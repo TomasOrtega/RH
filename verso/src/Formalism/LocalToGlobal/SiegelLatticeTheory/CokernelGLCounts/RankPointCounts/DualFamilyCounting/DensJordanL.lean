@@ -25,6 +25,9 @@ section JL
 variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (L : LocSp D M) (p : PlF D)
 
+/- English proof (translation)
+Rewrite using `[← L.bc_smul p]`. Use `congr 1`. Use `first`. Consider the case `rfl`. Consider the case `exact (algebraMap_smul D.host.E o x).symm`.
+-/
 theorem jl_bc_smulO (o : 𝓞 D.host.E) (x : (VS D).V) :
     L.bc p (o • x) = (D.s.atP p).ιE (o : D.host.E) • L.bc p x := by
   rw [← L.bc_smul p]
@@ -33,10 +36,22 @@ theorem jl_bc_smulO (o : 𝓞 D.host.E) (x : (VS D).V) :
     | rfl
     | exact (algebraMap_smul D.host.E o x).symm
 
+/- English proof (translation)
+Rewrite using `[hA.2.2.2.1]`. Conclude with `PI.CntNotIntW.iE_mem_O D p o`.
+-/
 theorem jl_iE_mem (hA : Agree δ M p) (o : 𝓞 D.host.E) : (D.s.atP p).ιE (o : D.host.E) ∈ (M p).L.O := by
   rw [hA.2.2.2.1]
   exact PI.CntNotIntW.iE_mem_O D p o
 
+/- English proof (translation)
+Unfold `lattice₂`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.span_induction (p := fun x _ => L.bc p x ∈ Submodule.span (M p).L.O (L.bc p '' S)) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+
+Introduce `y hy`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z _ _ hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Introduce `o y _ hy`. Rewrite using `[jl_bc_smulO L p o y]`. Conclude with `Submodule.smul_mem _ (⟨_, jl_iE_mem p hA o⟩ : (M p).L.O) hy`.
+
+Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+-/
 theorem jl_latP_span (hA : Agree δ M p) (S : Set (VS D).V) :
     lattice₂ L p (Submodule.span (𝓞 D.host.E) S) = Submodule.span (M p).L.O (L.bc p '' S) := by
   unfold lattice₂
@@ -57,6 +72,11 @@ theorem jl_latP_span (hA : Agree δ M p) (S : Set (VS D).V) :
       exact Submodule.smul_mem _ (⟨_, jl_iE_mem p hA o⟩ : (M p).L.O) hy
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), map_one _⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨t, ht, rfl⟩` from `hx`.
+
+Take `⟨t', ht', rfl⟩` from `hy`. Conclude with `⟨t * t', fun h => (p.isPrime.mem_or_mem h).elim ht ht', map_mul _ _ _⟩`.
+-/
 theorem jl_closure {s : 𝓞 D.host.E}
     (hs : s ∈ Submonoid.closure {s : 𝓞 D.host.E | ∃ t : 𝓞 D.host.F, t ∉ p.asIdeal ∧
       algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t = s}) :
@@ -69,6 +89,17 @@ theorem jl_closure {s : 𝓞 D.host.E}
     obtain ⟨t', ht', rfl⟩ := hy
     exact ⟨t * t', fun h => (p.isPrime.mem_or_mem h).elim ht ht', map_mul _ _ _⟩
 
+/- English proof (translation)
+Unfold `lattice₂`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `haA : a ∈ locF (F` using `D.host.F) (K := D.host.E) p.asIdeal A := ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`. Take `⟨s, hs, hsb⟩` from `h haA`.
+
+Take `⟨t, ht, rfl⟩` from `jl_closure p hs`. Establish `hne` using `Formalism.L2.SG.Pf.LocUnramP.iotaF_ne p t ht`. Establish `hcc : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (t : D.host.F))⁻¹ * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (t : D.host.F)) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hne, map_one]`. Establish `hE : (((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t : 𝓞 D.host.E) : D.host.E)) = ((t : D.host.F) : D.host.E)` using `rfl`.
+
+Establish `hbc : L.bc p (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • a) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (t : D.host.F)) • L.bc p a`. Rewrite using `[jl_bc_smulO, hE, Formalism.L2.SG.Pf.LocUnramP.iotaE_alg]`. Establish `hmem : L.bc p (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • a) ∈ Submodule.span (M p).L.O (L.bc p '' (B : Set (VS D).V))` using `Submodule.subset_span ⟨_, hsb, rfl⟩`. Establish `hy : ((D.s.atP p).ιF (t : D.host.F))⁻¹ ∈ 𝒪[(D.s.atP p).Fp]` using `Formalism.L2.SG.Pf.LocUnramP.iotaF_inv_mem p t ht`. Establish `hc'O : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF (t : D.host.F))⁻¹ ∈ (M p).L.O`.
+
+Rewrite using `[hA.2.2.2.1, (D.s.atP p).O_def]`. Establish `hI : IsIntegral 𝒪[(D.s.atP p).Fp] ((D.s.atP p).ιF (t : D.host.F))⁻¹` using `isIntegral_algebraMap (x := (⟨_, hy⟩ : 𝒪[(D.s.atP p).Fp]))`. Conclude with `hI.algebraMap`. Establish `e : L.bc p a = (⟨_, hc'O⟩ : (M p).L.O) • L.bc p (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • a)`. Rewrite using `[hbc, Subring.smul_def, smul_smul]`.
+
+Simplify using `only [hcc, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+-/
 theorem jl_latP_le (hA : Agree δ M p) {A B : Submodule (𝓞 D.host.E) (VS D).V}
     (h : locF (F := D.host.F) (K := D.host.E) p.asIdeal A ≤ locF (F := D.host.F) (K := D.host.E) p.asIdeal B) :
     lattice₂ L p A ≤ lattice₂ L p B := by
@@ -110,6 +141,13 @@ section BaseDensityIntegrable
 
 variable {D : Formalism.BasicNotions.D7} (p : PlF D)
 
+/- English proof (translation)
+Introduce `hmem`. Establish `hc` using `(D.s.atP p).val 1 (t : D.host.F)`. Rewrite `hc` using `[map_one, map_one]`. Establish `h1 : (1 : (D.s.atP p).Fp) ≤ᵥ (D.s.atP p).ιF (t : D.host.F)`. Rewrite using `[Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation (D.s.atP p).Fp)]`.
+
+Rewrite `hmem` using `[Valuation.mem_integer_iff]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ ht0]`. Use `_ = ValuativeRel.valuation _ ((D.s.atP p).ιF (t : D.host.F)) * ValuativeRel.valuation _ ((D.s.atP p).ιF (t : D.host.F))⁻¹ := map_mul _ _ _`. Use `_ ≤ ValuativeRel.valuation _ ((D.s.atP p).ιF (t : D.host.F)) * 1 := mul_le_mul' le_rfl hmem`.
+
+Use `_ = ValuativeRel.valuation _ ((D.s.atP p).ιF (t : D.host.F)) := mul_one _`. Establish `h2` using `hc.mp h1`. Establish `h3` using `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.F) p t).mpr ht`. Conclude with `absurd h2 (not_le.mpr h3)`.
+-/
 theorem jl_not_inv_mem (t : 𝓞 D.host.F) (ht : t ∈ p.asIdeal) (ht0 : (D.s.atP p).ιF (t : D.host.F) ≠ 0) :
     ((D.s.atP p).ιF (t : D.host.F))⁻¹ ∉ 𝒪[(D.s.atP p).Fp] := by
   intro hmem
@@ -129,6 +167,13 @@ theorem jl_not_inv_mem (t : 𝓞 D.host.F) (ht : t ∈ p.asIdeal) (ht0 : (D.s.at
   have h3 := (IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.F) p t).mpr ht
   exact absurd h2 (not_le.mpr h3)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu ht`. Take `⟨y, hy⟩` from `isUnit_iff_exists_inv.mp hu`. Establish `hy' : (D.s.atP p).ιF (t : D.host.F) * (y : (D.s.atP p).Fp) = 1`. Establish `h` using `congrArg Subtype.val hy`.
+
+Simplify using `using h`. Establish `hne : (D.s.atP p).ιF (t : D.host.F) ≠ 0` using `left_ne_zero_of_mul_eq_one hy'`. Apply `jl_not_inv_mem p t ht hne` to reduce the goal to its premises. Rewrite using `[inv_eq_of_mul_eq_one_right hy']`. Conclude with `y.2`.
+
+Introduce `ht`. Establish `hne` using `Formalism.L2.SG.Pf.LocUnramP.iotaF_ne p t ht`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, Formalism.L2.SG.Pf.LocUnramP.iotaF_inv_mem p t ht⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[mul_inv_cancel₀ hne]`.
+-/
 theorem jl_unit_iff (t : 𝓞 D.host.F) :
     IsUnit (⟨(D.s.atP p).ιF (t : D.host.F), Formalism.L2.SG.Pf.LocUnramP.iotaF_mem p t⟩ : 𝒪[(D.s.atP p).Fp]) ↔
       t ∉ p.asIdeal := by
@@ -148,6 +193,9 @@ theorem jl_unit_iff (t : 𝓞 D.host.F) :
     apply Subtype.ext
     simp [mul_inv_cancel₀ hne]
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, jl_unit_iff, not_not]`.
+-/
 theorem jl_dvd_iff (ϖ : 𝒪[(D.s.atP p).Fp]) (hϖ : Irreducible ϖ) (t : 𝓞 D.host.F) :
     ϖ ∣ (⟨(D.s.atP p).ιF (t : D.host.F), Formalism.L2.SG.Pf.LocUnramP.iotaF_mem p t⟩ : 𝒪[(D.s.atP p).Fp]) ↔
       t ∈ p.asIdeal := by
@@ -157,6 +205,29 @@ theorem jl_dvd_iff (ϖ : 𝒪[(D.s.atP p).Fp]) (hϖ : Irreducible ϖ) (t : 𝓞 
 
 end BaseDensityIntegrable
 
+/- English proof (translation)
+Introduce `D δ M hA L u u' hT F0 what₂ hR F' hz hP hI p ϖ hϖ`. Take `⟨hKc, hFc, -⟩` from `field_dictionary_holds D`. Take `⟨hC, -, hUr, -⟩` from `perpendicular_definition_holds D u u' hT F0 what₂ hR _ F' hz rfl hP`. Take `⟨hLat, -⟩` from `(mmChar_of local_unimodular_holds) D u u' hT F0 what₂ hR _ F' hz rfl hP`. Establish `hNd : NondegOn (VS D).hT (UPair D F0 F')`.
+
+Introduce `x hx hxy`. Establish `hxo : x ∈ orthK (VS D).hT (UPair D F0 F')`. Simplify using `only [orthK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `y hy`. Rewrite using `[← (VS D).herm.eq x y, hxy y hy, map_zero]`.
+
+Conclude with `(Submodule.disjoint_def.1 hC.disjoint) x hx hxo`. Take `⟨hJ1, -⟩` from `jordan_splitting_exists D.host.E D.host.F (VS D).V hKc hFc (VS D).hT (VS D).herm`. Establish `hne : {c | ∃ b a, IsJordanIn (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal b a ∧ c = cJof p.asIdeal a}.Nonempty`. Take `⟨b, a, hba⟩` from `hJ1 _ _ hNd hLat hI p.asIdeal p.isMaximal`. Conclude with `⟨_, b, a, hba, rfl⟩`.
+
+Take `⟨b, a, hba, hc⟩` from `Nat.sInf_mem hne`. Establish `hcJ : cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal = cJof p.asIdeal a` using `hc`. Take `⟨hbU, hloc, horth, hdiag, ha0⟩` from `hba`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hcard : D.R.rS + 1 + (D.R.rS + 1) = finrank D.host.E (UPair D F0 F')` using `by rw [hUr, hm]; ring`.
+
+Set `e : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1) ≃ Fin (finrank D.host.E (UPair D F0 F'))` to `finSumFinEquiv.trans (finCongr hcard)`. Use `⟨fun i => L.bc p (b (e i)), fun i => ⟨(D.s.atP p).ιF ((a (e i) : 𝓞 D.host.F) : D.host.F), Formalism.L2.SG.Pf.LocUnramP.iotaF_mem p (a (e i))⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span (M p).L.O (Set.range fun i => L.bc p (b (e i))) = lattice₂ L p (Submodule.span (𝓞 D.host.E) (Set.range b))`. Rewrite using `[jl_latP_span L p (hA p), ← Set.range_comp]`. Use `congr 1`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_range, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨e i, rfl⟩`.
+
+Introduce and unpack `⟨j, rfl⟩; exact ⟨e.symm j, by simp⟩`. Rewrite using `[h1]`. Conclude with `le_antisymm (jl_latP_le L p (hA p) hloc.le) (jl_latP_le L p (hA p) hloc.ge)`. Introduce `i j hij`. Rewrite using `[L.bc_form p]`.
+
+Use `show (D.s.atP p).ιE ((VS D).hT (b (e i)) (b (e j))) = 0`. Rewrite using `[horth _ _ (fun h => hij (e.injective h)), map_zero]`. Introduce `i`. Rewrite using `[L.bc_form p]`. Use `show (D.s.atP p).ιE ((VS D).hT (b (e i)) (b (e i))) = _`.
+
+Rewrite using `[hdiag, ← Formalism.L2.SG.Pf.LocUnramP.iotaE_alg p]`. Both sides reduce to the same expression. Rewrite using `[hcJ]`. Unfold `cJof`. Use `Finset.card_equiv e (fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite using `[jl_dvd_iff p ϖ hϖ (a (e i))]`. Establish `h0` using `ha0 (e i)`. Establish `hm1` using `unitaryAbsoluteValueBounds.mem_pow_iff_le_vF (F := D.host.F) p.isMaximal h0 1`. Rewrite `hm1` using `[pow_one]`.
+
+Rewrite using `[hm1]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+-/
 theorem jordan_decomposition_holds : DualityBasisChange.JordanL := by
   intro D δ M hA L u u' hT F0 what₂ hR F' hz hP hI p ϖ hϖ
   obtain ⟨hKc, hFc, -⟩ := field_dictionary_holds D

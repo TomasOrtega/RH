@@ -8,6 +8,13 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hmem : ∀ y, y ∈ Formalism.HermitianLatticesTheory.dual (hStd E n) L ↔ ∀ x ∈ L, (∑ k, star (x k) * y k) ∈ (algebraMap (𝓞 E) E).range`. Introduce `y`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Both sides reduce to the same expression. Establish `hset : dualSet σ (1 : Matrix (Fin n) (Fin n) E) L = (Formalism.HermitianLatticesTheory.dual (hStd E n) L : Set _)`.
+
+Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, hmem]`. Simplify using `only [dualSet, Set.mem_setOf_eq]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `: hform σ (1 : Matrix (Fin n) (Fin n) E) x y = ∑ k, star (x k) * y k`.
+
+Simplify using `[hform, Matrix.one_apply, hσ]`. Rewrite using `[this]`. Unfold `dualL`. Rewrite using `[hset, Submodule.span_eq]`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.dualL_one_eq_dual {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (σ : E →+* E)
     (hσ : ∀ x, σ x = star x) (L : Submodule (𝓞 E) (Fin n → E)) :
     dualL σ (1 : Matrix (Fin n) (Fin n) E) L = Formalism.HermitianLatticesTheory.dual (hStd E n) L := by
@@ -26,6 +33,9 @@ theorem GlobalTheory.Mem.Col2.TC.dualL_one_eq_dual {E : Type} [Field E] [NumberF
   unfold dualL
   rw [hset, Submodule.span_eq]
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a i hi L`. Establish `hG : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1`. Unfold `LdG`. Rewrite using `[hG]`. Conclude with `GlobalTheory.Mem.Col2.TC.dualL_one_eq_dual _ (fun x => rfl) L`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.ldG_eq_dual_hStd : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m), ∀ (L : Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)), LdG (I.rec7 l Z) i hi L = Formalism.HermitianLatticesTheory.dual (hStd B.host.E (B.R.N i)) L := by
   intro B X I hI hP l Z u a i hi L
   have hG : gramN (I.rec7 l Z) i hi = 1 := ((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1

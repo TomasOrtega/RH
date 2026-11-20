@@ -4,8 +4,14 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.RgBcC
 
+/- English proof (translation)
+The claim follows from `Cxd2.rmHol_of Cxd2.atTrace Cxd2.atDer`.
+-/
 theorem rmHol : RmHol := Cxd2.rmHol_of Cxd2.atTrace Cxd2.atDer
 
+/- English proof (translation)
+The claim follows from `Cxd2.rmAnti_of Cxd2.atTraceT Cxd2.atDer`.
+-/
 theorem rmAnti : RmAnti := Cxd2.rmAnti_of Cxd2.atTraceT Cxd2.atDer
 
 end PositivityTheory.RgBcC

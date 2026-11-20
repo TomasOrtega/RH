@@ -9,6 +9,11 @@ namespace UpperTheory.Reformulated.B.SphericalZetaCosets
 
 section Sums
 
+/- English proof (translation)
+Establish `hs : Summable (fun x : Σ n, T n => ‖y ^ x.1‖)`. Rewrite using `[summable_sigma_of_nonneg (fun _ => norm_nonneg _)]`. Use `⟨fun n => Summable.of_finite, ?_⟩` and prove the remaining obligations. Use `(summable_geometric_of_lt_one (norm_nonneg _) hy).congr fun n => ?_` and prove the remaining obligations. Simplify using `[tsum_const, hT, mul_pow]`.
+
+Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hs.of_norm.tsum_sigma, ← tsum_geometric_of_norm_lt_one hy]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `[tsum_const, hT, mul_pow]`.
+-/
 private theorem sum_sigma_geom (T : ℕ → Type) [∀ n, Finite (T n)] (N : ℕ)
     (hT : ∀ n, Nat.card (T n) = N ^ n) (y : ℂ) (hy : ‖(N : ℂ) * y‖ < 1) :
     Summable (fun x : Σ n, T n => ‖y ^ x.1‖) ∧
@@ -23,6 +28,13 @@ private theorem sum_sigma_geom (T : ℕ → Type) [∀ n, Finite (T n)] (N : ℕ
   refine tsum_congr fun n => ?_
   simp [tsum_const, hT, mul_pow]
 
+/- English proof (translation)
+Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `T f _`. Conclude with `⟨Summable.of_finite, by simp⟩`.
+
+Consider the case `succ c ih`. Introduce `T f hf`. Take `⟨h1, h2⟩` from `ih (fun i => T i.succ) (fun i => f i.succ) (fun i => hf i.succ)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← (Fin.consEquiv T).summable_iff]`.
+
+Use `(Summable.mul_norm (hf 0) h1).congr fun x => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`. Rewrite using `[← (Fin.consEquiv T).tsum_eq, Fin.prod_univ_succ, ← h2, tsum_mul_tsum_of_summable_norm (hf 0) h1]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`.
+-/
 private theorem sum_pi_prod : ∀ (c : ℕ) (T : Fin c → Type) (f : ∀ i, T i → ℂ),
     (∀ i, Summable fun x => ‖f i x‖) →
     Summable (fun p : ∀ i, T i => ‖∏ i, f i (p i)‖) ∧
@@ -59,15 +71,33 @@ private noncomputable def rowFn (π : R) (i : Fin c) (x : Row π i) (j : Fin c) 
 private noncomputable def hnf (π : R) (p : ∀ i : Fin c, Row π i) : Matrix (Fin c) (Fin c) R :=
   Matrix.of fun i j => rowFn π i (p i) j
 
+/- English proof (translation)
+Simplify using `[hnf, rowFn]`.
+-/
 private theorem hnf_diag (π : R) (p : ∀ i : Fin c, Row π i) (i : Fin c) :
     hnf π p i i = π ^ (p i).1 := by simp [hnf, rowFn]
 
+/- English proof (translation)
+Simplify using `[hnf, rowFn, h.not_gt, h.ne]`.
+-/
 private theorem hnf_low (π : R) (p : ∀ i : Fin c, Row π i) {i j : Fin c} (h : j < i) :
     hnf π p i j = 0 := by simp [hnf, rowFn, h.not_gt, h.ne]
 
+/- English proof (translation)
+Simplify using `[hnf, rowFn, h]`.
+-/
 private theorem hnf_up (π : R) (p : ∀ i : Fin c, Row π i) {i j : Fin c} (h : i < j) :
     hnf π p i j = ((p i).2 ⟨j, h⟩).out := by simp [hnf, rowFn, h]
 
+/- English proof (translation)
+Establish `key : ∀ l, (∀ m, l < m → x m = 0) → (H *ᵥ x) l = H l l * x l`. Introduce `l hm`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_single l (fun m _ hne => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Simplify using `[hl l m h]`. Simplify using `[hm m h]`. Establish `z : ∀ l, i < l → x l = 0`. Introduce `l`. Proceed by induction on `l using WellFoundedGT.induction with`.
+
+Consider the case `ind l ih`. Introduce `hil`. Use `key l fun m hm => ih m hm (hil.trans hm)` as an intermediate fact. Rewrite `this` using `[hx l hil]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left (hd l)`.
+
+Conclude with `key i z`.
+-/
 private theorem tri_mulVec [IsDomain R] (H : Matrix (Fin c) (Fin c) R)
     (hl : ∀ i j, j < i → H i j = 0) (hd : ∀ i, H i i ≠ 0) (x : Fin c → R) (i : Fin c)
     (hx : ∀ l, i < l → (H *ᵥ x) l = 0) : (H *ᵥ x) i = H i i * x i := by
@@ -88,6 +118,23 @@ private theorem tri_mulVec [IsDomain R] (H : Matrix (Fin c) (Fin c) R)
       exact (mul_eq_zero.1 this.symm).resolve_left (hd l)
   exact key i z
 
+/- English proof (translation)
+Establish `hd : ∀ (p : ∀ i : Fin c, Row π i) i, hnf π p i i ≠ 0` using `fun p i => by`. Rewrite using `[hnf_diag]`. Conclude with `pow_ne_zero _ hπ.ne_zero`. Establish `hle : ∀ (p p' : ∀ i : Fin c, Row π i) (k : Matrix (Fin c) (Fin c) R), hnf π p' = hnf π p * k → ∀ i, (p i).1 ≤ (p' i).1`. Introduce `p p' k h i`.
+
+Establish `e : ∀ l, (hnf π p *ᵥ fun m => k m i) l = hnf π p' l i` using `fun l => by`. Rewrite using `[h]`. Both sides reduce to the same expression. Use `tri_mulVec (hnf π p) (fun _ _ => hnf_low π p) (hd p) (fun m => k m i) i (fun l hl => by rw [e, hnf_low π p' hl])` as an intermediate fact. Rewrite `this` using `[e, hnf_diag, hnf_diag]`.
+
+Conclude with `(pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit).1 ⟨_, this⟩`. Establish `ha : ∀ i, (p i).1 = (p' i).1` using `fun i => le_antisymm (hle p p' k h i) (hle p' p k' h' i)`. Establish `row : ∀ (i : Fin c) (x y : Row π i), x.1 = y.1 → ∀ j, π ^ x.1 ∣ (y.2 j).out - (x.2 j).out → (y.2 j).out = (x.2 j).out`. Introduce and unpack `i ⟨n, r⟩ ⟨m, s⟩ rfl j hj`. Establish `: Ideal.Quotient.mk (Ideal.span {π ^ n}) (s j).out = Ideal.Quotient.mk (Ideal.span {π ^ n}) (r j).out` using `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 hj)`.
+
+Rewrite `this` using `[Ideal.Quotient.mk_out, Ideal.Quotient.mk_out]`. Simplify using `[this]`. Establish `row' : ∀ (i : Fin c) (x y : Row π i), x.1 = y.1 → (∀ j, (y.2 j).out = (x.2 j).out) → x = y`. Introduce and unpack `i ⟨n, r⟩ ⟨m, s⟩ rfl hj`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Conclude with `(Quotient.out_injective (hj j)).symm`. Establish `ent : ∀ j l, hnf π p' l j = hnf π p l j`. Introduce `j l`. Establish `e : ∀ l, (hnf π p *ᵥ fun m => (k - 1) m j) l = hnf π p' l j - hnf π p l j` using `fun l => by`.
+
+Establish `: hnf π p * (k - 1) = hnf π p' - hnf π p` using `by rw [mul_sub, ← h, mul_one]`. Rewrite using `[← Matrix.sub_apply, ← this]`. Both sides reduce to the same expression. Proceed by induction on `l using WellFoundedGT.induction with`. Consider the case `ind l ih`.
+
+Break down `lt_trichotomy l j with hlj | rfl | hlj` into its components or cases. Use `tri_mulVec (hnf π p) (fun _ _ => hnf_low π p) (hd p) (fun m => (k - 1) m j) l (fun m hm => by rw [e, ih m hm, sub_self])` as an intermediate fact. Rewrite `this` using `[e, hnf_diag, hnf_up π p hlj, hnf_up π p' hlj]`. Rewrite using `[hnf_up π p hlj, hnf_up π p' hlj]`. Conclude with `row l _ _ (ha l) _ ⟨_, this⟩`.
+
+Rewrite using `[hnf_diag, hnf_diag, ha]`. Rewrite using `[hnf_low π p hlj, hnf_low π p' hlj]`. Use function extensionality and compare the values at `i`. Use `row' i _ _ (ha i) fun j => ?_` and prove the remaining obligations. Rewrite using `[← hnf_up π p j.2, ← hnf_up π p' j.2, ent]`.
+-/
 private theorem hnf_unique [IsDomain R] {π : R} (hπ : Irreducible π)
     (p p' : ∀ i : Fin c, Row π i) (k k' : Matrix (Fin c) (Fin c) R)
     (h : hnf π p' = hnf π p * k) (h' : hnf π p = hnf π p' * k') : p = p' := by
@@ -135,6 +182,41 @@ private theorem hnf_unique [IsDomain R] {π : R} (hπ : Irreducible π)
   refine row' i _ _ (ha i) fun j => ?_
   rw [← hnf_up π p j.2, ← hnf_up π p' j.2, ent]
 
+/- English proof (translation)
+Use `set N : Submodule R (Fin c → R) := LinearMap.range G.mulVecLin with hN`. Establish `step : ∀ i : Fin c, ∃ (n : ℕ) (v : Fin c → R), v ∈ N ∧ (∀ l, i < l → v l = 0) ∧ v i = π ^ n ∧ ∀ w ∈ N, (∀ l, i < l → w l = 0) → π ^ n ∣ w i`. Introduce `i`. Set `M : Submodule R (Fin c → R)` to `N ⊓ Submodule.pi {l | i < l} fun _ => (⊥ : Submodule R R)`. Establish `hM : ∀ w, w ∈ M ↔ w ∈ N ∧ ∀ l, i < l → w l = 0` using `fun w => by`.
+
+Conclude with `Submodule.mem_inf.trans (and_congr_right fun _ => Submodule.mem_pi)`. Set `I : Ideal R` to `M.map (LinearMap.proj i)`. Establish `hI : I ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨G.det, ⟨Pi.single i G.det, (hM _).2 ⟨?_, ?_⟩, by simp⟩, hG⟩` and prove the remaining obligations. Use `⟨G.adjugate *ᵥ Pi.single i 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.mul_adjugate]`. Use function extensionality and compare the values at `l`. Apply the tactic sequence `by_cases h : l = i <;> simp [h, Matrix.smul_mulVec]`. Introduce `l hl`. Simplify using `[hl.ne']`.
+
+Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hI hπ`. Take `⟨v, hv, hv'⟩ : π ^ n ∈ I` from `hn ▸ Ideal.mem_span_singleton_self _`. Use `⟨n, v, ((hM v).1 hv).1, ((hM v).1 hv).2, hv', fun w hw hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← hn]`. Conclude with `⟨w, (hM w).2 ⟨hw, hw'⟩, rfl⟩`.
+
+Use `choose a v hvN hv0 hvd hdv using step`. Establish `red : ∀ m : ℕ, ∀ w ∈ N, ∃ u ∈ N, (∀ l : Fin c, m ≤ l.val → u l = w l) ∧ ∀ l : Fin c, l.val < m → u l = (Ideal.Quotient.mk (Ideal.span {π ^ a l}) (u l)).out`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun w hw => ⟨w, hw, fun _ _ => rfl, fun _ h => absurd h (Nat.not_lt_zero _)⟩`.
+
+Consider the case `succ m ih`. Introduce `w hw`. Distinguish the cases in `hm : m < c`. Set `i : Fin c` to `⟨m, hm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : π ^ a i ∣ w i - (Ideal.Quotient.mk (Ideal.span {π ^ a i}) (w i)).out := by`.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq, Ideal.Quotient.mk_out]`. Take `⟨u, hu, h1, h2⟩` from `ih (w - t • v i) (N.sub_mem hw (N.smul_mem t (hvN i)))`. Use `⟨u, hu, fun l hl => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 l (by omega)]`. Simplify using `[hv0 i l (show m < l.val by omega)]`.
+
+Break down `Nat.lt_succ_iff_lt_or_eq.1 hl with h | h` into its components or cases. Conclude with `h2 l h`. Take `rfl : l = i` from `Fin.ext h`. Establish `: u i = (Ideal.Quotient.mk (Ideal.span {π ^ a i}) (w i)).out`. Rewrite using `[h1 i le_rfl]`.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, hvd]`. Take the linear combination `ht`. Rewrite using `[this, Ideal.Quotient.mk_out]`. Take `⟨u, hu, h1, h2⟩` from `ih w hw`. Conclude with `⟨u, hu, fun l hl => h1 l (by omega), fun l _ => h2 l (by omega)⟩`.
+
+Use `choose u huN hu1 hu2 using fun j : Fin c => red j.val (v j) (hvN j)`. Set `p : ∀ i : Fin c, Row π i` to `fun i => ⟨a i, fun j => Ideal.Quotient.mk _ (u j i)⟩`. Establish `hp : ∀ i j, hnf π p i j = u j i`. Introduce `i j`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases.
+
+Rewrite using `[hnf_up π p h]`. Conclude with `(hu2 j i h).symm`. Rewrite using `[hnf_diag, hu1 i i le_rfl, hvd]`. Rewrite using `[hnf_low π p h, hu1 j i h.le, hv0 j i h]`. Establish `span : ∀ m : ℕ, ∀ w ∈ N, (∀ l : Fin c, m ≤ l.val → w l = 0) → ∃ x, w = hnf π p *ᵥ x`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun w _ h => ⟨0, by funext l; simp [h l (Nat.zero_le _)]⟩`. Consider the case `succ m ih`. Introduce `w hw h0`.
+
+Distinguish the cases in `hm : m < c`. Set `i : Fin c` to `⟨m, hm⟩`. Take `⟨t, ht⟩` from `hdv i w hw fun l hl => h0 l hl`. Take `⟨x, hx⟩` from `ih (w - t • u i) (N.sub_mem hw (N.smul_mem t (huN i))) (by`. Introduce `l hl`.
+
+Break down `hl.eq_or_lt with h | h` into its components or cases. Take `rfl : l = i` from `Fin.ext h.symm`. Simplify using `[hu1 i i le_rfl, hvd, ht, mul_comm]`. Simplify using `[h0 l h, hu1 i l hl, hv0 i l h])`. Use `⟨x + Pi.single i t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, ← hx]`. Use function extensionality and compare the values at `l`. Simplify using `[hp, mul_comm]`. Conclude with `ih w hw fun l hl => absurd l.2 (by omega)`. Use `choose x hx using huN`.
+
+Use `choose y hy using fun j : Fin c => span c (G *ᵥ Pi.single j 1) ⟨Pi.single j 1, rfl⟩ fun l hl => absurd l.2 (by omega)`. Use `⟨p, Matrix.of fun i j => x j i, Matrix.of fun i j => y j i, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[hp, ← hx j]`. Both sides reduce to the same expression.
+
+Use extensionality with `i j`. Use `congrFun (hy j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 private theorem hnf_exists [IsDomain R] [IsDiscreteValuationRing R] {π : R} (hπ : Irreducible π)
     (G : Matrix (Fin c) (Fin c) R) (hG : G.det ≠ 0) :
     ∃ (p : ∀ i : Fin c, Row π i) (k k' : Matrix (Fin c) (Fin c) R),
@@ -229,6 +311,17 @@ private theorem hnf_exists [IsDomain R] [IsDiscreteValuationRing R] {π : R} (h�
 
 end Hermite
 
+/- English proof (translation)
+Set `C : ι → Set G` to `fun i => (fun x => (g i)⁻¹ * x) ⁻¹' K`. Establish `hSC : S = ⋃ i, C i`. Use extensionality with `x`. Rewrite using `[hS, Set.mem_iUnion]`. Both sides reduce to the same expression.
+
+Establish `hm : ∀ i, MeasurableSet (C i)` using `fun i => measurable_const_mul _ hK`. Establish `hκ : ∀ i, κ (C i) = 1` using `fun i => (measure_preimage_mul κ _ _).trans h1`. Establish `he : ∀ i, Set.EqOn f (fun _ => v i) (C i)` using `fun i x hx => by`. Use `hf i _ hx` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `hd : Pairwise (Function.onFun Disjoint C)` using `fun i j hij => by`. Use `Set.disjoint_left.2 fun x hi hj => hij (hg i j ?_)` and prove the remaining obligations. Use `K.mul_mem hi (K.inv_mem hj)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hi : ∀ i, IntegrableOn f (C i) κ` using `fun i => (integrableOn_congr_fun (he i) (hm i)).2 (integrableOn_const (by simp [hκ]))`.
+
+Establish `hn : ∀ i, ∫ x in C i, ‖f x‖ ∂κ = ‖v i‖` using `fun i => by`. Rewrite using `[setIntegral_congr_fun (g := fun _ => ‖v i‖) (hm i) fun x hx => by simp [he i hx]]`. Simplify using `[Measure.real, hκ]`. Establish `hI : IntegrableOn f (⋃ i, C i) κ` using `integrableOn_iUnion_of_summable_integral_norm hi (by simpa only [hn] using hv)`. Rewrite using `[hSC]`.
+
+Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_iUnion hm hd hI]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[setIntegral_congr_fun (hm i) (he i)]`. Simplify using `[Measure.real, hκ]`.
+-/
 private theorem integral_cosets {G ι : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
     [Countable ι] (K : Subgroup G) (hK : MeasurableSet (K : Set G)) (κ : Measure G)
     [κ.IsMulLeftInvariant] (h1 : κ K = 1) (g : ι → G)
@@ -262,6 +355,9 @@ private theorem integral_cosets {G ι : Type} [Group G] [MeasurableSpace G] [Mea
   rw [setIntegral_congr_fun (hm i) (he i)]
   simp [Measure.real, hκ]
 
+/- English proof (translation)
+Establish `h` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer π).1 hπ`. Rewrite using `[← Ideal.span_singleton_pow, ← h]`. Conclude with `cardQuot_pow_of_prime (IsDiscreteValuationRing.not_a_field R)`.
+-/
 private theorem card_quot_pow {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {π : R} (hπ : Irreducible π) (n : ℕ) :
     Nat.card (R ⧸ Ideal.span {π ^ n}) = Nat.card (IsLocalRing.ResidueField R) ^ n := by
@@ -269,6 +365,9 @@ private theorem card_quot_pow {R : Type} [CommRing R] [IsDomain R] [IsDiscreteVa
   rw [← Ideal.span_singleton_pow, ← h]
   exact cardQuot_pow_of_prime (IsDiscreteValuationRing.not_a_field R)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨Matrix.of fun a b => ⟨Z a b, h a b⟩, rfl⟩`. Introduce and unpack `⟨Y, rfl⟩ a b`. Conclude with `(Y a b).2`.
+-/
 private theorem isInt_iff {F : Type} [Field F] (O : Subring F) {c : ℕ}
     (Z : Matrix (Fin c) (Fin c) F) :
     GlobalTheory.CompanionTheory.QL.IsInt O Z ↔ ∃ Y : Matrix (Fin c) (Fin c) O, O.subtype.mapMatrix Y = Z := by
@@ -277,6 +376,9 @@ private theorem isInt_iff {F : Type} [Field F] (O : Subring F) {c : ℕ}
   · rintro ⟨Y, rfl⟩ a b
     exact (Y a b).2
 
+/- English proof (translation)
+Establish `h : IsOpen {Z : Matrix (Fin c) (Fin c) F | GlobalTheory.CompanionTheory.QL.IsInt O Z}`. Simplify using `only [GlobalTheory.CompanionTheory.QL.IsInt, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => hO.preimage (continuous_apply_apply a b)`. Conclude with `(h.preimage Units.continuous_val).inter (h.preimage Units.continuous_coe_inv)`.
+-/
 private theorem isOpen_GLint {F : Type} [Field F] [TopologicalSpace F] [IsTopologicalRing F]
     (O : Subring F) (hO : IsOpen (O : Set F)) (c : ℕ) :
     IsOpen (GlobalTheory.CompanionTheory.QL.GLint O c : Set (GL (Fin c) F)) := by
@@ -289,6 +391,53 @@ private theorem isOpen_GLint {F : Type} [Field F] [TopologicalSpace F] [IsTopolo
 end UpperTheory.Reformulated.B.SphericalZetaCosets
 
 open UpperTheory.Reformulated.B.SphericalZetaCosets in
+/- English proof (translation)
+Introduce `F _ _ _ _ O ϖ nrm q hLF c χ α hχ φ hφ κ hκ h1 σ hσ`. Take `⟨rfl, hne, hlt, hq, hunit, hpi⟩` from `hLF`. Establish `hϖ : ValuativeRel.valuation F ϖ < 1` using `(hlt ϖ).2 ⟨1, one_mem _, (mul_one _).symm⟩`. Set `π : 𝒪[F]` to `⟨ϖ, hϖ.le⟩`. Establish `hπ : Irreducible π`.
+
+Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Use extensionality with `x`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, hlt, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, h⟩`.
+
+Conclude with `⟨⟨o, ho⟩, Subtype.ext h⟩`. Introduce and unpack `⟨o, h⟩`. Conclude with `⟨o, o.2, congrArg Subtype.val h⟩`. Establish `hq0 : 0 < q` using `by rw [hq]; exact Nat.card_pos`. Establish `hqR : (0 : ℝ) < q` using `by exact_mod_cast hq0`.
+
+Establish `hcard : ∀ n : ℕ, Nat.card (𝒪[F] ⧸ Ideal.span {π ^ n}) = q ^ n` using `fun n => by`. Rewrite using `[hq]`. Conclude with `card_quot_pow hπ n`. Use `haveI hfin : ∀ n : ℕ, Finite (𝒪[F] ⧸ Ideal.span {π ^ n}) := fun n => Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Set `ι : Matrix (Fin c) (Fin c) 𝒪[F] →+* Matrix (Fin c) (Fin c) F` to `(𝒪[F]).subtype.mapMatrix`.
+
+Establish `hι : Function.Injective ι` using `fun A B h => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `htri : ∀ p : ∀ i : Fin c, Row π i, (ι (hnf π p)).BlockTriangular id` using `fun p i j h => by`. Express the relevant statement in the definitionally equal form `((hnf π p i j : 𝒪[F]) : F) = 0`.
+
+Rewrite using `[hnf_low π p (show j < i from h)]`. Both sides reduce to the same expression. Establish `hdiag : ∀ (p : ∀ i : Fin c, Row π i) i, ι (hnf π p) i i = ϖ ^ (p i).1` using `fun p i => by`. Express the relevant statement in the definitionally equal form `((hnf π p i i : 𝒪[F]) : F) = _`. Rewrite using `[hnf_diag]`.
+
+Both sides reduce to the same expression. Establish `hdet : ∀ p : ∀ i : Fin c, Row π i, (ι (hnf π p)).det = ∏ i, ϖ ^ (p i).1` using `fun p => by`. Rewrite using `[Matrix.det_of_upperTriangular (htri p)]`. Conclude with `Finset.prod_congr rfl fun i _ => hdiag p i`. Set `g : (∀ i : Fin c, Row π i) → GL (Fin c) F` to `fun p => Matrix.GeneralLinearGroup.mkOfDetNeZero (ι (hnf π p)) (by rw [hdet]; exact Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ hne)`.
+
+Establish `hg : ∀ p, (g p : Matrix (Fin c) (Fin c) F) = ι (hnf π p)` using `fun p => rfl`. Establish `hK : ∀ x y : GL (Fin c) F, x⁻¹ * y ∈ GlobalTheory.CompanionTheory.QL.GLint 𝒪[F] c ↔ ∃ k k', (y : Matrix (Fin c) (Fin c) F) = x * ι k ∧ (x : Matrix (Fin c) (Fin c) F) = y * ι k'`. Introduce `x y`. Express the relevant statement in the definitionally equal form `GlobalTheory.CompanionTheory.QL.IsInt _ _ ∧ GlobalTheory.CompanionTheory.QL.IsInt _ _ ↔ _`. Rewrite using `[isInt_iff, isInt_iff, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k, hk⟩, k', hk'⟩`. Conclude with `⟨k, k', ((Units.eq_inv_mul_iff_mul_eq _).1 hk).symm, ((Units.eq_inv_mul_iff_mul_eq _).1 hk').symm⟩`. Introduce and unpack `⟨k, k', hk, hk'⟩`. Conclude with `⟨⟨k, (Units.eq_inv_mul_iff_mul_eq _).2 hk.symm⟩, k', (Units.eq_inv_mul_iff_mul_eq _).2 hk'.symm⟩`.
+
+Establish `hdetK : ∀ k ∈ GlobalTheory.CompanionTheory.QL.GLint 𝒪[F] c, nrm (k : Matrix (Fin c) (Fin c) F).det = 1`. Introduce and unpack `k ⟨hk, hk'⟩`. Take `⟨A, hA⟩` from `(isInt_iff _ _).1 hk`. Take `⟨B, hB⟩` from `(isInt_iff _ _).1 hk'`. Establish `hAB : A * B = 1` using `hι (by`.
+
+Rewrite using `[map_mul, map_one]`. Express the relevant statement in the definitionally equal form `(𝒪[F]).subtype.mapMatrix A * (𝒪[F]).subtype.mapMatrix B = 1`. Rewrite using `[hA, hB, Units.mul_inv])`. Apply `hunit` to reduce the goal to its premises. Rewrite using `[← hA, ← RingHom.map_det]`.
+
+Conclude with `(Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)).1 (Matrix.isUnit_det_of_right_inverse hAB)`. Set `y : Fin c → ℂ` to `fun i => α i * (((q : ℝ) ^ ((i : ℕ) - ((c : ℝ) - 1) / 2 - σ) : ℝ) : ℂ)`. Establish `hy : ∀ i : Fin c, ((q ^ (c - 1 - i) : ℕ) : ℂ) * y i = α i * (((q : ℝ) ^ (((c : ℝ) - 1) / 2 - σ) : ℝ) : ℂ)`. Introduce `i`. Establish `e : ((c - 1 - i : ℕ) : ℝ) = (c : ℝ) - 1 - (i : ℕ)`.
+
+Use `i.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]`. Establish `: (q : ℝ) ^ (((c : ℝ) - 1) / 2 - σ) = (q : ℝ) ^ (c - 1 - i : ℕ) * (q : ℝ) ^ ((i : ℕ) - ((c : ℝ) - 1) / 2 - σ)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hqR, e]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Simplify using `only [y]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hrow` using `fun i : Fin c => sum_sigma_geom (fun n => {j : Fin c // i < j} → 𝒪[F] ⧸ Ideal.span {π ^ n}) (q ^ (c - 1 - i)) (fun n => by`. Rewrite using `[Nat.card_fun, hcard, ← pow_mul, ← pow_mul, mul_comm]`. Use `congr 2`. Rewrite using `[← Fin.card_Ioi, ← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun j => Finset.mem_Ioi.symm)) (y i)`.
+
+Use the proof step `(by`. Rewrite using `[hy, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hqR.le _)]`. Conclude with `hσ i)`. Take `⟨hs, ht⟩` from `sum_pi_prod c (fun i => Row π i) (fun i x => y i ^ x.1) fun i => (hrow i).1`. Establish `hO : IsOpen ((𝒪[F] : Subring F) : Set F)` using `Valuation.isOpen_integer`.
+
+Establish `main` using `integral_cosets (GlobalTheory.CompanionTheory.QL.GLint 𝒪[F] c) (isOpen_GLint _ hO c).measurableSet κ h1 g (fun p p' h => by`. Take `⟨k, k', hk, hk'⟩` from `(hK _ _).1 h`. Rewrite `hk`, `hk'` using `[hg, hg, ← map_mul]`. Conclude with `hnf_unique hπ p p' k k' (hι hk) (hι hk'))`. Use the proof step `(fun g => φ g * ((nrm (g : Matrix (Fin c) (Fin c) F).det ^ σ : ℝ) : ℂ))`.
+
+Use the proof step `(fun p => ∏ i, y i ^ (p i).1)`. Use the proof step `(fun p k hk => by`. Rewrite using `[hφ (g p) (htri p) k hk, Units.val_mul, Matrix.det_mul, map_mul, hdetK k hk, mul_one, hg, hdet, map_prod, ← Real.finsetProd_rpow _ _ (fun _ _ => nrm.nonneg _), Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hn : nrm (ϖ ^ (p i).1) = (q : ℝ) ^ (-((p i).1 : ℤ))`.
+
+Rewrite using `[map_pow, hpi, inv_pow, _root_.zpow_neg, zpow_natCast]`. Rewrite using `[hdiag, hχ.2 i _ _ hn, hn, zpow_natCast, mul_pow, mul_assoc, ← Complex.ofReal_mul, ← Complex.ofReal_pow, ← Real.rpow_intCast, ← Real.rpow_mul hqR.le, ← Real.rpow_mul hqR.le, ← Real.rpow_add hqR, ← Real.rpow_mul_natCast hqR.le]`. Use `congr 3`. Use `push_cast`. Use the proof step `ring)`.
+
+Use `hs (GlobalTheory.CompanionTheory.QL.Mint 𝒪[F] c)`. Use the proof step `(fun x => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.CompanionTheory.QL.IsInt _ _ ↔ _`. Rewrite using `[isInt_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨G, hG⟩`. Establish `hG0 : G.det ≠ 0` using `fun h => by`. Use `x.det_ne_zero` as an intermediate fact. Rewrite `this` using `[← hG, ← RingHom.map_det, h, map_zero]`. Conclude with `this rfl`.
+
+Take `⟨p, k, k', hk, hk'⟩` from `hnf_exists hπ G hG0`. Use `⟨p, (hK _ _).2 ⟨k', k, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hg, ← map_mul, ← hk', ← hG]`. Rewrite using `[hg, hk, map_mul, ← hG]`. Introduce and unpack `⟨p, h⟩`.
+
+Take `⟨k, k', hk, -⟩` from `(hK _ _).1 h`. Conclude with `⟨hnf π p * k, by rw [hk, hg, ← map_mul]⟩)`. Use `⟨main.1, ?_⟩` and prove the remaining obligations. Rewrite using `[main.2, ht]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [(hrow i).2, hy]`.
+-/
 theorem UpperTheory.Reformulated.B.SphericalZetaCosets.zeta_spherical :
     ∀ {F : Type} [inst : Field F] [inst_1 : ValuativeRel F] [inst_2 : TopologicalSpace F]
       [inst_3 : IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ},

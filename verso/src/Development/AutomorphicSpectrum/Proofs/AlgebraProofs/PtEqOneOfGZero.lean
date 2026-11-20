@@ -26,10 +26,18 @@ open GlobalTheory.CompanionTheory.Ar.GR
 
 namespace GlobalTheory.CompanionTheory.Ar.GR.Top
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.trivial_polarized_abelian_point_eq_one`.
+-/
 theorem pt_eq_one_of_g_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (P : Out.PolAV (Spec (CommRingCat.of R))), P.g = 0 → ∀ z : sp (R₀ := R) R ⟶ P.A, z = 1 :=
   GlobalTheory.T.trivial_polarized_abelian_point_eq_one
 
+/- English proof (translation)
+Establish `h1 : 0 < p - 1` using `Nat.sub_pos_of_lt hp.out.one_lt`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq (p : C) h1`. Establish `hle : v c ≤ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Establish `: 1 < v c ^ (p - 1)` using `one_lt_pow₀ h h1.ne'`. Rewrite `this` using `[← map_pow, hc]`. Conclude with `absurd hpv (not_lt.2 this.le)`. Take `⟨r, hr⟩` from `hv.exists_of_le_one hle`. Conclude with `⟨r, by rw [hr, ← v.map_pow, hc, map_natCast (algebraMap R C)]⟩`.
+-/
 theorem exists_cp (p : ℕ) [hp : Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C] (hv : v.Integers R)
     (hpv : v (p : C) < 1) :
@@ -45,6 +53,11 @@ theorem exists_cp (p : ℕ) [hp : Fact p.Prime] {C : Type} [Field C] [IsAlgClose
   obtain ⟨r, hr⟩ := hv.exists_of_le_one hle
   exact ⟨r, by rw [hr, ← v.map_pow, hc, map_natCast (algebraMap R C)]⟩
 
+/- English proof (translation)
+Set `_ : Unique (Nb p 0)` to `Pi.uniqueOfIsEmpty _`. Use `le_antisymm AA.le_int fun f hf => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hf default`. Establish `: f = r • (1 : Nb p 0 → C)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Subsingleton.elim x default, ← hr]`. Simplify using `[Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `AA.carrier.smul_mem r AA.one_mem`.
+-/
 theorem hopf_carrier_g_zero {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} [CommRing R]
     [Algebra R C] (AA : ReciprocityTheory.PGsh.L2.HopfOrder (C := C) R (Nb p 0)) :
     AA.carrier = ReciprocityTheory.PGsh.L2.intFun R (Nb p 0) := by
@@ -58,6 +71,13 @@ theorem hopf_carrier_g_zero {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : T
   rw [this]
   exact AA.carrier.smul_mem r AA.one_mem
 
+/- English proof (translation)
+Set `_ : Unique (Nb p 0)` to `Pi.uniqueOfIsEmpty _`. Take `⟨φ₀, hφ₀, -⟩` from `T.univ R (1 : sp (R₀ := R) R ⟶ G) (one_pow p)`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ x`.
+
+Conclude with `⟨φ₀ a, (ha x φ₀ hφ₀).symm⟩`. Introduce `hf`. Take `⟨r, hr⟩` from `hf default`. Use `⟨algebraMap R T.A r, fun x φ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim x default, ← hr, AlgHom.commutes]`.
+
+Both sides reduce to the same expression.
+-/
 theorem torsFun_one_eq {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} [CommRing R]
     [Algebra R C] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] (T : TorsRep G p) :
     torsFun C T (fun _ : Nb p 0 => (1 : sp (R₀ := R) R ⟶ G)) = ReciprocityTheory.PGsh.L2.intFun R (Nb p 0) := by
@@ -73,6 +93,27 @@ theorem torsFun_one_eq {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {R : Type} 
     rw [Subsingleton.elim x default, ← hr, AlgHom.commutes]
     rfl
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hp hcomp _ P`. Use `haveI : IsLocalRing R := isLocal_of_integers hv`. Use `haveI : IsDomain R := hv.hom_inj.isDomain (algebraMap R C)`. Use `haveI : Fact ¬IsUnit (p : R) := ⟨fun hu => by`. Establish `h1` using `hv.one_of_isUnit hu`.
+
+Rewrite `h1` using `[map_natCast]`. Rewrite `hp` using `[h1]`. Conclude with `lt_irrefl _ hp⟩`. Use `haveI : IsAdicComplete (Ideal.span {(p : R)}) R := hcomp`. Use `haveI : IsCommMonObj P.A := P.isAb.comm`.
+
+Establish `hT : Nonempty (TorsRep P.A p)` using `GlobalTheory.T.abelian_scheme_torsion_representation R p (Fact.out : p.Prime).one_le P.A P.L P.isAb P.isLB P.ample`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos P.g with hg | hg` into its components or cases. Take `⟨cp, hcp⟩` from `exists_cp p hv hp`. Establish `hpne : v (algebraMap R C (p : R)) ≠ 0`.
+
+Rewrite using `[map_natCast]`. Conclude with `fun h => Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero ((Valuation.zero_iff v).1 h)`. Establish `hplt : v (algebraMap R C (p : R)) < 1` using `by rwa [map_natCast]`. Establish `hS : HodgeTateSetting p v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp`. Use `⟨hv, hplt, hpne, hcp, ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Establish `h : ∀ (x : ℤ_[p]) (y : ℤ), sigE p ℤ (x ⊗ₜ[ℤ] y) = x ⊗ₜ[ℤ] star y` using `fun _ _ => rfl`.
+
+Rewrite using `[h, h, star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Take `⟨H⟩` from `GlobalTheory.ChF.htd_dim_zero p C v R hv ℤ cp`. Rewrite `H` using `[← hg]`. Take `⟨hS', H', -⟩` from `GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H`.
+
+Establish `h1` using `pt_eq_one_of_g_zero R P hg`. Use `revert H'`. Rewrite using `[hg]`. Introduce `H'`. Use `⟨cp, hS', H', fun _ => 1, ⟨?_, ?_, ?_⟩, fun T => ?_⟩` and prove the remaining obligations.
+
+Introduce `x y _`. Set `_ : Unique (Nb p 0)` to `Pi.uniqueOfIsEmpty _`. Conclude with `Subsingleton.elim x y`. Introduce `x y`. Conclude with `(_root_.mul_one _).symm`.
+
+Introduce `z`. Conclude with `⟨fun _ => ⟨0, (h1 z).symm⟩, fun _ => by rw [h1 z]; exact one_pow p⟩`. Rewrite using `[hopf_carrier_g_zero, torsFun_one_eq]`. Take `⟨F, X, hX⟩` from `GlobalTheory.ChF.exists_nilChart R P.A P.g P.smoothDim`. Take `⟨o⟩` from `GlobalTheory.T.polarised_variety_integer_action R P`.
+
+Establish `hα : ∀ a : ℤ, ∃ φ, Reads X X (o.act a) φ` using `fun a => GlobalTheory.ChF.exists_reads R P.A P.A _ _ F.F F.F X X hX hX (o.act a) (o.hom a)`. Use `choose α hα using hα`. Take `⟨cp, hS, H, S, pt, -, -, -, -, -, hpt, hAA, -⟩` from `GlobalTheory.T.formal_group_chart_family p C v R hv P hg P.g rfl ℤ o F X hX α hα`. Take `⟨hS', H', hAA', -⟩` from `GlobalTheory.T.hodge_tate_datum_reduce_scalars p P.g C v R (ℤ_[p] ⊗[ℤ] ℤ) (sigE p ℤ) cp hS H`. Conclude with `⟨cp, hS', H', pt, hpt, fun T => by rw [hAA']; exact hAA T⟩`.
+-/
 theorem main : HodgeTateDatumStatement := by
   intro p _ C _ _ _ v R _ _ hv hp hcomp _ P
   haveI : IsLocalRing R := isLocal_of_integers hv

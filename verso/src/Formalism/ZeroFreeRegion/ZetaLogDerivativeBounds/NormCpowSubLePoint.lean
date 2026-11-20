@@ -8,6 +8,11 @@ namespace Formalism.ZF
 
 namespace ComplexPowerDifferenceIntegral
 
+/- English proof (translation)
+Establish `h0 : (0:ℝ) ∉ Set.uIcc x y`. Rewrite using `[Set.uIcc_of_le hxy]`. Introduce `h`. Conclude with `absurd h.1 (not_le.mpr hx)`. Establish `hr : (-s - 1) ≠ -1` using `by intro h; apply hs; linear_combination -h`.
+
+Establish `hs' : -s ≠ 0` using `neg_ne_zero.mpr hs`. Rewrite using `[integral_cpow (Or.inr ⟨hr, h0⟩)]`. Establish `e : -s - 1 + 1 = -s` using `by ring`. Rewrite using `[e, mul_div_assoc', eq_div_iff hs']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma cpow_sub_eq_integral' {x y : ℝ} (hx : 0 < x) (hxy : x ≤ y) {s : ℂ} (hs : s ≠ 0) :
     (x : ℂ) ^ (-s) - (y : ℂ) ^ (-s) = s * ∫ t in x..y, (t : ℂ) ^ (-s - 1) := by
   have h0 : (0:ℝ) ∉ Set.uIcc x y := by
@@ -19,6 +24,15 @@ lemma cpow_sub_eq_integral' {x y : ℝ} (hx : 0 < x) (hxy : x ≤ y) {s : ℂ} (
   rw [e, mul_div_assoc', eq_div_iff hs']
   ring
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0` using `by rintro rfl; simp at hs`. Establish `hxpos : 0 < x` using `lt_of_lt_of_le ha hax`. Rewrite using `[cpow_sub_eq_integral' hxpos hxa hs0, norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hC : ∀ t ∈ Set.uIoc x (a + 1), ‖(t : ℂ) ^ (-s - 1)‖ ≤ a ^ (-s.re - 1)`.
+
+Introduce `t ht`. Rewrite `ht` using `[Set.uIoc_of_le hxa]`. Establish `hta : a ≤ t` using `le_trans hax ht.1.le`. Establish `ht0 : 0 < t` using `lt_of_lt_of_le ha hta`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos ht0]`.
+
+Establish `hre : (-s - 1).re = -s.re - 1` using `by simp`. Rewrite using `[hre]`. Conclude with `Real.rpow_le_rpow_of_nonpos ha hta (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg ha.le _)` and prove the remaining obligations.
+
+Rewrite using `[abs_of_nonneg (by linarith)]; linarith`. Use `_ = a ^ (-s.re - 1) := mul_one _`.
+-/
 lemma norm_cpow_sub_le_point {a x : ℝ} (ha : 0 < a) (hax : a ≤ x) (hxa : x ≤ a + 1) {s : ℂ}
     (hs : 0 < s.re) :
     ‖(x : ℂ) ^ (-s) - ((a + 1 : ℝ) : ℂ) ^ (-s)‖ ≤ ‖s‖ * a ^ (-s.re - 1) := by
@@ -44,6 +58,11 @@ lemma norm_cpow_sub_le_point {a x : ℝ} (ha : 0 < a) (hax : a ≤ x) (hxa : x �
 
 def eint (s : ℂ) (a : ℝ) : ℂ := ∫ x in a..(a + 1), ((x : ℂ) ^ (-s) - ((a + 1 : ℝ) : ℂ) ^ (-s))
 
+/- English proof (translation)
+Unfold `eint`. Establish `hC : ∀ x ∈ Set.uIoc a (a + 1), ‖((x : ℂ) ^ (-s) - ((a + 1 : ℝ) : ℂ) ^ (-s))‖ ≤ ‖s‖ * a ^ (-s.re - 1)`. Introduce `x hx`. Rewrite `hx` using `[Set.uIoc_of_le (by linarith)]`. Conclude with `norm_cpow_sub_le_point ha hx.1.le hx.2 hs`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_eint_le {a : ℝ} (ha : 0 < a) {s : ℂ} (hs : 0 < s.re) :
     ‖eint s a‖ ≤ ‖s‖ * a ^ (-s.re - 1) := by
   unfold eint
@@ -56,6 +75,15 @@ lemma norm_eint_le {a : ℝ} (ha : 0 < a) {s : ℂ} (hs : 0 < s.re) :
         intervalIntegral.norm_integral_le_of_norm_le_const hC
     _ = _ := by rw [show a + 1 - a = 1 by ring, abs_one, mul_one]
 
+/- English proof (translation)
+Unfold `eint`. Distinguish the cases in `hs1 : s = 1`. Substitute `hs1` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : (0:ℝ) ∉ Set.uIcc a (a + 1)`.
+
+Rewrite using `[Set.uIcc_of_le (by linarith)]; intro h; linarith [h.1]`. Establish `hr : -s ≠ -1` using `by intro h; apply hs1; linear_combination -h`. Establish `hint1 : IntervalIntegrable (fun x : ℝ => (x : ℂ) ^ (-s)) MeasureTheory.volume a (a + 1)` using `intervalIntegral.intervalIntegrable_cpow (Or.inr h0)`. Rewrite using `[intervalIntegral.integral_sub hint1 intervalIntegrable_const, integral_cpow (Or.inr ⟨hr, h0⟩), intervalIntegral.integral_const]`. Establish `e : -s + 1 = 1 - s` using `by ring`.
+
+Rewrite using `[e]`. Establish `hs' : (1 - s) ≠ 0` using `sub_ne_zero.mpr (Ne.symm hs1)`. Rewrite using `[Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma d_eq {a : ℝ} (ha : 0 < a) (s : ℂ) :
     (a : ℂ) ^ (1 - s) - ((a + 1 : ℝ) : ℂ) ^ (1 - s) - (s - 1) * ((a + 1 : ℝ) : ℂ) ^ (-s) =
       (s - 1) * eint s a := by

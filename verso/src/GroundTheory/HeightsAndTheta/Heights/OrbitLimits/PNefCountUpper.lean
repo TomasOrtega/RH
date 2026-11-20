@@ -12,6 +12,35 @@ open GroundTheory.Heights₂.Heights.HilbertSamuel
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Use `filter_upwards [hCurve K ι Ω y A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε] with n hn`. Simplify using `using hn`. Establish `: CharZero Ω` using `UpperNormalisation.charZero_of_isArithVar har`.
+
+Use `set F : ℝ := ((D + 1).factorial : ℝ) with hF`. Establish `hFpos : 0 < F` using `by rw [hF]; exact_mod_cast Nat.factorial_pos _`. Use `set IA := II K ι (mCoordIdeal y) (D + 1) (fun _ => A) with hIA`. Take `⟨q, B, P1, hq, hsg, hBc, htop, hev⟩` from `hApx K ι Ω y D A P0 II hD hII har hb hP0 hs hc hnef hgen hht (ε / 4) (by linarith)`. Use `set IB := II K ι (mCoordIdeal y) (D + 1) (fun _ => B) with hIB`.
+
+Use `set T : ℝ := IA + ε / 2 with hT`. Establish `hq1 : (1 : ℝ) ≤ (q : ℝ) ^ (D + 1)` using `one_le_pow₀ (by exact_mod_cast hq)`. Establish `hBT : IB + ε / 4 ≤ (q : ℝ) ^ (D + 1) * T`. Establish `: ε / 4 ≤ (q : ℝ) ^ (D + 1) * (ε / 4)` using `le_mul_of_one_le_left (by linarith) hq1`. Rewrite using `[hT]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨hfin, Cp, hCp⟩` from `hPack K ι Ω y D B (chartLat y B.a) har hb hsg.semipos.1 (fun τ => Mono.chartLat_le_nm y B.a τ)`. Establish `hG7` using `h7 K ι Ω y D B P1 II hD hII har hb hsg hBc`. Use `set v : ℕ → ℝ := fun N => smallSectionCount (IsSmallH (mCoordIdeal y) y B) (chartLat y B.a) N / ((N : ℝ) ^ (D + 1) / F) with hv`. Establish `hv_bdd : ∀ N, v N ≤ |Cp| * F * 2 ^ (D + 1)`.
+
+Introduce `N`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Simplify using `only [hv, Nat.cast_zero, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true, zero_pow, zero_div, div_zero]`. Check the signs of the components of the expression. Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hNpos : (0 : ℝ) < (N : ℝ) ^ (D + 1) / F` using `by positivity`. Simplify using `only [hv]`. Rewrite using `[div_le_iff₀ hNpos]`. Establish `h1` using `(hCp N).trans (mul_le_mul_of_nonneg_right (le_abs_self Cp) (by positivity))`. Establish `h2 : ((N : ℝ) + 1) ^ (D + 1) ≤ (2 * N) ^ (D + 1)` using `pow_le_pow_left₀ (by positivity) (by linarith) _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hev1 : ∀ᶠ N in atTop, v N < IB + ε / 4` using `eventually_lt_of_limsup_lt (lt_of_le_of_lt hG7 (by linarith)) (isBoundedUnder_of ⟨_, hv_bdd⟩)`. Establish `hNq : Tendsto (fun n : ℕ => n / q + 1) atTop atTop` using `tendsto_atTop_mono (fun n => Nat.le_succ _) (Nat.tendsto_div_const_atTop (Nat.one_le_iff_ne_zero.mp hq))`. Establish `hlim : Tendsto (fun n : ℕ => T * (1 + (q : ℝ) / n) ^ (D + 1)) atTop (𝓝 T)`. Establish `h0 : Tendsto (fun n : ℕ => (q : ℝ) / n) atTop (𝓝 0)` using `tendsto_const_div_atTop_nhds_zero_nat _`.
+
+Simplify using `using ((tendsto_const_nhds (x := (1 : ℝ))).add h0).pow (D + 1) |>.const_mul T`. Use `filter_upwards [hNq.eventually hev1, hlim.eventually (gt_mem_nhds (show T < IA + ε by linarith)), hev, eventually_ge_atTop 1] with n h2 h3 ⟨t, ht0, hts⟩ hn1`. Use `set N := n / q + 1 with hN`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `hNpos : (0 : ℝ) < (N : ℝ) ^ (D + 1) / F`.
+
+Establish `: (0 : ℝ) < N` using `by exact_mod_cast Nat.succ_pos _`. Check the signs of the components of the expression. Establish `hcmp : smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a) n ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y B) (chartLat y B.a) N` using `Mono.smallSectionCount_le_of_injOn (Q := fun m => IsSmallH (mCoordIdeal y) y B (m / q + 1)) (La' := fun m => chartLat y B.a (m / q + 1)) (fun s => s * t) (fun s _ u _ hsu => mul_right_cancel₀ ht0 hsu) (fun s hs hsm => hts s hs hsm) (hfin N)`. Establish `hcount : smallSectionCount (IsSmallH (mCoordIdeal y) y B) (chartLat y B.a) N ≤ (IB + ε / 4) * ((N : ℝ) ^ (D + 1) / F)`. Use `h2` as an intermediate fact.
+
+Simplify using `only [hv] at this`. Rewrite `this` using `[div_lt_iff₀ hNpos]`. Conclude with `this.le`. Establish `hlo : (n : ℝ) ≤ q * N`. Use `Nat.lt_mul_div_succ n (show 0 < q by omega)` as an intermediate fact.
+
+Conclude with `this.le` after adjusting the coercions. Establish `hhi : (q : ℝ) * N ≤ n + q`. Establish `: q * (n / q) ≤ n` using `Nat.mul_div_le n q`. Establish `: q * N ≤ n + q` using `by rw [hN, mul_add, mul_one]; omega`. Conclude with `this` after adjusting the coercions.
+
+Use `set X : ℝ := ((q : ℝ) * N) ^ (D + 1) with hX`. Establish `hX1 : (n : ℝ) ^ (D + 1) ≤ X` using `pow_le_pow_left₀ hnpos.le hlo _`. Establish `hX2 : X ≤ ((n : ℝ) + q) ^ (D + 1)` using `pow_le_pow_left₀ (by positivity) hhi _`. Establish `hratio : ((n : ℝ) + q) ^ (D + 1) = (1 + (q : ℝ) / n) ^ (D + 1) * (n : ℝ) ^ (D + 1)`. Rewrite using `[← mul_pow]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hTX : T * X ≤ (IA + ε) * (n : ℝ) ^ (D + 1)`. Break down `le_or_gt 0 T with hT0 | hT0` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem NefCountUpper.proof (hApx : NefSmallApprox.Statement) (hCurve : NefCountUpperCurve.Statement)
     (h7 : G7.Statement) (hPack : PackingStatement) : NefCountUpper.Statement := by
   intro K _ ι _ Ω _ y D A P0 II hII har hb hP0 hs hc hnef hgen hht ε hε

@@ -88,6 +88,13 @@ section HV
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] {𝕜 : Type} [Field 𝕜]
   {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → 𝕜}
 
+/- English proof (translation)
+Take `⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩` from `h`. Take `⟨dg', dh', g', f', hg', hf', hd', e', hz0', ez'⟩` from `h'`. Use `⟨dg + dg', dh + dh', g * g', f * f', ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg hg', ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hf hf', fun k => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hd k` as an intermediate fact. Use `hd' k` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hz0 hz0'`. Rewrite using `[map_mul, map_mul, ez, ez']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hv_mul {a b : K → ℤ} {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y a s z w)
     (h' : Small.HasVal y b s' z w') : Small.HasVal y (a + b) (s * s') z (w * w') := by
   obtain ⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩ := h
@@ -106,10 +113,20 @@ theorem hv_mul {a b : K → ℤ} {s s' : Ω} {w w' : 𝕜} (h : Small.HasVal y a
   · rw [map_mul, map_mul, ez, ez']
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, 1, 1, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, fun _ => by simp, by simp, by simp, by simp⟩`.
+-/
 theorem hv_one : Small.HasVal y (0 : K → ℤ) (1 : Ω) z (1 : 𝕜) :=
   ⟨0, 0, 1, 1, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, fun _ => by simp,
     by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩` from `h`. Establish `hfy : MvPolynomial.aeval y f ≠ 0` using `fun h0 => hz0 (hz.2 f (by show mConeMap y f = 0`. Rewrite using `[mConeMap_form y hf, h0]`. Use the proof step `simp))`. Use `⟨dh, dg, f, g, hf, hg, fun k => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `hd k` as an intermediate fact. Simplify using `only [Pi.neg_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[ez]`. Conclude with `mul_ne_zero hw hz0`. Rewrite using `[ez]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hv_inv (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {a : K → ℤ} {s : Ω} {w : 𝕜}
     (h : Small.HasVal y a s z w) (hs : s ≠ 0) (hw : w ≠ 0) : Small.HasVal y (-a) s⁻¹ z w⁻¹ := by
   obtain ⟨dg, dh, g, f, hg, hf, hd, e, hz0, ez⟩ := h
@@ -128,6 +145,9 @@ theorem hv_inv (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {a : K → ℤ} {
   · rw [ez]
     field_simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hv_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, succ_nsmul]`. Conclude with `hv_mul ih h`.
+-/
 theorem hv_pow {a : K → ℤ} {s : Ω} {w : 𝕜} (h : Small.HasVal y a s z w) (n : ℕ) :
     Small.HasVal y (n • a) (s ^ n) z (w ^ n) := by
   induction n with
@@ -136,6 +156,9 @@ theorem hv_pow {a : K → ℤ} {s : Ω} {w : 𝕜} (h : Small.HasVal y a s z w) 
     rw [pow_succ, pow_succ, succ_nsmul]
     exact hv_mul ih h
 
+/- English proof (translation)
+Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using hv_pow h m`. Use `hv_inv hz (hv_pow h m) (pow_ne_zero _ hs) (pow_ne_zero _ hw)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hv_zpow (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {a : K → ℤ} {s : Ω} {w : 𝕜}
     (h : Small.HasVal y a s z w) (hs : s ≠ 0) (hw : w ≠ 0) (n : ℤ) :
     Small.HasVal y (n • a) (s ^ n) z (w ^ n) := by
@@ -144,6 +167,9 @@ theorem hv_zpow (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {a : K → ℤ} 
   · have := hv_inv hz (hv_pow h m) (pow_ne_zero _ hs) (pow_ne_zero _ hw)
     simpa using this
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hv_one`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `hv_mul (h i (Finset.mem_insert_self i S)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem hv_prod {I : Type} (S : Finset I) {a : I → K → ℤ} {s : I → Ω} {w : I → 𝕜}
     (h : ∀ i ∈ S, Small.HasVal y (a i) (s i) z (w i)) :
     Small.HasVal y (∑ i ∈ S, a i) (∏ i ∈ S, s i) z (∏ i ∈ S, w i) := by
@@ -163,6 +189,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def labelSig (q : Σ s, Fin (labelRk Dw s)) : Σ τ : E →+* ℂ, Fin (Dw.mult τ) :=
   ⟨Small.labelC q.1, Small.labelFin Dw q.1 q.2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, i⟩ ⟨s', i'⟩ h`. Establish `h1 : Small.labelC s = Small.labelC s'` using `congrArg Sigma.fst h`. Take `rfl` from `(Small.labelC_bijective H).1 h1`. Establish `h2 : (i : ℕ) = i'` using `congrArg (fun x : Σ τ : E →+* ℂ, Fin (Dw.mult τ) => (x.2 : ℕ)) h`.
+
+Conclude with `congrArg _ (Fin.ext h2)`. Introduce and unpack `⟨σ, i⟩`. Take `⟨s, k, hk⟩` from `Small.exists_labelFin Dw σ i`. Conclude with `⟨⟨s, k⟩, hk⟩`.
+-/
 theorem labelSig_bijective : Function.Bijective (labelSig Dw) := by
   constructor
   · rintro ⟨s, i⟩ ⟨s', i'⟩ h
@@ -174,20 +205,45 @@ theorem labelSig_bijective : Function.Bijective (labelSig Dw) := by
     obtain ⟨s, k, hk⟩ := Small.exists_labelFin Dw σ i
     exact ⟨⟨s, k⟩, hk⟩
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem rootIdx_lt {τ : CMType H} {n : Fin (Dw.p + Dw.q)} (h : (n : ℕ) < Dw.p) :
     HodgeCpt.rootIdx Dw (τ, n) = ⟨.inl τ, ⟨n, h⟩⟩ := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem rootIdx_ge {τ : CMType H} {n : Fin (Dw.p + Dw.q)} (h : ¬ (n : ℕ) < Dw.p) :
     HodgeCpt.rootIdx Dw (τ, n) = ⟨.inr τ, ⟨Dw.p + Dw.q - 1 - n, by have := n.2; show _ < Dw.q; omega⟩⟩ := dif_neg h
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x : Σ s, Fin (labelRk Dw s) => (x.2 : ℕ)) (rootIdx_lt Dw (τ := τ) h)`.
+-/
 theorem rootVal_lt {τ : CMType H} {n : Fin (Dw.p + Dw.q)} (h : (n : ℕ) < Dw.p) :
     ((HodgeCpt.rootIdx Dw (τ, n)).2 : ℕ) = n :=
   congrArg (fun x : Σ s, Fin (labelRk Dw s) => (x.2 : ℕ)) (rootIdx_lt Dw (τ := τ) h)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x : Σ s, Fin (labelRk Dw s) => (x.2 : ℕ)) (rootIdx_ge Dw (τ := τ) h)`.
+-/
 theorem rootVal_ge {τ : CMType H} {n : Fin (Dw.p + Dw.q)} (h : ¬ (n : ℕ) < Dw.p) :
     ((HodgeCpt.rootIdx Dw (τ, n)).2 : ℕ) = Dw.p + Dw.q - 1 - n :=
   congrArg (fun x : Σ s, Fin (labelRk Dw s) => (x.2 : ℕ)) (rootIdx_ge Dw (τ := τ) h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, n⟩ ⟨τ', n'⟩ h`. Establish `hn` using `n.2`. Establish `hn'` using `n'.2`. Establish `hs` using `congrArg Sigma.fst h`.
+
+Establish `hv` using `congrArg (fun x : Σ s, Fin (labelRk Dw s) => (x.2 : ℕ)) h`. Apply the tactic sequence `by_cases h1 : (n : ℕ) < Dw.p <;> by_cases h2 : (n' : ℕ) < Dw.p`. Simplify using `only [rootIdx_lt Dw h1, rootIdx_lt Dw h2] at hs`. Rewrite `hv` using `[show (HodgeCpt.rootIdx Dw (τ, n)).2.val = n from rootVal_lt Dw h1, show (HodgeCpt.rootIdx Dw (τ', n')).2.val = n' from rootVal_lt Dw h2]`. Conclude with `Prod.ext (Sum.inl.inj hs) (Fin.ext hv)`.
+
+Simplify using `only [rootIdx_lt Dw h1, rootIdx_ge Dw h2] at hs`. Conclude with `absurd hs (by simp)`. Simplify using `only [rootIdx_ge Dw h1, rootIdx_lt Dw h2] at hs`. Conclude with `absurd hs (by simp)`. Simplify using `only [rootIdx_ge Dw h1, rootIdx_ge Dw h2] at hs`.
+
+Rewrite `hv` using `[show (HodgeCpt.rootIdx Dw (τ, n)).2.val = _ from rootVal_ge Dw h1, show (HodgeCpt.rootIdx Dw (τ', n')).2.val = _ from rootVal_ge Dw h2]`. Conclude with `Prod.ext (Sum.inr.inj hs) (Fin.ext (by show (n : ℕ) = n'; omega))`. Introduce and unpack `⟨s | s, k⟩`. Establish `h : (k : ℕ) < Dw.p` using `k.2`. Conclude with `⟨(s, ⟨k, by omega⟩), rootIdx_lt Dw (n := ⟨k, by omega⟩) h⟩`.
+
+Establish `hk : (k : ℕ) < Dw.q` using `k.2`. Establish `h : ¬ (Dw.p + Dw.q - 1 - (k : ℕ) < Dw.p)` using `by omega`. Use `⟨(s, ⟨Dw.p + Dw.q - 1 - k, by omega⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[rootIdx_ge Dw (n := ⟨Dw.p + Dw.q - 1 - k, by omega⟩) h]`. Use `congr 2`.
+
+Use `show Dw.p + Dw.q - 1 - (Dw.p + Dw.q - 1 - (k : ℕ)) = k`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootIdx_bijective : Function.Bijective (HodgeCpt.rootIdx Dw) := by
   constructor
   · rintro ⟨τ, n⟩ ⟨τ', n'⟩ h
@@ -219,6 +275,9 @@ theorem rootIdx_bijective : Function.Bijective (HodgeCpt.rootIdx Dw) := by
       show Dw.p + Dw.q - 1 - (Dw.p + Dw.q - 1 - (k : ℕ)) = k
       omega
 
+/- English proof (translation)
+Set `g : RootIx Dw ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `Equiv.ofBijective _ ((labelSig_bijective Dw).comp (rootIdx_bijective Dw))`. Rewrite using `[← Fintype.prod_equiv (Equiv.optionCongr g) (fun o => t (Option.map g o) ^ exZ Dw a (Option.map g o)) (fun j => t j ^ exZ Dw a j) (fun _ => rfl), Fintype.prod_option]`. Simplify using `only [Option.map_none, Option.map_some]`. Rewrite using `[show exZ Dw a none = 0 from rfl, zpow_zero, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem prod_exZ (a : WZ E) (t : Ix Dw → ℝ) :
     ∏ j, t j ^ exZ Dw a j = ∏ r : RootIx Dw, t (Small.rootFrameIx Dw r) ^ exZ Dw a (Small.rootFrameIx Dw r) := by
   let g : RootIx Dw ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ) :=
@@ -229,6 +288,11 @@ theorem prod_exZ (a : WZ E) (t : Ix Dw → ℝ) :
   rw [show exZ Dw a none = 0 from rfl, zpow_zero, one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨τ, n⟩` from `r`. Distinguish the cases in `h : (n : ℕ) < Dw.p`. Establish `e1 : exZ Dw a (Small.rootFrameIx Dw (τ, n)) = a (τ.1, n)` using `congrArg (fun x : Σ s, Fin (labelRk Dw s) => a (Small.labelC x.1, (x.2 : ℕ))) (rootIdx_lt Dw (τ := τ) h)`. Rewrite using `[e1]`. Simplify using `[towerWt, HodgeCpt.rootSgn, h]`.
+
+Establish `e1 : exZ Dw a (Small.rootFrameIx Dw (τ, n)) = a (conjEmb τ.1, Dw.p + Dw.q - 1 - n)` using `congrArg (fun x : Σ s, Fin (labelRk Dw s) => a (Small.labelC x.1, (x.2 : ℕ))) (rootIdx_ge Dw (τ := τ) h)`. Rewrite using `[e1]`. Simplify using `[towerWt, HodgeCpt.rootSgn, h]`.
+-/
 theorem towerWt_root (a : WZ E) (r : RootIx Dw) :
     towerWt Dw a r.1 r.2 = ((HodgeCpt.rootSgn Dw r * exZ Dw a (Small.rootFrameIx Dw r) : ℤ) : ℝ) := by
   obtain ⟨τ, n⟩ := r
@@ -242,6 +306,9 @@ theorem towerWt_root (a : WZ E) (r : RootIx Dw) :
     rw [e1]
     simp [towerWt, HodgeCpt.rootSgn, h]
 
+/- English proof (translation)
+Unfold `HodgeCpt.rootSgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem rootSgn_mul_self (r : RootIx Dw) : HodgeCpt.rootSgn Dw r * HodgeCpt.rootSgn Dw r = 1 := by
   unfold HodgeCpt.rootSgn
   split_ifs <;> norm_num
@@ -262,6 +329,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
   {Or : RootOrigin Y SS RM Fx}
 
+/- English proof (translation)
+Establish `hp0 : (p : c.F) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hres : Formalism.L2.Pj.resCharOf la = p`. Assume the negation of the conclusion as `h`. Use `Formalism.L2.Pj.Crude.crv_not_mem la (fun hd => h ?_) hla` and prove the remaining obligations. Conclude with `(Nat.prime_dvd_prime_iff_eq (Formalism.L2.Pj.Crude.resCharOf_prime la) hp.out).1 hd`.
+
+Establish `hv : Ref.vl la (p : c.F) = ramOverZ la`. Rewrite using `[← hres]`. Conclude with `Formalism.L2.Pj.Crude.crv_vLa_char la`. Establish `h1 : la.valuation c.F (p : c.F) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 c.F) c.F)]`.
+
+Conclude with `(la.valuation_lt_one_iff_mem _).2 hla`. Establish `h2` using `(WithZero.log_lt_log ((la.valuation c.F).ne_zero_iff.2 hp0) one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`. Establish `h3 : (0 : ℤ) < Ref.vl la (p : c.F)` using `by unfold Ref.vl; omega`. Rewrite `h3` using `[hv]`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem ram_pos {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)} (hla : (p : 𝓞 c.F) ∈ la.asIdeal) :
     0 < ramOverZ la := by
   have hp0 : (p : c.F) ≠ 0 := by exact_mod_cast hp.out.ne_zero
@@ -281,12 +357,28 @@ theorem ram_pos {p : ℕ} [hp : Fact p.Prime] {la : HeightOneSpectrum (𝓞 c.F)
   rw [hv] at h3
   exact_mod_cast h3
 
+/- English proof (translation)
+Unfold `tOf absT`. Rewrite using `[if_neg (t j).ne_zero]`. Conclude with `inv_pos.2 (Real.rpow_pos_of_pos (by exact_mod_cast hp.out.pos) _)`.
+-/
 theorem tOf_pos {p : ℕ} [hp : Fact p.Prime] (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (e : ℕ) (t : Ix Dw → T.Frˣ)
     (j : Ix Dw) : 0 < tOf p la T e t j := by
   unfold tOf absT
   rw [if_neg (t j).ne_zero]
   exact inv_pos.2 (Real.rpow_pos_of_pos (by exact_mod_cast hp.out.pos) _)
 
+/- English proof (translation)
+Establish `he0 : e Z ∈ secZ Xo c 0`. Establish `h1` using `hL.e_sec Z`. Rewrite `h1` using `[← secZ_nat]`. Conclude with `h1`. Apply the tactic sequence `have hex : ∀ i, exZ Dw (0 : WZ E) i = 0 := fun i => by cases i <;> rfl`.
+
+Establish `hrd : Fr.rd (e Z) = 1`. Rewrite using `[Rd.rd_eq 0 (e Z) he0, (hL.e_val Z).1, map_one]`. Simplify using `[hex]`. Take `⟨v, hv, htop, hs⟩` from `hS 0 (e Z) he0`. Rewrite `hv` using `[hrd]`.
+
+Establish `hv1 : v = 1` using `hasVal_unique hz hv hv_one`. Substitute `hv1` using the available equality. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hra' : (0 : ℝ) < ramOverZ la` using `by exact_mod_cast hra`. Proceed by induction on `hval : (Ref.pjSys Xo c).val y (e Z) with`.
+
+Consider the case `bot => exact absurd hval ((Ref.pjSys Xo c).val_ne_bot y _)`. Consider the case `top => exact absurd (htop hval) one_ne_zero`. Consider the case `coe m`. Establish `h2` using `hs (m / ramOverZ la) (by rw [hval]; congr 1; field_simp)`. Simplify using `only [hex, zpow_zero, Finset.prod_const_one, mul_one, norm_one] at h2`.
+
+Establish `h3 : -(m / ramOverZ la) = 0`. Establish `h5` using `congrArg Real.log h2`. Rewrite `h5` using `[Real.log_one, Real.log_rpow (by linarith)]`. Conclude with `(mul_eq_zero.1 h5.symm).resolve_right (Real.log_pos hp1).ne'`. Establish `h4 : m = 0`.
+
+Clear denominators, using `at h3` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h4]`. Both sides reduce to the same expression.
+-/
 theorem val_indicator {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Comp Xo c → Rul Xo c}
     (hL : CompLaws U h e) {Fr : Small.GenFrame Or} {Z : Comp Xo c} (Rd : Reading Fr h Z) {p : ℕ} [hp : Fact p.Prime]
     {z : (Σ k, RM.ι k) → PadicAlgCl p} (hz : z ∈ Small.ptsOver (PadicAlgCl p) (mCoordIdeal RM.y))
@@ -322,6 +414,23 @@ theorem val_indicator {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h :
     rw [h4]
     rfl
 
+/- English proof (translation)
+Use `choose w hw hw0 hb using hR`. Establish `hwn : ∀ r, 0 < ‖w r‖` using `fun r => norm_pos_iff.2 (hw0 r)`. Use `⟨fun r => ‖w r‖ / t (Small.rootFrameIx Dw r) ^ HodgeCpt.rootSgn Dw r, fun r => ⟨div_pos (hwn r) (zpow_pos (htp _) _), hb r⟩, fun a n' hn f hf => ?_⟩` and prove the remaining obligations. Take `⟨v0, hv0, htop, hs⟩` from `hS a f hf`. Establish `hnone : n' none = 0`.
+
+Establish `h1` using `hn none`. Establish `h2 : RM.coef (towerWt Dw a) 0 none = 0` using `by simp [Top.RootModel.coef]`. Rewrite `h1` using `[h2]`. Conclude with `h1` after adjusting the coercions. Establish `hsome : ∀ r, n' (some r) = -(HodgeCpt.rootSgn Dw r * exZ Dw a (Small.rootFrameIx Dw r))` using `fun r => by`.
+
+Establish `h1` using `hn (some r)`. Establish `h2 : RM.coef (towerWt Dw a) 0 (some r) = -towerWt Dw a r.1 r.2` using `rfl`. Rewrite `h1` using `[h2, towerWt_root]`. Conclude with `h1` after adjusting the coercions. Establish `hdeg : (Top.combLine (RM.line 1) n').a = 0 + ∑ r, n' (some r) • RM.xdeg r` using `by show ∑ j, n' j • (RM.line 1 j).a = _`.
+
+Rewrite using `[Fintype.sum_option, hnone, zero_smul]`. Use `congrArg _ (Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Use `show n' (some r) • (RM.x 1 r).a = _`. Rewrite using `[RM.x_deg]`. Establish `hev : ∀ r, Or.e r ^ (-n' (some r)) = (Or.e r)⁻¹ ^ n' (some r)` using `fun r => by`.
+
+Rewrite using `[zpow_neg, inv_zpow]`. Establish `hroot : ∀ r ∈ (Finset.univ : Finset (RootIx Dw)), Small.HasVal RM.y (n' (some r) • RM.xdeg r) ((Or.e r)⁻¹ ^ n' (some r)) z (w r ^ n' (some r))` using `fun r _ => hv_zpow hz (hw r) (inv_ne_zero (Or.lines r).1) (hw0 r) _`. Use `⟨v0 * ∏ r, w r ^ n' (some r), ?_, fun h => ?_, fun s h => ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg]`. Simplify using `only [hev]`.
+
+Conclude with `hv_mul hv0 (hv_prod Finset.univ hroot)`. Rewrite using `[htop h, zero_mul]`. Establish `hrew : ∏ r, (‖w r‖ / t (Small.rootFrameIx Dw r) ^ HodgeCpt.rootSgn Dw r) ^ n' (some r) = (∏ r, ‖w r‖ ^ n' (some r)) * ∏ r, t (Small.rootFrameIx Dw r) ^ exZ Dw a (Small.rootFrameIx Dw r)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Establish `ht` using `htp (Small.rootFrameIx Dw r)`. Rewrite using `[div_zpow, div_eq_mul_inv, ← zpow_mul, ← zpow_neg]`. Use `congr 2`. Rewrite using `[hsome r]`. Take the linear combination `(exZ Dw a (Small.rootFrameIx Dw r)) * rootSgn_mul_self Dw r`.
+
+Rewrite using `[hrew, norm_mul, hs s h, norm_prod, prod_exZ]`. Simplify using `only [norm_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem read_of_reads {Fr : Small.GenFrame Or} {p : ℕ} [hp : Fact p.Prime]
     {z : (Σ k, RM.ι k) → PadicAlgCl p} (hz : z ∈ Small.ptsOver (PadicAlgCl p) (mCoordIdeal RM.y))
     {la : HeightOneSpectrum (𝓞 c.F)} (y : (Ref.pjSys Xo c).Pt la) {t : Ix Dw → ℝ} (htp : ∀ j, 0 < t j) {θ : ℝ}

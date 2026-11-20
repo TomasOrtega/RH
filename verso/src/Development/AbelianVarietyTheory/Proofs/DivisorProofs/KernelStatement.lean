@@ -22,6 +22,11 @@ section Flat
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Establish `hc : ContinuousAt (fun L : E →L[ℝ] E => L.det) (ContinuousLinearMap.id ℝ E)` using `ContinuousLinearMap.continuous_det.continuousAt`. Rewrite `hc` using `[Metric.continuousAt_iff]`. Take `⟨ε, hε, h⟩` from `hc (1 / 2) (by norm_num)`. Use `⟨ε / 2, by positivity, fun L hL => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (x := L) (by rw [dist_eq_norm]; linarith)`.
+
+Establish `hid : (ContinuousLinearMap.id ℝ E).det = 1` using `LinearMap.det_id`. Rewrite `h1` using `[Real.dist_eq, hid]`. Combine the linear relations using `[le_abs_self L.det, (abs_sub_lt_iff.1 h1).2]`.
+-/
 theorem exists_det_ge [FiniteDimensional ℝ E] : ∃ ε > 0, ∀ L : E →L[ℝ] E,
     ‖L - ContinuousLinearMap.id ℝ E‖ ≤ ε → 1 / 2 ≤ |L.det| := by
   have hc : ContinuousAt (fun L : E →L[ℝ] E => L.det) (ContinuousLinearMap.id ℝ E) :=
@@ -34,6 +39,13 @@ theorem exists_det_ge [FiniteDimensional ℝ E] : ∃ ε > 0, ∀ L : E →L[ℝ
   rw [Real.dist_eq, hid] at h1
   linarith [le_abs_self L.det, (abs_sub_lt_iff.1 h1).2]
 
+/- English proof (translation)
+Establish `hb : ∀ η ∈ closedBall (0 : E) r, HasFDerivWithinAt (fun x => g x - x) (L η - ContinuousLinearMap.id ℝ E) (closedBall 0 r) η` using `fun η hη => ((hg η hη).sub (hasFDerivAt_id η)).hasFDerivWithinAt`. Establish `hmv : ∀ x ∈ closedBall (0 : E) r, ∀ y ∈ closedBall (0 : E) r, ‖(g y - y) - (g x - x)‖ ≤ 1 / 2 * ‖y - x‖` using `fun x hx y hy => (convex_closedBall 0 r).norm_image_sub_le_of_norm_hasFDerivWithin_le hb hL hx hy`. Use `⟨fun x hx y hy hxy => ?_, fun η hη => ?_⟩` and prove the remaining obligations. Establish `h` using `hmv x hx y hy`. Rewrite `h` using `[hxy]`.
+
+Establish `e : (g y - y) - (g y - x) = -(y - x)` using `by abel`. Rewrite `h` using `[e, norm_neg]`. Establish `h0 : ‖y - x‖ = 0` using `by linarith [norm_nonneg (y - x)]`. Conclude with `(sub_eq_zero.1 (norm_eq_zero.1 h0)).symm`. Establish `hr : 0 ≤ r` using `(norm_nonneg η).trans (mem_closedBall_zero_iff.1 hη)`.
+
+Establish `h` using `hmv 0 (mem_closedBall_self hr) η hη`. Establish `e : g η - g 0 = ((g η - η) - (g 0 - 0)) + η` using `by abel`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem injOn_of_near_id {g : E → E} {r : ℝ} {L : E → E →L[ℝ] E}
     (hg : ∀ η ∈ closedBall (0 : E) r, HasFDerivAt g (L η) η)
     (hL : ∀ η ∈ closedBall (0 : E) r, ‖L η - ContinuousLinearMap.id ℝ E‖ ≤ 1 / 2) :
@@ -59,6 +71,9 @@ theorem injOn_of_near_id {g : E → E} {r : ℝ} {L : E → E →L[ℝ] E}
       _ ≤ 1 / 2 * ‖η - 0‖ + ‖η‖ := by gcongr
       _ ≤ 2 * ‖η‖ := by rw [sub_zero]; linarith [norm_nonneg η]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.uniform_derivative_approx F U hU hF K hK hKU h1 ε hε`.
+-/
 theorem unif_fderiv [FiniteDimensional ℝ E] (F : E × E → E) (U : Set (E × E)) (hU : IsOpen U)
     (hF : ContDiffOn ℝ 1 F U) (K : Set E) (hK : IsCompact K) (hKU : ∀ z ∈ K, (z, (0 : E)) ∈ U)
     (h1 : ∀ z ∈ K, ∀ η : E, HasDerivAt (fun s : ℝ => F (z, s • η)) η 0) (ε : ℝ) (hε : 0 < ε) :
@@ -66,6 +81,15 @@ theorem unif_fderiv [FiniteDimensional ℝ E] (F : E × E → E) (U : Set (E × 
       HasFDerivAt (fun η' => F (z, η')) (L z η) η ∧ ‖L z η - ContinuousLinearMap.id ℝ E‖ ≤ ε :=
   GlobalTheory.T.uniform_derivative_approx F U hU hF K hK hKU h1 ε hε
 
+/- English proof (translation)
+Establish `hI` using `(integrableOn_image_iff_integrableOn_abs_det_fderiv_smul μ hs hΦ hinj g).1 hg`. Establish `hIa` using `(integrableOn_image_iff_integrableOn_abs_det_fderiv_smul μ hs hΦ hinj (fun x => |g x|)).1 hg.abs`. Establish `hm : AEMeasurable (fun x => |(Φ' x).det|⁻¹) (μ.restrict s)` using `(continuous_abs.measurable.comp_aemeasurable (ContinuousLinearMap.continuous_det.measurable.comp_aemeasurable (aemeasurable_fderivWithin μ hs hΦ))).inv`. Establish `hgi : IntegrableOn (g ∘ Φ) s μ`. Establish `h` using `hI.bdd_mul (c := δ⁻¹) hm.aestronglyMeasurable ((ae_restrict_iff' hs).2 (ae_of_all _ fun x hx => by`.
+
+Rewrite using `[norm_inv, Real.norm_eq_abs, abs_abs]`. Conclude with `inv_anti₀ hδ (hdet x hx)))`. Use `IntegrableOn.congr_fun h (fun x hx => ?_) hs` and prove the remaining obligations. Establish `h0 : |(Φ' x).det| ≠ 0` using `(hδ.trans_le (hdet x hx)).ne'`. Simplify using `only [smul_eq_mul, Function.comp_apply]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨hgi, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_image_eq_integral_abs_det_fderiv_smul μ hs hΦ hinj, ← integral_const_mul]`. Use `setIntegral_mono_on hgi.abs (hIa.const_mul δ⁻¹) hs fun x hx => ?_` and prove the remaining obligations. Establish `h1 : 1 ≤ δ⁻¹ * |(Φ' x).det|`.
+
+Rewrite using `[inv_mul_eq_div, one_le_div hδ]`. Conclude with `hdet x hx`. Simplify using `only [smul_eq_mul, Function.comp_apply]`. Use polynomial arithmetic with `[abs_nonneg (g (Φ x))]`.
+-/
 theorem cov_bound [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [μ.IsAddHaarMeasure] {s : Set E} (hs : MeasurableSet s) {Φ : E → E} {Φ' : E → E →L[ℝ] E}
     (hΦ : ∀ x ∈ s, HasFDerivWithinAt Φ (Φ' x) s x) (hinj : InjOn Φ s) {δ : ℝ} (hδ : 0 < δ)
@@ -96,6 +120,13 @@ theorem cov_bound [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (
 
 end Flat
 
+/- English proof (translation)
+Establish `hs : s < 1` using `by linarith`. Rewrite using `[ChernReg.cutoff, if_pos hs]`. Establish `ha : 1 ≤ ((1 - s) ^ 2)⁻¹` using `(one_le_inv₀ (by nlinarith)).2 (by nlinarith)`. Establish `hb : Real.exp (-(4 / 3)) ≤ Real.exp (s - 1)⁻¹`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Establish `e : (s - 1)⁻¹ = -(1 - s)⁻¹` using `by rw [← neg_sub, inv_neg]`. Establish `h2 : (1 - s)⁻¹ ≤ (3 / 4)⁻¹` using `inv_anti₀ (by norm_num) (by linarith)`. Rewrite using `[e]`. Evaluate the numerical expressions using `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cutoff_ge {s : ℝ} (h0 : 0 ≤ s) (h1 : s ≤ 1 / 4) : Real.exp (-(4 / 3)) ≤ ChernReg.cutoff s := by
   have hs : s < 1 := by linarith
   rw [ChernReg.cutoff, if_pos hs]
@@ -111,6 +142,9 @@ theorem cutoff_ge {s : ℝ} (h0 : 0 ≤ s) (h1 : s ≤ 1 / 4) : Real.exp (-(4 / 
     _ = 1 * Real.exp (s - 1)⁻¹ := (one_mul _).symm
     _ ≤ _ := mul_le_mul_of_nonneg_right ha (Real.exp_pos _).le
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.kaehler_form_compact_bounds ha c hK hKt`.
+-/
 theorem form_comparable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (c : AlgChart p σ d) {Kc : Set (V d)}
     (hK : IsCompact Kc) (hKt : Kc ⊆ c.e.target) : ∃ m M : ℝ, 0 < m ∧ 0 < M ∧
@@ -123,6 +157,85 @@ namespace GlobalTheory.HeightParts
 open GlobalTheory.KernelBd
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `k _ Y p σ d _ a E ha hE c Kc hK hKt`. Take `⟨F, hFd⟩ : ∃ F : V d × V d → V d, F = fun q => c.e (E c (c.e.symm q.1) q.2.ofLp)` from `⟨_, rfl⟩`. Take `⟨U, hUd⟩ : ∃ U : Set (V d × V d), U = {q | q.1 ∈ c.e.target ∧ E c (c.e.symm q.1) q.2.ofLp ∈ c.e.source}` from `⟨_, rfl⟩`. Establish `hUo : IsOpen U`. Establish `h` using `(hE.cont c).isOpen_inter_preimage (c.e.open_target.prod isOpen_univ) c.e.open_source`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Simplify using `[hUd, Set.mem_prod]`. Establish `hFc : ContDiffOn ℝ 1 F U` using `hFd ▸ hUd ▸ (hE.smooth c c).of_le (by exact_mod_cast le_top)`. Establish `hKU : ∀ z ∈ Kc, (z, (0 : V d)) ∈ U` using `fun z hz => by`.
+
+Rewrite using `[hUd]`. Use `⟨hKt hz, ?_⟩` and prove the remaining obligations. Simplify using `only [WithLp.ofLp_zero]`. Rewrite using `[hE.zero c _ (c.e.map_target (hKt hz))]`. Conclude with `c.e.map_target (hKt hz)`.
+
+Establish `h1 : ∀ z ∈ Kc, ∀ η : V d, HasDerivAt (fun s : ℝ => F (z, s • η)) η 0`. Introduce `z hz η`. Establish `hz'` using `c.e.map_target (hKt hz)`. Establish `hd : DifferentiableAt ℝ F (z, 0)` using `(hFc.differentiableOn one_ne_zero _ (hKU z hz)).differentiableAt (hUo.mem_nhds (hKU z hz))`. Establish `hl : DifferentiableAt ℝ (fun s : ℝ => ((z, s • η) : V d × V d)) 0` using `(differentiableAt_const _).prodMk (differentiableAt_id.smul_const η)`.
+
+Establish `hd' : DifferentiableAt ℝ (fun s : ℝ => F (z, s • η)) 0`. Establish `hd0 : DifferentiableAt ℝ F ((fun s : ℝ => ((z, s • η) : V d × V d)) 0)` using `by simpa using hd`. Conclude with `hd0.comp (0 : ℝ) hl`. Establish `hj` using `hE.jets c (c.e.symm z) hz' η 1`. Simplify using `only [iteratedDeriv_one, jet_one] at hj`.
+
+Establish `e : (fun s : ℝ => F (z, s • η)) = fun t => c.e (E c (c.e.symm z) (t • η.ofLp))`. Use function extensionality and compare the values at `s`. Simplify using `[hFd]`. Establish `h` using `hd'.hasDerivAt`. Rewrite `h` using `[show deriv (fun s : ℝ => F (z, s • η)) 0 = η by rw [e]; exact hj]`. Then use the resulting hypothesis.
+
+Take `⟨m, M, hm, hM, hmM⟩` from `form_comparable ha c hK hKt`. Take `⟨ε₀, hε₀, hdet⟩` from `exists_det_ge (E := V d)`. Take `⟨δ, hδ, L, hL⟩` from `unif_fderiv F U hUo hFc Kc hK hKU h1 (min ε₀ (1 / 2)) (by positivity)`. Take `⟨ρ, hρ, hρt⟩` from `hK.exists_cthickening_subset_open c.e.open_target hKt`. Use `set R : ℝ := 1 + m⁻¹ with hRdef`.
+
+Establish `hR : 0 < R` using `by positivity`. Establish `hball : ∀ y ∈ c.e.source, c.e y ∈ Kc → ∀ v : V d, a c y v.ofLp < 1 → ‖v‖ ≤ R`. Introduce `y hy hz v hv`. Establish `h` using `(hmM y hy hz v).1`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `h2 : 1 ≤ ‖v‖` using `by have : 0 < m⁻¹ := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : m * ‖v‖ > 1`. Establish `: m * (1 + m⁻¹) = m + 1` using `by field_simp`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `set r₀ : ℝ := (2 * (M + 1))⁻¹ with hr₀def`. Establish `hr₀ : 0 < r₀` using `by positivity`. Use `set mm : ℝ := Real.exp (-(4 / 3)) * (volume (ball (0 : V d) r₀)).toReal with hmmdef`.
+
+Establish `hmm : 0 < mm` using `mul_pos (Real.exp_pos _) (ENNReal.toReal_pos (measure_ball_pos volume _ hr₀).ne' measure_ball_lt_top.ne)`. Use `set C : ℝ := max (2 * R + 1) (4 / mm) with hCdef`. Establish `hC : 0 < C` using `lt_max_of_lt_left (by positivity)`. Use `⟨C, min (δ / R) (ρ / C), hC, by positivity, ?_⟩` and prove the remaining obligations. Introduce `y hy hyK t ht htt`.
+
+Establish `hyz : c.e.symm (c.e y) = y` using `c.e.left_inv hy`. Establish `hCt : C * t ≤ ρ`. Use `htt.trans (min_le_right _ _)` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ hC, mul_comm]`. Then use the resulting hypothesis. Establish `hRt : t * R ≤ δ`.
+
+Use `htt.trans (min_le_left _ _)` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ hR]`. Then use the resulting hypothesis. Establish `hg : ∀ η ∈ closedBall (0 : V d) δ, HasFDerivAt (fun η' => F (c.e y, η')) (L (c.e y) η) η` using `fun η hη => (hL (c.e y) hyK η (mem_closedBall_zero_iff.1 hη)).2.1`. Establish `hgL : ∀ η ∈ closedBall (0 : V d) δ, ‖L (c.e y) η - ContinuousLinearMap.id ℝ (V d)‖ ≤ 1 / 2` using `fun η hη => (hL (c.e y) hyK η (mem_closedBall_zero_iff.1 hη)).2.2.trans (min_le_right _ _)`. Take `⟨hinj, hnorm⟩` from `injOn_of_near_id hg hgL`.
+
+Establish `hF0 : F (c.e y, 0) = c.e y`. Simplify using `only [hFd, WithLp.ofLp_zero, hyz, hE.zero c y hy]`. Establish `hFy : ∀ v : V d, ‖v‖ ≤ R → E c y (t • v.ofLp) ∈ c.e.source ∧ F (c.e y, t • v) = c.e (E c y (t • v.ofLp)) ∧ c.e (E c y (t • v.ofLp)) ∈ ball (c.e y) (C * t)`. Introduce `v hv`. Establish `htv : ‖t • v‖ ≤ δ`.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg ht.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hU'` using `(hL (c.e y) hyK (t • v) htv).1`. Rewrite `hU'` using `[hUd]`. Establish `eF : F (c.e y, t • v) = c.e (E c y (t • v.ofLp))` using `by simp [hFd, hyz]`.
+
+Use `⟨by simpa [hyz] using hU'.2, eF, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball, dist_eq_norm, ← eF]`. Use `hnorm (t • v) (mem_closedBall_zero_iff.2 htv)` as an intermediate fact. Rewrite `this` using `[hF0, norm_smul, Real.norm_of_nonneg ht.le]`. Establish `h2 : 2 * (t * ‖v‖) < C * t`.
+
+Establish `: 2 * R + 1 ≤ C` using `le_max_left _ _`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, fun ξ hξ => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+
+Apply `hρt` to reduce the goal to its premises. Conclude with `cthickening_mono hCt Kc (closedBall_subset_cthickening hyK _ (ball_subset_closedBall hw))`. Establish `hv : ‖(WithLp.toLp 2 ξ : V d)‖ ≤ R` using `hball y hy hyK _ (by simpa using hξ)`. Take `⟨h1', -, h3'⟩` from `hFy _ hv`. Simplify using `only [WithLp.ofLp_toLp] at h1' h3'`.
+
+Conclude with `⟨h1', h3'⟩`. Take `⟨hac, hah⟩` from `continuous_and_smul ha hy`. Take `⟨s, hsdef⟩ : ∃ s : Set (V d), s = {v | a c y v.ofLp < 1}` from `⟨_, rfl⟩`. Establish `hso : IsOpen s` using `hsdef ▸ isOpen_lt (hac.comp (PiLp.continuous_ofLp 2 _)) continuous_const`. Establish `hsR : s ⊆ closedBall 0 R` using `fun v hv => mem_closedBall_zero_iff.2 (hball y hy hyK v (by rw [hsdef] at hv; exact hv))`.
+
+Take `⟨Φ, hΦd⟩ : ∃ Φ : V d → V d, Φ = fun v => F (c.e y, t • v)` from `⟨_, rfl⟩`. Take `⟨Φ', hΦ'd⟩ : ∃ Φ' : V d → V d →L[ℝ] V d, Φ' = fun v => t • L (c.e y) (t • v)` from `⟨_, rfl⟩`. Establish `htv : ∀ v ∈ closedBall (0 : V d) R, t • v ∈ closedBall (0 : V d) δ` using `fun v hv => by`. Rewrite using `[mem_closedBall_zero_iff, norm_smul, Real.norm_of_nonneg ht.le]`. Rewrite `hv` using `[mem_closedBall_zero_iff]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hΦ : ∀ v ∈ closedBall (0 : V d) R, HasFDerivAt Φ (Φ' v) v` using `fun v hv => by`. Establish `h` using `(hg _ (htv v hv)).comp v ((hasFDerivAt_id v).const_smul t)`. Establish `e1 : Φ = (fun η' => F (c.e y, η')) ∘ fun v => t • id v` using `by rw [hΦd]; rfl`. Rewrite using `[e1]`.
+
+Use `h.congr_fderiv ?_` and prove the remaining obligations. Rewrite using `[hΦ'd]`. Use extensionality with `w`. Simplify using the standard rewrite rules. Establish `hinjΦ : InjOn Φ s` using `fun v₁ h₁ v₂ h₂ he => smul_right_injective (V d) ht.ne' (hinj (htv _ (hsR h₁)) (htv _ (hsR h₂)) (by rw [hΦd] at he; exact he))`.
+
+Establish `hfin : Module.finrank ℝ (V d) = 2 * d`. Rewrite using `[GlobalTheory.finrank_real_euclideanSpace_complex, Fintype.card_fin]`. Establish `hdetΦ : ∀ v ∈ s, t ^ (2 * d) / 2 ≤ |(Φ' v).det|` using `fun v hv => by`. Establish `h2` using `hdet _ ((hL (c.e y) hyK _ (mem_closedBall_zero_iff.1 (htv v (hsR hv)))).2.2.trans (min_le_left _ _))`. Establish `e : (Φ' v).det = t ^ (2 * d) * (L (c.e y) (t • v)).det`.
+
+Rewrite using `[hΦ'd]`. Simplify using `only [ContinuousLinearMap.det, ContinuousLinearMap.coe_smul, LinearMap.det_smul, hfin]`. Rewrite using `[e, abs_mul, abs_of_pos (by positivity : (0:ℝ) < t ^ (2 * d))]`. Use polynomial arithmetic with `[pow_pos ht (2 * d)]`. Establish `himg : Φ '' s ⊆ ball (c.e y) (C * t)`.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨-, e, h⟩` from `hFy v (mem_closedBall_zero_iff.1 (hsR hv))`. Rewrite using `[hΦd]`. Simplify `h` using `[e]`. Establish `hsymm : ∀ v ∈ s, (f ∘ c.e.symm) (Φ v) = f (E c y (t • v.ofLp))` using `fun v hv => by`.
+
+Take `⟨h1, e, -⟩` from `hFy v (mem_closedBall_zero_iff.1 (hsR hv))`. Rewrite using `[hΦd]`. Simplify using `only [Function.comp_apply, e, c.e.left_inv h1]`. Take `⟨hI, hB⟩` from `cov_bound volume hso.measurableSet (fun v hv => (hΦ v (hsR hv)).hasFDerivWithinAt) hinjΦ (by positivity : (0:ℝ) < t ^ (2 * d) / 2) hdetΦ (hf.mono_set himg)`. Set `eV : V d ≃ᵐ (Fin d → ℂ)` to `(PiLp.continuousLinearEquiv 2 ℝ (fun _ : Fin d => ℂ)).toHomeomorph.toMeasurableEquiv`.
+
+Establish `hV : MeasurePreserving eV volume volume` using `GlobalTheory.volume_preserving_ofLp_complex (Fin d)`. Take `⟨H, hHdef⟩ : ∃ H : V d → ℝ, H = fun v => f (E c y (t • v.ofLp)) * ChernReg.cutoff (a c y v.ofLp)` from `⟨_, rfl⟩`. Establish `hHs : Function.support H ⊆ s` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[hsdef]`.
+
+Conclude with `hv (by simp [hHdef, ChernReg.cutoff, show ¬ a c y v.ofLp < 1 from h])`. Establish `hcm : Measurable fun v : V d => ChernReg.cutoff (a c y v.ofLp)` using `measurable_cutoff.comp (hac.comp (PiLp.continuous_ofLp 2 _)).measurable`. Establish `hHi : Integrable H`. Use `(integrableOn_iff_integrable_of_support_subset hHs).1 ?_` and prove the remaining obligations. Establish `h` using `hI.mul_bdd (c := 2) hcm.aestronglyMeasurable (ae_of_all _ fun v => by`.
+
+Rewrite using `[Real.norm_of_nonneg (cutoff_nonneg _)]`. Conclude with `cutoff_le _)`. Use `IntegrableOn.congr_fun h (fun v hv => ?_) hso.measurableSet` and prove the remaining obligations. Use `show ((f ∘ c.e.symm) ∘ Φ) v * _ = H v`. Rewrite using `[Function.comp_apply, hsymm v hv, hHdef]`.
+
+Establish `hint : Integrable fun ξ : Fin d → ℂ => f (E c y (t • ξ)) * ChernReg.cutoff (a c y ξ)` using `(hV.integrable_comp_emb eV.measurableEmbedding).1 (by rw [hHdef] at hHi; exact hHi)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hci : Integrable fun v : V d => ChernReg.cutoff (a c y v.ofLp)` using `(hV.integrable_comp_emb eV.measurableEmbedding).2 (integrable_cutoff hac hah (ha.2 c y hy))`. Establish `heV : ∀ v : V d, eV v = v.ofLp` using `fun v => rfl`. Establish `hmass : mm ≤ ∫ ξ, ChernReg.cutoff (a c y ξ)`.
+
+Rewrite using `[← hV.integral_comp' (fun ξ => ChernReg.cutoff (a c y ξ))]`. Simplify using `only [heV]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmmdef, mul_comm]`. Use `setIntegral_ge_of_const_le measurableSet_ball measure_ball_lt_top.ne (fun v hv => ?_) hci.integrableOn` and prove the remaining obligations.
+
+Establish `hv' : ‖v‖ < r₀` using `mem_ball_zero_iff.1 hv`. Establish `hb` using `hmM y hy hyK v`. Establish `hr : 2 * (M + 1) * r₀ = 1` using `by rw [hr₀def]; field_simp`. Use `cutoff_ge (le_trans (by positivity) hb.1) (hb.2.trans ?_)` and prove the remaining obligations. Establish `h4 : (2 * (M + 1) * ‖v‖) ^ 2 ≤ 1`.
+
+Establish `: 2 * (M + 1) * ‖v‖ ≤ 1` using `(mul_le_mul_of_nonneg_left hv'.le (by positivity)).trans hr.le`. Conclude with `pow_le_one₀ (by positivity) this`. Establish `h5 : (2 * (M + 1) * ‖v‖) ^ 2 = 4 * ((M + 1) ^ 2 * ‖v‖ ^ 2)` using `by ring`. Establish `h6 : M * ‖v‖ ^ 2 ≤ (M + 1) ^ 2 * ‖v‖ ^ 2` using `mul_le_mul_of_nonneg_right (by nlinarith) (sq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ ≤ _ := setIntegral_le_integral hci (ae_of_all _ fun _ => cutoff_nonneg _)`. Establish `hmpos : 0 < ∫ ξ, ChernReg.cutoff (a c y ξ)` using `hmm.trans_le hmass`. Establish `hIb : 0 ≤ ∫ v in ball (c.e y) (C * t), |f (c.e.symm v)|` using `setIntegral_nonneg measurableSet_ball fun _ _ => abs_nonneg _`. Establish `hnum : |∫ ξ, f (E c y (t • ξ)) * ChernReg.cutoff (a c y ξ)| ≤ 4 / t ^ (2 * d) * ∫ v in ball (c.e y) (C * t), |f (c.e.symm v)|`. Rewrite using `[← hV.integral_comp' (fun ξ : Fin d → ℂ => f (E c y (t • ξ)) * ChernReg.cutoff (a c y ξ))]`.
+
+Simplify using `only [heV]`. Rewrite using `[← hHdef]`. Combine the equalities or inequalities in the displayed calculation. Establish `: H v = 0` using `Function.notMem_support.1 fun h => hv (hHs h)`. Rewrite using `[this, abs_zero]).symm`.
+
+Use `_ ≤ ∫ v in s, 2 * |(f ∘ c.e.symm) (Φ v)| := by`. Use `setIntegral_mono_on hHi.abs.integrableOn (hI.abs.const_mul 2) hso.measurableSet fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hsymm v hv, hHdef]`. Simplify using `only [abs_mul, abs_of_nonneg (cutoff_nonneg _)]`. Use polynomial arithmetic with `[cutoff_le (a c y v.ofLp), abs_nonneg (f (E c y (t • v.ofLp)))]`.
+
+Use `_ = 2 * ∫ v in s, |(f ∘ c.e.symm) (Φ v)| := integral_const_mul _ _`. Use `_ ≤ 2 * ((t ^ (2 * d) / 2)⁻¹ * ∫ v in Φ '' s, |(f ∘ c.e.symm) v|) := by gcongr`. Use `_ ≤ 2 * ((t ^ (2 * d) / 2)⁻¹ * ∫ v in ball (c.e y) (C * t), |f (c.e.symm v)|) := by gcongr`. Conclude with `setIntegral_mono_set hf.abs (ae_of_all _ fun _ => abs_nonneg _) himg.eventuallyLE`. Use `_ = 4 / t ^ (2 * d) * ∫ v in ball (c.e y) (C * t), |f (c.e.symm v)| := by`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rho_eq ha hE f hy t, rhoIn, mean, abs_div, abs_of_pos hmpos]`. Combine the equalities or inequalities in the displayed calculation. Use `(div_le_div_of_nonneg_right hnum hmpos.le).trans ?_` and prove the remaining obligations.
+
+Conclude with `div_le_div_of_nonneg_left (by positivity) hmm hmass`. Use `_ = 4 / mm / t ^ (2 * d) * ∫ v in ball (c.e y) (C * t), |f (c.e.symm v)| := by ring`. Use `_ ≤ _ := by gcongr`. Conclude with `le_max_right _ _`.
+-/
 theorem kernelSt_holds : KernelSt := by
   intro k _ Y p σ d _ a E ha hE c Kc hK hKt
   obtain ⟨F, hFd⟩ : ∃ F : V d × V d → V d, F = fun q => c.e (E c (c.e.symm q.1) q.2.ofLp) := ⟨_, rfl⟩

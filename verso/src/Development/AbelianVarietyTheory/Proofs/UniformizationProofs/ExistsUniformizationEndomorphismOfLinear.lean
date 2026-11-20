@@ -18,6 +18,9 @@ namespace GlobalTheory.UT.OLinEnd
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_four, _root_.mul_comm (cP D T χ) p]`. Use `show h (p * cP D _ χ).left ^ (1 : ℤ) * h (cP D _ χ).left ^ (-1 : ℤ) * h p.left ^ (-1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+-/
 theorem prod_Oφ (D : DegPre R) {T : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U]
     (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ i, h (D.Oφ p χ i) ^ Oε i =
@@ -27,6 +30,9 @@ theorem prod_Oφ (D : DegPre R) {T : Over (Spec (CommRingCat.of R))} (p : T ⟶ 
     h (1 : T ⟶ D.P.A).left ^ (1 : ℤ) = _
   simp only [zpow_neg, zpow_one]
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_four, _root_.mul_comm (cP D T χ) p]`. Use `show h (p * cP D _ χ).left ^ (-1 : ℤ) * h (cP D _ χ).left ^ (1 : ℤ) * h p.left ^ (1 : ℤ) * h (1 : T ⟶ D.P.A).left ^ (-1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+-/
 theorem prod_Oφ_inv (D : DegPre R) {T : Over (Spec (CommRingCat.of R))} (p : T ⟶ D.P.A) (χ : D.X) {U : Type}
     [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ i, h (D.Oφ p χ i) ^ Oinvε i =
@@ -36,6 +42,19 @@ theorem prod_Oφ_inv (D : DegPre R) {T : Over (Spec (CommRingCat.of R))} (p : T 
     h (1 : T ⟶ D.P.A).left ^ (-1 : ℤ) = _
   simp only [zpow_neg, zpow_one]
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `cf : ∀ (T) (x : O) χ, cP D T (x • χ) = cP D T χ ≫ oa.onB.act x` using `fun T x χ => by`. Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression.
+
+Take `⟨v, hv, vv⟩` from `exists_gen D.P.isLB (φ' := Sum.elim (D.Oφ (𝟙 _) (star a • χ)) (D.Oφ (oa.onB.act a) χ)) (ε' := Sum.elim Oε Oinvε) (fun U _ h => by`. Use `(prod_ros _ _ (cP D _ χ) (𝟙 D.P.A) h).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_Oφ D (𝟙 _) (star a • χ) h) (prod_Oφ_inv D (oa.onB.act a) χ h)).trans ?_` and prove the remaining obligations. Rewrite using `[cf, Category.id_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.pullGen D.P.L _ _ u (lift (cP D D.P.A χ) (𝟙 D.P.A)).left) (pullGen_isGen _ _ _ _ hu _)`. Establish `key : ∀ (T : Over (Spec (CommRingCat.of R))) (x : T ⟶ D.P.A) (Z : Scheme.{0}) (r : Z ⟶ T.left) (z : Z) (J), Good D.P.L z J → val v (r ≫ x.left) z J = val u (r ≫ (lift (cP D T χ) x).left) z J` using `fun T x Z r z J hJ => by`. Rewrite using `[vv Z _ z J hJ, val_pull hJ, Category.assoc, ← Over.comp_left, comp_lift, comp_cP, Category.comp_id]`.
+
+Use `⟨v, ⟨hv, corr_of_val D.P.isLB fun y J hJ => ?_⟩, key⟩` and prove the remaining obligations. Establish `C : IsCub (cubV D.cub (T` using `𝟙_ (Over (Spec (CommRingCat.of R)))) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(ros_add D.cub hG D.P.isAb _ _ u hu u₀ (T := 𝟙_ (Over (Spec (CommRingCat.of R)))) hJ 1 1 (cP D _ χ)).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Establish `e' : val₂ u (T` using `𝟙_ (Over (Spec (CommRingCat.of R)))) y J (cP D _ χ) 1 = 1 := mul_eq_left.1 e.symm`.
+
+Establish `k` using `key (𝟙_ (Over (Spec (CommRingCat.of R)))) 1 _ (𝟙 _) y J hJ`. Establish `o : (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A).left = eSec D.P.A`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Rewrite `k` using `[o]`.
+
+Use `(val_pull hJ _ _ _).trans (k.trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `e'`.
+-/
 theorem exists_u (hG : GlobalFnsSt) (D : DegPre R) {O : Type} [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O)
     (a : O) (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)) (hu : u.IsGen)
     (u₀ : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L)) (χ : D.X) :
@@ -73,6 +92,11 @@ theorem exists_u (hG : GlobalFnsSt) (D : DegPre R) {O : Type} [CommRing O] [Star
   rw [Category.id_comp]
   exact e'
 
+/- English proof (translation)
+Establish `z2 : zero2 D.P.A ≫ (snd D.P.A D.P.A).left ≫ D.P.A.hom = 𝟙 _`. Rewrite using `[Over.w]`. Conclude with `Over.w (lift η[D.P.A] η[D.P.A])`. Conclude with `gen_unique D.P.isLB _ (zero2 D.P.A) z2 (surj_comp (surj_snd hG D.P.isAb _) (hG _ _ D.P.isAb).2) hu' hu (fun y I hI => by`. Establish `a₁` using `val_corr hI u₀' (𝟙 _)`.
+
+Establish `a₂` using `val_corr hI u₀ (𝟙 _)`. Rewrite `a₁`, `a₂` using `[val_pull hI, Category.id_comp]`. Conclude with `a₁.trans a₂.symm) _ _ z J hJ`.
+-/
 theorem ros_unique (hG : GlobalFnsSt) (D : DegPre R) {f g : D.P.A ⟶ D.P.A}
     {u u' : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A f g) rosatiε)} (hu : u.IsGen) (hu' : u'.IsGen)
     (u₀ : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L))
@@ -88,6 +112,15 @@ theorem ros_unique (hG : GlobalFnsSt) (D : DegPre R) {f g : D.P.A ⟶ D.P.A}
       rw [val_pull hI, Category.id_comp] at a₁ a₂
       exact a₁.trans a₂.symm) _ _ z J hJ
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I _ D A G _ _ _ U O _ _ _ ιD ιA ιG hO a`. Establish `hG` using `hL.1.globalFns`. Use `ιD.onB.hom a` as an intermediate fact. Use `ιD.onB.hom (star a)` as an intermediate fact. Establish `hr` using `ιD.onB.rosati (star a)`.
+
+Rewrite `hr` using `[star_star]`. Take `⟨u, hu, u₀⟩` from `exists_ros hG D.toPre.P.isAb D.toPre.P.isLB _ _ hr`. Use `choose v hv vv using exists_u hG D.toPre ιD a u hu u₀`. Use `⟨{ aG := ιG.act a, aA := ιA.act a, aB := ιD.onB.act a, homG := ιG.hom a, homA := ιA.hom a, homB := ιD.onB.hom a, h := DistribSMul.toAddMonoidHom D.toPre.X (star a), ext := hO.ext a, q_lin := fun e => hO.q_lin e a, i_lin := fun e => hO.i_lin e a, u := v, u_norm := hv, t_lin := fun …` and prove the remaining obligations. Establish `e₁` using `val_corr hJ (hL.2.2.2.1.tLin R I O D A G U.toUnifPre ιD ιA ιG hO e a u hu u₀ χ) x`.
+
+Use `((val_pull hJ _ _ _).symm.trans e₁.symm).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ?_))` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans (vv χ _ (U.gt e).pG Z x z J hJ).symm`. Establish `k : ∀ χ z J, Good D.toPre.P.L z J → val (v χ) g.b.left z J = val u (𝟙 _ ≫ (lift (cP D.toPre _ χ) g.b).left) z J` using `fun χ z J hJ => (congrArg (fun q => val (v χ) q z J) (Category.id_comp g.b.left).symm).trans (vv χ _ g.b _ (𝟙 _) z J hJ)`. Use `and_congr Iff.rfl ⟨fun H u' hu' u₀' χ => corr_of_val D.toPre.P.isLB fun z J hJ => ?_, fun H χ z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) rfl ?_) (H χ z J hJ).symm)` and prove the remaining obligations.
+
+Conclude with `(val_pull hJ _ _ _).trans ((ros_unique hG D.toPre hu hu' u₀ u₀' _ _ z J hJ).trans (k χ z J hJ).symm)`. Use `(val_corr hJ (H u hu u₀ χ) (𝟙 _)).symm.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ?_))` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans (k χ z J hJ).symm`.
+-/
 theorem main : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → ∀ a : O, ∃ E : EndU U.toUnifPre, E.aG = ιG.act a ∧ E.aA = ιA.act a ∧ E.aB = ιD.onB.act a ∧ (∀ χ, E.h χ = star a • χ) ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (g g' : GtPtF D.toPre F), E.Act g g' ↔ GtAct ιD a g g' := by
   intro hL R _ _ _ I _ D A G _ _ _ U O _ _ _ ιD ιA ιG hO a
   have hG := hL.1.globalFns

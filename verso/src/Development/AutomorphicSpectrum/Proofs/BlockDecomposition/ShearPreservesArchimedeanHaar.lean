@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf
 
+/- English proof (translation)
+Establish `hf : Measurable (fun x : Fin n → V => Function.update x a (x a + T x))`. Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`.
+
+Conclude with `(measurable_pi_apply j).add hT`. Simplify `measurable_pi_apply j` using `[Function.update_of_ne h]`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Establish `h2s : MeasurableSet (Set.univ.pi s)` using `MeasurableSet.univ_pi hs`. Rewrite using `[← Measure.pi_pi, ← lintegral_indicator_one h2s, ← lintegral_indicator_one h2s, lintegral_map (measurable_one.indicator h2s) hf]`.
+
+Use `lintegral_eq_of_lmarginal_eq {a} ((measurable_one.indicator h2s).comp hf) (measurable_one.indicator h2s) ?_` and prove the remaining obligations. Repeatedly rewrite using `[lmarginal_singleton]`. Use extensionality with `x`. Establish `key : ∀ y : V, Function.update (Function.update x a y) a (Function.update x a y a + T (Function.update x a y)) = Function.update x a (y + T x)`. Introduce `y`.
+
+Simplify using `[hTa]`. Simplify using `only [Function.comp_def, key]`. Conclude with `lintegral_add_right_eq_self (fun y => (Set.univ.pi s).indicator (1 : (Fin n → V) → ℝ≥0∞) (Function.update x a y)) (T x)`.
+-/
 theorem pi_map_update_add {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd₂ V] {n : ℕ}
     (ν : Measure V) [SigmaFinite ν] [ν.IsAddRightInvariant] (a : Fin n) (T : (Fin n → V) → V)
     (hT : Measurable T) (hTa : ∀ x y, T (Function.update x a y) = T x) :
@@ -41,6 +50,17 @@ theorem pi_map_update_add {V : Type} [AddCommGroup V] [MeasurableSpace V] [Measu
   exact lintegral_add_right_eq_self
     (fun y => (Set.univ.pi s).indicator (1 : (Fin n → V) → ℝ≥0∞) (Function.update x a y)) (T x)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n M d b lam hlam a s hs`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Ainf F) d b lam hlam`.
+
+Use `haveI := hK`. Use `haveI : SigmaFinite (GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) := inferInstance`. Use `haveI hν : (Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam).IsAddHaarMeasure := inferInstance`. Establish `hmul : ∀ c : Ainf F ⊗[F] E, Measurable (fun y : Ainf F ⊗[F] E => c * y)` using `fun c => (continuous_const.mul continuous_id).measurable`. Establish `hT : Measurable (fun (x : Fin n → Fin M → Ainf F ⊗[F] E) (i : Fin M) => ∑ c, s c * x c i)`.
+
+Use `measurable_pi_lambda _ fun i => ?_` and prove the remaining obligations. Use `Finset.measurable_sum _ fun c _ => ?_` and prove the remaining obligations. Conclude with `(hmul (s c)).comp ((measurable_pi_apply i).comp (measurable_pi_apply c))`. Establish `hTa : ∀ (x : Fin n → Fin M → Ainf F ⊗[F] E) (y : Fin M → Ainf F ⊗[F] E), (fun i => ∑ c, s c * Function.update x a y c i) = fun i => ∑ c, s c * x c i`. Introduce `x y`.
+
+Use function extensionality and compare the values at `i`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using `[hs]`.
+
+Simplify using `[Function.update_of_ne h]`. Conclude with `pi_map_update_add (Measure.pi fun _ : Fin M => GlobalTheory.CompanionTheory.SW.coordK (Ainf F) b lam) a _ hT hTa`.
+-/
 theorem coordW_map_shearK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ (a : Fin n) (s : Fin n → Ainf F ⊗[F] E), s a = 0 → (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M).map (GlobalTheory.CompanionTheory.WhitFree.AvgInf.shearK a s) = GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M := by
   intro F E _ _ _ _ _ σ hσ n M d b lam hlam a s hs
   obtain ⟨j1, j2, j3, j4, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)

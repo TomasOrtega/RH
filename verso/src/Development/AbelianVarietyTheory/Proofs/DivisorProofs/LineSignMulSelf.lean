@@ -15,6 +15,21 @@ variable {W : Type} [DecidableEq W] {P Q R S : W → ℕ}
 def unitAtS (j : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) (z : ℂ) : ∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ :=
   Pi.single j.1 (Matrix.single j.2.1 j.2.2 z)
 
+/- English proof (translation)
+Take `⟨w0, a0, b0⟩` from `j`. Take `⟨w1, a1, b1⟩` from `k`. Rewrite using `[Finset.sum_eq_single w0]`. Distinguish the cases in `hw : w1 = w0`. Substitute `hw` using the available equality.
+
+Simplify using `only [unitAtS, Pi.single_eq_same]`. Rewrite using `[Finset.sum_eq_single a0, Finset.sum_eq_single b0]`. Distinguish the cases in `ha : a0 = a1`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b0 = b1`.
+
+Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Establish `: (⟨w1, a0, b0⟩ : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) ≠ ⟨w1, a0, b1⟩`. Introduce `h`. Simplify using `at h`.
+
+Conclude with `hb h`. Simplify using `[this, hb, Ne.symm hb]`. Establish `: (⟨w1, a0, b0⟩ : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) ≠ ⟨w1, a1, b1⟩`. Introduce `h`. Simplify using `at h`.
+
+Conclude with `ha h.1`. Simplify using `[this, ha, Ne.symm ha]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+
+Introduce `a _ ha`. Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules. Establish `: (⟨w0, a0, b0⟩ : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) ≠ ⟨w1, a1, b1⟩`. Introduce `h`.
+
+Conclude with `hw (congrArg Sigma.fst h).symm`. Simplify using `[unitAtS, hw, this]`. Introduce `w _ hw`. Simplify using `[unitAtS, hw]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_unitAtS [Fintype W] (j k : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) (z z' : ℂ) :
     (∑ w, ∑ a, ∑ b, lineSign a b * unitAtS j z w a b * star (unitAtS k z' w a b)) =
       if j = k then lineSign j.2.1 j.2.2 * z * star z' else 0 := by
@@ -45,6 +60,13 @@ theorem sum_unitAtS [Fintype W] (j k : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w
   · intro w _ hw; simp [unitAtS, hw]
   · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w a b`. Simplify using `only [Finset.sum_apply, Matrix.sum_apply, Fintype.sum_sigma, unitAtS]`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a, Finset.sum_eq_single b]`.
+
+Simplify using the standard rewrite rules. Introduce `b' _ hb`. Simplify using `[Matrix.single_apply, hb]`. Simplify using the standard rewrite rules. Introduce `a' _ ha`.
+
+Simplify using `[Matrix.single_apply, ha]`. Simplify using the standard rewrite rules. Introduce `w' _ hw`. Simplify using `[Pi.single_eq_of_ne' hw]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_unitAtS_eq [Fintype W] (c : ∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) :
     c = ∑ j : (Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)), unitAtS j (c j.1 j.2.1 j.2.2) := by
   funext w a b
@@ -66,18 +88,32 @@ namespace GlobalTheory.HoweD.CCRSig
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [DecidableEq W] {P Q R S : W → ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+-/
 theorem lineSign_cases {P Q R S : ℕ} (a : Ix P Q) (b : Ix R S) : (lineSign a b : ℂ) = 1 ∨ (lineSign a b : ℂ) = -1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+-/
 theorem lineSign_mul_self {P Q R S : ℕ} (a : Ix P Q) (b : Ix R S) : lineSign a b * lineSign a b = 1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
+/- English proof (translation)
+Simplify using `only [neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, mul_add, add_mul, mul_sub, sub_mul]`. Use `module`.
+-/
 theorem comm_expand (A A' B B' : Module.End ℂ V) (c u v : ℂ) :
     -(c • (A + u • A')) * (c • (B - v • B')) - (c • (B - v • B')) * -(c • (A + u • A')) =
       -((c * c) • ((A * B - B * A) - v • (A * B' - B' * A) + u • (A' * B - B * A') - (u * v) • (A' * B' - B' * A'))) := by
   simp only [neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, mul_add, add_mul, mul_sub, sub_mul]
   module
 
+/- English proof (translation)
+Establish `h : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = 2 * (Real.pi : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← mul_inv]`.
+
+Use `congr 1`. Take the linear combination `4 * h`.
+-/
 theorem inv_sq : (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ * (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ =
     (8 * (Real.pi : ℂ))⁻¹ := by
   have h : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = 2 * (Real.pi : ℂ) := by
@@ -97,6 +133,13 @@ def ccrD (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Modu
   -((2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ •
     (H (unitAtS j 1) + (lineSign j.2.1 j.2.2 * Complex.I) • H (unitAtS j Complex.I)))
 
+/- English proof (translation)
+Establish `h11` using `hc (unitAtS j 1) (unitAtS k 1)`. Establish `h1i` using `hc (unitAtS j 1) (unitAtS k Complex.I)`. Establish `hi1` using `hc (unitAtS j Complex.I) (unitAtS k 1)`. Establish `hii` using `hc (unitAtS j Complex.I) (unitAtS k Complex.I)`. Rewrite `h11`, `h1i`, `hi1`, `hii` using `[sum_unitAtS]`.
+
+Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk]`. Simplify using `only [if_neg hjk, Complex.zero_im, Complex.ofReal_zero, mul_zero, zero_smul, sub_eq_zero] at h11 h1i hi1 hii`. Unfold `ccrM`. Establish `c : Commute (H (unitAtS j 1) - (lineSign j.2.1 j.2.2 * Complex.I) • H (unitAtS j Complex.I)) (H (unitAtS k 1) - (lineSign k.2.1 k.2.2 * Complex.I) • H (unitAtS k Complex.I))` using `Commute.sub_left (Commute.sub_right h11 (Commute.smul_right h1i _)) (Commute.smul_left (Commute.sub_right hi1 (Commute.smul_right hii _)) _)`.
+
+Conclude with `((c.smul_left _).smul_right _).eq`.
+-/
 theorem ccrM_comm [Fintype W] (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V)
     (hc : ∀ c c', H c * H c' - H c' * H c =
       ((4 * Real.pi : ℂ) * Complex.I * ((∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im : ℂ)) • 1)
@@ -116,6 +159,15 @@ theorem ccrM_comm [Fintype W] (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w)
         (Commute.smul_left (Commute.sub_right hi1 (Commute.smul_right hii _)) _)
     exact ((c.smul_left _).smul_right _).eq
 
+/- English proof (translation)
+Unfold `ccrD ccrM`. Rewrite using `[comm_expand, hc, hc, hc, hc, sum_unitAtS, sum_unitAtS, sum_unitAtS, sum_unitAtS, inv_sq]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality.
+
+Simplify using `only [if_true, smul_smul, ← sub_smul, ← add_smul, ← neg_smul]`. Use `conv_rhs => rw [← one_smul ℂ (1 : Module.End ℂ V)]`. Use `congr 1`. Break down `lineSign_cases j.2.1 j.2.2 with h | h` into its components or cases. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-8 : ℂ) * Complex.I_sq`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-8 : ℂ) * Complex.I_sq`. Simplify using `[h]`.
+-/
 theorem ccrD_ccrM_comm [Fintype W] (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V)
     (hc : ∀ c c', H c * H c' - H c' * H c =
       ((4 * Real.pi : ℂ) * Complex.I * ((∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im : ℂ)) • 1)
@@ -135,6 +187,9 @@ theorem ccrD_ccrM_comm [Fintype W] (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix 
     · rw [h]; simp; field_simp; linear_combination (-8 : ℂ) * Complex.I_sq
   · simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = j.1`. Substitute `hw` using the available equality. Simplify using `only [unitAtS, Pi.add_apply, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_single, ← Matrix.single_add, smul_eq_mul, mul_one, Complex.re_add_im]`. Simplify using `[unitAtS, Pi.single_eq_of_ne hw]`.
+-/
 theorem unitAtS_re_im (j : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) (z : ℂ) :
     unitAtS j z = ((z.re : ℝ) : ℂ) • unitAtS j 1 + ((z.im : ℝ) : ℂ) • unitAtS j Complex.I := by
   funext w
@@ -144,6 +199,19 @@ theorem unitAtS_re_im (j : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) (z : ℂ)
       mul_one, Complex.re_add_im]
   · simp [unitAtS, Pi.single_eq_of_ne hw]
 
+/- English proof (translation)
+Establish `h0 : H 0 = 0`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`. Set `H' : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) →+ Module.End ℂ V` to `⟨⟨H, h0⟩, hadd⟩`.
+
+Establish `hsum : H c = ∑ j : (Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)), H (unitAtS j (c j.1 j.2.1 j.2.2))` using `by conv_lhs => rw [sum_unitAtS_eq c]`. Conclude with `map_sum H' _ _`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[unitAtS_re_im, hadd, hsmul, hsmul]`.
+
+Establish `hs : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) ≠ 0`. Establish `: 0 < Real.sqrt (2 * Real.pi)` using `Real.sqrt_pos.mpr (by positivity)`. Conclude with `this.ne'` after adjusting the coercions. Establish `he` using `lineSign_mul_self j.2.1 j.2.2`. Unfold `ccrM ccrD GlobalTheory.CCRFock.coefM GlobalTheory.CCRFock.coefD`.
+
+Generalize the expression as in `((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = s at hs ⊢`. Generalize the expression as in `lineSign j.2.1 j.2.2 = e at he ⊢`. Generalize the expression as in `H (unitAtS j 1) = A`. Generalize the expression as in `H (unitAtS j Complex.I) = B`. Generalize the expression as in `((c j.1 j.2.1 j.2.2).re : ℂ) = x`.
+
+Generalize the expression as in `((c j.1 j.2.1 j.2.2).im : ℂ) = y`. Establish `hI` using `Complex.I_mul_I`. Use `match_scalars`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(2 * y * e * e) * hI - 2 * y * he`.
+-/
 theorem heis_expanccrD [Fintype W] (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V)
     (hadd : ∀ c c', H (c + c') = H c + H c') (hsmul : ∀ (r : ℝ) c, H ((r : ℂ) • c) = (r : ℂ) • H c)
     (c : ∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) :
@@ -185,6 +253,9 @@ namespace GlobalTheory.HoweD
 
 open GlobalTheory.HoweD.CCRSig in
 
+/- English proof (translation)
+Introduce `V _ _ W _ _ P Q R S H hadd hsmul hc`. Use `⟨ccrM H, ccrD H, ccrM_comm H hc, ccrD_ccrM_comm H hc, fun j f₀ h => ?_, heis_expanccrD H hadd hsmul⟩` and prove the remaining obligations. Establish `h' : H (unitAtS j 1) f₀ + (lineSign j.2.1 j.2.2 * Complex.I) • H (unitAtS j Complex.I) f₀ = 0` using `h`. Simplify using `only [GlobalTheory.HoweD.CCRSig.ccrD, LinearMap.neg_apply, LinearMap.smul_apply, LinearMap.add_apply, h', smul_zero, neg_zero]`.
+-/
 theorem ccr_fock_ops_sig : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : W → ℕ} (H : (∀ w : W, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ V), (∀ c c', H (c + c') = H c + H c') → (∀ (r : ℝ) c, H ((r : ℂ) • c) = (r : ℂ) • H c) → (∀ c c', H c * H c' - H c' * H c = ((4 * Real.pi : ℂ) * Complex.I * ((∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im : ℂ)) • 1) → ∃ m D : (Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) → Module.End ℂ V, (∀ i j, m i * m j = m j * m i) ∧ (∀ i j, D i * m j - m j * D i = if i = j then 1 else 0) ∧ (∀ (j : Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)) (f₀ : V), H (Pi.single j.1 (Matrix.single j.2.1 j.2.2 1)) f₀ + (lineSign j.2.1 j.2.2 * Complex.I) • H (Pi.single j.1 (Matrix.single j.2.1 j.2.2 Complex.I)) f₀ = 0 → D j f₀ = 0) ∧ ∀ c, H c = ∑ j : (Σ w : W, Ix (P w) (Q w) × Ix (R w) (S w)), ((((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * GlobalTheory.CCRFock.coefM (c j.1 j.2.1 j.2.2) (lineSign j.2.1 j.2.2)) • m j + (((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * GlobalTheory.CCRFock.coefD (c j.1 j.2.1 j.2.2) (lineSign j.2.1 j.2.2)) • D j) := by
   intro V _ _ W _ _ P Q R S H hadd hsmul hc
   refine ⟨ccrM H, ccrD H, ccrM_comm H hc, ccrD_ccrM_comm H hc, fun j f₀ h => ?_, heis_expanccrD H hadd hsmul⟩

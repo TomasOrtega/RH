@@ -12,6 +12,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VoganMinimalTyp
 
 namespace PositivityTheory.RgDs.Hilb
 
+/- English proof (translation)
+The claim follows from `hilb_of hilbert_stable_holds hilbert_datum_holds hilbert_signature_holds GlobalTheory.T.mollifier_approximation_hilbert GlobalTheory.T.weight_vectors_span_dense hilbert_cone_of_stable_mollifier hilbert_lowest_weight_of_inputs GlobalTheory.T.irreducible_of_discrete_series_datum Gl …`.
+-/
 theorem hilbert_space_realisation_holds : PositivityTheory.RgDs.Hilb :=
   hilb_of hilbert_stable_holds hilbert_datum_holds hilbert_signature_holds GlobalTheory.T.mollifier_approximation_hilbert GlobalTheory.T.weight_vectors_span_dense hilbert_cone_of_stable_mollifier hilbert_lowest_weight_of_inputs
     GlobalTheory.T.irreducible_of_discrete_series_datum GlobalTheory.T.character_formula_of_discrete_series_datum hilbert_square_integrable_of_signature GlobalTheory.T.vogan_minimal_type_statement

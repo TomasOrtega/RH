@@ -19,6 +19,13 @@ section
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨S, hS, hPS⟩` from `(Bridge.isMultiHomogIdeal_iff P).mp hP`. Choose the witnesses or unpack the hypotheses as in `⟨T, hTS, hT⟩ : ∃ T : Finset (MRing ι ℂ), (T : Set (MRing ι ℂ)) ⊆ S ∧ Ideal.span S = Ideal.span (T : Set (MRing ι ℂ)) := by`. Establish `hfg : (Ideal.span S).FG`. Rewrite using `[← hPS]`. Conclude with `IsNoetherian.noetherian P`.
+
+Conclude with `(Submodule.fg_span_iff_fg_span_finset_subset S).mp hfg`. Use `⟨T.card, fun i => (T.equivFin.symm i).1, fun i => hS _ (hTS (T.equivFin.symm i).2), ?_⟩` and prove the remaining obligations. Establish `hrange : Set.range (fun i => (T.equivFin.symm i).1) = (T : Set (MRing ι ℂ))`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `(T.equivFin.symm i).2`. Introduce `hf`. Conclude with `⟨T.equivFin ⟨f, hf⟩, by simp⟩`. Rewrite using `[hrange, ← hT, hPS]`.
+-/
 theorem exists_forms_span {P : Ideal (MRing ι ℂ)} (hP : NumbersDVR.IsMultiHomogIdeal P) :
     ∃ (t : ℕ) (G : Fin t → MRing ι ℂ), (∀ i, ∃ a, ReciprocityTheory.AnForm.R.IsMultiHomog (G i) a) ∧
       Ideal.span (Set.range G) = P := by
@@ -40,10 +47,18 @@ theorem exists_forms_span {P : Ideal (MRing ι ℂ)} (hP : NumbersDVR.IsMultiHom
       exact ⟨T.equivFin ⟨f, hf⟩, by simp⟩
   rw [hrange, ← hT, hPS]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun q => isEmptyElim q.1⟩`.
+-/
 theorem isEmpty_sigma [IsEmpty K] : IsEmpty (Σ k, ι k) := ⟨fun q => isEmptyElim q.1⟩
 
 attribute [local instance] isEmpty_sigma
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Ideal.mem_bot, eq_C_of_isEmpty f]`. Assume the negation of the conclusion as `h`. Establish `hc : coeff 0 f ≠ 0` using `fun h0 => h (by rw [h0, map_zero])`.
+
+Use `hP.ne_top (Ideal.eq_top_of_isUnit_mem _ hf ?_)` and prove the remaining obligations. Rewrite using `[eq_C_of_isEmpty f]`. Conclude with `(isUnit_iff_ne_zero.mpr hc).map C`.
+-/
 theorem eq_bot_of_isEmpty [IsEmpty K] {P : Ideal (MRing ι ℂ)} (hP : P.IsPrime) : P = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -54,6 +69,9 @@ theorem eq_bot_of_isEmpty [IsEmpty K] {P : Ideal (MRing ι ℂ)} (hP : P.IsPrime
   rw [eq_C_of_isEmpty f]
   exact (isUnit_iff_ne_zero.mpr hc).map C
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv ((RingEquiv.quotientBot (MRing ι ℂ)).trans (isEmptyRingEquiv ℂ (Σ k, ι k)))]`. Conclude with `ringKrullDim_eq_zero_of_field ℂ`.
+-/
 theorem ringKrullDim_bot_of_isEmpty [IsEmpty K] :
     ringKrullDim (MRing ι ℂ ⧸ (⊥ : Ideal (MRing ι ℂ))) = 0 := by
   rw [ringKrullDim_eq_of_ringEquiv
@@ -110,6 +128,23 @@ def emptyAlgRes [IsEmpty K] : ReciprocityTheory.AnForm.R.AlgRes ι (⊥ : Ideal 
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P e hP`. Take `⟨⟨hprime, hhom, -⟩, hdimP⟩` from `hP`. Break down `isEmpty_or_nonempty K with hK | hK` into its components or cases. Establish `hP0 : P = ⊥` using `eq_bot_of_isEmpty hprime`. Substitute `hP0` using the available equality.
+
+Establish `he : e = 0`. Rewrite `hdimP` using `[ringKrullDim_bot_of_isEmpty, Fintype.card_eq_zero, add_zero]`. Conclude with `hdimP.symm` after adjusting the coercions. Substitute `he` using the available equality. Conclude with `⟨⟨⊤, fun _ _ _ => Submodule.mem_top, fun h' => hprime.ne_top (top_le_iff.mp h'), emptyAlgRes⟩⟩`.
+
+Use `haveI := hprime`. Take `⟨t, G, hG, hspan⟩` from `exists_forms_span hhom`. Establish `hdimQ : ∀ Q ∈ P.minimalPrimes, ringKrullDim (MRing ι ℂ ⧸ Q) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Introduce `Q hQ`. Rewrite `hQ` using `[Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff]`.
+
+Rewrite using `[hQ]`. Conclude with `hdimP`. Take `⟨a, b, hab⟩` from `exists_jacobian_minor_not_mem_charZero P G hspan (e + Fintype.card K) hdimP`. Take `⟨δ, hδ⟩` from `isMultiHomog_det_pderiv_over (R := ℂ) G hG a b`. Use `set d := Matrix.det (Matrix.of fun i j => pderiv (b j) (G (a i))) with hd`.
+
+Establish `hPR : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal P` using `⟨Set.range G, by rintro _ ⟨i, rfl⟩; exact hG i, hspan.symm⟩`. Establish `hDR : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal (Ideal.span {d})` using `⟨{d}, by rintro _ rfl; exact ⟨δ, hδ⟩, rfl⟩`. Establish `hDN : NumbersDVR.IsMultiHomogIdeal (Ideal.span {d})` using `(Bridge.isMultiHomogIdeal_iff _).mpr ⟨{d}, by rintro _ rfl; exact ⟨δ, hδ⟩, rfl⟩`. Establish `hnot : ¬ Ideal.span {d} ≤ P` using `fun hle => hab (hle (Ideal.subset_span rfl))`. Establish `hcomp : ∀ Q ∈ P.minimalPrimes, ReciprocityTheory.AnForm.R.IsRelevant Q → ¬ Ideal.span {d} ≤ Q`.
+
+Introduce `Q hQ _`. Rewrite `hQ` using `[Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff]`. Rewrite using `[hQ]`. Conclude with `hnot`. Establish `hsing : ∀ (p : (k : K) → ι k) (z : (Σ k, ι k) → ℂ), (∀ h ∈ ReciprocityTheory.AnForm.R.chartIdeal P p, eval z h = 0) → ¬ IsRegularLocalRing (ReciprocityTheory.AnForm.R.locAt (ReciprocityTheory.AnForm.R.chartIdeal P p) z) → ∀ f ∈ Ideal.span {d}, eval z f = 0`.
+
+Introduce `p z hz hnreg f hf`. Establish `hdz : eval z d = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hnreg (ReciprocityTheory.AnForm.R.isRegularLocalRing_locAt_chart P e hdimQ G hG hspan p z hz a b hne)`. Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`.
+
+Rewrite using `[map_mul, hdz, mul_zero]`. Establish `hdim : ∀ (p : (k : K) → ι k) (z : (Σ k, ι k) → ℂ), (∀ h ∈ ReciprocityTheory.AnForm.R.chartIdeal P p, eval z h = 0) → ringKrullDim (ReciprocityTheory.AnForm.R.locAt (ReciprocityTheory.AnForm.R.chartIdeal P p) z) = e` using `fun p z hz => ReciprocityTheory.AnForm.R.ringKrullDim_locAt_chart P hPR e hdimQ p z hz`. Take `⟨R⟩` from `ReciprocityTheory.AnForm.R.algRes_of_logResStC h.2 P (Ideal.span {d}) e hPR hprime.isRadical hDR hcomp hsing hdim (ReciprocityTheory.AnForm.R.projLogResC_of_C h.1 h.2 K ι P (Ideal.span {d}) hPR hDR hprime.isRadical hsing hcomp)`. Conclude with `⟨⟨Ideal.span {d}, hDN, hnot, R⟩⟩`.
+-/
 theorem ResExists.proof (h : ReciprocityTheory.AnForm.R.FinalTheorems.GFLogStC ∧ ReciprocityTheory.AnForm.R.FinalTheorems.FinTypeQE) :
     ResExists.Statement := by
   intro K _ _ ι _ P e hP

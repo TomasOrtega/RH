@@ -9,6 +9,29 @@ namespace GlobalTheory.Cut.PolynomialInertiaAction
 
 open GlobalTheory.Cut.PolyInertia
 
+/- English proof (translation)
+Introduce `D i r ρ π Xs S _ hG _ v hv hP c`. Take `⟨P, hP0, hPu⟩` from `hP`. Take `⟨-, hdec, hψ, -, -, -, -, ⟨hT, -⟩, -, ⟨hπ, -⟩, -⟩` from `hG`. Use `set γ0 := D.nd.gam0 i v with hγ0`. Set `a : S.X' → MatN D.nd i` to `fun x' => Polynomial.aeval (rO D.nd i r (S.p x') γ0) (P.map (evT D.nd i (S.p x')))`.
+
+Establish `ha_eq : ∀ x', a x' = ∑ k : Fin (P.natDegree + 1), evT D.nd i (S.p x') (P.coeff k) • rO D.nd i r (S.p x') (γ0 ^ (k : ℕ))`. Introduce `x'`. Simplify using `only [a, aeval_map_eq_sum, map_pow]`. Establish `ha : InR' D.nd r S a`. Use `⟨P.natDegree + 1, fun k x' => evT D.nd i (S.p x') (P.coeff k), fun k => γ0 ^ (k : ℕ), fun k => hT _ (P.coeff k).2, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x'`. Rewrite using `[ha_eq, Finset.sum_apply]`. Establish `h1 : InR' D.nd r S 1`. Use `⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`.
+
+Simplify using the standard rewrite rules. Establish `hchi : chiU D.nd i ((c : ℕ) + 1) γ0 = chiU D.nd i 1 γ0` using `(GlobalTheory.T.cyclotomicChar_unramified_away_from_ell D i v (D.nd.SQ_l i v (Or.inl hv)) γ0 (D.nd.locNd_chebotarevPlace_mem i v)).2 _ (Nat.le_add_left _ _) c.2`. Establish `hval : S.ψχ c a = (P.map (evT D.nd i π)).eval (D.nd.zeta i v)`. Apply `IsFractionRing.injective (D.nd.O i) (KK D.nd i)` to reduce the goal to its premises. Set `u` to `S.e.symm (0, Pi.single c 1)`.
+
+Establish `hu : (S.e u).2 c = 1` using `by simp [u]`. Establish `e1` using `congrArg (fun z => z.2 c) (hψ a ha u)`. Simplify using `only [hu, mul_one] at e1`. Establish `e2 : ((a S.π').map (toK D.nd i)).mulVec u = ∑ k : Fin (P.natDegree + 1), toK D.nd i (evT D.nd i π (P.coeff k)) • (mapM (toK D.nd i) (rO D.nd i r π) (γ0 ^ (k : ℕ))).mulVec u`. Rewrite using `[ha_eq, hπ]`.
+
+Express the relevant statement in the definitionally equal form `((toK D.nd i).mapMatrix _).mulVec u = _`. Rewrite using `[map_sum, Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mulVec]`. Use `congr 1`.
+
+Use extensionality with `p q`. Simplify using `[mapM]`. Rewrite `e1` using `[e2, map_sum, Prod.snd_sum, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `toK D.nd i _ = toK D.nd i _`. Rewrite using `[← e1, ← Polynomial.coe_aeval_eq_eval, aeval_map_eq_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hdec]`. Simplify using `only [Prod.smul_snd, Pi.smul_apply, hu, mul_one, map_pow, hchi, smul_eq_mul, map_mul, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Rewrite using `[resIne, cocChi, cocW, Submodule.map_span, Submodule.span_eq_bot]`.
+
+Introduce and unpack `_ ⟨_, ⟨φ, hφ, hφ0, rfl⟩, rfl⟩`. Use function extensionality and compare the values at `γ`. Express the relevant statement in the definitionally equal form `φ (yg D.nd r S γ) = 0`. Establish `hy : InY D.nd r S (yg D.nd r S γ)` using `⟨1, fun _ => 1, fun _ => γ, fun _ => h1, by simp⟩`. Establish `hay : InY D.nd r S (a * yg D.nd r S γ)` using `⟨1, fun _ => a, fun _ => γ, fun _ => ha, by simp⟩`.
+
+Establish `hz : φ (a * yg D.nd r S γ) = 0`. Use `hφ0 _ hay fun x' hx' => ?_` and prove the remaining obligations. Establish `h` using `hP0 (S.p x') hx' γ γ.2`. Establish `: yg D.nd r S γ x' = (((chiU D.nd i 1 γ)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • ((rO D.nd i r (S.p x') γ - ((chiU D.nd i 1 γ : (D.nd.O i)ˣ) : D.nd.O i) • (1 : MatN D.nd i)) * Eel D.nd S x')`. Rewrite using `[yg, sub_mul, smul_sub, smul_mul_assoc, one_mul, smul_smul, Units.inv_mul, one_smul]`.
+
+Rewrite using `[Pi.mul_apply, this, mul_smul_comm, ← mul_assoc]`. Simplify using `only [a]`. Rewrite using `[h, zero_mul, smul_zero]`. Rewrite `hz` using `[hφ a ha _ hy, matKO_smul_one, hval]`. Conclude with `hPu.smul_eq_zero.mp hz`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (S : IdempotentChoiceData D.nd i), GoodR D.nd i r → Formalism.MainNotions.IdempotentChoiceDepthZero.IsOrthogonalIdempotentDecomposition D.nd r ρ π S → π ∈ Xs → ∀ v ∈ D.nd.S i, PolyAt i r Xs π v → ∀ c : Fin D.R.t, resIne i (cocChi i r S Xs c) v = ⊥ := by
   intro D i r ρ π Xs S _ hG _ v hv hP c
   obtain ⟨P, hP0, hPu⟩ := hP

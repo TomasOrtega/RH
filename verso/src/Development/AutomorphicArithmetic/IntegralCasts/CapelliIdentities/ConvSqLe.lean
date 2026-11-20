@@ -4,6 +4,15 @@ import Mathlib
     ℕ → Type :=
     fun (d : ℕ) ↦ EuclideanSpace ℝ (Fin d)
 
+/- English proof (translation)
+Introduce `d k g hk hg ξ`. Establish `hk' : Measurable (fun η : UpperTheory.Reformulated.B.Qj8.E d => k (ξ - η))` using `hk.comp (measurable_const.sub measurable_id)`. Establish `hh : (0 : ℝ) ≤ 1 / 2` using `by norm_num`. Establish `hsq : ∀ a : ENNReal, (a ^ (1 / 2 : ℝ)) ^ (2 : ℕ) = a`. Introduce `a`.
+
+Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Establish `hsq' : ∀ a : ENNReal, (a ^ (2 : ℕ)) ^ (1 / 2 : ℝ) = a`. Introduce `a`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`.
+
+Evaluate the numerical expressions. Establish `H` using `ENNReal.lintegral_mul_norm_pow_le (μ := MeasureTheory.volume) (f := fun η : UpperTheory.Reformulated.B.Qj8.E d => k (ξ - η)) (g := fun η : UpperTheory.Reformulated.B.Qj8.E d => k (ξ - η) * g η ^ (2 : ℕ)) hk'.aemeasurable (hk'.mul (hg.pow_const 2)).aemeasurable hh hh (by norm_num)`. Establish `hpt : ∀ η : UpperTheory.Reformulated.B.Qj8.E d, k (ξ - η) ^ (1 / 2 : ℝ) * (k (ξ - η) * g η ^ (2 : ℕ)) ^ (1 / 2 : ℝ) = k (ξ - η) * g η`. Introduce `η`. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ hh, hsq', ← mul_assoc, ← pow_two, hsq]`.
+
+Simplify using `only [hpt] at H`. Rewrite `H` using `[MeasureTheory.lintegral_sub_left_eq_self k ξ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.Qj8.conv_sq_le :
     ∀ {d : ℕ} (k g : UpperTheory.Reformulated.B.Qj8.E d → ENNReal),
       Measurable k →

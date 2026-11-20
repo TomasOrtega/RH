@@ -26,6 +26,41 @@ open GlobalTheory.IndLine.PGenReal
 
 open GlobalTheory.ThK.RealUniq in
 
+/- English proof (translation)
+Establish `hR` using `hM.real`. Establish `hPV` using `isPair_V hM.triple`. Establish `actV` using `GlobalTheory.T.polynomial_datum_action_of_pair hKP.base _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPV`. Establish `ksL : ∀ γ ∈ Lines σ G.W, ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + a')), ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f₁ → R.p f = 0 → R.p f₁ = 0` using `fun γ hγ f hf f₁ h1 h0 => by`. Use `hR.lie γ hγ f hf 0 (zero_mem _) f₁ 0 h1 (actsD_zero _) (by rw [h0, map_zero])` as an intermediate fact.
+
+Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `ksK : ∀ k ∈ KInf σ G.W B.emb, ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (1, k)) f f₁ → R.p f = 0 → R.p f₁ = 0` using `fun k hk f hf f₁ h1 h0 => by`. Use `hR.cpt k hk f hf 0 (zero_mem _) f₁ 0 h1 (acts_zero _) (by rw [h0, map_zero])` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `onto : ∀ y, ∃ f ∈ G.M.Pol B.ψ B.emb, R.p f = y` using `fun y => by`.
+
+Establish `: y ∈ (G.M.Pol B.ψ B.emb).map R.p` using `hR.quot.onto ▸ Submodule.mem_top`. Conclude with `Submodule.mem_map.1 this`. Use `choose DL hDLm hDLi using actV.2.2.1`. Use `choose DK hDKm hDKi using actV.2.2.2`. Set `π : G.M.Pol B.ψ B.emb →ₗ[ℂ] R.Pi` to `R.p ∘ₗ (G.M.Pol B.ψ B.emb).subtype`.
+
+Establish `hπ : Function.Surjective π` using `fun y => by`. Take `⟨f, hf, e⟩` from `onto y`. Conclude with `⟨⟨f, hf⟩, e⟩`. Set `ρ : {γ // γ ∈ Lines σ G.W} → Module.End ℂ R.Pi` to `fun γ => induced π hπ ((DL γ.1 γ.2).restrict (hDLm γ.1 γ.2)) (fun u hu => ksL γ.1 γ.2 u.1 u.2 _ ((hDLi γ.1 γ.2 u.1 u.2 _).2 rfl) hu)`. Set `τ : {k // k ∈ KInf σ G.W B.emb} → Module.End ℂ R.Pi` to `fun k => induced π hπ ((DK k.1 k.2).restrict (hDKm k.1 k.2)) (fun u hu => ksK k.1 k.2 u.1 u.2 _ ((hDKi k.1 k.2 u.1 u.2 _).2 rfl) hu)`.
+
+Establish `hρ : ∀ γ, ∀ f (hf : f ∈ G.M.Pol B.ψ B.emb), ρ γ (R.p f) = R.p (DL γ.1 γ.2 f)` using `fun γ f hf => induced_apply π hπ _ _ ⟨f, hf⟩`. Establish `hτ : ∀ k, ∀ f (hf : f ∈ G.M.Pol B.ψ B.emb), τ k (R.p f) = R.p (DK k.1 k.2 f)` using `fun k f hf => induced_apply π hπ _ _ ⟨f, hf⟩`. Establish `dL : ∀ γ (hγ : γ ∈ Lines σ G.W), ∀ f ∈ G.M.Pol B.ψ B.emb, ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (DL γ hγ f)` using `fun γ hγ f hf => (hDLi γ hγ f hf _).2 rfl`. Establish `dK : ∀ k (hk : k ∈ KInf σ G.W B.emb), ∀ f ∈ G.M.Pol B.ψ B.emb, Acts (evI F) (om (1, k)) f (DK k hk f)` using `fun k hk f hf => (hDKi k hk f hf _).2 rfl`. Set `IsP : {γ // γ ∈ Lines σ G.W} → Prop` to `fun γ => (∀ s, γ.1 s ∈ unip σ G.W H') ∨ ∃ (t : Multiplicative ℝ →* (AE F E)ˣ) (γ₁ : Multiplicative ℝ →* UA σ W₁.J), γ₁ ∈ Lines σ W₁ ∧ ∀ s, IsLevi H' (t s) (γ₁ s) (γ.1 s)`.
+
+Set `IsK : {γ // γ ∈ Lines σ G.W} → Prop` to `fun γ => ∀ s, γ.1 s ∈ KInf σ G.W B.emb`. Establish `dec : ∀ i, ∃ a b c, IsP a ∧ IsP b ∧ IsK c ∧ ρ i = ρ a + ρ b + ρ c`. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨γu, hu, γl, hl, γk, hk, hu', hl', hk', key⟩` from `GlobalTheory.T.line_decomposition_unipotent hKP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPV _ W₁ H' _ _ hH' γ hγ`. Use `⟨⟨γu, hu⟩, ⟨γl, hl⟩, ⟨γk, hk⟩, Or.inl hu', Or.inr hl', hk', LinearMap.ext fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hf, rfl⟩` from `onto x`. Simplify using `only [LinearMap.add_apply, hρ _ f hf]`. Rewrite using `[key f hf _ _ _ _ (dL _ _ f hf) (dL _ _ f hf) (dL _ _ f hf) (dL _ _ f hf), map_add, map_add]`. Establish `br : ∀ i j, IsK i → ∃ e, ρ i * ρ j - ρ j * ρ i = ρ e`. Introduce and unpack `⟨κ, hκ⟩ ⟨δ, hδ⟩ -`.
+
+Take `⟨ε, hε, key⟩` from `GlobalTheory.T.weil_line_commutator_action hKP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPV κ hκ δ hδ`. Use `⟨⟨ε, hε⟩, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `onto x`. Establish `m1` using `hDLm κ hκ f hf`. Establish `m2` using `hDLm δ hδ f hf`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hρ _ f hf, hρ _ _ m1, hρ _ _ m2]`. Rewrite using `[← map_sub, key f hf _ _ _ _ _ (dL _ _ f hf) (dL _ _ f hf) (dL _ _ _ m1) (dL _ _ _ m2) (dL _ _ f hf)]`. Establish `ad : ∀ k i, ∃ e, τ k * ρ i = ρ e * τ k`. Introduce and unpack `⟨k, hk⟩ ⟨δ, hδ⟩`. Take `⟨ε, hε, key⟩` from `GlobalTheory.T.weil_compact_line_action hKP.base F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hPV k hk δ hδ`.
+
+Use `⟨⟨ε, hε⟩, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `onto x`. Establish `m1` using `hDKm k hk f hf`. Establish `m2` using `hDLm δ hδ f hf`. Simplify using `only [Module.End.mul_apply, hρ _ f hf, hτ _ f hf, hρ _ _ m1, hτ _ _ m2]`.
+
+Use `key f hf (DK k hk f) (DL δ hδ f) (DK k hk (DL δ hδ f)) (dK k hk f hf) (dL δ hδ f hf) (dK k hk _ m2)` as an intermediate fact. Rewrite using `[(hDLi ε hε _ m1 _).1 this]`. Establish `hVK : ∀ i, IsK i → ∀ x ∈ V, ρ i x ∈ V`. Introduce and unpack `⟨γ, hγ⟩ hk x hx`. Take `⟨f, hf, rfl⟩` from `onto x`.
+
+Rewrite using `[hρ _ f hf]`. Conclude with `hKV.2 γ hγ hk f hf _ (dL _ _ f hf) hx`. Establish `hVk : ∀ k, ∀ x ∈ V, τ k x ∈ V`. Introduce and unpack `⟨k, hk⟩ x hx`. Take `⟨f, hf, rfl⟩` from `onto x`.
+
+Rewrite using `[hτ _ f hf]`. Conclude with `hKV.1 k hk f hf _ (dK _ _ f hf) hx`. Take `⟨N', hVN', hmin, hstL, hstK⟩` from `exists_gen (ρ := ρ) (IsP := IsP) (V := V) τ dec br ad hVK hVk`. Introduce `N hVN hU hLv`. Establish `hN : ∀ i, IsP i → ∀ x ∈ N, ρ i x ∈ N`.
+
+Introduce and unpack `⟨γ, hγ⟩ hi x hx`. Take `⟨f, hf, rfl⟩` from `onto x`. Rewrite using `[hρ _ f hf]`. Break down `hi with hi | hi` into its components or cases. Conclude with `hU γ hγ hi f hf _ (dL _ _ f hf) hx`.
+
+Conclude with `hLv γ hγ hi f hf _ (dL _ _ f hf) hx`. Establish `hle` using `hmin N hVN hN`. Establish `hirr` using `hR.irred N' (fun γ hγ f hf f₁ h1 hx => by`. Rewrite using `[(hDLi γ hγ f hf f₁).1 h1, ← hρ ⟨γ, hγ⟩ f hf]`. Conclude with `hstL _ _ hx)`.
+
+Use the proof step `(fun k hk f hf f₁ h1 hx => by`. Rewrite using `[(hDKi k hk f hf f₁).1 h1, ← hτ ⟨k, hk⟩ f hf]`. Conclude with `hstK _ _ hx)`. Break down `hirr with h0 | h0` into its components or cases. Conclude with `absurd (le_bot_iff.1 (h0 ▸ hVN')) hV`.
+
+Conclude with `top_le_iff.1 (h0 ▸ hle)`.
+-/
 theorem pGen_of_kStab_adapted (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a a' d₁ i₀ i₁ : ℕ} {G : Geo σ a a'} {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁}
     (hH' : H'.IsAdapted σ B G.W W₁ i₀ i₁) {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'}
@@ -129,6 +164,11 @@ theorem pGen_of_kStab_adapted (hKP : GlobalTheory.ThK.KP) {F E : Type} [Field F]
   · exact absurd (le_bot_iff.1 (h0 ▸ hVN')) hV
   · exact top_le_iff.1 (h0 ▸ hle)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf hM`. Establish `hne : lowPartInf B G.M R.p ≠ ⊥` using `by haveI := hM.real.nontriv`. Take `⟨y, hy⟩` from `exists_ne (0 : R.Pi)`. Establish `hy' : y ∈ (G.M.Pol B.ψ B.emb).map R.p` using `hM.real.quot.onto ▸ Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy'`.
+
+Conclude with `lowPartInf_ne_bot B G.M R.p ⟨f, hf, hy⟩`. Establish `hgen` using `pGen_of_kStab_adapted hKP hC.hH' hM _ hne (GlobalTheory.T.low_part_compact_stable hKP F E σ B _ _ G X om om' R Rf hM)`. Use `sInf_eq_top.2 fun S hS => hgen S hS.1 (fun γ hγ hu => hS.2 γ hγ (Or.inl hu)) ?_` and prove the remaining obligations. Introduce and unpack `γ hγ ⟨t, γ₁, hγ₁, hl⟩`. Conclude with `hS.2 γ hγ (Or.inr ⟨γ₁, hγ₁, t, hl⟩)`.
+-/
 theorem paraSpan_eq_top : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PtInputsX
 
+/- English proof (translation)
+Introduce `hL hP hX`. Establish `h` using `(((GlobalTheory.T.coefficient_duty_tied_all_states hL hP hX).and (GlobalTheory.HeightCounting.Up.JointConditionThird.jointCond_third hL hP)).and (GlobalTheory.T.base_change_definite_unitary hL hP)).and ((GlobalTheory.T.admissible_and_lam_used_all_states hP hX).and (GlobalTheory.T …`. Use `h.trans (StepW.of_all fun K B f T w _ _ hh P x l => ?_)` and prove the remaining obligations. Take `⟨⟨⟨h1, h2⟩, h3⟩, h45, h6⟩` from `hh`. Establish `h4 : GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.NRows.LamUsed D'` using `⟨fun _ => ∅, fun _ _ _ => (h45 P x).2⟩`.
+
+Establish `h5 : GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → SumRepresentations.adm8 D'` using `⟨fun _ => ∅, fun _ _ _ => (h45 P x).1⟩`. Establish `e` using `fun (P₁ P₂ : D7 → Prop) => GlobalTheory.CoefDuty.LargeRing.evO_laws _ _ _ l.a.A l.mt.M l.c.ch l.c.tp.tup P₁ P₂`. Establish `a` using `(e _ _).1 (h1 P x l) ((e _ _).1 (h2 P x l) ((e _ _).1 (h3 P x l) ((e _ _).1 h4 ((e _ _).1 h5 (h6 P x l)))))`. Use `(e _ _).2.1 (fun D' hD' hO => ?_) a` and prove the remaining obligations. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `hD'`.
+
+Take `⟨T⟩` from `t1 hO`. Conclude with `⟨⟨T, ⟨hO, t2 hO, t3 hO, t4 hO, t5 hO, t6 hO, GlobalTheory.T.type_nonzero_of_howe_unramified hP.decay hP.howe hX D' T.P.cf T.P.C T.P.tp T.X⟩⟩⟩`.
+-/
 theorem inputs_at_third : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.NRows.HypothesesX →
     AllSt fun _ _ _ _ _ _ x => ∀ l : LC hL x,
     GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → Nonempty (GlobalTheory.NRows.Inputs hL D') := by

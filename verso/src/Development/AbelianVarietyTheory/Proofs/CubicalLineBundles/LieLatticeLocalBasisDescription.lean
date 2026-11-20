@@ -20,6 +20,19 @@ section General
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Establish `w : (Chart.dualMapR f).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp f`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `dec : ∀ {A : Type} [CommRing A] (x : DualNumber A), x = algebraMap A (DualNumber A) x.fst + algebraMap A (DualNumber A) x.snd * DualNumber.eps` using `fun x => by`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Establish `he : Chart.dualMapR f DualNumber.eps = DualNumber.eps`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Use `isPullback_SpecMap_of_isPushout (CommRingCat.ofHom (algebraMap R (DualNumber R))) (CommRingCat.ofHom f) (CommRingCat.ofHom (Chart.dualMapR f)) (CommRingCat.ofHom (algebraMap R' (DualNumber R'))) ?_` and prove the remaining obligations. Use `⟨⟨congrArg CommRingCat.ofHom w⟩, ⟨PushoutCocone.IsColimit.mk _ (fun s => ?_) (fun s => ?_) (fun s => ?_) (fun s m h₁ h₂ => ?_)⟩⟩` and prove the remaining obligations. Use `letI := s.inr.hom.toAlgebra`.
+
+Conclude with `CommRingCat.ofHom (DualNumber.lift (R := R') (A := R') ⟨(Algebra.ofId R' s.pt, s.inl.hom DualNumber.eps), by rw [← map_mul, DualNumber.eps_mul_eps, map_zero], fun _ => Commute.all _ _⟩).toRingHom`. Establish `hs : ∀ x, s.inl.hom (algebraMap R (DualNumber R) x) = s.inr.hom (f x)` using `fun x => RingHom.congr_fun (congrArg CommRingCat.Hom.hom s.condition) x`. Use `CommRingCat.hom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Use `conv_rhs => rw [dec x, map_add, map_mul, hs, hs]`. Simplify using `[DualNumber.lift_apply_apply, Chart.dualMapR]`.
+
+Both sides reduce to the same expression. Use `CommRingCat.hom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `e₁ : m.hom DualNumber.eps = s.inl.hom DualNumber.eps`.
+
+Rewrite using `[← h₁, ← he]`. Both sides reduce to the same expression. Establish `e₂ : ∀ x, m.hom (algebraMap R' (DualNumber R') x) = s.inr.hom x` using `fun x => by rw [← h₂]; rfl`. Use `CommRingCat.hom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Use `conv_lhs => rw [dec x, map_add, map_mul, e₁, e₂, e₂]`.
+
+Simplify using `[DualNumber.lift_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem isPullback_dualMap (f : R →+* R') :
     IsPullback (spMap (Chart.dualMapR f)) (epsR R').hom (epsR R).hom (spMap f) := by
   have w : (Chart.dualMapR f).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp f := by
@@ -54,6 +67,17 @@ theorem isPullback_dualMap (f : R →+* R') :
     simp [DualNumber.lift_apply_apply]
     rfl
 
+/- English proof (translation)
+Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom f) hf` as an intermediate fact. Establish `: Flat (epsR R).hom`. Establish `: Module.Free R (DualNumber R)` using `inferInstanceAs (Module.Free R (R × R))`. Express the relevant statement in the definitionally equal form `Flat (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat), CommRingCat.hom_ofHom, RingHom.flat_algebraMap_iff]`.
+
+Use `infer_instance`. Take `⟨u, hu, e⟩` from `DedekindExt.exists_of_locally (f := w) (epsR R).hom A.hom (isPullback_dualMap f) fun x => by`. Establish `: ∃ i, r i ∉ ((epsR R).hom x : PrimeSpectrum R).asIdeal` using `by by_contra! hc`. Conclude with `((epsR R).hom x : PrimeSpectrum R).isPrime.ne_top (top_le_iff.1 (hr ▸ Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hc i)))`. Take `⟨i, hi⟩` from `this`.
+
+Establish `hp` using `isPullback_dualMap (algebraMap R (Localization.Away (r i)))`. Establish `ho : IsOpenImmersion (spMap (algebraMap R (Localization.Away (r i))))` using `inferInstance`. Establish `hopen : IsOpenImmersion (spMap (Chart.dualMapR (algebraMap R (Localization.Away (r i)))))` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hp.flip ho`. Use `⟨_, _, hopen, t i, ?_, (ht i).trans hp.w.symm, fun T a a' h => ?_⟩` and prove the remaining obligations. Establish `: ((epsR R).hom x : PrimeSpectrum R) ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away (r i))))`.
+
+Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away (r i)) (r i)]`. Conclude with `hi`. Take `⟨y, hy⟩` from `this`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback hp x y hy.symm`. Conclude with `⟨z, hz⟩`.
+
+Rewrite `h` using `[← hg i, ← EllComp.dualMapR_comp (algebraMap R _) (g i), ← Category.assoc, cancel_mono]`. Rewrite using `[h, Category.assoc, hw]`. Conclude with `⟨Over.homMk u hu, e⟩`.
+-/
 theorem exists_glue (f : R →+* R') (hf : Function.Injective f) {A : Over (Sp R)} [IsSeparated A.hom] {I : Type}
     (r : I → R) (hr : Ideal.span (Set.range r) = ⊤) (g : ∀ i, Localization.Away (r i) →+* R')
     (hg : ∀ i, (g i).comp (algebraMap R _) = f) (w : Sp (DualNumber R') ⟶ A.left)
@@ -89,6 +113,13 @@ theorem exists_glue (f : R →+* R') (hf : Function.Injective f) {A : Over (Sp R
       rw [h, Category.assoc, hw]
   exact ⟨Over.homMk u hu, e⟩
 
+/- English proof (translation)
+Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom f) hf` as an intermediate fact. Use `ExtUnique.hom_ext_of_dominant A.hom ?_ (spMap f) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w v, Over.w η[A]]`. Use `(spMap_comp_spMap _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of R))` and prove the remaining obligations.
+
+Use `congr 1`. Establish `e` using `PolBaseChange.eSec_comm hφ`. Unfold `eSec at e`. Rewrite using `[← e, ← hv, Category.assoc, h, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+
+Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem isTangent_of_isVecOver {f : R →+* R'} (hf : Function.Injective f) {A : Over (Sp R)} {A' : Over (Sp R')}
     [GrpObj A] [GrpObj A'] [IsSeparated A.hom] {φ : A'.left ⟶ A.left} (hφ : IsGrpPullback A' A (spMap f) φ)
     {v : epsR R ⟶ A} {v' : epsR R' ⟶ A'} (h : IsVecOver f φ v v') (hv : IsTangent v') : IsTangent v := by
@@ -113,6 +144,9 @@ section Local
 variable {R K : Type} [CommRing R] [Field K] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {A : Over (Sp K)} [GrpObj A]
   [IsCommMonObj A] {g : R →+* K} {ψ : A.left ⟶ G.left} {n : ℕ} {e : Fin n → (epsR R ⟶ G)} {v : Fin n → (epsR K ⟶ A)}
 
+/- English proof (translation)
+Take `⟨e', he', h⟩` from `exists_isLieBasis_baseChange R K g G A ψ hψ hs n e he`. Use `choose M hM using fun j => (hv.2 _ (he'.1 j)).exists`. Conclude with `⟨M, (((LieComb.lieComb_algebra K A n v hv.1).2.2.2.2 M e' hv hM).1 he').ne_zero, fun j => ⟨e' j, h j, hM j⟩⟩`.
+-/
 theorem exists_matrix (hψ : IsGrpPullback A G (spMap g) ψ) (hs : Smooth G.hom) (he : IsLieBasis e) (hv : IsLieBasis v) :
     ∃ M : Matrix (Fin n) (Fin n) K, M.det ≠ 0 ∧ ∀ j, ∃ w, IsVecOver g ψ (e j) w ∧ IsLieComb (M j) v w := by
   obtain ⟨e', he', h⟩ := exists_isLieBasis_baseChange R K g G A ψ hψ hs n e he
@@ -121,6 +155,9 @@ theorem exists_matrix (hψ : IsGrpPullback A G (spMap g) ψ) (hs : Smooth G.hom)
 
 omit [IsCommMonObj G] in
 
+/- English proof (translation)
+Use `choose e' h₁ h₂ using hM`. Establish `alg` using `LieComb.lieComb_algebra K A n v hv.1`. Use `(lieComb_baseChange R K g G A ψ hψ n e t a e' w h₁ ht).trans ⟨fun h => alg.2.2.1 n M e' _ w h₂ h, fun h => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', -⟩` from `(LieComb.lieComb_algebra K A n e' fun j => alg.2.1 _ _ (h₂ j)).1 fun j => g (a j)`. Rewrite using `[(alg.1 _).unique h (alg.2.2.1 n M e' _ w' h₂ hw')]` and apply the resulting hypothesis.
+-/
 theorem isVecOver_iff (hψ : IsGrpPullback A G (spMap g) ψ) (hv : IsLieBasis v) {M : Matrix (Fin n) (Fin n) K}
     (hM : ∀ j, ∃ w, IsVecOver g ψ (e j) w ∧ IsLieComb (M j) v w) {a : Fin n → R} {t : epsR R ⟶ G}
     (ht : IsLieComb a e t) (w : epsR K ⟶ A) : IsVecOver g ψ t w ↔ IsLieComb (∑ j, g (a j) • M j) v w := by
@@ -132,6 +169,15 @@ theorem isVecOver_iff (hψ : IsGrpPullback A G (spMap g) ψ) (hv : IsLieBasis v)
 
 end Local
 
+/- English proof (translation)
+Establish `hg' : ∀ x, g (algebraMap R _ x) = algebraMap R K x` using `fun x => RingHom.congr_fun hg x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Take `⟨⟨_, k, rfl⟩, h⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers r) a`. Use `choose b hb using h`.
+
+Use `⟨k, b, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (b j), ← hg', hb, ← algebraMap_smul K (r ^ k), smul_smul, ← hg', ← map_mul]`. Use `congr 2`.
+
+Conclude with `(Algebra.smul_def _ _).symm`. Introduce and unpack `⟨k, a, h⟩`. Use `⟨fun j => IsLocalization.Away.invSelf r ^ k * algebraMap R _ (a j), ?_⟩` and prove the remaining obligations. Establish `h1 : g (IsLocalization.Away.invSelf r) ^ k * algebraMap R K (r ^ k) = 1`. Rewrite using `[map_pow, ← mul_pow, ← hg', ← map_mul, _root_.mul_comm, IsLocalization.Away.mul_invSelf, map_one, one_pow]`.
+
+Rewrite using `[← one_smul K c, ← h1, mul_smul, algebraMap_smul, h, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hg', mul_smul, algebraMap_smul]`.
+-/
 theorem exists_comb_iff {R K : Type} [CommRing R] [Field K] [Algebra R K] (r : R) (g : Localization.Away r →+* K)
     (hg : g.comp (algebraMap R _) = algebraMap R K) {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (c : Fin n → K) :
     (∃ a : Fin n → Localization.Away r, c = ∑ j, g (a j) • M j) ↔
@@ -155,6 +201,13 @@ theorem exists_comb_iff {R K : Type} [CommRing R] [Field K] [Algebra R K] (r : R
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [map_mul, map_pow, hg', mul_smul, algebraMap_smul]
 
+/- English proof (translation)
+Establish `h1 : Ideal.span {r | r ≠ 0 ∧ Q r} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨r, hr, hQ⟩` from `h ⟨m, hm.isPrime⟩`. Conclude with `hr (hle (Ideal.subset_span ⟨fun e => hr (e ▸ m.zero_mem), hQ⟩))`.
+
+Take `⟨s, hs, h2⟩` from `(Ideal.span_eq_top_iff_finite _).1 h1`. Use `⟨s.card, fun i => s.equivFin.symm i, ?_, fun i => hs (s.equivFin.symm i).2⟩` and prove the remaining obligations. Rewrite using `[← h2]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `⟨by rintro ⟨i, rfl⟩; exact (s.equivFin.symm i).2, fun hx => ⟨s.equivFin ⟨x, hx⟩, by simp⟩⟩`.
+-/
 theorem exists_finite_cover {R : Type} [CommRing R] (Q : R → Prop)
     (h : ∀ p : PrimeSpectrum R, ∃ r ∉ p.asIdeal, Q r) :
     ∃ (n : ℕ) (r : Fin n → R), Ideal.span (Set.range r) = ⊤ ∧ ∀ i, r i ≠ 0 ∧ Q (r i) := by
@@ -170,6 +223,9 @@ theorem exists_finite_cover {R : Type} [CommRing R] (Q : R → Prop)
   ext x
   exact ⟨by rintro ⟨i, rfl⟩; exact (s.equivFin.symm i).2, fun hx => ⟨s.equivFin ⟨x, hx⟩, by simp⟩⟩
 
+/- English proof (translation)
+Establish `n' : IsGrpPullback G₂ G (spMap g ≫ spMap f) χ` using `h₂.congr (by rw [spMap_comp_spMap, e]) rfl`. Establish `w : χ ≫ G.hom = (G₂.hom ≫ spMap g) ≫ spMap f` using `n'.1.w.trans (Category.assoc _ _ _).symm`. Establish `e' : h₁.1.lift _ _ w ≫ φ = χ` using `h₁.1.lift_fst _ _ w`. Conclude with `⟨_, e', h₁.cancel (n'.congr rfl e'.symm) (h₁.1.lift_snd _ _ w)⟩`.
+-/
 theorem exists_lift {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] {f : R →+* R₁} {g : R₁ →+* R₂}
     {h : R →+* R₂} (e : g.comp f = h) {G : Over (Sp R)} {G₁ : Over (Sp R₁)} {G₂ : Over (Sp R₂)} [GrpObj G] [GrpObj G₁]
     [GrpObj G₂] {φ : G₁.left ⟶ G.left} {χ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G (spMap f) φ)
@@ -179,6 +235,33 @@ theorem exists_lift {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing 
   have e' : h₁.1.lift _ _ w ≫ φ = χ := h₁.1.lift_fst _ _ w
   exact ⟨_, e', h₁.cancel (n'.congr rfl e'.symm) (h₁.1.lift_snd _ _ w)⟩
 
+/- English proof (translation)
+Introduce `K _ _ P F`. Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.smooth` as an intermediate fact. Use `F.P₀.isAb.comm` as an intermediate fact.
+
+Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective _ _`. Take `⟨n, r, hr, hQ⟩` from `exists_finite_cover _ (LieLoc.lie_locally_free (𝓞 K) P.A F.P₀.g (F.fib.1 ▸ P.smoothDim))`. Use `choose hr0 e he using hQ`. Establish `hu : ∀ i, IsUnit (algebraMap (𝓞 K) K (r i))` using `fun i => ((map_ne_zero_iff _ hinj).2 (hr0 i)).isUnit`. Set `g : ∀ i, Localization.Away (r i) →+* K` to `fun i => IsLocalization.Away.lift (r i) (hu i)`.
+
+Establish `hg : ∀ i, (g i).comp (algebraMap (𝓞 K) _) = algebraMap (𝓞 K) K` using `fun i => IsLocalization.Away.lift_comp _ _`. Establish `hφ` using `fun i => isGrpPullback_pullback P.A (spMap (algebraMap (𝓞 K) (Localization.Away (r i))))`. Establish `hcomm` using `fun i => PolPull.isCommMonObj_of_isGrpPullback (hφ i)`. Establish `hsm` using `fun i => MorphismProperty.of_isPullback (P := @Smooth) (hφ i).1 P.isAb.smooth`. Use `choose ψ hψφ hψ using fun i => exists_lift (hg i) (hφ i) F.fib.2.1`.
+
+Use `choose M hdet hM using fun i => exists_matrix (hψ i) (hsm i) (he i) F.basis`. Establish `alg` using `LieComb.lieComb_algebra K F.P₀.A _ F.v F.basis.1`. Use `⟨n, r, M, hr, fun i => ⟨hr0 i, hdet i⟩, fun c => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← fun i => exists_comb_iff (r i) (g i) (hg i) (M i) c]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hc i`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨u, hu, w, hw, hc⟩` from `hc`. Take `⟨t, ht, -⟩` from `existsUnique_isVecOver (f := algebraMap (𝓞 K) (Localization.Away (r i))) (A' := (Over.pullback (spMap (algebraMap (𝓞 K) (Localization.Away (r i))))).obj P.A) (hφ i).1 u`.
+
+Take `⟨a, ha, -⟩` from `(he i).2 t (ht.isTangent (hφ i) hu)`. Establish `h` using `EllComp.isVecOver_cancel (hφ i).1 (hψ i).1 ht (by rw [hg, hψφ]; exact hw)`. Conclude with `⟨a, (F.basis.2 w (alg.2.1 _ _ hc)).unique hc ((isVecOver_iff (hψ i) F.basis (hM i) ha w).1 h)⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul s x _ hx`. Take `⟨a, rfl⟩` from `hx`.
+
+Use `⟨fun j => algebraMap (𝓞 K) _ s * a j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, ← RingHom.comp_apply, hg, algebraMap_smul]`. Introduce `hc choose a ha using hc`.
+
+Take `⟨w, hw, -⟩` from `alg.1 c`. Use `choose t ht using fun i => ((LieComb.lieComb_algebra _ _ _ (e i) (he i).1).1 (a i)).exists`. Establish `hwt : ∀ i, IsVecOver (g i) (ψ i) (t i) w` using `fun i => (isVecOver_iff (hψ i) F.basis (hM i) (ht i) w).2 (ha i ▸ hw)`. Take `⟨u, hu⟩` from `exists_glue _ hinj r hr g hg (w.left ≫ F.φ) (fun i => (t i).left ≫ pullback.fst _ _) (fun i => by rw [Category.assoc, (hφ i).1.w, ← Category.assoc, Over.w]) (fun i => by rw [← Category.assoc, ← hwt i, Category.assoc, hψφ])`. Conclude with `Submodule.subset_span ⟨u, isTangent_of_isVecOver hinj F.fib.2.1 hu.symm (alg.2.1 _ _ hw), w, hu.symm, hw⟩`.
+
+Introduce `i R _ _ _ _ G _ φ ψ' hri h₁ h₂ h₃`. Set `l : Localization.Away (r i) →+* R` to `IsLocalization.Away.lift (r i) hri`. Establish `hl : l.comp (algebraMap (𝓞 K) _) = algebraMap (𝓞 K) R` using `IsLocalization.Away.lift_comp _ _`. Establish `hgl : (algebraMap R K).comp l = g i`. Use `IsLocalization.ringHom_ext (Submonoid.powers (r i)) ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_assoc, hl, hg, ← IsScalarTower.algebraMap_eq]`. Take `⟨χ, hχφ, hχ⟩` from `exists_lift hl (hφ i) h₁`. Use `PolPull.isCommMonObj_of_isGrpPullback h₁` as an intermediate fact. Take `⟨e', he', hee⟩` from `exists_isLieBasis_baseChange _ R l _ G χ hχ (hsm i) _ (e i) (he i)`. Establish `hψχ : ψ' ≫ χ = ψ i`.
+
+Use `(hφ i).1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hχφ, h₃, hψφ]`. Rewrite using `[Category.assoc, hχ.1.w, ← Category.assoc, h₂.1.w, Category.assoc, spMap_comp_spMap, hgl, (hψ i).1.w]`. Use `⟨e', he', fun j => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `hM i j`.
+
+Conclude with `⟨w, EllComp.isVecOver_cancel hχ.1 h₂.1 (hee j) (by rw [hgl, hψχ]; exact hw), hw'⟩`.
+-/
 theorem exists_cover_lieLat : ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P), ∃ (n : ℕ) (r : Fin n → 𝓞 K) (M : Fin n → Matrix (Fin F.P₀.g) (Fin F.P₀.g) K), Ideal.span (Set.range r) = ⊤ ∧ (∀ i, r i ≠ 0 ∧ (M i).det ≠ 0) ∧ (∀ c, c ∈ F.lieLat ↔ ∀ i, ∃ (k : ℕ) (a : Fin F.P₀.g → 𝓞 K), r i ^ k • c = ∑ j, a j • M i j) ∧
   ∀ i (R : Type) [CommRing R] [Algebra (𝓞 K) R] [Algebra R K] [IsScalarTower (𝓞 K) R K] (G : Over (Sp R)) [GrpObj G] (φ : G.left ⟶ P.A.left) (ψ : F.P₀.A.left ⟶ G.left), IsUnit (algebraMap (𝓞 K) R (r i)) → IsGrpPullback G P.A (spMap (algebraMap (𝓞 K) R)) φ → IsGrpPullback F.P₀.A G (spMap (algebraMap R K)) ψ → ψ ≫ φ = F.φ → ∃ e : Fin F.P₀.g → (epsR R ⟶ G), IsLieBasis e ∧ ∀ j, ∃ w, IsVecOver (algebraMap R K) ψ (e j) w ∧ IsLieComb (M i j) F.v w := by
   intro K _ _ P F

@@ -6,6 +6,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Set `e : Sp R ⟶ A.left` to `(η[A]).left`. Establish `he : e ≫ A.hom = 𝟙 (Sp R)` using `Over.w (η[A])`. Establish `hpt : ∀ t : Sp R, A.hom (e t) = t`. Introduce `t`. Rewrite using `[← Scheme.Hom.comp_apply, he]`.
+
+Both sides reduce to the same expression. Take `⟨W, hW, hsW, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := e s) trivial`. Establish `hrange : ∀ f : R, Set.range (spMap (algebraMap R (Localization.Away f))) = (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))`. Introduce `f`. Conclude with `PrimeSpectrum.localization_away_comap_range (Localization.Away f) f`.
+
+Establish `hopen : IsOpen (e ⁻¹' (W : Set A.left))` using `W.isOpen.preimage e.continuous`. Take `⟨_, ⟨f, rfl⟩, hsf, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open (a := s) hsW hopen`. Use `⟨f, ?_, W, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hrange]`. Conclude with `hsf`.
+
+Introduce `t ht`. Rewrite `ht` using `[hrange]`. Conclude with `⟨e t, hsub ht, hpt t⟩`.
+-/
 theorem GlobalTheory.chartAroundUnit (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (s : Sp R) :
     ∃ f : R, s ∈ Set.range (spMap (algebraMap R (Localization.Away f))) ∧ ∃ W : A.left.Opens,
       IsAffineOpen W ∧ ∀ t ∈ Set.range (spMap (algebraMap R (Localization.Away f))),

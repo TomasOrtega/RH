@@ -18,13 +18,24 @@ open scoped Matrix Classical
 
 namespace GlobalTheory.DefFibre
 
+/- English proof (translation)
+Simplify using `[vAdd, map_pow, WithZero.log_pow]`.
+-/
 theorem vAdd_pow' {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : K) (n : ℕ) :
     vAdd w (x ^ n) = n * vAdd w x := by
   simp [vAdd, map_pow, WithZero.log_pow]
 
+/- English proof (translation)
+Simplify using `[vAdd]`.
+-/
 theorem vAdd_one' {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) : vAdd w (1 : K) = 0 := by
   simp [vAdd]
 
+/- English proof (translation)
+Introduce and unpack `N la rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -⟩ ⟨m', -⟩`. Use `congr 1`. Use extensionality with `⟨i, _⟩`.
+
+Conclude with `i.elim0`.
+-/
 theorem subsingleton_idx : ∀ (N : ℕ) (la : Fin N → ℕ), N = 0 → Subsingleton (Idx la) := by
   rintro N la rfl
   constructor
@@ -33,12 +44,46 @@ theorem subsingleton_idx : ∀ (N : ℕ) (la : Fin N → ℕ), N = 0 → Subsing
   ext ⟨i, _⟩
   exact i.elim0
 
+/- English proof (translation)
+Use `haveI := subsingleton_idx N la h`. Establish `h1` using `dim_pos hla`. Establish `h2 : dim la ≤ 1` using `by rw [dim_eq_card]; exact Fintype.card_le_one_iff_subsingleton.2 inferInstance`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dim_eq_one_of_zero {N : ℕ} (la : Fin N → ℕ) (hla : Antitone la) (h : N = 0) : dim la = 1 := by
   haveI := subsingleton_idx N la h
   have h1 := dim_pos hla
   have h2 : dim la ≤ 1 := by rw [dim_eq_card]; exact Fintype.card_le_one_iff_subsingleton.2 inferInstance
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U ξ a n c₁ hD hDom hFl Z`. Take `⟨P⟩` from `GlobalTheory.T.nonempty_definiteRationalPointData_component E H Dw l Xo c r U ξ hD Z`. Use `haveI hTC : IsTotallyComplex c.F := ⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun e => GlobalTheory.CompHt.conj_comp_ne (c := c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`.
+
+Establish `hanti : ∀ τ, Antitone (part Dw a τ)` using `fun τ i j hij => hDom.1 τ (show (i : ℕ) ≤ j from hij)`. Take `⟨φ, hinj, hrange, hreads⟩` from `GlobalTheory.T.exists_injective_dualWeylTensor_cuspForms_rationalPoint E H Dw l Xo c r U ξ a n hD hDom Z P`. Take `⟨hconj, hint⟩` from `GlobalTheory.T.integral_coordinates_forms_and_fibre_norm_bound E H Dw l Xo c r U ξ a n hD hDom Z P`. Take `⟨hlie, -⟩` from `GlobalTheory.T.degree_dualDetLie_eq_neg_flatSection_degree E H Dw l Xo c r U ξ hD Z P`. Establish `hth` using `GlobalTheory.T.thetaLine_degree_ge_half_detLie_definitePoint E H Dw l Xo c r U ξ hD Z P`.
+
+Apply the tactic sequence `have hIntOne : ∀ (w : HeightOneSpectrum (𝓞 c.F)) (m : ℕ), IntAt w (1 : Matrix (Fin m) (Fin m) c.F) := fun w m i j => by by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hBad : ∀ τ, IsAdelic fun w => P.B w τ` using `fun τ => by`. Use `⟨fun w => (P.loc w).2.1 τ, P.fin.subset fun w hw h => hw ?_⟩` and prove the remaining obligations. Use `show IntAt w (P.B w τ) ∧ IntAt w (P.B w τ)⁻¹`. Establish `hB : P.B w τ = 1` using `by rw [h.2]; rfl`.
+
+Rewrite using `[hB, inv_one]`. Conclude with `⟨hIntOne w _, hIntOne w _⟩`. Establish `ha0 : ∀ w, P.a w ^ n ≠ 0` using `fun w => pow_ne_zero _ (P.loc w).1`. Establish `hsupp1 : (Function.support fun w => vAdd w (P.a w)).Finite` using `P.fin.subset fun w hw h => hw (by simp only; rw [h.1, vAdd_one'])`. Establish `hsupp : (Function.support fun w => vAdd w (P.a w ^ n)).Finite` using `hsupp1.subset fun w hw h => hw (by simp only at h ⊢; rw [vAdd_pow', h, mul_zero])`.
+
+Establish `hspos : ∀ σ, 0 < (Real.sqrt (P.N σ))⁻¹ ^ n` using `fun σ => pow_pos (inv_pos.2 (Real.sqrt_pos.2 (P.arch σ).1)) n`. Establish `hsconj : ∀ σ, (Real.sqrt (P.N ((starRingEnd ℂ).comp σ)))⁻¹ ^ n = (Real.sqrt (P.N σ))⁻¹ ^ n` using `fun σ => by`. Rewrite using `[(hconj σ).1]`. Take `⟨hdet, hslope⟩` from `GlobalTheory.T.slope_dualWeylFibreLattice_ge c.F (E →+* ℂ) Dw.mult (part Dw a) hanti (fun w => P.a w ^ n) P.B (fun σ => (Real.sqrt (P.N σ))⁻¹ ^ n) P.X ha0 hsupp hBad hspos (fun σ τ => (P.arch σ).2.1 τ) hsconj (fun σ τ => (hconj σ).2 τ)`. Establish `hlat : IsAdelic fun w => fibA (part Dw a) (P.a w ^ n) (P.B w)` using `GlobalTheory.T.fibre_action_preserves_adelic_matrices c.F (E →+* ℂ) Dw.mult (part Dw a) (fun w => P.a w ^ n) P.B ha0 hsupp hBad`.
+
+Establish `hsec : ∀ x, φ x ∈ sec Xo c a n` using `fun x => by`. Establish `h1 : φ x ∈ cuspOn U Z (wtZ a n)` using `hrange ▸ ⟨x, rfl⟩`. Establish `h2` using `cuspOn_le U Z (wtZ a n) h1`. Rewrite `h2` using `[cuspW_wtZ]`. Conclude with `cusp_le_sec Xo c U a n h2`.
+
+Establish `hne : ∀ τ, Nonempty (Idx (part Dw a τ))` using `fun τ => Fintype.card_pos_iff.1 ((dim_eq_card _) ▸ dim_pos (hanti τ))`. Establish `hline : lineDeg (fun σ => (Real.sqrt (P.N σ))⁻¹ ^ n) (fun w => (vAdd w (P.a w ^ n) : ℝ)) = n * P.degTh`. Simplify using `only [PtData.degTh, lineDeg, vAdd_pow', Int.cast_mul, Int.cast_natCast, Real.log_pow]`. Establish `hf` using `fin_mul (ρ := fun w => (vAdd w (P.a w) : ℝ)) (hsupp1.subset fun w hw => by simpa [Function.mem_support] using hw) (lw c.F)`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_finsum, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ τ : E →+* ℂ, ¬ τ (H.rt : E) = H.rt0 → (size (part Dw a τ) : ℝ) / (Dw.mult τ : ℝ) * detDeg (fun w => P.B w τ) (fun σ => P.X σ τ) - Real.log (dim (part Dw a τ)) / 2 = 0` using `fun τ hτ => by`. Establish `hm : Dw.mult τ = 0` using `by simp [Datum.mult, hτ, hD.q]`. Establish `hm' : (Dw.mult τ : ℝ) = 0` using `by rw [hm]; simp`.
+
+Rewrite using `[dim_eq_one_of_zero _ (hanti τ) hm, hm', div_zero, zero_mul]`. Simplify using the standard rewrite rules. Establish `hpsi : ∀ τ : Psi H, (size (part Dw a τ.1) : ℝ) / (Dw.mult τ.1 : ℝ) * detDeg (fun w => P.B w τ.1) (fun σ => P.X σ τ.1) - Real.log (dim (part Dw a τ.1)) / 2 = (size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) * c₁ - Real.log (dim (part Dw a τ.1)) / 2` using `fun τ => by`. Establish `hm : Dw.mult τ.1 = Dw.p` using `by simp [Datum.mult, τ.2]`. Establish `hl : P.degLie τ.1 = c₁`.
+
+Take `⟨s⟩` from `(hFl Z τ).1`. Rewrite using `[hlie τ s, (hFl Z τ).2 s, neg_neg]`. Establish `hm' : (Dw.mult τ.1 : ℝ) = Dw.p` using `by rw [hm]`. Rewrite using `[hm', show detDeg (fun w => P.B w τ.1) (fun σ => P.X σ τ.1) = P.degLie τ.1 from rfl, hl]`. Establish `hsum` using `(Fintype.sum_subtype_add_sum_subtype (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0) (fun τ => (size (part Dw a τ) : ℝ) / (Dw.mult τ : ℝ) * detDeg (fun w => P.B w τ) (fun σ => P.X σ τ) - Real.log (dim (part Dw a τ)) / 2)).symm`.
+
+Establish `h0 : ∑ τ : {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0}, ((size (part Dw a τ.1) : ℝ) / (Dw.mult τ.1 : ℝ) * detDeg (fun w => P.B w τ.1) (fun σ => P.X σ τ.1) - Real.log (dim (part Dw a τ.1)) / 2) = 0` using `Finset.sum_eq_zero fun τ _ => hterm τ.1 τ.2`. Rewrite `hsum` using `[h0, add_zero]`. Establish `hsum' : ∑ τ : Psi H, ((size (part Dw a τ.1) : ℝ) / (Dw.mult τ.1 : ℝ) * detDeg (fun w => P.B w τ.1) (fun σ => P.X σ τ.1) - Real.log (dim (part Dw a τ.1)) / 2) = ∑ τ : Psi H, ((size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) * c₁ - Real.log (dim (part Dw a τ.1)) / 2)` using `Finset.sum_congr rfl fun τ _ => hpsi τ`. Establish `hlieSum : ∑ τ : Psi H, P.degLie τ.1 = (Fintype.card (Psi H) : ℝ) * c₁`. Rewrite using `[Finset.sum_congr rfl fun τ _ => (show P.degLie τ.1 = c₁ by`.
+
+Take `⟨s⟩` from `(hFl Z τ).1`. Rewrite using `[hlie τ s, (hFl Z τ).2 s, neg_neg]), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hbound : defBound Dw a n c₁ = ∑ τ : Psi H, ((size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) * c₁ - Real.log (dim (part Dw a τ.1)) / 2) + (Fintype.card (Psi H) : ℝ) * ((n : ℝ) / 2 * c₁) + (n : ℝ) * ((Fintype.card (Psi H) : ℝ) * Dw.p) * (Real.log (2 * Real.pi) / 4 - GlobalTheory.Indefinite …`. Establish `hS : ∑ τ : Psi H, ((((size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) + (n : ℝ) / 2) * c₁ - Real.log (dim (part Dw a τ.1)) / 2)) = ∑ τ : Psi H, ((size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) * c₁ - Real.log (dim (part Dw a τ.1)) / 2) + ∑ _τ : Psi H, ((n : ℝ) / 2 * c₁)`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Rewrite using `[defBound, hS, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hmul` using `mul_le_mul_of_nonneg_left hth hn`. Rewrite `hmul` using `[hlieSum]`.
+
+Use `⟨TIdx (part Dw a), inferInstance, inferInstance, ⟨fun τ => (hne τ).some⟩, locLat (P.matA a n), P.matY a n, φ, GlobalTheory.T.isLattice_latticeOfLocalMatrixFamily c.F _ (P.matA a n) hlat, hdet, ?_, hinj, hrange, fun x hx w v hv => (hint x (φ x) (hsec x) (hreads x)).1 hx w v hv, fu …` and prove the remaining obligations. Use `le_trans ?_ hslope` and prove the remaining obligations. Establish `htot : ∑ t : E →+* ℂ, ((size (part Dw a t) : ℝ) / (Dw.mult t : ℝ) * detDeg (fun w => P.B w t) (fun σ => P.X σ t) - Real.log (dim (part Dw a t)) / 2) = ∑ τ : Psi H, ((size (part Dw a τ.1) : ℝ) / (Dw.p : ℝ) * c₁ - Real.log (dim (part Dw a τ.1)) / 2)`. Rewrite using `[hsum]`. Use `hsum' using 3` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hline, htot, hbound]`. Use polynomial arithmetic with `[hmul]`.
+-/
 theorem fibreAt_defCase : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (c₁ : ℝ), DefCase U ξ → Dom a n → FlatExistsAt U ξ c₁ →

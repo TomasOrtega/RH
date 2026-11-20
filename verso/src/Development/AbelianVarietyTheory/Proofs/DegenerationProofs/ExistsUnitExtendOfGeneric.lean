@@ -17,6 +17,11 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.GenericExtend
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `x hx`. It suffices to derive a contradiction. Establish `hxV` using `Y.basicOpen_le _ hx`. Take `⟨K, _, h, ho, hv⟩` from `H x hxV`.
+
+Establish `h₁ : ⊤ ≤ h ⁻¹ᵁ V` using `fun o _ ↦ show h o ∈ V from (ho o).symm ▸ hxV`. Establish `h₂` using `(Points.le_preimage_basicOpen_iff h h₁ (f - g)).1 fun o _ ↦ show h o ∈ Y.basicOpen (f - g) from (ho o).symm ▸ hx`. Rewrite `hv` using `[Points.valR_eq h V h₁, Points.valR_eq h V h₁]`. Rewrite `h₂` using `[Points.valR_eq h V h₁, map_sub, hv, sub_self]`. Conclude with `not_isUnit_zero h₂`.
+-/
 theorem eq_of_valR_eq {Y : Scheme.{0}} [IsReduced Y] {V : Y.Opens} {f g : Γ(Y, V)}
     (H : ∀ x ∈ V, ∃ (K : Type) (_ : Field K) (h : Sp K ⟶ Y), (∀ o, h o = x) ∧
       valR h V f = valR h V g) : f = g := by
@@ -32,6 +37,13 @@ theorem eq_of_valR_eq {Y : Scheme.{0}} [IsReduced Y] {V : Y.Opens} {f g : Γ(Y, 
   rw [Points.valR_eq h V h₁, map_sub, hv, sub_self] at h₂
   exact not_isUnit_zero h₂
 
+/- English proof (translation)
+Introduce `Z r z a b ha hb`. Establish `l₁ : J ⁻¹ᵁ (N.U a ⊓ N.U b) ≤ J ⁻¹ᵁ N.U a` using `J.preimage_mono inf_le_left`. Establish `l₂ : J ⁻¹ᵁ (N.U a ⊓ N.U b) ≤ J ⁻¹ᵁ N.U b` using `J.preimage_mono inf_le_right`. Establish `key : res l₁ (τ a) = pullU J _ (N.g a b) * res l₂ (τ b)`. Use `Units.ext (eq_of_valR_eq fun x hx ↦ ⟨Q.residueField x, inferInstance, Q.fromSpecResidueField x, fun o ↦ Scheme.fromSpecResidueField_apply x o, ?_⟩)` and prove the remaining obligations.
+
+Establish `ho : ∀ o, (Q.fromSpecResidueField x : Sp (Q.residueField x) ⟶ Q) o = x` using `fun o ↦ Scheme.fromSpecResidueField_apply x o`. Generalize the expression as in `(Q.fromSpecResidueField x : Sp (Q.residueField x) ⟶ Q) = h at ho`. Establish `h₁ : ⊤ ≤ h ⁻¹ᵁ J ⁻¹ᵁ (N.U a ⊓ N.U b)` using `fun o _ ↦ show h o ∈ J ⁻¹ᵁ (N.U a ⊓ N.U b) from (ho o).symm ▸ hx`. Use `H a b _ h (by rintro _ ⟨o, rfl⟩; exact (h₁ (x := o) trivial).1) (by rintro _ ⟨o, rfl⟩; exact (h₁ (x := o) trivial).2)` as an intermediate fact. Rewrite `this` using `[Points.valF_eq_valR, Points.valF_eq_valR, Points.valF_eq_valR, Points.valR_comp, ← Points.valR_res h l₁ h₁, ← Points.valR_res h l₂ h₁, ← Points.valR_mul _ _ h₁]`.
+
+Conclude with `this`. Establish `hz : r z ∈ J ⁻¹ᵁ (N.U a ⊓ N.U b)` using `⟨ha, hb⟩`. Use `congrArg (gm r z _) key` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res r z l₁ hz, gm_res r z l₂ hz, gm_pull r J z _ hz]`. Then use the resulting hypothesis.
+-/
 theorem compat_of_valF {Q Y : Scheme.{0}} [IsReduced Q] {N : LB Y} {J : Q ⟶ Y}
     {τ : ∀ a, Γ(Q, J ⁻¹ᵁ N.U a)ˣ}
     (H : ∀ (a b : N.ι) (K : Type) [Field K] (h : Sp K ⟶ Q), Set.range (h ≫ J) ⊆ N.U a →
@@ -58,6 +70,25 @@ theorem compat_of_valF {Q Y : Scheme.{0}} [IsReduced Q] {N : LB Y} {J : Q ⟶ Y}
   have := congrArg (gm r z _) key
   rwa [map_mul, gm_res r z l₁ hz, gm_res r z l₂ hz, gm_pull r J z _ hz] at this
 
+/- English proof (translation)
+Introduce `X P _ Ω _ j hX _ _ _ p e N he _ _ hN τ H₁ H₂`. Use `GlobalTheory.IsNormalScheme.of_pred hX` as an intermediate fact. Use `isNormalScheme_of_smooth p` as an intermediate fact. Use `LocallyOfFiniteType.isLocallyNoetherian p` as an intermediate fact. Establish `: QuasiCompact j` using `⟨fun U _ _ ↦ TopologicalSpace.NoetherianSpace.isCompact _⟩`.
+
+Use `IsSchemeTheoreticallyDominant.of_isDominant j` as an intermediate fact. Establish `hJ` using `(pullback.fst p j).app_injective`. Use `DvrModel.isIntegral_of_geometricallyIntegral (IsPullback.of_hasPullback p j)` as an intermediate fact. Establish `hτ : Compat N (pullback.fst p j) τ` using `compat_of_valF H₁`. Use `choose ρ hρ using H₂`.
+
+Set `eU : Sp Ω ⟶ pullback p j` to `pullback.lift (j ≫ e) (𝟙 _) (by simp [he])`. Establish `w : eU ≫ pullback.fst p j = j ≫ e` using `pullback.lift_fst _ _ _`. Establish `hπ : eU ≫ pullback.snd p j = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hτρ : ∀ (Z : Scheme.{0}) (κ : Z ⟶ Sp Ω) (z : Z) (a : N.ι), e (j (κ z)) ∈ N.U a → gm (κ ≫ eU) z (pullback.fst p j ⁻¹ᵁ N.U a) (τ a) = gm (κ ≫ j) z (e ⁻¹ᵁ N.U a) (ρ a)`. Introduce `Z κ z a ha`.
+
+Establish `hle : j ⁻¹ᵁ e ⁻¹ᵁ N.U a ≤ eU ⁻¹ᵁ pullback.fst p j ⁻¹ᵁ N.U a`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`. Establish `h₁ : ⊤ ≤ (𝟙 (Sp Ω) :) ⁻¹ᵁ j ⁻¹ᵁ e ⁻¹ᵁ N.U a` using `fun o _ ↦ show e (j o) ∈ N.U a from Subsingleton.elim (κ z) o ▸ ha`. Establish `key : res hle (pullU eU _ (τ a)) = pullU j _ (ρ a)`. Use `Units.ext (eq_of_valR_eq fun x hx ↦ ⟨Ω, inferInstance, 𝟙 _, fun o ↦ Subsingleton.elim _ _, ?_⟩)` and prove the remaining obligations.
+
+Use `hρ a eU w (by rintro _ ⟨o, rfl⟩; exact h₁ (x := o) trivial)` as an intermediate fact. Rewrite `this` using `[Points.valF_eq_valR, Points.valF_eq_valR]`. Use `(Points.valR_res _ hle h₁ _).trans ?_` and prove the remaining obligations. Use `(Points.valR_comp (𝟙 _) eU _ _).symm.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Points.valR_comp (𝟙 _) j _ _)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, Category.id_comp]` and apply the resulting hypothesis. Use `congrArg (gm κ z _) key` as an intermediate fact. Rewrite `this` using `[gm_res_pullU κ eU z hle ha, gm_pull κ j z _ ha]`. Then use the resulting hypothesis. Establish `key : ∀ a, ∀ y ∈ N.U a, Order.coheight y ≤ 1 → y ∉ Set.range (pullback.fst p j) → ExtAt (pullback.fst p j) (N.U a) (τ a).val y ∧ ExtAt (pullback.fst p j) (N.U a) ((τ a)⁻¹).val y` using `fun a y ha h1 hy ↦ by`. Use `extAt_of_coheight_eq_one j p he hN w hπ hτ hτρ y (le_antisymm (coheight_apply_le_one p h1) (ENat.one_le_iff_ne_zero.2 fun h0 ↦ hy ?_)) a ha` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Pullback.range_fst]`. Take `⟨ξ, hξ, hξy⟩` from `exists_specializes_mem_range j (p y)`. Conclude with `(Flat.generalizingMap j).stableUnderGeneralization_range (show p y ⤳ ξ from Order.coheight_eq_zero.1 h0 hξy) hξ`. Use `choose s hs using fun a ↦ exists_app_eq _ hJ _ _ fun y ha h1 hy ↦ (key a y ha h1 hy).1`. Use `choose s' hs' using fun a ↦ exists_app_eq _ hJ _ _ fun y ha h1 hy ↦ (key a y ha h1 hy).2`.
+
+Establish `hm : ∀ a, s a * s' a = 1` using `fun a ↦ hJ _ (by`. Express the relevant statement in the definitionally equal form `((pullback.fst p j).app _).hom _ = ((pullback.fst p j).app _).hom _`. Rewrite using `[map_mul, map_one, hs, hs', Units.mul_inv])`. Use `⟨fun a ↦ ⟨s a, s' a, hm a, (mul_comm _ _).trans (hm a)⟩, fun a K _ h _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Points.valF_eq_valR, Points.valF_eq_valR, Points.valR_comp]`.
+
+Conclude with `congrArg _ (hs a)`.
+-/
 theorem exists_unit_extend_of_generic : ∀ (X P : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type) [Field Ω] (j : Sp Ω ⟶ X), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsPreimmersion j → Flat j → IsDominant j → ∀ (p : P ⟶ X) (e : X ⟶ P) (N : LB P), e ≫ p = 𝟙 X → Smooth p → GeometricallyIntegral p → N.IsLB → ∀ τ : ∀ a, Γ(pullback p j, pullback.fst p j ⁻¹ᵁ N.U a)ˣ, (∀ (a b : N.ι) (K : Type) [Field K] (h : Sp K ⟶ pullback p j), Set.range (h ≫ pullback.fst p j) ⊆ N.U a → Set.range (h ≫ pullback.fst p j) ⊆ N.U b → valF h _ (τ a).val = valF (h ≫ pullback.fst p j) _ (N.g a b).val * valF h _ (τ b).val) → (∀ a, ∃ u : Γ(X, e ⁻¹ᵁ N.U a)ˣ, ∀ h : Sp Ω ⟶ pullback p j, h ≫ pullback.fst p j = j ≫ e → Set.range (j ≫ e) ⊆ N.U a → valF h _ (τ a).val = valF j _ u.val) → ∃ σ : ∀ a, Γ(P, N.U a)ˣ, ∀ (a : N.ι) (K : Type) [Field K] (h : Sp K ⟶ pullback p j), Set.range (h ≫ pullback.fst p j) ⊆ N.U a → valF (h ≫ pullback.fst p j) _ (σ a).val = valF h _ (τ a).val := by
   intro X P _ Ω _ j hX _ _ _ p e N he _ _ hN τ H₁ H₂
   have := GlobalTheory.IsNormalScheme.of_pred hX

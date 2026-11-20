@@ -15,8 +15,16 @@ section SlopeTestRemainingChoices
 
 variable {O : Type} [CommRing O] {C : Type} [Field C] [Algebra O C]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply' (h : ℕ) (l : Fin h → O) : incl C h l = fun i => algebraMap O C (l i) := rfl
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Introduce `a`. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun (hl a) i`. Simplify using `only [incl_apply', Pi.smul_apply, smul_eq_mul] at e ⊢`.
+
+Rewrite using `[← map_mul, ← e, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem incl_mem_eig {Λ : Type} [CommRing Λ] {h : ℕ} (ρ : Λ → Matrix (Fin h) (Fin h) O)
     (σ : Λ →+* O) (l : Fin h → O) (hl : ∀ a, ρ a *ᵥ l = σ a • l) : incl C h l ∈ eig C ρ σ := by
   simp only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]
@@ -35,6 +43,13 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O] {C : Type} [Field C] [Algebra O C]
   {ε : PreTilt O p} {h : ℕ} {Λ : Type} [CommRing Λ] [Algebra ℤ_[p] Λ]
 
+/- English proof (translation)
+Use `haveI : Nontrivial O := (algebraMap O C).domain_nontrivial`. Establish `hincl : Function.Injective (incl C h : (Fin h → O) →ₗ[O] (Fin h → C))`. Introduce `u u' e`. Use function extensionality and compare the values at `i`. Conclude with `hinj (congrFun e i)`.
+
+Establish `hliO : LinearIndependent O x`. Use `hx.1.restrict_scalars ?_` and prove the remaining obligations. Introduce `r s e`. Apply `hinj` to reduce the goal to its premises. Simplify `e` using `[Algebra.algebraMap_eq_smul_one]`.
+
+Establish `h1 : Module.finrank O (lieSub C D τ) = a`. Rewrite using `[← hx.2, finrank_span_eq_card hliO, Fintype.card_fin]`. Establish `h2 : Module.finrank O ↥(D.Lie ⊓ D.Tsub τ) = Module.finrank O (lieSub C D τ)` using `(Submodule.equivMapOfInjective _ hincl _).finrank_eq`. Unfold `Datum.lieRank`. Rewrite using `[h2, h1]`.
+-/
 theorem card_eq_lieRank (hinj : Function.Injective (algebraMap O C)) (D : Datum ε h Λ)
     (τ : Λ →+* O) {a : ℕ} (x : Fin a → Fin h → C) (hx : IsBasisOf C (lieSub C D τ) x) :
     a = D.lieRank τ := by
@@ -55,6 +70,23 @@ theorem card_eq_lieRank (hinj : Function.Injective (algebraMap O C)) (D : Datum 
   unfold Datum.lieRank
   rw [h2, h1]
 
+/- English proof (translation)
+Use `set S := Submodule.span C (Set.range u) with hSdef`. Use `set R := ⨆ σ : {σ : Λ →+* O // σ ≠ τ}, eig C (actT D) σ.1 with hRdef`. Establish `hSle : S ≤ eig C (actT D) τ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hue i`. Establish `hdisj : Disjoint (eig C (actT D) τ) R` using `(hind τ).mono_right (iSup_le fun σ => le_iSup₂_of_le (f := fun j (_ : j ≠ τ) => eig C (actT D) j) σ.1 σ.2 le_rfl)`. Establish `htop' : eig C (actT D) τ ⊔ R = ⊤`. Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← htop]`.
+
+Use `iSup_le fun σ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup (fun σ : {σ : Λ →+* O // σ ≠ τ} => eig C (actT D) σ.1) ⟨σ, hσ⟩)`.
+
+Establish `hS : ∀ z, z ∈ eigPart C (actT D) τ ⊤ → z ∈ S`. Introduce `z hz`. Rewrite `hz` using `[← hu]`. Conclude with `Submodule.span_le_restrictScalars O C _ hz`. Establish `hall : (⊤ : Submodule C (Fin h → C)) ≤ S ⊔ R`.
+
+Rewrite using `[← (Pi.basisFun C (Fin h)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hej : (Pi.basisFun C (Fin h) j) ∈ eig C (actT D) τ ⊔ R`. Rewrite using `[htop']`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨y, hy, r, hr, hyr⟩` from `Submodule.mem_sup.1 hej`. Establish `hy' : y ∈ eigPart C (actT D) τ ⊤`. Use `Submodule.mem_inf.2 ⟨hy, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_sup.2 ⟨Pi.basisFun C (Fin h) j, ⟨Pi.single j 1, trivial, ?_⟩, -r, Submodule.neg_mem _ hr, by rw [← hyr]; abel⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[incl_apply']`. Simplify using `[incl_apply', Pi.single_apply, hk]`. Conclude with `Submodule.mem_sup.2 ⟨y, hS y hy', r, hr, hyr⟩`.
+
+Use `le_antisymm hSle fun z hz => ?_` and prove the remaining obligations. Establish `hz' : z ∈ (S ⊔ R) ⊓ eig C (actT D) τ` using `⟨hall trivial, hz⟩`. Rewrite `hz'` using `[sup_inf_assoc_of_le R hSle, hdisj.symm.eq_bot, sup_bot_eq]`. Then use the resulting hypothesis.
+-/
 theorem span_eigPart_top (D : Datum ε h Λ) (τ : Λ →+* O)
     (hind : iSupIndep (fun σ : Λ →+* O => eig C (actT D) σ))
     (htop : (⨆ σ : Λ →+* O, eig C (actT D) σ) = ⊤) {n : ℕ} (u : Fin n → Fin h → C)
@@ -103,6 +135,23 @@ theorem span_eigPart_top (D : Datum ε h Λ) (τ : Λ →+* O)
 
 end Parts
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D τ a b x w n hx hw hn`. Take `⟨⟨hindT, htopT, hdimT⟩, ⟨hindH, htopH, hdimH⟩⟩` from `GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ N h hh D`. Use `⟨card_eq_lieRank hv.hom_inj D τ x hx, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, -, -, hu, -⟩` from `GlobalTheory.T.dvr_determinant_product_orders p C v O hv ε hε Λ a b h D τ w n hw hn`. Establish `hspan` using `span_eigPart_top D τ hindT htopT (fun i => (u i : Fin h → C)) hu.2 (fun i => (u i).2)`.
+
+Establish `e` using `finrank_span_eq_card hu.1`. Rewrite `e` using `[hspan, hdimT τ, Fintype.card_fin]`. Conclude with `e.symm`. Introduce `i`. Establish `hint` using `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`.
+
+Establish `hX : ∀ l, D.G.map (WittVector.fontaineTheta O p) * actH D l = actT D l * D.G.map (WittVector.fontaineTheta O p)`. Introduce `l`. Establish `e'` using `congrArg (fun M => M.map (WittVector.fontaineTheta O p)) (hint.2.2.1 l)`. Simplify using `only [Matrix.map_mul] at e'`. Unfold `actH actT`.
+
+Rewrite using `[e']`. Simplify using `only [rhoTA, Matrix.map_map]`. Both sides reduce to the same expression. Establish `hmap` using `(GlobalTheory.T.intertwiner_maps_eigenspaces C O Λ h (actH D) (actT D) (D.G.map (WittVector.fontaineTheta O p)) hX).2 htopH hindT τ`. Establish `hbC : bC C D = Matrix.toLin' ((D.G.map (WittVector.fontaineTheta O p)).map (algebraMap O C))`.
+
+Both sides reduce to the same expression. Establish `hxi : x i ∈ lieSub C D τ` using `hx.2 ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨l, ⟨hlL, hlT⟩, hl⟩` from `Submodule.mem_map.1 hxi`. Take `⟨m, rfl⟩` from `hlL`. Establish `hT : incl C h (D.bb m) ∈ eig C (actT D) τ`.
+
+Use `incl_mem_eig _ _ _ fun c => ?_` and prove the remaining obligations. Use `(Submodule.mem_iInf _).1 hlT c` as an intermediate fact. Rewrite `this` using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Conclude with `this`. Establish `hR : incl C h (D.bb m) ∈ LinearMap.range (bC C D)`.
+
+Use `⟨incl C h m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[hbC, Matrix.toLin'_apply, incl_apply', incl_apply']`. Use `show _ = algebraMap O C ((D.G.map (WittVector.fontaineTheta O p) *ᵥ m) k)`. Rewrite using `[RingHom.map_mulVec]`.
+
+Both sides reduce to the same expression. Rewrite `hR` using `[hbC]`. Establish `hmem` using `hmap ▸ (Submodule.mem_inf.2 ⟨hR, hT⟩)`. Take `⟨y, hy, hyeq⟩` from `Submodule.mem_map.1 hmem`. Conclude with `⟨⟨y, hy⟩, by rw [hbC]; exact hyeq.trans hl⟩`.
+-/
 theorem lieRank_add_card_and_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (N h : ℕ), h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (τ : Λ →+* O) (a b : ℕ) (x : Fin a → Fin h → C) (w : Fin a → Fin h → C) (n : Fin b → Fin h → C), IsBasisOf C (lieSub C D τ) x → IsBasisOf C (wQuot C D τ) w → IsBasisOf C (alQuot C D τ) n → a = D.lieRank τ ∧ a + b = N ∧ ∀ i, ∃ y : eig C (actH D) τ, bC C D y = x i := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D τ a b x w n hx hw hn
   obtain ⟨⟨hindT, htopT, hdimT⟩, ⟨hindH, htopH, hdimH⟩⟩ :=

@@ -6,6 +6,13 @@ open scoped ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hopen : IsOpen ((B.chart j).target ∩ (B.chart j).symm ⁻¹' T)` using `(B.chart j).isOpen_inter_preimage_symm hT`. Use `set x := (B.chart j).symm w`. Establish `hev : (fun y' => Φ.φ x ((B.chart j).symm y')) =ᶠ[nhds w] fun y' => Φ'.φ x ((B.chart j).symm y') + c` using `by filter_upwards [hopen.mem_nhds hw] with y' hy'`. Conclude with `hc x _ hy'.2`. Establish `h1 : fderiv ℝ (fun y' => Φ.φ x ((B.chart j).symm y')) =ᶠ[nhds w] fderiv ℝ (fun y' => Φ'.φ x ((B.chart j).symm y'))`.
+
+Establish `e1` using `hev.fderiv (𝕜 := ℝ)`. Establish `e2 : (fderiv ℝ fun y' => Φ'.φ x ((B.chart j).symm y') + c) = fderiv ℝ (fun y' => Φ'.φ x ((B.chart j).symm y'))` using `funext fun _ => fderiv_add_const c`. Rewrite `e1` using `[e2]`. Conclude with `e1`. Establish `h2` using `h1.fderiv_eq (𝕜 := ℝ)`.
+
+Unfold `locDens maDens hessC`. Simplify using `only [x] at h2`. Use `beta_reduce`. Simplify using `only [h2]`.
+-/
 theorem locDens_eq_of_eq_add_const_on {n : ℕ} {Y : Type} [TopologicalSpace Y]
     (B : FinHolAtlas n Y) (Φ Φ' : LocPot Y) (j : Fin B.n)
     (T : Set Y) (hT : IsOpen T) (c : ℝ) (hc : ∀ x, ∀ y ∈ T, Φ.φ x y = Φ'.φ x y + c)
@@ -35,6 +42,17 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `d X _ A n Y _ B μ hμ P Ψ O a G g C _ hO hmono hagree hG _ hC hbound`. Establish `hchart : ∀ j : Fin B.n, ∫⁻ w in (B.chart j).target ∩ (B.chart j).symm ⁻¹' G, g ((B.chart j).symm w) * ‖locDens B (fun _ => P.pullback μ hμ.1) j w‖ₑ ≤ C`. Introduce `j`. Use `set T : ℕ → Set (Fin n → ℂ) := fun R => (B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' O R) with hTdef`. Establish `hTmono : Monotone T` using `fun R R' h w hw => ⟨hw.1, hmono h hw.2⟩`.
+
+Establish `hsub : (B.chart j).target ∩ (B.chart j).symm ⁻¹' G ⊆ ⋃ R, T R`. Introduce `w hw`. Take `⟨R, hR⟩` from `hG _ hw.2`. Conclude with `Set.mem_iUnion.2 ⟨R, hw.1, hR⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `iSup_le fun R => ?_` and prove the remaining obligations. Establish `hTopen : IsOpen (T R)` using `(B.chart j).isOpen_inter_preimage_symm ((hO R).preimage hμ.1)`. Establish `heq : ∫⁻ w in T R, g ((B.chart j).symm w) * ‖locDens B (fun _ => P.pullback μ hμ.1) j w‖ₑ = ∫⁻ w in T R, g ((B.chart j).symm w) * ‖locDens B (fun _ => (Ψ R).pullback μ hμ.1) j w‖ₑ`. Use `setLIntegral_congr_fun hTopen.measurableSet ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Simplify using `only`. Rewrite using `[locDens_eq_of_eq_add_const_on B ((Ψ R).pullback μ hμ.1) (P.pullback μ hμ.1) j (μ ⁻¹' O R) ((hO R).preimage hμ.1) (a R) (fun x y hy => hagree R (μ x) (μ y) hy) w hw]`. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation. Unfold `chartSumInt`.
+
+Conclude with `Finset.single_le_sum (f := fun j => ∫⁻ w in (B.chart j).target ∩ (B.chart j).symm ⁻¹' Set.univ, g ((B.chart j).symm w) * ‖locDens B (fun _ => (Ψ R).pullback μ hμ.1) j w‖ₑ) (fun _ _ => zero_le') (Finset.mem_univ j)`. Use `_ ≤ C := hbound R`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chartSumInt_lt_top_of_monotone_limit : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (n : ℕ) (Y : Type)
     [TopologicalSpace Y] (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (P : LocPot X)
     (Ψ : ℕ → LocPot X) (O : ℕ → Set X) (a : ℕ → ℝ) (G : Set Y) (g : Y → ℝ≥0∞) (C : ℝ≥0∞),

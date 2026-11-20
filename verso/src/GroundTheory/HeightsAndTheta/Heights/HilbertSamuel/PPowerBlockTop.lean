@@ -25,6 +25,11 @@ def tensorPowH (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) : ℕ 
   | n + 1 => (tensorPowH A n).tensor A
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => funext k`. Simplify using `[tensorPowH]`. Consider the case `succ n ih`. Use function extensionality and compare the values at `k`.
+
+Use `show (tensorPowH A n).a k + A.a k = _`. Rewrite using `[ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensorPowH_a (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (n : ℕ) : (tensorPowH A n).a = fun k => ((n + 1 : ℕ) : ℤ) * A.a k := by
   induction n with
   | zero => funext k; simp [tensorPowH]
@@ -36,6 +41,9 @@ theorem tensorPowH_a (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) 
     ring
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [tensorPowH]`. Consider the case `succ n ih => show (tensorPowH A n).h z * A.h z = _`. Rewrite using `[ih, pow_succ _ (n + 1)]`.
+-/
 theorem tensorPowH_h (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (n : ℕ) (z : (Σ k, ι k) → ℂ) : (tensorPowH A n).h z = A.h z ^ (n + 1) := by
   induction n with
   | zero => simp [tensorPowH]
@@ -43,11 +51,19 @@ theorem tensorPowH_h (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) 
     show (tensorPowH A n).h z * A.h z = _
     rw [ih, pow_succ _ (n + 1)]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact hA`. Consider the case `succ n ih => exact isSmoothHerm_tensor ih hA`.
+-/
 theorem isSmoothHerm_tensorPowH {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (hA : IsSmoothHerm A) (n : ℕ) : IsSmoothHerm (tensorPowH A n) := by
   induction n with
   | zero => exact hA
   | succ n ih => exact isSmoothHerm_tensor ih hA
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp [tensorPowH]`. Consider the case `succ t ih`. Establish `h` using `GroundTheory.Heights₂.Heights.Targets.ArithIntersectionSystem.multilin_of_isFamily hI K ι P n L j (tensorPowH A t) A hP hL (isSmoothHerm_tensorPowH hA t) hA`. Use `show I K ι P n (Function.update L j ((tensorPowH A t).tensor A)) = _`.
+
+Rewrite using `[h, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem update_tensorPowH {I : AllFam} (hI : I.IsFamily) {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P n)
     {L : Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) (j : Fin n) {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (hA : IsSmoothHerm A)
     (t : ℕ) :
@@ -62,6 +78,23 @@ theorem update_tensorPowH {I : AllFam} (hI : I.IsFamily) {P : Ideal (MRing ι)} 
     push_cast
     ring
 
+/- English proof (translation)
+Set `Lr : ℕ → Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι` to `fun r i => if (i : ℕ) < r then tensorPowH A t else A`. Establish `hLr : ∀ r j, IsSmoothHerm (Lr r j)` using `fun r j => by`. Simplify using `only [Lr]`. Use `split_ifs`. Conclude with `isSmoothHerm_tensorPowH hA t`.
+
+Conclude with `hA`. Establish `step : ∀ r, r ≤ n → I K ι P n (Lr r) = ((t + 1 : ℕ) : ℝ) ^ r * I K ι P n (Lr 0)`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ r ih`. Introduce `hr`. Set `j : Fin n` to `⟨r, hr⟩`. Establish `e1 : Lr (r + 1) = Function.update (Lr r) j (tensorPowH A t)`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[Lr, j]`. Establish `: (i : ℕ) ≠ r` using `fun h => hi (Fin.ext h)`.
+
+Rewrite using `[Function.update_of_ne hi]`. Simplify using `only [Lr]`. Use `congr 1`. Conclude with `propext ⟨fun h => by omega, fun h => by omega⟩`. Establish `e2 : Lr r = Function.update (Lr r) j A`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[Lr, j]`. Rewrite using `[Function.update_of_ne hi]`.
+
+Rewrite using `[e1, update_tensorPowH hI hP (hLr r) j hA t, ← e2, ih (by omega), pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn` using `step n le_rfl`. Establish `e3 : Lr n = fun _ => tensorPowH A t` using `by funext i; simp [Lr, i.2]`. Establish `e4 : Lr 0 = fun _ => A` using `by funext i; simp [Lr]`.
+
+Rewrite `hn` using `[e3, e4]`. Conclude with `hn`.
+-/
 theorem const_tensorPowH {I : AllFam} (hI : I.IsFamily) {P : Ideal (MRing ι)} {n : ℕ} (hP : IsArithVar P n)
     {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} (hA : IsSmoothHerm A) (t : ℕ) :
     I K ι P n (fun _ => tensorPowH A t) = ((t + 1 : ℕ) : ℝ) ^ n * I K ι P n (fun _ => A) := by
@@ -103,6 +136,17 @@ theorem const_tensorPowH {I : AllFam} (hI : I.IsFamily) {P : Ideal (MRing ι)} {
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `hZ : ∀ s ∈ chartRingZ y c, s ∈ blockFnField y`. Introduce `s hs`. Establish `: chartRingZ y c ≤ (blockFnField y).toSubalgebra.restrictScalars ℤ`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩`. Conclude with `this hs`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨⟨_ | k, i⟩, ⟨_ | k', i'⟩, hpq, rfl⟩`.
+
+Establish `hP0 : (∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * A.a k))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `e : addBlock y v ⟨none, i⟩ / addBlock y v ⟨none, i'⟩ = (v i * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * A.a k))) / (v i' * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * A.a k)))`. Rewrite using `[mul_div_mul_right _ _ hP0]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `div_mem (hZ _ (hv i c hc)) (hZ _ (hv i' c hc))`. Conclude with `absurd hpq (by simp)`. Conclude with `absurd hpq (by simp)`. Take `rfl : k = k'` from `Option.some_injective _ hpq`. Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨⟨k, i⟩, ⟨k, i'⟩, rfl, rfl⟩`.
+
+Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`. Conclude with `IntermediateField.subset_adjoin ℚ _ ⟨oldV N p, oldV N q, by simp [oldV, hpq], rfl⟩`.
+-/
 theorem blockFnField_addBlock {Ω : Type} [Field Ω] [CharZero Ω] {y : (Σ k, ι k) → Ω}
     {A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {m N : ℕ} {v : Fin N → Ω} (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (hv : ∀ j, v j ∈ chartLat y A.a m) : blockFnField (addBlock y v) = blockFnField y := by
@@ -136,6 +180,21 @@ end PowerBlockTop
 
 open PowerBlockTop in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Ω _ _ y D A m N v B I hI hy hA hm hv hgen hBa hBs hmet`. Establish `hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hy.2.1.2.2 k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Use `show mConeMap _ (X _) = 0`.
+
+Simplify using `[mConeMap, h0]`. Use `choose c hc using hnz`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, v j ≠ 0 := by`. Take `⟨u, -, hu⟩` from `hgen c hc`. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [not_exists, not_not] at h`. Simplify using `[h] at hu`. Establish `hFn` using `blockFnField_addBlock c hc hv`. Establish `hbm` using `isBlockMap_oldV (ι := ι) N`. Establish `hyv : IsArithVar (mCoordIdeal (addBlock y v)) (D + 1)` using `CoordArithOfFnField.proof K ι (Option K) (addIdx ι N) Ω y (addBlock y v) (D + 1) ⟨none⟩ (fun k => by`.
+
+Consider the cases of `k with`. Consider the case `none => exact ⟨j₀, hj₀⟩`. Consider the case `some k => exact ⟨c k, hc k⟩) hFn.symm hy`. Establish `hcomp : addBlock y v ∘ oldV N = y` using `rfl`. Establish `himg : imageZ (oldV N) (mCoordIdeal (addBlock y v)) = mCoordIdeal y`.
+
+Rewrite using `[GroundTheory.Heights₂.Heights.Targets.ImageCoord.proof K ι (Option K) (addIdx ι N) some (oldV N) Ω (addBlock y v) hbm, hcomp]`. Establish `hAm : IsSmoothHerm (tensorPowH A (m - 1))` using `isSmoothHerm_tensorPowH hA _`. Establish `hm' : m - 1 + 1 = m` using `Nat.sub_add_cancel hm`. Establish `hpull` using `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.isPullHerm_pullHerm hbm (tensorPowH A (m - 1))`. Establish `hPFe` using `hPF I hI K ι (Option K) (addIdx ι N) some (oldV N) Ω (addBlock y v) (D + 1) (fun _ => tensorPowH A (m - 1)) (fun _ => GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.pullHerm hbm (tensorPowH A (m - 1))) hbm hyv (by rw [himg]; exact hy) (fun _ => hAm) (fun _ => hpul …`.
+
+Rewrite `hPFe` using `[IntermediateField.relfinrank_eq_one_iff.mpr (by rw [hcomp, hFn]), Nat.cast_one, one_mul, himg]`. Establish `hiso : ∀ _ : Fin (D + 1), IsIsometricOn (mCoordIdeal (addBlock y v)) B (GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.pullHerm hbm (tensorPowH A (m - 1)))` using `fun _ => hAB K ι Ω y D A m N v B _ hy hm hv hgen hBa (by show pullDeg some (tensorPowH A (m - 1)).a = _`. Rewrite using `[tensorPowH_a, hm'])`. Use the proof step `(fun z => by show (tensorPowH A (m - 1)).h (fun p => z (oldV N p)) = _`. Rewrite using `[tensorPowH_h, hm']`.
+
+Use the proof step `rfl) hmet`. Establish `e1` using `hIso (Option K) (addIdx ι N) (I (Option K) (addIdx ι N)) (hI _ _) (mCoordIdeal (addBlock y v)) (D + 1) (fun _ => B) (fun _ => GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.pullHerm hbm (tensorPowH A (m - 1))) hyv (fun _ => hBs) (fun _ => GroundTheory.Heights₂.Hei …`. Rewrite using `[e1, hPFe, const_tensorPowH hI hy hA, hm']`.
+-/
 theorem PowerBlockTop.proof (hPF : PFCoordStatement) (hIso : IsomInvariance.Statement)
     (hAB : AddBlockIsometric.Statement) : PowerBlockTop.Statement := by
   classical

@@ -16,6 +16,9 @@ namespace SmallSectionsSeparated
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (support_mul f g hm)`. Simplify using `[Finset.sum_add_distrib, hf m1 hm1 k, hg m2 hm2 k]`.
+-/
 theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -23,6 +26,9 @@ theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f
   obtain ⟨m1, hm1, m2, hm2, rfl⟩ := Finset.mem_add.mp (support_mul f g hm)
   simp [Finset.sum_add_distrib, hf m1 hm1 k, hg m2 hm2 k]
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (support_sub _ f g hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem isMultiHomog_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
   classical
@@ -31,6 +37,9 @@ theorem isMultiHomog_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -39,6 +48,9 @@ theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal, RingHom.mem_ker, GroundTheory.Heights₂.Heights.ConeTrdeg.mConeMap_of_isMultiHomog y hf, h0, map_zero, zero_mul]`.
+-/
 theorem mem_mCoordIdeal_of_homog (y : (Σ k, ι k) → Ω) {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d)
     (h0 : aeval y f = 0) : f ∈ mCoordIdeal y := by
   rw [mCoordIdeal, RingHom.mem_ker, GroundTheory.Heights₂.Heights.ConeTrdeg.mConeMap_of_isMultiHomog y hf, h0, map_zero,
@@ -48,6 +60,15 @@ def IsRepAt (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) (s : Ω) (z : (
   ∃ dg dh : K → ℕ, IsMultiHomog g dg ∧ IsMultiHomog h dh ∧ (∀ k, (dg k : ℤ) = dh k + τ * a k) ∧
     aeval y g = s * aeval y h ∧ eval z (map (Int.castRingHom ℂ) h) ≠ 0
 
+/- English proof (translation)
+Take `⟨dg, dh, hg, hh, hd, hy, -⟩` from `hr`. Take `⟨dg', dh', hg', hh', hd', hy', -⟩` from `hr'`. Establish `hdeg : dg + dh' = dg' + dh`. Use function extensionality and compare the values at `k`. Establish `: ((dg k + dh' k : ℕ) : ℤ) = ((dg' k + dh k : ℕ) : ℤ)`.
+
+Use `push_cast`. Combine the linear relations using `[hd k, hd' k]`. Simplify using `only [Pi.add_apply]`. Conclude with `this` after adjusting the coercions. Establish `hF : IsMultiHomog (g * h' - g' * h) (dg + dh')`.
+
+Use `isMultiHomog_sub (isMultiHomog_mul hg hh') ?_` and prove the remaining obligations. Rewrite using `[hdeg]`. Conclude with `isMultiHomog_mul hg' hh`. Establish `h0 : aeval y (g * h' - g' * h) = 0`. Rewrite using `[map_sub, map_mul, map_mul, hy, hy']`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `hz.2 _ (mem_mCoordIdeal_of_homog y hF h0)` as an intermediate fact. Simplify using `only [map_sub, map_mul] at this`. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem rep_cross {y : (Σ k, ι k) → Ω} {a : K → ℤ} {τ : ℕ} {s : Ω} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) {g h g' h' : MRing ι} (hr : IsRepAt y a τ s z g h)
     (hr' : IsRepAt y a τ s z g' h') :
@@ -73,6 +94,15 @@ theorem rep_cross {y : (Σ k, ι k) → Ω} {a : K → ℤ} {τ : ℕ} {s : Ω} 
   simp only [map_sub, map_mul] at this
   exact sub_eq_zero.mp this
 
+/- English proof (translation)
+Take `⟨dg, dh, hg, hh, hd, hy, hz0⟩` from `hr`. Take `⟨dg', dh', hg', hh', hd', hy', hz0'⟩` from `hr'`. Establish `hdeg : dg' + dh = dg + dh'`. Use function extensionality and compare the values at `k`. Establish `: ((dg' k + dh k : ℕ) : ℤ) = ((dg k + dh' k : ℕ) : ℤ)`.
+
+Use `push_cast`. Combine the linear relations using `[hd k, hd' k]`. Simplify using `only [Pi.add_apply]`. Conclude with `this` after adjusting the coercions. Use `⟨dg + dh', dh + dh', isMultiHomog_add (isMultiHomog_mul hg hh') ?_, isMultiHomog_mul hh hh', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hdeg]`. Conclude with `isMultiHomog_mul hg' hh`. Introduce `k`. Simplify using `only [Pi.add_apply]`. Use `push_cast`.
+
+Combine the linear relations using `[hd k]`. Rewrite using `[map_add, map_mul, map_mul, map_mul, hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_mul]`. Conclude with `mul_ne_zero hz0 hz0'`.
+-/
 theorem rep_add {y : (Σ k, ι k) → Ω} {a : K → ℤ} {τ : ℕ} {s t : Ω} {z : (Σ k, ι k) → ℂ} {g h g' h' : MRing ι}
     (hr : IsRepAt y a τ s z g h) (hr' : IsRepAt y a τ t z g' h') :
     IsRepAt y a τ (s + t) z (g * h' + g' * h) (h * h') := by
@@ -101,6 +131,25 @@ end SmallSectionsSeparated
 
 open SmallSectionsSeparated in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A hV hB hA`. Take `⟨C, hC, hZ⟩` from `hG K ι Ω y D A hV hB hA`. Use `⟨C, hC, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨Z, hZP, hrep, hsep⟩` from `hZ τ`. Establish `hR : ∀ (s : chartLatNm y A.a τ) (z : Z), ∃ gh : MRing ι × MRing ι, IsRepAt y A.a τ (s : Ω) (z : (Σ k, ι k) → ℂ) gh.1 gh.2`.
+
+Introduce `s z`. Take `⟨dg, dh, g, h, hg, hh, hd, hy, hz⟩` from `hrep s s.2 z z.2`. Conclude with `⟨(g, h), dg, dh, hg, hh, hd, hy, hz⟩`. Use `choose gh hgh using hR`. Set `val : chartLatNm y A.a τ → Z → ℂ` to `fun s z => eval (z : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) (gh s z).1) / eval (z : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) (gh s z).2)`.
+
+Establish `hval : ∀ (s : chartLatNm y A.a τ) (z : Z) (g h : MRing ι), IsRepAt y A.a τ (s : Ω) (z : (Σ k, ι k) → ℂ) g h → val s z = eval (z : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) g) / eval (z : (Σ k, ι k) → ℂ) (map (Int.castRingHom ℂ) h)`. Introduce `s z g h hr`. Establish `h1` using `(hgh s z).choose_spec.choose_spec.2.2.2.2`. Establish `h2` using `hr.choose_spec.choose_spec.2.2.2.2`. Rewrite using `[div_eq_div_iff h1 h2]`.
+
+Conclude with `rep_cross (hZP z z.2) (hgh s z) hr`. Set `ev : chartLatNm y A.a τ →+ (Z → ℂ)` to `AddMonoidHom.mk' (fun s z => val s z) (by`. Introduce `s t`. Use function extensionality and compare the values at `z`. Establish `hst` using `rep_add (hgh s z) (hgh t z)`.
+
+Rewrite using `[Pi.add_apply, hval (s + t) z _ _ (by simpa using hst)]`. Establish `h1` using `(hgh s z).choose_spec.choose_spec.2.2.2.2`. Establish `h2` using `(hgh t z).choose_spec.choose_spec.2.2.2.2`. Simplify using `only [val, map_add, map_mul]`. Use the proof step `field_simp)`.
+
+Use `⟨Z, ev, hZP, ?_, ?_⟩` and prove the remaining obligations. Introduce `s z`. Take `⟨dg, dh, hg, hh, hd, hy, hz⟩` from `hgh s z`. Use `⟨dg, dh, (gh s z).1, (gh s z).2, hg, hh, hd, hy, hz, ?_⟩` and prove the remaining obligations. Use `show val s z * _ = _`.
+
+Simplify using `only [val]`. Conclude with `div_mul_cancel₀ _ hz`. Introduce `s t _ _ hst`. Establish `hu : ((s - t : chartLatNm y A.a τ) : Ω) ≠ 0`. Introduce `h0`.
+
+Conclude with `hst (sub_eq_zero.mp (Subtype.ext h0))`. Take `⟨z, hzZ, dg, dh, g, h, hg, hh, hd, hy, hz, hb⟩` from `hsep _ (s - t).2 hu`. Use `⟨⟨z, hzZ⟩, ?_⟩` and prove the remaining obligations. Establish `hev : ev s ⟨z, hzZ⟩ - ev t ⟨z, hzZ⟩ = val (s - t) ⟨z, hzZ⟩`. Rewrite using `[← Pi.sub_apply, ← map_sub]`.
+
+Both sides reduce to the same expression. Rewrite using `[hev, hval (s - t) ⟨z, hzZ⟩ g h ⟨dg, dh, hg, hh, hd, hy, hz⟩, norm_div]`. Rewrite using `[le_div_iff₀ (norm_pos_iff.mpr hz)]`. Conclude with `hb`.
+-/
 theorem SmallSectionsSeparated.proof (hG : GridSeparation.Statement) : SmallSectionsSeparated.Statement := by
   intro K _ ι _ Ω _ y D A hV hB hA
   obtain ⟨C, hC, hZ⟩ := hG K ι Ω y D A hV hB hA

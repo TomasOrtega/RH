@@ -29,6 +29,9 @@ abbrev segreOpen (i : Fin (n + 1)) (j : Fin (m + 1)) : (prodP A n m).Opens :=
 
 omit [CommRing A] in
 
+/- English proof (translation)
+Introduce `x _`. Conclude with `h x.2`.
+-/
 lemma top_le_preimage_ι_comp {Y Z : Scheme.{u}} (V : Y.Opens) (q : Y ⟶ Z) {U : Z.Opens}
     (h : V ≤ q ⁻¹ᵁ U) : ⊤ ≤ (V.ι ≫ q) ⁻¹ᵁ U := by
   intro x _
@@ -36,6 +39,11 @@ lemma top_le_preimage_ι_comp {Y Z : Scheme.{u}} (V : Y.Opens) (q : Y ⟶ Z) {U 
 
 omit [CommRing A] in
 
+/- English proof (translation)
+Establish `key : ∀ (g : W.toScheme ⟶ Z) (_ : g = W.ι ≫ q) (e : (⊤ : W.toScheme.Opens) ≤ g ⁻¹ᵁ U), g.appLE U ⊤ e s = (W.ι ≫ q).appLE U ⊤ (top_le_preimage_ι_comp W q (hW.trans hV)) s`. Introduce and unpack `_ rfl _`. Both sides reduce to the same expression. Establish `h1 : (Y.homOfLE hW).appTop = (Y.homOfLE hW).appLE ⊤ ⊤ (fun _ _ => trivial)` using `(Scheme.Hom.appLE_eq_app _).symm`. Rewrite using `[h1]`.
+
+Conclude with `(congr($(Scheme.Hom.appLE_comp_appLE (Y.homOfLE hW) (V.ι ≫ q) U ⊤ ⊤ _ _) s)).trans (key _ (Scheme.homOfLE_ι_assoc _ _ _) _)`.
+-/
 lemma homOfLE_appTop_appLE {Y Z : Scheme.{u}} (q : Y ⟶ Z) {U : Z.Opens} {V W : Y.Opens}
     (hW : W ≤ V) (hV : V ≤ q ⁻¹ᵁ U) (s : Γ(Z, U)) :
     (Y.homOfLE hW).appTop ((V.ι ≫ q).appLE U ⊤ (top_le_preimage_ι_comp V q hV) s) =
@@ -52,6 +60,11 @@ lemma homOfLE_appTop_appLE {Y Z : Scheme.{u}} (q : Y ⟶ Z) {U : Z.Opens} {V W :
 
 variable {A}
 
+/- English proof (translation)
+Establish `hW : W ≤ q ⁻¹ᵁ Proj.basicOpen (grading A n) (X k * X j)`. Rewrite using `[Proj.basicOpen_mul, Scheme.Hom.preimage_inf]`. Conclude with `le_inf hk hj`. Establish `hres : ∀ {U : (projectiveSpace A n).Opens} (hU : Proj.basicOpen (grading A n) (X k * X j) ≤ U) (hWU : W ≤ q ⁻¹ᵁ U) (z : Γ(projectiveSpace A n, U)), q.appLE U W hWU z = q.appLE _ W hW ((projectiveSpace A n).presheaf.map (homOfLE hU).op z)` using `fun hU hWU z => by rw [← ConcreteCategory.comp_apply, Scheme.Hom.map_appLE]`. Establish `ha' : a ∈ grading A n (t • 1)` using `by rwa [smul_eq_mul, mul_one]`.
+
+Rewrite using `[hres (basicOpen_mul_le_right j k), hres (basicOpen_mul_le_left j k), hres (basicOpen_mul_le_left j k), chartHom_of_mem j ha]`. Conclude with `map_mul_pow_eq _ t (chart_identity j k ha')`.
+-/
 lemma appLE_chartHom_identity {Y : Scheme.{u}} (q : Y ⟶ projectiveSpace A n) (j k : Fin (n + 1))
     (W : Y.Opens) (hj : W ≤ q ⁻¹ᵁ Proj.basicOpen (grading A n) (X j))
     (hk : W ≤ q ⁻¹ᵁ Proj.basicOpen (grading A n) (X k)) {t : ℕ}
@@ -70,6 +83,13 @@ lemma appLE_chartHom_identity {Y : Scheme.{u}} (q : Y ⟶ projectiveSpace A n) (
     hres (basicOpen_mul_le_left j k), chartHom_of_mem j ha]
   exact map_mul_pow_eq _ t (chart_identity j k ha')
 
+/- English proof (translation)
+Use `conv_lhs => rw [p.as_sum]`. Use `conv_rhs => rw [p.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = m`.
+
+Use `hp (mem_support_iff.mp hd)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[monomial_eq, map_mul, map_mul, hC, map_finsuppProd, map_finsuppProd]`. Simplify using `only [map_pow, hX, mul_pow]`. Establish `hc : (d.prod fun _ k => c ^ k) = c ^ m`.
+
+Rewrite using `[← hdeg, Finsupp.prod, Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression. Rewrite using `[Finsupp.prod_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma map_eq_pow_mul_of_isHomogeneous {σ R S : Type*} [CommRing R] [CommRing S]
     (φ ψ : MvPolynomial σ R →+* S) (c : S) (hC : ∀ r, ψ (C r) = φ (C r))
     (hX : ∀ i, ψ (X i) = c * φ (X i)) {m : ℕ} {p : MvPolynomial σ R} (hp : p.IsHomogeneous m) :
@@ -106,16 +126,28 @@ def segreRing (i : Fin (n + 1)) (j : Fin (m + 1)) :
       ((chartHom i).comp C))
     (fun c => segreU A i j ((segreIndex n m).symm c).1 * segreV A i j ((segreIndex n m).symm c).2)
 
+/- English proof (translation)
+Rewrite using `[segreRing, eval₂Hom_X', Equiv.symm_apply_apply]`.
+-/
 lemma segreRing_X (i : Fin (n + 1)) (j : Fin (m + 1)) (a : Fin (n + 1)) (b : Fin (m + 1)) :
     segreRing A i j (X (segreIndex n m (a, b))) = segreU A i j a * segreV A i j b := by
   rw [segreRing, eval₂Hom_X', Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[segreU, chartHom_X_self, map_one]`.
+-/
 lemma segreU_self (i : Fin (n + 1)) (j : Fin (m + 1)) : segreU A i j i = 1 := by
   rw [segreU, chartHom_X_self, map_one]
 
+/- English proof (translation)
+Rewrite using `[segreV, chartHom_X_self, map_one]`.
+-/
 lemma segreV_self (i : Fin (n + 1)) (j : Fin (m + 1)) : segreV A i j j = 1 := by
   rw [segreV, chartHom_X_self, map_one]
 
+/- English proof (translation)
+The claim follows from `map_irrelevant_eq_top _ (segreIndex n m (i, j)) (by rw [segreRing_X, segreU_self, segreV_self, mul_one] exact isUnit_one)`.
+-/
 lemma segreRing_irrelevant (i : Fin (n + 1)) (j : Fin (m + 1)) :
     (HomogeneousIdeal.irrelevant (grading A (n * m + n + m))).toIdeal.map (segreRing A i j) = ⊤ :=
   map_irrelevant_eq_top _ (segreIndex n m (i, j)) (by
@@ -126,6 +158,9 @@ def segreLocal (i : Fin (n + 1)) (j : Fin (m + 1)) :
     (segreOpen A i j).toScheme ⟶ projectiveSpace A (n * m + n + m) :=
   Proj.fromOfGlobalSections (grading A _) (segreRing A i j) (segreRing_irrelevant A i j)
 
+/- English proof (translation)
+Rewrite using `[segreRing_X, map_mul, segreU, segreV, homOfLE_appTop_appLE _ hW inf_le_left, homOfLE_appTop_appLE _ hW inf_le_right]`.
+-/
 lemma segreRing_res_X (i : Fin (n + 1)) (j : Fin (m + 1)) {W : (prodP A n m).Opens}
     (hW : W ≤ segreOpen A i j) (a : Fin (n + 1)) (b : Fin (m + 1)) :
     ((prodP A n m).homOfLE hW).appTop (segreRing A i j (X (segreIndex n m (a, b)))) =
@@ -136,6 +171,9 @@ lemma segreRing_res_X (i : Fin (n + 1)) (j : Fin (m + 1)) {W : (prodP A n m).Ope
   rw [segreRing_X, map_mul, segreU, segreV, homOfLE_appTop_appLE _ hW inf_le_left,
     homOfLE_appTop_appLE _ hW inf_le_right]
 
+/- English proof (translation)
+Rewrite using `[segreRing, eval₂Hom_C, RingHom.comp_apply, RingHom.comp_apply]`. Conclude with `homOfLE_appTop_appLE _ hW inf_le_left _`.
+-/
 lemma segreRing_res_C (i : Fin (n + 1)) (j : Fin (m + 1)) {W : (prodP A n m).Opens}
     (hW : W ≤ segreOpen A i j) (r : A) :
     ((prodP A n m).homOfLE hW).appTop (segreRing A i j (C r)) =
@@ -144,6 +182,19 @@ lemma segreRing_res_C (i : Fin (n + 1)) (j : Fin (m + 1)) {W : (prodP A n m).Ope
   rw [segreRing, eval₂Hom_C, RingHom.comp_apply, RingHom.comp_apply]
   exact homOfLE_appTop_appLE _ hW inf_le_left _
 
+/- English proof (translation)
+Rewrite using `[segreLocal, segreLocal, ProjHom.comp_fromOfGlobalSections _ _ (fun c => X c) (fun _ => 1) (fun _ => one_pos) (fun c => X_mem c) iSup_basicOpen_X, ProjHom.comp_fromOfGlobalSections _ _ (fun c => X c) (fun _ => 1) (fun _ => one_pos) (fun c => X_mem c) iSup_basicOpen_X]`. Use `set W := segreOpen A i j ⊓ segreOpen A k l`. Use `set q₁ := W.ι ≫ pullback.fst (toSpecBase A n) (toSpecBase A m)`. Use `set q₂ := W.ι ≫ pullback.snd (toSpecBase A n) (toSpecBase A m)`. Establish `hi : ⊤ ≤ q₁ ⁻¹ᵁ Proj.basicOpen (grading A n) (X i)` using `top_le_preimage_ι_comp _ _ (inf_le_left.trans inf_le_left)`.
+
+Establish `hj : ⊤ ≤ q₂ ⁻¹ᵁ Proj.basicOpen (grading A m) (X j)` using `top_le_preimage_ι_comp _ _ (inf_le_left.trans inf_le_right)`. Establish `hk : ⊤ ≤ q₁ ⁻¹ᵁ Proj.basicOpen (grading A n) (X k)` using `top_le_preimage_ι_comp _ _ (inf_le_right.trans inf_le_left)`. Establish `hl : ⊤ ≤ q₂ ⁻¹ᵁ Proj.basicOpen (grading A m) (X l)` using `top_le_preimage_ι_comp _ _ (inf_le_right.trans inf_le_right)`. Use `set c : Γ(W, ⊤) := q₁.appLE _ ⊤ hk (chartHom k (X i)) * q₂.appLE _ ⊤ hl (chartHom l (X j))`. Establish `hc : IsUnit c`.
+
+Use `IsUnit.of_mul_eq_one (q₁.appLE _ ⊤ hi (chartHom i (X k)) * q₂.appLE _ ⊤ hj (chartHom j (X l))) ?_` and prove the remaining obligations. Establish `e₁` using `appLE_chartHom_identity q₁ i k ⊤ hi hk (X_mem k)`. Establish `e₂` using `appLE_chartHom_identity q₂ j l ⊤ hj hl (X_mem l)`. Rewrite `e₁`, `e₂` using `[pow_one, chartHom_X_self, map_one]`. Rewrite using `[show ∀ x y z w : Γ(W, ⊤), x * y * (z * w) = (z * x) * (w * y) from fun _ _ _ _ => by ring, e₁, e₂, mul_one]`.
+
+Use `(ProjHom.fromOfGlobalSections_eq_of_twist _ _ (fun c => X c) (fun _ => 1) (fun _ => one_pos) (fun c => X_mem c) iSup_basicOpen_X _ _ c hc fun m' a ha => ?_).symm` and prove the remaining obligations. Use `map_eq_pow_mul_of_isHomogeneous _ _ c (fun r => ?_) (fun z => ?_) ((mem_homogeneousSubmodule m' a).1 ha)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[segreRing_res_C, segreRing_res_C]`. Establish `e` using `appLE_chartHom_identity q₁ i k ⊤ hi hk (t := 0) (isHomogeneous_C _ r)`.
+
+Rewrite `e` using `[pow_zero, mul_one]`. Conclude with `e.symm`. Take `⟨⟨a, b⟩, rfl⟩` from `(segreIndex n m).surjective z`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[segreRing_res_X, segreRing_res_X]`.
+
+Establish `e₁` using `appLE_chartHom_identity q₁ i k ⊤ hi hk (X_mem a)`. Establish `e₂` using `appLE_chartHom_identity q₂ j l ⊤ hj hl (X_mem b)`. Rewrite `e₁`, `e₂` using `[pow_one]`. Rewrite using `[← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma segreLocal_agree (i k : Fin (n + 1)) (j l : Fin (m + 1)) :
     (prodP A n m).homOfLE (inf_le_left : segreOpen A i j ⊓ segreOpen A k l ≤ _) ≫
         segreLocal A i j =
@@ -194,6 +245,9 @@ lemma segreLocal_agree (i k : Fin (n + 1)) (j l : Fin (m + 1)) :
 
 variable (n m) in
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show pullback.fst (toSpecBase A n) (toSpecBase A m) x ∈ ⨆ i : Fin (n + 1), Proj.basicOpen (grading A n) (X i) by rw [iSup_basicOpen_X]; trivial)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show pullback.snd (toSpecBase A n) (toSpecBase A m) x ∈ ⨆ j : Fin (m + 1), Proj.basicOpen (grading A m) (X j) by rw [iSup_basicOpen_X]; trivial)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j), ⟨hi, hj⟩⟩`.
+-/
 lemma iSup_segreOpen : ⨆ c : Fin (n + 1) × Fin (m + 1), segreOpen A c.1 c.2 = ⊤ := by
   rw [eq_top_iff]
   intro x _
@@ -221,10 +275,16 @@ def segre : prodP A n m ⟶ projectiveSpace A (n * m + n + m) :=
     rw [← H.isoPullback_inv_fst, ← H.isoPullback_inv_snd, Category.assoc, Category.assoc,
       segreLocal_agree]
 
+/- English proof (translation)
+The claim follows from `(segreCover A n m).ι_glueMorphisms _ _ (i, j)`.
+-/
 lemma ι_segre (i : Fin (n + 1)) (j : Fin (m + 1)) :
     (segreOpen A i j).ι ≫ segre A n m = segreLocal A i j :=
   (segreCover A n m).ι_glueMorphisms _ _ (i, j)
 
+/- English proof (translation)
+Rewrite using `[toSpecBase, Proj.fromOfGlobalSections_toSpecZero_assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma fromOfGlobalSections_toSpecBase {N : ℕ} {O : Scheme.{u}}
     (φ : MvPolynomial (Fin (N + 1)) A →+* Γ(O, ⊤))
     (hφ : (HomogeneousIdeal.irrelevant (grading A N)).toIdeal.map φ = ⊤) :
@@ -235,6 +295,11 @@ lemma fromOfGlobalSections_toSpecBase {N : ℕ} {O : Scheme.{u}}
 
 variable (n m) in
 
+/- English proof (translation)
+Use `(segreCover A n m).hom_ext _ _ fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(segreOpen A c.1 c.2).ι ≫ _ = (segreOpen A c.1 c.2).ι ≫ _`. Establish `htop : ((segreOpen A c.1 c.2).ι ≫ pullback.fst (toSpecBase A n) (toSpecBase A m)) ⁻¹ᵁ Proj.basicOpen (grading A n) (X c.1) = ⊤` using `top_unique (top_le_preimage_ι_comp _ _ inf_le_left)`. Rewrite using `[← Category.assoc, ι_segre, segreLocal, fromOfGlobalSections_toSpecBase, ← Category.assoc, eq_fromOfGlobalSections_of_preimage_eq_top _ c.1 htop, fromOfGlobalSections_toSpecBase]`. Use `congr 3`.
+
+Use extensionality with `r`. Simplify using `[segreRing]`.
+-/
 theorem segre_toSpecBase :
     segre A n m ≫ toSpecBase A (n * m + n + m) =
       pullback.fst (toSpecBase A n) (toSpecBase A m) ≫ toSpecBase A n := by

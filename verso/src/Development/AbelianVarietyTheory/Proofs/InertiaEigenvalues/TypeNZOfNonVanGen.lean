@@ -18,6 +18,11 @@ open GlobalTheory.DownLift
 
 namespace GlobalTheory.DownLift
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ _ i t hNV hInf hFin hNo hMem h hh s hs y hy hg h0`. Assume the negation of the conclusion as `hne`. Establish `hF : R.thF i t y = 0`. Rewrite using `[← hMem y hg, h0]`. Conclude with `map_zero _`.
+
+Conclude with `hFin y (hNo y hg) (hInf y hF) (hNV h hh s hs y hy hne)`.
+-/
 theorem typeNZ_of_nonVan_gen : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, NonVan R i t → GenInf R i t → GenFin R i t → GoodNoChi R i t → GoodMem R i t → TypeNZ R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ _ i t hNV hInf hFin hNo hMem h hh s hs y hy hg h0
   by_contra hne

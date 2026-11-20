@@ -27,15 +27,29 @@ section Valuations
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuation_le_one _ v`.
+-/
 theorem valV_le_one (v : V) : valV V (algebraMap V K' v) ≤ 1 := HeightOneSpectrum.valuation_le_one _ v
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuation_lt_one_iff_mem _ v`.
+-/
 theorem valV_lt_one_iff (v : V) : valV V (algebraMap V K' v) < 1 ↔ v ∈ maximalIdeal V :=
   HeightOneSpectrum.valuation_lt_one_iff_mem _ v
 
+/- English proof (translation)
+Rewrite using `[← notMem_maximalIdeal, ← valV_lt_one_iff (K' := K'), not_lt]`. Conclude with `⟨fun h => h.ge, fun h => le_antisymm (valV_le_one v) h⟩`.
+-/
 theorem valV_eq_one_iff_isUnit (v : V) : valV V (algebraMap V K' v) = 1 ↔ IsUnit v := by
   rw [← notMem_maximalIdeal, ← valV_lt_one_iff (K' := K'), not_lt]
   exact ⟨fun h => h.ge, fun h => le_antisymm (valV_le_one v) h⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : algebraMap V K' v = 0`. Simplify using `[h, vV]`. Use `(WithZero.log_le_log (valV_ne_zero (V := V) h) one_ne_zero).2 (valV_le_one v)` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_nonneg (v : V) : 0 ≤ vV V (algebraMap V K' v) := by
   by_cases h : algebraMap V K' v = 0
   · simp [h, vV]
@@ -43,6 +57,9 @@ theorem vV_nonneg (v : V) : 0 ≤ vV V (algebraMap V K' v) := by
     simp only [WithZero.log_one] at this
     simp only [vV]; omega
 
+/- English proof (translation)
+Establish `h1 : algebraMap V K' v ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V K')).2 h0`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h1) one_ne_zero).2 ((valV_lt_one_iff v).2 h)` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {v : V} (h0 : v ≠ 0) (h : v ∈ maximalIdeal V) : 0 < vV V (algebraMap V K' v) := by
   have h1 : algebraMap V K' v ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective V K')).2 h0
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h1) one_ne_zero).2 ((valV_lt_one_iff v).2 h)
@@ -51,6 +68,27 @@ theorem vV_pos {v : V} (h0 : v ≠ 0) (h : v ∈ maximalIdeal V) : 0 < vV V (alg
 
 end Valuations
 
+/- English proof (translation)
+Establish `hint : ∀ a : 𝓞 K, ∃ v : T.V, algebraMap T.V T.Fr v = io a` using `fun a => IsIntegrallyClosed.algebraMap_eq_of_integral (R := T.V) (K := T.Fr) (IsIntegral.map_of_comp_eq (Int.castRingHom T.V) io (RingHom.ext_int _ _) a.isIntegral_coe)`. Use `choose g0 hg0 using hint`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Set `g : 𝓞 K →+* T.V` to `{ toFun := g0 map_one' := hinj (by simp [hg0]) map_mul' := fun a b => hinj (by simp [hg0]) map_zero' := hinj (by simp [hg0]) map_add' := fun a b => hinj (by simp [hg0]) }`. Establish `hg : ∀ a, algebraMap T.V T.Fr (g a) = io (algebraMap (𝓞 K) K a)` using `hg0`.
+
+Establish `hne : (maximalIdeal T.V).comap g ≠ ⊥`. Establish `: Finite (ResidueField T.V)` using `hT`. Establish `hc : Nat.card (ResidueField T.V) ≠ 0` using `Nat.card_pos.ne'`. Introduce `h`. Establish `h1 : ((Nat.card (ResidueField T.V) : ℕ) : 𝓞 K) ∈ (maximalIdeal T.V).comap g`.
+
+Rewrite using `[Ideal.mem_comap, map_natCast, ← residue_eq_zero_iff, map_natCast, ← nsmul_one]`. Conclude with `card_nsmul_eq_zero'`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `hc (by exact_mod_cast h1)`. Set `la : HeightOneSpectrum (𝓞 K)` to `⟨(maximalIdeal T.V).comap g, Ideal.comap_isPrime _ _, hne⟩`.
+
+Establish `hun : ∀ a : 𝓞 K, a ∉ la.asIdeal → valV T.V (io (algebraMap (𝓞 K) K a)) = 1` using `fun a ha => by`. Rewrite using `[← hg, valV_eq_one_iff_isUnit]`. Conclude with `notMem_maximalIdeal.1 ha`. Establish `hone : ∀ x : K, la.valuation K x = 1 → valV T.V (io x) = 1` using `fun x hx => by`. Take `⟨n, d, h⟩` from `la.exists_primeCompl_mul_eq_of_integer x hx.le`.
+
+Establish `hd : la.valuation K (algebraMap (𝓞 K) K d) = 1` using `(la.valuation_eq_one_iff_notMem).2 d.2`. Establish `hn : la.valuation K (algebraMap (𝓞 K) K n) = 1` using `by rw [← h, map_mul, hx, hd, one_mul]`. Establish `h2` using `hun n ((la.valuation_eq_one_iff_notMem).1 hn)`. Rewrite `h2` using `[← h, map_mul, map_mul, hun d d.2, mul_one]`. Then use the resulting hypothesis. Take `⟨π, hπ⟩` from `la.intValuation_exists_uniformizer`.
+
+Establish `hπK : la.valuation K (algebraMap (𝓞 K) K π) = WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hπ0 : algebraMap (𝓞 K) K π ≠ 0` using `fun h => by simp [h] at hπK; exact WithZero.exp_ne_zero hπK.symm`. Establish `hπm : π ∈ la.asIdeal`. Rewrite using `[← la.valuation_lt_one_iff_mem (K := K), hπK, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Evaluate the numerical expressions. Establish `hpos : 0 < vV T.V (io (algebraMap (𝓞 K) K π))`. Rewrite using `[← hg]`. Use `vV_pos (fun h => ?_) hπm` and prove the remaining obligations. Use `hg π` as an intermediate fact.
+
+Rewrite `this` using `[h, map_zero]`. Conclude with `(map_ne_zero io).2 hπ0 this.symm`. Use `⟨la, (vV T.V (io (algebraMap (𝓞 K) K π))).toNat, by omega, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg hpos.le]`. Distinguish the cases in `ha : a = 0`.
+
+Simplify using `[ha, vV, vLa]`. Establish `hva : la.valuation K a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `h1` using `hone (a * (algebraMap (𝓞 K) K π) ^ (-vLa la a)) (by`. Rewrite using `[map_mul, map_zpow₀, hπK, ← WithZero.exp_zsmul, ← WithZero.exp_log hva, ← WithZero.exp_add]`. Simplify using `[vLa])`.
+
+Establish `h2` using `congrArg WithZero.log h1`. Rewrite `h2` using `[map_mul, map_mul, map_zpow₀, map_zpow₀, WithZero.log_mul (valV_ne_zero ((map_ne_zero io).2 ha)) (zpow_ne_zero _ (valV_ne_zero ((map_ne_zero io).2 hπ0))), WithZero.log_zpow, WithZero.log_one]`. Simplify using `only [vV, smul_eq_mul] at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_overLa {K : Type} [Field K] [NumberField K] (T : CDVR) (io : K →+* T.Fr) (hT : T.FinRes) :
     ∃ (la : HeightOneSpectrum (𝓞 K)) (e : ℕ), OverLa la T.V io e := by
   have hint : ∀ a : 𝓞 K, ∃ v : T.V, algebraMap T.V T.Fr v = io a := fun a =>
@@ -110,6 +148,25 @@ theorem exists_overLa {K : Type} [Field K] [NumberField K] (T : CDVR) (io : K �
   simp only [vV, smul_eq_mul] at h2 ⊢
   linarith
 
+/- English proof (translation)
+Establish `hint : ∀ a : V, ∃ v : W, algebraMap W L v = i (algebraMap V K a)` using `fun a => Formalism.L2.PjFree.mem_range_of_vV_nonneg (by rw [hi]; exact mul_nonneg (by positivity) (vV_nonneg a))`. Use `choose g0 hg0 using hint`. Establish `hinj` using `IsFractionRing.injective W L`. Set `g : V →+* W` to `{ toFun := g0 map_one' := hinj (by simp [hg0]) map_mul' := fun a b => hinj (by simp [hg0]) map_zero' := hinj (by simp [hg0]) map_add' := fun a b => hinj (by simp [hg0]) }`. Establish `hg : ∀ a, algebraMap W L (g a) = i (algebraMap V K a)` using `hg0`.
+
+Use `letI : Algebra V W := g.toAlgebra`. Use `letI : Algebra K L := i.toAlgebra`. Use `letI : Algebra V L := ((algebraMap W L).comp g).toAlgebra`. Establish `: IsScalarTower V W L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower V K L` using `IsScalarTower.of_algebraMap_eq fun a => hg a`.
+
+Establish `hgi : Function.Injective (algebraMap V W)` using `fun a b hab => by`. Apply `IsFractionRing.injective V K` to reduce the goal to its premises. Apply `i.injective` to reduce the goal to its premises. Rewrite using `[← hg, ← hg]`. Conclude with `congrArg _ hab`.
+
+Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hgi`. Establish `hle : (maximalIdeal V).map (algebraMap V W) ≤ maximalIdeal W`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Distinguish the cases in `h0 : a = 0`.
+
+Simplify using `[h0]`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal]`. Introduce `hu`. Establish `h1 : valV W (algebraMap W L (g a)) = 1` using `(valV_eq_one_iff_isUnit _).2 hu`. Establish `h2` using `hi (algebraMap V K a)`.
+
+Establish `h3 : (0 : ℤ) < r * vV V (algebraMap V K a)` using `mul_pos (by exact_mod_cast hr) (vV_pos h0 ha)`. Rewrite `h3` using `[← h2, ← hg, vV, h1]`. Simplify using `at h3`. Establish `hne : (maximalIdeal V).map (algebraMap V W) ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective hgi]`.
+
+Conclude with `IsDiscreteValuationRing.not_a_field V`. Establish `htop : (maximalIdeal V).map (algebraMap V W) ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal W).ne_top hle`. Establish `: IsHausdorff ((maximalIdeal V).map (algebraMap V W)) W` using `IsHausdorff.of_isDomain _ htop`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne hϖ`.
+
+Establish `: Finite (W ⧸ (maximalIdeal V).map (algebraMap V W))`. Rewrite using `[hn, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Establish `: Finite (W ⧸ maximalIdeal W)` using `h'`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`. Establish `: Module.Finite V (W ⧸ (maximalIdeal V).map (algebraMap V W))` using `Module.Finite.of_finite`.
+
+Establish `: Module.Finite V W` using `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal V)`. Conclude with `Module.Finite.of_isLocalization V W (nonZeroDivisors V)`.
+-/
 theorem finite_of_finite_residueField {V K W L : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V] [Field K] [Algebra V K] [IsFractionRing V K] [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (i : K →+* L) {r : ℕ} (hr : 0 < r)
@@ -164,6 +221,17 @@ theorem finite_of_finite_residueField {V K W L : Type} [CommRing V] [IsDomain V]
   have : Module.Finite V W := GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal V)
   exact Module.Finite.of_isLocalization V W (nonZeroDivisors V)
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin J`. Set `v : Fin (p.n + Fintype.card J) → S` to `Fin.append (fun i => φ (Ideal.Quotient.mk p.I (MvPolynomial.X i))) (fun k => g (e.symm k))`. Set `Φ : MvPolynomial (Fin (p.n + Fintype.card J)) K →ₐ[K] S` to `MvPolynomial.aeval v`. Set `r : TRing K` to `⟨p.n + Fintype.card J, RingHom.ker Φ, (RingHom.ker_isPrime Φ).isRadical⟩`. Establish `hΦ : Φ.comp (MvPolynomial.rename (Fin.castAdd (Fintype.card J))) = φ.comp (Ideal.Quotient.mkₐ K p.I)`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[Φ, v, Fin.append_left]`. Set `α₀ : MvPolynomial (Fin p.n) K →ₐ[K] r.R` to `(Ideal.Quotient.mkₐ K (RingHom.ker Φ)).comp (MvPolynomial.rename (Fin.castAdd (Fintype.card J)))`. Establish `hα₀ : ∀ a ∈ p.I, α₀ a = 0`.
+
+Introduce `a ha`. Use `show Ideal.Quotient.mk _ _ = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, RingHom.mem_ker]`. Establish `h1 : Φ (MvPolynomial.rename (Fin.castAdd (Fintype.card J)) a) = φ (Ideal.Quotient.mk p.I a)` using `congrArg (fun F => F a) hΦ`. Conclude with `h1.trans (by rw [Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero])`.
+
+Set `α : p.R →ₐ[K] r.R` to `Ideal.Quotient.liftₐ p.I α₀ hα₀`. Set `χ : r.R →ₐ[K] S` to `Ideal.kerLiftAlg Φ`. Use `⟨r, α, χ, fun j => Ideal.Quotient.mk _ (MvPolynomial.X (Fin.natAdd p.n (e j))), Ideal.kerLiftAlg_injective Φ, ?_, ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Rewrite using `[← hΦ]`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Both sides reduce to the same expression. Introduce `j show Φ _ = g j`. Simplify using `[Φ, v, Fin.append_right]`.
+-/
 theorem exists_testRing_factor {K : Type} [Field K] (p : TRing K) {S : Type} [Field S] [Algebra K S]
     (φ : p.R →ₐ[K] S) {J : Type} [Fintype J] (g : J → S) :
     ∃ (r : TRing K) (α : p.R →ₐ[K] r.R) (χ : r.R →ₐ[K] S) (gr : J → r.R),
@@ -204,10 +272,16 @@ theorem exists_testRing_factor {K : Type} [Field K] (p : TRing K) {S : Type} [Fi
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y`.
+-/
 theorem exists_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) : ∃ z : FrPt Xo c T, FrMap φ y z :=
   FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y
 
+/- English proof (translation)
+Take `⟨y, -, h, -⟩` from `gfp_frPt_gen (L' := L) GlobalTheory.abelianSchemeLaws_all.2.secTwist (fun _ => rfl) x hx (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')`. Conclude with `⟨y, h⟩`.
+-/
 theorem exists_frame {L : Type} [Field L] [Algebra c.F L] (x : Sp L ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c L) :
     ∃ y : FrPt Xo c L, y.x = x := by
   classical
@@ -215,6 +289,15 @@ theorem exists_frame {L : Type} [Field L] [Algebra c.F L] (x : Sp L ⟶ Xo.X) (h
     (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')
   exact ⟨y, h⟩
 
+/- English proof (translation)
+Take `⟨p, φ, y₀, h₀⟩` from `hy`. Take `⟨g, a, hg, hc⟩` from `(frChg_exists_unique E H Dw l Xo c S y y').1 hx`. Take `⟨r, α, χ, gr, hχ, hα, hgr⟩` from `exists_testRing_factor p φ (J := (Σ τ : E →+* ℂ, Option (Fin (Dw.mult τ) × Fin (Dw.mult τ))) ⊕ Bool) (Sum.elim (fun q => q.2.elim (g q.1).det⁻¹ fun ij => g q.1 ij.1 ij.2) fun b => cond b (a : S) (a⁻¹ : Sˣ))`. Set `g₀ : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) r.R` to `fun τ => Matrix.of fun i j => gr (.inl ⟨τ, some (i, j)⟩)`. Establish `hg₀ : ∀ τ, (g₀ τ).map χ = g τ` using `fun τ => Matrix.ext fun i j => hgr (.inl ⟨τ, some (i, j)⟩)`.
+
+Establish `hd : ∀ τ, IsUnit (g₀ τ).det` using `fun τ => by`. Use `IsUnit.of_mul_eq_one (gr (.inl ⟨τ, none⟩)) (hχ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hgr, AlgHom.map_det, AlgHom.mapMatrix_apply, hg₀]`. Conclude with `mul_inv_cancel₀ (hg τ).ne_zero`. Establish `h1 : gr (.inr true) * gr (.inr false) = 1` using `hχ (by rw [map_mul, map_one, hgr, hgr]; simp)`.
+
+Set `a₀ : r.Rˣ` to `⟨gr (.inr true), gr (.inr false), h1, (mul_comm _ _).trans h1⟩`. Take `⟨z, hz⟩` from `exists_baseChange α y₀`. Establish `hzy : FrMap χ z y` using `frMap_cancel (Xo := Xo) (c := c) _ _ _ α χ y₀ z y hz (hα ▸ h₀)`. Take `⟨z', hz', -⟩` from `existsUnique_frChg E H Dw l Xo c r.R z g₀ a₀ hd`. Use `⟨r, χ, z', (ChgBC.frChg_baseChange E H Dw l Xo c r.R S χ z z' y y' g₀ a₀ hz' hzy).2 ?_⟩` and prove the remaining obligations.
+
+Establish `ha : χ (a₀ : r.R) = (a : S)` using `hgr (.inr true)`. Simplify using `only [hg₀, ha]`. Conclude with `hc`.
+-/
 theorem fromTest_of_same_point {S : Type} [Field S] [Algebra c.F S] {y y' : FrPt Xo c S} (hx : y'.x = y.x)
     (hy : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) :
     FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y' := by
@@ -241,6 +324,15 @@ theorem fromTest_of_same_point {S : Type} [Field S] [Algebra c.F S] {y y' : FrPt
   simp only [hg₀, ha]
   exact hc
 
+/- English proof (translation)
+Use `Formalism.L2.PjFree.reFrame_of (fun S _ x _ v hv _ w A N w' hw hw' => GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S x v hv w A N w' hw hw') ?_` and prove the remaining obligations. Introduce `T io`. Set `_` to `io.toAlgebra`. Introduce `y0 z hx k hk`. Establish `hK : ∀ τ, IsUnit ((k τ).map (algebraMap T.V T.Fr)).det` using `fun τ => by`.
+
+Establish `e : ((k τ).map (algebraMap T.V T.Fr)).det = algebraMap T.V T.Fr (k τ).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[e]`. Conclude with `(hk τ).map _`. Take `⟨zx, zo, zu, zt, ze, zb, zs, zg⟩` from `z`. Simplify using `only at hx`.
+
+Substitute `hx` using the available equality. Take `⟨u0, hu0⟩` from `IntRebase.gen_unit' (x := y0.1.x) zs y0.1.s zg y0.1.gen`. Use `⟨⟨IntRebase.rebase₂ y0.1 _ hK, fromTest_of_same_point (y := y0.1) rfl y0.2.1, IntRebase.integral_reb T io y0.1 y0.2.2 k hk hK⟩, u0, rfl, fun τ i => ?_, 𝟙 _, Category.id_comp _, Category.id_comp _, ?_⟩` and prove the remaining obligations. Conclude with `(IntRebase.isCombAtG_iff Xo.univ.t y0.1.x (fun j => IntRebase.ovT (t := Xo.univ.t) (y0.1.tan τ j)) _ _).2 rfl`. Introduce `i h show ((𝟙 _ : Gx y0.1.x ⟶ Gx y0.1.x).appLE _ _ h).hom (scal y0.1.x (u0 : T.Fr) i * zs.f i) = y0.1.s.f i`.
+
+Rewrite using `[← hu0 i]`. Conclude with `IntRebase.id_appLE_apply _ _ h _`.
+-/
 theorem reFrame : Formalism.L2.PjFree.ReFrame Xo c := by
   refine Formalism.L2.PjFree.reFrame_of
     (fun S _ x _ v hv _ w A N w' hw hw' => GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S x v hv w A N w' hw hw') ?_

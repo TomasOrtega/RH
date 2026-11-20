@@ -10,11 +10,29 @@ namespace Formalism.L2.SG.Pf.BH.Model
 
 def sqs {n : ℕ} (w : Fin n → ℝ) : ℝ := ∑ i, (w i) ^ 2
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, sq_abs]`.
+-/
 theorem norm_sq_euclid {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) : ‖x‖ ^ 2 = ∑ i, (WithLp.ofLp x i) ^ 2 := by
   rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Establish `hA` using `PiLp.volume_preserving_ofLp (Fin a)`. Establish `hB` using `PiLp.volume_preserving_ofLp (Fin b)`. Establish `hC` using `PiLp.volume_preserving_ofLp (Fin (a + b))`. Establish `hEa : MeasurableEmbedding (@WithLp.ofLp 2 (Fin a → ℝ))` using `(MeasurableEquiv.toLp 2 (Fin a → ℝ)).symm.measurableEmbedding`. Establish `hEb : MeasurableEmbedding (@WithLp.ofLp 2 (Fin b → ℝ))` using `(MeasurableEquiv.toLp 2 (Fin b → ℝ)).symm.measurableEmbedding`.
+
+Establish `hEc : MeasurableEmbedding (@WithLp.ofLp 2 (Fin (a + b) → ℝ))` using `(MeasurableEquiv.toLp 2 (Fin (a + b) → ℝ)).symm.measurableEmbedding`. Establish `e1 : ∀ x : EuclideanSpace ℝ (Fin a), ‖x‖ ^ 2 = sqs (WithLp.ofLp x)` using `norm_sq_euclid`. Establish `e2 : ∀ y : EuclideanSpace ℝ (Fin b), ‖y‖ ^ 2 = sqs (WithLp.ofLp y)` using `norm_sq_euclid`. Establish `e3 : ∀ z : EuclideanSpace ℝ (Fin (a + b)), ‖z‖ ^ 2 = sqs (WithLp.ofLp z)` using `norm_sq_euclid`. Repeatedly rewrite using `[e1, e2, e3]`.
+
+Rewrite using `[hC.lintegral_comp_emb hEc (fun w => F (sqs w))]`. Establish `inner : ∀ x : EuclideanSpace ℝ (Fin a), ∫⁻ y : EuclideanSpace ℝ (Fin b), F (sqs (WithLp.ofLp x) + sqs (WithLp.ofLp y)) = ∫⁻ q : Fin b → ℝ, F (sqs (WithLp.ofLp x) + sqs q)` using `fun x => hB.lintegral_comp_emb hEb (fun q => F (sqs (WithLp.ofLp x) + sqs q))`. Repeatedly rewrite using `[inner]`. Rewrite using `[hA.lintegral_comp_emb hEa (fun p => ∫⁻ q : Fin b → ℝ, F (sqs p + sqs q))]`. Establish `hS : Measurable fun w : Fin (a + b) → ℝ => sqs w` using `by unfold sqs; fun_prop`.
+
+Establish `hsum` using `volume_measurePreserving_sumPiEquivProdPi (fun _ : Fin a ⊕ Fin b => ℝ)`. Establish `hcong` using `volume_measurePreserving_piCongrLeft (fun _ : Fin (a + b) => ℝ) finSumFinEquiv`. Rewrite using `[← hcong.lintegral_comp_emb (MeasurableEquiv.piCongrLeft _ finSumFinEquiv).measurableEmbedding]`. Rewrite using `[← hsum.symm.lintegral_comp_emb (MeasurableEquiv.sumPiEquivProdPi _).symm.measurableEmbedding]`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ ?meas]`.
+
+Use `lintegral_congr fun p => lintegral_congr fun q => ?_` and prove the remaining obligations. Use `congr 1`. Use `symm`. Unfold `sqs`. Rewrite using `[← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]`.
+
+Establish `h1 : ∀ (g : Fin a ⊕ Fin b → ℝ) (i : Fin a), (Equiv.piCongrLeft (fun _ => ℝ) finSumFinEquiv) g (Fin.castAdd b i) = g (Sum.inl i)` using `fun g i => by`. Rewrite using `[← finSumFinEquiv_apply_left, Equiv.piCongrLeft_apply_apply]`. Establish `h2 : ∀ (g : Fin a ⊕ Fin b → ℝ) (i : Fin b), (Equiv.piCongrLeft (fun _ => ℝ) finSumFinEquiv) g (Fin.natAdd a i) = g (Sum.inr i)` using `fun g i => by`. Rewrite using `[← finSumFinEquiv_apply_right, Equiv.piCongrLeft_apply_apply]`. Simplify using `[MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, h1, h2, Equiv.sumPiEquivProdPi]`.
+
+Conclude with `((hF.comp hS).comp (MeasurableEquiv.piCongrLeft _ finSumFinEquiv).measurable).comp (MeasurableEquiv.sumPiEquivProdPi _).symm.measurable |>.aemeasurable`.
+-/
 theorem euclid_prod (a b : ℕ) (F : ℝ → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ x : EuclideanSpace ℝ (Fin a), ∫⁻ y : EuclideanSpace ℝ (Fin b), F (‖x‖ ^ 2 + ‖y‖ ^ 2) =
       ∫⁻ z : EuclideanSpace ℝ (Fin (a + b)), F (‖z‖ ^ 2) := by
@@ -62,10 +80,18 @@ end Formalism.L2.SG.Pf.BH.Model
 
 namespace Formalism.L2.SG.Pf.BH.Model
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem euclid_cast (a b : ℕ) (h : a = b) (F : ℝ → ℝ≥0∞) :
     ∫⁻ z : EuclideanSpace ℝ (Fin a), F (‖z‖ ^ 2) = ∫⁻ z : EuclideanSpace ℝ (Fin b), F (‖z‖ ^ 2) := by
   subst h; rfl
 
+/- English proof (translation)
+Set `φ` to `(stdOrthonormalBasis ℝ E).repr`. Establish `hφ : MeasurePreserving φ` using `φ.measurePreserving`. Establish `he : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`. Rewrite using `[← hφ.lintegral_comp_emb he (fun x => F (‖x‖ ^ 2))]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearIsometryEquiv.norm_map]`.
+-/
 theorem ip_to_euclid (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (F : ℝ → ℝ≥0∞) :
     ∫⁻ y : E, F (‖y‖ ^ 2) = ∫⁻ x : EuclideanSpace ℝ (Fin (Module.finrank ℝ E)), F (‖x‖ ^ 2) := by
@@ -76,6 +102,23 @@ theorem ip_to_euclid (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   refine lintegral_congr fun y => ?_
   rw [LinearIsometryEquiv.norm_map]
 
+/- English proof (translation)
+Use `set G : ℝ → ℝ≥0∞ := fun t => ∫⁻ x : EuclideanSpace ℝ (Fin m), F (t + ‖x‖ ^ 2) with hG`. Establish `hGm : Measurable G`. Establish `: Measurable fun p : ℝ × EuclideanSpace ℝ (Fin m) => F (p.1 + ‖p.2‖ ^ 2)` using `hF.comp (by fun_prop)`. Conclude with `this.lintegral_prod_right'`. Establish `hs : (Real.sqrt 2) ≠ 0` using `by positivity`.
+
+Establish `hmap` using `Measure.map_addHaar_smul (volume : Measure ℂ) hs`. Establish `e1 : ∀ w : ℂ, 2 * ‖w‖ ^ 2 = ‖(Real.sqrt 2) • w‖ ^ 2`. Introduce `w; rw [norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by norm_num)]`. Establish `step1 : ∫⁻ w : ℂ, G (2 * ‖w‖ ^ 2) = 2⁻¹ * ∫⁻ w : ℂ, G (‖w‖ ^ 2)`. Repeatedly rewrite using `[e1]`.
+
+Establish `hmeas : Measurable fun w : ℂ => G (‖w‖ ^ 2)` using `hGm.comp (by fun_prop)`. Rewrite using `[← lintegral_map hmeas (by fun_prop : Measurable fun w : ℂ => (Real.sqrt 2) • w), hmap, lintegral_smul_measure, Complex.finrank_real_complex]`. Use `congr 1`. Rewrite using `[show Real.sqrt 2 ^ 2 = 2 by rw [Real.sq_sqrt (by norm_num)]]`. Rewrite using `[abs_of_pos (by norm_num : (0 : ℝ) < 2⁻¹), ENNReal.ofReal_inv_of_pos (by norm_num)]`.
+
+Simplify using the standard rewrite rules. Establish `step2 : ∫⁻ w : ℂ, G (‖w‖ ^ 2) = ∫⁻ y : EuclideanSpace ℝ (Fin 2), G (‖y‖ ^ 2)`. Establish `h1` using `Complex.volume_preserving_equiv_pi`. Establish `h2` using `PiLp.volume_preserving_ofLp (Fin 2)`. Establish `he2 : MeasurableEmbedding (@WithLp.ofLp 2 (Fin 2 → ℝ))` using `(MeasurableEquiv.toLp 2 (Fin 2 → ℝ)).symm.measurableEmbedding`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Complex.measurableEquivPi_apply, sqs, Fin.sum_univ_two, Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫⁻ p : Fin 2 → ℝ, G (sqs p) := h1.lintegral_comp_emb Complex.measurableEquivPi.measurableEmbedding (fun p => G (sqs p))`. Use `_ = ∫⁻ y : EuclideanSpace ℝ (Fin 2), G (sqs (WithLp.ofLp y)) := (h2.lintegral_comp_emb he2 (fun p => G (sqs p))).symm`. Use `_ = ∫⁻ y : EuclideanSpace ℝ (Fin 2), G (‖y‖ ^ 2) := by`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_sq_euclid]`. Both sides reduce to the same expression. Establish `hmain : ∫⁻ w : ℂ, ∫⁻ x : EuclideanSpace ℝ (Fin m), F (2 * ‖w‖ ^ 2 + ‖x‖ ^ 2) = ∫⁻ w : ℂ, G (2 * ‖w‖ ^ 2)` using `rfl`. Rewrite using `[hmain, step1, step2]`. Use `congr 1`.
+
+Conclude with `euclid_prod 2 m F hF`.
+-/
 theorem cplx_step (m : ℕ) (F : ℝ → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ w : ℂ, ∫⁻ x : EuclideanSpace ℝ (Fin m), F (2 * ‖w‖ ^ 2 + ‖x‖ ^ 2) =
       2⁻¹ * ∫⁻ z : EuclideanSpace ℝ (Fin (2 + m)), F (‖z‖ ^ 2) := by
@@ -124,6 +167,21 @@ end Formalism.L2.SG.Pf.BH.Model
 
 namespace Formalism.L2.SG.Pf.BH.Model
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Introduce `m F hF`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty, lintegral_dirac]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, mul_zero, zero_add, pow_zero, inv_one, one_mul]`.
+
+Conclude with `euclid_cast m (2 * 0 + m) (by ring) F`. Consider the case `succ r ih`. Introduce `m F hF`. Establish `hp` using `measurePreserving_piFinSuccAbove (fun _ : Fin (r + 1) => (volume : Measure ℂ)) 0`. Establish `hmeasH : Measurable fun u : Fin (r + 1) → ℂ => ∫⁻ x : EuclideanSpace ℝ (Fin m), F (2 * ∑ a, ‖u a‖ ^ 2 + ‖x‖ ^ 2)`.
+
+Establish `: Measurable fun p : (Fin (r + 1) → ℂ) × EuclideanSpace ℝ (Fin m) => F (2 * ∑ a, ‖p.1 a‖ ^ 2 + ‖p.2‖ ^ 2)` using `hF.comp (by fun_prop)`. Conclude with `this.lintegral_prod_right'`. Rewrite using `[MeasureTheory.volume_pi, ← hp.symm.lintegral_comp_emb (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0).symm.measurableEmbedding]`. Establish `hsplit : ∀ p : ℂ × (Fin r → ℂ), ∑ a, ‖(MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0).symm p a‖ ^ 2 = ‖p.1‖ ^ 2 + ∑ a, ‖p.2 a‖ ^ 2`. Introduce `p`.
+
+Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[MeasurableEquiv.piFinSuccAbove, Fin.insertNth_zero']`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[lintegral_prod _ ?meas]`. Establish `inner : ∀ w : ℂ, ∫⁻ u' : Fin r → ℂ, ∫⁻ x : EuclideanSpace ℝ (Fin m), F (2 * (‖w‖ ^ 2 + ∑ a, ‖u' a‖ ^ 2) + ‖x‖ ^ 2) ∂volume ∂(Measure.pi fun _ => volume) = (2 ^ r)⁻¹ * ∫⁻ z : EuclideanSpace ℝ (Fin (2 * r + m)), F (2 * ‖w‖ ^ 2 + ‖z‖ ^ 2)`.
+
+Introduce `w`. Use `ih m (fun t => F (2 * ‖w‖ ^ 2 + t)) (hF.comp (by fun_prop))` as an intermediate fact. Rewrite using `[← MeasureTheory.volume_pi]`. Rewrite using `[← this]`. Use `lintegral_congr fun u' => lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_const_mul' _ _ (by simp), cplx_step (2 * r + m) F hF, euclid_cast (2 + (2 * r + m)) (2 * (r + 1) + m) (by ring) F, ← mul_assoc, pow_succ, ENNReal.mul_inv (by simp) (by simp)]`. Establish `: Measurable fun q : (ℂ × (Fin r → ℂ)) × EuclideanSpace ℝ (Fin m) => F (2 * (‖q.1.1‖ ^ 2 + ∑ a, ‖q.1.2 a‖ ^ 2) + ‖q.2‖ ^ 2)` using `hF.comp (by fun_prop)`.
+
+Conclude with `this.lintegral_prod_right'.aemeasurable`.
+-/
 theorem cpow_step (r : ℕ) : ∀ (m : ℕ) (F : ℝ → ℝ≥0∞), Measurable F →
     ∫⁻ u : Fin r → ℂ, ∫⁻ x : EuclideanSpace ℝ (Fin m), F (2 * ∑ a, ‖u a‖ ^ 2 + ‖x‖ ^ 2) =
       (2 ^ r)⁻¹ * ∫⁻ z : EuclideanSpace ℝ (Fin (2 * r + m)), F (‖z‖ ^ 2) := by
@@ -171,9 +229,31 @@ end Formalism.L2.SG.Pf.BH.Model
 
 namespace Formalism.L2.SG.Pf.BH.Model
 
+/- English proof (translation)
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg y), ENNReal.ofReal, norm_toNNReal]`.
+-/
 theorem enn_sq {E : Type*} [NormedAddCommGroup E] (y : E) : ((‖y‖₊ : ℝ≥0∞)) ^ 2 = ENNReal.ofReal (‖y‖ ^ 2) := by
   rw [ENNReal.ofReal_pow (norm_nonneg y), ENNReal.ofReal, norm_toNNReal]
 
+/- English proof (translation)
+Introduce `E1 E2 _ _ _ _ _ _ _ _ _ _ r s hs`. Use `set G : ℝ → ℝ≥0∞ := fun t => if t < s ^ 2 then 1 else 0 with hG`. Establish `hGm : Measurable G` using `Measurable.ite measurableSet_Iio measurable_const measurable_const`. Establish `hs2 : 0 < s ^ 2` using `by positivity`. Establish `hint : ∀ (c : Fin r → ℂ) (y1 : E1) (y2 : E2) (y3 : E1), (if (‖y1‖₊ : ℝ≥0∞) ^ 2 + ENNReal.ofReal (2 * ∑ a, ‖c a - 1‖ ^ 2) + (‖y2‖₊ : ℝ≥0∞) ^ 2 + (‖y3‖₊ : ℝ≥0∞) ^ 2 < ENNReal.ofReal (s ^ 2) then (1 : ℝ≥0∞) else 0) = G (2 * ∑ a, ‖c a - 1‖ ^ 2 + (‖y1‖ ^ 2 + (‖y2‖ ^ 2 + ‖y3‖ ^ 2)))`.
+
+Introduce `c y1 y2 y3`. Establish `hB : 0 ≤ 2 * ∑ a, ‖c a - 1‖ ^ 2` using `by positivity`. Rewrite using `[enn_sq, enn_sq, enn_sq, ← ENNReal.ofReal_add (by positivity) hB, ← ENNReal.ofReal_add (by positivity) (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Simplify using `only [ENNReal.ofReal_lt_ofReal_iff hs2, hG]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; linarith)`.
+
+Repeatedly rewrite using `[hint]`. Establish `step : ∀ B : ℝ, ∫⁻ y1 : E1, ∫⁻ y2 : E2, ∫⁻ y3 : E1, G (B + (‖y1‖ ^ 2 + (‖y2‖ ^ 2 + ‖y3‖ ^ 2))) = ∫⁻ w : EuclideanSpace ℝ (Fin (Module.finrank ℝ E1 + (Module.finrank ℝ E2 + Module.finrank ℝ E1))), G (B + ‖w‖ ^ 2)`. Introduce `B`. Establish `s3 : ∀ t : ℝ, ∫⁻ y2 : E2, ∫⁻ y3 : E1, G (B + (t + (‖y2‖ ^ 2 + ‖y3‖ ^ 2))) = ∫⁻ z : EuclideanSpace ℝ (Fin (Module.finrank ℝ E2 + Module.finrank ℝ E1)), G (B + (t + ‖z‖ ^ 2))`. Introduce `t`.
+
+Establish `a1 : ∀ y2 : E2, ∫⁻ y3 : E1, G (B + (t + (‖y2‖ ^ 2 + ‖y3‖ ^ 2))) = ∫⁻ x3 : EuclideanSpace ℝ (Fin (Module.finrank ℝ E1)), G (B + (t + (‖y2‖ ^ 2 + ‖x3‖ ^ 2)))` using `fun y2 => ip_to_euclid E1 (fun u => G (B + (t + (‖y2‖ ^ 2 + u))))`. Repeatedly rewrite using `[a1]`. Rewrite using `[ip_to_euclid E2 (fun u => ∫⁻ x3 : EuclideanSpace ℝ (Fin (Module.finrank ℝ E1)), G (B + (t + (u + ‖x3‖ ^ 2))))]`. Conclude with `euclid_prod _ _ (fun u => G (B + (t + u))) (hGm.comp (by fun_prop))`. Repeatedly rewrite using `[s3]`.
+
+Rewrite using `[ip_to_euclid E1 (fun u => ∫⁻ z : EuclideanSpace ℝ (Fin (Module.finrank ℝ E2 + Module.finrank ℝ E1)), G (B + (u + ‖z‖ ^ 2)))]`. Conclude with `euclid_prod _ _ (fun u => G (B + u)) (hGm.comp (by fun_prop))`. Repeatedly rewrite using `[step]`. Establish `htr` using `lintegral_add_left_eq_self (μ := (volume : Measure (Fin r → ℂ))) (fun c : Fin r → ℂ => ∫⁻ w : EuclideanSpace ℝ (Fin (Module.finrank ℝ E1 + (Module.finrank ℝ E2 + Module.finrank ℝ E1))), G (2 * ∑ a, ‖c a - 1‖ ^ 2 + ‖w‖ ^ 2)) 1`. Rewrite using `[← htr]`.
+
+Simplify using `only [Pi.add_apply, Pi.one_apply, add_sub_cancel_left]`. Rewrite using `[cpow_step r _ G hGm]`. Establish `hball : ∀ (n : ℕ), ∫⁻ z : EuclideanSpace ℝ (Fin n), G (‖z‖ ^ 2) = volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) s)`. Introduce `n`. Rewrite using `[← lintegral_indicator_one measurableSet_ball]`.
+
+Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [hG, Set.indicator, Metric.mem_ball, dist_zero_right, Pi.one_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hs.le h`. Introduce `h`. Conclude with `pow_lt_pow_left₀ h (norm_nonneg _) two_ne_zero`. Rewrite using `[euclid_cast _ (2 * Module.finrank ℝ E1 + 2 * r + Module.finrank ℝ E2) (by ring) G, hball, ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem modelVol : Formalism.L2.SG.Pf.BH.ModelVol := by
   intro E1 E2 _ _ _ _ _ _ _ _ _ _ r s hs
   set G : ℝ → ℝ≥0∞ := fun t => if t < s ^ 2 then 1 else 0 with hG

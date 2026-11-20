@@ -33,6 +33,19 @@ noncomputable def UpperTheory.Reformulated.B.StrictlyUpperRank.rankBelow.{u_2} :
                   (@Lattice.toSemilatticeInf n (@DistribLattice.toLattice n (@instDistribLatticeOfLinearOrder n inst_1))))))
             x i}
 
+/- English proof (translation)
+Introduce `𝕜 _ n _ _ X hX k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j h`. Establish `hij : i = j`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `h (by rw [pow_zero]; exact Matrix.one_apply_ne hne)`. Substitute `hij` using the available equality. Conclude with `le_rfl`. Consider the case `succ k ih`.
+
+Introduce `i j h`. Rewrite `h` using `[pow_succ, Matrix.mul_apply]`. Take `⟨l, -, hl⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Establish `h1` using `ih i l (left_ne_zero_of_mul hl)`. Establish `hlj : l < j`.
+
+Assume the negation of the conclusion as `hle`. Conclude with `right_ne_zero_of_mul hl (hX l j (not_lt.mp hle))`. Establish `h2 : UpperTheory.Reformulated.B.StrictlyUpperRank.rankBelow l < UpperTheory.Reformulated.B.StrictlyUpperRank.rankBelow j`. Unfold `UpperTheory.Reformulated.B.StrictlyUpperRank.rankBelow`. Apply `Finset.card_lt_card` to reduce the goal to its premises.
+
+Use `⟨fun x hx => ?_, fun hsub => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Conclude with `hx.trans hlj`. Establish `hm` using `@hsub l (by simpa using hlj)`. Simplify using `at hm`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.Reformulated.B.StrictlyUpperRank.rank_add_le_of_pow_ne_zero.{u_1, u_2} :
     ∀ {𝕜 : Type u_1} [inst : RCLike 𝕜] {n : Type u_2} [inst_1 : Fintype n] [inst_2 : LinearOrder n] {X : Matrix n n 𝕜},
       @UpperTheory.Reformulated.B.StrictlyUpperRank.IsStrictUpper 𝕜 inst n inst_2 X →

@@ -5,6 +5,11 @@ namespace GlobalTheory
 
 open Finset
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation`. Consider the case `exact _root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation`. Consider the case `(apply _root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation ..)`.
+-/
 theorem exists_finite_reproducing_of_submodule {X : Type} (V : Submodule ℂ (X → ℂ))
     (F : Finset ↥V) :
     ∃ (S : Finset X) (u : X → ↥V), ∀ f ∈ F, f = ∑ x ∈ S, (f : X → ℂ) x • u x := by
@@ -16,6 +21,15 @@ theorem exists_finite_reproducing_of_submodule {X : Type} (V : Submodule ℂ (X 
   | (intros; apply @_root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LagrangeInterpolationExistence.exists_interpolation ..)
 
+/- English proof (translation)
+Set `T : Finset A` to `τ.support ∪ τ'.support`. Set `F : ∀ k, Finset ↥(V k)` to `fun k => T.image (fun a => φ a k) ∪ T.image (fun a => φ' a k)`. Use `choose S u hSu using fun k => exists_finite_reproducing_of_submodule (V k) (F k)`. Establish `key : ∀ w : ∀ k, ↥(V k), (∀ k, w k ∈ F k) → M w = ∑ z ∈ Fintype.piFinset S, (∏ k, (w k : X k → ℂ) (z k)) • M (fun k => u k (z k))`. Introduce `w hw`.
+
+Establish `hw' : w = fun k => ∑ x ∈ S k, (w k : X k → ℂ) x • u k x`. Use function extensionality and compare the values at `fun k => hSu k (w k) (hw k)`. Use `conv_lhs => rw [hw']`. Rewrite using `[MultilinearMap.map_sum_finset]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MultilinearMap.map_smul_univ]`. Establish `expand : ∀ (σ : A →₀ ℂ) (ψ : A → ∀ k, ↥(V k)), σ.support ⊆ T → (∀ a ∈ T, ∀ k, ψ a k ∈ F k) → (σ.sum fun a c => c • M (ψ a)) = ∑ z ∈ Fintype.piFinset S, (σ.sum fun a c => c * ∏ k, (ψ a k : X k → ℂ) (z k)) • M (fun k => u k (z k))`. Introduce `σ ψ hσ hψ`. Unfold `Finsupp.sum`. Rewrite using `[Finset.sum_congr rfl fun a ha => congrArg (σ a • ·) (key (ψ a) (hψ a (hσ ha)))]`.
+
+Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[expand τ φ Finset.subset_union_left (fun a ha k => Finset.mem_union_left _ (Finset.mem_image_of_mem _ ha)), expand τ' φ' Finset.subset_union_right (fun a ha k => Finset.mem_union_right _ (Finset.mem_image_of_mem _ ha))]`. Conclude with `Finset.sum_congr rfl fun z _ => by rw [h z]`.
+-/
 theorem finsupp_sum_multilinear_eq_of_prod_eq {ι : Type} [Fintype ι] [DecidableEq ι]
     {X : ι → Type} (V : ∀ k, Submodule ℂ (X k → ℂ)) {R : Type} [AddCommGroup R] [Module ℂ R]
     (M : MultilinearMap ℂ (fun k => ↥(V k)) R) {A : Type} (τ τ' : A →₀ ℂ)

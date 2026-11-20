@@ -10,6 +10,11 @@ open MeasureTheory Complex
 
 noncomputable section
 
+/- English proof (translation)
+Set `e` to `(Module.finBasis ℂ W).equivFun.toContinuousLinearEquiv`. Establish `h1 : Differentiable ℂ (f ∘ e.symm)` using `by first`. Consider the case `exact hf.comp e.symm.differentiable`. Consider the case `exact hf.comp (e.symm.contDiff.differentiable (by simp))`. Establish `h3` using `(contDiff_of_differentiable h1 (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).comp e.contDiff`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+-/
 theorem contDiff_of_diff {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     {f : W → ℂ} (hf : Differentiable ℂ f) : ContDiff ℂ (⊤ : ℕ∞) f := by
   let e := (Module.finBasis ℂ W).equivFun.toContinuousLinearEquiv
@@ -21,6 +26,11 @@ theorem contDiff_of_diff {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] 
   convert h3 using 1
   funext v; simp
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq x, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Simplify using `[Hf, Complex.re_sum, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [← Complex.ofReal_pow, Complex.ofReal_re]`.
+
+Consider the case `norm_cast`. Consider the case `simp [sq]`.
+-/
 theorem jof_Hf_self_re {ι : Type} [Fintype ι] (x : EuclideanSpace ℂ ι) : (Hf x x).re = ‖x‖ ^ 2 := by
   rw [EuclideanSpace.norm_eq x, Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
   simp [Hf, Complex.re_sum, Complex.mul_conj, Complex.normSq_eq_norm_sq]
@@ -35,6 +45,9 @@ variable {E : Type} [Field E] [NumberField E] (X : PT E)
 def tens {n : ℕ} (s : Fin n → (Fin 1 → Vsp X.dim) → ℂ) : (Fin n → Vsp X.dim) → ℂ :=
   fun v => ∏ k, s k (fun _ => v k)
 
+/- English proof (translation)
+Establish `hd : Differentiable ℂ s` using `(show Differentiable ℂ s ∧ _ from hs).1`. Apply `contDiff_of_diff` to reduce the goal to its premises. Use `first`. Consider the case `exact hd.comp (differentiable_pi.mpr fun _ => differentiable_id)`. Consider the case `fun_prop`.
+-/
 theorem col_contDiff {q : ℕ} {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec q 1) :
     ContDiff ℂ (⊤ : ℕ∞) (fun z : Vsp X.dim => s (fun _ => z)) := by
   have hd : Differentiable ℂ s := (show Differentiable ℂ s ∧ _ from hs).1
@@ -43,10 +56,20 @@ theorem col_contDiff {q : ℕ} {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X
   | exact hd.comp (differentiable_pi.mpr fun _ => differentiable_id)
   | fun_prop
 
+/- English proof (translation)
+Conclude with `contDiff_of_diff (show Differentiable ℂ F ∧ _ from hF).1`.
+-/
 theorem sec_contDiff {q n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q n) :
     ContDiff ℂ (⊤ : ℕ∞) F := by
   exact contDiff_of_diff (show Differentiable ℂ F ∧ _ from hF).1
 
+/- English proof (translation)
+Establish `hd : ∀ k, Differentiable ℂ (s k)` using `fun k => (show Differentiable ℂ (s k) ∧ _ from hs k).1`. Use `show _ ∧ _`. Use `⟨?_, fun γ hγ v => ?_⟩` and prove the remaining obligations. Use `show Differentiable ℂ (fun v : Fin n → Vsp X.dim => ∏ k, s k (fun _ => v k)) first`. Consider the case `exact Differentiable.finset_prod (fun k _ => (hd k).comp (differentiable_pi.mpr fun _ => differentiable_apply k))`.
+
+Consider the case `fun_prop`. Establish `he : ∀ k, s k (fun _ => (v + γ) k) = ((X.eps (γ k) : ℂ)) ^ q * cexp (q * Real.pi * Hf (v k) (γ k) + q * Real.pi * Hf (γ k) (γ k) / 2) * s k (fun _ => v k)`. Introduce `k`. Use `(show Differentiable ℂ (s k) ∧ ∀ γ' : Fin 1 → Vsp X.dim, (∀ j, γ' j ∈ X.L) → ∀ w, s k (w + γ') = (∏ j, (X.eps (γ' j) : ℂ)) ^ q * cexp (q * Real.pi * HC w γ' + q * Real.pi * HC γ' γ' / 2) * s k w from hs k).2 (fun _ => γ k) (fun _ => hγ k) (fun _ => v k)` as an intermediate fact. Simplify `this` using `[HC, Pi.add_def]`.
+
+Establish `hsum : ∑ k, ((q : ℂ) * Real.pi * Hf (v k) (γ k) + q * Real.pi * Hf (γ k) (γ k) / 2) = q * Real.pi * HC v γ + q * Real.pi * HC γ γ / 2`. Simplify using `only [HC, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_div]`. Use `show ∏ k, s k (fun _ => (v + γ) k) = (∏ k, (X.eps (γ k) : ℂ)) ^ q * cexp (q * Real.pi * HC v γ + q * Real.pi * HC γ γ / 2) * ∏ k, s k (fun _ => v k)`. Rewrite using `[Finset.prod_congr rfl fun k _ => he k, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow, ← Complex.exp_sum, hsum]`.
+-/
 theorem tens_mem {n q : ℕ} {s : Fin n → (Fin 1 → Vsp X.dim) → ℂ} (hs : ∀ k, s k ∈ X.Sec q 1) :
     tens X s ∈ X.Sec q n := by
   have hd : ∀ k, Differentiable ℂ (s k) := fun k => (show Differentiable ℂ (s k) ∧ _ from hs k).1
@@ -72,6 +95,9 @@ theorem tens_mem {n q : ℕ} {s : Fin n → (Fin 1 → Vsp X.dim) → ℂ} (hs :
     rw [Finset.prod_congr rfl fun k _ => he k, Finset.prod_mul_distrib, Finset.prod_mul_distrib,
       Finset.prod_pow, ← Complex.exp_sum, hsum]
 
+/- English proof (translation)
+Establish `hHC : (HC v v).re = ∑ k, (HC (fun _ : Fin 1 => v k) (fun _ => v k)).re`. Simplify using `[HC, Complex.re_sum]`. Simplify using `only [PT.ptN2, tens]`. Rewrite using `[norm_prod, ← Finset.prod_pow, hHC, Finset.mul_sum, Real.exp_sum, ← Finset.prod_mul_distrib]`.
+-/
 theorem pointNormSq_tensor {n : ℕ} (q : ℕ) (s : Fin n → (Fin 1 → Vsp X.dim) → ℂ) (v : Fin n → Vsp X.dim) :
     X.ptN2 q (tens X s) v = ∏ k, X.ptN2 q (s k) (fun _ => v k) := by
   have hHC : (HC v v).re = ∑ k, (HC (fun _ : Fin 1 => v k) (fun _ => v k)).re := by
@@ -79,6 +105,13 @@ theorem pointNormSq_tensor {n : ℕ} (q : ℕ) (s : Fin n → (Fin 1 → Vsp X.d
   simp only [PT.ptN2, tens]
   rw [norm_prod, ← Finset.prod_pow, hHC, Finset.mul_sum, Real.exp_sum, ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `hfd : X.fd n = Set.univ.pi (fun _ : Fin n => ZSpan.fundamentalDomain X.b)`. Use extensionality with `v`. Simplify using `[PT.fd]`. Rewrite using `[hfd]`. Simplify using `only [MeasureTheory.setAverage_eq, smul_eq_mul]`.
+
+Rewrite using `[MeasureTheory.volume_pi, MeasureTheory.Measure.restrict_pi_pi]`. Simplify using `only [MeasureTheory.measureReal_def]`. Rewrite using `[MeasureTheory.Measure.pi_pi, ENNReal.toReal_prod, ← Finset.prod_inv_distrib]`. Use `first`. Consider the case `rw [MeasureTheory.integral_fintype_prod_eq_prod, ← Finset.prod_mul_distrib]`.
+
+Consider the case `rw [MeasureTheory.integral_fintype_prod_eq_prod (μ := fun _ => _), ← Finset.prod_mul_distrib]`.
+-/
 theorem avg_fd_prod {n : ℕ} (f : Fin n → Vsp X.dim → ℝ) :
     ⨍ v in X.fd n, ∏ k, f k (v k) = ∏ k, ⨍ x in ZSpan.fundamentalDomain X.b, f k x := by
   have hfd : X.fd n = Set.univ.pi (fun _ : Fin n => ZSpan.fundamentalDomain X.b) := by
@@ -92,6 +125,9 @@ theorem avg_fd_prod {n : ℕ} (f : Fin n → Vsp X.dim → ℝ) :
   | rw [MeasureTheory.integral_fintype_prod_eq_prod, ← Finset.prod_mul_distrib]
   | rw [MeasureTheory.integral_fintype_prod_eq_prod (μ := fun _ => _), ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `hv : ∀ v : Fin 1 → Vsp X.dim, (fun _ : Fin 1 => v 0) = v` using `fun v => funext fun k => by rw [Subsingleton.elim k 0]`. Establish `h` using `avg_fd_prod X (n := 1) (fun _ x => X.ptN2 q s (fun _ => x))`. Simplify using `only [Fin.prod_univ_one, hv] at h`. Conclude with `h`.
+-/
 theorem l2_norm_fundamental_domain (q : ℕ) (s : (Fin 1 → Vsp X.dim) → ℂ) :
     X.l2 q s = ⨍ x in ZSpan.fundamentalDomain X.b, X.ptN2 q s (fun _ => x) := by
   have hv : ∀ v : Fin 1 → Vsp X.dim, (fun _ : Fin 1 => v 0) = v :=
@@ -100,6 +136,9 @@ theorem l2_norm_fundamental_domain (q : ℕ) (s : (Fin 1 → Vsp X.dim) → ℂ)
   simp only [Fin.prod_univ_one, hv] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_congr rfl fun k _ => l2_norm_fundamental_domain X q (s k)]`. Rewrite using `[PT.l2]`. Repeatedly rewrite using `[pointNormSq_tensor X q s]`. Conclude with `avg_fd_prod X (fun k x => X.ptN2 q (s k) (fun _ => x))`.
+-/
 theorem l2_tens_eq_prod {n : ℕ} (q : ℕ) (s : Fin n → (Fin 1 → Vsp X.dim) → ℂ) :
     X.l2 q (tens X s) = ∏ k, X.l2 q (s k) := by
   rw [Finset.prod_congr rfl fun k _ => l2_norm_fundamental_domain X q (s k)]
@@ -107,6 +146,11 @@ theorem l2_tens_eq_prod {n : ℕ} (q : ℕ) (s : Fin n → (Fin 1 → Vsp X.dim)
   simp_rw [pointNormSq_tensor X q s]
   exact avg_fd_prod X (fun k x => X.ptN2 q (s k) (fun _ => x))
 
+/- English proof (translation)
+Establish `h : ∀ v, X.ptN2 q (c • F) v = ‖c‖ ^ 2 * X.ptN2 q F v`. Introduce `v`. Simplify using `only [PT.ptN2, Pi.smul_apply, smul_eq_mul, norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [PT.l2, h]`.
+
+Use `first`. Consider the case `exact MeasureTheory.integral_const_mul _ _`. Consider the case `exact MeasureTheory.integral_mul_left _ _`. Consider the case `simp [MeasureTheory.average, MeasureTheory.integral_const_mul]`.
+-/
 theorem l2_smul {n : ℕ} (q : ℕ) (c : ℂ) (F : (Fin n → Vsp X.dim) → ℂ) :
     X.l2 q (c • F) = ‖c‖ ^ 2 * X.l2 q F := by
   have h : ∀ v, X.ptN2 q (c • F) v = ‖c‖ ^ 2 * X.ptN2 q F v := by
@@ -126,6 +170,37 @@ def gtOf (q : ℕ) : GT (Idx X.dim) where
   ka := fun γ => (X.eps γ : ℂ) ^ q
   ka_abs := fun x hx => by rcases X.eps_pm x hx with h | h <;> simp [h]
 
+/- English proof (translation)
+Establish `hd : Differentiable ℂ s` using `(show Differentiable ℂ s ∧ _ from hs).1`. Use `set g : Vsp X.dim → ℂ := fun z => s (fun _ => z) with hgdef`. Establish `hgc : Continuous g` using `(hd.comp (differentiable_pi.mpr fun _ => differentiable_id)).continuous`. Establish `hq' : ∀ γ ∈ X.L, ∀ x, g (x + γ) = ((X.eps γ : ℂ)) ^ q * cexp (q * Real.pi * Hf x γ + q * Real.pi * Hf γ γ / 2) * g x`. Introduce `γ hγ x`.
+
+Use `(show Differentiable ℂ s ∧ ∀ γ' : Fin 1 → Vsp X.dim, (∀ j, γ' j ∈ X.L) → ∀ w, s (w + γ') = (∏ j, (X.eps (γ' j) : ℂ)) ^ q * cexp (q * Real.pi * HC w γ' + q * Real.pi * HC γ' γ' / 2) * s w from hs).2 (fun _ => γ) (fun _ => hγ) (fun _ => x)` as an intermediate fact. Simplify `this` using `[HC, Pi.add_def, hgdef]`. Establish `hne : ∀ γ ∈ X.L, ∀ x, g (x + γ) = 0 ↔ g x = 0`. Introduce `γ hγ x`. Rewrite using `[hq' γ hγ x]`.
+
+Apply the tactic sequence `have h1 : (X.eps γ : ℂ) ≠ 0 := by rcases X.eps_pm γ hγ with h | h <;> simp [h]`. Simplify using `[h1, Complex.exp_ne_zero]`. Establish `hpx : ∀ x, X.ptN2 q s (fun _ => x) = ‖g x‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖x‖ ^ 2)`. Introduce `x`. Establish `hre : (HC (fun _ : Fin 1 => x) (fun _ => x)).re = ‖x‖ ^ 2` using `by simp [HC, jof_Hf_self_re]`.
+
+Simplify using `only [PT.ptN2, hre, hgdef]`. Establish `hl` using `l2_norm_fundamental_domain X q s`. Rewrite `hl` using `[h0]`. Simplify using `only [hpx] at hl`. Use `set D := ZSpan.fundamentalDomain X.b with hD`.
+
+Establish `hDm : MeasurableSet D` using `ZSpan.fundamentalDomain_measurableSet X.b`. Establish `hDb : Bornology.IsBounded D` using `ZSpan.fundamentalDomain_isBounded X.b`. Use `haveI : MeasureTheory.VAddInvariantMeasure (Submodule.span ℤ (Set.range X.b)) (Vsp X.dim) MeasureTheory.volume := ⟨fun c s _ => by`. Simplify `MeasureTheory.measure_preimage_add MeasureTheory.volume (c : Vsp X.dim) s⟩` using `[Submodule.vadd_def, vadd_eq_add]`. Establish `hfd` using `ZSpan.isAddFundamentalDomain X.b (MeasureTheory.volume : MeasureTheory.Measure (Vsp X.dim))`.
+
+Establish `hD0 : MeasureTheory.volume D ≠ 0` using `hfd.measure_ne_zero (NeZero.ne _)`. Establish `hDt : MeasureTheory.volume D ≠ ⊤` using `hDb.measure_lt_top.ne`. Establish `hcont : Continuous fun x : Vsp X.dim => ‖g x‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖x‖ ^ 2)` using `by first`. Consider the case `fun_prop`. Consider the case `exact ((continuous_norm.comp hgc).pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`.
+
+Establish `hint : MeasureTheory.IntegrableOn (fun x : Vsp X.dim => ‖g x‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖x‖ ^ 2)) D` using `(hcont.continuousOn.integrableOn_compact hDb.isCompact_closure).mono_set subset_closure`. Rewrite `hl` using `[MeasureTheory.setAverage_eq, smul_eq_mul]`. Establish `hI : ∫ x in D, ‖g x‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖x‖ ^ 2) = 0`. Establish `hr : MeasureTheory.volume.real D ≠ 0`. Rewrite using `[MeasureTheory.measureReal_def]`.
+
+Conclude with `ENNReal.toReal_ne_zero.mpr ⟨hD0, hDt⟩`. Break down `mul_eq_zero.mp hl.symm with h | h` into its components or cases. Conclude with `absurd (inv_eq_zero.mp h) hr`. Conclude with `h`. Establish `hae` using `(MeasureTheory.setIntegral_eq_zero_iff_of_nonneg_ae (MeasureTheory.ae_of_all _ fun x => by show (0:ℝ) ≤ _; positivity) hint).mp hI`.
+
+Establish `h2 : ∀ᵐ x ∂(MeasureTheory.volume : MeasureTheory.Measure (Vsp X.dim)), x ∈ D → g x = 0`. Rewrite using `[← MeasureTheory.ae_restrict_iff' hDm]`. Use `filter_upwards [hae] with x hx`. Simplify `hx` using `[Real.exp_ne_zero]`. Rewrite `h2` using `[MeasureTheory.ae_iff]`.
+
+Establish `hset : {x | ¬(x ∈ D → g x = 0)} = {x | g x ≠ 0} ∩ D`. Use extensionality with `x`. Simplify using `[and_comm]`. Rewrite `h2` using `[hset]`. Use `open Pointwise in`.
+
+Establish `hinv : ∀ γ : Submodule.span ℤ (Set.range X.b), γ +ᵥ {x | g x ≠ 0} = {x | g x ≠ 0}`. Introduce `γ`. Use extensionality with `y`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Establish `e : (-γ) +ᵥ y = y + -(γ : Vsp X.dim)` using `by first`. Consider the case `(rw [Submodule.vadd_def, add_comm]; rfl)`. Consider the case `simp [Submodule.vadd_def, add_comm]`. Consider the case `(show ((-γ : Submodule.span ℤ (Set.range X.b)) : Vsp X.dim) + y = _; simp [add_comm])`. Rewrite using `[e]`.
+
+Conclude with `not_congr (hne _ (neg_mem γ.2) y)`. Establish `ht0` using `hfd.measure_zero_of_invariant {x | g x ≠ 0} hinv h2`. Establish `hopen : IsOpen {x | g x ≠ 0}` using `isOpen_ne_fun hgc continuous_const`. Establish `hempty : {x | g x ≠ 0} = ∅` using `(hopen.measure_eq_zero_iff MeasureTheory.volume).mp ht0`. Use function extensionality and compare the values at `v`.
+
+Use `show s v = 0`. Establish `hv : v = fun _ => v 0` using `funext fun k => by rw [Subsingleton.elim k 0]`. Establish `hz : g (v 0) = 0`. Assume the negation of the conclusion as `hc`. Establish `hm : v 0 ∈ ({x | g x ≠ 0} : Set (Vsp X.dim))` using `hc`.
+
+Rewrite `hm` using `[hempty]`. Conclude with `hm`. Rewrite using `[hv]`. Conclude with `hz`.
+-/
 theorem eq_zero_of_l2_eq_zero (hP : Ext.PackingCount) {q : ℕ} (hq : 1 ≤ q) {s : (Fin 1 → Vsp X.dim) → ℂ}
     (hs : s ∈ X.Sec q 1) (h0 : X.l2 q s = 0) : s = 0 := by
   have hd : Differentiable ℂ s := (show Differentiable ℂ s ∧ _ from hs).1
@@ -215,10 +290,18 @@ theorem eq_zero_of_l2_eq_zero (hP : Ext.PackingCount) {q : ℕ} (hq : 1 ≤ q) {
   rw [hv]
   exact hz
 
+/- English proof (translation)
+Simplify using `[polyDeriv, Pi.zero_def]`.
+-/
 theorem polyDeriv_zero_fun {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (P : MvPolynomial σ ℂ) (u : σ → W) (x : W) : polyDeriv P u (0 : W → ℂ) x = 0 := by
   simp [polyDeriv, Pi.zero_def]
 
+/- English proof (translation)
+Unfold `polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [iteratedFDeriv_const_smul_apply ((hF.of_le (by exact_mod_cast le_top)).contDiffAt)]`.
+
+Consider the case `rw [iteratedFDeriv_const_smul_apply (hF.of_le (by exact_mod_cast le_top))]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyDeriv_smul_fun {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     (P : MvPolynomial σ ℂ) (u : σ → W) {F : W → ℂ} (hF : ContDiff ℂ (⊤ : ℕ∞) F) (c : ℂ) (x : W) :
     polyDeriv P u (c • F) x = c * polyDeriv P u F x := by

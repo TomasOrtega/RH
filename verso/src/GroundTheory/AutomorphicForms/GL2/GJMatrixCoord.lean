@@ -28,6 +28,9 @@ def matrixCoordT (x : Matrix n n X) : n × n → X :=
   fun p ↦ x p.2 p.1
 
 omit [Fintype n] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixCoord_neg [Neg X] (x : Matrix n n X) : matrixCoord (-x) = -matrixCoord x := rfl
 
 variable (n X) in
@@ -51,14 +54,23 @@ def matrixCoordTHomeomorph [TopologicalSpace X] : Matrix n n X ≃ₜ (n × n �
   continuous_invFun := continuous_pi fun i ↦ continuous_pi fun j ↦ continuous_apply (j, i)
 
 omit [Fintype n] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_matrixCoordHomeomorph [TopologicalSpace X] :
     ⇑(matrixCoordHomeomorph n X) = matrixCoord := rfl
 
+/- English proof (translation)
+The claim follows from `measurePreserving_curry_symm μ`.
+-/
 theorem measurePreserving_matrixCoord [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] :
     MeasurePreserving (matrixCoord : Matrix n n X → n × n → X) (matrixMeasure μ)
       (Measure.pi fun _ : n × n ↦ μ) :=
   measurePreserving_curry_symm μ
 
+/- English proof (translation)
+Establish `h` using `(measurePreserving_piCongrLeft (fun _ : n × n ↦ μ) (Equiv.prodComm n n)).comp (measurePreserving_matrixCoord (n := n) μ)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x p`. Simplify using `only [Function.comp_apply, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, MeasurableEquiv.coe_mk, matrixCoordT]`. Both sides reduce to the same expression.
+-/
 theorem measurePreserving_matrixCoordT [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] :
     MeasurePreserving (matrixCoordT : Matrix n n X → n × n → X) (matrixMeasure μ)
       (Measure.pi fun _ : n × n ↦ μ) := by
@@ -70,6 +82,9 @@ theorem measurePreserving_matrixCoordT [MeasurableSpace X] (μ : Measure X) [Sig
     MeasurableEquiv.coe_mk, matrixCoordT]
   rfl
 
+/- English proof (translation)
+Rewrite using `[trace, Fintype.sum_prod_type]`. Simplify using `only [diag_apply, mul_apply, matrixCoord, matrixCoordT]`.
+-/
 theorem trace_mul_eq_sum {R : Type*} [CommRing R] (x y : Matrix n n R) :
     trace (x * y) = ∑ p, matrixCoord x p * matrixCoordT y p := by
   rw [trace, Fintype.sum_prod_type]

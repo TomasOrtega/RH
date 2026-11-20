@@ -15,12 +15,20 @@ section General
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ← hc, ← map_inv₀, ← hc, map_eq_zero_iff _ c.injective]`.
+-/
 theorem val_lt_iff {A B : ValuationSubring Ω} (c : Ω ≃+* Ω) (hc : ∀ x, x ∈ A ↔ c x ∈ B) (y : Ω) :
     B.valuation (c y) < 1 ↔ A.valuation y < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', ← hc, ← map_inv₀, ← hc, map_eq_zero_iff _ c.injective]
 
 variable {E : Type} [Field E] [NumberField E] [Algebra E Ω]
 
+/- English proof (translation)
+Establish `key : ∀ y, γ y ∈ B ↔ y ∈ B` using `fun y => by`. Take `⟨x, rfl⟩` from `c.surjective y`. Rewrite using `[hγ, ← hc, ← hc, apply_mem_iff_of_mem_Dec ht.1]`. Use `⟨?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show γ • B = B`.
+
+Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← key, mul_inv_apply]`. Take `⟨x, rfl⟩` from `c.surjective y`. Rewrite using `[hγ, ← map_sub, val_lt_iff c hc]`. Conclude with `ht.2 x ((A.valuation_le_one_iff x).2 ((hc x).2 ((B.valuation_le_one_iff _).1 hy)))`.
+-/
 theorem mem_Ine_of_transport {A B : ValuationSubring Ω} (c : Ω ≃+* Ω) (hc : ∀ x, x ∈ A ↔ c x ∈ B) {t γ : G E Ω}
     (hγ : ∀ x, γ (c x) = c (t x)) (ht : t ∈ Ine (F := E) A) : γ ∈ Ine (F := E) B := by
   have key : ∀ y, γ y ∈ B ↔ y ∈ B := fun y => by
@@ -34,6 +42,9 @@ theorem mem_Ine_of_transport {A B : ValuationSubring Ω} (c : Ω ≃+* Ω) (hc :
     rw [hγ, ← map_sub, val_lt_iff c hc]
     exact ht.2 x ((A.valuation_le_one_iff x).2 ((hc x).2 ((B.valuation_le_one_iff _).1 hy)))
 
+/- English proof (translation)
+Use `⟨{ (c.symm.trans (t.toRingEquiv.trans c)) with commutes' := fun y => ?_ }, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `s.surjective y show c (t (c.symm _)) = _`. Rewrite using `[← hs, c.symm_apply_apply, t.commutes]`. Use `show c (t (c.symm (c x))) = _`. Rewrite using `[c.symm_apply_apply]`.
+-/
 theorem exists_transport_elt (s : E ≃+* E) (c : Ω ≃+* Ω) (hs : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (s x))
     (t : G E Ω) : ∃ γ : G E Ω, ∀ x, γ (c x) = c (t x) := by
   refine ⟨{ (c.symm.trans (t.toRingEquiv.trans c)) with commutes' := fun y => ?_ }, fun x => ?_⟩
@@ -51,27 +62,51 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
 def conjInt (H : Host R) : 𝓞 H.E ≃+* 𝓞 H.E := RingOfIntegers.mapRingEquiv H.conj.toRingEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_conjInt (x : 𝓞 H.E) : ((conjInt H x : 𝓞 H.E) : H.E) = H.conj (x : H.E) := rfl
 
+/- English proof (translation)
+Use `⟨fun h x => h x _ (coe_conjInt x), fun h x y hy => ?_⟩` and prove the remaining obligations. Establish `: y = conjInt H x` using `RingOfIntegers.ext (hy.trans (coe_conjInt x).symm)`. Rewrite using `[this]`. Conclude with `h x`.
+-/
 theorem isConjPl_iff {w w' : PlE H} : IsConjPl H w w' ↔ ∀ x, x ∈ w.asIdeal ↔ conjInt H x ∈ w'.asIdeal := by
   refine ⟨fun h x => h x _ (coe_conjInt x), fun h x y hy => ?_⟩
   have : y = conjInt H x := RingOfIntegers.ext (hy.trans (coe_conjInt x).symm)
   rw [this]; exact h x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w.comap (conjInt H).symm.toRingHom (conjInt H).symm.surjective, isConjPl_iff.2 fun x => by simp [HeightOneSpectrum.comap]⟩`.
+-/
 theorem exists_isConjPl (w : PlE H) : ∃ w', IsConjPl H w w' :=
   ⟨w.comap (conjInt H).symm.toRingHom (conjInt H).symm.surjective, isConjPl_iff.2 fun x => by
     simp [HeightOneSpectrum.comap]⟩
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[isConjPl_iff.1 h₀, isConjPl_iff.1 h₁]`.
+-/
 theorem eq_of_isConjPl {w₀ w₁ w : PlE H} (h₀ : IsConjPl H w₀ w) (h₁ : IsConjPl H w₁ w) : w₀ = w₁ := by
   apply HeightOneSpectrum.ext
   ext x
   rw [isConjPl_iff.1 h₀, isConjPl_iff.1 h₁]
 
+/- English proof (translation)
+Use `(isConjPl_iff.1 h _).1 hp` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem mem_placesOver_of_isConjPl {w₀ w : PlE H} (h : IsConjPl H w₀ w) {p : ℕ} (hp : w₀ ∈ placesOver H.E p) :
     w ∈ placesOver H.E p := by
   have := (isConjPl_iff.1 h _).1 hp
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Set `c₀ : N.Om ≃+* N.Om` to `IsAlgClosure.equivOfEquiv N.Om N.Om H.conj.toRingEquiv`. Establish `h₀ : ∀ x : H.E, c₀ (algebraMap H.E N.Om x) = algebraMap H.E N.Om (H.conj x)` using `fun x => IsAlgClosure.equivOfEquiv_algebraMap N.Om N.Om H.conj.toRingEquiv x`. Set `B : ValuationSubring N.Om` to `(N.plOm.1 w₀).comap c₀.symm.toRingHom`. Establish `hB : ∀ x, x ∈ N.plOm.1 w₀ ↔ c₀ x ∈ B` using `fun x => by`. Simplify using `[B, ValuationSubring.mem_comap]`.
+
+Establish `hBw : IsPlaceOver (F` using `H.E) B w := fun y => by`. Take `⟨x, rfl⟩` from `(conjInt H).surjective y`. Rewrite using `[coe_conjInt, ← h₀, val_lt_iff c₀ hB, ← isConjPl_iff.1 h]`. Conclude with `N.plOm.2 w₀ x`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hBw (N.plOm.2 w)`.
+
+Use `⟨c₀.trans σ.toRingEquiv, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show σ (c₀ _) = _`. Rewrite using `[h₀, σ.commutes]`. Use `show _ ↔ σ (c₀ x) ∈ _`. Rewrite using `[hB, ← hσ, ← AlgEquiv.smul_def]`.
+
+Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff.symm`.
+-/
 theorem exists_ext (N : NData R H what₂) {w₀ w : PlE H} (h : IsConjPl H w₀ w) : ∃ c : N.Om ≃+* N.Om,
     (∀ x : H.E, c (algebraMap H.E N.Om x) = algebraMap H.E N.Om (H.conj x)) ∧
     ∀ x, x ∈ N.plOm.1 w₀ ↔ c x ∈ N.plOm.1 w := by
@@ -95,6 +130,11 @@ theorem exists_ext (N : NData R H what₂) {w₀ w : PlE H} (h : IsConjPl H w₀
 
 end Host
 
+/- English proof (translation)
+Establish `hpos : 0 < Fintype.card (D.nd.PlG k)`. Rewrite using `[D.nd.card_PlG]`. Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression. Take `⟨v⟩` from `Fintype.card_pos_iff.1 hpos`.
+
+Take `⟨w, hw⟩` from `exists_isConjPl (D.naut.plGw k v)`. Conclude with `⟨v, w, hw, fun v' e => D.naut.plGw_nconj k v v' (e ▸ hw)⟩`.
+-/
 theorem exists_place (D : D7) (k : Fin 2) :
     ∃ v w, IsConjPl D.host (D.naut.plGw k v) w ∧ ∀ v', w ≠ D.naut.plGw k v' := by
   have hpos : 0 < Fintype.card (D.nd.PlG k) := by
@@ -103,6 +143,9 @@ theorem exists_place (D : D7) (k : Fin 2) :
   obtain ⟨w, hw⟩ := exists_isConjPl (D.naut.plGw k v)
   exact ⟨v, w, hw, fun v' e => D.naut.plGw_nconj k v v' (e ▸ hw)⟩
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨c, γ, -, h2, h3, h4⟩` from `hL k v w hw`. Rewrite using `[h4 a]`. Conclude with `WD.natDegree_lab ⟨GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (mem_placesOver_of_isConjPl hw (D.naut.plGw_over k v)), mem_Ine_of_transport c h2 h3 (D.ntypes.tg_mem k v), D.ntypes.teichC_inj k⟩ _`.
+-/
 theorem natDegree_labLP {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (hL : LabConj D T) (k v) (w : PlE D.host)
     (hw : IsConjPl D.host (D.naut.plGw k v) w) (a : D.naut.LP w) :
     (D.naut.items₂ k w a).natDegree = (T.e w a).lpTame.lpDim := by
@@ -113,6 +156,9 @@ theorem natDegree_labLP {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (hL
     (mem_placesOver_of_isConjPl hw (D.naut.plGw_over k v)),
     mem_Ine_of_transport c h2 h3 (D.ntypes.tg_mem k v), D.ntypes.teichC_inj k⟩ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ (Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w a)).map (D.ntypes.teichC k) = (T.e w a).tameEig γ := by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ obtain ⟨c, γ, -, h2, h3, h4⟩ := hL k v w hw have hγ := mem_Ine_of_transport c h2 h3 (D.ntypes.tg …`.
+-/
 theorem roots_labLP {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (hL : LabConj D T) (k v) (w : PlE D.host)
     (hw : IsConjPl D.host (D.naut.plGw k v) w) : ∃ (c : D.nd.Om ≃+* D.nd.Om) (γ : G D.host.E D.nd.Om),
       γ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) ∧ (∀ x, γ (c x) = c (D.ntypes.tg k v x)) ∧ ∀ a : D.naut.LP w,
@@ -126,6 +172,13 @@ theorem roots_labLP {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (hL : L
   exact WD.map_rootsBar_lab ⟨GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k)
     (mem_placesOver_of_isConjPl hw (D.naut.plGw_over k v)), hγ, D.ntypes.teichC_inj k⟩ _
 
+/- English proof (translation)
+Establish `key : ∀ w : PlE D.host, ∃ γ : G D.host.E D.nd.Om, (∀ v, w = D.naut.plGw k v → γ = D.ntypes.tg k v) ∧ ∀ v, IsConjPl D.host (D.naut.plGw k v) w → ∃ c : D.nd.Om ≃+* D.nd.Om, (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) ∧ (∀ x, x ∈ …`. Introduce `w`. Distinguish the cases in `h : ∃ v, IsConjPl D.host (D.naut.plGw k v) w`. Take `⟨v, hv⟩` from `h`. Take `⟨c, h1, h2⟩` from `exists_ext D.nd hv`.
+
+Take `⟨γ, hγ⟩` from `exists_transport_elt D.host.conj.toRingEquiv c h1 (D.ntypes.tg k v)`. Use `⟨γ, fun v' e => absurd (e ▸ hv) (D.naut.plGw_nconj k v v'), fun v' hv' => ?_⟩` and prove the remaining obligations. Take `rfl : v = v'` from `D.naut.plGw_inj k (eq_of_isConjPl hv hv')`. Conclude with `⟨c, h1, h2, hγ⟩`. Use `⟨Function.extend (D.naut.plGw k) (D.ntypes.tg k) (fun _ => 1) w, fun v e => ?_, fun v hv => absurd ⟨v, hv⟩ h⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `(D.naut.plGw_inj k).extend_apply _ _ v`. Use `choose γ h1 h2 using key`. Conclude with `⟨γ, fun v => h1 _ v rfl, fun v w hw => h2 w v hw⟩`.
+-/
 theorem exists_gamma (D : D7) (k : Fin 2) : ∃ γ : PlE D.host → G D.host.E D.nd.Om,
     (∀ v, γ (D.naut.plGw k v) = D.ntypes.tg k v) ∧
     ∀ v w, IsConjPl D.host (D.naut.plGw k v) w → ∃ c : D.nd.Om ≃+* D.nd.Om,
@@ -150,6 +203,15 @@ theorem exists_gamma (D : D7) (k : Fin 2) : ∃ γ : PlE D.host → G D.host.E D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D hE Rw`. Establish `hS : ∀ k v, haveI : Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩ TeichmullerInertiaLabelCondition (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) (D.ntypes.teichC k) (D.ntypes.tg k v) := fun k v => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ .of_tameGenAt (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime …`. Set `lab : ∀ k, D.what₂.FT → D.nd.PlG k → Polynomial (ZMod (D.host.g k))` to `fun k σ v => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ WD.lab (D.ntypes.teichC k) (D.ntypes.tg k v) (Rw.par σ (D.naut.plGw k v))`. Establish `h : ∀ k σ v, (lab k σ v).Monic ∧ (lab k σ v).natDegree = D.R.r` using `fun k σ v => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ ⟨WD.lab_monic _ _ _, ((WD.natDegree_lab_eq_iff (hS k v) _).2 (Rw.tame σ k v)).trans (Rw.dim σ _)⟩`. Use `choose γ hγ1 hγ2 using exists_gamma D`.
+
+Set `A : NAut (ndLab D.nd lab h)` to `nAutWD (ndLab D.nd lab h) hE D.naut.plGw D.naut.plGw_over D.naut.plGw_inj D.naut.plGw_nconj D.ntypes.teichC γ`. Establish `hA : ∀ k v (a : A.LP (A.plGw k v)), haveI : Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩ A.items₂ k (A.plGw k v) a = WD.lab (D.ntypes.teichC k) (D.ntypes.tg k v) a := fun k v a => by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Conclude with `congrArg (fun x => WD.lab (h := D.nd.plOm.2 (D.naut.plGw k v)) (D.ntypes.teichC k) x a) (hγ1 k v)`. Establish `hl : ∀ k v (L : A.LP (A.plGw k v)), (A.items₂ k (A.plGw k v) L).natDegree = A.lpDim L → haveI : Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩ A.inePol L (D.ntypes.tg k v) = ((Formalism.CyclotomicNorms.rootsBar (A.items₂ k (A.plGw k v) L)).map fun x => X - Polynomial.C (D.ntypes.teichC k x)).prod := by`. Introduce `k v L hL`.
+
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Rewrite `hL`, the goal using `[hA k v L]`. Conclude with `WD.inePol_eq_of_natDegree_lab _ _ _ hL`. Take `⟨C⟩` from `GlobalTheory.MemN.nonempty_nbc_of_isEmpty_loc _ _ _ _ A hE`. Use `⟨lab, h, A, C, D.ntypes.tg_mem, D.ntypes.tg_gen, hl, fun _ _ => rfl, wdTieWD (ndLab D.nd lab h) hE D.naut.plGw D.naut.plGw_over D.naut.plGw_inj D.naut.plGw_nconj D.ntypes.teichC γ, fun k v a => hA k v a, fun k v w hw => ?_, ⟨Rw.par, Rw.sat, fun k σ v => (hA k v _).symm⟩, fun _ _ …` and prove the remaining obligations.
+
+Take `⟨c, h1, h2, h3⟩` from `hγ2 k v w hw`. Conclude with `⟨c, γ k w, h1, h2, h3, fun _ => rfl⟩`.
+-/
 theorem exists_labTrue_labConj : ∀ (D : D7) (hE : IsEmpty D.nd.Loc) (Rw : RowWD D), ∃ lab h A C tm tg hl,
     (∀ k v, A.plGw k v = D.naut.plGw k v) ∧
     ∃ T : GlobalTheory.RowTie.WDTie (setAut D hE lab h A C tm tg hl).nd (setAut D hE lab h A C tm tg hl).naut,

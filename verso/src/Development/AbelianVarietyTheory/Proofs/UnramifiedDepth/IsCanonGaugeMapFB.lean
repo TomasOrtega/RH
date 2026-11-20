@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.ChartBaseChange
 
+/- English proof (translation)
+Use `letI : Algebra R k := f.toAlgebra`. Establish `h1 : B.IsCanonGauge k (MvPowerSeries.map f h)` using `GlobalTheory.GaugeBaseChange.isCanonGauge_map B (Algebra.ofId R k) hg`. Establish `hid : ∀ {σ : Type} (g : MvPowerSeries σ k), MvPowerSeries.map (algebraMap k k) g = g`. Introduce `σ g`. Use extensionality with `m`.
+
+Simplify using `[MvPowerSeries.coeff_map]`. Establish `hF : (GlobalTheory.FBMap.mapFB f B).FK k = B.FK k` using `funext fun i => hid _`. Establish `hA : ∀ a, (GlobalTheory.FBMap.mapFB f B).actK k a = B.actK k a` using `fun a => funext fun i => hid _`. Use `⟨h1.ax0, h1.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, ← h1.ph1]`.
+
+Conclude with `hid _`. Rewrite using `[hF, ← h1.ph2]`. Conclude with `hid _`. Rewrite using `[← h1.sy]`. Conclude with `hid _`.
+
+Rewrite using `[hA, hA, ← h1.ad a]`. Conclude with `hid _`.
+-/
 theorem isCanonGauge_mapFB {R k : Type} [CommRing R] [Algebra ℚ R] [CommRing k] [Algebra ℚ k]
     (f : R →+* k) {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O) {h : PS R 2 d}
     (hg : B.IsCanonGauge R h) :
@@ -29,6 +38,9 @@ theorem isCanonGauge_mapFB {R k : Type} [CommRing R] [Algebra ℚ R] [CommRing k
   · rw [← h1.sy]; exact hid _
   · rw [hA, hA, ← h1.ad a]; exact hid _
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[hg, MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]`. Conclude with `(GlobalTheory.nval_eq_of_extension T C V.v V.l V.l_prime.ne_zero V.v_l ι hι).1 _`.
+-/
 theorem intS_map {T : CDVR} {C : Type} [Field C] {V : VF C} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     {σ : Type} {g : MvPowerSeries σ T.Fr} {g0 : MvPowerSeries σ T.V}
     (hg : g = MvPowerSeries.map (algebraMap T.V T.Fr) g0) : IntS V (MvPowerSeries.map ι g) := by
@@ -36,6 +48,11 @@ theorem intS_map {T : CDVR} {C : Type} [Field C] {V : VF C} {ι : T.Fr →+* C} 
   rw [hg, MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]
   exact (GlobalTheory.nval_eq_of_extension T C V.v V.l V.l_prime.ne_zero V.v_l ι hι).1 _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ T io y C3 C _ _ V ι hι hac hcpl hl hw k hk`. Take `⟨gF, gA, g1, g2, gs, ga, -⟩` from `C3.gen.1`. Establish `hg : (a3B C3).IsCanonGauge T.Fr (a3h C3)`. Use `letI := io.toAlgebra`. Conclude with `C3.ch.gauge`.
+
+Take `⟨lg, ex, hlin, hadd, hc, hle, hel⟩` from `GlobalTheory.FormalLog.exists_log_exp C (chD C3.ch) (GlobalTheory.FBMap.mapFB ι (a3B C3)).G`. Conclude with `⟨{ algClosed := hac cpl := hcpl l_odd := hl B := GlobalTheory.FBMap.mapFB ι (a3B C3) h := MvPowerSeries.map ι (a3h C3) gauge := isCanonGauge_mapFB ι (a3B C3) hg intF := fun i => intS_map hι (gF i) intAct := fun a i => intS_map hι (gA a i) intPh1 := intS_map hι g1 intPh2 := intS_m …`.
+-/
 theorem exists_baseChange :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], Formalism.L2.FormalSeriesBounds.BCExSt Xo c := by
   intro E _ _ _ H Dw l Xo c _ T io y C3 C _ _ V ι hι hac hcpl hl hw k hk

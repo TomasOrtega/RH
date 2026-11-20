@@ -9,6 +9,21 @@ namespace Formalism.FourierDecayAlt.P.SecondPolynomialClauses
 
 open Formalism.FourierDecayAlt.PairingProductCorollary
 
+/- English proof (translation)
+Introduce `K t t' Ntt Nt Nt' S abelian₂ c ht ht' hne hle hNt hNt' hS hLam hc hG hA`. Establish `ho0 : 0 < ‖1 / t - 1 / t'‖` using `norm_pos_iff.mpr hne`. Establish `htpos : 0 < ‖t‖` using `norm_pos_iff.mpr ht`. Establish `hto : ‖1 / t - 1 / t'‖ * ‖t‖ ≤ 2`. Establish `h1 : ‖1 / t - 1 / t'‖ ≤ ‖1 / t‖ + ‖1 / t'‖` using `norm_sub_le _ _`.
+
+Establish `h2 : ‖1 / t'‖ ≤ 1 / ‖t‖`. Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le htpos hle`. Establish `h3 : ‖1 / t‖ = 1 / ‖t‖` using `by rw [norm_div, norm_one]`. Establish `h4 : ‖1 / t - 1 / t'‖ ≤ 2 / ‖t‖`.
+
+Rewrite using `[h3] at h1; linarith [show 2 / ‖t‖ = 1 / ‖t‖ + 1 / ‖t‖ by ring]`. Conclude with `(le_div_iff₀ htpos).mp h4`. Establish `hL : ‖t‖ * abelian₂ ≤ 2 * abelian₂ / ‖1 / t - 1 / t'‖`. Rewrite using `[le_div_iff₀ ho0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hto hLam]`.
+
+Establish `hprod : ∏ a, c a ≤ (abelian₂ ^ 2) ^ K`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : 0 < ‖t‖ ^ (2 * K)` using `pow_pos htpos _`. Establish `e : ‖t‖ ^ (-(2 * K : ℤ)) = (‖t‖ ^ (2 * K))⁻¹`. Rewrite using `[zpow_neg]`.
+
+Use `norm_cast`. Rewrite `hA` using `[e]`. Establish `hA' : Nt ≤ ‖t‖ ^ (2 * K) * ((∏ a, c a) * S)` using `(inv_mul_le_iff₀ hT).mp hA`. Establish `hX0 : 0 ≤ (2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K` using `pow_nonneg (div_nonneg (by linarith) ho0.le) K`. Establish `hNtX : Nt ≤ ((2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K) ^ 2 * S`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ‖Ntt‖ ^ 2 ≤ ((2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K * ((S + Nt') / 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by nlinarith [sq_nonneg (S - Nt')]) (sq_nonneg _)`.
+
+Use `_ = _ := by ring`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hX0 (by linarith)) two_ne_zero).mp hsq`.
+-/
 theorem p3bOfA_ok : LeadingBlockBoundFromRecursion := by
   intro K t t' Ntt Nt Nt' S abelian₂ c ht ht' hne hle hNt hNt' hS hLam hc hG hA
   have ho0 : 0 < ‖1 / t - 1 / t'‖ := norm_pos_iff.mpr hne
@@ -50,6 +65,11 @@ theorem p3bOfA_ok : LeadingBlockBoundFromRecursion := by
       _ = _ := by ring
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hX0 (by linarith)) two_ne_zero).mp hsq
 
+/- English proof (translation)
+Introduce `K d grid q w e o W0 W RL RV he hq hR hD hS`. Unfold `LiftLeadingCoefficientIdentity at hD`. Unfold `NodeDualityBound at hS`. Apply the tactic sequence `have hne : ‖e‖ = 1 := by rcases he with rfl | rfl <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h` using `Real.abs_le_sqrt (hS j)`. Rewrite `h` using `[abs_norm]`. Conclude with `mul_le_mul_of_nonneg_left h (abs_nonneg _)`.
+-/
 theorem unipotent_degree_three_of_parts : UnnormalisedLiftBoundFromComponents := by
   intro K d grid q w e o W0 W RL RV he hq hR hD hS
   unfold LiftLeadingCoefficientIdentity at hD
@@ -65,6 +85,13 @@ theorem unipotent_degree_three_of_parts : UnnormalisedLiftBoundFromComponents :=
         rw [abs_norm] at h
         exact mul_le_mul_of_nonneg_left h (abs_nonneg _)
 
+/- English proof (translation)
+Establish `h1` using `(hR (x + y)).1`. Establish `h2` using `(hR (x + Complex.I • y)).1`. Establish `hx` using `(hR x).1`. Establish `hy` using `(hR y).1`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, map_smulₛₗ, Complex.conj_I, smul_eq_mul] at h1 h2`.
+
+Simplify using `only [Complex.add_im, Complex.add_re, Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im] at h1 h2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Complex.conj_im]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem herm_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.FourierDecayAlt.F7.Sesq V) (hR : PSD R)
     (x y : V) : (starRingEnd ℂ) (R x y) = R y x := by
   have h1 := (hR (x + y)).1
@@ -79,6 +106,9 @@ theorem herm_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.Fo
   · simp only [Complex.conj_re]; nlinarith
   · simp only [Complex.conj_im]; nlinarith
 
+/- English proof (translation)
+Set `c : PreInnerProductSpace.Core ℂ V` to `{ inner := fun x y => R y x conj_inner_symm := fun x y => herm_of_psd R hR x y re_inner_nonneg := fun x => (hR x).2 add_left := fun x y z => by simp smul_left := fun x y r => by simp }`. Establish `h` using `@InnerProductSpace.Core.inner_mul_inner_self_le ℂ V _ _ _ c x y`. Establish `e : ‖R y x‖ = ‖R x y‖` using `by rw [← herm_of_psd R hR x y, Complex.norm_conj]`. Rewrite using `[sq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cs_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.FourierDecayAlt.F7.Sesq V) (hR : PSD R)
     (x y : V) : ‖R x y‖ ^ 2 ≤ (R x x).re * (R y y).re := by
   let c : PreInnerProductSpace.Core ℂ V :=
@@ -93,6 +123,11 @@ theorem cs_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.Four
   calc ‖R x y‖ * ‖R x y‖ = ‖R y x‖ * ‖R x y‖ := by rw [e]
     _ ≤ _ := h
 
+/- English proof (translation)
+Introduce `V _ _ R x wt bw hR hbw hwt t t'`. Establish `hcs` using `cs_of_psd R hR (x t) (x t')`. Establish `hk : 0 ≤ wt t * wt t' / bw` using `div_nonneg (mul_nonneg (hwt t) (hwt t')) hbw.le`. Establish `e1 : ‖Npair R x wt bw t t'‖ = wt t * wt t' / bw * ‖R (x t) (x t')‖`. Rewrite using `[Npair, norm_mul, Complex.norm_real, Real.norm_of_nonneg hk]`.
+
+Establish `e2 : (Npair R x wt bw t t).re * (Npair R x wt bw t' t').re = (wt t * wt t' / bw) ^ 2 * ((R (x t) (x t)).re * (R (x t') (x t')).re)`. Simplify using `only [Npair, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hk]`. Conclude with `mul_le_mul_of_nonneg_left (le_trans (le_abs_self _) (Real.abs_le_sqrt hcs)) hk`.
+-/
 theorem second_polynomial_first_clause : PairingGramBound := by
   intro V _ _ R x wt bw hR hbw hwt t t'
   have hcs := cs_of_psd R hR (x t) (x t')
@@ -105,6 +140,31 @@ theorem second_polynomial_first_clause : PairingGramBound := by
   rw [e1, e2, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hk]
   exact mul_le_mul_of_nonneg_left (le_trans (le_abs_self _) (Real.abs_le_sqrt hcs)) hk
 
+/- English proof (translation)
+Introduce `ι _ _ K abelian₂ t t' Ntt Nt Nt' S1 S2 ht hLam hNt hNt' hS1 hS2 hG hA hB`. Take `⟨m, hm⟩ : ∃ m : ι → ℝ, m = fun v => minFac (2 * abelian₂ v) (oAbs t t' v) K` from `⟨_, rfl⟩`. Establish `hm0 : ∀ v, 0 ≤ m v`. Introduce `v`. Rewrite using `[hm]`.
+
+Simplify using `only`. Unfold `minFac`. Use `split_ifs with h`. Conclude with `pow_nonneg (div_nonneg (by linarith [hLam v]) (norm_nonneg _)) _`. Conclude with `zero_le_one`.
+
+Establish `key : ∀ v (s : ℝ), 0 ≤ s → s * oAbs t t' v ≤ 2 → 2 * abelian₂ v < oAbs t t' v → (s * abelian₂ v) ^ (2 * K) ≤ m v ^ 2`. Introduce `v s hs hso hlt`. Establish `ho : 0 < oAbs t t' v` using `lt_of_le_of_lt (by linarith [hLam v]) hlt`. Establish `hmv : m v = (2 * abelian₂ v / oAbs t t' v) ^ K` using `by rw [hm]; dsimp only; rw [minFac, if_pos hlt]`. Rewrite using `[hmv, ← pow_mul, mul_comm K 2]`.
+
+Apply `pow_le_pow_left₀ (mul_nonneg hs (hLam v))` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ ho]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hso (hLam v)]`. Establish `h1 : ∀ v, oAbs t t' v ≤ 1 / ‖t v‖ + 1 / ‖t' v‖`. Introduce `v`.
+
+Unfold `oAbs`. Combine the equalities or inequalities in the displayed calculation. Establish `hto : ∀ v, ‖t v‖ ≤ ‖t' v‖ → ‖t v‖ * oAbs t t' v ≤ 2`. Introduce `v hle`. Establish `ha : 0 < ‖t v‖` using `norm_pos_iff.mpr (ht v).1`.
+
+Establish `hb : 0 < ‖t' v‖` using `norm_pos_iff.mpr (ht v).2`. Combine the equalities or inequalities in the displayed calculation. Establish `hto' : ∀ v, ¬ ‖t v‖ ≤ ‖t' v‖ → ‖t' v‖ * oAbs t t' v ≤ 2`. Introduce `v hle`. Establish `ha : 0 < ‖t v‖` using `norm_pos_iff.mpr (ht v).1`.
+
+Establish `hb : 0 < ‖t' v‖` using `norm_pos_iff.mpr (ht v).2`. Combine the equalities or inequalities in the displayed calculation. Establish `hPA : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), (‖t v‖ * abelian₂ v) ^ (2 * K)) ≤ ∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), m v ^ 2` using `Finset.prod_le_prod (fun v _ => pow_nonneg (mul_nonneg (norm_nonneg _) (hLam v)) _) (fun v hv => by`. Take `⟨hv1, hv2⟩` from `(Finset.mem_filter.mp hv).2`. Conclude with `key v _ (norm_nonneg _) (hto v hv2) hv1)`.
+
+Establish `hPB : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), (‖t' v‖ * abelian₂ v) ^ (2 * K)) ≤ ∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), m v ^ 2` using `Finset.prod_le_prod (fun v _ => pow_nonneg (mul_nonneg (norm_nonneg _) (hLam v)) _) (fun v hv => by`. Take `⟨hv1, hv2⟩` from `(Finset.mem_filter.mp hv).2`. Conclude with `key v _ (norm_nonneg _) (hto' v hv2) hv1)`. Establish `hdisj : Disjoint (univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖)) (univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖))` using `Finset.disjoint_filter.mpr fun v _ hv1 hv2 => hv2.2 hv1.2`. Establish `hM : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), m v ^ 2) * (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), m v ^ 2) = (∏ v, m v) ^ 2`.
+
+Rewrite using `[← Finset.prod_union hdisj, ← Finset.prod_pow]`. Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `v _ hv`. Establish `hnot : ¬ 2 * abelian₂ v < oAbs t t' v`. Introduce `hlt`.
+
+Apply `hv` to reduce the goal to its premises. Distinguish the cases in `hle : ‖t v‖ ≤ ‖t' v‖`. Conclude with `Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlt, hle⟩)`. Conclude with `Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlt, hle⟩)`. Rewrite using `[hm]`.
+
+Simplify using `only`. Rewrite using `[minFac, if_neg hnot, one_pow]`. Establish `hM0 : 0 ≤ ∏ v, m v` using `Finset.prod_nonneg fun v _ => hm0 v`. Establish `hgoal : ∏ v, minFac (2 * abelian₂ v) (oAbs t t' v) K = ∏ v, m v` using `by rw [hm]`. Rewrite using `[hgoal]`.
+
+Establish `hsq : ‖Ntt‖ ^ 2 ≤ ((∏ v, m v) * ((S1 + S2) / 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hM0 (by linarith)) two_ne_zero).mp hsq`.
+-/
 theorem third_polynomial_prime_combination : LeadingBlockSeveralPlacesBound := by
   intro ι _ _ K abelian₂ t t' Ntt Nt Nt' S1 S2 ht hLam hNt hNt' hS1 hS2 hG hA hB
   obtain ⟨m, hm⟩ : ∃ m : ι → ℝ, m = fun v => minFac (2 * abelian₂ v) (oAbs t t' v) K := ⟨_, rfl⟩
@@ -189,18 +249,29 @@ theorem third_polynomial_prime_combination : LeadingBlockSeveralPlacesBound := b
       _ = _ := by ring
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hM0 (by linarith)) two_ne_zero).mp hsq
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.F7.lagCo`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i hi => inv_ne_zero (sub_ne_zero.mpr (hy.ne (Finset.ne_of_mem_erase hi).symm))`.
+-/
 theorem lagCo_ne_zero {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (j : Fin (d + 1)) :
     Formalism.FourierDecayAlt.F7.lagCo y j ≠ 0 := by
   unfold Formalism.FourierDecayAlt.F7.lagCo
   exact Finset.prod_ne_zero_iff.mpr fun i hi =>
     inv_ne_zero (sub_ne_zero.mpr (hy.ne (Finset.ne_of_mem_erase hi).symm))
 
+/- English proof (translation)
+Unfold `cg`. Conclude with `Finset.sum_pos' (fun i _ => abs_nonneg _) ⟨0, Finset.mem_univ _, abs_pos.mpr (lagCo_ne_zero (grid a) (hg a) 0)⟩`.
+-/
 theorem cg_pos {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, Function.Injective (grid a)) (a : Fin K) :
     0 < cg grid a := by
   unfold cg
   exact Finset.sum_pos' (fun i _ => abs_nonneg _)
     ⟨0, Finset.mem_univ _, abs_pos.mpr (lagCo_ne_zero (grid a) (hg a) 0)⟩
 
+/- English proof (translation)
+Establish `hc : ∀ a, ∑ i, |Formalism.FourierDecayAlt.F7.lagCo (grid a) i| ≠ 0` using `fun a => (cg_pos grid hg a).ne'`. Unfold `coProd Formalism.FourierDecayAlt.F7.thGrid cg`. Rewrite using `[Finset.abs_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h` using `hc a`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem co_eq {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, Function.Injective (grid a))
     (j : Fin K → Fin (d + 1)) : |coProd grid j| = (∏ a, cg grid a) * Formalism.FourierDecayAlt.F7.thGrid grid j := by
   have hc : ∀ a, ∑ i, |Formalism.FourierDecayAlt.F7.lagCo (grid a) i| ≠ 0 := fun a => (cg_pos grid hg a).ne'
@@ -210,6 +281,35 @@ theorem co_eq {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, Fu
   have h := hc a
   field_simp
 
+/- English proof (translation)
+Introduce `K d grid q nn w o W0 RL RV wt wt' bw Qw BB hinj hpos hQ hnn hBB hwt hwt' hbw hR H`. Establish `hQw : K = 0 ∨ 0 ≤ Qw`. Break down `Nat.eq_zero_or_pos K with hK | hK` into its components or cases. Conclude with `Or.inl hK`. Use `right`.
+
+Establish `h1` using `hQ ⟨0, hK⟩ 0`. Establish `h2` using `(hpos ⟨0, hK⟩ 0).1`. Establish `h3` using `(hpos ⟨0, hK⟩ 0).2.1`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Use polynomial arithmetic with `[mul_neg_of_neg_of_pos hneg h3]`. Establish `hZ2 : (Real.sqrt Qw * BB) ^ K * (Real.sqrt Qw * BB) ^ K = Qw ^ K * (BB ^ 2) ^ K`. Break down `hQw with hK | hQ0` into its components or cases. Substitute `hK` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[← mul_pow, ← mul_pow]`. Use `congr 1`. Take the linear combination `(BB ^ 2) * Real.mul_self_sqrt hQ0`. Establish `hN : ∀ j, nnProd nn 0 grid j * nnProd nn 1 grid j ≤ Qw ^ K * (BB ^ 2) ^ K * qProd q w grid j`. Introduce `j`.
+
+Unfold `nnProd qProd`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `e : Qw ^ K * (BB ^ 2) ^ K * ∏ a, F7.qW q w (grid a (j a)) = ∏ a, (Qw * BB ^ 2 * F7.qW q w (grid a (j a)))`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e]`.
+
+Use `Finset.prod_le_prod (fun a _ => ?_) (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `mul_nonneg (hpos a (j a)).2.2.1.le (hpos a (j a)).2.2.2.le`. Rewrite using `[add_zero]`. Establish `h1` using `(div_le_iff₀ (hpos a (j a)).1).mp (hnn a (j a))`.
+
+Establish `h2` using `hQ a (j a)`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg BB) (sub_nonneg.mpr h2)]`. Establish `hj : ∀ j, wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j) ≤ (Real.sqrt Qw * BB) ^ K * ((wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) + wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)) / 2)`. Introduce `j`. Establish `hq0 : 0 < qProd q w grid j` using `Finset.prod_pos fun a _ => (hpos a (j a)).2.1`.
+
+Establish `hN0 : 0 < nnProd nn 0 grid j` using `Finset.prod_pos fun a _ => by`. Rewrite using `[add_zero]`. Conclude with `(hpos a (j a)).2.2.1`. Establish `hN1 : 0 < nnProd nn 1 grid j` using `Finset.prod_pos fun a _ => (hpos a (j a)).2.2.2`. Establish `hX : 0 ≤ wt ^ 2 * RL j / (bw * nnProd nn 0 grid j)` using `div_nonneg (mul_nonneg (sq_nonneg _) (hR j).1) (mul_pos hbw hN0).le`.
+
+Establish `hY : 0 ≤ wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)` using `div_nonneg (mul_nonneg (sq_nonneg _) (hR j).2) (mul_pos hbw hN1).le`. Establish `hZ : 0 ≤ (Real.sqrt Qw * BB) ^ K` using `pow_nonneg (mul_nonneg (Real.sqrt_nonneg _) hBB) K`. Establish `hc : 0 ≤ wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (hR j).1) (hR j).2) (sq_nonneg _)`. Establish `hL0 : 0 ≤ wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j)` using `mul_nonneg (div_nonneg (mul_nonneg hwt hwt') hbw.le) (Real.sqrt_nonneg _)`. Establish `e1 : (wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j)) ^ 2 = (wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2) * (1 / qProd q w grid j)`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt (div_nonneg (mul_nonneg (hR j).1 (hR j).2) hq0.le)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 1 / qProd q w grid j ≤ Qw ^ K * (BB ^ 2) ^ K / (nnProd nn 0 grid j * nnProd nn 1 grid j)`. Rewrite using `[div_le_div_iff₀ hq0 (mul_pos hN0 hN1)]`. Combine the linear relations using `[hN j]`.
+
+Establish `e2 : (Real.sqrt Qw * BB) ^ K * (Real.sqrt Qw * BB) ^ K * (wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) * (wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j))) = (wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2) * (Qw ^ K * (BB ^ 2) ^ K / (nnProd nn 0 grid j * nnProd nn 1 grid j))`. Rewrite using `[hZ2]`. Expand and normalize the polynomial expressions, which then agree. Apply `(pow_le_pow_iff_left₀ hL0 (mul_nonneg hZ (by linarith)) two_ne_zero).mp` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hk : 0 ≤ wt * wt' / bw` using `div_nonneg (mul_nonneg hwt hwt') hbw.le`. Establish `hcg0 : 0 ≤ ∏ a, cg grid a` using `Finset.prod_nonneg fun a _ => (cg_pos grid hinj a).le`. Establish `hth : ∀ j, 0 ≤ F7.thGrid grid j` using `fun j => Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[co_eq grid hinj j]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∏ a, cg grid a) * ∑ j, F7.thGrid grid j * ((Real.sqrt Qw * BB) ^ K * ((wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) + wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)) / 2)) := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hj j) (hth j)) hcg0`. Use `_ = _ := by`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem p2cOfParts_ok : LowerBlockNormalisedBoundFromComponents := by
   intro K d grid q nn w o W0 RL RV wt wt' bw Qw BB hinj hpos hQ hnn hBB hwt hwt' hbw hR H
   have hQw : K = 0 ∨ 0 ≤ Qw := by
@@ -307,14 +407,29 @@ theorem p2cOfParts_ok : LowerBlockNormalisedBoundFromComponents := by
 
 end Formalism.FourierDecayAlt.P.SecondPolynomialClauses
 
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p3bOfA_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.third_polynomial_second_of_first : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockBoundFromRecursion := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p3bOfA_ok
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.unipotent_degree_three_of_parts`.
+-/
 theorem Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses : Formalism.FourierDecayAlt.PairingProductCorollary.UnnormalisedLiftBoundFromComponents := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.unipotent_degree_three_of_parts
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.second_polynomial_first_clause`.
+-/
 theorem Formalism.FourierDecayAlt.P.second_polynomial_first_identity : Formalism.FourierDecayAlt.PairingProductCorollary.PairingGramBound := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.second_polynomial_first_clause
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.third_polynomial_prime_combination`.
+-/
 theorem Formalism.FourierDecayAlt.P.third_polynomial_prime_combine : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockSeveralPlacesBound := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.third_polynomial_prime_combination
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p2cOfParts_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockNormalisedBoundFromComponents := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p2cOfParts_ok
 

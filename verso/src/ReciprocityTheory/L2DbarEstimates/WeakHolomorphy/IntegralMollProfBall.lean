@@ -6,6 +6,11 @@ namespace ReciprocityTheory.L2DbarEstimates.C
 open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `h1 : 1 - 4 * (‖z‖ / t) ^ 2 ≤ 0`. Establish `h2 : 1 / 2 < ‖z‖ / t`. Rewrite using `[lt_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+
+Simplify using `only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]`.
+-/
 theorem moll_eq_zero_of_lt {n : ℕ} {t : ℝ} (ht : 0 < t) {z : V n} (hz : t / 2 < ‖z‖) :
     moll n t z = 0 := by
   have h1 : 1 - 4 * (‖z‖ / t) ^ 2 ≤ 0 := by
@@ -14,6 +19,21 @@ theorem moll_eq_zero_of_lt {n : ℕ} {t : ℝ} (ht : 0 < t) {z : V n} (hz : t / 
     nlinarith
   simp only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]
 
+/- English proof (translation)
+Establish `hd : DifferentiableOn ℂ (fun l : ℂ => h (x + l • z)) (closedBall (0 : ℂ) 1)`. Introduce `l hl`. Establish `hl1 : ‖l‖ ≤ 1` using `by simpa using hl`. Establish `hmem : x + l • z ∈ ball x a`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : DifferentiableAt ℂ h (x + l • z)` using `hh.differentiableAt (isOpen_ball.mem_nhds hmem)`. Establish `h2 : DifferentiableAt ℂ (fun l : ℂ => x + l • z) l` using `(differentiableAt_id.smul_const z).const_add x`. Conclude with `(h1.comp l h2).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ (fun l : ℂ => h (x + l • z)) (ball (0 : ℂ) 1)`.
+
+Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball (0 : ℂ) one_ne_zero]`. Conclude with `hd`. Establish `hC` using `hdc.circleIntegral_sub_inv_smul (mem_ball_self one_pos)`. Establish `e0 : h (x + (0 : ℂ) • z) = h x` using `by rw [zero_smul, add_zero]`.
+
+Establish `key : Complex.I * ∫ θ in (0 : ℝ)..2 * Real.pi, h (x + circleMap 0 1 θ • z) = 2 * Real.pi * Complex.I * h x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun θ _ => ?_` and prove the remaining obligations. Establish `hne : circleMap 0 1 θ ≠ 0` using `circleMap_ne_center one_ne_zero`.
+
+Simplify using `only [deriv_circleMap, sub_zero, smul_eq_mul]`. Use `first`. Consider the case `(rw [mul_comm (circleMap 0 1 θ) Complex.I, mul_assoc, mul_inv_cancel_left₀ hne])`. Consider the case `field_simp`. Consider the case `(field_simp; ring)`.
+
+Use `_ = ∮ l in C(0, 1), (l - 0)⁻¹ • h (x + l • z) := rfl`. Use `_ = (2 * Real.pi * Complex.I : ℂ) • h (x + (0 : ℂ) • z) := hC`. Use `_ = 2 * Real.pi * Complex.I * h x := by rw [e0, smul_eq_mul]`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises.
+
+Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem integral_circleMap_smul_eq_two_pi_mul {n : ℕ} {a : ℝ} {h : V n → ℂ} {x z : V n}
     (hh : DifferentiableOn ℂ h (ball x a)) (hz : ‖z‖ < a) :
     ∫ θ in (0 : ℝ)..2 * Real.pi, h (x + circleMap 0 1 θ • z) = 2 * Real.pi * h x := by
@@ -55,6 +75,11 @@ private theorem integral_circleMap_smul_eq_two_pi_mul {n : ℕ} {a : ℝ} {h : V
   rw [key]
   ring
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, norm_zero]`. Conclude with `zero_ne_one hc`. Set `e : V n ≃ₗᵢ[ℝ] V n` to `{ toLinearEquiv := (LinearEquiv.smulOfNeZero ℂ (V n) c hc0).restrictScalars ℝ norm_map' := fun z => by show ‖c • z‖ = ‖z‖`.
+
+Rewrite using `[norm_smul, hc, one_mul] }`. Use `show ∫ z, f (e z) = ∫ z, f z`. Conclude with `e.measurePreserving.integral_comp e.toHomeomorph.measurableEmbedding f`.
+-/
 private theorem integral_comp_smul_of_norm_eq_one {n : ℕ} (c : ℂ) (hc : ‖c‖ = 1) (f : V n → ℂ) :
     ∫ z, f (c • z) = ∫ z, f z := by
   have hc0 : c ≠ 0 := by
@@ -69,6 +94,11 @@ private theorem integral_comp_smul_of_norm_eq_one {n : ℕ} (c : ℂ) (hc : ‖c
   show ∫ z, f (e z) = ∫ z, f z
   exact e.measurePreserving.integral_comp e.toHomeomorph.measurableEmbedding f
 
+/- English proof (translation)
+Establish `h1 : 1 - 4 * (‖z‖ / t) ^ 2 ≤ 0`. Establish `h2 : 1 / 2 < ‖z‖ / t`. Rewrite using `[lt_div_iff₀ ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+
+Simplify using `only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]`.
+-/
 private theorem moll_eq_zero_of_half_lt_norm {n : ℕ} {t : ℝ} (ht : 0 < t) {z : V n} (hz : t / 2 < ‖z‖) :
     moll n t z = 0 := by
   have h1 : 1 - 4 * (‖z‖ / t) ^ 2 ≤ 0 := by
@@ -77,9 +107,43 @@ private theorem moll_eq_zero_of_half_lt_norm {n : ℕ} {t : ℝ} (ht : 0 < t) {z
     nlinarith
   simp only [moll, mollProf, bumpProf, Real.smoothTransition.zero_of_nonpos h1, mul_zero]
 
+/- English proof (translation)
+The claim follows from `(moll_contDiff n t).continuous.integrable_of_hasCompactSupport (moll_hasCompactSupport n ht)`.
+-/
 private theorem integrable_moll (n : ℕ) {t : ℝ} (ht : 0 < t) : Integrable (moll n t) :=
   (moll_contDiff n t).continuous.integrable_of_hasCompactSupport (moll_hasCompactSupport n ht)
 
+/- English proof (translation)
+Establish `hA : ∫ w, (moll n a (x - w) : ℂ) * h w = ∫ z, (moll n a z : ℂ) * h (x + z)`. Establish `e1` using `integral_add_left_eq_self (μ := volume) (fun w => (moll n a (x - w) : ℂ) * h w) x`. Apply the tactic sequence `try beta_reduce at e1`. Rewrite using `[← e1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [sub_add_cancel_left, moll, norm_neg]`. Rewrite using `[hA]`. Establish `hB : ∀ θ : ℝ, ∫ z, (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z) = ∫ z, (moll n a z : ℂ) * h (x + z)`. Introduce `θ`.
+
+Establish `hc : ‖circleMap 0 1 θ‖ = 1` using `by simp`. Establish `e2` using `integral_comp_smul_of_norm_eq_one (circleMap 0 1 θ) hc (fun z => (moll n a z : ℂ) * h (x + z))`. Apply the tactic sequence `try beta_reduce at e2`. Rewrite using `[← e2]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [moll, norm_smul, hc, one_mul]`. Take `⟨C, hC⟩` from `(isCompact_closedBall x (a / 2)).exists_bound_of_continuousOn (hh.continuousOn.mono (closedBall_subset_ball (by linarith)))`. Establish `hcont : Continuous (fun p : ℝ × V n => (moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2))`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce and unpack `⟨θ0, z0⟩`. Distinguish the cases in `hz0 : ‖z0‖ < a`. Establish `hmc : Continuous fun p : ℝ × V n => (moll n a p.2 : ℂ)` using `Complex.continuous_ofReal.comp ((moll_contDiff n a).continuous.comp continuous_snd)`. Establish `hg : Continuous fun p : ℝ × V n => x + circleMap 0 1 p.1 • p.2` using `continuous_const.add (((continuous_circleMap 0 1).comp continuous_fst).smul continuous_snd)`. Establish `hmem : x + circleMap 0 1 θ0 • z0 ∈ ball x a`.
+
+Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, norm_circleMap_zero, abs_one, one_mul]`. Conclude with `hz0`. Establish `hhc : ContinuousAt h (x + circleMap 0 1 θ0 • z0)` using `(hh.differentiableAt (isOpen_ball.mem_nhds hmem)).continuousAt`. Conclude with `hmc.continuousAt.mul (hhc.comp_of_eq hg.continuousAt rfl)`. Use `push_neg at hz0`.
+
+Establish `hopen : IsOpen {p : ℝ × V n | a / 2 < ‖p.2‖}` using `isOpen_lt continuous_const (continuous_norm.comp continuous_snd)`. Establish `hmem : (θ0, z0) ∈ {p : ℝ × V n | a / 2 < ‖p.2‖}` using `by show a / 2 < ‖z0‖`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : (fun p : ℝ × V n => (moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2)) =ᶠ[𝓝 (θ0, z0)] fun _ => 0` using `by filter_upwards [hopen.mem_nhds hmem] with p hp`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hp]`.
+
+Simplify using the standard rewrite rules. Conclude with `(continuousAt_congr hev).mpr continuousAt_const`. Establish `hInt : Integrable (Function.uncurry fun (θ : ℝ) (z : V n) => (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z)) ((volume.restrict (Set.Ioc 0 (2 * Real.pi))).prod volume)`. Establish `hg1 : Integrable (fun _ : ℝ => C) (volume.restrict (Set.Ioc 0 (2 * Real.pi)))` using `integrable_const C`. Establish `hbd : Integrable (fun p : ℝ × V n => C * |moll n a p.2|) ((volume.restrict (Set.Ioc 0 (2 * Real.pi))).prod volume)` using `by first`.
+
+Consider the case `exact MeasureTheory.Integrable.prod_mul hg1 (integrable_moll n ha).abs`. Consider the case `exact MeasureTheory.Integrable.mul_prod hg1 (integrable_moll n ha).abs`. Consider the case `exact MeasureTheory.Integrable.prod_smul hg1 (integrable_moll n ha).abs`. Consider the case `exact MeasureTheory.Integrable.comp_snd ((integrable_moll n ha).abs.const_mul C) _`. Consider the case `exact ((integrable_moll n ha).abs.const_mul C).comp_snd`.
+
+Use `Integrable.mono' hbd hcont.aestronglyMeasurable (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show ‖(moll n a p.2 : ℂ) * h (x + circleMap 0 1 p.1 • p.2)‖ ≤ C * |moll n a p.2|`. Distinguish the cases in `hp : ‖p.2‖ ≤ a / 2`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_comm]`. Apply `mul_le_mul_of_nonneg_right _ (abs_nonneg _)` to reduce the goal to its premises.
+
+Apply `hC` to reduce the goal to its premises. Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul, norm_circleMap_zero, abs_one, one_mul]`. Conclude with `hp`. Use `push_neg at hp`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hp]`.
+
+Simplify using the standard rewrite rules. Establish `hswap` using `integral_integral_swap hInt`. Apply the tactic sequence `try beta_reduce at hswap`. Establish `hz : ∀ z : V n, ∫ θ in Set.Ioc 0 (2 * Real.pi), (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z) = (moll n a z : ℂ) * (2 * Real.pi * h x)`. Introduce `z`.
+
+Rewrite using `[integral_const_mul]`. Distinguish the cases in `hz : ‖z‖ ≤ a / 2`. Rewrite using `[← intervalIntegral.integral_of_le Real.two_pi_pos.le, integral_circleMap_smul_eq_two_pi_mul hh (by linarith)]`. Use `push_neg at hz`. Rewrite using `[moll_eq_zero_of_half_lt_norm ha hz]`.
+
+Simplify using the standard rewrite rules. Rewrite `hswap` using `[← intervalIntegral.integral_of_le Real.two_pi_pos.le, show (fun θ : ℝ => ∫ z, (moll n a z : ℂ) * h (x + circleMap 0 1 θ • z)) = fun _ => ∫ z, (moll n a z : ℂ) * h (x + z) from funext hB, intervalIntegral.integral_const, show (fun z : V n => ∫ θ in Set.Ioc 0 (2 * Real.pi), (moll …`. Establish `h2pi : (2 * Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.two_pi_pos.ne'`. Apply `mul_left_cancel₀ h2pi` to reduce the goal to its premises. Move the coercions through the operations in `at hswap ⊢`.
+
+Take the linear combination `hswap`.
+-/
 private theorem integral_moll_mul_eq_of_differentiableOn_ball {n : ℕ} {a : ℝ} (ha : 0 < a) {h : V n → ℂ} {x : V n}
     (hh : DifferentiableOn ℂ h (ball x a)) :
     ∫ w, (moll n a (x - w) : ℂ) * h w = h x := by
@@ -180,6 +244,9 @@ private theorem integral_moll_mul_eq_of_differentiableOn_ball {n : ℕ} {a : ℝ
   push_cast at hswap ⊢
   linear_combination hswap
 
+/- English proof (translation)
+Conclude with `integral_moll_mul_eq_of_differentiableOn_ball ht (hf.mono ball_subset_closedBall)`.
+-/
 theorem holo_eq_mollify {n : ℕ} {f : V n → ℂ} {x : V n} {t : ℝ} (ht : 0 < t)
     (hf : DifferentiableOn ℂ f (closedBall x t)) : mollify n t f x = f x := by
   exact integral_moll_mul_eq_of_differentiableOn_ball ht (hf.mono ball_subset_closedBall)

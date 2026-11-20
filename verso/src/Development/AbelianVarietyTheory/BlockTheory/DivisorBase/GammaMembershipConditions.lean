@@ -152,9 +152,15 @@ def VacuumFrame : Prop :=
     ∀ (θ : InfFam D) (f : WO S T → ℂ),
       IsVacO ψ θ S T (fun _ => 1) s (stdL D.host.E S.rank) L f → FrameLaws ψ θ χS om L s B f
 
+/- English proof (translation)
+Simplify using `[detOn, Matrix.det_fin_two, Matrix.one_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (u v : ℂ) : detOn !![1, 0; 0, -1] !![u, 0; 0, v] = u := by
   simp [detOn, Matrix.det_fin_two, Matrix.one_fin_two]; ring
 
+/- English proof (translation)
+Simplify using `[detOn, Matrix.det_fin_two, Matrix.one_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (u v : ℂ) : detOn (-!![1, 0; 0, -1]) !![u, 0; 0, v] = v := by
   simp [detOn, Matrix.det_fin_two, Matrix.one_fin_two]; ring
 

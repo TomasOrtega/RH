@@ -51,18 +51,35 @@ def stabRec (c : C.cls 0) : C.stab 0 c ≃ StabU L (L.y c) :=
 def clsOf (L : ColLevel R F E sp gp C A clsLat) (c : ClassSet (HA sp) (KA L)) : C.cls 0 :=
   (Equiv.ofBijective _ L.y_bij).symm c
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ L.y_bij).apply_symm_apply c`.
+-/
 theorem clsOf_spec (c : ClassSet (HA sp) (KA L)) : Fib.mkC (HA sp) (KA L) (L.y (clsOf L c)) = c :=
   (Equiv.ofBijective _ L.y_bij).apply_symm_apply c
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ L.y_bij).symm.injective`.
+-/
 theorem clsOf_inj : Function.Injective (clsOf L) := (Equiv.ofBijective _ L.y_bij).symm.injective
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ L.y_bij).symm.surjective`.
+-/
 theorem clsOf_surj : Function.Surjective (clsOf L) := (Equiv.ofBijective _ L.y_bij).symm.surjective
 
+/- English proof (translation)
+Take `⟨h, hh, κ, hκ, e⟩` from `(Fib.mk_eq_iff (HA sp) (KA L) _ _).1 (clsOf_spec (L := L) (Fib.mkC (HA sp) (KA L) x))`. Take `⟨h0, rfl⟩` from `exists_ratA h hh`. Conclude with `(Nat.card_congr ((stabRec _).trans (stabConj _ x h0 κ hκ e))).symm`.
+-/
 theorem card_stabU (x : GA sp) : Nat.card (StabU L x) = Nat.card (C.stab 0 (clsOf L (Fib.mkC (HA sp) (KA L) x))) := by
   obtain ⟨h, hh, κ, hκ, e⟩ := (Fib.mk_eq_iff (HA sp) (KA L) _ _).1 (clsOf_spec (L := L) (Fib.mkC (HA sp) (KA L) x))
   obtain ⟨h0, rfl⟩ := exists_ratA h hh
   exact (Nat.card_congr ((stabRec _).trans (stabConj _ x h0 κ hκ e))).symm
 
+/- English proof (translation)
+Introduce `x γ hγ`. Establish `h1 : Nat.card (StabU L x) = 1` using `by rw [card_stabU, h]`. Establish `h2 : Subsingleton (StabU L x)` using `(Nat.card_eq_one_iff_unique.1 h1).1`. Establish `h3 : x⁻¹ * ratA sp (1 : UJ (sp.cm.sig : E →+* E) sp.gram0) * x ∈ KA L`. Rewrite using `[map_one, mul_one, inv_mul_cancel]`.
+
+Conclude with `(KA L).one_mem`. Conclude with `congrArg Subtype.val (h2.elim (⟨γ, hγ⟩ : StabU L x) ⟨1, h3⟩)`.
+-/
 theorem trivStabU_of_rec (h : ∀ c : C.cls 0, Nat.card (C.stab 0 c) = 1) : TrivStabU L := by
   intro x γ hγ
   have h1 : Nat.card (StabU L x) = 1 := by rw [card_stabU, h]
@@ -77,6 +94,11 @@ variable (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
 
 include hH in
 
+/- English proof (translation)
+Use `((fibP I hdet hk hH).stab_iff (HA sp) (repP L p) (prP_repP I hk) i g (ratA sp γ)).trans (and_congr (mem_gamC_iff (repP L p i) γ).symm ?_)` and prove the remaining obligations. Use `show g⁻¹ * (prP I hk (ratA sp γ) * g) ∈ _ ↔ _`. Rewrite using `[← tupOf_eq_iff]`. Establish `: tupOf W (prP I hk (ratA sp γ) * g) = fun v => gMap W (prP I hk (ratA sp γ) v) (tupOf W g v)`. Use function extensionality and compare the values at `v`.
+
+Conclude with `gMap_mul W _ _ _`. Rewrite using `[this]`.
+-/
 theorem fix_iff (i : compL L p) (g : Fin nV → GL (Fin (m + 1)) Qq) (γ : UJ (sp.cm.sig : E →+* E) sp.gram0) :
     (repP L p i * jQ I hdet hk g)⁻¹ * ratA sp γ * (repP L p i * jQ I hdet hk g) ∈ KA L ↔
       γ ∈ gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) (repP L p i).1 ∧

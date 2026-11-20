@@ -24,24 +24,45 @@ section Cast
 
 variable {Ψ Ψ' : Finset (E →+* ℂ)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cast_symm (h : Ψ = Ψ') (x : Frame Ψ r) : castFr h.symm (castFr h x) = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cast_lact (h : Ψ = Ψ') (a : GL (Fin r) E) (x : Frame Ψ r) :
     castFr h (lact a x) = lact a (castFr h x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cast_rmul (h : Ψ = Ψ') (x b : Frame Ψ r) :
     castFr h (rmul x b) = rmul (castFr h x) (castFr h b) := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hb`.
+-/
 theorem cast_bor (h : Ψ = Ψ') {b : Frame Ψ r} (hb : b ∈ Bor Ψ r) : castFr h b ∈ Bor Ψ' r := by
   subst h; exact hb
 
+/- English proof (translation)
+Substitute `h hG hp` using the available equality. Conclude with `hx`.
+-/
 theorem cast_GG (h : Ψ = Ψ') {G G' : Matrix (Fin r) (Fin r) E} (hG : G = G') {p p' : ℕ} (hp : p = p')
     {x : Frame Ψ r} (hx : x ∈ GG Ψ G p) : castFr h x ∈ GG Ψ' G' p' := by
   subst h hG hp; exact hx
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `differentiable_id`.
+-/
 theorem cast_diff (h : Ψ = Ψ') : Differentiable ℂ (castFr (r := r) h) := by
   subst h; exact differentiable_id
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : la' = la` from `funext fun τ => funext fun i => hl τ i`. Both sides reduce to the same expression.
+-/
 theorem cast_bchar (h : Ψ = Ψ') {la : Wt Ψ r} {la' : Wt Ψ' r}
     (hl : ∀ (τ : Ψ') i, la' τ i = la ⟨τ.1, h ▸ τ.2⟩ i) (b : Frame Ψ r) :
     bchar la' (castFr h b) = bchar la b := by
@@ -49,6 +70,9 @@ theorem cast_bchar (h : Ψ = Ψ') {la : Wt Ψ r} {la' : Wt Ψ' r}
   obtain rfl : la' = la := funext fun τ => funext fun i => hl τ i
   rfl
 
+/- English proof (translation)
+Substitute `h hG` using the available equality. Take `rfl : la' = la` from `funext fun τ => funext fun i => hl τ i`. Both sides reduce to the same expression.
+-/
 theorem cast_wt (h : Ψ = Ψ') {G G' : Matrix (Fin r) (Fin r) E} (hG : G = G') {la : Wt Ψ r} {la' : Wt Ψ' r}
     (hl : ∀ (τ : Ψ') i, la' τ i = la ⟨τ.1, h ▸ τ.2⟩ i) (x : Frame Ψ' r) :
     (∏ τ, ∏ i, ‖dmin G (castFr h.symm x) τ (Fin.succ i) / dmin G (castFr h.symm x) τ i.castSucc‖ ^
@@ -60,16 +84,27 @@ theorem cast_wt (h : Ψ = Ψ') {G G' : Matrix (Fin r) (Fin r) E} (hG : G = G') {
 
 end Cast
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec (a : GL (Fin r) E) (v : Fin r → E) :
     ((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv (a : GL (Fin r) E) (v : Fin r → E) :
     (a : Matrix (Fin r) (Fin r) E) *ᵥ (((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 variable [NumberField E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`. Establish `e' : (a : Matrix (Fin r) (Fin r) E) *ᵥ w = (a : Matrix (Fin r) (Fin r) E) *ᵥ v` using `e`. Establish `: w = v` using `by rw [← inv_mulVec a w, e', inv_mulVec]`. Conclude with `this ▸ hw`.
+
+Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`.
+-/
 theorem mem_mapL {a : GL (Fin r) E} {L : Lt E r} {v : Fin r → E} :
     (a : Matrix (Fin r) (Fin r) E) *ᵥ v ∈ mapL a L ↔ v ∈ L := by
   constructor
@@ -82,12 +117,23 @@ theorem mem_mapL {a : GL (Fin r) E} {L : Lt E r} {v : Fin r → E} :
 
 variable [IsCMField E] {X : Data E r}
 
+/- English proof (translation)
+Introduce `x y` and use `by rw [← ha, mulVec_inv, mulVec_inv]`.
+-/
 theorem isUn_inv {a : GL (Fin r) E} (ha : IsUn X a) : IsUn X a⁻¹ := fun x y => by
   rw [← ha, mulVec_inv, mulVec_inv]
 
+/- English proof (translation)
+Introduce `x y` and use `by rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, hb]`.
+-/
 theorem isUn_mul {a b : GL (Fin r) E} (ha : IsUn X a) (hb : IsUn X b) : IsUn X (a * b) := fun x y => by
   rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, hb]
 
+/- English proof (translation)
+Establish `hc : mapL (a⁻¹ * g * a) X'.Λ = X'.Λ`. Rewrite using `[mapL_mul, mapL_mul, hfix, ← mapL_mul, inv_mul_cancel, mapL_one]`. Use `hP _ ⟨?_, fun x => ?_⟩ fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `isUn_mul (isUn_mul (isUn_inv ha) hg) ha`.
+
+Rewrite using `[← mem_mapL (a := a⁻¹ * g * a), hc]`. Take `⟨u', ⟨w, hw, e⟩, hu⟩` from `hM _ (mem_mapL.2 hv)`. Establish `e' : (a : Matrix (Fin r) (Fin r) E) *ᵥ w = u'` using `e`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hu, ← e', Matrix.mulVec_add, Matrix.mulVec_smul, inv_mulVec, inv_mulVec]`.
+-/
 theorem conj_mem {X' : Data E r} (hG : X'.Gm = X.Gm) {a g : GL (Fin r) E} {M : ℕ} (ha : IsUn X a) (hg : IsUn X g)
     (hfix : mapL g (mapL a X'.Λ) = mapL a X'.Λ)
     (hM : ∀ u ∈ mapL a X'.Λ, ∃ u' ∈ mapL a X'.Λ, (g : Matrix (Fin r) (Fin r) E) *ᵥ u = u + M • u')
@@ -108,6 +154,17 @@ end GlobalTheory.Dict.Pull
 
 open GlobalTheory.Dict.Extend GlobalTheory.Dict.Pull in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X' X h ga la' la Δ M P hga hl hΔ hP hχ hb`. Take `⟨⟨hd, hbor, hinv⟩, C, hC⟩` from `hb`. Establish `m1 : ∀ x ∈ X.dom, castFr h.psi.symm (lact ga⁻¹ x) ∈ X'.dom` using `fun x hx => cast_GG h.psi.symm h.gm.symm h.p0.symm (lact_mem (isUn_inv hga) hx)`. Establish `m2 : ∀ x ∈ X'.dom, lact ga (castFr h.psi x) ∈ X.dom` using `fun x hx => lact_mem hga (cast_GG h.psi h.gm h.p0 hx)`. Use `⟨⟨?_, ?_, ?_, C, ?_⟩, fun Q hQ hQb => ⟨?_, fun x hx => ⟨m2 x hx, ?_, fun b hb => ?_⟩⟩⟩` and prove the remaining obligations.
+
+Conclude with `hd.comp ((cast_diff h.psi.symm).comp (differentiable_lact ga⁻¹)).differentiableOn m1`. Introduce `x hx b hb`. Rewrite using `[lact_rmul, cast_rmul, hbor _ (m1 x hx) _ (cast_bor h.psi.symm hb), ← cast_bchar h.psi hl]`. Both sides reduce to the same expression. Introduce `g hg hfix x hx`.
+
+Establish `hm` using `conj_mem h.gm hga (hΔ g hg).1 hfix ((hΔ g hg).2 hfix) hP`. Establish `e : lact ga⁻¹ (lact g x) = lact (ga⁻¹ * g * ga) (lact ga⁻¹ x)`. Rewrite using `[lact_lact, lact_lact, mul_inv_cancel_right]`. Use `show P (castFr h.psi.symm (lact ga⁻¹ (lact g x))) = _`. Rewrite using `[e, cast_lact, hinv _ hm _ (m1 x hx), hχ _ hm, _root_.one_mul]`.
+
+Introduce `x hx`. Use `le_of_eq_of_le ?_ (hC _ (m1 x hx))` and prove the remaining obligations. Unfold `Data.pnorm`. Rewrite using `[cast_wt h.psi h.gm hl]`. Simplify using `only [dmin_lact (isUn_inv hga)]`.
+
+Conclude with `hQ.comp ((differentiable_lact ga).comp (cast_diff h.psi)).differentiableOn m2`. Rewrite using `[lact_lact, inv_mul_cancel, lact_one, cast_symm]`. Rewrite using `[cast_rmul, lact_rmul, hQb _ (m2 x hx) _ (cast_bor h.psi hb), cast_bchar h.psi hl]`.
+-/
 theorem GlobalTheory.Dict.isStabForm_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X' X : Data E r) (h : SameSp X' X) (ga : GL (Fin r) E) (la' : Wt X'.Ψ r) (la : Wt X.Ψ r) (Δ : Subgroup (GL (Fin r) E)) (M : ℕ) (P : Frame X'.Ψ r → ℂ), IsUn X ga → (∀ (τ : X.Ψ) i, la τ i = la' ⟨τ.1, by rw [h.psi]; exact τ.2⟩ i) → (∀ g' ∈ Δ, IsUn X g' ∧ (mapL g' (mapL ga X'.Λ) = mapL ga X'.Λ → ∀ u ∈ mapL ga X'.Λ, ∃ u' ∈ mapL ga X'.Λ, (g' : Matrix (Fin r) (Fin r) E) *ᵥ u = u + M • u')) → HasPrinc X' M → ChiOne X' la' → X'.IsBddSec la' P → IsStabForm X Δ (mapL ga X'.Λ) la (fun x => P (castFr h.psi.symm (lact ga⁻¹ x))) ∧ ∀ Q : Frame X.Ψ r → ℂ, DifferentiableOn ℂ Q X.dom → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Q (rmul x b) = bchar la b * Q x) → DifferentiableOn ℂ (fun x => Q (lact ga (castFr h.psi x))) X'.dom ∧ ∀ x ∈ X'.dom, lact ga (castFr h.psi x) ∈ X.dom ∧ castFr h.psi.symm (lact ga⁻¹ (lact ga (castFr h.psi x))) = x ∧ ∀ b ∈ Bor X'.Ψ r, Q (lact ga (castFr h.psi (rmul x b))) = bchar la' b * Q (lact ga (castFr h.psi x)) := by
   intro E _ _ _ r X' X h ga la' la Δ M P hga hl hΔ hP hχ hb
   obtain ⟨⟨hd, hbor, hinv⟩, C, hC⟩ := hb

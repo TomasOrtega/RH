@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.RswTop
 
+/- English proof (translation)
+Introduce `D p e`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.MuC.hermS_facts D p e`. Conclude with `⟨inferInstance, inferInstance, inferInstance, h2, h1, h3, h4⟩`.
+-/
 theorem topC : PositivityTheory.Rg.Rsw.Cell.TopC := by
   intro D p e
   obtain ⟨h1, h2, h3, h4, -⟩ := GlobalTheory.CompanionTheory.MuC.hermS_facts D p e

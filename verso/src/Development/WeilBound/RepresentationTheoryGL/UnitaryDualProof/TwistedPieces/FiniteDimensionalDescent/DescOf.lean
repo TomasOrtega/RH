@@ -6,6 +6,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.TP PositivityTheory.RgUd.TP.D
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨fun n Z => mu Z, fun n Z hZ χ => ?_⟩` and prove the remaining obligations. Take `⟨N, q, Z', hZ', hmu, hq, hr, hb, hpull⟩` from `hR p n Z hZ`. Take `⟨l, hl⟩` from `hpull χ`. Take `⟨m, F, hF, hg⟩` from `hl fun χ' _ => hP p hU N q Z' hZ' hq hr hb χ'`. Use `⟨m, F, hF, fun i => (hg i).imp_right fun ⟨N', S, hS, hlt, hv⟩ ih => hv (ih N' S hS hlt)⟩` and prove the remaining obligations.
+-/
 theorem desc_of (hR : Restr k) (hP : PieceGood k) (p : ℕ) [Fact p.Prime] [CharP k p]
     (hU : PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k)) : Desc k := by
   refine ⟨fun n Z => mu Z, fun n Z hZ χ => ?_⟩

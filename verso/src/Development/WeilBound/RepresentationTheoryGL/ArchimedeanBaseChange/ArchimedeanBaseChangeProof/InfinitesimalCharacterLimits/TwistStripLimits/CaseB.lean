@@ -9,6 +9,43 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `choose r c lam hr hrN hc hlam hpc hbd using fun k => PAscAll.exists_extremal (expFin_of dict_holds finTr_holds) expNeg_holds (V k) (hVd k) (hex k)`. Establish `hlam0 : Tendsto lam atTop (𝓝 0)`. Use `tendsto_order.2 ⟨fun a ha => Eventually.of_forall fun k => ha.trans (hlam k), fun a ha => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hsmall a ha] with k hk`. Assume the negation of the conclusion as `hle`.
+
+Conclude with `hk (gap_of_le (hbd k) (not_lt.1 hle))`. Take `⟨r₀, hr₀N, σ₁, hσ₁, hσ₁r⟩` from `exists_subseq_const (Set.finite_Iio N) r hrN`. Establish `hr₀ : 0 < r₀` using `hσ₁r 0 ▸ hr (σ₁ 0)`. Establish `hr₀N' : r₀ < N` using `hr₀N`. Take `⟨s, rfl⟩ : ∃ s, N = r₀ + s` from `⟨N - r₀, by omega⟩`.
+
+Establish `hs : 0 < s` using `by omega`. Establish `hc' : ∀ k, c (σ₁ k) ∈ ExpV r₀ (V (σ₁ k))` using `fun k => hσ₁r k ▸ hc (σ₁ k)`. Establish `hpc' : ∀ k, pE E (r₀ + s) r₀ (c (σ₁ k)) = -lam (σ₁ k) * (r₀ * s)` using `fun k => by`. Establish `h` using `hpc (σ₁ k)`. Rewrite `h` using `[hσ₁r k]`.
+
+Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hblk : ∀ k, ∃ (V₁ : Submodule ℂ (Sm E r₀)) (V₂ : Submodule ℂ (Sm E s)), IsDiscrete V₁ ∧ IsDiscrete V₂ ∧ Emb (V (σ₁ k)) (MemInd2 (tw V₁ (c (σ₁ k) / (r₀ * (Module.finrank ℚ E : ℂ)))) (tw V₂ (-c (σ₁ k) / (s * (Module.finrank ℚ E : ℂ)))))` using `fun k => by`. Take `⟨T, hT⟩` from `slice_of dict_holds finTr_holds E r₀ s hr₀ hs (V (σ₁ k)) (hVd _) _ (hc' k)`.
+
+Establish `hL2` using `chord_of expTw_holds sqIntCrit_holds E r₀ s hr₀ hs (V (σ₁ k)) _ T (lam (σ₁ k)) (hlam _) hT (hpc' k) (hbd (σ₁ k))`. Conclude with `proj_of pr_holds sliceTens_holds indMap_holds E r₀ s hr₀ hs (V (σ₁ k)) (hVd _) _ _ _ T hT hL2`. Use `choose V₁ V₂ hV₁ hV₂ hemb using hblk`. Set `w₁ : ℕ → ℂ` to `fun k => c (σ₁ k) / (r₀ * (Module.finrank ℚ E : ℂ)) - (s : ℂ) / 2`. Set `w₂ : ℕ → ℂ` to `fun k => -c (σ₁ k) / (s * (Module.finrank ℚ E : ℂ)) + (r₀ : ℂ) / 2`.
+
+Establish `hre : ∀ k, (w₁ k).re = -(s * lam (σ₁ k)) ∧ (w₂ k).re = r₀ * lam (σ₁ k)` using `fun k => re_twists hr₀ hs (hpc' k)`. Take `⟨C₁, hC₁⟩` from `hTB E r₀`. Take `⟨C₂, hC₂⟩` from `hTB E s`. Establish `hbb` using `fun k => block_bound hr₀ hs (hVd (σ₁ k)) (hV₁ k) (hV₂ k) (hemb k) (hVb _) (hC₁ ·) (hC₂ ·)`. Establish `hty` using `fun k => hBTK r₀ s rfl (V (σ₁ k)) (V₁ k) (V₂ k) _ _ (hVd _) (hV₁ k) (hV₂ k) (hVt _) (hemb k)`.
+
+Use `choose K₁ hK₁ W₁ hW₁ hT₁ using fun k => (hty k).1`. Use `choose K₂ hK₂ W₂ hW₂ hT₂ using fun k => (hty k).2`. Take `⟨⟨⟨⟨a₁, b₁⟩, a₂⟩, b₂⟩, hmem, σ₂, hσ₂, hσ₂e⟩` from `exists_subseq_const ((((hΘb r₀).1.prod (hΩb r₀).1).prod (hΘb s).1).prod (hΩb s).1) (fun k => (((K₁ k, W₁ k), K₂ k), W₂ k)) (fun k => ⟨⟨⟨hK₁ k, hW₁ k⟩, hK₂ k⟩, hW₂ k⟩)`. Simplify using `only [Prod.mk.injEq] at hσ₂e`. Take `⟨⟨⟨ma₁, mb₁⟩, ma₂⟩, mb₂⟩` from `hmem`.
+
+Take `⟨a, -, σ₃, hσ₃, ha⟩` from `tendsto_subseq_of_bounded (x := fun j => (w₁ (σ₂ j), w₂ (σ₂ j))) (Metric.isBounded_closedBall (x := (0 : ℂ × ℂ)) (r := max (R + |C₁|) (R + |C₂|))) (fun j => by`. Rewrite using `[mem_closedBall_zero_iff, Prod.norm_def]`. Conclude with `max_le_max (hbb _).1 (hbb _).2.1)`. Set `κ : ℕ → ℕ` to `fun j => σ₂ (σ₃ j)`. Establish `hκ : StrictMono κ` using `hσ₂.comp hσ₃`.
+
+Establish `ha₁ : Tendsto (fun j => w₁ (κ j)) atTop (𝓝 a.1)` using `(continuous_fst.tendsto a).comp ha`. Establish `ha₂ : Tendsto (fun j => w₂ (κ j)) atTop (𝓝 a.2)` using `(continuous_snd.tendsto a).comp ha`. Establish `hlamκ : Tendsto (fun j => lam (σ₁ (κ j))) atTop (𝓝 0)` using `hlam0.comp (hσ₁.comp hκ).tendsto_atTop`. Establish `hre₁ : a.1.re = 0`. Establish `h1 : Tendsto (fun j => (w₁ (κ j)).re) atTop (𝓝 a.1.re)` using `(Complex.continuous_re.tendsto _).comp ha₁`.
+
+Establish `h2 : Tendsto (fun j => (w₁ (κ j)).re) atTop (𝓝 0)`. Establish `e : (fun j => (w₁ (κ j)).re) = fun j => -(s : ℝ) * lam (σ₁ (κ j))` using `funext fun j => by`. Rewrite using `[(hre (κ j)).1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Simplify using `using hlamκ.const_mul (-(s : ℝ))`. Conclude with `tendsto_nhds_unique h1 h2`. Establish `hre₂ : a.2.re = 0`. Establish `h1 : Tendsto (fun j => (w₂ (κ j)).re) atTop (𝓝 a.2.re)` using `(Complex.continuous_re.tendsto _).comp ha₂`. Establish `h2 : Tendsto (fun j => (w₂ (κ j)).re) atTop (𝓝 0)`.
+
+Establish `e : (fun j => (w₂ (κ j)).re) = fun j => (r₀ : ℝ) * lam (σ₁ (κ j))` using `funext fun j => (hre (κ j)).2`. Rewrite using `[e]`. Simplify using `using hlamκ.const_mul (r₀ : ℝ)`. Conclude with `tendsto_nhds_unique h1 h2`. Take `⟨φ₁, t₁, t₁₀, hφ₁, hp₁₀, hz₁₀, hp₁, hs₁, hl₁, htw₁, he₁⟩` from `hIH r₀ (by omega) b₁ mb₁ a₁ ma₁ (2 * R + |C₁|) hr₀ hRep (fun j => V₁ (κ j)) (fun j => hV₁ _) (fun j => by`.
+
+Establish `e` using `hσ₂e (σ₃ j)`. Rewrite using `[← e.1.1.1, ← e.1.1.2]`. Conclude with `hT₁ _)`. Use the proof step `(fun j => (hbb _).2.2.1)`. Take `⟨φ₂, t₂, t₂₀, hφ₂, hp₂₀, hz₂₀, hp₂, hs₂, hl₂, htw₂, he₂⟩` from `hIH s (by omega) b₂ mb₂ a₂ ma₂ (2 * R + |C₂|) hs hRep (fun j => V₂ (κ (φ₁ j))) (fun j => hV₂ _) (fun j => by`.
+
+Establish `e` using `hσ₂e (σ₃ (φ₁ j))`. Rewrite using `[← e.1.2, ← e.2]`. Conclude with `hT₂ _)`. Use the proof step `(fun j => (hbb _).2.2.2)`. Establish `hL₁ : ∀ j, (t₁ j).twists.length = t₁₀.twists.length` using `fun j => length_twists_of_strip (hs₁ j)`.
+
+Establish `hL₂ : ∀ j, (t₂ j).twists.length = t₂₀.twists.length` using `fun j => length_twists_of_strip (hs₂ j)`. Establish `hφ₁₂ : StrictMono fun j => φ₁ (φ₂ j)` using `hφ₁.comp hφ₂`. Use `⟨fun j => σ₁ (κ (φ₁ (φ₂ j))), fun j => .node ((t₁ (φ₂ j)).shift (w₁ (κ (φ₁ (φ₂ j))))) ((t₂ j).shift (w₂ (κ (φ₁ (φ₂ j))))), .node (t₁₀.shift a.1) (t₂₀.shift a.2), hσ₁.comp (hκ.comp hφ₁₂), ⟨pos_shift _ hp₁₀, pos_shift _ hp₂₀⟩, ?_, fun j => ⟨pos_shift _ (hp₁ _), pos_shift _ (hp₂ _)⟩ …` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Tr.twists, twists_shift, List.mem_append, List.mem_map] at hz`.
+
+Break down `hz with ⟨y, hy, rfl⟩ | ⟨y, hy, rfl⟩` into its components or cases. Simplify using `[hz₁₀ y hy, hre₁]`. Simplify using `[hz₂₀ y hy, hre₂]`. Simplify using `only [Tr.strip, strip_shift, hs₁, hs₂]`. Simplify using `only [Tr.twists, twists_shift, getD_append, getD_map_add, List.length_map, hL₁, hL₂] split_ifs with h1 h2`.
+
+Conclude with `((htw₁ i).comp hφ₂.tendsto_atTop).add (ha₁.comp hφ₁₂.tendsto_atTop)`. Conclude with `(htw₂ (i - t₁₀.twists.length)).add (ha₂.comp hφ₁₂.tendsto_atTop)`. Conclude with `tendsto_const_nhds`. Establish `hN` using `hNE E r₀ s (V (σ₁ (κ (φ₁ (φ₂ j))))) (V₁ (κ (φ₁ (φ₂ j)))) (V₂ (κ (φ₁ (φ₂ j)))) _ _ (hVd _) (hemb _)`. Use `emb_trans hN ?_` and prove the remaining obligations.
+
+Use `hG E r₀ s _ _ _ _ (ParabolicProjection.isStable_tw (hV₁ _).stable _) (hTr E r₀ _ (allLeaves_shift _ (stable_of_pos (hp₁ _)))) (ParabolicProjection.isStable_tw (hV₂ _).stable _) (hTr E s _ (allLeaves_shift _ (stable_of_pos (hp₂ _)))) ?_ ?_` and prove the remaining obligations. Conclude with `hTS E r₀ (V₁ (κ (φ₁ (φ₂ j)))) (t₁ (φ₂ j)) _ (hV₁ _).stable (he₁ (φ₂ j))`. Conclude with `hTS E s (V₂ (κ (φ₁ (φ₂ j)))) (t₂ j) _ (hV₂ _).stable (he₂ j)`.
+-/
 theorem caseB' (hTB : TwBound) (hNE : NodeEmb) (hG : Graft) (hTS : TwShift) (hTr : TrStable) {N : ℕ}
     {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule ℂ (Kinf E N → ℂ)}
     {Ω Ωb : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))} {Θ Θb : ∀ M : ℕ, Set (Subgroup (GL (Fin M) (Af E)))}

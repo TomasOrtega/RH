@@ -6,6 +6,23 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `p _ D G L β D' j hP ga c hga`. Take `⟨hinj, hsmul, hspan, -⟩` from `hP`. Use `set f : 𝓞 D.F →+* G.F := (L.e : D.F →+* G.F).comp (algebraMap (𝓞 D.F) D.F) with hf`. Establish `hpow : ∀ (n : ℕ) (u : D'.La), j ((ga ^ n) u) = (L.rep c ^ n) (j u)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro u`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `u`.
+
+Rewrite using `[pow_succ, Module.End.mul_apply, ih, hga, pow_succ, Module.End.mul_apply]`. Establish `key : ∀ (q : (𝓞 D.F)[X]) (u : D'.La), j (q.sum fun i b => algebraMap (𝓞 D.F) D.O b • (ga ^ i) u) = L.rep (aeval c (q.map f)) (j u)`. Introduce `q u`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Polynomial.sum_def, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsmul, hpow, map_mul, map_pow, Module.End.mul_apply, ← L.rep_F]`. Both sides reduce to the same expression. Establish `hK : ∀ q : (𝓞 D.F)[X], Kills (algebraMap (𝓞 D.F) D.O) ga q ↔ aeval c (q.map f) = 0`. Introduce `q`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Apply `L.rep_inj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨m, u, hm, hmu⟩` from `hspan w`.
+
+Establish `h1 : L.rep (aeval c (q.map f)) (j u) = 0` using `by rw [← key, h u, map_zero]`. Establish `h2 : m • L.rep (aeval c (q.map f)) w = 0`. Rewrite using `[← LinearMap.map_smul_of_tower, hmu, h1]`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul ℚ]`. Rewrite using `[LinearMap.zero_apply]`.
+
+Conclude with `(smul_eq_zero.mp h2).resolve_left (Nat.cast_ne_zero.mpr hm)`. Introduce `h x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[key, h, map_zero, LinearMap.zero_apply, map_zero]`. Use `⟨(minpoly.monic (Algebra.IsIntegral.isIntegral c)).map _, fun q => ?_⟩` and prove the remaining obligations.
+
+Establish `hcomp : (L.e.symm : G.F →+* D.F).comp f = algebraMap (𝓞 D.F) D.F`. Use extensionality with `b`. Simplify using `[hf]`. Rewrite using `[hK, ← minpoly.dvd_iff, ← map_dvd_iff (Polynomial.mapEquiv L.e.symm), Polynomial.mapEquiv_apply, Polynomial.mapEquiv_apply, Polynomial.map_map, hcomp]`.
+-/
 theorem UpperTheory.Gal.W2.minBridge_of :
     UpperTheory.Gal.W2.MinBridge := by
   intro p _ D G L β D' j hP ga c hga

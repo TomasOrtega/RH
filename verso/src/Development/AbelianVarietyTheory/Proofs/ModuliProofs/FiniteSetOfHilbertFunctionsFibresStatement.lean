@@ -9,5 +9,8 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.finite_setOf_dimDeg_map | exact GlobalTheory.finite_setOf_dimDeg_map | (intros; apply GlobalTheory.finite_setOf_dimDeg_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_setOf_hilbertFunctions_fibres : ∀ (R σ : Type) [CommRing R] [IsNoetherianRing R] [Finite σ] (I : Ideal (MvPolynomial σ R)), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → {φ : ℕ → ℕ | ∃ (K : Type) (_ : Field K) (x : R →+* K), φ = dimDeg (I.map (MvPolynomial.map x))}.Finite := by
   first | exact @GlobalTheory.finite_setOf_dimDeg_map | exact GlobalTheory.finite_setOf_dimDeg_map | (intros; apply GlobalTheory.finite_setOf_dimDeg_map <;> assumption)

@@ -9,6 +9,9 @@ namespace GlobalTheory.EtC.TensFam
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[Tens.res, DirectSum.lmap_lof]`.
+-/
 theorem tensRes_id (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens.res (I := I) (J := J) (𝟙 U) w = LinearMap.id := by
   classical
   apply DirectSum.linearMap_ext
@@ -17,6 +20,9 @@ theorem tensRes_id (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens.res (I := I) (
   intro a b
   simp [Tens.res, DirectSum.lmap_lof]
 
+/- English proof (translation)
+Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[Tens.res, DirectSum.lmap_lof]`.
+-/
 theorem tensRes_comp (I J : Cx R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (w : ℤ) :
     Tens.res (I := I) (J := J) (f ≫ g) w = (Tens.res f w).comp (Tens.res g w) := by
   classical
@@ -26,6 +32,11 @@ theorem tensRes_comp (I J : Cx R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ 
   intro a b
   simp [Tens.res, DirectSum.lmap_lof]
 
+/- English proof (translation)
+Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Use `τ.nat g p.1.1 p.1.2 w p.2 a b` as an intermediate fact.
+
+Simplify using `[Tens.res, Pair.lift, DirectSum.lmap_lof] at this ⊢`. Conclude with `this.symm`.
+-/
 theorem lift_resL {I J K : Cx R} (τ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     (τ.lift V w).comp (Tens.res g w) = ((K.X w).obj.map g.op).hom.comp (τ.lift U w) := by
   classical
@@ -61,6 +72,9 @@ end GlobalTheory.EtC.TensFam
 
 open GlobalTheory.EtC.TensFam in
 
+/- English proof (translation)
+Introduce `R S _ _ I J K τ hτ w M b hb`. Conclude with `GlobalTheory.T.etaleSheaf_descend_along_locallyBijective S (tensP I J w) (secP (K.X w)) (liftP τ w) (fun U y => hτ.1 U w y) (fun U x hx => hτ.2 U w x hx) M b hb`.
+-/
 theorem GlobalTheory.EtC.tens_fam : ∀ (R S : Type) [CommRing R] [CommRing S] {I J K : Cx R} (τ : Pair I J K), τ.IsTensor → ∀ (w : ℤ) (M : Shv S) (b : ∀ U : Scheme.{0}, Tens I J U w →+ Sec M U), (∀ (V U : Scheme.{0}) (g : V ⟶ U) x, Sec.res g (b U x) = b V (Tens.res g w x)) → ∃ φ : ∀ U : Scheme.{0}, Sec (K.X w) U →+ Sec M U, (∀ (V U : Scheme.{0}) (g : V ⟶ U) y, Sec.res g (φ U y) = φ V (Sec.res g y)) ∧ ∀ U x, φ U (τ.lift U w x) = b U x := by
   intro R S _ _ I J K τ hτ w M b hb
   exact GlobalTheory.T.etaleSheaf_descend_along_locallyBijective S (tensP I J w) (secP (K.X w)) (liftP τ w)

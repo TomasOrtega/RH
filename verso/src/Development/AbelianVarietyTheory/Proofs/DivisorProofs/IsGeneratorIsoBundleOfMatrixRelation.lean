@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.HomFixUniv.CondGen
 
+/- English proof (translation)
+Establish `h1` using `gs_res (𝟙 Y) z e hz ((q.app U).hom f)`. Establish `h2` using `gs_pull (𝟙 Y) q z U (e hz) f`. Rewrite `h2` using `[Category.id_comp]`. Conclude with `h1.trans h2`.
+-/
 theorem gs_appLE_self {X Y : Scheme.{0}} (q : Y ⟶ X) (U : X.Opens) (W : Y.Opens) (e : W ≤ q ⁻¹ᵁ U) (z : Y)
     (hz : z ∈ W) (f : Γ(X, U)) : gs (𝟙 Y) z W ((q.appLE U W e).hom f) = gs q z U f := by
   have h1 := gs_res (𝟙 Y) z e hz ((q.app U).hom f)
@@ -17,6 +20,9 @@ theorem gs_appLE_self {X Y : Scheme.{0}} (q : Y ⟶ X) (U : X.Opens) (W : Y.Open
   rw [Category.id_comp] at h2
   exact h1.trans h2
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_sum]`.
+-/
 theorem gs_fsum {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {n : ℕ} (a : Fin n → Γ(X, U)) :
     gs f y U (∑ i, a i) = ∑ i, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
@@ -25,6 +31,27 @@ end GlobalTheory.HomFixUniv.CondGen
 
 open GlobalTheory.HomFixUniv.CondGen in
 
+/- English proof (translation)
+Introduce `Rg _ A B _ _ L M k mA mB bA bB R _ A' B' Φ' ψA ψB c u hG hR p p'`. Apply `unit_ext` to reduce the goal to its premises. Introduce `z hz`. Establish `hzp : z ∈ (isoLB (L` using `L) (M := M) k Φ' ψA ψB).U p := hz.1`. Establish `hzp' : z ∈ (isoLB (L` using `L) (M := M) k Φ' ψA ψB).U p' := hz.2`.
+
+Establish `hmB : (Φ'.left ≫ ψB) z ∈ LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1` using `GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1 hzp.1`. Establish `hmB' : (Φ'.left ≫ ψB) z ∈ LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p'.1` using `GlobalTheory.HomFixMat.wchart_comp_le M _ _ p'.1 hzp'.1`. Establish `hmA : ψA z ∈ LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2` using `GlobalTheory.HomFixMat.wchart_comp_le L _ _ p.2 hzp.2`. Establish `hmA' : ψA z ∈ LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p'.2` using `GlobalTheory.HomFixMat.wchart_comp_le L _ _ p'.2 hzp'.2`. Establish `key : ∀ (q : (Fin 1 → M.ι) × (Fin 1 → L.ι)), z ∈ (isoLB (L` using `L) (M := M) k Φ' ψA ψB).U q → ∀ j : Fin mB, gs (Φ'.left ≫ ψB) z (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) q.1) ((bB j).f q.1) = (gm (𝟙 _) z _ (u q)).val * GlobalTheory.HomFixUniv.comb bA ψA A'.hom c z q.2 j := by`.
+
+Introduce `q hq j`. Establish `e` using `congrArg (gs (𝟙 A'.left) z ((isoLB (L := L) (M := M) k Φ' ψA ψB).U q)) (hR j q)`. Use `(gs_appLE_self _ _ _ _ z hq _).symm.trans (e.trans ?_)` and prove the remaining obligations. Rewrite using `[gs_mul _ z _ hq, gs_unit _ z _ hq, gs_fsum _ z _ hq]`. Unfold `GlobalTheory.HomFixUniv.comb`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul _ z _ hq]`. Conclude with `congrArg₂ (· * ·) (gs_appLE_self _ _ _ _ z hq _) (gs_appLE_self _ _ _ _ z hq _)`. Establish `tB : ∀ j : Fin mB, gs (Φ'.left ≫ ψB) z (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) ((bB j).f p.1) = (trF (L` using `M) (fun _ : Fin 1 => (snd (topS Rg) B).left) (fun _ => (k : ℤ)) (Φ'.left ≫ ψB) z p.1 p'.1).val * gs (Φ'.left ≫ ψB) z (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p'.1) ((bB j).f p'.1) := fun j => sec_trans (bB j) (Φ'.left ≫ ψB) z hmB hmB'`.
+
+Establish `tA : ∀ i : Fin mA, gs ψA z (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p.2) ((bA i).f p.2) = (trF (L` using `L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2).val * gs ψA z (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A).left) p'.2) ((bA i).f p'.2) := fun i => sec_trans (bA i) ψA z hmA hmA'`. Establish `tC : ∀ j : Fin mB, GlobalTheory.HomFixUniv.comb bA ψA A'.hom c z p.2 j = (trF (L` using `L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2).val * GlobalTheory.HomFixUniv.comb bA ψA A'.hom c z p'.2 j := by`. Introduce `j`. Unfold `GlobalTheory.HomFixUniv.comb`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) (tA i)).trans (mul_left_comm _ _ _)`. Establish `hg : gm (𝟙 A'.left) z _ ((isoLB (L` using `L) (M := M) k Φ' ψA ψB).g p p') = trF (L := M) (fun _ : Fin 1 => (snd (topS Rg) B).left) (fun _ => (k : ℤ)) (Φ'.left ≫ ψB) z p.1 p'.1 * (trF (L := L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2)⁻¹ := by show gm (𝟙 A'.left) z _ (res _ _ * (res _ _)⁻¹ …`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ z _ hz _).trans ?_) ((map_inv _ _).trans (congrArg _ ((gm_res _ z _ hz _).trans ?_))))` and prove the remaining obligations. Conclude with `(gm_linComb M _ _ (𝟙 A'.left) z p.1 p'.1 hzp.1 hzp'.1).trans (by simp only [trF, Category.id_comp])`.
+
+Conclude with `(gm_linComb L _ _ (𝟙 A'.left) z p.2 p'.2 hzp.2 hzp'.2).trans (by simp only [trF, Category.id_comp])`. Take `⟨j, hj⟩` from `hG z p.2 hmA`. Use `(gm_res _ z _ hz _).trans (Eq.trans ?_ (map_mul _ _ _).symm)` and prove the remaining obligations. Rewrite using `[hg, gm_res _ z _ hz]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `hj.mul_right_cancel` to reduce the goal to its premises. Establish `e1` using `key p hzp j`. Establish `e2` using `key p' hzp' j`. Establish `e3` using `tB j`. Establish `e4` using `tC j`.
+
+Establish `hinv` using `Units.inv_mul (trF (L := L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2)`. Rewrite `e3` using `[e1, e2, e4]`. Simplify using `only [Units.val_mul]`. Rewrite using `[e4]`. Use `set TM := (trF (L := M) (fun _ : Fin 1 => (snd (topS Rg) B).left) (fun _ => (k : ℤ)) (Φ'.left ≫ ψB) z p.1 p'.1).val`.
+
+Use `set TL := (trF (L := L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2).val`. Use `set TLi := ((trF (L := L) (fun _ : Fin 1 => (snd (topS Rg) A).left) (fun _ => (k : ℤ)) ψA z p.2 p'.2)⁻¹).val`. Use `set U' := (gm (𝟙 A'.left) z _ (u p')).val`. Use `set C' := GlobalTheory.HomFixUniv.comb bA ψA A'.hom c z p'.2 j`. Take the linear combination `e3 - (TM * U' * C') * hinv`.
+-/
 theorem GlobalTheory.HomFixUniv.isGen_of_matRel : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (k mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (R : Type) [CommRing R] (A' B' : Over (Sp R)) (Φ' : A' ⟶ B') (ψA : A'.left ⟶ (topS Rg ⊗ A).left) (ψB : B'.left ⟶ (topS Rg ⊗ B).left) (c : Fin mA → Fin mB → Γ(Sp R, ⊤)) (u : ∀ p, Γ(A'.left, (isoLB (L := L) (M := M) k Φ' ψA ψB).U p)ˣ), GlobalTheory.HomFixUniv.Generates bA ψA A'.hom c → (∀ (j : Fin mB) (p : (Fin 1 → M.ι) × (Fin 1 → L.ι)),
       ((Φ'.left ≫ ψB).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1)
           ((isoLB (L := L) (M := M) k Φ' ψA ψB).U p)

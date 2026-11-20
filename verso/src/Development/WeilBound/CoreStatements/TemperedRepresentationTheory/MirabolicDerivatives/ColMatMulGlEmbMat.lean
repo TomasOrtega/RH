@@ -11,6 +11,9 @@ section Alg
 
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+Use `show vecMul _ _ = _ ↔ _`. Rewrite using `[vecMul_eLast]`.
+-/
 theorem mem_Mir_iff {n : ℕ} (g : GL (Fin (n + 1)) k) :
     g ∈ Mir k n ↔ (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) = eLast k n := by
   show vecMul _ _ = _ ↔ _
@@ -19,6 +22,11 @@ theorem mem_Mir_iff {n : ℕ} (g : GL (Fin (n + 1)) k) :
 def blockMat (n : ℕ) (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) : Matrix (Fin n) (Fin n) k :=
   fun i j => g (Fin.castSucc i) (Fin.castSucc j)
 
+/- English proof (translation)
+Establish `hh` using `(mem_Mir_iff k (h : GL (Fin (n + 1)) k)).1 h.2`. Use extensionality with `i j`. Establish `e : ((h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.castSucc j) = 0`. Rewrite using `[hh]`. Simplify using `[eLast, Pi.single_apply, Fin.castSucc_ne_last]`.
+
+Simplify using `[blockMat, Units.val_mul, mul_apply, Fin.sum_univ_castSucc, e]`.
+-/
 theorem blockMat_mul {n : ℕ} (g h : Mir k n) :
     blockMat k n ((g : GL (Fin (n + 1)) k) * (h : GL (Fin (n + 1)) k) : GL (Fin (n + 1)) k) =
       blockMat k n (g : GL (Fin (n + 1)) k) * blockMat k n (h : GL (Fin (n + 1)) k) := by
@@ -49,6 +57,9 @@ def mirChar (ψ : AddChar k Circle) (n : ℕ) : MirUin k (n + 1) →* ℂˣ :=
   (chrV k ψ n).comp ((unipEquiv k (n + 1)).symm.toMonoidHom.comp
     (Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k (n + 1))).toMonoidHom)
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [glEmbMat, colMat, mul_apply, Fin.sum_univ_castSucc, mulVec, dotProduct]`. Simplify using `[glEmbMat, colMat, mul_apply, hj]`.
+-/
 theorem glEmbMat_mul_colMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (v : Fin n → k) :
     glEmbMat k n A * colMat k n v = colMat k n (A.mulVec v) := by
   ext i j
@@ -57,11 +68,17 @@ theorem glEmbMat_mul_colMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (v : Fin n 
     induction i using Fin.lastCases <;> simp [glEmbMat, colMat, mul_apply, Fin.sum_univ_castSucc, mulVec, dotProduct]
   · simp [glEmbMat, colMat, mul_apply, hj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `induction j using Fin.lastCases <;> simp [colMat, glEmbMat, mul_apply, Fin.sum_univ_castSucc, Fin.castSucc_ne_last]`.
+-/
 theorem colMat_mul_glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (w : Fin n → k) :
     colMat k n w * glEmbMat k n A = colMat k n w := by
   ext i j
   induction j using Fin.lastCases <;> simp [colMat, glEmbMat, mul_apply, Fin.sum_univ_castSucc, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) * (1 + colMat k n v.toAdd) = (1 + colMat k n ((g : Matrix (Fin n) (Fin n) k).mulVec v.toAdd)) * glEmbMat k n (g : Matrix (Fin n) (Fin n) k)`. Rewrite using `[mul_add, add_mul, mul_one, one_mul, glEmbMat_mul_colMat, colMat_mul_glEmbMat]`.
+-/
 theorem glEmb_mul_unip' (n : ℕ) (g : GL (Fin n) k) (v : Multiplicative (Fin n → k)) :
     glEmb k n g * unip k n v =
       unip k n (Multiplicative.ofAdd ((g : Matrix (Fin n) (Fin n) k).mulVec v.toAdd)) * glEmb k n g := by
@@ -71,6 +88,9 @@ theorem glEmb_mul_unip' (n : ℕ) (g : GL (Fin n) k) (v : Multiplicative (Fin n 
     (1 + colMat k n ((g : Matrix (Fin n) (Fin n) k).mulVec v.toAdd)) * glEmbMat k n (g : Matrix (Fin n) (Fin n) k)
   rw [mul_add, add_mul, mul_one, one_mul, glEmbMat_mul_colMat, colMat_mul_glEmbMat]
 
+/- English proof (translation)
+Establish `h` using `(mem_Mir_iff k m).1 hm`. Establish `: ((m : Matrix (Fin (n + 1)) (Fin (n + 1)) k).mulVec v) (Fin.last n) = (m : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) ⬝ᵥ v` using `rfl`. Rewrite using `[this, h]`. Simplify using `[eLast, dotProduct, Pi.single_apply]`.
+-/
 theorem mulVec_last_of_mem {n : ℕ} (m : GL (Fin (n + 1)) k) (hm : m ∈ Mir k n) (v : Fin (n + 1) → k) :
     ((m : Matrix (Fin (n + 1)) (Fin (n + 1)) k).mulVec v) (Fin.last n) = v (Fin.last n) := by
   have h := (mem_Mir_iff k m).1 hm
@@ -79,6 +99,11 @@ theorem mulVec_last_of_mem {n : ℕ} (m : GL (Fin (n + 1)) k) (hm : m ∈ Mir k 
   rw [this, h]
   simp [eLast, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `key : (unipEquiv k (n + 1)).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k (n + 1))) x) = w`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hx`. Use `show Circle.toUnits (ψ (((unipEquiv k (n + 1)).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k (n + 1))) x)).toAdd (Fin.last n))) = _`.
+
+Rewrite using `[key]`.
+-/
 theorem mirChar_eq (ψ : AddChar k Circle) (n : ℕ) (x : MirUin k (n + 1)) (w : Multiplicative (Fin (n + 1) → k))
     (hx : ((x : Mir k (n + 1)) : GL (Fin (n + 2)) k) = unip k (n + 1) w) :
     mirChar k ψ n x = Circle.toUnits (ψ (w.toAdd (Fin.last n))) := by
@@ -98,6 +123,11 @@ def qProj (n : ℕ) : Q k n →* Mir k n :=
 def qEntry (n : ℕ) (g : GL (Fin (n + 2)) k) : k :=
   (g : Matrix (Fin (n + 2)) (Fin (n + 2)) k) (Fin.castSucc (Fin.last n)) (Fin.last (n + 1))
 
+/- English proof (translation)
+Establish `ha' : ∀ j : Fin (n + 1), ((a : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k) (Fin.castSucc (Fin.last n)) (Fin.castSucc j) = eLast k n j` using `fun j => congrFun ((mem_Mir_iff k _).1 ha) j`. Establish `hb : ((b : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k) (Fin.last (n + 1)) (Fin.last (n + 1)) = 1`. Use `congrFun ((mem_Mir_iff k _).1 b.2) (Fin.last (n + 1))` as an intermediate fact. Simplify `this` using `[eLast]`. Simplify using `only [qEntry, Units.val_mul, mul_apply, Fin.sum_univ_castSucc (n := n + 1), ha', hb, mul_one]`.
+
+Simplify using `[eLast, Pi.single_apply, add_comm]`.
+-/
 theorem qEntry_mul (n : ℕ) (a b : Mir k (n + 1)) (ha : mirabolicProjection k (n + 1) a ∈ Mir k n) :
     qEntry k n ((a : GL (Fin (n + 2)) k) * (b : GL (Fin (n + 2)) k)) =
       qEntry k n (a : GL (Fin (n + 2)) k) + qEntry k n (b : GL (Fin (n + 2)) k) := by
@@ -124,6 +154,11 @@ section Rep
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨?_, rfl⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Establish `hv' : ((u : Mir k n) : GL (Fin (n + 1)) k) = unip k n v` using `hv.symm`. Use `show glEmb k n m * ((u : Mir k n) : GL (Fin (n + 1)) k) * (glEmb k n m)⁻¹ ∈ MirU k n`. Rewrite using `[hv', glEmb_mul_unip', mul_inv_cancel_right]`.
+
+Conclude with `⟨_, rfl⟩`.
+-/
 theorem levi_normalises (n : ℕ) (m : GL (Fin n) k) (u : MirUin k n) :
     ∃ h : levi k n m * (u : Mir k n) * (levi k n m)⁻¹ ∈ MirUin k n, (1 : MirUin k n →* ℂˣ) ⟨_, h⟩ = (1 : MirUin k n →* ℂˣ) u := by
   refine ⟨?_, rfl⟩
@@ -145,6 +180,11 @@ def psiPlus {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Represent
     Representation ℂ (Mir k n) W :=
   σ.comp (mirabolicProjection k n)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k (n + 1)) : GL (Fin (n + 2)) k) ∈ MirU k (n + 1))`. Establish `hv' : ((u : Mir k (n + 1)) : GL (Fin (n + 2)) k) = unip k (n + 1) v` using `hv.symm`. Establish `e : glEmb k (n + 1) (m : GL (Fin (n + 1)) k) * ((u : Mir k (n + 1)) : GL (Fin (n + 2)) k) * (glEmb k (n + 1) (m : GL (Fin (n + 1)) k))⁻¹ = unip k (n + 1) (Multiplicative.ofAdd (((m : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k).mulVec v.toAdd))`. Rewrite using `[hv', glEmb_mul_unip', mul_inv_cancel_right]`. Use `⟨(show glEmb k (n + 1) (m : GL (Fin (n + 1)) k) * ((u : Mir k (n + 1)) : GL (Fin (n + 2)) k) * (glEmb k (n + 1) (m : GL (Fin (n + 1)) k))⁻¹ ∈ MirU k (n + 1) from e ▸ ⟨_, rfl⟩), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mirChar_eq k ψ n _ _ e, mirChar_eq k ψ n u v hv']`. Simplify using `only [toAdd_ofAdd]`. Rewrite using `[mulVec_last_of_mem k _ m.2]`.
+-/
 theorem levi_stab (ψ : AddChar k Circle) (n : ℕ) (m : Mir k n) (u : MirUin k (n + 1)) :
     ∃ h : ((levi k (n + 1)).comp (Mir k n).subtype) m * (u : Mir k (n + 1)) *
         (((levi k (n + 1)).comp (Mir k n).subtype) m)⁻¹ ∈ MirUin k (n + 1),

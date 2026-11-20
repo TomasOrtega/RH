@@ -44,6 +44,17 @@ def rebase {S : HSp D} (β : Frame p S n) (b : Matrix (Fin S.rank) m k) (b' : Ma
     simp only [← Matrix.mul_assoc, β.bb', Matrix.one_mul]
     rw [Matrix.mul_assoc _ β.b, β.bb', Matrix.mul_one]
 
+/- English proof (translation)
+Set `f : D.host.E →+* k` to `p.pr.comp (incA D)`. Set `w : Fin L.rank → D.host.E` to `(star ζ ⬝ᵥ L.gram *ᵥ ζ)⁻¹ • (star ζ ᵥ* L.gram)`. Establish `hw : w ⬝ᵥ ζ = 1`. Rewrite using `[smul_dotProduct, ← dotProduct_mulVec, smul_eq_mul, inv_mul_cancel₀ hζ.2]`. Set `M : Matrix (Fin S.rank) (Fin A.rank ⊕ Fin 1) D.host.E` to `fromCols o.iA (replicateCol (Fin 1) (vecB o ζ))`.
+
+Set `N : Matrix (Fin A.rank ⊕ Fin 1) (Fin S.rank) D.host.E` to `fromRows o.qA (replicateRow (Fin 1) (w ᵥ* o.qB))`. Establish `hNM : N * M = 1`. Rewrite using `[fromRows_mul_fromCols, o.qA_iA, ← replicateCol_mulVec, vecB, mulVec_mulVec, o.qA_iB, zero_mulVec, ← replicateRow_vecMul, vecMul_vecMul, o.qB_iA, vecMul_zero, replicateRow_mul_replicateCol, dotProduct_mulVec, vecMul_vecMul, o.qB_iB, vecMul_one, hw, replicateCol_zero, replicateRow …`. Use `congr 1`. Use extensionality with `i j`.
+
+Rewrite using `[Subsingleton.elim i j, one_apply_eq, of_apply]`. Set `X : Matrix (Fin A.rank ⊕ Fin 1) (Fin A.rank ⊕ Fin 1) k` to `fromBlocks β.b 0 0 1`. Set `X' : Matrix (Fin A.rank ⊕ Fin 1) (Fin A.rank ⊕ Fin 1) k` to `fromBlocks β.b' 0 0 1`. Establish `h1 : (X' * N.map f) * (M.map f * X) = (1 : Matrix (Fin A.rank ⊕ Fin 1) (Fin A.rank ⊕ Fin 1) k)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (N.map f), ← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero f) (map_one f), Matrix.one_mul, fromBlocks_multiply]`.
+
+Simplify using `[β.b'b]`. Establish `h2` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [← o.rank_add, hζ.1])).1 h1`. Use `⟨rebase γ _ _ h2 h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.map f * X = _`. Rewrite using `[fromCols_map, fromCols_mul_fromBlocks, Matrix.mul_zero, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_sumFrame {S A L : HSp D} (o : OrthDec S A L) {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ)
     (β : Frame p A (Fin A.rank)) (γ : Frame p S n) : ∃ β₀ : Frame p S (Fin A.rank ⊕ Fin 1), IsSumFrame o ζ β β₀ := by
   let f : D.host.E →+* k := p.pr.comp (incA D)
@@ -75,6 +86,9 @@ end Frames
 
 attribute [local instance] GlobalTheory.FinPl.Model.relAt GlobalTheory.FinPl.Model.locAt
 
+/- English proof (translation)
+The claim follows from `let ⟨β₀, h⟩ := exists_sumFrame o hζ (Model.frame τ A 1) (Model.frame τ S 1) ⟨⟨fun _ => Model.frame τ A 1, fun _ => β₀, fun _ => stdPair _ ⟨0, hA⟩⟩, h⟩`.
+-/
 theorem exists_pairDat {v : Pl D} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) {S A L : HSp D} (o : OrthDec S A L)
     {ζ : Fin L.rank → D.host.E} (hζ : IsLineVec L ζ) (hA : 0 < A.rank) :
     ∃ a : PairDat (fun _ : Unit => Model.splitPt τ) A S (Fin A.rank), IsSumFrame o ζ (a.α ()) (a.α₀ ()) :=
@@ -89,6 +103,11 @@ def stdLat {σ : ℕ} (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesL
   ⟨PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _, PlaceModel.latFrame _,
     PlaceModel.latFrame _⟩
 
+/- English proof (translation)
+Take `⟨T, B, c, hB, -, hc, -⟩` from `GlobalTheory.Unf.Inhab.exists_chain_of_isStdChar hψ`. Take `⟨v, ⟨τ⟩⟩` from `GlobalTheory.AdelicU.exists_split_place (GlobalTheory.AdelicU.isCMExt_host D)`. Consider the cases of `c with`. Consider the case `step J B' s₁ s₂ l vL c`. Take `⟨a, ha⟩` from `exists_pairDat τ B.o B.line hB`.
+
+Take `⟨a', ha'⟩` from `exists_pairDat τ B'.o B'.line hc.2.1`. Establish `h` using `fun S : HSp D => PlaceModel.isSelfDualC_latFrame S`. Conclude with `⟨v, _, B, J, B', s₁, s₂, l, stdLat B J B', a, midDat τ _ hc.1, a', hB, hc.1, hc.2.1, h _, h _, h _, h _, h _, h _, ha, ha'⟩`.
+-/
 theorem exists_data {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
     ∃ (v : Pl D) (p : Unit → SplitPt D (Fv D.host.F v)) (B : BesLev D 1) (J : JacLev D 1) (B' : BesLev D 0)
       (_ : StepBF ψ B J) (_ : StepFB ψ J B') (_ : Link B B'.L B'.ζ) (Λ : DblLat B J B')
@@ -106,6 +125,13 @@ theorem exists_data {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     exact ⟨v, _, B, J, B', s₁, s₂, l, stdLat B J B', a, midDat τ _ hc.1, a', hB, hc.1, hc.2.1, h _, h _, h _, h _, h _, h _,
       ha, ha'⟩
 
+/- English proof (translation)
+Introduce `G₁ G₂`. Establish `h1 : ∀ x ∈ G₁, x.2 = 1` using `fun x hx => hx.2`. Establish `h2 : ∀ x ∈ G₂, x.1 = 1` using `fun x hx => hx.1`. Use `⟨isClosed_univ.prod isClosed_singleton, isClosed_singleton.prod isClosed_univ, h₁.prod h₂, fun x hx y hy => ?_, ?_, fun r hr => ⟨(r.1, 1), ⟨⟨hr.1, one_mem _⟩, trivial, rfl⟩, (1, r.2), ⟨⟨one_mem _, hr.2⟩, rfl, trivial⟩, by simp⟩, isCompact_singleton.prod isCompact_univ, by simp⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using `[h2 y hy]`. Simplify using `[h1 x hx]`. Use `isHomeomorph_iff_exists_inverse.2 ⟨by fun_prop, fun g => (⟨(g.1, 1), ⟨trivial, rfl⟩⟩, ⟨(1, g.2), ⟨rfl, trivial⟩⟩), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩`. Apply the tactic sequence `ext <;> simp [h1 x x.2, h2 y y.2]`.
+
+Introduce `g`. Simplify using the standard rewrite rules. Use `fun_prop`.
+-/
 theorem collapse_hyp (A B : Type) [Group A] [Group B] [TopologicalSpace A] [TopologicalSpace B] [IsTopologicalGroup A]
     [IsTopologicalGroup B] [T2Space A] [T2Space B] [CompactSpace B] (R₁ : Subgroup A) (R₂ : Subgroup B)
     (h₁ : IsClosed (R₁ : Set A)) (h₂ : IsClosed (R₂ : Set B)) :

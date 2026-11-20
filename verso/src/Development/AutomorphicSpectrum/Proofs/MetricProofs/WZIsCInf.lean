@@ -17,6 +17,11 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `k _ _ X p t L τ i y hy`. Establish `hy' : unsheet p y ∈ ptsIn p (emb p y) (L.B.U i)` using `mem_ptsIn.2 (mem_ptsIn.1 hy)`. Use `(GlobalTheory.T.contDiff_sheet_iff k X p t τ (emb p y) ((wZ L t τ).φ i) (unsheet p y)).2 ?_` and prove the remaining obligations. Use `(L.cInf (emb p y) i _ hy').congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hy'] with z hz`.
+
+Conclude with `wOver_wZ L t τ _ i z hz`.
+-/
 theorem wZ_isCInf : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X : Scheme.{0}) (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (L : HermLB p) (τ : ℤ →+* ℂ), (wZ L t τ).IsCInf := by
   intro k _ _ X p t L τ i y hy
   have hy' : unsheet p y ∈ ptsIn p (emb p y) (L.B.U i) := mem_ptsIn.2 (mem_ptsIn.1 hy)

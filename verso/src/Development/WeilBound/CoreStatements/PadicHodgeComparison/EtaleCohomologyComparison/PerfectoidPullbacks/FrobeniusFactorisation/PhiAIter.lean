@@ -37,10 +37,18 @@ def nuH (M : Model l K) (j : ℕ) : Sys.Hom (sH r M j) (sT r M j) (ψA r N) := �
 
 def muH (M : Model l K) (j : ℕ) : Sys.Hom (sT r M j) (sH r M j) (RingHom.id _) := ⟨fun n => Mid.mu r M n j hT, fun n x => mu_red r hT M n j x⟩
 
+/- English proof (translation)
+Take `⟨E⟩` from `LsG.ls_seq r M hM j`. Conclude with `GlobalTheory.T.module_finite_limit_of_lseq _ l _ _ E (smooth_model_finite_length_link r M hM j)`.
+-/
 theorem lw_fin (M : Model l K) (hM : M.Sm) (j : ℕ) : Module.Finite (WittVector l r.k) (HSW r M j).lim := by
   obtain ⟨E⟩ := LsG.ls_seq r M hM j
   exact GlobalTheory.T.module_finite_limit_of_lseq _ l _ _ E (smooth_model_finite_length_link r M hM j)
 
+/- English proof (translation)
+Distinguish the cases in `hM : M.Sm`. Use `swap`. Conclude with `⟨0, 0, fun h => absurd h hM⟩`. Take `⟨E⟩` from `LsG.ls_seq r M hM j`. Establish `ha : ∀ n, IsArtinian (WittVector l r.k) ((HSW r M j).M n)` using `fun n => (isFiniteLength_iff_isNoetherian_isArtinian.1 (GlobalTheory.T.finite_length_of_lseq_first _ l _ _ E (smooth_model_finite_length_link r M hM j) n)).2`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.bounded_cokernel_limit_to_level _ l _ _ E ha (lw_fin r M hM (j + 1))`. Use `flatW r` as an intermediate fact. Establish `: IsAdicComplete (Ideal.span {(l : AW r)}) (AW r)` using `adicA`. Take `⟨α, hα⟩` from `Fa.pin_ex l (WittVector.irreducible l) c (lw_fin r M hM j) E.kill (GlobalTheory.T.limit_divisible_of_vanishing_level _ l _ _ E ha) hc (gH r M j) (bc_tens r M hM j) (nuH r hT M j)`. Conclude with `⟨c, α, fun _ => hα⟩`.
+-/
 theorem pin_all (M : Model l K) (j : ℕ) : ∃ (e : ℕ) (α : (sH r M j).lim →+ AW r ⊗[WittVector l r.k] (HSW r M j).lim),
     M.Sm → Fa.Pin l (gH r M j) (nuH r hT M j) e α := by
   by_cases hM : M.Sm
@@ -56,6 +64,9 @@ theorem pin_all (M : Model l K) (j : ℕ) : ∃ (e : ℕ) (α : (sH r M j).lim �
     (bc_tens r M hM j) (nuH r hT M j)
   exact ⟨c, α, fun _ => hα⟩
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+-/
 theorem iter_lim {R : Type} [CommRing R] {S : Sys.{1} R} {σ : R →+* R} (φ : Sys.Hom S S σ) (N n : ℕ) (x : S.lim) :
     ((⇑φ.lim.toAddMonoidHom)^[N] x).1 n = (⇑(φ.f n))^[N] (x.1 n) := by
   induction N with
@@ -69,6 +80,9 @@ def betaP (M : Model l K) (j : ℕ) : AL r M j →ₗ[(per l K).A] HL M j where
   map_add' := (Fa.beta (A := AW r) (gH r M j) (muH r hT M j)).map_add
   map_smul' a w := (Fa.beta (A := AW r) (gH r M j) (muH r hT M j)).map_smul (ofA r a) w
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [Mid.phiA_succ, Function.iterate_succ_apply', ih]`.
+-/
 theorem phiA_iter (N : ℕ) (a : Acris l) : Mid.phiA l N a = (ACris.phi ℂ_[l] l)^[N] a := by
   induction N with
   | zero => rfl
@@ -84,6 +98,15 @@ def Pinned (F : Fac r N) : Prop := ∀ M : Model l K, M.Sm → ∀ j, Fa.Pin l (
 def MuNu : Prop := ∀ (M : Model l K) (n j : ℕ) (x : B.Hc (B.schFn M.p) (okToOC l K) true n j),
   Mid.mu r M n j hT (Mid.nu r M n j hT x) = (⇑(B.phiHc (B.schFn M.p) (okToOC l K) n j))^[N] x
 
+/- English proof (translation)
+Use `choose e α h using pin_all r hT`. Use `⟨{ e := e α := α β := betaP r hT phiT := fun M j => Fa.tmap (A := AW r) (φA r) (Wc.phiS l (B.schFn M.p) r.ρ j).lim hφ galT := fun M j g => Fa.tmap (A := AW r) (σA r (IntermediateField.fixingSubgroupEquiv K g)) (τW := RingHom.id _) LinearMap.id (hσ g) phiT_tmul := fun _ _ _ _ _ => …` and prove the remaining obligations. Introduce `M hM j a x`. Conclude with `((h M j hM).lin a x).trans (congrArg (fun b : AW r => b • α M j x) (phiA_iter N a))`. Introduce `M hM j x`.
+
+Conclude with `(h M j hM).fac (muH r hT M j) x _ fun n => (hmn M n j _).trans (iter_lim (M.phiH j) N n x).symm`. Introduce `M hM j x`. Conclude with `((h M j hM).op (h M j hM) (τ := φA r) (fun n => phiM r M n j) (Wc.phiS l (B.schFn M.p) r.ρ j).lim (fun n y => (bW_phi r M n j _).symm) _ (fun _ _ => rfl) x (phiL M j x) fun n => nu_phi r hT M n j _).2 rfl`. Introduce `M hM j g x`. Conclude with `((h M j hM).op (h M j hM) (τ := σA r (IntermediateField.fixingSubgroupEquiv K g)) (fun n => galM r M _ (hσ g) n j) id (fun n y => (bW_gal r M _ (hσ g) n j _).symm) _ (fun _ _ => rfl) x (galL M j g x) fun n => nu_gal r hT M _ (hσ g) n j _).2 rfl`.
+
+Introduce `M hM j g y`. Use `Subtype.ext (funext fun n => (mu_gal r hT M _ (hσ g) n j _).trans (congrArg (Mid.mu r M n j hT) ?_))` and prove the remaining obligations. Establish `e1 : Fa.E (gH r M j) n ((1 : AW r) ⊗ₜ y) = bW r M n j (y.1 n)` using `(Fa.E_tmul _ n 1 y).trans (one_smul _ _)`. Conclude with `(congrArg (galM r M _ (hσ g) n j) e1).trans ((bW_gal r M _ (hσ g) n j _).trans e1.symm)`. Introduce `M M' u hu hM hM' j x`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_smul, sub_eq_zero]`. Conclude with `((h M' j hM').op (h M j hM) (τ := RingHom.id _) (fun n => pullM r u hu n j) (Wc.pullS l r.ρ (B.schMap u hu) j).lim (fun n y => (bW_pull r u hu n j _).symm) (LinearMap.lTensor (AW r) (Wc.pullS l r.ρ (B.schMap u hu) j).lim).toAddMonoidHom (fun _ _ => rfl) x (pullL u hu j x) fun n = …`.
+-/
 theorem fac_ex (hmn : MuNu r hT) (hφ : ∀ w, ACris.phi ℂ_[l] l (r.w w) = r.w (WittVector.frobenius w))
     (hσ : ∀ (g : K.fixingSubgroup) w, ACris.galCris (IntermediateField.fixingSubgroupEquiv K g) (r.w w) = r.w w) :
     ∃ F : Fac r N, Pinned r hT F := by

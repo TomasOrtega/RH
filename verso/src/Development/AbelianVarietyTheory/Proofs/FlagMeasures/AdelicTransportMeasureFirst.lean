@@ -19,6 +19,15 @@ section Measure
 variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H]
   [SecondCountableTopology H] [LocallyCompactSpace H] [MeasurableSpace H] [BorelSpace H]
 
+/- English proof (translation)
+Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hfd : IsFundamentalDomain Γ D μ` using `IsFundamentalDomain.mk' hDm.nullMeasurableSet hD`. Establish `hfd' : IsFundamentalDomain Γ ((fun y => y * g) ⁻¹' D) μ` using `IsFundamentalDomain.mk' ((measurable_mul_const g) hDm).nullMeasurableSet fun x => by`. Use `hD (x * g)` as an intermediate fact. Simplify `this` using `[Subgroup.smul_def, mul_assoc]`.
+
+Establish `h0 : μ D ≠ 0` using `hfd.measure_ne_zero (NeZero.ne μ)`. Establish `: IsFiniteMeasureOnCompacts (Measure.map (fun y => y * g) μ)` using `⟨fun K hK => by`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hK.measurableSet]`. Conclude with `((Homeomorph.mulRight g).isCompact_preimage.2 hK).measure_lt_top⟩`. Establish `h` using `Measure.isMulLeftInvariant_eq_smul (Measure.map (fun y => y * g) μ) μ`.
+
+Use `set c := (Measure.map (fun y => y * g) μ).haarScalarFactor μ`. Establish `h1 : Measure.map (fun y => y * g) μ D = μ D`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hDm]`. Conclude with `hfd'.measure_eq hfd`. Rewrite `h1` using `[h]`.
+
+Establish `h2 : (c : ENNReal) = 1`. Establish `: (c : ENNReal) * μ D = 1 * μ D` using `by simpa using h1`. Conclude with `(ENNReal.mul_left_inj h0 htop).1 this`. Establish `h3 : c = 1` using `by exact_mod_cast h2`. Rewrite using `[h, h3, one_smul]`.
+-/
 theorem right_invariant (Γ : Subgroup H) [Countable Γ] (μ : Measure H) [μ.IsHaarMeasure] {D : Set H}
     (hDm : MeasurableSet D) (hD : ∀ x : H, ∃! γ : Γ, γ • x ∈ D) (htop : μ D ≠ ⊤) : μ.IsMulRightInvariant := by
   refine ⟨fun g => ?_⟩
@@ -43,6 +52,41 @@ theorem right_invariant (Γ : Subgroup H) [Countable Γ] (μ : Measure H) [μ.Is
   have h3 : c = 1 := by exact_mod_cast h2
   rw [h, h3, one_smul]
 
+/- English proof (translation)
+Use `right_invariant Γ μ hDm hD (ne_top_of_le_ne_top hC.measure_lt_top.ne (measure_mono hDC))` as an intermediate fact. Establish `hset : ∀ S : Set H, MeasurableSet S → (∀ γ ∈ Γ, ∀ y, γ * y ∈ S ↔ y ∈ S) → ∀ g : H, ν ((fun y => y * g) ⁻¹' S) = ν S`. Introduce `S hS hi g`. Establish `h1` using `hν (S.indicator 1) (fun γ hγ y => by`. Apply the tactic sequence `by_cases h : y ∈ S <;> simp [h, hi γ hγ y]) g`.
+
+Establish `h2 : (fun m => S.indicator (1 : H → ℂ) (m * g)) = ((fun y => y * g) ⁻¹' S).indicator fun _ => 1`. Use function extensionality and compare the values at `m`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, integral_indicator_const _ (measurable_mul_const g hS), Pi.one_def, integral_indicator_const _ hS]`. Simplify using `only [Complex.real_smul, mul_one, Complex.ofReal_inj] at h1`.
+
+Conclude with `(ENNReal.toReal_eq_toReal_iff' (measure_ne_top _ _) (measure_ne_top _ _)).1 h1`. Establish `hlin : ∀ F : H → ENNReal, Measurable F → (∀ γ ∈ Γ, ∀ y, F (γ * y) = F y) → ∀ g : H, ∫⁻ m, F (m * g) ∂ν = ∫⁻ m, F m ∂ν`. Introduce `F hF hi g`. Establish `hF' : Measurable fun m => F (m * g)` using `hF.comp (measurable_mul_const g)`. Establish `: ν.map (fun m => F (m * g)) = ν.map F`.
+
+Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hF' hB, Measure.map_apply hF hB]`. Conclude with `hset (F ⁻¹' B) (hF hB) (fun γ hγ y => by simp only [Set.mem_preimage, hi γ hγ y]) g`. Conclude with `(lintegral_map measurable_id hF').symm.trans (this ▸ lintegral_map measurable_id hF)`. Use `set κ : Measure H := Measure.sum fun γ : Γ => ν.map fun y => (γ : H) * y with hκ`.
+
+Establish `hκa : ∀ A, MeasurableSet A → κ A = ∑' γ : Γ, ν ((fun y => (γ : H) * y) ⁻¹' A)` using `fun A hA => by`. Rewrite using `[hκ, Measure.sum_apply _ hA]`. Conclude with `tsum_congr fun γ => Measure.map_apply (measurable_const_mul _) hA`. Establish `hκl : ∀ A, MeasurableSet A → κ A = ∫⁻ m, ∑' γ : Γ, A.indicator (1 : H → ENNReal) (γ * m) ∂ν` using `fun A hA => by`. Rewrite using `[hκa A hA, lintegral_tsum (f := fun (γ : Γ) m => A.indicator (1 : H → ENNReal) (γ * m)) fun γ => ((measurable_one.indicator hA).comp (measurable_const_mul (γ : H))).aemeasurable]`.
+
+Conclude with `tsum_congr fun γ => (lintegral_indicator_one (measurable_const_mul (γ : H) hA)).symm`. Establish `hR : κ.IsMulRightInvariant` using `⟨fun g => by`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hA, hκl _ hA, hκl _ (measurable_mul_const g hA), ← hlin (fun m => ∑' γ : Γ, A.indicator (1 : H → ENNReal) (γ * m)) _ _ g]`. Use `lintegral_congr fun m => tsum_congr fun γ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression. Conclude with `Measurable.ennreal_tsum fun γ => (measurable_one.indicator hA).comp (measurable_const_mul (γ : H))`. Introduce `δ hδ y`. Rewrite using `[← (Equiv.mulRight (⟨δ, hδ⟩ : Γ)).tsum_eq fun γ : Γ => A.indicator (1 : H → ENNReal) (γ * y)]`.
+
+Conclude with `tsum_congr fun γ => by rw [← mul_assoc]; rfl⟩`. Establish `hkey : ∀ D' : Set H, MeasurableSet D' → (∀ x : H, ∃! γ : Γ, γ • x ∈ D') → ∀ S, MeasurableSet S → (∀ γ ∈ Γ, ∀ y, γ * y ∈ S ↔ y ∈ S) → κ (S ∩ D') = ν S`. Introduce `D' hm hD' S hS hi`. Rewrite using `[hκa _ (hS.inter hm), ← measure_iUnion _ fun γ : Γ => measurable_const_mul (γ : H) (hS.inter hm)]`. Use `congr 1`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, Set.mem_inter_iff]`. Conclude with `⟨fun ⟨γ, h, _⟩ => (hi γ γ.2 y).1 h, fun h =>`. Set `⟨γ, h1, _⟩` to `hD' y`. Use the proof step `⟨γ, (hi γ γ.2 y).2 h, h1⟩⟩`.
+
+Introduce `γ δ hne`. Conclude with `Set.disjoint_left.2 fun y h1 h2 => hne ((hD' y).unique h1.2 h2.2)`. Establish `hK : IsFiniteMeasureOnCompacts κ` using `⟨fun K hK => by`. Establish `hF` using `hfin _ ((hC.prod hK).image (f := fun p : H × H => p.1 * p.2⁻¹) (by fun_prop))`. Establish `hF'` using `hF.preimage (f := (Subtype.val : Γ → H)) Subtype.val_injective.injOn`.
+
+Use `(measure_mono (t := ⋃ δ ∈ _, (fun y => ((δ : Γ) : H) * y) ⁻¹' D) fun y hy => ?_).trans_lt (measure_biUnion_lt_top hF' fun δ _ => ?_)` and prove the remaining obligations. Take `⟨δ, h, -⟩` from `hD y`. Conclude with `Set.mem_biUnion (x := δ) ⟨⟨((δ : H) * y, y), ⟨hDC h, hy⟩, by simp⟩, δ.2⟩ h`. Use `hkey ((fun y => (δ : H) * y) ⁻¹' D) (measurable_const_mul _ hDm) (fun x => by` as an intermediate fact. Take `⟨γ, h1, h2⟩` from `hD x`.
+
+Use `⟨δ⁻¹ * γ, ?_, fun ε hε => ?_⟩` and prove the remaining obligations. Use `show (δ : H) * (((δ : H)⁻¹ * γ) * x) ∈ D`. Rewrite using `[← mul_assoc, mul_inv_cancel_left]`. Conclude with `h1`. Rewrite using `[← h2 (δ * ε) (by show ((δ : H) * ε) * x ∈ D`.
+
+Rewrite using `[mul_assoc]; exact hε), inv_mul_cancel_left]) Set.univ MeasurableSet.univ (by simp)`. Rewrite `this` using `[Set.univ_inter]`. Rewrite using `[this]`. Conclude with `measure_lt_top _ _⟩`. Establish `: μ.inv.IsHaarMeasure` using `{}`.
+
+Establish `h` using `Measure.isMulLeftInvariant_eq_smul κ.inv μ.inv`. Use `set c := κ.inv.haarScalarFactor μ.inv`. Establish `h' : κ = c • μ`. Use `congrArg Measure.inv h` as an intermediate fact. Rewrite `this` using `[Measure.inv_inv]`.
+
+Rewrite using `[this]`. Use `conv_rhs => rw [← Measure.inv_inv μ]`. Conclude with `Measure.map_smul _ _ _`. Use `⟨c, fun f hf hi => ?_⟩` and prove the remaining obligations. Establish `e : ν.map f = (κ.restrict D).map f`.
+
+Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hf hB, Measure.map_apply hf hB, Measure.restrict_apply (hf hB), hkey D hDm hD _ (hf hB) fun γ hγ y => by simp only [Set.mem_preimage, hi γ hγ y]]`. Establish `e1` using `integral_map (μ := ν) hf.aemeasurable (f := id) measurable_id.aestronglyMeasurable`. Establish `e2` using `integral_map (μ := κ.restrict D) hf.aemeasurable (f := id) measurable_id.aestronglyMeasurable`. Rewrite `e1` using `[e, e2, h', Measure.restrict_smul, integral_smul_nnreal_measure]`.
+
+Conclude with `e1.symm`.
+-/
 theorem quot_unique (Γ : Subgroup H) [Countable Γ]
     (hfin : ∀ K : Set H, IsCompact K → (K ∩ (Γ : Set H)).Finite) (μ : Measure H) [μ.IsHaarMeasure]
     {C D : Set H} (hC : IsCompact C) (hDm : MeasurableSet D) (hDC : D ⊆ C) (hD : ∀ x : H, ∃! γ : Γ, γ • x ∈ D)
@@ -136,6 +180,35 @@ theorem quot_unique (Γ : Subgroup H) [Countable Γ]
   rw [e, e2, h', Measure.restrict_smul, integral_smul_nnreal_measure] at e1
   exact e1.symm
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hemb : MeasurableEmbedding ι` using `hι.measurableEmbedding`. Establish `: Countable Λ`. Use `(hΓc.preimage_of_injOn (f := ι) hι.injective.injOn).mono (s₁ := (Λ : Set H)) fun h hh => (hΛ h).1 hh` and prove the remaining obligations. Establish `hfin' : ∀ K : Set H, IsCompact K → (K ∩ (Λ : Set H)).Finite` using `fun K hK => ((hfin _ (hK.image hι.continuous)).preimage (f := ι) hι.injective.injOn).subset fun x hx => ⟨⟨x, hx.1, rfl⟩, (hΛ x).1 hx.2⟩`.
+
+Establish `hC'` using `hι.isCompact_preimage hC`. Take `⟨D, hDm, hDC, hD⟩` from `GlobalTheory.UnipQuot.exists_domain Λ hfin' _ hC' fun m => by`. Take `⟨_, ⟨h1, γ, rfl⟩, h2⟩` from `hcov _ ⟨m, rfl⟩`. Conclude with `⟨γ⁻¹, Λ.inv_mem ((hΛ γ).2 h1), by simpa using h2⟩`. Establish `hinv : ∀ x, ∀ γ ∈ Λ, ∀ y, f (ι (γ * y) * x) = f (ι y * x)` using `fun x γ hγ y => by`.
+
+Rewrite using `[map_mul, mul_assoc, hi _ ((hΛ γ).1 hγ)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ν ⟨h1, -, h2, h3⟩`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Establish `e : (ν.comap ι).map ι = ν`.
+
+Rewrite using `[hemb.map_comap]`. Conclude with `Measure.restrict_eq_self_of_ae_mem h2`. Establish `: IsFiniteMeasure (ν.comap ι)` using `⟨by`. Rewrite using `[hemb.comap_apply]`. Conclude with `measure_lt_top _ _⟩`.
+
+Take `⟨c, hc⟩` from `quot_unique Λ hfin' Measure.haar hC' hDm hDC hD (ν.comap ι) fun u hu g => by`. Use `h3 (Function.extend ι u 0) ?_ (ι g) ⟨g, rfl⟩` as an intermediate fact. Rewrite `this` using `[← e, hemb.integral_map, hemb.integral_map]`. Simplify `this` using `only [← map_mul, hι.injective.extend_apply]`. Introduce and unpack `_ ⟨hγ, γ, rfl⟩ y`.
+
+Distinguish the cases in `hy : ∃ a, ι a = y`. Take `⟨a, rfl⟩` from `hy`. Rewrite using `[← map_mul, hι.injective.extend_apply, hι.injective.extend_apply, hu _ ((hΛ γ).2 hγ)]`. Rewrite using `[Function.extend_apply' _ _ _ hy, Function.extend_apply']`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨a, ha⟩`. Conclude with `hy ⟨γ⁻¹ * a, by rw [map_mul, ha, map_inv, inv_mul_cancel_left]⟩`. Rewrite using `[← e, hemb.integral_map, hc (fun m => f (ι m * x)) (hf.comp (hι.continuous.mul continuous_const)).measurable (hinv x), h _ D inferInstance (IsFundamentalDomain.mk' hDm.nullMeasurableSet hD), smul_zero]`. Introduce `h μ 𝓕 hμ h𝓕 g`. Establish `hfd : IsFundamentalDomain Λ D μ` using `IsFundamentalDomain.mk' hDm.nullMeasurableSet hD`.
+
+Establish `htop : μ D < ⊤` using `(measure_mono hDC).trans_lt hC'.measure_lt_top`. Use `right_invariant Λ μ hDm hD htop.ne` as an intermediate fact. Establish `: IsFiniteMeasure (μ.restrict D)` using `⟨by simpa using htop⟩`. Establish `h1` using `h ((μ.restrict D).map ι) ⟨inferInstance, ?_, ?_, ?_⟩`. Simplify using `only [hemb.integral_map] at h1`.
+
+Establish `hc : Continuous fun x => ∫ m in D, f (ι m * x) ∂μ`. Use `continuous_parametric_integral_of_continuous (μ := μ.restrict D) (f := fun (x : G) (m : H) => f (ι m * x)) (hf.comp ((hι.continuous.comp continuous_snd).mul continuous_fst)) hC'` as an intermediate fact. Rewrite `this` using `[Measure.restrict_restrict hC'.measurableSet, Set.inter_eq_right.2 hDC]`. Then use the resulting hypothesis. Establish `h2` using `(hc.ae_eq_iff_eq μG continuous_zero).1 h1`. Rewrite using `[h𝓕.setIntegral_eq hfd fun γ y => hinv g γ γ.2 y]`.
+
+Conclude with `congrFun h2 g`. Introduce `h0`. Use `congrArg (fun m : Measure G => m Set.univ) h0` as an intermediate fact. Simplify using `only [hemb.map_apply] at this`. Conclude with `hfd.measure_ne_zero (NeZero.ne μ) (by simpa using this)`.
+
+Rewrite using `[hemb.map_apply]`. Simplify using the standard rewrite rules. Introduce and unpack `u hu _ ⟨g, rfl⟩`. Rewrite using `[hemb.integral_map, hemb.integral_map]`. Establish `hfd' : IsFundamentalDomain Λ ((fun y => y * g⁻¹) ⁻¹' D) μ` using `IsFundamentalDomain.mk' ((measurable_mul_const g⁻¹) hDm).nullMeasurableSet fun x => by`.
+
+Use `hD (x * g⁻¹)` as an intermediate fact. Simplify `this` using `[Subgroup.smul_def, mul_assoc]`. Establish `h1` using `(measurableEmbedding_mulRight g).setIntegral_map (μ := μ) (fun m => u (ι m)) ((fun y => y * g⁻¹) ⁻¹' D)`. Establish `h2 : (fun y : H => y * g) ⁻¹' ((fun y => y * g⁻¹) ⁻¹' D) = D`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules. Rewrite `h1` using `[map_mul_right_eq_self μ g, h2]`. Simplify using `only [← map_mul]`. Rewrite using `[← h1]`. Conclude with `hfd'.setIntegral_eq hfd fun γ x => by show u (ι ((γ : H) * x)) = _`.
+
+Rewrite using `[map_mul, hu _ ⟨(hΛ γ).1 γ.2, γ, rfl⟩]`.
+-/
 theorem constTerm_iff {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
     (ι : H →* G) (hι : Topology.IsClosedEmbedding ι) (Γ N : Set G) (hN : N = Set.range ι) (hΓc : Γ.Countable)
@@ -230,10 +303,18 @@ variable {E A : Type} [CommRing E] [CommRing A] (ι : E →+* A) {n r : ℕ}
 def UnipEq (C R : Matrix (Fin n) (Fin r) E) (B L : Matrix (Fin r) (Fin n) E) (m : Matrix (Fin n) (Fin n) A) : Prop :=
   m * C.map ι = 0 ∧ B.map ι * m = 0 ∧ (1 - C * L).map ι * m * (1 - R * B).map ι = 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_sub _ (map_sub ι), Matrix.map_mul, Matrix.map_one _ (map_zero ι) (map_one ι)]`.
+-/
 theorem map_one_sub (C : Matrix (Fin n) (Fin r) E) (L : Matrix (Fin r) (Fin n) E) :
     (1 - C * L).map ι = 1 - C.map ι * L.map ι := by
   rw [Matrix.map_sub _ (map_sub ι), Matrix.map_mul, Matrix.map_one _ (map_zero ι) (map_one ι)]
 
+/- English proof (translation)
+Establish `h : L.map ι * C.map ι = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero ι) (map_one ι)]`. Rewrite using `[map_one_sub, sub_mulVec, one_mulVec, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, h, Matrix.mul_one]`.
+
+Conclude with `fun e => ⟨_, e.trans (mulVec_mulVec _ _ _).symm⟩`.
+-/
 theorem col_iff (hL : L * C = 1) (y : Fin n → A) : (∃ a, y = C.map ι *ᵥ a) ↔ (1 - C * L).map ι *ᵥ y = 0 := by
   have h : L.map ι * C.map ι = 1 := by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero ι) (map_one ι)]
   rw [map_one_sub, sub_mulVec, one_mulVec, sub_eq_zero]
@@ -242,9 +323,19 @@ theorem col_iff (hL : L * C = 1) (y : Fin n → A) : (∃ a, y = C.map ι *ᵥ a
     rw [mulVec_mulVec, Matrix.mul_assoc, h, Matrix.mul_one]
   · exact fun e => ⟨_, e.trans (mulVec_mulVec _ _ _).symm⟩
 
+/- English proof (translation)
+Rewrite using `[map_one_sub, sub_mulVec, one_mulVec, ← mulVec_mulVec, hy, mulVec_zero, sub_zero]`.
+-/
 theorem ker_fix {y : Fin n → A} (hy : B.map ι *ᵥ y = 0) : (1 - R * B).map ι *ᵥ y = y := by
   rw [map_one_sub, sub_mulVec, one_mulVec, ← mulVec_mulVec, hy, mulVec_zero, sub_zero]
 
+/- English proof (translation)
+Establish `h1 : (1 - C * L).map ι * m * (1 - R * B).map ι = 0 → ∀ y, B.map ι *ᵥ y = 0 → ∃ a, m *ᵥ y = C.map ι *ᵥ a` using `fun h y hy => by`. Rewrite using `[col_iff ι hL, ← ker_fix ι (R := R) hy, mulVec_mulVec, mulVec_mulVec, h, zero_mulVec]`. Establish `h2 : (∀ y, B.map ι *ᵥ y = 0 → ∃ a, m *ᵥ y = C.map ι *ᵥ a) → ∀ x : Fin n → E, B *ᵥ x = 0 → ∃ a, m *ᵥ (fun i => ι (x i)) = C.map ι *ᵥ a` using `fun h x hx => by`. Use `h _ (funext fun i => ?_)` and prove the remaining obligations. Use `RingHom.map_mulVec ι B x i` as an intermediate fact.
+
+Rewrite `this` using `[hx]`. Simplify `this.symm` using `[Function.comp_def]`. Establish `h3 : (∀ x : Fin n → E, B *ᵥ x = 0 → ∃ a, m *ᵥ (fun i => ι (x i)) = C.map ι *ᵥ a) → (1 - C * L).map ι * m * (1 - R * B).map ι = 0` using `fun h => by`. Establish `h0 : B * (1 - R * B) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hR, Matrix.mul_one, Matrix.one_mul, sub_self]`.
+
+Use extensionality with `i j`. Use `(col_iff ι hL _).1 (h (fun k => (1 - R * B : Matrix (Fin n) (Fin n) E) k j) (funext fun k => congrFun (congrFun h0 k) j))` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec]`. Conclude with `congrFun this i`. Conclude with `⟨⟨fun h => h3 (h2 h), h1⟩, h3, fun h => h2 (h1 h)⟩`.
+-/
 theorem perp_cond (hL : L * C = 1) (hR : B * R = 1) (m : Matrix (Fin n) (Fin n) A) :
     ((∀ y, B.map ι *ᵥ y = 0 → ∃ a, m *ᵥ y = C.map ι *ᵥ a) ↔ (1 - C * L).map ι * m * (1 - R * B).map ι = 0) ∧
     ((∀ x : Fin n → E, B *ᵥ x = 0 → ∃ a, m *ᵥ (fun i => ι (x i)) = C.map ι *ᵥ a) ↔
@@ -268,6 +359,9 @@ theorem perp_cond (hL : L * C = 1) (hR : B * R = 1) (m : Matrix (Fin n) (Fin n) 
     exact congrFun this i
   exact ⟨⟨fun h => h3 (h2 h), h1⟩, h3, fun h => h2 (h1 h)⟩
 
+/- English proof (translation)
+Take `rfl : ι' = ψ.comp ι` from `RingHom.ext fun x => (hψ x).symm`. Take `⟨h1, h2, h3⟩` from `h`. Simplify using `only [UnipEq, RingHom.coe_comp, ← Matrix.map_map, ← Matrix.map_mul, h1, h2, h3, Matrix.map_zero _ (map_zero ψ), and_self]`.
+-/
 theorem UnipEq.map {A' : Type} [CommRing A'] {ι' : E →+* A'} (ψ : A →+* A') (hψ : ∀ x, ψ (ι x) = ι' x)
     {m : Matrix (Fin n) (Fin n) A} (h : UnipEq ι C R B L m) : UnipEq ι' C R B L (m.map ψ) := by
   obtain rfl : ι' = ψ.comp ι := RingHom.ext fun x => (hψ x).symm
@@ -275,6 +369,9 @@ theorem UnipEq.map {A' : Type} [CommRing A'] {ι' : E →+* A'} (ψ : A →+* A'
   simp only [UnipEq, RingHom.coe_comp, ← Matrix.map_map, ← Matrix.map_mul, h1, h2, h3, Matrix.map_zero _ (map_zero ψ),
     and_self]
 
+/- English proof (translation)
+Take `rfl : ι' = fun j => (ψ j).comp ι` from `funext fun j => RingHom.ext fun x => (hψ j x).symm`. Take `rfl : ι'' = χ.comp ι` from `RingHom.ext fun x => (hχ x).symm`. Simplify using `only [UnipEq, RingHom.coe_comp, ← Matrix.map_map, ← Matrix.map_mul] at h h'`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> ext a b`. Use `exacts [hinj _ (fun j => congrFun (congrFun (h j).1 a) b) (congrFun (congrFun h'.1 a) b), hinj _ (fun j => congrFun (congrFun (h j).2.1 a) b) (congrFun (congrFun h'.2.1 a) b), hinj _ (fun j => congrFun (congrFun (h j).2.2 a) b) (congrFun (congrFun h'.2.2 a) b)]`.
+-/
 theorem UnipEq.of_map {J A' A'' : Type} [CommRing A'] [CommRing A''] {ι' : J → E →+* A'} {ι'' : E →+* A''}
     (ψ : J → A →+* A') (χ : A →+* A'') (hψ : ∀ j x, ψ j (ι x) = ι' j x) (hχ : ∀ x, χ (ι x) = ι'' x)
     (hinj : ∀ z, (∀ j, ψ j z = 0) → χ z = 0 → z = 0)
@@ -288,6 +385,13 @@ theorem UnipEq.of_map {J A' A'' : Type} [CommRing A'] [CommRing A''] {ι' : J �
     hinj _ (fun j => congrFun (congrFun (h j).2.1 a) b) (congrFun (congrFun h'.2.1 a) b),
     hinj _ (fun j => congrFun (congrFun (h j).2.2 a) b) (congrFun (congrFun h'.2.2 a) b)]
 
+/- English proof (translation)
+Establish `key : Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' (Submodule.span E (Set.range C.col) : Set _)) = (C.map ι).mulVecLin.range`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, ← Matrix.range_mulVecLin]`. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨ι ∘ a, funext fun i => (RingHom.map_mulVec ι C a i).symm⟩`.
+
+Rewrite using `[Matrix.range_mulVecLin]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨Cᵀ k, Submodule.subset_span ⟨k, rfl⟩, rfl⟩`. Rewrite using `[key]`.
+
+Conclude with `⟨fun ⟨a, h⟩ => ⟨a, h.symm⟩, fun ⟨a, h⟩ => ⟨a, h.symm⟩⟩`.
+-/
 theorem mem_span_iff (C : Matrix (Fin n) (Fin r) E) (y : Fin n → A) :
     y ∈ Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' (Submodule.span E (Set.range C.col) : Set _)) ↔
       ∃ a, y = C.map ι *ᵥ a := by
@@ -305,6 +409,9 @@ theorem mem_span_iff (C : Matrix (Fin n) (Fin r) E) (y : Fin n → A) :
   exact ⟨fun ⟨a, h⟩ => ⟨a, h.symm⟩, fun ⟨a, h⟩ => ⟨a, h.symm⟩⟩
 
 open Formalism.UG in
+/- English proof (translation)
+Establish `h1 : ∀ x, hform s J x y = (s ∘ x) ⬝ᵥ (J *ᵥ y)` using `fun x => by`. Simplify using `only [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc, Function.comp_apply]`. Establish `h2 : s ∘ (C *ᵥ a) = C.map s *ᵥ (s ∘ a)` using `funext fun i => RingHom.map_mulVec s C a i`. Rewrite using `[h1, h2, ← mulVec_mulVec, dotProduct_mulVec _ (cT s C), cT, vecMul_transpose]`.
+-/
 theorem hform_mulVec (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (C : Matrix (Fin n) (Fin r) A) (a : Fin r → A)
     (y : Fin n → A) : hform s J (C *ᵥ a) y = (s ∘ a) ⬝ᵥ ((cT s C * J) *ᵥ y) := by
   have h1 : ∀ x, hform s J x y = (s ∘ x) ⬝ᵥ (J *ᵥ y) := fun x => by
@@ -313,6 +420,11 @@ theorem hform_mulVec (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (C : Matrix 
   rw [h1, h2, ← mulVec_mulVec, dotProduct_mulVec _ (cT s C), cT, vecMul_transpose]
 
 open Formalism.UG in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `k`. Use `h _ ⟨Pi.single k 1, rfl⟩` as an intermediate fact. Rewrite `this` using `[hform_mulVec]`.
+
+Establish `e : s ∘ (Pi.single k 1 : Fin r → A) = Pi.single k 1` using `funext fun j => by`. Apply the tactic sequence `by_cases hj : j = k <;> simp [hj]`. Rewrite `this` using `[e, single_one_dotProduct]`. Then use the resulting hypothesis. Introduce and unpack `h _ ⟨a, rfl⟩`. Rewrite using `[hform_mulVec, h, dotProduct_zero]`.
+-/
 theorem perp_iff (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (C : Matrix (Fin n) (Fin r) A) (y : Fin n → A) :
     (∀ x, (∃ a, x = C *ᵥ a) → hform s J x y = 0) ↔ (cT s C * J) *ᵥ y = 0 := by
   constructor
@@ -326,6 +438,9 @@ theorem perp_iff (s : A →+* A) (J : Matrix (Fin n) (Fin n) A) (C : Matrix (Fin
   · rintro h _ ⟨a, rfl⟩
     rw [hform_mulVec, h, dotProduct_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by ext i j simpa using congrFun (h (Pi.single j 1)) i, fun h a => by rw [h, zero_mulVec]⟩`.
+-/
 theorem forall_mulVec_eq_zero {p q : ℕ} (m : Matrix (Fin p) (Fin q) A) : (∀ a, m *ᵥ a = 0) ↔ m = 0 :=
   ⟨fun h => by
     ext i j
@@ -336,6 +451,13 @@ end Algebra
 open Formalism.MainNotions.S Formalism.UG NumberField
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `e : cT s (C.map ι) * I.J.map ι = (cT (starRingEnd I.E) C * I.J).map ι`. Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `hs _`.
+
+Simplify using `only [AutInst.InUnipRad, mem_span_iff, Set.mem_setOf_eq, perp_iff, e, UnipEq]`. Use `and_congr ?_ (and_comm.trans (and_congr ?_ (perp_cond ι hL hR _).1))` and prove the remaining obligations. Rewrite using `[← forall_mulVec_eq_zero]`. Conclude with `⟨fun h a => by rw [← mulVec_mulVec]; exact h _ ⟨a, rfl⟩, fun h => by`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Rewrite using `[mulVec_mulVec]`. Conclude with `h a⟩`. Simplify using `only [mulVec_mulVec, forall_mulVec_eq_zero]`.
+-/
 theorem inUnipRad_iff (I : AutInst) {A : Type} [CommRing A] (ι : I.E →+* A) (s : A →+* A)
     (hs : ∀ x, s (ι x) = ι (star x)) {r : ℕ} {C R : Matrix (Fin I.n) (Fin r) I.E} {L : Matrix (Fin r) (Fin I.n) I.E}
     (hL : L * C = 1) (hR : cT (starRingEnd I.E) C * I.J * R = 1) (g : Matrix (Fin I.n) (Fin I.n) A) :
@@ -354,6 +476,11 @@ theorem inUnipRad_iff (I : AutInst) {A : Type} [CommRing A] (ι : I.E →+* A) (
       rintro _ ⟨a, rfl⟩; rw [mulVec_mulVec]; exact h a⟩
   · simp only [mulVec_mulVec, forall_mulVec_eq_zero]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' C) (LinearMap.ker_eq_bot.2 (Matrix.mulVec_injective_iff.2 hC))`. Establish `h : LinearMap.toMatrix' l * C = 1`. Use `congrArg LinearMap.toMatrix' hl` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Use `⟨_, J⁻¹ * cT σ (LinearMap.toMatrix' l), h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hJ.isUnit, ← cT_mul, h, cT_one]`.
+-/
 theorem exists_inverses {E : Type} [Field E] (σ : E →+* E) {n r : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : J.det ≠ 0) {C : Matrix (Fin n) (Fin r) E} (hC : LinearIndependent E Cᵀ) :
     ∃ (L : Matrix (Fin r) (Fin n) E) (R : Matrix (Fin n) (Fin r) E), L * C = 1 ∧ cT σ C * J * R = 1 := by
@@ -365,6 +492,11 @@ theorem exists_inverses {E : Type} [Field E] (σ : E →+* E) {n r : ℕ}
   refine ⟨_, J⁻¹ * cT σ (LinearMap.toMatrix' l), h, ?_⟩
   rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hJ.isUnit, ← cT_mul, h, cT_one]
 
+/- English proof (translation)
+Establish `hz : ∀ z : (A × B) ⊗[F] E, z = LinearMap.rTensor E (LinearMap.inl F A B) (Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z) + LinearMap.rTensor E (LinearMap.inr F A B) (Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [← TensorProduct.add_tmul]`.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Rewrite using `[hz z, a, b, map_zero, map_zero, add_zero]`.
+-/
 theorem adele_tens_eq_zero {F E A B : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [Algebra F A]
     [Algebra F B] (z : (A × B) ⊗[F] E)
     (a : Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z = 0)
@@ -384,6 +516,19 @@ theorem adele_tens_eq_zero {F E A B : Type} [Field F] [Field E] [Algebra F E] [C
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes (HA AF Ainf inclR fstA sndA) in
 
+/- English proof (translation)
+Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1`. Take `⟨e, he, -⟩` from `GlobalTheory.Mem.VolInfIso.exists_infAdele_equiv I.F I.E I.cm.sig _ I.φ θ hcm (GlobalTheory.GaussDecay.isCMFam_of_over _ hcm I.φ I.φ_over) hθ`. Set `p : ∀ v : InfinitePlace I.F, AF I.F ⊗[I.F] I.E →+* ℂ` to `fun v => (θ v).comp (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E)).toRingHom`. Set `q : AF I.F ⊗[I.F] I.E →+* I.E ⊗[I.F] Af I.F` to `(Algebra.TensorProduct.comm I.F _ _).toRingEquiv.toRingHom.comp (Algebra.TensorProduct.map (sndA I.F) (AlgHom.id I.F I.E)).toRingHom`. Establish `hp : ∀ v x, p v (inclR (F` using `I.F) (AF I.F) x) = I.φ v x := fun v x => by`.
+
+Rewrite using `[← (hθ v).1]`. Express the relevant statement in the definitionally equal form `θ v (Algebra.TensorProduct.map _ _ ((1 : AF I.F) ⊗ₜ[I.F] x)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Establish `hq : ∀ x, q (inclR (F` using `I.F) (AF I.F) x) = inclE (F := I.F) (Af I.F) x := fun x => by`.
+
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm I.F _ _ (Algebra.TensorProduct.map _ _ ((1 : AF I.F) ⊗ₜ[I.F] x)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Establish `e1 : ∀ v, I.P v * uMat (x.1 v) * (I.P v)⁻¹ - 1 = ((HA.mat _ _ _ h).1 - 1).map (p v)` using `fun v => by`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), hi]`.
+
+Both sides reduce to the same expression. Establish `e2 : I.fmat x.2 - 1 = ((HA.mat _ _ _ h).1 - 1).map q`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), hf]`. Both sides reduce to the same expression. Unfold `AutInst.NA`.
+
+Rewrite using `[Set.mem_setOf_eq, inUnipRad_iff I (inclE (F := I.F) (Af I.F)) _ (fun _ => rfl) hL hR, e2, forall_congr' fun v => inUnipRad_iff I (I.φ v) _ (fun y => (hcm.2.2.2 (I.φ v) y).symm) hL hR _]`. Simplify using `only [e1]`. Use `⟨fun ⟨h1, h2⟩ => ?_, fun H => ⟨fun v => H.map _ _ (hp v), H.map _ _ hq⟩⟩` and prove the remaining obligations. Use `UnipEq.of_map _ p q hp hq (fun z hz hz' => ?_) h1 h2` and prove the remaining obligations. Use `adele_tens_eq_zero (A := Ainf I.F) (B := Af I.F) z ?_ ?_` and prove the remaining obligations.
+
+Use `e.injective (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[he, he, map_zero]`. Conclude with `hz v`. Conclude with `(Algebra.TensorProduct.comm I.F _ _).injective (hz'.trans (map_zero _).symm)`.
+-/
 theorem mem_NA_iff (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ))
     (hθ : ∀ v, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) (θ v)) (h : HA (AF I.F) I.cm.sig I.J) (x : I.GA)
     (hf : I.fmat x.2 = (Formalism.MainNotions.StandardLattice.finMat I.cm.sig I.J h).map (Algebra.TensorProduct.comm I.F _ _))
@@ -427,6 +572,15 @@ theorem mem_NA_iff (I : AutInst) (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] 
     exact hz v
   · exact (Algebra.TensorProduct.comm I.F _ _).injective (hz'.trans (map_zero _).symm)
 
+/- English proof (translation)
+Establish `key : ∀ (r : ℕ) (C : Matrix (Fin I.n) (Fin r) I.E), (∀ x ∈ Submodule.span I.E (Set.range C.col), ∀ y ∈ Submodule.span I.E (Set.range C.col), hform (starRingEnd I.E) I.J x y = 0) ↔ cT (starRingEnd I.E) C * I.J * C = 0` using `fun r C => by`. Rewrite using `[← Matrix.range_mulVecLin, ← forall_mulVec_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Rewrite using `[← mulVec_mulVec, ← perp_iff]`.
+
+Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `h _ ⟨b, rfl⟩ _ ⟨a, rfl⟩`. Introduce and unpack `h _ ⟨b, rfl⟩ _ ⟨a, rfl⟩`. Conclude with `(perp_iff _ _ C _).2 ((mulVec_mulVec _ _ _).trans (h a)) _ ⟨b, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Set `b` to `Module.finBasis I.E W`. Set `C : Matrix (Fin I.n) (Fin (Module.finrank I.E W)) I.E` to `fun i k => (b k).1 i`. Establish `e : Submodule.span I.E (Set.range C.col) = W`. Establish `: Set.range C.col = W.subtype '' Set.range b` using `by rw [← Set.range_comp]; rfl`.
+
+Rewrite using `[this, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`. Use `⟨_, C, ⟨Nat.pos_of_ne_zero fun h => h1 (Submodule.finrank_eq_zero.1 h), b.linearIndependent.map' W.subtype W.ker_subtype, (key _ C).1 (by rw [e]; exact h2)⟩, e⟩` and prove the remaining obligations. Introduce and unpack `⟨r, C, ⟨h1, h2, h3⟩, rfl⟩`. Use `⟨fun h => ?_, (key r C).2 h3⟩` and prove the remaining obligations. Conclude with `h2.ne_zero ⟨0, h1⟩ (Submodule.span_eq_bot.1 h _ ⟨⟨0, h1⟩, rfl⟩)`.
+-/
 theorem isIsot_iff (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) :
     I.IsIsot W ↔ ∃ (r : ℕ) (C : Matrix (Fin I.n) (Fin r) I.E), (0 < r ∧ LinearIndependent I.E Cᵀ ∧
       cT (starRingEnd I.E) C * I.J * C = 0) ∧ Submodule.span I.E (Set.range C.col) = W := by
@@ -454,6 +608,9 @@ theorem isIsot_iff (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) :
     refine ⟨fun h => ?_, (key r C).2 h3⟩
     exact h2.ne_zero ⟨0, h1⟩ (Submodule.span_eq_bot.1 h _ ⟨⟨0, h1⟩, rfl⟩)
 
+/- English proof (translation)
+Take `⟨N, rfl⟩` from `hA`. Establish `e : S = (N.comap T.toMonoidHom : Set G')` using `Set.ext hS`. Rewrite using `[e, Subgroup.closure_eq]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_closure_iff_of_equiv {G G' : Type} [Group G] [Group G'] (T : G' ≃* G) {A : Set G}
     (hA : ∃ N : Subgroup G, (N : Set G) = A) {S : Set G'} (hS : ∀ g, g ∈ S ↔ T g ∈ A) (h : G') :
     h ∈ Subgroup.closure S ↔ T h ∈ A := by
@@ -462,6 +619,17 @@ theorem mem_closure_iff_of_equiv {G G' : Type} [Group G] [Group G'] (T : G' ≃*
   rw [e, Subgroup.closure_eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨hT2, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Establish `: BorelSpace I.GA` using `inferInstance`. Establish `: (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure` using `Measure.pi.isHaarMeasure _`. Establish `: (I.muA μf).IsHaarMeasure` using `Measure.prod.instIsHaarMeasure _ _`. Take `⟨Γ, hΓ, hΓc, hfin, -⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I`.
+
+Set `T' : G' ≃ₜ I.GA` to `⟨T.toEquiv, hT.1, hT.2⟩`. Establish `: IsTopologicalGroup G'` using `T'.isInducing.topologicalGroup T`. Take `⟨-, hcl, -, -, K, hK, -, hcov⟩` from `GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I W hW`. Establish `hcl' : IsClosed (N : Set G')`. Establish `e : (N : Set G') = T ⁻¹' I.NA W` using `Set.ext hm`.
+
+Rewrite using `[e]`. Conclude with `hcl.preimage hT.1`. Establish `hι : Topology.IsClosedEmbedding (T.toMonoidHom.comp N.subtype)` using `T'.isClosedEmbedding.comp hcl'.isClosedEmbedding_subtypeVal`. Use `hι.locallyCompactSpace` as an intermediate fact. Use `hι.isEmbedding.secondCountableTopology` as an intermediate fact.
+
+Use `hι.isEmbedding.t2Space` as an intermediate fact. Use `Iff.trans ?_ (constTerm_iff _ hι I.GFset _ ?_ (hΓ ▸ Set.countable_coe_iff.1 hΓc) hfin (Q.subgroupOf N) (fun h => hQ h) K hK hcov _ f hf hi)` and prove the remaining obligations. Use `forall₄_congr fun μ 𝓕 _ _ => ?_` and prove the remaining obligations. Rewrite using `[← T.toEquiv.forall_congr_right]`. Simplify using `only [map_mul]`.
+
+Both sides reduce to the same expression. Use extensionality with `y`. Take `⟨h, rfl⟩` from `T.surjective y`. Conclude with `⟨fun hh => ⟨⟨h, (hm h).2 hh⟩, rfl⟩, fun ⟨k, hk⟩ => hk ▸ (hm k).1 k.2⟩`.
+-/
 theorem constTerm_iff_inst (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf]
     {G' : Type} [Group G'] [TopologicalSpace G'] [MeasurableSpace G'] [BorelSpace G'] (T : G' ≃* I.GA)
     (hT : Continuous T ∧ Continuous T.symm) (Q N : Subgroup G') (hQ : ∀ h, h ∈ Q ↔ T h ∈ I.GFset)

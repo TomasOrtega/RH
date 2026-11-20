@@ -21,6 +21,27 @@ namespace GlobalTheory.WeilSpecialise
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Use `set a : Over.mk u ⊗ G ⟶ G := fst (Over.mk u) G ≫ x with ha`. Use `set y : Over.mk u ⊗ G ⟶ G := snd (Over.mk u) G with hy`. Establish `cube` using `GlobalTheory.CubeTop.cubeTheorem S G hA L hL (Over.mk u ⊗ G)`. Establish `key : ∀ m : ℕ, ∃ t : LB.Gen (LB.LinComb L ![(a ^ m * y).left, (a ^ m).left, (a * y).left, a.left, y.left, (1 : Over.mk u ⊗ G ⟶ G).left] ![1, -1, -(m : ℤ), (m : ℤ), (m : ℤ) - 1, 1 - (m : ℤ)]), t.IsGen`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Take `⟨t, ht⟩` from `cube 1 a y`. Take `⟨t', ht', -⟩` from `Geo.Tor.exists_gen hL (K' := Fin 6) (φ' := ![(a ^ 0 * y).left, (a ^ 0).left, (a * y).left, a.left, y.left, (1 : Over.mk u ⊗ G ⟶ G).left]) (ε' := ![1, -1, -((0 : ℕ) : ℤ), ((0 : ℕ) : ℤ), ((0 : ℕ) : ℤ) - 1, 1 - ((0 : ℕ) : ℤ)]) (fun V _ g => by`.
+
+Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Matrix.cons_val_one, pow_zero, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `push_cast`. Use the proof step `module) t ht`.
+
+Conclude with `⟨t', ht'⟩`. Consider the case `succ m ih`. Take `⟨t, ht⟩` from `ih`. Take `⟨c, hc⟩` from `cube (a ^ m) a y`. Establish `e₁ : a ^ m * a * y = a ^ (m + 1) * y` using `by rw [pow_succ]`.
+
+Establish `e₂ : a ^ m * a = a ^ (m + 1)` using `by rw [pow_succ]`. Take `⟨t', ht', -⟩` from `Geo.Tor.exists_gen hL (K' := Fin 6) (φ' := ![(a ^ (m + 1) * y).left, (a ^ (m + 1)).left, (a * y).left, a.left, y.left, (1 : Over.mk u ⊗ G ⟶ G).left]) (ε' := ![1, -1, -((m + 1 : ℕ) : ℤ), ((m + 1 : ℕ) : ℤ), ((m + 1 : ℕ) : ℤ) - 1, 1 - ((m + 1 : ℕ) : ℤ)]) (fun V _ g => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Matrix.cons_val_one, e₁, e₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `push_cast`. Use the proof step `module)`. Use the proof step `(LB.mulGen L _ _ _ _ t c) (DVR.mulGen_isGen _ _ _ _ _ _ _ ht hc)`. Conclude with `⟨t', ht'⟩`.
+
+Take `⟨t, ht⟩` from `key n`. Establish `han : a ^ n = 1` using `by rw [ha, ← MonObj.comp_pow, hx, MonObj.comp_one]`. Take `⟨e, he⟩` from `DVR.exists_gen_of_local (V := U) L hL (K := Fin 2) ![x.left, (1 : Over.mk u ⟶ G).left] ![-(n : ℤ), n]`. Establish `h1 : (fst (Over.mk u) G).left ≫ (1 : Over.mk u ⟶ G).left = (1 : Over.mk u ⊗ G ⟶ G).left`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`.
+
+Establish `h2 : (fst (Over.mk u) G).left ≫ x.left = a.left` using `rfl`. Establish `h3 : translPt G x = a * y` using `rfl`. Take `⟨w, hw, -⟩` from `Geo.Tor.exists_gen hL (K' := Fin 2) (φ' := ![(snd (Over.mk u) G).left, (translPt G x).left]) (ε' := ![(n : ℤ), -(n : ℤ)]) (fun V _ g => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Matrix.cons_val_one, han, h1, h2, h3, _root_.one_mul]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.pullGen L _ _ e (fst (Over.mk u) G).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.pullGen_isGen _ _ _ _ he _))`.
+
+Conclude with `⟨⟨x, w, hw⟩, rfl⟩`.
+-/
 theorem exists_theta_local {S : Scheme.{0}} (G : Over S) [GrpObj G] (hA : IsAbelianScheme G)
     (L : LB G.left) (hL : L.IsLB) (U : Type) [CommRing U] [IsLocalRing U] (u : Sp U ⟶ S) (n : ℕ)
     (x : Over.mk u ⟶ G) (hx : x ^ n = 1) : ∃ θ : ThetaGrp G L (n : ℤ) (Over.mk u), θ.pt = x := by
@@ -90,16 +111,38 @@ namespace GlobalTheory.WeilSpecialise
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective.2`.
+-/
 theorem unitOn_surjective {R : Type} [CommRing R] : Function.Surjective (unitOn (R := R)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective.2
 
+/- English proof (translation)
+The claim follows from `Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm`.
+-/
 theorem map_unitOn {R R' : Type} [CommRing R] [CommRing R'] (j : R →+* R') (c : Rˣ) :
     Units.map (spMap j).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map j.toMonoidHom c) :=
   Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1 (congrArg Units.val h))`.
+-/
 theorem unitOn_inj {R : Type} [CommRing R] : Function.Injective (unitOn (R := R)) := fun _ _ h =>
   Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1 (congrArg Units.val h))
 
+/- English proof (translation)
+Introduce `U Ω _ _ _ _ _ _ S G _ hA Lb hLb u n _ P Q c hP hQ P' Q' hP' hQ' HΩ k _ h P₀ Q₀ hP₀ hQ₀`. Establish `hG` using `globalFns_holds`. Establish `loc : ∀ z : Over.mk u ⟶ G, z ^ n = 1 → ∀ p : (Over.mk u).left, ∃ V : (Over.mk u).left.Opens, p ∈ V ∧ ∃ θ : ThetaGrp G Lb (n : ℤ) (overRes V), θ.pt = overResι V ≫ z` using `fun z hz p => by`. Take `⟨θ, hθ⟩` from `exists_theta_local G hA Lb hLb U u n z hz`. Take `⟨θ', h'⟩` from `GlobalTheory.CommutatorPairing.exists_pull hLb θ (overResι (⊤ : (Over.mk u).left.Opens))`.
+
+Conclude with `⟨⊤, trivial, θ', h'.trans (by rw [hθ])⟩`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.CommutatorPairing.exists_weilIs hG hA hLb (loc P hP) (loc Q hQ)`. Take `⟨c₁, rfl⟩` from `unitOn_surjective c₀`. Set `iΩ : Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ Over.mk u` to `Over.homMk (spMap (algebraMap U Ω)) rfl`. Establish `eP : P' = iΩ ≫ P` using `Over.OverMorphism.ext hP'`.
+
+Establish `eQ : Q' = iΩ ≫ Q` using `Over.OverMorphism.ext hQ'`. Establish `H₁` using `GlobalTheory.CommPairing.weilIs_pull hG hA hLb iΩ hc₀`. Rewrite `H₁` using `[← eP, ← eQ]`. Establish `H₁' : Out.WeilIs G Lb n P' Q' (unitOn (Units.map (algebraMap U Ω).toMonoidHom c₁))`. Rewrite using `[← map_unitOn]`.
+
+Conclude with `H₁`. Establish `e` using `GlobalTheory.CommutatorPairing.weilIs_unique hG hA hLb H₁' HΩ`. Establish `e'` using `unitOn_inj e`. Establish `hc : c₁ = c` using `Units.ext (IsFractionRing.injective U Ω (congrArg Units.val e'))`. Substitute `hc` using the available equality.
+
+Set `ik : Over.mk (spMap h ≫ u) ⟶ Over.mk u` to `Over.homMk (spMap h) rfl`. Establish `eP₀ : P₀ = ik ≫ P` using `Over.OverMorphism.ext hP₀`. Establish `eQ₀ : Q₀ = ik ≫ Q` using `Over.OverMorphism.ext hQ₀`. Establish `H₂` using `GlobalTheory.CommPairing.weilIs_pull hG hA hLb ik hc₀`. Rewrite `H₂` using `[← eP₀, ← eQ₀]`.
+
+Use `map_unitOn h c₁` as an intermediate fact. Conclude with `this ▸ H₂`.
+-/
 theorem weilIs_specialise : ∀ (U Ω : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [Algebra U Ω] [IsFractionRing U Ω] (S : Scheme.{0}) (G : Over S) [GrpObj G], IsAbelianScheme G → ∀ (Lb : LB G.left), Lb.IsLB → ∀ (u : Sp U ⟶ S) (n : ℕ), IsUnit (n : U) → ∀ (P Q : Over.mk u ⟶ G) (c : Uˣ), P ^ n = 1 → Q ^ n = 1 → ∀ (P' Q' : Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ G), P'.left = spMap (algebraMap U Ω) ≫ P.left → Q'.left = spMap (algebraMap U Ω) ≫ Q.left → Out.WeilIs G Lb n P' Q' (unitOn (Units.map (algebraMap U Ω : U →* Ω) c)) → ∀ (k : Type) [Field k] (h : U →+* k) (P₀ Q₀ : Over.mk (spMap h ≫ u) ⟶ G), P₀.left = spMap h ≫ P.left → Q₀.left = spMap h ≫ Q.left → Out.WeilIs G Lb n P₀ Q₀ (unitOn (Units.map (h : U →* k) c)) := by
   intro U Ω _ _ _ _ _ _ S G _ hA Lb hLb u n _ P Q c hP hQ P' Q' hP' hQ' HΩ k _ h P₀ Q₀ hP₀ hQ₀
   have hG := globalFns_holds

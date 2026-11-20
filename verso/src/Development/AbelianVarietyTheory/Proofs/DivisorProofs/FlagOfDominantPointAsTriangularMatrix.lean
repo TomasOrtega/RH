@@ -6,6 +6,9 @@ open Classical
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Establish `hx : x ∈ M.O (genericPoint M.Z)` using `by rw [RatModel.O_genericPoint]; exact Algebra.mem_top`. Use `M.val_spMap_comp σ M.pt (M.pt_specializes _ _) ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[RatModel.valLoc_eq_val, RatModel.val_pt]`. Conclude with `this`.
+-/
 theorem val_spMap_pt {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (M : RatModel F Ω) {K : Type} [Field K]
     (σ : Ω →+* K) (x : Ω) : M.val (spMap σ ≫ M.pt) x = σ x := by
   have hx : x ∈ M.O (genericPoint M.Z) := by rw [RatModel.O_genericPoint]; exact Algebra.mem_top
@@ -13,6 +16,27 @@ theorem val_spMap_pt {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (M : RatM
   rw [RatModel.valLoc_eq_val, RatModel.val_pt] at this
   exact this
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hR B hB A hA K _ ψ₁ ψ₂ U hpt hBe`. Establish `hom : (ratOf Y).pt ≫ f = spMap φ.toRingHom ≫ (ratOf X).pt` using `hR.hom`. Establish `key : ∀ σ : Y.Fn →+* K, spMap σ ≫ (ratOf Y).pt ≫ f = spMap (σ.comp φ.toRingHom) ≫ (ratOf X).pt`. Introduce `σ`. Rewrite using `[hom]`.
+
+Use `show Spec.map _ ≫ Spec.map _ ≫ _ = Spec.map (CommRingCat.ofHom (σ.comp φ.toRingHom)) ≫ _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `h1 : ∀ u : X.Fn, ψ₁ (φ u) = ψ₂ (φ u)`. Introduce `u`.
+
+Establish `e1` using `val_spMap_pt (ratOf X) (ψ₁.comp φ.toRingHom) u`. Establish `e2` using `val_spMap_pt (ratOf X) (ψ₂.comp φ.toRingHom) u`. Rewrite `e1` using `[← key, hpt, key]`. Conclude with `e1.symm.trans e2`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨A', hA', hP⟩` from `hBe`. Establish `hgen : (spMap ψ₂ ≫ (ratOf Y).pt) (IsLocalRing.closedPoint K) = genericPoint Y.X` using `(ratOf Y).pt_apply _`. Rewrite `hA'` using `[hgen]`. Establish `hval : (ratOf Y).val (spMap ψ₂ ≫ (ratOf Y).pt) = ψ₂` using `funext (val_spMap_pt (ratOf Y) ψ₂)`. Rewrite `hP` using `[hval]`.
+
+Establish `hAd : ∀ τ, (A τ).det ≠ 0` using `Fr.det_ne hA`. Establish `hBd : ∀ τ, (B τ).det ≠ 0` using `Fr.det_ne hB`. Establish `hA'd : ∀ τ, (A' τ).det ≠ 0` using `Fr.det_ne hA'`. Use `set C : Mat m Y.Fn := A.map φ with hC`. Establish `hCd : ∀ τ, (C τ).det ≠ 0` using `fun τ => by`.
+
+Rewrite using `[hC]`. Conclude with `fun h0 => (map_ne_zero φ.toRingHom).2 (hAd τ) ((Mat.det_map A φ.toRingHom τ).symm.trans h0)`. Establish `hCψ : C.map ψ₁ = C.map ψ₂`. Use function extensionality and compare the values at `τ`. Use extensionality with `i j`.
+
+Conclude with `h1 (A τ i j)`. Establish `hC2d : ∀ τ, (C.map ψ₂ τ).det ≠ 0` using `fun τ => by`. Rewrite using `[Mat.det_map]`. Conclude with `(map_ne_zero _).2 (hCd τ)`. Establish `hA'2d : ∀ τ, (A'.map ψ₂ τ).det ≠ 0` using `fun τ => by`.
+
+Rewrite using `[Mat.det_map]`. Conclude with `(map_ne_zero _).2 (hA'd τ)`. Establish `e : U * (B * C⁻¹).map ψ₁ * ((A' * C⁻¹).map ψ₂)⁻¹ = U * B.map ψ₁ * (A'.map ψ₂)⁻¹`. Rewrite using `[Mat.map_mul, Mat.map_mul, Mat.map_inv, Mat.map_inv, hCψ, Mat.mul_inv_rev, Mat.inv_inv hC2d]`. Rewrite using `[mul_assoc U, mul_assoc (B.map ψ₁), ← mul_assoc (C.map ψ₂)⁻¹, Mat.inv_mul hC2d, one_mul, ← mul_assoc]`.
+
+Rewrite `hP` using `[e]`. Establish `hQ : Par m (⊤ : Subring K) ((A' * B⁻¹).map ψ₂)`. Use `(Fr.mem_iff hB).1 hA'` as an intermediate fact. Conclude with `this.map ψ₂ (fun _ _ => trivial)`. Use `hP.mul hQ` as an intermediate fact.
+
+Rewrite `this` using `[Mat.map_mul, Mat.map_inv]`. Establish `e2 : U * B.map ψ₁ * (A'.map ψ₂)⁻¹ * (A'.map ψ₂ * (B.map ψ₂)⁻¹) = U * (B.map ψ₁ * (B.map ψ₂)⁻¹)`. Rewrite using `[mul_assoc (U * B.map ψ₁), ← mul_assoc (A'.map ψ₂)⁻¹, Mat.inv_mul hA'2d, one_mul, mul_assoc]`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem flag_conv : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ B ∈ E'.S (genericPoint Y.X), ∀ A ∈ E.S (f (genericPoint Y.X)), ∀ (K : Type) [Field K] (ψ₁ ψ₂ : Y.Fn →+* K) (U : Mat m K), spMap ψ₁ ≫ (ratOf Y).pt ≫ f = spMap ψ₂ ≫ (ratOf Y).pt ≫ f → Bears E' φ A (U * (B * (A.map φ)⁻¹).map ψ₁) (spMap ψ₂ ≫ (ratOf Y).pt) → (∀ u : X.Fn, ψ₁ (φ u) = ψ₂ (φ u)) ∧ Par m ⊤ (U * (B.map ψ₁ * (B.map ψ₂)⁻¹)) := by
   intro F _ X Y ι _ m E E' φ f hR B hB A hA K _ ψ₁ ψ₂ U hpt hBe
   have hom : (ratOf Y).pt ≫ f = spMap φ.toRingHom ≫ (ratOf X).pt := hR.hom

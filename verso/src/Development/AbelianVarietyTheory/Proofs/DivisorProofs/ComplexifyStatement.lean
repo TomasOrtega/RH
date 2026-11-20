@@ -18,6 +18,9 @@ open GlobalTheory
 
 namespace GlobalTheory.HilbertSamuel.Data
 
+/- English proof (translation)
+Introduce `F _ _ X β hF _ hS hB`. Use `haveI := hF`. Conclude with `⟨fun σ => hB.mulBoundAt σ, fun E _ _ _ => hS.baseChange E⟩`.
+-/
 theorem complexify_statement : Complexify := by
   intro F _ _ X β hF _ hS hB
   haveI := hF

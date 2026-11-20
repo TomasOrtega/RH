@@ -11,6 +11,9 @@ namespace GlobalTheory.UnfoldPartial
 open Filter Set GlobalTheory.Eis GlobalTheory.AutomorphicL2Unitary GlobalTheory.DefDoubling
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hE : Measurable fun x => ∑' i, ENNReal.ofReal (p i x)` using `(lowerSemicontinuous_tsum fun i => (ENNReal.continuous_ofReal.comp (hc i)).lowerSemicontinuous).measurable`. Establish `e : (fun x => ∑' i, p i x) = fun x => (∑' i, ENNReal.ofReal (p i x)).toReal` using `funext fun x => by`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun i => h0 i x) (hs x), ENNReal.toReal_ofReal (tsum_nonneg fun i => h0 i x)]`. Rewrite using `[e]`. Conclude with `hE.ennreal_toReal`.
+-/
 theorem measurable_tsum_nonneg {X ι : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {p : ι → X → ℝ} (hc : ∀ i, Continuous (p i)) (h0 : ∀ i x, 0 ≤ p i x)
     (hs : ∀ x, Summable fun i => p i x) : Measurable fun x => ∑' i, p i x := by
@@ -21,6 +24,11 @@ theorem measurable_tsum_nonneg {X ι : Type} [TopologicalSpace X] [MeasurableSpa
       ENNReal.toReal_ofReal (tsum_nonneg fun i => h0 i x)]
   rw [e]; exact hE.ennreal_toReal
 
+/- English proof (translation)
+Establish `s1 : ∀ x, Summable fun i => max (p i x) 0` using `fun x => (hs x).of_nonneg_of_le (fun i => le_max_right _ _) fun i => max_le (le_abs_self _) (abs_nonneg _)`. Establish `s2 : ∀ x, Summable fun i => max (-p i x) 0` using `fun x => (hs x).of_nonneg_of_le (fun i => le_max_right _ _) fun i => max_le (neg_le_abs _) (abs_nonneg _)`. Establish `e : (fun x => ∑' i, p i x) = fun x => ∑' i, max (p i x) 0 - ∑' i, max (-p i x) 0` using `funext fun x => by`. Rewrite using `[← (s1 x).tsum_sub (s2 x)]`. Conclude with `tsum_congr fun i => (max_zero_sub_max_neg_zero_eq_self _).symm`.
+
+Rewrite using `[e]`. Conclude with `(measurable_tsum_nonneg (fun i => (hc i).max continuous_const) (fun i x => le_max_right _ _) s1).sub (measurable_tsum_nonneg (fun i => (hc i).neg.max continuous_const) (fun i x => le_max_right _ _) s2)`.
+-/
 theorem measurable_tsum_real {X ι : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {p : ι → X → ℝ} (hc : ∀ i, Continuous (p i)) (hs : ∀ x, Summable fun i => |p i x|) :
     Measurable fun x => ∑' i, p i x := by
@@ -35,6 +43,11 @@ theorem measurable_tsum_real {X ι : Type} [TopologicalSpace X] [MeasurableSpace
   exact (measurable_tsum_nonneg (fun i => (hc i).max continuous_const) (fun i x => le_max_right _ _) s1).sub
     (measurable_tsum_nonneg (fun i => (hc i).neg.max continuous_const) (fun i x => le_max_right _ _) s2)
 
+/- English proof (translation)
+Establish `sr : ∀ x, Summable fun i => |(g i x).re|` using `fun x => (hs x).of_nonneg_of_le (fun i => abs_nonneg _) fun i => Complex.abs_re_le_norm _`. Establish `si : ∀ x, Summable fun i => |(g i x).im|` using `fun x => (hs x).of_nonneg_of_le (fun i => abs_nonneg _) fun i => Complex.abs_im_le_norm _`. Establish `e : (fun x => ∑' i, g i x) = fun x => ((∑' i, (g i x).re : ℝ) : ℂ) + ((∑' i, (g i x).im : ℝ) : ℂ) * Complex.I` using `funext fun x => by`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.re_tsum (hs x).of_norm, Complex.im_tsum (hs x).of_norm]`. Rewrite using `[e]`.
+
+Conclude with `(Complex.measurable_ofReal.comp (measurable_tsum_real (fun i => Complex.continuous_re.comp (hc i)) sr)).add ((Complex.measurable_ofReal.comp (measurable_tsum_real (fun i => Complex.continuous_im.comp (hc i)) si)).mul_const _)`.
+-/
 theorem measurable_tsum_complex {X ι : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {g : ι → X → ℂ} (hc : ∀ i, Continuous (g i)) (hs : ∀ x, Summable fun i => ‖g i x‖) :
     Measurable fun x => ∑' i, g i x := by
@@ -49,6 +62,35 @@ theorem measurable_tsum_complex {X ι : Type} [TopologicalSpace X] [MeasurableSp
   exact (Complex.measurable_ofReal.comp (measurable_tsum_real (fun i => Complex.continuous_re.comp (hc i)) sr)).add
     ((Complex.measurable_ofReal.comp (measurable_tsum_real (fun i => Complex.continuous_im.comp (hc i)) si)).mul_const _)
 
+/- English proof (translation)
+Use `set O : Set (Cosets P Γ₂) := {q | ∃ δ ∈ Γ, ((q.out : Γ₂) : G₂) * (i (1, δ))⁻¹ ∈ P} with hO`. Set `r : Γ → Γ₂` to `fun δ => ⟨i (1, δ), hΓ δ δ.2⟩`. Establish `hmem : ∀ δ : Γ, mk (P.subgroupOf Γ₂) (r δ) ∈ O` using `fun δ => by`. Take `⟨γ, hγ⟩` from `mk_eq_iff.1 (Quotient.out_eq (mk (P.subgroupOf Γ₂) (r δ)))`. Establish `h2 : ((γ : Γ₂) : G₂) * (((mk (P.subgroupOf Γ₂) (r δ)).out : Γ₂) : G₂) = i (1, δ)` using `congrArg Subtype.val hγ`.
+
+Use `⟨δ, δ.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, mul_inv_rev, mul_inv_cancel_left]`. Conclude with `P.inv_mem (Subgroup.mem_subgroupOf.1 γ.2)`. Set `e : Γ → O` to `fun δ => ⟨mk (P.subgroupOf Γ₂) (r δ), hmem δ⟩`. Establish `he : Function.Bijective e`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `δ δ' hδ`. Establish `h1 : mk (P.subgroupOf Γ₂) (r δ) = mk (P.subgroupOf Γ₂) (r δ')` using `congrArg Subtype.val hδ`. Take `⟨γ, hγ⟩` from `mk_eq_iff.1 h1`. Establish `h2 : ((γ : Γ₂) : G₂) * i (1, δ) = i (1, δ')` using `congrArg Subtype.val hγ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `hP` to reduce the goal to its premises. Rewrite using `[← h2, mul_inv_rev, mul_inv_cancel_left]`. Conclude with `P.inv_mem (Subgroup.mem_subgroupOf.1 γ.2)`. Introduce and unpack `⟨q, δ, hδ, hq⟩`.
+
+Use `⟨⟨δ, hδ⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(mk_eq_iff.2 ⟨⟨q.out * (r ⟨δ, hδ⟩)⁻¹, Subgroup.mem_subgroupOf.2 hq⟩, inv_mul_cancel_right _ _⟩).trans (Quotient.out_eq q)`. Establish `hterm : ∀ x (δ : Γ), term P Γ₂ Φ (i (h, x)) (e δ).1 = Φ (i (h, δ * x))` using `fun x δ => by show term P Γ₂ Φ (i (h, x)) (mk _ (r δ)) = _`. Rewrite using `[term_mk hΦ]`. Use `show Φ (i (1, δ) * i (h, x)) = _`.
+
+Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hopen : ∀ x, ∑' q : O, term P Γ₂ Φ (i (h, x)) q = ∑' δ : Γ, Φ (i (h, δ * x))` using `fun x => by`. Rewrite using `[← (Equiv.ofBijective e he).tsum_eq]`. Conclude with `tsum_congr fun δ => hterm x δ`. Establish `hsplit : ∀ x, cosetSum P Γ₂ Φ (i (h, x)) = ∑' δ : Γ, Φ (i (h, δ * x)) + ∑' q : {q : Cosets P Γ₂ // ¬ ∃ δ ∈ Γ, ((q.out : Γ₂) : G₂) * (i (1, δ))⁻¹ ∈ P}, term P Γ₂ Φ (i (h, x)) q.1` using `fun x => by`.
+
+Rewrite using `[← hopen x]`. Conclude with `((hconv _).of_norm.tsum_subtype_add_tsum_subtype_compl O).symm`. Use `set F : G → ℂ := fun x => f x * Φ (i (h, x)) * w x with hF`. Establish `hic : ∀ y : G, Continuous fun x : G => i (y, x)` using `fun y => hi.comp (continuous_const.prodMk continuous_id)`. Establish `hFc : Continuous F` using `(hf.mul (hΦc.comp (hic h))).mul hwc`.
+
+Establish `hw1e : ∀ x, ‖w x‖ₑ = 1` using `fun x => by rw [← ofReal_norm_eq_enorm, hw1, ENNReal.ofReal_one]`. Establish `hFδ : ∀ x (δ : Γ), F (δ * x) = f x * Φ (i (h, δ * x)) * w x` using `fun x δ => by`. Simplify using `only [hF, hfΓ _ δ.2, hw, hwΓ _ δ.2, one_mul]`. Establish `hFi : Integrable F μ`. Use `⟨hFc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫⁻ x, ‖F x‖ₑ ∂μ < ⊤`. Rewrite using `[← lintegral_tsum_eq h𝓕 hFc.measurable.enorm.aemeasurable]`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) (lt_top_iff_ne_top.2 hfin)` and prove the remaining obligations. Simplify using `only [hFδ, enorm_mul, hw1e, mul_one]`. Rewrite using `[ENNReal.tsum_mul_left]`.
+
+Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hopenF : ∀ x, ∑' δ : Γ, F (δ * x) = f x * (∑' δ : Γ, Φ (i (h, δ * x))) * w x` using `fun x => by`. Rewrite using `[tsum_congr (hFδ x), tsum_mul_right, tsum_mul_left]`. Use `set C : G → ℂ := fun x => f x * (∑' q : {q : Cosets P Γ₂ // ¬ ∃ δ ∈ Γ, ((q.out : Γ₂) : G₂) * (i (1, δ))⁻¹ ∈ P}, term P Γ₂ Φ (i (h, x)) q.1) * w x with hC`.
+
+Establish `hNm : Measurable fun x => ∑' q : {q : Cosets P Γ₂ // ¬ ∃ δ ∈ Γ, ((q.out : Γ₂) : G₂) * (i (1, δ))⁻¹ ∈ P}, term P Γ₂ Φ (i (h, x)) q.1` using `measurable_tsum_complex (fun q => hΦc.comp (continuous_const.mul (hic h))) fun x => (hconv (i (h, x))).subtype Oᶜ`. Establish `hCi : IntegrableOn C 𝓕 μ`. Use `⟨((hf.measurable.mul hNm).mul hwc.measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) (lt_top_iff_ne_top.2 hfin)` and prove the remaining obligations. Rewrite using `[hC]`.
+
+Simplify using `only [enorm_mul, hw1e, mul_one]`. Conclude with `mul_le_mul' le_rfl (enorm_tsum_le_tsum_enorm.trans (ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective _))`. Take `⟨h1, h2⟩` from `integral_tsum_eq h𝓕 hFi`. Establish `hA : ∀ x, f x * (cosetSum P Γ₂ Φ (i (h, x)) * w x) = ∑' δ : Γ, F (δ * x) + C x` using `fun x => by`. Rewrite using `[hsplit x, hopenF x, hC]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hA]`. Rewrite using `[integral_add h1 hCi, h2, hnon, add_zero, ← integral_mul_left_eq_self F h]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `: i (h, h * g) = i (h, h) * i (1, g)` using `by rw [← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Simplify using `only [hF, this, hlaw, hw]`. Take the linear combination `(f (h * g) * Φ (i (1, g)) * w g) * hcw h`.
+-/
 theorem unfold_of_nonopen_zero {G G₂ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] (i : G × G →* G₂) (P Γ₂ : Subgroup G₂)
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (Φ : G₂ → ℂ) (f w c : G → ℂ)

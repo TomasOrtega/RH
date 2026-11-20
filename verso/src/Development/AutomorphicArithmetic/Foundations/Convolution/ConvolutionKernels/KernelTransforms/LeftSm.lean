@@ -15,6 +15,19 @@ section
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+Rewrite using `[h.isSmoothFun_iff]`. Introduce `g`. Use `set ψ : 𝔤 → G → ℂ := fun Y w => β (g * h.expG Y * w) with hψdef`. Establish `hψ : ∀ w₀ : G, ContDiff ℝ ∞ (fun q : 𝔤 × 𝔤 => ψ q.1 (w₀ * h.expG q.2))`. Introduce `w₀`.
+
+Set `` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Establish `hm : ContMDiff 𝓘(ℝ, 𝔤 × 𝔤) 𝓘(ℝ, 𝔤) ∞ (fun q : 𝔤 × 𝔤 => g * h.expG q.1 * (w₀ * h.expG q.2))` using `(contMDiff_const.mul (h.contMDiff_expG_comp contDiff_fst)).mul (contMDiff_const.mul (h.contMDiff_expG_comp contDiff_snd))`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hβ hm).contDiff`. Use `set F : 𝔤 → S → ℂ := fun Y s => ψ Y (y * z s) with hFdef`.
+
+Establish `e : (fun Y : 𝔤 => ∫ s, β (g * h.expG Y * y * z s) ∂ρ) = fun Y => ∫ s, F Y s ∂ρ`. Use function extensionality and compare the values at `Y`. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [hFdef, hψdef, mul_assoc]`.
+
+Use `show ContDiff ℝ ∞ (fun Y : 𝔤 => ∫ s, β (g * h.expG Y * y * z s) ∂ρ)`. Rewrite using `[e]`. Use `contDiff_integral_of_iteratedFDeriv F (fun s => ?_) (fun k => ?_) (fun Y₀ => ?_)` and prove the remaining obligations. Establish `e2 : (fun Y => F Y s) = (fun q : 𝔤 × 𝔤 => ψ q.1 ((y * z s) * h.expG q.2)) ∘ fun Y => (Y, (0 : 𝔤))`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [Function.comp_apply, h.expG_zero, mul_one, hFdef]`. Rewrite using `[e2]`. Conclude with `(hψ _).comp (contDiff_id.prodMk contDiff_const)`. Conclude with `(h.continuous_iteratedFDeriv_param ψ hψ k).comp (continuous_fst.prodMk (continuous_const.mul (hz.comp continuous_snd)))`. Take `⟨D, hD, hDz⟩` from `hs ((fun Y => g * h.expG Y) '' Metric.closedBall Y₀ 1) ((isCompact_closedBall Y₀ 1).image (continuous_const.mul h.continuous_expG))`.
+
+Use `⟨Metric.closedBall Y₀ 1, Metric.closedBall_mem_nhds Y₀ one_pos, D, hD, fun Y hY s hsD => ?_⟩` and prove the remaining obligations. Establish `h0` using `hDz _ ⟨Y, hY, rfl⟩ s hsD`. Simplify `h0` using `only [hFdef, hψdef, mul_assoc]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_avg {S : Type*} [TopologicalSpace S] [T2Space S] [SecondCountableTopology S]
     [MeasurableSpace S] [OpensMeasurableSpace S] (ρ : Measure S) [IsFiniteMeasureOnCompacts ρ]
     {z : S → G} (hz : Continuous z) {β : G → ℂ} (hβ : h.IsSmoothFun β) (y : G)
@@ -57,6 +70,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_avg {S : Type*} [Topolog
 
 end
 
+/- English proof (translation)
+Establish `hm : MeasurableEmbedding expPos` using `expPosHomeomorph.measurableEmbedding`. Establish `hi : ∀ x, (expPos x)⁻¹ = expPos (-x)` using `fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Real.exp_neg]`. Rewrite using `[posRealMeasure_eq_map_expPos, hm.integral_map, hm.integral_map]`.
+
+Repeatedly rewrite using `[hi]`. Conclude with `integral_neg_eq_self (fun x => f (expPos x)) volume`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_inv (f : {r : ℝ // 0 < r} → ℂ) :
     ∫ s, f s⁻¹ ∂posRealMeasure = ∫ s, f s ∂posRealMeasure := by
   have hm : MeasurableEmbedding expPos := expPosHomeomorph.measurableEmbedding
@@ -67,6 +85,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_inv (f : {r : ℝ // 0 <
   simp_rw [hi]
   exact integral_neg_eq_self (fun x => f (expPos x)) volume
 
+/- English proof (translation)
+Use `UpperTheory.ConvolutionTheory.Tf.leftSm_avg (isExpLieAlgebra K n) posRealMeasure continuous_zInf hβ y ?_` and prove the remaining obligations. Introduce `C hC`. Establish `hD : IsCompact (detA K n '' tsupport β)` using `β.hasCompactSupport.isCompact.image continuous_detA`. Establish `hR : IsCompact (detA K n '' ((fun a => a * y) '' C))` using `(hC.image (continuous_id.mul continuous_const)).image continuous_detA`. Use `⟨(fun p : {r : ℝ // 0 < r} × {r : ℝ // 0 < r} => p.1 * p.2⁻¹) '' ((detA K n '' tsupport β) ×ˢ (detA K n '' ((fun a => a * y) '' C))), (hD.prod hR).image (continuous_fst.mul continuous_snd.inv), fun a ha s hs => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises. Use `⟨(s * detA K n (a * y), detA K n (a * y)), ⟨mem_of_kernel_ne_zero hn hne, _, ⟨a, ha, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_right]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_kbar {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (β : TI K n) (hβ : SmoothT β) (y : archGroup K n) :
     (isExpLieAlgebra K n).IsSmoothFun fun A : archGroup K n => kbar β (A * y) := by
@@ -84,6 +107,17 @@ private theorem UpperTheory.ConvolutionTheory.Tf.leftSm_kbar {K : Type} [Field K
     ⟨mem_of_kernel_ne_zero hn hne, _, ⟨a, ha, rfl⟩, rfl⟩, ?_⟩
   simp only [mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `K _ _ n hn β e`. Establish `hT : ∀ (β : TI K n) (e : TF K n) x, tens β e x = tensFun β e x` using `fun β e => (UpperTheory.ConvolutionTheory.Tf.tensApply K n hn β e).1`. Use `⟨fun hβ ⟨U, hUo, hU⟩ => ⟨fun x => ?_, ?_⟩, fun β' e' hβ' he' => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun A : archGroup K n => tens β e (archP K n A * x)) = fun A => e (finPart K n (x : AdelicGLn.AdelicGL K n)) • kbar β (A * infPart K n (x : AdelicGLn.AdelicGL K n))`. Use function extensionality and compare the values at `A`.
+
+Establish `hk : kbar β (A * (zInf K n (detA K n A))⁻¹ * infPart K n (x : AdelicGLn.AdelicGL K n)) = kbar β (A * infPart K n (x : AdelicGLn.AdelicGL K n))`. Rewrite using `[← map_inv, mul_assoc, zInf_mul_comm, ← mul_assoc, kbar_mul_zInf]`. Rewrite using `[hT, tensFun, Subgroup.coe_mul, map_mul, map_mul, infPart_archP, finPart_archP, one_mul, hk, smul_eq_mul, mul_comm]`. Rewrite using `[e1]`. Conclude with `((isExpLieAlgebra K n).smoothFuns (F := ℂ)).smul_mem _ (UpperTheory.ConvolutionTheory.Tf.leftSm_kbar hn β hβ _)`.
+
+Use `⟨U.comap (AdelicGLn.integralFiniteGL K n).subtype, hUo.preimage continuous_subtype_val, fun u hu x => ?_⟩` and prove the remaining obligations. Rewrite using `[hT, hT, tensFun, tensFun, Subgroup.coe_mul, coe_finOne, map_mul, map_mul, infPart_finEmb, finPart_finEmb, one_mul, hU (u : AdelicGLn.FiniteAdelicGL K n) hu]`. Establish `zInf_inv_comm : ∀ (s : {r : ℝ // 0 < r}) (a : archGroup K n), (zInf K n s)⁻¹ * a = a * (zInf K n s)⁻¹`. Introduce `s a`. Rewrite using `[← map_inv, zInf_mul_comm]`.
+
+Establish `hk : ∀ a, kbar β' a = conj (kbar β a⁻¹)`. Introduce `a`. Unfold `kbar`. Rewrite using `[← integral_conj, ← UpperTheory.ConvolutionTheory.Tf.leftSm_inv (fun s => conj (β (a⁻¹ * zInf K n s)))]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[hβ', map_inv (zInf K n) s, mul_inv_rev, zInf_inv_comm]`. Use extensionality with `g`. Rewrite using `[CuspidalProjection.ccStar_apply, hT, hT, tensFun, tensFun, map_mul, he', hk, Subgroup.coe_inv, map_inv, map_inv]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.leftSm :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n),
       (SmoothT β → (∃ U : Subgroup (AdelicGLn.FiniteAdelicGL K n), IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n)) ∧ ∀ u ∈ U, ∀ h, e (u * h) = e h) → IsLeftSmooth (tens β e)) ∧

@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef.AvgV
 
+/- English proof (translation)
+Use `measure_mono_null ?_ (h.1 b)` and prove the remaining obligations. Introduce `x hx hx'`. Conclude with `hx (hι ((hg x).symm.trans hx'.1))`.
+-/
 theorem ae_lift_eq {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [TopologicalSpace X] [MeasurableSpace X]
     {μ : Measure V} {ν : Measure X} {q : V → Y} {ι : X → Y} {W : Set V} {B : Set X} {fib : X → Measure V}
     (h : IsFibreFamily μ q ι W ν B fib) {g : V → X} (hg : ∀ x, q x = ι (g x)) (hι : Function.Injective ι)
@@ -22,6 +25,15 @@ theorem ae_lift_eq {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [Topo
   intro x hx hx'
   exact hx (hι ((hg x).symm.trans hx'.1))
 
+/- English proof (translation)
+Establish `hT : MeasurableSet (A ∩ g ⁻¹' S)` using `hA.inter (hgm hS)`. Establish `e` using `h.2.1 ((A ∩ g ⁻¹' S).indicator 1) (measurable_one.indicator hT)`. Simplify using `only [lintegral_indicator_one hT] at e`. Rewrite `e` using `[Measure.restrict_apply hT, Set.inter_eq_left.2 hW]`. Rewrite using `[e, ← lintegral_indicator hS]`.
+
+Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Establish `hae` using `ae_lift_eq h hg hι b`. Distinguish the cases in `hb : b ∈ S`. Rewrite using `[Set.indicator_of_mem hb]`. Use `measure_congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with x hx`. Use `propext ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `show g x ∈ S`. Rewrite using `[hx]` and apply the resulting hypothesis. Rewrite using `[Set.indicator_of_notMem hb]`.
+
+Use `measure_mono_null (t := {x | ¬ g x = b}) ?_ hae` and prove the remaining obligations. Introduce `x hx hxb`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← hxb]`. Conclude with `hx.2`.
+-/
 theorem fibre_mass_on {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [TopologicalSpace X]
     [MeasurableSpace X] {μ : Measure V} {ν : Measure X} {q : V → Y} {ι : X → Y} {W : Set V} {B : Set X}
     {fib : X → Measure V} (h : IsFibreFamily μ q ι W ν B fib) {g : V → X} (hg : ∀ x, q x = ι (g x))
@@ -49,6 +61,37 @@ theorem fibre_mass_on {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [T
     rw [← hxb]
     exact hx.2
 
+/- English proof (translation)
+Use `haveI : ν.IsNegInvariant := Measure.IsAddHaarMeasure.isNegInvariant_of_regular _`. Establish `hBc` using `hB.mem_nhds hc`. Set `S : ℕ → Set X` to `fun k => {s | c - s ∈ U k}`. Establish `hSo : ∀ k, IsOpen (S k)` using `fun k => (hU k).2.1.preimage (continuous_const.sub continuous_id)`. Establish `hSm : ∀ k, MeasurableSet (S k)` using `fun k => (hSo k).measurableSet`.
+
+Establish `hSc : ∀ k, c ∈ S k` using `fun k => by show c - c ∈ U k`. Rewrite using `[sub_self]`. Conclude with `(hU k).2.2`. Establish `hSU : ∀ k, ν (S k) = ν (U k)` using `fun k => (Measure.measurePreserving_sub_left _ c).measure_preimage (hU k).2.1.measurableSet.nullMeasurableSet`. Establish `hpos : ∀ k, ν (S k) ≠ 0` using `fun k => (hSo k).measure_ne_zero _ ⟨c, hSc k⟩`.
+
+Establish `htop : ∀ k, ν (S k) ≠ ⊤` using `fun k => by`. Rewrite using `[hSU]`. Conclude with `(hU k).1.measure_lt_top.ne`. Establish `hl : Filter.Tendsto S Filter.atTop (nhds c).smallSets`. Rewrite using `[Filter.tendsto_smallSets_iff]`.
+
+Introduce `t ht`. Establish `hcont : Filter.Tendsto (fun u : X => c - u) (nhds 0) (nhds c)`. Establish `: Continuous fun u : X => c - u` using `continuous_const.sub continuous_id`. Simplify using `using this.tendsto 0`. Establish `h0` using `(Filter.tendsto_smallSets_iff.1 hUt) _ (hcont ht)`.
+
+Use `filter_upwards [h0] with k hk s hs`. Use `hk (show c - s ∈ U k from hs)` as an intermediate fact. Simplify using `using this`. Take `⟨k0, hk0⟩` from `(hl.eventually (Filter.eventually_smallSets_subset.2 hBc)).exists`. Establish `hNc : IsCompact (S k0)` using `(Homeomorph.subLeft c).isCompact_preimage.2 (hU k0).1`.
+
+Set `A' : Set V` to `A ∩ g ⁻¹' S k0`. Establish `hA'c : IsCompact A'` using `hAc.inter_right (hNc.isClosed.preimage hgc)`. Establish `hA'o : IsOpen A'` using `hAo.inter ((hSo k0).preimage hgc)`. Establish `hA'm : MeasurableSet A'` using `hA'o.measurableSet`. Establish `hA'W : A' ⊆ W` using `fun x hx => hWB x (hk0 hx.2)`.
+
+Set `φ : V → ℝ` to `A'.indicator fun _ => 1`. Establish `hφc : Continuous φ`. Use `continuous_indicator ?_ continuous_const.continuousOn` and prove the remaining obligations. Simplify using `[hA'o.frontier_eq, hA'c.isClosed.closure_eq]`. Establish `hφs : HasCompactSupport φ`.
+
+Use `HasCompactSupport.intro hA'c fun x hx => ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem hx _`. Establish `hts : tsupport φ ⊆ W`. Use `subset_trans (closure_minimal (fun x hx => ?_) hA'c.isClosed) hA'W` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hx (Set.indicator_of_notMem h _)`. Take `⟨hI, hC⟩` from `h.2.2 φ hφc hφs hts`. Establish `hint : ∀ s, ∫ x, φ x ∂(fib s) = (fib s A').toReal` using `fun s => by`. Simplify using `[φ, integral_indicator hA'm, Measure.real]`. Establish `hG : ContinuousAt (fun s => (fib s A').toReal) c`.
+
+Establish `h` using `hC.continuousAt hBc`. Simplify `h` using `only [hint]`. Establish `hfin : ∀ᶠ s in nhds c, fib s A' ≠ ⊤` using `by filter_upwards [hBc] with s hs`. Establish `h` using `hI s hs`. Rewrite `h` using `[integrable_indicator_iff hA'm]`.
+
+Break down `(integrableOn_const_iff (C := (1 : ℝ)) (by simp)).1 h with h | h` into its components or cases. Simplify using `at h`. Conclude with `h.ne`. Establish `hcv : fib c A' = fib c A`. Use `measure_congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_lift_eq h hg hι c] with x hx`. Use `propext ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `show g x ∈ S k0`. Rewrite using `[hx]`. Conclude with `hSc k0`.
+
+Use `⟨fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hO : IsOpen (A ∩ {x | c - g x ∈ U k})` using `hAo.inter ((hSo k).preimage hgc)`. Conclude with `⟨hO.measurableSet, ne_top_of_le_ne_top hAc.measure_lt_top.ne (measure_mono Set.inter_subset_left)⟩`. Establish `key` using `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.AvgV.tendsto_mean ν (fun s => fib s A') c hG hfin S hSm hl hpos htop`. Simplify using `only [hcv] at key`.
+
+Use `key.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hl.eventually (Filter.eventually_smallSets_subset.2 ((hSo k0).mem_nhds (hSc k0)))] with k hk`. Establish `e : A ∩ {x | c - g x ∈ U k} = A' ∩ g ⁻¹' S k`. Use extensionality with `x`. Conclude with `⟨fun h => ⟨⟨h.1, hk h.2⟩, h.2⟩, fun h => ⟨h.1.1, h.2⟩⟩`.
+
+Rewrite using `[hSU k, e, fibre_mass_on h hg hι hgc.measurable hA'm (hSm k) (fun x hx => hA'W hx.1)]`.
+-/
 theorem avg_gen {V X Y : Type} {_ : TopologicalSpace V} {_ : MeasurableSpace V} {_ : TopologicalSpace X}
     {_ : MeasurableSpace X} {_ : AddCommGroup X} {μ : Measure V} {ν : Measure X} {q : V → Y} {ι : X → Y}
     {W : Set V} {B : Set X} {fib : X → Measure V} (h : IsFibreFamily μ q ι W ν B fib) {g : V → X}
@@ -141,6 +184,17 @@ theorem avg_gen {V X Y : Type} {_ : TopologicalSpace V} {_ : MeasurableSpace V} 
 
 end GlobalTheory.CompanionTheory.SiegelND.Coef.AvgV
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n _ d b v lv hlv mv hmv c hc A hAc hAo U hU hUt`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨a1, a2, a3, a4, -, -, -, a8, -, a10⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)`. Use `haveI := a1`.
+
+Use `haveI := a2`. Use `haveI := a3`. Use `haveI := a4`. Take `⟨-, hW, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b lv hlv.1`. Take `⟨e1, e2, e3, e4, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Fv F v) n`.
+
+Establish `hgc : Continuous (gramH hCM hJ (Fv F v) : (Fin n → Fin M → Fv F v ⊗[F] E) → HermR (Fv F v) σ n)` using `Continuous.subtype_mk (a10 n M J) _`. Establish `hUo : IsOpen {r : Fv F v | IsUnit r}`. Establish `: {r : Fv F v | IsUnit r} = {r | r ≠ 0}`. Use extensionality with `r`. Simplify using `[isUnit_iff_ne_zero]`.
+
+Rewrite using `[this]`. Conclude with `isOpen_ne`. Establish `hB : IsOpen {S : HermR (Fv F v) σ n | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det}` using `PI.VolStabS.isOpen_unitHerm (Fv F v) hUo σ n`. Conclude with `AvgV.avg_gen (q := gramR (Fv F v) σ J) (ι := Subtype.val) (g := gramH hCM hJ (Fv F v)) hmv (fun _ => rfl) Subtype.val_injective hgc inferInstance (a8 n M) e3 e4 inferInstance e1 e2 (hW n M).toIsFiniteMeasureOnCompacts (hH n) hB (fun _ h => h) hc hAc hAo hU hUt`.
+-/
 theorem GlobalTheory.CompanionTheory.SiegelND.Coef.avgV_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ mv : HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E), GlobalTheory.CompanionTheory.SW.IsGramFib (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) mv → ∀ c : HermR (Fv F v) σ n, IsUnit (c : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det → ∀ A : Set (Fin n → Fin M → Fv F v ⊗[F] E), IsCompact A → IsOpen A → ∀ U : ℕ → Set (HermR (Fv F v) σ n), (∀ k, IsCompact (U k) ∧ IsOpen (U k) ∧ (0 : HermR (Fv F v) σ n) ∈ U k) → Filter.Tendsto U Filter.atTop (nhds (0 : HermR (Fv F v) σ n)).smallSets → (∀ k, MeasurableSet (A ∩ {X | c - gramH hCM hJ (Fv F v) X ∈ U k}) ∧ GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (A ∩ {X | c - gramH hCM hJ (Fv F v) X ∈ U k}) ≠ ⊤) ∧ Filter.Tendsto (fun k => (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (A ∩ {X | c - gramH hCM hJ (Fv F v) X ∈ U k})).toReal / (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n (U k)).toReal) Filter.atTop (nhds (mv c A).toReal) := by
   intro F E _ _ _ _ _ σ hCM M J hJ n _ d b v lv hlv mv hmv c hc A hAc hAo U hU hUt
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

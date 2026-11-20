@@ -11,6 +11,19 @@ section
 variable {O : Type} [CommRing O] (O' : Type) [CommRing O'] [Algebra O O']
   {W : Type} [AddCommGroup W] [Module O W]
 
+/- English proof (translation)
+Take `⟨hfg, hle, hsat⟩` from `h`. Use `⟨?_, Submodule.baseChange_mono O' hle, ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hfg`. Rewrite using `[Submodule.baseChange_span]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`.
+
+Introduce `x hx`. Rewrite `hx` using `[Submodule.baseChange_eq_span]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, rfl⟩` from `hy`.
+
+Take `⟨c, hc, hcv⟩` from `hsat v hv`. Use `⟨algebraMap O O' c, fun h0 => hc (hinj (by rw [h0, map_zero])), ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul, ← map_smul]`. Conclude with `Submodule.tmul_mem_baseChange_of_mem 1 hcv`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hay`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ hbz`.
+
+Consider the case `smul a y _ hy`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ hby`.
+-/
 theorem isLatIn_baseChange [IsDomain O'] (hinj : Function.Injective (algebraMap O O'))
     {V L : Submodule O W} (h : Formalism.MainNotions.IntegralHeckeForms.IsLatIn L V) :
     Formalism.MainNotions.IntegralHeckeForms.IsLatIn (L.baseChange O') (V.baseChange O') := by
@@ -46,6 +59,11 @@ theorem isLatIn_baseChange [IsDomain O'] (hinj : Function.Injective (algebraMap 
 variable [IsDomain O] [IsDiscreteValuationRing O] [IsDomain O'] [IsDiscreteValuationRing O']
   [IsLocalHom (algebraMap O O')]
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul O O' := (faithfulSMul_iff_algebraMap_injective O O').mpr hinj`. Establish `h1 : Module.length O' (A.baseChange O' ⧸ (B.baseChange O').comap (A.baseChange O').subtype) = Module.length O (A ⧸ B.comap A.subtype) * (((IsLocalRing.maximalIdeal O').ramificationIdx O : ℕ) : ℕ∞)` using `length_baseChange_subquotient_dvr O O' A B`. Establish `h2` using `addVal_algebraMap (R := O) O' (l : O)`. Rewrite `h2` using `[map_natCast]`. Establish `he : (((IsLocalRing.maximalIdeal O').ramificationIdx O : ℕ) : ℝ) ≠ 0`.
+
+Conclude with `(ramificationIdx_maximalIdeal_pos O O').ne'` after adjusting the coercions. Unfold `Formalism.MainNotions.IntegralHeckeForms.lenR`. Rewrite using `[h1, h2, ENat.toNat_mul, ENat.toNat_mul, ENat.toNat_coe, Nat.cast_mul, Nat.cast_mul, mul_div_mul_right _ _ he]`.
+-/
 theorem lenR_baseChange_subquotient (hinj : Function.Injective (algebraMap O O')) (l : ℕ)
     (A B : Submodule O W) :
     Formalism.MainNotions.IntegralHeckeForms.lenR O' l
@@ -67,6 +85,9 @@ theorem lenR_baseChange_subquotient (hinj : Function.Injective (algebraMap O O')
 
 end
 
+/- English proof (translation)
+Introduce `O _ _ _ O' _ _ _ _ _ hinj W _ _ l V L₁ L₂ h₁ _`. Use `⟨isLatIn_baseChange O' hinj h₁, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.IntegralHeckeForms.sIdx`. Rewrite using `[lenR_baseChange_subquotient O' hinj, lenR_baseChange_subquotient O' hinj]`.
+-/
 theorem sIdx_baseChange :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (O' : Type) [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [IsLocalHom (algebraMap O O')], Function.Injective (algebraMap O O') → ∀ (W : Type) [AddCommGroup W] [Module O W] (l : ℕ) (V L₁ L₂ : Submodule O W), Formalism.MainNotions.IntegralHeckeForms.IsLatIn L₁ V → Formalism.MainNotions.IntegralHeckeForms.IsLatIn L₂ V → Formalism.MainNotions.IntegralHeckeForms.IsLatIn (L₁.baseChange O') (V.baseChange O') ∧ Formalism.MainNotions.IntegralHeckeForms.sIdx l (L₁.baseChange O') (L₂.baseChange O') = Formalism.MainNotions.IntegralHeckeForms.sIdx l L₁ L₂ := by
   intro O _ _ _ O' _ _ _ _ _ hinj W _ _ l V L₁ L₂ h₁ _

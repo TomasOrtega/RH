@@ -26,8 +26,14 @@ def act : Te D I e ⊗ thickObj R I e G ⟶ thickObj R I e G :=
 def sec : thickObj R I e G ⟶ Te D I e ⊗ thickObj R I e G :=
   lift (toUnit _ ≫ η[Te D I e]) (𝟙 _)
 
+/- English proof (translation)
+The claim follows from `g.isKernel.w`.
+-/
 lemma i_q : g.i ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A] := g.isKernel.w
 
+/- English proof (translation)
+Use `haveI : IsMonHom g.q := g.q_hom`. Establish `hq : g.i ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]` using `i_q g`. Establish `hf : fst (Te D I e) (thickObj R I e G) ≫ toUnit (Te D I e) = toUnit (Te D I e ⊗ thickObj R I e G)` using `toUnit_unique _ _`. Simplify using `only [act, Category.assoc, IsMonHom.mul_hom, CartesianMonoidalCategory.lift_map_assoc, hq, reassoc_of% hq, reassoc_of% hf, MonObj.lift_comp_one_left]`.
+-/
 lemma act_q : act g ≫ g.q = snd (Te D I e) (thickObj R I e G) ≫ g.q := by
   haveI : IsMonHom g.q := g.q_hom
   have hq : g.i ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A] := i_q g
@@ -36,6 +42,9 @@ lemma act_q : act g ≫ g.q = snd (Te D I e) (thickObj R I e G) ≫ g.q := by
   simp only [act, Category.assoc, IsMonHom.mul_hom, CartesianMonoidalCategory.lift_map_assoc, hq,
     reassoc_of% hq, reassoc_of% hf, MonObj.lift_comp_one_left]
 
+/- English proof (translation)
+Use `haveI : IsMonHom g.i := g.i_hom`. Establish `h1 : sec (D` using `D) (G := G) (I := I) (e := e) ≫ lift (fst (Te D I e) (thickObj R I e G) ≫ g.i) (snd (Te D I e) (thickObj R I e G)) = lift (toUnit (thickObj R I e G) ≫ η[thickObj R I e G]) (𝟙 _) := by`. Simplify using `only [sec, CartesianMonoidalCategory.comp_lift, CartesianMonoidalCategory.lift_fst_assoc, CartesianMonoidalCategory.lift_snd, Category.assoc, IsMonHom.one_hom]`. Rewrite using `[act, ← Category.assoc, h1, MonObj.lift_comp_one_left]`.
+-/
 lemma sec_act : sec (D := D) (G := G) (I := I) (e := e) ≫ act g = 𝟙 _ := by
   haveI : IsMonHom g.i := g.i_hom
   have h1 : sec (D := D) (G := G) (I := I) (e := e) ≫
@@ -45,8 +54,14 @@ lemma sec_act : sec (D := D) (G := G) (I := I) (e := e) ≫ act g = 𝟙 _ := by
       CartesianMonoidalCategory.lift_snd, Category.assoc, IsMonHom.one_hom]
   rw [act, ← Category.assoc, h1, MonObj.lift_comp_one_left]
 
+/- English proof (translation)
+Simplify using `[sec]`.
+-/
 lemma sec_snd : sec (D := D) (G := G) (I := I) (e := e) ≫ snd (Te D I e) (thickObj R I e G) = 𝟙 _ := by simp [sec]
 
+/- English proof (translation)
+Establish `h : (act g).left ≫ g.q.left = (snd (Te D I e) (thickObj R I e G)).left ≫ g.q.left` using `congrArg (fun f => f.left) (act_q g)`. Simplify using `only [GtCoord.pG, Over.comp_left, Over.map_map_left]`. Rewrite using `[reassoc_of% h]`.
+-/
 lemma act_left_pG : (act g).left ≫ g.pG.left = (snd (Te D I e) (thickObj R I e G)).left ≫ g.pG.left := by
   have h : (act g).left ≫ g.q.left = (snd (Te D I e) (thickObj R I e G)).left ≫ g.q.left :=
     congrArg (fun f => f.left) (act_q g)
@@ -54,6 +69,13 @@ lemma act_left_pG : (act g).left ≫ g.pG.left = (snd (Te D I e) (thickObj R I e
   rw [reassoc_of% h]
 
 omit [IsCommMonObj G] in
+/- English proof (translation)
+Establish `hu : h ≫ toUnit T = toUnit T'` using `toUnit_unique _ _`. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `h.left ≫ (padd D.P.A p (toUnit T ≫ D.c χ)).left = (padd D.P.A (h ≫ p) (toUnit T' ≫ D.c χ)).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+
+Simplify using `only [padd]`. Rewrite using `[← Category.assoc, CartesianMonoidalCategory.comp_lift, reassoc_of% hu]`. Express the relevant statement in the definitionally equal form `h.left ≫ (toUnit T ≫ D.c χ).left = (toUnit T' ≫ D.c χ).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, hu]`. Express the relevant statement in the definitionally equal form `h.left ≫ p.left = (h ≫ p).left`.
+
+Rewrite using `[Over.comp_left]`. Express the relevant statement in the definitionally equal form `h.left ≫ (toUnit T ≫ η[D.P.A]).left = (toUnit T' ≫ η[D.P.A]).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, hu]`.
+-/
 lemma Oφ_comp {T T' : Over (Spec (CommRingCat.of R))} (h : T' ⟶ T) (p : T ⟶ D.P.A) (χ : D.X)
     (k : Fin 4) : h.left ≫ D.Oφ p χ k = D.Oφ (h ≫ p) χ k := by
   have hu : h ≫ toUnit T = toUnit T' := toUnit_unique _ _
@@ -70,12 +92,18 @@ lemma Oφ_comp {T T' : Over (Spec (CommRingCat.of R))} (h : T' ⟶ T) (p : T ⟶
   · change h.left ≫ (toUnit T ≫ η[D.P.A]).left = (toUnit T' ≫ η[D.P.A]).left
     rw [← Over.comp_left, ← Category.assoc, hu]
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [Over.comp_left, Over.map_map_left]`. Conclude with `act_left_pG g`.
+-/
 lemma map_act_pG : (Over.map (thick R I e)).map (act g) ≫ g.pG =
     (Over.map (thick R I e)).map (snd (Te D I e) (thickObj R I e G)) ≫ g.pG := by
   ext
   simp only [Over.comp_left, Over.map_map_left]
   exact act_left_pG g
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_act_pG g]`. Use `_ = (snd (Te D I e) (thickObj R I e G)).left ≫ D.Oφ g.pG χ k := (Oφ_comp (D := D) ((Over.map (thick R I e)).map (snd (Te D I e) (thickObj R I e G))) g.pG χ k).symm`.
+-/
 lemma act_Oφ (χ : D.X) (k : Fin 4) :
     (act g).left ≫ D.Oφ g.pG χ k = (snd (Te D I e) (thickObj R I e G)).left ≫ D.Oφ g.pG χ k := by
   calc (act g).left ≫ D.Oφ g.pG χ k
@@ -86,11 +114,20 @@ lemma act_Oφ (χ : D.X) (k : Fin 4) :
     _ = (snd (Te D I e) (thickObj R I e G)).left ≫ D.Oφ g.pG χ k :=
         (Oφ_comp (D := D) ((Over.map (thick R I e)).map (snd (Te D I e) (thickObj R I e G))) g.pG χ k).symm
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.left) (sec_act g)`.
+-/
 lemma sec_left_act : (sec (D := D) (G := G) (I := I) (e := e)).left ≫ (act g).left = 𝟙 _ := congrArg (fun f => f.left) (sec_act g)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.left) (sec_snd (D := D) (G := G) (I := I) (e := e))`.
+-/
 lemma sec_left_snd : (sec (D := D) (G := G) (I := I) (e := e)).left ≫
     (snd (Te D I e) (thickObj R I e G)).left = 𝟙 _ := congrArg (fun f => f.left) (sec_snd (D := D) (G := G) (I := I) (e := e))
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sec_left_act g, Category.id_comp]`. Use `_ = (sec (D := D) (G := G) (I := I) (e := e)).left ≫ ((act g).left ≫ a) := Category.assoc _ _ _`. Use `_ = (sec (D := D) (G := G) (I := I) (e := e)).left ≫ ((act g).left ≫ b) := by rw [h]`. Use `_ = b := by rw [← Category.assoc, sec_left_act g, Category.id_comp]`.
+-/
 lemma cancel_sec_act {Z : Scheme.{0}} {a b : (thickObj R I e G).left ⟶ Z}
     (h : (act g).left ≫ a = (act g).left ≫ b) : a = b := by
   calc a = ((sec (D := D) (G := G) (I := I) (e := e)).left ≫ (act g).left) ≫ a := by
@@ -99,6 +136,9 @@ lemma cancel_sec_act {Z : Scheme.{0}} {a b : (thickObj R I e G).left ⟶ Z}
     _ = (sec (D := D) (G := G) (I := I) (e := e)).left ≫ ((act g).left ≫ b) := by rw [h]
     _ = b := by rw [← Category.assoc, sec_left_act g, Category.id_comp]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sec_left_snd, Category.id_comp]`. Use `_ = (sec (D := D) (G := G) (I := I) (e := e)).left ≫ ((snd (Te D I e) (thickObj R I e G)).left ≫ a) := Category.assoc _ _ _`. Use `_ = (sec (D := D) (G := G) (I := I) (e := e)).left ≫ ((snd (Te D I e) (thickObj R I e G)).left ≫ b) := by rw [h]`. Use `_ = b := by rw [← Category.assoc, sec_left_snd, Category.id_comp]`.
+-/
 lemma cancel_sec_snd {Z : Scheme.{0}} {a b : (thickObj R I e G).left ⟶ Z}
     (h : (snd (Te D I e) (thickObj R I e G)).left ≫ a = (snd (Te D I e) (thickObj R I e G)).left ≫ b) :
     a = b := by
@@ -111,12 +151,21 @@ lemma cancel_sec_snd {Z : Scheme.{0}} {a b : (thickObj R I e G).left ⟶ Z}
           ((snd (Te D I e) (thickObj R I e G)).left ≫ b) := by rw [h]
     _ = b := by rw [← Category.assoc, sec_left_snd, Category.id_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_val {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     ((res h u : Γ(X, V)ˣ) : Γ(X, V)) = (X.presheaf.map (homOfLE h).op).hom (u : Γ(X, U)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pullU_val {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) :
     ((pullU f U u : Γ(Y, f ⁻¹ᵁ U)ˣ) : Γ(Y, f ⁻¹ᵁ U)) = (f.app U).hom (u : Γ(X, U)) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h1).op ≫ X.presheaf.map (homOfLE h2).op).hom x = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma rres {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom x) =
       (X.presheaf.map (homOfLE (h2.trans h1)).op).hom x := by
@@ -124,10 +173,16 @@ lemma rres {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x :
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma sres_val_lemma_2 {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
     ((ReciprocityTheory.ChartRestriction.G.Semi.res h u : Γ(X, V)ˣ) : Γ(X, V)) =
       (X.presheaf.map (homOfLE h).op).hom (u : Γ(X, U)) := rfl
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun u => ((ReciprocityTheory.ChartRestriction.G.Semi.res hW u : Γ(Y, W)ˣ) : Γ(Y, W))) h`. Simplify using `only [map_mul, Units.val_mul, sres_val_lemma_2, rres] at h2`. Conclude with `h2`.
+-/
 private lemma corr_val_lemma_3 {Y : Scheme.{0}} {OA OC OS A B C PS W : Y.Opens}
     {pA : A ≤ OA} {c1 : C ≤ OC} {m1 : B ≤ C} {pS : PS ≤ OS} {m2 : B ≤ PS}
     (xa : Γ(Y, OA)ˣ) (xc : Γ(Y, OC)ˣ) (xs : Γ(Y, OS)ˣ) (hW : W ≤ A ⊓ B)
@@ -143,6 +198,17 @@ private lemma corr_val_lemma_3 {Y : Scheme.{0}} {OA OC OS A B C PS W : Y.Opens}
   simp only [map_mul, Units.val_mul, sres_val_lemma_2, rres] at h2
   exact h2
 
+/- English proof (translation)
+Establish `key` using `g.t_weight χ jt (Sum.elim PEmpty.elim jt) (fun k₁ k₂ h => hjt k₁ k₂ (cancel_sec_act g h)) (by`. Introduce and unpack `(s₁ | k₁) (s₂ | k₂) h`. Conclude with `s₁.elim`. Conclude with `s₁.elim`. Conclude with `s₂.elim`.
+
+Conclude with `hjt k₁ k₂ (cancel_sec_snd h))`. Use the proof step `(by`. Introduce and unpack `k (s | k') h`. Conclude with `s.elim`. Conclude with `hjt k k' (cancel_sec_snd ((act_Oφ g χ k).symm.trans h)))`.
+
+Simplify using `only [LB.pullGen, LB.mulGen, charGen] at key`. Establish `hW1 : W' ≤ LB.wchart D.P.L (fun k => (lift (fst (Te D I e) (thickObj R I e G) ≫ g.i) (snd (Te D I e) (thickObj R I e G)) ≫ μ[thickObj R I e G]).left ≫ D.Oφ g.pG χ k) jt`. Introduce `x hx`. Establish `h1 : (act g).left.base x ∈ ⋂ k, (D.Oφ g.pG χ k).base ⁻¹' (D.P.L.U (jt k) : Set _)` using `ha hx`. Conclude with `Set.mem_iInter.2 fun k => Set.mem_iInter.1 h1 k`.
+
+Establish `hW2 : W' ≤ LB.wchart D.P.L (Sum.elim PEmpty.elim fun k => (snd (Te D I e) (thickObj R I e G)).left ≫ D.Oφ g.pG χ k) (Sum.elim PEmpty.elim jt)`. Introduce `x hx`. Establish `h1 : (snd (Te D I e) (thickObj R I e G)).left.base x ∈ ⋂ k, (D.Oφ g.pG χ k).base ⁻¹' (D.P.L.U (jt k) : Set _)` using `hs hx`. Use `Set.mem_iInter.2 ?_` and prove the remaining obligations. Introduce and unpack `(s | k)`.
+
+Conclude with `s.elim`. Conclude with `Set.mem_iInter.1 h1 k`. Establish `hG` using `corr_val_lemma_3 _ _ _ (le_inf hW1 hW2) key`. Conclude with `hG`.
+-/
 lemma t_act (χ : D.X) (jt : Fin 4 → D.P.L.ι) (hjt : LB.Coh D.P.L (D.Oφ g.pG χ) jt)
     (W' : (Te D I e ⊗ thickObj R I e G).left.Opens)
     (hs : W' ≤ (snd (Te D I e) (thickObj R I e G)).left ⁻¹ᵁ LB.wchart D.P.L (D.Oφ g.pG χ) jt)

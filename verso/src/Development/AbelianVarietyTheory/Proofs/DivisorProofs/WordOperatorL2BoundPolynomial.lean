@@ -20,21 +20,41 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 abbrev Dir (F : Type) [Field F] [NumberField F] (κ : Type) : Type :=
   (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, Complex.real_smul, smul_eq_mul]`.
+-/
 theorem real_smul_fun {X : Type} (r : ℝ) (f : X → ℂ) : r • f = (r : ℂ) • f := by
   funext x
   simp only [Pi.smul_apply, Complex.real_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dD, Pi.add_apply]`. Conclude with `deriv_add ((SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F v hΦ).1 x) ((SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F v hΨ).1 x)`.
+-/
 theorem dD_add_fun (v : κ → mixedEmbedding.mixedSpace F) {Φ Ψ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ)
     (hΨ : Ψ ∈ schA F κ) : dD F v (Φ + Ψ) = dD F v Φ + dD F v Ψ := by
   funext x
   simp only [dD, Pi.add_apply]
   exact deriv_add ((SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F v hΦ).1 x) ((SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F v hΨ).1 x)
 
+/- English proof (translation)
+Rewrite using `[dD, (SchAStab.hasDerivAt_line F f g x v).deriv]`.
+-/
 theorem dD_pureA_apply (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (v : κ → mixedEmbedding.mixedSpace F) (x : κ → AF F) :
     dD F v (pureA F f g) x = fderiv ℝ f (arch F x) v * g (fun i => (x i).2) := by
   rw [dD, (SchAStab.hasDerivAt_line F f g x v).deriv]
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `⟨fun v w => funext fun x => ?_, fun r v => funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, dD_pureA_apply, map_add, add_mul]`.
+
+Simplify using `only [Pi.smul_apply, dD_pureA_apply, map_smul, smul_eq_mul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Establish `h0 : ∀ u : κ → mixedEmbedding.mixedSpace F, dD F u (0 : (κ → AF F) → ℂ) = 0` using `fun u => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[dD]`. Conclude with `⟨fun v w => by rw [h0, h0, h0, add_zero], fun r v => by rw [h0, h0, smul_zero]⟩`. Consider the case `add Φ Ψ hΦ hΨ h1 h2`. Use `⟨fun v w => ?_, fun r v => ?_⟩` and prove the remaining obligations. Rewrite using `[dD_add_fun _ hΦ hΨ, dD_add_fun _ hΦ hΨ, dD_add_fun _ hΦ hΨ, h1.1, h2.1]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[dD_add_fun _ hΦ hΨ, dD_add_fun _ hΦ hΨ, h1.2, h2.2, smul_add]`. Consider the case `smul a Φ hΦ h`. Use `⟨fun v w => ?_, fun r v => ?_⟩` and prove the remaining obligations. Rewrite using `[dD_smul, dD_smul, dD_smul, h.1, smul_add]`.
+
+Rewrite using `[dD_smul, dD_smul, h.2, smul_comm]`.
+-/
 theorem dD_dir {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     (∀ v w : κ → mixedEmbedding.mixedSpace F, dD F (v + w) Φ = dD F v Φ + dD F w Φ) ∧
       ∀ (r : ℝ) (v : κ → mixedEmbedding.mixedSpace F), dD F (r • v) Φ = (r : ℂ) • dD F v Φ := by
@@ -59,16 +79,25 @@ theorem dD_dir {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     · rw [dD_smul, dD_smul, dD_smul, h.1, smul_add]
     · rw [dD_smul, dD_smul, h.2, smul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [mM, ContinuousLinearMap.add_apply, Complex.ofReal_add, Pi.add_apply, add_mul]`.
+-/
 theorem mM_add_l (l l' : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f : (κ → AF F) → ℂ) :
     mM F (l + l') f = mM F l f + mM F l' f := by
   funext x
   simp only [mM, ContinuousLinearMap.add_apply, Complex.ofReal_add, Pi.add_apply, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [mM, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul, Pi.smul_apply, mul_assoc]`.
+-/
 theorem mM_smul_l (r : ℝ) (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f : (κ → AF F) → ℂ) :
     mM F (r • l) f = (r : ℂ) • mM F l f := by
   funext x
   simp only [mM, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul, Pi.smul_apply, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [mM, Pi.add_apply, mul_add]`.
+-/
 theorem mM_add_f (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f g : (κ → AF F) → ℂ) :
     mM F l (f + g) = mM F l f + mM F l g := by
   funext x
@@ -76,35 +105,56 @@ theorem mM_add_f (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f g :
 
 variable (T : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ((κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ)) (c : ℂ)
 
+/- English proof (translation)
+Unfold `dR`. Rewrite using `[Prod.fst_add, Prod.snd_add, (dD_dir hΦ).1, map_add T, mM_add_l, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dR_add_dir {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (ζ ζ' : Dir F κ) :
     dR F T c (ζ + ζ') Φ = dR F T c ζ Φ + dR F T c ζ' Φ := by
   unfold dR
   rw [Prod.fst_add, Prod.snd_add, (dD_dir hΦ).1, map_add T, mM_add_l, smul_add]
   abel
 
+/- English proof (translation)
+Unfold `dR`. Rewrite using `[Prod.smul_fst, Prod.smul_snd, (dD_dir hΦ).2, map_smul T, mM_smul_l, smul_comm c, ← smul_add, real_smul_fun]`.
+-/
 theorem dR_smul_dir {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (r : ℝ) (ζ : Dir F κ) :
     dR F T c (r • ζ) Φ = r • dR F T c ζ Φ := by
   unfold dR
   rw [Prod.smul_fst, Prod.smul_snd, (dD_dir hΦ).2, map_smul T, mM_smul_l, smul_comm c, ← smul_add, real_smul_fun]
 
+/- English proof (translation)
+Unfold `dR`. Rewrite using `[dD_add_fun _ hΦ hΨ, mM_add_f, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dR_add_fun (ζ : Dir F κ) {Φ Ψ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (hΨ : Ψ ∈ schA F κ) :
     dR F T c ζ (Φ + Ψ) = dR F T c ζ Φ + dR F T c ζ Ψ := by
   unfold dR
   rw [dD_add_fun _ hΦ hΨ, mM_add_f, smul_add]
   abel
 
+/- English proof (translation)
+Unfold `dR`. Rewrite using `[dD_smul, mM_smul, smul_comm c a, ← smul_add]`.
+-/
 theorem dR_smul_fun (ζ : Dir F κ) (a : ℂ) (f : (κ → AF F) → ℂ) : dR F T c ζ (a • f) = a • dR F T c ζ f := by
   unfold dR
   rw [dD_smul, mM_smul, smul_comm c a, ← smul_add]
 
+/- English proof (translation)
+The claim follows from `Submodule.add_mem _ (SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F ζ.1 hΦ).2 (Submodule.smul_mem _ c (SchAStab.mem_schA_mM F _ hΦ))`.
+-/
 theorem dR_mem (ζ : Dir F κ) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : dR F T c ζ Φ ∈ schA F κ :=
   Submodule.add_mem _ (SchAStab.archimedeanDirectionalDerivative_mem_adelicSchwartz F ζ.1 hΦ).2 (Submodule.smul_mem _ c (SchAStab.mem_schA_mM F _ hΦ))
 
+/- English proof (translation)
+Proceed by induction on `zs with`. Consider the case `nil => exact hΦ`. Consider the case `cons ζ zs ih => exact dR_mem T c ζ ih`.
+-/
 theorem wordR_mem (zs : List (Dir F κ)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : wordR F T c zs Φ ∈ schA F κ := by
   induction zs with
   | nil => exact hΦ
   | cons ζ zs ih => exact dR_mem T c ζ ih
 
+/- English proof (translation)
+Proceed by induction on `zs with`. Consider the case `nil => rfl`. Consider the case `cons ζ zs ih => show dR F T c ζ (wordR F T c zs (Φ + Ψ)) = dR F T c ζ (wordR F T c zs Φ) + dR F T c ζ (wordR F T c zs Ψ)`. Rewrite using `[ih, dR_add_fun T c ζ (wordR_mem T c zs hΦ) (wordR_mem T c zs hΨ)]`.
+-/
 theorem wordR_add (zs : List (Dir F κ)) {Φ Ψ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (hΨ : Ψ ∈ schA F κ) :
     wordR F T c zs (Φ + Ψ) = wordR F T c zs Φ + wordR F T c zs Ψ := by
   induction zs with
@@ -113,6 +163,9 @@ theorem wordR_add (zs : List (Dir F κ)) {Φ Ψ : (κ → AF F) → ℂ} (hΦ : 
     show dR F T c ζ (wordR F T c zs (Φ + Ψ)) = dR F T c ζ (wordR F T c zs Φ) + dR F T c ζ (wordR F T c zs Ψ)
     rw [ih, dR_add_fun T c ζ (wordR_mem T c zs hΦ) (wordR_mem T c zs hΨ)]
 
+/- English proof (translation)
+Proceed by induction on `zs with`. Consider the case `nil => rfl`. Consider the case `cons ζ zs ih => show dR F T c ζ (wordR F T c zs (a • f)) = a • dR F T c ζ (wordR F T c zs f)`. Rewrite using `[ih, dR_smul_fun]`.
+-/
 theorem wordR_smul (zs : List (Dir F κ)) (a : ℂ) (f : (κ → AF F) → ℂ) :
     wordR F T c zs (a • f) = a • wordR F T c zs f := by
   induction zs with
@@ -121,6 +174,9 @@ theorem wordR_smul (zs : List (Dir F κ)) (a : ℂ) (f : (κ → AF F) → ℂ) 
     show dR F T c ζ (wordR F T c zs (a • f)) = a • dR F T c ζ (wordR F T c zs f)
     rw [ih, dR_smul_fun]
 
+/- English proof (translation)
+Unfold `wordR`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression.
+-/
 theorem wordR_concat (zs : List (Dir F κ)) (ζ : Dir F κ) (Φ : (κ → AF F) → ℂ) :
     wordR F T c (zs ++ [ζ]) Φ = wordR F T c zs (dR F T c ζ Φ) := by
   unfold wordR
@@ -132,6 +188,9 @@ def wordRL (zs : List (Dir F κ)) : schA F κ →ₗ[ℂ] ((κ → AF F) → ℂ
   map_add' Φ Ψ := wordR_add T c zs Φ.2 Ψ.2
   map_smul' a Φ := wordR_smul T c zs a Φ
 
+/- English proof (translation)
+Establish `e : (∑ i, a i • Φ i) = ((∑ i, a i • (⟨Φ i, h i⟩ : schA F κ) : schA F κ) : (κ → AF F) → ℂ)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[e]`. Conclude with `(map_sum (wordRL T c zs) _ _).trans (Finset.sum_congr rfl fun i _ => map_smul (wordRL T c zs) _ _)`.
+-/
 theorem wordR_sum {ι : Type} [Fintype ι] (zs : List (Dir F κ)) (a : ι → ℂ) (Φ : ι → (κ → AF F) → ℂ)
     (h : ∀ i, Φ i ∈ schA F κ) : wordR F T c zs (∑ i, a i • Φ i) = ∑ i, a i • wordR F T c zs (Φ i) := by
   have e : (∑ i, a i • Φ i) = ((∑ i, a i • (⟨Φ i, h i⟩ : schA F κ) : schA F κ) : (κ → AF F) → ℂ) := by
@@ -144,6 +203,9 @@ def dRL {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : Dir F κ →ₗ[
   map_add' := dR_add_dir T c hΦ
   map_smul' := dR_smul_dir T c hΦ
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dR_expand {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Dir F κ)) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ)
     (ζ : Dir F κ) : dR F T c ζ Φ = ∑ i, ((b.repr ζ i : ℝ) : ℂ) • dR F T c (b i) Φ := by
   calc dR F T c ζ Φ = dRL T c hΦ ζ := rfl
@@ -151,6 +213,9 @@ theorem dR_expand {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (Dir F κ)) 
     _ = ∑ i, b.repr ζ i • dRL T c hΦ (b i) := by rw [map_sum]; simp only [map_smul]
     _ = _ := Finset.sum_congr rfl fun i _ => real_smul_fun _ _
 
+/- English proof (translation)
+Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Simplify using `only [ENNReal.toReal_ofNat, Nat.cast_ofNat, one_div]`. Rewrite using `[inv_mul_cancel₀ two_ne_zero, ENNReal.rpow_one]`. Simplify using `only [ENNReal.rpow_two]`.
+-/
 theorem lintegral_enorm_sq {X : Type} {m : MeasurableSpace X} (μ : Measure X) (f : X → ℂ) :
     ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ = eLpNorm f 2 μ ^ 2 := by
   rw [eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]
@@ -165,6 +230,23 @@ namespace GlobalTheory.ArchDecay.WordL2Estimates
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 variable (T : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ((κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ)) (c : ℂ)
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (κ → AF F) := borel _`. Establish `hL2 : ∀ Φ ∈ schA F κ, MemLp Φ 2 μ` using `fun Φ hΦ => GlobalTheory.WeilM.schA_memLp_two F κ μ hμ Φ hΦ`. Proceed by induction on `P with`. Consider the case `zero`. Introduce `Φ hΦ`.
+
+Use `⟨(eLpNorm Φ 2 μ).toReal, ENNReal.toReal_nonneg, fun ρ _ zs hl _ => ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_eq_zero_iff.1 (Nat.le_zero.1 hl), pow_zero, mul_one, ENNReal.ofReal_toReal (hL2 Φ hΦ).eLpNorm_lt_top.ne]`. Both sides reduce to the same expression. Consider the case `succ P ih`. Introduce `Φ hΦ`.
+
+Set `b` to `Module.finBasis ℝ (Dir F κ)`. Take `⟨C₀, h₀, hC₀⟩` from `ih Φ hΦ`. Use `choose C h1 hC using fun i => ih (dR F T c (b i) Φ) (dR_mem T c (b i) hΦ)`. Set `κ₀` to `‖b.equivFunL.toContinuousLinearMap‖`. Establish `hκ₀ : 0 ≤ κ₀` using `norm_nonneg _`.
+
+Establish `hs : 0 ≤ ∑ i, κ₀ * C i` using `Finset.sum_nonneg fun i _ => mul_nonneg hκ₀ (h1 i)`. Use `⟨C₀ + ∑ i, κ₀ * C i, add_nonneg h₀ hs, fun ρ hρ zs hl hu => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 ≤ ρ` using `zero_le_one.trans hρ`. Establish `hρp : 0 ≤ ρ ^ P` using `pow_nonneg hρ0 P`. Break down `List.eq_nil_or_concat' zs with rfl | ⟨zs', ζ, rfl⟩` into its components or cases.
+
+Use `(hC₀ ρ hρ [] (Nat.zero_le _) (by simp)).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Conclude with `mul_le_mul (le_add_of_nonneg_right hs) (pow_le_pow_right₀ hρ P.le_succ) hρp (add_nonneg h₀ hs)`. Establish `hl' : zs'.length ≤ P` using `by simpa using hl`. Establish `hu' : ∀ z ∈ zs', ‖z‖ ≤ ρ` using `fun z hz => hu z (List.mem_append_left _ hz)`. Establish `hζ : ‖ζ‖ ≤ ρ` using `hu ζ (List.mem_append_right _ (List.mem_singleton_self _))`.
+
+Establish `a2 : ∀ i, ‖b.repr ζ i‖ ≤ κ₀ * ρ` using `fun i => (norm_le_pi_norm (b.equivFunL.toContinuousLinearMap ζ) i).trans ((b.equivFunL.toContinuousLinearMap.le_opNorm ζ).trans (mul_le_mul_of_nonneg_left hζ hκ₀))`. Rewrite using `[wordR_concat, dR_expand T c b hΦ ζ, wordR_sum T c zs' _ _ fun i => dR_mem T c (b i) hΦ]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eLpNorm_const_smul, ← ofReal_norm_eq_enorm, Complex.norm_real, ENNReal.ofReal_mul (mul_nonneg hκ₀ hρ0)]`.
+
+Conclude with `mul_le_mul' (ENNReal.ofReal_le_ofReal (a2 i)) (hC i ρ hρ zs' hl' hu')`. Use `_ = ENNReal.ofReal (∑ i, κ₀ * ρ * (C i * ρ ^ P)) := (ENNReal.ofReal_sum_of_nonneg fun i _ => mul_nonneg (mul_nonneg hκ₀ hρ0) (mul_nonneg (h1 i) hρp)).symm`. Use `_ ≤ ENNReal.ofReal ((C₀ + ∑ i, κ₀ * C i) * ρ ^ (P + 1)) := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `e : ∑ i, κ₀ * ρ * (C i * ρ ^ P) = (∑ i, κ₀ * C i) * ρ ^ (P + 1)`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (le_add_of_nonneg_left h₀) (pow_nonneg hρ0 _)`.
+-/
 theorem eLpNorm_wordR_le (μ : @Measure (κ → AF F) (borel _)) (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ)
     (P : ℕ) : ∀ Φ ∈ schA F κ, ∃ C : ℝ, 0 ≤ C ∧ ∀ ρ : ℝ, 1 ≤ ρ → ∀ zs : List (Dir F κ), zs.length ≤ P →
       (∀ ζ ∈ zs, ‖ζ‖ ≤ ρ) → eLpNorm (wordR F T c zs Φ) 2 μ ≤ ENNReal.ofReal (C * ρ ^ P) := by
@@ -221,6 +303,11 @@ end GlobalTheory.ArchDecay.WordL2Estimates
 
 namespace GlobalTheory.ArchDecay
 
+/- English proof (translation)
+Introduce `F _ _ κ _ T c Φ hΦ μ hμ P`. Take `⟨C, hC0, hC⟩` from `WordL2Estimates.eLpNorm_wordR_le T c μ hμ P Φ hΦ`. Use `⟨C ^ 2, fun ρ hρ zs hl hu => ?_⟩` and prove the remaining obligations. Establish `h` using `hC ρ hρ zs hl hu`. Rewrite using `[WordL2Estimates.lintegral_enorm_sq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_pow (mul_nonneg hC0 (pow_nonneg (zero_le_one.trans hρ) _))]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wordR_L2_le : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ((κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ)) (c : ℂ), ∀ Φ ∈ schA F κ, ∀ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∀ P : ℕ, ∃ C : ℝ, ∀ ρ : ℝ, 1 ≤ ρ → ∀ zs : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)), zs.length ≤ P → (∀ ζ ∈ zs, ‖ζ‖ ≤ ρ) → ∫⁻ x, ‖wordR F T c zs Φ x‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal (C * ρ ^ (2 * P)) := by
   intro F _ _ κ _ T c Φ hΦ μ hμ P
   obtain ⟨C, hC0, hC⟩ := WordL2Estimates.eLpNorm_wordR_le T c μ hμ P Φ hΦ

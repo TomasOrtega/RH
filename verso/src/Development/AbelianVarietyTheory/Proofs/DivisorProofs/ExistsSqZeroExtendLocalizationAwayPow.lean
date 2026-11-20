@@ -22,11 +22,51 @@ def sqZeroInterp {R B S : Type} [CommRing R] [CommRing B] [CommRing S] [Algebra 
   map_add' x y := by simp only [map_add]; ring
   commutes' r := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sqZeroInterp_apply {R B S : Type} [CommRing R] [CommRing B] [CommRing S]
     [Algebra R B] [Algebra R S] (J : Ideal S) (hJ : J ^ 2 = ⊥) (α β : B →ₐ[R] S)
     (h : ∀ x, β x - α x ∈ J) (c : S) (x : B) :
     sqZeroInterp J hJ α β h c x = α x + c * (β x - α x) := rfl
 
+/- English proof (translation)
+Take `⟨n, π, hπ, hker⟩` from `hfp.out`. Establish `hJg : (J.map (algebraMap S (Localization.Away g))) ^ 2 = ⊥`. Rewrite using `[← Ideal.map_pow, hJ, Ideal.map_bot]`. Establish `hy : ∀ i : Fin n, ∃ k : ℕ, ∃ y ∈ J, algebraMap S (Localization.Away g) y = algebraMap S (Localization.Away g) g ^ k * (ψ (π (MvPolynomial.X i)) - algebraMap S (Localization.Away g) (φ (π (MvPolynomial.X i))))`. Introduce `i`.
+
+Take `⟨⟨⟨j, hj⟩, ⟨m, ⟨k, rfl⟩⟩⟩, e⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers g) (Localization.Away g)).1 (hψ (π (MvPolynomial.X i)))`. Use `⟨k, j, hj, ?_⟩` and prove the remaining obligations. Simplify using `only [map_pow] at e`. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `choose k y hyJ hyeq using hy`. Use `set M := Finset.univ.sup k with hM`. Use `set y' : Fin n → S := fun i => g ^ (M - k i) * y i with hy'`. Establish `hy'J : ∀ i, y' i ∈ J` using `fun i => J.mul_mem_left _ (hyJ i)`. Establish `hy'eq : ∀ i, algebraMap S (Localization.Away g) (y' i) = algebraMap S (Localization.Away g) g ^ M * (ψ (π (MvPolynomial.X i)) - algebraMap S (Localization.Away g) (φ (π (MvPolynomial.X i))))`.
+
+Introduce `i`. Establish `hk : k i ≤ M` using `Finset.le_sup (Finset.mem_univ i)`. Simplify using `only [y', map_mul, map_pow, hyeq, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hk]`. Use `set α₀ : MvPolynomial (Fin n) R' →ₐ[R'] S := φ.comp π with hα₀`. Use `set β₀ : MvPolynomial (Fin n) R' →ₐ[R'] S := MvPolynomial.aeval (fun i => φ (π (MvPolynomial.X i)) + y' i) with hβ₀`.
+
+Establish `hβα : ∀ p, β₀ p - α₀ p ∈ J`. Introduce `p`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `e : (Ideal.Quotient.mkₐ R' J).comp β₀ = (Ideal.Quotient.mkₐ R' J).comp α₀`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `i`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, β₀, α₀, MvPolynomial.aeval_X]`. Rewrite using `[Ideal.Quotient.eq]`. Simplify using `using hy'J i`. Conclude with `DFunLike.congr_fun e p`.
+
+Establish `hloc : ∀ p, algebraMap S (Localization.Away g) (β₀ p) = algebraMap S (Localization.Away g) (α₀ p) + algebraMap S (Localization.Away g) g ^ M * (ψ (π p) - algebraMap S (Localization.Away g) (α₀ p))`. Introduce `p`. Establish `e : (IsScalarTower.toAlgHom R' S (Localization.Away g)).comp β₀ = sqZeroInterp _ hJg ((IsScalarTower.toAlgHom R' S (Localization.Away g)).comp α₀) (ψ.comp π) (fun q => hψ (π q)) (algebraMap S (Localization.Away g) g ^ M)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using `only [AlgHom.comp_apply, sqZeroInterp_apply, IsScalarTower.coe_toAlgHom', β₀, α₀, MvPolynomial.aeval_X, map_add, hy'eq]`. Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun e p`. Take `⟨s, hs⟩` from `hker`. Establish `hrel : ∀ r ∈ s, ∃ K : ℕ, g ^ K * (β₀ r - α₀ r) = 0`.
+
+Introduce `r hr`. Establish `hrk : r ∈ RingHom.ker π.toRingHom` using `hs ▸ Ideal.subset_span hr`. Establish `hπr : π r = 0` using `hrk`. Establish `hz : algebraMap S (Localization.Away g) (β₀ r - α₀ r) = 0`. Rewrite using `[map_sub, hloc]`.
+
+Simplify using `[α₀, hπr]`. Take `⟨⟨m, ⟨K, rfl⟩⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers g) _ _).1 hz`. Conclude with `⟨K, hm⟩`. Use `choose! Kf hKf using hrel`. Use `set K := s.sup Kf with hK`.
+
+Use `set θ := sqZeroInterp J hJ α₀ β₀ hβα (g ^ K) with hθ`. Establish `hθker : ∀ r ∈ RingHom.ker π.toRingHom, θ r = 0`. Introduce `r hr`. Rewrite `hr` using `[← hs]`. Establish `hle : Ideal.span (s : Set (MvPolynomial (Fin n) R')) ≤ RingHom.ker θ`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `r hr`. Establish `hrk : r ∈ RingHom.ker π.toRingHom` using `hs ▸ Ideal.subset_span hr`. Establish `hπr : π r = 0` using `hrk`. Establish `hle' : Kf r ≤ K` using `Finset.le_sup hr`.
+
+Use `show θ r = 0`. Rewrite using `[hθ, sqZeroInterp_apply]`. Establish `: α₀ r = 0` using `by simp [α₀, hπr]`. Establish `h2` using `hKf r hr`. Rewrite `h2` using `[this, sub_zero]`.
+
+Rewrite using `[this, sub_zero, zero_add, ← Nat.sub_add_cancel hle', pow_add, mul_assoc, h2, mul_zero]`. Conclude with `hle hr`. Set `χ₀ : A →ₐ[R'] S` to `(Ideal.Quotient.liftₐ (RingHom.ker π.toRingHom) θ hθker).comp (Ideal.quotientKerAlgEquivOfSurjective hπ).symm.toAlgHom`. Establish `hχ₀ : ∀ p, χ₀ (π p) = θ p`. Introduce `p`.
+
+Establish `: (Ideal.quotientKerAlgEquivOfSurjective hπ).symm (π p) = Ideal.Quotient.mk _ p`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show Ideal.Quotient.liftₐ _ θ hθker ((Ideal.quotientKerAlgEquivOfSurjective hπ).symm (π p)) = θ p`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Use `⟨K + M, χ₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨p, rfl⟩` from `hπ x`. Rewrite using `[hχ₀, hθ, sqZeroInterp_apply]`.
+
+Establish `: φ (π p) = α₀ p` using `rfl`. Rewrite using `[this, add_sub_cancel_left]`. Conclude with `J.mul_mem_left _ (hβα p)`. Introduce `x`. Take `⟨p, rfl⟩` from `hπ x`.
+
+Rewrite using `[hχ₀, hθ, sqZeroInterp_apply]`. Establish `: φ (π p) = α₀ p` using `rfl`. Rewrite using `[this, map_add, map_mul, map_sub, hloc, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_sqZero_extend_base (R' A S : Type) [CommRing R'] [CommRing A] [CommRing S]
     [Algebra R' A] [Algebra R' S]
     [hfp : Algebra.FinitePresentation R' A] (J : Ideal S) (hJ : J ^ 2 = ⊥) (g : S)
@@ -134,6 +174,11 @@ theorem exists_sqZero_extend_base (R' A S : Type) [CommRing R'] [CommRing A] [Co
     rw [this, map_add, map_mul, map_sub, hloc, map_pow, pow_add]
     ring
 
+/- English proof (translation)
+Introduce `R' A S _ _ _ _ _ _ J hJ g φ ψ hψ`. Take `⟨N₀, χ₀, h1, h2⟩` from `exists_sqZero_extend_base R' A S J hJ g φ ψ hψ`. Use `⟨N₀, fun N hN => ⟨sqZeroInterp J hJ φ χ₀ h1 (g ^ (N - N₀)), ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[sqZeroInterp_apply, add_sub_cancel_left]`.
+
+Conclude with `J.mul_mem_left _ (h1 x)`. Introduce `x`. Rewrite using `[sqZeroInterp_apply, map_add, map_mul, map_sub, h2, map_pow, add_sub_cancel_left, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hN]`.
+-/
 theorem exists_sqZero_extend_pow : ∀ (R' A S : Type) [CommRing R'] [CommRing A] [CommRing S] [Algebra R' A] [Algebra R' S]
     [Algebra.FinitePresentation R' A] (J : Ideal S), J ^ 2 = ⊥ → ∀ (g : S) (φ : A →ₐ[R'] S)
     (ψ : A →ₐ[R'] Localization.Away g),

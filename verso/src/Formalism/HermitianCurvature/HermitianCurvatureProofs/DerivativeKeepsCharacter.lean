@@ -11,9 +11,19 @@ namespace Formalism.FourierDecayAlt.P.HeadLetterLemmas
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.Qx5
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SingleEntryHermitianProducts.nL_uh j hj a, fun b hb => absurd hb (by simp)⟩`.
+-/
 theorem nL_glev0 {k r j : ℕ} (hj : j + 1 ≤ r) (a : Fin j → ℂ) : LevelPointCoordinates.nL k r j hj a ∈ Q.Glev k r 0 :=
   ⟨SingleEntryHermitianProducts.nL_uh j hj a, fun b hb => absurd hb (by simp)⟩
 
+/- English proof (translation)
+Establish `hng : LevelPointCoordinates.nL k r j hj a * g ∈ Q.Glev k r 0 ∩ Dm` using `⟨Qx3.glev_mul (nL_glev0 hj a) hg.1, hDm g hg a⟩`. Use `set c := psi k r z cStd (LevelPointCoordinates.nL k r j hj a) with hc`. Establish `hG` using `Qx2.good_eh (E := E) (k := k) (r := r) (i := 0) hD (PBG.c0 p) (PBG.c0 q)`. Simplify using `only [PBG.position_level_zero_coord] at hG`. Unfold `PBG.E0`.
+
+Rewrite using `[ev_E hD _ _ w hng, ev_E hD _ _ w hg, PBG.position_level_zero_coord, PBG.position_level_zero_coord]`. Rewrite using `[← WeylCellAction.eH_left (LevelPointCoordinates.nL k r j hj a) p q (w : Q.Mx k r → E) g]`. Rewrite using `[hG.loc (fun x => (w : Q.Mx k r → E) (LevelPointCoordinates.nL k r j hj a * x)) (fun x => (fun _ => (0 : E)) x + c • (w : Q.Mx k r → E) x) (fun x hx => by simp only [zero_add]; exact hw x hx a) g hg]`. Rewrite using `[hG.lin (fun _ => (0 : E)) (w : Q.Mx k r → E) c Qx2.smooth_zero w.2.1 g hg]`. Establish `h0 : Q.EH k r p q (fun _ : Q.Mx k r => (0 : E)) g = 0`.
+
+Simplify using `[Q.EH, EabH, RdV]`. Rewrite using `[h0, zero_add]`.
+-/
 theorem derivative_keeps_character {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k r j : ℕ} (hj : j + 1 ≤ r)
     (z : Fin (2 * r + k + 1) → ℂ) {Dm : Set (Q.Mx k r)} (hD : IsOpen Dm)
     (hDm : ∀ g ∈ Q.Glev k r 0 ∩ Dm, ∀ a : Fin j → ℂ, LevelPointCoordinates.nL k r j hj a * g ∈ Dm)
@@ -38,6 +48,15 @@ theorem derivative_keeps_character {E : Type} [NormedAddCommGroup E] [NormedSpac
     simp [Q.EH, EabH, RdV]
   rw [h0, zero_add]
 
+/- English proof (translation)
+Introduce `E _ _ k r j hj z Dm hD hDm x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨⟨p, q⟩, rfl⟩` from `hy`. Introduce `v hv g hg a`.
+
+Conclude with `derivative_keeps_character hj z hD hDm p q v hv g hg a`. Consider the case `algebraMap c`. Introduce `v hv g hg a`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hv g hg a, smul_comm]`.
+
+Consider the case `add y1 y2 _ _ h1 h2`. Introduce `v hv g hg a`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Rewrite using `[h1 v hv g hg a, h2 v hv g hg a, smul_add]`. Consider the case `mul y1 y2 _ _ h1 h2`.
+
+Introduce `v hv`. Conclude with `h1 _ (h2 v hv)`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.adjoin_lower_unipotent : LevelPointCoordinates.AdjoinNL := by
   intro E _ _ k r j hj z Dm hD hDm x hx
   induction hx using Algebra.adjoin_induction with

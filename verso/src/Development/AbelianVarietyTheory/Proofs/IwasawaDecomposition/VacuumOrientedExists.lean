@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.IndefR.Datum
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.VacuumO.vacExists`.
+-/
 theorem vacuum_oriented_exists : ∀ D : D7, VacExistsO D := GlobalTheory.VacuumO.vacExists
 
 end GlobalTheory.Member

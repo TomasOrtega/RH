@@ -19,6 +19,11 @@ noncomputable section
 open scoped TensorProduct
 namespace GlobalTheory.BotFormula
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul x a`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.toFinAd ℚ D.host.E (a ⊗ₜ[ℚ] D.host.conj x) = GlobalTheory.CuspRep.conjFin _ (GlobalTheory.LFun.toFinAd ℚ D.host.E (a ⊗ₜ[ℚ] x))`.
+
+Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, GlobalTheory.LFun.toFinAd_tmul, map_mul, GlobalTheory.DefU.ClassFin.conjFin_adMap _ (fun q => D.host.conj.commutes q), GlobalTheory.CuspRep.conjFin_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem toFinE_sgA (D : D7) (y : Formalism.MainNotions.StandardLatticesGL3.AE D) :
     toFinE D (Formalism.MainNotions.StandardLatticesGL3.sgA D y) = GlobalTheory.CuspRep.conjFin (D.host.conj : D.host.E ≃+* D.host.E) (toFinE D y) := by
   induction y using TensorProduct.induction_on with
@@ -34,6 +39,9 @@ theorem toFinE_sgA (D : D7) (y : Formalism.MainNotions.StandardLatticesGL3.AE D)
 def toAfE (D : D7) : Formalism.MainNotions.StandardLatticesGL3.AE D ≃+* TensorProduct D.host.F (Af D.host.F) D.host.E :=
   (toFinE D).trans (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm
 
+/- English proof (translation)
+Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.DefU.ClassFin.finAdEquiv_sigR D.sp.cm.sig (D.host.conj : D.host.E ≃+* D.host.E) (fun x => Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D x)]`. Simplify using `only [toAfE, RingEquiv.trans_apply, RingEquiv.apply_symm_apply]`. Conclude with `toFinE_sgA D y`.
+-/
 theorem toAfE_sgA (D : D7) (y : Formalism.MainNotions.StandardLatticesGL3.AE D) :
     toAfE D (Formalism.MainNotions.StandardLatticesGL3.sgA D y) = sigR (Af D.host.F) D.sp.cm.sig (toAfE D y) := by
   apply (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective
@@ -42,6 +50,13 @@ theorem toAfE_sgA (D : D7) (y : Formalism.MainNotions.StandardLatticesGL3.AE D) 
   simp only [toAfE, RingEquiv.trans_apply, RingEquiv.apply_symm_apply]
   exact toFinE_sgA D y
 
+/- English proof (translation)
+Introduce `D WW hG n h hr`. Substitute `hr` using the available equality. Set `x' : GL (Fin WW.rank) (TensorProduct D.host.F (Af D.host.F) D.host.E)` to `Formalism.UG.bc (toAfE D).toRingHom h.1`. Establish `hh : Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) (h.1 : Matrix (Fin WW.rank) (Fin WW.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * h.1 = 1`. Establish `h2` using `h.2`.
+
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (h.1 : Matrix (Fin WW.rank) (Fin WW.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) * _ * _ = _ at h2`. Rewrite `h2` using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`. Conclude with `h2`. Establish `hx' : x' ∈ HR (Af D.host.F) D.sp.cm.sig WW.gram` using `by show Formalism.UG.cT (sigR (Af D.host.F) D.sp.cm.sig) (x' : Matrix (Fin WW.rank) (Fin WW.rank) _) * JR (Af D.host.F) WW.gram * (x' : Matrix (Fin WW.rank) (Fin WW.rank) _) = JR (Af D.host.F) WW.gram`. Rewrite using `[hG, JR, Matrix.map_one _ (map_zero _) (map_one _), mul_one]`.
+
+Conclude with `GlobalTheory.DefU.ClassFin.unitary_map (toAfE D).toRingHom (Formalism.MainNotions.StandardLatticesGL3.sgA D) _ (toAfE_sgA D) _ hh`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue WW 1 x' (one_mem _) hx'`. Use `⟨k, k1, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[k2]`. Conclude with `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).apply_symm_apply _`.
+-/
 theorem exists_isFinPt_of_gram_one : ∀ {D : D7} (WW : HSp D), WW.gram = 1 → ∀ {n : ℕ} (h : GA D n), WW.rank = n →
     ∃ g : GA D WW, GlobalTheory.BotFormula.IsFinPt WW g h := by
   intro D WW hG n h hr

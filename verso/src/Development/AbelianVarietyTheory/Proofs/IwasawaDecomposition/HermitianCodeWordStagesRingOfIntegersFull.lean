@@ -11,11 +11,21 @@ open Formalism.L2.Pj
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Introduce `x y h`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `Subtype.ext h`.
+-/
 theorem Base.OtoLL_injective' (B : Base) : Function.Injective B.OtoLL := by
   intro x y h
   apply RingOfIntegers.ext
   exact Subtype.ext h
 
+/- English proof (translation)
+Introduce `X`. Use `⟨X.B.OtoLL_injective', ?_⟩` and prove the remaining obligations. Set `f : X.B.Ks →+* ℂ` to `X.B.embLL.comp (algebraMap X.B.Ks X.B.LL)`. Establish `hle : FO X.toD7 ≤ f.toRatAlgHom.fieldRange`. Rewrite using `[FO, IntermediateField.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨algebraMap (𝓞 X.B.Ks) X.B.Ks y, rfl⟩`. Introduce `z hz hint`. Take `⟨x, rfl⟩` from `hle hz`. Establish `hx : IsIntegral ℤ x` using `(isIntegral_algHom_iff f.toIntAlgHom f.injective).1 hint`.
+
+Conclude with `⟨(⟨x, hx⟩ : 𝓞 X.B.Ks), rfl⟩`.
+-/
 theorem hermitianCodeWordStages_ringOfIntegers_full : ∀ X : Stages, OFull X.toD7 := by
   intro X
   refine ⟨X.B.OtoLL_injective', ?_⟩

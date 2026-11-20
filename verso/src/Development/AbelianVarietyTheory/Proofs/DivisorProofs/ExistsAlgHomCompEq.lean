@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ToSpanSingletonCons
 
 namespace GlobalTheory.GroupBplus
 
+/- English proof (translation)
+Establish `h : ∀ c, f c ∈ (⊥ : Subalgebra A K)` using `fun c => by`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.mp ((Algebra.IsIntegral.isIntegral (R := A) c).map f)`. Conclude with `Algebra.mem_bot.2 ⟨a, ha⟩`. Set `e` to `Algebra.botEquivOfInjective (IsFractionRing.injective A K)`. Use `⟨e.toAlgHom.comp (f.codRestrict ⊥ h), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `c`. Establish `h1` using `congrArg Subtype.val (e.symm.commutes (e (f.codRestrict ⊥ h c)))`. Rewrite `h1` using `[Algebra.algebraMap_self, RingHom.id_apply, AlgEquiv.symm_apply_apply]`. Conclude with `h1.symm`.
+-/
 theorem exists_algHom_comp_eq {A K C : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K] [Algebra A K]
     [IsFractionRing A K] [CommRing C] [Algebra A C] [Algebra.IsIntegral A C] (f : C →ₐ[A] K) :
     ∃ g : C →ₐ[A] A, (Algebra.ofId A K).comp g = f := by

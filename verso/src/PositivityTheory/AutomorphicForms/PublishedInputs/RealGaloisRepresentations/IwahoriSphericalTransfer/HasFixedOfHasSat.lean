@@ -24,6 +24,15 @@ section Loc
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨T, hT1, -, -⟩` from `hT`. Take `⟨f, hf0, hf⟩` from `hσ`. Establish `key : ∀ g x, π.locRep u g (T.symm x) = ((GlobalTheory.CuspRep.CuspSub.locDet a η u g : ℂˣ) : ℂ) • T.symm (π.locRep u g x)`. Introduce `g x`. Establish `h1` using `hT1 (locGL F a u g) (T.symm x)`.
+
+Rewrite `h1` using `[LinearEquiv.apply_symm_apply, TR.CuspSub.chiDet_locGL]`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Use `⟨T.symm.toLinearMap ∘ₗ f, fun h => hf0 (LinearMap.ext fun v => T.symm.injective ?_), fun g v => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `LinearMap.congr_fun h v`. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `h2`. Express the relevant statement in the definitionally equal form `T.symm (f (((GlobalTheory.CuspRep.CuspSub.locDet a η u g : ℂˣ) : ℂ) • σ.ρ g v)) = π.locRep u g (T.symm (f v))`. Rewrite using `[key, LinearMap.map_smul, LinearEquiv.map_smul]`.
+
+Use `congr 2`. Conclude with `hf g v`.
+-/
 theorem isLocComp_twist {π : TR.CuspSub F a} {η : HChar F} (hT : IsoTwist π η) {u : HeightOneSpectrum (𝓞 F)}
     {σ : SmIrr (GL (Fin a) (u.adicCompletion F))} (hσ : π.IsLocComp u σ) :
     π.IsLocComp u (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)) := by
@@ -46,6 +55,9 @@ theorem isLocComp_twist {π : TR.CuspSub F a} {η : HChar F} (hT : IsoTwist π �
     congr 2
     exact hf g v
 
+/- English proof (translation)
+Use `((hL F a π u).2 σ hσ).hasFixed (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL u a).2 ?_` and prove the remaining obligations. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`. Conclude with `⟨x, h0, fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx k hk⟩`.
+-/
 theorem hasFixed_of_hasSat (hL : LocCompR) {π : TR.CuspSub F a} {u : HeightOneSpectrum (𝓞 F)} {B : Multiset ℂˣ}
     (hB : π.HasSat u B) {σ : SmIrr (GL (Fin a) (u.adicCompletion F))} (hσ : π.IsLocComp u σ) :
     HasFixed σ.ρ (GlobalTheory.LFun.KGL u a) := by
@@ -60,6 +72,9 @@ section Par
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `(ParLaws.unr_iff H _).2 ?_` and prove the remaining obligations. Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Take `⟨v, h0, hv⟩` from `hf`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩`.
+-/
 theorem unr_of_hasFixed {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (hf : HasFixed σ.ρ (GlobalTheory.LFun.KGL w n)) :
     (rc (cls (ParLaws.toRep σ))).unr := by
@@ -69,6 +84,13 @@ theorem unr_of_hasFixed {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h 
   obtain ⟨v, h0, hv⟩ := hf
   exact (Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩
 
+/- English proof (translation)
+Rewrite `ht` using `[lpChar_lpOfChar]`. Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite `ht` using `[WD.lpTwist_mk, WD.unr_mk]`. Rewrite `hx` using `[WD.unr_mk]`. Rewrite `hd` using `[WD.lpDim_mk]`.
+
+Establish `h1` using `ht.2 s`. Express the relevant statement in the definitionally equal form `((ξ (ineIncl h s) : ℂ) • b.ρ (ineIncl h s)) = 1 at h1`. Rewrite `h1` using `[hx.2 s]`. Establish `hn : 1 ≤ n` using `by simpa using hd`. Establish `h3` using `congrFun (LinearMap.congr_fun h1 (fun _ => 1)) ⟨0, hn⟩`.
+
+Simplify using `using h3`.
+-/
 theorem ine_trivial {x : WD h} (hx : x.unr) (hd : 1 ≤ x.lpDim) {ξ : Weil h →* ℂˣ} (hξ : IsSmooth ξ)
     (ht : (x.lpChar (WD.lpOfChar h ξ hξ)).unr) (s : Ine (F := E) A) : ξ (ineIncl h s) = 1 := by
   rw [lpChar_lpOfChar] at ht
@@ -89,6 +111,19 @@ end GlobalTheory.RealGal.TwistUnr
 
 open GlobalTheory.RealGal.TwistUnr in
 
+/- English proof (translation)
+Introduce `LN hA F _ _ _ a ha π η hT u B hB`. Establish `hL` using `GlobalTheory.T.local_global_compatibility_real hA`. Establish `L` using `LN.loc`. Take `⟨σ, hσ⟩` from `(hL F a π u).1`. Establish `hσ'` using `isLocComp_twist hT hσ`.
+
+Take `⟨A, hAu⟩` from `exists_isPlaceOver (AlgebraicClosure F) u`. Take `⟨rc, hrc⟩` from `L.llc F (AlgebraicClosure F) A u hAu`. Establish `H : IsRec hAu rc` using `GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F (AlgebraicClosure F) A u hAu rc hrc`. Establish `u1` using `unr_of_hasFixed H σ (hasFixed_of_hasSat hL hB hσ)`. Establish `u2` using `unr_of_hasFixed H _ (hasFixed_of_hasSat hL hB hσ')`.
+
+Take `⟨ar, har, ε, -, LL⟩` from `H`. Establish `hs` using `GlobalTheory.HeckeComp.smooth_loc η u`. Establish `e : rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)))) = (rc (cls (ParLaws.toRep σ))).lpChar (rc (.ofChar (η.loc u) hs))`. Rewrite using `[← LL.twist]`. Conclude with `congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`.
+
+Rewrite `u2` using `[e, LL.one]`. Establish `hd : 1 ≤ (rc (cls (ParLaws.toRep σ))).lpDim` using `by rw [LL.dim]; exact ha`. Establish `hi` using `ine_trivial u1 hd _ u2`. Establish `hU : (WD.lpOfChar hAu ((η.loc u).comp ar) (har.smooth hs)).unr`. Rewrite using `[WD.lpOfChar, WD.unr_mk]`.
+
+Use `⟨rfl, fun s => LinearMap.ext fun v => funext fun i => ?_⟩` and prove the remaining obligations. Use `hi s` as an intermediate fact. Simplify using `[this]`. Establish `hU'` using `(GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff har hs).1 hU`. Introduce `x hx`.
+
+Use `hU' x ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : u.adicCompletion F) ≠ 0` using `by simp`. Rewrite using `[← GlobalTheory.SmGL.ord_eq_zero_iff, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]`. Unfold `IsUnitAt at hx`. Rewrite using `[hx, WithZero.log_one]`.
+-/
 theorem GlobalTheory.RealGal.unrAt_of_isoTwist : GlobalTheory.Mem.LiteralAutomorphy.LitN → AdmissibleReal → ∀ (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (η : HChar F), IsoTwist π η →
     ∀ (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ), π.HasSat u B → η.UnrAt u := by

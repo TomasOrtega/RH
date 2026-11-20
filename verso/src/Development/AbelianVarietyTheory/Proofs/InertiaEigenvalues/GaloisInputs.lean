@@ -18,6 +18,11 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.TwGalInputs
 
+/- English proof (translation)
+Introduce `hC hArt hTor D G hGH`. Establish `h2 : BlochKatoReduction.adm2 D` using `GlobalTheory.TripleAdm.adm2_of_isTriple D G.triple (GlobalTheory.T.full_degree_label_forces_trivial_wild_inertia D G.wd G.lab)`. Establish `hF : GlobalTheory.TypeLeaf.FrobDense D` using `GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 hC)`. Establish `hg` using `GlobalTheory.TripleLocal.galois_hypotheses_of_isTriple G.chr hF hGH h2 G.triple`. Establish `hs` using `GlobalTheory.Triple.satake_identity_of_isTriple D G.triple`.
+
+Establish `hL` using `GlobalTheory.LamTie.isToricElt_of_isLamTie D _ D.ntw G.lam G.lamOk G.lamTie`. Take `⟨N0, h9, h10, -⟩` from `GlobalTheory.ToricAssembly.toric_properties hArt hTor D hL.1`. Conclude with `⟨hg.1, h2, hg.2.1, hs.2.1, hs.2.2, ⟨N0, h9⟩, h10, GlobalTheory.SettingHypotheses.setHyp_of_isTriple_of_galHodge hC D G.wd G.cf G.chr hGH h2 G.triple G.lam G.lamOk G.lamTie G.rank G.primes⟩`.
+-/
 theorem galois_inputs : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → ∀ (D : D7) (G : GalSide D), GlobalTheory.TripleLocal.GalHodge D G.wd → BlochKatoReduction.adm1 (BlochKatoReduction.bk0 D) ∧ BlochKatoReduction.adm2 D ∧ BlochKatoReduction.adm8 D ∧ AllGood D.nexp ∧ D.nexp.sig_all ∧ (∃ N0, BlochKatoReduction.adm9 D N0) ∧ BlochKatoReduction.adm10 D ∧ ∀ i, D.ntw.NonzeroIndexPlace i → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) i := by
   intro hC hArt hTor D G hGH
   have h2 : BlochKatoReduction.adm2 D := GlobalTheory.TripleAdm.adm2_of_isTriple D G.triple (GlobalTheory.T.full_degree_label_forces_trivial_wild_inertia D G.wd G.lab)

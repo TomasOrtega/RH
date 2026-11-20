@@ -13,23 +13,38 @@ section Abstract
 
 variable {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Simplify using `only [avg, mul_smul]`. Conclude with `integral_smul a _`.
+-/
 theorem avg_const_mul {K : Subgroup G} [MeasurableSpace K] (μ : Measure K) (ρ : K →* (W →L[ℂ] W)) (a : ℂ) (f : K → ℂ) :
     avg μ ρ (fun κ => a * f κ) = a • avg μ ρ f := by
   simp only [avg, mul_smul]
   exact integral_smul a _
 
+/- English proof (translation)
+Simplify using `only [eis, map_smul]`. Rewrite using `[← tsum_const_smul'']`. Conclude with `tsum_congr fun q => smul_comm _ _ _`.
+-/
 theorem eis_const_smul (Γ K P : Subgroup G) (c : G → ℂ) (ρ : K →* (W →L[ℂ] W)) (Λ : G → ℂ) (g : G) (a : ℂ) (w : W) :
     eis Γ K P c ρ Λ g (a • w) = a • eis Γ K P c ρ Λ g w := by
   simp only [eis, map_smul]
   rw [← tsum_const_smul'']
   exact tsum_congr fun q => smul_comm _ _ _
 
+/- English proof (translation)
+The claim follows from `(Quotient.out q).2`.
+-/
 theorem rep_mem {P Γ : Subgroup G} (q : Cos P Γ) : rep q ∈ Γ := (Quotient.out q).2
 
+/- English proof (translation)
+Rewrite using `[hl.left _ (Subgroup.mem_top _), hl.rat _ (rep_mem q) (Subgroup.mem_top _), zero_add]`.
+-/
 theorem ht_rep {Γ K : Subgroup G} {l : G → ℝ} (hl : IsHt Γ K ⊤ l) {P : Subgroup G} (q : Cos P Γ) (g : G) :
     l (rep q * g) = l g := by
   rw [hl.left _ (Subgroup.mem_top _), hl.rat _ (rep_mem q) (Subgroup.mem_top _), zero_add]
 
+/- English proof (translation)
+Simplify using `only [eis]`. Rewrite using `[← tsum_const_smul'']`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[ht_rep hl, Complex.exp_add, mul_smul]`.
+-/
 theorem eis_add_ht {Γ K : Subgroup G} {l : G → ℝ} (hl : IsHt Γ K ⊤ l) (P : Subgroup G) (c : G → ℂ)
     (ρ : K →* (W →L[ℂ] W)) (Λ : G → ℂ) (g : G) (w : W) :
     eis Γ K P c ρ (fun x => (l x : ℂ) + Λ x) g w = Complex.exp (l g) • eis Γ K P c ρ Λ g w := by
@@ -38,6 +53,9 @@ theorem eis_add_ht {Γ K : Subgroup G} {l : G → ℝ} (hl : IsHt Γ K ⊤ l) (P
   refine tsum_congr fun q => ?_
   rw [ht_rep hl, Complex.exp_add, mul_smul]
 
+/- English proof (translation)
+Introduce `g`. Use `((h g).mul_left (Real.exp (l g))).congr fun q => ?_` and prove the remaining obligations. Use `show _ = Real.exp (l (rep q * g) + f (rep q * g))`. Rewrite using `[ht_rep hl, Real.exp_add]`.
+-/
 theorem conv_add_ht {Γ K : Subgroup G} {l : G → ℝ} (hl : IsHt Γ K ⊤ l) {P : Subgroup G} {f : G → ℝ}
     (h : Conv Γ P f) : Conv Γ P fun g => l g + f g := by
   intro g
@@ -51,10 +69,20 @@ section ModPow
 
 variable {k : Type} [Field k] [NumberField k]
 
+/- English proof (translation)
+Unfold `modPow`. Conclude with `differentiable_id.const_cpow (Or.inl (Complex.ofReal_ne_zero.2 (IdeleGroup.ideleModule k x).2.ne'))`.
+-/
 theorem modPow_differentiable (x : IdeleGroup k) : Differentiable ℂ (modPow x) := by
   unfold modPow
   exact differentiable_id.const_cpow (Or.inl (Complex.ofReal_ne_zero.2 (IdeleGroup.ideleModule k x).2.ne'))
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) < (IdeleGroup.ideleModule k x : ℝ)` using `(IdeleGroup.ideleModule k x).2`. Use `set r : ℝ := (IdeleGroup.ideleModule k x : ℝ) with hrdef`. Use `⟨r ^ b + r ^ c, by positivity, fun z hb hc => ?_⟩` and prove the remaining obligations. Establish `e : ‖modPow x z‖ = r ^ z.re` using `Complex.norm_cpow_eq_rpow_re_of_pos hr z`. Rewrite using `[e]`.
+
+Establish `h1 : 0 ≤ r ^ b` using `by positivity`. Establish `h2 : 0 ≤ r ^ c` using `by positivity`. Break down `le_total 1 r with h | h` into its components or cases. Use `Real.rpow_le_rpow_of_exponent_le h hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `Real.rpow_le_rpow_of_exponent_ge hr h hb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem modPow_strip (x : IdeleGroup k) (b c : ℝ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ z : ℂ, b ≤ z.re → z.re ≤ c → ‖modPow x z‖ ≤ M := by
   have hr : (0 : ℝ) < (IdeleGroup.ideleModule k x : ℝ) := (IdeleGroup.ideleModule k x).2
@@ -70,6 +98,11 @@ theorem modPow_strip (x : IdeleGroup k) (b c : ℝ) :
   · have := Real.rpow_le_rpow_of_exponent_ge hr h hb
     linarith
 
+/- English proof (translation)
+Use `⟨((differentiable_const u).mul (modPow_differentiable x)).mul ha.1, fun b c => ?_⟩` and prove the remaining obligations. Take `⟨M₁, h₁, hM₁⟩` from `modPow_strip x b c`. Take `⟨M₂, hM₂⟩` from `ha.2 b c`. Use `⟨‖u‖ * M₁ * M₂, fun z hb hc => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, mul_assoc (‖u‖ * M₁)]`.
+
+Use `hM₂ z hb hc` as an intermediate fact. Use `hM₁ z hb hc` as an intermediate fact. Use `gcongr`.
+-/
 theorem polyEnt_mul_modPow (u : ℂ) (x : IdeleGroup k) {a : ℂ → ℂ} (ha : PolyEnt a) :
     PolyEnt fun z => u * modPow x z * a z := by
   refine ⟨((differentiable_const u).mul (modPow_differentiable x)).mul ha.1, fun b c => ?_⟩
@@ -87,6 +120,9 @@ section Fam
 
 variable {G : Type} [Group G] [TopologicalSpace G] {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hc : Continuous fun g => π g * D` using `hπ.mul continuous_const`. Use `⟨fun g => h.entire _, ?_, fun a b C hC => ?_⟩` and prove the remaining obligations. Conclude with `h.cont.comp (continuous_fst.prodMk (hc.comp continuous_snd))`. Take `⟨M, hM⟩` from `h.strip a b _ (hC.image hc)`. Conclude with `⟨M, fun z h1 h2 g hg => hM z h1 h2 _ (Set.mem_image_of_mem _ hg)⟩`.
+-/
 theorem polyFam_of {π : G →* GL ι 𝔸[k]} (hπ : Continuous π) {Ψ : (ι → 𝔸[k]) → ℂ} {ω : HeckeCharacter k}
     {F : ℂ → GL ι 𝔸[k] → ℂ} (h : IsEpCont Ψ ω F) (D : GL ι 𝔸[k]) :
     PolyFam fun z g => F z (π g * D) := by
@@ -96,6 +132,19 @@ theorem polyFam_of {π : G →* GL ι 𝔸[k]} (hπ : Continuous π) {Ψ : (ι �
   · obtain ⟨M, hM⟩ := h.strip a b _ (hC.image hc)
     exact ⟨M, fun z h1 h2 g hg => hM z h1 h2 _ (Set.mem_image_of_mem _ hg)⟩
 
+/- English proof (translation)
+Establish `hmaps : ∀ z : ℂ, z.re < 1 / 2 → 1 < ((N : ℂ) - z).re` using `fun z hz => by`. Simplify using `only [Complex.sub_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : Differentiable ℂ fun z : ℂ => (N : ℂ) - z` using `by fun_prop`. Establish `hp : Differentiable ℂ fun z : ℂ => -A * ((N : ℂ) - z) * B * modPow x ((N : ℂ) - z)` using `(((differentiable_const _).mul hd).mul (differentiable_const _)).mul ((modPow_differentiable x).comp hd)`.
+
+Use `⟨fun κ => ?_, ?_, fun b c hc => ?_⟩` and prove the remaining obligations. Conclude with `hp.differentiableOn.mul ((h1 κ).comp hd.differentiableOn fun z hz => hmaps z hz)`. Use `ContinuousOn.mul (hp.continuous.comp continuous_fst).continuousOn ?_` and prove the remaining obligations. Use `h2.comp (f := fun y : ℂ × T => ((N : ℂ) - y.1, y.2)) (by fun_prop) fun y hy => ?_` and prove the remaining obligations. Conclude with `⟨hmaps y.1 hy.1, Set.mem_univ _⟩`.
+
+Take `⟨M, hM⟩` from `h3 (N - c) (N - b) (by linarith)`. Take `⟨M₁, h₁, hM₁⟩` from `modPow_strip x (N - c) (N - b)`. Use `⟨‖A‖ * (|N| + 1) * ‖B‖ * M₁ * |M|, fun z hb hcz κ => ?_⟩` and prove the remaining obligations. Establish `hre : N - c ≤ ((N : ℂ) - z).re` using `by simp only [Complex.sub_re, Complex.ofReal_re]; linarith`. Establish `hre' : ((N : ℂ) - z).re ≤ N - b` using `by simp only [Complex.sub_re, Complex.ofReal_re]; linarith`.
+
+Establish `ht : ‖t ((N : ℂ) - z) κ‖ ≤ |M|` using `(hM _ hre hre' κ).trans (le_abs_self M)`. Establish `hm` using `hM₁ _ hre hre'`. Establish `hz0 : 0 ≤ ‖z‖` using `norm_nonneg z`. Establish `hn : ‖(N : ℂ) - z‖ ≤ (|N| + 1) * (1 + ‖z‖) ^ 2`. Establish `e1 : ‖(N : ℂ) - z‖ ≤ |N| + ‖z‖`.
+
+Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e0 : 0 ≤ |N|` using `abs_nonneg N`. Use polynomial arithmetic with `[mul_nonneg e0 hz0, mul_nonneg hz0 hz0, mul_nonneg e0 (mul_nonneg hz0 hz0)]`. Simplify using `only [norm_mul, norm_neg]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem leftFam_of {T : Type} [TopologicalSpace T] {t : ℂ → T → ℂ} (x : IdeleGroup k) (A B : ℂ) {N : ℝ} (hN : 3 / 2 ≤ N)
     (h1 : ∀ κ, DifferentiableOn ℂ (fun s => t s κ) {s | 1 < s.re})
     (h2 : ContinuousOn (fun y : ℂ × T => t y.1 y.2) ({s | 1 < s.re} ×ˢ Set.univ))
@@ -132,6 +181,57 @@ theorem leftFam_of {T : Type} [TopologicalSpace T] {t : ℂ → T → ℂ} (x : 
 
 end Fam
 
+/- English proof (translation)
+Introduce `hEp hDG hMa hSO hTe hZK hSU hSC hZ1 G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hP k _ _ ι _ _ π Γ i₀ i₁ ω d c η η' l hM Ψ Ψ₁ φ L J hΨ hΨ₁ hzt hne hL hJ`. Use `haveI : Nonempty ι := ⟨i₀⟩`. Take `⟨V, hV, hEk⟩` from `hEp k`. Take `⟨F, F', hF, hF', hFE, hval⟩` from `hEk ι Ψ ω hΨ hM.sq`. Take `⟨hS, hS', htr, hdet⟩` from `hSO G K hK k ι π Γ i₀ i₁ ω d c η η' l hM`.
+
+Take `⟨a₁, ha₁, ha₁eq⟩` from `hZ1 k Ψ₁ ω hΨ₁ hM.sq`. Establish `hΨh : GJMatrix.adelicFourierPi k Ψ ∈ GJMatrix.schwartzBruhatPi k ι` using `GJMatrix.adelicFourierPi_mem_schwartzBruhatPi hΨ`. Generalize the expression as in `hΨhd : GJMatrix.adelicFourierPi k Ψ = Ψh at hF' hval hΨh`. Generalize the expression as in `hd' : (fun i => (d i)⁻¹ : ι → IdeleGroup k) = d' at hS' htr`. Establish `hpar' : IsPar Γ K ((stab 𝔸[k] {i₁}ᶜ).comap π) c` using `hM.par'`.
+
+Take `⟨Nr, hNr⟩ : ∃ Nr : ℝ, Nr = (Fintype.card ι : ℝ)` from `⟨_, rfl⟩`. Establish `hN2 : (2 : ℝ) ≤ Nr` using `by rw [hNr]; exact_mod_cast hM.two`. Establish `hcast : ((Fintype.card ι : ℕ) : ℂ) = (Nr : ℂ)` using `by rw [hNr]; simp`. Rewrite using `[← hNr]`. Simplify using `only [hcast] at hFE hval`.
+
+Establish `hFeq : ∀ z : ℂ, Nr < z.re → ∀ m, F z m = z * (z - Nr) * epstein Ψ ω z m` using `fun z hz m => by`. Rewrite using `[hF.eq z (hNr ▸ hz) m, hcast]`. Establish `hF'eq : ∀ z : ℂ, Nr < z.re → ∀ m, F' z m = z * (z - Nr) * epstein Ψh ω z m` using `fun z hz m => by`. Rewrite using `[hF'.eq z (hNr ▸ hz) m, hcast]`. Establish `hlK : ∀ g (κ : K), l (g * κ) = l g` using `fun g κ => hM.htl.right g κ κ.2`.
+
+Take `⟨u, hu⟩ : ∃ u : ℂ, u = (ω.toIdele (d i₀) : ℂ)` from `⟨_, rfl⟩`. Establish `hu0 : u ≠ 0` using `by rw [hu]; exact Circle.coe_ne_zero _`. Take `⟨A, hA⟩ : ∃ A : ℂ, A = modPow (Matrix.GeneralLinearGroup.det (dgl d)) 1` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : ℂ, B = (ω.toIdele (d' i₁) : ℂ)` from `⟨_, rfl⟩`. Set `a : ℂ → ℂ` to `fun z => u * modPow (d i₀) z * a₁ z`.
+
+Set `Φ : ℂ → G → ℂ` to `fun z g => F z (π g * dgl d)`. Set `ζ : ℂ → K → ℂ` to `fun z κ => -A * ((Nr : ℂ) - z) * B * modPow (d' i₁) ((Nr : ℂ) - z) * zt (tInv.comp π) d' i₁ Ψh ω ((Nr : ℂ) - z) κ`. Establish `hPE : PolyEnt a` using `polyEnt_mul_modPow u (d i₀) ha₁`. Establish `hPF : PolyFam Φ` using `polyFam_of hM.cont hF (dgl d)`. Take `⟨hz1, hz2, hz3⟩` from `hZK G K hK k ι (tInv.comp π) Γ ((stab 𝔸[k] {i₁}ᶜ).comap π) i₁ ω d' c η' hS' Ψh hΨh`.
+
+Establish `hLF : LeftFam ζ` using `leftFam_of (d' i₁) A B (by linarith) hz1 hz2 hz3`. Establish `hLaw : ∀ z, Law K ((stab 𝔸[k] {i₁}ᶜ).comap π) c (ζ z)` using `fun z r κ hr => by`. Use `(hTe G K hK k ι (tInv.comp π) Γ ((stab 𝔸[k] {i₁}ᶜ).comap π) i₁ ω d' c η' hS').2 Ψh ((Nr : ℂ) - z)` as an intermediate fact. Establish `h2 : zt (tInv.comp π) d' i₁ Ψh ω ((Nr : ℂ) - z) ((r * κ : K) : G) = c r * zt (tInv.comp π) d' i₁ Ψh ω ((Nr : ℂ) - z) (κ : G)` using `this.2.1 r κ hr`. Use `show _ * zt _ _ _ _ _ _ ((r * κ : K) : G) = c r * (_ * zt _ _ _ _ _ _ (κ : G))`.
+
+Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconvR : ∀ x : ℝ, Nr < x → Conv Γ ((stab 𝔸[k] {i₀}).comap π) fun g => x * η g` using `fun x hx => hSC G K hK k ι π Γ ((stab 𝔸[k] {i₀}).comap π) i₀ ω d c η hS x (hNr ▸ hx)`. Establish `hconvL : ∀ x : ℝ, x < -Nr → Conv Γ ((stab 𝔸[k] {i₁}ᶜ).comap π) fun g => (l g + Nr * η' g) - x * η' g` using `fun x hx => by`. Establish `h` using `conv_add_ht hM.htl (hSC G K hK k ι (tInv.comp π) Γ ((stab 𝔸[k] {i₁}ᶜ).comap π) i₁ ω d' c η' hS' (Nr - x) (by rw [← hNr]; linarith))`.
+
+Use `h using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨z₀, hz₀, ht₀⟩` from `hne`. Rewrite `hz₀` using `[← hNr]`. Establish `hne' : ∃ z, z ≠ (Nr : ℂ) ∧ a z ≠ 0`.
+
+Use `⟨z₀, fun h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hz₀` using `[h, Complex.ofReal_re]`. Conclude with `lt_irrefl _ hz₀`. Establish `hre : 1 < z₀.re` using `by linarith`. Establish `n0 : z₀ ≠ 0` using `fun h => by rw [h] at hre; simp at hre; linarith`.
+
+Establish `n1 : z₀ - 1 ≠ 0` using `fun h => by`. Rewrite `h` using `[sub_eq_zero]`. Rewrite `hre` using `[h]`. Simplify using `at hre`. Use `show u * modPow (d i₀) z₀ * a₁ z₀ ≠ 0`.
+
+Rewrite using `[ha₁eq z₀ hre]`. Conclude with `mul_ne_zero (mul_ne_zero hu0 (modPow_ne_zero _ _)) (mul_ne_zero (mul_ne_zero n0 n1) ht₀)`. Establish `hRight : ∀ z : ℂ, Nr < z.re → ∀ g (w : L), (z - 1) • avg μ ρ (fun κ => Φ z (g * κ)) (J w) = ((z - Nr) * a z) • eis Γ K ((stab 𝔸[k] {i₀}).comap π) c ρ (fun x => z * η x) g w`. Introduce `z hz g w`. Establish `hre : 1 < z.re` using `by linarith`.
+
+Establish `e1 : (fun κ : K => Φ z (g * κ)) = fun κ : K => (z * (z - Nr)) * epstein Ψ ω z (π (g * κ) * dgl d)`. Use function extensionality and compare the values at `fun κ => hFeq z hz _`. Establish `hU` using `hSU G W K ρ hK hρ μ hμ hP k ι π Γ ((stab 𝔸[k] {i₀}).comap π) i₀ ω d c η hS Ψ hΨ z (hNr ▸ hz) g (J w)`. Establish `e2 : (fun κ : K => zt π d i₀ Ψ ω z κ) = fun κ => tate Ψ₁ ω z * φ κ` using `funext (hzt z)`. Rewrite `hU` using `[e2, avg_const_mul, ContinuousLinearMap.smul_apply, hJ, eis_const_smul, ← hu]`.
+
+Rewrite using `[e1, avg_const_mul, ContinuousLinearMap.smul_apply, hU]`. Simplify using `only [smul_smul]`. Use `congr 1`. Use `show _ = (z - Nr) * (u * modPow (d i₀) z * a₁ z)`. Rewrite using `[ha₁eq z hre]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hLeft : ∀ z : ℂ, z.re < -Nr → ∀ g (w : W), avg μ ρ (fun κ => Φ z (g * κ)) w = z • eis Γ K ((stab 𝔸[k] {i₁}ᶜ).comap π) c ρ (fun x => ((l x + Nr * η' x : ℝ) : ℂ) - z * η' x) g (avg μ ρ (ζ z) w)`. Introduce `z hz g w`. Establish `hs : Nr < ((Nr : ℂ) - z).re`. Simplify using `only [Complex.sub_re, Complex.ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (fun κ : K => Φ z (g * κ)) = fun κ : K => (Complex.exp (l g) * A * (((Nr : ℂ) - z) * (-z))) * epstein Ψh ω ((Nr : ℂ) - z) ((tInv.comp π) (g * κ) * dgl d')`. Use function extensionality and compare the values at `κ`. Use `show F z (π (g * κ : G) * dgl d) = _`. Rewrite using `[hFE, hdet, htr, hF'eq _ hs, hlK, ← hA]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hU` using `hSU G W K ρ hK hρ μ hμ hP k ι (tInv.comp π) Γ ((stab 𝔸[k] {i₁}ᶜ).comap π) i₁ ω d' c η' hS' Ψh hΨh ((Nr : ℂ) - z) (hNr ▸ hs) g w`. Establish `e2 : (fun x => ((l x + Nr * η' x : ℝ) : ℂ) - z * η' x) = fun x => (l x : ℂ) + ((Nr : ℂ) - z) * η' x`. Use function extensionality and compare the values at `x`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ζ z = fun κ : K => (-A * ((Nr : ℂ) - z) * B * modPow (d' i₁) ((Nr : ℂ) - z)) * zt (tInv.comp π) d' i₁ Ψh ω ((Nr : ℂ) - z) κ` using `rfl`. Rewrite using `[e1, avg_const_mul, ContinuousLinearMap.smul_apply, hU, e2, eis_add_ht hM.htl, e3, avg_const_mul, ContinuousLinearMap.smul_apply, eis_const_smul, ← hB]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨Op, H, hWall, hH, O, hO, hOp⟩` from `hMa G W K ρ hK hρ μ hμ hP Γ ((stab 𝔸[k] {i₀}).comap π) ((stab 𝔸[k] {i₁}ᶜ).comap π) c η η' (fun g => l g + Nr * η' g) L J Nr Nr Φ a ζ hpar' hL (by linarith) hconvR hconvL hPF hPE hne' hLF hLaw hRight hLeft`. Use `⟨Nr, fun z => (z - Nr) * (Complex.exp (z ^ 2) * a z), Op, H, hWall, ⟨fun z => Complex.exp (z ^ 2) * a z, (hDG a Nr hPE).1, fun z => rfl, fun ht => ?_⟩, ⟨O, hO, hOp⟩, fun hω => ?_⟩` and prove the remaining obligations. Establish `hre : 1 < ((Nr : ℂ)).re` using `by rw [Complex.ofReal_re]; linarith`. Establish `n0 : (Nr : ℂ) ≠ 0`.
+
+Rewrite using `[Ne, Complex.ofReal_eq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `n1 : (Nr : ℂ) - 1 ≠ 0`. Establish `: (Nr - 1 : ℝ) ≠ 0` using `by linarith`. Conclude with `this` after adjusting the coercions.
+
+Use `show Complex.exp ((Nr : ℂ) ^ 2) * (u * modPow (d i₀) Nr * a₁ Nr) ≠ 0`. Rewrite using `[ha₁eq _ hre]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (mul_ne_zero (mul_ne_zero hu0 (modPow_ne_zero _ _)) (mul_ne_zero (mul_ne_zero n0 n1) ht))`. Establish `hv` using `hval hω`. Establish `hav : ∀ (C : ℂ), avg μ ρ (fun _ : K => C) = C • avg μ ρ (fun _ => 1)` using `fun C => by`.
+
+Use `avg_const_mul μ ρ C (fun _ => 1)` as an intermediate fact. Simplify using `using this`. Use `⟨⟨-(Nr * V), ?_, fun g w => ?_⟩, ⟨Complex.exp ((Nr : ℂ) ^ 2) * ((Nr : ℂ) - 1) * (Nr * V * A * Ψh 0), fun g w => ?_⟩⟩` and prove the remaining obligations. Establish `: (Nr : ℂ) * V ≠ 0`. Establish `h1 : Nr * V ≠ 0`.
+
+Use `mul_pos (by linarith : (0 : ℝ) < Nr) hV` as an intermediate fact. Conclude with `this.ne'`. Conclude with `h1` after adjusting the coercions. Conclude with `neg_ne_zero.2 this`. Rewrite using `[hH]`.
+
+Establish `e1 : (fun κ : K => Φ 0 (g * κ)) = fun _ => (Nr : ℂ) * V * Ψ 0` using `funext fun κ => (hv _).1`. Rewrite using `[e1, hav, ContinuousLinearMap.smul_apply, smul_smul]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[hH]`.
+
+Establish `e1 : (fun κ : K => Φ Nr (g * κ)) = fun _ => (Nr : ℂ) * V * (Complex.exp (l g) * A) * Ψh 0` using `funext fun κ => by show F Nr (π (g * κ : G) * dgl d) = _`. Rewrite using `[(hv _).2, hdet, hlK, ← hA]`. Rewrite using `[e1, hav, ContinuousLinearMap.smul_apply, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wall_core : EpMain → DGood → Master → SideOf → Term → ZetaK → SideUnfold → SideConv → ZetaOne → Core := by
   intro hEp hDG hMa hSO hTe hZK hSU hSC hZ1 G _ _ _ _ _ W _ _ _ K ρ hK hρ _ _ μ hμ hP k _ _ ι _ _ π Γ i₀ i₁ ω d c η η' l hM
     Ψ Ψ₁ φ L J hΨ hΨ₁ hzt hne hL hJ

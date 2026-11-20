@@ -14,8 +14,14 @@ open GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep
 section
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+The claim follows from `(exists_units_ord_eq_one K).choose_spec`.
+-/
 theorem ord_unif : ord (unifUnit K : K) = 1 := (exists_units_ord_eq_one K).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx]`.
+-/
 theorem mem_int_iff_ord {x : K} (hx : x ≠ 0) : x ∈ 𝒪[K] ↔ 0 ≤ ord x := by
   rw [← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx]
 
@@ -28,10 +34,21 @@ open Classical in
 
 def uInd (x : K) : ℂ := if modulus x = 1 then 1 else 0
 
+/- English proof (translation)
+Simplify using `[intInd, h]`.
+-/
 theorem intInd_of_mem {x : K} (h : x ∈ 𝒪[K]) : intInd x = 1 := by simp [intInd, h]
 
+/- English proof (translation)
+Simplify using `[intInd, h]`.
+-/
 theorem intInd_of_not_mem {x : K} (h : x ∉ 𝒪[K]) : intInd x = 0 := by simp [intInd, h]
 
+/- English proof (translation)
+Rewrite using `[modulus_of_ne_zero hx]`. Establish `hq : (1 : NNReal) < (residueCard K : NNReal)` using `one_lt_residueCard_nnreal`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(zpow_right_injective₀ (zero_lt_one.trans hq) hq.ne') (h.trans (zpow_zero _).symm)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite using `[h, neg_zero, zpow_zero]`.
+-/
 theorem modulus_eq_one_iff {x : K} (hx : x ≠ 0) : modulus x = 1 ↔ ord x = 0 := by
   rw [modulus_of_ne_zero hx]
   have hq : (1 : NNReal) < (residueCard K : NNReal) := one_lt_residueCard_nnreal
@@ -42,6 +59,15 @@ theorem modulus_eq_one_iff {x : K} (hx : x ≠ 0) : modulus x = 1 ↔ ord x = 0 
   · intro h
     rw [h, neg_zero, zpow_zero]
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[ord_zero]`. Use linear arithmetic over natural numbers and integers. Break down `eq_or_ne x 0 with rfl | h0` into its components or cases.
+
+Simplify using `[uInd, intInd, zero_mem]`. Establish `hm : c⁻¹ * x ≠ 0` using `mul_ne_zero (inv_ne_zero hc0) h0`. Establish `ho : ord (c⁻¹ * x) = ord x - 1`. Rewrite using `[ord_mul (inv_ne_zero hc0) h0, ord_inv hc0, hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Distinguish the cases in `hx : ord x = 0`. Rewrite using `[intInd_of_mem ((mem_int_iff_ord h0).2 hx.ge), intInd_of_not_mem (fun h => by have := (mem_int_iff_ord hm).1 h; omega)]`. Simplify using `[uInd, (modulus_eq_one_iff h0).2 hx]`. Establish `hu : uInd x = 0` using `by simp [uInd, (modulus_eq_one_iff h0).not.2 hx]`. Rewrite using `[hu, zero_add]`.
+
+Distinguish the cases in `hp : 0 < ord x`. Rewrite using `[intInd_of_mem ((mem_int_iff_ord h0).2 hp.le), intInd_of_mem ((mem_int_iff_ord hm).2 (by omega))]`. Rewrite using `[intInd_of_not_mem (fun h => by have := (mem_int_iff_ord h0).1 h; omega), intInd_of_not_mem (fun h => by have := (mem_int_iff_ord hm).1 h; omega)]`.
+-/
 theorem intInd_split {c : K} (hc : ord c = 1) (x : K) : intInd x = uInd x + intInd (c⁻¹ * x) := by
   have hc0 : c ≠ 0 := by
     rintro rfl
@@ -66,22 +92,34 @@ theorem intInd_split {c : K} (hc : ord c = 1) (x : K) : intInd x = uInd x + intI
 
 variable [MeasurableSpace K] [BorelSpace K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `h : x ∈ 𝒪[K]`. Rewrite using `[intInd_of_mem h, Set.indicator_of_mem (show x ∈ (valBall K 0 : Set K) from mem_valBall_zero_iff.2 h)]`. Rewrite using `[intInd_of_not_mem h, Set.indicator_of_notMem (show x ∉ (valBall K 0 : Set K) from fun h' => h (mem_valBall_zero_iff.1 h'))]`.
+-/
 theorem intInd_eq_indicator : (intInd : K → ℂ) = (valBall K 0 : Set K).indicator fun _ => 1 := by
   funext x
   by_cases h : x ∈ 𝒪[K]
   · rw [intInd_of_mem h, Set.indicator_of_mem (show x ∈ (valBall K 0 : Set K) from mem_valBall_zero_iff.2 h)]
   · rw [intInd_of_not_mem h, Set.indicator_of_notMem (show x ∉ (valBall K 0 : Set K) from fun h' => h (mem_valBall_zero_iff.1 h'))]
 
+/- English proof (translation)
+Rewrite using `[intInd_eq_indicator]`. Use `(integrable_indicator_iff (measurableSet_valBall 0)).2 ?_` and prove the remaining obligations. Use `integrableOn_const ?_` and prove the remaining obligations. Conclude with `(isCompact_valBall 0).measure_lt_top.ne`.
+-/
 theorem integrable_intInd : Integrable (intInd : K → ℂ) (haarIntegers K) := by
   rw [intInd_eq_indicator]
   refine (integrable_indicator_iff (measurableSet_valBall 0)).2 ?_
   refine integrableOn_const ?_
   exact (isCompact_valBall 0).measure_lt_top.ne
 
+/- English proof (translation)
+Rewrite using `[intInd_eq_indicator, integral_indicator (measurableSet_valBall 0)]`. Simplify using `[measureReal_def, coe_valBall_zero, haarIntegers_integers]`.
+-/
 theorem integral_intInd : ∫ x, (intInd x : ℂ) ∂haarIntegers K = 1 := by
   rw [intInd_eq_indicator, integral_indicator (measurableSet_valBall 0)]
   simp [measureReal_def, coe_valBall_zero, haarIntegers_integers]
 
+/- English proof (translation)
+The claim follows from `(integrable_intInd (K := K)).bdd_mul hf.aestronglyMeasurable (Filter.Eventually.of_forall hb)`.
+-/
 theorem integrable_mul_intInd {f : K → ℂ} (hf : Continuous f) (hb : ∀ x, ‖f x‖ ≤ 1) :
     Integrable (fun x => f x * intInd x) (haarIntegers K) :=
   (integrable_intInd (K := K)).bdd_mul hf.aestronglyMeasurable (Filter.Eventually.of_forall hb)
@@ -93,31 +131,51 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
   [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Establish `h` using `ord_algebraMap (K := F) (L := E) (unifUnit F : F)`. Rewrite `h` using `[h1, ord_unif]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ramIdx_eq_one (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) : ramificationIndex F E = 1 := by
   have h := ord_algebraMap (K := F) (L := E) (unifUnit F : F)
   rw [h1, ord_unif] at h
   omega
 
+/- English proof (translation)
+Establish `h` using `ramificationIndex_mul_residueDegree F E`. Rewrite `h` using `[ramIdx_eq_one h1, hd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem resDeg_eq_two (hd : Module.finrank F E = 2) (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) :
     residueDegree F E = 2 := by
   have h := ramificationIndex_mul_residueDegree F E
   rw [ramIdx_eq_one h1, hd] at h
   omega
 
+/- English proof (translation)
+Rewrite using `[ord_algebraMap, ramIdx_eq_one h1]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_map (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (a : F) :
     ord (algebraMap F E a) = ord a := by
   rw [ord_algebraMap, ramIdx_eq_one h1]; simp
 
+/- English proof (translation)
+Rewrite using `[ord_norm, resDeg_eq_two hd h1]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_normE (hd : Module.finrank F E = 2) (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (x : E) :
     ord (Algebra.norm F x) = 2 * ord x := by
   rw [ord_norm, resDeg_eq_two hd h1]; simp
 
+/- English proof (translation)
+Establish `h` using `card_residueField_eq_pow_residueDegree F E`. Rewrite `h` using `[resDeg_eq_two hd h1]`. Conclude with `h`.
+-/
 theorem card_E (hd : Module.finrank F E = 2) (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) :
     residueCard E = residueCard F ^ 2 := by
   have h := card_residueField_eq_pow_residueDegree F E
   rw [resDeg_eq_two hd h1] at h
   exact h
 
+/- English proof (translation)
+Break down `eq_or_ne u 0 with rfl | h0` into its components or cases. Rewrite using `[Algebra.norm_zero]`. Conclude with `zero_mem _`. Establish `hN : Algebra.norm F u ≠ 0` using `Algebra.norm_ne_zero_iff.2 h0`. Rewrite using `[mem_int_iff_ord hN, ord_norm]`.
+
+Use `(mem_int_iff_ord h0).1 hu` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem norm_mem {u : E} (hu : u ∈ 𝒪[E]) : Algebra.norm F u ∈ 𝒪[F] := by
   rcases eq_or_ne u 0 with rfl | h0
   · rw [Algebra.norm_zero]
@@ -135,6 +193,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E]
   [hE : Fact (Module.finrank F E = 2)]
 
+/- English proof (translation)
+Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using `only [map_zero, zero_mem]`. Establish `ha' : algebraMap F E a ≠ 0` using `by simpa using ha`. Rewrite using `[mem_valBall_iff_le_ord ha, mem_valBall_iff_le_ord ha', ord_map h1]`.
+-/
 theorem map_mem_valBall_iff (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {n : ℤ} {a : F} :
     algebraMap F E a ∈ valBall E n ↔ a ∈ valBall F n := by
   rcases eq_or_ne a 0 with rfl | ha
@@ -142,15 +203,24 @@ theorem map_mem_valBall_iff (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {n 
   have ha' : algebraMap F E a ≠ 0 := by simpa using ha
   rw [mem_valBall_iff_le_ord ha, mem_valBall_iff_le_ord ha', ord_map h1]
 
+/- English proof (translation)
+Rewrite using `[← map_mem_valBall_iff (E := E) h1, algebraMap_trace_eq_add_conj]`. Conclude with `add_mem hx (conj_mem_valBall_iff.2 hx)`.
+-/
 theorem trace_mem_valBall (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {n : ℤ} {x : E}
     (hx : x ∈ valBall E n) : Algebra.trace F E x ∈ valBall F n := by
   rw [← map_mem_valBall_iff (E := E) h1, algebraMap_trace_eq_add_conj]
   exact add_mem hx (conj_mem_valBall_iff.2 hx)
 
+/- English proof (translation)
+The claim follows from `mem_valBall_zero_iff.1 (trace_mem_valBall h1 (mem_valBall_zero_iff.2 hu))`.
+-/
 theorem trace_mem (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {u : E} (hu : u ∈ 𝒪[E]) :
     Algebra.trace F E u ∈ 𝒪[F] :=
   mem_valBall_zero_iff.1 (trace_mem_valBall h1 (mem_valBall_zero_iff.2 hu))
 
+/- English proof (translation)
+Establish `ht : Filter.Tendsto (Algebra.trace F E) (nhds 0) (nhds 0)` using `((hasBasis_nhds_zero_valBall (K := E)).tendsto_iff (hasBasis_nhds_zero_valBall (K := F))).2 fun n _ => ⟨n, trivial, fun x hx => trace_mem_valBall h1 hx⟩`. Use `continuous_of_continuousAt_zero (Algebra.trace F E).toAddMonoidHom ?_` and prove the remaining obligations. Simplify `ht` using `[ContinuousAt]`.
+-/
 theorem continuous_trace' (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) :
     Continuous (Algebra.trace F E) := by
   have ht : Filter.Tendsto (Algebra.trace F E) (nhds 0) (nhds 0) :=
@@ -159,6 +229,19 @@ theorem continuous_trace' (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) :
   refine continuous_of_continuousAt_zero (Algebra.trace F E).toAddMonoidHom ?_
   simpa [ContinuousAt] using ht
 
+/- English proof (translation)
+Establish `ht : Filter.Tendsto (Algebra.norm F : E → F) (nhds 0) (nhds 0)`. Use `((hasBasis_nhds_zero_valBall (K := E)).tendsto_iff (hasBasis_nhds_zero_valBall (K := F))).2 fun n _ => ⟨max n 0, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Rewrite using `[Algebra.norm_zero]`. Conclude with `zero_mem _`.
+
+Establish `hN : Algebra.norm F x ≠ 0` using `Algebra.norm_ne_zero_iff.2 h0`. Establish `hx'` using `(mem_valBall_iff_le_ord h0).1 hx`. Use `ord_normE hE.out h1 x` as an intermediate fact. Use `show Algebra.norm F x ∈ valBall F n`. Rewrite using `[mem_valBall_iff_le_ord hN, this]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Establish `e : (Algebra.norm F : E → F) = fun z => Algebra.norm F x + Algebra.norm F (z - x) + Algebra.trace F E (x * conj F E (z - x))`. Use function extensionality and compare the values at `z`.
+
+Use `norm_add (K := F) x (z - x)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[e]`. Establish `c1 : ContinuousAt (fun z : E => Algebra.norm F (z - x)) x`. Establish `h0 : Continuous (fun z : E => z - x)` using `continuous_id'.sub continuous_const`.
+
+Establish `h2` using `h0.tendsto x`. Simplify using `only [sub_self] at h2`. Establish `hz : Algebra.norm F (x - x) = 0` using `by rw [sub_self, Algebra.norm_zero]`. Use `show Filter.Tendsto _ _ (nhds (Algebra.norm F (x - x)))`. Rewrite using `[hz]`.
+
+Conclude with `ht.comp h2`. Establish `c2 : Continuous (fun z : E => Algebra.trace F E (x * conj F E (z - x)))` using `(continuous_trace' h1).comp (continuous_const.mul (continuous_conj.comp (continuous_id.sub continuous_const)))`. Conclude with `(continuousAt_const.add c1).add c2.continuousAt`.
+-/
 theorem continuous_norm' (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) :
     Continuous (Algebra.norm F : E → F) := by
   have ht : Filter.Tendsto (Algebra.norm F : E → F) (nhds 0) (nhds 0) := by

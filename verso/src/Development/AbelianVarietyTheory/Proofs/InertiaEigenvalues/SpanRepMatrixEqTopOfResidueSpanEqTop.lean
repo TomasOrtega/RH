@@ -6,6 +6,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue`. Consider the case `exact _root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue`. Consider the case `(apply _root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue ..)`.
+-/
 theorem span_matrix_eq_top_of_residue_span {ι A : Type} [CommRing A] [IsLocalRing A] {r : ℕ}
     (f : ι → Matrix (Fin r) (Fin r) A)
     (h : Submodule.span (IsLocalRing.ResidueField A)
@@ -19,6 +24,9 @@ theorem span_matrix_eq_top_of_residue_span {ι A : Type} [CommRing A] [IsLocalRi
   | (intros; apply @_root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SpanOfResidue.span_eq_top_of_residue ..)
 
+/- English proof (translation)
+The claim follows from `span_matrix_eq_top_of_residue_span (mat ρ) h`.
+-/
 theorem span_mat_eq_top_of_residue {Γ A : Type} [Group Γ] [CommRing A] [IsLocalRing A] {r : ℕ}
     (ρ : Γ →* GL (Fin r) A)
     (h : Submodule.span (IsLocalRing.ResidueField A)

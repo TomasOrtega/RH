@@ -23,6 +23,15 @@ open GlobalTheory.CompanionTheory.SmallSec
 
 namespace GlobalTheory.CompanionTheory.SmallSec
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ν hν n₀`. Take `⟨n, hn, hn1, hν1⟩` from `GlobalTheory.CompanionTheory.CharTriv.exists_trivial_on_principal F ν hν n₀`. Take `⟨hf, hg, hφ⟩` from `GlobalTheory.CompanionTheory.TorSB.tor_schwartzBruhat F ψ hψ n hn1`. Take `⟨hV, hH, -⟩` from `GlobalTheory.CompanionTheory.VolNe.volumes_ne_zero F ψ`. Establish `hν' : IsUnit1 ν⁻¹`.
+
+Use `⟨hν.1.inv, fun x => ?_⟩` and prove the remaining obligations. Use `hν.2 x` as an intermediate fact. Simplify using `[this]`. Use `⟨n, hn, hn1, _, hφ, (((selfDualMeasure ψ).real (valBall F (-(n : ℤ)) : Set F) : ℝ) : ℂ) * (((multHaar F).real {h : Fˣ | (h : F) - 1 ∈ valBall F (n : ℤ)} : ℝ) : ℂ), mul_ne_zero (Complex.ofReal_ne_zero.2 (hV _)) (Complex.ofReal_ne_zero.2 (hH n hn1)), fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ ν ν⁻¹ hν hν' _ hf _ hg a, ((GlobalTheory.CompanionTheory.KirTorus.torus_integral F ψ hψ ν n hn1 hν1 a).1 ha)]`.
+
+Establish `h1 : mp a (1 / 2) = 1`. Simplify using `[mp, GlobalTheory.CompanionTheory.SmallSec.modulus_eq_one_of_sub_one_mem_valBall_pos F n hn1 a ha]`. Rewrite using `[h1]`. Simplify using `[hν1 a ha]`. Rewrite using `[GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ ν ν⁻¹ hν hν' _ hf _ hg a, ((GlobalTheory.CompanionTheory.KirTorus.torus_integral F ψ hψ ν n hn1 hν1 a).2 ha)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem torus : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ ν : Fˣ →* ℂˣ, IsUnit1 ν → ∀ n₀ : ℕ,
   ∃ n : ℕ, n₀ ≤ n ∧ 1 ≤ n ∧ ∃ φ ∈ GodementSectionLocal.schwartzBruhat2 F, ∃ C : ℂ, C ≠ 0 ∧
     (∀ a : Fˣ, (a : F) - 1 ∈ valBall F (n : ℤ) → W2 ψ ν ν⁻¹ φ (dg2 a 1) = C) ∧
@@ -45,6 +54,9 @@ theorem torus : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [
   · rw [GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ ν ν⁻¹ hν hν' _ hf _ hg a, ((GlobalTheory.CompanionTheory.KirTorus.torus_integral F ψ hψ ν n hn1 hν1 a).2 ha)]
     simp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ W' m hm hW'`. Take `⟨hV, -, hK⟩` from `GlobalTheory.CompanionTheory.VolNe.volumes_ne_zero F ψ`. Take `⟨h1, h0⟩` from `GlobalTheory.CompanionTheory.SintSec.main F ψ hψ W' m hm hW' (secFun ψ m) (GlobalTheory.CompanionTheory.SmallSec.secFun_mem_SB_of_isStd F ψ hψ m) _ (fun A ξ h => (GlobalTheory.CompanionTheory.SmallSec.pFT_secFun F ψ hψ m A ξ).1 h) (fun A ξ h => (GlobalTheory.CompanionTheory.Small …`. Conclude with `⟨secFun ψ m, GlobalTheory.CompanionTheory.SmallSec.secFun_mem_SB_of_isStd F ψ hψ m, _, mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 (hV _))) (Complex.ofReal_ne_zero.2 (hK m)), h1, h0⟩`.
+-/
 theorem sec : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (W' : GL (Fin 2) F → ℂ) (m : ℕ), 1 ≤ m →
   (∀ g, ∀ u ∈ GLnLocal.congruenceSubgroup F 2 m, W' (g * u) = W' g) →
   ∃ Φ ∈ LFS.SB F, ∃ c : ℂ, c ≠ 0 ∧
@@ -62,6 +74,19 @@ theorem sec : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [Is
 end GlobalTheory.CompanionTheory.SmallSec
 namespace GlobalTheory.CompanionTheory.SmallSec
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ν hν U hU`. Establish `hν' : IsUnit1 ν⁻¹`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hν.1.inv`. Use `hν.2 x` as an intermediate fact.
+
+Simplify using `[this]`. Take `⟨n₀, -, hn₀⟩` from `(GLnLocal.hasBasis_nhds_one F 2).mem_iff.mp hU`. Take `⟨n, hn, hn1, φ, hφ, C, hC, hc1, hc0⟩` from `GlobalTheory.CompanionTheory.SmallSec.torus F ψ hψ ν hν n₀`. Take `⟨V, hV⟩` from `GlobalTheory.CompanionTheory.WhittakerSmooth.sSmooth F ψ hψ ν ν⁻¹ hν hν' φ hφ`. Take `⟨m', -, hm'⟩` from `(GLnLocal.hasBasis_nhds_one F 2).mem_iff.mp (V.isOpen.mem_nhds V.one_mem)`.
+
+Use `set W' := W2 ψ ν ν⁻¹ φ with hW'`. Establish `hW'mem : W' ∈ V2 ψ ν ν⁻¹` using `Submodule.subset_span ⟨φ, hφ, rfl⟩`. Use `set m := max m' n with hm`. Establish `hmm : ∀ g, ∀ u ∈ GLnLocal.congruenceSubgroup F 2 m, W' (g * u) = W' g` using `fun g u hu => hV g u (hm' (GLnLocal.congruenceSubgroup_antitone F 2 (le_max_left m' n) hu))`. Establish `hm1 : 1 ≤ m` using `hn1.trans (le_max_right _ _)`.
+
+Take `⟨Φ, hΦ, c, hc, hW1, hW0⟩` from `GlobalTheory.CompanionTheory.SmallSec.sec F ψ hψ W' m hm1 hmm`. Take `⟨hs1, hs2⟩` from `GlobalTheory.CompanionTheory.SmallSecSupp.support_and_value F ψ hψ W' (LFS.Wp ψ W' Φ) n m C c hn1 (le_max_right _ _) (GlobalTheory.CompanionTheory.WhittakerPsi.whittaker_upper_unipotent_equivariance ψ ν ν⁻¹ φ) hmm hc1 hc0 hW1 hW0`. Use `⟨LFS.Wp ψ W' Φ, Submodule.subset_span ⟨W', hW'mem, Φ, hΦ, rfl⟩, {u | u ∈ GLnLocal.congruenceSubgroup F 2 n ∧ u.val 1 0 ∈ valBall F (m : ℤ) ∧ u.val 1 1 - 1 ∈ valBall F (m : ℤ)}, c * C, ?_, ?_, ?_, ?_, mul_ne_zero hc hC, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have h1 : IsOpen {u : GL (Fin 2) F | u.val 1 0 ∈ valBall F (m : ℤ)} := (isOpen_valBall (m : ℤ)).preimage (GLnLocal.continuous_entry F 2 1 0)`. Apply the tactic sequence `have h2 : IsOpen {u : GL (Fin 2) F | u.val 1 1 - 1 ∈ valBall F (m : ℤ)} := (isOpen_valBall (m : ℤ)).preimage ((GLnLocal.continuous_entry F 2 1 1).sub continuous_const)`.
+
+Conclude with `(GLnLocal.isOpen_congruenceSubgroup F 2 n).inter (h1.inter h2)`. Apply the tactic sequence `refine ⟨one_mem _, ?_, ?_⟩ <;> simp`. Conclude with `fun u hu => hn₀ (GLnLocal.congruenceSubgroup_antitone F 2 hn hu.1)`. Conclude with `fun u hu => GLnLocal.congruenceSubgroup_le F 2 n hu.1`. Introduce `h hh`.
+
+Take `⟨x, u, hu, rfl⟩` from `hs1 h hh`. Conclude with `⟨x, u, hu, rfl⟩`. Introduce and unpack `x u ⟨h1, h2, h3⟩`. Conclude with `hs2 x u h1 h2 h3`.
+-/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
   (ψ : AddChar F Circle), IsStd ψ → ∀ ν : Fˣ →* ℂˣ, IsUnit1 ν → ∀ U ∈ 𝓝 (1 : GL (Fin 2) F),
   ∃ W ∈ LFS.VF ψ (V2 ψ ν ν⁻¹), ∃ (S : Set (GL (Fin 2) F)) (C₁ : ℂ), IsOpen S ∧ (1 : GL (Fin 2) F) ∈ S ∧ S ⊆ U ∧ S ⊆ GL2LocalData.K2 F ∧ C₁ ≠ 0 ∧

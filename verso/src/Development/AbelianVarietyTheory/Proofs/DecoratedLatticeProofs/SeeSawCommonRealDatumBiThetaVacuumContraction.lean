@@ -20,6 +20,17 @@ namespace GlobalTheory.VReal
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Use `⟨hf.cont.add hg.cont, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n L L' hL hL' hLf hL'f u v`. Conclude with `(hf.smooth n L L' hL hL' hLf hL'f u v).add (hg.smooth n L L' hL hL' hLf hL'f u v)`. Simplify using `only [Pi.add_apply]`. Rewrite using `[hf.quasiL, hg.quasiL]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply]`. Rewrite using `[hf.quasiR, hg.quasiR]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, hUf⟩` from `hf.levL`.
+
+Take `⟨V, hV, hVf⟩` from `hg.levL`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Establish `h1` using `congrFun (hUf a ha.1 ha' v) u`. Establish `h2` using `congrFun (hVf a ha.2 ha' v) u`.
+
+Simplify using `only [heisO, Pi.add_apply] at h1 h2 ⊢`. Rewrite using `[mul_add, h1, h2]`. Take `⟨U, hU, hUf⟩` from `hf.levR`. Take `⟨V, hV, hVf⟩` from `hg.levR`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' u => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Establish `h1` using `congrFun (hUf a ha.1 ha' u) v`. Establish `h2` using `congrFun (hVf a ha.2 ha' u) v`. Simplify using `only [heisO, Pi.add_apply] at h1 h2 ⊢`. Rewrite using `[mul_add, h1, h2]`.
+-/
 theorem biTheta_add {A S A' : HSp D} {f g : WO A S → WO S A' → ℂ} (hf : IsBiTheta ψ A S A' f)
     (hg : IsBiTheta ψ A S A' g) : IsBiTheta ψ A S A' (f + g) := by
   refine ⟨hf.cont.add hg.cont, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩
@@ -44,6 +55,11 @@ theorem biTheta_add {A S A' : HSp D} {f g : WO A S → WO S A' → ℂ} (hf : Is
     simp only [heisO, Pi.add_apply] at h1 h2 ⊢
     rw [mul_add, h1, h2]
 
+/- English proof (translation)
+Use `⟨?_, fun n L L' _ _ _ _ u v => ?_, fun γ u v => by simp, fun γ u v => by simp, ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ v => ?_⟩, ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ u => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply]`. Conclude with `continuous_const`. Simplify using `only [Pi.zero_apply]`. Conclude with `contDiff_const`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[heisO]`. Use function extensionality and compare the values at `x`. Simplify using `[heisO]`.
+-/
 theorem biTheta_zero {A S A' : HSp D} : IsBiTheta ψ A S A' 0 := by
   refine ⟨?_, fun n L L' _ _ _ _ u v => ?_, fun γ u v => by simp, fun γ u v => by simp, ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ v => ?_⟩,
     ⟨⊤, by rw [AddSubgroup.coe_top]; exact isOpen_univ, fun a _ _ u => ?_⟩⟩
@@ -52,6 +68,9 @@ theorem biTheta_zero {A S A' : HSp D} : IsBiTheta ψ A S A' 0 := by
   · funext x; simp [heisO]
   · funext x; simp [heisO]
 
+/- English proof (translation)
+Unfold `BiOp.app`. Conclude with `Finset.sum_induction _ (IsBiTheta ψ A S A') (fun f g hf hg => biTheta_add hf hg) biTheta_zero fun i _ => GlobalTheory.FrComb.biTheta_combL hψ (GlobalTheory.FrComb.biTheta_combR hψ hC (ho i).2) (ho i).1`.
+-/
 theorem biTheta_app (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} (o : BiOp A S A')
     (ho : ∀ i, IsFinComb (o.u i) ∧ IsFinComb (o.u' i)) {C : WO A S → WO S A' → ℂ} (hC : IsBiTheta ψ A S A' C) :
     IsBiTheta ψ A S A' (o.app ψ C) := by
@@ -59,21 +78,36 @@ theorem biTheta_app (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} (o : BiOp A S A
   exact Finset.sum_induction _ (IsBiTheta ψ A S A') (fun f g hf hg => biTheta_add hf hg) biTheta_zero
     fun i _ => GlobalTheory.FrComb.biTheta_combL hψ (GlobalTheory.FrComb.biTheta_combR hψ hC (ho i).2) (ho i).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.add_apply, mul_add]`.
+-/
 theorem heisO_add {S T : HSp D} (w : WO S T) (f g : WO S T → ℂ) :
     heisO ψ S T w (f + g) = heisO ψ S T w f + heisO ψ S T w g := by
   funext x; simp only [heisO, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[heisO]`.
+-/
 theorem heisO_zero {S T : HSp D} (w : WO S T) : heisO ψ S T w 0 = 0 := by
   funext x; simp [heisO]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u hu => by rw [heisO_add, hf.1 u hu, hg.1 u hu], fun e he u hu hh => by rw [heisO_add, hf.2 e he u hu hh, hg.2 e he u hu hh]⟩`.
+-/
 theorem latVac_add {S T : HSp D} {Λ : AddSubgroup (WO S T)} {f g : WO S T → ℂ} (hf : IsLatVac (heisO ψ S T) Λ f)
     (hg : IsLatVac (heisO ψ S T) Λ g) : IsLatVac (heisO ψ S T) Λ (f + g) :=
   ⟨fun u hu => by rw [heisO_add, hf.1 u hu, hg.1 u hu],
     fun e he u hu hh => by rw [heisO_add, hf.2 e he u hu hh, hg.2 e he u hu hh]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u _ => heisO_zero _, fun _ _ u _ _ => heisO_zero u⟩`.
+-/
 theorem latVac_zero {S T : HSp D} {Λ : AddSubgroup (WO S T)} : IsLatVac (heisO ψ S T) Λ 0 :=
   ⟨fun u _ => heisO_zero _, fun _ _ u _ _ => heisO_zero u⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ _ (fun _ _ hf hg => latVac_add hf hg) latVac_zero h`.
+-/
 theorem latVac_sum {S T : HSp D} {Λ : AddSubgroup (WO S T)} {ι : Type} (s : Finset ι) (F : ι → WO S T → ℂ)
     (h : ∀ i ∈ s, IsLatVac (heisO ψ S T) Λ (F i)) : IsLatVac (heisO ψ S T) Λ (∑ i ∈ s, F i) :=
   Finset.sum_induction _ _ (fun _ _ hf hg => latVac_add hf hg) latVac_zero h
@@ -87,6 +121,11 @@ def combEnd (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ �
     simp only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Establish `hle : latO S T (LS : Set _) (LT : Set _) P ≤ latO S T (LS : Set _) (LT : Set _) fun _ => True`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, -, rest⟩`. Conclude with `⟨α, hα, fun v hv => absurd trivial hv, rest⟩`. Unfold `Vac IsLatVac at h ⊢`.
+
+Conclude with `⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩`.
+-/
 theorem vac_of_true {S T : HSp D} {LS : Lat S} {LT : Lat T} {P : Pl D → Prop} {f : WO S T → ℂ}
     (h : Vac ψ S T LS LT (fun _ => True) f) : Vac ψ S T LS LT P f := by
   have hle : latO S T (LS : Set _) (LT : Set _) P ≤ latO S T (LS : Set _) (LT : Set _) fun _ => True := by
@@ -96,6 +135,9 @@ theorem vac_of_true {S T : HSp D} {LS : Lat S} {LT : Lat T} {P : Pl D → Prop} 
   unfold Vac IsLatVac at h ⊢
   exact ⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩
 
+/- English proof (translation)
+Establish `H` using `(GlobalTheory.DisjComb.main D ψ hψ S T P (fun p => ¬ P p) (fun p hp hq => hq hp)).2.2.2.2 LS LT f hS hT`. Establish `e : (fun p => P p ∨ ¬ P p) = fun _ => True` using `funext fun p => propext ⟨fun _ => trivial, fun _ => em _⟩`. Establish `h3` using `H.2 ⟨h1, h2⟩`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem vac_union (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (P : Pl D → Prop) (LS : Lat S) (LT : Lat T) (f : WO S T → ℂ)
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) (h1 : Vac ψ S T LS LT P f) (h2 : Vac ψ S T LS LT (fun p => ¬ P p) f) :
     Vac ψ S T LS LT (fun _ => True) f := by
@@ -104,6 +146,15 @@ theorem vac_union (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (P : Pl D → Prop) 
   have h3 := H.2 ⟨h1, h2⟩
   rwa [e] at h3
 
+/- English proof (translation)
+Establish `hfin : ∀ i, IsFinComb (o.u i) ∧ IsFinComb (o.u' i)` using `fun i => ⟨(hcomb _ _ _ (ho i).1).1, (hcomb _ _ _ (ho i).2).1⟩`. Establish `hB` using `biTheta_app hψ o hfin hC`. Establish `hoffApp : BiVacAt ψ LA LS LA' (fun p => ¬ P p) (o.app ψ C)`. Use `⟨fun v => ⟨GlobalTheory.FrComb.slice_left hB v, ?_⟩, fun u => ⟨GlobalTheory.FrComb.slice_right hB u, ?_⟩⟩` and prove the remaining obligations. Establish `e : (fun u => o.app ψ C u v) = ∑ i, fun u => biComb ψ A S A' (o.u i) (o.u' i) C u v`.
+
+Use function extensionality and compare the values at `u`. Simplify using `only [BiOp.app, Finset.sum_apply]`. Rewrite using `[e]`. Use `latVac_sum _ _ fun i _ => ?_` and prove the remaining obligations. Establish `hR` using `GlobalTheory.FrComb.biTheta_combR hψ hC (hfin i).2`.
+
+Establish `hg : Vac ψ A S LA LS (fun p => ¬ P p) (fun u' => comb ψ S A' (o.u' i) (C u') v)` using `⟨GlobalTheory.FrComb.slice_left hR v, GlobalTheory.FrComb.latVac_opR (fun v => (hoff.1 v).2) (combEnd ψ S A' (o.u' i)) v⟩`. Conclude with `((hcomb _ _ _ (ho i).1).2 LA LS _ hg).2`. Establish `e : o.app ψ C u = ∑ i, fun v => biComb ψ A S A' (o.u i) (o.u' i) C u v`. Use function extensionality and compare the values at `v`. Simplify using `only [BiOp.app, Finset.sum_apply]`.
+
+Rewrite using `[e]`. Use `latVac_sum _ _ fun i _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.FrComb.latVac_opL (K := fun u' => comb ψ S A' (o.u' i) (C u')) (fun u' => ((hcomb _ _ _ (ho i).2).2 LS LA' _ (hoff.2 u')).2) (combEnd ψ A S (o.u i)) u`. Establish `hT : BiVacAt ψ LA LS LA' (fun _ => True) (o.app ψ C)` using `⟨fun v => vac_union hψ _ _ P _ _ _ hA hS (hon.1 v) (hoffApp.1 v), fun u => vac_union hψ _ _ P _ _ _ hS hA' (hon.2 u) (hoffApp.2 u)⟩`. Conclude with `⟨hB, ⟨hB.cont, fun v => hT.1 v, fun u => hT.2 u⟩, hB.smooth⟩`.
+-/
 theorem real_of (hψ : IsStdChar D ψ (-1)) (P : Pl D → Prop)
     (hcomb : ∀ (S T : HSp D) (e : WO S T →₀ ℂ), CombAt P e → IsFinComb e ∧
       ∀ LS LT f, Vac ψ S T LS LT (fun p => ¬ P p) f → Vac ψ S T LS LT (fun p => ¬ P p) (comb ψ S T e f))
@@ -136,6 +187,13 @@ theorem real_of (hψ : IsStdChar D ψ (-1)) (P : Pl D → Prop)
       fun u => vac_union hψ _ _ P _ _ _ hS hA' (hon.2 u) (hoffApp.2 u)⟩
   exact ⟨hB, ⟨hB.cont, fun v => hT.1 v, fun u => hT.2 u⟩, hB.smooth⟩
 
+/- English proof (translation)
+Introduce `D c v t w hc hv ht hV hT hF`. Establish `hψ` using `hc.std`. Establish `hfl` using `GlobalTheory.Unf.FlatTheta.flat_isThetaFun D hF c.ψ`. Establish `hcomb : ∀ (S T : HSp D) (e : WO S T →₀ ℂ), CombAt (· ∈ v.tP) e → IsFinComb e ∧ ∀ LS LT f, Vac c.ψ S T LS LT (fun p => ¬ p ∈ v.tP) f → Vac c.ψ S T LS LT (fun p => ¬ p ∈ v.tP) (comb c.ψ S T e f)` using `fun S T e he => (GlobalTheory.DisjComb.main D c.ψ hψ S T (· ∈ v.tP) (fun p => ¬ p ∈ v.tP) (fun p hp hq => hq hp)).2.1 e he`. Use `⟨fun j σ h Ψ₁ Ψ₂ h1 h2 => ?_, fun j h Ψ₁ Ψ₂ hW h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Establish `hC : IsBiTheta c.ψ _ _ _ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂)` using `(GlobalTheory.ContrComb.contr_comb_main D c.ψ hψ (σ + 1) σ (c.B j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (c.lnk j σ h) (c.X (j + 1)) (c.vL j σ h) (flatBF (t.sBF j (σ + 1) h) Ψ₁) (flatFB (t.sFB j σ h) Ψ₂) (hfl.1 (σ + 1) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (t.sBF j (σ + 1) h) …`. Establish `R` using `real_of hψ (· ∈ v.tP) hcomb (hc.x j (by omega)).sd (hc.x (j + 1) (by omega)).sd (hc.x (j + 1 + 1) (by omega)).sd (v.op j) (hv.atT j).2 hC (hV.1 j σ h Ψ₁ Ψ₂ (vac_of_true h1) (vac_of_true h2)) (hT.1 j σ h Ψ₁ Ψ₂ (vac_of_true h1) (vac_of_true h2)).1`. Conclude with `⟨hC, R.2.1, R.2.2⟩`. Establish `hC : IsBiTheta c.ψ _ _ _ (c.lst j h (v.τ j h) (t.sBF j 0 h) Ψ₁ Ψ₂)` using `GlobalTheory.LastBiTheta.isBiTheta_lastBi D c.ψ hψ _ _ _ _ _ _ _ (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) (hW.tau j h).2 (flatBF (t.sBF j 0 h) Ψ₁) (fun w => Ψ₂ ((c.jac j 0 h).d.ext0 c.T w)) (hfl.1 0 (c.B j 0 h) (c.J j 0 h) (t.sBF j 0 h) Ψ₁ h1.1) ((GlobalTheory.WeilSrc.Zero. …`. Establish `R` using `real_of hψ (· ∈ v.tP) hcomb (hc.x j (by omega)).sd (hc.x (j + 1) (by omega)).sd (hc.x (j + 1 + 1) (by omega)).sd (v.op j) (hv.atT j).2 hC (hV.2 j h Ψ₁ Ψ₂ (vac_of_true h1) (vac_of_true h2)) (hT.2 j h Ψ₁ Ψ₂ (vac_of_true h1) (vac_of_true h2)).1`.
+
+Conclude with `⟨hC, R.2.1, R.2.2⟩`.
+-/
 theorem v_real : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → v.Is → t.Is → VacLaw (t := t) v → TLaw v w → FlatLaw D → (∀ j σ h Ψ₁ Ψ₂, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (fun _ => True) Ψ₁ → Vac c.ψ _ _ (v.N (j + 1)) (v.N (j + 1 + 1)) (fun _ => True) Ψ₂ → IsBiTheta c.ψ _ _ _ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂) ∧ c.IsReal j ((v.op j).app c.ψ (c.ctr j σ h (t.sBF j (σ + 1) h) (t.sFB j σ h) Ψ₁ Ψ₂))) ∧ ∀ j h Ψ₁ Ψ₂, WeilOK (t := t) v → Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (fun _ => True) Ψ₁ → Vac c.ψ _ _ (v.N (j + 1)) v.NT (fun _ => True) Ψ₂ → IsBiTheta c.ψ _ _ _ (c.lst j h (v.τ j h) (t.sBF j 0 h) Ψ₁ Ψ₂) ∧ c.IsReal j ((v.op j).app c.ψ (c.lst j h (v.τ j h) (t.sBF j 0 h) Ψ₁ Ψ₂)) := by
   intro D c v t w hc hv ht hV hT hF
   have hψ := hc.std

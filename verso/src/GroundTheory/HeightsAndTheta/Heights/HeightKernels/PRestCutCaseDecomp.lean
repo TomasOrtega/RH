@@ -6,6 +6,19 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce and unpack `f j k r a cs e hf hN h2 hF ⟨Q₀, hQ₀⟩`. Establish `hD : flagDim f j k = RestTerms.topDegree f (r + a)`. Simplify using `only [flagDim, RestTerms.topDegree, hN]`. Establish `hFh` using `(h₁ f r a cs).2`. Establish `hND : r + a ≤ RestTerms.topDegree f (r + a) + 1`.
+
+Establish `h1 : (r + a - 1) * 2 ≤ (r + a) * (r + a - 1)`. Rewrite using `[mul_comm]`. Conclude with `Nat.mul_le_mul_right _ h2`. Establish `h2' : r + a - 1 ≤ (r + a) * (r + a - 1) / 2` using `(Nat.le_div_iff_mul_le (by norm_num)).2 h1`. Establish `h3 : (r + a) * (r + a - 1) / 2 ≤ RestTerms.topDegree f (r + a)`.
+
+Unfold `RestTerms.topDegree`. Conclude with `Nat.le_mul_of_pos_left _ hf`. Use linear arithmetic over natural numbers and integers. Establish `hdec` using `h₂ f (r + a) _ Q₀ _ hQ₀ hFh hND`. Use `⟨⟨_, hdec, fun l σ _ _ => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD]`. Conclude with `homogeneousComponent_isHomogeneous _ _`. Use `⟨fun τ m => restTransport f j k (r + a) e (homogeneousComponent (RestTerms.topDegree f (r + a) + 1 - m) (Q₀ m τ)), fun τ m _ _ => ?_, ?_⟩` and prove the remaining obligations. Use `show (restRename f j k (r + a) e (map (algebraMap ℚ ℝ) _)).IsHomogeneous _`. Rewrite using `[hD]`.
+
+Conclude with `((homogeneousComponent_isHomogeneous _ _).map _).rename_isHomogeneous`. Rewrite using `[← hF] conv_lhs => rw [hdec]`. Rewrite using `[map_sum, Finset.sum_comm, ← hN]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h₃]`.
+-/
 theorem RestCutCaseDecomp.proof (h₁ : RestCutRestHom.Statement) (h₂ : RestCutHomDecomp.Statement)
     (h₃ : RestCutTransportPsum.Statement) : RestCutCaseDecomp.Statement := by
   rintro f j k r a cs e hf hN h2 hF ⟨Q₀, hQ₀⟩

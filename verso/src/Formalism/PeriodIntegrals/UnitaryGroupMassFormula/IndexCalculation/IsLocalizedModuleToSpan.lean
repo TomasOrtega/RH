@@ -12,6 +12,9 @@ section Gen
 
 variable {R : Type*} [CommRing R] (S : Submonoid R)
 
+/- English proof (translation)
+The claim follows from `Module.length_eq_add_of_exact (LocalizedModule.map S f) (LocalizedModule.map S g) (LocalizedModule.map_injective S f hf) (LocalizedModule.map_surjective S g hg) (LocalizedModule.map_exact S f g hfg)`.
+-/
 theorem lenS_exact {A B C : Type*} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     [AddCommGroup C] [Module R C] (f : A →ₗ[R] B) (g : B →ₗ[R] C) (hf : Function.Injective f)
     (hg : Function.Surjective g) (hfg : Function.Exact f g) :
@@ -27,15 +30,36 @@ variable {V : Type*} [AddCommGroup V] [Module R V]
 def lenS (M N : Submodule R V) : ℕ∞ :=
   Module.length (Localization S) (LocalizedModule S (↥M ⧸ N.comap M.subtype))
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]`. Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`.
+-/
 theorem comap_inf (M N : Submodule R V) : N.comap M.subtype = (M ⊓ N).comap M.subtype := by
   ext x
   simp only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]
   exact ⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Unfold `lenS`. Rewrite using `[comap_inf M N]`.
+-/
 theorem lenS_inf (M N : Submodule R V) : lenS S M N = lenS S M (M ⊓ N) := by
   unfold lenS
   rw [comap_inf M N]
 
+/- English proof (translation)
+Set `f : (↥N ⧸ P.comap N.subtype) →ₗ[R] (↥M ⧸ P.comap M.subtype)` to `Submodule.mapQ _ _ (Submodule.inclusion hNM) (by`. Introduce `x hx`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx ⊢`. Conclude with `hx)`. Set `g : (↥M ⧸ P.comap M.subtype) →ₗ[R] (↥M ⧸ N.comap M.subtype)` to `Submodule.mapQ _ _ LinearMap.id (fun x hx => hPN hx)`.
+
+Establish `key` using `lenS_exact S f g ?_ ?_ ?_`. Unfold `lenS`. Rewrite using `[key, add_comm]`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`.
+
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite `hy` using `[LinearMap.mem_ker]`. Simplify using `only [f] at hy`. Rewrite `hy` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Conclude with `hy`. Introduce `z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H x => exact ⟨Submodule.Quotient.mk x, rfl⟩`.
+
+Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Prove the components needed by the constructor for the conclusion. Introduce `hy dsimp only [g] at hy`.
+
+Rewrite `hy` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Submodule.Quotient.mk ⟨x, hy⟩, rfl⟩`. Introduce and unpack `⟨w, hw⟩`. Rewrite using `[← hw]`. Proceed by induction on `w using Submodule.Quotient.induction_on with`.
+
+Consider the case `H z => dsimp only [f, g]`. Rewrite using `[Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `z.2`.
+-/
 theorem lenS_add (P N M : Submodule R V) (hPN : P ≤ N) (hNM : N ≤ M) :
     lenS S M P = lenS S M N + lenS S N P := by
   let f : (↥N ⧸ P.comap N.subtype) →ₗ[R] (↥M ⧸ P.comap M.subtype) :=
@@ -76,11 +100,21 @@ theorem lenS_add (P N M : Submodule R V) (hPN : P ≤ N) (hNM : N ≤ M) :
           rw [Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]
           exact z.2
 
+/- English proof (translation)
+Rewrite using `[lenS_add S P N M hPN hNM]`. Conclude with `le_self_add`.
+-/
 theorem lenS_le (P N M : Submodule R V) (hPN : P ≤ N) (hNM : N ≤ M) :
     lenS S M N ≤ lenS S M P := by
   rw [lenS_add S P N M hPN hNM]
   exact le_self_add
 
+/- English proof (translation)
+Unfold `lenS`. Establish `: Subsingleton (LocalizedModule S (↥M ⧸ N.comap M.subtype))`. Rewrite using `[IsLocalizedModule.subsingleton_iff S (LocalizedModule.mkLinearMap S _)]`. Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`.
+
+Consider the case `H x`. Take `⟨s, hs, hsx⟩` from `h x.1 x.2`. Conclude with `⟨s, hs, by`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hsx⟩`.
+
+Conclude with `Module.length_eq_zero`.
+-/
 theorem lenS_eq_zero (M N : Submodule R V) (h : ∀ x ∈ M, ∃ s ∈ S, s • x ∈ N) :
     lenS S M N = 0 := by
   unfold lenS
@@ -95,9 +129,15 @@ theorem lenS_eq_zero (M N : Submodule R V) (h : ∀ x ∈ M, ∃ s ∈ S, s • 
         exact hsx⟩
   exact Module.length_eq_zero
 
+/- English proof (translation)
+The claim follows from `lenS_eq_zero S M N fun x hx => ⟨1, S.one_mem, by rw [one_smul]; exact h hx⟩`.
+-/
 theorem lenS_of_le (M N : Submodule R V) (h : M ≤ N) : lenS S M N = 0 :=
   lenS_eq_zero S M N fun x hx => ⟨1, S.one_mem, by rw [one_smul]; exact h hx⟩
 
+/- English proof (translation)
+Set `b` to `Module.finBasis A N`. Set `e : (N ⧸ J • (⊤ : Submodule A N)) ≃ₗ[A] (Fin (Module.finrank A N) → A ⧸ J)` to `(TensorProduct.quotTensorEquivQuotSMul N J).symm ≪≫ₗ TensorProduct.congr (LinearEquiv.refl A (A ⧸ J)) b.equivFun ≪≫ₗ TensorProduct.piScalarRight A A (A ⧸ J) (Fin (Module.finrank A N))`. Rewrite using `[e.length_eq, Module.length_pi_of_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem length_quot_free {A : Type*} [CommRing A] [StrongRankCondition A] (J : Ideal A)
     (N : Type*) [AddCommGroup N] [Module A N] [Module.Free A N] [Module.Finite A N] :
     Module.length A (N ⧸ J • (⊤ : Submodule A N)) =
@@ -119,6 +159,9 @@ variable {K : Type*} [Field K] {R : Type*} [CommRing R] [IsDomain R] [Algebra R 
 
 variable (K) in
 include K in
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K c x, smul_eq_zero]`. Establish `: algebraMap R K c ≠ 0`. Introduce `h`. Conclude with `hc ((IsFractionRing.injective R K) (by rw [h, map_zero]))`. Simplify using `[this]`.
+-/
 theorem smul_eq_zero_iff' {c : R} (hc : c ≠ 0) {x : V} : c • x = 0 ↔ x = 0 := by
   rw [← algebraMap_smul K c x, smul_eq_zero]
   have : algebraMap R K c ≠ 0 := by
@@ -126,10 +169,20 @@ theorem smul_eq_zero_iff' {c : R} (hc : c ≠ 0) {x : V} : c • x = 0 ↔ x = 0
     exact hc ((IsFractionRing.injective R K) (by rw [h, map_zero]))
   simp [this]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ElementDenominator.eltDen Y hy`.
+-/
 theorem eltDen (Y : Submodule R V) {y : V} (hy : y ∈ Submodule.span K (Y : Set V)) :
     ∃ s : R, s ≠ 0 ∧ s • y ∈ Y :=
   _root_.UpperTheory.Reformulated.B.ElementDenominator.eltDen Y hy
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hX`. Establish `hc : ∀ a ∈ s, ∃ c : R, c ≠ 0 ∧ c • a ∈ Y` using `fun a ha => eltDen (K := K) Y (hXY a (Submodule.subset_span ha))`. Use `choose! c hc0 hcY using hc`. Use `⟨∏ a ∈ s, c a, Finset.prod_ne_zero_iff.mpr hc0, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Rewrite using `[← Finset.prod_erase_mul s c ha, mul_smul]`. Conclude with `Y.smul_mem _ (hcY a ha)`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `Y.zero_mem`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Y.add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `Y.smul_mem r hx`.
+-/
 theorem den (X Y : Submodule R V) (hX : X.FG) (hXY : ∀ x ∈ X, x ∈ Submodule.span K (Y : Set V)) :
     ∃ c : R, c ≠ 0 ∧ ∀ x ∈ X, c • x ∈ Y := by
   classical
@@ -148,6 +201,9 @@ theorem den (X Y : Submodule R V) (hX : X.FG) (hXY : ∀ x ∈ X, x ∈ Submodul
   | smul r x _ hx => rw [smul_comm]; exact Y.smul_mem r hx
 
 omit [IsScalarTower R K V] in
+/- English proof (translation)
+The claim follows from `den (K := K) X Y hX fun x hx => h ▸ Submodule.subset_span hx`.
+-/
 theorem den_of_span (X Y : Submodule R V) (hX : X.FG) [IsScalarTower R K V]
     (h : Submodule.span K (X : Set V) = Submodule.span K (Y : Set V)) :
     ∃ c : R, c ≠ 0 ∧ ∀ x ∈ X, c • x ∈ Y :=
@@ -155,6 +211,9 @@ theorem den_of_span (X Y : Submodule R V) (hX : X.FG) [IsScalarTower R K V]
 
 variable (K) in
 include K in
+/- English proof (translation)
+The claim follows from `Module.isTorsionFree_iff_smul_eq_zero.mpr fun r v h => by by_cases hr : r = 0 · exact Or.inl hr · exact Or.inr ((smul_eq_zero_iff' K hr).mp h)`.
+-/
 theorem isTorsionFree_V : Module.IsTorsionFree R V :=
   Module.isTorsionFree_iff_smul_eq_zero.mpr fun r v h => by
     by_cases hr : r = 0
@@ -163,6 +222,9 @@ theorem isTorsionFree_V : Module.IsTorsionFree R V :=
 
 variable (K) in
 include K in
+/- English proof (translation)
+The claim follows from `Module.isTorsionFree_iff_smul_eq_zero.mpr fun r v h => by by_cases hr : r = 0 · exact Or.inl hr · refine Or.inr (Subtype.ext ?_) have : r • (v : V) = 0 := by rw [← Submodule.coe_smul, h, Submodule.coe_zero] exact (smul_eq_zero_iff' K hr).mp this`.
+-/
 theorem isTorsionFree_sub (M : Submodule R V) : Module.IsTorsionFree R M :=
   Module.isTorsionFree_iff_smul_eq_zero.mpr fun r v h => by
     by_cases hr : r = 0
@@ -206,6 +268,9 @@ instance isLocalizedModule_toSpan (M : Submodule R V) :
     have : x₁ = x₂ := Subtype.ext h'
     rw [this]
 
+/- English proof (translation)
+Rewrite using `[IsLocalization.finrank_eq K (nonZeroDivisors R) le_rfl]`. Conclude with `IsLocalizedModule.finrank_eq (nonZeroDivisors R) (toSpan (K := K) M) le_rfl`.
+-/
 theorem finrank_span_eq (M : Submodule R V) :
     Module.finrank K (Submodule.span K (M : Set V)) = Module.finrank R M := by
   rw [IsLocalization.finrank_eq K (nonZeroDivisors R) le_rfl]

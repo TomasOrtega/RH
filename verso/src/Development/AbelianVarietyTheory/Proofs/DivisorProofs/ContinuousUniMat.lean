@@ -13,6 +13,11 @@ abbrev Pos (n : ℕ) : Type := {p : Fin n × Fin n // p.1 < p.2}
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[LeviDatum.mem_U]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, e⟩`. Conclude with `⟨fun _ _ hij => h hij, fun i => congrArg (fun t : Fin n → kˣ => (t i : k)) e⟩`. Introduce and unpack `⟨h, e⟩`.
+
+Conclude with `⟨fun _ _ hij => h _ _ hij, funext fun i => Units.ext (e i)⟩`.
+-/
 theorem mem_U_iff (g : GL (Fin n) k) :
     g ∈ (borelGL k (Fin n)).U ↔ (∀ i j, j < i → g.val i j = 0) ∧ ∀ i, g.val i i = 1 := by
   rw [LeviDatum.mem_U]
@@ -26,18 +31,32 @@ def uniMat (x : Pos n → k) : Matrix (Fin n) (Fin n) k :=
   fun i j => if h : i < j then x ⟨(i, j), h⟩ else if i = j then 1 else 0
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[uniMat, h.not_gt, h.ne']`.
+-/
 theorem uniMat_low (x : Pos n → k) (i j : Fin n) (h : j < i) : uniMat x i j = 0 := by
   simp [uniMat, h.not_gt, h.ne']
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[uniMat]`.
+-/
 theorem uniMat_diag (x : Pos n → k) (i : Fin n) : uniMat x i i = 1 := by
   simp [uniMat]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[det_of_upperTriangular (fun i j h => uniMat_low x i j h)]`. Simplify using `[uniMat_diag]`.
+-/
 theorem uniMat_det (x : Pos n → k) : (uniMat x).det = 1 := by
   rw [det_of_upperTriangular (fun i j h => uniMat_low x i j h)]
   simp [uniMat_diag]
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Unfold `uniMat`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_uniMat : Continuous (uniMat : (Pos n → k) → _) := by
   refine continuous_matrix fun i j => ?_
   unfold uniMat
@@ -50,6 +69,9 @@ def uniGL (x : Pos n → k) : GL (Fin n) k :=
   ⟨uniMat x, (uniMat x).adjugate, by rw [mul_adjugate, uniMat_det, one_smul],
     by rw [adjugate_mul, uniMat_det, one_smul]⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨continuous_uniMat, continuous_uniMat.matrix_adjugate⟩`.
+-/
 theorem continuous_uniGL : Continuous (uniGL : (Pos n → k) → _) :=
   Units.continuous_iff.2 ⟨continuous_uniMat, continuous_uniMat.matrix_adjugate⟩
 
@@ -72,11 +94,19 @@ def coord (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
   continuous_toFun := continuous_pi fun p => (continuous_entry _ _).comp continuous_subtype_val
   continuous_invFun := continuous_uniGL.subtype_mk _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_apply (u : (borelGL k (Fin n)).U) (p : Pos n) : coord k n u p = u.1.val p.1.1 p.1.2 := rfl
 
 def leftMat (A : Matrix (Fin n) (Fin n) k) : Matrix (Pos n) (Pos n) k :=
   fun p q => if q.1.2 = p.1.2 then A p.1.1 q.1.1 else 0
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_U_iff _).1 u.2`. Establish `hb : (leftMat u.1.val).BlockTriangular (fun p => p.1.1)` using `fun p q h => by`. Simplify using `[leftMat, h1 _ _ h]`. Rewrite using `[hb.det_fintype]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations.
+
+Establish `: (leftMat u.1.val).toSquareBlock (fun p => p.1.1) a = 1`. Use extensionality with `⟨⟨⟨i, j⟩, hp⟩, rfl⟩ ⟨⟨⟨i', j'⟩, hq⟩, e⟩`. Take `rfl : i' = i` from `e`. Simplify using `[toSquareBlock_def, leftMat, h2, Matrix.one_apply, eq_comm]`. Rewrite using `[this, det_one]`.
+-/
 theorem leftMat_det (u : (borelGL k (Fin n)).U) : (leftMat u.1.val).det = 1 := by
   obtain ⟨h1, h2⟩ := (mem_U_iff _).1 u.2
   have hb : (leftMat u.1.val).BlockTriangular (fun p => p.1.1) := fun p q h => by
@@ -89,6 +119,13 @@ theorem leftMat_det (u : (borelGL k (Fin n)).U) : (leftMat u.1.val).det = 1 := b
     simp [toSquareBlock_def, leftMat, h2, Matrix.one_apply, eq_comm]
   rw [this, det_one]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_U_iff _).1 x.2`. Use function extensionality and compare the values at `⟨⟨i, j⟩, hp⟩`. Use `show (u.1.val * x.1.val) i j = ∑ q : Pos n, (if q.1.2 = j then u.1.val i q.1.1 else 0) * x.1.val q.1.1 q.1.2 + u.1.val i j`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun p : Fin n × Fin n => p.1 < p.2) (by simp) (fun q : Fin n × Fin n => (if q.2 = j then u.1.val i q.1 else 0) * x.1.val q.1 q.2), Finset.sum_filter, Fintype.sum_prod_type, mul_apply]`. Establish `: u.1.val i j = ∑ l, if l = j then u.1.val i l else 0` using `by simp`.
+
+Rewrite using `[this, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [hb]) (by simp)]`. Break down `lt_trichotomy l j with h | rfl | h` into its components or cases. Simplify using `[h, h.ne]`.
+
+Simplify using `[h2]`. Simplify using `[h.not_gt, h.ne', h1 _ _ h]`.
+-/
 theorem coord_mul (u x : (borelGL k (Fin n)).U) :
     coord k n (u * x) = (leftMat u.1.val).mulVec (coord k n x) + coord k n u := by
   obtain ⟨h1, h2⟩ := (mem_U_iff _).1 x.2
@@ -107,6 +144,11 @@ theorem coord_mul (u x : (borelGL k (Fin n)).U) :
   · simp [h2]
   · simp [h.not_gt, h.ne', h1 _ _ h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[mulVec_diagonal, coord_apply, conjAut_coe, coord_apply]`. Use `show ((diagHom k (Fin n) t) * x.1 * (diagHom k (Fin n) t)⁻¹).val _ _ = _`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, diagHom_val, diagHom_val, mul_diagonal, diagonal_mul]`. Simplify using `only [Pi.inv_apply, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coord_conj (t : Fin n → kˣ) (ht) (x : (borelGL k (Fin n)).U) :
     coord k n (conjAut _ ⟨(borelGL k (Fin n)).s t, ht⟩ x) =
       (diagonal fun p : Pos n => ((t p.1.1 * (t p.1.2)⁻¹ : kˣ) : k)).mulVec (coord k n x) := by
@@ -117,6 +159,11 @@ theorem coord_conj (t : Fin n → kˣ) (ht) (x : (borelGL k (Fin n)).U) :
   simp only [Pi.inv_apply, Units.val_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun p : Fin n × Fin n => p.1 < p.2) (by simp) (fun q : Fin n × Fin n => t q.1 * (t q.2)⁻¹), Finset.prod_mul_distrib, Finset.prod_filter, Finset.prod_filter, Fintype.prod_prod_type, Fintype.prod_prod_type_right, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.prod_filter, Finset.prod_const]`. Rewrite using `[Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio, inv_pow, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_sub]`. Use `congr 1`.
+
+Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_pos_eq {G : Type} [CommGroup G] (t : Fin n → G) :
     ∏ p : Pos n, (t p.1.1 * (t p.1.2)⁻¹) = ∏ i : Fin n, t i ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ)) := by
   rw [← Finset.prod_subtype (Finset.univ.filter fun p : Fin n × Fin n => p.1 < p.2) (by simp)
@@ -130,6 +177,25 @@ theorem prod_pos_eq {G : Type} [CommGroup G] (t : Fin n → G) :
   have := i.2
   omega
 
+/- English proof (translation)
+Use `haveI := SplitWeil.secondCountable k`. Use `borelize k`. Use `borelize ↥(borelGL k (Fin n)).U`. Set `ν : Measure k` to `Measure.addHaar`. Set `π : Measure (Pos n → k)` to `Measure.pi fun _ => ν`.
+
+Set `e` to `coord k n`. Set `μ : Measure (borelGL k (Fin n)).U` to `Measure.map e.symm π`. Establish `hm : ∀ A : Matrix (Pos n) (Pos n) k, Measurable A.mulVec` using `fun A => (continuous_const.matrix_mulVec continuous_id).measurable`. Establish `hes : Measurable e.symm` using `e.symm.continuous.measurable`. Use `haveI : μ.Regular := Measure.Regular.map e.symm`.
+
+Use `haveI : μ.IsOpenPosMeasure := e.symm.continuous.isOpenPosMeasure_map e.symm.surjective`. Use `haveI : μ.IsMulLeftInvariant := ⟨fun u => by`. Establish `h1 : (fun x => u * x) ∘ e.symm = e.symm ∘ (fun y => y + e u) ∘ (leftMat u.1.val).mulVec`. Use function extensionality and compare the values at `y`. Apply `e.injective` to reduce the goal to its premises.
+
+Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply]`. Rewrite using `[coord_mul, Homeomorph.apply_symm_apply]`. Establish `h2` using `WeilM.smul_map_mulVec_pi ν (leftMat u.1.val) 1 (by rw [leftMat_det]; rfl)`. Rewrite `h2` using `[map_one, ENNReal.coe_one, one_smul]`. Rewrite using `[Measure.map_map (measurable_const_mul u) hes, h1, ← Measure.map_map hes ((measurable_add_const _).comp (hm _)), ← Measure.map_map (measurable_add_const _) (hm _), h2, map_add_right_eq_self]⟩`.
+
+Use `haveI : μ.IsHaarMeasure := {}`. Use `set t := (borelGL k (Fin n)).p q`. Rewrite using `[LeviDatum.delta_apply]`. Use `set g : Subgroup.normalizer ((borelGL k (Fin n)).U : Set (GL (Fin n) k)) := ⟨(borelGL k (Fin n)).s t, _⟩`. Use `set c := distribHaarChar k (∏ p : Pos n, (t p.1.1 * (t p.1.2)⁻¹))`.
+
+Establish `hc : Continuous (conjAut (borelGL k (Fin n)).U g)` using `(conjAut _ g).continuous`. Establish `h3 : (c : ENNReal) • Measure.map (conjAut _ g) μ = μ`. Establish `h1 : (conjAut _ g) ∘ e.symm = e.symm ∘ (diagonal fun p : Pos n => ((t p.1.1 * (t p.1.2)⁻¹ : kˣ) : k)).mulVec`. Use function extensionality and compare the values at `y`. Apply `e.injective` to reduce the goal to its premises.
+
+Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply]`. Rewrite using `[coord_conj, Homeomorph.apply_symm_apply]`. Establish `h2` using `WeilM.smul_map_mulVec_pi ν (diagonal fun p : Pos n => ((t p.1.1 * (t p.1.2)⁻¹ : kˣ) : k)) (∏ p : Pos n, (t p.1.1 * (t p.1.2)⁻¹)) (by rw [det_diagonal, Units.coe_prod])`. Rewrite using `[Measure.map_map hc.measurable hes, h1, ← Measure.map_map hes (hm _), ← Measure.map_smul, h2]`. Use `haveI : LocallyCompactSpace (borelGL k (Fin n)).U := (borelGL k (Fin n)).closed_U.locallyCompactSpace`.
+
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : (borelGL k (Fin n)).U)`. Establish `h4` using `modulus_measure _ (borelGL k (Fin n)).closed_U μ g K`. Establish `h5` using `congrArg (fun m : Measure _ => m (conjAut _ g '' K)) h3`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h5`. Rewrite `h5` using `[Measure.map_apply hc.measurable (hK.image hc).isClosed.measurableSet, Set.preimage_image_eq _ (conjAut _ g).injective, h4]`.
+
+Conclude with `(ENNReal.coe_injective ((ENNReal.mul_left_inj (Measure.measure_pos_of_mem_nhds μ hK1).ne' hK.measure_lt_top.ne).1 h5)).symm`.
+-/
 theorem delta_eq (q : (borelGL k (Fin n)).Q) :
     (borelGL k (Fin n)).delta q =
       distribHaarChar k (∏ p : Pos n, ((borelGL k (Fin n)).p q p.1.1 * ((borelGL k (Fin n)).p q p.1.2)⁻¹)) := by
@@ -184,6 +250,11 @@ theorem delta_eq (q : (borelGL k (Fin n)).Q) :
   exact (ENNReal.coe_injective ((ENNReal.mul_left_inj (Measure.measure_pos_of_mem_nhds μ hK1).ne'
     hK.measure_lt_top.ne).1 h5)).symm
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n q`. Rewrite using `[delta_eq, prod_pos_eq, map_prod, NNReal.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ∀ (x : kˣ) (m : ℤ), distribHaarChar k (x ^ m) = distribHaarChar k x ^ m` using `fun x m => (congrArg Units.val (map_zpow (distribHaarChar k (G := kˣ)).toHomUnits x m)).trans (Units.val_zpow_eq_zpow_val _ _)`. Rewrite using `[h, NNReal.coe_zpow]`.
+
+Both sides reduce to the same expression.
+-/
 theorem delta_borelGL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (q : (borelGL k (Fin n)).Q), (((borelGL k (Fin n)).delta q : ℝ≥0) : ℝ) =
       ∏ i : Fin n, GlobalTheory.SplitWeil.nabs k ((borelGL k (Fin n)).p q i) ^ ((n : ℤ) - 1 - 2 * (i.val : ℤ)) := by

@@ -8,5 +8,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems | exact GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems | (intros; apply GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.top_separation : GlobalTheory.FunPr.Hypotheses₂ → TopSep := by
   first | exact @GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems | exact GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems | (intros; apply GlobalTheory.SepRows.SepProof.topSep_of_classicalTheorems <;> assumption)

@@ -18,11 +18,17 @@ namespace GlobalTheory.EisRestrict.LatLocPre
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
   (J : Matrix (Fin n) (Fin n) E) {r : ℕ} (X Y : Matrix (Fin n) (Fin (r + 1)) E)
 
+/- English proof (translation)
+Rewrite using `[hE_eq_dot, ← Matrix.mulVec_mulVec]`. Simplify using `[Formalism.UG.cT, Matrix.mulVec, dotProduct, GlobalTheory.EisMidHt.firstColumn]`.
+-/
 theorem mulVec_zero_eq (Z : Matrix (Fin n) (Fin (r + 1)) E) (z : Fin n → E) :
     ((Formalism.UG.cT (σ : E →+* E) Z * J) *ᵥ z) 0 = hE σ J (GlobalTheory.EisMidHt.firstColumn Z) z := by
   rw [hE_eq_dot, ← Matrix.mulVec_mulVec]
   simp [Formalism.UG.cT, Matrix.mulVec, dotProduct, GlobalTheory.EisMidHt.firstColumn]
 
+/- English proof (translation)
+Rewrite using `[← mulVec_zero_eq]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, GlobalTheory.EisMidHt.firstColumn]`.
+-/
 theorem hE_col0v_apply (Z W : Matrix (Fin n) (Fin (r + 1)) E) :
     hE σ J (GlobalTheory.EisMidHt.firstColumn Z) (GlobalTheory.EisMidHt.firstColumn W) = (Formalism.UG.cT (σ : E →+* E) Z * J * W) 0 0 := by
   rw [← mulVec_zero_eq]
@@ -32,16 +38,33 @@ def prj : (Fin n → E) →ₗ[E] (Fin n → E) :=
   LinearMap.id - LinearMap.smulRight (hRight σ J (GlobalTheory.EisMidHt.firstColumn Y)) (GlobalTheory.EisMidHt.firstColumn X) -
     LinearMap.smulRight (hRight σ J (GlobalTheory.EisMidHt.firstColumn X)) (GlobalTheory.EisMidHt.firstColumn Y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prj_apply (z : Fin n → E) : prj σ J X Y z =
     z - hE σ J (GlobalTheory.EisMidHt.firstColumn Y) z • GlobalTheory.EisMidHt.firstColumn X - hE σ J (GlobalTheory.EisMidHt.firstColumn X) z • GlobalTheory.EisMidHt.firstColumn Y :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[prj_apply, (mem_invariant_forms σ J X Y).1 hz |>.1, (mem_invariant_forms σ J X Y).1 hz |>.2]`. Simplify using the standard rewrite rules.
+-/
 theorem prj_of_mem {z : Fin n → E} (hz : z ∈ V0 σ J X Y) : prj σ J X Y z = z := by
   rw [prj_apply, (mem_invariant_forms σ J X Y).1 hz |>.1, (mem_invariant_forms σ J X Y).1 hz |>.2]
   simp
 
 variable {σ J X Y}
 
+/- English proof (translation)
+Establish `hxx : hRight σ J (GlobalTheory.EisMidHt.firstColumn X) (GlobalTheory.EisMidHt.firstColumn X) = 0`. Express the relevant statement in the definitionally equal form `hE σ J _ _ = 0`. Rewrite using `[hE_col0v_apply, hW.xx]`. Both sides reduce to the same expression. Establish `hyy : hRight σ J (GlobalTheory.EisMidHt.firstColumn Y) (GlobalTheory.EisMidHt.firstColumn Y) = 0`.
+
+Express the relevant statement in the definitionally equal form `hE σ J _ _ = 0`. Rewrite using `[hE_col0v_apply, hW.yy]`. Both sides reduce to the same expression. Establish `hxy : hRight σ J (GlobalTheory.EisMidHt.firstColumn X) (GlobalTheory.EisMidHt.firstColumn Y) = 1`. Express the relevant statement in the definitionally equal form `hE σ J _ _ = 1`.
+
+Rewrite using `[hE_col0v_apply, hW.xy]`. Both sides reduce to the same expression. Establish `hyx : hRight σ J (GlobalTheory.EisMidHt.firstColumn Y) (GlobalTheory.EisMidHt.firstColumn X) = 1`. Express the relevant statement in the definitionally equal form `hE σ J _ _ = 1`. Rewrite using `[hE_col0v_apply, GlobalTheory.StdPar.yx h hJ hW]`.
+
+Both sides reduce to the same expression. Use `(mem_invariant_forms σ J X Y).2 ⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hRight σ J _ (prj σ J X Y z) = 0`. Simplify using `only [prj, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smulRight_apply, map_sub, map_smul, hxx, hxy, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `hRight σ J _ (prj σ J X Y z) = 0`. Simplify using `only [prj, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smulRight_apply, map_sub, map_smul, hyy, hyx, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prj_mem (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (z : Fin n → E) :
     prj σ J X Y z ∈ V0 σ J X Y := by
   have hxx : hRight σ J (GlobalTheory.EisMidHt.firstColumn X) (GlobalTheory.EisMidHt.firstColumn X) = 0 := by
@@ -70,15 +93,26 @@ def crd (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
 
 variable {σ J X Y}
 
+/- English proof (translation)
+Rewrite using `[ι_eq_sum, ← Module.Basis.equivFun_symm_apply]`. Simplify using `[crd]`.
+-/
 theorem ι_crd (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (z : Fin n → E) :
     ι σ J X Y (crd σ J X Y h hJ hW z) = prj σ J X Y z := by
   rw [ι_eq_sum, ← Module.Basis.equivFun_symm_apply]
   simp [crd]
 
+/- English proof (translation)
+The claim follows from `ι_injective σ J X Y (by rw [ι_crd, prj_of_mem σ J X Y (ι_mem σ J X Y u)])`.
+-/
 theorem crd_ι (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (u : Fin (dim σ J X Y) → E) :
     crd σ J X Y h hJ hW (ι σ J X Y u) = u :=
   ι_injective σ J X Y (by rw [ι_crd, prj_of_mem σ J X Y (ι_mem σ J X Y u)])
 
+/- English proof (translation)
+Establish `e : P σ J X Y = LinearMap.toMatrix' (ι σ J X Y)`. Establish `e' : ι σ J X Y = Matrix.toLin' (P σ J X Y)` using `LinearMap.ext fun u => by rw [ι_apply, Matrix.toLin'_apply]`. Rewrite using `[e', LinearMap.toMatrix'_toLin']`. Rewrite using `[e, ← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`.
+
+Conclude with `LinearMap.ext fun u => crd_ι h hJ hW u`.
+-/
 theorem Q_mul_P (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     LinearMap.toMatrix' (crd σ J X Y h hJ hW) * P σ J X Y = 1 := by
   have e : P σ J X Y = LinearMap.toMatrix' (ι σ J X Y) := by
@@ -89,6 +123,9 @@ theorem Q_mul_P (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J
   congr 1
   exact LinearMap.ext fun u => crd_ι h hJ hW u
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hA.split z hz 0`. Rewrite `h1`, `h2` using `[mulVec_zero_eq]`. Rewrite using `[prj_apply]`. Conclude with `sub_mem (sub_mem hz h1) h2`.
+-/
 theorem prj_mem_L {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F ⊗[F] E)}
     (hA : GlobalTheory.EisLine.IsAdapted σ J X Y L a) {z : Fin n → E} (hz : z ∈ L) : prj σ J X Y z ∈ L := by
   obtain ⟨h1, h2⟩ := hA.split z hz 0
@@ -98,11 +135,19 @@ theorem prj_mem_L {L : Submodule (𝓞 E) (Fin n → E)} {a : GL (Fin n) (AF F �
 
 variable {a b : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct, inclR, TensorProduct.tmul_sum, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem map_mulVec_tmul {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (M : Matrix (Fin a) (Fin b) E) (c : Fv F v)
     (x : Fin b → E) : M.map (inclR (F := F) (Fv F v)) *ᵥ (fun i => c ⊗ₜ[F] x i) = fun j => c ⊗ₜ[F] (M *ᵥ x) j := by
   funext j
   simp [Matrix.mulVec, dotProduct, inclR, TensorProduct.tmul_sum, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Use `latLoc_induction (p := fun y => M.map (inclR (F := F) (Fv F v)) *ᵥ y ∈ latLoc F L' v) (fun c hc x hx => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hy` and prove the remaining obligations. Rewrite using `[map_mulVec_tmul]`. Conclude with `tmul_mem_latLoc hc (hM x hx)`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem hy hz`. Rewrite using `[Matrix.mulVec_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem map_mulVec_mem_latLoc {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (M : Matrix (Fin a) (Fin b) E)
     {L : Submodule (𝓞 E) (Fin b → E)} {L' : Submodule (𝓞 E) (Fin a → E)} (hM : ∀ x ∈ L, M *ᵥ x ∈ L')
     {y : Fin b → Fv F v ⊗[F] E} (hy : y ∈ latLoc F L v) : M.map (inclR (F := F) (Fv F v)) *ᵥ y ∈ latLoc F L' v := by
@@ -119,6 +164,11 @@ namespace GlobalTheory.EisRestrict
 
 open LatLocPre in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW L a hA v u`. Prove the components needed by the constructor for the conclusion. Conclude with `map_mulVec_mem_latLoc _ (fun x hx => (mem_lattice_zeroTorus σ J X Y).1 hx)`. Introduce `hu`. Establish `h1` using `map_mulVec_mem_latLoc (L' := L0 σ J X Y L) (LinearMap.toMatrix' (crd σ J X Y h hJ hW)) (fun x hx => by`.
+
+Rewrite using `[mem_lattice_zeroTorus, LinearMap.toMatrix'_mulVec, ← ι_apply, ι_crd]`. Conclude with `prj_mem_L hA hx) hu`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Q_mul_P, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_localLattice_restricted_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

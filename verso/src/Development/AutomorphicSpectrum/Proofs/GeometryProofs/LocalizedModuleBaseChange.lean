@@ -4,6 +4,19 @@ namespace GlobalTheory.CompanionTheory.LocHom
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hu` using `IsLocalizedModule.map_units h s`. Rewrite `hu` using `[Module.End.isUnit_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `(show Function.Injective i' from fun a b e => by rw [← hji' a, ← hji' b, e])` to reduce the goal to its premises. Apply `hu.1` to reduce the goal to its premises. Simplify using `only [Module.algebraMap_end_apply] at hxy ⊢`.
+
+Rewrite using `[← map_smul, ← map_smul, hxy]`. Introduce `y`. Take `⟨z, hz⟩` from `hu.2 (i' y)`. Use `⟨j' z, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply] at hz ⊢`.
+
+Rewrite using `[← map_smul, hz, hji']`. Introduce `y`. Take `⟨⟨x, s⟩, hx⟩` from `IsLocalizedModule.surj S h (i' y)`. Use `⟨⟨j x, s⟩, ?_⟩` and prove the remaining obligations. Simplify using `only at hx ⊢`.
+
+Rewrite using `[hj, ← hx, Submonoid.smul_def, Submonoid.smul_def, map_smul, hji']`. Introduce `x₁ x₂ e`. Establish `h0 : h (i x₁) = h (i x₂)` using `by rw [hi, hi, e]`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := S) h0`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg j hc`. Simplify `h1` using `only [Submonoid.smul_def, map_smul, hji]`.
+-/
 theorem isLocalizedModule_of_retract {M M' N N' : Type*} [AddCommGroup M] [AddCommGroup M']
     [AddCommGroup N] [AddCommGroup N'] [Module R M] [Module R M'] [Module R N] [Module R N']
     (S : Submonoid R) (g : M →ₗ[R] M') (h : N →ₗ[R] N') [IsLocalizedModule S h]
@@ -39,6 +52,13 @@ theorem isLocalizedModule_of_retract {M M' N N' : Type*} [AddCommGroup M] [AddCo
     have h1 := congrArg j hc
     simpa only [Submonoid.smul_def, map_smul, hji] using h1
 
+/- English proof (translation)
+Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (Submonoid.powers f) a`. Simplify using `only at hrs`. Establish `hs : IsUnit (algebraMap R D s)`. Use `(IsLocalization.map_units (Localization.Away f) s).map ρ` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Then use the resulting hypothesis.
+
+Establish `h1 : (s : R) • (a • p) = r • p`. Rewrite using `[← algebraMap_smul (Localization.Away f) (s : R), ← algebraMap_smul (Localization.Away f) r, ← hrs, smul_smul, mul_comm]`. Establish `h2 : (s : R) • φ (a • p) = r • φ p` using `by rw [← map_smul, h1, map_smul]`. Rewrite `h2` using `[Algebra.smul_def, Algebra.smul_def]`. Establish `h3` using `congrArg ρ hrs`.
+
+Rewrite `h3` using `[map_mul, AlgHom.commutes, AlgHom.commutes]`. Apply `hs.mul_right_injective` to reduce the goal to its premises. Use `show algebraMap R D s * _ = algebraMap R D s * _`. Take the linear combination `h2 - φ p * h3`.
+-/
 theorem map_away_smul {f : R} {P D : Type*} [AddCommGroup P] [Module R P]
     [Module (Localization.Away f) P] [IsScalarTower R (Localization.Away f) P]
     [CommRing D] [Algebra R D] (ρ : Localization.Away f →ₐ[R] D) (φ : P →ₗ[R] D)
@@ -81,6 +101,19 @@ def evalAt (D : Type*) [CommRing D] [Algebra R D] (b : Fin n → P) :
 
 end retraction
 
+/- English proof (translation)
+Introduce `R P C C' _ _ _ _ _ f t _ _ _ _ _ _ hf c hc`. Establish `hunit : ∀ y : Submonoid.powers f, IsUnit ((Algebra.ofId R C) (y : R))`. Introduce and unpack `⟨_, k, rfl⟩`. Simplify `hf.pow k` using `[Algebra.ofId_apply]`. Set `ρ : Localization.Away f →ₐ[R] C` to `IsLocalization.liftAlgHom (M := Submonoid.powers f) hunit`.
+
+Set `ρ' : Localization.Away f →ₐ[R] C'` to `c.comp ρ`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' (Localization.Away f) P`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `s₀ : P →ₗ[R] (Fin n → Localization.Away f)` to `s.restrictScalars R`. Set `b : Fin n → P` to `fun k => π (fun j => if k = j then 1 else 0)`.
+
+Establish `hexp : ∀ p : P, ∑ k, s p k • b k = p`. Introduce `p`. Establish `h1` using `LinearMap.congr_fun hs p`. Establish `h2` using `LinearMap.pi_apply_eq_sum_univ π (s p)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1`.
+
+Rewrite `h2` using `[h1]`. Conclude with `h2.symm`. Establish `hret : ∀ {D : Type} [CommRing D] [Algebra R D] (σ : Localization.Away f →ₐ[R] D) (φ : P →ₗ[R] D), assemble s₀ σ (evalAt D b φ) = φ`. Introduce `D _ _ σ φ`. Use extensionality with `p`.
+
+Use `conv_rhs => rw [← hexp p]`. Simplify using `[assemble, evalAt, coord, s₀, map_sum, map_away_smul σ, mul_comm]`. Use `haveI : IsLocalizedModule (Submonoid.powers t) (LinearMap.pi fun k : Fin n => c.toLinearMap ∘ₗ LinearMap.proj k) := IsLocalizedModule.pi (Submonoid.powers t) (fun _ : Fin n => c.toLinearMap)`. Use `isLocalizedModule_of_retract (Submonoid.powers t) _ (LinearMap.pi fun k : Fin n => c.toLinearMap ∘ₗ LinearMap.proj k) (evalAt C b) (assemble s₀ ρ) (evalAt C' b) (assemble s₀ ρ') (hret ρ) (hret ρ') ?_ ?_` and prove the remaining obligations. Introduce `φ`.
+
+Both sides reduce to the same expression. Introduce `v`. Use extensionality with `p`. Simplify using `[assemble, coord, ρ', map_sum]`.
+-/
 theorem isLocalizedModule_compRight_away :
     ∀ (R P C C' : Type) [CommRing R] [CommRing C] [CommRing C'] [Algebra R C] [Algebra R C']
       (f t : R) [AddCommGroup P] [Module R P]

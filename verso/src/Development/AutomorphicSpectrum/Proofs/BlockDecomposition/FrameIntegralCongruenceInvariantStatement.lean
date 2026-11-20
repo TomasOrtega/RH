@@ -7,5 +7,8 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH | exact GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frame_integral_congruence_invariant : ∀ (D : D7) (V : HSp D) (ν : Measure (GA D V)) (r : ℕ) (φ : Mx D V.rank r → ℂ) (β : HermE D r) (a : Matrix (Fin r) (Fin r) D.host.E), a.det ≠ 0 → IfrB V ν φ (GlobalTheory.CompanionTheory.WeilSiegel.Deg.congrH a β) = IfrB V ν (pull a φ) β := by
   first | exact @GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH | exact GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH | (intros; apply GlobalTheory.CompanionTheory.WeilSiegel.Deg.ifrB_congrH <;> assumption)

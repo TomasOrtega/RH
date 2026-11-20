@@ -11,6 +11,9 @@ section HomAux
 variable {R O M : Type*} [Ring R] [CommRing O] [AddCommGroup M] [Module R M] [Module O M]
   [SMulCommClass R O M] {m g : Type} [Fintype m] [Fintype g] [DecidableEq g]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem relMap_apply' (Θ : Matrix m g R) (v : g → M) (i : m) :
     relMap O M Θ v i = ∑ j, Θ i j • v j := rfl
 
@@ -19,18 +22,30 @@ def combo (v : g → M) : (g → R) →ₗ[R] M where
   map_add' w w' := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' r w := by simp [mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem combo_apply (v : g → M) (w : g → R) : combo v w = ∑ j, w j • v j := rfl
 
+/- English proof (translation)
+Rewrite using `[combo_apply]`. Simplify using `[Pi.single_apply, ite_smul]`.
+-/
 theorem combo_single (v : g → M) (j : g) (x : R) : combo v (Pi.single j x) = x • v j := by
   rw [combo_apply]
   simp [Pi.single_apply, ite_smul]
 
+/- English proof (translation)
+Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem single_eq_smul (j : g) (x : R) : (Pi.single j x : g → R) = x • Pi.single j 1 := by
   ext i
   by_cases h : i = j
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem sum_row (Θ : Matrix m g R) (i : m) :
     ∑ j, Θ i j • (Pi.single j (1 : R) : g → R) = Θ i := by
   ext k
@@ -39,6 +54,11 @@ theorem sum_row (Θ : Matrix m g R) (i : m) :
 def toVec (Θ : Matrix m g R) (φ : Coker Θ →ₗ[R] M) : g → M :=
   fun j => φ ((relSpan Θ).mkQ (Pi.single j (1 : R)))
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Rewrite using `[relMap_apply', Pi.zero_apply]`. Simplify using `only [toVec]`. Establish `h : ∑ j, Θ i j • φ ((relSpan Θ).mkQ (Pi.single j (1 : R))) = φ ((relSpan Θ).mkQ (∑ j, Θ i j • (Pi.single j (1 : R) : g → R)))`.
+
+Simplify using `[map_sum, map_smul]`. Rewrite using `[h, sum_row]`. Establish `hmem : Θ i ∈ relSpan Θ` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr hmem, map_zero]`.
+-/
 theorem toVec_mem (Θ : Matrix m g R) (φ : Coker Θ →ₗ[R] M) :
     toVec Θ φ ∈ LinearMap.ker (relMap O M Θ) := by
   rw [LinearMap.mem_ker]
@@ -61,6 +81,9 @@ def ofVec (Θ : Matrix m g R) (v : LinearMap.ker (relMap O M Θ)) : Coker Θ →
     rw [relMap_apply'] at h
     exact h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofVec_mk (Θ : Matrix m g R) (v : LinearMap.ker (relMap O M Θ)) (w : g → R) :
     ofVec Θ v (Submodule.Quotient.mk w) = combo (v : g → M) w := rfl
 
@@ -85,6 +108,9 @@ def homEquiv (Θ : Matrix m g R) : (Coker Θ →ₗ[R] M) ≃ₗ[O] LinearMap.ke
 
 end HomAux
 
+/- English proof (translation)
+Introduce `R O M _ _ _ _ _ _ m g _ _ _ Θ`. Conclude with `⟨homEquiv Θ⟩`.
+-/
 theorem homCoker : StatHomCoker := by
   intro R O M _ _ _ _ _ _ m g _ _ _ Θ
   exact ⟨homEquiv Θ⟩

@@ -18,6 +18,9 @@ section Lemmas
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Proceed by induction on `l generalizing a with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Rewrite using `[List.foldl_cons, twistSys_twist_eq_add, ih, List.map_cons, List.sum_cons, add_assoc]`.
+-/
 theorem foldl_twist_twistSys {n : ℕ} (b : Fin n → ℤ) (l : List (Fin n)) (a : ℤ) :
     l.foldl (fun F i => F.twist (twistSys S x (b i))) (twistSys S x a) =
       twistSys S x (a + (l.map b).sum) := by
@@ -26,6 +29,9 @@ theorem foldl_twist_twistSys {n : ℕ} (b : Fin n → ℤ) (l : List (Fin n)) (a
   | cons i l ih =>
     rw [List.foldl_cons, twistSys_twist_eq_add, ih, List.map_cons, List.sum_cons, add_assoc]
 
+/- English proof (translation)
+Rewrite using `[tensorSub, foldl_twist_twistSys, zero_add, ← List.sum_toFinset b ((List.nodup_finRange n).filter _)]`. Use `congr 1`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem tensorSub_twistSys {n : ℕ} (b : Fin n → ℤ) (T : Finset (Fin n)) :
     tensorSub (fun i => twistSys S x (b i)) T = twistSys S x (∑ i ∈ T, b i) := by
   classical
@@ -36,6 +42,9 @@ theorem tensorSub_twistSys {n : ℕ} (b : Fin n → ℤ) (T : Finset (Fin n)) :
   ext i
   simp
 
+/- English proof (translation)
+Unfold `interSum`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[tensorSub_twistSys, twistSys_twist_eq_add]`.
+-/
 theorem interSum_twistSys (pp : Ideal (Poly S N)) {n : ℕ} (b : Fin n → ℤ) (c : ℕ) :
     interSum pp (fun i => twistSys S x (b i)) c =
       ∑ T : Finset (Fin n), (-1) ^ (n - T.card) * restrLen pp (twistSys S x (∑ i ∈ T, b i + c)) := by
@@ -49,6 +58,13 @@ section Differences
 
 variable {K : Type*}
 
+/- English proof (translation)
+Proceed by induction on `l generalizing m with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Take `⟨ha, hl'⟩` from `List.nodup_cons.mp hl`. Establish `ha' : a ∉ l.toFinset` using `fun h' => ha (List.mem_toFinset.mp h')`.
+
+Rewrite using `[List.map_cons, List.foldr_cons, List.toFinset_cons, Finset.sum_powerset_insert ha']`. Express the relevant statement in the definitionally equal form `(l.map bs).foldr NumbersDVR.diffStep h m - (l.map bs).foldr NumbersDVR.diffStep h (m - bs a) = _`. Rewrite using `[ih hl' m, ih hl' (m - bs a), sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations.
+
+Establish `hat : a ∉ t` using `fun h' => ha' (Finset.mem_powerset.mp ht h')`. Rewrite using `[Finset.card_insert_of_notMem hat, Finset.sum_insert hat, pow_succ, sub_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem foldr_diffStep_eq {n : ℕ} (bs : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) (l : List (Fin n))
     (hl : l.Nodup) (m : K → ℤ) :
     (l.map bs).foldr NumbersDVR.diffStep h m =
@@ -68,6 +84,9 @@ theorem foldr_diffStep_eq {n : ℕ} (bs : Fin n → K → ℤ) (h : (K → ℤ) 
     rw [Finset.card_insert_of_notMem hat, Finset.sum_insert hat, pow_succ, sub_sub]
     ring
 
+/- English proof (translation)
+Rewrite using `[NumbersDVR.mixedDiff, List.ofFn_eq_map, foldr_diffStep_eq bs h _ (List.nodup_finRange n), List.toFinset_finRange, Finset.powerset_univ]`.
+-/
 theorem mixedDiff_eq_sum {n : ℕ} (bs : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) (m : K → ℤ) :
     NumbersDVR.mixedDiff bs h m = ∑ T : Finset (Fin n), (-1) ^ T.card * h (m - ∑ i ∈ T, bs i) := by
   classical
@@ -80,6 +99,15 @@ section Point
 
 variable {k : Type u} [Field k] {K' : Type w} [Field K'] [Algebra k K'] {N : ℕ}
 
+/- English proof (translation)
+Establish `hid : ∀ I : Chart y, idealMod (x` using `y) (primeOf (S := k) y) I = ⊥ := by`. Introduce `I`. Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, _, hfe, _, rfl⟩`. Rewrite using `[(mem_primeOf_of_isHomogeneous y hfe).mp hf, zero_div]`.
+
+Establish `hbot : ∀ I : Chart y, (F.twist (idealSys y (primeOf (S` using `k) y))).sub I = ⊥ := by`. Introduce `I`. Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, z, _, rfl⟩`. Establish `hq' : q ∈ idealMod (x` using `y) (primeOf (S := k) y) I := hq`.
+
+Rewrite `hq'` using `[hid I, Submodule.mem_bot]`. Rewrite using `[hq', zero_smul]`. Establish `hsecs : (F.twist (idealSys y (primeOf (S` using `k) y))).secs = ⊥ := by`. Use `eq_bot_iff.mpr fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `(Submodule.mem_iInf _).mp hz (singleChart hyj)`.
+
+Rewrite `h1` using `[Submodule.restrictScalars_mem, hbot]`. Conclude with `h1`. Unfold `restrLen`. Rewrite using `[hsecs, Submodule.comap_bot, Submodule.ker_subtype, (Submodule.quotEquivOfEqBot (⊥ : Submodule k F.secs) rfl).length_eq, Module.length_eq_rank]`. Both sides reduce to the same expression.
+-/
 theorem restrLen_primeOf_eq_finrank (y : Fin (N + 1) → K') {j : Fin (N + 1)} (hyj : y j ≠ 0)
     (F : SubSystem k y K') : restrLen (primeOf (S := k) y) F = Module.finrank k F.secs := by
   have hid : ∀ I : Chart y, idealMod (x := y) (primeOf (S := k) y) I = ⊥ := by
@@ -106,6 +134,33 @@ theorem restrLen_primeOf_eq_finrank (y : Fin (N + 1) → K') {j : Fin (N + 1)} (
 
 end Point
 
+/- English proof (translation)
+Introduce `k _ N Ω _ _ x pp e b hsub`. Take `⟨j, hjp⟩` from `hsub.relevant`. Establish `hj : x j ≠ 0` using `fun h0 => hjp (hsub.le ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0)))`. Take `⟨hcp, hpt⟩` from `PrimeFiltration.Point.full k Ω N x pp hsub.isPrime hsub.homog hsub.le j hj hjp`. Use `hcp` as an intermediate fact.
+
+Set `A` to `chartRing k x (singleChart hj)`. Set `Ip : Ideal A` to `chartPrime pp hj`. Set `ψ : A →ₐ[k] Ip.ResidueField` to `IsScalarTower.toAlgHom k A Ip.ResidueField`. Establish `hker : RingHom.ker ψ = Ip` using `Ideal.ker_algebraMap_residueField Ip`. Set `y : Fin (N + 1) → Ip.ResidueField` to `fun i => ψ (ratio hj i)`.
+
+Establish `hxy : ∀ i, y i ≠ 0 → x i ≠ 0`. Introduce `i h hx`. Apply `h` to reduce the goal to its premises. Establish `h0 : ratio (S` using `k) hj i = 0 := Subtype.ext (by change x i / x j = 0; rw [hx, zero_div])`. Express the relevant statement in the definitionally equal form `ψ (ratio hj i) = 0`.
+
+Rewrite using `[h0, map_zero]`. Establish `hpy : primeOf (S` using `k) y = pp := hpt _ ψ hker`. Establish `hxy' : primeOf (S` using `k) x ≤ primeOf (S := k) y := hpy ▸ hsub.le`. Establish `hsubW : IsSubvar y pp e` using `⟨hsub.isPrime, hsub.homog, le_of_eq hpy, hsub.relevant, hsub.dim⟩`. Establish `hyj : y j ≠ 0` using `fun h0 => hjp (hpy ▸ (mem_primeOf_of_isHomogeneous y (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0))`.
+
+Establish `hy0 : y ≠ 0` using `fun h => hyj (congrFun h j)`. Use `set I := pp.comap (oneBlock (S := k) (N := N)) with hI_def`. Establish `hI : I = primeOfOne (S` using `k) y := by rw [primeOfOne, hpy]`. Establish `hIp : NumbersDVR.IsMultiProjPrime I` using `hI ▸ isMultiProjPrime_primeOfOne y hy0`. Establish `hIdim : FieldNumbers.relDim I = ((e : ℕ) : WithBot (WithTop ℤ))`.
+
+Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, hI, HilbertPositive.ringKrullDim_primeOfOne, hpy, hsub.dim]`. Simplify using the standard rewrite rules. Set `H : ℤ → ℤ` to `fun m => NumbersDVR.hilbFn I (fun _ : Unit => m)`. Set `R : ℤ → ℤ` to `fun m => restrLen pp (twistSys k x m)`. Establish `hY : ∀ᶠ n : ℕ in atTop, restrLen pp (twistSys k y (n : ℤ)) = H n` using `by filter_upwards [TwistSections.full k _ N y hy0] with n hn`.
+
+Rewrite using `[← hpy, restrLen_primeOf_eq_finrank y hyj, hn, HilbertPositive.finrank_piece_eq_hilbFn, ← hI]`. Take `⟨r₀, hr₀⟩` from `RestrictTwist.full.1 k Ω N x _ y hxy hxy' 0`. Establish `hXY` using `hRL k Ω N x _ y hxy hxy' pp e hsubW (twistBundle k x 0) (twistBundle k y 0) r₀ hr₀`. Establish `hRH : ∀ᶠ n : ℕ in atTop, R n = H n` using `by filter_upwards [hY, hXY] with n h1 h2`. Establish `e1 : (twistBundle k y 0).toSubSystem = twistSys k y 0` using `rfl`.
+
+Establish `e2 : (twistBundle k x 0).toSubSystem = twistSys k x 0` using `rfl`. Rewrite `h2` using `[e1, e2, twistSys_zero_twist, twistSys_zero_twist]`. Rewrite using `[← h1, h2]`. Take `⟨n₀, hn₀⟩` from `eventually_atTop.mp hRH`. Establish `hRH' : ∀ m : ℤ, (n₀ : ℤ) ≤ m → R m = H m`.
+
+Introduce `m hm`. Establish `h` using `hn₀ m.toNat (by omega)`. Rewrite `h` using `[Int.toNat_of_nonneg (by omega)]`. Then use the resulting hypothesis. Set `bs : Fin e → Unit → ℤ` to `fun i _ => b i`. Establish `hMD` using `(FieldNumbers.MixedDiffConst.full k Unit (fun _ => Fin (N + 1)) I hIp.multiHomog hIp.relevant e hIdim).1 bs`.
+
+Take `⟨m₀, hm₀⟩` from `eventually_atTop.mp hMD`. Use `set B : ℤ := ∑ i, b i with hB`. Establish `hev : ∀ᶠ c : ℕ in atTop, interSum pp (fun i => twistSys k x (b i)) c = NumbersDVR.intNum k I bs` using `by filter_upwards [eventually_ge_atTop (m₀ () - B).toNat, eventually_all.mpr fun T : Finset (Fin e) => eventually_ge_atTop ((n₀ : ℤ) - ∑ i ∈ T, b i).toNat] with c hc1 hc2`. Rewrite using `[interSum_twistSys, ← hm₀ (fun _ => (c : ℤ) + B) (fun u => by cases u; change m₀ () ≤ (c : ℤ) + B; omega), mixedDiff_eq_sum]`. Use `Fintype.sum_bijective compl compl_involutive.bijective _ _ fun T => ?_` and prove the remaining obligations.
+
+Establish `hsum : (∑ i ∈ Tᶜ, bs i) = fun _ : Unit => ∑ i ∈ Tᶜ, b i`. Use function extensionality and compare the values at `u`. Rewrite using `[Finset.sum_apply]`. Establish `hc : (n₀ : ℤ) ≤ ∑ i ∈ T, b i + c` using `by have := hc2 T; omega`. Establish `hsplit` using `Finset.sum_add_sum_compl T b`.
+
+Establish `hcard : Tᶜ.card = e - T.card` using `by rw [Finset.card_compl, Fintype.card_fin]`. Rewrite using `[show restrLen pp (twistSys k x (∑ i ∈ T, b i + c)) = H (∑ i ∈ T, b i + c) from hRH' _ hc, hsum, hcard]`. Express the relevant statement in the definitionally equal form `(-1) ^ (e - T.card) * H (∑ i ∈ T, b i + c) = (-1) ^ (e - T.card) * NumbersDVR.hilbFn I ((fun _ : Unit => (c : ℤ) + B) - fun _ => ∑ i ∈ Tᶜ, b i)`. Establish `hfun : ((fun _ : Unit => (c : ℤ) + B) - fun _ => ∑ i ∈ Tᶜ, b i) = fun _ : Unit => ∑ i ∈ T, b i + c`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hfun]`. Unfold `interNum`. Conclude with `(tendsto_const_nhds.congr' (hev.mono fun c h => h.symm)).limUnder_eq`.
+-/
 theorem NumEq.proof (hRL : RestrLenRestrict.Statement.{0, 0}) : NumEq.Statement := by
   intro k _ N Ω _ _ x pp e b hsub
   classical

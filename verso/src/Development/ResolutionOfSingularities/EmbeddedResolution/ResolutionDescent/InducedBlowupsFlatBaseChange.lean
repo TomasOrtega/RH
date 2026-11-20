@@ -35,12 +35,20 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY' : Y' ⟶ Spec (CommRingCat.of k')} [AlgebraicGeometry.LocallyOfFiniteType pY']
   {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 private theorem congr_hom_apply {A B : Scheme.{u}} {f g : A ⟶ B} (e : f = g) (a : A) :
     f a = g a := by
   subst e
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Establish `hσ' : F.reindex j + 1 ≤ F.reindex (j + 1)` using `F.reindex_lt_succ j hj`. Establish `key : S.ambientSeq.transitionMap hσ' ≫ S.blowdown (F.reindex j) = S.ambientSeq.transitionMap hσ`. Rewrite using `[show S.blowdown (F.reindex j) = S.ambientSeq.transitionMap (Nat.le_succ (F.reindex j)) from S.ambientSeq.blowupMorphism_eq_transitionMap _, S.ambientSeq.transitionMap_trans]`. Establish `hw` using `(F.isPullback_step j hj hσ').w`. Rewrite `hw` using `[Category.assoc, key]`.
+
+Conclude with `hw`. Use the proof step `@[reassoc]`.
+-/
 theorem levelMap_succ_comp_transitionMap (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
     F.levelMap (j + 1) (Nat.succ_le_of_lt hj) ≫ S.ambientSeq.transitionMap hσ =
@@ -54,6 +62,11 @@ theorem levelMap_succ_comp_transitionMap (F : ChartFlatBaseChange S S') (j : ℕ
   exact hw
 
 @[reassoc]
+/- English proof (translation)
+Establish `: Mono (S.strictTransformι (F.reindex j))` using `inferInstance`. Rewrite using `[← cancel_mono (S.strictTransformι (F.reindex j))]`. Establish `e1 : (F.strictTransformComparison (j + 1) (Nat.succ_le_of_lt hj) ≫ S.strictTransformMapOfLE hσ) ≫ S.strictTransformι (F.reindex j) = S'.strictTransformι (j + 1) ≫ (S'.blowdown j ≫ F.levelMap j (le_of_lt hj))`. Rewrite using `[Category.assoc, S.strictTransformMapOfLE_strictTransformι, ← Category.assoc, F.strictTransformComparison_comp_strictTransformι, Category.assoc, F.levelMap_succ_comp_transitionMap j hj hσ]`. Establish `e2 : (S'.strictTransformMap j ≫ F.strictTransformComparison j (le_of_lt hj)) ≫ S.strictTransformι (F.reindex j) = S'.strictTransformι (j + 1) ≫ (S'.blowdown j ≫ F.levelMap j (le_of_lt hj))`.
+
+Rewrite using `[Category.assoc, F.strictTransformComparison_comp_strictTransformι, ← Category.assoc, S'.strictTransformMap_comp_strictTransformι, Category.assoc]`. Rewrite using `[e1, e2]`. Use the proof step `@[reassoc]`.
+-/
 theorem strictTransformComparison_succ_comp_strictTransformMapOfLE (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
     F.strictTransformComparison (j + 1) (Nat.succ_le_of_lt hj) ≫ S.strictTransformMapOfLE hσ =
@@ -71,6 +84,9 @@ theorem strictTransformComparison_succ_comp_strictTransformMapOfLE (F : ChartFla
   rw [e1, e2]
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `[ChartFlatBaseChange.totalSpaceMap]`.
+-/
 theorem inr_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j ≤ S'.length) :
     (coprod.inr : S'.detachedCoprod j ⟶ S'.totalSpace j) ≫ F.totalSpaceMap j hj =
@@ -78,6 +94,17 @@ theorem inr_totalSpaceMap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsRe
         (coprod.inr : S.detachedCoprod (F.reindex j) ⟶ S.totalSpace (F.reindex j)) := by
   simp [ChartFlatBaseChange.totalSpaceMap]
 
+/- English proof (translation)
+Apply `coprod.hom_ext` to reduce the goal to its premises. Establish `e1 : (coprod.inl : S'.strictTransform (j + 1) ⟶ S'.totalSpace (j + 1)) ≫ (S'.totalTransition j ≫ F.totalSpaceMap j (le_of_lt hj)) = S'.strictTransformMap j ≫ F.strictTransformComparison j (le_of_lt hj) ≫ coprod.inl`. Rewrite using `[← Category.assoc, S'.inl_totalTransition, Category.assoc, F.inl_totalSpaceMap]`. Establish `e2 : (coprod.inl : S'.strictTransform (j + 1) ⟶ S'.totalSpace (j + 1)) ≫ (F.totalSpaceMap (j + 1) (Nat.succ_le_of_lt hj) ≫ S.totalMapOfLE hσ) = S'.strictTransformMap j ≫ F.strictTransformComparison j (le_of_lt hj) ≫ coprod.inl`. Rewrite using `[← Category.assoc, F.inl_totalSpaceMap, Category.assoc, S.inl_totalMapOfLE, ← Category.assoc, F.strictTransformComparison_succ_comp_strictTransformMapOfLE j hj hσ, Category.assoc]`.
+
+Rewrite using `[e1, e2]`. Apply `S'.detachedCoprod_hom_ext (j + 1)` to reduce the goal to its premises. Introduce `s hs`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hs with hlt | heq` into its components or cases. Establish `h1` using `F.detachedToCoprod_inr_totalSpaceMap (j + 1) (Nat.succ_le_of_lt hj) s hs`.
+
+Establish `h4` using `F.detachedToCoprod_inr_totalSpaceMap j (le_of_lt hj) s hlt`. Establish `h2` using `S.detachedToCoprod_detachedCoprodMapOfLE (F.reindex_lt_reindex hlt (le_of_lt hj)) hσ`. Establish `h3` using `S.detachedCoprodMapOfLE_inr_totalMapOfLE hσ`. Establish `h6` using `S'.detachedCoprodInl_inr_totalTransition_assoc j (F.totalSpaceMap j (le_of_lt hj))`. Rewrite using `[reassoc_of% h1, ← h2]`.
+
+Rewrite using `[S'.detachedToCoprod_succ_of_lt s j hlt]`. Simplify using `only [Category.assoc]`. Rewrite using `[h6, h4, h3]`. Substitute `heq` using the available equality. Establish `h1` using `F.detachedToCoprod_inr_totalSpaceMap (s + 1) (Nat.succ_le_of_lt hj) s hs`.
+
+Rewrite using `[reassoc_of% h1, S.detachedToCoprod_inr_totalMapOfLE hσ (le_refl (F.reindex s)) (F.reindex_lt_succ s hj), S.strictTransformMapOfLE_self]`. Rewrite using `[S'.detachedToCoprod_self s]`. Simplify using `only [Category.id_comp]`. Rewrite using `[S'.detachedCoprodInr_inr_totalTransition_assoc s (F.totalSpaceMap s (le_of_lt hj)), F.inl_totalSpaceMap, F.detachedSchemeComparison_comp_detachedι_assoc s hj coprod.inl]`.
+-/
 private theorem totalTransition_comp_totalSpaceMap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length)
     (hσ : F.reindex j ≤ F.reindex (j + 1)) :
@@ -115,6 +142,13 @@ private theorem totalTransition_comp_totalSpaceMap (F : ChartFlatBaseChange S S'
       rw [S'.detachedCoprodInr_inr_totalTransition_assoc s (F.totalSpaceMap s (le_of_lt hj)),
         F.inl_totalSpaceMap, F.detachedSchemeComparison_comp_detachedι_assoc s hj coprod.inl]
 
+/- English proof (translation)
+Apply `FunctorialResolution.Blowup.idealSheafData_ext_coprod` to reduce the goal to its premises. Establish `l1 : (S'.totalCenter i).comap (coprod.inl : S'.strictTransform i ⟶ S'.totalSpace i) = S'.centerOffDetached i`. Rewrite using `[S'.totalCenter_eq, FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inl, Scheme.IdealSheafData.ker_subschemeι]`. Establish `l2 : (S.totalCenter (F.reindex i)).comap (coprod.inl : S.strictTransform (F.reindex i) ⟶ S.totalSpace (F.reindex i)) = S.centerOffDetached (F.reindex i)`. Rewrite using `[S.totalCenter_eq, FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inl, Scheme.IdealSheafData.ker_subschemeι]`.
+
+Rewrite using `[l1, ← Scheme.IdealSheafData.comap_comp, F.inl_totalSpaceMap, Scheme.IdealSheafData.comap_comp, l2, ← F.centerOffDetached_eq_comap i hi]`. Establish `r1 : (S'.totalCenter i).comap (coprod.inr : S'.detachedCoprod i ⟶ S'.totalSpace i) = ⊤`. Rewrite using `[S'.totalCenter_eq]`. Conclude with `FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inr _`. Rewrite using `[r1, ← Scheme.IdealSheafData.comap_comp, F.inr_totalSpaceMap, Scheme.IdealSheafData.comap_comp, S.totalCenter_eq, FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inr]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem totalCenter_eq_comap (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y'] (i : ℕ) (hi : i < S'.length) :
     S'.totalCenter i = (S.totalCenter (F.reindex i)).comap (F.totalSpaceMap i hi.le) := by
@@ -139,6 +173,23 @@ private theorem totalCenter_eq_comap (F : ChartFlatBaseChange S S')
       FunctorialResolution.Blowup.ker_comp_coprod_inl_comap_inr]
     simp
 
+/- English proof (translation)
+Rewrite using `[FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center]`. Apply `FunctorialResolution.Blowup.comap_eq_top_of_notMem_support` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[S.totalCenter_eq]`. Establish `hmem : (pullback.snd F.baseMap ((S.inducedBlowups h).projectionToBase i)) x ∈ closure (Set.range (⇑((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i))))`.
+
+Rewrite using `[← Scheme.Hom.support_ker]`. Conclude with `hx`. Establish `hrange : Set.range (⇑((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i))) ⊆ (⇑(coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) '' (↑(S.centerOffDetached i).support : Set (S.strictTransform i))`. Introduce and unpack `y ⟨t, rfl⟩`. Use `⟨(S.centerOffDetached i).subschemeι t, ?_, (Scheme.Hom.comp_apply _ _ t).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `Set.mem_range_self t`. Establish `hce : Topology.IsClosedEmbedding (⇑(coprod.inl : S.strictTransform i ⟶ S.totalSpace i))` using `AlgebraicGeometry.IsClosedImmersion.isClosedEmbedding (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)`. Establish `hsupclosed : IsClosed (↑(S.centerOffDetached i).support : Set (S.strictTransform i))` using `(S.centerOffDetached i).support.2`. Establish `hclosed : IsClosed ((⇑(coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) '' (↑(S.centerOffDetached i).support : Set (S.strictTransform i)))` using `hce.isClosedMap _ hsupclosed`.
+
+Take `⟨a, ha, hax⟩` from `(closure_minimal hrange hclosed) hmem`. Establish `ha2 : (S.strictTransformι i) a ∈ (↑(S.ambientCenter i).support : Set (S.schemeAt i))` using `S.support_centerOffDetached_subset_preimage i ha`. Use `set b := (pullback.fst F.baseMap ((S.inducedBlowups h).projectionToBase i)) x with hb`. Establish `hcond` using `congr_hom_apply (pullback.condition (f := F.baseMap) (g := (S.inducedBlowups h).projectionToBase i)) x`. Rewrite `hcond` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+
+Establish `hstr : ((S.inducedBlowups h).projectionToBase i) ((coprod.inl : S.strictTransform i ⟶ S.totalSpace i) a) = (S.strictTransformToBase i) a` using `congr_hom_apply (FunctorialResolution.EmbeddedResolution.inl_inducedBlowups_projectionToBase S h i) a`. Establish `hemb` using `congr_hom_apply F.isPullback_emb.w b`. Rewrite `hemb` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Establish `hae` using `congr_hom_apply (S.strictTransformToBase_emb i) a`. Rewrite `hae` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+
+Establish `hcompat : F.ambientMap (S'.emb b) = (S.ambientSeq.projectionToBase i) ((S.strictTransformι i) a)`. Rewrite using `[← hemb, ← hae, ← hstr, hax, ← hcond]`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (S'.emb b) ((S.strictTransformι i) a) hcompat`. Establish `hcs` using `F.comap_center_skipped i hi (fun j hj => hskip j hj) (pullback F.ambientMap (S.ambientSeq.projectionToBase i)) (pullback.snd F.ambientMap (S.ambientSeq.projectionToBase i)) (pullback.fst F.ambientMap (S.ambientSeq.projectionToBase i)) ((IsPullback.of_hasPullback F.ambientMap (S.a …`. Establish `hz0 : (pullback.snd F.ambientMap (S.ambientSeq.projectionToBase i)) z ∈ (S.ambientCenter i).support`.
+
+Rewrite using `[hz2]`. Conclude with `ha2`. Establish `hz : z ∈ ((S.ambientCenter i).comap (pullback.snd F.ambientMap (S.ambientSeq.projectionToBase i))).support`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Conclude with `hz0`.
+
+Rewrite `hz` using `[hcs]`. Simplify using `at hz`. Conclude with `hz`.
+-/
 private theorem comap_center_eq_top_of_not_mem_range_reindex (F : ChartFlatBaseChange S S') (h : S.TransitionsAreBlowups) (i : ℕ)
     (hi : i < S.length) (hskip : ∀ j, j < S'.length → F.reindex j ≠ i) :
     ((S.inducedBlowups h).center i).comap (pullback.snd F.baseMap ((S.inducedBlowups h).projectionToBase i)) = ⊤ := by
@@ -210,6 +261,9 @@ private def inducedBlowupsSchemeAtIsoPullback (F : ChartFlatBaseChange S S') [Al
   ((F.isPullback_totalSpaceMap h h' i
     (by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi)).flip).isoPullback
 
+/- English proof (translation)
+The claim follows from `IsPullback.isoPullback_hom_fst _`.
+-/
 private theorem inducedBlowupsIso_hom_fst (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)
     (i : ℕ) (hi : i ≤ (S'.inducedBlowups h').length) :
@@ -217,6 +271,9 @@ private theorem inducedBlowupsIso_hom_fst (F : ChartFlatBaseChange S S') [Algebr
       = (S'.inducedBlowups h').projectionToBase i :=
   IsPullback.isoPullback_hom_fst _
 
+/- English proof (translation)
+The claim follows from `IsPullback.isoPullback_hom_snd _`.
+-/
 private theorem inducedBlowupsIso_hom_snd (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups)
     (i : ℕ) (hi : i ≤ (S'.inducedBlowups h').length) :
@@ -224,6 +281,19 @@ private theorem inducedBlowupsIso_hom_snd (F : ChartFlatBaseChange S S') [Algebr
       = F.totalSpaceMap i (by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi) :=
   IsPullback.isoPullback_hom_snd _
 
+/- English proof (translation)
+Use `⟨F.reindex, fun i hi => F.inducedBlowupsSchemeAtIsoPullback h h' i hi, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi`, the goal using `[FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length]`. Conclude with `F.reindex_lt i hi`. Introduce `i j hj hij`.
+
+Rewrite `hj` using `[FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length]`. Conclude with `F.reindex_lt_reindex_of_lt hij hj`. Rewrite using `[FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length]`. Conclude with `F.reindex_len`. Introduce `i hi hns`.
+
+Establish `hi' : i < S.length` using `by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi`. Establish `hskip : ∀ j, j < S'.length → F.reindex j ≠ i`. Introduce `j hj he`. Conclude with `hns ⟨j, by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length], he⟩`. Introduce and unpack `⟨x, hx⟩`.
+
+Rewrite `hx` using `[F.comap_center_eq_top_of_not_mem_range_reindex h i hi' hskip]`. Simplify using `at hx`. Conclude with `hx`. Introduce `i hi`. Conclude with `F.inducedBlowupsIso_hom_fst h h' i hi`.
+
+Introduce `i hi hr`. Establish `hi' : i < S'.length` using `by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, F.inducedBlowupsIso_hom_fst, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_comp_fst, F.inducedBlowupsIso_hom_fst, SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]`. Rewrite using `[Category.assoc, F.inducedBlowupsIso_hom_snd, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_comp_snd, ← Category.assoc, F.inducedBlowupsIso_hom_snd, FunctorialResolution.EmbeddedResolution.inducedBlowups_blowupMorphism, FunctorialResolution.EmbeddedResolution.inducedBlo …`.
+
+Conclude with `F.totalTransition_comp_totalSpaceMap i hi' hr`. Introduce `i hi`. Establish `hi' : i < S'.length` using `by rwa [FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_length] at hi`. Rewrite using `[F.inducedBlowupsIso_hom_snd, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center]`. Conclude with `F.totalCenter_eq_comap i hi'`.
+-/
 theorem isPullbackUpToEmptyCenters_inducedBlowups (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :
@@ -263,6 +333,9 @@ theorem isPullbackUpToEmptyCenters_inducedBlowups (F : ChartFlatBaseChange S S')
     rw [F.inducedBlowupsIso_hom_snd, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center, FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inducedBlowups_center]
     exact F.totalCenter_eq_comap i hi'
 
+/- English proof (translation)
+The claim follows from `(F.isPullbackUpToEmptyCenters_inducedBlowups h h').isPullbackSequenceOfBlowups_withoutIsoBlowups`.
+-/
 theorem isPullbackBlowupSequence_inducedBlowupsWithoutIso (F : ChartFlatBaseChange S S')
     [AlgebraicGeometry.IsReduced Y] [AlgebraicGeometry.IsReduced Y']
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :

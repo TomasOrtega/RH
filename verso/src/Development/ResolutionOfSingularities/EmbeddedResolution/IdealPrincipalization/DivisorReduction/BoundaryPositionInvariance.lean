@@ -28,6 +28,21 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Distinguish the cases in `hcs : (orderAtLeastLocus T.ideal T.mult).Nonempty`. Establish `hN : AlgebraicGeometry.IsNoetherian T.scheme` using `DivisorReduction.isNoetherian_scheme_of_isAdmissible T hV`. Establish `hN₁ : AlgebraicGeometry.IsNoetherian (T.withBoundary L₁).scheme` using `DivisorReduction.isNoetherian_scheme_of_isAdmissible _ hV₁`. Establish `hN₂ : AlgebraicGeometry.IsNoetherian (T.withBoundary L₂).scheme` using `DivisorReduction.isNoetherian_scheme_of_isAdmissible _ hV₂`. Establish `hflat : AlgebraicGeometry.Flat (𝟙 T.scheme)` using `inferInstance`.
+
+Establish `hjb₁ : j₁ < (T.withBoundary L₁).boundary.length` using `hj₁`. Establish `hjb₂ : j₂ < (T.withBoundary L₂).boundary.length` using `hj₂`. Establish `hpre : DivisorReduction.containedComponentsIdeal (T.withBoundary L₁) j₁ hjb₁ = DivisorReduction.containedComponentsIdeal (T.withBoundary L₂) j₂ hjb₂` using `DivisorReduction.containedComponentsIdeal_withBoundary_congr T L₁ L₂ j₁ hj₁ j₂ hj₂ heq`. Establish `hs₁ : _ ∨ _` using `hshape j₁ (T.withBoundary L₁) hV₁ hjb₁ hdim hO hbal hcs`. Establish `hs₂ : _ ∨ _` using `hshape j₂ (T.withBoundary L₂) hV₂ hjb₂ hdim hO hbal hcs`.
+
+Simplify using `only [divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq]`. Break down `hs₁ with ⟨hZ₁, hpr₁, hmk₁, he₁⟩ | ⟨hZ₁, hb₁, hpr₁, hmk₁, he₁⟩` into its components or cases. Break down `hs₂ with ⟨hZ₂, hpr₂, hmk₂, he₂⟩ | ⟨hZ₂, hb₂, hpr₂, hmk₂, he₂⟩` into its components or cases. Establish `hstep : IsStrictPullbackBlowupSeq (𝟙 T.scheme) (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian (T.withBoundary L₂) j₂ hjb₂ (DivisorReduction.lowerIdealWithoutBlowup (T.withBoundary L₂)) (DivisorReduction.lowerBoundaryWithoutBlowup (T.withBoundary L₂)) (L (Diviso …` using `hfacts.isStrictPullbackSeq_ambientTower T.scheme T.scheme ((L₁.get ⟨j₁, hj₁⟩).subscheme) ((L₂.get ⟨j₂, hj₂⟩).subscheme) ((L₁.get ⟨j₁, hj₁⟩).subschemeι) ((L₂.get ⟨j₂, hj₂⟩).subschemeι) (𝟙 T.scheme) _ ((DivisorReduction.isPullback_divisorPullbackMap hbc (T.withBoundary L₁) j₁ hjb₁ …`. Rewrite using `[he₁, he₂]`.
+
+Simplify using `only [BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`. Conclude with `hstep`. Conclude with `absurd (hpre.symm.trans hZ₁) hZ₂`. Break down `hs₂ with ⟨hZ₂, hpr₂, hmk₂, he₂⟩ | ⟨hZ₂, hb₂, hpr₂, hmk₂, he₂⟩` into its components or cases. Conclude with `absurd (hpre.trans hZ₂) hZ₁`.
+
+Establish `hcomap : (DivisorReduction.containedComponentsIdeal (T.withBoundary L₁) j₁ hjb₁).comap (𝟙 (T.withBoundary L₁).scheme) = DivisorReduction.containedComponentsIdeal (T.withBoundary L₁) j₁ hjb₁`. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Establish `hZZ : DivisorReduction.containedComponentsIdeal (T.withBoundary L₂) j₂ hjb₂ = (DivisorReduction.containedComponentsIdeal (T.withBoundary L₁) j₁ hjb₁).comap (𝟙 (T.withBoundary L₁).scheme)` using `hpre.symm.trans hcomap.symm`. Establish `hb₁' : Blowup.IsBlowupAlongIdealSheaf (𝟙 (T.withBoundary L₁).scheme) ((DivisorReduction.containedComponentsIdeal (T.withBoundary L₁) j₁ hjb₁).comap (𝟙 (T.withBoundary L₁).scheme))`. Rewrite using `[hcomap]`.
+
+Conclude with `hb₁`. Establish `hstep : IsStrictPullbackBlowupSeq (𝟙 T.scheme) (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian (T.withBoundary L₂) j₂ hjb₂ (DivisorReduction.lowerIdealAfterBlowup (T.withBoundary L₂) j₂ hjb₂) (DivisorReduction.lowerBoundaryAfterBlowup (T.withBoundary L₂) j₂ hjb₂ …` using `hfacts.isStrictPullbackSeq_ambientTower T.scheme T.scheme ((L₁.get ⟨j₁, hj₁⟩).subscheme) ((L₂.get ⟨j₂, hj₂⟩).subscheme) ((L₁.get ⟨j₁, hj₁⟩).subschemeι) ((L₂.get ⟨j₂, hj₂⟩).subschemeι) (𝟙 T.scheme) _ ((DivisorReduction.isPullback_divisorPullbackMap hbc (T.withBoundary L₁) j₁ hjb₁ …`. Establish `hfin : IsStrictPullbackBlowupSeq (𝟙 T.scheme) (BlowupSequenceData.prepend (DivisorReduction.containedComponentsIdeal (T.withBoundary L₂) j₂ hjb₂) hb₂ (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian (T.withBoundary L₂) j₂ hjb₂ (DivisorReduction.lowerIdealAfterBlo …`. Rewrite using `[BlowupSequenceData.prepend_toSequenceOfBlowups_congr hZZ hb₂ hb₁' (DivisorReduction.ambientBlowupSeq hres blowupPreservesNoetherian (T.withBoundary L₂) j₂ hjb₂ (DivisorReduction.lowerIdealAfterBlowup (T.withBoundary L₂) j₂ hjb₂) (DivisorReduction.lowerBoundaryAfterBlowup (T.with …`. Conclude with `IsStrictPullbackBlowupSeq.prepend hstep _ hb₁ hb₁'`.
+
+Rewrite using `[he₁, he₂]`. Simplify using `only [BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`. Conclude with `hfin`. Establish `hcs0 : orderAtLeastLocus T.ideal T.mult = ∅` using `Set.not_nonempty_iff_eq_empty.mp hcs`. Conclude with `IsStrictPullbackBlowupSeq.of_length_zero _ _ _ (divisorFamily_canonicalAlgorithmRules_length_eq_zero hres n L j₂ (T.withBoundary L₂) hV₂ hdim hO hbal hj₂ hcs0) (divisorFamily_canonicalAlgorithmRules_length_eq_zero hres n L j₁ (T.withBoundary L₁) hV₁ hdim hO hbal hj₁ hcs0)`.
+-/
 theorem isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -155,6 +170,9 @@ theorem isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq
       (divisorFamily_canonicalAlgorithmRules_length_eq_zero hres n L j₁ (T.withBoundary L₁) hV₁ hdim hO hbal
         hj₁ hcs0)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun T hV hdim hO hbal L₁ L₂ j₁ hj₁ j₂ hj₂ heq hBE hV₁ hV₂ => isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq hres hfacts hbc hsh n L O hL hshape T hV hdim hO hbal L₁ L₂ j₁ hj₁ j₂ hj₂ heq hBE hV₁ hV₂⟩`.
+-/
 theorem strictBoundaryReindexingInvariance_of_divisorReductionSeqEqAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -168,6 +186,9 @@ theorem strictBoundaryReindexingInvariance_of_divisorReductionSeqEqAmbient
     isStrictPullbackBlowupSeq_id_divisorFamily_of_get_eq hres hfacts hbc hsh n L O hL hshape T hV hdim hO hbal
       L₁ L₂ j₁ hj₁ j₂ hj₂ heq hBE hV₁ hV₂⟩
 
+/- English proof (translation)
+The claim follows from `DivisorReduction.isBoundaryPositionInvariant_divisorFamily hres n L (strictBoundaryReindexingInvariance_of_divisorReductionSeqEqAmbient hres hfacts hbc hsh n L O hL hshape)`.
+-/
 theorem isBoundaryPositionInvariant_divisorFamily_of_divisorReductionSeqEqAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)

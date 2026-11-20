@@ -13,6 +13,13 @@ namespace GlobalTheory.OTY.GlueEnergy
 variable {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La] {A : WeightedAtlas n Y ι La}
 
+/- English proof (translation)
+Establish `h : ∀ p : Fin C.m × Fin C.m × Fin n, ∃ B : ℝ, ∀ v ∈ closedBall (C.c p.2.1) (C.r p.2.1), ‖wdb n p.2.2 (fun x => (C.chi p.1 ((A.chart (C.idx p.2.1)).symm x) : ℂ)) v‖ ≤ B`. Introduce and unpack `⟨a, b, j⟩`. Apply `(isCompact_closedBall _ _).exists_bound_of_continuousOn` to reduce the goal to its premises. Use `ContinuousOn.mono ?_ (C.sub b)` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ∞ (fun x => (C.chi a ((A.chart (C.idx b)).symm x) : ℂ)) (A.chart (C.idx b)).target` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (C.smooth a (C.idx b))`.
+
+Establish `h2` using `h1.continuousOn_fderiv_of_isOpen (A.chart (C.idx b)).open_target (by simp)`. Unfold `wdb`. Conclude with `((h2.clm_apply continuousOn_const).add (continuousOn_const.mul (h2.clm_apply continuousOn_const))).div_const _`. Use `choose B hB using h`. Use `⟨∑ p, |B p|, Finset.sum_nonneg fun _ _ => abs_nonneg _, fun a b j v hv => ?_⟩` and prove the remaining obligations.
+
+Conclude with `((hB (a, b, j) v (ball_subset_closedBall hv)).trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun p => |B p|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _))`.
+-/
 theorem exists_bound (C : Cover A) : ∃ B : ℝ, 0 ≤ B ∧ ∀ a b j, ∀ v ∈ ball (C.c b) (C.r b),
     ‖wdb n j (fun x => (C.chi a ((A.chart (C.idx b)).symm x) : ℂ)) v‖ ≤ B := by
   have h : ∀ p : Fin C.m × Fin C.m × Fin n, ∃ B : ℝ, ∀ v ∈ closedBall (C.c p.2.1) (C.r p.2.1),
@@ -32,6 +39,11 @@ theorem exists_bound (C : Cover A) : ∃ B : ℝ, 0 ≤ B ∧ ∀ a b j, ∀ v �
   exact ((hB (a, b, j) v (ball_subset_closedBall hv)).trans (le_abs_self _)).trans
     (Finset.single_le_sum (f := fun p => |B p|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _))
 
+/- English proof (translation)
+Establish `h1 : (A.chart i).symm v ∉ tsupport (C.chi a)` using `fun h' => h (C.supp a h')`. Establish `h2` using `notMem_tsupport_iff_eventuallyEq.mp h1`. Establish `h3` using `((A.chart i).continuousAt_symm hv).eventually h2`. Establish `h4 : (fun x => (C.chi a ((A.chart i).symm x) : ℂ)) =ᶠ[𝓝 v] fun _ => 0` using `h3.mono fun x hx => by simp only [Pi.zero_apply] at hx; simp [hx]`. Unfold `wdb`.
+
+Rewrite using `[h4.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem wdb_eq_zero (C : Cover A) (a : Fin C.m) (i : ι) (j : Fin n) (v : V n)
     (hv : v ∈ (A.chart i).target)
     (h : (A.chart i).symm v ∉
@@ -46,6 +58,9 @@ theorem wdb_eq_zero (C : Cover A) (a : Fin C.m) (i : ι) (j : Fin n) (v : V n)
   rw [h4.fderiv_eq]
   simp
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun a => ‖x a * d a‖)`. Use `_ ≤ m * ∑ a, B ^ 2 * e a := by gcongr with a; exact h a`. Use `_ = _ := by rw [← Finset.mul_sum, mul_assoc]`.
+-/
 theorem sq_sum_le {m : ℕ} (x d : Fin m → ℂ) (B : ℝ) (e : Fin m → ℝ)
     (h : ∀ a, ‖x a * d a‖ ^ 2 ≤ B ^ 2 * e a) :
     ‖∑ a, x a * d a‖ ^ 2 ≤ m * B ^ 2 * ∑ a, e a := by
@@ -56,6 +71,47 @@ theorem sq_sum_le {m : ℕ} (x d : Fin m → ℂ) (B : ℝ) (e : Fin m → ℝ)
     _ ≤ m * ∑ a, B ^ 2 * e a := by gcongr with a; exact h a
     _ = _ := by rw [← Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A C`. Take `⟨B, hB0, hB⟩` from `exists_bound C`. Use `⟨C.m * (n * (C.m * B ^ 2)), by positivity, fun la F0 u hF hu => ?_⟩` and prove the remaining obligations. Use `set D : Fin C.m → ι → Y → ℂ := fun a i y => A.g (A.kap + la) i (C.idx a) y * u a (A.chart (C.idx a) y) - F0 i y with hD`. Use `set U : Fin C.m → Set Y := fun a => (A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a) with hU`.
+
+Establish `hUo : ∀ a, IsOpen (U a)` using `fun a => (A.chart (C.idx a)).isOpen_inter_preimage isOpen_ball`. Establish `hbt : ∀ b, ball (C.c b) (C.r b) ⊆ (A.chart (C.idx b)).target` using `fun b => ball_subset_closedBall.trans (C.sub b)`. Use `set W : Fin C.m → Fin C.m → Set (V n) := fun b a => ball (C.c b) (C.r b) ∩ ((A.chart (C.idx b)).target ∩ (A.chart (C.idx b)).symm ⁻¹' U a) with hW`. Establish `hWo : ∀ b a, IsOpen (W b a)` using `fun b a => isOpen_ball.inter ((A.chart (C.idx b)).isOpen_inter_preimage_symm (hUo a))`. Establish `hDc : ∀ b a, ContinuousOn (D a (C.idx b) ∘ (A.chart (C.idx b)).symm) (W b a)`.
+
+Introduce `b a`. Establish `hov : W b a ⊆ ovl A.chart (C.idx b) (C.idx a)` using `fun v hv => ⟨hv.2.1, hv.2.2.1⟩`. Establish `h1` using `(A.holo_g (A.kap + la) (C.idx b) (C.idx a)).continuousOn.mono hov`. Establish `h2` using `(A.holo_trans (C.idx b) (C.idx a)).continuousOn.mono hov`. Establish `h3` using `(hu a).continuousOn.comp h2 (fun v hv => hv.2.2.2)`.
+
+Establish `h4` using `(hF.1 (C.idx b)).continuousOn.mono (t := W b a) (fun v hv => hv.2.1)`. Conclude with `(h1.mul h3).sub h4`. Establish `hcomp : ∀ a i y, y ∈ (A.chart i).source → y ∈ (A.chart (C.idx a)).source → D a (A.pick y) y = A.g (A.kap + la) (A.pick y) i y * D a i y`. Introduce `a i y hi ha`. Simplify using `only [hD]`.
+
+Rewrite using `[A.g_cocycle _ (A.pick y) i (C.idx a) y (A.mem_pick y) hi ha, hF.2 (A.pick y) i y (A.mem_pick y) hi]`. Expand and normalize the polynomial expressions, which then agree. Use `set f : Fin C.m → Fin C.m → V n → ℝ≥0∞ := fun b a v => ENNReal.ofReal (‖D a (C.idx b) ((A.chart (C.idx b)).symm v)‖ ^ 2 * Real.exp (-A.ph la (C.idx b) ((A.chart (C.idx b)).symm v))) with hf`. Establish `hk : ∀ b a, ∫⁻ y in (A.chart (C.idx b)).source ∩ A.chart (C.idx b) ⁻¹' W b a, ENNReal.ofReal (A.nsq (A.kap + la) (D a) y) ∂A.mu = ∫⁻ v in W b a, f b a v`. Introduce `b a`.
+
+Use `GlobalTheory.T.lintegral_nsq_canonical_add_chart_part n Y ι La A la (C.idx b) (W b a) (D a) (hWo b a).measurableSet (fun v hv => hv.2.1) (fun y hy hy' => hcomp a _ y hy ?_) ((hDc b a).aemeasurable (hWo b a).measurableSet)` and prove the remaining obligations. Use `hy'.2.2.1` as an intermediate fact. Rewrite `this` using `[(A.chart (C.idx b)).left_inv hy]`. Then use the resulting hypothesis. Establish `hWaa : ∀ a, W a a = ball (C.c a) (C.r a)`. Introduce `a`.
+
+Use `Set.inter_eq_left.mpr fun v hv => ⟨hbt a hv, (A.chart _).map_target (hbt a hv), ?_⟩` and prove the remaining obligations. Use `show A.chart (C.idx a) ((A.chart (C.idx a)).symm v) ∈ ball (C.c a) (C.r a)`. Rewrite using `[(A.chart (C.idx a)).right_inv (hbt a hv)]` and apply the resulting hypothesis. Establish `hE : ∀ b a, ∫⁻ v in W b a, f b a v ≤ ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v)))`. Introduce `b a`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_set` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[hWaa]`. Use `hy.2.2.2` as an intermediate fact.
+
+Rewrite `this` using `[Set.mem_preimage, (A.chart (C.idx b)).left_inv hy.1]`. Then use the resulting hypothesis. Use `_ = _ := hk a a`. Use `_ = _ := by`. Rewrite using `[hWaa]`. Use `setLIntegral_congr_fun measurableSet_ball fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hs` using `(A.chart (C.idx a)).map_target (hbt a hv)`. Establish `h1 : A.g (A.kap + la) (C.idx a) (C.idx a) ((A.chart (C.idx a)).symm v) = 1`. Establish `h2` using `A.g_cocycle (A.kap + la) _ _ _ _ hs hs hs`. Establish `h3` using `A.g_ne (A.kap + la) _ _ _ hs hs`. Conclude with `(mul_right_eq_self₀.mp h2.symm).resolve_right h3`.
+
+Simplify using `only [hf, hD]`. Rewrite using `[h1, one_mul, (A.chart (C.idx a)).right_inv (hbt a hv), norm_sub_rev]`. Establish `hfm : ∀ b a, AEMeasurable ((W b a).indicator (f b a)) (volume.restrict (ball (C.c b) (C.r b)))`. Introduce `b a`. Use `AEMeasurable.restrict ?_` and prove the remaining obligations.
+
+Rewrite using `[aemeasurable_indicator_iff (hWo b a).measurableSet]`. Use `ContinuousOn.aemeasurable ?_ (hWo b a).measurableSet` and prove the remaining obligations. Establish `h4` using `(A.smooth_ph la (C.idx b)).continuousOn.mono (t := W b a) (fun v hv => hv.2.1)`. Conclude with `ENNReal.continuous_ofReal.comp_continuousOn (((hDc b a).norm.pow 2).mul (Real.continuous_exp.comp_continuousOn h4.neg))`. Establish `hpt : ∀ b, ∀ v ∈ ball (C.c b) (C.r b), ENNReal.ofReal ((∑ j, ‖wdb n j (glue C la u (C.idx b) ∘ (A.chart (C.idx b)).symm) v‖ ^ 2) * Real.exp (-A.ph la (C.idx b) ((A.chart (C.idx b)).symm v))) ≤ ENNReal.ofReal (n * (C.m * B ^ 2)) * ∑ a, (W b a).indicator (f b a) v`.
+
+Introduce `b v hv`. Use `set e : Fin C.m → ℝ := fun a => (W b a).indicator (fun v => ‖D a (C.idx b) ((A.chart (C.idx b)).symm v)‖ ^ 2) v with he`. Establish `he0 : ∀ a, 0 ≤ e a` using `fun a => Set.indicator_nonneg (fun _ _ => by positivity) _`. Establish `h1 : ∀ j, ‖wdb n j (glue C la u (C.idx b) ∘ (A.chart (C.idx b)).symm) v‖ ^ 2 ≤ C.m * B ^ 2 * ∑ a, e a`. Introduce `j`.
+
+Rewrite using `[GlobalTheory.T.dbar_glueSectionByPartition_eq n Y ι La A C la u (C.idx b) v (F0 (C.idx b) ((A.chart (C.idx b)).symm v)) j hu (hbt b hv)]`. Apply `sq_sum_le` to reduce the goal to its premises. Introduce `a`. Distinguish the cases in `hm : v ∈ W b a`. Simplify using `only [he, Set.indicator_of_mem hm, hD]`.
+
+Rewrite using `[norm_mul, mul_pow]`. Use `gcongr`. Conclude with `hB a b j v hv`. Rewrite using `[wdb_eq_zero C a (C.idx b) j v (hbt b hv) (fun h => hm ⟨hv, hbt b hv, h⟩)]`. Simplify using `only [zero_mul, norm_zero]`.
+
+Use `he0 a` as an intermediate fact. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Check the signs of the components of the expression. Establish `h2 : ∑ a, (W b a).indicator (f b a) v = ENNReal.ofReal ((∑ a, e a) * Real.exp (-A.ph la (C.idx b) ((A.chart (C.idx b)).symm v)))`. Rewrite using `[Finset.sum_mul, ENNReal.ofReal_sum_of_nonneg (fun a _ => mul_nonneg (he0 a) (Real.exp_pos _).le)]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : v ∈ W b a`. Simplify using `only [he, hf, Set.indicator_of_mem hm]`. Simplify using `[he, Set.indicator_of_notMem hm]`. Rewrite using `[h2, ← ENNReal.ofReal_mul (by positivity), ← mul_assoc]`.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Unfold `n1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Use `(setLIntegral_mono' measurableSet_ball (hpt b)).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finset_sum' _ (fun a _ => hfm b a)]`. Use `mul_le_mul_right (Finset.sum_le_sum fun a _ => ?_) _` and prove the remaining obligations. Use `le_trans (setLIntegral_le_lintegral _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_indicator (hWo b a).measurableSet]`. Conclude with `hE b a`. Use `_ = _ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ENNReal.ofReal_mul (p := (C.m : ℝ)) (by positivity), ENNReal.ofReal_natCast, mul_assoc]`.
+-/
 theorem energy_glue_le : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ C : Cover A, ∃ K : ℝ, 0 ≤ K ∧ ∀ (la : La) (F0 : ι → Y → ℂ) (u : Fin C.m → V n → ℂ), A.IsSSec (A.kap + la) F0 → (∀ a, DifferentiableOn ℂ (u a) (ball (C.c a) (C.r a))) → n1 C la (glue C la u) ≤ ENNReal.ofReal K * ∑ a, ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F0 (C.idx a) ((A.chart (C.idx a)).symm v) - u a v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) := by
   intro n Y _ _ _ _ _ ι La _ A C
   obtain ⟨B, hB0, hB⟩ := exists_bound C

@@ -8,6 +8,15 @@ namespace Formalism.FG.LowCoefficients
 
 open Formalism.G
 
+/- English proof (translation)
+Distinguish the cases in `hdiv : ∀ i, q ∣ d i`. Set `m : τ →₀ ℕ` to `d.mapRange (fun k => k / q) (by simp)`. Establish `hdm : d = q • m`. Use extensionality with `i`. Simplify using `[m, Nat.mul_div_cancel' (hdiv i)]`.
+
+Establish `hdeg : d.degree = q * m.degree`. Rewrite using `[hdm, map_nsmul, smul_eq_mul]`. Rewrite using `[hdm, MvPowerSeries.coeff_expand_smul]`. Apply `hlow` to reduce the goal to its premises. Establish `h1 : q * m.degree = N` using `by rw [← hdeg, hd]`.
+
+Establish `h2 : 0 < m.degree`. Break down `Nat.eq_zero_or_pos m.degree with h | h` into its components or cases. Rewrite `h1` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hdiv`. Take `⟨i, hi⟩` from `hdiv`. Conclude with `MvPowerSeries.coeff_expand_of_not_dvd q hq φ hi`.
+-/
 theorem coeff_expand_eq_zero {R : Type*} [CommRing R] {τ : Type*} (q : ℕ) (hq : q ≠ 0)
     (hq2 : 2 ≤ q) (φ : MvPowerSeries τ R) (N : ℕ) (hN : 1 ≤ N)
     (hlow : ∀ m : τ →₀ ℕ, m.degree < N → MvPowerSeries.coeff m φ = 0)
@@ -40,6 +49,11 @@ namespace Formalism.FG
 
 open Formalism.G
 
+/- English proof (translation)
+Introduce `K _ _ p q hq σ hq2 ι _ M τ D hD N hN hlow j d hd`. Establish `h1` using `hD j d`. Establish `h2 : MvPowerSeries.coeff d (∑ k, M j k • MvPowerSeries.expand q hq (MvPowerSeries.map σ (D k))) = 0`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul, LowCoefficients.coeff_expand_eq_zero q hq hq2 _ N hN (fun m hm => by rw [MvPowerSeries.coeff_map, hlow k m hm, map_zero]) d hd, mul_zero]`. Rewrite `h1` using `[map_sub, map_smul, smul_eq_mul, h2, mul_zero, sub_zero]`. Conclude with `h1`.
+-/
 theorem low_coeff_vector : Formalism.FG.LowCoeffV.{u, v, w} := by
 
   intro K _ _ p q hq σ hq2 ι _ M τ D hD N hN hlow j d hd

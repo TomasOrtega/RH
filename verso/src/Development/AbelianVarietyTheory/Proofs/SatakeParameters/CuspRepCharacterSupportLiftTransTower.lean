@@ -11,11 +11,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem chars_congr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {ξ ξ' : Fin n → (kˣ →* ℂˣ)} (hξ : ∀ j, IsSmoothChar (ξ j)) (hξ' : ∀ j, IsSmoothChar (ξ' j)) (e : ξ = ξ') :
     chars ξ hξ = chars ξ' hξ' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `K M N _ _ _ _ _ _ _ _ _ _ _ _ _ a π P Q h1 h2`. Use `⟨GlobalTheory.T.cuspidal_baseChange_trans_tower K M N a π P Q h1.1 h2.1, ?_⟩` and prove the remaining obligations. Introduce `v w _ τ T hτ hT ξ hξ hs`. Set `u : HeightOneSpectrum (𝓞 M)` to `w.under (𝓞 M)`. Use `haveI hwu : w.asIdeal.LiesOver u.asIdeal := ⟨rfl⟩`.
+
+Use `haveI huv : u.asIdeal.LiesOver v.asIdeal := Ideal.LiesOver.tower_bot w.asIdeal u.asIdeal v.asIdeal`. Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL M a P u`. Establish `h3` using `h1.2 v u τ σ hτ hσ ξ hξ hs`. Establish `h4` using `h2.2 u w σ T hσ hT _ _ h3`. Establish `e` using `GlobalTheory.BCChar.normU_comp_normU v u w`.
+
+Use `(congrArg (HasSupport T.ρ) (chars_congr _ _ ?_)).mp h4` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[MonoidHom.comp_assoc, e]`.
+-/
 theorem charLift_trans : ∀ (K M N : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M] [NumberField M] [IsTotallyComplex M] [Field N] [NumberField N] [IsTotallyComplex N] [Algebra K M] [Algebra M N] [Algebra K N] [IsScalarTower K M N] (a : ℕ) (π : CuspSub K a) (P : CuspSub M a) (Q : CuspSub N a), CharLift π P → CharLift P Q → CharLift π Q := by
   intro K M N _ _ _ _ _ _ _ _ _ _ _ _ _ a π P Q h1 h2
   refine ⟨GlobalTheory.T.cuspidal_baseChange_trans_tower K M N a π P Q h1.1 h2.1, ?_⟩

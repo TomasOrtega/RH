@@ -17,6 +17,19 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.LowKMultOne
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM S hS N _hN hVN hSN`. Set `U : ℕ → Submodule ℂ R.Pi` to `fun k => (fockDeg G.M B.ψ B.emb k).map R.p`. Establish `hUmono : Monotone U` using `fun i j h => Submodule.map_mono (fockDeg_mono _ _ _ h)`. Establish `htop : ⨆ k, U k = ⊤` using `by show ⨆ k, (fockDeg G.M B.ψ B.emb k).map R.p = ⊤`. Rewrite using `[← Submodule.map_iSup, ← pol_eq_iSup_fockDeg]`.
+
+Conclude with `hM.real.quot.onto`. Establish `hfin : FiniteDimensional ℂ (lowPartInf B G.M R.p)` using `GlobalTheory.T.lowPart_finite_dimensional hKP F E σ B a a' G X om om' R Rf hM`. Establish `hfg : ((lowPartInf B G.M R.p).map S).FG` using `(Module.Finite.iff_fg.1 hfin).map S`. Take `⟨Y, ⟨m, rfl⟩, hm⟩` from `(CompleteLattice.isCompactElement_iff_le_of_directed_sSup_le (Submodule ℂ R.Pi) _).1 ((Submodule.fg_iff_compact _).1 hfg) (Set.range U) (Set.range_nonempty U) hUmono.directed_le.directedOn_range (by rw [sSup_range, htop]; exact le_top)`. Establish `hstep` using `GlobalTheory.T.low_degree_K_equivariant hKP F E σ B a a' G X om om' R Rf hM`.
+
+Establish `key : ∀ j : ℕ, (∀ x ∈ lowPartInf B G.M R.p, S x ∈ U (lowDegInf B G.M R.p + j)) → ∀ x ∈ lowPartInf B G.M R.p, S x ∈ U (lowDegInf B G.M R.p)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact fun h => h`. Consider the case `succ j ih => exact fun h => ih (hstep _ (Nat.le_add_right _ _) S hS h)`.
+
+Establish `hV : ∀ x ∈ lowPartInf B G.M R.p, S x ∈ lowPartInf B G.M R.p`. Establish `hm' : ∀ x ∈ lowPartInf B G.M R.p, S x ∈ U m` using `fun x hx => hm ⟨x, hx, rfl⟩`. Break down `le_total m (lowDegInf B G.M R.p) with h | h` into its components or cases. Conclude with `fun x hx => hUmono h (hm' x hx)`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le h`.
+
+Rewrite `hm'` using `[hj]`. Conclude with `key j hm'`. Introduce `x hx`. Establish `: S x ∈ lowPartInf B G.M R.p ⊓ N` using `⟨hV x hx, hSN x hx⟩`. Rewrite `this` using `[hVN]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`.
+-/
 theorem map_eq_zero_of_disjoint : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

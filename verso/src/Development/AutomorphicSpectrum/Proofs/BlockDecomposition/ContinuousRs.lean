@@ -19,6 +19,9 @@ variable {D : D7} {r : ℕ}
 
 def rs (σ : (D.what₂.Tau → ℂ) →+ AE D) (s : ℝ) : AE D := σ fun _ => (s : ℂ)
 
+/- English proof (translation)
+Unfold `rs`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules.
+-/
 theorem rs_add (σ : (D.what₂.Tau → ℂ) →+ AE D) (s t : ℝ) : rs σ (s + t) = rs σ s + rs σ t := by
   unfold rs
   rw [← map_add]
@@ -26,11 +29,17 @@ theorem rs_add (σ : (D.what₂.Tau → ℂ) →+ AE D) (s t : ℝ) : rs σ (s +
   funext τ
   simp
 
+/- English proof (translation)
+Unfold `rs`. Establish `: (fun _ : D.what₂.Tau => ((0 : ℝ) : ℂ)) = 0` using `by funext; simp`. Rewrite using `[this, map_zero]`.
+-/
 theorem rs_zero (σ : (D.what₂.Tau → ℂ) →+ AE D) : rs σ 0 = 0 := by
   unfold rs
   have : (fun _ : D.what₂.Tau => ((0 : ℝ) : ℂ)) = 0 := by funext; simp
   rw [this, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, ha, hb]`.
+-/
 theorem finPart_cA (z : AE D) :
     finPart D (cA D z) = sigR (Af D.host.F) D.sp.cm.sig (finPart D z) := by
   induction z using TensorProduct.induction_on with
@@ -38,6 +47,11 @@ theorem finPart_cA (z : AE D) :
   | tmul a x => rfl
   | add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, ha, hb]
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Establish `h0 : finPart D (rs σ s) = 0` using `hσ.fin _`. Rewrite using `[RingHom.map_sub, finPart_cA, h0, map_zero, sub_zero]`. Establish `hcm` using `Formalism.MainNotions.UnusedSlot34.isCMExt_D D`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, GlobalTheory.PhaseReal.infPart_cA, GlobalTheory.Mem.VolExists.infEmb_sigR hcm (hσ.inf τ)]`.
+
+Unfold `rs`. Rewrite using `[hσ.comp]`. Simplify using the standard rewrite rules.
+-/
 theorem cA_rs {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) (s : ℝ) :
     cA D (rs σ s) = rs σ s := by
   refine sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)
@@ -50,6 +64,9 @@ theorem cA_rs {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : Gl
     rw [hσ.comp]
     simp
 
+/- English proof (translation)
+The claim follows from `hσ.cont.comp (continuous_pi fun _ => Complex.continuous_ofReal)`.
+-/
 theorem continuous_rs {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) :
     Continuous (rs σ) :=
   hσ.cont.comp (continuous_pi fun _ => Complex.continuous_ofReal)

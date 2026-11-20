@@ -25,9 +25,27 @@ def OrthSplit : Prop :=
       (∀ u ∈ L', B x u = 0) ∧ Submodule.span ℤ_[p] {x} ⊔ L' = L ∧
       (∀ (c : ℤ_[p]) (y : MvPolynomial σ ℚ_[p]), y ∈ L' → c • x + y = 0 → c = 0)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.FreeLattices.goal1 .. | (apply Bl.FreeLattices.goal1 <;> assumption) | (intros; apply Bl.FreeLattices.goal1 <;> assumption) | (apply @Bl.FreeLattices.goal1 <;> assumption) | (intros; apply @Bl.FreeLattices.goal1 <;> assumption) | (apply @Bl.FreeLattices.goal1 <;> …`.
+-/
 theorem freeLat_proved : FreeLat := by
   first | exact Bl.FreeLattices.goal1 .. | (apply Bl.FreeLattices.goal1 <;> assumption) | (intros; apply Bl.FreeLattices.goal1 <;> assumption) | (apply @Bl.FreeLattices.goal1 <;> assumption) | (intros; apply @Bl.FreeLattices.goal1 <;> assumption) | (apply @Bl.FreeLattices.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Introduce `p _ σ B L W hp hW hLW hfg hsm hadd hsy`. It suffices to establish `H : ∀ n : ℕ, ∀ L : Submodule ℤ_[p] (MvPolynomial σ ℚ_[p]), Module.finrank ℤ_[p] L = n → (∀ x ∈ L, x ∈ W) → L.FG → (∀ u ∈ L, ∀ v ∈ L, B u v = B v u) → ∃ (m : ℕ) (f : Fin m → MvPolynomial σ ℚ_[p]), (∀ a, f a ∈ L) ∧ LinearIndependent ℤ_[p] f ∧ Submodule.span ℤ_[p] (Set.range f) = L …`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `L hn hLW hfg hsy`. Distinguish the cases in `h0 : ∃ u ∈ L, ∃ v ∈ L, B u v ≠ 0`. Take `⟨x, hx, L', hL'L, hL'fg, hrk, horth, hspan, hdir⟩` from `hS p σ B L W hp hW hLW hfg hsm hadd hsy h0`. Take `⟨m, f, hfL, hli, hsp, hfo⟩` from `ih _ (hn ▸ hrk) L' rfl (fun y hy => hLW y (hL'L hy)) hL'fg (fun u hu v hv => hsy u (hL'L hu) v (hL'L hv))`. Use `⟨m + 1, Fin.cons x f, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Use `Fin.cases ?_ (fun b => ?_) a` and prove the remaining obligations. Simplify using `using hx`. Simplify using `using hL'L (hfL b)`. Use `hli.finCons' x f fun c y hy hsum => ?_` and prove the remaining obligations.
+
+Establish `hle : Submodule.span ℤ_[p] (Set.range f) ≤ L'` using `by rw [hsp]`. Conclude with `hdir c y (hle hy) hsum`. Rewrite using `[Fin.range_cons, Submodule.span_insert, hsp, hspan]`. Establish `hfx : ∀ b, B x (f b) = 0` using `fun b => horth _ (hfL b)`. Introduce `a b hab`.
+
+Use `Fin.cases (fun hab => ?_) (fun a' hab => ?_) a hab` and prove the remaining obligations. Use `Fin.cases (fun h => absurd rfl h) (fun b' _ => ?_) b hab` and prove the remaining obligations. Simplify using `using hfx b'`. Use `Fin.cases (fun _ => ?_) (fun b' h => ?_) b hab` and prove the remaining obligations. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+
+Rewrite using `[hsy _ (hL'L (hfL a')) _ hx]`. Conclude with `hfx a'`. Simplify using `only [Fin.cons_succ]`. Conclude with `hfo a' b' (fun e => h (by rw [e]))`. Use `push Not at h0`.
+
+Take `⟨m, f, hfL, hli, hsp⟩` from `hF p σ L W hW hLW hfg`. Conclude with `⟨m, f, hfL, hli, hsp, fun a b _ => h0 _ (hfL a) _ (hfL b)⟩`.
+-/
 theorem orthBasisLat_of (hF : FreeLat) (hS : OrthSplit) : OrthBasisLat := by
   intro p _ σ B L W hp hW hLW hfg hsm hadd hsy
 

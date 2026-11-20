@@ -9,6 +9,9 @@ variable {O : Type} [Ring O] {R : Type} [CommRing R] {V : Type} [AddCommGroup V]
 def matAct (ρ : O →+* Module.End R V) {m : ℕ} (M : Matrix (Fin m) (Fin m) O) : (Fin m → V) →ₗ[R] (Fin m → V) :=
   LinearMap.pi fun i => ∑ j, ρ (M i j) ∘ₗ LinearMap.proj j
 
+/- English proof (translation)
+Simplify using `[matAct]`.
+-/
 theorem matAct_apply (ρ : O →+* Module.End R V) {m : ℕ} (M : Matrix (Fin m) (Fin m) O) (x : Fin m → V) (i : Fin m) :
     matAct ρ M x i = ∑ j, ρ (M i j) (x j) := by
   simp [matAct]
@@ -24,6 +27,9 @@ def altPull (E : Type) [CommRing E] [Algebra R E] {W W' : Type} [AddCommGroup W]
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem altPull_apply {W W' : Type} [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R W']
     (u : W' →ₗ[R] W) (q : ℕ) (f : Alt R W E q) (x : Fin q → W') : altPull E u q f x = f fun i => u (x i) := rfl
 
@@ -56,6 +62,13 @@ def powRep (σ : Representation R Γ V) (m : ℕ) : Representation R Γ (Fin m �
     ext x i
     simp
 
+/- English proof (translation)
+Establish `h : ∀ (M : Matrix (Fin m) (Fin m) O) (x : Fin m → V), matAct ρ M (powRep σ m γ⁻¹ x) = powRep σ m γ⁻¹ (matAct ρ M x)`. Introduce `M x`. Use function extensionality and compare the values at `i`. Establish `h1 : ∀ b y, σ γ⁻¹ (ρ b y) = ρ b (σ γ⁻¹ y)` using `fun b y => LinearMap.congr_fun (hσ γ⁻¹ b) y`. Simplify using `[matAct_apply, powRep, map_sum, h1]`.
+
+Unfold `altOp Finsupp.sum`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun M _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`.
+
+Use extensionality with `f x`. Express the relevant statement in the definitionally equal form `f (fun i => matAct ρ M (powRep σ m γ⁻¹ (x i))) = f (fun i => powRep σ m γ⁻¹ (matAct ρ M (x i)))`. Simplify using `only [h]`.
+-/
 theorem altOp_comm (ρ : O →+* Module.End R V) (σ : Representation R Γ V) (hσ : ∀ γ b, σ γ * ρ b = ρ b * σ γ) {m : ℕ}
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (q : ℕ) (γ : Γ) :
     altRep E (powRep σ m) q γ * altOp ρ ε q = altOp ρ ε q * altRep E (powRep σ m) q γ := by
@@ -80,6 +93,11 @@ def xiRep (ρ : O →+* Module.End R V) (σ : Representation R Γ V) (hσ : ∀ 
     rintro _ ⟨f, rfl⟩
     exact ⟨altRep E (powRep σ m) k γ f, (LinearMap.congr_fun (altOp_comm ρ σ hσ ε k γ) f).symm⟩
 
+/- English proof (translation)
+Establish `: altOp ρ (Finsupp.single (1 : Matrix (Fin 0) (Fin 0) O) (1 : E)) 0 = 1`. Use extensionality with `f x`. Simplify using `only [altOp, zero_smul, Finsupp.sum_single_index, one_smul, altPull_apply, Module.End.one_apply]`. Conclude with `congrArg f (Subsingleton.elim _ _)`. Rewrite using `[this, one_mul]`.
+
+Use `zero q hq := by`. Use extensionality with `f x`. Take `⟨q, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hq`. Simplify using `only [altOp, zero_smul, Finsupp.sum_single_index, one_smul, altPull, LinearMap.coe_mk, AddHom.coe_mk, AlternatingMap.compLinearMap_apply, LinearMap.zero_apply, AlternatingMap.zero_apply]`. Conclude with `f.map_coord_zero 0 (Subsingleton.elim _ _)`.
+-/
 example (ρ : O →+* Module.End R V) : IsCut ρ (Finsupp.single (1 : Matrix (Fin 0) (Fin 0) O) (1 : E)) 0 where
   idem := by
     have : altOp ρ (Finsupp.single (1 : Matrix (Fin 0) (Fin 0) O) (1 : E)) 0 = 1 := by

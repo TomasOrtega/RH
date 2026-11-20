@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Glob
 
+/- English proof (translation)
+Take `⟨U, hU, hUs⟩` from `GlobalTheory.T.exists_hermitianSpace_with_signature D (P + 1) Q`. Establish `hr` using `GlobalTheory.T.volume_ratio_up_positive_line D hT h2 W P Q hW hs hPQ U hU hUs`. Establish `hb` using `massRatio_of_definiteVolume D h2 hv (P + Q + 1) (by omega)`. Establish `e : P + Q + 1 - 1 = P + Q` using `by omega`. Rewrite `hb` using `[e]`.
+
+Rewrite `hr` using `[← hb, hup U hU hUs]`. Establish `h1` using `massI_pos D (P + Q + 1)`. Establish `h3` using `massI_pos D (P + Q)`. Establish `h4` using `D.vol_pos W`. Clear denominators, using `at hr` for the nonvanishing conditions.
+
+Use polynomial arithmetic with `[hr]`.
+-/
 theorem vol_eq_massI_step (D : D7) (hT : VolTie D) (h2 : Conclusion2 D) (hv : DefiniteVolumeEqMass D)
     (W : HSpace D.host.E) (P Q : ℕ) (hW : W.SigOK) (hs : ∀ τ, W.sig τ = (P, Q)) (hPQ : 2 ≤ P + Q)
     (hup : ∀ U : HSpace D.host.E, U.SigOK → (∀ τ, U.sig τ = (P + 1, Q)) → D.vol U = massI D (P + Q + 1)) :
@@ -24,6 +31,15 @@ theorem vol_eq_massI_step (D : D7) (hT : VolTie D) (h2 : Conclusion2 D) (hv : De
   field_simp at hr
   nlinarith [hr]
 
+/- English proof (translation)
+Introduce `D hT h2 hv`. Establish `h2v` using `volume_eq_mass_of_definite D h2 hv`. Establish `hP1 : ∀ (W : HSpace D.host.E) (Q : ℕ), W.SigOK → (∀ τ, W.sig τ = (1, Q)) → 2 ≤ 1 + Q → D.vol W = massI D (1 + Q)`. Introduce `W Q hW hs hQ`. Use `vol_eq_massI_step D hT h2 hv W 1 Q hW hs hQ fun U hU hUs => ?_` and prove the remaining obligations.
+
+Use `h2v.2 U 2 Q hU hUs le_rfl` as an intermediate fact. Rewrite using `[this]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Introduce `W P Q hW hs hPQ`.
+
+Break down `Nat.lt_or_ge P 2 with hP | hP` into its components or cases. Use `interval_cases P`. Use `vol_eq_massI_step D hT h2 hv W 0 Q hW hs hPQ fun U hU hUs => ?_` and prove the remaining obligations. Rewrite using `[hP1 U Q hU hUs (by omega)]; congr 1; omega`. Conclude with `hP1 W Q hW hs hPQ`.
+
+Conclude with `h2v.2 W P Q hW hs hP`.
+-/
 theorem vol_eq_massI_of_two_le_rank : ∀ D : D7, VolTie D → Conclusion2 D → DefiniteVolumeEqMass D → ∀ (W : HSpace D.host.E) (P Q : ℕ),
     W.SigOK → (∀ τ, W.sig τ = (P, Q)) → 2 ≤ P + Q → D.vol W = massI D (P + Q) := by
   intro D hT h2 hv

@@ -15,12 +15,22 @@ namespace GlobalTheory.HCFinU.KinfBridge
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Both sides reduce to the same expression.
+-/
 theorem bridgeS_mat (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) (x : I.GA) :
     ((HA.mat (AF I.F) s I.J (bridgeS I s hs x) : GL (Fin I.n) (AF I.F ⊗[I.F] I.E)) :
       Matrix (Fin I.n) (Fin I.n) (AF I.F ⊗[I.F] I.E)) = hmat I (bridgeS I I.cm.sig rfl x) := by
   subst hs
   rfl
 
+/- English proof (translation)
+Set `ι : Formalism.MainNotions.S.Af I.F →ₗ[I.F] AF I.F` to `LinearMap.inr I.F (InfiniteAdeleRing I.F) (Formalism.MainNotions.S.Af I.F)`. Set `Φ : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F →ₗ[I.F] AF I.F ⊗[I.F] I.E` to `(TensorProduct.comm I.F I.E (AF I.F)).toLinearMap ∘ₗ (LinearMap.lTensor I.E (ι ∘ₗ LinearMap.mulLeft I.F u.2))`. Establish `key : ∀ y : AF I.F ⊗[I.F] I.E, u • y = Φ (tauF I y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b x`. Rewrite using `[tauF_tmul]`. Establish `hb : u * b = ι (u.2 * b.2)` using `Prod.ext (by show u.1 * b.1 = 0; rw [hu, zero_mul]) rfl`. Simplify using `only [Φ, LinearMap.coe_comp, Function.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.comm_tmul, LinearMap.mulLeft_apply]`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, hb]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]`. Rewrite using `[key, hz, map_zero]`.
+-/
 theorem smul_eq_zero_of_tauF (I : Formalism.MainNotions.S.AutInst) (z : AF I.F ⊗[I.F] I.E) (hz : tauF I z = 0)
     (u : AF I.F) (hu : u.1 = 0) : u • z = 0 := by
   let ι : Formalism.MainNotions.S.Af I.F →ₗ[I.F] AF I.F := LinearMap.inr I.F (InfiniteAdeleRing I.F) (Formalism.MainNotions.S.Af I.F)
@@ -40,6 +50,11 @@ theorem smul_eq_zero_of_tauF (I : Formalism.MainNotions.S.AutInst) (z : AF I.F �
     | add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]
   rw [key, hz, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[thetaV_tmul, hτ]`. Establish `h : compInf I.F I.E v (a ⊗ₜ[I.F] x) = (a.1 v) ⊗ₜ[I.F] x` using `rfl`.
+
+Use `show _ = infEmb τ (compInf I.F I.E v (a ⊗ₜ[I.F] x))`. Rewrite using `[h, infEmb_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem thetaV_eq (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (τ : EmbOver I.E v) (hτ : I.φ v = τ.1)
     (z : AF I.F ⊗[I.F] I.E) : thetaV I v z = piInf τ z := by
   induction z using TensorProduct.induction_on with
@@ -52,6 +67,11 @@ theorem thetaV_eq (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) 
     rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `key : ∀ X Y : Matrix (Fin n) (Fin n) ℂ, P * ((P⁻¹ * X * P) * (P⁻¹ * Y * P)) * P⁻¹ = X * Y`. Introduce `X Y`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show M * T = T * M`. Rewrite using `[← key M T, ← key T M, h.eq]`.
+-/
 theorem commute_of_conj {n : ℕ} (P M T : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P)
     (h : Commute (P⁻¹ * M * P) (P⁻¹ * T * P)) : Commute M T := by
   have hdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det _).1 hP
@@ -64,6 +84,17 @@ theorem commute_of_conj {n : ℕ} (P M T : Matrix (Fin n) (Fin n) ℂ) (hP : IsU
   show M * T = T * M
   rw [← key M T, ← key T M, h.eq]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `bridgeS_isBridge I ((fun v => (k v).1), 1)`. Use `⟨fun u hu => ?_, fun v T hT => ?_⟩` and prove the remaining obligations. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace I.F).injective (hu.trans (map_zero _).symm)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply]`.
+
+Use `smul_eq_zero_of_tauF I _ ?_ u hu1` and prove the remaining obligations. Establish `h3 : (1 : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)) = (hmat I (bridgeS I I.cm.sig rfl ((fun v => (k v).1), 1))).map (tauF I)` using `h2`. Establish `h4` using `congrFun (congrFun h3 i) j`. Rewrite `h4` using `[Matrix.map_apply]`. Rewrite using `[Matrix.sub_apply, map_sub, ← h4]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Use `commute_of_conj (I.P v) _ T (I.P_unit v) ?_` and prove the remaining obligations.
+
+Establish `h3 : Formalism.REAL.toM (k v).1 = (I.P v)⁻¹ * (hmat I (bridgeS I I.cm.sig rfl ((fun v => (k v).1), 1))).map (thetaV I v) * I.P v` using `h1 v`. Establish `h4 : Formalism.REAL.toM (k v).1 ∈ Formalism.REAL.Kset (I.ε v)` using `(k v).2`. Establish `h5 : Commute (Formalism.REAL.toM (k v).1) (Formalism.REAL.Jm (I.ε v))` using `h4.2`. Rewrite using `[← h3]`. Break down `hT with hT | hT` into its components or cases.
+
+Rewrite using `[hT]`. Conclude with `h5`. Rewrite using `[hT]`. Conclude with `h5.neg_right`.
+-/
 theorem bridge_kinf (I : Formalism.MainNotions.S.AutInst) (k : GlobalTheory.Dec.Kinf I) :
     At (evI I.F) (hmat I (bridgeS I I.cm.sig rfl ((fun v => (k v).1), 1)) - 1) ∧
     ∀ v (T : Matrix (Fin I.n) (Fin I.n) ℂ),
@@ -93,6 +124,15 @@ theorem bridge_kinf (I : Formalism.MainNotions.S.AutInst) (k : GlobalTheory.Dec.
     · rw [hT]; exact h5
     · rw [hT]; exact h5.neg_right
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B d r s W _ _ c hc _ cm hJ hdet L hfg hspan hdual ε hφ P hPu hP hθ hs k`. Establish `hb` using `bridge_kinf (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) k`. Establish `hm` using `bridgeS_mat (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) σ hs ((fun v => (k v).1), 1)`. Rewrite `hb` using `[← hm]`. Generalize the expression as in `GlobalTheory.HCFinU.bridgeS (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) σ hs ((fun v => (k v).1), 1) = h at hb ⊢`.
+
+Establish `hg` using `toGAd_mat hσ W.J hc ((toGAd hσ W.J hc).symm h)`. Use `replace hg := (congrArg (HA.mat (AF F) σ (c • W.J.map σ)) ((toGAd hσ W.J hc).apply_symm_apply h)).symm.trans hg`. Establish `hg' : mat ((toGAd hσ W.J hc).symm h) = ((HA.mat (AF F) σ (c • W.J.map σ) h : GL (Fin d) (AF F ⊗[F] E)) : Matrix (Fin d) (Fin d) (AF F ⊗[F] E))` using `(congrArg Units.val hg).symm`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `show At (evI F) (mat ((toGAd hσ W.J hc).symm h) - 1)`.
+
+Rewrite using `[hg']`. Conclude with `hb.1`. Rewrite using `[hg']`. Establish `h2` using `hb.2 w (W.θ w) (hθ w)`. Establish `h3 : (thetaV (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) w : AF F ⊗[F] E → ℂ) = piInf (B.emb w)`.
+
+Use function extensionality and compare the values at `fun z => thetaV_eq (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) w (B.emb w) rfl z`. Rewrite using `[← h3]`. Conclude with `h2`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (d r s : ℕ) (W : Spc F E d), B.IsGood σ → W.IsSkew σ B r s → ∀ (c : E) (hc : c ≠ 0), σ c = -c → ∀ (cm : @Formalism.BasicNotions.CMData F E _ _ _ _ (GlobalTheory.HCFinU.starOf σ hσ) _) (hJ : ∀ i j, σ ((c • W.J.map σ) j i) = (c • W.J.map σ) i j) (hdet : (c • W.J.map σ).det ≠ 0) (L : Submodule (𝓞 E) (Fin d → E)) (hfg : L.FG) (hspan : Submodule.span E (L : Set (Fin d → E)) = ⊤) (hdual : ∀ x : Fin d → E, x ∈ L ↔ ∀ y ∈ L, Formalism.UG.hform (σ : E →+* E) (c • W.J.map σ) y x ∈ (algebraMap (𝓞 E) E).range) (ε : InfinitePlace F → Fin d → Bool) (hφ : ∀ v (a : F), (B.emb v).1 (algebraMap F E a) = v.embedding a) (P : InfinitePlace F → Matrix (Fin d) (Fin d) ℂ) (hPu : ∀ v, IsUnit (P v)) (hP : ∀ v, (P v)ᴴ * (c • W.J.map σ).map (B.emb v).1 * P v = Formalism.REAL.Jm (ε v)), (∀ v, (P v)⁻¹ * W.θ v * P v = Formalism.REAL.Jm (ε v) ∨ (P v)⁻¹ * W.θ v * P v = -Formalism.REAL.Jm (ε v)) → ∀ (hs : σ = (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP).cm.sig) (k : GlobalTheory.Dec.Kinf (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP)), (toGAd hσ W.J hc).symm (GlobalTheory.HCFinU.bridgeS (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) σ hs ((fun v => (k v).1), 1)) ∈ KInf σ W B.emb := by
   intro F E _ _ _ _ _ σ hσ B d r s W _ _ c hc _ cm hJ hdet L hfg hspan hdual ε hφ P hPu hP hθ hs k
   have hb := bridge_kinf (GlobalTheory.HCFinU.mkI σ hσ cm (c • W.J.map σ) hJ hdet L hfg hspan hdual ε (fun v => (B.emb v).1) hφ P hPu hP) k

@@ -14,6 +14,13 @@ open GlobalTheory.QCoh (IsFiniteQC)
 
 variable {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C]
 
+/- English proof (translation)
+Use `hC.isNoetherian` as an intermediate fact. Use `hi.mono` as an intermediate fact. Use `hi.isFiniteQC` as an intermediate fact. Set `q : G ⟶ Q` to `i ≫ p`. Establish `hKG : IsFiniteQC (kernel q)` using `.of_mono (kernel.ι q)`.
+
+Establish `hm : Mono (Abelian.factorThruCoimage q)` using `inferInstance`. Establish `hc : IsFiniteQC (cokernel (kernel.ι q))` using `.of_mono (Abelian.factorThruCoimage q)`. Set `j : kernel q ⟶ kernel p` to `kernel.lift p (kernel.ι q ≫ i) (by`. Rewrite using `[Category.assoc]`. Conclude with `kernel.condition q)`.
+
+Establish `hj : Mono j` using `mono_of_mono_fac (kernel.lift_ι p (kernel.ι q ≫ i) _)`. Use `⟨_, IsCohSub.deg_mem (i := j) ⟨hj, hKG⟩, _, IsCohSub.deg_mem (i := Abelian.factorThruCoimage q) ⟨hm, hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hC.deg_cokernel]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_deg_eq_add (hC : IsProjCurve k C) {B Q : C.Modules} [IsFiniteQC Q] (p : B ⟶ Q)
     {G : C.Modules} {i : G ⟶ B} (hi : IsCohSub i) :
     ∃ a ∈ subDegs k (kernel p), ∃ b ∈ subDegs k Q, deg k G = a + b := by
@@ -32,6 +39,17 @@ theorem exists_deg_eq_add (hC : IsProjCurve k C) {B Q : C.Modules} [IsFiniteQC Q
   rw [hC.deg_cokernel]
   ring
 
+/- English proof (translation)
+Use `hC.isNoetherian` as an intermediate fact. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Z _ ψ h`. Establish `hZ : IsZero Z` using `(IsZero.iff_id_eq_zero Z).2 (h Z (𝟙 Z) fun j => j.elim0)`.
+
+Introduce and unpack `_ ⟨G, i, hi, rfl⟩`. Use `hi.mono` as an intermediate fact. Simplify using `[deg_eq_zero_of_isZero k (hZ.of_mono i)]`. Consider the case `succ n ih`. Introduce `Z _ ψ h`.
+
+Establish `: IsFiniteQC (kernel (ψ 0))` using `.of_mono (kernel.ι (ψ 0))`. Establish `hK` using `ih (kernel (ψ 0)) (fun j => kernel.ι (ψ 0) ≫ ψ j.succ) fun W g hg => by`. Establish `h0 : g ≫ kernel.ι (ψ 0) = 0` using `h W _ fun j => by`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Category.assoc, kernel.condition, comp_zero]`.
+
+Rewrite using `[Category.assoc]`. Conclude with `hg j`. Conclude with `(cancel_mono (kernel.ι (ψ 0))).1 (h0.trans (zero_comp).symm)`. Introduce and unpack `_ ⟨G, i, hi, rfl⟩`. Take `⟨a, ha, c, hc, e⟩` from `exists_deg_eq_add hC (ψ 0) hi`.
+
+Rewrite using `[e]`. Use `hK a ha` as an intermediate fact. Use `hD c hc` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_of_jointly_mono (hC : IsProjCurve k C) {D : C.Modules} [IsFiniteQC D] {b : ℤ}
     (hD : ∀ d ∈ subDegs k D, d ≤ b) (n : ℕ) :
     ∀ (Z : C.Modules) [IsFiniteQC Z] (ψ : Fin n → (Z ⟶ D)),
@@ -62,6 +80,13 @@ theorem le_of_jointly_mono (hC : IsProjCurve k C) {D : C.Modules} [IsFiniteQC D]
     push_cast
     linarith
 
+/- English proof (translation)
+Use `Abelian.hasFiniteBiproducts (C := C.Modules)` as an intermediate fact. Establish `hO : ∀ d ∈ subDegs k (structureModule C), d ≤ 0`. Introduce `d hd`. Use `(hC.isMaxSubDeg_of_rank_one (isVB_structureModule C)).2 hd` as an intermediate fact. Simplify using `using this`.
+
+Set `e : QCoh.freeModule C (Fin r) ≅ ⨁ fun _ : Fin r => structureModule C` to `(biproduct.isoCoproduct (fun _ : Fin r => structureModule C)).symm`. Introduce `d hd`. Use `le_of_jointly_mono hC hO r (QCoh.freeModule C (Fin r)) (fun j => e.hom ≫ biproduct.π _ j) (fun W g hg => by` as an intermediate fact. Establish `: g ≫ e.hom = 0` using `biproduct.hom_ext _ _ fun j => by`. Rewrite using `[Category.assoc, zero_comp]`.
+
+Conclude with `hg j`. Conclude with `(cancel_mono e.hom).1 (this.trans zero_comp.symm)) d hd`. Simplify using `using this`.
+-/
 theorem subDegs_freeModule_nonpos (hC : IsProjCurve k C) (r : ℕ) :
     ∀ d ∈ subDegs k (QCoh.freeModule C (Fin r)), d ≤ 0 := by
   have := Abelian.hasFiniteBiproducts (C := C.Modules)
@@ -88,6 +113,11 @@ open scoped TensorProduct
 
 variable {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp only [act, map_zero]`. Rewrite using `[zero_comp, comp_zero]`. Consider the case `tmul c a => rw [act_tensorAct_tmul, act_tensorAct_tmul, Linear.smul_comp, Linear.comp_smul, h a]`. Consider the case `add x y hx hy => simp only [act, map_add] at *`.
+
+Rewrite using `[Preadditive.add_comp, Preadditive.comp_add, hx, hy]`.
+-/
 theorem tensorAct_comm {O : Type} [CommRing O] {F F' : C.Modules} {ρ : O →+* End F}
     {ρ' : O →+* End F'} {φ : F ⟶ F'} (h : IsEquivariant ρ ρ' φ) (x : k ⊗[ℤ] O) :
     act (tensorAct k ρ) x ≫ φ = φ ≫ act (tensorAct k ρ') x := by
@@ -96,12 +126,20 @@ theorem tensorAct_comm {O : Type} [CommRing O] {F F' : C.Modules} {ρ : O →+* 
   | tmul c a => rw [act_tensorAct_tmul, act_tensorAct_tmul, Linear.smul_comp, Linear.comp_smul, h a]
   | add x y hx hy => simp only [act, map_add] at *; rw [Preadditive.add_comp, Preadditive.comp_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (eigenι ρ' (scal C (τ j))), Category.assoc, eigenMap_ι, ← Category.assoc, IsSplitBy.proj_ι, Category.assoc, IsSplitBy.proj_ι, tensorAct_comm h]`.
+-/
 theorem proj_eigenMap {O ι : Type} [CommRing O] [DecidableEq ι] {τ : ι → (O →+* k)} (hτ : IsSplitBy τ)
     {F F' : C.Modules} {ρ : O →+* End F} {ρ' : O →+* End F'} {φ : F ⟶ F'} (h : IsEquivariant ρ ρ' φ)
     (j : ι) : hτ.proj ρ j ≫ eigenMap (scal C (τ j)) h = φ ≫ hτ.proj ρ' j := by
   rw [← cancel_mono (eigenι ρ' (scal C (τ j))), Category.assoc, eigenMap_ι, ← Category.assoc,
     IsSplitBy.proj_ι, Category.assoc, IsSplitBy.proj_ι, tensorAct_comm h]
 
+/- English proof (translation)
+Establish `: Epi (hτ.proj ρ' j)` using `⟨fun u v e => by`. Simplify using `using eigenι ρ' (scal C (τ j)) ≫= e⟩`. Establish `: Epi (hτ.proj ρ j ≫ eigenMap (scal C (τ j)) h)`. Rewrite using `[proj_eigenMap]`. Use `infer_instance`.
+
+Conclude with `epi_of_epi (hτ.proj ρ j) _`.
+-/
 theorem epi_eigenMap {O ι : Type} [CommRing O] {τ : ι → (O →+* k)} (hτ : IsSplitBy τ)
     {F F' : C.Modules} {ρ : O →+* End F} {ρ' : O →+* End F'} {φ : F ⟶ F'} (h : IsEquivariant ρ ρ' φ)
     [Epi φ] (j : ι) : Epi (eigenMap (scal C (τ j)) h) := by
@@ -118,6 +156,23 @@ namespace GlobalTheory.CurveRootGeometry.QuotDeg
 
 open GlobalTheory.QCoh (IsFiniteQC)
 
+/- English proof (translation)
+Introduce `k _ _ C _ _ hC O _ hS F F' g g' hF hF' ρ ρ' φ hφ _ ⟨r, ⟨eK⟩⟩`. Establish `hP` using `hC.toIsProjCurve`. Use `hP.isNoetherian` as an intermediate fact. Use `hF.isFiniteQC` as an intermediate fact. Use `hF'.isFiniteQC` as an intermediate fact.
+
+Establish `hK : ∀ d ∈ subDegs k (kernel φ), d ≤ 0`. Rewrite using `[subDegs_congr eK]`. Conclude with `subDegs_freeModule_nonpos hP r`. Use `⟨fun σ => ?_, fun d ⟨G, i, hi, e⟩ => ?_⟩` and prove the remaining obligations. Take `⟨κ, _, τ, hτ⟩` from `hS`.
+
+Take `⟨j₀, rfl⟩` from `hτ.exists_eq σ`. Use `hτ.isFiniteQC_eigen ρ` as an intermediate fact. Use `hτ.isFiniteQC_eigen ρ'` as an intermediate fact. Use `fun j => epi_eigenMap hτ hφ (φ := φ) j` as an intermediate fact. Establish `hKj : ∀ j, IsFiniteQC (kernel (eigenMap (scal C (τ j)) hφ))` using `fun j => .of_mono (kernel.ι (eigenMap (scal C (τ j)) hφ))`.
+
+Establish `e₁ : ∀ j, deg k (eigen ρ (scal C (τ j))) = deg k (kernel (eigenMap (scal C (τ j)) hφ)) + deg k (eigen ρ' (scal C (τ j)))` using `fun j => hP.deg_shortExact (S := ShortComplex.mk _ _ (kernel.condition (eigenMap (scal C (τ j)) hφ))) (ShortComplex.ShortExact.mk' (ShortComplex.exact_kernel _) inferInstance inferInstance)`. Establish `e₂ : ∀ j, deg k (kernel (eigenMap (scal C (τ j)) hφ)) ≤ 0` using `fun j => by`. Set `m : kernel (eigenMap (scal C (τ j)) hφ) ⟶ kernel φ` to `kernel.lift φ (kernel.ι _ ≫ eigenι ρ _) (by`. Rewrite using `[Category.assoc, ← eigenMap_ι (scal C (τ j)) hφ, kernel.condition_assoc, zero_comp])`. Establish `: Mono m` using `mono_of_mono_fac (kernel.lift_ι _ _ _)`.
+
+Conclude with `hK _ (IsCohSub.deg_mem (i := m) ⟨inferInstance, inferInstance⟩)`. Establish `hKφ : IsFiniteQC (kernel φ)` using `.of_mono (kernel.ι φ)`. Establish `e₃ : deg k F = deg k (kernel φ) + deg k F'` using `hP.deg_shortExact (S := ShortComplex.mk _ _ (kernel.condition φ)) (ShortComplex.ShortExact.mk' (ShortComplex.exact_kernel _) inferInstance inferInstance)`. Establish `e₄ : deg k (kernel φ) = 0`. Rewrite using `[deg_congr k eK]`.
+
+Conclude with `deg_freeModule (hP.finiteCoh _) (Fin r)`. Establish `e₅` using `(hP.deg_eq_sum_eigen hτ ρ).1`. Establish `e₆` using `(hP.deg_eq_sum_eigen hτ ρ').1`. Establish `e₇ : ∑ j, deg k (kernel (eigenMap (scal C (τ j)) hφ)) = 0`. Establish `: ∑ j, deg k (eigen ρ (scal C (τ j))) = ∑ j, deg k (kernel (eigenMap (scal C (τ j)) hφ)) + ∑ j, deg k (eigen ρ' (scal C (τ j)))`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => e₁ j`. Use linear arithmetic over natural numbers and integers. Establish `e₈` using `(Finset.sum_eq_zero_iff_of_nonpos fun j _ => e₂ j).1 e₇ j₀ (Finset.mem_univ _)`. Rewrite using `[e₁ j₀, e₈, zero_add]`.
+
+Take `⟨a, ha, b, hb, e'⟩` from `exists_deg_eq_add hP φ hi`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `hK a ha` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem quot_deg : ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] [IsIntegral C], IsSmoothProjCurve k C →
   ∀ (O : Type) [CommRing O], Splits O k → ∀ (F F' : C.Modules) (g g' : ℕ), IsVB F g → IsVB F' g' →
   ∀ (ρ : O →+* End F) (ρ' : O →+* End F') (φ : F ⟶ F'), IsEquivariant ρ ρ' φ → Epi φ →

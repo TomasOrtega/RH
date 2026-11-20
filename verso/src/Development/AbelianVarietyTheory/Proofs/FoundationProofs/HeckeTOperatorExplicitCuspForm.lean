@@ -10,12 +10,18 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_mapGL_rat (σ : SL(2, ℤ)) :
     Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.SpecialLinearGroup.mapGL ℚ σ) =
       Matrix.SpecialLinearGroup.mapGL ℝ σ := by
   ext i j
   simp
 
+/- English proof (translation)
+Use `Finset.sum_induction F (fun G => c.IsZeroAt G k) (fun a b ha hb => ha.add hb) ?_ h` and prove the remaining obligations. Introduce `g _`. Use `show IsZeroAtImInfty ((0 : ℍ → ℂ) ∣[k] g)`. Rewrite using `[SlashAction.zero_slash]`. Conclude with `Filter.zero_zeroAtFilter _`.
+-/
 theorem isZeroAt_sum {c : OnePoint ℝ} {k : ℤ} {ι : Type} (s : Finset ι) (F : ι → ℍ → ℂ)
     (h : ∀ i ∈ s, c.IsZeroAt (F i) k) : c.IsZeroAt (∑ i ∈ s, F i) k := by
   refine Finset.sum_induction F (fun G => c.IsZeroAt G k) (fun a b ha hb => ha.add hb) ?_ h
@@ -24,6 +30,17 @@ theorem isZeroAt_sum {c : OnePoint ℝ} {k : ℤ} {ι : Type} (s : Finset ι) (F
   rw [SlashAction.zero_slash]
   exact Filter.zero_zeroAtFilter _
 
+/- English proof (translation)
+Introduce `N l q k σ hN hq hql hσ f`. Establish `hl : 0 < l`. Break down `Nat.eq_zero_or_pos l with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hql`.
+
+Conclude with `h`. Establish `hq0 : 0 < q` using `hq.pos`. Establish `hinv` using `GlobalTheory.T.heckeT_slash_eq_of_slash_eq N l q k σ (⇑f) hN hq hql hσ (fun γ hγ => by`. Rewrite using `[ModularForm.SL_slash]`. Conclude with `SlashInvariantFormClass.slash_action_eq f _ ⟨γ, hγ, rfl⟩)`.
+
+Establish `hhol` using `(GlobalTheory.T.mdifferentiable_heckeOperatorsExplicit q k σ (⇑f) hq0 (CuspFormClass.holo f)).2.2`. Use `⟨{ toFun := GlobalTheory.Hk.heckeT k q σ ⇑f slash_action_eq' := ?_ holo' := hhol zero_at_cusps' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce and unpack `A ⟨γ, hγ, rfl⟩`. Conclude with `hinv γ hγ`. Introduce `c hc show c.IsZeroAt (GlobalTheory.Hk.heckeT k q σ ⇑f) k`.
+
+Rewrite using `[GlobalTheory.Hk.heckeT, GlobalTheory.T.heckeUOperatorExplicit_eq_sum_slash q k (⇑f) hq0, GlobalTheory.T.pow_smul_heckeVOperatorExplicit_eq_slash_diag q k _ hq0, ModularForm.SL_slash, ← SlashAction.slash_mul]`. Use `OnePoint.IsZeroAt.add (isZeroAt_sum _ _ fun j _ => ?_) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.cuspForm_gamma1InterGamma0_slash_rat_isZeroAt N l k _ hN hl (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq0) f c hc`. Establish `h` using `GlobalTheory.T.cuspForm_gamma1InterGamma0_slash_rat_isZeroAt N l k (Matrix.SpecialLinearGroup.mapGL ℚ σ * Matrix.GeneralLinearGroup.mkOfDetNeZero !![(q : ℚ), 0; 0, 1] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq0.ne')) hN hl (by simp [Matrix.det_fin_two_of]; exact_mod_cast …`. Rewrite `h` using `[map_mul, map_mapGL_rat]`.
+
+Conclude with `h`.
+-/
 theorem heckeT_cuspForm : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)), 0 < N → q.Prime → ¬ q ∣ N * l →
     GlobalTheory.Hk.IsDia N l q σ → ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k,
     ∃ g : CuspForm (GlobalTheory.Hk.lev N l) k, ⇑g = GlobalTheory.Hk.heckeT k q σ ⇑f := by

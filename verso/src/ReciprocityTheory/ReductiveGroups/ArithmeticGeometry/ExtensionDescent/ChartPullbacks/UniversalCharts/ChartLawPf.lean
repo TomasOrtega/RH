@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h : RingHom.ker (jetAug R κ 0) = ⊥`. Rewrite using `[← pow_one (RingHom.ker (jetAug R κ 0))]`. Conclude with `ker_jetAug_pow (R := R) κ 0`.
+
+Establish `: a ∈ RingHom.ker (jetAug R κ 0)` using `ha`. Rewrite `this` using `[h]`. Conclude with `this`.
+-/
 theorem jetAug_zero_injective (κ : Type) : Function.Injective (jetAug R κ 0) := by
   rw [injective_iff_map_eq_zero]
   intro a ha
@@ -23,9 +28,17 @@ theorem jetAug_zero_injective (κ : Type) : Function.Injective (jetAug R κ 0) :
   rw [h] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm`.
+-/
 theorem jetAug_eq_comp (κ : Type) (m : ℕ) : jetAug R κ m = (jetAug R κ 0).comp (jetZeroR R κ m) :=
   jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Apply `jetAug_zero_injective κ` to reduce the goal to its premises. Rewrite using `[map_zero, ← AlgHom.comp_apply, ← jetAug_eq_comp, ← AlgHom.comp_apply, h, jetAug_zR]`. Introduce `h`.
+
+Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[AlgHom.comp_apply, jetAug_eq_comp, AlgHom.comp_apply, h j, map_zero, jetAug_zR]`.
+-/
 theorem aug_iff {κ : Type} {d m : ℕ} (ψ : JetR R (Fin d) m →ₐ[R] JetR R κ m) :
     (jetAug R κ m).comp ψ = jetAug R (Fin d) m ↔ ∀ j, jetZeroR R κ m (ψ (zR m j)) = 0 := by
   constructor
@@ -39,6 +52,27 @@ theorem aug_iff {κ : Type} {d m : ℕ} (ψ : JetR R (Fin d) m →ₐ[R] JetR R 
 
 variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ hsm d v hv`. Use `haveI := hsm`. Take `⟨n, x, hx⟩` from `univChartLoc G`. Establish `htan : ∀ i, IsTan (v i)` using `fun i => (isTan_iff _).mpr (hv.1 i)`. Set `M : Fin d → Fin n → R` to `fun i => tcoord hx (v i) (htan i)`.
+
+Set `L : (Fin d → R) →ₗ[R] (Fin n → R)` to `Fintype.linearCombination R M`. Establish `hL : ∀ c, L c = ∑ i, c i • M i` using `fun c => Fintype.linearCombination_apply R M c`. Establish `hprod : ∀ c, ∃ h : IsTan (prodPts c v), tcoord hx _ h = L c` using `fun c => by`. Take `⟨h, e⟩` from `prodPts_tan hx c v htan`. Conclude with `⟨h, e.trans (hL c).symm⟩`.
+
+Establish `hbij : Function.Bijective L`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hcc`. Take `⟨h, e⟩` from `hprod c`. Take `⟨h', e'⟩` from `hprod c'`.
+
+Establish `hw : prodPts c v = prodPts c' v` using `tan_ext hx h h' (by rw [e, e', hcc])`. Establish `ht : IsTangent (prodPts c v)` using `(isTan_iff _).mp h`. Conclude with `(hv.2 _ ht).unique ((isLieComb_iff c v _).mpr rfl) ((isLieComb_iff c' v _).mpr hw)`. Introduce `t`. Establish `hw` using `isTan_dualLift hx t`.
+
+Take `⟨c, hc, -⟩` from `hv.2 _ ((isTan_iff _).mp hw)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Take `⟨h, e⟩` from `hprod c`. Rewrite using `[← e, ← tcoord_congr hx ((isLieComb_iff c v _).mp hc) hw h, tcoord_eq hx _ hw t rfl]`. Set `Le` to `LinearEquiv.ofBijective L hbij`.
+
+Establish `hx'` using `isUnivChart_sub hx Le`. Use `⟨fun m => spMap (jetSub Le.toLinearMap m) ≫ x m, hx'.1, hx'.2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `⟨dualLift (Pi.single j 1), by rw [dualLift_zR, Pi.single_eq_same], fun i hij => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dualLift_zR, Pi.single_eq_of_ne hij, TrivSqZeroExt.inr_zero]`.
+
+Rewrite using `[algOverHom_eq, ← Category.assoc, spMap_comp, dualLift_comp_jetSub]`. Establish `: Le.toLinearMap (Pi.single j 1) = M j` using `by show L (Pi.single j 1) = M j`. Rewrite using `[hL]`. Simplify using `[Pi.single_apply]`. Rewrite using `[this]`.
+
+Conclude with `(tcoord_spec hx (v j) (htan j)).symm`. Introduce `κ m y hy`. Establish `hy' : spMap (jetAug R κ m) ≫ y = 1`. Rewrite using `[jetAug_eq_comp, ← spMap_comp, Category.assoc]`. Rewrite `hy` using `[algOverHom_eq]`.
+
+Rewrite using `[hy]`. Conclude with `comp_one' _`. Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `hx'.2.2 (JetR R κ m) (jetAug R κ m) m (ker_jetAug_pow κ m) y hy'`. Use `⟨ψ, ⟨(aug_iff ψ).mp h1, h2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ₂ ⟨h3, h4⟩`.
+
+Conclude with `hu ψ₂ ⟨(aug_iff ψ₂).mpr h3, h4⟩`.
+-/
 theorem chartLawLoc : ChartLawLocSt := by
   intro R _ _ G _ _ hsm d v hv
   haveI := hsm
@@ -88,6 +122,17 @@ theorem chartLawLoc : ChartLawLocSt := by
     rintro ψ₂ ⟨h3, h4⟩
     exact hu ψ₂ ⟨(aug_iff ψ₂).mpr h3, h4⟩
 
+/- English proof (translation)
+Use `haveI := hsm`. Take `⟨n, x, hx⟩` from `univChartLoc G`. Set `v : Fin n → (epsR R ⟶ G)` to `fun i => spMap (dualLift (Pi.single i 1)) ≫ x 1`. Establish `htan : ∀ i, IsTan (v i)` using `fun i => isTan_dualLift hx _`. Establish `hM : ∀ i, tcoord hx (v i) (htan i) = Pi.single i 1` using `fun i => tcoord_eq hx _ _ _ rfl`.
+
+Use `⟨n, v, fun i => (isTan_iff _).mp (htan i), fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : IsTan w` using `(isTan_iff _).mpr hw`. Establish `key : ∀ c, IsLieComb c v w ↔ tcoord hx w hw' = c`. Introduce `c`. Take `⟨h, e⟩` from `prodPts_tan hx c v htan`.
+
+Establish `e2 : tcoord hx _ h = c`. Rewrite using `[e]`. Simplify using `only [hM]`. Conclude with `sum_single c`. Rewrite using `[isLieComb_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hwc`. Rewrite using `[tcoord_congr hx hwc hw' h, e2]`. Introduce `hc`. Conclude with `tan_ext hx hw' h (hc.trans e2.symm)`.
+
+Conclude with `⟨tcoord hx w hw', (key _).mpr rfl, fun c hc => ((key c).mp hc).symm⟩`.
+-/
 theorem exists_isLieBasis [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] (hsm : Smooth G.hom) :
     ∃ (d : ℕ) (v : Fin d → (epsR R ⟶ G)), IsLieBasis v := by
   haveI := hsm

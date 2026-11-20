@@ -23,17 +23,26 @@ def uS (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v))
     Wd.Ix (Fin w.length) → B.Mat S.G.k (S.G.r - j) → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :=
   uY S p F v ε j hj w (Y.image fun h => h ++ [blk]) (h ++ [blk])
 
+/- English proof (translation)
+The claim follows from `uY_mem S p F v ε j hj w _ _ (Finset.mem_image_of_mem _ hh)`.
+-/
 theorem uS_mem (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (Y : Finset C.LPt) (blk : ℕ × ℂ) (h : C.LPt) (hh : h ∈ Y) :
     uS S p F v ε j hj w Y blk h = uB S p F v ε j hj w (h ++ [blk]) :=
   uY_mem S p F v ε j hj w _ _ (Finset.mem_image_of_mem _ hh)
 
+/- English proof (translation)
+Take `⟨hg1, hg2, -⟩` from `hB`. Use `⟨by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hg1 hg2, ?_⟩` and prove the remaining obligations. Unfold `Sz.Glob.ka; rw [S.hv]; exact div_pos Real.pi_pos (by linarith [PBD.rd_pos' E])`.
+-/
 theorem glob_pos' (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) : 0 < S.G.g ∧ 0 < S.G.ka := by
   obtain ⟨hg1, hg2, -⟩ := hB
   refine ⟨by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hg1 hg2, ?_⟩
   unfold Sz.Glob.ka; rw [S.hv]; exact div_pos Real.pi_pos (by linarith [PBD.rd_pos' E])
 
+/- English proof (translation)
+Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem prod_ofFn_map' {K : ℕ} (g0 : Fin K → ℝ) (g : ℝ → ℝ) : ((List.ofFn g0).map g).prod = ∏ c, g (g0 c) := by
   rw [List.map_ofFn, List.prod_ofFn]; rfl
 

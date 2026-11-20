@@ -18,6 +18,11 @@ open Classical in
 
 def monoDeg (e : DVar T a b →₀ ℕ) (τ : T) : ℕ := ∑ k ∈ e.support.filter (fun k => k.1 = τ), e k
 
+/- English proof (translation)
+Unfold `monoDeg`. Rewrite using `[Finset.sum_filter, Finset.sum_subset (Finset.subset_univ e.support) (fun k _ hk => by`. Simplify using `only [Finsupp.mem_support_iff, not_not] at hk`. Simplify using `[hk])]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ]`.
+
+Simplify using `[Fintype.sum_prod_type]`. Introduce `t _ ht`. Simplify using `[ht]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+-/
 theorem monoDeg_eq_sum [Fintype T] (e : DVar T a b →₀ ℕ) (τ : T) : monoDeg e τ = ∑ β, ∑ α, e (τ, β, α) := by
   unfold monoDeg
   rw [Finset.sum_filter, Finset.sum_subset (Finset.subset_univ e.support) (fun k _ hk => by
@@ -30,6 +35,13 @@ theorem monoDeg_eq_sum [Fintype T] (e : DVar T a b →₀ ℕ) (τ : T) : monoDe
   · intro h
     exact absurd (Finset.mem_univ τ) h
 
+/- English proof (translation)
+Use `⟨∑ t, Finsupp.single (t, (⟨0, hb⟩ : Fin b), (⟨0, ha⟩ : Fin a)) (n t), fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[monoDeg_eq_sum, Finset.sum_eq_single (⟨0, hb⟩ : Fin b)]`. Rewrite using `[Finset.sum_eq_single (⟨0, ha⟩ : Fin a)]`. Simplify using `[Finsupp.finsetSum_apply, Finsupp.single_apply]`. Introduce `α _ hα`.
+
+Simplify using `[Finsupp.finsetSum_apply, Ne.symm hα]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `β _ hβ`. Use `Finset.sum_eq_zero fun α _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Finsupp.finsetSum_apply, Ne.symm hβ]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem exists_monoDeg [Fintype T] (ha : 0 < a) (hb : 0 < b) (n : T → ℕ) : ∃ e : DVar T a b →₀ ℕ, ∀ τ, monoDeg e τ = n τ := by
   classical
   refine ⟨∑ t, Finsupp.single (t, (⟨0, hb⟩ : Fin b), (⟨0, ha⟩ : Fin a)) (n t), fun τ => ?_⟩
@@ -62,6 +74,13 @@ end ColIn
 
 abbrev nuDeg (B : Base) (u : B.Word) (i : ℕ) (τ : B.fields.Tau) : ℤ := ∑ r, (B.wts.nuW u (i + 1) τ).w r
 
+/- English proof (translation)
+Establish `h0` using `GlobalTheory.MoveCompare.nuW_detShift_nonneg B.wts u hi τ`. Unfold `nuDeg`. Use `Finset.sum_nonneg fun r _ => le_trans h0 ?_` and prove the remaining obligations. Unfold `DomWeight.detShift`. Use `split_ifs with h`.
+
+Apply `DomWeight.anti` to reduce the goal to its premises. Rewrite using `[Fin.le_iff_val_le_val]`. Use `r.isLt` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `absurd (lt_of_le_of_lt (Nat.zero_le _) r.isLt) h`.
+-/
 theorem nuDeg_nonneg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : B.fields.Tau) : 0 ≤ nuDeg B u i τ := by
   have h0 := GlobalTheory.MoveCompare.nuW_detShift_nonneg B.wts u hi τ
   unfold nuDeg
@@ -75,6 +94,11 @@ theorem nuDeg_nonneg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : B.
     omega
   · exact absurd (lt_of_le_of_lt (Nat.zero_le _) r.isLt) h
 
+/- English proof (translation)
+Establish `hk` using `B.R.m_add_three_le_k`. Establish `h1 : 0 < B.R.N i` using `by show 0 < B.R.k + i * (B.R.t + 1)`. Use linear arithmetic over natural numbers and integers. Establish `h2 : 0 < B.R.N (i + 1)` using `by show 0 < B.R.k + (i + 1) * (B.R.t + 1)`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨e, he⟩` from `exists_monoDeg (T := B.fields.Tau) h1 h2 (fun τ => (nuDeg B u i τ).toNat)`. Conclude with `⟨e, fun τ => by rw [he τ]; exact Int.toNat_of_nonneg (nuDeg_nonneg B u hi τ)⟩`.
+-/
 theorem exists_monoDeg_nuDeg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) :
     ∃ e : DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ, ∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ := by
   have hk := B.R.m_add_three_le_k
@@ -87,6 +111,9 @@ theorem exists_monoDeg_nuDeg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) 
   obtain ⟨e, he⟩ := exists_monoDeg (T := B.fields.Tau) h1 h2 (fun τ => (nuDeg B u i τ).toNat)
   exact ⟨e, fun τ => by rw [he τ]; exact Int.toNat_of_nonneg (nuDeg_nonneg B u hi τ)⟩
 
+/- English proof (translation)
+Unfold `monoDeg`. Reduce the equality to equality of the corresponding arguments.
+-/
 private theorem monoDeg_eq_sum_filter {T : Type} {a b : ℕ} {d : DecidableEq T} (e : DVar T a b →₀ ℕ) (τ : T) :
     monoDeg e τ = ∑ k ∈ e.support.filter (fun k => k.1 = τ), e k := by
   unfold monoDeg
@@ -112,6 +139,13 @@ def JetsIn : Prop :=
       (cAof (Pr := B.primes X) I.sel (I.tup a) (I.cst a) * cBof (Pr := B.primes X) I.sel (I.tup a) (I.cst a) u)
       (fun τ => ∑ r, (B.wts.nuW u (i + 1) τ).w r)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a u i hi N N' c x hx e he`. Take `⟨y, hy⟩` from `h a u i hi N N' c x hx e (fun τ => by rw [← monoDeg_eq_sum_filter]; exact he τ)`. Use `RingHom.mem_fieldRange.mpr ⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← I.A_σ₀]`.
+
+Conclude with `hy`. Introduce `h a u i hi N N' c x hx e he`. Take `⟨y, hy⟩` from `RingHom.mem_fieldRange.mp (h a u i hi N N' c x hx e (fun τ => by rw [monoDeg_eq_sum_filter]; exact he τ))`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[I.A_σ₀]`.
+
+Conclude with `hy`.
+-/
 theorem jetsIn_iff : I.JetsIn ↔ ∀ (a : I.ι) (u : B.Word) (i : ℕ), i < B.R.m → ∀ N N' c x,
     I.JetRange a u i N N' c x → ∀ e, (∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ) →
       I.jetNum a u i N N' c x e ∈ B.embLL.fieldRange := by
@@ -128,6 +162,9 @@ theorem jetsIn_iff : I.JetsIn ↔ ∀ (a : I.ι) (u : B.Word) (i : ℕ), i < B.R
     rw [I.A_σ₀]
     exact hy
 
+/- English proof (translation)
+Use `letI := B.fields.starE`. Use `show IsSdLat _ ∧ IsSdLat _ ∧ 0 < 1 ∧ 1 ∣ _ ∧ _`. Conclude with `⟨And.intro Formalism.L2.Col.stdLat_lattice Formalism.L2.Col.stdLat_unimodular, And.intro Formalism.L2.Col.stdLat_lattice Formalism.L2.Col.stdLat_unimodular, Nat.one_pos, one_dvd _, zero_mem _⟩`.
+-/
 theorem jetRange_std (a : I.ι) (u : B.Word) (i : ℕ) :
     I.JetRange a u i (stdLat B.fields.E (B.R.N i)) (stdLat B.fields.E (B.R.N (i + 1))) 1 0 := by
   letI := B.fields.starE
@@ -139,10 +176,16 @@ variable {I} {a : I.ι} {u : B.Word} {i : ℕ} {N : Submodule (𝓞 B.fields.E) 
   {N' : Submodule (𝓞 B.fields.E) (Sp B.fields.E (B.R.N (i + 1)))} {c : ℕ} {x : HomE B.fields.E (B.R.N i) (B.R.N (i + 1))}
   {e : DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ}
 
+/- English proof (translation)
+Conclude with `RingHom.mem_fieldRange.mp ((jetsIn_iff I).mp h a u i hi N N' c x hx e he)`.
+-/
 theorem JetsIn.exists_eq (h : I.JetsIn) (hi : i < B.R.m) (hx : I.JetRange a u i N N' c x)
     (he : ∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ) : ∃ y : B.LL, B.embLL y = I.jetNum a u i N N' c x e := by
   exact RingHom.mem_fieldRange.mp ((jetsIn_iff I).mp h a u i hi N N' c x hx e he)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h.exists_eq hi hx he`. Rewrite using `[← hy]`. Conclude with `IsAlgebraic.algHom B.embLL.toRatAlgHom (Algebra.IsAlgebraic.isAlgebraic y)`.
+-/
 theorem JetsIn.isAlgebraic (h : I.JetsIn) (hi : i < B.R.m) (hx : I.JetRange a u i N N' c x)
     (he : ∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ) : IsAlgebraic ℚ (I.jetNum a u i N N' c x e) := by
   obtain ⟨y, hy⟩ := h.exists_eq hi hx he
@@ -151,21 +194,33 @@ theorem JetsIn.isAlgebraic (h : I.JetsIn) (hi : i < B.R.m) (hx : I.JetRange a u 
 
 end ColIn
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_monoDeg_nuDeg B u hi`. Conclude with `⟨e, he, h.exists_eq hi (I.jetRange_std _ u i) he⟩`.
+-/
 example {B : Base} {X : PreX B.toPre} (I : ColIn B X) (h : I.JetsIn) (u : B.Word) (i : ℕ) (hi : i < B.R.m) :
     ∃ e, (∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ) ∧
       I.jetNum I.mu0 u i (stdLat _ _) (stdLat _ _) 1 0 e ∈ B.embLL.fieldRange := by
   obtain ⟨e, he⟩ := exists_monoDeg_nuDeg B u hi
   exact ⟨e, he, h.exists_eq hi (I.jetRange_std _ u i) he⟩
 
+/- English proof (translation)
+Introduce `h` and use `ht (h.isAlgebraic hi (I.jetRange_std _ u i) he)`.
+-/
 example {B : Base} {X : PreX B.toPre} (I : ColIn B X) (u : B.Word) (i : ℕ) (hi : i < B.R.m) (e)
     (he : ∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ)
     (ht : Transcendental ℚ (I.jetNum I.mu0 u i (stdLat _ _) (stdLat _ _) 1 0 e)) : ¬ I.JetsIn :=
   fun h => ht (h.isAlgebraic hi (I.jetRange_std _ u i) he)
 
+/- English proof (translation)
+Simplify using `[monoDeg_eq_sum, Finsupp.single_apply, Prod.ext_iff]`.
+-/
 example : monoDeg (Finsupp.single ((true, 0, 1) : DVar Bool 2 1) 3) true = 3 ∧
     monoDeg (Finsupp.single ((true, 0, 1) : DVar Bool 2 1) 3) false = 0 := by
   simp [monoDeg_eq_sum, Finsupp.single_apply, Prod.ext_iff]
 
+/- English proof (translation)
+Establish `h : ∀ (n : ℕ) (_ : n = 0) (v : Fin n → VCx T a b), iteratedFDeriv ℂ n G 0 v = G 0`. Introduce and unpack `_ rfl v`. Simplify using the standard rewrite rules. Simplify using `only [jetC, derivAt0, Finsupp.prod_zero_index, one_mul]`. Conclude with `h _ (by simp) _`.
+-/
 example {T : Type} [Fintype T] {a b : ℕ} (cD : T → ℂ) (G : VCx T a b → ℂ) : jetC cD G 0 = G 0 := by
   have h : ∀ (n : ℕ) (_ : n = 0) (v : Fin n → VCx T a b), iteratedFDeriv ℂ n G 0 v = G 0 := by
     rintro _ rfl v

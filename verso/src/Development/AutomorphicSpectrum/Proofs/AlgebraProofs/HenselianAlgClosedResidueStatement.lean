@@ -20,6 +20,9 @@ open GlobalTheory.CechPic GlobalTheory.AbDual
 open GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase (IsPrincipalPol sqToBase)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed | exact GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed | (intros; apply GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClos …`.
+-/
 theorem _root_.GlobalTheory.T.henselian_alg_closed_residue : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Algebra R C] [IsFractionRing R C],
     HenselianLocalRing R ∧ IsAlgClosed (IsLocalRing.ResidueField R) := by
   first | exact @GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed | exact GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed | (intros; apply GlobalTheory.CompanionTheory.CommAlg.Hens.henselian_and_residueField_isAlgClosed <;> assumption)

@@ -6,6 +6,25 @@ import Mathlib.Topology.ContinuousMap.StoneWeierstrass
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
+/- English proof (translation)
+Introduce `H _ _ _ A hA φ hφ x v hv`. Distinguish the cases in `hv0 : v = 0`. Simplify using `[hv0]`. Establish `halg : ∀ r : ℝ, (algebraMap ℝ (H →L[ℂ] H) r) v = (r : ℂ) • v`. Introduce `r`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules. Establish `hx : x ∈ spectrum ℝ A`. Rewrite using `[spectrum.mem_iff]`. Introduce and unpack `⟨u, hu⟩`.
+
+Apply `hv0` to reduce the goal to its premises. Establish `h0 : (u : H →L[ℂ] H) v = 0`. Rewrite using `[hu, ContinuousLinearMap.sub_apply, halg, hv, sub_self]`. Establish `h1 : ((↑u⁻¹ * ↑u : H →L[ℂ] H)) v = v`. Rewrite using `[Units.inv_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h1, ContinuousLinearMap.mul_apply, h0, map_zero]`. Establish `key : ∀ f : C(spectrum ℝ A, ℝ), (cfcHom hA f : H →L[ℂ] H) v = ((f ⟨x, hx⟩ : ℝ) : ℂ) • v`. Introduce `f`. Proceed by induction on `f using ContinuousMap.induction_on_of_compact with`.
+
+Consider the case `const r`. Establish `: (ContinuousMap.const (spectrum ℝ A) r) = algebraMap ℝ C(spectrum ℝ A, ℝ) r` using `rfl`. Rewrite using `[this, AlgHomClass.commutes, halg]`. Simplify using the standard rewrite rules. Consider the case `id`.
+
+Rewrite using `[cfcHom_id hA, hv]`. Both sides reduce to the same expression. Consider the case `star_id`. Rewrite using `[star_trivial, cfcHom_id hA, hv]`. Both sides reduce to the same expression.
+
+Consider the case `add f g hf hg`. Rewrite using `[map_add, ContinuousLinearMap.add_apply, hf, hg]`. Simplify using `[add_smul]`. Consider the case `mul f g hf hg`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, hg, map_smul, hf, smul_smul]`.
+
+Simplify using `[mul_comm]`. Consider the case `frequently f hf`. Establish `hc : IsClosed {g : C(spectrum ℝ A, ℝ) | (cfcHom hA g : H →L[ℂ] H) v = ((g ⟨x, hx⟩ : ℝ) : ℂ) • v}`. Apply `isClosed_eq` to reduce the goal to its premises. Conclude with `(cfcHom_continuous hA).clm_apply continuous_const`.
+
+Conclude with `(Complex.continuous_ofReal.comp (continuous_eval_const _)).smul continuous_const`. Conclude with `hc.closure_subset (mem_closure_iff_frequently.mpr hf)`. Rewrite using `[cfc_apply φ A hA hφ.continuousOn, key]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.cfc_apply_of_eigenvector :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (A : H →L[ℂ] H), IsSelfAdjoint A → ∀ (φ : ℝ → ℝ), Continuous φ → ∀ (x : ℝ) (v : H), A v = (x : ℂ) • v → (cfc φ A : H →L[ℂ] H) v = (φ x : ℂ) • v := by
   intro H _ _ _ A hA φ hφ x v hv

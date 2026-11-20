@@ -14,6 +14,27 @@ section Lin
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {n r : ℕ}
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hmax` using `hπ.maximalIdeal_eq`. Establish `hπm : IsLocalRing.residue V π = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `Ideal.mem_span_singleton_self π`.
+
+Establish `hinj : LinearMap.ker (Matrix.toLin' (u.map (IsLocalRing.residue V))) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Rewrite `hx` using `[Matrix.toLin'_apply]`. Use `choose a ha using fun j => IsLocalRing.residue_surjective (x j)`.
+
+Establish `hm : ∀ i, u.mulVec a i ∈ IsLocalRing.maximalIdeal V`. Introduce `i`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, RingHom.map_mulVec]`. Establish `e1 : (⇑(IsLocalRing.residue V) ∘ a) = x` using `funext ha`. Rewrite using `[e1]`.
+
+Conclude with `congrFun hx i`. Rewrite `hm` using `[hmax]`. Use `choose cv hcv using fun i => Ideal.mem_span_singleton'.mp (hm i)`. Establish `hmul : u.mulVec a = π • cv`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, hcv i]`. Take `⟨a', ha'⟩` from `hu π a cv hπ.ne_zero hmul`. Use function extensionality and compare the values at `j`. Rewrite using `[← ha j, ha', Pi.smul_apply, smul_eq_mul, map_mul, hπm, zero_mul]`. Both sides reduce to the same expression.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`. Establish `hBb : LinearMap.toMatrix' g * u.map (IsLocalRing.residue V) = 1`. Establish `h1` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Establish `hsurj : ∀ i j, ∃ b, IsLocalRing.residue V b = LinearMap.toMatrix' g i j` using `fun i j => IsLocalRing.residue_surjective _`.
+
+Use `choose B₁ hB₁ using hsurj`. Take `⟨B₀, hB₀⟩ : ∃ B₀ : Matrix (Fin r) (Fin n) V, ∀ i j, IsLocalRing.residue V (B₀ i j) = LinearMap.toMatrix' g i j` from `⟨Matrix.of B₁, hB₁⟩`. Establish `hred : (B₀ * u').map (IsLocalRing.residue V) = 1`. Rewrite using `[Matrix.map_mul]`. Establish `e1 : B₀.map (IsLocalRing.residue V) = LinearMap.toMatrix' g`.
+
+Use extensionality with `i j`. Conclude with `hB₀ i j`. Establish `e2 : u'.map (IsLocalRing.residue V) = u.map (IsLocalRing.residue V)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hc i j`. Rewrite using `[e1, e2, hBb]`. Establish `hdet : IsUnit (B₀ * u').det`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, RingHom.map_det]`.
+
+Establish `e3 : (IsLocalRing.residue V).mapMatrix (B₀ * u') = 1` using `hred`. Rewrite using `[e3, Matrix.det_one]`. Conclude with `one_ne_zero`. Use `⟨(B₀ * u')⁻¹ * B₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]`.
+-/
 theorem exists_left_inv {u u' : Matrix (Fin n) (Fin r) V} (hu : Prim u)
     (hc : ∀ i j, u' i j - u i j ∈ IsLocalRing.maximalIdeal V) : ∃ B : Matrix (Fin r) (Fin n) V, B * u' = 1 := by
   classical
@@ -73,6 +94,15 @@ theorem exists_left_inv {u u' : Matrix (Fin n) (Fin r) V} (hu : Prim u)
 variable {K : Type} [Field K] [Algebra V K] [IsFractionRing V K]
 
 omit [IsDiscreteValuationRing V] in
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors V) Finset.univ a`. Establish `hp' : ∀ j, ∃ y, algebraMap V K y = (p : V) • a j` using `fun j => hp j (Finset.mem_univ j)`. Use `choose a'' ha'' using hp'`. Establish `hp0 : (p : V) ≠ 0` using `nonZeroDivisors.ne_zero p.2`. Establish `hpK : algebraMap V K p ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V K)).mpr hp0`.
+
+Establish `hmul : u.mulVec a'' = (p : V) • cv`. Use function extensionality and compare the values at `j`. Apply `IsFractionRing.injective V K` to reduce the goal to its premises. Rewrite using `[RingHom.map_mulVec]`. Establish `e1 : (algebraMap V K ∘ a'') = (p : V) • a` using `funext ha''`.
+
+Rewrite using `[e1, Matrix.mulVec_smul, h]`. Simplify using `[Algebra.smul_def]`. Take `⟨a', ha'⟩` from `hu (p : V) a'' cv hp0 hmul`. Use `⟨a' i, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hpK` to reduce the goal to its premises.
+
+Establish `e2 : algebraMap V K (a'' i) = algebraMap V K p * algebraMap V K (a' i)`. Rewrite using `[ha', Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← e2, ha'' i, Algebra.smul_def]`.
+-/
 theorem Prim.integral {u : Matrix (Fin n) (Fin r) V} (hu : Prim u) (a : Fin r → K) (cv : Fin n → V)
     (h : (u.map (algebraMap V K)).mulVec a = fun j => algebraMap V K (cv j)) (i : Fin r) :
     a i ∈ (algebraMap V K).range := by
@@ -95,6 +125,13 @@ theorem Prim.integral {u : Matrix (Fin n) (Fin r) V} (hu : Prim u) (a : Fin r �
     rw [ha', Pi.smul_apply, smul_eq_mul, map_mul]
   rw [← e2, ha'' i, Algebra.smul_def]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h1`. Take `⟨b, hb⟩` from `h2`. Establish `hle : valV V x ≤ 1`. Rewrite using `[← ha]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`.
+
+Establish `hle' : valV V x⁻¹ ≤ 1`. Rewrite using `[← hb]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ b`. Establish `hge : 1 ≤ valV V x`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `vV`. Rewrite using `[le_antisymm hle hge, WithZero.log_one, neg_zero]`.
+-/
 theorem vV_eq_zero {x : K} (hx : x ≠ 0) (h1 : x ∈ (algebraMap V K).range) (h2 : x⁻¹ ∈ (algebraMap V K).range) :
     vV V x = 0 := by
   obtain ⟨a, ha⟩ := h1
@@ -113,6 +150,11 @@ theorem vV_eq_zero {x : K} (hx : x ≠ 0) (h1 : x ∈ (algebraMap V K).range) (h
   unfold vV
   rw [le_antisymm hle hge, WithZero.log_one, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem diag_mul {A B : Matrix (Fin r) (Fin r) K} (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin r) :
     (A * B) i i = A i i * B i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -123,6 +165,31 @@ theorem diag_mul {A B : Matrix (Fin r) (Fin r) K} (hA : A.BlockTriangular id) (h
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Establish `hdetC : IsUnit C.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hC]`. Conclude with `Ne.isUnit (Finset.prod_ne_zero_iff.mpr fun i _ => h0 i)`. Establish `hdetC' : IsUnit C'.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hC']`.
+
+Conclude with `Ne.isUnit (Finset.prod_ne_zero_iff.mpr fun i _ => h0' i)`. Use `letI := C.invertibleOfIsUnitDet hdetC`. Use `letI := C'.invertibleOfIsUnitDet hdetC'`. Establish `hCi : (C⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hC`. Establish `hCi' : (C'⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hC'`.
+
+Take `⟨X, hX⟩ : ∃ X, X = C⁻¹ * C'` from `⟨_, rfl⟩`. Take `⟨Y, hY⟩ : ∃ Y, Y = C'⁻¹ * C` from `⟨_, rfl⟩`. Establish `hXY : X * Y = 1`. Rewrite using `[hX, hY, Matrix.mul_assoc, ← Matrix.mul_assoc C', Matrix.mul_nonsing_inv _ hdetC', Matrix.one_mul, Matrix.nonsing_inv_mul _ hdetC]`. Establish `hXtri : X.BlockTriangular id` using `hX ▸ hCi.mul hC'`.
+
+Establish `hYtri : Y.BlockTriangular id` using `hY ▸ hCi'.mul hC`. Establish `hXint : ∀ i j, X i j ∈ (algebraMap V K).range`. Establish `hBK : B.map (algebraMap V K) * u.map (algebraMap V K) = 1`. Rewrite using `[← Matrix.map_mul, hB, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBg : B.map (algebraMap V K) * g = C⁻¹`.
+
+Establish `h1 : B.map (algebraMap V K) * g * C = 1` using `by rw [Matrix.mul_assoc, e, hBK]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (B.map (algebraMap V K) * g), Matrix.mul_nonsing_inv _ hdetC, Matrix.mul_one]`. Use `_ = C⁻¹ := by rw [h1, Matrix.one_mul]`. Establish `hXeq : X = (B * u').map (algebraMap V K)`.
+
+Rewrite using `[Matrix.map_mul, ← e', ← Matrix.mul_assoc, hBg, hX]`. Introduce `i j`. Rewrite using `[hXeq]`. Conclude with `⟨(B * u') i j, rfl⟩`. Establish `hYint : ∀ i j, Y i j ∈ (algebraMap V K).range`.
+
+Introduce `i j`. Establish `h2 : u'.map (algebraMap V K) * Y = u.map (algebraMap V K)`. Rewrite using `[← e', ← e, hY, Matrix.mul_assoc, ← Matrix.mul_assoc C', Matrix.mul_nonsing_inv _ hdetC', Matrix.one_mul]`. Establish `hcol : (u'.map (algebraMap V K)).mulVec (fun k => Y k j) = fun l => algebraMap V K (u l j)`. Use function extensionality and compare the values at `l`.
+
+Establish `h3` using `congrFun (congrFun h2 l) j`. Rewrite `h3` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+
+Conclude with `Prim.integral hu' (fun k => Y k j) (fun l => u l j) hcol i`. Establish `hdiag` using `diag_mul hXtri hYtri i`. Rewrite `hdiag` using `[hXY, Matrix.one_apply_eq]`. Establish `hXi0 : X i i ≠ 0` using `left_ne_zero_of_mul_eq_one hdiag.symm`. Establish `hXinv : (X i i)⁻¹ ∈ (algebraMap V K).range`.
+
+Rewrite using `[inv_eq_of_mul_eq_one_right hdiag.symm]`. Conclude with `hYint i i`. Establish `hv0 : vV V (X i i) = 0` using `vV_eq_zero hXi0 (hXint i i) hXinv`. Establish `hCinv : (C⁻¹) i i = (C i i)⁻¹`. Establish `h4` using `diag_mul hCi hC i`.
+
+Rewrite `h4` using `[Matrix.nonsing_inv_mul _ hdetC, Matrix.one_apply_eq]`. Conclude with `eq_inv_of_mul_eq_one_left h4.symm`. Establish `hXii : X i i = (C i i)⁻¹ * C' i i`. Rewrite using `[hX, diag_mul hCi hC' i, hCinv]`. Establish `hC'eq : C' i i = C i i * X i i`.
+
+Rewrite using `[hXii, ← mul_assoc, mul_inv_cancel₀ (h0 i), one_mul]`. Rewrite using `[hC'eq, vV_mul (h0 i) hXi0, hv0, add_zero]`.
+-/
 theorem vV_diag_eq {g : Matrix (Fin n) (Fin r) K} {C C' : Matrix (Fin r) (Fin r) K} (hC : C.BlockTriangular id)
     (hC' : C'.BlockTriangular id) (h0 : ∀ i, C i i ≠ 0) (h0' : ∀ i, C' i i ≠ 0) {u u' : Matrix (Fin n) (Fin r) V}
     {B : Matrix (Fin r) (Fin n) V} (hB : B * u = 1) (hu' : Prim u') (e : g * C = u.map (algebraMap V K))
@@ -211,15 +278,28 @@ def Tend (a : (S →+* K) → K) (b : K) : Prop :=
 
 variable {V ψ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨F, n, h⟩`.
+-/
 private theorem mem_closeF_lemma {P : Set (S →+* K)} (F : Finset S) (n : ℕ)
     (h : ∀ ψ' : S →+* K, (∀ s ∈ F, ψ' s = ψ s ∨ (n : ℤ) ≤ vV V (ψ' s - ψ s)) → ψ' ∈ P) : P ∈ closeF V ψ :=
   ⟨F, n, h⟩
 
+/- English proof (translation)
+Unfold `vV at h`. Conclude with `(WithZero.log_lt_log (valV_ne_zero hx) (valV_ne_zero hy)).mp (by omega)`.
+-/
 private theorem valV_lt_of_vV_lt_lemma_2 {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) (h : vV V y < vV V x) :
     valV V x < valV V y := by
   unfold vV at h
   exact (WithZero.log_lt_log (valV_ne_zero hx) (valV_ne_zero hy)).mp (by omega)
 
+/- English proof (translation)
+Introduce `c hc`. Use `mem_closeF_lemma {s} (vV V c + 1).toNat fun ψ' h => ?_` and prove the remaining obligations. Use `show valV V (ψ' s - ψ s) < valV V c`. Establish `hc0 : 0 < valV V c` using `zero_lt_iff.mpr (valV_ne_zero hc)`. Distinguish the cases in `hd : ψ' s - ψ s = 0`.
+
+Rewrite using `[hd, map_zero]`. Conclude with `hc0`. Break down `h s (Finset.mem_singleton_self s) with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.mpr h1) hd`. Apply `valV_lt_of_vV_lt_lemma_2 hd hc` to reduce the goal to its premises.
+
+Establish `h2` using `Int.self_le_toNat (vV V c + 1)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem tend_val (s : S) : Tend V ψ (fun ψ' => ψ' s) (ψ s) := by
   intro c hc
   refine mem_closeF_lemma {s} (vV V c + 1).toNat fun ψ' h => ?_
@@ -234,6 +314,9 @@ theorem tend_val (s : S) : Tend V ψ (fun ψ' => ψ' s) (ψ s) := by
       have h2 := Int.self_le_toNat (vV V c + 1)
       omega
 
+/- English proof (translation)
+Introduce `c hc`. Use `filter_upwards [h c hc, h' c hc] with ψ' h1 h2`. Establish `e : a ψ' + a' ψ' - (b + b') = (a ψ' - b) + (a' ψ' - b')` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ h1 h2`.
+-/
 theorem Tend.add {a a' : (S →+* K) → K} {b b' : K} (h : Tend V ψ a b) (h' : Tend V ψ a' b') :
     Tend V ψ (fun ψ' => a ψ' + a' ψ') (b + b') := by
   intro c hc
@@ -242,6 +325,9 @@ theorem Tend.add {a a' : (S →+* K) → K} {b b' : K} (h : Tend V ψ a b) (h' :
   rw [e]
   exact Valuation.map_add_lt _ h1 h2
 
+/- English proof (translation)
+Introduce `c hc`. Conclude with `Filter.Eventually.of_forall fun _ => by show valV V (b - b) < valV V c`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_iff.mpr (valV_ne_zero hc)`.
+-/
 theorem tend_const (b : K) : Tend V ψ (fun _ => b) b := by
   intro c hc
   exact Filter.Eventually.of_forall fun _ => by
@@ -249,6 +335,13 @@ theorem tend_const (b : K) : Tend V ψ (fun _ => b) b := by
     rw [sub_self, map_zero]
     exact zero_lt_iff.mpr (valV_ne_zero hc)
 
+/- English proof (translation)
+Introduce `c hc`. Distinguish the cases in `hd : d = 0`. Conclude with `Filter.Eventually.of_forall fun ψ' => by show valV V (a ψ' * d - b * d) < valV V c`. Rewrite using `[hd, mul_zero, mul_zero, sub_self, map_zero]`. Conclude with `zero_lt_iff.mpr (valV_ne_zero hc)`.
+
+Use `filter_upwards [h (c / d) (div_ne_zero hc hd)] with ψ' h1`. Establish `hvd : 0 < valV V d` using `zero_lt_iff.mpr (valV_ne_zero hd)`. Establish `e : a ψ' * d - b * d = (a ψ' - b) * d` using `by ring`. Rewrite using `[e, map_mul]`. Establish `e2 : valV V c = valV V (c / d) * valV V d` using `by rw [← map_mul, div_mul_cancel₀ c hd]`.
+
+Rewrite using `[e2]`. Conclude with `mul_lt_mul_of_pos_right h1 hvd`.
+-/
 theorem Tend.mul_const {a : (S →+* K) → K} {b : K} (h : Tend V ψ a b) (d : K) :
     Tend V ψ (fun ψ' => a ψ' * d) (b * d) := by
   intro c hc
@@ -265,6 +358,9 @@ theorem Tend.mul_const {a : (S →+* K) → K} {b : K} (h : Tend V ψ a b) (d : 
     rw [e2]
     exact mul_lt_mul_of_pos_right h1 hvd
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (tend_const (V := V) (ψ := ψ) (0 : K))`. Consider the case `insert i s hi ih`. Establish `h2` using `(h i).add ih`. Simplify `h2` using `[Finset.sum_insert hi]`.
+-/
 theorem Tend.sum {I : Type} (s : Finset I) {a : I → (S →+* K) → K} {b : I → K} (h : ∀ i, Tend V ψ (a i) (b i)) :
     Tend V ψ (fun ψ' => ∑ i ∈ s, a i ψ') (∑ i ∈ s, b i) := by
   classical
@@ -274,6 +370,21 @@ theorem Tend.sum {I : Type} (s : Finset I) {a : I → (S →+* K) → K} {b : I 
     have h2 := (h i).add ih
     simpa [Finset.sum_insert hi] using h2
 
+/- English proof (translation)
+Introduce `c hc`. Establish `hvb : valV V b' ≠ 0` using `valV_ne_zero hb`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, hbt⟩ : ∃ t : K, t ≠ 0 ∧ valV V b * valV V t ≤ valV V c * valV V b' * valV V b' := by`. Distinguish the cases in `hb0 : b = 0`. Conclude with `⟨1, one_ne_zero, by rw [hb0, map_zero, zero_mul]; exact zero_le⟩`.
+
+Use `⟨c * b' * b' / b, div_ne_zero (mul_ne_zero (mul_ne_zero hc hb) hb) hb0, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [h (c * b') (mul_ne_zero hc hb), h' b' hb, h' t ht] with ψ' h1 h2 h3`.
+
+Establish `ha' : valV V (a' ψ') = valV V b'` using `Valuation.map_eq_of_sub_lt _ h2`. Establish `ha'0 : a' ψ' ≠ 0`. Introduce `h0`. Rewrite `ha'` using `[h0, map_zero]`. Conclude with `hvb ha'.symm`.
+
+Establish `e : a ψ' / a' ψ' - b / b' = (a ψ' - b) / a' ψ' + -(b * (a' ψ' - b') / (a' ψ' * b'))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply `Valuation.map_add_lt` to reduce the goal to its premises.
+
+Rewrite using `[map_div₀, ha']`. Establish `e3 : valV V c = valV V (c * b') / valV V b'`. Rewrite using `[map_mul, mul_div_assoc, div_self hvb, mul_one]`. Rewrite using `[e3]`. Conclude with `(div_lt_div_iff_of_pos_right (zero_lt_iff.mpr hvb)).mpr h1`.
+
+Distinguish the cases in `hb0 : b = 0`. Rewrite using `[hb0, zero_mul, zero_div, neg_zero, map_zero]`. Conclude with `zero_lt_iff.mpr (valV_ne_zero hc)`. Rewrite using `[Valuation.map_neg, map_div₀, map_mul, map_mul, ha']`. Establish `hpos : 0 < valV V b' * valV V b'` using `zero_lt_iff.mpr (mul_ne_zero hvb hvb)`.
+
+Establish `e4 : valV V c = valV V c * valV V b' * valV V b' / (valV V b' * valV V b')`. Rewrite using `[mul_assoc, mul_div_assoc, div_self (mul_ne_zero hvb hvb), mul_one]`. Rewrite using `[e4]`. Use `(div_lt_div_iff_of_pos_right hpos).mpr (lt_of_lt_of_le ?_ hbt)` and prove the remaining obligations. Conclude with `mul_lt_mul_of_pos_left h3 (zero_lt_iff.mpr (valV_ne_zero hb0))`.
+-/
 theorem Tend.div {a a' : (S →+* K) → K} {b b' : K} (h : Tend V ψ a b) (h' : Tend V ψ a' b') (hb : b' ≠ 0) :
     Tend V ψ (fun ψ' => a ψ' / a' ψ') (b / b') := by
   intro c hc
@@ -312,6 +423,9 @@ theorem Tend.div {a a' : (S →+* K) → K} {b b' : K} (h : Tend V ψ a b) (h' :
       refine (div_lt_div_iff_of_pos_right hpos).mpr (lt_of_lt_of_le ?_ hbt)
       exact mul_lt_mul_of_pos_left h3 (zero_lt_iff.mpr (valV_ne_zero hb0))
 
+/- English proof (translation)
+Use `filter_upwards [tend_val h (ψ h) hh] with ψ' h1 h0`. Rewrite `h1` using `[h0, zero_sub, Valuation.map_neg]`. Conclude with `lt_irrefl _ h1`.
+-/
 theorem eventually_ne {h : S} (hh : ψ h ≠ 0) : ∀ᶠ ψ' in closeF V ψ, ψ' h ≠ 0 := by
   filter_upwards [tend_val h (ψ h) hh] with ψ' h1 h0
   rw [h0, zero_sub, Valuation.map_neg] at h1
@@ -322,11 +436,23 @@ open Classical in
 def ext (h : S) (χ₀ : Localization.Away h →+* K) (ψ' : S →+* K) : Localization.Away h →+* K :=
   if hh : ψ' h = 0 then χ₀ else IsLocalization.Away.lift h (Ne.isUnit hh)
 
+/- English proof (translation)
+Rewrite using `[ext, dif_neg hh]`. Conclude with `IsLocalization.Away.lift_comp h _`.
+-/
 theorem ext_comp {h : S} (χ₀ : Localization.Away h →+* K) {ψ' : S →+* K} (hh : ψ' h ≠ 0) :
     (ext h χ₀ ψ').comp (algebraMap S _) = ψ' := by
   rw [ext, dif_neg hh]
   exact IsLocalization.Away.lift_comp h _
 
+/- English proof (translation)
+Take `⟨n, s, hs⟩` from `IsLocalization.Away.surj h a`. Establish `key : ∀ φ : Localization.Away h →+* K, φ (algebraMap S _ h) ≠ 0 → φ a = φ (algebraMap S _ s) / φ (algebraMap S _ h) ^ n`. Introduce `φ hφ`. Rewrite using `[← hs, map_mul, map_pow, mul_div_assoc, div_self (pow_ne_zero _ hφ), mul_one]`. Establish `hχ : ∀ x, χ₀ (algebraMap S _ x) = ψ x` using `fun x => by rw [← h0]; rfl`.
+
+Establish `ht : Tend V ψ (fun ψ' => ψ' s / ψ' h ^ n) (ψ s / ψ h ^ n)`. Establish `h1 : Tend V ψ (fun ψ' => ψ' (h ^ n)) (ψ (h ^ n))` using `tend_val (h ^ n)`. Simplify using `only [map_pow] at h1`. Conclude with `(tend_val s).div h1 (pow_ne_zero _ hh)`. Rewrite using `[key χ₀ (by rw [hχ]; exact hh), hχ, hχ]`.
+
+Introduce `c hc`. Use `filter_upwards [ht c hc, eventually_ne hh] with ψ' h1 h2`. Establish `hE : ∀ x, ext h χ₀ ψ' (algebraMap S _ x) = ψ' x` using `fun x => by`. Rewrite using `[← RingHom.comp_apply, ext_comp χ₀ h2]`. Rewrite using `[key _ (by rw [hE]; exact h2), hE, hE]`.
+
+Conclude with `h1`.
+-/
 theorem tend_ext {h : S} (hh : ψ h ≠ 0) {χ₀ : Localization.Away h →+* K} (h0 : χ₀.comp (algebraMap S _) = ψ)
     (a : Localization.Away h) : Tend V ψ (fun ψ' => ext h χ₀ ψ' a) (χ₀ a) := by
   obtain ⟨n, s, hs⟩ := IsLocalization.Away.surj h a
@@ -347,6 +473,15 @@ theorem tend_ext {h : S} (hh : ψ h ≠ 0) {χ₀ : Localization.Away h →+* K}
   rw [key _ (by rw [hE]; exact h2), hE, hE]
   exact h1
 
+/- English proof (translation)
+Use `filter_upwards [h 1 one_ne_zero] with ψ' h1`. Rewrite `h1` using `[map_one]`. Establish `hint : a ψ' - algebraMap V K b ∈ (algebraMap V K).range`. Apply `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `w`.
+
+Establish `hw : w = IsDiscreteValuationRing.maximalIdeal V`. Apply `IsDedekindDomain.HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `IsLocalRing.eq_maximalIdeal (w.isPrime.isMaximal w.ne_bot)`. Rewrite using `[hw]`. Conclude with `le_of_lt h1`.
+
+Take `⟨y, hy⟩` from `hint`. Use `⟨b + y, by rw [map_add, hy, add_sub_cancel], ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`. Establish `h3 : valV V (algebraMap V K y) < 1`. Rewrite using `[hy]`.
+
+Conclude with `h1`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem _ y).mp h3`.
+-/
 theorem Tend.cong {a : (S →+* K) → K} {b : V} (h : Tend V ψ a (algebraMap V K b)) :
     ∀ᶠ ψ' in closeF V ψ, ∃ b' : V, algebraMap V K b' = a ψ' ∧ b' - b ∈ IsLocalRing.maximalIdeal V := by
   filter_upwards [h 1 one_ne_zero] with ψ' h1

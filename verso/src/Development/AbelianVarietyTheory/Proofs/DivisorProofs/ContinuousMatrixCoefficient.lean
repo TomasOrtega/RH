@@ -5,6 +5,15 @@ open scoped SchwartzMap
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Introduce `n g g'`. Establish `hp : Continuous (fun w : Fin n ⊕ Fin n → ℝ => pPart w)`. Unfold `pPart`. Use `fun_prop`. Establish `hq : Continuous (fun w : Fin n ⊕ Fin n → ℝ => qPart w)`.
+
+Unfold `qPart`. Use `fun_prop`. Use `continuous_of_dominated (bound := fun x => SchwartzMap.seminorm ℂ 0 0 g * ‖g' x‖) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w`. Conclude with `(((continuous_phase w).mul (g.continuous.comp (continuous_id.add continuous_const))).mul (continuous_star.comp g'.continuous)).aestronglyMeasurable`.
+
+Introduce `w`. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Simplify using `only [rhoFun, norm_mul, norm_phase, one_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (SchwartzMap.norm_le_seminorm ℂ g _) (norm_nonneg _)`. Conclude with `(SchwartzMap.integrable g').norm.const_mul _`.
+
+Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Simplify using `only [rhoFun, phase]`. Use `fun_prop`.
+-/
 theorem continuous_matrixCoeff_rhoFun : ∀ (n : ℕ) (g g' : Sch (Fin n)),
     Continuous (fun w : Fin n ⊕ Fin n → ℝ => ∫ x, rhoFun w ⇑g x * starRingEnd ℂ (g' x)) := by
   intro n g g'

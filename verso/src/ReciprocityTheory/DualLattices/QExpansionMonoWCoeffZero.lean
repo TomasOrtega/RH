@@ -11,6 +11,9 @@ def monoIdx (w : ℕ) : Finset ℕ :=
 
 def monoB (w a : ℕ) : ℕ := (w - 4 * a) / 6
 
+/- English proof (translation)
+Simplify using `only [monoIdx, Finset.mem_filter, Finset.mem_range] at h`. Take `⟨_, h1, h2⟩` from `h`. Unfold `monoB`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem monoIdx_wt {w a : ℕ} (h : a ∈ monoIdx w) : 4 * a + 6 * monoB w a = w := by
   simp only [monoIdx, Finset.mem_filter, Finset.mem_range] at h
   obtain ⟨_, h1, h2⟩ := h
@@ -22,10 +25,16 @@ noncomputable def monoW (w a : ℕ) : ModularForm 𝒮ℒ (w : ℤ) :=
     ModularForm.mcast (by omega) ((E₄.pow a).mul (E₆.pow (monoB w a)))
   else 0
 
+/- English proof (translation)
+Simplify using `[monoW, monoIdx_wt h]`.
+-/
 theorem coe_monoW {w a : ℕ} (h : a ∈ monoIdx w) :
     (⇑(monoW w a) : ℍ → ℂ) = (⇑E₄) ^ a * (⇑E₆) ^ monoB w a := by
   simp [monoW, monoIdx_wt h]
 
+/- English proof (translation)
+Simplify using `only [monoW, monoIdx_wt h, dite_true, ModularForm.qExpansion_mcast]`. Rewrite using `[ModularForm.qExpansion_mul one_pos one_mem_strictPeriods_SL, ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL, ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL, qExpansion_E₄_eq, qExpansion_E₆_eq, map_mul, map_pow, map_pow]`.
+-/
 theorem qExpansion_monoW {w a : ℕ} (h : a ∈ monoIdx w) :
     qExpansion 1 (monoW w a) =
       PowerSeries.map (Int.castRingHom ℂ) (e4Z ^ a * e6Z ^ monoB w a) := by
@@ -35,6 +44,9 @@ theorem qExpansion_monoW {w a : ℕ} (h : a ∈ monoIdx w) :
     ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL, qExpansion_E₄_eq,
     qExpansion_E₆_eq, map_mul, map_pow, map_pow]
 
+/- English proof (translation)
+Establish `h4 : PowerSeries.constantCoeff e4Z = 1` using `by simp [e4Z]`. Establish `h6 : PowerSeries.constantCoeff e6Z = 1` using `by simp [e6Z]`. Rewrite using `[qExpansion_monoW h, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, map_pow, map_pow, h4, h6]`. Simplify using the standard rewrite rules.
+-/
 theorem qExpansion_monoW_coeff_zero {w a : ℕ} (h : a ∈ monoIdx w) :
     (qExpansion 1 (monoW w a)).coeff 0 = 1 := by
   have h4 : PowerSeries.constantCoeff e4Z = 1 := by simp [e4Z]
@@ -43,6 +55,9 @@ theorem qExpansion_monoW_coeff_zero {w a : ℕ} (h : a ∈ monoIdx w) :
     map_mul, map_pow, map_pow, h4, h6]
   simp
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `he`. Simplify using `only [monoIdx, Finset.mem_filter, Finset.mem_range]`. Distinguish the cases in `h : m % 2 = 0`. Conclude with `⟨(m + m) / 4, by omega, by omega, ⟨0, by omega⟩⟩`. Conclude with `⟨(m + m - 6) / 4, by omega, by omega, ⟨1, by omega⟩⟩`.
+-/
 theorem monoIdx_nonempty {w : ℕ} (he : Even w) (h2 : w ≠ 2) : ∃ a, a ∈ monoIdx w := by
   obtain ⟨m, rfl⟩ := he
   simp only [monoIdx, Finset.mem_filter, Finset.mem_range]
@@ -53,9 +68,25 @@ theorem monoIdx_nonempty {w : ℕ} (he : Even w) (h2 : w ≠ 2) : ∃ a, a ∈ m
 noncomputable def monoSpanF (w : ℕ) : Submodule ℂ (ℍ → ℂ) :=
   Submodule.span ℂ (Set.range fun a : monoIdx w => (⇑(monoW w a) : ℍ → ℂ))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨⟨a, h⟩, rfl⟩`.
+-/
 theorem mono_mem_monoSpanF {w a : ℕ} (h : a ∈ monoIdx w) : (⇑(monoW w a) : ℍ → ℂ) ∈ monoSpanF w :=
   Submodule.subset_span ⟨⟨a, h⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨a, ha⟩, rfl⟩` from `hx`. Establish `hwt` using `monoIdx_wt ha`. Establish `ha3 : a + 3 ∈ monoIdx w`.
+
+Simplify using `only [monoIdx, Finset.mem_filter, Finset.mem_range]`. Use `⟨by omega, by omega, ⟨monoB (w - 12) a, by omega⟩⟩` and prove the remaining obligations. Establish `ha0 : a ∈ monoIdx w`. Simplify using `only [monoIdx, Finset.mem_filter, Finset.mem_range]`. Use `⟨by omega, by omega, ⟨monoB (w - 12) a + 2, by omega⟩⟩` and prove the remaining obligations.
+
+Establish `hb3 : monoB w (a + 3) = monoB (w - 12) a`. Use `monoIdx_wt ha3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hb0 : monoB w a = monoB (w - 12) a + 2`. Use `monoIdx_wt ha0` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `heq : (ModularForm.discriminant : ℍ → ℂ) * ⇑(monoW (w - 12) a) = (1728 : ℂ)⁻¹ • ((⇑(monoW w (a + 3)) : ℍ → ℂ) - ⇑(monoW w a))`. Rewrite using `[coe_monoW ha, coe_monoW ha3, coe_monoW ha0, hb3, hb0]`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, ModularForm.discriminant_eq_E₄_cube_sub_E₆_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (mono_mem_monoSpanF ha3) (mono_mem_monoSpanF ha0))`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mulDisc_mem {w : ℕ} (hw : 12 ≤ w) {φ : ℍ → ℂ} (hφ : φ ∈ monoSpanF (w - 12)) :
     (ModularForm.discriminant : ℍ → ℂ) * φ ∈ monoSpanF w := by
   induction hφ using Submodule.span_induction with
@@ -86,6 +117,21 @@ theorem mulDisc_mem {w : ℕ} (hw : 12 ≤ w) {φ : ℍ → ℂ} (hφ : φ ∈ m
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Proceed by induction on `w using Nat.strong_induction_on with`. Consider the case `_ w ih`. Break down `Nat.even_or_odd w with he | ho` into its components or cases. Distinguish the cases in `h2 : w = 2`. Substitute `h2` using the available equality.
+
+Establish `: f = 0` using `rank_zero_iff_forall_zero.mp ModularForm.levelOne_weight_two_rank_zero f`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `monoIdx_nonempty he h2`. Use `set g := f - (qExpansion 1 f).coeff 0 • monoW w a with hg`.
+
+Establish `hgc : (qExpansion 1 g).coeff 0 = 0` using `(ModularForm.isCuspForm_iff_coeffZero_eq_zero g).mp (ModularForm.sub_smul_isCuspForm f _ (qExpansion_monoW_coeff_zero ha))`. Establish `hfg : (⇑f : ℍ → ℂ) = ⇑g + (qExpansion 1 f).coeff 0 • ⇑(monoW w a)`. Rewrite using `[hg]`. Simplify using the standard rewrite rules. Rewrite using `[hfg]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.smul_mem _ _ (mono_mem_monoSpanF ha))` and prove the remaining obligations. Distinguish the cases in `h12 : w < 12`. Establish `h0 : ModularForm.toCuspForm g hgc = 0` using `rank_zero_iff_forall_zero.mp (CuspForm.rank_eq_zero_of_weight_lt_twelve (by omega)) _`. Establish `: (⇑g : ℍ → ℂ) = 0`. Use function extensionality and compare the values at `z`.
+
+Use `congrArg (fun F : CuspForm 𝒮ℒ (w : ℤ) => F z) h0` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Use `replace h12 : 12 ≤ w := by omega set h := CuspForm.discriminantEquiv (ModularForm.toCuspForm g hgc) with hh`.
+
+Establish `hmem` using `ih (w - 12) (by omega) (ModularForm.mcast (by omega) h)`. Establish `hgd : (⇑g : ℍ → ℂ) = (ModularForm.discriminant : ℍ → ℂ) * ⇑h`. Use `ModularForm.discriminant_mul_discriminantEquiv (ModularForm.toCuspForm g hgc)` as an intermediate fact. Rewrite using `[hh, this]`. Both sides reduce to the same expression.
+
+Rewrite using `[hgd]`. Conclude with `mulDisc_mem h12 hmem`. Establish `: f = 0` using `ModularForm.levelOne_odd_weight_eq_zero (by exact_mod_cast ho.natCast) f`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem coe_mem_monoSpanF (w : ℕ) (f : ModularForm 𝒮ℒ (w : ℤ)) : (⇑f : ℍ → ℂ) ∈ monoSpanF w := by
   induction w using Nat.strong_induction_on with
   | _ w ih =>

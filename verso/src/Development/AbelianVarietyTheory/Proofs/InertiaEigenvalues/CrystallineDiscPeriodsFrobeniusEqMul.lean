@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Establish `hdet : B.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hc h1.symm`.
+
+Establish `h2 : (B * A - c • (1 : Matrix n n R)) * B = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_self]`. Establish `h3 : B.det • (B * A - c • (1 : Matrix n n R)) = 0`. Use `congrArg (· * B.adjugate) h2` as an intermediate fact. Simplify using `only [Matrix.zero_mul] at this`.
+
+Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Conclude with `this`. Establish `h4 : B * A - c • (1 : Matrix n n R) = 0`. Use extensionality with `i j`. Use `congrFun (congrFun h3 i) j` as an intermediate fact.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at this`. Simplify using `using (mul_eq_zero.1 this).resolve_left hdet`. Conclude with `sub_eq_zero.1 h4`.
+-/
 theorem mul_comm_of_mul_eq_smul_one {R : Type} [CommRing R] [IsDomain R] {n : Type} [Fintype n] [DecidableEq n]
     (A B : Matrix n n R) (c : R) (hc : c ≠ 0) (h : A * B = c • (1 : Matrix n n R)) :
     B * A = c • (1 : Matrix n n R) := by
@@ -37,6 +46,9 @@ theorem mul_comm_of_mul_eq_smul_one {R : Type} [CommRing R] [IsDomain R] {n : Ty
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ≥0) < (l : ℝ≥0)` using `by exact_mod_cast hl.out.one_lt`. Establish `he : (0 : ℝ) < (bk.Ep.natDegree : ℝ)` using `by exact_mod_cast bk.deg_pos`. Use `⟨NNReal.rpow_pos (zero_lt_one.trans hl1), NNReal.rpow_lt_one_of_one_lt_of_neg hl1 ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) < 1 / (bk.Ep.natDegree : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem BK.ρ₀_pos_lt_one {K : FinExt l} (bk : BK K) : 0 < bk.ρ₀ ∧ bk.ρ₀ < 1 := by
   have hl1 : (1 : ℝ≥0) < (l : ℝ≥0) := by exact_mod_cast hl.out.one_lt
   have he : (0 : ℝ) < (bk.Ep.natDegree : ℝ) := by exact_mod_cast bk.deg_pos
@@ -44,6 +56,17 @@ theorem BK.ρ₀_pos_lt_one {K : FinExt l} (bk : BK K) : 0 < bk.ρ₀ ∧ bk.ρ�
   have : (0 : ℝ) < 1 / (bk.Ep.natDegree : ℝ) := by positivity
   linarith
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨h1, ε, η, hε, hφ⟩` from `hτ`. Establish `hε1 : ε ≠ 1`. Introduce and unpack `rfl`. Take `⟨-, hu⟩` from `hε`.
+
+Conclude with `hu (by rw [map_one]; simp)`. Establish `hc0 : τ.coeff 0 ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (fun x => WittVector.constantCoeff x) hφ`. Express the relevant statement in the definitionally equal form `(WittVector.frobenius τ).coeff 0 = _ at h1`.
+
+Rewrite `h1` using `[WittVector.coeff_frobenius_charP, h0, zero_pow (Fact.out : l.Prime).ne_zero, map_mul, map_sub, map_one]`. Express the relevant statement in the definitionally equal form `0 = WittVector.constantCoeff (η : Ainf l) * ((WittVector.teichmuller l ε).coeff 0 - 1) at h1`. Rewrite `h1` using `[WittVector.teichmuller_coeff_zero]`. Establish `hη : IsUnit (WittVector.constantCoeff (η : Ainf l))` using `η.isUnit.map _`. Break down `mul_eq_zero.1 h1.symm with h | h` into its components or cases.
+
+Conclude with `hη.ne_zero h`. Conclude with `hε1 (sub_eq_zero.1 h)`. Establish `h2` using `congrArg WittVector.frobenius h1`. Rewrite `h2` using `[map_mul, h0, zero_mul]`. Establish `h3` using `congrArg (fun x : Ainf l => x.coeff 0) h2`.
+
+Simplify using `only [WittVector.coeff_frobenius_charP, WittVector.zero_coeff] at h3`. Conclude with `hc0 (pow_eq_zero_iff (Fact.out : l.Prime).ne_zero |>.1 (pow_eq_zero_iff (Fact.out : l.Prime).ne_zero |>.1 h3))`.
+-/
 theorem BK.frobenius_ev_E_ne_zero {K : FinExt l} (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) :
     WittVector.frobenius (bk.ev bk.E) ≠ 0 := by
   intro h0
@@ -69,6 +92,23 @@ theorem BK.frobenius_ev_E_ne_zero {K : FinExt l} (bk : BK K) {τ : Ainf l} (hτ 
   simp only [WittVector.coeff_frobenius_charP, WittVector.zero_coeff] at h3
   exact hc0 (pow_eq_zero_iff (Fact.out : l.Prime).ne_zero |>.1 (pow_eq_zero_iff (Fact.out : l.Prime).ne_zero |>.1 h3))
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d ρ _ s Φ hΦ`. Take `⟨h0, h1⟩` from `bk.ρ₀_pos_lt_one`. Use `haveI : IsDomain (bk.DA bk.ρ₀) := (GlobalTheory.T.breuilKisin_ainfDisc_isDomain_norm_bounds l K bk bk.ρ₀ h0 h1).1`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Establish `hinj : Function.Injective bk.iA` using `(GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ h0 h1).1`.
+
+Establish `hΦS : ∀ x, Φ (bk.iS x) = bk.iS (frobS l bk.a x)` using `fun x => by`. Express the relevant statement in the definitionally equal form `Φ (bk.iA (bk.ev x)) = bk.iA (bk.ev (frobS l bk.a x))`. Rewrite using `[hΦ.ext, bk.ev_frob]`. Establish `he : bk.iS (frobS l bk.a bk.E) ≠ 0`. Express the relevant statement in the definitionally equal form `bk.iA (bk.ev (frobS l bk.a bk.E)) ≠ 0`.
+
+Rewrite using `[bk.ev_frob, ← map_zero bk.iA]`. Conclude with `fun h => bk.frobenius_ev_E_ne_zero hτ (hinj h)`. Establish `hL0 : (l : bk.DA bk.ρ₀) ≠ 0` using `fun h => WittVector.p_nonzero l (OCb l) (hinj (by rw [map_natCast, map_zero]; exact h))`. Establish `hQP : s.X.map (bk.iS.comp (frobS l bk.a)) * s.X'.map (bk.iS.comp (frobS l bk.a)) = ((l : bk.DA bk.ρ₀) ^ s.c₂ * bk.iS (frobS l bk.a bk.E) ^ (2 * s.N)) • (1 : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))`. Rewrite using `[← Matrix.map_mul, s.X_mul, Matrix.map_smul' _ _ _ (map_mul _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Simplify using `only [RingHom.comp_apply, map_mul, map_pow, map_natCast]`. Establish `hc : (l : bk.DA bk.ρ₀) ^ s.c₂ * bk.iS (frobS l bk.a bk.E) ^ (2 * s.N) ≠ 0` using `mul_ne_zero (pow_ne_zero _ hL0) (pow_ne_zero _ he)`. Establish `hPQ` using `mul_comm_of_mul_eq_smul_one _ _ _ hc hQP`. Establish `hA : (s.X'.map bk.iS).map Φ = s.X'.map (bk.iS.comp (frobS l bk.a))`. Rewrite using `[Matrix.map_map]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hΦS x`. Establish `hF : (s.F.map (C : Wq l bk.a →+* bk.S)).map bk.iS = s.F.map (bk.iS.comp C)`. Rewrite using `[Matrix.map_map]`.
+
+Both sides reduce to the same expression. Establish `hX : (s.X.map (frobS l bk.a)).map bk.iS = s.X.map (bk.iS.comp (frobS l bk.a))`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (· * s.X.map (bk.iS.comp (frobS l bk.a))) (s.φ Φ hΦ)`.
+
+Simplify using `only [Matrix.map_mul, hA] at h2`. Rewrite `h2` using `[Matrix.smul_mul, Matrix.mul_assoc (s.W.map Φ), hPQ, Matrix.mul_smul, Matrix.mul_one, smul_smul]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hF, hX]`. Use `smul_right_injective (Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)) (pow_ne_zero s.N he) ?_` and prove the remaining obligations. Simplify using `only`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Seed.crystallineDiscPeriods_frobenius_eq_mul : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ)
     (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : Seed bk d ρ τ),
     ∀ Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap WittVector.frobenius Φ →

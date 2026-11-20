@@ -11,6 +11,17 @@ namespace GlobalTheory.RedFun
 open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models GlobalTheory.Present Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions TensorProduct
 open scoped LaurentSeries PowerSeries
 
+/- English proof (translation)
+Set `I : Ideal R` to `Ideal.span {1 - ε}`. Establish `hI : I ≠ ⊤`. Introduce `hI`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 ((Ideal.eq_top_iff_one I).1 hI)`. Apply `h0` to reduce the goal to its premises.
+
+Establish `h1 : ε * ε = ε` using `hε`. Take the linear combination `(-ε) * hc - c * h1`. Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hI`. Set `Θ : R ⊗[k] N →ₗ[R] (R ⧸ I) ⊗[k] N` to `AlgebraTensorModule.map (Algebra.linearMap R (R ⧸ I)) LinearMap.id`. Establish `h1 : algebraMap R (R ⧸ I) ε = 1`.
+
+Rewrite using `[eq_comm, ← map_one (algebraMap R (R ⧸ I))]`. Conclude with `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self _)`. Establish `hli : LinearIndependent (R ⧸ I) fun j => (1 : R ⧸ I) ⊗ₜ[k] b j` using `Module.Flat.linearIndependent_one_tmul hb`. Establish `h2` using `linearIndependent_le_span_aux' _ hli (Set.range fun j => Θ (u j)) (by`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Establish `h3` using `Submodule.mem_map_of_mem (f := Θ) (h j)`. Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp]`. Establish `h4 : Θ (ε ⊗ₜ[k] b j) = (1 : R ⧸ I) ⊗ₜ[k] b j`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+
+Rewrite `h3` using `[h4]`. Conclude with `Submodule.span_le_restrictScalars R (R ⧸ I) _ h3)`. Establish `h5` using `Fintype.card_range_le fun j => Θ (u j)`. Simplify using `only [Fintype.card_fin] at h2 h5`. Conclude with `h2.trans h5`.
+-/
 theorem card_le_of_span {k R N : Type} [Field k] [CommRing R] [Algebra k R] [AddCommGroup N] [Module k N]
     {ε : R} (hε : IsIdempotentElem ε) (h0 : ε ≠ 0) {s t : ℕ} (u : Fin s → R ⊗[k] N) (b : Fin t → N)
     (hb : LinearIndependent k b) (h : ∀ j, ε ⊗ₜ[k] b j ∈ Submodule.span R (Set.range u)) : t ≤ s := by
@@ -51,12 +62,21 @@ def Phi (φ : Rk →ₐ[k] Rk) (m : ℕ) : Rk ⊗[k] (Fin m → k) →ₗ[k] Rk 
 def Act (a : G → (Rk →ₐ[k] Rk)) (A : Ob k G) (g : G) : Rk ⊗[k] (Fin A.m → k) →ₗ[k] Rk ⊗[k] (Fin A.m → k) :=
   TensorProduct.map (a g).toLinearMap (A.ρ g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Phi_tmul (φ : Rk →ₐ[k] Rk) (m : ℕ) (r : Rk) (t : Fin m → k) :
     Phi φ m (r ⊗ₜ[k] t) = φ r ⊗ₜ[k] t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Act_tmul (a : G → (Rk →ₐ[k] Rk)) (A : Ob k G) (g : G) (r : Rk) (t : Fin A.m → k) :
     Act a A g (r ⊗ₜ[k] t) = a g r ⊗ₜ[k] A.ρ g t := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem Phi_smul (φ : Rk →ₐ[k] Rk) (m : ℕ) (r : Rk) (y : Rk ⊗[k] (Fin m → k)) :
     Phi φ m (r • y) = φ r • Phi φ m y := by
   induction y using TensorProduct.induction_on with
@@ -64,6 +84,9 @@ theorem Phi_smul (φ : Rk →ₐ[k] Rk) (m : ℕ) (r : Rk) (y : Rk ⊗[k] (Fin m
   | tmul a t => simp [TensorProduct.smul_tmul']
   | add a b ha hb => simp [ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem Act_smul (a : G → (Rk →ₐ[k] Rk)) (A : Ob k G) (g : G) (r : Rk) (y : Rk ⊗[k] (Fin A.m → k)) :
     Act a A g (r • y) = a g r • Act a A g y := by
   induction y using TensorProduct.induction_on with
@@ -71,6 +94,9 @@ theorem Act_smul (a : G → (Rk →ₐ[k] Rk)) (A : Ob k G) (g : G) (r : Rk) (y 
   | tmul a t => simp [TensorProduct.smul_tmul']
   | add a b ha hb => simp [ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [ha]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem Act_mul (a : G → (Rk →ₐ[k] Rk)) (ha : ∀ g h x, a (g * h) x = a g (a h x)) (A : Ob k G) (g h : G)
     (y : Rk ⊗[k] (Fin A.m → k)) : Act a A (g * h) y = Act a A g (Act a A h y) := by
   induction y using TensorProduct.induction_on with
@@ -78,6 +104,9 @@ theorem Act_mul (a : G → (Rk →ₐ[k] Rk)) (ha : ∀ g h x, a (g * h) x = a g
   | tmul a t => simp [ha]
   | add a b ha hb => simp [ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [ha]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem Act_one (a : G → (Rk →ₐ[k] Rk)) (ha : ∀ x, a 1 x = x) (A : Ob k G)
     (y : Rk ⊗[k] (Fin A.m → k)) : Act a A 1 y = y := by
   induction y using TensorProduct.induction_on with
@@ -145,9 +174,15 @@ def redT {M : Type} [AddCommGroup M] [Module O M] {m : ℕ} (q : M →ₗ[O] (Fi
       change ρ (c • w) ⊗ₜ[k] q t = ρ w ⊗ₜ[k] q (c • t)
       rw [map_smul, map_smul, ← algebraMap_smul k c (ρ w), ← algebraMap_smul k c (q t), smul_tmul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem redT_tmul {M : Type} [AddCommGroup M] [Module O M] {m : ℕ} (q : M →ₗ[O] (Fin m → k)) (w : RW)
     (t : M) : redT ρ q (w ⊗ₜ[O] t) = ρ w ⊗ₜ[k] q t := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TensorProduct.smul_tmul']`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem redT_smul {M : Type} [AddCommGroup M] [Module O M] {m : ℕ} (q : M →ₗ[O] (Fin m → k)) (w : RW)
     (y : RW ⊗[O] M) : redT ρ q (w • y) = ρ w • redT ρ q y := by
   induction y using TensorProduct.induction_on with
@@ -162,26 +197,47 @@ def rE : W.EE →+* Rk := (ρ : RW →+* Rk).comp (E.ioE : W.EE →+* RW)
 
 def eps (i : ZMod n) : Rk := rE E ρ (algebraMap (LetA O n) W.EE (letE i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem J_apply (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k)) (x : W.DD T) :
     J E ρ T q x = redT ρ q (E.jD T x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rE_apply (e : W.EE) : rE E ρ e = ρ (E.ioE e) := rfl
 
+/- English proof (translation)
+Rewrite using `[rE_apply, AlgHom.commutes, AlgHom.commutes, IsScalarTower.algebraMap_apply O k Rk]`.
+-/
 theorem rE_O (c : O) : rE E ρ (algebraMap O W.EE c) = algebraMap k Rk (algebraMap O k c) := by
   rw [rE_apply, AlgHom.commutes, AlgHom.commutes, IsScalarTower.algebraMap_apply O k Rk]
 
+/- English proof (translation)
+Rewrite using `[J_apply, E.jD_smul, redT_smul]`. Both sides reduce to the same expression.
+-/
 theorem J_smul (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k)) (e : W.EE) (x : W.DD T) :
     J E ρ T q (e • x) = rE E ρ e • J E ρ T q x := by
   rw [J_apply, E.jD_smul, redT_smul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE c x, J_smul]`.
+-/
 theorem J_smulA (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k)) (c : LetA O n) (x : W.DD T) :
     J E ρ T q (c • x) = rE E ρ (algebraMap (LetA O n) W.EE c) • J E ρ T q x := by
   rw [← algebraMap_smul W.EE c x, J_smul]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE c x, J_smul, rE_O (k := k)]`.
+-/
 theorem J_smulO (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k)) (c : O) (x : W.DD T) :
     J E ρ T q (c • x) = algebraMap k Rk (algebraMap O k c) • J E ρ T q x := by
   rw [← algebraMap_smul W.EE c x, J_smul, rE_O (k := k)]
 
+/- English proof (translation)
+Rewrite using `[J_apply, J_apply, E.jD_φ]`. Proceed by induction on `E.jD T x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp [TWmap, hφ]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem J_φ {φ : Rk →ₐ[k] Rk} (hφ : ∀ w, φ (ρ w) = ρ (φR w)) (T : LocLat G Qp LL O) {m : ℕ}
     (q : ↥T.L.T →ₗ[O] (Fin m → k)) (x : W.DD T) : J E ρ T q (W.φD T x) = Phi φ m (J E ρ T q x) := by
   rw [J_apply, J_apply, E.jD_φ]
@@ -190,6 +246,11 @@ theorem J_φ {φ : Rk →ₐ[k] Rk} (hφ : ∀ w, φ (ρ w) = ρ (φR w)) (T : L
   | tmul a t => simp [TWmap, hφ]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[J_apply, J_apply, E.jD_act]`. Proceed by induction on `E.jD T x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Establish `: q (T.actT g t) = A.ρ g (q t)` using `hq.2 g t`.
+
+Simplify using `[TWact, ha, this]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem J_act {a : G → (Rk →ₐ[k] Rk)} (ha : ∀ g w, a g (ρ w) = ρ (gR g w)) (T : LocLat G Qp LL O) (A : Ob k G)
     (q : ↥T.L.T →ₗ[O] (Fin A.m → k)) (hq : Onto T A q) (g : G) (x : W.DD T) :
     J E ρ T q (W.γD T (W.resΓ g) x) = Act a A g (J E ρ T q x) := by
@@ -201,6 +262,11 @@ theorem J_act {a : G → (Rk →ₐ[k] Rk)} (ha : ∀ g w, a g (ρ w) = ρ (gR g
     simp [TWact, ha, this]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[J_apply, J_apply, E.jD_map]`. Proceed by induction on `E.jD T x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a t`. Rewrite using `[TensorProduct.map_tmul, redT_tmul, redT_tmul, LinearMap.baseChange_tmul, h t _ rfl]`.
+
+Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem J_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) {m m' : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k))
     (q' : ↥T'.L.T →ₗ[O] (Fin m' → k)) (g : (Fin m → k) →ₗ[k] (Fin m' → k))
     (h : ∀ (x : ↥T.L.T) (x' : ↥T'.L.T), (x' : T'.V) = f.f x → q' x' = g (q x)) (x : W.DD T) :
@@ -212,11 +278,21 @@ theorem J_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) {m m' : ℕ} (q : 
     rw [TensorProduct.map_tmul, redT_tmul, redT_tmul, LinearMap.baseChange_tmul, h t _ rfl]; rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[← J_map E ρ (latId T) q q' g (fun x x' e => by rw [← h]; exact congrArg q' (Subtype.ext e)), W.map_id]`.
+-/
 theorem J_comp (T : LocLat G Qp LL O) {m m' : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k))
     (q' : ↥T.L.T →ₗ[O] (Fin m' → k)) (g : (Fin m → k) →ₗ[k] (Fin m' → k)) (h : ∀ x, q' x = g (q x))
     (x : W.DD T) : J E ρ T q' x = g.baseChange Rk (J E ρ T q x) := by
   rw [← J_map E ρ (latId T) q q' g (fun x x' e => by rw [← h]; exact congrArg q' (Subtype.ext e)), W.map_id]
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ Submodule.span RW (Set.range (E.jD T)), redT ρ q y ∈ Submodule.span Rk (Set.range (J E ρ T q))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨x, rfl⟩ := hy`. Conclude with `Submodule.subset_span ⟨x, rfl⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul w y _ hy => rw [redT_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Use `key ((1 : RW) ⊗ₜ[O] t) (by rw [E.jD_span]; trivial)` as an intermediate fact. Rewrite `this` using `[redT_tmul, map_one]`. Then use the resulting hypothesis.
+-/
 theorem J_span (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m → k)) (t : ↥T.L.T) :
     (1 : Rk) ⊗ₜ[k] q t ∈ Submodule.span Rk (Set.range (J E ρ T q)) := by
   have key : ∀ y ∈ Submodule.span RW (Set.range (E.jD T)),
@@ -230,6 +306,11 @@ theorem J_span (T : LocLat G Qp LL O) {m : ℕ} (q : ↥T.L.T →ₗ[O] (Fin m �
   have := key ((1 : RW) ⊗ₜ[O] t) (by rw [E.jD_span]; trivial)
   rwa [redT_tmul, map_one] at this
 
+/- English proof (translation)
+Rewrite using `[IsIdempotentElem, eps, ← map_mul, ← map_mul]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using `[letE]`. Simplify using `[letE, h]`.
+-/
 theorem eps_idem (i : ZMod n) : IsIdempotentElem (eps E ρ i) := by
   rw [IsIdempotentElem, eps, ← map_mul, ← map_mul]
   congr 2
@@ -238,6 +319,13 @@ theorem eps_idem (i : ZMod n) : IsIdempotentElem (eps E ρ i) := by
   · subst h; simp [letE]
   · simp [letE, h]
 
+/- English proof (translation)
+Establish `hm : ∀ g, g ∈ W.DelF ↔ IsOfFinOrder g` using `fun g => by rw [W.DelF_def, isOfFinOrder_iff_pow_eq_one]`. Introduce `δ hδ`. Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (fun d => δ * d) (fun d => δ⁻¹ * d) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `d hd`.
+
+Conclude with `(hm _).2 (((hm _).1 hδ).mul ((hm _).1 hd))`. Introduce `d hd`. Conclude with `(hm _).2 (((hm _).1 hδ).inv.mul ((hm _).1 hd))`. Introduce `d _`. Simplify using the standard rewrite rules.
+
+Introduce `d _`. Simplify using the standard rewrite rules. Introduce `d _`. Rewrite using `[W.γD_mul]`.
+-/
 theorem sum_mem_DΔ (T : LocLat G Qp LL O) (x : W.DD T) : ∑ δ ∈ W.DelF, W.γD T δ x ∈ DΔ W T := by
   have hm : ∀ g, g ∈ W.DelF ↔ IsOfFinOrder g := fun g => by rw [W.DelF_def, isOfFinOrder_iff_pow_eq_one]
   intro δ hδ

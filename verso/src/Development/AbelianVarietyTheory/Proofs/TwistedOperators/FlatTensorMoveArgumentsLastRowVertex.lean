@@ -19,6 +19,9 @@ open GlobalTheory.FunObj.FiniteSupport
 section Helpers
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Use extensionality with `r s`. Simplify using `only [reindex_apply, Matrix.mul_apply, submatrix_apply, frameGL_val]`. Conclude with `Fintype.sum_equiv (frame h).symm _ _ fun p => by simp`.
+-/
 theorem reindex_mul_frameGL {a c b : ℕ} {ι : Type} {a' : ℕ} (h : a + c = b) (f : ι ≃ Fin a') (g : GL (Fin b) k)
     (D : Matrix ι (Fin a ⊕ Fin c) k) :
     D.reindex f (frame h) * g.val = (D * (frameGL h g).val).reindex f (frame h) := by
@@ -26,10 +29,20 @@ theorem reindex_mul_frameGL {a c b : ℕ} {ι : Type} {a' : ℕ} (h : a + c = b)
   simp only [reindex_apply, Matrix.mul_apply, submatrix_apply, frameGL_val]
   exact Fintype.sum_equiv (frame h).symm _ _ fun p => by simp
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `H`.
+-/
 theorem frameGL_embX_congr {a c c' b : ℕ} (hc : c = c') (h : a + c = b) (h' : a + c' = b) {g : GL (Fin b) k}
     {κ : GL (Fin a) k} (H : frameGL h g = embX c κ) : frameGL h' g = embX c' κ := by
   subst hc; exact H
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `key : ∀ p, N k n 0 p = ⊥` using `fun p => by`. Rewrite using `[N, Subgroup.closure_eq_bot_iff]`. Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff]`.
+
+Use `Units.ext (Matrix.ext fun r s => ?_)` and prove the remaining obligations. Break down `r with r | r` into its components or cases. Break down `s with s | s` into its components or cases. Conclude with `hg _ _ le_rfl`. Conclude with `s.elim0`.
+
+Conclude with `r.elim0`. Rewrite `hv` using `[symN, key, key, sup_bot_eq, Subgroup.mem_bot]`. Conclude with `hv`.
+-/
 theorem eq_one_of_mem_symN_zero {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {v : GL (n ⊕ Fin c) k}
     (hv : v ∈ symN k n c) (hc : c = 0) : v = 1 := by
   subst hc
@@ -52,6 +65,9 @@ abbrev StepFam (Γ : Grid k) [MeasurableSpace k] : Type :=
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `: ∀ i : Fin (Γ.m - 1), SigmaFinite (stepVol ν (Fin (topRank Γ (i + 1))) (Γ.m - 2 - i) (Fin (topRank Γ i)))` using `fun i => by unfold stepVol; infer_instance`. Rewrite using `[varsVol_eq]`. Conclude with `measurePreserving_pi _ _ hφ`.
+-/
 theorem measurePreserving_stepFam {Γ : Grid k} (ν : Measure k) [ν.IsAddHaarMeasure] (φ : StepFam Γ)
     (hφ : ∀ i, MeasurePreserving (φ i) (stepVol ν _ _ _) (stepVol ν _ _ _)) :
     MeasurePreserving (MeasurableEquiv.piCongrRight φ) (varsVol Γ ν) (varsVol Γ ν) := by
@@ -61,6 +77,11 @@ theorem measurePreserving_stepFam {Γ : Grid k} (ν : Measure k) [ν.IsAddHaarMe
   rw [varsVol_eq]
   exact measurePreserving_pi _ _ hφ
 
+/- English proof (translation)
+Introduce `i`. Break down `eq_or_ne i i₀ with rfl | h` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `hΨ i`.
+-/
 theorem measurePreserving_update {Γ : Grid k} (ν : Measure k) (Ψ : StepFam Γ)
     (hΨ : ∀ i, MeasurePreserving (Ψ i) (stepVol ν _ _ _) (stepVol ν _ _ _)) (i₀ : Fin (Γ.m - 1))
     (φ : (StepVar (Fin (topRank Γ (i₀ + 1))) (Γ.m - 2 - i₀) (Fin (topRank Γ i₀)) → k) ≃ᵐ
@@ -72,6 +93,9 @@ theorem measurePreserving_update {Γ : Grid k} (ν : Measure k) (Ψ : StepFam Γ
   · rw [Function.update_self]; exact hφ
   · rw [Function.update_of_ne h]; exact hΨ i
 
+/- English proof (translation)
+Rewrite using `[flatTensor, flatTensor, ← hΦ.integral_comp' (flatIntegrand hs ψ F x' y)]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Simplify using `only [flatIntegrand, hfill, hph]`.
+-/
 theorem flatTensor_comp_of_equiv {Γ : Grid k} (hs : 1 ≤ Γ.s) (ψ : AddChar k Circle) (ν : Measure k) (F : Γ.Args → ℂ)
     (A : Γ.Args → Γ.Args) (x x' : ColArgs Γ) (y : RowArgs Γ) (Φ : Vars Γ ≃ᵐ Vars Γ)
     (hΦ : MeasurePreserving Φ (varsVol Γ ν) (varsVol Γ ν))
@@ -82,6 +106,9 @@ theorem flatTensor_comp_of_equiv {Γ : Grid k} (hs : 1 ≤ Γ.s) (ψ : AddChar k
   funext e
   simp only [flatIntegrand, hfill, hph]
 
+/- English proof (translation)
+Unfold `downMap`. Use `split_ifs with h1`. Rewrite using `[hx, he h1]`. Rewrite using `[hx]`. Both sides reduce to the same expression.
+-/
 theorem downMap_congr {Γ : Grid k} (hs : 1 ≤ Γ.s) {x x' : ColArgs Γ} {e e' : Vars Γ} {l : ℕ} (hx : x' l = x l)
     (he : ∀ h : l < Γ.m - 1, e' ⟨l, h⟩ = e ⟨l, h⟩) : downMap hs x' e' l = downMap hs x e l := by
   unfold downMap
@@ -92,6 +119,37 @@ theorem downMap_congr {Γ : Grid k} (hs : 1 ≤ Γ.s) {x x' : ColArgs Γ} {e e' 
 
 end Helpers
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ Γ hs ψ ν _ F j hj g κ hdet v hv hg x y`. Establish `hcol : ∀ i, i ≠ j → i ≠ j + 1 → colMove j κ x i = x i` using `fun i h1 h2 => by`. Simplify using `only [colMove, Function.update_of_ne h1, Function.update_of_ne h2]`. Establish `hcj : colMove j κ x j = (κ⁻¹).val * x j`. Simplify using `only [colMove, Function.update_of_ne (show j ≠ j + 1 by omega), Function.update_self]`.
+
+Establish `hcj1 : colMove j κ x (j + 1) = x (j + 1) * κ.val`. Simplify using `only [colMove, Function.update_self]`. Break down `Nat.lt_or_ge (j + 2) Γ.m with hA | hB` into its components or cases. Take `⟨φ₀, hφ₀, φ₁, hφ₁, H⟩` from `GlobalTheory.T.lastRowVertex_adjacentSteps_translate_frames (a₀ := topRank Γ j) (a₂ := topRank Γ (j + 1 + 1)) (c := Γ.m - 2 - (j + 1)) (c₀ := Γ.m - 2 - j) ν (by omega) (by omega) (by have := topRank_add hs (j + 1); omega) (by have := topRank_add hs (j + 1); omega) _ g κ hdet v hv …`. Establish `h01 : (⟨j, by omega⟩ : Fin (Γ.m - 1)) ≠ ⟨j + 1, by omega⟩` using `fun h => by simp at h`.
+
+Set `Ψ0 : StepFam Γ` to `fun i => MeasurableEquiv.refl _`. Set `Ψ1 : StepFam Γ` to `Function.update Ψ0 ⟨j, by omega⟩ φ₀`. Set `Ψ2 : StepFam Γ` to `Function.update Ψ1 ⟨j + 1, by omega⟩ φ₁`. Set `Φ : Vars Γ ≃ᵐ Vars Γ` to `MeasurableEquiv.piCongrRight Ψ2`. Establish `hΦ0 : ∀ e, Φ e ⟨j, by omega⟩ = φ₀ (e ⟨j, by omega⟩)` using `fun e => by show Function.update Ψ1 ⟨j + 1, by omega⟩ φ₁ ⟨j, by omega⟩ (e ⟨j, by omega⟩) = _`.
+
+Rewrite using `[Function.update_of_ne h01]`. Use `show Function.update Ψ0 ⟨j, by omega⟩ φ₀ ⟨j, by omega⟩ (e ⟨j, by omega⟩) = _`. Rewrite using `[Function.update_self]`. Establish `hΦ1 : ∀ e, Φ e ⟨j + 1, by omega⟩ = φ₁ (e ⟨j + 1, by omega⟩)` using `fun e => by show Function.update Ψ1 ⟨j + 1, by omega⟩ φ₁ ⟨j + 1, by omega⟩ (e ⟨j + 1, by omega⟩) = _`. Rewrite using `[Function.update_self]`.
+
+Establish `hΦo : ∀ e (i : Fin (Γ.m - 1)), i.val ≠ j → i.val ≠ j + 1 → Φ e i = e i` using `fun e i h1 h2 => by show Function.update Ψ1 ⟨j + 1, by omega⟩ φ₁ i (e i) = _`. Rewrite using `[Function.update_of_ne (fun h => h2 (by rw [h]))]`. Use `show Function.update Ψ0 ⟨j, by omega⟩ φ₀ i (e i) = _`. Rewrite using `[Function.update_of_ne (fun h => h1 (by rw [h]))]`. Both sides reduce to the same expression.
+
+Establish `hMP : MeasurePreserving Φ (varsVol Γ ν) (varsVol Γ ν)` using `measurePreserving_stepFam ν Ψ2 (measurePreserving_update ν Ψ1 (measurePreserving_update ν Ψ0 (fun i => MeasurePreserving.id _) ⟨j, by omega⟩ φ₀ hφ₀) ⟨j + 1, by omega⟩ φ₁ hφ₁)`. Use `flatTensor_comp_of_equiv hs ψ ν F _ x (colMove j κ x) y Φ hMP (fun e => ?_) (fun e => ?_)` and prove the remaining obligations. Use `GlobalTheory.T.unfoldingFilledArgs_moveInnerLastColumnVertex hs j hj g x (colMove j κ x) y e (Φ e) (fun l h1 h2 => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `downMap_congr hs (hcol l h1 h2) fun h => hΦo e ⟨l, h⟩ h1 h2`. Rewrite using `[downMap, dif_pos (show j < Γ.m - 1 by omega), downMap, dif_pos (show j < Γ.m - 1 by omega), hcj, hΦ0]`.
+
+Conclude with `((H (e ⟨j, by omega⟩) (e ⟨j + 1, by omega⟩)).1 _).symm`. Rewrite using `[downMap, dif_pos (show j + 1 < Γ.m - 1 by omega), downMap, dif_pos (show j + 1 < Γ.m - 1 by omega), hcj1, hΦ1]`. Conclude with `((H (e ⟨j, by omega⟩) (e ⟨j + 1, by omega⟩)).2.1 _).symm`. Establish `hrow : ∀ (x : ColArgs Γ) (e : Vars Γ) r, rowVar x e (j + 1) r = ∑ l : Fin (Γ.m - 2 - (j + 1)), if l.val = (Γ.m - 2 - (j + 1)) / 2 then stepPt (x (j + 1)) (e ⟨j + 1, by omega⟩) (.inr l) (.inl r) else 0` using `fun x e r => by rw [rowVar, dif_pos (by omega)]`. Use `GlobalTheory.T.fourierJacobiPhase_adjacentInnerSteps_invariant j hA x (colMove j κ x) e (Φ e) hcol (fun i h1 h2 => hΦo e i h1 h2) ?_ ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [hrow, colVar]`. Rewrite using `[hcj, hcj1, hΦ0, hΦ1]`. Conclude with `(H (e ⟨j, by omega⟩) (e ⟨j + 1, by omega⟩)).2.2.1`. Introduce `ho s`. Rewrite using `[rowVar, rowVar, dif_pos (by omega), dif_pos (by omega)]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with hl`. Rewrite using `[hcj, hΦ0]`. Conclude with `(H (e ⟨j, by omega⟩) (e ⟨j + 1, by omega⟩)).2.2.2.1 ho l s hl`. Both sides reduce to the same expression.
+
+Introduce `ho r`. Simplify using `only [colVar]`. Rewrite using `[hcj1, hΦ1]`. Conclude with `(H (e ⟨j, by omega⟩) (e ⟨j + 1, by omega⟩)).2.2.2.2 ho r _ rfl`. Establish `hB' : j + 2 = Γ.m` using `by omega`.
+
+Take `rfl : v = 1` from `eq_one_of_mem_symN_zero hv (by omega)`. Establish `hg' : toFrame hs hj g = embX _ κ` using `by rw [hg, one_mul]`. Take `⟨φ₀, hφ₀, H⟩` from `GlobalTheory.T.fourierJacobiStep_leftChange_measurePreserving (n := Fin (topRank Γ (j + 1))) (n' := Fin (topRank Γ j)) (c := Γ.m - 2 - j) ν 1 (one_mem _) κ hdet (x j)`. Set `Ψ0 : StepFam Γ` to `fun i => MeasurableEquiv.refl _`. Set `Ψ1 : StepFam Γ` to `Function.update Ψ0 ⟨j, by omega⟩ φ₀`.
+
+Set `Φ : Vars Γ ≃ᵐ Vars Γ` to `MeasurableEquiv.piCongrRight Ψ1`. Establish `hΦ0 : ∀ e, Φ e ⟨j, by omega⟩ = φ₀ (e ⟨j, by omega⟩)` using `fun e => by show Function.update Ψ0 ⟨j, by omega⟩ φ₀ ⟨j, by omega⟩ (e ⟨j, by omega⟩) = _`. Rewrite using `[Function.update_self]`. Establish `hΦo : ∀ e (i : Fin (Γ.m - 1)), i.val ≠ j → Φ e i = e i` using `fun e i h1 => by show Function.update Ψ0 ⟨j, by omega⟩ φ₀ i (e i) = _`. Rewrite using `[Function.update_of_ne (fun h => h1 (by rw [h]))]`.
+
+Both sides reduce to the same expression. Establish `hMP : MeasurePreserving Φ (varsVol Γ ν) (varsVol Γ ν)` using `measurePreserving_stepFam ν Ψ1 (measurePreserving_update ν Ψ0 (fun i => MeasurePreserving.id _) ⟨j, by omega⟩ φ₀ hφ₀)`. Establish `hf : frameGL (show topRank Γ (j + 1) + (Γ.m - 2 - j) = Γ.rank (Γ.m, j + 1) by`. Use `topRank_add hs (j + 1)` as an intermediate fact. Use the proof step `omega) g = embX (Γ.m - 2 - j) κ :=`.
+
+Use `frameGL_embX_congr (by omega) _ _ hg'`. Use `flatTensor_comp_of_equiv hs ψ ν F _ x (colMove j κ x) y Φ hMP (fun e => ?_) (fun e => ?_)` and prove the remaining obligations. Use `GlobalTheory.T.unfoldingFilledArgs_moveInnerLastColumnVertex hs j hj g x (colMove j κ x) y e (Φ e) (fun l h1 h2 => ?_) ?_ ?_` and prove the remaining obligations. Conclude with `downMap_congr hs (hcol l h1 h2) fun h => hΦo e ⟨l, h⟩ h1`. Rewrite using `[downMap, dif_pos (show j < Γ.m - 1 by omega), downMap, dif_pos (show j < Γ.m - 1 by omega), hcj, hΦ0, ← H, one_mul, mul_reindex, map_inv, hf]`.
+
+Conclude with `GlobalTheory.T.downwardVertexMap_lastVertex_mul_of_frame hs j hj hB' g κ hg' x (colMove j κ x) e (Φ e) hcj1`. Use `GlobalTheory.T.fourierJacobiPhase_lastInnerVertex_invariant j hB' κ x (colMove j κ x) e (Φ e) hcol hcj1 (fun i h1 => hΦo e i h1) ?_` and prove the remaining obligations. Rewrite using `[hcj, hΦ0, ← H, one_mul]`.
+-/
 theorem flatTensor_moveArgs_mulSingle : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (hs : 1 ≤ Γ.s) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (F : Γ.Args → ℂ)
     (j : ℕ) (hj : j + 1 < Γ.m) (g : GL (Fin (Γ.rank (Γ.m, j + 1))) k) (κ : GL (Fin (topRank Γ (j + 1))) k),
     valuation k (gdet κ : k) = 1 → ∀ v ∈ symN k (Fin (topRank Γ (j + 1))) (Γ.m - 1 - (j + 1)), toFrame hs hj g = v * embX _ κ →

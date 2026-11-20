@@ -18,6 +18,9 @@ open Formalism.L2.Host GlobalTheory.CuspRep
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1` using `GlobalTheory.SmGL.ord_eq_zero_iff.2 h`. Rewrite `h1` using `[GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]`. Rewrite using `[IsUnitAt, ← WithZero.exp_log h0, h1, WithZero.exp_zero]`.
+-/
 theorem isUnitAt_of_valuation (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ)
     (h : ValuativeRel.valuation (w.adicCompletion E) (x : w.adicCompletion E) = 1) : IsUnitAt w x := by
   have h0 : Valued.v (x : w.adicCompletion E) ≠ 0 := by simp
@@ -25,16 +28,25 @@ theorem isUnitAt_of_valuation (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompl
   rw [GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero] at h1
   rw [IsUnitAt, ← WithZero.exp_log h0, h1, WithZero.exp_zero]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PrinSat.eq_unrChar_of_ord (fun x hx => h x (isUnitAt_of_valuation w x hx)) (GlobalTheory.PrinSat.ord_unif w)`.
+-/
 theorem loc_eq_unrChar {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt w) :
     χ.loc w = GlobalTheory.SmGL.unrChar (w.adicCompletion E) (χ.val w) :=
   GlobalTheory.PrinSat.eq_unrChar_of_ord (fun x hx => h x (isUnitAt_of_valuation w x hx)) (GlobalTheory.PrinSat.ord_unif w)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using HChar.loc_one w x`. Consider the case `succ k ih => rw [pow_succ, HChar.loc_mul, ih, pow_succ]`.
+-/
 theorem loc_pow (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (k : ℕ) (x : (w.adicCompletion E)ˣ) :
     (χ ^ k).loc w x = χ.loc w x ^ k := by
   induction k with
   | zero => simpa using HChar.loc_one w x
   | succ k ih => rw [pow_succ, HChar.loc_mul, ih, pow_succ]
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.BCT.MuProps.mu_mul_conj h (Neutral.B1.localIdele E _ x)`. Rewrite `h1` using `[GlobalTheory.PolChar.ideleConj_eq, GlobalTheory.ThetaPull.conjAd_localIdele]`. Conclude with `h1`.
+-/
 theorem loc_mul_loc_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : GlobalTheory.BCT.IsMu μ e) (w : HeightOneSpectrum (𝓞 E))
     (x : ((GlobalTheory.ThetaSatake.cw w).adicCompletion E)ˣ) :
     μ.loc (GlobalTheory.ThetaSatake.cw w) x * μ.loc w (Units.map (conjLoc (IsCMField.complexConj E).toRingEquiv w).toMonoidHom x) = 1 := by
@@ -42,11 +54,17 @@ theorem loc_mul_loc_conj {μ : HChar E} {e : InfinitePlace E → ℤ} (h : Globa
   rw [GlobalTheory.PolChar.ideleConj_eq, GlobalTheory.ThetaPull.conjAd_localIdele] at h1
   exact h1
 
+/- English proof (translation)
+The claim follows from `((conjLoc_spec _ w).2.2 x.val).trans hx`.
+-/
 theorem isUnitAt_conj (w : HeightOneSpectrum (𝓞 E)) (x : ((GlobalTheory.ThetaSatake.cw w).adicCompletion E)ˣ)
     (hx : IsUnitAt (GlobalTheory.ThetaSatake.cw w) x) :
     IsUnitAt w (Units.map (conjLoc (IsCMField.complexConj E).toRingEquiv w).toMonoidHom x) :=
   ((conjLoc_spec _ w).2.2 x.val).trans hx
 
+/- English proof (translation)
+The claim follows from `((conjLoc_spec _ w).2.2 x.val).trans hx`.
+-/
 theorem isUnifAt_conj (w : HeightOneSpectrum (𝓞 E)) (x : ((GlobalTheory.ThetaSatake.cw w).adicCompletion E)ˣ)
     (hx : IsUnifAt (GlobalTheory.ThetaSatake.cw w) x) :
     IsUnifAt w (Units.map (conjLoc (IsCMField.complexConj E).toRingEquiv w).toMonoidHom x) :=
@@ -56,6 +74,13 @@ end GlobalTheory.CompanionTheory.MuLocal
 
 open GlobalTheory.CompanionTheory.MuLocal Formalism.L2.Host GlobalTheory.CuspRep in
 
+/- English proof (translation)
+Introduce `E _ _ _ _ μ e w hμ hun`. Use `⟨loc_eq_unrChar hun, fun k => ⟨fun x hx => ?_, ?_⟩, fun u _ hu => ?_⟩` and prove the remaining obligations. Rewrite using `[loc_pow, hun x hx, one_pow]`. Rewrite using `[HChar.val, HChar.locK, MonoidHom.comp_apply, loc_pow]`. Both sides reduce to the same expression.
+
+Take `rfl` from `GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl hu`. Establish `hc` using `loc_mul_loc_conj hμ w`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `hc x`. Rewrite `h2` using `[hun _ (isUnitAt_conj w x hx), mul_one]`.
+
+Conclude with `h2`. Establish `h2` using `hc (atFin (GlobalTheory.ThetaSatake.cw w) (unif (GlobalTheory.ThetaSatake.cw w)))`. Rewrite `h2` using `[μ.val_eq hun _ (isUnifAt_conj w _ (unif_spec _))]`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+-/
 theorem GlobalTheory.CompanionTheory.MuLocal.muLoc_holds : PositivityTheory.Rg.BcB.F.RS.MuLoc := by
   intro E _ _ _ _ μ e w hμ hun
   refine ⟨loc_eq_unrChar hun, fun k => ⟨fun x hx => ?_, ?_⟩, fun u _ hu => ?_⟩

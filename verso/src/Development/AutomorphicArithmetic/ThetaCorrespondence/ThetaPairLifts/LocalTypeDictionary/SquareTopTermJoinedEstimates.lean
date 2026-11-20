@@ -10,6 +10,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareTopStatements
 
 section
 namespace GlobalTheory.SqTop
+/- English proof (translation)
+Introduce `hHD hPr hFE hTD hTr hZD hRefl hTI hLM`. Establish `hS` using `GlobalTheory.T.completedHeckeL_bounded_in_vertical_strips`. Establish `hInp` using `GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied`. Establish `hF : FieldDat` using `GlobalTheory.SqTop.fieldDat`. Establish `hL : LNe` using `GlobalTheory.SqTop.lNe_of_functionalEquation hFE hS hF`.
+
+Establish `hLB : LBound` using `GlobalTheory.T.heckeLValue_upperBound_permutedWeights_of_FE hFE hS hF`. Establish `hTor : TorEx` using `GlobalTheory.ToricExist.torEx hTr hF hL`. Establish `hBA : BetaArch` using `GlobalTheory.T.betaConjugate_mean_logAbs_bound_of_transport hTr hF hLB hTor`. Establish `hDE : DenEx` using `GlobalTheory.DenExist.denEx hZD hF`. Establish `hDS : DenSum` using `GlobalTheory.DenSumPf.denSum hZD hF`.
+
+Establish `hThb : ThbSt` using `GlobalTheory.T.toricValueHeightBound_of_denominatorsMeans hTD hF hTor hDE hDS hBA`. Establish `hBS : BotSmall` using `GlobalTheory.SqTop.BotSmallProof.botSmall_holds`. Establish `hBC : BotConst` using `_root_.GlobalTheory.T.botConst_of_theta_matching hPr hTI hLM hInp hBS hL`. Establish `hBE : BotEx` using `GlobalTheory.T.bottomPairs_exist_baseTuple hInp`. Establish `hBET : BotExT` using `GlobalTheory.T.bottomPairsExistEveryTuple_of_cmThetaHypotheses hInp`.
+
+Establish `hNB : NormBig` using `_root_.GlobalTheory.T.normBig_of_lNe hPr hInp hL`. Establish `hRL : RhoLow` using `GlobalTheory.T.lValueRatio_lower_bound_gauge hTD hF hTor`. Establish `hTri : TriEx` using `_root_.GlobalTheory.T.triEx_of_howe_duality_real hHD hPr hTI hLM hL`. Establish `hBN : BotNe` using `_root_.GlobalTheory.T.bottomTheta_nonvanishing hPr hTI hLM hInp hL hBS hNB hTri`. Establish `hTw : Tower` using `_root_.GlobalTheory.T.tower_of_theta_matching_lNe hPr hTI hLM hL`.
+
+Establish `hOne : OneSqSt` using `GlobalTheory.T.square_ratio_valuation_without_norm_formula hInp hL hTor hBS hBET hNB hBN hTri hTw hBC hRefl hRL`. Conclude with `⟨hDS, hThb, hOne, hBS, hBN, hF, hTor, hDE, hBE, hL, hTri, hTw⟩`.
+-/
 theorem square_top_term_joined_estimates : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport → GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators → GlobalTheory.SqTop.Refl → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SqTop.DenSum ∧ GlobalTheory.SqTop.ThbSt ∧ GlobalTheory.SqTop.OneSqSt ∧ GlobalTheory.SqTop.BotSmall ∧ GlobalTheory.SqTop.BotNe ∧ GlobalTheory.SqTop.FieldDat ∧ GlobalTheory.SqTop.TorEx ∧ GlobalTheory.SqTop.DenEx ∧ GlobalTheory.SqTop.BotEx ∧ GlobalTheory.SqTop.LNe ∧ GlobalTheory.SqTop.TriEx ∧ GlobalTheory.SqTop.Tower := by
   intro hHD hPr hFE hTD hTr hZD hRefl hTI hLM
   have hS := GlobalTheory.T.completedHeckeL_bounded_in_vertical_strips
@@ -37,6 +48,9 @@ end GlobalTheory.SqTop
 end
 
 section
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqTop.square_top_term_joined_estimates | exact _root_.GlobalTheory.SqTop.square_top_term_joined_estimates | (intros; apply _root_.GlobalTheory.SqTop.square_top_term_joined_estimates <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.square_leading_term_bound : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport → GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators → GlobalTheory.SqTop.Refl → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SqTop.DenSum ∧ GlobalTheory.SqTop.ThbSt ∧ GlobalTheory.SqTop.OneSqSt ∧ GlobalTheory.SqTop.BotSmall ∧ GlobalTheory.SqTop.BotNe ∧ GlobalTheory.SqTop.FieldDat ∧ GlobalTheory.SqTop.TorEx ∧ GlobalTheory.SqTop.DenEx ∧ GlobalTheory.SqTop.BotEx ∧ GlobalTheory.SqTop.LNe ∧ GlobalTheory.SqTop.TriEx ∧ GlobalTheory.SqTop.Tower := by
   first | exact @_root_.GlobalTheory.SqTop.square_top_term_joined_estimates | exact _root_.GlobalTheory.SqTop.square_top_term_joined_estimates | (intros; apply _root_.GlobalTheory.SqTop.square_top_term_joined_estimates <;> assumption)
 end

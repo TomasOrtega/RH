@@ -15,6 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D _ G _ _ Pl0 I0 T A3 Ks _ _ _ R F C CH hC hOk hP hser hadm hde hla`. Establish `hlev : R.toRealDat.grp_levels F.lv2` using `hC.base.grp.levels`. Establish `hrec : R.toRealDat.grp_record` using `hC.base.grp.record`. Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hind` using `GlobalTheory.T.goodCharacter_placewise_cuspidal_parabolic_product D G Pl0 T A3.A Ks R.toRealDat hrec hser hirr`.
+
+Use `letI i0 : Fintype F.P0 := Fintype.ofFinite _`. Use `letI i1 : Fintype F.P1 := Fintype.ofFinite _`. Establish `hone : ∀ χ ∈ A3.A.X, ∑ h : F.P0, χ (h : G) * (((F.ψ0 h)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) = (Fintype.card F.P0 : D.what₂.LL)` using `@GlobalTheory.RealOneVector.typeSum_base_eq_card D G _ _ Pl0 T A3.A Ks _ _ _ R.toRealDat F.lv2 hlev hind i0`. Take `⟨S, iS, Ws, iA, iM, iF, τ, hgood, hchars, hm1⟩` from `GlobalTheory.T.exists_goodFamily_given_characters_multiplicityOne D.what₂.LL G A3.A.X hirr F.P0 F.ψ0 hone`. Take `⟨hcard, hres⟩` from `GlobalTheory.typePlaces_card_and_residue_le D G Pl0 T A3.A Ks R.toRealDat hrec`.
+
+Establish `hcol` using `@GlobalTheory.ColumnMultSum.columnMult D G _ _ Pl0 T A3.A Ks _ _ _ R.toRealDat F.lv2 hlev hcard hres hadm hirr hind i1`. Use `⟨S, iS, Ws, iA, iM, iF, τ, (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar R.Pg D.R.k : ℝ), ?_⟩` and prove the remaining obligations. Use `⟨GlobalTheory.ratMuP_of_rowTest D G Pl0 I0 T A3 Ks R F hP.rowTest hP.h2P, hgood, hchars, hm1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar_pos R.Pg D.R.k` after adjusting the coercions. Introduce `s`.
+
+Take `⟨n, hn, hb⟩` from `hcol (Formalism.IndefR.TransferLatticeStatement.charOf (τ s)) ((hchars _).2 ⟨s, rfl⟩)`. Establish `hnOf` using `GlobalTheory.T.multiplicity_linearCharacter_eq_characterSum D.what₂.LL G (Ws s) (τ s) F.P1 F.ψ1`. Establish `heq : Formalism.IndefR.IndefiniteEpsilonOperator.nOf (τ s) ⟨F.P1, F.ψ1⟩ = n`. Apply `Nat.cast_injective (R := D.what₂.LL)` to reduce the goal to its premises. Rewrite using `[hnOf]`.
+
+Conclude with `hn`. Rewrite using `[heq]`. Establish `hde' : ((faceOf3 A3 F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc (R.toCx3 F).zs).Z.num C CH).de = _` using `hde`. Rewrite using `[hde']`. Use `abs_le.1 hb` as an intermediate fact.
+
+Apply the tactic sequence `constructor <;> nlinarith [this.1, this.2]`. Conclude with `hla`.
+-/
 theorem passIn3_of_rows : ∀ (D : D7) [IsTotallyComplex D.what₂.LL] (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (C CH : ℝ), R.WeakCharacterisation F → A3.fam3.Ok3 1 → PrimRows3 R F → (∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; ∃ (C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv (ZMod (D.host.g k))) (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap (ZMod (D.host.g k)) C), ∀ f, D.ntypes.eSer k f = Formalism.L2.NT.eSerO O D.R.r f) → Formalism.MainNotions.PrimeDegreeVariant.LevelRatioBound D → (R.num F C CH).de = 8 * (D.R.f : ℝ) * (D.R.r : ℝ) / ((min (D.host.g 0) (D.host.g 1) : ℕ) : ℝ) → (R.num F C CH).la = Real.log (Fintype.card G) → PassIn3 R F C CH := by
   intro D _ G _ _ Pl0 I0 T A3 Ks _ _ _ R F C CH hC hOk hP hser hadm hde hla
   classical

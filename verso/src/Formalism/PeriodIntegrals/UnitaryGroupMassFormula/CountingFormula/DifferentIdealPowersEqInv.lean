@@ -12,11 +12,22 @@ section Loc
 
 variable {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨1, S.one_mem, by simpa using hx⟩`.
+-/
 theorem le_locS (S : Submonoid R) (L : Submodule R W) : L ≤ Formalism.HermitianLatticesTheory.locS S L := fun x hx => ⟨1, S.one_mem, by simpa using hx⟩
 
+/- English proof (translation)
+Introduce `x ⟨s, hs, hx⟩` and use `⟨s, hs, h hx⟩`.
+-/
 theorem locS_mono (S : Submonoid R) {L M : Submodule R W} (h : L ≤ M) :
     Formalism.HermitianLatticesTheory.locS S L ≤ Formalism.HermitianLatticesTheory.locS S M := fun x ⟨s, hs, hx⟩ => ⟨s, hs, h hx⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨s, hs, t, ht, hx⟩`. Use `⟨t * s, S.mul_mem ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `hx`.
+
+Conclude with `le_locS S _`.
+-/
 theorem locS_idem (S : Submonoid R) (L : Submodule R W) :
     Formalism.HermitianLatticesTheory.locS S (Formalism.HermitianLatticesTheory.locS S L) = Formalism.HermitianLatticesTheory.locS S L := by
   apply le_antisymm
@@ -26,6 +37,9 @@ theorem locS_idem (S : Submonoid R) (L : Submodule R W) :
     exact hx
   · exact le_locS S _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem locS_eq_of (S : Submonoid R) {L M : Submodule R W} (h1 : L ≤ Formalism.HermitianLatticesTheory.locS S M)
     (h2 : M ≤ Formalism.HermitianLatticesTheory.locS S L) : Formalism.HermitianLatticesTheory.locS S L = Formalism.HermitianLatticesTheory.locS S M := by
   apply le_antisymm
@@ -34,6 +48,15 @@ theorem locS_eq_of (S : Submonoid R) {L M : Submodule R W} (h1 : L ≤ Formalism
   · calc Formalism.HermitianLatticesTheory.locS S M ≤ Formalism.HermitianLatticesTheory.locS S (Formalism.HermitianLatticesTheory.locS S L) := locS_mono S h2
       _ = Formalism.HermitianLatticesTheory.locS S L := locS_idem S L
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_iInf]`. Assume the negation of the conclusion as `hxL`. Set `I : Ideal R` to `L.comap (LinearMap.toSpanSingleton R W x)`.
+
+Establish `hI : I ≠ ⊤`. Introduce `h`. Apply `hxL` to reduce the goal to its premises. Establish `h1 : (1 : R) ∈ I` using `h ▸ Submodule.mem_top`. Simplify `h1` using `[I]`.
+
+Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Establish `hM0 : M ≠ ⊥`. Introduce `h`. Apply `hR` to reduce the goal to its premises. Rewrite `hM` using `[h]`.
+
+Conclude with `Ring.isField_iff_maximal_bot.2 hM`. Take `⟨s, hs, hsx⟩` from `hx ⟨M, hM.isPrime, hM0⟩`. Conclude with `hs (hIM (by simpa [I] using hsx))`. Conclude with `le_iInf fun P => le_locS _ L`.
+-/
 theorem iInf_localization_eq [IsDedekindDomain R] (hR : ¬ IsField R) (L : Submodule R W) :
     (⨅ P : HeightOneSpectrum R, haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L) = L := by
   apply le_antisymm
@@ -67,6 +90,11 @@ def GDiffPrime : Prop :=
   ∀ (D : Formalism.BasicNotions.D7) (P : HeightOneSpectrum (𝓞 D.host.E)), ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal →
     ∃ s ∈ JdS D, s ∉ P.asIdeal
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[differentIdealPowers, Fin.snoc_last, pow_zero, Ideal.one_eq_top, FractionalIdeal.coeIdeal_top, inv_one]`. Use `⟨D.R.rS - (a : ℕ), ?_⟩` and prove the remaining obligations. Establish `hcast : ((D.R.rS : ℤ) - (a : ℕ)) = ((D.R.rS - (a : ℕ) : ℕ) : ℤ)`.
+
+Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[differentIdealPowers, Fin.snoc_castSucc, hcast, zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression.
+-/
 theorem differentIdealPowers_eq_inv (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) :
     ∃ k : ℕ, differentIdealPowers D i = ((((JdS D) ^ k : Ideal (𝓞 D.host.E)) :
       FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹ := by
@@ -80,6 +108,9 @@ theorem differentIdealPowers_eq_inv (D : Formalism.BasicNotions.D7) (i : Fin (D.
     rw [differentIdealPowers, Fin.snoc_castSucc, hcast, zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]
     rfl
 
+/- English proof (translation)
+Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero, ← Ideal.zero_eq_bot]`. Apply `pow_ne_zero` to reduce the goal to its premises. Rewrite using `[Ideal.zero_eq_bot, JdS, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `differentIdeal_ne_bot`.
+-/
 theorem JdS_pow_ne_zero (D : Formalism.BasicNotions.D7) (k : ℕ) :
     ((((JdS D) ^ k : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ≠ 0 := by
   rw [Ne, FractionalIdeal.coeIdeal_eq_zero, ← Ideal.zero_eq_bot]
@@ -87,6 +118,9 @@ theorem JdS_pow_ne_zero (D : Formalism.BasicNotions.D7) (k : ℕ) :
   rw [Ideal.zero_eq_bot, JdS, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]
   exact differentIdeal_ne_bot
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `differentIdealPowers_eq_inv D i`. Rewrite using `[hk, FractionalIdeal.mem_inv_iff (JdS_pow_ne_zero D k)]`. Introduce `y hy`. Take `⟨a, -, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨o * a, by rw [map_mul]⟩`.
+-/
 theorem one_mem_aa (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) (o : 𝓞 D.host.E) :
     (o : D.host.E) ∈ differentIdealPowers D i := by
   obtain ⟨k, hk⟩ := differentIdealPowers_eq_inv D i
@@ -95,6 +129,11 @@ theorem one_mem_aa (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) (o : �
   obtain ⟨a, -, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hy
   exact (FractionalIdeal.mem_one_iff _).2 ⟨o * a, by rw [map_mul]⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `differentIdealPowers_eq_inv D i`. Use `⟨k, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[hk, FractionalIdeal.mem_inv_iff (JdS_pow_ne_zero D k)]`. Establish `hsk : ((s ^ k : 𝓞 D.host.E) : D.host.E) ∈ ((JdS D ^ k : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨s ^ k, Ideal.pow_mem_pow hs k, rfl⟩`. Establish `h1` using `hc _ hsk`.
+
+Rewrite `h1` using `[mul_comm]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Conclude with `⟨o, ho⟩`.
+-/
 theorem clear_aa (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) (s : 𝓞 D.host.E) (hs : s ∈ JdS D) :
     ∃ k : ℕ, ∀ c ∈ differentIdealPowers D i, ∃ o : 𝓞 D.host.E, (o : D.host.E) = ((s ^ k : 𝓞 D.host.E) : D.host.E) * c := by
   obtain ⟨k, hk⟩ := differentIdealPowers_eq_inv D i
@@ -108,12 +147,21 @@ theorem clear_aa (D : Formalism.BasicNotions.D7) (i : Fin (D.R.rS + 1)) (s : �
   obtain ⟨o, ho⟩ := (FractionalIdeal.mem_one_iff _).1 h1
   exact ⟨o, ho⟩
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul D.host.E o v).symm`.
+-/
 theorem smul_O_E {D : Formalism.BasicNotions.D7} (o : 𝓞 D.host.E) (v : (VS D).V) : o • v = ((o : D.host.E)) • v := (algebraMap_smul D.host.E o v).symm
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨i, c, hc, rfl⟩`.
+-/
 theorem mem_pb {D : Formalism.BasicNotions.D7} {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (i : Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (c : D.host.E) (hc : c ∈ Sum.elim (differentIdealPowers D) (differentIdealPowers D) i) :
     c • flagDifferenceVectors D F0 F' i ∈ pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPowers D) (differentIdealPowers D)) := Submodule.subset_span ⟨i, c, hc, rfl⟩
 
+/- English proof (translation)
+The claim follows from `P.isPrime Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (MMg D F0 F') = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPowers D) (differentIdealPowers D))) := by haveI := P.isPrime apply locS_e …`.
+-/
 theorem loc_g (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (P : HeightOneSpectrum (𝓞 D.host.E)) (s : 𝓞 D.host.E) (hsJ : s ∈ JdS D) (hsP : s ∉ P.asIdeal) :
     haveI := P.isPrime
@@ -140,17 +188,33 @@ theorem loc_g (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS 
     · exact Or.inl ⟨a, rfl⟩
     · exact Or.inr ⟨b, rfl⟩
 
+/- English proof (translation)
+Establish `h : gS D ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Conclude with `h` after adjusting the coercions.
+-/
 theorem gS_ne_zero' (D : Formalism.BasicNotions.D7) : ((gS D : D.host.E)) ≠ 0 := by
   have h : gS D ≠ 0 := mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
   exact_mod_cast h
 
+/- English proof (translation)
+Rewrite using `[differentIdealPowers, Fin.snoc_castSucc]`.
+-/
 theorem aa_castSucc (D : Formalism.BasicNotions.D7) (a : Fin D.R.rS) :
     differentIdealPowers D (Fin.castSucc a) = ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) := by
   rw [differentIdealPowers, Fin.snoc_castSucc]
 
+/- English proof (translation)
+Rewrite using `[differentIdealPowers, Fin.snoc_last]`.
+-/
 theorem aa_last (D : Formalism.BasicNotions.D7) : differentIdealPowers D (Fin.last D.R.rS) = 1 := by
   rw [differentIdealPowers, Fin.snoc_last]
 
+/- English proof (translation)
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite `hc` using `[aa_last, FractionalIdeal.mem_one_iff]`. Take `⟨o, rfl⟩` from `hc`. Simplify using `only [FlagG.fvec, Fin.snoc_last]`.
+
+Rewrite using `[← smul_O_E, ← smul_O_E]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ o (Submodule.mem_span_singleton_self _))))`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ o (Submodule.mem_span_singleton_self _))`. Consider the case `cast a`.
+
+Rewrite `hc` using `[aa_castSucc]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨a, c, hc, rfl⟩)))`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span ⟨a, c, hc, rfl⟩))`.
+-/
 theorem mem_UUS_fvec (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') (a : Fin (D.R.rS + 1)) (c : D.host.E) (hc : c ∈ differentIdealPowers D a) :
     c • F0.fvec a ∈ UUS D F0 F' ∧ c • F'.fl.fvec a ∈ UUS D F0 F' := by
@@ -172,6 +236,21 @@ theorem mem_UUS_fvec (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : Fla
         (Submodule.subset_span ⟨a, c, hc, rfl⟩)))
     · exact Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span ⟨a, c, hc, rfl⟩))
 
+/- English proof (translation)
+Establish `hg` using `gS_ne_zero' D`. Establish `key : ∀ (a : Fin (D.R.rS + 1)) (c : D.host.E), c ∈ differentIdealPowers D a → c • F0.fvec a ∈ pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPowers D) (differentIdealPowers D)) ∧ c • F'.fl.fvec a ∈ pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPow …`. Introduce `a c hc`. Use `⟨mem_pb F0 F' (Sum.inl a) c hc, ?_⟩` and prove the remaining obligations. Establish `hgc : ((gS D : D.host.E)) * c ∈ differentIdealPowers D a`.
+
+Use `Submodule.smul_mem (differentIdealPowers D a : Submodule (𝓞 D.host.E) D.host.E) ((gS D : ℕ) : 𝓞 D.host.E) hc` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, map_natCast]`. Then use the resulting hypothesis. Establish `e : c • F'.fl.fvec a = (((gS D : D.host.E)) * c) • flagDifferenceVectors D F0 F' (Sum.inr a) + c • flagDifferenceVectors D F0 F' (Sum.inl a)`. Simplify using `only [flagDifferenceVectors, Sum.elim_inr, Sum.elim_inl]`. Establish `hgc' : (((gS D : D.host.E)) * c) • (((gS D : D.host.E))⁻¹ • (F'.fl.fvec a - F0.fvec a)) = c • (F'.fl.fvec a - F0.fvec a)`.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hgc', smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (mem_pb F0 F' (Sum.inr a) _ hgc) (mem_pb F0 F' (Sum.inl a) c hc)`. Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, c, hc, rfl⟩`.
+
+Use `(key (Fin.castSucc a) c (by rw [aa_castSucc]; exact hc)).1` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`. Use `(Submodule.span_singleton_le_iff_mem _ _).mpr ?_` and prove the remaining obligations. Use `(key (Fin.last _) 1 (by simpa using one_mem_aa D (Fin.last D.R.rS) 1)).1` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, c, hc, rfl⟩`. Use `(key (Fin.castSucc a) c (by rw [aa_castSucc]; exact hc)).2` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`. Use `(Submodule.span_singleton_le_iff_mem _ _).mpr ?_` and prove the remaining obligations.
+
+Use `(key (Fin.last _) 1 (by simpa using one_mem_aa D (Fin.last D.R.rS) 1)).2` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`.
+-/
 theorem UUS_le_pb (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (F' : LFlag (VS D) D.R.rS T') : UUS D F0 F' ≤ pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPowers D) (differentIdealPowers D)) := by
   have hg := gS_ne_zero' D
@@ -210,6 +289,9 @@ theorem UUS_le_pb (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG 
     have := (key (Fin.last _) 1 (by simpa using one_mem_aa D (Fin.last D.R.rS) 1)).2
     simpa [FlagG.fvec] using this
 
+/- English proof (translation)
+The claim follows from `P.isPrime Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UUS D F0 F') = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (pbLat (flagDifferenceVectors D F0 F') (Sum.elim (differentIdealPowers D) (differentIdealPowers D))) := by haveI := P.isPrime have hg := g …`.
+-/
 theorem loc_ng (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ((gS D : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) :
     haveI := P.isPrime
@@ -235,6 +317,11 @@ theorem loc_ng (D : Formalism.BasicNotions.D7) {T T' : D.host.E} (F0 : FlagG (VS
       exact Submodule.sub_mem _ (mem_UUS_fvec D F0 F' b c hc).2 (mem_UUS_fvec D F0 F' b c hc).1
 
 open Classical in
+/- English proof (translation)
+Introduce `D u u' _ F0 what₂ _ Z F' _ _ _ _`. Establish `hP : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (haveI` using `P.isPrime if ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal then Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (MMg D F0 F') else Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (UUS D F0 F')) = (haveI := P.isPrime Formalism.HermitianLatticesTheory.localization₂ P.as …`. Introduce `P`. Use `split_ifs with h`. Take `⟨s, hsJ, hsP⟩` from `hg D P h`.
+
+Conclude with `loc_g D F0 F' P s hsJ hsP`. Conclude with `loc_ng D F0 F' P h`. Unfold `MMof`. Rewrite using `[iInf_congr hP]`. Conclude with `iInf_localization_eq (NumberField.RingOfIntegers.not_isField D.host.E) _`.
+-/
 theorem mmPseudo_of (hg : GDiffPrime) : MMPseudo := by
   intro D u u' _ F0 what₂ _ Z F' _ _ _ _
   have hP : ∀ P : HeightOneSpectrum (𝓞 D.host.E),
@@ -252,6 +339,17 @@ theorem mmPseudo_of (hg : GDiffPrime) : MMPseudo := by
   rw [iInf_congr hP]
   exact iInf_localization_eq (NumberField.RingOfIntegers.not_isField D.host.E) _
 
+/- English proof (translation)
+Introduce `D P hP`. Use `haveI := P.isPrime`. Establish `hg : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal ∨ ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Apply `P.isPrime.mem_or_mem` to reduce the goal to its premises. Unfold `gS at hP`.
+
+Conclude with `hP` after adjusting the coercions. Establish `key : ∀ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∃ s ∈ JdS D, s ∉ P.asIdeal`. Introduce `i hi`. Use `set n := Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F))`. Use `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (n : 𝓞 D.host.F), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Ideal.mem_map_of_mem _ (Ideal.absNorm_mem _)`. Introduce `hn`. Rewrite `hn` using `[map_natCast]`. Establish `hc` using `(Formalism.L2.SG.SplitPrimeNormLemmas.IntG.coprime_gi (D := D) i).cast (R := 𝓞 D.host.E)`. Take `⟨a, b, hab⟩` from `hc`.
+
+Establish `h1 : (1 : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[← hab]`. Conclude with `Submodule.add_mem _ (Ideal.mul_mem_left _ _ hn) (Ideal.mul_mem_left _ _ hi)`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Break down `hg with h | h` into its components or cases.
+
+Conclude with `key 0 h`. Conclude with `key 1 h`.
+-/
 theorem congruence_prime_different : GDiffPrime := by
   intro D P hP
   haveI := P.isPrime
@@ -276,6 +374,9 @@ theorem congruence_prime_different : GDiffPrime := by
   · exact key 0 h
   · exact key 1 h
 
+/- English proof (translation)
+The claim follows from `mmPseudo_of congruence_prime_different`.
+-/
 theorem mass_pseudo_basis : MMPseudo := mmPseudo_of congruence_prime_different
 
 end PI.UnitaryGroupMassFormula.CntFormula.R6

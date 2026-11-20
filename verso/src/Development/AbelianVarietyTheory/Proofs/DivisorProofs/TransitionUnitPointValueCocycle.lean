@@ -13,9 +13,15 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CocVal
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem valR_pos {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)) : valR x U f = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((x.appLE U ⊤ h).hom f) := dif_pos h
 
+/- English proof (translation)
+Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `h.trans (x.preimage_mono hVU)`. Rewrite using `[valR_pos x V h, valR_pos x U hU]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem valR_map_le {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V : X.Opens} (hVU : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     valR x V ((X.presheaf.map (homOfLE hVU).op).hom f) = valR x U f := by
@@ -24,14 +30,25 @@ theorem valR_map_le {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U
   congr 1
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Simplify using `only [valR_pos x U h, map_mul]`.
+-/
 theorem valR_mul_pos {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f g : Γ(X, U)) : valR x U (f * g) = valR x U f * valR x U g := by
   simp only [valR_pos x U h, map_mul]
 
+/- English proof (translation)
+Introduce `p _` and use `⟨hU trivial, hV trivial⟩`.
+-/
 theorem top_le_inf {A : Type} [CommRing A] {X : Scheme.{0}} (x : Sp A ⟶ X) {U V : X.Opens}
     (hU : ⊤ ≤ x ⁻¹ᵁ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) :=
   fun p _ => ⟨hU trivial, hV trivial⟩
 
+/- English proof (translation)
+Introduce `X L hL F _ ξ j j' j'' h1 h2 h3`. Establish `h123 : ⊤ ≤ ξ ⁻¹ᵁ (L.U j ⊓ L.U j' ⊓ L.U j'')` using `top_le_inf ξ (top_le_inf ξ h1 h2) h3`. Establish `e` using `congrArg (fun u : Γ(X, L.U j ⊓ L.U j' ⊓ L.U j'')ˣ => valR ξ _ u.val) (hL.cocycle j j' j'')`. Simplify using `only [Units.val_mul] at e`. Rewrite `e` using `[valR_mul_pos ξ _ h123]`.
+
+Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe] at e`. Rewrite `e` using `[valR_map_le ξ _ h123, valR_map_le ξ _ h123, valR_map_le ξ _ h123]`. Conclude with `e`.
+-/
 theorem valR_cocycle : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (F : Type) [Field F] (ξ : Sp F ⟶ X)
     (j j' j'' : L.ι), ⊤ ≤ ξ ⁻¹ᵁ L.U j → ⊤ ≤ ξ ⁻¹ᵁ L.U j' → ⊤ ≤ ξ ⁻¹ᵁ L.U j'' →
     valR ξ (L.U j ⊓ L.U j') (L.g j j').val * valR ξ (L.U j' ⊓ L.U j'') (L.g j' j'').val =

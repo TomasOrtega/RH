@@ -14,6 +14,11 @@ namespace PositivityTheory.Rg.BcB.F.FX
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+Introduce `hR E _ _ _ n π S F₀ T' c c' e e' b b' i s₁ s₂ Pa Pb D`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.ctx, h.leaves₁, h.leaves₂, h.inf₁, h.inf₂, h.vec⟩`. Introduce `h`.
+
+Conclude with `⟨h.ctx, h.leaves₁, h.leaves₂, h.inf₁, h.inf₂, h.vec⟩`.
+-/
 theorem candIndep : CandIndep := by
   intro hR E _ _ _ n π S F₀ T' c c' e e' b b' i s₁ s₂ Pa Pb D
   constructor

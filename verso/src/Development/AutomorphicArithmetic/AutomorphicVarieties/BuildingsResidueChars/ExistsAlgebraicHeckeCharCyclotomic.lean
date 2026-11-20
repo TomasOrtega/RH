@@ -9,6 +9,11 @@ section Hecke
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := F) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+
+Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`.
+-/
 private theorem isOpen_ker_kills {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) :
     IsOpen (φ.ker : Set (G F Ω)) := by
   have hfin : {ζ : Ω | ζ ^ M = 1}.Finite := by
@@ -22,6 +27,11 @@ private theorem isOpen_ker_kills {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qba
   · simp only [Set.mem_iInter] at hs
     exact hφ s fun ζ hζ => hs ζ hζ
 
+/- English proof (translation)
+Establish `ho` using `isOpen_ker_kills hM hφ`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `hfi : Finite (G F Ω ⧸ φ.ker)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `hpos : 0 < φ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Take `⟨χ, ⟨h1, h2⟩, -⟩` from `exists_unique_hchar_of_finite_order ha ι φ (continuous_of_isOpen_ker' φ ho) hpos (MonoidHom.ext fun s => by`.
+
+Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `φ.ker.pow_index_mem s)`. Conclude with `⟨χ, isAlgPos_zero_of_orderDvd hpos h1, h2⟩`.
+-/
 private theorem exists_hchar_fin {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ)
     {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) :
     ∃ χ : HChar F, IsAlgPos χ 0 ∧ IsLAdicOf art ι χ 0 φ := by
@@ -35,17 +45,28 @@ private theorem exists_hchar_fin {art : Ideles F →* Gab F Ω} (ha : IsGlobalAr
       exact φ.ker.pow_index_mem s)
   exact ⟨χ, isAlgPos_zero_of_orderDvd hpos h1, h2⟩
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+-/
 private theorem isAlgPos_mul {χ χ' : HChar F} {n n' : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
     IsAlgPos (χ * χ') (n + n') := fun k hk => by
   have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl
   rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+-/
 private theorem isAlgPos_inv {χ : HChar F} {n : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
   have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
   rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ m)` using `fun m => by`. Establish `h` using `GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F m`. Take `⟨μ, hμ, hL⟩` from `ha.exists_isLAdicOf ι h`. Establish `e : μ = cycBar F Ω l ^ m` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow ha hμ hL`. Conclude with `⟨_, _, h, e ▸ hL⟩`.
+
+Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg j`. Simplify using `using key m`. Take `⟨χ, n, h1, h2⟩` from `key m`. Conclude with `⟨_, _, isAlgPos_inv h1, by simpa using h2.inv⟩`.
+-/
 private theorem exists_hchar_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ) (j : ℤ) :
     ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ j) := by
   have key : ∀ m : ℕ, ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ m) := fun m => by
@@ -58,6 +79,9 @@ private theorem exists_hchar_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalAr
   · obtain ⟨χ, n, h1, h2⟩ := key m
     exact ⟨_, _, isAlgPos_inv h1, by simpa using h2.inv⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F 1`. Take `⟨μ, hμ, hL⟩` from `ha.exists_isLAdicOf ι h`. Establish `e : μ = cycBar F Ω l ^ 1` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow ha hμ hL`. Rewrite `e` using `[pow_one]`. Conclude with `e ▸ hμ`.
+-/
 private theorem continuous_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ) :
     Continuous (cycBar F Ω l) := by
   have h := GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F 1
@@ -68,6 +92,11 @@ private theorem continuous_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalArti
 
 end Hecke
 
+/- English proof (translation)
+Introduce `H F Ω _ _ _ _ _ l _ ι wt θ hθ`. Take `⟨art, ha⟩` from `H F Ω`. Take `⟨M, φ, hM, hφ, rfl⟩` from `hθ`. Take `⟨χ, h1, h2⟩` from `exists_hchar_fin ha ι hM hφ`. Take `⟨χ', n, h3, h4⟩` from `exists_hchar_cyc ha ι wt`.
+
+Use `⟨?_, _, art, _, ha, isAlgPos_mul h3 h1, h4.mul h2⟩` and prove the remaining obligations. Establish `hc : Continuous φ` using `continuous_of_isOpen_ker' φ (isOpen_ker_kills hM hφ)`. Conclude with `((continuous_cyc ha ι).zpow wt).mul hc`.
+-/
 theorem UpperTheory.exists_algebraic_heckeChar_cyclotomic :
     UpperTheory.V.Af.Bc.CycHecke := by
   intro H F Ω _ _ _ _ _ l _ ι wt θ hθ

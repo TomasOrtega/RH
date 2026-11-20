@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open Matrix UpperTheory.V.U3
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `h1 : (X * A) i k ∈ I`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `I.sum_mem fun l _ => I.mul_mem_right _ (hX i l)`. Establish `h2` using `Ideal.mul_mem_mul h1 (hY k j)`. Rewrite `h2` using `[hI]`. Conclude with `h2`.
+-/
 private theorem UpperTheory.V.U3.defcob_mul_zero {C : Type} [CommRing C] {m : ℕ} {I : Ideal C}
     (hI : I * I = ⊥) {X Y : Matrix (Fin m) (Fin m) C} (hX : EntIn I X) (hY : EntIn I Y)
     (A : Matrix (Fin m) (Fin m) C) : X * A * Y = 0 := by
@@ -15,6 +20,9 @@ private theorem UpperTheory.V.U3.defcob_mul_zero {C : Type} [CommRing C] {m : �
   rw [hI] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `I.sum_mem fun k _ => I.mul_mem_right _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `I.sum_mem fun l _ => I.mul_mem_left _ (hX k l)`.
+-/
 private theorem UpperTheory.V.U3.defcob_entIn {C : Type} [CommRing C] {m : ℕ} {I : Ideal C}
     {X : Matrix (Fin m) (Fin m) C} (hX : EntIn I X)
     (A B : Matrix (Fin m) (Fin m) C) : EntIn I (A * Xᵀ * B) := by
@@ -24,6 +32,17 @@ private theorem UpperTheory.V.U3.defcob_entIn {C : Type} [CommRing C] {m : ℕ} 
   rw [Matrix.mul_apply]
   exact I.sum_mem fun l _ => I.mul_mem_left _ (hX k l)
 
+/- English proof (translation)
+Introduce `G C _ _ m I r X hI hX`. Establish `hXX : X * X = 0` using `by simpa using defcob_mul_zero hI hX hX 1`. Set `h : GL (Fin m) C` to `⟨1 + X, 1 - X, by`. Rewrite using `[Matrix.mul_sub, Matrix.add_mul, Matrix.add_mul, hXX]; simp, by`. Rewrite using `[Matrix.mul_add, Matrix.sub_mul, Matrix.sub_mul, hXX]`.
+
+Use the proof step `simp⟩`. Establish `hv : (h : Matrix (Fin m) (Fin m) C) = 1 + X` using `rfl`. Establish `hi : ((h⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) = 1 - X` using `rfl`. Use `⟨h, rfl, fun g => ⟨by simp [conjBy], ?_⟩⟩` and prove the remaining obligations. Establish `hl : (conjBy h r g).mat = (1 + X) * (r g).mat * ((sgnAct m C (r g).right h⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C)`.
+
+Simplify using `[conjBy, GG.mat, hv]`. Establish `hc : cob r X g = X - (r g).adFun X` using `rfl`. Establish `ha : (((r g).left⁻¹ : GL (Fin m) C) : Matrix (Fin m) (Fin m) C) * (r g).mat = 1` using `Units.inv_mul _`. Rewrite using `[hl, hc, GG.adFun]`. Break down `Int.units_eq_one_or (r g).right with hs | hs` into its components or cases.
+
+Rewrite using `[hs, sgnAct_one, hi, if_pos rfl]`. Simplify using `only [Matrix.mul_sub, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[defcob_mul_zero hI hX hX, Matrix.mul_assoc _ _ (r g).mat, ha, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hJ : Jmat C m * (1 + X)ᵀ * Jmat C m = 1 + Jmat C m * Xᵀ * Jmat C m`.
+
+Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Jmat_mul_Jmat]`. Rewrite using `[hs, sgnAct_neg_one, theta_val, inv_inv, hv, hJ, if_neg (by decide), thetaLie]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[defcob_mul_zero hI hX (defcob_entIn hX _ _), Matrix.mul_assoc _ _ (r g).mat, ha, Matrix.mul_one, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.V.U3.isDeform_cob :
     ∀ {G C : Type} [Group G] [CommRing C] {m : ℕ} (I : Ideal C) (r : G →* GG m C) (X : Matrix (Fin m) (Fin m) C), I * I = ⊥ → EntIn I X →
       ∃ h : GL (Fin m) C, (h : Matrix (Fin m) (Fin m) C) = 1 + X ∧ IsDeform r (cob r X) (conjBy h r) := by

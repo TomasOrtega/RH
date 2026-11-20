@@ -23,6 +23,21 @@ def pbMapIso {C D : Type*} [Category C] [Category D] (Fn : C ⥤ D) {B G A' A : 
         PreservesPullback.iso_hom_fst_assoc, ← Fn.map_comp]
     · simp only [Arrow.mk_hom, Category.assoc, pullback.lift_snd, PreservesPullback.iso_hom_snd, ← Fn.map_comp, Category.comp_id])
 
+/- English proof (translation)
+Rewrite `hP`, the goal using `[Cofan.nonempty_isColimit_iff_bijective_fromSigma]`. Establish `J1 : ∀ a y, fst (j a y) = ι a (fst' a y)` using `fun a y => ConcreteCategory.congr_hom (hj1 a) y`. Establish `J2 : ∀ a y, snd (j a y) = snd' a y` using `fun a y => ConcreteCategory.congr_hom (hj2 a) y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, y⟩ ⟨b, z⟩ hyz`.
+
+Establish `hyz' : j a y = j b z` using `hyz`. Establish `h1 : ι a (fst' a y) = ι b (fst' b z)` using `by rw [← J1, ← J1, hyz']`. Establish `h2 : snd' a y = snd' b z` using `by rw [← J2, ← J2, hyz']`. Establish `h3` using `hP.1 (a₁ := ⟨a, fst' a y⟩) (a₂ := ⟨b, fst' b z⟩) h1`. Take `⟨rfl, h4⟩` from `Sigma.mk.inj_iff.mp h3`.
+
+Establish `h4' : fst' a y = fst' a z` using `eq_of_heq h4`. Establish `: y = z` using `PullbackCone.IsLimit.type_ext (hQ' a) h4' h2`. Substitute `this` using the available equality. Both sides reduce to the same expression. Introduce `q`.
+
+Take `⟨⟨a, u⟩, hu⟩` from `hP.2 (fst q)`. Establish `hu' : ι a u = fst q` using `hu`. Establish `hc : e a u = g (snd q)`. Rewrite using `[← ConcreteCategory.congr_hom (he a) u]`. Express the relevant statement in the definitionally equal form `p (ι a u) = g (snd q)`.
+
+Rewrite using `[hu']`. Conclude with `ConcreteCategory.congr_hom w q`. Set `y : Q' a` to `(PullbackCone.IsLimit.equivPullbackObj (hQ' a)).symm ⟨(u, snd q), hc⟩`. Establish `y1 : fst' a y = u` using `PullbackCone.IsLimit.equivPullbackObj_symm_apply_fst (hQ' a) _`. Establish `y2 : snd' a y = snd q` using `PullbackCone.IsLimit.equivPullbackObj_symm_apply_snd (hQ' a) _`.
+
+Use `⟨⟨a, y⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j a y = q`. Use `PullbackCone.IsLimit.type_ext hQ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fst (j a y) = fst q`. Rewrite using `[J1, y1, hu']`.
+
+Express the relevant statement in the definitionally equal form `snd (j a y) = snd q`. Rewrite using `[J2, y2]`.
+-/
 theorem types_pb {A : Type} {E : A → Type} {P Y G : Type} (ι : ∀ a, E a ⟶ P) (hP : Nonempty (IsColimit (Cofan.mk P ι)))
     (p : P ⟶ Y) (g : G ⟶ Y) (e : ∀ a, E a ⟶ Y) (he : ∀ a, ι a ≫ p = e a)
     {Q : Type} (fst : Q ⟶ P) (snd : Q ⟶ G) (w : fst ≫ p = snd ≫ g) (hQ : IsLimit (PullbackCone.mk fst snd w))
@@ -62,6 +77,11 @@ theorem types_pb {A : Type} {E : A → Type} {P Y G : Type} (ι : ∀ a, E a ⟶
     · change snd (j a y) = snd q
       rw [J2, y2]
 
+/- English proof (translation)
+Take `⟨hP⟩` from `hP`. Use `⟨evaluationJointlyReflectsColimits _ fun U => (isColimitMapCoconeCofanMkEquiv _ _ _).symm ?_⟩` and prove the remaining obligations. Establish `hPU` using `isColimitCofanMkObjOfIsColimit ((evaluation _ _).obj U) _ _ hP`. Establish `hQ` using `isLimitPullbackConeMapOfIsLimit ((evaluation _ _).obj U) pullback.condition (pullbackIsPullback p g)`. Establish `hQ'` using `fun a => isLimitPullbackConeMapOfIsLimit ((evaluation _ _).obj U) pullback.condition (pullbackIsPullback (e a) g)`.
+
+Conclude with `(types_pb _ ⟨hPU⟩ _ _ _ (fun a => congrArg (fun t => NatTrans.app t U) (he a)) _ _ _ hQ _ _ _ hQ' _ (fun a => by rw [← Functor.map_comp, ← Functor.map_comp, pullback.lift_fst]) (fun a => by rw [← Functor.map_comp, pullback.lift_snd, Category.comp_id])).some`.
+-/
 theorem psh_pb {A : Type} {E : A → PSh} {P Y G : PSh} (ι : ∀ a, E a ⟶ P) (hP : Nonempty (IsColimit (Cofan.mk P ι)))
     (p : P ⟶ Y) (g : G ⟶ Y) (e : ∀ a, E a ⟶ Y) (he : ∀ a, ι a ≫ p = e a) :
     Nonempty (IsColimit (Cofan.mk (pullback p g) fun a =>
@@ -76,6 +96,9 @@ theorem psh_pb {A : Type} {E : A → PSh} {P Y G : PSh} (ι : ∀ a, E a ⟶ P) 
     (fun a => by rw [← Functor.map_comp, ← Functor.map_comp, pullback.lift_fst])
     (fun a => by rw [← Functor.map_comp, pullback.lift_snd, Category.comp_id])).some
 
+/- English proof (translation)
+Use extensionality with `U x`. Establish `e : (homOfLE (Fin.zero_le (0 : Fin (n.unop.len + 1))) : (0 : Fin _) ⟶ 0) = 𝟙 _` using `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `(cx (σ.obj 0)).app U ((Dx.map (σ.map (homOfLE (Fin.zero_le 0)))).app U x) = (cx (σ.obj 0)).app U x`. Rewrite using `[e, σ.map_id, Dx.map_id]`. Both sides reduce to the same expression.
+-/
 theorem inj_aug_RRelL {J : Type} [SmallCategory J] {Y : PSh} (Dx : J ⥤ PSh) (cx : ∀ j, Dx.obj j ⟶ Y) (hcx : Coc Dx cx)
     (n : SimplexCategoryᵒᵖ) (σ : Fin (n.unop.len + 1) ⥤ J) : inj Dx n σ ≫ (aug cx hcx).app n = cx (σ.obj 0) := by
   ext U x
@@ -83,12 +106,22 @@ theorem inj_aug_RRelL {J : Type} [SmallCategory J] {Y : PSh} (Dx : J ⥤ PSh) (c
   change (cx (σ.obj 0)).app U ((Dx.map (σ.map (homOfLE (Fin.zero_le 0)))).app U x) = (cx (σ.obj 0)).app U x
   rw [e, σ.map_id, Dx.map_id]; rfl
 
+/- English proof (translation)
+Use extensionality with `U x`. Conclude with `mkChn_congr (F := D.flip.obj U) σ (funext fun i => ConcreteCategory.congr_hom (NatTrans.congr_app (α.naturality (σ.map (homOfLE (Fin.zero_le i)))) U) x) _ _`.
+-/
 theorem inj_nat {J : Type} [SmallCategory J] {D' D : J ⥤ PSh} (α : D' ⟶ D) (n : SimplexCategoryᵒᵖ)
     (σ : Fin (n.unop.len + 1) ⥤ J) : inj D' n σ ≫ ((hocF J).map α).app n = α.app (σ.obj 0) ≫ inj D n σ := by
   ext U x
   exact mkChn_congr (F := D.flip.obj U) σ
     (funext fun i => ConcreteCategory.congr_hom (NatTrans.congr_app (α.naturality (σ.map (homOfLE (Fin.zero_le i)))) U) x) _ _
 
+/- English proof (translation)
+Introduce `hL J _ D' D α Y G g c' c hc' hc h h' n`. Establish `hj : ∀ j, α.app j ≫ c j = c' j` using `fun j => congrArg (fun t => NatTrans.app t (op (SimplexCategory.mk 0))) (h j)`. Establish `hn : ((hocF J).map α).app n ≫ (aug c hc).app n = (aug c' hc').app n` using `congrArg (fun t => NatTrans.app t n) h'`. Use `⟨Fin (n.unop.len + 1) ⥤ J, fun σ => σ.obj 0, fun σ => disc.obj (pullback (c' (σ.obj 0)) g), fun σ => disc.obj (pullback (c (σ.obj 0)) g), Cofan.mk (disc.obj (pullback ((aug c' hc').app n) g)) (fun σ => disc.map (pullback.map _ _ _ _ (inj D' n σ) (𝟙 _) (𝟙 _) (by simp [inj_aug_RRel …` and prove the remaining obligations. Introduce `σ`.
+
+Express the relevant statement in the definitionally equal form `disc.map _ ≫ disc.map _ = disc.map _ ≫ disc.map _`. Rewrite using `[← disc.map_comp, ← disc.map_comp]`. Use `congr 1`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `only [pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]`.
+
+Rewrite using `[inj_nat]`. Introduce `σ`. Conclude with `⟨(pbMapIso disc g (α.app (σ.obj 0)) (c' (σ.obj 0)) (c (σ.obj 0)) (hj _)).symm⟩`. Conclude with `⟨disc.mapArrow.mapIso (pbMapIso ((evaluation _ _).obj n) (disc.map g) ((hocF J).map α) (aug c' hc') (aug c hc) h').symm⟩`.
+-/
 theorem LeafRelLev_of : LeafRelLev := by
   intro hL J _ D' D α Y G g c' c hc' hc h h' n
   have hj : ∀ j, α.app j ≫ c j = c' j := fun j => congrArg (fun t => NatTrans.app t (op (SimplexCategory.mk 0))) (h j)

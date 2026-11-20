@@ -293,9 +293,15 @@ def U (z : Cone ι) : ℝ := max 0 (⨆ I : ℕ, -Real.log (D.cuspNorm I z))
 
 def hodgeW (z : Cone ι) : ℝ := (Real.log (D.muLine.h z) - Real.log (D.muRef.h z)) / D.k0
 
+/- English proof (translation)
+Introduce `c z hc` and use `by simp only [D.regMu_inv t c z hc]`.
+-/
 theorem torusInvariant_k0_regMu (t : ℝ) : IsTorusInv (fun z => (D.k0 : ℝ) * D.regMu t z) := fun c z hc => by
   simp only [D.regMu_inv t c z hc]
 
+/- English proof (translation)
+Introduce `c z hc` and use `by simp only [D.regCusp_inv t c z hc]`.
+-/
 theorem torusInvariant_k0_regCusp (t : ℝ) : IsTorusInv (fun z => (D.k0 : ℝ) * D.regCusp t z) := fun c z hc => by
   simp only [D.regCusp_inv t c z hc]
 

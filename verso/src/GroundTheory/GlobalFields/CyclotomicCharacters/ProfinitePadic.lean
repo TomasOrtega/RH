@@ -16,20 +16,34 @@ section Padic
 
 variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime]
 
+/- English proof (translation)
+Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, h, sub_self]`.
+-/
 theorem norm_sub_le_of_toZModPow_eq {x y : ℤ_[ℓ]} {n : ℕ}
     (h : PadicInt.toZModPow n x = PadicInt.toZModPow n y) :
     ‖x - y‖ ≤ (ℓ : ℝ) ^ (-(n : ℤ)) := by
   rw [PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub,
     h, sub_self]
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) < ℓ` using `by exact_mod_cast hℓ.out.one_lt`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ h1)`. Conclude with `⟨n, by rwa [zpow_neg, zpow_natCast, ← inv_pow]⟩`.
+-/
 theorem exists_zpow_neg_lt {ε : ℝ} (hε : 0 < ε) : ∃ n : ℕ, (ℓ : ℝ) ^ (-(n : ℤ)) < ε := by
   have h1 : (1 : ℝ) < ℓ := by exact_mod_cast hℓ.out.one_lt
   obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one hε (inv_lt_one_of_one_lt₀ h1)
   exact ⟨n, by rwa [zpow_neg, zpow_natCast, ← inv_pow]⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yde3.continuous_toZModPow n`.
+-/
 theorem continuous_toZModPow (n : ℕ) : Continuous (PadicInt.toZModPow (p := ℓ) n) :=
   _root_.UpperTheory.Reformulated.B.Yde3.continuous_toZModPow n
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_zpow_neg_lt (ℓ := ℓ) hε`. Establish `hU : IsOpen {y | PadicInt.toZModPow n (f y) = PadicInt.toZModPow n (f x)}` using `(isOpen_discrete {PadicInt.toZModPow n (f x)}).preimage (h n)`. Use `filter_upwards [hU.mem_nhds rfl] with y hy`. Rewrite using `[dist_eq_norm]`.
+
+Conclude with `(norm_sub_le_of_toZModPow_eq hy).trans_lt hn`.
+-/
 theorem continuous_of_continuous_toZModPow {X : Type*} [TopologicalSpace X] {f : X → ℤ_[ℓ]}
     (h : ∀ n, Continuous fun x => PadicInt.toZModPow n (f x)) : Continuous f := by
   refine continuous_iff_continuousAt.2 fun x => Metric.tendsto_nhds.2 fun ε hε => ?_
@@ -42,6 +56,9 @@ theorem continuous_of_continuous_toZModPow {X : Type*} [TopologicalSpace X] {f :
 
 variable (ℓ) in
 
+/- English proof (translation)
+The claim follows from `continuous_of_continuous_toZModPow fun n => (ProfiniteInteger.continuous_proj (primePowPNat ℓ n)).congr fun x => (toZModPow_toPadicInt ℓ n x).symm`.
+-/
 theorem continuous_toPadicInt : Continuous (toPadicInt ℓ) :=
   continuous_of_continuous_toZModPow fun n =>
     (ProfiniteInteger.continuous_proj (primePowPNat ℓ n)).congr fun x =>
@@ -51,18 +68,27 @@ end Padic
 
 section CRT
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (Subsingleton.elim ((Pi.evalRingHom (fun p : n.primeFactors => ZMod ((p : ℕ) ^ n.factorization p)) p).comp (ZMod.equivPi n hn).toRingHom) (ZMod.castHom (Nat.ordProj_dvd n p) _)) z`.
+-/
 theorem equivPi_apply {n : ℕ} (hn : n ≠ 0) (z : ZMod n) (p : n.primeFactors) :
     ZMod.equivPi n hn z p = ZMod.castHom (Nat.ordProj_dvd n p) _ z :=
   RingHom.congr_fun (Subsingleton.elim
     ((Pi.evalRingHom (fun p : n.primeFactors => ZMod ((p : ℕ) ^ n.factorization p)) p).comp
       (ZMod.equivPi n hn).toRingHom) (ZMod.castHom (Nat.ordProj_dvd n p) _)) z
 
+/- English proof (translation)
+The claim follows from `(ZMod.equivPi n hn).injective (funext fun p => by rw [equivPi_apply, equivPi_apply, h p p.2])`.
+-/
 theorem eq_of_castHom_ordProj_eq {n : ℕ} (hn : n ≠ 0) {a b : ZMod n}
     (h : ∀ p ∈ n.primeFactors,
       ZMod.castHom (Nat.ordProj_dvd n p) (ZMod (p ^ n.factorization p)) a =
         ZMod.castHom (Nat.ordProj_dvd n p) _ b) : a = b :=
   (ZMod.equivPi n hn).injective (funext fun p => by rw [equivPi_apply, equivPi_apply, h p p.2])
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (Subsingleton.elim ((ZMod.castHom h₁ (ZMod k)).comp (ZMod.castHom h₂ (ZMod m))) (ZMod.castHom h₃ (ZMod k))) z`.
+-/
 theorem castHom_castHom {k m n : ℕ} (h₁ : k ∣ m) (h₂ : m ∣ n) (h₃ : k ∣ n) (z : ZMod n) :
     ZMod.castHom h₁ (ZMod k) (ZMod.castHom h₂ (ZMod m) z) = ZMod.castHom h₃ (ZMod k) z :=
   RingHom.congr_fun (Subsingleton.elim ((ZMod.castHom h₁ (ZMod k)).comp (ZMod.castHom h₂ (ZMod m)))
@@ -81,6 +107,9 @@ noncomputable def padicReduceHom (n : ℕ) :
 noncomputable def ofPadicsFamily (x : ∀ q : Nat.Primes, ℤ_[q]) (n : ℕ+) : ZMod n :=
   (ZMod.equivPi (n : ℕ) n.ne_zero).symm (padicReduceHom n x)
 
+/- English proof (translation)
+Use `equivPi_apply n.ne_zero (ofPadicsFamily x n) ⟨p, hp⟩` as an intermediate fact. Rewrite `this` using `[ofPadicsFamily, RingEquiv.apply_symm_apply]`. Rewrite using `[ofPadicsFamily, ← this]`. Both sides reduce to the same expression.
+-/
 theorem castHom_ofPadicsFamily (x : ∀ q : Nat.Primes, ℤ_[q]) (n : ℕ+) {p : ℕ}
     (hp : p ∈ (n : ℕ).primeFactors) :
     ZMod.castHom (Nat.ordProj_dvd n p) _ (ofPadicsFamily x n) =
@@ -91,6 +120,11 @@ theorem castHom_ofPadicsFamily (x : ∀ q : Nat.Primes, ℤ_[q]) (n : ℕ+) {p :
   rw [ofPadicsFamily, ← this]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_profiniteIntegers]`. Introduce `m n h`. Use `eq_of_castHom_ordProj_eq m.ne_zero fun p hp => ?_` and prove the remaining obligations. Establish `hpn : p ∈ (n : ℕ).primeFactors` using `Nat.primeFactors_mono h n.ne_zero hp`. Establish `hle : (m : ℕ).factorization p ≤ (n : ℕ).factorization p` using `(Nat.factorization_le_iff_dvd m.ne_zero n.ne_zero).2 h p`.
+
+Rewrite using `[castHom_castHom _ h ((Nat.ordProj_dvd m p).trans h), ← castHom_castHom (pow_dvd_pow p hle) (Nat.ordProj_dvd n p) ((Nat.ordProj_dvd m p).trans h), castHom_ofPadicsFamily x n hpn, castHom_ofPadicsFamily x m hp]`. Establish `: Fact p.Prime` using `⟨Nat.prime_of_mem_primeFactors hp⟩`. Conclude with `PadicInt.cast_toZModPow _ _ hle _`.
+-/
 theorem ofPadicsFamily_mem (x : ∀ q : Nat.Primes, ℤ_[q]) :
     ofPadicsFamily x ∈ profiniteIntegers := by
   rw [mem_profiniteIntegers]
@@ -110,6 +144,9 @@ noncomputable def ofPadics : (∀ q : Nat.Primes, ℤ_[q]) →+* ℤ̂ :=
     (RingHom.pi fun n : ℕ+ => (ZMod.equivPi (n : ℕ) n.ne_zero).symm.toRingHom.comp
       (padicReduceHom n)) profiniteIntegers ofPadicsFamily_mem
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_ofPadics (x : ∀ q : Nat.Primes, ℤ_[q]) (n : ℕ+) :
     ProfiniteInteger.proj n (ofPadics x) = ofPadicsFamily x n :=
   rfl
@@ -117,9 +154,19 @@ theorem proj_ofPadics (x : ∀ q : Nat.Primes, ℤ_[q]) (n : ℕ+) :
 noncomputable def toPadics : ℤ̂ →+* ∀ q : Nat.Primes, ℤ_[q] :=
   RingHom.pi fun q => toPadicInt q
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toPadics_apply (x : ℤ̂) (q : Nat.Primes) : toPadics x q = toPadicInt q x :=
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Use `PadicInt.ext_of_toZModPow.mp fun k => ?_` and prove the remaining obligations. Rewrite using `[toPadics_apply, toZModPow_toPadicInt, proj_ofPadics]`. Use `eq_of_castHom_ordProj_eq (primePowPNat q k).ne_zero fun p hp => ?_` and prove the remaining obligations. Establish `hpq : p = q`.
+
+Establish `hk : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hp`. Rewrite `hp` using `[coe_primePowPNat, Nat.primeFactors_prime_pow hk q.2, Finset.mem_singleton]`. Conclude with `hp`.
+
+Substitute `hpq` using the available equality. Establish `hle : (primePowPNat (q : ℕ) k : ℕ).factorization q ≤ k`. Simplify using `[coe_primePowPNat, Nat.factorization_pow, Nat.Prime.factorization_self q.2]`. Rewrite using `[castHom_ofPadicsFamily x _ hp]`. Conclude with `(PadicInt.cast_toZModPow _ _ hle _).symm`.
+-/
 theorem toPadics_ofPadics (x : ∀ q : Nat.Primes, ℤ_[q]) : toPadics (ofPadics x) = x := by
   funext q
   refine PadicInt.ext_of_toZModPow.mp fun k => ?_
@@ -137,6 +184,11 @@ theorem toPadics_ofPadics (x : ∀ q : Nat.Primes, ℤ_[q]) : toPadics (ofPadics
   rw [castHom_ofPadicsFamily x _ hp]
   exact (PadicInt.cast_toZModPow _ _ hle _).symm
 
+/- English proof (translation)
+Use extensionality with `n`. Use `eq_of_castHom_ordProj_eq n.ne_zero fun p hp => ?_` and prove the remaining obligations. Rewrite using `[proj_ofPadics, castHom_ofPadicsFamily _ n hp]`. Establish `: Fact p.Prime` using `⟨Nat.prime_of_mem_primeFactors hp⟩`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow _ (toPadicInt p x) = _`.
+
+Rewrite using `[toZModPow_toPadicInt]`. Conclude with `(ProfiniteInteger.castHom_proj (m := primePowPNat p ((n : ℕ).factorization p)) (Nat.ordProj_dvd n p) x).symm`.
+-/
 theorem ofPadics_toPadics (x : ℤ̂) : ofPadics (toPadics x) = x := by
   ext n
   refine eq_of_castHom_ordProj_eq n.ne_zero fun p hp => ?_
@@ -151,23 +203,41 @@ noncomputable def padicEquiv : ℤ̂ ≃+* ∀ q : Nat.Primes, ℤ_[q] :=
   RingEquiv.ofRingHom toPadics ofPadics (RingHom.ext toPadics_ofPadics)
     (RingHom.ext ofPadics_toPadics)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem padicEquiv_apply (x : ℤ̂) : padicEquiv x = toPadics x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem padicEquiv_symm_apply (x : ∀ q : Nat.Primes, ℤ_[q]) :
     padicEquiv.symm x = ofPadics x := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun q => continuous_toPadicInt q`.
+-/
 theorem continuous_toPadics : Continuous toPadics :=
   continuous_pi fun q => continuous_toPadicInt q
 
 noncomputable def padicHomeomorph : ℤ̂ ≃ₜ ∀ q : Nat.Primes, ℤ_[q] :=
   Continuous.homeoOfEquivCompactToT2 (f := padicEquiv.toEquiv) continuous_toPadics
 
+/- English proof (translation)
+The claim follows from `padicHomeomorph.symm.continuous`.
+-/
 theorem continuous_ofPadics : Continuous ofPadics :=
   padicHomeomorph.symm.continuous
 
+/- English proof (translation)
+The claim follows from `padicEquiv.injective`.
+-/
 theorem toPadics_injective : Function.Injective toPadics :=
   padicEquiv.injective
 
+/- English proof (translation)
+The claim follows from `toPadics_injective (funext h)`.
+-/
 theorem ext_toPadicInt {x y : ℤ̂} (h : ∀ q : Nat.Primes, toPadicInt q x = toPadicInt q y) :
     x = y :=
   toPadics_injective (funext h)
@@ -175,10 +245,16 @@ theorem ext_toPadicInt {x y : ℤ̂} (h : ∀ q : Nat.Primes, toPadicInt q x = t
 noncomputable def unitsPadicEquiv : ℤ̂ˣ ≃* ∀ q : Nat.Primes, ℤ_[q]ˣ :=
   (Units.mapEquiv padicEquiv.toMulEquiv).trans MulEquiv.piUnits
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_unitsPadicEquiv_apply (u : ℤ̂ˣ) (q : Nat.Primes) :
     (unitsPadicEquiv u q : ℤ_[q]) = toPadicInt q u :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem unitsPadicEquiv_apply (u : ℤ̂ˣ) (q : Nat.Primes) :
     unitsPadicEquiv u q = Units.map (toPadicInt q).toMonoidHom u :=
   Units.ext rfl

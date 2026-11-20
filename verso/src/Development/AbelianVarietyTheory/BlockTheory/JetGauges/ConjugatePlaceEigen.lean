@@ -30,21 +30,36 @@ open Ideal
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`.
+-/
 theorem valuation_coe_eq_norm (x : ℂ_[p]) : ((Valued.v x : NNReal) : ℝ) = ‖x‖ := by
   rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding,
     Valuation.embedding_restrict]
 
+/- English proof (translation)
+Rewrite using `[← valuation_coe_eq_norm, PadicComplex.valuation_p]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_p : ‖((p : ℕ) : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← valuation_coe_eq_norm, PadicComplex.valuation_p]; simp
 
+/- English proof (translation)
+The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)`.
+-/
 theorem inv_p_lt_one : (p : ℝ)⁻¹ < 1 :=
   inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.out.one_lt)
 
+/- English proof (translation)
+Rewrite using `[← valuation_coe_eq_norm]`. Express the relevant statement in the definitionally equal form `Valued.v x ≤ 1 ↔ _`. Conclude with `Iff.rfl` after adjusting the coercions.
+-/
 theorem mem_iff_norm (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := by
   rw [← valuation_coe_eq_norm]
   change Valued.v x ≤ 1 ↔ _
   exact_mod_cast Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton, (PadicComplexInt.integers p).dvd_iff_le, map_pow, map_natCast, ← norm_p, ← norm_pow, ← valuation_coe_eq_norm, ← valuation_coe_eq_norm, NNReal.coe_le_coe]`. Both sides reduce to the same expression.
+-/
 theorem smodEq_iff (n : ℕ) (x y : 𝓞_ℂ_[p]) :
     x ≡ y [SMOD ((span {((p : ℕ) : 𝓞_ℂ_[p])}) ^ n • ⊤ : Submodule 𝓞_ℂ_[p] 𝓞_ℂ_[p])] ↔
       ‖(x : ℂ_[p]) - (y : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ n := by
@@ -53,10 +68,16 @@ theorem smodEq_iff (n : ℕ) (x y : 𝓞_ℂ_[p]) :
     ← norm_p, ← norm_pow, ← valuation_coe_eq_norm, ← valuation_coe_eq_norm, NNReal.coe_le_coe]
   rfl
 
+/- English proof (translation)
+The claim follows from `tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_p_lt_one p)`.
+-/
 theorem tendsto_inv_p_pow :
     Filter.Tendsto (fun n : ℕ => (p : ℝ)⁻¹ ^ n) Filter.atTop (nhds 0) :=
   tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_p_lt_one p)
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : ∀ n : ℕ, ‖(x : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ n` using `fun n => by`. Simplify using `using (smodEq_iff p n x 0).1 (hx n)`. Establish `h0 : ‖(x : ℂ_[p])‖ ≤ 0` using `ge_of_tendsto (tendsto_inv_p_pow p) (Filter.Eventually.of_forall h)`. Conclude with `Subtype.ext (norm_le_zero_iff.1 h0)`.
+-/
 theorem isHausdorff : IsHausdorff (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] := by
   refine ⟨fun x hx => ?_⟩
   have h : ∀ n : ℕ, ‖(x : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ n := fun n => by
@@ -65,6 +86,13 @@ theorem isHausdorff : IsHausdorff (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[
     ge_of_tendsto (tendsto_inv_p_pow p) (Filter.Eventually.of_forall h)
   exact Subtype.ext (norm_le_zero_iff.1 h0)
 
+/- English proof (translation)
+Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `h : ∀ {m n : ℕ}, m ≤ n → ‖(f m : ℂ_[p]) - (f n : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ m` using `fun hmn => (smodEq_iff p _ _ _).1 (hf hmn)`. Establish `hc : CauchySeq fun n => (f n : ℂ_[p])`. Use `cauchySeq_of_le_geometric (p : ℝ)⁻¹ 1 (inv_p_lt_one p) fun n => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, _root_.one_mul]`.
+
+Conclude with `h (Nat.le_succ n)`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Establish `hm : ∀ m : ℕ, ‖(f m : ℂ_[p]) - L‖ ≤ (p : ℝ)⁻¹ ^ m` using `fun m => le_of_tendsto ((tendsto_const_nhds.sub hL).norm) ((Filter.eventually_ge_atTop m).mono fun n hn => h hn)`. Establish `hLO : L ∈ 𝓞_ℂ_[p]`. Rewrite using `[mem_iff_norm]`.
+
+Conclude with `le_of_tendsto hL.norm (Filter.Eventually.of_forall fun n => (mem_iff_norm p _).1 (f n).2)`. Conclude with `⟨⟨L, hLO⟩, fun n => (smodEq_iff p n _ _).2 (hm n)⟩`.
+-/
 theorem isPrecomplete : IsPrecomplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] := by
   refine ⟨fun f hf => ?_⟩
   have h : ∀ {m n : ℕ}, m ≤ n → ‖(f m : ℂ_[p]) - (f n : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ ^ m :=
@@ -83,9 +111,15 @@ theorem isPrecomplete : IsPrecomplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_�
       (Filter.Eventually.of_forall fun n => (mem_iff_norm p _).1 (f n).2)
   exact ⟨⟨L, hLO⟩, fun n => (smodEq_iff p n _ _).2 (hm n)⟩
 
+/- English proof (translation)
+The claim follows from `{ isHausdorff p, isPrecomplete p with }`.
+-/
 theorem isAdicComplete : IsAdicComplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p] :=
   { isHausdorff p, isPrecomplete p with }
 
+/- English proof (translation)
+The claim follows from `hp.out algClosed := inferInstance charZero := inferInstance integers := PadicComplexInt.integers p p_lt := by have h := valuation_coe_eq_norm p ((p : ℕ) : ℂ_[p]) rw [norm_p] at h have h1 := inv_p_lt_one p rw [← h] at h1 exact_mod_cast h1 complete := isAdicComplete p`.
+-/
 theorem setting_padicComplex : HidaSetting p (PadicComplex.valued p).v 𝓞_ℂ_[p] where
   prime := hp.out
   algClosed := inferInstance
@@ -212,6 +246,11 @@ def HasColength_vp (p : ℕ) {C : Type} [Field C] (v : Valuation C NNReal) [Alge
     (τ : R →+* O) (a : ℝ) : Prop :=
   0 ≤ a ∧ ReciprocityTheory.PGsh.Up.HasLen v O (omegaEig α τ ⧸ htEig α p τ) (v (p : C) ^ a)
 
+/- English proof (translation)
+Use `⟨fun x y z h => ?_, fun c x z h => ?_⟩` and prove the remaining obligations. Use `hf.1 x.1 y.1 (h ▸ z.1.2) show f z.1 = f x.1 + f y.1` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+
+Use `hf.2 c x.1 (h ▸ z.1.2) show f z.1 = c * f x.1` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+-/
 example (τ : R →+* O) (f : LieG G → O) (hf : f ∈ omega G) :
     restrictEig α τ f ∈ omegaEig α τ := by
   refine ⟨fun x y z h => ?_, fun c x z h => ?_⟩

@@ -6,6 +6,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.HostAutTrans
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ τ τ' hτ hτ'`. Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) τ τ' (Subsingleton.elim _ _)`. Establish `key : ∀ x, τ' x = τ (σ.symm x)` using `fun x => by rw [← hσ]; rfl`. Use `⟨⟨σ.symm.toRingEquiv, τ.injective ((key _).symm.trans (hτ'.trans hτ.symm))⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.ext fun x => key x`.
+
+Introduce and unpack `⟨g₀, hfix⟩ hg`. Establish `hx : ∀ x, g₀ x = σ.symm x` using `fun x => τ.injective ((RingHom.congr_fun hg x).symm.trans (key x))`. Establish `h0 : g₀ = σ.symm.toRingEquiv` using `RingEquiv.ext fun x => hx x`. Substitute `h0` using the available equality. Both sides reduce to the same expression.
+-/
 theorem existsUnique_hostAut_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [IsGalois ℚ E] (τ τ' : E →+* ℂ), τ (H.rt : E) = H.rt0 → τ' (H.rt : E) = H.rt0 → ∃! g : HostAut H, τ' = τ.comp g.σ.toRingHom := by
   intro E _ _ _ H _ τ τ' hτ hτ'
   obtain ⟨σ, hσ⟩ := NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) τ τ'

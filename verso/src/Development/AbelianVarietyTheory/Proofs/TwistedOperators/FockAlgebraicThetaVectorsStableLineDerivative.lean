@@ -18,6 +18,15 @@ namespace GlobalTheory.SquareComm.LineDeriv
 
 open GlobalTheory.FockCompare GlobalTheory.OrientedHeis
 
+/- English proof (translation)
+Establish `hlin : HasDerivAt (fun t : ℝ => t • u) u 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const u`. Establish `hF : HasDerivAt (fun t : ℝ => f (w + ι (t • u))) (fderiv ℝ (fun x : R => f (w + ι x)) 0 u) 0`. Establish `h0 : ((0 : ℝ) • u) = 0` using `zero_smul ℝ u`. Establish `hf' : DifferentiableAt ℝ (fun x : R => f (w + ι x)) ((0 : ℝ) • u)` using `by rwa [h0]`.
+
+Use `hf'.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hlin` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this`. Establish `hP : HasDerivAt (fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * ((om (π w) (t • u) : ℝ) : ℂ))) (-(Real.pi * Complex.I) * ((om (π w) u : ℝ) : ℂ)) 0`. Establish `e : (fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * ((om (π w) (t • u) : ℝ) : ℂ))) = fun t : ℝ => Complex.exp ((t : ℂ) * (-(Real.pi * Complex.I) * ((om (π w) u : ℝ) : ℂ)))`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[map_smul, smul_eq_mul]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e]`.
+
+Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) * (-(Real.pi * Complex.I) * ((om (π w) u : ℝ) : ℂ))) (1 * (-(Real.pi * Complex.I) * ((om (π w) u : ℝ) : ℂ))) 0` using `(Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const _`. Simplify using `using h1.cexp`. Establish `hPF` using `hP.mul hF`. Unfold `hD`. Conclude with `hPF.deriv.trans (by simp)`.
+-/
 private theorem hD_eq_mul_add_fderiv {G R : Type} [AddCommGroup G] [NormedAddCommGroup R] [NormedSpace ℝ R]
     (ι : R →+ G) (π : G →+ R) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (f : G → ℂ) (w : G)
     (hf : DifferentiableAt ℝ (fun x : R => f (w + ι x)) 0) (u : R) :
@@ -48,6 +57,13 @@ private theorem hD_eq_mul_add_fderiv {G R : Type} [AddCommGroup G] [NormedAddCom
   unfold hD
   exact hPF.deriv.trans (by simp)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_chart hθ`. Use function extensionality and compare the values at `w`. Establish `hd : DifferentiableAt ℝ (fun x => f (w + iotaW σ T S x)) 0` using `((theta_sm hσ hf w).differentiable (by simp)).differentiableAt`. Rewrite using `[Finset.sum_apply, dLine_eq_hD hσ hψ hL f, hD_eq_mul_add_fderiv _ _ _ _ _ hd]`. Establish `hτ : ∀ τ, Datum.dRho (heisO ψ S T) θ τ (compAt θ τ (L 1)) f w = (-(Real.pi * Complex.I) * ((omO S T (piW θ T S w) (Pi.single τ (compAt θ τ (L 1))) : ℝ) : ℂ)) * f w + fderiv ℝ (fun x => f (w + iotaW σ T S x)) 0 (Pi.single τ (compAt θ τ (L 1)))`.
+
+Introduce `τ`. Rewrite using `[dRho_eq_dLine, dLine_eq_hD hσ hψ (isRealDir_lineAt hθ τ _) f, GlobalTheory.FockIndep.piW_lineAt hθ τ]`. Conclude with `hD_eq_mul_add_fderiv _ _ _ _ _ hd _`. Rewrite using `[Finset.sum_congr rfl fun τ _ => hτ τ, Finset.sum_add_distrib]`. Establish `hp : piW θ T S (L 1) = ∑ τ, (Pi.single τ (compAt θ τ (L 1)) : RW T S)`.
+
+Conclude with `(Finset.univ_sum_single (piW θ T S (L 1))).symm`. Rewrite using `[hp, map_sum, map_sum]`. Simplify using `only [Complex.ofReal_sum, Finset.mul_sum, Finset.sum_mul]`.
+-/
 theorem dLine_eq_sum_dRho {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L : ℝ →+ WO S T} (hL : IsRealDir T S L) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -70,6 +86,13 @@ theorem dLine_eq_sum_dRho {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ
   rw [hp, map_sum, map_sum]
   simp only [Complex.ofReal_sum, Finset.mul_sum, Finset.sum_mul]
 
+/- English proof (translation)
+Introduce `D ψ θ hψ hθ ε M X A B Φ hΦ L hLc hLf`. Establish `hsub : algF ψ θ ε A B ≤ GlobalTheory.RealWeil.thetaSub ψ (sgn ε M) X`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, P, hg, rfl⟩`. Establish `hg' : IsThetaFunO ψ (sgn ε M) X g` using `hg.1`.
+
+Use `show IsThetaFunO ψ (sgn ε M) X (fockF ψ θ ε A B g P)`. Unfold `fockF pureTensorO aPlusAll`. Conclude with `GlobalTheory.FockIndep.pure_mem (fun _ _ h h' => GlobalTheory.OrientedHeis.theta_add h h') (fun a _ h => GlobalTheory.OrientedHeis.theta_smul a h) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) hg' P`. Establish `hth : IsThetaFunO ψ (sgn ε M) X Φ` using `hsub hΦ`. Establish `hL : IsRealDir X (sgn ε M) L` using `⟨hLc, hLf⟩`.
+
+Use `show dLine ψ (sgn ε M) X L Φ ∈ algF ψ θ ε A B`. Rewrite using `[dLine_eq_sum_dRho hψ hθ hL hth]`. Conclude with `Submodule.sum_mem _ fun τ _ => GlobalTheory.SquareComm.dRho_mem_algF D ψ θ hψ hθ ε M X A B Φ hΦ τ _`.
+-/
 theorem deriv_line_mem_algF : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X), ∀ Φ ∈ algF ψ θ ε A B,
       ∀ L : ℝ →+ WO (sgn ε M) X, Continuous L → (∀ t, (L t).map (finPart D) = 0) →

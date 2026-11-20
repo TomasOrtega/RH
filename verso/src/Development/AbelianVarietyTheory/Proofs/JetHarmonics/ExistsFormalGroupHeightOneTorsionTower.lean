@@ -9,6 +9,15 @@ open GlobalTheory.ConvSer
 
 namespace GlobalTheory.ConvSer
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hX, -, hsub, -⟩` from `GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[nMul_zero]`. Introduce `ν`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[nMul_succ]`. Establish `hc : PowerSeries.constantCoeff (nMul F n) = 0` using `((GlobalTheory.T.formalGroupNatMulSeries_properties K F).1 n).1`. Use `(hsub (Fin 2) ![nMul F n, PowerSeries.X] F.toPowerSeries ?_ ?_).1 hF` and prove the remaining obligations.
+
+Introduce `j fin_cases j`. Conclude with `ih`. Conclude with `(hX ()).1`. Introduce `j fin_cases j`. Conclude with `hc`.
+
+Conclude with `PowerSeries.constantCoeff_X`.
+-/
 theorem intg_nMul_of_intg (K : Type) [NormedField K] [IsUltrametricDist K] (F : FormalGroup K)
     (hF : Intg F.toPowerSeries) (n : ℕ) : Intg (nMul F n) := by
   obtain ⟨-, -, -, -, hX, -, hsub, -⟩ := GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit
@@ -30,6 +39,43 @@ theorem intg_nMul_of_intg (K : Type) [NormedField K] [IsUltrametricDist K] (F : 
       · exact hc
       · exact PowerSeries.constantCoeff_X
 
+/- English proof (translation)
+Establish `hpr : p.Prime` using `Fact.out`. Establish `hI` using `intg_nMul_of_intg K F hF p`. Use `set h := nMul F p with hh`. Take `⟨-, -, hpow, -, -, -, -, -, -, hiff⟩` from `GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit`. Establish `hev` using `fun (x : K) (hx : ‖x‖ < 1) => GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K x hx`.
+
+Establish `hbdd : ∀ f : PowerSeries K, Intg f → Bdd f` using `fun f hf => (hpow f 0).2.2 hf`. Establish `hcoef : ∀ n, ‖PowerSeries.coeff n h‖ ≤ 1` using `(hiff h).1.1 hI`. Establish `h0 : PowerSeries.coeff 0 h = 0`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `((GlobalTheory.T.formalGroupNatMulSeries_properties K F).1 p).1`.
+
+Establish `h0c : PowerSeries.constantCoeff h = 0` using `((GlobalTheory.T.formalGroupNatMulSeries_properties K F).1 p).1`. Establish `h1 : PowerSeries.coeff 1 h = (p : K)` using `((GlobalTheory.T.formalGroupNatMulSeries_properties K F).1 p).2`. Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.mpr hpr.ne_zero`. Establish `hz : ‖(0 : K)‖ < 1` using `by simp`. Take `⟨-, -, -, -, -, -, -, -, -, -, hzero⟩` from `hev 0 hz`.
+
+Establish `hstep : ∀ c : {c : K // ‖c‖ < 1}, ∃ y : {y : K // ‖y‖ < 1}, ev1 h y = c`. Introduce and unpack `⟨c, hc⟩`. Establish `hIc : Intg (h - PowerSeries.C c)`. Rewrite using `[(hiff _).1]`. Introduce `n`.
+
+Break down `n with _ | n` into its components or cases. Simplify using `[h0c, hc.le]`. Rewrite using `[map_sub, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero n), sub_zero]`. Conclude with `hcoef _`. Take `⟨y, hy, hy0⟩` from `GlobalTheory.T.exists_root_openDisc_of_weierstrassDegree K (h - PowerSeries.C c) p hpr.pos hIc (by`.
+
+Rewrite using `[map_sub, PowerSeries.coeff_C, if_neg hpr.ne_zero, sub_zero]`. Conclude with `hp) (by`. Introduce `k hk`. Break down `k with _ | k` into its components or cases. Simplify `hc` using `[h0, h0c]`.
+
+Rewrite using `[map_sub, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero k), sub_zero]`. Conclude with `hlt _ hk)`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Take `⟨-, hops, hCe, -⟩` from `hev y hy`. Establish `hCI : Intg (PowerSeries.C c)`.
+
+Rewrite using `[(hiff _).1]`. Introduce `n`. Rewrite using `[PowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `hc.le`.
+
+Simplify using the standard rewrite rules. Establish `e` using `(hops h (PowerSeries.C c) (hbdd h hI) (hbdd _ hCI)).2.1`. Rewrite `e` using `[hy0, hCe]`. Simplify using `only`. Take the linear combination `-e`.
+
+Use `set g : PowerSeries K := PowerSeries.mk fun k => PowerSeries.coeff (k + 1) h with hg`. Establish `hgI : Intg g`. Rewrite using `[(hiff _).1]`. Introduce `n`. Rewrite using `[hg, PowerSeries.coeff_mk]`.
+
+Conclude with `hcoef _`. Establish `hp1 : 0 < p - 1` using `by have := hpr.two_le; omega`. Take `⟨x, hx, hx0⟩` from `GlobalTheory.T.exists_root_openDisc_of_weierstrassDegree K g (p - 1) hp1 hgI (by`. Rewrite using `[hg, PowerSeries.coeff_mk, Nat.sub_add_cancel hpr.one_lt.le]`. Conclude with `hp) (by`.
+
+Introduce `k hk`. Rewrite using `[hg, PowerSeries.coeff_mk]`. Conclude with `hlt _ (by omega))`. Establish `hxne : x ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hx0` using `[hzero, hg, PowerSeries.coeff_mk, h1]`. Conclude with `hp0 hx0`. Establish `hXI : Intg (PowerSeries.X : PowerSeries K)`. Rewrite using `[(hiff _).1]`. Introduce `n`.
+
+Rewrite using `[PowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hXg : h = PowerSeries.X * g`. Use extensionality with `n`. Break down `n with _ | n` into its components or cases.
+
+Simplify using `[h0]`. Rewrite using `[PowerSeries.coeff_succ_X_mul, hg, PowerSeries.coeff_mk]`. Establish `hxroot : ev1 h x = 0`. Take `⟨-, hops, -, hXe, -⟩` from `hev x hx`. Rewrite using `[hXg, ((hops _ _ (hbdd _ hXI) (hbdd _ hgI)).2.2), hXe, hx0, mul_zero]`.
+
+Use `choose f hf using hstep`. Set `x0 : {y : K // ‖y‖ < 1}` to `⟨x, hx⟩`. Use `⟨fun n => if n = 0 then 0 else ((f^[n - 1] x0 : {y : K // ‖y‖ < 1}) : K), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n dsimp only split_ifs`. Conclude with `hz`.
+
+Conclude with `(f^[n - 1] x0).2`. Simplify using the standard rewrite rules. Simplify `hxne` using `[x0]`. Introduce `n`. Break down `n with _ | m` into its components or cases.
+
+Simplify `hxroot` using `[x0]`. Simplify using `only [Nat.add_sub_cancel, if_neg (Nat.succ_ne_zero _), Function.iterate_succ_apply']`. Conclude with `hf _`.
+-/
 theorem exists_torsion_tower (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [IsAlgClosed K] [CharZero K] (p : ℕ) [Fact p.Prime] (F : FormalGroup K)
     (hF : Intg F.toPowerSeries) (hp : ‖PowerSeries.coeff p (nMul F p)‖ = 1)

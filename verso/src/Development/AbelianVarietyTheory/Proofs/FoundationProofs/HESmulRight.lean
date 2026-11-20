@@ -20,43 +20,76 @@ def IntE (D : D7) (e : D.host.E) : Prop := e ∈ (algebraMap (𝓞 D.host.E) D.h
 def sgO (D : D7) : 𝓞 D.host.E →+* 𝓞 D.host.E :=
   MulSemiringAction.toRingHom (D.host.E ≃ₐ[ℚ] D.host.E) (𝓞 D.host.E) D.host.conj
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgO_coe (D : D7) (a : 𝓞 D.host.E) : ((sgO D a : 𝓞 D.host.E) : D.host.E) = D.host.conj a := rfl
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[← AdLattice.star_eq_conj, ← AdLattice.star_eq_conj]`. Conclude with `star_star x`.
+-/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   letI := D.host.cmStar
   rw [← AdLattice.star_eq_conj, ← AdLattice.star_eq_conj]
   exact star_star x
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (conj_conj D a)`.
+-/
 theorem sgO_sgO (D : D7) (a : 𝓞 D.host.E) : sgO D (sgO D a) = a :=
   Subtype.ext (conj_conj D a)
 
+/- English proof (translation)
+Use `letI := D.host.isCMField_hostE`. Rewrite using `[← AdLattice.star_eq_conj]`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E (embT D τ) x`.
+-/
 theorem embT_conj (D : D7) (τ : D.what₂.Tau) (x : D.host.E) :
     embT D τ (D.host.conj x) = (starRingEnd ℂ) (embT D τ x) := by
   letI := D.host.isCMField_hostE
   rw [← AdLattice.star_eq_conj]
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E (embT D τ) x
 
+/- English proof (translation)
+Simplify using `only [hE, map_sum, map_mul, conj_conj, mul_comm]`.
+-/
 theorem conj_hE (D : D7) {n : ℕ} (x y : Fin n → D.host.E) : D.host.conj (hE D x y) = hE D y x := by
   simp only [hE, map_sum, map_mul, conj_conj, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [hE, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hE_add_left (D : D7) {n : ℕ} (x x' y : Fin n → D.host.E) : hE D (x + x') y = hE D x y + hE D x' y := by
   simp only [hE, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hE, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hE_add_right (D : D7) {n : ℕ} (x y y' : Fin n → D.host.E) : hE D x (y + y') = hE D x y + hE D x y' := by
   simp only [hE, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hE, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hE_smul_left (D : D7) {n : ℕ} (a : D.host.E) (x y : Fin n → D.host.E) : hE D (a • x) y = a * hE D x y := by
   simp only [hE, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [hE, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem hE_smul_right (D : D7) {n : ℕ} (a : D.host.E) (x y : Fin n → D.host.E) :
     hE D x (a • y) = D.host.conj a * hE D x y := by
   simp only [hE, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, map_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `⟨sgO D a, rfl⟩`.
+-/
 theorem IntE.conj {D : D7} {e : D.host.E} (h : IntE D e) : IntE D (D.host.conj e) := by
   obtain ⟨a, rfl⟩ := h
   exact ⟨sgO D a, rfl⟩
 
+/- English proof (translation)
+Unfold `SD IsSDLat`. Simplify using `only [stdH, AdLattice.star_eq_conj, IntE, hE, mul_comm]`.
+-/
 theorem sd_iff (D : D7) {n : ℕ} (L : Lat D n) : SD D L ↔
     L.FG ∧ Submodule.span D.host.E (L : Set (Fin n → D.host.E)) = ⊤ ∧ ∀ y, y ∈ L ↔ ∀ x ∈ L, IntE D (hE D y x) := by
   unfold SD IsSDLat
@@ -69,6 +102,9 @@ def nbM (D : D7) {n : ℕ} (B : Lat D n) (x : Fin n → D.host.E) : Lat D n wher
   smul_mem' := fun c a ha => ⟨B.smul_mem c ha.1, by
     rw [← algebraMap_smul D.host.E c a, hE_smul_left]; exact mul_mem ⟨c, rfl⟩ ha.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_nbM {D : D7} {n : ℕ} {B : Lat D n} {x y : Fin n → D.host.E} :
     y ∈ nbM D B x ↔ y ∈ B ∧ IntE D (hE D y x) := Iff.rfl
 
@@ -104,45 +140,79 @@ def bc (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') : ℂ :=
   Complex.exp (-(Real.pi : ℂ) * Complex.I *
     ((Real.sqrt D.host.d * (Hf D T x y).re + (Hf D T x y).im : ℝ) : ℂ))
 
+/- English proof (translation)
+Simplify using `only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]`.
+-/
 theorem Hf_add_left (D : D7) (T : Tor D) {N N' : ℕ} (x x' y : VC D N N') :
     Hf D T (x + x') y = Hf D T x y + Hf D T x' y := by
   simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
 
+/- English proof (translation)
+Simplify using `only [Hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, add_div]`.
+-/
 theorem Hf_add_right (D : D7) (T : Tor D) {N N' : ℕ} (x y y' : VC D N N') :
     Hf D T x (y + y') = Hf D T x y + Hf D T x y' := by
   simp only [Hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, add_div]
 
+/- English proof (translation)
+Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal, mul_comm]`.
+-/
 theorem Hf_conj (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     (starRingEnd ℂ) (Hf D T x y) = Hf D T y x := by
   simp only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal, mul_comm]
 
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 theorem bc_ne_zero (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') : bc D T x y ≠ 0 := Complex.exp_ne_zero _
 
+/- English proof (translation)
+Rewrite using `[bc, bc, bc, ← Complex.exp_add, Hf_add_left, Complex.add_re, Complex.add_im]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bc_add_left (D : D7) (T : Tor D) {N N' : ℕ} (x x' y : VC D N N') :
     bc D T (x + x') y = bc D T x y * bc D T x' y := by
   rw [bc, bc, bc, ← Complex.exp_add, Hf_add_left, Complex.add_re, Complex.add_im]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[bc, bc, bc, ← Complex.exp_add, Hf_add_right, Complex.add_re, Complex.add_im]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bc_add_right (D : D7) (T : Tor D) {N N' : ℕ} (x y y' : VC D N N') :
     bc D T x (y + y') = bc D T x y * bc D T x y' := by
   rw [bc, bc, bc, ← Complex.exp_add, Hf_add_right, Complex.add_re, Complex.add_im]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Establish `h` using `bc_add_left D T 0 0 y`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left₀ (bc_ne_zero D T 0 y)).1 h.symm`.
+-/
 theorem bc_zero_left (D : D7) (T : Tor D) {N N' : ℕ} (y : VC D N N') : bc D T 0 y = 1 := by
   have h := bc_add_left D T 0 0 y
   rw [add_zero] at h
   exact (mul_eq_left₀ (bc_ne_zero D T 0 y)).1 h.symm
 
+/- English proof (translation)
+Establish `h` using `bc_add_right D T x 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left₀ (bc_ne_zero D T x 0)).1 h.symm`.
+-/
 theorem bc_zero_right (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') : bc D T x 0 = 1 := by
   have h := bc_add_right D T x 0 0
   rw [add_zero] at h
   exact (mul_eq_left₀ (bc_ne_zero D T x 0)).1 h.symm
 
+/- English proof (translation)
+Rewrite using `[bc, bc, ← Complex.exp_add, ← Hf_conj D T x y, Complex.conj_re, Complex.conj_im]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bc_comm (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     bc D T x y = Complex.exp (-(2 * Real.pi * Complex.I) * ((Hf D T x y).im : ℂ)) * bc D T y x := by
   rw [bc, bc, ← Complex.exp_add, ← Hf_conj D T x y, Complex.conj_re, Complex.conj_im]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hc` using `Hf_conj D T x y`. Establish `hre : (Hf D T y x).re = (Hf D T x y).re` using `by rw [← hc, Complex.conj_re]`. Establish `h2 : Hf D T y x = Hf D T x y - 2 * Complex.I * ((Hf D T x y).im : ℂ)`. Apply the tactic sequence `rw [← hc]; apply Complex.ext <;> simp <;> ring`.
+
+Simplify using `only [Wd, U, wdPh, ee, bc, qH, Pi.smul_apply, smul_eq_mul, Hf_add_left, Hf_add_right, Complex.add_re, hre, add_assoc]`. Rewrite using `[h2]`. Establish `key : ∀ a b c d' e f g' : ℂ, ∀ v : ℂ, a + b + c + d' = e + f + g' → Complex.exp a * (Complex.exp b * (v * Complex.exp c) * Complex.exp d') = Complex.exp e * (Complex.exp f * (v * Complex.exp g'))`. Introduce `a b c d' e f g' v h`. Use `congrArg Complex.exp h` as an intermediate fact.
+
+Simplify using `only [Complex.exp_add] at this`. Take the linear combination `v * this`. Apply `key` to reduce the goal to its premises. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wd_Wd (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N N' → ℂ) :
     Wd D T x (Wd D T y F) = bc D T x y • Wd D T (x + y) F := by
   funext z
@@ -163,14 +233,23 @@ theorem Wd_Wd (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N N'
   apply key
   push_cast; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wd_add (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (F G : VC D N N' → ℂ) :
     Wd D T x (F + G) = Wd D T x F + Wd D T x G := by
   funext z; simp only [Wd, U, Pi.add_apply]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wd_smul (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (a : ℂ) (F : VC D N N' → ℂ) :
     Wd D T x (a • F) = a • Wd D T x F := by
   funext z; simp only [Wd, U, Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[Wd, U, wdPh, ee, qH, Hf]`.
+-/
 theorem Wd_zero (D : D7) (T : Tor D) {N N' : ℕ} (F : VC D N N' → ℂ) : Wd D T 0 F = F := by
   funext z; simp [Wd, U, wdPh, ee, qH, Hf]
 
@@ -178,11 +257,17 @@ def Nice (D : D7) (T : Tor D) {N N' : ℕ} (A : AddSubgroup (VC D N N')) : Prop 
   (∀ x ∈ A, ∀ F, Wd D T x F = fun z => al D T x * U D T x F z) ∧ (∀ x ∈ A, ∀ y ∈ A, bc D T x y = 1) ∧
     ∀ x, (∀ y ∈ A, bc D T x y = bc D T y x) → x ∈ A
 
+/- English proof (translation)
+Use `and_congr_right fun _ => forall₂_congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[h.1 x hx, funext_iff]`.
+-/
 theorem Nice.mem_ThSp {D : D7} {T : Tor D} {N N' : ℕ} {A : AddSubgroup (VC D N N')} (h : Nice D T A)
     (F : VC D N N' → ℂ) : F ∈ ThSp D T A ↔ Differentiable ℂ F ∧ ∀ x ∈ A, Wd D T x F = F := by
   refine and_congr_right fun _ => forall₂_congr fun x hx => ?_
   rw [h.1 x hx, funext_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [Iop]`. Use `congr 1`. Conclude with `finsum_congr fun q => by rw [h.1 _ (Quotient.out q : B).2]`.
+-/
 theorem Nice.Iop_eq {D : D7} {T : Tor D} {N N' : ℕ} (A : AddSubgroup (VC D N N')) {B : AddSubgroup (VC D N N')}
     (h : Nice D T B) (F : VC D N N' → ℂ) :
     Iop D T A B F = fun z => ((Real.sqrt ((A.addSubgroupOf B).index : ℝ))⁻¹ : ℂ) *

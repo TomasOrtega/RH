@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE
 
+/- English proof (translation)
+Introduce `M y y'` and use `GlobalTheory.CompanionTheory.PcB.sh_mul M y y'`.
+-/
 theorem sh_add : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (y y' : Mx D ρ p),
     M.sh y * M.sh y' = M.sh (y + y') :=
   fun M y y' => GlobalTheory.CompanionTheory.PcB.sh_mul M y y'

@@ -21,11 +21,23 @@ private def sw (R : Type) [CommRing R] : GL (Fin 2) R where
   val_inv := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]
   inv_val := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem low_val {R : Type} [CommRing R] (x : R) : (low x : Matrix (Fin 2) (Fin 2) R) = !![1, 0; x, 1] := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sw_val {R : Type} [CommRing R] : (sw R : Matrix (Fin 2) (Fin 2) R) = !![0, 1; 1, 0] := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem aff_val {R : Type} [CommRing R] (y : Rˣ) (x : R) :
     (aff y x : Matrix (Fin 2) (Fin 2) R) = !![(y : R), x; 0, 1] := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.GeneralLinearGroup.scalar, aff_val, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.diagonal_apply, mul_div_cancel₀]`.
+-/
 private theorem bor_val {K : Type} [Field K] (a d : Kˣ) (x : K) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) x : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) =
       !![(a : K), d * x; 0, d] := by
@@ -33,6 +45,11 @@ private theorem bor_val {K : Type} [Field K] (a d : Kˣ) (x : K) :
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.GeneralLinearGroup.scalar, aff_val, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.diagonal_apply, mul_div_cancel₀]
 
+/- English proof (translation)
+Establish `hd : (g : Matrix (Fin 2) (Fin 2) K).det ≠ 0` using `g.det_ne_zero`. Rewrite `hd` using `[Matrix.det_fin_two]`. Take `⟨a, ha⟩ : ∃ a : Kˣ, (a : K) = (g 0 0 * g 1 1 - g 0 1 * g 1 0) / g 1 1` from `⟨Units.mk0 _ (div_ne_zero hd h), rfl⟩`. Take `⟨d, hd'⟩ : ∃ a : Kˣ, (a : K) = g 1 1` from `⟨Units.mk0 _ h, rfl⟩`. Use `⟨a, d, g 0 1 / g 1 1, Units.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, bor_val, low_val, Matrix.mul_fin_two, ha, hd']`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) = M at h ⊢`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> (try field_simp) <;> (try ring)`.
+-/
 private theorem dec1 {K : Type} [Field K] (g : GL (Fin 2) K) (h : g 1 1 ≠ 0) :
     ∃ (a d : Kˣ) (x : K), g = Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) x * low (g 1 0 / g 1 1) := by
   have hd : (g : Matrix (Fin 2) (Fin 2) K).det ≠ 0 := g.det_ne_zero
@@ -45,6 +62,11 @@ private theorem dec1 {K : Type} [Field K] (g : GL (Fin 2) K) (h : g 1 1 ≠ 0) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp <;> (try field_simp) <;> (try ring)
 
+/- English proof (translation)
+Establish `hd : (g : Matrix (Fin 2) (Fin 2) K).det ≠ 0` using `g.det_ne_zero`. Rewrite `hd` using `[Matrix.det_fin_two]`. Take `⟨a, ha⟩ : ∃ a : Kˣ, (a : K) = -(g 0 0 * g 1 1 - g 0 1 * g 1 0) / g 1 0` from `⟨Units.mk0 _ (div_ne_zero (neg_ne_zero.2 hd) h), rfl⟩`. Take `⟨d, hd'⟩ : ∃ a : Kˣ, (a : K) = g 1 0` from `⟨Units.mk0 _ h, rfl⟩`. Use `⟨a, d, g 0 0 / g 1 0, Units.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, bor_val, Units.val_mul, sw_val, aff_val, Matrix.mul_fin_two, Matrix.mul_fin_two, ha, hd']`. Generalize the expression as in `(g : Matrix (Fin 2) (Fin 2) K) = M at h ⊢`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> (try field_simp) <;> (try ring)`.
+-/
 private theorem dec2 {K : Type} [Field K] (g : GL (Fin 2) K) (h : g 1 0 ≠ 0) :
     ∃ (a d : Kˣ) (x : K), g = Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) x * (sw K * aff 1 (g 1 1 / g 1 0)) := by
   have hd : (g : Matrix (Fin 2) (Fin 2) K).det ≠ 0 := g.det_ne_zero
@@ -57,6 +79,71 @@ private theorem dec2 {K : Type} [Field K] (g : GL (Fin 2) K) (h : g 1 0 ≠ 0) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp <;> (try field_simp) <;> (try ring)
 
+/- English proof (translation)
+Establish `hπ : ¬ IsUnit π` using `(hm π).2 dvd_rfl`. Establish `haff1 : ∀ (y : A) g, Φ (g * aff 1 (y : K)) = Φ g` using `fun y g => by simpa using haff 1 y g`. Establish `hA : ∀ (a : Kˣ) (x : K), Φ (aff a x) = (μ₁ a : ℂ) • Φ 1` using `fun a x => by simpa using hB a 1 x 1`. Establish `hD : ∀ (d : Kˣ) g, Φ (Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (1 / d) 0 * g) = (μ₂ d : ℂ) • Φ g` using `fun d g => by simpa using hB 1 d 0 g`. Establish `canc : ∀ {s t : ℂ} {v : V}, v ≠ 0 → s • v = t • v → s = t` using `fun hv h => smul_left_injective ℂ hv h`.
+
+Establish `u1 : Φ 1 ≠ 0 → ∀ x : Aˣ, μ₁ (Units.map A.subtype.toMonoidHom x) = 1` using `fun h x => by`. Use `haff x 0 1` as an intermediate fact. Rewrite `this` using `[one_mul, hA]`. Conclude with `Units.ext (canc h (this.trans (one_smul _ _).symm))`. Establish `u2 : Φ (sw K) ≠ 0 → ∀ x : Aˣ, μ₂ (Units.map A.subtype.toMonoidHom x) = 1` using `fun h x => by`.
+
+Use `haff x 0 (sw K)` as an intermediate fact. Establish `e : ∀ d : Kˣ, sw K * aff d ((0 : A) : K) = Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (1 / d) 0 * sw K` using `fun d => by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul _ (sw K), bor_val, sw_val, aff_val]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]`. Rewrite `this` using `[e, hD]`. Conclude with `Units.ext (canc h (this.trans (one_smul _ _).symm))`. Establish `sum1 : ∑ u ∈ S, Φ (1 * aff p (u : K)) = ((S.card : ℂ) * (μ₁ p : ℂ)) • Φ 1`. Simplify using `only [one_mul, hA, Finset.sum_const]`.
+
+Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul]`. Establish `z1 : ∀ (g : GL (Fin 2) K) (x : A), g 1 1 ≠ 0 → g 1 0 = x * g 1 1 → Φ (low (x : K)) = 0 → Φ g = 0`. Introduce `g x h1 h2 h3`. Take `⟨a, d, y, e⟩` from `dec1 g h1`. Rewrite `e` using `[h2, mul_div_cancel_right₀ _ h1]`.
+
+Rewrite using `[e, hB, h3, smul_zero]`. Establish `iw : (∀ x : A, π ∣ x → Φ (low (x : K)) = 0) → Φ (sw K) ≠ 0`. Introduce `h hs`. Apply `hΦ` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Establish `z2 : ∀ y : A, g 1 0 ≠ 0 → g 1 1 = y * g 1 0 → Φ g = 0`. Introduce `y h1 h2`. Take `⟨a, d, x, e⟩` from `dec2 g h1`. Rewrite `e` using `[h2, mul_div_cancel_right₀ _ h1]`. Rewrite using `[e, hB, haff1, hs, smul_zero]`.
+
+Distinguish the cases in `h0 : g 1 0 = 0`. Establish `h1 : g 1 1 ≠ 0` using `fun h1 => g.det_ne_zero (by rw [Matrix.det_fin_two, h0, h1]; ring)`. Conclude with `z1 g 0 h1 (by simp [h0]) (h 0 (dvd_zero _))`. Distinguish the cases in `hy : g 1 1 / g 1 0 ∈ A`. Conclude with `z2 ⟨_, hy⟩ h0 (div_mul_cancel₀ _ h0).symm`.
+
+Establish `h1 : g 1 1 ≠ 0` using `fun h1 => hy (by rw [h1, zero_div]; exact A.zero_mem)`. Establish `hx : g 1 0 / g 1 1 ∈ A`. Use `(A.mem_or_inv_mem (g 1 1 / g 1 0)).resolve_left hy` as an intermediate fact. Rewrite `this` using `[inv_div]`. Then use the resulting hypothesis. Use `z1 g ⟨_, hx⟩ h1 (div_mul_cancel₀ _ h1).symm (h _ ((hm _).1 ?_))` and prove the remaining obligations.
+
+Introduce `hu`. Take `⟨y, hy'⟩` from `hu.exists_right_inv`. Establish `hy2 : g 1 0 / g 1 1 * (y : K) = 1` using `congrArg Subtype.val hy'`. Apply `hy` to reduce the goal to its premises. Establish `: g 1 1 / g 1 0 = y`.
+
+Rewrite using `[← inv_div]`. Conclude with `inv_eq_of_mul_eq_one_right hy2`. Rewrite using `[this]`. Conclude with `y.2`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hc`. Establish `hs : Φ (sw K) = Φ 1` using `by simpa using hsw hc 1`. Establish `h1 : Φ 1 ≠ 0` using `fun h1 => iw (fun x _ => by`. Use `hlow x (by simp [hc]) 1` as an intermediate fact. Rewrite using `[one_mul, h1] at this) (hs.trans h1)` and apply the resulting hypothesis.
+
+Use `⟨fun x => ⟨u1 h1 x, u2 (hs ▸ h1) x⟩, ?_⟩` and prove the remaining obligations. Use `hU 1` as an intermediate fact. Establish `e : (1 : GL (Fin 2) K) * (Matrix.GeneralLinearGroup.scalar (Fin 2) p * (aff p 0)⁻¹) = Matrix.GeneralLinearGroup.scalar (Fin 2) p * aff (1 / p) 0 * 1`. Rewrite using `[one_mul, mul_one]`. Use `congr 1`.
+
+Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, aff_val, aff_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]`.
+
+Rewrite `this` using `[if_pos hc, sum1, e, hD, ← add_smul]`. Conclude with `(canc h1 this).symm`. Introduce `hc`. Simplify using `only [if_neg hc, add_zero] at hU`. Distinguish the cases in `hl : lam = 0`.
+
+Conclude with `Or.inl hl`. Use `right`. Distinguish the cases in `h1 : Φ 1 = 0`. Use `swap`. Use `left`.
+
+Use `⟨u1 h1, ?_⟩` and prove the remaining obligations. Use `hU 1` as an intermediate fact. Rewrite `this` using `[sum1]`. Conclude with `(canc h1 this).symm`. Use `right`.
+
+Establish `step : ∀ j : ℕ, (∀ x : A, π ^ (j + 2) ∣ x → Φ (low (x : K)) = 0) → ∀ x : A, π ^ (j + 1) ∣ x → Φ (low (x : K)) = 0`. Introduce `j ih x hx`. Use `hU (low (x : K))` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_zero]`. Conclude with `(smul_eq_zero.1 this.symm).resolve_left hl`.
+
+Introduce `u _`. Establish `hxu : ¬ IsUnit (x * u)` using `(hm _).2 (((dvd_pow_self π (Nat.succ_ne_zero j)).trans hx).mul_right u)`. Establish `hu : IsUnit (x * u + 1)`. Use `IsLocalRing.isUnit_or_isUnit_one_sub_self (-(x * u))` as an intermediate fact. Rewrite `this` using `[IsUnit.neg_iff]`.
+
+Use `this.resolve_left hxu` as an intermediate fact. Rewrite `this` using `[sub_neg_eq_add, add_comm]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `hy2 : ((x : K) * u + 1) * y = 1` using `congrArg Subtype.val hy`. Establish `e11 : (low (x : K) * aff p (u : K)) 1 1 = x * u + 1`.
+
+Rewrite using `[Units.val_mul, low_val, aff_val]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `e10 : (low (x : K) * aff p (u : K)) 1 0 = x * π`. Rewrite using `[Units.val_mul, low_val, aff_val, hp]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+
+Use `z1 _ (x * π * y) ?_ ?_ (ih _ ?_)` and prove the remaining obligations. Rewrite using `[e11]`. Conclude with `left_ne_zero_of_mul_eq_one hy2`. Rewrite using `[e11, e10]`. Use `push_cast`.
+
+Take the linear combination `(-(x : K) * π) * hy2`. Rewrite using `[pow_succ π (j + 1)]`. Conclude with `(mul_dvd_mul hx dvd_rfl).mul_right y`. Establish `down : ∀ j : ℕ, (∀ x : A, π ^ (j + 1) ∣ x → Φ (low (x : K)) = 0) → ∀ x : A, π ∣ x → Φ (low (x : K)) = 0`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => exact fun h => ih (step j h)`. Establish `hz : ∀ x : A, π ∣ x → Φ (low (x : K)) = 0`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hc`.
+
+Use `down j fun x hx => ?_` and prove the remaining obligations. Use `hlow x hx 1` as an intermediate fact. Rewrite `this` using `[one_mul, h1]`. Then use the resulting hypothesis. Establish `hs` using `iw hz`. Use `⟨u2 hs, ?_⟩` and prove the remaining obligations.
+
+Take `⟨u₀, hu₀, hr⟩` from `hS.surjOn (Set.mem_univ 0)`. Establish `hnu : ∀ u : A, IsLocalRing.residue A u = 0 ↔ ¬ IsUnit u` using `fun u => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Both sides reduce to the same expression. Use `hU (sw K)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_eq_single u₀]`. Take `⟨y, hy⟩` from `(hm _).1 ((hnu _).1 hr)`. Establish `e : sw K * aff p (u₀ : K) = Matrix.GeneralLinearGroup.scalar (Fin 2) p * aff (1 / p) 0 * (sw K * aff 1 (y : K))`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul _ (sw K * _), bor_val, Units.val_mul, sw_val, aff_val, aff_val, hy]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, hp]`. Rewrite `this` using `[e, hD, haff1]`. Conclude with `(canc hs this).symm`. Introduce `u hu hne`.
+
+Establish `hun : IsUnit u`. Assume the negation of the conclusion as `hn`. Conclude with `hne (hS.injOn hu hu₀ (((hnu u).2 hn).trans hr.symm))`. Take `⟨y, hy⟩` from `hun.exists_right_inv`. Establish `hy2 : (u : K) * y = 1` using `congrArg Subtype.val hy`.
+
+Establish `e11 : (sw K * aff p (u : K)) 1 1 = u`. Rewrite using `[Units.val_mul, sw_val, aff_val]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `e10 : (sw K * aff p (u : K)) 1 0 = π`. Rewrite using `[Units.val_mul, sw_val, aff_val, hp]`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Use `z1 _ (π * y) ?_ ?_ (hz _ (dvd_mul_right _ _))` and prove the remaining obligations. Rewrite using `[e11]`. Conclude with `left_ne_zero_of_mul_eq_one hy2`. Rewrite using `[e11, e10]`.
+
+Use `push_cast`. Take the linear combination `(-(π : K)) * hy2`. Conclude with `fun h => absurd hu₀ h`.
+-/
 private theorem core {K : Type} [Field K] (A : ValuationSubring K) (p : Kˣ) (π : A) (hp : (π : K) = p)
     (hm : ∀ x : A, ¬ IsUnit x ↔ π ∣ x) (μ₁ μ₂ : Kˣ →* ℂˣ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (Φ : GL (Fin 2) K → V) (hΦ : Φ ≠ 0)
@@ -226,6 +313,11 @@ private theorem core {K : Type} [Field K] (A : ValuationSubring K) (p : Kˣ) (π
       · rw [e11, e10]; push_cast; linear_combination (-(π : K)) * hy2
     · exact fun h => absurd hu₀ h
 
+/- English proof (translation)
+Use `⟨k, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `![0, 1] ᵥ* _ = ![0, 1]`. Use extensionality with `j`. Use `fin_cases j`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_succ, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Simplify `Ideal.Quotient.eq.2 h1` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_succ]`. Use extensionality with `i j`. Rewrite using `[hg]`. Both sides reduce to the same expression.
+-/
 private theorem mem_parahoricTimesPrincipalCongruence_iff {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (c : ℕ)
     (k : GL (Fin 2) (w.adicCompletionIntegers F))
     (h0 : k 1 0 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ c)
@@ -241,6 +333,37 @@ private theorem mem_parahoricTimesPrincipalCongruence_iff {F : Type} [Field F] [
     rw [hg]
     rfl
 
+/- English proof (translation)
+Introduce `F _ _ w μ₁ μ₂ V _ _ Φ hΦ hB c lam hfix hU`. Establish `hp : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hlt : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Set `π : w.adicCompletionIntegers F` to `⟨(atFin w (unif w) : (w.adicCompletion F)ˣ), by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hp]`. Conclude with `hlt.le⟩`. Establish `hm : ∀ x : w.adicCompletionIntegers F, ¬ IsUnit x ↔ π ∣ x`. Introduce `x`.
+
+Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : Valued.v (x : w.adicCompletion F) < 1` using `lt_of_le_of_ne x.2 h`. Establish `h2 : Valued.v (x : w.adicCompletion F) ≤ WithZero.exp (-1 : ℤ)`.
+
+Distinguish the cases in `hx : Valued.v (x : w.adicCompletion F) = 0`. Rewrite using `[hx]`. Conclude with `zero_le`. Rewrite `h1`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨(x : w.adicCompletion F) / (π : w.adicCompletion F), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀]`. Express the relevant statement in the definitionally equal form `_ / Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) ≤ 1`.
+
+Rewrite using `[hp]`. Conclude with `div_le_one_of_le₀ h2 zero_le`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(x : w.adicCompletion F) = (π : w.adicCompletion F) * (x / (π : w.adicCompletion F))`. Rewrite using `[mul_div_cancel₀]`.
+
+Conclude with `(atFin w (unif w)).ne_zero`. Introduce and unpack `⟨y, rfl⟩`. Apply `ne_of_lt` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Valued.v (((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) * y) < 1`. Rewrite using `[map_mul, hp]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' y.2) hlt`. Establish `hπ : π ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F)` using `(hm π).2 dvd_rfl`. Establish `hf : ∀ k ∈ K1 w c, ∀ g, Φ (g * k) = Φ g` using `fun k hk g => congrFun (hfix k hk) g`. Take `⟨σ, hσ⟩` from `(IsLocalRing.residue_surjective (R := w.adicCompletionIntegers F)).hasRightInverse`. Use `Fintype.ofFinite (IsLocalRing.ResidueField (w.adicCompletionIntegers F))` as an intermediate fact.
+
+Establish `hS : Set.BijOn (IsLocalRing.residue _) ((Finset.univ.image σ : Finset _) : Set (w.adicCompletionIntegers F)) Set.univ`. Use `⟨fun _ _ => trivial, ?_, fun y _ => ⟨σ y, by simp, hσ y⟩⟩` and prove the remaining obligations. Introduce `a ha b hb h`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ] at ha hb`. Take `⟨a, rfl⟩` from `ha`.
+
+Take `⟨b, rfl⟩` from `hb`. Rewrite `h` using `[hσ, hσ]`. Rewrite using `[h]`. Establish `hcard : (Finset.univ.image σ).card = normV w`. Rewrite using `[Finset.card_image_of_injective _ hσ.injective, Finset.card_univ, ← Nat.card_eq_fintype_card]`.
+
+Conclude with `(Nat.card_congr (GroundTheory.Global.residueFieldEquiv w).toEquiv).symm`. Establish `hun : ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → ∃ y : (w.adicCompletionIntegers F)ˣ, x = Units.map (w.adicCompletionIntegers F).subtype.toMonoidHom y`. Introduce `x hx`. Establish `: IsUnit (⟨(x : w.adicCompletion F), le_of_eq hx⟩ : w.adicCompletionIntegers F)` using `HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.2 hx`. Conclude with `⟨this.unit, Units.ext rfl⟩`.
+
+Establish `key` using `core (w.adicCompletionIntegers F) (atFin w (unif w)) π rfl hm μ₁ μ₂ Φ hΦ hB c lam (fun x hx => hf _ (mem_parahoricTimesPrincipalCongruence_iff w c (low x) (by`. Take `⟨y, rfl⟩` from `hx`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hπ c)) (by simp [low_val])`. Apply the tactic sequence `_ fun i j => by fin_cases i <;> fin_cases j <;> simp [low_val]))`. Apply the tactic sequence `(fun a y => hf _ (mem_parahoricTimesPrincipalCongruence_iff w c (aff a y) (by simp [aff_val]) (by simp [aff_val]) _ fun i j => by fin_cases i <;> fin_cases j <;> simp [aff_val]))`.
+
+Apply the tactic sequence `(fun hc => hf _ (mem_parahoricTimesPrincipalCongruence_iff w c (sw _) (by simp [hc]) (by simp [hc]) _ fun i j => by fin_cases i <;> fin_cases j <;> simp [sw_val]))`. Use `_ hS (fun g => by`. Establish `h` using `congrFun (((uopSum F w _ (Hi.rtr ℂ _ V) c Φ hfix).2 _ hS).symm.trans hU) g`. Rewrite `h` using `[Pi.add_apply, Finset.sum_apply, ite_apply]`. Conclude with `h)`.
+
+Rewrite `key` using `[hcard]`. Use `⟨fun hc => ⟨fun x hx => ?_, (key.1 hc).2⟩, fun hc => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hun x hx`. Conclude with `(key.1 hc).1 y`. Break down `key.2 hc with h | ⟨h, h'⟩ | ⟨h, h'⟩` into its components or cases.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl ⟨fun x hx => by obtain ⟨y, rfl⟩ := hun x hx; exact h y, h'⟩)`. Conclude with `Or.inr (Or.inr ⟨fun x hx => by obtain ⟨y, rfl⟩ := hun x hx; exact h y, h'⟩)`.
+-/
 theorem locEig : UpperTheory.V.Sd.LocEig := by
   intro F _ _ w μ₁ μ₂ V _ _ Φ hΦ hB c lam hfix hU
   classical

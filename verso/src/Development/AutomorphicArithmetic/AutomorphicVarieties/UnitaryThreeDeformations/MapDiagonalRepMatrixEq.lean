@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Rewrite using `[GG.map_mat]`. Use `show ((tor O (Ψ g)).val).map (algebraMap O R) = _`. Rewrite using `[tor_val, Matrix.diagonal_map (map_zero _)]`. Both sides reduce to the same expression.
+-/
 private theorem map_diagonal_rep_matrix_eq {O R D : Type} [CommRing O] [CommRing R] [Algebra O R] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (g : D) :
     (GG.map (algebraMap O R) (r0 η Ψ g)).mat = Matrix.diagonal fun a => algebraMap O R (psi Ψ a g) := by
@@ -10,11 +13,21 @@ private theorem map_diagonal_rep_matrix_eq {O R D : Type} [CommRing O] [CommRing
   rw [tor_val, Matrix.diagonal_map (map_zero _)]
   rfl
 
+/- English proof (translation)
+Use `ext1 g`. Simplify using `[conjBy]`.
+-/
 private theorem conjBy_inv_one {R D : Type} [CommRing R] [Group D] (r : D →* GG 3 R) :
     conjBy (1 : GL (Fin 3) R)⁻¹ r = r := by
   ext1 g
   simp [conjBy]
 
+/- English proof (translation)
+Establish `hne : ∀ a b : Fin 3, wt a b ≠ 0 → a ≠ b`. Introduce `a b h hab`. Substitute `hab` using the available equality. Simplify using `[wt] at h`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `g _ a b hab`. Rewrite using `[conjBy_inv_one, hr]`. Conclude with `Matrix.diagonal_apply_ne _ (hne a b hab.ne)`. Introduce `s _ _ a`. Rewrite using `[conjBy_inv_one, hr, Matrix.diagonal_apply_eq]`.
+
+Introduce `g _ a b hab`. Rewrite using `[conjBy_inv_one, hr]`. Conclude with `Matrix.diagonal_apply_ne _ (hne a b hab.ne')`.
+-/
 private theorem diagIn_one {O R D : Type} [CommRing O] [CommRing R] [Algebra O R] [Group D]
     (η : D →* ℤˣ) (Ψ : D →* Oˣ) (I : Subgroup D) (r : D →* GG 3 R)
     (hr : ∀ g, (r g).mat = Matrix.diagonal fun a => algebraMap O R (psi Ψ a g)) : DiagIn η Ψ I r 1 := by
@@ -32,6 +45,31 @@ private theorem diagIn_one {O R D : Type} [CommRing O] [CommRing R] [Algebra O R
     rw [conjBy_inv_one, hr]
     exact Matrix.diagonal_apply_ne _ (hne a b hab.ne')
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hok g₁ R _ _ _ _`. Establish `hmat : ∀ g, (F.rz R g).mat = diagonal fun a => algebraMap O R (psi F.Ψ a g)` using `fun g => map_diagonal_rep_matrix_eq F.η F.Ψ g`. Establish `hinhat : InHat (1 : GL (Fin 3) R)`. Introduce `a b`. Simplify using the standard rewrite rules.
+
+Establish `hloc : ∀ v, ∀ s, ((F.rz R).comp (F.loc v) s).mat = diagonal fun a => algebraMap O R (psi (F.Ψv v) a s)` using `fun v s => hmat _`. Use `⟨⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g`. Both sides reduce to the same expression. Introduce `g a b`.
+
+Establish `e : (F.rz R g).mat = (r0 F.η F.Ψ g).mat.map (algebraMap O R)` using `GG.map_mat _ _`. Rewrite using `[e, sub_self, Matrix.zero_apply]`. Conclude with `zero_mem _`. Introduce `v`. Use `⟨fun _ => ⟨1, hinhat, (diagIn_one _ _ _ _ (hloc v)).toTriIn⟩, fun _ => ⟨1, hinhat, diagIn_one _ _ _ _ (hloc v)⟩, fun hv s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : F.Ψ (F.loc v s) = 1` using `hok.teich v hv s hs`. Establish `h2 : F.η (F.loc v s) = 1` using `hs.1.2`. Use `show GG.map (algebraMap O R) (r0 F.η F.Ψ (F.loc v s)) = 1`. Establish `e : r0 F.η F.Ψ (F.loc v s) = 1`. Apply `SemidirectProduct.ext` to reduce the goal to its premises.
+
+Rewrite using `[unitaryThreeReflection_left, h1, map_one]`. Both sides reduce to the same expression. Conclude with `h2`. Rewrite using `[e, map_one]`. Establish `hc : ∀ a, psi F.Ψ a F.c = 1`.
+
+Introduce `a`. Simplify using `[psi, hok.Ψc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmat]`. Simplify using `[hc, Matrix.diagonal_one]`.
+
+Simplify using `[zmat, hmat]`. Simplify using `[zmat, hmat]`. Introduce `n`. Establish `hle : Ideal.map (algebraMap O R) (maximalIdeal O ^ n) ≤ maximalIdeal R ^ n`. Rewrite using `[Ideal.map_pow]`.
+
+Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (map_nonunit (algebraMap O R) x hx)) n`. Establish `key : ∀ g g', Ideal.Quotient.mk (maximalIdeal O ^ n) (F.Ψ g : O) = Ideal.Quotient.mk (maximalIdeal O ^ n) (F.Ψ g' : O) → ∀ a, Ideal.Quotient.mk (maximalIdeal R ^ n) (algebraMap O R (psi F.Ψ a g)) = Ideal.Quotient.mk (maximalIdeal R ^ n) (algebraMap O R (psi F.Ψ a g'))`. Introduce `g g' h a`. Set `q : O →* O ⧸ maximalIdeal O ^ n` to `(Ideal.Quotient.mk (maximalIdeal O ^ n) : O →* O ⧸ maximalIdeal O ^ n)`. Establish `hu : Units.map q (F.Ψ g) = Units.map q (F.Ψ g')` using `Units.ext h`.
+
+Establish `h2 : ((Units.map q (F.Ψ g ^ wt1 a) : (O ⧸ maximalIdeal O ^ n)ˣ) : O ⧸ maximalIdeal O ^ n) = ((Units.map q (F.Ψ g' ^ wt1 a) : (O ⧸ maximalIdeal O ^ n)ˣ) : O ⧸ maximalIdeal O ^ n)`. Rewrite using `[map_zpow (Units.map q) (F.Ψ g) (wt1 a), map_zpow (Units.map q) (F.Ψ g') (wt1 a), hu]`. Establish `h3 : Ideal.Quotient.mk (maximalIdeal O ^ n) (psi F.Ψ a g) = Ideal.Quotient.mk (maximalIdeal O ^ n) (psi F.Ψ a g')` using `h2`. Rewrite `h3`, the goal using `[Ideal.Quotient.eq]`. Rewrite using `[← map_sub]`.
+
+Conclude with `hle (Ideal.mem_map_of_mem _ h3)`. Establish `hf` using `hok.Ψ_cont n`. Rewrite `hf`, the goal using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Take `⟨U, hU, hxU, hUx⟩` from `hf x`.
+
+Use `⟨U, hU, hxU, fun x' hx' => ?_⟩` and prove the remaining obligations. Simplify using `only [hmat]`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Conclude with `key x' x (hUx x' hx') a`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.isPt_rz :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]
       {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]

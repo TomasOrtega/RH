@@ -14,5 +14,8 @@ open GlobalTheory.SingleDatum
 set_option synthInstance.maxHeartbeats 400000
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BasePairChar.base_pair_char | exact GlobalTheory.BasePairChar.base_pair_char | (intros; apply GlobalTheory.BasePairChar.base_pair_char <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.character_unramified_off_bad : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → ∀ χ : Formalism.L2.Host.HChar D.host.E, ChrEq (B.mu * B.eta⁻¹) χ → ∀ bad : ℕ, (∀ PP, PP ∈ B.G.Pg ∨ PP ∈ B.de.Q → (bad : 𝓞 D.host.E) ∈ PP.asIdeal) → (∀ Q : HeightOneSpectrum (𝓞 D.host.E), (bad : 𝓞 D.host.E) ∉ Q.asIdeal → χ.UnrAt Q) ∧ ∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → ∀ k, χ.resFin (Q.under (𝓞 D.host.F)) k = 1 := by
   first | exact @GlobalTheory.BasePairChar.base_pair_char | exact GlobalTheory.BasePairChar.base_pair_char | (intros; apply GlobalTheory.BasePairChar.base_pair_char <;> assumption)

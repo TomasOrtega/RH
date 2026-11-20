@@ -23,13 +23,25 @@ def tel : (n : ℕ) → (Fin n → X →ₗ[ℂ] Module.End ℂ M) → (Fin n �
   | n + 1, a, b, f, x =>
     a 0 (x 0) (tel n (Fin.tail a) (Fin.tail b) f (Fin.tail x)) + rp n (Fin.tail b) (Fin.tail x) (f (x 0))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rp_zero (b : Fin 0 → X →ₗ[ℂ] Module.End ℂ M) (x : Fin 0 → X) : rp 0 b x = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rp_succ {n : ℕ} (b : Fin (n + 1) → X →ₗ[ℂ] Module.End ℂ M) (x : Fin (n + 1) → X) :
     rp (n + 1) b x = rp n (Fin.tail b) (Fin.tail x) * b 0 (x 0) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tel_zero (a b : Fin 0 → X →ₗ[ℂ] Module.End ℂ M) (f : X →ₗ[ℂ] M) (x : Fin 0 → X) : tel 0 a b f x = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tel_succ {n : ℕ} (a b : Fin (n + 1) → X →ₗ[ℂ] Module.End ℂ M) (f : X →ₗ[ℂ] M) (x : Fin (n + 1) → X) :
     tel (n + 1) a b f x =
       a 0 (x 0) (tel n (Fin.tail a) (Fin.tail b) f (Fin.tail x)) + rp n (Fin.tail b) (Fin.tail x) (f (x 0)) := rfl
@@ -77,17 +89,29 @@ def hol (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) : Matrix (Fin a) (Fin a) 
   map_smul' c x := by simp [Finset.smul_sum, mul_smul]
 
 omit [NumberField E] [IsScalarTower ℝ ℂ N] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hol_apply (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) (x : Matrix (Fin a) (Fin a) ℂ) :
     hol τ L x = ∑ i, ∑ j, x i j • eL L τ i j := rfl
 
 omit [NumberField E] [IsScalarTower ℝ ℂ N] in
+/- English proof (translation)
+Simplify using `[hol_apply, Matrix.single_apply, ite_and]`.
+-/
 theorem hol_single (τ : E →+* ℂ) (L : Lie E a →ₗ[ℝ] N) (i j : Fin a) : hol τ L (Matrix.single i j 1) = eL L τ i j := by
   simp [hol_apply, Matrix.single_apply, ite_and]
 
 end Hol
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eL_dmat (Ξ : AlgRep E a) (τ : E →+* ℂ) : eL Ξ.dmat τ = WeylC.eOf Ξ.mat τ := rfl
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.WignerGL.dualE, GlobalTheory.WignerGL.dualS, eL, Matrix.transpose_smul, Matrix.transpose_sub]`. Use `module`.
+-/
 theorem dualE_eq (Ξ : AlgRep E a) (τ : E →+* ℂ) (i j : Fin a) :
     GlobalTheory.WignerGL.dualE Ξ τ i j = -(eL Ξ.dmat τ i j)ᵀ := by
   simp only [GlobalTheory.WignerGL.dualE, GlobalTheory.WignerGL.dualS, eL, Matrix.transpose_smul, Matrix.transpose_sub]
@@ -112,6 +136,9 @@ def hp : Lie E a →ₗ[ℝ] Herm E a where
     rw [star_smul, star_trivial, ← smul_add, smul_comm])
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hp_val (X : Matrix (Fin a) (Fin a) (Cinf E)) : (hp (toL X)).1 = (1 / 2 : ℝ) • (X + star X) := rfl
 
 omit [NumberField E] in
@@ -170,13 +197,25 @@ def lieB (π : CuspSub E a) (Ξ : AlgRep E a) : Lie E a →ₗ[ℝ] Module.End �
       ← algebraMap_smul ℂ c (LinearMap.lTensor _ _ : Module.End ℂ (π.V ⊗[ℂ] (Fin Ξ.d → ℂ))), map_smul,
       LinearMap.lTensor_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lieA_apply (π : CuspSub E a) (Ξ : AlgRep E a) (X : Lie E a) : lieA π Ξ X = (lieOp π X).rTensor _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lieB_apply (π : CuspSub E a) (Ξ : AlgRep E a) (X : Lie E a) :
     lieB π Ξ X = (Matrix.toLin' (Ξ.dmat X)).lTensor _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorLie_eq (π : CuspSub E a) (Ξ : AlgRep E a) : tensorLie π Ξ = lieA π Ξ + lieB π Ξ := rfl
 
+/- English proof (translation)
+The claim follows from `TensorProduct.ext' fun _ _ => rfl`.
+-/
 theorem lieA_commute (π : CuspSub E a) (Ξ : AlgRep E a) (X Y : Lie E a) : Commute (lieA π Ξ X) (lieB π Ξ Y) :=
   TensorProduct.ext' fun _ _ => rfl
 
@@ -187,6 +226,9 @@ def eEnd (Ξ : AlgRep E a) (τ : E →+* ℂ) (i j : Fin a) : Module.End ℂ (Fi
 def IsAlgIso (Ξ Ξ' : AlgRep E a) (T : (Fin Ξ.d → ℂ) ≃ₗ[ℂ] (Fin Ξ'.d → ℂ)) : Prop :=
   (∀ y v, T (Ξ.mat y *ᵥ v) = Ξ'.mat y *ᵥ T v) ∧ ∀ X v, T (Ξ.dmat X *ᵥ v) = Ξ'.dmat X *ᵥ T v
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem isAlgIso_refl (Ξ : AlgRep E a) : IsAlgIso Ξ Ξ (LinearEquiv.refl _ _) := ⟨fun _ _ => rfl, fun _ _ => rfl⟩
 
 end UpperTheory.V.AlgRepEndIrreducible

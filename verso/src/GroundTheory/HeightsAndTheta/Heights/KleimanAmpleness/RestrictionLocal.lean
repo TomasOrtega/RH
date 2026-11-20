@@ -28,10 +28,16 @@ def redAt (a : Ω) : K' :=
 
 variable {k x y}
 
+/- English proof (translation)
+Introduce `h0` and use `h ((mem_primeOf_of_isHomogeneous y hs).mp (hsp ((mem_primeOf_of_isHomogeneous x hs).mpr h0)))`.
+-/
 theorem aeval_ne_zero_of_primeOf_le (hsp : primeOf (S := k) x ≤ primeOf (S := k) y)
     {s : Poly k N} {e : ℕ} (hs : s.IsHomogeneous e) (h : aeval y s ≠ 0) : aeval x s ≠ 0 := fun h0 =>
   h ((mem_primeOf_of_isHomogeneous y hs).mp (hsp ((mem_primeOf_of_isHomogeneous x hs).mpr h0)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨f, s, e, hf, hs, h, rfl⟩`.
+-/
 theorem mem_locAt {f s : Poly k N} {e : ℕ} (hf : f.IsHomogeneous e) (hs : s.IsHomogeneous e)
     (h : aeval y s ≠ 0) : aeval x f / aeval x s ∈ locAt k x y :=
   ⟨f, s, e, hf, hs, h, rfl⟩
@@ -39,6 +45,15 @@ theorem mem_locAt {f s : Poly k N} {e : ℕ} (hf : f.IsHomogeneous e) (hs : s.Is
 variable (hsp : primeOf (S := k) x ≤ primeOf (S := k) y)
 include hsp
 
+/- English proof (translation)
+Establish `hex : ∃ (p : Poly k N × Poly k N) (e : ℕ), p.1.IsHomogeneous e ∧ p.2.IsHomogeneous e ∧ aeval y p.2 ≠ 0 ∧ aeval x f / aeval x s = aeval x p.1 / aeval x p.2` using `⟨(f, s), e, hf, hs, h, rfl⟩`. Rewrite using `[redAt, dif_pos hex]`. Take `⟨e', hf', hs', h', heq⟩` from `hex.choose_spec`. Establish `hx` using `aeval_ne_zero_of_primeOf_le hsp hs h`. Establish `hx'` using `aeval_ne_zero_of_primeOf_le hsp hs' h'`.
+
+Rewrite `heq` using `[div_eq_div_iff hx hx']`. Establish `hhom : (f * hex.choose.2 - hex.choose.1 * s).IsHomogeneous (e + e')`. Use `(hf.mul hs').sub ?_` and prove the remaining obligations. Rewrite using `[add_comm e e']`. Conclude with `hf'.mul hs`.
+
+Establish `hmem : f * hex.choose.2 - hex.choose.1 * s ∈ primeOf (S` using `k) x := by`. Rewrite using `[mem_primeOf_of_isHomogeneous x hhom]`. Simplify using `only [map_sub, map_mul, heq, sub_self]`. Establish `hy` using `(mem_primeOf_of_isHomogeneous y hhom).mp (hsp hmem)`. Simplify using `only [map_sub, map_mul] at hy`.
+
+Rewrite using `[div_eq_div_iff h' h]`. Take the linear combination `-hy`.
+-/
 theorem redAt_eq {f s : Poly k N} {e : ℕ} (hf : f.IsHomogeneous e) (hs : s.IsHomogeneous e)
     (h : aeval y s ≠ 0) : redAt k x y (aeval x f / aeval x s) = aeval y f / aeval y s := by
   have hex : ∃ (p : Poly k N × Poly k N) (e : ℕ), p.1.IsHomogeneous e ∧ p.2.IsHomogeneous e ∧
@@ -60,6 +75,11 @@ theorem redAt_eq {f s : Poly k N} {e : ℕ} (hf : f.IsHomogeneous e) (hs : s.IsH
   rw [div_eq_div_iff h' h]
   linear_combination -hy
 
+/- English proof (translation)
+Establish `h1 : aeval y (1 : Poly k N) ≠ 0` using `by simp`. Establish `hc : algebraMap k Ω c = aeval x (C c : Poly k N) / aeval x (1 : Poly k N)`. Simplify using the standard rewrite rules. Rewrite using `[hc]`. Use `⟨mem_locAt (isHomogeneous_C _ c) (isHomogeneous_one _ _) h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[redAt_eq hsp (isHomogeneous_C _ c) (isHomogeneous_one _ _) h1]`. Simplify using the standard rewrite rules.
+-/
 theorem locAt_algebraMap (c : k) :
     algebraMap k Ω c ∈ locAt k x y ∧ redAt k x y (algebraMap k Ω c) = algebraMap k K' c := by
   have h1 : aeval y (1 : Poly k N) ≠ 0 := by simp
@@ -70,12 +90,25 @@ theorem locAt_algebraMap (c : k) :
   rw [redAt_eq hsp (isHomogeneous_C _ c) (isHomogeneous_one _ _) h1]
   simp
 
+/- English proof (translation)
+Simplify using `using locAt_algebraMap hsp (0 : k)`.
+-/
 theorem locAt_zero : (0 : Ω) ∈ locAt k x y ∧ redAt k x y (0 : Ω) = 0 := by
   simpa using locAt_algebraMap hsp (0 : k)
 
+/- English proof (translation)
+Simplify using `using locAt_algebraMap hsp (1 : k)`.
+-/
 theorem locAt_one : (1 : Ω) ∈ locAt k x y ∧ redAt k x y (1 : Ω) = 1 := by
   simpa using locAt_algebraMap hsp (1 : k)
 
+/- English proof (translation)
+Take `⟨f, s, e, hf, hs, hsy, rfl⟩` from `ha`. Take `⟨f', s', e', hf', hs', hsy', rfl⟩` from `hb`. Establish `hsx` using `aeval_ne_zero_of_primeOf_le hsp hs hsy`. Establish `hsx'` using `aeval_ne_zero_of_primeOf_le hsp hs' hsy'`. Establish `hhom : (f * s' + s * f').IsHomogeneous (e + e')` using `(hf.mul hs').add (hs.mul hf')`.
+
+Establish `hsum : aeval x f / aeval x s + aeval x f' / aeval x s' = aeval x (f * s' + s * f') / aeval x (s * s')`. Rewrite using `[div_add_div _ _ hsx hsx']`. Simplify using `only [map_add, map_mul]`. Establish `hss : aeval y (s * s') ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hsy hsy'`. Rewrite using `[hsum]`.
+
+Use `⟨mem_locAt hhom (hs.mul hs') hss, ?_⟩` and prove the remaining obligations. Rewrite using `[redAt_eq hsp hhom (hs.mul hs') hss, redAt_eq hsp hf hs hsy, redAt_eq hsp hf' hs' hsy', div_add_div _ _ hsy hsy']`. Simplify using `only [map_add, map_mul]`.
+-/
 theorem locAt_add {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) :
     a + b ∈ locAt k x y ∧ redAt k x y (a + b) = redAt k x y a + redAt k x y b := by
   obtain ⟨f, s, e, hf, hs, hsy, rfl⟩ := ha
@@ -93,6 +126,11 @@ theorem locAt_add {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) :
     div_add_div _ _ hsy hsy']
   simp only [map_add, map_mul]
 
+/- English proof (translation)
+Take `⟨f, s, e, hf, hs, hsy, rfl⟩` from `ha`. Take `⟨f', s', e', hf', hs', hsy', rfl⟩` from `hb`. Establish `hprod : aeval x f / aeval x s * (aeval x f' / aeval x s') = aeval x (f * f') / aeval x (s * s')`. Rewrite using `[div_mul_div_comm]`. Simplify using `only [map_mul]`.
+
+Establish `hss : aeval y (s * s') ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hsy hsy'`. Rewrite using `[hprod]`. Use `⟨mem_locAt (hf.mul hf') (hs.mul hs') hss, ?_⟩` and prove the remaining obligations. Rewrite using `[redAt_eq hsp (hf.mul hf') (hs.mul hs') hss, redAt_eq hsp hf hs hsy, redAt_eq hsp hf' hs' hsy', div_mul_div_comm]`. Simplify using `only [map_mul]`.
+-/
 theorem locAt_mul {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) :
     a * b ∈ locAt k x y ∧ redAt k x y (a * b) = redAt k x y a * redAt k x y b := by
   obtain ⟨f, s, e, hf, hs, hsy, rfl⟩ := ha
@@ -107,6 +145,11 @@ theorem locAt_mul {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) :
     div_mul_div_comm]
   simp only [map_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using locAt_one hsp`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `locAt_mul hsp ih.1 ha`. Rewrite using `[pow_succ, pow_succ]`.
+
+Conclude with `⟨h1, by rw [h2, ih.2]⟩`.
+-/
 theorem locAt_pow {a : Ω} (ha : a ∈ locAt k x y) (n : ℕ) :
     a ^ n ∈ locAt k x y ∧ redAt k x y (a ^ n) = redAt k x y a ^ n := by
   induction n with
@@ -116,6 +159,11 @@ theorem locAt_pow {a : Ω} (ha : a ∈ locAt k x y) (n : ℕ) :
     rw [pow_succ, pow_succ]
     exact ⟨h1, by rw [h2, ih.2]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using locAt_zero hsp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Take `⟨h1, h2⟩` from `ih fun j hj => ha j (Finset.mem_insert_of_mem hj)`.
+
+Take `⟨h3, h4⟩` from `locAt_add hsp (ha i (Finset.mem_insert_self i s)) h1`. Conclude with `⟨h3, by rw [h4, h2]⟩`.
+-/
 theorem locAt_sum {ι : Type*} (s : Finset ι) (a : ι → Ω) (ha : ∀ i ∈ s, a i ∈ locAt k x y) :
     ∑ i ∈ s, a i ∈ locAt k x y ∧ redAt k x y (∑ i ∈ s, a i) = ∑ i ∈ s, redAt k x y (a i) := by
   classical
@@ -127,6 +175,11 @@ theorem locAt_sum {ι : Type*} (s : Finset ι) (a : ι → Ω) (ha : ∀ i ∈ s
     obtain ⟨h3, h4⟩ := locAt_add hsp (ha i (Finset.mem_insert_self i s)) h1
     exact ⟨h3, by rw [h4, h2]⟩
 
+/- English proof (translation)
+Take `⟨f, s, e, hf, hs, hsy, rfl⟩` from `ha`. Rewrite `hr` using `[redAt_eq hsp hf hs hsy]`. Establish `hfy : aeval y f ≠ 0` using `fun h => hr (by rw [h, zero_div])`. Establish `hfx` using `aeval_ne_zero_of_primeOf_le hsp hf hfy`. Establish `hsx` using `aeval_ne_zero_of_primeOf_le hsp hs hsy`.
+
+Use `⟨div_ne_zero hfx hsx, by rw [inv_div]; exact mem_locAt hs hf hfy, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div, redAt_eq hsp hs hf hfy, redAt_eq hsp hf hs hsy, inv_div]`.
+-/
 theorem locAt_inv {a : Ω} (ha : a ∈ locAt k x y) (hr : redAt k x y a ≠ 0) :
     a ≠ 0 ∧ a⁻¹ ∈ locAt k x y ∧ redAt k x y a⁻¹ = (redAt k x y a)⁻¹ := by
   obtain ⟨f, s, e, hf, hs, hsy, rfl⟩ := ha
@@ -137,6 +190,9 @@ theorem locAt_inv {a : Ω} (ha : a ∈ locAt k x y) (hr : redAt k x y a ≠ 0) :
   refine ⟨div_ne_zero hfx hsx, by rw [inv_div]; exact mem_locAt hs hf hfy, ?_⟩
   rw [inv_div, redAt_eq hsp hs hf hfy, redAt_eq hsp hf hs hsy, inv_div]
 
+/- English proof (translation)
+Take `⟨-, h1, h2⟩` from `locAt_inv hsp hb hr`. Take `⟨h3, h4⟩` from `locAt_mul hsp ha h1`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Conclude with `⟨h3, by rw [h4, h2]⟩`.
+-/
 theorem locAt_div {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) (hr : redAt k x y b ≠ 0) :
     a / b ∈ locAt k x y ∧ redAt k x y (a / b) = redAt k x y a / redAt k x y b := by
   obtain ⟨-, h1, h2⟩ := locAt_inv hsp hb hr
@@ -144,6 +200,9 @@ theorem locAt_div {a b : Ω} (ha : a ∈ locAt k x y) (hb : b ∈ locAt k x y) (
   rw [div_eq_mul_inv, div_eq_mul_inv]
   exact ⟨h3, by rw [h4, h2]⟩
 
+/- English proof (translation)
+Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Establish `hsy : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos I hs`. Conclude with `⟨mem_locAt hf hse hsy, by rw [redAt_eq hsp hf hse hsy]; exact ⟨f, s, e, hs, hf, hse, rfl⟩⟩`.
+-/
 theorem chartRing_sub_locAt (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (I : Chart y) {a : Ω}
     (ha : a ∈ chartRing k x (liftChart hxy I)) :
     a ∈ locAt k x y ∧ redAt k x y a ∈ chartRing k y I := by
@@ -151,6 +210,9 @@ theorem chartRing_sub_locAt (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (I : Chart y)
   have hsy : aeval y s ≠ 0 := eval_ne_zero_of_mem_monos I hs
   exact ⟨mem_locAt hf hse hsy, by rw [redAt_eq hsp hf hse hsy]; exact ⟨f, s, e, hs, hf, hse, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `hc`. Conclude with `⟨aeval x f / aeval x s, ⟨f, s, e, hs, hf, hse, rfl⟩, redAt_eq hsp hf hse (eval_ne_zero_of_mem_monos I hs)⟩`.
+-/
 theorem exists_redAt_eq (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (I : Chart y) {c : K'}
     (hc : c ∈ chartRing k y I) : ∃ a ∈ chartRing k x (liftChart hxy I), redAt k x y a = c := by
   obtain ⟨f, s, e, hs, hf, hse, rfl⟩ := hc
@@ -164,6 +226,15 @@ section Specialize
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {K' : Type w} [Field K']
   [Algebra k K'] {N : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ {B : Type w} [CommRing B] [Algebra k B] (φ : chartRing k x (singleChart hj) →ₐ[k] B) (g : Poly k N), φ (aeval (ratio (S` using `k) hj) g) = aeval (fun i => φ (ratio hj i)) g := by`. Introduce `B _ _ φ g`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Introduce `f hf`. Establish `hcomp : ∀ d, homogeneousComponent d f ∈ primeOf (S` using `k) (fun i => ψ (ratio hj i)) := by`.
+
+Introduce `d`. Establish `hg` using `homogeneousComponent_isHomogeneous d f`. Establish `h0 : aeval x (homogeneousComponent d f) = 0` using `(mem_primeOf_of_isHomogeneous x hg).mp (homogeneousComponent_mem_primeOf x hf d)`. Rewrite using `[mem_primeOf_of_isHomogeneous _ hg, ← key]`. Establish `hval : aeval (ratio (S` using `k) hj) (homogeneousComponent d f) = 0 := by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `key (chartRing k x (singleChart hj)).val (homogeneousComponent d f)` as an intermediate fact. Simplify using `only [Subalgebra.coe_val] at this`. Rewrite using `[this, ZeroMemClass.coe_zero]`. Express the relevant statement in the definitionally equal form `aeval (fun l => x l / x j) (homogeneousComponent d f) = 0`.
+
+Rewrite using `[aeval_div_of_isHomogeneous hg j, h0, zero_div]`. Rewrite using `[hval, map_zero]`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ fun d _ => hcomp d`.
+-/
 theorem primeOf_le_primeOf_of_algHom {x : Fin (N + 1) → Ω} {j : Fin (N + 1)} (hj : x j ≠ 0)
     (ψ : chartRing k x (singleChart hj) →ₐ[k] K') :
     primeOf (S := k) x ≤ primeOf (S := k) (fun i => ψ (ratio hj i)) := by
@@ -189,6 +260,9 @@ theorem primeOf_le_primeOf_of_algHom {x : Fin (N + 1) → Ω} {j : Fin (N + 1)} 
   rw [← sum_homogeneousComponent f]
   exact Ideal.sum_mem _ fun d _ => hcomp d
 
+/- English proof (translation)
+Establish `: ratio (S` using `k) hj j = 1 := Subtype.ext (div_self hj)`. Rewrite using `[this, map_one]`.
+-/
 theorem algHom_ratio_self {x : Fin (N + 1) → Ω} {j : Fin (N + 1)} (hj : x j ≠ 0)
     (ψ : chartRing k x (singleChart hj) →ₐ[k] K') : ψ (ratio hj j) = 1 := by
   have : ratio (S := k) hj j = 1 := Subtype.ext (div_self hj)

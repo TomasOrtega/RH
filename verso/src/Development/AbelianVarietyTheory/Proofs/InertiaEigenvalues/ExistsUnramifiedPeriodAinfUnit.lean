@@ -9,6 +9,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod l) a` using `Algebra.IsIntegral.isIntegral a`. Set `K` to `IntermediateField.adjoin (ZMod l) ({a} : Set (AlgebraicClosure (ZMod l)))`. Use `haveI : FiniteDimensional (ZMod l) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod l)`. Use `letI : Fintype K := Fintype.ofFinite K`.
+
+Set `b : K` to `⟨a, IntermediateField.mem_adjoin_simple_self _ a⟩`. Establish `hb : b ≠ 0` using `fun h => ha (congrArg Subtype.val h)`. Establish `h1 : 1 < Fintype.card K` using `Fintype.one_lt_card`. Use `⟨Fintype.card K - 1, by omega, ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`.
+
+Establish `h0 : ((Fintype.card K - 1 : ℕ) : K) = 0`. Take `⟨c, hc⟩` from `hd`. Establish `hl : ((l : ℕ) : K) = 0`. Rewrite using `[← map_natCast (algebraMap (ZMod l) K), ZMod.natCast_self, map_zero]`. Rewrite using `[hc, Nat.cast_mul, hl, zero_mul]`.
+
+Rewrite `h0` using `[Nat.cast_sub h1.le, FiniteField.cast_card_eq_zero]`. Simplify using `at h0`. Use `congrArg Subtype.val (FiniteField.pow_card_sub_one_eq_one b hb)` as an intermediate fact. Simplify `this` using `[b]`.
+-/
 theorem exists_pow_eq_one_algClosure_coprime (l : ℕ) [Fact l.Prime] (a : AlgebraicClosure (ZMod l))
     (ha : a ≠ 0) : ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ a ^ m = 1 := by
   have hint : IsIntegral (ZMod l) a := Algebra.IsIntegral.isIntegral a
@@ -31,6 +40,11 @@ theorem exists_pow_eq_one_algClosure_coprime (l : ℕ) [Fact l.Prime] (a : Algeb
   · have := congrArg Subtype.val (FiniteField.pow_card_sub_one_eq_one b hb)
     simpa [b] using this
 
+/- English proof (translation)
+Establish `h1 : (1 : WittVector l k).coeff 0 ≠ 0` using `by simp`. Establish `h2 : u.coeff 0 ≠ 0` using `(hu.map (WittVector.constantCoeff (p := l) (R := k))).ne_zero`. Use `⟨WittVector.frobeniusRotation l h1 h2, ?_, ?_⟩` and prove the remaining obligations. Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Simplify `WittVector.RecursionBase.solution_nonzero l h1 h2` using `[WittVector.frobeniusRotation, WittVector.frobeniusRotationCoeff]`.
+
+Use `WittVector.frobenius_frobeniusRotation l h1 h2` as an intermediate fact. Rewrite `this` using `[mul_one, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem exists_unit_frobenius_eq_mul (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [IsAlgClosed k]
     (u : WittVector l k) (hu : IsUnit u) :
     ∃ w : WittVector l k, IsUnit w ∧ WittVector.frobenius w = u * w := by
@@ -43,6 +57,11 @@ theorem exists_unit_frobenius_eq_mul (l : ℕ) [Fact l.Prime] (k : Type) [Field 
   · have := WittVector.frobenius_frobeniusRotation l h1 h2
     rwa [mul_one, mul_comm] at this
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `sub_eq_zero.1 (IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(l : R)}) R) _ fun n => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n x)`. Establish `hx : x = c * (l : ℤ_[l]) ^ n + (x.appr n : ℤ_[l])` using `by rw [hc]; ring`. Establish `h : f x - g x = (f c - g c) * (l : R) ^ n`.
+
+Rewrite using `[hx]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, h]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 private theorem padicInt_ringHom_ext (l : ℕ) [Fact l.Prime] {R : Type*} [CommRing R]
     [IsHausdorff (Ideal.span {(l : R)}) R] (f g : ℤ_[l] →+* R) : f = g := by
   refine RingHom.ext fun x => ?_
@@ -56,6 +75,19 @@ private theorem padicInt_ringHom_ext (l : ℕ) [Fact l.Prime] {R : Type*} [CommR
   rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, h]
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Introduce `l _ F hF u`. Take `⟨f⟩` from `GlobalTheory.T.nonempty_closure_hom_tilt_field l`. Set `u' : WittVector l (AlgebraicClosure (ZMod l))` to `WittVector.map (ZMod.castHom (dvd_refl l) _) (WittVector.fromPadicInt l u)`. Establish `hu' : IsUnit u'` using `(u.isUnit.map _).map _`. Take `⟨w₀, hw₀, hφ⟩` from `exists_unit_frobenius_eq_mul l _ u' hu'`.
+
+Establish `hfu : WittVector.map f u' = Per.zA l u`. Conclude with `RingHom.congr_fun (padicInt_ringHom_ext l (R := Per.Ainf l) ((WittVector.map f).comp ((WittVector.map (ZMod.castHom (dvd_refl l) _)).comp (WittVector.fromPadicInt l))) (Per.zA l)) u`. Establish `hact : ∀ (g : GQ l) (n : ℕ), n ≠ 0 → (∀ (x : Om l) (m : ℕ), 0 < m → ¬ l ∣ m → x ^ m = 1 → g x = x ^ n) → ∀ a, Per.σF g (f a) = f a ^ n`. Introduce `g n hn hg a`. Distinguish the cases in `ha : a = 0`.
+
+Rewrite using `[ha, map_zero, map_zero, zero_pow hn]`. Take `⟨m, hm, hl, ham⟩` from `exists_pow_eq_one_algClosure_coprime l a ha`. Conclude with `GlobalTheory.T.tilt_galois_action_root_of_unity_coprime l (f a) m n g hm hl (by rw [← map_pow, ham, map_one]) fun x hx => hg x m hm hl hx`. Establish `hφA : Per.φA l (WittVector.map f w₀) = Per.zA l u * WittVector.map f w₀`. Rewrite using `[← hfu, ← map_mul, ← hφ]`.
+
+Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.phiA_coeff]`. Simplify using `only [WittVector.map_coeff, WittVector.coeff_frobenius_charP, map_pow]`. Use `⟨WittVector.map f w₀, hw₀.map _, fun g hg => ?_, ?_, hφA⟩` and prove the remaining obligations. Use `WittVector.ext fun n => ?_` and prove the remaining obligations.
+
+Use `hact g 1 one_ne_zero (fun x m hm hl hx => by` as an intermediate fact. Rewrite using `[pow_one]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (IntermediateField.subset_adjoin _ _ ⟨m, hm, hl, hx⟩)) (w₀.coeff n)`. Rewrite `this` using `[pow_one]`. Rewrite using `[GlobalTheory.RingIface.sigA_coeff, WittVector.map_coeff]`.
+
+Conclude with `this`. Rewrite using `[← hφA]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.sigA_coeff, GlobalTheory.RingIface.phiA_coeff, WittVector.map_coeff]`. Conclude with `hact F l (Fact.out : l.Prime).ne_zero hF (w₀.coeff n)`.
+-/
 theorem exists_unramified_period : ∀ (l : ℕ) [Fact l.Prime] (F : GQ l), (∀ (x : Om l) (m : ℕ), 0 < m → ¬ l ∣ m → x ^ m = 1 → F x = x ^ l) → ∀ u : ℤ_[l]ˣ, ∃ w : Per.Ainf l, IsUnit w ∧ (∀ g ∈ (MaximalUnramifiedExtension l).fixingSubgroup, Per.σA g w = w) ∧ Per.σA F w = Per.zA l u * w ∧ Per.φA l w = Per.zA l u * w := by
   intro l _ F hF u
   obtain ⟨f⟩ := GlobalTheory.T.nonempty_closure_hom_tilt_field l

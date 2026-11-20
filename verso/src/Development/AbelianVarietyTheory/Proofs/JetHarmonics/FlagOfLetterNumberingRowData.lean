@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h : (Finset.univ.filter fun c : (Σ s : A, Fin (m s)) => ty c.1 = ty s) = (Finset.univ : Finset (Fin (m s))).map (Function.Embedding.sigmaMk (β` using `fun s => Fin (m s)) s) := by`. Use extensionality with `⟨a, c⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, EmbeddingLike.apply_eq_iff_eq, Finset.mem_map, Function.Embedding.sigmaMk_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Conclude with `⟨c, rfl⟩`. Introduce and unpack `⟨c', h⟩`. Conclude with `(congrArg Sigma.fst h).symm`. Rewrite using `[h, Finset.card_map, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem card_sigma_fibre {A B : Type} [Fintype A] (m : A → ℕ) (ty : A ≃ B) (s : A) :
     (Finset.univ.filter fun c : (Σ s : A, Fin (m s)) => ty c.1 = ty s).card = m s := by
   have h : (Finset.univ.filter fun c : (Σ s : A, Fin (m s)) => ty c.1 = ty s)
@@ -24,6 +29,13 @@ theorem card_sigma_fibre {A B : Type} [Fintype A] (m : A → ℕ) (ty : A ≃ B)
       exact (congrArg Sigma.fst h).symm
   rw [h, Finset.card_map, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `C _ V d _ A _ m ty J _ X h`. Establish `h1 : ∀ g s, X.rkF g (ty g s) = m g s`. Introduce `g s`. Unfold `RowData.rkF`. Simplify using `only [h]`.
+
+Use `card_sigma_fibre (m g) (ty g) s` and compare the differences between its conclusion and the goal. Establish `h2 : ∀ g a, X.rkF g a = m g ((ty g).symm a)`. Introduce `g a`. Rewrite using `[← h1, Equiv.apply_symm_apply]`. Use `⟨h1, ⟨⟨fun g a c => ⟨(ty g).symm a, Fin.cast (h2 g a) c⟩, ?_, ?_⟩, fun g a c => ⟨rfl, rfl⟩⟩⟩` and prove the remaining obligations.
+
+Introduce `g a c c' hc`. Conclude with `Fin.cast_injective _ (eq_of_heq (Sigma.mk.inj hc).2)`. Introduce `g a c`. Rewrite using `[h]`. Conclude with `Equiv.apply_symm_apply _ _`.
+-/
 theorem flag_of_numbering : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (A : Fin 2 → Type) [∀ g, Fintype (A g)] (m : ∀ g, A g → ℕ) (ty : ∀ g, A g ≃ ZMod d) (J : Fin 2 → Type) [∀ g, Fintype (J g)] (X : RowData C V d (fun g => Σ s : A g, Fin (m g s)) J), (∀ g x, (X.G g).ty (Sum.inl x) = ty g x.1) → (∀ g s, X.rkF g (ty g s) = m g s) ∧ ∃ F : RF.Flag X, ∀ g a c, (F.en g a c).1 = (ty g).symm a ∧ ((F.en g a c).2 : ℕ) = c := by
   intro C _ V d _ A _ m ty J _ X h
   have h1 : ∀ g s, X.rkF g (ty g s) = m g s := by

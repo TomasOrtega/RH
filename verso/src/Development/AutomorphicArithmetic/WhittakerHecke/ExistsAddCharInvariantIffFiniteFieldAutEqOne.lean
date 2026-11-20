@@ -1,6 +1,23 @@
 import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTransport
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq
 
+/- English proof (translation)
+Introduce `K _ _ f`. Use `haveI hp : Fact (ringChar K).Prime := ⟨CharP.char_is_prime K _⟩`. Use `haveI : NeZero (ringChar K) := ⟨hp.out.ne_zero⟩`. Use `letI : Algebra (ZMod (ringChar K)) K := ZMod.algebra K (ringChar K)`. Take `⟨b, hb⟩` from `IsCyclic.exists_generator (α := Kˣ)`.
+
+Set `T : K →ₗ[ZMod (ringChar K)] ZMod (ringChar K)` to `Algebra.trace (ZMod (ringChar K)) K`. Set `χ : AddChar K ℂ` to `((ZMod.stdAddChar (N := ringChar K)).compAddMonoidHom T.toAddMonoidHom).mulShift (b : K)`. Establish `hχ : ∀ x : K, χ x = ZMod.stdAddChar (T ((b : K) * x))` using `fun x => rfl`. Use `⟨χ.toMonoidHom.toHomUnits, fun m => ⟨fun h => ?_, fun h x => by rw [h]; rfl⟩⟩` and prove the remaining obligations. Generalize the expression as in `f ^ m = g at h ⊢`.
+
+Establish `h1 : ∀ x : K, T ((b : K) * g x) = T ((b : K) * x)`. Introduce `x`. Apply `ZMod.injective_stdAddChar` to reduce the goal to its premises. Rewrite using `[← hχ, ← hχ]`. Conclude with `congrArg Units.val (h x)`.
+
+Establish `hT : ∀ y : K, T (g y) = T y`. Introduce `y`. Set `e : K ≃ₐ[ZMod (ringChar K)] K` to `AlgEquiv.ofRingEquiv (f := g) (fun c => by`. Use `RingHom.ext_zmod ((g : K →+* K).comp (algebraMap (ZMod (ringChar K)) K)) (algebraMap (ZMod (ringChar K)) K)` as an intermediate fact. Conclude with `DFunLike.congr_fun this c)`.
+
+Conclude with `Algebra.trace_eq_of_algEquiv e y`. Establish `h2 : g (b : K) = (b : K)`. Assume the negation of the conclusion as `hne`. Establish `hne' : (b : K) - g (b : K) ≠ 0` using `fun h0 => hne (sub_eq_zero.mp h0).symm`. Take `⟨y, hy⟩` from `FiniteField.trace_to_zmod_nondegenerate K hne'`.
+
+Apply `hy` to reduce the goal to its premises. Take `⟨x, rfl⟩` from `g.surjective y`. Express the relevant statement in the definitionally equal form `T (((b : K) - g b) * g x) = 0`. Rewrite using `[sub_mul, map_sub, h1, ← map_mul, hT, sub_self]`. Use extensionality with `x`.
+
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨n, hn⟩` from `Subgroup.mem_zpowers_iff.mp (hb (Units.mk0 x hx))`. Establish `hxn : x = (b : K) ^ n`. Rewrite using `[← Units.val_zpow_eq_zpow_val, hn]`.
+
+Both sides reduce to the same expression. Rewrite using `[hxn, map_zpow₀, h2]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.exists_addChar_invariant_iff_finiteField_aut_eq_one :
     ∀ (K : Type) [Field K] [Finite K] (f : RingAut K), ∃ ψ : Multiplicative K →* ℂˣ, ∀ m : ℤ,
         (∀ x : K, ψ (Multiplicative.ofAdd ((f ^ m) x)) = ψ (Multiplicative.ofAdd x)) ↔ f ^ m = 1 := by

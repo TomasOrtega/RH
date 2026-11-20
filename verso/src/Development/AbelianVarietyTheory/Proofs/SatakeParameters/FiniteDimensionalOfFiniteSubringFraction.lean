@@ -5,6 +5,27 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K L _ _ _ B B' φ hφ hfin hfrac`. Use `letI : Algebra B B' := φ.toAlgebra`. Establish `hMF : Module.Finite B B'` using `hfin`. Take `⟨s, hs⟩` from `hMF.fg_top`. Establish `hB'span : ∀ x : B', (x : L) ∈ Submodule.span K ((fun z : B' => (z : L)) '' (s : Set B'))`.
+
+Introduce `x`. Establish `hx : x ∈ Submodule.span B (s : Set B')` using `by rw [hs]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv => simpa using Submodule.add_mem _ hu hv`. Consider the case `smul b u _ hu`. Establish `: ((b • u : B') : L) = (b : K) • (u : L)`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, Subring.coe_mul, hφ, Algebra.smul_def]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hu`. Set `S : Subalgebra K L` to `Algebra.adjoin K (B' : Set L)`. Establish `hSsub : Subalgebra.toSubmodule S = Submodule.span K ((fun z : B' => (z : L)) '' (s : Set B'))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_eq_span]`.
+
+Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce `y hy`. Establish `hy' : y ∈ B'.toSubmonoid`. Rewrite using `[← Submonoid.closure_eq B'.toSubmonoid]`. Conclude with `hy`.
+
+Conclude with `hB'span ⟨y, hy'⟩`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, _, rfl⟩`. Conclude with `Algebra.subset_adjoin z.2`. Establish `hFG : (Subalgebra.toSubmodule S).FG`.
+
+Rewrite using `[hSsub]`. Conclude with `Submodule.fg_span ((s.finite_toSet).image _)`. Establish `hB'S : ∀ y ∈ B', y ∈ S` using `fun y hy => Algebra.subset_adjoin hy`. Establish `htop : ∀ y : L, y ∈ S`. Introduce `y`.
+
+Take `⟨a, ha, b, hb, hb0, hyb⟩` from `hfrac y`. Establish `hbinv : b⁻¹ ∈ S`. Establish `hint : IsIntegral K b` using `IsIntegral.of_mem_of_fg S hFG b (hB'S b hb)`. Conclude with `Subalgebra.inv_mem_of_algebraic (A := S) (x := ⟨b, hB'S b hb⟩) hint.isAlgebraic`. Establish `: y = a * b⁻¹` using `by rw [← hyb, mul_assoc, mul_inv_cancel₀ hb0, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `S.mul_mem (hB'S a ha) hbinv`. Use `⟨?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hFG`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ht, eq_top_iff]`. Introduce `y _`. Conclude with `htop y`.
+-/
 theorem finiteDimensional_of_finite_subring_fraction :
     ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (B : Subring K) (B' : Subring L)
       (φ : B →+* B'), (∀ x : B, (φ x : L) = algebraMap K L x) → φ.Finite →

@@ -9,6 +9,23 @@ namespace GlobalTheory.HTBasis
 
 open GlobalTheory.DeRhamSymbol Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hc0` to reduce the goal to its premises. Use `set s : Fin m → Fin m → P.R.BdR := fun i j => ((tU P ^ (-k i) : P.R.BdRˣ) : P.R.BdR) * u i j with hs`.
+
+Establish `hs0 : ∀ i j, s i j ∈ (P.PD (botExt l)).Fil 0` using `fun i j => (shift_iff J (k i) 0 _).2 (by rw [add_zero]; exact (mem_iff K _ _).1 (hu i j))`. Use `choose γ hγ0 hγ using J.θ_onto`. Use `set z : Fin m → P.R.BdR := fun j => ∑ i, γ (c i) * s i j with hz`. Establish `hz0 : ∀ j, z j ∈ (P.PD (botExt l)).Fil 0` using `fun j => by`. Use `Submodule.sum_mem ((P.PD (botExt l)).Fil 0) (t := Finset.univ) (f := fun i => γ (c i) * s i j) fun i _ => by` as an intermediate fact.
+
+Simplify using `using (P.PD (botExt l)).Fil_mul 0 0 _ _ (hγ0 (c i)) (hs0 i j)`. Conclude with `this`. Establish `hz1 : ∀ j, z j ∈ (P.PD K).Fil 1` using `fun j => by`. Rewrite using `[mem_iff K]`. Use `(J.θ_ker _ (hz0 j)).1 ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrFun hc j`. Simplify using `only [Matrix.mulVec, dotProduct, colHT, Matrix.of_apply, Pi.zero_apply] at h1`. Rewrite using `[hz, GlobalTheory.DeRhamSymbolBasis.theta_sum J _ _ fun i => by`. Simplify using `using (P.PD (botExt l)).Fil_mul 0 0 _ _ (hγ0 (c i)) (hs0 i j)]`. Rewrite using `[← h1]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[J.θ_mul _ (hγ0 (c i)) _ (hs0 i j), hγ, mul_comm]`. Take `⟨f, hf, hfz⟩` from `hspan 1 z hz1`. Establish `hz' : z = ∑ i, (γ (c i) * ((tU P ^ (-k i) : P.R.BdRˣ) : P.R.BdR)) • u i`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [hz, hs, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `hdiff` using `Fintype.linearIndependent_iff.1 hli (fun i => f i - γ (c i) * ((tU P ^ (-k i) : P.R.BdRˣ) : P.R.BdR)) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← hfz, ← hz', sub_self])`. Use function extensionality and compare the values at `i`. Establish `hfi : f i = γ (c i) * ((tU P ^ (-k i) : P.R.BdRˣ) : P.R.BdR)` using `sub_eq_zero.1 (hdiff i)`.
+
+Establish `hγi : γ (c i) = f i * ((tU P ^ (k i) : P.R.BdRˣ) : P.R.BdR)`. Rewrite using `[hfi, mul_assoc, ← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero, Units.val_one, mul_one]`. Establish `hmem : γ (c i) ∈ (P.PD (botExt l)).Fil 1`. Use `(P.PD (botExt l)).Fil_mul _ _ _ _ ((mem_iff K _ _).1 (hf i)) (zpow_mem J (k i))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+
+Rewrite using `[hγi]` and apply the resulting hypothesis. Rewrite using `[Pi.zero_apply, ← hγ (c i)]`. Conclude with `(J.θ_ker _ (hγ0 (c i))).2 hmem`.
+-/
 theorem colHT_isUnit_det {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
     (J : Formalism.MainNotions.LocalSituation.ThetaL P AI) {K : FinExt l} {m : ℕ} (u : Fin m → Fin m → P.R.BdR) (k : Fin m → ℤ)
     (hu : ∀ i j, u i j ∈ (P.PD K).Fil (k i))

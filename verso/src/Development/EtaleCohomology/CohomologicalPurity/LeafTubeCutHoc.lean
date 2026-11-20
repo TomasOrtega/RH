@@ -31,6 +31,9 @@ def aug {D : J ⥤ PSh} {Y : PSh} (c : ∀ j, D.obj j ⟶ Y) (hc : Coc D c) : ho
     refine Eq.trans ?_ h
     exact congrArg (fun y => (c ((chn x).obj (θ.unop.toOrderHom 0)).1).app U y) g.2.symm
 
+/- English proof (translation)
+Use extensionality with `n U x`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (h ((chn x).obj 0).1) U) ((chn x).obj 0).2`.
+-/
 theorem map_aug {D' D : J ⥤ PSh} {Y : PSh} (α : D' ⟶ D) (c' : ∀ j, D'.obj j ⟶ Y) (c : ∀ j, D.obj j ⟶ Y) (hc' : Coc D' c')
     (hc : Coc D c) (h : ∀ j, α.app j ≫ c j = c' j) : (hocF J).map α ≫ aug c hc = aug c' hc' := by
   ext n U x
@@ -43,9 +46,15 @@ def mkChn {I : Type} [SmallCategory I] {F : J ⥤ Type} (σ : I ⥤ J) (s : ∀ 
   map_id i := Subtype.ext (σ.map_id i)
   map_comp g g' := Subtype.ext (σ.map_comp g g')
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mkChn_congr {I : Type} [SmallCategory I] {F : J ⥤ Type} (σ : I ⥤ J) {s s' : ∀ i, F.obj (σ.obj i)} (e : s = s') h h' :
     mkChn σ s h = mkChn σ s' h' := by subst e; rfl
 
+/- English proof (translation)
+Rewrite using `[← D.map_comp, ← σ.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem laurent_adjoin_eq_of_image_eq (D : J ⥤ PSh) {n : ℕ} (σ : Fin (n + 1) ⥤ J) (i k : Fin (n + 1)) (g : i ⟶ k) :
     D.map (σ.map (homOfLE (Fin.zero_le i))) ≫ D.map (σ.map g) = D.map (σ.map (homOfLE (Fin.zero_le k))) := by
   rw [← D.map_comp, ← σ.map_comp]; rfl

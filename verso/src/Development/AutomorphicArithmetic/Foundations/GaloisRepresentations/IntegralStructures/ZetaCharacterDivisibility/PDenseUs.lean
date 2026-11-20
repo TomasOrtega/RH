@@ -13,6 +13,11 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ a d hd U hU X`. Establish `hfin` using `GlobalTheory.CongL.UnitLim.finite_not_sph a U hU`. Use `(GlobalTheory.CongL.UnitLim.dense_frob_usable_off E Ω l Fact.out d hd (X ∪ hfin.toFinset)).mono ?_` and prove the remaining obligations. Introduce and unpack `g ⟨w, hw, hus, hl, -, A, hA, hg⟩`. Use `⟨w, fun h => hw (Finset.mem_union_left _ h), hus, hl, ?_, A, hA, hg⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hB`. Conclude with `hw (Finset.mem_union_right _ (hfin.mem_toFinset.2 ⟨hus.1, hB⟩))`.
+-/
 theorem UpperTheory.Gal.Int.Div.denseUs_of :
     DenseUs := by
   classical

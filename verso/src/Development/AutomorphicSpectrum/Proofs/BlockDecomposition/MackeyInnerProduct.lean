@@ -16,6 +16,11 @@ def mS (A B : Subgroup Γ) (a b : Γ → ℂ) (x : Γ) : ℂ :=
 
 def dc (A B : Subgroup Γ) (g : Γ) : Set Γ := {x | ∃ β ∈ B, ∃ α ∈ A, x = β * g * α}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hh`. Establish `: u⁻¹ * (u * h * u⁻¹) * u⁻¹⁻¹ ∈ H` using `H.mul_mem (H.mul_mem (H.inv_mem hu) hh) (H.inv_mem (H.inv_mem hu))`. Simplify `this` using `[mul_assoc]`. Introduce `hh`.
+
+Conclude with `H.mul_mem (H.mul_mem hu hh) (H.inv_mem hu)`.
+-/
 theorem conj_mem_iff (H : Subgroup Γ) {u h : Γ} (hu : u ∈ H) : u * h * u⁻¹ ∈ H ↔ h ∈ H := by
   constructor
   · intro hh
@@ -25,6 +30,9 @@ theorem conj_mem_iff (H : Subgroup Γ) {u h : Γ} (hu : u ∈ H) : u * h * u⁻�
   · intro hh
     exact H.mul_mem (H.mul_mem hu hh) (H.inv_mem hu)
 
+/- English proof (translation)
+Establish `hc : (((A ⊓ cj y B : Subgroup Γ) : Set Γ)).ncard = Nat.card (A ⊓ cj y B : Subgroup Γ)` using `(Nat.card_coe_set_eq _).symm`. Unfold `ip mS`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem ip_inter (A B : Subgroup Γ) (a b : Γ → ℂ) (y : Γ) :
     ip ((A ⊓ cj y B : Subgroup Γ) : Set Γ) a (fun h => b (y * h * y⁻¹)) =
       (Nat.card (A ⊓ cj y B : Subgroup Γ) : ℂ)⁻¹ * mS A B a b y := by
@@ -35,6 +43,15 @@ theorem ip_inter (A B : Subgroup Γ) (a b : Γ → ℂ) (y : Γ) :
   rw [hc]
   rfl
 
+/- English proof (translation)
+Establish `hc : ((A : Set Γ)).ncard = Nat.card A` using `(Nat.card_coe_set_eq _).symm`. Unfold `ip indF mS`. Rewrite using `[hc, Finset.sum_comm, mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Distinguish the cases in `hh : h ∈ A`. Establish `hh' : h ∈ (A : Set Γ)` using `hh`. Rewrite using `[if_pos hh', mul_left_comm, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x * h * x⁻¹ ∈ B`. Establish `hm : h ∈ (A ⊓ cj x B : Subgroup Γ)` using `⟨hh, hx⟩`. Rewrite using `[if_pos hx, if_pos hm]`. Establish `hm : h ∉ (A ⊓ cj x B : Subgroup Γ)` using `fun q => hx q.2`.
+
+Rewrite using `[if_neg hx, if_neg hm, mul_zero]`. Establish `hh' : h ∉ (A : Set Γ)` using `hh`. Rewrite using `[if_neg hh']`. Establish `: ∀ x, h ∉ (A ⊓ cj x B : Subgroup Γ)` using `fun x q => hh q.1`. Simplify using `[this]`.
+-/
 theorem ip_ind (A B : Subgroup Γ) (a b : Γ → ℂ) :
     ip (A : Set Γ) a (indF B b) =
       ((Nat.card A : ℂ)⁻¹ * (Nat.card B : ℂ)⁻¹) * ∑ x, mS A B a b x := by
@@ -60,6 +77,13 @@ theorem ip_ind (A B : Subgroup Γ) (a b : Γ → ℂ) :
     have : ∀ x, h ∉ (A ⊓ cj x B : Subgroup Γ) := fun x q => hh q.1
     simp [this]
 
+/- English proof (translation)
+Unfold `mS`. Use `Fintype.sum_equiv (MulAut.conj α).toEquiv _ _ fun h => ?_` and prove the remaining obligations. Establish `he : (MulAut.conj α).toEquiv h = α * h * α⁻¹` using `rfl`. Rewrite using `[he]`. Establish `hk : (β * x * α) * h * (β * x * α)⁻¹ = β * (x * (α * h * α⁻¹) * x⁻¹) * β⁻¹` using `by group`.
+
+Establish `hmem : h ∈ (A ⊓ cj (β * x * α) B : Subgroup Γ) ↔ α * h * α⁻¹ ∈ (A ⊓ cj x B : Subgroup Γ)`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_inf, mem_cj, mem_cj, hk, conj_mem_iff B hβ, conj_mem_iff A hα]`. Distinguish the cases in `hm : α * h * α⁻¹ ∈ (A ⊓ cj x B : Subgroup Γ)`. Establish `hx2 : x * (α * h * α⁻¹) * x⁻¹ ∈ B` using `hm.2`. Rewrite using `[if_pos hm, if_pos (hmem.2 hm), hk, hB β hβ _ hx2]`.
+
+Establish `hinv : (α * h * α⁻¹)⁻¹ = α * h⁻¹ * α⁻¹` using `by group`. Establish `hhA : h ∈ A` using `(conj_mem_iff A hα).1 hm.1`. Rewrite using `[hinv, hA α hα _ (A.inv_mem hhA)]`. Rewrite using `[if_neg hm, if_neg (fun q => hm (hmem.1 q))]`.
+-/
 theorem mS_inv {A B : Subgroup Γ} {a b : Γ → ℂ} (hA : IsClassOn A a) (hB : IsClassOn B b)
     {β α : Γ} (x : Γ) (hβ : β ∈ B) (hα : α ∈ A) :
     mS A B a b (β * x * α) = mS A B a b x := by
@@ -81,6 +105,25 @@ theorem mS_inv {A B : Subgroup Γ} {a b : Γ → ℂ} (hA : IsClassOn A a) (hB :
     rw [hinv, hA α hα _ (A.inv_mem hhA)]
   · rw [if_neg hm, if_neg (fun q => hm (hmem.1 q))]
 
+/- English proof (translation)
+Set `φ : B × A → dc A B g` to `fun p => ⟨p.1 * g * p.2, p.1, p.1.2, p.2, p.2.2, rfl⟩`. Establish `fib : ∀ x : dc A B g, Nat.card {p // φ p = x} = Nat.card (A ⊓ cj g B : Subgroup Γ)`. Introduce and unpack `⟨x, β₀, hβ₀, α₀, hα₀, rfl⟩`. Use `symm`. Establish `hB' : ∀ c : (A ⊓ cj g B : Subgroup Γ), β₀ * (g * (c : Γ)⁻¹ * g⁻¹) ∈ B` using `fun c => by`.
+
+Establish `h2 : g * (c : Γ) * g⁻¹ ∈ B` using `c.2.2`. Establish `: g * (c : Γ)⁻¹ * g⁻¹ = (g * (c : Γ) * g⁻¹)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `B.mul_mem hβ₀ (B.inv_mem h2)`. Establish `hA' : ∀ c : (A ⊓ cj g B : Subgroup Γ), (c : Γ) * α₀ ∈ A` using `fun c => A.mul_mem c.2.1 hα₀`.
+
+Set `f : (A ⊓ cj g B : Subgroup Γ) → {p // φ p = ⟨β₀ * g * α₀, β₀, hβ₀, α₀, hα₀, rfl⟩}` to `fun c => ⟨(⟨_, hB' c⟩, ⟨_, hA' c⟩), by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show β₀ * (g * (c : Γ)⁻¹ * g⁻¹) * g * ((c : Γ) * α₀) = β₀ * g * α₀`. Use the proof step `group⟩`. Use `Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Introduce `c c' hcc`. Establish `h3 : (c : Γ) * α₀ = (c' : Γ) * α₀`. Use `congrArg (fun p => ((p.1.2 : A) : Γ)) hcc` as an intermediate fact. Conclude with `this`. Conclude with `Subtype.ext (mul_right_cancel h3)`.
+
+Introduce and unpack `⟨⟨⟨β, hβ⟩, ⟨α, hα⟩⟩, hp⟩`. Establish `he : β * g * α = β₀ * g * α₀` using `congrArg Subtype.val hp`. Establish `hcA : α * α₀⁻¹ ∈ A` using `A.mul_mem hα (A.inv_mem hα₀)`. Establish `hβe : β = β₀ * (g * (α * α₀⁻¹)⁻¹ * g⁻¹)`. Establish `: β = (β * g * α) * α⁻¹ * g⁻¹` using `by group`.
+
+Rewrite using `[this, he]`. Use `group`. Establish `hcB : g * (α * α₀⁻¹) * g⁻¹ ∈ B`. Establish `: g * (α * α₀⁻¹) * g⁻¹ = (β₀⁻¹ * β)⁻¹`. Rewrite using `[hβe]`.
+
+Use `group`. Rewrite using `[this]`. Conclude with `B.inv_mem (B.mul_mem (B.inv_mem hβ₀) hβ)`. Use `⟨⟨α * α₀⁻¹, hcA, hcB⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Prod.ext` to reduce the goal to its premises. Conclude with `Subtype.ext hβe.symm`. Apply `Subtype.ext show α * α₀⁻¹ * α₀ = α group` to reduce the goal to its premises. Establish `e : (B × A) ≃ Σ x : dc A B g, {p // φ p = x}` using `(Equiv.sigmaFiberEquiv φ).symm`. Establish `h4 : Nat.card (B × A) = Nat.card (dc A B g) * Nat.card (A ⊓ cj g B : Subgroup Γ)`.
+
+Rewrite using `[Nat.card_congr e, Nat.card_sigma]`. Simplify using `only [fib, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]`. Rewrite using `[← h4, Nat.card_prod, mul_comm]`.
+-/
 theorem card_dc (A B : Subgroup Γ) (g : Γ) :
     Nat.card (dc A B g) * Nat.card (A ⊓ cj g B : Subgroup Γ) = Nat.card A * Nat.card B := by
   classical
@@ -131,6 +174,11 @@ theorem card_dc (A B : Subgroup Γ) (g : Γ) :
     simp only [fib, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card]
   rw [← h4, Nat.card_prod, mul_comm]
 
+/- English proof (translation)
+Establish `h1 : ∀ x, (if x ∈ dc A B g then mS A B a b x else 0) = if x ∈ dc A B g then mS A B a b g else 0`. Introduce `x`. Distinguish the cases in `hx : x ∈ dc A B g`. Take `⟨β, hβ, α, hα, rfl⟩` from `hx`. Rewrite using `[if_pos ⟨β, hβ, α, hα, rfl⟩, if_pos ⟨β, hβ, α, hα, rfl⟩, mS_inv hA hB g hβ hα]`.
+
+Rewrite using `[if_neg hx, if_neg hx]`. Simplify using `only [h1]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+-/
 theorem sum_dc {A B : Subgroup Γ} {a b : Γ → ℂ} (hA : IsClassOn A a) (hB : IsClassOn B b)
     (g : Γ) [DecidablePred (· ∈ dc A B g)] :
     (∑ x, if x ∈ dc A B g then mS A B a b x else 0) = (Nat.card (dc A B g) : ℂ) * mS A B a b g := by
@@ -146,6 +194,21 @@ theorem sum_dc {A B : Subgroup Γ} {a b : Γ → ℂ} (hA : IsClassOn A a) (hB :
   rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card,
     Fintype.card_subtype]
 
+/- English proof (translation)
+Introduce `Γ _ _ A B a b hA hB R _ g h1 h2`. Establish `cardC : ∀ y, (Nat.card (A ⊓ cj y B : Subgroup Γ) : ℂ) ≠ 0` using `fun y => Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `cardA : (Nat.card A : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `cardB : (Nat.card B : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hvan : ∀ x, (∀ r, x ∉ dc A B (g r)) → mS A B a b x = 0`.
+
+Introduce `x hx`. Break down `h2 x with ⟨r, β, hβ, α, hα, e⟩ | ⟨y, ⟨β, hβ, α, hα, rfl⟩, hy⟩` into its components or cases. Conclude with `absurd ⟨β, hβ, α, hα, e⟩ (hx r)`. Rewrite using `[mS_inv hA hB y hβ hα]`. Rewrite `hy` using `[ip_inter]`.
+
+Conclude with `(mul_eq_zero.1 hy).resolve_left (inv_ne_zero (cardC y))`. Establish `hdisj : ∀ x r r', x ∈ dc A B (g r) → x ∈ dc A B (g r') → r = r'`. Introduce and unpack `x r r' ⟨β, hβ, α, hα, rfl⟩ ⟨β', hβ', α', hα', e⟩`. Use `h1 r r' ⟨β'⁻¹ * β, B.mul_mem (B.inv_mem hβ') hβ, α * α'⁻¹, A.mul_mem hα (A.inv_mem hα'), ?_⟩` and prove the remaining obligations. Establish `: g r' = β'⁻¹ * (β' * g r' * α') * α'⁻¹` using `by group`.
+
+Rewrite using `[this, ← e]`. Use `group`. Establish `hsum : ∀ x, mS A B a b x = ∑ r, if x ∈ dc A B (g r) then mS A B a b x else 0`. Introduce `x`. Distinguish the cases in `hx : ∃ r, x ∈ dc A B (g r)`.
+
+Take `⟨r, hr⟩` from `hx`. Rewrite using `[Fintype.sum_eq_single r, if_pos hr]`. Introduce `r' hne`. Conclude with `if_neg fun q => hne (hdisj x r r' hr q).symm`. Use `push_neg at hx`.
+
+Rewrite using `[hvan x hx]`. Simplify using the standard rewrite rules. Rewrite using `[ip_ind, Finset.sum_congr rfl fun x _ => hsum x, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[sum_dc hA hB, ip_inter]`.
+
+Establish `hc : (Nat.card (dc A B (g r)) : ℂ) * (Nat.card (A ⊓ cj (g r) B : Subgroup Γ) : ℂ) = (Nat.card A : ℂ) * (Nat.card B : ℂ)`. Conclude with `card_dc A B (g r)` after adjusting the coercions. Use `cardC (g r)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `(mS A B a b (g r)) * hc`.
+-/
 theorem mackeyIp : ReciprocityTheory.Ty.Fin.St.MackeyIp := by
   classical
   intro Γ _ _ A B a b hA hB R _ g h1 h2

@@ -13,6 +13,17 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped TensorProduct NNReal Matrix
 namespace PositivityTheory.ThKF0
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hS` using `hP.weil.isUSplitting`. Take `⟨l, hl, hlt⟩` from `(GlobalTheory.T.theta_distribution_nonzero_admissible F (Fin n × Fin d)).2.1`. Use `⟨fun Φ hΦ => ⟨?_, ?_, _root_.PositivityTheory.ThKF0.norm_theta_le_mul_ht_pow_of_isPair harch F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ⟩, ?_⟩` and prove the remaining obligations. Use `(hS.cont l hl Φ hΦ).congr fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [theta]`. Conclude with `hlt _ (hS.pres _ _ hΦ)`. Introduce `γ hγ γ' hγ' g h`. Simplify using `only [theta]`. Establish `e : om (γ * g, γ' * h) Φ = om (γ, γ') (om (g, h) Φ)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `_root_.PositivityTheory.ThKF0.thetaSum_rational_pair_invariant F E σ B n d X W M χX χW om r s r' s' hP γ hγ γ' hγ' _ (hS.pres _ _ hΦ)`. Introduce `φ hφ g h`.
+
+Take `⟨T, hT⟩` from `hS.adm (g, h) l hl φ hφ`. Use `T.continuous.congr fun f => ?_` and prove the remaining obligations. Simplify using `only [theta]`. Establish `hm : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Rewrite using `[← hlt _ (hS.pres _ _ hm)]`.
+
+Conclude with `(hT f).symm`.
+-/
 theorem thetaBasic_of_k (harch : _root_.PositivityTheory.ThKF0.ArchBd_k) : _root_.GlobalTheory.ThK.ThetaBasic_k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP
   have hS := hP.weil.isUSplitting

@@ -16,6 +16,11 @@ namespace UpperTheory.V.Af.Gu
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `x using Quotient.inductionOn with | h a => ?_`. Proceed by induction on `y using Quotient.inductionOn with | h b => ?_`. Establish `ha : a.2.Unr` using `hx`. Establish `hb : b.2.Unr` using `hy`. Use `show (WD.mk (a.2.sum b.2)).unr`.
+
+Rewrite using `[WD.unr_mk]`. Use `⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[WDRep.sum_N, ha.1, hb.1, LinearMap.prodMap_zero]`. Rewrite using `[WDRep.sum_ρ, ha.2, hb.2]`. Conclude with `LinearMap.prodMap_one`.
+-/
 private theorem unr_lpSum {x y : WD h} (hx : x.unr) (hy : y.unr) : (x.lpSum y).unr := by
   induction x using Quotient.inductionOn with | h a => ?_
   induction y using Quotient.inductionOn with | h b => ?_
@@ -27,6 +32,13 @@ private theorem unr_lpSum {x y : WD h} (hx : x.unr) (hy : y.unr) : (x.lpSum y).u
   · rw [WDRep.sum_N, ha.1, hb.1, LinearMap.prodMap_zero]
   · rw [WDRep.sum_ρ, ha.2, hb.2]; exact LinearMap.prodMap_one
 
+/- English proof (translation)
+Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `f M _`. Establish `e : sumList (List.ofFn f) = WD.lpZero h` using `by simp [sumList]`.
+
+Rewrite using `[e, WD.lpZero, WD.unr_mk, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd]`. Conclude with `⟨WDRep.unr_diag _, by simp⟩`. Consider the case `succ c ih`. Introduce `f M H`. Take `⟨h1, h2⟩` from `ih (fun i => f i.succ) (fun i => M i.succ) fun i => H i.succ`.
+
+Establish `e : sumList (List.ofFn f) = (f 0).lpSum (sumList (List.ofFn fun i => f (Fin.succ i)))`. Rewrite using `[List.ofFn_succ]`. Both sides reduce to the same expression. Rewrite using `[e, WD.charPol_lpSum, h2, (H 0).2, Fin.sum_univ_succ, Multiset.map_add, Multiset.prod_add]`. Conclude with `⟨unr_lpSum (H 0).1 h1, rfl⟩`.
+-/
 private theorem sumList_spec (g : Weil h) : ∀ (c : ℕ) (f : Fin c → WD h) (M : Fin c → Multiset ℂ),
     (∀ i, (f i).unr ∧ (f i).charPol g = ((M i).map fun b => X - C b).prod) →
     (sumList (List.ofFn f)).unr ∧ (sumList (List.ofFn f)).charPol g = ((∑ i, M i).map fun b => X - C b).prod := by
@@ -45,6 +57,11 @@ private theorem sumList_spec (g : Weil h) : ∀ (c : ℕ) (f : Fin c → WD h) (
     rw [e, WD.charPol_lpSum, h2, (H 0).2, Fin.sum_univ_succ, Multiset.map_add, Multiset.prod_add]
     exact ⟨unr_lpSum (H 0).1 h1, rfl⟩
 
+/- English proof (translation)
+Take `⟨hu, -⟩` from `GlobalTheory.RecLaws.rec_hasSatGL H σ B hB`. Take `⟨α, hα⟩` from `ParLaws.exists_hasSatake_of_unr H hu`. Use `⟨α, hB.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα), ?_⟩` and prove the remaining obligations. Establish `e : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `ParLaws.rec_eq_diag H hα`. Rewrite using `[e, WD.lpTw_mk]`.
+
+Use `WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[mul_zpow, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 private theorem rec_tw_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) {n : ℕ}
     (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) (s : ℝ) :
     ∃ α : Fin n → ℂˣ, B = Finset.univ.val.map α ∧
@@ -58,6 +75,11 @@ private theorem rec_tw_diag {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRe
   refine WD.sound ⟨.refl _ _, fun g v => funext fun i => ?_, fun v => rfl⟩
   simp [mul_zpow, mul_comm, mul_left_comm, mul_assoc]
 
+/- English proof (translation)
+Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (zero_lt_one.trans (one_lt_normV w)).ne'`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), zpow_neg_one, Units.val_mul, mul_inv, Units.val_inv_eq_inv_val, inv_inv, coe_qPow, ← Complex.cpow_neg, Units.val_mul, coe_qPow, mul_left_comm, Complex.ofReal_natCast, ← Complex.cpow_add _ _ hq]`. Use `congr 2`. Simplify using `only [ex]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem val_inv_eq (n d k : ℕ) (a : ℂˣ) :
     (((a⁻¹ * qPow w ((ex n d k : ℝ) / 2) : ℂˣ) : ℂ)) ^ (-1 : ℤ) =
       ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) *
@@ -70,6 +92,11 @@ private theorem val_inv_eq (n d k : ℕ) (a : ℂˣ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `e : algSat n (normV w) (satTot w d S) = ∑ i, ∑ k : Fin (d i), algSat n (normV w) ((S i).map (· * qPow w (((k : ℕ) : ℝ) - ((d i : ℝ) - 1) / 2)))`. Establish `hm : ∀ {α β ι : Type} (f : α → β) (s : Finset ι) (M : ι → Multiset α), (∑ i ∈ s, M i).map f = ∑ i ∈ s, (M i).map f` using `fun f s M => map_sum (Multiset.mapAddMonoidHom f) M s`. Simplify using `only [algSat, satTot, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton, hm]`. Rewrite using `[e]`. Use `sumList_spec g c _ _ fun i => sumList_spec g (d i) _ _ fun k => ?_` and prove the remaining obligations.
+
+Take `⟨α, hα, e⟩` from `rec_tw_diag H (ρ i) (S i) (hS i) ((ex n (d i) k : ℝ) / 2)`. Rewrite using `[e, hα, WD.unr_mk, WD.charPol_mk, WDRep.diag_ρ, charpoly_diagEnd, hg]`. Use `⟨WDRep.unr_diag _, ?_⟩` and prove the remaining obligations. Simplify using `only [val_inv_eq, algSat, Multiset.map_map, Multiset.pure_def, Multiset.bind_def, Multiset.bind_singleton]`. Both sides reduce to the same expression.
+-/
 private theorem totPar_spec {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) (n c : ℕ) (a d : Fin c → ℕ)
     (ρ : ∀ i, SmIrr (GL (Fin (a i)) (w.adicCompletion E))) (S : Fin c → Multiset ℂˣ)
     (hS : ∀ i, GlobalTheory.LFun.HasSatGL w (ρ i).ρ (S i)) (g : Weil h) (hg : deg g = -1) :
@@ -90,6 +117,13 @@ private theorem totPar_spec {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRe
 
 end UpperTheory.V.Af.Gu
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ ι n c a d r _ w hl ρ S hS H A h`. Establish `L` using `P.litN.loc`. Take `⟨rc, hrc⟩` from `L.llc F Ω A w h`. Establish `hrec : IsRec h rc` using `GlobalTheory.T.rec_of_rec_literal L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz F Ω A w h rc hrc`. Establish `hx` using `(H A h rc hrec).1 hl`.
+
+Establish `hw` using `hx.wdOf_eq hl`. Take `⟨t, ht, φ, hφ, N, b, hN, -⟩` from `hx`. Establish `hsp` using `totPar_spec hrec n c a d ρ S hS`. Use `⟨(hN.unr_wdOf_iff hl ht ι).1 (by rw [hw]; exact (hsp (frob h)⁻¹ (by rw [deg_inv, deg_frob])).1), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hd : deg (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h) = 1` using `deg_eq_one_iff.2 hs`.
+
+Use `hN.charPol_wdOf hl ht ι (⟨s, mem_Weil_of_isFrob h hs⟩ : Weil h)⁻¹` as an intermediate fact. Rewrite `this` using `[hw, (hsp _ (by rw [deg_inv, hd])).2]`. Conclude with `this.symm`.
+-/
 theorem UpperTheory.total_frobenius_compatibility :
     HypothesesH → FrobTot := by
   intro P F Ω _ _ _ _ _ l _ ι n c a d r _ w hl ρ S hS H A h

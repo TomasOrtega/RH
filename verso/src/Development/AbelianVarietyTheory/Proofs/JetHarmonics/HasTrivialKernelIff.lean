@@ -50,6 +50,9 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R)
 
 end Conclusion
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AbLaw.Cube.cube_of_gen GlobalTheory.laws_without_cohomology.1 (GlobalTheory.AbLaw.exists_gen_theta GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected GlobalTheory.laws_without_cohomology.1 GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy …`.
+-/
 theorem cube : Out.CubeSt :=
   GlobalTheory.AbLaw.Cube.cube_of_gen GlobalTheory.laws_without_cohomology.1 (GlobalTheory.AbLaw.exists_gen_theta
     GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected
@@ -60,6 +63,9 @@ theorem cube : Out.CubeSt :=
       (GlobalTheory.SmallExtLift.exists_gen_of_small_extension GlobalTheory.laws_without_cohomology.1
         GlobalTheory.KuennethOne.kuenneth_injective)))
 
+/- English proof (translation)
+Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨cub⟩` from `(cube _ P ⟨P.L, rig, P.isLB, hrig⟩ rfl).1`. Take `⟨sym, hsym, hsr⟩` from `SelfUnif.exists_sym P`. Use `choose psi hpsi using fun n : ℤ => DVR.exists_gen_of_local (V := FractionRing R) P.L P.isLB (K := PUnit) (fun _ => Out.ptK (c ^ n)) (fun _ => -1)`. Conclude with `⟨{ P := P, rig := rig, rig_gen := hrig, cub := cub, sym := sym, sym_gen := hsym, sym_rig := hsr, X := ℤ c := fun n => c ^ n, c_add := fun a b => zpow_add c a b, psi := psi, psi_gen := hpsi }, (1 : ℤ), rfl, zpow_one c⟩`.
+-/
 theorem exists_degPre {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     (P : Out.PolAV (Spec (CommRingCat.of R))) (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ P.A) :
     ∃ (D : Out.DegPre R) (α : D.X) (e : D.P = P), e ▸ D.c α = c := by

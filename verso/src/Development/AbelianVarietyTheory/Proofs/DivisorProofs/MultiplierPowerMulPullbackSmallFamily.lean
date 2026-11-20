@@ -10,6 +10,17 @@ open GlobalTheory.Mum GlobalTheory.TwFam
 
 namespace GlobalTheory.ZmPow
 
+/- English proof (translation)
+Introduce `R _ _ _ hAdm D a a' h h' hE A G _ _ hG U b hb N k g ρ hgS hρS hgT hρT`. Establish `key : ∀ m : ℕ, ∀ n j : ℤ, n = (N : ℤ) * m → j = (k : ℤ) - m → ∃ F : ∀ β, SecT D.toPre a n j β, Small (maximalIdeal R) (w` using `id) F ∧ TFE h h' F ∧ ∀ (e : ℕ) (τ : SecE U.toUnifPre (b e) N (-1)) (τ' : SecE U.toUnifPre (b e) 0 k), TExp U.toUnifPre τ (w := id) g → TExp U.toUnifPre τ' (w := id) ρ → ∃ τ'' : SecE U.toUnifPre (b e) n j, (∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R (maximalIdeal R) e G).left) (z : Z …`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `n j hn hj`. Establish `hn' : n = 0` using `by simp [hn]`. Establish `hj' : j = (k : ℤ)` using `by simp [hj]`. Substitute `hn' hj'` using the available equality. Use `⟨ρ, hρS, hρT, fun e τ τ' _ hτ' => ⟨τ', fun Z x z J' _ => by simp, hτ'⟩⟩` and prove the remaining obligations.
+
+Consider the case `succ m ih`. Introduce `n j hn hj`. Take `⟨Fm, hFS, hFT, hFm⟩` from `ih ((N : ℤ) * m) ((k : ℤ) - m) rfl rfl`. Take `⟨F, hS, hT, hP⟩` from `GlobalTheory.T.exists_product_small_twistedFunctionalEqn_family R hAdm D a a' h h' hE A G hG U b hb (N : ℤ) (-1) ((N : ℤ) * m) ((k : ℤ) - m) n j (by rw [hn]; push_cast; ring) (by rw [hj]; push_cast; ring) g Fm hgS hFS hgT hFT`. Use `⟨F, hS, hT, fun e τ τ' hτ hτ' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨τm, hτmv, hτmE⟩` from `hFm e τ τ' hτ hτ'`. Take `⟨τ'', hv, hE''⟩` from `hP e τ τm hτ hτmE`. Use `⟨τ'', fun Z x z J' hJ => ?_, hE''⟩` and prove the remaining obligations. Rewrite using `[hv Z x z J' hJ, hτmv Z x z J' hJ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `key k _ _ (by push_cast; ring) (by simp)`.
+-/
 theorem pow_mul_small : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G), ∀ b, FormalEnd U.toUnifPre a h' b → ∀ (N k : ℕ) (g : ∀ β, SecT D.toPre a N (-1) β) (ρ : ∀ β, SecT D.toPre a 0 k β), Small (maximalIdeal R) (w := id) g → Small (maximalIdeal R) (w := id) ρ → TFE h h' g → TFE h h' ρ → ∃ F : ∀ β, SecT D.toPre a ((N * k : ℕ) : ℤ) 0 β, Small (maximalIdeal R) (w := id) F ∧ TFE h h' F ∧ ∀ (e : ℕ) (τ : SecE U.toUnifPre (b e) N (-1)) (τ' : SecE U.toUnifPre (b e) 0 k), TExp U.toUnifPre τ (w := id) g → TExp U.toUnifPre τ' (w := id) ρ → ∃ τ'' : SecE U.toUnifPre (b e) ((N * k : ℕ) : ℤ) 0, (∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R (maximalIdeal R) e G).left) (z : Z) (J'), Good U.LG.L z J' → sval τ'' x z J' = sval τ x z J' ^ k * sval τ' x z J') ∧ TExp U.toUnifPre τ'' (w := id) F := by
   intro R _ _ _ hAdm D a a' h h' hE A G _ _ hG U b hb N k g ρ hgS hρS hgT hρT
   have key : ∀ m : ℕ, ∀ n j : ℤ, n = (N : ℤ) * m → j = (k : ℤ) - m →

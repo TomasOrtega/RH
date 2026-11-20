@@ -18,6 +18,11 @@ namespace GlobalTheory.WittExt
 open Matrix
 open Formalism.UG (cT)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols`. Consider the case `exact _root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols`. Consider the case `(apply _root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdjugateAppendColumn.exists_wittFrame_initCols ..)`.
+-/
 theorem exists_isWittFrame_initCols : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (C : Matrix (Fin n) (Fin (r + 1)) E),
       LinearIndependent E C.transpose → Formalism.UG.cT (σ : E →+* E) C * J * C = 0 →

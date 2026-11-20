@@ -18,9 +18,17 @@ variable (R O O') in
 def mulChar : R ⊗[O] O' →ₐ[R] R :=
   Algebra.TensorProduct.lift (AlgHom.id R R) (IsScalarTower.toAlgHom O O' R) fun _ _ ↦ .all _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulChar_tmul (r : R) (x : O') :
     mulChar R O O' (r ⊗ₜ x) = r * algebraMap O' R x := rfl
 
+/- English proof (translation)
+Set `f : A ⊗[R] A →ₐ[R] A` to `Algebra.TensorProduct.lift ((Algebra.ofId R A).comp χ) (AlgHom.id R A) fun _ _ ↦ .all _ _`. Use `⟨f (Algebra.FormallyUnramified.elem R A), ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `: ∀ z, χ (f z) = χ (Algebra.TensorProduct.lmul' R z)` using `fun z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => simp [f]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Rewrite using `[this, Algebra.FormallyUnramified.lmul_elem, map_one]`. Simplify `congrArg f (Algebra.FormallyUnramified.one_tmul_mul_elem (R := R) x)` using `[f, Algebra.smul_def]`.
+-/
 theorem exists_elem_of_unramified {A : Type*} [CommRing A] [Algebra R A]
     [Algebra.FormallyUnramified R A] [Algebra.EssFiniteType R A] (χ : A →ₐ[R] R) :
     ∃ e : A, χ e = 1 ∧ ∀ x, x * e = χ x • e := by
@@ -38,6 +46,23 @@ theorem exists_elem_of_unramified {A : Type*} [CommRing A] [Algebra R A]
 
 variable {M : Type*} [AddCommGroup M] [Module O M] [Module O' M] [IsScalarTower O O' M]
 
+/- English proof (translation)
+Take `⟨e, he₁, he₂⟩` from `exists_elem_of_unramified (mulChar R O O')`. Set `g : O' →ₐ[O] Module.End R (N ⊗[O] M)` to `{ toFun x := AlgebraTensorModule.lTensor R N (Algebra.lsmul O O M x) map_one' := by ext; simp map_mul' x y := by ext; simp map_zero' := by ext; simp map_add' x y := by ext; simp commutes' x := by ext; simp }`. Set `ρ : R ⊗[O] O' →ₐ[R] Module.End R (N ⊗[O] M)` to `Algebra.TensorProduct.lift (Algebra.ofId R _) g fun r x ↦ Algebra.commute_algebraMap_left _ _`. Establish `hρ : ∀ (r : R) (x : O') z, ρ (r ⊗ₜ x) z = r • (Algebra.lsmul O O M x).lTensor N z` using `fun r x z ↦ rfl`. Establish `hρe : ∀ (x : O') z, (Algebra.lsmul O O M x).lTensor N (ρ e z) = algebraMap O' R x • ρ e z` using `fun x z ↦ by`.
+
+Use `congrArg (fun y ↦ ρ y z) (he₂ (1 ⊗ₜ x))` as an intermediate fact. Simplify `this` using `only [map_mul, map_smul, Module.End.mul_apply, hρ, one_smul, mulChar_tmul, one_mul, LinearMap.smul_apply]`. Establish `hρe' : ∀ (x : O') z, ρ e ((Algebra.lsmul O O M x).lTensor N z) = algebraMap O' R x • ρ e z` using `fun x z ↦ by`. Use `congrArg (fun y ↦ ρ y z) ((mul_comm _ _).trans (he₂ (1 ⊗ₜ x)))` as an intermediate fact. Simplify `this` using `only [map_mul, map_smul, Module.End.mul_apply, hρ, one_smul, mulChar_tmul, one_mul, LinearMap.smul_apply]`.
+
+Set `s : N ⊗[O'] M →ₗ[R] N ⊗[O] M` to `AlgebraTensorModule.lift { toFun n := { toFun m := ρ e (n ⊗ₜ m) map_add' m m' := by rw [tmul_add, map_add] map_smul' x m := (hρe' x (n ⊗ₜ m)).trans (algebraMap_smul R x _) } map_add' n n' := LinearMap.ext fun m ↦ (congrArg (ρ e) (add_tmul n n' m)).trans (map_add _ _ _) map_smul' …`. Set `q : N ⊗[O] M →ₗ[R] N ⊗[O'] M` to `mapOfCompatibleSMul O' O R N M`. Establish `hq : ∀ y z, q (ρ y z) = mulChar R O O' y • q z` using `fun y z ↦ by`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+
+Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy', add_smul]`. Consider the case `tmul r x`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz', smul_add]`.
+
+Consider the case `tmul n m => simp [hρ, q, mul_smul]`. Establish `hqs : ∀ z, q (s z) = z` using `fun z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`.
+
+Consider the case `tmul n m => exact (hq e (n ⊗ₜ m)).trans (by rw [he₁, one_smul]; rfl)`. Establish `hsq : ∀ z, s (q z) = ρ e z` using `fun z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`.
+
+Consider the case `tmul n m => rfl`. Use `⟨s, Function.LeftInverse.injective hqs, fun z ↦ ⟨?_, fun hz ↦ ⟨q z, ?_⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z, rfl⟩ x`. Rewrite using `[← hqs z, hsq, hρe]`. Establish `: ∀ y, ρ y z = mulChar R O O' y • z` using `fun y ↦ by`.
+
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy', add_smul]`. Consider the case `tmul r x => rw [hρ, hz, mulChar_tmul, mul_smul]`. Rewrite using `[hsq, this, he₁, one_smul]`.
+-/
 theorem exists_eigen_of_unramified (N : Type*) [AddCommGroup N] [Module R N] [Module O N]
     [Module O' N] [IsScalarTower O R N] [IsScalarTower O' R N] [IsScalarTower O O' N]
     [Algebra.FormallyUnramified R (R ⊗[O] O')] [Algebra.EssFiniteType R (R ⊗[O] O')] :
@@ -104,6 +129,21 @@ theorem exists_eigen_of_unramified (N : Type*) [AddCommGroup N] [Module R N] [Mo
 
 omit [Algebra O R] in
 
+/- English proof (translation)
+Set `i' : N →ₗ[O] L` to `{ i.toAddHom with map_smul' := hlin }`. Set `j : N ⊗[O] M →ₗ[R] L ⊗[O] M` to `{ (i'.rTensor M).toAddHom with map_smul' := fun r z ↦ by`. Express the relevant statement in the definitionally equal form `i'.rTensor M (r • z) = r • i'.rTensor M z`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [smul_add, map_add, hz, hz']`. Consider the case `tmul n m => simp [smul_tmul', i'] }`. Use `⟨j, fun _ _ ↦ rfl, Module.Flat.rTensor_preserves_injective_linearMap i' hi, fun z ↦ ⟨?_, fun hz ↦ ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z, rfl⟩ x`. Proceed by induction on `z with`.
+
+Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [smul_add, map_add, hz, hz']`. Consider the case `tmul n m`. Express the relevant statement in the definitionally equal form `(x • i n) ⊗ₜ[O] m = (τ x • i n) ⊗ₜ[O] m`. Rewrite using `[(hr _).mp ⟨n, rfl⟩]`.
+
+Take `⟨n, t, s, -, -, hst⟩` from `Module.Finite.exists_comp_eq_id_of_projective O M`. Set `c (k : Fin n) : L ⊗[O] M →ₗ[O] L` to `(TensorProduct.rid O L).toLinearMap ∘ₗ (LinearMap.proj k ∘ₗ s).lTensor L`. Establish `hc : ∀ k (r : R) z, c k (r • z) = r • c k z` using `fun k r z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [smul_add, map_add, hz, hz']`. Consider the case `tmul l m => simpa [smul_tmul', c] using smul_comm _ r l`. Establish `hsum : ∀ z, ∑ k, c k z ⊗ₜ[O] t (Pi.single k 1) = z` using `fun z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [map_add, add_tmul, Finset.sum_add_distrib, hz, hz']`. Consider the case `tmul l m`. Establish `hm : t (s m) = m` using `congr($hst m)`. Use `conv_rhs => rw [← hm, pi_eq_sum_univ' (s m)]`. Simplify using `[c, smul_tmul, tmul_sum]`.
+
+Use `choose u hu using fun k ↦ (hr (c k z)).mpr fun x ↦ by rw [← map_smul, hz, hc]`. Use `⟨∑ k, u k ⊗ₜ t (Pi.single k 1), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← hsum z]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ by rw [← hu]; rfl`.
+-/
 theorem exists_eigen_of_projective (M : Type*) [AddCommGroup M] [Module O M] [Module.Finite O M]
     [Module.Projective O M] {N L : Type*} [AddCommGroup N] [Module R N] [Module O N]
     [SMulCommClass O R N] [AddCommGroup L] [Module R L] [Module O L] [SMulCommClass O R L]
@@ -151,6 +191,13 @@ theorem exists_eigen_of_projective (M : Type*) [AddCommGroup M] [Module O M] [Mo
     rw [map_sum, ← hsum z]
     exact Finset.sum_congr rfl fun k _ ↦ by rw [← hu]; rfl
 
+/- English proof (translation)
+Take `⟨s, hs₁, hs₂⟩` from `exists_eigen_of_unramified (R := R) (O := O) (O' := O') (M := M) N`. Take `⟨j, hj₀, hj₁, hj₂⟩` from `exists_eigen_of_projective M (algebraMap O R) i hi (fun x n ↦ by rw [(hr _).mp ⟨n, rfl⟩, ← map_smul, algebraMap_smul]) hr`. Establish `hj : ∀ (x : O') z, j ((Algebra.lsmul O O M x).lTensor N z) = (Algebra.lsmul O O M x).lTensor L (j z)` using `fun x z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Consider the case `tmul n m => simp [hj₀]`. Use `⟨j ∘ₗ s, hj₁.comp hs₁, fun z ↦ ⟨?_, fun hz ↦ ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩ x`. Rewrite using `[LinearMap.comp_apply, ← hj, (hs₂ _).mp ⟨w, rfl⟩, map_smul]`.
+
+Take `⟨w, rfl⟩` from `(hj₂ z).mpr fun x ↦ by`. Rewrite using `[IsScalarTower.algebraMap_apply O O' R, ← hz, AlgHom.commutes]`. Simplify using `[Module.algebraMap_end_eq_smul_id]`. Take `⟨v, rfl⟩` from `(hs₂ w).mpr fun x ↦ hj₁ (by rw [hj, hz, map_smul])`. Conclude with `⟨v, rfl⟩`.
+-/
 theorem exists_eigen_tensor [Module.Finite O M] [Module.Projective O M]
     {N L : Type*} [AddCommGroup N] [Module R N] [Module O N]
     [Module O' N] [IsScalarTower O R N] [IsScalarTower O' R N] [IsScalarTower O O' N]
@@ -189,12 +236,20 @@ variable (k K E : Type*) [Field k] [CharZero k] [Field K] [Field E] [NumberField
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+-/
 theorem ringOfIntegers_injective (τ : 𝓞 K →+* k) : Function.Injective τ := by
   rw [RingHom.injective_iff_ker_eq_bot]
   refine Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_
   rw [RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]
   exact RingHom.injective_int _
 
+/- English proof (translation)
+Establish `hinj` using `ringOfIntegers_injective k K (algebraMap (𝓞 K) k)`. Set `: Algebra K k` to `(IsFractionRing.lift hinj).toAlgebra`. Establish `: IsScalarTower (𝓞 K) K k` using `.of_algebraMap_eq fun x ↦ (IsFractionRing.lift_algebraMap hinj x).symm`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) (nonZeroDivisors (𝓞 K))) E` using `IsIntegralClosure.isLocalization (𝓞 K) K E (𝓞 E)`. Establish `: Algebra.IsPushout (𝓞 K) K (𝓞 E) E` using `(Algebra.isPushout_of_isLocalization (nonZeroDivisors (𝓞 K)) K (𝓞 E) E).symm`.
+
+Establish `: Algebra.FormallyUnramified K E` using `Algebra.FormallyUnramified.of_isSeparable K E`. Establish `: Algebra.FormallyUnramified K (K ⊗[𝓞 K] 𝓞 E)` using `.of_equiv (Algebra.IsPushout.equiv (𝓞 K) K (𝓞 E) E).symm`. Conclude with `.of_equiv (Algebra.TensorProduct.cancelBaseChange (𝓞 K) K k k (𝓞 E))`.
+-/
 theorem formallyUnramified_ringOfIntegers [Algebra (𝓞 K) k] :
     Algebra.FormallyUnramified k (k ⊗[𝓞 K] 𝓞 E) := by
   have hinj := ringOfIntegers_injective k K (algebraMap (𝓞 K) k)
@@ -212,6 +267,11 @@ theorem formallyUnramified_ringOfIntegers [Algebra (𝓞 K) k] :
 
 omit [CharZero k] [NumberField K] in
 
+/- English proof (translation)
+Establish `h₁ : Module.finrank (𝓞 E) E = 1`. Rewrite using `[← IsFractionRing.finrank_right_eq (𝓞 E) E E, Module.finrank_self]`. Establish `: Module.Finite (𝓞 E) I` using `Module.Finite.iff_fg.mpr (FractionalIdeal.fg_of_isNoetherianRing le_rfl I)`. Establish `: Nontrivial I` using `Submodule.nontrivial_iff_ne_bot.mpr (FractionalIdeal.coeToSubmodule_ne_bot.mpr hI)`. Use `le_antisymm ?_ Module.finrank_pos` and prove the remaining obligations.
+
+Use `Module.finrank_le_of_rank_le ((Submodule.rank_le (I : Submodule (𝓞 E) E)).trans ?_)` and prove the remaining obligations. Rewrite using `[← IsFractionRing.rank_right_eq (𝓞 E) E E, Module.rank_self, Nat.cast_one]`.
+-/
 theorem finrank_fractionalIdeal {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : I ≠ 0) :
     Module.finrank (𝓞 E) I = 1 := by
   have h₁ : Module.finrank (𝓞 E) E = 1 := by
@@ -226,6 +286,11 @@ theorem finrank_fractionalIdeal {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) 
 
 omit [CharZero k] in
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 E) I` using `Module.Finite.iff_fg.mpr (FractionalIdeal.fg_of_isNoetherianRing le_rfl I)`. Establish `: Module.Finite (𝓞 K) I` using `Module.Finite.trans (𝓞 E) I`. Establish `: Nontrivial I` using `Submodule.nontrivial_iff_ne_bot.mpr (FractionalIdeal.coeToSubmodule_ne_bot.mpr hI)`. Take `⟨x, hx⟩` from `exists_ne (0 : (I : Submodule (𝓞 E) E))`. Use `le_antisymm (Module.finrank_le_of_rank_le ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.finrank_eq_rank, IsFractionRing.rank_right_eq (𝓞 K) K E]`. Conclude with `Submodule.rank_le ((I : Submodule (𝓞 E) E).restrictScalars (𝓞 K))`. Rewrite using `[IsFractionRing.finrank_eq (𝓞 K) K (𝓞 E) E]`. Conclude with `LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.toSpanSingleton (𝓞 E) I x).restrictScalars (𝓞 K)) (smul_left_injective _ hx)`.
+-/
 theorem finrank_fractionalIdeal_restrict {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}
     (hI : I ≠ 0) : Module.finrank (𝓞 K) I = Module.finrank K E := by
   have : Module.Finite (𝓞 E) I :=
@@ -243,6 +308,9 @@ theorem finrank_fractionalIdeal_restrict {I : FractionalIdeal (nonZeroDivisors (
 
 end Integers
 
+/- English proof (translation)
+The claim follows from `(Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo f fun i j φ ↦ Module.End.mapsTo_maxGenEigenspace_of_comm (hf j i) φ).mono fun _ ↦ iInf_mono fun i ↦ ((f i).genEigenspace _).monotone le_top`.
+-/
 theorem iSupIndep_eigen {k V I : Type*} [Field k] [AddCommGroup V] [Module k V]
     (f : I → Module.End k V) (hf : ∀ i j, Commute (f i) (f j)) :
     iSupIndep fun χ : I → k ↦ ⨅ i, (f i).eigenspace (χ i) :=

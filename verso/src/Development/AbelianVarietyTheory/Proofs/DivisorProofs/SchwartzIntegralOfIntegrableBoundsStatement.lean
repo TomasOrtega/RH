@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzIntegralOfI
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeSch.exists_schwartz_integral | exact GlobalTheory.ConeSch.exists_schwartz_integral | (intros; apply GlobalTheory.ConeSch.exists_schwartz_integral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_integral_of_integrable_bounds : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace S] (ν : Measure S)
     (f : S → SchwartzMap D ℂ),
     (∀ (n : ℕ) (x : D), AEStronglyMeasurable (fun s => iteratedFDeriv ℝ n (f s) x) ν) →

@@ -19,6 +19,11 @@ instance isNoetherian_projX {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : Is
   (isNoetherian_iff_of_finite_iSup_eq_top (S := chartOpen hP) (iSup_chartOpen_eq_top hP)).mpr
     (isNoetherianRing_gammaChart hP)
 
+/- English proof (translation)
+Use `haveI : ∀ x : projX P hP, _root_.IsReduced ((projX P hP).presheaf.stalk x) := by`. Introduce `x`. Take `⟨p, hp⟩` from `chartOpen_cover hP x`. Establish `hU` using `(chartOpen hP p).2`. Set `x' : ((chartOpen hP p).1 : Set (projX P hP))` to `⟨x, hp⟩`.
+
+Use `show _root_.IsReduced ((projX P hP).presheaf.stalk (x' : projX P hP))`. Use `letI := TopCat.Presheaf.algebra_section_stalk (projX P hP).presheaf x'`. Use `haveI := hU.isLocalization_stalk x'`. Conclude with `isReduced_localizationPreserves (hU.primeIdealOf x').asIdeal.primeCompl _ (isReduced_gammaChart hP hrad p)`. Conclude with `AlgebraicGeometry.isReduced_of_isReduced_stalk _`.
+-/
 theorem isReduced_projX {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hrad : P.IsRadical) : IsReduced (projX P hP) := by
   haveI : ∀ x : projX P hP, _root_.IsReduced ((projX P hP).presheaf.stalk x) := by
@@ -33,12 +38,20 @@ theorem isReduced_projX {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMult
       (isReduced_gammaChart hP hrad p)
   exact AlgebraicGeometry.isReduced_of_isReduced_stalk _
 
+/- English proof (translation)
+Introduce `x`. Take `⟨p, hp⟩` from `chartOpen_cover hP x`. Conclude with `⟨chartOpen hP p, hp, qeRing_gammaChart hP hQE p⟩`.
+-/
 theorem qe_projX {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hQE : FinalTheorems.FinTypeQE) : FinalTheorems.QE (projX P hP) := by
   intro x
   obtain ⟨p, hp⟩ := chartOpen_cover hP x
   exact ⟨chartOpen hP p, hp, qeRing_gammaChart hP hQE p⟩
 
+/- English proof (translation)
+Introduce `x p _ hchar`. Take `⟨q, hq⟩` from `chartOpen_cover hP x`. Set `f : ℂ →+* (projX P hP).residueField x` to `((projX P hP).residue x).hom.comp (((projX P hP).presheaf.germ (chartOpen hP q).1 x hq).hom.comp ((gammaChart hP q).symm.toRingHom.comp (algebraMap ℂ (chartRing P q))))`. It suffices to derive a contradiction. Establish `h1 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero`.
+
+Establish `h2 : f (p : ℂ) = 0`. Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. Conclude with `h1 (f.injective (by rw [h2, map_zero]))`.
+-/
 theorem fFinRes_projX {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P) :
     FinalTheorems.FFinRes (projX P hP) := by
   intro x p _ hchar
@@ -59,6 +72,19 @@ def projB (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (hP : IsMultiHomogIdeal 
   ⟨ProjectiveSpectrum.zeroLocus (segreGrading P) (Ideal.Quotient.mk (segreIdeal P) '' (segreIdeal D : Set _)),
     ProjectiveSpectrum.isClosed_zeroLocus _ _⟩
 
+/- English proof (translation)
+Use `letI := segreGraded hP`. Establish `hsec : ∀ f, (gammaChart hP p).symm (Ideal.Quotient.mk _ f) = Proj.awayToSection (segreGrading P) (segreW P p) (polyToAway hP p f)` using `fun f => rfl`. Use `show (Ideal.Quotient.mk (segreIdeal P) '' (segreIdeal D : Set _)) ⊆ (ProjectiveSpectrum.asHomogeneousIdeal (𝒜 := segreGrading P) x : Set _) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx'`.
+
+Take `⟨S, hS, rfl⟩` from `hD`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ha⟩` from `hS f hf`.
+
+Establish `hrn : rename (chartUpd p) f ∈ segreIdeal (Ideal.span S)` using `by show segreMap (rename (chartUpd p) f) ∈ Ideal.span S`. Rewrite using `[segre_rename_chartUpd p ha]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span hf)`. Establish `hhom` using `(isHomogeneous_of_isMultiHomog ha).rename_isHomogeneous (f := chartUpd p)`. Rewrite using `[hsec, away_eq_mk_of_val hP p _ hhom _ (val_polyToAway_mul_pow hP p ha)]`.
+
+Conclude with `(evaluation_awayToSection_eq_zero_iff _ _ x hx _).mpr (hx' ⟨_, hrn, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add f g _ _ h1 h2 => simp only [map_add, h1, h2, add_zero]`. Consider the case `smul a f _ h1 => simp only [smul_eq_mul, map_mul, h1, mul_zero]`. Introduce `h g hg`.
+
+Take `⟨g, hg, rfl⟩` from `hg`. Rewrite using `[← sum_homogeneousComponent g, map_sum]`. Use `show _ ∈ (ProjectiveSpectrum.asHomogeneousIdeal (𝒜 := segreGrading P) x).toIdeal`. Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Establish `hgd : homogeneousComponent d g ∈ segreIdeal D` using `homogeneousComponent_mem_of_mem (segreIdeal_isHomogeneous hD) hg d`.
+
+Establish `hv` using `h _ hgd`. Rewrite `hv` using `[hsec, away_eq_mk_of_val hP p _ (homogeneousComponent_isHomogeneous d g) _ (val_polyToAway_segre_mul_pow hP p (homogeneousComponent_isHomogeneous d g))]`. Conclude with `(evaluation_awayToSection_eq_zero_iff _ _ x hx _).mp hv`.
+-/
 theorem mem_projB_iff {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hD : IsMultiHomogIdeal D) (p : (k : K) → ι k) (x : projX P hP) (hx : x ∈ (chartOpen hP p).1) :
     x ∈ projB P D hP ↔
@@ -111,6 +137,9 @@ abbrev chartLocRing (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) →
     Type :=
   locAt (chartIdeal P p) y
 
+/- English proof (translation)
+Conclude with `exists_closedPoint_stalk' hP p x hx hc`.
+-/
 theorem exists_closedPoint_stalk {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (p : (k : K) → ι k) (x : projX P hP) (hx : x ∈ (chartOpen hP p).1) (hc : IsClosed ({x} : Set (projX P hP))) :
     ∃ y : (Σ k, ι k) → ℂ, (∀ h ∈ chartIdeal P p, eval y h = 0) ∧
@@ -118,12 +147,26 @@ theorem exists_closedPoint_stalk {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP
       Nonempty ((projX P hP).presheaf.stalk x ≃+* chartLocRing P p y) := by
   exact exists_closedPoint_stalk' hP p x hx hc
 
+/- English proof (translation)
+Establish `hopen` using `isOpen_regularLocus_of_cover (fun p => chartOpen hP p) (chartOpen_cover hP) (fun p => (qeRing_gammaChart hP hQE p).2.2 _)`. Conclude with `hopen.isClosed_compl`.
+-/
 theorem isClosed_sing {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hQE : FinalTheorems.FinTypeQE) : IsClosed (FinalTheorems.Sing (projX P hP)) := by
   have hopen := isOpen_regularLocus_of_cover (fun p => chartOpen hP p) (chartOpen_cover hP)
     (fun p => (qeRing_gammaChart hP hQE p).2.2 _)
   exact hopen.isClosed_compl
 
+/- English proof (translation)
+Introduce `x hx`. Assume the negation of the conclusion as `hxB`. Establish `: JacobsonSpace (projX P hP)` using `LocallyOfFiniteType.jacobsonSpace (toSpecC hP)`. Establish `hZ : IsLocallyClosed (FinalTheorems.Sing (projX P hP) ∩ (projB P D hP : Set (projX P hP))ᶜ)` using `(isClosed_sing hP hQE).isLocallyClosed.inter (projB P D hP).isClosed.isOpen_compl.isLocallyClosed`. Take `⟨c, ⟨hcS, hcB⟩, hcc⟩` from `nonempty_inter_closedPoints (Z := FinalTheorems.Sing (projX P hP) ∩ (projB P D hP : Set (projX P hP))ᶜ) ⟨x, hx, hxB⟩ hZ`.
+
+Take `⟨p, hp⟩` from `chartOpen_cover hP c`. Take `⟨y, hy, hval, ⟨e⟩⟩` from `exists_closedPoint_stalk hP p c hp hcc`. Establish `hreg : ¬ IsRegularLocalRing (chartLocRing P p y)` using `fun h => hcS (IsRegularLocalRing.of_ringEquiv e.symm)`. Establish `hDy` using `hsing p y hy hreg`. Apply `hcB` to reduce the goal to its premises.
+
+Rewrite using `[SetLike.mem_coe, mem_projB_iff hP hD p c hp]`. Introduce `f hf`. Rewrite using `[← val_eq_zero_iff (toSpecC hP) _ c hp hcc]`. Take `⟨φ, hφ⟩` from `val_ringHom (toSpecC hP) (chartOpen hP p).1 c hp hcc`. Rewrite using `[← hφ, gammaChart_symm_mk, eval₂_comp_left]`.
+
+Establish `h1 : φ.comp (constSec (toSpecC hP) (chartOpen hP p).1) = RingHom.id ℂ`. Use extensionality with `a`. Simplify using `[hφ, val_const (toSpecC hP) _ c hp hcc]`. Establish `h2 : (φ ∘ chartCoord hP p) = y`. Use function extensionality and compare the values at `q`.
+
+Simplify using `[hφ, hval]`. Rewrite using `[h1, h2]`. Conclude with `hDy f hf`.
+-/
 theorem sing_subset_projB {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hD : IsMultiHomogIdeal D) (hQE : FinalTheorems.FinTypeQE)
     (hsing : ∀ (p : (k : K) → ι k) (y : (Σ k, ι k) → ℂ), (∀ h ∈ chartIdeal P p, eval y h = 0) →
@@ -154,6 +197,23 @@ theorem sing_subset_projB {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : Is
   rw [h1, h2]
   exact hDy f hf
 
+/- English proof (translation)
+Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Take `⟨p, hp⟩` from `chartOpen_cover hP x`. Establish `hA : IsAffineOpen (chartOpen hP p).1` using `(chartOpen hP p).2`. Take `⟨𝔮, h𝔮min, h𝔮le⟩` from `Ideal.exists_minimalPrimes_le (bot_le : ⊥ ≤ (hA.primeIdealOf ⟨x, hp⟩).asIdeal)`.
+
+Establish `h𝔮p : 𝔮.IsPrime` using `h𝔮min.1.1`. Set `η : PrimeSpectrum Γ(projX P hP, (chartOpen hP p).1)` to `⟨𝔮, h𝔮p⟩`. Establish `hspec : hA.fromSpec η ⤳ x`. Establish `h1 : η ⤳ hA.primeIdealOf ⟨x, hp⟩` using `(PrimeSpectrum.le_iff_specializes _ _).mp h𝔮le`. Establish `h2` using `h1.map (hA.fromSpec).continuous`.
+
+Rewrite `h2` using `[hA.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Establish `hηO : hA.fromSpec η ∈ interior (projB P D hP : Set (projX P hP))` using `hspec.mem_open isOpen_interior hx`. Establish `hηU : hA.fromSpec η ∈ (chartOpen hP p).1` using `hA.range_fromSpec.le ⟨η, rfl⟩`. Establish `hηB : hA.fromSpec η ∈ (projB P D hP : Set (projX P hP))` using `interior_subset hηO`. Rewrite `hηB` using `[SetLike.mem_coe, mem_projB_iff hP hD p _ hηU]`.
+
+Establish `hpη : hA.primeIdealOf ⟨hA.fromSpec η, hηU⟩ = η` using `(hA.fromSpec).isOpenEmbedding.injective (hA.fromSpec_primeIdealOf ⟨hA.fromSpec η, hηU⟩)`. Set `θ : MvPolynomial (Σ k, ι k) ℂ →+* Γ(projX P hP, (chartOpen hP p).1)` to `(gammaChart hP p).symm.toRingHom.comp (Ideal.Quotient.mk (chartIdeal P p))`. Establish `hθs : Function.Surjective θ` using `(gammaChart hP p).symm.surjective.comp Ideal.Quotient.mk_surjective`. Establish `hθk : RingHom.ker θ = chartIdeal P p`. Use extensionality with `f`.
+
+Simplify using `[θ, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hDM : D ≤ 𝔮.comap θ` using `fun f hf => by`. Establish `h1` using `hηB f hf`. Rewrite `h1` using `[evaluation_eq_zero_iff_mem_primeIdealOf hA _ hηU, hpη]`. Conclude with `h1`.
+
+Establish `hMmin : 𝔮.comap θ ∈ (chartIdeal P p).minimalPrimes`. Use `⟨⟨Ideal.comap_isPrime θ 𝔮, fun f hf => ?_⟩, fun J hJ hJM => ?_⟩` and prove the remaining obligations. Establish `: θ f = 0` using `by rw [← RingHom.mem_ker, hθk]; exact hf show θ f ∈ 𝔮`. Rewrite using `[this]`. Conclude with `𝔮.zero_mem`.
+
+Use `haveI := hJ.1`. Establish `hk : RingHom.ker θ ≤ J` using `hθk ▸ hJ.2`. Establish `hJ' : (J.map θ).IsPrime` using `Ideal.map_isPrime_of_surjective hθs hk`. Establish `hle : J.map θ ≤ 𝔮` using `Ideal.map_le_iff_le_comap.mpr hJM`. Establish `h3 : 𝔮 ≤ J.map θ` using `h𝔮min.2 ⟨hJ', bot_le⟩ hle`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← RingHom.ker_eq_comap_bot]) hk`. Take `⟨q, hq, hrel, hDq⟩` from `exists_relevant_minimalPrime_of_chart hP hD p _ hMmin hDM`. Conclude with `hmin q hq hrel hDq`.
+-/
 theorem interior_projB {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
     (hD : IsMultiHomogIdeal D) (hmin : ∀ q ∈ P.minimalPrimes, IsRelevant q → ¬ D ≤ q) :
     interior (projB P D hP : Set (projX P hP)) = ∅ := by

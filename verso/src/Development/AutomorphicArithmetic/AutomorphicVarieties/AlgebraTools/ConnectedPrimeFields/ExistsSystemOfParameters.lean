@@ -6,6 +6,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Establish `hne : J ≠ ⊤` using `fun h => (maximalIdeal.isMaximal A).ne_top (top_le_iff.mp (h ▸ hle))`. Use `haveI : Nontrivial (A ⧸ J) := Ideal.Quotient.nontrivial_iff.mpr hne`. Use `haveI : IsLocalRing (A ⧸ J) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Use `set π := Ideal.Quotient.mk J with hπ`. Establish `hsurj : Function.Surjective π` using `Ideal.Quotient.mk_surjective`.
+
+Use `haveI : IsLocalHom π := IsLocalHom.of_surjective π hsurj`. Take `⟨s, hs, hcard⟩` from `Ideal.exists_finset_card_eq_height_of_isNoetherianRing (maximalIdeal (A ⧸ J))`. Take `⟨g, hg⟩` from `hsurj.hasRightInverse`. Use `⟨s.toList.map g, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨z, hz, rfl⟩` from `List.mem_map.1 hy`. Establish `h1 : π (g z) ∈ maximalIdeal (A ⧸ J)`. Rewrite using `[hg]`. Conclude with `hs.1.2 (Ideal.subset_span (Finset.mem_toList.1 hz))`. Rewrite `h1`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `fun h => h1 (h.map π)`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, ← hcard]`. Simplify using the standard rewrite rules. Introduce `P hP hJP hy`. Establish `hker : RingHom.ker π ≤ P` using `by rw [hπ, Ideal.mk_ker]; exact hJP`.
+
+Establish `hP' : (P.map π).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj hker`. Establish `hs' : Ideal.span (s : Set (A ⧸ J)) ≤ P.map π`. Rewrite using `[Ideal.span_le]`. Introduce `z hz`. Rewrite using `[← hg z]`.
+
+Conclude with `Ideal.mem_map_of_mem π (hy _ (List.mem_map.2 ⟨z, Finset.mem_toList.2 hz, rfl⟩))`. Establish `hm : maximalIdeal (A ⧸ J) ≤ P.map π` using `hs.2 ⟨hP', hs'⟩ (le_maximalIdeal hP'.ne_top)`. Use `le_antisymm (le_maximalIdeal hP.ne_top) fun a ha => ?_` and prove the remaining obligations. Establish `h1 : π a ∈ P.map π` using `hm (map_nonunit π a ha)`. Rewrite `h1` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective π hsurj, ← RingHom.ker_eq_comap_bot, sup_eq_left.2 hker]`.
+
+Conclude with `h1`.
+-/
 private theorem UpperTheory.V.AlgebraTools.Conn.exists_system_of_parameters {A : Type} [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] (J : Ideal A) (hle : J ≤ maximalIdeal A) :
     ∃ ys : List A, (∀ y ∈ ys, y ∈ maximalIdeal A) ∧
@@ -48,6 +63,13 @@ private theorem UpperTheory.V.AlgebraTools.Conn.exists_system_of_parameters {A :
       sup_eq_left.2 hker] at h1
     exact h1
 
+/- English proof (translation)
+Establish `h1` using `h.regular_mod_prev l.length (by simp)`. Simplify using `only [List.getElem_append_right, le_refl, Nat.sub_self, List.getElem_cons_zero] at h1`. Rewrite `h1` using `[List.take_left' rfl]`. Establish `e : (Ideal.ofList l • (⊤ : Submodule A A)) = Ideal.ofList l`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`.
+
+Establish `h2 : (Submodule.Quotient.mk x : A ⧸ (Ideal.ofList l • (⊤ : Submodule A A))) = 0`. Apply `h1` to reduce the goal to its premises. Use `show a • _ = a • _`. Rewrite using `[smul_zero, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, e]`. Conclude with `hx`.
+
+Rewrite `h2` using `[Submodule.Quotient.mk_eq_zero, e]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.AlgebraTools.Conn.weakly_regular_mem_of_mul {A : Type} [CommRing A] (l w : List A) (a : A)
     (h : RingTheory.Sequence.IsWeaklyRegular A (l ++ a :: w)) (x : A)
     (hx : a * x ∈ Ideal.ofList l) : x ∈ Ideal.ofList l := by
@@ -64,6 +86,29 @@ private theorem UpperTheory.V.AlgebraTools.Conn.weakly_regular_mem_of_mul {A : T
     exact hx
   rwa [Submodule.Quotient.mk_eq_zero, e] at h2
 
+/- English proof (translation)
+Introduce `A _ _ hA xs hxs hdim h2`. Use `haveI := hA.1`. Take `⟨ys, hys, hlen, hP⟩` from `exists_system_of_parameters (Ideal.ofList xs) (Ideal.span_le.2 hxs)`. Rewrite `hdim`, `h2` using `[← hlen]`. Establish `h2' : 2 ≤ ys.length` using `by exact_mod_cast h2`.
+
+Take `⟨u, v, w, rfl⟩ : ∃ u v w, ys = u :: v :: w` from `by match ys, h2' with`. Consider the case `u :: v :: w, _ => exact ⟨u, v, w, rfl⟩`. Establish `hu` using `hys u (by simp)`. Establish `hv` using `hys v (by simp)`. Use `⟨u, hu, v, hv, fun m K => ?_⟩` and prove the remaining obligations.
+
+Break down `K with _ | K` into its components or cases. Simplify using `using isWeaklyRegularPairMod_one_left _ _`. Use `set l := xs.map (· ^ (m + 1)) with hl`. Establish `hreg : RingTheory.Sequence.IsRegular A (l ++ u ^ (K + 1) :: v ^ (K + 1) :: w)`. Use `hA.isRegular_of_isArtinianRing_quotient _ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `r hr`. Simplify using `only [hl, List.mem_append, List.mem_map, List.mem_cons] at hr`. Break down `hr with ⟨x, hx, rfl⟩ | rfl | rfl | hr` into its components or cases. Conclude with `Ideal.pow_mem_of_mem _ (hxs x hx) _ (Nat.succ_pos _)`. Conclude with `Ideal.pow_mem_of_mem _ hu _ (Nat.succ_pos _)`.
+
+Conclude with `Ideal.pow_mem_of_mem _ hv _ (Nat.succ_pos _)`. Conclude with `hys r (by simp [hr])`. Rewrite using `[← hdim]`. Simplify using `only [hl, List.length_append, List.length_map, List.length_cons]`. Use `push_cast`.
+
+Rewrite using `[add_comm]`. Use `set I := Ideal.ofList (l ++ u ^ (K + 1) :: v ^ (K + 1) :: w) with hI`. Establish `: Ring.KrullDimLE 0 (A ⧸ I)`. Rewrite using `[Ring.krullDimLE_zero_iff]`. Introduce `Q hQ`.
+
+Establish `hp : (Q.comap (Ideal.Quotient.mk I)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hmem : ∀ r ∈ l ++ u ^ (K + 1) :: v ^ (K + 1) :: w, r ∈ Q.comap (Ideal.Quotient.mk I)`. Introduce `r hr`. Establish `: r ∈ I` using `Ideal.subset_span hr`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 this]`.
+
+Conclude with `Q.zero_mem`. Use `hP _ hp (Ideal.span_le.2 fun x hx => hp.mem_of_pow_mem (m + 1) (hmem _ (List.mem_append_left _ (List.mem_map.2 ⟨x, hx, rfl⟩)))) (by` as an intermediate fact. Introduce `y hy`. Simplify using `only [List.mem_cons] at hy`. Break down `hy with rfl | rfl | hy` into its components or cases.
+
+Conclude with `hp.mem_of_pow_mem (K + 1) (hmem _ (by simp))`. Conclude with `hp.mem_of_pow_mem (K + 1) (hmem _ (by simp))`. Conclude with `hmem _ (by simp [hy]))`. Establish `hmax : (Q.comap (Ideal.Quotient.mk I)).IsMaximal` using `this ▸ maximalIdeal.isMaximal A`. Rewrite using `[← Ideal.map_comap_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective Q]`.
+
+Use `(Ideal.map_eq_top_or_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective hmax).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_comap_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective Q]`. Conclude with `hQ.ne_top`. Conclude with `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero`. Use `⟨weakly_regular_mem_of_mul l _ _ hreg.toIsWeaklyRegular, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `e : Ideal.ofList (l ++ [u ^ (K + 1)]) = Ideal.ofList l ⊔ Ideal.span {u ^ (K + 1)}`. Rewrite using `[Ideal.ofList_append, Ideal.ofList_singleton]`. Rewrite `ha`, the goal using `[← e]`. Conclude with `weakly_regular_mem_of_mul _ w _ (by simpa using hreg.toIsWeaklyRegular) a ha`.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.reg2 :
     ∀ {A : Type} [CommRing A] [IsLocalRing A], ReciprocityTheory.CA.IsCM A → ∀ xs : List A, (∀ x ∈ xs, x ∈ maximalIdeal A) →
       ringKrullDim (A ⧸ Ideal.ofList xs) + xs.length = ringKrullDim A → 2 ≤ ringKrullDim (A ⧸ Ideal.ofList xs) →

@@ -21,6 +21,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `: Fact (PD.p).Prime` using `⟨PD.hp⟩`. Establish `: IsDomain O` using `Function.Injective.isDomain (algebraMap O LL) hinj`. Take `⟨hπ, -, -⟩` from `lemG_units W hcase hP9 hc₁ hO hOv hinj`. Establish `hdM : imgSub W F i ≤ (imgSub W F i).comap dop₂` using `fun z hz => dop_inImg W hπ F i dop₁ hd₁ dop₂ hd₂ hgN₁ hz`. Establish `hpow : ∀ (k : ℕ) (z : W.DD T₂), (((imgSub W F i).mapQ (imgSub W F i) dop₂ hdM) ^ k) ((imgSub W F i).mkQ z) = (imgSub W F i).mkQ ((dop₂ ^ k) z)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+
+Introduce `z`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, show ((imgSub W F i).mapQ (imgSub W F i) dop₂ hdM) ((imgSub W F i).mkQ z) = (imgSub W F i).mkQ (dop₂ z) from rfl, ih]`. Establish `haev : ∀ (p : O[X]) (z : W.DD T₂), aeval ((imgSub W F i).mapQ (imgSub W F i) dop₂ hdM) p ((imgSub W F i).mkQ z) = (imgSub W F i).mkQ (aeval dop₂ p z)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`.
+
+Consider the case `add p q hp hq => intro z`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq, map_add]`. Consider the case `monomial k c`. Introduce `z`. Rewrite using `[aeval_monomial, aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, hpow, Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul]`.
+
+It suffices to establish `hmain : InImg W F i ((((PD.p : ℕ) : O) ^ EG PD.p (Ai + ri) S η bi) • (s • lam)) by`. Take `⟨x₁, h1, h2⟩` from `hmain`. Use `⟨x₁, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← algebraMap_smul (LetA O n), map_pow, map_natCast]`. Break down `Nat.eq_zero_or_pos (Ai + ri) with ha0 | ha` into its components or cases.
+
+Establish `h` using `q_pow_inImg W hcase hP9 hc₁ hO hOv hinj F i Ai ri hA hr hH1`. Rewrite `h` using `[ha0, pow_zero, one_smul]`. Conclude with `inImg_smulO W F i _ h`. Establish `h₁` using `step_i W hcase hP9 i F hc₁ hO hOv Ai ri hA hr bi (by omega) hgpi0 hA3 hA4 hl0 hinj hgN₁ hgN₂ dop₁ hd₁ dop₂ hd₂ cc hcc s s' hs' hs lam hH1 hH2`. Establish `h₂` using `step_ii W hcase hP9 hc₁ hO hOv hinj F i Ai ri hA hr dop₁ hd₁ dop₂ hd₂ (TruncatedCoefficientPoly cc bi S η (Ai + ri)) hCONS hH1`.
+
+Establish `hu : v (algebraMap O LL ((W.χΓ W.gam : Oˣ) : O) - 1) = 1`. Rewrite using `[W.gam_gen, hcase.2.1, Nat.cast_one]`. Establish `hcA` using `cc_assoc v PD.p hcase.2.2 W.v_l hO hOv hinj (W.χΓ W.gam) hu cc hcc`. Establish `hS₂ : TruncationIndexSet bi S η (Ai + ri) ⊆ Finset.Icc ((bi : ℤ) + 1) ((bi : ℤ) + S + (Ai + ri : ℕ)) ∪ Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + (Ai + ri : ℕ))`. Introduce `y hy`.
+
+Simplify using `only [TruncationIndexSet, winU, Finset.mem_image, Finset.mem_product, Finset.mem_union, Finset.mem_Icc] at hy`. Take `⟨⟨u, j⟩, ⟨hu | hu, hj⟩, rfl⟩` from `hy`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`. Use `left`. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`. Use `right`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hE : ⌊(((3 * (Ai + ri) + S + 2 * η : ℕ) : ℝ) - 2) / ((PD.p : ℝ) - 1) + Real.logb PD.p ((bi : ℝ) + η - 1)⌋₊ ≤ EG PD.p (Ai + ri) S η bi`. Unfold `EG`. Use `push_cast`. Conclude with `le_rfl`. Establish `key` using `lemmaG_lagr PD.p ((imgSub W F i).mapQ (imgSub W F i) dop₂ hdM) cc hl0 hcA (Ai + ri) S η bi (EG PD.p (Ai + ri) S η bi) ha hb (TruncationIndexSet bi S η (Ai + ri)) hS₂ ((imgSub W F i).mkQ (s • lam)) (by rw [haev]; exact (Submodule.Quotient.mk_eq_zero _).2 h₁) (by rw [haev]; exact ( …`.
+
+Rewrite `key` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `key`.
+-/
 theorem existsLiftMapEqPrimePowSmul (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (i : ZMod n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hsur : Formalism.MainNotions.LiftingTheory.Sur W F)
     (hc₁ : IsCrys PD T₁.ρ) (hc₂ : IsCrys PD T₂.ρ)

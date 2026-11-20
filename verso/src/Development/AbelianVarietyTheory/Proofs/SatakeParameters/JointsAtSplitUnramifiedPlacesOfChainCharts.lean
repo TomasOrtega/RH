@@ -23,6 +23,13 @@ namespace GlobalTheory.TwV
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex t μ hlt hJ u w hg hw`. Take `⟨J⟩` from `hJ u`. Establish `ht : (Gl.Fl u w hg).t = D.R.t` using `fl_t ex u w hg`. Establish `hm : (Gl.Fl u w hg).mm = D.R.m` using `fl_mm_eq ex u w hg`. Take `⟨Z, hFo, hgood, hrest, -⟩` from `GlobalTheory.T.exists_comparisonSiteData_over_chainCharts t u w hg μ J hw`.
+
+Establish `H : CmpJHyp ex.cmp (Z.inTw (Gl.Fl u w hg) ht hT)` using `GlobalTheory.T.comparison_data_statements_at_site J.Gd.herm u w hg ex.tw μ Z (Gl.Fl u w hg) ht hT (fun u => J.Gd.forms u) ex.cmp J.Gd.cmp (fillRec ex u w hg) hgood hrest`. Establish `one` using `GlobalTheory.T.step_zero_level_statements_of_joint hT ex.cmp J.Gd u w hg J.joint0`. Take `⟨X, hX⟩` from `GlobalTheory.T.exists_labIn_c0_cls_eq_levelZeroClass hT ex.cmp J.Gd u w hg ex.tw μ Z (Gl.Fl u w hg) ht hm hgood J.rat (GlobalTheory.chTw_DGam_dvd_mem_DGam t u μ) one J.e0`. Take `⟨hst, htw⟩` from `GlobalTheory.T.comparisonSite_charts_twists_eq_tupleChain J.Gd.herm u w hg ex.tw μ Z (Gl.Fl u w hg) ht hT J.Hh J.St J.val hFo`. Take `⟨hiw, hpl, hB, hpos, halg, halg0⟩` from `GlobalTheory.T.site_localIdentifications_eq_stepZero hT ex.cmp J.Gd u w hg ex.tw μ Z (Gl.Fl u w hg) ht`.
+
+Use `⟨Z.lv (Gl.Fl u w hg) ht, Z.inTw (Gl.Fl u w hg) ht hT, H, X, ⟨?_⟩⟩` and prove the remaining obligations. Use `exact`. Use the proof step `{ Gd := J.Gd St := J.St A := J.A dtU := J.Hh.dt a := J.a pins := J.pins tie := J.tie st := fun j hj => hst j hj e0 := J.e0 jointCmpEmbeddingY := J.jointCmpEmbeddingY e0Tw := J.e0Tw one := one cls0 := fun c La _ => hX c La lev0 := J.lev0 ch0 := J.ch0 y0 := J.y0 fr0 := J.fr0 iw := …`.
+-/
 theorem jointsAt_of_jIn : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (μ : D.what₂.Tup), G.LatTied hT Gi Gl → (∀ u, Nonempty (JIn t u μ)) → GlobalTheory.TwV.JointsAt t μ := by
   intro D L hT Gi Gl Kc Dx cX ex t μ hlt hJ u w hg hw
   obtain ⟨J⟩ := hJ u

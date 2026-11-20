@@ -10,6 +10,15 @@ open GlobalTheory.AV GlobalTheory.AV.AbVar
 
 namespace GlobalTheory.CharpolyMinpolyPower
 
+/- English proof (translation)
+It suffices to establish `H : ∀ n : ℕ, ∀ Q : ℚ[X], Q.natDegree = n → Q.Monic → (∀ a : Ω, aeval a Q = 0 → minpoly ℚ a = m) → ∃ k : ℕ, Q = m ^ k from H _ P rfl hP h`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Q hQn hQ hroots`.
+
+Distinguish the cases in `hn : Q.natDegree = 0`. Conclude with `⟨0, by rw [pow_zero]; exact Polynomial.eq_one_of_monic_natDegree_zero hQ hn⟩`. Establish `hdeg : Q.degree ≠ 0`. Rewrite using `[Polynomial.degree_eq_natDegree hQ.ne_zero]`. Conclude with `hn` after adjusting the coercions.
+
+Take `⟨a, ha⟩` from `IsAlgClosed.exists_aeval_eq_zero Ω Q hdeg`. Establish `hdvd : m ∣ Q` using `hroots a ha ▸ minpoly.dvd ℚ a ha`. Take `⟨Q', rfl⟩` from `hdvd`. Establish `hQ' : Q'.Monic` using `hm.of_mul_monic_left hQ`. Establish `hsum : (m * Q').natDegree = m.natDegree + Q'.natDegree` using `hm.natDegree_mul hQ'`.
+
+Establish `hm0 : 0 < m.natDegree` using `hirr.natDegree_pos`. Take `⟨k, hk⟩` from `ih Q'.natDegree (by omega) Q' rfl hQ' (fun b hb => hroots b (by rw [map_mul, hb, mul_zero]))`. Conclude with `⟨k + 1, by rw [hk, pow_succ, mul_comm]⟩`.
+-/
 theorem eq_pow_of_roots (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω] (P m : ℚ[X]) (hP : P.Monic)
     (hm : m.Monic) (hirr : Irreducible m) (h : ∀ a : Ω, aeval a P = 0 → minpoly ℚ a = m) :
     ∃ k : ℕ, P = m ^ k := by
@@ -34,6 +43,13 @@ theorem eq_pow_of_roots (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω]
         (fun b hb => hroots b (by rw [map_mul, hb, mul_zero]))
       exact ⟨k + 1, by rw [hk, pow_succ, mul_comm]⟩
 
+/- English proof (translation)
+Establish `hI : Ideal.span {r} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hN0 : Ideal.absNorm (Ideal.span {r}) ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {r}))`. Establish `hc : ((Ideal.absNorm (Ideal.span {r}) : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast hN0`. Establish `hι : ι r ≫ ι s = ((Ideal.absNorm (Ideal.span {r}) : ℕ) : ℤ) • 𝟙 A`.
+
+Rewrite using `[← End.mul_def, ← map_mul, hs, map_natCast, natCast_zsmul]`. Conclude with `(nsmul_one (A := End A) _).symm`. Take `⟨-, hdN⟩` from `GlobalTheory.MulIsogeny.mul_isogeny K A _ hc`. Establish `hcomp` using `(isIsogeny_comp_iff_and_deg_comp K A A A (ι r) (ι s) rfl rfl).2`. Rewrite `hcomp` using `[hι, hdN]`.
+
+Introduce `h0`. Rewrite `hcomp` using `[h0, zero_mul]`. Conclude with `pow_ne_zero _ (Int.natAbs_ne_zero.2 hc) hcomp`.
+-/
 theorem deg_ne_zero {K : Type} [Field K] (A : AbVar K) {F : Type} [Field F] [NumberField F]
     (ι : NumberField.RingOfIntegers F →+* End A) (r : NumberField.RingOfIntegers F) (hr : r ≠ 0) :
     deg (A := A) (B := A) (ι r) ≠ 0 := by
@@ -51,6 +67,23 @@ theorem deg_ne_zero {K : Type} [Field K] (A : AbVar K) {F : Type} [Field F] [Num
   rw [h0, zero_mul] at hcomp
   exact pow_ne_zero _ (Int.natAbs_ne_zero.2 hc) hcomp
 
+/- English proof (translation)
+Take `⟨hcp, -⟩` from `charpoly_spec K A (ι x)`. Take `⟨hmon, hdeg, -⟩` from `hcp`. Establish `hPm : ((charpoly (ι x)).map (Int.castRingHom ℚ)).Monic` using `hmon.map _`. Establish `hPdeg : ((charpoly (ι x)).map (Int.castRingHom ℚ)).natDegree = 2 * A.dim`. Rewrite using `[hmon.natDegree_map, hdeg]`.
+
+Set `ιa : NumberField.RingOfIntegers F →ₐ[ℤ] End A` to `AlgHom.mk ι (fun n => by show ι (algebraMap ℤ _ n) = algebraMap ℤ (End A) n`. Rewrite using `[eq_intCast (algebraMap ℤ (NumberField.RingOfIntegers F)), eq_intCast (algebraMap ℤ (End A))]`. Conclude with `map_intCast ι n)`. Establish `hxint : IsIntegral ℚ (x : F)` using `Algebra.IsIntegral.isIntegral _`. Establish `key : ∀ a : AlgebraicClosure ℚ, aeval a ((charpoly (ι x)).map (Int.castRingHom ℚ)) = 0 → minpoly ℚ a = minpoly ℚ (x : F)`.
+
+Introduce `a ha`. Establish `haint : IsIntegral ℚ a` using `IsAlgebraic.isIntegral ⟨_, hPm.ne_zero, ha⟩`. Take `⟨b, hbM, hb⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors ℤ) (minpoly ℚ a)`. Establish `hRa : aeval a (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a)) = 0` using `IsLocalization.integerNormalization_aeval_eq_zero (nonZeroDivisors ℤ) _ (minpoly.aeval ℚ a)`. Establish `hprod` using `deg_aeval_eq_prod_aroots K A (ι x) (AlgebraicClosure ℚ) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a))`.
+
+Establish `hmem : a ∈ ((charpoly (ι x)).map (Int.castRingHom ℚ)).aroots (AlgebraicClosure ℚ)` using `(Polynomial.mem_aroots).2 ⟨hPm.ne_zero, ha⟩`. Rewrite `hprod` using `[Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨a, hmem, hRa⟩)]`. Establish `hdeg0 : deg (A` using `A) (B := A) (aeval (ι x) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a))) = 0 := by`. Establish `h` using `(map_eq_zero_iff _ (algebraMap ℚ (AlgebraicClosure ℚ)).injective).1 hprod`. Conclude with `h` after adjusting the coercions.
+
+Rewrite `hdeg0` using `[show aeval (ι x) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a)) = ι (aeval x (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a))) from Polynomial.aeval_algHom_apply ιa x _]`. Establish `hRx : aeval x (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `deg_ne_zero A ι _ hne hdeg0`. Establish `hRxF : aeval (x : F) (IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a)) = 0`.
+
+Establish `h` using `congrArg (algebraMap (NumberField.RingOfIntegers F) F) hRx`. Rewrite `h` using `[map_zero, ← Polynomial.aeval_algebraMap_apply]`. Then use the resulting hypothesis. Establish `hqx : aeval (x : F) (minpoly ℚ a) = 0`. Establish `h1 : aeval (x : F) ((IsLocalization.integerNormalization (nonZeroDivisors ℤ) (minpoly ℚ a)).map (algebraMap ℤ ℚ)) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap]` and apply the resulting hypothesis.
+
+Rewrite `h1` using `[hb, map_zsmul]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (nonZeroDivisors.ne_zero hbM)`. Conclude with `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible haint) hqx (minpoly.monic haint)`. Take `⟨k, hk⟩` from `eq_pow_of_roots (AlgebraicClosure ℚ) _ _ hPm (minpoly.monic hxint) (minpoly.irreducible hxint) key`. Use `⟨k, Nat.pos_of_ne_zero ?_, hk⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Rewrite `hPdeg` using `[hk, pow_zero, Polynomial.natDegree_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem charpoly_eq_minpoly_pow {K : Type} [Field K] (A : AbVar K) (hA : A.dim ≠ 0) {F : Type} [Field F]
     [NumberField F] (ι : NumberField.RingOfIntegers F →+* End A) (x : NumberField.RingOfIntegers F) :
     ∃ k : ℕ, 0 < k ∧ (charpoly (ι x)).map (Int.castRingHom ℚ) = minpoly ℚ (x : F) ^ k := by

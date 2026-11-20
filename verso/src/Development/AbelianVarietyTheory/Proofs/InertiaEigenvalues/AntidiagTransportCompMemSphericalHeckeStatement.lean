@@ -13,5 +13,8 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SatInd.guMap_comp_mem_hecke | exact GlobalTheory.SatInd.guMap_comp_mem_hecke | (intros; apply GlobalTheory.SatInd.guMap_comp_mem_hecke <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.antidiagTransport_comp_mem_sphericalHecke : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x)), (∀ x, x ∈ Formalism.UG.intL K ↔ g x ∈ Formalism.UG.intL K) → ∀ (n : ℕ) (h : Formalism.UG.GU σ' n → ℂ), h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ' n) → (fun y => h (GlobalTheory.SatInd.guMap g hg n y)) ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n) := by
   first | exact @GlobalTheory.SatInd.guMap_comp_mem_hecke | exact GlobalTheory.SatInd.guMap_comp_mem_hecke | (intros; apply GlobalTheory.SatInd.guMap_comp_mem_hecke <;> assumption)

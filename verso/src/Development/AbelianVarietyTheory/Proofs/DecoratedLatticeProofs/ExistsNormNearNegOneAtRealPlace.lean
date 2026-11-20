@@ -13,10 +13,16 @@ namespace GlobalTheory.NormSign
 
 open scoped Classical
 
+/- English proof (translation)
+The claim follows from `InfinitePlace.Completion.extensionEmbedding_coe v ((WithAbs.equiv v.1).symm x)`.
+-/
 theorem ext_algebraMap {K : Type} [Field K] [NumberField K] (v : InfinitePlace K) (x : K) :
     InfinitePlace.Completion.extensionEmbedding v (algebraMap K v.Completion x) = v.embedding x :=
   InfinitePlace.Completion.extensionEmbedding_coe v ((WithAbs.equiv v.1).symm x)
 
+/- English proof (translation)
+Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.isInducing.tendsto_nhds_iff]`. Conclude with `iff_of_eq (congrArg (fun g => Tendsto g l _) (funext fun x => ext_algebraMap v (f x)))`.
+-/
 theorem tendsto_completion_iff {K : Type} [Field K] [NumberField K] (v : InfinitePlace K) {α : Type}
     {l : Filter α} (f : α → K) (c : v.Completion) :
     Tendsto (fun x => algebraMap K v.Completion (f x)) l (𝓝 c) ↔
@@ -24,6 +30,11 @@ theorem tendsto_completion_iff {K : Type} [Field K] [NumberField K] (v : Infinit
   rw [(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.isInducing.tendsto_nhds_iff]
   exact iff_of_eq (congrArg (fun g => Tendsto g l _) (funext fun x => ext_algebraMap v (f x)))
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.mk_eq_iff]`. Use `⟨fun h => h.elim id fun h => ?_, Or.inl⟩` and prove the remaining obligations. Establish `e : ComplexEmbedding.conjugate j = j` using `ComplexEmbedding.isReal_iff.mp hj`. Use extensionality with `x`. Establish `h1` using `RingHom.congr_fun h x`.
+
+Establish `h2` using `RingHom.congr_fun e x`. Rewrite `h1`, `h2` using `[ComplexEmbedding.conjugate_coe_eq]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_eq_mk_iff_of_isReal {K : Type} [Field K] [NumberField K] {j σ : K →+* ℂ}
     (hj : ComplexEmbedding.IsReal j) : InfinitePlace.mk σ = InfinitePlace.mk j ↔ σ = j := by
   rw [InfinitePlace.mk_eq_iff]
@@ -36,6 +47,15 @@ theorem mk_eq_mk_iff_of_isReal {K : Type} [Field K] [NumberField K] {j σ : K �
   calc σ x = starRingEnd ℂ (j x) := by rw [← h1, Complex.conj_conj]
     _ = j x := h2
 
+/- English proof (translation)
+Establish `h` using `(tendsto_completion_iff (InfinitePlace.mk σ) id _).1 (hl (InfinitePlace.mk σ))`. Establish `hc : InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk σ) (if InfinitePlace.mk σ = InfinitePlace.mk j then -1 else 1) = if σ = j then -1 else 1`. Distinguish the cases in `hσ : σ = j`. Substitute `hσ` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg (fun e => hσ ((mk_eq_mk_iff_of_isReal hj).1 e)), if_neg hσ, map_one]`. Rewrite `h` using `[hc]`. Break down `InfinitePlace.embedding_mk_eq σ with e | e` into its components or cases. Rewrite `h` using `[e]`. Conclude with `h`.
+
+Rewrite `h` using `[e]`. Establish `h'` using `(Complex.continuous_conj.tendsto _).comp h`. Apply the tactic sequence `have hs : starRingEnd ℂ (if σ = j then -1 else 1) = if σ = j then -1 else 1 := by split_ifs <;> simp`. Rewrite `h'` using `[hs]`. Use `h'.congr fun x => ?_` and prove the remaining obligations.
+
+Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem tendsto_embedding {K : Type} [Field K] [NumberField K] {j : K →+* ℂ} (hj : ComplexEmbedding.IsReal j)
     {l : Filter K}
     (hl : ∀ u : InfinitePlace K, Tendsto (fun x => algebraMap K u.Completion x) l
@@ -58,6 +78,17 @@ theorem tendsto_embedding {K : Type} [Field K] [NumberField K] {j : K →+* ℂ}
     refine h'.congr fun x => ?_
     simp [ComplexEmbedding.conjugate_coe_eq]
 
+/- English proof (translation)
+Use `letI : Algebra E ℂ := u.embedding.toAlgebra`. Establish `hn : ∀ x : K, u.embedding (Algebra.norm E x) = ∏ σ : K →ₐ[E] ℂ, σ x` using `fun x => Algebra.norm_eq_prod_embeddings E ℂ x`. Repeatedly rewrite using `[hn]`. Establish `hlim : Tendsto (fun x => ∏ σ : K →ₐ[E] ℂ, σ x) l (𝓝 (∏ σ : K →ₐ[E] ℂ, if (σ : K →+* ℂ) = j then (-1 : ℂ) else 1))` using `tendsto_finset_prod _ fun σ _ => hσ (σ : K →+* ℂ)`. Use `hlim using 2` and compare the differences between its conclusion and the goal.
+
+Distinguish the cases in `hu : u = InfinitePlace.mk (j.comp (algebraMap E K))`. Establish `he : u.embedding = j.comp (algebraMap E K)`. Rewrite using `[hu]`. Conclude with `InfinitePlace.embedding_mk_eq_of_isReal (hj.comp _)`. Set `σ₀ : K →ₐ[E] ℂ` to `{ toRingHom := j, commutes' := fun e => (RingHom.congr_fun he e).symm }`.
+
+Establish `hiff : ∀ σ : K →ₐ[E] ℂ, (σ : K →+* ℂ) = j ↔ σ = σ₀` using `fun σ => ⟨fun h => AlgHom.coe_ringHom_injective h, fun h => by rw [h]; rfl⟩`. Rewrite using `[if_pos hu, Finset.prod_congr rfl fun σ _ => if_congr (hiff σ) rfl rfl]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hu]`. Use `(Finset.prod_eq_one fun σ _ => if_neg fun h => hu ?_).symm` and prove the remaining obligations.
+
+Establish `he : u.embedding = j.comp (algebraMap E K)`. Use extensionality with `e`. Use `σ.commutes e` as an intermediate fact. Rewrite using `[← h]`. Conclude with `this.symm`.
+
+Rewrite using `[← he, InfinitePlace.mk_embedding]`.
+-/
 theorem tendsto_norm {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
     {j : K →+* ℂ} (hj : ComplexEmbedding.IsReal j) {l : Filter K}
     (hσ : ∀ σ : K →+* ℂ, Tendsto (fun x => σ x) l (𝓝 (if σ = j then -1 else 1))) (u : InfinitePlace E) :
@@ -94,6 +125,31 @@ namespace GlobalTheory.NormSign
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E K _ _ _ _ _ j hj T M W hW`. Use `set w₀ := InfinitePlace.mk (j.comp (algebraMap E K)) with hw₀`. Set `y : GlobalTheory.FrobDense.Loc T` to `(fun u => if u = InfinitePlace.mk j then -1 else 1, fun _ => 1)`. Set `f : K → GlobalTheory.FrobDense.Loc T` to `fun x => GlobalTheory.FrobDense.proj T (algebraMap K (AdeleRing (𝓞 K) K) x)`. Set `l : Filter K` to `comap f (𝓝 y)`.
+
+Use `haveI : l.NeBot := comap_neBot_iff.2 fun t ht => by`. Take `⟨_, hz, a, rfl⟩` from `mem_closure_iff_nhds.1 (GlobalTheory.FrobDense.denseRange_proj T y) t ht`. Conclude with `⟨a, hz⟩`. Establish `hf : Tendsto f l (𝓝 y)` using `tendsto_comap`. Establish `hinf : ∀ u : InfinitePlace K, Tendsto (fun x => algebraMap K u.Completion x) l (𝓝 (if u = InfinitePlace.mk j then -1 else 1))` using `fun u => (((continuous_apply u).comp continuous_fst).tendsto y).comp hf`.
+
+Establish `hfin : ∀ v : T, Tendsto (fun x => algebraMap K (v.1.adicCompletion K) x) l (𝓝 1)` using `fun v => (((continuous_apply v).comp continuous_snd).tendsto y).comp hf`. Establish `hσ` using `tendsto_embedding hj hinf`. Establish `h0 : ∀ᶠ x in l, x ≠ 0`. Establish `hj'` using `hσ j`. Rewrite `hj'` using `[if_pos rfl]`.
+
+Use `filter_upwards [hj'.eventually_ne (by norm_num : (-1 : ℂ) ≠ 0)] with x hx e`. Conclude with `hx (by rw [e, map_zero])`. Establish `h1 : ∀ᶠ x in l, ∀ v : T, v.1.valuation K (x - 1) ≤ WithZero.exp (-(M : ℤ))`. Rewrite using `[eventually_all]`. Introduce `v`.
+
+Establish `ho : IsOpen {z : v.1.adicCompletion K | Valued.v (z - 1) ≤ WithZero.exp (-(M : ℤ))}` using `(GlobalTheory.Mem.UnitOpen.isOpen_val_le v.1 (-(M : ℤ))).preimage (continuous_sub_right 1)`. Establish `hm : (1 : v.1.adicCompletion K) ∈ {z : v.1.adicCompletion K | Valued.v (z - 1) ≤ WithZero.exp (-(M : ℤ))}` using `by show Valued.v ((1 : v.1.adicCompletion K) - 1) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le'`. Use `filter_upwards [hfin v (ho.mem_nhds hm)] with x hx`.
+
+Establish `e : Valued.v (algebraMap K (v.1.adicCompletion K) x - 1) = v.1.valuation K (x - 1)`. Rewrite using `[← map_one (algebraMap K (v.1.adicCompletion K)), ← map_sub]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v.1 (x - 1)`. Rewrite using `[← e]`. Conclude with `hx`.
+
+Set `Φ : (InfiniteAdeleRing E)ˣ →* Ideles E` to `Units.map (MonoidHom.inl (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E))`. Establish `hΦ : Continuous Φ` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Set `P` to `ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E w₀ (-1)`. Set `p : (InfiniteAdeleRing E)ˣ` to `Units.map (MonoidHom.fst (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)) P`. Establish `hP : Φ p = P` using `Units.ext rfl`.
+
+Establish `hpW : Φ ⁻¹' W ∈ 𝓝 p` using `hΦ.continuousAt.preimage_mem_nhds (by rw [hP]; exact hW)`. Rewrite `hpW` using `[(GlobalTheory.HeckeGal.isOpenEmbedding_val_inf E).isInducing.nhds_eq_comap, mem_comap]`. Take `⟨U, hU, hUW⟩` from `hpW`. Establish `hpu : ∀ u : InfinitePlace E, InfinitePlace.Completion.extensionEmbedding u ((p : InfiniteAdeleRing E) u) = if u = w₀ then -1 else 1`. Introduce `u`.
+
+Distinguish the cases in `hu : u = w₀`. Substitute `hu` using the available equality. Rewrite using `[if_pos rfl]`. Use `show InfinitePlace.Completion.extensionEmbedding _ ((P : AdeleRing (𝓞 E) E).1 _) = _`. Rewrite using `[ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_self]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hu] show InfinitePlace.Completion.extensionEmbedding _ ((P : AdeleRing (𝓞 E) E).1 _) = _`. Rewrite using `[ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_ne E w₀ u hu, map_one]`. Establish `hg : Tendsto (fun x => algebraMap E (InfiniteAdeleRing E) (Algebra.norm E x)) l (𝓝 (p : InfiniteAdeleRing E))`. Use `tendsto_pi_nhds.2 fun u => ?_` and prove the remaining obligations.
+
+Use `(tendsto_completion_iff u (fun x => Algebra.norm E x) ((p : InfiniteAdeleRing E) u)).2 (by rw [hpu u]; exact tendsto_norm hj hσ u)` as an intermediate fact. Conclude with `this`. Establish `h2 : ∀ᶠ x in l, algebraMap E (InfiniteAdeleRing E) (Algebra.norm E x) ∈ U` using `hg hU`. Take `⟨x, ⟨hx0, hx1⟩, hx2⟩` from `((h0.and h1).and h2).exists`. Use `⟨Units.mk0 x hx0, fun w hw => hx1 ⟨w, hw⟩, ?_⟩` and prove the remaining obligations.
+
+Set `q : (InfiniteAdeleRing E)ˣ` to `Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom (Units.map (Algebra.norm E (S := K)) (Units.mk0 x hx0))`. Establish `hq : Units.map (ReciprocityTheory.Neutral.Bridge.HCFR.infPart E) (diagUnits E (Units.map (Algebra.norm E (S` using `K)) (Units.mk0 x hx0))) = Φ q := Units.ext rfl`. Rewrite using `[hq]`. Conclude with `hUW (show (q : InfiniteAdeleRing E) ∈ U from hx2)`.
+-/
 theorem exists_norm_sign : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (j : K →+* ℂ), NumberField.ComplexEmbedding.IsReal j → ∀ (T : Finset (HeightOneSpectrum (𝓞 K))) (M : ℕ) (W : Set (Ideles E)), W ∈ nhds (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E (InfinitePlace.mk (j.comp (algebraMap E K))) (-1)) → ∃ a : Kˣ, (∀ w ∈ T, w.valuation K ((a : K) - 1) ≤ WithZero.exp (-(M : ℤ))) ∧ Units.map (ReciprocityTheory.Neutral.Bridge.HCFR.infPart E) (diagUnits E (Units.map (Algebra.norm E (S := K)) a)) ∈ W := by
   intro E K _ _ _ _ _ j hj T M W hW
   set w₀ := InfinitePlace.mk (j.comp (algebraMap E K)) with hw₀

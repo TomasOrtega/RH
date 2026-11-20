@@ -10,6 +10,9 @@ namespace GlobalTheory.UnfoldingCompare
 open NumberField MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice
 open scoped ENNReal TensorProduct
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => forall_congr' fun a => imp_congr_right (h a)`.
+-/
 theorem allSome_congr {α : Sort*} {P Q Q' : α → Prop} (h : ∀ a, P a → (Q a ↔ Q' a)) :
     AllSome P Q ↔ AllSome P Q' :=
   and_congr_right fun _ => forall_congr' fun a => imp_congr_right (h a)
@@ -17,9 +20,17 @@ theorem allSome_congr {α : Sort*} {P Q Q' : α → Prop} (h : ∀ a, P a → (Q
 def IsChoice {α : Type} (T : (α → Prop) → Prop) : Prop :=
   ∃ S : Set α, (∀ K, T K ↔ T (fun _ => True) ∧ ∀ f ∈ S, K f) ∧ (T (fun _ => True) → S.Nonempty)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{a}, fun K => by simp, fun _ => ⟨a, rfl⟩⟩`.
+-/
 theorem isChoice_eval {α : Type} (a : α) : IsChoice fun K => K a :=
   ⟨{a}, fun K => by simp, fun _ => ⟨a, rfl⟩⟩
 
+/- English proof (translation)
+Use `choose S hS hne using h`. Use `⟨{f | ∃ b, P b ∧ f ∈ S b}, fun K => ⟨fun hK => ⟨⟨hK.1, fun b hb => ((hS b K).1 (hK.2 b hb)).1⟩, ?_⟩, fun hK => ⟨hK.1.1, fun b hb => (hS b K).2 ⟨hK.1.2 b hb, fun f hf => hK.2 f ⟨b, hb, hf⟩⟩⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨b, hb, hf⟩`. Conclude with `((hS b K).1 (hK.2 b hb)).2 f hf`. Introduce and unpack `⟨⟨b, hb⟩, hT⟩`.
+
+Take `⟨f, hf⟩` from `hne b (hT b hb)`. Conclude with `⟨f, b, hb, hf⟩`.
+-/
 theorem isChoice_allSome {α β : Type} (P : β → Prop) (T : β → (α → Prop) → Prop)
     (h : ∀ b, IsChoice (T b)) : IsChoice fun K => AllSome P fun b => T b K := by
   choose S hS hne using h
@@ -31,6 +42,13 @@ theorem isChoice_allSome {α β : Type} (P : β → Prop) (T : β → (α → Pr
     obtain ⟨f, hf⟩ := hne b (hT b hb)
     exact ⟨f, b, hb, hf⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hne⟩` from `hT`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Take `⟨h1, h2⟩` from `(hS _).1 h`. Take `⟨f₀, hf₀⟩` from `hne h1`.
+
+Use `⟨f₀ x, (hS _).2 ⟨h1, fun f hf => ?_⟩, h2 f₀ hf₀ x hx⟩` and prove the remaining obligations. Conclude with `(ENNReal.mul_right_inj hm hm').1 ((h2 f hf x hx).symm.trans (h2 f₀ hf₀ x hx))`. Introduce `h`. Take `⟨I₀, hI₀, -⟩` from `h x₀ h₀`. Use `(hS _).2 ⟨((hS _).1 hI₀).1, fun f hf x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨I, hI, hL⟩` from `h x hx`. Rewrite using `[hL, ((hS _).1 hI).2 f hf]`.
+-/
 theorem IsChoice.value_iff {X : Type} {T : ((X → ℝ≥0∞) → Prop) → Prop} (hT : IsChoice T)
     (p : X → Prop) (x₀ : X) (h₀ : p x₀) (L : X → ℝ≥0∞) {m : ℝ≥0∞} (hm : m ≠ 0) (hm' : m ≠ ⊤) :
     T (fun f => ∀ x, p x → L x = m * f x) ↔
@@ -52,18 +70,39 @@ section Stab
 
 variable {P Q P' Q' : ℕ}
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, fromBlocks_multiply]`.
+-/
 theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
   simp [Formalism.UG.Jpq, fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, fromBlocks_conjTranspose]`.
+-/
 theorem Jpq_conjTranspose (P Q : ℕ) : (Formalism.UG.Jpq P Q)ᴴ = Formalism.UG.Jpq P Q := by
   simp [Formalism.UG.Jpq, fromBlocks_conjTranspose]
 
+/- English proof (translation)
+The claim follows from `(show Formalism.UG.Upq P Q from g).2`.
+-/
 theorem mat_unitary (g : UpqT P Q) : (UpqT.mat g)ᴴ * Formalism.UG.Jpq P Q * UpqT.mat g = Formalism.UG.Jpq P Q :=
   (show Formalism.UG.Upq P Q from g).2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 theorem mat_injective {g h : UpqT P Q} (e : UpqT.mat g = UpqT.mat h) : g = h :=
   Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Use `set b := star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x with hb`. Establish `h3 : Cᴴ * Formalism.UG.Jpq P Q * replicateCol Unit x = 0`. Rewrite using `[← replicateCol_mulVec, h2]`. Both sides reduce to the same expression. Establish `h4 : (replicateCol Unit x)ᴴ * Formalism.UG.Jpq P Q * C = 0`.
+
+Use `congrArg conjTranspose h3` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, Jpq_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `h5 : (replicateCol Unit x)ᴴ * Formalism.UG.Jpq P Q * replicateCol Unit x = b • (1 : Matrix Unit Unit ℂ)`. Rewrite using `[Matrix.mul_assoc, ← replicateCol_mulVec, conjTranspose_replicateCol]`. Use extensionality with `i j`.
+
+Simplify using `[hb]`. Establish `hG : (fromCols C (replicateCol Unit x))ᴴ * Formalism.UG.Jpq P Q * fromCols C (replicateCol Unit x) = fromBlocks (Formalism.UG.Jpq P' Q') 0 0 (b • (1 : Matrix Unit Unit ℂ))`. Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul, fromRows_mul_fromCols, h1, h3, h4, h5]`. Establish `hN : (fromBlocks (Formalism.UG.Jpq P' Q') 0 0 (b⁻¹ • (1 : Matrix Unit Unit ℂ)) * ((fromCols C (replicateCol Unit x))ᴴ * Formalism.UG.Jpq P Q)) * fromCols C (replicateCol Unit x) = 1`. Rewrite using `[Matrix.mul_assoc, hG, fromBlocks_multiply]`.
+
+Simplify using `[Jpq_mul_self, smul_smul, hx]`. Establish `e : ((Fin P' ⊕ Fin Q') ⊕ Unit) ≃ (Fin P ⊕ Fin Q)` using `Fintype.equivOfCardEq (by simpa using hc)`. Conclude with `⟨_, _, hN, (Matrix.mul_eq_one_comm_of_equiv e).1 hN, hG⟩`.
+-/
 theorem exists_frame_inv (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ}
     (hx : star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x ≠ 0) {C : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ}
     (h1 : Cᴴ * Formalism.UG.Jpq P Q * C = Formalism.UG.Jpq P' Q') (h2 : (Cᴴ * Formalism.UG.Jpq P Q) *ᵥ x = 0) :
@@ -92,6 +131,9 @@ theorem exists_frame_inv (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ
   have e : ((Fin P' ⊕ Fin Q') ⊕ Unit) ≃ (Fin P ⊕ Fin Q) := Fintype.equivOfCardEq (by simpa using hc)
   exact ⟨_, _, hN, (Matrix.mul_eq_one_comm_of_equiv e).1 hN, hG⟩
 
+/- English proof (translation)
+Take `⟨N, B, -, hN, -⟩` from `exists_frame_inv hc hx h1 h2`. Apply `mat_injective` to reduce the goal to its premises. Establish `: UpqT.mat g * fromCols C (replicateCol Unit x) = UpqT.mat h * fromCols C (replicateCol Unit x)`. Rewrite using `[mul_fromCols, mul_fromCols, eC, ← replicateCol_mulVec, ← replicateCol_mulVec, ex]`. Rewrite using `[← Matrix.mul_one (UpqT.mat g), ← Matrix.mul_one (UpqT.mat h), ← hN, ← Matrix.mul_assoc, this, Matrix.mul_assoc]`.
+-/
 theorem eq_of_frame (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ}
     (hx : star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x ≠ 0) {C : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ}
     (h1 : Cᴴ * Formalism.UG.Jpq P Q * C = Formalism.UG.Jpq P' Q') (h2 : (Cᴴ * Formalism.UG.Jpq P Q) *ᵥ x = 0)
@@ -104,6 +146,19 @@ theorem eq_of_frame (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ}
   rw [← Matrix.mul_one (UpqT.mat g), ← Matrix.mul_one (UpqT.mat h), ← hN, ← Matrix.mul_assoc, this,
     Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨N, B, hN, hN', hG⟩` from `exists_frame_inv hc hx h1 h2`. Use `set M := fromCols C (replicateCol Unit x) with hM`. Set `blk : UpqT P' Q' → Matrix ((Fin P' ⊕ Fin Q') ⊕ Unit) ((Fin P' ⊕ Fin Q') ⊕ Unit) ℂ` to `fun g => fromBlocks (UpqT.mat g) 0 0 1`. Establish `blk_mul : ∀ g h, blk (g * h) = blk g * blk h` using `fun g h => by`. Simplify using `[blk, fromBlocks_multiply, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.UpqT_mat_mul]`.
+
+Establish `blk_one : blk 1 = 1` using `by simp [blk, Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.UpqT_mat_one]`. Establish `blk_un : ∀ g, (blk g)ᴴ * fromBlocks (Formalism.UG.Jpq P' Q') 0 0 B * blk g = fromBlocks (Formalism.UG.Jpq P' Q') 0 0 B` using `fun g => by`. Simplify using `[blk, fromBlocks_multiply, fromBlocks_conjTranspose, mat_unitary]`. Set `φ : UpqT P' Q' →* Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ` to `{ toFun := fun g => M * blk g * N map_one' := by rw [blk_one, Matrix.mul_one, hN'] map_mul' := fun g h => by`. Rewrite using `[blk_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hφ : ∀ g, (φ g)ᴴ * Formalism.UG.Jpq P Q * φ g = Formalism.UG.Jpq P Q` using `fun g => by`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `(M * blk g * N)ᴴ * Formalism.UG.Jpq P Q * (M * blk g * N) = _`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Nᴴ * (Mᴴ * Formalism.UG.Jpq P Q * M) * N := by rw [hG, blk_un]`. Use `_ = (M * N)ᴴ * Formalism.UG.Jpq P Q * (M * N) := by simp only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hN']; simp`. Set `j : UpqT P' Q' →* Formalism.UG.Upq P Q` to `φ.toHomUnits.codRestrict (Formalism.UG.Upq P Q) fun g => hφ g`. Use `⟨j, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `e : φ g * M = fromCols (C * UpqT.mat g) (replicateCol Unit x)`. Express the relevant statement in the definitionally equal form `M * blk g * N * M = _`. Rewrite using `[Matrix.mul_assoc, hN, Matrix.mul_one, hM]`. Simplify using `[blk, fromCols_mul_fromBlocks]`. Rewrite `e` using `[hM, mul_fromCols, fromCols_ext_iff, ← replicateCol_mulVec]`.
+
+Conclude with `⟨replicateCol_injective e.2, e.1⟩`.
+-/
 theorem exists_stab_hom (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ}
     (hx : star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x ≠ 0) {C : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ}
     (h1 : Cᴴ * Formalism.UG.Jpq P Q * C = Formalism.UG.Jpq P' Q') (h2 : (Cᴴ * Formalism.UG.Jpq P Q) *ᵥ x = 0) :
@@ -149,6 +204,15 @@ section Arch
 
 variable {P Q P' Q' : ℕ} {T : Type}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨j₀, hj₀⟩, H⟩ choose C₀ hC₀ using hj₀`. Use `⟨⟨C₀, fun ρ => ⟨(hC₀ ρ).1, (hC₀ ρ).2.1⟩⟩, fun C hC => ?_⟩` and prove the remaining obligations. Use `choose j₁ hj₁ using fun ρ => exists_stab_hom hc (hx ρ) (hC ρ).1 (hC ρ).2`. Use `⟨⟨IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.piEmb j₁, fun b ρ => ⟨(hj₁ ρ (b ρ)).2, (hj₁ ρ (b ρ)).1⟩⟩, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Establish `e : j = IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.piEmb j₁`. Use extensionality with `b ρ`. Conclude with `eq_of_frame hc (hx ρ) (hC ρ).1 (hC ρ).2 ((hj b ρ).1.trans (hj₁ ρ (b ρ)).2.symm) ((hj b ρ).2.trans (hj₁ ρ (b ρ)).1.symm)`. Substitute `e` using the available equality. Take `⟨⟨ν₀, hν₀⟩, H'⟩` from `H j₁ fun ρ => ⟨C ρ, (hC ρ).1, (hC ρ).2, hj₁ ρ⟩`.
+
+Conclude with `⟨(H' ν₀ hν₀).1, fun y hy => ⟨⟨ν₀, hν₀⟩, fun ν hν => (H' ν hν).2 y hy⟩⟩`. Introduce and unpack `⟨⟨C₀, hC₀⟩, H⟩ choose j₀ hj₀ using fun ρ => exists_stab_hom hc (hx ρ) (hC₀ ρ).1 (hC₀ ρ).2`. Use `⟨⟨j₀, fun ρ => ⟨C₀ ρ, (hC₀ ρ).1, (hC₀ ρ).2, hj₀ ρ⟩⟩, fun j hj => ?_⟩` and prove the remaining obligations. Use `choose C hC using hj`. Take `⟨⟨y₀, hy₀⟩, H'⟩` from `(H C fun ρ => ⟨(hC ρ).1, (hC ρ).2.1⟩).2 (IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.piEmb j) fun b ρ => ⟨((hC ρ).2.2 (b ρ)).2, ((hC ρ).2.2 (b ρ)).1⟩`.
+
+Conclude with `⟨(H' y₀ hy₀).1, fun ν hν => ⟨⟨y₀, hy₀⟩, fun y hy => (H' y hy).2 ν hν⟩⟩`.
+-/
 theorem arch_iff (hc : P' + Q' + 1 = P + Q) (xr : T → Fin P ⊕ Fin Q → ℂ)
     (hx : ∀ ρ, star (xr ρ) ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ xr ρ ≠ 0)
     (m' : Measure (T → UpqT P' Q')) (m : Measure (T → UpqT P Q)) {Y : Type} (R : Y → Prop)
@@ -186,6 +250,11 @@ theorem arch_iff (hc : P' + Q' + 1 = P + Q) (xr : T → Fin P ⊕ Fin Q → ℂ)
 
 end Arch
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← Matrix.mul_assoc, hA]`. Use `conv_rhs => rw [← W.frame.sum_repr x]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply, dotProduct, mulVec, Matrix.map_apply, HSpace.gram, Pi.star_apply, starRingEnd_apply, hτ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_coords {E : Type} [Field E] [NumberField E] [StarRing E] (W : HSpace E) (τ : E →+* ℂ)
     (hτ : ∀ a, τ (star a) = star (τ a)) {P Q : ℕ} (A : Matrix (Fin P ⊕ Fin Q) (Fin W.rank) ℂ)
     (hA : Aᴴ * Formalism.UG.Jpq P Q * A = W.gram.map τ) (x : W.V) :
@@ -200,11 +269,17 @@ theorem norm_coords {E : Type} [Field E] [NumberField E] [StarRing E] (W : HSpac
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use `haveI := D.host.isCMField_hostE`. Conclude with `IsCMField.complexEmbedding_complexConj D.host.E τ a`.
+-/
 theorem emb_star (D : D7) (τ : D.host.E →+* ℂ) (a : D.host.E) :
     letI := D.host.cmStar; τ (star a) = star (τ a) := by
   haveI := D.host.isCMField_hostE
   exact IsCMField.complexEmbedding_complexConj D.host.E τ a
 
+/- English proof (translation)
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA σ J` as an intermediate fact. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `: Countable Γ` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma σ J`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup Γ μ` as an intermediate fact. Conclude with `IsFundamentalDomain.measure_ne_zero (G := Γ) (NeZero.ne μ) h`.
+-/
 theorem fundamentalDomain_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (μ : Measure (HA (AF F) σ J)) [μ.IsHaarMeasure]
     {𝓕 : Set (HA (AF F) σ J)} (h : IsFundamentalDomain (HFinIn (AF F) σ J) 𝓕 μ) : μ 𝓕 ≠ 0 := by
@@ -214,6 +289,15 @@ theorem fundamentalDomain_ne_zero {F E : Type} [Field F] [NumberField F] [Field 
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup Γ μ
   exact IsFundamentalDomain.measure_ne_zero (G := Γ) (NeZero.ne μ) h
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Introduce `W W' P Q P' Q' s x hc hx`. Establish `key : ∀ (μ : Measure (HA (AF D.host.F) D.sp.cm.sig W.gram)) (𝓕 : Set (HA (AF D.host.F) D.sp.cm.sig W.gram)) (m : ℝ≥0∞), m ≠ 0 → m ≠ ⊤ → ((AllSome (fun θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) => ∀ ρ, IsInfEmb (embOf D ρ) (θ ρ)) fun θ => AllSome (fun A : D.what …`. Introduce `μ 𝓕 m hm hm'`. Use `Iff.trans (allSome_congr fun θ _ => allSome_congr fun A hA => arch_iff hc (fun ρ => A ρ *ᵥ fun i => embOf D ρ (IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.coordTup W x 0 i)) (fun ρ => ?_) _ _ _ (fun j ν (pt : (D.what₂.Tau → UpqT P Q) → (Fin 1 → Fin W.rank → Ainf D.host.F …` and prove the remaining obligations.
+
+Use `norm_coords W (embOf D ρ) (emb_star D _) (A ρ) (hA ρ) x` as an intermediate fact. Use `fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `this.symm.trans h0`. Rewrite `h1` using `[hx]`. Apply the tactic sequence `cases s <;> simp at h1`.
+
+Conclude with `IsChoice.value_iff (isChoice_allSome _ _ fun θ => isChoice_allSome _ _ fun A => isChoice_allSome _ _ fun C => isChoice_allSome _ _ fun (j : (D.what₂.Tau → UpqT P' Q') →* (D.what₂.Tau → UpqT P Q)) => isChoice_allSome _ _ fun (o : (D.what₂.Tau → UpqT P Q) → (Fin 1 → Fin W.rank → Ai …`. Prove the components needed by the constructor for the conclusion. Introduce `h μ μ' hμ hμ' 𝓕 𝓕' h1 h2 h3 h4 haveI := hμ'.1`. Conclude with `(key μ 𝓕 _ (fundamentalDomain_ne_zero _ _ μ' h2) h4.ne).1 (h μ μ' 𝓕 𝓕' hμ hμ' h1 h2 h3 h4)`. Introduce `h μ μ' 𝓕 𝓕' hμ hμ' h1 h2 h3 h4 haveI := hμ'.1`.
+
+Conclude with `(key μ 𝓕 _ (fundamentalDomain_ne_zero _ _ μ' h2) h4.ne).2 (h μ μ' hμ hμ' 𝓕 𝓕' h1 h2 h3 h4)`.
+-/
 theorem unfoldAt_iff (D : D7) : letI := D.host.cmStar
     ∀ (W W' : HSpace D.host.E) (P Q P' Q' : ℕ) (s : Bool) (x : W.V), P' + Q' + 1 = P + Q →
       W.hT x x = (if s then 1 else -1) →
@@ -277,6 +361,13 @@ theorem unfoldAt_iff (D : D7) : letI := D.host.cmStar
     haveI := hμ'.1
     exact (key μ 𝓕 _ (fundamentalDomain_ne_zero _ _ μ' h2) h4.ne).2 (h μ μ' hμ hμ' 𝓕 𝓕' h1 h2 h3 h4)
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Introduce `R`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h W W' P Q P' Q' s x ι ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ hR`. Consider the cases of `s`.
+
+Take `⟨rfl, rfl⟩ : P = P' ∧ Q = Q' + 1` from `by simpa using h4`. Conclude with `(unfoldAt_iff D W W' P (Q' + 1) P Q' false x rfl h5).1 (h W P (Q' + 1) h1 h2 h3 false (by simp) x h5 h6 W' ι h7 h8 h9 h10 hR)`. Take `⟨rfl, rfl⟩ : P = P' + 1 ∧ Q = Q'` from `by simpa using h4`. Conclude with `(unfoldAt_iff D W W' (P' + 1) Q P' Q true x (by omega) h5).1 (h W (P' + 1) Q h1 h2 h3 true (by simp) x h5 h6 W' ι h7 h8 h9 h10 hR)`. Introduce `h W P Q h1 h2 h3 s h4 x h5 h6 W' ι h7 h8 h9 h10 hR`.
+
+Consider the cases of `s`. Establish `h4' : 1 ≤ Q` using `by simpa using h4`. Conclude with `(unfoldAt_iff D W W' P Q P (Q - 1) false x (by omega) h5).2 (h W W' P Q P (Q - 1) false x ι ⟨h1, h2, h3, by simp; omega, h5, h6, h7, h8, h9, h10⟩ hR)`. Establish `h4' : 1 ≤ P` using `by simpa using h4`. Conclude with `(unfoldAt_iff D W W' P Q (P - 1) Q true x (by omega) h5).2 (h W W' P Q (P - 1) Q true x ι ⟨h1, h2, h3, by simp; omega, h5, h6, h7, h8, h9, h10⟩ hR)`.
+-/
 theorem setting_iff (D : D7) : letI := D.host.cmStar
     ∀ R : ∀ (W W' : HSpace D.host.E), (W'.V →ₗ[D.host.E] W.V) → Prop,
     (∀ (W : HSpace D.host.E) (P Q : ℕ), W.SigOK → (∀ τ, W.sig τ = (P, Q)) → 3 ≤ W.rank →
@@ -309,6 +400,9 @@ theorem setting_iff (D : D7) : letI := D.host.cmStar
       exact (unfoldAt_iff D W W' P Q (P - 1) Q true x (by omega) h5).2
         (h W W' P Q (P - 1) Q true x ι ⟨h1, h2, h3, by simp; omega, h5, h6, h7, h8, h9, h10⟩ hR)
 
+/- English proof (translation)
+The claim follows from `letI := D.host.cmStar setting_iff D fun W W' ι => ∀ y : W'.V, y ∈ W'.L0 ↔ ι y ∈ W.L0`.
+-/
 theorem unfolding_iff (D : D7) : IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.Unfolding D ↔ IndefiniteRowSideFullHecke.LatticeTensorUnfolding.Unfolding D :=
   letI := D.host.cmStar
   setting_iff D fun W W' ι => ∀ y : W'.V, y ∈ W'.L0 ↔ ι y ∈ W.L0

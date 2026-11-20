@@ -7,6 +7,29 @@ namespace UpperTheory.Kd.K4.BoundedOrderUnits
 
 open Filter Topology
 
+/- English proof (translation)
+Take `⟨φ', C, hφ', hsum⟩` from `X.an_exp X.jK`. Establish `hinj : Function.Injective (fun n : ℕ => (n : ℚ) - 1)` using `fun a b h => by simpa using h`. Establish `hsumN : ∀ z : ℂ, C < z.im → HasSum (fun n : ℕ => ε ((X.exp X.jK).coeff ((n : ℚ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z)) (Complex.exp (2 * Real.pi * Complex.I * z) * φ' z)`. Introduce `z hz`. Establish `h1` using `hsum z hz`.
+
+Rewrite `h1` using `[← hinj.hasSum_iff]`. Establish `h2` using `h1.mul_left (Complex.exp (2 * Real.pi * Complex.I * z))`. Establish `e : (fun n : ℕ => ε ((X.exp X.jK).coeff ((n : ℚ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (n : ℂ) * z)) = fun n : ℕ => Complex.exp (2 * Real.pi * Complex.I * z) * (ε ((X.exp X.jK).coeff ((n : ℚ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (((n : ℚ) - 1 : ℚ) : ℂ) * z))`. Use function extensionality and compare the values at `n`. Rewrite using `[mul_left_comm, ← Complex.exp_add]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2`.
+
+Introduce `r hr`. Establish `: (X.exp X.jK).coeff r = 0`. Assume the negation of the conclusion as `hne`. Take `⟨m, rfl⟩` from `GlobalTheory.K4.LevFin.exponent_int X X.jK (X.j_inv _) r hne`. Establish `hm : -1 ≤ m`.
+
+Assume the negation of the conclusion as `hm`. Conclude with `hne (X.j_exp.2.1 _ (by exact_mod_cast (not_le.1 hm)))`. Use `hr ⟨(m + 1).toNat, ?_⟩` and prove the remaining obligations. Use `show (((m + 1).toNat : ℕ) : ℚ) - 1 = m`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[this]`. Take `⟨B, t, hB⟩` from `GlobalTheory.KZ.ExpBound.series_bound _ _ C hsumN`. Simplify using `only [Nat.cast_zero, zero_sub, X.j_exp.1, map_one] at hB`.
+
+Establish `ht : Tendsto (fun s : ℝ => B * Real.exp (-(2 * Real.pi * (s - t)))) atTop (𝓝 0)`. Establish `h1 : Tendsto (fun s : ℝ => 2 * Real.pi * (s - t)) atTop atTop`. Apply `Tendsto.const_mul_atTop Real.two_pi_pos` to reduce the goal to its premises. Conclude with `tendsto_atTop_add_const_right _ _ tendsto_id`. Simplify using `using (Real.tendsto_exp_neg_atTop_nhds_zero.comp h1).const_mul B`.
+
+Take `⟨s, hs⟩` from `eventually_atTop.1 (ht.eventually (ge_mem_nhds (show (0 : ℝ) < 1 / 2 by norm_num)))`. Use `⟨max (max s t) 1, lt_max_of_lt_right one_pos, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hzH : z ∈ Hs` using `lt_trans (lt_max_of_lt_right one_pos) hz`. Establish `hev : φ =ᶠ[codiscreteWithin Hs] φ'` using `Filter.Germ.coe_eq.mp (hφ.symm.trans hφ')`. Establish `h1` using `mem_codiscreteWithin_iff_forall_mem_nhdsNE.mp hev z hzH`.
+
+Establish `hHs : Hs ∈ 𝓝 z` using `SiegelModel.isOpen_Hs.mem_nhds hzH`. Establish `h2 : Hs ∈ 𝓝[≠] z` using `mem_nhdsWithin_of_mem_nhds hHs`. Establish `h3 : {w : ℂ | max (max s t) 1 < w.im} ∈ 𝓝[≠] z` using `mem_nhdsWithin_of_mem_nhds ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds hz)`. Establish `hc : ContinuousAt (fun w => ‖Complex.exp (2 * Real.pi * Complex.I * w) * φ w - 1‖) z`. Use `hφc.continuousAt hHs` as an intermediate fact.
+
+Use `fun_prop`. Use `le_of_tendsto (hc.tendsto.mono_left (nhdsWithin_le_nhds (s := {z}ᶜ))) ?_` and prove the remaining obligations. Use `filter_upwards [h1, h2, h3] with w hw1 hw2 hw3`. Break down `hw1 with e | e` into its components or cases. Establish `e' : φ w = φ' w` using `e`.
+
+Rewrite using `[e']`. Simplify using `only [Set.mem_setOf_eq, max_lt_iff] at hw3`. Conclude with `(hB w hw3.1.2).trans (hs _ hw3.1.1.le)`. Conclude with `absurd hw2 e`.
+-/
 private theorem near_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (φ : ℂ → ℂ)
     (hφ : X.an X.jK = (φ : Mero)) (hφc : ContinuousOn φ Hs) :
     ∃ t : ℝ, 0 < t ∧ ∀ z : ℂ, t < z.im → ‖Complex.exp (2 * Real.pi * Complex.I * z) * φ z - 1‖ ≤ 1 / 2 := by
@@ -70,6 +93,17 @@ private theorem near_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* 
     exact (hB w hw3.1.2).trans (hs _ hw3.1.1.le)
   · exact absurd hw2 e
 
+/- English proof (translation)
+Introduce `h0`. Establish `hsub : ∀ w ∈ Metric.closedBall z 1, t < w.im`. Introduce `w hw`. Establish `h1 : ‖w - z‖ ≤ 1` using `by simpa [dist_eq_norm] using hw`. Establish `h2` using `(Complex.abs_im_le_norm (w - z)).trans h1`.
+
+Rewrite `h2` using `[Complex.sub_im, abs_le]`. Combine the linear relations using `[h2.1]`. Establish `hG : DifferentiableOn ℂ (fun w => Complex.exp (2 * Real.pi * Complex.I * w) * φ w - 1) Hs` using `(DifferentiableOn.mul (by fun_prop) hd).sub_const 1`. Establish `hb` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (c := z) (R := 1) (C := 1 / 2) one_pos (hG.diffContOnCl_ball (fun w hw => lt_trans ht (hsub w hw))) (fun w hw => h w (hsub w (Metric.sphere_subset_closedBall hw)))`. Establish `hzH : z ∈ Hs` using `show 0 < z.im by linarith`.
+
+Establish `hφ : HasDerivAt φ 0 z` using `h0 ▸ (hd.differentiableAt (SiegelModel.isOpen_Hs.mem_nhds hzH)).hasDerivAt`. Establish `he : HasDerivAt (fun w : ℂ => Complex.exp (2 * Real.pi * Complex.I * w)) (Complex.exp (2 * Real.pi * Complex.I * z) * (2 * Real.pi * Complex.I)) z`. Simplify using `using ((hasDerivAt_id z).const_mul (2 * Real.pi * Complex.I : ℂ)).cexp`. Establish `hD : HasDerivAt (fun w => Complex.exp (2 * Real.pi * Complex.I * w) * φ w - 1) _ z` using `(he.mul hφ).sub_const 1`. Rewrite `hb` using `[hD.deriv, mul_zero, add_zero, mul_right_comm, norm_mul]`.
+
+Establish `h1` using `h z (by linarith)`. Establish `h2` using `norm_sub_norm_le (1 : ℂ) (Complex.exp (2 * Real.pi * Complex.I * z) * φ z)`. Rewrite `h2` using `[norm_one, norm_sub_rev]`. Establish `h3 : ‖(2 * Real.pi * Complex.I : ℂ)‖ = 2 * Real.pi` using `by simp [abs_of_pos Real.pi_pos]`. Rewrite `hb` using `[h3]`.
+
+Use polynomial arithmetic with `[Real.pi_gt_three]`.
+-/
 private theorem deriv_ne (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs) (t : ℝ) (ht : 0 < t)
     (h : ∀ z : ℂ, t < z.im → ‖Complex.exp (2 * Real.pi * Complex.I * z) * φ z - 1‖ ≤ 1 / 2)
     (z : ℂ) (hz : t + 1 < z.im) : deriv φ z ≠ 0 := by
@@ -99,6 +133,19 @@ private theorem deriv_ne (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs) (t
   rw [h3] at hb
   nlinarith [Real.pi_gt_three]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hne : ∀ τ ∈ Hs, φ τ - a ≠ 0` using `fun τ hτ => sub_ne_zero.2 (hc τ hτ)`. Take `⟨c, hcc⟩` from `GlobalTheory.T.const_of_slTwoInt_invariant_bounded_upperHalfPlane (fun w => (φ w - a)⁻¹) ((hd.sub_const a).inv hne) (fun γ z hz => by simp only [hinv γ z hz]) ⟨1, max t (‖a‖ + 1), fun z hz hzt => by`. Rewrite `hzt` using `[max_lt_iff]`.
+
+Establish `h1` using `h z hzt.1`. Establish `h2` using `norm_sub_norm_le (1 : ℂ) (Complex.exp (2 * Real.pi * Complex.I * z) * φ z)`. Rewrite `h2` using `[norm_one, norm_sub_rev, norm_mul, Complex.norm_exp]`. Establish `e : (2 * Real.pi * Complex.I * z : ℂ).re = -(2 * Real.pi * z.im)`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+
+Rewrite `h2` using `[e, Real.exp_neg]`. Establish `h3` using `Real.add_one_le_exp (2 * Real.pi * z.im)`. Establish `h4` using `Real.exp_pos (2 * Real.pi * z.im)`. Establish `h5 : 1 / 2 * Real.exp (2 * Real.pi * z.im) ≤ ‖φ z‖`. Rewrite using `[← le_div_iff₀ h4, div_eq_inv_mul ‖φ z‖]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6` using `norm_sub_norm_le (φ z) a`. Establish `h7 : 0 < z.im` using `hz`. Rewrite using `[norm_inv]`. Apply `inv_le_one_of_one_le₀` to reduce the goal to its premises.
+
+Use polynomial arithmetic with `[Real.pi_gt_three]⟩`. Establish `hzH : ((t + 2 : ℝ) : ℂ) * Complex.I ∈ Hs` using `by simp [Hs]; linarith`. Use `deriv_ne φ hd t ht h (((t + 2 : ℝ) : ℂ) * Complex.I) (by simp) ?_` and prove the remaining obligations. Establish `hev : φ =ᶠ[𝓝 (((t + 2 : ℝ) : ℂ) * Complex.I)] fun _ => c⁻¹ + a` using `by filter_upwards [SiegelModel.isOpen_Hs.mem_nhds hzH] with w hw`. Rewrite using `[← hcc w hw]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hev.deriv_eq, deriv_const]`.
+-/
 private theorem onto (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs)
     (hinv : ∀ γ : SL(2, ℤ), ∀ z ∈ Hs, φ (mob (ofSL γ) z) = φ z) (t : ℝ) (ht : 0 < t)
     (h : ∀ z : ℂ, t < z.im → ‖Complex.exp (2 * Real.pi * Complex.I * z) * φ z - 1‖ ≤ 1 / 2)
@@ -132,6 +179,15 @@ private theorem onto (φ : ℂ → ℂ) (hd : DifferentiableOn ℂ φ Hs)
     simp
   rw [hev.deriv_eq, deriv_const]
 
+/- English proof (translation)
+Use `hK.induction_on (p := fun S => ∃ E : ℕ, ∀ τ ∈ S, analyticOrderAt g τ ≤ E) ⟨0, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s u hsu ⟨E, hE⟩`. Conclude with `⟨E, fun τ hτ => hE τ (hsu hτ)⟩`. Introduce and unpack `s u ⟨E, hE⟩ ⟨F, hF⟩`. Use `⟨max E F, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `τ (hτ | hτ)`. Conclude with `(hE τ hτ).trans (by exact_mod_cast le_max_left _ _)`. Conclude with `(hF τ hτ).trans (by exact_mod_cast le_max_right _ _)`. Introduce `x hx`. Establish `hnz : ¬ ∀ᶠ w in 𝓝 x, g w = 0` using `fun hz => h0 (hg.eqOn_zero_of_preconnected_of_eventuallyEq_zero GlobalTheory.FN.isPreconnected_Hs (hKH hx) hz hz0)`.
+
+Establish `hne` using `(hg x (hKH hx)).eventually_eq_zero_or_eventually_ne_zero.resolve_left hnz`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 (fun h => hnz (analyticOrderAt_eq_top.1 h))`. Rewrite `hne` using `[eventually_nhdsWithin_iff]`. Use `⟨_, mem_nhdsWithin_of_mem_nhds hne, n, fun τ hτ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : τ = x`.
+
+Rewrite using `[e, hn]`. Rewrite using `[analyticOrderAt_eq_zero.2 (Or.inr (hτ e))]`. Conclude with `zero_le`.
+-/
 private theorem bdd_order (g : ℂ → ℂ) (hg : AnalyticOnNhd ℂ g Hs) (z0 : ℂ) (hz0 : z0 ∈ Hs) (h0 : g z0 ≠ 0)
     (K : Set ℂ) (hK : IsCompact K) (hKH : K ⊆ Hs) : ∃ E : ℕ, ∀ τ ∈ K, analyticOrderAt g τ ≤ E := by
   refine hK.induction_on (p := fun S => ∃ E : ℕ, ∀ τ ∈ S, analyticOrderAt g τ ≤ E) ⟨0, by simp⟩ ?_ ?_ ?_
@@ -154,6 +210,17 @@ private theorem bdd_order (g : ℂ → ℂ) (hg : AnalyticOnNhd ℂ g Hs) (z0 : 
     · rw [analyticOrderAt_eq_zero.2 (Or.inr (hτ e))]
       exact zero_le
 
+/- English proof (translation)
+Establish `hden` using `GlobalTheory.KZ.InvFun.mob_ofSL_den_ne_zero γ hτ`. Establish `han : AnalyticAt ℂ (mob (ofSL γ)) τ`. Unfold `mob`. Conclude with `AnalyticAt.div (by fun_prop) (by fun_prop) hden`. Establish `hdet : (ent (ofSL γ) 0 0 : ℂ) * ent (ofSL γ) 1 1 - ent (ofSL γ) 0 1 * ent (ofSL γ) 1 0 = 1`.
+
+Establish `he : ∀ i j, ent (ofSL γ) i j = ((γ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ)` using `fun _ _ => rfl`. Establish `h1` using `Matrix.SpecialLinearGroup.det_coe γ`. Rewrite `h1` using `[Matrix.det_fin_two]`. Simplify using `only [he]`. Conclude with `h1` after adjusting the coercions.
+
+Establish `hD : HasDerivAt (mob (ofSL γ)) _ τ` using `(((hasDerivAt_id τ).const_mul (ent (ofSL γ) 0 0 : ℂ)).add_const (ent (ofSL γ) 0 1 : ℂ)).div (((hasDerivAt_id τ).const_mul (ent (ofSL γ) 1 0 : ℂ)).add_const (ent (ofSL γ) 1 1 : ℂ)) hden`. Establish `hD0 : deriv (mob (ofSL γ)) τ ≠ 0`. Rewrite using `[hD.deriv]`. Use `div_ne_zero ?_ (pow_ne_zero _ hden)` and prove the remaining obligations. Simplify using `only [id]`.
+
+Introduce `h`. Apply `one_ne_zero (α := ℂ)` to reduce the goal to its premises. Rewrite using `[← hdet, ← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← analyticOrderAt_comp_of_deriv_ne_zero han hD0]`.
+
+Apply `analyticOrderAt_congr` to reduce the goal to its premises. Use `filter_upwards [SiegelModel.isOpen_Hs.mem_nhds hτ] with w hw`. Simplify using `only [Function.comp_apply, hinv γ w hw, hinv γ τ hτ]`.
+-/
 private theorem order_inv (φ : ℂ → ℂ)
     (hinv : ∀ γ : SL(2, ℤ), ∀ z ∈ Hs, φ (mob (ofSL γ) z) = φ z) (γ : SL(2, ℤ)) (τ : ℂ) (hτ : τ ∈ Hs) :
     analyticOrderAt (fun s => φ s - φ τ) τ =
@@ -187,6 +254,19 @@ private theorem order_inv (φ : ℂ → ℂ)
 end UpperTheory.Kd.K4.BoundedOrderUnits
 
 open UpperTheory.Kd.K4.BoundedOrderUnits in
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X`. Take `⟨φ, hφ, hd⟩` from `X.j_hol`. Establish `hinv` using `GlobalTheory.T.modularTower_function_slTwoInt_invariant X X.jK φ hd.continuousOn hφ X.j_inv`. Take `⟨t, ht, h⟩` from `near_one X φ hφ hd.continuousOn`. Establish `hne` using `deriv_ne φ hd t ht h`.
+
+Establish `han` using `hd.analyticOnNhd SiegelModel.isOpen_Hs`. Take `⟨E, hE⟩` from `bdd_order (deriv φ) han.deriv (((t + 2 : ℝ) : ℂ) * Complex.I) (by simp [Hs]; linarith) (hne _ (by simp)) (Set.Icc (-1) 1 ×ℂ Set.Icc (1 / 2) (t + 1)) (isCompact_Icc.reProdIm isCompact_Icc) (fun z hz => lt_of_lt_of_le (by norm_num) hz.2.1)`. Use `⟨φ, E + 1, hφ, hd, onto φ hd hinv t ht h, fun τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `ModularGroup.exists_smul_mem_fd ⟨τ, hτ⟩`. Establish `hm : mob (ofSL γ) τ = ((γ • (⟨τ, hτ⟩ : UpperHalfPlane) : UpperHalfPlane) : ℂ)` using `SiegelModel.mob_ofSL γ ⟨τ, hτ⟩`.
+
+Rewrite using `[order_inv φ hinv γ τ hτ, hm]`. Generalize the expression as in `γ • (⟨τ, hτ⟩ : UpperHalfPlane) = σ at hγ`. Rewrite using `[← (han σ σ.2).analyticOrderAt_deriv_add_one]`. Use `push_cast`. Use `gcongr`.
+
+Distinguish the cases in `hσ : t + 1 < (σ : ℂ).im`. Rewrite using `[analyticOrderAt_eq_zero.2 (Or.inr (hne _ hσ))]`. Conclude with `zero_le`. Establish `h1` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hγ`. Establish `h2` using `abs_le.1 hγ.2`.
+
+Establish `h3` using `σ.im_pos`. Use `hE _ ⟨⟨?_, ?_⟩, ?_, not_lt.1 hσ⟩` and prove the remaining obligations. Use `show -1 ≤ σ.re`. Combine the linear relations using `[h2.1]`. Use `show σ.re ≤ 1`.
+
+Combine the linear relations using `[h2.2]`. Use `show 1 / 2 ≤ σ.im`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem UpperTheory.Kd.K4.jan :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∃ (φ : ℂ → ℂ) (E : ℕ), X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs ∧ (∀ z : ℂ, ∃ τ ∈ Hs, φ τ = z) ∧
       ∀ τ ∈ Hs, analyticOrderAt (fun s => φ s - φ τ) τ ≤ E := by

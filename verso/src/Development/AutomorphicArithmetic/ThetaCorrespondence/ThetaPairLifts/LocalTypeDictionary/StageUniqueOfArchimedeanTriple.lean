@@ -19,6 +19,9 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.StageUniq
 open GlobalTheory.SquareComm GlobalTheory.BotUniq
+/- English proof (translation)
+Take `⟨CF1, h1⟩` from `hP`. Use `⟨CF1, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, g1⟩` from `h1 ε CF hCF`. Conclude with `⟨C1, x1, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (g1 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩`.
+-/
 private theorem grid_bigness_mono {P Q : GP} (hP : GBig P)
     (h : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
       Lc.Is μ₀ → P G μ₀ C x b → Q G μ₀ C x b) : GBig Q := by
@@ -26,6 +29,23 @@ private theorem grid_bigness_mono {P Q : GP} (hP : GBig P)
   refine ⟨CF1, fun ε CF hCF => ?_⟩
   obtain ⟨C1, x1, g1⟩ := h1 ε CF hCF
   exact ⟨C1, x1, fun C hC D large₂ he hx hr T Lc μ₀ hμ G => h G μ₀ _ _ _ hμ (g1 C hC D large₂ he hx hr T Lc μ₀ hμ G)⟩
+/- English proof (translation)
+Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ A A' WW FA FA' FW _ _ hT m fd m' fd' hme hme' ω ω' hm.weilA hm.weilB`. Take `⟨R, Rf, hR⟩` from `hL D.host.F D.host.E D.sp.cm.sig Bs A.rank A'.rank Γ Xc om om' hTD`. Establish `kA : ∀ Φ ∈ algF ψ θ true FA FW, p₀ Φ = 0 ↔ p Φ = 0` using `fun Φ hΦ => by`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algA Φ hΦ`. Rewrite using `[_root_.GlobalTheory.SquareAgree.mem_ker_iff_polarization_match_eq_zero hH hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀ Φ hΦ ΦD hΦD hD, _root_.GlobalTheory.SquareAgree.mem_ker_iff_polarization_match_eq_zero hH hP D …`.
+
+Establish `kB : ∀ Φ ∈ algF ψ θ false FA' FW, p₀' Φ = 0 ↔ p' Φ = 0` using `fun Φ hΦ => by`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algB Φ hΦ`. Rewrite using `[_root_.GlobalTheory.SquareAgree.derivative_eq_zero_iff_polarization_match hH hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀ Φ hΦ ΦD hΦD hD, _root_.GlobalTheory.SquareAgree.derivative_eq_zero_iff_polarization_match hH …`. Take `⟨EA, hEA⟩` from `exists_equiv_of_ker _ p₀ p hm₀.mapA.onto hm.mapA.onto kA`. Take `⟨EB, hEB⟩` from `exists_equiv_of_ker _ p₀' p' hm₀.mapB.onto hm.mapB.onto kB`.
+
+Establish `fA : ∀ h ∈ GfC WW, ∀ x, EA (rf₀ h x) = rf h (EA x)` using `fun h hh => intertwine _ p₀ p EA hEA hm₀.mapA.onto _ _ fun Φ hΦ => ⟨_, hm₀.mapA.stabX.1 h hh Φ hΦ, hm₀.mapA.eqf h hh Φ hΦ, hm.mapA.eqf h hh Φ hΦ⟩`. Establish `fB : ∀ h ∈ GfC WW, ∀ x, EB (rf₀ h x) = rf h (EB x)` using `fun h hh => intertwine _ p₀' p' EB hEB hm₀.mapB.onto _ _ fun Φ hΦ => ⟨_, hm₀.mapB.stabX.1 h hh Φ hΦ, hm₀.mapB.eqf h hh Φ hΦ, hm.mapB.eqf h hh Φ hΦ⟩`. Establish `lA : ∀ τ, ∀ Y ∈ lieAt WW τ, ∀ x, EA (rl₀ τ Y x) = rl τ Y (EA x)` using `fun τ Y hY => intertwine _ p₀ p EA hEA hm₀.mapA.onto _ _ fun Φ hΦ => by`. Take `⟨Φ', hΦ', hd⟩` from `hm₀.mapA.stabX.2 τ Y hY Φ hΦ`. Conclude with `⟨Φ', hΦ', hm₀.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd, hm.mapA.eql τ Y hY Φ hΦ Φ' hΦ' hd⟩`.
+
+Establish `lB : ∀ τ, ∀ Y ∈ lieAt WW τ, ∀ x, EB (rl₀ τ Y x) = rl τ Y (EB x)` using `fun τ Y hY => intertwine _ p₀' p' EB hEB hm₀.mapB.onto _ _ fun Φ hΦ => by`. Take `⟨Φ', hΦ', hd⟩` from `hm₀.mapB.stabX.2 τ Y hY Φ hΦ`. Conclude with `⟨Φ', hΦ', hm₀.mapB.eql τ Y hY Φ hΦ Φ' hΦ' hd, hm.mapB.eql τ Y hY Φ hΦ Φ' hΦ' hd⟩`. Set `ι` to `{g // g ∈ GfC WW} ⊕ {x : D.what₂.Tau × Matrix (Fin WW.rank) (Fin WW.rank) ℂ // x.2 ∈ lieAt WW x.1}`. Set `ρ : ι → Module.End ℂ Pi₀` to `Sum.elim (fun g => rf₀ g.1) (fun x => rl₀ x.1.1 x.1.2)`.
+
+Establish `hrank : Module.rank ℂ Pi₀ ≤ Cardinal.aleph0` using `_root_.GlobalTheory.SquareAgree.rank_polarization_pi_le_aleph0 hH hP D _ _ A A' WW FA FA' FW _ _ _ _ _ _ _ _ e Bs Γ Xc om om' cA cB hθ hT hO hTD R Rf hR Pi₀ rf₀ rl₀ p₀ p₀' hm₀`. Establish `hirr : ∀ N : Submodule ℂ Pi₀, (∀ k, ∀ x ∈ N, ρ k x ∈ N) → N = ⊥ ∨ N = ⊤` using `fun N hN => hm₀.irred.2 N (fun g hg x hx => hN (Sum.inl ⟨g, hg⟩) x hx) fun τ Y hY x hx => hN (Sum.inr ⟨(τ, Y), hY⟩) x hx`. Establish `hcomm : ∀ k, ((EA.trans EB.symm : Pi₀ ≃ₗ[ℂ] Pi₀) : Module.End ℂ Pi₀) * ρ k = ρ k * ((EA.trans EB.symm : Pi₀ ≃ₗ[ℂ] Pi₀) : Module.End ℂ Pi₀)`. Introduce and unpack `(⟨g, hg⟩ | ⟨⟨τ, Y⟩, hY⟩)`. Conclude with `comm_of_intertwine EA EB _ _ (fA g hg) (fB g hg)`.
+
+Conclude with `comm_of_intertwine EA EB _ _ (lA τ Y hY) (lB τ Y hY)`. Take `⟨c, hc⟩` from `GlobalTheory.dixmier_commutant_scalar ι Pi₀ ρ hrank hirr _ hcomm`. Establish `hT' : ∀ x, EB.symm (EA x) = c • x` using `fun x => by`. Use `LinearMap.congr_fun hc x` as an intermediate fact. Simplify using `using this`.
+
+Use `haveI : Nontrivial Pi₀ := hm₀.irred.1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `exists_ne (0 : Pi₀)`. Establish `h1` using `hT' x`.
+
+Rewrite `h1` using `[zero_smul, LinearEquiv.map_eq_zero_iff, LinearEquiv.map_eq_zero_iff]`. Conclude with `hx h1`. Use `⟨EB, c, hc0, fun Φ hΦ => ?_, fun Φ hΦ => hEB Φ hΦ⟩` and prove the remaining obligations. Rewrite using `[hEA Φ hΦ, ← LinearEquiv.map_smul, ← hT', LinearEquiv.apply_symm_apply]`.
+-/
 theorem stage_unique_of_archimedean_triple (hH : GlobalTheory.Published.HoweDualityReal) (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching)
     {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) {A A' WW : HSp D} (α β : (AE D)ˣ →* Circle)
     (hT : IsTriple A A' WW α β) (m : MeasureTheory.Measure (GA D A)) (fd : Set (GA D A))
@@ -98,6 +118,11 @@ theorem stage_unique_of_archimedean_triple (hH : GlobalTheory.Published.HoweDual
     exact hx h1
   refine ⟨EB, c, hc0, fun Φ hΦ => ?_, fun Φ hΦ => hEB Φ hΦ⟩
   rw [hEA Φ hΦ, ← LinearEquiv.map_smul, ← hT', LinearEquiv.apply_symm_apply]
+/- English proof (translation)
+Introduce `hP _ hL`. Use `grid_bigness_mono GlobalTheory.T.towerStage_seesawDictionary_framesSignatures ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b _ H W i j a a' A A' WW X hX FA FA' FW t Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`. Take `⟨_, _, _, _, _, -, -, -, hall⟩` from `H W i j a a' A A' WW X hX`. Establish `hIs` using `hX.2.2.2.2.2.2.2`.
+
+Conclude with `_root_.GlobalTheory.StageUniq.stage_unique_of_archimedean_triple hP.howeDualityReal hP hL W.ψ W.θ hIs.isVac.2.inf _ _ (hall t).1 X.m X.fd X.m' X.fd' hIs.meas hIs.meas' (X.ω t) (X.ω' t) FA FA' FW Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`.
+-/
 theorem _root_.GlobalTheory.T.theta_stage_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (a b : ℕ) (A A' WW : HSp D)
     (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j a b X →

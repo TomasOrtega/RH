@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.LevGeo.MassLev
 
+/- English proof (translation)
+Introduce `hMB hTB D j H Dw l Xo c U dict hL σ hσ x0 FF hF`. Take `⟨G, Λ, g, Λk, u, hSD, hk, hdist⟩` from `GlobalTheory.T.principalLevel_components_doubleCosets_congruence D j H Dw l Xo c U dict hL σ hσ`. Establish `hX'` using `fun k => GlobalTheory.T.exists_flagDomainData_principalCongruenceLevel D.host.E D.R.r l.M ((U σ).X k) (Λk k) l.three_le (hk k).2.2.2.1 (hk k).2.2.2.2.1`. Use `choose X' hX'Gm hX'Ψ hX'p0 hX'Λ hX'Γ using hX'`. Establish `hfm : ∀ k, ∃ y, IsOrth (X' k) y ∧ ∃ FF', IsFundSet (X' k) y FF' ∧ muF (X' k) y FF' < ⊤` using `fun k => GlobalTheory.finMu_all_data D.host.E D.R.r (X' k)`.
+
+Use `choose y hy FF' hFF' _ using hfm`. Establish `hμ : ∀ k, muF ((U σ).X k) (x0 k) (FF k) = muF (X' k) (y k) (FF' k)`. Introduce `k`. Take `⟨hGm, -, -, -, -, hgram, hfw, hbw⟩` from `hk k`. Use `GlobalTheory.T.covolume_eq_of_realUnitary_conj D.host.E D.R.r ((U σ).X k) (X' k) (hX'Ψ k) (u k) (x0 k) (y k) (FF k) (FF' k) (hX'Gm k) (hX'p0 k) (by rw [hGm]; exact hgram) ?_ ?_ (hF k).1 (hy k) (hF k).2 (hFF' k)` and prove the remaining obligations.
+
+Introduce `γ hγ`. Take `⟨γ', hγ', hc⟩` from `hfw γ hγ`. Conclude with `⟨γ', (hX'Γ k γ').2 (by rw [hGm]; exact hγ'), hc⟩`. Introduce `γ' hγ'`. Use `(hX'Γ k γ').1 hγ'` as an intermediate fact.
+
+Rewrite `this` using `[hGm]`. Conclude with `hbw γ' this`. Establish `hunf` using `hL.unf σ hσ`. Use `set Ψ : Finset (D.host.E →+* ℂ) := Finset.univ.filter (fun τ => τ (H.rt : D.host.E) = H.rt0) with hΨdef`. Establish `hΨ : ∀ k, (X' k).Ψ = Ψ`.
+
+Introduce `k`. Rewrite using `[hX'Ψ k]`. Use extensionality with `τ`. Rewrite using `[(hunf.2.1 k).2 τ, hΨdef, Finset.mem_filter]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_congr rfl (fun k _ => hμ k)]`. Use `set e := Fintype.equivFin (U σ).Comp`. Rewrite using `[← e.symm.sum_comp]`. Establish `hr : 2 ≤ D.R.r` using `Formalism.L2.Geo.two_le_r D`. Establish `hTor` using `hTB D.host.E D.R.r l.M G Λ (by omega) (by have := l.three_le; omega) H.unram hSD`.
+
+Conclude with `hMB D.host.E D.R.r l.M _ _ G Λ Ψ (fun i => X' (e.symm i)) (fun i => g (e.symm i)) (fun i => y (e.symm i)) (fun i => FF' (e.symm i)) hr l.three_le H.unram hSD hTor (fun i => (hk (e.symm i)).2.1) (fun i i' h => e.symm.injective (hdist _ _ h)) (fun i => ⟨(hX'Gm _).trans (hk _).1, hΨ …`.
+-/
 theorem mass_components_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (x0 : ∀ k, Frame ((U σ).X k).Ψ D.R.r) (FF : ∀ k, Set (ReciprocityTheory.L2DbarEstimates.V (nd ((U σ).X k)))), (∀ k, IsOrth ((U σ).X k) (x0 k) ∧ IsFundSet ((U σ).X k) (x0 k) (FF k)) → ∑ k, muF ((U σ).X k) (x0 k) (FF k) ≤ ENNReal.ofReal (massLev D.host.E D.R.r l.M) := by
   intro hMB hTB D j H Dw l Xo c U dict hL σ hσ x0 FF hF
   obtain ⟨G, Λ, g, Λk, u, hSD, hk, hdist⟩ := GlobalTheory.T.principalLevel_components_doubleCosets_congruence D j H Dw l Xo c U dict hL σ hσ

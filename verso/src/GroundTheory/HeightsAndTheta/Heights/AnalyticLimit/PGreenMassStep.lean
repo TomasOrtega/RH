@@ -14,6 +14,29 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (ell)
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `D W _ _ _ S a ha ε t hε ht hℓ`. Use `set a' : Fin (D + 1) := ⟨a, ha⟩ with ha'`. Establish `hform` using `S.form a' t ht hℓ`. Establish `hu : S.A.Smooth (S.u a' t)` using `hform.2`. Establish `hΦ : ∀ i, IsPotential S.A (S.rest a t i)` using `S.rest_isPotential ht hℓ a`.
+
+Establish `hth : IsPotential S.A (S.th a')` using `hform.1.th_pot`. Establish `huP : IsPotential S.A (LocPot.ofFun (S.u a' t))` using `isPotential_ofFun S.A _ hu`. Establish `hf : S.A.Smooth fun x => Real.log (secNorm S.L S.s x ^ 2 + ε)` using `smooth_log_secNorm_sq_add S.L_pot S.s_sec hε`. Establish `hDd : IsPotential S.A (formDiff S.Om.pot (S.th a'))` using `isPotential_formDiff S.Om.isPot hth`. Establish `hcons` using `fun (P : LocPot W) (hP : IsPotential S.A P) => forall_cons_of (p := IsPotential S.A) (Φ := S.rest a t) hP hΦ`.
+
+Establish `hGi` using `fun (P : LocPot W) (hP : IsPotential S.A P) => mIntegrable_greenSplit S.L_pot S.s_sec S.s_snc hε _ (hcons P hP)`. Establish `hG` using `fun Ψ => mInt_greenEp_eq_split (A := S.A) (Φ := Ψ) S.s_sec S.s_snc hε`. Establish `hJ1 : S.J (a + 1) ε t = mInt S.A (Fin.cons (S.th a' + LocPot.ofFun (S.u a' t)) (S.rest a t)) (greenSplit S.L S.s ε)`. Establish `h` using `mixedForms_cycle S.Om.pot (S.T t) a ha (a + 1) (Or.inr rfl)`. Establish `h0 : mixedForms S.Om.pot (S.T t) (a + 1) a' = S.th a' + LocPot.ofFun (S.u a' t)`.
+
+Simplify using `[mixedForms, a', UIData.T, curForms, potForm]`. Rewrite `h` using `[h0]`. Use `show mInt S.A (mixedForms S.Om.pot (S.T t) (a + 1)) (greenEp S.L S.s ε) = _`. Rewrite using `[← mIntSymm S.A (mixedForms S.Om.pot (S.T t) (a + 1)) (Fin.cycleRange a').symm, h, hG]`. Both sides reduce to the same expression.
+
+Establish `hJ0 : S.J a ε t = mInt S.A (Fin.cons S.Om.pot (S.rest a t)) (greenEp S.L S.s ε)`. Establish `h` using `mixedForms_cycle S.Om.pot (S.T t) a ha a (Or.inl rfl)`. Establish `h0 : mixedForms S.Om.pot (S.T t) a a' = S.Om.pot` using `by simp [mixedForms, a']`. Rewrite `h` using `[h0]`. Use `show mInt S.A (mixedForms S.Om.pot (S.T t) a) (greenEp S.L S.s ε) = _`.
+
+Rewrite using `[← mIntSymm S.A (mixedForms S.Om.pot (S.T t) a) (Fin.cycleRange a').symm, h]`. Both sides reduce to the same expression. Establish `hOm : mInt S.A (Fin.cons S.Om.pot (S.rest a t)) (greenEp S.L S.s ε) = mInt S.A (Fin.cons (S.th a') (S.rest a t)) (greenSplit S.L S.s ε) + mInt S.A (Fin.cons (formDiff S.Om.pot (S.th a')) (S.rest a t)) (greenSplit S.L S.s ε)`. Rewrite using `[hG, ReciprocityTheory.AnForm.M.PLC.mInt_congr_phi S.A _ (Fin.cons (S.th a' + formDiff S.Om.pot (S.th a')) (S.rest a t)) ?_]`. Conclude with `mIntAdd S.A _ _ _ hth hDd hΦ _ (hGi _ hth) (hGi _ hDd)`.
+
+Introduce `i x y`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `(add_formDiff_φ _ _ x y).symm`. Simplify using `only [Fin.cons_succ]`.
+
+Establish `hpos : 0 ≤ mInt S.A (Fin.cons (formDiff S.Om.pot (S.th a')) (S.rest a t)) (greenSplit S.L S.s ε)`. Rewrite using `[← hG]`. Conclude with `mIntNonneg S.A _ (hcons _ hDd) (forall_cons_of (p := IsPsh S.A) (isPsh_formDiff S.Om.isPot hth hform.1.th_le) (S.rest_isPsh ht hℓ a)) _ (greenEp_nonneg S.L S.s hε.le)`. Establish `hU : mInt S.A (Fin.cons (LocPot.ofFun (S.u a' t)) (S.rest a t)) (greenSplit S.L S.s ε) = mInt S.A (Fin.cons (LocPot.ofFun fun x => Real.log (secNorm S.L S.s x ^ 2 + ε)) (S.rest a t)) (S.u a' t) + 2 * mInt S.A (Fin.cons S.L (S.rest a t)) (S.u a' t) - 2 * S.divInt (S.rest a t) (S.u …`. Establish `hlin` using `mIntLinear S.A _ (hcons _ huP) (-2) (logNormSec S.L S.s) (fun x => Real.log (secNorm S.L S.s x ^ 2 + ε)) (logNormIntegrable S.A S.L S.s S.mult S.comp S.L_pot S.s_sec S.s_snc _ (hcons _ huP)) (mIntegrableCont S.A _ (hcons _ huP) _ (ReciprocityTheory.AnForm.M.PLC.continuous_of_smoo …`.
+
+Establish `hpl` using `poincareLelong S.A S.L S.s S.mult S.comp S.B S.L_pot S.s_sec S.s_snc S.B_holo (S.u a' t) hu (S.rest a t) hΦ`. Establish `hbp` using `byPartsSymm S.A _ (S.u a' t) hf hu (S.rest a t) hΦ`. Establish `hdiv : S.divInt (S.rest a t) (S.u a' t) = ∑ k, (S.mult k : ℝ) * mInt (S.B k) (fun i => (S.rest a t i).pullback Subtype.val continuous_subtype_val) (S.u a' t ∘ Subtype.val)` using `rfl`. Use `show mInt S.A _ (fun x => (-2) * logNormSec S.L S.s x + Real.log (secNorm S.L S.s x ^ 2 + ε)) = _`. Rewrite using `[hlin, hpl, hbp, hdiv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpl : S.plTerm a ha ε t = 2 * mInt S.A (Fin.cons S.L (S.rest a t)) (S.u a' t) + mInt S.A (Fin.cons (LocPot.ofFun fun x => Real.log (secNorm S.L S.s x ^ 2 + ε)) (S.rest a t)) (S.u a' t) - 2 * S.divInt (S.rest a t) (S.u a' t)`. Establish `hcu` using `ReciprocityTheory.AnForm.M.PLC.continuous_of_smooth S.A hu`. Establish `hL2 : IsPotential S.A (S.L.rsmul 2)` using `isPotentialRsmul S.A 2 S.L S.L_pot`. Establish `hfP` using `isPotential_ofFun S.A _ hf`.
+
+Use `show mInt S.A (Fin.cons (S.L.rsmul 2 + LocPot.ofFun fun x => Real.log (secNorm S.L S.s x ^ 2 + ε)) (S.rest a t)) (S.u a' t) - 2 * S.divInt (S.rest a t) (S.u a' t) = _`. Rewrite using `[mIntAdd S.A _ _ _ hL2 hfP hΦ _ (mIntegrableCont S.A _ (hcons _ hL2) _ hcu) (mIntegrableCont S.A _ (hcons _ hfP) _ hcu), mIntRsmul S.A 2 S.L _ S.L_pot hΦ]`. Rewrite using `[hJ1, hJ0, hOm, mIntAdd S.A _ _ _ hth huP hΦ _ (hGi _ hth) (hGi _ huP), hU, hpl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GreenMassStep.proof : GreenMassStep.Statement := by
   intro D W _ _ _ S a ha ε t hε ht hℓ
   set a' : Fin (D + 1) := ⟨a, ha⟩ with ha'

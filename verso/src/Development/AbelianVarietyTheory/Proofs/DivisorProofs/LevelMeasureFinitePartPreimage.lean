@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.VolPush
 
+/- English proof (translation)
+Introduce `D V θ A m rp K μ hV hθ hA hm hc hrp hK hμ g hg B hB`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI := hμ.1`. Establish `h1 : rp g = 1` using `GlobalTheory.CovTop.VolBox.rp_eq_one V θ A rp hV hA hrp g hg`.
+
+Rewrite using `[← GlobalTheory.CovTop.VolBox.meas_level V θ A m rp K μ hV hθ hA hm hc hrp hK hμ B hB, ← measure_preimage_mul μ g⁻¹ {h | finE V h ∈ K ∧ rp h ∈ B}]`. Use `congr 1`. Use extensionality with `h`. Use `show finE V (g⁻¹ * h) ∈ K ∧ rp h ∈ B ↔ finE V (g⁻¹ * h) ∈ K ∧ rp (g⁻¹ * h) ∈ B`. Rewrite using `[map_mul rp, map_inv rp, h1, inv_one, one_mul]`.
+-/
 theorem meas_translate_eq : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (A : Frames V) (m : ∀ ρ, Measure (Upq V ρ)) (rp : GA D V →* (∀ ρ, Upq V ρ)) (K : Subgroup (GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))) (μ : Measure (GA D V)), V.SigOK → IsInfFam θ → IsFrames V A → (∀ ρ, IsMinf (m ρ)) → Continuous rp → IsRealPart V θ A rp → IsOpen {h : GA D V | finE V h ∈ K} → IsMeasLev V K μ → ∀ g ∈ GfC V, ∀ B : Set (∀ ρ, Upq V ρ), MeasurableSet B → μ {h | finE V (g⁻¹ * h) ∈ K ∧ rp h ∈ B} = Measure.pi m B := by
   intro D V θ A m rp K μ hV hθ hA hm hc hrp hK hμ g hg B hB
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _

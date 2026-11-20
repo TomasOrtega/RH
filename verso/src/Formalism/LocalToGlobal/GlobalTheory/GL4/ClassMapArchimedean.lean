@@ -18,6 +18,13 @@ section GramSelf
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `h : ∀ i', (A.X v)⁻¹ *ᵥ vecAt A.b v (A.b i') = fun k => (A.X v)⁻¹ k i'`. Introduce `i'`. Use function extensionality and compare the values at `k`. Simplify using `[vecAt, Matrix.mulVec, dotProduct, Finsupp.single_apply]`. Establish `e : gramJ A A.b v = ((A.X v)⁻¹)ᴴ * (A.X v)⁻¹`.
+
+Use extensionality with `i j`. Simplify using `only [gramJ, Matrix.of_apply, majAt, fcoord, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[h, h]`. Establish `hz : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2` using `fun z => by`. Rewrite using `[show star z * z = ((Complex.normSq z : ℝ) : ℂ) by rw [Complex.normSq_eq_conj_mul_self]; rfl, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+
+Rewrite using `[e, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', hz, norm_inv, inv_pow]`.
+-/
 theorem gramJ_self_det (A : HLat K) (v : InfinitePlace K) : (gramJ A A.b v).det.re = (‖(A.X v).det‖ ^ 2)⁻¹ := by
   classical
   have h : ∀ i', (A.X v)⁻¹ *ᵥ vecAt A.b v (A.b i') = fun k => (A.X v)⁻¹ k i' := by
@@ -39,6 +46,9 @@ section F
 
 variable {D : D7} {u : D.what₂.Word} (CV : ColVal D u)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[crdQ, famOf, Basis.equivFun_apply, Finset.sum_apply, Pi.basisFun_apply, Finsupp.single_apply, Pi.single_apply]`.
+-/
 theorem crd_fam (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)
     (a : Fin (D.R.N 0)) :
     crdQ CV c τ (∑ i, B i a • (CV.Q c τ).b ((CV.eQ c τ).symm i)) = famOf (Pi.basisFun D.what₂.LL (Fin (D.R.N 0))) B a := by
@@ -46,6 +56,9 @@ theorem crd_fam (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : Matrix (Fin (D
   simp [crdQ, famOf, Basis.equivFun_apply, Finset.sum_apply, Pi.basisFun_apply,
     Finsupp.single_apply, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [latOf, Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `crd_fam CV c τ B a`.
+-/
 theorem latOf_map_crd (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL) :
     (latOf (K := D.what₂.LL) fun a : Fin (D.R.N 0) => ∑ i, B i a • (CV.Q c τ).b ((CV.eQ c τ).symm i)).map
         ((crdQ CV c τ : (CV.Q c τ).V →ₗ[D.what₂.LL] (Fin (D.R.N 0) → D.what₂.LL)).restrictScalars (𝓞 D.what₂.LL)) =
@@ -56,6 +69,29 @@ theorem latOf_map_crd (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (B : Matrix (
   funext a
   exact crd_fam CV c τ B a
 
+/- English proof (translation)
+Introduce `u CV c τ`. Use `(columnHypotheses D u).tc` as an intermediate fact. Establish `hQ` using `CV.Q_good c τ`. Establish `hn : 0 < D.R.N 0` using `rank_zero_pos D`. Use `haveI : Nonempty (Fin (D.R.N 0)) := ⟨⟨0, hn⟩⟩`.
+
+Use `haveI : Nonempty (CV.Q c τ).ι := ⟨(CV.eQ c τ).symm ⟨0, hn⟩⟩`. Establish `hfr : Module.finrank D.what₂.LL (CV.Q c τ).V = D.R.N 0`. Rewrite using `[Module.finrank_eq_card_basis (CV.Q c τ).b, Fintype.card_congr (CV.eQ c τ), Fintype.card_fin]`. Use `choose bK hbK using fun p : FinPl D.what₂.LL => exists_basis_locP (toH p) hQ.2.1 hQ.2.2 hfr`. Use `set g : FinPl D.what₂.LL → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL := fun p => ((CV.Q c τ).b.reindex (CV.eQ c τ)).toMatrix (bK p) with hgdef`.
+
+Establish `hg : ∀ p, (g p).det ≠ 0` using `fun p => by`. Use `((CV.Q c τ).b.reindex (CV.eQ c τ)).isUnit_det (bK p)` as an intermediate fact. Rewrite `this` using `[Basis.det_apply]`. Conclude with `this.ne_zero`. Establish `hfam : ∀ p, (fun a : Fin (D.R.N 0) => ∑ i, g p i a • (CV.Q c τ).b ((CV.eQ c τ).symm i)) = bK p` using `fun p => by`.
+
+Use function extensionality and compare the values at `a`. Use `((CV.Q c τ).b.reindex (CV.eQ c τ)).sum_repr (bK p a)` as an intermediate fact. Simplify `this` using `[hgdef, Basis.toMatrix_apply, Basis.reindex_apply]`. Establish `hloc : ∀ p, localization₂ (toH p).asIdeal (CV.Q c τ).L = localization₂ (toH p).asIdeal (latOf (K` using `D.what₂.LL) fun a : Fin (D.R.N 0) => ∑ i, g p i a • (CV.Q c τ).b ((CV.eQ c τ).symm i)) := fun p => by`. Rewrite using `[hfam p, hbK p]`.
+
+Take `⟨-, -, hmuQ⟩` from `mu_of_frames (CV.Q c τ) hQ (ownFrame (CV.Q c τ) (CV.eQ c τ) g hg hloc)`. Establish `hML` using `MQ_lattice CV c τ`. Establish `hstdGood : (stdHL D.what₂.LL (MQ CV c τ)).Good` using `⟨fun _ => by simp, hML.fg, hML.span_eq_top⟩`. Set `FS : FrameData (stdHL D.what₂.LL (MQ CV c τ)) (Fin (D.R.N 0))` to `{ e := Pi.basisFun D.what₂.LL (Fin (D.R.N 0)) Γ := g det_ne := hg loc := fun p => by show localization₂ (toH p).asIdeal (MQ CV c τ) = _`. Use extensionality with `z`.
+
+Take `⟨q, rfl⟩` from `(crdQ CV c τ).surjective z`. Unfold `MQ`. Rewrite using `[mem_localization_map_equiv, hloc p, ← latOf_map_crd CV c τ (g p), mem_localization_map_equiv] }`. Take `⟨-, -, hmuS⟩` from `mu_of_frames (stdHL D.what₂.LL (MQ CV c τ)) hstdGood FS`. Rewrite using `[brp_latK_mu D.what₂.LL (MQ CV c τ) hML.fg]`.
+
+Establish `hQinf : infPart (fun v => (gramJ (CV.Q c τ) (ownFrame (CV.Q c τ) (CV.eQ c τ) g hg hloc).e v).det.re) = -((1 / (nPl D.what₂.LL : ℝ)) * ∑ v, Real.log (‖((CV.Q c τ).X v).det‖ ^ 2))`. Unfold `infPart`. Rewrite using `[← mul_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[show ((ownFrame (CV.Q c τ) (CV.eQ c τ) g hg hloc).e : (CV.Q c τ).ι → (CV.Q c τ).V) = (CV.Q c τ).b from rfl, gramJ_self_det, Real.log_inv]`. Establish `hSinf : infPart (fun v => (gramJ (stdHL D.what₂.LL (MQ CV c τ)) FS.e v).det.re) = 0`. Unfold `infPart`. Rewrite using `[Finset.sum_eq_zero fun v _ => ?_, mul_zero]`.
+
+Use `beta_reduce`. Rewrite using `[show (FS.e : Fin (D.R.N 0) → (Fin (D.R.N 0) → D.what₂.LL)) = (stdHL D.what₂.LL (MQ CV c τ)).b from rfl, gramJ_self_det]`. Simplify using the standard rewrite rules. Establish `hfin : finPart (fun p => ((ownFrame (CV.Q c τ) (CV.eQ c τ) g hg hloc).Γ p).det) = finPart (fun p => (FS.Γ p).det)`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p`. Conclude with `Matrix.det_submatrix_equiv_self _ _`. Establish `hcQ : (Fintype.card (CV.Q c τ).ι : ℝ) = (D.R.N 0 : ℝ)`. Rewrite using `[Fintype.card_congr (CV.eQ c τ), Fintype.card_fin]`. Rewrite `hmuQ` using `[hcQ]`.
+
+Rewrite `hmuS` using `[Fintype.card_fin]`. Rewrite using `[hmuQ, hmuS, hQinf, hSinf, hfin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem q_frame_degree (D : D7) : QFrameDeg D := by
   intro u CV c τ
   classical
@@ -122,12 +158,21 @@ theorem q_frame_degree (D : D7) : QFrameDeg D := by
   rw [hmuQ, hmuS, hQinf, hSinf, hfin]
   ring
 
+/- English proof (translation)
+The claim follows from `classMapT_of (q_frame_degree D)`.
+-/
 theorem class_map_archimedean (D : D7) : ClassMapT D :=
   classMapT_of (q_frame_degree D)
 
+/- English proof (translation)
+The claim follows from `Link6F_of_frameDeg q_frame_degree`.
+-/
 theorem third_link_family : Link6F :=
   Link6F_of_frameDeg q_frame_degree
 
+/- English proof (translation)
+The claim follows from `packet_of_third_proposition third_link_family`.
+-/
 theorem packet_family : KudlaFamilyOfMinkowskiTransference :=
   packet_of_third_proposition third_link_family
 

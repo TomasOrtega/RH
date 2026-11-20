@@ -13,6 +13,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.
 open CategoryTheory AlgebraicGeometry GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `|fderiv ℝ (lnRatio (metsOf x O.Φ c none σ (O.ex ρ)) (refMet x O.Φ c σ (O.ex ρ)) ∘ ch.e.symm) (ch.e y) ξ| ≤ C * O.met.r c σ y ^ μ * Real.exp (O.met.r c σ y / 2) * √(P.om c σ ch y ξ.ofLp) := by first | exact @GlobalTheory.HodgeGradNear.abs_fderiv_lnRatio_le_near | exact GlobalTheor …`.
+-/
 theorem _root_.GlobalTheory.T.log_metric_ratio_differentiable_nonneg : Hypotheses2 → HypothesesH → OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (ρ : DV.Rt D.what₂.Tau O.N)
   (y₀ : GlobalTheory.CxPts (O.var c).str σ), y₀ ∉ offBd O.Φ c σ →
   ∃ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (C μ : ℝ),

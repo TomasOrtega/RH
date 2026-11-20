@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TorusAlgebraicHolds
 
 namespace GlobalTheory.KeyFam
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.keyDatumConnectedFamily_of_polarizedArithmeticFamily GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 (GlobalTheory.T.polarized_family_of_theta_uniformization GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalT …`.
+-/
 theorem connFam_holds : GlobalTheory.KeyKa.ConnFam :=
   GlobalTheory.T.keyDatumConnectedFamily_of_polarizedArithmeticFamily GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2
     (GlobalTheory.T.polarized_family_of_theta_uniformization GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.thetaUnifAV_closed

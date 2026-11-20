@@ -4,6 +4,19 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory.StrictHensel
 
+/- English proof (translation)
+Use `⟨fun f hf a₀ h₁ h₂ => ?_⟩` and prove the remaining obligations. Set `P : StandardEtalePair R` to `⟨f, hf, derivative f, 1, 0, 1, by simp⟩`. Establish `e : ∀ p : R[X], aeval (residue R a₀) p = residue R (p.eval a₀)` using `fun p => by`. Rewrite using `[← ResidueField.algebraMap_eq]`. Conclude with `aeval_algebraMap_apply_eq_algebraMap_eval _ _`.
+
+Establish `hP : P.HasMap (residue R a₀)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval (residue R a₀) f = 0`. Rewrite using `[e]`. Conclude with `(residue_eq_zero_iff _).mpr h₁`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (aeval (residue R a₀) (derivative f))`. Rewrite using `[e]`. Conclude with `h₂.map (residue R)`. Set `ψ` to `P.lift (residue R a₀) hP`. Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ`.
+
+Establish `hq : (RingHom.ker ψ).comap (algebraMap R P.Ring) = maximalIdeal R`. Use extensionality with `r`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes, ResidueField.algebraMap_eq, residue_eq_zero_iff]`. Take `⟨s, hs⟩` from `H P.Ring (RingHom.ker ψ) hq`. Use `⟨s P.X, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(P.hasMap_X.map s).1`. Simplify `h` using `[P, IsRoot, coe_aeval_eq_eval]`. Establish `hmem : P.X - algebraMap R P.Ring a₀ ∈ RingHom.ker ψ`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, ResidueField.algebraMap_eq]`. Simplify using `[ψ]`.
+
+Rewrite `hmem` using `[← hs, Ideal.mem_comap]`. Simplify using `using hmem`.
+-/
 theorem henselian_of_sections {R : Type} [CommRing R] [IsLocalRing R]
     (H : ∀ (A : Type) [CommRing A] [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime],
       q.comap (algebraMap R A) = maximalIdeal R →
@@ -35,6 +48,19 @@ theorem henselian_of_sections {R : Type} [CommRing R] [IsLocalRing R]
     rw [← hs, Ideal.mem_comap] at hmem
     simpa using hmem
 
+/- English proof (translation)
+Use `IsSepClosed.of_exists_root _ fun g hm hirr hsep => ?_` and prove the remaining obligations. Take `⟨f, hf, -, hfm⟩` from `lifts_and_natDegree_eq_and_monic ((mem_lifts g).2 (map_surjective _ residue_surjective g)) hm`. Use `haveI : Fact (Irreducible g) := ⟨hirr⟩`. Set `P : StandardEtalePair R` to `⟨f, hfm, derivative f, 1, 0, 1, by simp⟩`. Establish `e : ∀ p : R[X], aeval (AdjoinRoot.root g) p = AdjoinRoot.mk g (p.map (residue R))` using `fun p => by`.
+
+Rewrite using `[← AdjoinRoot.aeval_eq, ← ResidueField.algebraMap_eq, aeval_map_algebraMap]`. Establish `hP : P.HasMap (AdjoinRoot.root g)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval (AdjoinRoot.root g) f = 0`. Rewrite using `[e, hf, AdjoinRoot.mk_self]`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (aeval (AdjoinRoot.root g) (derivative f))`. Rewrite using `[e, ← derivative_map, hf, isUnit_iff_ne_zero, Ne, AdjoinRoot.mk_eq_zero]`. Introduce and unpack `⟨c, hc⟩`. Take `⟨a, b, hab⟩` from `hsep`. Conclude with `hirr.not_isUnit (isUnit_of_dvd_one ⟨a + b * c, by rw [← hab, hc]; ring⟩)`.
+
+Set `ψ` to `P.lift (AdjoinRoot.root g) hP`. Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ`. Establish `hq : (RingHom.ker ψ).comap (algebraMap R P.Ring) = maximalIdeal R`. Use extensionality with `r`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes]`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply R (ResidueField R) (AdjoinRoot g), map_eq_zero_iff _ (algebraMap (ResidueField R) (AdjoinRoot g)).injective, ResidueField.algebraMap_eq, residue_eq_zero_iff]`. Take `⟨s, -⟩` from `H P.Ring (RingHom.ker ψ) hq`. Establish `ha : f.eval (s P.X) = 0`. Establish `h` using `(P.hasMap_X.map s).1`. Simplify `h` using `[P, coe_aeval_eq_eval]`.
+
+Conclude with `⟨residue R (s P.X), by rw [← hf, eval_map, eval₂_hom, ha, map_zero]⟩`.
+-/
 theorem isSepClosed_of_sections {R : Type} [CommRing R] [IsLocalRing R]
     (H : ∀ (A : Type) [CommRing A] [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime],
       q.comap (algebraMap R A) = maximalIdeal R →
@@ -75,6 +101,17 @@ end GlobalTheory.StrictHensel
 
 namespace GlobalTheory.StrictHensel
 
+/- English proof (translation)
+Set `S` to `Localization.AtPrime q`. Use `haveI : IsLocalHom (algebraMap R S) := ⟨fun r hr => by`. Rewrite `hr` using `[IsScalarTower.algebraMap_apply R A S, IsLocalization.AtPrime.isUnit_to_map_iff S q]`. Conclude with `(notMem_maximalIdeal).mp fun h => hr (by`. Establish `: r ∈ q.comap (algebraMap R A)` using `hq ▸ h`.
+
+Conclude with `this)⟩`. Use `haveI : Algebra.FormallyUnramified R S := Algebra.FormallyUnramified.comp R A S`. Use `haveI : Algebra.EssFiniteType R S := Algebra.EssFiniteType.comp R A S`. Establish `hsurj` using `IsSepClosed.algebraMap_surjective (ResidueField R) (ResidueField S)`. Set `e : ResidueField R ≃ₐ[ResidueField R] ResidueField S` to `AlgEquiv.ofBijective (Algebra.ofId _ _) ⟨fun a b h => (algebraMap (ResidueField R) (ResidueField S)).injective h, hsurj⟩`.
+
+Set `φ : A →ₐ[R] ResidueField R` to `((e.symm.restrictScalars R).toAlgHom).comp ((IsScalarTower.toAlgHom R S (ResidueField S)).comp (IsScalarTower.toAlgHom R A S))`. Take `⟨s, hs⟩` from `(GlobalTheory.T.bijective_residue_comp_etale_henselian R A R).2 φ`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `hx` using `congrArg (fun ψ : A →ₐ[R] ResidueField R => ψ x) hs`.
+
+Simplify using `only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom'] at hx`. Rewrite using `[Ideal.mem_comap, ← residue_eq_zero_iff, ← ResidueField.algebraMap_eq]`. Express the relevant statement in the definitionally equal form `algebraMap R (ResidueField R) (s x) = 0 ↔ x ∈ q`. Rewrite using `[hx]`. Simplify using `only [φ, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, IsScalarTower.coe_toAlgHom', ResidueField.algebraMap_eq]`.
+
+Express the relevant statement in the definitionally equal form `e.symm (residue S (algebraMap A S x)) = 0 ↔ x ∈ q`. Rewrite using `[map_eq_zero_iff _ e.symm.injective, residue_eq_zero_iff, IsLocalization.AtPrime.to_map_mem_maximal_iff S q]`.
+-/
 theorem sections_of_henselian_sepClosed {R : Type} [CommRing R] [IsLocalRing R]
     [HenselianLocalRing R] [IsSepClosed (ResidueField R)]
     (A : Type) [CommRing A] [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime]
@@ -111,6 +148,9 @@ end GlobalTheory.StrictHensel
 
 namespace GlobalTheory.StrictHensel
 
+/- English proof (translation)
+Introduce `R _ _`. Use `⟨fun H => ⟨henselian_of_sections H, isSepClosed_of_sections H⟩, fun ⟨h₁, h₂⟩ => ?_⟩` and prove the remaining obligations. Introduce `A _ _ _ q _ hq`. Conclude with `sections_of_henselian_sepClosed A q hq`.
+-/
 theorem strictlyHenselian_iff : ∀ (R : Type) [CommRing R] [IsLocalRing R],
     (∀ (A : Type) [CommRing A] [Algebra R A] [Algebra.Etale R A] (q : Ideal A) [q.IsPrime],
       q.comap (algebraMap R A) = maximalIdeal R →

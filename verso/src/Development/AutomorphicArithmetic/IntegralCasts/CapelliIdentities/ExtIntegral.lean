@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `B S K _ _ _ _ _ _ hinj φ`. Use `haveI hP : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := S) (RingHom.ker φ) ⊥ (by`. Rewrite using `[← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le)`.
+
+Use `haveI : Q.LiesOver (RingHom.ker φ) := ⟨hQP.symm⟩`. Use `letI : Algebra (B ⧸ RingHom.ker φ) K := (RingHom.kerLift φ).toAlgebra`. Use `haveI : FaithfulSMul (B ⧸ RingHom.ker φ) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective φ)`. Use `haveI : Algebra.IsIntegral (B ⧸ RingHom.ker φ) (S ⧸ Q) := Algebra.IsIntegral.tower_top (R := B)`. Use `haveI : FaithfulSMul (B ⧸ RingHom.ker φ) (S ⧸ Q) := inferInstance`.
+
+Use `haveI : Module.IsTorsionFree (B ⧸ RingHom.ker φ) (S ⧸ Q) := Module.isTorsionFree_iff_faithfulSMul.2 inferInstance`. Use `haveI : Module.IsTorsionFree (B ⧸ RingHom.ker φ) K := Module.isTorsionFree_iff_faithfulSMul.2 inferInstance`. Use `haveI : Nontrivial (B ⧸ RingHom.ker φ) := Ideal.Quotient.nontrivial_iff.2 hP.ne_top`. Use `haveI : Algebra.IsAlgebraic (B ⧸ RingHom.ker φ) (S ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `f : (S ⧸ Q) →ₐ[B ⧸ RingHom.ker φ] K` to `IsAlgClosed.lift`.
+
+Use `⟨f.toRingHom.comp (Ideal.Quotient.mk Q), fun b => ?_⟩` and prove the remaining obligations. Conclude with `(f.commutes (Ideal.Quotient.mk _ b)).trans (RingHom.kerLift_mk φ b)`.
+-/
 theorem UpperTheory.Reformulated.B.Qe16.ext_integral :
     ∀ {B S K : Type} [inst : CommRing B] [inst_1 : CommRing S]
     [inst_2 : Field K] [IsAlgClosed K] [inst_4 : Algebra B S] [Algebra.IsIntegral B S],

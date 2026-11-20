@@ -10,6 +10,11 @@ section General
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Take `⟨r, hr, hr0⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors hX`. Establish `hr' : Module.IsTorsionBySet R X (Ideal.span {r})`. Rewrite using `[Module.isTorsionBySet_span_singleton_iff]`. Conclude with `fun x ↦ Submodule.mem_annihilator.mp hr x trivial`. Use `letI := hr'.module`.
+
+Use `haveI : Module.Finite (R ⧸ Ideal.span {r}) X := Module.Finite.of_restrictScalars_finite R _ _`. Use `haveI : IsArtinian R (R ⧸ Ideal.span {r}) := (isFiniteLength_iff_isNoetherian_isArtinian.mp (isFiniteLength_quotient_span_singleton R hr0)).2`. Use `haveI : IsArtinianRing (R ⧸ Ideal.span {r}) := isArtinian_of_tower R inferInstance`. Rewrite using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `⟨inferInstance, isArtinian_of_surjective_algebraMap (R := R ⧸ Ideal.span {r}) Ideal.Quotient.mk_surjective⟩`.
+-/
 theorem isFiniteLength_of_isTorsion [IsNoetherianRing R] [Ring.KrullDimLE 1 R]
     {X : Type*} [AddCommGroup X] [Module R X] [Module.Finite R X] (hX : Module.IsTorsion R X) :
     IsFiniteLength R X := by

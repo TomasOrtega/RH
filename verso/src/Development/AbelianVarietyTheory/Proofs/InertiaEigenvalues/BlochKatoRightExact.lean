@@ -37,18 +37,27 @@ def res : Representation L G V where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Dcris, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem Dcris_res : Dcris PD (res L ρ) = (Dcris PD ρ).restrictScalars L := by
   ext x
   simp only [Dcris, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker,
     LinearMap.sub_apply, LinearMap.id_apply]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [DdR, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem DdR_res : DdR PD (res L ρ) = (DdR PD ρ).restrictScalars L := by
   ext x
   simp only [DdR, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker,
     LinearMap.sub_apply, LinearMap.id_apply]
   rfl
 
+/- English proof (translation)
+Unfold `IsCrys at h ⊢`. Rewrite using `[Dcris_res]`. Express the relevant statement in the definitionally equal form `finrank L ↥(Dcris PD ρ) = _`. Rewrite using `[← Module.finrank_mul_finrank L LL ↥(Dcris PD ρ), ← Module.finrank_mul_finrank L LL V, h, mul_left_comm]`.
+-/
 theorem isCrys_res (h : IsCrys PD ρ) : IsCrys PD (res L ρ) := by
   unfold IsCrys at h ⊢
   rw [Dcris_res]
@@ -56,6 +65,9 @@ theorem isCrys_res (h : IsCrys PD ρ) : IsCrys PD (res L ρ) := by
   rw [← Module.finrank_mul_finrank L LL ↥(Dcris PD ρ), ← Module.finrank_mul_finrank L LL V, h,
     mul_left_comm]
 
+/- English proof (translation)
+Unfold `IsDR at h ⊢`. Rewrite `h` using `[DdR_res]`. Express the relevant statement in the definitionally equal form `finrank L ↥(DdR PD ρ) = _ at h`. Rewrite `h` using `[← Module.finrank_mul_finrank L LL ↥(DdR PD ρ), ← Module.finrank_mul_finrank L LL V, mul_left_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left Module.finrank_pos h`.
+-/
 theorem isDR_of_res [FiniteDimensional L LL] (h : IsDR PD (res L ρ)) : IsDR PD ρ := by
   unfold IsDR at h ⊢
   rw [DdR_res] at h
@@ -68,6 +80,9 @@ end Res
 
 variable (f : V →ₗ[LL] V')
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [φVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_φVB (x : V ⊗[Qp] B) :
     AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) (φVB PD (LL := LL) x) =
       φVB PD (LL := LL) (AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) x) := by
@@ -76,6 +91,9 @@ theorem map_φVB (x : V ⊗[Qp] B) :
   | tmul v b => simp [φVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_ιV (x : V ⊗[Qp] B) :
     AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) (ιV PD (LL := LL) x) =
       ιV PD (LL := LL) (AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) x) := by
@@ -84,6 +102,11 @@ theorem map_ιV (x : V ⊗[Qp] B) :
   | tmul v b => simp [ιV]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hy`. Use `⟨AlgebraTensorModule.map f LinearMap.id z, ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_mem_FilV {a : ℤ} {y : V ⊗[Qp] BdR} (hy : y ∈ FilV PD (LL := LL) (V := V) a) :
     AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) y ∈ FilV PD (LL := LL) (V := V') a := by
   obtain ⟨z, rfl⟩ := hy
@@ -93,6 +116,9 @@ theorem map_mem_FilV {a : ℤ} {y : V ⊗[Qp] BdR} (hy : y ∈ FilV PD (LL := LL
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, hf]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_actVB {ρ : Representation LL G V} {ρ' : Representation LL G V'}
     (hf : ∀ g x, f (ρ g x) = ρ' g (f x)) (g : G) (x : V ⊗[Qp] B) :
     AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) (actVB PD ρ g x) =
@@ -103,6 +129,11 @@ theorem map_actVB {ρ : Representation LL G V} {ρ' : Representation LL G V'}
   | add x y hx hy => simp only [map_add, hx, hy]
 
 include PD in
+/- English proof (translation)
+Establish `h1 : (1 : B) ≠ 0` using `fun h0 => PD.not_mem_filtration_two (by`. Rewrite using `[← mul_one PD.t, h0, mul_zero, map_zero]`. Conclude with `Submodule.zero_mem _)`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one Qp h1`. Use `congrArg (fun z => TensorProduct.rid Qp V (LinearMap.lTensor V φ z)) h` as an intermediate fact.
+
+Simplify `this` using `[hφ]`.
+-/
 theorem tmul_one_injective {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 : B)) : v = w := by
   have h1 : (1 : B) ≠ 0 := fun h0 => PD.not_mem_filtration_two (by
     rw [← mul_one PD.t, h0, mul_zero, map_zero]; exact Submodule.zero_mem _)
@@ -112,6 +143,17 @@ theorem tmul_one_injective {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1
 
 end Generic
 
+/- English proof (translation)
+Set `L : FinExt l` to `⟨⊥, inferInstance⟩`. Use `letI : Algebra ↥L.1 LL := ((algebraMap ℚ_[l] LL).comp (IntermediateField.botEquiv ℚ_[l] (Om l)).toRingEquiv.toRingHom).toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 LL := IsScalarTower.of_algebraMap_eq fun x => (congrArg (algebraMap ℚ_[l] LL) ((IntermediateField.botEquiv ℚ_[l] (Om l)).commutes x)).symm`. Use `haveI : FiniteDimensional ↥L.1 LL := Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Use `letI : Module ↥L.1 V := Module.compHom V (algebraMap ↥L.1 LL)`.
+
+Use `letI : Module ↥L.1 V' := Module.compHom V' (algebraMap ↥L.1 LL)`. Use `haveI : IsScalarTower ↥L.1 LL V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : IsScalarTower ↥L.1 LL V' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 V := IsScalarTower.to₁₂₄ ℚ_[l] ↥L.1 LL V`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 V' := IsScalarTower.to₁₂₄ ℚ_[l] ↥L.1 LL V'`.
+
+Use `haveI : FiniteDimensional ↥L.1 V := Module.Finite.trans LL V`. Use `haveI : FiniteDimensional ↥L.1 V' := Module.Finite.trans LL V'`. Establish `hc` using `isCrys_res (P.PD K) ↥L.1 ρ h`. Establish `hd` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T K L V _ hc).1`. Take `⟨-, h1⟩` from `(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l P AI T K L V (res ↥L.1 ρ) V' (res ↥L.1 ρ') (f.restrictScalars ↥L.1) hf).2 hs hc`.
+
+Take `⟨h2, h3⟩` from `(GlobalTheory.DRSubQuot.deRham_sub_quot l P AI T K L V (res ↥L.1 ρ) V' (res ↥L.1 ρ') (f.restrictScalars ↥L.1) hf).2 hs hd`. Rewrite `h1` using `[Dcris_res, Dcris_res]`. Rewrite `h3` using `[DdR_res, DdR_res]`. Use `⟨isDR_of_res (P.PD K) ↥L.1 ρ' h2, h1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.DRFil.exists_mem_FilV (P.PD K) (LL := ↥L.1) y`.
+
+Take `⟨x, hx, hxy⟩` from `h3 a y ⟨hy, ha⟩`. Conclude with `⟨x, hx.1, hxy⟩`.
+-/
 theorem lift_periods {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
@@ -151,6 +193,17 @@ theorem lift_periods {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P
   obtain ⟨x, hx, hxy⟩ := h3 a y ⟨hy, ha⟩
   exact ⟨x, hx.1, hxy⟩
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL _ _ _ O _ _ hO A A' f hf hs hA _ c' hc'`. Use `haveI := hO.2.1`. Take `⟨hdr, hl1, hl2⟩` from `lift_periods T K LL A.ρ A'.ρ f hf hs hA`. Take `⟨-, x', hx'⟩` from `hc'`. Take `⟨hd1, d₂', hd2, hfil⟩` from `GlobalTheory.T.crystalline_coboundary_lift l P AI T K LL O hO A' hdr c' x' hx'`.
+
+Take `⟨d₁, hd₁, e₁⟩` from `hl1 _ hd1`. Take `⟨d₂, hd₂, e₂⟩` from `hl2 _ hd2`. Take `⟨x, y, c, hy, hx1, hx2, hc, hcx⟩` from `GlobalTheory.T.exists_blochKato_cocycle_of_crys_deRham_pair l P AI T K LL O hO A d₁ hd₁ d₂ hd₂`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite `e₁` using `[← hx1, map_sub, map_φVB]`.
+
+Rewrite `e₂` using `[← hx2, map_sub, map_ιV]`. Take `⟨v, hv⟩` from `(GlobalTheory.T.tensor_fundamental_exact_sequence_crystalline l P AI T K LL A'.V).2 (AlgebraTensorModule.map f (LinearMap.id : P.R.B →ₗ[ℚ_[l]] P.R.B) x - x') (by rw [map_sub, eq_comm, sub_eq_sub_iff_sub_eq_sub]; exact e₁) (by`. Use `Submodule.sub_mem _ (map_mem_FilV (P.PD K) f hy) hfil` as an intermediate fact. Rewrite `this` using `[← e₂]`. Rewrite using `[map_sub]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `abel)`. Use `⟨v, funext fun g => tmul_one_injective (P.PD K) ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (AlgebraTensorModule.map f (LinearMap.id : P.R.B →ₗ[ℚ_[l]] P.R.B)) (hcx g)`. Rewrite `h1` using `[map_sub, map_actVB (P.PD K) f hf, AlgebraTensorModule.map_tmul, LinearMap.id_apply]`.
+
+Establish `h2 : actVB (P.PD K) A'.ρ g (v ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = A'.ρ g v ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Simplify using `[actVB]`. Express the relevant statement in the definitionally equal form `(A'.ρ g v - v) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = (f (c g) - c' g) ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Rewrite using `[sub_tmul, sub_tmul, h1, hx', ← h2, ← hv, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bkARightExact_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ K : FinExt l, Formalism.MainNotions.LocalSituation.bkARightExact (P.PD K) := by
   intro l _ P AI T K LL _ _ _ O _ _ hO A A' f hf hs hA _ c' hc'
   haveI := hO.2.1

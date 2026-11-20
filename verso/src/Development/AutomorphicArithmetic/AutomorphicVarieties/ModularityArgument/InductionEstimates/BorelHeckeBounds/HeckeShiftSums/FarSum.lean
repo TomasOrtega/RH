@@ -13,6 +13,21 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.K
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+Establish `p0` using `hρ 0`. Establish `p1` using `hρ 1`. Establish `p2` using `hρ 2`. Establish `p3` using `hρ 3`. Establish `hm : 0 < max 1 (inR ρ)` using `lt_of_lt_of_le one_pos (le_max_left _ _)`.
+
+Establish `hM0 : 0 ≤ Real.log (max 1 (inR ρ))` using `Real.log_nonneg (le_max_left _ _)`. Establish `hL : Real.log (ρ 0) - Real.log (ρ 1) + (Real.log (ρ 2) - Real.log (ρ 3)) ≤ Real.log (max 1 (inR ρ))`. Rewrite using `[← Real.log_div p0.ne' p1.ne', ← Real.log_div p2.ne' p3.ne', ← Real.log_mul (by positivity) (by positivity)]`. Conclude with `Real.log_le_log (by positivity) (le_max_right _ _)`. Establish `r1` using `Real.log_le_log (by positivity) hr.1`.
+
+Establish `r2` using `Real.log_le_log (by positivity) hr.2`. Rewrite `r1` using `[Real.log_mul ht.ne' p1.ne']`. Rewrite `r2` using `[Real.log_mul ht.ne' p3.ne']`. Rewrite `h2` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul p0.ne' p1.ne', Real.log_mul p2.ne' p3.ne', abs_le]`. Rewrite `h1` using `[Real.log_mul p0.ne' p1.ne', abs_le]`.
+
+Establish `hτ` using `neg_abs_le (Real.log t)`. Establish `hτ0` using `abs_nonneg (Real.log t)`. Establish `hs : -C ≤ Real.log (ρ 0) + Real.log (ρ 1) ∧ Real.log (ρ 0) + Real.log (ρ 1) ≤ H + C`. Break down `le_total 0 (Real.log (ρ 0) + Real.log (ρ 1)) with h | h` into its components or cases. Use `mul_le_mul_of_nonneg_right hd h` as an intermediate fact.
+
+Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`. Use `mul_le_mul_of_nonpos_right hd h` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`. Establish `hb : ∀ k : Fin (2 + 2), |Real.log (ρ k)| ≤ (2 * C + |Real.log t| + H + Real.log (max 1 (inR ρ))) / 2`. Establish `hk : ∀ k : Fin (2 + 2), k = 0 ∨ k = 1 ∨ k = 2 ∨ k = 3` using `by decide`.
+
+Introduce `k`. Rewrite using `[abs_le]`. Apply the tactic sequence `rcases hk k with rfl | rfl | rfl | rfl <;> constructor <;> linarith [hs.1, hs.2, h2.1, h2.2]`. Establish `e : ρ i / ρ j = Real.exp (Real.log (ρ i) - Real.log (ρ j))`. Rewrite using `[Real.exp_sub, Real.exp_log (hρ i), Real.exp_log (hρ j)]`.
+
+Rewrite using `[e, ← Real.exp_log hm, ← Real.exp_add, ← Real.exp_add, Real.exp_le_exp]`. Combine the linear relations using `[(abs_le.1 (hb i)).2, (abs_le.1 (hb j)).1]`.
+-/
 private theorem fs_ratio (ρ : Fin (2 + 2) → ℝ) (hρ : ∀ i, 0 < ρ i) (t C H d : ℝ) (ht : 0 < t) (hd : 1 ≤ d) (hH : 0 ≤ H)
     (hr : Rel t ρ) (h1 : |H - d * Real.log (ρ 0 * ρ 1)| ≤ C) (h2 : |Real.log (ρ 0 * ρ 1 * (ρ 2 * ρ 3))| ≤ C) (i j : Fin (2 + 2)) :
     ρ i / ρ j ≤ Real.exp (2 * C + |Real.log t|) * Real.exp H * max 1 (inR ρ) := by
@@ -49,6 +64,19 @@ private theorem fs_ratio (ρ : Fin (2 + 2) → ℝ) (hρ : ∀ i, 0 < ρ i) (t C
   rw [e, ← Real.exp_log hm, ← Real.exp_add, ← Real.exp_add, Real.exp_le_exp]
   linarith [(abs_le.1 (hb i)).2, (abs_le.1 (hb j)).1]
 
+/- English proof (translation)
+Take `⟨C, c, hC, hs⟩` from `sgBasics ω hω`. Take `⟨c₀, C₀, hc₀, hq⟩` from `hpQht (K := K)`. Use `⟨⌈c₀⌉₊ * (2 + c * N₀), fun M => ?_⟩` and prove the remaining obligations. Take `⟨D₀, hD₀⟩` from `secDec ω t hω ht f hf 0`. Take `⟨D₁, hD₁⟩` from `secDec ω t hω ht f hf (c * N₀ + M)`.
+
+Use `set A := Real.exp (2 * C + |Real.log t|) with hA`. Establish `hA1 : 1 ≤ A` using `Real.one_le_exp (by have := abs_nonneg (Real.log t); linarith)`. Use `⟨(C * A ^ c) ^ N₀ * max 0 (max D₀ D₁) * Real.exp C₀ ^ (2 + c * N₀), by positivity, fun ρ z hz hr hH => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hs ρ z hz`. Establish `hd : (1 : ℝ) ≤ (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`.
+
+Use `set m := max 1 (inR ρ) with hm`. Establish `hm1 : 1 ≤ m` using `le_max_left _ _`. Use `set E := Real.exp (HH z) with hE`. Establish `hE1 : 1 ≤ E` using `Real.one_le_exp hH`. Establish `h4` using `h3 (A * E * m) (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hA1 hE1) hm1) (fs_ratio ρ hz.1 t C (HH z) _ ht hd hH hr h1 h2)`.
+
+Establish `hQ : 1 ≤ qht z` using `(qhtBasic K (2 + 2)).1 z`. Establish `h5 : E ≤ Real.exp C₀ * qht z ^ ⌈c₀⌉₊`. Rewrite using `[← Real.exp_log (lt_of_lt_of_le one_pos hQ), ← Real.exp_nat_mul, ← Real.exp_add, hE, Real.exp_le_exp]`. Use `mul_le_mul_of_nonneg_right (Nat.le_ceil c₀) (Real.log_nonneg hQ)` as an intermediate fact. Combine the linear relations using `[hq z]`.
+
+Establish `h6 : ‖f z‖ * m ^ (c * N₀ + M) ≤ max 0 (max D₀ D₁)`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Break down `le_total 1 (inR ρ) with h | h` into its components or cases. Rewrite using `[hm, max_eq_right h]`. Conclude with `(hD₁ ρ z hz hr).trans (le_max_right _ _)`.
+
+Rewrite using `[hm, max_eq_left h, one_pow, ← pow_zero (inR ρ)]`. Conclude with `(hD₀ ρ z hz hr).trans (le_max_left _ _)`. Establish `e2 : Real.exp (2 * HH z) = E ^ 2` using `by rw [hE, ← Real.exp_nat_mul]; norm_num`. Establish `hh0` using `(height_pos (z : AdelicGLn.AdelicGL K (2 + 2))).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fs_point {K : Type} [Field K] [NumberField K] (ω : Set (AdelicGLn.AdelicGL K (2 + 2))) (t : ℝ) (hω : Bor ω)
     (ht : 0 < t) (f : G1 K (2 + 2) → ℂ) (hf : SFun f) (N₀ : ℕ) :
     ∃ N₁ : ℕ, ∀ M : ℕ, ∃ D : ℝ, 0 ≤ D ∧ ∀ (ρ : Fin (2 + 2) → ℝ) (z : G1 K (2 + 2)), Sg ω ρ z → Rel t ρ → 0 ≤ HH z →
@@ -90,6 +118,17 @@ private theorem fs_point {K : Type} [Field K] [NumberField K] (ω : Set (AdelicG
     _ ≤ (C * A ^ c) ^ N₀ * max 0 (max D₀ D₁) * (Real.exp C₀ * qht z ^ ⌈c₀⌉₊) ^ (2 + c * N₀) := by gcongr
     _ = _ := by rw [mul_pow (Real.exp C₀), ← pow_mul, mul_assoc _ _ (qht z ^ _)]
 
+/- English proof (translation)
+Take `⟨N, C, hC, hs⟩` from `sumHt (K := K) (2 + 2)`. Use `⟨N, C.toReal, fun x S g B hB h => ?_⟩` and prove the remaining obligations. Use `set φ : Gam K (2 + 2) → ℝ := fun γ => (AutomorphicForm.height (((γ : G1 K (2 + 2)) * x : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ^ N)⁻¹ with hφ`. Establish `hφ0 : ∀ γ, 0 ≤ φ γ` using `fun γ => inv_nonneg.2 (pow_nonneg (height_pos _).le _)`. Establish `h' : ∀ q : Cos K, ∃ γ : Gam K (2 + 2), (Quotient.mk _ γ : Cos K) = q ∧ (q ∈ S → g q ≤ φ γ * B)`.
+
+Introduce `q`. Distinguish the cases in `hq : q ∈ S`. Take `⟨_, ⟨δ, hδ, rfl⟩, hb⟩` from `h q hq`. Use `⟨δ * q.out, ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `Eq.trans (Quotient.sound ?_) (Quotient.out_eq q)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `QuotientGroup.rightRel _ _ _`. Rewrite using `[QuotientGroup.rightRel_apply]`. Simplify using `using hδ`. Rewrite using `[hφ] beta_reduce`. Rewrite using `[le_inv_mul_iff₀ (pow_pos (height_pos _) _), mul_comm, Subgroup.coe_mul (Gam K (2 + 2)), mul_assoc]`.
+
+Conclude with `hb`. Conclude with `⟨q.out, Quotient.out_eq q, fun h => absurd h hq⟩`. Use `choose γ hγ hg using h'`. Establish `hinj : Function.Injective γ` using `fun a b e => by rw [← hγ a, ← hγ b, e]`. Establish `h1 : ∑ q ∈ S, φ (γ q) ≤ C.toReal`.
+
+Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal hC, ENNReal.ofReal_sum_of_nonneg fun q _ => hφ0 _, ← Finset.sum_image (f := fun a => ENNReal.ofReal (φ a)) fun a _ b _ e => hinj e]`. Conclude with `(ENNReal.sum_le_tsum _).trans (hs x)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fs_sum {K : Type} [Field K] [NumberField K] : ∃ (N₀ : ℕ) (C : ℝ), ∀ (x : G1 K (2 + 2)) (S : Finset (Cos K))
     (g : Cos K → ℝ) (B : ℝ), 0 ≤ B →
     (∀ q ∈ S, ∃ δ ∈ PK K, g q * AutomorphicForm.height ((δ * qx q x : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ^ N₀ ≤ B) →
@@ -124,6 +163,23 @@ private theorem fs_sum {K : Type} [Field K] [NumberField K] : ∃ (N₀ : ℕ) (
     _ = (∑ q ∈ S, φ (γ q)) * B := (Finset.sum_mul _ _ _).symm
     _ ≤ C.toReal * B := mul_le_mul_of_nonneg_right h1 hB
 
+/- English proof (translation)
+Introduce `K _ _ ω t hred f hf`. Take `⟨N₀, C, hsum⟩` from `fs_sum (K := K)`. Take `⟨N₁, hp⟩` from `fs_point ω t hred.bor hred.pos f hf N₀`. Take `⟨hq1, hq2, -⟩` from `qhtBasic K (2 + 2)`. Establish `hqx : ∀ (q : Cos K) (x : G1 K (2 + 2)), qht (qx q x) = qht x` using `fun q x => hq2 _ q.out.2 x`.
+
+Establish `hqδ : ∀ δ ∈ PK K, ∀ z : G1 K (2 + 2), qht (δ * z) = qht z`. Introduce and unpack `_ ⟨δ, -, rfl⟩ z`. Conclude with `hq2 _ δ.2 z`. Establish `hH` using `(hpSpec (K := K)).2.2.1`. Use `⟨?_, fun ε N' hε => ?_⟩` and prove the remaining obligations.
+
+Take `⟨D, hD, h⟩` from `hp 0`. Use `⟨C * D, N₁, fun x S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `hsum x S _ _ (mul_nonneg hD (pow_nonneg (zero_le_one.trans (hq1 x)) _)) fun q hq => ?_` and prove the remaining obligations. Take `⟨δ, hδ, ρ, h1, h2⟩` from `hred.rel (qx q x)`.
+
+Establish `h3` using `h ρ _ h1 h2 (by rw [hH δ hδ]; exact hS q hq)`. Rewrite `h3` using `[pow_zero, mul_one, hH δ hδ, hf.rat δ hδ, hqδ δ hδ, hqx]`. Conclude with `⟨δ, hδ, h3⟩`. Take `⟨D, hD, h⟩` from `hp ⌈((N₁ + N' : ℕ) : ℝ) / ε⌉₊`. Use `⟨C * D, fun x S hS => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Establish `hx0 : 0 < qht x` using `one_pos.trans_le (hq1 x)`. Use `hsum x S _ _ (by positivity) fun q hq => ?_` and prove the remaining obligations. Take `⟨h0, δ, hδ, ρ, h1, h2, h4⟩` from `hS q hq`. Establish `h3` using `h ρ _ h1 h2 (by rw [hH δ hδ]; exact h0)`.
+
+Rewrite `h3` using `[hH δ hδ, hf.rat δ hδ, hqδ δ hδ, hqx]`. Rewrite `h4` using `[hqx]`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Establish `h5 : qht x ^ (N₁ + N') ≤ max 1 (inR ρ) ^ ⌈((N₁ + N' : ℕ) : ℝ) / ε⌉₊`. Use `le_trans ?_ (pow_le_pow_left₀ (Real.rpow_nonneg hx0.le ε) (h4.trans (le_max_right _ _)) _)` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `Real.rpow_le_rpow_of_exponent_le (hq1 x) ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← div_le_iff₀ hε]`. Conclude with `Nat.le_ceil _`. Establish `hh0` using `(height_pos ((δ * qx q x : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2))).le`.
+
+Establish `h6` using `(mul_le_mul_of_nonneg_left h5 (by positivity)).trans h3`. Rewrite `h6` using `[pow_add, mul_comm (qht x ^ N₁), ← mul_assoc, mul_le_mul_iff_left₀ (pow_pos hx0 _)]`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (pow_pos hx0 _)]` and apply the resulting hypothesis.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.farSum :
     ∀ {K : Type} [Field K] [NumberField K] (ω : Set (AdelicGLn.AdelicGL K (2 + 2))) (t : ℝ), Red ω t → ∀ f : G1 K (2 + 2) → ℂ, SFun f →
       (∃ (C : ℝ) (N : ℕ), ∀ (x : G1 K (2 + 2)) (S : Finset (Cos K)), (∀ q ∈ S, 0 ≤ HH (qx q x)) →

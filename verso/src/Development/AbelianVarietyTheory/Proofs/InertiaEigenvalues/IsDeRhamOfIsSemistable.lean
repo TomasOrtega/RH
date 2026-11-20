@@ -9,6 +9,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ P AI T K V _ _ _ ρ hρ`. Take `⟨ι, -, hι⟩` from `GlobalTheory.T.exists_equivariant_log_semistable_to_deRham l P AI T`. Set `b` to `Module.finBasis ℚ_[l] V`. Take `⟨Q, hQ⟩` from `GlobalTheory.T.exists_semistable_period_matrix_of_isSemistable l P AI T _ K V b ρ hρ`. Use `GlobalTheory.T.isDeRham_of_invertible_periodMatrix l P _ K V b ρ (Matrix.GeneralLinearGroup.map ι.toRingHom Q) ?_` and prove the remaining obligations.
+
+Introduce `g`. Establish `hmap : ((Matrix.GeneralLinearGroup.map ι.toRingHom Q : GL (Fin (finrank ℚ_[l] V)) P.R.BdR) : Matrix (Fin (finrank ℚ_[l] V)) (Fin (finrank ℚ_[l] V)) P.R.BdR) = (Q : Matrix (Fin (finrank ℚ_[l] V)) (Fin (finrank ℚ_[l] V)) (Bst P)).map ι` using `rfl`. Establish `h` using `congrArg (fun M => M.map ι) (hQ g)`. Simplify using `only [Matrix.map_mul, Matrix.map_map] at h`. Rewrite using `[hmap]`.
+
+Use `conv_rhs => rw [← h]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(ι.commutes _).symm`. Rewrite using `[Matrix.map_map]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `(hι _ x).symm`.
+-/
 theorem sst_isDR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), IsSst P ρ → IsDR (P.PD K) ρ := by
   intro l _ P AI T K V _ _ _ ρ hρ
   obtain ⟨ι, -, hι⟩ := GlobalTheory.T.exists_equivariant_log_semistable_to_deRham l P AI T

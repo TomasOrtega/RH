@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TensHead.position_mem_of_maximal_stable | exact GlobalTheory.TensHead.position_mem_of_maximal_stable | (intros; apply GlobalTheory.TensHead.position_mem_of_maximal_stable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.piTensor_maximalStable_contains_positionKernel : ∀ {ι : Type} [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀]
     {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
     (Op₀ : Set (Module.End ℂ M₀)) (Op : ∀ i, Set (Module.End ℂ (M i))) (i : ι)

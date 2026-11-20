@@ -9,10 +9,18 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.bijective_of_isIso i.hom`.
+-/
 private theorem bijective_hom_of_iso {A B : CommRingCat.{u}} (i : A ≅ B) :
     Function.Bijective i.hom.hom :=
   ConcreteCategory.bijective_of_isIso i.hom
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, h1]`. Conclude with `ha`.
+
+Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap]`. Establish `hmem` using `Ideal.mem_map_of_mem φ hx`. Rewrite `hmem` using `[h2 x]`. Then use the resulting hypothesis.
+-/
 private theorem map_eq_comap_of_inverse {A B : Type u} [CommRing A] [CommRing B]
     (φ : A →+* B) (ψ : B →+* A) (h1 : ∀ a, ψ (φ a) = a) (h2 : ∀ b, φ (ψ b) = b) (J : Ideal A) :
     Ideal.map φ J = Ideal.comap ψ J := by
@@ -26,6 +34,11 @@ private theorem map_eq_comap_of_inverse {A B : Type u} [CommRing A] [CommRing B]
     have hmem := Ideal.mem_map_of_mem φ hx
     rwa [h2 x] at hmem
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion I f V]`. Establish `happ : f.appLE (f ''ᵁ (V : X.Opens)) (V : X.Opens) e = (f.appIso (V : X.Opens)).hom` using `(Scheme.Hom.appIso_hom' f (V : X.Opens)).symm`. Rewrite using `[happ]`. Establish `h1 : ∀ a, (f.appIso (V : X.Opens)).inv.hom ((f.appIso (V : X.Opens)).hom.hom a) = a` using `fun a => CommRingCat.inv_hom_apply (f.appIso (V : X.Opens)) a`. Establish `h2 : ∀ b, (f.appIso (V : X.Opens)).hom.hom ((f.appIso (V : X.Opens)).inv.hom b) = b` using `fun b => CommRingCat.hom_inv_apply (f.appIso (V : X.Opens)) b`.
+
+Conclude with `(map_eq_comap_of_inverse _ _ h1 h2 _).symm`.
+-/
 private theorem ideal_comap_eq_map_appLE {X Y : Scheme.{u}} (I : Y.IdealSheafData) (f : X ⟶ Y)
     [IsOpenImmersion f] (V : X.affineOpens) (hU : IsAffineOpen (f ''ᵁ (V : X.Opens)))
     (e : (V : X.Opens) ≤ f ⁻¹ᵁ (f ''ᵁ (V : X.Opens))) :
@@ -42,6 +55,9 @@ private theorem ideal_comap_eq_map_appLE {X Y : Scheme.{u}} (I : Y.IdealSheafDat
     fun b => CommRingCat.hom_inv_apply (f.appIso (V : X.Opens)) b
   exact (map_eq_comap_of_inverse _ _ h1 h2 _).symm
 
+/- English proof (translation)
+Establish `h : f.appLE (f ''ᵁ V) V e = (f.appIso V).hom` using `(Scheme.Hom.appIso_hom' f V).symm`. Rewrite using `[h]`. Conclude with `bijective_hom_of_iso (f.appIso V)`.
+-/
 private theorem bijective_appLE_image_of_isOpenImmersion {Z W : Scheme.{u}} (f : W ⟶ Z) [IsOpenImmersion f]
     (V : W.Opens) (e : V ≤ f ⁻¹ᵁ (f ''ᵁ V)) :
     Function.Bijective (f.appLE (f ''ᵁ V) V e).hom := by
@@ -49,6 +65,9 @@ private theorem bijective_appLE_image_of_isOpenImmersion {Z W : Scheme.{u}} (f :
   rw [h]
   exact bijective_hom_of_iso (f.appIso V)
 
+/- English proof (translation)
+Establish `key : (f.appLE U V e).hom.comp (sectionsAlgebraMap K q U) = sectionsAlgebraMap K (f ≫ q) V`. Rewrite using `[sectionsAlgebraMap_eq, sectionsAlgebraMap_eq, ← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.appLE_comp_appLE]`. Conclude with `DFunLike.congr_fun key a`.
+-/
 private theorem appLE_sectionsAlgebraMap (K : Type u) [CommRing K] {Z W : Scheme.{u}}
     (q : Z ⟶ Spec (CommRingCat.of K)) (f : W ⟶ Z) (U : Z.Opens) (V : W.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (a : K) :
@@ -59,6 +78,9 @@ private theorem appLE_sectionsAlgebraMap (K : Type u) [CommRing K] {Z W : Scheme
       Scheme.Hom.appLE_comp_appLE]
   exact DFunLike.congr_fun key a
 
+/- English proof (translation)
+Set `_ : Algebra S S'` to `φ.toAlgebra`. Establish `: IsScalarTower K S S'` using `IsScalarTower.of_algebraMap_eq fun a => (hcomp a).symm`. Establish `: IsLocalization.Away (1 : S) S'` using `IsLocalization.away_of_isUnit_of_bijective (hr := isUnit_one) (H := hφ)`. Conclude with `logDerivIdealIterate_map_away K (1 : S) hP r J`.
+-/
 private theorem map_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K]
     {S S' : Type u} [CommRing S] [CommRing S'] [Algebra K S] [Algebra K S']
     (φ : S →+* S') (hφ : Function.Bijective φ)
@@ -73,6 +95,11 @@ private theorem map_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K]
     IsLocalization.away_of_isUnit_of_bijective (hr := isUnit_one) (H := hφ)
   exact logDerivIdealIterate_map_away K (1 : S) hP r J
 
+/- English proof (translation)
+Establish `hfp` using `@finitePresentation_kaehlerDifferential_sections K _ _ Z q _ U (sectionsAlgebra K q (U : Z.Opens)) (algebraMap_sectionsAlgebra K q (U : Z.Opens))`. Establish `hno` using `@isNoetherianRing_sections K _ _ Z q _ U (sectionsAlgebra K q (U : Z.Opens)) (algebraMap_sectionsAlgebra K q (U : Z.Opens))`. Establish `hP : P.FG` using `IsNoetherian.noetherian P`. Establish `hcomp : ∀ a : K, (f.appLE (U : Z.Opens) (V : W.Opens) e).hom (@algebraMap K Γ(Z, (U : Z.Opens)) _ _ (sectionsAlgebra K q (U : Z.Opens)) a) = @algebraMap K Γ(W, (V : W.Opens)) _ _ (sectionsAlgebra K (f ≫ q) (V : W.Opens)) a`. Introduce `a`.
+
+Rewrite using `[algebraMap_sectionsAlgebra, algebraMap_sectionsAlgebra]`. Conclude with `appLE_sectionsAlgebraMap K q f (U : Z.Opens) (V : W.Opens) e a`. Conclude with `@map_logDerivIdealIterate_of_bijective K _ Γ(Z, (U : Z.Opens)) Γ(W, (V : W.Opens)) _ _ (sectionsAlgebra K q (U : Z.Opens)) (sectionsAlgebra K (f ≫ q) (V : W.Opens)) (f.appLE (U : Z.Opens) (V : W.Opens) e).hom hbij hcomp hfp P hP r A`.
+-/
 private theorem map_appLE_logDerivIdealIterate_of_bijective (K : Type u) [CommRing K] [IsNoetherianRing K]
     {Z W : Scheme.{u}} (q : Z ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType q]
     (f : W ⟶ Z) [LocallyOfFiniteType (f ≫ q)]
@@ -103,6 +130,11 @@ variable (k : Type u) [CommRing k] [IsNoetherianRing k] {X Y : Scheme.{u}}
   (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
   (g : Y ⟶ X) [IsOpenImmersion g] [LocallyOfFiniteType (g ≫ p)]
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (g ''ᵁ (V : Y.Opens))` using `V.2.image_of_isOpenImmersion g`. Establish `e : (V : Y.Opens) ≤ g ⁻¹ᵁ (g ''ᵁ (V : Y.Opens))`. Introduce `x hx`. Conclude with `⟨x, hx, rfl⟩`. Establish `hbij : Function.Bijective (g.appLE (g ''ᵁ (V : Y.Opens)) (V : Y.Opens) e).hom` using `bijective_appLE_image_of_isOpenImmersion g (V : Y.Opens) e`.
+
+Rewrite using `[ideal_comap_eq_map_appLE _ g V hU e, logDerivIdealSheafIterate_ideal, logDerivIdealSheafIterate_ideal, ideal_comap_eq_map_appLE P g V hU e, ideal_comap_eq_map_appLE A g V hU e]`. Conclude with `map_appLE_logDerivIdealIterate_of_bijective k p g ⟨g ''ᵁ (V : Y.Opens), hU⟩ V e hbij _ _ r`.
+-/
 theorem logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion
     (P A : X.IdealSheafData) (r : ℕ) (V : Y.affineOpens) :
     ((logDerivIdealSheafIterate k p P r A).comap g).ideal V =
@@ -119,6 +151,9 @@ theorem logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion
     ideal_comap_eq_map_appLE A g V hU e]
   exact map_appLE_logDerivIdealIterate_of_bijective k p g ⟨g ''ᵁ (V : Y.Opens), hU⟩ V e hbij _ _ r
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.ext (funext fun V => logDerivIdealSheafIterate_comap_ideal_of_isOpenImmersion k p g P A r V)`.
+-/
 theorem logDerivIdealSheafIterate_comap_of_isOpenImmersion
     (P A : X.IdealSheafData) (r : ℕ) :
     (logDerivIdealSheafIterate k p P r A).comap g =

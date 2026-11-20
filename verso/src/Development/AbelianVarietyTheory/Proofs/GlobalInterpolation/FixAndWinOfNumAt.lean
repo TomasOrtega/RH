@@ -12,6 +12,15 @@ namespace GlobalTheory.EX.DC
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 
+/- English proof (translation)
+Take `⟨⟨-, -, -, -, -, -, -, -, -, sCt⟩, sCc, -, -, scw, sCYL, -, sCp, seP, scTO, -, sCe, -⟩` from `hS`. Simplify using `only [FamP.cOut, FC.cOut, List.cons.injEq] at hO`. Take `⟨oCt, oCc, -, -, -, ocw, oCYL, -, -, -, oCp, oeP, ocTO, -, oCe, -⟩` from `hO`. Use `⟨⟨oCp.trans sCp, oeP.trans seP, ?_, ?_, oCe.trans sCe, oCc.trans sCc, ocw.trans scw, oCYL.trans sCYL, fun x hx i => ?_⟩, fun x hx i => ?_⟩` and prove the remaining obligations. Rewrite using `[ocTO, oeP, scTO, seP]`.
+
+Evaluate the numerical expressions. Rewrite using `[ocTO, oCt, scTO, sCt]`. Evaluate the numerical expressions. Take `⟨N⟩` from `hN x i`. Use `⟨N.ccK_top, N.cloud1, N.g_le, N.pde_lt.1, N.pde_lt.2, N.logFiveDepth_eq, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `N.Lw_eq`. Rewrite `h` using `[Fm.L_x x i hx, Fm.L_eps x i, ← oCt]`. Conclude with `h`. Establish `h` using `(Fm.parT x hx i).TO_eq`. Rewrite `h` using `[Fm.parT_cTO, Fm.L_x x i hx]`.
+
+Conclude with `h`. Take `⟨N⟩` from `hN x i`. Establish `h` using `N.win`. Rewrite `h` using `[Fm.L_x x i hx, Fm.L_eps x i]`. Conclude with `h`.
+-/
 theorem fix_and_win_of_numAt (eps : ℝ) (C : FC) (Fm : FamP eps) (hS : Std C) (hO : Fm.cOut = C.cOut)
     (hN : ∀ x (i : Fm.Ix x), Nonempty (NumAt C (Fm.L x i))) : DC.PageFix Fm ∧ DC.PageWin Fm := by
   obtain ⟨⟨-, -, -, -, -, -, -, -, -, sCt⟩, sCc, -, -, scw, sCYL, -, sCp, seP, scTO, -, sCe, -⟩ := hS

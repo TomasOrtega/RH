@@ -6,11 +6,25 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.HCofan
 
+/- English proof (translation)
+Use `ConcreteCategory.congr_hom (φ.comm i j) x` as an intermediate fact. Simplify using `only [ConcreteCategory.comp_apply] at this`. Conclude with `this.symm`.
+-/
 theorem comm_el {C D : AbCx} (φ : C ⟶ D) (i j : ℤ) (x : C.X i) : φ.f j (C.d i j x) = D.d i j (φ.f i x) := by
   have := ConcreteCategory.congr_hom (φ.comm i j) x
   simp only [ConcreteCategory.comp_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `GlobalTheory.T.bijective_HC_component_eval_of_maps R F n`. Establish `nat : ∀ (k : ℕ) (i : ι) (x : ((HC R F).obj (op E)).X n), (π k).app (op (Q i)) (((HC R F).map (a i).op).f n x) = (free R).map ((a i).app (op (SimplexCategory.mk k))) ≫ (π k).app (op E) x`. Introduce `k i x`. Use `ConcreteCategory.congr_hom ((π k).naturality (a i).op) x` as an intermediate fact. Conclude with `this`.
+
+Set `hk` to `fun k : ℕ => (hc (op (SimplexCategory.mk k))).some`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `(hπ (op E)).1` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+
+Apply `Cofan.IsColimit.hom_ext (hk k)` to reduce the goal to its premises. Introduce `i`. Establish `h : ((HC R F).map (a i).op).f n x = ((HC R F).map (a i).op).f n y` using `congrFun hxy i`. Express the relevant statement in the definitionally equal form `(free R).map ((a i).app (op (SimplexCategory.mk k))) ≫ (π k).app (op E) x = (free R).map ((a i).app (op (SimplexCategory.mk k))) ≫ (π k).app (op E) y`. Rewrite using `[← nat, ← nat, h]`.
+
+Introduce `y`. Take `⟨x, hx⟩` from `(hπ (op E)).2 (fun k => Cofan.IsColimit.desc (hk k) (fun i => (π k).app (op (Q i)) (y i)))`. Use `⟨x, funext fun i => ?_⟩` and prove the remaining obligations. Apply `(hπ (op (Q i))).1` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+
+Establish `e : (π k).app (op E) x = Cofan.IsColimit.desc (hk k) (fun i => (π k).app (op (Q i)) (y i))` using `congrFun hx k`. Use `show (π k).app (op (Q i)) (((HC R F).map (a i).op).f n x) = (π k).app (op (Q i)) (y i)`. Rewrite using `[nat, e]`. Conclude with `Cofan.IsColimit.fac (hk k) _ i`.
+-/
 theorem cochains_bij (R : Type) [CommRing R] (F : Shv R) (E : Spc) (ι : Type) (Q : ι → Spc) (a : ∀ i, Q i ⟶ E)
     (hc : ∀ k : SimplexCategoryᵒᵖ, Nonempty (IsColimit (Cofan.mk ((free R).obj (E.obj k)) (fun i => (free R).map ((a i).app k)))))
     (n : ℤ) : Function.Bijective (fun (x : ((HC R F).obj (op E)).X n) (i : ι) => ((HC R F).map (a i).op).f n x) := by
@@ -44,6 +58,21 @@ theorem cochains_bij (R : Type) [CommRing R] (F : Shv R) (E : Spc) (ι : Type) (
 
 end GlobalTheory.EtC.HCofan
 
+/- English proof (translation)
+Introduce `R _ F E ι Q a hc n`. Take `⟨-, cl, hsurj, heq, -, hpull⟩` from `GlobalTheory.EtC.HCElements.main R F`. Establish `hb` using `fun m => GlobalTheory.EtC.HCofan.cochains_bij R F E ι Q a hc m`. Prove the components needed by the constructor for the conclusion. Introduce `x x' hxx`.
+
+Take `⟨z, hz, rfl⟩` from `hsurj E n x`. Take `⟨z', hz', rfl⟩` from `hsurj E n x'`. Rewrite using `[heq]`. Establish `hi : ∀ i, ∃ y, ((HC R F).map (a i).op).f n z = ((HC R F).map (a i).op).f n z' + ((HC R F).obj (op (Q i))).d (n - 1) n y`. Introduce `i`.
+
+Establish `h : pull R (a i) F n (cl E n z hz) = pull R (a i) F n (cl E n z' hz')` using `congrFun hxx i`. Take `⟨h1, e1⟩` from `hpull (Q i) E (a i) n z hz`. Take `⟨h2, e2⟩` from `hpull (Q i) E (a i) n z' hz'`. Rewrite `h` using `[e1, e2]`. Conclude with `(heq _ _ _ h1 _ h2).1 h`.
+
+Use `choose y hy using hi`. Take `⟨w, hw⟩` from `(hb (n - 1)).2 y`. Establish `hw' : ∀ i, ((HC R F).map (a i).op).f (n - 1) w = y i` using `fun i => congrFun hw i`. Use `⟨w, (hb n).1 (funext fun i => ?_)⟩` and prove the remaining obligations. Use `show ((HC R F).map (a i).op).f n z = ((HC R F).map (a i).op).f n (z' + ((HC R F).obj (op E)).d (n - 1) n w)`.
+
+Rewrite using `[map_add, GlobalTheory.EtC.HCofan.comm_el, hw' i]`. Conclude with `hy i`. Introduce `x choose z hz hzx using fun i => hsurj (Q i) n (x i)`. Take `⟨w, hw⟩` from `(hb n).2 z`. Establish `hw' : ∀ i, ((HC R F).map (a i).op).f n w = z i` using `fun i => congrFun hw i`.
+
+Establish `hdw : ((HC R F).obj (op E)).d n (n + 1) w = 0`. Apply `(hb (n + 1)).1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show ((HC R F).map (a i).op).f (n + 1) (((HC R F).obj (op E)).d n (n + 1) w) = ((HC R F).map (a i).op).f (n + 1) 0`. Rewrite using `[GlobalTheory.EtC.HCofan.comm_el, hw' i, hz i, map_zero]`.
+
+Use `⟨cl E n w hdw, funext fun i => ?_⟩` and prove the remaining obligations. Take `⟨h1, e1⟩` from `hpull (Q i) E (a i) n w hdw`. Use `show pull R (a i) F n (cl E n w hdw) = x i`. Rewrite using `[e1, ← hzx i]`. Conclude with `(heq _ _ _ h1 _ (hz i)).2 ⟨0, by rw [hw' i, map_zero, add_zero]⟩`.
+-/
 theorem GlobalTheory.EtC.HCofan.main : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc) (ι : Type) (Q : ι → Spc) (a : ∀ i, Q i ⟶ E), (∀ k : SimplexCategoryᵒᵖ, Nonempty (IsColimit (Cofan.mk ((free R).obj (E.obj k)) (fun i => (free R).map ((a i).app k))))) → ∀ n : ℤ, Function.Bijective (fun (x : H R E F n) (i : ι) => pull R (a i) F n x) := by
   intro R _ F E ι Q a hc n
   obtain ⟨-, cl, hsurj, heq, -, hpull⟩ := GlobalTheory.EtC.HCElements.main R F

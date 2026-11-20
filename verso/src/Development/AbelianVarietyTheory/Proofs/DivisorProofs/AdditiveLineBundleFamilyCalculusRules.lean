@@ -14,27 +14,55 @@ namespace GlobalTheory.FamCalc
 
 variable {S : Scheme.{0}} {A : Over S}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem whisker_eq {Y T : Over S} (y : Y ⟶ T) : A ◁ y = lift (fst A Y) (snd A Y ≫ y) := by
   ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem lift_whisker {Y T Z : Over S} (y : Y ⟶ T) (a : Z ⟶ A) (t : Z ⟶ Y) :
     lift a t ≫ A ◁ y = lift a (t ≫ y) := by
   ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, ← Over.comp_left, lift_whisker, evc]`.
+-/
 theorem pull_whisker_evc {T Y Z : Over S} {N : LB (A ⊗ T).left} (hN : N.IsLB) (y : Y ⟶ T) (a : Z ⟶ A)
     (t : Z ⟶ Y) :
     CechPic.pull (lift a t).left (CechPic.pull (A ◁ y).left (cls N hN)) = evc hN a (t ≫ y) := by
   rw [← pull_comp, ← Over.comp_left, lift_whisker, evc]
 
+/- English proof (translation)
+Rewrite using `[evc, whisker_eq]`.
+-/
 theorem evc_whisker {T Y : Over S} {N : LB (A ⊗ T).left} (hN : N.IsLB) (y : Y ⟶ T) :
     evc hN (fst A Y) (snd A Y ≫ y) = CechPic.pull (A ◁ y).left (cls N hN) := by
   rw [evc, whisker_eq]
 
+/- English proof (translation)
+Rewrite using `[evc_ev hN, lift_fst, lift_snd_assoc]`.
+-/
 theorem evc_ev_whisker {T Y Z : Over S} {N : LB (A ⊗ T).left} (hN : N.IsLB) (y : Y ⟶ T)
     (h : (ev N (fst A Y) (snd A Y ≫ y)).IsLB) (a : Z ⟶ A) (t : Z ⟶ Y) :
     evc h a t = evc hN a (t ≫ y) := by
   rw [evc_ev hN, lift_fst, lift_snd_assoc]
 
+/- English proof (translation)
+Introduce `S A _`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T Y N y hN`. Establish `h : (ev N (fst A Y) (snd A Y ≫ y)).IsLB` using `pull_isLB hN.isLB _`. Use `⟨h, (isAdditive_iff h).2 fun Z a a' t ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [evc_ev_whisker hN.isLB y h]`. Conclude with `(isAdditive_iff hN.isLB).1 hN.add Z a a' (t ≫ y)`. Introduce `T U Y N M hN hM y u D hD hc`. Use `⟨hD, (isAdditive_iff hD).2 fun Z a a' t ↦ ?_⟩` and prove the remaining obligations. Establish `aN` using `(isAdditive_iff hN.isLB).1 hN.add Z a a' (t ≫ y)`.
+
+Establish `aM` using `(isAdditive_iff hM.isLB).1 hM.add Z a a' (t ≫ u)`. Break down `hc with hc | hc` into its components or cases. Establish `e : ∀ b : Z ⟶ A, evc hD b t = evc hN.isLB b (t ≫ y) + evc hM.isLB b (t ≫ u)` using `fun b ↦ by`. Rewrite using `[evc, hc, map_add, pull_whisker_evc, pull_whisker_evc]`. Rewrite using `[e, e, e, aN, aM]`.
+
+Normalize the expressions using the abelian group laws. Establish `e : ∀ b : Z ⟶ A, evc hD b t = evc hN.isLB b (t ≫ y) - evc hM.isLB b (t ≫ u)` using `fun b ↦ by`. Rewrite using `[evc, hc, map_sub, pull_whisker_evc, pull_whisker_evc]`. Rewrite using `[e, e, e, aN, aM]`. Normalize the expressions using the abelian group laws.
+
+Introduce `T U Y N M hN hM y u`. Rewrite using `[same_iff hN hM, evc_whisker, evc_whisker]`. Introduce `T U Y Z N M y u z hN hM h`. Rewrite `h`, the goal using `[same_iff hN hM]`. Establish `e` using `congrArg (CechPic.pull (A ◁ z).left) h`.
+
+Rewrite `e` using `[pull_evc, pull_evc, whiskerLeft_fst, whiskerLeft_snd_assoc, whiskerLeft_snd_assoc]`. Then use the resulting hypothesis. Introduce `T U Y Z N M y z u hN hM`. Establish `h : (ev N (fst A Y) (snd A Y ≫ y)).IsLB` using `pull_isLB hN _`. Rewrite using `[same_iff h hM, same_iff hN hM, evc_ev_whisker hN y h, Category.assoc]`.
+-/
 theorem famCalc : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], (∀ (T Y : Over S) (N : LB (A ⊗ T).left) (y : Y ⟶ T), Fam A N → Fam A (ev N (fst A Y) (snd A Y ≫ y))) ∧ (∀ (T U Y : Over S) (N : LB (A ⊗ T).left) (M : LB (A ⊗ U).left) (hN : Fam A N) (hM : Fam A M) (y : Y ⟶ T) (u : Y ⟶ U) (D : LB (A ⊗ Y).left) (hD : D.IsLB), (cls D hD = GlobalTheory.CechPic.pull (A ◁ y).left (cls N hN.isLB) + GlobalTheory.CechPic.pull (A ◁ u).left (cls M hM.isLB) ∨ cls D hD = GlobalTheory.CechPic.pull (A ◁ y).left (cls N hN.isLB) - GlobalTheory.CechPic.pull (A ◁ u).left (cls M hM.isLB)) → Fam A D) ∧ (∀ (T U Y : Over S) (N : LB (A ⊗ T).left) (M : LB (A ⊗ U).left) (hN : N.IsLB) (hM : M.IsLB) (y : Y ⟶ T) (u : Y ⟶ U), Same A N M y u ↔ GlobalTheory.CechPic.pull (A ◁ y).left (cls N hN) = GlobalTheory.CechPic.pull (A ◁ u).left (cls M hM)) ∧ (∀ (T U Y Z : Over S) (N : LB (A ⊗ T).left) (M : LB (A ⊗ U).left) (y : Y ⟶ T) (u : Y ⟶ U) (z : Z ⟶ Y), N.IsLB → M.IsLB → Same A N M y u → Same A N M (z ≫ y) (z ≫ u)) ∧ (∀ (T U Y Z : Over S) (N : LB (A ⊗ T).left) (M : LB (A ⊗ U).left) (y : Y ⟶ T) (z : Z ⟶ Y) (u : Z ⟶ U), N.IsLB → M.IsLB → (Same A (ev N (fst A Y) (snd A Y ≫ y)) M z u ↔ Same A N M (z ≫ y) u)) := by
   intro S A _
   refine ⟨?_, ?_, ?_, ?_, ?_⟩

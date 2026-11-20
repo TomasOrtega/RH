@@ -19,6 +19,13 @@ namespace GlobalTheory.LevelDescent
 
 open GlobalTheory.SiegelPull GlobalTheory.CharZeroPts
 
+/- English proof (translation)
+Use `haveI := p.isPrime`. Take `⟨q, hq, hqp⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal R₁)) (J := p.asIdeal) bot_le`. Take `⟨P, hP, hPq⟩` from `Ideal.exists_comap_eq_of_mem_minimalPrimes_of_injective (f := R₁.subtype) Subtype.val_injective q hq`. Take `⟨K, _, _, t, ht⟩` from `GlobalTheory.SiegelTypings.exists_geomPt (S := Sp R) ⟨P, hP⟩`. Use `⟨K, inferInstance, inferInstance, t, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `e : t u = ⟨P, hP⟩`. Take `⟨v, hv⟩` from `ht`. Rewrite using `[Subsingleton.elim u v, hv]`. Rewrite using `[Scheme.Hom.comp_apply, e]`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations.
+
+Use `show P.comap R₁.subtype ≤ p.asIdeal`. Rewrite using `[hPq]`. Conclude with `hqp`.
+-/
 theorem exists_geomPt_specializes (R : Type) [CommRing R] (R₁ : Subring R) (p : Sp R₁) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (z : Sp K ⟶ Sp R), ∀ u, (z ≫ spMap R₁.subtype) u ⤳ p := by
   haveI := p.isPrime
@@ -45,15 +52,27 @@ def toStd : (Fin (h + h) → ZMod M) →+ IndefiniteRowSideFullHecke.SiegelFamil
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `Prod.ext (funext fun i => Fin.append_left a.1 a.2 i) (funext fun i => Fin.append_right a.1 a.2 i)`.
+-/
 theorem toStd_append (a : IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M) : toStd (Fin.append a.1 a.2) = a :=
   Prod.ext (funext fun i => Fin.append_left a.1 a.2 i) (funext fun i => Fin.append_right a.1 a.2 i)
 
+/- English proof (translation)
+The claim follows from `Fin.append_castAdd_natAdd`.
+-/
 theorem append_toStd (c : Fin (h + h) → ZMod M) : Fin.append (toStd c).1 (toStd c).2 = c :=
   Fin.append_castAdd_natAdd
 
+/- English proof (translation)
+Introduce `c c' e` and use `by rw [← append_toStd c, ← append_toStd c', e]`.
+-/
 theorem toStd_injective : Function.Injective (toStd (h := h) (M := M)) := fun c c' e => by
   rw [← append_toStd c, ← append_toStd c', e]
 
+/- English proof (translation)
+Repeatedly rewrite using `[← map_nsmul, ← map_sum]`. Use `congr 1`. Use `conv_rhs => rw [← Finset.univ_sum_single c]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, nsmul_eq_mul, _root_.mul_one, ZMod.natCast_zmod_val]`.
+-/
 theorem sum_val_smul [NeZero M] (c : Fin (h + h) → ZMod M) :
     ∑ i, (c i).val • toStd (Pi.single i (1 : ZMod M)) = toStd c := by
   simp_rw [← map_nsmul, ← map_sum]
@@ -68,19 +87,33 @@ section Sections
 
 variable {S : Scheme.{0}} {h M : ℕ} {A : Over S} [GrpObj A] {lv : IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M → (𝟙_ (Over S) ⟶ A)}
 
+/- English proof (translation)
+Establish `e` using `add 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_mul.1 e`.
+-/
 theorem lv_zero (add : ∀ a b, lv (a + b) = lv a * lv b) : lv 0 = 1 := by
   have e := add 0 0
   rw [add_zero] at e
   exact left_eq_mul.1 e
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, lv_zero add]`. Consider the case `succ n ih => rw [succ_nsmul, add, ih, pow_succ]`.
+-/
 theorem lv_nsmul (add : ∀ a b, lv (a + b) = lv a * lv b) (n : ℕ) (a) : lv (n • a) = lv a ^ n := by
   induction n with
   | zero => rw [zero_smul, pow_zero, lv_zero add]
   | succ n ih => rw [succ_nsmul, add, ih, pow_succ]
 
+/- English proof (translation)
+Apply the tactic sequence `rw [← lv_nsmul add, show M • a = 0 by ext i <;> simp, lv_zero add]`.
+-/
 theorem lv_pow (add : ∀ a b, lv (a + b) = lv a * lv b) (a) : lv a ^ M = 1 := by
   rw [← lv_nsmul add, show M • a = 0 by ext i <;> simp, lv_zero add]
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `v n`. Simplify using `[Out.linComb, lv_zero add]`.
+
+Consider the case `succ r ih`. Introduce `v n`. Establish `e` using `ih (fun i => v i.succ) (fun i => n i.succ)`. Simplify using `only [Out.linComb] at e ⊢`. Rewrite using `[List.ofFn_succ, List.prod_cons, e, Fin.sum_univ_succ, add, MonObj.comp_mul, lv_nsmul add, MonObj.comp_pow]`.
+-/
 theorem linComb_lv (add : ∀ a b, lv (a + b) = lv a * lv b) {T : Over S} (g : T ⟶ 𝟙_ (Over S)) :
     ∀ {r : ℕ} (v : Fin r → IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M) (n : Fin r → ℕ),
       Out.linComb (fun i => g ≫ lv (v i)) n = g ≫ lv (∑ i, n i • v i) := by
@@ -108,6 +141,15 @@ section Cond
 
 variable {S : Scheme.{0}} {h M : ℕ} {A : Over S} [GrpObj A] {lv : IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M → (𝟙_ (Over S) ⟶ A)}
 
+/- English proof (translation)
+Establish `E : ∀ c : Fin (h + h) → ZMod M, Out.linComb (fun i => toB x ≫ lv (toStd (Pi.single i 1))) (fun i => (c i).val) = toUnit (Over.mk x) ≫ lv (toStd c)` using `fun c => (linComb_lv add (toB x) _ _).trans (by rw [sum_val_smul]; rfl)`. Establish `tors : ∀ a, (toUnit (Over.mk x) ≫ lv a) ^ M = 1` using `fun a => by`. Rewrite using `[← MonObj.comp_pow, lv_pow add, MonObj.comp_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨inj, sp⟩ y hy`.
+
+Take `⟨a, rfl⟩` from `(sp y).1 hy`. Use `⟨Fin.append a.1 a.2, by beta_reduce; rw [E, toStd_append], fun c hc => toStd_injective ?_⟩` and prove the remaining obligations. Rewrite using `[toStd_append]`. Conclude with `inj ((E c).symm.trans hc)`. Introduce `H`.
+
+Use `⟨fun a b e => ?_, fun g => ⟨fun hg => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨c, -, hc⟩` from `H _ (tors a)`. Establish `ea` using `hc (Fin.append a.1 a.2) (by beta_reduce; rw [E, toStd_append])`. Establish `eb` using `hc (Fin.append b.1 b.2) (by beta_reduce; rw [E, toStd_append]; exact e.symm)`. Rewrite using `[← toStd_append a, ← toStd_append b, ea, eb]`.
+
+Take `⟨c, hc, -⟩` from `H g hg`. Conclude with `⟨toStd c, (E c).symm.trans hc⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `tors a`.
+-/
 theorem cond_iff [NeZero M] (add : ∀ a b, lv (a + b) = lv a * lv b) {k : Type} [Field k] (x : Sp k ⟶ S) :
     ((Function.Injective fun a => toUnit (Over.mk x) ≫ lv a) ∧
       ∀ g : Over.mk x ⟶ A, g ^ M = 1 ↔ ∃ a, toUnit (Over.mk x) ≫ lv a = g) ↔
@@ -144,6 +186,9 @@ variable {h M : ℕ} {S S₁ : Scheme.{0}} {A : Over S} [GrpObj A] {A₁ : Over 
   {φ : A.left ⟶ A₁.left} {lv : IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M → (𝟙_ (Over S) ⟶ A)}
   {lv₁ : IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit.Std h M → (𝟙_ (Over S₁) ⟶ A₁)}
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((toUnit T).left ≫ (lv a).left) ≫ φ = (toUnit (Over.mk (T.hom ≫ f))).left ≫ (lv₁ a).left`. Rewrite using `[Category.assoc, hl, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem push_lv (hp : IsGrpPullback A A₁ f φ) (hl : ∀ a, (lv a).left ≫ φ = f ≫ (lv₁ a).left) (T : Over S) (a) :
     pushHom hp T (toUnit T ≫ lv a) = toUnit (Over.mk (T.hom ≫ f)) ≫ lv₁ a := by
   apply Over.OverMorphism.ext
@@ -151,6 +196,11 @@ theorem push_lv (hp : IsGrpPullback A A₁ f φ) (hl : ∀ a, (lv a).left ≫ φ
   rw [Category.assoc, hl, Over.toUnit_left, Over.toUnit_left, ← Category.assoc]
   rfl
 
+/- English proof (translation)
+Establish `P` using `push_lv hp hl (Over.mk x)`. Establish `inj` using `push_injective hp (Over.mk x)`. Use `⟨fun a b e => H.1 (inj ?_), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[P, P]`. Conclude with `e`.
+
+Take `⟨g', rfl⟩` from `push_surjective hp (Over.mk x) g`. Rewrite using `[← map_pow, ← map_one (pushHom hp (Over.mk x)), inj.eq_iff, H.2 g']`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[← inj.eq_iff, P]`. Both sides reduce to the same expression.
+-/
 theorem cond_push (hp : IsGrpPullback A A₁ f φ) (hl : ∀ a, (lv a).left ≫ φ = f ≫ (lv₁ a).left) {k : Type} [Field k]
     (x : Sp k ⟶ S)
     (H : (Function.Injective fun a => toUnit (Over.mk x) ≫ lv a) ∧
@@ -176,6 +226,11 @@ namespace GlobalTheory.LevelDescent
 
 open GlobalTheory.SiegelPull GlobalTheory.CharZeroPts
 
+/- English proof (translation)
+Introduce `h M R _ R₁ A _ A₁ _ φ lv lv₁ hM hu hA hp hl hadd hlev`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hu' : IsUnit ((M : ℕ) : Γ(Sp R₁, ⊤))`. Simplify using `using hu.map (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom`. Use `⟨hadd, fun k _ _ x => (cond_iff hadd x).2 fun y hy => ?_⟩` and prove the remaining obligations.
+
+Use `torsion_basis_of_generization A₁ M (h + h) (fun i => lv₁ (toStd (Pi.single i 1))) hA hM hu' (fun i => lv_pow hadd _) (fun p => ?_) k x y hy` and prove the remaining obligations. Take `⟨K, _, _, z, hz⟩` from `exists_geomPt_specializes R R₁ p`. Conclude with `⟨K, inferInstance, inferInstance, z ≫ spMap R₁.subtype, hz, (cond_iff hadd _).1 (cond_push hp hl z (hlev.2 K z))⟩`.
+-/
 theorem isLevel_of_subring : ∀ (h M : ℕ) (R : Type) [CommRing R] (R₁ : Subring R) (A : Over (Sp R)) [GrpObj A] (A₁ : Over (Sp R₁)) [GrpObj A₁] (φ : A.left ⟶ A₁.left) (lv : Std h M → (𝟙_ (Over (Sp R)) ⟶ A)) (lv₁ : Std h M → (𝟙_ (Over (Sp R₁)) ⟶ A₁)), 0 < M → IsUnit (M : R₁) → IsAbelianScheme A₁ → IsGrpPullback A A₁ (spMap R₁.subtype) φ → (∀ a, (lv a).left ≫ φ = spMap R₁.subtype ≫ (lv₁ a).left) → (∀ a b, lv₁ (a + b) = lv₁ a * lv₁ b) → IsLevel A lv → IsLevel A₁ lv₁ := by
   intro h M R _ R₁ A _ A₁ _ φ lv lv₁ hM hu hA hp hl hadd hlev
   haveI : NeZero M := ⟨hM.ne'⟩

@@ -13,9 +13,17 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Simplify using `[orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+-/
 theorem mem_orth {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ y ∈ U, S.hT y v = 0 := by
   simp [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
+/- English proof (translation)
+Rewrite using `[mem_orth]`. Introduce `y hy`. Establish `hy' : y ∈ Submodule.span E (Set.range F.fl.e)` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `F.fl.z_orth a`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+-/
 theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   rw [mem_orth]
   intro y hy
@@ -27,6 +35,13 @@ theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   | add x y _ _ hx hy => simp [hx, hy]
   | smul c x _ hx => simp [hx]
 
+/- English proof (translation)
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Establish `hv` using `h2 _ (z_mem_orth F)`. Establish `hv' : n F.fl.z - F.fl.z ∈ Submodule.span E (Set.range F.fl.e)` using `hv`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).mp hv'`.
+
+Use `⟨c, fun k hk => absurd hk (by simp), ?_⟩` and prove the remaining obligations. Rewrite using `[frame_last, hc]`. Consider the case `cast i`. Rewrite using `[frame_castSucc]`. Establish `hmem : F.fl.e i ∈ Xflag F ((i : ℕ) + 1)` using `Submodule.subset_span ⟨i, (by simp : (i : ℕ) < (i : ℕ) + 1), rfl⟩`.
+
+Establish `hv : n (F.fl.e i) - F.fl.e i ∈ Submodule.span E (F.fl.e '' {k | (k : ℕ) < i})` using `h1 _ _ hmem`. Take `⟨l, hl, hlc⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).mp hv`. Use `⟨l, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Finsupp.mem_supported' E l).mp hl k (by simpa using hk)`. Rewrite using `[← hlc, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+-/
 theorem coef_exists {T : E} (F : LFlag S r T) (n : S.V ≃ₗ[E] S.V)
     (h1 : ∀ j, ∀ x ∈ Xflag F (j + 1), n x - x ∈ Xflag F j)
     (h2 : ∀ x ∈ orth S (Xsp F), n x - x ∈ Xsp F) (b : Fin (r + 1)) :
@@ -49,6 +64,33 @@ theorem coef_exists {T : E} (F : LFlag S r T) (n : S.V ≃ₗ[E] S.V)
     · exact (Finsupp.mem_supported' E l).mp hl k (by simpa using hk)
     · rw [← hlc, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]
 
+/- English proof (translation)
+Take `⟨⟨_, hΛ⟩, h1, h2⟩` from `hn`. Establish `hnΛ : ∀ y ∈ Λ, n y ∈ Λ`. Introduce `y hy`. Rewrite using `[← hΛ]`. Conclude with `Submodule.mem_map_of_mem hy`.
+
+Use `choose c hc0 hcs using coef_exists F n h1 h2`. Set `ν : Matrix (Fin (r + 1)) (Fin (r + 1)) E` to `fun a b => if h : (a : ℕ) < r then c b ⟨a, h⟩ else 0`. Establish `hν0 : ∀ a b, b ≤ a → ν a b = 0`. Introduce `a b hba`. Simplify using `only [ν]`.
+
+Use `split_ifs with h`. Conclude with `hc0 b ⟨a, h⟩ (by simpa using hba)`. Both sides reduce to the same expression. Establish `hνsum : ∀ b, ∑ a, ν a b • frame F a = n (frame F b) - frame F b`. Introduce `b`.
+
+Rewrite using `[Fin.sum_univ_castSucc, ← hcs b]`. Simplify using `[ν, frame_castSucc]`. Establish `hint : ∀ P : HeightOneSpectrum (𝓞 E), ((g : 𝓞 E) ∈ P.asIdeal) → ∀ b k, (haveI` using `P.isPrime; c b k ∈ locInt P.asIdeal) := by`. Introduce `P hP b k`. Use `haveI := P.isPrime`.
+
+Establish `hf` using `frame_mem_locP Λ g F hz hc P hP b`. Take `⟨s, hs, hsf⟩` from `mem_locP.mp hf`. Establish `hX : n (frame F b) - frame F b ∈ Xsp F`. Rewrite using `[← hcs b]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Establish `hloc : n (frame F b) - frame F b ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ F)`. Use `mem_locP.mpr ⟨s, hs, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← lin_osmul]`. Conclude with `Λ.sub_mem (hnΛ _ hsf) hsf`.
+
+Use `show s • (n (frame F b) - frame F b) ∈ Xsp F`. Rewrite using `[osmul]`. Conclude with `Submodule.smul_mem _ _ hX`. Take `⟨c', _, hc'1, heq⟩` from `hc.1 P`. Rewrite `hloc` using `[heq]`.
+
+Take `⟨t, ht, htv⟩` from `mem_locP.mp hloc`. Establish `hfun : (fun a => c' a • F.fl.e a) = F.fl.e`. Use function extensionality and compare the values at `a`. Rewrite using `[hc'1 hP a, one_smul]`. Rewrite `htv` using `[hfun]`.
+
+Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp htv`. Establish `hsum : ∑ j, ((o j : E) - (t : E) * c b j) • F.fl.e j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Establish `e1 : ∑ j, (o j : E) • F.fl.e j = ∑ j, o j • F.fl.e j` using `by simp only [osmul]`.
+
+Rewrite using `[e1, ho, ← hcs b, osmul, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Establish `hk` using `Fintype.linearIndependent_iff.mp F.fl.e_indep _ hsum k`. Conclude with `⟨t, ht, o k, by linear_combination -hk⟩`. Use `⟨1 + ν, ⟨fun a b hba => ?_, fun a => ?_⟩, fun b => ?_, fun P hP a b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hba).symm, hν0 a b hba.le, add_zero]`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, hν0 a a le_rfl, add_zero]`. Simplify using `only [frE, Matrix.add_apply, add_smul, Finset.sum_add_distrib, hνsum b, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Normalize the expressions using the abelian group laws. Use `haveI := P.isPrime`.
+
+Use `Subring.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Simplify using `only [ν] split_ifs with h`.
+
+Conclude with `hint P hP b ⟨a, h⟩`. Conclude with `Subring.zero_mem _`.
+-/
 theorem coef {T : E} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (hz : F.fl.z ∈ Λ)
     (hc : IsFixedConv Λ g F) (n : S.V ≃ₗ[E] S.V) (hn : n ∈ NLam Λ F) :
     ∃ B : Matrix (Fin (r + 1)) (Fin (r + 1)) E, UT B ∧ (∀ b, n (frame F b) = frE (frame F) B b) ∧
@@ -120,6 +162,27 @@ theorem coef {T : E} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (
       · exact hint P hP b ⟨a, h⟩
       · exact Subring.zero_mem _
 
+/- English proof (translation)
+Take `⟨ξ, hξl, hξd, hξm⟩` from `hadm`. Establish `hnΛ : ∀ y ∈ Λ, n y ∈ Λ`. Introduce `y hy`. Rewrite using `[← hn.1.2]`. Conclude with `Submodule.mem_map_of_mem hy`.
+
+Take `⟨B, hBU, hBf, hBi⟩` from `coef Λ g F hFz hFc n hn`. Take `⟨A, hAU, hAf, hAi⟩` from `coef Λ g x hxz hxc m hm`. Set `Ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) E` to `ξ.map (fun t => (t : E))`. Establish `hΞU : UT Ξ` using `⟨fun a b h => by simp [Ξ, hξl a b h], fun a => by simp [Ξ, hξd a]⟩`. Set `M` to `B * (Ξ * A)`.
+
+Establish `hMU : UT M` using `hBU.mul (hΞU.mul hAU)`. Establish `hMi : ∀ P : HeightOneSpectrum (𝓞 E), (g : 𝓞 E) ∈ P.asIdeal → ∀ a b, (haveI` using `P.isPrime; M a b ∈ locInt P.asIdeal) := by`. Introduce `P hP`. Use `haveI := P.isPrime`. Conclude with `mul_mem_locInt (hBi P hP) (mul_mem_locInt (fun a b => coe_mem_locInt _ (ξ a b)) (hAi P hP))`.
+
+Establish `happ : ∀ a b, ∃ c : 𝓞 E, ∀ P : HeightOneSpectrum (𝓞 E), (g : 𝓞 E) ∈ P.asIdeal → ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ ∃ w : 𝓞 E, (s : E) * ((c : E) - M a b) = ((g : 𝓞 E) : E) * w` using `fun a b => approx _ _ (fun P hP => hMi P hP a b)`. Use `choose c hc using happ`. Set `ξ' : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)` to `fun a b => if b < a then 0 else if a = b then 1 else c a b`. Use `⟨ξ', fun a b h => by simp [ξ', h], fun a => by simp [ξ'], fun b P hP => ?_⟩` and prove the remaining obligations. Use `haveI := P.isPrime`.
+
+Set `ε : Fin (r + 1) → S.V` to `fun a => frame x a - frE (frame F) Ξ a`. Establish `hε : ∀ a, ε a ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)` using `fun a => hξm a P hP`. Establish `hxε : frame x = fun a => frE (frame F) Ξ a + ε a`. Use function extensionality and compare the values at `a`. Simplify using `[ε]`.
+
+Establish `e1 : n (frE (frE (frame F) Ξ) A b) = frE (frame F) M b`. Rewrite using `[frE_mul, frE_map, show (fun a => n (frame F a)) = frE (frame F) B from funext hBf, frE_mul]`. Establish `key : frame F₂ b = frE (frame F) M b + n (frE ε A b)`. Rewrite using `[hfr, hAf, hxε, frE_add, map_add, e1]`. Establish `hdiff : frame F₂ b - frameAct (frame F) ξ' b = n (frE ε A b) + ∑ a, (M a b - (ξ' a b : E)) • frame F a`.
+
+Rewrite using `[key]`. Simplify using `only [frE, frameAct, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Use `show frame F₂ b - frameAct (frame F) ξ' b ∈ _`. Rewrite using `[hdiff]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Use `localization_map₂ n (gsmul_map n hnΛ) ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun a _ => smul_mem_locP (hAi P hP a b) (hε a)`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Establish `hξ' : ξ' a b = c a b` using `by simp [ξ', not_lt.mpr h.le, h.ne]`.
+
+Take `⟨s, hs, w, hw⟩` from `hc a b P hP`. Rewrite using `[hξ']`. Use `gsmem (w := -w) hs ?_ (frame_mem_locP Λ g F hFz hFc P hP a)` and prove the remaining obligations. Move the coercions through the operations in `at hw ⊢`. Take the linear combination `-hw`.
+
+Simplify using `[ξ', hMU.2 a]`. Simplify using `[ξ', h, hMU.1 a b h]`.
+-/
 theorem admissible_stable_under_frame_change {T T' : E} (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (x F₂ : LFlag S r T')
     (hFz : F.fl.z ∈ Λ) (hFc : IsFixedConv Λ g F) (hxz : x.fl.z ∈ Λ) (hxc : IsFixedConv Λ g x)
     (hadm : IsAdmissible Λ g F x) (n : S.V ≃ₗ[E] S.V) (hn : n ∈ NLam Λ F) (m : S.V ≃ₗ[E] S.V)

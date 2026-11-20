@@ -31,10 +31,16 @@ def compress (A : Matrix (Fin n) (Fin k) R) (N : Matrix (Fin k) (Fin n) R) (hNA 
     val_inv := key t t⁻¹ (mul_inv_cancel t) ht
     inv_val := mul_eq_one_comm.1 (key t t⁻¹ (mul_inv_cancel t) ht) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compress_val (A : Matrix (Fin n) (Fin k) R) (N : Matrix (Fin k) (Fin n) R) (hNA : N * A = 1)
     (t : GL (Fin n) R) (ht : t.val * (A * N) = (A * N) * t.val) :
     (compress A N hNA t ht).val = N * t.val * A := rfl
 
+/- English proof (translation)
+Rewrite using `[compress_val]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_frame (A : Matrix (Fin n) (Fin k) R) (N : Matrix (Fin k) (Fin n) R) (hNA : N * A = 1)
     (t : GL (Fin n) R) (ht : t.val * (A * N) = (A * N) * t.val) :
     t.val * A = A * (compress A N hNA t ht).val := by
@@ -43,6 +49,9 @@ theorem mul_frame (A : Matrix (Fin n) (Fin k) R) (N : Matrix (Fin k) (Fin n) R) 
     _ = (t.val * (A * N)) * A := by simp only [Matrix.mul_assoc]
     _ = A * (N * t.val * A) := by rw [ht]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[compress_val, Matrix.mul_assoc A N, Matrix.det_one_add_mul_comm, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hNA, add_sub_cancel]`.
+-/
 theorem det_compress (A : Matrix (Fin n) (Fin k) R) (N : Matrix (Fin k) (Fin n) R) (hNA : N * A = 1)
     (t : GL (Fin n) R) (ht : t.val * (A * N) = (A * N) * t.val) :
     (compress A N hNA t ht).val.det = (1 + (A * N) * (t.val - 1)).det := by
@@ -55,6 +64,11 @@ section Image
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `(Module.finBasis E W).linearIndependent.map' W.subtype (Submodule.ker_subtype W)`. Establish `h1 : (basisMat W)ᵀ = W.subtype ∘ (Module.finBasis E W)`. Use extensionality with `j i`. Simplify using `[basisMat]`. Rewrite using `[h1]`.
+
+Conclude with `h`.
+-/
 theorem linInd_basisMat (W : Submodule E (Fin n → E)) : LinearIndependent E (basisMat W)ᵀ := by
   have h := (Module.finBasis E W).linearIndependent.map' W.subtype (Submodule.ker_subtype W)
   have h1 : (basisMat W)ᵀ = W.subtype ∘ (Module.finBasis E W) := by
@@ -63,6 +77,11 @@ theorem linInd_basisMat (W : Submodule E (Fin n → E)) : LinearIndependent E (b
   rw [h1]
   exact h
 
+/- English proof (translation)
+Use `⟨(Module.finBasis E W).repr ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `(Module.finBasis E W).sum_repr ⟨w, hw⟩`. Use extensionality with `i`. Establish `h2 : ((∑ j, (Module.finBasis E W).repr ⟨w, hw⟩ j • Module.finBasis E W j : W) : Fin n → E) i = w i`. Rewrite using `[h]`.
+
+Rewrite `h2` using `[Submodule.coe_sum, Finset.sum_apply]`. Rewrite using `[← h2]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [basisMat, mul_comm]`.
+-/
 theorem exists_coord (W : Submodule E (Fin n → E)) (w : Fin n → E) (hw : w ∈ W) :
     ∃ c, basisMat W *ᵥ c = w := by
   refine ⟨(Module.finBasis E W).repr ⟨w, hw⟩, ?_⟩
@@ -75,6 +94,9 @@ theorem exists_coord (W : Submodule E (Fin n → E)) (w : Fin n → E) (hw : w �
   simp only [Matrix.mulVec, dotProduct]
   exact Finset.sum_congr rfl fun j _ => by simp [basisMat, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `(mem_range_idem he _).1 (Module.finBasis E (LinearMap.range (Matrix.toLin' e)) j).2`. Simplify `congrFun h i` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, basisMat]`.
+-/
 theorem idem_mul_basisMat {e : Matrix (Fin n) (Fin n) E} (he : e * e = e) :
     e * basisMat (LinearMap.range (Matrix.toLin' e)) = basisMat (LinearMap.range (Matrix.toLin' e)) := by
   ext i j
@@ -82,6 +104,9 @@ theorem idem_mul_basisMat {e : Matrix (Fin n) (Fin n) E} (he : e * e = e) :
     (Module.finBasis E (LinearMap.range (Matrix.toLin' e)) j).2
   simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct, basisMat] using congrFun h i
 
+/- English proof (translation)
+Use `Matrix.toLin'.injective (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`. Take `⟨c, hc⟩` from `exists_coord (LinearMap.range (Matrix.toLin' e)) (e *ᵥ y) ⟨y, by rw [Matrix.toLin'_apply]⟩`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hc, Matrix.mulVec_mulVec c L, hL, Matrix.one_mulVec]`.
+-/
 theorem basisMat_mul_idem {e : Matrix (Fin n) (Fin n) E}
     {L : Matrix (Fin (Module.finrank E (LinearMap.range (Matrix.toLin' e)))) (Fin n) E}
     (hL : L * basisMat (LinearMap.range (Matrix.toLin' e)) = 1) :
@@ -94,6 +119,15 @@ theorem basisMat_mul_idem {e : Matrix (Fin n) (Fin n) E}
 
 end Image
 
+/- English proof (translation)
+Introduce `E _ _ _ n hA e he t x ht`. Establish `hM` using `linInd_basisMat (LinearMap.range (Matrix.toLin' e))`. Take `⟨L, hLM⟩` from `GlobalTheory.CompanionTheory.DegAdelicProof.exists_leftInv _ hM`. Establish `hNM : (L * e) * basisMat (LinearMap.range (Matrix.toLin' e)) = 1`. Rewrite using `[Matrix.mul_assoc, idem_mul_basisMat he, hLM]`.
+
+Establish `hBA : (L * e).map (algebraMap E (Ad E)) * (basisMat (LinearMap.range (Matrix.toLin' e))).map (algebraMap E (Ad E)) = 1`. Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hAB : (basisMat (LinearMap.range (Matrix.toLin' e))).map (algebraMap E (Ad E)) * (L * e).map (algebraMap E (Ad E)) = rm e`. Rewrite using `[← Matrix.map_mul, basisMat_mul_idem hLM]`. Both sides reduce to the same expression.
+
+Establish `ht' : t.val * ((basisMat (LinearMap.range (Matrix.toLin' e))).map (algebraMap E (Ad E)) * (L * e).map (algebraMap E (Ad E))) = ((basisMat (LinearMap.range (Matrix.toLin' e))).map (algebraMap E (Ad E)) * (L * e).map (algebraMap E (Ad E))) * t.val`. Rewrite using `[hAB]`. Conclude with `ht`. Establish `h` using `hA E n _ x t (compress _ _ hBA t ht') _ hM (mul_frame _ _ hBA t ht')`. Establish `hd` using `det_compress _ _ hBA t ht'`.
+
+Rewrite `hd` using `[hAB]`. Unfold `deg lam chi`. Rewrite using `[← hd]`. Conclude with `h`.
+-/
 theorem deg_lam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), DegAdelic →
     ∀ (e : Matrix (Fin n) (Fin n) E), e * e = e → ∀ t x : GA E n, t.val * rm e = rm e * t.val →
       deg (t * x) (LinearMap.range (Matrix.toLin' e)) = deg x (LinearMap.range (Matrix.toLin' e)) + lam e t := by

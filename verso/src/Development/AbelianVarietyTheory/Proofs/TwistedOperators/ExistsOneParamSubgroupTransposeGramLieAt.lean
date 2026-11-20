@@ -22,6 +22,9 @@ namespace GlobalTheory.KapXLine
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X (g * h)) = Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X g) * Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X h)`. Rewrite using `[map_mul, map_mul]`.
+-/
 theorem kapX_mul (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (g h : GA D X) :
     kapX X e hJ (g * h) = kapX X e hJ g * kapX X e hJ h := by
@@ -31,12 +34,18 @@ theorem kapX_mul (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (F
       Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X h)
   rw [map_mul, map_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X 1) = 1`. Rewrite using `[map_one, map_one]`.
+-/
 theorem kapX_one (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) : kapX X e hJ 1 = 1 := by
   apply Subtype.ext
   show Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X 1) = 1
   rw [map_one, map_one]
 
+/- English proof (translation)
+Establish `h1 : Continuous (matHom X)` using `continuous_subtype_val`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp h1).matrix_reindex e e`. Conclude with `(Units.continuous_coe_inv.comp h1).matrix_reindex e e`.
+-/
 theorem continuous_kapX (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) : Continuous (kapX X e hJ) := by
   have h1 : Continuous (matHom X) := continuous_subtype_val
@@ -44,6 +53,11 @@ theorem continuous_kapX (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Ma
   · exact (Units.continuous_val.comp h1).matrix_reindex e e
   · exact (Units.continuous_coe_inv.comp h1).matrix_reindex e e
 
+/- English proof (translation)
+Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).injective (hu.trans (map_zero _).symm)`. Use `GlobalTheory.LFun.tens_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_zero]`. Express the relevant statement in the definitionally equal form `(u.1 ⊗ₜ[D.host.F] (1 : D.host.E)) * _ = 0`. Rewrite using `[hu1, TensorProduct.zero_tmul, zero_mul]`.
+
+Rewrite using `[Algebra.smul_def, map_mul, map_zero, hz, mul_zero]`.
+-/
 theorem smul_eq_zero_of_finTens {u : AF D.host.F} (hu : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F u = 0) {z : AE D}
     (hz : GlobalTheory.LFun.finTens D.host.F D.host.E z = 0) : u • z = 0 := by
   have hu1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).injective (hu.trans (map_zero _).symm)
@@ -53,6 +67,15 @@ theorem smul_eq_zero_of_finTens {u : AF D.host.F} (hu : GlobalTheory.IndefiniteR
     rw [hu1, TensorProduct.zero_tmul, zero_mul]
   · rw [Algebra.smul_def, map_mul, map_zero, hz, mul_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hf : finHom X g = 1` using `hg`. Establish `hent : ∀ a b, GlobalTheory.LFun.finTens D.host.F D.host.E (Formalism.L2.Theta.mt X g a b) = (1 : Matrix (Fin X.rank) (Fin X.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) a b`. Introduce `a b`. Use `congrArg (fun k : GL (Fin X.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => k.1 a b) hf` as an intermediate fact.
+
+Conclude with `this`. Use extensionality with `i j`. Rewrite using `[mat_kapX]`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, reindex_apply, submatrix_apply]`. Apply `smul_eq_zero_of_finTens hu` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, hent, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : e.symm i ≠ e.symm j` using `fun k => h (e.symm.injective k)`.
+
+Simplify using `[h, h']`.
+-/
 theorem kapX_mem_UAt (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : Spc D.host.F D.host.E d)
     (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ) {g : GA D X} (hg : g ∈ GinfC X) :
     kapX X e hJ g ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt D.sp.cm.sig Wd (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) := by
@@ -76,6 +99,11 @@ theorem kapX_mem_UAt (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : Spc 
 end GlobalTheory.KapXLine
 
 open GlobalTheory.KapXLine in
+/- English proof (translation)
+Introduce `D θ X τ Y hθ hY d e Wd hJ`. Set `γ : Multiplicative ℝ →* GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Wd.J` to `{ toFun := fun t => kapX X e hJ (oneP θ X τ Y (Multiplicative.toAdd t)) map_one' := by show kapX X e hJ (oneP θ X τ Y 0) = 1`. Rewrite using `[GlobalTheory.Mem.Lift.oneP_zero hθ, kapX_one]`. Use the proof step `map_mul' := fun s t => by show kapX X e hJ (oneP θ X τ Y (Multiplicative.toAdd s + Multiplicative.toAdd t)) = _`. Rewrite using `[GlobalTheory.Mem.Lift.oneP_add hθ hY, kapX_mul] }`.
+
+Use `⟨γ, ⟨?_, fun t => ?_⟩, fun t => rfl⟩` and prove the remaining obligations. Conclude with `(continuous_kapX X e hJ).comp ((GlobalTheory.Mem.Lift.continuous_oneP hθ hY).comp continuous_toAdd)`. Conclude with `kapX_mem_UAt X e Wd hJ (GlobalTheory.Mem.Lift.isAtTau_oneP hθ hY _).1`.
+-/
 theorem GlobalTheory.KapXLine.exists_line : ∀ (D : D7) (θ : InfFam D) (X : HSp D) (τ : D.what₂.Tau) (Y : Matrix (Fin X.rank) (Fin X.rank) ℂ),
     IsInfFam θ → Y ∈ lieAt X τ → ∀ {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : Spc D.host.F D.host.E d)
     (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ),

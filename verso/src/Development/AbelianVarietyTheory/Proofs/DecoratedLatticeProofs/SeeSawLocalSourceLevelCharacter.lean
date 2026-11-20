@@ -19,6 +19,9 @@ namespace GlobalTheory.SeeSaw.LocSrc
 section Local
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `⟨fun i j => by simp [Formalism.L2.Theta.mt], ?_⟩` and prove the remaining obligations. Establish `: Formalism.L2.Theta.mt S 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this, Matrix.map_one p.π (map_zero _) (map_one _)]`. Simplify using `[F.βγ]`.
+-/
 theorem isLoc_one (p : Place D k) {S : HSp D} {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k S.rank Y) :
     p.IsLoc F 1 1 := by
   refine ⟨fun i j => by simp [Formalism.L2.Theta.mt], ?_⟩
@@ -26,12 +29,18 @@ theorem isLoc_one (p : Place D k) {S : HSp D} {Y : Type} [Fintype Y] [DecidableE
   rw [this, Matrix.map_one p.π (map_zero _) (map_one _)]
   simp [F.βγ]
 
+/- English proof (translation)
+Introduce `x a ha`. Establish `h1` using `h x a ha`. Simplify using `only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Circle.coe_inv] at h1 ⊢`. Rewrite using `[h1, inv_inv]`.
+-/
 theorem isComp_inv (p : Place D k) {χ : (AE D)ˣ →* Circle} {μ : kˣ →* ℂˣ} (h : p.IsComp χ⁻¹ μ) : p.IsComp χ μ⁻¹ := by
   intro x a ha
   have h1 := h x a ha
   simp only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Circle.coe_inv] at h1 ⊢
   rw [h1, inv_inv]
 
+/- English proof (translation)
+Establish `h1` using `valuation_det_of_mem_KO (GlobalTheory.StepData.mem_stabLat.1 hh)`. Establish `e : Matrix.GeneralLinearGroup.det (g⁻¹ * h * g) = Matrix.GeneralLinearGroup.det h`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem valuation_det_of_mem_stabLat {Y : Type} [Fintype Y] [DecidableEq Y] {g h : GL Y k} (hh : h ∈ GlobalTheory.StepData.stabLat g) :
     valuation k ((Matrix.GeneralLinearGroup.det h : kˣ) : k) = 1 := by
   have h1 := valuation_det_of_mem_KO (GlobalTheory.StepData.mem_stabLat.1 hh)
@@ -39,6 +48,11 @@ theorem valuation_det_of_mem_stabLat {Y : Type} [Fintype Y] [DecidableEq Y] {g h
     rw [map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]
   rwa [e] at h1
 
+/- English proof (translation)
+Take `⟨e1, e2⟩` from `GlobalTheory.SeeSaw.MuUnits.withMu_eq k s κ S t μ hμ hu`. Establish `hx : x.1 ∈ (((withMu S μ hμ).T t).lev j (a + 1) hb).J` using `by rw [(e2 j (a + 1) hb).1]; exact x.2`. Establish `L : ((withMu S μ hμ).T t).Laws` using `Chain.ofType_laws _ _ _ _ _`. Establish `h1` using `(L.1 j a H).1 ⟨x.1, hx⟩`. Rewrite `h1` using `[e1, (e2 j (a + 1) hb).2 x.1 hx x.2]`.
+
+Conclude with `h1`.
+-/
 theorem om_Phi {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j))
     (hu : ∀ j (x : kˣ), valuation k (x : k) = 1 → μ j x = S.μ j x) (j a : ℕ) (H : j + a = s) (hb : j + (a + 1) = s + 1)
     (x : ((S.T t).lev j (a + 1) hb).J) :
@@ -52,6 +66,15 @@ theorem om_Phi {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [Decidab
 
 end Local
 
+/- English proof (translation)
+Introduce `D c v G hc hv j χS χT ω hω μ hμ hu hS hT hj b hb x h hl f hf`. Take `⟨μ', hT, hT'⟩` from `hT`. Take `⟨a, rfl⟩ : ∃ a, b = a + 1` from `⟨b - 1, by omega⟩`. Establish `H : j + a = G.s` using `by omega`. Establish `H' : j + 1 + a = G.s + 1` using `by omega`.
+
+Establish `hm` using `G.hs`. Take `⟨Tm, hTm, hO⟩` from `(GlobalTheory.T.integralIndicator_gives_localVacuum_splitPlace D G.k G.q G.unit _ _ (c.V j) (c.V (j + 1)) (G.FY j (a + 1) hb) (G.FY (j + 1) a H') c.ψ G.S.ψ hc.std G.char G.S.cond (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega)) (G.latY j (a + 1) hb) (G.latY ( …`. Take `⟨O, hO1, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := G.k) (Y := XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin a) (Y' := XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (a + 1))`. Establish `R : (G.S.T (Fin D.R.t)).Regular` using `Chain.ofType_regular _ _ _ _ _`. Set `Φ : SB (Matrix (XIx (Fin D.R.k) (Fin D.R.t) (j + 1) ⊕ Fin a) (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (a + 1)) G.k)` to `⟨(G.S.T (Fin D.R.t)).Phi j a H, R.1 j a H⟩`.
+
+Establish `e1 : Tm Φ = comb c.ψ _ _ (G.eg j) f`. Rewrite using `[← hO O hO1]`. Conclude with `(G.eg_is j a H).2 Tm hTm O Φ hO1 rfl`. Establish `hd` using `valuation_det_of_mem_stabLat ((R.2.2 j (a + 1) hb).2.2 x.2)`. Establish `e2 : ((μ (j + 1))⁻¹ * μ'⁻¹) (Matrix.GeneralLinearGroup.det x.1) = 1`.
+
+Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.inv_apply, ← mul_inv, mul_comm, hT' _ hd, inv_one]`. Establish `key` using `GlobalTheory.T.weilDatum_localModel_formula D G.k (ofSplit G.q) c.ψ _ _ χS χT ω hω (μ (j + 1))⁻¹ μ' (isComp_inv _ hS) hT _ _ (G.FY j (a + 1) hb) (G.FY (j + 1) a H') Tm hTm h x.1 1 1 hl (isLoc_one _ _) Φ ((((G.S.T (Fin D.R.t)).lev j (a + 1) hb).lam x : ℂ) • Φ) (by`. Rewrite using `[e2, inv_inv, Units.val_one, one_smul]`. Conclude with `(om_Phi G.S (Fin D.R.t) μ hμ hu j a H hb x).symm)`. Rewrite using `[← e1, key, map_smul]`.
+-/
 theorem seeSaw_local_sourceLevel_character : ∀ (D : D7) (c : Comm D) (v : VCom c) (G : GLoc v), c.Is → v.Is → ∀ (j : ℕ) (χS χT : (AE D)ˣ →* Circle) (om : Om (c.V j) (c.V (j + 1))), IsWeilDatumO c.ψ _ _ χS χT om → ∀ (μ : ℕ → G.kˣ →* ℂˣ), (∀ i, IsTame (μ i)) → (∀ i (x : G.kˣ), valuation G.k (x : G.k) = 1 → μ i x = G.S.μ i x) → (ofSplit G.q).IsComp χS⁻¹ (μ (j + 1)) → (∃ μ', (ofSplit G.q).IsComp χT μ' ∧ ∀ x : G.kˣ, valuation G.k (x : G.k) = 1 → μ' x * μ (j + 1) x = 1) → j ≤ G.s → ∀ (b : ℕ) (hb : j + b = G.s + 1) (x : ((G.S.T (Fin D.R.t)).lev j b hb).J) (h : GA D (c.V j)), (ofSplit G.q).IsLoc (G.FY j b hb) h x.1 → ∀ f : WO (c.V j) (c.V (j + 1)) → ℂ, Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = G.q.v) f → om (h, 1) (comb c.ψ _ _ (G.eg j) f) = (((G.S.T (Fin D.R.t)).lev j b hb).lam x : ℂ) • comb c.ψ _ _ (G.eg j) f := by
   intro D c v G hc hv j χS χT ω hω μ hμ hu hS hT hj b hb x h hl f hf
   obtain ⟨μ', hT, hT'⟩ := hT

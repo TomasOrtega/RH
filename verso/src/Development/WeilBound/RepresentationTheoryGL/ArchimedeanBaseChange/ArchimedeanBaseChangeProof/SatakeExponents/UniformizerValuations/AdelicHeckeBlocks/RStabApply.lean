@@ -16,6 +16,9 @@ attribute [local instance] borelG borelF borelH
 
 namespace Hint
 
+/- English proof (translation)
+Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Set `U : OpenSubgroup K` to `⟨H.subgroupOf K, hH.preimage continuous_subtype_val⟩`. Establish `: Finite (K ⧸ (U : Subgroup K))` using `Subgroup.quotient_finite_of_isOpen _ U.isOpen`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {H K : Subgroup G}
     (hH : IsOpen (H : Set G)) (hK : IsCompact (K : Set G)) : H.relIndex K ≠ 0 := by
   have : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -23,10 +26,19 @@ theorem relIndex_ne_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   have : Finite (K ⧸ (U : Subgroup K)) := Subgroup.quotient_finite_of_isOpen _ U.isOpen
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem mem_rStab {H : Type} [Group H] {u : H → ℂ} {k : H} (h : ∀ x, u (x * k) = u x) : k ∈ rStab u := h
 
+/- English proof (translation)
+The claim follows from `h x`.
+-/
 theorem rStab_apply {H : Type} [Group H] {u : H → ℂ} {k : H} (h : k ∈ rStab u) (x : H) : u (x * k) = u x := h x
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem (show x * k ∈ (K : Set H) from K.mul_mem hx hk), Set.indicator_of_mem (show x ∈ (K : Set H) from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x * k ∉ (K : Set H) from fun h => hx ((K.mul_mem_cancel_right hk).1 h)), Set.indicator_of_notMem (show x ∉ (K : Set H) from hx)]`.
+-/
 theorem ind_mul {H : Type} [Group H] (K : Subgroup H) {k : H} (hk : k ∈ K) (x : H) :
     (K : Set H).indicator (1 : H → ℂ) (x * k) = (K : Set H).indicator 1 x := by
   by_cases hx : x ∈ K
@@ -36,10 +48,16 @@ theorem ind_mul {H : Type} [Group H] (K : Subgroup H) {k : H} (hk : k ∈ K) (x 
   · rw [Set.indicator_of_notMem (show x * k ∉ (K : Set H) from fun h => hx ((K.mul_mem_cancel_right hk).1 h)),
       Set.indicator_of_notMem (show x ∉ (K : Set H) from hx)]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[QuotientGroup.eq, mul_one, inv_mem_iff]`.
+-/
 theorem out_mem {H : Type} [Group H] (K : Subgroup H) (q : H ⧸ K) : q.out ∈ K ↔ q = ((1 : H) : H ⧸ K) := by
   conv_rhs => rw [← QuotientGroup.out_eq' q]
   rw [QuotientGroup.eq, mul_one, inv_mem_iff]
 
+/- English proof (translation)
+Establish `hle : K ≤ rStab ((K : Set H).indicator (1 : H → ℂ))` using `fun k hk => mem_rStab (ind_mul K hk)`. Rewrite using `[hint, inf_eq_right.2 hle, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul, finsum_eq_single _ ((1 : H) : H ⧸ K)]`. Conclude with `Set.indicator_of_mem (show _ ∈ (K : Set H) from (out_mem K _).2 rfl) _`. Introduce `q hq`. Conclude with `Set.indicator_of_notMem (show q.out ∉ (K : Set H) from fun h => hq ((out_mem K q).1 h)) _`.
+-/
 theorem hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set H).indicator 1) = 1 := by
   have hle : K ≤ rStab ((K : Set H).indicator (1 : H → ℂ)) := fun k hk => mem_rStab (ind_mul K hk)
   rw [hint, inf_eq_right.2 hle, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul,
@@ -48,6 +66,9 @@ theorem hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set H).ind
   · intro q hq
     exact Set.indicator_of_notMem (show q.out ∉ (K : Set H) from fun h => hq ((out_mem K q).1 h)) _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K L _ hLK (fun k hk => mem_rStab (ind_mul K (hLK hk))) hidx`. Rewrite `h` using `[hint_ind]`. Establish `hc : ((L.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`. Rewrite `h` using `[eq_inv_mul_iff_mul_eq₀ hc, mul_one]`. Conclude with `h.symm`.
+-/
 theorem idx_eq {H : Type} [Group H] (K L : Subgroup H) (hLK : L ≤ K) (hidx : L.relIndex K ≠ 0) :
     ∑ᶠ q : H ⧸ L, (K : Set H).indicator (1 : H → ℂ) q.out = ((L.relIndex K : ℕ) : ℂ) := by
   have h := GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K L _ hLK (fun k hk => mem_rStab (ind_mul K (hLK hk))) hidx
@@ -56,11 +77,19 @@ theorem idx_eq {H : Type} [Group H] (K L : Subgroup H) (hLK : L ≤ K) (hidx : L
   rw [eq_inv_mul_iff_mul_eq₀ hc, mul_one] at h
   exact h.symm
 
+/- English proof (translation)
+Use `show q.out⁻¹ * y ∈ W ↔ _`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', eq_comm]`.
+-/
 theorem coset_mem {G : Type} [Group G] (W : Subgroup G) (q : G ⧸ W) (y : G) :
     y ∈ (fun y => q.out⁻¹ * y) ⁻¹' (W : Set G) ↔ (y : G ⧸ W) = q := by
   show q.out⁻¹ * y ∈ W ↔ _
   rw [← QuotientGroup.eq, QuotientGroup.out_eq', eq_comm]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hg.isCompact.elim_finite_subcover (fun q : G ⧸ W => (fun y => q.out⁻¹ * y) ⁻¹' (W : Set G)) (fun q => hW.preimage (continuous_const_mul _)) (fun y _ => Set.mem_iUnion.2 ⟨(y : G ⧸ W), (coset_mem W _ y).2 rfl⟩)`. Use `t.finite_toSet.subset fun q hq => ?_` and prove the remaining obligations. Take `⟨i, hi, hyi⟩` from `Set.mem_iUnion₂.1 (ht (subset_tsupport g hq))`. Establish `h` using `(coset_mem W i _).1 hyi`. Rewrite `h` using `[QuotientGroup.out_eq']`.
+
+Rewrite using `[h]`. Conclude with `hi`.
+-/
 theorem fin_supp {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (W : Subgroup G)
     (hW : IsOpen (W : Set G)) (g : G → ℂ) (hg : HasCompactSupport g) :
     (Function.support fun q : G ⧸ W => g q.out).Finite := by
@@ -75,6 +104,19 @@ theorem fin_supp {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
   rw [h]
   exact hi
 
+/- English proof (translation)
+Use `set C : Γ ⧸ V → Set Γ := fun q => (fun y => q.out⁻¹ * y) ⁻¹' (V : Set Γ)`. Establish `hCm : ∀ q, MeasurableSet (C q)` using `fun q => (hV.preimage (continuous_const_mul _)).measurableSet`. Establish `hCν : ∀ q, ν (C q) = ν V` using `fun q => measure_preimage_mul ν _ _`. Establish `hval : ∀ x, g x = g (x : Γ ⧸ V).out`. Introduce `x`.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul V x`. Rewrite using `[hh, hr _ h.2 x]`. Establish `hfin` using `fin_supp V hV g hg`. Establish `hpt : ∀ x, g x = ∑ q ∈ hfin.toFinset, (C q).indicator (fun _ => g q.out) x`. Introduce `x`.
+
+Rewrite using `[Finset.sum_eq_single (x : Γ ⧸ V)]`. Rewrite using `[Set.indicator_of_mem ((coset_mem V _ x).2 rfl)]`. Conclude with `hval x`. Introduce `q _ hq`. Conclude with `Set.indicator_of_notMem (fun hm => hq ((coset_mem V q x).1 hm).symm) _`.
+
+Introduce `hx`. Rewrite using `[Set.indicator_of_mem ((coset_mem V _ x).2 rfl)]`. Assume the negation of the conclusion as `h`. Conclude with `hx (hfin.mem_toFinset.2 h)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hpt x`. Use `_ = ∑ q ∈ hfin.toFinset, ∫ x, (C q).indicator (fun _ => g q.out) x ∂ν := integral_finsetSum _ fun q _ => (integrable_indicator_iff (hCm q)).2 (integrableOn_const (by rw [hCν q]; exact hVf))`. Use `_ = ∑ q ∈ hfin.toFinset, (ν.real V : ℂ) * g q.out := by`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hCm q), Complex.real_smul]`. Simplify using `only [measureReal_def, hCν q]`. Use `_ = (ν.real V : ℂ) * ∑ᶠ q : Γ ⧸ V, g q.out := by`. Rewrite using `[← Finset.mul_sum, finsum_eq_sum_of_support_subset _ hfin.coe_toFinset.ge]`.
+-/
 theorem int_cosets {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [MeasurableSpace Γ]
     [BorelSpace Γ] (ν : Measure Γ) [ν.IsMulLeftInvariant] (V : Subgroup Γ) (hV : IsOpen (V : Set Γ))
     (hVf : ν V ≠ ⊤) (g : Γ → ℂ) (hg : HasCompactSupport g) (hr : ∀ v ∈ V, ∀ x, g (x * v) = g x) :
@@ -114,6 +156,13 @@ theorem int_cosets {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGr
 
 end Hint
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ ν _ K U f hKo hKc hUo hf hfU _`. Establish `hVo : IsOpen ((U ⊓ K : Subgroup Γ) : Set Γ)` using `hUo.inter hKo`. Establish `hVK : U ⊓ K ≤ K` using `inf_le_right`. Establish `hidx : (U ⊓ K).relIndex K ≠ 0` using `Hint.relIndex_ne_zero hVo hKc`. Establish `hKf : ν K ≠ ⊤` using `hKc.measure_lt_top.ne`.
+
+Establish `hVf : ν (U ⊓ K : Subgroup Γ) ≠ ⊤` using `ne_top_of_le_ne_top hKf (measure_mono hVK)`. Establish `h1` using `Hint.int_cosets ν (U ⊓ K) hVo hVf f hf fun v hv => hfU v (Subgroup.mem_inf.1 hv).1`. Establish `h2` using `Hint.int_cosets ν (U ⊓ K) hVo hVf ((K : Set Γ).indicator 1) (HasCompactSupport.intro hKc fun x hx => Set.indicator_of_notMem hx _) fun v hv => Hint.ind_mul K (Subgroup.mem_inf.1 hv).2`. Establish `h3 : ∫ x, (K : Set Γ).indicator (1 : Γ → ℂ) x ∂ν = (ν.real K : ℂ)`. Rewrite using `[show (1 : Γ → ℂ) = fun _ => (1 : ℂ) from rfl, integral_indicator_const _ hKo.measurableSet, Complex.real_smul, mul_one]`.
+
+Rewrite `h2` using `[h3, Hint.idx_eq K (U ⊓ K) hVK hidx]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level Γ K (U ⊓ K) f hVK (fun k hk => Hint.mem_rStab fun x => hfU k (Subgroup.mem_inf.1 hk).1 x) hidx, h1, h2]`. Establish `hc : (((U ⊓ K).relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`. Rewrite using `[mul_assoc, ← mul_assoc (((U ⊓ K).relIndex K : ℕ) : ℂ), mul_inv_cancel₀ hc, one_mul]`.
+-/
 theorem intHint : IntHint := by
   intro Γ _ _ _ _ _ ν _ K U f hKo hKc hUo hf hfU _
   have hVo : IsOpen ((U ⊓ K : Subgroup Γ) : Set Γ) := hUo.inter hKo
@@ -136,6 +185,11 @@ theorem intHint : IntHint := by
 
 namespace Hint
 
+/- English proof (translation)
+Establish `e : ∀ k, ∑ᶠ x, g k x = ∑ x ∈ (hs k).toFinset, g k x` using `fun k => finsum_eq_sum_of_support_subset (g k) (hs k).coe_toFinset.ge`. Simplify using `only [e]`. Rewrite using `[Finset.prod_univ_sum]`. Use `finsum_eq_sum_of_support_subset _ fun c hc => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`.
+
+Introduce `k`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Function.mem_support.2 fun h0 => (Function.mem_support.1 hc) (Finset.prod_eq_zero (Finset.mem_univ k) h0)`.
+-/
 theorem finsum_prod {κ : Type} [Fintype κ] {A : κ → Type} (g : ∀ k, A k → ℂ)
     (hs : ∀ k, (Function.support (g k)).Finite) :
     ∑ᶠ c : (∀ k, A k), ∏ k, g k (c k) = ∏ k, ∑ᶠ x, g k x := by
@@ -150,6 +204,39 @@ theorem finsum_prod {κ : Type} [Fintype κ] {A : κ → Type} (g : ∀ k, A k �
   exact Function.mem_support.2 fun h0 =>
     (Function.mem_support.1 hc) (Finset.prod_eq_zero (Finset.mem_univ k) h0)
 
+/- English proof (translation)
+Use `set V : Subgroup Γ := ⨅ i, (W i).comap (p i) with hV`. Establish `hmemV : ∀ x, x ∈ V ↔ ∀ i, p i x ∈ W i` using `fun x => by`. Rewrite using `[hV, Subgroup.mem_iInf]`. Both sides reduce to the same expression. Use `set F : Γ → ℂ := fun x => ∏ᶠ i, h i (p i x) with hF`.
+
+Establish `hFV : ∀ x, ∀ v ∈ V, F (x * v) = F x`. Introduce `x v hv`. Simplify using `only [hF, map_mul]`. Conclude with `finprod_congr fun i => rStab_apply (hWs i ((hmemV v).1 hv i)) (p i x)`. Establish `hFout : ∀ x : Γ, F ((x : Γ ⧸ V).out) = F x`.
+
+Introduce `x`. Take `⟨v, hv⟩` from `QuotientGroup.mk_out_eq_mul V x`. Rewrite using `[hv, hFV x v v.2]`. Set `y : (∀ i : T, Hl i ⧸ W i) → ∀ i, Hl i` to `fun c i => if hi : i ∈ T then (c ⟨i, hi⟩).out else 1`. Establish `hy_out : ∀ c (i : T), y c i = (c i).out` using `fun c i => dif_pos i.2`.
+
+Establish `hy_one : ∀ c i, i ∉ T → y c i = 1` using `fun c i hi => dif_neg hi`. Establish `hy : ∀ c, ∀ᶠ i in cofinite, y c i ∈ KH i` using `fun c => Filter.eventually_cofinite.2 (T.finite_toSet.subset fun i hi => by`. Assume the negation of the conclusion as `hiT`. Conclude with `hi (by rw [hy_one c i hiT]; exact (KH i).one_mem))`. Use `choose X hX using fun c => hsurj (y c) (hy c)`.
+
+Set `Φ : (∀ i : T, Hl i ⧸ W i) → Γ ⧸ V` to `fun c => (X c : Γ ⧸ V)`. Establish `hΦinj : Function.Injective Φ`. Introduce `c c' hcc`. Establish `h1 : (X c)⁻¹ * X c' ∈ V` using `QuotientGroup.eq.1 hcc`. Use function extensionality and compare the values at `i`.
+
+Establish `h2` using `(hmemV _).1 h1 i.1`. Rewrite `h2` using `[map_mul, map_inv, hX, hX, hy_out c i, hy_out c' i]`. Establish `h3 : (((c i).out : Hl i.1) : Hl i.1 ⧸ W i.1) = (c' i).out` using `QuotientGroup.eq.2 h2`. Rewrite `h3` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `h3`.
+
+Establish `hmulS : ∀ x : Γ, (Function.mulSupport fun j => h j (p j x)).Finite`. Introduce `x`. Use `(T.finite_toSet.union (Filter.eventually_cofinite.1 (hfin x))).subset fun j hj => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_ofPred_eq, not_or, not_not] at hn`.
+
+Conclude with `(Function.mem_mulSupport.1 hj) (by show h j (p j x) = 1`. Rewrite using `[hT j hn.1]`. Conclude with `Set.indicator_of_mem hn.2 _)`. Establish `hsupp : ∀ q : Γ ⧸ V, F q.out ≠ 0 → q ∈ Set.range Φ`. Introduce `q hq`.
+
+Establish `hK : ∀ i ∉ T, p i q.out ∈ KH i`. Introduce `i hi`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Use `show (∏ᶠ j, h j (p j q.out)) = 0`.
+
+Conclude with `finprod_eq_zero _ i (by show h i (p i q.out) = 0`. Rewrite using `[hT i hi]`. Conclude with `Set.indicator_of_notMem hn _) (hmulS _)`. Use `⟨fun i => (p i.1 q.out : Hl i.1 ⧸ W i.1), ?_⟩` and prove the remaining obligations. Use `show (X _ : Γ ⧸ V) = q`.
+
+Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`. Use `QuotientGroup.eq.2 ((hmemV _).2 fun i => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hX]`. Distinguish the cases in `hi : i ∈ T`. Simplify using `only [y, dif_pos hi]`.
+
+Conclude with `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Simplify using `only [y, dif_neg hi, inv_one, one_mul]`. Rewrite using `[hW i hi]`. Conclude with `hK i hi`. Establish `hval : ∀ c, F (Φ c).out = ∏ i : T, h i (c i).out`.
+
+Introduce `c`. Use `show F (X c : Γ ⧸ V).out = _`. Rewrite using `[hFout]`. Use `show (∏ᶠ i, h i (p i (X c))) = _`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := T) ?_, ← Finset.prod_coe_sort T]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hX, hy_out c i]`. Introduce `j hj`. Assume the negation of the conclusion as `hn`. Conclude with `(Function.mem_mulSupport.1 hj) (by show h j (p j (X c)) = 1`.
+
+Rewrite using `[hX, hy_one c j hn, hT j hn]`. Conclude with `Set.indicator_of_mem (KH j).one_mem _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← finsum_mem_univ]`. Conclude with `finsum_mem_inter_support_eq _ _ _ (Set.ext fun q => ⟨fun hq => ⟨hsupp q hq.2, hq.2⟩, fun hq => ⟨Set.mem_univ _, hq.2⟩⟩)`.
+
+Use `_ = ∑ᶠ c, F (Φ c).out := finsum_mem_range hΦinj`. Use `_ = ∑ᶠ c, ∏ i : T, h i (c i).out := finsum_congr hval`. Use `_ = ∏ i : T, ∑ᶠ x : Hl i ⧸ W i, h i x.out := finsum_prod (fun (i : T) (x : Hl i ⧸ W i) => h i x.out) fun i => hs i`. Use `_ = ∏ i ∈ T, ∑ᶠ c : Hl i ⧸ W i, h i c.out := Finset.prod_coe_sort T fun i => ∑ᶠ c : Hl i ⧸ W i, h i c.out`.
+-/
 theorem count {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i)
     (KH W : ∀ i, Subgroup (Hl i)) (T : Finset ι) (h : ∀ i, Hl i → ℂ)
     (hsurj : ∀ y : ∀ i, Hl i, (∀ᶠ i in cofinite, y i ∈ KH i) → ∃ x : Γ, ∀ i, p i x = y i)
@@ -248,6 +335,35 @@ theorem count {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)]
 
 end Hint
 
+/- English proof (translation)
+Introduce `ι Γ _ Hl _ _ _ p K KH U f hinj hsurj hfin hK hloc hcof`. Establish `hTf : {i | ¬ f i = (KH i : Set (Hl i)).indicator 1}.Finite` using `Filter.eventually_cofinite.1 hcof`. Use `set T := hTf.toFinset`. Establish `hT : ∀ i ∉ T, f i = (KH i : Set (Hl i)).indicator 1` using `fun i hi => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hi (hTf.mem_toFinset.2 hn)`. Set `W : ∀ i, Subgroup (Hl i)` to `fun i => KH i ⊓ rStab (f i)`. Establish `hWo : ∀ i, IsOpen (W i : Set (Hl i))` using `fun i => (hloc i).2.1.inter (Subgroup.isOpen_mono (fun u hu => Hint.mem_rStab ((hloc i).2.2.2.2 u hu)) (hloc i).2.2.1)`. Establish `hWK : ∀ i, W i ≤ KH i` using `fun i => inf_le_left`. Establish `hWs : ∀ i, W i ≤ rStab (f i)` using `fun i => inf_le_right`.
+
+Establish `hW : ∀ i ∉ T, W i = KH i` using `fun i hi => inf_eq_left.2 (by`. Rewrite using `[hT i hi]`. Conclude with `fun k hk => Hint.mem_rStab (Hint.ind_mul (KH i) hk))`. Establish `hidxi : ∀ i, (W i).relIndex (KH i) ≠ 0` using `fun i => Hint.relIndex_ne_zero (hWo i) (hloc i).1`. Use `set V : Subgroup Γ := ⨅ i, (W i).comap (p i) with hV`.
+
+Establish `hmemV : ∀ x, x ∈ V ↔ ∀ i, p i x ∈ W i` using `fun x => by`. Rewrite using `[hV, Subgroup.mem_iInf]`. Both sides reduce to the same expression. Establish `hVK : V ≤ K` using `fun x hx => (hK x).2 fun i => hWK i ((hmemV x).1 hx i)`. Establish `hidx : V.relIndex K ≠ 0`.
+
+Establish `hle : (⨅ j : T, (W j).comap (p j)) ⊓ K ≤ V`. Introduce `x hx`. Rewrite `hx` using `[Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `(hmemV x).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ T`.
+
+Conclude with `hx.1 ⟨i, hi⟩`. Rewrite using `[hW i hi]`. Conclude with `(hK x).1 hx.2 i`. Introduce `h0`. Establish `h1` using `Subgroup.relIndex_eq_zero_of_le_left hle h0`.
+
+Rewrite `h1` using `[Subgroup.inf_relIndex_right]`. Conclude with `Subgroup.relIndex_iInf_ne_zero (fun j => by`. Rewrite using `[Subgroup.relIndex_comap]`. Conclude with `fun h2 => hidxi j (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_le_iff_le_comap.2 fun x hx => (hK x).1 hx j.1) h2)) h1`. Establish `hrF : V ≤ rStab (fun x => ∏ᶠ i, f i (p i x))` using `fun v hv => Hint.mem_rStab fun x => by`.
+
+Simplify using `only [map_mul]`. Conclude with `finprod_congr fun i => Hint.rStab_apply (hWs i ((hmemV v).1 hv i)) (p i x)`. Establish `hfs : ∀ i, (Function.support fun c : Hl i ⧸ W i => f i c.out).Finite` using `fun i => Hint.fin_supp (W i) (hWo i) (f i) (hloc i).2.2.2.1`. Establish `his : ∀ i, (Function.support fun c : Hl i ⧸ W i => (KH i : Set (Hl i)).indicator (1 : Hl i → ℂ) c.out).Finite` using `fun i => Hint.fin_supp (W i) (hWo i) _ (HasCompactSupport.intro (hloc i).1 fun x hx => Set.indicator_of_notMem hx _)`. Establish `c1` using `Hint.count p KH W T f hsurj hfin hW hWs hT hfs`.
+
+Establish `c2` using `Hint.count p KH W T (fun i => (KH i : Set (Hl i)).indicator 1) hsurj hfin hW (fun i k hk => Hint.mem_rStab (Hint.ind_mul (KH i) (hWK i hk))) (fun i _ => rfl) his`. Establish `hindK : ∀ x, ∏ᶠ i, (KH i : Set (Hl i)).indicator (1 : Hl i → ℂ) (p i x) = (K : Set Γ).indicator 1 x`. Introduce `x`. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem (show x ∈ (K : Set Γ) from hx)]`.
+
+Conclude with `finprod_eq_one_of_forall_eq_one fun i => Set.indicator_of_mem ((hK x).1 hx i) _`. Rewrite using `[Set.indicator_of_notMem (show x ∉ (K : Set Γ) from hx)]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, p i x ∉ KH i := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Conclude with `hx ((hK x).2 hn)`. Use `finprod_eq_zero _ i (Set.indicator_of_notMem hi _) ?_` and prove the remaining obligations. Use `(Filter.eventually_cofinite.1 (hfin x)).subset fun j hj => ?_` and prove the remaining obligations. Use `show ¬ p j x ∈ KH j`. Conclude with `fun hj' => (Function.mem_mulSupport.1 hj) (Set.indicator_of_mem hj' _)`.
+
+Establish `hcK : ((V.relIndex K : ℕ) : ℂ) = ∏ i ∈ T, (((W i).relIndex (KH i) : ℕ) : ℂ)`. Rewrite using `[← Hint.idx_eq K V hVK hidx]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level Γ K V _ hVK hrF hidx]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := T) ?_]`.
+
+Rewrite using `[Finset.prod_congr (rfl : T = T) fun i _ => GlobalTheory.CompanionTheory.HintLevel.hint_eq_level (Hl i) (KH i) (W i) (f i) (hWK i) (hWs i) (hidxi i)]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib, ← hcK]`. Use `congr 1`. Introduce `i hi`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `(Function.mem_mulSupport.1 hi) (by show hint (KH i) (f i) = 1`. Rewrite using `[hT i hn]`. Conclude with `Hint.hint_ind (KH i))`.
+-/
 theorem hintProd : HintProd := by
   intro ι Γ _ Hl _ _ _ p K KH U f hinj hsurj hfin hK hloc hcof
   have hTf : {i | ¬ f i = (KH i : Set (Hl i)).indicator 1}.Finite := Filter.eventually_cofinite.1 hcof

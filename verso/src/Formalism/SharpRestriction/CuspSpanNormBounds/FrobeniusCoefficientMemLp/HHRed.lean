@@ -18,6 +18,11 @@ variable (D : D7)
 
 def rho0 : ℝ := Real.sqrt (finrank ℚ D.host.E) * D.host.rdE
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.one_le_rpow _ (by positivity)` to reduce the goal to its premises. Establish `h : (NumberField.discr D.host.E) ≠ 0` using `NumberField.discr_ne_zero D.host.E`. Establish `h1 : (1 : ℤ) ≤ |NumberField.discr D.host.E|` using `Int.one_le_abs h`. Establish `h2 : ((1 : ℤ) : ℝ) ≤ ((|NumberField.discr D.host.E| : ℤ) : ℝ)` using `by exact_mod_cast h1`.
+
+Simplify `h2` using `[Int.cast_abs]`.
+-/
 theorem one_le_rdE : 1 ≤ D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   apply Real.one_le_rpow _ (by positivity)
@@ -26,6 +31,9 @@ theorem one_le_rdE : 1 ≤ D.host.rdE := by
   have h2 : ((1 : ℤ) : ℝ) ≤ ((|NumberField.discr D.host.E| : ℤ) : ℝ) := by exact_mod_cast h1
   simpa [Int.cast_abs] using h2
 
+/- English proof (translation)
+Unfold `rho0`. Establish `h1 : (1 : ℝ) ≤ finrank ℚ D.host.E` using `by exact_mod_cast Module.finrank_pos`. Establish `h2 : 1 ≤ Real.sqrt (finrank ℚ D.host.E)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt h1`. Use polynomial arithmetic with `[one_le_rdE D]`.
+-/
 theorem one_le_rho0 : 1 ≤ rho0 D := by
   unfold rho0
   have h1 : (1 : ℝ) ≤ finrank ℚ D.host.E := by exact_mod_cast Module.finrank_pos
@@ -33,11 +41,19 @@ theorem one_le_rho0 : 1 ≤ rho0 D := by
     rw [show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt h1
   nlinarith [one_le_rdE D]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem norm_embS_eq (τ : D.what₂.Tau) (x : D.host.E) :
     ‖embS D τ x‖ = (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ) x := rfl
 
 def boxS : Set D.host.E := {x | ∀ τ, ‖embS D τ x‖ ≤ rho0 D}
 
+/- English proof (translation)
+Introduce `x`. Establish `hc : ∀ w : InfinitePlace D.host.E, w.IsComplex` using `by haveI := Formalism.MainNotions.BesselShellMomentBounds.instCM D`. Conclude with `fun w => NumberField.IsTotallyComplex.isComplex w`. Take `⟨a, ha⟩` from `Formalism.HermitianLatticeCounting.P.covering_of_transference D.host.E hc (fun w => - w.embedding x)`. Use `⟨(a : D.host.E), coe_mem_intS D a, fun τ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_embS_eq, ← InfinitePlace.norm_embedding_eq]`. Use `ha (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ)` as an intermediate fact. Rewrite using `[map_add, show (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ).embedding x + (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ).embedding (a : D.host.E) = -(-(Formalism.MainNotions.BesselShellMomentBounds.plOf D τ).embedding x - (Formalism.MainNotions.BesselShellMo …`. Conclude with `this`.
+-/
 theorem boxS_cover : ∀ x : D.host.E, ∃ a ∈ intS D, x + a ∈ boxS D := by
   intro x
   have hc : ∀ w : InfinitePlace D.host.E, w.IsComplex := by
@@ -51,8 +67,14 @@ theorem boxS_cover : ∀ x : D.host.E, ∃ a ∈ intS D, x + a ∈ boxS D := by
     -(-(Formalism.MainNotions.BesselShellMomentBounds.plOf D τ).embedding x - (Formalism.MainNotions.BesselShellMomentBounds.plOf D τ).embedding (a : D.host.E)) by ring, norm_neg]
   exact this
 
+/- English proof (translation)
+Introduce `τ` and use `by simpa using one_le_rho0 D`.
+-/
 theorem mem_boxS_one : (1 : D.host.E) ∈ boxS D := fun τ => by simpa using one_le_rho0 D
 
+/- English proof (translation)
+Introduce `τ` and use `by simpa using le_trans zero_le_one (one_le_rho0 D)`.
+-/
 theorem mem_boxS_zero : (0 : D.host.E) ∈ boxS D := fun τ => by
   simpa using le_trans zero_le_one (one_le_rho0 D)
 
@@ -60,10 +82,20 @@ def liftO {N : ℕ} (n : Matrix (Fin N) (Fin N) D.host.E) (h : ∀ i j, n i j �
     Matrix (Fin N) (Fin N) (𝓞 D.host.E) :=
   fun i j => ⟨n i j, h i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem liftO_map {N : ℕ} (n : Matrix (Fin N) (Fin N) D.host.E) (h : ∀ i j, n i j ∈ intS D) :
     (liftO D n h).map (fun x => (x : D.host.E)) = n := by
   ext i j; rfl
 
+/- English proof (translation)
+Take `⟨n, hn1, hn0, hnO, hnF⟩` from `Formalism.HermitianLatticeCounting.P.unitriangularReduction D.host.E (intS D) (boxS D) N U (boxS_cover D) (fun i => (hU i i).2 rfl) (fun i j h => (hU i j).1 h)`. Use `⟨liftO D n hnO, fun a b h => Subtype.ext (hn0 a b h), fun a => Subtype.ext (hn1 a), ?_⟩` and prove the remaining obligations. Rewrite using `[liftO_map]`. Establish `hnU : IsUpUni n` using `fun i j => ⟨hn0 i j, fun h => h ▸ hn1 i⟩`. Establish `hP` using `rows_upUni_mul hU hnU`.
+
+Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `hnF i j h`. Rewrite using `[(hP i j).2 h]`. Conclude with `mem_boxS_one D`.
+
+Rewrite using `[(hP i j).1 h]`. Conclude with `mem_boxS_zero D`.
+-/
 theorem reduce_up {N : ℕ} (U : Matrix (Fin N) (Fin N) D.host.E) (hU : IsUpUni U) :
     ∃ B : Matrix (Fin N) (Fin N) (𝓞 D.host.E), (∀ a b, b < a → B a b = 0) ∧ (∀ a, B a a = 1) ∧
       ∀ i j, (U * B.map (fun x => (x : D.host.E))) i j ∈ boxS D := by
@@ -79,6 +111,11 @@ theorem reduce_up {N : ℕ} (U : Matrix (Fin N) (Fin N) D.host.E) (hU : IsUpUni 
   · rw [(hP i j).2 h]; exact mem_boxS_one D
   · rw [(hP i j).1 h]; exact mem_boxS_zero D
 
+/- English proof (translation)
+Establish `hU : IsUpUni L.transpose` using `fun i j => ⟨fun h => (hL j i).1 h, fun h => h ▸ (hL i i).2 rfl⟩`. Take `⟨B, hB0, hB1, hBF⟩` from `reduce_up D L.transpose hU`. Use `⟨B.transpose, fun a b h => hB0 b a h, fun a => hB1 a, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : (B.transpose.map (fun x => (x : D.host.E)) * L) = (L.transpose * B.map (fun x => (x : D.host.E))).transpose`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_map]`.
+
+Rewrite using `[e]`. Conclude with `hBF j i`.
+-/
 theorem reduce_lo {N : ℕ} (L : Matrix (Fin N) (Fin N) D.host.E) (hL : IsLoUni L) :
     ∃ A : Matrix (Fin N) (Fin N) (𝓞 D.host.E), (∀ a b, a < b → A a b = 0) ∧ (∀ a, A a a = 1) ∧
       ∀ i j, (A.map (fun x => (x : D.host.E)) * L) i j ∈ boxS D := by

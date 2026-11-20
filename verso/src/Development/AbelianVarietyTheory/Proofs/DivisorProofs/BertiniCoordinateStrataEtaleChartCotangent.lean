@@ -11,6 +11,19 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 namespace GlobalTheory.StrataBertini
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `ha : a ∉ p` using `fun h => hx (Ideal.mem_map_of_mem _ h)`.
+
+Simplify using `only [Ideal.Quotient.algebraMap_quotient_map_quotient]`. Conclude with `(IsLocalization.map_units S (⟨a, ha⟩ : p.primeCompl)).map _`. Introduce `z`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj p.primeCompl w`.
+
+Use `⟨⟨Ideal.Quotient.mk I a, ⟨Ideal.Quotient.mk I s, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun hs => s.2 ((Ideal.mem_quotient_iff_mem hI).1 hs)`. Simplify using `only [Ideal.Quotient.algebraMap_quotient_map_quotient]`. Rewrite using `[← map_mul, h]`. Introduce `x y hxy`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Simplify using `only [Ideal.Quotient.algebraMap_quotient_map_quotient, Ideal.Quotient.eq, ← map_sub] at hxy`. Rewrite `hxy` using `[IsLocalization.mem_map_algebraMap_iff p.primeCompl S]`. Take `⟨⟨⟨i, hi⟩, m⟩, hm⟩` from `hxy`.
+
+Rewrite `hm` using `[← map_mul, IsLocalization.eq_iff_exists p.primeCompl S]`. Take `⟨c, hc⟩` from `hm`. Use `⟨⟨Ideal.Quotient.mk I (c * m), ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun hs => (p.primeCompl.mul_mem c.2 m.2) ((Ideal.mem_quotient_iff_mem hI).1 hs)`. Use `show Ideal.Quotient.mk I (↑c * ↑m) * Ideal.Quotient.mk I a = Ideal.Quotient.mk I (↑c * ↑m) * Ideal.Quotient.mk I b`.
+
+Rewrite using `[← sub_eq_zero, ← mul_sub, ← map_sub, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `: (↑c * ↑m * (a - b) : A) = ↑c * i` using `by linear_combination hc`. Rewrite using `[this]`. Conclude with `I.mul_mem_left _ hi`.
+-/
 theorem isLocalization_atPrime_quotient {A S : Type*} [CommRing A] [CommRing S] [Algebra A S]
     (p : Ideal A) [p.IsPrime] [IsLocalization.AtPrime S p] (I : Ideal A) (hI : I ≤ p)
     [(p.map (Ideal.Quotient.mk I)).IsPrime] :
@@ -50,6 +63,15 @@ end GlobalTheory.StrataBertini
 namespace GlobalTheory.StrataBertini
 
 open IsLocalRing in
+/- English proof (translation)
+Rewrite using `[linearIndependent_option]`. Use `⟨hind, fun hmem => hnot ?_⟩` and prove the remaining obligations. Rewrite `hmem` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hmem`. Use `choose b hb using fun j => IsLocalRing.residue_surjective (c j)`.
+
+Establish `hc' : ∑ j, b j • (maximalIdeal S).toCotangent ⟨w (some j), hw (some j)⟩ = (maximalIdeal S).toCotangent ⟨w none, hw none⟩`. Rewrite using `[← hc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← hb j, ← IsLocalRing.ResidueField.algebraMap_eq, algebraMap_smul]`. Establish `h0 : (maximalIdeal S).toCotangent (⟨w none, hw none⟩ - ∑ j, b j • ⟨w (some j), hw (some j)⟩) = 0`.
+
+Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[hc', sub_self]`. Rewrite `h0` using `[Ideal.toCotangent_eq_zero]`. Establish `h1 : w none = (w none - ∑ j, b j * w (some j)) + ∑ j, b j * w (some j)` using `by ring`.
+
+Rewrite using `[h1]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Simplify using `using h0`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+-/
 theorem linearIndependent_option_cotangent {S : Type*} [CommRing S] [IsLocalRing S] {J : Type*}
     [Fintype J] (w : Option J → S) (hw : ∀ j, w j ∈ maximalIdeal S)
     (hind : LinearIndependent (ResidueField S)
@@ -84,6 +106,35 @@ end GlobalTheory.StrataBertini
 namespace GlobalTheory.StrataBertini
 
 open IsLocalRing in
+/- English proof (translation)
+Establish `hU : IsAffineOpen U` using `hfr.affine`. Use `set I : Ideal Γ(Y, U) := Ideal.span (z '' (J : Set (Fin n))) with hIdef`. Use `letI : Algebra ℂ (Γ(Y, U) ⧸ I) := ((Ideal.Quotient.mk I).comp (algX q U)).toAlgebra`. Use `haveI : Algebra.Smooth ℂ (Γ(Y, U) ⧸ I) := GlobalTheory.T.smooth_coordinateStratum_etaleChart Y q n U z hfr J`. Take `⟨Q1, hQ1, hQ1u⟩` from `GlobalTheory.bertini_cotangent_independent ℂ (Γ(Y, U) ⧸ I) (fun i => Ideal.Quotient.mk I (f i)) 1`.
+
+Establish `hinj : Function.Injective (Prod.snd : Fin 1 × ι → ι)` using `fun a b h => Prod.ext (Subsingleton.elim _ _) h`. Use `⟨MvPolynomial.rename Prod.snd Q1, fun h0 => hQ1 (MvPolynomial.rename_injective _ hinj (by rw [h0, map_zero])), ?_⟩` and prove the remaining obligations. Introduce `u hu y hy hf hz ht`. Establish `hu' : MvPolynomial.eval (u ∘ Prod.snd) Q1 ≠ 0` using `by rwa [MvPolynomial.eval_rename] at hu`. Use `letI : Algebra Γ(Y, U) (Y.presheaf.stalk y) := TopCat.Presheaf.algebra_section_stalk Y.presheaf ⟨y, hy⟩`.
+
+Use `set p := (hU.primeIdealOf ⟨y, hy⟩).asIdeal with hpdef`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y) p := hU.isLocalization_stalk ⟨y, hy⟩`. Establish `hgerm : ∀ a, algebraMap Γ(Y, U) (Y.presheaf.stalk y) a = Y.presheaf.germ U y hy a` using `fun a => rfl`. Establish `hpm : ∀ a, a ∈ p ↔ Y.presheaf.germ U y hy a ∈ maximalIdeal (Y.presheaf.stalk y)`. Introduce `a`.
+
+Rewrite using `[← IsLocalization.AtPrime.comap_maximalIdeal (Y.presheaf.stalk y) p, ← hgerm]`. Both sides reduce to the same expression. Establish `hIp : I ≤ p` using `Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `(hpm _).2 (hz ⟨j, hj⟩))`.
+
+Use `haveI : (p.map (Ideal.Quotient.mk I)).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIp)`. Use `set IS := I.map (algebraMap Γ(Y, U) (Y.presheaf.stalk y)) with hISdef`. Establish `hISm : IS ≤ maximalIdeal (Y.presheaf.stalk y)` using `Ideal.map_le_iff_le_comap.2 (fun a ha => (hpm a).1 (hIp ha))`. Use `haveI : Nontrivial (Y.presheaf.stalk y ⧸ IS) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hISm)`. Use `haveI : IsLocalRing (Y.presheaf.stalk y ⧸ IS) := IsLocalRing.of_surjective' (Ideal.Quotient.mk IS) Ideal.Quotient.mk_surjective`.
+
+Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y ⧸ IS) (p.map (Ideal.Quotient.mk I)) := isLocalization_atPrime_quotient p I hIp`. Establish `hmk : ∀ a ∈ maximalIdeal (Y.presheaf.stalk y), Ideal.Quotient.mk IS a ∈ maximalIdeal (Y.presheaf.stalk y ⧸ IS)`. Introduce `a ha`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hun`.
+
+Take `⟨c, hc⟩` from `hun.exists_right_inv`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite `hc` using `[← map_mul, ← map_one (Ideal.Quotient.mk IS), Ideal.Quotient.eq]`. Establish `h1 : a * c' ∈ maximalIdeal (Y.presheaf.stalk y)` using `Ideal.mul_mem_right _ _ ha`. Establish `h2` using `Ideal.sub_mem _ h1 (hISm hc)`.
+
+Rewrite `h2` using `[sub_sub_cancel]`. Conclude with `(maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Establish `hfi : ∃ i, Ideal.Quotient.mk I (f i) ∉ p.map (Ideal.Quotient.mk I)`. Take `⟨i, hi⟩` from `hf`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_quotient_iff_mem hIp, hpm]`. Conclude with `fun h => ((IsLocalRing.mem_maximalIdeal _).1 h) ((Y.mem_basicOpen _ _ hy).1 hi)`. Establish `htR : algebraMap (Γ(Y, U) ⧸ I) (Y.presheaf.stalk y ⧸ IS) (∑ i, (u ∘ Prod.snd) ((0 : Fin 1), i) • Ideal.Quotient.mk I (f i)) = Ideal.Quotient.mk IS (Y.presheaf.germ U y hy (∑ i, algX q U (u i) * f i))`. Rewrite using `[← hgerm, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, map_mul, map_mul, map_mul]`. Both sides reduce to the same expression. Establish `hli` using `hQ1u (u ∘ Prod.snd) hu' (p.map (Ideal.Quotient.mk I)) (Y.presheaf.stalk y ⧸ IS) hfi`. Establish `hmemR : algebraMap (Γ(Y, U) ⧸ I) (Y.presheaf.stalk y ⧸ IS) (∑ i, (u ∘ Prod.snd) ((0 : Fin 1), i) • Ideal.Quotient.mk I (f i)) ∈ maximalIdeal (Y.presheaf.stalk y ⧸ IS)`. Rewrite using `[htR]`.
+
+Conclude with `hmk _ ht`. Establish `hne` using `hli.ne_zero ⟨0, hmemR⟩`. Rewrite `hne` using `[Ne, Ideal.toCotangent_eq_zero]`. Introduce `hmem2`. Apply `hne` to reduce the goal to its premises.
+
+Use `show algebraMap (Γ(Y, U) ⧸ I) (Y.presheaf.stalk y ⧸ IS) (∑ i, (u ∘ Prod.snd) ((0 : Fin 1), i) • Ideal.Quotient.mk I (f i)) ∈ _`. Rewrite using `[htR]`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hmem2`. Establish `hbI : b ∈ IS`. Use `(Ideal.span_le.2 ?_) hb` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Ideal.mem_map_of_mem (algebraMap Γ(Y, U) (Y.presheaf.stalk y)) (Ideal.subset_span ⟨j, j.2, rfl⟩)`. Rewrite using `[← hab, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hbI, add_zero]`. Establish `hma : Ideal.Quotient.mk IS a ∈ (maximalIdeal (Y.presheaf.stalk y)).map (Ideal.Quotient.mk IS) ^ 2`. Rewrite using `[← Ideal.map_pow]`.
+
+Conclude with `Ideal.mem_map_of_mem _ ha`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hmk) 2 hma`.
+-/
 theorem key (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ)
     [SmoothOfRelativeDimension n q] (U : Y.Opens) (z : Fin n → Γ(Y, U)) (hfr : IsFrame (dOn q z))
     (ι : Type) [Fintype ι] (f : ι → Γ(Y, U)) (J : Finset (Fin n)) :
@@ -180,6 +231,11 @@ end GlobalTheory.StrataBertini
 
 namespace GlobalTheory.StrataBertini
 
+/- English proof (translation)
+Introduce `Y _ _ q n _ U z hfr ι _ f`. Use `choose Q hQ0 hQ using fun J : Finset (Fin n) => key Y q n U z hfr ι f J`. Use `⟨∏ J, Q J, Finset.prod_ne_zero_iff.2 fun J _ => hQ0 J, fun u hu y hy hf J h => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[map_prod]`. Establish `huJ` using `Finset.prod_ne_zero_iff.1 hu J (Finset.mem_univ _)`.
+
+Conclude with `linearIndependent_option_cotangent (fun j : Option J => Y.presheaf.germ U y hy (j.elim (∑ i, algX q U (u i) * f i) fun j => z j)) h (GlobalTheory.T.linearIndependent_cotangent_of_isTopFormFrame_of_vanishing Y q n U z hfr y hy J (fun j => h (some j))) (hQ J u huJ y hy hf (fun j => …`.
+-/
 theorem bertini_strata_cotangent : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ) [SmoothOfRelativeDimension n q], ∀ (U : Y.Opens) (z : Fin n → Γ(Y, U)), IsFrame (dOn q z) → ∀ (ι : Type) [Fintype ι] (f : ι → Γ(Y, U)), ∃ Q : MvPolynomial ι ℂ, Q ≠ 0 ∧ ∀ u : ι → ℂ, MvPolynomial.eval u Q ≠ 0 → ∀ (y : Y) (hy : y ∈ U), (∃ i, y ∈ Y.basicOpen (f i)) → ∀ (J : Finset (Fin n)) (h : ∀ j : Option J, Y.presheaf.germ U y hy (j.elim (∑ i, algX q U (u i) * f i) fun j => z j) ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y)), LinearIndependent (IsLocalRing.ResidueField (Y.presheaf.stalk y)) (fun j : Option J => ((IsLocalRing.maximalIdeal (Y.presheaf.stalk y)).toCotangent ⟨(fun j : Option J => Y.presheaf.germ U y hy (j.elim (∑ i, algX q U (u i) * f i) fun j => z j)) j, h j⟩ : IsLocalRing.CotangentSpace (Y.presheaf.stalk y))) := by
   intro Y _ _ q n _ U z hfr ι _ f
   choose Q hQ0 hQ using fun J : Finset (Fin n) => key Y q n U z hfr ι f J

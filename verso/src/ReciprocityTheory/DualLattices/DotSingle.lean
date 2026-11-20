@@ -10,6 +10,11 @@ namespace ReciprocityTheory.PGsh.Up.ED
 
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[map_sum, dotProduct]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : (Pi.single k (x k) : ι → R) = x k • (Pi.single k (1 : R) : ι → R)`. Use extensionality with `i`.
+
+Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hi]`. Rewrite using `[hk, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem dot_single {ι : Type} [Fintype ι] [DecidableEq ι] (f : (ι → R) →ₗ[R] R) (x : ι → R) :
     (fun k => f (Pi.single k 1)) ⬝ᵥ x = f x := by
   conv_rhs => rw [← Finset.univ_sum_single x]
@@ -22,11 +27,125 @@ theorem dot_single {ι : Type} [Fintype ι] [DecidableEq ι] (f : (ι → R) →
     · simp [Pi.single_apply, hi]
   rw [hk, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `using h (Pi.single i 1)`.
+-/
 theorem eq_of_dot {ι : Type} [Fintype ι] [DecidableEq ι] {w w' : ι → R}
     (h : ∀ x, w ⬝ᵥ x = w' ⬝ᵥ x) : w = w' := by
   funext i
   simpa using h (Pi.single i 1)
 
+/- English proof (translation)
+Establish `: IsDomain R` using `hv.hom_inj.isDomain`. Use `ValuationRing.of_integers v hv` as an intermediate fact. Use `set T := LinearMap.range (Matrix.mulVecLin ε) with hT`. Establish `hQeq : Qs = LinearMap.range (Matrix.mulVecLin Pq)` using `le_antisymm (fun w hw => ⟨w, hPqid w hw⟩) (by rintro _ ⟨w, rfl⟩; exact hPqmem w)`. Establish `hTfg : T.FG` using `by rw [hT, LinearMap.range_eq_map]; exact Module.Finite.fg_top.map _`.
+
+Establish `hQfg : Qs.FG` using `by rw [hQeq, LinearMap.range_eq_map]; exact Module.Finite.fg_top.map _`. Establish `htf : ∀ {α : Type} (S : Submodule R (α → R)) (r : R) (x : S), r ≠ 0 → r • x = 0 → x = 0`. Introduce and unpack `α S r ⟨x, hx⟩ hr h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrArg Subtype.val h) i` as an intermediate fact. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, Submodule.coe_zero, Pi.zero_apply] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hr`. Establish `: Module.Finite R T` using `Module.Finite.iff_fg.2 hTfg`. Establish `: Module.Finite R Qs` using `Module.Finite.iff_fg.2 hQfg`.
+
+Establish `: Module.Free R T` using `L2.SecondCohomologyLattice.free_of_finite_torsionFree T (htf T)`. Establish `: Module.Free R Qs` using `L2.SecondCohomologyLattice.free_of_finite_torsionFree Qs (htf Qs)`. Use `set β := Module.finBasisOfFinrankEq R T hnT with hβ`. Use `set γ := Module.finBasisOfFinrankEq R Qs hnQ with hγ`. Establish `hεT : ∀ t ∈ T, ε *ᵥ t = t`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Use `show ε *ᵥ (ε *ᵥ x) = ε *ᵥ x`. Rewrite using `[mulVec_mulVec, hε]`. Establish `hΦT : ∀ t : T, Φ *ᵥ (t : ι → R) ∈ Qs`. Introduce and unpack `⟨_, x, rfl⟩`.
+
+Use `show Φ *ᵥ (ε *ᵥ x) ∈ Qs`. Rewrite using `[mulVec_mulVec, hcomm, ← mulVec_mulVec]`. Conclude with `hPqmem _`. Use `set Φi : T →ₗ[R] Qs := LinearMap.codRestrict Qs ((Matrix.mulVecLin Φ).comp T.subtype) hΦT with hΦi`. Establish `hΦiapp : ∀ t : T, ((Φi t : Qs) : κ' → R) = Φ *ᵥ (t : ι → R)` using `fun _ => rfl`.
+
+Use `set M := LinearMap.toMatrix β γ Φi with hM`. Establish `hrange : ((T.map (Matrix.mulVecLin Φ)).comap Qs.subtype) = LinearMap.range Φi`. Use extensionality with `q`. Simplify using `only [Submodule.mem_comap, Submodule.mem_map, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, ht, htq⟩`. Conclude with `⟨⟨t, ht⟩, Subtype.ext htq⟩`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨t, t.2, rfl⟩`. Establish `hkey : ∀ t : T, γ.equivFun (Φi t) = M *ᵥ β.equivFun t`.
+
+Introduce `t`. Simplify using `only [Module.Basis.equivFun_apply]`. Rewrite using `[hM, LinearMap.toMatrix_mulVec_repr]`. Establish `hmapM : (LinearMap.range Φi).map γ.equivFun.toLinearMap = LinearMap.range (Matrix.mulVecLin M)`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨t, rfl⟩, rfl⟩`. Conclude with `⟨β.equivFun t, (hkey t).symm⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨Φi (β.equivFun.symm c), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show γ.equivFun (Φi (β.equivFun.symm c)) = M *ᵥ c`. Rewrite using `[hkey, LinearEquiv.apply_symm_apply]`. Establish `hLen : HasLen v R (Qs ⧸ ((T.map (Matrix.mulVecLin Φ)).comap Qs.subtype)) (v (algebraMap R C M.det))`. Take `⟨m', c', ⟨f⟩, hf⟩` from `Smith.hasLen_coker_det (C := C) (v := v) hv M`. Conclude with `⟨m', c', ⟨((Submodule.quotEquivOfEq _ _ hrange).trans (Submodule.Quotient.equiv _ _ γ.equivFun hmapM)).trans f⟩, hf⟩`.
+
+Establish `hXM : X = v (algebraMap R C M.det)` using `hasLen_unique hv hX hLen`. Take `⟨P, Q', a, hP, hQ', hD⟩` from `Smith.smith_mat hv n n Mᵀ`. Establish `hdiag : P * Mᵀ * Q' = Matrix.diagonal a`. Use extensionality with `j k`. Rewrite using `[hD, Matrix.diagonal_apply]`.
+
+Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: (k : ℕ) ≠ (j : ℕ)` using `fun e => h (Fin.ext e.symm)`. Simplify using `[h, this]`.
+
+Establish `hprod : ∏ j, v (algebraMap R C (a j)) = X`. Rewrite using `[hXM, ← map_prod, ← map_prod, ← Matrix.det_diagonal, ← hdiag, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, map_mul, map_mul, map_mul, map_mul, hv.one_of_isUnit hP, hv.one_of_isUnit hQ', one_mul, mul_one]`. Use `set Pi' := P⁻¹ with hPi'`. Establish `hPP : P * Pi' = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `hPP' : Pi' * P = 1` using `Matrix.nonsing_inv_mul P hP`.
+
+Use `set ℓ : Fin n → (ι → R) →ₗ[R] R := fun l => (β.coord l).comp (Matrix.mulVecLin ε).rangeRestrict with hℓ`. Establish `hℓε : ∀ l x, ℓ l (ε *ᵥ x) = ℓ l x`. Introduce `l x`. Simplify using `only [hℓ, LinearMap.coe_comp, Function.comp_apply]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ε *ᵥ (ε *ᵥ x) = ε *ᵥ x`. Rewrite using `[mulVec_mulVec, hε]`. Establish `hℓβ : ∀ l m, ℓ l (β m : ι → R) = if m = l then 1 else 0`. Introduce `l m`.
+
+Simplify using `only [hℓ, LinearMap.coe_comp, Function.comp_apply]`. Establish `: (Matrix.mulVecLin ε).rangeRestrict (β m : ι → R) = β m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ε *ᵥ (β m : ι → R) = β m`. Conclude with `hεT _ (β m).2`.
+
+Rewrite using `[this, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `set lam : Fin n → ι → R := fun j k => ∑ l, Pi' l j * ℓ l (Pi.single k 1) with hlam`. Establish `hlamdot : ∀ j x, lam j ⬝ᵥ x = ∑ l, Pi' l j * ℓ l x`. Introduce `j x`. Establish `e : lam j = fun k => (∑ l, Pi' l j • ℓ l) (Pi.single k 1)`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[hlam, LinearMap.sum_apply]`. Rewrite using `[e, dot_single]`. Simplify using `[LinearMap.sum_apply]`. Use `set y : Fin n → ι → R := fun l => ∑ m, P l m • (β m : ι → R) with hy`.
+
+Establish `hyT : ∀ l, y l ∈ T` using `fun l => Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (β m).2`. Establish `hdotε : ∀ (w : ι → R) x, (w ᵥ* ε) ⬝ᵥ x = w ⬝ᵥ (ε *ᵥ x)` using `fun w x => (Matrix.dotProduct_mulVec w ε x).symm`. Establish `hlamε : ∀ j, lam j ᵥ* ε = lam j`. Introduce `j`. Apply `eq_of_dot` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[hdotε, hlamdot, hlamdot]`. Simplify using `only [hℓε]`. Establish `hlamy : ∀ j l, lam j ⬝ᵥ y l = if j = l then 1 else 0`. Introduce `j l`.
+
+Rewrite using `[hlamdot]`. Establish `e1 : ∀ l', ℓ l' (y l) = P l l'`. Introduce `l'`. Simplify using `only [hy, map_sum, map_smul, hℓβ, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [e1]`.
+
+Use `congrFun (congrFun hPP l) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h2 : (if j = l then (1 : R) else 0) = if l = j then 1 else 0`. Apply the tactic sequence `by_cases h : j = l <;> simp [h, eq_comm]`. Rewrite using `[h2, ← this]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Set `K : (ι → R) →ₗ[R] (Fin n → R)` to `{ toFun := fun w l => w ⬝ᵥ (β l : ι → R) map_add' := fun w w' => by funext l; simp [add_dotProduct] map_smul' := fun c w => by funext l; simp [smul_dotProduct] }`. Establish `hKapp : ∀ w l, K w l = w ⬝ᵥ (β l : ι → R)` using `fun _ _ => rfl`. Establish `hKlam : ∀ j, K (lam j) = fun l => Pi' l j`. Introduce `j`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[hKapp, hlamdot]`. Simplify using `only [hℓβ, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `set cvec : κ' → Fin n → R := fun k m => (γ m : κ' → R) k with hcvec`. Establish `hKrow : ∀ k, K ((Φ * ε) k) = Mᵀ *ᵥ cvec k`.
+
+Introduce `k`. Use function extensionality and compare the values at `l`. Rewrite using `[hKapp]`. Establish `e1 : (Φ * ε) k ⬝ᵥ (β l : ι → R) = ((Φ * ε) *ᵥ (β l : ι → R)) k` using `rfl`. Rewrite using `[e1, ← mulVec_mulVec, hεT _ (β l).2, ← hΦiapp]`.
+
+Establish `e2 : ((Φi (β l) : Qs) : κ' → R) = ∑ m, M m l • (γ m : κ' → R)`. Establish `h` using `γ.sum_repr (Φi (β l))`. Rewrite using `[← h]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hM, LinearMap.toMatrix_apply]`. Rewrite using `[e2, Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, transpose_apply, hcvec]`. Use `set gs : Fin n → κ' → R := fun m k => γ.coord m ⟨Pq *ᵥ Pi.single k 1, hPqmem _⟩ with hgs`. Establish `hgsc : ∀ m m', ∑ k, gs m k * cvec k m' = if m' = m then 1 else 0`. Introduce `m m'`. Set `f : (κ' → R) →ₗ[R] R` to `(γ.coord m).comp (LinearMap.codRestrict Qs (Matrix.mulVecLin Pq) hPqmem)`.
+
+Establish `hf : ∀ k, f (Pi.single k 1) = gs m k` using `fun k => rfl`. Establish `h1 : (fun k => f (Pi.single k 1)) ⬝ᵥ (γ m' : κ' → R) = f (γ m')` using `dot_single f _`. Establish `h2 : f (γ m') = if m' = m then 1 else 0`. Establish `: LinearMap.codRestrict Qs (Matrix.mulVecLin Pq) hPqmem (γ m' : κ' → R) = γ m'` using `Subtype.ext (hPqid _ (γ m').2)`. Simplify using `only [f, LinearMap.coe_comp, Function.comp_apply, this, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+
+Rewrite using `[← h2, ← h1]`. Simplify using `only [dotProduct, hf, hcvec]`. Establish `hMrange : ∀ z, Mᵀ *ᵥ z ∈ Submodule.span R (Set.range fun k => Mᵀ *ᵥ cvec k)`. Introduce `z`. Establish `hz : z = ∑ k, (∑ m, z m * gs m k) • cvec k`.
+
+Use function extensionality and compare the values at `m'`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, hgsc, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hz, mulVec_sum]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => by`. Rewrite using `[mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hmapN : (Submodule.span R (Set.range fun k => (Φ * ε) k)).map K = LinearMap.range (Matrix.mulVecLin Mᵀ)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨cvec k, (hKrow k).symm⟩`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Establish `e : (K ∘ fun k => (Φ * ε) k) = fun k => Mᵀ *ᵥ cvec k` using `funext hKrow`. Rewrite using `[e]`. Conclude with `hMrange z`. Establish `hmapS : (Submodule.span R (Set.range fun j => a j • lam j)).map K = LinearMap.range (Matrix.mulVecLin Mᵀ)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+
+Establish `e1 : (K ∘ fun j => a j • lam j) = fun j => fun l => (Pi' * Matrix.diagonal a) l j`. Use function extensionality and compare the values at `j l`. Simplify using `only [Function.comp_apply, map_smul, hKlam, Pi.smul_apply, smul_eq_mul, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Establish `e2 : Pi' * Matrix.diagonal a = Mᵀ * Q'`. Rewrite using `[← hdiag, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP', Matrix.one_mul]`. Rewrite using `[e2]`. Establish `e3 : Submodule.span R (Set.range fun j => fun l => (Mᵀ * Q') l j) = LinearMap.range (Matrix.mulVecLin (Mᵀ * Q'))`. Rewrite using `[Matrix.range_mulVecLin]`.
+
+Both sides reduce to the same expression. Rewrite using `[e3]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩; exact ⟨Q' *ᵥ z, by simp [mulVec_mulVec]⟩`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Use `⟨Q'⁻¹ *ᵥ z, ?_⟩` and prove the remaining obligations. Use `show (Mᵀ * Q') *ᵥ (Q'⁻¹ *ᵥ z) = Mᵀ *ᵥ z`. Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ', Matrix.mul_one]`. Establish `hKinj : ∀ w w', w ᵥ* ε = w → w' ᵥ* ε = w' → K w = K w' → w = w'`. Introduce `w w' hw hw' hK`.
+
+Establish `hT0 : ∀ t ∈ T, w ⬝ᵥ t = w' ⬝ᵥ t`. Introduce `t ht`. Establish `: t = ∑ l, β.repr ⟨t, ht⟩ l • (β l : ι → R)`. Establish `h` using `congrArg Subtype.val (β.sum_repr ⟨t, ht⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`.
+
+Conclude with `h.symm`. Rewrite using `[this, dotProduct_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[dotProduct_smul, dotProduct_smul]`. Use `congrFun hK l` as an intermediate fact.
+
+Rewrite `this` using `[hKapp, hKapp]`. Rewrite using `[this]`. Apply `eq_of_dot` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← hw, ← hw', hdotε, hdotε]`.
+
+Conclude with `hT0 _ ⟨x, rfl⟩`. Establish `hrowε : ∀ k, (Φ * ε) k ᵥ* ε = (Φ * ε) k`. Introduce `k`. Use function extensionality and compare the values at `k'`. Simplify using `only [vecMul, dotProduct]`.
+
+Use `congrFun (congrFun (show Φ * ε * ε = Φ * ε by rw [Matrix.mul_assoc, hε]) k) k'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Conclude with `this`. Establish `hNle : ∀ w ∈ Submodule.span R (Set.range fun k => (Φ * ε) k), w ᵥ* ε = w`. Introduce `w hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨k, rfl⟩ := hw`. Conclude with `hrowε k`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_vecMul, hx, hy]`.
+
+Consider the case `smul c x _ hx => rw [smul_vecMul, hx]`. Establish `hSle : ∀ w ∈ Submodule.span R (Set.range fun j => a j • lam j), w ᵥ* ε = w`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨j, rfl⟩ := hw`.
+
+Rewrite using `[smul_vecMul, hlamε]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_vecMul, hx, hy]`. Consider the case `smul c x _ hx => rw [smul_vecMul, hx]`. Establish `hspan : Submodule.span R (Set.range fun k => (Φ * ε) k) = Submodule.span R (Set.range fun j => a j • lam j)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`. Establish `hKw : K w ∈ (Submodule.span R (Set.range fun j => a j • lam j)).map K`. Rewrite using `[hmapS, ← hmapN]`. Conclude with `⟨w, hw, rfl⟩`.
+
+Take `⟨s, hs, hsw⟩` from `hKw`. Rewrite using `[← hKinj s w (hSle s hs) (hNle w hw) hsw]`. Conclude with `hs`. Introduce `w hw`. Establish `hKw : K w ∈ (Submodule.span R (Set.range fun k => (Φ * ε) k)).map K`.
+
+Rewrite using `[hmapN, ← hmapS]`. Conclude with `⟨w, hw, rfl⟩`. Take `⟨s, hs, hsw⟩` from `hKw`. Rewrite using `[← hKinj s w (hNle s hs) (hSle w hw) hsw]`. Conclude with `hs`.
+
+Establish `hdvd : ∀ j, ∃ c, cp = a j * c`. Introduce `j`. Take `⟨u, hu⟩` from `hcp (lam j) (hlamε j)`. Establish `hmem : cp • lam j ∈ Submodule.span R (Set.range fun k => (Φ * ε) k)`. Rewrite using `[hu]`.
+
+Establish `e : u ᵥ* (Φ * ε) = ∑ k, u k • (Φ * ε) k`. Use function extensionality and compare the values at `k'`. Simplify using `[vecMul, dotProduct, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Establish `hK` using `Submodule.mem_map_of_mem (f := K) hmem`. Rewrite `hK` using `[hmapN]`. Take `⟨z, hz⟩` from `hK`. Establish `hz' : Mᵀ *ᵥ z = cp • fun l => Pi' l j`. Rewrite using `[← hKlam, ← map_smul]`.
+
+Conclude with `hz`. Establish `h2 : Matrix.diagonal a *ᵥ (Q'⁻¹ *ᵥ z) = cp • Pi.single j 1`. Rewrite using `[← hdiag, mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ', Matrix.mul_one, ← mulVec_mulVec]`. Use `show P *ᵥ (Mᵀ *ᵥ z) = _`. Rewrite using `[hz']`.
+
+Use function extensionality and compare the values at `l`. Simplify using `only [mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Use `congrFun (congrFun hPP l) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [mulVec, dotProduct, this, Pi.single_apply, eq_comm]`.
+
+Establish `h3` using `congrFun h2 j`. Simplify using `only [Matrix.mulVec_diagonal, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one] at h3`. Conclude with `⟨_, h3.symm⟩`. Use `⟨lam, a, y, hlamε, fun l => hεT _ (hyT l), hlamy, hdvd, hprod, hspan⟩` and prove the remaining obligations.
+-/
 theorem block (hv : v.Integers R) {ι κ' : Type} [Fintype ι] [DecidableEq ι] [Fintype κ']
     [DecidableEq κ'] (Φ : Matrix κ' ι R)
     (ε : Matrix ι ι R) (hε : ε * ε = ε) (Pq : Matrix κ' κ' R) (Qs : Submodule R (κ' → R))

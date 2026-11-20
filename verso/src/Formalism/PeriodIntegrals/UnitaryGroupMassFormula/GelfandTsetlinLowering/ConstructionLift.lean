@@ -12,6 +12,9 @@ namespace PI.WGL
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+The claim follows from `liftMod_asm hZ hV hN hX equivariant_divisibility equivariant_partial_weight (decomp_of h4 equivariant_last_degree) (zComm_of h4 equivariant_divisibility equivariant_partial_weight) (fockDetect_of h3 equivariant_divisibility) tuple_decomposition_formula`.
+-/
 theorem liftMod_of (h3 : PI.HwIrred) (h4 : PI.GTBranch) (hZ : CapelliZ) (hV : ZScalarVanish)
     (hN : Numbers) (hX : XiFacts) : LiftMod :=
   liftMod_asm hZ hV hN hX equivariant_divisibility equivariant_partial_weight (decomp_of h4 equivariant_last_degree)

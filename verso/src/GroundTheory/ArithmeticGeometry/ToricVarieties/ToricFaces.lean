@@ -6,6 +6,13 @@ namespace GroundTheory.Arith.Toric
 
 open Module PointedCone TensorProduct
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hσ`. Establish `hτ' : τ.IsFaceOf (hull ℝ ((S.image ι : Finset E) : Set E))`. Rewrite using `[Finset.coe_image]` and apply the resulting hypothesis. Use `⟨S.filter (fun n => ι n ∈ τ), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [isFaceOf_eq_hull_filter _ hτ']`.
+
+Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Take `⟨hnS, hnτ⟩` from `Finset.mem_filter.1 (Finset.mem_coe.1 hn)`.
+
+Conclude with `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_image_of_mem _ hnS, hnτ⟩)`. Introduce `hy`. Take `⟨hy1, hy2⟩` from `Finset.mem_filter.1 (Finset.mem_coe.1 hy)`. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 hy1`. Conclude with `⟨n, Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hn, hy2⟩), rfl⟩`.
+-/
 theorem IsRationalPolyhedral.of_isFaceOf {L E : Type*} [AddCommGroup L] [AddCommGroup E]
     [Module ℝ E] {ι : L →ₗ[ℤ] E} {σ τ : PointedCone ℝ E} (hσ : IsRationalPolyhedral ι σ)
     (hτ : τ.IsFaceOf σ) : IsRationalPolyhedral ι τ := by
@@ -28,6 +35,9 @@ theorem IsRationalPolyhedral.of_isFaceOf {L E : Type*} [AddCommGroup L] [AddComm
 
 variable {N : Type*} [AddCommGroup N]
 
+/- English proof (translation)
+Introduce `m m' h`. Use `LinearMap.ext fun n => ?_` and prove the remaining obligations. Use `congrArg (fun f => f (toRealSpan N n)) h` as an intermediate fact. Simplify using `only [toRealDual_apply_toRealSpan] at this`. Conclude with `this` after adjusting the coercions.
+-/
 theorem toRealDual_injective : Function.Injective (toRealDual N) := by
   intro m m' h
   refine LinearMap.ext fun n => ?_
@@ -35,12 +45,30 @@ theorem toRealDual_injective : Function.Injective (toRealDual N) := by
   simp only [toRealDual_apply_toRealSpan] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `_ hm` and use `mem_dualMonoid.2 fun x hx => mem_dualMonoid.1 hm x (h hx)`.
+-/
 theorem dualMonoid_anti {σ₁ σ₂ : PointedCone ℝ (ℝ ⊗[ℤ] N)} (h : σ₁ ≤ σ₂) :
     dualMonoid σ₂ ≤ dualMonoid σ₁ :=
   fun _ hm => mem_dualMonoid.2 fun x hx => mem_dualMonoid.1 hm x (h hx)
 
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hσ`. Take `⟨S', rfl⟩` from `hσ'`. Take `⟨TM, hTM⟩` from `(show IsRationalPolyhedral (toRealSpan N) (hull ℝ (toRealSpan N '' ↑(S ∪ S'.image Neg.neg))) from ⟨_, rfl⟩).dual`. Rewrite `hTM` using `[dual_hull]`. Use `set SR := S.image (toRealSpan N) with hSR`.
+
+Use `set SR' := S'.image (toRealSpan N) with hSR'`. Establish `e1 : hull ℝ (toRealSpan N '' (S : Set N)) = hull ℝ (SR : Set (ℝ ⊗[ℤ] N))`. Rewrite using `[hSR, Finset.coe_image]`. Establish `e2 : hull ℝ (toRealSpan N '' (S' : Set N)) = hull ℝ (SR' : Set (ℝ ⊗[ℤ] N))`. Rewrite using `[hSR', Finset.coe_image]`.
+
+Rewrite `h`, `h'`, the goal using `[e1, e2]`. Use `set TR := TM.image (toRealDual N) with hTR`. Establish `hT : ∀ u : Dual ℝ (ℝ ⊗[ℤ] N), u ∈ hull ℝ (TR : Set (Dual ℝ (ℝ ⊗[ℤ] N))) ↔ (∀ x ∈ hull ℝ (SR : Set (ℝ ⊗[ℤ] N)), 0 ≤ u x) ∧ (∀ x ∈ hull ℝ (SR' : Set (ℝ ⊗[ℤ] N)), u x ≤ 0)`. Introduce `u`. Rewrite using `[hTR, Finset.coe_image, hTM]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨fun x hx => nonneg_of_mem_hull (fun y hy => ?_) hx, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Simplify using `using hu ⟨n, by simp [hn], rfl⟩`.
+
+Use `nonneg_of_mem_hull (f := -u) (s := (SR' : Set (ℝ ⊗[ℤ] N))) (fun y hy => by` as an intermediate fact. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Simplify using `using hu ⟨-n, by simp [hn], rfl⟩) hx`. Simplify using `using this`. Introduce and unpack `⟨h1, h2⟩ y ⟨n, hn, rfl⟩`.
+
+Simplify using `only [Finset.coe_union, Finset.coe_image, Set.mem_union, Finset.mem_coe, Set.mem_image] at hn`. Break down `hn with hn | ⟨n', hn', rfl⟩` into its components or cases. Simplify using `using h1 _ (subset_hull (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn)))`. Simplify using `using h2 _ (subset_hull (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn')))`. Take `⟨hu1, hu2, hE1, hE2⟩` from `separation_of_generators SR SR' TR hT h h'`.
+
+Establish `hsum : (∑ t ∈ TR, t) = toRealDual N (∑ t ∈ TM, t)`. Rewrite using `[hTR, Finset.sum_image (fun x _ y _ hxy => toRealDual_injective hxy), map_sum]`. Rewrite `hu1`, `hu2`, `hE1`, `hE2` using `[hsum]`. Conclude with `⟨∑ t ∈ TM, t, mem_dualMonoid.2 hu1, mem_dualMonoid.2 fun x hx => by simpa using hu2 x hx, hE1, hE2⟩`.
+-/
 theorem exists_separating_rational {σ σ' : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) (hσ' : IsRationalPolyhedral (toRealSpan N) σ')
     (h : (σ ⊓ σ').IsFaceOf σ) (h' : (σ ⊓ σ').IsFaceOf σ') :
@@ -87,6 +115,9 @@ theorem exists_separating_rational {σ σ' : PointedCone ℝ (ℝ ⊗[ℤ] N)}
   exact ⟨∑ t ∈ TM, t, mem_dualMonoid.2 hu1, mem_dualMonoid.2 fun x hx => by simpa using hu2 x hx,
     hE1, hE2⟩
 
+/- English proof (translation)
+Establish `hστ : σ ⊓ τ = τ` using `inf_eq_right.2 hτ.le`. Take `⟨u, hu, -, hE, -⟩` from `exists_separating_rational hσ (hσ.of_isFaceOf hτ) (by rw [hστ]; exact hτ) (by rw [hστ])`. Conclude with `⟨u, hu, by rw [hE, hστ]⟩`.
+-/
 theorem exists_mem_dualMonoid_eq_exposedFace {σ τ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) (hτ : τ.IsFaceOf σ) :
     ∃ u ∈ dualMonoid σ, τ = exposedFace σ (toRealDual N u) := by
@@ -97,6 +128,13 @@ theorem exists_mem_dualMonoid_eq_exposedFace {σ τ : PointedCone ℝ (ℝ ⊗[�
 
 omit [Module.Free ℤ N] [Module.Finite ℤ N] in
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hσ`. Rewrite `hu`, the goal using `[← Finset.coe_image]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `m hm`. Take `⟨p, -, hp⟩` from `exists_add_smul_mem_dual (S.image (toRealSpan N)) (u := toRealDual N u) (w := toRealDual N m) (mem_dualMonoid.1 hu) (mem_dualMonoid.1 hm)`.
+
+Establish `hk : p ≤ ((⌈p⌉₊ : ℕ) : ℝ)` using `Nat.le_ceil p`. Rewrite using `[AddSubmonoid.mem_sup]`. Use `⟨m + ⌈p⌉₊ • u, mem_dualMonoid.2 fun x hx => ?_, ⌈p⌉₊ • (-u), AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (Set.mem_singleton _)) _, by rw [smul_neg, add_neg_cancel_right]⟩` and prove the remaining obligations. Use `hp _ hk x hx` as an intermediate fact. Rewrite using `[map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul]`.
+
+Conclude with `this`. Use `sup_le (dualMonoid_anti fun x hx => (mem_exposedFace.1 hx).1) ?_` and prove the remaining obligations. Rewrite using `[AddSubmonoid.closure_le, Set.singleton_subset_iff]`. Conclude with `mem_dualMonoid.2 fun x hx => by simp [(mem_exposedFace.1 hx).2]`.
+-/
 theorem dualMonoid_exposedFace {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) {u : Dual ℤ N} (hu : u ∈ dualMonoid σ) :
     dualMonoid (exposedFace σ (toRealDual N u)) = dualMonoid σ ⊔ AddSubmonoid.closure {-u} := by

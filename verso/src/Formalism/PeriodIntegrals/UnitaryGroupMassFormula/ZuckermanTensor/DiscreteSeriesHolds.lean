@@ -12,6 +12,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ZuckermanTensor.SquareI
 namespace PI.ZuckTensorWork
 open PI.ZuckTensor
 
+/- English proof (translation)
+The claim follows from `dsConj_of unitary_representation_holds irreducible_conjecture_holds square_integrable_conj (kTypeConj_of compact_dominant_holds) (kTypeConjInv_of compact_dominant_holds) lowest_k_type_holds vector_norm_holds`.
+-/
 theorem discrete_series_holds : DSConj :=
   dsConj_of unitary_representation_holds irreducible_conjecture_holds square_integrable_conj (kTypeConj_of compact_dominant_holds) (kTypeConjInv_of compact_dominant_holds)
     lowest_k_type_holds vector_norm_holds

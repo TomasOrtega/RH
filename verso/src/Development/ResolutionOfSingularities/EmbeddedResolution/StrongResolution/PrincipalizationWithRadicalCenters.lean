@@ -39,6 +39,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+The claim follows from `isCorrect_canonicalAlgorithmRules strictTransformIsBlowupOfClosedSubscheme`.
+-/
 theorem canonicalAlgorithmRules_isCorrect :
     (canonicalAlgorithmRules strictTransformIsBlowupOfClosedSubscheme.{u}).ReducesInductivelyOnDimension :=
   isCorrect_canonicalAlgorithmRules strictTransformIsBlowupOfClosedSubscheme
@@ -46,6 +49,9 @@ theorem canonicalAlgorithmRules_isCorrect :
 noncomputable abbrev principalizationWithRadicalCenters : PrincipalizationAlgorithm.{u} :=
   canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme smoothSubschemeIdealIsRadical.{u}
 
+/- English proof (translation)
+Introduce `k _ _ Y pY _ _ _ _ i hi`. Conclude with `h k Y pY (affineSpaceEmbeddingDatum affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth k Y pY) i hi`.
+-/
 theorem embeddedPrincipalizationDiscardedLocusIsOpen_of_detachedLocusIsOpen (A : PrincipalizationAlgorithm.{u}) (h : DetachedLocusIsOpenForEmbeddings.{u} A) :
     EmbeddedPrincipalizationDiscardedLocusIsOpen.{u} A affineEmbedsIntoAffineSpace
       nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth := by
@@ -54,6 +60,11 @@ theorem embeddedPrincipalizationDiscardedLocusIsOpen_of_detachedLocusIsOpen (A :
     (affineSpaceEmbeddingDatum affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace
       affineSpaceIsSmooth k Y pY) i hi
 
+/- English proof (translation)
+Establish `h : OpenImmersionRestriction.reducedVanishingAssignment.{u} = OpenImmersionRestriction.vanishingIdealAssignment.{u}`. Use function extensionality and compare the values at `X T`. Rewrite using `[OpenImmersionRestriction.vanishingIdealAssignment_apply]`. Both sides reduce to the same expression. Establish `h2` using `OpenImmersionRestriction.chartIsolationHypotheses_reducedVanishingAssignment principalizationWithRadicalCenters.{u}`.
+
+Rewrite `h2` using `[h]`. Then use the resulting hypothesis.
+-/
 theorem chartIsolationHypotheses_principalizationWithRadicalCenters :
     OpenImmersionRestriction.ChartIsolationHypotheses OpenImmersionRestriction.vanishingIdealAssignment.{u} principalizationWithRadicalCenters.{u} := by
   have h : OpenImmersionRestriction.reducedVanishingAssignment.{u} = OpenImmersionRestriction.vanishingIdealAssignment.{u} := by
@@ -63,17 +74,26 @@ theorem chartIsolationHypotheses_principalizationWithRadicalCenters :
   have h2 := OpenImmersionRestriction.chartIsolationHypotheses_reducedVanishingAssignment principalizationWithRadicalCenters.{u}
   rwa [h] at h2
 
+/- English proof (translation)
+The claim follows from `OpenImmersionRestriction.detachedLocusIsOpenForEmbeddings_canonicalPrincipalization OpenImmersionRestriction.idealSheafGeometryHypotheses_vanishingIdealAssignment.{u} strictTransformIsBlowupOfClosedSubscheme.{u} canonicalAlgorithmRules_isCorrect smoothSubschemeIdealIsRadical.{u} …`.
+-/
 theorem detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters :
     DetachedLocusIsOpenForEmbeddings.{u} principalizationWithRadicalCenters.{u} :=
   OpenImmersionRestriction.detachedLocusIsOpenForEmbeddings_canonicalPrincipalization OpenImmersionRestriction.idealSheafGeometryHypotheses_vanishingIdealAssignment.{u}
     strictTransformIsBlowupOfClosedSubscheme.{u} canonicalAlgorithmRules_isCorrect smoothSubschemeIdealIsRadical.{u}
     chartIsolationHypotheses_principalizationWithRadicalCenters.{u}
 
+/- English proof (translation)
+The claim follows from `transitionsAreBlowupsForEmbeddings_of_detachedLocusIsOpen principalizationWithRadicalCenters.{u} detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters`.
+-/
 theorem transitionsAreBlowupsForEmbeddings_principalizationWithRadicalCenters :
     TransitionsAreBlowupsForEmbeddings principalizationWithRadicalCenters.{u} :=
   transitionsAreBlowupsForEmbeddings_of_detachedLocusIsOpen principalizationWithRadicalCenters.{u}
     detachedLocusIsOpenForEmbeddings_principalizationWithRadicalCenters
 
+/- English proof (translation)
+The claim follows from `embeddedPrincipalizationYieldsBlowups_of_discardedLocusIsOpen principalizationWithRadicalCenters.{u} affineEmbedsIntoAffineSpace nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth (embeddedPrincipalizationDiscardedLocusIsOpen_of_detachedLocusIsOpen principalizationWithRa …`.
+-/
 theorem embeddedPrincipalizationYieldsBlowups_principalizationWithRadicalCenters :
     EmbeddedPrincipalizationYieldsBlowups principalizationWithRadicalCenters.{u} affineEmbedsIntoAffineSpace
       nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth :=
@@ -85,6 +105,9 @@ theorem embeddedPrincipalizationYieldsBlowups_principalizationWithRadicalCenters
       nilIsStrictNormalCrossingsOnAffineSpace affineSpaceIsSmooth)
     strictTransformIsBlowupOfClosedSubscheme
 
+/- English proof (translation)
+The claim follows from `isFunctorialPrincipalization_canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme canonicalAlgorithmRules_isCorrect smoothSubschemeIdealIsRadical (commutesWithClosedImmersion_of_isCorrect (canonicalAlgorithmRules strictTransformIsBlowupOfClosedSubscheme) canonicalAl …`.
+-/
 theorem isFunctorialPrincipalization_principalizationWithRadicalCenters : IsFunctorialPrincipalization principalizationWithRadicalCenters.{u} :=
   isFunctorialPrincipalization_canonicalPrincipalization strictTransformIsBlowupOfClosedSubscheme canonicalAlgorithmRules_isCorrect
     smoothSubschemeIdealIsRadical

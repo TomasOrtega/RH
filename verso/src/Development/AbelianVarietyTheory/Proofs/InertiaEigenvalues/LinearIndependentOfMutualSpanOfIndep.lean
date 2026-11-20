@@ -5,6 +5,21 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R W _ _ act hmul hone ι _ _ b f hb hf hbf d hd`. Use `letI : Module R W := { smul := fun r w => act r w one_smul := hone mul_smul := fun r s w => hmul r s w smul_zero := fun r => map_zero (act r) smul_add := fun r x y => map_add (act r) x y add_smul := fun r s w => by show act (r + s) w = act r w + act s w`. Rewrite using `[map_add, AddMonoidHom.add_apply]`. Use `zero_smul := fun w => by show act 0 w = 0`. Rewrite using `[map_zero, AddMonoidHom.zero_apply] }`.
+
+Establish `hs : ∀ (r : R) (w : W), act r w = r • w` using `fun _ _ => rfl`. Simplify using `only [hs] at hb hf hbf hd`. Use `choose P hP using hf`. Use `choose Q hQ using hbf`. Establish `expand : ∀ c : ι → R, ∑ i, c i • f i = ∑ k, (Matrix.vecMul c (Matrix.of P)) k • b k`.
+
+Introduce `c`. Simplify using `only [hP, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `hQP : Matrix.of Q * Matrix.of P = 1`. Use extensionality with `k k'`.
+
+Establish `h0 : ∑ k'', ((Matrix.vecMul (Q k) (Matrix.of P)) k'' - (1 : Matrix ι ι R) k k'') • b k'' = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← expand, ← hQ, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Use `hb _ h0 k'` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Rewrite using `[← this, Matrix.mul_apply]`.
+
+Simplify using `[Matrix.vecMul, dotProduct]`. Establish `hPQ : Matrix.of P * Matrix.of Q = 1` using `mul_eq_one_comm.mp hQP`. Establish `he : Matrix.vecMul d (Matrix.of P) = 0`. Rewrite `hd` using `[expand]`. Use function extensionality and compare the values at `k`.
+
+Conclude with `hb _ hd k`. Establish `: d = 0`. Rewrite using `[← Matrix.vecMul_one d, ← hPQ, ← Matrix.vecMul_vecMul, he, Matrix.zero_vecMul]`. Introduce `i`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem linIndep_of_mutual_span_of_indep :
     ∀ (R W : Type) [CommRing R] [AddCommGroup W] (act : R →+ (W →+ W)),
       (∀ (r s : R) (w : W), act (r * s) w = act r (act s w)) → (∀ w : W, act 1 w = w) →

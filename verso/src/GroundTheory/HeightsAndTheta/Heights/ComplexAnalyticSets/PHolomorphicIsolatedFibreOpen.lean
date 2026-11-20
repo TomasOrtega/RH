@@ -7,6 +7,21 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Metric
 
+/- English proof (translation)
+Introduce `k U g u hU hu hg ⟨W, hW, hiso⟩ V hV`. Take `⟨r, hr, hrsub⟩ : ∃ r > 0, closedBall u r ⊆ U ∩ W ∩ V` from `nhds_basis_closedBall.mem_iff.1 (Filter.inter_mem (Filter.inter_mem (hU.mem_nhds hu) hW) hV)`. Establish `hgc : ContinuousOn g (closedBall u r)` using `hg.continuousOn.mono fun x hx => (hrsub hx).1.1`. Establish `hSc : IsCompact (g '' sphere u r)` using `(isCompact_sphere u r).image_of_continuousOn (hgc.mono sphere_subset_closedBall)`. Establish `hnot : g u ∉ g '' sphere u r`.
+
+Introduce and unpack `⟨s, hs, hgs⟩`. Establish `hsK` using `hrsub (sphere_subset_closedBall hs)`. Use `hiso s hsK.1.2 hsK.1.1 hgs` as an intermediate fact. Substitute `this` using the available equality. Rewrite `hs` using `[mem_sphere, dist_self]`.
+
+Conclude with `hr.ne' hs.symm`. Take `⟨ε, hε, hεsub⟩` from `Metric.isOpen_iff.1 hSc.isClosed.isOpen_compl (g u) hnot`. Establish `key : ∀ v ∈ closedBall u r, g v ∈ ball (g u) ε → v ∈ ball u r`. Introduce `v hv hgv`. Break down `(mem_closedBall.1 hv).lt_or_eq with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `(hεsub hgv ⟨v, mem_sphere.2 h, rfl⟩).elim`. Establish `hΩ : IsOpen (ball u r ∩ g ⁻¹' ball (g u) ε)` using `(hgc.mono ball_subset_closedBall).isOpen_inter_preimage isOpen_ball isOpen_ball`. Establish `hproper : ∀ L ⊆ ball (g u) ε, IsCompact L → IsCompact ((ball u r ∩ g ⁻¹' ball (g u) ε) ∩ g ⁻¹' L)`. Introduce `L hLD hL`.
+
+Establish `heq : (ball u r ∩ g ⁻¹' ball (g u) ε) ∩ g ⁻¹' L = closedBall u r ∩ g ⁻¹' L`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hv, _⟩, hvL⟩`. Conclude with `⟨ball_subset_closedBall hv, hvL⟩`.
+
+Introduce and unpack `⟨hv, hvL⟩`. Conclude with `⟨⟨key v hv (hLD hvL), hLD hvL⟩, hvL⟩`. Rewrite using `[heq]`. Conclude with `(isCompact_closedBall u r).of_isClosed_subset (hgc.preimage_isClosed_of_isClosed isClosed_closedBall hL.isClosed) Set.inter_subset_left`. Establish `hsurj` using `hPS k _ _ g hΩ ⟨u, mem_ball_self hr, mem_ball_self hε⟩ isOpen_ball (convex_ball _ _).isPreconnected (hg.mono fun x hx => (hrsub (ball_subset_closedBall hx.1)).1.1) (fun x hx => hx.2) hproper`.
+
+Use `Filter.mem_of_superset (ball_mem_nhds _ hε) ?_` and prove the remaining obligations. Rewrite using `[← hsurj]`. Conclude with `Set.image_mono fun x hx => (hrsub (ball_subset_closedBall hx.1)).2`.
+-/
 theorem HolomorphicIsolatedFibreOpen.proof (hPS : ProperHolomorphicSurjective.Statement) :
     HolomorphicIsolatedFibreOpen.Statement := by
   intro k U g u hU hu hg ⟨W, hW, hiso⟩ V hV

@@ -11,11 +11,17 @@ namespace GlobalTheory.ParahoricOfCong
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CongLevel.mem_sclLat, GlobalTheory.TopStep.mem_stdAt]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_stdAt_iff_sclLat_zero (q N : ℕ) (x : Sp E N) :
     x ∈ stdAt E N P ↔ x ∈ LocE.sclLat P q N (fun _ => 0) := by
   rw [GlobalTheory.CongLevel.mem_sclLat, GlobalTheory.TopStep.mem_stdAt]
   simp
 
+/- English proof (translation)
+Introduce `x hx`. Establish `e : h x = x + (h x - x)` using `by abel`. Rewrite using `[e]`. Conclude with `M.add_mem hx (hqM _ (hh x (hM hx)))`.
+-/
 theorem map_mem_of_cong {N : ℕ} (q : E) (M : Submodule (𝓞 E) (Sp E N)) (hM : M ≤ stdAt E N P)
     (hqM : ∀ y : Sp E N, q⁻¹ • y ∈ stdAt E N P → y ∈ M)
     (h : Sp E N ≃ₗ[E] Sp E N) (hh : ∀ x ∈ stdAt E N P, q⁻¹ • (h x - x) ∈ stdAt E N P) :
@@ -25,6 +31,11 @@ theorem map_mem_of_cong {N : ℕ} (q : E) (M : Submodule (𝓞 E) (Sp E N)) (hM 
   rw [e]
   exact M.add_mem hx (hqM _ (hh x (hM hx)))
 
+/- English proof (translation)
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `map_mem_of_cong P q M hM hqM g⁻¹ h2 (g x) hx` as an intermediate fact. Establish `e : g⁻¹ (g x) = x` using `LinearEquiv.symm_apply_apply g x`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Conclude with `map_mem_of_cong P q M hM hqM g h1 x`.
+-/
 theorem mem_stabL_of_cong {N : ℕ} (q : E) (M : Submodule (𝓞 E) (Sp E N)) (hM : M ≤ stdAt E N P)
     (hqM : ∀ y : Sp E N, q⁻¹ • y ∈ stdAt E N P → y ∈ M)
     (g : Sp E N ≃ₗ[E] Sp E N) (h1 : ∀ x ∈ stdAt E N P, q⁻¹ • (g x - x) ∈ stdAt E N P)
@@ -42,6 +53,15 @@ end GlobalTheory.ParahoricOfCong
 
 open GlobalTheory.ParahoricOfCong in
 
+/- English proof (translation)
+Introduce `E _ _ _ P kj n c g h1 h2`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0` using `GlobalTheory.TopStep.qOf_ne_zero (P := P)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `mem_stabL_of_cong P _ _ le_rfl (fun y hy => ?_) g h1 h2` and prove the remaining obligations. Establish `e : y = (qOf P : E) • ((qOf P : E)⁻¹ • y)` using `by rw [smul_smul, mul_inv_cancel₀ hq, one_smul]`.
+
+Rewrite using `[e, Nat.cast_smul_eq_nsmul E]`. Conclude with `nsmul_mem hy _`. Use `mem_stabL_of_cong P _ _ ?_ ?_ g h1 h2` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mem_stdAt_iff_sclLat_zero P (qOf P)]`.
+
+Use `GlobalTheory.CongLevel.sclLat_le P (qOf P) hq (n + c) (fun _ => 0) (fun l => kj ≤ l ∧ l < n)` as an intermediate fact. Conclude with `this (by simpa [LocE.parL] using hx)`. Introduce `y hy`. Rewrite `hy` using `[mem_stdAt_iff_sclLat_zero P (qOf P)]`. Use `GlobalTheory.CongLevel.smul_mem_sclLat P (qOf P) hq (n + c) (fun _ => 0) (fun l => kj ≤ l ∧ l < n) y hy` as an intermediate fact.
+
+Simplify `this` using `[LocE.parL]`.
+-/
 theorem GlobalTheory.ParahoricOfCong.mem_JQ_of_cong : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (kj n c : ℕ) (g : Sp E (n + c) ≃ₗ[E] Sp E (n + c)), (∀ x ∈ stdAt E (n + c) P, (qOf P : E)⁻¹ • (g x - x) ∈ stdAt E (n + c) P) → (∀ x ∈ stdAt E (n + c) P, (qOf P : E)⁻¹ • (g⁻¹ x - x) ∈ stdAt E (n + c) P) → g ∈ LocE.JQ P (qOf P) kj n c := by
   intro E _ _ _ P kj n c g h1 h2
   have hq : ((qOf P : ℕ) : E) ≠ 0 := GlobalTheory.TopStep.qOf_ne_zero (P := P)

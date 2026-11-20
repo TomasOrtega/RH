@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.I
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.LFun GlobalTheory.PRep UpperTheory.V.Af
 open private UpperTheory.V.Af.RealLocalComponent.exists_comp UpperTheory.V.Af.RealLocalComponent.isotypic from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompR
 
+/- English proof (translation)
+Introduce `F _ _ n w σ`. Establish `hex : GlobalTheory.LGrp.IsSpherical σ.ρ (KGL w n) → ∃ B, HasSatGL w σ.ρ B` using `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred`. Use `⟨fun ⟨v, h0, hv⟩ => hex ((Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, h0⟩), ?_⟩` and prove the remaining obligations. Introduce `V _ _ ρ ⟨hV, htop⟩ B`. Establish `up : ∀ B, HasSatGL w σ.ρ B → HasSatGL w (ρ.comp (locGL F n w)) B`.
+
+Introduce `B h`. Prove the components needed by the constructor for the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨f, h0⟩ : ∃ f : {f : σ.V →ₗ[ℂ] V // ∀ g v, f (σ.ρ g v) = ρ (locGL F n w g) (f v)}, f.1 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Use `top_ne_bot (htop.symm.trans (eq_bot_iff.2 (iSup_le fun f => ?_)))` and prove the remaining obligations. Rewrite using `[hc f, LinearMap.range_zero]`. Take `⟨x, hx⟩` from `h.exists_vec`. Establish `hi : LinearMap.ker f.1 = ⊥` using `((isIrreducible_iff σ.ρ).1 σ.irred).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[f.2, hv, map_zero]) |>.resolve_right fun e => h0 (LinearMap.ker_eq_top.1 e)`. Establish `h1` using `hx.map (ρ' := ρ.comp (locGL F n w)) f.1 f.2 ((map_ne_zero_iff f.1 (LinearMap.ker_eq_bot.1 hi)).2 hx.1)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, h1.2.1, h1.1⟩`. Introduce `x hx h0`. Conclude with `GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup (ρ := ρ.comp (locGL F n w)) σ.irred h (fun f : {f : σ.V →ₗ[ℂ] V // ∀ g v, f (σ.ρ g v) = ρ (locGL F n w g) (f v)} => f.1) (fun f => f.2) (htop ▸ Submodule.mem_top) hx h0`.
+
+Use `⟨fun h => ?_, up B⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 h.1`. Take `⟨y, hy0, hy⟩` from `LocSph.exists_fixed_of_mem_iSup (ρ.comp (locGL F n w)) σ.ρ σ.irred (fun f : {f : σ.V →ₗ[ℂ] V // ∀ g v, f (σ.ρ g v) = ρ (locGL F n w g) (f v)} => f.1) (fun f => f.2) (KGL w n : Set _) x hx0 (fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx k hk) (htop ▸ Submodule.mem_top)`. Take `⟨B', hB'⟩` from `hex ((Submodule.ne_bot_iff _).2 ⟨y, GlobalTheory.LGrp.mem_fixed.2 hy, hy0⟩)`. Conclude with `(up B' hB').unique h ▸ hB'`.
+-/
 private theorem satLocFree : UpperTheory.V.Af.SatLoc := by
   intro F _ _ n w σ
   have hex : GlobalTheory.LGrp.IsSpherical σ.ρ (KGL w n) → ∃ B, HasSatGL w σ.ρ B :=
@@ -40,6 +51,9 @@ private theorem satLocFree : UpperTheory.V.Af.SatLoc := by
   obtain ⟨B', hB'⟩ := hex ((Submodule.ne_bot_iff _).2 ⟨y, GlobalTheory.LGrp.mem_fixed.2 hy, hy0⟩)
   exact (up B' hB').unique h ▸ hB'
 
+/- English proof (translation)
+Introduce `F _ _ _ a π`. Conclude with `ExLib.eventually_sat satLocFree π.finPart π.isSmooth_finPart fun w => (UpperTheory.V.Af.RealLocalComponent.exists_comp admissibleReal π w).imp (UpperTheory.V.Af.RealLocalComponent.isotypic π w)`.
+-/
 theorem UpperTheory.V.Af.Gk.satAE :
     UpperTheory.V.Af.Gk.SatAE := by
   intro F _ _ _ a π

@@ -14,6 +14,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ s₀ S X s i P L₀ hpb hL₀ hob`. Take `⟨C', _, _, G, hbas, u, hfr, hobu⟩` from `hob`. Rewrite `hobu` using `[map_zero]`. Take `⟨v, hvp, hvc⟩` from `GlobalTheory.T.unitCocycle_lift_of_obstruction_eq_zero R R₀ I hI π hπ hk R₁ α C' (G ⋙ OAff s₀) ((ofSys S).restrict G) u hobu`. Take `⟨V, hV, hi, e, hpre, he, hred⟩` from `GlobalTheory.T.exists_charts_squareZero_presented_scheme R R₀ I hI π hπ hk X₀ s₀ S X s i P hpb`.
+
+Set `V' : C' → X.Opens` to `fun T => V (G.obj T)`. Establish `hV' : ∀ ⦃T T' : C'⦄, (T ⟶ T') → V' T' ≤ V' T` using `fun T T' a => hV (G.map a)`. Set `u' : ∀ (T T' : C') (_ : T ⟶ T'), Γ(X, V' T')ˣ` to `fun T T' a => Units.map (e (G.obj T')).toMonoidHom (v T T' a)`. Establish `hcoc : IsCoc V' hV' u'`. Introduce `T T' T'' a b`.
+
+Use `ext`. Establish `h1` using `hvc T T' T'' a b`. Express the relevant statement in the definitionally equal form `e (G.obj T'') (v T T'' (a ≫ b)).val = _`. Rewrite using `[h1]`. Use `((e (G.obj T'')).map_mul _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (· * e (G.obj T'') (v T' T'' b).val) (he (G.obj T') (G.obj T'') (G.map b) (v T T' a).val)`. Use `haveI : IsClosedImmersion i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip (IsClosedImmersion.spec_of_surjective _ hπ)`. Use `haveI : Surjective i := surjective_of_isPullback_sqZero hI hπ hk hpb`. Establish `hbas' : IsBas V'` using `GlobalTheory.LBObs.isBas_of_preimage_eq X X₀ i C' V' (opOf G) (fun T => hpre _) hbas`. Take `⟨L, hL, hfrL⟩` from `GlobalTheory.T.exists_lineBundle_of_thinBasis_cocycle X C' V' hV' u' hbas' hcoc`.
+
+Establish `hH : ∀ T, opOf G T ≤ i ⁻¹ᵁ V' ((𝟭 C').obj T)` using `fun T => (hpre _).ge`. Establish `hfr2` using `GlobalTheory.LBObs.isFrame_pull X C' V' hV' L u' X₀ i C' (opOf G) (opOf_le G) (𝟭 C') hH hfrL`. Establish `hueq : (fun T T' (a : T ⟶ T') => res (hH T') (pullU i _ (u' _ _ ((𝟭 C').map a)))) = u`. Use function extensionality and compare the values at `T T' a`. Use `ext`.
+
+Establish `h2` using `hred (G.obj T') (v T T' a).val`. Establish `h3` using `hvp T T' a`. Use `Eq.trans ?_ (h2.trans h3)` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite `hfr2` using `[hueq]`.
+
+Conclude with `⟨L, hL, GlobalTheory.LBObs.lbIso_of_isFrame X₀ C' (opOf G) (opOf_le G) (L.pull i) L₀ u hbas (LB.isLB_pull hL i) hL₀ hfr2 hfr⟩`.
+-/
 theorem GlobalTheory.LBObs.exists_lift_of_isObL_zero : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (R₁ : Type) [CommRing R₁] [Algebra R₀ R₁] (α : Aug I π R₁) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (S : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (P : S.Presents s i) (L₀ : LB X₀), IsPullback i s₀ s (spMap π) → L₀.IsLB → IsObL S α L₀ 0 → ∃ L : LB X, L.IsLB ∧ LBIso (L.pull i) L₀ := by
   intro R R₀ _ _ I hI π hπ hk R₁ _ _ α X₀ s₀ S X s i P L₀ hpb hL₀ hob
   obtain ⟨C', _, _, G, hbas, u, hfr, hobu⟩ := hob

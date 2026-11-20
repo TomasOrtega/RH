@@ -10,6 +10,9 @@ variable {ι : Type*} [Fintype ι] [dι : DecidableEq ι] {R : Type*} [CommSemir
   {X : ι → Type*} [∀ i, AddCommMonoid (X i)] [∀ i, Module R (X i)]
 
 omit [Fintype ι] dι in
+/- English proof (translation)
+Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 private theorem apply_update (φ : ∀ i, X i →ₗ[R] R) [inst : DecidableEq ι] (x : ∀ i, X i) (k : ι)
     (y : X k) (i : ι) :
     φ i (Function.update x k y i) = Function.update (fun i => φ i (x i)) k (φ k y) i := by
@@ -50,15 +53,24 @@ def contractMultilinear (φ : ∀ i, X i →ₗ[R] R) (j : ι) : MultilinearMap 
       simp only [Finset.prod_update_of_mem hk, Function.update_of_ne (Ne.symm h), map_smul,
         smul_eq_mul, mul_assoc, mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem contractMultilinear_apply (φ : ∀ i, X i →ₗ[R] R) (j : ι) (x : ∀ i, X i) :
     contractMultilinear φ j x = (∏ i ∈ Finset.univ.erase j, φ i (x i)) • x j := rfl
 
 noncomputable def contract (φ : ∀ i, X i →ₗ[R] R) (j : ι) : (⨂[R] i, X i) →ₗ[R] X j :=
   PiTensorProduct.lift (contractMultilinear φ j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem contract_def (φ : ∀ i, X i →ₗ[R] R) (j : ι) :
     contract φ j = PiTensorProduct.lift (contractMultilinear φ j) := rfl
 
+/- English proof (translation)
+Rewrite using `[contract_def, PiTensorProduct.lift.tprod, contractMultilinear_apply]`.
+-/
 @[simp] theorem contract_tprod (φ : ∀ i, X i →ₗ[R] R) (j : ι) (x : ∀ i, X i) :
     contract φ j (⨂ₜ[R] i, x i) = (∏ i ∈ Finset.univ.erase j, φ i (x i)) • x j := by
   rw [contract_def, PiTensorProduct.lift.tprod, contractMultilinear_apply]
@@ -73,15 +85,24 @@ variable {ι : Type*} [Fintype ι] {R : Type*} [CommSemiring R]
 def prodMultilinear (φ : ∀ i, X i →ₗ[R] R) : MultilinearMap R X R :=
   (MultilinearMap.mkPiAlgebra R ι R).compLinearMap φ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodMultilinear_apply (φ : ∀ i, X i →ₗ[R] R) (x : ∀ i, X i) :
     prodMultilinear φ x = ∏ i, φ i (x i) := rfl
 
 noncomputable def prodForm (φ : ∀ i, X i →ₗ[R] R) : (⨂[R] i, X i) →ₗ[R] R :=
   PiTensorProduct.lift (prodMultilinear φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodForm_def (φ : ∀ i, X i →ₗ[R] R) :
     prodForm φ = PiTensorProduct.lift (prodMultilinear φ) := rfl
 
+/- English proof (translation)
+Rewrite using `[prodForm_def, PiTensorProduct.lift.tprod, prodMultilinear_apply]`.
+-/
 @[simp] theorem prodForm_tprod (φ : ∀ i, X i →ₗ[R] R) (x : ∀ i, X i) :
     prodForm φ (⨂ₜ[R] i, x i) = ∏ i, φ i (x i) := by
   rw [prodForm_def, PiTensorProduct.lift.tprod, prodMultilinear_apply]

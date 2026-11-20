@@ -12,6 +12,9 @@ def topW {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ
 def specW {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ) : Fin n' → Fin (m + 1) → ℤ :=
   fun s => if s ∈ TT then 0 else X s
 
+/- English proof (translation)
+Introduce `s`. Unfold `topW`. Use `split_ifs`. Conclude with `h s`. Conclude with `anti_zero m`.
+-/
 theorem topW_dom {n' m : ℕ} (TT : Finset (Fin n')) {X : Fin n' → Fin (m + 1) → ℤ} (h : IsDominant X) :
     IsDominant (topW TT X) := by
   intro s
@@ -20,6 +23,9 @@ theorem topW_dom {n' m : ℕ} (TT : Finset (Fin n')) {X : Fin n' → Fin (m + 1)
   · exact h s
   · exact anti_zero m
 
+/- English proof (translation)
+Introduce `s`. Unfold `specW`. Use `split_ifs`. Conclude with `anti_zero m`. Conclude with `h s`.
+-/
 theorem specW_dom {n' m : ℕ} (TT : Finset (Fin n')) {X : Fin n' → Fin (m + 1) → ℤ} (h : IsDominant X) :
     IsDominant (specW TT X) := by
   intro s
@@ -28,19 +34,31 @@ theorem specW_dom {n' m : ℕ} (TT : Finset (Fin n')) {X : Fin n' → Fin (m + 1
   · exact anti_zero m
   · exact h s
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply the tactic sequence `by_cases h : s ∈ TT <;> simp [topW, specW, h]`.
+-/
 theorem top_add_spec {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ) : X = topW TT X + specW TT X := by
   funext s
   by_cases h : s ∈ TT <;> simp [topW, specW, h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun s hs => by simp [topW, specW, hs], fun s hs => by simp [topW, specW, hs]⟩`.
+-/
 theorem peel_self {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ) :
     Peel TT X (topW TT X) (specW TT X) :=
   ⟨fun s hs => by simp [topW, specW, hs], fun s hs => by simp [topW, specW, hs]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[restW, flW, dT, hs]`.
+-/
 theorem restW_off {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin n') (hs : s ∉ TT) :
     restW TT lam0 s = lam0 s := by
   funext i
   simp [restW, flW, dT, hs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Distinguish the cases in `h : s ∈ TT`. Simplify using `[specW, h]`. Simplify using `only [specW, if_neg h, restW_off TT lam0 s h]`.
+-/
 theorem specW_rest {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     specW TT (restW TT lam0) = specW TT lam0 := by
   funext s
@@ -48,6 +66,9 @@ theorem specW_rest {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m
   · simp [specW, h]
   · simp only [specW, if_neg h, restW_off TT lam0 s h]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_le_card_of_injOn (fun a => a.val) ?_ (Fin.val_injective.injOn)` and prove the remaining obligations. Introduce `a ha`. Simplify using `using ha`. Use `_ = r := Finset.card_range r`.
+-/
 theorem card_lt_le (m r : ℕ) : (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card ≤ r := by
   calc (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card ≤ (Finset.range r).card := by
         refine Finset.card_le_card_of_injOn (fun a => a.val) ?_ (Fin.val_injective.injOn)
@@ -55,6 +76,19 @@ theorem card_lt_le (m r : ℕ) : (Finset.univ.filter fun a : Fin (m + 1) => a.va
         simpa using ha
     _ = r := Finset.card_range r
 
+/- English proof (translation)
+Unfold `ordMax`. Establish `h1 : ∀ s : Fin n', ∀ a : Fin (m + 1), lamAt (specW TT lam0) s a - lamAt (specW TT lam0) s (Fin.last m) ≤ 2 * (cpp : ℤ)`. Introduce `s a`. Distinguish the cases in `hs : s ∈ TT`. Rewrite using `[lamAt_zero (by simp [specW, hs])]`.
+
+Simplify using the standard rewrite rules. Establish `hz : specW TT lam0 s = lam0 s` using `by simp [specW, hs]`. Establish `hb'` using `hb s hs`. Unfold `lamAt`. Rewrite using `[hz]`.
+
+Use `split_ifs`. Use `abs_le.1 (hb' a)` as an intermediate fact. Use `abs_le.1 (hb' (Fin.last m))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `abs_le.1 (hb' a.rev)` as an intermediate fact.
+
+Use `abs_le.1 (hb' (Fin.last m).rev)` as an intermediate fact. Use `show -lam0 s a.rev - -lam0 s (Fin.last m).rev ≤ 2 * (cpp : ℤ)`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Finset.sum_const]`.
+
+Use `_ ≤ ∑ _s : Fin n', (r : ℤ) * (2 * (cpp : ℤ)) := by`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Use `card_lt_le m r` as an intermediate fact. Establish `h2 : ((Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card : ℤ) ≤ r` using `by exact_mod_cast this`. Use polynomial arithmetic with `[Int.natCast_nonneg cpp]`.
+
+Use `_ = ((2 * r * n' * cpp : ℕ) : ℤ) := by`. Simplify using `[Finset.sum_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordMax_spec {n' m : ℕ} (r : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) (cpp : ℕ)
     (hb : ∀ s, s ∉ TT → ∀ i, |lam0 s i| ≤ cpp) : ordMax r (specW TT lam0) ≤ ((2 * r * n' * cpp : ℕ) : ℤ) := by
   unfold ordMax
@@ -112,6 +146,13 @@ def RhoTopStep (C CK : ℝ) : Prop :=
 def RestRhoTop (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ CK C₁ : ℝ, 0 < CK ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → RhoTopStep C CK
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ`. Take `⟨κ, hκ, hT⟩` from `hR p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ`. Establish `hdom : IsDominant lam0` using `H.2.2.2.2.1.2.1`. Establish `hb : ∀ s, s ∉ TT → ∀ i, |lam0 s i| ≤ cpp` using `fun s hs => (H.2.2.2.2.1.1 s).2 hs`. Use `rhoAt_of_G p n' ι σ w r TT lam0 c0 _ _ e Θ κ hκ ?_` and prove the remaining obligations.
+
+Establish `hPr : Peel TT (restW TT lam0) (topW TT (restW TT lam0)) (specW TT lam0)`. Use `peel_self TT (restW TT lam0)` as an intermediate fact. Rewrite `this` using `[specW_rest]`. Then use the resulting hypothesis. Establish `hrest : restW TT lam0 = topW TT (restW TT lam0) + specW TT lam0`. Use `top_add_spec TT (restW TT lam0)` as an intermediate fact.
+
+Rewrite `this` using `[specW_rest]`. Then use the resulting hypothesis. Conclude with `rho_peel D hSet.1 r TT (dT TT lam0) (fun s hs => by simp [dT, hs]) (restW TT lam0) lam0 (topW TT (restW TT lam0)) (topW TT lam0) (specW TT lam0) (peel_self TT lam0) hPr (topW_dom TT hdom) (specW_dom TT hdom) (top_add_spec TT lam0) hrest c0 (r * TT.card * c0) κ (2 * r * n' * cpp) …`.
+-/
 theorem rhoStep_of_top (D : Formalism.BasicNotions.D7) (C CK : ℝ) (hR : RhoTopStep C CK) : RhoStep C CK := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ
     e he htgt hm g hhm hg hbasis Θ hΘ
@@ -131,12 +172,18 @@ theorem rhoStep_of_top (D : Formalism.BasicNotions.D7) (C CK : ℝ) (hR : RhoTop
     (specW_dom TT hdom) (top_add_spec TT lam0) hrest c0 (r * TT.card * c0) κ (2 * r * n' * cpp)
     (ordMax_spec r TT lam0 cpp hb) e he Θ hT
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨CK, C₁, h1, h2, h3⟩` from `h hA`. Conclude with `⟨CK, C₁, h1, h2, fun C hC => rhoStep_of_top D C CK (h3 C hC)⟩`.
+-/
 theorem restRho_of_top (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : RestRhoTop D CLa Ck Crk Cdeg) :
     RestRho D CLa Ck Crk Cdeg := by
   intro hA
   obtain ⟨CK, C₁, h1, h2, h3⟩ := h hA
   exact ⟨CK, C₁, h1, h2, fun C hC => rhoStep_of_top D C CK (h3 C hC)⟩
 
+/- English proof (translation)
+The claim follows from `restCloudB_of_rho D CLa Ck Crk Cdeg (restRho_of_top D CLa Ck Crk Cdeg h)`.
+-/
 theorem restCloudB_of_top (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : RestRhoTop D CLa Ck Crk Cdeg) :
     RestCloudB D CLa Ck Crk Cdeg :=
   restCloudB_of_rho D CLa Ck Crk Cdeg (restRho_of_top D CLa Ck Crk Cdeg h)

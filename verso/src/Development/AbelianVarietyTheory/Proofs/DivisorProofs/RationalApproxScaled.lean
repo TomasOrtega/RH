@@ -16,6 +16,9 @@ open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 namespace GlobalTheory.BoxLattice
 
+/- English proof (translation)
+Introduce `F _ _ κ _ a _ r`. Establish `hd : DenseRange (Pi.map fun (_ : κ) => algebraMap F (FiniteAdeleRing (𝓞 F) F))` using `DenseRange.piMap fun _ => GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F`. Establish `hop : IsOpen {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ scaledInt F κ a}` using `(isOpen_scaledInt a).preimage (continuous_id.sub continuous_const)`. Take `⟨ρ, hρ⟩` from `hd.exists_mem_open hop ⟨r, by simp [zero_mem]⟩`. Conclude with `⟨ρ, hρ⟩`.
+-/
 theorem exists_ratFin_coset : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ r : κ → FiniteAdeleRing (𝓞 F) F, ∃ ρ : κ → F, ratFin F κ ρ - r ∈ scaledInt F κ a := by
   intro F _ _ κ _ a _ r

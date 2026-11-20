@@ -7,10 +7,18 @@ open scoped ContDiff ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Conclude with `fun _ _ => contDiffOn_const`.
+-/
 theorem smoothR_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℝ) :
     SmoothR n z (fun _ => c) := by
   exact fun _ _ => contDiffOn_const
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using smoothR_const n z 1`. Consider the case `@insert a s ha ih`. Establish `h1` using `hf a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+
+Establish `h3` using `SmoothR.mul n z _ _ h1 h2`. Simplify `h3` using `[Finset.prod_insert ha]`.
+-/
 theorem smoothR_prod {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (f : ι → M → ℝ) (hf : ∀ i ∈ s, SmoothR n z (f i)) :
     SmoothR n z (fun x => ∏ i ∈ s, f i x) := by
@@ -23,6 +31,11 @@ theorem smoothR_prod {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
     have h3 := SmoothR.mul n z _ _ h1 h2
     simpa [Finset.prod_insert ha] using h3
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using smoothR_const n z 0`. Consider the case `@insert a s ha ih`. Establish `h1` using `hf a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+
+Establish `h3` using `SmoothR.add n z _ _ h1 h2`. Simplify `h3` using `[Finset.sum_insert ha]`.
+-/
 theorem smoothR_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (f : ι → M → ℝ) (hf : ∀ i ∈ s, SmoothR n z (f i)) :
     SmoothR n z (fun x => ∑ i ∈ s, f i x) := by
@@ -35,6 +48,27 @@ theorem smoothR_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {
     have h3 := SmoothR.add n z _ _ h1 h2
     simpa [Finset.sum_insert ha] using h3
 
+/- English proof (translation)
+Establish `hz' : ∀ y, ∃ e : OpenPartialHomeomorph M (V n), y ∈ e.source ∧ z = e` using `hz`. Take `⟨e, hxe, hze⟩` from `hz' x`. Establish `he : IsChart n z e` using `fun y _ => congrFun hze y`. Establish `hO : IsOpen (e.target ∩ e.symm ⁻¹' U)` using `e.isOpen_inter_preimage_symm hU`. Establish `hxO : e x ∈ e.target ∩ e.symm ⁻¹' U` using `⟨e.map_source hxe, by simp [e.left_inv hxe, hx]⟩`.
+
+Take `⟨r, hr, hrO⟩` from `Metric.nhds_basis_closedBall.mem_iff.mp (hO.mem_nhds hxO)`. Set `φ : ContDiffBump (e x)` to `⟨r / 2, r, by positivity, by linarith⟩`. Set `ψ : M → ℝ` to `e.source.indicator (fun y => φ (e y))`. Use `set K := e.symm '' Metric.closedBall (e x) r with hKdef`. Establish `hKt : Metric.closedBall (e x) r ⊆ e.target` using `fun w hw => (hrO hw).1`.
+
+Establish `hKc : IsCompact K` using `(isCompact_closedBall _ _).image_of_continuousOn (e.continuousOn_symm.mono hKt)`. Establish `hKs : K ⊆ e.source ∩ U`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨e.map_target (hrO hw).1, (hrO hw).2⟩`. Establish `hsupp : Function.support ψ ⊆ K`.
+
+Introduce `y hy`. Rewrite `hy` using `[Function.mem_support]`. Distinguish the cases in `hys : y ∈ e.source`. Establish `h1 : φ (e y) ≠ 0` using `by simpa [ψ, Set.indicator_of_mem hys] using hy`. Establish `h2 : e y ∈ Metric.ball (e x) r`.
+
+Rewrite using `[← φ.support_eq]`. Conclude with `h1`. Conclude with `⟨e y, Metric.ball_subset_closedBall h2, e.left_inv hys⟩`. Conclude with `absurd (by simp [ψ, Set.indicator_apply, hys]) hy`. Establish `htsK : tsupport ψ ⊆ K` using `closure_minimal hsupp hKc.isClosed`.
+
+Use `⟨e, ψ, he, ?_, hKc.of_isClosed_subset (isClosed_tsupport _) htsK, htsK.trans hKs, fun y => ?_, ?_⟩` and prove the remaining obligations. Introduce `e' he' w hw`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `hys : e'.symm w ∈ e.source`. Establish `hc` using `e'.continuousAt_symm hw`.
+
+Establish `h1 : (fun y => (ψ y : ℂ)) ∘ e'.symm =ᶠ[𝓝 w] fun w' => ((φ w' : ℝ) : ℂ)` using `by filter_upwards [e'.open_target.mem_nhds hw, hc (e.open_source.mem_nhds hys)] with w' hw' hw2`. Establish `h2 : e (e'.symm w') = w'`. Rewrite using `[← congrFun hze, he' (e'.map_target hw'), e'.right_inv hw']`. Establish `hw3 : e'.symm w' ∈ e.source` using `hw2`. Simplify using `only [Function.comp_apply, ψ, Set.indicator_of_mem hw3, h2]`.
+
+Establish `h3 : ContDiff ℝ ∞ (fun w' => ((φ w' : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp φ.contDiff`. Conclude with `h3.contDiffAt.congr_of_eventuallyEq h1`. Establish `hc` using `e'.continuousAt_symm hw`. Establish `hyK : e'.symm w ∉ K` using `fun h => hys (hKs h).1`. Establish `h1 : (fun y => (ψ y : ℂ)) ∘ e'.symm =ᶠ[𝓝 w] fun _ => (0 : ℂ)` using `by filter_upwards [hc (hKc.isClosed.isOpen_compl.mem_nhds hyK)] with w' hw'`.
+
+Establish `h2 : ψ (e'.symm w') = 0` using `Function.notMem_support.mp (fun h => hw' (hsupp h))`. Simplify using `[h2]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h1`. Distinguish the cases in `hys : y ∈ e.source`. Simplify using `only [ψ, Set.indicator_of_mem hys]`.
+
+Conclude with `⟨φ.nonneg, φ.le_one⟩`. Simplify using `[ψ, Set.indicator_apply, hys]`. Establish `h1 : IsOpen (e.source ∩ e ⁻¹' Metric.ball (e x) (r / 2))` using `e.isOpen_inter_preimage Metric.isOpen_ball filter_upwards [h1.mem_nhds ⟨hxe, Metric.mem_ball_self (by positivity)⟩] with y hy`. Simplify using `only [ψ, Set.indicator_of_mem hy.1]`. Conclude with `φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy.2)`.
+-/
 theorem exists_chart_bump {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (U : Set M) (hU : IsOpen U) (x : M) (hx : x ∈ U) :
     ∃ (e : OpenPartialHomeomorph M (V n)) (ψ : M → ℝ),
@@ -97,6 +131,23 @@ theorem exists_chart_bump {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ)
     simp only [ψ, Set.indicator_of_mem hy.1]
     exact φ.one_of_mem_closedBall (Metric.ball_subset_closedBall hy.2)
 
+/- English proof (translation)
+Establish `hz' : ∀ y, ∃ e : OpenPartialHomeomorph M (V n), y ∈ e.source ∧ z = e` using `hz`. Establish `H : ∀ x, ∃ (e : OpenPartialHomeomorph M (V n)) (ψ : M → ℝ), x ∈ U → IsChart n z e ∧ SmoothR n z ψ ∧ HasCompactSupport ψ ∧ tsupport ψ ⊆ e.source ∩ U ∧ (∀ y, 0 ≤ ψ y ∧ ψ y ≤ 1) ∧ ∀ᶠ y in 𝓝 x, ψ y = 1`. Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Take `⟨e, ψ, h⟩` from `exists_chart_bump n z hz U hU x hx`.
+
+Conclude with `⟨e, ψ, fun _ => h⟩`. Take `⟨e0, -, -⟩` from `hz' x`. Conclude with `⟨e0, fun _ => 0, fun h => absurd h hx⟩`. Use `choose e ψ hψ using H`. Take `⟨t, htK, hcov⟩` from `hK.elim_nhds_subcover (fun x => {y | ψ x y = 1}) (fun x hx => (hψ x (hKU hx)).2.2.2.2.2)`.
+
+Set `g : Fin t.card → M` to `fun i => (t.equivFin.symm i : M)`. Establish `hgU : ∀ i, g i ∈ U` using `fun i => hKU (htK _ (t.equivFin.symm i).2)`. Establish `P` using `fun i => hψ (g i) (hgU i)`. Establish `h1 : ∀ j, SmoothR n z (fun y => 1 - ψ (g j) y)`. Introduce `j`.
+
+Establish `h2` using `SmoothR.add n z _ _ (smoothR_const n z 1) (SmoothR.mul n z _ _ (smoothR_const n z (-1)) (P j).2.1)`. Establish `h3 : (fun y => 1 - ψ (g j) y) = fun y => 1 + (-1) * ψ (g j) y` using `by funext y; ring`. Rewrite using `[h3]`. Conclude with `h2`. Establish `hsum : ∀ y, ∑ i, ψ (g i) y * ∏ j ∈ Finset.univ.filter (fun j => j < i), (1 - ψ (g j) y) = 1 - ∏ i, (1 - ψ (g i) y)`.
+
+Introduce `y`. Establish `h4` using `Finset.prod_one_sub_ordered (Finset.univ : Finset (Fin t.card)) (fun i => ψ (g i) y)`. Use `beta_reduce at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ∀ y, 0 ≤ ∏ i, (1 - ψ (g i) y)` using `fun y => Finset.prod_nonneg fun j _ => sub_nonneg.2 ((P j).2.2.2.2.1 y).2`.
+
+Use `⟨t.card, fun i => e (g i), fun i y => ψ (g i) y * ∏ j ∈ Finset.univ.filter (fun j => j < i), (1 - ψ (g j) y), fun i => (P i).1, fun i => ?_, fun i => ?_, fun i => ?_, fun i x => ?_, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `SmoothR.mul n z _ _ (P i).2.1 (smoothR_prod n z (Finset.univ.filter (fun j => j < i)) (fun j y => 1 - ψ (g j) y) (fun j _ => h1 j))`. Conclude with `HasCompactSupport.mul_right (f' := fun y => ∏ j ∈ Finset.univ.filter (fun j => j < i), (1 - ψ (g j) y)) (P i).2.2.1`. Conclude with `tsupport_mul_subset_left.trans (P i).2.2.2.1`. Conclude with `mul_nonneg ((P i).2.2.2.2.1 x).1 (Finset.prod_nonneg fun j _ => sub_nonneg.2 ((P j).2.2.2.2.1 x).2)`.
+
+Rewrite using `[hsum x]`. Combine the linear relations using `[hprod x]`. Rewrite using `[hsum x]`. Take `⟨x', hx't, hx'⟩` from `Set.mem_iUnion₂.1 (hcov hx)`. Establish `hi : g (t.equivFin ⟨x', hx't⟩) = x'` using `by simp [g]`.
+
+Establish `h0 : ∏ i, (1 - ψ (g i) x) = 0`. Apply `Finset.prod_eq_zero (Finset.mem_univ (t.equivFin ⟨x', hx't⟩))` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq] at hx'`. Rewrite using `[hi, hx', sub_self]`. Rewrite using `[h0, sub_zero]`.
+-/
 theorem exists_chart_partition {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (K U : Set M) (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
     ∃ (N : ℕ) (e : Fin N → OpenPartialHomeomorph M (V n)) (χ : Fin N → M → ℝ),
       (∀ i, IsChart n z (e i)) ∧ (∀ i, SmoothR n z (χ i)) ∧ (∀ i, HasCompactSupport (χ i)) ∧
@@ -156,6 +207,11 @@ theorem exists_chart_partition {M : Type*} [TopologicalSpace M] [T2Space M] (n :
       rw [hi, hx', sub_self]
     rw [h0, sub_zero]
 
+/- English proof (translation)
+Take `⟨N, e, χ, he, hs, hc, hts, h0, h1, hK1⟩` from `exists_chart_partition n z hz K U hK hU hKU`. Establish `hS : tsupport (fun x => ∑ i, χ i x) ⊆ ⋃ i, tsupport (χ i)`. Use `closure_minimal ?_ (isClosed_iUnion_of_finite fun i => isClosed_tsupport _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, _, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`.
+
+Conclude with `Set.mem_iUnion.2 ⟨i, subset_tsupport _ hi⟩`. Use `⟨fun x => ∑ i, χ i x, smoothR_sum n z Finset.univ χ (fun i _ => hs i), (isCompact_iUnion fun i => hc i).of_isClosed_subset (isClosed_tsupport _) hS, hS.trans (Set.iUnion_subset fun i => (hts i).trans Set.inter_subset_right), fun x => ⟨Finset.sum_nonneg (fun i _ => h0 i x), h1 x⟩, …` and prove the remaining obligations.
+-/
 theorem exists_cutoff {M : Type*} [TopologicalSpace M] [T2Space M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z) (K U : Set M) (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
     ∃ η : M → ℝ, SmoothR n z η ∧ HasCompactSupport η ∧ tsupport η ⊆ U ∧
       (∀ x, 0 ≤ η x ∧ η x ≤ 1) ∧ ∀ x ∈ K, η x = 1 := by

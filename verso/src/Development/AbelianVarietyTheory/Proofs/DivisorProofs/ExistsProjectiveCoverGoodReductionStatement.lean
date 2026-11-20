@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagLines.main | exact GlobalTheory.FlagLines.main | (intros; apply GlobalTheory.FlagLines.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_projective_cover_good_reduction : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (P : Finset ℕ) (M : O.LatModel P c)
   (q : ℕ) [Fact q.Prime], q ∉ P → ¬ q ∣ (discr D.host.E).natAbs →
   ∃ (W : Scheme.{0}) (a : W ⟶ M.V.X) (b : W ⟶ O.s.T.Z.X), IsProjOver (a ≫ M.V.p) ∧ Surjective a ∧

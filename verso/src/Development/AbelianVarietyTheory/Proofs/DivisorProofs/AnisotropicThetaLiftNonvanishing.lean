@@ -23,12 +23,18 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKOrthCusp
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨⟨GlobalTheory.StdPar.isAutOn_const σ J X Y S K 0, fun S' _ => GlobalTheory.StdPar.isConstAlong_const σ J X S' 0⟩, 0, h, fun ψ _ μ 𝓕 _ _ g g' => ⟨?_, ?_, ?_⟩⟩ <;> simp`.
+-/
 theorem zeroComp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {S : Finset (Fin r)} {K : Subgroup (GAd σ J)}
     {φ : GAd σ J → ℂ} (h : GlobalTheory.StdPar.IsConstAlong σ J X S φ 0) : GlobalTheory.StdPar.IsCuspComp σ J X Y S K φ 0 := by
   refine ⟨⟨GlobalTheory.StdPar.isAutOn_const σ J X Y S K 0, fun S' _ => GlobalTheory.StdPar.isConstAlong_const σ J X S' 0⟩, 0, h,
     fun ψ _ μ 𝓕 _ _ g g' => ⟨?_, ?_, ?_⟩⟩ <;> simp
 
+/- English proof (translation)
+Take `⟨T, -, m, m', f, φ, f', φ', hi, hj, rfl, rfl, -⟩` from `h`. Use `⟨Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (hi i).1, φ i, (hi i).2.1, ?_, rfl⟩, Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, (hj j).1, φ' j, (hj j).2.1, ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hi i).2.2 v hT))`. Conclude with `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hj j).2.2 v hT))`.
+-/
 theorem polData_of_polMatch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {R : RealMaps F a a'} {Rf : FinMaps F a a'} {Φ Φ'}
     (h : PolMatch B G X R Rf Φ Φ') : Φ ∈ GlobalTheory.ThK.PolData B G.M ∧ Φ' ∈ GlobalTheory.ThK.PolData B G.M' := by
@@ -38,6 +44,31 @@ theorem polData_of_polMatch {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   · exact Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hi i).2.2 v hT))
   · exact Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hj j).2.2 v hT))
 
+/- English proof (translation)
+Introduce `r C ⟨hr, hind, hiso⟩ μ 𝓕 hμ h𝓕 g`. Take `⟨r, rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Take `⟨m, hm, X, Y, hW, hC⟩` from `GlobalTheory.T.isotropic_columns_extend_witt F E σ h n J hJ r C hind hiso`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hAut : GlobalTheory.StdPar.IsAutOn σ J X Y ∅ K φ` using `GlobalTheory.StdPar.isAutOn_empty.2 hφ`.
+
+Establish `hLL` using `hL F E σ h n J hJ m X Y hW K hK ∅ φ hAut`. Take `⟨ψ, hψ, -⟩` from `hLL.1 ∅ le_rfl`. Establish `hψc : GlobalTheory.StdPar.IsCuspOn σ J X Y ∅ K ψ` using `hψ.1`. Establish `hiso0` using `isIsoCols_of_isWittFrame hW (sigma_sigma h) hJ hm1`. Establish `hx0 : X.submatrix id (Fin.castLE hm1) ≠ 0` using `fun e => by`.
+
+Use `hiso0.1.ne_zero (0 : Fin 1)` as an intermediate fact. Conclude with `this (by rw [e]; rfl)`. Establish `hline0 : IsConstTerm σ J (X.submatrix id (Fin.castLE hm1)) φ 0` using `hline _ hx0 hiso0.2`. Establish `h0 : ∀ S : Finset (Fin m), S.Nonempty → GlobalTheory.StdPar.IsCuspComp σ J X Y S K φ 0`. Introduce `S hS`.
+
+Distinguish the cases in `hi : ∀ k ∈ S, ∀ i ≤ k, i ∈ S`. Take `⟨k, hk⟩` from `hS`. Establish `h0S : (⟨0, by omega⟩ : Fin m) ∈ S` using `hi k hk _ (show (⟨0, by omega⟩ : Fin m) ≤ k from Nat.zero_le _)`. Apply `zeroComp` to reduce the goal to its premises. Use `GlobalTheory.T.constant_term_along_subset F E σ h n J hJ m X Y hW φ hφ.mod.cont hφ.mod.left S {⟨0, by omega⟩} (Finset.singleton_subset_iff.2 h0S) ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.StdPar.isConstAlong_singleton hW]`. Conclude with `hline0`. Conclude with `hblk m X Y hW S hi`. Establish `hψ0 : ∀ S : Finset (Fin m), S.Nonempty → GlobalTheory.StdPar.IsCuspComp σ J X Y S K ψ 0` using `fun S hS => zeroComp (hψc.2 S (Finset.empty_ssubset.2 hS))`. Establish `hψself : GlobalTheory.StdPar.IsCuspComp σ J X Y ∅ K ψ ψ` using `GlobalTheory.StdPar.isCuspComp_self hL h hJ hW hK hψc`.
+
+Establish `hdiff : ∀ S : Finset (Fin m), GlobalTheory.StdPar.IsCuspComp σ J X Y S K (fun g => φ g - 1 * ψ g) 0`. Introduce `S`. Break down `S.eq_empty_or_nonempty with rfl | hS` into its components or cases. Use `GlobalTheory.T.automorphic_linear_combination_const F E σ h n J hJ m X Y hW K ∅ φ ψ ψ ψ 1 hAut hψc.1 hψ hψself` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `GlobalTheory.T.automorphic_linear_combination_const F E σ h n J hJ m X Y hW K S φ ψ 0 0 1 hAut hψc.1 (h0 S hS) (hψ0 S hS)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules. Establish `hAutD` using `GlobalTheory.T.automorphic_sub_scalar_mul F E σ n J m X Y ∅ K φ ψ 1 hAut hψc.1`. Establish `hzero` using `(hL F E σ h n J hJ m X Y hW K hK ∅ _ hAutD).2.1 fun S _ => hdiff S`. Establish `hφψ : φ = ψ` using `funext fun x => by`. Use `congrFun hzero x` as an intermediate fact.
+
+Simplify `this` using `[sub_eq_zero]`. Establish `hk : (∅ : Finset (Fin m)) ⊂ {(⟨r, hm⟩ : Fin m)}` using `Finset.empty_ssubset.2 (Finset.singleton_nonempty _)`. Establish `hct : GlobalTheory.StdPar.IsConstAlong σ J X {(⟨r, hm⟩ : Fin m)} ψ 0` using `hψc.2 _ hk`. Take `rfl` from `hφψ`. Rewrite `hct` using `[GlobalTheory.StdPar.isConstAlong_singleton hW]`.
+
+Substitute `hC` using the available equality. Use `haveI := hμ`. Establish `hC' : IsIsoCols σ J (GlobalTheory.StdPar.initCols X ⟨r, hm⟩)` using `⟨hind, hiso⟩`. Use `haveI := locallyCompact_unipRad h hJ hC'`. Establish `hco` using `cocompact_unipRad h hJ hC'`.
+
+Establish `h1 : μ 𝓕 ≠ ⊤` using `hco.measure_ne_top h𝓕`. Establish `h0' : μ 𝓕 ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne _)`. Establish `hν : ((μ 𝓕)⁻¹ • μ).IsHaarMeasure` using `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0')`. Establish `hν𝓕 : IsFundamentalDomain ((ratPts σ J).subgroupOf (unipRad σ J (GlobalTheory.StdPar.initCols X ⟨r, hm⟩))) 𝓕 ((μ 𝓕)⁻¹ • μ)` using `h𝓕.mono Measure.smul_absolutelyContinuous`. Establish `hν1 : ((μ 𝓕)⁻¹ • μ) 𝓕 = 1` using `by simp [ENNReal.inv_mul_cancel h0' h1]`.
+
+Use `hct _ 𝓕 hν hν𝓕 hν1 g` as an intermediate fact. Rewrite `this` using `[Measure.restrict_smul, integral_smul_measure]`. Establish `hpos : ((μ 𝓕)⁻¹).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨ENNReal.inv_ne_zero.2 h1, ENNReal.inv_ne_top.2 h0'⟩`. Conclude with `(smul_eq_zero.1 this.symm).resolve_left hpos`.
+-/
 theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     (hL : GlobalTheory.Published.LanglandsLemmaUnitary) {K : Subgroup (GAd σ J)} (hK : IsMaxCpt σ J K) {φ : GAd σ J → ℂ}
@@ -108,6 +139,15 @@ theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
   have hpos : ((μ 𝓕)⁻¹).toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨ENNReal.inv_ne_zero.2 h1, ENNReal.inv_ne_top.2 h0'⟩
   exact (smul_eq_zero.1 this.symm).resolve_left hpos
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hprop Φ Φ' hΦ' hPM hCT c₀ hc₀ φ' hφ'`. Establish `h : IsCMExt F E σ` using `hM.triple.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma h`. Take `⟨c₁, hc₁, hc₁σ⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ h`. Establish `hJ₁` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B (a + a') G.W _ _ hM.triple.geo.hW c₁ hc₁ hc₁σ`.
+
+Take `⟨hΦd, hΦ'd⟩` from `polData_of_polMatch hPM`. Take `⟨K, hK, hAV, hAV'⟩` from `GlobalTheory.T.max_compact_pol_data_pair F E σ hσ B a a' G X om om' hKP hM.triple c₁ hc₁ hc₁σ Φ hΦd Φ' ⟨hΦ'd, hΦ'⟩`. Establish `hA : IsAut σ (c₁ • G.W.J.map σ) K (fun x => G.M.I om Φ ((toGAd hσ G.W.J hc₁).symm x) - c * G.M'.I om' Φ' ((toGAd hσ G.W.J hc₁).symm x))` using `GlobalTheory.StdPar.isAutOn_empty.1 (GlobalTheory.T.automorphic_sub_scalar_mul F E σ (a + a') _ 0 (0 : Matrix (Fin (a + a')) (Fin 0) E) 0 ∅ K _ _ c (GlobalTheory.StdPar.isAutOn_empty.2 hAV) (GlobalTheory.StdPar.isAutOn_empty.2 hAV'))`. Take `⟨hx0, hxiso, hct⟩` from `GlobalTheory.T.constant_term_nonzero_vector F E σ hσ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hM.triple.geo.hW hH' c₁ hc₁ _ hCT`. Establish `hcusp` using `core h hJ₁ hKP.automorphicFormsUnitary.2 hK hA (fun x hx hxi => GlobalTheory.T.constant_term_isotropic_vectors F E σ h (a + a') _ hJ₁ _ hA.mod.left _ x hx0 hxiso hx hxi hct) (fun r Xf Yf hW S hS => by`.
+
+Establish `h1` using `GlobalTheory.T.pol_data_witt_frame_scaled F E σ hσ B a a' G X om om' hKP hM.triple c₁ hc₁ hc₁σ Φ hΦd r Xf Yf hW K hK hAV S hS`. Establish `h2` using `GlobalTheory.T.pol_data_so_witt_frame F E σ hσ B a a' G X om om' hKP hM.triple c₁ hc₁ hc₁σ Φ' ⟨hΦ'd, hΦ'⟩ r Xf Yf hW K hK hAV' S hS`. Use `GlobalTheory.T.automorphic_linear_combination_const F E σ h (a + a') _ hJ₁ r Xf Yf hW K S _ _ 0 0 c (GlobalTheory.StdPar.isAutOn_empty.2 hAV) (GlobalTheory.StdPar.isAutOn_empty.2 hAV') h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Use the proof step `simp)`. Establish `he : c₀ • G.W.J.map σ = (c₀ / c₁) • (c₁ • G.W.J.map σ)` using `by rw [smul_smul, div_mul_cancel₀ _ hc₁]`. Establish `hφ₁ : ∀ (g : GAd σ (c₁ • G.W.J.map σ)) (g' : GAd σ (c₀ • G.W.J.map σ)), g.1 = g'.1 → φ' g' = G.M.I om Φ ((toGAd hσ G.W.J hc₁).symm g) - c * G.M'.I om' Φ' ((toGAd hσ G.W.J hc₁).symm g)` using `fun g g' hg => hφ' _ g' hg`. Conclude with `GlobalTheory.T.cuspidal_scale_hermitian_form F E σ (a + a') (c₁ • G.W.J.map σ) (c₀ • G.W.J.map σ) (c₀ / c₁) (div_ne_zero hc₀ hc₁) he (fun x => G.M.I om Φ ((toGAd hσ G.W.J hc₁).symm x) - c * G.M'.I om' Φ' ((toGAd hσ G.W.J hc₁).symm x)) φ' hφ₁ hcusp`.
+-/
 theorem cusp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

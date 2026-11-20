@@ -10,6 +10,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGaugeGRawSmooth
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `gauge_construction_of_truncation gauge_section_exists section_move_holds family_locality_holds hGT generator_to_quadratic_form model_locality_holds radial_space_smoothness Formalism.FourierDecayAlt.P.CutMP.Gauge.raw_gauge_smoothness_holds Formalism.FourierDecayAlt.P.CutMP.Gauge.q …`.
+-/
 theorem gCore_of_genTransfer (hGT : GenTransfer) : GCore :=
   gauge_construction_of_truncation gauge_section_exists section_move_holds family_locality_holds hGT generator_to_quadratic_form model_locality_holds
     radial_space_smoothness Formalism.FourierDecayAlt.P.CutMP.Gauge.raw_gauge_smoothness_holds Formalism.FourierDecayAlt.P.CutMP.Gauge.quadratic_local_family_holds assumption_on_sections_holds

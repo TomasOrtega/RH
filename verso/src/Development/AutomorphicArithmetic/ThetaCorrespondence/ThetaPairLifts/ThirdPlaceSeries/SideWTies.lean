@@ -10,6 +10,13 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links GlobalTheory.FinalJoin2 GlobalTheory.AtMember GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.Plug GlobalTheory.PlugPt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Introduce `hR hL 𝒮 ν hC K p`. Take `⟨hRC, hTC, -⟩` from `GlobalTheory.Plug.wPt_frame 𝒮 K p`. Establish `ht` using `GlobalTheory.T.coreFrameCompatible_constructed_point hR 𝒮 hC K p`. Take `⟨hpsi, hval, htame⟩` from `_root_.GlobalTheory.T.side_weight_psi_choice_tame_tie hL 𝒮 ν K p`. Take `⟨hser, hlev, hdat, hsmall⟩` from `_root_.GlobalTheory.T.side_weight_export_all_data_small_has hR hL 𝒮 ν K p`.
+
+Use `⟨?_, ?_, hser, hlev, hdat, hpsi, hval, hsmall, htame⟩` and prove the remaining obligations. Use `show p.x.what₂.r.z.R.C = GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z`. Rewrite using `[hRC, hTC]`. Use `show Tied p.O.ex.errX p.x.what₂.r.z.core (GlobalTheory.Mem.Col2.TC.cf p.w.I p.w.l p.Z)`. Rewrite using `[hTC]`.
+
+Conclude with `ht`.
+-/
 theorem GlobalTheory.PlugPt.side_weight_ties_of_ray_field : GlobalTheory.NT.RayField → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (𝒮 : Slots) (ν : _root_.GlobalTheory.PlugPt.ExtensionReading hL 𝒮), CoreSlot 𝒮 → ∀ (K : Ctx) (p : WPt 𝒮 K), (_root_.GlobalTheory.PlugPt.sideOfWeightedPoint ν p).Ties p.O.ex.errX p.O.ex.xd := by
   intro hR hL 𝒮 ν hC K p
   obtain ⟨hRC, hTC, -⟩ := GlobalTheory.Plug.wPt_frame 𝒮 K p

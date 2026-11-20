@@ -67,12 +67,24 @@ instance : Category (AbVar K) where
   comp_id _ := Subtype.ext (Category.comp_id _)
   assoc _ _ _ := Subtype.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 @[ext] theorem hom_ext {A B : AbVar K} {f g : A ⟶ B} (h : f.hom = g.hom) : f = g := Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_hom (A : AbVar K) : Hom.hom (𝟙 A) = 𝟙 A.X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_hom {A B C : AbVar K} (f : A ⟶ B) (g : B ⟶ C) : Hom.hom (f ≫ g) = f.hom ≫ g.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_hom {A B : AbVar K} (f : A.X ⟶ B.X) [IsMonHom f] : (Hom.mk f : Hom A B).hom = f := rfl
 
 instance : Preadditive (AbVar K) where
@@ -80,14 +92,29 @@ instance : Preadditive (AbVar K) where
   add_comp _ _ _ f f' g := hom_ext (MonObj.mul_comp f.hom f'.hom g.hom)
   comp_add _ _ _ f g g' := hom_ext (MonObj.comp_mul f.hom g.hom g'.hom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_hom {A B : AbVar K} (f g : A ⟶ B) : Hom.hom (f + g) = f.hom * g.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_hom (A B : AbVar K) : Hom.hom (0 : A ⟶ B) = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_hom {A B : AbVar K} (f : A ⟶ B) : Hom.hom (-f) = f.hom⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nsmul_hom {A B : AbVar K} (n : ℕ) (f : A ⟶ B) : Hom.hom (n • f) = f.hom ^ n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zsmul_hom {A B : AbVar K} (n : ℤ) (f : A ⟶ B) : Hom.hom (n • f) = f.hom ^ n := rfl
 
 def IsIsogeny {A B : AbVar K} (f : A ⟶ B) : Prop := IsFinite f.hom.left ∧ Surjective f.hom.left
@@ -117,6 +144,9 @@ abbrev Gal (K : Type) [Field K] : Type := AlgebraicClosure K ≃ₐ[K] Algebraic
 def ptMap {A B : AbVar K} (f : A ⟶ B) : A.Pt →* B.Pt :=
   MonoidHom.mk' (fun x => x ≫ f.hom) fun x y => MonObj.mul_comp x y f.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ptMap_apply {A B : AbVar K} (f : A ⟶ B) (x : A.Pt) : ptMap f x = x ≫ f.hom := rfl
 
 section Tate
@@ -136,16 +166,28 @@ def tmap (A B : AbVar K) : (A ⟶ B) →+ (Tl l A →ₗ[ℤ_[l]] Tl l B) :=
   AddMonoidHom.mk' (fun f => Tate.map l (ptMap f)) fun f g =>
     LinearMap.ext fun t => Tate.ext fun n => MonObj.comp_mul (t.lev n) f.hom g.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_tmap {A B : AbVar K} (f : A ⟶ B) (t : Tl l A) (n : ℕ) :
     (tmap l A B f t).lev n = t.lev n ≫ f.hom := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun t => Tate.ext fun n => (Category.assoc (t.lev n) f.hom g.hom).symm`.
+-/
 theorem tmap_comp {A B C : AbVar K} (f : A ⟶ B) (g : B ⟶ C) :
     tmap l A C (f ≫ g) = tmap l B C g ∘ₗ tmap l A B f :=
   LinearMap.ext fun t => Tate.ext fun n => (Category.assoc (t.lev n) f.hom g.hom).symm
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun t => Tate.ext fun n => Category.comp_id (t.lev n)`.
+-/
 theorem tmap_id (A : AbVar K) : tmap l A A (𝟙 A) = LinearMap.id :=
   LinearMap.ext fun t => Tate.ext fun n => Category.comp_id (t.lev n)
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun t => Tate.ext fun n => Category.assoc (specAut σ) (t.lev n) f.hom`.
+-/
 theorem tmap_galT {A B : AbVar K} (f : A ⟶ B) (σ : Gal K) :
     tmap l A B f ∘ₗ galT l A σ = galT l B σ ∘ₗ tmap l A B f :=
   LinearMap.ext fun t => Tate.ext fun n => Category.assoc (specAut σ) (t.lev n) f.hom
@@ -248,8 +290,14 @@ def prodDesc {A B T : AbVar K} (f : A ⟶ T) (g : B ⟶ T) : prod A B ⟶ T := p
 
 def prodList (s : List (AbVar K)) : AbVar K := s.foldr prod (zero K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodList_nil : prodList ([] : List (AbVar K)) = zero K := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prodList_cons (A : AbVar K) (s : List (AbVar K)) : prodList (A :: s) = prod A (prodList s) := rfl
 
 def pow (A : AbVar K) (n : ℕ) : AbVar K := prodList (List.replicate n A)
@@ -298,25 +346,45 @@ def ell (W : WeierstrassCurve K) [W.IsElliptic] : AbVar K where
 
 open GlobalTheory.WeierstrassCurve in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, (ellPolAV W).ample, rfl⟩`.
+-/
 theorem ell_isAmpleCls (W : WeierstrassCurve K) [W.IsElliptic] :
     IsAmpleCls (A := ell W) (cls (ellPolAV W).L (ellPolAV W).isLB) :=
   ⟨_, _, (ellPolAV W).ample, rfl⟩
 
 open Classical in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ell (WeierstrassCurve.ofJ (0 : K)), rfl⟩`.
+-/
 theorem exists_dim_eq_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 :=
   ⟨ell (WeierstrassCurve.ofJ (0 : K)), rfl⟩
 
+/- English proof (translation)
+The claim follows from `exists_dim_eq_one K`.
+-/
 theorem exists_dim_one (K : Type) [Field K] : ∃ A : AbVar K, A.dim = 1 := exists_dim_eq_one K
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstanceAs (IsFinite (𝟙 _)), inferInstanceAs (Surjective (𝟙 _))⟩`.
+-/
 theorem isIsogeny_id (A : AbVar K) : IsIsogeny (𝟙 A) :=
   ⟨inferInstanceAs (IsFinite (𝟙 _)), inferInstanceAs (Surjective (𝟙 _))⟩
 
+/- English proof (translation)
+Establish `: IsIso (Hom.hom (𝟙 A)).left` using `inferInstanceAs (IsIso (𝟙 _))`. Rewrite using `[deg, if_pos (isIsogeny_id A), Scheme.Hom.finrank_eq_one_of_isIso]`. Both sides reduce to the same expression.
+-/
 theorem deg_id (A : AbVar K) : deg (𝟙 A) = 1 := by
   have : IsIso (Hom.hom (𝟙 A)).left := inferInstanceAs (IsIso (𝟙 _))
   rw [deg, if_pos (isIsogeny_id A), Scheme.Hom.finrank_eq_one_of_isIso]
   rfl
 
+/- English proof (translation)
+Establish `h : CechPic.pull (1 : Y ⟶ A.X).left c = 0`. Rewrite using `[CategoryTheory.Hom.one_def, Over.comp_left, pull_comp]`. Take `⟨V, hV, hc⟩` from `AbDual.exists_pull_eq_zero (CechPic.pull (η[A.X]).left c) (IsLocalRing.closedPoint K)`. Conclude with `AbDual.pull_eq_zero_of_mem V _ (fun z => by`. Establish `: (toUnit Y).left z = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`.
+
+Rewrite using `[this]`. Conclude with `hV) hc`. Rewrite using `[lam, CechPic.lam, h, add_zero]`.
+-/
 theorem lam_eq {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A.X) :
     lam c x y = CechPic.lam c x y := by
   have h : CechPic.pull (1 : Y ⟶ A.X).left c = 0 := by
@@ -327,7 +395,13 @@ theorem lam_eq {A : AbVar K} (c : Pic A.X.left) {Y : Over (Sp K)} (x y : Y ⟶ A
       rw [this]; exact hV) hc
   rw [lam, CechPic.lam, h, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (zero ℚ).dim = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (ell (WeierstrassCurve.ofJ (0 : ℚ))).dim = 1 := rfl
 
 end AbVar

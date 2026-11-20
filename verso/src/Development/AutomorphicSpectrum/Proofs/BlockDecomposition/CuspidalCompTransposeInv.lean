@@ -25,6 +25,9 @@ def sw (h : r + s = 3) (p : UPos 3 s) : UPos 3 r :=
     simp only [Fin.val_rev]
     omega⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[sw]`.
+-/
 theorem sw_sw (h : r + s = 3) (h' : s + r = 3) (p : UPos 3 s) : sw h' (sw h p) = p := by
   apply Subtype.ext
   simp [sw]
@@ -34,22 +37,47 @@ def swE (h : r + s = 3) : UPos 3 s ≃ UPos 3 r :=
 
 def tX (h : r + s = 3) (X : UPos 3 r → R) : UPos 3 s → R := fun p => -X (sw h p)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[tX, sw_sw]`.
+-/
 theorem tX_tX (h : r + s = 3) (h' : s + r = 3) (X : UPos 3 r → R) : tX h' (tX h X) = X := by
   funext p
   simp [tX, sw_sw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[tX, add_comm]`.
+-/
 theorem tX_add (h : r + s = 3) (X Y : UPos 3 r → R) : tX h (X + Y) = tX h X + tX h Y := by
   funext p
   simp [tX, add_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [w3, Matrix.mul_apply, Fin.sum_univ_three, Fin.rev]`.
+-/
 theorem longWeyl_mul_apply (M : Matrix (Fin 3) (Fin 3) R) (i j : Fin 3) :
     (((w3 : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * M) i j = M (Fin.rev i) j := by
   fin_cases i <;> simp [w3, Matrix.mul_apply, Fin.sum_univ_three, Fin.rev]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases j <;> simp [w3, Matrix.mul_apply, Fin.sum_univ_three, Fin.rev]`.
+-/
 theorem mul_longWeyl_apply (M : Matrix (Fin 3) (Fin 3) R) (i j : Fin 3) :
     (M * ((w3 : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) i j = M i (Fin.rev j) := by
   fin_cases j <;> simp [w3, Matrix.mul_apply, Fin.sum_univ_three, Fin.rev]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, longWeyl_mul_apply, mul_longWeyl_apply]`. Express the relevant statement in the definitionally equal form `((unipGL X)⁻¹ : GL (Fin 3) R).val j (Fin.rev i) = (unipMatrix (tX h X)) i (Fin.rev j)`. Rewrite using `[coe_unipGL_inv]`.
+
+Simplify using `only [unipMatrix, Matrix.add_apply, blockEntry_apply, Matrix.one_apply]`. Establish `e1 : (j = Fin.rev i) ↔ (i = Fin.rev j)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Establish `e2 : ((j : ℕ) < r ∧ r ≤ (Fin.rev i : ℕ)) ↔ ((i : ℕ) < s ∧ s ≤ (Fin.rev j : ℕ))`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact.
+
+Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `c : (j : ℕ) < r ∧ r ≤ (Fin.rev i : ℕ)`. Rewrite using `[dif_pos c, dif_pos (e2.1 c)]`. Simplify using `only [e1, tX, Pi.neg_apply]`.
+
+Use `congr 2`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[sw]`. Rewrite using `[dif_neg c, dif_neg (fun d => c (e2.2 d))]`.
+
+Simplify using `only [e1]`.
+-/
 theorem longWeyl_transposeInv_unipotent (h : r + s = 3) (X : UPos 3 r → R) :
     w3 * ti (unipGL X) = unipGL (tX h X) * w3 := by
   apply Units.ext
@@ -85,8 +113,20 @@ def tE (h : r + s = 3) : (UPos 3 r → 𝔸[ℚ]) ≃ᵐ (UPos 3 s → 𝔸[ℚ]
   measurable_toFun := measurable_pi_lambda _ fun p => (measurable_pi_apply _).neg
   measurable_invFun := measurable_pi_lambda _ fun p => (measurable_pi_apply _).neg
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tE_apply (h : r + s = 3) (X : UPos 3 r → 𝔸[ℚ]) : tE h X = tX h X := rfl
 
+/- English proof (translation)
+Use `⟨(tE h).measurable, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Measure.pi_eq fun S hS => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (tE h).measurable (MeasurableSet.univ_pi hS)]`. Establish `e : (tE h) ⁻¹' (Set.univ.pi S) = Set.univ.pi (fun p : UPos 3 r => Neg.neg ⁻¹' S ((swE h).symm p))`.
+
+Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff, tE_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `H p`. Use `H ((swE h).symm p)` as an intermediate fact.
+
+Establish `e2 : sw h ((swE h).symm p) = p` using `(swE h).apply_symm_apply p`. Simplify `this` using `[tX, e2]`. Introduce `H q`. Use `H (swE h q)` as an intermediate fact. Simplify `this` using `[tX, swE, sw_sw]`.
+
+Rewrite using `[e, Measure.pi_pi]`. Conclude with `Fintype.prod_equiv (swE h).symm _ _ fun p => Measure.measure_preimage_neg _ _`.
+-/
 theorem mp_tE (h : r + s = 3) :
     MeasurePreserving (tE h) (unipMeasure ℚ 3 r) (unipMeasure ℚ 3 s) := by
   refine ⟨(tE h).measurable, ?_⟩
@@ -108,6 +148,15 @@ theorem mp_tE (h : r + s = 3) :
   rw [e, Measure.pi_pi]
   exact Fintype.prod_equiv (swE h).symm _ _ fun p => Measure.measure_preimage_neg _ _
 
+/- English proof (translation)
+Establish `h' : s + r = 3` using `by omega`. Establish `hmem : ∀ {a b : ℕ} (k : a + b = 3) (ξ : unipLattice ℚ 3 a), tX k ξ.1 ∈ unipLattice ℚ 3 b`. Introduce and unpack `a b k ⟨_, ξ, rfl⟩`. Use `⟨tX k ξ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+
+Simplify using `[tX]`. Use `isAddFundamentalDomain_unipFundamentalDomain.preimage_of_equiv (mp_tE h).symm.quasiMeasurePreserving (e := fun ξ => ⟨tX h ξ.1, hmem h ξ⟩) ?_ ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `ξ η e`. Use `congrArg (fun z : unipLattice ℚ 3 s => tX h' z.1) e` as an intermediate fact.
+
+Simplify using `only [tX_tX] at this`. Conclude with `Subtype.ext this`. Introduce `η`. Conclude with `⟨⟨tX h' η.1, hmem h' η⟩, Subtype.ext (tX_tX h' h η.1)⟩`. Introduce `ξ Y`.
+
+Express the relevant statement in the definitionally equal form `tX h' (tX h ξ.1 + Y) = ξ.1 + tX h' Y`. Rewrite using `[tX_add, tX_tX]`.
+-/
 theorem isFD_preimage (h : r + s = 3) :
     IsAddFundamentalDomain (unipLattice ℚ 3 s) ((tE h).symm ⁻¹' unipFundamentalDomain ℚ 3 r)
       (unipMeasure ℚ 3 s) := by
@@ -130,11 +179,19 @@ theorem isFD_preimage (h : r + s = 3) :
     change tX h' (tX h ξ.1 + Y) = ξ.1 + tX h' Y
     rw [tX_add, tX_tX]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, w3]`.
+-/
 theorem diagonal_weyl_GL3 : AdelicGLn.diagonal ℚ 3 w3 = (w3 : G3) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [AdelicGLn.diagonal_apply, w3]
 
+/- English proof (translation)
+Rewrite using `[constantTerm_eq_setIntegral hφ (isFD_preimage h)]`. Rewrite using `[← (mp_tE h).setIntegral_preimage_emb (tE h).measurableEmbedding]`. Establish `e : (tE h) ⁻¹' ((tE h).symm ⁻¹' unipFundamentalDomain ℚ 3 r) = unipFundamentalDomain ℚ 3 r`. Use extensionality with `X`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, constantTerm]`. Use `setIntegral_congr_fun measurableSet_unipFundamentalDomain fun X _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (ti (unipGL X * g)) = φ (unipGL (tX h X) * (w3 * ti g))`. Rewrite using `[← mul_assoc, ← longWeyl_transposeInv_unipotent h, GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, mul_assoc, ← diagonal_weyl_GL3, hφ]`.
+-/
 theorem constantTerm_ti {φ : G3 → ℂ} (hφ : IsLeftInvariant φ) (h : r + s = 3) (g : G3) :
     constantTerm r (fun g : G3 => φ (ti g)) g = constantTerm s φ (w3 * ti g) := by
   rw [constantTerm_eq_setIntegral hφ (isFD_preimage h)]
@@ -149,6 +206,9 @@ theorem constantTerm_ti {φ : G3 → ℂ} (hφ : IsLeftInvariant φ) (h : r + s 
   rw [← mul_assoc, ← longWeyl_transposeInv_unipotent h, GlobalTheory.CompanionTheory.TransposeInverse.ti_mul, mul_assoc,
     ← diagonal_weyl_GL3, hφ]
 
+/- English proof (translation)
+Introduce `φ hφ hc r hr hr3 g`. Rewrite using `[constantTerm_ti hφ (s := 3 - r) (by omega)]`. Conclude with `hc (3 - r) (by omega) (by omega) _`.
+-/
 theorem isCuspidal_comp_ti :
     ∀ φ : G3 → ℂ, IsLeftInvariant φ → IsCuspidal φ → IsCuspidal (fun g : G3 => φ (ti g)) := by
   intro φ hφ hc r hr hr3 g

@@ -3,6 +3,19 @@ open scoped NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨0, by simp, fun i j => if i = j then 1 else 0, fun j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Take `⟨a, ha, e, he⟩` from `ih`. Use `⟨h + l * a, ?_, fun i' j => ∑ i, e i' i ^ l * c i j, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : l * (a + h) ≤ l * (h * l ^ k)` using `Nat.mul_le_mul_left _ ha`. Establish `h2 : 2 * h ≤ l * h` using `Nat.mul_le_mul_right _ hl2`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, mul_comm (u ^ h) (u ^ (l * a)), mul_assoc, hD j, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm a l]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, (∑ i', D i' ^ (l ^ k) * e i' i) ^ l * c i j := by`. Simplify using `only [he]`. Use `_ = ∑ i, ∑ i', D i' ^ (l ^ (k + 1)) * (e i' i ^ l * c i j) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sum_pow_char, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i', D i' ^ (l ^ (k + 1)) * ∑ i, e i' i ^ l * c i j := by`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+-/
 theorem phiEq_iterate (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [ExpChar R l] (u : R)
     (κ : Type) [Fintype κ] (D : κ → R) (c : κ → κ → R) (h : ℕ)
     (hD : ∀ j, u ^ h * D j = ∑ i, D i ^ l * c i j) (k : ℕ) :
@@ -39,6 +52,21 @@ theorem phiEq_iterate (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [ExpChar 
             rw [Finset.sum_comm]
             simp only [Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `l _ R _ u hl hu κ _ D c h hD hnil m j`. Establish `hlp : l.Prime` using `Fact.out`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Establish `hchar : ringChar R = l`.
+
+Break down `(Nat.dvd_prime hlp).1 (ringChar.dvd hl) with h1 | h1` into its components or cases. Conclude with `absurd h1 CharP.ringChar_ne_one`. Conclude with `h1`. Use `haveI : CharP R l := hchar ▸ ringChar.charP R`. Use `haveI : ExpChar R l := ExpChar.prime hlp`.
+
+Use `choose C hC using fun i => hnil i (h + 1)`. Use `set Cm := ∑ i, C i with hCm`. Take `⟨k, hk⟩ : ∃ k, m + Cm < l ^ k` from `⟨m + Cm, Nat.lt_pow_self hlp.one_lt⟩`. Take `⟨a, ha, e, he⟩` from `phiEq_iterate l R u κ D c h hD k`. Establish `hdiv : u ^ ((h + 1) * l ^ k) ∣ u ^ (Cm + a) * D j`.
+
+Rewrite using `[pow_add, mul_assoc, he j, Finset.mul_sum]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Use `Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Establish `hCi : C i ≤ Cm` using `Finset.single_le_sum (fun i _ => Nat.zero_le (C i)) (Finset.mem_univ i)`.
+
+Use `(hC i (l ^ k)).trans ?_` and prove the remaining obligations. Establish `hsp : u ^ Cm = u ^ C i * u ^ (Cm - C i)` using `by rw [← pow_add, Nat.add_sub_cancel' hCi]`. Rewrite using `[hsp]`. Conclude with `⟨u ^ (Cm - C i), by ring⟩`. Establish `hle : Cm + a + m ≤ (h + 1) * l ^ k`.
+
+Establish `: h * l ^ k + l ^ k = (h + 1) * l ^ k` using `by ring`. Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `hdiv`. Establish `hsplit : (h + 1) * l ^ k = (Cm + a) + ((h + 1) * l ^ k - (Cm + a))` using `by omega`. Rewrite `hy` using `[hsplit, pow_add u (Cm + a), mul_assoc]`.
+
+Establish `hreg : u ^ (Cm + a) ∈ nonZeroDivisors R` using `pow_mem hu _`. Establish `hDj` using `(mul_cancel_left_mem_nonZeroDivisors hreg).1 hy`. Rewrite using `[hDj]`. Use `Dvd.dvd.mul_right (pow_dvd_pow u ?_) _` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 theorem phiEq_dvd_all_pow : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (u : R),
     ((l : ℕ) : R) = 0 → u ∈ nonZeroDivisors R → ∀ (κ : Type) [Fintype κ] (D : κ → R)
     (c : κ → κ → R) (h : ℕ), (∀ j, u ^ h * D j = ∑ i, D i ^ l * c i j) →

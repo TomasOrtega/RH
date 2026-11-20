@@ -35,9 +35,17 @@ instance : MulAction (L ≃ₐ[K] L) (HeightOneSpectrum (𝓞 L)) where
   mul_smul σ τ w := HeightOneSpectrum.ext (mul_smul σ τ w.asIdeal)
 
 omit [NumberField L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_asIdeal (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) :
     (σ • w).asIdeal = σ • w.asIdeal := rfl
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hσx : σ • x ≠ 0` using `fun h ↦ hx (by rw [← inv_smul_smul σ x, h, smul_zero])`. Establish `key : ∀ n : ℕ, (σ • w).intValuation (σ • x) ≤ exp (-(n : ℤ)) ↔ w.intValuation x ≤ exp (-(n : ℤ))`.
+
+Introduce `n`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_mem, HeightOneSpectrum.intValuation_le_pow_iff_mem, smul_asIdeal, ← smul_pow', Ideal.smul_mem_pointwise_smul_iff]`. Rewrite `key`, the goal using `[HeightOneSpectrum.intValuation_eq_exp_neg_multiplicity _ hσx, HeightOneSpectrum.intValuation_eq_exp_neg_multiplicity _ hx]`. Simplify using `only [exp_le_exp, neg_le_neg_iff, Nat.cast_le] at key`. Rewrite using `[le_antisymm ((key _).1 le_rfl) ((key _).2 le_rfl)]`.
+-/
 theorem intValuation_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) (x : 𝓞 L) :
     (σ • w).intValuation (σ • x) = w.intValuation x := by
   by_cases hx : x = 0
@@ -55,6 +63,9 @@ theorem intValuation_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) 
   simp only [exp_le_exp, neg_le_neg_iff, Nat.cast_le] at key
   rw [le_antisymm ((key _).1 le_rfl) ((key _).2 le_rfl)]
 
+/- English proof (translation)
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) x`. Establish `h : ∀ c : 𝓞 L, σ (algebraMap (𝓞 L) L c) = algebraMap (𝓞 L) L (σ • c)` using `fun _ ↦ rfl`. Rewrite using `[map_div₀, map_div₀, map_div₀, h, h, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, intValuation_smul, intValuation_smul]`.
+-/
 theorem valuation_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) (x : L) :
     (σ • w).valuation L (σ x) = w.valuation L x := by
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 L) x
@@ -63,6 +74,9 @@ theorem valuation_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) (x 
     HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap,
     HeightOneSpectrum.valuation_of_algebraMap, intValuation_smul, intValuation_smul]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv w.asIdeal (σ • w).asIdeal (MulSemiringAction.toRingEquiv _ (𝓞 L) σ) (by rw [smul_asIdeal, Ideal.pointwise_smul_def]; rfl)).toEquiv.symm`.
+-/
 theorem absNorm_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) :
     Ideal.absNorm (σ • w).asIdeal = Ideal.absNorm w.asIdeal := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply,
@@ -71,6 +85,9 @@ theorem absNorm_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) :
     (MulSemiringAction.toRingEquiv _ (𝓞 L) σ)
     (by rw [smul_asIdeal, Ideal.pointwise_smul_def]; rfl)).toEquiv.symm
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Function.comp_apply, Algebra.algebraMap_self, RingHom.id_apply, RingHom.id_apply, ← FinitePlace.embedding_apply, ← FinitePlace.embedding_apply, FinitePlace.norm_embeddi …`. Establish `: ∀ (e₁ e₂ : NNReal) (h₁ : e₁ ≠ 0) (h₂ : e₂ ≠ 0), e₁ = e₂ → ∀ c : ℤᵐ⁰, WithZeroMulInt.toNNReal h₁ c = WithZeroMulInt.toNNReal h₂ c`. Introduce and unpack `_ _ _ _ rfl _`. Both sides reduce to the same expression. Rewrite using `[this _ _ _ _ (by rw [absNorm_smul])]`.
+-/
 theorem norm_algebraMap_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) (x : L) :
     ‖algebraMap L ((σ • w).adicCompletion L) (σ x)‖ = ‖algebraMap L (w.adicCompletion L) x‖ := by
   rw [HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion,
@@ -91,6 +108,9 @@ instance : MulAction (L ≃ₐ[K] L) (PlacesOver L v) where
   mul_smul σ τ w := Subtype.ext (mul_smul σ τ w.1)
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_smul_placesOver (σ : L ≃ₐ[K] L) (w : PlacesOver L v) :
     (σ • w).1 = σ • w.1 := rfl
 
@@ -109,12 +129,20 @@ def galoisCompletionMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
   (algebraMap L (w'.adicCompletion L)).comp
     (σ.toRingEquiv.toRingHom.comp (WithVal.equiv (w.valuation L)).toRingHom)
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.adicCompletion.uniformEquiv L w).symm.isUniformEmbedding.isUniformInducing.comp (UniformSpace.Completion.isUniformInducing_coe _)`.
+-/
 theorem isUniformInducing_algebraMap_withVal (w : HeightOneSpectrum (𝓞 L)) :
     IsUniformInducing (fun x : WithVal (w.valuation L) ↦
       algebraMap L (w.adicCompletion L) (WithVal.equiv _ x)) :=
   (HeightOneSpectrum.adicCompletion.uniformEquiv L w).symm.isUniformEmbedding.isUniformInducing.comp
     (UniformSpace.Completion.isUniformInducing_coe _)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[UniformContinuous, ← (isUniformInducing_algebraMap_withVal w).comap_uniformity, ((Metric.uniformity_basis_dist).comap _).tendsto_iff Metric.uniformity_basis_dist]`. Introduce `ε hε`. Use `⟨ε, hε, fun p hp ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, dist_eq_norm] at hp ⊢`.
+
+Rewrite `hp` using `[← map_sub, ← map_sub]`. Rewrite using `[← map_sub]`. Simplify using `only [galoisCompletionMap, RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv]`. Rewrite using `[norm_algebraMap_smul]` and apply the resulting hypothesis.
+-/
 theorem uniformContinuous_galoisCompletionMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     (h : w' = σ • w) : UniformContinuous (galoisCompletionMap σ w w') := by
   subst h
@@ -135,11 +163,17 @@ def galHom (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L)) (h : w' = σ
       (uniformContinuous_galoisCompletionMap σ w w' h).continuous).comp
     (HeightOneSpectrum.adicCompletion.equiv L w).toRingHom
 
+/- English proof (translation)
+The claim follows from `UniformSpace.Completion.continuous_extension.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion L w)`.
+-/
 theorem continuous_galHom (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L)) (h : w' = σ • w) :
     Continuous (galHom σ w w' h) :=
   UniformSpace.Completion.continuous_extension.comp
     (HeightOneSpectrum.adicCompletion.continuous_toCompletion L w)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `UniformSpace.Completion.extensionHom (galoisCompletionMap σ w w') (uniformContinuous_galoisCompletionMap σ w w' h).continuous ((WithVal.equiv (w.valuation L)).symm x : UniformSpace.Completion _) = _`. Rewrite using `[UniformSpace.Completion.extensionHom_coe]`. Both sides reduce to the same expression.
+-/
 theorem galHom_algebraMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L)) (h : w' = σ • w)
     (x : L) : galHom σ w w' h (algebraMap L (w.adicCompletion L) x) =
       algebraMap L (w'.adicCompletion L) (σ x) := by
@@ -149,6 +183,9 @@ theorem galHom_algebraMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L
   rw [UniformSpace.Completion.extensionHom_coe]
   rfl
 
+/- English proof (translation)
+Use `(HeightOneSpectrum.denseRange_algebraMap L w).equalizer ((continuous_galHom τ w' w h').comp (continuous_galHom σ w w' h)) continuous_id (funext fun x ↦ by` as an intermediate fact. Simplify using `only [Function.comp_apply, galHom_algebraMap, id_eq]`. Rewrite using `[← AlgEquiv.mul_apply, hστ, AlgEquiv.one_apply])`. Conclude with `RingHom.ext (congrFun this)`.
+-/
 theorem galHom_comp_galHom (σ τ : L ≃ₐ[K] L) (hστ : τ * σ = 1) (w w' : HeightOneSpectrum (𝓞 L))
     (h : w' = σ • w) (h' : w = τ • w') :
     (galHom τ w' w h').comp (galHom σ w w' h) = RingHom.id _ := by
@@ -161,6 +198,9 @@ theorem galHom_comp_galHom (σ τ : L ≃ₐ[K] L) (hστ : τ * σ = 1) (w w' :
 
 variable [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Use `(HeightOneSpectrum.denseRange_algebraMap K v).equalizer ((continuous_galHom σ w w' h).comp (continuous_completionMap v w)) (continuous_completionMap v w') (funext fun x ↦ by` as an intermediate fact. Simplify using `only [Function.comp_apply, completionMap_algebraMap, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), IsScalarTower.algebraMap_apply K L (w'.adicCompletion L), galHom_algebraMap, AlgEquiv.commutes])`. Conclude with `congrFun this a`.
+-/
 theorem galHom_completionMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w)
     (a : v.adicCompletion K) : galHom σ w w' h (completionMap v w a) = completionMap v w' a := by
@@ -183,21 +223,33 @@ def galEquiv (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L)) [w.asIdeal
       (galHom_comp_galHom σ σ⁻¹ (inv_mul_cancel σ) w w' h _))
     (fun a ↦ galHom_completionMap v σ w w' h a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galEquiv_apply (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w)
     (y : w.adicCompletion L) : galEquiv v σ w w' h y = galHom σ w w' h y := rfl
 
+/- English proof (translation)
+The claim follows from `galHom_algebraMap σ w w' h x`.
+-/
 theorem galEquiv_algebraMap (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w) (x : L) :
     galEquiv v σ w w' h (algebraMap L (w.adicCompletion L) x) =
       algebraMap L (w'.adicCompletion L) (σ x) :=
   galHom_algebraMap σ w w' h x
 
+/- English proof (translation)
+The claim follows from `continuous_galHom σ w w' h`.
+-/
 theorem continuous_galEquiv (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w) :
     Continuous (galEquiv v σ w w' h) :=
   continuous_galHom σ w w' h
 
+/- English proof (translation)
+The claim follows from `continuous_galHom σ⁻¹ w' w (by rw [h, inv_smul_smul])`.
+-/
 theorem continuous_galEquiv_symm (σ : L ≃ₐ[K] L) (w w' : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] [w'.asIdeal.LiesOver v.asIdeal] (h : w' = σ • w) :
     Continuous (galEquiv v σ w w' h).symm :=
@@ -217,6 +269,9 @@ section Product
 variable [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Rewrite using `[← coe_smul_placesOver, smul_inv_smul]`.
+-/
 theorem eq_smul_inv_smul (σ : L ≃ₐ[K] L) (u : PlacesOver L v) : u.1 = σ • (σ⁻¹ • u).1 := by
   rw [← coe_smul_placesOver, smul_inv_smul]
 
@@ -225,9 +280,17 @@ def piGal (σ : L ≃ₐ[K] L) : CompletionsOver L v →ₐ[v.adicCompletion K] 
     (galEquiv v σ (σ⁻¹ • u).1 u.1 (eq_smul_inv_smul v σ u)).toAlgHom.comp
       (Pi.evalAlgHom _ _ (σ⁻¹ • u))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piGal_apply (σ : L ≃ₐ[K] L) (y : CompletionsOver L v) (u : PlacesOver L v) :
     piGal v σ y u = galEquiv v σ (σ⁻¹ • u).1 u.1 (eq_smul_inv_smul v σ u) (y (σ⁻¹ • u)) := rfl
 
+/- English proof (translation)
+Establish `: (tensorEquiv L v).toAlgHom.comp (Algebra.TensorProduct.map (AlgHom.id (v.adicCompletion K) (v.adicCompletion K)) σ.toAlgHom) = (piGal v σ).comp (tensorEquiv L v).toAlgHom`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a l`. Use function extensionality and compare the values at `u`. Simplify using `[piGal_apply, Pi.mul_apply, galEquiv_algebraMap]`.
+
+Conclude with `DFunLike.congr_fun this x`.
+-/
 theorem tensorEquiv_map_gal (σ : L ≃ₐ[K] L) (x : v.adicCompletion K ⊗[K] L) :
     tensorEquiv L v (Algebra.TensorProduct.map
       (AlgHom.id (v.adicCompletion K) (v.adicCompletion K)) σ.toAlgHom x) =

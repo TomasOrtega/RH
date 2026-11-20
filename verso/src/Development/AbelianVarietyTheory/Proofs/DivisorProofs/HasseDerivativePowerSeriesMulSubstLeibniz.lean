@@ -7,16 +7,25 @@ namespace GlobalTheory.PicDiv
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_hasse, Polynomial.coeff_coe, Polynomial.coeff_coe, hasseDeriv_coeff]`.
+-/
 theorem hasse_coe (l : ℕ) (f : R[X]) :
     hasse l (f : PowerSeries R) = ((hasseDeriv l f : R[X]) : PowerSeries R) := by
   ext n
   rw [coeff_hasse, Polynomial.coeff_coe, Polynomial.coeff_coe, hasseDeriv_coeff]
 
+/- English proof (translation)
+Rewrite using `[coeff_hasse, coeff_hasse, h _ le_rfl]`.
+-/
 theorem coeff_hasse_congr {l n : ℕ} {φ φ' : PowerSeries R}
     (h : ∀ m ≤ n + l, PowerSeries.coeff m φ = PowerSeries.coeff m φ') :
     PowerSeries.coeff n (hasse l φ) = PowerSeries.coeff n (hasse l φ') := by
   rw [coeff_hasse, coeff_hasse, h _ le_rfl]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_mul, PowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Establish `hs` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hij`. Rewrite using `[h₁ _ (by omega), h₂ _ (by omega)]`.
+-/
 theorem coeff_mul_congr {n : ℕ} {φ φ' ψ ψ' : PowerSeries R}
     (h₁ : ∀ m ≤ n, PowerSeries.coeff m φ = PowerSeries.coeff m φ')
     (h₂ : ∀ m ≤ n, PowerSeries.coeff m ψ = PowerSeries.coeff m ψ') :
@@ -26,6 +35,17 @@ theorem coeff_mul_congr {n : ℕ} {φ φ' ψ ψ' : PowerSeries R}
   have hs := Finset.HasAntidiagonal.mem_antidiagonal.mp hij
   rw [h₁ _ (by omega), h₂ _ (by omega)]
 
+/- English proof (translation)
+Use extensionality with `n`. Use `set M := n + l + 1 with hM`. Use `set f : R[X] := PowerSeries.trunc M φ`. Use `set g : R[X] := PowerSeries.trunc M ψ`. Establish `hf : ∀ m < M, PowerSeries.coeff m φ = PowerSeries.coeff m (f : PowerSeries R)`.
+
+Introduce `m hm`. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hm]`. Establish `hg : ∀ m < M, PowerSeries.coeff m ψ = PowerSeries.coeff m (g : PowerSeries R)`. Introduce `m hm`. Rewrite using `[Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hm]`.
+
+Establish `hpoly : hasse l ((f : PowerSeries R) * (g : PowerSeries R)) = ∑ p ∈ Finset.range (l + 1), hasse p (f : PowerSeries R) * hasse (l - p) (g : PowerSeries R)`. Rewrite using `[← Polynomial.coe_mul, hasse_coe, hasseDeriv_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => hasseDeriv i f * hasseDeriv j g) l]`. Simplify using `only [hasse_coe]`. Rewrite using `[← Polynomial.coeToPowerSeries.ringHom_apply, map_sum]`. Simplify using `[Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_mul]`.
+
+Rewrite using `[coeff_hasse_congr (φ' := (f : PowerSeries R) * (g : PowerSeries R)), hpoly, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpl : p ≤ l` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hp)`. Apply `coeff_mul_congr` to reduce the goal to its premises. Introduce `m hm`.
+
+Conclude with `(coeff_hasse_congr fun m' hm' => hf m' (by omega)).symm`. Introduce `m hm`. Conclude with `(coeff_hasse_congr fun m' hm' => hg m' (by omega)).symm`. Introduce `m hm`. Conclude with `coeff_mul_congr (fun m' hm' => hf m' (by omega)) (fun m' hm' => hg m' (by omega))`.
+-/
 theorem hasse_mul (l : ℕ) (φ ψ : PowerSeries R) :
     hasse l (φ * ψ) = ∑ p ∈ Finset.range (l + 1), hasse p φ * hasse (l - p) ψ := by
   ext n
@@ -61,6 +81,9 @@ end GlobalTheory.PicDiv
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ a φ ψ l ha`. Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Rewrite using `[GlobalTheory.PicDiv.hasse_mul, ← PowerSeries.coe_substAlgHom hs, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+-/
 theorem hasse_mul_subst :
     ∀ (k : Type) [Field k] (a φ ψ : PowerSeries k) (l : ℕ), PowerSeries.constantCoeff a = 0 →
       ((GlobalTheory.PicDiv.hasse l (φ * ψ)).subst a : PowerSeries k) =

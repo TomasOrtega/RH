@@ -12,6 +12,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.NonzeroFlag
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro r j _`. Simplify using the standard rewrite rules. Consider the case `succ a ih`.
+
+Introduce `r j h`. Establish `h1` using `ih (fun i => r i.castSucc) (fun i => j i.castSucc) (fun i => h i.castSucc)`. Establish `h2` using `h (Fin.last a)`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h3 : r (Fin.last (a + 1)) = r (Fin.last a).castSucc + j (Fin.last a)` using `h2`.
+
+Establish `h4 : r (Fin.last a).castSucc = r 0 + ∑ i : Fin a, j i.castSucc` using `h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem telescope : ∀ (a : ℕ) (r : Fin (a + 1) → ℕ) (j : Fin a → ℕ),
     (∀ i : Fin a, r i.succ = r i.castSucc + j i) → r (Fin.last a) = r 0 + ∑ i, j i := by
   intro a
@@ -26,6 +33,13 @@ theorem telescope : ∀ (a : ℕ) (r : Fin (a + 1) → ℕ) (j : Fin a → ℕ),
     have h4 : r (Fin.last a).castSucc = r 0 + ∑ i : Fin a, j i.castSucc := h1
     omega
 
+/- English proof (translation)
+Establish `key : ∀ (b : ℕ) (e : b = a) (j' : Fin b → ℕ), (∀ i, j' i = j (Fin.cast e i)) → P b j'`. Introduce `b e j' hh`. Substitute `e` using the available equality. Establish `: j' = j` using `funext hh`. Rewrite using `[this]`.
+
+Conclude with `h`. Use `⟨⟨List.ofFn j, ?_, ?_⟩, key _ (by simp [Composition.length]) _ ?_⟩` and prove the remaining obligations. Introduce `i hi`. Take `⟨k, rfl⟩` from `List.mem_ofFn.mp hi`. Conclude with `hj k`.
+
+Rewrite using `[List.sum_ofFn, hJ]`. Introduce `i`. Simplify using `[Composition.blocksFun]`. Both sides reduce to the same expression.
+-/
 theorem exists_composition (a : ℕ) (j : Fin a → ℕ) (hj : ∀ i, 1 ≤ j i) (J : ℕ) (hJ : ∑ i, j i = J)
     (P : ∀ a : ℕ, (Fin a → ℕ) → Prop) (h : P a j) :
     ∃ c : Composition J, P c.length c.blocksFun := by
@@ -43,6 +57,11 @@ theorem exists_composition (a : ℕ) (j : Fin a → ℕ) (hj : ∀ i, 1 ≤ j i)
     simp [Composition.blocksFun]
     rfl
 
+/- English proof (translation)
+Establish `: simplexH a = (⋂ i : Fin a, ⋂ k : Fin a, ⋂ _ : i < k, {τ : Fin a → ℝ | τ i < τ k}) ∩ ⋂ i : Fin a, ({τ : Fin a → ℝ | 0 < τ i} ∩ {τ : Fin a → ℝ | τ i < 1 / 2})`. Use extensionality with `τ`. Simplify using `[simplexH, StrictMono]`. Rewrite using `[this]`. Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations.
+
+Conclude with `MeasurableSet.iInter fun i => MeasurableSet.iInter fun k => MeasurableSet.iInter fun _ => measurableSet_lt (measurable_pi_apply i) (measurable_pi_apply k)`. Conclude with `MeasurableSet.iInter fun i => (measurableSet_lt measurable_const (measurable_pi_apply i)).inter (measurableSet_lt (measurable_pi_apply i) measurable_const)`.
+-/
 theorem measurableSet_simplexH (a : ℕ) : MeasurableSet (simplexH a) := by
   have : simplexH a = (⋂ i : Fin a, ⋂ k : Fin a, ⋂ _ : i < k, {τ : Fin a → ℝ | τ i < τ k}) ∩
       ⋂ i : Fin a, ({τ : Fin a → ℝ | 0 < τ i} ∩ {τ : Fin a → ℝ | τ i < 1 / 2}) := by
@@ -55,6 +74,19 @@ theorem measurableSet_simplexH (a : ℕ) : MeasurableSet (simplexH a) := by
   · exact MeasurableSet.iInter fun i => (measurableSet_lt measurable_const (measurable_pi_apply i)).inter
       (measurableSet_lt (measurable_pi_apply i) measurable_const)
 
+/- English proof (translation)
+Take `⟨⟨a, S, τ, hF⟩, -, h3⟩` from `GlobalTheory.PointFlag.flag_spec I x`. Establish `h3` using `(h3 a S τ hF).1`. Use `set j : Fin a → ℕ := fun i => Formalism.HN.rkK (S i.succ) - Formalism.HN.rkK (S i.castSucc) with hjdef`. Establish `hj1 : ∀ i, 1 ≤ j i` using `fun i => by have := (h3 i).2.1; simp only [hjdef]; omega`. Establish `hj2 : ∀ i, Formalism.HN.rkK (S i.succ) = Formalism.HN.rkK (S i.castSucc) + j i` using `fun i => by`.
+
+Use `(h3 i).2.1` as an intermediate fact. Simplify using `only [hjdef]`. Use linear arithmetic over natural numbers and integers. Establish `htel` using `telescope a (fun i => Formalism.HN.rkK (S i)) j hj2`. Take `⟨v⟩ : Nonempty (InfinitePlace I.F)` from `inferInstance`.
+
+Establish `hr` using `(GlobalTheory.T.canonicalLatticeFlag_isotropic_selfDual I x).2.1 v`. Establish `hq : rkR (I.ε v) ≤ q`. Rewrite using `[← (hs v).2]`. Conclude with `min_le_right _ _`. Establish `hle : ∑ i, j i ≤ q`.
+
+Simplify using `only [hF.2.2.1] at htel`. Use linear arithmetic over natural numbers and integers. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite using `[← hF.2.2.1, ← hF.1]`. Both sides reduce to the same expression. Establish `hge : 1 ≤ ∑ i, j i` using `(hj1 ⟨0, Nat.pos_of_ne_zero ha⟩).trans (Finset.single_le_sum (fun i _ => Nat.zero_le (j i)) (mem_univ _))`. Use `⟨∑ i, j i, Finset.mem_Icc.mpr ⟨hge, hle⟩, ?_⟩` and prove the remaining obligations. Use `exists_composition a j hj1 _ rfl (fun a j => x ∈ typeSet I j (simplexH a)) ?_` and prove the remaining obligations.
+
+Conclude with `⟨τ, ⟨hF.2.2.2.1, fun i => ⟨(hF.2.2.2.2.1 i).1, (hF.2.2.2.2.1 i).2.1⟩⟩, S, hF, hj2⟩`.
+-/
 theorem mem_typeSet (I : AutInst) (p q : ℕ) (hs : HasSig I p q) (x : I.GA) (hx : stepLt I x (1 / 2) ≠ ⊥) :
     ∃ J ∈ Finset.Icc 1 q, ∃ c : Composition J, x ∈ typeSet I c.blocksFun (simplexH c.length) := by
   obtain ⟨⟨a, S, τ, hF⟩, -, h3⟩ := GlobalTheory.PointFlag.flag_spec I x
@@ -81,6 +113,29 @@ theorem mem_typeSet (I : AutInst) (p q : ℕ) (hs : HasSig I p q) (x : I.GA) (hx
   refine exists_composition a j hj1 _ rfl (fun a j => x ∈ typeSet I j (simplexH a)) ?_
   exact ⟨τ, ⟨hF.2.2.2.1, fun i => ⟨(hF.2.2.2.2.1 i).1, (hF.2.2.2.2.1 i).2.1⟩⟩, S, hF, hj2⟩
 
+/- English proof (translation)
+Introduce `hV I μf _ _ fund hfund p q hs hn hq hrd hf`. Take `⟨hfd, hv, -, hf1, -, hpq⟩` from `GlobalTheory.T.autInst_degree_rootDiscriminant_rank I`. Establish `hpq` using `hpq p q hs`. Establish `hn16 : 16 ≤ I.n`. Establish `hpos : (0 : ℝ) < I.n`.
+
+Break down `Nat.eq_zero_or_pos I.n with h | h` into its components or cases. Rewrite `hn` using `[h]`. Simplify using `at hn`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h` after adjusting the coercions.
+
+Use `Real.log_le_sub_one_of_pos hpos` as an intermediate fact. Establish `: (16 : ℝ) ≤ I.n` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `h2q : 2 * q + 2 ≤ I.n` using `by nlinarith`. Use `set X : ℝ := I.n * I.f * Real.log I.n with hX`.
+
+Establish `hX15 : 15 ≤ X`. Establish `h1 : (1 : ℝ) ≤ I.n` using `by exact_mod_cast (by omega : 1 ≤ I.n)`. Establish `h2 : (1 : ℝ) ≤ I.f` using `by exact_mod_cast hf1`. Establish `h3 : (1 : ℝ) ≤ I.n * I.f` using `one_le_mul_of_one_le_of_one_le h1 h2`. Rewrite using `[hX]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hone : ∀ J ∈ Finset.Icc 1 q, ∀ c : Composition J, I.muA μf (typeSet I c.blocksFun (simplexH c.length) ∩ fund) / I.muA μf fund ≤ ENNReal.ofReal (Real.exp (-(1 / 2 * J * X)))`. Introduce `J hJ c`. Take `⟨hJ1, hJq⟩` from `Finset.mem_Icc.mp hJ`. Establish `hsum` using `c.sum_blocksFun`.
+
+Establish `hT` using `(GlobalTheory.T.isotropicFlagProbabilityBound_of_volumeRatio hV I μf fund hfund p q hs h2q c.length c.blocksFun (c.length_pos_of_pos hJ1) c.one_le_blocksFun (by omega) _ (measurableSet_simplexH _) subset_rfl).2.2.2`. Establish `hD` using `GlobalTheory.T.lintegral_flagSizeDensity_le_one I.n I.f c.length c.blocksFun hf1 c.one_le_blocksFun (by omega)`. Establish `hK` using `GlobalTheory.T.flag_explicit_constant_le_exp_neg_half I.E I.cm.cmUnram p q c.length c.blocksFun c.one_le_blocksFun (by omega) (by rw [hpq]; exact hn) (by rw [hpq]; exact hq) (by rw [hpq, hv]; exact hrd) (by rw [hpq, hfd]; exact hf)`. Rewrite `hK` using `[hpq, hfd, hsum]`. Use `hT.trans ((mul_le_mul_right hD _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[mul_one]`. Use `ENNReal.ofReal_le_ofReal (hK.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[hX]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsub : {x | stepLt I x (1 / 2) ≠ ⊥} ∩ fund ⊆ ⋃ J ∈ Finset.Icc 1 q, ⋃ c ∈ (Finset.univ : Finset (Composition J)), typeSet I c.blocksFun (simplexH c.length) ∩ fund`. Introduce and unpack `x ⟨hx, hxf⟩`. Take `⟨J, hJ, c, hc⟩` from `mem_typeSet I p q hs x hx`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨J, hJ, c, mem_univ _, hc, hxf⟩`.
+
+Establish `hμ : I.muA μf ({x | stepLt I x (1 / 2) ≠ ⊥} ∩ fund) ≤ ∑ J ∈ Finset.Icc 1 q, ∑ c : Composition J, I.muA μf (typeSet I c.blocksFun (simplexH c.length) ∩ fund)` using `(measure_mono hsub).trans ((measure_biUnion_finset_le _ _).trans (Finset.sum_le_sum fun J _ => measure_biUnion_finset_le _ _))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [div_eq_mul_inv, Finset.sum_mul]`. Use `_ ≤ ∑ J ∈ Finset.Icc 1 q, ∑ _c : Composition J, ENNReal.ofReal (Real.exp (-(1 / 2 * J * X))) := Finset.sum_le_sum fun J hJ => Finset.sum_le_sum fun c _ => hone J hJ c`. Use `_ = ENNReal.ofReal (∑ J ∈ Finset.Icc 1 q, (2 : ℝ) ^ (J - 1) * Real.exp (-(1 / 2 * J * X))) := by`.
+
+Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun J _ => by positivity)]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, composition_card, nsmul_eq_mul, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (by norm_num)]`. Simplify using the standard rewrite rules. Use `_ ≤ _ := by`.
+
+Use `ENNReal.ofReal_le_ofReal ((GlobalTheory.T.sum_two_pow_pred_mul_exp_neg_le_exp_neg_third q X hX15).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[hX]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nonzeroFlagBound : VolumeStep → NonzeroFlagBound := by
   intro hV I μf _ _ fund hfund p q hs hn hq hrd hf
   obtain ⟨hfd, hv, -, hf1, -, hpq⟩ := GlobalTheory.T.autInst_degree_rootDiscriminant_rank I

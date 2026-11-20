@@ -24,6 +24,23 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω}
   {Ω' : Type} [Field Ω'] [Algebra o Ω'] {M' : RatModel o Ω'} {φ : Ω →ₐ[o] Ω'}
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ M Ω' _ _ φ J _ EE s hM ⟨j₀, hj₀⟩ hs`. Take `⟨n, t, e, m, v, ht, hv⟩` from `GlobalTheory.T.exists_projective_lattice_twist_generated o Ω M hM J EE`. Take `⟨i₀, hi₀⟩` from `ht.1 (genericPoint M.Z)`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k, pairing φ s (v k) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Take `⟨c, hc⟩` from `EE.exists_eq_sum_pairing (φ := φ) s (hv _ i₀ hi₀) j₀`. Conclude with `hj₀ (by simp [hc, pairing_div, h])`. Set `τ : Fin (n + 1) × Fin m → Ω'` to `fun q => φ (t q.1) * pairing φ s (v q.2)`. Establish `hφ0 : φ (t i₀) ≠ 0` using `(map_ne_zero φ).2 hi₀.1`.
+
+Establish `hτ0 : τ (i₀, k₀) ≠ 0` using `mul_ne_zero hφ0 hk₀`. Take `⟨N, hN⟩ : ∃ N, Fintype.card (Fin (n + 1) × Fin m) = N + 1` from `Nat.exists_eq_succ_of_ne_zero (Fintype.card_pos_iff.2 ⟨(i₀, k₀)⟩).ne'`. Set `ε : Fin (N + 1) ≃ Fin (n + 1) × Fin m` to `(Fintype.equivFinOfCardEq hN).symm`. Take `⟨M', hcl, hproj⟩` from `exists_isCl_isProjOver o Ω' N (fun l => τ (ε l)) ⟨ε.symm (i₀, k₀), by simpa using hτ0⟩ (by set K := Subfield.closure (Set.range (algebraMap o Ω') ∪ {x | ∃ i j, x = τ (ε j) / τ (ε i)})`. Establish `hK : ∀ q, τ q / τ (i₀, k₀) ∈ K` using `fun q => Subfield.subset_closure (Or.inr ⟨ε.symm (i₀, k₀), ε.symm q, by simp⟩)`.
+
+Take `⟨V, hV, hD, hR⟩` from `ht.2 i₀ hi₀.1`. Establish `h1 : ∀ x, φ x ∈ K` using `map_mem_of_ringOn hV ⟨genericPoint M.Z, hD ▸ hi₀⟩ fun x hx => by`. Rewrite `hx` using `[hR]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem _ h`.
+
+Take `⟨i, rfl⟩` from `h`. Simplify `hK (i, k₀)` using `[τ, mul_div_mul_right _ _ hk₀]`. Consider the case `algebraMap r => exact Subfield.subset_closure (Or.inl ⟨r, (φ.commutes r).symm⟩)`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`. Use `EE.eq_top_of_pairing_mem hs (hv _ i₀ hi₀) hk₀ h1 fun k => ?_` and prove the remaining obligations. Rewrite using `[pairing_div, mul_div_assoc]`. Conclude with `mul_mem (inv_mem (h1 _)) (by simpa [τ, mul_div_mul_left _ _ hφ0] using hK (i₀, k)))`.
+
+Establish `hd : ∀ z, ∃ i k, M'.Div (fun i => φ (t i)) i z ∧ M'.Div (fun k => pairing φ s (v k)) k z` using `fun z => by`. Take `⟨l, hl⟩` from `hcl.1 z`. Conclude with `⟨(ε l).1, (ε l).2, div_mul_prod_iff.1 ((div_comp_iff ε.surjective).1 hl)⟩`. Take `⟨f, hf⟩` from `ht.exists_isHom (M' := M') (φ := φ) fun z => (hd z).imp fun _ h => h.choose_spec.1`. Use `⟨M', f, hf, hproj, fun W B hW hne hB => ?_⟩` and prove the remaining obligations.
+
+Conclude with `charts_of_universal EE hs ht.1 hv hf (fun z => (hd z).choose_spec.imp fun _ h => h.2) (fun N' hN' => hcl.exists_isHom fun z => by`. Take `⟨q, hq⟩` from `hN' z`. Take `⟨l, rfl⟩` from `ε.surjective q`. Conclude with `⟨l, (div_comp_iff (t := τ) ε.surjective).2 hq⟩) W B hW hne hB`.
+-/
 theorem exists_projBundle_closure : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [IsNoetherianRing o] (M : RatModel o Ω) (Ω' : Type) [Field Ω'] [Algebra o Ω'] (φ : Ω →ₐ[o] Ω') (J : Type) [Fintype J] (EE : M.Lat J) (s : J → Ω'), IsProjOver M.s → (∃ j, s j ≠ 0) → Subfield.closure (Set.range φ ∪ {x | ∃ i j, x = s j / s i}) = ⊤ → ∃ (M' : RatModel o Ω') (f : M'.Z ⟶ M.Z), M.IsHom M' φ f ∧ IsProjOver M'.s ∧ ∀ (W : M.Z.Opens) (B : Matrix J J Ω), IsAffineOpen W → (W : Set M.Z).Nonempty → (∀ z ∈ W, EE.E z = Submodule.span (M.O z) (Set.range B)) → (∀ z', f z' ∈ W → ∃ i, M'.Div ((B.map φ).mulVec s) i z') ∧ ∀ i, (B.map φ).mulVec s i ≠ 0 → ∃ U : M'.Z.Opens, IsAffineOpen U ∧ (U : Set M'.Z) = {z' | f z' ∈ W ∧ M'.Div ((B.map φ).mulVec s) i z'} ∧ M'.ringOn U = Algebra.adjoin o (φ '' (M.ringOn W : Set Ω) ∪ Set.range fun j => (B.map φ).mulVec s j / (B.map φ).mulVec s i) := by
   intro o Ω _ _ _ _ M Ω' _ _ φ J _ EE s hM ⟨j₀, hj₀⟩ hs
   obtain ⟨n, t, e, m, v, ht, hv⟩ := GlobalTheory.T.exists_projective_lattice_twist_generated o Ω M hM J EE

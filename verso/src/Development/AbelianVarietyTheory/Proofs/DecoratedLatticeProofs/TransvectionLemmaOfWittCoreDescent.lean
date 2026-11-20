@@ -15,6 +15,13 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Introduce `S S₀ T ρ d ψ χS χT om hom μ 𝓕 hμ a v hv u hu x hx f hf`. Take `⟨om₀, hom₀⟩` from `(hD ψ S T χS χT om hom).1 S₀ ρ d`. Take `⟨m, b, c, rfl, hdet, hk⟩` from `GlobalTheory.T.unitaryTransvection_eq_leviUnipotentProduct D S S₀ ρ d _ v hv u hu`. Take `⟨h1, h2, h3⟩` from `hk T x hx`. Establish `F` using `fun g hg => GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ S S₀ T ρ d χS χT om om₀ hom hom₀ μ 𝓕 hμ g hg`.
+
+Establish `hc` using `hom.om_pres (d.nC c, 1) f hf`. Establish `hb` using `hom.om_pres (d.nB b, 1) _ hc`. Establish `e : om (d.levi m * d.nB b * d.nC c, 1) f = om (d.levi m, 1) (om (d.nB b, 1) (om (d.nC c, 1) f))`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_one, mul_one]`. Establish `hq : symplOH S T (d.extX T x) (d.extY T (x ⬝ c.1)) = 0` using `h3`.
+
+Rewrite using `[e, (F _ hb).levi, h1, (F _ hc).unip, h2, GlobalTheory.MixPer.heisO_zero, (F _ hf).centre, hq, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, hdet]`. Simplify using the standard rewrite rules.
+-/
 theorem transvTrivial_of_descent (D : D7) (hD : Descent D) : GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvTrivial D := by
   intro S S₀ T ρ d ψ χS χT om hom μ 𝓕 hμ a v hv u hu x hx f hf
   obtain ⟨om₀, hom₀⟩ := (hD ψ S T χS χT om hom).1 S₀ ρ d
@@ -30,6 +37,9 @@ theorem transvTrivial_of_descent (D : D7) (hD : Descent D) : GlobalTheory.Indefi
   rw [e, (F _ hb).levi, h1, (F _ hc).unip, h2, GlobalTheory.MixPer.heisO_zero, (F _ hf).centre, hq, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, hdet]
   simp
 
+/- English proof (translation)
+Introduce `D hD` and use `⟨(GlobalTheory.T.unitaryTransvection_unitary_and_conjugation D).1, (GlobalTheory.T.unitaryTransvection_unitary_and_conjugation D).2, transvTrivial_of_descent D hD⟩`.
+-/
 theorem transvLemma_of_descent : ∀ D : D7, Descent D → GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvLemma D := fun D hD =>
   ⟨(GlobalTheory.T.unitaryTransvection_unitary_and_conjugation D).1, (GlobalTheory.T.unitaryTransvection_unitary_and_conjugation D).2, transvTrivial_of_descent D hD⟩
 

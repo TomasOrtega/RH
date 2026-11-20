@@ -17,12 +17,20 @@ section Rep
 
 variable {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem twGL_val (ρ : Γ →* GL (Fin a) k) (χ : Γ →* kˣ) (g : Γ) :
     ((twGL ρ χ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) =
       ((χ g : kˣ) : k) • (ρ g : Matrix (Fin a) (Fin a) k) := by
   rw [Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Establish `h1` using `W.smul_mem (((χ g)⁻¹ : kˣ) : k) (h g v hv)`. Rewrite `h1` using `[twGL_val, Matrix.smul_mulVec, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Conclude with `h1`.
+
+Introduce `h g v hv`. Rewrite using `[twGL_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`.
+-/
 theorem isInv_twGL_iff (ρ : Γ →* GL (Fin a) k) (χ : Γ →* kˣ) (W : Submodule k (Fin a → k)) :
     IsInv (twGL ρ χ) W ↔ IsInv ρ W := by
   constructor
@@ -35,11 +43,17 @@ theorem isInv_twGL_iff (ρ : Γ →* GL (Fin a) k) (χ : Γ →* kˣ) (W : Submo
     rw [twGL_val, Matrix.smul_mulVec]
     exact W.smul_mem _ (h g v hv)
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', h1, h2⟩` from `h W ((isInv_twGL_iff ρ χ W).1 hW)`. Conclude with `⟨W', (isInv_twGL_iff ρ χ W').2 h1, h2⟩`.
+-/
 theorem isSSRep_twGL (ρ : Γ →* GL (Fin a) k) (χ : Γ →* kˣ) (h : IsSSRep ρ) : IsSSRep (twGL ρ χ) := by
   intro W hW
   obtain ⟨W', h1, h2⟩ := h W ((isInv_twGL_iff ρ χ W).1 hW)
   exact ⟨W', (isInv_twGL_iff ρ χ W').2 h1, h2⟩
 
+/- English proof (translation)
+Simplify using `only [twGL_val]`. Use `Continuous.smul (M := k) ?_ hρ` and prove the remaining obligations. Establish `e : ∀ g, (((Matrix.GeneralLinearGroup.det.comp χ) g : kˣ) : k) = (χ g : Matrix (Fin 1) (Fin 1) k).det` using `fun g => rfl`. Simplify using `only [e]`. Conclude with `hχ.matrix_det`.
+-/
 theorem cont_twGL [TopologicalSpace Γ] [TopologicalSpace k] [IsTopologicalRing k]
     (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k)
     (hρ : Continuous fun g => ((ρ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k))
@@ -53,6 +67,11 @@ theorem cont_twGL [TopologicalSpace Γ] [TopologicalSpace k] [IsTopologicalRing 
   simp only [e]
   exact hχ.matrix_det
 
+/- English proof (translation)
+Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[Matrix.eval_charpoly, Matrix.eval_charpoly]`. Establish `hc : IsClosed {g : Γ | (Matrix.scalar (Fin a) t - ((ρ₁ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)).det = (Matrix.scalar (Fin a) t - ((ρ₂ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)).det}` using `isClosed_eq (continuous_const.sub h1).matrix_det (continuous_const.sub h2).matrix_det`. Establish `hsub : closure S ⊆ _` using `hc.closure_subset_iff.mpr fun g hg => by show _ = _`.
+
+Rewrite using `[← Matrix.eval_charpoly, ← Matrix.eval_charpoly, hE g hg]`. Rewrite `hsub` using `[hS]`. Conclude with `hsub (Set.mem_univ g)`.
+-/
 theorem charpoly_eq_of_dense [TopologicalSpace Γ] [TopologicalSpace k] [IsTopologicalRing k] [T2Space k]
     [Infinite k] (ρ₁ ρ₂ : Γ →* GL (Fin a) k)
     (h1 : Continuous fun g => ((ρ₁ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k))
@@ -80,6 +99,13 @@ section Glob
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Establish `u1` using `A.etaT_unr w`. Take `⟨u2, f2⟩` from `A.etaTinv_def w`. Establish `d2 : A.lpDim (A.locG A.etaTinv w) = 1` using `A.locG_dim _ w`. Take `⟨b, hb⟩ : ∃ b, A.frobEig (A.locG A.etaT w) = {b}` from `Multiset.card_eq_one.mp (by rw [A.frobEig_card _ u1, A.locG_dim])`. Establish `hb0 : b ≠ 0`.
+
+Introduce `h0`. Apply `A.frobEig_ne_zero _ u1` to reduce the goal to its premises. Rewrite using `[hb, h0]`. Conclude with `Multiset.mem_singleton_self 0`. Rewrite `f2` using `[hb, Multiset.map_singleton]`.
+
+Establish `hu` using `A.unr_char _ _ d2 u1 u2`. Establish `hf` using `A.frobEig_char _ _ b⁻¹ u1 u2 d2 f2`. Rewrite `hf` using `[hb, Multiset.map_singleton, mul_inv_cancel₀ hb0]`. Rewrite using `[A.unr_eq_lpUnr _ hu, hf]`.
+-/
 theorem etaT_char_etaTinv (w : PlE H) :
     A.lpChar (A.locG A.etaT w) (A.locG A.etaTinv w) = A.lpUnr w {1} := by
   have u1 := A.etaT_unr w
@@ -98,6 +124,11 @@ theorem etaT_char_etaTinv (w : PlE H) :
   rw [hb, Multiset.map_singleton, mul_inv_cancel₀ hb0] at hf
   rw [A.unr_eq_lpUnr _ hu, hf]
 
+/- English proof (translation)
+Establish `d1 : A.lpDim (A.locG A.etaT w) = 1` using `A.locG_dim _ w`. Establish `d2 : A.lpDim (A.locG A.etaTinv w) = 1` using `A.locG_dim _ w`. Establish `c3` using `(hLP w (A.lpTw (A.locG (A.tw π A.etaT) w) u) (A.lpZero w) (A.locG A.etaTinv w) (A.locG A.etaTinv w) s d2 d2).2.2.1`. Establish `c2` using `(hLP w (A.locG (A.tw π A.etaT) w) (A.lpZero w) (A.locG A.etaTinv w) (A.locG A.etaTinv w) u d2 d2).2.1`. Establish `c4` using `(hLP w (A.locG π w) (A.lpZero w) (A.locG A.etaT w) (A.locG A.etaTinv w) 0 d1 d2).2.2.2.1`.
+
+Establish `c5` using `(hLP w (A.locG π w) (A.lpZero w) (A.locG A.etaT w) (A.locG A.etaTinv w) 0 d1 d2).2.2.2.2.1`. Rewrite using `[c3, c2, A.lpTw_add, A.locG_tw, c4, etaT_char_etaTinv N A w, c5, add_comm]`.
+-/
 theorem param_twist (hLP : TieLP N A) {a : ℕ} (π : A.CG a) (w : PlE H) (u s : ℝ) :
     A.lpChar (A.lpTw (A.locG (A.tw π A.etaT) w) u) (A.lpTw (A.locG A.etaTinv w) s) =
       A.lpTw (A.locG π w) (s + u) := by
@@ -111,6 +142,11 @@ theorem param_twist (hLP : TieLP N A) {a : ℕ} (π : A.CG a) (w : PlE H) (u s :
   have c5 := (hLP w (A.locG π w) (A.lpZero w) (A.locG A.etaT w) (A.locG A.etaTinv w) 0 d1 d2).2.2.2.2.1
   rw [c3, c2, A.lpTw_add, A.locG_tw, c4, etaT_char_etaTinv N A w, c5, add_comm]
 
+/- English proof (translation)
+Set `_ : Algebra (Kf N i) (Qbar (N.l i))` to `(A.iotaQ i).toAlgebra`. Establish `: CharZero (Kf N i)` using `RingHom.charZero (A.iotaQ i)`. Establish `e : mapRep (iotaOQ N A i) ρ = mapRep (algebraMap (Kf N i) (Qbar (N.l i))) (mapRep (algebraMap (N.O i) (Kf N i)) ρ)`. Use extensionality with `g p q`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `ssAscent (Kf N i) (Qbar (N.l i)) (G H.E N.Om) a _ h`.
+-/
 theorem isSSRep_iotaOQ (i : N.Loc) {a : ℕ} (ρ : G H.E N.Om →* GL (Fin a) (N.O i))
     (h : IsSSRep (mapRep (algebraMap (N.O i) (Kf N i)) ρ)) : IsSSRep (mapRep (iotaOQ N A i) ρ) := by
   let _ : Algebra (Kf N i) (Qbar (N.l i)) := (A.iotaQ i).toAlgebra
@@ -122,6 +158,9 @@ theorem isSSRep_iotaOQ (i : N.Loc) {a : ℕ} (ρ : G H.E N.Om →* GL (Fin a) (N
   rw [e]
   exact ssAscent (Kf N i) (Qbar (N.l i)) (G H.E N.Om) a _ h
 
+/- English proof (translation)
+Establish `hne : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : (N.l i).Prime).ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors hne).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+-/
 theorem placesOver_finite (i : N.Loc) : (placesOver H.E (N.l i)).Finite := by
   have hne : Ideal.span {((N.l i : ℕ) : 𝓞 H.E)} ≠ ⊥ := by
     rw [Ne, Ideal.span_singleton_eq_bot]
@@ -135,6 +174,37 @@ section Main
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Take `⟨ρ1, c1, ss1, away1, above1⟩` from `(hG i).1 a ha _ hcsd hralg`. Establish `hint : ∀ τ : H.E →+* ℂ, ∀ z ∈ A.infG A.etaTinv τ, ∃ k : ℤ, z + (s : ℂ) = (k : ℂ)`. Introduce `τ z hz`. Take `⟨m, rfl⟩` from `hs`. Take `⟨h1, h2⟩` from `hAut.2.1 τ`.
+
+Rewrite `hz` using `[h2]`. Break down `h1 with h1 | h1` into its components or cases. Rewrite `hz` using `[h1]`. Simplify using `at hz`. Substitute `hz` using the available equality.
+
+Conclude with `⟨m, by push_cast; ring⟩`. Rewrite `hz` using `[h1]`. Simplify using `at hz`. Substitute `hz` using the available equality. Conclude with `⟨m + 1, by push_cast; ring⟩`.
+
+Take `⟨χ1, cχ, awayχ, aboveχ⟩` from `(hG i).2.2 A.etaTinv s hint`. Take `⟨-, hconj, -, htw⟩` from `hGal.2.2.2 i`. Establish `ok1 : ∀ w, WDok N A i ρ1 w` using `fun w => by`. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`. Conclude with `Or.inr (above1 w hw).1`.
+
+Conclude with `Or.inl hw`. Establish `okχ : ∀ w, WDok N A i χ1 w` using `fun w => by`. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`. Conclude with `Or.inr (aboveχ w hw).1`. Conclude with `Or.inl hw`.
+
+Establish `wd1 : ∀ w, A.wdOf i ρ1 w = A.lpTw (A.locG (A.tw π A.etaT) w) ((1 - (a : ℝ)) / 2)` using `fun w => by`. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`. Conclude with `(above1 w hw).2.2`. Conclude with `(away1 w hw).1`. Establish `wdχ : ∀ w, A.wdOf i χ1 w = A.lpTw (A.locG A.etaTinv w) s` using `fun w => by`.
+
+Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`. Conclude with `(aboveχ w hw).2.1`. Conclude with `awayχ w hw`. Set `ρ0` to `twGL ρ1 (Matrix.GeneralLinearGroup.det.comp χ1)`. Establish `c0 : ContQ N i ρ0` using `cont_twGL ρ1 χ1 c1 cχ`.
+
+Establish `wd0 : ∀ w, A.wdOf i ρ0 w = A.lpTw (A.locG π w) (s + (1 - (a : ℝ)) / 2)` using `fun w => by`. Rewrite using `[(htw a ρ1 χ1 c1 cχ).2.1 w (ok1 w) (okχ w), wd1, wdχ, param_twist N A hLP]`. Establish `dR0 : ∀ w ∈ placesOver H.E (N.l i), A.IsdRW i ρ0 w` using `fun w hw => ((htw a ρ1 χ1 c1 cχ).1 w hw (aboveχ w hw).1).2 (above1 w hw).1`. Establish `ok0 : ∀ w, WDok N A i ρ0 w` using `fun w => by`. Distinguish the cases in `hw : w ∈ placesOver H.E (N.l i)`.
+
+Conclude with `Or.inr (dR0 w hw)`. Conclude with `Or.inl hw`. Set `ρQ` to `mapRep (iotaOQ N A i) ρ`. Establish `cQ : ContQ N i ρQ` using `GlobalTheory.LocalInv.cont_mapRep_iotaOQ N A i ρ hρ`. Establish `ssQ : IsSSRep ρQ` using `isSSRep_iotaOQ N A i ρ hss`.
+
+Establish `ss0 : IsSSRep ρ0` using `isSSRep_twGL _ _ ss1`. Establish `hcp : ∀ g, ((ρ0 g : GL (Fin a) (Qbar (N.l i))) : Matrix (Fin a) (Fin a) (Qbar (N.l i))).charpoly = ((ρQ g : GL (Fin a) (Qbar (N.l i))) : Matrix (Fin a) (Fin a) (Qbar (N.l i))).charpoly`. Establish `hMf` using `Filter.eventually_cofinite.mp hM`. Establish `hUf` using `Filter.eventually_cofinite.mp (A.locG_unr_ae π)`. Use `charpoly_eq_of_dense ρ0 ρQ c0 cQ _ (hAN.2.2.1 _ (((placesOver_finite N i).union hMf).union hUf)) ?_` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨v, hv, hsp, B, hB, hg⟩`. Simplify using `only [Set.mem_union, not_or] at hv`. Take `⟨⟨hvl, hvM⟩, hvU⟩` from `hv`. Establish `hvM'` using `not_not.mp hvM`. Establish `hvU'` using `not_not.mp hvU`.
+
+Apply `Polynomial.map_injective (A.iotaQC i).toRingHom (A.iotaQC i).injective` to reduce the goal to its premises. Establish `hu0 : A.unr (A.wdOf i ρ0 v)`. Rewrite using `[wd0]`. Conclude with `(A.unr_tw _ _).2 hvU'`. Rewrite using `[A.wdOf_frob i ρ0 v hvl c0 hu0 B g hB hg, wd0]`.
+
+Establish `e` using `hvM' hsp B g hB hg`. Establish `e2 : ((ρQ g : GL (Fin a) (Qbar (N.l i))) : Matrix (Fin a) (Fin a) (Qbar (N.l i))).charpoly.map (A.iotaQC i).toRingHom = ((ρ g : GL (Fin a) (N.O i)) : Matrix (Fin a) (Fin a) (N.O i)).charpoly.map (iotaO N A i)` using `by show ((((ρ g : GL (Fin a) (N.O i)) : Matrix (Fin a) (Fin a) (N.O i)).map (iotaOQ N A i)).charpoly).map _ = _`. Rewrite using `[Matrix.charpoly_map, Polynomial.map_map]`. Both sides reduce to the same expression. Rewrite using `[e2, e]`.
+
+Both sides reduce to the same expression. Take `⟨Pm, hPm⟩` from `hAN.2.2.2 (Qbar (N.l i)) a ρ0 ρQ ss0 ssQ hcp`. Take `⟨hdR, hwd, -⟩` from `hconj a ρ0 ρQ c0 Pm hPm`. Use `⟨?_, fun hw => ?_⟩` and prove the remaining obligations. Use `show A.wdOf i ρQ w = _`.
+
+Rewrite using `[hwd w (ok0 w), wd0]`. Use `show A.IsdRW i ρQ w`. Conclude with `(hdR w hw).2 (dR0 w hw)`.
+-/
 theorem localGlobal_twist_at (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGal N A) (hG : exists_galois_rep_local_global_compatible N A)
     (hAN : JacquetShalikaStrongMultOne N A) (i : N.Loc) (a : ℕ) (ha : 1 ≤ a) (π : A.CG a) (s : ℝ)
     (hcsd : A.csd (A.tw π A.etaT)) (hralg : A.ralg (A.tw π A.etaT)) (hs : ∃ m : ℤ, s = (m : ℝ) + 1 / 2)
@@ -231,6 +301,9 @@ theorem localGlobal_twist_at (hLP : TieLP N A) (hAut : TieAut N A) (hGal : TieGa
 
 end Main
 
+/- English proof (translation)
+Introduce `D ht h2 h5 i a ha π s hcsd hralg hs ρ hρ hss hM w`. Conclude with `localGlobal_twist_at D.nd D.naut ht.1 ht.2.1 ht.2.2 h2 h5 i a ha π s hcsd hralg hs ρ hρ hss hM w`.
+-/
 theorem localGlobal_twist : ∀ D : D7, Formalism.MainNotions.SumRepresentations.tie0 D → Formalism.MainNotions.SumRepresentations.adm2 D → Formalism.MainNotions.SumRepresentations.adm5 D →
     ∀ (i : D.nd.Loc) (a : ℕ), 1 ≤ a → ∀ (π : D.naut.CG a) (s : ℝ), D.naut.csd (D.naut.tw π D.naut.etaT) →
     D.naut.ralg (D.naut.tw π D.naut.etaT) → (∃ m : ℤ, s = (m : ℝ) + 1 / 2) →

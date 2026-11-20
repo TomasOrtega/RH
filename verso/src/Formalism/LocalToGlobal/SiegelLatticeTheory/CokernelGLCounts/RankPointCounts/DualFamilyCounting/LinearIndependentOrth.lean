@@ -12,6 +12,11 @@ open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.Hermiti
 variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F]
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff hp L x).1 hx`. Establish `ht0 : algebraMap F K (t : F) ≠ 0`. Rewrite using `[← jι_eq']`. Conclude with `jι_ne_zero (ne_zero_of_notMem ht)`.
+
+Establish `h1 : algebraMap F K (t : F) • x ∈ Submodule.span K (L : Set V)`. Rewrite using `[← jι_eq', algebraMap_smul]`. Conclude with `Submodule.subset_span htx`. Conclude with `(Submodule.smul_mem_iff _ ht0).1 h1`.
+-/
 theorem locF_subset_span {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) V) :
     (locF 𝔭 L : Set V) ⊆ Submodule.span K (L : Set V) := by
   intro x hx
@@ -22,6 +27,11 @@ theorem locF_subset_span {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (L : Submod
     rw [← jι_eq', algebraMap_smul]; exact Submodule.subset_span htx
   exact (Submodule.smul_mem_iff _ ht0).1 h1
 
+/- English proof (translation)
+Rewrite using `[← hM.2, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : x ∈ locF 𝔭 (Submodule.span (𝓞 K) (Set.range b))`. Rewrite using `[hb]`. Conclude with `LocF.le_locF 𝔭 M hx`.
+
+Establish `h2` using `locF_subset_span hp _ h1`. Rewrite `h2` using `[Submodule.span_span_of_tower]`. Then use the resulting hypothesis.
+-/
 theorem le_span_of_locF {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {U : Submodule K V}
     {M : Submodule (𝓞 K) V} (hM : IsLatIn U M) {n : ℕ} {b : Fin n → V}
     (hb : locF 𝔭 (Submodule.span (𝓞 K) (Set.range b)) = locF 𝔭 M) :
@@ -33,6 +43,11 @@ theorem le_span_of_locF {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {U : Submodu
   have h2 := locF_subset_span hp _ h1
   rwa [Submodule.span_span_of_tower] at h2
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg k`. Establish `h1` using `congrArg (h (w k)) hg`. Rewrite `h1` using `[map_sum, map_zero]`. Simplify using `only [map_smul, smul_eq_mul] at h1`.
+
+Rewrite `h1` using `[Finset.sum_eq_single k (fun j _ hj => by rw [hwo k j (Ne.symm hj), mul_zero]) (by simp)]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (hwn k)`.
+-/
 theorem linearIndependent_orth {m : ℕ} (h : V →ₗ⋆[K] V →ₗ[K] K) (w : Fin m → V)
     (hwo : ∀ j k, j ≠ k → h (w j) (w k) = 0) (hwn : ∀ j, h (w j) (w j) ≠ 0) :
     LinearIndependent K w := by
@@ -45,6 +60,19 @@ theorem linearIndependent_orth {m : ℕ} (h : V →ₗ⋆[K] V →ₗ[K] K) (w :
     (by simp)] at h1
   exact (mul_eq_zero.1 h1).resolve_right (hwn k)
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUc M hM hMi 𝔭 h𝔭 b a hba π w c τ hg`. Establish `hp` using `h𝔭.isPrime`. Take `⟨hbU, hbL, hbo, hbn, ha0⟩` from `hba`. Take `⟨hwW, hwo, hwn, hτ, ⟨s₀, hu⟩, hcong, hunit⟩` from `hg`. Establish `hw : ∀ j, w j ∈ Submodule.span K (Set.range (glueFam K 𝔭 b a π w τ))` using `fun j => Submodule.subset_span ⟨Sum.inr j, rfl⟩`.
+
+Establish `hb : ∀ i, b i ∈ Submodule.span K (Set.range (glueFam K 𝔭 b a π w τ))`. Introduce `i`. Establish `hg' : glueFam K 𝔭 b a π w τ (Sum.inl i) ∈ Submodule.span K (Set.range (glueFam K 𝔭 b a π w τ))` using `Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Simplify using `only [glueFam, Sum.elim_inl] at hg'`. Distinguish the cases in `hi : vF 𝔭 (a i) = 0`.
+
+Rewrite `hg'` using `[if_pos hi]`. Then use the resulting hypothesis. Rewrite `hg'` using `[if_neg hi]`. Establish `h0 : (algebraMap F K (π : F))⁻¹ ^ vF 𝔭 (a i) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises. Apply `inv_ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← jι_eq']`. Conclude with `jι_ne_zero hu.ne_zero`. Establish `h1` using `(Submodule.smul_mem_iff _ h0).1 hg'`. Establish `h2` using `Submodule.sub_mem _ h1 (hw (τ i))`. Rewrite `h2` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `hU : U ≤ Submodule.span K (Set.range (glueFam K 𝔭 b a π w τ))` using `le_trans (le_span_of_locF hp hM hbL) (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hb i))`. Establish `hli : LinearIndependent K w` using `linearIndependent_orth h w hwo fun j => by`. Rewrite using `[(hwn j).1]`. Conclude with `(map_ne_zero _).2 (hwn j).2`. Establish `hle : Submodule.span K (Set.range w) ≤ orthK h U` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hwW j)`.
+
+Establish `hfr : finrank K (Submodule.span K (Set.range w)) = finrank K (orthK h U)`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`. Establish `hW : orthK h U ≤ Submodule.span K (Set.range (glueFam K 𝔭 b a π w τ))` using `le_trans (Submodule.eq_of_le_of_finrank_eq hle hfr).ge (Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hw j))`. Rewrite using `[eq_top_iff, ← hUc.sup_eq_top]`. Conclude with `sup_le hU hW`.
+-/
 theorem family_top_holds : FamTop := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUc M hM hMi 𝔭 h𝔭 b a hba π w c τ hg
   have hp := h𝔭.isPrime

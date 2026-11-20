@@ -24,40 +24,73 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Simplify using `[φVB]`.
+-/
 theorem φVB_tmul_one (v : V) :
     φVB PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) = v ⊗ₜ[Qp] (1 : B) := by
   simp [φVB]
 
+/- English proof (translation)
+Simplify using `[ιV]`.
+-/
 theorem ιV_tmul_one (v : V) :
     ιV PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) = v ⊗ₜ[Qp] (1 : BdR) := by
   simp [ιV]
 
+/- English proof (translation)
+Simplify using `[actVB]`.
+-/
 theorem actVB_tmul_one (g : G) (v : V) :
     actVB PD ρ g (v ⊗ₜ[Qp] (1 : B)) = ρ g v ⊗ₜ[Qp] (1 : B) := by
   simp [actVB]
 
+/- English proof (translation)
+Simplify using `[actVdR]`.
+-/
 theorem actVdR_tmul_one (g : G) (v : V) :
     actVdR PD ρ g (v ⊗ₜ[Qp] (1 : BdR)) = ρ g v ⊗ₜ[Qp] (1 : BdR) := by
   simp [actVdR]
 
+/- English proof (translation)
+Simplify using `[H0V, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_H0V_iff {v : V} : v ∈ H0V ρ ↔ ∀ g, ρ g v = v := by
   simp [H0V, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris_iff {x : V ⊗[Qp] B} : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[DdR, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_DdR_iff {x : V ⊗[Qp] BdR} : x ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g x = x := by
   simp [DdR, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+The claim follows from `(mem_Dcris_iff PD ρ).2 fun g => by rw [actVB_tmul_one, (mem_H0V_iff ρ).1 hv g]`.
+-/
 theorem tmul_one_mem_Dcris {v : V} (hv : v ∈ H0V ρ) : v ⊗ₜ[Qp] (1 : B) ∈ Dcris PD ρ :=
   (mem_Dcris_iff PD ρ).2 fun g => by rw [actVB_tmul_one, (mem_H0V_iff ρ).1 hv g]
 
+/- English proof (translation)
+The claim follows from `(mem_DdR_iff PD ρ).2 fun g => by rw [actVdR_tmul_one, (mem_H0V_iff ρ).1 hv g]`.
+-/
 theorem tmul_one_mem_DdR {v : V} (hv : v ∈ H0V ρ) : v ⊗ₜ[Qp] (1 : BdR) ∈ DdR PD ρ :=
   (mem_DdR_iff PD ρ).2 fun g => by rw [actVdR_tmul_one, (mem_H0V_iff ρ).1 hv g]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CobCrisLift.tmul_mem PD v PD.one_mem`.
+-/
 theorem tmul_one_mem_FilV (v : V) : v ⊗ₜ[Qp] (1 : BdR) ∈ FilV PD (LL := LL) (V := V) 0 :=
   GlobalTheory.CobCrisLift.tmul_mem PD v PD.one_mem
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CobCrisLift.sub_φ_mem_Dcris PD ρ 0 x fun g => by rw [(mem_Dcris_iff PD ρ).1 hx g]; simp`.
+-/
 theorem sub_φVB_mem_Dcris {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
     x - φVB PD (LL := LL) (V := V) x ∈ Dcris PD ρ :=
   GlobalTheory.CobCrisLift.sub_φ_mem_Dcris PD ρ 0 x fun g => by
@@ -110,6 +143,9 @@ def relR : Submodule LL ((↥(Dcris PD ρ) × ↥(DdR PD ρ)) × FiniteCohomolog
     · simp only [Prod.smul_snd, ← h4]; rfl
 
 include PD in
+/- English proof (translation)
+Use `⟨v, funext fun g => GlobalTheory.BKRightExact.tmul_one_injective PD ?_⟩` and prove the remaining obligations. Establish `: cob ρ v g = ρ g v - v` using `rfl`. Rewrite using `[this, hc g, hx, actVB_tmul_one, sub_tmul]`.
+-/
 theorem cocycle_eq_cob {c : G → V} {v : V} {x : V ⊗[Qp] B}
     (hc : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x) (hx : x = v ⊗ₜ[Qp] (1 : B)) :
     c ∈ B1 ρ := by
@@ -117,6 +153,37 @@ theorem cocycle_eq_cob {c : G → V} {v : V} {x : V ⊗[Qp] B}
   have : cob ρ v g = ρ g v - v := rfl
   rw [this, hc g, hx, actVB_tmul_one, sub_tmul]
 
+/- English proof (translation)
+Establish `hker : ∀ p : ↥(Dcris PD ρ) × ↥(DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) 0), bMap PD ρ p = 0 → p ∈ LinearMap.range (aMap PD ρ) := by`. Introduce and unpack `⟨⟨d, hd⟩, ⟨e, he, hef⟩⟩ h`. Establish `h1 : d - φVB PD (LL` using `LL) (V := V) d = 0 := congrArg (fun z => (z.1 : V ⊗[Qp] B)) h`. Establish `h2 : ιV PD (LL` using `LL) (V := V) d - e = 0 := congrArg (fun z => (z.2 : V ⊗[Qp] BdR)) h`. Establish `h2'` using `sub_eq_zero.1 h2`.
+
+Take `⟨v, rfl⟩` from `hfund d (sub_eq_zero.1 h1).symm (h2' ▸ hef)`. Establish `hv : v ∈ H0V ρ` using `(mem_H0V_iff ρ).2 fun g => GlobalTheory.BKRightExact.tmul_one_injective PD (by`. Rewrite using `[← actVB_tmul_one PD ρ]`. Conclude with `(mem_Dcris_iff PD ρ).1 hd g)`. Use `⟨⟨v, hv⟩, ?_⟩` and prove the remaining obligations.
+
+Use `ext`. Both sides reduce to the same expression. Simplify `(ιV_tmul_one PD v).symm.trans h2'` using `[aMap, ιV_tmul_one]`. Establish `hRan : LinearMap.range (aMap PD ρ) = LinearMap.ker (bMap PD ρ)`. Use `le_antisymm ?_ fun p hp => hker p hp` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Use `ext`. Simplify using `[aMap, bMap, φVB_tmul_one]`. Simplify using `[aMap, bMap, ιV_tmul_one]`.
+
+Establish `hInj : Function.Injective (aMap PD ρ)`. Introduce `u v h`. Conclude with `Subtype.ext (GlobalTheory.BKRightExact.tmul_one_injective PD (congrArg (fun z => (z.1 : V ⊗[Qp] B)) h))`. Establish `hAll : ∀ n, ∃ q, (n, q) ∈ relR PD ρ`. Introduce and unpack `⟨⟨d₁, h₁⟩, ⟨d₂, h₂⟩⟩`.
+
+Take `⟨x, y, c, hy, e1, e2, hc, hcx⟩` from `hconn d₁ h₁ d₂ h₂`. Conclude with `⟨Submodule.Quotient.mk ⟨c, hc⟩, x, y, ⟨c, hc⟩, hy, e1, e2, hcx, rfl⟩`. Establish `hOnto : ∀ q, ∃ n, (n, q) ∈ relR PD ρ`. Introduce `q`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Take `⟨-, x, hx⟩` from `c.2`. Take `⟨h1, d, hd, hy⟩` from `hlift c x hx`. Conclude with `⟨(⟨_, h1⟩, ⟨d, hd⟩), x, _, c, hy, rfl, by simp, hx, rfl⟩`. Establish `hZero : ∀ q, ((0 : ↥(Dcris PD ρ) × ↥(DdR PD ρ)), q) ∈ relR PD ρ → q = 0`. Introduce and unpack `q ⟨x, y, c, hy, e1, e2, hc, rfl⟩`.
+
+Establish `e1' : x - φVB PD (LL` using `LL) (V := V) x = 0 := e1`. Establish `e2' : ιV PD (LL` using `LL) (V := V) x - y = 0 := e2`. Take `⟨v, hv⟩` from `hfund x (sub_eq_zero.1 e1').symm (sub_eq_zero.1 e2' ▸ hy)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (cocycle_eq_cob PD ρ hc hv)`. Establish `hBack : ∀ n, (n, (0 : FiniteCohomology PD ρ)) ∈ relR PD ρ ↔ n ∈ LinearMap.range (bMap PD ρ)`.
+
+Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, y, c, hy, e1, e2, hc, hq⟩`. Take `⟨v, hv⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hq`. Establish `hcv : ∀ g, actVB PD ρ g (x - v ⊗ₜ[Qp] (1 : B)) = x - v ⊗ₜ[Qp] (1 : B)`.
+
+Introduce `g`. Establish `h1 : (c : G → V) g = ρ g v - v` using `(congrFun hv g).symm`. Establish `h2` using `hc g`. Rewrite `h2` using `[h1, sub_tmul, ← actVB_tmul_one PD ρ]`. Rewrite using `[map_sub, sub_eq_sub_iff_sub_eq_sub]`.
+
+Conclude with `h2.symm`. Establish `hd : x - v ⊗ₜ[Qp] (1 : B) ∈ Dcris PD ρ` using `(mem_Dcris_iff PD ρ).2 hcv`. Establish `hιd : ιV PD (LL` using `LL) (V := V) (x - v ⊗ₜ[Qp] (1 : B)) - n.2 = y - v ⊗ₜ[Qp] (1 : BdR) := by`. Rewrite using `[map_sub, ιV_tmul_one, ← e2]`. Normalize the expressions using the abelian group laws.
+
+Establish `hmem : y - v ⊗ₜ[Qp] (1 : BdR) ∈ DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) 0 := ⟨hιd ▸ Submodule.sub_mem _ (GlobalTheory.DRFil.ιV_mem_DdR PD ρ hd) n.2.2, Submodule.sub_mem _ hy (tmul_one_mem_FilV PD v)⟩`. Use `⟨(⟨_, hd⟩, ⟨_, hmem⟩), ?_⟩` and prove the remaining obligations. Use `ext`. Express the relevant statement in the definitionally equal form `(x - v ⊗ₜ[Qp] (1 : B)) - φVB PD (LL := LL) (V := V) (x - v ⊗ₜ[Qp] (1 : B)) = _`. Rewrite using `[map_sub, φVB_tmul_one, ← e1]`.
+
+Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `ιV PD (LL := LL) (V := V) (x - v ⊗ₜ[Qp] (1 : B)) - (y - v ⊗ₜ[Qp] (1 : BdR)) = _`. Rewrite using `[← hιd]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨⟨⟨d, hd⟩, ⟨e, he, hef⟩⟩, rfl⟩`.
+
+Use `⟨d, e, 0, hef, rfl, rfl, fun g => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[(mem_Dcris_iff PD ρ).1 hd g]`. Simplify using the standard rewrite rules. Take `⟨-, hcount⟩` from `GlobalTheory.T.linear_relation_exact_sequence_dim LL _ _ _ _ (aMap PD ρ) (bMap PD ρ) (relR PD ρ) hInj hRan hAll hOnto hZero hBack`. Rewrite `hcount` using `[Module.finrank_prod, Module.finrank_prod]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq (hD : FiniteDimensional LL ↥(Dcris PD ρ)) (hR : FiniteDimensional LL ↥(DdR PD ρ))
     (hfund : ∀ x : V ⊗[Qp] B, φVB PD (LL := LL) (V := V) x = x →
       ιV PD (LL := LL) (V := V) x ∈ FilV PD (LL := LL) (V := V) 0 → ∃ v : V, x = v ⊗ₜ[Qp] (1 : B))
@@ -206,6 +273,13 @@ theorem finrank_eq (hD : FiniteDimensional LL ↥(Dcris PD ρ)) (hR : FiniteDime
 
 end Generic
 
+/- English proof (translation)
+Set `L : FinExt l` to `⟨⊥, inferInstance⟩`. Use `letI : Algebra ↥L.1 LL := ((algebraMap ℚ_[l] LL).comp (IntermediateField.botEquiv ℚ_[l] (Om l)).toRingEquiv.toRingHom).toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 LL := IsScalarTower.of_algebraMap_eq fun x => (congrArg (algebraMap ℚ_[l] LL) ((IntermediateField.botEquiv ℚ_[l] (Om l)).commutes x)).symm`. Use `haveI : FiniteDimensional ↥L.1 LL := Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Use `letI : Module ↥L.1 V := Module.compHom V (algebraMap ↥L.1 LL)`.
+
+Use `haveI : IsScalarTower ↥L.1 LL V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : IsScalarTower ℚ_[l] ↥L.1 V := IsScalarTower.to₁₂₄ ℚ_[l] ↥L.1 LL V`. Use `haveI : FiniteDimensional ↥L.1 V := Module.Finite.trans LL V`. Establish `h1` using `(GlobalTheory.T.fontaine_inequality_dcris_finite_concrete_rings l P AI T K L).2 V (GlobalTheory.BKRightExact.res ↥L.1 ρ)`. Establish `h2` using `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K L V (GlobalTheory.BKRightExact.res ↥L.1 ρ)).1`.
+
+Rewrite `h1` using `[GlobalTheory.BKRightExact.Dcris_res]`. Rewrite `h2` using `[GlobalTheory.BKRightExact.DdR_res]`. Establish `h1' : Module.Finite ↥L.1 ↥(Dcris (P.PD K) ρ)` using `h1`. Establish `h2' : Module.Finite ↥L.1 ↥(DdR (P.PD K) ρ)` using `h2`. Conclude with `⟨Module.Finite.of_restrictScalars_finite ↥L.1 LL _, Module.Finite.of_restrictScalars_finite ↥L.1 LL _⟩`.
+-/
 theorem finite_periods {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
@@ -230,6 +304,9 @@ theorem finite_periods {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l
   exact ⟨Module.Finite.of_restrictScalars_finite ↥L.1 LL _,
     Module.Finite.of_restrictScalars_finite ↥L.1 LL _⟩
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL _ _ _ O _ _ hO A hdr`. Use `haveI := hO.2.1`. Take `⟨hD, hR⟩` from `finite_periods T K LL A.ρ`. Conclude with `finrank_eq (P.PD K) A.ρ hD hR (GlobalTheory.T.tensor_fundamental_exact_sequence_crystalline l P AI T K LL A.V).2 (fun d₁ h₁ d₂ h₂ => GlobalTheory.T.exists_blochKato_cocycle_of_crys_deRham_pair l P AI T K LL O hO A d₁ h₁ d₂ h₂) (fun c x hx => GlobalTheory.T.crystalline_coboundary_ …`.
+-/
 theorem bkADim_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ K : FinExt l, LocalSituation.bkADim (P.PD K) := by
   intro l _ P AI T K LL _ _ _ O _ _ hO A hdr

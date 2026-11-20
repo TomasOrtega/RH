@@ -5,6 +5,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 
 namespace GlobalTheory.PsType
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t V _ _ π P h0 h1 h2`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨u, hu⟩, w, rfl⟩`. Use `set e := stdSum (rfl : r + t = r + t) with he`. Take `⟨hl, hd⟩` from `(mem_unipB k).1 hu`.
+
+Establish `hp : u ∈ parab k (two e)` using `(mem_parab_two k).2 fun j i => hl _ _ (by`. Rewrite using `[Fin.lt_def, he, stdSum_inl, stdSum_inr]`. Use the proof step `omega)`. Take `⟨y, hy, hdec⟩` from `exists_levi_mul_unip k (two e) ⟨u, hp⟩`. Use `set a : GL (Fin r) k := leviProj k (two e) ⟨u, hp⟩ false with ha`.
+
+Use `set b : GL (Fin t) k := leviProj k (two e) ⟨u, hp⟩ true with hb`. Establish `hau : a ∈ unipB k (Fin r)` using `(mem_unipB k).2 ⟨fun i j hij => hl (e (.inl i)) (e (.inl j)) (by`. Rewrite using `[Fin.lt_def, he, stdSum_inl, stdSum_inl]`. Conclude with `hij), fun i => hd (e (.inl i))⟩`. Establish `hbu : b ∈ unipB k (Fin t)` using `(mem_unipB k).2 ⟨fun i j hij => hl (e (.inr i)) (e (.inr j)) (by`.
+
+Rewrite using `[Fin.lt_def, he, stdSum_inr, stdSum_inr]`. Conclude with `Nat.add_lt_add_left hij r), fun i => hd (e (.inr i))⟩`. Establish `hlev : leviEmb k (two e) (leviProj k (two e) ⟨u, hp⟩) = emb₂ k e (a, 1) * emb₂ k e (1, b)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Use `show _ = leviEmb k (two e) (leviTwo k _ _ (a, b))`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`. Establish `hdec' : u = emb₂ k e (a, 1) * emb₂ k e (1, b) * y` using `by rw [← hlev]; exact hdec`. Establish `h3 : π y w - w ∈ P` using `h0 (Submodule.subset_span ⟨⟨y, hy⟩, w, by simp⟩)`.
+
+Establish `h4` using `P.add_mem (P.add_mem (h1 a hau (π (emb₂ k e (1, b)) (π y w))) (h2 b hbu (π y w))) h3`. Establish `h5 : π u w - w ∈ P`. Rewrite using `[hdec', map_mul, map_mul]`. Simplify using `using h4`. Simplify using `using h5`.
+-/
 theorem twKer_unipB_le_of_stages : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (r + t)) k) V) (P : Submodule ℂ V), twKer π (unipRad k (two (stdSum (rfl : r + t = r + t)))) 1 ≤ P → (∀ u ∈ unipB k (Fin r), ∀ w, π (emb₂ k (stdSum (rfl : r + t = r + t)) (u, 1)) w - w ∈ P) → (∀ u ∈ unipB k (Fin t), ∀ w, π (emb₂ k (stdSum (rfl : r + t = r + t)) (1, u)) w - w ∈ P) → twKer π (unipB k (Fin (r + t))) 1 ≤ P := by
   intro k _ _ _ _ r t V _ _ π P h0 h1 h2
   refine Submodule.span_le.2 ?_

@@ -10,6 +10,21 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `hg0 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg g`. Establish `e1 : (2 : ℝ) ^ ((g : ℝ) / 2) ≤ 2 ^ g`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)`. Establish `e2 : (2 : ℝ) ^ ((g : ℝ) / 2 - 1) ≤ 2 ^ g`.
+
+Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)`. Establish `e3 : (3 / 2 : ℝ) ^ g ≤ 2 ^ g` using `pow_le_pow_left₀ (by norm_num) (by norm_num) g`. Establish `hNpos : 0 < N` using `by omega`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hN' : ((1 + 2 * g * 2 ^ g : ℕ) : ℝ) < N` using `by exact_mod_cast hN`. Move the coercions through the operations in `at hN'`. Establish `: 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) ≤ 2 * g * 2 ^ g` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set X : ℕ := N ^ g * g.factorial`.
+
+Establish `hX : (0 : ℝ) ≤ (X : ℝ)` using `Nat.cast_nonneg _`. Establish `hr' : ((6 * X + 2 * X * (g * 4 ^ g) : ℕ) : ℝ) < r` using `by exact_mod_cast hr`. Move the coercions through the operations in `at hr'`. Establish `hC : (g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1) ≤ g * 4 ^ g`. Establish `h4 : (4 : ℝ) ^ g = 2 ^ g * 2 ^ g` using `by rw [← mul_pow]; norm_num`.
+
+Rewrite using `[h4, ← _root_.mul_assoc]`. Establish `hp1 : (0 : ℝ) ≤ (3 / 2 : ℝ) ^ g` using `by positivity`. Establish `hp2 : (0 : ℝ) ≤ (2 : ℝ) ^ ((g : ℝ) / 2 - 1)` using `by positivity`. Use `gcongr`. Establish `h1 : 2 * (X : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)) < r`.
+
+Establish `: 2 * (X : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)) ≤ 2 * X * (g * 4 ^ g)` using `by gcongr`. Establish `h6 : (0 : ℝ) ≤ 6 * X` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hNpos`. Use `push_cast`.
+
+Conclude with `mul_lt_mul_of_pos_right h1 hNr`. Establish `h1 : 6 * (N ^ g * g.factorial) < r` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bigSizes_of (g N r : ℕ) (hN : 1 + 2 * g * 2 ^ g < N)
     (hr : 6 * (N ^ g * g.factorial) + 2 * (N ^ g * g.factorial) * (g * 4 ^ g) < r) :
     1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) < N ∧
@@ -52,6 +67,15 @@ theorem bigSizes_of (g N r : ℕ) (hN : 1 + 2 * g * 2 ^ g < N)
     calc 6 * (N ^ g * g.factorial) < r := h1
       _ ≤ r * N := Nat.le_mul_of_pos_right r hNpos
 
+/- English proof (translation)
+Introduce `g n hp _`. Establish `hn : 1 < n` using `hp.one_lt`. Use `set k := (1 + 2 * g * 2 ^ g) + 2 with hk`. Use `set N₀ := (n ^ k) ^ 2 with hN₀`. Use `set M := 6 * (N₀ ^ g * g.factorial) + 2 * (N₀ ^ g * g.factorial) * (g * 4 ^ g) with hM`.
+
+Use `⟨k, M + 1, by omega, by omega, ?_⟩` and prove the remaining obligations. Introduce `o Ω _ _ _ S hg hN hr`. Establish `hkN : 1 + 2 * g * 2 ^ g < N₀`. Establish `h1 : k < n ^ k` using `Nat.lt_pow_self hn`. Establish `h2 : n ^ k ≤ (n ^ k) ^ 2` using `Nat.le_self_pow (by norm_num) _`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hjr : M < n ^ (M + 1)`. Use `Nat.lt_pow_self (n := M + 1) hn` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `GlobalTheory.ZH.ThetaSys.Big`.
+
+Rewrite using `[hg, hN, hr]`. Conclude with `bigSizes_of g N₀ (n ^ (M + 1)) hkN hjr`.
+-/
 theorem bigSizes : ∀ (g n : ℕ), n.Prime → Odd n → ∃ k j : ℕ, 2 ≤ k ∧ 1 ≤ j ∧ ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : GlobalTheory.ZH.ThetaSys o Ω), S.g = g → S.N = (n ^ k) ^ 2 → S.r = n ^ j → S.Big := by
   intro g n hp _
   have hn : 1 < n := hp.one_lt

@@ -16,6 +16,15 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 
 namespace PositivityTheory.Xgn.DualBaseChange
 
+/- English proof (translation)
+Establish `: Module.FinitePresentation R V` using `Module.finitePresentation_of_projective R V`. Rewrite using `[← isLocalizedModule_iff_isBaseChange (nonZeroDivisors R) A]`. Use `⟨(isLocalizedModule_id (nonZeroDivisors R) (Module.Dual A W) A).map_units, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ`. Take `⟨h, s, hs⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule (nonZeroDivisors R) (Algebra.linearMap R A) ((φ.restrictScalars R) ∘ₗ j)`.
+
+Use `⟨(h, s), ?_⟩` and prove the remaining obligations. Apply `hb.algHom_ext` to reduce the goal to its premises. Introduce `v`. Use `LinearMap.congr_fun hs v` as an intermediate fact. Rewrite using `[hb.toDual_comp_apply]`.
+
+Conclude with `this.symm`. Introduce `u₁ u₂ h`. Use `⟨1, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use extensionality with `v`.
+
+Apply `IsFractionRing.injective R A` to reduce the goal to its premises. Rewrite using `[← hb.toDual_comp_apply, ← hb.toDual_comp_apply, h]`.
+-/
 theorem dual_isBaseChange {R : Type} [CommRing R] {A : Type} [Field A] [Algebra R A]
     [IsFractionRing R A] {V : Type} [AddCommGroup V] [Module R V] [Module.Finite R V]
     [Module.Projective R V] {W : Type} [AddCommGroup W] [Module R W] [Module A W]
@@ -42,6 +51,9 @@ theorem dual_isBaseChange {R : Type} [CommRing R] {A : Type} [Field A] [Algebra 
 
 end PositivityTheory.Xgn.DualBaseChange
 
+/- English proof (translation)
+Introduce `Ω _ O _ _ R _ L _ _ _ _ Li _ _ toLi hb`. Conclude with `⟨hb.toDual, PositivityTheory.Xgn.DualBaseChange.dual_isBaseChange hb, fun u v => hb.toDual_comp_apply u v⟩`.
+-/
 theorem PositivityTheory.Xgn.exists_dual_base_change : ∀ (Ω : Type) [Field Ω] (O : Type) [CommRing O] [Algebra O Ω] (R : Subalgebra O Ω) [IsFractionRing R Ω] (L : Type) [AddCommGroup L] [Module R L] [Module.Finite R L] [Module.Projective R L] (Li : Type) [AddCommGroup Li] [Module Ω Li] (toLi : L →ₗ[R] Li), IsBaseChange Ω toLi → ∃ j : Module.Dual R L →ₗ[R] Module.Dual Ω Li, IsBaseChange Ω j ∧ ∀ u v, j u (toLi v) = algebraMap R Ω (u v) := by
   intro Ω _ O _ _ R _ L _ _ _ _ Li _ _ toLi hb
   exact ⟨hb.toDual, PositivityTheory.Xgn.DualBaseChange.dual_isBaseChange hb,

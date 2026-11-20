@@ -15,6 +15,15 @@ section Eval
 
 variable {G V LL : Type} [Field LL] [AddCommGroup V] [Module LL V]
 
+/- English proof (translation)
+Set `Ks : Finset G → Submodule LL (G → V)` to `fun s => W ⊓ ⨅ g ∈ s, LinearMap.ker (LinearMap.proj (R := LL) (φ := fun _ : G => V) g)`. Establish `hmem : ∀ s c, c ∈ Ks s ↔ c ∈ W ∧ ∀ g ∈ s, c g = 0`. Introduce `s c`. Simplify using `[Ks, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Take `⟨s, -, hs⟩` from `(measure fun s => finrank LL ↥(Ks s)).wf.has_min Set.univ ⟨∅, trivial⟩`.
+
+Use `⟨s, fun c hc h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, c g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (funext h)`. Establish `hlt : Ks (insert g s) < Ks s`. Use `lt_of_le_of_ne (fun x hx => ?_) fun heq => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[hmem]`. Conclude with `⟨hx.1, fun g' hg' => hx.2 g' (Finset.mem_insert_of_mem hg')⟩`.
+
+Establish `h1 : c ∈ Ks s` using `(hmem s c).2 ⟨hc, h0⟩`. Rewrite `h1` using `[← heq, hmem]`. Conclude with `hg (h1.2 g (Finset.mem_insert_self g s))`. Use `haveI : Module.Finite LL ↥(Ks s) := Submodule.finiteDimensional_of_le inf_le_left`. Conclude with `hs (insert g s) trivial (Submodule.finrank_lt_finrank_of_lt hlt)`.
+-/
 theorem exists_finset_eval (W : Submodule LL (G → V)) [Module.Finite LL ↥W] :
     ∃ s : Finset G, ∀ c ∈ W, (∀ g ∈ s, c g = 0) → c = 0 := by
   classical
@@ -40,6 +49,13 @@ theorem exists_finset_eval (W : Submodule LL (G → V)) [Module.Finite LL ↥W] 
   haveI : Module.Finite LL ↥(Ks s) := Submodule.finiteDimensional_of_le inf_le_left
   exact hs (insert g s) trivial (Submodule.finrank_lt_finrank_of_lt hlt)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_finset_eval W`. Use `haveI : IsNoetherian O ↥T := isNoetherian_of_fg_of_noetherian T hT`. Set `φ : ↥N →ₗ[O] (↥s → ↥T)` to `{ toFun := fun c i => ⟨(c : G → V) i, hNT _ c.2 _⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hφ : Function.Injective φ`. Introduce `c c' h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Use `hs _ (W.sub_mem (hNW c.2) (hNW c'.2)) fun g hg => ?_` and prove the remaining obligations. Use `congrArg (fun f => ((f ⟨g, hg⟩ : ↥T) : V)) h` as an intermediate fact. Simplify `this` using `[φ, sub_eq_zero]`.
+
+Use `haveI : IsNoetherian O ↥N := isNoetherian_of_injective φ hφ`. Conclude with `Module.Finite.iff_fg.1 inferInstance`.
+-/
 theorem fg_of_le_of_values {O : Type} [CommRing O] [IsNoetherianRing O] [Algebra O LL] [Module O V]
     [IsScalarTower O LL V] (W : Submodule LL (G → V)) [Module.Finite LL ↥W]
     (T : Submodule O V) (hT : T.FG) (N : Submodule O (G → V)) (hNW : N ≤ W.restrictScalars O)
@@ -80,6 +96,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {O : Type} [CommRing O] [Algebra O LL] [IsDomain O] [IsDiscreteValuationRing O]
     [IsFractionRing O LL] [Module O V] [IsScalarTower O LL V]
 
+/- English proof (translation)
+Establish `hle : B1 ρ ≤ finiteCocycles PD ρ`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `coboundary_mem_blochKatoCocycles PD hρ x`. Use `haveI : Module.Finite LL ↥(B1 ρ) := LinearMap.finiteDimensional_range _`. Use `haveI : Module.Finite LL ↥((B1 ρ).comap (finiteCocycles PD ρ).subtype) := Module.Finite.equiv (Submodule.comapSubtypeEquivOfLe hle).symm`.
+
+Use `haveI : IsNoetherian LL ↥(finiteCocycles PD ρ) := isNoetherian_of_range_eq_ker ((B1 ρ).comap (finiteCocycles PD ρ).subtype).subtype (Submodule.mkQ _) (by rw [Submodule.range_subtype, Submodule.ker_mkQ])`. Use `infer_instance`.
+-/
 theorem finite_Z1f_of_H1fV [FiniteDimensional LL V] (hρ : ∀ x, Continuous fun g => ρ g x)
     [Module.Finite LL (FiniteCohomology PD ρ)] : Module.Finite LL ↥(finiteCocycles PD ρ) := by
   have hle : B1 ρ ≤ finiteCocycles PD ρ := by
@@ -93,11 +114,25 @@ theorem finite_Z1f_of_H1fV [FiniteDimensional LL V] (hρ : ∀ x, Continuous fun
       (Submodule.mkQ _) (by rw [Submodule.range_subtype, Submodule.ker_mkQ])
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.2 (fg_of_le_of_values (finiteCocycles PD ρ) L.T L.fg (latticeFiniteCocycles PD L) inf_le_right fun _ hc g => hc.1.2 g (Set.mem_univ g))`.
+-/
 theorem finite_Z1fT_of (L : Lattice (O := O) ρ) [Module.Finite LL ↥(finiteCocycles PD ρ)] :
     Module.Finite O ↥(latticeFiniteCocycles PD L) :=
   Module.Finite.iff_fg.2 (fg_of_le_of_values (finiteCocycles PD ρ) L.T L.fg (latticeFiniteCocycles PD L) inf_le_right
     fun _ hc g => hc.1.2 g (Set.mem_univ g))
 
+/- English proof (translation)
+Use `haveI hI : (Ideal.span {ϖ}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Use `letI : Field (O ⧸ Ideal.span {ϖ}) := Ideal.Quotient.field _`. Use `haveI := L.free`. Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Use `haveI := finite_Z1f_of_H1fV PD hρ`.
+
+Use `haveI := finite_Z1fT_of PD L`. Use `haveI : Module.IsTorsionFree O LL := inferInstance`. Use `haveI : Module.IsTorsionFree O V := Module.IsTorsionFree.trans LL`. Use `haveI : Module.Free O ↥(latticeFiniteCocycles PD L) := inferInstance`. Take `⟨m, z, hz, hm⟩` from `exists_generators (Ideal.span {ϖ}) (cobT PD L hρ)`.
+
+Use `⟨m, ⟨Finset.univ.image fun i => classT PD L (z i), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (Submodule.map (classT PD L)) hz` as an intermediate fact. Rewrite `this` using `[Submodule.map_sup, ← ker_classT, Submodule.map_top, range_classT, (Submodule.map_le_iff_le_comap.2 le_rfl : (LinearMap.ker (classT PD L)).map (classT PD L) ≤ ⊥).antisymm bot_le, sup_bot_eq, Submodule.map_span, ← Set.range_comp]`. Rewrite using `[← this, Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Both sides reduce to the same expression.
+
+Simplify using `using Finset.card_image_le (s := Finset.univ) (f := fun i => classT PD L (z i))`. Use `haveI := finite_latMod L (Ideal.span {ϖ})`. Establish `h1` using `Submodule.finrank_mono (ker_redMap_le PD L hρ (Ideal.span {ϖ}))`. Establish `h2` using `finrank_bloch_kato_cocycles PD hρ`. Establish `h3` using `finrank_lattice L`.
+
+Establish `h4 : finrank O ↥(latticeFiniteCocycles PD L) ≤ finrank LL ↥(finiteCocycles PD ρ)` using `finrank_le_of_injective (W := ↥(finiteCocycles PD ρ)) { toFun := fun c => ⟨c, c.2.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl } fun _ _ h => Subtype.ext (congrArg (fun c : ↥(finiteCocycles PD ρ) => (c : G → V)) h)`. Establish `h5 : finrank (O ⧸ Ideal.span {ϖ}) ↥(LinearMap.ker (redMap (Ideal.span {ϖ}) (cobT PD L hρ))) ≤ h0ModResidueDim L ϖ` using `h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_generators_H1fT' [FiniteDimensional LL V] (L : Lattice (O := O) ρ)
     (hρ : ∀ x, Continuous fun g => ρ g x) [Module.Finite LL (FiniteCohomology PD ρ)]
     {ϖ : O} (hϖ : Irreducible ϖ) :
@@ -140,6 +175,11 @@ end Cohomology
 
 open GlobalTheory.H1fGeneratorBoundAlt GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions
 
+/- English proof (translation)
+Introduce `l _ P AI hTied K LL _ _ _ O _ _ hO T hDR`. Establish `hH1f` using `(GlobalTheory.SeqDim.h1f_finrank l P AI hTied K LL O hO (toGRep T) hDR).1`. Take `⟨⟨hD, hDVR, hF⟩, -⟩` from `hO`. Use `haveI : IsTopologicalAddGroup T.V := IsModuleTopology.topologicalAddGroup LL T.V`. Use `haveI : Module.Finite LL (FiniteCohomology (P.PD K) T.ρ) := hH1f`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, ⟨s, hs, hc⟩, hm⟩` from `exists_generators_H1fT' (P.PD K) T.L T.cont hϖ`. Establish `h5` using `h0_mod_uniformizer_le_rank T.L hϖ`. Establish `h3` using `finrank_lattice T.L`. Conclude with `⟨s, hs, by omega⟩`.
+-/
 theorem h1fT_generators : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ T : LocLat ↥(GK K) ℚ_[l] LL O, IsDR (P.PD K) T.ρ → ∃ s : Finset (LatticeCohomology T.L), Submodule.span O (s : Set (LatticeCohomology T.L)) = latticeFiniteCohomology (P.PD K) T.L ∧ s.card + finrank LL ↥(H0V T.ρ) ≤ finrank LL (FiniteCohomology (P.PD K) T.ρ) + finrank LL T.V := by
   intro l _ P AI hTied K LL _ _ _ O _ _ hO T hDR
   have hH1f := (GlobalTheory.SeqDim.h1f_finrank l P AI hTied K LL O hO (toGRep T) hDR).1

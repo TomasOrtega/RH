@@ -108,6 +108,9 @@ structure Hom (D D' : Dat A P) where
 
 variable {D} {D' D'' : Dat A P}
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `D.surj w m`. Rewrite using `[← D.equiv, u.comm, u.comm, u.equiv, D'.equiv]`.
+-/
 theorem Hom.equivq (u : Hom D D') (w : P.ι) (g : P.G w) (m : (D.Q w).X) :
     u.fq w ((D.Q w).ρ g m) = (D'.Q w).ρ g (u.fq w m) := by
   obtain ⟨m, rfl⟩ := D.surj w m
@@ -118,6 +121,11 @@ def Hom.c2 (u : Hom D D') : D.C2 →ₗ[A] D'.C2 where
   map_add' p q := by ext <;> simp
   map_smul' c p := by ext <;> simp
 
+/- English proof (translation)
+Take `⟨⟨hc, hcoc⟩, hloc⟩` from `hp`. Use `⟨⟨(continuous_of_discreteTopology (f := u.f)).comp hc, fun g h k => ?_⟩, fun w => ⟨(continuous_of_discreteTopology (f := u.fq w)).comp (hloc w).1, fun g h => ?_⟩⟩` and prove the remaining obligations. Use `show D'.M.ρ g (u.f (p.1 (h, k))) - u.f (p.1 (g * h, k)) + u.f (p.1 (g, h * k)) - u.f (p.1 (g, h)) = 0`. Rewrite using `[← u.equiv, ← map_sub, ← map_add, ← map_sub, hcoc, map_zero]`. Use `show D'.π w (u.f (p.1 (P.φ w g, P.φ w h))) = (D'.Q w).ρ g (u.fq w (p.2 w h)) - u.fq w (p.2 w (g * h)) + u.fq w (p.2 w g)`.
+
+Rewrite using `[← u.comm, (hloc w).2]`. Use `show u.fq w ((D.Q w).ρ g (p.2 w h) - p.2 w (g * h) + p.2 w g) = _`. Rewrite using `[map_add, map_sub, u.equivq]`.
+-/
 theorem Hom.lineCoeffQuadratic_mem (u : Hom D D') {p : D.C2} (hp : p ∈ D.selmerSecondCocycles) : u.c2 p ∈ D'.selmerSecondCocycles := by
   obtain ⟨⟨hc, hcoc⟩, hloc⟩ := hp
   refine ⟨⟨(continuous_of_discreteTopology (f := u.f)).comp hc, fun g h k => ?_⟩,
@@ -130,6 +138,11 @@ theorem Hom.lineCoeffQuadratic_mem (u : Hom D D') {p : D.C2} (hp : p ∈ D.selme
     show u.fq w ((D.Q w).ρ g (p.2 w h) - p.2 w (g * h) + p.2 w g) = _
     rw [map_add, map_sub, u.equivq]
 
+/- English proof (translation)
+Take `⟨⟨hc, hcoc⟩, Y, hY⟩` from `hy`. Use `⟨⟨(continuous_of_discreteTopology (f := u.fq w)).comp hc, fun g h => ?_⟩, u.fq w Y, fun g hg => ?_⟩` and prove the remaining obligations. Use `show u.fq w (y (g * h)) = u.fq w (y g) + (D'.Q w).ρ g (u.fq w (y h))`. Rewrite using `[hcoc, map_add, u.equivq]`. Use `show u.fq w (y g) = (D'.Q w).ρ g (u.fq w Y) - u.fq w Y`.
+
+Rewrite using `[hY g hg, map_sub, u.equivq]`.
+-/
 theorem Hom.lam_mem (u : Hom D D') (w : P.ι) {y} (hy : y ∈ D.abelian₂ w) : (fun g => u.fq w (y g)) ∈ D'.abelian₂ w := by
   obtain ⟨⟨hc, hcoc⟩, Y, hY⟩ := hy
   refine ⟨⟨(continuous_of_discreteTopology (f := u.fq w)).comp hc, fun g h => ?_⟩, u.fq w Y, fun g hg => ?_⟩

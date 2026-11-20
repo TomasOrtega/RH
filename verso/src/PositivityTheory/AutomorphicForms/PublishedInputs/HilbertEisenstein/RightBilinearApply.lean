@@ -89,8 +89,14 @@ def B1 : Vr F →L[ℝ] UpperTheory.V.TR.Lie F 2 →L[ℝ] Vr F :=
 def B2 : Vr F →L[ℝ] UpperTheory.V.TR.Lie F 2 →L[ℝ] Vr F :=
   LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ B2lin)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem left_bilinear_apply (w : Vr F) (x : UpperTheory.V.TR.Lie F 2) : B1 w x = w ᵥ* Matrix.of x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem right_bilinear_apply (w : Vr F) (z : UpperTheory.V.TR.Lie F 2) : B2 w z = Matrix.of z *ᵥ w := rfl
 
 def invL (x : UpperTheory.V.TR.Lie F 2) : UpperTheory.V.TR.Lie F 2 := UpperTheory.V.TR.toL (Matrix.of x)⁻¹

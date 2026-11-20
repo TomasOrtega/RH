@@ -8,6 +8,19 @@ namespace GlobalTheory.SplitComplHomeo
 
 open scoped WithZeroTopology in
 
+/- English proof (translation)
+Introduce `E _ _ _ s`. Establish `: s.w.asIdeal.LiesOver s.v.asIdeal` using `⟨s.w_under.symm⟩`. Establish `hc` using `(HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (maximalRealSubfield E) E s.v s.w).continuous`. Set `φ : s.v.adicCompletion (maximalRealSubfield E) →+* s.w.adicCompletion E` to `((HeightOneSpectrum.adicCompletion.equiv E s.w).symm.toRingHom.comp (UniformSpace.Completion.mapRingHom (algebraMap (WithVal (s.v.valuation (maximalRealSubfield E))) (WithVal (s.w.valuation E))) hc)).comp (HeightOneSpectrum.adicCompletion.equiv (maximalRealSubfield E) s.v).toRing …`. Establish `hφ : ∀ x : maximalRealSubfield E, φ (algebraMap (maximalRealSubfield E) _ x) = algebraMap E _ (algebraMap (maximalRealSubfield E) E x)` using `fun x => by`.
+
+Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Conclude with `UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ x)`. Establish `hcont : Continuous φ` using `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion E s.w).comp ((UniformSpace.Completion.continuous_map (f := algebraMap (WithVal (s.v.valuation (maximalRealSubfield E))) (WithVal (s.w.valuation E)))).comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion (maximalR …`. Establish `hi : ∀ x : E, φ (s.i x) = algebraMap E (s.w.adicCompletion E) x` using `fun x => by`. Establish `key : ∀ y, Valued.v (φ y - algebraMap E (s.w.adicCompletion E) x) = Valued.v (y - s.i x)` using `fun y => (HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield E) s.v).induction_on (p := fun y => Valued.v (φ y - algebraMap E (s.w.adicCompletion E) x) = Valued.v (y - s.i x)) y (isClosed_eq ((Valued.continuous_valuation_of_surjective (s.w.valuedAdicCompletion_surjectiv …`.
+
+Rewrite using `[hφ, ← map_sub, ← PI.CompAtExist.stepA s, map_sub, AlgHom.commutes]`. Establish `h0` using `key (s.i x)`. Rewrite `h0` using `[sub_self, map_zero, map_eq_zero, sub_eq_zero]`. Conclude with `h0`. Use `letI : Algebra (s.v.adicCompletion (maximalRealSubfield E)) (s.w.adicCompletion E) := φ.toAlgebra`.
+
+Use `haveI : ContinuousSMul (s.v.adicCompletion (maximalRealSubfield E)) (s.w.adicCompletion E) := continuousSMul_of_algebraMap _ _ hcont`. Use `letI : NontriviallyNormedField (s.v.adicCompletion (maximalRealSubfield E)) := Valued.toNontriviallyNormedField _ _`. Establish `hs : Function.Surjective φ`. Establish `hcl : IsClosed (LinearMap.range (Algebra.linearMap (s.v.adicCompletion (maximalRealSubfield E)) (s.w.adicCompletion E)) : Set (s.w.adicCompletion E))` using `Submodule.closed_of_finiteDimensional _`. Introduce `y`.
+
+Conclude with `(HeightOneSpectrum.denseRange_algebraMap E s.w).induction_on (p := fun y => y ∈ (LinearMap.range (Algebra.linearMap (s.v.adicCompletion (maximalRealSubfield E)) (s.w.adicCompletion E)) : Set (s.w.adicCompletion E))) y hcl fun x => ⟨s.i x, hi x⟩`. Set `e : s.v.adicCompletion (maximalRealSubfield E) ≃ₗ[s.v.adicCompletion (maximalRealSubfield E)] s.w.adicCompletion E` to `LinearEquiv.ofBijective (Algebra.linearMap _ _) ⟨φ.injective, hs⟩`. Use `haveI : FiniteDimensional (s.v.adicCompletion (maximalRealSubfield E)) (s.w.adicCompletion E) := e.finiteDimensional`. Establish `hinv : Continuous e.symm` using `e.symm.toLinearMap.continuous_of_finiteDimensional`. Use `⟨RingEquiv.ofBijective φ ⟨φ.injective, hs⟩, hcont, hinv.congr fun y => ?_, hi⟩` and prove the remaining obligations.
+
+Conclude with `(RingEquiv.symm_apply_eq _).2 (e.apply_symm_apply y).symm |>.symm`.
+-/
 theorem exists_complEquiv : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L),
     ∃ i : s.v.adicCompletion (NumberField.maximalRealSubfield L) ≃+* s.w.adicCompletion L,
       Continuous i ∧ Continuous i.symm ∧ ∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x := by

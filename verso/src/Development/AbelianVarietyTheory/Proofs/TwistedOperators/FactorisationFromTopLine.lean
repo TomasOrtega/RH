@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SepRows
 
+/- English proof (translation)
+Use `Submodule.map_mono (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce `T hT`. Conclude with `⟨hT.aut, hT.cusp, fun v k hk g => by simp at hk, hT.equiv, hT.cont⟩`.
+-/
 theorem factor_multT_le_empty {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V))
     (χ : GA D V → ℂ) : MultT θ M J χ ≤ MultT θ M ∅ 1 := by
 

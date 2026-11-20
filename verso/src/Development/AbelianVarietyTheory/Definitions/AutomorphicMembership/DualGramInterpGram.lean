@@ -19,21 +19,38 @@ variable {m : ℕ}
 
 def grSq (M : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) : ℝ := (lminor M i.succ / lminor M i.castSucc).re
 
+/- English proof (translation)
+The claim follows from `(h.submatrix (Fin.castLE_injective _)).det_pos`.
+-/
 theorem lminor_pos {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) (k : Fin (m + 1)) : 0 < lminor M k :=
   (h.submatrix (Fin.castLE_injective _)).det_pos
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 (div_pos (lminor_pos h _) (lminor_pos h _))).1`.
+-/
 theorem grSq_pos {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) (i : Fin m) : 0 < grSq M i :=
   (Complex.pos_iff.1 (div_pos (lminor_pos h _) (lminor_pos h _))).1
 
+/- English proof (translation)
+The claim follows from `det_of_upperTriangular fun _ _ h => hT _ _ h`.
+-/
 theorem lminor_eq_prod {T : Matrix (Fin m) (Fin m) ℂ} (hT : ∀ a c, c < a → T a c = 0) (k : Fin (m + 1)) :
     lminor T k = ∏ a : Fin k, T (a.castLE (Nat.le_of_lt_succ k.2)) (a.castLE (Nat.le_of_lt_succ k.2)) :=
   det_of_upperTriangular fun _ _ h => hT _ _ h
 
+/- English proof (translation)
+Rewrite using `[lminor_eq_prod hT, lminor_eq_prod hT]`. Conclude with `Fin.prod_univ_castSucc _`.
+-/
 theorem lminor_tri {T : Matrix (Fin m) (Fin m) ℂ} (hT : ∀ a c, c < a → T a c = 0) (i : Fin m) :
     lminor T i.succ = lminor T i.castSucc * T i i := by
   rw [lminor_eq_prod hT, lminor_eq_prod hT]
   exact Fin.prod_univ_castSucc _
 
+/- English proof (translation)
+Establish `e (k) : lminor (Tᴴ * M * T) k = starRingEnd ℂ (lminor T k) * lminor M k * lminor T k` using `(ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_LMU (T.map (starRingEnd ℂ)) M T (fun a c h => by simp [hT a c h]) hT k).trans (congrArg (· * _ * _) (ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj T k))`. Establish `h0 : lminor T i.castSucc ≠ 0`. Rewrite using `[lminor_eq_prod hT]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hd _`. Establish `h1 : starRingEnd ℂ (lminor T i.castSucc) ≠ 0` using `(map_ne_zero _).2 h0`.
+
+Rewrite using `[grSq, grSq, e, e, lminor_tri hT, ← Complex.re_ofReal_mul, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem grSq_tri (M : Matrix (Fin m) (Fin m) ℂ) {T : Matrix (Fin m) (Fin m) ℂ} (hT : ∀ a c, c < a → T a c = 0)
     (hd : ∀ a, T a a ≠ 0) (i : Fin m) : grSq (Tᴴ * M * T) i = ‖T i i‖ ^ 2 * grSq M i := by
   have e (k) : lminor (Tᴴ * M * T) k = starRingEnd ℂ (lminor T k) * lminor M k * lminor T k :=
@@ -47,10 +64,16 @@ theorem grSq_tri (M : Matrix (Fin m) (Fin m) ℂ) {T : Matrix (Fin m) (Fin m) �
   congr 1
   field_simp
 
+/- English proof (translation)
+Rewrite using `[grSq, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ← map_div₀, Complex.conj_re, grSq]`.
+-/
 theorem grSq_map_conj (M : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) : grSq (M.map (starRingEnd ℂ)) i = grSq M i := by
   rw [grSq, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_map_conj, ← map_div₀,
     Complex.conj_re, grSq]
 
+/- English proof (translation)
+Establish `hT : ∀ a c, c < a → (diagonal fun a => (d a : ℂ)) a c = 0` using `fun a c h => diagonal_apply_ne _ h.ne'`. Establish `h0 : lminor (diagonal fun a => (d a : ℂ)) i.castSucc ≠ 0`. Rewrite using `[lminor_eq_prod hT]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => by simpa using hd _`. Rewrite using `[grSq, lminor_tri hT, mul_div_cancel_left₀ _ h0, diagonal_apply_eq, Complex.ofReal_re]`.
+-/
 theorem grSq_diagonal {d : Fin m → ℝ} (hd : ∀ a, d a ≠ 0) (i : Fin m) : grSq (diagonal fun a => (d a : ℂ)) i = d i := by
   have hT : ∀ a c, c < a → (diagonal fun a => (d a : ℂ)) a c = 0 := fun a c h => diagonal_apply_ne _ h.ne'
   have h0 : lminor (diagonal fun a => (d a : ℂ)) i.castSucc ≠ 0 := by
@@ -58,6 +81,21 @@ theorem grSq_diagonal {d : Fin m → ℝ} (hd : ∀ a, d a ≠ 0) (i : Fin m) : 
     exact Finset.prod_ne_zero_iff.2 fun a _ => by simpa using hd _
   rw [grSq, lminor_tri hT, mul_div_cancel_left₀ _ h0, diagonal_apply_eq, Complex.ofReal_re]
 
+/- English proof (translation)
+Use `set U := (LDL.lowerInv h)ᴴ with hU`. Establish `hT : ∀ a c, c < a → U a c = 0` using `fun a c hc => by simp [hU, LDL.lowerInv_triangular h hc]`. Establish `hu : IsUnit U.det`. Rewrite using `[hU, det_conjTranspose]`. Conclude with `(isUnit_det_of_invertible _).star`.
+
+Establish `hd : ∀ a, U a a ≠ 0` using `fun a => by`. Rewrite `hu` using `[det_of_upperTriangular (M := U) fun _ _ h => hT _ _ h]`. Conclude with `Finset.prod_ne_zero_iff.1 hu.ne_zero a (Finset.mem_univ _)`. Establish `hD : Uᴴ * M * U = diagonal (LDL.diagEntries h)`. Rewrite using `[hU, conjTranspose_conjTranspose]`.
+
+Conclude with `(LDL.diag_eq_lowerInv_conj h).symm`. Establish `hp : ∀ a, 0 < LDL.diagEntries h a` using `posDef_diagonal_iff.1 (hD ▸ h.conjTranspose_mul_mul_same (mulVec_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 hu)))`. Take `⟨d, hd0, hD⟩ : ∃ d : Fin m → ℝ, (∀ a, 0 < d a) ∧ Uᴴ * M * U = diagonal fun a => (d a : ℂ)` from `⟨fun a => (LDL.diagEntries h a).re, fun a => (Complex.pos_iff.1 (hp a)).1, hD.trans (congrArg _ (funext fun a => Complex.ext rfl (Complex.pos_iff.1 (hp a)).2.symm))⟩`. Establish `e1 : d i = ‖U i i‖ ^ 2 * grSq M i` using `by rw [← grSq_tri M hT hd, hD, grSq_diagonal fun a => (hd0 a).ne']`. Establish `e2 (w : Fin m → ℂ) : (star (U *ᵥ w) ⬝ᵥ M *ᵥ (U *ᵥ w)).re = ∑ a, d a * ‖w a‖ ^ 2`.
+
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hD, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mulVec_diagonal, mul_left_comm, Complex.re_ofReal_mul, Pi.star_apply, mul_comm (star _), RCLike.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Establish `e3 (w : Fin m → ℂ) (hw : ∀ k, i < k → w k = 0) : (U *ᵥ w) i = U i i * w i` using `Finset.sum_eq_single (s := Finset.univ) (f := fun a => U i a * w a) i (fun a _ ha => ha.lt_or_gt.elim (fun h => by rw [hT _ _ h, zero_mul]) fun h => by rw [hw _ h, mul_zero]) (by simp)`. Establish `e4 {z : ℂ} (hz : U i i * z = 1) : d i * ‖z‖ ^ 2 = grSq M i`.
+
+Rewrite using `[e1, mul_right_comm, ← mul_pow, ← norm_mul, hz]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Use `⟨U *ᵥ Pi.single i (U i i)⁻¹, ?_, fun k hk => by simp [hT k i hk], ?_⟩` and prove the remaining obligations. Simplify using `[hd i]`.
+
+Rewrite using `[e2, Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp), Pi.single_eq_same, e4 (mul_inv_cancel₀ (hd i))]`. Introduce and unpack `_ ⟨v, h1, h2, rfl⟩`. Use `invertibleOfIsUnitDet U hu` as an intermediate fact. Establish `hi : U⁻¹.BlockTriangular id` using `blockTriangular_inv_of_blockTriangular fun _ _ h => hT _ _ h`. Establish `hv : v = U *ᵥ (U⁻¹ *ᵥ v)` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`.
+
+Establish `hw : ∀ k, i < k → (U⁻¹ *ᵥ v) k = 0` using `fun k hk => Finset.sum_eq_zero (s := Finset.univ) (f := fun a => U⁻¹ k a * v a) fun a _ => (lt_or_ge a k).elim (fun h => by rw [hi h, zero_mul]) fun h => by rw [h2 a (hk.trans_le h), mul_zero]`. Rewrite using `[hv, e2, ← e4 (z := (U⁻¹ *ᵥ v) i) (by rw [← e3 _ hw, ← hv, h1])]`. Conclude with `Finset.single_le_sum (f := fun a => d a * ‖(U⁻¹ *ᵥ v) a‖ ^ 2) (fun a _ => mul_nonneg (hd0 a).le (sq_nonneg _)) (Finset.mem_univ i)`.
+-/
 theorem isLeast_grSq {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) (i : Fin m) :
     IsLeast {a | ∃ v : Fin m → ℂ, v i = 1 ∧ (∀ k, i < k → v k = 0) ∧ a = (star v ⬝ᵥ M *ᵥ v).re} (grSq M i) := by
   set U := (LDL.lowerInv h)ᴴ with hU
@@ -108,39 +146,68 @@ def mixDual (s : ℝ) (M₀ M : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fi
 
 variable {s : ℝ} {M₀ M : Matrix (Fin m) (Fin m) ℂ}
 
+/- English proof (translation)
+Break down `hs.1.eq_or_lt with rfl | h1` into its components or cases. Simplify `h₀` using `[mix]`. Conclude with `PosDef.posSemidef_add (h₀.posSemidef.smul (Complex.zero_le_real.2 (sub_nonneg.2 hs.2))) (h.smul (Complex.zero_lt_real.2 h1))`.
+-/
 theorem mix_posDef (hs : s ∈ Set.Icc (0 : ℝ) 1) (h₀ : M₀.PosDef) (h : M.PosDef) : (mix s M₀ M).PosDef := by
   rcases hs.1.eq_or_lt with rfl | h1
   · simpa [mix] using h₀
   · exact PosDef.posSemidef_add (h₀.posSemidef.smul (Complex.zero_le_real.2 (sub_nonneg.2 hs.2)))
       (h.smul (Complex.zero_lt_real.2 h1))
 
+/- English proof (translation)
+The claim follows from `dualGram_posDef (mix_posDef hs (dualGram_posDef h₀) (dualGram_posDef h))`.
+-/
 theorem mixDual_posDef (hs : s ∈ Set.Icc (0 : ℝ) 1) (h₀ : M₀.PosDef) (h : M.PosDef) : (mixDual s M₀ M).PosDef :=
   dualGram_posDef (mix_posDef hs (dualGram_posDef h₀) (dualGram_posDef h))
 
+/- English proof (translation)
+Rewrite using `[dualGram, dualGram, ← transpose_nonsing_inv, transpose_transpose, nonsing_inv_nonsing_inv _ h]`.
+-/
 theorem dualGram_dualGram (h : IsUnit M.det) : dualGram (dualGram M) = M := by
   rw [dualGram, dualGram, ← transpose_nonsing_inv, transpose_transpose, nonsing_inv_nonsing_inv _ h]
 
+/- English proof (translation)
+The claim follows from `dualGram_dualGram ((isUnit_iff_isUnit_det _).1 (mix_posDef hs (dualGram_posDef h₀) (dualGram_posDef h)).isUnit)`.
+-/
 theorem dualGram_mixDual (hs : s ∈ Set.Icc (0 : ℝ) 1) (h₀ : M₀.PosDef) (h : M.PosDef) :
     dualGram (mixDual s M₀ M) = mix s (dualGram M₀) (dualGram M) :=
   dualGram_dualGram ((isUnit_iff_isUnit_det _).1 (mix_posDef hs (dualGram_posDef h₀) (dualGram_posDef h)).isUnit)
 
+/- English proof (translation)
+Simplify using `only [mix, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem mix_conj (T : Matrix (Fin m) (Fin m) ℂ) : mix s (Tᴴ * M₀ * T) (Tᴴ * M * T) = Tᴴ * mix s M₀ M * T := by
   simp only [mix, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[mixDual, dualGram_conj, dualGram_conj, mix_conj, dualGram_conj]`. Rewrite using `[show T⁻¹ᵀ⁻¹ᵀ = T from dualGram_dualGram hT, mixDual]`.
+-/
 theorem mixDual_conj {T : Matrix (Fin m) (Fin m) ℂ} (hT : IsUnit T.det) :
     mixDual s (Tᴴ * M₀ * T) (Tᴴ * M * T) = Tᴴ * mixDual s M₀ M * T := by
   rw [mixDual, dualGram_conj, dualGram_conj, mix_conj, dualGram_conj]
   rw [show T⁻¹ᵀ⁻¹ᵀ = T from dualGram_dualGram hT, mixDual]
 
+/- English proof (translation)
+Use `⟨by simp [mix], by simp [mix], ?_⟩` and prove the remaining obligations. Rewrite using `[mix, ← add_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem mix_values : mix 0 M₀ M = M₀ ∧ mix 1 M₀ M = M ∧ mix s M M = M := by
   refine ⟨by simp [mix], by simp [mix], ?_⟩
   rw [mix, ← add_smul]; simp
 
+/- English proof (translation)
+Rewrite using `[mixDual, mixDual, mixDual, (mix_values (s := s)).1, (mix_values (s := s)).2.1, (mix_values (M₀ := M₀)).2.2]`. Conclude with `⟨dualGram_dualGram h₀, dualGram_dualGram h, dualGram_dualGram h⟩`.
+-/
 theorem mixDual_values (h₀ : IsUnit M₀.det) (h : IsUnit M.det) :
     mixDual 0 M₀ M = M₀ ∧ mixDual 1 M₀ M = M ∧ mixDual s M M = M := by
   rw [mixDual, mixDual, mixDual, (mix_values (s := s)).1, (mix_values (s := s)).2.1, (mix_values (M₀ := M₀)).2.2]
   exact ⟨dualGram_dualGram h₀, dualGram_dualGram h, dualGram_dualGram h⟩
 
+/- English proof (translation)
+Establish `e (a b : ℂ) : mix (1 / 2) (a • (1 : Matrix (Fin 1) (Fin 1) ℂ)) (b • 1) = ((a + b) / 2) • 1`. Rewrite using `[mix, smul_smul, smul_smul, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Prove the components needed by the constructor for the conclusion. Simplify `e 1 3` using `[show (1 + 3 : ℂ) / 2 = 2 by norm_num]`. Rewrite using `[mixDual, ← one_smul ℂ (1 : Matrix (Fin 1) (Fin 1) ℂ), smul_smul, dualGram_smul_one one_ne_zero, dualGram_smul_one (by norm_num), e, dualGram_smul_one (by norm_num), smul_smul]`. Evaluate the numerical expressions.
+-/
 example : mix (1 / 2) (1 : Matrix (Fin 1) (Fin 1) ℂ) ((3 : ℂ) • 1) = (2 : ℂ) • 1 ∧
     mixDual (1 / 2) (1 : Matrix (Fin 1) (Fin 1) ℂ) ((3 : ℂ) • 1) = (3 / 2 : ℂ) • 1 := by
   have e (a b : ℂ) : mix (1 / 2) (a • (1 : Matrix (Fin 1) (Fin 1) ℂ)) (b • 1) = ((a + b) / 2) • 1 := by
@@ -151,6 +218,9 @@ example : mix (1 / 2) (1 : Matrix (Fin 1) (Fin 1) ℂ) ((3 : ℂ) • 1) = (2 : 
       dualGram_smul_one (by norm_num), e, dualGram_smul_one (by norm_num), smul_smul]
     norm_num
 
+/- English proof (translation)
+Simplify using `[grSq, lminor, det_fin_two]`. Evaluate the numerical expressions.
+-/
 example : grSq !![1, 1; 1, 2] 1 = 1 := by
   simp [grSq, lminor, det_fin_two]
   norm_num
@@ -176,6 +246,9 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {x : Sp R �
 def IsMap (f : EigFrame Z φ x) (ψ : R →+* R') (f' : EigFrame Z φ' x') : Prop :=
   ∀ τ i, f'.v τ i = spMap (dualMap ψ) ≫ f.v τ i
 
+/- English proof (translation)
+Substitute `hφ hx` using the available equality. Conclude with `exists_baseChange E H Dw l Xo c O β Z R R' φ x f ψ`.
+-/
 theorem exists_isMap (f : EigFrame Z φ x) (ψ : R →+* R') (hφ : φ' = ψ.comp φ) (hx : x' = spMap ψ ≫ x) :
     ∃ f' : EigFrame Z φ' x', f.IsMap ψ f' := by
   subst hφ hx
@@ -186,42 +259,69 @@ variable (f g k : EigFrame Z φ x) (τ : E →+* ℂ)
 def co : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R :=
   of fun a i => (f.basis τ _ (g.tan τ i) (g.eig τ i)).exists.choose a
 
+/- English proof (translation)
+The claim follows from `(f.basis τ _ (g.tan τ i) (g.eig τ i)).exists.choose_spec`.
+-/
 theorem co_spec (i : Fin (Dw.mult τ)) : IsCombAtG Z.t x (f.v τ) (fun a => f.co g τ a i) (g.v τ i) :=
   (f.basis τ _ (g.tan τ i) (g.eig τ i)).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(isComb_iff (f.vec τ) _ (g.vec τ i)).1 (f.co_spec g τ i)`.
+-/
 theorem vec_eq (i : Fin (Dw.mult τ)) : g.vec τ i = ∑ a, f.co g τ a i • f.vec τ a :=
   (isComb_iff (f.vec τ) _ (g.vec τ i)).1 (f.co_spec g τ i)
 
 variable {f g τ} in
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun a i => congrFun ((f.basis τ _ (g.tan τ i) (g.eig τ i)).unique (f.co_spec g τ i) (h i)) a`.
+-/
 theorem co_eq {T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R}
     (h : ∀ i, IsCombAtG Z.t x (f.v τ) (fun a => T a i) (g.v τ i)) : f.co g τ = T :=
   Matrix.ext fun a i => congrFun ((f.basis τ _ (g.tan τ i) (g.eig τ i)).unique (f.co_spec g τ i) (h i)) a
 
+/- English proof (translation)
+Use `(co_eq fun i => (isComb_iff (f.vec τ) _ (k.vec τ i)).2 ?_).symm` and prove the remaining obligations. Simplify using `only [g.vec_eq k τ i, f.vec_eq g τ, Finset.smul_sum, smul_smul, mul_apply, Finset.sum_smul, mul_comm]`. Conclude with `Finset.sum_comm`.
+-/
 theorem co_mul : f.co g τ * g.co k τ = f.co k τ := by
   refine (co_eq fun i => (isComb_iff (f.vec τ) _ (k.vec τ i)).2 ?_).symm
   simp only [g.vec_eq k τ i, f.vec_eq g τ, Finset.smul_sum, smul_smul, mul_apply, Finset.sum_smul, mul_comm]
   exact Finset.sum_comm
 
+/- English proof (translation)
+The claim follows from `co_eq fun i => (isComb_iff (f.vec τ) _ (f.vec τ i)).2 (by simp [one_apply])`.
+-/
 theorem co_self : f.co f τ = 1 :=
   co_eq fun i => (isComb_iff (f.vec τ) _ (f.vec τ i)).2 (by simp [one_apply])
 
+/- English proof (translation)
+The claim follows from `isUnit_det_of_right_inverse ((f.co_mul g f τ).trans (f.co_self τ))`.
+-/
 theorem isUnit_det_co : IsUnit (f.co g τ).det := isUnit_det_of_right_inverse ((f.co_mul g f τ).trans (f.co_self τ))
 
 variable {f g}
 
+/- English proof (translation)
+The claim follows from `co_eq fun i => by rw [funext (hf τ), hg τ i] exact GlobalTheory.GradedPieces.comb_map ψ hx.symm (f.co_spec g τ i)`.
+-/
 theorem IsMap.co {ψ : R →+* R'} {f' g' : EigFrame Z φ' x'} (hf : f.IsMap ψ f') (hg : g.IsMap ψ g')
     (hx : x' = spMap ψ ≫ x) : f'.co g' τ = (f.co g τ).map ψ :=
   co_eq fun i => by
     rw [funext (hf τ), hg τ i]
     exact GlobalTheory.GradedPieces.comb_map ψ hx.symm (f.co_spec g τ i)
 
+/- English proof (translation)
+Use `choose T h1 h2 h3 using h.2.2 τ`. Rewrite using `[co_eq (T := of fun a i => T i a) fun i => by rw [funext (hf τ)]; exact h3 i]`. Conclude with `⟨fun a i => h2 i a, h1⟩`.
+-/
 theorem Tri.co {ψ : R →+* R'} {f' g' : EigFrame Z φ' x'} {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ} (h : f.Tri ψ g' t)
     (hf : f.IsMap ψ f') : (∀ a i, i < a → f'.co g' τ a i = 0) ∧ ∀ i, f'.co g' τ i i = t τ i := by
   choose T h1 h2 h3 using h.2.2 τ
   rw [co_eq (T := of fun a i => T i a) fun i => by rw [funext (hf τ)]; exact h3 i]
   exact ⟨fun a i => h2 i a, h1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx, hφ, fun τ i => ⟨Pi.single i 1, by simp, fun _ hk => Pi.single_eq_of_ne hk.ne' _, by rw [← funext (hf τ)]; exact isCombAtG_single Z.t x' (f'.tan τ) i⟩⟩`.
+-/
 theorem IsMap.tri {ψ : R →+* R'} {f' : EigFrame Z φ' x'} (hf : f.IsMap ψ f') (hφ : φ' = ψ.comp φ)
     (hx : x' = spMap ψ ≫ x) : f.Tri ψ f' 1 :=
   ⟨hx, hφ, fun τ i => ⟨Pi.single i 1, by simp, fun _ hk => Pi.single_eq_of_ne hk.ne' _, by
@@ -269,13 +369,22 @@ def interp (s : CxPts (genStr Z) σ → ℝ) (hs : ∀ y, s y ∈ Set.Icc (0 : �
 variable {s : CxPts (genStr Z) σ → ℝ} {hs : ∀ y, s y ∈ Set.Icc (0 : ℝ) 1} {G₀ G : EigMet Z σ} {y : CxPts (genStr Z) σ}
   (f : EigFrame Z σ (y.1 ≫ genι Z)) {τ : E →+* ℂ}
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem interp_gram (h : τ (H.rt : E) = H.rt0) :
     (interp s hs G₀ G).gram y f τ = mix (s y) (G₀.gram y f τ) (G.gram y f τ) := if_pos h
 
+/- English proof (translation)
+The claim follows from `(congrArg dualGram (if_neg h)).trans (dualGram_mixDual (hs y) (G₀.pos y f τ) (G.pos y f τ))`.
+-/
 theorem dualGram_interp_gram (h : τ (H.rt : E) ≠ H.rt0) : dualGram ((interp s hs G₀ G).gram y f τ) =
     mix (s y) (dualGram (G₀.gram y f τ)) (dualGram (G.gram y f τ)) :=
   (congrArg dualGram (if_neg h)).trans (dualGram_mixDual (hs y) (G₀.pos y f τ) (G.pos y f τ))
 
+/- English proof (translation)
+Simplify using `only [interp, h]`. Use `split_ifs`. Use `exacts [(mix_values (s := 0)).1, (mixDual_values (s := 0) ((isUnit_iff_isUnit_det _).1 (G₀.pos y f τ).isUnit) ((isUnit_iff_isUnit_det _).1 (G.pos y f τ).isUnit)).1]`.
+-/
 theorem interp_gram_zero (h : s y = 0) : (interp s hs G₀ G).gram y f τ = G₀.gram y f τ := by
   simp only [interp, h]
   split_ifs
@@ -300,6 +409,9 @@ abbrev _root_.GlobalTheory.ShFam.embOf (e : F ≃+* c.F) (σ : F →+* ℂ) : c.
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `h1 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext e.apply_symm_apply))`. Rewrite using `[← Y.π_str, Category.assoc, Category.assoc, h1, Category.comp_id]`.
+-/
 theorem π_genStr : Y.π ≫ genStr Z = Y.Y.str ≫ spMap e.symm.toRingHom := by
   have h1 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _ := by
     rw [← Spec.map_comp, ← Spec.map_id]
@@ -318,11 +430,19 @@ def Adapted (p : Y.Y.pts σ) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `Scheme.Spec_stalkClosedPointTo_fromSpecStalk p.1`.
+-/
 theorem spMap_evStalk (p : Y.Y.pts σ) : spMap (evStalk p) ≫ stalkPt Y.Y (base p) = p.1 :=
   Scheme.Spec_stalkClosedPointTo_fromSpecStalk p.1
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨φ, f, t, h1, h2⟩` from `Y.gr_spec (base p)`. Establish `hφ : embOf e σ = (evStalk p).comp φ` using `RingHom.ext fun a => by`. Establish `h3 : φ a = algebraMap F _ (e.symm a)` using `IsFractionRing.injective _ Y.Y.X.functionField ((RingHom.congr_fun h1.2.1 a).symm.trans ((Y.Y.stalkIncl (base p)).commutes _).symm)`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, h3]`. Conclude with `((evStalk_germ (U := ⊤) trivial _).trans (ev_algX mem_ptsIn_top _)).symm`.
+
+Establish `hx : (Y.down p).1 ≫ genι Z = spMap (evStalk p) ≫ stalkPt Y.Y (base p) ≫ Y.π ≫ genι Z`. Rewrite using `[← Category.assoc, Y.spMap_evStalk]`. Conclude with `Category.assoc _ _ _`. Take `⟨g, hg⟩` from `f.exists_isMap (evStalk p) hφ hx`. Conclude with `⟨(t, g), h2, φ, f, h1, hg.tri hφ hx⟩`.
+-/
 theorem exists_adapted (p : Y.Y.pts σ) : ∃ q : (∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) × Y.FrameAt p,
     (∀ τ i, p ∈ eqnSet σ (Y.gr τ i) (q.1 τ i)) ∧ Y.Adapted p q.1 q.2 1 := by
   obtain ⟨φ, f, t, h1, h2⟩ := Y.gr_spec (base p)
@@ -345,6 +465,9 @@ def genSq {p : Y.Y.pts σ} (g : Y.FrameAt p) : ℝ := ∏ z : Letter Dw, grSq (G
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun _ _ => zpow_pos (grSq_pos (G.pos _ _ _) _) _`.
+-/
 theorem genSq_pos {p : Y.Y.pts σ} (g : Y.FrameAt p) : 0 < Y.genSq G n g :=
   Finset.prod_pos fun _ _ => zpow_pos (grSq_pos (G.pos _ _ _) _) _
 
@@ -356,6 +479,11 @@ def met : Met Y.Y σ (divOf Y n) where
 variable {Y} {p : Y.Y.pts σ} {t t₁ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ} {g g₁ : Y.FrameAt p}
   {t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂˣ}
 
+/- English proof (translation)
+Establish `hE : ∀ s : Finset (Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn (base p) (∏ z ∈ s, t z.1 z.2 ^ n z)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero (base p)`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((h _ _).zsmul _).add ih`.
+
+Conclude with `hE Finset.univ`.
+-/
 theorem prodPow_mem (h : ∀ τ i, p ∈ eqnSet σ (Y.gr τ i) (t τ i)) : p ∈ eqnSet σ (divOf Y n) (prodPow t n) := by
   have hE : ∀ s : Finset (Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn (base p) (∏ z ∈ s, t z.1 z.2 ^ n z) := fun s => by
     classical
@@ -366,6 +494,19 @@ theorem prodPow_mem (h : ∀ τ i, p ∈ eqnSet σ (Y.gr τ i) (t τ i)) : p ∈
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨φ₁, f₁, a₁, b₁⟩` from `h₁`. Take `⟨φ, f, a, b⟩` from `h`. Establish `hι` using `IsFractionRing.injective (Y.Y.X.presheaf.stalk (base p)) Y.Y.X.functionField`. Take `rfl : φ₁ = φ` from `RingHom.ext fun x => hι ((RingHom.congr_fun a₁.2.1 x).symm.trans (RingHom.congr_fun a.2.1 x))`. Take `⟨k₁, hk₁⟩` from `f₁.exists_isMap _ a.2.1 a.1`.
+
+Take `⟨k, hk⟩` from `f.exists_isMap _ a.2.1 a.1`. Take `⟨q₁, hq₁⟩` from `f₁.exists_isMap _ b.2.1 b.1`. Take `⟨q, hq⟩` from `f.exists_isMap _ b.2.1 b.1`. Establish `e1 (τ i d) : k₁.co Y.f0 τ d i = ∑ j, k.co Y.f0 τ j i * algebraMap _ Y.Y.X.functionField (f₁.co f τ d j)`. Rewrite using `[← k₁.co_mul k, hk₁.co τ hk a.1, mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hM (τ d i) (h : i < d) : f₁.co f τ d i = 0` using `hι ((CoordUniq.tri_of_mul (M := fun i a => algebraMap _ Y.Y.X.functionField (f₁.co f τ a i)) (fun i a => (a₁.co τ hk₁).1 a i) (fun i a' => (a.co τ hk).1 a' i) (fun i => (a.co τ hk).2 i ▸ (t τ i).ne_zero) (e1 τ) i d h).trans (map_zero _).symm)`. Establish `hu (τ i) : IsUnit (f₁.co f τ i i)`. Use `f₁.isUnit_det_co f τ` as an intermediate fact. Rewrite `this` using `[det_of_upperTriangular (M := f₁.co f τ) fun _ _ h => hM τ _ _ h]`.
+
+Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => f₁.co f τ i i) (Finset.mem_univ i)) this`. Use `⟨fun τ i => (hu τ i).unit, fun τ i => Units.ext ?_, fun τ i => ?_⟩` and prove the remaining obligations. Rewrite using `[← (a₁.co τ hk₁).2, e1, Units.val_mul, ← (a.co τ hk).2]`. Conclude with `CoordUniq.diag_of_mul (M := fun i a => algebraMap _ Y.Y.X.functionField (f₁.co f τ a i)) (fun i a' => (a.co τ hk).1 a' i) (fun i a h => by simp only [hM τ a i h, map_zero]) i`. Establish `h3` using `fun a => (evStalk_ne_zero_iff _).2 (hu τ a)`.
+
+Establish `e2` using `grSq_tri (G.gram _ q₁ τ) (b₁.co τ hq₁).1 (fun a => (b₁.co τ hq₁).2 a ▸ Units.ne_zero _) i`. Establish `e3` using `grSq_tri (G.gram _ q τ) (b.co τ hq).1 (fun a => (b.co τ hq).2 a ▸ Units.ne_zero _) i`. Establish `e4` using `grSq_tri (G.gram _ q₁ τ) (T := q₁.co q τ) (fun a c h => by rw [hq₁.co τ hq b.1, map_apply, hM τ a c h, map_zero]) (fun a => by rw [hq₁.co τ hq b.1]; exact h3 a) i`. Rewrite `e2`, `e3`, `e4` using `[← G.change]`. Rewrite using `[e3, e4, e2, (b₁.co τ hq₁).2, (b.co τ hq).2, hq₁.co τ hq b.1, map_apply, IsUnit.unit_spec, norm_mul]`.
+
+Simplify using `only [Pi.one_apply, Units.val_one, norm_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Adapted.compare (h₁ : Y.Adapted p t₁ g₁ 1) (h : Y.Adapted p t g t') :
     ∃ u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Y.Y.X.presheaf.stalk (base p))ˣ,
       (∀ τ i, t₁ τ i = t τ i * Units.map (algebraMap _ Y.Y.X.functionField).toMonoidHom (u τ i)) ∧
@@ -404,6 +545,11 @@ theorem Adapted.compare (h₁ : Y.Adapted p t₁ g₁ 1) (h : Y.Adapted p t g t'
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨G⟩ : Nonempty (EigMet Z (embOf e σ))` from `inferInstance`. Take `⟨q, h1, h2⟩` from `Y.exists_adapted p`. Take `⟨u, hu, -⟩` from `h2.compare G h`. Use `(CartierDiv.IsEqn.iff_unitAt (h1 τ i)).2 ⟨((u τ i)⁻¹ : _ˣ), Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, Units.val_mul, div_mul_cancel_left₀ (Units.ne_zero _), ← Units.val_inv_eq_inv_val, ← map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Adapted.mem_eqnSet (h : Y.Adapted p t g t') (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     p ∈ eqnSet σ (Y.gr τ i) (t τ i) := by
   obtain ⟨G⟩ : Nonempty (EigMet Z (embOf e σ)) := inferInstance
@@ -413,6 +559,15 @@ theorem Adapted.mem_eqnSet (h : Y.Adapted p t g t') (τ : E →+* ℂ) (i : Fin 
   rw [hu, Units.val_mul, div_mul_cancel_left₀ (Units.ne_zero _), ← Units.val_inv_eq_inv_val, ← map_inv]
   rfl
 
+/- English proof (translation)
+Take `⟨u, hu, hg⟩` from `(Y.exists_adapted p).choose_spec.2.compare G h`. Establish `e1 : Var.tv (prodPow t n) (prodPow (Y.exists_adapted p).choose.1 n) p = evStalk p (prodPow u n : _ˣ)`. Rewrite using `[← (hasVal_cx_stalk _).val_eq, Var.tv]`. Simplify using `only [prodPow, hu, mul_zpow, Finset.prod_mul_distrib, ← map_zpow, ← map_prod, Units.val_mul, mul_div_cancel_left₀ _ (Units.ne_zero _)]`. Both sides reduce to the same expression.
+
+Establish `e2 : evStalk p (prodPow u n : _ˣ) = ∏ z : Letter Dw, evStalk p (u z.1 z.2) ^ n z`. Use `(congrArg Units.val (map_prod (Units.map (evStalk p).toMonoidHom) _ _)).trans ?_` and prove the remaining obligations. Simplify using `only [map_zpow, Units.coe_prod, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Rewrite using `[eq_div_iff (pow_ne_zero _ (norm_ne_zero_iff.2 (Units.ne_zero _)))]`.
+
+Use `show ‖_‖ ^ 2 * _ * _ = _`. Rewrite using `[e1, e2]`. Simplify using `only [genSq, hg, prodPow, Units.coe_prod, Units.val_zpow_eq_zpow_val, norm_prod, norm_zpow, norm_mul, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [sq, mul_zpow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem met_h (h : Y.Adapted p t g t') :
     (Y.met G n).h (prodPow t n) p = Y.genSq G n g / ‖((prodPow t' n : ℂˣ) : ℂ)‖ ^ 2 := by
   obtain ⟨u, hu, hg⟩ := (Y.exists_adapted p).choose_spec.2.compare G h
@@ -436,6 +591,13 @@ theorem met_h (h : Y.Adapted p t g t') :
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `hs : base p ⤳ y`. Establish `: base p ∈ Set.range (Y.Y.X.fromSpecStalk y)` using `by rw [base, hp]; exact ⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Set `ρ : Y.Y.X.presheaf.stalk y →+* Y.Y.X.presheaf.stalk (base p)` to `(Y.Y.X.presheaf.stalkSpecializes hs).hom`. Establish `h1 : spMap ρ ≫ stalkPt Y.Y y = stalkPt Y.Y (base p)` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs`.
+
+Establish `h2 : (evStalk p).comp ρ = ψ` using `EigLoc.spMap_inj ((cancel_mono (Y.Y.X.fromSpecStalk y)).1 (by`. Use `Eq.trans ?_ ((Y.spMap_evStalk p).trans hp)` and prove the remaining obligations. Rewrite using `[← h1, ← Category.assoc, ← Spec.map_comp]`. Use the proof step `rfl))`. Establish `h3 : (algebraMap _ Y.Y.X.functionField).comp ρ = algebraMap _ Y.Y.X.functionField` using `congrArg CommRingCat.Hom.hom (Y.Y.X.presheaf.stalkSpecializes_comp _ hs)`.
+
+Take `⟨f', hf⟩` from `f.exists_isMap ρ (x' := stalkPt Y.Y (base p) ≫ Y.π ≫ genι Z) rfl (by rw [← h1, Category.assoc])`. Establish `key : ∀ {k : Type} [CommRing k] (χ : Y.Y.X.presheaf.stalk (base p) →+* k) {φ' : c.F →+* k} {x' : Sp k ⟶ Z.X} {g : EigFrame Z φ' x'} {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ}, f.Tri (χ.comp ρ) g t → f'.Tri χ g t` using `fun χ _ _ g t h => ⟨by rw [h.1, ← h1, Category.assoc, ← Category.assoc (spMap χ), ← Spec.map_comp]; rfl, h.2.1, fun τ i => by simpa only [hf τ, GlobalTheory.GradedPieces.dual_comp] using h.2.2 τ i⟩`. Use `⟨⟨_, f', key _ (h3.symm ▸ a), key _ (h2.symm ▸ b)⟩, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3, ← h2]`. Conclude with `(hasVal_cx_stalk _).val_eq`.
+-/
 theorem adapted_of_tri {y : Y.Y.X} {ψ : Y.Y.X.presheaf.stalk y →+* ℂ} {φ : c.F →+* Y.Y.X.presheaf.stalk y}
     {f : EigFrame Z φ (stalkPt Y.Y y ≫ Y.π ≫ genι Z)} (hp : p.1 = spMap ψ ≫ stalkPt Y.Y y)
     (a : f.Tri (algebraMap (Y.Y.X.presheaf.stalk y) Y.Y.X.functionField) Y.f0 t) (b : f.Tri ψ g t') :
@@ -459,6 +621,9 @@ theorem adapted_of_tri {y : Y.Y.X} {ψ : Y.Y.X.presheaf.stalk y →+* ℂ} {φ :
   rw [← h3, ← h2]
   exact (hasVal_cx_stalk _).val_eq
 
+/- English proof (translation)
+Take `⟨y, ψ, φ, f, t, t', r, h1, h2, h3, h4, rfl⟩` from `h`. Take `⟨ha, hv⟩` from `adapted_of_tri h1 h2 h3`. Rewrite using `[pn_eq (prodPow_mem n ha.mem_eqnSet), met_h G n ha, fval, ← map_mul, ← h4, hv, norm_mul]`. Simplify using `only [prodPow, _root_.zpow_neg, Finset.prod_inv_distrib, Units.val_inv_eq_inv_val, norm_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pn_met {s : Y.Y.Fn} {a : ℂ} (h : IsCoord Y p.1 g n s a) :
     pn Y.Y σ _ (Y.met G n) (Y.Y.cx σ s) p = ‖a‖ ^ 2 * Y.genSq G n g := by
   obtain ⟨y, ψ, φ, f, t, t', r, h1, h2, h3, h4, rfl⟩ := h
@@ -467,15 +632,26 @@ theorem pn_met {s : Y.Y.Fn} {a : ℂ} (h : IsCoord Y p.1 g n s a) :
   simp only [prodPow, _root_.zpow_neg, Finset.prod_inv_distrib, Units.val_inv_eq_inv_val, norm_inv]
   ring
 
+/- English proof (translation)
+The claim follows from `Set.eq_univ_of_forall fun p => by obtain ⟨q, h1, h2⟩ := Y.exists_adapted p rw [Met.mem_posSet_iff (prodPow_mem n h1), met_h G n h2] exact div_pos (Y.genSq_pos G n _) (pow_pos (norm_pos_iff.2 (Units.ne_zero _)) _)`.
+-/
 theorem posSet_met : (Y.met G n).posSet = Set.univ := Set.eq_univ_of_forall fun p => by
   obtain ⟨q, h1, h2⟩ := Y.exists_adapted p
   rw [Met.mem_posSet_iff (prodPow_mem n h1), met_h G n h2]
   exact div_pos (Y.genSq_pos G n _) (pow_pos (norm_pos_iff.2 (Units.ne_zero _)) _)
 
+/- English proof (translation)
+Simplify using `only [met, genSq, h]`.
+-/
 theorem met_congr {G' : EigMet Z (embOf e σ)} (h : ∀ g τ, G.gram (Y.down p) g τ = G'.gram (Y.down p) g τ) (a : Y.Y.Fnˣ) :
     (Y.met G n).h a p = (Y.met G' n).h a p := by
   simp only [met, genSq, h]
 
+/- English proof (translation)
+Establish `e1 (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) : prodPow t (n + n') = prodPow t n * prodPow t n'`. Simplify using `only [prodPow, Pi.add_apply, _root_.zpow_add, Finset.prod_mul_distrib]`. Establish `e2 (g : Y.FrameAt p) : Y.genSq G (n + n') g = Y.genSq G n g * Y.genSq G n' g`. Simplify using `only [genSq, Pi.add_apply, zpow_add₀ (grSq_pos (G.pos _ _ _) _).ne', Finset.prod_mul_distrib]`. Simplify using `only [met]`.
+
+Rewrite using `[e1, e2, tv_mul_mul h (prodPow_mem n (Y.exists_adapted p).choose_spec.1), norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem met_add_h {a a' : Y.Y.Fnˣ} (h : p ∈ eqnSet σ (divOf Y n) a) (h' : p ∈ eqnSet σ (divOf Y n') a') :
     (Y.met G (n + n')).h (a * a') p = (Y.met G n).h a p * (Y.met G n').h a' p := by
   have e1 (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Y.Y.Fnˣ) : prodPow t (n + n') = prodPow t n * prodPow t n' := by
@@ -488,9 +664,15 @@ theorem met_add_h {a a' : Y.Y.Fnˣ} (h : p ∈ eqnSet σ (divOf Y n) a) (h' : p 
 
 variable (Y) in
 
+/- English proof (translation)
+Simplify using `only [divOf, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem divOf_add : divOf Y (n + n') = divOf Y n + divOf Y n' := by
   simp only [divOf, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `f p`. Establish `h` using `mem_eqnSet (divOf Y n) p`. Establish `h'` using `mem_eqnSet (divOf Y n') p`. Establish `h₂ : p ∈ eqnSet σ (divOf Y n + divOf Y n') _` using `CartierDiv.IsEqn.add h h'`. Rewrite using `[pn_eq h₂, pn_eq (Y.divOf_add n n' ▸ h₂), mAdd_h h h', met_add_h G n n' h h']`.
+-/
 theorem pn_met_add : pn Y.Y σ _ (Y.met G (n + n')) = pn Y.Y σ _ (mAdd Y.Y σ _ _ (Y.met G n) (Y.met G n')) := by
   funext f p
   have h := mem_eqnSet (divOf Y n) p
@@ -498,11 +680,17 @@ theorem pn_met_add : pn Y.Y σ _ (Y.met G (n + n')) = pn Y.Y σ _ (mAdd Y.Y σ _
   have h₂ : p ∈ eqnSet σ (divOf Y n + divOf Y n') _ := CartierDiv.IsEqn.add h h'
   rw [pn_eq h₂, pn_eq (Y.divOf_add n n' ▸ h₂), mAdd_h h h', met_add_h G n n' h h']
 
+/- English proof (translation)
+Take `⟨q, -, φ, f, h1, h2⟩` from `Y.exists_adapted p`. Rewrite using `[pn_met G 0 (a := 1) ⟨_, _, φ, f, _, _, 1, (Y.spMap_evStalk p).symm, h1, h2, by simp, by simp⟩]`. Simplify using `[genSq]`.
+-/
 example : pn Y.Y σ _ (Y.met G 0) (Y.Y.cx σ 1) p = 1 := by
   obtain ⟨q, -, φ, f, h1, h2⟩ := Y.exists_adapted p
   rw [pn_met G 0 (a := 1) ⟨_, _, φ, f, _, _, 1, (Y.spMap_evStalk p).symm, h1, h2, by simp, by simp⟩]
   simp [genSq]
 
+/- English proof (translation)
+Use `met_h G (Pi.single z 1) h` as an intermediate fact. Rewrite `this` using `[genSq, prodPow, Finset.prod_eq_single z (fun b _ hb => by simp [hb]) (by simp), Finset.prod_eq_single z (fun b _ hb => by simp [hb]) (by simp)]`. Simplify `this` using `[prodPow]`.
+-/
 example [DecidableEq (Letter Dw)] (h : Y.Adapted p t g 1) (z : Letter Dw) :
     (Y.met G (Pi.single z 1)).h (t z.1 z.2) p = grSq (G.gram _ g z.1) z.2 := by
   have := met_h G (Pi.single z 1) h

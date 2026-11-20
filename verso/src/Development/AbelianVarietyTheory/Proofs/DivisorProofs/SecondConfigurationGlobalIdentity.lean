@@ -16,6 +16,41 @@ noncomputable section
 
 namespace GlobalTheory.ConeVIntegrand
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' cfg X om om' om₁ om₁' T T₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev t m hL m₀ hL₀ Φ hΦ h g`. Establish `hS : Φ ∈ schA F (Fin a × Fin (a + (b + 2)))`. Use `Submodule.span_le.mpr ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hφ, hv, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hv, T.geo.hM.std] with v h1 h2`. Rewrite using `[h1, h2]`. Establish `hpres : ∀ x, ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), om x Ψ ∈ schA F (Fin a × Fin (a + (b + 2)))` using `fun x Ψ hΨ => (T.weil.isUSplitting).pres x Ψ hΨ`. Establish `himpl` using `(T.weil.isUSplitting).impl`. Establish `hrho : ∀ w, ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), G.M.co.rho B.ψ w Ψ ∈ schA F (Fin a × Fin (a + (b + 2)))` using `fun w Ψ hΨ => GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ T.base.std w Ψ hΨ`.
+
+Establish `hcm` using `T.base.cm`. Use `set ct : (AE F E)ˣ := Units.map (cA σ : AE F E →* AE F E) t with hct`. Use `set Ψ₁ := om (m₀⁻¹ * g, h) Φ with hΨ₁`. Establish `hΨ₁s : Ψ₁ ∈ schA F (Fin a × Fin (a + (b + 2)))` using `hpres _ _ hS`. Use `set Ψ := G.M.co.rho B.ψ (shiftA H₀ H' 1) Ψ₁ with hΨ`.
+
+Establish `hΨs : Ψ ∈ schA F (Fin a × Fin (a + (b + 2)))` using `hrho _ _ hΨ₁s`. Establish `s1 : G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, m * h) Φ) = om (1, m) (G.M.co.rho B.ψ (shiftA H₀ H' ct) (om (g, h) Φ))`. Establish `hc : om (g, m * h) Φ = om (1, m) (om (g, h) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[hc, himpl (1, m) _ _ (hpres _ _ hS)]`.
+
+Use `congr 1`. Establish `hy` using `hL.2.1`. Use `show (1 : (AE F E)ˣ).1 • Matrix.vecMulVec (incV F H₀.x) (incV F H'.y) = (1 : Matrix (Fin a) (Fin a) (AE F E)) * (ct.1 • Matrix.vecMulVec (incV F H₀.x) (incV F H'.y)) * (mat m)ᵀ`. Rewrite using `[Matrix.one_mul]`. Use extensionality with `i j`.
+
+Establish `hyj` using `congrFun hy j`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hyj`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Establish `hs : ∀ k, ct.1 * (incV F H₀.x i * incV F H'.y k) * mat m j k = (ct.1 * incV F H₀.x i) * (mat m j k * incV F H'.y k)` using `fun k => by ring`. Simplify using `only [hs, ← Finset.mul_sum, hyj]`.
+
+Establish `hu : ct.1 * (cA σ) (t⁻¹).1 = 1`. Rewrite using `[hct]`. Use `show (cA σ) t.1 * (cA σ) (t⁻¹).1 = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[Units.val_one, one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `s2 : G.M.co.rho B.ψ (shiftA H₀ H' ct) (om (g, h) Φ) = om (m₀, 1) Ψ`. Establish `hc : om (g, h) Φ = om (m₀, 1) Ψ₁`. Rewrite using `[hΨ₁, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel_left, one_mul]`. Rewrite using `[hc, hΨ, himpl (m₀, 1) _ _ hΨ₁s]`.
+
+Use `congr 1`. Establish `hx` using `hL₀.1`. Use `show ct.1 • Matrix.vecMulVec (incV F H₀.x) (incV F H'.y) = mat m₀ * ((1 : (AE F E)ˣ).1 • Matrix.vecMulVec (incV F H₀.x) (incV F H'.y)) * (1 : Matrix (Fin (a + (b + 2))) (Fin (a + (b + 2))) (AE F E))ᵀ`. Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Units.val_one, one_smul]`. Use extensionality with `i j`.
+
+Establish `hxi` using `congrFun hx i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at hxi`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hxi]`.
+
+Establish `hΨ' : om (m₀, 1) Ψ ∈ schA F (Fin a × Fin (a + (b + 2)))` using `hpres _ _ hΨs`. Establish `s3 : e₂ (om (1, m) (om (m₀, 1) Ψ)) = (((X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)) * (((X.β / X.α) ct : ℂ) * (((absE F E ct : ℝ) ^ (((a + b : ℕ) : ℝ) / 2) : ℝ) : ℂ))) • e₂ Ψ`. Rewrite using `[GlobalTheory.T.levi_evaluation_config_b_triple hKP F E σ B a b G G₁ H H' cfg X om om' om₁ om₁' T T₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev t m hL _ hΨ', GlobalTheory.T.config_b_levi_triple_pair hKP F E σ B a b G G₁ H H' cfg X om om' om₁ om₁' T T₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ …`. Establish `hνF : ∀ u : (HeckeCharacterZeroLocus.ThmBIn.AF F)ˣ, X.ν (HeckeCharacterZeroLocus.ThmBIn.idF F E u) = 1`. Introduce `u`.
+
+Establish `e1 : (X.α (HeckeCharacterZeroLocus.ThmBIn.idF F E u) : ℂ) = _` using `T.chars.resα u`. Establish `e2 : (X.β (HeckeCharacterZeroLocus.ThmBIn.idF F E u) : ℂ) = _` using `T.chars.resβ u`. Establish `hpar : (b + 2) % 2 = a % 2`. Take `⟨k, hk⟩` from `T.geo.even`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[← Circle.coe_eq_one, Chars.ν, MonoidHom.div_apply, Circle.coe_div, e1, e2]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[neg_one_pow_eq_pow_mod_two (R := ℂ), hpar, ← neg_one_pow_eq_pow_mod_two (R := ℂ)]`. Conclude with `div_self (pow_ne_zero _ (by norm_num))`.
+
+Establish `hνct : X.ν ct = (X.ν t)⁻¹` using `GlobalTheory.ideleChar_conj_eq_inv_of_trivial_on_base F E σ hcm X.ν hνF t ct rfl`. Establish `habs : absE F E ct = absE F E t` using `GlobalTheory.Doubling.absE_conjUnit σ t`. Establish `hr : (0 : ℝ) < (absE F E t : ℝ)`. Establish `h1 : absE F E t * absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h2 : absE F E t ≠ 0` using `left_ne_zero_of_mul_eq_one h1`.
+
+Conclude with `pos_iff_ne_zero.mpr h2` after adjusting the coercions. Establish `hsc : ((X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)) * (((X.β / X.α) ct : ℂ) * (((absE F E ct : ℝ) ^ (((a + b : ℕ) : ℝ) / 2) : ℝ) : ℂ)) = (X.α t : ℂ) * (((absE F E t : ℝ) ^ (((b + 2 : ℕ) : ℝ) / 2) : ℝ) : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) - 1) : ℝ) : ℂ)`. Establish `hβα : ((X.β / X.α) ct : ℂ) = (X.α t : ℂ) / (X.β t : ℂ)`. Establish `h1 : ((X.β / X.α) ct : ℂ) = ((X.ν ct)⁻¹ : Circle)`. Rewrite using `[Chars.ν, MonoidHom.div_apply, MonoidHom.div_apply, Circle.coe_inv, Circle.coe_div, Circle.coe_div, inv_div]`.
+
+Rewrite using `[h1, hνct, inv_inv, Chars.ν, MonoidHom.div_apply, Circle.coe_div]`. Establish `hexp : (a : ℝ) / 2 + ((a + b : ℕ) : ℝ) / 2 = ((b + 2 : ℕ) : ℝ) / 2 + ((a : ℝ) - 1)` using `by push_cast; ring`. Establish `hβ : (X.β t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Rewrite using `[hβα, habs]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Real.rpow_add hr, ← Real.rpow_add hr, hexp]`. Use `_ = _ := by push_cast; ring`. Rewrite using `[s1, s2, s3, hsc]`. Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`.
+-/
 theorem xTerm_levi : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ (t : (AE F E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := G₁.W) H' t 1 m → ∀ m₀ : UA σ G.V.J, IsLevi (W₁ := X₁) H₀ (Units.map (cA σ : AE F E →* AE F E) t) 1 m₀ → ∀ Φ ∈ PolData B G.M, ∀ h g, thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, m * h) Φ))) = (X.α t : ℂ) * (((absE F E t : ℝ) ^ (((b + 2 : ℕ) : ℝ) / 2) : ℝ) : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) - 1) : ℝ) : ℂ) * thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (m₀⁻¹ * g, h) Φ))) := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' cfg X om om' om₁ om₁' T T₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hev t m hL m₀ hL₀ Φ hΦ h g
   have hS : Φ ∈ schA F (Fin a × Fin (a + (b + 2))) := by

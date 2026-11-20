@@ -18,6 +18,9 @@ variable {m n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   {ρ : GR n → PX m n →ₗ[ℂ] PX m n} {Pp Γ : Subgroup G} {ι : GR n →* G} {s₀ : ℂ} {Ht : G → ℝ≥0}
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
+/- English proof (translation)
+Use `⟨∑ r ∈ d.roots.toFinset, |r.re|, fun z hz h0 => ?_⟩` and prove the remaining obligations. Establish `hm : z ∈ d.roots.toFinset` using `Multiset.mem_toFinset.mpr ((Polynomial.mem_roots hd).mpr h0)`. Establish `h1 : |z.re| ≤ ∑ r ∈ d.roots.toFinset, |r.re|` using `Finset.single_le_sum (f := fun r : ℂ => |r.re|) (fun r _ => abs_nonneg _) hm`. Combine the linear relations using `[le_abs_self z.re]`.
+-/
 theorem roots_bound (d : Polynomial ℂ) (hd : d ≠ 0) : ∃ σ : ℝ, ∀ z : ℂ, σ < z.re → d.eval z ≠ 0 := by
   refine ⟨∑ r ∈ d.roots.toFinset, |r.re|, fun z hz h0 => ?_⟩
   have hm : z ∈ d.roots.toFinset := Multiset.mem_toFinset.mpr ((Polynomial.mem_roots hd).mpr h0)
@@ -25,6 +28,23 @@ theorem roots_bound (d : Polynomial ℂ) (hd : d ≠ 0) : ∃ σ : ℝ, ∀ z : 
     Finset.single_le_sum (f := fun r : ℂ => |r.re|) (fun r _ => abs_nonneg _) hm
   linarith [le_abs_self z.re]
 
+/- English proof (translation)
+Establish `hsm : ∀ (c : ℂ) (F : G → ℂ) (g : G), Top μ ι p q e a b nb ψ (fun x => c * F x) g = c * Top μ ι p q e a b nb ψ F g`. Introduce `c F g`. Simplify using `only [Top, mul_assoc c]`. Repeatedly rewrite using `[integral_const_mul, mul_left_comm _ c, integral_const_mul]`. Introduce `z hzU g`.
+
+Establish `hdiff : DifferentiableOn ℂ (fun w => Top μ ι p q e a b nb ψ (E w) g - cz (w - s₀) * E w g) U`. Establish `h1 : DifferentiableOn ℂ (fun w => Top μ ι p q e a b nb ψ (E w) g) U` using `top_hol (p := p) (q := q) (e := e) (a := a) (b := b) μ hD hHP hG.ιcont hnbc hψc hψs hUo E hEc hEh g`. Establish `h2 : DifferentiableOn ℂ (fun w => cz (w - s₀)) U` using `(hczd.comp (differentiable_id.sub_const s₀)).differentiableOn`. Conclude with `h1.sub (h2.mul (hEh g))`. Establish `hVo : IsOpen (connectedComponentIn U z)` using `hUo.connectedComponentIn`.
+
+Establish `hVU : connectedComponentIn U z ⊆ U` using `connectedComponentIn_subset U z`. Establish `han` using `(hdiff.mono hVU).analyticOnNhd hVo`. Establish `hray : (fun t : ℝ => z + (t : ℂ)) '' Ici 0 ⊆ connectedComponentIn U z`. Apply `IsPreconnected.subset_connectedComponentIn` to reduce the goal to its premises. Conclude with `isPreconnected_Ici.image _ (by fun_prop : Continuous fun t : ℝ => z + (t : ℂ)).continuousOn`.
+
+Conclude with `⟨0, Set.mem_Ici.mpr le_rfl, by simp⟩`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hUr.2 z hzU t ht`. Establish `hT : (0 : ℝ) ≤ max 0 (σ - z.re) + 1`. Use `le_max_left 0 (σ - z.re)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0 : z + ((max 0 (σ - z.re) + 1 : ℝ) : ℂ) ∈ connectedComponentIn U z` using `hray ⟨_, hT, rfl⟩`. Establish `hre : σ < (z + ((max 0 (σ - z.re) + 1 : ℝ) : ℂ)).re`. Use `le_max_right 0 (σ - z.re)` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : (fun w => Top μ ι p q e a b nb ψ (E w) g - cz (w - s₀) * E w g) =ᶠ[𝓝 (z + ((max 0 (σ - z.re) + 1 : ℝ) : ℂ))] 0`. Establish `hopen : IsOpen {w : ℂ | σ < w.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hopen.mem_nhds hre] with w hw`. Establish `hEw : E w = fun x => d.eval w * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w) x`.
+
+Use function extensionality and compare the values at `fun x => (hEr w hw).2 x`. Establish `hs` using `top_sum μ hL hG hD hG.ιcont hnbc hψc hψs hceig w (hEr w hw).1 g`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[hEw, hsm (d.eval w) (fun x => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ w) x), hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_connectedComponentIn hw0 hev (mem_connectedComponentIn hzU)`. Simplify using `only [Pi.zero_apply] at h`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem top_E [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (hD : CayleyBlocksInvertible)
     (hHP : HolParam) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n} (hnbc : Continuous nb)

@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `k _ X _ p A B`. Establish `hloc : ∀ (P : Pair p) i j, P.loc 1 (-1) 1 i j = (P.r i : X.functionField) / (P.r' j : X.functionField)`. Introduce `P i j`. Simplify using `[Pair.loc, div_eq_mul_inv]`. Establish `hexp : ∀ s t : ℝ, -(((1 : ℤ) : ℝ) * s + ((-1 : ℤ) : ℝ) * t) / 2 = -(s - t) / 2`.
+
+Introduce `s t`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, rfl, rfl, hH, hnu⟩`.
+
+Use `⟨P.r, P.r', P.hr, P.hr', fun x i j hi hj => ?_, fun σ y i j hi hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← hloc]`. Conclude with `hH x i j hi hj`. Establish `e` using `hnu σ y`. Rewrite `e` using `[nu_eq k X p P 1 (-1) 1 hH σ y i j hi hj, hloc, hexp]`.
+
+Conclude with `e`. Introduce and unpack `⟨r, r', hr, hr', hreg, hnu⟩`. Use `⟨⟨A, B, r, r', hr, hr'⟩, rfl, rfl, fun x i j hi hj => ?_, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hloc]`. Conclude with `hreg x i j hi hj`.
+
+Rewrite using `[Pair.nu, hloc, hexp]`. Conclude with `hnu σ y _ _ (mem_pick _ y) (mem_pick _ y)`.
+-/
 theorem le_iff_local : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ A B : HermLB p, Le B A ↔ ∃ (r : A.B.ι → X.functionFieldˣ) (r' : B.B.ι → X.functionFieldˣ), IsRatSec A.B r ∧ IsRatSec B.B r' ∧ (∀ (x : X) i j, x ∈ A.B.U i → x ∈ B.B.U j → RegAt x ((r i : X.functionField) / (r' j : X.functionField))) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ) i j, y ∈ ptsIn p σ (A.B.U i) → y ∈ ptsIn p σ (B.B.U j) → ‖ratVal ((r i : X.functionField) / (r' j : X.functionField)) y‖ * Real.exp (-((A.φ σ).φ i y - (B.φ σ).φ j y) / 2) ≤ 1 := by
   intro k _ X _ p A B
   have hloc : ∀ (P : Pair p) i j, P.loc 1 (-1) 1 i j = (P.r i : X.functionField) / (P.r' j : X.functionField) := by

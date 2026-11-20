@@ -37,10 +37,25 @@ def GamSupP : Prop :=
 
 variable (hs : M.split = some g) {T T' : F} {TT : M.R}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (g.e.injective (Prod.ext h1 h2))`.
+-/
 theorem R_ext {x y : M.R} (h1 : p1 g x = p1 g y) (h2 : p2 g x = p2 g y) : x = y := Subtype.ext (g.e.injective (Prod.ext h1 h2))
 
+/- English proof (translation)
+The claim follows from `g.e.injective (Prod.ext h1 h2)`.
+-/
 theorem E_ext {x y : E} (h1 : p1 g x = p1 g y) (h2 : p2 g x = p2 g y) : x = y := g.e.injective (Prod.ext h1 h2)
 
+/- English proof (translation)
+Unfold `pdat at h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `h`. Establish `e1` using `congrArg g.e h1`. Establish `e2` using `congrArg g.e h2`.
+
+Establish `e3` using `congrArg g.e h3`. Establish `e4` using `congrArg g.e h4`. Simplify using `only [AlgEquiv.apply_symm_apply, Prod.mk.injEq] at e1 e2 e3 e4`. Take `⟨a1, a2⟩` from `e1`. Take `⟨b1, b2⟩` from `e2`.
+
+Take `⟨c1, c2⟩` from `e3`. Take `⟨d1, d2⟩` from `e4`. Establish `hη : η₁ = η₂` using `R_ext a1 d1`. Establish `hη' : η₁' = η₂'` using `R_ext a2 d2`. Substitute `hη hη'` using the available equality.
+
+Conclude with `⟨rfl, E_ext (sub_right_inj.mp c1) (sub_right_inj.mp b1), rfl, E_ext (sub_right_inj.mp c2) (sub_right_inj.mp b2)⟩`.
+-/
 theorem pdat_inj {k : E} {η₁ η₂ η₁' η₂' : M.R} {a₁ a₂ a₁' a₂' : E}
     (h : pdat g k η₁ a₁ η₁' a₁' = pdat g k η₂ a₂ η₂' a₂') : η₁ = η₂ ∧ a₁ = a₂ ∧ η₁' = η₂' ∧ a₁' = a₂' := by
   unfold pdat at h
@@ -61,6 +76,13 @@ theorem pdat_inj {k : E} {η₁ η₂ η₁' η₂' : M.R} {a₁ a₂ a₁' a₂
   exact ⟨rfl, E_ext (sub_right_inj.mp c1) (sub_right_inj.mp b1), rfl,
     E_ext (sub_right_inj.mp c2) (sub_right_inj.mp b2)⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨x1, x2, x3, x4⟩, ⟨y1, y2, y3, y4⟩⟩ ⟨⟨x1', x2', x3', x4'⟩, ⟨y1', y2', y3', y4'⟩⟩ hab`. Unfold `asm at hab`. Simplify using `only [Prod.mk.injEq] at hab`. Take `⟨h1, h2, h3⟩` from `hab`. Establish `e1` using `(splitH hs h).symm.injective h1`.
+
+Establish `e2` using `(splitH hs h).symm.injective h2`. Simplify using `only [Prod.mk.injEq] at e1 e2`. Take `⟨q1, q2, q3, q4⟩` from `pdat_inj h3`. Take `⟨e11, e12⟩` from `e1`. Take `⟨e21, e22⟩` from `e2`.
+
+Use `subst_vars`. Both sides reduce to the same expression.
+-/
 theorem asm_inj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z Zσ : M.Mat (r + 1)} (h : GHyp M g T T' TT Zh Z Zσ) :
     Function.Injective (asm hs h) := by
   rintro ⟨⟨x1, x2, x3, x4⟩, ⟨y1, y2, y3, y4⟩⟩ ⟨⟨x1', x2', x3', x4'⟩, ⟨y1', y2', y3', y4'⟩⟩ hab
@@ -78,6 +100,9 @@ theorem asm_inj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z Zσ : M.Mat (r + 
 
 def mapD {A B : Type} (θ : A → B) (p : A × A × M.R × E) : B × B × M.R × E := (θ p.1, θ p.2.1, p.2.2.1, p.2.2.2)
 
+/- English proof (translation)
+Establish `hk'` using `kap_common hk h₁.2.2.2.2.2.1 h₂.2.2.2.2.2.1`. Simplify using `only [asm, thetaOf, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, Prod.map, mapD, hk']`. Both sides reduce to the same expression.
+-/
 theorem asm_compat {Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z₁ Z₂ Zσ₁ Zσ₂ : M.Mat (r + 1)}
     (h₁ : GHyp M g T T' TT Zh₁ Z₁ Zσ₁) (h₂ : GHyp M g T T' TT Zh₂ Z₂ Zσ₂) (hk : KapEq Zh₁ Zh₂)
     (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT)

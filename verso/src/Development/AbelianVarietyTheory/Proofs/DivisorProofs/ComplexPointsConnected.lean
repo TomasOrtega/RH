@@ -8,6 +8,11 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+Introduce `F _ _ Y σ`. Establish `hI : IsIntegral (pullback Y.str (spMap σ))` using `GeometricallyIntegral.geometrically_isIntegral (f := Y.str) (spMap σ) _ _ (IsPullback.of_hasPullback Y.str (spMap σ))`. Establish `hP` using `GlobalTheory.OpenSubgroupPts.preconnectedSpace_pts_of_isIntegral (pullback.snd Y.str (spMap σ))`. Set `f : GlobalTheory.Points.Pts (pullback.snd Y.str (spMap σ)) → Pts Y σ` to `fun y => ⟨y.1 ≫ pullback.fst _ _, by rw [Category.assoc, pullback.condition, ← Category.assoc, y.2, Category.id_comp]⟩`. Establish `hc : Continuous f` using `((GlobalTheory.Points.continuous_comp (C := ℂ) (pullback.fst Y.str (spMap σ))).comp continuous_subtype_val).subtype_mk _`.
+
+Establish `hs : Function.Surjective f` using `fun z => ⟨⟨pullback.lift z.1 (𝟙 _) (by rw [z.2, Category.id_comp]), pullback.lift_snd _ _ _⟩, Subtype.ext (pullback.lift_fst _ _ _)⟩`. Take `⟨z⟩ : Nonempty (Pts Y σ)` from `inferInstance`. Take `⟨y, -⟩` from `hs z`. Establish `: ConnectedSpace (GlobalTheory.Points.Pts (pullback.snd Y.str (spMap σ)))` using `⟨⟨y⟩⟩`. Conclude with `hs.connectedSpace hc`.
+-/
 theorem connectedSpace_pts : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ), ConnectedSpace (Pts Y σ) := by
   intro F _ _ Y σ
   have hI : IsIntegral (pullback Y.str (spMap σ)) :=

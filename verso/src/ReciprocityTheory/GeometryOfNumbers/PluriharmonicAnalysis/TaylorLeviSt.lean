@@ -7,12 +7,18 @@ open Complex
 section
 variable {D : ℕ}
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pgtl_smul_decomp (c : ℂ) (z : Fin D → ℂ) : c • z = c.re • z + c.im • (I • z) := by
   ext j
   simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]
   conv_lhs => rw [← Complex.re_add_im c]
   ring
 
+/- English proof (translation)
+Rewrite using `[pgtl_smul_decomp c x, hadd, hr, hr, hI]`. Use `conv_rhs => rw [← Complex.re_add_im c]`. Rewrite using `[add_smul, mul_smul]`.
+-/
 lemma pgtl_clin {F : Type*} [AddCommGroup F] [Module ℂ F] (f : (Fin D → ℂ) → F)
     (hadd : ∀ x y, f (x + y) = f x + f y) (hr : ∀ (r : ℝ) x, f (r • x) = (r : ℂ) • f x)
     (hI : ∀ x, f (I • x) = I • f x) (c : ℂ) (x : Fin D → ℂ) : f (c • x) = c • f x := by
@@ -38,21 +44,33 @@ noncomputable def pgtlCx (d : (Fin D → ℂ) →L[ℝ] ℝ) : (Fin D → ℂ) �
         ring_nf
         rw [I_sq]; ring }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pgtlCx_apply (d : (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     pgtlCx d z = (d z : ℂ) - I * (d (I • z) : ℂ) := rfl
 
+/- English proof (translation)
+Simplify using `[pgtlCx_apply]`.
+-/
 lemma pgtlCx_re (d : (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) : (pgtlCx d z).re = d z := by
   simp [pgtlCx_apply]
 
 noncomputable def pgtlJ : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) :=
   (I • ContinuousLinearMap.id ℂ (Fin D → ℂ)).restrictScalars ℝ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pgtlJ_apply (w : Fin D → ℂ) : pgtlJ w = I • w := rfl
 
 noncomputable def pgtlDz (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     (Fin D → ℂ) →L[ℝ] ℝ :=
   (1 / 4 : ℝ) • (B z - (B (I • z)).comp pgtlJ)
 
+/- English proof (translation)
+Simplify using `only [pgtlDz, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, pgtlJ_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma pgtlDz_apply (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z w : Fin D → ℂ) :
     pgtlDz B z w = (B z w - B (I • z) (I • w)) / 4 := by
   simp only [pgtlDz, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply,
@@ -87,15 +105,24 @@ noncomputable def pgtlBil (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[�
           neg_one_smul, map_neg, ContinuousLinearMap.neg_apply, smul_eq_mul]
         apply Complex.ext <;> simp <;> ring }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pgtlBil_apply (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z w : Fin D → ℂ) :
     pgtlBil B z w = pgtlCx (pgtlDz B z) w := rfl
 
+/- English proof (translation)
+Rewrite using `[pgtlBil_apply, pgtlCx_re, pgtlDz_apply]`.
+-/
 lemma pgtlBil_re (B : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) (z : Fin D → ℂ) :
     (pgtlBil B z z).re = (B z z - B (I • z) (I • z)) / 4 := by
   rw [pgtlBil_apply, pgtlCx_re, pgtlDz_apply]
 
 end
 
+/- English proof (translation)
+The claim follows from `|φ z - φ 0 - fderiv ℝ φ 0 z - fderiv ℝ (fderiv ℝ φ) 0 z z / 2| ≤ K₃ * ‖z‖ ^ 3 := by have hzr : ‖z‖ < ρ₀ := mem_ball_zero_iff.mp hz have h0 : (0 : Fin D → ℂ) ∈ Metric.ball (0 : Fin D → ℂ) ρ₀ := Metric.mem_ball_self ((norm_nonneg z).trans_lt hzr) have hK : 0 ≤ K₃ := (norm_nonneg _) …`.
+-/
 lemma pgtl_taylor {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
     (hφ : ContDiffOn ℝ 3 φ (Metric.ball 0 ρ₀))
     (hK₃ : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, ‖iteratedFDeriv ℝ 3 φ z‖ ≤ K₃)
@@ -174,6 +201,9 @@ lemma pgtl_taylor {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
   calc _ ≤ K₃ * ‖z‖ * ‖z‖ * ‖z‖ := key
     _ = K₃ * ‖z‖ ^ 3 := by ring
 
+/- English proof (translation)
+The claim follows from `|φ z - φ 0 - (q z).re - (fderiv ℝ (fderiv ℝ φ) 0 z z + fderiv ℝ (fderiv ℝ φ) 0 (I • z) (I • z)) / 4| ≤ K₃ * ‖z‖ ^ 3 := by refine ⟨fun z => pgtlCx (fderiv ℝ φ 0) z + pgtlBil (fderiv ℝ (fderiv ℝ φ) 0) z z, ?_, ?_, ?_⟩ · exact (pgtlCx _).differentiable.add ((pgtlBil _).differentiabl …`.
+-/
 theorem exists_pluriharmonic_part {D : ℕ} {ρ₀ K₃ : ℝ} (φ : (Fin D → ℂ) → ℝ)
     (hφ : ContDiffOn ℝ 3 φ (Metric.ball 0 ρ₀))
     (hK₃ : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) ρ₀, ‖iteratedFDeriv ℝ 3 φ z‖ ≤ K₃) :

@@ -8,6 +8,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FockCompare
 
+/- English proof (translation)
+Set `L : ℂ →L[ℝ] R` to `Complex.reCLM.smulRight u - Complex.imCLM.smulRight u'`. Establish `hL : ∀ z : ℂ, L z = z.re • u - z.im • u'` using `fun z => rfl`. Set `re' : ℂ →L[ℝ] ℂ` to `Complex.ofRealCLM.comp Complex.reCLM`. Set `im' : ℂ →L[ℝ] ℂ` to `Complex.ofRealCLM.comp Complex.imCLM`. Establish `hre : ∀ z : ℂ, re' z = (z.re : ℂ)` using `fun z => rfl`.
+
+Establish `him : ∀ z : ℂ, im' z = (z.im : ℂ)` using `fun z => rfl`. Set `c1 : ℂ` to `-(Real.pi * Complex.I)`. Set `c2 : ℂ` to `-(Real.pi * q / 2)`. Set `φ : ℂ → ℂ` to `fun z => c1 * (a * re' z - b * im' z) + c2 * (re' z * re' z + im' z * im' z)`. Set `H : ℂ → ℂ` to `fun z => Complex.exp (φ z) * F (L z)`.
+
+Establish `hHd : Differentiable ℂ H`. Introduce `z`. Establish `r` using `re'.hasFDerivAt (x := z)`. Establish `i` using `im'.hasFDerivAt (x := z)`. Establish `h1` using `((((r.const_mul (a : ℂ)).sub (i.const_mul (b : ℂ))).const_mul c1).add (((r.mul r).add (i.mul i)).const_mul c2)).cexp`.
+
+Establish `h2` using `(hF (L z)).hasFDerivAt.comp z (L.hasFDerivAt (x := z))`. Establish `h3 : HasFDerivAt H _ z` using `h1.mul h2`. Rewrite using `[differentiableAt_complex_iff_differentiableAt_real]`. Use `⟨h3.differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[h3.fderiv]`.
+
+Establish `e` using `h z.re z.im`. Rewrite `e` using `[← hL]`. Establish `e1 : L 1 = u` using `by simp [hL]`. Establish `eI : L Complex.I = -u'` using `by simp [hL]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sub_apply, e1, eI, hre, him, smul_eq_mul, map_neg, Function.comp_apply, Complex.I_re, Complex.I_im, Complex.one_re, Complex.one_im, Complex.ofReal_zero, Comple …`.
+
+Generalize the expression as in `Complex.exp _ = E`. Rewrite `e` using `[sub_eq_iff_eq_add]`. Rewrite using `[e]`. Simplify using `only [c1, c2]`. Take the linear combination `(-(E * fderiv ℝ F (L z) u') + E * F (L z) * Real.pi * (-(z.im * q) + Complex.I * (b + z.re * q))) * Complex.I_mul_I`.
+
+Establish `hn : ∀ z, ‖H z‖ ≤ C * Real.exp (-(Real.pi * q / 2) * ‖z‖ ^ 2)`. Introduce `z`. Establish `: (φ z).re = -(Real.pi * q / 2) * ‖z‖ ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[φ, c1, c2, hre, him]`.
+
+Simplify using `only [H]`. Rewrite using `[norm_mul, Complex.norm_exp, this, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (Real.exp_pos _).le`. Establish `ht : Filter.Tendsto H (Filter.cocompact ℂ) (nhds 0)`. Use `squeeze_zero_norm hn ?_` and prove the remaining obligations.
+
+Establish `hp : -(Real.pi * q / 2) < 0` using `by have := Real.pi_pos; have : 0 < Real.pi * q / 2 := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1 : Filter.Tendsto (fun z : ℂ => ‖z‖ ^ 2) (Filter.cocompact ℂ) Filter.atTop` using `(Filter.tendsto_pow_atTop two_ne_zero).comp tendsto_norm_cocompact_atTop`. Establish `t2` using `(Real.tendsto_exp_atBot.comp (t1.const_mul_atTop_of_neg hp)).const_mul C`. Simplify using `using t2`.
+
+Establish `h0` using `hHd.apply_eq_of_tendsto_cocompact 0 ht`. Simplify using `only [H, map_zero, mul_eq_zero, Complex.exp_ne_zero, false_or] at h0`. Conclude with `h0`.
+-/
 theorem eq_zero_of_bounded_of_creation_eq {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ R]
     (F : R → ℂ) (hF : Differentiable ℝ F) (C : ℝ) (hC : ∀ x, ‖F x‖ ≤ C) (u u' : R) (a b q : ℝ) (hq : 0 < q)
     (h : ∀ s t : ℝ, fderiv ℝ F (s • u - t • u') u - Complex.I * fderiv ℝ F (s • u - t • u') u' =
@@ -66,6 +87,17 @@ theorem eq_zero_of_bounded_of_creation_eq {R : Type} [NormedAddCommGroup R] [Nor
   simp only [H, map_zero, mul_eq_zero, Complex.exp_ne_zero, false_or] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `G R _ _ _ _ ι π om hπ hform hanti f hf hb u u' hq h0`. Use function extensionality and compare the values at `w`. Take `⟨C, hC⟩` from `hb w`. Establish `hF : Differentiable ℝ fun x : R => f (w + ι x)` using `(hf w).differentiable (by simp)`. Establish `huu : ∀ v, om v v = 0` using `fun v => by have := hanti v v; linarith`.
+
+Establish `key` using `eq_zero_of_bounded_of_creation_eq (fun x : R => f (w + ι x)) hF C hC u u' (om (π w) u) (om (π w) u') (om u u') hq (fun s t => by set x := s • u - t • u' with hx`. Establish `e` using `congrFun h0 (w + ι x)`. Establish `hfd : fderiv ℝ (fun y : R => f (w + ι x + ι y)) 0 = fderiv ℝ (fun y : R => f (w + ι y)) x`. Establish `: (fun y : R => f (w + ι x + ι y)) = fun y => (fun y : R => f (w + ι y)) (x + y)`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [map_add, add_assoc]`. Rewrite using `[this, fderiv_comp_add_left (f := fun y : R => f (w + ι y)), add_zero]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hform f hf, hfd] at e`. Establish `e1 : om (π (w + ι x)) u = om (π w) u + t * om u u'`. Rewrite using `[map_add, hπ, map_add, LinearMap.add_apply, hx]`.
+
+Simplify using `[huu, hanti u u']`. Establish `e2 : om (π (w + ι x)) u' = om (π w) u' + s * om u u'`. Rewrite using `[map_add, hπ, map_add, LinearMap.add_apply, hx]`. Simplify using `[huu]`. Rewrite `e` using `[e1, e2]`.
+
+Move the coercions through the operations in `at e`. Take the linear combination `e)`. Simplify using `using key`.
+-/
 theorem eq_zero_of_creation_eq_zero : ∀ (G R : Type) [AddCommGroup G] [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R] (ι : R →+ G) (π : G →+ R) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ), (∀ x, π (ι x) = x) → (∀ (f : G → ℂ), Sm ι f → ∀ (u : R) (w : G), hD ι π om u f w = -(Real.pi * Complex.I) * (om (π w) u : ℝ) * f w + fderiv ℝ (fun x : R => f (w + ι x)) 0 u) → (∀ u v, om v u = -om u v) → ∀ (f : G → ℂ), Sm ι f → (∀ w, ∃ C : ℝ, ∀ x, ‖f (w + ι x)‖ ≤ C) → ∀ u u' : R, 0 < om u u' → hD ι π om u f - Complex.I • hD ι π om u' f = 0 → f = 0 := by
   intro G R _ _ _ _ ι π om hπ hform hanti f hf hb u u' hq h0
   funext w

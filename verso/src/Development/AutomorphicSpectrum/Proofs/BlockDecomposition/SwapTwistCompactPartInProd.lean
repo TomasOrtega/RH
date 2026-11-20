@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SplitUnit
 
+/- English proof (translation)
+Establish `hi : IsCompact (Prod.fst '' closure (Subgroup.zpowers t : Set (H × H)))` using `hc.image continuous_fst`. Use `hi.of_isClosed_subset isClosed_closure (closure_minimal ?_ hi.isClosed)` and prove the remaining obligations. Introduce and unpack `x ⟨k, rfl⟩`. Use `⟨t ^ k, subset_closure ⟨k, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem compact_zpowers_fst {H : Type} [Group H] [TopologicalSpace H] [T2Space H] (t : H × H)
     (hc : IsCompact (closure (Subgroup.zpowers t : Set (H × H)))) :
     IsCompact (closure (Subgroup.zpowers t.1 : Set H)) := by
@@ -19,6 +22,17 @@ theorem compact_zpowers_fst {H : Type} [Group H] [TopologicalSpace H] [T2Space H
   refine ⟨t ^ k, subset_closure ⟨k, rfl⟩, ?_⟩
   simp
 
+/- English proof (translation)
+Introduce `H _ _ _ _ σ K d d' _ hσ hK hd hd' hcpt hsurj`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cptPart, Subgroup.closure_le]`. Introduce and unpack `t ⟨ht, hc⟩`. Take `⟨h₁, h₂⟩` from `(mem_twCent_swTw σ hσ d d' t).1 ht`.
+
+Establish `hg : t.1 ∈ K` using `hcpt (Subgroup.subset_closure ⟨h₁, compact_zpowers_fst t hc⟩)`. Use `Subgroup.mem_prod.2 ⟨hg, ?_⟩` and prove the remaining obligations. Rewrite using `[h₂]`. Conclude with `K.mul_mem (K.mul_mem hd' (hK _ hg)) (K.inv_mem hd')`. Introduce and unpack `⟨x₁, x₂⟩ hy`.
+
+Establish `hy'` using `Subgroup.mem_prod.1 hy`. Establish `hz₁ : x₁⁻¹ * d * σ x₂ ∈ K` using `by simpa using hy'.1`. Establish `hz₂ : x₂⁻¹ * d' * σ x₁ ∈ K` using `by simpa using hy'.2`. Establish `hN : x₁⁻¹ * (d * σ d') * MonoidHom.id H x₁ ∈ K`. Establish `e : x₁⁻¹ * (d * σ d') * MonoidHom.id H x₁ = (x₁⁻¹ * d * σ x₂) * σ (x₂⁻¹ * d' * σ x₁)`.
+
+Simplify using `only [map_mul, map_inv, hσ, MonoidHom.id_apply]`. Use `group`. Rewrite using `[e]`. Conclude with `K.mul_mem hz₁ (hK _ hz₂)`. Take `⟨g, hg, hk₁⟩` from `hsurj x₁ hN`.
+
+Use `⟨(g, d' * σ g * d'⁻¹), (mem_twCent_swTw σ hσ d d' _).2 ⟨hg, rfl⟩, (g⁻¹ * x₁, d' * σ (g⁻¹ * x₁) * (x₂⁻¹ * d' * σ x₁)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_prod.2 ⟨hk₁, K.mul_mem (K.mul_mem hd' (hK _ hk₁)) (K.inv_mem hz₂)⟩`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only [Prod.mk_mul_mk, map_mul, map_inv] group`.
+-/
 theorem main : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H) (d d' : H),
   Continuous σ → (∀ g, σ (σ g) = g) → (∀ k ∈ K, σ k ∈ K) → d ∈ K → d' ∈ K →
   cptPart (twCent (MonoidHom.id H) (d * σ d')) ≤ K →

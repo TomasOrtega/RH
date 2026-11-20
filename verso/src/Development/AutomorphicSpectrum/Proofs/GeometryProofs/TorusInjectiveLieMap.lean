@@ -13,6 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.CompanionTheory.Ar.TsClosed
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
@@ -20,12 +23,18 @@ theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f :
 
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨t, fun _ => rfl, id⟩`.
+-/
 theorem exists_transport (u : splitTorus S X ⟶ G) {A : Type} [CommRing A] {a a' : Sp A ⟶ S} (e : a = a')
     (t : Over.mk a ⟶ splitTorus S X) :
     ∃ t' : Over.mk a' ⟶ splitTorus S X, (∀ χ, charVal t' χ = charVal t χ) ∧ (t' ≫ u = 1 → t ≫ u = 1) := by
   subst e
   exact ⟨t, fun _ => rfl, id⟩
 
+/- English proof (translation)
+Introduce `A _ g t ht`. Establish `e : spMap g ≫ spMap c ≫ b = spMap (g.comp c) ≫ b`. Rewrite using `[← Category.assoc, spMap_comp_eq]`. Take `⟨t', h1, h2⟩` from `exists_transport u e t`. Conclude with `h2 (h A (g.comp c) t' fun y hy => by rw [h1]; exact ht y hy)`.
+-/
 theorem killsOver_comp (u : splitTorus S X ⟶ G) (Y : AddSubgroup X) {B B' : Type} [CommRing B] [CommRing B']
     (b : Sp B ⟶ S) (c : B →+* B') (h : KillsOver u Y b) : KillsOver u Y (spMap c ≫ b) := by
   intro A _ g t ht
@@ -34,6 +43,19 @@ theorem killsOver_comp (u : splitTorus S X ⟶ G) (Y : AddSubgroup X) {B B' : Ty
   obtain ⟨t', h1, h2⟩ := exists_transport u e t
   exact h2 (h A (g.comp c) t' fun y hy => by rw [h1]; exact ht y hy)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Set `c : IsLocalRing.ResidueField R →+* R ⧸ (IsLocalRing.maximalIdeal R ^ (0 + 1))` to `Ideal.Quotient.lift _ (Ideal.Quotient.mk _) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha))`. Establish `hc : c.comp (IsLocalRing.residue R) = Ideal.Quotient.mk _`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Establish `key` using `killsOver_comp u Y _ c h`. Rewrite `key` using `[← Category.assoc, spMap_comp_eq, hc]`. Conclude with `key`. Consider the case `succ n ih`.
+
+Establish `hJ : IsLocalRing.maximalIdeal R ^ (n + 1 + 1) ≠ ⊤`. Introduce `e`. Establish `h1 : IsLocalRing.maximalIdeal R ^ (n + 1 + 1) ≤ IsLocalRing.maximalIdeal R` using `Ideal.pow_le_self (by omega)`. Rewrite `h1` using `[e]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 h1)`.
+
+Use `haveI : Nontrivial (R ⧸ IsLocalRing.maximalIdeal R ^ (n + 1 + 1)) := Ideal.Quotient.nontrivial_iff.2 hJ`. Use `haveI : IsLocalRing (R ⧸ IsLocalRing.maximalIdeal R ^ (n + 1 + 1)) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Set `I : Ideal (R ⧸ IsLocalRing.maximalIdeal R ^ (n + 1 + 1))` to `(IsLocalRing.maximalIdeal R ^ (n + 1)).map (Ideal.Quotient.mk _)`. Establish `hI : I ^ 2 = ⊥`. Simplify using `only [I]`.
+
+Rewrite using `[← Ideal.map_pow, ← pow_mul, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `Ideal.pow_le_pow_right (by omega)`. Use `GlobalTheory.T.killsOver_square_zero_lift S G X u Y _ _ I hI ?_` and prove the remaining obligations. Set `c : R ⧸ (IsLocalRing.maximalIdeal R ^ (n + 1)) →+* (R ⧸ IsLocalRing.maximalIdeal R ^ (n + 1 + 1)) ⧸ I` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk I).comp (Ideal.Quotient.mk _)) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha))`. Establish `hc : c.comp (Ideal.Quotient.mk _) = (Ideal.Quotient.mk I).comp (Ideal.Quotient.mk _)`.
+
+Use extensionality with `x`. Both sides reduce to the same expression. Establish `key` using `killsOver_comp u Y _ c ih`. Rewrite `key` using `[← Category.assoc, spMap_comp_eq, hc, ← spMap_comp_eq, Category.assoc]`. Conclude with `key`.
+-/
 theorem killsOver_pow (u : splitTorus S X ⟶ G) [IsMonHom u] (Y : AddSubgroup X) {R : Type} [CommRing R]
     [IsLocalRing R] (b : Sp R ⟶ S) (h : KillsOver u Y (spMap (IsLocalRing.residue R) ≫ b)) (n : ℕ) :
     KillsOver u Y (spMap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (n + 1))) ≫ b) := by
@@ -75,6 +97,15 @@ theorem killsOver_pow (u : splitTorus S X ⟶ G) [IsMonHom u] (Y : AddSubgroup X
     rw [← Category.assoc, spMap_comp_eq, hc, ← spMap_comp_eq, Category.assoc] at key
     exact key
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ S b G _ _ X _ _ u _ hK M hM δ hδ`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl, ψ, hψ, hk⟩` from `GlobalTheory.T.torus_kernel_prime_quotient S G X u (IsLocalRing.ResidueField R) (spMap (IsLocalRing.residue R) ≫ b) M hM δ hne hδ`. Establish `hR` using `GlobalTheory.T.killsOver_of_adic_completion S G X u ψ.ker R b (killsOver_pow u ψ.ker b hk)`. Establish `hKk` using `killsOver_comp u ψ.ker b (algebraMap R K) hR`.
+
+Use `haveI := Fact.mk hl`. Take `⟨-, -, h1, -, hex, -⟩` from `GlobalTheory.T.charVal_multiplicative S X (AddMonoidAlgebra K (ZMod l)) (spMap (algebraMap K (AddMonoidAlgebra K (ZMod l))) ≫ spMap (algebraMap R K) ≫ b)`. Set `w : Multiplicative X →* AddMonoidAlgebra K (ZMod l)` to `(AddMonoidAlgebra.of K (ZMod l)).comp (AddMonoidHom.toMultiplicative ψ)`. Take `⟨t, ht⟩` from `hex w`. Establish `hu : t ≫ u = 1` using `hKk _ (algebraMap K (AddMonoidAlgebra K (ZMod l))) t fun y hy => by`.
+
+Rewrite using `[ht]`. Establish `hy0 : ψ y = 0` using `hy`. Simplify using `[w, hy0, AddMonoidAlgebra.one_def]`. Establish `ht1` using `hK _ (algebraMap K (AddMonoidAlgebra K (ZMod l))) t hu`. Take `⟨χ, hχ⟩` from `hψ 1`.
+
+Establish `key` using `ht χ`. Rewrite `key` using `[ht1, h1]`. Simplify using `only [w, MonoidHom.comp_apply, AddMonoidHom.toMultiplicative_apply_apply, toAdd_ofAdd, hχ] at key`. Rewrite `key` using `[AddMonoidAlgebra.one_def, AddMonoidAlgebra.of_apply, AddMonoidAlgebra.single_left_inj one_ne_zero]`. Conclude with `zero_ne_one key`.
+-/
 theorem diff_injective_mod_pi : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (S : Scheme.{0}) (b : Sp R ⟶ S) (G : Over S) [GrpObj G] [IsSeparated G.hom] (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (u : splitTorus S X ⟶ G) [IsMonHom u], (∀ (A : Type) [CommRing A] (g : K →+* A) (t : Over.mk (spMap g ≫ spMap (algebraMap R K) ≫ b) ⟶ splitTorus S X), t ≫ u = 1 → t = 1) → ∀ M : LieModel (splitTorus S X) (spMap (IsLocalRing.residue R) ≫ b) (X →+ IsLocalRing.ResidueField R), IsCocharLie M → ∀ δ, M.pt δ ≫ u = 1 → δ = 0 := by
   intro R K _ _ _ _ _ _ S b G _ _ X _ _ u _ hK M hM δ hδ
   by_contra hne

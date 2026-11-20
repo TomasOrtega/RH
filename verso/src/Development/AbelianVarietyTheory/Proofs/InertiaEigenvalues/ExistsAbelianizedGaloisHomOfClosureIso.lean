@@ -24,10 +24,20 @@ def conjGal {E Ω E' Ω' : Type} [Field E] [Field Ω] [Algebra E Ω] [Field E'] 
     rw [RingEquiv.apply_symm_apply]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjGal_apply {E Ω E' Ω' : Type} [Field E] [Field Ω] [Algebra E Ω] [Field E'] [Field Ω'] [Algebra E' Ω']
     (φ : Ω ≃+* Ω') (j : E →+* E') (hφ : ∀ x, φ (algebraMap E Ω x) = algebraMap E' Ω' (j x))
     (τ : Ω' ≃ₐ[E'] Ω') (z : Ω) : conjGal φ j hφ τ z = φ.symm (τ (φ z)) := rfl
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ E' Ω' _ _ _ _ _ φ j hφ`. Use `haveI : Algebra.IsIntegral E' Ω' := (IsAlgClosure.isAlgebraic (R := E') (K := Ω')).isIntegral`. Use `haveI : IsClosed ((commutator (Formalism.ConjugateSelfDual.G E Ω)).topologicalClosure : Set (Formalism.ConjugateSelfDual.G E Ω)) := Subgroup.isClosed_topologicalClosure _`. Set `c` to `conjGal φ j hφ`. Establish `hc : Continuous c` using `continuous_galHom_of_fix c fun y => ⟨φ y, fun τ hτ => by`.
+
+Rewrite using `[conjGal_apply, hτ, RingEquiv.symm_apply_apply]⟩`. Set `r : Formalism.ConjugateSelfDual.G E' Ω' →* Gab E Ω` to `(toAb E Ω).comp c`. Establish `hr : Continuous r` using `QuotientGroup.continuous_mk.comp hc`. Use `⟨liftAb r hr, continuous_liftAb r hr, fun τ σ h => ?_⟩` and prove the remaining obligations. Rewrite using `[liftAb_toAb]`.
+
+Use `show toAb E Ω (c τ) = toAb E Ω σ`. Use `congr 1`. Use extensionality with `z`. Rewrite using `[conjGal_apply, ← h, RingEquiv.symm_apply_apply]`.
+-/
 theorem exists_abHom_of_ringEquiv : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
     (φ : Ω ≃+* Ω') (j : E →+* E'), (∀ x, φ (algebraMap E Ω x) = algebraMap E' Ω' (j x)) →

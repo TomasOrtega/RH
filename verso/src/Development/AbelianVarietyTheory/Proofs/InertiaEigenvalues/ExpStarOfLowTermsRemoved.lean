@@ -19,13 +19,22 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
+/- English proof (translation)
+Take `⟨y, h1, -⟩` from `T.om x`. Conclude with `(GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩`.
+-/
 theorem oB_mem_zero {AI : LocAinf l P} (T : LocTied l P AI) (x : Om l) : oB P x ∈ FilB P 0 := by
   obtain ⟨y, h1, -⟩ := T.om x
   exact (GlobalTheory.ThetaTie.fil_zero T _).2 ⟨y, h1.symm⟩
 
+/- English proof (translation)
+The claim follows from `FilB_anti (by simp) (FilB_pow (tD_mem (P := P)) j)`.
+-/
 theorem tD_pow_mem_zero (j : ℕ) : tD P ^ j ∈ FilB P 0 :=
   FilB_anti (by simp) (FilB_pow (tD_mem (P := P)) j)
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_pow, act_tD, P.actQdR_Om, hx, AlgEquiv.commutes, map_mul, map_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem act_term (g : GQ l) (c : ℚ_[l]) {x : Om l} (hx : g x = x) (j : ℕ) :
     P.actQdR g (qB P c * (oB P x * tD P ^ j)) =
       qB P (c * (P.χQ g : ℚ_[l]) ^ j) * (oB P x * tD P ^ j) := by
@@ -33,9 +42,33 @@ theorem act_term (g : GQ l) (c : ℚ_[l]) {x : Om l} (hx : g x = x) (j : ℕ) :
     mul_pow]
   ring
 
+/- English proof (translation)
+The claim follows from `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun _ hx => Exists.intro s hx) _`.
+-/
 theorem Ks_le_Kinf (K : FinExt l) (s : ℕ) : Ks K s ≤ Kinf K :=
   sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun _ hx => Exists.intro s hx) _
 
+/- English proof (translation)
+Introduce `LT l _ AI T K s hs e g hg w hw b hb hH hN`. Establish `hχ : IsCyc (LT l).χQ` using `(LT l).χQ_cyc`. Take `⟨hn, -, hker⟩` from `GlobalTheory.Cyc.cyc_basic l _ hχ`. Take `⟨-, -, hint, hlog⟩` from `GlobalTheory.PadicLogUnits.logZl_hom l`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`.
+
+Use `set u : ℚ_[l] := ((LT l).χQ g : ℚ_[l]) with hu`. Establish `hu0 : u ≠ 0` using `Units.ne_zero _`. Establish `hL : logZl l u ≠ 0`. Rewrite using `[← norm_pos_iff, hlog s hs.1 hs.2 u hg.2.le, hg.2]`. Conclude with `zpow_pos hl _`.
+
+Establish `hLc : ((logChi LT g : ℤ_[l]) : ℚ_[l]) = logZl l u` using `congrArg Subtype.val (dif_pos (hint _ (hn g)))`. Establish `hne : ∀ j ∈ Finset.range e, u ^ ((j : ℤ) - e) - 1 ≠ 0`. Introduce `j hj`. Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[← norm_pos_iff, GlobalTheory.Cyc.LiftExp.norm_zpow_sub_one l s hs u hg.2 _ (by omega)]`.
+
+Conclude with `zpow_pos hl _`. Use `set c : ℕ → ℚ_[l] := fun j => (u ^ ((j : ℤ) - e) - 1)⁻¹ with hc`. Use `set S : (LT l).R.BdR := ∑ j ∈ Finset.range e, qB (LT l) (c j) * (oB (LT l) (w j) * tD (LT l) ^ j) with hS`. Establish `hS0 : S ∈ FilB (LT l) 0` using `Submodule.sum_mem _ fun j _ => qB_mul_mem _ (FilB_zero_mul (oB_mem_zero T _) (tD_pow_mem_zero j))`. Establish `hSH : ∀ h ∈ Hinf K, (LT l).actQdR h S = S`.
+
+Introduce `h hh`. Establish `h1 : (LT l).χQ h = 1` using `(hker K h (Hinf_le_fix hh)).2.1 hh`. Rewrite using `[hS, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[act_term h _ (hh ⟨w j, Ks_le_Kinf K s (hw j)⟩), h1]`.
+
+Simplify using the standard rewrite rules. Establish `hSg : qB (LT l) (((LT l).χQ g ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * (LT l).actQdR g S - S = ∑ j ∈ Finset.range e, oB (LT l) (w j) * tD (LT l) ^ j`. Rewrite using `[hS, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[act_term g _ (hg.1 ⟨w j, hw j⟩), ← mul_assoc, ← map_mul, ← sub_mul, ← map_sub]`.
+
+Establish `: (((LT l).χQ g ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * (c j * u ^ j) - c j = 1`. Establish `h2 : u ^ ((j : ℤ) - e) = u ^ (-(e : ℤ)) * u ^ j`. Rewrite using `[sub_eq_neg_add, zpow_add₀ hu0, zpow_natCast]`. Establish `h3 : (u ^ ((j : ℤ) - e) - 1) * c j = 1` using `mul_inv_cancel₀ (hne j hj)`. Rewrite using `[Units.val_zpow_eq_zpow_val, ← hu]`.
+
+Rewrite `h3` using `[h2]`. Take the linear combination `h3`. Rewrite using `[this, map_one, one_mul]`. Use `GlobalTheory.T.integral_cocycle_of_generator_and_fixing LT l AI T K s hs e g hg _ (mul_mem (IntermediateField.algebraMap_mem _ _) (hw e)) (b + S) (add_mem hb hS0) (fun h hh => ?_) ?_` and prove the remaining obligations. Use `hH h hh` as an intermediate fact.
+
+Rewrite using `[map_add, hSH h hh, add_sub_add_right_eq_sub]` and apply the resulting hypothesis. Establish `h4 : qB (LT l) (logZl l u) * oB (LT l) (algebraMap ℚ_[l] (Om l) (logZl l u)⁻¹) = 1`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← map_mul, mul_inv_cancel₀ hL, map_one]`. Use `hN using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hLc, Finset.sum_range_succ, ← hSg, map_add, map_mul]`.
+
+Take the linear combination `(oB (LT l) (w e) * tD (LT l) ^ e) * h4`.
+-/
 theorem expStar_of_sum : ∀ (LT : LocTheory) (l : ℕ) [Fact l.Prime] (AI : LocAinf l (LT l)), LocTied l (LT l) AI → ∀ (K : FinExt l) (s : ℕ), Lev l s → ∀ (e : ℕ) (g : GQ l), IsGen (LT l).χQ K s g → ∀ w : ℕ → Om l, (∀ j, w j ∈ Ks K s) → ∀ b ∈ FilB (LT l) 0, (∀ h ∈ Hinf K, NearZ (LT l) (e + 1) ((LT l).actQdR h b - b)) → NearZ (LT l) (e + 1) (∑ j ∈ Finset.range (e + 1), oB (LT l) (w j) * tD (LT l) ^ j + (qB (LT l) (((LT l).χQ g ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * (LT l).actQdR g b - b)) → ∃ z : GQ l → ℚ_[l], (∀ σ ∈ Gj K s, ‖z σ‖ ≤ 1) ∧ ExpStar LT (Gj K s) e z (algebraMap ℚ_[l] (Om l) (logZl l ((LT l).χQ g : ℚ_[l]))⁻¹ * w e) := by
   intro LT l _ AI T K s hs e g hg w hw b hb hH hN
   have hχ : IsCyc (LT l).χQ := (LT l).χQ_cyc

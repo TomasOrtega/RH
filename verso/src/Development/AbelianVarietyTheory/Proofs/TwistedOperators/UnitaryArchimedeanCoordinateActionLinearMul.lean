@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.ArchLine
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M`. Use `⟨fun h v v' => ?_, fun h c v => ?_, fun h h' v => ?_⟩` and prove the remaining obligations. Unfold `archAct`. Rewrite using `[Prod.fst_add, Prod.snd_add, lift_add, lift_add, ← Prod.mk_add_mk, map_add]`. Simplify using `only [actAB, Matrix.mul_add, Matrix.add_mul]`.
+
+Rewrite using `[coordI_add]`. Unfold `archAct`. Rewrite using `[Prod.smul_fst, Prod.smul_snd, lift_smul, lift_smul, ← Prod.smul_mk, map_smul]`. Simplify using `only [actAB, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[coordI_smul]`.
+
+Unfold `archAct`. Rewrite using `[lift_coordI]`. Simplify using `only [actAB, Matrix.mul_smul, Matrix.smul_mul, coordI_one]`. Use `congr 1`. Simplify using `only [one_mul, Units.val_one, Subgroup.coe_one, Subgroup.coe_mul, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Simplify using `only [Matrix.one_mul]`.
+-/
 theorem archAct_linear_mul : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W),
     (∀ (h : UA σ W.J) (v v' : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)),

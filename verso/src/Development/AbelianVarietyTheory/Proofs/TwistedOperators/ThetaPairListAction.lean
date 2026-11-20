@@ -38,6 +38,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 section
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, SchwartzMap.add_apply, SchwartzMap.smul_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_add_smul (f s : SInf F κ) (t : ℝ) (r : (κ → AF F) → ℂ) :
     tens (evI F) ⇑(f + t • s) r = tens (evI F) ⇑f r + (t : ℂ) • tens (evI F) ⇑s r := by
   funext x
@@ -45,6 +48,13 @@ theorem tens_add_smul (f s : SInf F κ) (t : ℝ) (r : (κ → AF F) → ℂ) :
     Complex.real_smul]
   ring
 
+/- English proof (translation)
+Introduce `x`. Establish `ev : ∀ y : κ → mixedEmbedding.mixedSpace F, Continuous fun s : SInf F κ => s y`. Introduce `y`. Establish `h1` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ).continuous`. Conclude with `(continuous_eval_const (F := BoundedContinuousFunction (κ → mixedEmbedding.mixedSpace F) ℂ) y).comp h1`.
+
+Establish `e : (fun t => T t (tens (evI F) ⇑f r) x) = fun t => tens (evI F) ⇑(c t) r x`. Use function extensionality and compare the values at `t`. Rewrite using `[hc t]`. Rewrite using `[e, hasDerivAt_iff_tendsto_slope]`. Use `((((ev _).tendsto g).comp hlim).mul_const (r x)).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, tens]`. Rewrite using `[slope_def_module, hc0]`. Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_of_curve {T : ℝ → ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {f g : SInf F κ} {c : ℝ → SInf F κ}
     {r : (κ → AF F) → ℂ} (hc : ∀ t, T t (tens (evI F) ⇑f r) = tens (evI F) ⇑(c t) r) (hc0 : c 0 = f)
     (hlim : Tendsto (fun t : ℝ => t⁻¹ • (c t - f)) (𝓝[≠] 0) (𝓝 g)) :
@@ -68,16 +78,41 @@ end
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
   {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
 
+/- English proof (translation)
+Establish `e : ((a * b, (1 : UA σ Wd.J)) : UA σ Y.J × UA σ Wd.J) = (a, 1) * (b, 1)`. Simplify using `[Prod.mk_mul_mk]`. Rewrite using `[e, map_mul, Module.End.mul_apply]`.
+-/
 theorem om_prod_one (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd) (a b : UA σ Y.J) (Φ : (Fin n × Fin d → AF F) → ℂ) :
     om (a * b, 1) Φ = om (a, 1) (om (b, 1) Φ) := by
   have e : ((a * b, (1 : UA σ Wd.J)) : UA σ Y.J × UA σ Wd.J) = (a, 1) * (b, 1) := by
     simp [Prod.mk_mul_mk]
   rw [e, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[show ((1 : UA σ Y.J), (1 : UA σ Wd.J)) = (1 : UA σ Y.J × UA σ Wd.J) from rfl, map_one, Module.End.one_apply]`.
+-/
 theorem om_one_one (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd) (Φ : (Fin n × Fin d → AF F) → ℂ) :
     om ((1 : UA σ Y.J), (1 : UA σ Wd.J)) Φ = Φ := by
   rw [show ((1 : UA σ Y.J), (1 : UA σ Wd.J)) = (1 : UA σ Y.J × UA σ Wd.J) from rfl, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hr0 : ∃ x, r x ≠ 0` using `⟨0, hr00⟩`. Establish `canc` using `GlobalTheory.ArchCancel.eq_of_tens_eq F r (hr f).1 hr0`. Establish `img : ∀ i (h : SInf F (Fin n × Fin d)) (t : ℝ), ∃ k : SInf F (Fin n × Fin d), om (γs i (Multiplicative.ofAdd t), 1) (tens (evI F) ⇑h r) = tens (evI F) ⇑k r`. Introduce `i h t`. Take `⟨c, -, hc, -⟩` from `GlobalTheory.T.weil_line_good_model_polynomial hP M ψ χX χW om hψ hG hW (γs i) (hγs i) h r (hr h)`.
+
+Conclude with `⟨c t, hc t⟩`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun _ => f, fun t => ?_, rfl, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_nil, List.prod_nil]`. Conclude with `om_one_one om _`. Simplify using `only [sub_self, smul_zero, List.map_nil, List.sum_nil]`. Conclude with `tendsto_const_nhds`. Consider the case `cons i l' ih`.
+
+Take `⟨c', hc', hc'0, hlim'⟩` from `ih`. Take `⟨ci, hci, hci0, hlimi⟩` from `hg i`. Use `set S' := (l'.map g).sum with hS'`. Set `s : ℝ → SInf F (Fin n × Fin d)` to `fun t => if t = 0 then S' else t⁻¹ • (c' t - f)`. Use `choose k hk using fun t => img i (s t) t`.
+
+Establish `hs : Tendsto s (𝓝 0) (𝓝 S')`. Rewrite using `[← nhdsNE_sup_pure (0 : ℝ)]`. Use `Tendsto.sup ?_ ?_` and prove the remaining obligations. Use `hlim'.congr' ?_ filter_upwards [self_mem_nhdsWithin] with t ht` and prove the remaining obligations. Simplify using `only [s, if_neg (show t ≠ 0 from ht)]`.
+
+Simplify using `only [tendsto_pure_left, s, if_pos rfl]`. Conclude with `fun _ => mem_of_mem_nhds`. Establish `hk' : Tendsto k (𝓝 0) (𝓝 S')` using `GlobalTheory.T.weil_line_good_model_action hP M ψ χX χW om hψ hG hW (γs i) (hγs i) r hr00 hr s k S' hk hs`. Establish `hcs : ∀ t, c' t = f + t • s t`. Introduce `t`.
+
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `[hc'0]`. Simplify using `only [s, if_neg ht, smul_smul, mul_inv_cancel₀ ht, one_smul, add_sub_cancel]`. Use `⟨fun t => ci t + t • k t, fun t => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[om_prod_one, hc' t, hcs t, tens_add_smul, map_add, map_smul, hci t, hk t, tens_add_smul]`. Simplify using `[hci0]`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `(hlimi.add (hk'.mono_left nhdsWithin_le_nhds)).congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Establish `ht' : t ≠ 0` using `ht`. Rewrite using `[add_sub_right_comm, smul_add, smul_smul, inv_mul_cancel₀ ht', one_smul]`.
+-/
 theorem curve_prod (hP : GlobalTheory.FunPr.Hypotheses₂) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd)
     (hψ : IsStd ψ) (hG : M.IsGood ψ) (hW : M.IsWeil ψ χX χW om)
@@ -141,6 +176,21 @@ end GlobalTheory.LineAdd
 
 open GlobalTheory.LineAdd GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om a b a' b' hpair ι l γs hγs γ _ hprod f _ f₁ fs hD hDs`. Take `⟨r, hr00, hr⟩` from `GlobalTheory.ThK.exists_rest_inf F (Fin n × Fin d)`. Establish `hψ` using `hpair.base.std`. Establish `hG` using `hpair.good`. Establish `hW` using `hpair.weil`.
+
+Establish `canc` using `GlobalTheory.ArchCancel.eq_of_tens_eq F r (hr f).1 ⟨0, hr00⟩`. Use `choose cs gs hcs hlims using fun i => GlobalTheory.T.weil_line_good_model_polynomial hP M B.ψ χX χW om hψ hG hW (γs i) (hγs i) f r (hr f)`. Establish `hcs0 : ∀ i, cs i 0 = f`. Introduce `i`. Use `canc _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hcs i 0]`. Simplify using `only [ofAdd_zero, map_one]`. Conclude with `om_one_one om _`. Establish `hlims' : ∀ i, Tendsto (fun t : ℝ => t⁻¹ • (cs i t - f)) (𝓝[≠] 0) (𝓝 (gs i))`. Introduce `i`.
+
+Simplify `hlims i` using `[hcs0 i]`. Establish `hfs : ∀ i, fs i = gs i`. Introduce `i`. Use `canc _ _ (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(hDs i r (hr f) x).unique (hasDerivAt_of_curve (hcs i) (hcs0 i) (hlims' i) x)`.
+
+Take `⟨c, hc, hc0, hlim⟩` from `curve_prod hP M B.ψ χX χW om hψ hG hW γs hγs r hr00 hr f gs (fun i => ⟨cs i, hcs i, hcs0 i, hlims' i⟩) l`. Establish `hc' : ∀ t, om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) ⇑f r) = tens (evI F) ⇑(c t) r`. Introduce `t`. Rewrite using `[hprod]`. Conclude with `hc t`.
+
+Establish `e1 : f₁ = (l.map gs).sum`. Use `canc _ _ (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(hD r (hr f) x).unique (hasDerivAt_of_curve hc' hc0 hlim x)`. Rewrite using `[e1]`. Use `congr 1`.
+
+Conclude with `List.map_congr_left fun i _ => (hfs i).symm`.
+-/
 theorem GlobalTheory.LineAdd.deriv_prod_lines : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ),

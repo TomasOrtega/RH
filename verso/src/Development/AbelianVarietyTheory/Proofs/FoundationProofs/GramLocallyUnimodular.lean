@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.GramLoc
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `hM`. Establish `h1 : ∀ y : T, ∃ s : R, s ∈ p.primeCompl ∧ s • (y : W) ∈ L` using `fun y => h (Submodule.subset_span y.2)`. Use `choose f hf hf' using h1`. Use `⟨∏ y, f y, Submonoid.prod_mem p.primeCompl (fun y _ => hf y), ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => classical`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨x, hx⟩ : T)), mul_smul]`. Conclude with `L.smul_mem _ (hf' ⟨x, hx⟩)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `L.add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `L.smul_mem _ hx`.
+-/
 theorem exists_common_denom {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
     (p : Ideal R) [p.IsPrime] (L M : Submodule R W) (hM : M.FG) (h : M ≤ Formalism.HermitianLatticesTheory.localization₂ p L) :
     ∃ s : R, s ∉ p ∧ ∀ y ∈ M, s • y ∈ L := by
@@ -56,15 +63,30 @@ def locRing (w : HeightOneSpectrum (𝓞 K)) : Subring K where
     simp only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_add, map_neg] at *
     rw [← hr]; ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Conclude with `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)`.
+-/
 theorem det_mem_subring (S : Subring K) (P : Matrix (Fin n) (Fin n) K) (h : ∀ a b, P a b ∈ S) :
     P.det ∈ S := by
   rw [Matrix.det_apply']
   exact S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨j, rfl⟩`.
+-/
 theorem col_mem_colLat (B : GL (Fin n) K) (j : Fin n) :
     (fun a => (B : Matrix (Fin n) (Fin n) K) a j) ∈ colLat B :=
   Submodule.subset_span ⟨j, rfl⟩
 
+/- English proof (translation)
+Unfold `colLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Establish `h : ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K) = 1` using `Units.inv_mul B`.
+
+Establish `h2` using `congrFun (congrFun h j) i`. Use `⟨if j = i then 1 else 0, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K)) j i = _`. Rewrite using `[h2, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨r, hr⟩` from `hx`. Take `⟨u, hu⟩` from `hy`. Conclude with `⟨r + u, by rw [Matrix.mulVec_add, Pi.add_apply, hr, hu]; simp⟩`.
+
+Consider the case `smul a x _ hx`. Take `⟨r, hr⟩` from `hx`. Use `⟨a * r, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, hr, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+-/
 theorem coord_of_mem_colLat (B : GL (Fin n) K) (x : Fin n → K) (hx : x ∈ colLat B) (j : Fin n) :
     ∃ r : 𝓞 K, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) j = r := by
   unfold colLat at hx
@@ -91,6 +113,13 @@ theorem coord_of_mem_colLat (B : GL (Fin n) K) (x : Fin n → K) (hx : x ∈ col
 
 variable [StarRing K]
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `ha`. Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0, ValuationRepresentative.vw_zero]`. Establish `hs0 : (s : K) ≠ 0`. Introduce `h`.
+
+Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `h1` using `ValuationRepresentative.vw_mul w _ _ hs0 h0`.
+
+Establish `h2 : vw w (s : K) = 0` using `idxChange_cnt_unit (K := K) w hs`. Establish `h3` using `ValuationRepresentative.vw_int_nonneg w r`. Rewrite `h1` using `[hr, h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vw_nonneg_of_mem (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ∈ locRing w) :
     0 ≤ vw w a := by
   obtain ⟨s, hs, r, hr⟩ := ha
@@ -107,6 +136,9 @@ theorem vw_nonneg_of_mem (w : HeightOneSpectrum (𝓞 K)) (a : K) (ha : a ∈ lo
   rw [hr, h2] at h1
   omega
 
+/- English proof (translation)
+Introduce `h`. Apply `ht` to reduce the goal to its premises. Use `Ideal.mem_map_of_mem (cO K) h` as an intermediate fact. Rewrite `this` using `[ValuationRepresentative.cO_cO]`. Then use the resulting hypothesis.
+-/
 theorem cO_notMem (w : HeightOneSpectrum (𝓞 K)) (t : 𝓞 K) (ht : t ∉ (conjPl w).asIdeal) :
     cO K t ∉ w.asIdeal := by
   intro h
@@ -114,10 +146,22 @@ theorem cO_notMem (w : HeightOneSpectrum (𝓞 K)) (t : 𝓞 K) (ht : t ∉ (con
   have := Ideal.mem_map_of_mem (cO K) h
   rwa [ValuationRepresentative.cO_cO] at this
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨1, one_mem _, by simpa using hx⟩`.
+-/
 theorem mem_localization_of_mem {w : HeightOneSpectrum (𝓞 K)} (M : Submodule (𝓞 K) (Fin n → K)) :
     M ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M := fun x hx =>
   ⟨1, one_mem _, by simpa using hx⟩
 
+/- English proof (translation)
+Unfold `IsBasisAt at hB hB'`. Establish `h1` using `mem_localization_of_mem (w := conjPl w) _ (col_mem_colLat B a)`. Establish `h2` using `mem_localization_of_mem (w := w) _ (col_mem_colLat B' b)`. Rewrite `h1` using `[← hB]`. Rewrite `h2` using `[← hB']`.
+
+Take `⟨t, ht, h1⟩` from `h1`. Take `⟨u, hu, h2⟩` from `h2`. Rewrite `h2` using `[← hM]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (h2 _ h1)`. Use `⟨cO K t * u, fun h => (w.isPrime.mem_or_mem h).elim (cO_notMem w t ht) hu, r, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap (𝓞 K) K r`. Rewrite using `[hr, Matrix.mul_assoc]`. Establish `hc : ((cO K t * u : 𝓞 K) : K) = star (t : K) * (u : K)`. Rewrite using `[← ValuationRepresentative.cO_apply]`. Conclude with `map_mul (algebraMap (𝓞 K) K) _ _`.
+
+Rewrite using `[hc]`. Simplify using `only [Matrix.mul_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Pi.smul_apply, Algebra.smul_def, Matrix.conjTranspose_apply, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (t : K) * (u : K) * _ = star (t : K) * _ * (_ * ((u : K) * _))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hM : hdualFr G M = M) (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K)
     (hB : IsBasisAt (conjPl w) M B) (hB' : IsBasisAt w M B') (a b : Fin n) :
@@ -143,6 +187,19 @@ theorem gram_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n �
   change star (t : K) * (u : K) * _ = star (t : K) * _ * (_ * ((u : K) * _))
   ring
 
+/- English proof (translation)
+Unfold `IsBasisAt at hB hB'`. Take `⟨t, ht, h1⟩` from `exists_common_denom (conjPl w).asIdeal (colLat B) M hfg (hB ▸ mem_localization_of_mem M)`. Use `set C : Matrix (Fin n) (Fin n) K := ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) with hC`. Use `set x : Fin n → K := fun i => (G⁻¹ * Cᴴ) i b with hx`. Establish `hGx : G *ᵥ x = fun i => star (C b i)`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(G * (G⁻¹ * Cᴴ)) i b = _`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hG, Matrix.conjTranspose_apply]`. Establish `hxM : cO K t • x ∈ hdualFr G M`. Introduce `y hy`.
+
+Take `⟨r, hr⟩` from `coord_of_mem_colLat B _ (h1 y hy) b`. Use `Submodule.mem_one.2 ⟨cO K r, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cO K r : 𝓞 K) : K) = _`. Rewrite using `[ValuationRepresentative.cO_apply, ← hr, Matrix.mulVec_smul, Matrix.mulVec_smul, hGx]`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Pi.smul_apply, Algebra.smul_def, star_mul', Finset.mul_sum, star_sum, ← hC]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (t : K) * _ = _ * (star (t : K) * _)`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hxM` using `[hM]`. Establish `h3` using `mem_localization_of_mem (w := w) M hxM`.
+
+Rewrite `h3` using `[hB']`. Take `⟨u, hu, h3⟩` from `h3`. Take `⟨r, hr⟩` from `coord_of_mem_colLat B' _ h3 a`. Use `⟨u * cO K t, fun h => (w.isPrime.mem_or_mem h).elim hu (cO_notMem w t ht), r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, ← mul_smul, Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gram_inv_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K))
     (hG : IsUnit G.det) (hfg : M.FG)
     (hM : hdualFr G M = M) (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K)
@@ -178,6 +235,15 @@ theorem gram_inv_mem (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin
   rw [← hr, ← mul_smul, Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ _ n G M _ hG hM w B B' hB hB'`. Establish `hfg : M.FG` using `hM.1.fg`. Establish `h1` using `gram_mem G M hM.2 w B B' hB hB'`. Establish `h2` using `gram_inv_mem G M hG hfg hM.2 w B B' hB hB'`. Use `⟨fun a b => vw_nonneg_of_mem w _ (h1 a b), ?_⟩` and prove the remaining obligations.
+
+Establish `d1` using `vw_nonneg_of_mem w _ (det_mem_subring _ _ h1)`. Establish `d2` using `vw_nonneg_of_mem w _ (det_mem_subring _ _ h2)`. Establish `e : ((B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K)) * (((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (G⁻¹ * ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᴴ)) = 1`. Establish `e1 : (B' : Matrix (Fin n) (Fin n) K) * ((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1` using `Units.mul_inv B'`. Establish `e2 : ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K) = 1` using `Units.inv_mul B`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (B' : Matrix (Fin n) (Fin n) K), e1, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hG, ← Matrix.conjTranspose_mul, e2, Matrix.conjTranspose_one]`. Establish `e'` using `congrArg Matrix.det e`. Rewrite `e'` using `[Matrix.det_mul, Matrix.det_one]`. Establish `e3` using `ValuationRepresentative.vw_mul w _ _ (left_ne_zero_of_mul_eq_one e') (right_ne_zero_of_mul_eq_one e')`. Rewrite `e3` using `[e', ValuationRepresentative.vw_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem gram_locally_unimodular : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)), Gᴴ = G → IsUnit G.det → IsSelfDualK G M → ∀ (w : HeightOneSpectrum (𝓞 K)) (B B' : GL (Fin n) K), IsBasisAt (conjPl w) M B → IsBasisAt w M B' → (∀ a b, 0 ≤ vw w (((B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K)) a b)) ∧ vw w ((B : Matrix (Fin n) (Fin n) K)ᴴ * G * (B' : Matrix (Fin n) (Fin n) K)).det = 0 := by
   intro K _ _ _ n G M _ hG hM w B B' hB hB'
   have hfg : M.FG := hM.1.fg

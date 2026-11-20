@@ -21,6 +21,11 @@ noncomputable def fixedFieldGalHom :
     map_one' := AlgEquiv.ext fun _ => Subtype.ext rfl
     map_mul' := fun _ _ => AlgEquiv.ext fun _ => Subtype.ext rfl }
 
+/- English proof (translation)
+Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Establish `: IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))) Ksep` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) Ksep` using `IsGalois.tower_top_of_isGalois K (fixedField (U : Subgroup Gal(Ksep/K))) Ksep`. Introduce `σ`. Use `set τ := σ.liftNormal Ksep`.
+
+Establish `hτU : τ.restrictScalars K ∈ (U : Subgroup Gal(Ksep/K))` using `(fixingSubgroup_fixedField_openSubgroup U).le ((mem_fixingSubgroup_iff _ _).2 fun x hx => τ.commutes ⟨x, hx⟩)`. Conclude with `⟨⟨τ.restrictScalars K, hτU⟩, AlgEquiv.ext fun x => Subtype.ext (σ.liftNormal_commutes Ksep x)⟩`.
+-/
 theorem fixedFieldGalHom_surjective : Function.Surjective (fixedFieldGalHom h) := by
   let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
   have : IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))) Ksep :=
@@ -34,6 +39,11 @@ theorem fixedFieldGalHom_surjective : Function.Surjective (fixedFieldGalHom h) :
       ((mem_fixingSubgroup_iff _ _).2 fun x hx => τ.commutes ⟨x, hx⟩)
   exact ⟨⟨τ.restrictScalars K, hτU⟩, AlgEquiv.ext fun x => Subtype.ext (σ.liftNormal_commutes Ksep x)⟩
 
+/- English proof (translation)
+Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Conclude with `(fixingSubgroup_fixedField_openSubgroup V).le ((mem_fixingSubgroup_iff _ _).2 fun x hx => congrArg Subtype.val (AlgEquiv.ext_iff.1 hg ⟨x, hx⟩))`. Introduce `hg`. Conclude with `AlgEquiv.ext fun x => Subtype.ext ((mem_fixedField_iff _ _).1 x.2 _ hg)`.
+-/
 theorem fixedFieldGalHom_ker :
     (fixedFieldGalHom h).ker = (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)) := by
   let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
@@ -55,12 +65,18 @@ noncomputable def quotientFixedFieldGalEquiv :
   (QuotientGroup.quotientMulEquivOfEq (fixedFieldGalHom_ker h).symm).trans
     (QuotientGroup.quotientKerEquivOfSurjective _ (fixedFieldGalHom_surjective h))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotientFixedFieldGalEquiv_mk (g : (U : Subgroup Gal(Ksep/K))) :
     letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
     quotientFixedFieldGalEquiv h (g : (U : Subgroup Gal(Ksep/K)) ⧸
       (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) = fixedFieldGalHom h g :=
   rfl
 
+/- English proof (translation)
+The claim follows from `cohomologyZeroRootsEquiv_cohomologyConj h l g x`.
+-/
 theorem cohomologyZeroRootsEquiv_cohomologyConj_gal (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 0) :
@@ -73,6 +89,9 @@ theorem cohomologyZeroRootsEquiv_cohomologyConj_gal (l : ℕ) (g : (U : Subgroup
         (cohomologyZeroRootsEquiv h l x) :=
   cohomologyZeroRootsEquiv_cohomologyConj h l g x
 
+/- English proof (translation)
+Set `` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Rewrite using `[cohomologyOneRootsEquiv_cohomologyConj]`. Take `⟨u, hu⟩` from `Submodule.mkQ_surjective _ (cohomologyOneRootsEquiv h hl x)`. Rewrite using `[← hu]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyOneRootsEquiv_cohomologyConj_gal {l : ℕ} (hl : (l : K) ≠ 0) (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 1) :

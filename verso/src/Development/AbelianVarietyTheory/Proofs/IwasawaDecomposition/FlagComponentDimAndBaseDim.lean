@@ -10,6 +10,13 @@ open scoped Matrix
 
 namespace GlobalTheory.FlagBaseDim
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ Φ k X j f f₀ Eb A₀ _ hL`. Establish `hcard : Fintype.card (GlobalTheory.AllWt.Psi H) = Module.finrank ℚ E / 2`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `GlobalTheory.PeriodCoord.card_cmType H`. Use `⟨by rw [Φ.dim_eq k, hcard], ?_⟩` and prove the remaining obligations.
+
+Take `⟨hj', -, -⟩` from `hL`. Take `⟨Uo, hUo, hx, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.X.isBasis_affineOpens (TopologicalSpace.Opens.mem_top (genericPoint X.X))`. Establish `h1` using `GlobalTheory.SmoothDim.ringKrullDim_affineOpen F X.X X.str X.dim inferInstance Uo hUo ⟨_, hx⟩`. Establish `h2` using `GlobalTheory.SmoothDim.ringKrullDim_affineOpen c.F (gen T.Z) (genStr T.Z) Dw.dim T.smooth (j ''ᵁ Uo) (hUo.image_of_isOpenImmersion j) ⟨j (genericPoint X.X), ⟨_, hx, rfl⟩⟩`. Rewrite `h2` using `[ringKrullDim_eq_of_ringEquiv (j.appIso Uo).commRingCatIsoToRingEquiv, h1]`.
+
+Establish `hd : X.dim = Dw.dim` using `by exact_mod_cast h2`. Rewrite using `[hd, Datum.dim, hcard, mul_assoc]`.
+-/
 theorem dims : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → (Φ.C k).Y.dim = Fintype.card (GlobalTheory.AllWt.Psi H) * ((Dw.p + Dw.q) * (Dw.p + Dw.q - 1) / 2) ∧ X.dim = Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U _ _ Φ k X j f f₀ Eb A₀ _ hL
   have hcard : Fintype.card (GlobalTheory.AllWt.Psi H) = Module.finrank ℚ E / 2 := by

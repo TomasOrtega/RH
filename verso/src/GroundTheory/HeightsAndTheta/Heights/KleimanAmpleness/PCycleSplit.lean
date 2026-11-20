@@ -15,6 +15,11 @@ section Lemmas
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `h0 : tensorSub ![L] ∅ = twistSys S x 0` using `by simp [tensorSub]`. Establish `h1 : tensorSub ![L] {0} = L`. Simplify using `[tensorSub, List.finRange_succ, twistSys_zero_twist]`. Establish `huniv : (Finset.univ : Finset (Finset (Fin 1))) = {∅, {0}}` using `by decide`. Rewrite using `[interSum, huniv, Finset.sum_pair (by decide), h0, h1]`.
+
+Simplify using `only [Finset.card_empty, Finset.card_singleton]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem interSum_one (pp : Ideal (Poly S N)) (L : SubSystem S x Ω) (c : ℕ) :
     interSum pp ![L] c = restrLen pp (L.twist (twistSys S x (c : ℤ))) -
       restrLen pp ((twistSys S x 0).twist (twistSys S x (c : ℤ))) := by
@@ -27,6 +32,13 @@ theorem interSum_one (pp : Ideal (Poly S N)) (L : SubSystem S x Ω) (c : ℕ) :
   norm_num
   ring
 
+/- English proof (translation)
+Establish `hle : F.secs ≤ (F.twist (idealSys x pp)).secs`. Introduce `y hy`. Simplify using `only [SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem] at hy ⊢`. Introduce `I`. Take `⟨i, hi⟩` from `I.2.1`.
+
+Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Establish `h1 : (1 : Ω) ∈ (idealSys x pp).sub I` using `Submodule.subset_span ⟨X i, X i, 1, hX i, X_mem_monos hi, isHomogeneous_X S i, isHomogeneous_X S i, by rw [aeval_X, div_self hxi]⟩`. Conclude with `Submodule.subset_span ⟨1, h1, y, hy I, (one_smul Ω y).symm⟩`. Establish `hs : Subsingleton (F.secs ⧸ ((F.twist (idealSys x pp)).secs).comap F.secs.subtype)`. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`.
+
+Introduce `y _`. Conclude with `hle y.2`. Unfold `restrLen`. Rewrite using `[Module.length_eq_zero_iff.mpr hs]`. Both sides reduce to the same expression.
+-/
 theorem restrLen_of_irrelevant (pp : Ideal (Poly S N)) (hX : ∀ i, (X i : Poly S N) ∈ pp)
     (F : SubSystem S x Ω) : restrLen pp F = 0 := by
   have hle : F.secs ≤ (F.twist (idealSys x pp)).secs := by
@@ -47,6 +59,9 @@ theorem restrLen_of_irrelevant (pp : Ideal (Poly S N)) (hX : ∀ i, (X i : Poly 
   rw [Module.length_eq_zero_iff.mpr hs]
   rfl
 
+/- English proof (translation)
+Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) (r := Ideal.Quotient.mk _ f) ?_ ?_` and prove the remaining obligations. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hfp`.
+-/
 theorem ringKrullDim_quot_succ_le {G pp : Ideal (Poly S N)} [G.IsPrime] (hle : G ≤ pp) {f : Poly S N}
     (hfp : f ∈ pp) (hfG : f ∉ G) : ringKrullDim (Poly S N ⧸ pp) + 1 ≤ ringKrullDim (Poly S N ⧸ G) := by
   refine ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hle)
@@ -56,6 +71,13 @@ theorem ringKrullDim_quot_succ_le {G pp : Ideal (Poly S N)} [G.IsPrime] (hle : G
   · rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
     exact hfp
 
+/- English proof (translation)
+Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact absurd h2 (by decide)`.
+
+Consider the case `coe n`. Establish `h2a : (n : ℕ∞) ≤ 2` using `WithBot.coe_le_coe.mp h2`. Establish `h2' : n ≤ 2` using `by exact_mod_cast h2a`. Establish `hne' : n ≠ 2` using `fun h => hne (by rw [h]; rfl)`. Establish `h1 : (n : ℕ∞) ≤ 1` using `by exact_mod_cast (show n ≤ 1 by omega)`.
+
+Conclude with `WithBot.coe_le_coe.mpr h1`.
+-/
 theorem withBot_le_one_of_le_two {a : WithBot ℕ∞} (h2 : a ≤ 2)
     (hne : a ≠ ((1 + 1 : ℕ) : WithBot ℕ∞)) : a ≤ 1 := by
   induction a using WithBot.recBotCoe with
@@ -70,6 +92,9 @@ theorem withBot_le_one_of_le_two {a : WithBot ℕ∞} (h2 : a ≤ 2)
       have h1 : (n : ℕ∞) ≤ 1 := by exact_mod_cast (show n ≤ 1 by omega)
       exact WithBot.coe_le_coe.mpr h1
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Use `hab.trans hb` as an intermediate fact. Conclude with `absurd this (by decide)`.
+-/
 theorem withBot_not_succ_le {a b : WithBot ℕ∞} (ha : a = ((1 + 1 : ℕ) : WithBot ℕ∞)) (hab : a + 1 ≤ b)
     (hb : b ≤ 2) : False := by
   subst ha
@@ -80,6 +105,37 @@ end Lemmas
 
 open Classical in
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x M 𝔪 h𝔪 J hJhom hJle hJm hdim`. Take `⟨n, pp, d, hpp, hcount, hres⟩` from `hF S Ω N x 𝔪 h𝔪 J hJhom hJle hJm`. Set `v : Ideal (Poly S N) → ℤ` to `fun G => if IsSubvar x G 1 then interNum G ![M.toSubSystem] else 0`. Establish `hdimj : ∀ j, ringKrullDim (Poly S N ⧸ pp j) ≤ 2`. Introduce `j`.
+
+Use `(hpp j).1` as an intermediate fact. Take `⟨G, hG, hGle⟩` from `Ideal.exists_minimalPrimes_le (hpp j).2.2`. Conclude with `(ringKrullDim_le_of_surjective (Ideal.Quotient.factor hGle) (Ideal.Quotient.factor_surjective hGle)).trans (hdim G hG)`. Establish `hmin : ∀ j, IsSubvar x (pp j) 1 → pp j ∈ J.minimalPrimes`. Introduce `j hsv`.
+
+Use `(hpp j).1` as an intermediate fact. Take `⟨G, hG, hGle⟩` from `Ideal.exists_minimalPrimes_le (hpp j).2.2`. Distinguish the cases in `hGe : G = pp j`. Rewrite using `[← hGe]`. Conclude with `hG`.
+
+It suffices to derive a contradiction. Establish `: G.IsPrime` using `hG.1.1`. Take `⟨f, hfp, hfG⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hGle hGe)`. Conclude with `withBot_not_succ_le hsv.dim (ringKrullDim_quot_succ_le hGle hfp hfG) (hdim G hG)`. Establish `hpiece : ∀ j, ∀ᶠ c : ℕ in atTop, interSum (pp j) ![M.toSubSystem] c = v (pp j)`.
+
+Introduce `j`. Take `⟨hjp, hjh, hJj⟩` from `hpp j`. Distinguish the cases in `hsv : IsSubvar x (pp j) 1`. Simplify using `only [v, if_pos hsv]`. Conclude with `hCu S Ω N x M 𝔪 h𝔪 (pp j) hsv (hJm.trans hJj)`.
+
+Simplify using `only [v, if_neg hsv]`. Distinguish the cases in `hrel : ∃ i, (X i : Poly S N) ∉ pp j`. Use `hSm S Ω N x M 𝔪 h𝔪 (pp j) hjp hjh (hJle.trans hJj) (hJm.trans hJj) ?_` and prove the remaining obligations. Conclude with `withBot_le_one_of_le_two (hdimj j) fun h => hsv ⟨hjp, hjh, hJle.trans hJj, hrel, h⟩`. Use `push Not at hrel`.
+
+Conclude with `Eventually.of_forall fun c => by`. Rewrite using `[interSum_one, restrLen_of_irrelevant _ hrel, restrLen_of_irrelevant _ hrel, sub_zero]`. Establish `hshift : ∀ j, ∀ᶠ c : ℕ in atTop, 0 ≤ (c : ℤ) + d j ∧ interSum (pp j) ![M.toSubSystem] ((c : ℤ) + d j).toNat = v (pp j)`. Introduce `j`. Establish `ht : Tendsto (fun c : ℕ => ((c : ℤ) + d j).toNat) atTop atTop`.
+
+Use `tendsto_atTop_atTop.mpr fun b => ⟨b + (d j).natAbs, fun a ha => ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Conclude with `((eventually_ge_atTop (d j).natAbs).and (ht.eventually (hpiece j))).mono fun c hc => ⟨by omega, hc.2⟩`. Establish `hall` using `Filter.eventually_all.mpr hshift`. Use `filter_upwards [hall, hres M, hres (twistBundle S x 0)] with c hc hM h0`.
+
+Establish `h0' : restrLen J ((twistSys S x 0).twist (twistSys S x (c : ℤ))) = ∑ j, restrLen (pp j) ((twistSys S x 0).twist (twistSys S x ((c : ℤ) + d j)))` using `h0`. Establish `hsum : interSum J ![M.toSubSystem] c = ∑ j, v (pp j)`. Rewrite using `[interSum_one, hM, h0', ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← (hc j).2, interSum_one, Int.toNat_of_nonneg (hc j).1]`.
+
+Rewrite using `[hsum, Finset.sum_comp (fun G => v G) pp]`. Use `symm`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.univ.image pp) ?_]`. Use `Finset.sum_congr rfl fun G hG => ?_` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `Finset.mem_image.mp hG`.
+
+Distinguish the cases in `hsv : IsSubvar x (pp j) 1`. Establish `hm` using `hmin j hsv`. Establish `: (pp j).IsPrime` using `(hpp j).1`. Rewrite using `[dif_pos ⟨hm, hsv⟩, nsmul_eq_mul]`. Simplify using `only [v, if_pos hsv]`.
+
+Rewrite using `[← hcount (pp j) hm, ENat.toNat_natCast]`. Rewrite using `[dif_neg fun h => hsv h.2]`. Simplify using `only [v, if_neg hsv, smul_zero]`. Introduce `G hG`. Rewrite `hG` using `[Function.mem_support]`.
+
+Use `split_ifs at hG with h`. Establish `: G.IsPrime` using `h.1.1.1`. Establish `hc0 : (cutMult J G).toNat ≠ 0`. Introduce `h0`. Rewrite `hG` using `[h0]`.
+
+Simplify using `at hG`. Rewrite `hc0` using `[← hcount G h.1, ENat.toNat_natCast]`. Take `⟨j, hj⟩` from `Finset.card_pos.mp (Nat.pos_of_ne_zero hc0)`. Rewrite `hj` using `[Finset.mem_filter]`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+
+Conclude with `⟨j, hj.2⟩`. Conclude with `absurd rfl hG`.
+-/
 theorem CycleSplit.proof (hF : CycleSplit.Filt.Statement.{u, w}) (hCu : CycleSplit.Curve.Statement.{u, w})
     (hSm : CycleSplit.Small.Statement.{u, w}) : CycleSplit.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x M 𝔪 h𝔪 J hJhom hJle hJm hdim

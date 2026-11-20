@@ -8,6 +8,9 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+The claim follows from `|∑' n : ℕ, r ^ (n + 1) * c n| ≤ 2 * M * r := by have hM : 0 ≤ M := (abs_nonneg _).trans (hc 0) have hs : HasSum (fun n : ℕ => (M * r) * (1 / 2 : ℝ) ^ n) ((M * r) * 2) := hasSum_geometric_two.mul_left _ have := tsum_of_norm_bounded (f := fun n : ℕ => r ^ (n + 1) * c n) hs (fun n = …`.
+-/
 theorem abs_tsum_geom_bdd_le (r M : ℝ) (c : ℕ → ℝ) (h0 : 0 ≤ r) (h1 : r ≤ 1 / 2) (hc : ∀ n, |c n| ≤ M) :
     |∑' n : ℕ, r ^ (n + 1) * c n| ≤ 2 * M * r := by
   have hM : 0 ≤ M := (abs_nonneg _).trans (hc 0)
@@ -20,6 +23,13 @@ theorem abs_tsum_geom_bdd_le (r M : ℝ) (c : ℕ → ℝ) (h0 : 0 ≤ r) (h1 : 
   rw [Real.norm_eq_abs] at this
   linarith
 
+/- English proof (translation)
+Establish `hs : Summable (fun n : ℕ => 2 * (n : ℝ) ^ (-(3 / 2) : ℝ))` using `(Real.summable_nat_rpow.2 (by norm_num)).mul_left 2`. Use `Summable.of_nonneg_of_le (fun n => mul_nonneg (Real.log_natCast_nonneg n) (by positivity)) (fun n => ?_) hs` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+
+Establish `h1 : Real.log n ≤ (n : ℝ) ^ (1 / 2 : ℝ) / (1 / 2)` using `Real.log_le_rpow_div hn'.le (by norm_num)`. Establish `h2 : (n : ℝ) ^ (-(3 / 2) : ℝ) = (n : ℝ) ^ (1 / 2 : ℝ) * ((n : ℝ) ^ 2)⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg hn'.le, ← Real.rpow_add hn']`. Evaluate the numerical expressions. Rewrite using `[h2, ← mul_assoc]`.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem summable_log_div_sq_nat : Summable (fun n : ℕ => Real.log n * ((n : ℝ) ^ 2)⁻¹) := by
   have hs : Summable (fun n : ℕ => 2 * (n : ℝ) ^ (-(3 / 2) : ℝ)) :=
     (Real.summable_nat_rpow.2 (by norm_num)).mul_left 2
@@ -35,6 +45,17 @@ theorem summable_log_div_sq_nat : Summable (fun n : ℕ => Real.log n * ((n : �
   gcongr
   linarith
 
+/- English proof (translation)
+Set `M : D.what₂.Tau → ℕ → ℝ` to `fun τ k => ∑ σ, |Y.chern (chLie Y.j (k - 1) σ * Q τ k)|`. Use `⟨∑ τ, ∑ k ∈ Finset.Icc 2 Y.N, (Nat.factorial k : ℝ) * (2 * M τ k), fun p hp => ?_⟩` and prove the remaining obligations. Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Unfold `restTerm`.
+
+Rewrite using `[abs_mul, abs_of_nonneg hl, mul_left_comm]`. Use `mul_le_mul_of_nonneg_left ?_ hl` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k hk => ?_)` and prove the remaining obligations. Establish `hk2 : 2 ≤ k` using `(Finset.mem_Icc.1 hk).1`. Rewrite using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg _), mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Establish `hpk : (p : ℝ) ^ 2 ≤ (p : ℝ) ^ k` using `pow_le_pow_right₀ (by linarith) hk2`.
+
+Establish `hr : ((p : ℝ) ^ k)⁻¹ ≤ ((p : ℝ) ^ 2)⁻¹` using `inv_anti₀ (by positivity) hpk`. Establish `hr2 : ((p : ℝ) ^ 2)⁻¹ ≤ 1 / 2`. Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by norm_num) (by nlinarith)`. Establish `hM : 0 ≤ M τ k` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+
+Use `(abs_tsum_geom_bdd_le _ (M τ k) _ (by positivity) (hr.trans hr2) (fun n => ?_)).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun σ => |Y.chern (chLie Y.j (k - 1) σ * Q τ k)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ _)`. Use `gcongr`.
+-/
 theorem abs_restTerm_le_log_div_sq {D : D7} (Y : ShimX D.what₂.Tau) (Q : D.what₂.Tau → ℕ → Pol D.what₂.Tau Y.N) :
     ∃ C : ℝ, ∀ p : ℕ, 2 ≤ p → |restTerm Y p Q| ≤ C * (Real.log p * ((p : ℝ) ^ 2)⁻¹) := by
   let M : D.what₂.Tau → ℕ → ℝ := fun τ k => ∑ σ, |Y.chern (chLie Y.j (k - 1) σ * Q τ k)|
@@ -62,6 +83,15 @@ theorem abs_restTerm_le_log_div_sq {D : D7} (Y : ShimX D.what₂.Tau) (Q : D.wha
       (fun _ _ => abs_nonneg _) (Finset.mem_univ _)
   · gcongr
 
+/- English proof (translation)
+Introduce `D Y B₀ Q hB`. Take `⟨C, hC⟩` from `abs_restTerm_le_log_div_sq Y Q`. Set `f : ℕ → ℝ` to `fun p => if p.Prime ∧ B₀ < (p : ℝ) ∧ ¬ p ∣ 2 * dE D ∧ p ∉ Y.lev then restTerm Y p Q else 0`. Establish `hs : Summable f`. Use `Summable.of_norm_bounded (summable_log_div_sq_nat.mul_left |C|) (fun p => ?_)` and prove the remaining obligations.
+
+Establish `h0 : 0 ≤ Real.log p * ((p : ℝ) ^ 2)⁻¹` using `mul_nonneg (Real.log_natCast_nonneg p) (by positivity)`. Simplify using `only [f, Real.norm_eq_abs]`. Use `split_ifs with h`. Conclude with `(hC p h.1.two_le).trans (mul_le_mul_of_nonneg_right (le_abs_self C) h0)`. Rewrite using `[abs_zero]`.
+
+Check the signs of the components of the expression. Use `⟨∑' p, f p, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hs.hasSum.tendsto_sum_nat).comp (tendsto_add_atTop_nat 1)`. Use `h1.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.new_primes_set_description D Y B₀ B₀ hB).2.2.2 n, Finset.sum_filter]`.
+
+Both sides reduce to the same expression.
+-/
 theorem restTerm_sum_tendsto : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (B₀ : ℝ) (Q : D.what₂.Tau → ℕ → Pol D.what₂.Tau Y.N), 0 ≤ B₀ → ∃ L : ℝ, Tendsto (fun B : ℕ => ∑ p ∈ newPrimes Y B₀ B, restTerm Y p Q) atTop (𝓝 L) := by
   intro D Y B₀ Q hB
   obtain ⟨C, hC⟩ := abs_restTerm_le_log_div_sq Y Q

@@ -16,6 +16,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.OrdPush
 
+/- English proof (translation)
+Set `_ : Algebra T T'` to `e.toRingHom.toAlgebra`. Set `e' : T ≃ₐ[T] T'` to `{ e with commutes' := fun _ => rfl }`. Unfold `Ring.ord`. Rewrite using `[← Module.length_eq_of_surjective (S := T) (R := T') e.surjective]`. Use `(Ideal.quotientEquivAlg (Ideal.span {x}) (Ideal.span {e x}) e' ?_).toLinearEquiv.length_eq.symm` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem ord_ringEquiv {T T' : Type*} [CommRing T] [CommRing T'] (e : T ≃+* T') (x : T) :
     Ring.ord T' (e x) = Ring.ord T x := by
   let _ : Algebra T T' := e.toRingHom.toAlgebra
@@ -26,12 +31,24 @@ theorem ord_ringEquiv {T T' : Type*} [CommRing T] [CommRing T'] (e : T ≃+* T')
   rw [Ideal.map_span, Set.image_singleton]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← (IsLocalization.algEquiv M T T').commutes s]`. Conclude with `ord_ringEquiv (IsLocalization.algEquiv M T T').toRingEquiv _`.
+-/
 theorem ord_isLocalization {S : Type*} [CommRing S] (M : Submonoid S) (T T' : Type*) [CommRing T]
     [CommRing T'] [Algebra S T] [Algebra S T'] [IsLocalization M T] [IsLocalization M T'] (s : S) :
     Ring.ord T' (algebraMap S T' s) = Ring.ord T (algebraMap S T s) := by
   rw [← (IsLocalization.algEquiv M T T').commutes s]
   exact ord_ringEquiv (IsLocalization.algEquiv M T T').toRingEquiv _
 
+/- English proof (translation)
+Rewrite using `[ResidueDegreeChart.inertiaDeg_eq_finrank_of_ker (K := Q.ResidueField) (L := Q.ResidueField) ((algebraMap B Q.ResidueField).comp (algebraMap S B)) (algebraMap B Q.ResidueField) Q (fun s => Ideal.algebraMap_residueField_eq_zero.symm) ?_ ?_ (fun _ => rfl), Module.finrank_self]`. Introduce `z`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := B ⧸ Q) z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+
+Take `⟨⟨a₁, a₂⟩, ha⟩` from `IsLocalization.surj M a`. Take `⟨⟨b₁, b₂⟩, hb⟩` from `IsLocalization.surj M b`. Establish `h₁` using `((IsLocalization.map_units B a₂).map (algebraMap B Q.ResidueField)).ne_zero`. Establish `h₂` using `((IsLocalization.map_units B b₂).map (algebraMap B Q.ResidueField)).ne_zero`. Use `⟨a₁ * b₂, b₁ * a₂, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, map_mul] at ha hb ⊢`. Rewrite using `[← ha, ← hb, map_mul, map_mul, mul_assoc, mul_assoc, mul_comm (algebraMap B _ (algebraMap S B b₂)), mul_div_mul_right _ _ (mul_ne_zero h₁ h₂)]`. Both sides reduce to the same expression. Introduce `z`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := B ⧸ Q) z`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Conclude with `⟨a, b, rfl⟩`.
+-/
 theorem inertiaDeg_isLocalization {S : Type*} [CommRing S] (M : Submonoid S) (B : Type*)
     [CommRing B] [Algebra S B] [IsLocalization M B] (Q : Ideal B) [Q.IsPrime] :
     Q.inertiaDeg S = 1 := by
@@ -57,6 +74,29 @@ theorem inertiaDeg_isLocalization {S : Type*} [CommRing S] (M : Submonoid S) (B 
     obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
     exact ⟨a, b, rfl⟩
 
+/- English proof (translation)
+Set `M` to `Algebra.algebraMapSubmonoid S p.asIdeal.primeCompl`. Set `B` to `Localization M`. Establish `hp0 : p.asIdeal.primeCompl ≤ nonZeroDivisors R` using `p.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `hM0 : M ≤ nonZeroDivisors S`. Introduce and unpack `_ ⟨r, hr, rfl⟩`.
+
+Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero (hp0 hr)))`. Establish `: IsDomain B` using `IsLocalization.isDomain_localization hM0`. Set `_ : Algebra A B` to `localizationAlgebra p.asIdeal.primeCompl S`. Establish `: IsScalarTower R A B` using `IsScalarTower.of_algebraMap_eq fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R S B]`.
+
+Conclude with `(IsLocalization.map_eq (T := M) (S := A) (Q := B) _ r).symm`. Establish `: Module.Finite A B` using `Module.Finite.of_isLocalization R S p.asIdeal.primeCompl`. Establish `hAB : Function.Injective (algebraMap A B)` using `localizationAlgebra_injective A B hinj`. Establish `ha' : algebraMap R A a ≠ 0` using `(map_ne_zero_iff _ (IsLocalization.injective A hp0)).2 ha`. Establish `hdeg : ∀ Q : PrimeSpectrum B, Q.asIdeal.inertiaDeg A = (Q.asIdeal.under S).inertiaDeg R` using `fun Q => by`.
+
+Establish `h₁` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under S) Q.asIdeal`. Establish `h₂` using `Ideal.inertiaDeg_tower (R := R) (Q.asIdeal.under A) Q.asIdeal`. Rewrite `h₁` using `[inertiaDeg_isLocalization M B, mul_one]`. Rewrite `h₂` using `[inertiaDeg_isLocalization p.asIdeal.primeCompl A, one_mul]`. Conclude with `h₂.symm.trans h₁`.
+
+Establish `hrk : Module.finrank A B = Module.finrank R S`. Rewrite using `[← inertiaDeg_bot_eq_finrank A B hAB, ← inertiaDeg_bot_eq_finrank R S hinj]`. Use `(hdeg ⊥).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Ideal.comap_bot_of_injective _ (IsLocalization.injective B hM0)`.
+
+Rewrite using `[← hrk, ← finsum_ord_mul_inertiaDeg_eq_finrank_mul_ord A B hAB hdim _ ha']`. Use `symm`. Establish `hmax : (IsLocalRing.maximalIdeal A).comap (algebraMap R A) = p.asIdeal` using `IsLocalization.AtPrime.under_maximalIdeal A p.asIdeal`. Establish `hsq : ∀ Q : PrimeSpectrum B, PrimeSpectrum.comap (algebraMap R S) (PrimeSpectrum.comap (algebraMap S B) Q) = PrimeSpectrum.comap (algebraMap R A) (PrimeSpectrum.comap (algebraMap A B) Q)` using `fun Q => by`. Rewrite using `[← PrimeSpectrum.comap_comp_apply, ← PrimeSpectrum.comap_comp_apply, ← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`.
+
+Use `finsum_mem_eq_of_bijOn (PrimeSpectrum.comap (algebraMap S B)) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `Q hQ`. Express the relevant statement in the definitionally equal form `_ = p`. Rewrite using `[hsq]`. Use `ext1`.
+
+Rewrite using `[← hmax, ← show Q.asIdeal.comap (algebraMap A B) = _ from hQ]`. Both sides reduce to the same expression. Conclude with `(PrimeSpectrum.localization_comap_injective B M).injOn`. Introduce `Q hQ`. Establish `hQ' : PrimeSpectrum.comap (algebraMap R S) Q = p` using `hQ`.
+
+Establish `: Q ∈ Set.range (PrimeSpectrum.comap (algebraMap S B))`. Rewrite using `[PrimeSpectrum.localization_comap_range B M]`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, rfl⟩ h`. Conclude with `hr (by rw [← hQ']; exact h)`.
+
+Take `⟨Q', rfl⟩` from `this`. Use `⟨Q', ?_, rfl⟩` and prove the remaining obligations. Use `PrimeSpectrum.localization_comap_injective A p.asIdeal.primeCompl (a₁ := PrimeSpectrum.comap (algebraMap A B) Q') (a₂ := IsLocalRing.closedPoint A) (by rw [← hsq, hQ']; ext1; exact hmax.symm)` as an intermediate fact. Conclude with `congrArg PrimeSpectrum.asIdeal this`. Introduce `Q _`.
+
+Rewrite using `[hdeg]`. Use `congr 3`. Establish `: IsLocalization.AtPrime (Localization.AtPrime Q.asIdeal) (PrimeSpectrum.comap (algebraMap S B) Q).asIdeal` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime Q.asIdeal) Q.asIdeal`. Rewrite using `[← IsScalarTower.algebraMap_apply R A B, IsScalarTower.algebraMap_apply R S B, ← IsScalarTower.algebraMap_apply S B]`. Conclude with `ord_isLocalization (PrimeSpectrum.comap (algebraMap S B) Q).asIdeal.primeCompl _ _ _`.
+-/
 theorem finsum_ord_mul_inertiaDeg (R S A : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S]
     [Algebra R S] [Module.Finite R S] (hinj : Function.Injective (algebraMap R S))
     (p : PrimeSpectrum R) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A]
@@ -134,6 +174,11 @@ theorem finsum_ord_mul_inertiaDeg (R S A : Type) [CommRing R] [IsDomain R] [Comm
       ← IsScalarTower.algebraMap_apply S B]
     exact ord_isLocalization (PrimeSpectrum.comap (algebraMap S B) Q).asIdeal.primeCompl _ _ _
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[← h, PrimeSpectrum.height_eq_orderHeight, PrimeSpectrum.height_eq_orderHeight]`. Conclude with `Order.height_le_height_apply_of_strictMono _ (fun a b hab => Ideal.IsIntegral.comap_lt_comap (R := R) (I := a.asIdeal) hab) Q`. Rewrite using `[Order.one_le_iff_ne_zero]`. Introduce `h0`.
+
+Establish `hQ : Q.asIdeal = ⊥` using `Ideal.height_eq_zero_iff_eq_bot.1 h0`. Rewrite `h` using `[PrimeSpectrum.comap_asIdeal, hQ, Ideal.comap_bot_of_injective _ hinj, Ideal.height_bot]`. Conclude with `zero_ne_one h`.
+-/
 theorem height_eq_one {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [IsDomain S]
     [Algebra R S] [Algebra.IsIntegral R S] (hinj : Function.Injective (algebraMap R S))
     (Q : PrimeSpectrum S) (h : (PrimeSpectrum.comap (algebraMap R S) Q).asIdeal.height = 1) :
@@ -148,6 +193,9 @@ theorem height_eq_one {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [IsDom
     rw [PrimeSpectrum.comap_asIdeal, hQ, Ideal.comap_bot_of_injective _ hinj, Ideal.height_bot] at h
     exact zero_ne_one h
 
+/- English proof (translation)
+Set `_ : Algebra Γ(X, V) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Use `hV.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Establish `h` using `IsLocalization.AtPrime.ringKrullDim_eq_height (hV.primeIdealOf ⟨x, hx⟩).asIdeal (X.presheaf.stalk x)`. Rewrite `h` using `[ringKrullDim_stalk_eq_coheight]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem coheight_eq_height {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) (x : X)
     (hx : x ∈ V) : Order.coheight x = (hV.primeIdealOf ⟨x, hx⟩).asIdeal.height := by
   let _ : Algebra Γ(X, V) (X.presheaf.stalk x) :=
@@ -158,6 +206,9 @@ theorem coheight_eq_height {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V) 
   rw [ringKrullDim_stalk_eq_coheight] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Set `_ : Algebra Γ(X, V) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hx⟩`. Use `hV.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Rewrite using `[← algebraMap_germ hx, ord_algebraMap h1 ((map_ne_zero_iff _ (germ_injective_of_isIntegral X x hx)).2 ha), ord_isLocalization (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (X.presheaf.stalk x)]`. Both sides reduce to the same expression.
+-/
 theorem ord_fnOf {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {V : X.Opens}
     (hV : IsAffineOpen V) (x : X) (hx : x ∈ V) (h1 : Order.coheight x = 1) (a : Γ(X, V))
     (ha : a ≠ 0) : Scheme.ord (fnOf V (gen_mem hx) a) x =
@@ -171,6 +222,11 @@ theorem ord_fnOf {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {V : X.
     ord_isLocalization (hV.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (X.presheaf.stalk x)]
   rfl
 
+/- English proof (translation)
+Take `⟨_, ⟨V', hV', rfl⟩, hzV, -⟩` from `(U : Scheme.{0}).isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (⟨z, hz⟩ : U)) isOpen_univ`. Use `⟨U.ι ''ᵁ V', ⟨⟨z, hz⟩, hzV, rfl⟩, hV'.image_of_isOpenImmersion _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← image_morphismRestrict_preimage]`. Conclude with `(IsAffineOpen.preimage hV' (π ∣_ U)).image_of_isOpenImmersion _`. Establish `h` using `(π ∣_ U).finite_app V' hV'`.
+
+Rewrite `h` using `[morphismRestrict_app]`. Conclude with `(RingHom.finite_respectsIso.cancel_right_isIso _ _).1 h`.
+-/
 theorem exists_affine {X Y : Scheme.{0}} (π : Y ⟶ X) (z : X) (U : X.Opens) (hz : z ∈ U)
     [IsFinite (π ∣_ U)] : ∃ V : X.Opens, z ∈ V ∧ IsAffineOpen V ∧ IsAffineOpen (π ⁻¹ᵁ V) ∧
       (π.app V).hom.Finite := by
@@ -183,6 +239,27 @@ theorem exists_affine {X Y : Scheme.{0}} (π : Y ⟶ X) (z : X) (U : X.Opens) (h
     rw [morphismRestrict_app] at h
     exact (RingHom.finite_respectsIso.cancel_right_isIso _ _).1 h
 
+/- English proof (translation)
+Establish `hgen : genericPoint Y ∈ π ⁻¹ᵁ V` using `hη.mem_open V.isOpen (gen_mem hz)`. Establish `: Nonempty V` using `⟨⟨z, hz⟩⟩`. Establish `: Nonempty (π ⁻¹ᵁ V : Y.Opens)` using `⟨⟨_, hgen⟩⟩`. Set `_ : Algebra Γ(X, V) Γ(Y, π ⁻¹ᵁ V)` to `(π.app V).hom.toAlgebra`. Establish `: Module.Finite Γ(X, V) Γ(Y, π ⁻¹ᵁ V)` using `hfin`.
+
+Establish `hinj : Function.Injective (algebraMap Γ(X, V) Γ(Y, π ⁻¹ᵁ V))`. Introduce `s t hst`. Apply `germ_injective_of_isIntegral X (genericPoint X) (gen_mem hz)` to reduce the goal to its premises. Apply `(TrueGeo.SmallSec.fnMap π hη).injective` to reduce the goal to its premises. Conclude with `(TrueGeo.SmallSec.fnMap_fnOf π hη _ hgen s).trans ((congrArg (fnOf _ hgen) hst).trans (TrueGeo.SmallSec.fnMap_fnOf π hη _ hgen t).symm)`.
+
+Establish `hcomap : ∀ (w : Y) (hw : w ∈ π ⁻¹ᵁ V), PrimeSpectrum.comap (algebraMap Γ(X, V) Γ(Y, π ⁻¹ᵁ V)) (hW.primeIdealOf ⟨w, hw⟩) = hV.primeIdealOf ⟨π w, hw⟩` using `fun w hw => by`. Establish `h` using `IsAffineOpen.comap_primeIdealOf_appLE (f := π) V hV _ hW le_rfl hw`. Rewrite `h` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis. Establish `hp1 : (hV.primeIdealOf ⟨z, hz⟩).asIdeal.height = 1`. Rewrite using `[← coheight_eq_height, h1]`.
+
+Establish `: IsNoetherianRing Γ(X, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Establish `key` using `finsum_ord_mul_inertiaDeg Γ(X, V) Γ(Y, π ⁻¹ᵁ V) (Localization.AtPrime (hV.primeIdealOf ⟨z, hz⟩).asIdeal) hinj (hV.primeIdealOf ⟨z, hz⟩) (by rw [IsLocalization.AtPrime.ringKrullDim_eq_height (hV.primeIdealOf ⟨z, hz⟩).asIdeal, hp1]; rfl) a ha`. Establish `hrk : π.residueDegree (genericPoint Y) = Module.finrank Γ(X, V) Γ(Y, π ⁻¹ᵁ V)`. Rewrite using `[ResidueDegreeChart.residueDegree_eq_inertiaDeg X Y π V hV hW _ hgen, ← inertiaDeg_bot_eq_finrank _ _ hinj]`. Use `congr 1`.
+
+Rewrite using `[hW.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]`. Both sides reduce to the same expression. Rewrite using `[hrk, ord_fnOf hV z hz h1 a ha, ← key, TrueGeo.SmallSec.fnMap_fnOf π hη _ hgen]`. Use `symm`. Establish `hmem : ∀ Q : PrimeSpectrum Γ(Y, π ⁻¹ᵁ V), hW.fromSpec Q ∈ π ⁻¹ᵁ V` using `fun Q => by`.
+
+Establish `: hW.fromSpec Q ∈ Set.range hW.fromSpec` using `⟨Q, rfl⟩`. Rewrite `this` using `[hW.range_fromSpec]`. Then use the resulting hypothesis. Establish `hinv : ∀ Q : PrimeSpectrum Γ(Y, π ⁻¹ᵁ V), hW.primeIdealOf ⟨_, hmem Q⟩ = Q` using `fun Q => hW.fromSpec.isOpenEmbedding.injective (hW.fromSpec_primeIdealOf _)`. Use `finsum_mem_eq_of_bijOn (fun Q => hW.fromSpec Q) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `Q hQ`.
+
+Establish `h` using `hcomap _ (hmem Q)`. Rewrite `h` using `[hinv, show PrimeSpectrum.comap _ Q = _ from hQ]`. Establish `h'` using `congrArg (fun q => hV.fromSpec q) h`. Simplify using `only [hV.fromSpec_primeIdealOf] at h'`. Conclude with `h'.symm`.
+
+Conclude with `hW.fromSpec.isOpenEmbedding.injective.injOn`. Introduce `w hw`. Establish `hw' : π w = z` using `hw`. Substitute `hw'` using the available equality. Conclude with `⟨hW.primeIdealOf ⟨w, hz⟩, hcomap w hz, hW.fromSpec_primeIdealOf _⟩`.
+
+Introduce `Q hQ`. Establish `hc : Order.coheight (hW.fromSpec Q) = 1`. Rewrite using `[coheight_eq_height hW _ (hmem Q), hinv]`. Conclude with `height_eq_one hinj Q (by rw [show PrimeSpectrum.comap _ Q = _ from hQ, hp1])`. Establish `h₁` using `ord_fnOf hW _ (hmem Q) hc (algebraMap Γ(X, V) _ a) ((map_ne_zero_iff _ hinj).2 ha)`.
+
+Establish `h₂` using `ResidueDegreeChart.residueDegree_eq_inertiaDeg X Y π V hV hW _ (hmem Q)`. Rewrite `h₁`, `h₂` using `[hinv]`. Rewrite using `[h₂]`. Conclude with `congrArg (· * _) h₁.symm`.
+-/
 theorem finsum_ord_fnOf {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X]
     [IsLocallyNoetherian Y] (π : Y ⟶ X) (hη : π (genericPoint Y) ⤳ genericPoint X) (z : X)
     (h1 : Order.coheight z = 1) (V : X.Opens) (hz : z ∈ V) (hV : IsAffineOpen V)
@@ -249,6 +326,11 @@ theorem finsum_ord_fnOf {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLoca
     rw [h₂]
     exact congrArg (· * _) h₁.symm
 
+/- English proof (translation)
+Establish `h` using `(π ∣_ U).finite_preimage_singleton ⟨z, hz⟩`. Use `(h.image (π ⁻¹ᵁ U).ι).subset ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : π w = z` using `hw`. Substitute `hw'` using the available equality.
+
+Conclude with `⟨⟨w, hz⟩, Subtype.ext (morphismRestrict_base_coe π U ⟨w, hz⟩), rfl⟩`.
+-/
 theorem finite_fibre {X Y : Scheme.{0}} (π : Y ⟶ X) (z : X) (U : X.Opens) (hz : z ∈ U)
     [IsFinite (π ∣_ U)] : {w : Y | π w = z}.Finite := by
   have h := (π ∣_ U).finite_preimage_singleton ⟨z, hz⟩
@@ -258,6 +340,15 @@ theorem finite_fibre {X Y : Scheme.{0}} (π : Y ⟶ X) (z : X) (U : X.Opens) (hz
   subst hw'
   exact ⟨⟨w, hz⟩, Subtype.ext (morphismRestrict_base_coe π U ⟨w, hz⟩), rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `X Y _ _ _ _ π hη z h1 ⟨U, hU, hfin⟩ f hf`. Take `⟨V, hz, hV, hW, hF⟩` from `exists_affine π z U hU`. Establish `: Nonempty V` using `⟨⟨z, hz⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X V hV` as an intermediate fact. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(X, V)) f`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb' : fnOf V (gen_mem hz) b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective Γ(X, V) X.functionField)).2 hb0`. Establish `e : fnOf V (gen_mem hz) a = f * fnOf V (gen_mem hz) b` using `(div_eq_iff hb').1 hab`. Establish `ha0 : a ≠ 0` using `fun h => mul_ne_zero hf hb' (by rw [← e, h, map_zero])`. Establish `h₁` using `finsum_ord_fnOf π hη z h1 V hz hV hW hF a ha0`.
+
+Establish `h₂` using `finsum_ord_fnOf π hη z h1 V hz hV hW hF b hb0`. Establish `hi` using `(TrueGeo.SmallSec.fnMap π hη).injective`. Establish `hf'` using `(map_ne_zero_iff _ hi).2 hf`. Establish `hb''` using `(map_ne_zero_iff _ hi).2 hb'`. Rewrite `h₁` using `[e, map_mul]`.
+
+Simplify using `only [Scheme.ord_mul hf hb', Scheme.ord_mul hf' hb'', add_mul, mul_add] at h₁`. Rewrite `h₁` using `[finsum_mem_add_distrib (finite_fibre π z U hU), h₂]`. Conclude with `add_right_cancel h₁`.
+-/
 theorem finsum_ord_fnMap_mul_residueDegree : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (π : Y ⟶ X) (hη : π (genericPoint Y) ⤳ genericPoint X) (z : X), Order.coheight z = 1 → (∃ U : X.Opens, z ∈ U ∧ IsFinite (π ∣_ U)) → ∀ f : X.functionField, f ≠ 0 → ∑ᶠ (w : Y) (_ : π w = z), Scheme.ord (TrueGeo.SmallSec.fnMap π hη f) w * (π.residueDegree w : ℤ) = (π.residueDegree (genericPoint Y) : ℤ) * Scheme.ord f z := by
   rintro X Y _ _ _ _ π hη z h1 ⟨U, hU, hfin⟩ f hf
   obtain ⟨V, hz, hV, hW, hF⟩ := exists_affine π z U hU

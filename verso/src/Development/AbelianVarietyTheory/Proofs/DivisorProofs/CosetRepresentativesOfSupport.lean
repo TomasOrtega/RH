@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V P e f α hP hα`. Break down `id hP with ⟨he, rfl⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `(GlobalTheory.SplitPlace.split_local V P e he).2.1 α hα`. Conclude with `(GlobalTheory.InertDoubleCoset.inert_double_cosets V P f hP (GlobalTheory.SphericalComm.exists_unif_of_not_dvd P (GlobalTheory.HeckeOrthSum.not_dvd_different D P)) α hα).2.1`.
+-/
 theorem GlobalTheory.LocalReps.exists_isCosetRep : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e f : Formalism.L2.Theta.AE D) (α : GA D V), IsPrimeIdem P e f → SuppF V f α → ∃ R : Finset (GA D V), (∀ γ ∈ R, SuppF V f γ) ∧ IsCosetRep V {k | k ∈ KsphC V ∅ ∧ SuppF V f k} α R := by
   intro D V P e f α hP hα
   rcases id hP with ⟨he, rfl⟩ | ⟨rfl, -⟩

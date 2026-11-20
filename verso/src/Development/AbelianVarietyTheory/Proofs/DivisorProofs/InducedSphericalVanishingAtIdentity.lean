@@ -7,6 +7,17 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 
 namespace GlobalTheory.IndSpK
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a a' α β f hf hK h1`. Use function extensionality and compare the values at `g`. Take `⟨p, hp, κ, hκ, rfl⟩` from `(GlobalTheory.MaxParabIwasawa.iwasawa_stdMaxParab k (a + a') a a' rfl g).2`. Rewrite using `[Pi.zero_apply, hK κ hκ p]`. Rewrite `hp` using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.mem_stdMaxParab]`.
+
+Use `set M := p.val.submatrix finSumFinEquiv finSumFinEquiv with hM`. Establish `h21 : M.toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `only [hM, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, Matrix.zero_apply]`. Conclude with `hp _ _ (by simp) (by simp)`.
+
+Establish `hdet : M.det = M.toBlocks₁₁.det * M.toBlocks₂₂.det`. Rewrite using `[← Matrix.fromBlocks_toBlocks M, h21, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Establish `hMdet : M.det ≠ 0`. Rewrite using `[hM, Matrix.det_submatrix_equiv_self]`.
+
+Conclude with `p.isUnit.map Matrix.detMonoidHom |>.ne_zero`. Rewrite `hMdet` using `[hdet]`. Establish `hA : M.toBlocks₁₁.det ≠ 0` using `left_ne_zero_of_mul hMdet`. Establish `hD : M.toBlocks₂₂.det ≠ 0` using `right_ne_zero_of_mul hMdet`. Establish `hb : p.val.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks (GeneralLinearGroup.mkOfDetNeZero _ hA).val M.toBlocks₁₂ 0 (GeneralLinearGroup.mkOfDetNeZero _ hD).val`.
+
+Rewrite using `[← h21]`. Conclude with `(Matrix.fromBlocks_toBlocks M).symm`. Use `hf.1 p _ _ _ hb 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this, h1, mul_zero]`.
+-/
 theorem eq_zero_of_KO_invariant_of_apply_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a a' : ℕ) (α β : kˣ →* ℂˣ), ∀ f ∈ indSp a a' α β,
     (∀ u ∈ KO k (Fin (a + a')), ∀ h, f (h * u) = f h) → f 1 = 0 → f = 0 := by

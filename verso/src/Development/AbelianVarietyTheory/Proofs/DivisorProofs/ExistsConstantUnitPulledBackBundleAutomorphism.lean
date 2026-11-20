@@ -13,6 +13,9 @@ open TopologicalSpace
 
 namespace GlobalTheory.PullAutConst
 
+/- English proof (translation)
+Establish `hp : f y ∈ (L.pull F).U (fun _ => j) ⊓ (L.pull F).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g j j'))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f y _ hp _).trans (gm_pull f F y (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)`.
+-/
 theorem gm_pullChart {X Z T : Scheme.{0}} (L : LB X) (F : Z ⟶ X) (f : T ⟶ Z) (y : T) (j j' : L.ι)
     (hj : F (f y) ∈ L.U j) (hj' : F (f y) ∈ L.U j') :
     gm f y _ ((L.pull F).g (fun _ => j) (fun _ => j')) = gm (f ≫ F) y _ (L.g j j') := by
@@ -21,6 +24,19 @@ theorem gm_pullChart {X Z T : Scheme.{0}} (L : LB X) (F : Z ⟶ X) (f : T ⟶ Z)
   rw [Fintype.prod_unique, zpow_one]
   exact (gm_res f y _ hp _).trans (gm_pull f F y (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)
 
+/- English proof (translation)
+Establish `hpt : ∀ x, β (π₁ x) = β (π₂ x)` using `fun x => congrArg (fun g : B ⟶ Y => g x) hβ`. Take `⟨W, hW⟩ : ∃ W : M₀.ι × L.ι × L.ι → B.Opens, ∀ t x, x ∈ W t ↔ β (π₁ x) ∈ M₀.U t.1 ∧ π₁ x ∈ L.U t.2.1 ∧ π₂ x ∈ L.U t.2.2` from `⟨fun t => π₁ ⁻¹ᵁ (β ⁻¹ᵁ M₀.U t.1) ⊓ (π₁ ⁻¹ᵁ L.U t.2.1 ⊓ π₂ ⁻¹ᵁ L.U t.2.2), fun _ _ => Iff.rfl⟩`. Establish `l₂ : ∀ t, W t ≤ π₂ ⁻¹ᵁ ((M₀.pull β).U (fun _ => t.1) ⊓ L.U t.2.2)` using `fun t x hx => ⟨mem_pull.2 (show β (π₂ x) ∈ _ by rw [← hpt]; exact ((hW t x).1 hx).1), ((hW t x).1 hx).2.2⟩`. Establish `lw : ∀ t, W t ≤ (L.pull π₂).U (fun _ => t.2.2) ⊓ (L.pull π₁).U (fun _ => t.2.1)` using `fun t x hx => ⟨mem_pull.2 ((hW t x).1 hx).2.2, mem_pull.2 ((hW t x).1 hx).2.1⟩`. Establish `l₁ : ∀ t, W t ≤ π₁ ⁻¹ᵁ ((M₀.pull β).U (fun _ => t.1) ⊓ L.U t.2.1)` using `fun t x hx => ⟨mem_pull.2 ((hW t x).1 hx).1, ((hW t x).1 hx).2.1⟩`.
+
+Take `⟨u, hu⟩ : ∃ u : ∀ t, Γ(B, W t)ˣ, ∀ (Z : Scheme.{0}) (f : Z ⟶ B) (z : Z) (t : M₀.ι × L.ι × L.ι), f z ∈ W t → gm f z (W t) (u t) = gw wF (f ≫ π₂) z t.1 t.2.2 * gw w f z t.2.2 (fun _ => t.2.1) * (gw wF (f ≫ π₁) z t.1 t.2.1)⁻¹` from `⟨fun t => res (l₂ t) (pullU π₂ _ (wF.s (fun _ => t.1, t.2.2))) * res (lw t) (w.s (fun _ => t.2.2, fun _ => t.2.1)) * (res (l₁ t) (pullU π₁ _ (wF.s (fun _ => t.1, t.2.1))))⁻¹, fun Z f z t hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm …`. Establish `indep : ∀ (Z : Scheme.{0}) (f : Z ⟶ B) (z : Z) (t t' : M₀.ι × L.ι × L.ι), f z ∈ W t → f z ∈ W t' → gw wF (f ≫ π₂) z t.1 t.2.2 * gw w f z t.2.2 (fun _ => t.2.1) * (gw wF (f ≫ π₁) z t.1 t.2.1)⁻¹ = gw wF (f ≫ π₂) z t'.1 t'.2.2 * gw w f z t'.2.2 (fun _ => t'.2.1) * (gw wF (f ≫ π₁) z …`. Introduce and unpack `Z f z ⟨a, b, c⟩ ⟨a', b', c'⟩ h h'`. Take `⟨ha, hb, hc⟩` from `(hW _ _).1 h`. Take `⟨ha', hb', hc'⟩` from `(hW _ _).1 h'`.
+
+Establish `e₂` using `hF Z (f ≫ π₂) z a a' c c' (show β (π₂ (f z)) ∈ _ by rw [← hpt]; exact ha) (show β (π₂ (f z)) ∈ _ by rw [← hpt]; exact ha') hc hc'`. Establish `e₁` using `hF Z (f ≫ π₁) z a a' b b' ha ha' hb hb'`. Establish `ew` using `hw Z f z c c' (fun _ => b) (fun _ => b') hc hc' (mem_pull.2 hb) (mem_pull.2 hb')`. Rewrite `ew` using `[gm_pullChart L π₁ f z b b' hb hb']`. Establish `hg : gm ((f ≫ π₂) ≫ β) z _ (M₀.g a a') = gm ((f ≫ π₁) ≫ β) z _ (M₀.g a a')`.
+
+Simplify using `only [Category.assoc, hβ]`. Simplify using `only`. Rewrite using `[e₂, e₁, ew, hg]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨s, hs⟩` from `glue_unit ⊤ W (fun _ => le_top) (fun x _ => by`. Take `⟨j₁, h₁⟩` from `exists_chart hL (π₁ x)`. Take `⟨j₂, h₂⟩` from `exists_chart hL (π₂ x)`. Take `⟨j₀, h₀⟩` from `exists_chart hM (β (π₁ x))`.
+
+Conclude with `Opens.mem_iSup.2 ⟨(j₀, j₁, j₂), (hW _ x).2 ⟨h₀, h₁, h₂⟩⟩) u`. Use the proof step `(fun t t' x hx => (hu _ (𝟙 B) x t hx.1).trans ((indep _ (𝟙 B) x t t' hx.1 hx.2).trans (hu _ (𝟙 B) x t' hx.2).symm))`. Use `⟨s, fun Z f z j₀ j₁ j₂ h₀ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : f z ∈ W (j₀, j₁, j₂)` using `(hW _ _).2 ⟨h₀, h₁, h₂⟩`. Conclude with `(gm_res f z le_top hz s).symm.trans ((congrArg (gm f z _) (hs _)).trans (hu Z f z _ hz))`.
+-/
 theorem exists_glued {X Y B : Scheme.{0}} (L : LB X) (M₀ : LB Y) (β : X ⟶ Y) (wF : LB.Iso L (M₀.pull β))
     (π₁ π₂ : B ⟶ X) (w : LB.Iso (L.pull π₁) (L.pull π₂)) (hL : L.IsLB) (hM : M₀.IsLB)
     (hF : PGen wF) (hw : PGen w) (hβ : π₁ ≫ β = π₂ ≫ β) :
@@ -73,6 +89,17 @@ theorem exists_glued {X Y B : Scheme.{0}} (L : LB X) (M₀ : LB Y) (β : X ⟶ Y
   have hz : f z ∈ W (j₀, j₁, j₂) := (hW _ _).2 ⟨h₀, h₁, h₂⟩
   exact (gm_res f z le_top hz s).symm.trans ((congrArg (gm f z _) (hs _)).trans (hu Z f z _ hz))
 
+/- English proof (translation)
+Introduce `A _ B' _ hB X Y L M₀ β wF π₁ π₂ w hL hM hwF hw hβ`. Take `⟨s, hs⟩` from `exists_glued L M₀ β wF π₁ π₂ w hL hM ((isGen_iff wF).1 hwF) ((isGen_iff w).1 hw) hβ`. Establish `hbij` using `GlobalTheory.globalFns_holds _ B' hB`. Set `e` to `RingEquiv.ofBijective B'.hom.appTop.hom hbij`. Set `a : Γ(Sp A, ⊤)ˣ` to `Units.map e.symm.toMonoidHom s`.
+
+Establish `ha : Units.map B'.hom.appTop.hom.toMonoidHom a = s`. Use `ext`. Conclude with `e.apply_symm_apply _`. Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom a, ?_⟩` and prove the remaining obligations. Introduce `p hp zz J J₀ hJ hJ₀`.
+
+Establish `hua : unitOn (Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom a) = a`. Use `ext`. Simplify using `[unitOn]`. Establish `k₁` using `gm_pull p B'.hom zz ⊤ trivial a`. Rewrite `k₁` using `[hp]`.
+
+Establish `key : gm p zz ⊤ s = gm (𝟙 _) zz ⊤ a`. Rewrite using `[← ha]`. Conclude with `k₁`. Establish `hs'` using `hs (Sp A) p zz (J₀ (p ≫ π₁ ≫ β)) (J (p ≫ π₁)) (J (p ≫ π₂)) (hJ₀ _) (hJ _) (hJ _)`. Rewrite using `[hua, ← key, show p ≫ π₂ ≫ β = p ≫ π₁ ≫ β by rw [hβ], hs']`.
+
+Conclude with `(inv_mul_cancel_right _ _).symm`.
+-/
 theorem exists_unit : ∀ (A : Type) [CommRing A] (B' : Over (Sp A)) [GrpObj B'], IsAbelianScheme B' → ∀ {X Y : Scheme.{0}} (L : LB X) (M₀ : LB Y) (β : X ⟶ Y) (wF : LB.Iso L (M₀.pull β)) (π₁ π₂ : B'.left ⟶ X) (w : LB.Iso (L.pull π₁) (L.pull π₂)), L.IsLB → M₀.IsLB → wF.IsGen → w.IsGen → π₁ ≫ β = π₂ ≫ β → ∃ u : Aˣ, ∀ (p : Sp A ⟶ B'.left), p ≫ B'.hom = 𝟙 _ → ∀ (zz : Sp A) (J : (Sp A ⟶ X) → L.ι) (J₀ : (Sp A ⟶ Y) → M₀.ι), Good L zz J → Good M₀ zz J₀ → gm (p ≫ π₂) zz _ (wF.s (fun _ => J₀ (p ≫ π₂ ≫ β), J (p ≫ π₂))) * gm p zz _ (w.s (fun _ => J (p ≫ π₂), fun _ => J (p ≫ π₁))) = gm (𝟙 _) zz ⊤ (unitOn u) * gm (p ≫ π₁) zz _ (wF.s (fun _ => J₀ (p ≫ π₁ ≫ β), J (p ≫ π₁))) := by
   intro A _ B' _ hB X Y L M₀ β wF π₁ π₂ w hL hM hwF hw hβ
   obtain ⟨s, hs⟩ := exists_glued L M₀ β wF π₁ π₂ w hL hM ((isGen_iff wF).1 hwF) ((isGen_iff w).1 hw) hβ

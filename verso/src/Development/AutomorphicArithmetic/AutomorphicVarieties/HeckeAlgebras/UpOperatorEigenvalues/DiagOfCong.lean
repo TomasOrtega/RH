@@ -9,6 +9,23 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace UpperTheory.V.Hi.Up
 
+/- English proof (translation)
+Set `O : ValuationSubring K` to `(NormedField.valuation (K := K)).valuationSubring`. Establish `hm : ∀ a : O, residue O a = 0 ↔ ‖(a : K)‖ < 1` using `fun a => by`. Rewrite using `[residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Conclude with `Iff.rfl`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`.
+
+Set `T` to `{a : O // a ^ N = 1}`. Establish `lift : ∀ s : Multiset K, (∀ a ∈ s, a ^ N = 1) → ∃ s' : Multiset T, s = s'.map fun a => (a.1 : K)` using `fun s hs => ⟨s.attach.map fun a => ⟨⟨a.1, show ‖a.1‖₊ ≤ 1 from ((pow_eq_one_iff_left hN0).1 (by rw [← nnnorm_pow, hs _ a.2, nnnorm_one])).le⟩, Subtype.ext (hs _ a.2)⟩, by`. Simplify using `[Multiset.map_map]⟩`. Take `⟨s, rfl⟩` from `lift s hs`. Take `⟨t, rfl⟩` from `lift t ht`.
+
+Establish `inj : Function.Injective fun a : T => residue O a.1`. Introduce `a b hab`. Establish `hab : residue O a.1 = residue O b.1` using `hab`. Establish `h1` using `Commute.geom_sum₂_mul (Commute.all a.1 b.1) N`. Rewrite `h1` using `[a.2, b.2, sub_self, mul_eq_zero]`.
+
+Use `Subtype.ext (sub_eq_zero.1 (h1.resolve_left fun h2 => ?_))` and prove the remaining obligations. Establish `h3` using `congrArg (residue O) h2`. Simplify using `only [map_sum, map_mul, map_pow, hab, map_zero] at h3`. Rewrite `h3` using `[geom_sum₂_self, mul_eq_zero]`. Break down `h3 with h3 | h3` into its components or cases.
+
+Rewrite `h3` using `[← map_natCast (residue O), hm]`. Simplify using `[hN] at h3`. Establish `h4` using `congrArg (residue O) b.2`. Rewrite `h4` using `[map_pow, eq_zero_of_pow_eq_zero h3, zero_pow hN0, map_one]`. Conclude with `zero_ne_one h4`.
+
+Establish `e : ∀ s : Multiset T, ((s.map fun a => (a.1 : K)).map fun a => X - C a).prod = ((s.map fun a : T => X - C a.1).prod).map O.subtype` using `fun s => by`. Simplify using `[Polynomial.map_multiset_prod, Multiset.map_map]`. Establish `e' : ∀ s : Multiset T, ((s.map fun a : T => X - C a.1).prod).map (residue O) = ((s.map fun a => residue O a.1).map fun a => X - C a).prod` using `fun s => by`. Simplify using `[Polynomial.map_multiset_prod, Multiset.map_map]`. Establish `h5 : ((s.map fun a : T => X - C a.1).prod).map (residue O) = ((t.map fun a : T => X - C a.1).prod).map (residue O)`.
+
+Use extensionality with `k`. Use `h k` as an intermediate fact. Rewrite `this` using `[e, e, coeff_map, coeff_map, ← map_sub]`. Rewrite using `[coeff_map, coeff_map, ← sub_eq_zero, ← map_sub, hm]`. Conclude with `this`.
+
+Establish `h6` using `congrArg Polynomial.roots h5`. Rewrite `h6` using `[e', e', roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Rewrite using `[Multiset.map_injective inj h6]`.
+-/
 private theorem cong_roots {K : Type} [NormedField K] [IsUltrametricDist K] {N : ℕ} (hN : ‖(N : K)‖ = 1)
     (s t : Multiset K) (hs : ∀ a ∈ s, a ^ N = 1) (ht : ∀ a ∈ t, a ^ N = 1)
     (h : ∀ k, ‖((s.map fun a => X - C a).prod).coeff k - ((t.map fun a => X - C a).prod).coeff k‖ < 1) : s = t := by
@@ -55,6 +72,11 @@ private theorem cong_roots {K : Type} [NormedField K] [IsUltrametricDist K] {N :
   rw [e', e', roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C] at h6
   rw [Multiset.map_injective inj h6]
 
+/- English proof (translation)
+Use `haveI : NeZero N := ⟨hN⟩`. Set `T : Γ → Fin n → rootsOfUnity N K` to `fun g i => ⟨t i g, ht i g⟩`. Use `(Set.finite_range fun z => ρ (Function.invFun T z)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Use `⟨T g, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : T (Function.invFun T (T g)) = T g` using `Function.invFun_eq ⟨g, rfl⟩`. Establish `h2` using `hρ (Function.invFun T (T g) * g⁻¹) fun i => by`. Rewrite using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `congrArg Subtype.val (congrFun h1 i)`. Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 private theorem fin_range {Γ K H : Type} [Group Γ] [Field K] [Group H] {n N : ℕ} (hN : N ≠ 0) (t : Fin n → Γ →* Kˣ)
     (ht : ∀ i g, t i g ^ N = 1) (ρ : Γ →* H) (hρ : ∀ g, (∀ i, t i g = 1) → ρ g = 1) : (Set.range ρ).Finite := by
   haveI : NeZero N := ⟨hN⟩
@@ -68,6 +90,15 @@ private theorem fin_range {Γ K H : Type} [Group Γ] [Field K] [Group H] {n N : 
     exact congrArg Subtype.val (congrFun h1 i)
   rwa [map_mul, map_inv, mul_inv_eq_one] at h2
 
+/- English proof (translation)
+Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Set `δ : Γ →* GL (Fin n) (Qbar l)` to `(W.diagRep t).toHomUnits`. Establish `hδ : ∀ g, (δ g : Matrix (Fin n) (Fin n) (Qbar l)) = Matrix.diagonal fun i => (t i g : Qbar l)` using `fun g => rfl`. Take `⟨P, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix ρ δ (Formalism.MainNotions.SumRepresentations.isSSRep_of_finite ρ (fin_range hN0 t ht ρ hρ)) (Formalism.MainNotions.SumRepresentations.isSSRep_of_finite δ (fin_range hN0 t ht δ fun g hg => Units.ext (by simp [hδ, hg])) …`. Rewrite using `[hδ, Matrix.charpoly_diagonal]`.
+
+Establish `hs` using `(IsAlgClosed.splits (ρ g : Matrix (Fin n) (Fin n) (Qbar l)).charpoly).eq_prod_roots_of_monic (Matrix.charpoly_monic _)`. Establish `e : ∏ i, (X - C (t i g : Qbar l)) = ((Finset.univ.val.map fun i => (t i g : Qbar l)).map fun a => X - C a).prod`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Use `hs.trans (e ▸ congrArg (fun s : Multiset (Qbar l) => (s.map fun a => X - C a).prod) (cong_roots hN _ _ (fun a ha => ?_) (fun a ha => ?_) fun k => by rw [← e, ← hs]; exact h g k))` and prove the remaining obligations.
+
+Establish `h1` using `spectrum.pow_mem_pow _ N (Matrix.mem_spectrum_iff_isRoot_charpoly.2 (isRoot_of_mem_roots ha))`. Rewrite `h1` using `[← Units.val_pow_eq_pow_val, ← map_pow, hρ _ fun i => by rw [map_pow, ht], Units.val_one]`. Assume the negation of the conclusion as `h2`. Use `h1 ?_` and prove the remaining obligations. Rewrite using `[← map_one (algebraMap (Qbar l) _), resolventSet, Set.mem_setOf_eq, ← map_sub]`.
+
+Conclude with `(IsUnit.mk0 _ (sub_ne_zero.2 h2)).map _`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 ha`. Rewrite using `[← Units.val_pow_eq_pow_val, ht, Units.val_one]`. Use `⟨P⁻¹, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv, ← hδ, ← hP g]`.
+-/
 theorem diag_of_cong {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] {n N : ℕ} (hN : ‖(N : Qbar l)‖ = 1)
     (t : Fin n → Γ →* (Qbar l)ˣ) (ht : ∀ i g, t i g ^ N = 1) (ρ : Γ →* GL (Fin n) (Qbar l))
     (hρ : ∀ g, (∀ i, t i g = 1) → ρ g = 1)

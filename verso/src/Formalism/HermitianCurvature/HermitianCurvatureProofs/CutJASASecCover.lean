@@ -15,6 +15,25 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r z z' hz hz' g hg`. Take `⟨hg0, hD, hG⟩` from `hg`. Take `⟨n, hn, n', hn', c, hc, μ, hμ, hgeq⟩` from `Formalism.FourierDecayAlt.P.big_cell_decomposition k r z z' g hg0.1 hD`. Establish `e : bigCell k r c μ = wCell k r (Fin.last r) c * B2.embWb k r μ`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization k r c μ).1]`.
+
+Establish `hg1 : B2.embWb k r μ ∈ Glev k r (Fin.last r)` using `Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mem_UWb hμ)`. Establish `hninv : n⁻¹ ∈ Nset k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hn`. Establish `hDinv : ∀ l, Dmin k r z z' g l = Dmin k r z z' (bigCell k r c μ) l`. Introduce `l`. Rewrite using `[hgeq]`.
+
+Conclude with `dInv k r z z' hz hz' _ (Formalism.FourierDecayAlt.P.BigCellDecomposition.n_inv_S hn) _ (Formalism.FourierDecayAlt.P.BigCellDecomposition.n_S hn') _ l`. Establish `hGb : 0 < Gf k r z z' (bigCell k r c μ)`. Establish `e2 : Gf k r z z' g = Gf k r z z' (bigCell k r c μ)`. Unfold `Gf`. Rewrite using `[hDinv, hDinv]`.
+
+Rewrite using `[← e2]`. Conclude with `hG`. Establish `hGG : 0 < GGl k r z z' (B2.embWb k r μ)`. Establish `hmin` using `big_cell_minors_holds k r z z' c μ hz hz'`. Establish `hζ : herm (Hpk k r) (bigCell k r c μ *ᵥ z') z = zetaL k r z z' (Fin.last r) (B2.embWb k r μ)`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last, ← Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hz', Formalism.FourierDecayAlt.P.BigCellHermitian.bigCell_mulVec_jV, Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mulVec_jV]`. Establish `hzeta` using `hmin.2.2 hc`. Rewrite `hzeta` using `[hζ]`. Establish `hr` using `hmin.1 (Fin.last r)`. Use `set Pd := Dmin k r z z' (bigCell k r c μ) ⟨r, by omega⟩ with hPd`.
+
+Establish `hP0 : Pd ≠ 0`. Establish `: Pd = ∏ a : Fin r with a.val < (Fin.last r).val, c a` using `hr`. Rewrite using `[this]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hlast : Dmin k r z z' (bigCell k r c μ) (Fin.last (r + 1)) = zetaL k r z z' (Fin.last r) (B2.embWb k r μ) * Pd`.
+
+Unfold `Formalism.QuantumDeterminants.zeta at hzeta`. Rewrite `hzeta` using `[← hPd]`. Establish `h2` using `div_mul_cancel₀ (Dmin k r z z' (bigCell k r c μ) (Fin.last (r + 1))) hP0`. Rewrite `h2` using `[hzeta]`. Conclude with `h2.symm`.
+
+Establish `hGb'` using `hGb`. Unfold `Gf at hGb'`. Rewrite `hGb'` using `[hlast, ← hPd, Complex.normSq_mul]`. Establish `h1 : 0 < Complex.normSq Pd` using `Complex.normSq_pos.2 hP0`. Unfold `GGl`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `⟨n⁻¹, ⟨hninv, hninv.1, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, n', ⟨hn', hn'.1, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, c, hc, B2.embWb k r μ, hg1, hGG, ?_⟩` and prove the remaining obligations. Rewrite using `[hgeq, e]`.
+-/
 theorem self_adjoint_cover_holds : SACover := by
   intro k r z z' hz hz' g hg
   obtain ⟨hg0, hD, hG⟩ := hg

@@ -5,6 +5,9 @@ import Formalism.RealPlaceAnalysis.SmoothOnGVIff
 import Formalism.FormalDegreeBessel.StatementG
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation | exact GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation | (intros; apply GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_element_prescribed_blocks : ∀ {n m : ℕ} (ε : Fin n → Bool) (x y : Matrix (Fin n) (Fin m) ℂ) (A : Set (Fin m)),
     xᴴ * Formalism.REAL.Jm ε * x = 0 → xᴴ * Formalism.REAL.Jm ε * y = 1 →
     ∃ (u : Matrix (Fin m) (Fin n) ℂ) (w : Matrix (Fin n) (Fin m) ℂ), (∀ i v, i ∉ A → u i v = 0) ∧

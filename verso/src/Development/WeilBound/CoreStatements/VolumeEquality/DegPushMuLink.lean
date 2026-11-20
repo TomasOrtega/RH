@@ -12,6 +12,13 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 
 def muRev (p q : ℕ) (m : Fin q) : Fin (p + q) := ⟨p + q - 1 - m, by have := m.2; omega⟩
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun τ _ => (Finset.sum_bij (fun m _ => muRev p q m) ?_ ?_ ?_ fun _ _ => rfl).symm` and prove the remaining obligations. Introduce `m _`. Use `m.2` as an intermediate fact. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, muRev]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `a _ b _ h`. Establish `h` using `congrArg Fin.val h`. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Simplify using `only [muRev] at h`.
+
+Conclude with `Fin.ext (by omega)`. Introduce `i hi`. Establish `h1` using `(Finset.mem_filter.1 hi).2`. Establish `h2` using `i.2`. Conclude with `⟨⟨p + q - 1 - i, by omega⟩, Finset.mem_univ _, Fin.ext (by simp only [muRev]; omega)⟩`.
+-/
 theorem muDeg_eq {Ψ K : Type} [Fintype Ψ] {p q : ℕ} (x : Ψ × Fin (p + q) → K → ℤ) :
     muDeg x = ∑ τ, ∑ m : Fin q, x (τ, muRev p q m) := by
   refine Finset.sum_congr rfl fun τ _ => (Finset.sum_bij (fun m _ => muRev p q m) ?_ ?_ ?_ fun _ _ => rfl).symm
@@ -30,6 +37,9 @@ theorem muDeg_eq {Ψ K : Type} [Fintype Ψ] {p q : ℕ} (x : Ψ × Fin (p + q) �
     have h2 := i.2
     exact ⟨⟨p + q - 1 - i, by omega⟩, Finset.mem_univ _, Fin.ext (by simp only [muRev]; omega)⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, ← ih, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (hz k) _ _`.
+-/
 theorem mu_mono_sum {Ω K I : Type} [Field Ω] [Fintype K] (z : K → Ω) (hz : ∀ k, z k ≠ 0) (s : Finset I) (a : I → K → ℤ) :
     ∏ k, z k ^ (∑ j ∈ s, a j) k = ∏ j ∈ s, ∏ k, z k ^ a j k := by
   classical
@@ -46,6 +56,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {J' : K' → Type} [∀ k, Fintype (J' k)] {y' : (Σ k, J' k) → Ω'} {𝔐' : HodgeCpt Y S' y'} (Fl : 𝔐'.Flag)
 
 omit [∀ k, Fintype (J' k)] in
+/- English proof (translation)
+Establish `hm` using `m.2`. Establish `h0 : ¬ ((muRev D.p D.q m : ℕ) < D.p)` using `by simp only [muRev]; omega`. Establish `h1 : HodgeCpt.rootIdx D (τ, muRev D.p D.q m) = ⟨.inr τ, m⟩`. Unfold `HodgeCpt.rootIdx`. Rewrite using `[dif_neg h0]`.
+
+Use `congr 1`. Conclude with `Fin.ext (by simp only [muRev]; omega)`. Establish `h2 : HodgeCpt.rootSgn D (τ, muRev D.p D.q m) = -1` using `if_neg h0`. Unfold `HodgeCpt.Flag.rootLat`. Rewrite using `[h1, h2]`.
+-/
 theorem mu_rootLat (τ : CMType H) (m : Fin D.q) : Fl.rootLat (τ, muRev D.p D.q m) =
     Lat.tens (fun _ : Unit => (𝔐'.V (.inr τ)).gr (Fl.b (.inr τ)) m) fun _ => -1 := by
   have hm := m.2
@@ -59,6 +74,15 @@ theorem mu_rootLat (τ : CMType H) (m : Fin D.q) : Fl.rootLat (τ, muRev D.p D.q
   unfold HodgeCpt.Flag.rootLat
   rw [h1, h2]
 
+/- English proof (translation)
+Take `⟨ch, hch⟩` from `𝔐'.tie.cover q`. Establish `hz : ∀ k, y' ⟨k, ch k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hch.1 k (Finset.mem_univ _)`. Establish `g1` using `fun τ m => mu_deg_gen (hR (τ, muRev D.p D.q m)) hch`. Simplify using `only [mu_rootLat] at g1`. Use `choose g hg using fun τ m => mu_tens_ex (g1 τ m)`.
+
+Establish `v1 : ∀ τ m, O.valuation (i ((∏ k, y' ⟨k, ch k⟩ ^ x (τ, muRev D.p D.q m) k) * e (τ, muRev D.p D.q m))) * O.valuation (i (g τ m ())) = 1` using `fun τ m => by`. Rewrite using `[mu_gen_val hD (g1 τ m) (mu_tens_gen _ (hg τ m)), ← map_mul, ← map_mul]`. Simplify using `[(hg τ m ()).1]`. Establish `v2 : ∀ τ, O.valuation (i (t τ)) = ∏ m, O.valuation (i (g τ m ()))` using `fun τ => by`. Establish `h` using `ht τ`.
+
+Rewrite `h` using `[GlobalTheory.T.det_lattice_flag_tensor _ _ _ _ _ _ _ (hb _) (Fl.sub _)]`. Rewrite using `[mu_gen_val hD h (mu_tens_gen _ fun m => hg τ m ())]`. Simplify using `only [zpow_one, map_prod]`. Both sides reduce to the same expression. Rewrite using `[hC _ _ _ O i _ q _ _ y' ch _ hD hch, muDeg_eq, mu_mono_sum _ hz]`.
+
+Simplify using `only [mu_mono_sum _ hz, map_prod O.valuation, map_prod i (s := Finset.univ (α := CMType H)), map_prod i (s := Finset.univ (α := Fin D.q)), v2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => Finset.prod_eq_one fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← v1 τ m, map_mul, map_mul]`.
+-/
 theorem mu_flag_side (hC : ChartVal) {x : CMType H × Fin (D.p + D.q) → K' → ℤ} {e : CMType H × Fin (D.p + D.q) → Ω'}
     (hR : Fl.RootLines x e) (hb : ∀ s, LinearIndependent Ω' (Fl.b s)) {Ω₃ : Type} [Field Ω₃] {O : ValuationSubring Ω₃}
     {i : Ω' →+* Ω₃} {q : Cpt 𝔐'.ξ} (hD : Dom O i 𝔐'.ξ q) {t : CMType H → Ω'}
@@ -87,6 +111,31 @@ theorem mu_flag_side (hC : ChartVal) {x : CMType H × Fin (D.p + D.q) → K' →
 
 end
 
+/- English proof (translation)
+Introduce `hC hZ hL E _ _ _ _ H D Xo l c Y S' Ω' _ K' _ J' _ y' 𝔐' Fl x e II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or ψ Ω₃ _ _ i₁ i₂ hR hbg hsm hS hψ hi`. Take `⟨b, u, hb, -, -, hFl, -, -, hstep, -⟩` from `Fl.generic`. Take `⟨A, hA, hj, hoth⟩` from `hL E H D l (Xo l) c Y S' Ω' K' J' y' 𝔐' Fl b hb`. Take `⟨b₁, hb₁, hA₁⟩` from `hoth S₀ Ω K J Dc.y Or.𝔐 ψ hψ`. Establish `hmem : ∀ s m, Fl.b s m ∈ 𝔐'.Vgen s` using `fun s m => by`.
+
+Establish `h1 : Fl.b s m ∈ flagStep Ω' (Fl.b s) (labelRk D s)` using `Submodule.subset_span ⟨m, m.2, rfl⟩`. Rewrite `h1` using `[hstep]`. Use `(Submodule.span_le.2 ?_ : _ ≤ 𝔐'.Vgen s) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ((hj s).2 ▸ Submodule.subset_span ⟨a, rfl⟩)`.
+
+Take `⟨ch₀, hch₀⟩` from `Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩`. Take `⟨n, f, cc, -, -, hsum, hloc⟩` from `Hd.locally ch₀ hch₀.1`. Choose the witnesses or unpack the hypotheses as in `⟨l₀⟩ : Nonempty (Fin n) := by`. Assume the negation of the conclusion as `h`. Use `not_nonempty_iff.1 h` as an intermediate fact.
+
+Simplify using `at hsum`. Take `⟨bb, -, w, -, hΛ⟩` from `hloc l₀`. Establish `hs : ∀ τ k, ∃ z, z ∈ Or.𝔐.Vgen (Or.sm τ) ∧ Or.i τ (bb τ (tailIdx Dc.j_le_N k)) - z ∈ Or.𝔐.Vgen (Or.bg τ)` using `fun τ k => by`. Take `⟨a, ha, z, hz, h⟩` from `Submodule.mem_sup.1 (Or.i_range τ ▸ LinearMap.mem_range_self (Or.i τ) (bb τ (tailIdx Dc.j_le_N k)))`. Conclude with `⟨z, hz, by rw [← h, add_sub_cancel_right]; exact ha⟩`.
+
+Use `choose s hs using hs`. Take `⟨hsi, hdeg⟩` from `GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or 0 bb s _ hs hΛ`. Establish `hSB : Dc.SB 0 = ∅` using `by simp [ComponentData.SB, hS]`. Establish `hmu : muTwDeg Hd 0 = Hd.aMu` using `by simp [muTwDeg, hSB]`. Rewrite `hdeg` using `[hmu, hSB, Finset.union_empty, hsm]`.
+
+Take `⟨e₁, hdeg⟩ : ∃ e₁, (Lat.tens (fun τ => detLat (Or.𝔐.V (.inr τ)) (s τ)) fun _ => -1).IsDegOn Set.univ Dc.y Hd.aMu e₁` from `⟨_, hdeg⟩`. Establish `hrk : ∀ τ : CMType H, labelRk D (.inr τ) = Dc.N - Dc.j` using `fun τ => by`. Use `Or.rk_sm τ` as an intermediate fact. Rewrite `this` using `[hsm]`. Then use the resulting hypothesis. Use `choose ρ₁ hρ₁ h₁ using fun τ => mu_side (Ω₃ := Ω₃) (Or.𝔐.V (.inr τ)) (hrk τ) _ (Or.𝔐.vb _) _ (hb₁ _).1 (hb₁ _).2 (s τ) (hsi τ) fun k => by`.
+
+Use `(hs τ k).1` as an intermediate fact. Rewrite `this` using `[hsm]`. Then use the resulting hypothesis. Use `choose ρ₂ hρ₂ h₂ using fun τ => mu_side (Ω₃ := Ω₃) (𝔐'.V (.inr τ)) rfl _ (𝔐'.vb _) _ (hj _).1 (hj _).2 (Fl.b (.inr τ)) (hFl _) (hmem _)`. Establish `n1 : i₁ (∏ τ, ρ₁ τ) ≠ 0` using `(map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun τ _ => hρ₁ τ)`. Establish `n2 : i₂ (∏ τ, ρ₂ τ) ≠ 0` using `(map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun τ _ => hρ₂ τ)`.
+
+Establish `n3 : i₂ (∏ τ, ∏ m, e (τ, muRev D.p D.q m)) ≠ 0` using `(map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun m _ => (hR _).1)`. Use `⟨i₁ e₁ * i₂ (∏ τ, ρ₂ τ) / (i₁ (∏ τ, ρ₁ τ) * i₂ (∏ τ, ∏ m, e (τ, muRev D.p D.q m))), div_ne_zero (mul_ne_zero ((map_ne_zero _).2 hdeg.1) n2) (mul_ne_zero n1 n3), fun O hO => ?_⟩` and prove the remaining obligations. Take `⟨q, q', hD, hD', hq⟩` from `hZ E H D l (Xo l) c Y S₀ S' Ω Ω' Ω₃ K K' J J' Dc.y y' Or.𝔐 𝔐' i₁ i₂ O (by`. Establish `e1 : Or.𝔐.ξ ≫ Or.𝔐.f = spMap ψ ≫ 𝔐'.ξ₀` using `hψ`. Establish `e2 : 𝔐'.ξ ≫ 𝔐'.f = spMap 𝔐'.fn ≫ 𝔐'.ξ₀` using `𝔐'.fn_over`.
+
+Rewrite using `[e1, e2, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hi])`. Use `choose t₁ T₁ g₁ d₁ sp₁ using fun τ => h₁ τ q O i₁ _ ψ _ hD (hA₁ q (mu_char0 hD hO) (.inr τ))`. Use `choose t₂ T₂ g₂ d₂ sp₂ using fun τ => h₂ τ q' O i₂ _ 𝔐'.fn _ hD' (hA q' (mu_char0 hD' hO) (.inr τ))`. Establish `hi' : ∀ a, i₁ (ψ a) = i₂ (𝔐'.fn a)` using `fun a => DFunLike.congr_fun hi a`. Establish `k3 : O.valuation (i₁ (∏ τ, ρ₁ τ)) * O.valuation (i₁ (∏ τ, t₁ τ)) = O.valuation (i₂ (∏ τ, ρ₂ τ)) * O.valuation (i₂ (∏ τ, t₂ τ))`.
+
+Simplify using `only [map_prod, ← Finset.prod_mul_distrib, ← map_mul, ← d₁, ← d₂]`. Use `Finset.prod_congr rfl fun τ _ => mu_det_eq O _ _ ?_` and prove the remaining obligations. Rewrite using `[sp₁, sp₂, hq]`. Simplify using `only [hi']`. Establish `k2` using `mu_flag_side Fl hC hR hFl hD' g₂`.
+
+Take `⟨ch, hch⟩` from `Or.𝔐.tie.cover q`. Establish `k1 : vdeg O (fun a => i₁ (Dc.y a)) Hd.aMu * O.valuation (i₁ e₁) * O.valuation (i₁ (∏ τ, t₁ τ)) = 1`. Rewrite using `[hC _ _ _ O i₁ _ q _ _ Dc.y ch _ hD hch, ← map_mul O.valuation (i₁ _) (i₁ e₁), ← map_mul i₁, mu_gen_val hD (mu_deg_gen hdeg hch) (mu_tens_gen _ g₁), ← map_mul, ← map_mul, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun τ _ => by simp [(g₁ τ).1]]`. Simplify using the standard rewrite rules. Rewrite using `[map_div₀, map_mul, map_mul]`.
+
+Conclude with `mu_alg k1 k2 k3 ((map_ne_zero _).2 n1)`.
+-/
 theorem muLink : ChartVal → Centre → CoordLat → MuLink := by
   intro hC hZ hL E _ _ _ _ H D Xo l c Y S' Ω' _ K' _ J' _ y' 𝔐' Fl x e II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or ψ Ω₃ _ _ i₁ i₂ hR hbg hsm hS
     hψ hi

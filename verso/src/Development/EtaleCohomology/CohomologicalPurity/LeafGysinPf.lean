@@ -21,6 +21,9 @@ def LeafPur : Prop := Hyp → ∀ d, ∃ pur : ∀ (q : ℕ) (P : SP d) (n i : �
 
 namespace GysinPf
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Mono (sch.map U.ι)`. Use `haveI : ∀ k, Mono ((sch.map U.ι).app k) := fun _ => by`. Express the relevant statement in the definitionally equal form `Mono (yoneda.map U.ι)`. Use `infer_instance`. Conclude with `NatTrans.mono_of_mono_app _`.
+-/
 theorem mono_opn {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
   change Mono (sch.map U.ι)
   haveI : ∀ k, Mono ((sch.map U.ι).app k) := fun _ => by
@@ -30,29 +33,47 @@ theorem mono_opn {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
 def castHs {q : ℕ} {P : Arrow Spc} {a b : ℤ} (i : ℤ) (h : a = b) : Hs q P a i →+ Hs q P b i := by
   subst h; exact AddMonoidHom.id _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `Function.bijective_id`.
+-/
 theorem castHs_bij {q : ℕ} {P : Arrow Spc} {a b : ℤ} (i : ℤ) (h : a = b) :
     Function.Bijective (castHs (q := q) (P := P) i h) := by
   subst h; exact Function.bijective_id
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castHs_pull {q : ℕ} {P' P : Arrow Spc} (φ : P' ⟶ P) {a b : ℤ} (i : ℤ) (h : a = b) (x : Hs q P a i) :
     Hs.pull q φ b i (castHs i h x) = castHs i h (Hs.pull q φ a i x) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hxy`.
+-/
 theorem castHs_val {Q q : ℕ} {P : Arrow Spc} {a b : ℤ} (i : ℤ) (h : a = b) (x : Hs Q P a i) (y : Hs q P a i)
     (hxy : y.1 = red Q q _ a i x.1) : (castHs i h y).1 = red Q q _ b i (castHs i h x).1 := by
   subst h; exact hxy
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pull _ (dbl.inl P') _ n (pull _ (dbl.map φ) _ n x.1) = pull _ φ.right _ n (pull _ (dbl.inl P) _ n x.1)`. Rewrite using `[← pull_comp, ← pull_comp, show dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P from pushout.inl_desc _ _ _]`.
+-/
 theorem fgt_pull {q : ℕ} {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.fgt q P' n i (Hs.pull q φ n i x) = pull _ φ.right _ _ (Hs.fgt q P n i x) := by
   change pull _ (dbl.inl P') _ n (pull _ (dbl.map φ) _ n x.1) = pull _ φ.right _ n (pull _ (dbl.inl P) _ n x.1)
   rw [← pull_comp, ← pull_comp,
     show dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P from pushout.inl_desc _ _ _]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pull _ (dbl.inl P) _ n y.1 = red Q q _ n i (pull _ (dbl.inl P) _ n x.1)`. Rewrite using `[h, pull_red]`.
+-/
 theorem fgt_red {Q q : ℕ} {P : Arrow Spc} (n i : ℤ) (x : Hs Q P n i) (y : Hs q P n i)
     (h : y.1 = red Q q _ n i x.1) : Hs.fgt q P n i y = red Q q _ n i (Hs.fgt Q P n i x) := by
   change pull _ (dbl.inl P) _ n y.1 = red Q q _ n i (pull _ (dbl.inl P) _ n x.1)
   rw [h, pull_red]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hf`.
+-/
 theorem exact_cast {q : ℕ} {P : Arrow Spc} {a b : ℤ} (i : ℤ) (h : a = b) {M : Type*} [AddCommGroup M]
     (f : M →+ Hs q P a i) (hf : Function.Exact f (Hs.fgt q P a i)) :
     Function.Exact ((castHs i h).comp f) (Hs.fgt q P b i) := by
@@ -62,6 +83,35 @@ end GysinPf
 
 open GysinPf in
 
+/- English proof (translation)
+Introduce `hH d`. Take `⟨δ, hex, hnatδ, hredδ⟩` from `hBd`. Take `⟨pur, hp⟩` from `hPur hH d`. Set `gys : ∀ (q : ℕ) (P : SP d) (n i : ℤ), Ht q (sch.obj P.Z) n i →+ Ht q (sch.obj P.X) (n + 2 * d) (i + d)` to `fun q P n i => (Hs.fgt q (opn P.U) (n + 2 * d) (i + d)).comp (pur q P n i)`. Set `rs : ∀ (q : ℕ) (P : SP d) (n i : ℤ), Ht q (sch.obj P.U) (n + 2 * d - 1) (i + d) →+ Ht q (sch.obj P.Z) n i` to `fun q P n i => if h : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤)) then (AddEquiv.ofBijective _ ((@hp q ⟨h.1⟩ P h.2).1 n i)).symm.toAddMonoidHom.comp ((castHs (i + d) (show n + 2 * d - 1 + 1 = n + 2 * d by ring)).comp (δ q (opn P.U) (n + 2 * d - 1) (i + d))) else 0`.
+
+Establish `hrs : ∀ (q : ℕ) [NeZero q] (P : SP d) (_ : IsUnit (q : Γ(P.X, ⊤))) (n i : ℤ) u, pur q P n i (rs q P n i u) = castHs (i + d) (show n + 2 * d - 1 + 1 = n + 2 * d by ring) (δ q (opn P.U) (n + 2 * d - 1) (i + d) u)`. Introduce `q _ P hq n i u`. Simplify using `only [rs, dif_pos (⟨NeZero.ne q, hq⟩ : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤)))]`. Conclude with `AddEquiv.ofBijective_apply_symm_apply (pur q P n i) ((hp q P hq).1 n i)`. Use `⟨gys, rs, ?_⟩` and prove the remaining obligations.
+
+Introduce `q _ P hq`. Take `⟨hbij, hnat, hproj, hred⟩` from `hp q P hq`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n i`. Establish `ex` using `hex q (opn P.U) (mono_opn _) (n + 2 * d - 1) (i + d)`.
+
+Establish `ex'` using `hex q (opn P.U) (mono_opn _) (n + 2 * d) (i + d)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `Iff.trans ?_ (ex.2.1 x)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h2` using `congrArg (pur q P n i) h`. Rewrite `h2` using `[hrs q P hq, map_zero]`. Conclude with `(castHs_bij _ _).1 (by rw [h2, map_zero])`. Introduce `h`.
+
+Apply `(hbij n i).1` to reduce the goal to its premises. Rewrite using `[hrs q P hq, h, map_zero, map_zero]`. Introduce `y`. Use `(exact_cast (i + d) (show n + 2 * d - 1 + 1 = n + 2 * d by ring) _ ex.2.2 (pur q P n i y)).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, (hbij n i).1 ((hrs q P hq n i x).trans hx)⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, (hrs q P hq n i x).symm⟩`. Introduce `z`.
+
+Use `(ex'.1 z).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Take `⟨y, rfl⟩` from `(hbij n i).2 s`. Conclude with `⟨y, rfl⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce `P' φ n i`. Establish `hq' : IsUnit (q : Γ(P'.X, ⊤))`. Use `hq.map (φ.f.appTop).hom` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Express the relevant statement in the definitionally equal form `_ = Hs.fgt q (opn P'.U) _ _ (pur q P' n i _)`. Rewrite using `[← hnat, fgt_pull]`.
+
+Both sides reduce to the same expression. Introduce `u`. Apply `((hp q P' hq').1 n i).1` to reduce the goal to its premises. Rewrite using `[← hnat, hrs q P hq, hrs q P' hq', castHs_pull]`. Conclude with `congrArg _ (hnatδ q _ _ (opnMap φ.f _ _ φ.le) (mono_opn _) (mono_opn _) _ _ u)`.
+
+Conclude with `hproj`. Introduce `r hr n i`. Establish `: NeZero r` using `⟨fun h => by subst h; exact NeZero.ne q (Nat.eq_zero_of_zero_dvd hr)⟩`. Establish `hr' : IsUnit (r : Γ(P.X, ⊤))`. Take `⟨k, hk⟩` from `hr`.
+
+Rewrite `hq` using `[hk, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_left hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Conclude with `fgt_red _ _ _ _ (hred r hr n i a)`.
+
+Introduce `u`. Apply `((hp r P hr').1 n i).1` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hrs r P hr', hred r hr, hrs q P hq]`. Conclude with `castHs_val _ _ _ _ (hredδ q r hr _ (mono_opn _) _ _ u)`.
+-/
 theorem LeafGysin_of (hBd : LeafBd) (hPur : LeafPur) : LeafGysin := by
   intro hH d
   obtain ⟨δ, hex, hnatδ, hredδ⟩ := hBd

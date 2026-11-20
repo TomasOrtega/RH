@@ -8,6 +8,21 @@ universe u
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `A _ I T P _ W _ hP`. Set `Q` to `A ⧸ I`. Set `B` to `Localization.AtPrime W ⧸ I.map (algebraMap A (Localization.AtPrime W))`. Establish `hsub : (P.comap (algebraMap Q (Localization T))).primeCompl = Algebra.algebraMapSubmonoid Q W.primeCompl`. Establish `hmem : ∀ r : A, Ideal.Quotient.mk I r ∈ P.comap (algebraMap Q (Localization T)) ↔ r ∈ W`.
+
+Introduce `r`. Rewrite using `[← hP]`. Conclude with `Iff.rfl`. Establish `hIW : I ≤ W` using `fun r hr => by`. Rewrite using `[← hmem, Ideal.Quotient.eq_zero_iff_mem.2 hr]`.
+
+Conclude with `Ideal.zero_mem _`. Use extensionality with `q`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `h1 : Ideal.Quotient.mk I r ∈ (P.comap (algebraMap Q (Localization T))).primeCompl ↔ r ∉ W` using `not_congr (hmem r)`. Rewrite using `[h1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `⟨r, hr, rfl⟩`. Introduce and unpack `⟨r', hr', he⟩ hr`. Apply `hr'` to reduce the goal to its premises.
+
+Establish `: r' - r ∈ I` using `Ideal.Quotient.eq.1 he`. Simplify using `using W.add_mem (hIW this) hr`. Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P)`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization T (Localization.AtPrime P) P` as an intermediate fact. Rewrite `this` using `[IsLocalization.AtPrime, hsub]`.
+
+Conclude with `this`. Set `e` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid Q W.primeCompl) (Localization.AtPrime P) B`. Use `⟨e.toRingEquiv, fun a => ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (Localization T) (Localization.AtPrime P) (algebraMap Q (Localization T) (Ideal.Quotient.mk I a)) = algebraMap Q (Localization.AtPrime P) (Ideal.Quotient.mk I a)` using `(IsScalarTower.algebraMap_apply Q (Localization T) (Localization.AtPrime P) _).symm`. Rewrite using `[h2]`.
+
+Conclude with `e.commutes (Ideal.Quotient.mk I a)`.
+-/
 theorem LocalizationAtPrimeQuotient.proof : LocalizationAtPrimeQuotient.Statement.{u} := by
   intro A _ I T P _ W _ hP
   let Q := A ⧸ I

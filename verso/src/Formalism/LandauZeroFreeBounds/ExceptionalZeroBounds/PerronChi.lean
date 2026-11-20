@@ -16,6 +16,11 @@ def vonMangoldtCharRe (n : ℕ) : ℝ := (Λ n : ℝ) * (χ (n : ZMod q)).re
 
 def vonMangoldtCharIm (n : ℕ) : ℝ := (Λ n : ℝ) * (χ (n : ZMod q)).im
 
+/- English proof (translation)
+Unfold `vonMangoldtCharRe`. Establish `hΛ : (0 : ℝ) ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Rewrite using `[abs_mul, abs_of_nonneg hΛ, one_mul]`. Use `mul_le_of_le_one_right hΛ ?_` and prove the remaining obligations. Use `le_trans ?_ (DirichletCharacter.norm_le_one χ (n : ZMod q))` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact Complex.abs_re_le_norm _`. Consider the case `exact Complex.abs_re_le_abs _`.
+-/
 lemma vonMangoldtCharRe_bound (n : ℕ) : |vonMangoldtCharRe χ n| ≤ 1 * Λ n := by
   unfold vonMangoldtCharRe
   have hΛ : (0 : ℝ) ≤ Λ n := ArithmeticFunction.vonMangoldt_nonneg
@@ -26,6 +31,11 @@ lemma vonMangoldtCharRe_bound (n : ℕ) : |vonMangoldtCharRe χ n| ≤ 1 * Λ n 
   | exact Complex.abs_re_le_norm _
   | exact Complex.abs_re_le_abs _
 
+/- English proof (translation)
+Unfold `vonMangoldtCharIm`. Establish `hΛ : (0 : ℝ) ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Rewrite using `[abs_mul, abs_of_nonneg hΛ, one_mul]`. Use `mul_le_of_le_one_right hΛ ?_` and prove the remaining obligations. Use `le_trans ?_ (DirichletCharacter.norm_le_one χ (n : ZMod q))` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact Complex.abs_im_le_norm _`. Consider the case `exact Complex.abs_im_le_abs _`.
+-/
 lemma vonMangoldtCharIm_bound (n : ℕ) : |vonMangoldtCharIm χ n| ≤ 1 * Λ n := by
   unfold vonMangoldtCharIm
   have hΛ : (0 : ℝ) ≤ Λ n := ArithmeticFunction.vonMangoldt_nonneg
@@ -36,10 +46,21 @@ lemma vonMangoldtCharIm_bound (n : ℕ) : |vonMangoldtCharIm χ n| ≤ 1 * Λ n 
   | exact Complex.abs_im_le_norm _
   | exact Complex.abs_im_le_abs _
 
+/- English proof (translation)
+Simplify using `[vonMangoldtCharRe]`.
+-/
 lemma vonMangoldtCharRe_zero : vonMangoldtCharRe χ 0 = 0 := by simp [vonMangoldtCharRe]
 
+/- English proof (translation)
+Simplify using `[vonMangoldtCharIm]`.
+-/
 lemma vonMangoldtCharIm_zero : vonMangoldtCharIm χ 0 = 0 := by simp [vonMangoldtCharIm]
 
+/- English proof (translation)
+Unfold `Schi Formalism.Sa vonMangoldtCharRe vonMangoldtCharIm`. Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma chebyshev_character_re_im (x : ℝ) :
     Schi χ x = (Formalism.Sa (vonMangoldtCharRe χ) x : ℂ) + I * (Formalism.Sa (vonMangoldtCharIm χ) x : ℂ) := by
   unfold Schi Formalism.Sa vonMangoldtCharRe vonMangoldtCharIm
@@ -49,6 +70,11 @@ lemma chebyshev_character_re_im (x : ℝ) :
   conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]
   ring
 
+/- English proof (translation)
+Unfold `Schi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc]`. Establish `h1 : ⌊x⌋₊ ≤ 1` using `(Nat.floor_mono hx).trans_eq Nat.floor_one`.
+
+Establish `hn1 : n = 1` using `by omega`. Substitute `hn1` using the available equality. Simplify using the standard rewrite rules.
+-/
 lemma chebyshev_character_eq_zero_of_le_one {x : ℝ} (hx : x ≤ 1) : Schi χ x = 0 := by
   unfold Schi
   apply Finset.sum_eq_zero
@@ -64,6 +90,13 @@ end
 section
 variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 
+/- English proof (translation)
+Establish `hΛ` using `ArithmeticFunction.LSeriesSummable_vonMangoldt hw`. Establish `hb : ∀ n, ‖LSeries.term (fun n => (a n : ℂ)) w n‖ ≤ ‖LSeries.term (fun n => (Λ n : ℂ)) w n‖`. Introduce `n`. Rewrite using `[LSeries.norm_term_eq, LSeries.norm_term_eq]`. Use `split_ifs`.
+
+Conclude with `le_rfl`. Use `gcongr`. Establish `h2` using `ha n`. Establish `h3 : (0 : ℝ) ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Simplify `h2` using `[Complex.norm_real, abs_of_nonneg h3]`.
+
+Use `first`. Consider the case `exact Summable.of_norm_bounded hΛ.norm hb`. Consider the case `exact Summable.of_norm_bounded _ hΛ.norm hb`.
+-/
 lemma lseries_summable_of_vonMangoldt_bound {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * Λ n) {w : ℂ} (hw : 1 < w.re) :
     LSeriesSummable (fun n => (a n : ℂ)) w := by
   have hΛ := ArithmeticFunction.LSeriesSummable_vonMangoldt hw
@@ -80,6 +113,11 @@ lemma lseries_summable_of_vonMangoldt_bound {a : ℕ → ℝ} (ha : ∀ n, |a n|
   | exact Summable.of_norm_bounded hΛ.norm hb
   | exact Summable.of_norm_bounded _ hΛ.norm hb
 
+/- English proof (translation)
+Unfold `negLD`. Rewrite using `[DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hw, neg_div]`. Establish `hEq : ∀ s : ℂ, 1 < s.re → DirichletCharacter.LFunction χ s = L (fun n => χ n) s` using `fun s hs => DirichletCharacter.LFunction_eq_LSeries χ hs`. Establish `hev : DirichletCharacter.LFunction χ =ᶠ[𝓝 w] L (fun n => χ n)` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hw] with s hs`. Conclude with `hEq s hs`.
+
+Rewrite using `[hev.deriv_eq, hEq w hw]`.
+-/
 lemma neg_log_deriv_eq_lseries_mul_vonMangoldt {w : ℂ} (hw : 1 < w.re) : negLD χ w = LSeries (↗χ * ↗Λ) w := by
   unfold negLD
   rw [DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hw, neg_div]
@@ -90,6 +128,11 @@ lemma neg_log_deriv_eq_lseries_mul_vonMangoldt {w : ℂ} (hw : 1 < w.re) : negLD
     exact hEq s hs
   rw [hev.deriv_eq, hEq w hw]
 
+/- English proof (translation)
+Establish `h1` using `lseries_summable_of_vonMangoldt_bound (vonMangoldtCharRe_bound χ) hw`. Establish `h2` using `lseries_summable_of_vonMangoldt_bound (vonMangoldtCharIm_bound χ) hw`. Rewrite using `[neg_log_deriv_eq_lseries_mul_vonMangoldt χ hw, ← LSeries_smul, ← LSeries_add h1 (h2.smul I)]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul, vonMangoldtCharRe, vonMangoldtCharIm]`. Use `push_cast`. Use `conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma neg_log_deriv_eq_lseries_re_im {w : ℂ} (hw : 1 < w.re) :
     negLD χ w = LSeries (fun n => (vonMangoldtCharRe χ n : ℂ)) w +
       I * LSeries (fun n => (vonMangoldtCharIm χ n : ℂ)) w := by
@@ -103,6 +146,15 @@ lemma neg_log_deriv_eq_lseries_re_im {w : ℂ} (hw : 1 < w.re) :
   conv_lhs => rw [← Complex.re_add_im (χ (n : ZMod q))]
   ring
 
+/- English proof (translation)
+Establish `hw' : 1 < w.re` using `by rw [hw]; exact hσ`. Rewrite using `[neg_log_deriv_eq_lseries_mul_vonMangoldt χ hw']`. Establish `hs : LSeriesSummable (fun n => (Λ n : ℂ)) (σ₀ : ℂ)` using `ArithmeticFunction.LSeriesSummable_vonMangoldt (by simpa using hσ)`. Establish `hb : ∀ n, ‖LSeries.term (↗χ * ↗Λ) w n‖ ≤ ‖LSeries.term (fun n => (Λ n : ℂ)) (σ₀ : ℂ) n‖`. Introduce `n`.
+
+Rewrite using `[LSeries.norm_term_eq, LSeries.norm_term_eq]`. Use `split_ifs`. Conclude with `le_rfl`. Rewrite using `[hw, Complex.ofReal_re] gcongr`. Rewrite using `[Pi.mul_apply, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) (DirichletCharacter.norm_le_one χ _)`. Establish `hsum : Summable fun n => ‖LSeries.term (↗χ * ↗Λ) w n‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hb hs.norm`. Use `(norm_tsum_le_tsum_norm hsum).trans ?_` and prove the remaining obligations. Use `first`. Consider the case `exact tsum_le_tsum hb hsum hs.norm`.
+
+Consider the case `exact Summable.tsum_le_tsum hb hsum hs.norm`.
+-/
 lemma norm_neg_log_deriv_le_tsum {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw : w.re = σ₀) :
     ‖negLD χ w‖ ≤ ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ := by
   have hw' : 1 < w.re := by rw [hw]; exact hσ
@@ -125,6 +177,17 @@ lemma norm_neg_log_deriv_le_tsum {σ₀ : ℝ} (hσ : 1 < σ₀) (w : ℂ) (hw :
   | exact tsum_le_tsum hb hsum hs.norm
   | exact Summable.tsum_le_tsum hb hsum hs.norm
 
+/- English proof (translation)
+Establish `hU : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hz : DifferentiableOn ℂ (DirichletCharacter.LFunction χ) {s : ℂ | 1 < s.re}` using `fun s hs => (DirichletCharacter.differentiableAt_LFunction χ s (Or.inl (by rintro rfl; simp at hs))).differentiableWithinAt`. Establish `hdz : ContinuousOn (deriv (DirichletCharacter.LFunction χ)) {s : ℂ | 1 < s.re}` using `(hz.deriv hU).continuousOn`. Establish `hline : Continuous (fun t : ℝ => (σ₀ : ℂ) + t * I)` using `by fun_prop`. Establish `hmem : ∀ t : ℝ, (σ₀ : ℂ) + t * I ∈ {s : ℂ | 1 < s.re}` using `by intro t; simp [hσ]`.
+
+Establish `c1 : Continuous (fun t : ℝ => deriv (DirichletCharacter.LFunction χ) ((σ₀ : ℂ) + t * I))` using `hdz.comp_continuous hline hmem`. Establish `c2 : Continuous (fun t : ℝ => DirichletCharacter.LFunction χ ((σ₀ : ℂ) + t * I))` using `hz.continuousOn.comp_continuous hline hmem`. Establish `hne : ∀ t : ℝ, DirichletCharacter.LFunction χ ((σ₀ : ℂ) + t * I) ≠ 0` using `fun t => by`. Establish `h1 : 1 < ((σ₀ : ℂ) + t * I).re` using `by simp [hσ]`. Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ h1]`.
+
+Conclude with `DirichletCharacter.LSeries_ne_zero_of_one_lt_re χ h1`. Establish `c3 : Continuous (fun t : ℝ => (y : ℂ) ^ ((σ₀ : ℂ) + t * I))` using `hline.const_cpow (Or.inl (by exact_mod_cast hy.ne'))`. Establish `hw0 : ∀ t : ℝ, ((σ₀ : ℂ) + t * I) * ((σ₀ : ℂ) + t * I - 1) ≠ 0`. Introduce `t`. Apply `mul_ne_zero` to reduce the goal to its premises.
+
+Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+
+Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Fchi negLD`. Conclude with `((c1.div c2 hne).neg.mul c3).div (hline.mul (hline.sub continuous_const)) hw0`.
+-/
 lemma perron_integrand_continuous {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Continuous (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + t * I)) := by
   have hU : IsOpen {s : ℂ | 1 < s.re} := isOpen_lt continuous_const Complex.continuous_re
@@ -153,6 +216,15 @@ lemma perron_integrand_continuous {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 
   unfold Fchi negLD
   exact ((c1.div c2 hne).neg.mul c3).div (hline.mul (hline.sub continuous_const)) hw0
 
+/- English proof (translation)
+Use `set B := ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ with hBdef`. Establish `hB : 0 ≤ B` using `tsum_nonneg (fun n => norm_nonneg _)`. Use `set dd := min ((σ₀ - 1) ^ 2) 1 with hdddef`. Establish `hdd : 0 < dd` using `lt_min (by nlinarith) one_pos`. Establish `hy' : 0 < y ^ σ₀` using `Real.rpow_pos_of_pos hy _`.
+
+Use `Integrable.mono' ((integrable_inv_one_add_sq).const_mul (B * y ^ σ₀ / dd)) (perron_integrand_continuous χ hy hσ).aestronglyMeasurable (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hre : ((σ₀ : ℂ) + t * I).re = σ₀` using `by simp`. Unfold `Fchi`. Rewrite using `[norm_div, norm_mul, norm_cpow_eq_rpow_re_of_pos hy, hre]`. Establish `hL` using `norm_neg_log_deriv_le_tsum χ hσ _ hre`.
+
+Establish `hD` using `Formalism.ZF.perron_denom_bound hσ t`. Establish `hpos : 0 < dd * (1 + t ^ 2)` using `by positivity`. Establish `hc : 0 ≤ B * y ^ σ₀ / dd * (1 + t ^ 2)⁻¹` using `mul_nonneg (div_nonneg (mul_nonneg hB hy'.le) hdd.le) (inv_nonneg.mpr (by positivity))`. Rewrite using `[div_le_iff₀ (lt_of_lt_of_le hpos hD)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Clear the denominators using the available nonvanishing facts. Use `_ ≤ B * y ^ σ₀ / dd * (1 + t ^ 2)⁻¹ * ‖((σ₀ : ℂ) + t * I) * ((σ₀ : ℂ) + t * I - 1)‖ := mul_le_mul_of_nonneg_left hD hc`.
+-/
 lemma perron_integrand_integrable {y : ℝ} (hy : 0 < y) {σ₀ : ℝ} (hσ : 1 < σ₀) :
     Integrable (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + t * I)) := by
   set B := ∑' n, ‖LSeries.term ↗Λ (σ₀ : ℂ) n‖ with hBdef
@@ -183,6 +255,11 @@ end
 section
 variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 
+/- English proof (translation)
+Rewrite using `[Formalism.Sa_eq_tsum _ ha0]`. Use `tsum_eq_sum (fun n hn => ?_)` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_range, not_lt]`. Establish `hxn : x < n` using `lt_of_lt_of_le hx (by exact_mod_cast hn)`. Use `Formalism.a_mxS_eq_zero _ ha0 x n ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_Icc]`. Introduce and unpack `⟨h1, h2⟩`. Establish `hx1 : 1 ≤ x` using `Nat.floor_pos.mp (by omega)`. Establish `: (n : ℝ) ≤ x` using `(Nat.cast_le.mpr h2).trans (Nat.floor_le (by linarith))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma summatory_eq_sum_range {a : ℕ → ℝ} (ha0 : a 0 = 0) {N : ℕ} {x : ℝ} (hx : x < N) :
     Formalism.Sa a x = ∑ n ∈ Finset.range N, a n * Formalism.mxS n x := by
   rw [Formalism.Sa_eq_tsum _ ha0]
@@ -196,6 +273,9 @@ lemma summatory_eq_sum_range {a : ℕ → ℝ} (ha0 : a 0 = 0) {N : ℕ} {x : �
   have : (n : ℝ) ≤ x := (Nat.cast_le.mpr h2).trans (Nat.floor_le (by linarith))
   linarith
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_gt y`. Establish `hev : (fun x => ((∑ n ∈ Finset.range N, a n * Formalism.mxS n x : ℝ) : ℂ)) =ᶠ[𝓝 y] (fun x => (Formalism.Sa a x : ℂ))` using `by filter_upwards [eventually_lt_nhds hN] with x hx`. Rewrite using `[summatory_eq_sum_range ha0 hx]`. Use `ContinuousAt.congr ?_ hev` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp (continuous_finsetSum _ (fun n _ => continuous_const.mul (Formalism.ZF.perron_continuous_mxS n)))).continuousAt`.
+-/
 lemma summatory_function_continuousAt {a : ℕ → ℝ} (ha0 : a 0 = 0) (y : ℝ) :
     ContinuousAt (fun x => (Formalism.Sa a x : ℂ)) y := by
   obtain ⟨N, hN⟩ := exists_nat_gt y
@@ -207,6 +287,9 @@ lemma summatory_function_continuousAt {a : ℕ → ℝ} (ha0 : a 0 = 0) (y : ℝ
   exact (Complex.continuous_ofReal.comp (continuous_finsetSum _
     (fun n _ => continuous_const.mul (Formalism.ZF.perron_continuous_mxS n)))).continuousAt
 
+/- English proof (translation)
+Establish `h : (fun x => Schi χ x) = fun x => (Formalism.Sa (vonMangoldtCharRe χ) x : ℂ) + I * (Formalism.Sa (vonMangoldtCharIm χ) x : ℂ)`. Use function extensionality and compare the values at `(chebyshev_character_re_im χ)`. Rewrite using `[h]`. Conclude with `(summatory_function_continuousAt (vonMangoldtCharRe_zero χ) y).add (continuousAt_const.mul (summatory_function_continuousAt (vonMangoldtCharIm_zero χ) y))`.
+-/
 lemma chebyshev_character_continuousAt (y : ℝ) : ContinuousAt (fun x => Schi χ x) y := by
   have h : (fun x => Schi χ x) =
       fun x => (Formalism.Sa (vonMangoldtCharRe χ) x : ℂ) + I * (Formalism.Sa (vonMangoldtCharIm χ) x : ℂ) :=
@@ -215,6 +298,11 @@ lemma chebyshev_character_continuousAt (y : ℝ) : ContinuousAt (fun x => Schi �
   exact (summatory_function_continuousAt (vonMangoldtCharRe_zero χ) y).add
     (continuousAt_const.mul (summatory_function_continuousAt (vonMangoldtCharIm_zero χ) y))
 
+/- English proof (translation)
+Take `⟨hm, hI, -⟩` from `Formalism.mellinSgen a 1 ha`. Use `Integrable.mono' (hI w.re hw) ?_ ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp hm).mul (Complex.measurable_ofReal.pow_const _)).aestronglyMeasurable`. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx`. Establish `hx0 : 0 < x` using `lt_trans zero_lt_one hx`.
+
+Rewrite using `[norm_mul, norm_cpow_eq_rpow_re_of_pos hx0, Complex.norm_real, Real.norm_eq_abs]`. Simplify using the standard rewrite rules.
+-/
 lemma summatory_rpow_integrableOn {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * Λ n) {w : ℂ} (hw : 1 < w.re) :
     IntegrableOn (fun x : ℝ => (Formalism.Sa a x : ℂ) * (x : ℂ) ^ (-w - 1)) (Ioi 1) := by
   obtain ⟨hm, hI, -⟩ := Formalism.mellinSgen a 1 ha
@@ -226,6 +314,9 @@ lemma summatory_rpow_integrableOn {a : ℕ → ℝ} (ha : ∀ n, |a n| ≤ 1 * �
     rw [norm_mul, norm_cpow_eq_rpow_re_of_pos hx0, Complex.norm_real, Real.norm_eq_abs]
     simp
 
+/- English proof (translation)
+Use `((summatory_rpow_integrableOn (vonMangoldtCharRe_bound χ) hw).add ((summatory_rpow_integrableOn (vonMangoldtCharIm_bound χ) hw).const_mul I)).congr_fun (fun x _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Rewrite using `[Pi.add_apply, chebyshev_character_re_im χ x, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma chebyshev_character_integrableOn {w : ℂ} (hw : 1 < w.re) :
     IntegrableOn (fun x : ℝ => (x : ℂ) ^ (-w - 1) • Schi χ x) (Ioi 1) := by
   refine ((summatory_rpow_integrableOn (vonMangoldtCharRe_bound χ) hw).add
@@ -233,6 +324,15 @@ lemma chebyshev_character_integrableOn {w : ℂ} (hw : 1 < w.re) :
   rw [Pi.add_apply, chebyshev_character_re_im χ x, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h1` using `(Formalism.mellinSgen _ 1 (vonMangoldtCharRe_bound χ)).2.2 w hw`. Establish `h2` using `(Formalism.mellinSgen _ 1 (vonMangoldtCharIm_bound χ)).2.2 w hw`. Unfold `mellin`. Rewrite using `[setIntegral_eq_of_subset_of_forall_sdiff_eq_zero measurableSet_Ioi (Ioi_subset_Ioi zero_le_one) ?_]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[chebyshev_character_re_im χ t, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∫ t in Ioi (1:ℝ), (Formalism.Sa (vonMangoldtCharRe χ) t : ℂ) * (t : ℂ) ^ (-w - 1)) + I * ∫ t in Ioi (1:ℝ), (Formalism.Sa (vonMangoldtCharIm χ) t : ℂ) * (t : ℂ) ^ (-w - 1) := by`.
+
+Rewrite using `[integral_add (summatory_rpow_integrableOn (vonMangoldtCharRe_bound χ) hw) ((summatory_rpow_integrableOn (vonMangoldtCharIm_bound χ) hw).const_mul I), integral_const_mul]`. Use `_ = _ := by`. Rewrite using `[h1, h2, neg_log_deriv_eq_lseries_re_im χ hw]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`.
+
+Establish `hx1 : x ≤ 1` using `not_lt.mp hx.2`. Simplify using `[chebyshev_character_eq_zero_of_le_one χ hx1]`.
+-/
 lemma mellin_chebyshev_character {w : ℂ} (hw : 1 < w.re) :
     mellin (fun x : ℝ => Schi χ x) (-w) = negLD χ w / (w * (w - 1)) := by
   have h1 := (Formalism.mellinSgen _ 1 (vonMangoldtCharRe_bound χ)).2.2 w hw
@@ -255,6 +355,11 @@ lemma mellin_chebyshev_character {w : ℂ} (hw : 1 < w.re) :
     have hx1 : x ≤ 1 := not_lt.mp hx.2
     simp [chebyshev_character_eq_zero_of_le_one χ hx1]
 
+/- English proof (translation)
+Unfold `MellinConvergent`. Rewrite using `[← Ioc_union_Ioi_eq_Ioi zero_le_one]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Use `(integrableOn_zero).congr_fun (fun x hx => ?_) measurableSet_Ioc` and prove the remaining obligations. Simplify using `[chebyshev_character_eq_zero_of_le_one χ hx.2]`.
+
+Establish `h` using `chebyshev_character_integrableOn χ (w := (σ₀ : ℂ)) (by simpa using hσ)`. Use `h.congr_fun (fun x _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `only [ofReal_neg]`.
+-/
 lemma mellin_convergent_chebyshev_character {σ₀ : ℝ} (hσ : 1 < σ₀) :
     MellinConvergent (fun x : ℝ => Schi χ x) ((-σ₀ : ℝ) : ℂ) := by
   unfold MellinConvergent
@@ -266,6 +371,11 @@ lemma mellin_convergent_chebyshev_character {σ₀ : ℝ} (hσ : 1 < σ₀) :
     refine h.congr_fun (fun x _ => ?_) measurableSet_Ioi
     simp only [ofReal_neg]
 
+/- English proof (translation)
+Use `show Integrable (fun t : ℝ => mellin (fun x : ℝ => Schi χ x) (((-σ₀ : ℝ) : ℂ) + t * I))`. Establish `h1` using `(perron_integrand_integrable χ one_pos hσ).comp_neg`. Use `h1.congr (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show Fchi χ 1 ((σ₀ : ℂ) + ((-t : ℝ) : ℂ) * I) = mellin (fun x : ℝ => Schi χ x) (((-σ₀ : ℝ) : ℂ) + t * I)`. Establish `hw : ((-σ₀ : ℝ) : ℂ) + t * I = -((σ₀ : ℂ) + ((-t : ℝ) : ℂ) * I)` using `by push_cast; ring`.
+
+Rewrite using `[hw, mellin_chebyshev_character χ (by simp [hσ])]`. Unfold `Fchi`. Rewrite using `[ofReal_one, one_cpow, mul_one]`.
+-/
 lemma perron_vertical_integrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
     VerticalIntegrable (mellin (fun x : ℝ => Schi χ x)) (-σ₀) := by
   show Integrable (fun t : ℝ => mellin (fun x : ℝ => Schi χ x) (((-σ₀ : ℝ) : ℂ) + t * I))
@@ -280,6 +390,15 @@ lemma perron_vertical_integrable {σ₀ : ℝ} (hσ : 1 < σ₀) :
 
 end
 
+/- English proof (translation)
+Introduce `q _ χ y hy σ₀ hσ`. Establish `hy0 : 0 < y` using `by linarith`. Use `⟨perron_integrand_integrable χ hy0 hσ, ?_⟩` and prove the remaining obligations. Establish `hinv` using `mellinInv_mellin_eq (-σ₀) (fun x : ℝ => Schi χ x) hy0 (mellin_convergent_chebyshev_character χ hσ) (perron_vertical_integrable χ hσ) (chebyshev_character_continuousAt χ y)`. Rewrite using `[← hinv]`.
+
+Unfold `mellinInv`. Establish `key : ∀ t : ℝ, (y : ℂ) ^ (-(((-σ₀ : ℝ) : ℂ) + t * I)) • mellin (fun x : ℝ => Schi χ x) (((-σ₀ : ℝ) : ℂ) + t * I) = Fchi χ y ((σ₀ : ℂ) + ((-t : ℝ) : ℂ) * I)`. Introduce `t`. Establish `hw : ((-σ₀ : ℝ) : ℂ) + t * I = -((σ₀ : ℂ) + ((-t : ℝ) : ℂ) * I)` using `by push_cast; ring`. Rewrite using `[hw, mellin_chebyshev_character χ (by simp [hσ]), neg_neg, smul_eq_mul]`.
+
+Unfold `Fchi`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Eventually.of_forall key)]`. Establish `h2 : ∫ t : ℝ, Fchi χ y ((σ₀ : ℂ) + ((-t : ℝ) : ℂ) * I) = ∫ t : ℝ, Fchi χ y ((σ₀ : ℂ) + (t : ℂ) * I)` using `integral_neg_eq_self (fun t : ℝ => Fchi χ y ((σ₀ : ℂ) + (t : ℂ) * I)) volume`. Rewrite using `[h2, Complex.real_smul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem perron_formula_character : PerronChi := by
   intro q _ χ y hy σ₀ hσ
   have hy0 : 0 < y := by linarith

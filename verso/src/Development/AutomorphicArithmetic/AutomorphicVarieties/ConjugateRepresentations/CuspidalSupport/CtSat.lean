@@ -6,6 +6,11 @@ open UpperTheory.V.Af.Fin (emb e1 e2 blk Bdd)
 open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ n r φ ψ hφ hψ h0 w B hB`. Set `C : Submodule ℂ (Sm E n)` to `{ carrier := {f | Continuous f.1} add_mem' := fun h h' => Continuous.add h h' zero_mem' := continuous_const smul_mem' := fun c _ h => Continuous.const_smul h c }`. Establish `hC : ∀ g, ∀ f ∈ C, fL n w g f ∈ C` using `fun g f hf => show Continuous fun x => f.1 (x * finGL E n (locGL E n w g)) from Continuous.comp (show Continuous f.1 from hf) (continuous_id.mul continuous_const)`. Establish `hc : φ ∈ C` using `((UpperTheory.V.Cm.isAutForm_iff φ).1 hφ).continuous`. Set `F : C →ₗ[ℂ] (GA E n → ℂ)` to `{ toFun := fun f => constantTerm r f.1.1 map_add' := fun f f' => funext fun g => GroundTheory.Automorphic.AutomorphicForm.constantTerm_add f.2 f'.2 g map_smul' := fun c f => funext fun g => GroundTheory.Automorphic.AutomorphicForm.constantTerm_smul c f.1.1 g }`.
+
+Establish `h1 : IsSatVecGL w (GlobalTheory.PRep.sub (fL n w) C hC) ⟨φ, hc⟩ B` using `IsSatVecGL.of_map C.subtype (fun _ _ => rfl) Subtype.val_injective hB`. Establish `hF : F ⟨φ, hc⟩ = ψ.1` using `hψ.symm`. Establish `h2` using `h1.map (ρ' := (GlobalTheory.PRep.rightReg ℂ (GA E n) ℂ).comp ((finGL E n).comp (locGL E n w))) F (fun g f => funext fun x => GroundTheory.Automorphic.AutomorphicForm.constantTerm_rightTranslate f.1.1 (finGL E n (locGL E n w g)) x) (by rw [hF]; exact fun h => h0 (Subtype.ext h))`. Rewrite `h2` using `[hF]`. Conclude with `IsSatVecGL.of_map (Sm E n).subtype (fun _ _ => rfl) Subtype.val_injective h2`.
+-/
 theorem UpperTheory.V.Cj.S.ctSat :
     UpperTheory.V.Cj.S.CtSat := by
   intro E _ _ _ n r φ ψ hφ hψ h0 w B hB

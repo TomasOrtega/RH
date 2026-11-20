@@ -9,6 +9,9 @@ section Det
 
 variable {K : Type} [CommRing K]
 
+/- English proof (translation)
+Establish `h : fromBlocks (-A) P (-D) B = fromBlocks P A B D * (fromBlocks 1 1 0 1 * fromBlocks 1 0 (-1) 1 * fromBlocks 1 1 0 1 : Matrix (n ⊕ n) (n ⊕ n) K)`. Simplify using `[fromBlocks_multiply]`. Rewrite using `[h]`. Simplify using `[det_mul]`.
+-/
 theorem det_fromBlocks_swap {n : Type} [Fintype n] [DecidableEq n] (P A B D : Matrix n n K) :
     (fromBlocks P A B D).det = (fromBlocks (-A) P (-D) B).det := by
   have h : fromBlocks (-A) P (-D) B = fromBlocks P A B D * (fromBlocks 1 1 0 1 * fromBlocks 1 0 (-1) 1 *
@@ -17,6 +20,9 @@ theorem det_fromBlocks_swap {n : Type} [Fintype n] [DecidableEq n] (P A B D : Ma
   rw [h]
   simp [det_mul]
 
+/- English proof (translation)
+Rewrite using `[det_succ_row _ (Fin.last r), Fin.sum_univ_castSucc]`. Establish `h : (X.updateRow (Fin.last r) (Pi.single (Fin.last r) 1)).submatrix Fin.castSucc Fin.castSucc = X.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Simplify using `[Fin.castSucc_ne_last, h, ← two_mul]`.
+-/
 theorem det_updateRow_last {r : ℕ} (X : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     (X.updateRow (Fin.last r) (Pi.single (Fin.last r) 1)).det = (X.submatrix Fin.castSucc Fin.castSucc).det := by
   rw [det_succ_row _ (Fin.last r), Fin.sum_univ_castSucc]
@@ -26,6 +32,13 @@ theorem det_updateRow_last {r : ℕ} (X : Matrix (Fin (r + 1)) (Fin (r + 1)) K) 
     simp
   simp [Fin.castSucc_ne_last, h, ← two_mul]
 
+/- English proof (translation)
+Establish `e1 : fromBlocks X (diagonal fun a => if a = l then t else 0) (diagonal fun a => if a = l then s else 0) Y = (fromBlocks X 0 (diagonal fun a => if a = l then s else 0) Y).updateRow (Sum.inl l) (fromBlocks X 0 (diagonal fun a => if a = l then s else 0) Y (Sum.inl l) + t • Pi.single …`. Apply the tactic sequence `ext (a | a) (b | b) <;> by_cases ha : a = l <;> by_cases hb : b = l <;>`. Simplify using `[updateRow_apply, diagonal_apply, ha, hb, @eq_comm _ l b]`. Establish `e2 : (fromBlocks X 0 (diagonal fun a => if a = l then s else 0) Y).updateRow (Sum.inl l) (Pi.single (Sum.inr l) 1) = (fromBlocks (X.updateRow l 0) (diagonal fun a => if a = l then 1 else 0) 0 Y).updateRow (Sum.inr l) (fromBlocks (X.updateRow l 0) (diagonal fun a => if a = l then …`. Apply the tactic sequence `ext (a | a) (b | b) <;> by_cases ha : a = l <;> by_cases hb : b = l <;>`.
+
+Simplify using `[updateRow_apply, diagonal_apply, ha, hb, @eq_comm _ l b]`. Establish `e3 : (fromBlocks (X.updateRow l 0) (diagonal fun a => if a = l then 1 else 0) 0 Y).updateRow (Sum.inr l) (Pi.single (Sum.inl l) 1) = (fromBlocks (X.updateRow l (Pi.single l 1)) 0 0 (Y.updateRow l (Pi.single l 1))).submatrix (Equiv.swap (Sum.inl l) (Sum.inr l)) id`. Apply the tactic sequence `ext (a | a) (b | b) <;> by_cases ha : a = l <;> by_cases hb : b = l <;>`. Simplify using `[updateRow_apply, diagonal_apply, Pi.single_apply, Equiv.swap_apply_def, ha, hb, @eq_comm _ l b]`. Establish `e4 : (X.updateRow l 0).det = 0` using `det_eq_zero_of_row_eq_zero l fun j => by simp`.
+
+Rewrite using `[e1, det_updateRow_add, det_updateRow_smul, updateRow_eq_self, det_fromBlocks_zero₁₂, e2, det_updateRow_add, det_updateRow_smul, updateRow_eq_self, det_fromBlocks_zero₂₁, e3, det_permute, det_fromBlocks_zero₂₁, Equiv.Perm.sign_swap (by simp), e4]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_fromBlocks_single {n : Type} [Fintype n] [DecidableEq n] (l : n) (X Y : Matrix n n K) (t s : K) :
     (fromBlocks X (diagonal fun a => if a = l then t else 0) (diagonal fun a => if a = l then s else 0) Y).det =
       X.det * Y.det - t * s * ((X.updateRow l (Pi.single l 1)).det * (Y.updateRow l (Pi.single l 1)).det) := by
@@ -55,6 +68,11 @@ theorem det_fromBlocks_single {n : Type} [Fintype n] [DecidableEq n] (l : n) (X 
   simp
   ring
 
+/- English proof (translation)
+Establish `h : (-diagonal fun a => if a = Fin.last r then -T' else 0) = diagonal fun a => if a = Fin.last r then T' else 0`. Use extensionality with `a b`. Simplify using `only [Matrix.neg_apply, diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : (-A).submatrix Fin.castSucc Fin.castSucc = -A.submatrix Fin.castSucc Fin.castSucc` using `rfl`.
+
+Rewrite using `[det_fromBlocks_swap, h, det_fromBlocks_single, det_updateRow_last, det_updateRow_last, h2, det_neg, det_neg]`. Simplify using `only [Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_fromBlocks_last {r : ℕ} (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (T T' : K) :
     (fromBlocks (diagonal fun a => if a = Fin.last r then -T else 0) A B
       (diagonal fun a => if a = Fin.last r then -T' else 0)).det =
@@ -74,6 +92,11 @@ end Det
 
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : HermSpace K V} {r : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `induction a using Fin.lastCases <;> induction b using Fin.lastCases`. Simplify using `[F.zz]`. Name the introduced variables `b`. Simplify using `[B_eq_zero_comm.1 (F.zperp b), diagonal_apply, (Fin.castSucc_ne_last b).symm]`. Name the introduced variables `a`.
+
+Simplify using `[F.zperp a, diagonal_apply, Fin.castSucc_ne_last]`. Name the introduced variables `a b`. Simplify using `[F.iso a b, diagonal_apply, Fin.castSucc_ne_last]`.
+-/
 theorem B_e_e (F : FlagD H r) (a b : Fin (r + 1)) :
     H.B (F.e a) (F.e b) = diagonal (fun a => if a = Fin.last r then -F.T else 0) a b := by
   induction a using Fin.lastCases <;> induction b using Fin.lastCases
@@ -85,6 +108,9 @@ theorem B_e_e (F : FlagD H r) (a b : Fin (r + 1)) :
   · rename_i a b
     simp [F.iso a b, diagonal_apply, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Use extensionality with `(a | a) (b | b)`. Conclude with `B_e_e F a b`. Both sides reduce to the same expression. Conclude with `(H.herm _ _).symm`. Conclude with `B_e_e F' a b`.
+-/
 theorem gram_eq_fromBlocks (F F' : FlagD H r) :
     Gram F F' = fromBlocks (diagonal fun a => if a = Fin.last r then -F.T else 0) (Zhat F F') (Zhat F F')ᴴ
       (diagonal fun a => if a = Fin.last r then -F'.T else 0) := by
@@ -94,12 +120,21 @@ theorem gram_eq_fromBlocks (F F' : FlagD H r) :
   · exact (H.herm _ _).symm
   · exact B_e_e F' a b
 
+/- English proof (translation)
+Rewrite using `[gram_eq_fromBlocks, det_fromBlocks_last, ← conjTranspose_submatrix, det_conjTranspose, det_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem det_gram (F F' : FlagD H r) : (Gram F F').det = (-1) ^ (r + 1) * Gval F F' := by
   rw [gram_eq_fromBlocks, det_fromBlocks_last, ← conjTranspose_submatrix, det_conjTranspose, det_conjTranspose]
   rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ F F'` and use `det_gram F F'`.
+-/
 theorem gram_det_statement : LemmaG := fun _ _ _ _ _ _ _ _ F F' => det_gram F F'
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ H r F F'`. Rewrite using `[isTransv_iff_gram, det_gram]`. Simplify using the standard rewrite rules.
+-/
 theorem isTransv_iff_gval : ∀ (K V : Type) [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (H : HermSpace K V) (r : ℕ) (F F' : FlagD H r), IsTransv F F' ↔ Gval F F' ≠ 0 := by
   intro K V _ _ _ _ _ H r F F'

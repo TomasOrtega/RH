@@ -15,10 +15,22 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.DownLift.GenFinite
 
+/- English proof (translation)
+Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem thetaKO_smul {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (h : GA D S)
     (g : GA D T) (c : ℂ) (f : WO S T → ℂ) : thetaKO om h g (c • f) = c * thetaKO om h g f := by
   simp only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y f l g hf`. Establish `hm` using `hG.core.models`. Establish `hom` using `(hP i t).datum`. Establish `hx` using `(hm.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hpos : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => by`.
+
+Use `D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hm.vpos i]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Establish `hcont : Continuous fun h => l (R.extV i t y h)` using `(LinearMap.continuous_of_finiteDimensional l).comp (GlobalTheory.ThetaIntegrand.ext_continuous (R.cV i) (hm.cV i) (R.βV i) (R.datVt i t) hx)`. Establish `hinv : ∀ γ ∈ GQ (Vc D i), ∀ h, l (R.extV i t y (γ * h)) = l (R.extV i t y h)` using `fun γ hγ h => congrArg l (GlobalTheory.ThetaIntegrand.ext_invariant (R.cV i) hx γ hγ h)`.
+
+Establish `key` using `GlobalTheory.DefiniteQuotient.integrableOn_theta D R.ψ hom.std (Vc D i) (Wc D i) _ _ (R.ωP i t) hom hpos ℂ (LinearMap.smulRight (LinearMap.id : ℂ →ₗ[ℂ] ℂ) f) (fun x => theta_smul x hf) (fun h => l (R.extV i t y h)) hcont hinv (R.νV i t) (R.fdV i t) (hm.νV i t).1.1 (hm.νV i t).2 g`. Establish `e : (fun h => thetaKO (R.ωP i t) h g (LinearMap.smulRight (LinearMap.id : ℂ →ₗ[ℂ] ℂ) f (l (R.extV i t y h)))) = fun h => thetaKO (R.ωP i t) h g f * l (R.extV i t y h)`. Use function extensionality and compare the values at `h`. Conclude with `(thetaKO_smul (R.ωP i t) h g _ f).trans (mul_comm _ _)`. Rewrite `key` using `[e]`.
+
+Conclude with `key`.
+-/
 theorem integrableOn_downIntegrand : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP →

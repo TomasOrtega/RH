@@ -9,6 +9,9 @@ open Finset Matrix
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Introduce `N ε lam H _ _ σ hHC hDS h hgap hlt S S' hS hS'`. Use `haveI : CompleteSpace H := hDS.1`. Conclude with `lowKMultOneG_of_cas N ε lam H σ hHC hDS h hgap hlt (casOnSmooth_of_isDS hDS ⟨hHC.1, h, hgap, hlt⟩) S S' hS hS'`.
+-/
 theorem final_lowKMultOneG :
     ∀ (N : ℕ) (ε : Fin N → Bool) (lam : Fin N → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsHCParam lam → Formalism.MainNotions.S.IsDS ε lam σ →
@@ -20,6 +23,9 @@ theorem final_lowKMultOneG :
   exact lowKMultOneG_of_cas N ε lam H σ hHC hDS h hgap hlt
     (casOnSmooth_of_isDS hDS ⟨hHC.1, h, hgap, hlt⟩) S S' hS hS'
 
+/- English proof (translation)
+Introduce `n ε lam H H' _ _ _ _ _ _ σ σ' hHC hDS hDS' h hgap hlt`. Conclude with `(isDS_props_of_gap n ε lam hHC h hgap hlt H σ hDS).2.2.2.2 H' σ' hDS'`.
+-/
 theorem final_deg_DSUniqG :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H H' : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       [CompleteSpace H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
@@ -34,6 +40,13 @@ section Cayley
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+Take `⟨⟨-, hJ⟩, hU⟩` from `hP`. Establish `h1 : Pᴴ * P = 1`. Establish `h` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Rewrite `h` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `h2 : P * Pᴴ = 1`.
+
+Establish `h` using `Matrix.mem_unitaryGroup_iff.mp hU`. Rewrite `h` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Use `⟨h1, h2, Matrix.inv_eq_left_inv h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem final_cayley_facts {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) :
     Pᴴ * P = 1 ∧ P * Pᴴ = 1 ∧ P⁻¹ = Pᴴ ∧ P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ = Formalism.REAL.Jm ε := by
@@ -50,6 +63,11 @@ theorem final_cayley_facts {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
         simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨-, -, -, h4⟩` from `final_cayley_facts hP`. Take `⟨⟨-, hJ⟩, -⟩` from `hP`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Use `show (P * g * Pᴴ)ᴴ * Formalism.REAL.Jm ε * (P * g * Pᴴ) = Formalism.REAL.Jm ε`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem final_conj_mem {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : P * g * Pᴴ ∈ Formalism.MainNotions.S.UJset ε := by
@@ -63,6 +81,11 @@ theorem final_conj_mem {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
     _ = P * Formalism.QuantumDeterminants.Hpk k r * Pᴴ := by rw [hJ, hg']
     _ = Formalism.REAL.Jm ε := h4
 
+/- English proof (translation)
+Take `⟨-, -, -, h4⟩` from `final_cayley_facts hP`. Take `⟨⟨-, hJ'⟩, -⟩` from `hP'`. Use `show (P' * Pᴴ)ᴴ * Formalism.REAL.Jm ε * (P' * Pᴴ) = Formalism.REAL.Jm ε`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hJ']; exact h4`.
+-/
 theorem final_c_mem {P P' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (hP' : Formalism.MainNotions.S.IsCayleyU k r ε P') :
     P' * Pᴴ ∈ Formalism.MainNotions.S.UJset ε := by
@@ -76,6 +99,27 @@ theorem final_c_mem {P P' : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
 
 end Cayley
 
+/- English proof (translation)
+Introduce `k r ε lam hHC h hgap hbd H _ _ _ σ hσ H' _ _ _ σ' hσ'`. Take `⟨P, hP, hds⟩` from `hσ`. Take `⟨P', hP', hds'⟩` from `hσ'`. Take `⟨U, hU⟩` from `final_deg_DSUniqG (2 * r + k + 1) ε lam H H' (fun g => σ (P⁻¹ * g * P)) (fun g => σ' (P'⁻¹ * g * P')) hHC hds hds' h hgap hbd`. Take `⟨h1, h2, h3, -⟩` from `final_cayley_facts hP`.
+
+Take `⟨h1', h2', h3', -⟩` from `final_cayley_facts hP'`. Establish `kP : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Pᴴ * (P * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `kP' : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P'ᴴ * (P' * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h1', Matrix.one_mul]`.
+
+Establish `hU' : ∀ g ∈ Formalism.MainNotions.S.UJset ε, ∀ x : H, U (σ (P⁻¹ * g * P) x) = σ' (P'⁻¹ * g * P') (U x)` using `hU`. Establish `hrep : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) (fun g => σ' (P'⁻¹ * g * P'))` using `hds'.2.2.1`. Establish `hmul : ∀ a ∈ Formalism.MainNotions.S.UJset ε, ∀ b ∈ Formalism.MainNotions.S.UJset ε, ∀ y : H', σ' (P'⁻¹ * (a * b) * P') y = σ' (P'⁻¹ * a * P') (σ' (P'⁻¹ * b * P') y)`. Introduce `a ha b hb y`. Conclude with `congrArg (fun T : H' →L[ℂ] H' => T y) (hrep.1.2 a ha b hb)`.
+
+Establish `hnorm : ∀ a ∈ Formalism.MainNotions.S.UJset ε, ∀ y : H', ‖σ' (P'⁻¹ * a * P') y‖ = ‖y‖` using `hrep.2.1`. Establish `hone : σ' 1 = 1`. Establish `h0 : σ' (P'⁻¹ * 1 * P') = 1` using `hrep.1.1`. Rewrite `h0` using `[Matrix.mul_one, h3', h1']`. Then use the resulting hypothesis. Establish `hc : P' * Pᴴ ∈ Formalism.MainNotions.S.UJset ε` using `final_c_mem hP hP'`.
+
+Establish `hci : P * P'ᴴ ∈ Formalism.MainNotions.S.UJset ε` using `final_c_mem hP' hP`. Set `f : H' →ₗᵢ[ℂ] H'` to `{ toLinearMap := (σ' (P'⁻¹ * (P' * Pᴴ) * P')).toLinearMap norm_map' := hnorm _ hc }`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Use `⟨σ' (P'⁻¹ * (P * P'ᴴ) * P') y, ?_⟩` and prove the remaining obligations.
+
+Use `show σ' (P'⁻¹ * (P' * Pᴴ) * P') (σ' (P'⁻¹ * (P * P'ᴴ) * P') y) = y`. Rewrite using `[← hmul _ hc _ hci]`. Establish `e : P'⁻¹ * (P' * Pᴴ * (P * P'ᴴ)) * P' = 1`. Rewrite using `[h3']`. Simplify using `only [Matrix.mul_assoc, kP, kP', h1, h1', Matrix.mul_one]`.
+
+Rewrite using `[e, hone]`. Both sides reduce to the same expression. Use `⟨U.trans (LinearIsometryEquiv.ofSurjective f hsurj), ?_⟩` and prove the remaining obligations. Introduce `g hg x`. Use `show σ' (P'⁻¹ * (P' * Pᴴ) * P') (U (σ g x)) = σ' g (σ' (P'⁻¹ * (P' * Pᴴ) * P') (U x))`.
+
+Establish `hgP : P * g * Pᴴ ∈ Formalism.MainNotions.S.UJset ε` using `final_conj_mem hP hg`. Establish `hgP' : P' * g * P'ᴴ ∈ Formalism.MainNotions.S.UJset ε` using `final_conj_mem hP' hg`. Establish `eσ : σ g = σ (P⁻¹ * (P * g * Pᴴ) * P)`. Use `congr 1`. Rewrite using `[h3]`.
+
+Simplify using `only [Matrix.mul_assoc, kP, h1, Matrix.mul_one]`. Establish `eσ' : σ' g = σ' (P'⁻¹ * (P' * g * P'ᴴ) * P')`. Use `congr 1`. Rewrite using `[h3']`. Simplify using `only [Matrix.mul_assoc, kP', h1', Matrix.mul_one]`.
+
+Establish `e2 : (P' * Pᴴ) * (P * g * Pᴴ) = (P' * g * P'ᴴ) * (P' * Pᴴ)`. Simplify using `only [Matrix.mul_assoc, kP, kP']`. Rewrite using `[eσ, hU' _ hgP, eσ', ← hmul _ hc _ hgP, ← hmul _ hgP' _ hc, e2]`.
+-/
 theorem discrete_series_unique_large_gap :
     ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
       ∀ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast ε lam h →
@@ -138,6 +182,41 @@ theorem discrete_series_unique_large_gap :
     simp only [Matrix.mul_assoc, kP, kP']
   rw [eσ, hU' _ hgP, eσ', ← hmul _ hc _ hgP, ← hmul _ hgP' _ hc, e2]
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ _ σ hlam hDS h hh hbig S hSf hSK`. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, hbig⟩`. Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Establish `hirr : Formalism.MainNotions.S.IsIrredOn (UJset ε) σ` using `hDS.2.2.2.1`. Take `⟨S0, hS0⟩` from `hDS.2.2.2.2.2.1`.
+
+Take `⟨V, hV, hV0, hVK, -⟩` from `exists_datum_of_isKTypeOf hσ hS0`. Establish `hD : IsDerivedOn ε σ (smD ε σ) (smE ε σ)` using `isDerivedOn_smE hσ`. Establish `hV' : IsKIrrHW ε (smE ε σ) (lowK ε lam) V` using `hV`. Establish `hc` using `casOnDatum_of_isDS hDS hgap hD hV' hVK`. Establish `hclos : closGen (smE ε σ) V = ⊤` using `data_closGen_eq_top hgap hσ hD hV' hc hVK hirr hV0`.
+
+Establish `hE : IsGlRep (smE ε σ)` using `hD.glRep`. Establish `hU : IsInfUnitary ε (smE ε σ)` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hKU : IsKUnitary ε (smE ε σ)` using `isKUnitary_of_isInfUnitary hU`. Use `choose T hTf hTG hTk hTmem using fun μ => admissible hE hU hV' hc hgap μ`. Use `haveI : ∀ μ, FiniteDimensional ℂ (T μ) := hTf`.
+
+Establish `hKG : ∀ g ∈ Kset ε, ∃ a : Formalism.REAL.KG ε, Formalism.REAL.toMK a = g`. Introduce `g hg`. Establish `hg' : g ∈ Set.range (fun a : Formalism.REAL.KG ε => Formalism.REAL.toMK a)`. Rewrite using `[Formalism.REAL.range_toMK]`. Conclude with `hg`.
+
+Take `⟨a, ha⟩` from `hg'`. Conclude with `⟨a, ha⟩`. Establish `hkfin : ∀ R : Submodule ℂ H, FiniteDimensional ℂ R → (∀ k ∈ Kset ε, ∀ x ∈ R, σ k x ∈ R) → R ≤ (genSub (smE ε σ) V).map (smD ε σ).subtype` using `fun R hRf hRK => data_kfin_le hgap hσ hD hV' hc hVK R (by rw [hclos]; exact le_top) hRf hRK`. Establish `hcomapK : ∀ R : Submodule ℂ H, (∀ k ∈ Kset ε, ∀ x ∈ R, σ k x ∈ R) → ∀ k ∈ Kset ε, ∀ v ∈ R.comap (smD ε σ).subtype, ∃ w ∈ R.comap (smD ε σ).subtype, (w : H) = σ k v` using `fun R hRK k hk v hv => ⟨⟨σ k v, hD.kStable k hk (v : H) v.2⟩, hRK k hk (v : H) hv, rfl⟩`. Establish `hcomapF : ∀ R : Submodule ℂ H, FiniteDimensional ℂ R → R ≤ smD ε σ → FiniteDimensional ℂ (R.comap (smD ε σ).subtype)` using `fun R hRf hRD => by haveI := hRf`.
+
+Conclude with `LinearEquiv.finiteDimensional (Submodule.comapSubtypeEquivOfLe hRD).symm`. Establish `hSK' : ∀ k ∈ Kset ε, ∀ x ∈ S, σ k x ∈ S` using `hSK`. Establish `hSD : S ≤ smD ε σ` using `(hkfin S hSf hSK').trans (Submodule.map_subtype_le _ _)`. Use `haveI hSDf : FiniteDimensional ℂ (S.comap (smD ε σ).subtype) := hcomapF S hSf hSD`. Establish `hSDk : IsKStableSub ε (smE ε σ) (S.comap (smD ε σ).subtype)` using `isKStableSub_of_kStable hσ hD _ hSDf (hcomapK S hSK')`.
+
+Establish `hSDc : ∀ c, ∀ v ∈ S.comap (smD ε σ).subtype, smE ε σ c c v ∈ S.comap (smD ε σ).subtype` using `fun c => hSDk c c rfl`. Set `P : Set (Fin n → ℝ)` to `{μ | ∃ w ∈ S.comap (smD ε σ).subtype, w ≠ 0 ∧ ∀ c, smE ε σ c c w = (μ c : ℂ) • w}`. Establish `hPfin : P.Finite`. Use `(Set.Finite.pi (t := fun c => {r : ℝ | Module.End.HasEigenvalue ((smE ε σ c c).restrict (hSDc c)) (r : ℂ)}) (fun c => (Module.End.finite_hasEigenvalue _).preimage (Complex.ofReal_injective.injOn))).subset ?_` and prove the remaining obligations. Introduce and unpack `μ ⟨w, hw, hw0, hμ⟩ c -`.
+
+Use `show Module.End.HasEigenvalue ((smE ε σ c c).restrict (hSDc c)) (μ c : ℂ)`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := ⟨w, hw⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `Subtype.ext (by simpa using hμ c)`. Introduce `h0`.
+
+Conclude with `hw0 (congrArg Subtype.val h0)`. Use `Submodule.finiteDimensional_of_le (S₂ := ((hPfin.toFinset).sup T).map (smD ε σ).subtype) ?_` and prove the remaining obligations. Use `sSup_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Θ, hΘ, rfl⟩`. Use `haveI := hSf`.
+
+Establish `hRK : ∀ k ∈ Kset ε, ∀ x ∈ LinearMap.range Θ, σ k x ∈ LinearMap.range Θ`. Introduce and unpack `k hk _ ⟨v, rfl⟩`. Take `⟨a, rfl⟩` from `hKG k hk`. Conclude with `⟨⟨σ (Formalism.REAL.toMK a) v, hSK' _ hk v v.2⟩, hΘ a v _ rfl⟩`. Establish `hRle` using `hkfin (LinearMap.range Θ) inferInstance hRK`.
+
+Establish `hRD : LinearMap.range Θ ≤ smD ε σ` using `hRle.trans (Submodule.map_subtype_le _ _)`. Use `haveI hRDf : FiniteDimensional ℂ ((LinearMap.range Θ).comap (smD ε σ).subtype) := hcomapF _ inferInstance hRD`. Establish `hRDk : IsKStableSub ε (smE ε σ) ((LinearMap.range Θ).comap (smD ε σ).subtype)` using `isKStableSub_of_kStable hσ hD _ hRDf (hcomapK _ hRK)`. Establish `hRDG : (LinearMap.range Θ).comap (smD ε σ).subtype ≤ genSub (smE ε σ) V`. Introduce `y hy`.
+
+Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 (hRle (show (y : H) ∈ LinearMap.range Θ from hy))`. Establish `hzy' : z = y` using `Subtype.ext hzy`. Rewrite using `[← hzy']`. Conclude with `hz`. Set `f : (S.comap (smD ε σ).subtype) →ₗ[ℂ] (smD ε σ)` to `LinearMap.codRestrict (smD ε σ) (Θ.comp (Submodule.comapSubtypeEquivOfLe hSD).toLinearMap) (fun s => hRD (LinearMap.mem_range_self Θ _))`.
+
+Establish `hfv : ∀ s : S.comap (smD ε σ).subtype, ((f s : smD ε σ) : H) = Θ ⟨((s : smD ε σ) : H), s.2⟩` using `fun s => rfl`. Establish `hf : ∀ (ν : Fin n → ℝ) (s : S.comap (smD ε σ).subtype), (∀ c, smE ε σ c c (s : smD ε σ) = (ν c : ℂ) • (s : smD ε σ)) → ∀ c, smE ε σ c c (f s) = (ν c : ℂ) • f s`. Introduce `ν s hs`. Establish `hw : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ ν ((s : smD ε σ) : H)` using `(isWtOn_iff hσ hD _ ν).2 hs`. Use `(isWtOn_iff hσ hD (f s) ν).1 ?_` and prove the remaining obligations.
+
+Introduce `θ hθ`. Take `⟨a, ha⟩` from `hKG _ hθ`. Establish `hv` using `hw θ hθ`. Rewrite using `[hfv]`. Rewrite `hv`, the goal using `[← ha]`.
+
+Establish `h3` using `hΘ a ⟨((s : smD ε σ) : H), s.2⟩ (Complex.exp (((∑ b, ν b * θ b : ℝ) : ℂ) * Complex.I) • ⟨((s : smD ε σ) : H), s.2⟩) hv.symm`. Rewrite `h3` using `[map_smul]`. Conclude with `h3.symm`. Establish `hwt : ∀ w ∈ (LinearMap.range Θ).comap (smD ε σ).subtype, w ≠ 0 → ∀ μ, IsKHWVec ε (smE ε σ) μ w → μ ∈ hPfin.toFinset`. Introduce `y hy hy0 μ hμ`.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Establish `hyf : y ∈ LinearMap.range f`. Take `⟨v, hv⟩` from `LinearMap.mem_range.1 (show (y : H) ∈ LinearMap.range Θ from hy)`. Use `⟨⟨⟨(v : H), hSD v.2⟩, v.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hfv]`.
+
+Conclude with `hv`. Conclude with `finalA_wt_mem hE hKU _ hSDc f hf hyf hy0 hμ.1`. Establish `hRle' : (LinearMap.range Θ).comap (smD ε σ).subtype ≤ (hPfin.toFinset).sup T` using `finalA_le_sup hE hU (genSub (smE ε σ) V) T hTk hTmem hPfin.toFinset _ _ rfl hRDf hRDG hRDk hwt`. Introduce `x hx`. Conclude with `Submodule.mem_map.2 ⟨⟨x, hRD hx⟩, hRle' (show (⟨x, hRD hx⟩ : smD ε σ) ∈ (LinearMap.range Θ).comap (smD ε σ).subtype from hx), rfl⟩`.
+-/
 theorem final_HCMultDSG :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsHCParam lam →

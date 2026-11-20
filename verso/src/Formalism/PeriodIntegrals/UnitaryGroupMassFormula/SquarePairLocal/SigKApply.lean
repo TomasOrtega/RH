@@ -9,6 +9,13 @@ namespace PI.SqPairLocal.Mdl
 
 open PI.SqPairLocal Formalism.BasicNotions.Examples₂
 
+/- English proof (translation)
+Break down `eq_or_ne b 0 with rfl | h0` into its components or cases. Establish `: a = 0`. Assume the negation of the conclusion as `ha0`. Take `⟨N, hN⟩` from `wz_exists_nat_lt a ha0`. Conclude with `absurd (h N (by simp)) (not_le.2 hN)`.
+
+Simplify using `[this]`. Establish `hl : log b ≤ 0`. Rewrite using `[← exp_le_exp, exp_log h0, exp_zero]`. Conclude with `hb`. Establish `e : b = exp (-(((-(log b)).toNat : ℕ) : ℤ))`.
+
+Rewrite using `[Int.toNat_of_nonneg (by omega), neg_neg, exp_log h0]`. Use `h ((-(log b)).toNat) (le_of_eq e)` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+-/
 theorem wz_le_of {a b : ℤᵐ⁰} (hb : b ≤ 1)
     (h : ∀ n : ℕ, b ≤ exp (-(n : ℤ)) → a ≤ exp (-(n : ℤ))) : a ≤ b := by
   rcases eq_or_ne b 0 with rfl | h0
@@ -24,17 +31,31 @@ theorem wz_le_of {a b : ℤᵐ⁰} (hb : b ≤ 1)
     have := h ((-(log b)).toNat) (le_of_eq e)
     rwa [← e] at this
 
+/- English proof (translation)
+The claim follows from `le_antisymm (wz_le_of hb fun n hn => (h n).2 hn) (wz_le_of ha fun n hn => (h n).1 hn)`.
+-/
 theorem wz_eq_of {a b : ℤᵐ⁰} (ha : a ≤ 1) (hb : b ≤ 1)
     (h : ∀ n : ℕ, a ≤ exp (-(n : ℤ)) ↔ b ≤ exp (-(n : ℤ))) : a = b :=
   le_antisymm (wz_le_of hb fun n hn => (h n).2 hn) (wz_le_of ha fun n hn => (h n).1 hn)
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_coe (x : 𝓞 E) : ((cj E x : 𝓞 E) : E) = star (x : E) := rfl
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[cj_coe, cj_coe, star_star]`.
+-/
 theorem cj_cj (x : 𝓞 E) : cj E (cj E x) = x := by
   ext; rw [cj_coe, cj_coe, star_star]
 
+/- English proof (translation)
+Establish `h1 : ∀ r, r ∈ Q ^ n → cj E r ∈ Q ^ n`. Introduce `r hr`. Establish `: Q ^ n ≤ (Q ^ n).comap (cj E)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this hr`.
+
+Conclude with `⟨fun h => by simpa [cj_cj] using h1 _ h, h1 r⟩`.
+-/
 theorem mem_pow_cj {Q : Ideal (𝓞 E)} (hQ : Q.comap (cj E) = Q) (n : ℕ) (r : 𝓞 E) :
     cj E r ∈ Q ^ n ↔ r ∈ Q ^ n := by
   have h1 : ∀ r, r ∈ Q ^ n → cj E r ∈ Q ^ n := by
@@ -50,10 +71,16 @@ section Val
 variable (v : HeightOneSpectrum (𝓞 E)) (hv : v.asIdeal.comap (cj E) = v.asIdeal)
 include hv
 
+/- English proof (translation)
+The claim follows from `wz_eq_of (v.intValuation_le_one _) (v.intValuation_le_one _) fun n => by rw [intValuation_le_pow_iff_mem, intValuation_le_pow_iff_mem, mem_pow_cj hv]`.
+-/
 theorem intVal_cj (r : 𝓞 E) : v.intValuation (cj E r) = v.intValuation r :=
   wz_eq_of (v.intValuation_le_one _) (v.intValuation_le_one _) fun n => by
     rw [intValuation_le_pow_iff_mem, intValuation_le_pow_iff_mem, mem_pow_cj hv]
 
+/- English proof (translation)
+Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Establish `hs : ∀ r : 𝓞 E, star (algebraMap (𝓞 E) E r) = algebraMap (𝓞 E) E (cj E r)` using `fun r => rfl`. Rewrite using `[star_div₀, hs, hs, map_div₀, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, valuation_of_algebraMap, intVal_cj v hv, intVal_cj v hv]`.
+-/
 theorem val_star (a : E) : v.valuation E (star a) = v.valuation E a := by
   obtain ⟨x, y, hy, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) a
   have hs : ∀ r : 𝓞 E, star (algebraMap (𝓞 E) E r) = algebraMap (𝓞 E) E (cj E r) := fun r => rfl
@@ -66,16 +93,28 @@ def tau : WithVal (v.valuation E) →+* WithVal (v.valuation E) :=
   WithVal.map (v.valuation E) (v.valuation E) (starRingEnd E)
 
 omit hv in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tau_apply (x : WithVal (v.valuation E)) :
     tau v x = WithVal.toVal (v.valuation E) (star (WithVal.ofVal x)) := rfl
 
 omit hv in
+/- English proof (translation)
+Rewrite using `[tau_apply, tau_apply, WithVal.ofVal_toVal, star_star, WithVal.toVal_ofVal]`.
+-/
 theorem tau_tau (x : WithVal (v.valuation E)) : tau v (tau v x) = x := by
   rw [tau_apply, tau_apply, WithVal.ofVal_toVal, star_star, WithVal.toVal_ofVal]
 
+/- English proof (translation)
+Rewrite using `[tau_apply, WithVal.valued_toVal, val_star v hv, WithVal.apply_ofVal]`.
+-/
 theorem v_tau (x : WithVal (v.valuation E)) : Valued.v (tau v x) = Valued.v x := by
   rw [tau_apply, WithVal.valued_toVal, val_star v hv, WithVal.apply_ofVal]
 
+/- English proof (translation)
+Apply `continuous_of_continuousAt_zero (tau v)` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_zero]`. Use `((Valued.hasBasis_nhds_zero _ _).tendsto_iff (Valued.hasBasis_nhds_zero _ _)).2 fun γ _ => ⟨γ, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding] at hx ⊢`. Rewrite using `[v_tau v hv]` and apply the resulting hypothesis.
+-/
 theorem tau_cont : Continuous (tau v) := by
   apply continuous_of_continuousAt_zero (tau v)
   rw [ContinuousAt, map_zero]
@@ -87,14 +126,23 @@ theorem tau_cont : Continuous (tau v) := by
 def sigC : (v.valuation E).Completion →+* (v.valuation E).Completion :=
   UniformSpace.Completion.mapRingHom (tau v) (tau_cont v hv)
 
+/- English proof (translation)
+The claim follows from `UniformSpace.Completion.mapRingHom_coe _ x`.
+-/
 theorem sigC_coe (x : WithVal (v.valuation E)) :
     sigC v hv (x : (v.valuation E).Completion) = (tau v x : (v.valuation E).Completion) :=
   UniformSpace.Completion.mapRingHom_coe _ x
 
+/- English proof (translation)
+Rewrite using `[sigC, UniformSpace.Completion.coe_mapRingHom]`. Conclude with `UniformSpace.Completion.continuous_map`.
+-/
 theorem sigC_cont : Continuous (sigC v hv) := by
   rw [sigC, UniformSpace.Completion.coe_mapRingHom]
   exact UniformSpace.Completion.continuous_map
 
+/- English proof (translation)
+Proceed by induction on `y using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq ((sigC_cont v hv).comp (sigC_cont v hv)) continuous_id`. Consider the case `ih a => rw [sigC_coe, sigC_coe, tau_tau]`.
+-/
 theorem sigC_sigC (y : (v.valuation E).Completion) : sigC v hv (sigC v hv y) = y := by
   induction y using UniformSpace.Completion.induction_on with
   | hp => exact isClosed_eq ((sigC_cont v hv).comp (sigC_cont v hv)) continuous_id
@@ -103,12 +151,21 @@ theorem sigC_sigC (y : (v.valuation E).Completion) : sigC v hv (sigC v hv y) = y
 def sigK : v.adicCompletion E →+* v.adicCompletion E :=
   (adicCompletion.equiv E v).symm.toRingHom.comp ((sigC v hv).comp (adicCompletion.equiv E v).toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigK_apply (x : v.adicCompletion E) :
     sigK v hv x = adicCompletion.ofCompletion (sigC v hv x.toCompletion) := rfl
 
+/- English proof (translation)
+Rewrite using `[sigK_apply, sigK_apply, adicCompletion.toCompletion_ofCompletion, sigC_sigC]`.
+-/
 theorem sigK_sigK (x : v.adicCompletion E) : sigK v hv (sigK v hv x) = x := by
   rw [sigK_apply, sigK_apply, adicCompletion.toCompletion_ofCompletion, sigC_sigC]
 
+/- English proof (translation)
+Establish `: (sigK v hv : v.adicCompletion E → v.adicCompletion E) = adicCompletion.ofCompletion ∘ (sigC v hv) ∘ adicCompletion.toCompletion` using `rfl`. Rewrite using `[this]`. Conclude with `(adicCompletion.continuous_ofCompletion E v).comp ((sigC_cont v hv).comp (adicCompletion.continuous_toCompletion E v))`.
+-/
 theorem sigK_cont : Continuous (sigK v hv) := by
   have : (sigK v hv : v.adicCompletion E → v.adicCompletion E) =
       adicCompletion.ofCompletion ∘ (sigC v hv) ∘ adicCompletion.toCompletion := rfl
@@ -116,6 +173,9 @@ theorem sigK_cont : Continuous (sigK v hv) := by
   exact (adicCompletion.continuous_ofCompletion E v).comp ((sigC_cont v hv).comp
     (adicCompletion.continuous_toCompletion E v))
 
+/- English proof (translation)
+Use `show adicCompletion.ofCompletion (sigC v hv _) = _`. Use `erw [sigC_coe]`. Both sides reduce to the same expression.
+-/
 theorem sigK_alg (a : E) :
     sigK v hv (algebraMap E (v.adicCompletion E) a) = algebraMap E (v.adicCompletion E) (star a) := by
   show adicCompletion.ofCompletion (sigC v hv _) = _

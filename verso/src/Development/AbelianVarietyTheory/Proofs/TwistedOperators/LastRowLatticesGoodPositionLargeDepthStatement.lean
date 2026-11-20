@@ -9,5 +9,8 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowShape.shapeAt_big | exact GlobalTheory.RowShape.shapeAt_big | (intros; apply GlobalTheory.RowShape.shapeAt_big <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lastRowLatticesGoodPosition_large_depth : Big fun ch => ShapeAt ch := by
   first | exact @GlobalTheory.RowShape.shapeAt_big | exact GlobalTheory.RowShape.shapeAt_big | (intros; apply GlobalTheory.RowShape.shapeAt_big <;> assumption)

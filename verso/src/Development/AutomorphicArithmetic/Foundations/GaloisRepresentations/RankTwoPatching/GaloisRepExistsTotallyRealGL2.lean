@@ -57,7 +57,13 @@ def GdOf : Prop :=
     ∀ (a : ℕ) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), GlobalTheory.RoadU.PlainTor (IrrGL.of σ.ρ σ.smooth σ.irred) →
       Gd (rc (algNorm σ))
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem rowOf' (h : RowT) : RowT := h
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem gr2S' (h : GaloisRepExistsTotallyRealGL2) : GaloisRepExistsTotallyRealGL2 := h
 
 end UpperTheory.Gal.SV

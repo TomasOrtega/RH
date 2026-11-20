@@ -6,6 +6,15 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.LocGenVal
 
+/- English proof (translation)
+Introduce `K _ _ I u`. Establish `h1` using `Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors (K := K) I)`. Establish `h2` using `Filter.eventually_cofinite.mp (FractionalIdeal.finite_factors (K := K) (FractionalIdeal.spanSingleton (𝓞 K)⁰ u))`. Use `⟨(h1.union h2).toFinset, ?_⟩` and prove the remaining obligations. Introduce `p hp a ha hu`.
+
+Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hp`. Take `⟨hpI, hpu⟩` from `hp`. Establish `hau : a / u ≠ 0` using `div_ne_zero ha.1 hu`. Establish `hsa : FractionalIdeal.spanSingleton (𝓞 K)⁰ a ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+
+Conclude with `ha.1`. Establish `hsu : FractionalIdeal.spanSingleton (𝓞 K)⁰ u ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hu`. Establish `hc : FractionalIdeal.count K p (FractionalIdeal.spanSingleton (𝓞 K)⁰ (a / u)) = 0`.
+
+Rewrite using `[div_eq_mul_inv, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_mul K p hsa (inv_ne_zero hsu), FractionalIdeal.count_inv, ha.2, hpI, hpu]`. Simplify using the standard rewrite rules. Rewrite using `[Formalism.L2.LamCM.valuation_eq_exp_neg_count p hau, hc, neg_zero, WithZero.exp_zero]`.
+-/
 theorem valuation_div_le_one_cofinite : ∀ (K : Type) [Field K] [NumberField K] (I : FractionalIdeal (𝓞 K)⁰ K) (u : K),
     ∃ S : Finset (HeightOneSpectrum (𝓞 K)), ∀ p ∉ S, ∀ a : K, Formalism.L2.LamCM.IsLocGen p a I → u ≠ 0 →
       p.valuation K (a / u) ≤ 1 := by

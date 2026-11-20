@@ -18,6 +18,9 @@ namespace GlobalTheory.PeriodLin
 open NumberField AlgebraicGeometry CategoryTheory Limits in
 open scoped Matrix nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g ty P h₀ hP hu hty`. Use `⟨(h₀.mulVecLin).toAddMonoidHom.comp P, _root_.GlobalTheory.PeriodConn.isPeriod_mulVec hP (isUnit_iff_ne_zero.mp hu) fun i j hij => ?_, fun a => rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hij (hty i j hne)`.
+-/
 theorem _root_.GlobalTheory.PeriodLin.exists_period_mulVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (h₀ : Matrix (Fin g) (Fin g) ℂ), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsPeriod D ty P → IsUnit h₀.det → (∀ j j', h₀ j j' ≠ 0 → ty j = ty j') → ∃ P' : D.La →+ (Fin g → ℂ), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsPeriod D ty P' ∧ ∀ a, P' a = h₀ *ᵥ P a := by
   intro E _ _ _ H D g ty P h₀ hP hu hty
   refine ⟨(h₀.mulVecLin).toAddMonoidHom.comp P,

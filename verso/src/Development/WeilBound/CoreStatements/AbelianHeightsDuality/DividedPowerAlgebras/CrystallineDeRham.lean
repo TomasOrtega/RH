@@ -17,6 +17,9 @@ variable {R : Type} [CommRing R] {I : Ideal R} {X : Scheme.{0}}
 
 abbrev chartOpen (s : X ⟶ Sp R) : Chart s → X.Opens := fun U ↦ U.1.1
 
+/- English proof (translation)
+Take `⟨N, h⟩` from `h`. Use `⟨N + 1, by omega, Ideal.span_eq_bot.2 ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hN, rfl⟩`. Conclude with `h l hl (by omega)`.
+-/
 theorem exists_lev {B : Type} [CommRing B] {J : Ideal B} {δ : DividedPowers J} (h : IsNilDP δ) :
     ∃ n, 1 ≤ n ∧ IsLev δ n := by
   obtain ⟨N, h⟩ := h
@@ -26,6 +29,17 @@ theorem exists_lev {B : Type} [CommRing B] {J : Ideal B} {δ : DividedPowers J} 
 
 variable {κ : DividedPowers I} {s : X ⟶ Sp R}
 
+/- English proof (translation)
+Take `⟨n, hn, hT⟩` from `exists_lev T.T.nil`. Take `⟨a₀⟩` from `exists_lift T.k T.T T.le`. Set `D` to `CostructuredArrow (NT κ (chartOpen s)).ι T`. Set `mk : ∀ (S : Thick (dp0 R) s) (_ : InN κ S) (_ : ⊤ ≤ S.x ⁻¹ᵁ T.k.1.1) (_ : S ⟶ T.T), D` to `fun S hS h c ↦ CostructuredArrow.mk (Y := (⟨⟨S, T.k, h⟩, hS⟩ : (NT κ (chartOpen s)).FullSubcategory)) (⟨c, le_rfl⟩ : Tag.Hom (⟨S, T.k, h⟩ : Tag (dp0 R) s (chartOpen s)) T)`. Set `c : ∀ a : D, a.left.obj.T ⟶ T.T` to `fun a ↦ Tag.Hom.f a.hom`.
+
+Establish `hk : ∀ a : D, chartOpen s a.left.obj.k ≤ chartOpen s T.k` using `fun a ↦ Tag.Hom.le a.hom`. Establish `hle : ∀ a : D, ⊤ ≤ a.left.obj.T.x ⁻¹ᵁ T.k.1.1` using `fun a p hp ↦ hk a (a.left.obj.le hp)`. Set `u : ∀ {a b : D}, (a ⟶ b) → (a.left.obj.T ⟶ b.left.obj.T)` to `fun f ↦ Tag.Hom.f f.left.hom`. Establish `hu : ∀ {a b : D} (f : a ⟶ b), u f ≫ c b = c a` using `fun f ↦ congrArg Tag.Hom.f (CostructuredArrow.w f)`. Establish `ext : ∀ {a b : D} (f g : a ⟶ b), u f = u g → f = g` using `fun f g h ↦ CostructuredArrow.hom_ext _ _ (ObjectProperty.hom_ext _ (Tag.hom_ext h))`.
+
+Set `hom : ∀ (a b : D) (φ : a.left.obj.T ⟶ b.left.obj.T) (_ : chartOpen s a.left.obj.k ≤ chartOpen s b.left.obj.k) (_ : φ ≫ c b = c a), a ⟶ b` to `fun a b φ h e ↦ CostructuredArrow.homMk (ObjectProperty.homMk (⟨φ, h⟩ : Tag.Hom _ _)) (Tag.hom_ext e)`. Use `choose P i j hP hl hun using fun a : D ↦ exists_coprod T.k a.left.obj.T a.left.property (hle a) n hn`. Use `choose q hq using fun a : D ↦ (hun a T.T hT (c a) a₀).exists`. Set `d : D` to `mk _ (bas_inN T.k) (bas_le T.k.1) a₀`. Set `Q : D → D` to `fun a ↦ mk (P a) (hP a) ((i a).le_preimage (hle a)) (q a)`.
+
+Use `acyc_of_coprod d Q (fun a ↦ hom a (Q a) (i a) (hk a) (hq a).1) (fun a ↦ hom d (Q a) (j a) le_rfl (hq a).2) fun a b φ ↦ ?_` and prove the remaining obligations. Take `⟨ψ, hψ, hψ'⟩` from `hun a (P b) (hl b) (u φ) (j b)`. Establish `e : ψ ≫ q b = q a`. Use `(hun a T.T hT (c a) a₀).unique ⟨?_, ?_⟩ (hq a)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hψ.1]`.
+
+Conclude with `hu φ`. Rewrite using `[← Category.assoc, hψ.2]`. Conclude with `(hq b).2`. Use `⟨hom (Q a) (Q b) ψ le_rfl e, ⟨ext _ _ hψ.1, ext _ _ hψ.2⟩, fun χ hχ ↦ ext _ _ ?_⟩` and prove the remaining obligations. Conclude with `hψ' (u χ) ⟨congrArg u hχ.1, congrArg u hχ.2⟩`.
+-/
 theorem acyc_NT (T : Tag (dp0 R) s (chartOpen s)) :
     Acyc R (CostructuredArrow (NT κ (chartOpen s)).ι T) := by
   obtain ⟨n, hn, hT⟩ := exists_lev T.T.nil
@@ -63,14 +77,25 @@ section Final
 
 variable {R₀ : Type} [CommRing R₀] {π : R →+* R₀} {X₀ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {i : X₀ ⟶ X}
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.preimage_iSup, chart_cover hs, Scheme.Hom.preimage_top]`.
+-/
 theorem red_cover (hs : Smooth s) (i : X₀ ⟶ X) : ⨆ k, redOpen (chartOpen s) i k = ⊤ := by
   rw [← Scheme.Hom.preimage_iSup, chart_cover hs, Scheme.Hom.preimage_top]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `chart_inf hs k l`. Conclude with `⟨m, by change i ⁻¹ᵁ m.1.1 = _; rw [hm]; rfl⟩`.
+-/
 theorem red_inf (hs : IsSeparated s) (i : X₀ ⟶ X) (k l : Chart s) :
     ∃ m, redOpen (chartOpen s) i m = redOpen (chartOpen s) i k ⊓ redOpen (chartOpen s) i l := by
   obtain ⟨m, hm⟩ := chart_inf hs k l
   exact ⟨m, by change i ⁻¹ᵁ m.1.1 = _; rw [hm]; rfl⟩
 
+/- English proof (translation)
+Establish `a` using `tag_pull1 (γ := dp0 R) (s := s) (chart_cover hs) (chart_inf hs')`. Establish `b` using `qa1 (Tag.forget (dp0 R) s (chartOpen s) ⋙ O (dp0 R) s) (NT κ (chartOpen s)).ι acyc_NT`. Establish `c` using `h.cG_pull1 (chartOpen s)`. Establish `d` using `tag_pull1 (γ := κ) (s := s₀ ≫ spMap π) (red_cover hs i) (red_inf hs' i)`. Use `(Function.Bijective.of_comp_iff' d _).1 ?_` and prove the remaining obligations.
+
+Use `c.comp (b.comp a) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Take `⟨z, rfl⟩` from `H1.mk_surjective _ z`. Both sides reduce to the same expression.
+-/
 theorem Red.pull1 (h : Red κ π s s₀ i) (hs : Smooth s) (hs' : IsSeparated s) : Function.Bijective h.mor.pull1 := by
   have a := tag_pull1 (γ := dp0 R) (s := s) (chart_cover hs) (chart_inf hs')
   have b := qa1 (Tag.forget (dp0 R) s (chartOpen s) ⋙ O (dp0 R) s) (NT κ (chartOpen s)).ι acyc_NT
@@ -82,6 +107,11 @@ theorem Red.pull1 (h : Red κ π s s₀ i) (hs : Smooth s) (hs' : IsSeparated s)
   obtain ⟨z, rfl⟩ := H1.mk_surjective _ z
   rfl
 
+/- English proof (translation)
+Establish `a` using `tag_pull2 (γ := dp0 R) (s := s) (chart_cover hs) (chart_inf hs')`. Establish `b` using `qa2 (Tag.forget (dp0 R) s (chartOpen s) ⋙ O (dp0 R) s) (NT κ (chartOpen s)).ι acyc_NT`. Establish `c` using `h.cG_pull2 (chartOpen s)`. Establish `d` using `tag_pull2 (γ := κ) (s := s₀ ≫ spMap π) (red_cover hs i) (red_inf hs' i)`. Use `(Function.Bijective.of_comp_iff' d _).1 ?_` and prove the remaining obligations.
+
+Use `c.comp (b.comp a) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Take `⟨z, rfl⟩` from `H2.mk_surjective _ z`. Both sides reduce to the same expression.
+-/
 theorem Red.pull2 (h : Red κ π s s₀ i) (hs : Smooth s) (hs' : IsSeparated s) : Function.Bijective h.mor.pull2 := by
   have a := tag_pull2 (γ := dp0 R) (s := s) (chart_cover hs) (chart_inf hs')
   have b := qa2 (Tag.forget (dp0 R) s (chartOpen s) ⋙ O (dp0 R) s) (NT κ (chartOpen s)).ι acyc_NT
@@ -95,6 +125,9 @@ theorem Red.pull2 (h : Red κ π s s₀ i) (hs : Smooth s) (hs' : IsSeparated s)
 
 end Final
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ hκ _ _ _ hπ hI _ _ _ _ _ hs hs' _ hp _ ↦ ⟨Red.pull1 ⟨hκ, hπ, hI, hp⟩ hs hs', Red.pull2 ⟨hκ, hπ, hI, hp⟩ hs hs'⟩`.
+-/
 theorem crystallineDeRham : GlobalTheory.Published.CrystallineDeRham := fun _ _ _ _ hκ _ _ _ hπ hI _ _ _ _ _ hs hs' _ hp _ ↦
   ⟨Red.pull1 ⟨hκ, hπ, hI, hp⟩ hs hs', Red.pull2 ⟨hκ, hπ, hI, hp⟩ hs hs'⟩
 

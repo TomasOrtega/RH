@@ -30,6 +30,11 @@ def conv (c c' : WO S T →₀ ℂ) : WO S T →₀ ℂ :=
 
 def convList (l : List (WO S T →₀ ℂ)) : WO S T →₀ ℂ := l.foldr (conv ψ S T) (Finsupp.single 0 1)
 
+/- English proof (translation)
+Establish `h0` using `fun u => zero_smul ℂ (heisO ψ S T u f)`. Establish `h1` using `fun u (a b : ℂ) => add_smul a b (heisO ψ S T u f)`. Rewrite using `[GlobalTheory.HeisComb.comb_comb, GlobalTheory.HeisComb.comb_eq_sum, conv, ← Finsupp.sum_finset_sum_index h0 h1]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_finset_sum_index h0 h1]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (h0 _), GlobalTheory.WeilVacMove.heisO_heisO, smul_smul]`.
+-/
 theorem comb_conv (c c' : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (conv ψ S T c c') f = comb ψ S T c (comb ψ S T c' f) := by
   have h0 := fun u => zero_smul ℂ (heisO ψ S T u f)
@@ -40,11 +45,17 @@ theorem comb_conv (c c' : WO S T →₀ ℂ) (f : WO S T → ℂ) :
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [Finsupp.sum_single_index (h0 _), GlobalTheory.WeilVacMove.heisO_heisO, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (h := fun u (a : ℂ) => a • heisO ψ S T u f) (zero_smul ℂ _), one_smul]`. Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+-/
 theorem comb_unit (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
   rw [GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (h := fun u (a : ℂ) => a • heisO ψ S T u f) (zero_smul ℂ _), one_smul]
   funext w
   simp [heisO, symplOH, symplO, hO]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact comb_unit ψ S T f`. Consider the case `cons i l ih => exact (comb_conv ψ S T _ _ f).trans (congrArg _ ih)`.
+-/
 theorem comb_convList {α : Type} (l : List α) (c : α → WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (convList ψ S T (l.map c)) f = l.foldr (fun i f' => comb ψ S T (c i) f') f := by
   induction l with
@@ -53,6 +64,9 @@ theorem comb_convList {α : Type} (l : List α) (c : α → WO S T →₀ ℂ) (
 
 variable {ψ S T}
 
+/- English proof (translation)
+Take `⟨x, hx, h2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hw)`. Take `⟨y, hy, h3⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum h2)`. Conclude with `⟨x, hx, y, hy, Finset.mem_singleton.1 (Finsupp.support_single_subset h3)⟩`.
+-/
 theorem mem_support_conv {c c' : WO S T →₀ ℂ} {w : WO S T} (hw : w ∈ (conv ψ S T c c').support) :
     ∃ x ∈ c.support, ∃ y ∈ c'.support, w = x + y := by
   classical
@@ -60,6 +74,11 @@ theorem mem_support_conv {c c' : WO S T →₀ ℂ} {w : WO S T} (hw : w ∈ (co
   obtain ⟨y, hy, h3⟩ := Finset.mem_biUnion.1 (Finsupp.support_finset_sum h2)
   exact ⟨x, hx, y, hy, Finset.mem_singleton.1 (Finsupp.support_single_subset h3)⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact fun w hw => Finset.mem_singleton.1 (Finsupp.support_single_subset hw) ▸ h0`. Consider the case `cons c l ih`. Introduce `w hw`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_support_conv hw`.
+
+Conclude with `hadd x y (hl c List.mem_cons_self x hx) (ih (fun c' hc' => hl c' (List.mem_cons_of_mem _ hc')) y hy)`.
+-/
 theorem support_convList {p : WO S T → Prop} (h0 : p 0) (hadd : ∀ x y, p x → p y → p (x + y)) {l : List (WO S T →₀ ℂ)}
     (hl : ∀ c ∈ l, ∀ x ∈ c.support, p x) : ∀ w ∈ (convList ψ S T l).support, p w := by
   induction l with
@@ -69,6 +88,9 @@ theorem support_convList {p : WO S T → Prop} (h0 : p 0) (hadd : ∀ x y, p x �
     obtain ⟨x, hx, y, hy, rfl⟩ := mem_support_conv hw
     exact hadd x y (hl c List.mem_cons_self x hx) (ih (fun c' hc' => hl c' (List.mem_cons_of_mem _ hc')) y hy)
 
+/- English proof (translation)
+Rewrite using `[conv, Finsupp.support_single_ne_zero _ one_ne_zero, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finset.sum_singleton, Finsupp.single_eq_same, Finsupp.single_eq_same, one_mul, one_mul]`.
+-/
 example (x y : WO S T) :
     conv ψ S T (Finsupp.single x 1) (Finsupp.single y 1) = Finsupp.single (x + y) (ψ (symplOH S T x y)) := by
   rw [conv, Finsupp.support_single_ne_zero _ one_ne_zero, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton,
@@ -87,10 +109,16 @@ def symLevel (Pg : Finset (Pl D.host.E)) (ψ₀ : ∀ PP : Pl D.host.E, AddChar 
   LevelP.ofLocal (fun PP => Formalism.L2.Col.HPsymF (kP PP.1) D.R.r D.R.k D.R.rS)
     fun PP => Formalism.L2.Col.chiSymF (ψ₀ PP.1) D.R.r D.R.k D.R.rS
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h PP => h PP (Set.mem_univ _), fun h PP _ => h PP⟩`.
+-/
 theorem mem_symLevel {Pg : Finset (Pl D.host.E)} {ψ₀ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ} (g : Formalism.L2.DIV.G0 Pg D.R.r) :
     g ∈ (symLevel Pg ψ₀).H ↔ ∀ PP, g PP ∈ Formalism.L2.Col.HPsymF (kP PP.1) D.R.r D.R.k D.R.rS :=
   ⟨fun h PP => h PP (Set.mem_univ _), fun h PP _ => h PP⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.finset_prod_apply _ _ _`.
+-/
 theorem symLevel_chi {Pg : Finset (Pl D.host.E)} {ψ₀ : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ} (g : (symLevel Pg ψ₀).H) :
     (symLevel Pg ψ₀).chi g =
       ∏ PP : Pg, Formalism.L2.Col.chiSymF (ψ₀ PP.1) D.R.r D.R.k D.R.rS ⟨g.1 PP, (mem_symLevel g.1).1 g.2 PP⟩ :=
@@ -136,18 +164,30 @@ namespace StdSp
 variable {a : XPart D u} {ζ₀ : Fin a.Lz.rank → D.host.E} {π : D.host.E} (H : StdSp a ζ₀ π)
 include H
 
+/- English proof (translation)
+Rewrite using `[H.lzGram, H.zeta, Matrix.one_mulVec]`. Simplify using `[dotProduct, H.lzRank]`.
+-/
 theorem norm : star ζ₀ ⬝ᵥ a.Lz.gram *ᵥ ζ₀ = star π * π := by
   rw [H.lzGram, H.zeta, Matrix.one_mulVec]
   simp [dotProduct, H.lzRank]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.lzRank, by rw [H.norm]; exact mul_ne_zero (star_ne_zero.2 h) h⟩`.
+-/
 theorem line (h : π ≠ 0) : IsLineVec a.Lz ζ₀ := ⟨H.lzRank, by rw [H.norm]; exact mul_ne_zero (star_ne_zero.2 h) h⟩
 
+/- English proof (translation)
+Simplify using `only [vecB, Matrix.mulVec, dotProduct, H.iB, H.zeta]`. Apply the tactic sequence `split_ifs <;> simp [H.lzRank]`.
+-/
 theorem vec (n) (h : n = D.R.m) (r) : vecB (a.oT n h) ζ₀ r = if r.val + 1 = (D.sp.X n).rank then π else 0 := by
   simp only [vecB, Matrix.mulVec, dotProduct, H.iB, H.zeta]
   split_ifs <;> simp [H.lzRank]
 
 end StdSp
 
+/- English proof (translation)
+Introduce `H` and use `by have h1 := (H.lat 0 (Nat.zero_le _) fun _ => 1).2 fun _ => isIntegral_one rw [h, Submodule.mem_bot] at h1 exact one_ne_zero (congrFun h1 ⟨0, GlobalTheory.FinPl.rank_pos_of_le D (Nat.zero_le _)⟩)`.
+-/
 example {a : XPart D u} {ζ₀ : Fin a.Lz.rank → D.host.E} {π : D.host.E} (h : (a.x 0).L = ⊥) : ¬ StdSp a ζ₀ π := fun H => by
   have h1 := (H.lat 0 (Nat.zero_le _) fun _ => 1).2 fun _ => isIntegral_one
   rw [h, Submodule.mem_bot] at h1
@@ -155,6 +195,11 @@ example {a : XPart D u} {ζ₀ : Fin a.Lz.rank → D.host.E} {π : D.host.E} (h 
 
 def unitLine (D : D7) : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1
 
+/- English proof (translation)
+Use `⟨rfl, ?_, Examples₂.posSpace_sigOK _ 1, fun _ => rfl⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(Examples₂.stdSpace_gram_apply (E := D.host.E) Examples₂.star_isIntegral 1 (fun _ => false) 1 0 i j).trans ?_` and prove the remaining obligations. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j`. Rewrite using `[Matrix.one_apply_eq]`.
+
+Conclude with `if_pos rfl`.
+-/
 theorem unitLine_spec (D : D7) :
     (unitLine D).rank = 1 ∧ (unitLine D).gram = 1 ∧ (unitLine D).SigOK ∧ (unitLine D).IsPosDef := by
   refine ⟨rfl, ?_, Examples₂.posSpace_sigOK _ 1, fun _ => rfl⟩
@@ -228,6 +273,9 @@ def psiC (P : HeightOneSpectrum (𝓞 B.fields.E)) : AddChar (𝓞 B.fields.E �
 def chiC (i : ℕ) (P : HeightOneSpectrum (𝓞 B.fields.E)) : (𝓞 B.fields.E ⧸ P.asIdeal)ˣ →* ℂˣ :=
   (Units.map (B.embLL : B.LL →* ℂ)).comp (Formalism.L2.Col.chiP I.Ch P i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiC_apply (i P x) : ((chiC I i P x : ℂˣ) : ℂ) = B.embLL ((Formalism.L2.Col.chiP I.Ch P i x : B.LLˣ) : B.LL) := rfl
 
 structure IsComOf (c : GlobalTheory.ChainOnto.Com (I.rec7 l Z)) : Prop where
@@ -241,6 +289,9 @@ structure IsComOf (c : GlobalTheory.ChainOnto.Com (I.rec7 l Z)) : Prop where
 
 variable {I l Z}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `Finset.card_pos.1 ((l.pr.vG_card 0).symm ▸ (base_fields_primes_ok B X).1.f_pos)`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[H.places]`. Unfold `Formalism.L2.Col.Primes.vGs`. Conclude with `(@Finset.mem_union _ (_) _ _ _).2 (Or.inl hw)`.
+-/
 theorem IsComOf.nonempty {c} (H : IsComOf I l Z c) : c.Pg.Nonempty := by
   classical
   obtain ⟨w, hw⟩ := Finset.card_pos.1 ((l.pr.vG_card 0).symm ▸ (base_fields_primes_ok B X).1.f_pos)
@@ -268,6 +319,15 @@ def baseY (j : ℕ) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0)
 
 variable {A} in
 
+/- English proof (translation)
+Use `letI := GlobalTheory.Mem.Col2.starE B`. Take `⟨c, hc, y, hy, h⟩` from `H j hj P hP`. Take `⟨y₀, -, e⟩` from `(A.p0 j).mem_ybSet hj`. Establish `h1` using `(A.p0 j).repY_mem hj`. Rewrite `hy` using `[e]`.
+
+Establish `h1'` using `e.subset h1`. Establish `h2` using `(Formalism.L2.Col.mem_locLat _ _ _ _).1 (sub_mem h1' hy) P`. Rewrite `h` using `[if_pos hP, pow_zero, inv_one, one_smul]`. Simplify using `only [if_pos hP, zpow_zero, inv_one, one_smul, sub_sub_sub_cancel_right] at h2`. Establish `h3` using `GlobalTheory.ColNorms.liftFr_lifts B.fields.E _ _ _ (A.p0 j).1.1.deco ⟨P.1, hP⟩`.
+
+Establish `e2 : Formalism.L2.Col.frsF I.sel (I.tup I.mu0) (A.p0 j).1.1 P = (A.p0 j).1.1.deco.1.liftFr ⟨P.1, hP⟩` using `dif_pos hP`. Establish `h4` using `(h3.1 ((Formalism.L2.Col.frsF I.sel (I.tup I.mu0) (A.p0 j).1.1 P).symm (Formalism.L2.Col.repY (A.p0 j).1.2 - y))).1 (by`. Rewrite using `[← e2, LinearEquiv.apply_symm_apply]`. Conclude with `h2)`. Establish `h5` using `(Formalism.L2.Col.mem_localization_standardLattice P.1 _).1 (sub_mem h4 h) i`.
+
+Use `h5 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [baseY, map_sub, Pi.sub_apply, Pi.single_apply, Fin.ext_iff, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem BaseCoset.intAt (H : BaseCoset A) {j : ℕ} (hj : j + 1 = B.R.m) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup I.mu0))
     (hP : P.1 ∈ (B.primes X).vGs) (i : Fin (B.R.N j)) :
     Formalism.L2.Col.IntAt P.1 (baseY A j P i - if i.val = B.R.k then ((Formalism.L2.Col.qOf P.1 : B.fields.E))⁻¹ else 0) := by
@@ -361,10 +421,16 @@ namespace XStdBy
 variable {w a o G} {A : ColDat I l Z v (w.C.herm.base.Ch v)} (H : XStdBy w a o G A)
 include H
 
+/- English proof (translation)
+Rewrite using `[H.col.om j hj, ← H.col.chr j hj]`. Conclude with `H.col.is.om j hj`.
+-/
 theorem weil {j : ℕ} (hj : j < B.R.m) : IsWeilDatumO a.c.ψ _ _ (a.c.μ (j + 1)) (a.c.μ (j + 1)) (a.k j).om := by
   rw [H.col.om j hj, ← H.col.chr j hj]
   exact H.col.is.om j hj
 
+/- English proof (translation)
+Use `H.sp.norm.trans ?_` and prove the remaining obligations. Establish `h` using `congrArg (algebraMap (𝓞 B.fields.E) B.fields.E) (l.pr.piT_norm v)`. Rewrite `h` using `[map_mul, map_natCast, mul_comm]`. Conclude with `h`.
+-/
 theorem norm : star o.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ o.ζ₀ = ((B.T v : ℕ) : B.host.E) := by
   refine H.sp.norm.trans ?_
   have h := congrArg (algebraMap (𝓞 B.fields.E) B.fields.E) (l.pr.piT_norm v)
@@ -373,12 +439,21 @@ theorem norm : star o.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ o.ζ₀ = ((B.T v : ℕ) : B.h
 
 end XStdBy
 
+/- English proof (translation)
+The claim follows from `let ⟨P, hP⟩ := Finset.card_pos.1 ((l.pr.vT_card v).symm ▸ (base_fields_primes_ok B X).1.f_pos) ⟨⟨P, hP⟩⟩`.
+-/
 example : Nonempty ((B.primes X).vT v) :=
   let ⟨P, hP⟩ := Finset.card_pos.1 ((l.pr.vT_card v).symm ▸ (base_fields_primes_ok B X).1.f_pos)
   ⟨⟨P, hP⟩⟩
 
+/- English proof (translation)
+Introduce `⟨_, H⟩` and use `H.com.nonempty.ne_empty h`.
+-/
 example (h : a.c.Pg = ∅) : ¬ XStd w a o G := fun ⟨_, H⟩ => H.com.nonempty.ne_empty h
 
+/- English proof (translation)
+Rewrite using `[← H.unif]`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).1 o.q.2.not_isUnit`.
+-/
 example (H : OffsetCompatibility A o) : valuation k ((B.T v : ℕ) : k) < 1 := by
   rw [← H.unif]
   exact (Valuation.Integer.not_isUnit_iff_valuation_lt_one).1 o.q.2.not_isUnit

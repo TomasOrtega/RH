@@ -6,10 +6,20 @@ open scoped MatrixGroups ModularForm Manifold Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `(isCF_coe_top CuspForm.discriminant).1 x (Subgroup.mem_top x)`.
+-/
 theorem discriminant_slash_specialLinearGroup (x : SL(2, ℤ)) :
     (ModularForm.discriminant ∣[(12 : ℤ)] x) = ModularForm.discriminant :=
   (isCF_coe_top CuspForm.discriminant).1 x (Subgroup.mem_top x)
 
+/- English proof (translation)
+Establish `hsl : ∀ x : SL(2, ℤ), (H / ModularForm.discriminant) ∣[K - 12] x = (H ∣[K] x) / ModularForm.discriminant`. Introduce `x`. Use `ModularForm.div_slash_SL2 K 12 x H ModularForm.discriminant` as an intermediate fact. Rewrite `this` using `[discriminant_slash_specialLinearGroup]`. Conclude with `this`.
+
+Use `⟨H / ModularForm.discriminant, ⟨fun γ hγ => ?_, ?_, fun x => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsl, hH.1 γ hγ]`. Conclude with `hH.2.1.div CuspForm.discriminant.holo' ModularForm.discriminant_ne_zero`. Rewrite using `[hsl, IsBoundedAtImInfty, BoundedAtFilter]`. Conclude with `(Asymptotics.div_isBoundedUnder_of_isBigO ((hdec x).trans ModularForm.exp_isBigO_discriminant)).isBigO_one ℝ`.
+
+Use extensionality with `τ`. Simplify using `[mul_div_cancel₀ _ (ModularForm.discriminant_ne_zero τ)]`.
+-/
 theorem exists_eq_discriminant_mul (Γ : Subgroup SL(2, ℤ)) (K : ℤ) (H : ℍ → ℂ) (hH : IsMF Γ K H)
     (hdec : ∀ x : SL(2, ℤ), (H ∣[K] x) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)) :
     ∃ G : ℍ → ℂ, IsMF Γ (K - 12) G ∧ H = ModularForm.discriminant * G := by

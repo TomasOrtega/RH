@@ -20,6 +20,9 @@ section Gen
 
 variable {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Introduce `h`. Use `tensInj F κ φ h0 hs ∅ 1 (fun _ => 1) (fun _ => f) (fun _ => φ) (fun _ _ _ => rfl) (by simpa using h)` as an intermediate fact. Use `congrArg ((TensorProduct.rid ℂ (SInf F κ)).toLinearMap ∘ₗ (PiTensorProduct.isEmptyEquiv (R := ℂ) ((∅ : Finset (Pl F))) (s := fun v => (κ → Fv F v) → ℂ)).toLinearMap.lTensor (SInf F κ)) this` as an intermediate fact. Simplify using `at this`. Conclude with `hf this`.
+-/
 theorem pure_ne {f : SInf F κ} (hf : f ≠ 0) {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} (h0 : ∀ v, φ v ≠ 0) (hs : Std φ) : pure f φ ≠ 0 := by
   intro h
   have := tensInj F κ φ h0 hs ∅ 1 (fun _ => 1) (fun _ => f) (fun _ => φ) (fun _ _ _ => rfl) (by simpa using h)
@@ -28,11 +31,27 @@ theorem pure_ne {f : SInf F κ} (hf : f ≠ 0) {φ : ∀ v : Pl F, (κ → Fv F 
   simp at this
   exact hf this
 
+/- English proof (translation)
+Take `⟨r, -, hr'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hs`. Rewrite using `[← hr']`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`.
+-/
 theorem pure_upd_zero (f : SInf F κ) {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hs : Std φ) (v : Pl F) :
     pure f (Function.update φ v 0) = 0 := by
   obtain ⟨r, -, hr'⟩ := GlobalTheory.PureFactor.exists_rest_factor v f φ hs
   rw [← hr']; funext x; simp [tens]
 
+/- English proof (translation)
+Distinguish the cases in `hg : g = 0`. Conclude with `hg ▸ zero_mem _`. Take `⟨x₀, hx⟩` from `Function.ne_iff.1 (pure_ne hg h0 hs)`. Set `pt : (κ → mixedEmbedding.mixedSpace F) → κ → AF F` to `fun z k => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (z k), (x₀ k).2)`. Establish `e : ∀ (f : SInf F κ) ψ z, pure f ψ (pt z) = f z * ∏ᶠ v, ψ v fun i => evFin F v (x₀ i)` using `fun f ψ z => by`.
+
+Establish `: (fun k => evI F (pt z k)) = z` using `funext fun k => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `key : ∀ Φ ∈ Submodule.span ℂ {Φ | ∃ f ∈ N, ∃ ψ, Φ = pure f ψ}, ∃ f ∈ N, ∀ z, Φ (pt z) = f z` using `fun Φ hΦ => by`.
+
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, hf, ψ, rfl⟩` from `h`. Conclude with `⟨(∏ᶠ v, ψ v fun i => evFin F v (x₀ i)) • f, N.smul_mem _ hf, fun z => by rw [e, mul_comm]; rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ => rfl⟩`.
+
+Consider the case `add _ _ _ _ a b`. Take `⟨f, hf, a⟩` from `a`. Take `⟨f', hf', b⟩` from `b`. Conclude with `⟨f + f', add_mem hf hf', fun z => by rw [Pi.add_apply, a, b]; rfl⟩`. Consider the case `smul c _ _ a`.
+
+Take `⟨f, hf, a⟩` from `a`. Conclude with `⟨c • f, N.smul_mem _ hf, fun z => by rw [Pi.smul_apply, a]; rfl⟩`. Take `⟨f, hf, a⟩` from `key _ h`. Establish `hc : (∏ᶠ v, φ v fun i => evFin F v (x₀ i)) ≠ 0` using `right_ne_zero_of_mul hx`. Establish `: g = (∏ᶠ v, φ v fun i => evFin F v (x₀ i))⁻¹ • f`.
+
+Use extensionality with `z`. Rewrite using `[SchwartzMap.smul_apply, ← a, e, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Conclude with `this ▸ N.smul_mem _ hf`.
+-/
 theorem arch_slice {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} (h0 : ∀ v, φ v ≠ 0) (hs : Std φ) (N : Submodule ℂ (SInf F κ)) {g : SInf F κ}
     (h : pure g φ ∈ Submodule.span ℂ {Φ | ∃ f ∈ N, ∃ ψ, Φ = pure f ψ}) : g ∈ N := by
   by_cases hg : g = 0
@@ -67,23 +86,49 @@ end Gen
 
 variable {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ Y W}
 
+/- English proof (translation)
+The claim follows from `(h.vac v).2.1`.
+-/
 theorem vac_ne (h : M.IsGood B.ψ) (v) : M.vac v ≠ 0 := (h.vac v).2.1
 
+/- English proof (translation)
+The claim follows from `(h.vac v).1`.
+-/
 theorem vac_sb (h : M.IsGood B.ψ) (v) : M.vac v ∈ SB _ := (h.vac v).1
 
 variable (B M) in
 
 def SS : ∀ v : Pl F, Submodule ℂ (Fl F v n d) := Function.update (fun _ => SB _) B.v₁ (Submodule.span ℂ (M.SoLoc B.ψ B.τ₁))
 
+/- English proof (translation)
+The claim follows from `Function.update_self ..`.
+-/
 theorem SS_self : SS B M B.v₁ = Submodule.span ℂ (M.SoLoc B.ψ B.τ₁) := Function.update_self ..
 
+/- English proof (translation)
+The claim follows from `Function.update_of_ne h ..`.
+-/
 theorem SS_ne {v} (h : v ≠ B.v₁) : SS B M v = SB _ := Function.update_of_ne h ..
 
+/- English proof (translation)
+Distinguish the cases in `h : v = B.v₁`. Substitute `h` using the available equality. Rewrite using `[SS_self]`. Conclude with `Submodule.span_le.2 fun x hx => hx.1`. Rewrite using `[SS_ne h]`.
+-/
 theorem SS_le (v) : SS B M v ≤ SB _ := by
   by_cases h : v = B.v₁
   · subst h; rw [SS_self]; exact Submodule.span_le.2 fun x hx => hx.1
   · rw [SS_ne h]
 
+/- English proof (translation)
+Establish `sb` using `fun v => SS_le v (a.1 v)`. Establish `st : Std φ` using `(a.2.and h.std).mono fun _ h => h.1.trans h.2`. Establish `k : ∀ x ∈ Submodule.span ℂ (M.SoLoc B.ψ B.τ₁), pure f (Function.update φ B.v₁ x) ∈ M.So B.ψ B.τ₁` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Establish `b : admitted M (fun _ => SB _) (Function.update φ B.v₁ x)` using `admitted.upd ⟨sb, a.2⟩ hx.1`. Conclude with `Submodule.subset_span ⟨f, _, b.1, b.2, by rwa [Function.update_self], rfl⟩`. Consider the case `zero => rw [pure_upd_zero f st]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Use `(pureAct F _ B.v₁ id f φ sb st).2.1 x y 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`.
+
+Use `(pureAct F _ B.v₁ id f φ sb st).2.1 0 x c` as an intermediate fact. Rewrite `this` using `[zero_add, pure_upd_zero f st, zero_add]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `k _ (SS_self (B := B) (M := M) ▸ a.1 B.v₁)` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem pure_mem_so (h : M.IsGood B.ψ) (f : SInf F _) {φ} (a : admitted M (SS B M) φ) : pure f φ ∈ M.So B.ψ B.τ₁ := by
   have sb := fun v => SS_le v (a.1 v)
   have st : Std φ := (a.2.and h.std).mono fun _ h => h.1.trans h.2
@@ -104,12 +149,26 @@ theorem pure_mem_so (h : M.IsGood B.ψ) (f : SInf F _) {φ} (a : admitted M (SS 
   have := k _ (SS_self (B := B) (M := M) ▸ a.1 B.v₁)
   rwa [Function.update_eq_self] at this
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Take `⟨g, hg, e⟩` from `pure_eq_pureA h φ h1 h2`. Rewrite using `[e]`. Conclude with `pureA_mem f hg`.
+-/
 theorem so_le (h : M.IsGood B.ψ) : M.So B.ψ B.τ₁ ≤ schA F _ := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, φ, h1, h2, -, rfl⟩
   obtain ⟨g, hg, e⟩ := pure_eq_pureA h φ h1 h2
   rw [e]; exact pureA_mem f hg
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `(Submodule.span ℂ (M.SoLoc B.ψ B.τ₁)).exists_isCompl`. Set `π : Module.End ℂ (Fl F B.v₁ n d)` to `N.subtype ∘ₗ N.linearProjOfIsCompl _ hN.symm`. Take `⟨O, hO⟩` from `exists_factorOp B.v₁ π`. Establish `k : M.So B.ψ B.τ₁ ≤ LinearMap.ker O` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, φ, -, h2, h3, rfl⟩`.
+
+Establish `st : Std φ` using `(h2.and h.std).mono fun _ h => h.1.trans h.2`. Establish `: π (φ B.v₁) = 0`. Conclude with `congrArg N.subtype ((Submodule.linearProjOfIsCompl_apply_eq_zero_iff hN.symm).2 (Submodule.subset_span h3))`. Use `show O _ = 0`. Rewrite using `[hO g φ st, this, pure_upd_zero g st])`.
+
+Establish `st : ∀ y, Std (Function.update M.vac B.v₁ y)` using `fun y => (h.std.and (Filter.eventually_cofinite_ne B.v₁)).mono fun u hu => (Function.update_of_ne hu.2 ..).trans hu.1`. Establish `z : O _ = 0` using `k hx`. Rewrite `z` using `[hO f _ (st x), Function.update_self, Function.update_idem]`. Establish `p0 : π x = 0`. Assume the negation of the conclusion as `hn`.
+
+Use `pure_ne hf (fun u => ?_) (st _) z` and prove the remaining obligations. Distinguish the cases in `e : u = B.v₁`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`.
+
+Conclude with `vac_ne h u`. Establish `: N.linearProjOfIsCompl _ hN.symm x = 0` using `Subtype.ext p0`. Conclude with `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hN.symm).1 this`.
+-/
 theorem so_slice (h : M.IsGood B.ψ) {f : SInf F _} (hf : f ≠ 0) {x} (hx : pure f (Function.update M.vac B.v₁ x) ∈ M.So B.ψ B.τ₁) :
     x ∈ Submodule.span ℂ (M.SoLoc B.ψ B.τ₁) := by
   obtain ⟨N, hN⟩ := (Submodule.span ℂ (M.SoLoc B.ψ B.τ₁)).exists_isCompl
@@ -135,6 +194,9 @@ theorem so_slice (h : M.IsGood B.ψ) {f : SInf F _} (hf : f ≠ 0) {x} (hx : pur
   have : N.linearProjOfIsCompl _ hN.symm x = 0 := Subtype.ext p0
   exact (Submodule.linearProjOfIsCompl_apply_eq_zero_iff hN.symm).1 this
 
+/- English proof (translation)
+Establish `e : ∀ g, theta o (Φ + Ψ) g h = theta o Φ g h + theta o Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hw.isUSplitting.pres _ _ hΦ) (hw.isUSplitting.pres _ _ hΨ)`. Simplify using `only [Model.I, e]`. Conclude with `integral_add (c h) (c' h)`.
+-/
 theorem I_add₂ {o : Rep σ Y W} {χ χ' : Chr F E} (hw : M.IsWeil B.ψ χ χ' o) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _)
     (c : M.Conv o Φ) (c' : M.Conv o Ψ) (h : UA σ W.J) : M.I o (Φ + Ψ) h = M.I o Φ h + M.I o Ψ h := by
   have e : ∀ g, theta o (Φ + Ψ) g h = theta o Φ g h + theta o Ψ g h := fun g => by
@@ -164,8 +226,14 @@ structure Hyp : Prop where
   unim : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F _, ∀ g, M.I om (om (g, 1) Φ) = M.I om Φ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, fun _ => uat_one⟩`.
+-/
 theorem one_line : (1 : Multiplicative ℝ →* UA σ Y.J) ∈ Lines σ Y := ⟨continuous_const, fun _ => uat_one⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨uat_one, fun w => by rw [mat_one, Matrix.map_one _ (map_zero _) (map_one _)]; exact Commute.one_left _⟩`.
+-/
 theorem one_kinf (τ) : (1 : UA σ Y.J) ∈ KInf σ Y τ := ⟨uat_one, fun w => by
   rw [mat_one, Matrix.map_one _ (map_zero _) (map_one _)]; exact Commute.one_left _⟩
 
@@ -176,11 +244,23 @@ variable {om : Rep σ Y W} {χX χW : Chr F E} {r s r' s' : ℕ} {P : Type} [Add
   {n₂ : ℕ} {Y₂ : Spc F E n₂} {M₂ : Model σ Y₂ W} {om₂ : Rep σ Y₂ W} {χX₂ χW₂ : Chr F E} {r₂ s₂ r₂' s₂' : ℕ}
   {pi₂ : SInf F (Fin n₂ × Fin d) →ₗ[ℂ] P} {p₂ : ∀ v, Fl F v n₂ d →ₗ[ℂ] Q v}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v h hh a ha b hb a' ha' b' hb' x y e => (c.fin v h hh b hb a ha b' hb' a' ha' y x e.symm).symm, fun γ hγ a ha b hb a' b' x y e => (c.lie γ hγ b hb a ha b' a' y x e.symm).symm, fun γ hγ a ha b hb a' b' x y e => (c.cpt γ hγ b hb a ha b' a' y x e.symm).symm⟩`.
+-/
 theorem Cross.symm (c : Cross B M om M₂ om₂ pi p pi₂ p₂) : Cross B M₂ om₂ M om pi₂ p₂ pi p :=
   ⟨fun v h hh a ha b hb a' ha' b' hb' x y e => (c.fin v h hh b hb a ha b' hb' a' ha' y x e.symm).symm,
     fun γ hγ a ha b hb a' b' x y e => (c.lie γ hγ b hb a ha b' a' y x e.symm).symm,
     fun γ hγ a ha b hb a' b' x y e => (c.cpt γ hγ b hb a ha b' a' y x e.symm).symm⟩
 
+/- English proof (translation)
+Establish `A` using `fun v => (H.acts F E σ B _ _ _ _ M _ _ om _ _ _ _ hp v).1 1 uat_one`. Establish `A₂` using `fun v => (H.acts F E σ B _ _ _ _ M₂ _ _ om₂ _ _ _ _ hp₂ v).1 1 uat_one`. Establish `O₂` using `H.op F E σ B _ _ _ _ M₂ _ _ om₂ _ _ _ _ hp₂ 1 uat_one`. Use `⟨hp.good, le, onto, fun ξ => Submodule.mem_map.1 (oi ▸ Submodule.mem_top), fun v h hh x hx => ?_, ⟨𝓒, h1, fun Φ a Ψ b => I_add₂ hp.weil (h2 Φ a).1 (h2 Ψ b).1 (h2 Φ a).2 (h2 Ψ b).2⟩, cont, kill, fun v h hh a ha b hb a' ha' b' hb' x y e => ?_, fun γ hγ a ha b hb a' b' x y e => ?_, …` and prove the remaining obligations. Take `⟨x', ⟨h3, h4⟩, -⟩` from `A v h hh x (le v hx)`.
+
+Conclude with `⟨x', stab v h hh x hx x' h3 h4, h4⟩`. Take `⟨z, hz, ez⟩` from `Submodule.mem_map.1 (o₂ v ▸ Submodule.mem_top : p v a ∈ (SB _).map (p₂ v))`. Take `⟨z', ⟨h3, h4⟩, -⟩` from `A₂ v h hh z hz`. Rewrite using `[c.fin v h hh a ha z hz a' ha' z' h3 x h4 ez.symm, c.fin v h hh b hb z hz b' hb' z' h3 y h4 (e ▸ ez.symm)]`. Take `⟨z, hz, ez⟩` from `Submodule.mem_map.1 (oi₂ ▸ Submodule.mem_top : pi a ∈ (M₂.Pol B.ψ B.emb).map pi₂) choose T hT _ using fun t : ℝ => O₂ _ (hγ.2 (Multiplicative.ofAdd t))`.
+
+Take `⟨z', -, h4, -⟩` from `H.lie F E σ B _ _ _ _ M₂ _ _ om₂ _ _ _ _ hp₂ 1 one_line γ hγ T hT z hz`. Rewrite using `[c.lie γ hγ a ha z hz a' z' x h4 ez.symm, c.lie γ hγ b hb z hz b' z' y h4 (e ▸ ez.symm)]`. Take `⟨z, hz, ez⟩` from `Submodule.mem_map.1 (oi₂ ▸ Submodule.mem_top : pi a ∈ (M₂.Pol B.ψ B.emb).map pi₂)`. Take `⟨T, hT, -⟩` from `O₂ k hk.1`. Rewrite using `[c.cpt k hk a ha z hz a' _ x (hT.2 z) ez.symm, c.cpt k hk b hb z hz b' _ y (hT.2 z) (e ▸ ez.symm)]`.
+
+Take `⟨T, hT, hT'⟩` from `H.op F E σ B _ _ _ _ M _ _ om _ _ _ _ hp 1 uat_one h hh`. Conclude with `⟨T, hT, hT' (one_kinf _)⟩`.
+-/
 theorem side_of (H : Hyp) (hp : IsPair B M χX χW om r s r' s') (hp₂ : IsPair B M₂ χX₂ χW₂ om₂ r₂ s₂ r₂' s₂')
     (c : Cross B M om M₂ om₂ pi p pi₂ p₂) (o₂ : ∀ v, (SB _).map (p₂ v) = ⊤) (oi₂ : (M₂.Pol B.ψ B.emb).map pi₂ = ⊤)
     (oi : (M.Pol B.ψ B.emb).map pi = ⊤) {S : ∀ v : Pl F, Submodule ℂ (Fl F v n d)} (le : ∀ v, S v ≤ SB _)
@@ -212,6 +292,9 @@ theorem side_of (H : Hyp) (hp : IsPair B M χX χW om r s r' s') (hp₂ : IsPair
   · obtain ⟨T, hT, hT'⟩ := H.op F E σ B _ _ _ _ M _ _ om _ _ _ _ hp 1 uat_one h hh
     exact ⟨T, hT, hT' (one_kinf _)⟩
 
+/- English proof (translation)
+Take `⟨g, hg, e⟩` from `pure_eq_pureA hp.good φ a.1 a.2`. Simplify using `only [e]`. Conclude with `(H.weil F E σ B _ _ _ _ M _ _ om _ _ _ _ hp hw).2 g hg h`.
+-/
 theorem cont_weil (H : Hyp) (hp : IsPair B M χX χW om r s r' s') (hw : d + 2 * min r s < 2 * n ∨ min r s = 0) {φ}
     (a : admitted M (fun _ => SB _) φ) (h) : Continuous fun f : SInf F (Fin n × Fin d) => M.I om (pure f φ) h := by
   obtain ⟨g, hg, e⟩ := pure_eq_pureA hp.good φ a.1 a.2
@@ -223,13 +306,22 @@ end Mk
 variable {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'}
   {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m.fin.equiv, m.real.lie, m.real.cpt⟩`.
+-/
 theorem crossM (m : IsMatched B G X om om' R Rf) : Cross B G.M om G.M' om' R.p Rf.p R.p' Rf.p' :=
   ⟨m.fin.equiv, m.real.lie, m.real.cpt⟩
 
+/- English proof (translation)
+Take `⟨g, hg, e⟩` from `pure_eq_pureA h φ a.1 a.2`. Rewrite using `[e]`. Conclude with `pureA_mem f hg`.
+-/
 theorem admissible_pure_tensor_schwartz (h : M.IsGood B.ψ) (f : SInf F _) {φ} (a : admitted M (fun _ => SB _) φ) : pure f φ ∈ schA F (Fin n × Fin d) := by
   obtain ⟨g, hg, e⟩ := pure_eq_pureA h φ a.1 a.2
   rw [e]; exact pureA_mem f hg
 
+/- English proof (translation)
+The claim follows from `side_of H (pairV m.triple) (pairV' m.triple) (crossM m) m.fin.onto' m.real.quot'.onto m.real.quot.onto (fun _ => le_rfl) (fun v _ => Submodule.mem_map.1 (m.fin.onto v ▸ Submodule.mem_top)) (fun _ _ _ _ _ _ h _ => h) (schA F _) (fun f _ a => admissible_pure_tensor_schwartz m.tripl …`.
+-/
 theorem sideV (H : Hyp) (m : IsMatched B G X om om' R Rf) : Side B G.M om R.p Rf.p fun _ => SB _ :=
   side_of H (pairV m.triple) (pairV' m.triple) (crossM m) m.fin.onto' m.real.quot'.onto m.real.quot.onto (fun _ => le_rfl)
     (fun v _ => Submodule.mem_map.1 (m.fin.onto v ▸ Submodule.mem_top)) (fun _ _ _ _ _ _ h _ => h) (schA F _)
@@ -238,6 +330,9 @@ theorem sideV (H : Hyp) (m : IsMatched B G X om om' R Rf) : Side B G.M om R.p Rf
     (fun _ a => cont_weil H (pairV m.triple) (weilCondV m.triple) a)
     fun f hf φ a => (H.kills F E σ B _ _ G X om om' R Rf m).1 f hf φ a.1 a.2
 
+/- English proof (translation)
+The claim follows from `have w : a + a' + 2 * min G.q (a' - G.q) < 2 * a' ∨ min G.q (a' - G.q) = 0 := Or.inr (by rw [q]; simp) side_of H (pairV' m.triple) (pairV m.triple) (crossM m).symm m.fin.onto m.real.quot.onto m.real.quot'.onto (fun _ => le_rfl) (fun v _ => Submodule.mem_map.1 (m.fin.onto' v ▸ Sub …`.
+-/
 theorem side_condition_vanishing (H : Hyp) (m : IsMatched B G X om om' R Rf) (q : G.q = 0) : Side B G.M' om' R.p' Rf.p' fun _ => SB _ :=
   have w : a + a' + 2 * min G.q (a' - G.q) < 2 * a' ∨ min G.q (a' - G.q) = 0 := Or.inr (by rw [q]; simp)
   side_of H (pairV' m.triple) (pairV m.triple) (crossM m).symm m.fin.onto m.real.quot.onto m.real.quot'.onto (fun _ => le_rfl)
@@ -247,12 +342,28 @@ theorem side_condition_vanishing (H : Hyp) (m : IsMatched B G X om om' R Rf) (q 
     (fun _ a => cont_weil H (pairV' m.triple) w a)
     fun f hf φ a => H.kills0 F E σ B _ _ G X om om' R Rf m q f hf φ a.1 a.2
 
+/- English proof (translation)
+Use `haveI := m.real.nontriv`. Take `⟨ξ, hξ⟩` from `exists_ne (0 : R.Pi)`. Take `⟨f, -, e⟩` from `Submodule.mem_map.1 (m.real.quot'.onto ▸ Submodule.mem_top : ξ ∈ (G.M'.Pol B.ψ B.emb).map R.p')`. Conclude with `⟨f, fun h => hξ (by rw [← e, h, map_zero])⟩`.
+-/
 theorem ex_ne (m : IsMatched B G X om om' R Rf) : ∃ f : SInf F (Fin a' × Fin (a + a')), f ≠ 0 := by
   haveI := m.real.nontriv
   obtain ⟨ξ, hξ⟩ := exists_ne (0 : R.Pi)
   obtain ⟨f, -, e⟩ := Submodule.mem_map.1 (m.real.quot'.onto ▸ Submodule.mem_top : ξ ∈ (G.M'.Pol B.ψ B.emb).map R.p')
   exact ⟨f, fun h => hξ (by rw [← e, h, map_zero])⟩
 
+/- English proof (translation)
+Establish `hM` using `m.triple.geo.hM'`. Establish `co` using `H.coinv F E σ B _ _ G X om om' R Rf m`. Use `side_of H (pairV' m.triple) (pairV m.triple) (crossM m).symm m.fin.onto m.real.quot.onto m.real.quot'.onto SS_le (fun v ξ => ?_) (fun v h hh x hx x' hx' ac => ?_) (G.M'.So B.ψ B.τ₁) (fun f _ a => pure_mem_so hM f a) (fun Φ hΦ => ⟨so_le hM hΦ, ((H.dec F E σ B _ _ G X om om' m.trip …` and prove the remaining obligations. Distinguish the cases in `e : v = B.v₁`. Substitute `e` using the available equality.
+
+Take `⟨x, hx, ex⟩` from `(co.1 _ m.triple.chars.good).2.2.1 B.τ₁ ξ`. Conclude with `⟨x, by rw [SS_self]; exact Submodule.subset_span hx, ex⟩`. Rewrite using `[SS_ne e]`. Conclude with `Submodule.mem_map.1 (m.fin.onto' v ▸ Submodule.mem_top)`. Distinguish the cases in `e : v = B.v₁`.
+
+Substitute `e` using the available equality. Take `⟨f, hf⟩` from `ex_ne m`. Establish `ad : admitted G.M' (SS B G.M') (Function.update G.M'.vac B.v₁ x)`. Use `⟨fun u => ?_, (Filter.eventually_cofinite_ne B.v₁).mono fun u hu => Function.update_of_ne hu ..⟩` and prove the remaining obligations. Distinguish the cases in `e : u = B.v₁`.
+
+Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e, SS_ne e]`. Conclude with `vac_sb hM u`. Use `co.2 (1, h) _ (pure_mem_so hM f ad)` as an intermediate fact.
+
+Rewrite `this` using `[(pureAct F _ B.v₁ (om' (1, h)) f _ (fun u => SS_le u (ad.1 u)) ((ad.2.and hM.std).mono fun _ h => h.1.trans h.2)).2.2 x' (by rwa [Function.update_self]), Function.update_idem]`. Rewrite using `[SS_self]`. Conclude with `so_slice hM hf this`. Rewrite using `[SS_ne e]` and apply the resulting hypothesis. Take `⟨g, hg, e⟩` from `pure_eq_pureA hM φ (fun v => SS_le v (ad.1 v)) ad.2`.
+
+Use `continuous_iff_seqContinuous.2 fun u f hu => ?_` and prove the remaining obligations. Use `H.soc F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (pairV' m.triple) 1 (fun _ => g) (fun _ => f) (fun k _ => u k) (fun _ => ⟨hg, hu⟩) (fun k => by simpa [← e] using pure_mem_so hM (u k) ad) (by simpa [← e] using pure_mem_so hM f ad) h` as an intermediate fact. Simplify `this` using `[← e, Function.comp_def]`.
+-/
 theorem sideSo (H : Hyp) (m : IsMatched B G X om om' R Rf) : Side B G.M' om' R.p' Rf.p' (SS B G.M') := by
   have hM := m.triple.geo.hM'
   have co := H.coinv F E σ B _ _ G X om om' R Rf m

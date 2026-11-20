@@ -30,6 +30,11 @@ section Scalars
 variable {Γ : Type*} [Group Γ] [TopologicalSpace Γ] {M : Type*} [AddCommGroup M]
   [TopologicalSpace M] [IsTopologicalAddGroup M]
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf hd`. Conclude with `h (x := ⟨f, hf, hd⟩) trivial`. Introduce `h f _`.
+
+Conclude with `h f.1 f.2.1 f.2.2`.
+-/
 theorem subsingleton_Hn_succ_iff {R : Type*} [CommRing R] [Module R M] [ContinuousConstSMul R M]
     (rho : Representation R Γ M) (n : ℕ) :
     Subsingleton (Hn rho (n + 1)) ↔
@@ -44,6 +49,11 @@ theorem subsingleton_Hn_succ_iff {R : Type*} [CommRing R] [Module R M] [Continuo
 
 omit [TopologicalSpace Γ] [TopologicalSpace M] [IsTopologicalAddGroup M] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `show rho (g 0) (f fun i => g i.succ) + (Finset.univ.sum fun j : Fin (n + 1) => (-1 : R) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)) = rho' (g 0) (f fun i => g i.succ) + Finset.univ.sum fun j : Fin (n + 1) => (-1 : R') ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases Nat.even_or_odd ((j : ℕ) + 1) with hj | hj <;> simp [hj.neg_one_pow]`.
+-/
 theorem dn_eq_of_action_eq {R R' : Type*} [CommRing R] [CommRing R'] [Module R M] [Module R' M]
     (rho : Representation R Γ M) (rho' : Representation R' Γ M)
     (h : ∀ g m, rho g m = rho' g m) (n : ℕ) (f : (Fin n → Γ) → M) :
@@ -58,6 +68,9 @@ theorem dn_eq_of_action_eq {R R' : Type*} [CommRing R] [CommRing R'] [Module R M
   refine Finset.sum_congr rfl fun j _ => ?_
   rcases Nat.even_or_odd ((j : ℕ) + 1) with hj | hj <;> simp [hj.neg_one_pow]
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Rewrite `hs`, the goal using `[subsingleton_Hn_succ_iff]`. Introduce `f hf hd`. Take `⟨c, hc, e⟩` from `hs f hf (by rw [← dn_eq_of_action_eq rho rho' h]; exact hd)`. Conclude with `⟨c, hc, by rw [dn_eq_of_action_eq rho rho' h]; exact e⟩`.
+-/
 theorem subsingleton_Hn_of_action_eq {R R' : Type*} [CommRing R] [CommRing R'] [Module R M]
     [Module R' M] [ContinuousConstSMul R M] [ContinuousConstSMul R' M]
     (rho : Representation R Γ M) (rho' : Representation R' Γ M)
@@ -85,6 +98,9 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (l : ℕ) [Fact l.Prime] {R : Type*} [CommRing R] {M : Type} [AddCommGroup M] [Module R M]
   [Finite M] [TopologicalSpace M] [DiscreteTopology M]
 
+/- English proof (translation)
+Use `letI : Module (ZMod (l ^ r)) M := AddCommGroup.zmodModule hM`. Conclude with `subsingleton_Hn_of_action_eq rhoS (zmodRep (l ^ r) rhoS) (fun _ _ => rfl) n (by omega) (h F Ω l r M S (zmodRep (l ^ r) rhoS) hS hc n hn)`.
+-/
 theorem CohDimTwoGlobal.of_nsmul (h : CohDimTwoGlobal) [IsTotallyComplex F] (r : ℕ)
     (hM : ∀ m : M, (l ^ r) • m = 0) {S : Finset (HeightOneSpectrum (𝓞 F))}
     (rhoS : Representation R (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M)
@@ -94,6 +110,9 @@ theorem CohDimTwoGlobal.of_nsmul (h : CohDimTwoGlobal) [IsTotallyComplex F] (r :
   exact subsingleton_Hn_of_action_eq rhoS (zmodRep (l ^ r) rhoS) (fun _ _ => rfl) n (by omega)
     (h F Ω l r M S (zmodRep (l ^ r) rhoS) hS hc n hn)
 
+/- English proof (translation)
+Use `letI : Module (ZMod (l ^ r)) M := AddCommGroup.zmodModule hM`. Conclude with `subsingleton_Hn_of_action_eq rho (zmodRep (l ^ r) rho) (fun _ _ => rfl) n (by omega) (h F Ω l r M v A (zmodRep (l ^ r) rho) hA hc n hn)`.
+-/
 theorem CohDimTwoLocal.of_nsmul (h : CohDimTwoLocal) (r : ℕ)
     (hM : ∀ m : M, (l ^ r) • m = 0) {v : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω}
     (rho : Representation R (Dec (F := F) A) M)
@@ -105,6 +124,9 @@ theorem CohDimTwoLocal.of_nsmul (h : CohDimTwoLocal) (r : ℕ)
 
 end Consequences
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ v A rho hA hc n hn`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `haveI : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance`. Conclude with `Module.subsingleton (ZMod (l ^ 0)) _`. Conclude with `(h F Ω l r M A rho v hr hA hc).2.2.2 n hn`.
+-/
 theorem cohDimTwoLocal_of_localFiniteness (h : LocalFiniteness) : CohDimTwoLocal := by
   intro F Ω _ _ _ _ _ l _ r M _ _ _ _ _ v A rho hA hc n hn
   rcases Nat.eq_zero_or_pos r with rfl | hr

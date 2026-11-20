@@ -24,6 +24,9 @@ section General
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[evc, evc, CechPic.cls_pull hQ, ← CechPic.pull_comp, ← CechPic.pull_comp]`. Use `congr 2`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, m₁, lift_left_fst_assoc, ha]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, m₂, lift_left_snd_assoc, Over.comp_left, Over.comp_left, ← Category.assoc, hb, Category.assoc, Category.assoc, ey]`.
+-/
 theorem pull_evc_gen {A B : Over S} {A' B' : Over S'} {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left}
     {m : (A' ⊗ A').left ⟶ (A ⊗ A).left} {m' : (A' ⊗ B').left ⟶ (A ⊗ B).left}
     (m₁ : m' ≫ (fst A B).left = (fst A' B').left ≫ f) (m₂ : m' ≫ (snd A B).left = (snd A' B').left ≫ g)
@@ -40,6 +43,11 @@ theorem pull_evc_gen {A B : Over S} {A' B' : Over S'} {f : A'.left ⟶ A.left} {
 
 end General
 
+/- English proof (translation)
+Use `Q.isAb.comm` as an intermediate fact. Establish `e : ∀ (Y : Over (Sp K)) (a b : Y ⟶ Q.A), evc hΛ a b = CechPic.lam (CechPic.cls Q.L Q.isLB) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show CechPic.cls _ hΛ = CechPic.lam (CechPic.cls Q.L Q.isLB) (fst Q.A Q.A) (snd Q.A Q.A) from CechPic.cls_cube_two Q.isLB _ _ hΛ, CechPic.pull_lam, lift_fst, lift_snd]`. Establish `hd : IsDual Q.A Q.A (abelian₂ Q.A Q.L)` using `PerfectDual.isDual_of_isPerfect hD Q.A Q.A Q.isAb Q.isAb Q.smoothDim Q.smoothDim (isPerfect_lam Q.isLB Q.ktriv)`. Establish `a₂ : IsAdditive (swap (abelian₂ Q.A Q.L))` using `(BirigidLift.isAdditive_swap_iff hΛ).2 fun Y a b b' ↦ by`.
+
+Rewrite using `[e, e, e, CechPic.lam_comm, CechPic.lam_comm _ a b, CechPic.lam_comm _ a b', ← e, ← e, ← e]`. Conclude with `(isAdditive_iff hΛ).1 hd.additive _ _ _ _`. Take `⟨x, hx, ex⟩` from `BirigidLift.exists_hom hR hR' hΛ hd.additive a₂`. Conclude with `⟨x, hx, hd.isIso_of_cls hR ex, ex⟩`.
+-/
 theorem exists_generic_iso (hD : GlobalTheory.Published.DualAbelianScheme) {K : Type} [Field K] (Q : Out.PolAV (Sp K))
     (hΛ : (abelian₂ Q.A Q.L).IsLB) {D : Over (Sp K)} [GrpObj D] {R : LB (Q.A ⊗ D).left} (hR : IsDual Q.A D R)
     (hR' : IsAdditive (swap R)) :
@@ -64,11 +72,21 @@ variable {S : Scheme.{0}} [IsIntegral S] [AlgebraicGeometry.IsNoetherian S] {K :
 
 omit [IsIntegral S] [AlgebraicGeometry.IsNoetherian S] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (hψ.1.lift (φ ≫ y.left) A'.hom (by rw [Category.assoc, Over.w y, hφ.1.w])) (hψ.1.lift_snd _ _ _), (hψ.1.lift_fst _ _ _).symm⟩`.
+-/
 theorem exists_res (hφ : IsGrpPullback A' A η φ) (hψ : IsGrpPullback B' B η ψ) (y : A ⟶ B) :
     ∃ y' : A' ⟶ B', φ ≫ y.left = y'.left ≫ ψ :=
   ⟨Over.homMk (hψ.1.lift (φ ≫ y.left) A'.hom (by rw [Category.assoc, Over.w y, hφ.1.w])) (hψ.1.lift_snd _ _ _),
     (hψ.1.lift_fst _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨y₁, hy₁, -⟩` from `hR.univ A M₁ h₁ a₁`. Take `⟨y₂, hy₂, -⟩` from `hR.univ A M₂ h₂ a₂`. Establish `c₁ : CechPic.cls M₁ h₁ = evc hR.isLB (fst A A) (snd A A ≫ y₁)` using `(CechPic.cls_eq_iff h₁ (pull_isLB hR.isLB _)).2 hy₁`. Establish `c₂ : CechPic.cls M₂ h₂ = evc hR.isLB (fst A A) (snd A A ≫ y₂)` using `(CechPic.cls_eq_iff h₂ (pull_isLB hR.isLB _)).2 hy₂`. Take `⟨y₁', e₁⟩` from `exists_res hφ hψ y₁`.
+
+Take `⟨y₂', e₂⟩` from `exists_res hφ hψ y₂`. Establish `k` using `fun (y : A ⟶ B) (y' : A' ⟶ B') (ey : φ ≫ y.left = y'.left ≫ ψ) ↦ pull_evc_gen m₁ m₂ hR.isLB hR'.isLB (fst A A) (snd A A) (fst A' A') (snd A' A') y y' l₁ l₂ ey`. Establish `e' : y₁' = y₂'` using `BirigidLift.dual_ext hR' (by rw [← k _ _ e₁, ← k _ _ e₂, ← c₁, ← c₂, e])`. Take `⟨_, _⟩` from `hη.quasiCompact_and_dominant`. Use `hA.smooth` as an intermediate fact.
+
+Use `hB.proper` as an intermediate fact. Establish `ey : y₁ = y₂` using `ExtUnique.over_hom_ext_of_isPullback hφ.1 (by rw [e₁, e₂, e'])`. Substitute `ey` using the available equality. Conclude with `(CechPic.cls_eq_iff h₁ h₂).1 (c₁.trans c₂.symm)`.
+-/
 theorem lbIso_of_generic (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hη : IsGenericPointHom η)
     (hφ : IsGrpPullback A' A η φ) (hψ : IsGrpPullback B' B η ψ) {R : LB (A ⊗ B).left} (hR : IsDual A B R)
     {m' : (A' ⊗ B').left ⟶ (A ⊗ B).left} (m₁ : m' ≫ (fst A B).left = (fst A' B').left ≫ φ)
@@ -97,6 +115,25 @@ theorem lbIso_of_generic (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hη 
 
 end Generic
 
+/- English proof (translation)
+Introduce `hD hE O _ c S _ _ hS K _ η hη A _ i hA Q j φ hact hros`. Take `⟨hφ, hj⟩` from `hact`. Use `Q.isAb.comm` as an intermediate fact. Take `⟨B, _, R, hB, -, hR, hRs⟩` from `hD S A hA`. Establish `hψ` using `isGrpPullback_pullback B η`.
+
+Take `⟨m', m₁, m₂⟩` from `exists_prod_pullback hφ hψ`. Establish `hR' : (R.pull m').IsLB` using `pull_isLB hR.isLB m'`. Establish `dR'` using `hR.baseChange hφ hψ m₁ m₂ hR' ((CechPic.cls_eq_iff hR' hR').1 rfl)`. Establish `aR'` using `(BirigidLift.additive_pull hφ hψ m₁ m₂ hR.isLB hR' ((CechPic.cls_eq_iff hR' hR').1 rfl) hR.additive hRs.additive).2`. Establish `hΛ : (abelian₂ Q.A Q.L).IsLB` using `(isPerfect_lam Q.isLB Q.ktriv).isLB`.
+
+Take `⟨x, hx, ix, ex⟩` from `exists_generic_iso hD Q hΛ dR' aR'`. Establish `: IsMonHom (asIso x).hom` using `hx`. Take `⟨E, ⟨hE₁, hE₂⟩, -⟩` from `hE.generic_existsUnique_iso_of_isGrpPullback hS hη (isSemiAbelian_of_isAbelianScheme A hA) (isSemiAbelian_of_isAbelianScheme B hB) hφ hψ (asIso x)`. Use `replace hE₂ : φ ≫ E.hom.left = x.left ≫ pullback.fst B.hom η := hE₂.symm`. Establish `hP : (ev R (fst A A) (snd A A ≫ E.hom)).IsLB` using `pull_isLB hR.isLB _`.
+
+Take `⟨a₁, a₂⟩` from `BirigidLift.additive_ev hR.isLB hR.additive hRs.additive E.hom`. Establish `eΛ : ∀ (Y : Over (Sp K)) (a b : Y ⟶ Q.A), evc hΛ a b = CechPic.lam (CechPic.cls Q.L Q.isLB) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show CechPic.cls _ hΛ = CechPic.lam (CechPic.cls Q.L Q.isLB) (fst Q.A Q.A) (snd Q.A Q.A) from CechPic.cls_cube_two Q.isLB _ _ hΛ, CechPic.pull_lam, lift_fst, lift_snd]`. Establish `key : ∀ (m : (Q.A ⊗ Q.A).left ⟶ (A ⊗ A).left) (a b : A ⊗ A ⟶ A) (a' b' : Q.A ⊗ Q.A ⟶ Q.A), m ≫ a.left = a'.left ≫ φ → m ≫ b.left = b'.left ≫ φ → CechPic.pull m (evc hP a b) = CechPic.lam (CechPic.cls Q.L Q.isLB) a' b'` using `fun m a b a' b' ha hb ↦ by`. Rewrite using `[BirigidLift.evc_of_cls hR.isLB hP rfl, pull_evc_gen m₁ m₂ hR.isLB hR' a b a' b' E.hom x ha hb hE₂, ← eΛ, BirigidLift.evc_of_cls hR' hΛ ex]`.
+
+Establish `c₀ : CechPic.cls _ hP = evc hP (fst A A) (snd A A)`. Rewrite using `[evc, lift_fst_snd, Over.id_left, CechPic.pull_id]`. Take `⟨m, l₁, l₂⟩` from `exists_prod_pullback hφ hφ`. Use `⟨ev R (fst A A) (snd A A ≫ E.hom), ⟨isDual_of_iso S A A B _ R hR hP E.hom inferInstance hE₁ ((CechPic.cls_eq_iff hP hP).1 rfl), ?_, fun a ↦ ?_⟩, fun n n₁ n₂ ↦ ?_⟩` and prove the remaining obligations. Use `lbIso_of_generic hA hB hη hφ hψ hR m₁ m₂ dR' l₁ l₂ (pull_isLB hP _) hP a₂ a₁ ?_` and prove the remaining obligations.
+
+Rewrite using `[c₀, cls_ev hP, key m _ _ _ _ l₂ l₁, key m _ _ _ _ l₁ l₂, CechPic.lam_comm]`. Use `i.hom a` as an intermediate fact. Establish `hM₁` using `pull_isLB hP (lift (fst A A ≫ i.act a) (snd A A)).left`. Establish `hM₂` using `pull_isLB hP (lift (fst A A) (snd A A ≫ i.act (c a))).left`. Use `lbIso_of_generic hA hB hη hφ hψ hR m₁ m₂ dR' l₁ l₂ hM₁ hM₂ ((isAdditive_iff hM₁).2 fun Y u u' t ↦ ?_) ((isAdditive_iff hM₂).2 fun Y u u' t ↦ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[evc_ev hP, evc_ev hP, evc_ev hP]`. Simplify using `only [lift_fst_assoc, lift_snd, MonObj.mul_comp]`. Conclude with `(isAdditive_iff hP).1 a₁ _ _ _ _`. Rewrite using `[evc_ev hP, evc_ev hP, evc_ev hP]`. Simplify using `only [lift_snd_assoc, lift_fst]`.
+
+Conclude with `(isAdditive_iff hP).1 a₁ _ _ _ _`. Rewrite using `[cls_ev hP, cls_ev hP, key m _ _ (fst Q.A Q.A ≫ j.act a) _ (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, l₁, Category.assoc, Category.assoc, hj]) l₂,`. Use `key m _ _ _ (snd Q.A Q.A ≫ j.act (c a)) l₁ (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, l₂, Category.assoc, Category.assoc, hj])]`.
+
+Conclude with `EndOnTorsion.lam_rosati Q (hros a) _ _`. Use `(CechPic.cls_eq_iff (pull_isLB hP n) hΛ).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull hP, c₀, key n _ _ _ _ n₁ n₂]`. Conclude with `(CechPic.cls_cube_two Q.isLB _ _ hΛ).symm`.
+-/
 theorem exists_selfDual : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.SemiAbelianHomExtension → ∀ (O : Type) [CommRing O] (c : O →+* O)
     (S : Scheme.{0}) [IsIntegral S] [AlgebraicGeometry.IsNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S →
     ∀ (K : Type) [Field K] (η : Sp K ⟶ S), GlobalTheory.IsGenericPointHom η →

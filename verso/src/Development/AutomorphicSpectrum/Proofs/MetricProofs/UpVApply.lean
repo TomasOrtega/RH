@@ -101,6 +101,9 @@ def pRho (M : FlagModel y Ψ N j) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep 
   | Sum.inl l => Rb.A.chart kb (r (pBase M v z)) l
   | Sum.inr q => pRead M F keep (pBase M v z) h (upV v z) q.1.1.1 q.1.1.2.1 q.1.1.2.2
 
+/- English proof (translation)
+Establish `h : ∃ q', v q' = v q` using `⟨q, rfl⟩`. Simplify using `only [upV, dif_pos h]`. Rewrite using `[hv h.choose_spec]`.
+-/
 theorem upV_apply {v : (Σ k, ιk k) → (Σ k, ι k)} (hv : Function.Injective v) (z : (Σ k, ιk k) → ℂ) (q : Σ k, ιk k) :
     upV v z (v q) = z q := by
   have h : ∃ q', v q' = v q := ⟨q, rfl⟩

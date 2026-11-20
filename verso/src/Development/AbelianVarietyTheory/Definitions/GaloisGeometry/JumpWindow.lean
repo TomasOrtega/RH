@@ -32,6 +32,9 @@ def JumpWindow (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D
       ∀ a, IsJumpV (Br.PD D.loc D.nbr i w hw)
         (matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rTwO D.nd i r π)))) τ a → a ∈ U
 
+/- English proof (translation)
+Use `⟨h.1, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `h.2 w hw`. Use `⟨h1, h2, fun CL hL hs Y hc hY => ?_⟩` and prove the remaining obligations. Take `⟨k1, k2⟩` from `h3 CL hL hs Y hc hY`. Conclude with `⟨k1, fun e he => (k2 e he).trans hle⟩`.
+-/
 theorem JointTB.mono {D : D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW} {i : D.nd.Loc}
     {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))} {π : D.nd.X i} {M0 h0 cB cB' : ℕ} (hle : cB ≤ cB')
     (h : JointTB D HW F i r π M0 h0 cB) : JointTB D HW F i r π M0 h0 cB' := by

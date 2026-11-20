@@ -17,6 +17,9 @@ variable {o : Type} [CommRing o] {g k : ℕ} {J : Type} {β : TBase o k} {S S' S
 def PullsBack (t' : TObj g k J β s') (t : TObj g k J β s) (f : S' ⟶ S) (φ : t'.A.left ⟶ t.A.left) : Prop :=
   IsGrpPullback t'.A t.A f φ ∧ LBIso t'.L (t.L.pull φ) ∧ ∀ l, (t'.pt l).left ≫ φ = f ≫ (t.pt l).left
 
+/- English proof (translation)
+Establish `a : ChartPull (L'.pull c) L' c` using `⟨fun J => J PUnit.unit, fun J y hy => Set.mem_iInter.1 hy PUnit.unit, fun y J J' hJ hJ' => by`. Use `(gm_linComb L' (fun _ => c) (fun _ => 1) (𝟙 _) y J J' hJ hJ').trans ?_` and prove the remaining obligations. Use the proof step `simp⟩`. Conclude with `LBIso.chartPull a (chartPullSame L (fun _ => c ≫ f) (fun _ => f) (fun _ => 1) c (fun _ => rfl)) H`.
+-/
 private theorem lbIso_pull_comp_of_lbIso_pull {X Y Z : Scheme.{0}} {L : LB X} {L' : LB Y} {f : Y ⟶ X}
     (H : LBIso L' (L.pull f)) (c : Z ⟶ Y) : LBIso (L'.pull c) (L.pull (c ≫ f)) := by
   have a : ChartPull (L'.pull c) L' c :=
@@ -25,6 +28,11 @@ private theorem lbIso_pull_comp_of_lbIso_pull {X Y Z : Scheme.{0}} {L : LB X} {L
       simp⟩
   exact LBIso.chartPull a (chartPullSame L (fun _ => c ≫ f) (fun _ => f) (fun _ => 1) c (fun _ => rfl)) H
 
+/- English proof (translation)
+Take `⟨g', l', p'⟩` from `H'`. Take `⟨g₀, l₀, p₀⟩` from `H`. Substitute `e` using the available equality. Use `⟨g'.comp g₀, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans t''.isLB (pull_isLB t'.isLB φ') (pull_isLB t.isLB (φ' ≫ φ)) l' (lbIso_pull_comp_of_lbIso_pull l₀ φ')`.
+
+Rewrite using `[reassoc_of% (p' i), p₀ i, Category.assoc]`.
+-/
 theorem PullsBack.comp {t'' : TObj g k J β s''} {t' : TObj g k J β s'} {t : TObj g k J β s} {f' : S'' ⟶ S'} {f : S' ⟶ S}
     {h : S'' ⟶ S} {φ' : t''.A.left ⟶ t'.A.left} {φ : t'.A.left ⟶ t.A.left} (H' : PullsBack t'' t' f' φ')
     (H : PullsBack t' t f φ) (e : f' ≫ f = h) : PullsBack t'' t h (φ' ≫ φ) := by
@@ -36,6 +44,13 @@ theorem PullsBack.comp {t'' : TObj g k J β s''} {t' : TObj g k J β s'} {t : TO
       (lbIso_pull_comp_of_lbIso_pull l₀ φ')
   · rw [reassoc_of% (p' i), p₀ i, Category.assoc]
 
+/- English proof (translation)
+Take `⟨g'', l'', p''⟩` from `H''`. Take `⟨g₀, l₀, p₀⟩` from `H`. Substitute `e` using the available equality. Establish `sq : ψ ≫ t.A.hom = (t''.A.hom ≫ f') ≫ f` using `by rw [g''.1.w, Category.assoc]`. Use `set c := g₀.1.lift ψ (t''.A.hom ≫ f') sq with hcdef`.
+
+Establish `hc₁ : c ≫ φ = ψ` using `g₀.1.lift_fst _ _ _`. Establish `hc₂ : c ≫ t'.A.hom = t''.A.hom ≫ f'` using `g₀.1.lift_snd _ _ _`. Use `⟨c, ⟨g₀.cancel (by rw [hc₁]; exact g'') hc₂, ?_, fun i => ?_⟩, hc₁⟩` and prove the remaining obligations. Establish `l₁` using `lbIso_pull_comp_of_lbIso_pull l₀ c`. Rewrite `l₁` using `[hc₁]`.
+
+Conclude with `LBIso.trans t''.isLB (pull_isLB t.isLB ψ) (pull_isLB t'.isLB c) l'' (LBIso.symm l₁)`. Apply `g₀.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hc₁, p'' i, Category.assoc, Category.assoc, p₀ i]`. Rewrite using `[Category.assoc, hc₂, ← Category.assoc, Over.w (t''.pt i), Category.assoc, Over.w (t'.pt i)]`. Simplify using `[Out.baseOver]`.
+-/
 theorem PullsBack.cancel {t'' : TObj g k J β s''} {t' : TObj g k J β s'} {t : TObj g k J β s} (f' : S'' ⟶ S') {f : S' ⟶ S}
     {h : S'' ⟶ S} {ψ : t''.A.left ⟶ t.A.left} {φ : t'.A.left ⟶ t.A.left} (H'' : PullsBack t'' t h ψ)
     (H : PullsBack t' t f φ) (e : f' ≫ f = h) : ∃ c, PullsBack t'' t' f' c ∧ c ≫ φ = ψ := by
@@ -55,6 +70,21 @@ theorem PullsBack.cancel {t'' : TObj g k J β s''} {t' : TObj g k J β s'} {t : 
     · rw [Category.assoc, hc₂, ← Category.assoc, Over.w (t''.pt i), Category.assoc, Over.w (t'.pt i)]
       simp [Out.baseOver]
 
+/- English proof (translation)
+Introduce `hex o _ g n J β S s I U t u a b ha hb hrig i j m T x y z hxy hxz`. Establish `HA : ∀ i j, PullsBack (u i j) (t i) (S.homOfLE inf_le_left) (a i j)` using `ha`. Establish `HB : ∀ i j, PullsBack (u i j) (t j) (S.homOfLE inf_le_right) (b i j)` using `hb`. Set `V : S.Opens` to `(U i ⊓ U j) ⊓ (U j ⊓ U m)`. Establish `hVm : V ≤ U m` using `inf_le_right.trans inf_le_right`.
+
+Establish `hVim : V ≤ U i ⊓ U m` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_right)`. Take `⟨t', φk, gk, lk, pk, -⟩` from `hex o g n J β (U m).toScheme V.toScheme ((U m).ι ≫ s) (S.homOfLE hVm ≫ (U m).ι ≫ s) (S.homOfLE hVm) (t m) rfl`. Establish `hk : PullsBack t' (t m) (S.homOfLE hVm) φk` using `⟨gk, lk, pk⟩`. Take `⟨c₁, h₁, e₁⟩` from `PullsBack.cancel (S.homOfLE (inf_le_right : V ≤ U j ⊓ U m)) hk (HB j m) (by simp)`. Establish `h₁' : PullsBack t' (t j) (S.homOfLE (inf_le_right.trans inf_le_left : V ≤ U j)) (c₁ ≫ a j m)` using `h₁.comp (HA j m) (by simp)`.
+
+Take `⟨c₂, h₂, e₂⟩` from `PullsBack.cancel (S.homOfLE (inf_le_left : V ≤ U i ⊓ U j)) h₁' (HB i j) (by simp)`. Establish `h₂' : PullsBack t' (t i) (S.homOfLE (inf_le_left.trans inf_le_left : V ≤ U i)) (c₂ ≫ a i j)` using `h₂.comp (HA i j) (by simp)`. Take `⟨c₃, h₃, e₃⟩` from `PullsBack.cancel (S.homOfLE hVim) h₂' (HA i m) (by simp)`. Establish `h₃' : PullsBack t' (t m) (S.homOfLE hVm) (c₃ ≫ b i m)` using `h₃.comp (HB i m) (by simp)`. Establish `hφ : φk = c₃ ≫ b i m` using `hrig V.toScheme m (S.homOfLE hVm) t' φk (c₃ ≫ b i m) inferInstance hk.1 h₃'.1 hk.2.1 h₃'.2.1 (fun l => by rw [hk.2.2 l, h₃'.2.2 l])`.
+
+Establish `hq : (x ≫ (u i j).A.hom) ≫ S.homOfLE (inf_le_right : U i ⊓ U j ≤ U j) = (y ≫ (u j m).A.hom) ≫ S.homOfLE (inf_le_left : U j ⊓ U m ≤ U j)`. Rewrite using `[Category.assoc, Category.assoc, ← (HB i j).1.1.w, ← (HA j m).1.1.w, ← Category.assoc, hxy, Category.assoc]`. Establish `sq` using `isPullback_opens_inf_le (X := S) (inf_le_right : U i ⊓ U j ≤ U j) (inf_le_left : U j ⊓ U m ≤ U j)`. Take `⟨q, hq₁, hq₂⟩ : ∃ q : T ⟶ V.toScheme, q ≫ S.homOfLE (inf_le_left : V ≤ U i ⊓ U j) = x ≫ (u i j).A.hom ∧ q ≫ S.homOfLE (inf_le_right : V ≤ U j ⊓ U m) = y ≫ (u j m).A.hom` from `⟨sq.lift _ _ hq, sq.lift_fst _ _ _, sq.lift_snd _ _ _⟩`. Take `⟨w, hw₁, hw₂⟩ : ∃ w : T ⟶ t'.A.left, w ≫ c₁ = y ∧ w ≫ t'.A.hom = q` from `⟨h₁.1.1.lift y q hq₂.symm, h₁.1.1.lift_fst _ _ _, h₁.1.1.lift_snd _ _ _⟩`.
+
+Establish `hwx : w ≫ c₂ = x`. Apply `(HB i j).1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e₂, ← Category.assoc, hw₁, hxy]`. Rewrite using `[Category.assoc, h₂.1.1.w, ← Category.assoc, hw₂, hq₁]`. Establish `hbase : q ≫ S.homOfLE hVim = z ≫ (u i m).A.hom`.
+
+Establish `e₅ : ∀ {W : Scheme.{0}} (h : W ⟶ (U i ⊓ U m).toScheme), h ≫ (U i ⊓ U m).ι = (h ≫ S.homOfLE (inf_le_left : U i ⊓ U m ≤ U i)) ≫ (U i).ι` using `fun h => by simp`. Rewrite using `[← cancel_mono (U i ⊓ U m).ι, Category.assoc, Scheme.homOfLE_ι, e₅ (z ≫ (u i m).A.hom)]`. Simplify using `only [Category.assoc]`. Rewrite using `[← reassoc_of% (HA i m).1.1.w, ← reassoc_of% hxz, reassoc_of% (HA i j).1.1.w, ← reassoc_of% hq₁]`. Simplify using the standard rewrite rules.
+
+Establish `hwz : w ≫ c₃ = z`. Apply `(HA i m).1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e₃, ← Category.assoc, hwx, hxz]`. Rewrite using `[Category.assoc, h₃.1.1.w, ← Category.assoc, hw₂, hbase]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cocycle : (∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (f : S' ⟶ S) (t : TObj g k J b s), f ≫ s = s' → ∃ t' : TObj g k J b s', TMap t' t f) → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (β : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (I : Type) (U : I → S.Opens) (t : ∀ i, TObj g k J β ((U i).ι ≫ s)) (u : ∀ i j, TObj g k J β ((U i ⊓ U j).ι ≫ s)) (a : ∀ i j, (u i j).A.left ⟶ (t i).A.left) (b : ∀ i j, (u i j).A.left ⟶ (t j).A.left), (∀ i j, IsGrpPullback (u i j).A (t i).A (S.homOfLE inf_le_left) (a i j) ∧ LBIso (u i j).L ((t i).L.pull (a i j)) ∧ ∀ l, ((u i j).pt l).left ≫ a i j = S.homOfLE inf_le_left ≫ ((t i).pt l).left) → (∀ i j, IsGrpPullback (u i j).A (t j).A (S.homOfLE inf_le_right) (b i j) ∧ LBIso (u i j).L ((t j).L.pull (b i j)) ∧ ∀ l, ((u i j).pt l).left ≫ b i j = S.homOfLE inf_le_right ≫ ((t j).pt l).left) → (∀ (T : Scheme.{0}) (i : I) (f : T ⟶ (U i).toScheme) (u : TObj g k J β (f ≫ (U i).ι ≫ s)) (φ φ' : u.A.left ⟶ (t i).A.left), IsOpenImmersion f → IsGrpPullback u.A (t i).A f φ → IsGrpPullback u.A (t i).A f φ' → LBIso u.L ((t i).L.pull φ) → LBIso u.L ((t i).L.pull φ') → (∀ a, (u.pt a).left ≫ φ = (u.pt a).left ≫ φ') → φ = φ') → ∀ i j k (T : Scheme.{0}) (x : T ⟶ (u i j).A.left) (y : T ⟶ (u j k).A.left) (z : T ⟶ (u i k).A.left), x ≫ b i j = y ≫ a j k → x ≫ a i j = z ≫ a i k → y ≫ b j k = z ≫ b i k := by
   intro hex o _ g n J β S s I U t u a b ha hb hrig i j m T x y z hxy hxz
   have HA : ∀ i j, PullsBack (u i j) (t i) (S.homOfLE inf_le_left) (a i j) := ha

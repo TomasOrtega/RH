@@ -13,6 +13,17 @@ section form
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] (Dv : V → Prop) (β : V → V → ℂ)
 
+/- English proof (translation)
+Establish `e1 : β (x + (1 : ℂ) • y) (x + (1 : ℂ) • y) = β x x + β x y + β y x + β y y`. Rewrite using `[hl _ _ _ _ hx hy (hadd _ _ hx (hsmul _ _ hy)), hr _ _ _ _ hx hx hy, hr _ _ _ _ hy hx hy]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : β (x + Complex.I • y) (x + Complex.I • y) = β x x - Complex.I * β x y + Complex.I * β y x + β y y`.
+
+Rewrite using `[hl _ _ _ _ hx hy (hadd _ _ hx (hsmul _ _ hy)), hr _ _ _ _ hx hx hy, hr _ _ _ _ hy hx hy]`. Simplify using `only [Complex.conj_I]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `p1` using `(Complex.nonneg_iff.1 (hpos _ (hadd _ _ hx (hsmul (1 : ℂ) _ hy)))).2`. Establish `p2` using `(Complex.nonneg_iff.1 (hpos _ (hadd _ _ hx (hsmul (Complex.I) _ hy)))).2`. Establish `p3` using `(Complex.nonneg_iff.1 (hpos _ hx)).2`. Establish `p4` using `(Complex.nonneg_iff.1 (hpos _ hy)).2`. Rewrite `p1` using `[e1]`.
+
+Rewrite `p2` using `[e2]`. Simplify using `only [Complex.add_im, Complex.sub_im, Complex.mul_im, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_add] at p1 p2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem herm_of_nonneg (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hsmul : ∀ (c : ℂ) x, Dv x → Dv (c • x))
     (hl : ∀ x₁ x₂ y (c : ℂ), Dv x₁ → Dv x₂ → Dv y → β (x₁ + c • x₂) y = β x₁ y + c * β x₂ y)
     (hr : ∀ x y₁ y₂ (c : ℂ), Dv x → Dv y₁ → Dv y₂ → β x (y₁ + c • y₂) = β x y₁ + conj c * β x y₂)
@@ -35,6 +46,15 @@ theorem herm_of_nonneg (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)
   · simp only [Complex.conj_re]; linarith
   · simp only [Complex.conj_im]; linarith
 
+/- English proof (translation)
+Rewrite using `[PBA.psd_iff_qf]`. Use `⟨fun a _ b _ => herm_of_nonneg Dv β h0 hadd hsmul hl hr hpos _ _ (hu a) (hu b), fun c => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ t : Finset α, Dv (∑ i ∈ t, conj (c i) • u i)` using `by classical`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => simpa using h0`. Consider the case `insert b t hb ih => rw [Finset.sum_insert hb]`. Conclude with `hadd _ _ (hsmul _ _ (hu b)) ih`. Establish `key : PBA.qf Y (fun a b => β (u a) (u b)) c = β (∑ i ∈ Y, conj (c i) • u i) (∑ i ∈ Y, conj (c i) • u i)`. Rewrite using `[PBG.sesq_sum_left Dv Dv β h0 hadd hsmul hl Y (fun i => conj (c i)) u hu _ (hD Y)]`.
+
+Unfold `PBA.qf`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[PBG.sesq_sum_right Dv Dv β h0 hadd hsmul hr _ (hu a) Y (fun i => conj (c i)) u hu, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `(Complex.nonneg_iff.1 (hpos _ (hD Y))).1`.
+-/
 theorem gram_psd (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hsmul : ∀ (c : ℂ) x, Dv x → Dv (c • x))
     (hl : ∀ x₁ x₂ y (c : ℂ), Dv x₁ → Dv x₂ → Dv y → β (x₁ + c • x₂) y = β x₁ y + c * β x₂ y)
     (hr : ∀ x y₁ y₂ (c : ℂ), Dv x → Dv y₁ → Dv y₂ → β x (y₁ + c • y₂) = β x y₁ + conj c * β x y₂)
@@ -63,12 +83,20 @@ end form
 
 section choices
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem swap3 {α N : Type} [Fintype N] (Y : Finset α) (f : N → α → α → ℂ) :
     ∑ p ∈ Y, ∑ q ∈ Y, ∑ n, f n p q = ∑ n, ∑ p ∈ Y, ∑ q ∈ Y, f n p q := by
   calc ∑ p ∈ Y, ∑ q ∈ Y, ∑ n, f n p q = ∑ p ∈ Y, ∑ n, ∑ q ∈ Y, f n p q :=
         Finset.sum_congr rfl fun p _ => Finset.sum_comm
     _ = ∑ n, ∑ p ∈ Y, ∑ q ∈ Y, f n p q := Finset.sum_comm
 
+/- English proof (translation)
+Establish `e : ∀ p q, c p * conj (d q) * (M * ∑ n, (θ n : ℂ) * A n p q) = ∑ n, M * ((θ n : ℂ) * (c p * conj (d q) * A n p q))`. Introduce `p q`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`. Repeatedly rewrite using `[e]`.
+
+Rewrite using `[swap3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+-/
 theorem quad_mix {α N : Type} [Fintype N] (Y : Finset α) (A : N → α → α → ℂ) (θ : N → ℝ) (M : ℂ) (c d : α → ℂ) :
     ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * (M * ∑ n, (θ n : ℂ) * A n p q) =
       M * ∑ n, (θ n : ℂ) * ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * A n p q := by
@@ -84,6 +112,11 @@ theorem quad_mix {α N : Type} [Fintype N] (Y : Finset α) (A : N → α → α 
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [Finset.mul_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `h` using `((PBA.psd_iff_qf Y k).1 hk).2 (fun p => conj (c p))`. Unfold `PBA.qf at h`. Establish `e : (∑ p ∈ Y, ∑ q ∈ Y, conj (conj (c p)) * k p q * conj (c q)) = ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (c q) * k p q`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem quad_nonneg {α : Type} {Y : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn Y k) (c : α → ℂ) :
     0 ≤ (∑ p ∈ Y, ∑ q ∈ Y, c p * conj (c q) * k p q).re := by
   have h := ((PBA.psd_iff_qf Y k).1 hk).2 (fun p => conj (c p))
@@ -95,6 +128,17 @@ theorem quad_nonneg {α : Type} {Y : Finset α} {k : α → α → ℂ} (hk : TB
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[PBA.psd_iff_qf]`. Use `⟨fun a ha b hb => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_ofReal, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Complex.conj_ofReal, ((PBA.psd_iff_qf Y (A n)).1 (hA n)).1 a ha b hb]`. Establish `e : PBA.qf Y (fun p q => (M : ℂ) * ∑ n, (θ n : ℂ) * A n p q) c = (M : ℂ) * ∑ n, (θ n : ℂ) * PBA.qf Y (A n) c`. Unfold `PBA.qf`. Establish `e' : ∀ x y, conj (c x) * ((M : ℂ) * ∑ n, (θ n : ℂ) * A n x y) * c y = ∑ n, (M : ℂ) * ((θ n : ℂ) * (conj (c x) * A n x y * c y))`. Introduce `x y`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun n _ => by ring`. Repeatedly rewrite using `[e']`. Rewrite using `[swap3, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Rewrite using `[e, Complex.re_ofReal_mul, Complex.re_sum]`. Use `mul_nonneg hM (Finset.sum_nonneg fun n _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Complex.re_ofReal_mul]`. Conclude with `mul_nonneg (hθ n) (((PBA.psd_iff_qf Y (A n)).1 (hA n)).2 c)`.
+-/
 theorem psd_mix {α N : Type} [Fintype N] {Y : Finset α} (A : N → α → α → ℂ) (θ : N → ℝ) (M : ℝ)
     (hM : 0 ≤ M) (hθ : ∀ n, 0 ≤ θ n) (hA : ∀ n, TB.PSDOn Y (A n)) :
     TB.PSDOn Y (fun p q => (M : ℂ) * ∑ n, (θ n : ℂ) * A n p q) := by
@@ -123,6 +167,23 @@ theorem psd_mix {α N : Type} [Fintype N] {Y : Finset α} (A : N → α → α �
     rw [Complex.re_ofReal_mul]
     exact mul_nonneg (hθ n) (((PBA.psd_iff_qf Y (A n)).1 (hA n)).2 c)
 
+/- English proof (translation)
+Establish `hM : 0 ≤ M` using `hR.trans hRM`. Use `PBA.block_of_cauchy_schwarz _ _ Y Y _ _ _ (psd_mix A θ M hM hθ hA) (psd_mix B θ M hM hθ hB) fun c d => ?_` and prove the remaining obligations. Use `set a : N → ℝ := fun n => (∑ p ∈ Y, ∑ p' ∈ Y, c p * conj (c p') * A n p p').re with ha`. Use `set b : N → ℝ := fun n => (∑ q ∈ Y, ∑ q' ∈ Y, d q * conj (d q') * B n q q').re with hb`. Establish `ha0 : ∀ n, 0 ≤ a n` using `fun n => quad_nonneg (hA n) c`.
+
+Establish `hb0 : ∀ n, 0 ≤ b n` using `fun n => quad_nonneg (hB n) d`. Establish `eA : (∑ p ∈ Y, ∑ p' ∈ Y, c p * conj (c p') * ((M : ℂ) * ∑ n, (θ n : ℂ) * A n p p')).re = M * ∑ n, θ n * a n`. Rewrite using `[quad_mix, Complex.re_ofReal_mul, Complex.re_sum]`. Simplify using `only [Complex.re_ofReal_mul, ha]`. Establish `eB : (∑ q ∈ Y, ∑ q' ∈ Y, d q * conj (d q') * ((M : ℂ) * ∑ n, (θ n : ℂ) * B n q q')).re = M * ∑ n, θ n * b n`.
+
+Rewrite using `[quad_mix, Complex.re_ofReal_mul, Complex.re_sum]`. Simplify using `only [Complex.re_ofReal_mul, hb]`. Rewrite using `[eA, eB]`. Establish `eW : (∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * ∑ n, (θ n : ℂ) * P n p q) = ∑ n, (θ n : ℂ) * ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q`. Use `quad_mix Y P θ 1 c d` as an intermediate fact.
+
+Simplify using `only [one_mul] at this`. Conclude with `this`. Rewrite using `[eW]`. Establish `hn : ∀ n, ‖(θ n : ℂ) * ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q‖ ≤ R * (Real.sqrt (θ n * a n) * Real.sqrt (θ n * b n))`. Introduce `n`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hθ n)]`. Establish `h1 : ‖∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q‖ ≤ R * Real.sqrt (a n * b n)`. Rewrite using `[← Real.sqrt_sq hR, ← Real.sqrt_mul (sq_nonneg R)]`. Conclude with `Real.le_sqrt_of_sq_le (hCS n c d)`. Establish `h1' : ‖∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q‖ ≤ R * (Real.sqrt (a n) * Real.sqrt (b n))`.
+
+Rewrite using `[← Real.sqrt_mul (ha0 n)]`. Conclude with `h1`. Establish `hsq` using `Real.mul_self_sqrt (hθ n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul (hθ n), Real.sqrt_mul (hθ n)]`.
+
+Take the linear combination `(-(R * (Real.sqrt (a n) * Real.sqrt (b n)))) * hsq`. Establish `hsum : ‖∑ n, (θ n : ℂ) * ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q‖ ≤ R * ∑ n, Real.sqrt (θ n * a n) * Real.sqrt (θ n * b n)` using `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun n _ => hn n).trans (by rw [Finset.mul_sum]))`. Establish `hcs2 : (∑ n, Real.sqrt (θ n * a n) * Real.sqrt (θ n * b n)) ^ 2 ≤ (∑ n, θ n * a n) * (∑ n, θ n * b n)`. Use `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun n => Real.sqrt (θ n * a n)) (fun n => Real.sqrt (θ n * b n))` as an intermediate fact. Simplify `this` using `only [Real.sq_sqrt (mul_nonneg (hθ _) (ha0 _)), Real.sq_sqrt (mul_nonneg (hθ _) (hb0 _))]`.
+
+Establish `hSa : 0 ≤ ∑ n, θ n * a n` using `Finset.sum_nonneg fun n _ => mul_nonneg (hθ n) (ha0 n)`. Establish `hSb : 0 ≤ ∑ n, θ n * b n` using `Finset.sum_nonneg fun n _ => mul_nonneg (hθ n) (hb0 n)`. Establish `hS0 : 0 ≤ ∑ n, Real.sqrt (θ n * a n) * Real.sqrt (θ n * b n)` using `Finset.sum_nonneg fun n _ => mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem block_of_choices {α N : Type} [Fintype N] (Y : Finset α) (A B P : N → α → α → ℂ) (θ : N → ℝ) (R M : ℝ)
     (hθ : ∀ n, 0 ≤ θ n) (hA : ∀ n, TB.PSDOn Y (A n)) (hB : ∀ n, TB.PSDOn Y (B n)) (hR : 0 ≤ R) (hRM : R ≤ M)
     (hCS : ∀ n (c d : α → ℂ), ‖∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * P n p q‖ ^ 2 ≤
@@ -193,6 +254,9 @@ end choices
 
 section block0
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun x y : Y => k x y) = Matrix.of fun x y : Y => k' x y`. Use extensionality with `x y`. Conclude with `h x x.2 y y.2`. Unfold `TB.PSDOn at hk ⊢`. Rewrite using `[← e]` and apply the resulting hypothesis.
+-/
 theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ} (h : ∀ x ∈ Y, ∀ y ∈ Y, k x y = k' x y)
     (hk : TB.PSDOn Y k) : TB.PSDOn Y k' := by
   have e : (Matrix.of fun x y : Y => k x y) = Matrix.of fun x y : Y => k' x y := by
@@ -202,6 +266,23 @@ theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ} (h : �
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] (Dv : V → Prop) (β : V → V → ℂ)
 
+/- English proof (translation)
+Use `set β' : V → V → ℂ := fun x y => (c0 : ℂ) * β x y with hβ'`. Establish `hl' : ∀ x₁ x₂ y (c : ℂ), Dv x₁ → Dv x₂ → Dv y → β' (x₁ + c • x₂) y = β' x₁ y + c * β' x₂ y`. Introduce `x₁ x₂ y c h₁ h₂ hy`. Simplify using `only [hβ', hl _ _ _ _ h₁ h₂ hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr' : ∀ x y₁ y₂ (c : ℂ), Dv x → Dv y₁ → Dv y₂ → β' x (y₁ + c • y₂) = β' x y₁ + conj c * β' x y₂`. Introduce `x y₁ y₂ c hx h₁ h₂`. Simplify using `only [hβ', hr _ _ _ _ hx h₁ h₂]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos' : ∀ x, Dv x → 0 ≤ β' x x` using `fun x hx => by`.
+
+Simplify using `only [hβ']`. Conclude with `mul_nonneg (by exact_mod_cast hc0) (hpos x hx)`. Use `set z : α ⊕ α → V := fun x => match x with`. Consider the case `.inl p => Vop (u p)`. Consider the case `.inr q => u q with hz`.
+
+Establish `hzD : ∀ x, Dv (z x)` using `fun x => by`. Consider the cases of `x with`. Consider the case `inl p => exact hV _ (hu p)`. Consider the case `inr q => exact hu q`. Establish `hG` using `gram_psd Dv β' h0 hadd hsmul hl' hr' hpos' (Y.disjSum Y) z hzD`.
+
+Rewrite using `[PBA.blockPSD_iff]`. Use `psd_congr (fun x hx y hy => ?_) hG` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl p`. Consider the cases of `y with`.
+
+Consider the case `inl q`. Simplify using `only [hz, hβ', PBA.blockK]`. Rewrite using `[hiso _ _ (hu p) (hu q), ha p (Finset.inl_mem_disjSum.1 hx) q (Finset.inl_mem_disjSum.1 hy)]`. Consider the case `inr q`. Simplify using `only [hz, hβ', PBA.blockK]`.
+
+Rewrite using `[hw p (Finset.inl_mem_disjSum.1 hx) q (Finset.inr_mem_disjSum.1 hy)]`. Consider the case `inr q`. Consider the cases of `y with`. Consider the case `inl p`. Simplify using `only [hz, hβ', PBA.blockK]`.
+
+Rewrite using `[hw p (Finset.inl_mem_disjSum.1 hy) q (Finset.inr_mem_disjSum.1 hx), map_mul, Complex.conj_ofReal, herm_of_nonneg Dv β h0 hadd hsmul hl hr hpos _ _ (hV _ (hu p)) (hu q)]`. Consider the case `inr q'`. Simplify using `only [hz, hβ', PBA.blockK]`. Rewrite using `[ha q (Finset.inr_mem_disjSum.1 hx) q' (Finset.inr_mem_disjSum.1 hy)]`.
+-/
 theorem block_iso (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hsmul : ∀ (c : ℂ) x, Dv x → Dv (c • x))
     (hl : ∀ x₁ x₂ y (c : ℂ), Dv x₁ → Dv x₂ → Dv y → β (x₁ + c • x₂) y = β x₁ y + c * β x₂ y)
     (hr : ∀ x y₁ y₂ (c : ℂ), Dv x → Dv y₁ → Dv y₂ → β x (y₁ + c • y₂) = β x y₁ + conj c * β x y₂)
@@ -249,6 +330,9 @@ theorem block_iso (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hs
 
 end block0
 
+/- English proof (translation)
+Use `choose f hf using h`. Distinguish the cases in `hne : Nonempty ι`. Take `⟨i0, -, hi0⟩` from `Finset.exists_min_image Finset.univ f Finset.univ_nonempty`. Conclude with `⟨f i0, (hf i0).1, fun i => hmono i _ _ (hf i).2 (hf i0).1 (hi0 i (Finset.mem_univ i))⟩`. Conclude with `⟨1, one_pos, fun i => absurd ⟨i⟩ hne⟩`.
+-/
 theorem common_eps {ι : Type} [Fintype ι] (Q : ι → ℝ → Prop) (hmono : ∀ i ε ε', Q i ε → 0 < ε' → ε' ≤ ε → Q i ε')
     (h : ∀ i, ∃ ε, 0 < ε ∧ Q i ε) : ∃ ε, 0 < ε ∧ ∀ i, Q i ε := by
   classical
@@ -263,6 +347,9 @@ section choice
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   (Dv : V → Prop) (Dw : W → Prop) (β : V → V → ℂ) (γ : W → W → ℂ) (π : V → W → ℂ)
 
+/- English proof (translation)
+Proceed by induction on `Y using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert b t hb ih => rw [Finset.sum_insert hb]`. Conclude with `hadd _ _ (hsmul _ _ (hu b)) ih`.
+-/
 theorem sum_mem_of {X : Type} [AddCommGroup X] [Module ℂ X] (D : X → Prop) (h0 : D 0)
     (hadd : ∀ x y, D x → D y → D (x + y)) (hsmul : ∀ (c : ℂ) x, D x → D (c • x)) {α : Type} (Y : Finset α)
     (a : α → ℂ) (u : α → X) (hu : ∀ i, D (u i)) : D (∑ i ∈ Y, a i • u i) := by
@@ -271,6 +358,23 @@ theorem sum_mem_of {X : Type} [AddCommGroup X] [Module ℂ X] (D : X → Prop) (
   | empty => simpa using h0
   | insert b t hb ih => rw [Finset.sum_insert hb]; exact hadd _ _ (hsmul _ _ (hu b)) ih
 
+/- English proof (translation)
+Use `set X : V := ∑ p ∈ Y, c p • u p with hX`. Use `set X' : W := ∑ q ∈ Y, d q • u' q with hX'`. Establish `hXD : Dv X` using `sum_mem_of Dv h0 hadd hsmul Y c u hu`. Establish `hX'D : Dw X'` using `sum_mem_of Dw h0' hadd' hsmul' Y d u' hu'`. Establish `hV0 : Vop 0 = 0`.
+
+Use `hVlin 0 0 1 h0 h0` as an intermediate fact. Simplify using `only [one_smul, add_zero] at this`. Establish `h2 : Vop 0 + Vop 0 - Vop 0 = Vop 0 - Vop 0` using `by rw [← this]`. Simplify using `using h2`. Establish `hVsum : ∀ t : Finset α, Vop (∑ p ∈ t, c p • u p) = ∑ p ∈ t, c p • Vop (u p)`.
+
+Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hV0`. Consider the case `insert b t hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, add_comm (c b • u b), hVlin _ _ _ (sum_mem_of Dv h0 hadd hsmul t c u hu) (hu b), ih, add_comm]`.
+
+Establish `eP : ∑ p ∈ Y, ∑ q ∈ Y, c p * conj (d q) * (κ * π (Vop (u p)) (u' q)) = κ * π (Vop X) X'`. Rewrite using `[hX, hVsum Y, PBG.sesq_sum_left Dv Dw π h0 hadd hsmul hπl Y c (fun p => Vop (u p)) (fun p => hV _ (hu p)) _ hX'D, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[PBG.sesq_sum_right Dv Dw π h0' hadd' hsmul' hπr _ (hV _ (hu p)) Y d u' hu', Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `eA : ∑ p ∈ Y, ∑ p' ∈ Y, c p * conj (c p') * ((cp : ℂ) * β (u p) (u p')) = (cp : ℂ) * β X X`. Rewrite using `[hX, PBG.sesq_sum_left Dv Dv β h0 hadd hsmul hl Y c u hu _ hXD, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[PBG.sesq_sum_right Dv Dv β h0 hadd hsmul hr _ (hu p) Y c u hu, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `eB : ∑ q ∈ Y, ∑ q' ∈ Y, d q * conj (d q') * ((cm : ℂ) * γ (u' q) (u' q')) = (cm : ℂ) * γ X' X'`. Rewrite using `[hX', PBG.sesq_sum_left Dw Dw γ h0' hadd' hsmul' hl' Y d u' hu' _ hX'D, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[PBG.sesq_sum_right Dw Dw γ h0' hadd' hsmul' hr' _ (hu' p) Y d u' hu', Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eP, eA, eB, Complex.re_ofReal_mul, Complex.re_ofReal_mul, norm_mul]`. Establish `h1` using `hCS _ _ (hV _ hXD) hX'D`.
+
+Rewrite `h1` using `[hiso _ _ hXD hXD]`. Establish `hQcc : 0 < Q * cp * cm` using `by positivity`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hQcc, mul_pow]`. Establish `hk : 0 ≤ ‖κ‖ ^ 2` using `sq_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cs_choice (h0 : Dv 0) (hadd : ∀ x y, Dv x → Dv y → Dv (x + y)) (hsmul : ∀ (c : ℂ) x, Dv x → Dv (c • x))
     (h0' : Dw 0) (hadd' : ∀ x y, Dw x → Dw y → Dw (x + y)) (hsmul' : ∀ (c : ℂ) x, Dw x → Dw (c • x))
     (hl : ∀ x₁ x₂ y (c : ℂ), Dv x₁ → Dv x₂ → Dv y → β (x₁ + c • x₂) y = β x₁ y + c * β x₂ y)

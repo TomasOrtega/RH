@@ -20,6 +20,11 @@ def FujitaVanishing.Statement : Prop :=
     ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∀ N : K → ℤ, KH.NefOnF I V N →
       ∀ i : ℕ, 1 ≤ i → Subsingleton (KH.cechHc ι 𝓜 (m • H + N) i)
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[Module.mem_annihilator]`. Introduce `z`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `V.mul_mem_right r hx`.
+-/
 theorem le_annihilator_quotient {R : Type} [CommRing R] (V : Ideal R) :
     V ≤ Module.annihilator R (R ⧸ V) := by
   intro x hx

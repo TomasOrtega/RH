@@ -5,6 +5,23 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.PtClosed
 
+/- English proof (translation)
+Introduce `S P hloc hrep R' _ x hx`. Establish `key : ∀ (V : S.Opens) (hV : IsAffineOpen V) (r : R'), (∀ q : PrimeSpectrum R', r ∉ q.asIdeal → x.base q ∈ V) → P (Localization.Away r) (spMap (algebraMap R' (Localization.Away r)) ≫ x)`. Introduce `V hV r hsub`. Establish `e : (⊤ : (Sp (Localization.Away r)).Opens) ≤ (spMap (algebraMap R' (Localization.Away r)) ≫ x) ⁻¹ᵁ V`. Introduce `q _`.
+
+Use `show x.base ((spMap (algebraMap R' (Localization.Away r))).base q) ∈ V`. Apply `hsub` to reduce the goal to its premises. Introduce `h`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit r))`. Set `g' : Γ(S, V) ⟶ CommRingCat.of (Localization.Away r)` to `(spMap (algebraMap R' (Localization.Away r)) ≫ x).appLE V ⊤ e ≫ (Scheme.ΓSpecIso _).hom`.
+
+Establish `hy : spMap (algebraMap R' (Localization.Away r)) ≫ x = spMap g'.hom ≫ hV.fromSpec`. Establish `h1` using `IsAffineOpen.SpecMap_appLE_fromSpec (spMap (algebraMap R' (Localization.Away r)) ≫ x) hV (isAffineOpen_top (Sp (Localization.Away r))) e`. Rewrite `h1` using `[IsAffineOpen.fromSpec_top]`. Rewrite using `[(Iso.inv_comp_eq _).1 h1.symm, Scheme.isoSpec_Spec_hom]`. Simplify using `only [spMap, CommRingCat.ofHom_hom, g', Spec.map_comp, Category.assoc]`.
+
+Establish `hker : killIdeal (ptQ P V hV) ≤ RingHom.ker g'.hom`. Use `(hx V hV).trans ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Establish `hg : g' = x.app V ≫ ((spMap (algebraMap R' (Localization.Away r))).appLE (x ⁻¹ᵁ V) ⊤ e ≫ (Scheme.ΓSpecIso _).hom)`.
+
+Simplify using `only [g', Scheme.Hom.comp_appLE, Category.assoc]`. Rewrite using `[hg, CommRingCat.hom_comp, RingHom.comp_apply, ha, map_zero]`. Use `(hrep V hV (Localization.Away r) g'.hom).2 hker` as an intermediate fact. Rewrite using `[hy]`. Conclude with `this`.
+
+Set `G : Set R'` to `{r | ∃ V : S.Opens, IsAffineOpen V ∧ ∀ q : PrimeSpectrum R', r ∉ q.asIdeal → x.base q ∈ V}`. Establish `hG : Ideal.span G = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `p : PrimeSpectrum R'` to `⟨m, hm.isPrime⟩`.
+
+Take `⟨V, hV, hpV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.isBasis_affineOpens) (show x.base p ∈ (⊤ : S.Opens) from trivial)`. Establish `hpV' : p ∈ (x ⁻¹ᵁ V : TopologicalSpace.Opens (PrimeSpectrum R'))` using `hpV`. Take `⟨W, ⟨r, rfl⟩, hpW, hW⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 (PrimeSpectrum.isBasis_basic_opens (R := R'))) hpV'`. Establish `hr : r ∈ G` using `⟨V, hV, fun q hq => hW (show q ∈ PrimeSpectrum.basicOpen r from hq)⟩`. Conclude with `hpW (hle (Ideal.subset_span hr))`.
+
+Take `⟨t, ht, hspan⟩` from `(Ideal.span_eq_top_iff_finite G).1 hG`. Use `hloc R' x t hspan fun r hr => ?_` and prove the remaining obligations. Take `⟨V, hV, hsub⟩` from `ht hr`. Conclude with `key V hV r hsub`.
+-/
 theorem of_le_ker_app : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop),
   (∀ (R' : Type) [CommRing R'] (x : Sp R' ⟶ S) (t : Finset R'), Ideal.span (t : Set R') = ⊤ →
      (∀ r ∈ t, P (Localization.Away r) (spMap (algebraMap R' (Localization.Away r)) ≫ x)) → P R' x) →

@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.abMulN_holds | exact GlobalTheory.abMulN_holds | (intros; apply GlobalTheory.abMulN_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianVarietyTorsionCardEqPow : GlobalTheory.Published.AbMulNSt := by
   first | exact @GlobalTheory.abMulN_holds | exact GlobalTheory.abMulN_holds | (intros; apply GlobalTheory.abMulN_holds <;> assumption)

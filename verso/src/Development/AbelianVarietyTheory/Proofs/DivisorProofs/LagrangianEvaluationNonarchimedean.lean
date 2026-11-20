@@ -25,6 +25,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `hST hAD E _ _ _ _ I _ d φ hF 𝔣 Λ h𝔣 hΛ l _ Q hQ hQl y hy lam Ω hΩ 𝔠 X U`. Establish `hf : 0 < Module.finrank ℚ (FR E)` using `Module.finrank_pos`. Set `j₀ : Fin (Module.finrank ℚ (FR E))` to `⟨0, hf⟩`. Take `⟨k₁, R₁, hk₁, hR₁, hR₁k, P₁, A₁, _, φ₁, L₁, u₁, v₁, v₁', t, hA₁, hdim₁, hpb₁, hΛ₁, hv₁, hv₁', hvv₁, hd₁, ht, hsz⟩` from `GlobalTheory.T.elliptic_curve_good_reduction_model hST d Λ hF.1 hΛ l lam Ω hΩ`. Take `⟨P, A', _, φ', L', u, v, v', hA', hdim, hpb, hΛu, hv, hv', hvv, hd⟩` from `GlobalTheory.T.tangent_pullback_elliptic_model R₁ R₁.subtype P₁ A₁ φ₁ L₁ u₁ v₁ v₁' t Λ.lattice hA₁ hdim₁ hpb₁ hΛ₁ hv₁ hv₁' hvv₁ hd₁ (Module.finrank ℚ (FR E)) j₀`.
+
+Take `⟨α, M, n, N, hα, hfin, hflat, hsurj, hN, hker, hM, hMj, hn, hszn⟩` from `GlobalTheory.T.integral_lattice_l_adic_reduction E I d φ hF 𝔣 Λ h𝔣 hΛ l Q hQ hQl y hy lam 𝔠 X U A' L' u hA' hdim hΛu j₀`. Take `⟨k₀, R₀, hk₀, hR₀, hR₀k, G₀, _, p₀, P₀, Ψ₀, hG₀, hp₀, hΨ, hΨf, hΨfl, hΨs, htan⟩` from `GlobalTheory.T.isogeny_good_reduction_extension l lam k₁ R₁ hk₁ hR₁ hR₁k P A' φ' hpb X.A α N X.ab hα hfin hflat hsurj hN hker`. Use `⟨k₀, R₀, hk₀, hR₀, hR₀k, G₀, inferInstance, p₀, P₀, Ψ₀, hG₀, hp₀, hΨ, hΨf, hΨfl, hΨs, fun i ↦ ?_⟩` and prove the remaining obligations. Take `⟨v₀, hv₀, hc⟩` from `htan v v' hv hvv`. Establish `hαt : IsTangent (v' ≫ α)` using `GlobalTheory.HomLinear.isTangent_comp α hv'`.
+
+Establish `hW : M (Pi.single j₀ t) = fun _ ↦ t * (n : ℂ)`. Establish `: (Pi.single j₀ t : Fin (Module.finrank ℚ (FR E)) → ℂ) = t • Pi.single j₀ 1`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul, hMj]`. Both sides reduce to the same expression.
+
+Use `⟨v₀, GlobalTheory.Serre.Lie.mk X.rm (v' ≫ α) hαt, M (Pi.single j₀ t), hv₀, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hc`. Simplify using `using GlobalTheory.HomLinear.isDiff_comp u U.u α M hM hv' hd`. Rewrite using `[hW]`. Conclude with `mul_ne_zero ht (by exact_mod_cast hn.ne')`.
+
+Rewrite using `[hW]`. Establish `e : (t * (n : ℂ) * Ω)⁻¹ = (n : ℂ)⁻¹ * (t * Ω)⁻¹`. Rewrite using `[show t * (n : ℂ) * Ω = (n : ℂ) * (t * Ω) by ring, _root_.mul_inv]`. Rewrite using `[e]`. Simplify using `using GlobalTheory.LatValRam.sz_mul hszn hsz`.
+-/
 theorem GlobalTheory.LatModel.exists_isogModel : GlobalTheory.Published.SerreTateGoodReductionSt → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
     (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)) (Λ : PeriodPair), IsBaseCond 𝔣 →

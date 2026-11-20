@@ -14,5 +14,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KaehlerPot.exists_posPot_finAtlas | exact GlobalTheory.KaehlerPot.exists_posPot_finAtlas | (intros; apply GlobalTheory.KaehlerPot.exists_posPot_finAtlas <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_positive_potential_compact : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)], ∃ α : LocPot (CxPts (genStr s.T.Z) σ), IsPotential (manifold s.T.Z σ).finAtlas α ∧ ReciprocityTheory.AnForm.M.IsPosPot (manifold s.T.Z σ).finAtlas α := by
   first | exact @GlobalTheory.KaehlerPot.exists_posPot_finAtlas | exact GlobalTheory.KaehlerPot.exists_posPot_finAtlas | (intros; apply GlobalTheory.KaehlerPot.exists_posPot_finAtlas <;> assumption)

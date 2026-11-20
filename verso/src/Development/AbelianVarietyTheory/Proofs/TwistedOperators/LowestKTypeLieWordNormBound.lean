@@ -12,12 +12,22 @@ open GlobalTheory.SepReal
 
 namespace GlobalTheory.SepReal.LieWords
 
+/- English proof (translation)
+Use function extensionality and compare the values at `X w`. Unfold `dR GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit`. Use `congr 1`.
+-/
 theorem dR_eq_dAct {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (π : Mat m → (H →L[ℂ] H)) : dR π = GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct π := by
   funext X w
   unfold dR GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit
   congr 1
 
+/- English proof (translation)
+Establish `hint : ∀ a c : Fin m, a < c → 1 ≤ lam a - lam c`. Introduce `a c hac`. Take `⟨ka, hka⟩` from `hc.2 a`. Take `⟨kc, hkc⟩` from `hc.2 c`. Establish `e : lam a - lam c = ((ka - kc : ℤ) : ℝ)` using `by push_cast; linarith`.
+
+Establish `hpos : (0 : ℝ) < ((ka - kc : ℤ) : ℝ)` using `by rw [← e]; linarith [hc.1 hac]`. Establish `h1 : (0 : ℤ) < ka - kc` using `by exact_mod_cast hpos`. Establish `h2 : (1 : ℝ) ≤ ((ka - kc : ℤ) : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h01` using `hint ⟨0, by omega⟩ ⟨1, by omega⟩ (by simp [Fin.lt_def])`.
+
+Establish `h12` using `hint ⟨1, by omega⟩ ⟨2, by omega⟩ (by simp [Fin.lt_def])`. Establish `a0` using `abs_le.mp (hB ⟨0, by omega⟩)`. Establish `a2` using `abs_le.mp (hB ⟨2, by omega⟩)`. Combine the linear relations using `[a0.1, a0.2, a2.1, a2.2]`.
+-/
 theorem one_le_of_bound {m : ℕ} (hm : 3 ≤ m) {lam : Fin m → ℝ} (hc : IsHCParam lam) {B : ℝ}
     (hB : ∀ a, |lam a| ≤ B) : 1 ≤ B := by
   have hint : ∀ a c : Fin m, a < c → 1 ≤ lam a - lam c := by
@@ -35,6 +45,15 @@ theorem one_le_of_bound {m : ℕ} (hm : 3 ≤ m) {lam : Fin m → ℝ} (hc : IsH
   have a2 := abs_le.mp (hB ⟨2, by omega⟩)
   linarith [a0.1, a0.2, a2.1, a2.2]
 
+/- English proof (translation)
+Establish `hm' : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hB0 : (0 : ℝ) ≤ B` using `by linarith`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst`. Rewrite using `[Real.sq_sqrt hB0]`. Establish `h12 : (m : ℝ) ^ (1 / 2 : ℝ) ≤ m`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h32 : (m : ℝ) ^ (3 / 2 : ℝ) ≤ (m : ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hPr : (P : ℝ) ≤ m + 1` using `by exact_mod_cast hP`. Establish `a1 : (m : ℝ) ^ (1 / 2 : ℝ) * B ≤ m * B` using `mul_le_mul_of_nonneg_right h12 hB0`.
+
+Establish `hmB : 1 ≤ (m : ℝ) * B` using `by nlinarith`. Establish `a2 : (m : ℝ) * B ≤ (m * B) ^ 2` using `by nlinarith`. Establish `a3 : (m : ℝ) ^ 2 ≤ (m * B) ^ 2`. Establish `hB2 : 1 ≤ B ^ 2` using `one_le_pow₀ hB`. Rewrite using `[mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `a4 : 3 * (P : ℝ) ≤ 2 * (m : ℝ) ^ 2` using `by nlinarith`. Establish `e : (8 * (m : ℝ) * B) ^ 2 = 64 * (m * B) ^ 2` using `by ring`. Rewrite using `[e]`. Use polynomial arithmetic with `[sq_nonneg ((m : ℝ) * B)]`.
+-/
 theorem stepConst_le {m : ℕ} (hm : 3 ≤ m) {B : ℝ} (hB : 1 ≤ B) (P : ℕ) (hP : P ≤ m + 1) :
     GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst m (Real.sqrt B) P ≤ (8 * (m : ℝ) * B) ^ 2 := by
   have hm' : (3 : ℝ) ≤ m := by exact_mod_cast hm
@@ -63,6 +82,11 @@ theorem stepConst_le {m : ℕ} (hm : 3 ≤ m) {B : ℝ} (hB : 1 ≤ B) (P : ℕ)
   rw [e]
   nlinarith [sq_nonneg ((m : ℝ) * B)]
 
+/- English proof (translation)
+Establish `hm' : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hrk : GlobalTheory.Count.rkR ε ≤ m`. Unfold `GlobalTheory.Count.rkR`. Conclude with `(min_le_left _ _).trans ((Finset.card_filter_le _ _).trans (by simp))`. Establish `h1 : ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ (m : ℝ) ^ ((3 : ℝ) / 2)` using `Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hrk) (by norm_num)`.
+
+Establish `h32 : (m : ℝ) ^ ((3 : ℝ) / 2) ≤ (m : ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 0 ≤ ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2)` using `by positivity`. Establish `h2 : 120 * (m : ℝ) * ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 120 * (m : ℝ) * (m : ℝ) ^ 2` using `mul_le_mul_of_nonneg_left (h1.trans h32) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rk_le {m : ℕ} (hm : 3 ≤ m) (ε : Fin m → Bool) :
     120 * (m : ℝ) * ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 1000 * (m : ℝ) ^ 3 := by
   have hm' : (3 : ℝ) ≤ m := by exact_mod_cast hm
@@ -84,6 +108,23 @@ end GlobalTheory.SepReal.LieWords
 
 open GlobalTheory.SepReal.LieWords in
 
+/- English proof (translation)
+Introduce `m ε lam B hm hc hgap hB H _ _ π hDS v₀ hv₀`. Use `haveI : CompleteSpace H := hDS.1`. Establish `hU : IsURepOn (UJset ε) π` using `hDS.2.2.1`. Establish `hm' : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hgap2 : ∀ a b : Fin m, ε a ≠ ε b → 2 * (m : ℝ) < |lam a - lam b|`.
+
+Introduce `a b hab`. Establish `h` using `hgap a b hab`. Use polynomial arithmetic with `[sq_nonneg (m : ℝ)]`. Establish `hK` using `GlobalTheory.Jet.MultGap.isKTypeOf_lowKSub m ε lam H π hc hDS hgap2`. Establish `hZ` using `GlobalTheory.DSId.LowCharGap.lowChar m ε lam H π hc hDS _ hgap (rk_le hm ε)`.
+
+Establish `hB1 : 1 ≤ B` using `one_le_of_bound hm hc hB`. Establish `hb : ∀ a, |lam a| ≤ (Real.sqrt B) ^ 2`. Rewrite using `[Real.sq_sqrt (by linarith)]; exact hB`. Establish `hSB` using `GlobalTheory.StepBoundOneRep.stepBound_of_eigen m ε H π lam (Real.sqrt B) hU hK hZ hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `GlobalTheory.StepBoundOneRep.smooth_of_mem_lowKSub ε lam π hU hK v₀ hv₀.2`. Establish `hJ : IsUnit (Jm ε)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse (Jm_mul_self ε))`. Conclude with `(GlobalTheory.SmChart.smV_iff_smoothOnH hJ hU.1 v₀).2 hs`. Rewrite using `[dR_eq_dAct]`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil => intro _ _`. Simplify using `[hv₀.1]`. Consider the case `cons X l ih`. Introduce `hl hlen`.
+
+Establish `hX : inG ε X` using `hl X List.mem_cons_self`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieOf (Jm ε)` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Establish `hlen' : l.length ≤ m + 2` using `by simp at hlen; omega`. Establish `hmem : l.foldr (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct π) v₀ ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam π l.length` using `Submodule.subset_span ⟨l, v₀, le_rfl, hl', hv₀.2, rfl⟩`. Establish `h1` using `(hSB l.length).2.2.2 X hX _ hmem`.
+
+Establish `hcst` using `stepConst_le hm hB1 l.length (by simp at hlen; omega)`. Establish `hrest` using `ih hl' hlen'`. Establish `hsq : Real.sqrt (hs X) = hsn X` using `rfl`. Establish `hh : 0 ≤ hsn X` using `Real.sqrt_nonneg _`. Rewrite using `[List.foldr_cons, List.map_cons, List.prod_cons]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq]`. Use `mul_le_mul ?_ hrest (norm_nonneg _) (by positivity)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hcst hh`.
+-/
 theorem GlobalTheory.SepReal.lieBound : LieBound := by
   intro m ε lam B hm hc hgap hB H _ _ π hDS v₀ hv₀
   haveI : CompleteSpace H := hDS.1

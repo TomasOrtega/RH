@@ -21,6 +21,9 @@ namespace GlobalTheory.LieRigid
 
 open GlobalTheory.ZH.CrdCalc (valR_res valR_spMap valR_eq valHom)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CoverRefinementPullback.dlg_res' B L δ hδ i j (hT.trans hO)]`. Unfold `dlg`. Rewrite using `[GlobalTheory.KS.rsT_of_le hT, map_mul, GlobalTheory.CoverRefinementPullback.pbT_id' _ hO, GlobalTheory.CoverRefinementPullback.pbT_id' _ hO, ← hδ.2.2 _ _ hT le_top, GlobalTheory.CoverRefinementPullback.resG_resG', GlobalTheory.CoverRefinementPullback.resG_resG']`. Both sides reduce to the same expression.
+-/
 theorem dlg_sub {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (L : LB B.left)
     (δ : Fld B.left) (hδ : IsField ⊤ δ) (i j : L.ι) {O T : B.left.Opens} (hO : O ≤ L.U i ⊓ L.U j) (hT : T ≤ O) :
     rsT (dlg B (𝟙 _) L δ i j O) T = rsT (dlg B (𝟙 _) L δ i j (L.U i ⊓ L.U j)) T := by
@@ -30,6 +33,27 @@ theorem dlg_sub {A : Type} [CommRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonO
     GlobalTheory.CoverRefinementPullback.resG_resG', GlobalTheory.CoverRefinementPullback.resG_resG']
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ P w δ hδ K V jk hV hVj b hb`. Establish `hδ1 : IsField ⊤ δ` using `hδ.1`. Establish `hcob : IsCob P.L.U (fun j j' => dlg P.A (𝟙 _) P.L δ j j' (P.L.U j ⊓ P.L.U j'))`. Use `GlobalTheory.T.isCechOneCoboundary_of_mixed_overlaps P.A.left P.L.ι K P.L.U V hV _ (fun k k' => dlg P.A (𝟙 _) P.L δ (jk k) (jk k') (V k ⊓ V k')) (fun j k => rsT (dlg P.A (𝟙 _) P.L δ j (jk k) (P.L.U j ⊓ P.L.U (jk k))) (P.L.U j ⊓ V k)) (fun j j' k => ?_) (fun j k k' => ?_) ⟨b, fun …` and prove the remaining obligations. Establish `t1 : P.L.U j ⊓ P.L.U j' ⊓ V k ≤ P.L.U j ⊓ P.L.U j'` using `inf_le_left`.
+
+Establish `t2 : P.L.U j ⊓ P.L.U j' ⊓ V k ≤ P.L.U j ⊓ V k` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `t3 : P.L.U j ⊓ P.L.U j' ⊓ V k ≤ P.L.U j' ⊓ V k` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Rewrite using `[GlobalTheory.KS.rsT_rsT (inf_le_inf le_rfl (hVj k)) t2, GlobalTheory.KS.rsT_rsT (inf_le_inf le_rfl (hVj k)) t3, ← GlobalTheory.CoverRefinementPullback.dlg_tri _ _ P.isLB δ hδ1 j j' (jk k) t1 (t3.trans (inf_le_inf le_rfl (hVj k))) (t2.trans (inf_le_inf le_rfl (hVj k)))]`. Normalize the expressions using the abelian group laws. Establish `t1 : P.L.U j ⊓ V k ⊓ V k' ≤ V k ⊓ V k'` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`.
+
+Establish `t2 : P.L.U j ⊓ V k ⊓ V k' ≤ P.L.U j ⊓ V k` using `inf_le_left`. Establish `t3 : P.L.U j ⊓ V k ⊓ V k' ≤ P.L.U j ⊓ V k'` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Rewrite using `[dlg_sub _ _ δ hδ1 (jk k) (jk k') (inf_le_inf (hVj k) (hVj k')) t1, GlobalTheory.KS.rsT_rsT (inf_le_inf le_rfl (hVj k)) t2, GlobalTheory.KS.rsT_rsT (inf_le_inf le_rfl (hVj k')) t3, ← GlobalTheory.CoverRefinementPullback.dlg_tri _ _ P.isLB δ hδ1 j (jk k) (jk k') (t2.trans (inf_le_ …`. Normalize the expressions using the abelian group laws. Take `⟨H, hH⟩` from `hcob`.
+
+Establish `hgp` using `GlobalTheory.Heat.DlogIndep.isGrpPullback_self P.A`. Take `⟨u, hu⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.push_surj hgp (tv w)`. Establish `hul : u.left = (tv w).left` using `(Category.comp_id _).symm.trans (congrArg (fun q => q.left) hu)`. Establish `hut : IsTangent u` using `(ReciprocityTheory.ChartRestriction.G.PullbackSections.isTangent_iff hgp _).2 (by rw [hu]; exact ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem _)`. Establish `hee : ∀ (S : Type) [CommRing S] [Algebra R S] (φ : DualNumber R →ₐ[R] S), φ DualNumber.eps * φ DualNumber.eps = 0` using `fun S _ _ φ => by`.
+
+Rewrite using `[← map_mul, DualNumber.eps_mul_eps, map_zero]`. Establish `hφ : ∀ (S : Type) [CommRing S] [Algebra R S] (φ : DualNumber R →ₐ[R] S), (algOverHom φ ≫ u : algOver R S ⟶ P.A) = (Chart.spMap (SqZero.epsTo R (φ DualNumber.eps) (hee S φ)) ≫ u)`. Introduce `S _ _ φ`. Establish `e : φ = SqZero.epsTo R (φ DualNumber.eps) (hee S φ)` using `DualNumber.algHom_ext (by simp [SqZero.epsTo, SqZero.dualTo_apply])`. Use `conv_lhs => rw [e]`.
+
+Both sides reduce to the same expression. Establish `h1 : u = 1` using `GlobalTheory.Heat.DlogIndep.eq_one_of_coboundary P.isLB P.ktriv (DualNumber.eps : DualNumber R) DualNumber.eps_mul_eps u (fun j => -H j) (fun S _ _ φ y U hU => by`. Rewrite using `[hφ S φ]`. Conclude with `(GlobalTheory.Heat.DlogIndep.valR_translate hul hut hδ _ (hee S φ) y U hU).1)`. Use the proof step `(fun S _ _ φ y j j' hj hj' => by`.
+
+Rewrite using `[hφ S φ]`. Establish `hU : ⊤ ≤ y.left ⁻¹ᵁ (P.L.U j ⊓ P.L.U j')` using `fun p hp => ⟨hj hp, hj' hp⟩`. Establish `e₁` using `congrArg (valHom (R := S) y.left _ hU) (hH j j')`. Establish `r₁ : valHom (R` using `S) y.left _ hU (rsT (H j) _) = valHom (R := S) y.left _ hj (H j) := by`. Rewrite using `[rsT, dif_pos inf_le_left, ← valR_eq, ← valR_eq]`.
+
+Conclude with `valR_res _ _ hU _`. Establish `r₂ : valHom (R` using `S) y.left _ hU (rsT (H j') _) = valHom (R := S) y.left _ hj' (H j') := by`. Rewrite using `[rsT, dif_pos inf_le_right, ← valR_eq, ← valR_eq]`. Conclude with `valR_res _ _ hU _`. Simplify using `only [dlg, GlobalTheory.Heat.DlogIndep.pbT_id, map_sub, map_mul, r₁, r₂] at e₁`.
+
+Establish `e₂ : valHom (R` using `S) y.left _ hU (P.L.g j j').val * valHom (R := S) y.left _ hU (P.L.g j j')⁻¹.val = 1 := by`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `((GlobalTheory.Heat.DlogIndep.valR_translate hul hut hδ _ (hee S φ) y _ hU).2 _).trans ?_` and prove the remaining obligations. Simplify using `only [valR_eq (R := S) _ _ hU, valR_eq (R := S) _ _ hj, valR_eq (R := S) _ _ hj', map_neg]`. Take the linear combination `(φ DualNumber.eps * valHom (R := S) y.left _ hU (P.L.g j j').val) * e₁ + (-(φ DualNumber.eps * valHom (R := S) y.left _ hU (δ _ (P.L.g j j').val))) * e₂)`.
+
+Establish `h2 : tv w = tv (0 : TanM (𝟙 (Sp R)) P.A)`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_zero, ← hu, h1, map_one]`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.tanM_ext h2`.
+-/
 theorem lie_inj : ∀ (R : Type) [CommRing R] [IsLocalRing R] (P : PolAV (Sp R)) (w : TanM (𝟙 (Sp R)) P.A) (δ : Fld P.A.left), IsInv P.A w δ → ∀ (K : Type) (V : K → P.A.left.Opens) (jk : K → P.L.ι), ⨆ k, V k = ⊤ → (∀ k, V k ≤ P.L.U (jk k)) → ∀ (b : ∀ k, Γ(P.A.left, V k)), (∀ k k', rsT (b k') (V k ⊓ V k') - rsT (b k) (V k ⊓ V k') = dlg P.A (𝟙 _) P.L δ (jk k) (jk k') (V k ⊓ V k')) → w = 0 := by
   intro R _ _ P w δ hδ K V jk hV hVj b hb
   have hδ1 : IsField ⊤ δ := hδ.1

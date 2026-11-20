@@ -39,6 +39,13 @@ namespace GlobalTheory.AdTh.SerOne
 
 open GlobalTheory.ClassScalarValue GlobalTheory.PtId
 
+/- English proof (translation)
+Take `⟨e, e1, e2, e3, e4⟩` from `(GlobalTheory.RepsCompare.suppSplitOff_iff _ _ _).1 (GlobalTheory.RepsCompare.suppSplitOff_of_splitOffBad _ _ _ hs)`. Establish `hs' : GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) (bad * l.M) (finHom V h).1`. Use `⟨e, e1, e2, fun v hv => ⟨(e3 v hv).1, fun hm => (e3 v hv).2 ?_⟩, e4⟩` and prove the remaining obligations. Rewrite `hm` using `[Nat.cast_mul]`. Use `(v.isPrime.mem_or_mem hm).elim id fun h => ?_` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `hM`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h`. Take `⟨-, c1, c2, -, -, c5⟩` from `GlobalTheory.SplitReps.exists_conjLat V hg hL H l bad h2 h hs'`. Establish `g` using `GlobalTheory.ClassScalarCompare.guard_conjLat (H := H) (L := (GlobalTheory.UnRep.FullReps.conjLat H (Bridge.hLat V (fin V h))).La) ⟨c1, c2, c5⟩`.
+
+Establish `e2 : (GlobalTheory.ClassScalarCompare.conjLat (GlobalTheory.UnRep.FullReps.conjLat H (Bridge.hLat V (fin V h))).La).La = Bridge.hLat V (fin V h)` using `GlobalTheory.ClassScalarCompare.conjLat_conjLat _`. Rewrite `g` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem guard_of_splitOffBad {D : D7} (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank)
     {H : Geo.Tor.Host D.host.E} (l : Geo.Tor.Level H) {bad : ℕ} (h2 : 2 ∣ bad) (hM : l.M ∣ bad) {h : GA D V}
     (hs : SplitOffBad V bad h) : GlobalTheory.ClassScalarCompare.Guard H bad (Bridge.hLat V (fin V h)) := by
@@ -65,6 +72,19 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalis
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hL` using `hC.lev`. Establish `hpq : D.R.r = (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q` using `(hT.laws.unf _ ⟨Nat.le_add_left _ _, i.2⟩ _ T.toCore.good_σ₀).1`. Establish `hbar : (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = (GlobalTheory.IdemSupport.cO D : 𝓞 D.host.E →+* 𝓞 D.host.E)` using `RingHom.ext fun a => RingOfIntegers.ext (T.Q.H.bar_eq a)`. Take `⟨cc, c0, c1, c2, c3, c4⟩` from `exists_ideal (Vc D i) hO.lift.std.1 hO.lift.std.2 h e P y he hs hy (O.bad t) hP _ _ (chrEq_mul_inv (hL.mu0 i) (hL.xi (tup t)) hL.eta) (fun Q hQ x hx => by`. Establish `a1 : (R.C.mu0 i).UnrAt Q` using `(R.C.isMu0 i).unr Q fun j hj => hQ (by`.
+
+Take `⟨u, hu⟩` from `(Finset.dvd_prod_of_mem D.host.g (Finset.mem_univ j)).trans ((Fin.prod_univ_two D.host.g).symm ▸ (hO.bad t).2.2.2.2)`. Rewrite using `[hu, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hj)`. Establish `a2 : (R.xiH (tup t)).UnrAt Q`. Assume the negation of the conclusion as `hn`.
+
+Break down `(hL.Q_ram (tup t) Q).1 hn with a | ⟨Q', a, a'⟩` into its components or cases. Conclude with `hQ (hbad Q (Or.inr a))`. Rewrite `hQ` using `[(GlobalTheory.IdemSupport.isConjPl_iff _ _).1 a', GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `hQ (hbad Q' (Or.inr a))`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, a1 x hx, a2 x hx, R.C.isEta.unr Q x hx, inv_one, one_mul, one_mul])`.
+
+Use the proof step `(fun Q hQ x => by`. Rewrite using `[Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_inv, (R.C.isMu0 i).triv.1, (hL.xi_triv (tup t)).1, R.C.isEta.res.1, Formalism.L2.Host.etaFin, above_eq, Finset.card_pair hQ.symm, if_neg (by norm_num), inv_one, one_mul, one_mu …`. Rewrite `c1`, `c3` using `[← hbar]`. Generalize the expression as in `Bridge.hLat (Vc D i) (fin (Vc D i) h) = L at *`. Take `⟨q, q0, q1, q2⟩` from `(hO.ep t).2 L cc g.1 g.2.1 g.2.2 c1 c3`.
+
+Establish `hB` using `(hO.tuple t).B cc c0 c2`. Establish `hi` using `GlobalTheory.ClassScalarCompare.stdIndex_conjLat L`. Rewrite `hi` using `[← hcj]`. Rewrite `q1` using `[← hpq, ← Nat.cast_pow]`. Use `value_calc (x := (((Lift.chrTh (R.toLevCh.mu (tup t)) R.eta ((i : ℕ) + 1)).2 y : Circle) : ℂ)) q0 (fun h0 => c0 (Ideal.absNorm_eq_zero_iff.1 h0)) (mIdx_ne_zero Λ D.R.r (fun h0 : N = 0 => by simpa [h0] using r4.1)) q1` as an intermediate fact.
+
+Rewrite using `[q2, zCard_eq _ _ _ r4.2.2, map_mul, map_mul, map_mul, map_inv₀, map_inv₀, hB, ← c4, map_ratCast, map_natCast, map_natCast, ← Nat.cast_pow]`. Establish `hi' : (Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index = ((L ⊓ Formalism.L2.Pj.stdLat D.host.E (Vc D i).rank).toAddSubgroup.addSubgroupOf L.toAddSubgroup).index` using `hi`. Rewrite `this` using `[← hi']`. Conclude with `this`.
+-/
 theorem lattice_scalar_value (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Tp tup)
     (hO : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) (t : Tp) (h : GA D (Vc D i)) (e : AE D)
     (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (y : (AE D)ˣ) (he : IsIdemSum e P)
@@ -121,6 +141,31 @@ theorem lattice_scalar_value (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `letI : Algebra O.c'.F ℂ := (inC O.c').toAlgebra`. Establish `hs : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Establish `hσ : GoodEmb T.Q.c O.s0` using `hs ▸ T.toCore.good_σ₀`. Establish `hmod` using `models_at_record_core D G Pl0 T0 A T R F κ v₀ hC hT i O.s0 hs`. Take `⟨hemb, -, -, hmk⟩` from `dict_cast T hT.laws _ (inR i) O.s0 hσ (Wc D i) O.hV (rank_Wc i)`.
+
+Take `⟨hX, hon, hinv, hp, hrk, hpq, h1, hrt, -, hbas, hD, -⟩` from `hmod (O.dict g').1`. Establish `hU : IsUnf (unfO O)` using `GlobalTheory.OneMapAll.isUnf_unfExt O.hle (inC O.c') (fun _ => rfl) (hT.laws.unf _ (inR i) O.s0 hσ)`. Take `⟨hx', g, Dc, γ, mk, v, ϑ, κ', B, hat, hsd, hm, hBm, hma, hϑ, hv, hκ, hrd⟩` from `exists_point (unfO O) hσ hU h1 hT.laws.pins.2.1.2 R.θ (Vc D i) (Wc D i) (rank_Wc i) O.dict (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) (fun Wt k => hmk R.θ hC.models.inf (fun k => (hmod k).1) h1 ⟨Wt.g, Wt.e, Wt.F, Wt.ik, Wt.φ, Wt.isom, Wt.pt⟩ k) (wtA (κ i)) hD O.mu (R.ωP i A.μ0) (R.vac …`. Take `⟨hγ, hΛ, hfr⟩` from `hat`. Establish `hM : 0 < T.Q.l.M` using `T.Q.l.odd.pos`.
+
+Take `⟨Y, hY⟩` from `(DualMark.dual_marking _ _ _ T.Q.l _ _ _ mk _ hsd hm (Complex.isPrimitiveRoot_exp _ hM.ne')).2.2.2.2 (Vc D i).rank N hN.1.pos`. Establish `hcj : La = GlobalTheory.ClassScalarCompare.conjLat (Bridge.hLat (Vc D i) (fin (Vc D i) h))` using `congrArg GenLat.mk (Submodule.ext hla)`. Establish `hg'` using `GlobalTheory.ClassScalarCompare.guard_conjLat hg`. Rewrite `hg'` using `[← hcj]`. Establish `hMb : T.Q.l.M ∣ O.bad ()`.
+
+Rewrite using `[level_M T.toCore hT.laws.toLawsM]`. Conclude with `(hP.bad ()).2.2.2.2`. Establish `hTr : La.TrivAt T.Q.l.M`. Take `⟨k, hk, h2⟩` from `hg'.2.1`. Conclude with `⟨k, hk.coprime_dvd_right hMb, h2⟩`.
+
+Take `⟨-, cga, hio⟩` from `hP.io`. Establish `hH` using `mem_HHa_of_span _ _ _ _ _ _ (hio.2.2.1 ▸ LinearMap.mem_range_self O.io xs)`. Establish `hgeo` using `GlobalTheory.Dict.shortValAt_eq_thP GlobalTheory.ChartFree.chartIndep _ _ _ _ _ O.c' _ g _ Dc.bas Dc.idx Dc.e _ _ _ B Dc.sympl hx hsd _ _ Dc.hr Dc.eL hrk hD.2 Dc.dir_eq nab hnab ϑ v κ' hϑ hv hκ mk hm hBm La.La ((GlobalTheory.Dict.GenLatCmp.genLat_vset _ _ La.La).2.1 _ N hM hg'.1 …`. Take `⟨vr, hvr⟩` from `exists_isVarOf (Vc D i) (Wc D i) (rank_Wc i) _ hX _ Dc.hr`. Establish `hlt` using `letters_eq_fockVars_core D G Pl0 T0 A T R F κ v₀ hC hT i _ _ O hP _ g Dc vr hX hp hvr`.
+
+Establish `hω` using `hC.thP.ωP i A.μ0`. Establish `hmove : ∀ f, IsThetaFunO R.ψ (Vc D i) (Wc D i) f → thetaKO (R.ωP i A.μ0) h g' f = thetaKO (R.ωP i A.μ0) h (γ * g') f` using `fun f hf => by`. Establish `e1 : ((h, γ * g') : GA D (Vc D i) × GA D (Wc D i)) = (1, γ) * (h, g')` using `by simp`. Rewrite using `[thetaKO, thetaKO, e1, map_mul]`. Conclude with `(hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ f hf)).symm`.
+
+Rewrite using `[hmove _ (hC.thP.pt_theta i A.μ0 _), hka (fun ℓ => vr (Dc.eL ℓ)) hlt w hw A.μ0 xs]`. Take `⟨hfin, e, Ps, he, hPs, hsupp⟩` from `hsp`. Take `⟨yd, hyd⟩` from `exists_isDetAt he (Vc D i) h`. Establish `hhom : (MvPolynomial.rename Dc.eL (MvPolynomial.map (inC O.c') (O.io xs))).IsHomogeneous (degW (T.Q.Dw ((i : ℕ) + 1)) (wtA (κ i)))` using `((isHomogeneous_of_rowDeg _ _ _ _ hH.2.2).map _).rename_isHomogeneous`. Establish `hQ : R.Q A.μ0 = ∅` using `Finset.eq_empty_of_forall_notMem fun PP hP => (hC.lev.Q_ram A.μ0 PP).2 (Or.inl hP) (by rw [hC.lev.xi_base]; exact fun _ _ => rfl)`.
+
+Establish `hhalf : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q A.μ0 → T.Q.l.Mb ≤ PP.asIdeal ∧ ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun PP hPP => by`. Take `⟨k1, -, k3⟩` from `(hP.tuple ()).half`. Use `⟨?_, k3 PP hPP⟩` and prove the remaining obligations. Break down `hPP with hPP | hPP` into its components or cases. Conclude with `k1.le.trans (Ideal.prod_le_inf.trans (Finset.inf_le hPP))`.
+
+Rewrite `hPP` using `[hQ]`. Conclude with `absurd hPP (Finset.notMem_empty _)`. Take `⟨h₀, J', hR, -⟩` from `(hP.tuple ()).reps`. Establish `hcl` using `hδ A.μ0 T.Q.l (fun x => inC O.c' (φ x)) hφ hhalf hrt g _ _ Dc.hr Dc.bas Dc.idx _ vr hX Dc.sympl hon hinv (hbas _) hvr (O.bad ()) N h (γ * g') La mk e Ps yd hR.2.1 he hPs hfin hsupp hyd hla hTr hN hma Y (hΛ ▸ hY) v _ (hΛ ▸ hv) (hfr ▸ hrd) _ _ hhom`. Establish `hep` using `lattice_scalar_value hC hT O hP () h e Ps yd he hPs hsupp hyd hR.2.1 La N _ hcj hg hN`.
+
+Establish `hw' : hatC T.Q.l (fun x => inC O.c' (φ x)) = fun q => inC O.c' (phiHat O.c' φ q)` using `funext fun q => (PairModel.hatC_phiHat O.c' φ q).symm`. Rewrite `hcl` using `[← hep, hw', hΛ, MvPolynomial.rename_rename]`. Establish `hsm : ∀ f, thetaKO (R.ωP i A.μ0) h (γ * g') (ka • f) = ka * thetaKO (R.ωP i A.μ0) h (γ * g') f` using `fun f => by rw [thetaKO, thetaKO, map_smul]; rfl`. Rewrite using `[hsm]`. Use `(congrArg (fun z => ka * z) hcl).trans ?_` and prove the remaining obligations.
+
+Establish `e1` using `congrArg (thP ((unfO O).X (O.dict g').1) Dc.hr Dc.bas Dc.idx (gphi ((unfO O).X (O.dict g').1) Dc.bas (T.Q.H.w0 : D.host.E) La.La ((unfO O).X (O.dict g').1).Λ v (fun q => inC O.c' (phiHat O.c' φ q)) Y) (MvPolynomial.rename Dc.eL (MvPolynomial.map (inC O.c') (O.io xs)))) hfr`. Use `Eq.trans (congrArg (fun z => ka * (_ * z)) e1.symm) ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun z => _ * z) hgeo.symm)` and prove the remaining obligations. Establish `halg : ∀ s : O.c'.F, algebraMap O.c'.F ℂ s = inC O.c' s` using `fun _ => rfl`. Simplify using `only [cmpConst, halg, map_mul, map_inv₀, map_natCast, map_one, inv_one, one_mul]`.
+
+Establish `key : ∀ s c m k e a z n th : ℂ, ka * (s * (c * m * k) * (e * a * z) * n * th) = ka * s * c * m * e * (a * n * z * k * th)` using `fun s c m k e a z n th => by ring`. Conclude with `key _ _ _ _ _ _ _ _ _`.
+-/
 theorem kernel_eq_shortVal (hC : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Unit (fun _ => A.μ0))
     (hP : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) {ka : ℂ} (hka : IoAt O (v₀ i (sg0 D A)) ka)
     {δ : ℤˣ} (hδ : ClsAt R i (iotaW T i) δ) {cst : (T.U ((i : ℕ) + 1) O.s0).Comp → ℂ}

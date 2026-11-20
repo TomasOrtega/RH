@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1` using `sum_vAdd_nat (K := K) (n := 2) two_ne_zero`. Simplify using `only [Nat.cast_ofNat, h, Int.cast_zero, zero_mul, finsum_zero] at h1`. Conclude with `(Real.log_pos one_lt_two).ne h1`.
+-/
 theorem exists_vAdd_two_ne (K : Type) [Field K] [NumberField K] :
     ∃ w : HeightOneSpectrum (𝓞 K), vAdd w (2 : K) ≠ 0 := by
   by_contra h
@@ -22,6 +25,13 @@ theorem exists_vAdd_two_ne (K : Type) [Field K] [NumberField K] :
   simp only [Nat.cast_ofNat, h, Int.cast_zero, zero_mul, finsum_zero] at h1
   exact (Real.log_pos one_lt_two).ne h1
 
+/- English proof (translation)
+Establish `hex : ∀ σ : c.F →+* ℂ, ∃ U : Unf Xo c σ (Dw.p + Dw.q), GoodEmb c σ → IsUnf U` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb c σ`. Take `⟨U, hU⟩` from `GlobalTheory.IsUnfEx.exists_isUnf h1 h2 GlobalTheory.abelianSchemeLaws_all.1.secBaseChange GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c σ hpq hσ`. Conclude with `⟨⟨U.Comp, U.X, U.un⟩, fun _ => hU⟩`. Conclude with `⟨⟨Empty, fun k => k.elim, fun k => k.elim⟩, fun h => absurd h hσ⟩`.
+
+Use `choose U hU using hex`. Use `⟨U, hU, (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c hpq).1, fun Z => ?_⟩` and prove the remaining obligations. Establish `h` using `hasPts U hpq hg hU Z`. Take `⟨w, hw⟩` from `exists_vAdd_two_ne c.F`. Use `⟨(ConstSec.one x h).smul 2 two_ne_zero, fun σ => ?_, ⟨w, ?_⟩, (ConstSec.deg_smul _ _ _).trans (ConstSec.deg_one h)⟩` and prove the remaining obligations.
+
+Use `show ‖σ 2‖ * 1 = 2`. Rewrite using `[map_ofNat]`. Simplify using the standard rewrite rules. Use `show (vAdd w (2 : c.F) : ℝ) + 0 ≠ 0`. Simplify using `using hw`.
+-/
 theorem exists_constSec (h1 : N1c) (h2 : GlobalTheory.Published.HasseNormSt) (Xo : Moduli Dw l) (c : Coeff l)
     (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p) (x : ℝ) :
     ∃ U : ∀ σ : c.F →+* ℂ, Unf Xo c σ (Dw.p + Dw.q), (∀ σ, GoodEmb c σ → IsUnf (U σ)) ∧ Nonempty (Comp Xo c) ∧
@@ -46,12 +56,20 @@ theorem exists_constSec (h1 : N1c) (h2 : GlobalTheory.Published.HasseNormSt) (Xo
 
 variable {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, conj_mem h⟩⟩`.
+-/
 theorem nonempty_psi (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : Nonempty (Psi H) := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases h : τ (H.rt : E) = H.rt0
   · exact ⟨⟨τ, h⟩⟩
   · exact ⟨⟨_, conj_mem h⟩⟩
 
+/- English proof (translation)
+Introduce `hF`. Take `⟨Z⟩` from `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c hpq).1`. Take `⟨τ⟩` from `nonempty_psi H`. Take `⟨s⟩` from `hF.nonempty Z τ`. Take `⟨z, -⟩` from `(s.hasPts.1 c.F.val.toRingHom).1`.
+
+Conclude with `(h _).false z.1`.
+-/
 theorem not_flatExists_of_isEmpty (hpq : 1 ≤ Dw.p + Dw.q) (h : ∀ σ, IsEmpty (U σ).Comp) : ¬ FlatExists U x := by
   intro hF
   obtain ⟨Z⟩ := (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c hpq).1
@@ -60,12 +78,18 @@ theorem not_flatExists_of_isEmpty (hpq : 1 ≤ Dw.p + Dw.q) (h : ∀ σ, IsEmpty
   obtain ⟨z, -⟩ := (s.hasPts.1 c.F.val.toRingHom).1
   exact (h _).false z.1
 
+/- English proof (translation)
+Establish `hne` using `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c hpq).1`. Take `⟨τ⟩` from `nonempty_psi H`. Rewrite using `[← ha.c1_eq hne τ, hb.c1_eq hne τ]`.
+-/
 theorem flatExistsAt_unique (hpq : 1 ≤ Dw.p + Dw.q) {a b : ℝ} (ha : FlatExistsAt U x a) (hb : FlatExistsAt U x b) :
     a = b := by
   have hne := (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c hpq).1
   obtain ⟨τ⟩ := nonempty_psi H
   rw [← ha.c1_eq hne τ, hb.c1_eq hne τ]
 
+/- English proof (translation)
+Establish `h` using `pnorm_horizGen X τ hy`. Establish `hx : ‖(mat y τ).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hy τ).1`. Simplify using `only [Data.pnorm, horizGen, norm_inv] at h ⊢`. Rewrite using `[← h]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pnorm_modelFlat (X : Data E r) (τ : X.Ψ) (P : Frame X.Ψ r → ℂ) {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
     X.pnorm (modelFlat r τ) P y = ‖P y‖ * (‖(mat y τ).det‖ * Real.sqrt ‖τ.1 X.Gm.det‖) := by
   have h := pnorm_horizGen X τ hy
@@ -73,6 +97,13 @@ theorem pnorm_modelFlat (X : Data E r) (τ : X.Ψ) (P : Frame X.Ψ r → ℂ) {y
   simp only [Data.pnorm, horizGen, norm_inv] at h ⊢
   rw [← h]; field_simp
 
+/- English proof (translation)
+Establish `hσ` using `goodEmb_goodOf c σ`. Establish `hτ : relab c (goodOf c σ) τ.1 ∈ ((U (goodOf c σ)).X k).Ψ`. Use `(((hU _ hσ).2.1 k).2 _).2 ?_` and prove the remaining obligations. Establish `hσ0 : goodOf c σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg (goodOf c σ) (Subtype.ext τ.2)).trans hσ0`.
+
+Establish `hG : 0 < Real.sqrt ‖relab c (goodOf c σ) τ.1 ((U (goodOf c σ)).X k).Gm.det‖` using `Real.sqrt_pos.2 (norm_pos_iff.2 ((map_ne_zero _).2 ((U (goodOf c σ)).X k).Gm_det))`. Establish `hl` using `lieFacZ_pos (Dw := Dw) x (wtOf Dw (flatWt Dw τ) 0)`. Use `⟨hτ, s.cInf σ / (lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0) * Real.sqrt ‖relab c (goodOf c σ) τ.1 ((U (goodOf c σ)).X k).Gm.det‖), div_pos (s.cInf_pos σ) (mul_pos hl hG), fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `s.homN_eq hy`. Rewrite `h` using `[homN, ptN, modelWt_flatWt _ hσ (hU _ hσ) τ k hτ, pnorm_modelFlat _ _ _ hy.1]`.
+
+Establish `hx : ‖(mat y ⟨_, hτ⟩).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hy.1 _).1`. Rewrite using `[← h, horizGen, norm_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_rdU_sig (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ)
     (σ : c.F →+* ℂ) (k : (U (goodOf c σ)).Comp) :
     ∃ (hτ : relab c (goodOf c σ) τ.1 ∈ ((U (goodOf c σ)).X k).Ψ) (a : ℝ), 0 < a ∧ ∀ y,
@@ -97,12 +128,22 @@ theorem norm_rdU_sig (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {Z : Comp Xo c
 
 def twoFr (Ψ : Finset (E →+* ℂ)) (r : ℕ) : Frame Ψ r := fun _ => ((2 : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) :)
 
+/- English proof (translation)
+Use `show ((1 : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ) * ((2 : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)) = _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules.
+-/
 theorem mat_double {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) (τ : Ψ) :
     mat (rmul (lact 1 y) (twoFr Ψ r)) τ = (2 : ℂ) • mat y τ := by
   show ((1 : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ) * ((2 : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)) = _
   rw [Matrix.map_one _ (map_zero _) (map_one _)]
   simp
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨by rw [mat_double, Matrix.det_smul]; exact mul_ne_zero (by simp) (hy τ).1, fun i => ?_⟩` and prove the remaining obligations. Establish `hg : gram τ.1 X.Gm ((2 : ℂ) • mat y τ) = (4 : ℂ) • gram τ.1 X.Gm (mat y τ)`. Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, map_ofNat]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Establish `: dmin X.Gm (rmul (lact 1 y) (twoFr X.Ψ r)) τ i = (((4 : ℝ) ^ (i : ℕ) : ℝ) : ℂ) * dmin X.Gm y τ i`. Rewrite using `[dmin, mat_double, hg, dmin, lminor, lminor, Matrix.submatrix_smul]`. Simplify using `[Matrix.det_smul]`. Rewrite using `[this, Complex.re_ofReal_mul, mul_left_comm]`.
+
+Conclude with `mul_pos (by positivity) ((hy τ).2 i)`.
+-/
 theorem double_mem {X : Data E r} {y : Frame X.Ψ r} (hy : y ∈ X.dom) : rmul (lact 1 y) (twoFr X.Ψ r) ∈ X.dom := by
   intro τ
   refine ⟨by rw [mat_double, Matrix.det_smul]; exact mul_ne_zero (by simp) (hy τ).1, fun i => ?_⟩
@@ -117,6 +158,17 @@ theorem double_mem {X : Data E r} {y : Frame X.Ψ r} (hy : y ∈ X.dom) : rmul (
   rw [this, Complex.re_ofReal_mul, mul_left_comm]
   exact mul_pos (by positivity) ((hy τ).2 i)
 
+/- English proof (translation)
+Introduce `hs`. Set `σ : c.F →+* ℂ` to `c.F.val.toRingHom`. Establish `hI` using `hU _ (goodEmb_goodOf c σ)`. Take `⟨⟨k, y⟩, hy⟩` from `(s.hasPts.1 σ).1`. Take `⟨hτ, b, hb, h⟩` from `norm_rdU_sig hU s σ k`.
+
+Establish `hd` using `double_mem hy.1`. Establish `hy' : (⟨k, rmul (lact 1 y) (twoFr _ r)⟩ : Σ k, Frame ((U (goodOf c σ)).X k).Ψ r) ∈ framesOn (U (goodOf c σ)) Z`. Take `⟨t, ht⟩` from `(hI.2.2.2.1 k k ⟨y, hy.1⟩ ⟨_, hd⟩).2 ⟨1, one_mem _, twoFr _ r, fun τ' => ⟨by show ((2 : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).det ≠ 0 simp, fun a c h => by simp [twoFr, Matrix.one_apply_ne h.ne']⟩, rfl⟩`. Use `⟨hd, fun p => ?_⟩` and prove the remaining obligations. Establish `e : ptF ((U (goodOf c σ)).un k ⟨_, hd⟩) = ptF ((U (goodOf c σ)).un k ⟨y, hy.1⟩)`.
+
+Simplify using `only [ptF, ht.1]`. Rewrite using `[e]`. Conclude with `hy.2 p`. Establish `hv : ∀ z ∈ framesOn (U (goodOf c σ)) Z, ‖rdU (U (goodOf c σ)) s.sig z.1 z.2‖ = ‖goodOf c σ a‖` using `fun z hz => by`. Rewrite using `[← homN_zero _ x, hs, homN_smul, homN_idem _ x hz.1 hz.2 ((s.hasPts.1 σ).2 z hz _), mul_one]`.
+
+Establish `e` using `(h _ hy').symm.trans ((hv _ hy').trans ((hv _ hy).symm.trans (h _ hy)))`. Establish `hx : ‖(mat y ⟨_, hτ⟩).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hy.1 _).1`. Rewrite `e` using `[mul_right_inj' hb.ne', horizGen, horizGen, mat_double, Matrix.det_smul, norm_inv, norm_inv, inv_inj, norm_mul, mul_left_eq_self₀]`. Establish `e2` using `e.resolve_right hx`. Establish `hr : r ≠ 0` using `by have := hI.1; omega`.
+
+Simplify using `only [Fintype.card_fin, norm_pow, Complex.norm_ofNat] at e2`. Conclude with `(one_lt_pow₀ one_lt_two hr).ne' e2`.
+-/
 theorem flatSec_ne_const (hpq : 1 ≤ Dw.p + Dw.q) (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) {Z : Comp Xo c} {τ : Psi H}
     (s : FlatSec U x Z τ) (a : c.F) : s.sig ≠ a • idem Z := by
   intro hs
@@ -156,6 +208,17 @@ def rescale {Z : Comp Xo c} {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) 
       have := (lieFacZ_pos (Dw := Dw) x (wtOf Dw la 0)).ne'
       rw [Pi.mul_apply, ← s.homN_eq hz, homN, homN]; field_simp⟩ }
 
+/- English proof (translation)
+Establish `hne : τ.1 ≠ conjEmb τ.1` using `fun h => conj_not_mem τ (h ▸ τ.2)`. Establish `key : ∀ ρ : E →+* ℂ, ∑ i : Fin (Dw.mult ρ), (((wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) : ℤ) : ℝ) = (if ρ = conjEmb τ.1 then (Dw.q : ℝ) else 0) - if ρ = τ.1 then (Dw.p : ℝ) else 0` using `fun ρ => by`. Distinguish the cases in `h : ρ (H.rt : E) = H.rt0`. Establish `hm : Dw.mult ρ = Dw.p` using `by simp [Datum.mult, h]`. Establish `h1 : ρ ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ h)`.
+
+Establish `h2 : ∀ i : Fin (Dw.mult ρ), (wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) = if ρ = τ.1 then -1 else 0` using `fun i => by`. Use `wtOf_big (flatWt Dw τ) 0 ⟨ρ, h⟩ i (hm ▸ i.2)` as an intermediate fact. Rewrite using `[this]`. Simplify using `[flatWt, parWt, Subtype.ext_iff]`. Simplify using `only [h2]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hm : Dw.mult ρ = Dw.q` using `by simp [Datum.mult, h]`. Establish `h1 : ρ ≠ τ.1` using `fun e => h (e ▸ τ.2)`. Establish `h2 : ∀ i : Fin (Dw.mult ρ), (wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) = if ρ = conjEmb τ.1 then 1 else 0` using `fun i => by`. Use `wtOf_small (flatWt Dw τ) 0 ⟨_, conj_mem h⟩ i (hm ▸ i.2)` as an intermediate fact.
+
+Simplify using `only [conjEmb_conjEmb] at this`. Rewrite using `[this]`. Distinguish the cases in `e : ρ = conjEmb τ.1`. Simplify using `[flatWt, parWt, Subtype.ext_iff, e, conjEmb_conjEmb]`. Establish `: conjEmb ρ ≠ τ.1` using `fun e' => e (by rw [← e', conjEmb_conjEmb])`.
+
+Simplify using `[flatWt, parWt, Subtype.ext_iff, e, this]`. Simplify using `only [h2]`. Apply the tactic sequence `split_ifs <;> simp_all`. Simplify using `[key]`.
+-/
 theorem sum_flatWt (τ : Psi H) :
     ∑ ρ : E →+* ℂ, ∑ i : Fin (Dw.mult ρ), (((wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) : ℤ) : ℝ) = Dw.q - Dw.p := by
   classical
@@ -187,6 +250,11 @@ theorem sum_flatWt (τ : Psi H) :
       split_ifs <;> simp_all
   simp [key]
 
+/- English proof (translation)
+Establish `h` using `lineDeg_mul (r := fun _ => lieFacZ Dw x' (wtOf Dw (flatWt Dw τ) 0) / lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0)) (ρ := 0) (fun _ => div_pos (lieFacZ_pos _ _) (lieFacZ_pos _ _)) s.cInf_pos (by simp) s.finite_rho`. Rewrite `h` using `[zero_add]`. Use `h.trans ?_` and prove the remaining obligations. Establish `hK : (finrank ℚ c.F : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr finrank_pos.ne'`. Simplify using `only [lineDeg, ConstSec.deg, lieFacZ, ← Real.exp_sub, Real.log_exp, sum_flatWt, Pi.zero_apply, zero_mul, finsum_zero, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_rescale {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ) (x' : ℝ) :
     (rescale s x').deg = s.deg - ((Dw.p : ℝ) - Dw.q) / 2 * (Real.log (2 * Real.pi * x') - Real.log (2 * Real.pi * x)) := by
   have h := lineDeg_mul (r := fun _ => lieFacZ Dw x' (wtOf Dw (flatWt Dw τ) 0) / lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0))
@@ -199,6 +267,9 @@ theorem deg_rescale {Z : Comp Xo c} {τ : Psi H} (s : FlatSec U x Z τ) (x' : �
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `Z τ` and use `⟨(h Z τ).1.map fun s => rescale s x', fun s => by have h1 := deg_rescale s x rw [(h Z τ).2] at h1 linarith⟩`.
+-/
 theorem flatExistsAt_rescale {a : ℝ} (h : FlatExistsAt U x a) (x' : ℝ) : FlatExistsAt U x'
     (a + ((Dw.p : ℝ) - Dw.q) / 2 * (Real.log (2 * Real.pi * x') - Real.log (2 * Real.pi * x))) := fun Z τ =>
   ⟨(h Z τ).1.map fun s => rescale s x', fun s => by
@@ -206,6 +277,11 @@ theorem flatExistsAt_rescale {a : ℝ} (h : FlatExistsAt U x a) (x' : ℝ) : Fla
     rw [(h Z τ).2] at h1
     linarith⟩
 
+/- English proof (translation)
+Use `haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩`. Use `haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩`. Establish `a3 : padicValNat 3 (3 ^ 6 * 7 ^ 10) = 6`. Rewrite using `[padicValNat.mul (by norm_num) (by norm_num), padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd (by norm_num)]`. Establish `a7 : padicValNat 7 (3 ^ 6 * 7 ^ 10) = 10`.
+
+Rewrite using `[padicValNat.mul (by norm_num) (by norm_num), padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd (by norm_num)]`. Simplify using `only [flDefect_vp, different_vp, h2, hd, h7, a3, a7]`. Apply the tactic sequence `constructor <;> norm_num <;> ring`.
+-/
 theorem flDefect_vp_cyclotomic (h2 : finrank ℚ E = 12) (hd : (discr E).natAbs = 3 ^ 6 * 7 ^ 10) (h7 : H.d = 7) :
     flDefect_vp Dw 3 = Dw.q / 2 ∧ flDefect_vp Dw 7 = -(Dw.q / 6) := by
   haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩

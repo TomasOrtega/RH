@@ -6,6 +6,11 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.PeriodSpan
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hd : a - b ≠ 0` using `sub_ne_zero.mpr hne`. Establish `h1` using `H (Real.pi * Complex.I / (a - b))`. Establish `h2 : Complex.exp (Real.pi * Complex.I / (a - b) * a - Real.pi * Complex.I / (a - b) * b) = 1`. Rewrite using `[Complex.exp_sub, h1, div_self (Complex.exp_ne_zero _)]`.
+
+Rewrite `h2` using `[← mul_sub, div_mul_cancel₀ _ hd, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem eq_of_exp_mul_eq {a b : ℂ} (H : ∀ s : ℂ, Complex.exp (s * a) = Complex.exp (s * b)) :
     a = b := by
   by_contra hne
@@ -17,6 +22,19 @@ theorem eq_of_exp_mul_eq {a b : ℂ} (H : ∀ s : ℂ, Complex.exp (s * a) = Com
   rw [← mul_sub, div_mul_cancel₀ _ hd, Complex.exp_pi_mul_I] at h2
   norm_num at h2
 
+/- English proof (translation)
+Set `T : (Fin g → ℝ) →ₗ[ℝ] (Fin g → ℝ)` to `LinearMap.pi fun k => if k ∈ S then LinearMap.proj k else (LinearMap.proj k).comp A.mulVecLin`. Establish `hT : ∀ b k, T b k = if k ∈ S then b k else A.mulVec b k`. Introduce `b k`. Apply the tactic sequence `by_cases hk : k ∈ S <;> simp [T, hk]`. Establish `hinj : Function.Injective T`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Assume the negation of the conclusion as `hb0`. Establish `hpos` using `hA.dotProduct_mulVec_pos hb0`. Establish `: star b ⬝ᵥ A.mulVec b = 0`.
+
+Unfold `dotProduct`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `h1` using `hT b k`. Rewrite `h1` using `[hb]`. Distinguish the cases in `hk : k ∈ S`.
+
+Simplify using `only [hk, if_true, Pi.zero_apply] at h1`. Simplify using `[← h1]`. Simplify using `only [hk, if_false, Pi.zero_apply] at h1`. Simplify using `[← h1]`. Conclude with `hpos.ne' this`.
+
+Take `⟨b, hb⟩` from `LinearMap.surjective_of_injective hinj (fun k => if k ∈ S then 0 else y k)`. Use `⟨b, fun k hk => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `hT b k` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify `this.symm` using `[hk]`.
+
+Use `hT b k` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify `this.symm` using `[hk]`.
+-/
 theorem exists_block_solution {g : ℕ} (S : Finset (Fin g)) (A : Matrix (Fin g) (Fin g) ℝ)
     (hA : A.PosDef) (y : Fin g → ℝ) :
     ∃ b : Fin g → ℝ, (∀ k ∈ S, b k = 0) ∧ ∀ k ∉ S, A.mulVec b k = y k := by
@@ -53,6 +71,45 @@ theorem exists_block_solution {g : ℕ} (S : Finset (Fin g)) (A : Matrix (Fin g)
     rw [hb] at this
     simpa [hk] using this.symm
 
+/- English proof (translation)
+Introduce `g n S h τ p ℓ hn hτ hp hℓ hu z hz`. Use `set R := Submodule.span ℝ {q | ∃ u : Fin g ⊕ Fin g → ℤ, (∀ k ∈ S, u (.inr k) = 0) ∧ q = p u} with hR`. Use `set e : Fin g → Fin g → ℂ := fun k => p (Pi.single (.inl k) 1) with he`. Use `set f : Fin g → Fin g → ℂ := fun k => p (Pi.single (.inr k) 1) with hf`. Establish `hhe : ∀ k, h.mulVec (e k) = Pi.single k 1` using `fun k => (hp k).1`.
+
+Establish `hhf : ∀ k, h.mulVec (f k) = τ.mulVec (Pi.single k 1)` using `fun k => (hp k).2`. Establish `hinj : Function.Injective h.mulVec`. Establish `hM : h * (Matrix.of fun i k => e k i) = 1`. Use extensionality with `i k`. Use `congrFun (hhe k) i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.one_apply, Pi.single_apply]`. Establish `hM'` using `mul_eq_one_comm.mp hM`. Introduce `x y hxy`. Use `congrArg (Matrix.of fun i k => e k i).mulVec hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hM']`.
+
+Establish `hℓe : ∀ k ∈ S, ∀ k' ∈ S, ℓ k (e k') = 2 * Real.pi * Complex.I * n * if k' = k then 1 else 0`. Introduce `k hk k' hk'`. Use `eq_of_exp_mul_eq fun s => ?_` and prove the remaining obligations. Use `hℓ k hk k' hk' s` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, eTwoPi]`.
+
+Rewrite using `[he]`. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : ∀ r ∈ R, ∀ k ∈ S, (ℓ k r).re = 0`.
+
+Introduce `r hr k hk`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu', rfl⟩` from `hx`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.mp (hu u hu' k hk)`.
+
+Rewrite using `[hm]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[← Complex.coe_smul, map_smul]`. Simplify using `[hx]`. Establish `heR : ∀ k, e k ∈ R` using `fun k => Submodule.subset_span ⟨Pi.single (.inl k) 1, fun k' _ => by simp, rfl⟩`. Establish `hfR : ∀ k ∉ S, f k ∈ R` using `fun k hk => Submodule.subset_span ⟨Pi.single (.inr k) 1, fun k' hk' => by`. Establish `: k' ≠ k` using `fun e => hk (e ▸ hk')`.
+
+Simplify using `[this], rfl⟩`. Take `⟨b, hbS, hb⟩` from `exists_block_solution S _ hτ fun k => (h.mulVec z k).im`. Use `set c : Fin g → ℂ := h.mulVec z - τ.mulVec fun k => (b k : ℂ) with hc`. Establish `hcim : ∀ k ∉ S, (c k).im = 0`. Introduce `k hk`.
+
+Use `hb k hk` as an intermediate fact. Simplify using `only [hc, Pi.sub_apply, Complex.sub_im]`. Rewrite using `[← this]`. Simplify using `[Matrix.mulVec, dotProduct]`. Establish `hzeq : z = ∑ k, (b k : ℂ) • f k + ∑ k, c k • e k`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `h1 : ∑ k, (b k : ℂ) • (Pi.single k 1 : Fin g → ℂ) = fun k => (b k : ℂ)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h2 : ∑ k, c k • (Pi.single k 1 : Fin g → ℂ) = c`.
+
+Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hhe, hhf, h2]`. Simplify using `only [← Matrix.mulVec_smul, ← Matrix.mulVec_sum, h1]`.
+
+Rewrite using `[hc]`. Normalize the expressions using the abelian group laws. Use `set r : Fin g → ℂ := ∑ k, (b k : ℂ) • f k + ∑ k, ((c k).re : ℂ) • e k with hr`. Establish `hrR : r ∈ R`. Use `R.add_mem (R.sum_mem fun k _ => ?_) (R.sum_mem fun k _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k ∈ S`. Simplify using `[hbS k hk]`. Rewrite using `[Complex.coe_smul]`. Conclude with `R.smul_mem _ (hfR k hk)`. Rewrite using `[Complex.coe_smul]`.
+
+Conclude with `R.smul_mem _ (heR k)`. Establish `hzr : z = r + ∑ k, (((c k).im : ℂ) * Complex.I) • e k`. Rewrite using `[hr, add_assoc, ← Finset.sum_add_distrib]`. Simplify using `only [← add_smul, Complex.re_add_im]`. Conclude with `hzeq`.
+
+Establish `him : ∀ k, (c k).im = 0`. Introduce `k`. Distinguish the cases in `hk : k ∈ S`. Establish `h0` using `hz k hk`. Rewrite `h0` using `[hzr, map_add, map_sum, Finset.sum_eq_single k]`.
+
+Establish `h1` using `congrArg Complex.re h0`. Rewrite `h1` using `[map_smul, hℓe k hk k hk, Complex.add_re, hre r hrR k hk]`. Simplify `h1` using `[Real.pi_ne_zero, hn.ne']`. Introduce `k' _ hne`. Distinguish the cases in `hk' : k' ∈ S`.
+
+Rewrite using `[map_smul, hℓe k hk k' hk']`. Simplify using `[hne]`. Simplify using `[hcim k' hk']`. Simplify using the standard rewrite rules. Conclude with `hcim k hk`.
+
+Rewrite using `[hzr]`. Simplify `hrR` using `[him]`.
+-/
 theorem mem_span_periods : ∀ (g n : ℕ) (S : Finset (Fin g)) (h τ : Matrix (Fin g) (Fin g) ℂ) (p : (Fin g ⊕ Fin g → ℤ) →+ (Fin g → ℂ)) (ℓ : Fin g → (Fin g → ℂ) →ₗ[ℂ] ℂ), 0 < n → (τ.map Complex.im).PosDef → (∀ k, h.mulVec (p (Pi.single (.inl k) 1)) = Pi.single k 1 ∧ h.mulVec (p (Pi.single (.inr k) 1)) = τ.mulVec (Pi.single k 1)) → (∀ k ∈ S, ∀ k' ∈ S, ∀ s : ℂ, Complex.exp (ℓ k (s • p (Pi.single (.inl k') 1))) = eTwoPi (n * s * if k' = k then 1 else 0)) → (∀ u : Fin g ⊕ Fin g → ℤ, (∀ k ∈ S, u (.inr k) = 0) → ∀ k ∈ S, Complex.exp (ℓ k (p u)) = 1) → ∀ z : Fin g → ℂ, (∀ k ∈ S, ℓ k z = 0) → z ∈ Submodule.span ℝ {q | ∃ u : Fin g ⊕ Fin g → ℤ, (∀ k ∈ S, u (.inr k) = 0) ∧ q = p u} := by
   classical
   intro g n S h τ p ℓ hn hτ hp hℓ hu z hz

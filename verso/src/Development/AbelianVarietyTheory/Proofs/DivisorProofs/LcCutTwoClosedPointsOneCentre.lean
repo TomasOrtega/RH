@@ -22,6 +22,25 @@ noncomputable section
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `hPr hNa hNe X _ _ _ p n hp hn`. Use `letI := algebraΓOfHom p`. Introduce `Δ m G N D d h x x' z j hΔ hklt hm hG hN hD hd hx hx' hlx hlx' hzx hzx' hz hdim hh hpos`. Establish `hDq : IsQCart D` using `hD.isQCart`. Take `⟨B, δ₀, hδ0, hδ1, hB, hoff, hnk, hpres⟩` from `GlobalTheory.T.exists_divisor_nonKlt_at_points_not_containing_centre hPr hNa hNe X p n hp hn Δ m G N D {x, x'} z (j + 1) h hΔ hklt hm hG hN hDq (by`.
+
+Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `⟨hx, hzx⟩`. Rewrite using `[Finset.mem_singleton.1 hy]`. Conclude with `⟨hx', hzx'⟩)`.
+
+Use the proof step `(by omega) hdim hz hh`. Use the proof step `(by`. Establish `hc : (({x, x'} : Finset X).card : ℚ) ≤ 2`. Conclude with `Finset.card_le_two` after adjusting the coercions. Establish `hk : (0 : ℚ) ≤ ((j + 1 : ℕ) : ℚ) ^ (j + 1)` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hBq : IsQCart B` using `hB.isQCart`. Establish `hδ1' : (0 : ℚ) ≤ 1 - δ₀` using `by linarith`. Establish `hDδ : IsQCart ((1 - δ₀) • D)` using `(GlobalTheory.T.isEffectiveQCartierDivisor_convexCone X D D (1 - δ₀) hDq hDq hδ1').2.1`. Establish `hkx : KltAt p n (Δ + (1 - δ₀) • D) x` using `GlobalTheory.T.kltAt_add_one_sub_smul_of_kltAt_of_lcAt X p n hp hn Δ D δ₀ x hDq (hklt x) hlx hδ0 hδ1`.
+
+Establish `hkx' : KltAt p n (Δ + (1 - δ₀) • D) x'` using `GlobalTheory.T.kltAt_add_one_sub_smul_of_kltAt_of_lcAt X p n hp hn Δ D δ₀ x' hDq (hklt x') hlx' hδ0 hδ1`. Take `⟨c, hc0, hc1, hcl, hcn⟩` from `GlobalTheory.T.exists_rational_logCanonicalThreshold_at_point hPr X p n hp hn Δ m G ((1 - δ₀) • D) B x hm hG hDδ hBq hkx (hnk δ₀ hδ0.le le_rfl x (by simp))`. Take `⟨c', hc0', hc1', hcl', hcn'⟩` from `GlobalTheory.T.exists_rational_logCanonicalThreshold_at_point hPr X p n hp hn Δ m G ((1 - δ₀) • D) B x' hm hG hDδ hBq hkx' (hnk δ₀ hδ0.le le_rfl x' (by simp))`. Establish `hq1 : QNum p N ((1 - δ₀) * d) ((1 - δ₀) • D)` using `GlobalTheory.T.effQCartierNumEquivMultiple_nonneg_smul X p hp N d (1 - δ₀) D hδ1' hD`. Establish `key : ∀ e : ℚ, 0 < e → e ≤ 1 → ∃ d' : ℚ, 0 ≤ d' ∧ d' ≤ d + h ∧ QNum p N d' ((1 - δ₀) • D + e • B)`.
+
+Introduce `e he0 he1`. Use `⟨(1 - δ₀) * d + e * h, by positivity, by nlinarith, ?_⟩` and prove the remaining obligations. Conclude with `qNum_add X p hp N _ _ _ _ hq1 (GlobalTheory.T.effQCartierNumEquivMultiple_nonneg_smul X p hp N h e B he0.le hB)`. Break down `le_total c' c with hcc | hcc` into its components or cases. Take `⟨d', h1, h2, h3⟩` from `key c hc0 hc1`.
+
+Use `⟨(1 - δ₀) • D + c • B, d', h1, h2, h3, Or.inl ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← add_assoc]`. Conclude with `GlobalTheory.T.nonKlt_locus_dim_lt_after_perturbation X p n hp hn Δ D B δ₀ c x z j (hklt x) hDq hBq hlx hδ0 hδ1 hc1 hoff hpres hdim hcl hcn`. Rewrite using `[← add_assoc]`. Introduce `hk`.
+
+Conclude with `hcn' ((GlobalTheory.T.kltAt_and_lcAt_antitone_coeff X p n hp hn (Δ + (1 - δ₀) • D) B c' c x' hBq hcc).1 hk)`. Take `⟨d', h1, h2, h3⟩` from `key c' hc0' hc1'`. Use `⟨(1 - δ₀) • D + c' • B, d', h1, h2, h3, Or.inr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← add_assoc]`. Conclude with `GlobalTheory.T.nonKlt_locus_dim_lt_after_perturbation X p n hp hn Δ D B δ₀ c' x' z j (hklt x') hDq hBq hlx' hδ0 hδ1 hc1' hoff hpres hdim hcl' hcn'`.
+
+Rewrite using `[← add_assoc]`. Introduce `hk`. Conclude with `hcn ((GlobalTheory.T.kltAt_and_lcAt_antitone_coeff X p n hp hn (Δ + (1 - δ₀) • D) B c c' x hBq hcc).1 hk)`.
+-/
 theorem logCanonicalCut_two_points : GlobalTheory.Published.Principalisation → GlobalTheory.Published.NadelVanishingPair → GlobalTheory.Published.NefNumerics → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → letI := algebraΓOfHom p; ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X) (N : LB X) (D : X → ℚ) (d h : ℚ) (x x' z : X) (j : ℕ), IsEffQDiv Δ → (∀ y, KltAt p n Δ y) → 0 < m → IsLogCanonicalMultiple p n Δ m G → IsAmpleLB N → QNum p N d D → 0 ≤ d → IsClosed ({x} : Set X) → IsClosed ({x'} : Set X) → LcAt p n (Δ + D) x → LcAt p n (Δ + D) x' → z ⤳ x → z ⤳ x' → (z = genericPoint X ∨ IsNkltCentre p n (Δ + D) z) → topologicalKrullDim (closure ({z} : Set X)) = (j + 1 : ℕ) → 0 < h → 2 * ((j + 1 : ℕ) : ℚ) ^ (j + 1) < h ^ (j + 1) * (interNumRed ℂ (Closeds.closure ({z} : Set X)) fun _ : Fin (j + 1) => N : ℤ) → ∃ (D' : X → ℚ) (d' : ℚ), 0 ≤ d' ∧ d' ≤ d + h ∧ QNum p N d' D' ∧ ((LcCut p n (Δ + D') x j ∧ ¬ KltAt p n (Δ + D') x') ∨ (LcCut p n (Δ + D') x' j ∧ ¬ KltAt p n (Δ + D') x)) := by
   intro hPr hNa hNe X _ _ _ p n hp hn
   letI := algebraΓOfHom p

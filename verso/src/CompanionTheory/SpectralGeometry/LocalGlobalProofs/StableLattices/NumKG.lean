@@ -13,6 +13,77 @@ open CompanionTheory.D.LK
 open GlobalTheory.CompanionTheory.DSNormLt (sig sig_anti sig_mul pair_eq abs_sig)
 open PI.UpqRep
 
+/- English proof (translation)
+Introduce `n ε γ lev ν B C hG hB hBn hC _ hdom hn`. Use `set X := xv ε γ with hX`. Use `set κ := X - rhoC ε - wt B with hκ`. Use `set μ := X - wt B - wt C with hμ`. Take `⟨hXa, -, hgap⟩` from `hG`.
+
+Take `⟨w, hw, hs⟩` from `exists_sort ε κ`. Take `⟨m, hm, hm2⟩` from `hdom w hw`. Establish `i1 : ∑ a, κ (w a) * μ (w a) ≤ ∑ a, κ (w a) * ν a`. Rewrite using `[← sub_nonneg, ← Finset.sum_sub_distrib]`. Establish `e : ∀ a, κ (w a) * ν a - κ (w a) * μ (w a) = ∑ c, ∑ d, (m c d : ℝ) * (κ (w a) * root c d a)` using `fun a => by`.
+
+Use `congrFun hm2 a` as an intermediate fact. Simplify using `only [Pi.sub_apply, Function.comp, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[← mul_sub, this, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Simplify using `only [e]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_nonneg fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_nonneg fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Distinguish the cases in `h0 : m c d = 0`. Simplify using `[h0]`. Use `mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations.
+
+Simplify using `only [root, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', mem_univ, if_true, sub_nonneg]`. Conclude with `hs c d (hm c d h0).1 (hm c d h0).2`. Set `tC : Fin n → Fin n → ℝ` to `fun a b => 2 * (ind C a b - ind C b a) - sc ε a b`. Establish `htC : ∀ a b, |tC a b| ≤ if ε a = ε b then 1 else 0` using `fun a b => by`. Simplify using `only [tC, ind_eq, sc, sig]`.
+
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `only [dif_pos h, dif_neg h.not_gt, if_pos h]`. Distinguish the cases in `h1 : (⟨(a, b), h⟩ : Pos n) ∈ C`. Establish `: ε a = ε b` using `hC _ h1`. Simplify using `[h1, this]`.
+
+Evaluate the numerical expressions. Apply the tactic sequence `simp only [h1, if_false]; split_ifs <;> simp`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [dif_pos h, dif_neg h.not_gt, if_pos h, if_neg h.not_gt]`.
+
+Distinguish the cases in `h1 : (⟨(b, a), h⟩ : Pos n) ∈ C`. Establish `: ε a = ε b` using `(hC _ h1).symm`. Simplify using `[h1, this]`. Evaluate the numerical expressions. Apply the tactic sequence `simp only [h1, if_false]; split_ifs <;> simp`.
+
+Establish `i2 : ∑ a, κ a * (wt C a - rhoC ε a) ≤ ∑ a, κ (w a) * rhoC ε a`. Establish `p1` using `pair_eq tC (fun a b => by simp only [tC]; rw [sc_anti ε a b]; ring) κ`. Establish `p2` using `pair_eq (sc ε) (sc_anti ε) fun a => κ (w a)`. Establish `e : ∀ a, wt C a - rhoC ε a = (∑ b, tC a b) / 2` using `fun a => by`. Simplify using `only [tC]`.
+
+Rewrite using `[wt_eq, rhoC_eq, Finset.sum_sub_distrib (f := fun b => 2 * (ind C a b - ind C b a)), ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Simplify using `only [rhoC_eq]`. Establish `: ∑ a, ∑ b, tC a b * (κ a - κ b) ≤ ∑ a, ∑ b, sc ε a b * (κ (w a) - κ (w b))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (htC a b) (abs_nonneg _))`. Use `_ = ∑ a, ∑ b, (if ε (w a) = ε (w b) then 1 else 0) * |κ (w a) - κ (w b)| := by`. Rewrite using `[← Equiv.sum_comp w]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp w]`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hw, hw, sc, sig]`.
+
+Distinguish the cases in `h : ε a = ε b`. Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases. Simplify using `[h, h1, abs_of_nonneg (sub_nonneg.2 (hs a b h1 h))]`. Simplify using `[h1]`. Simplify using `[h, h1, h1.not_gt, abs_of_nonpos (sub_nonpos.2 (hs b a h1 h.symm))]`.
+
+Simplify using `[h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκw : ∀ a, κ (w a) = ν a + rhoC ε a`. Establish `e1 : ∑ a, κ a * κ a = ∑ a, κ (w a) * μ (w a) + ∑ a, κ a * (wt C a - rhoC ε a)`. Rewrite using `[Equiv.sum_comp w fun a => κ a * μ a, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [hκ, hμ, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ a, κ (w a) * κ (w a) = ∑ a, κ a * κ a` using `Equiv.sum_comp w fun a => κ a * κ a`. Establish `e3 : ∑ a, (κ (w a) - (ν a + rhoC ε a)) ^ 2 = ∑ a, κ (w a) * κ (w a) - 2 * ∑ a, κ (w a) * ν a - 2 * ∑ a, κ (w a) * rhoC ε a + ∑ a, (ν a + rhoC ε a) * (ν a + rhoC ε a)`.
+
+Simplify using `only [Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `hn' : ∑ a, (ν a + rhoC ε a) * (ν a + rhoC ε a) = ∑ a, κ a * κ a` using `hn`. Establish `h0 : ∑ a, (κ (w a) - (ν a + rhoC ε a)) ^ 2 = 0` using `le_antisymm (by linarith) (Finset.sum_nonneg fun _ _ => sq_nonneg _)`. Introduce `a`.
+
+Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => sq_nonneg _).1 h0 a (mem_univ _)` as an intermediate fact. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 this)`. Set `t : Fin n → Fin n → ℝ` to `fun a b => (sig a b - sc ε a b) - 2 * (ind B a b - ind B b a) + sc ε (w.symm a) (w.symm b)`. Establish `hws : ∀ c, ε (w.symm c) = ε c` using `fun c => by rw [← hw, Equiv.apply_symm_apply]`. Establish `ta : ∀ a b, t b a = -t a b` using `fun a b => by`.
+
+Simplify using `only [t]`. Rewrite using `[sig_anti a b, sc_anti ε a b, sc_anti ε (w.symm a)]`. Expand and normalize the polynomial expressions, which then agree. Establish `tb : ∀ a b, a < b → |t a b| ≤ 1` using `fun a b h => by`. Simplify using `only [t, ind_eq, dif_pos h, dif_neg h.not_gt, sc, hws]`.
+
+Distinguish the cases in `h1 : ε a = ε b`. Rewrite using `[if_neg fun h2 => (hBn _ h2).1 h1]`. Simplify `abs_sig _ _` using `[h1]`. Apply the tactic sequence `simp only [if_neg h1, sig, if_pos h] split_ifs <;> norm_num`. Establish `tb' : ∀ a b, |t a b| ≤ 1` using `fun a b => by`.
+
+Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `tb a b h`. Substitute `h` using the available equality. Use `ta a a` as an intermediate fact. Rewrite using `[show t a a = 0 by linarith]; simp`.
+
+Rewrite using `[ta, abs_neg]`. Conclude with `tb b a h`. Take `⟨⟨⟨c, d⟩, hcd⟩, hi⟩` from `hB`. Establish `hcd' : c < d` using `hcd`. Establish `hne : t c d = -1`.
+
+Establish `h1 : ¬ε c = ε d` using `(hBn _ hi).1`. Simplify using `only [t, ind_eq, dif_pos hcd', dif_neg hcd'.not_gt, sc, hws, if_neg h1, if_pos hi, sig, if_pos hcd']`. Evaluate the numerical expressions. Establish `hgcd : Lc n ≤ X c - X d` using `hgap c d (hBn _ hi).2`. Establish `p1` using `pair_eq t ta X`.
+
+Establish `p2` using `pair_eq sig sig_anti X`. Establish `hD : ∀ a b, 0 ≤ sig a b * (X a - X b) - t a b * (X a - X b)` using `fun a b => by`. Rewrite using `[sig_mul hXa, sub_nonneg]`. Conclude with `(le_abs_self _).trans (by`. Rewrite using `[abs_mul]`.
+
+Conclude with `mul_le_of_le_one_left (abs_nonneg _) (tb' a b))`. Establish `hDcd : 2 * Lc n ≤ sig c d * (X c - X d) - t c d * (X c - X d)`. Rewrite using `[hne, show sig c d = 1 by simp [sig, hcd']]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ a, ∑ b, t a b * (X a - X b) + 2 * Lc n ≤ ∑ a, ∑ b, sig a b * (X a - X b)`.
+
+Establish `h1 : sig c d * (X c - X d) - t c d * (X c - X d) ≤ ∑ a, ∑ b, (sig a b * (X a - X b) - t a b * (X a - X b))` using `(Finset.single_le_sum (f := fun b => sig c b * (X c - X b) - t c b * (X c - X b)) (fun b _ => hD c b) (mem_univ d)).trans (Finset.single_le_sum (f := fun a => ∑ b, (sig a b * (X a - X b) - t a b * (X a - X b))) (fun a _ => Finset.sum_nonneg fun b _ => hD a b) (mem_univ c))`. Simplify using `only [Finset.sum_sub_distrib] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : ∀ a, (ν + (2 : ℝ) • rhoC ε) (w.symm a) = X a + ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2)` using `fun a => by`. Establish `h1` using `hκw (w.symm a)`.
+
+Establish `h3` using `rhoC_eq ε a`. Establish `h4` using `rhoC_eq ε (w.symm a)`. Rewrite `h4` using `[← Equiv.sum_comp w.symm]`. Establish `h5` using `wt_eq B a`. Establish `ts : ∑ b, t a b = ∑ b, sig a b - ∑ b, sc ε a b - 2 * ∑ b, (ind B a b - ind B b a) + ∑ b, sc ε (w.symm a) (w.symm b)`.
+
+Simplify using `only [t]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib (f := fun b => sig a b - sc ε a b), Finset.sum_sub_distrib (f := fun b => sig a b), ← Finset.mul_sum]`. Simplify using `only [hκ, Equiv.apply_symm_apply, Pi.sub_apply] at h1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[ts]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY : ∀ a, ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2) ^ 2 ≤ (n : ℝ) ^ 2` using `fun a => by`. Establish `e : (∑ b, t a b) / 2 - (∑ b, sig a b) / 2 = (∑ b, (t a b - sig a b)) / 2`. Rewrite using `[Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : |∑ b, (t a b - sig a b)| ≤ 2 * (n : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Use `abs_sub (t a b) (sig a b)` as an intermediate fact. Combine the linear relations using `[tb' a b, abs_sig a b]`. Use `_ = 2 * (n : ℝ) := by simp [mul_comm]`.
+
+Rewrite using `[e, div_pow]`. Establish `h3 : (∑ b, (t a b - sig a b)) ^ 2 ≤ (2 * (n : ℝ)) ^ 2` using `sq_le_sq' (abs_le.1 h2).1 (abs_le.1 h2).2`. Use the polynomial consequences of the given equalities and inequalities. Establish `g1 : vNormSq ε ν = ∑ a, (X a + ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2)) ^ 2`. Unfold `vNormSq nsq dot`.
+
+Rewrite using `[← Equiv.sum_comp w.symm]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [hy, sq]`. Establish `g2 : vNormSq ε γ = ∑ a, X a ^ 2`. Unfold `vNormSq nsq dot`. Conclude with `Finset.sum_congr rfl fun a _ => (sq _).symm`.
+
+Establish `g3 : ∑ a, (X a + ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2)) ^ 2 = ∑ a, X a ^ 2 + (2 * ∑ a, X a * ((∑ b, t a b) / 2) - 2 * ∑ a, X a * ((∑ b, sig a b) / 2)) + ∑ a, ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2) ^ 2`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `g4 : ∑ a, ((∑ b, t a b) / 2 - (∑ b, sig a b) / 2) ^ 2 ≤ (n : ℝ) ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `g5 : (n : ℝ) ^ 3 < Lc n`. Establish `h0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Unfold `Lc`. Use polynomial arithmetic with `[pow_le_pow_left₀ h0 (by linarith : (n : ℝ) ≤ n + 1) 3, pow_pos (by linarith : (0 : ℝ) < n + 1) 3]`. Rewrite using `[g1, g2, g3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numKG : NumKG := by
   intro n ε γ lev ν B C hG hB hBn hC _ hdom hn
   set X := xv ε γ with hX

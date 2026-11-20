@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 open GlobalTheory.BCT PositivityTheory.Rg.BcB.G8.Fin
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.OrbitCount.orbit_count | exact GlobalTheory.CompanionTheory.OrbitCount.orbit_count | (intros; apply GlobalTheory.CompanionTheory.OrbitCount.orbit_count <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_diagonal_double_cosets : ∀ (H : Type) [Group H] (Z L C : Subgroup H) (F : H × H → ℂ),
   (∀ x : H, Z ⊓ L.map (MulAut.conj x).toMonoidHom ≤ C ∧ (Z ⊓ L.map (MulAut.conj x).toMonoidHom).relIndex C ≠ 0) →
   (∀ t ∈ Z, ∀ c ∈ C, t * c * t⁻¹ ∈ C) →

@@ -17,10 +17,16 @@ def cj (v : V) : V :=
   (Module.Basis.ofVectorSpace ℂ V).repr.symm
     (((Module.Basis.ofVectorSpace ℂ V).repr v).mapRange (starRingEnd ℂ) (map_zero _))
 
+/- English proof (translation)
+Unfold `cj`. Rewrite using `[map_add, Finsupp.mapRange_add (fun a b => map_add (starRingEnd ℂ) a b), map_add]`.
+-/
 theorem cj_add (v w : V) : cj V (v + w) = cj V v + cj V w := by
   unfold cj
   rw [map_add, Finsupp.mapRange_add (fun a b => map_add (starRingEnd ℂ) a b), map_add]
 
+/- English proof (translation)
+Unfold `cj`. Establish `: (c • (Module.Basis.ofVectorSpace ℂ V).repr v).mapRange (starRingEnd ℂ) (map_zero _) = star c • ((Module.Basis.ofVectorSpace ℂ V).repr v).mapRange (starRingEnd ℂ) (map_zero _)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[LinearEquiv.map_smul (Module.Basis.ofVectorSpace ℂ V).repr c v, this, LinearEquiv.map_smul]`.
+-/
 theorem cj_smul (c : ℂ) (v : V) : cj V (c • v) = star c • cj V v := by
   unfold cj
   have : (c • (Module.Basis.ofVectorSpace ℂ V).repr v).mapRange (starRingEnd ℂ) (map_zero _) =
@@ -29,6 +35,11 @@ theorem cj_smul (c : ℂ) (v : V) : cj V (c • v) = star c • cj V v := by
     simp
   rw [LinearEquiv.map_smul (Module.Basis.ofVectorSpace ℂ V).repr c v, this, LinearEquiv.map_smul]
 
+/- English proof (translation)
+Unfold `cj`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `: (((Module.Basis.ofVectorSpace ℂ V).repr v).mapRange (starRingEnd ℂ) (map_zero _)).mapRange (starRingEnd ℂ) (map_zero _) = (Module.Basis.ofVectorSpace ℂ V).repr v`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, LinearEquiv.symm_apply_apply]`.
+-/
 theorem cj_cj (v : V) : cj V (cj V v) = v := by
   unfold cj
   rw [LinearEquiv.apply_symm_apply]
@@ -62,15 +73,24 @@ def colI (u : D.what₂.Word) : D.what₂.Mu u →ₗ[ℂ] HF D :=
   (LinearMap.inr ℂ (HR D) (HC D)).comp
     (lp.lsingle (𝕜 := ℂ) (E := fun u : D.what₂.Word => D.what₂.Mu u) 2 u)
 
+/- English proof (translation)
+The claim follows from `lp.single_apply_self (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x`.
+-/
 theorem component_inclusion (μ j) (x : D.what₂.Mult μ j) : rowP D μ j (rowI D μ j x) = x :=
   lp.single_apply_self (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x
 
+/- English proof (translation)
+Use `show inner ℂ (lp.single (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x) b.1 + inner ℂ (0 : HC D) b.2 = _`. Rewrite using `[inner_zero_left, add_zero]`. Conclude with `lp.inner_single_left (G := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) ⟨μ, j⟩ x b.1`.
+-/
 theorem pet_rowI (μ j) (x : D.what₂.Mult μ j) (b : HF D) : petH D (rowI D μ j x) b = inner ℂ x (rowP D μ j b) := by
   show inner ℂ (lp.single (E := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) 2 ⟨μ, j⟩ x) b.1 +
     inner ℂ (0 : HC D) b.2 = _
   rw [inner_zero_left, add_zero]
   exact lp.inner_single_left (G := fun i : (Σ _ : D.what₂.Tup, ℕ) => D.what₂.Mult i.1 i.2) ⟨μ, j⟩ x b.1
 
+/- English proof (translation)
+Use `show inner ℂ (0 : HR D) 0 + inner ℂ (lp.single 2 u x) (lp.single 2 u y) = _`. Rewrite using `[inner_zero_left, zero_add, lp.inner_single_left (G := fun u : D.what₂.Word => D.what₂.Mu u) u x]`. Rewrite using `[lp.single_apply_self]`.
+-/
 theorem pet_colI (u) (x y : D.what₂.Mu u) : petH D (colI D u x) (colI D u y) = inner ℂ x y := by
   show inner ℂ (0 : HR D) 0 + inner ℂ (lp.single 2 u x) (lp.single 2 u y) = _
   rw [inner_zero_left, zero_add, lp.inner_single_left (G := fun u : D.what₂.Word => D.what₂.Mu u) u x]
@@ -172,23 +192,38 @@ def thetaFull : ThetaX D where
   adelicDataRowMeasureScale_trivialTuple := fun _ => rfl
   mY_zero := fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `Complex.ofReal_one`.
+-/
 theorem thetaFull_mY (μ : D.what₂.Tup) (j : ℕ) : (((thetaFull D).mY μ j : ℝ) : ℂ) = 1 := Complex.ofReal_one
 
+/- English proof (translation)
+Introduce `μ j _ x y` and use `by unfold ThetaX.petY rw [thetaFull_mY, one_mul] exact (pet_rowI D μ j x (rowI D μ j y)).trans (by rw [component_inclusion])`.
+-/
 theorem thetaFull_row : (thetaFull D).TieRowIsom := fun μ j _ x y => by
   unfold ThetaX.petY
   rw [thetaFull_mY, one_mul]
   exact (pet_rowI D μ j x (rowI D μ j y)).trans (by rw [component_inclusion])
 
+/- English proof (translation)
+Introduce `μ j _ y x` and use `by unfold ThetaX.petY ThetaX.dnY rw [thetaFull_mY, thetaFull_mY, one_mul, one_smul] show petH D (rowI D μ j (D.what₂.io μ j (rowP D μ (j + 1) (rowI D μ (j + 1) y)))) (rowI D μ j x) = _ rw [component_inclusion, pet_rowI, component_inclusion]`.
+-/
 theorem thetaFull_io : (thetaFull D).TieIo := fun μ j _ y x => by
   unfold ThetaX.petY ThetaX.dnY
   rw [thetaFull_mY, thetaFull_mY, one_mul, one_smul]
   show petH D (rowI D μ j (D.what₂.io μ j (rowP D μ (j + 1) (rowI D μ (j + 1) y)))) (rowI D μ j x) = _
   rw [component_inclusion, pet_rowI, component_inclusion]
 
+/- English proof (translation)
+The claim follows from `pet_colI D u x y`.
+-/
 theorem thetaFull_colIsom (u μ j) (x y : D.what₂.Mu u) :
     (thetaFull D).pet _ (((thetaFull D).colAF u μ j x : (thetaFull D).cusp _) : (thetaFull D).AF _)
       ((thetaFull D).colAF u μ j y) = inner ℂ x y := pet_colI D u x y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨thetaFull D, thetaFull_row D, thetaFull_io D⟩`.
+-/
 theorem theta_exists : ∃ X : ThetaX D, X.TieRowIsom ∧ X.TieIo :=
   ⟨thetaFull D, thetaFull_row D, thetaFull_io D⟩
 

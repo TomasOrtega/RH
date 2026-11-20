@@ -12,6 +12,13 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 namespace GlobalTheory.Glob.CovolRow
 
+/- English proof (translation)
+Introduce `hDS hHC hCR hCW hRay hCov hL N S Γ hN o`. Establish `hA` using `GlobalTheory.T.class_sum_divisor_all hRay hL N S Γ hN o.hDivG`. Take `⟨R, hR, h⟩` from `RowL.and (RowL.and (RowL.and (RowL.and o.hPA o.hDivG) o.good) o.geo) hA`. Use `⟨R, hR, h.imp fun 𝒜 σ hsel H => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨hpa, hdv⟩, hgd⟩, hgeo⟩, hall⟩` from `H`.
+
+Use `choose τ hτ using fun {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) x hx i => hgeo Fm hc x hx i`. Set `τ' : TieSel σ` to `fun Fm hc x hx i => τ Fm hc x hx i`. Establish `hduty : ∀ (eps : ℝ) (Fm : FamP eps), 𝒜 Fm → GlobalTheory.EX.DQ.Duty7 Fm` using `fun _ Fm hc =>`. Set `⟨_, _, h7, _⟩` to `hsel Fm hc`. Use the proof step `(DQ.familyClass_sevenDuties_and_stableLattices _ Fm h7).1`.
+
+Establish `hrows : Ind.EvW Ind.PRows 𝒜 (partSel σ τ')` using `GlobalTheory.Fc.Ind.evW_pRows_of_rows hDS hHC hCR hCW 𝒜 (partSel σ τ') (fun Fm hc x hx i => hpa Fm hc x hx i) (fun Fm hc x hx i => GlobalTheory.Fc.FourBoundsAtBundles.pDiv_of _ (hdv Fm hc x hx i)) hgd (fun Fm hc x hx i => ⟨(hτ Fm hc x hx i).2.1, (hτ Fm hc x hx i).2.2.1⟩)`. Conclude with `GlobalTheory.Fc.Ind.eventual_L3_of_covolume hCov 𝒜 (partSel σ τ') hduty hrows (GlobalTheory.Fc.FourBoundsAtBundles.evW_of_atAll fun Fm hc x hx i => (hall Fm hc x hx i (τ Fm hc x hx i)).2.2.2.1)`.
+-/
 theorem linked_bundles_l3_of_open : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.NT.RayField → GlobalTheory.CovTop.CovolX → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.Up.NEb hL K B f T w Z Wt p0 t nch n xd c)) → S0.Open0 (prmR N S Γ) → RL.At (prmR N S Γ) S0.CovolumeBound' := by
   intro hDS hHC hCR hCW hRay hCov hL N S Γ hN o
   have hA := GlobalTheory.T.class_sum_divisor_all hRay hL N S Γ hN o.hDivG

@@ -23,6 +23,11 @@ namespace GlobalTheory.FinAdIdent
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite using `[← h]`. Conclude with `⟨y, hy, rfl⟩`. Introduce `hy`.
+
+Rewrite `hy` using `[← h]`. Take `⟨z, hz, hzy⟩` from `hy`. Rewrite using `[← hj hzy]` and apply the resulting hypothesis.
+-/
 theorem mem_iff_of_image {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin n) A} (hj : Function.Injective j.mulVec)
     {H : Set (Fin n → A)} {H' : Set (Fin m → A)} (h : j.mulVec '' H = H') (y : Fin n → A) : y ∈ H ↔ j.mulVec y ∈ H' := by
   constructor
@@ -34,6 +39,15 @@ theorem mem_iff_of_image {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m)
     obtain ⟨z, hz, hzy⟩ := hy
     rwa [← hj hzy]
 
+/- English proof (translation)
+Establish `hu : ∀ {k : ℕ} {K : Matrix (Fin k) (Fin k) A} {z : GL (Fin k) A}, z ∈ Formalism.UG.UJ σ K → Formalism.UG.bc ψ z ∈ Formalism.UG.UJ τ (K.map ψ)`. Introduce `k K z hz`. Establish `hz' : Formalism.UG.cT σ (z : Matrix (Fin k) (Fin k) A) * K * z = K` using `hz`. Use `show Formalism.UG.cT τ ((z : Matrix (Fin k) (Fin k) A).map ψ) * K.map ψ * (z : Matrix (Fin k) (Fin k) A).map ψ = K.map ψ`. Use `conv_rhs => rw [← hz']`.
+
+Simplify using `only [Matrix.map_mul]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `(RingHom.congr_fun h _).symm`.
+
+Take `⟨j', hj1, -⟩` from `exists_inv hb`. Establish `hcψ : x'.val.map ψ * j.map ψ = j.map ψ * x.val.map ψ`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hc]`. Establish `key` using `stab_pred (p := fun y => y ∈ H) (p' := fun y => y ∈ H') hj1 hcψ (mem_iff_of_image hb.1 hl)`. Establish `e1 : Formalism.UG.bc ψ x ∈ Formalism.UG.level τ (J.map ψ) H ↔ Formalism.UG.bc ψ x ∈ Formalism.UG.UJ τ (J.map ψ) ∧ ∀ y, y ∈ H ↔ (x.val.map ψ).mulVec y ∈ H` using `Iff.rfl`.
+
+Establish `e2 : Formalism.UG.bc ψ x' ∈ Formalism.UG.level τ (J'.map ψ) H' ↔ Formalism.UG.bc ψ x' ∈ Formalism.UG.UJ τ (J'.map ψ) ∧ ∀ y, y ∈ H' ↔ (x'.val.map ψ).mulVec y ∈ H'` using `Iff.rfl`. Rewrite using `[e1, e2]`. Conclude with `⟨fun a => ⟨hu hx', key.1 a.2⟩, fun a => ⟨hu hx, key.2 a.2⟩⟩`.
+-/
 theorem level_conj {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (ψ : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ψ.comp σ = τ.comp ψ) {S : Subring B} (H : Submodule S (Fin n → B)) (H' : Submodule S (Fin m → B))
     {j : Matrix (Fin m) (Fin n) A} (hb : Function.Bijective (j.map ψ).mulVec)
@@ -62,6 +76,11 @@ theorem level_conj {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (ψ : A �
   rw [e1, e2]
   exact ⟨fun a => ⟨hu hx', key.1 a.2⟩, fun a => ⟨hu hx, key.2 a.2⟩⟩
 
+/- English proof (translation)
+Establish `h1` using `level_conj (Formalism.UG.prV (E := E) v) (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F)) (Formalism.UG.sigR σ (v.adicCompletion F)) (Formalism.UG.P.afsplit_prV_comp_sigR σ v) (Formalism.L2.Herm.locL v Λ) (Formalism.L2.Herm.locL v Λ') hb hl hx hx' hc`. Establish `hG : ∀ {k : ℕ} (K : Matrix (Fin k) (Fin k) E), (K.map (Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F))).map (Formalism.UG.prV (E := E) v) = K.map (Formalism.UG.inclE (F := F) (v.adicCompletion F)) := by`. Introduce `k K`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`.
+
+Conclude with `Formalism.UG.P.afsplit_prV_inclE v (K a b)`. Rewrite `h1` using `[hG, hG]`. Conclude with `h1`.
+-/
 theorem levelVL_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ} (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (Fin n → E)) (Λ' : Submodule (𝓞 E) (Fin m → E))
     (G : Matrix (Fin n) (Fin n) E) (G' : Matrix (Fin m) (Fin m) E) (j : Matrix (Fin m) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -85,6 +104,17 @@ theorem levelVL_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 
 open GlobalTheory.HeckeTrans in
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨c, hB⟩` from `hβ`. Take `⟨c', hB'⟩` from `hβ'`. Establish `himg : ∀ x, x ∈ (Formalism.L2.Herm.hatL (F` using `D.host.F) Λ : Set _) ↔ j.mulVec x ∈ (Formalism.L2.Herm.hatL (F := D.host.F) Λ' : Set _) := mem_iff_of_image hj.1.1.1 hj.2`. Establish `hvec : ∀ (f : Af D.host.F ⊗[D.host.F] D.host.E) (y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E), (fun a => swapAE D (f * ((j.map (unswap D)).mulVec y) a)) = j.mulVec (fun b => swapAE D (f * y b))`. Introduce `f y`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.mul_sum, map_sum, map_mul, swap_unswap]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Establish `gN : ∀ f, Good (D` using `D) (N * N') f → Good (N ^ c) f := fun f hf => hf.pow c`. Establish `gN' : ∀ f, Good (D` using `D) (N * N') f → Good (N' ^ c') f := by`.
+
+Introduce `f hf`. Rewrite `hf` using `[mul_comm]`. Conclude with `hf.pow c'`. Use `⟨h, GlobalTheory.HeckeTrans.map_mul_one _ h1, GlobalTheory.HeckeTrans.map_mul_one _ h2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Use `congrArg (fun X => X.map (unswap D)) (hφ g)` as an intermediate fact. Simplify using `only [mmul, Matrix.map_mul, finE_unswap] at this`. Conclude with `this`. Introduce `f hf y`. Rewrite using `[(lamHat_good hB (gN f hf)).2, (lamHat_good hB' (gN' f hf)).2, hvec]`.
+
+Conclude with `himg _`. Introduce `f hf y hy`. Conclude with `(lamHat_good hB (gN f hf)).1 y hy`. Introduce `f hf y hy`. Conclude with `(lamHat_good hB' (gN' f hf)).1 y hy`.
+-/
 theorem link_of_isLatIsom {V V' : HSp D} (h : V.rank = V'.rank)
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)}
     {β : GL (Fin V.rank) (EAf D)} {β' : GL (Fin V'.rank) (EAf D)} {N N' : ℕ}
@@ -121,6 +151,13 @@ theorem link_of_isLatIsom {V V' : HSp D} (h : V.rank = V'.rank)
   · intro f hf y hy
     exact (lamHat_good hB' (gN' f hf)).1 y hy
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [inA, Finset.coe_map, Function.Embedding.coe_subtype, Set.mem_image, Finset.mem_coe] at hg`. Take `⟨a, -, rfl⟩` from `hg`. Conclude with `a.2`.
+
+Introduce `g hg`. Simplify using `only [imA, inA, Finset.coe_map, Function.Embedding.coe_subtype, Set.mem_image, Finset.mem_coe] at hg`. Take `⟨a, -, rfl⟩` from `hg`. Conclude with `a.2`. Simplify using `[inA, imA]`.
+
+Conclude with `⟨fun hg => ⟨g.1, g.2, hg, rfl⟩, fun ⟨a, ha, hR, hag⟩ => hag ▸ hR⟩`.
+-/
 theorem corr_inA {V V' : HSp D} (φ : GfC V ≃ₜ* GfC V') (R : Finset (GfC V)) :
     Corr φ.toMulEquiv (inA V R : Set (GA D V)) (imA φ R : Set (GA D V')) := by
   refine ⟨?_, ?_, fun g => ?_⟩
@@ -135,6 +172,9 @@ theorem corr_inA {V V' : HSp D} (φ : GfC V ≃ₜ* GfC V') (R : Finset (GfC V))
   · simp [inA, imA]
     exact ⟨fun hg => ⟨g.1, g.2, hg, rfl⟩, fun ⟨a, ha, hR, hag⟩ => hag ▸ hR⟩
 
+/- English proof (translation)
+Establish `h1 : ((φ.symm g : H) : G) ∈ K` using `(hK.2.2 (φ.symm g)).2 (by simpa using hg)`. Establish `h2` using `hχ (φ.symm g) h1`. Simplify using `using h2.symm`.
+-/
 theorem chi_symm {G G' : Type} [Group G] [Group G'] {H : Subgroup G} {H' : Subgroup G'} {φ : H ≃* H'} {K : Set G} {K' : Set G'}
     (hK : Corr φ K K') {χ : G → ℂ} {χ' : G' → ℂ} (hχ : ∀ g : H, (g : G) ∈ K → χ' (φ g : G') = χ g) (g : H')
     (hg : (g : G') ∈ K') : χ (φ.symm g : G) = χ' g := by
@@ -142,6 +182,11 @@ theorem chi_symm {G G' : Type} [Group G] [Group G'] {H : Subgroup G} {H' : Subgr
   have h2 := hχ (φ.symm g) h1
   simpa using h2.symm
 
+/- English proof (translation)
+Establish `hg : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) ((matHom V g : GL _ _) : Matrix _ _ _) * JR (AF D.host.F) V.gram * ((matHom V g : GL _ _) : Matrix _ _ _) = JR (AF D.host.F) V.gram` using `g.2`. Use `show Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) ((finE V g : GL _ _) : Matrix _ _ _) * V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) * ((finE V g : GL _ _) : Matrix _ _ _) = V.gram.map (Formalism.UG.inclE (F : …`. Use `congrArg (fun X => X.map (GlobalTheory.FinIsoGrp.qFin D)) hg` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Rewrite using `[GlobalTheory.FinIsoGrp.finE_val, ← GlobalTheory.FinIsoGrp.gram_map, ← this]`.
+
+Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.FinIsoGrp.qFin_sig]`.
+-/
 private theorem finE_mem_UPts (V : HSp D) (g : GA D V) :
     finE V g ∈ Formalism.UG.UPts D.sp.cm.sig V.gram (Formalism.L2.Herm.Af D.host.F) := by
   have hg : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) ((matHom V g : GL _ _) : Matrix _ _ _) *
@@ -157,6 +202,31 @@ private theorem finE_mem_UPts (V : HSp D) (g : GA D V) :
   simp only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.FinIsoGrp.qFin_sig]
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `V V' h Λ Λ' β β' N N' hβ hβ' T j hj hm`. Take `⟨j', h1, h2⟩` from `exists_inv hj.1.1`. Take `⟨φ, hφ⟩` from `GlobalTheory.FinIsoGrp.exists_finIso V V' j j' h1 h2 hj.1.2`. Establish `hφ' : IsConjBy V V' j φ` using `hφ`. Establish `L` using `link_of_isLatIsom h hβ hβ' hj h1 h2 hφ'`.
+
+Take `⟨c, hB⟩` from `id hβ`. Take `⟨c', hB'⟩` from `id hβ'`. Take `⟨u, hu, hT⟩` from `hm`. Establish `hl : ∀ y ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ', j'.mulVec y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := ((image_iff h1 h2 _ _).1 hj.2).2`. Establish `e : ∀ {W : HSp D} (γ : GL (Fin W.rank) (EAf D)) (L1 : Formalism.L2.DIV.LevDat D.host.E ℂ W.rank) (κ : GA D W), κ ∈ levG W γ L1 ↔ κ ∈ GfC W ∧ finE W κ ∈ Formalism.L2.DIV.parLev D.sp.cm W.gram γ L1 ∧ Formalism.L2.DIV.rTup γ L1 (finE W κ) ∈ L1.P.H` using `fun _ _ _ => Iff.rfl`.
+
+Establish `hle` using `fun (L0 : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (hL0 : ReadIn L0 T) (g : GfC V) => lev_eq h V.gram V'.gram Λ Λ' β (finE V g) β' (finE V' (φ g)) hB.1 hB'.1 j j' h1 h2 hl u hu T hT (hφ g) (finE_mem_UPts V g) (finE_mem_UPts V' (φ g)) L0 hL0`. Establish `hlev : ∀ L0 : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank, ReadIn L0 T → ∀ g : GfC V, (g : GA D V) ∈ levG V β L0 ↔ (φ g : GA D V') ∈ levG V' β' (castDat h L0)`. Introduce `L0 hL0 g`. Establish `H` using `hle L0 hL0 g`. Rewrite using `[e, e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hp, hr⟩`. Conclude with `⟨(φ g).2, H.1.1 hp, (H.2 hp).1 ▸ hr⟩`. Introduce and unpack `⟨-, hp', hr'⟩`. Establish `hp` using `H.1.2 hp'`.
+
+Conclude with `⟨g.2, hp, (H.2 hp).1 ▸ hr'⟩`. Establish `hchi : ∀ L0 : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank, ReadIn L0 T → ∀ g : GfC V, (g : GA D V) ∈ levS V β L0 → levChi V' β' (castDat h L0) (φ g : GA D V') = levChi V β L0 (g : GA D V)`. Introduce `L0 hL0 g hg`. Establish `hp` using `((e β L0 g).1 hg).2.1`. Establish `H` using `(hle L0 hL0 g).2 hp`.
+
+Unfold `levChi`. Rewrite using `[H.2]`. Establish `hK : ∀ L0 : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank, ReadIn L0 T → Corr φ.toMulEquiv (levS V β L0) (levS V' β' (castDat h L0))` using `fun L0 hL0 => ⟨fun g hg => ((e β L0 g).1 hg).1, fun g hg => ((e β' (castDat h L0) g).1 hg).1, fun g => hlev L0 hL0 g⟩`. Use `⟨φ, hφ', ?_⟩` and prove the remaining obligations. Conclude with `{ stabLoc := fun v g => by`.
+
+Take `⟨hb, hl'⟩` from `loc_gen D.sp.cm.sig v Λ Λ' V.gram V'.gram j hj.1.1 hj.1.2 hj.2`. Conclude with `levelVL_conj D.sp.cm.sig v Λ Λ' V.gram V'.gram j hb.1 hl' (finE_mem_UPts V g) (finE_mem_UPts V' (φ g)) (hφ g)`. Use `supp := fun f g => L.supp f g`. Use `det := fun g => L.det g`. Use `lev := hlev`.
+
+Use `chi := hchi`. Use `lift := fun L0 hL0 g0 g => by`. Establish `H` using `hle L0 hL0 g`. Unfold `IsLevelLift`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hp, hr⟩`. Conclude with `⟨(φ g).2, H.1.1 hp, (H.2 hp).1.trans hr⟩`. Introduce and unpack `⟨-, hp', hr'⟩`. Establish `hp` using `H.1.2 hp'`. Conclude with `⟨g.2, hp, (H.2 hp).1.symm.trans hr'⟩`.
+
+Use `sph := fun S hS g => ⟨L.sph_imp S hS g, fun hg => by simpa using L.symm.sph_imp S hS (φ g) hg⟩`. Use `heckeElt := fun P e ϖ k hM he g => ⟨L.hecke_imp he hM g, fun hg => by simpa using L.symm.hecke_imp he hM (φ g) hg⟩`. Use `heckeAt := fun P k hM g => by`. Unfold `IsHeckeAt`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e, ϖ, he, h1', h2', h3⟩`. Conclude with `⟨e, ϖ, he, h1', h2', L.hecke_imp he hM g h3⟩`. Introduce and unpack `⟨e, ϖ, he, h1', h2', h3⟩`. Conclude with `⟨e, ϖ, he, h1', h2', by simpa using L.symm.hecke_imp he hM (φ g) h3⟩`. Use `divAt := fun P e f ϖ d hM hP g => ⟨L.div_imp hP hM g, fun hg => by simpa using L.symm.div_imp hP hM (φ g) hg⟩`.
+
+Use `opAt := fun L0 hL0 S P k hM R => ⟨fun H => L.opAt_imp (hK L0 hL0) (hchi L0 hL0) (corr_inA φ R) S hM H, fun H => L.symm.opAt_imp (hK L0 hL0).symm (chi_symm (hK L0 hL0) (hchi L0 hL0)) (corr_inA φ R).symm S hM H⟩`. Use `opFull := fun L0 hL0 S P d hM R => ⟨fun H => L.opFull_imp (hK L0 hL0) (hchi L0 hL0) (corr_inA φ R) S hM H, fun H => L.symm.opFull_imp (hK L0 hL0).symm (chi_symm (hK L0 hL0) (hchi L0 hL0)) (corr_inA φ R).symm S hM H⟩ }`.
+-/
 theorem inducedIso (D : D7) : InducedIso D := by
   intro V V' h Λ Λ' β β' N N' hβ hβ' T j hj hm
   obtain ⟨j', h1, h2⟩ := exists_inv hj.1.1

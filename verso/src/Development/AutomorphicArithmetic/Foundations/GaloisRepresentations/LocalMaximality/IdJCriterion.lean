@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KahlerFormsOverSuba
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => simp [Algebra.commutes]`. Consider the case `add x y i _ _ hx hy => rw [mul_add, add_mul, hx, hy, smul_add]`. Consider the case `mem_mul m hm i x _ hx`. Take `⟨u, rfl⟩` from `hm`.
+
+Establish `h` using `ExteriorAlgebra.ι_add_mul_swap (R := R) v u`. Establish `h' : ExteriorAlgebra.ι R v * ExteriorAlgebra.ι R u = -(ExteriorAlgebra.ι R u * ExteriorAlgebra.ι R v)` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[← mul_assoc, h', neg_mul, mul_assoc, hx, mul_smul_comm]`. Simplify using `only [pow_succ, mul_neg, mul_one, neg_smul, mul_assoc]`.
+-/
 private theorem ext_comm_one {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (v : M) (q : ℕ)
     (w : ExteriorAlgebra R M) (hw : w ∈ ⋀[R]^q M) :
     ExteriorAlgebra.ι R v * w = ((-1 : ℤ) ^ q) • (w * ExteriorAlgebra.ι R v) := by
@@ -19,6 +24,11 @@ private theorem ext_comm_one {R M : Type} [CommRing R] [AddCommGroup M] [Module 
     rw [← mul_assoc, h', neg_mul, mul_assoc, hx, mul_smul_comm]
     simp only [pow_succ, mul_neg, mul_one, neg_smul, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap r => simp [Algebra.commutes]`. Consider the case `add x y i _ _ hx hy => rw [add_mul, mul_add, hx, hy, smul_add]`. Consider the case `mem_mul m hm i x _ hx`. Take `⟨u, rfl⟩` from `hm`.
+
+Rewrite using `[mul_assoc, hx, mul_smul_comm, ← mul_assoc, ext_comm_one u q w hw, smul_mul_assoc, smul_smul, mul_assoc, Nat.succ_mul, pow_add]`.
+-/
 private theorem ext_comm {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (p q : ℕ)
     (y w : ExteriorAlgebra R M) (hy : y ∈ ⋀[R]^p M) (hw : w ∈ ⋀[R]^q M) :
     y * w = ((-1 : ℤ) ^ (p * q)) • (w * y) := by
@@ -30,6 +40,23 @@ private theorem ext_comm {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     rw [mul_assoc, hx, mul_smul_comm, ← mul_assoc, ext_comm_one u q w hw, smul_mul_assoc, smul_smul,
       mul_assoc, Nat.succ_mul, pow_add]
 
+/- English proof (translation)
+Introduce `hOm hA hD F K _ _ _ _ _ _ d x hc τ hτ a ha j`. Take `⟨⟨_, n, v, φ, hv, hφ, hdec⟩, hsp⟩` from `hOm F K d x hc a {j} (by simp)`. Establish `hdec' : ∀ z ∈ Submodule.span F (omB ℂ K (rB ℂ K (xv x) {j}) a : Set (DR ℂ K)), z = ∑ k, φ k z • v k`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz => exact hdec z hz`. Consider the case `zero => simp`. Consider the case `add p q _ _ hp hq`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← hp, ← hq]`.
+
+Consider the case `smul c p _ hp`. Simplify using `only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← hp]`. Establish `hG : omG x j ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun l _ => div_ne_zero (x l).ne_zero (x j).ne_zero` and prove the remaining obligations.
+
+Use `choose w hwm hwt using fun k => (hD F K d x hc τ hτ a ha (omG x j • φ k)).2`. Establish `hwB : ∀ k, w k ∈ omB ℂ K (rB ℂ K (xv x) {j}) (d - a)`. Introduce `k`. Use `(GlobalTheory.T.twistedDual_regularForms_finiteCover ℂ F K d (xv x) hc τ hτ {j} (by simp) a (d - a) (by omega) (w k) (hwm k)).1 ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Establish `hy' : y ∈ ⋀[K]^a Ω[K⁄ℂ]` using `GlobalTheory.PD.mem_deg_of_mem_omB _ _ _ hy`. Rewrite using `[ext_comm a (d - a) y (w k) hy' (hwm k), map_zsmul, map_zsmul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[← hwt k y hy']`. Use `((hA F d x hc.pd {j} j (by simp)).2.1 _).2 ?_` and prove the remaining obligations.
+
+Simplify `hφ k y hy` using `[hG]`. Use `⟨∑ k, w k ⊗ₜ[ℂ] v k, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ MZ F K (xv x) a {j} {j}`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.apply_mem_map₂ _ (hwB k) (hv k)`. Introduce `y hy conv_rhs => rw [hdec' y (hsp y hy)]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: muP F K τ (w k ⊗ₜ[ℂ] v k) y = (Algebra.trace F K (τ (w k * y))) ⊗ₜ[ℂ] v k`. Simplify using `[muP]`. Rewrite using `[this, ← hwt k y hy]`.
+
+Simplify using `[mulP]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.idJ_of :
     LatOm → LatA → DualForm → IdJ := by
   intro hOm hA hD F K _ _ _ _ _ _ d x hc τ hτ a ha j

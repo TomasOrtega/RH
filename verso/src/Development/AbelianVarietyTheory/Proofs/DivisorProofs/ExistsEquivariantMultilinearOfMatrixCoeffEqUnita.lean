@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ∀ w ∈ Submodule.span ℂ s, ⟪w, z⟫_ℂ = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [inner_smul_left, hx, mul_zero]`. Establish `h2 : closure (Submodule.span ℂ s : Set K) ⊆ {w | ⟪w, z⟫_ℂ = 0}` using `closure_minimal h1 (isClosed_eq (by fun_prop) (by fun_prop))`. Conclude with `inner_self_eq_zero.1 (h2 hz)`.
+-/
 theorem eq_zero_of_mem_closure_span_of_inner_eq_zero {K : Type} [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] {s : Set K} {z : K} (hz : z ∈ closure (Submodule.span ℂ s : Set K))
     (h : ∀ w ∈ s, ⟪w, z⟫_ℂ = 0) : z = 0 := by
@@ -21,6 +26,33 @@ theorem eq_zero_of_mem_closure_span_of_inner_eq_zero {K : Type} [NormedAddCommGr
     closure_minimal h1 (isClosed_eq (by fun_prop) (by fun_prop))
   exact inner_self_eq_zero.1 (h2 hz)
 
+/- English proof (translation)
+Set `B : (∀ τ, H τ) → (∀ τ, H τ) → ℂ` to `fun p q => (c : ℂ) * ∏ τ, ⟪p τ, q τ⟫_ℂ`. Establish `hBc : Continuous fun p : (∀ τ, H τ) × (∀ τ, H τ) => B p.1 p.2`. Simplify using `only [B]`. Use `fun_prop`. Set `lin : (∀ τ, A τ →₀ ℂ) → (∀ τ, H τ)` to `fun x τ => Finsupp.linearCombination ℂ (e τ) (x τ)`.
+
+Set `P : (∀ τ, A τ →₀ ℂ) → K` to `fun x => ∑ a ∈ Fintype.piFinset (fun τ => (x τ).support), (∏ τ, x τ (a τ)) • f a`. Establish `hPmem : ∀ x, P x ∈ Submodule.span ℂ (Set.range f)` using `fun x => Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h1 : ∀ x (z : K) (q : ∀ τ, H τ), (∀ a, ⟪f a, z⟫_ℂ = B (fun τ => e τ (a τ)) q) → ⟪P x, z⟫_ℂ = B (lin x) q`. Introduce `x z q hz`. Simplify using `only [P, B, lin, sum_inner, inner_smul_left, hz, Finsupp.linearCombination_apply, Finsupp.sum]`.
+
+Rewrite using `[Finset.prod_univ_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, map_prod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : ∀ p q, (starRingEnd ℂ) (B p q) = B q p`.
+
+Introduce `p q`. Simplify using `only [B, map_mul, map_prod, inner_conj_symm, Complex.conj_ofReal]`. Establish `h2 : ∀ x a, ⟪f a, P x⟫_ℂ = B (fun τ => e τ (a τ)) (lin x)`. Introduce `x a`. Rewrite using `[← inner_conj_symm, h1 x (f a) (fun τ => e τ (a τ)) (fun b => hf b a), hconj]`.
+
+Establish `h3 : ∀ x x', ⟪P x, P x'⟫_ℂ = B (lin x) (lin x')` using `fun x x' => h1 x _ _ (h2 x')`. Establish `hdl : DenseRange lin`. Establish `: DenseRange (Pi.map fun τ => fun x : A τ →₀ ℂ => Finsupp.linearCombination ℂ (e τ) x)`. Use `DenseRange.piMap fun τ => ?_` and prove the remaining obligations. Use `hd τ` as an intermediate fact.
+
+Rewrite `this` using `[← Finsupp.range_linearCombination, LinearMap.coe_range]`. Conclude with `this`. Conclude with `this`. Take `⟨u, hu, hlim⟩` from `mem_closure_iff_seq_limit.1 (hdl y)`. Use `choose x hx using hu`.
+
+Establish `hlim' : Filter.Tendsto (fun n => lin (x n)) Filter.atTop (nhds y)`. Simplify `hlim` using `only [hx]`. Establish `hcau : CauchySeq fun n => P (x n)`. Rewrite using `[cauchySeq_iff_tendsto_dist_atTop_0]`. Set `G : (∀ τ, H τ) × (∀ τ, H τ) → ℝ` to `fun p => Real.sqrt (B p.1 p.1 - B p.1 p.2 - B p.2 p.1 + B p.2 p.2).re`.
+
+Establish `hG : Continuous G`. Simplify using `only [G, B]`. Use `fun_prop`. Establish `hG0 : G (y, y) = 0` using `by simp [G]`. Establish `ht : Filter.Tendsto (fun n : ℕ × ℕ => (lin (x n.1), lin (x n.2))) Filter.atTop (nhds (y, y))`.
+
+Rewrite using `[← Filter.prod_atTop_atTop_eq]`. Conclude with `(hlim'.comp Filter.tendsto_fst).prodMk_nhds (hlim'.comp Filter.tendsto_snd)`. Use `(hG.tendsto (y, y)).comp ht` as an intermediate fact. Rewrite `this` using `[hG0]`. Use `this.congr fun n => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp, G]`. Rewrite using `[dist_eq_norm, @norm_eq_sqrt_re_inner ℂ, inner_sub_sub_self, h3, h3, h3, h3]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `cauchySeq_tendsto_of_complete hcau`. Establish `h4 : ∀ a, ⟪f a, z⟫_ℂ = B (fun τ => e τ (a τ)) y`.
+
+Introduce `a`. Establish `t1 : Filter.Tendsto (fun n => ⟪f a, P (x n)⟫_ℂ) Filter.atTop (nhds ⟪f a, z⟫_ℂ)` using `Filter.Tendsto.inner tendsto_const_nhds hz`. Establish `t2` using `(hBc.tendsto (fun τ => e τ (a τ), y)).comp (tendsto_const_nhds.prodMk_nhds hlim')`. Use `tendsto_nhds_unique t1 (t2.congr fun n => ?_)` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Use `⟨z, mem_closure_of_tendsto hz (Filter.Eventually.of_forall fun n => hPmem _), h4, ?_⟩` and prove the remaining obligations. Establish `t1 : Filter.Tendsto (fun n => ⟪P (x n), z⟫_ℂ) Filter.atTop (nhds ⟪z, z⟫_ℂ)` using `Filter.Tendsto.inner hz tendsto_const_nhds`. Establish `t2` using `(hBc.tendsto (y, y)).comp (hlim'.prodMk_nhds tendsto_const_nhds)`. Use `tendsto_nhds_unique t1 (t2.congr fun n => ?_)` and prove the remaining obligations.
+
+Rewrite using `[h1 _ _ _ h4]`. Both sides reduce to the same expression.
+-/
 theorem exists_vector_of_inner_eq_prod {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type}
     [∀ τ, NormedAddCommGroup (H τ)] [∀ τ, InnerProductSpace ℂ (H τ)]
     {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
@@ -96,6 +128,19 @@ theorem exists_vector_of_inner_eq_prod {ι : Type} [Fintype ι] [DecidableEq ι]
   refine tendsto_nhds_unique t1 (t2.congr fun n => ?_)
   rw [h1 _ _ _ h4]; rfl
 
+/- English proof (translation)
+Use `choose F hF1 hF2 hF3 using exists_vector_of_inner_eq_prod e f c hd hf`. Set `L : (∀ τ, A τ) → MultilinearMap ℂ H ℂ` to `fun a => (c : ℂ) • (MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap fun τ => innerₛₗ ℂ (e τ (a τ))`. Establish `hL : ∀ a y, ⟪f a, F y⟫_ℂ = L a y`. Introduce `a y`. Rewrite using `[hF2]`.
+
+Simplify using `[L]`. Establish `hmem : ∀ y, F y ∈ (Submodule.span ℂ (Set.range f)).topologicalClosure` using `hF1`. Set `M : MultilinearMap ℂ H K` to `{ toFun := F map_update_add' := by`. Introduce `_ m i p q`. Rewrite using `[← sub_eq_zero]`.
+
+Use `eq_zero_of_mem_closure_span_of_inner_eq_zero (s := Set.range f) (Submodule.sub_mem _ (hmem _) (Submodule.add_mem _ (hmem _) (hmem _))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[inner_sub_right, inner_add_right, hL, hL, hL, MultilinearMap.map_update_add, sub_self]`. Use the proof step `map_update_smul' := by`. Introduce `_ m i r p`.
+
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_mem_closure_span_of_inner_eq_zero (s := Set.range f) (Submodule.sub_mem _ (hmem _) (Submodule.smul_mem _ _ (hmem _))) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[inner_sub_right, inner_smul_right, hL, hL, MultilinearMap.map_update_smul, smul_eq_mul, sub_self] }`. Use `⟨M.mkContinuous (Real.sqrt |c|) fun y => ?_, fun y => ⟨hF1 y, hF2 y⟩⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `‖F y‖ ≤ _`. Establish `h` using `congrArg norm (hF3 y)`. Simplify using `only [inner_self_eq_norm_sq_to_K, norm_mul, norm_prod, norm_pow, Complex.coe_algebraMap, Complex.norm_real, norm_norm, Real.norm_eq_abs, Finset.prod_pow] at h`. Use `le_of_eq ?_` and prove the remaining obligations. Use `(pow_left_inj₀ (n := 2) (by positivity) (by positivity) two_ne_zero).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, Real.sq_sqrt (abs_nonneg c)]`. Simplify using `using h`.
+-/
 theorem exists_continuousMultilinearMap_of_inner_eq_prod {ι : Type} [Fintype ι] [DecidableEq ι] {H : ι → Type}
     [∀ τ, NormedAddCommGroup (H τ)] [∀ τ, InnerProductSpace ℂ (H τ)]
     {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
@@ -139,6 +184,55 @@ theorem exists_continuousMultilinearMap_of_inner_eq_prod {ι : Type} [Fintype ι
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `n ι _ _ Hm H _ _ _ σ K _ _ _ ρ v k hσ hρ1 hρm hρn hco`. Establish `hone : ∀ τ, (1 : Mt n) ∈ Formalism.QuantumDeterminants.UH (Hm τ)` using `fun τ => by simp [Formalism.QuantumDeterminants.UH]`. Establish `hmul : ∀ τ, ∀ a ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∀ b ∈ Formalism.QuantumDeterminants.UH (Hm τ), a * b ∈ Formalism.QuantumDeterminants.UH (Hm τ)`. Introduce `τ a ha b hb`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq] at ha hb ⊢`.
+
+Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ∀ τ, ∀ a ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∃ b ∈ Formalism.QuantumDeterminants.UH (Hm τ), a * b = 1`. Introduce `τ a ha`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq] at ha ⊢`.
+
+Establish `hd : IsUnit a.det`. Use `congrArg Matrix.det ha` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul]`. Use `isUnit_iff_ne_zero.2 fun h => (hσ τ).1 ?_` and prove the remaining obligations. Rewrite using `[← this, h, mul_zero]`.
+
+Use `⟨a⁻¹, ?_, Matrix.mul_nonsing_inv a hd⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hσ1 : ∀ τ, σ τ 1 = 1` using `fun τ => (hσ τ).2.1.1.1`. Establish `hσm : ∀ τ, ∀ a ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∀ b ∈ Formalism.QuantumDeterminants.UH (Hm τ), σ τ (a * b) = σ τ a * σ τ b` using `fun τ => (hσ τ).2.1.1.2`. Establish `hσi : ∀ τ, ∀ a ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∀ p q, ⟪σ τ a p, σ τ a q⟫_ℂ = ⟪p, q⟫_ℂ` using `fun τ a ha => (LinearMap.norm_map_iff_inner_map_map (σ τ a)).1 ((hσ τ).2.1.2.1 a ha)`.
+
+Establish `hρi : ∀ a ∈ UG Hm, ∀ p q, ⟪ρ a p, ρ a q⟫_ℂ = ⟪p, q⟫_ℂ` using `fun a ha => (LinearMap.norm_map_iff_inner_map_map (ρ a)).1 (hρn a ha)`. Establish `hdiv : ∀ a ∈ UG Hm, ∀ b ∈ UG Hm, ∃ d ∈ UG Hm, a * d = b`. Introduce `a ha b hb`. Use `choose a' h1 h2 using fun τ => hinv τ (a τ) (ha τ)`. Use `⟨a' * b, fun τ => hmul τ _ (h1 τ) _ (hb τ), funext fun τ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.mul_apply]`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Set `e : ∀ τ, Formalism.QuantumDeterminants.UH (Hm τ) → H τ` to `fun τ g => σ τ g (v τ)`. Set `f : (∀ τ, Formalism.QuantumDeterminants.UH (Hm τ)) → K` to `fun a => ρ (fun τ => a τ) k`. Establish `hrange : Set.range f = {z | ∃ u ∈ UG Hm, z = ρ u k}`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨fun τ => a τ, fun τ => (a τ).2, rfl⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `⟨fun τ => ⟨u τ, hu τ⟩, rfl⟩`. Establish `hd : ∀ τ, Dense (Submodule.span ℂ (Set.range (e τ)) : Set (H τ))`. Introduce `τ`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Establish `hst : ∀ g ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∀ w ∈ (Submodule.span ℂ (Set.range (e τ))).topologicalClosure, σ τ g w ∈ (Submodule.span ℂ (Set.range (e τ))).topologicalClosure`.
+
+Introduce `g hg w hw`. Use `map_mem_closure (σ τ g).continuous hw fun p hp => ?_` and prove the remaining obligations. Establish `: Submodule.span ℂ (Set.range (e τ)) ≤ (Submodule.span ℂ (Set.range (e τ))).comap (σ τ g).toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Use `Submodule.subset_span ⟨⟨g * b, hmul τ _ hg _ b.2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [e]`. Rewrite using `[hσm τ _ hg _ b.2]`. Both sides reduce to the same expression. Conclude with `this hp`.
+
+Use `((hσ τ).2.2.1 _ (Submodule.isClosed_topologicalClosure _) hst).resolve_left fun h => ?_` and prove the remaining obligations. Establish `hv : v τ ∈ (Submodule.span ℂ (Set.range (e τ))).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨⟨1, hone τ⟩, by simp [e, hσ1]⟩)`. Rewrite `hv` using `[h, Submodule.mem_bot]`. Use `(hσ τ).2.2.2` as an intermediate fact. Rewrite `this` using `[hv, norm_zero]`.
+
+Conclude with `zero_ne_one this`. Establish `hf : ∀ a b, ⟪f a, f b⟫_ℂ = ((‖k‖ ^ 2 : ℝ) : ℂ) * ∏ τ, ⟪e τ (a τ), e τ (b τ)⟫_ℂ`. Introduce `a b`. Establish `ha : (fun τ => (a τ : Mt n)) ∈ UG Hm` using `fun τ => (a τ).2`. Take `⟨d, hdm, hd⟩` from `hdiv _ ha (fun τ => (b τ : Mt n)) (fun τ => (b τ).2)`.
+
+Simplify using `only [f, e]`. Rewrite using `[← hd, hρm _ ha _ hdm, ContinuousLinearMap.mul_apply, hρi _ ha, hco d hdm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `: (b τ : Mt n) = a τ * d τ` using `(congrFun hd τ).symm`.
+
+Rewrite using `[this, hσm τ _ (a τ).2 _ (hdm τ), ContinuousLinearMap.mul_apply, hσi τ _ (a τ).2]`. Take `⟨Φ, hΦ⟩` from `exists_continuousMultilinearMap_of_inner_eq_prod e f _ hd hf`. Establish `hmem : ∀ y, Φ y ∈ (Submodule.span ℂ (Set.range f)).topologicalClosure` using `fun y => (hΦ y).1`. Establish `hk : f (fun τ => ⟨1, hone τ⟩) = k`. Express the relevant statement in the definitionally equal form `ρ 1 k = k`.
+
+Rewrite using `[hρ1]`. Both sides reduce to the same expression. Use `⟨Φ, ?_, fun τ g hg y => ?_, fun y => hrange ▸ (hΦ y).1⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_mem_closure_span_of_inner_eq_zero (s := Set.range f) (Submodule.sub_mem _ (hmem _) (Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨_, hk⟩))) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[inner_sub_right, (hΦ v).2, ← hk, hf, hk]`. Simplify using `[e, hσ1]`. Establish `hs : (Pi.mulSingle τ g : ι → Mt n) ∈ UG Hm`. Introduce `τ'`.
+
+Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Simplify using `using hg`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `hone τ'`.
+
+Establish `hst : ρ (Pi.mulSingle τ g) (Φ y) ∈ (Submodule.span ℂ (Set.range f)).topologicalClosure`. Use `map_mem_closure (ρ _).continuous (hmem y) fun p hp => ?_` and prove the remaining obligations. Establish `: Submodule.span ℂ (Set.range f) ≤ (Submodule.span ℂ (Set.range f)).comap (ρ (Pi.mulSingle τ g)).toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Establish `hb : (fun τ => (b τ : Mt n)) ∈ UG Hm` using `fun τ => (b τ).2`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Rewrite using `[hrange]`. Establish `hsb : ((Pi.mulSingle τ g : ι → Mt n) * fun τ => (b τ : Mt n)) ∈ UG Hm`. Introduce `τ'`.
+
+Rewrite using `[Pi.mul_apply]`. Conclude with `hmul τ' _ (hs τ') _ (hb τ')`. Use `⟨_, hsb, ?_⟩` and prove the remaining obligations. Rewrite using `[hρm _ hs _ hb]`. Both sides reduce to the same expression.
+
+Conclude with `this hp`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_mem_closure_span_of_inner_eq_zero (s := Set.range f) (Submodule.sub_mem _ (hmem _) hst) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `ha : (fun τ => (a τ : Mt n)) ∈ UG Hm` using `fun τ => (a τ).2`.
+
+Take `⟨d, hdm, hd⟩` from `hdiv _ hs _ ha`. Establish `h1 : f a = ρ (Pi.mulSingle τ g) (f fun τ => ⟨d τ, hdm τ⟩)`. Simplify using `only [f]`. Rewrite using `[← hd, hρm _ hs _ hdm]`. Both sides reduce to the same expression.
+
+Rewrite using `[inner_sub_right, (hΦ _).2, h1, hρi _ hs, (hΦ _).2, sub_eq_zero]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ' _ => ?_` and prove the remaining obligations. Establish `h2 : (a τ' : Mt n) = (Pi.mulSingle τ g : ι → Mt n) τ' * d τ'` using `(congrFun hd τ').symm`. Simplify using `only [e]`.
+
+Rewrite using `[h2]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Function.update_self, hσm _ _ hg _ (hdm _), ContinuousLinearMap.mul_apply, hσi _ _ hg]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, Function.update_of_ne h, Matrix.one_mul]`.
+-/
 theorem exists_equivariant_multilinear_of_matrixCoeff_eq :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (H : ι → Type) [∀ τ, NormedAddCommGroup (H τ)] [∀ τ, InnerProductSpace ℂ (H τ)] [∀ τ, CompleteSpace (H τ)] (σ : ∀ τ, Mt n → (H τ →L[ℂ] H τ)) (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] (ρ : (ι → Mt n) → (K →L[ℂ] K)) (v : ∀ τ, H τ) (k : K), (∀ τ, (Hm τ).det ≠ 0 ∧ IsURepOn (Formalism.QuantumDeterminants.UH (Hm τ)) (σ τ) ∧ IsIrredOn (Formalism.QuantumDeterminants.UH (Hm τ)) (σ τ) ∧ ‖v τ‖ = 1) → ρ 1 = 1 → (∀ u ∈ UG Hm, ∀ u' ∈ UG Hm, ρ (u * u') = ρ u * ρ u') → (∀ u ∈ UG Hm, ∀ y, ‖ρ u y‖ = ‖y‖) → (∀ u ∈ UG Hm, ⟪k, ρ u k⟫_ℂ = ((‖k‖ ^ 2 : ℝ) : ℂ) * ∏ τ, ⟪v τ, σ τ (u τ) (v τ)⟫_ℂ) → ∃ Φ : ContinuousMultilinearMap ℂ H K, Φ v = k ∧ (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (Hm τ), ∀ y, Φ (Function.update y τ (σ τ g (y τ))) = ρ (Pi.mulSingle τ g) (Φ y)) ∧ ∀ y, Φ y ∈ closure (Submodule.span ℂ {z | ∃ u ∈ UG Hm, z = ρ u k} : Set K) := by
   intro n ι _ _ Hm H _ _ _ σ K _ _ _ ρ v k hσ hρ1 hρm hρn hco

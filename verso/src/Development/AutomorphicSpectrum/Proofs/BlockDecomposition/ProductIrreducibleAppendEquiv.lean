@@ -16,6 +16,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open GlobalTheory.ProdFlatten in
 unseal GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.one GlobalTheory.ProdFlatten.two in
 
+/- English proof (translation)
+The claim follows from `H`.
+-/
 theorem equiv_of_iso_two {p q c r t N : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (w : Fin c → IrrGL k)
     (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t)
     (hz : ∑ a, (w a).1 = N) (e : r + t = N) (H : Iso (two e (pr x hx) (pr y hy)) (pr w hz)) :
@@ -24,10 +27,16 @@ theorem equiv_of_iso_two {p q c r t N : ℕ} (x : Fin p → IrrGL k) (y : Fin q 
 open GlobalTheory.ProdFlatten in
 unseal GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.one in
 
+/- English proof (translation)
+The claim follows from `H`.
+-/
 theorem equiv_of_iso {q c N : ℕ} (y : Fin q → IrrGL k) (w : Fin c → IrrGL k)
     (hy : ∑ a, (y a).1 = N) (hz : ∑ a, (w a).1 = N) (H : Iso (pr y hy) (pr w hz)) :
     Nonempty ((prodIrr y hy).Equiv (prodIrr w hz)) := H
 
+/- English proof (translation)
+Establish `A : Nonempty ((ind₂ (stdSum e) (extTensor (prodIrr x hx) (prodIrr y hy))).Equiv (prodIrr y hy))` using `GlobalTheory.ProdReorder.ind₂_unit_left k N 0 e _ (prodIrr y hy) (isSmooth_prodIrr y hy) (fun a => (x a).1) (fun a => (x a).2.rep.V) (fun a => (x a).rep) (stdBlocks (fun a => (x a).1) hx)`. Establish `B : Nonempty ((prodIrr y hy).Equiv (prodIrr w hz))` using `equiv_of_iso y w hy hz (GlobalTheory.ProdFlatten.pr_congr hw.symm hy hz)`. Conclude with `A.elim fun a => B.elim fun b => ⟨a.trans b⟩`.
+-/
 theorem ind₂_prodIrr_empty {c q N : ℕ} (x : Fin 0 → IrrGL k) (y : Fin q → IrrGL k) (w : Fin c → IrrGL k)
     (hw : List.ofFn w = List.ofFn y) (hx : ∑ a, (x a).1 = 0) (hy : ∑ a, (y a).1 = N)
     (hz : ∑ a, (w a).1 = N) (e : 0 + N = N) :
@@ -39,6 +48,9 @@ theorem ind₂_prodIrr_empty {c q N : ℕ} (x : Fin 0 → IrrGL k) (y : Fin q �
     equiv_of_iso y w hy hz (GlobalTheory.ProdFlatten.pr_congr hw.symm hy hz)
   exact A.elim fun a => B.elim fun b => ⟨a.trans b⟩
 
+/- English proof (translation)
+Establish `hr : r = 0` using `by simpa using hx.symm`. Substitute `hr` using the available equality. Establish `ht : t = N` using `by omega`. Substitute `ht` using the available equality. Conclude with `ind₂_prodIrr_empty x y w hw hx hy hz e`.
+-/
 theorem ind₂_prodIrr_equiv_zero {q c r t N : ℕ} (x : Fin 0 → IrrGL k) (y : Fin q → IrrGL k) (w : Fin c → IrrGL k)
     (hw : List.ofFn w = List.ofFn y) (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t)
     (hz : ∑ a, (w a).1 = N) (e : r + t = N) :
@@ -49,6 +61,9 @@ theorem ind₂_prodIrr_equiv_zero {q c r t N : ℕ} (x : Fin 0 → IrrGL k) (y :
   subst ht
   exact ind₂_prodIrr_empty x y w hw hx hy hz e
 
+/- English proof (translation)
+The claim follows from `equiv_of_iso_two x y w hx hy hz e (GlobalTheory.ProdFlatten.iso_symm (GlobalTheory.ProdFlatten.pr_append x y w hw (Or.inl hp) hx hy hz e))`.
+-/
 theorem ind₂_prodIrr_equiv_pos {p q c r t N : ℕ} (hp : p ≠ 0) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k)
     (w : Fin c → IrrGL k) (hw : List.ofFn w = List.ofFn x ++ List.ofFn y) (hx : ∑ a, (x a).1 = r)
     (hy : ∑ a, (y a).1 = t) (hz : ∑ a, (w a).1 = N) (e : r + t = N) :
@@ -56,6 +71,9 @@ theorem ind₂_prodIrr_equiv_pos {p q c r t N : ℕ} (hp : p ≠ 0) (x : Fin p �
   equiv_of_iso_two x y w hx hy hz e
     (GlobalTheory.ProdFlatten.iso_symm (GlobalTheory.ProdFlatten.pr_append x y w hw (Or.inl hp) hx hy hz e))
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `zero => exact ind₂_prodIrr_equiv_zero x y w (by simpa using hw) hx hy hz e`. Consider the case `succ n => exact ind₂_prodIrr_equiv_pos (Nat.succ_ne_zero n) x y w hw hx hy hz e`.
+-/
 theorem ind₂_prodIrr_equiv {p q c r t N : ℕ} (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (w : Fin c → IrrGL k)
     (hw : List.ofFn w = List.ofFn x ++ List.ofFn y) (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t)
     (hz : ∑ a, (w a).1 = N) (e : r + t = N) :
@@ -64,6 +82,9 @@ theorem ind₂_prodIrr_equiv {p q c r t N : ℕ} (x : Fin p → IrrGL k) (y : Fi
   | zero => exact ind₂_prodIrr_equiv_zero x y w (by simpa using hw) hx hy hz e
   | succ n => exact ind₂_prodIrr_equiv_pos (Nat.succ_ne_zero n) x y w hw hx hy hz e
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ x y hx hy h` and use `ind₂_prodIrr_equiv x y (Fin.append x y) (List.ofFn_fin_append x y) hx hy h rfl`.
+-/
 theorem prod₂_prodIrr_append : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p q r t : ℕ) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k)
     (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t) (h : ∑ a, (Fin.append x y a).1 = r + t),

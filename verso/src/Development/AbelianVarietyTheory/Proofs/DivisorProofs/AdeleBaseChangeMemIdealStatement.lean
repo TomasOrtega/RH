@@ -8,6 +8,9 @@ import GroundTheory.GlobalFields.TateThesis.AdeleIdealMeasure
 open MeasureTheory NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped nonZeroDivisors TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocIdealAdele.mem_idealFiniteAdeles_of_locId | exact GlobalTheory.LocIdealAdele.mem_idealFiniteAdeles_of_locId | (intros; apply GlobalTheory.LocIdealAdele.mem_idealFiniteAdeles_of_locId <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adele_base_change_mem_ideal : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (𝔞 : FractionalIdeal (𝓞 E)⁰ E) (h𝔞 : 𝔞 ≠ 0) (z : AE F E),
     (∀ v : Pl F, compFin F E v z ∈ GlobalTheory.LocIdeal.locId v 𝔞) →

@@ -22,6 +22,9 @@ noncomputable section
 
 namespace GlobalTheory.SplitMoveKappa
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℚ ζ`. Use `⟨Polynomial.X ^ n - Polynomial.C 1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.X_pow_sub_C_ne_zero hn 1`. Simplify using `[hζ]`. Conclude with `mem_algebraicClosure_iff.2 halg`.
+-/
 theorem qbar_of_root {ζ : ℂ} {n : ℕ} (hn : 0 < n) (hζ : ζ ^ n = 1) : ζ ∈ TaylorLogMetric.Qbar := by
   have halg : IsAlgebraic ℚ ζ := by
     refine ⟨Polynomial.X ^ n - Polynomial.C 1, ?_, ?_⟩
@@ -29,15 +32,26 @@ theorem qbar_of_root {ζ : ℂ} {n : ℕ} (hn : 0 < n) (hζ : ζ ^ n = 1) : ζ �
     · simp [hζ]
   exact mem_algebraicClosure_iff.2 halg
 
+/- English proof (translation)
+Use `⟨qbar_of_root hn hζ, fun σ => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨ζ, qbar_of_root hn hζ⟩ : TaylorLogMetric.Qbar) ^ n = 1` using `by ext; simpa using hζ`. Establish `h2 : (σ ⟨ζ, qbar_of_root hn hζ⟩) ^ n = 1` using `by rw [← map_pow, h1, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h2, norm_one])`.
+-/
 theorem mod1All_root {ζ : ℂ} {n : ℕ} (hn : 0 < n) (hζ : ζ ^ n = 1) : Mod1All ζ := by
   refine ⟨qbar_of_root hn hζ, fun σ => ?_⟩
   have h1 : (⟨ζ, qbar_of_root hn hζ⟩ : TaylorLogMetric.Qbar) ^ n = 1 := by ext; simpa using hζ
   have h2 : (σ ⟨ζ, qbar_of_root hn hζ⟩) ^ n = 1 := by rw [← map_pow, h1, map_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h2, norm_one])
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem lamC_mem {q : ℕ} [Fact q.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[q]) {x : ℂ} (h : x ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam x = lam ⟨x, h⟩ := dif_pos h
 
+/- English proof (translation)
+Introduce `lam`. Establish `e : (⟨x * y, mul_mem hx hy⟩ : TaylorLogMetric.Qbar) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Establish `hx'` using `ux lam`. Establish `hy'` using `uy lam`. Rewrite `hx'` using `[lamC_mem lam hx]`.
+
+Rewrite `hy'` using `[lamC_mem lam hy]`. Rewrite using `[lamC_mem lam (mul_mem hx hy), e, map_mul, norm_mul, hx', hy', one_mul]`.
+-/
 theorem unitAt_mul {q : ℕ} [Fact q.Prime] {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar)
     (ux : GlobalTheory.MovedKappaEx.UnitAt q x) (uy : GlobalTheory.MovedKappaEx.UnitAt q y) : GlobalTheory.MovedKappaEx.UnitAt q (x * y) := by
   intro lam
@@ -48,6 +62,9 @@ theorem unitAt_mul {q : ℕ} [Fact q.Prime] {x y : ℂ} (hx : x ∈ TaylorLogMet
   rw [lamC_mem lam hy] at hy'
   rw [lamC_mem lam (mul_mem hx hy), e, map_mul, norm_mul, hx', hy', one_mul]
 
+/- English proof (translation)
+Introduce `lam`. Establish `e : (⟨x⁻¹, inv_mem hx⟩ : TaylorLogMetric.Qbar) = (⟨x, hx⟩ : TaylorLogMetric.Qbar)⁻¹` using `rfl`. Establish `hx'` using `ux lam`. Rewrite `hx'` using `[lamC_mem lam hx]`. Rewrite using `[lamC_mem lam (inv_mem hx), e, map_inv₀, norm_inv, hx', inv_one]`.
+-/
 theorem unitAt_inv {q : ℕ} [Fact q.Prime] {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar)
     (ux : GlobalTheory.MovedKappaEx.UnitAt q x) : GlobalTheory.MovedKappaEx.UnitAt q x⁻¹ := by
   intro lam
@@ -56,6 +73,9 @@ theorem unitAt_inv {q : ℕ} [Fact q.Prime] {x : ℂ} (hx : x ∈ TaylorLogMetri
   rw [lamC_mem lam hx] at hx'
   rw [lamC_mem lam (inv_mem hx), e, map_inv₀, norm_inv, hx', inv_one]
 
+/- English proof (translation)
+Introduce `lam`. Establish `h1 : (⟨ζ, qbar_of_root hn hζ⟩ : TaylorLogMetric.Qbar) ^ n = 1` using `by ext; simpa using hζ`. Establish `h2 : (lam ⟨ζ, qbar_of_root hn hζ⟩) ^ n = 1` using `by rw [← map_pow, h1, map_one]`. Rewrite using `[lamC_mem lam (qbar_of_root hn hζ)]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h2, norm_one])`.
+-/
 theorem unitAt_root (q : ℕ) [Fact q.Prime] {ζ : ℂ} {n : ℕ} (hn : 0 < n) (hζ : ζ ^ n = 1) :
     GlobalTheory.MovedKappaEx.UnitAt q ζ := by
   intro lam
@@ -64,6 +84,17 @@ theorem unitAt_root (q : ℕ) [Fact q.Prime] {ζ : ℂ} {n : ℕ} (hn : 0 < n) (
   rw [lamC_mem lam (qbar_of_root hn hζ)]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h2, norm_one])
 
+/- English proof (translation)
+Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y κ hJ e he s s' hs hs'`. Take `⟨x₀, y₀, hx₀, hy₀, ζ, ⟨n, hn, hζ⟩, r, hr, hJ'⟩` from `GlobalTheory.T.jet_scalar_local_identity hP hI ch hch p hp x y κ hJ e he s s' hs hs'`. Establish `h1` using `GlobalTheory.T.jet_scalar_unit_modulus hP hI ch hch p hp x y κ hJ`. Establish `h2` using `GlobalTheory.T.jet_scalar_unit_modulus hP hI ch hch p hp _ _ _ hJ'`. Establish `hζn : ‖ζ‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, hζ, norm_one])`.
+
+Establish `hχn : ‖((((ch.G.chrT p x₀)⁻¹ * ch.G.chrS p y₀ : Circle)) : ℂ)‖ = 1` using `Circle.norm_coe _`. Establish `hr1 : (r : ℂ) = 1`. Rewrite `h2` using `[norm_mul, norm_mul, norm_mul, hζn, hχn, h1, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]`. Simplify using `only [mul_one] at h2`. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules. Rewrite `hJ'` using `[hr1, one_mul]`. Establish `hA` using `GlobalTheory.T.split_idempotent_unit_decomposition hP hI ch hch p hp e he x₀ hx₀`. Establish `hB` using `GlobalTheory.T.split_idempotent_unit_decomposition hP hI ch hch p hp e he y₀ hy₀`. Establish `hco : ((((ch.G.chrT p x₀)⁻¹ * ch.G.chrS p y₀ : Circle)) : ℂ) = ((ch.G.chrT p x₀ : Circle) : ℂ)⁻¹ * ((ch.G.chrS p y₀ : Circle) : ℂ)`.
+
+Rewrite using `[Circle.coe_mul, Circle.coe_inv]`. Establish `hm : Mod1All ((((ch.G.chrT p x₀)⁻¹ * ch.G.chrS p y₀ : Circle)) : ℂ)`. Rewrite using `[hco]`. Conclude with `GlobalTheory.FamilyTieProof.mod1All_mul' (GlobalTheory.FamilyTieProof.mod1All_inv hA.1.2) hB.1.1`. Use `⟨ζ * ((((ch.G.chrT p x₀)⁻¹ * ch.G.chrS p y₀ : Circle)) : ℂ), GlobalTheory.FamilyTieProof.mod1All_mul' (mod1All_root hn hζ) hm, fun q _ hq => ?_, hJ'⟩` and prove the remaining obligations.
+
+Use `unitAt_mul (qbar_of_root hn hζ) hm.1 (unitAt_root q hn hζ) ?_` and prove the remaining obligations. Rewrite using `[hco]`. Conclude with `unitAt_mul (inv_mem hA.1.2.1) hB.1.1.1 (unitAt_inv hA.1.2.1 ((hA.2 q hq).2)) ((hB.2 q hq).1)`.
+-/
 theorem moved_split : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (κ : ℂ), GlobalTheory.MovedKappaEx.JetKap ch p x y κ →

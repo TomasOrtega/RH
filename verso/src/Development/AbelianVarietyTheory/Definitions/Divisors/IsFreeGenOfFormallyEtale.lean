@@ -21,12 +21,20 @@ variable {k K : Type} [Field k] [Field K] {c : k →+* K} {n : ℕ}
 def incl {Q : Subring K} {P : Place c} (h : P.Contains Q) : Q →+* P.ring :=
   Q.subtype.codRestrict P.ring fun q => h q q.2
 
+/- English proof (translation)
+Establish `h1 : (b : K)⁻¹ ∈ P.ring` using `(P.ord_nonneg_iff (inv_ne_zero hb)).1 (by rw [P.ord_inv, h]; rfl)`. Conclude with `IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (mul_inv_cancel₀ hb))`.
+-/
 theorem isUnit_of_ord_eq_zero (P : Place c) (b : P.ring) (hb : (b : K) ≠ 0)
     (h : P.ord (b : K) = 0) : IsUnit b := by
   have h1 : (b : K)⁻¹ ∈ P.ring :=
     (P.ord_nonneg_iff (inv_ne_zero hb)).1 (by rw [P.ord_inv, h]; rfl)
   exact IsUnit.of_mul_eq_one ⟨_, h1⟩ (Subtype.ext (mul_inv_cancel₀ hb))
 
+/- English proof (translation)
+Use `letI := (incl h.1).toAlgebra`. Use `haveI : IsLocalization ((IsUnit.submonoid P.ring).comap (incl h.1)) P.ring := by`. Rewrite using `[isLocalization_iff]`. Use `⟨fun y => y.2, fun f => ?_, fun {a b} e => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `h.2 f f.2`.
+
+Conclude with `⟨⟨⟨a, ha⟩, ⟨⟨b, hb⟩, isUnit_of_ord_eq_zero P ⟨b, h.1 b hb⟩ hb0 hbo⟩⟩, Subtype.ext e⟩`. Establish `: (a : K) = b` using `congrArg (fun z : P.ring => (z : K)) e`. Rewrite using `[Subtype.ext this]`. Conclude with `Algebra.FormallyEtale.of_isLocalization ((IsUnit.submonoid P.ring).comap (incl h.1))`.
+-/
 theorem formallyEtale_incl {Q : Subring K} {P : Place c} (h : P.IsPrimeOf Q) :
     (incl h.1).FormallyEtale := by
   letI := (incl h.1).toAlgebra
@@ -39,6 +47,11 @@ theorem formallyEtale_incl {Q : Subring K} {P : Place c} (h : P.IsPrimeOf Q) :
       rw [Subtype.ext this]
   exact Algebra.FormallyEtale.of_isLocalization ((IsUnit.submonoid P.ring).comap (incl h.1))
 
+/- English proof (translation)
+Rewrite using `[← formMap_dForm ρ h]`. Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k A B := IsScalarTower.of_algebraMap_eq' h.symm`.
+
+Use `haveI : Algebra.FormallyEtale A B := hρ`. Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) n)`.
+-/
 theorem isFreeGen_of_formallyEtale {A B : Type} [CommRing A] [CommRing B] {α : k →+* A}
     {β : k →+* B} {ρ : A →+* B} (hρ : ρ.FormallyEtale) (h : ρ.comp α = β) {x : Fin n → A}
     (hω : IsFreeGen A (dForm α x)) : IsFreeGen B (dForm β fun i => ρ (x i)) := by
@@ -51,6 +64,9 @@ theorem isFreeGen_of_formallyEtale {A B : Type} [CommRing A] [CommRing B] {α : 
   exact hω.of_isBaseChange (isBaseChange_exteriorPower
     (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) n)
 
+/- English proof (translation)
+Establish `h1` using `isFreeGen_of_formallyEtale (β := P.const) (formallyEtale_incl h) rfl hx`. Establish `h2` using `P.formOrd_toRat h1`. Rewrite `h2` using `[show P.toRat n (dForm P.const fun i => incl h.1 (x i)) = dForm c fun i => (x i : K) from formMap_dForm (α := P.const) (β := c) P.ring.subtype rfl _]`. Then use the resulting hypothesis.
+-/
 theorem formOrd_eq_zero {Q : Subring K} (hQ : IsLocModel c Q) {x : Fin n → Q}
     (hx : IsFreeGen Q (dForm (c.codRestrict Q hQ.const_mem) x)) {P : Place c}
     (h : P.IsPrimeOf Q) : P.formOrd (dForm c fun i => (x i : K)) = 0 := by
@@ -59,6 +75,31 @@ theorem formOrd_eq_zero {Q : Subring K} (hQ : IsLocModel c Q) {x : Fin n → Q}
   rwa [show P.toRat n (dForm P.const fun i => incl h.1 (x i)) = dForm c fun i => (x i : K) from
     formMap_dForm (α := P.const) (β := c) P.ring.subtype rfl _] at h2
 
+/- English proof (translation)
+Set `c0` to `c.codRestrict Q hQ.const_mem`. Use `haveI : IsNoetherianRing Q := by`. Use `letI := c0.toAlgebra`. Use `haveI : Algebra.EssFiniteType k Q := hQ.essFiniteType`. Conclude with `Algebra.EssFiniteType.isNoetherianRing k Q`.
+
+Use `haveI : IsFractionRing Q K := by`. Use `IsFractionRing.of_field Q K fun z => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, e⟩` from `hQ.frac z`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, eq_div_of_mul_eq hb0 e⟩`. Set `p : Ideal Q` to `Ideal.span {t}`.
+
+Use `haveI : p.IsPrime := (Ideal.span_singleton_prime ht.ne_zero).2 ht`. Establish `hp : p.primeCompl ≤ nonZeroDivisors Q` using `p.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra Q K` to `Localization.subalgebra.ofField K p.primeCompl hp`. Use `haveI hA : IsLocalization p.primeCompl A := Localization.subalgebra.isLocalization_ofField K _ hp`. Use `haveI : IsLocalRing A := IsLocalization.AtPrime.isLocalRing A p`.
+
+Use `haveI : IsNoetherianRing A := IsLocalization.isNoetherianRing p.primeCompl A inferInstance`. Establish `hm : IsLocalRing.maximalIdeal A = Ideal.span {algebraMap Q A t}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal p A, Ideal.map_span, Set.image_singleton]`. Establish `ht0 : algebraMap Q A t ≠ 0` using `fun e => ht.ne_zero (Subtype.ext (congrArg (fun z : A => (z : K)) e))`. Establish `hnf : ¬ IsField A` using `fun hf => ht0 (by`.
+
+Use `IsLocalRing.isField_iff_maximalIdeal_eq.1 hf` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `Ideal.span_singleton_eq_bot.1 this)`. Use `haveI : IsDiscreteValuationRing A := ((IsDiscreteValuationRing.TFAE A hnf).out 0 4).2 (show (IsLocalRing.maximalIdeal A).IsPrincipal from ⟨_, hm⟩)`. Use `haveI : IsFractionRing A K := Localization.subalgebra.isFractionRing_ofField K _ hp`.
+
+Set `V : ValuationSubring K` to `{ A.toSubring with mem_or_inv_mem' := fun x => by`. Break down `ValuationRing.isInteger_or_isInteger A x with ⟨a, e⟩ | ⟨a, e⟩` into its components or cases. Conclude with `Or.inl (e ▸ a.2)`. Conclude with `Or.inr (e ▸ a.2) }`. Establish `hc : ∀ a, c a ∈ V` using `fun a => A.algebraMap_mem (c0 a)`.
+
+Set `S : Place c` to `⟨V, hc, ‹IsDiscreteValuationRing A›, by`. Establish `e : c.codRestrict V hc = (algebraMap Q A).comp c0` using `rfl`. Rewrite using `[e]`. Conclude with `RingHom.EssFiniteType.comp hQ.essFiniteType ((RingHom.essFiniteType_algebraMap (R := Q) (S := A)).2 (Algebra.EssFiniteType.of_isLocalization A p.primeCompl))⟩`. Establish `hu : ∀ b : Q, b ∉ p → IsUnit (algebraMap Q A b)` using `fun b hb => IsLocalization.map_units A (⟨b, hb⟩ : p.primeCompl)`.
+
+Use `⟨S, ⟨fun q hq => A.algebraMap_mem ⟨q, hq⟩, fun f hf => ?_⟩, ?_, fun P hP hne => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj p.primeCompl (⟨f, hf⟩ : A)`. Conclude with `⟨a, a.2, b.1, b.1.2, fun h => b.2 (by rw [show b.1 = 0 from Subtype.ext h]; exact p.zero_mem), S.ord_eq_zero (u := algebraMap Q A b.1) (hu _ b.2), congrArg Subtype.val e⟩`. Conclude with `S.ord_irreducible (t := algebraMap Q A t) ((IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hm)`. Assume the negation of the conclusion as `h0`.
+
+Establish `htK : (t : K) ≠ 0` using `fun e => ht.ne_zero (Subtype.ext e)`. Establish `h1 : 0 ≤ P.ord (t : K)` using `(P.ord_nonneg_iff htK).2 (hP.1 _ t.2)`. Use `hne (ValuationSubring.eq_of_le_of_ne_top P.ring (fun f hf => ?_) S.ring_ne_top)` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `hP.2 f hf`. Establish `hbp : (⟨b, hb⟩ : Q) ∉ p` using `fun h => by`.
+
+Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 h`. Establish `hd' : b = t * d` using `congrArg Subtype.val hd`. Establish `hd0 : (d : K) ≠ 0` using `fun h => hb0 (by rw [hd', h, mul_zero])`. Use `(P.ord_nonneg_iff hd0).2 (hP.1 _ d.2)` as an intermediate fact. Rewrite `hbo` using `[hd', P.ord_mul htK hd0]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨g, hg⟩` from `(hu _ hbp).exists_right_inv`. Establish `hg' : b * (g : K) = 1` using `congrArg Subtype.val hg`. Establish `: f = a * g` using `by rw [← e, mul_assoc, hg', mul_one]`. Rewrite using `[this]`.
+
+Conclude with `A.mul_mem (A.algebraMap_mem ⟨a, ha⟩) g.2`.
+-/
 theorem exists_place {Q : Subring K} (hQ : IsLocModel c Q) {t : Q} (ht : Prime t) :
     ∃ S : Place c, S.IsPrimeOf Q ∧ S.ord (t : K) = 1 ∧
       ∀ P : Place c, P.IsPrimeOf Q → P.ring ≠ S.ring → P.ord (t : K) = 0 := by
@@ -129,6 +170,29 @@ theorem exists_place {Q : Subring K} (hQ : IsLocModel c Q) {t : Q} (ht : Prime t
 
 open MvPolynomial in
 
+/- English proof (translation)
+Set `P` to `MvPolynomial (Fin 2) k`. Set `L` to `FractionRing P`. Set `q : Ideal P` to `RingHom.ker (constantCoeff : P →+* k)`. Establish `hs : Function.Surjective (constantCoeff : P →+* k)` using `fun a => ⟨C a, constantCoeff_C _ a⟩`. Use `haveI : q.IsMaximal := RingHom.ker_isMaximal_of_surjective _ hs`.
+
+Establish `hq : q.primeCompl ≤ nonZeroDivisors P` using `q.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra P L` to `Localization.subalgebra.ofField L q.primeCompl hq`. Use `haveI hA : IsLocalization q.primeCompl A := Localization.subalgebra.isLocalization_ofField L _ hq`. Set `a : P →+* A` to `algebraMap P A`. Establish `hc : ∀ x, algebraMap k L x ∈ A.toSubring` using `fun x => A.algebraMap_mem (C x)`.
+
+Establish `e : (algebraMap k L).codRestrict A.toSubring hc = a.comp (algebraMap k P)` using `rfl`. Use `haveI := IsLocalization.AtPrime.isLocalRing A q`. Establish `hX : ∀ i, X i ∈ q` using `fun i => constantCoeff_X k i`. Establish `hsp : q = Ideal.span {X 0, X 1}`. Use `le_antisymm (fun f hf => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations.
+
+Establish `: (({X 0, X 1} : Set P)) = X '' (Set.univ : Set (Fin 2))`. Use extensionality with `z`. Simplify using `[eq_comm]`. Rewrite using `[this, mem_ideal_span_X_image]`. Introduce `m hm`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: m = 0` using `Finsupp.ext fun i => hc i trivial`. Substitute `this` using the available equality. Conclude with `(mem_support_iff.1 hm) hf`.
+
+Apply the tactic sequence `rintro _ (rfl | rfl) <;> exact hX _`. Use `⟨A.toSubring, ⟨hc, ‹IsLocalRing A›, ?_, ?_⟩, fun i => a (X i), fun _ => rfl, ?_, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `RingHom.EssFiniteType.comp ?_ ?_` and prove the remaining obligations. Conclude with `RingHom.essFiniteType_algebraMap.2 (inferInstance : Algebra.EssFiniteType k P)`.
+
+Conclude with `(RingHom.essFiniteType_algebraMap (R := P) (S := A)).2 (Algebra.EssFiniteType.of_isLocalization A q.primeCompl)`. Introduce `f`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := P) f`. Establish `hy' : algebraMap P L y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Conclude with `⟨_, A.algebraMap_mem x, _, A.algebraMap_mem y, hy', div_mul_cancel₀ _ hy'⟩`.
+
+Express the relevant statement in the definitionally equal form `(Ideal.span {a (X 0), a (X 1)} : Ideal A) = IsLocalRing.maximalIdeal A`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal q A]`. Use `conv_rhs => rw [hsp]`. Rewrite using `[Ideal.map_span, Set.image_pair]`. Express the relevant statement in the definitionally equal form `ringKrullDim A = 2`.
+
+Establish `h` using `ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field k 2 q`. Rewrite `h` using `[ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient q).1 ‹_›), add_zero]`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height q A, h]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Prime (a (X i))`.
+
+Establish `h0 : a (X i) ≠ 0` using `fun h => X_ne_zero i (IsFractionRing.injective P L ((congrArg (fun z : A => (z : L)) h).trans (map_zero _).symm))`. Establish `hp : (Ideal.span {(X i : P)}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero i)).2 X_prime`. Use `IsLocalization.isPrime_of_isPrime_disjoint q.primeCompl A _ hp (Set.disjoint_left.2 fun z hz hz' => hz (Ideal.span_le.2 (by simpa using hX i) hz'))` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton]`. Conclude with `(Ideal.span_singleton_prime h0).1 this`.
+
+Conclude with `isFreeGen_of_formallyEtale (α := algebraMap k P) (ρ := a) (RingHom.formallyEtale_algebraMap.2 (Algebra.FormallyEtale.of_isLocalization q.primeCompl))`. Use `rfl (isFreeGen_dForm_X k 2)`.
+-/
 theorem exists_plane (k : Type) [Field k] :
     ∃ (Q : Subring (FractionRing (MvPolynomial (Fin 2) k)))
       (hQ : IsLocModel (algebraMap k _) Q) (x : Fin 2 → Q),
@@ -195,6 +259,21 @@ theorem exists_plane (k : Type) [Field k] :
       (RingHom.formallyEtale_algebraMap.2 (Algebra.FormallyEtale.of_isLocalization q.primeCompl))
       rfl (isFreeGen_dForm_X k 2)
 
+/- English proof (translation)
+Use `letI := c.toAlgebra`. Use `letI := E.const.toAlgebra`. Use `haveI : IsScalarTower k E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hη : dForm c x = dWedge k x` using `rfl`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`.
+
+Establish `ht0 : algebraMap E.ring K t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective E.ring K)).mpr ht.ne_zero`. Take `⟨γ, hγ⟩` from `GlobalTheory.smul_dlogWedge_mem_regForms k t ht0 Finset.univ x (fun i _ => GlobalTheory.exists_eq_unit_mul_zpow ht (hx0 i)) (fun i hi => (hi (Finset.mem_univ i)).elim)`. Take `⟨ω, hω⟩` from `E.exists_isFreeGen hx`. Take `⟨a, rfl⟩` from `hω.2 γ`. Establish `hbr : ∀ θ, GlobalTheory.formMap k E.ring K n θ = E.toRat n θ` using `fun _ => rfl`.
+
+Establish `hPne : (∏ i, x i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hx0 i`. Establish `h2 : dWedge k x = (∏ i, x i) • dlogWedge k Finset.univ x`. Rewrite using `[GlobalTheory.dlogWedge_eq_smul, smul_smul, mul_inv_cancel₀ hPne, one_smul]`. Establish `h3 : (algebraMap E.ring K t) • dlogWedge k Finset.univ x = (algebraMap E.ring K a) • E.toRat n ω`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : dForm c x = ((∏ i, x i) * (algebraMap E.ring K t)⁻¹ * algebraMap E.ring K a) • E.toRat n ω`. Rewrite using `[hη, h2, mul_assoc, mul_smul, mul_smul, ← h3, inv_smul_smul₀ ht0]`. Establish `ha0 : algebraMap E.ring K a ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[key, h, mul_zero, zero_smul]`. Establish `hsum : ∀ s : Finset (Fin n), E.ord (∏ j ∈ s, x j) = ∑ j ∈ s, E.ord (x j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, E.ord_mul (hx0 j) (Finset.prod_ne_zero_iff.2 fun i _ => hx0 i), ih]`. Establish `hordt : E.ord (algebraMap E.ring K t) = 1` using `E.ord_irreducible ht`. Establish `horda : 0 ≤ E.ord (algebraMap E.ring K a)` using `(E.ord_nonneg_iff ha0).2 a.2`. Rewrite using `[key, E.formOrd_smul_toRat hω (mul_ne_zero (mul_ne_zero hPne (inv_ne_zero ht0)) ha0), E.ord_mul (mul_ne_zero hPne (inv_ne_zero ht0)) ha0, E.ord_mul hPne (inv_ne_zero ht0), E.ord_inv, hsum, hordt]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_ord_sub_one_le [PerfectField k] {x : Fin n → K} (hx : TrBasis c x)
     (h0 : dForm c x ≠ 0) (hx0 : ∀ i, x i ≠ 0) (E : Place c) :
     ∑ i, E.ord (x i) - 1 ≤ E.formOrd (dForm c x) := by
@@ -243,10 +322,24 @@ theorem sum_ord_sub_one_le [PerfectField k] {x : Fin n → K} (hx : TrBasis c x)
     E.ord_inv, hsum, hordt]
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h h0 => h (isUnit_of_ord_eq_zero P b hb h0), fun h hu => h (P.ord_eq_zero hu)⟩`.
+-/
 theorem mem_maximalIdeal_iff (P : Place c) (b : P.ring) (hb : (b : K) ≠ 0) :
     b ∈ IsLocalRing.maximalIdeal P.ring ↔ P.ord (b : K) ≠ 0 :=
   ⟨fun h h0 => h (isUnit_of_ord_eq_zero P b hb h0), fun h hu => h (P.ord_eq_zero hu)⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `haveI := hQ.isLocalRing`. Establish `h0 : E.ord (0 : K) = 0` using `by simp [Place.ord]`. Establish `hle : IsLocalRing.maximalIdeal Q ≤ (IsLocalRing.maximalIdeal E.ring).comap (incl hS.1)`. Rewrite using `[← hm, Ideal.span_le]`.
+
+Apply the tactic sequence `rintro _ (h | h) <;> rw [h]`. Conclude with `(mem_maximalIdeal_iff E _ fun h => by`. Express the relevant statement in the definitionally equal form `(t : K) = 0 at h; rw [h, h0] at ht; omega).2 (by change E.ord (t : K) ≠ 0; omega)`. Conclude with `(mem_maximalIdeal_iff E _ fun h => by`. Express the relevant statement in the definitionally equal form `(u : K) = 0 at h; rw [h, h0] at hu; omega).2 (by change E.ord (u : K) ≠ 0; omega)`.
+
+Establish `hb : Function.Bijective (incl hS.1)`. Use `⟨fun a b e => Subtype.ext (congrArg (fun z : E.ring => (z : K)) e), fun f => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `hS.2 f f.2`. Establish `hu : IsUnit (⟨b, hb⟩ : Q)`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `(mem_maximalIdeal_iff E _ hb0).1 (hle hn) hbo`. Take `⟨g, hg⟩` from `hu.exists_right_inv`. Establish `hg' : b * (g : K) = 1` using `congrArg Subtype.val hg`. Use `⟨⟨a, ha⟩ * g, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a * (g : K) = f`.
+
+Rewrite using `[← e, mul_assoc, hg', mul_one]`. Use `ringKrullDim_eq_of_ringEquiv (RingEquiv.ofBijective _ hb)` as an intermediate fact. Rewrite `this` using `[hd, IsPrincipalIdealRing.ringKrullDim_eq_one _ (IsDiscreteValuationRing.not_isField _)]`. Conclude with `absurd this (by decide)`.
+-/
 theorem neighbour_ne {Q : Subring K} (hQ : IsLocModel c Q) {t u : Q} {S E : Place c}
     (hm : Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q))
     (hd : ringKrullDim Q = 2) (hS : S.IsPrimeOf Q) (ht : S.ord (t : K) = 1)
@@ -277,6 +370,23 @@ theorem neighbour_ne {Q : Subring K} (hQ : IsLocModel c Q) {t u : Q} {S E : Plac
   rw [hd, IsPrincipalIdealRing.ringKrullDim_eq_one _ (IsDiscreteValuationRing.not_isField _)] at this
   exact absurd this (by decide)
 
+/- English proof (translation)
+Use `haveI := hQ.isLocalRing`. Establish `ht0 : (t : K) ≠ 0` using `fun e => hp.ne_zero (Subtype.ext e)`. Set `p : Ideal Q` to `(IsLocalRing.maximalIdeal E.ring).comap (incl hE)`. Use `haveI hpp : p.IsPrime := Ideal.comap_isPrime _ _`. Use `haveI hp1 : (Ideal.span {t}).IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp`.
+
+Establish `l1 : Ideal.span {t} ≤ p` using `Ideal.span_le.2 (by`. Introduce and unpack `_ h`. Rewrite using `[h]`. Conclude with `(mem_maximalIdeal_iff E (incl hE t) ht0).2 h1)`. Establish `l2 : p < IsLocalRing.maximalIdeal Q` using `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hpp.ne_top) fun e => (mem_maximalIdeal_iff E (incl hE u) hu0).1 (show u ∈ p from e ▸ hu) h2`.
+
+Establish `l0 : (⊥ : Ideal Q) < Ideal.span {t}` using `bot_lt_iff_ne_bot.2 fun e => hp.ne_zero (Ideal.span_singleton_eq_bot.1 e)`. Establish `e1 : Ideal.span {t} = p`. Assume the negation of the conclusion as `hne`. Establish `l1'` using `lt_of_le_of_ne l1 hne`. Set `s : LTSeries (PrimeSpectrum Q)` to `LTSeries.mk 3 ![⟨⊥, inferInstance⟩, ⟨Ideal.span {t}, hp1⟩, ⟨p, hpp⟩, ⟨IsLocalRing.maximalIdeal Q, inferInstance⟩] (Fin.strictMono_iff_lt_succ.2 fun i => by fin_cases i exacts [l0, l1', l2])`.
+
+Use `Order.LTSeries.length_le_krullDim s` as an intermediate fact. Express the relevant statement in the definitionally equal form `((3 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim Q at this`. Rewrite `this` using `[hd]`. Conclude with `absurd this (by decide)`. Use `Place.ext (ValuationSubring.eq_of_le_of_ne_top S.ring (fun f hf => ?_) E.ring_ne_top).symm` and prove the remaining obligations.
+
+Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `hS.2 f hf`. Establish `hbp : (⟨b, hb⟩ : Q) ∉ p` using `fun h => by`. Rewrite `h` using `[← e1]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 h`. Establish `hd' : b = t * d` using `congrArg Subtype.val hd`.
+
+Establish `hd0 : (d : K) ≠ 0` using `fun h => hb0 (by rw [hd', h, mul_zero])`. Use `(S.ord_nonneg_iff hd0).2 (hS.1 _ d.2)` as an intermediate fact. Rewrite `hbo` using `[hd', S.ord_mul ht0 hd0]`. Use linear arithmetic over natural numbers and integers. Establish `hu : IsUnit (incl hE ⟨b, hb⟩)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hbp hn`. Take `⟨g, hg⟩` from `hu.exists_right_inv`. Establish `hg' : b * (g : K) = 1` using `congrArg (fun z : E.ring => (z : K)) hg`. Establish `: f = a * g` using `by rw [← e, mul_assoc, hg', mul_one]`.
+
+Rewrite using `[this]`. Conclude with `E.ring.mul_mem _ _ (hE a ha) g.2`.
+-/
 theorem eq_of_centre {Q : Subring K} (hQ : IsLocModel c Q) {t u : Q} {S E : Place c}
     (hu : ¬ IsUnit u) (hu0 : (u : K) ≠ 0) (hd : ringKrullDim Q = 2) (hp : Prime t)
     (hS : S.IsPrimeOf Q) (ht : S.ord (t : K) = 1) (hE : E.Contains Q)
@@ -327,6 +437,27 @@ theorem eq_of_centre {Q : Subring K} (hQ : IsLocModel c Q) {t u : Q} {S E : Plac
   rw [this]
   exact E.ring.mul_mem _ _ (hE a ha) g.2
 
+/- English proof (translation)
+Take `⟨Q, hQ, x, hx, hm, hd, hp, hω⟩` from `exists_plane k`. Take `⟨S, hS, hS1, hS0⟩` from `exists_place hQ (hp 0)`. Take `⟨E, hE, hE1, hE0⟩` from `exists_place hQ (hp 1)`. Establish `htr : TrBasis (algebraMap k _) fun i => (x i : FractionRing (MvPolynomial (Fin 2) k))`. Rewrite using `[funext hx]`.
+
+Conclude with `trBasis_fractionRing 2`. Establish `hx0 : ∀ i, (x i : FractionRing (MvPolynomial (Fin 2) k)) ≠ 0` using `fun i e => (hp i).ne_zero (Subtype.ext e)`. Establish `hη : dForm (algebraMap k _) (fun i => (x i : FractionRing (MvPolynomial (Fin 2) k))) ≠ 0` using `fun h => one_ne_zero ((formOrd_api _ 2 _ htr).1.1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Establish `hne : E ≠ S` using `neighbour_ne hQ hm hd hS hS1 hE1`. Establish `hne' : E.ring ≠ S.ring` using `fun e => hne (Place.ext e)`.
+
+Establish `hdisc : ∀ (P : Place (algebraMap k (FractionRing (MvPolynomial (Fin 2) k)))) (s : ℚ), P.disc (dForm _ fun i => (x i : FractionRing (MvPolynomial (Fin 2) k))) (Finsupp.single (x 0).1 1 + Finsupp.single (x 1).1 s) = P.formOrd (dForm _ fun i => (x i : FractionRing (MvPolynomial (Fin …` using `fun P s => by`. Rewrite using `[Place.disc, map_add, Place.ordQ_single, Place.ordQ_single, one_mul]`. Establish `hSd : ∀ s : ℚ, S.disc (dForm _ fun i => (x i : FractionRing (MvPolynomial (Fin 2) k))) (Finsupp.single (x 0).1 1 + Finsupp.single (x 1).1 s) = -1` using `fun s => by`. Rewrite using `[hdisc, formOrd_eq_zero hQ hω hS, hS1, hE0 S hS hne'.symm]`. Simplify using the standard rewrite rules.
+
+Use `⟨_, _, _, Q, S, fun i => x i, hQ, htr, hη, hS, hS1, hx0, fun s => ⟨hSd s, fun h => (h.lt_disc hS.1).ne' (hSd s), fun h => ?_, fun hs => ?_⟩, hQ, x 0, x 1, E, hm, hd, hE, rfl, rfl, hE1, hE0⟩` and prove the remaining obligations. Apply the tactic sequence `replace h := by first | exact h.2.2 | exact h`. Use `h Q hQ (x 0) (x 1) E le_rfl hm hd hS hE hS1 hE1 fun P hP h1 h2 => by` as an intermediate fact. Rewrite using `[hdisc, formOrd_eq_zero hQ hω hP, hS0 P hP h1, hE0 P hP h2]`. Simplify using the standard rewrite rules.
+
+Rewrite `this` using `[hdisc, formOrd_eq_zero hQ hω hE, hE1, hS0 E hE hne']`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `first`. Consider the case `refine ⟨hη, by simp [Finsupp.single_eq_of_ne (hx0 0).symm, Finsupp.single_eq_of_ne (hx0 1).symm], ?_⟩`.
+
+Consider the case `skip`. Introduce `Q' hQ' t u F hle hm' hd' hS' hF ht hu _`. Establish `hFS` using `neighbour_ne hQ' hm' hd' hS' ht hu`. Establish `hFQ : F.Contains Q` using `hF.1.mono hle`. Establish `a0` using `(F.ord_nonneg_iff (hx0 0)).2 (hFQ _ (x 0).2)`.
+
+Establish `a1` using `(F.ord_nonneg_iff (hx0 1)).2 (hFQ _ (x 1).2)`. Establish `b0` using `Place.formOrd_dForm_nonneg _ 2 _ F htr fun i => hFQ _ (x i).2`. Establish `b1` using `sum_ord_sub_one_le htr hη hx0 F`. Rewrite `b1` using `[Fin.sum_univ_two]`. Rewrite using `[hdisc]`.
+
+Distinguish the cases in `h1 : F.ord (x 1).1 = 0`. Establish `h0 : F.ord (x 0).1 = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hFS (eq_of_centre hQ (hp 1).not_unit (hx0 1) hd (hp 0) hS hS1 hFQ h0 h1)`. Rewrite using `[h0, h1]`.
+
+Establish `: (0 : ℚ) ≤ _` using `Int.cast_nonneg b0`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : (0 : ℚ) < F.ord (x 1).1` using `by exact_mod_cast lt_of_le_of_ne a1 (Ne.symm h1)`. Establish `c2` using `(Int.cast_le (R := ℚ)).2 b1`.
+
+Move the coercions through the operations in `at c2`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem plane_threshold (k : Type) [Field k] [CharZero k] :
     ∃ (K : Type) (_ : Field K) (c : k →+* K) (Q : Subring K) (S : Place c) (x : Fin 2 → K),
       IsLocModel c Q ∧ TrBasis c x ∧ dForm c x ≠ 0 ∧ S.IsPrimeOf Q ∧ S.ord (x 0) = 1 ∧

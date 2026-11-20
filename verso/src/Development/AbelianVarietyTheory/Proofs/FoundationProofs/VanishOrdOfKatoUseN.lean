@@ -16,6 +16,9 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 omit [Fact l.Prime] in
 
+/- English proof (translation)
+Take `⟨v, hv, hl⟩` from `h`. Establish `h1` using `(hv ((l : ℕ) : 𝓞 ℚ)).2 hl`. Simplify using `using h1`.
+-/
 theorem valuation_lt_one {A : ValuationSubring Ω} (h : OverL l A) : A.valuation (l : Ω) < 1 := by
   obtain ⟨v, hv, hl⟩ := h
   have h1 := (hv ((l : ℕ) : 𝓞 ℚ)).2 hl

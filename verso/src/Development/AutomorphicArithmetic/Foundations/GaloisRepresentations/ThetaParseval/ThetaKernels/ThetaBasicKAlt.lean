@@ -13,6 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped TensorProduct NNReal Matrix
 open scoped Classical
 namespace PositivityTheory.ThKF0
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.ThKF0.thetaBasic_of_k _root_.PositivityTheory.ThKF0.weil_schwartz_decay_bound`.
+-/
 theorem thetaBasic_k : _root_.GlobalTheory.ThK.ThetaBasic_k := _root_.PositivityTheory.ThKF0.thetaBasic_of_k _root_.PositivityTheory.ThKF0.weil_schwartz_decay_bound
 end PositivityTheory.ThKF0
 end

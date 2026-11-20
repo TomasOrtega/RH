@@ -6,6 +6,29 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial Metric
 
+/- English proof (translation)
+Proceed by induction on `M with`. Consider the case `zero`. Introduce `g C hg hb`. Use `⟨Polynomial.C (g 0), by simp, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_C]`.
+
+Use `hg.apply_eq_apply_of_bounded ?_ z 0` and prove the remaining obligations. Use `isBounded_iff_forall_norm_le.2 ⟨C, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Simplify using `using hb w`. Consider the case `succ M ih`.
+
+Introduce `g C hg hb`. Use `set h := dslope g 0 with hh`. Establish `hdiff : Differentiable ℂ h`. Rewrite using `[← differentiableOn_univ]`. Conclude with `(Complex.differentiableOn_dslope Filter.univ_mem).2 hg.differentiableOn`.
+
+Take `⟨B, hB⟩ : ∃ B, ∀ z ∈ closedBall (0 : ℂ) 1, ‖h z‖ ≤ B` from `(isCompact_closedBall 0 1).exists_bound_of_continuousOn hdiff.continuous.continuousOn`. Establish `hrep : ∀ z, g z = g 0 + z * h z` using `fun z => by`. Use `sub_smul_dslope g 0 z` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, sub_zero]`. Take the linear combination `-this`.
+
+Use `set C' := max C 0 with hC'def`. Establish `hC' : 0 ≤ C'` using `le_max_right _ _`. Establish `hb' : ∀ z, ‖g z‖ ≤ C' * (1 + ‖z‖) ^ (M + 1)` using `fun z => (hb z).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `hgrowth : ∀ z, ‖h z‖ ≤ (max B 0 + 2 * C' + ‖g 0‖) * (1 + ‖z‖) ^ M`. Introduce `z`.
+
+Establish `hg0` using `norm_nonneg (g 0)`. Establish `hBm` using `le_max_left B 0`. Establish `hB0` using `le_max_right B 0`. Break down `le_or_gt ‖z‖ 1 with hz | hz` into its components or cases. Establish `h1 : 1 ≤ (1 + ‖z‖) ^ M` using `one_le_pow₀ (by linarith [norm_nonneg z])`.
+
+Use `hB z (by simpa using hz)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hz0 : z ≠ 0` using `by rintro rfl; norm_num at hz`. Establish `hhz : h z = (g z - g 0) / z`. Rewrite using `[hh, dslope_of_ne _ hz0, slope_def_field, sub_zero]`.
+
+Rewrite using `[hhz, norm_div, div_le_iff₀ (by positivity)]`. Establish `e1` using `norm_sub_le (g z) (g 0)`. Establish `e2` using `hb' z`. Establish `hP : 1 ≤ (1 + ‖z‖) ^ M` using `one_le_pow₀ (by linarith [norm_nonneg z])`. Establish `hs : (1 + ‖z‖) ^ (M + 1) = (1 + ‖z‖) ^ M * (1 + ‖z‖)` using `pow_succ _ _`.
+
+Rewrite `e2` using `[hs]`. Establish `k1 : 0 ≤ C' * (1 + ‖z‖) ^ M * (‖z‖ - 1)` using `mul_nonneg (mul_nonneg hC' (by positivity)) (by linarith)`. Establish `k2 : 0 ≤ ‖g 0‖ * ((1 + ‖z‖) ^ M * ‖z‖ - 1)` using `mul_nonneg hg0 (by nlinarith)`. Establish `k3 : 0 ≤ max B 0 * (1 + ‖z‖) ^ M * ‖z‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨q, hqdeg, hq⟩` from `ih h (max B 0 + 2 * C' + ‖g 0‖) hdiff hgrowth`. Use `⟨Polynomial.C (g 0) + Polynomial.X * q, ?_, fun z => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `max_le (by simp) (Polynomial.natDegree_mul_le.trans ?_)` and prove the remaining obligations. Use `Polynomial.natDegree_X_le (R := ℂ)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hrep z, hq z]`. Simplify using the standard rewrite rules.
+-/
 theorem entire_polynomialGrowth_one_var (M : ℕ) : ∀ (g : ℂ → ℂ) (C : ℝ), Differentiable ℂ g →
     (∀ z, ‖g z‖ ≤ C * (1 + ‖z‖) ^ M) →
     ∃ q : Polynomial ℂ, q.natDegree ≤ M ∧ ∀ z, g z = q.eval z := by
@@ -69,6 +92,35 @@ theorem entire_polynomialGrowth_one_var (M : ℕ) : ∀ (g : ℂ → ℂ) (C : �
             omega
     · rw [hrep z, hq z]; simp
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `f C M _ _`. Use `⟨MvPolynomial.C (f 0), fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.eval_C]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ d ih`. Introduce `f C M hf hb`.
+
+Use `set C' := max C 0 with hC'def`. Establish `hC' : 0 ≤ C'` using `le_max_right _ _`. Establish `hb' : ∀ y, ‖f y‖ ≤ C' * (1 + ‖y‖) ^ M` using `fun y => (hb y).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `hcons : ∀ (c : ℂ) (w : Fin d → ℂ), ‖(Fin.cons c w : Fin (d + 1) → ℂ)‖ ≤ ‖c‖ + ‖w‖`. Introduce `c w`.
+
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[norm_nonneg]`. Simplify using `only [Fin.cons_succ]`. Combine the linear relations using `[norm_le_pi_norm w i, norm_nonneg c]`.
+
+Establish `hdc : ∀ w : Fin d → ℂ, Differentiable ℂ (fun z : ℂ => (Fin.cons z w : Fin (d + 1) → ℂ))`. Introduce `w`. Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`.
+
+Use `fun_prop`. Simplify using `only [Fin.cons_succ]`. Use `fun_prop`. Establish `hdw : ∀ c : ℂ, Differentiable ℂ (fun w : Fin d → ℂ => (Fin.cons c w : Fin (d + 1) → ℂ))`. Introduce `c`.
+
+Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Use `fun_prop`. Simplify using `only [Fin.cons_succ]`.
+
+Use `fun_prop`. Establish `hp : ∀ j : ℕ, ∃ p : MvPolynomial (Fin d) ℂ, ∀ w, f (Fin.cons (j : ℂ) w) = eval w p`. Introduce `j`. Use `ih _ (C' * (1 + (j : ℝ)) ^ M) M (hf.comp (hdw _)) fun w => ?_` and prove the remaining obligations. Establish `hn` using `hcons (j : ℂ) w`.
+
+Rewrite `hn` using `[Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[norm_nonneg w, (Nat.cast_nonneg j : (0 : ℝ) ≤ j)]`. Use `_ = C' * (1 + (j : ℝ)) ^ M * (1 + ‖w‖) ^ M := by rw [mul_pow, mul_assoc]`. Use `choose p hp using hp`.
+
+Establish `hz : ∀ w : Fin d → ℂ, ∃ q : Polynomial ℂ, q.natDegree ≤ M ∧ ∀ z, f (Fin.cons z w) = q.eval z`. Introduce `w`. Use `entire_polynomialGrowth_one_var M _ (C' * (1 + ‖w‖) ^ M) (hf.comp (hdc w)) fun z => ?_` and prove the remaining obligations. Establish `hn` using `hcons z w`. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[norm_nonneg w, norm_nonneg z]`. Use `_ = C' * (1 + ‖w‖) ^ M * (1 + ‖z‖) ^ M := by rw [mul_pow, mul_assoc]`. Use `⟨∑ j ∈ Finset.range (M + 1), Polynomial.aeval (X 0 : MvPolynomial (Fin (d + 1)) ℂ) (Lagrange.basis (Finset.range (M + 1)) (fun j : ℕ => (j : ℂ)) j) * rename Fin.succ (p j), fun y => ?_⟩` and prove the remaining obligations. Take `⟨q, hqd, hq⟩` from `hz (Fin.tail y)`. Establish `hinj : Set.InjOn (fun j : ℕ => (j : ℂ)) (Finset.range (M + 1) : Set ℕ)` using `Nat.cast_injective.injOn`.
+
+Establish `hdeg : q.degree < (Finset.range (M + 1)).card`. Rewrite using `[Finset.card_range]`. Conclude with `(Polynomial.degree_le_of_natDegree_le hqd).trans_lt (by exact_mod_cast Nat.lt_succ_self M)`. Establish `key` using `Lagrange.eq_interpolate hinj hdeg`. Establish `hev : ∀ P : Polynomial ℂ, eval y (Polynomial.aeval (X 0 : MvPolynomial (Fin (d + 1)) ℂ) P) = P.eval (y 0)`.
+
+Introduce `P`. Establish `hid : (eval y).comp (algebraMap ℂ (MvPolynomial (Fin (d + 1)) ℂ)) = RingHom.id ℂ` using `by ext; simp`. Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂, MvPolynomial.eval_X, hid]`. Both sides reduce to the same expression. Use `conv_lhs => rw [← Fin.cons_self_tail y, hq (y 0), key]`.
+
+Rewrite using `[Lagrange.interpolate_apply, Polynomial.eval_finsetSum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hev, eval_rename, Polynomial.eval_mul, Polynomial.eval_C, ← hq, hp, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem EntirePolynomialGrowth.proof : EntirePolynomialGrowth.Statement := by
   intro d
   induction d with

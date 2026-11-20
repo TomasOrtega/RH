@@ -38,6 +38,9 @@ def HasRed (X Y : Matrix (Fin n) (Fin r) E) : Prop :=
     ∀ g, ∃ γ ∈ ratPts σ J, ∃ q ∈ minParOne σ J X, ∃ s : Fin r → ℝ,
       (fun i => Real.exp (s i)) ∈ cone r c ∧ ∃ κ ∈ C, g = γ * q * a s * κ
 
+/- English proof (translation)
+Introduce `u v h`. Use function extensionality and compare the values at `i`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `haveI : Nontrivial (AF F) := (evInf F w : AF F →+* w.Completion).domain_nontrivial`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective (congrFun h i)`.
+-/
 theorem ratV_injective : Function.Injective (ratV F : (Fin n → E) → Fin n → AF F ⊗[F] E) := by
   intro u v h
   funext i
@@ -47,10 +50,16 @@ theorem ratV_injective : Function.Injective (ratV F : (Fin n → E) → Fin n �
 
 variable {σ J}
 
+/- English proof (translation)
+Unfold `Sends at h ⊢`. Rewrite using `[← h, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem Sends.inv {γ : GAd σ J} {u v : Fin n → E} (h : Sends σ J γ u v) : Sends σ J γ⁻¹ v u := by
   unfold Sends at h ⊢
   rw [← h, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `Sends at h`. Unfold `hgt`. Rewrite using `[← h, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Simplify using `[_root_.mul_inv_rev]`.
+-/
 theorem hgt_mul {γ g : GAd σ J} {u v : Fin n → E} (h : Sends σ J γ⁻¹ v u) : hgt σ J (γ⁻¹ * g) u = hgt σ J g v := by
   unfold Sends at h
   unfold hgt

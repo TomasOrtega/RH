@@ -22,6 +22,11 @@ def ConeFibreAverage.Statement : Prop :=
           K * Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ)
             {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h J}
 
+/- English proof (translation)
+Take `⟨hJ, hfib⟩` from `ConeMassOfFibre.hypotheses_inhabited`. Use `⟨hJ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfib] with π hπ`. Use `filter_upwards [hπ] with w hw`. Rewrite using `[hw]`.
+
+Conclude with `ENat.natCast_ne_top 1`.
+-/
 theorem ConeFibreAverage.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
       ∀ᵐ π : Fin 1 → Fin 1 → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),

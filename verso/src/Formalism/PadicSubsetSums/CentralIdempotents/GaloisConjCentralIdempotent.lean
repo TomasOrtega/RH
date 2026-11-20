@@ -240,6 +240,9 @@ def bcRepr (σ : ℂ ≃+* ℂ) {V : Type} [AddCommGroup V] [Module ℂ V] [Fini
 
 def bc (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) : FDRep ℂ Γ := FDRep.of (bcRepr σ τ.ρ)
 
+/- English proof (translation)
+Establish `h1 : bcRepr σ ρ γ = Matrix.toLin' (σ.toRingHom.mapMatrix (LinearMap.toMatrix (Module.finBasis ℂ V) (Module.finBasis ℂ V) (ρ γ)))` using `rfl`. Rewrite using `[h1, LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ _), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin', LinearMap.trace_eq_matrix_trace ℂ (Module.finBasis ℂ V) (ρ γ)]`. Simplify using `[Matrix.trace, map_sum]`.
+-/
 theorem trace_bcRepr (σ : ℂ ≃+* ℂ) {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (ρ : Representation ℂ Γ V) (γ : Γ) :
     LinearMap.trace ℂ _ (bcRepr σ ρ γ) = σ (LinearMap.trace ℂ V (ρ γ)) := by
@@ -249,10 +252,16 @@ theorem trace_bcRepr (σ : ℂ ≃+* ℂ) {V : Type} [AddCommGroup V] [Module �
     LinearMap.toMatrix'_toLin', LinearMap.trace_eq_matrix_trace ℂ (Module.finBasis ℂ V) (ρ γ)]
   simp [Matrix.trace, map_sum]
 
+/- English proof (translation)
+Conclude with `Module.finrank_fin_fun ℂ`.
+-/
 theorem finrank_bc (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) :
     Module.finrank ℂ (bc σ τ) = Module.finrank ℂ τ := by
   exact Module.finrank_fin_fun ℂ
 
+/- English proof (translation)
+Unfold `zIdem`. Simplify using `[MonoidAlgebra.coeff, Finsupp.finset_sum_apply, Finsupp.single_apply, MonoidAlgebra.single]`.
+-/
 theorem zIdem_coeff [Fintype Γ] (τ : FDRep ℂ Γ) (γ : Γ) :
     (zIdem τ).coeff γ = (Module.finrank ℂ τ : ℂ) / Fintype.card Γ * LinearMap.trace ℂ τ (τ.ρ γ⁻¹) := by
   classical
@@ -278,6 +287,9 @@ def BcZIdem : Prop :=
   ∀ (Γ : Type) [Group Γ] [Fintype Γ] (σ : ℂ ≃+* ℂ) (τ : FDRep ℂ Γ) (γ : Γ),
     σ ((zIdem τ).coeff γ) = (zIdem (bc σ τ)).coeff γ
 
+/- English proof (translation)
+Introduce `Γ _ _ σ τ γ`. Establish `h : LinearMap.trace ℂ (bc σ τ) ((bc σ τ).ρ γ⁻¹) = σ (LinearMap.trace ℂ τ (τ.ρ γ⁻¹))` using `trace_bcRepr σ τ.ρ γ⁻¹`. Rewrite using `[zIdem_coeff, zIdem_coeff, finrank_bc, h, map_mul, map_div₀, map_natCast, map_natCast]`.
+-/
 theorem galoisConjCentralIdempotent : BcZIdem := by
   intro Γ _ _ σ τ γ
   have h : LinearMap.trace ℂ (bc σ τ) ((bc σ τ).ρ γ⁻¹) = σ (LinearMap.trace ℂ τ (τ.ρ γ⁻¹)) :=

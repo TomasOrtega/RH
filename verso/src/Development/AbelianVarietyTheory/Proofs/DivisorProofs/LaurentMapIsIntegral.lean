@@ -20,6 +20,9 @@ variable {R}
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.EtC.GmStep.rowD, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply, map_sum, map_zsmul, hc]`.
+-/
 private theorem map_rowDifferential_of_commute_faces_lemma {E E' : _root_.GlobalTheory.EtC.Spc}
     {F F' : _root_.GlobalTheory.EtC.Shv R} {s s' : ℤ}
     (φ : ∀ p : ℕ, _root_.GlobalTheory.EtC.H R (_root_.GlobalTheory.EtC.disc.obj (E.obj (op ⦋p⦌))) F s →+
@@ -38,6 +41,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
 
+/- English proof (translation)
+Introduce `y' hy'`. Take `⟨y, rfl⟩` from `(hφ (p + 1)).2 y'`. Establish `hy : _root_.GlobalTheory.EtC.GmStep.rowD R E F s (p + 1) y = 0`. Apply `(hφ (p + 1 + 1)).1` to reduce the goal to its premises. Rewrite using `[map_rowDifferential_of_commute_faces_lemma φ hc, hy', map_zero]`.
+
+Take `⟨z, rfl⟩` from `h y hy`. Conclude with `⟨φ p z, (map_rowDifferential_of_commute_faces_lemma φ hc p z).symm⟩`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.rowExact_transfer {E E' : _root_.GlobalTheory.EtC.Spc}
     {F F' : _root_.GlobalTheory.EtC.Shv R} {s s' : ℤ}
     (φ : ∀ p : ℕ, _root_.GlobalTheory.EtC.H R (_root_.GlobalTheory.EtC.disc.obj (E.obj (op ⦋p⦌))) F s →+
@@ -62,6 +70,9 @@ def laurentMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : LaurentP
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.EtC.GmStep.laurentMap, LaurentPolynomial.eval₂_C]`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_C {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
     _root_.GlobalTheory.EtC.GmStep.laurentMap f (LaurentPolynomial.C a) = LaurentPolynomial.C (f a) := by
   simp [_root_.GlobalTheory.EtC.GmStep.laurentMap, LaurentPolynomial.eval₂_C]
@@ -69,6 +80,11 @@ theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_C {A B : Type} [CommRing A] [C
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
+/- English proof (translation)
+Establish `hu : ((_root_.GlobalTheory.EtC.laurentVarUnit B : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = LaurentPolynomial.T 1` using `rfl`. Establish `hinv : (((_root_.GlobalTheory.EtC.laurentVarUnit B)⁻¹ : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = LaurentPolynomial.T (-1)`. Rewrite using `[← Units.inv_mul_cancel_left (_root_.GlobalTheory.EtC.laurentVarUnit B) (LaurentPolynomial.T (-1)), hu, ← LaurentPolynomial.T_add]`. Simplify using the standard rewrite rules. Rewrite using `[_root_.GlobalTheory.EtC.GmStep.laurentMap, LaurentPolynomial.eval₂_T]`.
+
+Use `Int.induction_on m ?_ (fun k ih => ?_) (fun k ih => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[zpow_add_one, Units.val_mul, ih, hu, ← LaurentPolynomial.T_add]`. Rewrite using `[zpow_sub_one, Units.val_mul, ih, hinv, ← LaurentPolynomial.T_add, sub_eq_add_neg]`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_T {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (m : ℤ) :
     _root_.GlobalTheory.EtC.GmStep.laurentMap f (LaurentPolynomial.T m) = LaurentPolynomial.T m := by
   have hu : ((_root_.GlobalTheory.EtC.laurentVarUnit B : (LaurentPolynomial B)ˣ) :
@@ -87,6 +103,9 @@ theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_T {A B : Type} [CommRing A] [C
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => _root_.GlobalTheory.EtC.GmStep.laurentMap_C f a`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_comp_C {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (_root_.GlobalTheory.EtC.GmStep.laurentMap f).comp LaurentPolynomial.C =
       (LaurentPolynomial.C : B →+* LaurentPolynomial B).comp f :=
@@ -95,6 +114,9 @@ theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_comp_C {A B : Type} [CommRing 
 open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
+/- English proof (translation)
+Use `LaurentPolynomial.induction_on' p (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add, AddMonoidAlgebra.coeff_add, AddMonoidAlgebra.coeff_add, hp, hq, Finsupp.mapRange_add (map_add f)]`. Rewrite using `[map_mul, _root_.GlobalTheory.EtC.GmStep.laurentMap_C, _root_.GlobalTheory.EtC.GmStep.laurentMap_T, ← LaurentPolynomial.single_eq_C_mul_T, ← LaurentPolynomial.single_eq_C_mul_T, AddMonoidAlgebra.coeff_single, AddMonoidAlgebra.coeff_single, Finsupp.mapRange_single]`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_coeff {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (p : LaurentPolynomial A) :
     (_root_.GlobalTheory.EtC.GmStep.laurentMap f p).coeff = Finsupp.mapRange f f.map_zero p.coeff := by
@@ -109,6 +131,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
 
+/- English proof (translation)
+Use `letI := (_root_.GlobalTheory.EtC.GmStep.laurentMap f).toAlgebra`. Introduce `x`. Express the relevant statement in the definitionally equal form `IsIntegral (LaurentPolynomial A) x`. Use `LaurentPolynomial.induction_on' x (fun p q hp hq => hp.add hq) (fun n b => ?_)` and prove the remaining obligations. Use `IsIntegral.mul ?_ ?_` and prove the remaining obligations.
+
+Take `⟨P, hm, hP⟩` from `hf b`. Use `⟨P.map LaurentPolynomial.C, hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ ((_root_.GlobalTheory.EtC.GmStep.laurentMap f).comp LaurentPolynomial.C) (LaurentPolynomial.C b) P = 0`. Rewrite using `[_root_.GlobalTheory.EtC.GmStep.laurentMap_comp_C, ← Polynomial.hom_eval₂, hP, map_zero]`.
+
+Rewrite using `[← _root_.GlobalTheory.EtC.GmStep.laurentMap_T f n]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_isIntegral {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : f.IsIntegral) : (_root_.GlobalTheory.EtC.GmStep.laurentMap f).IsIntegral := by
   letI := (_root_.GlobalTheory.EtC.GmStep.laurentMap f).toAlgebra
@@ -129,6 +158,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Establish `hc : ∀ n, f (x.coeff n) = 0`. Introduce `n`. Establish `h` using `congrArg (fun g => g n) (_root_.GlobalTheory.EtC.GmStep.laurentMap_coeff f x)`.
+
+Rewrite `h` using `[hx]`. Simplify using `using h.symm`. Rewrite using `[← AddMonoidAlgebra.sum_coeff_single x, Finsupp.sum]`. Use `Ideal.sum_mem _ fun n _ => ?_` and prove the remaining obligations. Rewrite using `[LaurentPolynomial.single_eq_C_mul_T]`.
+
+Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Conclude with `mem_nilradical.mpr ((mem_nilradical.mp (hk (RingHom.mem_ker.mpr (hc n)))).map _)`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.laurentMap_ker {A B : Type} [CommRing A] [CommRing B]
     (f : A →+* B) (hk : RingHom.ker f ≤ nilradical A) :
     RingHom.ker (_root_.GlobalTheory.EtC.GmStep.laurentMap f) ≤ nilradical (LaurentPolynomial A) := by
@@ -149,6 +185,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial in
 variable (R : Type) [CommRing R] in
 variable {R} in
 
+/- English proof (translation)
+Use `⟨IsIntegralHom.SpecMap_iff.mpr hi, ⟨?_⟩⟩` and prove the remaining obligations. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hi⟩`. Introduce `P`. Use `haveI := P.isPrime`.
+
+Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral P.asIdeal (⊥ : Ideal B) (fun a ha => nilradical_le_prime P.asIdeal (hk (RingHom.mem_ker.mpr (Ideal.mem_bot.mp (Ideal.mem_comap.mp ha)))))`. Use `⟨⟨Q, hQ⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap φ ⟨Q, hQ⟩ = P`. Conclude with `PrimeSpectrum.ext hQP`.
+-/
 theorem _root_.GlobalTheory.EtC.GmStep.spec_integral_surj {A B : Type} [CommRing A] [CommRing B]
     (φ : A →+* B) (hi : φ.IsIntegral) (hk : RingHom.ker φ ≤ nilradical A) :
     IsIntegralHom (Spec.map (CommRingCat.ofHom φ)) ∧ Surjective (Spec.map (CommRingCat.ofHom φ)) := by

@@ -13,6 +13,9 @@ def NefPsEffUpTo (k : Type) [Field k] (d : ℕ) : Prop :=
   ∀ (V : Scheme.{0}) [IsIntegral V] [Algebra k Γ(V, ⊤)], IsProjOver (strHom k V) →
     topologicalKrullDim V ≤ (d : WithBot ℕ∞) → ∀ N : LB V, IsNef k N → IsPsEff N
 
+/- English proof (translation)
+Introduce `V _ _ hp hV N hN` and use `h V hp (hV.trans (by exact_mod_cast he)) N hN`.
+-/
 theorem NefPsEffUpTo.mono {k : Type} [Field k] {d e : ℕ} (h : NefPsEffUpTo k d) (he : e ≤ d) :
     NefPsEffUpTo k e := fun V _ _ hp hV N hN =>
   h V hp (hV.trans (by exact_mod_cast he)) N hN

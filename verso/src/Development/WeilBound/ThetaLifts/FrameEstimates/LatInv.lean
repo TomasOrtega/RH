@@ -26,6 +26,11 @@ def latInvEquiv {E : Type} [Field E] {n d : ℕ} (a : GL (Fin n) E) (b : GL (Fin
     simp only [← Matrix.mul_assoc, h1, Matrix.one_mul]
     rw [Matrix.mul_assoc, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `ha : IsUnit a.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 a.isUnit`. Establish `hb : IsUnit b.1ᵀ.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 b.isUnit`. Express the relevant statement in the definitionally equal form `(a.1 * x * b.1ᵀ).rank = x.rank`.
+
+Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ hb, Matrix.rank_mul_eq_right_of_isUnit_det _ _ ha]`.
+-/
 theorem latInvEquiv_rank {E : Type} [Field E] {n d : ℕ} (a : GL (Fin n) E) (b : GL (Fin d) E)
     (x : Matrix (Fin n) (Fin d) E) : (latInvEquiv a b x).rank = x.rank := by
   have ha : IsUnit a.1.det := (Matrix.isUnit_iff_isUnit_det _).1 a.isUnit
@@ -36,6 +41,9 @@ theorem latInvEquiv_rank {E : Type} [Field E] {n d : ℕ} (a : GL (Fin n) E) (b 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Subgroup.mem_subgroupOf.1 ((ratU σ J).inv_mem hγ)`. Use `⟨a, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : mat γ⁻¹ = incM F a.1` using `(congrArg Units.val ha).symm`. Rewrite using `[mul_inv_rev, ← h1]`. Both sides reduce to the same expression.
+-/
 theorem latInv_mat_inv_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (γ : UA σ J) (hγ : γ ∈ ratU σ J) :
     ∃ a : GL (Fin n) E, ∀ g : UA σ J, mat (γ * g)⁻¹ = mat g⁻¹ * incM F a.1 := by
   obtain ⟨a, ha⟩ := Subgroup.mem_subgroupOf.1 ((ratU σ J).inv_mem hγ)
@@ -44,11 +52,21 @@ theorem latInv_mat_inv_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (γ : UA σ 
   rw [mul_inv_rev, ← h1]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `incM F (a.1 * x * b.1ᵀ) = _`. Simplify using `only [incM, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem latInv_incM {n d : ℕ} (a : GL (Fin n) E) (b : GL (Fin d) E) (x : Matrix (Fin n) (Fin d) E) :
     incM F (latInvEquiv a b x) = incM F a.1 * incM F x * (incM F b.1)ᵀ := by
   change incM F (a.1 * x * b.1ᵀ) = _
   simp only [incM, Matrix.map_mul, Matrix.transpose_map]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ τ n d J J' _ _ C N S hS γ hγ δ hδ g h`. Take `⟨a, ha⟩` from `latInv_mat_inv_mul γ hγ`. Take `⟨b, hb⟩` from `latInv_mat_inv_mul δ hδ`. Establish `hSS : ∀ x, x ∈ S ↔ latInvEquiv a b x ∈ S`. Introduce `x`.
+
+Break down `hS with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [fullRank, Set.mem_setOf_eq, latInvEquiv_rank]`. Unfold `latSum`. Rewrite using `[← Equiv.tsum_eq ((latInvEquiv a b).subtypeEquiv hSS) (fun x : S => ENNReal.ofReal (maj τ C N (mat g⁻¹ * incM F x.1 * (mat h⁻¹)ᵀ)))]`.
+
+Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Equiv.subtypeEquiv_apply, ha, hb, latInv_incM, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem latInv_of : LatInv := by
   intro F E _ _ _ _ _ σ _ τ n d J J' _ _ C N S hS γ hγ δ hδ g h
   obtain ⟨a, ha⟩ := latInv_mat_inv_mul γ hγ

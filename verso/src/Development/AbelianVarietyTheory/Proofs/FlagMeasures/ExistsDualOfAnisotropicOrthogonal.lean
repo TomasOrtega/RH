@@ -5,6 +5,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.StabUnfold
 
+/- English proof (translation)
+Establish `h6 : Aᴴ *ᵥ (J *ᵥ x) = 0`. Use `congrArg star hx` as an intermediate fact. Rewrite `this` using `[Matrix.star_vecMul, star_star, Matrix.conjTranspose_mul, hJ, star_zero, ← Matrix.mulVec_mulVec]`. Conclude with `this`. Take `⟨u, hu⟩ : ∃ u : Fin n → E, u = (star x ⬝ᵥ (J *ᵥ x))⁻¹ • (star x ᵥ* J)` from `⟨_, rfl⟩`.
+
+Take `⟨A', hA'⟩ : ∃ A' : Matrix (Fin m) (Fin n) E, A' = J'⁻¹ * Aᴴ * J` from `⟨_, rfl⟩`. Establish `h1 : A' * A = 1`. Rewrite using `[hA', Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Aᴴ, hA]`. Conclude with `Matrix.nonsing_inv_mul _ (Ne.isUnit hdet)`. Establish `h2 : A' *ᵥ x = 0`.
+
+Rewrite using `[hA', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h6, Matrix.mulVec_zero]`. Establish `h3 : u ᵥ* A = 0`. Rewrite using `[hu, Matrix.smul_vecMul, Matrix.vecMul_vecMul, hx, smul_zero]`. Establish `h4 : u ⬝ᵥ x = 1`. Rewrite using `[hu, smul_dotProduct, ← Matrix.dotProduct_mulVec, smul_eq_mul, inv_mul_cancel₀ hβ]`.
+
+Use `⟨u, A', h1, h2, h3, h4, ?_, h6⟩` and prove the remaining obligations. Substitute `hn` using the available equality. Set `C : Matrix (Fin (m + 1)) (Fin (m + 1)) E` to `Matrix.of fun i j => (Fin.cons (x i) (fun k => A i k) : Fin (m + 1) → E) j`. Set `C' : Matrix (Fin (m + 1)) (Fin (m + 1)) E` to `Matrix.of fun i j => (Fin.cons (u j) (fun k => A' k j) : Fin (m + 1) → E) i`. Establish `hCC : C' * C = 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify `h4` using `[C, C', Matrix.mul_apply, dotProduct]`. Use `congrFun h3 j` as an intermediate fact. Simplify `this` using `[C, C', Matrix.mul_apply, dotProduct, Matrix.vecMul, (Fin.succ_ne_zero j).symm]`.
+
+Use `congrFun h2 i` as an intermediate fact. Simplify `this` using `[C, C', Matrix.mul_apply, dotProduct, Matrix.mulVec, Fin.succ_ne_zero i]`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify `this` using `[C, C', Matrix.mul_apply, Matrix.one_apply]`. Establish `hCC' : C * C' = 1` using `mul_eq_one_comm.mp hCC`.
+
+Rewrite using `[← hCC']`. Use extensionality with `i j`. Simplify using `[C, C', Matrix.mul_apply, Fin.sum_univ_succ, Matrix.vecMulVec_apply]`.
+-/
 theorem exists_dual_of_anisotropic_orthogonal (E : Type) [Field E] [StarRing E] (n m : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin m) (Fin m) E) (x : Fin n → E)
     (A : Matrix (Fin n) (Fin m) E) (hn : m + 1 = n) (hJ : Jᴴ = J) (hdet : J'.det ≠ 0)

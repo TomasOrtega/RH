@@ -12,6 +12,13 @@ namespace GlobalTheory.PerfdLat
 open GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta GlobalTheory.Published
 open scoped Pointwise
 
+/- English proof (translation)
+Set `B` to `Localization.Away a`. Establish `hc : w ∘ₗ u = a • LinearMap.id` using `LinearMap.ext h`. Establish `hs : Function.Surjective (w.baseChange B)` using `fun y => by`. Take `⟨v, hv⟩` from `IsLocalization.Away.algebraMap_isUnit (S := B) a`. Use `⟨u.baseChange B ((v⁻¹ : Bˣ) • y), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hc, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul B a, ← hv, Units.smul_def, smul_smul, Units.mul_inv, one_smul]`. Establish `hb` using `Module.bijective_of_surjective_of_rankAtStalk_eq hs fun q _ => by`. Rewrite using `[Module.rankAtStalk_baseChange, Module.rankAtStalk_baseChange, hr]`. Use `(injective_iff_map_eq_zero _).2 fun m hm => ?_` and prove the remaining obligations. Establish `h1 : TensorProduct.mk R B M 1 m = 0` using `hb.1 (by simp [hm])`.
+
+Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers a) _).1 h1`. Establish `h2 : IsSMulRegular M a` using `Module.Flat.isSMulRegular_of_isRegular ((Commute.isRegular_iff (Commute.all a)).2 (isLeftRegular_iff.2 ha))`. Conclude with `(h2.pow k) (hk.trans (smul_zero _).symm)`.
+-/
 theorem injective_of_comp_eq_smul {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [Module.Finite R M] [Module.Flat R M] [Module.Finite R N] [Module.Flat R N]
     (hr : Module.rankAtStalk (R := R) M = Module.rankAtStalk N) (u : N →ₗ[R] M) (w : M →ₗ[R] N) {a : R}
@@ -33,6 +40,17 @@ theorem injective_of_comp_eq_smul {R M N : Type} [CommRing R] [AddCommGroup M] [
     ((Commute.isRegular_iff (Commute.all a)).2 (isLeftRegular_iff.2 ha))
   exact (h2.pow k) (hk.trans (smul_zero _).symm)
 
+/- English proof (translation)
+Use `letI := ψ.toAlgebra`. Establish `hi : Function.Injective (w.baseChange R)`. Use `injective_of_comp_eq_smul (funext fun q => ?_) (u.baseChange R) _ ha fun x => ?_` and prove the remaining obligations. Use `haveI := (PrimeSpectrum.comap (algebraMap A R) q).nontrivial`. Rewrite using `[Module.rankAtStalk_baseChange, Module.rankAtStalk_baseChange, hr, Module.rankAtStalk_eq_finrank_of_free]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, show w ∘ₗ u = a • LinearMap.id from LinearMap.ext hc, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul R a]`. Both sides reduce to the same expression. Set `F` to `(TensorProduct.piScalarRight A R R (Fin h)).toLinearMap ∘ₗ w.baseChange R`. Establish `hF : ∀ r m, F (r ⊗ₜ m) = r • piMap ψ _ (w m)` using `fun r m => funext fun j => by`.
+
+Simplify using `[F, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Establish `he : LinearMap.range F = LinearMap.range ((piMap ψ _).comp w)`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul r m => rw [hF]`. Conclude with `Submodule.smul_mem _ _ ⟨m, rfl⟩`. Consider the case `add x y hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨1 ⊗ₜ m, (hF 1 m).trans (one_smul _ _)⟩`. Establish `e` using `(LinearEquiv.ofInjective F ((TensorProduct.piScalarRight A R R (Fin h)).injective.comp hi)).trans (LinearEquiv.ofEq _ _ he)`. Conclude with `⟨.of_equiv e, .equiv e⟩`.
+-/
 theorem projective_range_of_comp_eq_smul {A R M : Type} [CommRing A] [CommRing R] [AddCommGroup M] [Module A M]
     [Module.Finite A M] [Module.Projective A M] {h : ℕ} (hr : ∀ q, Module.rankAtStalk (R := A) M q = h)
     (u : (Fin h → A) →ₗ[A] M) (w : M →ₗ[A] Fin h → A) {a : A} (ψ : A →+* R) [RingHomSurjective ψ]
@@ -70,6 +88,9 @@ variable {p : ℕ} [Fact p.Prime]
 
 def thetaPhiInv (S : CycPerfd p) (n : ℕ) : Ainf p S.R →+* S.R := (fontaineTheta S.R p).comp (phiInv p S.R ^ n)
 
+/- English proof (translation)
+Rewrite using `[thetaPhiInv, RingHom.comp_apply, RingHom.coe_pow]`.
+-/
 theorem thetaPhiInv_apply (S : CycPerfd p) (n : ℕ) (a : Ainf p S.R) :
     thetaPhiInv S n a = fontaineTheta S.R p ((phiInv p S.R)^[n] a) := by
   rw [thetaPhiInv, RingHom.comp_apply, RingHom.coe_pow]
@@ -80,6 +101,9 @@ instance thetaPhiInv_surjective (S : CycPerfd p) (n : ℕ) : RingHomSurjective (
     obtain ⟨b, rfl⟩ := (Function.RightInverse.surjective (Dieudonne.phiInv_frobenius (p := p) (O := S.R))).iterate n a
     exact ⟨b, thetaPhiInv_apply S n b⟩⟩
 
+/- English proof (translation)
+Rewrite using `[thetaPhiInv_apply, ← theta_muN]`. Use `congr 1`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, phiInv_muN]`.
+-/
 theorem thetaPhiInv_mu (S : CycPerfd p) (n : ℕ) : thetaPhiInv S n (Sandwich.mu S.ε) = zeta S.ε n - 1 := by
   rw [thetaPhiInv_apply, ← theta_muN]
   congr 1
@@ -89,6 +113,11 @@ theorem thetaPhiInv_mu (S : CycPerfd p) (n : ℕ) : thetaPhiInv S n (Sandwich.mu
 
 variable (D : PrismData p) {S : CycPerfd p} {G : PDivGroup p S.R} (c : ConstTate (eps S) G)
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨m, hm⟩` from `(mem_K D c n k).1 hk`. Conclude with `⟨m, funext fun j => (thetaPhiInv_apply S n _).trans (congrArg _ (hm j))⟩`.
+
+Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨_, (mem_K D c n _).2 ⟨m, fun _ => rfl⟩, funext fun j => (thetaPhiInv_apply S n _).symm⟩`.
+-/
 theorem thetaK_eq_range (n : ℕ) : thetaK D c n = LinearMap.range ((piMap (thetaPhiInv S n) _).comp (coord D c)) := by
   ext x
   constructor
@@ -98,12 +127,20 @@ theorem thetaK_eq_range (n : ℕ) : thetaK D c n = LinearMap.range ((piMap (thet
   · rintro ⟨m, rfl⟩
     exact ⟨_, (mem_K D c n _).2 ⟨m, fun _ => rfl⟩, funext fun j => (thetaPhiInv_apply S n _).symm⟩
 
+/- English proof (translation)
+Rewrite using `[thetaK_eq_range]`. Conclude with `projective_range_of_comp_eq_smul (D.rank_eq S G.dual) (inj D c) (coord D c) _ (by rw [thetaPhiInv_mu]; exact isSMulRegular_zeta_sub_one S n) (coord_inj D c)`.
+-/
 theorem projective_thetaK (n : ℕ) :
     Module.Projective S.R (thetaK D c (n + 1)) ∧ Module.Finite S.R (thetaK D c (n + 1)) := by
   rw [thetaK_eq_range]
   exact projective_range_of_comp_eq_smul (D.rank_eq S G.dual) (inj D c) (coord D c) _
     (by rw [thetaPhiInv_mu]; exact isSMulRegular_zeta_sub_one S n) (coord_inj D c)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_H, hv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, h⟩`. Conclude with `⟨_, ⟨k, hk, rfl⟩, funext fun j => isSMulRegular_zeta_sub_one S n ((mul_smul ..).symm.trans (congrFun h j))⟩`.
+
+Introduce and unpack `⟨_, ⟨k, hk, rfl⟩, rfl⟩`. Conclude with `⟨k, hk, mul_smul ..⟩`.
+-/
 theorem H_eq_map_thetaK (n : ℕ) {v : S.R} (hv : zeta S.ε 1 - 1 = (zeta S.ε (n + 1) - 1) * v) :
     H D c n = (thetaK D c (n + 1)).map (LinearMap.lsmul S.R _ v) := by
   ext x
@@ -114,6 +151,11 @@ theorem H_eq_map_thetaK (n : ℕ) {v : S.R} (hv : zeta S.ε 1 - 1 = (zeta S.ε (
   · rintro ⟨_, ⟨k, hk, rfl⟩, rfl⟩
     exact ⟨k, hk, mul_smul ..⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `zeta_sub_one_dvd S n`. Establish `hr : IsSMulRegular S.R v` using `IsSMulRegular.of_mul (a := zeta S.ε (n + 1) - 1) (hv ▸ isSMulRegular_zeta_sub_one S 0)`. Take `⟨h1, h2⟩` from `projective_thetaK D c n`. Establish `e` using `Submodule.equivMapOfInjective (LinearMap.lsmul S.R (Fin G.height → S.R) v) (fun x y h => funext fun j => hr (congrFun h j)) (thetaK D c (n + 1))`. Rewrite using `[H_eq_map_thetaK D c n hv]`.
+
+Conclude with `⟨.of_equiv e, .equiv e⟩`.
+-/
 theorem projective_finite_H (p : ℕ) [Fact p.Prime] (D : PrismData p) (S : CycPerfd p) (G : PDivGroup p S.R)
     (c : ConstTate (eps S) G) (n : ℕ) : Module.Projective S.R (H D c n) ∧ Module.Finite S.R (H D c n) := by
   obtain ⟨v, hv⟩ := zeta_sub_one_dvd S n

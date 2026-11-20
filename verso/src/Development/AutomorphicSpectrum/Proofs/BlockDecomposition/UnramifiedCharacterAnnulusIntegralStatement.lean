@@ -11,5 +11,8 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.integral_unramified_shells | exact GlobalTheory.CompanionTheory.WS.integral_unramified_shells | (intros; apply GlobalTheory.CompanionTheory.WS.integral_unramified_shells <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_character_annulus_integral : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (μ : Fˣ →* ℂˣ), IsUnramifiedChar μ → ∀ A D : ℤ, ∫ u : Fˣ, (if -A ≤ ord (u : F) ∧ ord (u : F) ≤ -D then ((μ u : ℂˣ) : ℂ) else 0) ∂multHaar F = ∑ j ∈ Finset.Icc D A, ((μ (unifUnit F) : ℂˣ) : ℂ) ^ (-j) := by
   first | exact @GlobalTheory.CompanionTheory.WS.integral_unramified_shells | exact GlobalTheory.CompanionTheory.WS.integral_unramified_shells | (intros; apply GlobalTheory.CompanionTheory.WS.integral_unramified_shells <;> assumption)

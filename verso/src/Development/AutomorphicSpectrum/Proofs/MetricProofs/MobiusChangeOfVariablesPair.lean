@@ -14,14 +14,27 @@ def cod : Set ℂ := {b | g 1 1 - g 0 1 * b ≠ 0}
 
 variable {g}
 
+/- English proof (translation)
+The claim follows from `Matrix.det_fin_two g`.
+-/
 theorem det_eq : g.det = g 0 0 * g 1 1 - g 0 1 * g 1 0 := Matrix.det_fin_two g
 
+/- English proof (translation)
+Establish `hc : Continuous fun a : ℂ => GlobalTheory.CompanionTheory.Ar.PB.FibPt.den g a` using `by show Continuous fun a : ℂ => g 0 0 + g 0 1 * a fun_prop`. Conclude with `isOpen_ne_fun hc continuous_const`.
+-/
 theorem isOpen_dom : IsOpen (dom g) := by
   have hc : Continuous fun a : ℂ => GlobalTheory.CompanionTheory.Ar.PB.FibPt.den g a := by
     show Continuous fun a : ℂ => g 0 0 + g 0 1 * a
     fun_prop
   exact isOpen_ne_fun hc continuous_const
 
+/- English proof (translation)
+Establish `hden : g 0 0 + g 0 1 * a ≠ 0` using `ha`. Establish `h1 : HasDerivAt (fun z : ℂ => g 1 0 + g 1 1 * z) (g 1 1) a`. Simplify using `using ((hasDerivAt_id a).const_mul (g 1 1)).const_add (g 1 0)`. Establish `h2 : HasDerivAt (fun z : ℂ => g 0 0 + g 0 1 * z) (g 0 1) a`. Simplify using `using ((hasDerivAt_id a).const_mul (g 0 1)).const_add (g 0 0)`.
+
+Establish `h` using `h1.div h2 hden`. Establish `heq : GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g = (fun z : ℂ => g 1 0 + g 1 1 * z) / (fun z : ℂ => g 0 0 + g 0 1 * z)`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Establish `hval : GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g a = (g 1 1 * (g 0 0 + g 0 1 * a) - (g 1 0 + g 1 1 * a) * g 0 1) / (g 0 0 + g 0 1 * a) ^ 2`.
+
+Rewrite using `[show GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g a = g.det / (g 0 0 + g 0 1 * a) ^ 2 from rfl, GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, hval]`. Conclude with `h`.
+-/
 theorem hasDerivAt_mob {a : ℂ} (ha : a ∈ dom g) : HasDerivAt (mob g) (mobD g a) a := by
   have hden : g 0 0 + g 0 1 * a ≠ 0 := ha
   have h1 : HasDerivAt (fun z : ℂ => g 1 0 + g 1 1 * z) (g 1 1) a := by
@@ -41,6 +54,13 @@ theorem hasDerivAt_mob {a : ℂ} (ha : a ∈ dom g) : HasDerivAt (mob g) (mobD g
   rw [heq, hval]
   exact h
 
+/- English proof (translation)
+Introduce `a ha b hb hab`. Establish `ha' : g 0 0 + g 0 1 * a ≠ 0` using `ha`. Establish `hb' : g 0 0 + g 0 1 * b ≠ 0` using `hb`. Establish `hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 ≠ 0`. Rewrite using `[← GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq]`.
+
+Conclude with `hg.ne_zero`. Establish `h : (g 1 0 + g 1 1 * a) / (g 0 0 + g 0 1 * a) = (g 1 0 + g 1 1 * b) / (g 0 0 + g 0 1 * b)` using `hab`. Rewrite `h` using `[div_eq_div_iff ha' hb']`. Establish `h2 : (g 0 0 * g 1 1 - g 0 1 * g 1 0) * (a - b) = 0`. Take the linear combination `h`.
+
+Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hdet`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem injOn_mob (hg : IsUnit g.det) : Set.InjOn (mob g) (dom g) := by
   intro a ha b hb hab
   have ha' : g 0 0 + g 0 1 * a ≠ 0 := ha
@@ -57,6 +77,19 @@ theorem injOn_mob (hg : IsUnit g.det) : Set.InjOn (mob g) (dom g) := by
   · exact absurd h3 hdet
   · exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Establish `hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 ≠ 0`. Rewrite using `[← GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq]`. Conclude with `hg.ne_zero`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Establish `ha' : g 0 0 + g 0 1 * a ≠ 0` using `ha`. Use `show g 1 1 - g 0 1 * ((g 1 0 + g 1 1 * a) / (g 0 0 + g 0 1 * a)) ≠ 0`. Establish `hval : g 1 1 - g 0 1 * ((g 1 0 + g 1 1 * a) / (g 0 0 + g 0 1 * a)) = (g 0 0 * g 1 1 - g 0 1 * g 1 0) / (g 0 0 + g 0 1 * a)`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`. Conclude with `div_ne_zero hdet ha'`. Introduce `hb`. Establish `hb' : g 1 1 - g 0 1 * b ≠ 0` using `hb`.
+
+Establish `hx : (g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b) * (g 1 1 - g 0 1 * b) = g 0 0 * b - g 1 0` using `div_mul_cancel₀ _ hb'`. Establish `hden : g 0 0 + g 0 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b)) = (g 0 0 * g 1 1 - g 0 1 * g 1 0) / (g 1 1 - g 0 1 * b)`. Rewrite using `[eq_div_iff hb']`. Take the linear combination `g 0 1 * hx`. Establish `hnum : g 1 0 + g 1 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b)) = b * (g 0 0 * g 1 1 - g 0 1 * g 1 0) / (g 1 1 - g 0 1 * b)`.
+
+Rewrite using `[eq_div_iff hb']`. Take the linear combination `g 1 1 * hx`. Use `⟨(g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b), ?_, ?_⟩` and prove the remaining obligations. Use `show g 0 0 + g 0 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b)) ≠ 0`. Rewrite using `[hden]`.
+
+Conclude with `div_ne_zero hdet hb'`. Use `show (g 1 0 + g 1 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b))) / (g 0 0 + g 0 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b))) = b`. Rewrite using `[hnum, hden, div_div_div_cancel_right₀ hb', mul_div_assoc, div_self hdet, mul_one]`.
+-/
 theorem image_mob (hg : IsUnit g.det) : mob g '' dom g = cod g := by
   have hdet : g 0 0 * g 1 1 - g 0 1 * g 1 0 ≠ 0 := by
     rw [← GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq]
@@ -92,6 +125,13 @@ theorem image_mob (hg : IsUnit g.det) : mob g '' dom g = cod g := by
           (g 0 0 + g 0 1 * ((g 0 0 * b - g 1 0) / (g 1 1 - g 0 1 * b))) = b
       rw [hnum, hden, div_div_div_cancel_right₀ hb', mul_div_assoc, div_self hdet, mul_one]
 
+/- English proof (translation)
+Use `Set.Subsingleton.measure_zero ?_ _` and prove the remaining obligations. Introduce `x hx y hy`. Establish `hx' : c + d * x = 0` using `hx`. Establish `hy' : c + d * y = 0` using `hy`. Establish `hd : d ≠ 0`.
+
+Introduce and unpack `rfl`. Break down `h with hc | hd` into its components or cases. Conclude with `hc (by simpa using hx')`. Conclude with `hd rfl`. Establish `hxy : d * (x - y) = 0`.
+
+Take the linear combination `hx' - hy'`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 hxy).resolve_left hd)`.
+-/
 theorem null_affine {c d : ℂ} (h : c ≠ 0 ∨ d ≠ 0) : volume {a : ℂ | c + d * a = 0} = 0 := by
   refine Set.Subsingleton.measure_zero ?_ _
   intro x hx y hy
@@ -106,6 +146,11 @@ theorem null_affine {c d : ℂ} (h : c ≠ 0 ∨ d ≠ 0) : volume {a : ℂ | c 
     linear_combination hx' - hy'
   exact sub_eq_zero.1 ((mul_eq_zero.1 hxy).resolve_left hd)
 
+/- English proof (translation)
+Rewrite using `[ae_eq_univ]`. Establish `h1 : (volume : Measure (ℂ × ℂ)) (Prod.fst ⁻¹' Vᶜ) = 0`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.quasiMeasurePreserving_fst.preimage_null hV`. Establish `h2 : (volume : Measure (ℂ × ℂ)) (Prod.snd ⁻¹' Vᶜ) = 0`.
+
+Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.quasiMeasurePreserving_snd.preimage_null hV`. Use `measure_mono_null (fun p hp => ?_) (measure_union_null h1 h2)` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_prod, not_and_or] at hp`. Simplify `hp` using `only [Set.mem_union, Set.mem_preimage, Set.mem_compl_iff]`.
+-/
 theorem ae_prod_self {V : Set ℂ} (hV : volume Vᶜ = 0) :
     (V ×ˢ V : Set (ℂ × ℂ)) =ᵐ[(volume : Measure (ℂ × ℂ))] (Set.univ : Set (ℂ × ℂ)) := by
   rw [ae_eq_univ]
@@ -119,6 +164,11 @@ theorem ae_prod_self {V : Set ℂ} (hV : volume Vᶜ = 0) :
   simp only [Set.mem_compl_iff, Set.mem_prod, not_and_or] at hp
   simpa only [Set.mem_union, Set.mem_preimage, Set.mem_compl_iff] using hp
 
+/- English proof (translation)
+Establish `hne : g 0 0 ≠ 0 ∨ g 0 1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hg.ne_zero` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq, h.1, h.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `measure_mono_null (fun a ha => ?_) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.null_affine hne)` and prove the remaining obligations. Establish `ha' : ¬ (g 0 0 + g 0 1 * a ≠ 0)` using `ha`. Conclude with `not_not.1 ha'`.
+-/
 theorem null_dom (hg : IsUnit g.det) : volume (dom g)ᶜ = 0 := by
   have hne : g 0 0 ≠ 0 ∨ g 0 1 ≠ 0 := by
     by_contra h
@@ -130,6 +180,13 @@ theorem null_dom (hg : IsUnit g.det) : volume (dom g)ᶜ = 0 := by
   have ha' : ¬ (g 0 0 + g 0 1 * a ≠ 0) := ha
   exact not_not.1 ha'
 
+/- English proof (translation)
+Establish `hne : g 1 1 ≠ 0 ∨ -g 0 1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h01 : g 0 1 = 0` using `neg_eq_zero.1 h.2`. Apply `hg.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_eq, h.1, h01]`. Expand and normalize the polynomial expressions, which then agree. Use `measure_mono_null (fun b hb => ?_) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.null_affine hne)` and prove the remaining obligations. Establish `hb' : ¬ (g 1 1 - g 0 1 * b ≠ 0)` using `hb`. Use `show g 1 1 + -g 0 1 * b = 0`.
+
+Take the linear combination `not_not.1 hb'`.
+-/
 theorem null_cod (hg : IsUnit g.det) : volume (cod g)ᶜ = 0 := by
   have hne : g 1 1 ≠ 0 ∨ -g 0 1 ≠ 0 := by
     by_contra h
@@ -143,6 +200,9 @@ theorem null_cod (hg : IsUnit g.det) : volume (cod g)ᶜ = 0 := by
   show g 1 1 + -g 0 1 * b = 0
   linear_combination not_not.1 hb'
 
+/- English proof (translation)
+Establish `hmul : ((z • (1 : ℂ →L[ℝ] ℂ) : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) = Algebra.lmul ℝ ℂ z`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[Algebra.coe_lmul_eq_mul, LinearMap.mul_apply']`. Simplify using the standard rewrite rules. Rewrite using `[hmul, ← Algebra.norm_apply, Algebra.norm_complex_apply]`.
+-/
 theorem det_smul_one (z : ℂ) :
     LinearMap.det ((z • (1 : ℂ →L[ℝ] ℂ) : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) = Complex.normSq z := by
   have hmul : ((z • (1 : ℂ →L[ℝ] ℂ) : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) = Algebra.lmul ℝ ℂ z := by
@@ -151,12 +211,24 @@ theorem det_smul_one (z : ℂ) :
     simp
   rw [hmul, ← Algebra.norm_apply, Algebra.norm_complex_apply]
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.det, ContinuousLinearMap.coe_prodMap, LinearMap.det_prodMap, GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_smul_one, GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_smul_one]`.
+-/
 theorem det_prodMap (z w : ℂ) :
     ((z • (1 : ℂ →L[ℝ] ℂ)).prodMap (w • (1 : ℂ →L[ℝ] ℂ))).det
       = Complex.normSq z * Complex.normSq w := by
   rw [ContinuousLinearMap.det, ContinuousLinearMap.coe_prodMap, LinearMap.det_prodMap,
     GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_smul_one, GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_smul_one]
 
+/- English proof (translation)
+Use `haveI : Measure.IsAddHaarMeasure (volume : Measure (ℂ × ℂ)) := by`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Establish `hUo : IsOpen (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g)` using `GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.isOpen_dom`. Establish `hUm : MeasurableSet (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g ×ˢ GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g)` using `hUo.measurableSet.prod hUo.measurableSet`.
+
+Establish `hderiv : ∀ p ∈ GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g ×ˢ GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g, HasFDerivWithinAt (Prod.map (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g)) ((GlobalTheory.CompanionTheo …`. Introduce `p hp`. Conclude with `(HasFDerivAt.prodMap p (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.hasDerivAt_mob hp.1).complexToReal_fderiv (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.hasDerivAt_mob hp.2).complexToReal_fderiv).hasFDerivWithinAt`. Establish `hinj : Set.InjOn (Prod.map (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g)) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g ×ˢ GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.dom g)`. Introduce `p hp q hq hpq`.
+
+Conclude with `Prod.ext (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.injOn_mob hg hp.1 hq.1 (congrArg Prod.fst hpq)) (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.injOn_mob hg hp.2 hq.2 (congrArg Prod.snd hpq))`. Establish `hcv` using `integral_image_eq_integral_abs_det_fderiv_smul volume hUm hderiv hinj f`. Rewrite `hcv` using `[Set.prodMap_image_prod, GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.image_mob hg, setIntegral_congr_set (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.ae_prod_self (GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.null_cod hg)), setIntegral_congr_set (GlobalTheory.CompanionThe …`. Rewrite using `[hcv]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.det_prodMap, Prod.map_apply, smul_eq_mul]`. Rewrite using `[abs_of_nonneg (mul_nonneg (Complex.normSq_nonneg _) (Complex.normSq_nonneg _))]`. Both sides reduce to the same expression.
+-/
 theorem integral_mob_sq (hg : IsUnit g.det) (f : ℂ × ℂ → ℝ) :
     ∫ p : ℂ × ℂ, (Complex.normSq (mobD g p.1) * Complex.normSq (mobD g p.2)) * f (mob g p.1, mob g p.2)
       = ∫ q : ℂ × ℂ, f q := by
@@ -193,6 +265,9 @@ theorem integral_mob_sq (hg : IsUnit g.det) (f : ℂ × ℂ → ℝ) :
 
 end GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq
 
+/- English proof (translation)
+Introduce `_ hg f` and use `GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.integral_mob_sq hg f`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.integral_mob_sq_main :
     ∀ (g : Matrix (Fin 2) (Fin 2) ℂ), IsUnit g.det → ∀ f : ℂ × ℂ → ℝ, ∫ p : ℂ × ℂ, (Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g p.1) * Complex.normSq (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mobD g p.2)) * f (GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g p.1, GlobalTheory.CompanionTheory.Ar.PB.FibPt.mob g p.2) = ∫ q : ℂ × ℂ, f q :=
   fun _ hg f => GlobalTheory.CompanionTheory.Ar.PB.FibPt.CovSq.integral_mob_sq hg f

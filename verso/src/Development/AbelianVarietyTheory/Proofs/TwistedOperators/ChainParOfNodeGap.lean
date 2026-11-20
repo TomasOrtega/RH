@@ -12,6 +12,15 @@ open GlobalTheory.Chain.ItPairCompare GlobalTheory.Chain.ParOfSizes
 
 namespace GlobalTheory.Chain.ParOfNodeGap
 
+/- English proof (translation)
+Unfold `minSig`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩ hx`.
+
+Rewrite `hx` using `[Finset.mem_filter]`. Take `⟨hx, hs⟩` from `hx`. Simplify using `only at hs`. Substitute `hs` using the available equality. Take `⟨y, hy, hsy⟩` from `(mem_lamS k τ a false).1 hx`.
+
+Break down `y with y | y | y` into its components or cases. Simplify using `[sgn] at hsy`. Conclude with `Finset.mem_image.2 ⟨y, Finset.mem_univ _, by rw [hy]⟩`. Simplify using `[sgn] at hsy`. Use `_ ≤ (Finset.univ : Finset (Fin D.R.m)).card := Finset.card_image_le`.
+
+Use `_ = D.R.m := by simp`.
+-/
 theorem minSig_lamS_le {D : D7} (k : Fin D.R.m) (τ : D.what₂.Tau) : minSig (lamS D k τ) ≤ D.R.m := by
   unfold minSig
   refine (min_le_right _ _).trans ?_
@@ -32,6 +41,15 @@ theorem minSig_lamS_le {D : D7} (k : Fin D.R.m) (τ : D.what₂.Tau) : minSig (l
     _ ≤ (Finset.univ : Finset (Fin D.R.m)).card := Finset.card_image_le
     _ = D.R.m := by simp
 
+/- English proof (translation)
+Establish `hqm : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (m : ℝ) ^ 2`. Establish `h1 : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (q : ℝ) ^ (2 : ℕ)`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Substitute `h` using the available equality. Rewrite using `[Nat.cast_zero, Real.zero_rpow (by norm_num)]`.
+
+Check the signs of the components of the expression. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le` to reduce the goal to its premises. Conclude with `Nat.one_le_cast.mpr h`. Evaluate the numerical expressions.
+
+Use `h1.trans ?_` and prove the remaining obligations. Establish `: (q : ℝ) ≤ m` using `by exact_mod_cast hq`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) this 2`. Establish `hnR : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Establish `hNR : 3 * (m : ℝ) ^ 2 ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hmR : (2 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hN12 : (12 : ℝ) ≤ N` using `by nlinarith`. Establish `hpos : (0 : ℝ) ≤ (q : ℝ) ^ ((3 : ℝ) / 2)` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem num_bound' {n q m N : ℕ} (hq : q ≤ m) (hn : n ≤ N) (hm : 2 ≤ m) (hN : 3 * m ^ 2 ≤ N) :
     120 * (n : ℝ) * (q : ℝ) ^ ((3 : ℝ) / 2) ≤ 4 * (N : ℝ) ^ 3 := by
   have hqm : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (m : ℝ) ^ 2 := by
@@ -59,24 +77,46 @@ theorem num_bound' {n q m N : ℕ} (hq : q ≤ m) (hn : n ≤ N) (hm : 2 ≤ m) 
     _ = 40 * (N : ℝ) ^ 2 := by ring
     _ ≤ 4 * (N : ℝ) ^ 3 := by nlinarith [mul_nonneg (sq_nonneg (N : ℝ)) (by linarith : (0 : ℝ) ≤ N - 10)]
 
+/- English proof (translation)
+Introduce `i hi`. Use `H D.u₀ τ i hi` as an intermediate fact. Rewrite `this` using `[D.hcW_base]`. Then use the resulting hypothesis.
+-/
 private theorem le_sub_b_succ_of_nodeGap {D : D7} {h : ℝ} (H : D.NodeGap h) (τ : D.what₂.Tau) :
     ∀ (i : ℕ) (hi : i + 1 < D.R.m), h ≤ (((D.hc τ).b ⟨i + 1, hi⟩ - (D.hc τ).b ⟨i, by omega⟩ : ℚ) : ℝ) := by
   intro i hi
   have := H D.u₀ τ i hi
   rwa [D.hcW_base] at this
 
+/- English proof (translation)
+Establish `h1 : j * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul hj le_rfl`. Simplify using `only [Ranks.rankY, Ranks.r, Ranks.N]`. Rewrite using `[Nat.mul_add, Nat.mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem rankY_le_N (D : D7) {j : ℕ} (hj : j ≤ D.R.m) : D.R.rankY j ≤ D.R.N D.R.m := by
   have h1 : j * D.R.t ≤ D.R.m * D.R.t := Nat.mul_le_mul hj le_rfl
   simp only [Ranks.rankY, Ranks.r, Ranks.N]
   rw [Nat.mul_add, Nat.mul_one]
   omega
 
+/- English proof (translation)
+Establish `h1 : 3 * D.R.m + 1 ≤ D.R.t` using `D.R.three_m_lt_t`. Establish `h2 : D.R.m * (3 * D.R.m + 1) ≤ D.R.m * D.R.t` using `Nat.mul_le_mul le_rfl h1`. Simplify using `only [Ranks.N]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem three_mul_m_sq_le_N (D : D7) : 3 * D.R.m ^ 2 ≤ D.R.N D.R.m := by
   have h1 : 3 * D.R.m + 1 ≤ D.R.t := D.R.three_m_lt_t
   have h2 : D.R.m * (3 * D.R.m + 1) ≤ D.R.m * D.R.t := Nat.mul_le_mul le_rfl h1
   simp only [Ranks.N]
   nlinarith
 
+/- English proof (translation)
+Use `set H : ℝ := 4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6 with hH`. Establish `hg` using `le_sub_b_succ_of_nodeGap h`. Establish `hNpos : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hcube : ∀ j : ℕ, j ≤ D.R.m → ((D.R.rankY j : ℕ) : ℝ) ^ 3 < H`. Introduce `j hj`.
+
+Establish `: ((D.R.rankY j : ℕ) : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ)` using `by exact_mod_cast rankY_le_N D hj`. Establish `: ((D.R.rankY j : ℕ) : ℝ) ^ 3 ≤ ((D.R.N D.R.m : ℕ) : ℝ) ^ 3` using `pow_le_pow_left₀ (Nat.cast_nonneg _) this 3`. Establish `: (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[pow_nonneg hNpos 3]`. Introduce `τ`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, s⟩ hx ⟨y, s'⟩ hy hne`. Take `⟨a, rfl, rfl⟩` from `(mem_lamS k τ x s).1 hx`. Take `⟨b, rfl, rfl⟩` from `(mem_lamS k τ y s').1 hy`. Conclude with `(hcube _ (Nat.succ_le_of_lt k.isLt)).trans_le (le_val_sub (D.hc τ) (hg τ) _ _ a b hne)`.
+
+Introduce and unpack `⟨x, s⟩ hx ⟨y, s'⟩ hy hne`. Take `⟨a, rfl, rfl⟩` from `(mem_lamT k τ x s).1 hx`. Take `⟨b, rfl, rfl⟩` from `(mem_lamT k τ y s').1 hy`. Conclude with `(hcube _ (Nat.succ_le_of_lt k.isLt)).trans_le (le_val_sub (D.hc τ) (hg τ) _ _ a b hne)`. Introduce and unpack `⟨x, s⟩ hx ⟨y, s'⟩ hy hne`.
+
+Take `⟨a, rfl, rfl⟩` from `(mem_lamS k τ x s).1 hx`. Take `⟨b, rfl, rfl⟩` from `(mem_lamS k τ y s').1 hy`. Use `le_trans ?_ (le_val_sub (D.hc τ) (hg τ) _ _ a b hne)` and prove the remaining obligations. Establish `hb` using `num_bound' (minSig_lamS_le k τ) (rankY_le_N D k.isLt.le) D.R.two_le_m (three_mul_m_sq_le_N D)`. Establish `: (0 : ℝ) ≤ (D.R.t : ℝ)` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem stepGap_of_nodeGap {D : D7} (h : D.NodeGap (4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6))
     (k : Fin D.R.m) : StepGap D k := by
   set H : ℝ := 4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6 with hH
@@ -107,6 +147,9 @@ theorem stepGap_of_nodeGap {D : D7} (h : D.NodeGap (4 * ((D.R.N D.R.m : ℕ) : �
     have : (0 : ℝ) ≤ (D.R.t : ℝ) := Nat.cast_nonneg _
     linarith
 
+/- English proof (translation)
+Introduce `D h k`. Conclude with `(chainPar_iff_stepGap k).mpr (stepGap_of_nodeGap h k)`.
+-/
 theorem chainPar_of_nodeGap :
     ∀ D : D7, D.NodeGap (4 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 3 + 2 * D.R.t + 6) → ∀ k, GlobalTheory.Chain.ChainPar D k := by
   intro D h k

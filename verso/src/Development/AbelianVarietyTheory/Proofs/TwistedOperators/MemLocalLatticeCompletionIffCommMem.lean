@@ -21,6 +21,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TwistLat
 
+/- English proof (translation)
+Establish `hle : Formalism.BasicNotions.intV E v ≤ (GlobalTheory.AdelicU.intLoc F E v).comap ((Algebra.TensorProduct.comm F (Fv F v) E).symm : E ⊗[F] Fv F v →+* Fv F v ⊗[F] E)`. Unfold `Formalism.BasicNotions.intV Formalism.UG.tensInt`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `z (⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩)`. Take `⟨x, rfl⟩` from `RingHom.mem_range.1 (show e ∈ (algebraMap (𝓞 E) E).range from he)`.
+
+Simplify using `only [SetLike.mem_coe, Subring.mem_comap, RingHom.coe_coe]`. Simplify using `using GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (v := v) (one_mem _) x`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, RingHom.coe_coe]`. Simplify using `using GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (v := v) (a := b) hb 1`. Conclude with `hle ha`.
+-/
 theorem comm_symm_mem_intLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) {a : E ⊗[F] Fv F v} (ha : a ∈ Formalism.BasicNotions.intV E v) :
     (Algebra.TensorProduct.comm F (Fv F v) E).symm a ∈ GlobalTheory.AdelicU.intLoc F E v := by
@@ -36,6 +41,25 @@ theorem comm_symm_mem_intLoc {F E : Type} [Field F] [NumberField F] [Field E] [N
       simpa using GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (v := v) (a := b) hb 1
   exact hle ha
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L v y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `GlobalTheory.AdelicU.latLoc_induction (p := fun y => (fun i => Algebra.TensorProduct.comm F (Fv F v) E (y i)) ∈ Formalism.L2.Herm.locL v L) (fun a ha x hx => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hy` and prove the remaining obligations. Establish `hmem : ((1 : E) ⊗ₜ[F] a) ∈ Formalism.BasicNotions.intV E v` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+
+Establish `h2` using `(Formalism.L2.Herm.locL v L).smul_mem ⟨_, hmem⟩ (Submodule.subset_span ⟨x, hx, rfl⟩ : (fun i => Formalism.UG.inclE (F := F) (Fv F v) (x i)) ∈ Formalism.L2.Herm.locL v L)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.UG.inclE, Subring.smul_def]`. Use `(Formalism.L2.Herm.locL v L).zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `(Formalism.L2.Herm.locL v L).add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Use `(Formalism.L2.Herm.locL v L).neg_mem hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `hy`. Establish `key : ∀ z : Fin n → E ⊗[F] Fv F v, z ∈ Formalism.L2.Herm.locL v L → (fun i => (Algebra.TensorProduct.comm F (Fv F v) E).symm (z i)) ∈ GlobalTheory.AdelicU.latLoc F L v`.
+
+Introduce `z hz`. Unfold `Formalism.L2.Herm.locL Formalism.UG.latS at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+
+Use `GlobalTheory.AdelicU.tmul_mem_latLoc (F := F) (v := v) (one_mem _) hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.UG.inclE]`. Consider the case `zero`. Use `(GlobalTheory.AdelicU.latLoc F L v).zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add z w _ _ hz hw`. Use `(GlobalTheory.AdelicU.latLoc F L v).add_mem hz hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Consider the case `smul c z _ hz`. Establish `h2` using `(GlobalTheory.AdelicU.latLoc F L v).smul_mem ⟨_, comm_symm_mem_intLoc v c.2⟩ hz`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Subring.smul_def]`. Use `key _ hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem mem_latLoc_iff_comm_mem_locL : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → Fv F v ⊗[F] E), y ∈ GlobalTheory.AdelicU.latLoc F L v ↔ (fun i => Algebra.TensorProduct.comm F (Fv F v) E (y i)) ∈ Formalism.L2.Herm.locL v L := by
   intro F E _ _ _ _ _ n L v y
   constructor

@@ -25,6 +25,11 @@ noncomputable section
 
 namespace GlobalTheory.FamTraceChiColSide
 
+/- English proof (translation)
+Establish `hsplit : ((S.ϖ⁻¹ : kˣ) : k) * d = ((S.ϖ⁻¹ : kˣ) : k) * e + ((S.ϖ⁻¹ : kˣ) : k) * (d - e)` using `by ring`. Establish `h1 : S.ψ (((S.ϖ⁻¹ : kˣ) : k) * (d - e)) = 1`. Use `(S.cond 1).2 le_rfl _ ?_` and prove the remaining obligations. Establish `hle` using `(S.unif _).1 hv`. Establish `hϖ : valuation k ((S.ϖ : kˣ) : k) ≠ 0` using `by simp`.
+
+Rewrite using `[map_one, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsplit, AddChar.map_add_eq_mul, h1, mul_one]`.
+-/
 theorem psi_unif_mul_congr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s κ : ℕ}
     (S : GlobalTheory.SymChain.SymData k s κ) (d e : k) (hv : valuation k (d - e) < 1) :
     (S.ψ (((S.ϖ⁻¹ : kˣ) : k) * e) : ℂ) = (S.ψ (((S.ϖ⁻¹ : kˣ) : k) * d) : ℂ) := by
@@ -39,6 +44,9 @@ theorem psi_unif_mul_congr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
       _ = 1 := inv_mul_cancel₀ hϖ
   rw [hsplit, AddChar.map_add_eq_mul, h1, mul_one]
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ y hy hyU i g hg`. Take `⟨j, h, z, w, hw, hv, hcol⟩` from `GlobalTheory.T.true_geometry_final_twist W hW u a ha hat row col hc κ hκ y hy hyU i g hg`. Rewrite using `[hcol, ← GlobalTheory.T.true_geometry_psi_value W hW u a ha hat row col hc i j h z w hw]`. Conclude with `psi_unif_mul_congr _ _ _ hv`.
+-/
 theorem colLam_eq_psi_superSum : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (F0 W u).cls0.lev.U → ∀ (i : Fin a.n) g, GlobalTheory.FamTrace.IsMatrixInFrameOfXZero (a.G i) κ g → GlobalTheory.FamTraceChiCol.colLam (F0 W u) ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)) (y : GL _ _) = ((a.G i).S.ψ ((((a.G i).S.ϖ⁻¹ : (a.G i).kˣ) : (a.G i).k) * ∑ p : Fin (I.rec7 l Z).R.k, ∑ q : Fin (I.rec7 l Z).R.k, if q.val = p.val + 1 then g.val (Sum.inl (Sum.inl p)) (Sum.inl (Sum.inl q)) else 0) : ℂ) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat row col hc κ hκ y hy hyU i g hg
   obtain ⟨j, h, z, w, hw, hv, hcol⟩ := GlobalTheory.T.true_geometry_final_twist W hW u a ha hat row col hc κ hκ y hy hyU i g hg

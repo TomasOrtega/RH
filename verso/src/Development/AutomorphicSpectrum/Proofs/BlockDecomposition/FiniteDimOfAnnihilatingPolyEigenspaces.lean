@@ -7,6 +7,27 @@ namespace GlobalTheory.CompanionTheory.LinAlg
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`. Introduce `V _ hker _`. Establish `hbot : V = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `v hv`. Conclude with `(Submodule.mem_bot ℂ).mpr (by simpa using hker v hv)`. Substitute `hbot` using the available equality. Use `infer_instance`. Consider the case `cons a s ih`.
+
+Introduce `V hV hker hfin`. Use `set f : Module.End ℂ M := aeval T (X - C a : ℂ[X]) with hf`. Establish `hfv : ∀ v, f v = T v - a • v`. Introduce `v`. Simplify using `[f]`.
+
+Establish `hWV : ∀ w ∈ V.map f, w ∈ V`. Introduce and unpack `w ⟨v, hv, rfl⟩`. Rewrite using `[hfv]`. Conclude with `V.sub_mem (hV v hv) (V.smul_mem a hv)`. Establish `hW1 : ∀ w ∈ V.map f, T w ∈ V.map f`.
+
+Introduce and unpack `w ⟨v, hv, rfl⟩`. Use `⟨T v, hV v hv, ?_⟩` and prove the remaining obligations. Simplify using `[hfv, map_sub, map_smul]`. Establish `hW2 : ∀ w ∈ V.map f, aeval T ((s.map fun b => (X - C b : ℂ[X])).prod) w = 0`. Introduce and unpack `w ⟨v, hv, rfl⟩`.
+
+Establish `h` using `hker v hv`. Rewrite `h` using `[Multiset.map_cons, Multiset.prod_cons, mul_comm, map_mul]`. Conclude with `h`. Establish `hW3 : ∀ c : ℂ, FiniteDimensional ℂ (Submodule.span ℂ {v | v ∈ V.map f ∧ T v = c • v})`. Introduce `c`.
+
+Use `haveI := hfin c`. Establish `hsub : {v | v ∈ V.map f ∧ T v = c • v} ⊆ {v | v ∈ V ∧ T v = c • v}` using `fun v hv => ⟨hWV v hv.1, hv.2⟩`. Conclude with `Submodule.finiteDimensional_of_le (Submodule.span_mono hsub)`. Establish `hWfin : FiniteDimensional ℂ (V.map f)` using `ih (V.map f) hW1 hW2 hW3`. Apply `Module.Finite.iff_fg.mpr` to reduce the goal to its premises.
+
+Apply `Submodule.fg_of_fg_map_of_fg_inf_ker f` to reduce the goal to its premises. Conclude with `Module.Finite.iff_fg.mp hWfin`. Use `haveI := hfin a`. Establish `hle : V ⊓ LinearMap.ker f ≤ Submodule.span ℂ {v | v ∈ V ∧ T v = a • v}`. Introduce and unpack `v ⟨hv, hk⟩`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨hv, ?_⟩` and prove the remaining obligations. Establish `h0 : f v = 0` using `hk`. Rewrite `h0` using `[hfv, sub_eq_zero]`. Conclude with `h0`.
+
+Use `haveI := Submodule.finiteDimensional_of_le hle`. Conclude with `Module.Finite.iff_fg.mp inferInstance`.
+-/
 theorem finiteDimensional_of_roots_of_eigenspaces {M : Type} [AddCommGroup M] [Module ℂ M]
     (T : Module.End ℂ M) (s : Multiset ℂ) :
     ∀ V : Submodule ℂ M, (∀ v ∈ V, T v ∈ V) →
@@ -64,6 +85,13 @@ theorem finiteDimensional_of_roots_of_eigenspaces {M : Type} [AddCommGroup M] [M
       haveI := Submodule.finiteDimensional_of_le hle
       exact Module.Finite.iff_fg.mp inferInstance
 
+/- English proof (translation)
+Introduce `M _ _ T V hV p hp hker hfin`. Establish `hsplit : p = C p.leadingCoeff * (p.roots.map fun a => (X - C a : ℂ[X])).prod` using `by first`. Consider the case `exact Polynomial.eq_prod_roots_of_splits_id (IsAlgClosed.splits p)`. Consider the case `exact (Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C (IsAlgClosed.card_roots_eq_natDegree (k := ℂ))).symm`. Use `finiteDimensional_of_roots_of_eigenspaces T p.roots V hV ?_ hfin` and prove the remaining obligations.
+
+Introduce `v hv`. Establish `h` using `hker v hv`. Rewrite `h` using `[hsplit, map_mul, Polynomial.aeval_C]`. Establish `h' : p.leadingCoeff • aeval T ((p.roots.map fun a => (X - C a : ℂ[X])).prod) v = 0`. Rewrite using `[← h, Algebra.algebraMap_eq_smul_one]`.
+
+Both sides reduce to the same expression. Conclude with `(smul_eq_zero.mp h').resolve_left (Polynomial.leadingCoeff_ne_zero.mpr hp)`.
+-/
 theorem finiteDimensional_of_polynomial_of_eigenspaces :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) (V : Submodule ℂ M),
       (∀ v ∈ V, T v ∈ V) → ∀ p : Polynomial ℂ, p ≠ 0 →

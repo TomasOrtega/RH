@@ -14,6 +14,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 
 namespace GlobalTheory.Mem.Top.Bl.RowWt
 
+/- English proof (translation)
+Unfold `fockDeg`. Use `push_cast`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(h n h1 h2 τ).1 a]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[(h n h1 h2 τ).2 c, abs_neg]`.
+-/
 theorem fockDeg_cast (D : D7) (h : DV.KapDef D) (n : ℕ) (h1 : 1 ≤ n) (h2 : n ≤ D.R.m) :
     ((fockDeg D n : ℤ) : ℚ) = ∑ τ, (∑ a : Fin (D.R.sigW n).1, |DV.aPlusQ D n τ a| +
       ∑ c : Fin (D.R.sigW n).2, |DV.aMinusQ D n τ c|) := by
@@ -26,6 +31,9 @@ theorem fockDeg_cast (D : D7) (h : DV.KapDef D) (n : ℕ) (h1 : 1 ≤ n) (h2 : n
   · refine Finset.sum_congr rfl fun c _ => ?_
     rw [(h n h1 h2 τ).2 c, abs_neg]
 
+/- English proof (translation)
+Establish `e` using `fockDeg_cast (w.D Z) h n h1 h2`. Establish `e'` using `fockDeg_cast (w.D Z') h' n h1 h2`. Conclude with `e.trans e'.symm` after adjusting the coercions.
+-/
 theorem fockDeg_eq {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z Z' : w.Lt)
     (h : DV.KapDef (w.D Z)) (h' : DV.KapDef (w.D Z')) (n : ℕ) (h1 : 1 ≤ n) (h2 : n ≤ (w.D Z).R.m) :
     fockDeg (w.D Z) n = fockDeg (w.D Z') n := by
@@ -33,6 +41,11 @@ theorem fockDeg_eq {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z
   have e' := fockDeg_cast (w.D Z') h' n h1 h2
   exact_mod_cast e.trans e'.symm
 
+/- English proof (translation)
+Introduce `K B f T w Z Z' h h'`. Use function extensionality and compare the values at `y j`. Establish `hT : FTypeG (w.D Z) (j.1 + 1) = FTypeG (w.D Z') (j.1 + 1)`. Unfold `FTypeG`. Rewrite using `[fockDeg_eq w Z Z' h h' (j.1 + 1) (Nat.succ_pos _) j.2]`.
+
+Unfold `F0K FK`. Rewrite using `[hT]`. Both sides reduce to the same expression.
+-/
 theorem forcedContent_eq_over_same_choices : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z Z' : w.Lt), DV.KapDef (w.D Z) →
     DV.KapDef (w.D Z') → F0K K.s (w.D Z) = F0K K.s (w.D Z') := by
   intro K B f T w Z Z' h h'

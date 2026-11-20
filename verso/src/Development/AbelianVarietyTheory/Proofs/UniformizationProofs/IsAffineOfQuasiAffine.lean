@@ -19,6 +19,17 @@ noncomputable section
 namespace GlobalTheory.AmpleStabFinite
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Take `⟨M, hM, rfl⟩` from `cls_surj c`. Establish `key` using `exists_gen_of_local_on_base hM (K := Fin 2) ![𝟙 Y, p ≫ e] ![1, -1] p e he hp (fun U _ k => by`. Rewrite using `[Fin.prod_univ_two]`. Use `show k (e ≫ 𝟙 Y) ^ (1 : ℤ) * k (e ≫ p ≫ e) ^ (-1 : ℤ) = 1`. Rewrite using `[← Category.assoc e, he, Category.comp_id, Category.id_comp]`.
+
+Use the proof step `simp)`. Use the proof step `(fun s => by`. Take `⟨U, hs, hU⟩` from `h s`. Use `⟨U, hs, (cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ?_⟩` and prove the remaining obligations. Take `⟨n, n₁⟩ : ∃ n : (p ⁻¹ᵁ U).toScheme ⟶ (p ⁻¹ᵁ U).toScheme, n ≫ (p ⁻¹ᵁ U).ι = (p ⁻¹ᵁ U).ι ≫ p ≫ e` from `⟨IsOpenImmersion.lift (p ⁻¹ᵁ U).ι ((p ⁻¹ᵁ U).ι ≫ p ≫ e) (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `e'` using `congrArg (fun q => q (p y.1)) he`. Conclude with `(congrArg (· ∈ U) e').mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Rewrite using `[cls_linComb hM, Fin.sum_univ_two]`.
+
+Use `show (1 : ℤ) • CechPic.pull ((p ⁻¹ᵁ U).ι ≫ 𝟙 Y) (cls M hM) + (-1 : ℤ) • CechPic.pull ((p ⁻¹ᵁ U).ι ≫ p ≫ e) (cls M hM) = 0`. Rewrite using `[← n₁, Category.comp_id, pull_comp, hU, map_zero]`. Use the proof step `simp)`. Establish `k2` using `(cls_eq_zero_iff (LB.isLB_linComb hM _ _)).2 key`. Rewrite `k2` using `[cls_linComb hM, Fin.sum_univ_two]`.
+
+Establish `k3 : (1 : ℤ) • CechPic.pull (𝟙 Y) (cls M hM) + (-1 : ℤ) • CechPic.pull (p ≫ e) (cls M hM) = 0` using `k2`. Rewrite `k3` using `[pull_id, one_zsmul, neg_one_zsmul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `k3`.
+-/
 theorem eq_pull_of_local {Y S : Scheme.{0}} (p : Y ⟶ S) (e : S ⟶ Y) (he : e ≫ p = 𝟙 S)
     (hp : ∀ V : S.Opens, Function.Surjective (pullback.snd p V.ι).appTop.hom) (c : CechPic.Pic Y)
     (h : ∀ s : S, ∃ U : S.Opens, s ∈ U ∧ CechPic.pull (p ⁻¹ᵁ U).ι c = 0) : c = CechPic.pull (p ≫ e) c := by
@@ -48,12 +59,20 @@ theorem eq_pull_of_local {Y S : Scheme.{0}} (p : Y ⟶ S) (e : S ⟶ Y) (he : e 
   rw [pull_id, one_zsmul, neg_one_zsmul, ← sub_eq_add_neg, sub_eq_zero] at k3
   exact k3
 
+/- English proof (translation)
+Rewrite using `[← h.isoPullback_hom_snd]`. Conclude with `surj_comp (ConcreteCategory.bijective_of_isIso (h.isoPullback.hom.app ⊤)).2 (surj_snd hG hB (Over.mk b))`.
+-/
 theorem surj_of_isPullback (hG : GlobalFnsSt) {S : Scheme.{0}} {B : Over S} [GrpObj B] (hB : IsAbelianScheme B)
     {Y T : Scheme.{0}} {a : Y ⟶ B.left} {q : Y ⟶ T} {b : T ⟶ S} (h : IsPullback a q B.hom b) :
     Function.Surjective q.appTop.hom := by
   rw [← h.isoPullback_hom_snd]
   exact surj_comp (ConcreteCategory.bijective_of_isIso (h.isoPullback.hom.app ⊤)).2 (surj_snd hG hB (Over.mk b))
 
+/- English proof (translation)
+Establish `h` using `LB.isLB_linComb hL (fun _ : PUnit => 𝟙 X) (fun _ => d)`. Establish `e` using `cls_linComb hL _ _ h`. Rewrite `e` using `[Fintype.sum_unique, pull_id]`. Rewrite using `[← e]`. Use `(cls_eq_iff _ h).2 (iso_of_chart h ⟨fun i _ => i, fun _ _ hy => Set.mem_iInter.2 fun _ => hy, ?_⟩)` and prove the remaining obligations.
+
+Introduce `y i j hi hj`. Use `Eq.trans (map_zpow _ _ _) (Eq.symm ((gm_linComb L (fun _ : PUnit => 𝟙 X) (fun _ => d) (𝟙 X) y (fun _ => i) (fun _ => j) (Set.mem_iInter.2 fun _ => hi) (Set.mem_iInter.2 fun _ => hj)).trans ?_))` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem cls_pw {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (d : ℤ) : cls (pw L d) (isLB_pw hL d) = d • cls L hL := by
   have h := LB.isLB_linComb hL (fun _ : PUnit => 𝟙 X) (fun _ => d)
   have e := cls_linComb hL _ _ h
@@ -66,11 +85,19 @@ theorem cls_pw {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (d : ℤ) : cls (pw L d
   rw [Fintype.prod_unique, Category.id_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `(cls_eq_zero_iff (pull_isLB hM y)).2 (DVR.exists_gen_of_local M hM _ _)`.
+-/
 theorem pull_spec_local {K : Type} [CommRing K] [IsLocalRing K] {X : Scheme.{0}} (y : Spec (CommRingCat.of K) ⟶ X)
     (c : CechPic.Pic X) : CechPic.pull y c = 0 := by
   obtain ⟨M, hM, rfl⟩ := cls_surj c
   exact (cls_eq_zero_iff (pull_isLB hM y)).2 (DVR.exists_gen_of_local M hM _ _)
 
+/- English proof (translation)
+Establish `: UniversallyClosed (X.toSpecΓ ≫ Spec.map f.appTop)`. Rewrite using `[← Scheme.toSpecΓ_naturality]`. Use `infer_instance`. Establish `: UniversallyClosed X.toSpecΓ` using `.of_comp_of_isSeparated _ (Spec.map f.appTop)`. Establish `: Surjective X.toSpecΓ` using `inferInstance`.
+
+Conclude with `⟨isIso_of_isOpenImmersion_of_opensRange_eq_top _ (top_unique fun x _ => X.toSpecΓ.surjective x)⟩`.
+-/
 theorem isAffine_of_quasiAffine {X S : Scheme.{0}} [IsAffine S] [X.IsQuasiAffine] (f : X ⟶ S) [UniversallyClosed f] :
     IsAffine X := by
   have : UniversallyClosed (X.toSpecΓ ≫ Spec.map f.appTop) := by
@@ -80,6 +107,13 @@ theorem isAffine_of_quasiAffine {X S : Scheme.{0}} [IsAffine S] [X.IsQuasiAffine
   exact ⟨isIso_of_isOpenImmersion_of_opensRange_eq_top _
     (top_unique fun x _ => X.toSpecΓ.surjective x)⟩
 
+/- English proof (translation)
+Use `Scheme.IsQuasiAffine.of_forall_exists_mem_basicOpen X fun x => ?_` and prove the remaining obligations. Take `⟨a, hxa⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc.ge (Set.mem_univ (f x)))`. Take `⟨b, hxb⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc.ge (Set.mem_univ (g x)))`. Establish `hN` using `LB.isLB_linComb hM (Sum.elim (fun _ : PUnit => g) (fun _ : PUnit => f)) (Sum.elim (fun _ => 1) (fun _ => 1))`. Establish `h0 : cls _ hN = 0`.
+
+Rewrite using `[cls_linComb hM, Fintype.sum_sum_type]`. Simplify `h` using `[add_comm]`. Take `⟨t, ht⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_triv X) hN ((cls_eq_iff _ _).1 h0.symm) (DVR.mulSec M _ _ _ _ (secPull (s b) g) (secPull (s a) f))`. Rewrite `ht` using `[nonzeroLocus_mulSec, nonzeroLocus_secPull (s a)]`. Establish `e : nonzeroLocus t = X.basicOpen (show Γ(X, ⊤) from t.f PUnit.unit)` using `le_antisymm (iSup_le fun _ => le_rfl) (basicOpen_le_nonzeroLocus t PUnit.unit)`.
+
+Use `⟨t.f PUnit.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ht]`. Conclude with `isAffineOpen_nonzeroLocus_inf (pull_isLB hM g) _ ((ha a).preimage f)`. Rewrite using `[← e, ht, nonzeroLocus_secPull]`. Conclude with `⟨hxb, hxa⟩`.
+-/
 theorem quasiAffine_of_pull_add {X Y : Scheme.{0}} [CompactSpace X] (f g : X ⟶ Y) [IsAffineHom f] {M : LB Y}
     (hM : M.IsLB) {I : Type} (s : I → M.Sec) (hc : ⨆ i, nonzeroLocus (s i) = ⊤)
     (ha : ∀ i, IsAffineOpen (nonzeroLocus (s i)))
@@ -108,6 +142,17 @@ section Points
 
 variable {S : Scheme.{0}} {B : Over S} [GrpObj B] {L O : LB B.left}
 
+/- English proof (translation)
+Establish `h₁ : (translDiff B L x).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h₂` using `pull_isLB hO (snd T B).left`. Establish `hM` using `LB.isLB_div h₁ h₂`. Establish `val : ∀ b : T ⟶ B, CechPic.pull (lift (𝟙 T) b).left (cls _ hM) = CechPic.pull (x * b).left (cls L hL) - CechPic.pull b.left (cls L hL) - CechPic.pull b.left (cls O hO)`. Introduce `b`.
+
+Establish `e₁ : cls _ h₁ = CechPic.pull (lift (fst T B ≫ x) (snd T B) ≫ μ[B]).left (cls L hL) - CechPic.pull (snd T B).left (cls L hL)`. Use `(cls_linComb hL _ _ h₁).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`. Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`. Establish `a₁ : lift (𝟙 T) b ≫ (lift (fst T B ≫ x) (snd T B) ≫ μ[B]) = x * b`.
+
+Rewrite using `[comp_lift_assoc, lift_fst_assoc, lift_snd, Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[cls_div h₁ h₂, e₁, cls_pull hO, map_sub, map_sub, ← pull_comp, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, a₁, lift_snd]`. Establish `sec : ∀ b : T ⟶ B, (lift (𝟙 T) b).left ≫ (fst T B).left = 𝟙 _` using `fun b => by`. Rewrite using `[← Over.comp_left, lift_fst]`.
+
+Both sides reduce to the same expression. Establish `key` using `eq_pull_of_local (fst T B).left (lift (𝟙 T) (1 : T ⟶ B)).left (sec 1) (fun V => surj_of_isPullback hG hB ((IsPullback.of_hasPullback (fst T B).left V.ι).paste_horiz (IsPullback.of_hasPullback T.hom B.hom).flip)) (cls _ hM) (fun p => by`. Take `⟨U, hU, ht⟩` from `h p`. Conclude with `⟨U, hU, (cls_eq_zero_iff (pull_isLB hM _)).2 ht⟩)`. Establish `k` using `congrArg (CechPic.pull (lift (𝟙 T) b).left) key`.
+
+Rewrite `k` using `[← pull_comp, ← Category.assoc, sec, Category.id_comp, val, val, _root_.mul_one]`. Conclude with `k`.
+-/
 theorem transl_const (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (hL : L.IsLB) (hO : O.IsLB) {T : Over S} (x : T ⟶ B)
     (h : ∀ p : T.left, ∃ U : T.left.Opens, p ∈ U ∧
       Triv ((LB.div (translDiff B L x) (O.pull (snd T B).left)).pull ((fst T B).left ⁻¹ᵁ U).ι)) (b : T ⟶ B) :
@@ -142,6 +187,9 @@ theorem transl_const (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (hL : L.IsLB) (
   rw [← pull_comp, ← Category.assoc, sec, Category.id_comp, val, val, _root_.mul_one] at k
   exact k
 
+/- English proof (translation)
+Establish `a` using `transl_const hG hB hL hO x hx (x⁻¹ * y⁻¹)`. Establish `b` using `transl_const hG hB hL hO y hy (x⁻¹ * y⁻¹)`. Rewrite `a` using `[mul_inv_cancel_left]`. Rewrite `b` using `[mul_comm x⁻¹ y⁻¹, mul_inv_cancel_left, mul_comm y⁻¹ x⁻¹]`. Take the linear combination `(norm := abel) b - a`.
+-/
 theorem add_inv_eq [IsCommMonObj B] (hG : GlobalFnsSt) (hB : IsAbelianScheme B) (hL : L.IsLB) (hO : O.IsLB)
     {T : Over S} (x y : T ⟶ B)
     (hx : ∀ p : T.left, ∃ U : T.left.Opens, p ∈ U ∧
@@ -158,6 +206,21 @@ theorem add_inv_eq [IsCommMonObj B] (hG : GlobalFnsSt) (hB : IsAbelianScheme B) 
 
 end Points
 
+/- English proof (translation)
+Introduce `hG R _ B _ _ hB L O hL hO hA H j hj hH`. Take `⟨d, -, n, s, hc, ha⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy R B L hL).1 hA`. Use `hB.proper` as an intermediate fact. Establish `: IsProper H.hom` using `by rw [← Over.w j]; infer_instance`. It suffices to establish `LocallyQuasiFinite H.hom from .of_isProper_of_locallyQuasiFinite _`.
+
+Use `LocallyQuasiFinite.of_finite_preimage_singleton _ fun z => ?_` and prove the remaining obligations. Break down `Set.eq_empty_or_nonempty (H.hom ⁻¹' {z}) with h0 | ⟨h, hh⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.finite_empty`. Set `K : Type` to `H.left.residueField h`.
+
+Set `y₀ : Spec (CommRingCat.of K) ⟶ H.left` to `H.left.fromSpecResidueField h`. Set `P : Over (Spec (CommRingCat.of R))` to `Over.mk (y₀ ≫ H.hom)`. Set `y : P ⟶ H` to `Over.homMk y₀ rfl`. Set `π : (H ⊗ P).left ⟶ H.left` to `(fst H P).left`. Set `q : (H ⊗ P).left ⟶ Spec (CommRingCat.of K)` to `(snd H P).left`.
+
+Establish `hpb : IsPullback π q H.hom (y₀ ≫ H.hom)` using `IsPullback.of_hasPullback H.hom P.hom`. Establish `: IsProper q` using `MorphismProperty.of_isPullback hpb inferInstance`. Establish `: IsAffineHom π` using `MorphismProperty.of_isPullback hpb.flip inferInstance`. Establish `key` using `add_inv_eq hG hB hL hO (fst H P ≫ j) (snd H P ≫ y ≫ j) ((hH _ _).2 ⟨_, rfl⟩) ((hH _ _).2 ⟨snd H P ≫ y, Category.assoc _ _ _⟩)`. Rewrite `key` using `[← GrpObj.comp_inv (snd H P), Over.comp_left _ _ _ (snd H P), Over.comp_left _ _ _ (snd H P), pull_comp (snd H P).left, pull_comp (snd H P).left, pull_spec_local (K := K) (y ≫ j).left, pull_spec_local (K := K) (y ≫ j)⁻¹.left, map_zero, add_zero]`.
+
+Establish `: CompactSpace (H ⊗ P).left` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `: IsAffineHom (fst H P ≫ j).left` using `inferInstanceAs (IsAffineHom (π ≫ j.left))`. Establish `: (H ⊗ P).left.IsQuasiAffine` using `quasiAffine_of_pull_add (fst H P ≫ j).left ((fst H P ≫ j)⁻¹).left (isLB_pw hL d) s hc (fun i => (ha i).1) (by`. Rewrite using `[cls_pw hL, map_zsmul, map_zsmul, ← zsmul_add, key, zsmul_zero])`. Establish `: IsAffine (H ⊗ P).left` using `isAffine_of_quasiAffine q`.
+
+Establish `: IsFinite q` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Establish `hfin : (Set.univ : Set (H ⊗ P).left).Finite`. Use `q.finite_preimage_singleton (IsLocalRing.closedPoint K)` as an intermediate fact. Use `this.subset fun t _ => Subsingleton.elim _ _` and prove the remaining obligations. Use `(hfin.image π).subset fun w hw => ?_` and prove the remaining obligations.
+
+Establish `e : H.hom w = (y₀ ≫ H.hom) (IsLocalRing.closedPoint K)`. Establish `e₀ : y₀ (IsLocalRing.closedPoint K) = h` using `Scheme.fromSpecResidueField_apply h _`. Conclude with `(show H.hom w = z from hw).trans ((show H.hom h = z from hh).symm.trans (congrArg H.hom e₀).symm)`. Take `⟨t, ht, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := H.hom) (g := y₀ ≫ H.hom) w _ e`. Conclude with `⟨t, trivial, ht⟩`.
+-/
 theorem isFinite_of_relAmple : GlobalFnsSt → ∀ (R : Type) [CommRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ L O : LB B.left, L.IsLB → O.IsLB → RelAmple B L → ∀ (H : Over (Spec (CommRingCat.of R))) (j : H ⟶ B), IsClosedImmersion j.left → (∀ (T : Over (Spec (CommRingCat.of R))) (x : T ⟶ B), (∀ p : (T).left, ∃ U : (T).left.Opens, p ∈ U ∧ Triv ((LB.div (translDiff B L x) (O.pull (snd (T) B).left)).pull ((fst (T) B).left ⁻¹ᵁ U).ι)) ↔ ∃ y : T ⟶ H, y ≫ j = x) → IsFinite H.hom := by
   intro hG R _ B _ _ hB L O hL hO hA H j hj hH
   obtain ⟨d, -, n, s, hc, ha⟩ := (GlobalTheory.Unif.relAmple_iff_veryAmpleBy R B L hL).1 hA

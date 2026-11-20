@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ A B f d hf hd`. Take `⟨L, hL, hrel, rfl⟩` from `hd`. Establish `hB : IsAmpleLB L` using `(GlobalTheory.T.abelianVarietyAmpleClass_cechPicardClass_iff_ample K B L hL).1 ⟨L, hL, hrel, rfl⟩`. Establish `hA : IsAmpleLB (L.pull f.hom.left)` using `hB.pull_of_isAffineHom f.hom.left`. Establish `h` using `(GlobalTheory.T.abelianVarietyAmpleClass_cechPicardClass_iff_ample K A (L.pull f.hom.left) hA.isLB).2 hA`.
+
+Rewrite `h` using `[cls_pull hL f.hom.left hA.isLB]`. Then use the resulting hypothesis.
+-/
 theorem isAmpleCls_pull_of_isFinite : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (d : Pic B.X.left),
     IsFinite f.hom.left → IsAmpleCls d → IsAmpleCls (CechPic.pull f.hom.left d) := by
   intro K _ A B f d hf hd

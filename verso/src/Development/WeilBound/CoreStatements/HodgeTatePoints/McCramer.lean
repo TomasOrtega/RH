@@ -10,6 +10,17 @@ namespace PositivityTheory.HtPt.Mc
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
+/- English proof (translation)
+Introduce `Ω _ E _ _ A r b κ z c₀ h0 h`. Take `⟨li, sp⟩` from `(Module.Basis.is_basis_iff_det b).2 (isUnit_iff_ne_zero.2 h0)`. Use `⟨li, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Set `B` to `Module.Basis.mk li sp.ge`.
+
+Establish `hc : ∀ l, B.repr (z k) l ∈ A`. Introduce `l`. Establish `e` using `LinearMap.congr_fun (b.det_smul_mk_coord_eq_det_update li sp.ge l) (z k)`. Establish `e2 : b.det (z ∘ c₀) * B.repr (z k) l = b.det (z ∘ Function.update c₀ l k)`. Rewrite using `[Function.comp_update]`.
+
+Conclude with `e`. Establish `e3 : B.repr (z k) l = b.det (z ∘ Function.update c₀ l k) / b.det (z ∘ c₀)`. Rewrite using `[← e2, mul_div_cancel_left₀ _ h0]`. Rewrite using `[e3]`. Conclude with `h _`.
+
+Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun l => ⟨_, hc l⟩, ?_⟩` and prove the remaining obligations. Use `B.sum_repr (z k)` as an intermediate fact. Simplify using `only [B, Module.Basis.mk_apply] at this`. Conclude with `this`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨c₀ i, rfl⟩`.
+-/
 theorem cramer_sub : ∀ (Ω : Type) [Field Ω] (E : Type) [AddCommGroup E] [Module Ω E] (A : Subring Ω) (r : ℕ) (b : Module.Basis (Fin r) Ω E) (κ : Type) (z : κ → E) (c₀ : Fin r → κ), b.det (z ∘ c₀) ≠ 0 → (∀ c : Fin r → κ, b.det (z ∘ c) / b.det (z ∘ c₀) ∈ A) → LinearIndependent Ω (z ∘ c₀) ∧ Submodule.span A (Set.range z) = Submodule.span A (Set.range (z ∘ c₀)) := by
   intro Ω _ E _ _ A r b κ z c₀ h0 h
   classical
@@ -37,6 +48,13 @@ theorem cramer_sub : ∀ (Ω : Type) [Field Ω] (E : Type) [AddCommGroup E] [Mod
 section
 variable {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] (A : Subring Ω) {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[B.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+
+Use `exacts [A.one_mem, A.zero_mem]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa using A.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: B.repr (a • x) j = (a : Ω) * B.repr x j` using `by show B.repr ((a : Ω) • x) j = _`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `A.mul_mem a.2 hx`.
+-/
 theorem repr_mem {ι : Type} (B : Module.Basis ι Ω E) {v : E} (hv : v ∈ Submodule.span A (Set.range B)) (j : ι) :
     B.repr v j ∈ A := by
   classical
@@ -55,12 +73,20 @@ theorem repr_mem {ι : Type} (B : Module.Basis ι Ω E) {v : E} (hv : v ∈ Subm
     rw [this]
     exact A.mul_mem a.2 hx
 
+/- English proof (translation)
+Rewrite using `[Module.Basis.det_apply, Matrix.det_apply']`. Use `A.sum_mem fun s _ => A.mul_mem (intCast_mem _ _) (A.prod_mem fun i _ => ?_)` and prove the remaining obligations. Conclude with `repr_mem A B (hv _) _`.
+-/
 theorem det_mem (B : Module.Basis (Fin r) Ω E) (v : Fin r → E)
     (hv : ∀ i, v i ∈ Submodule.span A (Set.range B)) : B.det v ∈ A := by
   rw [Module.Basis.det_apply, Matrix.det_apply']
   refine A.sum_mem fun s _ => A.mul_mem (intCast_mem _ _) (A.prod_mem fun i _ => ?_)
   exact repr_mem A B (hv _) _
 
+/- English proof (translation)
+Use `choose c hc using fun i => Finsupp.mem_span_range_iff_exists_finsupp.1 (hv i)`. Establish `e : v = fun i => ∑ k ∈ (c i).support, ((c i k : A) : Ω) • z k` using `funext fun i => (hc i).symm`. Establish `e2` using `B.det.toMultilinearMap.map_sum_finset (fun i k => ((c i k : A) : Ω) • z k) fun i => (c i).support`. Rewrite using `[e]`. Use `(show B.det _ = _ from e2) ▸ Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MultilinearMap.map_smul_univ]`. Establish `: (∏ i, ((c i (s i) : A) : Ω)) = ((∏ i, c i (s i) : A) : Ω)` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ (∏ i, c i (s i)) (Submodule.subset_span ⟨s, rfl⟩)`.
+-/
 theorem det_mem_span (B : Module.Basis (Fin r) Ω E) {κ : Type} (z : κ → E) (v : Fin r → E)
     (hv : ∀ i, v i ∈ Submodule.span A (Set.range z)) :
     B.det v ∈ Submodule.span A (Set.range fun c : Fin r → κ => B.det (z ∘ c)) := by
@@ -77,6 +103,19 @@ theorem det_mem_span (B : Module.Basis (Fin r) Ω E) {κ : Type} (z : κ → E) 
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ E _ _ A _ r b κ z f li h`. Use `haveI := Module.Finite.of_basis b`. Establish `sp : Submodule.span Ω (Set.range f) = ⊤` using `li.span_eq_top_of_card_eq_finrank' (by rw [Module.finrank_eq_card_basis b])`. Set `B` to `Module.Basis.mk li sp.ge`. Establish `hB : (B : Fin r → E) = f` using `Module.Basis.coe_mk _ _`.
+
+Establish `hd : b.det f ≠ 0` using `((Module.Basis.is_basis_iff_det b).1 ⟨li, sp⟩).ne_zero`. Establish `hbB : ∀ v, b.det v = b.det f * B.det v` using `fun v => by conv_lhs => rw [b.det.eq_smul_basis_det B, hB]`. Both sides reduce to the same expression. Establish `hA : ∀ c : Fin r → κ, B.det (z ∘ c) ∈ A` using `fun c => det_mem A B _ fun i => by rw [hB, ← h]; exact Submodule.subset_span ⟨c i, rfl⟩`. Establish `h1` using `det_mem_span A B z f fun i => by rw [h]; exact Submodule.subset_span ⟨i, rfl⟩`.
+
+Rewrite `h1` using `[← hB, B.det_self]`. Establish `: ∃ c₀, IsUnit (⟨_, hA c₀⟩ : A)`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `: Submodule.span A (Set.range fun c : Fin r → κ => B.det (z ∘ c)) ≤ Submodule.map (Algebra.linearMap A Ω) (IsLocalRing.maximalIdeal A)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨⟨_, hA c⟩, hn c, rfl⟩`. Take `⟨y, hy, e⟩` from `this h1`. Establish `: y = 1` using `Subtype.ext e`.
+
+Conclude with `hy (this ▸ isUnit_one)`. Take `⟨c₀, hu⟩` from `this`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `hw' : B.det (z ∘ c₀) * (w : Ω) = 1` using `congrArg Subtype.val hw`. Use `⟨c₀, by rw [hbB]; exact mul_ne_zero hd (left_ne_zero_of_mul_eq_one hw'), fun c => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hbB, hbB (z ∘ c₀), mul_div_mul_left _ _ hd, div_eq_mul_inv, ← eq_inv_of_mul_eq_one_right hw']`. Conclude with `A.mul_mem (hA c) w.2`.
+-/
 theorem frame_plucker : ∀ (Ω : Type) [Field Ω] (E : Type) [AddCommGroup E] [Module Ω E] (A : Subring Ω) [IsLocalRing A] (r : ℕ) (b : Module.Basis (Fin r) Ω E) (κ : Type) (z : κ → E) (f : Fin r → E), LinearIndependent Ω f → Submodule.span A (Set.range z) = Submodule.span A (Set.range f) → ∃ c₀ : Fin r → κ, b.det (z ∘ c₀) ≠ 0 ∧ ∀ c : Fin r → κ, b.det (z ∘ c) / b.det (z ∘ c₀) ∈ A := by
   intro Ω _ E _ _ A _ r b κ z f li h
   classical

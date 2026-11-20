@@ -8,14 +8,23 @@ namespace Formalism.L2.PairingIndexBounds.Rec
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.GL3Theta Formalism.L2.PairingIndexBounds.Mv Formalism.L2.Th1.H Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun a b _ _ => ⟨fun x hx => L.smul_mem _ hx, fun x hx => L.smul_mem _ hx⟩⟩`.
+-/
 theorem eqOff_refl (D : D7) (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {N : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) : EqOff D P L L :=
   ⟨0, fun a b _ _ => ⟨fun x hx => L.smul_mem _ hx, fun x hx => L.smul_mem _ hx⟩⟩
 
+/- English proof (translation)
+Simplify using `[volP, AddSubgroup.addSubgroupOf_self]`.
+-/
 theorem volP_self (D : D7) (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {N N' : ℕ}
     (Y : AddSubgroup (Matrix (Fin N') (Fin N) (EP D P))) : volP Y Y = 1 := by
   simp [volP, AddSubgroup.addSubgroupOf_self]
 
+/- English proof (translation)
+Take `⟨hbc, hheis⟩` from `heisU V H α A B hH hA hB`. Take `⟨hfa, hfb⟩` from `fixed_of_good H α A B Λ₀ g0 0 (fixedBy H α Λ₀).zero_mem`. Take `⟨Xi, hXi, -⟩` from `xiExists ℂ A B (V → ℂ) (cU H A B) (wA H α A) (wB H α B) hbc hheis (Λ₀.addSubgroupOf A) 0 hfa hfb`. Take `⟨-, hpos, -⟩` from `movesU V H α A B Λ₀ Λ₁ hH hA hB g0 g1 hfin 0 (fixedBy H α Λ₀).zero_mem Xi hXi`. Conclude with `hpos`.
+-/
 theorem volA_pos {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A B Λ₀ Λ₁ : AddSubgroup V)
     (hH : IsHerm H) (hA : IsSemiChar H A α) (hB : IsSemiChar H B α) (g0 : GoodLat H α A B Λ₀)
     (g1 : GoodLat H α A B Λ₁) (hfin : relIdx Λ₀ Λ₁ ≠ 0) : 0 < volA A Λ₀ Λ₁ := by
@@ -26,6 +35,21 @@ theorem volA_pos {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V
   obtain ⟨-, hpos, -⟩ := movesU V H α A B Λ₀ Λ₁ hH hA hB g0 g1 hfin 0 (fixedBy H α Λ₀).zero_mem Xi hXi
   exact hpos
 
+/- English proof (translation)
+Introduce `cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP th hth`. Take `⟨hHerm, -, hIop, hTh, -⟩` from `local_global_comparison_holds D (tor0 D cc δ) N N'`. Set `ι : Type` to `{q : Pair D N N' // admitted D N N' q.1 q.2 ∧ EqOff D P q.1 L₀ ∧ EqOff D P q.2 L₀'}`. Establish `hfam` using `genModelXi (VC D N N') (HfS D (tor0 D cc δ) N N') (al D (tor0 D cc δ)) (La D (tor0 D cc δ) L₀ L₀') (Matrix (Fin N') (Fin N) (EP D P)) ι (fun i => La D (tor0 D cc δ) i.1.1 i.1.2) (fun i => (YP D P i.1.1 i.1.2 : Set _)) (fun i => volP (YP D P L₀ L₀') (YP D P i.1.1 i.1.2)) hHerm th …`. Use `swap`.
+
+Introduce `s`. Take `⟨A, B, φ, hA, hB, g0, hs⟩` from `hH D cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP (s.map ⟨Subtype.val, Subtype.val_injective⟩) (by`. Introduce `q hq`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 hq`. Conclude with `i.2)`.
+
+Use `⟨A, B, φ, hA, hB, g0, fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `hs i.1 (Finset.mem_map_of_mem _ hi)`. Take `⟨Xi, hXi⟩` from `hfam`. Use `⟨Xi, ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `hXi ⟨(L₀, L₀'), hAdm, eqOff_refl D P L₀, eqOff_refl D P L₀'⟩`.
+
+Simplify using `only [volP_self, Real.sqrt_one, Complex.ofReal_one, one_smul] at h0`. Rewrite using `[h0]`. Take `⟨A, B, φ, hA, hB, g0, -⟩` from `hH D cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP ∅ (by simp)`. Conclude with `interSelf (VC D N N') (HfS D (tor0 D cc δ) N N') (al D (tor0 D cc δ)) _ hHerm g0.1 th (hTh _ hth)`. Introduce `L L' hLL hE1 hE2`.
+
+Set `i : ι` to `⟨(L, L'), hLL, hE1, hE2⟩`. Establish `h1` using `hXi i`. Take `⟨A, B, φ, hA, hB, g0, hs⟩` from `hH D cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP {(L, L')} (by simpa using ⟨hLL, hE1, hE2⟩)`. Take `⟨g1, hfin, -, hvol⟩` from `hs (L, L') (Finset.mem_singleton_self _)`. Establish `hpos : 0 < volP (YP D P L₀ L₀') (YP D P L L')`.
+
+Rewrite using `[hvol]`. Conclude with `volA_pos _ _ A B _ _ hHerm hA hB g0 g1 hfin`. Establish `hs0 : (Real.sqrt (volP (YP D P L₀ L₀') (YP D P L L')) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 hpos).ne'` after adjusting the coercions. Rewrite using `[hIop]`.
+
+Use function extensionality and compare the values at `z`. Establish `h1z` using `congrFun h1 z`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1z`. Express the relevant statement in the definitionally equal form `Xi (Set.indicator (YP D P L L' : Set _) 1) z = _ at h1z`. Rewrite using `[h1z, Complex.ofReal_inv, ← mul_assoc, inv_mul_cancel₀ hs0, one_mul]`.
+-/
 theorem modelXiNZ_of (hH : HalvesRec) (D : D7) : ModelXiNZ D := by
   intro cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP th hth
   classical
@@ -67,6 +91,11 @@ theorem modelXiNZ_of (hH : HalvesRec) (D : D7) : ModelXiNZ D := by
     change Xi (Set.indicator (YP D P L L' : Set _) 1) z = _ at h1z
     rw [h1z, Complex.ofReal_inv, ← mul_assoc, inv_mul_cancel₀ hs0, one_mul]
 
+/- English proof (translation)
+Introduce `cc δ hcc hδ N N' L₀ L₀' hAdm P hP th hth`. Establish `hδ0 : δ ≠ 0`. Introduce `h0`. Apply `hΔ cc hcc` to reduce the goal to its premises. Rewrite using `[← hδ, h0]`.
+
+Evaluate the numerical expressions. Conclude with `modelXiNZ_of hH D cc δ hcc hδ hδ0 N N' L₀ L₀' hAdm P hP th hth`.
+-/
 theorem modelXi_of (hH : HalvesRec) (D : D7) (hΔ : DiscrNZ D) : modelXi D := by
   intro cc δ hcc hδ N N' L₀ L₀' hAdm P hP th hth
   have hδ0 : δ ≠ 0 := by

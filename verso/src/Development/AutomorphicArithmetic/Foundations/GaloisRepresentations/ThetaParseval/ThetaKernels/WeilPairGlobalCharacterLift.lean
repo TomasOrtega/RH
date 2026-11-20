@@ -19,6 +19,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E →ₐ[F] E} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
 end PositivityTheory.ThKW.DblSchur
 open PositivityTheory.ThKW.DblSchur PositivityTheory.ThKW.Dbl Formalism.IndefR.DatumF MeasureTheory GlobalTheory.DblTargetDelta in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h hd e`. Establish `hψ : IsCharAF F B.ψ` using `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).1`. Establish `hinv : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`. Establish `hT'` using `GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT`. Establish `hth` using `fun w f hf => _root_.GlobalTheory.HeisThetaF.isThetaFunOF_heisOF_k F E σ B hB nS nT JS JT ξ₀ w f hf`. Take `⟨μ, 𝓕, μ₂, 𝓕₂, hμ, h𝓕, hμ₂, h𝓕₂, hprod⟩` from `exists_prod_domain F E nS nT`. Set `T` to `{f // IsThetaFunOF σ JS JT ξ₀ B.ψ f}`.
+
+Establish `hδ : ∀ f₁ f₂ g₁ g₂ : WOF F E nS nT → ℂ, ∫ x in 𝓕₂, deltaT f₁ f₂ x * star (deltaT g₁ g₂ x) ∂μ₂ = (∫ x in 𝓕, f₁ x * star (g₁ x) ∂μ) * ∫ x in 𝓕, conj (f₂ (-x)) * star (conj (g₂ (-x))) ∂μ` using `fun f₁ f₂ g₁ g₂ => by`. Rewrite using `[← hprod]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [deltaT_apply, star_mul']`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, H⟩` from `abstract hψ (GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS hT' ξ₀ hσξ) (_root_.GlobalTheory.T.rational_lattice_self_dual F E σ B hB _ _ JS _ hS hT' ξ₀ hξ) (fun p : T × T => ωd (1, hd) (deltaT p.1.1 p.2.1)) (fun p => deltaT (ω (1, h) p.1.1) p.2.1 …`. Establish `e1 : actOF σ JS JT 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) = topR w`. Rewrite using `[← GlobalTheory.WeilPartsF.actOF_mul, mul_one, mul_inv_cancel, act_one_left, show mtF σ JT 1 = 1 from rfl, Matrix.one_mul]`. Establish `e2 : actOF σ JS _ 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) = w`.
+
+Rewrite using `[act_glue h hd e, e1]`. Conclude with `tb_ext (top_glue _ _) (bot_glue _ _)`. Use `⟨(⟨_, hth (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2⟩, ⟨_, hth (-botR w) _ p.2.2⟩), ?_, ?_⟩` and prove the remaining obligations. Use `hωd.om_heis 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) _ (theta_delta hψ.2.1 p.1.2 p.2.2)` as an intermediate fact. Rewrite `this` using `[e2, heis_delta hψ.2.1, top_glue, bot_glue]`.
+
+Conclude with `this.symm`. Use `hω.om_heis 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2` as an intermediate fact. Rewrite `this` using `[e1]`. Use `show _ = deltaT (ω (1, h) _) _`. Rewrite using `[this, heis_delta hψ.2.1])`.
+
+Use `μ₂ 𝓕₂ hμ₂ h𝓕₂ (fun p q => by`. Rewrite using `[GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ₂ 𝓕₂ hμ₂ h𝓕₂ (ωd (1, hd)) (hωd.om_pres _) (hωd.om_unit μ₂ 𝓕₂ hμ₂ h𝓕₂ _) _ _ (theta_delta hψ.2.1 p.1.2 p.2.2) (theta_delta hψ.2.1 q.1.2 q.2.2), hδ, hδ, GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ 𝓕 hμ h𝓕 (ω (1, h)) (hω.om_pres _) (hω.om_ …`. Conclude with `⟨c, hc, fun f₁ f₂ h₁ h₂ => H (⟨f₁, h₁⟩, ⟨f₂, h₂⟩)⟩`.
+-/
 theorem PositivityTheory.ThKW.weil_pair_global_character_lift : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

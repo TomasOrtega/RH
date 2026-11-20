@@ -9,6 +9,13 @@ open scoped Classical
 
 namespace GlobalTheory.WeilM
 
+/- English proof (translation)
+Introduce `R S _ _ _ c ξ α β _ _ _ _ r₀ J₀ K z z'`. Simplify using `only [symp, hTens, ← map_add, ← map_sum, ← mul_add, ← Finset.mul_sum]`. Use `congr 2`. Simplify using `only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.of_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Rewrite using `[add_comm]`. Apply the tactic sequence `congr 1 <;>`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem symp_fromBlocks_hyperbolic :
     ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S) (ξ : S) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (r₀ : ℕ) (J₀ : Matrix α α S) (K : Matrix β β S)

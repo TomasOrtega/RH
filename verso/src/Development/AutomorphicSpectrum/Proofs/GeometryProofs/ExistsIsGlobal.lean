@@ -30,6 +30,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo l c hpq hg hA`. Take `⟨-, hI⟩` from `GlobalTheory.CompanionTheory.Ar.Top.partI_holds`. Take `⟨Yl, hYl, hN6⟩` from `hI E H Dw hpq Xo`. Take `⟨Ygl, hD, hDom⟩` from `hN6 l c hg hA`. Conclude with `⟨Ygl, Yl, hg, hYl, hA, hD, hDom⟩`.
+-/
 theorem exists_isGlobal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (l : Level H) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → ∃ Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F), Top.IsGlobal Xo l c Y := by
   intro E _ _ _ H Dw Xo l c hpq hg hA
   obtain ⟨-, hI⟩ := GlobalTheory.CompanionTheory.Ar.Top.partI_holds

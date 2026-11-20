@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨h1, h2, -⟩` from `h.1`. Establish `hm : e * (e + cA D e) = e` using `by rw [mul_add, h1, h2, add_zero]`. Assume the negation of the conclusion as `hne`. Establish `h0` using `(GlobalTheory.IdemSupport.place_comp hΦ hε).2.2 P (fun e => hne e.symm)`.
+
+Establish `h3` using `GlobalTheory.IdemSupport.ev_mul (Φ := Φ) e (e + cA D e) P`. Rewrite `h3` using `[hm, hs, h0, mul_zero, (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ h).2.1]`. Conclude with `one_ne_zero h3`.
+-/
 theorem placeIdem_eq_under_of_idemAt {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D}
     (h : Formalism.L2.NTheta.IsIdemAt e P) {v' : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v' ε)
     (hs : e + cA D e = algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) ε) : v' = P.under (𝓞 D.host.F) := by
@@ -33,6 +38,19 @@ theorem placeIdem_eq_under_of_idemAt {D : D7} {P : HeightOneSpectrum (𝓞 D.hos
   rw [hm, hs, h0, mul_zero, (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ h).2.1] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Introduce `D T L sc G t B b hb v hv y hy`. Take `⟨e, ⟨⟨es, hes, rfl⟩, -⟩, hsupp, -⟩` from `hb.1`. Establish `hkill : ∀ PP ∈ locPl G t, ∀ a ∈ idAt D (· = v), (es PP + cA D (es PP)) * a = 0`. Introduce `PP hPP a ha`. Take `⟨-, -, v', ε, hε, hs⟩` from `(hes PP hPP).1`.
+
+Establish `hv' : v' = PP.under (𝓞 D.host.F)` using `placeIdem_eq_under_of_idemAt (hes PP hPP) hε hs`. Rewrite using `[hs]`. Apply `(GlobalTheory.FinPl.placeIdem_acts D v' ε hε).2` to reduce the goal to its premises. Rewrite `ha`, the goal using `[GlobalTheory.FinPl.mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere]`. Use `⟨ha.1, fun w hw => ha.2 w ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Apply `hw` to reduce the goal to its premises. Introduce `hwv'`. Conclude with `hv PP hPP (hv'.symm.trans (hwv'.symm.trans h))`. Establish `hz : ∀ i, ((Formalism.L2.Theta.mt _ (b 0) - 1) *ᵥ y) i ∈ idAt D (· = v)` using `fun i => by`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`. Establish `hE : ∀ i, ((Formalism.L2.Theta.mt _ (b 0) - 1) *ᵥ y) i = ((∑ PP ∈ locPl G t, es PP) + cA D (∑ PP ∈ locPl G t, es PP)) * ((Formalism.L2.Theta.mt _ (b 0) - 1) *ᵥ y) i`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hsupp i j]`. Establish `h0 : (Formalism.L2.Theta.mt _ (b 0) - 1) *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[hE i, map_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_eq_zero fun PP hPP => hkill PP hPP _ (hz i)`. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem base_mt_mulVec_off : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (B : Frames G) (b : Pts G), IsBase t B b → ∀ v : GlobalTheory.FinPl.Pl D, (∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ v) → ∀ y : Fin (G.V (.grid D.R.m 0)).rank → AE D, (∀ i, y i ∈ idAt D (· = v)) → Formalism.L2.Theta.mt _ (b 0) *ᵥ y = y := by
   intro D T L sc G t B b hb v hv y hy
   obtain ⟨e, ⟨⟨es, hes, rfl⟩, -⟩, hsupp, -⟩ := hb.1

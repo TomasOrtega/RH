@@ -20,6 +20,9 @@ open GlobalTheory.RowEx MeasureTheory
 
 namespace GlobalTheory.BotDictAlg
 
+/- English proof (translation)
+Rewrite using `[← mem_algebraicClosure_iff]`. Unfold `GL3Theta.applyAt0`. Use `sum_mem fun α _ => mul_mem (mul_mem ((mem_algebraicClosure_iff).2 (hP α)) ?_) (hG α)` and prove the remaining obligations. Conclude with `prod_mem fun _ _ => natCast_mem _ _`.
+-/
 theorem applyAt0_isAlgebraic {D : D7} {N N' : ℕ} {P : MvPolynomial (GL3Theta.Idx D N N') ℂ} {G : TaylorLogMetric.VC D N N' → ℂ}
     (hP : ∀ α, IsAlgebraic ℚ (P.coeff α)) (hG : TaylorLogMetric.CoefIn D G TaylorLogMetric.Qbar) : IsAlgebraic ℚ (GL3Theta.applyAt0 D P G) := by
   rw [← mem_algebraicClosure_iff]
@@ -27,6 +30,11 @@ theorem applyAt0_isAlgebraic {D : D7} {N N' : ℕ} {P : MvPolynomial (GL3Theta.I
   refine sum_mem fun α _ => mul_mem (mul_mem ((mem_algebraicClosure_iff).2 (hP α)) ?_) (hG α)
   exact prod_mem fun _ _ => natCast_mem _ _
 
+/- English proof (translation)
+Use `Even.mul_left ?_ _` and prove the remaining obligations. Establish `h1` using `hX.rank`. Establish `h2` using `hX.rank'`. Establish `h3` using `hX.is.rank`. Establish `h4` using `SqNum.ranks_exact D i j`.
+
+Rewrite using `[← h3, h1, h2]`. Use `⟨SqNum.halfRank D i j - (D.R.m - (j.1 + 1)) / 2 - (D.R.m - j.1) / 2, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 theorem even_bot {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) : Even (A'.rank * WW.rank) := by
   refine Even.mul_left ?_ _
@@ -38,6 +46,11 @@ theorem even_bot {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData
   refine ⟨SqNum.halfRank D i j - (D.R.m - (j.1 + 1)) / 2 - (D.R.m - j.1) / 2, ?_⟩
   omega
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX n`. Take `⟨Ω, hΩ, H⟩` from `GlobalTheory.T.period_algebraic_ideal_expansion hP hI hL hX n`. Use `⟨Ω, hΩ, fun t x hx h hh U => ?_⟩` and prove the remaining obligations. Take `⟨cc, δ, t0, e0, k, c, s, hc, ht0, he0, hca, hs, hU⟩` from `H t x hx h hh`. Take `⟨Q, hQ, heq⟩` from `hU U`.
+
+Rewrite using `[heq, mul_div_cancel_left₀ _ hΩ]`. Use `applyAt0_isAlgebraic hQ ?_` and prove the remaining obligations. Conclude with `((hI D).alg cc δ hc t0 ht0 A'.rank WW.rank (StandardLatticesGL3.stdL D A'.rank) (StandardLatticesGL3.stdL D WW.rank) (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) (even_bot hX) e0 he0.2.2.2.1).2.2.1 k c s (fun l => (mem_algebraicClosure_iff).2 (hca …`.
+-/
 theorem kernel_div_period_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

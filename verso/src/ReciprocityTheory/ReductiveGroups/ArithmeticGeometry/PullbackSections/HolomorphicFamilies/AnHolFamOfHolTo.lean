@@ -21,13 +21,22 @@ variable {g g' : ℕ}
 def anLin (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 × Fin g) : MvPolynomial (Fin 1 × Fin g') ℂ :=
   ∑ k : Fin g', MvPolynomial.C (A (Pi.single k 1) p.2) * MvPolynomial.X ((0 : Fin 1), k)
 
+/- English proof (translation)
+The claim follows from `Ideal.sum_mem _ fun _ _ => Ideal.mul_mem_left _ _ (X_mem_orig _)`.
+-/
 theorem anLin_mem (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 × Fin g) : anLin A p ∈ orig ℂ (Fin 1 × Fin g') :=
   Ideal.sum_mem _ fun _ _ => Ideal.mul_mem_left _ _ (X_mem_orig _)
 
+/- English proof (translation)
+Simplify using `[anLin, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem anLin_add (A B : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 × Fin g) :
     anLin (A + B) p = anLin A p + anLin B p := by
   simp [anLin, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `h` using `map_sum (MvPolynomial.coeToMvPowerSeries.ringHom (σ := Fin 1 × Fin g') (R := ℂ)) (fun k => MvPolynomial.C (A (Pi.single k 1) p.2) * MvPolynomial.X ((0 : Fin 1), k)) Finset.univ`. Unfold `anLin`. Use `h.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem anLin_coe (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 × Fin g) :
     ((anLin A p : MvPolynomial (Fin 1 × Fin g') ℂ) : MvPowerSeries (Fin 1 × Fin g') ℂ) =
       ∑ k : Fin g', MvPowerSeries.C (A (Pi.single k 1) p.2) * MvPowerSeries.X ((0 : Fin 1), k) := by
@@ -37,11 +46,23 @@ theorem anLin_coe (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 ×
   refine h.trans ?_
   simp
 
+/- English proof (translation)
+Rewrite using `[anLin_coe, map_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem anLin_cc (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) (p : Fin 1 × Fin g) :
     MvPowerSeries.constantCoeff ((anLin A p : MvPolynomial (Fin 1 × Fin g') ℂ) : MvPowerSeries (Fin 1 × Fin g') ℂ) = 0 := by
   rw [anLin_coe, map_sum]
   simp
 
+/- English proof (translation)
+Establish `hθ' : ContDiffAt ℂ ω θ (A 0)` using `by rw [map_zero]; exact hθ`. Establish `hA : ContDiffAt ℂ ω (θ ∘ A) 0` using `hθ'.comp (0 : Fin g' → ℂ) A.contDiff.contDiffAt`. Establish `hv : ∀ q : Fin 1 × Fin g', A (Pi.single q.2 1) = ∑ p : Fin 1 × Fin g, A (Pi.single q.2 1) p.2 • (Pi.single p.2 1 : Fin g → ℂ)`. Introduce `q`. Rewrite using `[Fintype.sum_prod_type, Fin.sum_univ_one]`.
+
+Conclude with `sum_single_smul _`. Establish `hLd : ∀ (p : Fin 1 × Fin g) (q : Fin 1 × Fin g'), MvPowerSeries.pderiv ℂ q ((anLin A p : MvPolynomial (Fin 1 × Fin g') ℂ) : MvPowerSeries (Fin 1 × Fin g') ℂ) = MvPowerSeries.C (A (Pi.single q.2 1) p.2)`. Introduce `p q`. Take `⟨a, j⟩` from `q`. Establish `ha : a = 0` using `Subsingleton.elim _ _`.
+
+Substitute `ha` using the available equality. Rewrite using `[anLin_coe, map_sum, Finset.sum_eq_single j]`. Rewrite using `[Derivation.leibniz, MvPowerSeries.pderiv_C, smul_zero, add_zero, MvPowerSeries.pderiv_X, smul_eq_mul]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Rewrite using `[Derivation.leibniz, MvPowerSeries.pderiv_C, smul_zero, add_zero, MvPowerSeries.pderiv_X, smul_eq_mul]`. Simplify using `[Prod.ext_iff, hk]`. Simplify using the standard rewrite rules. Conclude with `(TCPf.isTayF_tay hA).eq (TCPf.isTayF_comp hθ A hv (TCPf.isTayF_subst θ hθ _ _ (anLin_cc A) hLd))`.
+-/
 theorem tay_comp_anLin {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) :
     tay (θ ∘ A) 0 = MvPowerSeries.subst (fun p => ((anLin A p : MvPolynomial (Fin 1 × Fin g') ℂ) :
       MvPowerSeries (Fin 1 × Fin g') ℂ)) (tay θ 0) := by
@@ -68,6 +89,9 @@ theorem tay_comp_anLin {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω �
     · simp
   exact (TCPf.isTayF_tay hA).eq (TCPf.isTayF_comp hθ A hv (TCPf.isTayF_subst θ hθ _ _ (anLin_cc A) hLd))
 
+/- English proof (translation)
+Rewrite using `[jetOf, tay_comp_anLin hθ A, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psJet_subst m _ (anLin_cc A)]`. Use `jetMap_congr _ _ _ _ (fun p => ?_) _` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_eq, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.mk_trunc_coe]`.
+-/
 theorem jetOf_comp_anLin (m : ℕ) {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0)
     (A : (Fin g' → ℂ) →L[ℂ] (Fin g → ℂ)) :
     jetOf m (θ ∘ A) = jetMap (anLin A) (anLin_mem A) (jetOf m θ) := by
@@ -81,6 +105,15 @@ variable {Y : Scheme.{0}}
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Unfold `jetPt`. Rewrite using `[spMap, spec_comp_nbhdPt]`. Establish `hres : ∀ (U V : Y.Opens) (hU : e 0 cpt ∈ U) (hV : e 0 cpt ∈ V) (h : V ≤ U), Y.presheaf.map (homOfLE h).op ≫ (jetψ e hol m V hV ≫ CommRingCat.ofHom χ) = jetψ e hol m U hU ≫ CommRingCat.ofHom χ` using `fun U V hU hV h => by rw [← Category.assoc, jetψ_res]`. Establish `hloc : ∀ (U : Y.Opens) (hU : e 0 cpt ∈ U) (f : Γ(Y, U)), IsUnit ((jetψ e hol m U hU ≫ CommRingCat.ofHom χ) f) → e 0 cpt ∈ Y.basicOpen f`. Introduce `U hU f hf`.
+
+Rewrite `hf` using `[CommRingCat.comp_apply]`. Conclude with `jetψ_loc e hol m U hU f (hχl.map_nonunit _ hf)`. Establish `hpt` using `nbhdPt_closedPoint _ hres hloc`. Establish `hpt'` using `nbhdPt_closedPoint (y₀ := e' 0 cpt) _ (jetψ_res e' hol' m) (jetψ_loc e' hol' m)`. Use `hom_ext_of_local (hpt.trans (by rw [hpt', h0])) fun U h₁ h₂ => ?_` and prove the remaining obligations.
+
+Establish `hU : e 0 cpt ∈ U`. Establish `: nbhdPt _ hres (IsLocalRing.closedPoint _) ∈ U` using `h₁ (show IsLocalRing.closedPoint _ ∈ (⊤ : (Spec _).Opens) from trivial)`. Rewrite `this` using `[hpt]`. Then use the resulting hypothesis. Establish `hU' : e' 0 cpt ∈ U` using `by rw [h0]; exact hU`. Rewrite using `[nbhdPt_appLE _ hres hloc U hU h₁, nbhdPt_appLE _ (jetψ_res e' hol' m) (jetψ_loc e' hol' m) U hU' h₂]`.
+
+Use `congr 1`. Use extensionality with `f`. Rewrite using `[CommRingCat.comp_apply, jetψ_apply, jetψ_apply]`. Conclude with `hχ U hU f`.
+-/
 theorem jetPt_precompD {g g' : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (e' : (Fin g' → ℂ) → (Sp ℂ ⟶ Y))
     (hol : IsHolFam e) (hol' : IsHolFam e') (h0 : e' 0 = e 0) (m : ℕ)
     (χ : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 1 × Fin g') m) [hχl : IsLocalHom χ]
@@ -112,16 +145,27 @@ theorem jetPt_precompD {g g' : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (e'
   rw [CommRingCat.comp_apply, jetψ_apply, jetψ_apply]
   exact hχ U hU f
 
+/- English proof (translation)
+Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Simplify using `only [Set.mem_univ, true_and] at h1 h2`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem anHolFam_of_holTo {N : ℕ} {y : (Fin N → ℂ) → (Sp ℂ ⟶ Y)} (h : IsHolTo Set.univ y) : IsHolFam y := by
   intro U f
   obtain ⟨h1, h2⟩ := h U f
   simp only [Set.mem_univ, true_and] at h1 h2
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem anSpMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval ψ (MvPolynomial.aeval φ p)) = Ideal.Quotient.mk _ (MvPolynomial.aeval ch p)`. Use `congr 1`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X, h i]`.
+-/
 theorem anJetMap_comp {K : Type} [Field K] {Ia Ib Ic : Type} {m : ℕ} (φ : Ia → MvPolynomial Ib K)
     (hφ : ∀ i, φ i ∈ orig K Ib) (ψ : Ib → MvPolynomial Ic K) (hψ : ∀ i, ψ i ∈ orig K Ic)
     (ch : Ia → MvPolynomial Ic K) (hch : ∀ i, ch i ∈ orig K Ic) (h : ∀ i, MvPolynomial.aeval ψ (φ i) = ch i)
@@ -144,10 +188,16 @@ abbrev anKap : Fin 2 × Fin g ≃ Fin (2 * g) := finProdFinEquiv
 def anPr (i : Fin 2) : (Fin (2 * g) → ℂ) →L[ℂ] (Fin g → ℂ) :=
   ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (2 * g) => ℂ) (anKap (i, j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem anPr_apply (i : Fin 2) (v : Fin (2 * g) → ℂ) (j : Fin g) : anPr i v j = v (anKap (i, j)) := rfl
 
 abbrev anSum : (Fin (2 * g) → ℂ) →L[ℂ] (Fin g → ℂ) := anPr 0 + anPr 1
 
+/- English proof (translation)
+Rewrite using `[anLin, Finset.sum_eq_single (anKap (i, p.2))]`. Rewrite using `[anPr_apply, Pi.single_eq_same, map_one, _root_.one_mul]`. Introduce `k _ hk`. Simplify using `[anPr_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+-/
 theorem anLin_anPr (i : Fin 2) (p : Fin 1 × Fin g) :
     anLin (anPr (g := g) i) p = MvPolynomial.X ((0 : Fin 1), anKap (i, p.2)) := by
   rw [anLin, Finset.sum_eq_single (anKap (i, p.2))]
@@ -159,11 +209,21 @@ theorem anLin_anPr (i : Fin 2) (p : Fin 1 × Fin g) :
 def anRen (m : ℕ) : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m :=
   jetMap (fun p => MvPolynomial.X (anKap.symm p.2)) fun _ => X_mem_orig _
 
+/- English proof (translation)
+Unfold `anRen jetCopy`. Conclude with `anJetMap_comp _ _ _ _ _ _ (fun p => by simp only [anLin_anPr, MvPolynomial.aeval_X, Equiv.symm_apply_apply]) a`.
+-/
 theorem anRen_copy (m : ℕ) (i : Fin 2) (a : Jet ℂ (Fin 1 × Fin g) m) :
     anRen m (jetMap (anLin (anPr i)) (anLin_mem _) a) = jetCopy (S := ℂ) g m i a := by
   unfold anRen jetCopy
   exact anJetMap_comp _ _ _ _ _ _ (fun p => by simp only [anLin_anPr, MvPolynomial.aeval_X, Equiv.symm_apply_apply]) a
 
+/- English proof (translation)
+Establish `hs : ∀ p : Fin 1 × Fin g, MvPolynomial.aeval (fun q : Fin 1 × Fin (2 * g) => (MvPolynomial.X (anKap.symm q.2) : MvPolynomial (Fin 2 × Fin g) ℂ)) (anLin anSum p) = MvPolynomial.X ((0 : Fin 2), p.2) + MvPolynomial.X ((1 : Fin 2), p.2)`. Introduce `p`. Simplify using `only [anSum, anLin_add, anLin_anPr, map_add, MvPolynomial.aeval_X, Equiv.symm_apply_apply]`. Unfold `anRen jetSubstP`. Rewrite using `[anJetMap_comp _ _ _ _ _ (fun p => Ideal.add_mem _ (X_mem_orig _) (X_mem_orig _)) hs a]`.
+
+Use `jetMap_congr _ _ _ _ (fun p => ?_) a` and prove the remaining obligations. Establish `hc : MvPolynomial.constantCoeff (psTrunc m (addF ℂ g p.2)) = 0`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_eq, MvPolynomial.constantCoeff_eq, MvPowerSeries.coeff_truncTotal _ (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[addF]`. Establish `ha : (addF ℂ g p.2 : MvPowerSeries (Fin 2 × Fin g) ℂ) = ((MvPolynomial.X ((0 : Fin 2), p.2) + MvPolynomial.X ((1 : Fin 2), p.2) : MvPolynomial (Fin 2 × Fin g) ℂ) : MvPowerSeries (Fin 2 × Fin g) ℂ)` using `by simp [addF]`.
+
+Simplify using `only [hc, map_zero, sub_zero]`. Rewrite using `[ha, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.psTrunc_eq, Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet.mk_trunc_coe]`.
+-/
 theorem anRen_sum (m : ℕ) (a : Jet ℂ (Fin 1 × Fin g) m) :
     anRen m (jetMap (anLin anSum) (anLin_mem _) a) =
       jetSubstP (S := ℂ) m (fun p : Fin 1 × Fin g => psTrunc m (addF ℂ g p.2)) a := by
@@ -196,6 +256,9 @@ def anJX (u : Sp ℂ ⟶ X) (ex : (Fin g → ℂ) → (Over.mk u ⟶ G)) (hol : 
   Over.homMk (jetPt (fun z => (ex z).left) hol m)
     (jetPt_over (fun z => (ex z).left) hol G.hom u (fun z => Over.w (ex z)) m)
 
+/- English proof (translation)
+Use `isLocalHom_jetMap (K := ℂ) (m := m) (anLin A) (anLin_mem A)` as an intermediate fact. Use `jetPt_precompD _ _ hol hA (by show (ex (A 0)).left = (ex 0).left; rw [map_zero]) m _ fun U hU f => ?_` and prove the remaining obligations. Conclude with `(jetOf_comp_anLin m (contDiffAt_val _ hol hU f) A).symm`.
+-/
 theorem anJX_jets {u : Sp ℂ ⟶ X} (ex : (Fin g → ℂ) → (Over.mk u ⟶ G)) (hol : IsHolFam fun z => (ex z).left) (m : ℕ)
     (A : (Fin (2 * g) → ℂ) →L[ℂ] (Fin g → ℂ)) (hA : IsHolFam fun v => (ex (A v)).left) :
     spMap ((jetMap (anLin A) (anLin_mem A) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 1 × Fin (2 * g)) m) :
@@ -205,6 +268,21 @@ theorem anJX_jets {u : Sp ℂ ⟶ X} (ex : (Fin g → ℂ) → (Over.mk u ⟶ G)
   refine jetPt_precompD _ _ hol hA (by show (ex (A 0)).left = (ex 0).left; rw [map_zero]) m _ fun U hU f => ?_
   exact (jetOf_comp_anLin m (contDiffAt_val _ hol hU f) A).symm
 
+/- English proof (translation)
+Set `P : (Fin (2 * g) → ℂ) → (Sp ℂ ⟶ pullback G.hom G.hom)` to `fun v => pullback.lift (ex (anPr 0 v)).left (ex (anPr 1 v)).left ((Over.w (ex (anPr 0 v))).trans (Over.w (ex (anPr 1 v))).symm)`. Establish `hPh : IsHolFam P` using `anHolFam_of_holTo hP`. Establish `hPf : ∀ v, P v ≫ pullback.fst G.hom G.hom = (ex (anPr 0 v)).left` using `fun v => pullback.lift_fst _ _ _`. Establish `hPs : ∀ v, P v ≫ pullback.snd G.hom G.hom = (ex (anPr 1 v)).left` using `fun v => pullback.lift_snd _ _ _`. Establish `hPm : ∀ v, P v ≫ (MonObj.mul : G ⊗ G ⟶ G).left = (ex (anSum v)).left`.
+
+Introduce `v`. Establish `h1 : ex (anSum v) = ex (anPr 0 v) * ex (anPr 1 v)` using `by rw [← ex_add]; rfl`. Rewrite using `[h1, CategoryTheory.Hom.mul_def, Over.comp_left, Over.lift_left]`. Establish `hol0 : IsHolFam fun v => (ex (anPr 0 v)).left`. Establish `h` using `isHolFam_comp P hPh (pullback.fst G.hom G.hom)`.
+
+Rewrite `h` using `[show (fun v => P v ≫ pullback.fst G.hom G.hom) = fun v => (ex (anPr 0 v)).left from funext hPf]`. Then use the resulting hypothesis. Establish `hol1 : IsHolFam fun v => (ex (anPr 1 v)).left`. Establish `h` using `isHolFam_comp P hPh (pullback.snd G.hom G.hom)`. Rewrite `h` using `[show (fun v => P v ≫ pullback.snd G.hom G.hom) = fun v => (ex (anPr 1 v)).left from funext hPs]`. Then use the resulting hypothesis. Establish `hols : IsHolFam fun v => (ex (anSum v)).left`.
+
+Establish `h` using `isHolFam_comp P hPh (MonObj.mul : G ⊗ G ⟶ G).left`. Rewrite `h` using `[show (fun v => P v ≫ (MonObj.mul : G ⊗ G ⟶ G).left) = fun v => (ex (anSum v)).left from funext hPm]`. Then use the resulting hypothesis. Establish `Jc : ∀ (i : Fin 2) (hA : IsHolFam fun v => (ex (anPr i v)).left), (homAt u (jetCopy (S` using `ℂ) g m i) ≫ xm m).left = spMap ((anRen m : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin (2 * g)) m →+* Jet ℂ (Fin 2 × Fin g) m) ≫ jetPt (fun v => (ex (anPr i v)).left) hA m := by`. Introduce `i hA`. Establish `hring : ((jetCopy (S` using `ℂ) g m i : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 2 × Fin g) m) = ((anRen m : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin (2 * g)) m →+* Jet ℂ (Fin 2 × Fin g) m).comp ((jetMap (anLin (a …`.
+
+Rewrite using `[Over.comp_left, hx]`. Use `show spMap _ ≫ jetPt _ hol m = _`. Rewrite using `[hring, anSpMap_comp, Category.assoc, anJX_jets ex hol m (anPr i) hA]`. Establish `Js : (homAt u (jetSubstP (S` using `ℂ) m fun p : Fin 1 × Fin g => psTrunc m (addF ℂ g p.2)) ≫ xm m).left = spMap ((anRen m : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin (2 * g)) m →+* Jet ℂ (Fin 2 × Fin g) m) ≫ jetPt (fun v => (ex (anSum v)).left) hols m := by`. Establish `hring : ((jetSubstP (S` using `ℂ) m fun p : Fin 1 × Fin g => psTrunc m (addF ℂ g p.2) : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin g) m →+* Jet ℂ (Fin 2 × Fin g) m) = ((anRen m : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin (2 * g)) m →+* Je …`.
+
+Rewrite using `[Over.comp_left, hx]`. Use `show spMap _ ≫ jetPt _ hol m = _`. Rewrite using `[hring, anSpMap_comp, Category.assoc, anJX_jets ex hol m anSum hols]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Js, CategoryTheory.Hom.mul_def, Over.comp_left, Over.lift_left]`.
+
+Establish `hl : pullback.lift (homAt u (jetCopy (S` using `ℂ) g m (0 : Fin 2)) ≫ xm m).left (homAt u (jetCopy (S := ℂ) g m (1 : Fin 2)) ≫ xm m).left (by rw [Over.w, Over.w]) = spMap ((anRen m : Jet ℂ (Fin 1 × Fin (2 * g)) m →ₐ[ℂ] Jet ℂ (Fin 2 × Fin g) m) : Jet ℂ (Fin 1 × Fin (2 * g)) m →+* Jet ℂ (Fin 2 × Fin g) m) ≫ jetPt P hPh m := by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, jetPt_comp P hPh _ _ hol0 hPf, Jc 0 hol0]`. Rewrite using `[pullback.lift_snd, Category.assoc, jetPt_comp P hPh _ _ hol1 hPs, Jc 1 hol1]`. Rewrite using `[hl, Category.assoc, jetPt_comp P hPh _ _ hols hPm]`.
+-/
 theorem jets_law (u : Sp ℂ ⟶ X) {u' : Sp ℂ ⟶ X} (ex : (Fin g → ℂ) → (Over.mk u' ⟶ G))
     (hol : IsHolFam fun z => (ex z).left) (xm : ∀ m, overAt u (Jet ℂ (Fin 1 × Fin g) m) ⟶ G)
     (hx : ∀ m, (xm m).left = jetPt (fun z => (ex z).left) hol m)

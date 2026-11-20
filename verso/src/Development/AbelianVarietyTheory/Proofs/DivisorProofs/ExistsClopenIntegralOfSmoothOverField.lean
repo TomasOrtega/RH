@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ Z q hq z`. Take `⟨hR, hN, hL⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field F Z q hq`. Apply the tactic sequence `have : GlobalTheory.IsNormalScheme Z := by first | exact hN | exact IsNormalScheme.of_pred hN`. Establish `hC : irreducibleComponent z ∈ irreducibleComponents Z` using `irreducibleComponent_mem_irreducibleComponents z`. Set `C : Z.Opens` to `⟨irreducibleComponent z, IsNormalScheme.isOpen_of_mem_irreducibleComponents hC⟩`.
+
+Establish `hzC : z ∈ C` using `mem_irreducibleComponent`. Establish `hrange : Set.range C.ι = (C : Set Z)` using `Scheme.Opens.range_ι C`. Use `⟨C.toScheme, C.ι, ?_, inferInstance, ?_, by rw [hrange]; exact hzC⟩` and prove the remaining obligations. Apply `IsClosedImmersion.of_isPreimmersion` to reduce the goal to its premises. Rewrite using `[hrange]`.
+
+Conclude with `isClosed_of_mem_irreducibleComponents _ hC`. Establish `: IrreducibleSpace C` using `Subtype.irreducibleSpace isIrreducible_irreducibleComponent`. Establish `: Nonempty C` using `⟨⟨z, hzC⟩⟩`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced C.toScheme`.
+-/
 theorem exists_clopen_integral_of_smooth_over_field :
     ∀ (F : Type) [Field F] (Z : Scheme.{0}) (q : Z ⟶ Sp F), Smooth q → ∀ z : Z,
       ∃ (W' : Scheme.{0}) (j : W' ⟶ Z), IsClosedImmersion j ∧ IsOpenImmersion j ∧ IsIntegral W' ∧

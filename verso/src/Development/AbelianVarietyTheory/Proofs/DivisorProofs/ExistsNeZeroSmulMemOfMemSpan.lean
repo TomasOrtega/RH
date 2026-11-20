@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.NonzeroScalarInSpan
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `N.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem a hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors R) c`. Establish `hq : (q : R) ≠ 0` using `nonZeroDivisors.coe_ne_zero q`. Use `⟨a * q, mul_ne_zero ha hq, ?_⟩` and prove the remaining obligations. Establish `h1 : (q : R) • c • y = p • y`. Rewrite using `[← algebraMap_smul K (q : R), smul_smul, mul_comm]`.
+
+Simplify using `only at hpq`. Rewrite using `[hpq, algebraMap_smul]`. Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `N.smul_mem p hay`.
+-/
 theorem exists_ne_zero_smul_mem_of_mem_span {R K V : Type} [CommRing R] [IsDomain R] [Field K]
     [Algebra R K] [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V]
     [IsScalarTower R K V] (N : Submodule R V) {x : V}

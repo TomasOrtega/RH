@@ -16,6 +16,9 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Loca
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `hK hK'` using the available equality. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply, map_smul]`.
+-/
 theorem classFrameAll_comp {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (P G K : V →L[ℂ] V) (G' H' K' : V' →L[ℂ] V') (T : V' →L[ℂ] V)
     (a : ℂ) (hK : K = P * G) (hK' : K' = G' * H') :
@@ -44,6 +47,11 @@ def VIndepAtC (sc : ℝ) : Prop :=
           Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' w)) Set.univ (X.Wu u) (X.Wu u')
             (Formalism.L2.SG.RealObj.gamW X u u' w)).comp (X.piU u' h₂'))
 
+/- English proof (translation)
+Establish `rep` using `X.piU_rep w`. Establish `hki` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X w hk`. Establish `hgi` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X w hg`. Establish `hhi` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X w hh`. Establish `e1 : X.piU w k * (X.piU w h⁻¹ * X.piU w g) = 1`.
+
+Rewrite using `[e, mul_assoc, ← mul_assoc (X.piU w h), ← rep.2.1 h hh h⁻¹ hhi, mul_inv_cancel, rep.1, one_mul, ← rep.2.1 g⁻¹ hgi g hg, inv_mul_cancel, rep.1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem classFrameAll_pi_inv (w : D.what₂.Word) {k g h : X.B.I.Ginf} (hk : k ∈ X.SinfU w) (hg : g ∈ X.SinfU w)
     (hh : h ∈ X.SinfU w) (e : X.piU w k = X.piU w g⁻¹ * X.piU w h) :
     X.piU w k⁻¹ = X.piU w h⁻¹ * X.piU w g := by
@@ -57,6 +65,15 @@ theorem classFrameAll_pi_inv (w : D.what₂.Word) {k g h : X.B.I.Ginf} (hk : k �
   calc X.piU w k⁻¹ = X.piU w k⁻¹ * (X.piU w k * (X.piU w h⁻¹ * X.piU w g)) := by rw [e1, mul_one]
     _ = X.piU w h⁻¹ * X.piU w g := by rw [← mul_assoc, ← rep.2.1 k⁻¹ hki k hk, inv_mul_cancel, rep.1, one_mul]
 
+/- English proof (translation)
+Establish `hgi` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u hg`. Establish `hgi'` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u' hg'`. Take `⟨n, hn, a, ha, e⟩` from `sDecompC_holds X u g⁻¹ hgi`. Take `⟨n', hn', a', ha', e'⟩` from `sDecompC_holds X u' g'⁻¹ hgi'`. Establish `hM` using `dFrameMoveHC_holds X u u' i0 i0' _ h h' n a n' a' hD hn ha hn' ha'`.
+
+Establish `eγ : n * a * (g * γ * g'⁻¹) * a'⁻¹ * n'⁻¹ = γ`. Establish `e0 : n * a * (g * γ * g'⁻¹) * a'⁻¹ * n'⁻¹ = n * a * (g * γ * g'⁻¹) * (n' * a')⁻¹` using `by group`. Rewrite using `[e0, ← e, ← e']`. Use `group`. Rewrite `hM` using `[eγ]`.
+
+Establish `hh` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hD.1`. Establish `hh'` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1`. Establish `hk` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hM.1`. Establish `p1 : X.piU u (a * h) = X.piU u g⁻¹ * X.piU u h`. Rewrite using `[ClassFrameLeviDecomposition.pi_levi X u hn ha hh, ← e]`.
+
+Both sides reduce to the same expression. Establish `p2 : X.piU u' (a' * h') = X.piU u' g'⁻¹ * X.piU u' h'`. Rewrite using `[ClassFrameLeviDecomposition.pi_levi X u' hn' ha' hh', ← e']`. Both sides reduce to the same expression. Conclude with `⟨a * h, a' * h', hM, classFrameAll_pi_inv X u hk hg hh p1, p2⟩`.
+-/
 theorem classFrameAll_pull (γ g g' h h' : X.B.I.Ginf) (hg : g ∈ X.SinfU u) (hg' : g' ∈ X.SinfU u')
     (hD : Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' (g * γ * g'⁻¹) h h') :
     ∃ k k', Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' γ k k' ∧
@@ -82,6 +99,13 @@ theorem classFrameAll_pull (γ g g' h h' : X.B.I.Ginf) (hg : g ∈ X.SinfU u) (h
     rfl
   exact ⟨a * h, a' * h', hM, classFrameAll_pi_inv X u hk hg hh p1, p2⟩
 
+/- English proof (translation)
+Introduce `R ρ s hrel h₁ h₁' h₂ h₂' hD₁ hD₂`. Take `⟨hpt, g, hg, g', hg', hdec⟩` from `h3 R ρ s hrel`. Establish `hO : Formalism.L2.SG.TermOp.OOt s.1 = (((vR s.1.toTerm : ℝ) : ℂ) * (X.psiInfU u g * conj (X.psiInfU u' g'))) • (((Formalism.L2.SG.RealObj.InfCut.piIso X u g hg).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u).comp ((haveI` using `FiniteDimensional.complete ℂ (X.Vpi u) Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))).comp ((Formalism.L2.S …`. Rewrite using `[h5 R ρ s hrel g hg g' hg' hdec, ← smul_smul]`. Use `congr 1`.
+
+Rewrite using `[hdec]`. Conclude with `ClassFrameNormal.oo_map_mulLeft _ _ _ _ g g' _ _ _ _ (fun x => (X.Wu_spec u).1 g hg x) (fun x => (X.Wu_spec u').1 g' hg' x)`. Rewrite `hO` using `[Formalism.L2.SG.RealObj.InfCut.piIso_coe, Formalism.L2.SG.RealObj.InfCut.piIso_symm]`. Rewrite `hD₁`, `hD₂` using `[hdec]`. Take `⟨k₁, k₁', hK₁, e₁, e₁'⟩` from `classFrameAll_pull X u u' i0 i0' _ g g' h₁ h₁' hg hg' hD₁`.
+
+Take `⟨k₂, k₂', hK₂, e₂, e₂'⟩` from `classFrameAll_pull X u u' i0 i0' _ g g' h₂ h₂' hg hg' hD₂`. Establish `hV` using `hVA _ hpt (h4' R ρ s hrel) k₁ k₁' k₂ k₂' hK₁ hK₂`. Unfold `chiOO`. Rewrite using `[hO, smul_smul, classFrameAll_comp _ _ _ _ _ _ _ _ e₁ e₁', classFrameAll_comp _ _ _ _ _ _ _ _ e₂ e₂', hV]`.
+-/
 theorem vIndepLiftC_of_at (h3 : LiftDecompC X Y u u' κ) (h4' : LiftGPosC X Y u u' κ)
     (h5 : FormTranspC X Y u u' vR νq κ) (hVA : VIndepAtC X u u' i0 i0' νq 1) :
     VIndepLiftC X Y u u' i0 i0' κ := by
@@ -107,6 +131,9 @@ theorem vIndepLiftC_of_at (h3 : LiftDecompC X Y u u' κ) (h4' : LiftGPosC X Y u 
   unfold chiOO
   rw [hO, smul_smul, classFrameAll_comp _ _ _ _ _ _ _ _ e₁ e₁', classFrameAll_comp _ _ _ _ _ _ _ _ e₂ e₂', hV]
 
+/- English proof (translation)
+The claim follows from `normalFormC_of' X Y u u' vR i0 i0' νq κ (RealDecompL.liftAtSomeC_of X Y u u' κ hAtS) hCU (decompPhaseC_of X Y u u' κ (RealDecompL.liftDecompC_of_atSome X Y u u' κ hAtS) hPT) hDF (RealDecompL.liftGPosC_of X Y u u' κ hAtS hTP) hFT`.
+-/
 theorem normalFormC_all
     (hAtS : ∀ t : Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
     (hTP : ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w →
@@ -118,6 +145,9 @@ theorem normalFormC_all
     (decompPhaseC_of X Y u u' κ (RealDecompL.liftDecompC_of_atSome X Y u u' κ hAtS) hPT) hDF
     (RealDecompL.liftGPosC_of X Y u u' κ hAtS hTP) hFT
 
+/- English proof (translation)
+Establish `hLD` using `RealDecompL.liftDecompC_of_atSome X Y u u' κ hAtS`. Establish `hGP` using `RealDecompL.liftGPosC_of X Y u u' κ hAtS hTP`. Establish `hP : PtValueC X Y u u' vR i0 i0' νq κ` using `ptValueC_of X Y u u' vR i0 i0' νq κ (RealDecompL.liftAtSomeC_of X Y u u' κ hAtS) hCU (decompPhaseC_of X Y u u' κ hLD hPT) hDF hGP hFT (dFrameMoveC_of X u u' i0 i0' (sDecompC_holds X u) (sDecompC_holds X u') (dFrameMoveHC_holds X u u' i0 i0'))`. Conclude with `commonFrameC_of X Y u u' vR i0 i0' νq κ hP (vIndepLiftC_of_at X Y u u' vR i0 i0' νq κ hLD hGP hFT hVA) (commonDFrameC_of_exact X Y u u' vR i0 i0' νq κ (commonDFrameExactC_of X Y u u' vR i0 i0' νq κ hP (pairDFrameC_of X Y u u' i0 i0' κ (scalarAgreeC_of_scalT X Y u u' κ hSc)))) (ir …`.
+-/
 theorem commonFrameC_all
     (hAtS : ∀ t : Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
     (hTP : ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w →
@@ -138,6 +168,9 @@ theorem commonFrameC_all
       (pairDFrameC_of X Y u u' i0 i0' κ (scalarAgreeC_of_scalT X Y u u' κ hSc))))
     (irrelZeroC_of X Y u u' vR i0 i0' νq κ hV hAt)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.classFrameOO_of X Y u u' vR i0 i0' νq κ (normalFormC_all X Y u u' vR i0 i0' νq κ hAtS hTP hCU hDF hPT hFT) (commonFrameC_all X Y u u' vR i0 i0' νq κ hAtS hTP hCU hDF hPT hFT hVA hSc hV hAt) hV hAt`.
+-/
 theorem classFrameOO_all
     (hAtS : ∀ t : Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
     (hTP : ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w →
@@ -151,6 +184,9 @@ theorem classFrameOO_all
     (normalFormC_all X Y u u' vR i0 i0' νq κ hAtS hTP hCU hDF hPT hFT)
     (commonFrameC_all X Y u u' vR i0 i0' νq κ hAtS hTP hCU hDF hPT hFT hVA hSc hV hAt) hV hAt
 
+/- English proof (translation)
+The claim follows from `classFrameC_of_OO X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq κ (classFrameOO_all X Y u u' vR i0 i0' νq κ hAtS hTP hCU hDF hPT hFT hVA hSc hV hAt) hVol hc`.
+-/
 theorem classFrameC_all
     (hAtS : ∀ t : Term D u u' (X.Fu u) (Y.what₂ u), t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
     (hTP : ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w →

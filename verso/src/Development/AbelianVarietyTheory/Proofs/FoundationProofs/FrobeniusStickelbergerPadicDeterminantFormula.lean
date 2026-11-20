@@ -27,6 +27,17 @@ namespace GlobalTheory.FrobStick
 
 open PowerSeries
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hA`. Take `⟨hq, hL, h2, h3, hσ, v, hv, hw⟩` from `GlobalTheory.T.genus_one_datum_model_lattice_algebraic_data D p cc δ g hA`. Establish `ok : g.Ok` using `hA.2.2.2.2`. Take `⟨hAa, hBa, hS, hAv, hBv⟩` from `GlobalTheory.T.sigmaStar_cube_columns_model_parameter_series p g hq hL h2 h3 hσ v hv hw`. Take `⟨hCa, hCv⟩` from `GlobalTheory.T.sigmaStarCube_wpDeriv_model_parameter_series GlobalTheory.T.model_parameter_series_deriv_transport p g hq hL h2 h3 hσ v hv hw`.
+
+Establish `hF : ∀ j, AlgEnt (![colA g.abelian₂, colB g.abelian₂ v, colC g.abelian₂ v] j)`. Introduce `j`. Use `fin_cases j`. Use `exacts [hAa, hBa, hCa]`. Establish `h6` using `GlobalTheory.T.frobeniusStickelberger_defect_padic_of_complex p g.lam _ (sgStar g.abelian₂) hF hσ (GlobalTheory.T.frobeniusStickelberger_taylor_defect_eq_zero GlobalTheory.T.mvPowerSeries_fin_three_eq_zero_of_subst_lines GlobalTheory.T.frobeniusStickelbergerDeterminantDefect_on_l …`.
+
+Take `⟨c0, c1, c2, c3, h7⟩` from `GlobalTheory.T.frobeniusStickelberger_defect_subst_formal_group_log p g ok`. Establish `h8` using `h7 ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) _ _ h6`. Establish `e : ∀ F : ℂ → ℂ, (PowerSeries.subst (C ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * g.l) (GL3Theta.ser1 g.lam F) : PowerSeries ℂ_[p]) = g.atU F` using `fun F => (GlobalTheory.SerTransport.atU_eq g F).symm`. Simplify using `only [e, hS] at h8`. Establish `hw0 : PowerSeries.constantCoeff g.wq = 1`.
+
+Establish `h` using `congrArg PowerSeries.constantCoeff hq`. Simplify using `using h`. Use `GlobalTheory.T.det_column_operations_model_parameter p (ePhi1 g.lam g.abelian₂ g.C g.wq) g.wq ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) g.C.r g.W.a₁ g.W.a₃ _ _ _ _ (Units.ne_zero _) hw0 c0 c1 c2 c3 ?_` and prove the remaining obligations. Rewrite using `[← h8]`. Use `congr 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases j <;> simp [hAv, hBv, hCv]`.
+-/
 theorem frobenius_stickelberger_padic_determinant_formula : ∀ D : D7, Formalism.MainNotions.Ext.CutA.PAdicFrobeniusStickelberger D := by
   intro D p _ cc δ g hA
   obtain ⟨hq, hL, h2, h3, hσ, v, hv, hw⟩ := GlobalTheory.T.genus_one_datum_model_lattice_algebraic_data D p cc δ g hA

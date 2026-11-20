@@ -11,6 +11,15 @@ open Polynomial
 
 namespace GlobalTheory.UnitLemma.PrincipalLatDVR
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `exists_aeval_eq_of_charpoly_separable g hP a`. Take `⟨m, hm⟩` from `ha`. Establish `hf : aeval (LinearMap.mulLeft E g) (f ^ m) = 0`. Establish `h2 : aeval g (f ^ m) = 0` using `by rw [map_pow, hm]`.
+
+Use `aeval_algHom_apply (Algebra.lmul E A) g (f ^ m)` as an intermediate fact. Rewrite `this` using `[h2, map_zero]`. Conclude with `this`. Establish `h1` using `GlobalTheory.CharpolyDvd.charpoly_dvd_pow_finrank _ _ hf`. Rewrite `h1` using `[← pow_mul]`.
+
+Take `⟨q, hq⟩` from `hP.squarefree.isRadical _ _ h1`. Establish `hc : aeval g (LinearMap.mulLeft E g).charpoly = 0`. Establish `h` using `LinearMap.aeval_self_charpoly (LinearMap.mulLeft E g)`. Establish `h' : Algebra.lmul E A (aeval g (LinearMap.mulLeft E g).charpoly) = 0`. Rewrite using `[← aeval_algHom_apply]`.
+
+Conclude with `h`. Simplify using `using congrArg (fun F : Module.End E A => F 1) h'`. Rewrite using `[hq, map_mul, hc, zero_mul]`.
+-/
 theorem isReduced_of_charpoly_separable {E A : Type} [Field E] [CommRing A] [Algebra E A]
     [Module.Finite E A] (g : A) (hP : (LinearMap.mulLeft E g).charpoly.Separable) :
     IsReduced A := by
@@ -32,6 +41,15 @@ theorem isReduced_of_charpoly_separable {E A : Type} [Field E] [CommRing A] [Alg
     simpa using congrArg (fun F : Module.End E A => F 1) h'
   rw [hq, map_mul, hc, zero_mul]
 
+/- English proof (translation)
+Use `haveI : IsDedekindDomain (integralClosure O L) := GlobalTheory.isDedekindDomain_integralClosure_of_dimensionLEOne E`. Establish `hinj : Function.Injective (algebraMap O L)`. Rewrite using `[IsScalarTower.algebraMap_eq O E L]`. Conclude with `(algebraMap E L).injective.comp (IsFractionRing.injective O E)`. Use `haveI : Module.IsTorsionFree O (integralClosure O L) := Module.isTorsionFree_iff_algebraMap_injective.mpr fun x y h => hinj (congrArg Subtype.val h)`.
+
+Apply `IsPrincipalIdealRing.of_finite_primes` to reduce the goal to its premises. Establish `hfin` using `IsDedekindDomain.primesOver_finite (IsLocalRing.maximalIdeal O) (integralClosure O L)`. Use `(hfin.insert ⊥).subset ?_` and prove the remaining obligations. Introduce `P hP`. Distinguish the cases in `h : P = ⊥`.
+
+Conclude with `Or.inl h`. Use `right haveI : P.IsPrime := hP`. Establish `hne : P.comap (algebraMap O (integralClosure O L)) ≠ ⊥` using `fun h0 => h (Ideal.eq_bot_of_comap_eq_bot h0)`. Establish `hmax : (P.comap (algebraMap O (integralClosure O L))).IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hne inferInstance`. Use `⟨hP, ⟨?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(IsLocalRing.eq_maximalIdeal hmax).symm`.
+-/
 theorem isPrincipalIdealRing_integralClosure_field {O E L : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field E] [Algebra O E] [IsFractionRing O E] [Field L]
     [Algebra E L] [Algebra O L] [IsScalarTower O E L] [FiniteDimensional E L] :
@@ -57,6 +75,15 @@ theorem isPrincipalIdealRing_integralClosure_field {O E L : Type} [CommRing O] [
     refine ⟨hP, ⟨?_⟩⟩
     exact (IsLocalRing.eq_maximalIdeal hmax).symm
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite E A`. Set `ψ : A ≃ₐ[O] (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)` to `(IsArtinianRing.equivPi A).restrictScalars O`. Use `haveI hpir : ∀ I : MaximalSpectrum A, IsPrincipalIdealRing (integralClosure O (A ⧸ I.asIdeal)) := by`. Introduce `I`. Use `haveI := I.isMaximal`.
+
+Use `letI : Field (A ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : FiniteDimensional E (A ⧸ I.asIdeal) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ E I.asIdeal).toLinearMap Ideal.Quotient.mk_surjective`. Conclude with `isPrincipalIdealRing_integralClosure_field (E := E)`. Set `G : (∀ I : MaximalSpectrum A, integralClosure O (A ⧸ I.asIdeal)) →ₐ[O] (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal)` to `Pi.algHom O _ fun I => (integralClosure O (A ⧸ I.asIdeal)).val.comp (Pi.evalAlgHom O _ I)`. Set `F` to `(ψ.symm.toAlgHom.comp G).codRestrict (integralClosure O A) fun l => (PrincipalLat.isIntegral_pi' (G l) fun I => (l I).2).map ψ.symm`.
+
+Use `IsPrincipalIdealRing.of_surjective F ?_` and prove the remaining obligations. Introduce `x`. Use `⟨fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ψ.symm (G _) = (x : A)`.
+
+Establish `: G (fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩) = ψ x` using `rfl`. Rewrite using `[this, AlgEquiv.symm_apply_apply]`.
+-/
 theorem isPrincipalIdealRing_integralClosure {O E A : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field E] [Algebra O E] [IsFractionRing O E] [CommRing A]
     [Algebra E A] [Algebra O A] [IsScalarTower O E A] [Module.Finite E A] [IsReduced A] :
@@ -86,6 +113,9 @@ theorem isPrincipalIdealRing_integralClosure {O E A : Type} [CommRing O] [IsDoma
   have : G (fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩) = ψ x := rfl
   rw [this, AlgEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `O E A _ _ _ _ _ _ _ _ _ _ _ g hsep N hN hst`. Use `haveI := isReduced_of_charpoly_separable g hsep`. Use `haveI := isPrincipalIdealRing_integralClosure (O := O) (E := E) (A := A)`. Conclude with `PrincipalLat.eq_mulLat_of_isPrincipalIdealRing N hN hst`.
+-/
 theorem eq_mulLat_integralClosure_of_separable : ∀ (O E A : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field E] [Algebra O E] [IsFractionRing O E] [CommRing A]
     [Algebra O A] [Algebra E A] [IsScalarTower O E A] [Module.Finite E A] (g : A),

@@ -7,6 +7,19 @@ import Mathlib.Topology.JacobsonSpace
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Take `⟨U, Z, hU, hZ, rfl⟩` from `hW`. Take `⟨hpU, hpZ⟩` from `hp`. Take `⟨_, ⟨_, ⟨f, rfl⟩, rfl⟩, hpf, hfU⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open hpU hU`. Establish `hqmax : (p.asIdeal.comap (algebraMap B A)).IsMaximal`. Establish `e` using `Ideal.IsMaximal.eq_of_le ‹m.IsMaximal› (Ideal.IsPrime.comap (algebraMap B A)).ne_top hm`.
+
+Rewrite using `[← e]`. Use `infer_instance`. Use `letI := Ideal.Quotient.field (p.asIdeal.comap (algebraMap B A))`. Use `haveI : IsJacobsonRing (A ⧸ p.asIdeal) := isJacobsonRing_of_finiteType (A := B ⧸ p.asIdeal.comap (algebraMap B A))`. Establish `hbot : (⊥ : Ideal (A ⧸ p.asIdeal)).jacobson = ⊥` using `isJacobsonRing_iff_prime_eq.1 ‹_› ⊥ Ideal.bot_prime`.
+
+Establish `hf0 : Ideal.Quotient.mk p.asIdeal f ∉ (⊥ : Ideal (A ⧸ p.asIdeal)).jacobson`. Rewrite using `[hbot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 hpf`. Establish `hf1 : ¬ ∀ J ∈ {J : Ideal (A ⧸ p.asIdeal) | ⊥ ≤ J ∧ J.IsMaximal}, Ideal.Quotient.mk p.asIdeal f ∈ J` using `fun h => hf0 (Ideal.mem_sInf.2 h)`. Use `push_neg at hf1`.
+
+Take `⟨J, ⟨-, hJ⟩, hfJ⟩` from `hf1`. Use `haveI := hJ`. Use `haveI := hJ.isPrime`. Establish `hle : p.asIdeal ≤ J.comap (Ideal.Quotient.mk p.asIdeal)` using `fun a ha => by`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 ha]`.
+
+Conclude with `J.zero_mem`. Use `⟨⟨J.comap (Ideal.Quotient.mk p.asIdeal), Ideal.IsPrime.comap _⟩, ⟨hfU ?_, ?_⟩, ?_, Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective⟩` and prove the remaining obligations. Conclude with `hfJ`. Establish `hpx : p ≤ ⟨J.comap (Ideal.Quotient.mk p.asIdeal), Ideal.IsPrime.comap _⟩` using `hle`. Conclude with `hZ.closure_subset_iff.2 (Set.singleton_subset_iff.2 hpZ) ((PrimeSpectrum.le_iff_mem_closure _ _).1 hpx)`.
+
+Conclude with `hm.trans (Ideal.comap_mono hle)`.
+-/
 private theorem fibre_closed {B A : Type} [CommRing B] [CommRing A] [Algebra B A] [Algebra.FiniteType B A]
     (m : Ideal B) [m.IsMaximal] (W : Set (PrimeSpectrum A)) (hW : IsLocallyClosed W) (p : PrimeSpectrum A)
     (hp : p ∈ W) (hm : m ≤ p.asIdeal.comap (algebraMap B A)) :
@@ -42,6 +55,11 @@ private theorem fibre_closed {B A : Type} [CommRing B] [CommRing A] [Algebra B A
     exact hZ.closure_subset_iff.2 (Set.singleton_subset_iff.2 hpZ) ((PrimeSpectrum.le_iff_mem_closure _ _).1 hpx)
   · exact hm.trans (Ideal.comap_mono hle)
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S C hC U hU hne`. Take `⟨-, -, -, -, hft, -, -⟩` from `gr_A hF hn S`. Take `⟨hco, hmax⟩` from `co_B hF hn S`. Use `haveI := hco`. Use `haveI : S.mB.IsMaximal := hmax ▸ IsLocalRing.maximalIdeal.isMaximal S.B`.
+
+Take `⟨p, ⟨hpC, hpU⟩, hpm, hpT⟩` from `hne`. Establish `hO : IsOpen {x : PrimeSpectrum S.A | ¬ S.u.triP ≤ x.asIdeal}` using `(PrimeSpectrum.isClosed_zeroLocus (S.u.triP : Set S.A)).isOpen_compl`. Establish `hW : IsLocallyClosed (C ∩ U ∩ {x : PrimeSpectrum S.A | ¬ S.u.triP ≤ x.asIdeal})` using `(hC.isLocallyClosed.inter hU.isLocallyClosed).inter hO.isLocallyClosed`. Take `⟨x, ⟨⟨hxC, hxU⟩, hxT⟩, hxm, hxmax⟩` from `fibre_closed S.mB _ hW p ⟨⟨hpC, hpU⟩, hpT⟩ hpm`. Conclude with `⟨x, ⟨⟨hxC, hxU⟩, hxm, hxT⟩, hxmax⟩`.
+-/
 theorem UpperTheory.V.Fr.jac :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ C : Set (PrimeSpectrum S.A), IsClosed C → ∀ U : Set (PrimeSpectrum S.A), IsOpen U → (C ∩ U ∩ S.BB).Nonempty → ∃ x ∈ C ∩ U ∩ S.BB, x.asIdeal.IsMaximal := by
   intro l _ O _ _ _ _ F C₀ n hF hn S C hC U hU hne

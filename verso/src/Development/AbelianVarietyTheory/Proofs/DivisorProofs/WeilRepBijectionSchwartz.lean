@@ -11,19 +11,31 @@ noncomputable def eL (k : Type) [Field k] (n : ℕ) (β : Type) [Fintype β] [De
     Matrix (Fin n) (Fin (Fintype.card β)) k ≃ₗ[k] Matrix (Fin n) β k :=
   Matrix.reindexLinearEquiv k k (Equiv.refl (Fin n)) (Fintype.equivFin β).symm
 
+/- English proof (translation)
+Simplify using `[eL, reindexLinearEquiv_apply, reindex_apply, submatrix_apply]`.
+-/
 theorem eL_apply (C : Matrix (Fin n) (Fin (Fintype.card β)) k) (i : Fin n) (b : β) :
     eL k n β C i b = C i (Fintype.equivFin β b) := by
   simp [eL, reindexLinearEquiv_apply, reindex_apply, submatrix_apply]
 
+/- English proof (translation)
+Simplify using `[eL, reindexLinearEquiv_symm, reindexLinearEquiv_apply, reindex_apply, submatrix_apply]`.
+-/
 theorem eL_symm_apply (D : Matrix (Fin n) β k) (i : Fin n) (j : Fin (Fintype.card β)) :
     (eL k n β).symm D i j = D i ((Fintype.equivFin β).symm j) := by
   simp [eL, reindexLinearEquiv_symm, reindexLinearEquiv_apply, reindex_apply, submatrix_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [eL_apply]`. Conclude with `(continuous_apply _).comp (continuous_apply i)`.
+-/
 theorem continuous_eL : Continuous (eL k n β) := by
   refine continuous_pi fun i => continuous_pi fun b => ?_
   simp only [eL_apply]
   exact (continuous_apply _).comp (continuous_apply i)
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [eL_symm_apply]`. Conclude with `(continuous_apply _).comp (continuous_apply i)`.
+-/
 theorem continuous_eL_symm : Continuous (eL k n β).symm := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [eL_symm_apply]
@@ -35,6 +47,9 @@ noncomputable def eH (k : Type) [Field k] [TopologicalSpace k] (n : ℕ) (β : T
   continuous_toFun := continuous_eL
   continuous_invFun := continuous_eL_symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+-/
 theorem comp_mem_SB' {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : Y ≃ₜ X) {f : X → ℂ}
     (hf : f ∈ GlobalTheory.WeilM.SB X) : (f ∘ e) ∈ GlobalTheory.WeilM.SB Y :=
   ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩
@@ -43,6 +58,27 @@ end GlobalTheory.SchurHeisReindex
 
 open GlobalTheory.SchurHeisReindex in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n β _ _ Xt _ _ V ψ0 hψc hψ1 ι₁ ι₂ hbij hlin Tr Mu hTr hMu`. Use `set e := eL k n β with he`. Set `ι₁' : Xt →ₗ[ℂ] (Matrix (Fin n) (Fin (Fintype.card β)) k → ℂ)` to `LinearMap.funLeft ℂ ℂ e ∘ₗ ι₁`. Establish `hι₁' : ∀ x, ι₁' x = ι₁ x ∘ e` using `fun x => rfl`. Set `ι₂' : Xt → Matrix (Fin n) (Fin (Fintype.card β)) k → ℂ` to `fun x => ι₂ x ∘ e`.
+
+Establish `hsurj : Function.Surjective e` using `e.surjective`. Establish `hbij' : Set.BijOn ι₁' (V : Set Xt) (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin (Fintype.card β)) k) : Set _)`. Use `⟨fun x hx => ?_, fun x hx y hy hxy => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hι₁']`. Conclude with `comp_mem_SB' (eH k n β) (hbij.1 hx)`.
+
+Apply `hbij.2.1 hx hy` to reduce the goal to its premises. Rewrite `hxy` using `[hι₁', hι₁']`. Use function extensionality and compare the values at `Z`. Take `⟨Y, rfl⟩` from `hsurj Z`. Conclude with `congrFun hxy Y`.
+
+Establish `hf' : f ∘ (eH k n β).symm ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) β k)` using `comp_mem_SB' (eH k n β).symm hf`. Take `⟨x, hx, hxf⟩` from `hbij.2.2 hf'`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hι₁', hxf]`. Use function extensionality and compare the values at `Y`.
+
+Use `show f ((eH k n β).symm (e Y)) = f Y`. Conclude with `congrArg f ((eL k n β).symm_apply_apply Y)`. Establish `hlin' : ∀ x ∈ V, ∀ y ∈ V, ∀ c : ℂ, ι₂' (c • x + y) = c • ι₂' x + ι₂' y`. Introduce `x hx y hy c`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `[ι₂', hlin x hx y hy c]`. Establish `hadd : ∀ Y C, e (Y + C) = e Y + e C` using `fun Y C => map_add e Y C`. Take `⟨c, hc⟩` from `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat V ψ0 hψc hψ1 ι₁' ι₂' hbij' hlin' (fun C => Tr (e C)) (fun l => Mu (l ∘ₗ e.symm.toLinearMap)) (fun C x hx => by`. Take `⟨h1, h2, h3⟩` from `hTr (e C) x hx`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `Y`. Simplify using `[hι₁', h2, hadd]`. Use function extensionality and compare the values at `Y`. Simplify using `[ι₂', h3, hadd])`. Use the proof step `(fun l x hx => by`.
+
+Take `⟨h1, h2, h3⟩` from `hMu (l ∘ₗ e.symm.toLinearMap) x hx`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Simplify using `[hι₁', h2]`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `[ι₂', h3])`. Use `⟨c, fun x hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Take `⟨Y, rfl⟩` from `hsurj Z`. Use `congrFun (hc x hx) Y` as an intermediate fact.
+
+Simplify `this` using `[ι₂', hι₁']`.
+-/
 theorem GlobalTheory.schur_heisenberg_linearModel_fintype : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {β : Type} [Fintype β] [DecidableEq β] {Xt : Type} [AddCommGroup Xt] [Module ℂ Xt] (V : Submodule ℂ Xt)
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →

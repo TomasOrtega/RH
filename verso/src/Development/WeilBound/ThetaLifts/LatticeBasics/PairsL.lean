@@ -32,20 +32,39 @@ variable (B M p q T) in
 def Cl : Submodule ℂ (Fn F n d × PiT R Rf T) :=
   Submodule.span ℂ {z | ∃ f φ, Dat B M T f φ ∧ z = (pure f φ, p f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => q v (φ v))}
 
+/- English proof (translation)
+The claim follows from `T.eventually_cofinite_notMem.mono h.2.2`.
+-/
 theorem Dat.cof {f φ} (h : Dat B M T f φ) : ∀ᶠ v in cofinite, φ v = M.vac v :=
   T.eventually_cofinite_notMem.mono h.2.2
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.ThKG.pure_eq_pureA hM φ h.2.1 h.cof`.
+-/
 theorem Dat.pureA (hM : M.IsGood B.ψ) {f φ} (h : Dat B M T f φ) :
     ∃ g ∈ SB (Fin n × Fin d → Af F), ∀ f' : SInf F (Fin n × Fin d), pure f' φ = pureA F f' g :=
   PositivityTheory.ThKG.pure_eq_pureA hM φ h.2.1 h.cof
 
+/- English proof (translation)
+Take `⟨g, hg, e⟩` from `h.pureA hM`. Conclude with `Submodule.subset_span ⟨f, g, hg, e f⟩`.
+-/
 theorem Dat.sch (hM : M.IsGood B.ψ) {f φ} (h : Dat B M T f φ) : pure f φ ∈ schA F _ := by
   obtain ⟨g, hg, e⟩ := h.pureA hM
   exact Submodule.subset_span ⟨f, g, hg, e f⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, φ, h, rfl⟩`.
+-/
 theorem gen_mem {f φ} (h : Dat B M T f φ) :
     (pure f φ, p f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => q v (φ v)) ∈ Cl B M p q T := Submodule.subset_span ⟨f, φ, h, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, c, g, e⟩` from `Submodule.mem_span_set'.1 h`. Use `choose f φ hd hg using fun i => (g i).2`. Establish `e1 : ∀ i, pure (c i • f i) (φ i) = c i • pure (f i) (φ i)` using `fun i => funext fun x => by`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`. Use `⟨m, fun i => c i • f i, φ, fun i => ⟨Submodule.smul_mem _ _ (hd i).1, (hd i).2⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `(congrArg Prod.fst e).symm` using `[hg, e1, Prod.fst_sum]`. Simplify `(congrArg Prod.snd e).symm` using `[hg, Prod.snd_sum, TensorProduct.smul_tmul']`. Introduce and unpack `⟨m, f, φ, hd, rfl, rfl⟩`.
+
+Rewrite using `[prod_mk_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => gen_mem (hd i)`.
+-/
 theorem mem_cl {Φ ξ} : (Φ, ξ) ∈ Cl B M p q T ↔ ∃ (m : ℕ) (f : Fin m → SInf F _) (φ : Fin m → ∀ v : Pl F, (_ → Fv F v) → ℂ),
     (∀ i, Dat B M T (f i) (φ i)) ∧ Φ = ∑ i, pure (f i) (φ i) ∧
       ξ = ∑ i, p (f i) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => q v (φ i v) := by
@@ -62,12 +81,18 @@ theorem mem_cl {Φ ξ} : (Φ, ξ) ∈ Cl B M p q T ↔ ∃ (m : ℕ) (f : Fin m 
     rw [prod_mk_sum]
     exact Submodule.sum_mem _ fun i _ => gen_mem (hd i)
 
+/- English proof (translation)
+The claim follows from `(Submodule.span_le (p := (Cl B M p q T₁).comap (A.prodMap Ω))).2 (by rintro _ ⟨f, φ, hd, rfl⟩; exact h f φ hd) hz`.
+-/
 theorem cl_map (A : Fn F n d →ₗ[ℂ] Fn F n d) (Ω : PiT R Rf T →ₗ[ℂ] PiT R Rf T₁)
     (h : ∀ f φ, Dat B M T f φ →
       (A (pure f φ), Ω (p f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => q v (φ v))) ∈ Cl B M p q T₁)
     {Φ ξ} (hz : (Φ, ξ) ∈ Cl B M p q T) : (A Φ, Ω ξ) ∈ Cl B M p q T₁ :=
   (Submodule.span_le (p := (Cl B M p q T₁).comap (A.prodMap Ω))).2 (by rintro _ ⟨f, φ, hd, rfl⟩; exact h f φ hd) hz
 
+/- English proof (translation)
+The claim follows from `cl_map LinearMap.id _ (fun f φ hd => by rw [LinearMap.lTensor_tmul, he (fun v => q v (φ v)) fun v hv => by rw [hd.2.2 v hv, hs v hv]] exact gen_mem ⟨hd.1, hd.2.1, fun v hv => hd.2.2 v fun h => hv (hT h)⟩) hz`.
+-/
 theorem cl_ext (hT : T ⊆ T₁) (e : (PiTensorProduct ℂ fun v : T => Rf.Pi v) →ₗ[ℂ] PiTensorProduct ℂ fun v : T₁ => Rf.Pi v)
     (s : ∀ v, Rf.Pi v) (he : ∀ u : ∀ v, Rf.Pi v, (∀ v ∉ T, u v = s v) →
       e (PiTensorProduct.tprod ℂ fun v : T => u v) = PiTensorProduct.tprod ℂ fun v : T₁ => u v)
@@ -81,6 +106,15 @@ variable (R) in
 def opAt (v : T) (Op : Module.End ℂ (Rf.Pi v)) : PiT R Rf T →ₗ[ℂ] PiT R Rf T :=
   LinearMap.lTensor R.Pi (PiTensorProduct.map (Function.update (fun j : T => (LinearMap.id : Rf.Pi j →ₗ[ℂ] Rf.Pi j)) v Op))
 
+/- English proof (translation)
+Use `cl_map A _ (fun f φ hd => ?_) hz` and prove the remaining obligations. Take `⟨φ₁, s1, a1, e1⟩` from `h _ (hd.2.1 v)`. Establish `d₂ : Dat B M T f (Function.update φ v φ₁)`. Use `⟨hd.1, fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Simplify using `using s1`. Simplify `hd.2.1 w` using `[Function.update_of_ne hw]`. Rewrite using `[Function.update_of_ne (fun e : w = v => hw (by rw [e]; exact v.2)), hd.2.2 w hw]`. Use `gen_mem (p := p) (q := q) d₂ using 2` and compare the differences between its conclusion and the goal.
+
+Conclude with `(hP F _ v A f φ hd.2.1 ((hd.cof.and hM.std).mono fun _ k => k.1.trans k.2)).2.2 _ a1`. Simplify using `only [opAt, LinearMap.lTensor_tmul, PiTensorProduct.map_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Simplify using `using e1`. Simplify using `[Function.update_of_ne hw, Function.update_of_ne (show (w : Pl F) ≠ v from fun e => hw (Subtype.ext e))]`.
+-/
 theorem cl_fin (hP : PureAct) (hM : M.IsGood B.ψ) (v : T) (A : Fn F n d →ₗ[ℂ] Fn F n d) (Op : Module.End ℂ (Rf.Pi v))
     (h : ∀ φ ∈ SB _, ∃ φ₁ ∈ SB _, Acts (evFin F v) A φ φ₁ ∧ Op (q v φ) = q v φ₁) {Φ ξ} (hz : (Φ, ξ) ∈ Cl B M p q T) :
     (A Φ, opAt R v Op ξ) ∈ Cl B M p q T := by
@@ -103,6 +137,11 @@ theorem cl_fin (hP : PureAct) (hM : M.IsGood B.ψ) (v : T) (A : Fn F n d →ₗ[
 
 def finPart {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x : κ → AF F) : ℂ := ∏ᶠ v, φ v fun i => evFin F v (x i)
 
+/- English proof (translation)
+Establish `e : ∀ (v : Pl F) i, evFin F v ((x + z) i) = evFin F v (x i)` using `fun v i => by`. Establish `h : (1 : Af F) * (z i).2 = 0` using `congrArg Prod.snd (congrFun (hz ((0, 1) : Ainf F × Af F) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))) i)`. Establish `h3 : evFin F v (z i) = 0` using `by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i).2 = 0`. Rewrite using `[← one_mul (z i).2, h, map_zero]`. Rewrite using `[Pi.add_apply, map_add, h3, add_zero]`.
+
+Simplify using `only [finPart, e]`.
+-/
 theorem finPart_add {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x z : κ → AF F) (hz : At (evI F) z) :
     finPart φ (x + z) = finPart φ x := by
   have e : ∀ (v : Pl F) i, evFin F v ((x + z) i) = evFin F v (x i) := fun v i => by
@@ -114,8 +153,14 @@ theorem finPart_add {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x 
     rw [Pi.add_apply, map_add, h3, add_zero]
   simp only [finPart, e]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨finPart_add φ, h.sch hM⟩`.
+-/
 theorem Dat.rest (hM : M.IsGood B.ψ) {f φ} (h : Dat B M T f φ) : Rest (evI F) f (finPart φ) := ⟨finPart_add φ, h.sch hM⟩
 
+/- English proof (translation)
+Use `cl_map A _ (fun f φ hd => ?_) hz` and prove the remaining obligations. Take `⟨f₁, s1, a1, e1⟩` from `h _ hd.1`. Rewrite using `[LinearMap.rTensor_tmul, e1, show A (pure f φ) = pure f₁ φ from a1 _ (hd.rest hM)]`. Conclude with `gen_mem ⟨s1, hd.2⟩`.
+-/
 theorem cl_inf (hM : M.IsGood B.ψ) (A : Fn F n d →ₗ[ℂ] Fn F n d) (Op : Module.End ℂ R.Pi)
     (h : ∀ f ∈ M.Pol B.ψ B.emb, ∃ f₁ ∈ M.Pol B.ψ B.emb, Acts (evI F) A f f₁ ∧ Op (p f) = p f₁) {Φ ξ}
     (hz : (Φ, ξ) ∈ Cl B M p q T) : (A Φ, Op.rTensor _ ξ) ∈ Cl B M p q T := by
@@ -124,6 +169,9 @@ theorem cl_inf (hM : M.IsGood B.ψ) (A : Fn F n d →ₗ[ℂ] Fn F n d) (Op : Mo
   rw [LinearMap.rTensor_tmul, e1, show A (pure f φ) = pure f₁ φ from a1 _ (hd.rest hM)]
   exact gen_mem ⟨s1, hd.2⟩
 
+/- English proof (translation)
+Take `⟨ω, ρ, L⟩` from `hL F E σ n d B Y W M o ⟨hp.base, ⟨_, _, hp.herm⟩, ⟨_, _, hp.skew⟩, hp.good, _, _, hp.weil⟩ v`. Establish `o1 : (1 : UA σ Y.J) ∈ UAt σ Y (evFin F v)` using `fun u _ => by rw [show mat (1 : UA σ Y.J) = 1 from rfl, sub_self, smul_zero]`. Conclude with `⟨ω (1, h), fun φ hφ => ⟨L.pres 1 o1 h hh _ hφ, (L.acts 1 o1 h hh _ hφ _).2 rfl⟩⟩`.
+-/
 theorem loc_op (hL : LocRepEx) {χ χ' r s r' s'} (hp : IsPair B M χ χ' o r s r' s') {v : Pl F} {h : UA σ W.J}
     (hh : h ∈ UAt σ W (evFin F v)) : ∃ A : Module.End ℂ ((Fin n × Fin d → Fv F v) → ℂ),
       ∀ φ ∈ SB _, A φ ∈ SB _ ∧ Acts (evFin F v) (o (1, h)) φ (A φ) := by
@@ -131,6 +179,9 @@ theorem loc_op (hL : LocRepEx) {χ χ' r s r' s'} (hp : IsPair B M χ χ' o r s 
   have o1 : (1 : UA σ Y.J) ∈ UAt σ Y (evFin F v) := fun u _ => by rw [show mat (1 : UA σ Y.J) = 1 from rfl, sub_self, smul_zero]
   exact ⟨ω (1, h), fun φ hφ => ⟨L.pres 1 o1 h hh _ hφ, (L.acts 1 o1 h hh _ hφ _).2 rfl⟩⟩
 
+/- English proof (translation)
+Establish `o1 : (1 : UA σ Y.J) ∈ KInf σ Y B.emb` using `⟨fun u _ => by rw [show mat (1 : UA σ Y.J) = 1 from rfl, sub_self, smul_zero], fun w => by`. Rewrite using `[show mat (1 : UA σ Y.J) = 1 from rfl, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _⟩`. Take `⟨A, a1, a2⟩` from `hA F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp 1 o1.1 k hk.1`. Conclude with `⟨A, fun f hf => ⟨a2 o1 hk f hf, a1.2 f⟩⟩`.
+-/
 theorem inf_op (hA : ArchOp) {χ χ' r s r' s'} (hp : IsPair B M χ χ' o r s r' s') {k : UA σ W.J} (hk : k ∈ KInf σ W B.emb) :
     ∃ A : Module.End ℂ (SInf F (Fin n × Fin d)), ∀ f ∈ M.Pol B.ψ B.emb, A f ∈ M.Pol B.ψ B.emb ∧ Acts (evI F) (o (1, k)) f (A f) := by
   have o1 : (1 : UA σ Y.J) ∈ KInf σ Y B.emb :=
@@ -139,6 +190,11 @@ theorem inf_op (hA : ArchOp) {χ χ' r s r' s'} (hp : IsPair B M χ χ' o r s r'
   obtain ⟨A, a1, a2⟩ := hA F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp 1 o1.1 k hk.1
   exact ⟨A, fun f hf => ⟨a2 o1 hk f hf, a1.2 f⟩⟩
 
+/- English proof (translation)
+Establish `hq : Function.Surjective (p.domRestrict S)` using `fun u => by`. Take `⟨x, h1, h2⟩ : u ∈ S.map p` from `h ▸ Submodule.mem_top`. Conclude with `⟨⟨x, h1⟩, h2⟩`. Take `⟨s, hs⟩` from `(p.domRestrict S).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hq)`. Establish `k : ∀ x : S, p (A (s (p x.1))) = p (A x)` using `fun x => by`.
+
+Use `e (s (p x.1) - x) 0 (by simpa [sub_eq_zero] using LinearMap.congr_fun hs (p x.1))` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Conclude with `⟨p ∘ₗ A ∘ₗ s, k, fun x' => e _ _ (LinearMap.congr_fun hs _)⟩`.
+-/
 theorem common_op {V V' P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup P] [Module ℂ P]
     {S : Submodule ℂ V} {S' : Submodule ℂ V'} {p : V →ₗ[ℂ] P} {p' : V' →ₗ[ℂ] P} (h : S.map p = ⊤) (A : S →ₗ[ℂ] V)
     (A' : S' →ₗ[ℂ] V') (e : ∀ x x', p x.1 = p' x'.1 → p (A x) = p' (A' x')) :
@@ -154,6 +210,11 @@ theorem common_op {V V' P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
 
 variable {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `loc_op hL (PositivityTheory.ThKG.pairV hm.triple) hh`. Take `⟨A', hA'⟩` from `loc_op hL (PositivityTheory.ThKG.pairV' hm.triple) hh`. Take `⟨Op, h1, h2⟩` from `common_op (hm.fin.onto v) (A.domRestrict _) (A'.domRestrict (SB _)) fun x x' e => hm.fin.equiv v h hh _ x.2 _ x'.2 _ (hA _ x.2).1 _ (hA' _ x'.2).1 (hA _ x.2).2 (hA' _ x'.2).2 e`. Use `⟨Op, fun φ hφ => ⟨_, (hA _ hφ).1, (hA _ hφ).2, h1 ⟨φ, hφ⟩⟩, fun φ hφ φ₁ h₁ e => ?_, fun φ hφ => ⟨_, (hA' _ hφ).1, (hA' _ hφ).2, h2 ⟨φ, hφ⟩⟩⟩` and prove the remaining obligations. Take `⟨φ', s', e'⟩ : Rf.p v φ ∈ (SB _).map (Rf.p' v)` from `hm.fin.onto' v ▸ Submodule.mem_top`.
+
+Rewrite using `[hm.fin.equiv v h hh _ hφ _ s' _ h₁ _ (hA' _ s').1 e (hA' _ s').2 e'.symm, ← e']`. Conclude with `h2 ⟨φ', s'⟩`.
+-/
 theorem fin_ops (hL : LocRepEx) (hm : IsMatched B G X om om' R Rf) {v : Pl F} {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evFin F v)) :
     ∃ Op : Module.End ℂ (Rf.Pi v), (∀ φ ∈ SB _, ∃ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h)) φ φ₁ ∧ Op (Rf.p v φ) = Rf.p v φ₁) ∧
       (∀ φ ∈ SB _, ∀ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h)) φ φ₁ → Op (Rf.p v φ) = Rf.p v φ₁) ∧
@@ -168,6 +229,11 @@ theorem fin_ops (hL : LocRepEx) (hm : IsMatched B G X om om' R Rf) {v : Pl F} {h
   rw [hm.fin.equiv v h hh _ hφ _ s' _ h₁ _ (hA' _ s').1 e (hA' _ s').2 e'.symm, ← e']
   exact h2 ⟨φ', s'⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `inf_op hO (PositivityTheory.ThKG.pairV hm.triple) hk`. Take `⟨A', hA'⟩` from `inf_op hO (PositivityTheory.ThKG.pairV' hm.triple) hk`. Take `⟨Op, h1, h2⟩` from `common_op hm.real.quot.onto (A.domRestrict _) (A'.domRestrict (G.M'.Pol B.ψ B.emb)) fun x x' e => hm.real.cpt k hk _ x.2 _ x'.2 _ _ (hA _ x.2).2 (hA' _ x'.2).2 e`. Use `⟨Op, fun f hf => ⟨_, (hA _ hf).1, (hA _ hf).2, h1 ⟨f, hf⟩⟩, fun f hf f₁ e => ?_, fun f hf => ⟨_, (hA' _ hf).1, (hA' _ hf).2, h2 ⟨f, hf⟩⟩⟩` and prove the remaining obligations. Take `⟨f', s', e'⟩ : R.p f ∈ (G.M'.Pol B.ψ B.emb).map R.p'` from `hm.real.quot'.onto ▸ Submodule.mem_top`.
+
+Rewrite using `[hm.real.cpt k hk _ hf _ s' _ _ e (hA' _ s').2 e'.symm, ← e']`. Conclude with `h2 ⟨f', s'⟩`.
+-/
 theorem inf_ops (hO : ArchOp) (hm : IsMatched B G X om om' R Rf) {k : UA σ G.W.J} (hk : k ∈ KInf σ G.W B.emb) :
     ∃ Op : Module.End ℂ R.Pi,
       (∀ f ∈ G.M.Pol B.ψ B.emb, ∃ f₁ ∈ G.M.Pol B.ψ B.emb, Acts (evI F) (om (1, k)) f f₁ ∧ Op (R.p f) = R.p f₁) ∧
@@ -183,6 +249,11 @@ theorem inf_ops (hO : ArchOp) (hm : IsMatched B G X om om' R Rf) {k : UA σ G.W.
   rw [hm.real.cpt k hk _ hf _ s' _ _ e (hA' _ s').2 e'.symm, ← e']
   exact h2 ⟨f', s'⟩
 
+/- English proof (translation)
+Use `exists_congr fun T => and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, m', f, φ, f', φ', h1, h2, e1, e2, e3⟩`. Conclude with `⟨_, mem_cl.2 ⟨m, f, φ, h1, e1, rfl⟩, mem_cl.2 ⟨m', f', φ', h2, e2, e3⟩⟩`. Introduce and unpack `⟨ξ, h, h'⟩`. Take `⟨m, f, φ, h1, e1, e3⟩` from `mem_cl.1 h`.
+
+Take `⟨m', f', φ', h2, e2, e4⟩` from `mem_cl.1 h'`. Conclude with `⟨m, m', f, φ, f', φ', h1, h2, e1, e2, e3.symm.trans e4⟩`.
+-/
 theorem polMatch_iff {Φ Φ'} : PolMatch B G X R Rf Φ Φ' ↔
     ∃ T, X.T ⊆ T ∧ ∃ ξ, (Φ, ξ) ∈ Cl B G.M R.p Rf.p T ∧ (Φ', ξ) ∈ Cl B G.M' R.p' Rf.p' T := by
   refine exists_congr fun T => and_congr_right fun _ => ⟨?_, ?_⟩
@@ -193,6 +264,9 @@ theorem polMatch_iff {Φ Φ'} : PolMatch B G X R Rf Φ Φ' ↔
     obtain ⟨m', f', φ', h2, e2, e4⟩ := mem_cl.1 h'
     exact ⟨m, m', f, φ, f', φ', h1, h2, e1, e2, e3.symm.trans e4⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_ext (X := Rf.Pi) T T₁ hT fun v => Rf.p v (G.M.vac v)`. Conclude with `⟨_, fun _ _ => cl_ext hT e _ he fun _ _ => rfl, fun _ _ => cl_ext hT e _ he fun v hv => (hm.fin.sph v fun h => hv (hX h)).1.symm⟩`.
+-/
 theorem enlarge (hm : IsMatched B G X om om' R Rf) (hX : X.T ⊆ T) (hT : T ⊆ T₁) : ∃ e : PiT R Rf T →ₗ[ℂ] PiT R Rf T₁,
     (∀ Φ ξ, (Φ, ξ) ∈ Cl B G.M R.p Rf.p T → (Φ, e ξ) ∈ Cl B G.M R.p Rf.p T₁) ∧
       ∀ Φ ξ, (Φ, ξ) ∈ Cl B G.M' R.p' Rf.p' T → (Φ, e ξ) ∈ Cl B G.M' R.p' Rf.p' T₁ := by
@@ -200,6 +274,9 @@ theorem enlarge (hm : IsMatched B G X om om' R Rf) (hX : X.T ⊆ T) (hT : T ⊆ 
   exact ⟨_, fun _ _ => cl_ext hT e _ he fun _ _ => rfl,
     fun _ _ => cl_ext hT e _ he fun v hv => (hm.fin.sph v fun h => hv (hX h)).1.symm⟩
 
+/- English proof (translation)
+Take `⟨T₀, hT, ξ, h1, h2⟩` from `polMatch_iff.1 h`. Use `⟨T₀, hT, fun T h0 => ?_⟩` and prove the remaining obligations. Take `⟨e, e1, e2⟩` from `enlarge hm hT h0`. Conclude with `⟨_, e1 _ _ h1, e2 _ _ h2⟩`.
+-/
 theorem polMatch_big (hm : IsMatched B G X om om' R Rf) {Φ Φ'} (h : PolMatch B G X R Rf Φ Φ') :
     ∃ T₀, X.T ⊆ T₀ ∧ ∀ T, T₀ ⊆ T → ∃ ξ, (Φ, ξ) ∈ Cl B G.M R.p Rf.p T ∧ (Φ', ξ) ∈ Cl B G.M' R.p' Rf.p' T := by
   obtain ⟨T₀, hT, ξ, h1, h2⟩ := polMatch_iff.1 h
@@ -207,6 +284,9 @@ theorem polMatch_big (hm : IsMatched B G X om om' R Rf) {Φ Φ'} (h : PolMatch B
   obtain ⟨e, e1, e2⟩ := enlarge hm hT h0
   exact ⟨_, e1 _ _ h1, e2 _ _ h2⟩
 
+/- English proof (translation)
+Take `⟨T, hT, H⟩` from `polMatch_big hm h`. Take `⟨T', -, H'⟩` from `polMatch_big hm h'`. Take `⟨ξ, h1, h2⟩` from `H _ (Finset.subset_union_left (s₂ := T'))`. Take `⟨η, h3, h4⟩` from `H' _ (Finset.subset_union_right (s₁ := T))`. Conclude with `polMatch_iff.2 ⟨_, hT.trans Finset.subset_union_left, ξ + c • η, add_mem h1 (Submodule.smul_mem _ c h3), add_mem h2 (Submodule.smul_mem _ c h4)⟩`.
+-/
 theorem polMatch_add_smul (hm : IsMatched B G X om om' R Rf) {Φ Φ' Ψ Ψ'} (h : PolMatch B G X R Rf Φ Φ')
     (h' : PolMatch B G X R Rf Ψ Ψ') (c : ℂ) : PolMatch B G X R Rf (Φ + c • Ψ) (Φ' + c • Ψ') := by
   obtain ⟨T, hT, H⟩ := polMatch_big hm h

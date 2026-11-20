@@ -8,6 +8,13 @@ open GlobalTheory GlobalTheory.DI
 
 namespace GlobalTheory.DI
 
+/- English proof (translation)
+Introduce `ι _ E _ d Φ c hΦ hc hD`. Use function extensionality and compare the values at `u`. Establish `key` using `delta_cup_eq Φ c hΦ hc u`. It suffices to establish `hS : (∑ j ∈ u, ((-1 : ℤ) ^ ({x ∈ u | x < j}).card) • delta (Φ (c ({x ∈ u | x ≤ j}))) ({x ∈ u | j ≤ x})) + ((-1 : ℤ) ^ u.card) • d (cup Φ c u) = 0 by`. Simplify using `only [Dtot]`.
+
+Rewrite using `[key, add_assoc, hS, add_zero]`. Simplify using `only [cup, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Establish `h` using `congrFun (hD ({x ∈ u | x ≤ j})) ({x ∈ u | j ≤ x})`. Simplify using `only [Dtot, Pi.zero_apply] at h`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left h]`. Establish `hcard : ({x ∈ u | x < j}).card + ({x ∈ u | j ≤ x}).card = u.card`. Use `Finset.card_filter_add_card_filter_not (s := u) (fun x => x < j)` as an intermediate fact. Simplify `this` using `only [not_lt]`. Rewrite using `[smul_neg, smul_smul, ← pow_add, hcard, neg_add_cancel]`.
+-/
 theorem Dtot_cup : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E] (d : E →+ E)
     (Φ : E →+ (Finset ι → E)) (c : Finset ι → E), (∀ x, Φ x ∅ = 0) → c ∅ = 0 →
     (∀ s, Dtot d (Φ (c s)) = 0) → Dtot d (cup Φ c) = cup Φ (delta c) := by

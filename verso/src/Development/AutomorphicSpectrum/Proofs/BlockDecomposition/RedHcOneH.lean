@@ -9,6 +9,13 @@ namespace GlobalTheory.CompanionTheory.CrisUnit
 
 universe w w' u v u' v'
 
+/- English proof (translation)
+Establish `e : m.hom.f 0 (fun s : ComposableArrows C 0 => (1 : A.obj (s.obj (Fin.last 0)))) = fun s : ComposableArrows C' 0 => (1 : A'.obj (s.obj (Fin.last 0)))`. Use function extensionality and compare the values at `fun s => h (s.obj (Fin.last 0))`. Establish `c : ∀ s : ComposableArrows C' 1, (∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A'.map (GlobalTheory.CatH.toLast i s)).hom 1 : A'.obj _) = 0`. Introduce `s`. Rewrite using `[Fin.sum_univ_two, map_one, map_one]`.
+
+Simplify using the standard rewrite rules. Unfold `CH.Mor.pull CH.oneH`. Use `(CrystallineSemistableComparison.P.mapH_cls m.hom 0 _ _ ?_).trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `funext c`.
+
+Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext e)`.
+-/
 theorem pull_oneH {R R' : Type} [CommRing R] [CommRing R'] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     {σ : R →+* R'} (A : C ⥤ CommAlgCat.{w} R) (A' : C' ⥤ CommAlgCat.{w'} R')
     (m : CH.Mor (CH.modF A) (CH.modF A') σ)
@@ -27,12 +34,18 @@ theorem pull_oneH {R R' : Type} [CommRing R] [CommRing R'] {C : Type u} [Categor
     exact funext c
   · exact congrArg Submodule.Quotient.mk (Subtype.ext e)
 
+/- English proof (translation)
+The claim follows from `pull_oneH _ _ _ fun _ => rfl`.
+-/
 theorem omMor_oneH {b b' : Base} {L : b.Fun} {L' : b'.Fun} {σ : b.R →+* b'.R} (m : GlobalTheory.LogCris.Mor L L' σ)
     {Λ Λ' : Type} [CommRing Λ] [CommRing Λ'] {c : Λ →+* b.R} {c' : Λ' →+* b'.R}
     (σ₀ : Λ →+* Λ') (h : ∀ a, σ (c a) = c' (σ₀ a)) :
     (omMor m σ₀ h).pull 0 (CH.oneH (OA L c)) = CH.oneH (OA L' c') :=
   pull_oneH _ _ _ fun _ => rfl
 
+/- English proof (translation)
+Introduce `l _ O _ F κ k m n h`. Conclude with `omMor_oneH _ _ _`.
+-/
 theorem redHc_oneH : ∀ {l : ℕ} [Fact l.Prime], ∀ {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) (k : Bool) {m n : ℕ} (h : n ≤ m), redHc F κ k h 0 (CH.oneH (OcA F κ k m)) = CH.oneH (OcA F κ k n) := by
   intro l _ O _ F κ k m n h
   exact omMor_oneH _ _ _

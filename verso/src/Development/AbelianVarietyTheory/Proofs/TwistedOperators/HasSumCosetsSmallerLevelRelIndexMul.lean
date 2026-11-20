@@ -4,6 +4,15 @@ namespace GlobalTheory
 
 open QuotientGroup
 
+/- English proof (translation)
+Establish `hdec : (fun p : α × β => f p.1) = fun p => ∑ b : β, (if p.2 = b then f p.1 else 0)`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[hdec]`. Establish `hterm : ∀ b ∈ (Finset.univ : Finset β), HasSum (fun p : α × β => if p.2 = b then f p.1 else 0) a`.
+
+Introduce `b _`. Establish `hinj : Function.Injective (fun x : α => (x, b))` using `fun x y h => by`. Simplify using `using congrArg Prod.fst h`. Rewrite using `[← hinj.hasSum_iff]`. Simplify `hf` using `[Function.comp_def]`.
+
+Introduce `p hp`. Distinguish the cases in `h : p.2 = b`. Apply the tactic sequence `exact absurd ⟨p.1, by ext <;> simp [h]⟩ hp`. Simplify using `[h]`. Use `hasSum_sum hterm` as an intermediate fact.
+
+Simplify `this` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem hasSum_comp_fst_card_mul_of_fintype {α β : Type} [Fintype β] (f : α → ℂ) (a : ℂ) (hf : HasSum f a) :
     HasSum (fun p : α × β => f p.1) ((Fintype.card β : ℂ) * a) := by
   classical
@@ -25,6 +34,31 @@ theorem hasSum_comp_fst_card_mul_of_fintype {α β : Type} [Fintype β] (f : α 
   have := hasSum_sum hterm
   simpa [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] using this
 
+/- English proof (translation)
+Introduce `G _ K J H Γ hKJ hJH hHΓ hidx Ψ z hvan hinv hsum`. Use `set f : Γ ⧸ J.subgroupOf Γ → ℂ := fun x => Ψ (x.out : Γ) with hf`. Establish `hfmk : ∀ g : Γ, f (mk g) = Ψ (g : G)`. Introduce `g`. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul (J.subgroupOf Γ) g`.
+
+Simplify using `only [hf, hj, Subgroup.coe_mul]`. Conclude with `hinv _ g.2 _ (Subgroup.mem_subgroupOf.mp j.2)`. Set `ι : H ⧸ J.subgroupOf H → Γ ⧸ J.subgroupOf Γ` to `fun y => mk (Subgroup.inclusion hHΓ y.out)`. Establish `hιmk : ∀ a : H, ι (mk a) = mk (Subgroup.inclusion hHΓ a)`. Introduce `a`.
+
+Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul (J.subgroupOf H) a`. Use `show (mk (Subgroup.inclusion hHΓ (mk a : H ⧸ J.subgroupOf H).out) : Γ ⧸ J.subgroupOf Γ) = _`. Rewrite using `[hj, QuotientGroup.eq]`. Simplify using `[Subgroup.mem_subgroupOf]`. Conclude with `Subgroup.mem_subgroupOf.mp j.2`.
+
+Establish `hιinj : Function.Injective ι`. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with | H a => ?_`. Proceed by induction on `y using QuotientGroup.induction_on with | H b => ?_`. Rewrite `hxy` using `[hιmk, hιmk, QuotientGroup.eq]`.
+
+Rewrite using `[QuotientGroup.eq]`. Simplify `hxy` using `[Subgroup.mem_subgroupOf]`. Establish `h1 : HasSum f z`. Rewrite using `[← hιinj.hasSum_iff]`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Use `show f (mk (Subgroup.inclusion hHΓ y.out)) = _`. Rewrite using `[hfmk]`. Both sides reduce to the same expression. Introduce `x hx show Ψ (x.out : G) = 0`.
+
+Apply `hvan _ x.out.2` to reduce the goal to its premises. Introduce `hH`. Apply `hx` to reduce the goal to its premises. Use `⟨mk ⟨(x.out : G), hH⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hιmk]`.
+
+Use `conv_rhs => rw [← QuotientGroup.out_eq' x]`. Both sides reduce to the same expression. Establish `hle : K.subgroupOf Γ ≤ J.subgroupOf Γ` using `fun x hx => by`. Simplify `hKJ (Subgroup.mem_subgroupOf.mp hx)` using `[Subgroup.mem_subgroupOf]`. Set `e` to `Subgroup.quotientEquivProdOfLE hle`.
+
+Establish `hJΓ : J ≤ Γ` using `hJH.trans hHΓ`. Establish `hrel : (K.subgroupOf Γ).relIndex (J.subgroupOf Γ) = K.relIndex J` using `Subgroup.relIndex_subgroupOf hJΓ`. Use `haveI : (((K.subgroupOf Γ).subgroupOf (J.subgroupOf Γ))).FiniteIndex := ⟨by`. Rewrite using `[← Subgroup.relIndex, hrel]`. Conclude with `hidx⟩`.
+
+Use `haveI : Finite (J.subgroupOf Γ ⧸ (K.subgroupOf Γ).subgroupOf (J.subgroupOf Γ)) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI := Fintype.ofFinite (J.subgroupOf Γ ⧸ (K.subgroupOf Γ).subgroupOf (J.subgroupOf Γ))`. Establish `hcard : (Fintype.card (J.subgroupOf Γ ⧸ (K.subgroupOf Γ).subgroupOf (J.subgroupOf Γ)) : ℂ) = (K.relIndex J : ℂ)`. Rewrite using `[Fintype.card_eq_nat_card, ← Subgroup.index, ← Subgroup.relIndex, hrel]`. Establish `h2` using `hasSum_comp_fst_card_mul_of_fintype (β := J.subgroupOf Γ ⧸ (K.subgroupOf Γ).subgroupOf (J.subgroupOf Γ)) f z h1`.
+
+Rewrite `h2` using `[hcard, ← e.hasSum_iff]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Establish `he1 : (e y).1 = mk y.out` using `by conv_lhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression.
+
+Simplify using `only [Function.comp_apply, he1, hfmk]`.
+-/
 theorem hasSum_cosets_smaller_level_relIndex_mul : ∀ {G : Type} [Group G] (K J H Γ : Subgroup G), K ≤ J → J ≤ H → H ≤ Γ → K.relIndex J ≠ 0 → ∀ (Ψ : G → ℂ) (z : ℂ), (∀ g ∈ Γ, g ∉ H → Ψ g = 0) → (∀ g ∈ Γ, ∀ k ∈ J, Ψ (g * k) = Ψ g) → HasSum (fun y : H ⧸ J.subgroupOf H => Ψ (y.out : H)) z → HasSum (fun y : Γ ⧸ K.subgroupOf Γ => Ψ (y.out : Γ)) ((K.relIndex J : ℂ) * z) := by
   intro G _ K J H Γ hKJ hJH hHΓ hidx Ψ z hvan hinv hsum
   classical

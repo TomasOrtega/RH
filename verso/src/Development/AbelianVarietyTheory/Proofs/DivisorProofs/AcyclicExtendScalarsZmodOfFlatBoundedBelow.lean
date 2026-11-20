@@ -14,18 +14,30 @@ namespace GlobalTheory.EtC.FlatExtAcyc
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 lemma sres_comp {F : Shv R} {U V W : Scheme.{0}} (g : V ⟶ U) (k : W ⟶ V) (s : Sec F U) :
     Sec.res k (Sec.res g s) = Sec.res (k ≫ g) s := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Use `a.hom.naturality g.op` as an intermediate fact. Conclude with `congrArg (fun t => t.hom x) this.symm`.
+-/
 lemma sres_map {F G : Shv R} (a : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map a x) = Sec.map a (Sec.res g x) := by
   have := a.hom.naturality g.op
   exact congrArg (fun t => t.hom x) this.symm
 
+/- English proof (translation)
+The claim follows from `(F.obj.map g.op).hom.map_zero`.
+-/
 lemma sres_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 :=
   (F.obj.map g.op).hom.map_zero
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `by ext; simp`. Rewrite using `[this, zero_smul]`.
+-/
 lemma nsmul_self_eq_zero (q : ℕ) {F : Shv (ZMod q)} {U : Scheme.{0}} (z : Sec F U) : q • z = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
   have : ((q : ℕ) : ULift.{1} (ZMod q)) = 0 := by ext; simp
@@ -35,6 +47,23 @@ end GlobalTheory.EtC.FlatExtAcyc
 
 open GlobalTheory.EtC.FlatExtAcyc in
 
+/- English proof (translation)
+Introduce `Q q _ hq K a _ hflat hK`. Establish `hqe : q * (Q / q) = Q` using `Nat.mul_div_cancel' hq`. Establish `hKloc : ∀ (n : ℤ) (U : Scheme.{0}) (b : Sec (K.X n) U), Sec.map (K.d n (n + 1)) b = 0 → Loc U fun V g => ∃ c : Sec (K.X (n - 1)) V, Sec.map (K.d (n - 1) n) c = Sec.res g b`. Introduce `n U b hb`. Establish `hex : (K.sc' (n - 1) n (n + 1)).Exact` using `(K.exactAt_iff' (n - 1) n (n + 1) (by simp) (by simp)).1 (hK n)`.
+
+Conclude with `((GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally _ _).1 hex) U b hb`. Establish `hz : ∀ n, n < a → ∀ (U : Scheme.{0}) (x : Sec (K.X n) U), x = 0`. Introduce `n hn U x`. Establish `hZ : IsZero (K.X n)` using `K.isZero_of_isStrictlyGE a n hn`. Establish `e1 : 𝟙 (K.X n) = 0` using `hZ.eq_of_src _ _`.
+
+Establish `h1 : Sec.map (𝟙 (K.X n)) x = x` using `rfl`. Rewrite using `[← h1, e1]`. Both sides reduce to the same expression. Establish `hQ : ∀ (n : ℤ) (U : Scheme.{0}) (y : Sec (K.X n) U), (q * (Q / q)) • y = 0`. Introduce `n U y`.
+
+Rewrite using `[hqe, ← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod Q))]`. Establish `: ((Q : ℕ) : ULift.{1} (ZMod Q)) = 0` using `by ext; simp`. Rewrite using `[this, zero_smul]`. Establish `hst` using `GlobalTheory.T.etaleComplex_staircase_locally_exact (ZMod Q) q (Q / q) K a hz hQ (fun n U x hx => GlobalTheory.T.locallyFlatEtaleSheaf_locally_divisible Q q (Q / q) hqe (K.X n) (hflat n) U x hx) (fun n U x hx => GlobalTheory.T.locallyFlatEtaleSheaf_locally_divisible Q (Q / q) q ( …`. Introduce `n`.
+
+Rewrite using `[HomologicalComplex.exactAt_iff' _ (n - 1) n (n + 1) (by simp) (by simp), GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]`. It suffices to establish `H : ∀ (U : Scheme.{0}) (z : Sec ((extSh (ZMod.castHom hq (ZMod q))).obj (K.X n)) U), Sec.map ((extSh (ZMod.castHom hq (ZMod q))).map (K.d n (n + 1))) z = 0 → Loc U fun V g => ∃ b : Sec ((extSh (ZMod.castHom hq (ZMod q))).obj (K.X (n - 1))) V, Sec.map ((extSh (ZMod.castHom hq (ZMo …`. Introduce `U z hzz`. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.2.2.2.1 U _ ?_` and prove the remaining obligations. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 U _ _ (GlobalTheory.T.etaleSheafExtendScalars_zmod_section_locally_tmul Q q hq (K.X n) U z) ?_` and prove the remaining obligations.
+
+Introduce and unpack `V g ⟨x, hx⟩`. Establish `hdx : extSh.sec (ZMod.castHom hq (ZMod q)) (K.X (n + 1)) V (Sec.map (K.d n (n + 1)) x) = 0`. Rewrite using `[← extSh.sec_map, hx, ← sres_map, hzz, sres_zero]`. Establish `hloc` using `GlobalTheory.T.etaleSheafExtendScalars_zmod_kernel_locally_multiple Q q hq (K.X (n + 1)) V _ hdx`. Establish `hloc' : Loc V fun W k => ∃ y : Sec (K.X (n + 1)) W, Sec.map (K.d n (n + 1)) (Sec.res k x) = q • y`.
+
+Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 V _ _ hloc ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨y, hy⟩`. Conclude with `⟨y, by rw [← sres_map, hy]⟩`. Use `(GlobalTheory.T.etaleLocal_property_calculus_rules).2.1 V _ _ (hst n V x hloc') ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨u, y, hy⟩`.
+
+Use `⟨extSh.sec (ZMod.castHom hq (ZMod q)) (K.X (n - 1)) W u, ?_⟩` and prove the remaining obligations. Rewrite using `[extSh.sec_map, ← sres_comp, ← hx, extSh.sec_res, hy, map_add, map_nsmul, nsmul_self_eq_zero, add_zero]`.
+-/
 theorem GlobalTheory.EtC.flatExtAcyc.main : ∀ (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) (K : Cx (ZMod Q)) (a : ℤ) [K.IsStrictlyGE a], (∀ n, FlatS (K.X n)) → K.Acyclic → (extCx (ZMod.castHom hq (ZMod q)) K).Acyclic := by
   intro Q q _ hq K a _ hflat hK
   have hqe : q * (Q / q) = Q := Nat.mul_div_cancel' hq

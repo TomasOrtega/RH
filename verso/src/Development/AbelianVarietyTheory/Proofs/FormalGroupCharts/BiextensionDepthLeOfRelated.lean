@@ -11,6 +11,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ChartCmp
 namespace GlobalTheory.ChartCmp
 
+/- English proof (translation)
+Unfold `InPsi`. Establish `hb : ∀ σ : E →+* ℂ, σ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Introduce `σ`. Establish `h1 : ((H.rt : 𝓞 E) : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[← map_pow, h1, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Establish `h0 : H.rt0.re = 0`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+
+Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `him` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `[pow_two] at hre him`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`.
+
+Establish `h2 : H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 h2).resolve_left hne`. Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (hb τ) with h | h` into its components or cases.
+
+Conclude with `Or.inl h`. Use `right`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+-/
 theorem inPsi_or_conjugate {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (τ : E →+* ℂ) :
     InPsi H τ ∨ InPsi H (ComplexEmbedding.conjugate τ) := by
   unfold InPsi
@@ -37,6 +48,17 @@ theorem inPsi_or_conjugate {E : Type} [Field E] [NumberField E] [IsCMField E] (H
     rw [ComplexEmbedding.conjugate_coe_eq, h]
     apply Complex.ext <;> simp [h0]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io d B B' φ φi h h' u u' hrel hB hB' heig hu e k a n`. Unfold `nuAlg`. Use `le_iInf fun P => le_iInf fun hP => le_iInf fun f' => ?_` and prove the remaining obligations. Take `⟨f, hf⟩` from `GlobalTheory.T.harmonic_values_eq_of_related_biextensions T.V d (𝓞 E) T.Fr B B' φ φi hrel h h' hB hB' (E →+* ℂ) Dw.mult ComplexEmbedding.conjugate (InPsi H) (fun τ => io.comp (embK c τ)) (fun τ => by ext x; simp) (inPsi_or_conjugate H) (fun τ a => by`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hstar]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, ComplexEmbedding.conjugate_coe_eq, H.bar_eq, IsCMField.complexEmbedding_complexConj])`. Use the proof step `(fun σ τ hne => by`. Establish `hex : ∃ a : 𝓞 E, σ (a : E) ≠ τ (a : E)`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hne (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => by simpa using hc a))`. Take `⟨a, ha⟩` from `hex`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : embK c σ a - embK c τ a ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h1`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← embK_coe c, ← embK_coe c, h1]`.
+
+Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← map_sub]`. Conclude with `(Ne.isUnit h0).map _)`. Use `u u' (fun ℓ a => heig a ℓ) hu n P hP.1.1 H.w0 k f'`. Use `iInf_le_of_le P (iInf_le_of_le hP (iInf_le_of_le f ?_))` and prove the remaining obligations. Conclude with `le_of_eq (congrArg (nval T.V e) hf)`.
+-/
 theorem nuAlg_le_of_jrel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (d : ℕ) (B B' : FB T.V d (𝓞 E)) (φ φi : Pt T.V 1 d) (h h' : PS T.Fr 2 d) (u u' : Lt1 Dw → Fin d → T.Fr), (∀ m, ∃ ε : PS T.V 2 d, JRel m B B' φ φi ε) → B.IsCanonGauge T.Fr h → B'.IsCanonGauge T.Fr h' → (∀ (a : 𝓞 E) (ℓ : Lt1 Dw), (dAct T.Fr B' a).mulVec (u' ℓ) = io (embK c ℓ.1 a) • u' ℓ) → (∀ ℓ, u ℓ = ((dLin φ).map (algebraMap T.V T.Fr)).mulVec (u' ℓ)) → ∀ (e k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), nuAlg Dw T B h u e k a n ≤ nuAlg Dw T B' h' u' e k a n := by
   intro E _ _ _ H Dw l Xo c _ hstar T io d B B' φ φi h h' u u' hrel hB hB' heig hu e k a n
   unfold nuAlg

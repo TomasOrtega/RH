@@ -18,6 +18,11 @@ open PositivityTheory.Rg.BcB.F.FX PositivityTheory.Rg.BcB.F.FX.Bo
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.CG
 
+/- English proof (translation)
+Use `choose Z mZ hZ using fun (i : F₀.C.ι) (w : Pl E) => eig_fin hII hSPr (PA i) (PB i) w (F₀.d₀.ϖ w)`. Use `⟨fun i w => ⟨Z i w, (hZ i w).1, fun s₁ s₂ Pa Pb D hc _ => ?_⟩, ⟨Finset.univ.sup fun i => T'.sup (mZ i), fun i s₁ s₂ Pa Pb D hc w hw => ?_⟩⟩` and prove the remaining obligations. Conclude with `((hZ i w).2 Pa Pb (hcls i s₁ s₂ Pa Pb D hc).1 (hcls i s₁ s₂ Pa Pb D hc).2).2`. Establish `h1` using `((hZ i w).2 Pa Pb (hcls i s₁ s₂ Pa Pb D hc).1 (hcls i s₁ s₂ Pa Pb D hc).2).1`. Establish `h2 : mZ i w ≤ T'.sup (mZ i)` using `Finset.le_sup hw`.
+
+Establish `h3 : T'.sup (mZ i) ≤ Finset.univ.sup fun i => T'.sup (mZ i)` using `Finset.le_sup (f := fun i => T'.sup (mZ i)) (Finset.mem_univ i)`. Conclude with `le_trans h1 (le_trans h2 h3)`.
+-/
 theorem part1 (hII : IsoInv) (hSPr : StrictProd) {hR : Rd.ReadLimit} {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {π : Submodule ℂ (UA E n → ℂ)}
     {S : Finset (Pl E)} (F₀ : Frame0 hR π S) (d : LocData E n) (kA kB : F₀.C.ι → ℕ)
     (PA : ∀ i, Fin (kA i) → Pre E (F₀.C.a i)) (PB : ∀ i, Fin (kB i) → Pre E (n - F₀.C.a i))

@@ -34,10 +34,16 @@ def resPair [NeZero q] (hK : KapMul) (hT : InTw) (P : Probe C q) (i i' : ℤ) :
     rw [e2] at e
     exact e
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem res_res {R : Type} [CommRing R] {G : Shv R} {W V U : Scheme.{0}} (g : W ⟶ V) (f : V ⟶ U) (a : Sec G U) :
     Sec.res g (Sec.res f a) = Sec.res (g ≫ f) a := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Simplify using `only [CH.term, Probe.Pts.glob, Probe.res, secF]`. Use `show Sec.res _ (Sec.res _ a) = _`. Rewrite using `[res_res]`. Use `congr 1`. Conclude with `Y.nat _`.
+-/
 theorem term_glob (P : Probe C q) {X : Scheme.{0}} (Y : P.Pts X) (i : ℤ) (j : ℕ)
     (a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) {n : ℕ} (s : ComposableArrows C n)
     (g : Fin 1 → Fin (n + 1)) (hg : Monotone g) :
@@ -48,6 +54,9 @@ theorem term_glob (P : Probe C q) {X : Scheme.{0}} (Y : P.Pts X) (i : ℤ) (j : 
   congr 1
   exact Y.nat _
 
+/- English proof (translation)
+Simplify using `only [CH.Pairing.cupC, secPair]`. Use function extensionality and compare the values at `s`. Simplify using `only [LinearMap.mk₂_apply, term_glob]`. Rewrite using `[← (twPair q i i').nat]`. Both sides reduce to the same expression.
+-/
 theorem cupC_glob (P : Probe C q) {X : Scheme.{0}} (Y : P.Pts X) (i i' : ℤ) (j j' n : ℕ) (h : j + j' = n)
     (a : Sec ((GlobalTheory.EtC.res _ (tw q i)).X (j : ℤ)) X) (b : Sec ((GlobalTheory.EtC.res _ (tw q i')).X (j' : ℤ)) X) :
     (secPair P i i' j j' n h).cupC (add_zero 0) (Y.glob i j a) (Y.glob i' j' b) =
@@ -58,11 +67,21 @@ theorem cupC_glob (P : Probe C q) {X : Scheme.{0}} (Y : P.Pts X) (i i' : ℤ) (j
   rw [← (twPair q i i').nat]
   rfl
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_cup {E : Spc} {n m k i j : ℤ} (h : n + m = k) (hc : n + m = k) (x : Ht q E n i) (y : Ht q E m j) :
     Ht.cast hc rfl (GlobalTheory.EtC.cup q x y) = (twPair q i j).cup E h x y := by
   subst hc
   rfl
 
+/- English proof (translation)
+Introduce `hSpec hGood hEdge hBasic hRC hK hG hT q _ C _ P X Y i i' i'' hi j j' j'' hj x y`. Substitute `hi` using the available equality. Establish `h : (j : ℤ) + (j' : ℤ) = (j'' : ℤ)` using `by omega`. Rewrite using `[cast_cup h]`. Take `⟨a, ha⟩` from `(hBasic (ZMod q) (GlobalTheory.EtC.res (ZMod q) (tw q i)) X (j : ℤ)).1 x`.
+
+Take `⟨b, hb⟩` from `(hBasic (ZMod q) (GlobalTheory.EtC.res (ZMod q) (tw q i')) X (j' : ℤ)).1 y`. Establish `hab` using `hRC (ZMod q) _ _ _ (twPair q i i') X _ _ _ h x y a b ha hb`. Establish `ea` using `(hSpec hG q C P X Y i j x).1 a ha`. Establish `eb` using `(hSpec hG q C P X Y i' j' y).1 b hb`. Establish `e` using `hEdge ℤ C P.L P.L P.L (P.res i) (P.res i') (P.res (i + i')) (mulP (lcF P.S q)) (resPair hK hT P i i') (hGood hG q C P i) (hGood hG q C P i') j j' j'' hj (Y.glob i j a) (Y.glob i' j' b) (Y.et i j x) (Y.et i' j' y) ea eb`.
+
+Establish `e'` using `(congrArg (fun z => (P.res (i + i')).Edge z ((mulP (lcF P.S q)).cup hj (Y.et i j x) (Y.et i' j' y))) (cupC_glob P Y i i' j j' j'' hj a b)).mp e`. Conclude with `((hSpec hG q C P X Y (i + i') j'' _).2 _ ⟨_, hab, e'⟩).symm`.
+-/
 theorem etCup : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.ResGood → CrystallineSemistableComparison.E.EdgeCup → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.RepCup →
     CrystallineSemistableComparison.E.KapMul → CrystallineSemistableComparison.E.EtCup := by
   intro hSpec hGood hEdge hBasic hRC hK hG hT q _ C _ P X Y i i' i'' hi j j' j'' hj x y

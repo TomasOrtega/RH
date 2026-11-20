@@ -12,12 +12,20 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Crystal
 
 namespace GlobalTheory.CompanionTheory.CosieveRel
 
+/- English proof (translation)
+Use `𝒮.mid M N PUnit.{2} e.toLinearMap 0 ?_ h (𝒮.zero PUnit.{2} inferInstance)` and prove the remaining obligations. Introduce `y`. Conclude with `iff_of_true (Subsingleton.elim _ _) ⟨e.symm y, e.apply_symm_apply y⟩`.
+-/
 theorem serre_of_equiv {R : Type} [CommRing R] (𝒮 : Serre.{1} R) {M N : Type 1} [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N) (h : 𝒮.P M) : 𝒮.P N := by
   refine 𝒮.mid M N PUnit.{2} e.toLinearMap 0 ?_ h (𝒮.zero PUnit.{2} inferInstance)
   intro y
   exact iff_of_true (Subsingleton.elim _ _) ⟨e.symm y, e.apply_symm_apply y⟩
 
+/- English proof (translation)
+Introduce `R _ C _ F ι W hW 𝒮 n h`. Establish `hle : ∀ α, W α ≤ (fun T => ∃ β, W β T : ObjectProperty C)` using `fun α T hT => ⟨α, hT⟩`. Use `GlobalTheory.T.serre_class_of_cech_spectral_sequence ((ObjectProperty.ι (fun T => ∃ β, W β T : ObjectProperty C)) ⋙ F) (fun α T => W α T.obj) (fun α => by` and prove the remaining obligations. Introduce `T T' f hT`. Conclude with `hW α f.hom hT T'.property) (fun T => T.property) 𝒮 n ?_`.
+
+Introduce `p q hpq`. Take `⟨e⟩` from `GlobalTheory.T.cech_cohomology_full_subcategory_iso F (fun T => ∃ β, W β T : ObjectProperty C) W hle q p`. Conclude with `serre_of_equiv 𝒮 e.symm (h p q hpq)`.
+-/
 theorem serre_union : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type}
     (W : ι → ObjectProperty C) (hW : ∀ α ⦃T T' : C⦄, (T ⟶ T') → W α T → (∃ β, W β T') → W α T') (𝒮 : Serre.{1} R) (n : ℕ),
     (∀ p q, p + q = n → 𝒮.P ((cechH F W q).cx.H p)) → 𝒮.P (HU F (fun T => ∃ α, W α T) n) := by

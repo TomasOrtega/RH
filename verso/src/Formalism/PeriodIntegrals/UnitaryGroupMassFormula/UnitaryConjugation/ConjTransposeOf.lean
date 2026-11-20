@@ -6,6 +6,9 @@ noncomputable section
 
 namespace PI.UConjT
 
+/- English proof (translation)
+The claim follows from `h3 (h2 h1)`.
+-/
 theorem conjTranspose_of (h1 : OnbReal) (h2 : TransferStep) (h3 : BlockStep) :
     PI.UMultOne.ConjTranspose := h3 (h2 h1)
 

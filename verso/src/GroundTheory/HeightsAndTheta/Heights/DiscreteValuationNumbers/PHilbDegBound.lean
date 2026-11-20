@@ -18,6 +18,13 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type u} [
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Establish `e : I = Ideal.span {g | ∃ f ∈ I, ∃ b, g = weightedHomogeneousComponent (blockWeight ι) b f}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨f, hf, b, rfl⟩`. Conclude with `hI f hf b`. Rewrite using `[e]`. Use `Ideal.homogeneous_span _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨f, -, b, rfl⟩` from `hx`. Conclude with `⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩`.
+-/
 theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
     I.IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι)) := by
   classical
@@ -36,6 +43,9 @@ theorem isHomogeneous_of_isMultiHomogIdeal {I : Ideal (MRing ι F)} (hI : IsMult
   obtain ⟨f, -, b, rfl⟩ := hx
   exact ⟨b, weightedHomogeneousComponent_isWeightedHomogeneous b f⟩
 
+/- English proof (translation)
+Establish `h2 : (Ideal.span {s}).IsHomogeneous (weightedHomogeneousSubmodule F (blockWeight ι))` using `Ideal.homogeneous_span _ _ fun x hx => ⟨c, (Set.mem_singleton_iff.mp hx) ▸ hs⟩`. Introduce `f hf b`. Conclude with `weightedHomogeneousComponent_mem_of_mem (h := (isHomogeneous_of_isMultiHomogIdeal hI).sup h2) (hp := hf) (m := b)`.
+-/
 theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I)
     {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
     IsMultiHomogIdeal (I ⊔ Ideal.span {s}) := by
@@ -46,6 +56,13 @@ theorem isMultiHomogIdeal_sup_span {I : Ideal (MRing ι F)} (hI : IsMultiHomogId
   exact weightedHomogeneousComponent_mem_of_mem
     (h := (isHomogeneous_of_isMultiHomogIdeal hI).sup h2) (hp := hf) (m := b)
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Establish `e : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, top_add]`. Rewrite `h` using `[e, ← WithBot.coe_natCast, WithBot.coe_le_coe]`. Conclude with `absurd h (not_le.mpr (ENat.natCast_lt_top N))`.
+
+Consider the case `coe a`. Establish `: a + 1 ≤ N` using `by exact_mod_cast h`. Conclude with `(show a < N by omega)` after adjusting the coercions.
+-/
 theorem lt_of_add_one_le_natCast {x : WithBot ℕ∞} {N : ℕ} (h : x + 1 ≤ N) : x < N := by
   induction x using WithBot.recBotCoe with
   | bot => exact WithBot.bot_lt_coe _
@@ -61,6 +78,13 @@ theorem lt_of_add_one_le_natCast {x : WithBot ℕ∞} {N : ℕ} (h : x + 1 ≤ N
       have : a + 1 ≤ N := by exact_mod_cast h
       exact_mod_cast (show a < N by omega)
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Rewrite `h` using `[← WithBot.coe_natCast, WithBot.coe_lt_coe]`. Conclude with `absurd h (not_lt.mpr le_top)`. Consider the case `coe a`. Establish `: a < N + 1` using `by exact_mod_cast h`.
+
+Conclude with `(show a ≤ N by omega)` after adjusting the coercions.
+-/
 theorem le_natCast_of_lt_natCast_succ {x : WithBot ℕ∞} {N : ℕ}
     (h : x < ((N + 1 : ℕ) : WithBot ℕ∞)) : x ≤ N := by
   induction x using WithBot.recBotCoe with
@@ -77,6 +101,11 @@ theorem le_natCast_of_lt_natCast_succ {x : WithBot ℕ∞} {N : ℕ}
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.sum_nil]`. Conclude with `degLT_zero n`. Consider the case `cons a l ih`.
+
+Establish `e : (fun m => ((a :: l).map fun a => g a m).sum) = g a + fun m => (l.map fun a => g a m).sum`. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(h6 K n _ _ 0 0).1 (hl a (by simp)) (ih fun b hb => hl b (by simp [hb]))`.
+-/
 theorem degLT_listSum (h6 : DegLTClosure.Statement) {α : Type*} (n : ℕ)
     (g : α → (K → ℤ) → ℤ) (l : List α) (hl : ∀ a ∈ l, DegLT (g a) n) :
     DegLT (fun m => (l.map fun a => g a m).sum) n := by
@@ -98,6 +127,33 @@ end HilbDegBound
 
 open HilbDegBound in
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ n`. Establish `irr : ∀ (n : ℕ) (Q : Ideal (MRing ι F)), ¬ IsRelevant Q → DegLT (hilbFn Q) n`. Introduce `n Q hrel`. Unfold `IsRelevant at hrel`. Use `push Not at hrel`.
+
+Take `⟨k, hk⟩` from `hrel`. Establish `hev : (0 : (K → ℤ) → ℤ) =ᶠ[Filter.atTop] hilbFn Q` using `by filter_upwards [Filter.eventually_ge_atTop (1 : K → ℤ)] with m hm`. Conclude with `(h1 F K ι Q k hk m (hm k)).symm`. Conclude with `(h6 K n 0 _ 0 0).2.2.2.2 hev (degLT_zero n)`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `Q hQ hQh hdim`. Distinguish the cases in `hrel : IsRelevant Q`. It suffices to derive a contradiction. Establish `hge` using `h5 F K ι Q ⟨hQ, hQh, hrel⟩`.
+
+Rewrite `hdim` using `[Nat.zero_add]`. Conclude with `absurd hge (not_le.mpr hdim)`. Conclude with `irr 0 Q hrel`. Consider the case `succ n ih`. Introduce `Q hQ hQh hdim`.
+
+Distinguish the cases in `hrel : IsRelevant Q`. Use `swap`. Conclude with `irr _ Q hrel`. Establish `hdimle : ringKrullDim (MRing ι F ⧸ Q) ≤ ((n + Fintype.card K : ℕ) : WithBot ℕ∞)`. Establish `e : n + 1 + Fintype.card K = n + Fintype.card K + 1` using `by omega`.
+
+Rewrite `hdim` using `[e]`. Conclude with `le_natCast_of_lt_natCast_succ hdim`. Apply `h7 K n` to reduce the goal to its premises. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`.
+
+Establish `hx : IsMultiHomog (X ⟨k, i⟩ : MRing ι F) (Pi.single k 1)` using `isWeightedHomogeneous_X _ _ _`. Establish `hnzd : ∀ y, (X ⟨k, i⟩ : MRing ι F) * y ∈ Q → y ∈ Q` using `fun y hy => (hQ.mem_or_mem hy).resolve_left hi`. Establish `hcut` using `h2 F K ι Q (X ⟨k, i⟩) (Pi.single k 1) hQh hx hnzd`. Establish `hJ : IsMultiHomogIdeal (Q ⊔ Ideal.span {(X ⟨k, i⟩ : MRing ι F)})` using `isMultiHomogIdeal_sup_span hQh hx`. Establish `hs : (fun j => ((Pi.single k 1 : K → ℕ) j : ℤ)) = (Pi.single k 1 : K → ℤ)`.
+
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`. Establish `heq : diffStep (Pi.single k 1) (hilbFn Q) = hilbFn (Q ⊔ Ideal.span {(X ⟨k, i⟩ : MRing ι F)})`. Use function extensionality and compare the values at `m`. Rewrite using `[hcut m, hs]`.
+
+Both sides reduce to the same expression. Rewrite using `[heq]`. Take `⟨l, hl1, hl2, -⟩` from `h3 F K ι _ hJ`. Take `⟨G, hG⟩ : ∃ G : Ideal (MRing ι F) × (K → ℕ) → (K → ℤ) → ℤ, G = fun p => shiftFn (fun j => (p.2 j : ℤ)) (hilbFn p.1)` from `⟨_, rfl⟩`. Establish `hfun : hilbFn (Q ⊔ Ideal.span {(X ⟨k, i⟩ : MRing ι F)}) = fun m => (l.map fun p => G p m).sum`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[hl2 m, hG]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Apply `degLT_listSum h6 n G l` to reduce the goal to its premises.
+
+Introduce `p hp`. Take `⟨hp1, hp2, hp3⟩` from `hl1 p hp`. Rewrite using `[hG]`. Use `(h6 K n (hilbFn p.1) 0 0 _).2.2.1 ?_` and prove the remaining obligations. Use `ih p.1 hp1 hp2 ?_` and prove the remaining obligations.
+
+Establish `hlt : Q < p.1`. Use `lt_of_le_of_ne (le_sup_left.trans hp3) fun h => hi ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `hp3 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Use `hQ` as an intermediate fact.
+
+Use `hp1` as an intermediate fact. Establish `hd` using `h4 (MRing ι F) Q p.1 hlt`. Conclude with `lt_of_add_one_le_natCast (hd.trans hdimle)`.
+-/
 theorem HilbDegBound.proof (h1 : HilbFnVanishBlock.Statement.{u}) (h2 : HilbFnCut.Statement.{u})
     (h3 : PrimeFiltration.Statement.{u}) (h4 : DimStrictDrop.Statement.{u})
     (h5 : RelevantDimGe.Statement.{u}) (h6 : DegLTClosure.Statement)

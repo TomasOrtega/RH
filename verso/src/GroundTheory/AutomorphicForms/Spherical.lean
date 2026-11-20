@@ -17,6 +17,9 @@ section Characters
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `haveI := isIntegral_satake (μ := μ) (F := F) (n := n)`. Take `⟨w, hw⟩` from `exists_ker_evalAt_comp_eq (satakeHom μ) satakeHom_injective I`. Conclude with `⟨w, by rw [← evalAt_comp_satakeHom]; exact hw⟩`.
+-/
 theorem exists_ker_sphericalCharacter_eq (I : Ideal (SphericalHecke μ (F := F) (n := n)))
     [I.IsMaximal] : ∃ w : Fin n → ℂˣ,
       RingHom.ker (sphericalCharacter μ (isUnramified_unramifiedChar (F := F) w)) = I := by
@@ -24,6 +27,11 @@ theorem exists_ker_sphericalCharacter_eq (I : Ideal (SphericalHecke μ (F := F) 
   obtain ⟨w, hw⟩ := exists_ker_evalAt_comp_eq (satakeHom μ) satakeHom_injective I
   exact ⟨w, by rw [← evalAt_comp_satakeHom]; exact hw⟩
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective ω` using `fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩`. Use `haveI : (RingHom.ker ω).IsMaximal := RingHom.ker_isMaximal_of_surjective _ hsurj`. Take `⟨w, hw⟩` from `exists_ker_sphericalCharacter_eq (μ := μ) (RingHom.ker ω)`. Use `⟨unramifiedChar w, isUnramified_unramifiedChar w, AlgHom.ext fun h => ?_⟩` and prove the remaining obligations. Establish `hmem : h - algebraMap ℂ _ (ω h) ∈ RingHom.ker ω`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Rewrite `hmem` using `[← hw, RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero]`. Conclude with `hmem.symm`.
+-/
 theorem exists_eq_sphericalCharacter (ω : SphericalHecke μ (F := F) (n := n) →ₐ[ℂ] ℂ) :
     ∃ χ : levi F n (id : Fin n → Fin n) →* ℂ, ∃ hχ : IsUnramified χ, ω = sphericalCharacter μ hχ := by
   have hsurj : Function.Surjective ω := fun c => ⟨algebraMap ℂ _ c, AlgHom.commutes ω c⟩
@@ -39,6 +47,37 @@ theorem exists_eq_sphericalCharacter (ω : SphericalHecke μ (F := F) (n := n) �
 
 end Characters
 
+/- English proof (translation)
+Use `borelize (GL (Fin n) F)`. Set `μ : Measure (GL (Fin n) F)` to `Measure.haar`. Establish `hKc` using `isCompact_integralGL F n`. Establish `hKo` using `isOpen_integralGL F n`. Take `⟨v₀, hv₀, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hK`.
+
+Set `s₀` to `LinearMap.toSpanSingleton (SphericalHecke μ (F := F) (n := n)) (fixedVectors ρ (integralGL F n)) ⟨v₀, hv₀⟩`. Set `I : Ideal (SphericalHecke μ (F` to `F) (n := n)) := LinearMap.ker s₀`. Establish `hsimple` using `isSimpleModule_fixedVectors (μ := μ) hKc hKo hρ hK`. Establish `hsurj : Function.Surjective s₀` using `((isSimpleModule_iff_toSpanSingleton_surjective).1 hsimple).2 _ fun h => h0 (congrArg Subtype.val h)`. Use `haveI hI : I.IsMaximal := by`.
+
+Rewrite using `[Ideal.isMaximal_def]`. Conclude with `isSimpleModule_iff_isCoatom.1 (IsSimpleModule.congr (LinearMap.quotKerEquivOfSurjective _ hsurj))`. Take `⟨w, hw⟩` from `exists_ker_sphericalCharacter_eq (μ := μ) I`. Use `set χ := unramifiedChar (F := F) w`. Establish `hχ` using `isUnramified_unramifiedChar (F := F) w`.
+
+Use `⟨χ, hχ, ?_⟩` and prove the remaining obligations. Use `set φ := sphericalVector hχ`. Establish `hs` using `isSmooth_parabolicInd (F := F) (n := n) (β := (id : Fin n → Fin n)) (charRep χ)`. Establish `hφK` using `sphericalVector_mem_fixedVectors hχ`. Establish `hIv : ∀ h : SphericalHecke μ (F` using `F) (n := n), h ∈ I ↔ heckeAct μ ρ (h : HeckeAlgebra μ) v₀ = 0 := by`.
+
+Introduce `h`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, Subtype.ext_iff]`. Both sides reduce to the same expression. Establish `hIφ : ∀ h : SphericalHecke μ (F` using `F) (n := n), h ∈ I ↔ heckeAct μ (principalSeries F n χ) (h : HeckeAlgebra μ) φ = 0 := by`. Introduce `h`.
+
+Rewrite using `[heckeAct_sphericalVector hχ, smul_eq_zero, ← hw, RingHom.mem_ker, sphericalCharacter_apply]`. Simplify using `[φ, sphericalVector_ne_zero hχ]`. Take `⟨A⟩` from `nonempty_equiv_quotRep hKc hKo I hρ hv₀ h0 hIv`. Set `Φ : HeckeAlgebra μ →ₗ[ℂ] principalSeriesSpace F n χ` to `orbitMap φ (hs φ)`. Establish `hΦ : ∀ f, Φ f = heckeAct μ (principalSeries F n χ) f φ` using `fun _ => rfl`.
+
+Establish `hint : ∀ g f, Φ (leftReg μ g f) = principalSeries F n χ g (Φ f)` using `fun g f => (heckeAct_ltrans g f.mem (hs φ)).symm`. Establish `key : ∀ f g, heckeAct μ (principalSeries F n χ) (idem μ hKc hKo) (principalSeries F n χ g (Φ f)) = heckeAct μ (principalSeries F n χ) (cornerₗ hKc hKo (leftReg μ g f) : HeckeAlgebra μ) φ`. Introduce `f g`. Rewrite using `[hΦ, heckeAct_ltrans g f.mem (hs φ)]`. Express the relevant statement in the definitionally equal form `heckeAct μ _ (idem μ hKc hKo) (heckeAct μ _ (leftReg μ g f : HeckeAlgebra μ) φ) = _`.
+
+Rewrite using `[← heckeAct_mul _ _ (hs φ)]`. Conclude with `(heckeAct_corner hKc hKo hφK _).symm`. Establish `hker : LinearMap.ker Φ ≤ heckeKernel hKc hKo I`. Introduce `f hf g`. Rewrite `hf` using `[LinearMap.mem_ker]`.
+
+Rewrite using `[hIφ, ← key, hf, map_zero]`. Conclude with `heckeAct_zero_right (idem μ hKc hKo).mem`. Set `W : Subrepresentation (principalSeries F n χ)` to `⟨LinearMap.range Φ, by`. Introduce and unpack `g _ ⟨f, rfl⟩`. Conclude with `⟨leftReg μ g f, hint g f⟩⟩`.
+
+Set `Ψ : HeckeAlgebra μ →ₗ[ℂ] V` to `A.toLinearMap ∘ₗ (heckeKernel hKc hKo I).mkQ`. Establish `hΨ : LinearMap.ker Φ ≤ LinearMap.ker Ψ` using `fun f hf => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 (hker hf), map_zero]`. Set `T : LinearMap.range Φ →ₗ[ℂ] V` to `(LinearMap.ker Φ).liftQ Ψ hΨ ∘ₗ Φ.quotKerEquivRange.symm.toLinearMap`. Establish `hT : ∀ f, T ⟨Φ f, LinearMap.mem_range_self Φ f⟩ = Ψ f`.
+
+Introduce `f`. Simplify using `only [T, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply]`. Establish `hT' : ∀ (y : LinearMap.range Φ) (f) (_ : Φ f = y), T y = Ψ f`. Introduce and unpack `⟨y, hy⟩ f rfl`. Conclude with `hT f`.
+
+Use `⟨W, ⟨T, fun g => LinearMap.ext fun y => ?_⟩, fun v => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `y.2`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Establish `hy : (W.toRepresentation g y : principalSeriesSpace F n χ) = Φ (leftReg μ g f)`. Rewrite using `[hint, hf]`.
+
+Both sides reduce to the same expression. Rewrite using `[hT' _ _ hy.symm, hT' y f hf]`. Simplify using `only [Ψ, LinearMap.coe_comp, Function.comp_apply, Representation.Equiv.coe_toLinearMap]`. Rewrite using `[← quotRep_mkQ]`. Conclude with `Representation.IntertwiningMap.isIntertwining _ _ A.toIntertwiningMap g _`.
+
+Take `⟨y, hy⟩` from `A.toLinearEquiv.surjective v`. Take `⟨f, rfl⟩` from `(heckeKernel hKc hKo I).mkQ_surjective y`. Use `⟨⟨Φ f, LinearMap.mem_range_self Φ f⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T _ = v`. Rewrite using `[hT]`.
+
+Conclude with `hy`.
+-/
 theorem exists_subquotient_principalSeries {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} (hρ : IsSmooth ρ) [ρ.IsIrreducible]
     (hK : fixedVectors ρ (integralGL F n) ≠ ⊥) :

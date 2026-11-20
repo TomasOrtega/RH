@@ -15,12 +15,21 @@ namespace SheetPieceProductAnalytic
 def tailL (d : ℕ) : (Fin (d + 1) → ℂ) →L[ℂ] (Fin d → ℂ) :=
   ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj i.succ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tailL_apply {d : ℕ} (p : Fin (d + 1) → ℂ) (i : Fin d) : tailL d p i = p i.succ := rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[tailL_apply]`.
+-/
 theorem tailL_cons {d : ℕ} (a : ℂ) (y : Fin d → ℂ) : tailL d (Fin.cons a y) = y := by
   ext i
   simp [tailL_apply]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `cases i using Fin.cases <;> simp [tailL_apply]`.
+-/
 theorem cons_tailL {d : ℕ} (p : Fin (d + 1) → ℂ) : (Fin.cons (p 0) (tailL d p) : Fin (d + 1) → ℂ) = p := by
   ext i
   cases i using Fin.cases <;> simp [tailL_apply]
@@ -29,6 +38,15 @@ def prodFn {σ : Type} [Fintype σ] (X B U : Set (σ → ℂ)) {d : ℕ} (A : (�
     (ℓ : (σ → ℂ) →L[ℂ] ℂ) (p : Fin (d + 1) → ℂ) : ℂ :=
   ∏ᶠ x ∈ {x | x ∈ X ∩ B ∧ x ∈ U ∧ A x = tailL d p}, (p 0 - ℓ x)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨p, hp⟩` from `hVne`. Establish `hc : Continuous fun y : Fin d → ℂ => (Fin.cons (p 0) y : Fin (d + 1) → ℂ)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations.
+
+Consider the cases of `i using Fin.cases`. Simplify using `using continuous_const`. Simplify using `using continuous_apply _`. Establish `hev : δ =ᶠ[𝓝 (tailL d p)] 0`. Establish `hmem : (fun y : Fin d → ℂ => (Fin.cons (p 0) y : Fin (d + 1) → ℂ)) ⁻¹' V ∈ 𝓝 (tailL d p)`.
+
+Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Use `show V ∈ 𝓝 (Fin.cons (p 0) (tailL d p) : Fin (d + 1) → ℂ)`. Rewrite using `[cons_tailL]`. Conclude with `hV.mem_nhds hp`. Use `filter_upwards [hmem] with y hy`.
+
+Use `h _ hy` as an intermediate fact. Rewrite `this` using `[tailL_cons]`. Then use the resulting hypothesis. Take `⟨y, hy, hy0⟩` from `hne`. Conclude with `hy0 (hδ.eqOn_zero_of_preconnected_of_eventuallyEq_zero hD (hVW hp) hev hy)`.
+-/
 theorem exists_ne_zero_of_open {d : ℕ} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ}
     (hδ : AnalyticOnNhd ℂ δ D) (hD : IsPreconnected D) (hne : ∃ y ∈ D, δ y ≠ 0)
     (V : Set (Fin (d + 1) → ℂ)) (hV : IsOpen V) (hVW : V ⊆ tailL d ⁻¹' D) (hVne : V.Nonempty) :
@@ -53,6 +71,35 @@ theorem exists_ne_zero_of_open {d : ℕ} {D : Set (Fin d → ℂ)} {δ : (Fin d 
   obtain ⟨y, hy, hy0⟩ := hne
   exact hy0 (hδ.eqOn_zero_of_preconnected_of_eventuallyEq_zero hD (hVW hp) hev hy)
 
+/- English proof (translation)
+Take `⟨r, g, hr, -, hrδ, hg, hfib⟩` from `hsec σ X w B d A D δ N hP _ hp₀ hδp₀`. Use `set y₀ := tailL d p₀ with hy₀def`. Establish `hy₀ : y₀ ∈ ball y₀ r` using `mem_ball_self hr`. Establish `hconst : ∀ i, ∀ y ∈ ball y₀ r, (g i y ∈ U ↔ g i y₀ ∈ U)`. Introduce `i`.
+
+Establish `hgc : ContinuousOn (g i) (ball y₀ r)` using `(hg i).continuousOn`. Establish `hS : ∀ y ∈ ball y₀ r, g i y ∈ X ∩ B ∧ δ (A (g i y)) ≠ 0`. Introduce `y hy`. Establish `hx : g i y ∈ {x | x ∈ X ∩ B ∧ A x = y}`. Rewrite using `[(hfib y hy).2]`.
+
+Conclude with `⟨i, rfl⟩`. Conclude with `⟨hx.1, by rw [hx.2]; exact hrδ y hy⟩`. Establish `hopU` using `hgc.isOpen_inter_preimage isOpen_ball hU`. Establish `hopV` using `hgc.isOpen_inter_preimage isOpen_ball hV`. Establish `hdj : Disjoint (ball y₀ r ∩ g i ⁻¹' U) (ball y₀ r ∩ g i ⁻¹' V)`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce and unpack `y ⟨hy, hyU⟩ ⟨-, hyV⟩`. Establish `: g i y ∈ {x | x ∈ X ∩ B ∧ δ (A x) ≠ 0} ∩ (U ∩ V)` using `⟨hS y hy, hyU, hyV⟩`. Rewrite `this` using `[hdisj]`. Conclude with `this`.
+
+Establish `hcv : ball y₀ r ⊆ (ball y₀ r ∩ g i ⁻¹' U) ∪ (ball y₀ r ∩ g i ⁻¹' V)`. Introduce `y hy`. Break down `hcov (hS y hy) with h | h` into its components or cases. Conclude with `Or.inl ⟨hy, h⟩`. Conclude with `Or.inr ⟨hy, h⟩`.
+
+Establish `hc : IsPreconnected (ball y₀ r)` using `(convex_ball y₀ r).isPreconnected`. Introduce `y hy`. Prove the components needed by the constructor for the conclusion. Introduce `hyU`. Assume the negation of the conclusion as `hy0U`.
+
+Establish `hy0V : y₀ ∈ ball y₀ r ∩ g i ⁻¹' V` using `(hcv hy₀).resolve_left fun h => hy0U h.2`. Establish `hsub` using `hc.subset_right_of_subset_union hopU hopV hdj hcv ⟨y₀, hy₀, hy0V⟩`. Conclude with `Set.disjoint_left.1 hdj ⟨hy, hyU⟩ (hsub hy)`. Introduce `hy0U`. Conclude with `(hc.subset_left_of_subset_union hopU hopV hdj hcv ⟨y₀, hy₀, hy₀, hy0U⟩ hy).2`.
+
+Use `set I : Finset (Fin N) := Finset.univ.filter fun i => g i y₀ ∈ U with hIdef`. Establish `hrep : ∀ p : Fin (d + 1) → ℂ, tailL d p ∈ ball y₀ r → prodFn X B U A ℓ p = ∏ i ∈ I, (p 0 - ℓ (g i (tailL d p)))`. Introduce `p hp`. Establish `hset : {x | x ∈ X ∩ B ∧ x ∈ U ∧ A x = tailL d p} = (fun i => g i (tailL d p)) '' (I : Set (Fin N))`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxB, hxU, hxA⟩`. Establish `hx : x ∈ Set.range (fun i => g i (tailL d p))`. Rewrite using `[← (hfib _ hp).2]`. Conclude with `⟨hxB, hxA⟩`.
+
+Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨i, by simpa [hIdef] using (hconst i _ hp).1 hxU, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Establish `hx : g i (tailL d p) ∈ {x | x ∈ X ∩ B ∧ A x = tailL d p}`. Rewrite using `[(hfib _ hp).2]`.
+
+Conclude with `⟨i, rfl⟩`. Conclude with `⟨hx.1, (hconst i _ hp).2 (by simpa [hIdef] using hi), hx.2⟩`. Unfold `prodFn`. Rewrite using `[hset, finprod_mem_image ((hfib _ hp).1.injOn), finprod_mem_coe_finset]`. Establish `hev : prodFn X B U A ℓ =ᶠ[𝓝 p₀] fun p => ∏ i ∈ I, (p 0 - ℓ (g i (tailL d p)))`.
+
+Establish `hmem : tailL d ⁻¹' ball y₀ r ∈ 𝓝 p₀` using `(tailL d).continuous.continuousAt.preimage_mem_nhds (isOpen_ball.mem_nhds hy₀)`. Use `filter_upwards [hmem] with p hp using hrep p hp`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hfac : ∀ i, DifferentiableAt ℂ (fun p : Fin (d + 1) → ℂ => p 0 - ℓ (g i (tailL d p))) p₀`. Introduce `i`.
+
+Establish `h1 : DifferentiableAt ℂ (fun p : Fin (d + 1) → ℂ => p 0) p₀` using `differentiableAt_apply 0 p₀`. Establish `h2 : DifferentiableAt ℂ (fun p => ℓ (g i (tailL d p))) p₀` using `ℓ.differentiableAt.comp _ (((hg i) _ hy₀).differentiableAt.comp _ (tailL d).differentiableAt)`. Conclude with `h1.sub h2`. Use `Finset.induction_on I ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Introduce `j s hj ih`. Simplify using `only [Finset.prod_insert hj]`. Conclude with `(hfac j).mul ih`.
+-/
 theorem differentiableAt_prodFn (hsec : UnbranchedFibreSections.Statement)
     {σ : Type} [Fintype σ] {X : Set (σ → ℂ)} {w : σ → ℂ} {B : Set (σ → ℂ)} {d : ℕ}
     {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ} {N : ℕ}
@@ -136,6 +183,19 @@ theorem differentiableAt_prodFn (hsec : UnbranchedFibreSections.Statement)
     simp only [Finset.prod_insert hj]
     exact (hfac j).mul ih
 
+/- English proof (translation)
+Take `⟨-, -, hD, -, -, hprop, -, -, -, hcard, -, -⟩` from `hP`. Take `⟨ρ, hρ, hρD⟩` from `Metric.isOpen_iff.1 hD _ hp₀`. Use `set y₀ := tailL d p₀ with hy₀def`. Establish `hK : IsCompact {x | x ∈ X ∩ B ∧ A x ∈ closedBall y₀ (ρ / 2)}` using `hprop _ ((closedBall_subset_ball (half_lt_self hρ)).trans hρD) (isCompact_closedBall _ _)`. Take `⟨M, hM⟩` from `isBounded_iff_forall_norm_le.1 (hK.image ℓ.continuous).isBounded`.
+
+Use `set C : ℝ := max 1 (‖p₀ 0‖ + 1 + M) with hCdef`. Use `⟨tailL d ⁻¹' ball y₀ (ρ / 2) ∩ {p | ‖p 0‖ < ‖p₀ 0‖ + 1}, ?_, ?_⟩` and prove the remaining obligations. Use `Filter.inter_mem ((tailL d).continuous.continuousAt.preimage_mem_nhds (isOpen_ball.mem_nhds (mem_ball_self (half_pos hρ)))) ?_` and prove the remaining obligations. Conclude with `(isOpen_lt (continuous_norm.comp (continuous_apply 0)) continuous_const).mem_nhds (by simp)`. Rewrite using `[isBounded_iff_forall_norm_le]`.
+
+Use `⟨C ^ N, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨⟨⟨hpb, hpn⟩, hpD⟩, hpδ⟩, rfl⟩`. Establish `hpn' : ‖p 0‖ < ‖p₀ 0‖ + 1` using `hpn`. Establish `hsub : {x | x ∈ X ∩ B ∧ x ∈ U ∧ A x = tailL d p} ⊆ {x | x ∈ X ∩ B ∧ A x = tailL d p}` using `fun x hx => ⟨hx.1, hx.2.2⟩`. Establish `hfin : {x | x ∈ X ∩ B ∧ A x = tailL d p}.encard = N` using `hcard _ hpD hpδ`.
+
+Establish `hsfin : {x | x ∈ X ∩ B ∧ x ∈ U ∧ A x = tailL d p}.Finite` using `(Set.finite_of_encard_eq_coe hfin).subset hsub`. Establish `hcardle : hsfin.toFinset.card ≤ N`. Establish `h1` using `Set.encard_le_encard hsub`. Rewrite `h1` using `[hfin, ← hsfin.coe_toFinset, Set.encard_coe_eq_coe_finsetCard]`. Conclude with `h1` after adjusting the coercions.
+
+Establish `hbd : ∀ x ∈ hsfin.toFinset, ‖p 0 - ℓ x‖ ≤ C`. Introduce `x hx`. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Establish `hxK : x ∈ {x | x ∈ X ∩ B ∧ A x ∈ closedBall y₀ (ρ / 2)}` using `⟨hx.1, by rw [hx.2.2]; exact ball_subset_closedBall hpb⟩`. Establish `hMx` using `hM _ ⟨x, hxK, rfl⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `prodFn`. Rewrite using `[finprod_mem_eq_finite_toFinset_prod _ hsfin]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isBounded_prodFn {σ : Type} [Fintype σ] {X : Set (σ → ℂ)} {w : σ → ℂ} {B : Set (σ → ℂ)} {d : ℕ}
     {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {D : Set (Fin d → ℂ)} {δ : (Fin d → ℂ) → ℂ} {N : ℕ}
     (U : Set (σ → ℂ)) (ℓ : (σ → ℂ) →L[ℂ] ℂ)
@@ -186,6 +246,21 @@ end SheetPieceProductAnalytic
 
 open SheetPieceProductAnalytic in
 
+/- English proof (translation)
+Introduce `σ _ X w B d A D δ N U V ℓ hP hU hV hcov hdisj`. Establish `hP'` using `hP`. Take `⟨-, -, hD, hDc, -, -, -, hδ, hne, -, -, -⟩` from `hP'`. Establish `hW : IsOpen (tailL d ⁻¹' D)` using `hD.preimage (tailL d).continuous`. Establish `hgd : DifferentiableOn ℂ (fun p => δ (tailL d p)) (tailL d ⁻¹' D)` using `fun p hp => ((hδ _ hp).differentiableAt.comp p (tailL d).differentiableAt).differentiableWithinAt`.
+
+Take `⟨F, hF, hFG⟩` from `RiemannExtensionAnalytic.proof (d + 1) (tailL d ⁻¹' D) (fun p => δ (tailL d p)) (prodFn X B U A ℓ) hW hgd (fun V' hV' hsub hne' => exists_ne_zero_of_open hδ hDc hne V' hV' hsub hne') (fun p hp => (differentiableAt_prodFn hsec ℓ hP hU hV hcov hdisj hp.1 hp.2).differentiableWithinA …`. Establish `hFa : AnalyticOnNhd ℂ F (tailL d ⁻¹' D)` using `RiemannExtensionAnalytic.analyticOnNhd_of_differentiableOn hW hF`. Establish `hcons : ∀ z, tailL d (Fin.cons (ℓ z) (A z) : Fin (d + 1) → ℂ) = A z` using `fun z => tailL_cons _ _`. Use `⟨fun z => F (Fin.cons (ℓ z) (A z)), fun z hz => ?_, fun z hz hδz => ?_⟩` and prove the remaining obligations. Establish `hm : (Fin.cons (ℓ z) (A z) : Fin (d + 1) → ℂ) ∈ tailL d ⁻¹' D`.
+
+Rewrite using `[Set.mem_preimage, hcons]`. Conclude with `hz`. Establish `hlin : AnalyticAt ℂ (fun z => (Fin.cons (ℓ z) (A z) : Fin (d + 1) → ℂ)) z`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`.
+
+Consider the cases of `i using Fin.cases`. Simplify using `using ℓ.analyticAt z`. Name the introduced variables `j`. Simplify using `only [Fin.cons_succ]`. Conclude with `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin d => ℂ) j).comp A).analyticAt z`.
+
+Conclude with `AnalyticAt.comp (g := F) (f := fun z => (Fin.cons (ℓ z) (A z) : Fin (d + 1) → ℂ)) (hFa _ hm) hlin`. Establish `hm : (Fin.cons (ℓ z) (A z) : Fin (d + 1) → ℂ) ∈ tailL d ⁻¹' D ∩ {p | δ (tailL d p) ≠ 0}`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hcons]`. Conclude with `hz`.
+
+Use `show δ (tailL d _) ≠ 0`. Rewrite using `[hcons]`. Conclude with `hδz`. Use `show F _ = _`. Rewrite using `[hFG hm]`.
+
+Simplify using `only [prodFn, hcons, Fin.cons_zero]`.
+-/
 theorem SheetPieceProductAnalytic.proof (hsec : UnbranchedFibreSections.Statement) :
     SheetPieceProductAnalytic.Statement := by
   intro σ _ X w B d A D δ N U V ℓ hP hU hV hcov hdisj

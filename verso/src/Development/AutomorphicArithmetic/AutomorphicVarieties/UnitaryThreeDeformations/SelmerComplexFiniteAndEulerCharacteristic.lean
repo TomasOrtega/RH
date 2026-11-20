@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia Module
 
+/- English proof (translation)
+Use `LinearMap.finrank_range_add_finrank_ker g` as an intermediate fact. Rewrite `this` using `[LinearMap.exact_iff.1 h]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem mid {k A B C : Type} [Field k] [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
     [AddCommGroup C] [Module k C] [Module.Finite k B] (f : A →ₗ[k] B) (g : B →ₗ[k] C) (h : Function.Exact f g) :
     finrank k B = finrank k (LinearMap.range f) + finrank k (LinearMap.range g) := by
@@ -10,6 +13,13 @@ private theorem mid {k A B C : Type} [Field k] [AddCommGroup A] [Module k A] [Ad
   rw [LinearMap.exact_iff.1 h] at this
   omega
 
+/- English proof (translation)
+Establish `hD : Module.Finite k D`. Establish `e : Function.Exact h p.rangeRestrict`. Introduce `y`. Rewrite using `[← h3 y, Subtype.ext_iff]`. Both sides reduce to the same expression.
+
+Conclude with `Module.Finite.of_exact e p.surjective_rangeRestrict`. Use `⟨hD, ?_⟩` and prove the remaining obligations. Establish `a1` using `mid f g h1`. Establish `a2` using `mid g h h2`. Establish `a3` using `mid h p h3`.
+
+Establish `a4` using `mid p q h4`. Establish `a5` using `LinearMap.finrank_range_of_inj hf`. Establish `a6 : finrank k (LinearMap.range q) = finrank k F`. Rewrite using `[LinearMap.range_eq_top.2 hq, finrank_top]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem six {k A B C D E F : Type} [Field k] [AddCommGroup A] [Module k A] [AddCommGroup B] [Module k B]
     [AddCommGroup C] [Module k C] [AddCommGroup D] [Module k D] [AddCommGroup E] [Module k E]
     [AddCommGroup F] [Module k F] [Module.Finite k B] [Module.Finite k C] [Module.Finite k E]
@@ -33,6 +43,39 @@ private theorem six {k A B C D E F : Type} [Field k] [AddCommGroup A] [Module k 
     rw [LinearMap.range_eq_top.2 hq, finrank_top]
   omega
 
+/- English proof (translation)
+Establish `hr : ∀ v, ∀ x ∈ Z1, r1 v x ∈ Z1v v` using `fun v x hx => (hZv v _).2 ⟨hC v x ((hZ x).1 hx).1, by rw [← hd, ((hZ x).1 hx).2, map_zero]⟩`. Use `haveI : ∀ v, Module.Finite k (ZL v) := fun v => Module.Finite.of_injective _ (Submodule.inclusion_injective (hL v))`. Apply the tactic sequence `let f : selmerCocycles →ₗ[k] Z1 × ∀ v, ZL v := { toFun := fun x => (⟨x.1, ((hZ1L _).1 x.2).1⟩, fun v => ⟨-r1 v x.1, neg_mem (((hZ1L _).1 x.2).2 v)⟩) map_add' := fun x y => by ext <;> simp [add_comm] map_smul' := fun a x => by ext <;> simp }`. Set `g : (Z1 × ∀ v, ZL v) →ₗ[k] ∀ v, Z1v v` to `{ toFun := fun x v => ⟨r1 v x.1.1 + (x.2 v).1, add_mem (hr v _ x.1.2) (hL v (x.2 v).2)⟩ map_add' := fun x y => by ext; simp; abel map_smul' := fun a x => by ext; simp }`. Apply the tactic sequence `let h0 : (∀ v, Z1v v) →ₗ[k] framedTwoCocycles := { toFun := fun y => ⟨(0, fun v => (y v).1), (hZ2c _).2 ⟨zero_mem _, fun v => ⟨((hZv v _).1 (y v).2).1, by simpa using ((hZv v _).1 (y v).2).2⟩⟩⟩ map_add' := fun x y => by ext <;> simp map_smul' := fun a x => by ext <;> simp }`.
+
+Set `p0 : framedTwoCocycles →ₗ[k] Z2` to `{ toFun := fun y => ⟨y.1.1, ((hZ2c _).1 y.2).1⟩ map_add' := fun x y => rfl map_smul' := fun a x => rfl }`. Set `p : (framedTwoCocycles ⧸ framedTwoCoboundaries.comap framedTwoCocycles.subtype) →ₗ[k] (Z2 ⧸ (C.map d).comap Z2.subtype)` to `Submodule.mapQ _ _ p0 fun x hx => by`. Take `⟨h, h1, h2, -⟩` from `(hB2c _).1 hx`. Conclude with `⟨h, h1, h2⟩`. Set `q0 : ∀ v, Z2 →ₗ[k] Z2v v` to `fun v => (r2 v).restrict (hZ2 v)`.
+
+Set `q : (Z2 ⧸ (C.map d).comap Z2.subtype) →ₗ[k] ∀ v, (Z2v v ⧸ ((Cv v).map (dv v)).comap (Z2v v).subtype)` to `LinearMap.pi fun v => Submodule.mapQ _ _ (q0 v) fun x hx => by`. Take `⟨h, h1, h2⟩` from `hx`. Conclude with `⟨r1 v h, hC v h h1, by rw [← hd, h2]; rfl⟩`. Establish `key` using `six f g ((Submodule.mkQ _) ∘ₗ h0) p q ?_ ?_ ?_ ?_ ?_ ?_`. Rewrite `key` using `[Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_pi_fintype, Module.finrank_pi_fintype]`.
+
+Conclude with `key`. Introduce `x y hxy`. Conclude with `Subtype.ext (congrArg (fun t => t.1.1) hxy)`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `e : ∀ v, r1 v x.1.1 = -(x.2 v).1` using `fun v => eq_neg_of_add_eq_zero_left (congrArg Subtype.val (congrFun hx v))`. Use `⟨⟨x.1.1, (hZ1L _).2 ⟨x.1.2, fun v => e v ▸ neg_mem (x.2 v).2⟩⟩, ?_⟩` and prove the remaining obligations. Use `Prod.ext rfl (funext fun v => Subtype.ext ?_)` and prove the remaining obligations. Use `show -r1 v x.1.1 = _`.
+
+Rewrite using `[e, neg_neg]`. Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `v`. Conclude with `Subtype.ext (add_neg_cancel _)`. Introduce `y`.
+
+Rewrite using `[LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, hB2c]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h1, h2, h3⟩`. Use `⟨(⟨h, (hZ h).2 ⟨h1, h2⟩⟩, fun v => ⟨_, h3 v⟩), funext fun v => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `add_sub_cancel _ _`.
+
+Introduce and unpack `⟨x, rfl⟩`. Use `⟨x.1.1, ((hZ _).1 x.1.2).1, ((hZ _).1 x.1.2).2, fun v => ?_⟩` and prove the remaining obligations. Use `show r1 v x.1.1 + (x.2 v).1 - r1 v x.1.1 ∈ _`. Rewrite using `[add_sub_cancel_left]`. Conclude with `(x.2 v).2`.
+
+Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨h, h1, h2⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hy`.
+
+Establish `h2' : d h = y.1.1` using `h2`. Establish `hy2` using `((hZ2c _).1 y.2).2`. Use `⟨fun v => ⟨y.1.2 v - r1 v h, (hZv v _).2 ⟨sub_mem (hy2 v).1 (hC v h h1), ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, (hy2 v).2, ← hd, h2', sub_self]`. Use `(Submodule.Quotient.eq _).2 ((hB2c _).2 ⟨-h, neg_mem h1, ?_, fun v => ?_⟩)` and prove the remaining obligations.
+
+Use `show d (-h) = 0 - y.1.1`. Rewrite using `[map_neg, h2', zero_sub]`. Use `show y.1.2 v - r1 v h - y.1.2 v - r1 v (-h) ∈ _`. Rewrite using `[map_neg, show y.1.2 v - r1 v h - y.1.2 v - -r1 v h = 0 by abel]`. Conclude with `zero_mem _`.
+
+Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (zero_mem (C.map d))`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `e : ∀ v, ∃ c ∈ Cv v, dv v c = r2 v y.1` using `fun v => (Submodule.Quotient.mk_eq_zero _).1 (congrFun hy v)`. Use `choose c hc1 hc2 using e`. Conclude with `⟨Submodule.Quotient.mk ⟨(y.1, c), (hZ2c _).2 ⟨y.2, fun v => ⟨hc1 v, hc2 v⟩⟩⟩, rfl⟩`.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← hx]`. Use function extensionality and compare the values at `v`. Establish `hx2` using `((hZ2c _).1 x.2).2 v`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x.1.2 v, hx2.1, hx2.2⟩`. Introduce `y choose κ hκ using fun v => Submodule.Quotient.mk_surjective _ (y v)`. Take `⟨z, hz⟩` from `hs κ`. Use `⟨Submodule.Quotient.mk z, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hκ]`.
+
+Conclude with `(Submodule.Quotient.eq _).2 (hz v)`.
+-/
 private theorem cone {k ι A1 A2 : Type} [Field k] [Fintype ι] {L1 L2 : ι → Type} [AddCommGroup A1] [Module k A1]
     [AddCommGroup A2] [Module k A2] [∀ v, AddCommGroup (L1 v)] [∀ v, Module k (L1 v)]
     [∀ v, AddCommGroup (L2 v)] [∀ v, Module k (L2 v)]
@@ -153,6 +196,11 @@ private theorem cone {k ι A1 A2 : Type} [Field k] [Fintype ι] {L1 L2 : ι → 
     rw [← hκ]
     exact (Submodule.Quotient.eq _).2 (hz v)
 
+/- English proof (translation)
+Use `and_congr Iff.rfl ⟨fun h => funext fun p => ?_, fun h g g' => ?_⟩` and prove the remaining obligations. Take `⟨g, g'⟩` from `p`. Rewrite using `[d1_apply, h, Pi.zero_apply]`. Normalize the expressions using the abelian group laws. Establish `e` using `congrFun h (g, g')`.
+
+Rewrite `e` using `[d1_apply, Pi.zero_apply]`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem mem_cocycles_iff {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M] [Module R M]
     [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M] (rho : Representation R G M)
     (x : G → M) : x ∈ Z1 rho ↔ x ∈ contMaps R M G ∧ d1 rho x = 0 := by
@@ -163,6 +211,9 @@ private theorem mem_cocycles_iff {R G M : Type} [CommRing R] [Group G] [Topologi
     rw [d1_apply, Pi.zero_apply] at e
     rw [← sub_eq_zero, ← neg_eq_zero, ← e]; abel
 
+/- English proof (translation)
+Establish `e` using `Submodule.comapSubtypeEquivOfLe h`. Use `haveI : Module.Finite k (B.comap Z.subtype) := Module.Finite.equiv e.symm`. Use `haveI : Module.Finite k Z := Module.Finite.of_submodule_quotient (B.comap Z.subtype)`. Conclude with `⟨this, by rw [← e.finrank_eq]; exact Submodule.finrank_quotient_add_finrank _⟩`.
+-/
 private theorem quot {k A : Type} [Field k] [AddCommGroup A] [Module k A] (B Z : Submodule k A) (h : B ≤ Z)
     [Module.Finite k B] [Module.Finite k (Z ⧸ B.comap Z.subtype)] :
     Module.Finite k Z ∧ finrank k (Z ⧸ B.comap Z.subtype) + finrank k B = finrank k Z := by
@@ -171,6 +222,23 @@ private theorem quot {k A : Type} [Field k] [AddCommGroup A] [Module k A] (B Z :
   haveI : Module.Finite k Z := Module.Finite.of_submodule_quotient (B.comap Z.subtype)
   exact ⟨this, by rw [← e.finrank_eq]; exact Submodule.finrank_quotient_add_finrank _⟩
 
+/- English proof (translation)
+Introduce `O _ _ G Γ ι _ _ _ _ _ _ _ F j hπ hact hfin hB h1 h2 h1v h2v hs`. Establish `hloc : ∀ v, Continuous (F.loc v)` using `fun v => hπ.comp continuous_subtype_val`. Establish `hL : ∀ v, F.ZL j v ≤ Z1 (F.gloc j v)` using `fun v y hy => hy.1`. Use `haveI : Module.Finite (ResidueField O) (B1 (F.gbar j)) := Module.Finite.range _`. Use `haveI : ∀ v, Module.Finite (ResidueField O) (B1 (F.gloc j v)) := fun v => Module.Finite.range _`.
+
+Take `⟨fZ, eZ⟩` from `quot (B1 (F.gbar j)) (Z1 (F.gbar j)) (coboundaries_le_cocycles _ hact)`. Use `haveI : ∀ v, Module.Finite (ResidueField O) (Z1 (F.gloc j v)) := fun v => (quot (B1 (F.gloc j v)) (Z1 (F.gloc j v)) ((hB v).trans (hL v))).1`. Establish `hZ1L : ∀ x, x ∈ F.selmerCocycles j ↔ x ∈ Z1 (F.gbar j) ∧ ∀ v, F.res1 j v x ∈ F.ZL j v` using `fun x => by`. Simplify using `[Frame.selmerCocycles, Submodule.mem_iInf]`. Establish `hBL : B1 (F.gbar j) ≤ F.selmerCocycles j` using `fun x hx => (hZ1L x).2 ⟨coboundaries_le_cocycles _ hact hx, fun v => hB v (by`.
+
+Take `⟨m, rfl⟩` from `hx`. Conclude with `⟨m, rfl⟩)⟩`. Use `haveI : Module.Finite (ResidueField O) (F.selmerCocycles j) := Module.Finite.of_injective _ (Submodule.inclusion_injective (fun x hx => ((hZ1L x).1 hx).1 : F.selmerCocycles j ≤ Z1 (F.gbar j)))`. Establish `fL : Module.Finite (ResidueField O) (F.selmerCohomologyQuotient j)` using `inferInstance`. Take `⟨-, eL⟩` from `quot (B1 (F.gbar j)) (F.selmerCocycles j) hBL`.
+
+Use `haveI := h2`. Use `haveI := h2v`. Establish `key` using `@cone (ResidueField O) ι _ _ _ _ _ _ _ _ _ _ _ _ _ _ (contMaps _ _ Γ) (Z1 (F.gbar j)) (Z2 (F.gbar j)) (d1 (F.gbar j)) (fun v => contMaps _ _ (F.D v)) (fun v => Z1 (F.gloc j v)) (F.ZL j) (fun v => Z2 (F.gloc j v)) (fun v => d1 (F.gloc j v)) (F.res1 j) (F.res2 j) (mem_cocycles_iff …`. Use function extensionality and compare the values at `p`. Take `⟨a, b⟩` from `p`.
+
+Simplify using `[Frame.res1, Frame.res2, LinearMap.funLeft_apply])`. Use the proof step `(fun v x hx => (restrictCocycles2 (F.gbar j) (F.loc v) (hloc v) ⟨x, hx⟩).2) hL (F.selmerCocycles j) hZ1L (F.framedTwoCocycles j) (F.framedTwoCoboundaries j)`. Use the proof step `(fun x => by simp [Frame.framedTwoCocycles, Submodule.mem_iInf])`. Use the proof step `(fun x => by`. Rewrite using `[Frame.framedTwoCoboundaries, Submodule.mem_sup]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨h, hh, rfl⟩, _, ⟨z, hz, rfl⟩, rfl⟩`. Use `⟨h, hh, by simp, fun v => ?_⟩` and prove the remaining obligations. Simplify using `using hz v trivial`. Introduce and unpack `⟨h, hh, e, hz⟩`.
+
+Use `⟨_, ⟨h, hh, rfl⟩, _, ⟨fun v => x.2 v - F.res1 j v h, fun v _ => hz v, rfl⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [e])`. Use `_ _ h2 h2v hs`. Use `⟨fL, key.1, ?_⟩` and prove the remaining obligations. Establish `k2 : finrank (ResidueField O) (F.selmerCocycles j) + ∑ v, finrank (ResidueField O) (Z1 (F.gloc j v)) + finrank (ResidueField O) (H2 (F.gbar j)) = finrank (ResidueField O) (Z1 (F.gbar j)) + ∑ v, finrank (ResidueField O) (F.ZL j v) + finrank (ResidueField O) (F.Ob j) + ∑ v, finrank …` using `key.2`.
+
+Establish `eZ' : finrank (ResidueField O) (H1 (F.gbar j)) + finrank (ResidueField O) (B1 (F.gbar j)) = finrank (ResidueField O) (Z1 (F.gbar j))` using `eZ`. Establish `eL' : finrank (ResidueField O) (F.selmerCohomologyQuotient j) + finrank (ResidueField O) (B1 (F.gbar j)) = finrank (ResidueField O) (F.selmerCocycles j)` using `eL`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Nat.cast_sum, ← Nat.cast_sum, ← Nat.cast_sum]`. Use `clear key eZ eL`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.selmerComplex_finite_and_euler_characteristic :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Fintype ι] (F : Frame O G Γ ι) (j : ℤ),
         Continuous F.π → ContAction (F.gbar j) → Module.Finite (ResidueField O) (Gb (ResidueField O) j) →

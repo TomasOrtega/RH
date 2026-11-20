@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsorsTrivialIff
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocAcyc.exists_section_strictHenselisation_at_closed | exact GlobalTheory.LocAcyc.exists_section_strictHenselisation_at_closed | (intros; apply GlobalTheory.LocAcyc.exists_section_strictHenselisation_at_closed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_section_strictHenselisation_closedFibre_point : GlobalTheory.LocAcyc.KeyClosedPts →
     ∀ (T E : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing E]
       [Algebra (Polynomial T) E] [Algebra T E] [IsScalarTower T (Polynomial T) E]

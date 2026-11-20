@@ -11,17 +11,28 @@ namespace PositivityTheory.tft.PlacesPf
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[Algebra.finrank_eq_one_iff_bijective_algebraMap, algebraMap_completion_eq]`. Conclude with `⟨fun h => ⟨(completionMap v w).injective, h⟩, fun h => h.2⟩`.
+-/
 theorem surj_iff_finrank (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     [w.asIdeal.LiesOver v.asIdeal] :
     Function.Surjective (completionMap v w) ↔ finrank (v.adicCompletion F) (w.adicCompletion E) = 1 := by
   rw [Algebra.finrank_eq_one_iff_bijective_algebraMap, algebraMap_completion_eq]
   exact ⟨fun h => ⟨(completionMap v w).injective, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Rewrite using `[splitsCompletely_iff_forall_finrank]`. Conclude with `forall_congr' fun w => surj_iff_finrank v w.1`.
+-/
 theorem split_iff (v : HeightOneSpectrum (𝓞 F)) :
     UpperTheory.ConvolutionTheory.GM.Split E v ↔ SplitsCompletely E v := by
   rw [splitsCompletely_iff_forall_finrank]
   exact forall_congr' fun w => surj_iff_finrank v w.1
 
+/- English proof (translation)
+Introduce `hfin`. Establish `h1` using `hasDirichletDensity_setOf_splitsCompletely F E`. Establish `h0` using `hasDirichletDensity_zero_of_finite hfin`. Unfold `NumberField.Set.HasDirichletDensity at h1 h0`. Establish `h` using `tendsto_nhds_unique h1 h0`.
+
+Establish `hpos : (0 : ℝ) < finrank F E` using `by exact_mod_cast Module.finrank_pos`. Rewrite `h` using `[one_div]`. Conclude with `(inv_ne_zero hpos.ne') h`.
+-/
 theorem split_infinite [IsGalois F E] :
     {v : HeightOneSpectrum (𝓞 F) | SplitsCompletely E v}.Infinite := by
   intro hfin
@@ -33,6 +44,11 @@ theorem split_infinite [IsGalois F E] :
   rw [one_div] at h
   exact (inv_ne_zero hpos.ne') h
 
+/- English proof (translation)
+Establish `hfin` using `Ideal.finite_factors (differentIdeal_ne_bot (A := 𝓞 F) (B := 𝓞 E))`. Use `Filter.eventually_cofinite.2 ((hfin.image fun w => w.under (𝓞 F)).subset ?_)` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_ofPred_eq, UpperTheory.ConvolutionTheory.GM.Unr, not_forall] at hv`. Take `⟨w, hw⟩` from `hv`.
+
+Use `⟨w.1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `dvd_differentIdeal_iff.2 hw`. Use `ext1`. Conclude with `w.2.over.symm`.
+-/
 theorem unr_cofinite : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, UpperTheory.ConvolutionTheory.GM.Unr E v := by
   have hfin := Ideal.finite_factors (differentIdeal_ne_bot (A := 𝓞 F) (B := 𝓞 E))
   refine Filter.eventually_cofinite.2 ((hfin.image fun w => w.under (𝓞 F)).subset ?_)
@@ -44,6 +60,11 @@ theorem unr_cofinite : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, UpperT
   · ext1
     exact w.2.over.symm
 
+/- English proof (translation)
+Rewrite `hv` using `[split_iff, splitsCompletely_iff_exists_finrank]`. Use `push Not at hv`. Establish `hsum` using `sum_finrank_eq E v`. Rewrite `hsum` using `[Finset.sum_congr rfl (fun u _ => finrank_eq_of_isGalois v u w), Finset.sum_const, smul_eq_mul, Finset.card_univ]`. Rewrite `hp` using `[← hsum]`.
+
+Break down `Nat.prime_mul_iff.mp hp with ⟨_, h⟩ | ⟨_, h⟩` into its components or cases. Conclude with `absurd h (hv w)`. Conclude with `Fintype.card_le_one_iff.mp h.le w' w`.
+-/
 theorem unique_of_not_split [IsGalois F E] (hp : (finrank F E).Prime) (v : HeightOneSpectrum (𝓞 F))
     (hv : ¬ UpperTheory.ConvolutionTheory.GM.Split E v) (w w' : PlacesOver E v) : w' = w := by
   rw [split_iff, splitsCompletely_iff_exists_finrank] at hv
@@ -56,6 +77,11 @@ theorem unique_of_not_split [IsGalois F E] (hp : (finrank F E).Prime) (v : Heigh
   · exact absurd h (hv w)
   · exact Fintype.card_le_one_iff.mp h.le w' w
 
+/- English proof (translation)
+Establish `: w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal` using `⟨rfl⟩`. Use `(w.under (𝓞 F)).isMaximal` as an intermediate fact. Use `w.isMaximal` as an intermediate fact. Rewrite using `[Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal (w.under (𝓞 F)).asIdeal (w.under (𝓞 F)).isPrime (w.under (𝓞 F)).ne_bot]`. Unfold `UpperTheory.ConvolutionTheory.resDeg`.
+
+Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg]`.
+-/
 theorem absNorm_eq (w : HeightOneSpectrum (𝓞 E)) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 F)).asIdeal ^ UpperTheory.ConvolutionTheory.resDeg F w := by
   have : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩
@@ -66,6 +92,17 @@ theorem absNorm_eq (w : HeightOneSpectrum (𝓞 E)) :
   unfold UpperTheory.ConvolutionTheory.resDeg
   rw [Ideal.inertiaDeg'_eq_inertiaDeg]
 
+/- English proof (translation)
+Establish `hle : v.asIdeal ≤ w.asIdeal.under (𝓞 F)`. Introduce `a ha`. Rewrite using `[Ideal.under, Ideal.mem_comap]`. Use `set x : v.adicCompletion F := algebraMap F _ (algebraMap (𝓞 F) F a) with hxdef`. Establish `hx : Valued.v x < 1`.
+
+Rewrite using `[hxdef, HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem v a).2 ha`. Establish `ht` using `Valued.tendsto_zero_pow_of_v_lt_one hx`. Establish `ht2 : Tendsto (fun n : ℕ => (i x) ^ n) atTop (𝓝 0)`. Use `(map_zero i ▸ hi.tendsto 0).comp ht` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, map_pow]`. Establish `hopen` using `Valued.isOpen_ball (w.adicCompletion E) 1`. Take `⟨n, hn⟩` from `(ht2.eventually (hopen.mem_nhds (by simp))).exists`. Rewrite `hn` using `[Valuation.restrict_lt_one_iff, map_pow]`. Establish `hy : Valued.v (i x) < 1`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `absurd (one_le_pow₀ (n := n) h) (not_le.2 hn)`. Rewrite `hy` using `[hxdef, hc, HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← IsScalarTower.algebraMap_apply (𝓞 F) F E, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).1 hy`.
+
+Establish `hne : w.asIdeal.under (𝓞 F) ≠ ⊤` using `(Ideal.IsPrime.under (𝓞 F) w.asIdeal).ne_top`. Conclude with `⟨v.isMaximal.eq_of_le hne hle⟩`.
+-/
 theorem liesOver_of_cont (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (i : v.adicCompletion F →+* w.adicCompletion E) (hi : Continuous i)
     (hc : ∀ x : F, i (algebraMap F _ x) = algebraMap E _ (algebraMap F E x)) :
@@ -96,6 +133,11 @@ theorem liesOver_of_cont (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum
   have hne : w.asIdeal.under (𝓞 F) ≠ ⊤ := (Ideal.IsPrime.under (𝓞 F) w.asIdeal).ne_top
   exact ⟨v.isMaximal.eq_of_le hne hle⟩
 
+/- English proof (translation)
+Establish `hlies : w.asIdeal.LiesOver v.asIdeal` using `liesOver_of_cont v w i.toRingHom hi hc`. Establish `heq : ∀ x, i x = completionMap v w x`. Use `(HeightOneSpectrum.denseRange_algebraMap F v).equalizer hi (continuous_completionMap v w) (funext fun x => by` as an intermediate fact. Simplify using `only [Function.comp_apply, hc, completionMap_algebraMap]`. Rewrite using `[IsScalarTower.algebraMap_apply F E (w.adicCompletion E)])`.
+
+Conclude with `congrFun this`. Use `⟨?_, ⟨w, hlies⟩, rfl, heq⟩` and prove the remaining obligations. Rewrite using `[split_iff, splitsCompletely_iff_exists_finrank]`. Conclude with `⟨⟨w, hlies⟩, (surj_iff_finrank v w).1 (fun y => ⟨i.symm y, by rw [← heq]; simp⟩)⟩`.
+-/
 theorem cont_iso [IsGalois F E] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (i : v.adicCompletion F ≃+* w.adicCompletion E) (hi : Continuous i)
     (hc : ∀ x : F, i (algebraMap F _ x) = algebraMap E _ (algebraMap F E x)) :
@@ -113,6 +155,11 @@ theorem cont_iso [IsGalois F E] (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneS
 
 end PositivityTheory.tft.PlacesPf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hp`. Use `⟨?_, PositivityTheory.tft.PlacesPf.unr_cofinite, fun v => nonempty_placesOver E v, PositivityTheory.tft.PlacesPf.unique_of_not_split hp, PositivityTheory.tft.PlacesPf.absNorm_eq, fun v w i hi hc => PositivityTheory.tft.PlacesPf.cont_iso v w i hi hc⟩` and prove the remaining obligations. Use `PositivityTheory.tft.PlacesPf.split_infinite (F := F) (E := E)` as an intermediate fact. Establish `hset : {v : HeightOneSpectrum (𝓞 F) | UpperTheory.ConvolutionTheory.GM.Split E v} = {v | SplitsCompletely E v}` using `Set.ext fun v => PositivityTheory.tft.PlacesPf.split_iff v`. Rewrite using `[hset]`.
+
+Conclude with `this`.
+-/
 theorem PositivityTheory.tft.places_holds : UpperTheory.ConvolutionTheory.T.Places := by
   intro F E _ _ _ _ _ _ hp
   refine ⟨?_, PositivityTheory.tft.PlacesPf.unr_cofinite, fun v => nonempty_placesOver E v,

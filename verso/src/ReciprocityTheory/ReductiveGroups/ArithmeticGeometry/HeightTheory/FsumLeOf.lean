@@ -21,6 +21,15 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `set u : Finset α := (hf.union hg).toFinset with hu`. Establish `hus : ∀ x ∈ u, x ∈ s`. Introduce `x hx`. Simplify using `only [hu, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq] at hx`. Break down `hx with h | h` into its components or cases.
+
+Conclude with `h.1`. Conclude with `h.1`. Establish `ef : ∑ᶠ x ∈ s, f x = ∑ x ∈ u, f x`. Apply `finsum_mem_eq_sum_of_inter_support_eq` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `only [hu, Set.Finite.coe_toFinset, Set.mem_inter_iff, Set.mem_union, Set.mem_setOf_eq, Function.mem_support]`. The claim follows by propositional logic. Establish `eg : ∑ᶠ x ∈ s, g x = ∑ x ∈ u, g x`. Apply `finsum_mem_eq_sum_of_inter_support_eq` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `only [hu, Set.Finite.coe_toFinset, Set.mem_inter_iff, Set.mem_union, Set.mem_setOf_eq, Function.mem_support]`. The claim follows by propositional logic. Rewrite using `[ef, eg, Int.cast_sum, Int.cast_sum, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun x hx => hle x (hus x hx)`.
+-/
 theorem fsum_le_of {α : Type*} (s : Set α) (f g : α → ℤ) (hf : {x | x ∈ s ∧ f x ≠ 0}.Finite)
     (hg : {x | x ∈ s ∧ g x ≠ 0}.Finite) (r : ℝ) (hle : ∀ x ∈ s, (f x : ℝ) ≤ r * g x) :
     ((∑ᶠ x ∈ s, f x : ℤ) : ℝ) ≤ r * ((∑ᶠ x ∈ s, g x : ℤ) : ℝ) := by
@@ -47,6 +56,11 @@ theorem fsum_le_of {α : Type*} (s : Set α) (f g : α → ℤ) (hf : {x | x ∈
   rw [ef, eg, Int.cast_sum, Int.cast_sum, Finset.mul_sum]
   exact Finset.sum_le_sum fun x hx => hle x (hus x hx)
 
+/- English proof (translation)
+Use `haveI := hd.tower c`. Unfold `wx`. Rewrite using `[Finset.sum_apply]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ← algebraMap_smul (Ω c) (x j) (d.w j c)]`.
+
+Conclude with `Submodule.smul_mem _ _ (hd.w_mem j c)`.
+-/
 theorem wx_mem (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) : d.wx x c ∈ 𝒜 c d.wL := by
   haveI := hd.tower c
   unfold wx
@@ -55,6 +69,11 @@ theorem wx_mem (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) : d.wx x c �
   rw [Pi.smul_apply, ← algebraMap_smul (Ω c) (x j) (d.w j c)]
   exact Submodule.smul_mem _ _ (hd.w_mem j c)
 
+/- English proof (translation)
+Introduce `c`. Use `haveI := hd.graded c`. Proceed by induction on `n with`. Consider the case `zero => simpa using hta c`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, Pi.mul_apply, succ_nsmul G (n + 1)]`. Conclude with `⟨SetLike.mul_mem_graded ih.1 (hta c).1, hd.mul_ne_zero c ih.1 (hta c).1 ih.2 (hta c).2⟩`.
+-/
 theorem pow_mem_ne (hd : d.AxH 𝒜) {G : WT} {ta : ∀ c, A c} (hta : ∀ c, ta c ∈ 𝒜 c G ∧ ta c ≠ 0)
     (n : ℕ) : ∀ c, (ta ^ (n + 1)) c ∈ 𝒜 c ((n + 1) • G) ∧ (ta ^ (n + 1)) c ≠ 0 := by
   intro c
@@ -65,6 +84,13 @@ theorem pow_mem_ne (hd : d.AxH 𝒜) {G : WT} {ta : ∀ c, A c} (hta : ∀ c, ta
     rw [pow_succ, Pi.mul_apply, succ_nsmul G (n + 1)]
     exact ⟨SetLike.mul_mem_graded ih.1 (hta c).1, hd.mul_ne_zero c ih.1 (hta c).1 ih.2 (hta c).2⟩
 
+/- English proof (translation)
+Establish `hs : s ∩ Function.support (fun x => k * f x) = s ∩ Function.support f`. Use extensionality with `x`. Simplify using `[hk]`. Distinguish the cases in `hf : (s ∩ Function.support f).Finite`. Rewrite using `[finsum_mem_eq_sum_of_inter_support_eq (fun x => k * f x) (t := hf.toFinset) (by`.
+
+Use extensionality with `x`. Simplify using `[hk]`. Apply the tactic sequence `try tauto),`. Use `finsum_mem_eq_sum_of_inter_support_eq f (t := hf.toFinset) (by`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `try tauto),`. Use the proof step `Finset.mul_sum]`. Rewrite using `[finsum_mem_eq_zero_of_infinite hf, finsum_mem_eq_zero_of_infinite (by rwa [hs]), mul_zero]`.
+-/
 private lemma finsum_mem_const_mul {α : Type*} (s : Set α) (f : α → ℤ) (k : ℤ) (hk : k ≠ 0) :
     ∑ᶠ x ∈ s, k * f x = k * ∑ᶠ x ∈ s, f x := by
   classical
@@ -83,6 +109,11 @@ private lemma finsum_mem_const_mul {α : Type*} (s : Set α) (f : α → ℤ) (k
       Finset.mul_sum]
   · rw [finsum_mem_eq_zero_of_infinite hf, finsum_mem_eq_zero_of_infinite (by rwa [hs]), mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : (ta ^ (n + 1 + 1)) c = (ta ^ (n + 1)) c * ta c` using `by rw [pow_succ, Pi.mul_apply]`. Rewrite using `[e, succ_nsmul G (n + 1), d.nP_mul hd h c (d.pow_mem_ne hd hta n c).1 (hta c).1 (d.pow_mem_ne hd hta n c).2 (hta c).2 hp, ih]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma nP_pow_succ_eq_succ_mul (hd : d.AxH 𝒜) (h : d.S1) {G : WT} {ta : ∀ c, A c}
     (hta : ∀ c, ta c ∈ 𝒜 c G ∧ ta c ≠ 0) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     (n : ℕ) : d.nP h c ((n + 1) • G) ((ta ^ (n + 1)) c) p = ((n : ℤ) + 1) * d.nP h c G (ta c) p := by
@@ -95,6 +126,11 @@ private lemma nP_pow_succ_eq_succ_mul (hd : d.AxH 𝒜) (h : d.S1) {G : WT} {ta 
     push_cast
     ring
 
+/- English proof (translation)
+Unfold `aG`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_mem_const_mul _ (fun p => d.nP h c G (ta c) p * (d.dg (d.gen p) : ℤ)) ((n : ℤ) + 1) (by positivity)]`. Use `finsum_mem_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[nP_pow_succ_eq_succ_mul d hd h hta c hp n, mul_assoc]`.
+-/
 theorem aG_pow (hd : d.AxH 𝒜) (h : d.S1) {G : WT} {ta : ∀ c, A c}
     (hta : ∀ c, ta c ∈ 𝒜 c G ∧ ta c ≠ 0) (n : ℕ) :
     d.aG h ((n + 1) • G) (ta ^ (n + 1)) = (n + 1) * d.aG h G ta := by
@@ -105,6 +141,9 @@ theorem aG_pow (hd : d.AxH 𝒜) (h : d.S1) {G : WT} {ta : ∀ c, A c}
   refine finsum_mem_congr rfl fun p hp => ?_
   rw [nP_pow_succ_eq_succ_mul d hd h hta c hp n, mul_assoc]
 
+/- English proof (translation)
+Unfold `aG`. Use `Finset.sum_nonneg fun c _ => ?_` and prove the remaining obligations. Use `finsum_nonneg fun p => finsum_nonneg fun hp => ?_` and prove the remaining obligations. Conclude with `mul_nonneg (d.nP_nonneg hd h c hp G (ta c) (hord c)) (by positivity)`.
+-/
 theorem aG_nonneg (hd : d.AxH 𝒜) (h : d.S1) (G : WT) (ta : ∀ c, A c)
     (hord : ∀ c v, d.admitted c v → 0 ≤ d.ord c v G (ta c)) : 0 ≤ d.aG h G ta := by
   unfold aG
@@ -112,6 +151,11 @@ theorem aG_nonneg (hd : d.AxH 𝒜) (h : d.S1) (G : WT) (ta : ∀ c, A c)
   refine finsum_nonneg fun p => finsum_nonneg fun hp => ?_
   exact mul_nonneg (d.nP_nonneg hd h c hp G (ta c) (hord c)) (by positivity)
 
+/- English proof (translation)
+Unfold `ratio`. Use `split_ifs with h0`. Break down `smul_eq_zero.1 h0.choose_spec.symm with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 hg`.
+
+Both sides reduce to the same expression.
+-/
 private lemma ratio_zero_left {F0 V0 : Type*} [Field F0] [AddCommGroup V0] [Module F0 V0] {g : V0}
     (hg : g ≠ 0) : ratio (Ω := F0) (0 : V0) g = 0 := by
   unfold ratio
@@ -121,6 +165,11 @@ private lemma ratio_zero_left {F0 V0 : Type*} [Field F0] [AddCommGroup V0] [Modu
     · exact absurd h1 hg
   · rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨e, he, -, hy⟩` from `hd.a4`. Take `⟨q, hq, p, hp⟩` from `hy 1`. Establish `key` using `hp c`.
+
+Simplify using `only [Pi.one_apply, mul_one] at key`. Rewrite `key` using `[Finset.sum_eq_zero]`. Conclude with `hq c key`. Introduce `k _`. Rewrite using `[hcon, ratio_zero_left (he c).2, map_zero, mul_zero]`.
+-/
 theorem thp_ne (hd : d.AxH 𝒜) (c : ι) : ∃ k, d.thp k c ≠ 0 := by
   by_contra hcon
   push_neg at hcon
@@ -133,6 +182,13 @@ theorem thp_ne (hd : d.AxH 𝒜) (c : ι) : ∃ k, d.thp k c ≠ 0 := by
   · intro k _
     rw [hcon, ratio_zero_left (he c).2, map_zero, mul_zero]
 
+/- English proof (translation)
+Unfold `aG del`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨F, -, -, -, h4, -⟩` from `d.componentForm_properties hd h c`.
+
+Establish `hf` using `(d.good_primes_properties hd h c).2.2.2 _ (hd.w_mem _ c) (hd.w_base c)`. Establish `hE` using `d.Ep_ne hd h c _ (hd.w_mem _ c) (hd.w_base c)`. Rewrite using `[← h4, ← finsum_mem_add_distrib']`. Conclude with `finsum_mem_congr rfl fun p hp => by rw [d.nP_split hd h c hp]; ring`. Conclude with `hf.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩`.
+
+Conclude with `hE.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩`.
+-/
 theorem aG_sb (hd : d.AxH 𝒜) (h : d.S1) :
     d.aG h d.wL (fun c => d.w (d.jc c) c) =
       d.del + ∑ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne),
@@ -149,6 +205,9 @@ theorem aG_sb (hd : d.AxH 𝒜) (h : d.S1) :
   · exact hf.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩
   · exact hE.subset fun p ⟨hp, hs⟩ => ⟨hp, fun h0 => hs (by simp [h0])⟩
 
+/- English proof (translation)
+The claim follows from `(d.norm_factorization hd h).2.1 _ _ _ (fun c => ⟨d.wx_mem hd x c, hx c⟩) (fun c => ⟨hd.w_mem _ c, hd.w_base c⟩)`.
+-/
 theorem aG_wx (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K) (hx : ∀ c, d.wx x c ≠ 0) :
     d.aG h d.wL (d.wx x) = d.aG h d.wL (fun c => d.w (d.jc c) c) :=
   (d.norm_factorization hd h).2.1 _ _ _ (fun c => ⟨d.wx_mem hd x c, hx c⟩) (fun c => ⟨hd.w_mem _ c, hd.w_base c⟩)

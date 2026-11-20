@@ -30,9 +30,15 @@ def epsHom (f : R →+* R') (c : R') : DualNumber R →+* DualNumber R' where
     · simp
       ring
 
+/- English proof (translation)
+Simplify using `[epsHom]`.
+-/
 @[simp] lemma epsHom_fst (f : R →+* R') (c : R') (x : DualNumber R) :
     (epsHom f c x).fst = f x.fst := by simp [epsHom]
 
+/- English proof (translation)
+Simplify using `[epsHom]`.
+-/
 @[simp] lemma epsHom_snd (f : R →+* R') (c : R') (x : DualNumber R) :
     (epsHom f c x).snd = c * f x.snd := by simp [epsHom]
 
@@ -64,6 +70,11 @@ def epsScale (c : R) : SpEps R ⟶ SpEps R :=
       ext a <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
     rw [this])
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `spMap (epsRed R) ≫ spMap (epsHom (RingHom.id R) c) = spMap (epsRed R)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (epsRed R).comp (epsHom (RingHom.id R) c) = epsRed R`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Simplify using `[epsRed]`. Rewrite using `[this]`.
+-/
 lemma epsZero_scale (c : R) : epsZero R ≫ epsScale c = epsZero R := by
   ext1
   change spMap (epsRed R) ≫ spMap (epsHom (RingHom.id R) c) = spMap (epsRed R)
@@ -117,9 +128,15 @@ def TanCorr {R' : Type} [CommRing R'] {G' : Over (Sp R')} [GrpObj G'] (f : R →
     (φ : G'.left ⟶ G.left) (v' : Tan G') (v : Tan G) : Prop :=
   v'.1.left ≫ φ = spMap (epsHom f 1) ≫ v.1.left
 
+/- English proof (translation)
+Simplify using `[TanCorr, Tan.smul, epsScale]`.
+-/
 example (v : Tan G) : TanCorr (RingHom.id R) (𝟙 G.left) (Tan.smul 1 v) v := by
   simp [TanCorr, Tan.smul, epsScale]
 
+/- English proof (translation)
+Simplify using `[linComb]`.
+-/
 example (c : R) (v : Tan G) : linComb ![c] ![v] = Tan.smul c v := by
   simp [linComb]
 

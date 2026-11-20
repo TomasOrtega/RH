@@ -8,6 +8,9 @@ open MvPolynomial Formalism.BasicNotions Formalism.MainNotions.product_first_zer
 
 section Gen
 
+/- English proof (translation)
+Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, norm_zpow, ← zpow_natCast, ← _root_.zpow_mul, mul_comm e]`. Evaluate the numerical expressions.
+-/
 theorem norm_detPow_sq {n : ℕ} (g : GL (Fin n) ℂ) (e : ℤ) :
     ‖detPow ℂ n g e‖ ^ 2 = ‖(g : Matrix (Fin n) (Fin n) ℂ).det‖ ^ (2 * e) := by
   unfold detPow
@@ -15,6 +18,17 @@ theorem norm_detPow_sq {n : ℕ} (g : GL (Fin n) ℂ) (e : ℤ) :
     mul_comm e]
   norm_num
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (map (σ` using `σ) j) := MvPolynomial.map_injective _ j.injective`. Distinguish the cases in `hF : F = 0`. Use `⟨0, ?_, fun s => by simp⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, hF]`.
+
+Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, F.coeff m ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hF (MvPolynomial.ext _ _ fun m => by rw [hc m, coeff_zero])`.
+
+Establish `hc : j (Q.coeff m) = χ⁻¹ * j (F.coeff m)`. Use `congrArg (coeff m) h` as an intermediate fact. Rewrite `this` using `[coeff_map, coeff_smul, coeff_map, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hjm : j (F.coeff m) ≠ 0` using `(map_ne_zero j).2 hm`. Establish `ha : j (Q.coeff m / F.coeff m) = χ⁻¹`.
+
+Rewrite using `[map_div₀, hc, mul_div_assoc, div_self hjm, mul_one]`. Use `⟨Q.coeff m / F.coeff m, ?_, fun s => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul F (Q.coeff m / F.coeff m), map_mul, map_C, ha]`. Use `norm_one_of_pow j s _ k hk (by rw [ha, inv_pow, hχ, inv_one])` as an intermediate fact.
+
+Rewrite using `[this]`.
+-/
 theorem desc_scalar {K σ : Type} [Field K] (j : K →+* ℂ) (Q F : MvPolynomial σ K) (χ : ℂ) (k : ℕ) (hk : 0 < k)
     (hχ : χ ^ k = 1) (h : map j Q = χ⁻¹ • map j F) : ∃ a : K, Q = a • F ∧ ∀ s : K →+* ℂ, ‖s a‖ ≤ 1 := by
   have hinj : Function.Injective (map (σ := σ) j) := MvPolynomial.map_injective _ j.injective
@@ -43,9 +57,15 @@ end Gen
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normal_form_agree {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (p : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     Formalism.MainNotions.product_first_zeroth_parts.nfAll lam p p = Formalism.L2.Forms.nfAll lam p p := rfl
 
+/- English proof (translation)
+Establish `hT : (0 : ℝ) ≤ ((D.mem u).A.T : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow]`. Establish `h1 : ‖((sqrtT D u : ℂˣ) : ℂ)‖ = Real.sqrt ((D.mem u).A.T : ℝ)`. Simplify using `only [sqrtT, Units.val_mk0, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite using `[h1, ← zpow_natCast, ← _root_.zpow_mul, mul_comm d, _root_.zpow_mul, zpow_natCast, Real.sq_sqrt hT]`.
+-/
 theorem norm_sqrtT_sq (d : ℤ) : ‖(((sqrtT D u) ^ d : ℂˣ) : ℂ)‖ ^ 2 = ((D.mem u).A.T : ℝ) ^ d := by
   have hT : (0 : ℝ) ≤ ((D.mem u).A.T : ℝ) := Nat.cast_nonneg _
   rw [Units.val_zpow_eq_zpow_val, norm_zpow]
@@ -53,6 +73,31 @@ theorem norm_sqrtT_sq (d : ℤ) : ‖(((sqrtT D u) ^ d : ℂˣ) : ℂ)‖ ^ 2 = 
     simp only [sqrtT, Units.val_mk0, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]
   rw [h1, ← zpow_natCast, ← _root_.zpow_mul, mul_comm d, _root_.zpow_mul, zpow_natCast, Real.sq_sqrt hT]
 
+/- English proof (translation)
+Establish `hT : ∀ τ, IsUnit ((o' τ)ᵀ).det` using `fun τ => by rw [Matrix.det_transpose]; exact ho' τ`. Set `g : D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ` to `fun τ => ⟨(o' τ)ᵀ, ((o' τ)ᵀ)⁻¹, Matrix.mul_nonsing_inv _ (hT τ), Matrix.nonsing_inv_mul _ (hT τ)⟩`. Establish `hg : ∀ τ, ((g τ : GL _ ℂ) : Matrix _ _ ℂ) = (o' τ)ᵀ` using `fun τ => rfl`. Establish `hL1 : blk (fun τ => sqAct ℂ _ (lamTr D u τ) (gFull D u (g τ))) Y = (∏ τ, detPow ℂ _ (gFull D u (g τ)) (lamTr D u τ).detShift) • blkRow (fun τ => dOT u (o' τ)) Y`. Rewrite using `[blk_sqAct_eq]`.
+
+Establish `e : (fun τ => ((gFull D u (g τ) : GL _ ℂ) : Matrix _ _ ℂ)ᵀ) = fun τ => dOT u (o' τ)`. Use function extensionality and compare the values at `fun τ => transpose_gFull_eq_dOT_of_eq_transpose (o' τ) (g τ) (hg τ)`. Rewrite using `[e]`. Establish `hR1 : blk (fun τ => sqAct ℂ _ (sgTr D u τ) (g τ)) (Formalism.L2.Ker.brTen D u Y) = (∏ τ, detPow ℂ _ (g τ) (sgTr D u τ).detShift) • subP o' (Formalism.L2.Ker.brTen D u Y)`. Rewrite using `[blk_sqAct_eq]`.
+
+Establish `e : (fun τ => ((g τ : GL _ ℂ) : Matrix _ _ ℂ)ᵀ) = o'` using `funext fun τ => by rw [hg, Matrix.transpose_transpose]`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `key` using `brTen_blk_gFull Tf g Y`. Rewrite `key` using `[hL1, hR1, map_smul, smul_smul]`.
+
+Establish `hn` using `congrArg (fun p => (Formalism.L2.Forms.nfAll (D.fm u).sg p p).re) key`. Simplify using `only [nfAll_smul_reB, normal_form_agree] at hn`. Establish `hdO : ∀ τ, IsUnit (dOT u (o' τ)).det` using `fun τ => by`. Rewrite using `[det_dOT]`. Conclude with `(ho' τ).mul (Units.isUnit _)`.
+
+Establish `hZ` using `blkRow_mem_CSpan ((D.fm u).lam D.R.m) (fun τ => dOT u (o' τ)) hdO Y hY`. Establish `hle` using `nfAll_brTen_le' Tf hBe _ hZ`. Establish `hshL : ∀ τ, (lamTr D u τ).detShift = shiftOf (lamT u D.R.m) τ` using `fun τ => by rw [shift_lamTr]`. Establish `hshS : ∀ τ, (sgTr D u τ).detShift = shiftOf (sgT u) τ` using `fun τ => by`. Establish `hI0` using `interlaceTr D u (sg_interlace Tf.valP) τ`.
+
+Establish `hS : (sgTr D u τ).detShift = (lamTr D u τ).detShift` using `Formalism.L2.Ker.sameShiftTr D u τ hI0`. Rewrite using `[hS, hshL, shift_lamT_sgTS Tf τ]`. Establish `hk1 : ‖∏ τ, detPow ℂ _ (gFull D u (g τ)) (lamTr D u τ).detShift‖ ^ 2 = ∏ τ, ‖(dOT u (o' τ)).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)`. Rewrite using `[norm_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_detPow_sq, hshL, ← transpose_gFull_eq_dOT_of_eq_transpose (o' τ) (g τ) (hg τ), Matrix.det_transpose]`. Establish `hk2 : ‖∏ τ, detPow ℂ _ (g τ) (sgTr D u τ).detShift‖ ^ 2 = ∏ τ, ‖(o' τ).det‖ ^ (2 * shiftOf (sgT u) τ)`. Rewrite using `[norm_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_detPow_sq, hshS, hg, Matrix.det_transpose]`.
+
+Establish `hcT : ‖∏ τ, (((sqrtT D u) ^ ((D.fm u).deg τ) : ℂˣ) : ℂ)‖ ^ 2 = ∏ τ, ((D.mem u).A.T : ℝ) ^ ((D.fm u).deg τ)`. Rewrite using `[norm_prod, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun τ _ => norm_sqrtT_sq _`. Establish `hTpos : (0 : ℝ) < ((D.mem u).A.T : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.pos`. Establish `hcpos : 0 < ∏ τ, ((D.mem u).A.T : ℝ) ^ ((D.fm u).deg τ)` using `Finset.prod_pos fun τ _ => zpow_pos hTpos _`.
+
+Establish `hptB : ptB D u * ∏ τ, ((D.mem u).A.T : ℝ) ^ ((D.fm u).deg τ) = ∏ τ, (D.fm u).beOn τ ^ 2`. Unfold `ptB`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `hn` using `[norm_mul, mul_pow, hk1, hk2, hcT]`. Use `set nW := (Formalism.L2.Forms.nfAll (D.fm u).sg (subP o' (Formalism.L2.Ker.brTen D u Y)) (subP o' (Formalism.L2.Ker.brTen D u Y))).re`. Use `set nBZ := (Formalism.L2.Forms.nfAll (D.fm u).sg (Formalism.L2.Ker.brTen D u (blkRow (fun τ => dOT u (o' τ)) Y)) (Formalism.L2.Ker.brTen D u (blkRow (fun τ => dOT u (o' τ)) Y))).re`. Use `set nZ := (Formalism.L2.Forms.nfAll ((D.fm u).lam D.R.m) (blkRow (fun τ => dOT u (o' τ)) Y) (blkRow (fun τ => dOT u (o' τ)) Y)).re`.
+
+Use `set K1 := ∏ τ, ‖(dOT u (o' τ)).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)`. Use `set K2 := ∏ τ, ‖(o' τ).det‖ ^ (2 * shiftOf (sgT u) τ)`. Use `set CT := ∏ τ, ((D.mem u).A.T : ℝ) ^ ((D.fm u).deg τ)`. Use `set B := ∏ τ, (D.fm u).beOn τ ^ 2`. Establish `hK1 : 0 ≤ K1` using `Finset.prod_nonneg fun τ _ => zpow_nonneg (norm_nonneg _) _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chain_at (Tf : FormsTiedSym D u Ch chOf) (hBe : Formalism.L2.Ker.BeOnTie D u)
     (o' : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (ho' : ∀ τ, IsUnit (o' τ).det)
     (Y : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)

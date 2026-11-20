@@ -15,6 +15,9 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.HoweEveryPlace
 
+/- English proof (translation)
+Introduce `hU hR hMin hP F E _ _ _ _ _ σ Bs a a' G Xc om om' _ R Rf hM N hN hne`. Use `GlobalTheory.T.matched_maps_intertwining hP F E σ Bs a a' G Xc om om' R Rf hM (fun v => ?_) (GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift hR F E σ Bs a a' G Xc om om' R Rf hM) N hN hne` and prove the remaining obligations. Break down `isEmpty_or_nonempty (E →ₐ[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) with h | h` into its components or cases. Conclude with `GlobalTheory.T.matched_maps_global_sum (GlobalTheory.T.howe_duality_finite_of_unitary hP hU) F E σ Bs a a' G Xc om om' R Rf hM v h`. Conclude with `GlobalTheory.T.matched_maps_local_sum hP hMin F E σ Bs a a' G Xc om om' R Rf hM v h`.
+-/
 theorem allInKer : GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityReal → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

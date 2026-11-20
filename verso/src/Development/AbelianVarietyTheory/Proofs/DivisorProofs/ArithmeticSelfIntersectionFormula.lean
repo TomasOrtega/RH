@@ -31,11 +31,25 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `h` using `(genericPoint_spec V.G).image V.π.continuous`. Rewrite `h` using `[Set.image_univ, V.π.surjective.range_eq, closure_univ]`. Conclude with `h.eq (genericPoint_spec Y.X)`.
+-/
 theorem π_genericPoint (V : Cover Y) : V.π (genericPoint V.G) = genericPoint Y.X := by
   have h := (genericPoint_spec V.G).image V.π.continuous
   rw [Set.image_univ, V.π.surjective.range_eq, closure_univ] at h
   exact h.eq (genericPoint_spec Y.X)
 
+/- English proof (translation)
+Use `M.ar.isIntegral` as an intermediate fact. Take `⟨V', α, g, β, hα, hβ, e₁, e₂, e₃, e₄⟩` from `GlobalTheory.T.common_refinement_of_cover_and_model F Y V M`. Establish `hg₀ : V'.π ≫ (Cover.ofModel M hM).π = V'.π` using `Category.comp_id _`. Establish `n₁` using `GlobalTheory.T.norms_pullback_along_cover F Y V V' α hα g e₁ e₂ e₃ N f a l h`. Establish `n₂` using `GlobalTheory.T.norms_pullback_along_cover F Y (Cover.ofModel M hM) V' β hβ V'.π e₄ hg₀ (π_genericPoint V') N₀ f a l h₀`.
+
+Take `⟨g₁, d₁⟩` from `GlobalTheory.T.cover_refinement_generic_degree F Y V V' α hα g e₁ e₂ e₃`. Take `⟨g₂, d₂⟩` from `GlobalTheory.T.cover_refinement_generic_degree F Y (Cover.ofModel M hM) V' β hβ V'.π e₄ hg₀ (π_genericPoint V')`. Rewrite `d₂` using `[Cover.deg_ofModel, mul_one]`. Establish `hd` using `V'.deg_pos`. Establish `p₁ : α.residueDegree (genericPoint V'.X) ≠ 0` using `fun e => by rw [e, zero_mul] at d₁; omega`.
+
+Establish `p₂ : β.residueDegree (genericPoint V'.X) ≠ 0` using `fun e => hd.ne' (d₂.symm.trans e)`. Establish `s₁` using `(hA.arProj _ V.X V'.X V.p V'.p _ V.ar V'.ar α hα g₁ p₁).1 N s hs`. Establish `s₂` using `(hA.arProj _ M.X V'.X M.p V'.p _ M.ar V'.ar β hβ g₂ p₂).1 N₀ t ht`. Take `⟨η, hη, e⟩` from `s₁`. Establish `s₃ : (N₀.pull β hβ).IsSelfInter _` using `⟨η, (hA.arIso _ V'.X V'.p _ V'.ar).1 _ _ η (GlobalTheory.T.isometric_of_same_norms F Y V' _ _ f a l n₁ n₂) hη, e⟩`.
+
+Establish `key` using `HermLB.IsSelfInter.unique V'.ar s₃ s₂`. Establish `d₃ : ((β.residueDegree (genericPoint V'.X) : ℕ) : ℝ) = (α.residueDegree (genericPoint V'.X) : ℕ) * V.deg`. Rewrite using `[← Nat.cast_mul, d₁]`. Conclude with `congrArg _ d₂`. Rewrite `key` using `[d₃, mul_assoc]`.
+
+Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 p₁) key`.
+-/
 theorem selfInter_eq (hA : GlobalTheory.Published.ArCalc) (V : Cover Y) (M : TrueGeo.Model Y)
     (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) {N : HermLB V.p} {N₀ : HermLB M.p} {f : Y.X → Y.Fn}
     {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ} {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ}
@@ -66,6 +80,9 @@ theorem selfInter_eq (hA : GlobalTheory.Published.ArCalc) (V : Cover Y) (M : Tru
 variable {e : ℕ} {M : Man e} {I : ManIs M Y} {V : Cover Y}
   {ε : (𝓞 F →+* ℂ) → Fin (M.n + 1)} {π : ∀ σ, CxPts V.p σ → M.X (ε σ)}
 
+/- English proof (translation)
+Use `CoverHt.isPreimmersion_j V` as an intermediate fact. Take `⟨w, h₁, h₂⟩` from `(hd σ).2 y'`. Establish `h₃ : w = z` using `by rw [← cancel_mono V.j, h₁, h]`. Rewrite using `[← h₂, h₃]`.
+-/
 theorem down_eq (hd : V.IsDown I ε π) {σ : 𝓞 F →+* ℂ} (y' : CxPts V.p σ) {z : Sp ℂ ⟶ V.G} (h : y'.1 = z ≫ V.j) :
     (I.pt _ (π σ y')).1 = z ≫ V.π := by
   have := CoverHt.isPreimmersion_j V
@@ -75,12 +92,18 @@ theorem down_eq (hd : V.IsDown I ε π) {σ : 𝓞 F →+* ℂ} (y' : CxPts V.p 
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `h₁ : spMap σ = spMap σ'` using `by rw [← y.2, ← y'.2, h]`. Take `rfl : σ = σ'` from `congrArg CommRingCat.Hom.hom (Spec.map_injective h₁)`. Rewrite using `[Subtype.ext h]`.
+-/
 theorem val_congr (g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) {σ σ' : F →+* ℂ} {y : Pts Y σ} {y' : Pts Y σ'} (h : y.1 = y'.1) :
     g σ y = g σ' y' := by
   have h₁ : spMap σ = spMap σ' := by rw [← y.2, ← y'.2, h]
   obtain rfl : σ = σ' := congrArg CommRingCat.Hom.hom (Spec.map_injective h₁)
   rw [Subtype.ext h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `2 * u _ _ = _`. Rewrite using `[hu, val_congr g ((down_eq hd y' h₂).trans h₁.symm)]`.
+-/
 theorem pull_eq (hd : V.IsDown I ε π) {u : M.Fun} {g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     (hu : ∀ a x, u a x = g _ (I.pt a x)) (σ : F →+* ℂ) (z : CxPts (V.π ≫ Y.str) σ) (y : Pts Y σ)
     (y' : CxPts V.p (σ.comp (algebraMap (𝓞 F) F))) (h₁ : y.1 = z.1 ≫ V.π) (h₂ : y'.1 = z.1 ≫ V.j) :
@@ -88,6 +111,9 @@ theorem pull_eq (hd : V.IsDown I ε π) {u : M.Fun} {g : ∀ σ : F →+* ℂ, P
   change 2 * u _ _ = _
   rw [hu, val_congr g ((down_eq hd y' h₂).trans h₁.symm)]
 
+/- English proof (translation)
+Introduce `_ z z' h _`. Take `⟨w, h₁, h₂⟩` from `(hd σ).2 z`. Express the relevant statement in the definitionally equal form `2 * u _ _ = 2 * u _ _`. Rewrite using `[hu, hu, hg _ _ _ _ ((down_eq hd z' (z := spMap (starRingEnd ℂ) ≫ w) (by rw [h, Category.assoc, h₁])).trans (by rw [Category.assoc, h₂]))]`.
+-/
 theorem pull_conj (hd : V.IsDown I ε π) {u : M.Fun} {g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     (hu : ∀ a x, u a x = g _ (I.pt a x))
     (hg : ∀ σ σ' (y : Pts Y σ) (y' : Pts Y σ'), y'.1 = spMap (starRingEnd ℂ) ≫ y.1 → g σ' y' = g σ y) (σ σ' : 𝓞 F →+* ℂ) :
@@ -98,10 +124,32 @@ theorem pull_conj (hd : V.IsDown I ε π) {u : M.Fun} {g : ∀ σ : F →+* ℂ,
   rw [hu, hu, hg _ _ _ _ ((down_eq hd z' (z := spMap (starRingEnd ℂ) ≫ w) (by rw [h, Category.assoc, h₁])).trans
     (by rw [Category.assoc, h₂]))]
 
+/- English proof (translation)
+Use `K.num.map_smul_univ (fun _ => c) fun _ => v` as an intermediate fact. Simplify `this` using `[Calc.top]`.
+-/
 theorem top_smul (K : Calc M) (c : ℝ) (v : K.V) : K.top (c • v) = c ^ (e + 1) * K.top v := by
   have := K.num.map_smul_univ (fun _ => c) fun _ => v
   simpa [Calc.top] using this
 
+/- English proof (translation)
+Substitute `hdim` using the available equality. Use `P.ar.isIntegral` as an intermediate fact. Take `⟨q, b, hq, hb, h₁, h₂, h₃⟩` from `hB`. Establish `hs2 : M.Smooth ((2 : ℝ) • u)` using `fun σ j => (hs σ j).const_smul (2 : ℝ)`. Take `⟨ε₀, π₀, hd₀⟩` from `(Cover.ofModel P hP).exists_isDown I`.
+
+Establish `n₀` using `GlobalTheory.T.combined_adelic_metric_identity F Y (Cover.ofModel P hP) B ι ρ g q b hq h₁ h₂ h₃ (m * k) (fun _ => ((m : ℕ) : ℤ)) (fun i => k * b i) (fun i => by push_cast; ring) L₀ (fun i => (norms_of_induces (Cover.induces_ofModel hP (h₀ i))).congr (fun _ => (zpow_natCast _ _).s …`. Establish `n₁` using `GlobalTheory.T.combined_adelic_metric_identity F Y V B ι ρ g q b hq h₁ h₂ h₃ (m * k) x (fun i => (m : ℕ) * c i * b i) (fun i => by push_cast; rw [← hx i]; ring) L hL _ (OnModelCInf.cInfAt_pull F Y _ _ M I ε π hd _ hs2) (pull_conj hd hu hg) (pull_eq hd hu)`. Set `κ : ℕ+` to `⟨m * k * q, Nat.mul_pos (Nat.mul_pos m.2 hk) hq⟩`. Establish `hI` using `GlobalTheory.T.induced_of_positive_norms F _ Y B P hP _ κ (fun σ z => (h₂ σ z).1) n₀`. Take `⟨η, hη⟩` from `(hA.arExists _ P.X P.p Y.dim P.ar).1 _`.
+
+Establish `e₀` using `(arTop_of_induced hA hD F _ Y B P _ κ 0 hI).2 _ ⟨η, hη, rfl⟩`. Take `⟨Φ, hΦ⟩` from `((hA.arExists _ V.X V.p Y.dim V.ar).2 _ fun o : Option ι => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) (OnModelCInf.cInfAt_pull F Y _ _ M I ε π hd _ hs2) (pull_conj hd hu hg)) L).1`. Establish `e₁` using `selfInter_eq hA V P hP n₁ n₀ (hΦ.1 _) ⟨η, hη, rfl⟩`. Rewrite `e₁` using `[hK u hs _ _ Φ hΦ]`. Establish `hx' (i) : (c i : ℝ) * x i = k` using `by exact_mod_cast hx i`.
+
+Establish `hk' : (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `e₂ : ∑ i, ((((m : ℕ) : ℤ) * c i * b i : ℤ) : ℝ) • v i + (((m * k * q * (B.n : ℕ) : ℕ) : ℤ) : ℝ) • K.ar u = (((κ : ℕ) : ℝ) * (B.n : ℕ)) • (∑ i, (t i / (x i * ((ρ i).n : ℕ))) • v i + K.ar u)`. Rewrite using `[smul_add, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Establish `hn : (((ρ i).n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (ρ i).n.ne_zero`. Establish `hxi : (x i : ℝ) ≠ 0` using `fun h => hk' (by rw [← hx' i, h, mul_zero])`. Express the relevant statement in the definitionally equal form `_ = ((m * k * q : ℕ) : ℝ) * _ * _`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(k : ℝ)) * hb i + (b i : ℝ) * ((ρ i).n : ℕ) * hx' i`. Express the relevant statement in the definitionally equal form `_ = (((m * k * q : ℕ) : ℝ) * _) • _`. Use `push_cast`.
+
+Both sides reduce to the same expression. Simplify using `only [Option.elim] at e₁`. Rewrite `e₁` using `[e₂, top_smul, Cover.ν]`. Establish `hκ : (((κ : ℕ) : ℝ) * (B.n : ℕ)) ^ (Y.dim + 1) ≠ 0` using `pow_ne_zero _ (mul_ne_zero (Nat.cast_ne_zero.2 κ.ne_zero) (Nat.cast_ne_zero.2 B.n.ne_zero))`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+
+Establish `hV : (V.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 V.deg_pos.ne'`. Rewrite using `[e₀]`. Simplify using `only [Pi.zero_apply, finsum_zero, mul_zero, add_zero]`. Rewrite using `[div_div, div_eq_iff (mul_ne_zero hκ hF)]`. Apply `mul_left_cancel₀ hV` to reduce the goal to its premises.
+
+Rewrite using `[← e₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arTop_eq (hA : GlobalTheory.Published.ArCalc) (hD : GlobalTheory.Published.ArDegree) (hdim : Y.dim = e) (hd : V.IsDown I ε π)
     {B : Adl (cxSt F) Y} {ι : Type} [Fintype ι] {ρ : ι → Adl (cxSt F) Y} {t : ι → ℝ} {g : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     (hB : IsComb B ρ t g)
@@ -172,6 +220,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.FlagPoly GlobalTheory.FlagAr
 
+/- English proof (translation)
+Repeatedly rewrite using `[← map_smul]`. Rewrite using `[← map_sum]`. Use `congr 1`. Use extensionality with `σ i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single σ, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb.symm]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_single {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : Y.Comp) (w : Wt Y) :
     ∑ x : D.what₂.Tau × Fin Y.N, w x.1 x.2 • T.L B c (Pi.single x.1 (Pi.single x.2 1)) = T.L B c w := by
   simp_rw [← map_smul]
@@ -186,6 +241,19 @@ theorem sum_single {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c
   · intro b _ hb; simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Introduce `hP hH D O hO _ A T H h B hB u s hu hs hdom hsm c`. Establish `hsh : A.sh u s = fun τ i => u τ i - s * O.met.dir τ i`. Rewrite using `[← h.aux.dir]`. Both sides reduce to the same expression. Establish `hc` using `hO.mbIs B hB u s hu hs (A.sh u s) hsh hdom c`.
+
+Take `⟨P, hP₀, L₀, m, h₀⟩` from `GlobalTheory.T.normal_model_for_root_metrics D O hO B hB c`. Take `⟨W, hW⟩ : ∃ W : O.LatModel (FlagAr.setB O.Y B) c, O.NumIs (h.man c) B W` from `⟨_, h.num B hB c⟩`. Take `⟨ε, π, hd⟩` from `W.V.exists_isDown (h.man c)`. Apply the tactic sequence `have key := arTop_eq hP.p4 hH.deg ((O.dim_eq c).trans rfl : (O.var c).dim = dimY O.Y) hd hc (fun σ σ' y y' e => congrArg (· / 2) (GlobalTheory.T.regular_metric_conjugation_invariant D O hO c σ σ' _ _ y y' e)) (hsm c) ((h.an c).phS _ _ (by exact_mod_cast hs)) P hP₀ L₀ m h₀ (W.gens …`. Introduce and unpack `(_ | x)`.
+
+Conclude with `(CoverNorm.norms_of_induces W.amp_spec).congr (fun _ => (zpow_natCast _ _).symm) (fun _ _ => by simp) fun _ _ _ => by simp`. Conclude with `(GlobalTheory.T.norms_dual_bundle _ _ _ _ _ _ _ (CoverNorm.norms_of_induces (GlobalTheory.T.lattice_model_induces_root_metric D O hO.dualRef _ c W _ subset_rfl x))).congr (fun _ => by simp) (fun _ _ => by simp) fun _ _ _ => by simp)`. Use the proof step `(T.K B c) (T.gen B c W.mult) (hW ε π hd)`. Use `key.trans ?_` and prove the remaining obligations. Use `congr 2`.
+
+Rewrite using `[Fintype.sum_option, add_comm]`. Use `congr 1`. Rewrite using `[← sum_single T B c (A.sh u s)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `-A.sh u s x.1 x.2 / (((-1 : ℤ) : ℝ) * ((1 : ℕ) : ℝ)) = _`. Simplify using the standard rewrite rules. Establish `hn : (((O.met.ab c).n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (O.met.ab c).n.ne_zero`. Establish `hk : (W.k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 W.k_pos.ne'`. Simplify using `only [Option.elim, Real0.gen, Setup.LatModel.mult, smul_smul]`.
+
+Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem arSelf_onObj : Hypotheses2 → HypothesesH → OnObj fun _ O A T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → Dominant O.Y (A.sh u s) → (∀ c, (T.M c).Smooth ((T.F c).phS (A.sh u s) s)) → ∀ c, O.Y.arSelfC (O.Y.Mbar B u s) c = (T.K B c).top (T.L B c (A.sh u s) + (s : ℝ) • T.a B c + (T.K B c).ar ((T.F c).phS (A.sh u s) s)) := by
   intro hP hH D O hO _ A T H h B hB u s hu hs hdom hsm c
   have hsh : A.sh u s = fun τ i => u τ i - s * O.met.dir τ i := by

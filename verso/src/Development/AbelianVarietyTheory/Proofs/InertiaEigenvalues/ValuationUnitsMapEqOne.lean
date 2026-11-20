@@ -14,6 +14,11 @@ namespace GlobalTheory.GLp.Supp
 
 open GlobalTheory.SmGL GlobalTheory.PRep ValuativeRel
 
+/- English proof (translation)
+Establish `hn : ‖((u : ℤ_[g]) : ℚ_[g])‖ = 1`. Rewrite using `[PadicInt.padic_norm_e_of_padicInt]`. Conclude with `PadicInt.isUnit_iff.1 u.isUnit`. Establish `e : ((Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u : ℚ_[g]ˣ) : ℚ_[g]) = ((u : ℤ_[g]) : ℚ_[g])` using `rfl`. Rewrite using `[e]`.
+
+Use `le_antisymm (not_lt.1 fun hlt => ?_) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Use `(GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 ((u : ℤ_[g]) : ℚ_[g])).1 (by simpa using hlt)` as an intermediate fact. Simplify using `[hn] at this`. Use `(GlobalTheory.SplitWeil.padic_valuation_lt_iff g ((u : ℤ_[g]) : ℚ_[g]) 1).1 (by simpa using hlt)` as an intermediate fact. Simplify using `[hn] at this`.
+-/
 theorem valuation_units_map_eq_one {g : ℕ} [Fact g.Prime] (u : ℤ_[g]ˣ) :
     valuation ℚ_[g] ((Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom u : ℚ_[g]ˣ) : ℚ_[g]) = 1 := by
   have hn : ‖((u : ℤ_[g]) : ℚ_[g])‖ = 1 := by
@@ -26,6 +31,31 @@ theorem valuation_units_map_eq_one {g : ℕ} [Fact g.Prime] (u : ℤ_[g]ˣ) :
   · have := (GlobalTheory.SplitWeil.padic_valuation_lt_iff g ((u : ℤ_[g]) : ℚ_[g]) 1).1 (by simpa using hlt)
     simp [hn] at this
 
+/- English proof (translation)
+Introduce `g _ a b n h V W W' _ _ _ _ _ _ π σ ρ φ hφ`. Use `⟨h.symm, absPow ℚ_[g] ((b : ℂ) / 2), absPow ℚ_[g] (-(a : ℂ) / 2), φ.toLinearMap ∘ₗ (twKer π (unipRad ℚ_[g] (two (stdSum h))) 1).mkQ, fun u => isUnram_absPow ℚ_[g] _ _ (valuation_units_map_eq_one u), fun u => isUnram_absPow ℚ_[g] _ _ (valuation_units_map_eq_one u), ?_, ?_⟩` and prove the remaining obligations. Introduce `hΛ`. Apply `hφ` to reduce the goal to its premises. Use extensionality with `x`.
+
+Conclude with `LinearMap.congr_fun hΛ x`. Introduce `p x y h0 hx hy v`. Establish `hp : p ∈ parab ℚ_[g] (two (stdSum h))`. Rewrite using `[mem_parab_iff]`. Introduce and unpack `(_|_) (_|_) i j hlt`.
+
+Conclude with `absurd hlt (by decide)`. Conclude with `absurd hlt (by decide)`. Apply `h0` to reduce the goal to its premises. Use `show ((stdSum h (Sum.inl j) : Fin n) : ℕ) < a`. Rewrite using `[stdSum_inl]`.
+
+Conclude with `j.isLt`. Use `show a ≤ ((stdSum h (Sum.inr i) : Fin n) : ℕ)`. Rewrite using `[stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd hlt (by decide)`.
+
+Establish `hl : leviProj ℚ_[g] (two (stdSum h)) ⟨p, hp⟩ = leviTwo ℚ_[g] (Fin a) (Fin b) (x, y)`. Use function extensionality and compare the values at `c`. Consider the cases of `c`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[leviProj_apply]`.
+
+Use `show _ = (x : Matrix (Fin a) (Fin a) ℚ_[g]) i j`. Establish `hi : (i : ℕ) < n` using `by omega`. Establish `hj : (j : ℕ) < n` using `by omega`. Rewrite using `[hx]`. Simplify using `only [Formalism.MainNotions.ArithmeticCylinders.entN, hi, hj, and_self, dif_pos]`.
+
+Both sides reduce to the same expression. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[leviProj_apply]`. Use `show _ = (y : Matrix (Fin b) (Fin b) ℚ_[g]) i j`. Establish `hi : a + (i : ℕ) < n` using `by omega`.
+
+Establish `hj : a + (j : ℕ) < n` using `by omega`. Rewrite using `[hy]`. Simplify using `only [Formalism.MainNotions.ArithmeticCylinders.entN, hi, hj, and_self, dif_pos]`. Both sides reduce to the same expression. Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip ℚ_[g] (two (stdSum h)) ⟨p, hp⟩`.
+
+Rewrite `hpu` using `[hl]`. Establish `hpu' : p = leviEmb ℚ_[g] (two (stdSum h)) (leviTwo ℚ_[g] (Fin a) (Fin b) (x, y)) * u` using `hpu`. Establish `hmk : (Submodule.Quotient.mk (π u v) : Jacquet π (unipRad ℚ_[g] (two (stdSum h)))) = Submodule.Quotient.mk v`. Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨u, hu⟩, v, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `key : ∀ (M : Levi ℚ_[g] (Two (Fin a) (Fin b))) (w : V), (Submodule.Quotient.mk (π (leviEmb ℚ_[g] (two (stdSum h)) M) w) : Jacquet π (unipRad ℚ_[g] (two (stdSum h)))) = (deltaHalf ℚ_[g] (Two (Fin a) (Fin b)) M : ℂ) • jac (two (stdSum h)) π M (Submodule.Quotient.mk w)`. Introduce `M w`. Rewrite using `[jac_mk, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Establish `hint` using `Representation.IntertwiningMap.isIntertwining _ _ φ (x, y) (Submodule.Quotient.mk v : Jacquet π (unipRad ℚ_[g] (two (stdSum h))))`.
+
+Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[hpu', map_mul, Module.End.mul_apply, key, hmk, map_smul]`. Express the relevant statement in the definitionally equal form `_ • φ (jac₂ (stdSum h) π (x, y) (Submodule.Quotient.mk v)) = _`. Rewrite using `[hint, deltaHalf_two]`. Simplify using `only [Fintype.card_fin]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mapsToProd_of_jac₂ : ∀ (g : ℕ) [Fact g.Prime] (a b n : ℕ) (h : a + b = n) (V W W' : Type) [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (σ : Representation ℂ (GL (Fin a) ℚ_[g]) W)

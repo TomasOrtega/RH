@@ -15,22 +15,37 @@ def jInv (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n)
 
 variable (ε : Fin n → Bool)
 
+/- English proof (translation)
+Simplify using `only [jInv, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem jInv_sub (X Y : Matrix (Fin n) (Fin n) ℂ) : jInv ε (X - Y) = jInv ε X - jInv ε Y := by
   simp only [jInv, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Simplify using `[jInv, conjTranspose_smul]`.
+-/
 theorem jInv_smul (a : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) : jInv ε (a • X) = a • jInv ε X := by
   simp [jInv, conjTranspose_smul]
 
+/- English proof (translation)
+Simplify using `only [jInv, conjTranspose_mul, Jm_conjTranspose, conjTranspose_conjTranspose, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]`.
+-/
 theorem jInv_jInv_mul (X : Matrix (Fin n) (Fin n) ℂ) : jInv ε (jInv ε X * X) = jInv ε X * X := by
   simp only [jInv, conjTranspose_mul, Jm_conjTranspose, conjTranspose_conjTranspose, Matrix.mul_assoc,
     Jm_mul_self, Matrix.mul_one]
 
+/- English proof (translation)
+Conclude with `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`.
+-/
 theorem continuous_jInv : Continuous (jInv ε) := by
   exact (continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const
 
 def iter (Y : Matrix (Fin n) (Fin n) ℂ) (k : ℕ) : Matrix (Fin n) (Fin n) ℂ :=
   Nat.rec Y (fun _ X => Y - (1 / 2 : ℝ) • (jInv ε X * X)) k
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact continuous_id`. Consider the case `succ k ih`. Conclude with `continuous_id.sub ((((continuous_jInv ε).comp ih).matrix_mul ih).const_smul (1 / 2 : ℝ))`.
+-/
 theorem continuous_iter (k : ℕ) : Continuous fun Y => iter ε Y k := by
   induction k with
   | zero => exact continuous_id
@@ -39,6 +54,9 @@ theorem continuous_iter (k : ℕ) : Continuous fun Y => iter ε Y k := by
 
 variable {ε} {A : ℕ → Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact hY`. Consider the case `succ k ih`. Conclude with `(A 0).sub_mem hY ((A 0).smul_mem _ (hle 0 (hmul 0 _ (hinv 0 _ ih) _ ih).1))`.
+-/
 theorem iter_mem (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c + 1) ∧ Y * X ∈ A (c + 1))
     (hle : ∀ c, A (c + 1) ≤ A c) (hinv : ∀ c, ∀ X ∈ A c, Jm ε * Xᴴ * Jm ε ∈ A c)
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y ∈ A 0) (k : ℕ) : iter ε Y k ∈ A 0 := by
@@ -47,6 +65,13 @@ theorem iter_mem (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c + 1
   | succ k ih =>
     exact (A 0).sub_mem hY ((A 0).smul_mem _ (hle 0 (hmul 0 _ (hinv 0 _ ih) _ ih).1))
 
+/- English proof (translation)
+Establish `hm` using `iter_mem hmul hle hinv hY`. Proceed by induction on `k with`. Consider the case `zero => exact (A 0).sub_mem (hm 1) (hm 0)`. Consider the case `succ k ih`. Establish `e : iter ε Y (k + 1 + 1) - iter ε Y (k + 1) = (-(1 / 2) : ℝ) • (jInv ε (iter ε Y (k + 1) - iter ε Y k) * iter ε Y (k + 1) + jInv ε (iter ε Y k) * (iter ε Y (k + 1) - iter ε Y k))`.
+
+Establish `e1 : iter ε Y (k + 1 + 1) = Y - (1 / 2 : ℝ) • (jInv ε (iter ε Y (k + 1)) * iter ε Y (k + 1))` using `rfl`. Establish `e2 : iter ε Y (k + 1) = Y - (1 / 2 : ℝ) • (jInv ε (iter ε Y k) * iter ε Y k)` using `rfl`. Rewrite using `[e1]`. Generalize the expression as in `iter ε Y (k + 1) = P at e2 ⊢`. Generalize the expression as in `iter ε Y k = Q at e2 ⊢`.
+
+Rewrite using `[jInv_sub, Matrix.sub_mul, Matrix.mul_sub]`. Use `nth_rewrite 3 [e2]`. Use `module`. Rewrite using `[e]`. Conclude with `(A _).smul_mem _ ((A _).add_mem (hmul k _ (hinv k _ ih) _ (hm _)).1 (hmul k _ ih _ (hinv 0 _ (hm _))).2)`.
+-/
 theorem iter_sub_mem (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c + 1) ∧ Y * X ∈ A (c + 1))
     (hle : ∀ c, A (c + 1) ≤ A c) (hinv : ∀ c, ∀ X ∈ A c, Jm ε * Xᴴ * Jm ε ∈ A c)
     {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y ∈ A 0) (k : ℕ) : iter ε Y (k + 1) - iter ε Y k ∈ A k := by
@@ -70,6 +95,11 @@ theorem iter_sub_mem (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c
     exact (A _).smul_mem _ ((A _).add_mem (hmul k _ (hinv k _ ih) _ (hm _)).1
       (hmul k _ ih _ (hinv 0 _ (hm _))).2)
 
+/- English proof (translation)
+Establish `h2 : jInv ε X = -Y - (1 / 2 : ℝ) • (jInv ε X * X)` using `by conv_lhs => rw [h]`. Rewrite using `[jInv_sub, jInv_smul, jInv_jInv_mul, hY]`. Establish `h3 : X + jInv ε X + jInv ε X * X = 0`. Generalize the expression as in `jInv ε X * X = P at h h2 ⊢`. Rewrite using `[h2, h]`.
+
+Use `module`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_add_mul_of_fixed {X Y : Matrix (Fin n) (Fin n) ℂ} (hY : jInv ε Y = -Y)
     (h : X = Y - (1 / 2 : ℝ) • (jInv ε X * X)) : (1 + jInv ε X) * (1 + X) = 1 := by
   have h2 : jInv ε X = -Y - (1 / 2 : ℝ) • (jInv ε X * X) := by
@@ -83,6 +113,9 @@ theorem one_add_mul_of_fixed {X Y : Matrix (Fin n) (Fin n) ℂ} (hY : jInv ε Y 
   calc 1 + X + (jInv ε X + jInv ε X * X) = 1 + (X + jInv ε X + jInv ε X * X) := by abel
     _ = 1 := by rw [h3, add_zero]
 
+/- English proof (translation)
+Establish `e : (1 + X)ᴴ * Jm ε = Jm ε * (1 + jInv ε X)`. Rewrite using `[conjTranspose_add, conjTranspose_one, Matrix.add_mul, Matrix.mul_add, jInv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e, Matrix.mul_assoc, h, Matrix.mul_one]`.
+-/
 theorem inUJ_of_one_add_mul {X : Matrix (Fin n) (Fin n) ℂ} (h : (1 + jInv ε X) * (1 + X) = 1) :
     (1 + X)ᴴ * Jm ε * (1 + X) = Jm ε := by
   have e : (1 + X)ᴴ * Jm ε = Jm ε * (1 + jInv ε X) := by
@@ -90,6 +123,21 @@ theorem inUJ_of_one_add_mul {X : Matrix (Fin n) (Fin n) ℂ} (h : (1 + jInv ε X
       ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one]
   rw [e, Matrix.mul_assoc, h, Matrix.mul_one]
 
+/- English proof (translation)
+Set `Y : (Fin d → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun x => ∑ i, x i • E i`. Establish `hYc : Continuous Y`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).smul continuous_const`. Establish `hY0 : ∀ x, Y x ∈ A 0` using `fun x => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hG i).1`.
+
+Establish `hYθ : ∀ x, jInv ε (Y x) = -Y x` using `fun x => by`. Simplify using `only [jInv, Y, conjTranspose_sum, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `jInv_smul ε (x i) (E i)` as an intermediate fact. Unfold `jInv at this`.
+
+Rewrite using `[this, inv_eq_neg_of_inG (hG i).2, smul_neg]`. Set `X : (Fin d → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun x => iter ε (Y x) m`. Establish `hXc : Continuous X` using `(continuous_iter ε m).comp hYc`. Establish `hfix : ∀ x, X x = Y x - (1 / 2 : ℝ) • (jInv ε (X x) * X x)` using `fun x => by`. Establish `h` using `iter_sub_mem hmul hle hinv (hY0 x) m`.
+
+Rewrite `h` using `[hA, Submodule.mem_bot, sub_eq_zero]`. Conclude with `h.symm`. Establish `h1 : ∀ x, (1 + jInv ε (X x)) * (1 + X x) = 1` using `fun x => one_add_mul_of_fixed (hYθ x) (hfix x)`. Set `u : (Fin d → ℝ) → (Matrix (Fin n) (Fin n) ℂ)ˣ` to `fun x => ⟨1 + X x, 1 + jInv ε (X x), mul_eq_one_comm.1 (h1 x), h1 x⟩`. Establish `huc : Continuous u` using `Units.continuous_iff.2 ⟨continuous_const.add hXc, continuous_const.add ((continuous_jInv ε).comp hXc)⟩`.
+
+Establish `hu : ∀ x, u x ∈ UJ ε` using `fun x => inUJ_of_one_add_mul (h1 x)`. Use `⟨fun x => ⟨u x, hu x⟩, huc.subtype_mk hu, fun x => ?_⟩` and prove the remaining obligations. Establish `e : uMat (⟨u x, hu x⟩ : UJ ε) - 1 = X x`. Express the relevant statement in the definitionally equal form `1 + X x - 1 = X x`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Use `⟨iter_mem hmul hle hinv (hY0 x) m, fun i => ?_⟩` and prove the remaining obligations. Establish `h0 : ipL (E i) (jInv ε (X x) * X x) = 0`. Establish `h` using `ipL_inv (hG i).2 (jInv ε (X x) * X x)`. Establish `h' : ipL (E i) (jInv ε (jInv ε (X x) * X x)) = -ipL (E i) (jInv ε (X x) * X x)` using `h`.
+
+Rewrite `h'` using `[jInv_jInv_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ipL_apply, hfix x, map_sub, map_smul, h0, smul_zero, sub_zero]`. Simplify using `only [Y, map_sum, map_smul, ipL_apply, hE, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_continuous_section (n d m : ℕ) (ε : Fin n → Bool)
     (A : ℕ → Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hA : A m = ⊥) (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c + 1) ∧ Y * X ∈ A (c + 1))

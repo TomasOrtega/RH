@@ -22,6 +22,11 @@ def locAdele (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum
     ∑ v : S₂, GlobalTheory.AdelicU.singleFin v.1 (p.1 v))
 
 open Classical in
+/- English proof (translation)
+Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Use `continuous_pi fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u ∈ S₁`. Simplify using `only [h, dite_true]`. Conclude with `(continuous_apply _).comp continuous_snd`.
+
+Simplify using `only [h, dite_false]`. Conclude with `continuous_const`. Conclude with `continuous_finset_sum _ fun v _ => (GlobalTheory.AdelicU.continuous_singleFin v.1).comp ((continuous_apply v).comp continuous_fst)`.
+-/
 theorem continuous_locAdele (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) :
     Continuous (locAdele S₁ S₂) := by
   refine Continuous.prodMk ?_ ?_
@@ -35,6 +40,11 @@ theorem continuous_locAdele (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (He
       (GlobalTheory.AdelicU.continuous_singleFin v.1).comp ((continuous_apply v).comp continuous_fst)
 
 open Classical in
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `(if h : u ∈ S₁ then (0 : u.Completion) else 0) = 0`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `[locAdele]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locAdele_zero (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) :
     locAdele S₁ S₂ 0 = 0 := by
   refine Prod.ext ?_ ?_
@@ -45,6 +55,17 @@ theorem locAdele_zero (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOn
     rfl
 
 open Classical in
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hε`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `fstA F ε u * fstA F a u = _`. Distinguish the cases in `h : u ∈ S₁`.
+
+Simplify using `only [locAdele, h, dite_true, h1 u h, one_mul]`. Simplify using `only [locAdele, h, dite_false, h2 u h, zero_mul]`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`. Express the relevant statement in the definitionally equal form `evalV F u (sndA F ε) * evalV F u (sndA F a) = _`.
+
+Simplify using `only [locAdele, map_sum]`. Distinguish the cases in `h : u ∈ S₂`. Rewrite using `[h3 u h, one_mul, Finset.sum_eq_single ⟨u, h⟩]`. Conclude with `(GlobalTheory.AdelicU.evalV_singleFin_self u _).symm`. Introduce `b _ hb`.
+
+Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (fun e => hb (Subtype.ext e.symm)) _`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[h4 u h, zero_mul, Finset.sum_eq_zero]`. Introduce `b _`.
+
+Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (fun e => h (by rw [e]; exact b.2)) _`.
+-/
 theorem mul_eq_locAdele {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F}
     (hε : IsPlacesIdem S₁ S₂ ε) (a : AF F) :
     ε * a = locAdele S₁ S₂ ((fun v => evalV F v.1 (sndA F a)), (fun w => fstA F a w.1)) := by
@@ -69,6 +90,9 @@ theorem mul_eq_locAdele {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (Height
       intro b _
       exact GlobalTheory.AdelicU.evalV_singleFin_ne (fun e => h (by rw [e]; exact b.2)) _
 
+/- English proof (translation)
+Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Simplify using `only [map_sub, AlgHom.commutes, Prod.fst_sub, Pi.sub_apply]`. Simplify using `only [map_sub, AlgHom.commutes, Prod.snd_sub, Pi.sub_apply]`. Both sides reduce to the same expression.
+-/
 theorem loc_sub_algebraMap (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (x : AF F) (t : F) :
     (((fun v : S₂ => evalV F v.1 (sndA F (x - algebraMap F (AF F) t))),
       (fun w : S₁ => fstA F (x - algebraMap F (AF F) t) w.1)) :
@@ -80,6 +104,13 @@ theorem loc_sub_algebraMap (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (Hei
   · simp only [map_sub, AlgHom.commutes, Prod.snd_sub, Pi.sub_apply]
     rfl
 
+/- English proof (translation)
+Introduce `F _ _ S₁ S₂ ε hε x U hU`. Use `set c : ((v : S₂) → Fv F v.1) × ((w : S₁) → w.1.Completion) := ((fun v : S₂ => evalV F v.1 (sndA F x)), (fun w : S₁ => fstA F x w.1)) with hc`. Establish `hO : {p | locAdele S₁ S₂ (c - p) ∈ U} ∈ 𝓝 c`. Establish `hcont : Continuous fun p => locAdele S₁ S₂ (c - p)` using `(continuous_locAdele S₁ S₂).comp (continuous_const.sub continuous_id)`. Establish `h0 : locAdele S₁ S₂ (c - c) = 0`.
+
+Rewrite using `[sub_self, locAdele_zero]`. Conclude with `hcont.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU)`. Establish `hd` using `GroundTheory.Global.denseRange_algebraMap_prod_pi (K := F) S₂ S₁`. Take `⟨_, hy, t, rfl⟩` from `mem_closure_iff_nhds.1 (hd c) _ hO`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_eq_locAdele hε, loc_sub_algebraMap]`. Conclude with `hy`.
+-/
 theorem weak_approx_idem : ∀ (F : Type) [Field F] [NumberField F], ∀ (S₁ : Finset (InfinitePlace F))
     (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε →
     ∀ (x : AF F) (U : Set (AF F)), U ∈ 𝓝 (0 : AF F) → ∃ t : F, ε * (x - algebraMap F (AF F) t) ∈ U := by

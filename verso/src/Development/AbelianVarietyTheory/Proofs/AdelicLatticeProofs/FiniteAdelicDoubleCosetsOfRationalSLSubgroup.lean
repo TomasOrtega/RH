@@ -11,6 +11,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Establish `key : ∀ (S : Type) [CommRing S] [Algebra ℚ S], pts Γ S = pts Δ S`. Introduce `S _ _`. Simplify using `only [pts, h]`. Simplify using `only [CF, key]`.
+-/
 theorem cf_congr_of_vanI_eq {ι : Type} [Fintype ι] [DecidableEq ι] {Γ Δ : Set (Matrix ι ι ℂ)}
     (h : vanI Γ = vanI Δ) (R : Type) [CommRing R] [Algebra ℚ R] (R₀ : Subring R) :
     CF Γ R R₀ ↔ CF Δ R R₀ := by
@@ -20,6 +23,15 @@ theorem cf_congr_of_vanI_eq {ι : Type} [Fintype ι] [DecidableEq ι] {Γ Δ : S
     simp only [pts, h]
   simp only [CF, key]
 
+/- English proof (translation)
+Introduce `ι _ _`. It suffices to establish `H : ∀ n : ℕ, ∀ (Γ : Set (Matrix ι ι ℂ)), Module.finrank ℂ (Submodule.span ℂ Γ) = n → ∀ (R : Type) [CommRing R] [Algebra ℚ R] (R₀ : Subring R), IsQGroup Γ → AdelicPair R R₀ → CF Γ R R₀ by`. Introduce `Γ R _ _ R₀ hQ hA`. Conclude with `H _ Γ rfl R R₀ hQ hA`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Γ hn R _ _ R₀ hQ hA`. Distinguish the cases in `hS : SS Γ`. Conclude with `GlobalTheory.T.classFiniteness_completelyReducible ι Γ R R₀ hQ hS hA`.
+
+Take `⟨e, he, hup, a, ha, ha0, hblk⟩` from `GlobalTheory.T.exists_rat_idempotent_blockDiagPart_kills_span ι Γ hQ.toIsPre hS`. Establish `hPre : IsPre (blk e '' Γ)` using `GlobalTheory.T.isAutStableSLMatrixGroup_image_blockDiagPart ι Γ e hQ.toIsPre he hup`. Take `⟨hQ', hvan, hspan⟩` from `GlobalTheory.T.ratZariskiClosure_of_autStable_SL_group ι (blk e '' Γ) hPre`. Establish `hlt` using `GlobalTheory.T.finrank_span_blockDiagPart_image_lt ι Γ e a ha ha0 hblk`. Establish `hcl : CF (pts (blk e '' Γ) ℂ) R R₀` using `ih _ (by rw [← hn, hspan]; exact hlt) _ rfl R R₀ hQ' hA`.
+
+Establish `hblkCF : CF (blk e '' Γ) R R₀` using `(cf_congr_of_vanI_eq hvan R R₀).mp hcl`. Conclude with `GlobalTheory.T.hasFiniteAdelicDoubleCosets_of_blockDiagPart_image ι Γ e R R₀ hQ he hup hA hblkCF`.
+-/
 theorem cf_of_isQGroup : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)) (R : Type) [CommRing R] [Algebra ℚ R] (R₀ : Subring R), IsQGroup Γ → AdelicPair R R₀ → CF Γ R R₀ := by
   intro ι _ _
 

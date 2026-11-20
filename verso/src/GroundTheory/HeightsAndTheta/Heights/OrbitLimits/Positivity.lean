@@ -16,20 +16,32 @@ section
 
 variable {K : Type u} [Fintype K] {ι : K → Type v} [∀ k, Fintype (ι k)] {F : Type w} [Field F]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k => (hV.1.2.2 k).choose, fun k => (hV.1.2.2 k).choose_spec⟩`.
+-/
 theorem exists_isChart_of_isProjVarF {V : Ideal (MRingOver F ι)} {n : ℕ} (hV : IsProjVarF V n) :
     ∃ i, IsChart V i :=
   ⟨fun k => (hV.1.2.2 k).choose, fun k => (hV.1.2.2 k).choose_spec⟩
 
+/- English proof (translation)
+Simplify using `[ratDiv, divCycle_one]`.
+-/
 theorem ratDiv_one_eq_mapRange (V : Ideal (MRingOver F ι)) (f : MRingOver F ι) :
     ratDiv V f 1 = Finsupp.mapRange (fun n : ℕ => (n : ℤ)) Nat.cast_zero (divCycle V f) := by
   simp [ratDiv, divCycle_one]
 
+/- English proof (translation)
+Rewrite using `[ratDiv_one_eq_mapRange, cycEval, Finsupp.sum_mapRange_index (by simp), Finsupp.sum]`. Conclude with `Finset.sum_nonneg fun W hW => mul_nonneg (Nat.cast_nonneg _) (h W (mem_divSupp_of_divCycle_ne_zero (Finsupp.mem_support_iff.mp hW)))`.
+-/
 theorem cycEval_ratDiv_one_nonneg (J : Ideal (MRingOver F ι) → ℤ) (V : Ideal (MRingOver F ι))
     (f : MRingOver F ι) (h : ∀ W ∈ divSupp V f, 0 ≤ J W) : 0 ≤ cycEval J (ratDiv V f 1) := by
   rw [ratDiv_one_eq_mapRange, cycEval, Finsupp.sum_mapRange_index (by simp), Finsupp.sum]
   exact Finset.sum_nonneg fun W hW => mul_nonneg (Nat.cast_nonneg _)
     (h W (mem_divSupp_of_divCycle_ne_zero (Finsupp.mem_support_iff.mp hW)))
 
+/- English proof (translation)
+Rewrite using `[ratDiv_one_eq_mapRange, cycEval, Finsupp.sum_mapRange_index (by simp), Finsupp.sum]`. Use `Finset.sum_pos (fun W hW => mul_pos ?_ ?_) (Finsupp.support_nonempty_iff.mpr hne)` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hW)` after adjusting the coercions. Conclude with `h W (mem_divSupp_of_divCycle_ne_zero (Finsupp.mem_support_iff.mp hW))`.
+-/
 theorem cycEval_ratDiv_one_pos (J : Ideal (MRingOver F ι) → ℤ) (V : Ideal (MRingOver F ι))
     (f : MRingOver F ι) (hne : divCycle V f ≠ 0) (h : ∀ W ∈ divSupp V f, 0 < J W) :
     0 < cycEval J (ratDiv V f 1) := by
@@ -38,12 +50,22 @@ theorem cycEval_ratDiv_one_pos (J : Ideal (MRingOver F ι) → ℤ) (V : Ideal (
   · exact_mod_cast Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hW)
   · exact h W (mem_divSupp_of_divCycle_ne_zero (Finsupp.mem_support_iff.mp hW))
 
+/- English proof (translation)
+Use `chart_finite hV hi` as an intermediate fact. Establish `: Nontrivial (MRingOver F ι ⧸ chartIdeal V i)` using `⟨(chart_isField hV hi).exists_pair_ne⟩`. Conclude with `Module.finrank_pos`.
+-/
 theorem ptDeg_pos {V : Ideal (MRingOver F ι)} (hV : IsProjVarF V 0) {i : ∀ k, ι k}
     (hi : IsChart V i) : 0 < ptDeg V i := by
   have := chart_finite hV hi
   have : Nontrivial (MRingOver F ι ⧸ chartIdeal V i) := ⟨(chart_isField hV hi).exists_pair_ne⟩
   exact Module.finrank_pos
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `V hV L _`. Take `⟨i, hi⟩` from `exists_isChart_of_isProjVarF hV`.
+
+Rewrite using `[hI.1 V L i hV hi]`. Conclude with `Nat.cast_nonneg _`. Consider the case `succ n ih`. Introduce `V hV L hL`. Take `⟨i, hi⟩` from `exists_isChart_of_isProjVarF hV`.
+
+Establish `hf` using `isMultiHomog_coordProd (F := F) i (fun k => (L (Fin.last n) k).toNat)`. Establish `hfV` using `coordProd_not_mem hV.1.1 i hi (fun k => (L (Fin.last n) k).toNat)`. Establish `hsec : IsRatSection V (L (Fin.last n)) (∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ (L (Fin.last n) k).toNat) 1` using `⟨_, 0, hf, isMultiHomog_one, hfV, fun h => hV.1.1.ne_top ((Ideal.eq_top_iff_one V).mpr h), fun k => by simp [Int.toNat_of_nonneg (hL _ k)]⟩`. Rewrite using `[← Fin.snoc_init_self (α := fun _ => K → ℤ) L, hI.2 V n (Fin.init L) _ _ 1 hV hsec]`. Conclude with `cycEval_ratDiv_one_nonneg _ _ _ fun W hW => ih W (isProjVarF_of_mem_divSupp hV hf hfV hW) _ fun j k => hL _ k`.
+-/
 theorem nonneg_of_isFieldIntersection {I : IFamily F ι} (hI : IsFieldIntersection I) :
     ∀ (n : ℕ) (V : Ideal (MRingOver F ι)), IsProjVarF V n →
       ∀ L : Fin n → K → ℤ, (∀ j k, 0 ≤ L j k) → 0 ≤ I V n L := by
@@ -70,12 +92,22 @@ theorem nonneg_of_isFieldIntersection {I : IFamily F ι} (hI : IsFieldIntersecti
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp`.
+-/
 theorem const_one_eq_snoc (n : ℕ) :
     (fun _ _ => (1 : ℤ) : Fin (n + 1) → K → ℤ) =
       Fin.snoc (α := fun _ => K → ℤ) (fun _ _ => 1) (fun _ => 1) := by
   funext j
   refine Fin.lastCases ?_ (fun j => ?_) j <;> simp
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `V hV`. Take `⟨i, hi⟩` from `exists_isChart_of_isProjVarF hV`.
+
+Rewrite using `[hI.1 V _ i hV hi]`. Conclude with `ptDeg_pos hV hi` after adjusting the coercions. Consider the case `succ n ih`. Introduce `V hV`. Take `⟨f, hf, hfV, hne⟩` from `hS K ι F V n hV`.
+
+Establish `hsec : IsRatSection V (fun _ => 1) f 1` using `⟨_, 0, hf, isMultiHomog_one, hfV, fun h => hV.1.1.ne_top ((Ideal.eq_top_iff_one V).mpr h), fun k => by simp⟩`. Rewrite using `[const_one_eq_snoc, hI.2 V n _ _ f 1 hV hsec]`. Conclude with `cycEval_ratDiv_one_pos _ _ _ hne fun W hW => ih W (isProjVarF_of_mem_divSupp hV hf hfV hW)`.
+-/
 theorem segre_pos_of_isFieldIntersection (hS : SegreDivisor.Statement.{u, v, w})
     {I : IFamily F ι} (hI : IsFieldIntersection I) :
     ∀ (n : ℕ) (V : Ideal (MRingOver F ι)), IsProjVarF V n → 0 < I V n (fun _ _ => 1) := by
@@ -98,6 +130,9 @@ theorem segre_pos_of_isFieldIntersection (hS : SegreDivisor.Statement.{u, v, w})
 
 end
 
+/- English proof (translation)
+Introduce `_ hI V n hV` and use `⟨fun L hL => nonneg_of_isFieldIntersection hI n V hV L hL, segre_pos_of_isFieldIntersection hS hI n V hV⟩`.
+-/
 theorem Positivity.of_found (hS : SegreDivisor.Statement.{u, v, w}) {K : Type u} [Fintype K]
     (F : Type w) [Field F] (ι : K → Type v) [∀ k, Fintype (ι k)] :
     ReciprocityTheory.ChartRestriction.G.AI.I1.PositivityStatement F ι :=

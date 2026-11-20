@@ -30,6 +30,19 @@ scoped macro "set_cases " h1:ident h2:ident N:ident N':ident X:ident X':ident : 
     subst xTw; subst fixedFieldTransport_baseIntegerRing_heq; subst fixedFieldTransport_baseIntegerCommRing_heq; subst xO; subst xcrO; subst xalgO; subst xOk; subst xcrOk; subst xalgOk; subst xpD
     subst fixedFieldTransport_initialPlaceSet_heq))
 
+/- English proof (translation)
+Use `geo_cases h D D'`. Use `set_cases h1 h2 N N' X X'`. Take `⟨rc, ch, bad, e, ek, B, om, Cl, rep, β, eG⟩` from `ρ`. Name the introduced variables `fin`. Use `⟨@Setup.mk _ _ _ ⟨rc.κ, rc.art⟩ ch bad e ek (fun i j b => ⟨(B i j b).hr, ⟨(B i j b).F.ψ, (B i j b).F.θ, (B i j b).F.sT, (B i j b).F.BS, (B i j b).F.BT, (B i j b).F.ΛS, (B i j b).F.ΛT, (B i j b).F.βS, (B i j b).F.βT, (B i j b).F.f₀⟩, ⟨(B i j b).G.Pg, (B i j b).G.P, (B i j b).G.mu⟩ …` and prove the remaining obligations.
+
+Introduce `i i' hi j j' hj b`. Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Conclude with `⟨⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩, ⟨.rfl, .rfl, .rfl⟩, ⟨.rfl, .rfl, .rfl⟩, ⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩, .rfl, .rfl⟩`. Introduce and unpack `i i' hi j j' hj b ⟨_, _, _⟩ ⟨_, _, _⟩ ⟨r1, r2, r3⟩`.
+
+Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Consider the cases of `r1`. Consider the cases of `r2`. Consider the cases of `r3`.
+
+Both sides reduce to the same expression. Introduce and unpack `i i' hi j j' hj b ⟨_, _, _⟩ ⟨_, _, _⟩ ⟨r1, r2, r3⟩`. Consider the cases of `hi`. Consider the cases of `Fin.ext hj`. Consider the cases of `r1`.
+
+Consider the cases of `r2`. Consider the cases of `r3`. Conclude with `HEq.rfl`. Introduce `i i' hi j j' hj b`. Consider the cases of `hi`.
+
+Consider the cases of `Fin.ext hj`. Conclude with `HEq.rfl`.
+-/
 theorem exists_setupRel (h : SameGeo D D') {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     (h1 : GlobalTheory.TwistChoice.SameGalois N N') (h2 : GlobalTheory.TwistChoice.TwistDataAgreeAcrossCoefficients X X') (ρ : Setup X) :
@@ -60,6 +73,11 @@ theorem exists_setupRel (h : SameGeo D D') {N : NData D.R D.host D.what₂} {N' 
     cases hi; cases Fin.ext hj
     exact HEq.rfl
 
+/- English proof (translation)
+Use `geo_cases h D D'`. Substitute `hΩ` using the available equality. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Take `⟨κ, art⟩` from `a`.
+
+Take `⟨κ', art'⟩` from `a'`. Take `⟨r1, r2⟩` from `r`. Consider the cases of `r1`. Consider the cases of `r2`. Conclude with `⟨g.1, g.2, g.3, g.4⟩`.
+-/
 theorem RecipRel.good (h : SameGeo D D') {Ω Ω' : Type} [i1 : Field Ω] [i2 : Algebra D.host.E Ω] [i1' : Field Ω']
     [i2' : Algebra D'.host.E Ω'] (hΩ : Ω = Ω') (h1 : HEq i1 i1') (h2 : HEq i2 i2') {a : Recip D Ω} {a' : Recip D' Ω'}
     (r : RecipRel a a') (g : a.Good) : a'.Good := by
@@ -71,6 +89,15 @@ theorem RecipRel.good (h : SameGeo D D') {Ω Ω' : Type} [i1 : Field Ω] [i2 : A
   cases r1; cases r2
   exact ⟨g.1, g.2, g.3, g.4⟩
 
+/- English proof (translation)
+Establish `grc` using `r.rc.good h (eq_of_heq h1.Om) h1.instOm h1.algOm g.rc`. Establish `h0` using `h`. Use `geo_cases h D D'`. Use `set_cases h1 h2 N N' X X'`. Simplify using `only at hδ`.
+
+Substitute `hδ` using the available equality. Take `⟨⟨κ, art⟩, ch, bad, e, ek, B, om, Cl, rep, β, eG⟩` from `ρ`. Take `⟨⟨κ', art'⟩, ch', bad', e', ek', B', om', Cl', rep', β', eG'⟩` from `ρ'`. Take `⟨⟨r1, r2⟩, r3, r4, r5, r6, r7, r8, r9, r10, -, -⟩` from `r`. Simplify using `only at r1 r2 r3 r4 r5 r6 r8`.
+
+Substitute `r1 r2 r3 r4 r5 r6 r8` using the available equality. Use `⟨grc, fun i => ⟨(g.ch i).1, (g.ch i).2⟩, g.bad_ne, g.goodSetup_bad_mem_badPlaces, g.goodSetup_badPlaces_conj, g.goodSetup_placesOverTwo_subset, g.goodSetup_count_eq_zero_off_badPlaces, fun i b x' => ?_, g.ek_e, fun i j b => (r7 i i .rfl j j rfl b).good h0 .rfl .rfl (g.base i j b) …` and prove the remaining obligations. Take `⟨x, h3, h4⟩` from `he i i .rfl b x'`. Conclude with `(congrArg (e i b) (eq_of_heq h3).symm).trans ((g.e_LL0 i b x).trans h4)`. Establish `t` using `(r7 i i .rfl j j rfl b).de`.
+
+Rewrite `t` using `[g.delta i j b]`. Conclude with `TwistRel.eq ⟨t.1.symm, t.2.symm, t.3.symm⟩`. Conclude with `(r7 i i .rfl j j rfl b).isWeil h0 .rfl .rfl .rfl .rfl (g.weil i j b ⟨t.Q, t.chi, t.res⟩ (TwistRel.good h0.symm ⟨.rfl, .rfl, .rfl⟩ ht))`. Conclude with `(r7 i i .rfl j j rfl b).isClassSystem h0 .rfl .rfl (t := ⟨t.Q, t.chi, t.res⟩) ⟨.rfl, .rfl, .rfl⟩ (r9 i i .rfl j j rfl b _ t ⟨.rfl, .rfl, .rfl⟩) (r10 i i .rfl j j rfl b _ t ⟨.rfl, .rfl, .rfl⟩) (g.classes i j b ⟨t.Q, t.chi, t.res⟩ (TwistRel.good h0.symm ⟨.rfl, .rfl, .rfl⟩ ht) ((r7 …`.
+-/
 theorem SetupRel.good_of (h : SameGeo D D') {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     (h1 : GlobalTheory.TwistChoice.SameGalois N N') (h2 : GlobalTheory.TwistChoice.TwistDataAgreeAcrossCoefficients X X') (hδ : HEq X.delta X'.delta)
@@ -105,12 +132,18 @@ theorem SetupRel.good_of (h : SameGeo D D') {N : NData D.R D.host D.what₂} {N'
       (g.classes i j b ⟨t.Q, t.chi, t.res⟩ (TwistRel.good h0.symm ⟨.rfl, .rfl, .rfl⟩ ht)
         ((r7 i i .rfl j j rfl b).adm h0 .rfl .rfl .rfl ha))
 
+/- English proof (translation)
+Substitute `hT hn ha hc` using the available equality. Conclude with `g τ`.
+-/
 theorem val_move {T T' : Type} {n n' : ℕ} (hT : T = T') (hn : n = n') {a : T → GL (Fin n) ℂ} {a' : T' → GL (Fin n') ℂ}
     {c : T → Matrix (Fin n) (Fin n) ℂ} {c' : T' → Matrix (Fin n') (Fin n') ℂ} (ha : HEq a a') (hc : HEq c c')
     (g : ∀ τ, (a τ).val = c τ) (τ : T') : (a' τ).val = c' τ := by
   subst hT hn ha hc
   exact g τ
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Substitute `hH` using the available equality. Substitute `hT hp hc hi hP` using the available equality. Conclude with `g`.
+-/
 theorem mem_move {R R' : Ranks} {H : Host R} {H' : Host R'} (hR : R = R') (hH : HEq H H') {T T' : Type} (hT : T = T')
     {p : T → Finset (Pl H.E)} {p' : T' → Finset (Pl H'.E)} {c : T → Set (Pl H.E)} {c' : T' → Set (Pl H'.E)} (hp : HEq p p')
     (hc : HEq c c') {i : T} {i' : T'} (hi : HEq i i') {P : Pl H.E} {P' : Pl H'.E} (hP : HEq P P') (g : P ∈ p i → P ∈ c i) :
@@ -118,6 +151,9 @@ theorem mem_move {R R' : Ranks} {H : Host R} {H' : Host R'} (hR : R = R') (hH : 
   subst hR; subst hH; subst hT hp hc hi hP
   exact g
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Substitute `hH` using the available equality. Substitute `hL e e' hA hB hu hc` using the available equality. Conclude with `g`.
+-/
 theorem grp_move {R R' : Ranks} {H : Host R} {H' : Host R'} {L L' : Fin 2 → Type} (hR : R = R') (hH : HEq H H') (hL : L = L')
     {r r' : ℕ} (e : r = R.r) (e' : r' = R'.r) {A B : Finset (Pl H.E)} {A' B' : Finset (Pl H'.E)} (hA : HEq A A') (hB : HEq B B')
     {u : (∀ kv : (Σ k : Fin 2, L k), GL (Fin R.r) (ZMod (H.g kv.1))) ≃* G0 A r}
@@ -130,6 +166,9 @@ theorem grp_move {R R' : Ranks} {H : Host R} {H' : Host R'} {L L' : Fin 2 → Ty
   subst hR; subst hH; subst hL e e' hA hB hu hc
   exact g
 
+/- English proof (translation)
+Substitute `hT hf hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem heq_app {T T' A : Type} (hT : T = T') {f : T → A} {f' : T' → A} (hf : HEq f f') {i : T} {i' : T'} (hi : HEq i i') :
     f i = f' i' := by
   subst hT hf hi
@@ -137,9 +176,25 @@ theorem heq_app {T T' A : Type} (hT : T = T') {f : T → A} {f' : T' → A} (hf 
 
 variable {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}
 
+/- English proof (translation)
+The claim follows from `r.good_of h.sameGeo h.gal h.set h.delta (fun _ _ hi b x => ⟨e x, h.sideEmb_heq hi b x, h.embLL0_eq x⟩) g`.
+-/
 theorem SetupRel.good (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} (r : SetupRel ρ ρ') (g : ρ.Good) : ρ'.Good :=
   r.good_of h.sameGeo h.gal h.set h.delta (fun _ _ hi b x => ⟨e x, h.sideEmb_heq hi b x, h.embLL0_eq x⟩) g
 
+/- English proof (translation)
+Establish `G` using `h.sameGeo`. Establish `back : ∀ (i' : D'.ntw.Tw) (j' : Fin D'.R.m), ∃ i : D.ntw.Tw, ∃ j : Fin D.R.m, HEq i i' ∧ (j : ℕ) = j'` using `fun i' j' => ⟨cast h.Tw_eq.symm i', Fin.cast (congrArg Ranks.m h.gal.R).symm j', cast_heq _ _, rfl⟩`. Establish `chain : ∀ {A A' : Type} {a c : A} {a' c' : A'}, HEq a a' → a = c → HEq c c' → a' = c'` using `fun h1 h2 h3 => eq_of_heq (h1.symm.trans ((heq_of_eq h2).trans h3))`. Prove the components needed by the constructor for the conclusion. Use `case deltaPl =>`.
+
+Introduce `i' t' P' h1 h2`. Take `⟨t, P, h3, h4⟩` from `m.Q i' t' P' h1 h2`. Conclude with `mem_move h.gal.R h.gal.host h.Tw_eq h.set.pD r.ch (cast_heq h.Tw_eq.symm i') h4 (p.deltaPl _ t P h3) h2`. Use `all_goals`. Introduce `i' j' b`.
+
+Take `⟨i, j, hi, hj⟩` from `back i' j'`. Establish `q` using `r.B i i' hi j j' hj b`. Take `⟨hV, hW, rV, rW, hp, hm⟩` from `G.spaces hj`. Conclude with `chain q.F.ψ (p.psi i j b) m.ψ`. Conclude with `chain q.F.θ (p.inf i j b) m.θ`.
+
+Conclude with `chain q.F.sT (p.cartT i j b) ((m.MW j j' hj).cart_onb G hW).1`. Conclude with `val_move h.Tau rV q.F.BS (m.BV j j' hj) (p.onbS i j b)`. Conclude with `chain q.F.BT (p.onbT i j b) ((m.MW j j' hj).cart_onb G hW).2`. Conclude with `chain q.F.ΛS (p.latS i j b) (m.ΛV j j' hj)`. Conclude with `chain q.F.ΛT (p.latT i j b) (m.ΛW j j' hj)`.
+
+Conclude with `chain q.F.βS (p.frS i j b) (m.βV j j' hj)`. Conclude with `chain q.F.βT (p.frT i j b) (m.βW j j' hj)`. Conclude with `chain q.F.f₀ (p.vac i j b) (m.vacP j j' hj)`. Conclude with `chain q.G.Pg (p.Pg i j b) m.Pg`. Conclude with `grp_move h.gal.R h.gal.host (eq_of_heq h.gal.PlG) (FWT.rank_Wc j) (FWT.rank_Wc j') q.G.Pg m.Pg (r.eG i i' hi j j' hj b) m.cG (p.grp i j b)`.
+
+Conclude with `chain q.mu0 (p.mu0 i j b) (hj ▸ m.mu0 j)`. Conclude with `chain q.eta (p.eta i j b) m.eta`. Conclude with `G.chrEq q.de.chi (heq_app h.Tw_eq h.set.l hi ▸ m.delAt _) (p.delta i j b)`. Conclude with `congrFun (chain q.w.ap (funext (p.ap i j b)) hp)`. Conclude with `congrFun (chain q.w.am (funext (p.am i j b)) hm)`.
+-/
 theorem SetupRel.realPin (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {ρ : Setup D.ntw}
     {ρ' : Setup D'.ntw} (r : SetupRel ρ ρ') (p : RealPin X.R X.cG ρ) : RealPin X'.R X'.cG ρ' := by
   have G := h.sameGeo
@@ -176,14 +231,23 @@ theorem SetupRel.realPin (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide 
   · exact congrFun (chain q.w.ap (funext (p.ap i j b)) hp)
   · exact congrFun (chain q.w.am (funext (p.am i j b)) hm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨r.F.1, r.F.2, r.F.3, r.F.4, r.F.5, r.F.6, r.F.7, r.F.8, r.F.9, r.F.10, r.G.1, r.G.2, r.G.3, ⟨r.de.1, r.de.2, r.de.3⟩, r.w.1, r.w.2, r.w.3, r.w.4, r.w.5, r.w.6, r.mu0, r.eta⟩`.
+-/
 theorem BaseRel.sameBase {S T : HSp D} {S' T' : HSp D'} {B : Base S T} {B' : Base S' T'} (r : BaseRel B B') : SameBase B B' :=
   ⟨r.F.1, r.F.2, r.F.3, r.F.4, r.F.5, r.F.6, r.F.7, r.F.8, r.F.9, r.F.10, r.G.1, r.G.2, r.G.3, ⟨r.de.1, r.de.2, r.de.3⟩,
     r.w.1, r.w.2, r.w.3, r.w.4, r.w.5, r.w.6, r.mu0, r.eta⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨r.ψ, r.θ, r.sT, r.BS, r.BT, r.ΛS, r.ΛT, r.βS, r.βT, r.f₀⟩, ⟨r.Pg, r.P, r.mu⟩, ⟨r.de.1, r.de.2, r.de.3⟩, ⟨r.p, r.q, r.ap, r.am, r.c, r.lam⟩, r.mu0, r.eta⟩`.
+-/
 theorem SameBase.baseRel {S T : HSp D} {S' T' : HSp D'} {B : Base S T} {B' : Base S' T'} (r : SameBase B B') : BaseRel B B' :=
   ⟨⟨r.ψ, r.θ, r.sT, r.BS, r.BT, r.ΛS, r.ΛT, r.βS, r.βT, r.f₀⟩, ⟨r.Pg, r.P, r.mu⟩, ⟨r.de.1, r.de.2, r.de.3⟩,
     ⟨r.p, r.q, r.ap, r.am, r.c, r.lam⟩, r.mu0, r.eta⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r => ⟨r.rc.1, r.rc.2, r.ch, r.bad, r.e, r.ek, fun i i' hi j j' hj b => (r.B i i' hi j j' hj b).sameBase, r.om, fun i i' hi j j' hj b t t' ht => ⟨r.Cl i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩, r.rep i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩⟩, r.β, r.eG⟩, fun r => ⟨⟨r.κ, r.ar …`.
+-/
 theorem setupRel_iff_sameData {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} : SetupRel ρ ρ' ↔ SameData ρ ρ' :=
   ⟨fun r => ⟨r.rc.1, r.rc.2, r.ch, r.bad, r.e, r.ek, fun i i' hi j j' hj b => (r.B i i' hi j j' hj b).sameBase, r.om,
       fun i i' hi j j' hj b t t' ht => ⟨r.Cl i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩, r.rep i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩⟩,
@@ -192,6 +256,9 @@ theorem setupRel_iff_sameData {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} : SetupRel
       fun i i' hi j j' hj b t t' ht => (r.Cl i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩).1,
       fun i i' hi j j' hj b t t' ht => (r.Cl i i' hi j j' hj b t t' ⟨ht.1, ht.2, ht.3⟩).2, r.β, r.eG⟩⟩
 
+/- English proof (translation)
+Introduce `D D' ι e h X X' m ρ g p`. Take `⟨ρ', r⟩` from `exists_setupRel h.sameGeo h.gal h.set ρ`. Conclude with `⟨ρ', setupRel_iff_sameData.1 r, r.good h g, r.realPin h m p⟩`.
+-/
 theorem setup_move_data : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) (ρ : Setup D.ntw), ρ.Good → RealPin X.R X.cG ρ →
     ∃ ρ' : Setup D'.ntw, SameData ρ ρ' ∧ ρ'.Good ∧ RealPin X'.R X'.cG ρ' := by
   intro D D' ι e h X X' m ρ g p

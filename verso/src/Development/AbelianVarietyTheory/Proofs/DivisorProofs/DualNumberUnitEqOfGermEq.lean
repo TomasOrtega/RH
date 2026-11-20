@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualUnitGerm
 
+/- English proof (translation)
+Establish `key : ∀ p : PrimeSpectrum (DualNumber k), p.asIdeal = maximalIdeal (DualNumber k)`. Introduce `p`. Use `le_antisymm (le_maximalIdeal p.isPrime.ne_top) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hn : IsNilpotent x`.
+
+Break down `TrivSqZeroExt.isUnit_or_isNilpotent x with h | h` into its components or cases. Conclude with `absurd h hx`. Conclude with `h`. Conclude with `(nilpotent_iff_mem_prime.1 hn) p.asIdeal p.isPrime`. Conclude with `⟨fun p q => PrimeSpectrum.ext ((key p).trans (key q).symm)⟩`.
+-/
 theorem primeSpectrum_subsingleton (k : Type) [Field k] : Subsingleton (PrimeSpectrum (DualNumber k)) := by
   have key : ∀ p : PrimeSpectrum (DualNumber k), p.asIdeal = maximalIdeal (DualNumber k) := by
     intro p
@@ -29,6 +34,11 @@ theorem primeSpectrum_subsingleton (k : Type) [Field k] : Subsingleton (PrimeSpe
     exact (nilpotent_iff_mem_prime.1 hn) p.asIdeal p.isPrime
   exact ⟨fun p q => PrimeSpectrum.ext ((key p).trans (key q).symm)⟩
 
+/- English proof (translation)
+Introduce `k _ z u v h`. Establish `hs : Subsingleton (Sp (DualNumber k))` using `primeSpectrum_subsingleton k`. Establish `h1 : (unitOn u).val = (unitOn v).val`. Use `TopCat.Presheaf.section_ext (Sp (DualNumber k)).sheaf ⊤ _ _ fun x hx => ?_` and prove the remaining obligations. Take `rfl : x = z` from `Subsingleton.elim _ _`.
+
+Use `congrArg Units.val h` as an intermediate fact. Rewrite `this` using `[gm_val _ x ⊤ hx, gm_val _ x ⊤ hx]`. Conclude with `this`. Conclude with `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv).1 h1)`.
+-/
 theorem unit_eq_of_germ_eq : ∀ (k : Type) [Field k] (z : Sp (DualNumber k)) (u v : (DualNumber k)ˣ), gm (𝟙 (Sp (DualNumber k))) z ⊤ (unitOn u) = gm (𝟙 (Sp (DualNumber k))) z ⊤ (unitOn v) → u = v := by
   intro k _ z u v h
   have hs : Subsingleton (Sp (DualNumber k)) := primeSpectrum_subsingleton k

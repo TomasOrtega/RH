@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.HomFixUniv
 
+/- English proof (translation)
+Establish `hm : Mono (topS Rg).hom`. Express the relevant statement in the definitionally equal form `Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _)`. Use `infer_instance`. Use `ext1`. Rewrite using `[← cancel_mono (topS Rg).hom, Over.w u, Over.w v]`.
+-/
 theorem topS_hom_ext {Rg : Type} [CommRing Rg] {Y : Over (Sp Rg)} (u v : Y ⟶ topS Rg) : u = v := by
   have hm : Mono (topS Rg).hom := by
     change Mono ((⊤ : (Sp Rg).Opens).ι ≫ 𝟙 _); infer_instance
@@ -27,6 +30,9 @@ instance isIso_snd_left {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) :
     · simp
   exact (Over.forget _).map_isIso (snd (topS Rg) A)
 
+/- English proof (translation)
+Introduce `Rg _ A _ L hA hL hamp`. Establish `hsq : IsPullback (snd (topS Rg) A).left (fA A) A.hom (𝟙 (Sp Rg))` using `IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id]; exact Over.w (snd (topS Rg) A)⟩`. Take `⟨hproj, hsm, hpr, -⟩` from `GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral (Sp Rg) A L hA hL hamp Rg (𝟙 _) _ _ (fA A) hsq`. Conclude with `⟨inferInstance, hproj, inferInstance⟩`.
+-/
 theorem fA_flat_isProjBy_universallyClosed : ∀ (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → RelAmple A L → Flat (GlobalTheory.HomFixUniv.fA A) ∧ GlobalTheory.AbLaw.IsProjBy (GlobalTheory.HomFixUniv.fA A) ∧ UniversallyClosed (GlobalTheory.HomFixUniv.fA A) := by
   intro Rg _ A _ L hA hL hamp
   have hsq : IsPullback (snd (topS Rg) A).left (fA A) A.hom (𝟙 (Sp Rg)) :=

@@ -23,6 +23,9 @@ variable {S : Type u} [CommRing S] {N : ℕ}
 variable {M : Type v} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
   [IsScalarTower S (Poly S N) M]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Express the relevant statement in the definitionally equal form `locRes hJK (locRes hIJ _) = locRes (hIJ.trans hJK) _`. Rewrite using `[locRes_mk, locRes_mk, locRes_mk]`.
+-/
 theorem locResS_comp (I J K : StdCell N) (hIJ : I.1 ⊆ J.1) (hJK : J.1 ⊆ K.1) :
     (locResS (S := S) (M := M) J K hJK).comp (locResS I J hIJ) = locResS I K (hIJ.trans hJK) := by
   refine LinearMap.ext fun x => ?_

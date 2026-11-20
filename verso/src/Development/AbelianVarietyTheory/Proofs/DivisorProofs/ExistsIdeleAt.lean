@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VacuumCharacter
 
+/- English proof (translation)
+Set `L` to `Matrix.toLin' P`. Set `b` to `Module.finBasis ℂ (LinearMap.range L)`. Set `e` to `Pi.basisFun ℂ (Fin m)`. Use `⟨_, LinearMap.toMatrix b e (LinearMap.range L).subtype, LinearMap.toMatrix e b L.rangeRestrict, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix_comp, LinearMap.subtype_comp_codRestrict, LinearMap.toMatrix_eq_toMatrix']`.
+
+Conclude with `LinearMap.toMatrix'_toLin' P`. Rewrite using `[← LinearMap.toMatrix_comp, ← LinearMap.toMatrix_id b]`. Use `congr 1`. Use extensionality with `⟨_, y, rfl⟩ : 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show L (L y) = L y`. Rewrite using `[← LinearMap.comp_apply, ← Matrix.toLin'_mul, hP]`.
+-/
 theorem exists_factor {m : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (hP : P * P = P) :
     ∃ (p : ℕ) (U : Matrix (Fin m) (Fin p) ℂ) (V : Matrix (Fin p) (Fin m) ℂ), U * V = P ∧ V * U = 1 := by
   let L := Matrix.toLin' P
@@ -27,6 +34,13 @@ theorem exists_factor {m : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (hP : P * P = P
     show L (L y) = L y
     rw [← LinearMap.comp_apply, ← Matrix.toLin'_mul, hP]
 
+/- English proof (translation)
+Take `⟨p, U, V, h1, h2⟩` from `exists_factor P hP`. Use `⟨p, by rw [← h1, Matrix.trace_mul_comm, h2]; simp, fun a => ?_⟩` and prove the remaining obligations. Establish `e : P ⊗ₖ a + (1 - P) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ) = 1 + (U ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)) * (V ⊗ₖ (a - 1))`. Rewrite using `[← Matrix.mul_kronecker_mul, h1, Matrix.one_mul, ← Matrix.one_kronecker_one]`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`.
+
+Simplify using `only [Matrix.add_apply, Matrix.kroneckerMap_apply, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 1 + (V ⊗ₖ (a - 1)) * (U ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)) = (1 : Matrix (Fin p) (Fin p) ℂ) ⊗ₖ a`. Rewrite using `[← Matrix.mul_kronecker_mul, h2, Matrix.mul_one, ← Matrix.one_kronecker_one]`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`.
+
+Simplify using `only [Matrix.add_apply, Matrix.kroneckerMap_apply, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Matrix.det_one_add_mul_comm, e2, Matrix.det_kronecker]`. Simplify using the standard rewrite rules.
+-/
 theorem det_idem_kron {m n : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (hP : P * P = P) :
     ∃ p : ℕ, P.trace = p ∧ ∀ a : Matrix (Fin n) (Fin n) ℂ,
       (P ⊗ₖ a + (1 - P) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)).det = a.det ^ p := by
@@ -46,6 +60,23 @@ theorem det_idem_kron {m n : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (hP : P * P =
   rw [e, Matrix.det_one_add_mul_comm, e2, Matrix.det_kronecker]
   simp
 
+/- English proof (translation)
+Take `⟨P, hPd⟩ : ∃ P, P = (1 / 2 : ℂ) • (1 + s)` from `⟨_, rfl⟩`. Establish `hQ : (1 / 2 : ℂ) • (1 - s) = 1 - P` using `by rw [hPd]; module`. Establish `hP : P * P = P`. Rewrite using `[hPd, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, mul_add, hs, one_mul, mul_one, one_mul]`. Use `module`.
+
+Take `⟨p, hp, hd⟩` from `det_idem_kron (n := n) P hP`. Use `⟨p, ?_, fun a b hb => ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[hPd, Matrix.trace_smul, Matrix.trace_add, Matrix.trace_one, Fintype.card_fin, smul_eq_mul]`. Take the linear combination `2 * hp`. Establish `hc : P * b = b * P`.
+
+Rewrite using `[hPd, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, hb, one_mul, mul_one]`. Establish `hc2 : P * b * P = P * b` using `by rw [mul_assoc, ← hc, ← mul_assoc, hP]`. Rewrite using `[← hPd, hQ]`. Prove the components needed by the constructor for the conclusion. Establish `e1 : (1 / 2 : ℂ) • ((1 + s ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)ᵀ) * (b ⊗ₖ aᵀ)) + (1 / 2 : ℂ) • (1 - s ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)ᵀ) = (P * b) ⊗ₖ aᵀ + (1 - P) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)`.
+
+Rewrite using `[← hQ, hPd, Matrix.transpose_one, add_mul, ← Matrix.mul_kronecker_mul, Matrix.smul_mul, add_mul, one_mul, one_mul, one_mul, ← Matrix.one_kronecker_one]`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.add_apply, Matrix.kroneckerMap_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (P * b) ⊗ₖ aᵀ + (1 - P) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ) = ((P * b + (1 - P)) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)) * (P ⊗ₖ aᵀ + (1 - P) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ))`.
+
+Establish `f1 : (P * b + (1 - P)) * P = P * b` using `by rw [add_mul, hc2, sub_mul, one_mul, hP, sub_self, add_zero]`. Establish `f2 : (P * b + (1 - P)) * (1 - P) = 1 - P` using `by rw [mul_sub, f1, mul_one]; abel`. Rewrite using `[mul_add, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, f1, f2, one_mul, one_mul]`. Unfold `GlobalTheory.WeilParts.detPlus`. Rewrite using `[e1, e2, Matrix.det_mul, hd, Matrix.det_kronecker]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Establish `f3 : P * b * ((1 - P) * b) = 0`. Rewrite using `[← mul_assoc, mul_sub, mul_one, hc2, sub_self, zero_mul]`.
+
+Establish `f4 : (1 - P) * ((1 - P) * b) = (1 - P) * b`. Rewrite using `[← mul_assoc, sub_mul, mul_sub, mul_sub, hP]`. Simplify using the standard rewrite rules. Establish `f5 : (1 - P) * P = 0` using `by rw [sub_mul, hP, one_mul, sub_self]`. Rewrite using `[add_mul, mul_add, mul_add, f3, f4, f5, hc2, sub_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem detPlus_one {m n : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) (hs : s * s = 1) :
     ∃ p : ℕ, s.trace = 2 * p - m ∧ ∀ (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fin m) (Fin m) ℂ), s * b = b * s →
       GlobalTheory.WeilParts.detPlus 1 s a b = ((1 / 2 : ℂ) • (1 + s) * b + (1 / 2 : ℂ) • (1 - s)).det ^ n * a.det ^ p ∧
@@ -92,6 +123,15 @@ theorem detPlus_one {m n : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) (hs : s * s = 1
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨n, hn, h0, h⟩` from `hχ`. Take `⟨n', hn', -, h'⟩` from `hη`. Establish `e : n' = 1`. Establish `: (n' : ℚ) = 1` using `by rw [hn']; norm_num`. Conclude with `this` after adjusting the coercions.
+
+Substitute `e` using the available equality. Use `⟨n - k, by push_cast; rw [hn]; ring, h0, fun θ hθ x h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hne : θ τ (infPart D (x : AE D)) / (‖θ τ (infPart D (x : AE D))‖ : ℂ) ≠ 0`. Use `h' θ hθ x h1 h2` as an intermediate fact. Rewrite `this` using `[zpow_one]`.
+
+Rewrite using `[← this]`. Conclude with `Circle.coe_ne_zero _`. Rewrite using `[zpow_sub₀ hne, ← h θ hθ x h1 h2, zpow_natCast]`. Use `h' θ hθ x h1 h2` as an intermediate fact. Rewrite `this` using `[zpow_one]`.
+
+Rewrite using `[← this]`. Simplify using `[div_eq_mul_inv]`.
+-/
 theorem hasInfExp_twist {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a : ℚ} (hχ : HasInfExp D χ τ a)
     (hη : HasInfExp D η τ (1 / 2)) (k : ℕ) : HasInfExp D (χ * (η ^ k)⁻¹) τ (a - k / 2) := by
   obtain ⟨n, hn, h0, h⟩ := hχ
@@ -111,6 +151,9 @@ theorem hasInfExp_twist {χ η : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a :
   rw [← this]
   simp [div_eq_mul_inv]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Rewrite using `[← sub_eq_zero]`. Conclude with `hσ.ext _ (by rw [RingHom.map_sub, h1, sub_self]) fun τ => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, h2, sub_self]`.
+-/
 theorem adele_ext {θ : InfFam D} (hθ : IsInfFam θ) {x y : AE D} (h1 : finPart D x = finPart D y)
     (h2 : ∀ τ, θ τ (infPart D x) = θ τ (infPart D y)) : x = y := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.FockCompare.exists_chart hθ
@@ -120,6 +163,15 @@ theorem adele_ext {θ : InfFam D} (hθ : IsInfFam θ) {x y : AE D} (h1 : finPart
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Establish `key : ∀ w : ℂ, ∃ x : AE D, finPart D x = 1 ∧ ∀ τ', θ τ' (infPart D x) = if τ' = τ then w else 1` using `fun w => ⟨1 + σ fun τ' => (if τ' = τ then w else 1) - 1, by rw [RingHom.map_add, hσ.fin, RingHom.map_one, add_zero], fun τ' => by`. Rewrite using `[RingHom.map_add, RingHom.map_add, hσ.comp, RingHom.map_one, RingHom.map_one]`. Use the proof step `ring⟩`. Take `⟨x, hx1, hx2⟩` from `key w`.
+
+Take `⟨y, hy1, hy2⟩` from `key w⁻¹`. Establish `hxy : x * y = 1` using `adele_ext hθ (by rw [RingHom.map_mul, hx1, hy1, RingHom.map_one, one_mul]) fun τ' => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, hx2, hy2, RingHom.map_one, RingHom.map_one]`. Use `split_ifs`. Conclude with `mul_inv_cancel₀ hw`.
+
+Conclude with `one_mul 1`. Establish `hyx : y * x = 1` using `(mul_comm y x).trans hxy`. Use `⟨⟨x, y, hxy, hyx⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk]`. Conclude with `hx1`.
+
+Rewrite using `[Units.val_mk]`. Conclude with `hx2`.
+-/
 theorem exists_idele_at {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (w : ℂ) (hw : w ≠ 0) :
     ∃ x : (AE D)ˣ, finPart D (x : AE D) = 1 ∧ ∀ τ', θ τ' (infPart D (x : AE D)) = if τ' = τ then w else 1 := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.FockCompare.exists_chart hθ
@@ -138,10 +190,18 @@ theorem exists_idele_at {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau)
   · rw [Units.val_mk]; exact hx1
   · rw [Units.val_mk]; exact hx2
 
+/- English proof (translation)
+The claim follows from `(RingHom.map_det ((θ τ).comp (infPart D)) M).symm`.
+-/
 theorem det_compAt (θ : InfFam D) (τ : D.what₂.Tau) {k : ℕ} (M : Matrix (Fin k) (Fin k) (AE D)) :
     (compAt θ τ M).det = θ τ (infPart D M.det) :=
   (RingHom.map_det ((θ τ).comp (infPart D)) M).symm
 
+/- English proof (translation)
+Establish `key : ∀ z : AE D, finPart D (cA D z) = sigR (Af D.host.F) D.sp.cm.sig (finPart D z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `tmul a x => rfl`. Rewrite using `[key, hz, map_one]`.
+-/
 theorem finPart_cA (z : AE D) (hz : finPart D z = 1) : finPart D (cA D z) = 1 := by
   have key : ∀ z : AE D, finPart D (cA D z) = sigR (Af D.host.F) D.sp.cm.sig (finPart D z) := by
     intro z
@@ -151,6 +211,27 @@ theorem finPart_cA (z : AE D) (hz : finPart D z = 1) : finPart D (cA D z) = 1 :=
     | tmul a x => rfl
   rw [key, hz, map_one]
 
+/- English proof (translation)
+Establish `hu : ∀ τ, ‖(compAt θ τ (Formalism.L2.Theta.mt V g)).det‖ = 1` using `fun τ => by`. Establish `h : (compAt θ τ (Formalism.L2.Theta.mt V g))ᴴ * gramAt D V τ * compAt θ τ (Formalism.L2.Theta.mt V g) = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Establish `h2` using `congrArg (fun M => ‖Matrix.det M‖) h`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star] at h2`. Establish `h3 : ‖(gramAt D V τ).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hV τ)`.
+
+Establish `h4 : ‖(compAt θ τ (Formalism.L2.Theta.mt V g)).det‖ ^ 2 = 1`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Take the linear combination `h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`. Establish `hw : ∀ τ, ∃ w : ℂ, w ^ 2 = (compAt θ τ (Formalism.L2.Theta.mt V g)).det ∧ ‖w‖ = 1` using `fun τ => by`.
+
+Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq (compAt θ τ (Formalism.L2.Theta.mt V g)).det two_pos`. Use `⟨w, hw, (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_pow, hw, hu]`. Use `choose w hw1 hw2 using hw`. Establish `hw0 : ∀ τ, w τ ≠ 0` using `fun τ h => by simpa [h] using hw2 τ`.
+
+Use `choose x hx1 hx2 using fun τ => exists_idele_at hθ τ (w τ) (hw0 τ)`. Establish `hf : finPart D ((∏ τ, x τ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[Units.coe_prod, map_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => hx1 τ`. Establish `hi : ∀ τ, θ τ (infPart D ((∏ τ, x τ : (AE D)ˣ) : AE D)) = w τ` using `fun τ => by`.
+
+Rewrite using `[Units.coe_prod, map_prod, map_prod]`. Simplify using `[hx2]`. Use `⟨∏ τ, x τ, ?_, fun ν c hc => ?_⟩` and prove the remaining obligations. Use `adele_ext hθ ?_ fun τ => ?_` and prove the remaining obligations. Establish `hd : finPart D (Formalism.L2.Theta.mt V g).det = 1`.
+
+Establish `hg' : finHom V g = 1` using `hg`. Establish `: (Formalism.L2.Theta.mt V g).map (finPart D) = 1` using `congrArg Units.val hg'`. Rewrite using `[RingHom.map_det]`. Conclude with `(congrArg Matrix.det this).trans Matrix.det_one`. Rewrite using `[map_mul, hf]`.
+
+Conclude with `((congrArg₂ (· * ·) hd (finPart_cA _ hf)).trans (one_mul 1)).symm`. Rewrite using `[map_mul, map_mul, hi]`. Establish `e1` using `GlobalTheory.FockCompare.comp_cA hθ τ ((∏ τ, x τ : (AE D)ˣ) : AE D)`. Establish `e2` using `det_compAt θ τ (Formalism.L2.Theta.mt V g)`. Rewrite `e1` using `[hi]`.
+
+Use `Eq.trans ?_ (congrArg₂ (· * ·) e2 e1.symm)` and prove the remaining obligations. Establish `: w τ * starRingEnd ℂ (w τ) = 1` using `by rw [Complex.mul_conj', hw2]; simp`. Rewrite using `[← hw1]`. Take the linear combination `(-w τ) * this`. Rewrite using `[map_prod]`.
+
+Rewrite using `[show ((∏ τ, ν (x τ) : Circle) : ℂ) = ∏ τ, (ν (x τ) : ℂ) from map_prod Circle.coeHom _ _]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨n, hn, -, h⟩` from `hc τ`. Establish `e : n = 2 * c τ` using `by exact_mod_cast hn`. Rewrite using `[h θ hθ (x τ) (hx1 τ) (fun τ' h' => by rw [hx2, if_neg h']), hx2, if_pos rfl, hw2, e, ← hw1, _root_.zpow_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_root {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : ∀ τ, (gramAt D V τ).det ≠ 0)
     (g : GA D V) (hg : g ∈ GinfC V) :
     ∃ x, IsDetRoot V g x ∧ ∀ (ν : (AE D)ˣ →* Circle) (c : D.what₂.Tau → ℤ), (∀ τ, HasInfExp D ν τ (c τ)) →

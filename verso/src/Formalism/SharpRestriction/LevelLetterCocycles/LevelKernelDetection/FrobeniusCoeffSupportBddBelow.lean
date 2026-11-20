@@ -22,6 +22,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Establish `h1` using `Lb.mem T (c - (ell : ZMod n)) 1 y k`. Establish `h2` using `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_pow_letter W T (c - (ell : ZMod n)) h1 ell`. Rewrite `h2` using `[sub_add_cancel, Module.End.pow_apply]`. Conclude with `Submodule.smul_mem _ _ h2`.
+-/
 theorem frobeniusCoeff_mem_letter (Lb : LevB W) (T : LocLat G Qp LL O) (c : ZMod n) (ell : ℕ) (y : ↥(W.N T))
     (k : ℤ) :
     ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL := LL) (V := T.V))^[ell]
@@ -36,6 +39,9 @@ def frobeniusCoeff (Lb : LevB W) (T : LocLat G Qp LL O) (c : ZMod n) (ell : ℕ)
   ⟨((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL := LL) (V := T.V))^[ell]
       (Lb.levB T (c - (ell : ZMod n)) 1 y k), frobeniusCoeff_mem_letter Lb T c ell y k⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL := LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 y k) = 0`. Rewrite using `[hm₀ k hk, Function.iterate_fixed (map_zero _), smul_zero]`.
+-/
 theorem frobeniusCoeff_low_eq_zero (Lb : LevB W) (T : LocLat G Qp LL O) (c : ZMod n) (ell : ℕ) (y : ↥(W.N T))
     (m₀ : ℤ) (hm₀ : ∀ k < m₀, Lb.levB T (c - (ell : ZMod n)) 1 y k = 0) (k : ℤ) (hk : k < m₀) :
     frobeniusCoeff Lb T c ell y k = 0 := by
@@ -44,6 +50,11 @@ theorem frobeniusCoeff_low_eq_zero (Lb : LevB W) (T : LocLat G Qp LL O) (c : ZMo
       (Lb.levB T (c - (ell : ZMod n)) 1 y k) = 0
   rw [hm₀ k hk, Function.iterate_fixed (map_zero _), smul_zero]
 
+/- English proof (translation)
+Take `⟨m₀, hm₀⟩` from `Lb.supp T (c - (ell : ZMod n)) 1 y`. Use `⟨m₀, fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hk` to reduce the goal to its premises. Use `show (1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell y k = 0`.
+
+Rewrite using `[frobeniusCoeff_low_eq_zero Lb T c ell y m₀ hm₀ k (not_le.1 h), TensorProduct.tmul_zero]`.
+-/
 theorem frobeniusCoeff_support_bddBelow (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZMod n) (ell : ℕ)
     (y : ↥(W.N T)) :
     BddBelow (Function.support fun k : ℤ => (1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell y k) := by
@@ -59,10 +70,16 @@ def constLaurentSeries (Lb : LevB W) (s : ℕ) (T : LocLat G Qp LL O) (c : ZMod 
   HahnModule.of (KsW W s) (HahnSeries.ofSuppBddBelow
     (fun k : ℤ => (1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell y k) (frobeniusCoeff_support_bddBelow Lb s T c ell y))
 
+/- English proof (translation)
+Simplify using `[Pf_LvExp_Φ, TensorProduct.piScalarRightHom_tmul]`.
+-/
 theorem expansion_Phi_one (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (d : D)
     (ζ : Rs LL PD.p s) : Pf_LvExp_Φ W s D ((1 : KsW W s) ⊗ₜ[LL] d) ζ = d := by
   simp [Pf_LvExp_Φ, TensorProduct.piScalarRightHom_tmul]
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_mul, Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+-/
 theorem mulHom_iterate_mul {R F : Type} [CommRing R] [FunLike F R R] [MulHomClass F R R] (f : F)
     (r : ℕ) (a a' : R) : (⇑f)^[r] (a * a') = (⇑f)^[r] a * (⇑f)^[r] a' := by
   induction r with
@@ -70,12 +87,18 @@ theorem mulHom_iterate_mul {R F : Type} [CommRing R] [FunLike F R R] [MulHomClas
   | succ r ih =>
     rw [Function.iterate_succ_apply', ih, map_mul, Function.iterate_succ_apply', Function.iterate_succ_apply']
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ r ih => rw [Function.iterate_succ_apply', ih, map_pow, Function.iterate_succ_apply']`.
+-/
 theorem iterate_pow {R F : Type} [CommRing R] [FunLike F R R] [MonoidHomClass F R R] (f : F)
     (r : ℕ) (a : R) (k : ℕ) : (⇑f)^[r] (a ^ k) = ((⇑f)^[r] a) ^ k := by
   induction r with
   | zero => rfl
   | succ r ih => rw [Function.iterate_succ_apply', ih, map_pow, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => exact ha`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `ih.map f`.
+-/
 theorem isUnit_iterate_of_isUnit {R F : Type} [CommRing R] [FunLike F R R] [MonoidHomClass F R R] (f : F)
     {a : R} (ha : IsUnit a) (r : ℕ) : IsUnit ((⇑f)^[r] a) := by
   induction r with
@@ -84,6 +107,9 @@ theorem isUnit_iterate_of_isUnit {R F : Type} [CommRing R] [FunLike F R R] [Mono
     rw [Function.iterate_succ_apply']
     exact ih.map f
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply', ih, (baseIdOf hR).φA_d, Function.iterate_succ_apply']`.
+-/
 theorem frobenius_iterate_base (hR : Ring9 W) (a : PowerSeries O) (r : ℕ) :
     W.φA^[r] ((baseIdOf hR).d a) = (baseIdOf hR).d ((baseIdOf hR).Bs.φ^[r] a) := by
   induction r with
@@ -91,6 +117,9 @@ theorem frobenius_iterate_base (hR : Ring9 W) (a : PowerSeries O) (r : ℕ) :
   | succ r ih =>
     rw [Function.iterate_succ_apply', ih, (baseIdOf hR).φA_d, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hu, mul_pow, mulHom_iterate_mul, ← (baseIdOf hR).d_q, ← map_pow (baseIdOf hR).d, frobenius_iterate_base, iterate_pow (baseIdOf hR).Bs.φ]`. Both sides reduce to the same expression.
+-/
 theorem product_frobenius_Q_pow (hR : Ring9 W) (m : ℕ) (u : (LetA O n)ˣ) (hu : W.Q = (u : LetA O n) * qP W)
     (i : ℕ) :
     ∏ r ∈ Finset.range i, W.φA^[r] (W.Q ^ m) =
@@ -102,6 +131,11 @@ theorem product_frobenius_Q_pow (hR : Ring9 W) (m : ℕ) (u : (LetA O n)ˣ) (hu 
     frobenius_iterate_base, iterate_pow (baseIdOf hR).Bs.φ]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [phiIt]`. Consider the case `succ i ih`. Rewrite using `[phiIt, ih, φD_smulA, smul_smul, Finset.prod_range_succ', Function.iterate_succ_apply']`. Use `congr 1`.
+
+Rewrite using `[map_prod, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply']`.
+-/
 theorem frobenius_iterate_eq_prod (T : LocLat G Qp LL O) (m : ℕ) (z : W.DD T) (i : ℕ) :
     phiIt W T m z i = (∏ r ∈ Finset.range i, W.φA^[r] (W.Q ^ m)) • (W.φD T)^[i] z := by
   induction i with
@@ -114,6 +148,9 @@ theorem frobenius_iterate_eq_prod (T : LocLat G Qp LL O) (m : ℕ) (z : W.DD T) 
     refine Finset.prod_congr rfl fun r _ => ?_
     rw [Function.iterate_succ_apply']
 
+/- English proof (translation)
+The claim follows from `| 0 => by show C.t (i + ((0 : ℕ) : ZMod n)) x = C.t i x rw [Nat.cast_zero, add_zero] | k + 1 => by have ih := coord_t_frobenius_iterate C i x k have e : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n) := by push_cast; ring show C.t (i + ((k + 1 : ℕ) : ZMod n)) ((latOf C).φ (i + …`.
+-/
 theorem coord_t_frobenius_iterate {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i : ZMod n) (x : C.V) :
     ∀ k : ℕ, C.t (i + (k : ZMod n)) ((latOf C).phiIt i k x) = (W.φD T)^[k] (C.t i x)
   | 0 => by
@@ -125,6 +162,33 @@ theorem coord_t_frobenius_iterate {T : LocLat G Qp LL O} (C : Coord W (baseIdOf 
     show C.t (i + ((k + 1 : ℕ) : ZMod n)) ((latOf C).φ (i + ((k + 1 : ℕ) : ZMod n)) ((latOf C).phiIt i k x)) = _
     rw [t_φ, e, ih, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hQ`. Take `⟨Pm, hPm⟩ : ∃ Pm : PowerSeries O, Pm = ∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ m` from `⟨_, rfl⟩`. Rewrite `hkz`, the goal using `[← hPm]`. Take `⟨U, hUdef⟩ : ∃ U : LetA O n, U = ∏ r ∈ Finset.range ell, W.φA^[r] ((u : LetA O n) ^ m)` from `⟨_, rfl⟩`. Establish `hU : IsUnit U`.
+
+Rewrite using `[hUdef]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ h1 h2 => h1.mul h2) isUnit_one (fun r _ => isUnit_iterate_of_isUnit W.φA (u.isUnit.pow m) r)`. Establish `hchain : ∀ i, phiIt W T m (C.t (c - (ell : ZMod n)) x) i = (∏ r ∈ Finset.range i, W.φA^[r] ((u : LetA O n) ^ m)) • C.t (c - (ell : ZMod n) + (i : ZMod n)) ((∏ r ∈ Finset.range i, (baseIdOf hR).Bs.p r ^ m) • (latOf C).phiIt (c - (ell : ZMod n)) i x)`. Introduce `i`. Rewrite using `[frobenius_iterate_eq_prod, product_frobenius_Q_pow hR m u hu, C.t_smul, coord_t_frobenius_iterate, mul_smul]`.
+
+Establish `hN : ∀ i ≤ ell, phiIt W T m (C.t (c - (ell : ZMod n)) x) i ∈ W.N T`. Introduce `i _`. Rewrite using `[hchain i]`. Conclude with `(W.N T).smul_mem _ (LvLoc.phiIt_mem (latOf C) m hP5 (c - (ell : ZMod n)) i x hx)`. Establish `hxell : phiIt W T m (C.t (c - (ell : ZMod n)) x) ell = U • (baseIdOf hR).d Pm • (W.φD T)^[ell] (C.t (c - (ell : ZMod n)) x)`.
+
+Rewrite using `[frobenius_iterate_eq_prod, product_frobenius_Q_pow hR m u hu, mul_smul, hUdef, hPm]`. Establish `hsub : (baseIdOf hR).d a • (⟨phiIt W T m (C.t (c - (ell : ZMod n)) x) ell, hN ell le_rfl⟩ : ↥(W.N T)) = U • (⟨C.t c z, hz⟩ : ↥(W.N T))`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (baseIdOf hR).d a • phiIt W T m (C.t (c - (ell : ZMod n)) x) ell = U • C.t c z`. Rewrite using `[hxell, hkz, map_mul, mul_smul, smul_comm ((baseIdOf hR).d a) U]`.
+
+Take `⟨m₀, hm₀⟩` from `Lb.supp T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩`. Establish `hg : ∀ k' < m₀, (fun k => ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL` using `LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k)) k' = 0 := fun k' hk' => by show ((PD.p : LL) ^ ((ell : ℤ) * k')) • (φVB PD (LL := LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k') = 0`. Rewrite using `[hm₀ k' hk', Function.iterate_fixed (map_zero _), smul_zero]`. Establish `hexp : ∀ ζ : Rs LL PD.p s, ∀ k' : ℤ, Lb.levB T c (ζ : LL) ⟨C.t c z, hz⟩ k' = cv (W.lev c (ζ : LL) ((baseIdOf hR).d (a * Pm))) (fun k => ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL` using `LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k)) k' := by`. Introduce `ζ`.
+
+Establish `hζ : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pow_pos (Fact.out : PD.p.Prime).pos _)).1 ζ.2`. Take `⟨Uu, hUu⟩` from `hU`. Take `⟨mz, hmz⟩` from `Lb.supp T c (ζ : LL) ⟨C.t c z, hz⟩`. Establish `hfx : Lb.levB T c (ζ : LL) ⟨phiIt W T m (C.t (c - (ell : ZMod n)) x) ell, hN ell le_rfl⟩ = cv (W.lev c (ζ : LL) (U * (baseIdOf hR).d Pm)) (fun k => ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL` using `LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k)) := by`. Use function extensionality and compare the values at `k''`.
+
+Rewrite using `[phiIt_levB Lb T levB_φ lev_φ hp0 m c ell _ hN s hs (ζ : LL) hζ k'', product_frobenius_Q_pow hR m u hu, ← hUdef, ← hPm]`. Establish `hmul : W.lev c (ζ : LL) ((baseIdOf hR).d a) * W.lev c (ζ : LL) (U * (baseIdOf hR).d Pm) = W.lev c (ζ : LL) U * W.lev c (ζ : LL) ((baseIdOf hR).d (a * Pm))`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ k', cv (W.lev c (ζ : LL) U) (Lb.levB T c (ζ : LL) ⟨C.t c z, hz⟩) k' = cv (W.lev c (ζ : LL) U) (cv (W.lev c (ζ : LL) ((baseIdOf hR).d (a * Pm))) (fun k => ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL` using `LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k))) k' := by`.
+
+Introduce `k'`. Rewrite using `[← levelExpansion_smul levN_eq T c (ζ : LL) U _ k', ← hsub, levelExpansion_smul levN_eq T c (ζ : LL) _ _ k', hfx, ← cv_mul _ _ _ m₀ hg k', hmul, cv_mul _ _ _ m₀ hg k']`. Establish `hG' : ∀ k' < m₀, cv (W.lev c (ζ : LL) ((baseIdOf hR).d (a * Pm))) (fun k => ((PD.p : LL) ^ ((ell : ℤ) * k)) • (φVB PD (LL` using `LL) (V := T.V))^[ell] (Lb.levB T (c - (ell : ZMod n)) 1 ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k)) k' = 0 := fun k' hk' => cv_low _ _ m₀ hg k' hk'`. Establish `hinv : W.lev c (ζ : LL) (↑Uu⁻¹ : LetA O n) * W.lev c (ζ : LL) U = 1`. Rewrite using `[← map_mul, ← hUu, Units.inv_mul, map_one]`.
+
+Introduce `k'`. Rewrite using `[← convolution_one (R := LL) (Lb.levB T c (ζ : LL) ⟨C.t c z, hz⟩) k', ← hinv, cv_mul _ _ _ mz hmz k', show cv (W.lev c (ζ : LL) U) (Lb.levB T c (ζ : LL) ⟨C.t c z, hz⟩) = _ from funext h1, ← cv_mul _ _ _ m₀ hG' k', hinv, convolution_one (R := LL)]`. Apply `(HahnModule.of (KsW W s)).symm.injective` to reduce the goal to its premises. Use extensionality with `k'`. Take `⟨N, hN'⟩ : ∃ N : ℕ, k' - m₀ < N` from `⟨(k' - m₀).toNat + 1, by omega⟩`.
+
+Establish `hGlow : ∀ k'' < m₀, ((HahnModule.of (KsW W s)).symm (constLaurentSeries Lb s T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩)).coeff k'' = 0` using `fun k'' hk'' => by show (1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩ k'' = 0`. Rewrite using `[frobeniusCoeff_low_eq_zero Lb T c ell _ m₀ hm₀ k'' hk'', TensorProduct.tmul_zero]`. Rewrite using `[Pf_LvExp_coeff_smul _ _ m₀ hGlow k' N hN', Pf_LvExp_coeff_expN]`. Apply `(Pf_LvExp_Φ W s (Dc W T c)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `ζ`.
+
+Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [Pf_LvExp_Φ_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Pf_LvExp_Φ_coefN, hexp ζ k', cv_eq_sum _ _ m₀ hg k' N hN', Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hc : (PowerSeries.coeff i (rhoL hR c s (a * Pm))) ζ = PowerSeries.coeff i (W.lev c (ζ : LL) ((baseIdOf hR).d (a * Pm)))`. Use `congrArg (PowerSeries.coeff i) (map_eval_rhoL hR c s (a * Pm) ζ)` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_map]`. Conclude with `this`. Rewrite using `[Submodule.coe_smul, hc]`.
+
+Use `congr 1`. Use `show _ = ((Pf_LvExp_Φ W s (Dc W T c) ((1 : KsW W s) ⊗ₜ[LL] frobeniusCoeff Lb T c ell ⟨C.t (c - (ell : ZMod n)) x, hx⟩ (k' - i)) ζ : Dc W T c) : T.V ⊗[Qp] B)`. Rewrite using `[expansion_Phi_one]`. Both sides reduce to the same expression.
+-/
 theorem level_expansion_exponent {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     (s : ℕ) (hs : s < ell) (m : ℕ) (hP5 : ∀ i, (latOf C).P5M i m)
     (hQ : ∃ u : (LetA O n)ˣ, W.Q = (u : LetA O n) * qP W)
@@ -243,6 +307,15 @@ theorem level_expansion_exponent {T : LocLat G Qp LL O} {C : Coord W (baseIdOf h
   rw [expansion_Phi_one]
   rfl
 
+/- English proof (translation)
+Introduce `s hs k`. Establish `ht` using `coord_t_frobenius_iterate C (c - (ell : ZMod n)) x ell`. Rewrite `ht` using `[sub_add_cancel]`. Establish `hkz : C.t c (κ • (w : C.V)) = (baseIdOf hR).d (1 * ∏ r ∈ Finset.range ell, (baseIdOf hR).Bs.p r ^ m) • (W.φD T)^[ell] (C.t (c - (ell : ZMod n)) x)`. Rewrite using `[one_mul, hκ, mul_comm, mul_smul, hw, C.t_smul, ht]`.
+
+Establish `hexpN` using `level_expansion_exponent s hs m hP5 hQ levN_eq levB_φ lev_φ hp0 x hx 1 (κ • (w : C.V)) (Hy.kap w w.2) hkz`. Rewrite `hexpN` using `[one_mul]`. Establish `hunit` using `kapUnit_holds Hy j M g η kind b m hκ k1b unitsAt s hs`. Establish `e1 : prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w) = HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell)) • prL s ((lvData Hy ((baseId …` using `prL_smul s _ _`. Establish `e2 : prL s ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w) = Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) • expN Lb s T c ⟨C.t c (κ • (w : C.V)), Hy.kap w w.2⟩` using `prL_of_lt s hs _`.
+
+Establish `e3 : HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell)) * Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) * HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s (∏ r ∈ Finset.range ell, (baseIdOf hR).B …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul (HahnSeries.ofPowerSeries ℤ (KsW W s)), ← map_mul (rhoL hR c s), ← hκ]`. Use `_ = 1 := Ring.inverse_mul_cancel _ hunit`. Rewrite using `[e1, e2, hexpN, smul_smul, smul_smul, e3, one_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem level_expansion_d {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ} {H : ℕ → ℕ}
     {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
     (Hy : LvHyp Lb hR uZ ιZ C c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ lam) (j M g η : ℕ)
@@ -302,6 +375,13 @@ theorem level_expansion_d {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {
   rw [e1, e2, hexpN, smul_smul, smul_smul, e3, one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `s hs k`. Establish `ht` using `coord_t_frobenius_iterate C (c - (ell : ZMod n)) x ell`. Rewrite `ht` using `[sub_add_cancel]`. Establish `hkz : C.t c (κ • (w : C.V)) = (baseIdOf hR).d (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell * ∏ r ∈ Finset.range ell, (baseIdOf hR).Bs.p r ^ m) • (W.φD T)^[ell] (C.t (c - (ell : ZMod n)) x)`. Rewrite using `[← hκ, hw, C.t_smul, ht]`.
+
+Establish `hexpN` using `level_expansion_exponent s hs m hP5 hQ levN_eq levB_φ lev_φ hp0 x hx _ (κ • (w : C.V)) (Hy.kap w w.2) hkz`. Rewrite `hexpN` using `[← hκ]`. Establish `hunit` using `kapUnit_holds Hy j M g η kind b m hκ k1b unitsAt s hs`. Establish `e2 : prL s ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w) = Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) • expN Lb s T c ⟨C.t c (κ • (w : C.V)), Hy.kap w w.2⟩` using `prL_of_lt s hs _`. Rewrite using `[e2, hexpN, smul_smul, Ring.inverse_mul_cancel _ hunit, one_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem level_expansion_d_direct {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {H : ℕ → ℕ} {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
     (Hy : LvHyp Lb hR uZ ιZ C c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ lam) (j M g η : ℕ)

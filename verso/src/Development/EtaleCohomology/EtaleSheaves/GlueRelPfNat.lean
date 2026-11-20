@@ -7,6 +7,11 @@ open CategoryTheory Limits GlobalTheory.EtC CochainComplex.HomComplex CochainCom
 namespace LateralTheory.E.GlueRelPfNat
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[mappingCone.ext_cochain_from_iff φ₁ 0 1 (zero_add 1)]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Cochain.comp_assoc_of_second_is_zero_cochain, mappingCone.map, mappingCone.inl_desc, Cochain.comp_assoc_of_first_is_zero_cochain, mappingCone.inl_fst, ← Cochain.comp_assoc_of_third_is_zero_cochain, mappingCone.inl_fst]`. Simplify using the standard rewrite rules. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain, mappingCone.inr_fst]`.
+
+Simplify using `[mappingCone.map]`.
+-/
 theorem map_fst {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) (a : K₁ ⟶ K₂) (b : L₁ ⟶ L₂)
     (comm : φ₁ ≫ b = a ≫ φ₂) :
     (Cochain.ofHom (mappingCone.map φ₁ φ₂ a b comm)).comp (mappingCone.fst φ₂).1 (zero_add 1) =
@@ -20,6 +25,9 @@ theorem map_fst {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K�
   · rw [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain, mappingCone.inr_fst]
     simp [mappingCone.map]
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Simplify using `only [NatTrans.comp_app]`. Simplify using `[cechAug, LateralTheory.E.LocSurjPf.bcMap, sch, Arrow.mapCechNerve, Arrow.augmentedCechNerve]`. Conclude with `(WidePullback.lift_base _ _ _ _).symm`.
+-/
 theorem sq {Y X V : Scheme.{0}} (f : Y ⟶ X) (v : V ⟶ X) :
     cechAug (pullback.snd f v) ≫ sch.map v = LateralTheory.E.LocSurjPf.bcMap f v ≫ cechAug f := by
   ext n : 1

@@ -9,6 +9,9 @@ noncomputable section
 
 namespace Formalism.DivisionValues
 
+/- English proof (translation)
+Unfold `lw`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem lw_nonneg' {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     0 ≤ lw w := by
   unfold lw

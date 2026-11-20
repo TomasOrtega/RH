@@ -19,9 +19,19 @@ section Core
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+The claim follows from `W.AΔ.add_mem hR.1 (W.AΔ.natCast_mem _)`.
+-/
 theorem qp_mem_AΔ (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ :=
   W.AΔ.add_mem hR.1 (W.AΔ.natCast_mem _)
 
+/- English proof (translation)
+Take `⟨hN, -⟩` from `cmp_qpphi W T hs hR h3 hM hxN hxD.1`. Use `set z := ((PD.p : O) ^ pad) • (Formalism.MainNotions.LiftingTheory.qp W ^ kB • W.φD T x) with hz`. Establish `hzN : z ∈ W.N T`. Rewrite using `[hz, ← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T).smul_mem _ hN`.
+
+Establish `hzΔ : ∀ δ ∈ W.DelF, W.γD T δ z = z`. Introduce `δ hδ`. Rewrite using `[hz, map_smul, Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', ← W.φγ_comm, hxD.2 δ hδ, (W.AΔ.pow_mem (qp_mem_AΔ W hR) kB) δ hδ]`. Establish `hzl : (letE c : LetA O n) • z = z`. Rewrite using `[hz, osmul_comm W T, aself_comm W T, letter_phi W T c hxD.1]`.
+
+Use `⟨⟨hzl, hzΔ⟩, ⟨0, 0, by simpa using hzN⟩, ?_⟩` and prove the remaining obligations. Take `⟨x', hx', he⟩` from `hmod.2 z ⟨hzN, hzΔ⟩`. Conclude with `⟨x', hx'.1, hx'.2, by rw [pow_one]; exact he⟩`.
+-/
 theorem inI_qpphi [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (T : LocLat G Qp LL O) (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀)
     {c : ZMod n} {kB : ℕ} (hM : ∀ z ∈ W.Nl T (c - 1), W.Q ^ kB • W.φD T z ∈ W.N T)
@@ -41,6 +51,23 @@ theorem inI_qpphi [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.Unused
   obtain ⟨x', hx', he⟩ := hmod.2 z ⟨hzN, hzΔ⟩
   exact ⟨x', hx'.1, hx'.2, by rw [pow_one]; exact he⟩
 
+/- English proof (translation)
+Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Take `⟨n', hn'N, hmN, hn'D, hcmp⟩` from `hG`. Use `set x := ((PD.p : O) ^ pad) • (Formalism.MainNotions.LiftingTheory.qp W ^ kB • W.φD T₁ n') with hxdef`. Use `⟨x, inI_qpphi W hs hR T₁ h3₁ hmod₁ hM₁ hn'N hn'D pad, ?_⟩` and prove the remaining obligations. Establish `hyN : y ∈ W.N T₂` using `NDl_N W T₂ hy`.
+
+Establish `hyl : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ c y` using `NDl_DL W T₂ hy`. Establish `hml : (letE (c - 1) : LetA O n) • W.map F n' = W.map F n'`. Rewrite using `[← Formalism.MainNotions.UnusedSlot80.ArcC.map_smulA, hn'D.1]`. Take `⟨hqN, hqc⟩` from `cmp_qpphi W T₂ hs hR h3₂ hM₂ hmN hml`. Establish `hFx : W.map F x = ((PD.p : O) ^ pad) • (Formalism.MainNotions.LiftingTheory.qp W ^ kB • W.φD T₂ (W.map F n'))`.
+
+Rewrite using `[hxdef, Formalism.MainNotions.UnusedSlot80.ArcC.map_smulO, Formalism.MainNotions.UnusedSlot80.ArcC.map_smulA, W.map_φ]`. Establish `hFxN : W.map F x ∈ W.N T₂`. Rewrite using `[hFx, ← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T₂).smul_mem _ hqN`. Establish `hxI` using `inI_qpphi W hs hR T₁ h3₁ hmod₁ hM₁ hn'N hn'D pad`.
+
+Establish `hFxD : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ c (W.map F x)`. Use `⟨by rw [← Formalism.MainNotions.UnusedSlot80.ArcC.map_smulA, hxI.1.1], fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← W.map_γ, hxI.1.2 δ hδ]`. Establish `hpyN : ((PD.p : O) ^ (e + s₁ + s₂)) • y ∈ W.N T₂`. Rewrite using `[← algebraMap_smul (LetA O n)]`.
+
+Conclude with `(W.N T₂).smul_mem _ hyN`. Establish `hzmem : ((PD.p : O) ^ (e + s₁ + s₂)) • y - W.map F x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c` using `(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c).sub_mem ((Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c).smul_mem _ hy) ⟨hFxN, hFxD⟩`. Use `ker_NDl W T₂ c h3₂ hmod₂ hR hzmem ?_` and prove the remaining obligations. Establish `hsub : Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (((PD.p : O) ^ (e + s₁ + s₂)) • y - W.map F x) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (((PD.p : O) ^ (e + s₁ + s₂)) • y) - Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (W.map F x)`. Use `cmpD_add W T₂ ((W.N T₂).sub_mem hpyN hFxN) hFxN` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`. Rewrite using `[hsub, sub_eq_zero, cmpD_osmul W T₂ _ hyN, hFx, cmpD_osmul W T₂ _ hqN, hqc, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T₂ hmN, ← hcmp, map_pow, map_pow, map_natCast]`. Establish `hsc : (PD.p : LL) ^ e * (PD.p : LL) ^ hh = (PD.p : LL) ^ bb * ((PD.p : LL) ^ pad * (PD.p : LL) ^ k)`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hp, ← zpow_add₀ hp, ← zpow_add₀ hp]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `key : (PD.p : LL) ^ (e + s₂) • d1 = ((PD.p : LL) ^ pad * (PD.p : LL) ^ k) • φVB PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) d3) := by`. Apply `smul_right_injective _ (pow_ne_zero bb hp)` to reduce the goal to its premises. Simplify using `only`.
+
+Rewrite using `[smul_comm, h2, pow_add, mul_smul, ← map_smul, h3, map_smul, smul_smul, smul_smul, hsc]`. Rewrite using `[pow_add, pow_add, mul_smul, mul_smul, smul_comm ((PD.p : LL) ^ s₁), h1, ← mul_smul, ← pow_add, smul_comm, ← map_smul, key, map_smul, map_smul, smul_smul]`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_inI_inPN_pow_smul_sub_map [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (h3₁ : Formalism.MainNotions.DeltaInvariantLattices.p3 W T₁) (h3₂ : Formalism.MainNotions.DeltaInvariantLattices.p3 W T₂)

@@ -63,6 +63,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RankinSelbergTh
 
 namespace Ad3.R
 
+/- English proof (translation)
+The claim follows from `rs_asm (@GlobalTheory.T.rankin_selberg_local_first : Ad3.R.A1) (@GlobalTheory.T.rankin_selberg_local_second : Ad3.R.A2) (@GlobalTheory.T.rankin_selberg_local_fourth : Ad3.R.A4) (@GlobalTheory.T.rankin_selberg_third_of_second_fourth : Ad3.R.A2 → Ad3.R.A4 → Ad3.R.A3) (@GlobalTheory …`.
+-/
 theorem rs_of : Ad3.Loc2 → Ad3.RS :=
   rs_asm
     (@GlobalTheory.T.rankin_selberg_local_first : Ad3.R.A1)

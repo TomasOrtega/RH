@@ -8,11 +8,26 @@ section Act
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_add_fst (p q : Q.Pr V) : (p + q).1 = p.1 + q.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_mul_fst (p q : Q.Pr V) : (p * q).1 = p.1 * q.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_zero_fst : (0 : Q.Pr V).1 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_one_fst : (1 : Q.Pr V).1 = 1 := rfl
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, pr_zero_fst]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, pr_add_fst, ih]`.
+-/
 theorem pr_sum_fst {ι : Type*} (s : Finset ι) (f : ι → Q.Pr V) : (∑ i ∈ s, f i).1 = ∑ i ∈ s, (f i).1 := by
   classical
   refine Finset.induction_on s ?_ ?_
@@ -22,12 +37,20 @@ theorem pr_sum_fst {ι : Type*} (s : Finset ι) (f : ι → Q.Pr V) : (∑ i ∈
 
 def actP (M : SlopeTestRemainingChoices S (Q.Pr V)) (X : Ix S → V) : Ix S → V := fun a => ∑ b, (M a b).1 (X b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `actP`. Simplify using `only [Matrix.mul_apply, pr_sum_fst, pr_mul_fst, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem polyAction_mul (M N : SlopeTestRemainingChoices S (Q.Pr V)) (X : Ix S → V) : actP (M * N) X = actP M (actP N X) := by
   funext a
   unfold actP
   simp only [Matrix.mul_apply, pr_sum_fst, pr_mul_fst, LinearMap.sum_apply, Module.End.mul_apply, map_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `actP`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Matrix.one_apply_eq, pr_one_fst]`. Both sides reduce to the same expression.
+
+Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hb), pr_zero_fst]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem polyAction_one₂ (X : Ix S → V) : actP (1 : SlopeTestRemainingChoices S (Q.Pr V)) X = X := by
   funext a
   unfold actP
@@ -40,10 +63,16 @@ theorem polyAction_one₂ (X : Ix S → V) : actP (1 : SlopeTestRemainingChoices
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [actP, Pi.add_apply, map_add, Finset.sum_add_distrib]`.
+-/
 theorem blockMulVec_add (M : SlopeTestRemainingChoices S (Q.Pr V)) (X Y : Ix S → V) : actP M (X + Y) = actP M X + actP M Y := by
   funext a
   simp only [actP, Pi.add_apply, map_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [actP, Pi.smul_apply, map_smul, Finset.smul_sum]`.
+-/
 theorem actP_smul (M : SlopeTestRemainingChoices S (Q.Pr V)) (c : ℂ) (X : Ix S → V) : actP M (c • X) = c • actP M X := by
   funext a
   simp only [actP, Pi.smul_apply, map_smul, Finset.smul_sum]

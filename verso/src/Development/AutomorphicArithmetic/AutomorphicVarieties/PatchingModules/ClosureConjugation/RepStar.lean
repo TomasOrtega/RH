@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Cl
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P y`. Establish `sb` using `star_basic G.frame n O B`. Establish `hrep : ∀ (g : G.G₀) (b : B), P.rep (MonoidAlgebra.single g b) = P.f b • mat x.ρ (h.p₀ g)`. Introduce `g b`. Simplify using `only [OoPt.rep, GDet.repAlg, RingHom.comp_apply, MonoidAlgebra.mapRingHom_single, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MonoidAlgebra.lift_single, MonoidHom.comp_apply, Algebra.algebraMap_self, RingHom.mapMatrix_id]`.
+
+Both sides reduce to the same expression. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero`. Establish `h0 : G.frame.star O B n 0 = 0` using `by simpa using sb.2.2.2.2.2.1 0 0`. Rewrite using `[h0, map_zero, Matrix.transpose_zero]`.
+
+Consider the case `add p q hp hq => rw [sb.2.2.1, map_add, map_add, hp, hq, Matrix.transpose_add]`. Consider the case `single g b`. Rewrite using `[sb.2.2.2.2.2.2 g b]`. Take `⟨he, hc⟩` from `eps_eq P g`. Establish `hform` using `x.form (h.p₀ g)`.
+
+Rewrite `hform` using `[Units.val_one, mul_one]`. Establish `hci : mat x.ρ (G0.frame.conj (h.p₀ g)) * mat x.ρ (G0.frame.conj (h.p₀ g))⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `hT : (mat x.ρ (h.p₀ g))ᵀ = ((G0.frame.eps ℤ_[l] (PowerSeries x.K) (h.p₀ g) ^ (1 - (n : ℤ)) : (PowerSeries x.K)ˣ) : PowerSeries x.K) • mat x.ρ (G0.frame.conj (h.p₀ g))⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hci, mul_one]`. Use `_ = _ := by rw [← mul_assoc, hform, Matrix.smul_mul, one_mul]`. Establish `hu : Units.map (P.f.toRingHom : B →* x.A) (G.frame.eps O B g) = G0.frame.eps ℤ_[l] x.A (h.p₀ g)` using `Units.ext he`. Establish `hfu : P.f ((G.frame.eps O B g ^ (1 - (n : ℤ)) : Bˣ) : B) = ((G0.frame.eps ℤ_[l] x.A (h.p₀ g) ^ (1 - (n : ℤ)) : (x.A)ˣ) : x.A)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hrep, hrep, Matrix.transpose_smul, map_mul, hfu, hT, map_inv, hc, mul_smul]`.
+-/
 theorem UpperTheory.V.Pa.rep_star :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ y, P.rep (G.frame.star O B n y) = (P.rep y)ᵀ := by
   intro l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P y

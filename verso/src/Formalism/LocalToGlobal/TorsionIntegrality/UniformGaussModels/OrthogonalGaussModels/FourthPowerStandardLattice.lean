@@ -14,12 +14,20 @@ open Formalism.L2.Th1.Top
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.L2.Th1.H (cmL CmOK matH stdH stdLat blk4 pow4 imgLat relIdx IsIsom IsSelfDual)
 
+/- English proof (translation)
+Use extensionality with `⟨a, i⟩ ⟨a', i'⟩`. Simplify using `only [blk4, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]`.
+-/
 theorem block_diag_smul_one {n : Type} [Fintype n] [DecidableEq n] (c : ℂ) :
     blk4 (c • (1 : Matrix n n ℂ)) = c • (1 : Matrix (Fin 4 × n) (Fin 4 × n) ℂ) := by
   ext ⟨a, i⟩ ⟨a', i'⟩
   simp only [blk4, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]
   by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[Formalism.L2.Th1.H.mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz w`. Conclude with `(Formalism.L2.Th1.H.mem_stdLat L n _).1 (hz w.1) w.2`.
+
+Introduce `hz a`. Conclude with `(Formalism.L2.Th1.H.mem_stdLat L n _).2 fun i => hz (a, i)`.
+-/
 theorem fourth_power_standard_lattice (L : PeriodPair) (n : Type) [Fintype n] :
     pow4 (stdLat L n) = stdLat L (Fin 4 × n) := by
   ext z
@@ -30,14 +38,27 @@ theorem fourth_power_standard_lattice (L : PeriodPair) (n : Type) [Fintype n] :
   · intro hz a
     exact (Formalism.L2.Th1.H.mem_stdLat L n _).2 fun i => hz (a, i)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[imgLat]`.
+-/
 theorem imgLat_refl {V : Type} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgroup V) :
     imgLat ((LinearEquiv.refl ℂ V : V ≃ₗ[ℂ] V) : V →ₗ[ℂ] V) Λ = Λ := by
   ext x
   simp [imgLat]
 
+/- English proof (translation)
+Simplify using `[relIdx]`.
+-/
 theorem relIdx_self {V : Type} [AddCommGroup V] [Module ℂ V] (Λ : AddSubgroup V) : relIdx Λ Λ = 1 := by
   simp [relIdx]
 
+/- English proof (translation)
+Establish `hb : Odd b₀` using `Formalism.L2.Th1.H.CmData.odd_b a₀ b₀ c₀ dK hok.1 hok.2.2.1`. Establish `hcm : Formalism.L2.Th1.CM.HasCMBy dK (cmL a₀ b₀ dK ha hdK lam hlam)` using `Formalism.L2.Th1.F.hasCMByScale dK _ lam hlam (Formalism.L2.Th1.F.cmPairHasCMBy a₀ b₀ c₀ dK ha hdK hok.1 hb)`. Take `⟨k, hk⟩` from `hb`. Establish `hθ : Formalism.L2.Th1.F.cmTheta b₀ dK = (k : ℂ) + Formalism.L2.Th1.CM.omegaK dK`. Unfold `Formalism.L2.Th1.F.cmTheta Formalism.L2.Th1.CM.omegaK`.
+
+Rewrite using `[hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hθ, add_mul]`. Use `Submodule.add_mem _ ?_ (hcm ω hω)` and prove the remaining obligations.
+
+Establish `: (k : ℂ) * ω = k • ω` using `by rw [zsmul_eq_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_of_tower_mem _ k hω`.
+-/
 theorem cmTheta_mul_mem (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hok : CmOK a₀ b₀ c₀ dK) (ω : ℂ) (hω : ω ∈ (cmL a₀ b₀ dK ha hdK lam hlam).lattice) :
     Formalism.L2.Th1.F.cmTheta b₀ dK * ω ∈ (cmL a₀ b₀ dK ha hdK lam hlam).lattice := by
@@ -56,6 +77,13 @@ theorem cmTheta_mul_mem (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀
   rw [this]
   exact Submodule.smul_of_tower_mem _ k hω
 
+/- English proof (translation)
+Use `set L := cmL a₀ b₀ dK ha hdK lam hlam with hL`. Use `⟨((Formalism.L2.Th1.F.area L : ℝ) : ℂ)⁻¹ • (1 : Matrix n n ℂ), stdLat L n, LinearEquiv.refl ℂ (Fin 4 × n → ℂ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[block_diag_smul_one]`. Both sides reduce to the same expression.
+
+Conclude with `Formalism.L2.Th1.H.stdSelfDual L n`. Introduce `x hx`. Rewrite `hx`, the goal using `[Formalism.L2.Th1.H.mem_stdLat]`. Introduce `i`. Conclude with `cmTheta_mul_mem a₀ b₀ c₀ dK ha hdK lam hlam hok (x i) (hx i)`.
+
+Rewrite using `[imgLat_refl, fourth_power_standard_lattice, relIdx_self]`. Conclude with `one_ne_zero`. Rewrite using `[imgLat_refl, fourth_power_standard_lattice, relIdx_self]`. Conclude with `one_ne_zero`.
+-/
 theorem isLatH_std (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hdK : 0 < dK) (lam : ℂ) (hlam : lam ≠ 0)
     (hok : CmOK a₀ b₀ c₀ dK) (n : Type) [Fintype n] [DecidableEq n] :
     ∃ (h : Matrix n n ℂ) (Λ : AddSubgroup (n → ℂ)) (g₀ : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)),
@@ -74,6 +102,15 @@ theorem isLatH_std (a₀ : ℕ) (b₀ c₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hd
   · rw [imgLat_refl, fourth_power_standard_lattice, relIdx_self]; exact one_ne_zero
   · rw [imgLat_refl, fourth_power_standard_lattice, relIdx_self]; exact one_ne_zero
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[Matrix.one_apply_ne hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `[Matrix.one_apply_ne h]`. Simplify using `[Matrix.one_apply_ne hk]`.
+-/
 theorem unitary_one {K : Type} [NormedField K] (σ : K →+* K) {m : Type} [Fintype m] [DecidableEq m] :
     IsUnitaryK σ (1 : Matrix m m K) := by
   refine ⟨fun a b => ?_, fun a b => ?_⟩
@@ -92,6 +129,13 @@ theorem unitary_one {K : Type} [NormedField K] (σ : K →+* K) {m : Type} [Fint
       · subst hk; simp [Matrix.one_apply_ne h]
       · simp [Matrix.one_apply_ne hk]
 
+/- English proof (translation)
+Use `⟨unitary_one σ, fun i' i w => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [Matrix.one_apply_eq, one_mul, LinearEquiv.refl_symm, LinearEquiv.refl_apply]`. Distinguish the cases in `hw : w = (i', i)`. Substitute `hw` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne (Ne.symm hw), Pi.single_eq_of_ne (Ne.symm hw)]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hj), zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem isFrameH_refl {l : ℕ} [Fact l.Prime] (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (ι : ℂ ≃+* ℂ_[l]) {n : Type} [Fintype n]
     [DecidableEq n] :
     IsFrameH σ ι (LinearEquiv.refl ℂ (Fin 4 × n → ℂ)) (1 : Matrix (Fin 4 × n) (Fin 4 × n) (MaximalUnramifiedExtension l))
@@ -107,6 +151,9 @@ theorem isFrameH_refl {l : ℕ} [Fact l.Prime] (σ : MaximalUnramifiedExtension 
     rw [Matrix.one_apply_ne (Ne.symm hj), zero_mul]
   · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [h2, h3, hs2]`.
+-/
 theorem isLTNorm_one (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (g2 g3 s2 : MaximalUnramifiedExtension l)
     (h2 : (g2 : ℂ_[l]) = ι L.g₂) (h3 : (g3 : ℂ_[l]) = ι L.g₃)
     (hs2 : (s2 : ℂ_[l]) = ι (Formalism.L2.Th1.F.s2 L)) : IsLTNorm l L ι g2 g3 s2 1 := by

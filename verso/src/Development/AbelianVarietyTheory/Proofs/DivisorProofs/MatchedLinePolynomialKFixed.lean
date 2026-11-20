@@ -23,6 +23,17 @@ open scoped Classical
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨hb, hg, hc, hw, hw'⟩` from `hT`. Use `choose A hA hAθ using fun w => i_frameex _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Use `choose C hC hCθ using fun w => i_frameex _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf, one_smul]`.
+
+Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+
+Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Establish `hsec` using `i_liesecond hP i_derex hfe hvl (i_liescalar hP i_derex hvl)`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`.
+
+Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hb.cm hb.std fr hΦ hwp.1 hc.expβ`. Take `⟨Yg, -, hY⟩` from `i_genex F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_leftInverse_of_injective Φ (LinearMap.ker_eq_bot.2 hΦ.1)`. Use `⟨Φ ∘ₗ sumPl (fun w => fockAct2 _ _ _ _ (Yg w) + (((B.mβ w : ℂ) / 2) * (Yg w).trace) • 1) ∘ₗ Ψ, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, rfl⟩` from `pol_eq B G.M Φ hr hf`. Establish `e : Ψ (Φ T) = T` using `by rw [← LinearMap.comp_apply, hΨ, LinearMap.id_apply]`. Simplify using `only [LinearMap.comp_apply, e]`. Conclude with `hW2 γ hγ Yg hY T`.
+-/
 theorem exists_der_first (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (γ : Multiplicative ℝ →* UA σ G.W.J)
     (hγ : γ ∈ Lines σ G.W) :
@@ -52,6 +63,13 @@ theorem exists_der_first (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} 
   simp only [LinearMap.comp_apply, e]
   exact hW2 γ hγ Yg hY T
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hw`. Introduce `r hr l hl`. Establish `h1` using `hD r hr _ (hS.adm (k, 1) l hl)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[sa_of_acts hf₁ r hr]`.
+
+Use `h1.congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hcomm : om (k, 1) (om (1, γ (Multiplicative.ofAdd t)) (pureA F f r)) = om (1, γ (Multiplicative.ofAdd t)) (om (k, 1) (pureA F f r))`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Conclude with `Prod.ext (by simp) (by simp)`.
+
+Use `show l (om (1, γ (Multiplicative.ofAdd t)) (pureA F g r)) = l (om (k, 1) (om (1, γ (Multiplicative.ofAdd t)) (pureA F f r)))`. Rewrite using `[hcomm, sa_of_acts hf r hr]`.
+-/
 theorem sd_comm_left {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ}
     {χ₁ χ₂ : Chr F E} {om : Rep σ Y W} (hw : M.IsWeil ψ χ₁ χ₂ om) (k : UA σ Y.J) (γ : Multiplicative ℝ →* UA σ W.J)
     {f f₁ g g₁ : SInf F (Fin n × Fin d)} (hf : Acts (evI F) (om (k, 1)) f g) (hf₁ : Acts (evI F) (om (k, 1)) f₁ g₁)
@@ -71,6 +89,15 @@ theorem sd_comm_left {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y
   show l (om (1, γ (Multiplicative.ofAdd t)) (pureA F g r)) = l (om (k, 1) (om (1, γ (Multiplicative.ofAdd t)) (pureA F f r)))
   rw [hcomm, sa_of_acts hf r hr]
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ g hg hgk f₁ hf₁ k hk`. Establish `hL` using `actsLaws F (Fin a × Fin (a + a'))`. Take `⟨D, hD⟩` from `exists_der_first hK.base hM.triple γ hγ`. Establish `hSD` using `hD g hg`. Establish `hAD : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) g (D g)` using `(hL g (D g) (D g)).1 _ (fun t => map_zero _) hSD`.
+
+Establish `e1 : f₁ = D g` using `(hL g f₁ (D g)).2.2.1 _ hf₁ hAD`. Substitute `e1` using the available equality. Establish `h1 : (1 : UA σ G.W.J) ∈ UAt σ G.W (evI F)`. Introduce `u _`. Simplify using `[mat]`.
+
+Take `⟨A, hA⟩` from `exists_op_of_UAt hM.triple.base.std hM.triple.weil (k, 1) hk.1 h1`. Establish `hAg : A g = g` using `(hL g (A g) g).2.2.2.1 _ (hA g) (hgk k hk)`. Establish `h2` using `sd_comm_left hM.triple.weil k γ (hA g) (hA (D g)) hSD`. Rewrite `h2` using `[hAg]`. Establish `hAf : A (D g) = D g` using `(hL g (A (D g)) (D g)).2.2.2.2 _ h2 hSD`.
+
+Use `hA (D g)` as an intermediate fact. Rewrite `this` using `[hAf]`. Conclude with `this`.
+-/
 theorem isKFix_of_actsD : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

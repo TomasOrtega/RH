@@ -16,20 +16,36 @@ instance uniqueLow : Unique (LowEnt Unit 2) where
 
 def q1 : LowEnt Unit 2 ≃ Fin 1 := Equiv.ofUnique _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [lowMat]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem lowMat_two (q : LowEnt Unit 2 ≃ Fin 1) (z : Fin 1 → ℂ) (τ : Unit) : lowMat q z τ = !![1, 0; z 0, 1] := by
   ext a b
   fin_cases a <;> fin_cases b <;> simp [lowMat]
   congr 1; exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun z τ => ?_` and prove the remaining obligations. Rewrite using `[lowMat_two]`. Conclude with `(chart_flag (z 0)).2.2.2.1 () (z 0 : ℂ) ⟨_, rfl⟩`.
+-/
 theorem cellDom_two_two (q : LowEnt Unit 2 ≃ Fin 1) : cellDom 2 q = Set.univ := by
   refine Set.eq_univ_of_forall fun z τ => ?_
   rw [lowMat_two]
   exact (chart_flag (z 0)).2.2.2.1 () (z 0 : ℂ) ⟨_, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [cellDom, Set.mem_setOf_eq, lowMat_two, Model.inFlagDomain_disc, forall_const]`.
+-/
 theorem cellDom_two_one (q : LowEnt Unit 2 ≃ Fin 1) : cellDom 1 q = {z | ‖z 0‖ < 1} := by
   ext z
   simp only [cellDom, Set.mem_setOf_eq, lowMat_two, Model.inFlagDomain_disc, forall_const]
 
+/- English proof (translation)
+Establish `e : (!![1, 0; z 0, 1] : Matrix (Fin 2) (Fin 2) ℂ) = frame () ((z 0 : ℂ) : OnePoint ℂ)` using `rfl`. Establish `h0 : gramLog (sigForm 2 j) 0 (frame () ((z 0 : ℂ) : OnePoint ℂ)) = 0`. Rewrite using `[gramLog, det_head_zero]`. Simplify using the standard rewrite rules. Establish `h1 : gramLog (sigForm 2 j) 1 (frame () ((z 0 : ℂ) : OnePoint ℂ)) = (1 / 2) * Real.log (sigForm 2 j 0 + sigForm 2 j 1 * ‖z 0‖ ^ 2)`.
+
+Rewrite using `[gramLog, det_head_one, gram_frame_zero, Complex.norm_real, Real.norm_eq_abs, Real.log_abs]`. Both sides reduce to the same expression. Simplify using `only [cellDens, lowMat_two, e, Finset.prod_const, Finset.card_univ, Fintype.card_unit, pow_one, Fin.prod_univ_two, Fin.val_zero, Fin.val_one, h0, h1]`. Establish `hp : 0 < (sigForm 2 j 0 + sigForm 2 j 1 * ‖z 0‖ ^ 2) ^ 2` using `by positivity`. Rewrite using `[← Real.exp_log hp, ← Real.exp_neg, Real.log_pow, ← Real.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cellDens_two (j : ℕ) (q : LowEnt Unit 2 ≃ Fin 1) (z : Fin 1 → ℂ)
     (h : sigForm 2 j 0 + sigForm 2 j 1 * ‖z 0‖ ^ 2 ≠ 0) :
     cellDens j q z = ((sigForm 2 j 0 + sigForm 2 j 1 * ‖z 0‖ ^ 2) ^ 2)⁻¹ := by
@@ -45,10 +61,16 @@ theorem cellDens_two (j : ℕ) (q : LowEnt Unit 2 ≃ Fin 1) (z : Fin 1 → ℂ)
   rw [← Real.exp_log hp, ← Real.exp_neg, Real.log_pow, ← Real.exp_add]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Establish `: sigForm 2 2 0 + sigForm 2 2 1 * ‖z 0‖ ^ 2 = 1 + ‖z 0‖ ^ 2` using `by simp [sigForm]`. Rewrite using `[cellDens_two 2 q z (by rw [this]; positivity), this]`.
+-/
 theorem cellDens_line (q : LowEnt Unit 2 ≃ Fin 1) (z : Fin 1 → ℂ) : cellDens 2 q z = ((1 + ‖z 0‖ ^ 2) ^ 2)⁻¹ := by
   have : sigForm 2 2 0 + sigForm 2 2 1 * ‖z 0‖ ^ 2 = 1 + ‖z 0‖ ^ 2 := by simp [sigForm]
   rw [cellDens_two 2 q z (by rw [this]; positivity), this]
 
+/- English proof (translation)
+Rewrite `hz` using `[cellDom_two_one]`. Establish `hz' : ‖z 0‖ < 1` using `hz`. Establish `: sigForm 2 1 0 + sigForm 2 1 1 * ‖z 0‖ ^ 2 = -(1 - ‖z 0‖ ^ 2)` using `by simp [sigForm]; ring`. Establish `hp : 0 < 1 - ‖z 0‖ ^ 2` using `by nlinarith [norm_nonneg (z 0)]`. Rewrite using `[cellDens_two 1 q z (by rw [this]; exact neg_ne_zero.2 hp.ne'), this, neg_sq]`.
+-/
 theorem cellDens_disc (q : LowEnt Unit 2 ≃ Fin 1) (z : Fin 1 → ℂ) (hz : z ∈ cellDom 1 q) :
     cellDens 1 q z = ((1 - ‖z 0‖ ^ 2) ^ 2)⁻¹ := by
   rw [cellDom_two_one] at hz
@@ -86,10 +108,18 @@ def lineUnif : PieceUnif sysFlag 2 1 where
     refine Set.iUnion_subset fun n => ?_
     exact (Set.image_mono (Set.subset_univ _)).trans (Set.subset_iUnion (fun _ : Fin 1 => projectiveLineChartAtZero.symm '' Set.univ) 0)
 
+/- English proof (translation)
+Use `show ∫⁻ z in Set.univ, ENNReal.ofReal (cellDens 2 q1 z) = _`. Simplify using `only [Measure.restrict_univ, cellDens_line]`.
+-/
 theorem lineUnif_vol : lineUnif.vol 0 = ∫⁻ z : Fin 1 → ℂ, ENNReal.ofReal (((1 + ‖z 0‖ ^ 2) ^ 2)⁻¹) := by
   show ∫⁻ z in Set.univ, ENNReal.ofReal (cellDens 2 q1 z) = _
   simp only [Measure.restrict_univ, cellDens_line]
 
+/- English proof (translation)
+Rewrite using `[lineUnif_vol, lintegral_pos_iff_support (by fun_prop)]`. Establish `: Function.support (fun z : Fin 1 → ℂ => ENNReal.ofReal (((1 + ‖z 0‖ ^ 2) ^ 2)⁻¹)) = Set.univ`. Use `Set.eq_univ_of_forall fun z => ?_` and prove the remaining obligations. Conclude with `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Rewrite using `[this]`.
+
+Conclude with `isOpen_univ.measure_pos _ Set.univ_nonempty`.
+-/
 theorem lineUnif_vol_pos : 0 < lineUnif.vol 0 := by
   rw [lineUnif_vol, lintegral_pos_iff_support (by fun_prop)]
   have : Function.support (fun z : Fin 1 → ℂ => ENNReal.ofReal (((1 + ‖z 0‖ ^ 2) ^ 2)⁻¹)) = Set.univ := by
@@ -98,6 +128,11 @@ theorem lineUnif_vol_pos : 0 < lineUnif.vol 0 := by
   rw [this]
   exact isOpen_univ.measure_pos _ Set.univ_nonempty
 
+/- English proof (translation)
+Rewrite using `[lineUnif_vol]`. Establish `h` using `(volume_preserving_funUnique (Fin 1) ℂ).lintegral_comp (f := fun w : ℂ => ENNReal.ofReal (((1 + ‖w‖ ^ 2) ^ 2)⁻¹)) (by fun_prop)`. Establish `h2 : Integrable (fun w : ℂ => (1 + ‖w‖ ^ 2) ^ (-(4 : ℝ) / 2))` using `integrable_rpow_neg_one_add_norm_sq (by simp; norm_num)`. Establish `h3 : (fun w : ℂ => (1 + ‖w‖ ^ 2) ^ (-(4 : ℝ) / 2)) = fun w : ℂ => ((1 + ‖w‖ ^ 2) ^ 2)⁻¹`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[show (-(4 : ℝ) / 2) = -((2 : ℕ) : ℝ) by norm_num, Real.rpow_neg (by positivity), Real.rpow_natCast]`. Rewrite `h2` using `[h3]`. Conclude with `lt_of_eq_of_lt h h2.lintegral_lt_top`.
+-/
 theorem lineUnif_vol_lt_top : lineUnif.vol 0 < ⊤ := by
   rw [lineUnif_vol]
   have h := (volume_preserving_funUnique (Fin 1) ℂ).lintegral_comp
@@ -110,10 +145,16 @@ theorem lineUnif_vol_lt_top : lineUnif.vol 0 < ⊤ := by
   rw [h3] at h2
   exact lt_of_eq_of_lt h h2.lintegral_lt_top
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sysFlag, lineUnif, lineUnif_vol_pos, lineUnif_vol_lt_top⟩`.
+-/
 theorem exists_pieceUnif :
     ∃ (S : AnSys 1 (Unit × Fin 2)) (U : PieceUnif S 2 1), 0 < U.vol 0 ∧ U.vol 0 < ⊤ :=
   ⟨sysFlag, lineUnif, lineUnif_vol_pos, lineUnif_vol_lt_top⟩
 
+/- English proof (translation)
+Use `⟨fun U => ?_⟩` and prove the remaining obligations. Establish `h` using `U.cover (0 : Fin 2)`. Establish `e : (⋃ k : Fin 0, U.π k '' U.FF k) = ∅` using `by simp`. Rewrite `h` using `[e, Set.compl_empty, Set.preimage_univ, Set.inter_univ]`. Conclude with `(isOpen_univ.measure_pos (volume : Measure (Fin 1 → ℂ)) Set.univ_nonempty).ne' h`.
+-/
 theorem isEmpty_zero_pieces (j : ℕ) : IsEmpty (PieceUnif sysFlag j 0) := by
   refine ⟨fun U => ?_⟩
   have h := U.cover (0 : Fin 2)

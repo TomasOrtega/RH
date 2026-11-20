@@ -4,6 +4,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `q' : Ideal D` to `q.comap (e : D →+* C)`. Use `haveI : q'.IsPrime := Ideal.comap_isPrime _ _`. Establish `H : q'.primeCompl.map e.toMonoidHom = q.primeCompl`. Use extensionality with `x`. Simplify using `only [Submonoid.mem_map, Ideal.primeCompl, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_compl_iff, SetLike.mem_coe, q', Ideal.mem_comap]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`. Conclude with `⟨e.symm x, by simpa using hx, by simp⟩`.
+
+Set `f : Localization.AtPrime q' ≃+* Localization.AtPrime q` to `IsLocalization.ringEquivOfRingEquiv (Localization.AtPrime q') (Localization.AtPrime q) e H`. Take `⟨h1, h2⟩` from `h q'`. Conclude with `⟨f.symm.injective.isDomain _, IsIntegrallyClosed.of_equiv f⟩`.
+-/
 theorem isDomain_and_isIntegrallyClosed_atPrime_of_ringEquiv {D C : Type*} [CommRing D]
     [CommRing C] (e : D ≃+* C)
     (h : ∀ (q : Ideal D) [q.IsPrime],
@@ -32,6 +39,11 @@ namespace GlobalTheory
 
 open Algebra.TensorProduct in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨∅, fun R _ ↦ Subalgebra.zero_mem _⟩`. Consider the case `tmul a k`. Use `⟨{k}, fun R hR ↦ ⟨a ⊗ₜ ⟨k, hR (by simp)⟩, by simp⟩⟩` and prove the remaining obligations. Consider the case `add x y hx hy`.
+
+Take `⟨T₁, h₁⟩` from `hx`. Take `⟨T₂, h₂⟩` from `hy`. Use `⟨T₁ ∪ T₂, fun R hR ↦ Subalgebra.add_mem _ (h₁ R ?_) (h₂ R ?_)⟩` and prove the remaining obligations. Conclude with `fun z hz ↦ hR (by simp [hz])`. Conclude with `fun z hz ↦ hR (by simp [hz])`.
+-/
 theorem exists_finset_mem_range_map_val {F A K : Type*} [Field F] [CommRing A] [Algebra F A]
     [Field K] [Algebra F K] (x : A ⊗[F] K) :
     ∃ T : Finset K, ∀ R : Subalgebra F K, (↑T : Set K) ⊆ (R : Set K) →
@@ -48,6 +60,15 @@ theorem exists_finset_mem_range_map_val {F A K : Type*} [Field F] [CommRing A] [
     · exact fun z hz ↦ hR (by simp [hz])
     · exact fun z hz ↦ hR (by simp [hz])
 
+/- English proof (translation)
+Introduce `F K A _ _ _ _ _ _ hA Q _`. Use `hL2 (TensorProduct F A K) Q fun s ↦ ?_` and prove the remaining obligations. Use `choose T hT using fun x : A ⊗[F] K ↦ exists_finset_mem_range_map_val (F := F) x`. Take `⟨R, hR, hsm⟩` from `hL1 F K (s.biUnion T)`. Set `φ : A ⊗[F] R →ₐ[F] A ⊗[F] K` to `Algebra.TensorProduct.map (AlgHom.id F A) R.val`.
+
+Establish `hφ : ⇑φ = ⇑(LinearMap.lTensor A (R.val.toLinearMap))`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a k => simp [φ]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hinj : Function.Injective φ`. Rewrite using `[hφ]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ Subtype.val_injective`. Use `⟨φ.range.toSubring, fun x hx ↦ hT x R (fun z hz ↦ hR ?_), ?_⟩` and prove the remaining obligations.
+
+Conclude with `Finset.mem_biUnion.mpr ⟨x, hx, hz⟩`. Set `e : A ⊗[F] R ≃+* φ.range.toSubring` to `(AlgEquiv.ofInjective φ hinj).toRingEquiv`. Conclude with `isDomain_and_isIntegrallyClosed_atPrime_of_ringEquiv e fun q _ ↦ isDomain_and_isIntegrallyClosed_atPrime_of_smooth_of_forall A hA q _`.
+-/
 theorem isDomain_and_isIntegrallyClosed_atPrime_tensor_field
     (hL1 : ∀ (F K : Type) [Field F] [CharZero F] [Field K] [Algebra F K] (s : Finset K),
       ∃ R : Subalgebra F K, (↑s : Set K) ⊆ (R : Set K) ∧ Algebra.Smooth F R)

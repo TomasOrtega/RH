@@ -19,6 +19,9 @@ variable {k : Type} [CommRing k] {X X' : Scheme.{0}} {p : X ⟶ Sp k} {q : X' �
 
 def fam (S : Finset (HermLB p)) (b : Fin S.card) : HermLB p := (S.equivFin.symm b : HermLB p)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finsupp.sum_of_support_subset x hx (fun L c => Finsupp.single L c) (by simp)]`. Simplify using `[cl, Finsupp.smul_single_one]`. Use `_ = ∑ L : S, x L • cl (L : HermLB p) := (Finset.sum_coe_sort S (fun L => x L • cl L)).symm`. Use `_ = _ := (Equiv.sum_comp S.equivFin.symm (fun L : S => x L • cl (L : HermLB p))).symm`.
+-/
 theorem eq_sum_fam {S : Finset (HermLB p)} (x : Cl p) (hx : x.support ⊆ S) :
     x = ∑ b, x (fam S b) • cl (fam S b) := by
   calc x = ∑ L ∈ S, x L • cl L := by
@@ -30,9 +33,23 @@ theorem eq_sum_fam {S : Finset (HermLB p)} (x : Cl p) (hx : x.support ⊆ S) :
 
 def supp {D : ℕ} (v : Fin (D + 1) → Cl p) : Finset (HermLB p) := Finset.univ.biUnion fun j => (v j).support
 
+/- English proof (translation)
+The claim follows from `Finset.subset_biUnion_of_mem (fun j => (v j).support) (Finset.mem_univ j)`.
+-/
 theorem support_subset {D : ℕ} (v : Fin (D + 1) → Cl p) (j : Fin (D + 1)) : (v j).support ⊆ supp v :=
   Finset.subset_biUnion_of_mem (fun j => (v j).support) (Finset.mem_univ j)
 
+/- English proof (translation)
+Introduce `v j`. Set `F` to `fam (supp v)`. Set `FL : Option (Fin (supp v).card) → HermLB p` to `fun o => o.elim L F`. Set `FM : Option (Fin (supp v).card) → HermLB p` to `fun o => o.elim M F`. Take `⟨Φ, hΦ⟩` from `((hA.arExists k X p D hX).2 _ FL).1`.
+
+Establish `hΦ' : IsArFun FM D Φ` using `((hA.arIso k X p D hX).2 _ FL Φ hΦ).2.1 FM fun o => by`. Consider the cases of `o with`. Consider the case `none => exact h`. Consider the case `some b => exact HermLB.Isometric.refl _`. Set `a : Fin (D + 1) → Option (Fin (supp v).card) → ℝ` to `fun i o => o.elim (if i = j then 1 else 0) fun b => if i = j then 0 else v i (F b)`.
+
+Establish `key (N : HermLB p) (G : Option (Fin (supp v).card) → HermLB p) (hG : G = fun o => o.elim N F) : (fun i => ∑ o, a i o • cl (G o)) = Function.update v j (cl N)`. Substitute `hG` using the available equality. Use function extensionality and compare the values at `i`. Rewrite using `[Fintype.sum_option]`. Distinguish the cases in `hi : i = j`.
+
+Substitute `hi` using the available equality. Simplify using `[a]`. Simplify using `only [a, hi, if_false, Option.elim, zero_smul, zero_add, Function.update_of_ne hi]`. Conclude with `(eq_sum_fam (v i) (support_subset v i)).symm`. Establish `e₁` using `hnum _ FL Φ hΦ a`.
+
+Establish `e₂` using `hnum _ FM Φ hΦ' a`. Rewrite `e₁` using `[key L FL rfl]`. Rewrite `e₂` using `[key M FM rfl]`. Rewrite using `[num.map_update_sub, ← e₁, ← e₂, sub_self]`.
+-/
 theorem sub_mem_rad_of_isometric (hA : GlobalTheory.Published.ArCalc) [IsIntegral X] {D : ℕ} (hX : IsArithVar p D)
     {num : Form (Cl p) D} (hnum : IsArForm D num) {L M : HermLB p} (h : L.Isometric M) : cl L - cl M ∈ rad num := by
   intro v j
@@ -62,6 +79,9 @@ theorem sub_mem_rad_of_isometric (hA : GlobalTheory.Published.ArCalc) [IsIntegra
   rw [key M FM rfl] at e₂
   rw [num.map_update_sub, ← e₁, ← e₂, sub_self]
 
+/- English proof (translation)
+The claim follows from `HermLB.isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top) (fun x j j' h h' => (gm_pull_g _ π (𝟙 X') x j j' h h').trans ((map_one _).trans (map_one _).symm)) fun σ j y _ => by rw [show (((oneB p).pull π hπ).φ σ).φ j y = _ from Weight.pull_φ ((oneB p).φ σ) π hπ j y] rfl`.
+-/
 theorem isometric_pull_oneB (π : X' ⟶ X) (hπ : π ≫ p = q) : ((oneB p).pull π hπ).Isometric (oneB q) :=
   HermLB.isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top)
     (fun x j j' h h' => (gm_pull_g _ π (𝟙 X') x j j' h h').trans ((map_one _).trans (map_one _).symm))
@@ -69,6 +89,15 @@ theorem isometric_pull_oneB (π : X' ⟶ X) (hπ : π ≫ p = q) : ((oneB p).pul
       rw [show (((oneB p).pull π hπ).φ σ).φ j y = _ from Weight.pull_φ ((oneB p).φ σ) π hπ j y]
       rfl
 
+/- English proof (translation)
+Introduce `hA k _ X X' _ _ p q D hX hX' π hπ hg hd num num' hnum hnum'`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Set `F` to `fam (supp v)`. Take `⟨Φ, hΦ⟩` from `((hA.arExists k X p D hX).2 _ F).1`. Establish `hΦ'` using `(hA.arProj k X X' p q D hX hX' π hπ hg hd).2 _ F Φ hΦ`.
+
+Set `a : Fin (D + 1) → Fin (supp v).card → ℝ` to `fun j b => v j (F b)`. Establish `e₁` using `hnum _ F Φ hΦ a`. Establish `e₂` using `hnum' _ _ _ hΦ' a`. Establish `hv : (fun j => ∑ b, a j b • cl (F b)) = v`. Use function extensionality and compare the values at `fun j => (eq_sum_fam (v j) (support_subset v j)).symm`.
+
+Establish `hv' : (fun j => ∑ b, a j b • cl ((F b).pull π hπ)) = fun j => pullCl π hπ (v j)` using `funext fun j => by conv_rhs => rw [eq_sum_fam (v j) (support_subset v j)]`. Simplify using `only [map_sum, LinearMap.map_smul, pullCl_cl, a, F]`. Rewrite `e₁` using `[hv]`. Rewrite `e₂` using `[hv']`. Rewrite using `[← e₂, ← e₁, LinearMap.smul_apply, smul_eq_mul]`.
+
+Use `sub_mem_rad_of_isometric hA hX' hnum' (isometric_pull_oneB (p := p) π hπ)` as an intermediate fact. Rewrite using `[pullCl_cl]` and apply the resulting hypothesis.
+-/
 theorem arForm_pull : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (p : X ⟶ Sp k) (q : X' ⟶ Sp k) (D : ℕ), IsArithVar p D → IsArithVar q D → ∀ (π : X' ⟶ X) (hπ : π ≫ p = q), π (genericPoint X') = genericPoint X → π.residueDegree (genericPoint X') ≠ 0 → ∀ (num : Form (Cl p) D) (num' : Form (Cl q) D), IsArForm D num → IsArForm D num' → (∀ v : Fin (D + 1) → Cl p, num' (fun j => pullCl π hπ (v j)) = (π.residueDegree (genericPoint X') : ℝ) * num v) ∧ pullCl π hπ (cl (oneB p)) - cl (oneB q) ∈ rad num' := by
   intro hA k _ X X' _ _ p q D hX hX' π hπ hg hd num num' hnum hnum'
   refine ⟨fun v => ?_, ?_⟩

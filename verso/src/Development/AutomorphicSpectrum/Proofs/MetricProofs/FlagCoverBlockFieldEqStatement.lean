@@ -10,5 +10,8 @@ open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm 
 open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_cover_block_field_eq : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) [CharZero Φ'], (∀ k, ∃ i, y' ⟨k, i⟩ ≠ 0) → blockFnField y' = blockFnField (pairV (transPt Cv) y') := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt | exact GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.CovGraph.blockFnField_pair_transPt <;> assumption)

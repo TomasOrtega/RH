@@ -13,6 +13,11 @@ namespace AbelianQuotient
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hc : ∀ {W : Scheme.{0}} (g g' : W ⟶ X.left), g ≫ p.left = g' ≫ p.left → g ≫ f.left = g' ≫ f.left`. Introduce `W g g' hg`. Establish `hw : g' ≫ X.hom = g ≫ X.hom`. Rewrite using `[← Over.w p, ← Category.assoc, ← hg, Category.assoc]`. Use `h (Over.mk (g ≫ X.hom)) (Over.homMk g rfl) (Over.homMk g' hw) (Over.OverMorphism.ext hg)` as an intermediate fact.
+
+Conclude with `congrArg CommaMorphism.left this`. Establish `hfac` using `EffectiveEpi.fac p.left f.left hc`. Conclude with `⟨Over.homMk (EffectiveEpi.desc p.left f.left hc) (by`. Rewrite using `[← cancel_epi p.left, ← Category.assoc, hfac, Over.w, Over.w]),`. Use the proof step `Over.OverMorphism.ext hfac⟩`.
+-/
 lemma exists_desc {X Y Z : Over S} (p : X ⟶ Y) [Flat p.left] [Surjective p.left]
     [QuasiCompact p.left] (f : X ⟶ Z)
     (h : ∀ (W : Over S) (a b : W ⟶ X), a ≫ p = b ≫ p → a ≫ f = b ≫ f) :
@@ -30,11 +35,17 @@ lemma exists_desc {X Y Z : Over S} (p : X ⟶ Y) [Flat p.left] [Surjective p.lef
     rw [← cancel_epi p.left, ← Category.assoc, hfac, Over.w, Over.w]),
     Over.OverMorphism.ext hfac⟩
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Conclude with `MorphismProperty.pullbackMap (P := @Flat) hf hg (Over.w f).symm (Over.w g).symm`.
+-/
 lemma flat_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     [hf : Flat f.left] [hg : Flat g.left] : Flat (f ⊗ₘ g).left := by
   rw [Over.tensorHom_left]
   exact MorphismProperty.pullbackMap (P := @Flat) hf hg (Over.w f).symm (Over.w g).symm
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Establish `: MorphismProperty.IsStableUnderComposition @Surjective.{0}` using `⟨fun _ _ _ _ => inferInstance⟩`. Conclude with `MorphismProperty.pullbackMap (P := @Surjective) hf hg (Over.w f).symm (Over.w g).symm`.
+-/
 lemma surjective_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     [hf : Surjective f.left] [hg : Surjective g.left] : Surjective (f ⊗ₘ g).left := by
   rw [Over.tensorHom_left]
@@ -42,11 +53,53 @@ lemma surjective_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     ⟨fun _ _ _ _ => inferInstance⟩
   exact MorphismProperty.pullbackMap (P := @Surjective) hf hg (Over.w f).symm (Over.w g).symm
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Conclude with `MorphismProperty.pullbackMap (P := @QuasiCompact) hf hg (Over.w f).symm (Over.w g).symm`.
+-/
 lemma quasiCompact_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y')
     [hf : QuasiCompact f.left] [hg : QuasiCompact g.left] : QuasiCompact (f ⊗ₘ g).left := by
   rw [Over.tensorHom_left]
   exact MorphismProperty.pullbackMap (P := @QuasiCompact) hf hg (Over.w f).symm (Over.w g).symm
 
+/- English proof (translation)
+Establish `rel : ∀ {W : Over S} (a b : W ⟶ A), a ≫ q = b ≫ q ↔ ∃ t : W ⟶ H, a = (t ≫ i) * b`. Introduce `W a b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨hq.lift a b h ≫ fst H A, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hq.lift_fst a b h`. Rewrite `h1` using `[comp_mul, hq.lift_snd]`. Rewrite using `[Category.assoc, h1]`. Introduce and unpack `⟨t, rfl⟩`. Use `lift t b ≫= hq.w` as an intermediate fact.
+
+Simplify `this` using `[comp_mul, ← Category.assoc]`. Use `flat_tensorHom q q` as an intermediate fact. Use `surjective_tensorHom q q` as an intermediate fact. Use `quasiCompact_tensorHom q q` as an intermediate fact. Use `FlatQuotient.epi_of_flat_surjective q` as an intermediate fact.
+
+Use `FlatQuotient.epi_tensorHom q q` as an intermediate fact. Use `FlatQuotient.epi_tensorHom (q ⊗ₘ q) q` as an intermediate fact. Take `⟨m, hm⟩` from `exists_desc (q ⊗ₘ q) (μ[A] ≫ q) (by`. Introduce `W a b h`. Take `⟨s, hs⟩` from `(rel (a ≫ fst A A) (b ≫ fst A A)).1 (by simpa using h =≫ fst Q Q)`.
+
+Take `⟨t, ht⟩` from `(rel (a ≫ snd A A) (b ≫ snd A A)).1 (by simpa using h =≫ snd Q Q)`. Rewrite using `[← Category.assoc, ← Category.assoc, rel]`. Use `⟨s * t, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.mul_eq_mul, comp_mul, comp_mul, hs, ht, mul_comp, _root_.mul_mul_mul_comm])`. Take `⟨n, hn⟩` from `exists_desc q (GrpObj.inv ≫ q) (by`.
+
+Introduce `W a b h`. Take `⟨s, hs⟩` from `(rel a b).1 h`. Rewrite using `[← Category.assoc, ← Category.assoc, rel]`. Use `⟨s⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← Hom.inv_def, ← Hom.inv_def, hs, GrpObj.inv_comp, mul_inv])`.
+
+Establish `key : ∀ {W : Over S} (a b : W ⟶ A), lift (a ≫ q) (b ≫ q) ≫ m = (a * b) ≫ q`. Introduce `W a b`. Rewrite using `[← lift_map, Category.assoc, hm, Hom.mul_def, Category.assoc]`. Use `letI : MonObj Q := { one := η[A] ≫ q mul := m one_mul := by`. Rewrite using `[← cancel_epi (λ_ Q).inv, ← cancel_epi q]`.
+
+Use `key (1 : A ⟶ A) (𝟙 A)` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Rewrite using `[Iso.inv_hom_id, Category.comp_id]`. Use `Eq.trans ?_ (this.trans (Category.id_comp _))` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Use `mul_one := by`. Rewrite using `[← cancel_epi (ρ_ Q).inv, ← cancel_epi q]`. Use `key (𝟙 A) (1 : A ⟶ A)` as an intermediate fact.
+
+Rewrite `this` using `[_root_.mul_one]`. Rewrite using `[Iso.inv_hom_id, Category.comp_id]`. Use `Eq.trans ?_ (this.trans (Category.id_comp _))` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+
+Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Use `mul_assoc := by`. Rewrite using `[← cancel_epi ((q ⊗ₘ q) ⊗ₘ q)]`. Establish `h1 : ((q ⊗ₘ q) ⊗ₘ q) ≫ m ▷ Q = (μ[A] ▷ A) ≫ (q ⊗ₘ q)`. Rewrite using `[← tensorHom_id, ← tensorHom_id, tensorHom_comp_tensorHom, tensorHom_comp_tensorHom, hm, Category.comp_id, Category.id_comp]`.
+
+Establish `h2 : ((q ⊗ₘ q) ⊗ₘ q) ≫ (α_ Q Q Q).hom ≫ Q ◁ m = (α_ A A A).hom ≫ (A ◁ μ[A]) ≫ (q ⊗ₘ q)`. Rewrite using `[associator_naturality_assoc]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [hm]`. Rewrite using `[reassoc_of% h1, reassoc_of% h2, hm, MonObj.mul_assoc_assoc] }`.
+
+Establish `hhom : IsMonHom q` using `⟨rfl, hm.symm⟩`. Use `letI : GrpObj Q := { inv := n left_inv := by`. Rewrite using `[← cancel_epi q, comp_lift_assoc, hn, Category.comp_id]`. Use `key GrpObj.inv (𝟙 A)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.mul_def, GrpObj.left_inv, comp_toUnit_assoc, Category.assoc]`. Both sides reduce to the same expression. Use `right_inv := by`. Rewrite using `[← cancel_epi q, comp_lift_assoc, hn, Category.comp_id]`.
+
+Use `key (𝟙 A) GrpObj.inv` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.mul_def, GrpObj.right_inv, comp_toUnit_assoc, Category.assoc]`. Use `rfl }`.
+
+Use `⟨inferInstance, ⟨?_⟩, hhom, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi (q ⊗ₘ q), BraidedCategory.braiding_naturality_assoc, ← IsMonHom.mul_hom, IsCommMonObj.mul_comm_assoc]`. Establish `hk : IsPullback (lift (𝟙 H) (toUnit H ≫ η[A])) (toUnit H) (snd H A) η[A]`. Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => s.fst ≫ fst H A) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`.
+
+Use `ext`. Simplify using the standard rewrite rules. Simplify using `[s.condition, toUnit_unique (toUnit _) s.snd]`. Introduce `s`. Conclude with `toUnit_unique _ _`.
+
+Introduce `s l h1 _`. Simplify using `[← h1]`. Use `hk.flip.paste_vert hq.flip` as an intermediate fact. Establish `e : lift (𝟙 H) (toUnit H ≫ η[A]) ≫ ((fst H A ≫ i) * snd H A) = i`. Simplify using `[comp_mul, ← Hom.one_def]`.
+
+Rewrite `this` using `[e]`. Conclude with `this.flip`.
+-/
 theorem exists_grpObj {A H Q : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj H] (i : H ⟶ A)
     [IsMonHom i] (q : A ⟶ Q) [Flat q.left] [Surjective q.left] [QuasiCompact q.left]
     (hq : IsPullback ((fst H A ≫ i) * snd H A) (snd H A) q q) :
@@ -152,6 +205,9 @@ theorem exists_grpObj {A H Q : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj H] (i
     rw [e] at this
     exact this.flip
 
+/- English proof (translation)
+Establish `(y : Y) : _root_.IsReduced (Y.presheaf.stalk y)`. Take `⟨x, rfl⟩` from `p.surjective y`. Conclude with `isReduced_of_injective (p.stalkMap x).hom (faithfullyFlat_stalkMap_of_flat p x).injective`. Conclude with `isReduced_of_isReduced_stalk Y`.
+-/
 lemma isReduced_of_flat_of_surjective {X Y : Scheme.{0}} (p : X ⟶ Y) [Flat p] [Surjective p]
     [IsReduced X] : IsReduced Y := by
   have (y : Y) : _root_.IsReduced (Y.presheaf.stalk y) := by
@@ -160,6 +216,9 @@ lemma isReduced_of_flat_of_surjective {X Y : Scheme.{0}} (p : X ⟶ Y) [Flat p] 
       (faithfullyFlat_stalkMap_of_flat p x).injective
   exact isReduced_of_isReduced_stalk Y
 
+/- English proof (translation)
+Use `⟨fun K _ y W a b hW => ?_⟩` and prove the remaining obligations. Establish `: IsReduced (pullback p a)` using `h.geometrically_isReduced y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)`. Conclude with `isReduced_of_flat_of_surjective (pullback.snd p a)`.
+-/
 lemma geometricallyReduced_of_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y ⟶ Z) [Flat p]
     [Surjective p] [h : GeometricallyReduced (p ≫ f)] : GeometricallyReduced f := by
   refine ⟨fun K _ y W a b hW => ?_⟩
@@ -167,6 +226,9 @@ lemma geometricallyReduced_of_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y ⟶
     h.geometrically_isReduced y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)
   exact isReduced_of_flat_of_surjective (pullback.snd p a)
 
+/- English proof (translation)
+Use `⟨fun K _ y W a b hW => ?_⟩` and prove the remaining obligations. Establish `: ConnectedSpace ↥(pullback p a)` using `h.geometrically_connectedSpace y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)`. Conclude with `(pullback.snd p a).surjective.connectedSpace (pullback.snd p a).continuous`.
+-/
 lemma geometricallyConnected_of_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y ⟶ Z)
     [Surjective p] [h : GeometricallyConnected (p ≫ f)] : GeometricallyConnected f := by
   refine ⟨fun K _ y W a b hW => ?_⟩
@@ -174,6 +236,9 @@ lemma geometricallyConnected_of_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y �
     h.geometrically_connectedSpace y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)
   exact (pullback.snd p a).surjective.connectedSpace (pullback.snd p a).continuous
 
+/- English proof (translation)
+Use `Smooth.of_smooth_fiberToSpecResidueField _ fun y => ?_` and prove the remaining obligations. Use `letI : GrpObj (Over.mk Q.hom) := inferInstanceAs (GrpObj Q)`. Use `letI : GrpObj (Over.mk (pullback.snd Q.hom (S.fromSpecResidueField y))) := Over.grpObjMkPullbackSnd`. Conclude with `smooth_of_grpObj (K := S.residueField y) (pullback.snd Q.hom (S.fromSpecResidueField y))`.
+-/
 lemma smooth_of_grpObj_of_flat (Q : Over S) [GrpObj Q] [Flat Q.hom]
     [LocallyOfFinitePresentation Q.hom] [GeometricallyReduced Q.hom] : Smooth Q.hom := by
   refine Smooth.of_smooth_fiberToSpecResidueField _ fun y => ?_
@@ -186,6 +251,15 @@ end AbelianQuotient
 
 open AbelianQuotient in
 
+/- English proof (translation)
+Introduce `hint hquot R _ _ P H _ i hi hmono hfin hflat`. Take `⟨Q, q, h1, h2, h3, h4, h5, hq⟩` from `hquot R P H i hi hmono hfin hflat`. Use `P.isAb.comm` as an intermediate fact. Take `⟨inst, hcomm, hhom, hker⟩` from `exists_grpObj i q hq`. Use `⟨Q, inst, ?_, q, hhom, h1, h2, h3, hker⟩` and prove the remaining obligations.
+
+Establish `hw : q.left ≫ Q.hom = P.A.hom` using `Over.w q`. Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Use `hint _ _ P.A.hom P.isAb.smooth P.isAb.geomConnected` as an intermediate fact.
+
+Establish `: Flat (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: UniversallyClosed (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: GeometricallyReduced (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: GeometricallyConnected (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Use `flat_of_comp_of_flat_of_surjective q.left Q.hom` as an intermediate fact.
+
+Use `UniversallyClosed.of_comp_surjective q.left Q.hom` as an intermediate fact. Use `geometricallyReduced_of_comp q.left Q.hom` as an intermediate fact. Establish `: LocallyOfFinitePresentation Q.hom` using `inferInstance`. Conclude with `⟨hcomm, smooth_of_grpObj_of_flat Q, ⟨⟩, geometricallyConnected_of_comp q.left Q.hom⟩`.
+-/
 theorem quotient_isAbelianScheme_of_quotientScheme :
     (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f →
       GeometricallyIntegral f) →

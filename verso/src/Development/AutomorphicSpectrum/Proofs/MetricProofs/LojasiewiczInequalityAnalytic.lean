@@ -5,6 +5,25 @@ open Filter Topology Metric
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Loj
 
+/- English proof (translation)
+Establish `h0mem : (0 : ℂ) ∈ closedBall (0 : ℂ) ρ` using `by simp [hρ.le]`. Establish `hQ : ∀ z ∈ closedBall (0 : ℂ) ρ, AnalyticAt ℂ (fun w => f w ^ (d + 1) / g w) z`. Introduce `z hzm`. Distinguish the cases in `h0 : g z = 0`. Take `⟨hf0, hord⟩` from `hz z hzm h0`.
+
+Establish `hne : analyticOrderAt g z ≠ ⊤` using `ne_top_of_le_ne_top (by simp) hord`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 hne`. Establish `hkd : k ≤ d`. Rewrite `hord` using `[← hk]`. Conclude with `hord` after adjusting the coercions.
+
+Take `⟨h, hh, hh0, eh⟩` from `(hg z hzm).analyticOrderAt_eq_natCast.1 hk.symm`. Take `⟨u, hu, eu⟩` from `(natCast_le_analyticOrderAt (hf z hzm) (n := 1)).1 ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (hf z hzm)).2 (fun i hi => by`. Take `rfl : i = 0` from `by omega`. Simplify using `using hf0))`. Take `⟨n, hn⟩ : ∃ n, d + 1 = (n + 1) + k` from `⟨d - k, by omega⟩`.
+
+Establish `ha : AnalyticAt ℂ (fun w => (w - z) ^ (n + 1) * (u w ^ (d + 1) / h w)) z`. Establish `h1 : AnalyticAt ℂ (fun w => u w ^ (d + 1) / h w) z` using `(hu.fun_pow _).fun_div hh hh0`. Establish `h2 : AnalyticAt ℂ (fun w : ℂ => (w - z) ^ (n + 1)) z` using `by fun_prop`. Conclude with `h2.fun_mul h1`. Use `ha.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eh, eu, hh.continuousAt.eventually_ne hh0] with w e1 e2 e3`. Distinguish the cases in `hw : w = z`. Substitute `hw` using the available equality. Simplify using `[h0]`. Establish `hwz : w - z ≠ 0` using `sub_ne_zero.2 hw`.
+
+Rewrite using `[e1, e2, smul_eq_mul, smul_eq_mul, pow_one, mul_pow, hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `((hf z hzm).fun_pow _).fun_div (hg z hzm) h0`. Establish `hdiff : DiffContOnCl ℂ (fun w => f w ^ (d + 1) / g w) (ball (0 : ℂ) ρ)`.
+
+Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball _ hρ.ne']`. Conclude with `fun z hzm => (hQ z hzm).differentiableAt.differentiableWithinAt`. Establish `hbd : ∀ z ∈ frontier (ball (0 : ℂ) ρ), ‖f z ^ (d + 1) / g z‖ ≤ M ^ (d + 1) / m`. Introduce `z hzm`.
+
+Rewrite `hzm` using `[frontier_ball _ hρ.ne']`. Rewrite using `[norm_div, norm_pow]`. Establish `hM : 0 ≤ M` using `(norm_nonneg _).trans (hfM z hzm)`. Conclude with `div_le_div₀ (pow_nonneg hM _) (pow_le_pow_left₀ (norm_nonneg _) (hfM z hzm) _) hm (hgm z hzm)`. Establish `hmax` using `Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball hdiff hbd (subset_closure (mem_ball_self hρ))`.
+
+Distinguish the cases in `h0 : g 0 = 0`. Simplify using `[(hz 0 h0mem h0).1, h0]`. Establish `hpos : 0 < ‖g 0‖` using `norm_pos_iff.2 h0`. Rewrite `hmax` using `[norm_div, norm_pow, div_le_iff₀ hpos]`. Conclude with `hmax`.
+-/
 theorem one_variable {f g : ℂ → ℂ} {ρ m M : ℝ} {d : ℕ} (hρ : 0 < ρ) (hm : 0 < m)
     (hf : ∀ z ∈ closedBall (0 : ℂ) ρ, AnalyticAt ℂ f z)
     (hg : ∀ z ∈ closedBall (0 : ℂ) ρ, AnalyticAt ℂ g z)
@@ -64,10 +83,16 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 def dirDeriv (v : E) (h : E → ℂ) : E → ℂ := fun y => fderiv ℂ h y v
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.apply ℂ ℂ v).analyticAt _).comp hh.fderiv`.
+-/
 theorem analyticAt_dirDeriv (v : E) {h : E → ℂ} {y : E} (hh : AnalyticAt ℂ h y) :
     AnalyticAt ℂ (dirDeriv v h) y :=
   ((ContinuousLinearMap.apply ℂ ℂ v).analyticAt _).comp hh.fderiv
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hh`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `analyticAt_dirDeriv v ih`.
+-/
 theorem analyticAt_iterate_dirDeriv (v : E) {h : E → ℂ} {y : E} (hh : AnalyticAt ℂ h y) (k : ℕ) :
     AnalyticAt ℂ ((dirDeriv v)^[k] h) y := by
   induction k with
@@ -76,11 +101,24 @@ theorem analyticAt_iterate_dirDeriv (v : E) {h : E → ℂ} {y : E} (hh : Analyt
     rw [Function.iterate_succ_apply']
     exact analyticAt_dirDeriv v ih
 
+/- English proof (translation)
+Use `fun_prop`.
+-/
 theorem continuous_line (y v : E) : Continuous (fun ζ : ℂ => y + ζ • v) := by fun_prop
 
+/- English proof (translation)
+Use `fun_prop`.
+-/
 theorem analyticAt_line (y v : E) (z : ℂ) : AnalyticAt ℂ (fun ζ : ℂ => y + ζ • v) z := by
   fun_prop
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro z _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `z hz`.
+
+Establish `hev : ∀ᶠ ζ in 𝓝 z, y + ζ • v ∈ U` using `(continuous_line y v).continuousAt.eventually_mem (hU.mem_nhds hz)`. Establish `e : iteratedDeriv k (fun ζ : ℂ => g (y + ζ • v)) =ᶠ[𝓝 z] fun ζ => ((dirDeriv v)^[k] g) (y + ζ • v)` using `by filter_upwards [hev] with ζ hζ using ih ζ hζ`. Rewrite using `[iteratedDeriv_succ, e.deriv_eq, Function.iterate_succ_apply']`. Establish `hd : HasFDerivAt ((dirDeriv v)^[k] g) (fderiv ℂ ((dirDeriv v)^[k] g) (y + z • v)) (y + z • v)` using `(analyticAt_iterate_dirDeriv v (hg _ hz) k).differentiableAt.hasFDerivAt`. Establish `hl : HasDerivAt (fun ζ : ℂ => y + ζ • v) v z`.
+
+Simplify using `using ((hasDerivAt_id z).smul_const v).const_add y`. Conclude with `(hd.comp_hasDerivAt z hl).deriv`.
+-/
 theorem iteratedDeriv_line {U : Set E} (hU : IsOpen U) {g : E → ℂ}
     (hg : ∀ y ∈ U, AnalyticAt ℂ g y) (y v : E) (k : ℕ) :
     ∀ z : ℂ, y + z • v ∈ U →
@@ -101,6 +139,9 @@ theorem iteratedDeriv_line {U : Set E} (hU : IsOpen U) {g : E → ℂ}
       simpa using ((hasDerivAt_id z).smul_const v).const_add y
     exact (hd.comp_hasDerivAt z hl).deriv
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h1 : ((d + 1 : ℕ) : ℕ∞) ≤ analyticOrderAt h z`. Simplify using `using Order.add_one_le_of_lt hlt`. Conclude with `hd ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hh).1 h1 d (Nat.lt_succ_self d))`.
+-/
 theorem order_le_of_iteratedDeriv_ne {h : ℂ → ℂ} {z : ℂ} (hh : AnalyticAt ℂ h z) {d : ℕ}
     (hd : iteratedDeriv d h z ≠ 0) : analyticOrderAt h z ≤ d := by
   by_contra hlt
@@ -109,6 +150,53 @@ theorem order_le_of_iteratedDeriv_ne {h : ℂ → ℂ} {z : ℂ} (hh : AnalyticA
     simpa using Order.add_one_le_of_lt hlt
   exact hd ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero hh).1 h1 d (Nat.lt_succ_self d))
 
+/- English proof (translation)
+Distinguish the cases in `hz : ∀ᶠ y in 𝓝 x, g y = 0`. Use `⟨1, 0, one_pos, ?_⟩ filter_upwards [hz, hfg] with y h1 h2` and prove the remaining obligations. Simplify using `[h2 h1]`. Take `⟨r₀, hr₀, han⟩` from `Metric.eventually_nhds_iff_ball.1 (hf.eventually_analyticAt.and hg.eventually_analyticAt)`. Choose the witnesses or unpack the hypotheses as in `⟨y₁, hy₁, hgy₁⟩ : ∃ y₁ ∈ ball x r₀, g y₁ ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hz (by filter_upwards [ball_mem_nhds x hr₀] with y hy using hcon y hy)`. Use `set v := y₁ - x with hv`. Establish `hvr : ‖v‖ < r₀` using `by simpa [hv, dist_eq_norm] using hy₁`.
+
+Use `set φ : ℂ → ℂ := fun ζ => g (x + ζ • v) with hφ`. Establish `hgU : ∀ y ∈ ball x r₀, AnalyticAt ℂ g y` using `fun y hy => (han y hy).2`. Establish `hφa : ∀ ζ : ℂ, x + ζ • v ∈ ball x r₀ → AnalyticAt ℂ φ ζ` using `fun ζ hζ => AnalyticAt.comp (g := g) (f := fun ζ : ℂ => x + ζ • v) (hgU _ hζ) (analyticAt_line x v ζ)`. Establish `hunit : ∀ ζ ∈ closedBall (0 : ℂ) 1, x + ζ • v ∈ ball x r₀`. Introduce `ζ hζ`.
+
+Establish `h1 : ‖ζ‖ ≤ 1` using `by simpa using hζ`. Establish `h2 : ‖ζ • v‖ ≤ ‖v‖`. Rewrite using `[norm_smul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) h1`. Simplify `lt_of_le_of_lt h2 hvr` using `[dist_eq_norm]`.
+
+Establish `hφ0 : ∀ᶠ ζ in 𝓝[≠] (0 : ℂ), φ ζ ≠ 0`. Use `((hφa 0 (hunit 0 (by simp))).eventually_eq_zero_or_eventually_ne_zero).resolve_left ?_` and prove the remaining obligations. Introduce `hev`. Establish `hA : AnalyticOnNhd ℂ φ (closedBall (0 : ℂ) 1)` using `fun ζ hζ => hφa ζ (hunit ζ hζ)`. Use `hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_closedBall (0 : ℂ) 1).isPreconnected (z₀ := 0) (by simp) hev (show (1 : ℂ) ∈ closedBall (0 : ℂ) 1 by simp)` as an intermediate fact.
+
+Apply `hgy₁` to reduce the goal to its premises. Simplify `this` using `[hφ, hv]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, iteratedDeriv i φ 0 ≠ 0 := by`. Establish `hφ00` using `hφa 0 (hunit 0 (by simp))`. Establish `hne : analyticOrderAt φ 0 ≠ ⊤`.
+
+Introduce `htop`. Establish `h'` using `(analyticOrderAt_eq_top.1 htop).filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ))`. Take `⟨z, hz1, hz2⟩` from `(hφ0.and h').exists`. Conclude with `hz1 hz2`. Take `⟨d, hd⟩` from `ENat.ne_top_iff_exists.1 hne`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `(natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (n := d + 1) hφ00).2 (fun j _ => hcon j)` as an intermediate fact. Rewrite `this` using `[← hd]`. Establish `h2 : d + 1 ≤ d` using `by exact_mod_cast this`.
+
+Use linear arithmetic over natural numbers and integers. Use `set G := (dirDeriv v)^[i] g with hG`. Establish `hGx : G x ≠ 0`. Use `iteratedDeriv_line isOpen_ball hgU x v i 0 (hunit 0 (by simp))` as an intermediate fact. Rewrite `this` using `[show (fun ζ : ℂ => g (x + ζ • v)) = φ from rfl]`.
+
+Simplify `hi` using `[this]`. Establish `hGc : ContinuousAt G x` using `(analyticAt_iterate_dirDeriv v hg i).continuousAt`. Use `set M := ‖f x‖ + 1 with hM`. Establish `hfb : ∀ᶠ y in 𝓝 x, ‖f y‖ ≤ M` using `(hf.continuousAt.norm.eventually (gt_mem_nhds (lt_add_one _))).mono fun y hy => le_of_lt hy`. Take `⟨r, hr, hP⟩` from `Metric.eventually_nhds_iff_ball.1 (((hfg.and (hGc.eventually_ne hGx)).and hfb).and (ball_mem_nhds x hr₀))`.
+
+Take `⟨ε, hε, hφε⟩` from `Metric.eventually_nhds_iff_ball.1 (eventually_nhdsWithin_iff.1 hφ0)`. Use `set ρ := min (ε / 2) (r / (2 * (‖v‖ + 1))) with hρdef`. Establish `hv1 : 0 < ‖v‖ + 1` using `by positivity`. Establish `hρ : 0 < ρ` using `lt_min (by positivity) (by positivity)`. Establish `hρε : ρ < ε` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`.
+
+Establish `hρv : ρ * ‖v‖ < r / 2`. Establish `h1 : ρ * (‖v‖ + 1) ≤ r / 2`. Establish `h2 : ρ ≤ r / (2 * (‖v‖ + 1))` using `min_le_right _ _`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hclose : ∀ y ∈ ball x (r / 2), ∀ ζ ∈ closedBall (0 : ℂ) ρ, y + ζ • v ∈ ball x r`. Introduce `y hy ζ hζ`. Establish `h1 : ‖ζ‖ ≤ ρ` using `by simpa using hζ`. Establish `h2 : ‖ζ • v‖ ≤ ρ * ‖v‖`. Rewrite using `[norm_smul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`. Establish `h3 : ‖y - x‖ < r / 2` using `by simpa [dist_eq_norm] using hy`. Rewrite using `[mem_ball, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hxr : x ∈ ball x (r / 2)` using `mem_ball_self (by positivity)`.
+
+Establish `hsph : ∀ ζ ∈ sphere (0 : ℂ) ρ, ζ ∈ closedBall (0 : ℂ) ρ` using `fun ζ hζ => sphere_subset_closedBall hζ`. Establish `hcont : ContinuousOn (fun ζ => ‖φ ζ‖) (sphere (0 : ℂ) ρ)`. Introduce `ζ hζ`. Establish `h1` using `(hP _ (hclose x hxr ζ (hsph ζ hζ))).2`. Conclude with `(hφa ζ h1).continuousAt.norm.continuousWithinAt`.
+
+Establish `hne : (sphere (0 : ℂ) ρ).Nonempty` using `NormedSpace.sphere_nonempty.2 hρ.le`. Take `⟨ζ₀, hζ₀, hmin⟩` from `(isCompact_sphere (0 : ℂ) ρ).exists_isMinOn hne hcont`. Establish `hφpos : ∀ ζ ∈ sphere (0 : ℂ) ρ, φ ζ ≠ 0`. Introduce `ζ hζ`. Establish `h1 : ‖ζ‖ = ρ` using `by simpa using hζ`.
+
+Use `hφε ζ (by simp [h1, hρε]) ?_` and prove the remaining obligations. Introduce `h0`. Establish `h00 : ζ = 0` using `by simpa using h0`. Rewrite `h1` using `[h00, norm_zero]`. Conclude with `hρ.ne h1`.
+
+Use `set m := ‖φ ζ₀‖ / 2 with hmdef`. Establish `hm : 0 < m`. Use `norm_pos_iff.2 (hφpos ζ₀ hζ₀)` as an intermediate fact. Check the signs of the components of the expression. Establish `htube : ∀ᶠ y in 𝓝 x, ∀ ζ ∈ sphere (0 : ℂ) ρ, m < ‖g (y + ζ • v)‖`.
+
+Use `(isCompact_sphere (0 : ℂ) ρ).eventually_forall_of_forall_eventually fun ζ hζ => ?_` and prove the remaining obligations. Establish `h1 : x + ζ • v ∈ ball x r₀` using `(hP _ (hclose x hxr ζ (hsph ζ hζ))).2`. Establish `hc : ContinuousAt (fun p : (Fin e → ℂ) × ℂ => ‖g (p.1 + p.2 • v)‖) (x, ζ)`. Establish `h2 : ContinuousAt (fun p : (Fin e → ℂ) × ℂ => p.1 + p.2 • v) (x, ζ)` using `by fun_prop`. Conclude with `(ContinuousAt.comp (g := g) (f := fun p : (Fin e → ℂ) × ℂ => p.1 + p.2 • v) (x := (x, ζ)) (hgU _ h1).continuousAt h2).norm`.
+
+Establish `hlt : m < ‖g (x + ζ • v)‖`. Establish `h3 : ‖φ ζ₀‖ ≤ ‖φ ζ‖` using `hmin hζ`. Establish `h4 : 0 < ‖φ ζ₀‖` using `norm_pos_iff.2 (hφpos ζ₀ hζ₀)`. Establish `h5 : ‖φ ζ‖ = ‖g (x + ζ • v)‖` using `rfl`. Rewrite using `[hmdef]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hc.eventually (lt_mem_nhds hlt)`. Use `⟨i + 1, M ^ (i + 1) / m, Nat.succ_pos i, ?_⟩` and prove the remaining obligations. Use `filter_upwards [htube, ball_mem_nhds x (half_pos hr)] with y ht hy`. Establish `hin` using `hclose y hy`.
+
+Establish `key` using `one_variable (f := fun ζ : ℂ => f (y + ζ • v)) (g := fun ζ : ℂ => g (y + ζ • v)) (ρ := ρ) (m := m) (M := M) (d := i) hρ hm (fun z hzm => AnalyticAt.comp (g := f) (f := fun ζ : ℂ => y + ζ • v) (han _ (hP _ (hin z hzm)).2).1 (analyticAt_line y v z)) (fun z hzm => AnalyticAt.comp (g …`. Establish `hQ` using `hP _ (hin z hzm)`. Use `⟨hQ.1.1.1 h0, order_le_of_iteratedDeriv_ne (AnalyticAt.comp (g := g) (f := fun ζ : ℂ => y + ζ • v) (han _ hQ.2).2 (analyticAt_line y v z)) ?_⟩` and prove the remaining obligations. Use `show iteratedDeriv i (fun ζ : ℂ => g (y + ζ • v)) z ≠ 0`. Rewrite using `[iteratedDeriv_line isOpen_ball hgU y v i z hQ.2]`.
+
+Conclude with `hQ.1.1.2)`. Simplify using `using key`.
+-/
 theorem lojasiewicz (e : ℕ) (f g : (Fin e → ℂ) → ℂ) (x : Fin e → ℂ) (hf : AnalyticAt ℂ f x)
     (hg : AnalyticAt ℂ g x) (hfg : ∀ᶠ y in 𝓝 x, g y = 0 → f y = 0) :
     ∃ (N : ℕ) (C : ℝ), 0 < N ∧ ∀ᶠ y in 𝓝 x, ‖f y‖ ^ N ≤ C * ‖g y‖ := by

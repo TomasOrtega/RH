@@ -30,6 +30,9 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Establish `hf : ∀ x : Fin (l + 0), (finSumFinEquiv.symm x : Fin l ⊕ Fin 0) = Sum.inl x`. Introduce `x`. Rewrite using `[Equiv.symm_apply_eq, finSumFinEquiv_apply_left]`. Both sides reduce to the same expression. Simplify using `[_root_.GlobalTheory.StepData.stdOrd, _root_.GlobalTheory.StepData.ixZero, hf]`.
+-/
 private lemma stdOrd_ixZero_inr (t : Type) {κ l : ℕ} (H : 0 + l = l) (i : Fin l) :
     _root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t (Sum.inr i)) = Sum.inr i := by
   have hf : ∀ x : Fin (l + 0), (finSumFinEquiv.symm x : Fin l ⊕ Fin 0) = Sum.inl x := by
@@ -39,6 +42,9 @@ private lemma stdOrd_ixZero_inr (t : Type) {κ l : ℕ} (H : 0 + l = l) (i : Fin
   simp [_root_.GlobalTheory.StepData.stdOrd, _root_.GlobalTheory.StepData.ixZero, hf]
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Break down `r with i | i` into its components or cases. Both sides reduce to the same expression. Simplify using `only [stdOrd_ixZero_inr]`. Both sides reduce to the same expression.
+-/
 private lemma wt_stdOrd_ixZero {k : Type} [Field k] (t : Type) {κ l : ℕ} (ϖ : kˣ) (H : 0 + l = l)
     (r : Fin κ ⊕ Fin l) :
     _root_.GlobalTheory.StepData.Model.wt ϖ (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t r)) =
@@ -49,10 +55,18 @@ private lemma wt_stdOrd_ixZero {k : Type} [Field k] (t : Type) {κ l : ℕ} (ϖ 
     rfl
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma typeFrame_ord {k : Type} [Field k] {ι n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (ϖ : kˣ)
     (o : ι ≃ n ⊕ Fin c) : (_root_.GlobalTheory.StepData.typeFrame ϖ o).ord = o := rfl
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(_root_.GlobalTheory.StepData.typeFrame ϖ (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H)).conj.surjective x`. Rewrite using `[← wt_stdOrd_ixZero t ϖ H r, ← wt_stdOrd_ixZero t ϖ H r']`. Simplify using `only [_root_.GlobalTheory.FirstVertexFrame.read, MulEquiv.trans_apply, MulEquiv.symm_apply_apply]`. Simplify using `only [_root_.GlobalTheory.StepData.reGL_symm_val, _root_.GlobalTheory.StepData.LatFrame.conj_apply, Units.val_mul, _root_.GlobalTheory.StepData.Model.typeFrame_val, _root_.GlobalTheory.StepData.Model.typeFrame_inv, _root_.GlobalTheory.StepData.reGL_val, Matrix.diagonal_mul, Matri …`. Establish `h1` using `_root_.GlobalTheory.StepData.Model.wt_ne_zero ϖ (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t r))`.
+
+Establish `h2` using `_root_.GlobalTheory.StepData.Model.wt_ne_zero ϖ (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t r'))`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma read_apply_eq_stdOrd_mul_wt {k : Type} [Field k] (t : Type) [Fintype t] [DecidableEq t] {κ l : ℕ} (ϖ : kˣ)
     (H : 0 + l = l) (x : GL (_root_.GlobalTheory.StepData.XIx (Fin κ) t 0 ⊕ Fin l) k) (r r' : Fin κ ⊕ Fin l) :
     (_root_.GlobalTheory.FirstVertexFrame.read t ϖ H x : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) r r' =
@@ -75,6 +89,9 @@ private lemma read_apply_eq_stdOrd_mul_wt {k : Type} [Field k] (t : Type) [Finty
   field_simp
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.RootEx.embX`. Simplify using the standard rewrite rules.
+-/
 private lemma coe_embX_eq_fromBlocks {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c : ℕ) (g : GL n k) :
     ((_root_.GlobalTheory.RootEx.embX c g : GL (n ⊕ Fin c) k) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) =
       Matrix.fromBlocks (g : Matrix n n k) 0 0 1 := by
@@ -82,11 +99,21 @@ private lemma coe_embX_eq_fromBlocks {k : Type} [Field k] {n : Type} [Fintype n]
   simp
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma stdOrd_ixZero_inl (t : Type) {κ l : ℕ} (H : 0 + l = l) (i : Fin κ) :
     _root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t (Sum.inl i)) =
       Sum.inl (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t i) := rfl
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Use extensionality with `r r'`. Rewrite using `[read_apply_eq_stdOrd_mul_wt, coe_embX_eq_fromBlocks, coe_embX_eq_fromBlocks, _root_.GlobalTheory.StepData.reGL_symm_val]`. Establish `hw1 : ∀ i : Fin κ, _root_.GlobalTheory.StepData.Model.wt (c` using `l) ϖ (Sum.inl i) = 1 := fun _ => rfl`. Establish `hw : ∀ m : Fin l, _root_.GlobalTheory.StepData.Model.wt (n` using `Fin κ) ϖ (Sum.inr m) ≠ 0 := fun m => _root_.GlobalTheory.StepData.Model.wt_ne_zero ϖ _`. Apply the tactic sequence `rcases r with i | i <;> rcases r' with j | j`.
+
+Simplify using `[stdOrd_ixZero_inl, hw1]`. Simplify using `[stdOrd_ixZero_inl, stdOrd_ixZero_inr]`. Simplify using `[stdOrd_ixZero_inl, stdOrd_ixZero_inr]`. Simplify using `only [stdOrd_ixZero_inr, fromBlocks_apply₂₂, Matrix.one_apply] split_ifs with h`. Substitute `h` using the available equality.
+
+Clear denominators, using `[hw i]` for the nonvanishing conditions. Simplify using the standard rewrite rules.
+-/
 private lemma read_embX_eq_embX_reGL_symm {k : Type} [Field k] (t : Type) [Fintype t] [DecidableEq t] {κ l : ℕ} (ϖ : kˣ)
     (H : 0 + l = l) (γ : GL (_root_.GlobalTheory.StepData.XIx (Fin κ) t 0) k) :
     _root_.GlobalTheory.FirstVertexFrame.read t ϖ H (_root_.GlobalTheory.RootEx.embX l γ) =
@@ -108,6 +135,19 @@ private lemma read_embX_eq_embX_reGL_symm {k : Type} [Field k] (t : Type) [Finty
     · simp
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.RootEx.Model.mem_N_iff, _root_.GlobalTheory.RootEx.Model.mem_N_iff]`. Unfold `_root_.GlobalTheory.RootEx.InN`. Set `σ : (Fin κ ⊕ Fin l) ≃ (_root_.GlobalTheory.StepData.XIx (Fin κ) t 0 ⊕ Fin l)` to `(_root_.GlobalTheory.StepData.ixZero (Fin κ ⊕ Fin l) t).trans (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H)`. Establish `hpos : ∀ r, _root_.GlobalTheory.RootEx.lev 1 (σ r) = _root_.GlobalTheory.RootEx.lev 1 r`. Introduce and unpack `(i | i)`.
+
+Both sides reduce to the same expression. Use `show _root_.GlobalTheory.RootEx.lev 1 (_root_.GlobalTheory.StepData.stdOrd (Fin κ) t 0 l H (_root_.GlobalTheory.StepData.ixZero _ t (Sum.inr i))) = _`. Rewrite using `[stdOrd_ixZero_inr]`. Both sides reduce to the same expression. Establish `hent : ∀ r r', (_root_.GlobalTheory.StepData.Model.wt ϖ r)⁻¹ * (u : Matrix _ _ k) (σ r) (σ r') * _root_.GlobalTheory.StepData.Model.wt ϖ r' = (1 : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) r r' ↔ (u : Matrix _ _ k) (σ r) (σ r') = (1 : Matrix _ _ k) (σ r) (σ r')`.
+
+Introduce `r r'`. Establish `h1` using `_root_.GlobalTheory.StepData.Model.wt_ne_zero ϖ r`. Establish `h2` using `_root_.GlobalTheory.StepData.Model.wt_ne_zero ϖ r'`. Distinguish the cases in `h : r = r'`. Substitute `h` using the available equality.
+
+Establish `key : ∀ a : k, (_root_.GlobalTheory.StepData.Model.wt ϖ r)⁻¹ * a * _root_.GlobalTheory.StepData.Model.wt ϖ r = a` using `fun a => by field_simp`. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, key]`. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (σ.injective.ne h)]`. Simplify using `[h1, h2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b hab`. Take `⟨r, rfl⟩` from `σ.surjective a`. Take `⟨r', rfl⟩` from `σ.surjective b`. Rewrite `hab` using `[hpos, hpos]`. Use `h r r' hab` as an intermediate fact.
+
+Rewrite `this` using `[read_apply_eq_stdOrd_mul_wt]`. Conclude with `(hent r r').1 this`. Introduce `h r r' hrr`. Rewrite using `[read_apply_eq_stdOrd_mul_wt]`. Conclude with `(hent r r').2 (h _ _ (by rw [hpos, hpos]; exact hrr))`.
+-/
 private lemma read_mem_N_iff {k : Type} [Field k] (t : Type) [Fintype t] [DecidableEq t] {κ l : ℕ}
     (ϖ : kˣ) (H : 0 + l = l) (u : GL (_root_.GlobalTheory.StepData.XIx (Fin κ) t 0 ⊕ Fin l) k) :
     _root_.GlobalTheory.FirstVertexFrame.read t ϖ H u ∈ _root_.GlobalTheory.RootEx.N k (Fin κ) l 1 ↔
@@ -150,6 +190,11 @@ private lemma read_mem_N_iff {k : Type} [Field k] (t : Type) [Fintype t] [Decida
     exact (hent r r').2 (h _ _ (by rw [hpos, hpos]; exact hrr))
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Take `⟨g₀, h1, h2⟩` from `h`. Use `⟨Units.map (Matrix.reindexAlgEquiv 𝒪[k] 𝒪[k] e).toAlgHom.toMonoidHom g₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.StepData.reGL_val]`.
+
+Rewrite using `[← h2]`. Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.StepData.reGL_val]`.
+-/
 private lemma reduces_reGL_of_reduces {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ≃ b) {g : GL a k} {gb : GL a 𝓀[k]} (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces g gb) :
@@ -164,6 +209,11 @@ private lemma reduces_reGL_of_reduces {k : Type} [Field k] [ValuativeRel k] [Top
     simp [_root_.GlobalTheory.StepData.reGL_val]
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip`. Rewrite using `[_root_.GlobalTheory.StepData.reGL_val]`. Prove the components needed by the constructor for the conclusion. Introduce `h r s hrs`. Use `h (e r) (e s) hrs` as an intermediate fact.
+
+Simplify `this` using `[Matrix.one_apply]`. Introduce `h r s hrs`. Use `h (e.symm r) (e.symm s) (by simpa using hrs)` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`.
+-/
 private lemma isUpperUnip_reGL_iff {F a b : Type} [Field F] [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] (e : a ≃ b) (f : b → ℕ) (g : GL a F) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip f ((_root_.GlobalTheory.StepData.reGL e g : GL b F) : Matrix b b F) ↔
@@ -179,6 +229,9 @@ private lemma isUpperUnip_reGL_iff {F a b : Type} [Field F] [Fintype a] [Decidab
     simpa [Matrix.one_apply] using this
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.StepData.reGL_symm_val, _root_.GlobalTheory.StepData.reGL_val]`.
+-/
 private lemma reGL_symm_apply {F a b : Type} [Field F] [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ≃ b) (g : GL b F) :
     (_root_.GlobalTheory.StepData.reGL e).symm g = _root_.GlobalTheory.StepData.reGL e.symm g := by
@@ -186,6 +239,9 @@ private lemma reGL_symm_apply {F a b : Type} [Field F] [Fintype a] [DecidableEq 
   simp [_root_.GlobalTheory.StepData.reGL_symm_val, _root_.GlobalTheory.StepData.reGL_val]
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Break down `x with ((i | i) | p)` into its components or cases. Both sides reduce to the same expression. Conclude with `i.elim0`. Conclude with `p.1.elim0`.
+-/
 private lemma val_comp_epsEquiv_symm_eq_colPos (κ : ℕ) (t : Type) :
     (Fin.val ∘ (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t).symm) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.colPos κ t := by
   funext x
@@ -195,6 +251,9 @@ private lemma val_comp_epsEquiv_symm_eq_colPos (κ : ℕ) (t : Type) :
   · exact p.1.elim0
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum`. Use `Fintype.sum_equiv e _ _ fun r => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv e _ _ fun s => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private lemma superSum_submatrix_eq_superSum_comp_symm {F a b : Type} [Field F] [Fintype a] [Fintype b] (e : a ≃ b)
     (f : a → ℕ) (M : Matrix b b F) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum f (M.submatrix e e) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.superSum (f ∘ e.symm) M := by
@@ -204,6 +263,13 @@ private lemma superSum_submatrix_eq_superSum_comp_symm {F a b : Type} [Field F] 
   simp
 
 open MeasureTheory ValuativeRel Matrix Topology in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.RootEx.simpleSum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hij`. Rewrite using `[read_apply_eq_stdOrd_mul_wt, stdOrd_ixZero_inr, stdOrd_ixZero_inr]`. Establish `hw : ∀ m : Fin l, _root_.GlobalTheory.StepData.Model.wt (n` using `Fin κ) ϖ (Sum.inr m) = (ϖ : k) ^ ((m : ℕ) + 1) := fun _ => rfl`. Rewrite using `[hw, hw, hij]`. Use `ϖ.ne_zero` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 private lemma simpleSum_read_eq_mul_simpleSum {k : Type} [Field k] (t : Type) [Fintype t] [DecidableEq t] {κ l : ℕ} (ϖ : kˣ)
     (H : 0 + l = l) (u : GL (_root_.GlobalTheory.StepData.XIx (Fin κ) t 0 ⊕ Fin l) k) :
     _root_.GlobalTheory.RootEx.simpleSum (_root_.GlobalTheory.FirstVertexFrame.read t ϖ H u) =
@@ -225,6 +291,29 @@ private lemma simpleSum_read_eq_mul_simpleSum {k : Type} [Field k] (t : Type) [F
 
 open MeasureTheory ValuativeRel Matrix Topology in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ ϖ s t _ _ κ P hP μ hμ c H`. Take `⟨h1, h2, h3⟩` from `hP`. Take `rfl : c = s + 1` from `by omega`. Establish `hmem : ∀ x, x ∈ ((_root_.GlobalTheory.StepData.typeChain t ϖ P μ hμ).lev 0 (s + 1) H).J ↔ _root_.GlobalTheory.FirstVertexFrame.read t ϖ H x ∈ P.J`. Introduce `x`.
+
+Unfold `_root_.GlobalTheory.StepData.typeChain _root_.GlobalTheory.StepData.Chain.lev _root_.GlobalTheory.StepData.Chain.ofType`. Simplify using `only`. Rewrite using `[_root_.GlobalTheory.StepData.Level.mem_map, _root_.GlobalTheory.StepData.TypeDatum.iter_zero]`. Conclude with `_root_.GlobalTheory.StepData.Level.mem_map`. Establish `hlam : ∀ x (hx : x ∈ ((_root_.GlobalTheory.StepData.typeChain t ϖ P μ hμ).lev 0 (s + 1) H).J), ((_root_.GlobalTheory.StepData.typeChain t ϖ P μ hμ).lev 0 (s + 1) H).lam ⟨x, hx⟩ = P.lam ⟨_, (hmem x).1 hx⟩` using `fun x hx => rfl`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `γ`. Simplify using `only [SetLike.mem_coe, _root_.GlobalTheory.StepData.mem_prX, _root_.GlobalTheory.StepData.mem_Cgrp, inv_one, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `_ ↔ ∃ gb, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces γ gb ∧ _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.colPos κ t) gb.val`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, -, hJ⟩`. Rewrite `hJ` using `[hmem, map_mul, read_embX_eq_embX_reGL_symm]`. Take `⟨gb, hr, hup⟩` from `h1 _ ((read_mem_N_iff t ϖ H u).2 hu) _ hJ`. Use `⟨_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t) gb, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using reduces_reGL_of_reduces (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t) hr`.
+
+Rewrite using `[isUpperUnip_reGL_iff]`. Conclude with `hup`. Introduce and unpack `⟨gb, hr, hup⟩`. Use `⟨1, one_mem _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`.
+
+Unfold `_root_.GlobalTheory.RootEx.R`. Conclude with `Subgroup.mem_sup_left ⟨γ, rfl⟩`. Rewrite using `[one_mul, hmem, read_embX_eq_embX_reGL_symm]`. Use `(h2 _ ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm gb) ?_ ?_).1` and prove the remaining obligations. Rewrite using `[reGL_symm_apply, reGL_symm_apply]`.
+
+Conclude with `reduces_reGL_of_reduces _ hr`. Rewrite using `[reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]`. Conclude with `hup`. Introduce and unpack `γ ⟨gb, hr, hup⟩`. Establish `hr' : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.Reduces ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm γ) ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm gb)`.
+
+Rewrite using `[reGL_symm_apply, reGL_symm_apply]`. Conclude with `reduces_reGL_of_reduces _ hr`. Establish `hup' : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUpperUnip Fin.val ((_root_.GlobalTheory.StepData.reGL (_root_.GlobalTheory.FirstVertexFrame.epsEquiv κ t)).symm gb).val`. Rewrite using `[reGL_symm_apply, isUpperUnip_reGL_iff, val_comp_epsEquiv_symm_eq_colPos]`. Conclude with `hup`.
+
+Take `⟨hm, hv⟩` from `h2 _ _ hr' hup'`. Establish `hm' : _root_.GlobalTheory.RootEx.embX (s + 1) γ ∈ ((_root_.GlobalTheory.StepData.typeChain t ϖ P μ hμ).lev 0 (s + 1) H).J`. Rewrite using `[hmem, read_embX_eq_embX_reGL_symm]`. Conclude with `hm`. Use `⟨hm', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlam]`. Establish `he : (⟨_, (hmem _).1 hm'⟩ : P.J) = ⟨_, hm⟩` using `Subtype.ext (read_embX_eq_embX_reGL_symm t ϖ H γ)`. Rewrite using `[he, hv]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.colChar`. Rewrite using `[_root_.GlobalTheory.StepData.reGL_symm_val, superSum_submatrix_eq_superSum_comp_symm, val_comp_epsEquiv_symm_eq_colPos]`.
+
+Introduce `u hu hm`. Rewrite using `[hlam, h3 _ ((read_mem_N_iff t ϖ H u).2 hu) ((hmem u).1 hm), simpleSum_read_eq_mul_simpleSum, Units.val_inv_eq_inv_val, ← mul_assoc, inv_mul_cancel₀ ϖ.ne_zero, one_mul]`.
+-/
 theorem _root_.GlobalTheory.FirstVertexFrame.firstVertex_typeChain : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (ϖ : kˣ) (s : ℕ) (t : Type) [Fintype t] [DecidableEq t]
     (κ : ℕ) (P : _root_.GlobalTheory.StepData.TypeDatum k (Fin κ ⊕ Fin (s + 1))),

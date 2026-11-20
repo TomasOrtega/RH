@@ -18,6 +18,15 @@ namespace GlobalTheory.StabDecInf
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hmi : mat m⁻¹ * mat m = 1` using `Units.inv_mul m.1`. Establish `hhi : mat h₁ * mat h₁⁻¹ = 1` using `Units.mul_inv h₁.1`. Establish `hmul : mat (p * m⁻¹) = mat p * mat m⁻¹` using `rfl`. Establish `hx : mat m⁻¹ *ᵥ incV F H'.x = incV F H'.x`. Establish `h0` using `hl.1`.
+
+Rewrite `h0` using `[Units.val_one, one_smul]`. Use `conv_lhs => rw [← h0]`. Rewrite using `[Matrix.mulVec_mulVec, hmi, Matrix.one_mulVec]`. Establish `hι : mat m⁻¹ * incM F H'.ι = incM F H'.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc (incM F H'.ι), ← hl.2.2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = incM F H'.ι * mat h₁⁻¹ := by rw [hmi, Matrix.one_mul]`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hx, hpx]`.
+
+Take `⟨a, ha⟩` from `hpι (mat h₁⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹) (incM F H'.ι), hι, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]`.
+-/
 theorem mul_inv_mem_unip_one {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
     {h₁ : UA σ W₁.J} {m p : UA σ W.J} (hl : IsLevi H' 1 h₁ m)
     (hpx : mat p *ᵥ incV F H'.x = incV F H'.x)
@@ -43,6 +52,17 @@ theorem mul_inv_mem_unip_one {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d}
     rw [hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹) (incM F H'.ι), hι, ← Matrix.mulVec_mulVec, ha,
       Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]
 
+/- English proof (translation)
+Set `c : AE F E →+* AE F E` to `(cA σ).toRingHom`. Establish `hPI : incM F π * incM F H.ι = 1`. Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, hπι, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hcM : (incM F H.ι)ᵀ * incM F X.J = incM F X₁.J * (incM F π).map c`.
+
+Rewrite using `[show (incM F π).map c = (incM F π).map (cA σ) from rfl, GlobalTheory.LeviFrame.incM_map_cA]`. Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hc, Matrix.map_mul]`. Establish `hdM : incM F X.J * (incM F H.ι).map c = (incM F π)ᵀ * incM F X₁.J`. Rewrite using `[show (incM F H.ι).map c = (incM F H.ι).map (cA σ) from rfl, GlobalTheory.LeviFrame.incM_map_cA]`.
+
+Simplify using `only [incM]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hd, Matrix.map_mul]`. Establish `hU : (mat g₀)ᵀ * incM F X₁.J * (mat g₀).map c = incM F X₁.J` using `g₀.2`. Establish `hHK : mat g₀ * mat g₀⁻¹ = 1` using `Units.mul_inv g₀.1`. Establish `hKH : mat g₀⁻¹ * mat g₀ = 1` using `Units.inv_mul g₀.1`.
+
+Set `g : GL (Fin n) (AE F E)` to `⟨1 + incM F H.ι * ((mat g₀ - 1) * incM F π), 1 + incM F H.ι * ((mat g₀⁻¹ - 1) * incM F π), GlobalTheory.LeviFrame.levi_inv_alg _ _ _ _ hPI hHK, GlobalTheory.LeviFrame.levi_inv_alg _ _ _ _ hPI hKH⟩`. Establish `hg : g ∈ UG (cA σ) (incM F X.J)` using `GlobalTheory.LeviFrame.levi_unit_alg c (incM F X.J) (incM F X₁.J) (incM F H.ι) (incM F π) (mat g₀) hPI hcM hdM hU`. Use `⟨⟨g, hg⟩, ⟨?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (1 + incM F H.ι * ((mat g₀ - 1) * incM F π)) *ᵥ incV F H.x = ((1 : (AE F E)ˣ) : AE F E) • incV F H.x`. Rewrite using `[Units.val_one, one_smul, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, GlobalTheory.LeviFrame.incM_mulVec_incV, hπx, show incV F (0 : Fin n₁ → E) = 0 from funext fun _ => map_zero _, Matrix.mulVec_zero, Matrix.mulVec_zero, add_zero]`.
+
+Use `show (1 + incM F H.ι * ((mat g₀ - 1) * incM F π)) *ᵥ incV F H.y = cA σ (((1 : (AE F E)ˣ)⁻¹ : (AE F E)ˣ) : AE F E) • incV F H.y`. Rewrite using `[inv_one, Units.val_one, map_one, one_smul, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, GlobalTheory.LeviFrame.incM_mulVec_incV, hπy, show incV F (0 : Fin n₁ → E) = 0 from funext fun _ => map_zero _, Matrix.mulVec_zero, Matrix.mulVec_zero …`. Use `show (1 + incM F H.ι * ((mat g₀ - 1) * incM F π)) * incM F H.ι = incM F H.ι * mat g₀`. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hPI, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]`.
+-/
 theorem exists_levi_mat {σ : E →ₐ[F] E} {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} (H : Plane E n n₁)
     (π : Matrix (Fin n₁) (Fin n) E) (hπι : π * H.ι = 1) (hπx : π *ᵥ H.x = 0) (hπy : π *ᵥ H.y = 0)
     (hc : H.ιᵀ * X.J = X₁.J * π.map σ) (hd : X.J * H.ι.map σ = πᵀ * X₁.J) (g₀ : UA σ X₁.J) :
@@ -80,6 +100,17 @@ theorem exists_levi_mat {σ : E →ₐ[F] E} {n n₁ : ℕ} {X : Spc F E n} {X�
     rw [Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hPI, Matrix.mul_one, Matrix.mul_sub,
       Matrix.mul_one, add_sub_cancel]
 
+/- English proof (translation)
+Establish `hσ : ∀ z, σ (σ z) = z` using `GlobalTheory.PlaneFrame.conj_conj hB.cm`. Establish `hspan` using `GlobalTheory.LeviSpan.span_adelic F E σ n n₁ X.J X₁.J H.x H.y H.ι hσ hX.herm hA.1 hA.xx hA.yy hA.xy hA.orth hA.gram hdet`. Take `⟨g₀, hg₀⟩` from `GlobalTheory.LeviCols.levi_cols F E σ n n₁ X.J X₁.J H.x H.y H.ι hσ hX.herm hA.xx hA.yy hA.xy hA.orth hA.gram hdet hspan p 1 (by rw [Units.val_one, one_smul]; exact hpx)`. Take `⟨π, hπι, hπx, hπy, hc, hd⟩` from `GlobalTheory.LeviFrameH.frame_facts σ B X X₁ H hB.cm hX hA`. Take `⟨m, hl, hm⟩` from `exists_levi_mat H π hπι hπx hπy hc hd g₀`.
+
+Establish `hPI : incM F π * incM F H.ι = 1`. Simplify using `only [incM]`. Rewrite using `[← Matrix.map_mul, hπι, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hPx : incM F π *ᵥ incV F H.x = 0`. Rewrite using `[GlobalTheory.LeviFrame.incM_mulVec_incV, hπx]`.
+
+Conclude with `funext fun _ => map_zero _`. Establish `hg : mat g₀ - 1 = incM F π * ((mat p - 1) * incM F H.ι)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, hPI]`. Use `congr 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hg₀ w`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hPx, smul_zero, add_zero, Matrix.mulVec_mulVec (mat g₀ *ᵥ w), hPI, Matrix.one_mulVec]`. Establish `hg₀at : g₀ ∈ UAt σ X₁ ev` using `fun u hu => by`. Rewrite using `[hg, ← Matrix.mul_smul, ← Matrix.smul_mul, hp u hu, Matrix.zero_mul, Matrix.mul_zero]`.
+
+Establish `hmat : m ∈ UAt σ X ev` using `fun u hu => by`. Rewrite using `[hm, add_sub_cancel_left, ← Matrix.mul_smul, ← Matrix.smul_mul, hg₀at u hu, Matrix.zero_mul, Matrix.mul_zero]`. Use `⟨p * m⁻¹, m, g₀, mul_inv_mem_unip_one hl hpx hg₀, ?_, hl, hmat, hg₀at, by group⟩` and prove the remaining obligations. Conclude with `(UAtSub σ X ev).mul_mem hp ((UAtSub σ X ev).inv_mem hmat)`.
+-/
 theorem stab_decomp_at {R : Type} [Zero R] (ev : AF F → R) {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {X : Spc F E n}
     {X₁ : Spc F E n₁} {H : Plane E n n₁} {r s i₀ i₁ : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hdet : X₁.J.det ≠ 0) (hA : H.IsAdapted σ B X X₁ i₀ i₁) (p : UA σ X.J) (hp : p ∈ UAt σ X ev)
@@ -114,6 +145,9 @@ theorem stab_decomp_at {R : Type} [Zero R] (ev : AF F → R) {σ : E →ₐ[F] E
   refine ⟨p * m⁻¹, m, g₀, mul_inv_mem_unip_one hl hpx hg₀, ?_, hl, hmat, hg₀at, by group⟩
   exact (UAtSub σ X ev).mul_mem hp ((UAtSub σ X ev).inv_mem hmat)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ p hp hpx`. Conclude with `stab_decomp_at (evI F) hB hG.hV (GlobalTheory.FinUniq.det_ne_zero_herm hG₁.hV) hC.hH p hp hpx`.
+-/
 theorem stab_decomp_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     B.IsGood σ → G.IsGood B → G₁.IsGood B →

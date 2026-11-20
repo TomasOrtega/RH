@@ -8,6 +8,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D l _ K LL`. Establish `hA` using `(GlobalTheory.T.ramifiedCoefficientChains_adm11 D l K LL).1`. Introduce `hbij V₀ V₁ V₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ρ₀ ρ₁ ρ₂ ι π _ _ _ _ _ _ _ _ _ hιe hπe hinj hsurj hker c₀ c₁ c₂`. Take `⟨h1, h2, h3, h4⟩` from `hA hbij V₀ ρ₀ V₁ ρ₁ V₂ ρ₂ ι π hιe hπe hinj hsurj hker.symm c₀ c₁ c₂`. Use `⟨h1, ?_, h3, fun a => (h4 a).1, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx hπx`. Conclude with `Submodule.mem_map.mp (h2.ge ⟨hx, hπx⟩)`. Introduce `a y hy hyF`. Conclude with `(h4 a).2.ge ⟨hy, hyF⟩`.
+-/
 theorem dcris_exact_strict_elementwise : ∀ D : D7, Formalism.MainNotions.TruncatedSeriesCountingBounds.adm9 D := by
   intro D l _ K LL
   have hA := (GlobalTheory.T.ramifiedCoefficientChains_adm11 D l K LL).1

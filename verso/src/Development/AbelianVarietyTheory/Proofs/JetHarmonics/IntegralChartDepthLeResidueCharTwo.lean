@@ -20,6 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CharDepth
 
+/- English proof (translation)
+Establish `hl : Real.log r < 0` using `Real.log_neg hr0 hr1`. Establish `h1` using `Real.log_le_log (Real.rpow_pos_of_pos hr0 B) h`. Rewrite `h1` using `[Real.log_rpow hr0, Real.log_prod hx]`. Rewrite using `[← Finset.sum_div, div_le_iff_of_neg hl]`. Conclude with `h1`.
+-/
 theorem sum_log_div_log_le_of_rpow_le_prod {ι : Type} (S : Finset ι) (x : ι → ℝ) (r B : ℝ) (hr0 : 0 < r)
     (hr1 : r < 1) (hx : ∀ i ∈ S, x i ≠ 0) (h : r ^ B ≤ ∏ i ∈ S, x i) :
     ∑ i ∈ S, Real.log (x i) / Real.log r ≤ B := by
@@ -29,6 +32,37 @@ theorem sum_log_div_log_le_of_rpow_le_prod {ι : Type} (S : Finset ι) (x : ι �
   rw [← Finset.sum_div, div_le_iff_of_neg hl]
   exact h1
 
+/- English proof (translation)
+Introduce `p _ hAv hHT E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y Ch hy h2 hsp f vd hvd htp e k n a he hdom hn Ap hAp haA`. Take `⟨X⟩` from `GlobalTheory.T.nonempty_closedValuedExtensionOfCDVR T p h2`. Take `⟨τT, -, hty, -⟩` from `GlobalTheory.T.exists_cmType_embeddings_into_valuation_ring E H l c T io p X`.
+
+Take `⟨hw0, happ⟩` from `UpperTheory.cmDatum_splitPlaces_conj_stable p Fact.out E H hsp X.C X.v X.O X.ints X.nonunit.out`. Take `⟨xs, hxs, hprod⟩` from `GlobalTheory.T.integralChart_colength_bound_prime_two p hAv E H Dw l Xo c T io y Ch X hy f vd htp`. Take `⟨N, u, hu, hspan⟩` from `GlobalTheory.T.hodgeTate_inclusion_integralChart p hHT E H Dw l Xo c T io y Ch X hy`. Establish `h2C : algebraMap X.O X.C ((p : ℕ) : X.O) = ((p : ℕ) : X.C)` using `map_natCast _ _`. Establish `h2C0 : ((p : ℕ) : X.C) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+
+Establish `h2O0 : ((p : ℕ) : X.O) ≠ 0` using `fun h => h2C0 (by rw [← h2C, h, map_zero])`. Establish `hr0 : (0 : ℝ) < (X.v ((p : ℕ) : X.C) : ℝ)`. Establish `: X.v ((p : ℕ) : X.C) ≠ 0` using `(Valuation.ne_zero_iff _).2 h2C0`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Establish `hr1 : (X.v ((p : ℕ) : X.C) : ℝ) < 1`.
+
+Establish `hle : X.v ((p : ℕ) : X.C) ≤ 1` using `by rw [← h2C]; exact X.ints.map_le_one _`. Establish `hne : X.v ((p : ℕ) : X.C) ≠ 1` using `fun h => X.nonunit.out (X.ints.isUnit_iff_valuation_eq_one.2 (by rw [h2C]; exact h))`. Conclude with `lt_of_le_of_ne hle hne` after adjusting the coercions. Use `set r : ℝ := (X.v ((p : ℕ) : X.C) : ℝ) with hr`. Establish `hlog : Real.log r < 0` using `Real.log_neg hr0 hr1`.
+
+Establish `hxs0 : ∀ τ ∈ Finset.univ.filter (fun τ => InPsi H τ), (xs τ : ℝ) ≠ 0` using `Finset.prod_ne_zero_iff.1 (lt_of_lt_of_le (Real.rpow_pos_of_pos hr0 _) hprod).ne'`. Establish `hxs0' : ∀ τ, InPsi H τ → xs τ ≠ 0` using `fun τ hτ h => hxs0 τ (Finset.mem_filter.2 ⟨Finset.mem_univ _, hτ⟩) (by rw [h]; rfl)`. Set `len : (E →+* ℂ) → ℝ` to `fun τ => if InPsi H τ then Real.log (xs τ) / Real.log r else (Dw.q : ℝ)`. Establish `hlen0 : ∀ τ, 0 ≤ len τ`. Introduce `τ`.
+
+Distinguish the cases in `hτ : InPsi H τ`. Simplify using `only [len, if_pos hτ]`. Establish `h1` using `(GlobalTheory.T.exists_flag_characters_leading_minors_colength X.C X.v X.O X.ints _ _ _ _ _ (hxs τ hτ) (hxs0' τ hτ)).1`. Conclude with `div_nonneg_of_nonpos (Real.log_nonpos (xs τ).2 (by exact_mod_cast h1)) hlog.le`. Simplify using `only [len, if_neg hτ]`.
+
+Conclude with `Nat.cast_nonneg _`. Establish `key` using `GlobalTheory.T.chartDepth_le_of_characterFlags E H Dw l Xo c T io y Ch p X _ hty (fun τ => ⟨H.w0, hw0 _⟩) (fun x hx => by`. Take `⟨M, hM, hM'⟩` from `happ x hx`. Conclude with `⟨M, hM, fun τ => hM' _⟩) e k n a he hdom hn len hlen0 (by`. Introduce `τ`.
+
+Distinguish the cases in `hτ : InPsi H τ`. Take `⟨-, χ, hχ, hχ'⟩` from `GlobalTheory.T.exists_flag_characters_leading_minors_colength X.C X.v X.O X.ints _ _ _ _ _ (hxs τ hτ) (hxs0' τ hτ)`. Use `⟨χ, hχ, fun i => ?_⟩` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < xs τ` using `by exact_mod_cast pos_iff_ne_zero.2 (hxs0' τ hτ)`. Establish `: r ^ len τ = xs τ`.
+
+Simplify using `only [len, if_pos hτ]`. Rewrite using `[Real.rpow_def_of_pos hr0, mul_div_cancel₀ _ hlog.ne, Real.exp_log hpos]`. Rewrite using `[← hr, this]`. Conclude with `hχ' i` after adjusting the coercions. Take `⟨χ, hχ, hχ'⟩` from `GlobalTheory.T.exists_characters_leading_minors_valuation_ge X.C X.v X.O X.ints _ _ N _ _ (GlobalTheory.T.cmTypeDirections_eigenbasis_valuedIntegers E H Dw l Xo c T io y Ch p X _ hty τ).2 u hu ((p : ℕ) : X.O) h2O0 (hspan _ (by`.
+
+Rewrite using `[h2C]`. Establish `hle : X.v ((p : ℕ) : X.C) ≤ 1` using `by exact_mod_cast hr1.le`. Conclude with `pow_le_of_le_one zero_le hle (by have := (Fact.out : p.Prime).two_le; omega)))`. Use `⟨χ, hχ, fun i => ?_⟩` and prove the remaining obligations. Establish `hm : Dw.mult τ = Dw.q` using `if_neg hτ`.
+
+Establish `: r ^ len τ = ((X.v (algebraMap X.O X.C ((p : ℕ) : X.O)) ^ Dw.mult τ : NNReal) : ℝ)`. Simplify using `only [len, if_neg hτ]`. Rewrite using `[Real.rpow_natCast, h2C, hm, NNReal.coe_pow]`. Rewrite using `[← hr, this]`. Conclude with `hχ' i)` after adjusting the coercions.
+
+Use `key.trans (EReal.coe_le_coe_iff.2 (mul_le_mul_of_nonneg_left ?_ ?_))` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ => InPsi H τ)]`. Use `add_le_add ?_ (le_of_eq ?_)` and prove the remaining obligations. Establish `hsum` using `sum_log_div_log_le_of_rpow_le_prod _ (fun τ => (xs τ : ℝ)) r _ hr0 hr1 hxs0 hprod`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right hsum hAp)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ hτ => ?_` and prove the remaining obligations. Establish `hτ' : InPsi H τ` using `(Finset.mem_filter.1 hτ).2`. Establish `h0` using `hlen0 τ`. Simplify using `only [len, if_pos hτ'] at h0 ⊢`.
+
+Conclude with `mul_le_mul_of_nonneg_left (haA τ hτ') h0`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Establish `hτ' : ¬ InPsi H τ` using `(Finset.mem_filter.1 hτ).2`. Simplify using `only [len, if_neg hτ']`.
+
+Establish `h0` using `GlobalTheory.vV_algebraMap_nonneg_dvr T ((p : ℕ) : T.V)`. Rewrite `h0` using `[map_natCast]`. Conclude with `div_nonneg (by exact_mod_cast h0) (Nat.cast_nonneg _)`.
+-/
 theorem nuLocC_le_over_two : ∀ (p : ℕ) [Fact p.Prime], AvFSt p → HTFSt p → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y), y.IsAlg → ¬ IsUnit ((p : ℕ) : T.V) → UpperTheory.Depth.SplitAt H.d p → ∀ (f : ℕ) (vd : ℝ), 0 ≤ vd → UpperTheory.Depth.SplitPlaces p H f vd → ∀ (e k n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), 0 < e → DomW Dw a → Fintype.card (Lt1 Dw) ≤ n → ∀ Ap : ℝ, 0 ≤ Ap → (∀ τ, InPsi H τ → (a (τ, 0) : ℝ) ≤ Ap) → (open Classical in nuLocC Ch e k a n ≤ (((vV T.V ((p : ℕ) : T.Fr) : ℝ) / (e : ℝ) * ((f : ℝ) * Dw.q * (1 + vd / 2) * Ap + Dw.q * ∑ τ ∈ Finset.univ.filter (fun τ => ¬ InPsi H τ), (a (τ, 0) : ℝ)) : ℝ) : EReal)) := by
   intro p _ hAv hHT E _ _ _ H Dw l Xo c
   letI := H.starRing

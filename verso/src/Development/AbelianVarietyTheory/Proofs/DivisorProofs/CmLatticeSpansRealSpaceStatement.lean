@@ -12,6 +12,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HermDiagCM.diagonal_of_conj_form | exact GlobalTheory.HermDiagCM.diagonal_of_conj_form | (intros; apply GlobalTheory.HermDiagCM.diagonal_of_conj_form <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_lattice_spans_real_space : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), 0 < d → δ ^ 2 = -(d : K) →
     ∀ g : ℂ ≃+* ℂ, (∀ x, g (io x) = io x) →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),

@@ -15,6 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {gp : Fin 2 → ℕ}
 
+/- English proof (translation)
+Rewrite using `[X.chi_eq κ]`. Use `prod_mem fun i _ => ?_` and prove the remaining obligations. Use `finprod_induction (fun z : ℂ => z ∈ K) (one_mem K) (fun _ _ hx hy => mul_mem hx hy) fun v => ?_` and prove the remaining obligations. Use `finprod_induction (fun z : ℂ => z ∈ K) (one_mem K) (fun _ _ hx hy => mul_mem hx hy) fun h => ?_` and prove the remaining obligations. Use `inv_mem ?_` and prove the remaining obligations.
+
+Unfold `lamJ`. Conclude with `mul_mem (hψ i v h _) (prod_mem fun b hb => hχ i v h b (Finset.mem_range.1 hb) _)`.
+-/
 theorem chi_mem_subfield {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp} {a t nb skip fc : ℕ} {zl : Bool}
     (X : GLev S G a t nb skip fc zl) (K : Subfield ℂ) (hψ : ∀ i v h x, G.psi0 i v h x ∈ K)
     (hχ : ∀ i v h b, b < nb → ∀ x, G.chiB i v h b x ∈ K) (κ : S.U) : ((S.chi κ : ℂˣ) : ℂ) ∈ K := by
@@ -32,6 +37,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `x`. Establish `h1 : (D.fm u).emb 0 x ∈ (D.fm u).Fi 0` using `((((T u).val0).rat _).1 ⟨x, rfl⟩).1`. Take `⟨fa, hfa, e⟩` from `(((T u).val0).Fi _).1 h1`. Conclude with `⟨fa, hfa.1, fun c => congrFun e c⟩`.
+-/
 theorem adExt_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) :
     AdExt ((T u).cls0).lev (embT D) D.what₂.embLL (embFr T u) ((T u).cls0).y := by
   intro x
@@ -42,6 +50,9 @@ theorem adExt_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) 
 def LevelZeroCharacterRational (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) : Prop :=
   ∀ i v h x, ∃ r : D.what₂.LL, D.what₂.embLL r = (T u).gl.psi0 i v h x
 
+/- English proof (translation)
+Introduce `κ`. Conclude with `RingHom.mem_fieldRange.1 (chi_mem_subfield ((T u).glev0) D.what₂.embLL.fieldRange (fun i v hv x => RingHom.mem_fieldRange.2 (h i v hv x)) (fun _ _ _ b hb => absurd hb (Nat.not_lt_zero b)) κ)`.
+-/
 theorem chiRatAll_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (h : LevelZeroCharacterRational T u) :
     ChiRatAll ((T u).cls0).lev D.what₂.embLL := by
   intro κ
@@ -52,6 +63,9 @@ variable {X : Formalism.L2.Herm.Herm0 D}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `valEx_of_rep' (tEL D) (tEL_emb D) (embT_conj D) (locAt_std u w hg I.B I.B_std) (adExt_rec T u) (ptEx_rec X T u w hg I.B) hO h1 (chiRatAll_rec T u h2)`.
+-/
 theorem ex_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I : CmpIn D X) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (hO : PtOne ((T u).cls0).lev (D.gat u w hg) (locAt X u w hg I.B))

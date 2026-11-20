@@ -22,12 +22,20 @@ def integerAlgEquivOfAlgEquiv (e : L₁ ≃ₐ[K] L₂) : 𝒪[L₁] ≃ₐ[𝒪
     (by ext; simp) (by ext; simp)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerAlgEquivOfAlgEquiv_apply (e : L₁ ≃ₐ[K] L₂) (x : 𝒪[L₁]) :
     (integerAlgEquivOfAlgEquiv e x : L₂) = e x :=
   rfl
 
 omit [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Take `⟨ϖ, hϖ⟩` from `exists_irreducible R`. Take `⟨n, u, rfl⟩` from `eq_unit_mul_pow_irreducible hx hϖ`. Establish `hϖ' : Irreducible (φ ϖ)` using `(MulEquiv.irreducible_iff (f := (φ : R ≃* S))).mpr hϖ`.
+
+Rewrite using `[map_mul, map_pow, addVal_def' u hϖ n]`. Conclude with `addVal_def' (Units.map (φ : R →* S) u) hϖ' n`.
+-/
 theorem addVal_ringEquiv {R S : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [CommRing S] [IsDomain S] [IsDiscreteValuationRing S] (φ : R ≃+* S) (x : R) :
     addVal S (φ x) = addVal R x := by
@@ -39,6 +47,11 @@ theorem addVal_ringEquiv {R S : Type*} [CommRing R] [IsDomain R] [IsDiscreteValu
   rw [map_mul, map_pow, addVal_def' u hϖ n]
   exact addVal_def' (Units.map (φ : R →* S) u) hϖ' n
 
+/- English proof (translation)
+Use `set φ := integerAlgEquivOfAlgEquiv e`. Rewrite using `[lowerIndex, lowerIndex, ← φ.toEquiv.iInf_comp]`. Use `iInf_congr fun x => ?_` and prove the remaining obligations. Establish `h : integerAlgEquiv K L₂ (e.autCongr σ) (φ x) - φ x = φ (integerAlgEquiv K L₁ σ x - x)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[φ, AlgEquiv.autCongr_apply]`. Simplify using `only [AlgEquiv.toEquiv_eq_coe, EquivLike.coe_coe]`. Rewrite using `[h]`. Conclude with `addVal_ringEquiv (φ : 𝒪[L₁] ≃+* 𝒪[L₂]) _`.
+-/
 theorem lowerIndex_autCongr (e : L₁ ≃ₐ[K] L₂) (σ : L₁ ≃ₐ[K] L₁) :
     lowerIndex K L₂ (e.autCongr σ) = lowerIndex K L₁ σ := by
   set φ := integerAlgEquivOfAlgEquiv e
@@ -51,6 +64,13 @@ theorem lowerIndex_autCongr (e : L₁ ≃ₐ[K] L₂) (σ : L₁ ≃ₐ[K] L₁)
   rw [h]
   exact addVal_ringEquiv (φ : 𝒪[L₁] ≃+* 𝒪[L₂]) _
 
+/- English proof (translation)
+Use extensionality with `τ`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Rewrite `hσ`, the goal using `[mem_lowerRamificationGroup_iff_lowerIndex]`.
+
+Use `show _ ≤ lowerIndex K L₂ (e.autCongr σ)`. Rewrite using `[lowerIndex_autCongr]`. Conclude with `hσ`. Introduce `hτ`. Use `⟨e.autCongr.symm τ, ?_, MulEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations.
+
+Rewrite `hτ`, the goal using `[mem_lowerRamificationGroup_iff_lowerIndex]`. Rewrite using `[← lowerIndex_autCongr e, MulEquiv.apply_symm_apply]`. Conclude with `hτ`.
+-/
 theorem map_lowerRamificationGroup_autCongr (e : L₁ ≃ₐ[K] L₂) (i : ℤ) :
     (lowerRamificationGroup K L₁ i).map (e.autCongr : (L₁ ≃ₐ[K] L₁) →* (L₂ ≃ₐ[K] L₂)) =
       lowerRamificationGroup K L₂ i := by
@@ -68,11 +88,19 @@ theorem map_lowerRamificationGroup_autCongr (e : L₁ ≃ₐ[K] L₂) (i : ℤ) 
     rw [← lowerIndex_autCongr e, MulEquiv.apply_symm_apply]
     exact hτ
 
+/- English proof (translation)
+The claim follows from `map_lowerRamificationGroup_autCongr e _`.
+-/
 theorem map_lowerRamificationGroupReal_autCongr (e : L₁ ≃ₐ[K] L₂) (t : ℝ) :
     (lowerRamificationGroupReal K L₁ t).map (e.autCongr : (L₁ ≃ₐ[K] L₁) →* (L₂ ≃ₐ[K] L₂)) =
       lowerRamificationGroupReal K L₂ t :=
   map_lowerRamificationGroup_autCongr e _
 
+/- English proof (translation)
+Break down `le_or_gt (-1) u with hu | hu` into its components or cases. Rewrite using `[herbrandPhi_eq_sum_lowerIndex hu, herbrandPhi_eq_sum_lowerIndex hu]`. Establish `hcard : Nat.card (lowerRamificationGroup K L₂ 0) = Nat.card (lowerRamificationGroup K L₁ 0)`. Rewrite using `[← map_lowerRamificationGroup_autCongr e 0]`. Conclude with `Subgroup.card_map_of_injective e.autCongr.injective`.
+
+Rewrite using `[hcard, ← Fintype.sum_equiv e.autCongr.toEquiv (fun σ => enatMin (lowerIndex K L₁ σ) (u + 1)) (fun τ => enatMin (lowerIndex K L₂ τ) (u + 1)) (fun σ => by show _ = enatMin (lowerIndex K L₂ (e.autCongr σ)) (u + 1)`. Rewrite using `[lowerIndex_autCongr])]`. Rewrite using `[herbrandPhi_of_nonpos (by linarith), herbrandPhi_of_nonpos (by linarith)]`.
+-/
 theorem herbrandPhi_eq_of_algEquiv (e : L₁ ≃ₐ[K] L₂) (u : ℝ) :
     herbrandPhi K L₂ u = herbrandPhi K L₁ u := by
   rcases le_or_gt (-1) u with hu | hu
@@ -88,16 +116,27 @@ theorem herbrandPhi_eq_of_algEquiv (e : L₁ ≃ₐ[K] L₂) (u : ℝ) :
         rw [lowerIndex_autCongr])]
   · rw [herbrandPhi_of_nonpos (by linarith), herbrandPhi_of_nonpos (by linarith)]
 
+/- English proof (translation)
+Rewrite using `[herbrandPsi_eq_iff, herbrandPhi_eq_of_algEquiv e, herbrandPhi_herbrandPsi]`.
+-/
 theorem herbrandPsi_eq_of_algEquiv (e : L₁ ≃ₐ[K] L₂) (v : ℝ) :
     herbrandPsi K L₂ v = herbrandPsi K L₁ v := by
   rw [herbrandPsi_eq_iff, herbrandPhi_eq_of_algEquiv e, herbrandPhi_herbrandPsi]
 
+/- English proof (translation)
+Rewrite using `[upperRamificationGroup, upperRamificationGroup, herbrandPsi_eq_of_algEquiv e, map_lowerRamificationGroupReal_autCongr]`.
+-/
 theorem map_upperRamificationGroup_autCongr (e : L₁ ≃ₐ[K] L₂) (v : ℝ) :
     (upperRamificationGroup K L₁ v).map (e.autCongr : (L₁ ≃ₐ[K] L₁) →* (L₂ ≃ₐ[K] L₂)) =
       upperRamificationGroup K L₂ v := by
   rw [upperRamificationGroup, upperRamificationGroup, herbrandPsi_eq_of_algEquiv e,
     map_lowerRamificationGroupReal_autCongr]
 
+/- English proof (translation)
+Establish `h0 : lowerRamificationGroup K L₁ 0 = ⊥` using `Subgroup.eq_bot_of_card_eq _ (by rw [card_lowerRamificationGroup_zero, he])`. Rewrite using `[eq_bot_iff, ← h0, upperRamificationGroup, lowerRamificationGroupReal]`. Apply `lowerRamificationGroup_antitone` to reduce the goal to its premises. Establish `h1 : -1 < herbrandPsi K L₁ v`. Rewrite using `[← herbrandPsi_of_nonpos (K := K) (L := L₁) (show (-1 : ℝ) ≤ 0 by norm_num)]`.
+
+Conclude with `herbrandPsi_strictMono hv`. Conclude with `Int.le_ceil_iff.mpr (by push_cast; linarith)`.
+-/
 theorem upperRamificationGroup_eq_bot_of_ramificationIndex_eq_one [IsGalois K L₁]
     (he : ramificationIndex K L₁ = 1) {v : ℝ} (hv : -1 < v) : upperRamificationGroup K L₁ v = ⊥ := by
   have h0 : lowerRamificationGroup K L₁ 0 = ⊥ :=
@@ -119,6 +158,15 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   {L M : IntermediateField K Ω} [FiniteDimensional K L] [FiniteDimensional K M] [IsGalois K L]
   [IsGalois K M]
 
+/- English proof (translation)
+Use `set R := IntermediateField.restrict h`. Set `e : L ≃ₐ[K] R` to `IntermediateField.restrictAlgEquiv h`. Establish `: IsGalois K R` using `IsGalois.of_algEquiv e`. Establish `hH` using `map_upperRamificationGroup (K := K) (L := M) R v`. Establish `hT` using `map_upperRamificationGroup_autCongr e.symm v`.
+
+Establish `key : ∀ y : R, ((e.symm y : L) : Ω) = ((y : M) : Ω)` using `fun y => by conv_rhs => rw [← e.apply_symm_apply y]`. Both sides reduce to the same expression. Establish `hcomp : (e.symm.autCongr : (R ≃ₐ[K] R) →* (L ≃ₐ[K] L)).comp (AlgEquiv.restrictNormalHom R) = restrictAut h`. Use extensionality with `σ x`. Rewrite using `[restrictAut_apply]`.
+
+Use `show ((e.symm ((σ.restrictNormal R) (e x)) : L) : Ω) = _`. Rewrite using `[key]`. Establish `h1` using `AlgEquiv.restrictNormal_commutes σ R (e x)`. Establish `h2 : (algebraMap R M (σ.restrictNormal R (e x)) : M) = ((σ.restrictNormal R (e x) : R) : M)`. Both sides reduce to the same expression.
+
+Rewrite using `[← h2, h1]`. Both sides reduce to the same expression. Rewrite using `[← hT, ← hH, Subgroup.map_map, hcomp]`.
+-/
 theorem map_upperRamificationGroup_restrictAut (h : L ≤ M) (v : ℝ) :
     (upperRamificationGroup K M v).map (restrictAut h) = upperRamificationGroup K L v := by
   set R := IntermediateField.restrict h

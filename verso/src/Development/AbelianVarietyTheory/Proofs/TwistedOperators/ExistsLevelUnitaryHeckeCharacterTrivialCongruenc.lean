@@ -35,12 +35,24 @@ open scoped TensorProduct
 
 namespace GlobalTheory.HeckeLevel
 
+/- English proof (translation)
+Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem add_mul_sub_one {R : Type} [CommRing R] (m c : ℕ) (w : R) :
     1 + ((m * c : ℕ) : R) * w - 1 = m • ((c : R) * w) := by
   rw [nsmul_eq_mul]
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D ν hν`. Take `⟨N₀, hN₀, hker, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D ν hν.1`. Use `⟨N₀, hN₀, ?_⟩` and prove the remaining obligations. Introduce and unpack `N ⟨c, rfl⟩ u hu ⟨w, hw, e⟩ ⟨w', hw', e'⟩`. Establish `key : ∀ z : Af D.host.F ⊗[D.host.F] D.host.E, (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E z : Lev.EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E → z ∈ intAE D` using `fun z hz => (GlobalTheory.IdemSupport.mem_intAE_iff z).2 hz`.
+
+Establish `hint : ∀ (a : AE D) (v : Lev.EAf D), v ∈ Formalism.L2.Herm.intAf D.host.F D.host.E → toEAf D a = 1 + ((N₀ * c : ℕ) : Lev.EAf D) * v → finPart D a ∈ intAE D`. Introduce `a v hv ha`. Use `key _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toEAf D a ∈ _`. Rewrite using `[ha]`.
+
+Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ _) hv)`. Use `hker u ⟨hu, hint _ w hw e, hint _ w' hw' e'⟩ ⟨(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm ((c : Lev.EAf D) * w), key _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `mul_mem (natCast_mem _ _) hw`. Apply `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, map_one, map_nsmul, AlgEquiv.apply_symm_apply]`. Establish `e2 : (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D (u : AE D)) : Lev.EAf D) = 1 + ((N₀ * c : ℕ) : Lev.EAf D) * w` using `e`. Rewrite using `[e2]`. Conclude with `add_mul_sub_one N₀ c w`.
+-/
 theorem exists_level : ∀ (D : D7) (ν : (AE D)ˣ →* Circle), IsHeckeChar D ν → ∃ N₀ : ℕ, 0 < N₀ ∧ ∀ N : ℕ, N₀ ∣ N → ∀ u : (AE D)ˣ, infPart D (u : AE D) = 1 → (∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D (u : AE D) = 1 + (N : Lev.EAf D) * w) → (∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, toEAf D ((u⁻¹ : (AE D)ˣ) : AE D) = 1 + (N : Lev.EAf D) * w) → ν u = 1 := by
   intro D ν hν
   obtain ⟨N₀, hN₀, hker, -⟩ := GlobalTheory.CharFin.char_finUnit_finite_order D ν hν.1

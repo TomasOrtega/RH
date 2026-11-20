@@ -36,11 +36,17 @@ def PinnedConcl (t : SAB H S) (f : S' ⟶ S) (PP' : RigLB ((Over.pullback f).obj
     (m : SABMap ⟨(Over.pullback f).obj t.G, semi, act, PP', cub, sym, adj, prim⟩ t f),
     m.φ = pullback.fst t.G.hom f
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Conclude with `⟨_, DVR.linCombIso_isGen w hw _ _⟩`.
+-/
 theorem lbIso_cubeLB {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L M : LB G.left} (h : LBIso L M) : LBIso (cubeLB G x L) (cubeLB G x M) := by
   obtain ⟨w, hw⟩ := h
   exact ⟨_, DVR.linCombIso_isGen w hw _ _⟩
 
+/- English proof (translation)
+The claim follows from `DVR.linComb_isLB _ h _ _`.
+-/
 theorem cubeLB_isLB {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L : LB G.left} (h : L.IsLB) : (cubeLB G x L).IsLB := DVR.linComb_isLB _ h _ _
 

@@ -10,6 +10,13 @@ namespace SheetDecomposition.One
 open AlgebraicGeometry CategoryTheory Filter Topology Metric TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `hpb` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct K ℂ A)`. Set `q : Sp (ℂ ⊗[K] A) ⟶ Sp A` to `spMap (Algebra.TensorProduct.includeRight (R := K) (A := ℂ) (B := A)).toRingHom`. Establish `hpb' : IsPullback (spMap (algebraMap ℂ (ℂ ⊗[K] A))) q (spMap (algebraMap K ℂ)) (spMap (algebraMap K A))` using `hpb`. Establish `hp : SmoothOfRelativeDimension d (spMap (algebraMap ℂ (ℂ ⊗[K] A)))` using `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback hpb'.flip hs`. Establish `hl` using `GlobalTheory.FiniteClasses.isLocallyConstant_of_hol _ d hp (fun z => F (z.1 ≫ q)) (by`.
+
+Introduce `B y hB hy b₀ hb₀`. Take `⟨ε, hε, hsub⟩` from `Metric.isOpen_iff.1 hB b₀ hb₀`. Use `filter_upwards [ball_mem_nhds b₀ hε] with b hb`. Conclude with `hF d (ball b₀ ε) (fun b => (y b).1 ≫ q) isOpen_ball (convex_ball b₀ ε).isPreconnected (isHolTo_mono (GagaRat.isHolTo_comp q hy) isOpen_ball hsub) b hb b₀ (mem_ball_self hε))`. Use `haveI := GlobalTheory.FiniteClasses.preconnectedSpace_pts (ℂ ⊗[K] A)`.
+
+Use `hl.apply_eq_of_preconnectedSpace ⟨hpb'.lift (𝟙 _) x (by rw [Category.id_comp, hx]), hpb'.lift_fst _ _ _⟩ ⟨hpb'.lift (𝟙 _) x' (by rw [Category.id_comp, hx']), hpb'.lift_fst _ _ _⟩` as an intermediate fact. Simplify `this` using `only [IsPullback.lift_snd]`.
+-/
 theorem const_affine {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra K ℂ] [IsDomain (ℂ ⊗[K] A)] (d : ℕ)
     (hs : SmoothOfRelativeDimension d (spMap (algebraMap K A))) [Algebra.FiniteType K A] (F : (Sp ℂ ⟶ Sp A) → ℂ)
     (hF : ∀ (m : ℕ) (T : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Sp A)), IsOpen T → IsPreconnected T → IsHolTo T y →
@@ -33,6 +40,21 @@ theorem const_affine {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra 
     ⟨hpb'.lift (𝟙 _) x' (by rw [Category.id_comp, hx']), hpb'.lift_fst _ _ _⟩
   simpa only [IsPullback.lift_snd] using this
 
+/- English proof (translation)
+Use `haveI : CharZero K := σ.charZero`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Take `⟨A, _, _, a, -, ha, hr, has, -⟩` from `GagaRat.exists_chart (C := ℂ) s V hV`. Establish `hm : ∀ P, a P ∈ V` using `fun P => by`. Establish `: a P ∈ Set.range a` using `⟨P, rfl⟩`.
+
+Rewrite `this` using `[hr]`. Then use the resulting hypothesis. Establish `hg : genPt ξ ∈ V` using `(hVc _ (GagaRat.centre_mem hxV)).mem_open V.isOpen (GagaRat.centre_mem hxV)`. Take `⟨φ, hφ⟩` from `GagaRat.exists_ringHom_of_mem a ξ (by rw [hr]; exact hg)`. Take `⟨χ, hχ⟩` from `GagaRat.exists_ringHom_of_mem a x (by rw [hr]; exact GagaRat.centre_mem hxV)`. Take `⟨χ', hχ'⟩` from `GagaRat.exists_ringHom_of_mem a x' (by rw [hr]; exact GagaRat.centre_mem hxV')`.
+
+Establish `hφK : φ.comp (algebraMap K A) = algebraMap K Ω`. Establish `e : spMap (φ.comp (algebraMap K A)) = spMap (algebraMap K Ω)`. Rewrite using `[← GagaRat.spMap_comp, ← has, ← Category.assoc, hφ, hξs]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `hinj : Function.Injective φ`.
+
+Use `(injective_iff_map_eq_zero φ).2 fun b hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hne : (Submodule.span A {b}).annihilator ≠ ⊤` using `fun h => h0 (by`. Establish `h1 : (1 : A) ∈ (Submodule.span A {b}).annihilator` using `h ▸ Submodule.mem_top`. Simplify using `using Submodule.mem_annihilator_span_singleton b 1 |>.1 h1)`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `P : Sp A` to `(⟨M, hM.isPrime⟩ : PrimeSpectrum A)`. Take `⟨u, hu, e⟩` from `GagaRat.local_descend ξ a φ hφ P (hVc _ (hm P)) (hξ.inj ⟨_, hVc _ (hm P)⟩) b hb`. Conclude with `hu (hle ((Submodule.mem_annihilator_span_singleton b u).2 e))`. Establish `hsA : SmoothOfRelativeDimension d (spMap (algebraMap K A))`.
+
+Rewrite using `[← has]`. Simplify using `using (inferInstance : SmoothOfRelativeDimension (0 + d) (a ≫ s))`. Use `haveI : Algebra.FiniteType K A := by haveI : Smooth (spMap (algebraMap K A)) := SmoothOfRelativeDimension.smooth d _`. Conclude with `RingHom.finiteType_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 (inferInstance : LocallyOfFiniteType (spMap (algebraMap K A))))`. Use `haveI : IsDomain (ℂ ⊗[K] A) := GlobalTheory.GeomConn.isDomain_tensor ({ φ with commutes' := fun k => RingHom.congr_fun hφK k } : A →ₐ[K] Ω) hinj (fun w hw => by`.
+
+Take `⟨u, v, hv, h⟩` from `hcl w hw`. Conclude with `⟨u / v, by rw [map_div₀, ← h, mul_div_cancel_right₀ _ ((map_ne_zero _).2 hv)]⟩) ℂ`. Use `const_affine d hsA (fun z => F (z ≫ a)) (fun m T y hT hc hy => hF m T (fun b => y b ≫ a) hT hc (GagaRat.isHolTo_comp a hy) fun b _ p _ => hm (y b p)) (spMap χ) (spMap χ') (by rw [← has, ← Category.assoc, hχ, hx]) (by rw [← has, ← Category.assoc, hχ', hx'])` as an intermediate fact. Simplify `this` using `only [hχ, hχ']`.
+-/
 theorem const_chart {K : Type} [Field K] (σ : K →+* ℂ) {X : Scheme.{0}} (s : X ⟶ Sp K) {Ω : Type} [Field Ω] [Algebra K Ω]
     (ξ : Sp Ω ⟶ X) (V : X.Opens) (hV : IsAffineOpen V) (F : (Sp ℂ ⟶ X) → ℂ) (d : ℕ) (hs : SmoothOfRelativeDimension d s)
     (hξs : ξ ≫ s = spMap (algebraMap K Ω)) (hξ : IsCptGen ξ) (hcl : ConstClosed K Ω) (hVc : ∀ q ∈ V, genPt ξ ⤳ q)
@@ -80,6 +102,11 @@ theorem const_chart {K : Type} [Field K] (σ : K →+* ℂ) {X : Scheme.{0}} (s 
     (by rw [← has, ← Category.assoc, hχ, hx]) (by rw [← has, ← Category.assoc, hχ', hx'])
   simpa only [hχ, hχ'] using this
 
+/- English proof (translation)
+Use `haveI : Smooth s := SmoothOfRelativeDimension.smooth d s`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Take `⟨Z, hZ, -, -⟩` from `cpt_open_integral X Ω ξ hξ`. Take `⟨V, hV, m, le⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := centre x) (U := W ⊓ Z) ⟨GagaRat.centre_mem hxW, (hZ _).2 hc⟩`. Take `⟨V', hV', m', le'⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := centre x') (U := W ⊓ Z) ⟨GagaRat.centre_mem hxW', (hZ _).2 hc'⟩`.
+
+Take `⟨z, hz, hzV⟩` from `exists_point σ s (V ⊓ V') (q := genPt ξ) ⟨hc.mem_open V.isOpen m, hc'.mem_open V'.isOpen m'⟩`. Establish `e` using `const_chart σ s ξ V hV F d hs hξs hξ hcl (fun q hq => (hZ q).1 (le hq).2) (fun n T y h1 h2 h3 h4 => hF n T y h1 h2 h3 fun b hb p hp => (le (h4 b hb hp)).1) x z hx hz (GagaRat.top_le_of_centre_mem m) fun p hp => (hzV hp).1`. Establish `e'` using `const_chart σ s ξ V' hV' F d hs hξs hξ hcl (fun q hq => (hZ q).1 (le' hq).2) (fun n T y h1 h2 h3 h4 => hF n T y h1 h2 h3 fun b hb p hp => (le' (h4 b hb hp)).1) x' z hx' hz (GagaRat.top_le_of_centre_mem m') fun p hp => (hzV hp).2`. Conclude with `e.trans e'.symm`.
+-/
 theorem const_of_hol {K : Type} [Field K] (σ : K →+* ℂ) {X : Scheme.{0}} (s : X ⟶ Sp K) {Ω : Type} [Field Ω] [Algebra K Ω]
     (ξ : Sp Ω ⟶ X) (W : X.Opens) (F : (Sp ℂ ⟶ X) → ℂ) (d : ℕ) (hs : SmoothOfRelativeDimension d s)
     (hξs : ξ ≫ s = spMap (algebraMap K Ω)) (hξ : IsCptGen ξ) (hcl : ConstClosed K Ω)
@@ -103,6 +130,9 @@ theorem const_of_hol {K : Type} [Field K] (σ : K →+* ℂ) {X : Scheme.{0}} (s
     (GagaRat.top_le_of_centre_mem m') fun p hp => (hzV hp).2
   exact e.trans e'.symm
 
+/- English proof (translation)
+Take `⟨Z, hZ, -, -⟩` from `cpt_open_integral X Ω ξ hξ`. Take `⟨q, hq, hqU⟩` from `hU.inter_open_nonempty _ Z.isOpen ⟨genPt ξ, (hZ _).2 specializes_rfl⟩`. Conclude with `((hZ q).1 hq).mem_open U.isOpen hqU`.
+-/
 theorem genPt_mem_dense {X : Scheme.{0}} [IsLocallyNoetherian X] {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} (U : X.Opens)
     (hξ : IsCptGen ξ) (hU : Dense (U : Set X)) : genPt ξ ∈ U := by
   obtain ⟨Z, hZ, -, -⟩ := cpt_open_integral X Ω ξ hξ

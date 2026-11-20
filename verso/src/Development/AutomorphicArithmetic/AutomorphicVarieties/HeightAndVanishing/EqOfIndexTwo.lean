@@ -7,12 +7,26 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `h2 : IsIntegral A y` using `hy.tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`. Rewrite using `[← hz]`. Conclude with `z.2`.
+-/
 private theorem mem_of_int {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {y : Ω} (hy : IsIntegral ℤ y) : y ∈ A := by
   have h2 : IsIntegral A y := hy.tower_top
   obtain ⟨z, hz⟩ := IsIntegrallyClosed.isIntegral_iff.mp h2
   rw [← hz]
   exact z.2
 
+/- English proof (translation)
+Use `set M' : Matrix ι ι Ω := M.updateCol a (fun k => M k a + (-1 : Ω) • M k b) with hM'`. Establish `hdet : M'.det = M.det` using `Matrix.det_updateCol_add_smul_self M hab (-1)`. Establish `hent : ∀ i j, M' i j ∈ A`. Introduce `i j`. Rewrite using `[hM', Matrix.updateCol_apply]`.
+
+Use `split_ifs`. Simplify `A.sub_mem (hM i a) (hM i b)` using `[← sub_eq_add_neg]`. Conclude with `hM i j`. Establish `hcol : ∀ i, A.valuation (M' i a) < 1`. Introduce `i`.
+
+Rewrite using `[hM', Matrix.updateCol_self]`. Simplify `h i` using `[← sub_eq_add_neg]`. Rewrite using `[← hdet, Matrix.det_apply']`. Use `Valuation.map_sum_lt _ one_ne_zero (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun i => M' (σ i) i) (Finset.mem_univ a)]`.
+
+Establish `hs : ((Equiv.Perm.sign σ : ℤ) : Ω) ∈ A` using `intCast_mem A.toSubring _`. Establish `hp : (∏ i ∈ Finset.univ.erase a, M' (σ i) i) ∈ A` using `A.toSubring.prod_mem (fun i _ => hent _ _)`. Rewrite using `[Valuation.map_mul, Valuation.map_mul]`. Establish `e1` using `(A.valuation_le_one_iff _).mpr hs`. Establish `e2` using `(A.valuation_le_one_iff _).mpr hp`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem det_lt {Ω ι : Type} [Field Ω] [Fintype ι] [DecidableEq ι] (A : ValuationSubring Ω) (M : Matrix ι ι Ω)
     (hM : ∀ i j, M i j ∈ A) {a b : ι} (hab : a ≠ b) (h : ∀ i, A.valuation (M i a - M i b) < 1) :
     A.valuation M.det < 1 := by
@@ -41,6 +55,29 @@ private theorem det_lt {Ω ι : Type} [Field Ω] [Fintype ι] [DecidableEq ι] (
       ≤ 1 * (A.valuation (M' (σ a) a) * 1) := by gcongr
     _ < 1 := by rw [one_mul, mul_one]; exact hcol _
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Introduce `σ hσ`. Establish `hin : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation (σ x - x) < 1` using `(show σ ∈ Inertia A from hσ).2`. Use `show ∀ x : K, σ (algebraMap K Ω x) = algebraMap K Ω x`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Take `⟨x₀, hx₀⟩` from `hne`. Set `ι : K →ₐ[ℚ] Ω` to `(algebraMap K Ω).toRatAlgHom`. Set `ι' : K →ₐ[ℚ] Ω` to `(σ : Ω ≃ₐ[ℚ] Ω).toAlgHom.comp ι`. Establish `hιι : ι ≠ ι'`.
+
+Introduce `h`. Apply `hx₀` to reduce the goal to its premises. Use `congrArg (fun f : K →ₐ[ℚ] Ω => f x₀) h` as an intermediate fact. Conclude with `this.symm`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 K)) = Fintype.card (K →ₐ[ℚ] Ω)`.
+
+Rewrite using `[AlgHom.card ℚ K Ω, Module.finrank_eq_card_basis (integralBasis K)]`. Set `e` to `Fintype.equivOfCardEq hcard`. Establish `hdisc` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ Ω (integralBasis K) e`. Rewrite `hdisc` using `[← NumberField.coe_discr]`. Establish `hint : ∀ (f : K →ₐ[ℚ] Ω) i, IsIntegral ℤ (f (integralBasis K i))`.
+
+Introduce `f i`. Rewrite using `[integralBasis_apply]`. Conclude with `(RingOfIntegers.isIntegral_coe _).map ((f : K →+* Ω).toIntAlgHom)`. Establish `hlt : A.valuation (Algebra.embeddingsMatrixReindex ℚ Ω (integralBasis K) e).det < 1`. Use `det_lt A _ ?_ (a := e.symm ι) (b := e.symm ι') (e.symm.injective.ne hιι) ?_` and prove the remaining obligations.
+
+Introduce `i j`. Simplify using `only [Algebra.embeddingsMatrixReindex, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.symm_symm, Algebra.embeddingsMatrix_apply]`. Conclude with `mem_of_int A (hint _ _)`. Introduce `i`. Simplify using `only [Algebra.embeddingsMatrixReindex, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.symm_symm, Algebra.embeddingsMatrix_apply, Equiv.apply_symm_apply]`.
+
+Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hin _ ((A.valuation_le_one_iff _).mpr (mem_of_int A (hint _ _)))`. Establish `hdv : A.valuation ((discr K : ℤ) : Ω) < 1`. Establish `h1 : ((discr K : ℤ) : Ω) = algebraMap ℚ Ω ((discr K : ℤ) : ℚ)` using `by simp`. Rewrite using `[h1, hdisc, Valuation.map_pow]`.
+
+Conclude with `pow_lt_one₀ zero_le' hlt two_ne_zero`. Establish `hcop : Nat.Coprime l (discr K).natAbs` using `(Nat.Prime.coprime_iff_not_dvd hl).mpr hd`. Establish `hic : IsCoprime (l : ℤ) (discr K)` using `Int.isCoprime_iff_gcd_eq_one.mpr hcop`. Take `⟨u, v, huv⟩` from `hic`. Establish `hΩ : (u : Ω) * (l : Ω) + (v : Ω) * ((discr K : ℤ) : Ω) = 1`.
+
+Use `congrArg (fun t : ℤ => (t : Ω)) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hu : A.valuation (u : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A.toSubring _)`. Establish `hv : A.valuation (v : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A.toSubring _)`.
+
+Establish `h1 : A.valuation ((u : Ω) * (l : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A.valuation ((v : Ω) * ((discr K : ℤ) : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Valuation.map_add_lt _ h1 h2` as an intermediate fact. Rewrite `this` using `[hΩ, Valuation.map_one]`. Conclude with `lt_irrefl _ this`.
+-/
 private theorem ine_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] {l : ℕ} (hl : l.Prime) (hd : ¬ l ∣ (discr K).natAbs) (A : ValuationSubring Ω)
     (hA : A.valuation (l : Ω) < 1) : Ine (F := ℚ) A ≤ galOf ℚ K Ω := by
@@ -105,6 +142,19 @@ private theorem ine_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   rw [hΩ, Valuation.map_one] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`. Use `haveI : NeZero (l * N) := ⟨Nat.mul_ne_zero hp.ne_zero (NeZero.ne N)⟩`. Take `⟨σ, hσ⟩` from `(Chr.clsOnto Ω (l * N)).1 (-1)`. Establish `hcomp` using `(Chr.clsFacts ℚ Ω (l * N)).2.1`.
+
+Establish `hdown : ∀ (M : ℕ) [NeZero M] (h : M ∣ l * N), Chr.cls ℚ Ω M σ = -1`. Introduce `M _ h`. Rewrite using `[← hcomp M h, MonoidHom.comp_apply, hσ]`. Use `ext`. Simplify using `[ZMod.unitsMap_def]`.
+
+Establish `hl1` using `hdown l (dvd_mul_right l N)`. Establish `hN1` using `hdown N (dvd_mul_left N l)`. Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Establish `hsq : σ * σ ∈ w.ker`. Rewrite using `[hw, MonoidHom.mem_ker, map_mul, hl1]`.
+
+Simplify using the standard rewrite rules. Establish `hne : w σ ≠ 1`. Introduce `h`. Establish `h' : σ ∈ w.ker` using `h`. Rewrite `h'` using `[hw, MonoidHom.mem_ker, hl1]`.
+
+Use `haveI : Fact (2 < l) := ⟨lt_of_le_of_ne hp.two_le (Ne.symm hl)⟩`. Conclude with `ZMod.neg_one_ne_one (congrArg Units.val h')`. Establish `e1 : w σ * w σ = 1` using `by rw [← map_mul]; exact hsq`. Establish `e2 : ((w σ : Oˣ) : O) * (w σ : O) = 1` using `by rw [← Units.val_mul, e1, Units.val_one]`. Break down `mul_self_eq_one_iff.mp e2 with h | h` into its components or cases.
+
+Conclude with `absurd (Units.ext h) hne`. Conclude with `Units.ext (by rw [h, Units.val_neg, Units.val_one])`. Use `show ((MulChar.toUnitHom ψ (Chr.cls ℚ Ω N σ) : Oˣ) : O) = ψ (-1)`. Rewrite using `[MulChar.coe_toUnitHom, hN1, Units.val_neg, Units.val_one]`.
+-/
 private theorem exists_neg (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (hl : l ≠ 2)
     {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N] (ψ : DirichletCharacter O N) (w : G ℚ Ω →* Oˣ)
     (hw : w.ker = (Chr.cls ℚ Ω l).ker) : ∃ σ : G ℚ Ω, w σ = -1 ∧ ((Chr.dirG ℚ Ω ψ σ : Oˣ) : O) = ψ (-1) := by
@@ -138,6 +188,13 @@ private theorem exists_neg (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure �
   · show ((MulChar.toUnitHom ψ (Chr.cls ℚ Ω N σ) : Oˣ) : O) = ψ (-1)
     rw [MulChar.coe_toUnitHom, hN1, Units.val_neg, Units.val_one]
 
+/- English proof (translation)
+Establish `hτH : τ ∉ H` using `fun h => hτ (hθ h)`. Establish `h1 : σ * σ ∈ H` using `(Subgroup.mul_mem_iff_of_index_two hH).mpr (Iff.rfl)`. Establish `h2 : σ * τ ∈ H` using `(Subgroup.mul_mem_iff_of_index_two hH).mpr (iff_of_false hσ hτH)`. Establish `e1 : θ σ * θ σ = 1` using `by rw [← map_mul]; exact hθ h1`. Establish `e2 : θ σ * θ τ = 1` using `by rw [← map_mul]; exact hθ h2`.
+
+Establish `e3 : θ τ = θ σ`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : ((θ σ : Mˣ) : M) * (θ σ : M) = 1` using `by rw [← Units.val_mul, e1, Units.val_one]`. Break down `mul_self_eq_one_iff.mp e4 with h | h` into its components or cases. Conclude with `absurd (by rw [e3]; exact Units.ext h) hτ`.
+
+Conclude with `Units.ext (by rw [h, Units.val_neg, Units.val_one])`.
+-/
 private theorem eq_of_index_two {Γ M : Type} [Group Γ] [CommRing M] [IsDomain M] (H : Subgroup Γ) (hH : H.index = 2)
     (θ : Γ →* Mˣ) (hθ : H ≤ θ.ker) {τ : Γ} (hτ : θ τ ≠ 1) {σ : Γ} (hσ : σ ∉ H) : θ σ = -1 := by
   have hτH : τ ∉ H := fun h => hτ (hθ h)
@@ -154,6 +211,59 @@ private theorem eq_of_index_two {Γ M : Type} [Group Γ] [CommRing M] [IsDomain 
   · exact absurd (by rw [e3]; exact Units.ext h) hτ
   · exact Units.ext (by rw [h, Units.val_neg, Units.val_one])
 
+/- English proof (translation)
+Introduce `Ω _ _ _ K _ _ _ l _ c e N _ ψ w η a hG`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl2 : l ≠ 2` using `hG.l_odd`. Establish `hl3 : 3 ≤ l` using `by have := hp.two_le; omega`. Establish `hom` using `hG.om`.
+
+Establish `hw1 : w ^ (l - 1) = 1` using `hom.1`. Establish `hwc : Congr c w (chiO ℚ Ω l c.O)` using `hom.2`. Establish `hOm` using `(omT Ω l c).2 w hom`. Establish `hCF` using `congrFacts Ω l c`. Use `set D := Chr.dirG ℚ Ω ψ with hD`.
+
+Establish `hcE : ∀ n : ℕ, Congr c (chiO ℚ Ω l c.O ^ n) (w ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero]`. Conclude with `hCF.1.refl _`.
+
+Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `(hCF.2.1 _ _ _ _ ih (hCF.1.symm hwc)).1`. Establish `hΨc : Congr c (Chr.Psi l e D) (w ^ e * D)`. Establish `hΨ : Chr.Psi l e D = chiO ℚ Ω l c.O ^ e * D` using `by simp [Chr.Psi]`. Rewrite using `[hΨ]`.
+
+Conclude with `(hCF.2.1 _ _ _ _ (hcE e) (hCF.1.refl D)).1`. Establish `hl1 : ¬ l ∣ l - 1` using `Nat.not_dvd_of_pos_of_lt (by omega) (by omega)`. Establish `hwσ : ∀ σ, (w σ) ^ (l - 1) = 1`. Introduce `σ`. Rewrite using `[← MonoidHom.pow_apply, hw1, MonoidHom.one_apply]`.
+
+Establish `hdisc : ¬ l ∣ (discr K).natAbs` using `fun h => hG.l_cop (dvd_mul_of_dvd_left h _)`. Establish `hidx : (galOf ℚ K Ω).index = 2` using `by haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Rewrite using `[(galEmbTop ℚ K Ω).2.2, hG.quad]`. Use `set m := (l - 1) * orderOf D with hmdef`. Establish `hm : ¬ l ∣ m`.
+
+Introduce `h`. Break down `(Nat.Prime.dvd_mul hp).mp h with h | h` into its components or cases. Conclude with `hl1 h`. Conclude with `hG.ord h`. Establish `hpow : ∀ j : ℕ, (w ^ j * D) ^ m = 1`.
+
+Introduce `j`. Rewrite using `[mul_pow, ← pow_mul, hmdef, show j * ((l - 1) * orderOf D) = (l - 1) * (j * orderOf D) by ring, pow_mul, hw1, one_pow, one_mul, mul_comm, pow_mul, pow_orderOf_eq_one, one_pow]`. Take `⟨σ₀, hwσ₀, hDσ₀⟩` from `exists_neg Ω l hl2 ψ w hOm.2.1`. Establish `hev : ψ (-1) = (-1) ^ e` using `((psiBar Ω l c w hom N ψ).2.1 e).mpr hG.par`. Establish `hne1 : ((-1 : (c.O)ˣ)) ≠ 1`.
+
+Introduce `h`. Establish `h2 : ((-1 : (c.O)ˣ) : PadicAlgCl l) = ((1 : (c.O)ˣ) : PadicAlgCl l)` using `by rw [h]`. Simplify using `at h2`. Evaluate the numerical expressions using `at h2`. Establish `hθ0 : ∀ j : ℕ, (((w ^ j * D) σ₀ : (c.O)ˣ) : c.O) = (-1) ^ j * (-1) ^ e`.
+
+Introduce `j`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, hwσ₀, Units.val_mul, Units.val_pow_eq_pow_val, hDσ₀, hev, Units.val_neg, Units.val_one]`. Establish `key : ∀ j : ℕ, (∀ σ ∈ galOf ℚ K Ω, (((w ^ j * D) σ : (c.O)ˣ) : c.O) - 1 ∈ IsLocalRing.maximalIdeal c.O) → (-1 : c.O) ^ j * (-1) ^ e = -1 → η = w ^ j * D`. Introduce `j hj hv`. Establish `hle : galOf ℚ K Ω ≤ (w ^ j * D).ker`.
+
+Introduce `σ hσ`. Rewrite using `[MonoidHom.mem_ker]`. Use `hCF.2.2.2.1 _ 1 m hm ?_ (one_pow _) (by simpa using hj σ hσ)` and prove the remaining obligations. Rewrite using `[← MonoidHom.pow_apply, hpow, MonoidHom.one_apply]`. Establish `hτ : (w ^ j * D) σ₀ ≠ 1`.
+
+Introduce `h`. Apply `hne1` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_neg, Units.val_one, ← hv, ← hθ0 j, h, Units.val_one]`. Establish `hηle : galOf ℚ K Ω ≤ η.ker` using `le_of_eq hG.eta_ker.symm`.
+
+Use `MonoidHom.ext (fun σ => ?_)` and prove the remaining obligations. Distinguish the cases in `hσ : σ ∈ galOf ℚ K Ω`. Rewrite using `[MonoidHom.mem_ker.mp (hηle hσ), MonoidHom.mem_ker.mp (hle hσ)]`. Establish `hητ : η σ ≠ 1`. Introduce `h`.
+
+Apply `hσ` to reduce the goal to its premises. Rewrite using `[← hG.eta_ker]`. Conclude with `h`. Rewrite using `[eq_of_index_two _ hidx η hηle hητ hσ, eq_of_index_two _ hidx _ hle hτ hσ]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `A hA`. Use `⟨ine_le Ω K hp hdisc A hA, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hG.gen` to reduce the goal to its premises.
+
+Apply `hOm.2.2.2.2.2.2.1 A hA (2 * (e + a))` to reduce the goal to its premises. Introduce `σ hσ`. Rewrite using `[MonoidHom.mem_ker]`. Establish `hx : (w ^ (2 * (e + a))) σ = ((w ^ e * D) σ) ^ 2`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.pow_apply, hD, hG.ine A hA σ hσ, ← pow_add, ← pow_mul, mul_comm 2]`.
+
+Establish `hm1 : (((w ^ (2 * (e + a))) σ : (c.O)ˣ) : c.O) - (((Chr.Psi l e D σ) ^ 2 : (c.O)ˣ) : c.O) ∈ IsLocalRing.maximalIdeal c.O`. Rewrite using `[hx, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, sq_sub_sq]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Use `hΨc σ` as an intermediate fact. Rewrite using `[← neg_sub]`.
+
+Conclude with `Submodule.neg_mem _ this`. Establish `hm2` using `hcon σ hσ`. Use `hCF.2.2.2.1 _ 1 (l - 1) hl1 ?_ (one_pow _) ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.pow_apply, ← pow_mul, mul_comm, pow_mul, hw1, one_pow, MonoidHom.one_apply]`. Use `Ideal.add_mem _ hm1 hm2` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Simplify using `using this`. Assume the negation of the conclusion as `hcon push_neg at hcon`. Establish `hθ` using `key (e + 1) (fun σ hσ => by`. Establish `h1` using `hcon σ hσ`.
+
+Establish `h2 : (((w ^ (e + 1) * D) σ : (c.O)ˣ) : c.O) - ((w σ * Chr.Psi l e D σ : (c.O)ˣ) : c.O) ∈ IsLocalRing.maximalIdeal c.O`. Establish `hu : (w ^ (e + 1) * D) σ = w σ * ((w ^ e * D) σ)`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.pow_apply, pow_succ', mul_assoc]`. Rewrite using `[hu, Units.val_mul, Units.val_mul, ← mul_sub]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises.
+
+Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ (hΨc σ)`. Use `Ideal.add_mem _ h2 h1` as an intermediate fact. Rewrite using `[sub_add_sub_cancel] at this)` and apply the resulting hypothesis. Use the proof step `(by rw [← pow_add]; exact Odd.neg_one_pow ⟨e, by ring⟩)`.
+
+Apply `hG.eta (e + 1 + a) 1` to reduce the goal to its premises. Establish `hg : w ^ (e + 1 + a) * (D * (w ^ a)⁻¹) ^ 1 = w ^ (e + 1) * D`. Rewrite using `[pow_one, pow_add w (e + 1) a, mul_comm D, ← mul_assoc, mul_inv_cancel_right]`. Rewrite using `[hθ, hg]`. Conclude with `hCF.1.refl _`.
+
+Assume the negation of the conclusion as `hcon push_neg at hcon`. Take `⟨e', he⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by have := hG.e_pos; omega⟩`. Establish `hθ` using `key e' (fun σ hσ => by`. Establish `h1` using `hcon σ hσ`. Establish `h2 : (((w ^ e' * D) σ : (c.O)ˣ) : c.O) - (((w σ)⁻¹ * Chr.Psi l e D σ : (c.O)ˣ) : c.O) ∈ IsLocalRing.maximalIdeal c.O`.
+
+Establish `hu : (w ^ e' * D) σ = (w σ)⁻¹ * ((w ^ e * D) σ)`. Rewrite using `[he, MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.pow_apply, pow_succ', mul_assoc, inv_mul_cancel_left]`. Rewrite using `[hu, Units.val_mul, Units.val_mul, ← mul_sub]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Rewrite using `[← neg_sub]`.
+
+Conclude with `Submodule.neg_mem _ (hΨc σ)`. Use `Ideal.add_mem _ h2 h1` as an intermediate fact. Rewrite using `[sub_add_sub_cancel] at this)` and apply the resulting hypothesis. Use the proof step `(by rw [he, ← pow_add]; exact Odd.neg_one_pow ⟨e', by ring⟩)`. Apply `hG.eta (e' + a) 1` to reduce the goal to its premises.
+
+Establish `hg : w ^ (e' + a) * (D * (w ^ a)⁻¹) ^ 1 = w ^ e' * D`. Rewrite using `[pow_one, pow_add w e' a, mul_comm D, ← mul_assoc, mul_inv_cancel_right]`. Rewrite using `[hθ, hg]`. Conclude with `hCF.1.refl _`.
+-/
 theorem UpperTheory.V.HV.gdLoc :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) (e N : ℕ) [NeZero N]
       (ψ : DirichletCharacter c.O N) (w η : G ℚ Ω →* c.Oˣ) (a : ℕ), GDlit c K e ψ w η a →

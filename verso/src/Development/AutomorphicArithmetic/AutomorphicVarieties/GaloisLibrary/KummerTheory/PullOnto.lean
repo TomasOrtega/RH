@@ -8,6 +8,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ U hU N R M _ _ _ hN hU' hK`. Use `le_antisymm (pullMem F Ω K U hU N R M hN).1 fun φ hφ => ?_` and prove the remaining obligations. Take `⟨hlc, hadd, hI, hD⟩` from `hφ`. Take `⟨hDec, hIne, -, -⟩` from `toGalDict F Ω K U hU`. Take `⟨hE, -, -⟩` from `galEmbTop F K Ω`.
+
+Set `ι : G K Ω →* U` to `(galEmb F K Ω).codRestrict U fun σ => hU' (galEmb_mem F K Ω σ)`. Establish `hι : Continuous ι` using `hE.continuous.subtype_mk _`. Establish `h1 : ∀ σ, toGal K hU (ι σ) = σ` using `fun σ => AlgEquiv.ext fun x => rfl`. Establish `h2 : ∀ u, ι (toGal K hU u) = u` using `fun u => Subtype.ext (AlgEquiv.ext fun x => rfl)`. Set `φ' : U →* Multiplicative M` to `MonoidHom.mk' (fun u => Multiplicative.ofAdd (φ u)) fun a b => by`.
+
+Rewrite using `[hadd, ofAdd_add]`. Set `χ : G K Ω →* Multiplicative M` to `φ'.comp ι`. Establish `hχ : ∀ σ, χ σ = 1 ↔ φ (ι σ) = 0` using `fun σ => Iff.rfl`. Establish `hker : (artCl K Ω).ker ≤ χ.ker`. Use `artKer K Ω (Multiplicative M) χ ?_ (fun A σ hσ => ?_) fun c hc => ?_` and prove the remaining obligations.
+
+Conclude with `(hlc.comp_continuous hι).isOpen_fiber 0`. Conclude with `(hχ σ).2 (hI A _ ((hIne A _).1 ((h1 σ).symm ▸ hσ)))`. Take `⟨j, hj⟩` from `hc`. Break down `hK with hK | hK` into its components or cases. Use `absurd ?_ (InfinitePlace.not_isReal_iff_isComplex.2 (hK.isComplex (InfinitePlace.mk (j.comp (algebraMap K Ω)))))` and prove the remaining obligations.
+
+Rewrite using `[InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hj (algebraMap K Ω x)` as an intermediate fact. Rewrite `this` using `[show c.toRingEquiv (algebraMap K Ω x) = algebraMap K Ω x from c.commutes x]`. Conclude with `this.symm`.
+
+Establish `hcc : c * c = 1` using `AlgEquiv.ext fun x => j.injective (by`. Establish `e1` using `hj (c x)`. Establish `e2` using `hj x`. Conclude with `e1.trans ((congrArg _ e2).trans (Complex.conj_conj _)))`. Establish `e : χ c * χ c = 1` using `by rw [← map_mul, hcc, map_one]`.
+
+Use `(hχ c).2 (hK _ ?_)` and prove the remaining obligations. Rewrite using `[two_nsmul]`. Conclude with `e`. Set `θ` to `MonoidHom.liftOfSurjective (artCl K Ω) (artSurj K Ω).1 ⟨χ, hker⟩`. Establish `hθ : ∀ σ, θ (artCl K Ω σ) = χ σ` using `fun σ => MonoidHom.liftOfRightInverse_comp_apply _ _ _ ⟨χ, hker⟩ σ`.
+
+Use `⟨fun c => Multiplicative.toAdd (θ c), ⟨fun a b => congrArg Multiplicative.toAdd (θ.map_mul a b), fun v hv => ?_⟩, funext fun u => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`. Use `show Multiplicative.toAdd (θ (primeCl v)) = 0`. Rewrite using `[← artFrob K Ω A v σ hA hσ, hθ]`.
+
+Conclude with `hD A (((placeDict K Ω).2.2.2 A v N hA).2 hv) _ ((hDec A _).1 ((h1 σ).symm ▸ hσ.1))`. Rewrite using `[clPull_apply, hθ]`. Conclude with `congrArg φ (h2 u)`.
+-/
 theorem UpperTheory.V.Kum.pullOnto :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (U : Subgroup (G F Ω)) (hU : U ≤ galOf F K Ω) (N : ℕ) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], N ≠ 0 → galOf F K Ω ≤ U → (IsTotallyComplex K ∨ ∀ m : M, 2 • m = 0 → m = 0) → (ClDual K N R M).map (clPull K hU R M) = XDual N U R M := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ U hU N R M _ _ _ hN hU' hK

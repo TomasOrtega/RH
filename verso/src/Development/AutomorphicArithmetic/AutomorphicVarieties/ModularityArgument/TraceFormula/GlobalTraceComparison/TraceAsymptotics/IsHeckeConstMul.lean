@@ -9,16 +9,27 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+Use `⟨hf.1.add hg.1, fun k hk x => ?_⟩` and prove the remaining obligations. Simplify using `only [(hf.2 k hk x).1, (hf.2 k hk x).2, (hg.2 k hk x).1, (hg.2 k hk x).2, and_self]`.
+-/
 private theorem isHecke_add {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G} {f g : G → ℂ}
     (hf : IsHecke K f) (hg : IsHecke K g) : IsHecke K fun y => f y + g y := by
   refine ⟨hf.1.add hg.1, fun k hk x => ?_⟩
   simp only [(hf.2 k hk x).1, (hf.2 k hk x).2, (hg.2 k hk x).1, (hg.2 k hk x).2, and_self]
 
+/- English proof (translation)
+Use `⟨hf.1.mul_left (f := fun _ => c), fun k hk x => ?_⟩` and prove the remaining obligations. Simplify using `only [(hf.2 k hk x).1, (hf.2 k hk x).2, and_self]`.
+-/
 private theorem isHecke_const_mul {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G} {f : G → ℂ}
     (c : ℂ) (hf : IsHecke K f) : IsHecke K fun y => c * f y := by
   refine ⟨hf.1.mul_left (f := fun _ => c), fun k hk x => ?_⟩
   simp only [(hf.2 k hk x).1, (hf.2 k hk x).2, and_self]
 
+/- English proof (translation)
+Introduce `E _ _ _ w n a b h f g c hf hg`. Use `⟨funext fun m => ?_, funext fun m => ?_⟩` and prove the remaining obligations. Take `⟨e, -⟩` from `ctSph E w n a b h _ (isHecke_add hf hg) m`. Take `⟨e₁, s₁⟩` from `ctSph E w n a b h f hf m`. Take `⟨e₂, s₂⟩` from `ctSph E w n a b h g hg m`.
+
+Rewrite using `[e, e₁, e₂, finsum_add_distrib s₁ s₂, mul_add]`. Take `⟨e, -⟩` from `ctSph E w n a b h _ (isHecke_const_mul c hf) m`. Take `⟨e₁, s₁⟩` from `ctSph E w n a b h f hf m`. Rewrite using `[e, e₁, mul_left_comm c, mul_finsum _ c]`.
+-/
 theorem ctLin : CtLin := by
   intro E _ _ _ w n a b h f g c hf hg
   refine ⟨funext fun m => ?_, funext fun m => ?_⟩

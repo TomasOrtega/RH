@@ -40,6 +40,9 @@ def ModelFLinkStep : Prop :=
   ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ),
     Adm1 D HW F Cm CA CB CK → ExpansionFormAll D HW → modelFR D HW
 
+/- English proof (translation)
+Introduce `D HW F Cm CA CB CK hd hr hA` and use `hL D HW F Cm CA CB CK hA (hP D HW F Cm CA CB CK hA hd hr)`.
+-/
 theorem modelFStep_of (hL : ModelFLinkStep) (hP : ExpansionFormHypothesis) :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ),
       DdRFull D → DiRank D HW F Cm → Adm1 D HW F Cm CA CB CK → modelFR D HW :=
@@ -49,6 +52,9 @@ def ModelQLinkStep : Prop :=
   ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ),
     Adm1 D HW F Cm CA CB CK → modelLR D HW → modelQR D HW
 
+/- English proof (translation)
+Introduce `D HW F Cm CA CB CK hA` and use `hL D HW F Cm CA CB CK hA (hM D HW F Cm CA CB CK hA)`.
+-/
 theorem modelQStep_of (hL : ModelQLinkStep) (hM : ModelLStep) : ModelQStep :=
   fun D HW F Cm CA CB CK hA => hL D HW F Cm CA CB CK hA (hM D HW F Cm CA CB CK hA)
 

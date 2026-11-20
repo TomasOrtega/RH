@@ -7,6 +7,15 @@ noncomputable section
 
 namespace Formalism.ZF
 
+/- English proof (translation)
+Introduce `h341 hLDR hG hI hSH hLL`. Take `⟨t₀, -, ht₀⟩` from `zfo_large h341 hLDR hG hI hLL`. Take `⟨c₂, hc₂, hsmall⟩` from `hSH t₀`. Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Use `⟨min (1 / 200000) (c₂ * Real.log 2), lt_min (by norm_num) (mul_pos hc₂ hlog2), ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs1 hre`. Establish `hL : Real.log 2 ≤ Real.log (|s.im| + 2)` using `Real.log_le_log (by norm_num) (by linarith [abs_nonneg s.im])`. Establish `hLpos : 0 < Real.log (|s.im| + 2)` using `lt_of_lt_of_le hlog2 hL`. Break down `le_or_gt |s.im| t₀ with hT | hT` into its components or cases. Apply `hsmall s hT _ hs1` to reduce the goal to its premises.
+
+Establish `hc : min (1 / 200000) (c₂ * Real.log 2) / Real.log (|s.im| + 2) ≤ c₂`. Rewrite using `[div_le_iff₀ hLpos]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hz`.
+
+Establish `hs : s = (s.re : ℂ) + s.im * I` using `(Complex.re_add_im s).symm`. Establish `hβ` using `ht₀ s.re s.im hT.le (by rw [← hs]; exact hz)`. Establish `h2 : min (1 / 200000) (c₂ * Real.log 2) / Real.log (|s.im| + 2) ≤ (1 / 200000) / Real.log (|s.im| + 2)` using `div_le_div_of_nonneg_right (min_le_left _ _) hLpos.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem classicalZeroFreeRegionOfBounds : ZeroFreeOf := by
   intro h341 hLDR hG hI hSH hLL
   obtain ⟨t₀, -, ht₀⟩ := zfo_large h341 hLDR hG hI hLL

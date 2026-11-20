@@ -17,6 +17,13 @@ namespace GlobalTheory.QFam
 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 open ModularForm (E₄ E₆) in
+/- English proof (translation)
+Take `⟨f, hf⟩` from `hF`. Establish `hmem` using `_root_.ReciprocityTheory.PGsh.coe_mem_monoSpanF w f`. Unfold `_root_.ReciprocityTheory.PGsh.monoSpanF at hmem`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem`. Use `⟨(_root_.ReciprocityTheory.PGsh.monoIdx w).image fun a => (a, _root_.ReciprocityTheory.PGsh.monoB w a), fun p => if hp : p.1 ∈ _root_.ReciprocityTheory.PGsh.monoIdx w then c ⟨p.1, hp⟩ else 0, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `_root_.ReciprocityTheory.PGsh.monoIdx_wt ha`. Introduce `τ`. Rewrite using `[Finset.sum_image (fun x _ y _ h => congrArg Prod.fst h), ← hf τ, ← hc]`.
+
+Rewrite using `[Finset.sum_apply, ← Finset.sum_attach (_root_.ReciprocityTheory.PGsh.monoIdx w)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, a.2, dif_pos]`. Rewrite using `[_root_.ReciprocityTheory.PGsh.coe_monoW a.2]`. Both sides reduce to the same expression.
+-/
 private theorem exists_eisensteinCombination_of_isModularForm {w : ℕ} {F : ℍ → ℂ}
     (hF : _root_.ReciprocityTheory.ChartRestriction.L1.IsMF (w : ℤ) F) :
     ∃ (s : Finset (ℕ × ℕ)) (c : ℕ × ℕ → ℂ), (∀ p ∈ s, 4 * p.1 + 6 * p.2 = w) ∧
@@ -41,6 +48,9 @@ private theorem exists_eisensteinCombination_of_isModularForm {w : ℕ} {F : ℍ
 
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 open ModularForm (E₄ E₆) in
+/- English proof (translation)
+Use `_root_.GlobalTheory.QFam.QConj.sum s fun i _ => ?_` and prove the remaining obligations. Establish `h₄` using `_root_.GlobalTheory.QFam.eis_qConj N hN _ (Or.inl rfl) g`. Establish `h₆` using `_root_.GlobalTheory.QFam.eis_qConj N hN _ (Or.inr (Or.inl rfl)) g`. Conclude with `(_root_.GlobalTheory.QFam.QConj.const g N (c i)).mul hN ((h₄.pow hN (u i)).mul hN (h₆.pow hN (v i)))`.
+-/
 private theorem qConj_eisensteinCombination (g : ℂ ≃+* ℂ) {N : ℕ}
     (hN : 0 < N) {ι : Type} (s : Finset ι) (c : ι → ℂ) (u v : ι → ℕ) :
     _root_.GlobalTheory.QFam.QConj g N (fun τ => ∑ i ∈ s, c i * (E₄ τ ^ u i * E₆ τ ^ v i))
@@ -54,6 +64,13 @@ private theorem qConj_eisensteinCombination (g : ℂ ≃+* ℂ) {N : ℕ}
 open scoped UpperHalfPlane MatrixGroups ModularForm Manifold BigOperators in
 open ModularForm (E₄ E₆) in
 
+/- English proof (translation)
+Introduce `g w N F F' hN hinv hconj`. Take `⟨a, ha, ha'⟩` from `hconj`. Take `⟨s, c, hw, hF⟩` from `exists_eisensteinCombination_of_isModularForm (_root_.GlobalTheory.QFam.isMF_of_invariant_of_hasQ N w F a hN hinv ha)`. Use `⟨s, c, hw, hF, ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `qConj_eisensteinCombination g hN s c Prod.fst Prod.snd`.
+
+Establish `hFeq : F = fun τ => ∑ p ∈ s, c p * (E₄ τ ^ p.1 * E₆ τ ^ p.2)` using `funext hF`. Rewrite `hb` using `[← hFeq]`. Establish `hab : a = b` using `ha.coeff_unique hN hb`. Substitute `hab` using the available equality. Introduce `τ`.
+
+Conclude with `congrFun (ha'.fun_unique hb') τ`.
+-/
 theorem _root_.GlobalTheory.QFam.levelPoly_conj : ∀ (g : ℂ ≃+* ℂ) (w N : ℕ) (F F' : ℍ → ℂ),
     0 < N → (∀ γ : SL(2, ℤ), F ∣[(w : ℤ)] γ = F) → _root_.GlobalTheory.QFam.QConj g N F F' →
     ∃ (s : Finset (ℕ × ℕ)) (c : ℕ × ℕ → ℂ), (∀ p ∈ s, 4 * p.1 + 6 * p.2 = w) ∧

@@ -51,6 +51,11 @@ def LiftsSpan {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] 
     (v : (R.MW i (sg0 D A)).Vec) : Prop :=
   ∀ (t : T0) (x : A.fam.amb.FL i t), liftQ R i v t x ∈ Submodule.span ℂ (Set.range (liftQ R i v A.μ0))
 
+/- English proof (translation)
+Introduce `t x`. Establish `key : ∀ w ∈ Submodule.span ℂ (Set.range fun x => R.thF i A.μ0 (jVx R i A.μ0 x)), onQ (Wc D i) (w v) ∈ Submodule.span ℂ (Set.range (liftQ R i v A.μ0))`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨y, rfl⟩ := hw`.
+
+Conclude with `Submodule.subset_span ⟨y, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => exact Submodule.smul_mem _ c ha`. Conclude with `key _ (honto (hmem i t _))`.
+-/
 theorem liftsSpan_of_onto {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
     (v : (R.MW i (sg0 D A)).Vec) (hmem : R.thP_thF_mem)
     (honto : R.Wall i (sg0 D A) ≤ Submodule.span ℂ (Set.range fun x => R.thF i A.μ0 (jVx R i A.μ0 x))) : LiftsSpan R i v := by

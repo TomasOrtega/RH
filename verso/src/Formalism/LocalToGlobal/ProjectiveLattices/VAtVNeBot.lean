@@ -86,21 +86,33 @@ def evI {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f : Rul Xo c) : 
   letI := io.toAlgebra
   evR Xo c f y.1
 
+/- English proof (translation)
+Set `` to `io.toAlgebra`. Conclude with `evalAt_add _ _ f g y.1`.
+-/
 theorem evI_add {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
     evI y (f + g) = evI y f + evI y g := by
   let := io.toAlgebra
   exact evalAt_add _ _ f g y.1
 
+/- English proof (translation)
+Set `` to `io.toAlgebra`. Conclude with `evalAt_smul _ _ a f y.1`.
+-/
 theorem evI_smul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (a : c.F) (f : Rul Xo c) :
     evI y (a • f) = io a * evI y f := by
   let := io.toAlgebra
   exact evalAt_smul _ _ a f y.1
 
+/- English proof (translation)
+Set `` to `io.toAlgebra`. Conclude with `evalAt_mul _ _ f g y.1`.
+-/
 theorem evI_mul {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
     evI y (f * g) = evI y f * evI y g := by
   let := io.toAlgebra
   exact evalAt_mul _ _ f g y.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ f g => evI_add y f g, fun _ a f => evI_smul y a f, fun _ _ f g => evI_mul y f g⟩`.
+-/
 theorem isEval_evI {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) :
     IsEval (W := Unit) (Cusp := fun _ => Rul Xo c) (fun _ _ => ()) (fun _ _ f g => f * g) io
       (fun _ f => evI y f) :=
@@ -130,33 +142,51 @@ def PtV.mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T.Fr} 
     (y : IntFr Xo c T io) (hy : cls T io y) (eta : PY) (heta : lies T io y eta) : PtV Xo c cls PY lies la :=
   ⟨profI Xo c PY e y eta, T, io, e, ho, y, hy, eta, heta, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vAtV_mk (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ}
     (ho : OverLa la T.V io e) (y : IntFr Xo c T io) (hy : cls T io y) (eta : PY) (heta : lies T io y eta)
     (f : Rul Xo c) : vAtV (PtV.mk la ho y hy eta heta) f = nval T.V e (evI y f) := rfl
 
 variable {la : HeightOneSpectrum (𝓞 c.F)}
 
+/- English proof (translation)
+Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y 0) = ⊤`. Rewrite using `[(isEval_evI y).zero (), nval_zero]`.
+-/
 theorem vAtV_zero (y : PtV Xo c cls PY lies la) : vAtV y 0 = ⊤ := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
   show nval T.V e (evI y 0) = ⊤
   rw [(isEval_evI y).zero (), nval_zero]
 
+/- English proof (translation)
+Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Conclude with `nval_ne_bot e _`.
+-/
 theorem vAtV_ne_bot (y : PtV Xo c cls PY lies la) (f : Rul Xo c) : vAtV y f ≠ ⊥ := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
   exact nval_ne_bot e _
 
+/- English proof (translation)
+Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show min (nval T.V e (evI y f)) (nval T.V e (evI y g)) ≤ nval T.V e (evI y (f + g))`. Rewrite using `[evI_add]`. Conclude with `nval_add e _ _`.
+-/
 theorem vAtV_add (y : PtV Xo c cls PY lies la) (f g : Rul Xo c) :
     min (vAtV y f) (vAtV y g) ≤ vAtV y (f + g) := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
   show min (nval T.V e (evI y f)) (nval T.V e (evI y g)) ≤ nval T.V e (evI y (f + g))
   rw [evI_add]; exact nval_add e _ _
 
+/- English proof (translation)
+Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y (a • f)) = _ + nval T.V e (evI y f)`. Rewrite using `[evI_smul]`. Conclude with `nval_smul ho ha _`.
+-/
 theorem vAtV_smul (y : PtV Xo c cls PY lies la) (a : c.F) (f : Rul Xo c) (ha : a ≠ 0) :
     vAtV y (a • f) = (((vLa la a : ℤ) : ℝ) : EReal) + vAtV y f := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩
   show nval T.V e (evI y (a • f)) = _ + nval T.V e (evI y f)
   rw [evI_smul]; exact nval_smul ho ha _
 
+/- English proof (translation)
+Break down `y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` into its components or cases. Use `show nval T.V e (evI y (f * g)) = nval T.V e (evI y f) + nval T.V e (evI y g)`. Rewrite using `[evI_mul]`. Conclude with `nval_mul e _ _`.
+-/
 theorem vAtV_mul (y : PtV Xo c cls PY lies la) (f g : Rul Xo c) :
     vAtV y (f * g) = vAtV y f + vAtV y g := by
   rcases y with ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩

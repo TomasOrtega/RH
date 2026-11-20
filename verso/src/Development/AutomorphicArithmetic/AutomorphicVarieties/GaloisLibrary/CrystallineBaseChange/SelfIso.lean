@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.R
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 
+/- English proof (translation)
+Introduce `H F _ _ _ a ha π η h2 h`. Establish `hd : ∀ z, TR.dchi η z = 0` using `fun z => by`. Establish `e` using `TR.dchi_mul η η z`. Rewrite `e` using `[← pow_two, h2, TR.dchi_one]`. Take the linear combination `(-1 / 2 : ℂ) * e`.
+
+Take `⟨S, hS⟩ : π.Iso (π.twist η)` from `H F a ha _ _ (by filter_upwards [h] with w ⟨hu, B, hB, hE⟩`. Conclude with `⟨B, hB, hE ▸ hB.twist hu⟩)`. Establish `key : ∀ o φ, (S.trans (π.toTwist η).symm) (π.op o φ) = ((TR.opMul η o : ℂˣ) : ℂ) • π.op o ((S.trans (π.toTwist η).symm) φ) + TR.opAdd η o • (S.trans (π.toTwist η).symm) φ` using `fun o φ => by`. Apply `(π.toTwist η).injective` to reduce the goal to its premises. Rewrite using `[← TR.CuspSub.op_toTwist]`.
+
+Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, hS]`. Use `⟨S.trans (π.toTwist η).symm, fun k φ => ?_, fun k φ => ?_, fun X φ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals rw [key]`. Simplify using `[TR.opMul, TR.opAdd, hd]`.
+-/
 theorem UpperTheory.V.Br.selfIso :
     UpperTheory.V.Br.SelfIso := by
   intro H F _ _ _ a ha π η h2 h

@@ -23,6 +23,9 @@ variable (d : Data K ι Ω WT A)
 
 open MeasureTheory
 
+/- English proof (translation)
+Unfold `Data.be`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Establish `h1` using `hd.nrm_pos c P (hd.w_mem (d.jc c) c) (hd.w_base c)`. Conclude with `lt_of_lt_of_le (pow_pos h1 2) (Finset.single_le_sum (f := fun j => d.nrm c d.wL (d.w j c) P ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ (d.jc c)))`.
+-/
 theorem be_pos (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) : 0 < d.be c P := by
   unfold Data.be
   apply Real.sqrt_pos.mpr
@@ -31,9 +34,17 @@ theorem be_pos (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) : 0 < d.be c P :=
     (Finset.single_le_sum (f := fun j => d.nrm c d.wL (d.w j c) P ^ 2) (fun j _ => sq_nonneg _)
       (Finset.mem_univ (d.jc c)))
 
+/- English proof (translation)
+Simplify using `only [finsum_neg_distrib]`.
+-/
 theorem fneg {α : Type*} (s : Set α) (g : α → ℝ) : ∑ᶠ x ∈ s, -g x = -∑ᶠ x ∈ s, g x := by
   simp only [finsum_neg_distrib]
 
+/- English proof (translation)
+Establish `hC : Integrable (fun _ : X => C) μ` using `integrable_const C`. Establish `h2C : Integrable (fun x => F2 x + C) μ` using `I2.add hC`. Establish `hI : Integrable (fun x => F2 x + C + r * F3 x) μ` using `h2C.add (I3.const_mul r)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add h2C (I3.const_mul r), integral_const_mul, integral_add I2 hC]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_le_of_ae_le_affine {X : Type*} [MeasurableSpace X] (μ : Measure X) [IsProbabilityMeasure μ]
     (F1 F2 F3 : X → ℝ) (C r : ℝ) (I1 : Integrable F1 μ) (I2 : Integrable F2 μ) (I3 : Integrable F3 μ)
     (hle : ∀ᵐ x ∂μ, F1 x ≤ F2 x + C + r * F3 x) :
@@ -46,6 +57,9 @@ theorem integral_le_of_ae_le_affine {X : Type*} [MeasurableSpace X] (μ : Measur
       rw [integral_add h2C (I3.const_mul r), integral_const_mul, integral_add I2 hC]
       simp
 
+/- English proof (translation)
+Conclude with `hI.neg.congr (ae_of_all _ fun z => by simp only [Pi.neg_apply, fneg])`.
+-/
 theorem int_neg (c : ι) (sg : K →+* ℂ) (g : (Ω c →+* ℂ) → ℝ)
     (hI : Integrable (fun z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1) =>
       ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (fun i j => ReciprocityTheory.MultiplicativeHeights.spherePoint (z i) j)), g P)
@@ -55,6 +69,17 @@ theorem int_neg (c : ι) (sg : K →+* ℂ) (g : (Ω c →+* ℂ) → ℝ)
       (ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1)) := by
   exact hI.neg.congr (ae_of_all _ fun z => by simp only [Pi.neg_apply, fneg])
 
+/- English proof (translation)
+Use `haveI := ReciprocityTheory.MultiplicativeHeights.blockSphereMeasure_isProbability (B := d.D) (Nat.succ_pos d.N)`. Establish `hint` using `d.int_Nsg hd h hI2be c sg`. Establish `I1` using `d.int_neg c sg (fun P => Real.log (d.nrm c d.wL (f c) P)) (hint.1 d.wL (f c) (by simp) (hf c).1 (hf c).2)`. Establish `I2` using `d.int_neg c sg (fun P => Real.log (d.nrm c d.wL (f c) P / d.be c P)) (hint.2 (f c) (hf c).1 (hf c).2)`. Establish `I3` using `d.int_neg c sg (fun P => Real.log (d.nrm c (d.n1 • d.wde) (d.et c) P)) (hint.1 (d.n1 • d.wde) (d.et c) (by simp) (hd.et_mem c) (hd.et_ne c))`.
+
+Use `set κ := d.tableLineDegreeFive * d.DF + d.cc * d.tableLineDegreeTwo`. Use `integral_le_of_ae_le_affine _ _ _ _ _ _ I1 I2 I3 ?_` and prove the remaining obligations. Use `filter_upwards [d.norm_at_sg hd h c sg] with z hz`. Take `⟨hfin0, hcard0, -, -⟩` from `hz`. Establish `hfin : (d.ST c sg (fun i j => ReciprocityTheory.MultiplicativeHeights.spherePoint (z i) j)).Finite` using `hfin0`.
+
+Establish `hcard : (d.ST c sg (fun i j => ReciprocityTheory.MultiplicativeHeights.spherePoint (z i) j)).ncard = d.delc c` using `hcard0`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Rewrite `hcard` using `[Set.ncard_eq_toFinset_card _ hfin]`. Establish `e : (d.delc c : ℝ) * κ = ∑ P ∈ hfin.toFinset, κ`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, hcard]`.
+
+Rewrite using `[e, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun P _ => ?_` and prove the remaining obligations. Establish `hn` using `hd.nrm_pos c P (hf c).1 (hf c).2`. Establish `hb` using `d.be_pos hd c P`. Establish `hI` using `hI2be c P`.
+
+Rewrite using `[Real.log_div hn.ne' hb.ne']`. Simplify using `only [κ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sg_one (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (f : ∀ c, A c)
     (hf : ∀ c, f c ∈ 𝒜 c d.wL ∧ f c ≠ 0) (c : ι) (sg : K →+* ℂ) :
     ∫ z, (∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (fun i j => ReciprocityTheory.MultiplicativeHeights.spherePoint (z i) j)),

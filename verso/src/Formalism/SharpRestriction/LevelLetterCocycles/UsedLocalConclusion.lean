@@ -31,6 +31,9 @@ def deltaInvariantLatticeGlobal (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc
     Prop :=
   deltaInvariantLatticeLocal D.loc HW D.locA F C
 
+/- English proof (translation)
+Introduce `l _ K s LL g` and use `⟨(h l K s LL g).1.1, (h l K s LL g).2.1, (h l K s LL g).2.2.1, (h l K s LL g).2.2.2.1, (h l K s LL g).2.2.2.2.1, (h l K s LL g).2.2.2.2.2.1, (h l K s LL g).2.2.2.2.2.2.1, (h l K s LL g).2.2.2.2.2.2.2.1, (h l K s LL g).2.2.2.2.2.2.2.2.1, (h l K s LL g).2.2.2.2.2.2.2.2.2.1⟩`.
+-/
 theorem thm1used_of {D : Formalism.BasicNotions.D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW}
     {C : CmpOf D.loc D.locA HW F} (h : thm1 D HW F C) : deltaInvariantLatticeGlobal D HW F C :=
   fun l _ K s LL g => ⟨(h l K s LL g).1.1, (h l K s LL g).2.1, (h l K s LL g).2.2.1,

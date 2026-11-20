@@ -9,6 +9,13 @@ namespace GlobalTheory.Mem.Col2.KerRat
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms GlobalTheory.Mem.Col2 Matrix
 
+/- English proof (translation)
+Use `Fintype.sum_bijective (fun q => Quotient.mk (MulAction.orbitRel G' D') (π (r q))) ⟨fun q q' h => ?_, fun q' => ?_⟩ _ _ fun q => ?_` and prove the remaining obligations. Take `⟨g', hg⟩ : ∃ g' : G', g' • π (r q') = π (r q)` from `Quotient.exact h`. Take `⟨g, hg⟩` from `h2 g' _ _ hg`. Rewrite using `[← hr q, ← hr q']`. Conclude with `Quotient.sound ⟨g, hg⟩`.
+
+Take `⟨d, hd⟩` from `hs (r' q')`. Use `⟨Quotient.mk _ d, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩ : ∃ g : G, g • d = r (Quotient.mk _ d)` from `Quotient.exact (hr (Quotient.mk _ d))`. Take `⟨g', hg'⟩` from `h1 g d`. Rewrite using `[← hr' q', ← hd]`.
+
+Conclude with `Quotient.sound ⟨g', by rw [← hg, hg']⟩`. Take `⟨g', hg⟩ : ∃ g' : G', g' • π (r q) = r' (Quotient.mk _ (π (r q)))` from `Quotient.exact (hr' (Quotient.mk _ (π (r q))))`. Rewrite using `[← hg, hf, h3, Nat.card_congr (MulAction.stabilizerEquivStabilizer (G := G') (a := π (r q)) (b := g' • π (r q)) (g := g') rfl).toEquiv]`.
+-/
 theorem sum_cover {K M G D G' D' : Type} [Field K] [AddCommGroup M] [Module K M] [Group G] [MulAction G D] [Group G']
     [MulAction G' D'] [Fintype (MulAction.orbitRel.Quotient G D)] [Fintype (MulAction.orbitRel.Quotient G' D')]
     (π : D → D') (hs : Function.Surjective π) (h1 : ∀ (g : G) d, ∃ g' : G', π (g • d) = g' • π d)
@@ -60,6 +67,9 @@ def colPt (φ : ∀ b, (I.S 0).D b → VV K (lamT hc 0)) (j : ℕ) : ∀ b, (I.S
 
 variable {emb k}
 
+/- English proof (translation)
+Unfold `stepPt`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[h, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem stepPt_smul {i : ℕ} (h : EqTarget emb k i) (x : (I.S i).Cl → VV K (lamT hc i)) (b' : (I.S (i + 1)).β)
     (g' : (I.S (i + 1)).G b') (d' : (I.S (i + 1)).D b') :
     stepPt hI k i x b' (g' • d') = (I.S (i + 1)).rho emb (lamT hc (i + 1)) b' g' (stepPt hI k i x b' d') := by
@@ -69,6 +79,9 @@ theorem stepPt_smul {i : ℕ} (h : EqTarget emb k i) (x : (I.S i).Cl → VV K (l
   rw [h, map_smul]
   rfl
 
+/- English proof (translation)
+Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Conclude with `stepPt_smul hI (h i (by omega)) _ b g d`.
+-/
 theorem colPt_smul (h : ∀ i, i < R.m → EqTarget emb k i) (φ : ∀ b, (I.S 0).D b → VV K (lamT hc 0)) {j : ℕ} (h0 : 0 < j) (hj : j ≤ R.m)
     (b : (I.S j).β) (g : (I.S j).G b) (d : (I.S j).D b) :
     colPt hI k φ j b (g • d) = (I.S j).rho emb (lamT hc j) b g (colPt hI k φ j b d) := by
@@ -77,6 +90,11 @@ theorem colPt_smul (h : ∀ i, i < R.m → EqTarget emb k i) (φ : ∀ b, (I.S 0
 
 variable {σ hI}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c'`. Unfold `stepPt`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, map_inv₀, map_natCast, ← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem K_ev {i : ℕ} (h : ReadsAt emb σ hI k i) (x : (I.S i).Cl → VV K (lamT hc i)) :
     (I.chain emb σ hI hc).K i (fun c => ev emb σ hc i (x c)) =
       fun c' => ev emb σ hc (i + 1) (stepPt hI k i x c'.1 ((I.S (i + 1)).rep c')) := by
@@ -87,6 +105,11 @@ theorem K_ev {i : ℕ} (h : ReadsAt emb σ hI k i) (x : (I.S i).Cl → VV K (lam
   rw [LinearMap.map_smulₛₗ, map_inv₀, map_natCast, ← h]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Use `Eq.trans ?_ (K_ev (h j (by omega)) fun c => colPt hI k φ j c.1 ((I.S j).rep c))` and prove the remaining obligations. Rewrite using `[← ih (by omega)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chain_ev (h : ∀ i, i < R.m → ReadsAt emb σ hI k i) (φ : ∀ b, (I.S 0).D b → VV K (lamT hc 0)) {j : ℕ} (hj : j ≤ R.m) :
     letI := (I.chain emb σ hI hc).clsFin
     Formalism.ThetaLiftIndependence.chainOpM (I.chain emb σ hI hc).wt (I.chain emb σ hI hc).Kmap j (fun c => ev emb σ hc 0 (φ c.1 ((I.S 0).rep c))) =
@@ -98,6 +121,9 @@ theorem chain_ev (h : ∀ i, i < R.m → ReadsAt emb σ hI k i) (φ : ∀ b, (I.
     rw [← ih (by omega)]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun c' => stepPt hI k i x.1 c'.1 ((I.S (i + 1)).rep c'), fun c' g => (stepPt_smul hI h' x.1 c'.1 g.1 _).symm.trans (congrArg (stepPt hI k i x.1 c'.1) g.2)⟩, (K_ev h x.1).symm⟩`.
+-/
 theorem exists_K_embF {i : ℕ} (h : ReadsAt emb σ hI k i) (h' : EqTarget emb k i) (hF : ((I.S i).fam emb (lamT hc i)).Ok)
     (hF' : ((I.S (i + 1)).fam emb (lamT hc (i + 1))).Ok) (x : (I.S i).FormsK emb (lamT hc i) hF) :
     ∃ y, (I.S (i + 1)).embF emb σ (lamT hc (i + 1)) hF' y = (I.chain emb σ hI hc).K i ((I.S i).embF emb σ (lamT hc i) hF x) :=
@@ -106,6 +132,9 @@ theorem exists_K_embF {i : ℕ} (h : ReadsAt emb σ hI k i) (h' : EqTarget emb k
 
 variable (Q : PerIn I) (hQ : Q.Ok)
 
+/- English proof (translation)
+Use `show fnOf (Gr emb σ (R.N R.m - 1)) (shiftOf Q.sgT) 1 (Q.br emb σ hc (polOf (Gr emb σ (R.N R.m)) (shiftOf (lamT hc R.m)) (fr0 emb σ (R.N R.m)) ((I.S R.m).tr emb σ Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c)) (evV emb (1 : Matrix (Fin (R.N R.m)) (Fin (R.N R.m)) E) (lamT hc R.m) σ (x (Q.til …`. Rewrite using `[← LvT.BuiltChain.evV_rho, LvT.BuiltChain.polOf_evV, LvT.BuiltChain.br_map]`. Both sides reduce to the same expression.
+-/
 theorem lower_ev (x : (I.S R.m).Cl → VV K (lamT hc R.m)) (c : Q.S'.Cl) :
     (Q.per emb σ hI hQ hc).lowerMap ((Q.per emb σ hI hQ hc).evz fun c => ev emb σ hc R.m (x c)) c =
       evV emb (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) E) Q.sgT σ
@@ -118,6 +147,13 @@ theorem lower_ev (x : (I.S R.m).Cl → VV K (lamT hc R.m)) (c : Q.S'.Cl) :
   rw [← LvT.BuiltChain.evV_rho, LvT.BuiltChain.polOf_evV, LvT.BuiltChain.br_map]
   rfl
 
+/- English proof (translation)
+Set `v : Q.S'.Cl → VV K (lamT hc R.m)` to `fun c => (I.S R.m).rho emb (lamT hc R.m) Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c)) (x.1 (Q.tilC c))`. Set `B` to `Br.brAt (N_m_succ R) (lamT hc R.m) Q.sgT (fun τ => emb τ Q.tz)`. Use `⟨⟨fun c => B (v c), fun c g => ?_⟩, funext fun c => (lower_ev Q hQ x.1 c).symm⟩` and prove the remaining obligations. Establish `h1 : (I.S R.m).rho emb (lamT hc R.m) Q.b0 (((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 g.1 * (I.S R.m).mv Q.b0 (Q.tilPt c)) (x.1 (Q.tilC c)) = x.1 (Q.tilC c)` using `x.2 (Q.tilC c) (Q.stabMap hQ c g)`. Establish `h2 : (I.S R.m).rho emb (lamT hc R.m) Q.b0 (Q.ext c.1 g.1) (v c) = v c`.
+
+Establish `h3` using `congrArg ((I.S R.m).rho emb (lamT hc R.m) Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c))) h1`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, mul_inv_cancel_left, map_mul, Module.End.mul_apply]`. Conclude with `h3`. Use `show ((Q.S'.chr c.1 g.1 : Kˣ) : K) • rhoVr emb Q.sgT (Q.S'.gam c.1 g.1) (B (v c)) = B (v c)`. Rewrite using `[← LvT.BuiltChain.brAt_rhoVr emb (N_m_succ R) hW hS _ (Q.S'.gam c.1 g.1) ((I.S R.m).gam Q.b0 (Q.ext c.1 g.1)) (fun z => by rw [← map_inv, ← map_inv, ← map_inv]; exact hQ.gam_ini _ _ z) (fun z => by rw [← map_inv, ← map_inv]; exact hQ.gam_last _ _ z), ← map_smul, ← hQ.chr_ext]`.
+
+Conclude with `congrArg B h2`.
+-/
 theorem exists_lower_embF (hW : ∀ τ, Br.Interlace (N_m_succ R) (lamT hc R.m τ) (Q.sgT τ))
     (hS : ∀ τ, Br.SameShift (lamT hc R.m τ) (Q.sgT τ)) (hF : ((I.S R.m).fam emb (lamT hc R.m)).Ok) (hP : (Q.S'.fam emb Q.sgT).Ok)
     (x : (I.S R.m).FormsK emb (lamT hc R.m) hF) :
@@ -139,6 +175,11 @@ theorem exists_lower_embF (hW : ∀ τ, Br.Interlace (N_m_succ R) (lamT hc R.m �
     (fun z => by rw [← map_inv, ← map_inv]; exact hQ.gam_last _ _ z), ← map_smul, ← hQ.chr_ext]
   exact congrArg B h2
 
+/- English proof (translation)
+Unfold `PeriodMap.PtilCol PeriodMap.Ptil ColumnChain.col`. Rewrite using `[chain_ev h φ le_rfl]`. Establish `e` using `funext (lower_ev (σ := σ) (emb := emb) (hI := hI) Q hQ fun c => colPt hI k φ R.m c.1 ((I.S R.m).rep c))`. Use `(congrArg (fun z => (Q.per emb σ hI hQ hc).period z F) e).trans ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_sum, map_mul, map_inv₀, map_natCast]`.
+
+Use `Finset.sum_congr rfl fun c _ => congrArg _ ?_` and prove the remaining obligations. Establish `e2` using `colPt_smul hI h' φ (lt_of_lt_of_le (by norm_num) R.two_le_m) le_rfl Q.b0 ((I.S R.m).mv Q.b0 (Q.tilPt c)) ((I.S R.m).rep ((I.S R.m).cl Q.b0 (Q.tilPt c)))`. Rewrite `e2` using `[GStep.mv_smul]`. Rewrite using `[pairBK_apply, PeriodOnStep.map_pairB, ← hy, ← PeriodOnStep.polOf_evV σ emb, e2]`. Both sides reduce to the same expression.
+-/
 theorem ptilCol_ev (h : ∀ i, i < R.m → ReadsAt emb σ hI k i) (h' : ∀ i, i < R.m → EqTarget emb k i)
     (φ : ∀ b, (I.S 0).D b → VV K (lamT hc 0)) (F : Q.Mt emb σ) (y : Q.S'.Cl → VV K Q.sgT)
     (hy : ∀ c, Q.rd emb σ F c = MvPolynomial.map σ (y c).1) :

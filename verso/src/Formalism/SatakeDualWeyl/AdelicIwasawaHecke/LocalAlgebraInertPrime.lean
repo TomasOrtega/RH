@@ -15,20 +15,36 @@ section Gen
 
 variable {A L : Type} [CommRing A] [CommRing L] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gLoc_bc_coe (e : A →+* L) (g : GL n A) :
     ((bc (n := n) e g : GL n L) : Matrix n n L) = (g : Matrix n n A).map e := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[bc]`.
+-/
 theorem gLoc_bc_symm (e : A ≃+* L) (g : GL n L) :
     bc (n := n) (e : A →+* L) (bc (n := n) (e.symm : L →+* A) g) = g := by
   ext i j
   simp [bc]
 
+/- English proof (translation)
+Introduce `g h hgh`. Use extensionality with `i j`. Use `congrArg (fun u : GL n L => (u : Matrix n n L) i j) hgh` as an intermediate fact. Simplify `this` using `[bc]`.
+-/
 theorem gLoc_bc_inj (e : A ≃+* L) : Function.Injective (bc (n := n) (e : A →+* L)) := by
   intro g h hgh
   ext i j
   have := congrArg (fun u : GL n L => (u : Matrix n n L) i j) hgh
   simpa [bc] using this
 
+/- English proof (translation)
+Use `set f : A →+* L := (e : A →+* L)`. Establish `hf : Function.Injective f` using `e.injective`. Establish `hc : (RingHom.mapMatrix f) (cT σA (g : Matrix n n A)) = cT σL (RingHom.mapMatrix f (g : Matrix n n A))`. Use extensionality with `i j`. Simplify using `[cT, f, he]`.
+
+Use `show cT σA (g : Matrix n n A) * 1 * (g : Matrix n n A) = 1 ↔ cT σL (RingHom.mapMatrix f (g : Matrix n n A)) * 1 * RingHom.mapMatrix f (g : Matrix n n A) = 1`. Rewrite using `[← hc, ← map_one (RingHom.mapMatrix f), ← map_mul, ← map_mul, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_one]`.
+
+Introduce `h`. Apply `Matrix.map_injective hf` to reduce the goal to its premises. Simplify `h` using `[RingHom.mapMatrix_apply]`.
+-/
 theorem gLoc_mem_one_iff (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L)
     (he : ∀ x, e (σA x) = σL (e x)) (g : GL n A) :
     g ∈ UJ σA (1 : Matrix n n A) ↔ bc (e : A →+* L) g ∈ UJ σL (1 : Matrix n n L) := by
@@ -48,6 +64,19 @@ theorem gLoc_mem_one_iff (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L)
     apply Matrix.map_injective hf
     simpa [RingHom.mapMatrix_apply] using h
 
+/- English proof (translation)
+Use `set p : Matrix n n L := (P : Matrix n n L)`. Use `set q : Matrix n n L := ((P⁻¹ : GL n L) : Matrix n n L)`. Use `set G : Matrix n n L := (g : Matrix n n L)`. Establish `hpq : p * q = 1`. Simplify using `only [p, q]`.
+
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hqp : q * p = 1`. Simplify using `only [p, q]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `cq : cT σL q * cT σL p = 1` using `by rw [← cT_mul, hpq, cT_one]`.
+
+Establish `cancel : ∀ X, cT σL q * (cT σL p * X * p) * q = X` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X := by rw [cq, hpq, Matrix.one_mul, Matrix.mul_one]`. Establish `inj : ∀ X Y, cT σL p * X * p = cT σL p * Y * p → X = Y` using `fun X Y h => by`.
+
+Rewrite using `[← cancel X, ← cancel Y, h]`. Establish `E : cT σL (q * G * p) * (cT σL p * p) * (q * G * p) = cT σL p * (cT σL G * G) * p`. Rewrite using `[cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = cT σL p * (cT σL G * G) * p := by rw [cq, hpq, Matrix.one_mul, Matrix.mul_one]`. Use `show cT σL G * 1 * G = 1 ↔ cT σL (((P⁻¹ * g * P : GL n L)) : Matrix n n L) * J * ((P⁻¹ * g * P : GL n L) : Matrix n n L) = J`. Rewrite using `[show (((P⁻¹ * g * P : GL n L)) : Matrix n n L) = q * G * p by simp only [Units.val_mul, p, q, G]]`. Rewrite using `[← hP, E, Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[h, Matrix.mul_one]`. Introduce `h`. Conclude with `inj _ _ (by rw [h, Matrix.mul_one])`.
+-/
 theorem gLoc_conj_iff (σL : L →+* L) (J : Matrix n n L) (P : GL n L)
     (hP : cT σL (P : Matrix n n L) * (P : Matrix n n L) = J) (g : GL n L) :
     g ∈ UJ σL (1 : Matrix n n L) ↔ P⁻¹ * g * P ∈ UJ σL J := by
@@ -89,10 +118,24 @@ section Int
 
 variable {A L : Type} [CommRing A] [CommRing L] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem gLoc_range_subtype {R : Type} [CommRing R] (S : Subring R) (x : R) :
     x ∈ Set.range S.subtype ↔ x ∈ S := by
   exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ {B : Type} [CommRing B] (S : Subring B) (u : GL n B), u ∈ (bc (n` using `n) S.subtype).range ↔ (∀ i j, (u : Matrix n n B) i j ∈ S) ∧ (∀ i j, ((u⁻¹ : GL n B) : Matrix n n B) i j ∈ S) := by`. Introduce `B _ S u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[bc]`. Rewrite using `[← map_inv]`. Simplify using `[bc]`. Introduce and unpack `⟨h1, h2⟩`. Establish `hinj : Function.Injective (RingHom.mapMatrix S.subtype : Matrix n n S → Matrix n n B)` using `Matrix.map_injective Subtype.val_injective`.
+
+Set `Am : Matrix n n S` to `Matrix.of fun i j => ⟨(u : Matrix n n B) i j, h1 i j⟩`. Set `Bm : Matrix n n S` to `Matrix.of fun i j => ⟨((u⁻¹ : GL n B) : Matrix n n B) i j, h2 i j⟩`. Establish `hA : RingHom.mapMatrix S.subtype Am = (u : Matrix n n B)` using `by ext i j; rfl`. Establish `hB : RingHom.mapMatrix S.subtype Bm = ((u⁻¹ : GL n B) : Matrix n n B)` using `by ext i j; rfl`. Use `⟨⟨Am, Bm, hinj ?_, hinj ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[key T g, key O (bc (e : A →+* L) g), ← map_inv]`.
+
+Simplify using `only [gLoc_bc_coe, Matrix.map_apply, RingEquiv.coe_toRingHom, ← hT]`.
+-/
 theorem gLoc_int_iff (e : A ≃+* L) (T : Subring A) (O : Subring L) (hT : ∀ x, x ∈ T ↔ e x ∈ O)
     (g : GL n A) :
     g ∈ (bc (n := n) T.subtype).range ↔ bc (e : A →+* L) g ∈ (bc (n := n) O.subtype).range := by
@@ -121,6 +164,11 @@ theorem gLoc_int_iff (e : A ≃+* L) (T : Subring A) (O : Subring L) (hT : ∀ x
   rw [key T g, key O (bc (e : A →+* L) g), ← map_inv]
   simp only [gLoc_bc_coe, Matrix.map_apply, RingEquiv.coe_toRingHom, ← hT]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hP) h) hP`. Introduce `h`. Use `K.mul_mem (K.mul_mem hP h) (K.inv_mem hP)` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`.
+-/
 theorem gLoc_conj_mem {G : Type} [Group G] (K : Subgroup G) (P : G) (hP : P ∈ K) (g : G) :
     g ∈ K ↔ P⁻¹ * g * P ∈ K := by
   constructor
@@ -154,6 +202,9 @@ def gLoc_hom (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e 
     rw [map_mul]
     simp only [mul_assoc, mul_inv_cancel_left]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gLoc_hom_apply (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e (σA x) = σL (e x))
     (P : GL (Fin m) L)
     (hP : cT σL (P : Matrix (Fin m) (Fin m) L) * (P : Matrix (Fin m) (Fin m) L) = antiJ L m)
@@ -162,6 +213,13 @@ theorem gLoc_hom_apply (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he :
     ((gLoc_hom σA σL e he P hP H hH x : GU σL m) : GL (Fin m) L) =
       P⁻¹ * bc (e : A →+* L) (x : GL (Fin m) A) * P := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1` using `congrArg (fun z : GU σL m => P * (z : GL (Fin m) L) * P⁻¹) hxy`. Simplify using `only [gLoc_hom_apply] at h1`. Establish `h2 : bc (e : A →+* L) (x : GL (Fin m) A) = bc (e : A →+* L) (y : GL (Fin m) A)`.
+
+Simplify `h1` using `[mul_assoc]`. Conclude with `Subtype.ext (gLoc_bc_inj e h2)`. Introduce `y`. Establish `hbg : bc (e : A →+* L) (bc (e.symm : L →+* A) (P * (y : GL (Fin m) L) * P⁻¹)) = P * (y : GL (Fin m) L) * P⁻¹` using `gLoc_bc_symm e _`. Establish `hmem : bc (e.symm : L →+* A) (P * (y : GL (Fin m) L) * P⁻¹) ∈ H`.
+
+Rewrite using `[hH, gLoc_mem_one_iff σA σL e he, hbg, gLoc_conj_iff σL _ P hP]`. Simplify `y.2` using `[mul_assoc]`. Use `⟨⟨_, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[gLoc_hom_apply, hbg]`. Use `group`.
+-/
 theorem gLoc_hom_bij (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e (σA x) = σL (e x))
     (P : GL (Fin m) L)
     (hP : cT σL (P : Matrix (Fin m) (Fin m) L) * (P : Matrix (Fin m) (Fin m) L) = antiJ L m)
@@ -184,6 +242,15 @@ theorem gLoc_hom_bij (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : �
     rw [gLoc_hom_apply, hbg]
     group
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨-, hxT⟩` from `(hLv _).mp (Subgroup.mem_subgroupOf.mp hx)`. Rewrite using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`.
+
+Use `⟨(f x).2, ?_⟩` and prove the remaining obligations. Use `show ((f x : GU σL m) : GL (Fin m) L) ∈ _`. Rewrite using `[hf]`. Conclude with `(gLoc_conj_mem _ P hPO _).mp ((gLoc_int_iff e T (intL L) hT _).mp hxT)`. Introduce `hy`.
+
+Take `⟨x, rfl⟩` from `f.surjective y`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Use `Subgroup.mem_subgroupOf.mpr ((hLv _).mpr ⟨x.2, ?_⟩)` and prove the remaining obligations. Rewrite `hy` using `[KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf]`. Establish `h2` using `hy.2`.
+
+Express the relevant statement in the definitionally equal form `((f x : GU σL m) : GL (Fin m) L) ∈ _ at h2`. Rewrite `h2` using `[hf]`. Conclude with `(gLoc_int_iff e T (intL L) hT _).mpr ((gLoc_conj_mem _ P hPO _).mpr h2)`.
+-/
 theorem gLoc_level (e : A ≃+* L) (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x ∈ intL L) (P : GL (Fin m) L)
     (hPO : P ∈ (bc (n := Fin m) (intL L).subtype).range) {σL : L →+* L}
     (H Lv : Subgroup (GL (Fin m) A))
@@ -209,6 +276,9 @@ theorem gLoc_level (e : A ≃+* L) (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x 
     rw [hf] at h2
     exact (gLoc_int_iff e T (intL L) hT _).mpr ((gLoc_conj_mem _ P hPO _).mpr h2)
 
+/- English proof (translation)
+Use `⟨MulEquiv.ofBijective (gLoc_hom σA σL e he P hP H hH) (gLoc_hom_bij σA σL e he P hP H hH), fun x => rfl, ?_⟩` and prove the remaining obligations. Conclude with `gLoc_level e T hT P hPO H Lv hLv _ (fun x => rfl)`.
+-/
 theorem gLoc_main (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ x, e (σA x) = σL (e x))
     (T : Subring A) (hT : ∀ x, x ∈ T ↔ e x ∈ intL L) (P : GL (Fin m) L)
     (hPO : P ∈ (bc (n := Fin m) (intL L).subtype).range)
@@ -224,6 +294,11 @@ theorem gLoc_main (σA : A →+* A) (σL : L →+* L) (e : A ≃+* L) (he : ∀ 
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n v L _ _ _ e σw P he hT hPO hP`. Establish `hH : ∀ g, g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) ↔ g ∈ UJ (sigR σ (v.adicCompletion F)) (1 : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F))`. Introduce `g`. Rewrite using `[UPts, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hLv : ∀ g, g ∈ levelV σ (1 : Matrix (Fin n) (Fin n) E) v ↔ g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) ∧ g ∈ (bc (n` using `Fin n) (tensInt (F := F) (v.adicCompletion F) (intOE E) (Ov F v)).subtype).range := by`.
+
+Introduce `g`. Rewrite using `[levelV, level, Subgroup.mem_inf, stabilizer_standard_lattice _ _ (Fin n) (fun a b h => Subtype.ext h)]`. Both sides reduce to the same expression. Take `⟨f, hf1, hf2⟩` from `gLoc_main (sigR σ (v.adicCompletion F)) σw e he _ hT P hPO hP _ _ hH hLv`. Conclude with `⟨f, hf1, hf2⟩`.
+-/
 theorem local_algebra_inert_prime : Formalism.UG.LocInert := by
   intro F E _ _ _ _ _ σ n v L _ _ _ e σw P he hT hPO hP
   have hH : ∀ g, g ∈ UPts σ (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) ↔

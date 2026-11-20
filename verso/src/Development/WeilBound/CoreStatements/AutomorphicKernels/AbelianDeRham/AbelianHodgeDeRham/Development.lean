@@ -59,11 +59,27 @@ structure Chapters : Prop where
   h1field : FlatBCSt → PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe → H1DimGeAbelianDim → H1StructureFieldDim
   final : SteinSt → ParSt → H1StructureBundle → DegenSt → WedgeHypSt → OBCSt → FormBCSt → GlobalTheory.Published.AbelianHodgeDeRham
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Rewrite using `[← he, (exteriorPower.ιMulti R 2).map_eq_zero_of_eq ![c, c] (i := 0) (j := 1) rfl (by decide), map_zero]`.
+-/
 theorem wedge_alt {R : Type} [CommRing R] {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R} (h : Wedge F)
     (c : H1 F) : cup F c c = 0 := by
   obtain ⟨e, he⟩ := h
   rw [← he, (exteriorPower.ιMulti R 2).map_eq_zero_of_eq ![c, c] (i := 0) (j := 1) rfl (by decide), map_zero]
 
+/- English proof (translation)
+Establish `low` using `h.low h.dict`. Establish `htpy` using `h.htpy h.cx`. Establish `qc` using `h.qcalc h.cx`. Establish `fub` using `h.fubini h.cx`. Establish `aff` using `h.affacyc h.cx htpy`.
+
+Establish `des` using `h.descent h.cx htpy qc fub aff`. Establish `sbc` using `h.sysbc des low`. Establish `par` using `h.par h.cot h.stein`. Establish `axo` using `h.axo des low sbc h.stein`. Establish `axf` using `h.axform h.cot h.stein par`.
+
+Establish `cmp` using `h.cmp h.cx`. Establish `hopf` using `h.hopf htpy qc fub aff des low axo`. Establish `perf` using `h.perf h₁ h₂ h₃ des low sbc (h.fincoh cmp) (h.perfnoeth h.cx h.dict) h.perfbase`. Establish `van` using `h.van h.cx cmp`. Establish `fbc` using `h.flatbc des low sbc`.
+
+Establish `h1f` using `h.h1field fbc (h.h1le des low h.stein van hopf (h.hopfle h.cx h.dict low)) (h.h1ge ht hk fbc h.feweqn h.stalkdim)`. Establish `wf` using `h.wedgefield2 des low h.stein h1f van hopf (h.hopffield h.cx h.dict low)`. Establish `h1` using `h.h1all des low sbc perf h.stein h1f (h.smalllift des low sbc axo (h.noprim des low h.stein axo wf)) h.perfvb`. Take `⟨obc, w⟩` from `h.oside des low sbc perf h.stein h1 wf hopf h.perfh1 h.perfh2 (h.wedgeof low)`. Establish `bi` using `h.bi des low h.stein par axo axf`.
+
+Establish `fr : AllAb fun _ _ A _ _ ↦ Framed (OAff A.hom)` using `fun R _ A _ g hA hg ↦ ⟨h.stein R A g hA hg, (par R A g hA hg).1, (par R A g hA hg).2.1, (par R A g hA hg).2.2.1⟩`. Establish `deg : DegenSt` using `fun R _ A _ g hA hg ↦`. Establish `c` using `h.closed h.twoform R _ _ (fr R A g hA hg) (bi R A g hA hg)`. Use the proof step `⟨c, h.lift h.oneform h.twoform R _ _ (fr R A g hA hg) (bi R A g hA hg) c⟩`. Establish `wh : WedgeHypSt` using `fun R _ A _ g hA hg ↦ h.hyp2 h.oneform h.twoform R _ _ (fr R A g hA hg) (h1 R A g hA hg).1 (h1 R A g hA hg).2.1 (deg R A g hA hg).1 (deg R A g hA hg).2 (w R A g hA hg) (h.alt h.oneform h.twoform R _ _ (fr R A g hA hg) (bi R A g hA hg) (deg R A g hA hg).1 (deg R A g hA hg).2 (wedg …`.
+
+Conclude with `h.final h.stein par h1 deg wh obc (h.formbc h.stein par)`.
+-/
 theorem Chapters.print (h : Chapters) (h₁ : GlobalTheory.SpreadingModels.SchemeModels)
     (h₂ : GlobalTheory.SpreadingModels.Spreads (fun _ _ f => Smooth f)) (h₃ : GlobalTheory.SpreadingModels.Spreads (fun _ _ f => IsProper f))
     (ht : PositivityTheory.ObstructionTrivialLocus.TrivLocus) (hk : PositivityTheory.ObstructionTrivialLocus.KFinite) : GlobalTheory.Published.AbelianHodgeDeRham := by
@@ -101,6 +117,11 @@ theorem Chapters.print (h : Chapters) (h₁ : GlobalTheory.SpreadingModels.Schem
         (wedge_alt (w R A g hA hg)))
   exact h.final h.stein par h1 deg wh obc (h.formbc h.stein par)
 
+/- English proof (translation)
+Establish `low` using `h.low h.dict`. Establish `htpy` using `h.htpy h.cx`. Establish `qc` using `h.qcalc h.cx`. Establish `fub` using `h.fubini h.cx`. Establish `aff` using `h.affacyc h.cx htpy`.
+
+Establish `des` using `h.descent h.cx htpy qc fub aff`. Establish `axo` using `h.axo des low (h.sysbc des low) h.stein`. Conclude with `h.h1le des low h.stein (h.van h.cx (h.cmp h.cx)) (h.hopf htpy qc fub aff des low axo) (h.hopfle h.cx h.dict low)`.
+-/
 theorem Chapters.h1Le (h : Chapters) : PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe := by
   have low := h.low h.dict
   have htpy := h.htpy h.cx

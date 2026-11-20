@@ -16,6 +16,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.EisensteinSmoothness
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun v _ ↦ ?_` and prove the remaining obligations. Rewrite using `[normAtPlace_homeomorphMixedSpace]`. Establish `hv` using `IsTotallyReal.isReal v`. Establish `h : ‖x.1 v‖ = ‖UpperTheory.V.TR.pInf F x v‖`.
+
+Express the relevant statement in the definitionally equal form `‖x.1 v‖ = ‖InfinitePlace.Completion.ringEquivRealOfIsReal hv (x.1 v)‖`. Conclude with `((InfinitePlace.Completion.isometryEquivRealOfIsReal hv).isometry.norm_map_of_map_zero (map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal hv)) (x.1 v)).symm`. Rewrite using `[h]`. Conclude with `norm_le_pi_norm (UpperTheory.V.TR.pInf F x) v`.
+-/
 theorem norm_hms_le_norm_pInf (x : Ad F) :
     ‖homeomorphMixedSpace F x.1‖ ≤ ‖UpperTheory.V.TR.pInf F x‖ := by
   rw [norm_eq_sup'_normAtPlace]
@@ -29,6 +34,47 @@ theorem norm_hms_le_norm_pInf (x : Ad F) :
   rw [h]
   exact norm_le_pi_norm (UpperTheory.V.TR.pInf F x) v
 
+/- English proof (translation)
+Use `set dK : F := (d : F) with hdKdef`. Establish `hdK : dK ≠ 0`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h' : ((d : F)) = 0` using `h`.
+
+Conclude with `h'` after adjusting the coercions. Use `set J : (FractionalIdeal (𝓞 F)⁰ F)ˣ := Units.mk0 (FractionalIdeal.spanSingleton (𝓞 F)⁰ dK⁻¹) ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr (inv_ne_zero hdK))`. Establish `hJ : ∀ ξ : F, (∃ s : 𝓞 F, dK * ξ = s) → ξ ∈ (J : FractionalIdeal (𝓞 F)⁰ F)`. Introduce and unpack `ξ ⟨s, hs⟩`. Use `(FractionalIdeal.mem_spanSingleton _).mpr ⟨s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(s : F) * dK⁻¹ = ξ`. Rewrite using `[← hs, mul_comm dK, mul_assoc, mul_inv_cancel₀ hdK, mul_one]`. Establish `hNd : ((Algebra.norm ℚ dK : ℚ) : ℝ) ≠ 0`. Rewrite using `[Rat.cast_ne_zero]`.
+
+Conclude with `(Algebra.norm_ne_zero_iff).2 hdK`. Use `set κ₀ : ℝ := |((Algebra.norm ℚ dK : ℚ) : ℝ)|⁻¹`. Establish `hκ₀ : 0 < κ₀` using `inv_pos.2 (abs_pos.2 hNd)`. Establish `hNξ : ∀ ξ : F, ξ ≠ 0 → (∃ s : 𝓞 F, dK * ξ = s) → κ₀ ≤ mixedEmbedding.norm (mixedEmbedding F ξ)`. Introduce and unpack `ξ hξ0 ⟨s, hs⟩`.
+
+Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Apply `hξ0` to reduce the goal to its premises. Establish `h0 : dK * ξ = 0` using `by rw [hs]; simp`. Conclude with `(mul_eq_zero.1 h0).resolve_left hdK`.
+
+Establish `hmul : Algebra.norm ℚ dK * Algebra.norm ℚ ξ = Algebra.norm ℚ (s : F)`. Rewrite using `[← map_mul, hs]`. Establish `hξN : ((Algebra.norm ℚ ξ : ℚ) : ℝ) = ((Algebra.norm ℚ (s : F) : ℚ) : ℝ) * ((Algebra.norm ℚ dK : ℚ) : ℝ)⁻¹`. Rewrite using `[← hmul, Rat.cast_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[mixedEmbedding.norm_eq_norm, Rat.cast_abs, hξN, abs_mul, abs_inv]`. Conclude with `le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hs0)`. Establish `hcm : Continuous fun a : IdeleGroup F ↦ (infiniteModule a)⁻¹` using `continuous_infiniteModule.inv₀ fun a ↦ (infiniteModule_pos a).ne'`. Take `⟨B₂, hB₂⟩` from `hC.exists_bound_of_continuousOn hcm.continuousOn`. Use `set m : ℝ := (max B₂ 1)⁻¹`.
+
+Establish `hm0 : 0 < m` using `inv_pos.2 (zero_lt_one.trans_le (le_max_right _ _))`. Establish `hmC : ∀ a ∈ C, m ≤ infiniteModule a`. Introduce `a ha`. Establish `h1 : (infiniteModule a)⁻¹ ≤ max B₂ 1`. Use `hB₂ a ha` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_of_nonneg (inv_nonneg.2 (infiniteModule_pos a).le)]`. Conclude with `this.trans (le_max_left _ _)`. Conclude with `inv_le_of_inv_le₀ (infiniteModule_pos a) h1`. Use `set kL := Module.finrank ℤ (idealLattice F J) + 1`. Use `set n := Module.finrank ℚ F`.
+
+Establish `hcont : Continuous fun a : IdeleGroup F ↦ ‖homeomorphMixedSpace F ((IdeleGroup.toInfinite F a⁻¹ : (InfiniteAdeleRing F)ˣ) : InfiniteAdeleRing F)‖` using `continuous_norm.comp ((homeomorphMixedSpace F).continuous.comp (Units.continuous_val.comp ((IdeleGroup.continuous_toInfinite (K := F)).comp continuous_inv)))`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`. Use `set B' := max B 1`. Establish `hB'1 : 1 ≤ B'` using `le_max_right _ _`. Establish `hB'0 : 0 < B'` using `zero_lt_one.trans_le hB'1`.
+
+Use `set κ := m * κ₀`. Establish `hκ : 0 < κ` using `mul_pos hm0 hκ₀`. Use `⟨kL + n * r, fun ξ ↦ if ξ ∈ (J : FractionalIdeal (𝓞 F)⁰ F) then B' ^ kL * (κ ^ r)⁻¹ * ((1 + ‖mixedEmbedding F ξ‖) ^ kL)⁻¹ else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `summable_ite_mem_of_summable_idealLattice J (h := fun x ↦ B' ^ kL * (κ ^ r)⁻¹ * ((1 + ‖x‖) ^ kL)⁻¹) ((summable_inv_one_add_norm_pow_idealLattice J).mul_left (B' ^ kL * (κ ^ r)⁻¹))`. Introduce `ξ dsimp only split_ifs`.
+
+Check the signs of the components of the expression. Conclude with `le_rfl`. Introduce `a ha t ht ξ hξ0 hξs`. Establish `hξJ` using `hJ ξ hξs`. Use `set y := moduleSection (w0 F) t * a`.
+
+Use `set c := homeomorphMixedSpace F ((IdeleGroup.toInfinite F y : (InfiniteAdeleRing F)ˣ) : InfiniteAdeleRing F)`. Use `set c' := homeomorphMixedSpace F ((IdeleGroup.toInfinite F a⁻¹ : (InfiniteAdeleRing F)ˣ) : InfiniteAdeleRing F)`. Use `set e' := homeomorphMixedSpace F ((IdeleGroup.toInfinite F (moduleSection (w0 F) t⁻¹) : (InfiniteAdeleRing F)ˣ) : InfiniteAdeleRing F)`. Establish `hcc : c' * (e' * c) = 1`. Rewrite using `[← homeomorphMixedSpace_mul, ← homeomorphMixedSpace_mul, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, map_inv, ← mul_assoc, ← mul_assoc, inv_mul_cancel_right, inv_mul_cancel, map_one, Units.val_one, homeomorphMixedSpace_apply, map_one]`.
+
+Establish `he' : ∀ v, normAtPlace v e' ≤ 1`. Introduce `v`. Rewrite using `[normAtPlace_homeomorphMixedSpace]`. Use `norm_moduleSection_apply_le_one (w0 F) ?_ v` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t : ℝ)⁻¹ ≤ 1`.
+
+Conclude with `inv_le_one_of_one_le₀ ht`. Establish `hz_eq : homeomorphMixedSpace F ((((y : Ideles F) : Ad F) * algebraMap F (Ad F) ξ).1) = c * mixedEmbedding F ξ`. Establish `h1 : (((y : Ideles F) : Ad F) * algebraMap F (Ad F) ξ).1 = ((IdeleGroup.toInfinite F y : (InfiniteAdeleRing F)ˣ) : InfiniteAdeleRing F) * algebraMap F (InfiniteAdeleRing F) ξ` using `rfl`. Rewrite using `[h1, homeomorphMixedSpace_mul, homeomorphMixedSpace_algebraMap]`. Rewrite using `[hz_eq]`.
+
+Simplify using `only`. Rewrite using `[if_pos hξJ]`. Use `set x := mixedEmbedding F ξ`. Use `set z := c * x`. Establish `hx : ‖x‖ ≤ B' * ‖z‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN : (t : ℝ) * κ ≤ mixedEmbedding.norm z`. Rewrite using `[map_mul, mixedEmbedding_norm_toInfinite, infiniteModule_mul, infiniteModule_moduleSection]`. Establish `h1` using `hmC a ha`. Establish `h2` using `hNξ ξ hξ0 hξs`.
+
+Establish `ht0 : (0 : ℝ) ≤ t` using `t.2.le`. Combine the equalities or inequalities in the displayed calculation. Establish `htκ : 0 < (t : ℝ) * κ` using `mul_pos t.2 hκ`. Establish `hz : (t : ℝ) * κ ≤ (1 + ‖z‖) ^ n` using `hN.trans ((mixedEmbedding_norm_le_norm_pow z).trans (pow_le_pow_left₀ (norm_nonneg _) (by linarith [norm_nonneg z]) n))`. Establish `hx' : (1 + ‖x‖) / B' ≤ 1 + ‖z‖`.
+
+Rewrite using `[div_le_iff₀ hB'0]`. Use polynomial arithmetic with `[norm_nonneg z]`. Establish `h1 : ((1 + ‖z‖) ^ kL)⁻¹ ≤ (((1 + ‖x‖) / B') ^ kL)⁻¹` using `inv_anti₀ (pow_pos (div_pos (by positivity) hB'0) kL) (pow_le_pow_left₀ (div_pos (by positivity) hB'0).le hx' kL)`. Establish `h2 : (((1 + ‖z‖) ^ n) ^ r)⁻¹ ≤ (((t : ℝ) * κ) ^ r)⁻¹` using `inv_anti₀ (pow_pos htκ r) (pow_le_pow_left₀ htκ.le hz r)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[pow_add, pow_mul, mul_inv]`. Use `_ ≤ (((1 + ‖x‖) / B') ^ kL)⁻¹ * (((t : ℝ) * κ) ^ r)⁻¹ := mul_le_mul h1 h2 (by positivity) (by positivity)`. Use `_ = ((t : ℝ) ^ r)⁻¹ * (B' ^ kL * (κ ^ r)⁻¹ * ((1 + ‖x‖) ^ kL)⁻¹) := by`. Rewrite using `[div_pow, inv_div, mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem decay_one {C : Set (Ideles F)} (hC : IsCompact C) (d : 𝓞 F) (hd : d ≠ 0) (r : ℕ) :
     ∃ (k : ℕ) (u : F → ℝ), Summable u ∧ (∀ ξ, 0 ≤ u ξ) ∧ ∀ a ∈ C, ∀ T : {x : ℝ // 0 < x},
       1 ≤ (T : ℝ) → ∀ ξ : F, ξ ≠ 0 → (∃ s : 𝓞 F, (d : F) * ξ = s) →
@@ -170,6 +216,27 @@ theorem decay_one {C : Set (Ideles F)} (hC : IsCompact C) (d : 𝓞 F) (hd : d �
         rw [div_pow, inv_div, mul_pow, mul_inv]
         ring
 
+/- English proof (translation)
+Take `⟨k, u, hu, hu0, hb⟩` from `decay_one hC d hd r`. Use `set W : F → ℝ := fun η => if η = 0 then 1 else u η with hWdef`. Establish `hW0 : ∀ η, 0 ≤ W η` using `fun η => by`. Simplify using `only [hWdef]`. Use `split_ifs`.
+
+Conclude with `zero_le_one`. Conclude with `hu0 η`. Establish `hWs : Summable W`. Use `Summable.of_nonneg_of_le hW0 (fun η => ?_) (hu.add (hasSum_ite_eq (0 : F) (1 : ℝ)).summable)` and prove the remaining obligations. Simplify using `only [hWdef]`.
+
+Use `split_ifs with h`. Combine the linear relations using `[hu0 η]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨2 * k, fun ξ => W (ξ 0) * W (ξ 1), ?_, ?_⟩` and prove the remaining obligations. Establish `hprod : Summable fun p : F × F => W p.1 * W p.2` using `hWs.mul_of_nonneg hWs (fun η => hW0 η) (fun η => hW0 η)`.
+
+Conclude with `(finTwoArrowEquiv F).summable_iff.2 hprod`. Introduce `a ha T hT ξ hξ hds`. Use `set y : Ideles F := moduleSection (w0 F) T * a with hy`. Establish `hTr : ((T : ℝ) ^ r)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ hT)`. Use `set f : Fin 2 → ℝ := fun i => ((1 + ‖homeomorphMixedSpace F (((y : Ad F)) * algebraMap F (Ad F) (ξ i)).1‖) ^ k)⁻¹ with hfdef`.
+
+Establish `hf0 : ∀ i, 0 ≤ f i` using `fun i => by simp only [hfdef]; positivity`. Establish `hfT : ∀ i, ξ i ≠ 0 → f i ≤ ((T : ℝ) ^ r)⁻¹ * W (ξ i)`. Introduce `i h`. Simplify using `only [hfdef, hWdef, if_neg h]`. Conclude with `hb a ha T hT (ξ i) h (hds i)`.
+
+Establish `hfW : ∀ i, f i ≤ W (ξ i)`. Introduce `i`. Distinguish the cases in `h : ξ i = 0`. Establish `h0 : homeomorphMixedSpace F (((y : Ad F)) * algebraMap F (Ad F) (ξ i)).1 = 0`. Rewrite using `[h, map_zero, mul_zero, homeomorphMixedSpace_apply]`.
+
+Conclude with `map_zero _`. Simplify using `only [hfdef, hWdef, if_pos h, h0, norm_zero, add_zero, one_pow, inv_one, le_refl]`. Conclude with `(hfT i h).trans (mul_le_of_le_one_left (hW0 _) hTr)`. Establish `hvec : ∀ i, ‖homeomorphMixedSpace F (((y : Ad F)) * algebraMap F (Ad F) (ξ i)).1‖ ≤ ‖fun i => UpperTheory.V.TR.pInf F ((y : Ad F) * algebraMap F (Ad F) (ξ i))‖` using `fun i => (norm_hms_le_norm_pInf _).trans (norm_le_pi_norm (fun i => UpperTheory.V.TR.pInf F ((y : Ad F) * algebraMap F (Ad F) (ξ i))) i)`. Establish `hmain : ((1 + ‖fun i => UpperTheory.V.TR.pInf F ((y : Ad F) * algebraMap F (Ad F) (ξ i))‖) ^ (2 * k))⁻¹ ≤ f 0 * f 1`.
+
+Rewrite using `[two_mul, pow_add, mul_inv]`. Conclude with `mul_le_mul (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) (by linarith [hvec 0]) k)) (inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) (by linarith [hvec 1]) k)) (by positivity) (hf0 0)`. Use `hmain.trans ?_` and prove the remaining obligations. Establish `hTr0 : 0 ≤ ((T : ℝ) ^ r)⁻¹` using `by positivity`. Distinguish the cases in `h0 : ξ 0 = 0`.
+
+Establish `h1 : ξ 1 ≠ 0`. Introduce `h1`. Apply `hξ` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Conclude with `h0`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_decay_bound_two (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     {C : Set (Ideles F)} (hC : IsCompact C) (d : 𝓞 F) (hd : d ≠ 0) (r : ℕ) :
     ∃ (k : ℕ) (U : (Fin 2 → F) → ℝ), Summable U ∧ ∀ a ∈ C, ∀ T : {x : ℝ // 0 < x}, 1 ≤ (T : ℝ) →

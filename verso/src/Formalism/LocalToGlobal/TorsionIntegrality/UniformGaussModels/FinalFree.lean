@@ -15,10 +15,19 @@ namespace Formalism.L2.Th1.Top
 
 open Formalism.L2.Th1.H (localStandard kappaExists)
 
+/- English proof (translation)
+The claim follows from `FrP.hermFrame_holds`.
+-/
 theorem frameExistsH : FrameExistsH := FrP.hermFrame_holds
 
+/- English proof (translation)
+The claim follows from `theta_kappa_shape_holds localStandard kappaExists`.
+-/
 theorem uniformGaussModels_fact_variant : ThetaFourthPowerShapeNormalised := theta_kappa_shape_holds localStandard kappaExists
 
+/- English proof (translation)
+Introduce `l _ hl`. Take `⟨σ, hσ, -⟩` from `Formalism.L2.Th1.D.kurFrob l (by omega)`. Conclude with `⟨σ, hσ⟩`.
+-/
 theorem frobExistsH : FrobExistsH := by
   intro l _ hl
   obtain ⟨σ, hσ, -⟩ := Formalism.L2.Th1.D.kurFrob l (by omega)

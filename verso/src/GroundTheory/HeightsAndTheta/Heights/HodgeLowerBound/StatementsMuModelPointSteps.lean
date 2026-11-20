@@ -17,6 +17,15 @@ def IsHodgeFrame (D : ComponentDataHodge II Ψ K ι Ω E) (τ : Ψ) (b : Fin D.N
   ∃ (c : (k : K) → ι k) (f : Ω), IsFrameOver D.y (D.W τ) c f b ∧
     Submodule.span Ω (b '' {i | (i : ℕ) < D.j}) = D.F τ
 
+/- English proof (translation)
+Establish `hy : ∀ k, ∃ i, D.y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `D.arith.2.1.2.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Use `show mConeMap D.y (X ⟨k, i⟩) = 0`.
+
+Simplify using `[mConeMap, h]`. Use `choose c hc using hy`. Establish `hseg : segreCoord D.y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Establish `: ∀ τ, ∃ b : Fin D.N → E τ, IsHodgeFrame D τ b`. Introduce `τ`.
+
+Take `⟨m, f, a, -, -, hsum, hfr⟩` from `D.hodge τ c hseg`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, f l ≠ 0 := by`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Simplify using `[h] at hsum`.
+
+Take `⟨b, hb, hspan⟩` from `hfr l hl`. Conclude with `⟨b, c, f l, hb, hspan⟩`. Use `choose b hb using this`. Conclude with `⟨b, hb⟩`.
+-/
 theorem exists_hodgeFrame (D : ComponentDataHodge II Ψ K ι Ω E) :
     ∃ b : ∀ τ, Fin D.N → E τ, ∀ τ, IsHodgeFrame D τ (b τ) := by
   have hy : ∀ k, ∃ i, D.y ⟨k, i⟩ ≠ 0 := by
@@ -60,6 +69,9 @@ def MuPointDense.Statement : Prop :=
     (b : ∀ τ, Fin D.N → E τ), (∀ τ, IsHodgeFrame D τ (b τ)) →
     PXmu P ≤ mCoordIdeal (muPointOf P b)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨LineFlag.PL⟩, exists_hodgeFrame _⟩`.
+-/
 theorem MuPointVanish.objects_line :
     Nonempty (PlueckerData LineFlag.DL) ∧ ∃ b : Unit → Fin LineFlag.DL.N → (Fin 2 → _), ∀ τ, IsHodgeFrame LineFlag.DL τ (b τ) :=
   ⟨⟨LineFlag.PL⟩, exists_hodgeFrame _⟩

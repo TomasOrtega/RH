@@ -11,10 +11,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Basic
 
 namespace UpperTheory.Gal.Mod
 
+/- English proof (translation)
+The claim follows from `hopOp @galEx @corrOpEq`.
+-/
 theorem hopOp_holds : HopOp := hopOp @galEx @corrOpEq
 
+/- English proof (translation)
+The claim follows from `towES esGen_all bcEx (liesOp hopOp_holds @opCover) (fixDesc hopOp_holds)`.
+-/
 theorem towES_holds : TowES := towES esGen_all bcEx (liesOp hopOp_holds @opCover) (fixDesc hopOp_holds)
 
+/- English proof (translation)
+The claim follows from `esStep towES_holds placeData grPass`.
+-/
 theorem esStep_holds : UpperTheory.Gal.Int.Geo.ESStep := esStep towES_holds placeData grPass
 
 end UpperTheory.Gal.Mod

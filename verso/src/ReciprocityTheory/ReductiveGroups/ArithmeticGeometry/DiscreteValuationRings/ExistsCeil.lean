@@ -4,6 +4,19 @@ set_option autoImplicit false
 
 namespace ReciprocityTheory.ChartRestriction.G.DVR.UUA
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℤ X`. Establish `hk0 : (0 : ℤ) < k` using `by exact_mod_cast hk`. Use `⟨fun a => b.equivFun.symm (fun i => ((a i : ℕ) : ℤ)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ`. Use `⟨fun i => ⟨(b.equivFun χ i % k).toNat, ?_⟩, b.equivFun.symm (fun i => b.equivFun χ i / k), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.toNat_lt (Int.emod_nonneg _ hk0.ne')]`. Conclude with `Int.emod_lt_of_pos _ hk0`. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [map_add, map_nsmul, LinearEquiv.apply_symm_apply, Pi.add_apply, nsmul_eq_mul]`.
+
+Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hk0.ne')]`. Conclude with `Int.emod_add_mul_ediv _ _`. Introduce `a a' μ μ' h`. Use function extensionality and compare the values at `i`. Establish `e` using `congrFun (congrArg b.equivFun h) i`.
+
+Simplify using `only [map_add, map_nsmul, LinearEquiv.apply_symm_apply, Pi.add_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply] at e`. Establish `e'` using `congrArg (fun t => t % (k : ℤ)) e`. Rewrite `e'` using `[Int.add_mul_emod_self_left, Int.add_mul_emod_self_left]`. Establish `e1 : ((a i : ℕ) : ℤ) % k = (a i : ℕ)` using `Int.emod_eq_of_lt (by positivity) (by exact_mod_cast (a i).isLt)`. Establish `e2 : ((a' i : ℕ) : ℤ) % k = (a' i : ℕ)` using `Int.emod_eq_of_lt (by positivity) (by exact_mod_cast (a' i).isLt)`.
+
+Rewrite `e'` using `[e1, e2]`. Conclude with `Fin.ext (by exact_mod_cast e')`. Introduce `x y hxy`. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Establish `e` using `congrFun (congrArg b.equivFun hxy) i`. Simplify using `only [map_nsmul, Pi.smul_apply, nsmul_eq_mul] at e`. Conclude with `mul_left_cancel₀ hk0.ne' e`.
+-/
 theorem reps_X {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (k : ℕ) (hk : 1 ≤ k) :
     ∃ rep : (Fin (Module.finrank ℤ X) → Fin k) → X,
       (∀ χ : X, ∃ a μ, rep a + k • μ = χ) ∧

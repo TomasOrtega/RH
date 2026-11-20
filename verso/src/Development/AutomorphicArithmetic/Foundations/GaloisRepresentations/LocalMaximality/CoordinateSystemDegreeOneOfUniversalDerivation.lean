@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h : c s ∈ (if (s.card : ℤ) = n then A s else ⊥)` using `Submodule.mem_pi.1 (show c ∈ Submodule.pi Set.univ (fun s : Finset σ => if (s.card : ℤ) = n then A s else ⊥) from hc) s (Set.mem_univ _)`. Rewrite `h` using `[hs, ite_self, Submodule.mem_bot]`. Conclude with `h`.
+-/
 private lemma acx_eq_zero {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (A : Finset σ → Submodule ℂ E) (w : σ → Module.End ℂ E) (n : ℤ) (c : Finset σ → E)
     (hc : c ∈ (acx A w).C n) (s : Finset σ) (hs : A s = ⊥) : c s = 0 := by
@@ -13,6 +16,23 @@ private lemma acx_eq_zero {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Modul
   rw [hs, ite_self, Submodule.mem_bot] at h
   exact h
 
+/- English proof (translation)
+Introduce `hL hOk hU`. Introduce `d S E _ _ _ _ T κ _ _ n z N hG hAdm hKE c hc hbig hcol`. Take `⟨hW, -, -⟩` from `hOk d S E T κ n z hG hAdm`. Use `set A : Finset (Two d ⊕ₗ κ) → Submodule ℂ E := fun s => mixF (fun I J => Submodule.map (T.act ↑(∏ l ∈ rgt s, T.u n (pk I) (pk J) l)) (T.M I J)) (lft s) with hA`. Establish `hu` using `fun (b : Finset (Two d)) (L : Finset κ) => hU (Two d) κ E (T.wt z) (fun _ => 0) b L`.
+
+Establish `hcolA : ∀ b : Finset (Two d), (lft b).Nonempty → (rgt b).Nonempty → colA A (T.wt z) b = T.colCx n z (lft b) (rgt b)`. Introduce `b h1 h2`. Simplify using `only [colA, Sys.colCx, kosT]`. Use `congr 1`. Use function extensionality and compare the values at `L`.
+
+Simplify using `only [hA, (hu b L).2.1, (hu b L).2.2.1, mixF, if_pos (And.intro h1 h2)]`. Establish `hbot : ∀ b : Finset (Two d), ¬ ((lft b).Nonempty ∧ (rgt b).Nonempty) → ∀ L, A (uni b L) = ⊥`. Introduce `b h L`. Simplify using `only [hA, (hu b L).2.1, mixF, if_neg h]`. Establish `hcC : c ∈ (acx A (T.wt z)).C N` using `hc.1`.
+
+Use `hL (Two d) κ E A (T.wt z) (d : ℤ) N hW ?_ c hc ?_ ?_` and prove the remaining obligations. Introduce `b`. Distinguish the cases in `h : (lft b).Nonempty ∧ (rgt b).Nonempty`. Rewrite using `[hcolA b h.1 h.2]`. Conclude with `hKE _ _ h.1 h.2`.
+
+Introduce `m _ x hx`. Establish `hx1 : x ∈ (colA A (T.wt z) b).C m` using `hx.1`. Establish `hx0 : x = 0` using `funext fun L => acx_eq_zero (fun L => A (uni b L)) (fun l => T.wt z (inrE l)) m x hx1 L (hbot b h L)`. Rewrite using `[hx0]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `b L hlt`. Conclude with `hbig b L (by exact_mod_cast hlt)`. Introduce `b hb`. Distinguish the cases in `h : (lft b).Nonempty ∧ (rgt b).Nonempty`. Rewrite using `[hcolA b h.1 h.2]`.
+
+Establish `hU2` using `hU (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 0) (fun _ => 0) (lft b) (rgt b)`. Establish `hs : uni (lft b) (rgt b) = b` using `hU2.2.2.2.2 b`. Use `hcol (lft b) (rgt b) h.1 h.2 (by rw [← hb, ← hU2.2.2.2.1, hs])` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this`.
+
+Establish `h0 : col c b = 0` using `funext fun L => acx_eq_zero A (T.wt z) N c hcC (uni b L) (hbot b h L)`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.coordinateSystem_degree_one_of_universalDerivation :
     L1 → SysOk → WdUni → CechKoszulSystemBoundaryCriterion := by
   intro hL hOk hU

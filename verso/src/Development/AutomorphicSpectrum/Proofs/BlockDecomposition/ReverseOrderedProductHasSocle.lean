@@ -11,6 +11,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SocleRev
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA hJ hI hC h N Γ y hd hR hL`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_canonical_segment_order Γ`. Establish `hR' : IsRevOrdered (Γ ∘ σ)` using `GlobalTheory.T.canonical_segments_reverse_ordered _ hσ`. Establish `hd' : ∑ a, (y (σ a)).1 = N`. Rewrite using `[← hd]`.
+
+Conclude with `Equiv.sum_comp σ (fun a => (y a).1)`. Take `⟨e₁⟩` from `GlobalTheory.T.reverse_ordered_product_perm_equiv hA hC Γ σ y hd hd' hR hR' hL`. Establish `hL' : ∀ i, IsLSeg ((Γ ∘ σ) i) ((y ∘ σ) i).rep` using `fun i => hL (σ i)`. Take `⟨g, z, hz, ⟨e₂⟩, hjm⟩` from `GlobalTheory.T.canonical_product_equiv_multiplicity_one hA hJ hI (Γ ∘ σ) (y ∘ σ) hd' hσ hL'`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.socle_of_multiplicity_one hA z hz hjm`.
+
+Conclude with `⟨τ, hτ.of_equiv (Representation.Equiv.refl _) (e₁.trans e₂).symm⟩`.
+-/
 theorem exists_isSocle_prodIrr_of_isRevOrdered : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → LSegJacquet k → LUnlinkedIrr k →
     LUnlinkedComm k → ∀ {h N : ℕ} (Γ : Fin h → Segment k) (y : Fin h → IrrGL k) (hd : ∑ a, (y a).1 = N),

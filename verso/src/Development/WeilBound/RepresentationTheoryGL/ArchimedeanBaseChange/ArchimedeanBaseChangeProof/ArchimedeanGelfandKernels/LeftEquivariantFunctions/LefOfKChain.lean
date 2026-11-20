@@ -3,6 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.RgBcC
 
+/- English proof (translation)
+The claim follows from `lef_top wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.1 wave_existence_speed_multiplicity.2.2.2 hC`.
+-/
 theorem lef_of_kChain (hC : LfSt.KChain) : Lef :=
   lef_top wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.1 wave_existence_speed_multiplicity.2.2.2 hC
 

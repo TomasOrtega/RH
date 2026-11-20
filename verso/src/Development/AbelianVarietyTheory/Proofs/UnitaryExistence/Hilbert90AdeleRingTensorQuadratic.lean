@@ -7,6 +7,15 @@ open scoped TensorProduct Matrix nonZeroDivisors
 
 namespace GlobalTheory.AdLat
 
+/- English proof (translation)
+Take `⟨d', hd'⟩` from `hdu.exists_right_inv`. Establish `h3 : IsUnit (e - (1 - e) * d ^ 2)`. Use `IsUnit.of_mul_eq_one (e - (1 - e) * d' ^ 2) ?_` and prove the remaining obligations. Establish `h : d ^ 2 * d' ^ 2 = 1` using `by rw [← mul_pow, hd', one_pow]`. Take the linear combination `(1 + d ^ 2 + d' ^ 2 + d ^ 2 * d' ^ 2) * he + (1 - e) * h`.
+
+Establish `hx : σ (e * (1 + u) + (1 - e) * d * (1 - u)) = e * (1 + σ u) - (1 - e) * d * (1 - σ u)`. Simplify using `only [map_add, map_mul, map_sub, map_one, hσe, hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : (e * (1 + u) + (1 - e) * d * (1 - u)) * (e * (1 + σ u) - (1 - e) * d * (1 - σ u)) = 2 * (e * (1 + s) + (1 - e) * (1 - s)) * (e - (1 - e) * d ^ 2)`. Establish `hv : σ u = 2 * s - u` using `by linear_combination hs`.
+
+Rewrite `hu`, the goal using `[hv]`. Establish `h1 : e * (1 - e) = 0` using `by linear_combination - he`. Establish `h4 : (1 - e) * (1 - e) = 1 - e` using `by linear_combination he`. Generalize the expression as in `1 - e = f at h1 h4 ⊢`. Take the linear combination `(e * e - f * f * d ^ 2) * hu + (d * ((1 - u) * (1 + (2 * s - u)) - (1 + u) * (1 - (2 * s - u))) + 2 * (1 + s) * d ^ 2 - 2 * (1 - s)) * h1`.
+
+Establish `hxu : IsUnit (e * (1 + u) + (1 - e) * d * (1 - u))` using `isUnit_of_mul_isUnit_left (hN ▸ (h2.mul hun).mul h3)`. Use `⟨hxu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hx]`. Take the linear combination `(- e - (1 - e) * d) * hu`.
+-/
 theorem hilbert90_involution_of_idempotent_unit {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x)
     (u d e s : R) (hu : u * σ u = 1) (hd : σ d = -d) (hdu : IsUnit d) (h2 : IsUnit (2 : R))
     (he : e * e = e) (hσe : σ e = e) (hs : u + σ u = 2 * s)
@@ -34,6 +43,11 @@ theorem hilbert90_involution_of_idempotent_unit {R : Type} [CommRing R] (σ : R 
   rw [IsUnit.unit_spec, hx]
   linear_combination (- e - (1 - e) * d) * hu
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2` using `by rw [IsGalois.card_aut_eq_finrank, h2]`. Assume the negation of the conclusion as `hg`. Use `push Not at hg`. Take `⟨x, -, hx⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard`.
+
+Conclude with `hg.2 ((hx g hg.1).trans (hx c hc).symm)`.
+-/
 theorem aut_eq_one_or_of_finrank_two {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) (g : E ≃ₐ[F] E) : g = 1 ∨ g = c := by
   classical
@@ -44,6 +58,33 @@ theorem aut_eq_one_or_of_finrank_two {F E : Type} [Field F] [CharZero F] [Field 
   obtain ⟨x, -, hx⟩ := (Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard
   exact hg.2 ((hx g hg.1).trans (hx c hc).symm)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c h2 hc u hu`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Establish `hcc : ∀ x, c (c x) = x`. Introduce `x`. Break down `aut_eq_one_or_of_finrank_two c h2 hc (c * c) with h | h` into its components or cases.
+
+Simplify using `using congrArg (fun g : E ≃ₐ[F] E => g x) h`. Conclude with `absurd (by simpa using h) hc`. Establish `htr : ∀ x : E, ∃ t : F, x + c x = algebraMap F E t`. Introduce `x`. Establish `: x + c x ∈ Set.range (algebraMap F E)`.
+
+Rewrite using `[IsGalois.mem_range_algebraMap_iff_fixed]`. Introduce `g`. Break down `aut_eq_one_or_of_finrank_two c h2 hc g with rfl | rfl` into its components or cases. Both sides reduce to the same expression. Rewrite using `[map_add, hcc, add_comm]`.
+
+Take `⟨t, ht⟩` from `this`. Conclude with `⟨t, ht.symm⟩`. Establish `hsg : ∀ (a : AdeleRing (𝓞 F) F) (x : E), sg (AdeleRing (𝓞 F) F) c (a ⊗ₜ x) = a ⊗ₜ c x`. Introduce `a x`. Simplify using `[sg]`.
+
+Establish `hσ : ∀ z, sg (AdeleRing (𝓞 F) F) c (sg (AdeleRing (𝓞 F) F) c z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [hsg, hsg, hcc]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hT : ∀ z, ∃ t : AdeleRing (𝓞 F) F, z + sg (AdeleRing (𝓞 F) F) c z = t ⊗ₜ 1`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `tmul a x`. Take `⟨t, ht⟩` from `htr x`. Use `⟨t • a, ?_⟩` and prove the remaining obligations. Rewrite using `[hsg, ← TensorProduct.tmul_add, ht, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`.
+
+Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, TensorProduct.add_tmul, ← ht, ← ht']`. Expand and normalize the polynomial expressions, which then agree.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, c y ≠ y := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hc (AlgEquiv.ext h)`. Take `⟨t, ht⟩` from `hT u`.
+
+Take `⟨e, he, hun⟩` from `GlobalTheory.T.exists_idempotent_isUnit_one_add_or_sub_adele F ((2 : F)⁻¹ • t)`. Set `ι : AdeleRing (𝓞 F) F →+* AdeleRing (𝓞 F) F ⊗[F] E` to `Algebra.TensorProduct.includeLeftRingHom`. Establish `hι : ∀ a, ι a = a ⊗ₜ 1` using `fun a => rfl`. Set `κ : E →ₐ[F] AdeleRing (𝓞 F) F ⊗[F] E` to `Algebra.TensorProduct.includeRight`. Establish `hκ : ∀ a, κ a = 1 ⊗ₜ a` using `fun a => rfl`.
+
+Use `hilbert90_involution_of_idempotent_unit (sg (AdeleRing (𝓞 F) F) c : _ →+* _) hσ u (κ (y - c y)) (ι e) (ι ((2 : F)⁻¹ • t)) hu ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sg _ c _ = _`. Rewrite using `[← map_neg, hκ, hκ, hsg, map_sub, hcc, neg_sub]`. Conclude with `(IsUnit.mk0 _ (sub_ne_zero.2 hy.symm)).map κ`. Use `(IsUnit.mk0 (2 : E) two_ne_zero).map κ` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Rewrite using `[← map_mul, he]`. Express the relevant statement in the definitionally equal form `sg _ c _ = _`. Rewrite using `[hι, hsg, map_one]`. Express the relevant statement in the definitionally equal form `u + sg _ c u = _`.
+
+Rewrite using `[ht, two_mul, ← map_add, ← add_smul, hι]`. Evaluate the numerical expressions. Use `hun.map ι` as an intermediate fact. Simplify `this` using `only [map_add, map_mul, map_sub, map_one]`.
+-/
 theorem hilbert90_adeleRing_tensor_quadratic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E), Module.finrank F E = 2 → c ≠ 1 → ∀ u : AdeleRing (𝓞 F) F ⊗[F] E, u * sg (AdeleRing (𝓞 F) F) c u = 1 → ∃ x : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ, (x : AdeleRing (𝓞 F) F ⊗[F] E) = u * sg (AdeleRing (𝓞 F) F) c (x : AdeleRing (𝓞 F) F ⊗[F] E) := by
   intro F E _ _ _ _ _ c h2 hc u hu
   haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩

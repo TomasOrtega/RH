@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ColsConj
 
+/- English proof (translation)
+Establish `h : ∑ r, ∑ r', A r * G r r' * (β *ᵥ w) r' = ∑ m, (∑ r, ∑ r', A r * G r r' * β r' m) * w m`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset Y))]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset Y))]`.
+
+Use `Finset.sum_congr rfl fun r' _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Finset.sum_eq_single m₁ (fun m _ hm => by rw [h0 m hm, zero_mul]) (fun hm => absurd (Finset.mem_univ _) hm), h1]`.
+-/
 theorem form_mulVec {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (A : Fin N → k)
     (G : Fin N → Fin N → k) (β : Matrix (Fin N) Y k) (m₁ : Y) (c₁ : k)
     (h1 : ∑ r, ∑ r', A r * G r r' * β r' m₁ = c₁) (h0 : ∀ m, m ≠ m₁ → ∑ r, ∑ r', A r * G r r' * β r' m = 0)
@@ -25,6 +30,23 @@ theorem form_mulVec {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [Decid
     ring
   rw [h, Finset.sum_eq_single m₁ (fun m _ hm => by rw [h0 m hm, zero_mul]) (fun hm => absurd (Finset.mem_univ _) hm), h1]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q S L Y _ _ F u u' m₁ c₁ hL hI hc hb hd hp a`. Establish `hpr : ∀ x : D.host.E, (ofSplit q).pr x = q.pr (incA D x)` using `fun _ => rfl`. Simplify using `only [hpr] at hb hp`. Establish `hy : (fun r => cA D q.e * (a * incA D (u r))) = fun r => cA D (q.sec (q.pr (cA D a) * q.pr (incA D (star (u r)))))`. Use function extensionality and compare the values at `r`.
+
+Rewrite using `[← RingHom.map_mul, q.sec_pr, RingHom.map_mul, RingHom.map_mul, GlobalTheory.LatVac.cA_cA, GlobalTheory.FinPl.FrameLat.cA_incA, star_star]`. Establish `h1 : ∑ r, ∑ r', q.pr (incA D (star (u r))) * q.pr (incA D (S.gram r r')) * F.β r' m₁ = c₁`. Establish `h` using `congrArg (fun x => c₁ * q.pr (incA D x)) hd`. Simplify using `only [map_sum, RingHom.map_mul, RingHom.map_one, mul_one, Finset.mul_sum] at h`. Rewrite using `[← h]`.
+
+Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ w : Y → k, ∑ i, ∑ j, (F.β *ᵥ w) i * q.pr (cA D (incA D (S.gram i j))) * (q.pr (cA D a) * q.pr (incA D (star (u j)))) = q.pr (cA D a) * (c₁ * w m₁)`. Introduce `w`.
+
+Rewrite using `[← form_mulVec _ _ F.β m₁ c₁ h1 hp w, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinPl.FrameLat.cA_incA, GlobalTheory.LatVac.gram_star]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy, GlobalTheory.FinPl.FrameLat.csec_mem_iff hL]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hw : ∀ i, (Pi.single m₁ (1 : k) : Y → k) i ∈ 𝒪[k]` using `fun i => by`.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `h2` using `h _ ((hI _).1 hw)`.
+
+Rewrite `h2` using `[key, Pi.single_eq_same, mul_one]`. Rewrite `h2`, the goal using `[Valuation.mem_integer_iff]`. Rewrite `h2` using `[map_mul, hc, mul_one]`. Then use the resulting hypothesis. Introduce `ha x hx`. Establish `hxe : x = F.β *ᵥ (F.γ *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`.
+
+Establish `hw : ∀ i, (F.γ *ᵥ x) i ∈ 𝒪[k]` using `(hI _).2 (by rw [← hxe]; exact hx)`. Rewrite using `[hxe, key]`. Conclude with `mul_mem ha (mul_mem ((Valuation.mem_integer_iff _ _).2 hc.le) (hw m₁))`.
+-/
 theorem conj_part_mem_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (Y : Type) [Fintype Y] [DecidableEq Y] (F : Frame k S.rank Y) (u u' : Fin S.rank → D.host.E) (m₁ : Y) (c₁ : k), IsSelfDualC S L → IntIn q S F L → valuation k c₁ = 1 → (∀ r, F.β r m₁ = c₁ * (ofSplit q).pr (u' r)) → (∑ r, ∑ r', star (u r) * S.gram r r' * u' r' = 1) → (∀ m, m ≠ m₁ → ∑ r, ∑ r', (ofSplit q).pr (star (u r)) * (ofSplit q).pr (S.gram r r') * F.β r' m = 0) → ∀ a : AE D, ((fun r => cA D q.e * (a * incA D (u r))) ∈ GlobalTheory.FinPl.latV S L (· = q.v) ↔ q.pr (cA D a) ∈ 𝒪[k]) := by
   intro D k _ _ _ _ q S L Y _ _ F u u' m₁ c₁ hL hI hc hb hd hp a
   have hpr : ∀ x : D.host.E, (ofSplit q).pr x = q.pr (incA D x) := fun _ => rfl

@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VertexFromTransport
 
+/- English proof (translation)
+Introduce `D T L _ i ht`. Establish `hr : (D.sp.Y 0).rank = (D.sp.W ((i : ℕ) + 1)).rank`. Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _), D.sp.W_rank _ (by omega) (by omega)]`. Simplify using `[Ranks.rankY]`. Conclude with `GlobalTheory.NormalFramesLevels.vertexAt_of_transport L.Pg _ hr _ _ (GlobalTheory.NormalFramesLevels.transport_betaYOf L.Pg (Wc D i) (L.βW i) L.βY ht)`.
+-/
 theorem vertexAt_of_levTransport : ∀ {D : D7} {T : Type} (L : LevCh D T), (∀ PP, PP ∈ L.Pg ↔ ∃ l, L.C.P.Div l PP) →
     ∀ i : Fin D.R.m, GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.Transport L.Pg (Wc D i) (Yc D 0) (L.βW i) (L.βY 0) →
     ∃ (eW : Fin (D.sp.Y 0).rank ≃ Fin (D.sp.W ((i : ℕ) + 1)).rank)

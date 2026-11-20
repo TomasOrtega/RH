@@ -23,11 +23,17 @@ def sgn (pos : Bool) : ℤˣ := if pos then 1 else -1
 
 def typ (ε : ℤˣ) : Bool := decide (ε = 1)
 
+/- English proof (translation)
+Introduce `h` and use `by have e := H.sqrt_neg_disc_sq rw [h, zero_pow two_ne_zero, zero_eq_neg, Nat.cast_eq_zero] at e exact H.d_prime.pos.ne' e`.
+-/
 theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := fun h => by
   have e := H.sqrt_neg_disc_sq
   rw [h, zero_pow two_ne_zero, zero_eq_neg, Nat.cast_eq_zero] at e
   exact H.d_prime.pos.ne' e
 
+/- English proof (translation)
+Use `sq_eq_sq_iff_eq_or_eq_neg.1 ?_` and prove the remaining obligations. Establish `e : (H.rt : E) ^ 2 = -(H.d : E)` using `by simpa using congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, e, map_neg, map_natCast]`.
+-/
 theorem map_rt (H : Host E) (τ : E →+* ℂ) : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0 := by
   refine sq_eq_sq_iff_eq_or_eq_neg.1 ?_
   have e : (H.rt : E) ^ 2 = -(H.d : E) := by simpa using congrArg (algebraMap (𝓞 E) E) H.rt_sq
@@ -40,16 +46,25 @@ section Alg
 variable {k R : Type} [CommRing k] [CommRing R] {X : Scheme.{0}} {a : k →+* R} {y : Sp R ⟶ X}
   {T : SAB H X} {t : SAB H (Sp R)} (m : SABMap t T y)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (m.cart.1.lift φ.left (pullback.snd _ _) (Over.w φ)) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩`.
+-/
 theorem exists_lift {A : Over (Sp k)} (φ : curveOver A a y ⟶ T.G) :
     ∃ φ' : (Over.pullback (spMap a)).obj A ⟶ t.G, φ'.left ≫ m.φ = φ.left :=
   ⟨Over.homMk (m.cart.1.lift φ.left (pullback.snd _ _) (Over.w φ)) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pushPt m.cart.1.w φ', rfl⟩`.
+-/
 theorem exists_push {A : Over (Sp k)} (φ' : (Over.pullback (spMap a)).obj A ⟶ t.G) :
     ∃ φ : curveOver A a y ⟶ T.G, φ'.left ≫ m.φ = φ.left :=
   ⟨pushPt m.cart.1.w φ', rfl⟩
 
 variable {A : Over (Sp k)} {φ : curveOver A a y ⟶ T.G} {φ' : (Over.pullback (spMap a)).obj A ⟶ t.G}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (pullback.lift p.left s (Over.w p)) (pullback.lift_snd _ _ _), (pullback.lift_fst _ _ _).symm⟩`.
+-/
 theorem exists_point {Z : Scheme.{0}} {s : Z ⟶ Sp R} (p : Over.mk (s ≫ spMap a) ⟶ A) :
     ∃ x : Over.mk s ⟶ (Over.pullback (spMap a)).obj A, p.left = x.left ≫ pullback.fst A.hom (spMap a) :=
   ⟨Over.homMk (pullback.lift p.left s (Over.w p)) (pullback.lift_snd _ _ _), (pullback.lift_fst _ _ _).symm⟩

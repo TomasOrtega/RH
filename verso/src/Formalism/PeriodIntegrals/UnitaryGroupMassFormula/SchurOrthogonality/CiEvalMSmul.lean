@@ -6,6 +6,13 @@ namespace PI.WSF
 
 open MvPolynomial MeasureTheory Matrix
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (Matrix.mem_unitaryGroup_iff.mp hx) i) i`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply_eq] at h`. Establish `h3 : (∑ k, Complex.normSq (x i k) : ℝ) = 1`. Establish `h4 : ((∑ k, Complex.normSq (x i k) : ℝ) : ℂ) = 1`. Rewrite using `[Complex.ofReal_sum, ← h]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => (Complex.mul_conj (x i k)).symm`. Conclude with `h4` after adjusting the coercions. Establish `h5 : Complex.normSq (x i j) ≤ 1`. Rewrite using `[← h3]`. Conclude with `Finset.single_le_sum (fun k _ => Complex.normSq_nonneg (x i k)) (Finset.mem_univ j)`.
+
+Rewrite `h5` using `[Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[norm_nonneg (x i j)]`.
+-/
 private theorem entry_le_lemma {N : ℕ} {x : Matrix (Fin N) (Fin N) ℂ} (hx : x ∈ unitaryGroup (Fin N) ℂ)
     (i j : Fin N) : ‖x i j‖ ≤ 1 := by
   have h := congrFun (congrFun (Matrix.mem_unitaryGroup_iff.mp hx) i) i
@@ -21,6 +28,11 @@ private theorem entry_le_lemma {N : ℕ} {x : Matrix (Fin N) (Fin N) ℂ} (hx : 
   rw [Complex.normSq_eq_norm_sq] at h5
   nlinarith [norm_nonneg (x i j)]
 
+/- English proof (translation)
+Establish `hset : (unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)) = {x | x * star x = 1}`. Use extensionality with `x`. Conclude with `Matrix.mem_unitaryGroup_iff`. Establish `hclosed : IsClosed (unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ))`. Rewrite using `[hset]`.
+
+Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_star) continuous_const`. Establish `hbound : (unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)) ⊆ Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) 1`. Introduce `x hx`. Conclude with `Set.mem_univ_pi.mpr fun i => Set.mem_univ_pi.mpr fun j => mem_closedBall_zero_iff.mpr (entry_le_lemma hx i j)`. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1).of_isClosed_subset hclosed hbound`.
+-/
 theorem ci_compact (N : ℕ) : IsCompact (unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)) := by
   have hset : (unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)) = {x | x * star x = 1} := by
     ext x
@@ -36,16 +48,25 @@ theorem ci_compact (N : ℕ) : IsCompact (unitaryGroup (Fin N) ℂ : Set (Matrix
   exact (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1).of_isClosed_subset
     hclosed hbound
 
+/- English proof (translation)
+Unfold `evalM`. Conclude with `(MvPolynomial.continuous_eval p).comp (continuous_pi fun v => (continuous_apply v.2).comp (continuous_apply v.1))`.
+-/
 theorem ci_cont {N : ℕ} (p : MvPolynomial (Fin N × Fin N) ℂ) :
     Continuous fun x : Matrix (Fin N) (Fin N) ℂ => evalM x p := by
   unfold evalM
   exact (MvPolynomial.continuous_eval p).comp
     (continuous_pi fun v => (continuous_apply v.2).comp (continuous_apply v.1))
 
+/- English proof (translation)
+The claim follows from `(ci_cont p).mul (ci_cont q).star`.
+-/
 theorem ci_cont2 {N : ℕ} (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     Continuous fun x : Matrix (Fin N) (Fin N) ℂ => evalM x p * star (evalM x q) :=
   (ci_cont p).mul (ci_cont q).star
 
+/- English proof (translation)
+Take `⟨hprob, hae, -, -⟩` from `hμ`. Establish `h` using `hf.continuousOn.integrableOn_compact (μ := μ) (ci_compact N)`. Rewrite `h` using `[IntegrableOn, Measure.restrict_eq_self_of_ae_mem hae]`. Conclude with `h`.
+-/
 theorem ci_integrable {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ : IsHaarU N μ)
     {f : Matrix (Fin N) (Fin N) ℂ → ℂ} (hf : Continuous f) : Integrable f μ := by
   obtain ⟨hprob, hae, -, -⟩ := hμ
@@ -53,10 +74,16 @@ theorem ci_integrable {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ
   rw [IntegrableOn, Measure.restrict_eq_self_of_ae_mem hae] at h
   exact h
 
+/- English proof (translation)
+Simplify using `[evalM]`.
+-/
 theorem ci_evalM_add {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     evalM x (p + q) = evalM x p + evalM x q := by
   simp [evalM]
 
+/- English proof (translation)
+Simplify using `[evalM]`.
+-/
 theorem ci_evalM_smul {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (c : ℂ) (p : MvPolynomial (Fin N × Fin N) ℂ) :
     evalM x (c • p) = c * evalM x p := by
   simp [evalM]
@@ -82,9 +109,17 @@ def Alin {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ : IsHaarU N 
     rw [ci_evalM_smul]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ci_Alin_apply {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ : IsHaarU N μ)
     (p q : MvPolynomial (Fin N × Fin N) ℂ) : Alin hμ q p = Aform μ p q := rfl
 
+/- English proof (translation)
+Unfold `Aform`. Establish `h` using `integral_conj (μ := μ) (f := fun x => evalM x p * star (evalM x q))`. Rewrite using `[show star (∫ x, evalM x p * star (evalM x q) ∂μ) = (starRingEnd ℂ) (∫ x, evalM x p * star (evalM x q) ∂μ) from rfl, ← h]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem ci_herm {N : ℕ} (μ : Measure (Matrix (Fin N) (Fin N) ℂ)) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     Aform μ q p = star (Aform μ p q) := by
   unfold Aform
@@ -95,6 +130,11 @@ theorem ci_herm {N : ℕ} (μ : Measure (Matrix (Fin N) (Fin N) ℂ)) (p q : MvP
   funext x
   simp [mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[evalM, Formalism.GradedWeylDivisibility.rowAct]`. Use `next p q hp hq =>`. Rewrite using `[map_add, ci_evalM_add, ci_evalM_add, hp, hq]`.
+
+Use `next p v hp =>`. Simplify using `only [evalM, map_mul] at hp ⊢`. Rewrite using `[hp]`. Use `congr 1`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply]`.
+-/
 private theorem evalM_rowAct {N : ℕ} (u x : Matrix (Fin N) (Fin N) ℂ)
     (p : MvPolynomial (Fin N × Fin N) ℂ) :
     evalM x (Formalism.GradedWeylDivisibility.rowAct ℂ u p) = evalM (u * x) p := by
@@ -109,6 +149,9 @@ private theorem evalM_rowAct {N : ℕ} (u x : Matrix (Fin N) (Fin N) ℂ)
     congr 1
     simp [Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply]
 
+/- English proof (translation)
+Take `⟨-, -, -, hL⟩` from `hμ`. Unfold `Aform`. Simplify using `only [evalM_rowAct]`. Conclude with `hL u hu (fun x => evalM x p * star (evalM x q)) (ci_cont2 p q)`.
+-/
 theorem ci_invariant {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ : IsHaarU N μ)
     (u : Matrix (Fin N) (Fin N) ℂ) (hu : u ∈ unitaryGroup (Fin N) ℂ) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     Aform μ (Formalism.GradedWeylDivisibility.rowAct ℂ u p) (Formalism.GradedWeylDivisibility.rowAct ℂ u q) = Aform μ p q := by

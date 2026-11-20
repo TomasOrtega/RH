@@ -18,6 +18,11 @@ section Denominators
 variable {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
   [IsFractionRing W Qq]
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := W) q`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hd0 hp`. Use `⟨e, n * u, ?_⟩` and prove the remaining obligations. Establish `hd' : algebraMap W Qq d ≠ 0`.
+
+Simplify using `using (IsFractionRing.injective W Qq).ne hd0`. Rewrite using `[← hu, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_pow_mul_eq {ϖ : W} (hp : Irreducible ϖ) (q : Qq) :
     ∃ (e : ℕ) (w : W), algebraMap W Qq (ϖ ^ e) * q = algebraMap W Qq w := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := W) q
@@ -29,6 +34,11 @@ theorem exists_pow_mul_eq {ϖ : W} (hp : Irreducible ϖ) (q : Qq) :
   rw [← hu, map_mul, map_mul]
   field_simp
 
+/- English proof (translation)
+Use `choose e w h using fun i j => exists_pow_mul_eq (W := W) hp (c i j)`. Establish `hE : ∀ i j, e i j ≤ ∑ i, ∑ j, e i j` using `fun i j => (Finset.single_le_sum (f := fun j => e i j) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, e i j) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Use `⟨∑ i, ∑ j, e i j, Matrix.of fun i j => ϖ ^ ((∑ i, ∑ j, e i j) - e i j) * w i j, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, Matrix.of_apply, map_mul, ← h i j]`.
+
+Rewrite using `[← mul_assoc, ← map_mul, ← pow_add, Nat.sub_add_cancel (hE i j)]`.
+-/
 theorem exists_pow_smul_matrix {ϖ : W} (hp : Irreducible ϖ) {m n : Type} [Fintype m] [Fintype n]
     (c : Matrix m n Qq) :
     ∃ (e : ℕ) (M : Matrix m n W), algebraMap W Qq (ϖ ^ e) • c = M.map (algebraMap W Qq) := by
@@ -41,6 +51,13 @@ theorem exists_pow_smul_matrix {ϖ : W} (hp : Irreducible ϖ) {m n : Type} [Fint
   simp only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, Matrix.of_apply, map_mul, ← h i j]
   rw [← mul_assoc, ← map_mul, ← pow_add, Nat.sub_add_cancel (hE i j)]
 
+/- English proof (translation)
+Unfold `colSpan`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`.
+-/
 theorem mem_colSpan_iff_mulVec {k : ℕ} (g : Matrix (Fin k) (Fin k) Qq) (z : Fin k → Qq) :
     z ∈ colSpan W g ↔ ∃ v : Fin k → W, z = g *ᵥ (fun i => algebraMap W Qq (v i)) := by
   unfold colSpan
@@ -55,6 +72,13 @@ theorem mem_colSpan_iff_mulVec {k : ℕ} (g : Matrix (Fin k) (Fin k) Qq) (z : Fi
     ext i
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Take `⟨e₁, B, hB⟩` from `exists_pow_smul_matrix (W := W) hp b⁻¹`. Take `⟨e₂, A, hA⟩` from `exists_pow_smul_matrix (W := W) hp a`. Use `⟨e₁ + e₂, fun M z hz => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(mem_colSpan_iff_mulVec (W := W) a z).1 hz`. Use `(mem_colSpan_iff_mulVec (W := W) b _).2 ⟨(B * M * A) *ᵥ v, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (fun i => algebraMap W Qq (((B * M * A) *ᵥ v) i)) = (B.map (algebraMap W Qq) * M.map (algebraMap W Qq) * A.map (algebraMap W Qq)) *ᵥ (fun i => algebraMap W Qq (v i))`. Use extensionality with `i`. Rewrite using `[RingHom.map_mulVec, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hbb : b * b⁻¹ = 1` using `Matrix.mul_nonsing_inv b hb`.
+
+Rewrite using `[h1, ← hB, ← hA]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hbb, Matrix.one_mul, pow_add, map_mul, smul_smul]`. Rewrite using `[mul_comm (algebraMap W Qq (ϖ ^ e₁))]`.
+-/
 theorem exists_pow_smul_mem_homLat {ϖ : W} (hp : Irreducible ϖ) {k k' : ℕ}
     (a : Matrix (Fin k) (Fin k) Qq) (b : Matrix (Fin k') (Fin k') Qq) (hb : IsUnit b.det) :
     ∃ N : ℕ, ∀ M : Matrix (Fin k') (Fin k) W,
@@ -76,6 +100,13 @@ theorem exists_pow_smul_mem_homLat {ϖ : W} (hp : Irreducible ϖ) {k k' : ℕ}
     Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hbb, Matrix.one_mul, pow_add, map_mul, smul_smul]
   rw [mul_comm (algebraMap W Qq (ϖ ^ e₁))]
 
+/- English proof (translation)
+Take `⟨e₁, B, hB⟩` from `exists_pow_smul_matrix (W := W) hp b`. Take `⟨e₂, A, hA⟩` from `exists_pow_smul_matrix (W := W) hp a⁻¹`. Use `⟨e₁ + e₂, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ c, ∃ v : Fin k' → W, t *ᵥ (fun i => a i c) = b *ᵥ (fun i => algebraMap W Qq (v i))` using `fun c => (mem_colSpan_iff_mulVec (W := W) b _).1 (ht _ (Submodule.subset_span ⟨c, rfl⟩))`. Use `choose v hv using hcol`.
+
+Establish `hta : t * a = b * (Matrix.of fun i c => v c i : Matrix (Fin k') (Fin k) W).map (algebraMap W Qq)`. Use extensionality with `i c`. Simplify `congrFun (hv c) i` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `ht' : t = b * (Matrix.of fun i c => v c i : Matrix (Fin k') (Fin k) W).map (algebraMap W Qq) * a⁻¹`. Rewrite using `[← hta, Matrix.mul_assoc, Matrix.mul_nonsing_inv a ha, Matrix.mul_one]`.
+
+Use `⟨B * (Matrix.of fun i c => v c i : Matrix (Fin k') (Fin k) W) * A, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← hB, ← hA, ht']`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, pow_add, map_mul, smul_smul]`. Rewrite using `[mul_comm (algebraMap W Qq (ϖ ^ e₁))]`.
+-/
 theorem exists_pow_smul_of_mem_homLat {ϖ : W} (hp : Irreducible ϖ) {k k' : ℕ}
     (a : Matrix (Fin k) (Fin k) Qq) (b : Matrix (Fin k') (Fin k') Qq) (ha : IsUnit a.det) :
     ∃ m : ℕ, ∀ t ∈ homLat W (colSpan W a) (colSpan W b), ∃ M : Matrix (Fin k') (Fin k) W,
@@ -102,6 +133,21 @@ section Approximation
 
 variable {E : Type} [Field E] [NumberField E] {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
 
+/- English proof (translation)
+Proceed by induction on `ht using Submodule.span_induction generalizing n with`. Consider the case `mem x hx`. Take `⟨A, hA, rfl⟩` from `hx`. Conclude with `⟨A, hA, 0, by simp⟩`. Consider the case `zero`.
+
+Conclude with `⟨0, Y.zero_mem, 0, by ext i j; simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨A, hA, M, hM⟩` from `hx n`. Take `⟨A', hA', M', hM'⟩` from `hy n`. Use `⟨A + A', Y.add_mem hA hA', M + M', ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Establish `e1` using `congrFun (congrFun hM i) j`. Establish `e2` using `congrFun (congrFun hM' i) j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at e1 e2`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_add]`.
+
+Take the linear combination `e1 + e2`. Consider the case `smul c x _ hx`. Take `⟨A, hA, M, hM⟩` from `hx n`. Take `⟨u, z, hxz⟩` from `h2 c (n + m)`. Take `⟨M', hM'⟩` from `hm A hA`.
+
+Use `⟨u • A, Y.smul_mem u hA, c • M - z • M', ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e1` using `congrFun (congrFun hM i) j`. Establish `e2` using `congrFun (congrFun hM' i) j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at e1 e2`.
+
+Establish `e3 : ρ ((u • A) i j) = ρ (u : E) * ρ (A i j)`. Rewrite using `[Matrix.smul_apply, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, e3, hxz]`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.sub_apply, smul_eq_mul, Algebra.smul_def, map_add, map_sub, map_mul, map_pow, pow_add] at e1 e2 ⊢`.
+
+Take the linear combination `(algebraMap W Qq c) * e1 - algebraMap W Qq ϖ ^ n * algebraMap W Qq z * e2`.
+-/
 theorem approx_of_mem_span {ϖ : W} (ρ : E →+* Qq)
     (h2 : ∀ (y : W) (n : ℕ), ∃ (x : 𝓞 E) (z : W), ρ x = algebraMap W Qq (y + ϖ ^ n * z))
     {k k' : ℕ} (Y : Submodule (𝓞 E) (Matrix (Fin k') (Fin k) E)) (m : ℕ)
@@ -152,6 +198,9 @@ section Neighbourhoods
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Rewrite `hV` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hV`. Use `choose n hn using fun i => h (t i) (ht i)`. Use `⟨∑ i, n i, fun d hd => hsub fun i _ => hn i (hB ?_ (hd i))⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+-/
 theorem exists_box_subset {ι : Type} [Fintype ι] (x : X) (B : ℕ → Set X) (hB : Antitone B)
     (h : ∀ U ∈ nhds x, ∃ n, B n ⊆ U) (V : Set (ι → X)) (hV : V ∈ nhds (fun _ => x)) :
     ∃ n, {d : ι → X | ∀ i, d i ∈ B n} ⊆ V := by
@@ -161,6 +210,9 @@ theorem exists_box_subset {ι : Type} [Fintype ι] (x : X) (B : ℕ → Set X) (
   refine ⟨∑ i, n i, fun d hd => hsub fun i _ => hn i (hB ?_ (hd i))⟩
   exact Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
 
+/- English proof (translation)
+The claim follows from `exists_box_subset (fun _ => x) (fun n => {d : κ → X | ∀ j, d j ∈ B n}) (fun _ _ hnm _ hd j => hB hnm (hd j)) (fun U hU => exists_box_subset x B hB h U hU) V hV`.
+-/
 theorem exists_doubleIndex_box_subset_nhds_const_of_antitone {ι κ : Type} [Fintype ι] [Fintype κ] (x : X) (B : ℕ → Set X) (hB : Antitone B)
     (h : ∀ U ∈ nhds x, ∃ n, B n ⊆ U) (V : Set (ι → κ → X)) (hV : V ∈ nhds (fun _ _ => x)) :
     ∃ n, {d : ι → κ → X | ∀ i j, d i j ∈ B n} ⊆ V :=
@@ -173,6 +225,29 @@ end ClosureLat
 
 open ClosureLat in
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_pow_smul_mem_homLat (W := W) hp a b hb`. Take `⟨m, hm⟩` from `exists_pow_smul_of_mem_homLat (W := W) hp a b ha`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Set `S : AddSubgroup (Matrix (Fin k') (Fin k) (P.adicCompletion E))` to `(homLat W (colSpan W a) (colSpan W b)).toAddSubgroup.comap ((φ : P.adicCompletion E →+* Qq).toAddMonoidHom.mapMatrix)`.
+
+Establish `hS : ∀ d, d ∈ S ↔ d.map φ ∈ homLat W (colSpan W a) (colSpan W b)` using `fun d => Iff.rfl`. Set `U : Set (Matrix (Fin k') (Fin k) (P.adicCompletion E))` to `⋂ i, ⋂ j, (fun d : Matrix (Fin k') (Fin k) (P.adicCompletion E) => d i j) ⁻¹' {z : P.adicCompletion E | ∃ w : W, φ z = algebraMap W Qq ((p : W) ^ N * w)}`. Establish `hU : IsOpen U` using `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hop N).preimage (continuous_id.matrix_elem i j)`. Establish `h0 : (0 : Matrix (Fin k') (Fin k) (P.adicCompletion E)) ∈ U`. Simplify using `only [U, Set.mem_iInter]`.
+
+Conclude with `fun i j => ⟨0, by simp⟩`. Establish `hUS : U ⊆ S`. Introduce `d hd`. Simplify using `only [U, Set.mem_iInter, Set.mem_preimage, Set.mem_setOf_eq] at hd`. Use `choose w hw using hd`.
+
+Use `(hS d).2 ?_` and prove the remaining obligations. Establish `: d.map φ = algebraMap W Qq ((p : W) ^ N) • (Matrix.of w).map (algebraMap W Qq)`. Use extensionality with `i j`. Simplify using `[hw i j]`. Rewrite using `[this]`.
+
+Conclude with `hN _`. Establish `hopen : IsOpen (S : Set (Matrix (Fin k') (Fin k) (P.adicCompletion E)))` using `AddSubgroup.isOpen_of_mem_nhds S (Filter.mem_of_superset (hU.mem_nhds h0) hUS)`. Establish `hle : Y.toAddSubgroup.map ((algebraMap E (P.adicCompletion E)).toAddMonoidHom.mapMatrix) ≤ S`. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Rewrite using `[hS]`.
+
+Establish `: (((algebraMap E (P.adicCompletion E)).toAddMonoidHom.mapMatrix A).map φ) = A.map ρ`. Use extensionality with `i j`. Simplify using `[hφ]`. Rewrite using `[this]`. Conclude with `hY A hA`.
+
+Conclude with `(hS y).1 (AddSubgroup.topologicalClosure_minimal _ hle (AddSubgroup.isClosed_of_isOpen S hopen) hy)`. Introduce `hy`. Rewrite using `[← SetLike.mem_coe, AddSubgroup.topologicalClosure_coe, mem_closure_iff_nhds]`. Introduce `U hU`. Establish `hV : (fun d : Matrix (Fin k') (Fin k) (P.adicCompletion E) => y + d) ⁻¹' U ∈ nhds (0 : Matrix (Fin k') (Fin k) (P.adicCompletion E))` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hU)`.
+
+Establish `hanti : Antitone fun n : ℕ => {z : P.adicCompletion E | ∃ w : W, φ z = algebraMap W Qq ((p : W) ^ n * w)}`. Introduce `n n' hnn z hz`. Take `⟨w, hw⟩` from `hz`. Use `⟨(p : W) ^ (n' - n) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hnn]`.
+
+Take `⟨n, hn⟩` from `exists_doubleIndex_box_subset_nhds_const_of_antitone (ι := Fin k') (κ := Fin k) (0 : P.adicCompletion E) (fun n : ℕ => {z : P.adicCompletion E | ∃ w : W, φ z = algebraMap W Qq ((p : W) ^ n * w)}) hanti hnb _ hV`. Take `⟨A, hAY, M, hM⟩` from `approx_of_mem_span (ϖ := (p : W)) ρ h2 Y m (fun A hA => hm _ (hY A hA)) (hT hy) n`. Use `⟨(algebraMap E (P.adicCompletion E)).toAddMonoidHom.mapMatrix A, ?_, ⟨A, hAY, rfl⟩⟩` and prove the remaining obligations. Establish `hd : (algebraMap E (P.adicCompletion E)).toAddMonoidHom.mapMatrix A - y ∈ (fun d : Matrix (Fin k') (Fin k) (P.adicCompletion E) => y + d) ⁻¹' U`. Use `hn fun i j => ⟨-M i j, ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `congrFun (congrFun hM i) j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at e1`. Establish `e2 : φ (((algebraMap E (P.adicCompletion E)).toAddMonoidHom.mapMatrix A - y) i j) = ρ (A i j) - φ (y i j)`. Simplify using `[hφ]`. Use `e2.trans ?_` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_neg] at e1 ⊢`. Take the linear combination `-e1`. Simplify using `using hd`.
+-/
 theorem mem_closure_iff_map_mem_homLat {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {W Qq : Type}
     [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [IsFractionRing W Qq] (p : ℕ)
     (hp : Irreducible (p : W)) (ρ : E →+* Qq)

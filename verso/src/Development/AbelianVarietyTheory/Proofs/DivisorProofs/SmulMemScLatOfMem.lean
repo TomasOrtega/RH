@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.BigDat
 
+/- English proof (translation)
+Introduce `c hc`. Establish `h : a * c ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `FractionalIdeal.mul_one_div_le_one (FractionalIdeal.mul_mem_mul ha hc)`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 h`. Rewrite using `[smul_smul, mul_comm, ← hr, algebraMap_smul]`. Conclude with `Λ.smul_mem r hy`.
+-/
 theorem smul_mem_scLat_of_mem {E : Type} [Field E] [NumberField E] {n : ℕ} {𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E}
     {Λ : Submodule (𝓞 E) (Fin n → E)} {a : E} (ha : a ∈ 𝔞) {y : Fin n → E} (hy : y ∈ Λ) :
     a • y ∈ GlobalTheory.SkewLat.scLat 𝔞 Λ := by
@@ -25,6 +28,11 @@ theorem smul_mem_scLat_of_mem {E : Type} [Field E] [NumberField E] {n : ℕ} {�
   rw [smul_smul, mul_comm, ← hr, algebraMap_smul]
   exact Λ.smul_mem r hy
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun i j => β ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : Matrix _ _ (AE D)) = mulG S (Matrix.of fun i k => β ⊗ₜ[D.host.F] (a * t i * star (s k)))`. Use extensionality with `i j`. Rewrite using `[mulG_eq, Matrix.mul_apply]`. Simplify using `only [of_apply, map_apply, Finset.mul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = (β ⊗ₜ[D.host.F] (a * t i * star (s k))) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] S.gram k j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_assoc (a * t i)]`. Rewrite using `[h, divG_mulG, of_apply]`.
+-/
 theorem divG_gen {D : D7} (S : HSp D) {n : ℕ} (β : AF D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin n → D.host.E) (p : Fin n) (q : Fin S.rank) :
     divG S (Matrix.of fun i j => β ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) p q =
@@ -39,17 +47,31 @@ theorem divG_gen {D : D7} (S : HSp D) {n : ℕ} (β : AF D.host.F) (a : D.host.E
     rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_assoc (a * t i)]
   rw [h, divG_mulG, of_apply]
 
+/- English proof (translation)
+The claim follows from `Matrix.zero_mul _`.
+-/
 theorem divG_zero {D : D7} (S : HSp D) {n : ℕ} : divG S (0 : Matrix (Fin n) (Fin S.rank) (AE D)) = 0 :=
   Matrix.zero_mul _
 
+/- English proof (translation)
+The claim follows from `Matrix.neg_mul _ _`.
+-/
 theorem divG_neg {D : D7} (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : divG S (-x) = -divG S x :=
   Matrix.neg_mul _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `β • ((1 : AF D.host.F) ⊗ₜ[D.host.F] M p q) = _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem smul_incM_apply {D : D7} {m n : Type} (β : AF D.host.F) (M : Matrix m n D.host.E) (p : m) (q : n) :
     (β • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F M) p q = β ⊗ₜ[D.host.F] M p q := by
   change β • ((1 : AF D.host.F) ⊗ₜ[D.host.F] M p q) = _
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[smul_smul]`. Use `AddSubgroup.subset_closure ⟨_, ?_, ?_, x, hx, y, hy, rfl⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, ← mul_assoc, ← smul_eq_mul u, GlobalTheory.LatVac.at_liftV v 1 u hu, zero_mul]`. Rewrite using `[map_mul, GlobalTheory.LatVac.evFin_liftV, one_mul]`.
+
+Conclude with `hα v`.
+-/
 theorem one_smul_gen_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : Spc F E n) (Y : Spc F E d) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {α : Af F} (hα : α ∈ intAf F) {x : Fin n → E} (hx : x ∈ X.L)
     {y : Fin d → E} (hy : y ∈ Y.L) :
@@ -63,14 +85,25 @@ theorem one_smul_gen_mem {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ}
 
+/- English proof (translation)
+Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl, transpose_apply]`.
+-/
 theorem ofMaps_inl (e : Num G i j) (x : HomV G i j × HomW G i j) (p : Fin (spW G i j).rank) (k : Fin (spV G i j).rank) :
     ofMaps e x p (e (.inl k)) = divG (negSp (spW G i j)) x.1 k p := by
   simp only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl, transpose_apply]
 
+/- English proof (translation)
+Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply]`.
+-/
 theorem ofMaps_inr (e : Num G i j) (x : HomV G i j × HomW G i j) (p : Fin (spW G i j).rank) (k : Fin (spV₁ G i j).rank) :
     ofMaps e x p (e (.inr k)) = cA D (divG (spV₁ G i j) (-x.2) p k) := by
   simp only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply]
 
+/- English proof (translation)
+Use extensionality with `p q`. Take `⟨k | k, rfl⟩` from `e.surjective q`. Use `(ofMaps_inl e _ p k).trans ((divG_gen (negSp (spW G i j)) β a s t k p).trans ?_)` and prove the remaining obligations. Rewrite using `[smul_incM_apply, vecMulVec_apply, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, mul_comm]`. Both sides reduce to the same expression.
+
+Use `(ofMaps_inr e _ p k).trans ?_` and prove the remaining obligations. Rewrite using `[smul_incM_apply, vecMulVec_apply, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inr, neg_zero, divG_zero, Pi.zero_apply, mul_zero, TensorProduct.tmul_zero]`. Conclude with `map_zero _`.
+-/
 theorem ofMaps_genV (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (spW G i j).rank → D.host.E)
     (t : Fin (spV G i j).rank → D.host.E) :
     ofMaps e (Matrix.of fun i' j' => β ⊗ₜ[D.host.F] (a * t i' * ∑ k, star (s k) * (negSp (spW G i j)).gram k j'), 0) =
@@ -85,6 +118,13 @@ theorem ofMaps_genV (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (
       Pi.zero_apply, mul_zero, TensorProduct.tmul_zero]
     exact map_zero _
 
+/- English proof (translation)
+Use extensionality with `p q`. Take `⟨k | k, rfl⟩` from `e.surjective q`. Use `(ofMaps_inl e _ p k).trans ((congrFun (congrFun (divG_zero (negSp (spW G i j))) k) p).trans ?_)` and prove the remaining obligations. Rewrite using `[smul_incM_apply, vecMulVec_apply, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Pi.zero_apply, mul_zero, TensorProduct.tmul_zero]`. Both sides reduce to the same expression.
+
+Use `(ofMaps_inr e _ p k).trans ?_` and prove the remaining obligations. Rewrite using `[smul_incM_apply, vecMulVec_apply, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inr, divG_neg, Matrix.neg_apply, divG_gen, ← TensorProduct.tmul_neg]`. Express the relevant statement in the definitionally equal form `β ⊗ₜ[D.host.F] star (-(a * t p * star (s k))) = β ⊗ₜ[D.host.F] (star (-t p) * star (a * star (s k)))`. Rewrite using `[← star_mul']`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ofMaps_genW (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (spV₁ G i j).rank → D.host.E)
     (t : Fin (spW G i j).rank → D.host.E) :
     ofMaps e (0, Matrix.of fun i' j' => β ⊗ₜ[D.host.F] (a * t i' * ∑ k, star (s k) * (spV₁ G i j).gram k j')) =
@@ -103,10 +143,16 @@ theorem ofMaps_genW (e : Num G i j) (β : AF D.host.F) (a : D.host.E) (s : Fin (
     congr 2
     ring
 
+/- English proof (translation)
+The claim follows from `(AddSubgroup.closure_le (H.comap f)).2 h hx`.
+-/
 theorem map_mem_of_closure {A B : Type} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) {s : Set A} {H : AddSubgroup B}
     (h : ∀ x ∈ s, f x ∈ H) {x : A} (hx : x ∈ AddSubgroup.closure s) : f x ∈ H :=
   (AddSubgroup.closure_le (H.comap f)).2 h hx
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SkewLat.mem_pairLat]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]`. Conclude with `⟨hx, hy⟩`.
+-/
 theorem pair_mem {E : Type} [Field E] [NumberField E] {a b d : ℕ} {ΛA : Submodule (𝓞 E) (Fin a → E)}
     {ΛB : Submodule (𝓞 E) (Fin b → E)} (e : Fin a ⊕ Fin b ≃ Fin d) {x : Fin a → E} {y : Fin b → E} (hx : x ∈ ΛA) (hy : y ∈ ΛB) :
     Sum.elim x y ∘ e.symm ∈ GlobalTheory.SkewLat.pairLat ΛA ΛB e := by
@@ -114,10 +160,16 @@ theorem pair_mem {E : Type} [Field E] [NumberField E] {a b d : ℕ} {ΛA : Submo
   simp only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]
   exact ⟨hx, hy⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TripleSpaceW.mem_conjSub, star_star]`. Conclude with `hy`.
+-/
 theorem star_mem_conjSub {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {Λ : Submodule (𝓞 E) (Fin n → E)}
     {y : Fin n → E} (hy : y ∈ Λ) : star y ∈ GlobalTheory.TripleSpaceW.conjSub Λ := by
   rw [GlobalTheory.TripleSpaceW.mem_conjSub, star_star]; exact hy
 
+/- English proof (translation)
+Use `map_mem_of_closure ((DistribMulAction.toAddMonoidHom (Pt G i j) (GlobalTheory.LatVac.liftV v 1)).comp ((maps e).symm.toLinearMap.toAddMonoidHom.comp (AddMonoidHom.inl _ _))) ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Conclude with `(congrArg (fun z => GlobalTheory.LatVac.liftV v 1 • z ∈ latAtV Γ.V Γ.W v) (ofMaps_genV e (pairA _ 0 α) a s t)).mpr (one_smul_gen_mem _ _ v hα (h.1.ge (star_mem_conjSub hs)) (h.2.1.ge (pair_mem e (smul_mem_scLat_of_mem ha ht) (zero_mem _))))`.
+-/
 theorem smul_ofMaps_inl_mem {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E} {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j}
     {X : Chars D.host.F D.host.E} (h : IsTied t i j e Bs Γ X) (v : Pl D.host.F) {x : HomV G i j} (hx : x ∈ latV G i j) :
     GlobalTheory.LatVac.liftV v 1 • ofMaps e (x, 0) ∈ latAtV Γ.V Γ.W v := by
@@ -128,6 +180,9 @@ theorem smul_ofMaps_inl_mem {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E
     (one_smul_gen_mem _ _ v hα (h.1.ge (star_mem_conjSub hs))
       (h.2.1.ge (pair_mem e (smul_mem_scLat_of_mem ha ht) (zero_mem _))))
 
+/- English proof (translation)
+Use `map_mem_of_closure ((DistribMulAction.toAddMonoidHom (Pt G i j) (GlobalTheory.LatVac.liftV v 1)).comp ((maps e).symm.toLinearMap.toAddMonoidHom.comp (AddMonoidHom.inr _ _))) ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Conclude with `(congrArg (fun z => GlobalTheory.LatVac.liftV v 1 • z ∈ latAtV Γ.V Γ.W v) (ofMaps_genW e (pairA _ 0 α) a s t)).mpr (one_smul_gen_mem _ _ v hα (h.1.ge (star_mem_conjSub (neg_mem ht))) (h.2.1.ge (pair_mem e (zero_mem _) (star_mem_conjSub (smul_mem_scLat_of_mem ha (star_mem_conjSub …`.
+-/
 theorem smul_ofMaps_inr_mem {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E} {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j}
     {X : Chars D.host.F D.host.E} (h : IsTied t i j e Bs Γ X) (v : Pl D.host.F) {x : HomW G i j} (hx : x ∈ latW G i j) :
     GlobalTheory.LatVac.liftV v 1 • ofMaps e (0, x) ∈ latAtV Γ.V Γ.W v := by
@@ -138,6 +193,11 @@ theorem smul_ofMaps_inr_mem {t : T} {e : Num G i j} {Bs : Base D.host.F D.host.E
     (one_smul_gen_mem _ _ v hα (h.1.ge (star_mem_conjSub (neg_mem ht)))
       (h.2.1.ge (pair_mem e (zero_mem _) (star_mem_conjSub (smul_mem_scLat_of_mem ha (star_mem_conjSub hs))))))
 
+/- English proof (translation)
+Introduce `D T L sc G t i j e Bs Γ X h v u hu`. Take `⟨hat, h1, h2⟩` from `hu`. Establish `e1 : GlobalTheory.LatVac.liftV v 1 • u = u`. Use `hat (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`.
+
+Conclude with `this.symm`. Establish `e2 : u = ofMaps e (mapV e u, 0) + ofMaps e (0, mapW e u)` using `((ofMaps_maps e u).symm.trans (congrArg (ofMaps e) (Prod.ext (add_zero _).symm (zero_add _).symm))).trans (map_add (maps e).symm (mapV e u, 0) (0, mapW e u))`. Establish `e3` using `add_mem (smul_ofMaps_inl_mem h v h1) (smul_ofMaps_inr_mem h v h2)`. Rewrite `e3` using `[← smul_add, ← e2, e1]`. Then use the resulting hypothesis.
+-/
 theorem latPt_le_latAtV : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (t : T) (i j : ℕ) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E), IsTied t i j e Bs Γ X →
     ∀ v : Pl D.host.F, ∀ u ∈ latPt e v, u ∈ latAtV Γ.V Γ.W v := by
   intro D T L sc G t i j e Bs Γ X h v u hu

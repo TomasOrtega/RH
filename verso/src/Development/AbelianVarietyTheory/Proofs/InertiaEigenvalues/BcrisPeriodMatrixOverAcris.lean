@@ -14,6 +14,13 @@ namespace GlobalTheory.CrisPeriods
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hH : IsHausdorff (Ideal.span {((l : ℕ) : Per.Ainf l)}) (Per.Ainf l)` using `inferInstance`. Rewrite using `[← sub_eq_zero]`. Use `hH.haus _ fun n => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n z)`. Establish `hz : z = w * (l : ℤ_[l]) ^ n + (z.appr n : ℤ_[l])` using `by rw [hw]; ring`.
+
+Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨f w - g w, ?_⟩` and prove the remaining obligations. Establish `hf` using `congrArg f hz`. Establish `hg` using `congrArg g hz`. Simplify using `only [map_add, map_mul, map_pow, map_natCast] at hf hg`.
+
+Rewrite using `[hf, hg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem padicInt_hom_ext (f g : ℤ_[l] →+* Per.Ainf l) (z : ℤ_[l]) : f z = g z := by
   have hH : IsHausdorff (Ideal.span {((l : ℕ) : Per.Ainf l)}) (Per.Ainf l) := inferInstance
   rw [← sub_eq_zero]
@@ -28,11 +35,21 @@ private theorem padicInt_hom_ext (f g : ℤ_[l] →+* Per.Ainf l) (z : ℤ_[l]) 
   rw [hf, hg]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply]`.
+-/
 theorem map_smul_ring {R S : Type} [CommRing R] [CommRing S] {n : Type} (f : R →+* S) (c : R)
     (M : Matrix n n R) : (c • M).map f = f c • M.map f := by
   ext i j
   simp [Matrix.map_apply, Matrix.smul_apply]
 
+/- English proof (translation)
+Use `haveI : IsLocalization.Away C.t (Per.Bcris l) := hA`. Establish `h : ∀ i j, ∃ k : ℕ, ∃ a : Per.Acris l, U i j * algebraMap (Per.Acris l) (Per.Bcris l) C.t ^ k = algebraMap (Per.Acris l) (Per.Bcris l) a`. Introduce `i j`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers C.t) (U i j)`. Take `⟨k, hk⟩` from `s.2`.
+
+Use `⟨k, a, ?_⟩` and prove the remaining obligations. Establish `hk' : C.t ^ k = (s : Per.Acris l)` using `hk`. Rewrite using `[← map_pow, hk']`. Conclude with `hs`. Use `choose k a ha using h`.
+
+Use `⟨Finset.univ.sup fun p : Fin d × Fin d => k p.1 p.2, fun N hN => ⟨Matrix.of fun i j => a i j * C.t ^ (N - k i j), ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hk : k i j ≤ N` using `le_trans (Finset.le_sup (f := fun p : Fin d × Fin d => k p.1 p.2) (Finset.mem_univ (i, j))) hN`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, ← ha]`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hk, mul_comm]`.
+-/
 theorem exists_lift (C : Core l) (hA : C.AwayT) {d : ℕ} (U : Matrix (Fin d) (Fin d) (Per.Bcris l)) :
     ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → ∃ Z : Matrix (Fin d) (Fin d) (Per.Acris l),
       Z.map (algebraMap (Per.Acris l) (Per.Bcris l)) = algebraMap (Per.Acris l) (Per.Bcris l) C.t ^ N • U := by
@@ -59,6 +76,37 @@ end GlobalTheory.CrisPeriods
 
 namespace GlobalTheory.CrisPeriods
 
+/- English proof (translation)
+Introduce `l _ K P AI T C _hFits bk d ρ U U' hUU' hgal c₁ F hφ`. Establish `hA` using `(GlobalTheory.MemLoc.AwayT.away_and_inj l C).1`. Take `⟨_, _, -, -, -, hFilt, -⟩` from `GlobalTheory.MemLoc.BdRDVR.core_dvr l C`. Take `⟨-, hmul, -, hiff, -, -, hinj⟩` from `GlobalTheory.T.bdR_filtration_ker_theta_generator_facts l C (xi C.ε) C.ker_theta.symm`. Establish `AL` using `GlobalTheory.MemLoc.ActLaws.act_laws l`.
+
+Take `⟨N₁, h₁⟩` from `exists_lift C hA U`. Take `⟨N₂, h₂⟩` from `exists_lift C hA U'`. Use `⟨max N₁ N₂, fun N hN X X' hX hX' => ?_⟩` and prove the remaining obligations. Take `⟨Z, hZ⟩` from `h₁ N (le_of_max_le_left hN)`. Take `⟨Z', hZ'⟩` from `h₂ N (le_of_max_le_right hN)`.
+
+Establish `hmi : Function.Injective (fun M : Matrix (Fin d) (Fin d) (Per.Acris l) => M.map (algebraMap (Per.Acris l) (Per.Bcris l)))` using `Matrix.map_injective hinj`. Establish `hXm : ∀ Y : Matrix (Fin d) (Fin d) bk.S, ((Y.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map (algebraMap (Per.Acris l) (Per.Bcris l))).map C.ι = Y.map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp ((aDp l).comp bk.ev))`. Introduce `Y`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, RingHom.comp_apply]`.
+
+Rewrite using `[C.ι_j]`. Use `congr 1`. Conclude with `(congrArg C.j (GlobalTheory.RingIface.tower l (bk.ev (Y i j)))).trans ((C.j_cris.on0 _).trans (congrArg _ (Subalgebra.coe_algebraMap _ _)))`. Establish `htN : C.ι (algebraMap (Per.Acris l) (Per.Bcris l) C.t) ^ N ∈ Per.FilD l N`. Rewrite using `[C.ι_j, ← map_pow, hiff, hFilt]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨Z, Z', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `hmi` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, hZ, hZ', map_smul_ring, Matrix.map_one _ (map_zero _) (map_one _), smul_mul_smul_comm, hUU', map_pow, ← pow_add, two_mul]`.
+
+Apply `hmi` to reduce the goal to its premises. Simplify using `only`. Establish `hZφ : (Z.map (phiA l)).map (algebraMap (Per.Acris l) (Per.Bcris l)) = (Z.map (algebraMap (Per.Acris l) (Per.Bcris l))).map (Per.φB l)`. Use extensionality with `i j`. Conclude with `(AL.2.2.2.2.2.2.2.2.2.2.2.2 (Z i j)).symm`.
+
+Establish `hFm : (F.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)).map (algebraMap (Per.Acris l) (Per.Bcris l)) = F.map ((Per.aB l).comp (wA l bk.a).toRingHom)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, RingHom.comp_apply, bk.ev_C]`. Conclude with `(GlobalTheory.RingIface.aB_eq_alg l _).symm`. Establish `ht : algebraMap (Per.Acris l) (Per.Bcris l) (phiA l C.t) = Per.φB l (algebraMap (Per.Acris l) (Per.Bcris l) C.t)` using `(AL.2.2.2.2.2.2.2.2.2.2.2.2 C.t).symm`.
+
+Rewrite using `[map_smul_ring, hZφ, hZ, map_smul_ring, map_smul_ring, Matrix.map_mul, hFm, hZ, map_pow, map_pow, ht, Matrix.smul_mul, ← hφ]`. Simplify using `only [map_mul, map_pow, map_natCast, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `g`.
+
+Apply `hmi` to reduce the goal to its premises. Simplify using `only`. Establish `hZσ : (Z.map (sigA (g : GQ l))).map (algebraMap (Per.Acris l) (Per.Bcris l)) = (Z.map (algebraMap (Per.Acris l) (Per.Bcris l))).map (Per.σB (g : GQ l))`. Use extensionality with `i j`. Conclude with `(AL.2.2.2.2.2.2.2.2.2.2.2.1 _ (Z i j)).symm`.
+
+Establish `hρ : ((ρ g).map ((algebraMap (Ainf l) (Per.Acris l)).comp (algebraMap ℤ_[l] (Ainf l)))).map (algebraMap (Per.Acris l) (Per.Bcris l)) = (ρ g).map (Per.zB l)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, RingHom.comp_apply]`. Rewrite using `[GlobalTheory.RingIface.zB_eq_aB_zA, GlobalTheory.RingIface.aB_eq_alg, padicInt_hom_ext (Per.zA l) (algebraMap ℤ_[l] (Ainf l))]`. Establish `ht : algebraMap (Per.Acris l) (Per.Bcris l) (sigA (g : GQ l) C.t) = Per.σB (g : GQ l) (algebraMap (Per.Acris l) (Per.Bcris l) C.t)` using `(AL.2.2.2.2.2.2.2.2.2.2.2.1 _ C.t).symm`.
+
+Rewrite using `[map_smul_ring, Matrix.map_mul, hρ, hZσ, hZ, map_smul_ring, map_smul_ring, hZ]`. Simplify using `only [map_pow, ht]`. Rewrite using `[Matrix.mul_smul, hgal, smul_smul, smul_smul, mul_comm]`. Introduce `i j`. Rewrite using `[← hiff, ← C.ι_j]`.
+
+Establish `e : algebraMap (Per.Acris l) (Per.Bcris l) ((Z * X.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)) i j) = ((Z * X.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map (algebraMap (Per.Acris l) (Per.Bcris l))) i j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.map_mul, hZ, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`. Establish `e2 : C.ι ((U * (X.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map (algebraMap (Per.Acris l) (Per.Bcris l))) i j) = (U.map C.ι * X.map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp ((aDp l).comp bk.ev))) i j`. Rewrite using `[← hXm]`.
+
+Conclude with `congrFun (congrFun (Matrix.map_mul (f := C.ι)) i) j`. Rewrite using `[e2, show ((2 * N : ℕ) : ℤ) = (N : ℤ) + (N : ℤ) by push_cast; ring]`. Conclude with `hmul _ _ _ _ htN (hX i j)`. Introduce `i j`. Rewrite using `[← hiff, ← C.ι_j]`.
+
+Establish `e : algebraMap (Per.Acris l) (Per.Bcris l) ((X'.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) * Z') i j) = ((X'.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) * Z').map (algebraMap (Per.Acris l) (Per.Bcris l))) i j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.map_mul, hZ', Matrix.mul_smul, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`. Establish `e2 : C.ι (((X'.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map (algebraMap (Per.Acris l) (Per.Bcris l)) * U') i j) = (X'.map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp ((aDp l).comp bk.ev)) * U'.map C.ι) i j`. Rewrite using `[← hXm]`.
+
+Conclude with `congrFun (congrFun (Matrix.map_mul (f := C.ι)) i) j`. Rewrite using `[e2, show ((2 * N : ℕ) : ℤ) = (N : ℤ) + (N : ℤ) by push_cast; ring]`. Conclude with `hmul _ _ _ _ htN (hX' i j)`.
+-/
 theorem periods_over_Acris : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (U U' : Matrix (Fin d) (Fin d) (Per.Bcris l)), U * U' = 1 → (∀ g : ↥(GK K), (ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U) → ∀ (c₁ : ℕ) (F : Matrix (Fin d) (Fin d) (Wq l bk.a)), (l : Per.Bcris l) ^ c₁ • U.map (Per.φB l) = U * F.map ((Per.aB l).comp (wA l bk.a).toRingHom) → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → ∀ (X X' : Matrix (Fin d) (Fin d) (bk.S)), (∀ i j, (U.map C.ι * X.map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp ((aDp l).comp bk.ev))) i j ∈ Per.FilD l N) → (∀ i j, (X'.map ((algebraMap (Per.BdRp l) (Per.BdR l)).comp ((aDp l).comp bk.ev)) * U'.map C.ι) i j ∈ Per.FilD l N) → ∃ Z Z' : Matrix (Fin d) (Fin d) (Per.Acris l), Z * Z' = C.t ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) ∧ (C.t ^ N * (l : Per.Acris l) ^ c₁) • Z.map (phiA l) = phiA l C.t ^ N • (Z * F.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)) ∧ (∀ g : ↥(GK K), C.t ^ N • ((ρ g).map ((algebraMap (Ainf l) (Per.Acris l)).comp (algebraMap ℤ_[l] (Ainf l))) * Z.map (sigA (g : GQ l))) = sigA (g : GQ l) C.t ^ N • Z) ∧ (∀ i j, C.j ((Z * X.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)) i j) ∈ Per.FilP l (2 * N)) ∧ (∀ i j, C.j ((X'.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) * Z') i j) ∈ Per.FilP l (2 * N)) := by
   intro l _ K P AI T C _hFits bk d ρ U U' hUU' hgal c₁ F hφ
   have hA := (GlobalTheory.MemLoc.AwayT.away_and_inj l C).1

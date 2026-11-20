@@ -11,6 +11,11 @@ namespace GlobalTheory.ExpModel
 
 open GlobalTheory.ExpTie
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h0 : ((l : ℕ) : O) ≠ 0` using `Nat.cast_ne_zero.2 hl`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h0 hϖ`. Use `⟨ϖ, n, hϖ, ?_, hn.dvd⟩` and prove the remaining obligations. Break down `n with _ | n` into its components or cases.
+
+Conclude with `absurd (hn.isUnit_iff.2 (by simp)) hu`. Conclude with `(dvd_pow_self ϖ n.succ_ne_zero).trans hn.symm.dvd`.
+-/
 theorem exists_unif_dvd (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (l : ℕ)
     (hl : l ≠ 0) (hu : ¬ IsUnit ((l : ℕ) : O)) :
     ∃ (ϖ : O) (n : ℕ), Irreducible ϖ ∧ ϖ ∣ (l : O) ∧ (l : O) ∣ ϖ ^ n := by
@@ -41,6 +46,9 @@ abbrev SimpMod (μ : SimpIx X ϖ) : Type := μ.1 ⧸ μ.2.1
 
 variable {X ϖ}
 
+/- English proof (translation)
+Take `⟨E, ψ, hψ⟩` from `h`. Set `e` to `ψ.quotKerEquivOfSurjective hψ`. Use `haveI : IsSimpleModule X.A (E ⧸ LinearMap.ker ψ) := IsSimpleModule.congr e`. Conclude with `⟨⟨E, LinearMap.ker ψ, inferInstance⟩, ⟨e.symm⟩⟩`.
+-/
 theorem exists_simpMod (Gm : Type) [AddCommGroup Gm] [Module X.A Gm] [IsSimpleModule X.A Gm]
     (h : IsSubquot X.A (Red X ϖ) Gm) :
     ∃ μ : SimpIx X ϖ, Nonempty (Gm ≃ₗ[X.A] SimpMod X ϖ μ) := by

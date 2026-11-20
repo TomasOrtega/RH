@@ -16,12 +16,18 @@ def US (p : ∀ v, G →* Gv v) (K : ∀ v, Subgroup (Gv v)) (S : Finset V) : Su
   mul_mem' {a b} ha hb v hv := by rw [map_mul]; exact mul_mem (ha v hv) (hb v hv)
   inv_mem' {a} ha v hv := by rw [map_inv]; exact inv_mem (ha v hv)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_US {p : ∀ v, G →* Gv v} {K : ∀ v, Subgroup (Gv v)} {S : Finset V} {g : G} :
     g ∈ US p K S ↔ ∀ v ∉ S, p v g ∈ K v := Iff.rfl
 
 def prS (q : G →* Gi) (p : ∀ v, G →* Gv v) (S : Finset V) : G →* Gi × ∀ v : S, Gv v :=
   q.prod (Pi.monoidHom fun v : S => p v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prS_apply (q : G →* Gi) (p : ∀ v, G →* Gv v) (S : Finset V) (g : G) :
     prS q p S g = (q g, fun v : S => p v g) := rfl
 
@@ -49,6 +55,9 @@ def cen (f : G →* Gi) (g : G) : Subgroup.centralizer {g} →* Subgroup.central
   map_one' := Subtype.ext (map_one f)
   map_mul' s t := Subtype.ext (map_mul f _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_cen (f : G →* Gi) (g : G) (t : Subgroup.centralizer {g}) : (cen f g t : Gi) = f t := rfl
 
 end

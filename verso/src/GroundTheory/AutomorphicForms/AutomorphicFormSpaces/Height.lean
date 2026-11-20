@@ -19,11 +19,20 @@ def locHeight (g : GL (Fin n) E) : ℝ :=
     max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊
       ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ : ℝ≥0) : ℝ)
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_locHeight (g : GL (Fin n) E) : 1 ≤ locHeight g := le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le one_pos (one_le_locHeight g)`.
+-/
 theorem locHeight_pos (g : GL (Fin n) E) : 0 < locHeight g :=
   lt_of_lt_of_le one_pos (one_le_locHeight g)
 
+/- English proof (translation)
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Use `Finset.le_sup (f := fun p : Fin n × Fin n => max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) (Finset.mem_univ (i, j))` as an intermediate fact. Conclude with `le_trans (le_max_left _ _) (NNReal.coe_le_coe.2 this)`.
+-/
 theorem norm_apply_le_locHeight (g : GL (Fin n) E) (i j : Fin n) :
     ‖(g : Matrix (Fin n) (Fin n) E) i j‖ ≤ locHeight g := by
   refine le_trans ?_ (le_max_right _ _)
@@ -32,6 +41,9 @@ theorem norm_apply_le_locHeight (g : GL (Fin n) E) (i j : Fin n) :
       ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) (Finset.mem_univ (i, j))
   exact le_trans (le_max_left _ _) (NNReal.coe_le_coe.2 this)
 
+/- English proof (translation)
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Use `Finset.le_sup (f := fun p : Fin n × Fin n => max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) (Finset.mem_univ (i, j))` as an intermediate fact. Conclude with `le_trans (le_max_right _ _) (NNReal.coe_le_coe.2 this)`.
+-/
 theorem norm_inv_apply_le_locHeight (g : GL (Fin n) E) (i j : Fin n) :
     ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j‖ ≤ locHeight g := by
   refine le_trans ?_ (le_max_right _ _)
@@ -40,6 +52,9 @@ theorem norm_inv_apply_le_locHeight (g : GL (Fin n) E) (i j : Fin n) :
       ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) (Finset.mem_univ (i, j))
   exact le_trans (le_max_right _ _) (NNReal.coe_le_coe.2 this)
 
+/- English proof (translation)
+Use `max_le hc ?_` and prove the remaining obligations. Establish `hc0 : 0 ≤ c` using `le_trans zero_le_one hc`. Establish `: (Finset.univ.sup fun p : Fin n × Fin n => max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) ≤ ⟨c, hc0⟩` using `Finset.sup_le fun p _ => max_le (h₁ p.1 p.2) (h₂ p.1 p.2)`. Conclude with `this`.
+-/
 theorem locHeight_le {g : GL (Fin n) E} {c : ℝ} (hc : 1 ≤ c)
     (h₁ : ∀ i j, ‖(g : Matrix (Fin n) (Fin n) E) i j‖ ≤ c)
     (h₂ : ∀ i j, ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j‖ ≤ c) :
@@ -52,6 +67,11 @@ theorem locHeight_le {g : GL (Fin n) E} {c : ℝ} (hc : 1 ≤ c)
     Finset.sup_le fun p _ => max_le (h₁ p.1 p.2) (h₂ p.1 p.2)
   exact this
 
+/- English proof (translation)
+Use `le_antisymm (locHeight_le (one_le_locHeight g) (fun i j => norm_inv_apply_le_locHeight g i j) fun i j => ?_) (locHeight_le (one_le_locHeight _) (fun i j => ?_) fun i j => ?_)` and prove the remaining obligations. Rewrite using `[inv_inv]`. Conclude with `norm_apply_le_locHeight g i j`. Use `norm_inv_apply_le_locHeight g⁻¹ i j` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Conclude with `norm_apply_le_locHeight g⁻¹ i j`.
+-/
 theorem locHeight_inv (g : GL (Fin n) E) : locHeight g⁻¹ = locHeight g := by
   refine le_antisymm (locHeight_le (one_le_locHeight g) (fun i j => norm_inv_apply_le_locHeight g i j)
     fun i j => ?_) (locHeight_le (one_le_locHeight _) (fun i j => ?_) fun i j => ?_)
@@ -60,11 +80,17 @@ theorem locHeight_inv (g : GL (Fin n) E) : locHeight g⁻¹ = locHeight g := by
     rwa [inv_inv] at this
   · exact norm_apply_le_locHeight g⁻¹ i j
 
+/- English proof (translation)
+Use `le_antisymm (locHeight_le le_rfl (fun i j => ?_) fun i j => ?_) (one_le_locHeight _)` and prove the remaining obligations. Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Apply the tactic sequence `simp only [inv_one, Units.val_one, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem locHeight_one : locHeight (1 : GL (Fin n) E) = 1 := by
   refine le_antisymm (locHeight_le le_rfl (fun i j => ?_) fun i j => ?_) (one_le_locHeight _)
   · simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp
   · simp only [inv_one, Units.val_one, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) hA0`. Use `_ = n * (A * B) := by simp`.
+-/
 theorem norm_mul_apply_le (a b : Matrix (Fin n) (Fin n) E) {A B : ℝ} (hA : ∀ i j, ‖a i j‖ ≤ A)
     (hB : ∀ i j, ‖b i j‖ ≤ B) (hA0 : 0 ≤ A) (i j : Fin n) : ‖(a * b) i j‖ ≤ n * (A * B) := by
   rw [Matrix.mul_apply]
@@ -73,6 +99,15 @@ theorem norm_mul_apply_le (a b : Matrix (Fin n) (Fin n) E) {A B : ℝ} (hA : ∀
         rw [norm_mul]; exact mul_le_mul (hA i k) (hB k j) (norm_nonneg _) hA0
     _ = n * (A * B) := by simp
 
+/- English proof (translation)
+Establish `hg` using `one_le_locHeight g`. Establish `hh` using `one_le_locHeight h`. Establish `hn : (1 : ℝ) ≤ max 1 (n : ℝ)` using `le_max_left _ _`. Establish `h1 : 1 ≤ max 1 (n : ℝ) * locHeight g * locHeight h`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : ∀ (a b : Matrix (Fin n) (Fin n) E) (A B : ℝ), (∀ i j, ‖a i j‖ ≤ A) → (∀ i j, ‖b i j‖ ≤ B) → 1 ≤ A → 1 ≤ B → ∀ i j, ‖(a * b) i j‖ ≤ max 1 (n : ℝ) * A * B`. Introduce `a b A B hA hB hA1 hB1 i j`. Use `le_trans (norm_mul_apply_le a b hA hB (le_trans zero_le_one hA1) i j) ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity)`.
+
+Use `locHeight_le h1 (fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `key _ _ _ _ (norm_apply_le_locHeight g) (norm_apply_le_locHeight h) hg hh i j`. Rewrite using `[mul_inv_rev, Units.val_mul]`. Use `key _ _ _ _ (norm_inv_apply_le_locHeight h) (norm_inv_apply_le_locHeight g) hh hg i j` as an intermediate fact.
+
+Rewrite `this` using `[mul_right_comm]`. Then use the resulting hypothesis.
+-/
 theorem locHeight_mul_le (g h : GL (Fin n) E) :
     locHeight (g * h) ≤ max 1 (n : ℝ) * locHeight g * locHeight h := by
   have hg := one_le_locHeight g
@@ -95,6 +130,13 @@ theorem locHeight_mul_le (g h : GL (Fin n) E) :
     have := key _ _ _ _ (norm_inv_apply_le_locHeight h) (norm_inv_apply_le_locHeight g) hh hg i j
     rwa [mul_right_comm] at this
 
+/- English proof (translation)
+Establish `hg` using `one_le_locHeight g`. Establish `hh` using `one_le_locHeight h`. Establish `key : ∀ (a b : Matrix (Fin n) (Fin n) E) (A B : ℝ), (∀ i j, ‖a i j‖ ≤ A) → (∀ i j, ‖b i j‖ ≤ B) → 1 ≤ A → 1 ≤ B → ∀ i j, ‖(a * b) i j‖ ≤ A * B`. Introduce `a b A B hA hB hA1 hB1 i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i k) (hB k j) (norm_nonneg _) (le_trans zero_le_one hA1)`. Use `locHeight_le (one_le_mul_of_one_le_of_one_le hg hh) (fun i j => ?_) fun i j => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul]`.
+
+Conclude with `key _ _ _ _ (norm_apply_le_locHeight g) (norm_apply_le_locHeight h) hg hh i j`. Rewrite using `[mul_inv_rev, Units.val_mul, mul_comm (locHeight g)]`. Conclude with `key _ _ _ _ (norm_inv_apply_le_locHeight h) (norm_inv_apply_le_locHeight g) hh hg i j`.
+-/
 theorem locHeight_mul_le_of_ultrametric [IsUltrametricDist E] (g h : GL (Fin n) E) :
     locHeight (g * h) ≤ locHeight g * locHeight h := by
   have hg := one_le_locHeight g
@@ -112,6 +154,9 @@ theorem locHeight_mul_le_of_ultrametric [IsUltrametricDist E] (g h : GL (Fin n) 
   · rw [mul_inv_rev, Units.val_mul, mul_comm (locHeight g)]
     exact key _ _ _ _ (norm_inv_apply_le_locHeight h) (norm_inv_apply_le_locHeight g) hh hg i j
 
+/- English proof (translation)
+The claim follows from `le_antisymm (locHeight_le le_rfl h₁ h₂) (one_le_locHeight g)`.
+-/
 theorem locHeight_eq_one {g : GL (Fin n) E}
     (h₁ : ∀ i j, ‖(g : Matrix (Fin n) (Fin n) E) i j‖ ≤ 1)
     (h₂ : ∀ i j, ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j‖ ≤ 1) :
@@ -124,6 +169,9 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 open Reduction
 
+/- English proof (translation)
+Rewrite `hg` using `[GLnLocal.mem_integralGL_iff]`. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff] at hg`. Conclude with `locHeight_eq_one (fun i j => norm_le_one_of_mem v (hg.1 i j)) fun i j => norm_le_one_of_mem v (hg.2 i j)`.
+-/
 theorem locHeight_eq_one_of_mem_integralGL {v : HeightOneSpectrum (𝓞 K)}
     {g : GL (Fin n) (v.adicCompletion K)}
     (hg : g ∈ GLnLocal.integralGL (v.adicCompletion K) n) : locHeight g = 1 := by
@@ -132,6 +180,9 @@ theorem locHeight_eq_one_of_mem_integralGL {v : HeightOneSpectrum (𝓞 K)}
   exact locHeight_eq_one (fun i j => norm_le_one_of_mem v (hg.1 i j))
     fun i j => norm_le_one_of_mem v (hg.2 i j)
 
+/- English proof (translation)
+Establish `: ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, locHeight (finAt v g) = 1` using `(AdelicGLn.eventually_mem_integralGL K n g).mono fun v hv => locHeight_eq_one_of_mem_integralGL (g := finAt v g) hv`. Conclude with `Filter.eventually_cofinite.1 this`.
+-/
 theorem finite_mulSupport_locHeight_finAt (g : AdelicGLn.AdelicGL K n) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => locHeight (finAt v g)).Finite := by
   have : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, locHeight (finAt v g) = 1 :=
@@ -143,25 +194,43 @@ def height (g : AdelicGLn.AdelicGL K n) : ℝ :=
   (∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult) *
     ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g)
 
+/- English proof (translation)
+The claim follows from `finprod_induction (fun x : ℝ => 1 ≤ x) le_rfl (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) fun _ => one_le_locHeight _`.
+-/
 theorem one_le_finprod_locHeight (g : AdelicGLn.AdelicGL K n) :
     1 ≤ ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g) :=
   finprod_induction (fun x : ℝ => 1 ≤ x) le_rfl (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy)
     fun _ => one_le_locHeight _
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl fun _ _ => one_le_pow₀ (one_le_locHeight _)`.
+-/
 theorem one_le_prod_locHeight (g : AdelicGLn.AdelicGL K n) :
     1 ≤ ∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult :=
   Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy)
     le_rfl fun _ _ => one_le_pow₀ (one_le_locHeight _)
 
+/- English proof (translation)
+The claim follows from `one_le_mul_of_one_le_of_one_le (one_le_prod_locHeight g) (one_le_finprod_locHeight g)`.
+-/
 theorem one_le_height (g : AdelicGLn.AdelicGL K n) : 1 ≤ height g :=
   one_le_mul_of_one_le_of_one_le (one_le_prod_locHeight g) (one_le_finprod_locHeight g)
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le one_pos (one_le_height g)`.
+-/
 theorem height_pos (g : AdelicGLn.AdelicGL K n) : 0 < height g :=
   lt_of_lt_of_le one_pos (one_le_height g)
 
+/- English proof (translation)
+Simplify using `only [height, infAt_inv, finAt_inv, locHeight_inv]`.
+-/
 theorem height_inv (g : AdelicGLn.AdelicGL K n) : height g⁻¹ = height g := by
   simp only [height, infAt_inv, finAt_inv, locHeight_inv]
 
+/- English proof (translation)
+Simplify using `[height, locHeight_one]`.
+-/
 theorem height_one : height (1 : AdelicGLn.AdelicGL K n) = 1 := by
   simp [height, locHeight_one]
 
@@ -169,10 +238,24 @@ variable (K n) in
 
 def heightConst : ℝ := ∏ w : InfinitePlace K, (max 1 (n : ℝ)) ^ w.mult
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl fun _ _ => one_le_pow₀ (le_max_left _ _)`.
+-/
 theorem one_le_heightConst : 1 ≤ heightConst K n :=
   Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy)
     le_rfl fun _ _ => one_le_pow₀ (le_max_left _ _)
 
+/- English proof (translation)
+Use `set s := ((finite_mulSupport_locHeight_finAt g).union (finite_mulSupport_locHeight_finAt h)).union (finite_mulSupport_locHeight_finAt (g * h))`. Establish `hfin : ∀ x : AdelicGLn.AdelicGL K n, x = g ∨ x = h ∨ x = g * h → ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v x) = ∏ v ∈ s.toFinset, locHeight (finAt v x)`. Introduce `x hx`. Use `finprod_eq_prod_of_mulSupport_subset _ ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Simplify using `only [Set.Finite.coe_toFinset, Set.mem_union]`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `Or.inl (Or.inl hv)`. Conclude with `Or.inl (Or.inr hv)`. Conclude with `Or.inr hv`.
+
+Establish `hf : ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v (g * h)) ≤ (∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g)) * ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v h)`. Rewrite using `[hfin _ (Or.inr (Or.inr rfl)), hfin _ (Or.inl rfl), hfin _ (Or.inr (Or.inl rfl)), ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun v _ => (locHeight_pos _).le) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[finAt_mul]`. Conclude with `locHeight_mul_le_of_ultrametric _ _`.
+
+Establish `hi : (∏ w : InfinitePlace K, locHeight (infAt w (g * h)) ^ w.mult) ≤ heightConst K n * (∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult) * ∏ w : InfinitePlace K, locHeight (infAt w h) ^ w.mult`. Rewrite using `[heightConst, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => by have := locHeight_pos (infAt w (g * h)); positivity) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ← mul_pow, infAt_mul]`. Conclude with `pow_le_pow_left₀ (locHeight_pos _).le (locHeight_mul_le _ _) _`.
+
+Unfold `height`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem height_mul_le (g h : AdelicGLn.AdelicGL K n) :
     height (g * h) ≤ heightConst K n * height g * height h := by
   classical
@@ -218,6 +301,9 @@ theorem height_mul_le (g h : AdelicGLn.AdelicGL K n) :
             (le_trans zero_le_one (one_le_prod_locHeight h)))
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `h1 : infAt w k ∈ archCompact w` using `hk.1 w`. Establish `h2 : (infAt w k)⁻¹ ∈ archCompact w` using `inv_mem h1`. Conclude with `locHeight_eq_one (fun i j => norm_apply_le_one_of_mem_archCompact h1 i j) fun i j => norm_apply_le_one_of_mem_archCompact h2 i j`.
+-/
 theorem locHeight_infAt_eq_one_of_mem_maxCompact {k : AdelicGLn.AdelicGL K n}
     (hk : k ∈ maxCompact) (w : InfinitePlace K) : locHeight (infAt w k) = 1 := by
   have h1 : infAt w k ∈ archCompact w := hk.1 w
@@ -225,10 +311,16 @@ theorem locHeight_infAt_eq_one_of_mem_maxCompact {k : AdelicGLn.AdelicGL K n}
   exact locHeight_eq_one (fun i j => norm_apply_le_one_of_mem_archCompact h1 i j)
     fun i j => norm_apply_le_one_of_mem_archCompact h2 i j
 
+/- English proof (translation)
+The claim follows from `locHeight_eq_one_of_mem_integralGL (hk.2 v)`.
+-/
 theorem locHeight_finAt_eq_one_of_mem_maxCompact {k : AdelicGLn.AdelicGL K n}
     (hk : k ∈ maxCompact) (v : HeightOneSpectrum (𝓞 K)) : locHeight (finAt v k) = 1 :=
   locHeight_eq_one_of_mem_integralGL (hk.2 v)
 
+/- English proof (translation)
+Unfold `height`. Rewrite using `[Finset.prod_eq_one fun w _ => by`. Rewrite using `[locHeight_infAt_eq_one_of_mem_maxCompact hk w, one_pow], one_mul]`. Conclude with `finprod_eq_one_of_forall_eq_one (locHeight_finAt_eq_one_of_mem_maxCompact hk)`.
+-/
 theorem height_eq_one_of_mem_maxCompact {k : AdelicGLn.AdelicGL K n} (hk : k ∈ maxCompact) :
     height k = 1 := by
   unfold height

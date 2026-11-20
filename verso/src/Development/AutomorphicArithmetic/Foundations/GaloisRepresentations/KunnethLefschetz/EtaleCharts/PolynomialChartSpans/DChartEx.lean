@@ -10,6 +10,33 @@ namespace UpperTheory.Gal.KunnethLefschetz.G
 section alg
 variable {R B : Type} [CommRing R] [CommRing B] [Algebra R B]
 
+/- English proof (translation)
+Set `P` to `MvPolynomial (Fin D) R`. Use `letI : Algebra P B := (MvPolynomial.aeval u : P →ₐ[R] B).toRingHom.toAlgebra`. Use `haveI : Algebra.Etale P B := h`. Establish `hP : ∀ p : P, algebraMap P B p = MvPolynomial.aeval u p` using `fun _ => rfl`. Set `J : Ideal (B ⊗[R] B)` to `Ideal.span (Set.range fun k => (1 : B) ⊗ₜ[R] u k - u k ⊗ₜ[R] (1 : B))`.
+
+Establish `hJ : ∀ k, (1 : B) ⊗ₜ[R] u k - u k ⊗ₜ[R] (1 : B) ∈ J` using `fun k => Ideal.subset_span ⟨k, rfl⟩`. Set `iL : B →+* (B ⊗[R] B) ⧸ J` to `(Ideal.Quotient.mk J).comp (Algebra.TensorProduct.includeLeft (R := R) (S := R) (A := B) (B := B)).toRingHom`. Set `iR : B →+* (B ⊗[R] B) ⧸ J` to `(Ideal.Quotient.mk J).comp (Algebra.TensorProduct.includeRight (R := R) (A := B) (B := B)).toRingHom`. Establish `hLR : iR.comp (algebraMap P B) = iL.comp (algebraMap P B)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun k => ?_)` and prove the remaining obligations.
+
+Establish `e : algebraMap P B (MvPolynomial.C r) = algebraMap R B r` using `by simp [hP]`. Simplify using `only [RingHom.comp_apply, e]`. Use `show Ideal.Quotient.mk J ((1 : B) ⊗ₜ[R] algebraMap R B r) = Ideal.Quotient.mk J (algebraMap R B r ⊗ₜ[R] (1 : B))`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Establish `e : algebraMap P B (MvPolynomial.X k) = u k` using `by simp [hP]`.
+
+Simplify using `only [RingHom.comp_apply, e]`. Conclude with `Ideal.Quotient.eq.2 (hJ k)`. Use `letI : Algebra P ((B ⊗[R] B) ⧸ J) := (iL.comp (algebraMap P B)).toAlgebra`. Set `aL : B →ₐ[P] (B ⊗[R] B) ⧸ J` to `{ iL with commutes' := fun _ => rfl }`. Set `aR : B →ₐ[P] (B ⊗[R] B) ⧸ J` to `{ iR with commutes' := fun p => congrArg (fun f : P →+* _ => f p) hLR }`.
+
+Set `ρ : B ⊗[P] B →ₐ[P] (B ⊗[R] B) ⧸ J` to `Algebra.TensorProduct.productMap aL aR`. Establish `hρ : ∀ x y : B, ρ (x ⊗ₜ[P] y) = Ideal.Quotient.mk J (x ⊗ₜ[R] y)`. Introduce `x y`. Use `show aL x * aR y = _`. Use `show Ideal.Quotient.mk J _ * Ideal.Quotient.mk J _ = _`.
+
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Set `mulQ : (B ⊗[R] B) ⧸ J →+* B` to `Ideal.Quotient.lift J (Algebra.TensorProduct.lmul' R (S := B)).toRingHom (by`. Introduce `a ha`. Establish `: J ≤ RingHom.ker (Algebra.TensorProduct.lmul' R (S` using `B)).toRingHom := by`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `[RingHom.mem_ker]`. Conclude with `this ha)`. Establish `hm : ∀ y : B ⊗[P] B, mulQ (ρ y) = Algebra.TensorProduct.lmul' P y`.
+
+Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [hρ]`. Simplify using `[mulQ]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨t', ht0, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := P) (S := B)).1 inferInstance`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (ρ t')`. Use `⟨t, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `hm t'` as an intermediate fact.
+
+Rewrite `this` using `[← ht, ht1]`. Simplify `this` using `[mulQ]`. Establish `hxI : x ∈ KaehlerDifferential.ideal R B` using `hx`. Rewrite `hxI` using `[← KaehlerDifferential.span_range_eq_ideal]`. Use `clear hx`.
+
+Proceed by induction on `hxI using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Use `Ideal.Quotient.eq_zero_iff_mem.1 ?_` and prove the remaining obligations. Use `congrArg ρ (ht0 s)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_sub, hρ, hρ, map_zero, ← ht, ← map_sub, ← map_mul, mul_comm]`. Conclude with `this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `J.add_mem hx hy`.
+
+Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm]`. Conclude with `J.mul_mem_left a hx`.
+-/
 private theorem alg_core {D : ℕ} (u : Fin D → B)
     (h : (MvPolynomial.aeval u : MvPolynomial (Fin D) R →ₐ[R] B).toRingHom.Etale) :
     ∃ t : B ⊗[R] B, Algebra.TensorProduct.lmul' R t = 1 ∧
@@ -78,6 +105,15 @@ private theorem alg_core {D : ℕ} (u : Fin D → B)
     | add x y _ _ hx hy => rw [mul_add]; exact J.add_mem hx hy
     | smul a x _ hx => rw [smul_eq_mul, mul_left_comm]; exact J.mul_mem_left a hx
 
+/- English proof (translation)
+Take `⟨t, ht1, ht2⟩` from `alg_core (R := R) u h`. Establish `hm : ∀ y : B ⊗[R] B, m (Algebra.TensorProduct.productMap a b y) = Algebra.TensorProduct.lmul' R y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => simp [ma, mb]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `⟨Algebra.TensorProduct.productMap a b t, by rw [hm, ht1], fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hφ.2 x`. Rewrite `hx` using `[hm]`.
+
+Use `Ideal.mem_map_of_mem (Algebra.TensorProduct.productMap a b).toRingHom (ht2 y hx)` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, ← Set.range_comp]`. Establish `e : ((Algebra.TensorProduct.productMap a b).toRingHom ∘ fun k => (1 : B) ⊗ₜ[R] u k - u k ⊗ₜ[R] (1 : B)) = fun k => b (u k) - a (u k)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Rewrite `this` using `[e]`. Simplify using `using this`.
+-/
 private theorem alg2 {T : Type} [CommRing T] [Algebra R T] (a b : B →ₐ[R] T)
     (hφ : Function.Bijective (Algebra.TensorProduct.productMap a b)) (m : T →ₐ[R] B)
     (ma : ∀ x, m (a x) = x) (mb : ∀ x, m (b x) = x) {D : ℕ} (u : Fin D → B)
@@ -106,11 +142,17 @@ end alg
 section geo
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_comp_appLE g.left f.left U V V' h h')`.
+-/
 private theorem secMap_comp {X Y Y' : Sch R} (f : Y ⟶ X) (g : Y' ⟶ Y) {U : X.left.Opens} {V : Y.left.Opens}
     {V' : Y'.left.Opens} (h : V ≤ f.left ⁻¹ᵁ U) (h' : V' ≤ g.left ⁻¹ᵁ V) (h'' : V' ≤ (g ≫ f).left ⁻¹ᵁ U)
     (x : Sec X U) : secMap g h' (secMap f h x) = secMap (g ≫ f) h'' x :=
   congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_comp_appLE g.left f.left U V V' h h')
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Use `show (Scheme.Hom.appLE (𝟙 X.left) U U h).hom x = x`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]`. Conclude with `congrArg (fun φ => φ.hom x) (X.left.presheaf.map_id (Opposite.op U))`.
+-/
 private theorem secMap_self {X : Sch R} (f : X ⟶ X) (hf : f = 𝟙 X) {U : X.left.Opens}
     (h : U ≤ f.left ⁻¹ᵁ U) (x : Sec X U) : secMap f h x = x := by
   subst hf
@@ -118,30 +160,50 @@ private theorem secMap_self {X : Sch R} (f : X ⟶ X) (hf : f = 𝟙 X) {U : X.l
   simp only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]
   exact congrArg (fun φ => φ.hom x) (X.left.presheaf.map_id (Opposite.op U))
 
+/- English proof (translation)
+Use `show (Scheme.Hom.appLE (𝟙 X.left) U V h).hom x = _`. Simplify using `[Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+-/
 private theorem secRes_apply (X : Sch R) {U V : X.left.Opens} (h : V ≤ U) (x : Sec X U) :
     secRes X h x = (X.left.presheaf.map (homOfLE h).op).hom x := by
   show (Scheme.Hom.appLE (𝟙 X.left) U V h).hom x = _
   simp [Scheme.Hom.appLE]
   rfl
 
+/- English proof (translation)
+Rewrite using `[secRes_apply]`. Conclude with `congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_map f.left h (homOfLE h').op)`.
+-/
 private theorem secRes_secMap {X Y : Sch R} (f : Y ⟶ X) {U : X.left.Opens} {V V' : Y.left.Opens}
     (h : V ≤ f.left ⁻¹ᵁ U) (h' : V' ≤ V) (h'' : V' ≤ f.left ⁻¹ᵁ U) (x : Sec X U) :
     secRes Y h' (secMap f h x) = secMap f h'' x := by
   rw [secRes_apply]
   exact congrArg (fun φ => φ.hom x) (Scheme.Hom.appLE_map f.left h (homOfLE h').op)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem ker_pre {X Y : Sch R} (f : Y ⟶ X) {U : X.left.Opens} {V : Y.left.Opens}
     (e : f.left ⁻¹ᵁ U = V) (h : V ≤ f.left ⁻¹ᵁ U) :
     RingHom.ker (secMap f (le_refl (f.left ⁻¹ᵁ U))).toRingHom = RingHom.ker (secMap f h).toRingHom := by
   subst e
   rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (pullback.diagonal_fst Z.hom)`.
+-/
 private theorem diagonal_comp_fst (Z : Sch R) : dg Z ≫ p1 Z = 𝟙 Z :=
   Over.OverMorphism.ext (pullback.diagonal_fst Z.hom)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (pullback.diagonal_snd Z.hom)`.
+-/
 private theorem diagonal_comp_snd (Z : Sch R) : dg Z ≫ p2 Z = 𝟙 Z :=
   Over.OverMorphism.ext (pullback.diagonal_snd Z.hom)
 
+/- English proof (translation)
+Establish `e1 : (dg Z).left ⁻¹ᵁ ((p1 Z).left ⁻¹ᵁ U) = U`. Establish `h : (dg Z).left ≫ (p1 Z).left = 𝟙 _` using `congrArg (fun f => f.left) (diagonal_comp_fst Z)`. Rewrite using `[← Scheme.Hom.comp_preimage, h]`. Both sides reduce to the same expression. Establish `e2 : (dg Z).left ⁻¹ᵁ ((p2 Z).left ⁻¹ᵁ U) = U`.
+
+Establish `h : (dg Z).left ≫ (p2 Z).left = 𝟙 _` using `congrArg (fun f => f.left) (diagonal_comp_snd Z)`. Rewrite using `[← Scheme.Hom.comp_preimage, h]`. Both sides reduce to the same expression. Use `show (dg Z).left ⁻¹ᵁ ((p1 Z).left ⁻¹ᵁ U) ⊓ (dg Z).left ⁻¹ᵁ ((p2 Z).left ⁻¹ᵁ U) = U`. Rewrite using `[e1, e2, inf_idem]`.
+-/
 private theorem pre_dg (Z : Sch R) (U : Z.left.Opens) :
     (dg Z).left ⁻¹ᵁ ((p1 Z).left ⁻¹ᵁ U ⊓ (p2 Z).left ⁻¹ᵁ U) = U := by
   have e1 : (dg Z).left ⁻¹ᵁ ((p1 Z).left ⁻¹ᵁ U) = U := by
@@ -155,6 +217,11 @@ private theorem pre_dg (Z : Sch R) (U : Z.left.Opens) :
   show (dg Z).left ⁻¹ᵁ ((p1 Z).left ⁻¹ᵁ U) ⊓ (dg Z).left ⁻¹ᵁ ((p2 Z).left ⁻¹ᵁ U) = U
   rw [e1, e2, inf_idem]
 
+/- English proof (translation)
+Use `haveI : IsClosedImmersion (dg Z).left := inferInstanceAs (IsClosedImmersion (pullback.diagonal Z.hom))`. Establish `e` using `(dg Z).left.ker.map_ideal (U := ⟨N', hN'⟩) (V := ⟨N, hN⟩) h`. Rewrite `e` using `[Scheme.Hom.ker_apply, Scheme.Hom.ker_apply]`. Establish `r : (secRes (XX Z) h).toRingHom = ((XX Z).left.presheaf.map (homOfLE h).op).hom` using `RingHom.ext fun x => secRes_apply (XX Z) h x`. Establish `k : ∀ M : (XX Z).left.Opens, (secMap (dg Z) (le_refl ((dg Z).left ⁻¹ᵁ M))).toRingHom = ((dg Z).left.app M).hom`.
+
+Introduce `M`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[r, k, k]`. Conclude with `e.symm`.
+-/
 private theorem ker_res (Z : Sch R) [IsSeparated Z.hom] {N N' : (XX Z).left.Opens} (hN : IsAffineOpen N)
     (hN' : IsAffineOpen N') (h : N' ≤ N) :
     RingHom.ker (secMap (dg Z) (le_refl ((dg Z).left ⁻¹ᵁ N'))).toRingHom =
@@ -171,11 +238,17 @@ private theorem ker_res (Z : Sch R) [IsSeparated Z.hom] {N N' : (XX Z).left.Open
   rw [r, k, k]
   exact e.symm
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, e, ← Category.assoc, ← Spec.map_comp, a, s]`.
+-/
 private theorem factorization_through_pullback {A C T : CommRingCat.{0}} {Y X : Scheme.{0}} (j : Spec A ⟶ Y) (ψ : Spec C ⟶ X) {pr : X ⟶ Y}
     {ι : Spec T ⟶ X} {incl : A ⟶ C} {f : C ⟶ T} {g : A ⟶ T} (e : ψ ≫ pr = Spec.map incl ≫ j)
     (a : incl ≫ f = g) (s : Spec.map g ≫ j = ι ≫ pr) : (Spec.map f ≫ ψ) ≫ pr = ι ≫ pr := by
   rw [Category.assoc, e, ← Category.assoc, ← Spec.map_comp, a, s]
 
+/- English proof (translation)
+Establish `hi : Spec.map f = (IsOpenImmersion.isoOfRangeEq ι ψ h).hom`. Rewrite using `[← cancel_mono ψ, hf, IsOpenImmersion.isoOfRangeEq_hom_fac]`. Establish `hi' : IsIso (Spec.map f)` using `hi ▸ inferInstance`. Conclude with `isIso_SpecMap_iff.1 hi'`.
+-/
 private theorem commGroup_inv_eq_conj_twist_identity {T C : CommRingCat.{0}} {X : Scheme.{0}} (ι : Spec T ⟶ X) (ψ : Spec C ⟶ X)
     [IsOpenImmersion ι] [IsOpenImmersion ψ] (h : Set.range ι = Set.range ψ) (f : C ⟶ T)
     (hf : Spec.map f ≫ ψ = ι) : Function.Bijective f.hom := by
@@ -184,6 +257,27 @@ private theorem commGroup_inv_eq_conj_twist_identity {T C : CommRingCat.{0}} {X 
   have hi' : IsIso (Spec.map f) := hi ▸ inferInstance
   exact isIso_SpecMap_iff.1 hi'
 
+/- English proof (translation)
+Set `W` to `(p1 Z).left ⁻¹ᵁ U ⊓ (p2 Z).left ⁻¹ᵁ U`. Establish `hW1 : W ≤ (p1 Z).left ⁻¹ᵁ U` using `inf_le_left`. Establish `hW2 : W ≤ (p2 Z).left ⁻¹ᵁ U` using `inf_le_right`. Set `B` to `Sec Z U`. Set `j : Spec (CommRingCat.of B) ⟶ Z.left` to `hU.fromSpec`.
+
+Use `haveI : IsOpenImmersion j := inferInstanceAs (IsOpenImmersion hU.fromSpec)`. Establish `hj : Spec.map (CommRingCat.ofHom (algebraMap R B)) = j ≫ Z.hom`. Use `IsAffineOpen.SpecMap_appLE_fromSpec Z.hom (isAffineOpen_top _) hU (le_top : U ≤ Z.hom ⁻¹ᵁ ⊤)` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Conclude with `this`.
+
+Set `ψ₀` to `pullback.map (Spec.map (CommRingCat.ofHom (algebraMap R B))) (Spec.map (CommRingCat.ofHom (algebraMap R B))) Z.hom Z.hom j j (𝟙 _) (by rw [Category.comp_id, hj]) (by rw [Category.comp_id, hj])`. Use `haveI : IsOpenImmersion ψ₀ := MorphismProperty.pullback_map (P := IsOpenImmersion) inferInstance inferInstance hj hj`. Set `ψ : Spec (CommRingCat.of (B ⊗[R] B)) ⟶ (XX Z).left` to `(pullbackSpecIso R B B).inv ≫ ψ₀`. Use `haveI : IsOpenImmersion ψ := inferInstanceAs (IsOpenImmersion ((pullbackSpecIso R B B).inv ≫ ψ₀))`. Establish `hr : Set.range ψ = (W : Set (XX Z).left)`.
+
+Establish `h1 : Set.range ψ = Set.range ψ₀` using `by show Set.range ((pullbackSpecIso R B B).inv ≫ ψ₀) = _`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp]`. Conclude with `Function.Surjective.range_comp (Scheme.Hom.surjective _) _`. Rewrite using `[h1, Scheme.Pullback.range_map]`. Use `show _ = (pullback.fst Z.hom Z.hom) ⁻¹' (U : Set Z.left) ∩ (pullback.snd Z.hom Z.hom) ⁻¹' (U : Set Z.left)`.
+
+Rewrite using `[show Set.range j = (U : Set Z.left) from hU.range_fromSpec]`. Establish `hWa : IsAffineOpen W`. Establish `: ψ.opensRange = W` using `TopologicalSpace.Opens.ext hr`. Rewrite using `[← this]`. Conclude with `isAffineOpen_opensRange ψ`.
+
+Use `⟨hWa, ?_⟩` and prove the remaining obligations. Set `a` to `secMap (p1 Z) hW1`. Set `b` to `secMap (p2 Z) hW2`. Set `φ` to `Algebra.TensorProduct.productMap a b`. Establish `e1 : ψ ≫ pullback.fst Z.hom Z.hom = Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) ≫ j` using `by show ((pullbackSpecIso R B B).inv ≫ ψ₀) ≫ _ = _`.
+
+Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pullbackSpecIso_inv_fst]`. Establish `e2 : ψ ≫ pullback.snd Z.hom Z.hom = Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : B →ₐ[R] B ⊗[R] B).toRingHom) ≫ j` using `by show ((pullbackSpecIso R B B).inv ≫ ψ₀) ≫ _ = _`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullbackSpecIso_inv_snd]`. Both sides reduce to the same expression. Establish `a1 : CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : B →+* B ⊗[R] B) ≫ CommRingCat.ofHom φ.toRingHom = Scheme.Hom.appLE (pullback.fst Z.hom Z.hom) U W hW1`.
+
+Use extensionality with `x`. Use `show φ (x ⊗ₜ[R] 1) = a x`. Simplify using `[φ]`. Establish `a2 : CommRingCat.ofHom (Algebra.TensorProduct.includeRight : B →ₐ[R] B ⊗[R] B).toRingHom ≫ CommRingCat.ofHom φ.toRingHom = Scheme.Hom.appLE (pullback.snd Z.hom Z.hom) U W hW2`. Use extensionality with `x`.
+
+Use `show φ (1 ⊗ₜ[R] x) = b x`. Simplify using `[φ]`. Establish `hS : Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ ψ = hWa.fromSpec`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `factorization_through_pullback j ψ e1 a1 (IsAffineOpen.SpecMap_appLE_fromSpec (pullback.fst Z.hom Z.hom) hU hWa hW1)`.
+
+Conclude with `factorization_through_pullback j ψ e2 a2 (IsAffineOpen.SpecMap_appLE_fromSpec (pullback.snd Z.hom Z.hom) hU hWa hW2)`. Conclude with `commGroup_inv_eq_conj_twist_identity hWa.fromSpec ψ (by rw [hWa.range_fromSpec, hr]) _ hS`.
+-/
 private theorem sq_main (Z : Sch R) (U : Z.left.Opens) (hU : IsAffineOpen U) :
     IsAffineOpen ((p1 Z).left ⁻¹ᵁ U ⊓ (p2 Z).left ⁻¹ᵁ U) ∧
     Function.Bijective (Algebra.TensorProduct.productMap
@@ -245,6 +339,31 @@ private theorem sq_main (Z : Sch R) (U : Z.left.Opens) (hU : IsAffineOpen U) :
     · exact factorization_through_pullback j ψ e2 a2 (IsAffineOpen.SpecMap_appLE_fromSpec (pullback.snd Z.hom Z.hom) hU hWa hW2)
   exact commGroup_inv_eq_conj_twist_identity hWa.fromSpec ψ (by rw [hWa.range_fromSpec, hr]) _ hS
 
+/- English proof (translation)
+Introduce `R _ Z D _`. Use `⟨fun U u hc z hz => ?_, fun c N' hN' h => ?_⟩` and prove the remaining obligations. Take `⟨hW, hφ⟩` from `sq_main Z U hc.1`. Establish `hWU` using `pre_dg Z U`. Set `W` to `(p1 Z).left ⁻¹ᵁ U ⊓ (p2 Z).left ⁻¹ᵁ U`.
+
+Establish `hW1 : W ≤ (p1 Z).left ⁻¹ᵁ U` using `inf_le_left`. Establish `hW2 : W ≤ (p2 Z).left ⁻¹ᵁ U` using `inf_le_right`. Establish `hUW : U ≤ (dg Z).left ⁻¹ᵁ W` using `hWU.ge`. Set `a` to `secMap (p1 Z) hW1`. Set `b` to `secMap (p2 Z) hW2`.
+
+Set `m` to `secMap (dg Z) hUW`. Establish `ma : ∀ x, m (a x) = x` using `fun x => by`. Establish `h3 : U ≤ (dg Z ≫ p1 Z).left ⁻¹ᵁ U` using `fun y hy => by`. Use `hW1 (hUW hy)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `(secMap_comp (p1 Z) (dg Z) hW1 hUW h3 x).trans (secMap_self _ (diagonal_comp_fst Z) h3 x)`. Establish `mb : ∀ x, m (b x) = x` using `fun x => by`. Establish `h3 : U ≤ (dg Z ≫ p2 Z).left ⁻¹ᵁ U` using `fun y hy => by`. Use `hW2 (hUW hy)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `(secMap_comp (p2 Z) (dg Z) hW2 hUW h3 x).trans (secMap_self _ (diagonal_comp_snd Z) h3 x)`. Take `⟨t, ht1, ht2⟩` from `alg2 a b hφ m ma mb u hc.2`. Set `t' : Γ((XX Z).left, W)` to `t`. Set `N` to `(XX Z).left.basicOpen t'`. Establish `hNW : N ≤ W` using `Scheme.basicOpen_le _ _`.
+
+Establish `hNa : IsAffineOpen N` using `hW.basicOpen t'`. Establish `hNU : (dg Z).left ⁻¹ᵁ N = U`. Use `le_antisymm ((Scheme.Hom.preimage_mono _ hNW).trans hWU.le) ?_` and prove the remaining obligations. Establish `h0 : Z.left.basicOpen (show Γ(Z.left, U) from m t) = U`. Rewrite using `[show (show Γ(Z.left, U) from m t) = 1 from ht1]`.
+
+Conclude with `Scheme.basicOpen_of_isUnit _ isUnit_one`. Establish `h1 : Z.left.basicOpen (show Γ(Z.left, U) from m t) = U ⊓ Z.left.basicOpen (((dg Z).left.app W).hom t')` using `Scheme.basicOpen_res _ _ (homOfLE hUW).op`. Rewrite using `[Scheme.preimage_basicOpen]`. Rewrite `h1` using `[h0]`. Conclude with `inf_eq_left.1 h1.symm`.
+
+Establish `hNz : (dg Z).left z ∈ N`. Establish `: z ∈ (dg Z).left ⁻¹ᵁ N` using `hNU.ge hz`. Conclude with `this`. Use `⟨⟨U, u, hc, N, hNa, hNW.trans hW1, hNW.trans hW2, ?_⟩, rfl, HEq.rfl, hNz⟩` and prove the remaining obligations. Establish `hs : ∀ k, secMap (p2 Z) (hNW.trans hW2) (u k) - secMap (p1 Z) (hNW.trans hW1) (u k) = secRes (XX Z) hNW (b (u k) - a (u k))` using `fun k => by`.
+
+Rewrite using `[map_sub, secRes_secMap (p2 Z) hW2 hNW (hNW.trans hW2), secRes_secMap (p1 Z) hW1 hNW (hNW.trans hW1)]`. Rewrite using `[ker_res Z hW hNa hNW, ker_pre (dg Z) hWU hUW]`. Simplify using `only [hs]`. Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun x hx => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Establish `h3` using `Ideal.mem_map_of_mem (secRes (XX Z) hNW).toRingHom (ht2 x hx)`.
+
+Rewrite `h3` using `[Ideal.map_span, ← Set.range_comp, map_mul]`. Establish `hu : IsUnit ((secRes (XX Z) hNW).toRingHom t)`. Use `(XX Z).left.toRingedSpace.isUnit_res_basicOpen t'` as an intermediate fact. Rewrite using `[show (secRes (XX Z) hNW).toRingHom t = _ from secRes_apply (XX Z) hNW t]`. Conclude with `this`.
+
+Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 h3`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Ideal.mem_map_of_mem (secRes (XX Z) hNW).toRingHom ?_` and prove the remaining obligations. Use `show m (b (u k) - a (u k)) = 0`. Rewrite using `[map_sub, ma, mb, sub_self]`.
+
+Rewrite using `[ker_res Z c.aff hN' h, c.ker, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem dChartEx : DChartEx := by
   intro R _ Z D _
   refine ⟨fun U u hc z hz => ?_, fun c N' hN' h => ?_⟩

@@ -19,6 +19,15 @@ namespace PositivityTheory.Rg.DzT
 
 namespace SubquotientNontrivial
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf w`. Break down `eq_bot_or_eq_top S with rfl | rfl` into its components or cases. Conclude with `absurd (by rw [show v = 0 from Subtype.ext v.2, map_zero]) hw`.
+
+Set `j : ρ.IntertwiningMap (⊤ : Subrepresentation ρ).toRepresentation` to `⟨LinearMap.codRestrict _ LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hs : Function.Surjective (f.comp j)` using `fun w => by`. Take `⟨u, rfl⟩` from `hf w`. Conclude with `⟨u.1, rfl⟩`. Establish `hi : Function.Injective (f.comp j)`.
+
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Break down `eq_bot_or_eq_top (f.comp j).ker with h | h` into its components or cases. Establish `: x ∈ (f.comp j).ker` using `hx`. Rewrite `this` using `[h]`. Conclude with `this`.
+
+Establish `: v.1 ∈ (f.comp j).ker` using `by rw [h]; trivial`. Conclude with `absurd this hw`. Conclude with `⟨.mk (LinearEquiv.ofBijective (f.comp j).toLinearMap ⟨hi, hs⟩) (f.comp j).isIntertwining'⟩`.
+-/
 theorem nonempty_equiv_of_subquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
     (h : IsSubquotient σ ρ) [Nontrivial W] (hρ : ρ.IsIrreducible) : Nonempty (ρ.Equiv σ) := by
@@ -42,6 +51,9 @@ theorem nonempty_equiv_of_subquotient {G V W : Type} [Group G] [AddCommGroup V] 
       exact absurd this hw
   exact ⟨.mk (LinearEquiv.ofBijective (f.comp j).toLinearMap ⟨hi, hs⟩) (f.comp j).isIntertwining'⟩
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf w`. Use `⟨⟨v.1, 0, fun h0 => hw ?_⟩⟩` and prove the remaining obligations. Rewrite using `[show v = 0 from Subtype.ext h0, map_zero]`.
+-/
 theorem nontrivial_of_subquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
     (h : IsSubquotient σ ρ) [Nontrivial W] : Nontrivial V := by
@@ -51,6 +63,13 @@ theorem nontrivial_of_subquotient {G V W : Type} [Group G] [AddCommGroup V] [Mod
   refine ⟨⟨v.1, 0, fun h0 => hw ?_⟩⟩
   rw [show v = 0 from Subtype.ext h0, map_zero]
 
+/- English proof (translation)
+Establish `hχ : IsSmoothChar (unrChar k 1)` using `isSmoothChar_of_isUnram (isUnram_unrChar k 1)`. Establish `hd : ∑ j : Fin m, ((fun _ : Fin m => zc k 1) j).1 = m` using `by simp [zc, IrrGL.ofChar]`. Establish `hP : (prodIrr (fun _ : Fin m => zc k 1) hd).IsIrreducible` using `GlobalTheory.RgGu.Unl.lUnlinkedIrr_nu k (GlobalTheory.CompanionTheory.SegCoarse.lSegJacquet PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top PositivityTheory.RgGu.segmentRepresentation) PositivityTheory.Geo.geometricLemmaFiltration (GlobalTheory.RgGu.Nup2.nuPair k) m m (fun …`. Establish `hPs : IsSubquotient (prodIrr (fun _ : Fin m => zc k 1) hd) (prinSeries fun _ : Fin m => unrChar k 1)` using `GlobalTheory.SphSeg.isSubquotient_prodIrr_prinSeries _ hd _ (fun _ => hχ) (fun _ => rfl)`. Establish `hQs` using `GlobalTheory.T.principal_series_subquotient_of_characters k m (fun _ : Fin m => unrChar k 1)`.
+
+Set `φ` to `multiProdEquiv (Equiv.sigmaUnique (Fin m) fun _ => Fin 1) (fun _ : Fin m => GlobalTheory.LocGL.equivRep (IrrRep.det (Fin 1) (unrChar k 1) hχ))`. Take `⟨θ⟩` from `GlobalTheory.T.product_representation_reorder_equiv k m m (fun _ => 1) (Equiv.sigmaUnique (Fin m) fun _ => Fin 1) (stdBlocks (fun _ : Fin m => 1) hd) _ (fun _ : Fin m => (zc k 1).rep)`. Establish `hQ` using `(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv φ).2 ((GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv θ).2 hP)`. Use `GlobalTheory.SmGL.nontrivial_of_irreducible hP` as an intermediate fact. Use `nontrivial_of_subquotient hPs` as an intermediate fact.
+
+Take `⟨ψ⟩` from `nonempty_equiv_of_subquotient hQs hQ`. Establish `hI : (prinSeries fun _ : Fin m => unrChar k 1).IsIrreducible` using `(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv ψ).1 hQ`. Conclude with `⟨hI, hd, hPs.nonempty_equiv hP hI⟩`.
+-/
 theorem main (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ) :
     (prinSeries fun _ : Fin m => unrChar k 1).IsIrreducible ∧
     ∃ hd : ∑ j : Fin m, ((fun _ : Fin m => zc k 1) j).1 = m,

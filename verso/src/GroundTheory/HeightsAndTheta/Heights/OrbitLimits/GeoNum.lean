@@ -15,15 +15,26 @@ namespace GeoNumTarget
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.isPrime, (VocabMultiHomogIdeal.proof VocabMultiHomog.proof F K ι P).2 hP.multiHomog, hP.relevant⟩`.
+-/
 theorem geoIsMultiProjPrime {F : Type} [Field F] {P : Ideal (NumbersDVR.MRing ι F)}
     (hP : NumbersDVR.IsMultiProjPrime P) : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime P :=
   ⟨hP.isPrime, (VocabMultiHomogIdeal.proof VocabMultiHomog.proof F K ι P).2 hP.multiHomog,
     hP.relevant⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1, (VocabMultiHomogIdeal.proof VocabMultiHomog.proof F K ι P).1 hP.2.1, hP.2.2⟩`.
+-/
 theorem dvrIsMultiProjPrime {F : Type} [Field F] {P : Ideal (NumbersDVR.MRing ι F)}
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime P) : NumbersDVR.IsMultiProjPrime P :=
   ⟨hP.1, (VocabMultiHomogIdeal.proof VocabMultiHomog.proof F K ι P).1 hP.2.1, hP.2.2⟩
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum, finsum_eq_sum_of_support_subset]`. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+
+Conclude with `hW (by rw [h0, zero_mul])`.
+-/
 theorem finsum_mul_eq_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
     ∑ᶠ W, D W * J W = D.sum fun W m => m * J W := by
   classical
@@ -34,6 +45,15 @@ theorem finsum_mul_eq_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
   intro h0
   exact hW (by rw [h0, zero_mul])
 
+/- English proof (translation)
+Introduce `P hP hdim`. Establish `hd : ringKrullDim (NumbersDVR.MRing ι F ⧸ P) = ((0 + Fintype.card K : ℕ) : WithBot ℕ∞)` using `(CutRegular.relDim_eq_natCast_iff P 0).mp (by rw [hdim]; rfl)`. Establish `hi : ∀ k, (X ⟨k, (hP.relevant k).choose⟩ : NumbersDVR.MRing ι F) ∉ P` using `fun k => (hP.relevant k).choose_spec`. Rewrite using `[hI.1 P ![] (fun k => (hP.relevant k).choose) ⟨geoIsMultiProjPrime hP, hd⟩ hi, ← NumbersDVR.IntNumPoint.proof IntNumBase.full F K ι P _ hP hd hi]`. Take `⟨-, h⟩` from `IntNumBase.full F K ι P hP hdim`.
+
+Rewrite using `[h]`. Use `hP.isPrime` as an intermediate fact. Simplify using `[resDeg, hP.isPrime]`. Use `cut := by`. Introduce `P n hP hdim bf bg f g hf hg hfP hgP bs`.
+
+Establish `hd` using `(CutRegular.relDim_eq_natCast_iff P (n + 1)).mp hdim`. Establish `key` using `hI.2 P n bs (fun k => (bf k : ℤ) - bg k) f g ⟨geoIsMultiProjPrime hP, hd⟩ ⟨bf, bg, (VocabMultiHomog.proof F K ι f bf).2 hf, (VocabMultiHomog.proof F K ι g bg).2 hg, hfP, hgP, fun k => rfl⟩`. Use `key.trans ?_` and prove the remaining obligations. Establish `hD : ∀ W, NumbersDVR.ratDiv P f g W = ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv P f g W`. Introduce `W`.
+
+Simplify using `only [NumbersDVR.ratDiv, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply]`. Rewrite using `[VocabDivCycle.proof F K ι P f W, VocabDivCycle.proof F K ι P g W]`. Simplify using `only [NumbersDVR.cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, hD]`. Conclude with `(finsum_mul_eq_sum _ _).symm`.
+-/
 theorem isIntersectionTheory {F : Type} [Field F] (I : ReciprocityTheory.ChartRestriction.G.AI.I1.IFamily F ι)
     (hI : ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection I) :
     IsIntersectionTheory F (fun P n L => I P n L) where
@@ -64,6 +84,9 @@ theorem isIntersectionTheory {F : Type} [Field F] (I : ReciprocityTheory.ChartRe
     simp only [NumbersDVR.cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, hD]
     exact (finsum_mul_eq_sum _ _).symm
 
+/- English proof (translation)
+The claim follows from `IntNumIsFieldIntersection.full (ZMod p) K ι`.
+-/
 theorem isFieldIntersection_intNum (p : ℕ) [Fact p.Prime] :
     ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection (F := ZMod p) (ι := ι)
       (fun V _ L => NumbersDVR.intNum (ZMod p) V L) :=
@@ -73,6 +96,15 @@ end GeoNumTarget
 
 open GeoNumTarget Bridge.GeoNum in
 
+/- English proof (translation)
+Introduce `p _ I hI V n a hV hpV hproj`. Establish `hker : RingHom.ker (red (ι` using `ι) p) ≤ V := by`. Rewrite using `[ker_red, Ideal.span_le, Set.singleton_subset_iff]`. Rewrite using `[map_natCast]`. Conclude with `hpV`.
+
+Establish `hcm : (V.map (red p)).comap (red p) = V` using `comap_map_eq p hker`. Establish `hdim : ringKrullDim (ReciprocityTheory.ChartRestriction.G.Geo.MRing ι ⧸ V) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hproj.2]`. Use `ringKrullDim_eq_of_ringEquiv (quotEquiv p (V.map (red p)))` as an intermediate fact. Rewrite `this` using `[hcm]`.
+
+Conclude with `this`. Establish `hC : (C (p : ℤ) : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) ∈ V`. Rewrite using `[map_natCast]`. Conclude with `hpV`. Rewrite using `[← Bridge.intNum_map_eq_geoNum p n V hV hC hdim a]`.
+
+Conclude with `(IntNumUnique.full (ZMod p) K ι _ (isIntersectionTheory I hI) _ (dvrIsMultiProjPrime hproj.1) n ((CutRegular.relDim_eq_natCast_iff _ n).mpr hproj.2) a).symm`.
+-/
 theorem geoNumStatement {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] :
     ReciprocityTheory.ChartRestriction.G.AI.I1.GeoNumStatement ι := by
   classical

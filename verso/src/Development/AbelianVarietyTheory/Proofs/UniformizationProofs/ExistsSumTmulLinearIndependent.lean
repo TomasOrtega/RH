@@ -15,6 +15,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `B` to `Module.Basis.ofVectorSpace F M`. Take `⟨c, hc⟩` from `TensorProduct.eq_repr_basis_left B t`. Set `σ` to `c.support.equivFin.symm`. Use `⟨_, fun k => B (σ k), fun k => c (σ k), ?_, ?_⟩` and prove the remaining obligations. Conclude with `B.linearIndependent.comp (fun k => (σ k).val) (Subtype.val_injective.comp σ.injective)`.
+
+Rewrite using `[← hc, Finsupp.sum, ← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp σ (fun i => TensorProduct.tmul F (B i) (c i))).symm`.
+-/
 theorem exists_sum_tmul_linearIndependent {F M N : Type} [Field F] [AddCommGroup M] [Module F M]
     [AddCommGroup N] [Module F N] (t : TensorProduct F M N) :
     ∃ (m : ℕ) (e : Fin m → M) (c : Fin m → N), LinearIndependent F e ∧ t = ∑ k, TensorProduct.tmul F (e k) (c k) := by
@@ -35,6 +40,9 @@ noncomputable def svalAddHom (r : T ⟶ Y) (z : T) {J : (T ⟶ Z) → L.ι} (hJ 
     SecMod p (LB.LinComb L φ ε) →+ T.presheaf.stalk z :=
   AddMonoidHom.mk' (fun s => sval s.sec r z J) (fun _ _ => gs_add r z _ (hJ.mem φ r) _ _)
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) ((gs_res r z le_top (hJ.mem φ r) _).trans (gs_pull r p z ⊤ trivial _)))`.
+-/
 theorem svalAddHom_smul (r : T ⟶ Y) (z : T) {J : (T ⟶ Z) → L.ι} (hJ : Good L z J) (c : F)
     (s : SecMod p (LB.LinComb L φ ε)) :
     svalAddHom p φ ε r z hJ (c • s) =
@@ -47,6 +55,21 @@ noncomputable def secCompAddHom (N : LB Y) (j : N.ι) : SecMod p N →+ Γ(Y, N.
 
 end
 
+/- English proof (translation)
+Introduce `F _ Z L hL Y₁ Y₂ p₁ p₂ _ _ _ _ K₁ K₂ _ _ φ₁ ε₁ φ₂ ε₂ n a b`. Establish `key : ∀ (T : Scheme.{0}) (r₁ : T ⟶ Y₁) (r₂ : T ⟶ Y₂), r₁ ≫ p₁ = r₂ ≫ p₂ → ∀ (z : T) (J), Good L z J → ∃ Φ : TensorProduct F (SecMod p₁ (LB.LinComb L φ₁ ε₁)) (SecMod p₂ (LB.LinComb L φ₂ ε₂)) →+ T.presheaf.stalk z, ∀ s t, Φ (TensorProduct.tmul F s t) = sval s.sec r₁ z J * sval t.se …`. Introduce `T r₁ r₂ h z J hJ`. Use `⟨TensorProduct.liftAddHom ((AddMonoidHom.mul.compl₂ (svalAddHom p₂ φ₂ ε₂ r₂ z hJ)).comp (svalAddHom p₁ φ₁ ε₁ r₁ z hJ)) ?_, fun s t => rfl⟩` and prove the remaining obligations. Introduce `c s t`.
+
+Express the relevant statement in the definitionally equal form `svalAddHom p₁ φ₁ ε₁ r₁ z hJ (c • s) * svalAddHom p₂ φ₂ ε₂ r₂ z hJ t = svalAddHom p₁ φ₁ ε₁ r₁ z hJ s * svalAddHom p₂ φ₂ ε₂ r₂ z hJ (c • t)`. Rewrite using `[svalAddHom_smul, svalAddHom_smul, h]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce `h0 T r₁ r₂ h z J hJ`.
+
+Take `⟨Φ, hΦ⟩` from `key T r₁ r₂ h z J hJ`. Use `congrArg Φ h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero, Finset.sum_congr rfl (fun i _ => hΦ (a i) (b i))]`. Then use the resulting hypothesis. Introduce `H`. Take `⟨m, e, c, he, ht⟩` from `exists_sum_tmul_linearIndependent (∑ i, TensorProduct.tmul F (a i) (b i))`.
+
+Establish `: QuasiCompact (Over.mk p₁).hom` using `‹QuasiCompact p₁›`. Establish `: IsSeparated (Over.mk p₁).hom` using `‹IsSeparated p₁›`. Establish `: QuasiCompact (Over.mk p₂).hom` using `‹QuasiCompact p₂›`. Establish `: IsSeparated (Over.mk p₂).hom` using `‹IsSeparated p₂›`. Establish `hc` using `(GlobalTheory.T.section_lin_comb_fiber_product_separated F Z L hL (Over.mk p₁) (Over.mk p₂) K₁ K₂ φ₁ ε₁ φ₂ ε₂).2 m (fun k => (e k).sec) (fun k => (c k).sec) (fun d hd => by`.
+
+Establish `h1 : ∑ k, d k • e k = 0` using `DVR.SecOps.sec_ext fun j => (map_sum (secCompAddHom p₁ _ j) _ _).trans (hd j)`. Conclude with `funext (Fintype.linearIndependent_iff.1 he d h1)) (fun z J hJ => by`. Establish `w : (fst (Over.mk p₁) (Over.mk p₂)).left ≫ p₁ = (snd (Over.mk p₁) (Over.mk p₂)).left ≫ p₂` using `(Over.w (fst (Over.mk p₁) (Over.mk p₂))).trans (Over.w (snd (Over.mk p₁) (Over.mk p₂))).symm`. Take `⟨Φ, hΦ⟩` from `key _ _ _ w z J hJ`. Establish `h2` using `congrArg Φ ht`.
+
+Rewrite `h2` using `[map_sum, map_sum, Finset.sum_congr rfl (fun i _ => hΦ (a i) (b i)), Finset.sum_congr rfl (fun i _ => hΦ (e i) (c i))]`. Conclude with `h2.symm.trans (H _ _ _ w z J hJ))`. Rewrite using `[ht]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `: c k = 0` using `DVR.SecOps.sec_ext fun j => hc k j`.
+
+Rewrite using `[this, TensorProduct.tmul_zero]`.
+-/
 theorem tensor_sections_eq_zero_iff : ∀ (F : Type) [Field F] (Z : Scheme.{0}) (L : LB Z), L.IsLB → ∀ (Y₁ Y₂ : Scheme.{0}) (p₁ : Y₁ ⟶ Spec (CommRingCat.of F)) (p₂ : Y₂ ⟶ Spec (CommRingCat.of F)) [QuasiCompact p₁] [IsSeparated p₁] [QuasiCompact p₂] [IsSeparated p₂] (K₁ K₂ : Type) [Fintype K₁] [Fintype K₂] (φ₁ : K₁ → (Y₁ ⟶ Z)) (ε₁ : K₁ → ℤ) (φ₂ : K₂ → (Y₂ ⟶ Z)) (ε₂ : K₂ → ℤ) (n : ℕ) (a : Fin n → SecMod p₁ (LB.LinComb L φ₁ ε₁)) (b : Fin n → SecMod p₂ (LB.LinComb L φ₂ ε₂)), (∑ i, TensorProduct.tmul F (a i) (b i) = 0) ↔ ∀ (T : Scheme.{0}) (r₁ : T ⟶ Y₁) (r₂ : T ⟶ Y₂), r₁ ≫ p₁ = r₂ ≫ p₂ → ∀ (z : T) (J), Good L z J → ∑ i, sval (a i).sec r₁ z J * sval (b i).sec r₂ z J = 0 := by
   intro F _ Z L hL Y₁ Y₂ p₁ p₂ _ _ _ _ K₁ K₂ _ _ φ₁ ε₁ φ₂ ε₂ n a b
   have key : ∀ (T : Scheme.{0}) (r₁ : T ⟶ Y₁) (r₂ : T ⟶ Y₂), r₁ ≫ p₁ = r₂ ≫ p₂ → ∀ (z : T) (J), Good L z J →

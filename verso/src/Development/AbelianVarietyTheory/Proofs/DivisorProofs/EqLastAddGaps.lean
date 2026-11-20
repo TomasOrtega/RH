@@ -27,6 +27,11 @@ open Classical in
 
 def unitWt (τ : Psi H) (a : ℤ) : AllWt.Weight Dw := fun τ' _ => if τ' = τ then a else 0
 
+/- English proof (translation)
+Establish `h` using `ofGaps_gap v ⟨N - 1, by omega⟩ i`. Simplify using `only [ofGaps] at h`. Establish `hi : (i : ℕ) ≤ N - 1` using `by omega`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero]`. Establish `e : (Finset.range (N - 1)).filter (fun k => (i : ℕ) ≤ k) = Finset.Ico (i : ℕ) (N - 1)`.
+
+Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, Finset.sum_Ico_eq_sub _ hi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_last_add_gaps {N : ℕ} (v : Fin N → ℤ) (hN : 0 < N) (i : Fin N) :
     v i = v ⟨N - 1, by omega⟩ + ∑ k ∈ Finset.range (N - 1), if (i : ℕ) ≤ k then gap v k else 0 := by
   have h := ofGaps_gap v ⟨N - 1, by omega⟩ i
@@ -44,6 +49,9 @@ def piece (Dw : Datum H) (τ : Psi H) (k : ℕ) : AllWt.Weight Dw :=
   if k + 1 < Dw.p + Dw.q then (if k < Dw.p then headWt τ k else tailWt τ k) else 0
 
 open Classical in
+/- English proof (translation)
+Unfold `piece headWt tailWt`. Apply the tactic sequence `by_cases h : τ' = τ <;> split_ifs <;> simp_all`.
+-/
 theorem piece_apply (τ τ' : Psi H) (k : ℕ) (i : Fin (Dw.p + Dw.q)) : piece Dw τ k τ' i =
     if τ' = τ then (if k + 1 < Dw.p + Dw.q then (if k < Dw.p then (if (i : ℕ) ≤ k then 1 else 0)
       else (if k < (i : ℕ) then -1 else 0)) else 0) else 0 := by
@@ -51,10 +59,22 @@ theorem piece_apply (τ τ' : Psi H) (k : ℕ) (i : Fin (Dw.p + Dw.q)) : piece D
   by_cases h : τ' = τ <;> split_ifs <;> simp_all
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitWt_apply (τ τ' : Psi H) (a : ℤ) (i : Fin (Dw.p + Dw.q)) :
     unitWt τ a τ' i = if τ' = τ then a else 0 := rfl
 
 open Classical in
+/- English proof (translation)
+Introduce `cτ`. Use function extensionality and compare the values at `τ' i`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_disjSum, Finset.sum_product, Finset.univ_product_univ.symm, Finset.sum_product]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul, piece_apply, unitWt_apply, Fintype.sum_bool, mul_ite, mul_zero, if_true, if_false]`. Rewrite using `[Finset.sum_eq_single (s := Finset.univ) τ' (fun x _ hx => by simp [Ne.symm hx]) (by simp), Finset.sum_eq_single (s := Finset.univ) τ' (fun x _ hx => by simp [Ne.symm hx]) (by simp)]`.
+
+Simplify using `only [if_true, nsmul_eq_mul, Bool.false_eq_true, if_false, mul_one]`. Establish `hv` using `eq_last_add_gaps (la τ') hN i`. Establish `hterm : ∀ y ∈ Finset.range (Dw.p + Dw.q - 1), (if (i : ℕ) ≤ y then gap (la τ') y else 0) = ((gap (la τ') y).toNat : ℤ) * (if y + 1 < Dw.p + Dw.q then (if y < Dw.p then (if (i : ℕ) ≤ y then 1 else 0) else (if y < (i : ℕ) then -1 else 0)) else 0) + (if Dw.p ≤ y then gap (la τ') y e …`. Introduce `y hy`. Establish `hy' : y + 1 < Dw.p + Dw.q` using `by simp only [Finset.mem_range] at hy; omega`.
+
+Establish `hg : 0 ≤ gap (la τ') y` using `hla τ' y hy'`. Rewrite using `[Int.toNat_of_nonneg hg, if_pos hy']`. Apply the tactic sequence `split_ifs <;> first | omega | simp <;> omega`. Establish `hc` using `Int.toNat_sub_toNat_neg (cτ τ')`. Establish `hcdef : cτ τ' = la τ' ⟨Dw.p + Dw.q - 1, by omega⟩ + ∑ k ∈ Finset.range (Dw.p + Dw.q - 1), if Dw.p ≤ k then gap (la τ') k else 0` using `rfl`.
+
+Rewrite using `[hv, Finset.sum_congr rfl hterm, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem decomp (la : AllWt.Weight Dw) (hla : GapGe 0 la) (hN : 0 < Dw.p + Dw.q) :
     let cτ : Psi H → ℤ := fun τ => la τ ⟨Dw.p + Dw.q - 1, by omega⟩ +
       ∑ k ∈ Finset.range (Dw.p + Dw.q - 1), if Dw.p ≤ k then gap (la τ) k else 0

@@ -28,9 +28,17 @@ def Clauses : Prop :=
       π.IsUnitary → IsNormalised π → IsSpehOf V π d → ∀ w σ σ', π.IsLocComp w σ → IsLocCompGL V w σ' →
         GlobalTheory.LocGL.IsSpeh (GlobalTheory.LocGL.IrrGL.of σ.ρ σ.smooth σ.irred) d σ'.ρ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem byClass_iff : GlobalTheory.Published.ResidualSpectrumByClass ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N → Clauses E N := Iff.rfl
 
+/- English proof (translation)
+Use `⟨⟨fun a π d => if h : d * a = N ∧ IsNormalised π then (h2 a d π h.1 h.2).exists.choose else ⊥, fun a d π h _ hn => ?_, fun V hV => ?_⟩, fun V V' hV hV' a d π _ hn e e' => ?_, fun V hV a d π _ hn e w => (h5 V hV a d π hn e w).2⟩` and prove the remaining obligations. Simplify using `only [dif_pos (And.intro h hn)]`. Conclude with `(h2 a d π h hn).exists.choose_spec`. Take `⟨a, d, π, hu, hn, e⟩` from `h1 V hV`. Use `le_iSup_of_le a (le_iSup_of_le d (le_iSup_of_le π (le_iSup_of_le ⟨e.mul_eq, hu, hn⟩ ?_)))` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (And.intro e.mul_eq hn)]`. Conclude with `((h2 a d π e.mul_eq hn).unique ⟨hV, e⟩ (h2 a d π e.mul_eq hn).exists.choose_spec).le`. Take `rfl` from `(h2 a d π e.mul_eq hn).unique ⟨hV, e⟩ ⟨hV', e'⟩`. Conclude with `⟨.refl _ _, fun _ _ _ h => h⟩`.
+-/
 theorem clauses_of
     (h1 : ∀ V : Submodule ℂ (Sm E N), GlobalTheory.UnitaryBC.IsDiscrete V →
       ∃ (a d : ℕ) (π : CuspSub E a), π.IsUnitary ∧ IsNormalised π ∧ IsSpehOf V π d)
@@ -53,9 +61,15 @@ theorem clauses_of
   · obtain rfl := (h2 a d π e.mul_eq hn).unique ⟨hV, e⟩ ⟨hV', e'⟩
     exact ⟨.refl _ _, fun _ _ _ h => h⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ N hN` and use `let ⟨h1, h2, _, _, h5⟩ := H E N hN; clauses_of h1 h2 h5`.
+-/
 theorem of_residual (H : GlobalTheory.Published.DiscreteSpectrumResidual) : GlobalTheory.Published.ResidualSpectrumByClass :=
   fun E _ _ _ N hN => let ⟨h1, h2, _, _, h5⟩ := H E N hN; clauses_of h1 h2 h5
 
+/- English proof (translation)
+The claim follows from `let ⟨h1, h2, _, _, h5⟩ := ResidualModel.residual_one E; clauses_of h1 h2 h5`.
+-/
 theorem clauses_one : Clauses E 1 :=
   let ⟨h1, h2, _, _, h5⟩ := ResidualModel.residual_one E; clauses_of h1 h2 h5
 
@@ -63,6 +77,11 @@ section Algebra
 
 variable {M O : Type} [AddCommGroup M] [Module ℂ M] (A : O → Module.End ℂ M)
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨o, rfl⟩ := hx`. Conclude with `hV o`. Consider the case `algebraMap c => exact fun φ hφ => by simpa using V.smul_mem c hφ`. Consider the case `add x y _ _ hx hy => exact fun φ hφ => add_mem (hx φ hφ) (hy φ hφ)`.
+
+Consider the case `mul x y _ _ hx hy => exact fun φ hφ => hx _ (hy φ hφ)`.
+-/
 theorem apply_mem_of_stable {V : Submodule ℂ M} (hV : ∀ o, ∀ φ ∈ V, A o φ ∈ V) {z : Module.End ℂ M}
     (hz : z ∈ Algebra.adjoin ℂ (Set.range A)) : ∀ φ ∈ V, z φ ∈ V := by
   induction hz using Algebra.adjoin_induction with
@@ -78,6 +97,9 @@ def toOp (V : Submodule ℂ M) (hV : ∀ o, ∀ φ ∈ V, A o φ ∈ V) : Submod
 def IsIrr (V : Submodule ℂ M) : Prop :=
   (∀ o, ∀ φ ∈ V, A o φ ∈ V) ∧ V ≠ ⊥ ∧ ∀ W ≤ V, (∀ o, ∀ φ ∈ W, A o φ ∈ W) → W = ⊥ ∨ W = V
 
+/- English proof (translation)
+Use `isSimpleModule_iff_isAtom.2 ⟨fun h => hV.2.1 (eq_bot_iff.2 fun φ hφ => h.le hφ), fun W hW => ?_⟩` and prove the remaining obligations. Break down `hV.2.2 (W.restrictScalars ℂ) (fun φ hφ => hW.le hφ) (fun o φ hφ => W.smul_mem (⟨A o, Algebra.subset_adjoin ⟨o, rfl⟩⟩ : Algebra.adjoin ℂ (Set.range A)) hφ) with h | h` into its components or cases. Conclude with `eq_bot_iff.2 fun φ hφ => h.le hφ`. Conclude with `absurd (fun φ hφ => h.ge hφ) hW.not_ge`.
+-/
 theorem isSimpleModule_toOp {V : Submodule ℂ M} (hV : IsIrr A V) :
     IsSimpleModule (Algebra.adjoin ℂ (Set.range A)) (toOp A V hV.1) := by
   refine isSimpleModule_iff_isAtom.2 ⟨fun h => hV.2.1 (eq_bot_iff.2 fun φ hφ => h.le hφ), fun W hW => ?_⟩
@@ -86,6 +108,17 @@ theorem isSimpleModule_toOp {V : Submodule ℂ M} (hV : IsIrr A V) :
   · exact eq_bot_iff.2 fun φ hφ => h.le hφ
   · exact absurd (fun φ hφ => h.ge hφ) hW.not_ge
 
+/- English proof (translation)
+Set `t : Set (Submodule (Algebra.adjoin ℂ (Set.range A)) M)` to `{S | ∃ (J : _) (h : J ∈ s), S = toOp A J (hs J h).1}`. Use `haveI : ∀ m : t, IsSimpleModule (Algebra.adjoin ℂ (Set.range A)) m := by`. Introduce and unpack `⟨_, J, h, rfl⟩`. Conclude with `isSimpleModule_toOp A (hs J h)`. Use `haveI := isSimpleModule_toOp A hV`.
+
+Establish `ht : toOp A V hV.1 ≤ sSup t` using `fun φ hφ => by`. Establish `: sSup s ≤ (sSup t).restrictScalars ℂ` using `sSup_le fun J h ψ hψ => (le_sSup (s := t) ⟨J, h, rfl⟩ : toOp A J (hs J h).1 ≤ _) hψ`. Conclude with `this (hle hφ)`. Take `⟨_, ⟨J, hJ, rfl⟩, ⟨T⟩⟩` from `(toOp A V hV.1).linearEquiv_of_le_sSup t ht`. Use `replace T := T.symm`.
+
+Set `T₀ : J →ₗ[ℂ] M` to `{ toFun := fun φ => (T ⟨φ.1, φ.2⟩).1 map_add' := fun φ ψ => congrArg Subtype.val (T.map_add ⟨φ.1, φ.2⟩ ⟨ψ.1, ψ.2⟩) map_smul' := fun c φ => congrArg Subtype.val ((T.toLinearMap.restrictScalars ℂ).map_smul c ⟨φ.1, φ.2⟩) }`. Take `⟨g, hg⟩` from `T₀.exists_extend`. Establish `hg' : ∀ φ (hφ : φ ∈ J), g φ = (T ⟨φ, hφ⟩).1` using `fun φ hφ => LinearMap.congr_fun hg ⟨φ, hφ⟩`. Use `⟨J, hJ, g, le_antisymm ?_ fun ψ hψ => ⟨(T.symm ⟨ψ, hψ⟩).1, (T.symm ⟨ψ, hψ⟩).2, ?_⟩, fun o φ hφ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+
+Rewrite using `[hg' φ hφ]`. Conclude with `(T ⟨φ, hφ⟩).2`. Rewrite using `[hg' _ hφ, hg' _ ((hs J hJ).1 o φ hφ)]`. Conclude with `congrArg Subtype.val (T.map_smul (⟨A o, Algebra.subset_adjoin ⟨o, rfl⟩⟩ : Algebra.adjoin ℂ (Set.range A)) ⟨φ, hφ⟩)`. Rewrite using `[hg' _ (T.symm ⟨ψ, hψ⟩).2]`.
+
+Conclude with `congrArg Subtype.val (T.apply_symm_apply ⟨ψ, hψ⟩)`.
+-/
 theorem exists_map_eq {s : Set (Submodule ℂ M)} (hs : ∀ J ∈ s, IsIrr A J) {V : Submodule ℂ M} (hV : IsIrr A V)
     (hle : V ≤ sSup s) : ∃ J ∈ s, ∃ g : M →ₗ[ℂ] M, J.map g = V ∧ ∀ o, ∀ φ ∈ J, g (A o φ) = A o (g φ) := by
   let t : Set (Submodule (Algebra.adjoin ℂ (Set.range A)) M) := {S | ∃ (J : _) (h : J ∈ s), S = toOp A J (hs J h).1}
@@ -117,6 +150,9 @@ theorem exists_map_eq {s : Set (Submodule ℂ M)} (hs : ∀ J ∈ s, IsIrr A J) 
 
 end Algebra
 
+/- English proof (translation)
+Take `⟨h, ν, hν, f, hf, hc⟩` from `h`. Take `⟨g, hg, hd⟩` from `hq`. Use `⟨h, ν, hν, g ∘ₗ f, by rw [Submodule.map_comp, hf, hg], fun o φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hc o φ hφ, hd o _ (hf ▸ Submodule.mem_map_of_mem hφ)]`.
+-/
 theorem isSpehOf_of_isQuotOf {V V' : Submodule ℂ (Sm E N)} (hq : IsQuotOf V' V) {a d : ℕ} {π : CuspSub E a}
     (h : IsSpehOf V π d) : IsSpehOf V' π d := by
   obtain ⟨h, ν, hν, f, hf, hc⟩ := h
@@ -124,6 +160,11 @@ theorem isSpehOf_of_isQuotOf {V V' : Submodule ℂ (Sm E N)} (hq : IsQuotOf V' V
   refine ⟨h, ν, hν, g ∘ₗ f, by rw [Submodule.map_comp, hf, hg], fun o φ hφ => ?_⟩
   rw [LinearMap.comp_apply, LinearMap.comp_apply, hc o φ hφ, hd o _ (hf ▸ Submodule.mem_map_of_mem hφ)]
 
+/- English proof (translation)
+Take `⟨⟨J, hJ, hle⟩, -⟩` from `H`. Take `⟨_, ⟨a, d, π, h, hu, hn, rfl⟩, hq⟩` from `exists_map_eq (act (E := E) (a := N)) (s := {S | ∃ (a d : ℕ) (π : CuspSub E a), d * a = N ∧ π.IsUnitary ∧ IsNormalised π ∧ S = J a π d}) (by`. Introduce and unpack `_ ⟨a, d, π, h, hu, hn, rfl⟩`. Use `(hJ a d π h hu hn).1` as an intermediate fact. Conclude with `⟨this.stable, this.ne_bot, this.irred⟩) ⟨hV.stable, hV.ne_bot, hV.irred⟩`.
+
+Use the proof step `((hle V hV).trans (iSup_le fun a => iSup_le fun d => iSup_le fun π => iSup_le fun h => le_sSup ⟨a, d, π, h.1, h.2.1, h.2.2, rfl⟩))`. Conclude with `⟨a, d, π, hu, hn, isSpehOf_of_isQuotOf hq (hJ a d π h hu hn).2⟩`.
+-/
 theorem exhaustion (H : Clauses E N) {V : Submodule ℂ (Sm E N)} (hV : GlobalTheory.UnitaryBC.IsDiscrete V) :
     ∃ (a d : ℕ) (π : CuspSub E a), π.IsUnitary ∧ IsNormalised π ∧ IsSpehOf V π d := by
   obtain ⟨⟨J, hJ, hle⟩, -⟩ := H
@@ -137,6 +178,9 @@ theorem exhaustion (H : Clauses E N) {V : Submodule ℂ (Sm E N)} (hV : GlobalTh
       le_sSup ⟨a, d, π, h.1, h.2.1, h.2.2, rfl⟩))
   exact ⟨a, d, π, hu, hn, isSpehOf_of_isQuotOf hq (hJ a d π h hu hn).2⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨V, π, h1, h2, h3⟩ := Model.exists_discrete_speh (E := E) ⟨V, π, h1, Model.isUnitary_of_isNormalised h2, h2, h3⟩`.
+-/
 theorem exists_hyp : ∃ (V : Submodule ℂ (Sm E 1)) (π : CuspSub E 1),
     GlobalTheory.UnitaryBC.IsDiscrete V ∧ π.IsUnitary ∧ IsNormalised π ∧ IsSpehOf V π 1 :=
   let ⟨V, π, h1, h2, h3⟩ := Model.exists_discrete_speh (E := E)

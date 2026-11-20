@@ -8,6 +8,9 @@ namespace GlobalTheory.Pass
 
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module
 
+/- English proof (translation)
+Introduce `D _` and use `GlobalTheory.TypeDegOne.degree_one D`.
+-/
 theorem stepDeg_main : StepDeg := fun D _ => GlobalTheory.TypeDegOne.degree_one D
 
 end GlobalTheory.Pass

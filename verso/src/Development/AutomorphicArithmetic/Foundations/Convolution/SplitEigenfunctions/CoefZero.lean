@@ -16,18 +16,32 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent.VanishingCoefficients
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem vn (q : A E) : (nU q).val = !![1, q; 0, 1] := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+-/
 private theorem n_add (x y : A E) : gl (nU (x + y)) = gl (nU x) * gl (nU y) := by
   refine Units.ext ?_
   ext i j
   fin_cases i <;> fin_cases j <;> simp [vn, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn]`.
+-/
 private theorem n_zero : gl (nU (0 : A E)) = 1 := by
   refine Units.ext ?_
   ext i j
   fin_cases i <;> fin_cases j <;> simp [vn]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [vn] <;> fun_prop`. Establish `e : ∀ q : A E, (gl (nU q))⁻¹ = gl (nU (-q))` using `fun q => inv_eq_of_mul_eq_one_right (by rw [← n_add, add_neg_cancel, n_zero])`. Simplify using `only [e]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn] <;> fun_prop`.
+-/
 private theorem cont_n : Continuous fun q : A E => gl (nU q) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · refine continuous_matrix fun i j => ?_
@@ -38,22 +52,37 @@ private theorem cont_n : Continuous fun q : A E => gl (nU q) := by
     refine continuous_matrix fun i j => ?_
     fin_cases i <;> fin_cases j <;> simp [vn] <;> fun_prop
 
+/- English proof (translation)
+Use `⟨Matrix.SpecialLinearGroup.toGL ⟨!![1, k; 0, 1], by simp [Matrix.det_fin_two]⟩, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `algebraMap E (A E) (!![1, k; 0, 1] i j) = _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn]`.
+-/
 private theorem rat_n (k : E) : ∃ γ : GL (Fin 2) E, ratGL E 2 γ = gl (nU (rt k)) := by
   refine ⟨Matrix.SpecialLinearGroup.toGL ⟨!![1, k; 0, 1], by simp [Matrix.det_fin_two]⟩, Units.ext ?_⟩
   ext i j
   change algebraMap E (A E) (!![1, k; 0, 1] i j) = _
   fin_cases i <;> fin_cases j <;> simp [vn]
 
+/- English proof (translation)
+Use `⟨Matrix.SpecialLinearGroup.toGL ⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two]⟩, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `algebraMap E (A E) (!![0, 1; -1, 0] i j) = (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) (A E)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 private theorem rat_w : ∃ γ : GL (Fin 2) E, ratGL E 2 γ = gl (wW E) := by
   refine ⟨Matrix.SpecialLinearGroup.toGL ⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two]⟩, Units.ext ?_⟩
   ext i j
   change algebraMap E (A E) (!![0, 1; -1, 0] i j) = (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) (A E)) i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Simplify using `[ψ, AddChar.map_add_eq_mul]`.
+-/
 private theorem ψ_add (x y : A ℚ) : ψ (x + y) = ψ x * ψ y := by simp [ψ, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Simplify using `[ψ, adelicChar_algebraMap]`.
+-/
 private theorem ψ_rt (k : ℚ) : ψ (rt k) = 1 := by simp [ψ, adelicChar_algebraMap]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [vn, aE, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem n_aE (t : (A E)ˣ) (y : A E) : gl (nU ((t : A E) * y)) * aE t = aE t * gl (nU y) := by
   refine Units.ext ?_
   ext i j
@@ -62,10 +91,18 @@ private theorem n_aE (t : (A E)ˣ) (y : A E) : gl (nU ((t : A E) * y)) * aE t = 
 private def Fh (D : Dat ℚ E) (Φ : GL (Fin 2) (A E) → ℂ) (h : GL (Fin 2) (A E)) (x : Fin 2 → A ℚ) : ℂ :=
   Φ (gl (nU (D.mkE (x 0) (x 1))) * h)
 
+/- English proof (translation)
+The claim follows from `hΦ.comp ((cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))).mul continuous_const)`.
+-/
 private theorem cont_Fh (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hΦ : Continuous Φ) (h : GL (Fin 2) (A E)) :
     Continuous (Fh D Φ h) :=
   hΦ.comp ((cont_n.comp (D.continuous_mkE' (continuous_apply 0) (continuous_apply 1))).mul continuous_const)
 
+/- English proof (translation)
+Introduce `l hl x`. Take `⟨η, rfl⟩` from `mem_vecLattice.1 hl`. Take `⟨γ, hγ⟩` from `rat_n (algebraMap ℚ E (η 0) + algebraMap ℚ E (η 1) * D.θ)`. Simplify using `only [Fh, Pi.add_apply]`. Rewrite using `[D.mkE_add, n_add]`.
+
+Express the relevant statement in the definitionally equal form `Φ (gl (nU (D.mkE (rt (η 0)) (rt (η 1)))) * gl (nU (D.mkE (x 0) (x 1))) * h) = _`. Rewrite using `[D.mkE_rt, ← hγ, mul_assoc, hL]`.
+-/
 private theorem per_Fh (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀ γ g, Φ (ratGL E 2 γ * g) = Φ g)
     (h : GL (Fin 2) (A E)) : ∀ l ∈ vecLattice ℚ (Fin 2), ∀ x, Fh D Φ h (l + x) = Fh D Φ h x := by
   intro l hl x
@@ -76,6 +113,13 @@ private theorem per_Fh (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀
   change Φ (gl (nU (D.mkE (rt (η 0)) (rt (η 1)))) * gl (nU (D.mkE (x 0) (x 1))) * h) = _
   rw [D.mkE_rt, ← hγ, mul_assoc, hL]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : algebraMap ℚ E a - algebraMap ℚ E b * D.θ = 0`. Establish `e` using `congrArg D.σ h0`. Simplify `e` using `[D.conj, sub_eq_add_neg]`. Establish `ha : algebraMap ℚ E a = 0` using `by linear_combination (h0 + h1) / 2`.
+
+Establish `hb : algebraMap ℚ E b * D.θ = 0` using `by linear_combination (h0 - h1) / 2`. Establish `inj` using `(algebraMap ℚ E).injective`. Break down `h with h | h` into its components or cases. Conclude with `h (inj (by rw [ha, map_zero]))`. Use `h (inj ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 hb).resolve_right D.θ_ne_zero`.
+-/
 private theorem lin_ne (D : Dat ℚ E) {a b : ℚ} (h : a ≠ 0 ∨ b ≠ 0) : algebraMap ℚ E a + algebraMap ℚ E b * D.θ ≠ 0 := by
   intro h0
   have h1 : algebraMap ℚ E a - algebraMap ℚ E b * D.θ = 0 := by
@@ -90,6 +134,11 @@ private theorem lin_ne (D : Dat ℚ E) {a b : ℚ} (h : a ≠ 0 ∨ b ≠ 0) : a
     rw [map_zero]
     exact (mul_eq_zero.1 hb).resolve_right D.θ_ne_zero
 
+/- English proof (translation)
+Introduce `h0`. Establish `e : (algebraMap ℚ E a + algebraMap ℚ E b * D.θ) * (algebraMap ℚ E a + algebraMap ℚ E (-b) * D.θ) = algebraMap ℚ E (a * a - D.δ * b * b)`. Establish `hs` using `D.sq`. Simplify using `only [map_sub, map_mul, map_neg]`. Take the linear combination `(-(algebraMap ℚ E b) ^ 2) * hs`.
+
+Rewrite `e` using `[h0, map_zero]`. Conclude with `mul_ne_zero (lin_ne D h) (lin_ne D (a := a) (b := -b) (by simpa using h)) e`.
+-/
 private theorem norm_ne (D : Dat ℚ E) {a b : ℚ} (h : a ≠ 0 ∨ b ≠ 0) : a * a - D.δ * b * b ≠ 0 := by
   intro h0
   have e : (algebraMap ℚ E a + algebraMap ℚ E b * D.θ) * (algebraMap ℚ E a + algebraMap ℚ E (-b) * D.θ) =
@@ -100,10 +149,16 @@ private theorem norm_ne (D : Dat ℚ E) {a b : ℚ} (h : a ≠ 0 ∨ b ≠ 0) : 
   rw [h0, map_zero] at e
   exact mul_ne_zero (lin_ne D h) (lin_ne D (a := a) (b := -b) (by simpa using h)) e
 
+/- English proof (translation)
+Rewrite using `[matVec_apply, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+-/
 private theorem mat0 (a b d : ℚ) (x : Fin 2 → A ℚ) :
     matVec !![a, d; b, a] x 0 = UpperTheory.ConvolutionTheory.R2.rt a * x 0 + UpperTheory.ConvolutionTheory.R2.rt d * x 1 := by
   rw [matVec_apply, Fin.sum_univ_two]; rfl
 
+/- English proof (translation)
+Rewrite using `[matVec_apply, Fin.sum_univ_two]`. Both sides reduce to the same expression.
+-/
 private theorem mat1 (a b d : ℚ) (x : Fin 2 → A ℚ) :
     matVec !![a, d; b, a] x 1 = UpperTheory.ConvolutionTheory.R2.rt b * x 0 + UpperTheory.ConvolutionTheory.R2.rt a * x 1 := by
   rw [matVec_apply, Fin.sum_univ_two]; rfl
@@ -111,9 +166,17 @@ private theorem mat1 (a b d : ℚ) (x : Fin 2 → A ℚ) :
 private def Gh (D : Dat ℚ E) (Φ : GL (Fin 2) (A E) → ℂ) (h : GL (Fin 2) (A E)) (u : Fin 2 → A ℚ) : ℂ :=
   Fh D Φ h u * ψ (2 * u 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem int_Gh (D : Dat ℚ E) (Φ : GL (Fin 2) (A E) → ℂ) (h : GL (Fin 2) (A E)) :
     ∫ x in vecDomain ℚ (Fin 2), Gh D Φ h x ∂vecMeasure ℚ (Fin 2) = WE D Φ h := rfl
 
+/- English proof (translation)
+Introduce `l hl x`. Establish `e1` using `per_Fh D hL h l hl x`. Take `⟨η, rfl⟩` from `mem_vecLattice.1 hl`. Establish `e2 : (2 : A ℚ) * ((fun i => algebraMap ℚ (A ℚ) (η i)) + x) 0 = UpperTheory.ConvolutionTheory.R2.rt (2 * η 0) + 2 * x 0`. Simplify using `only [UpperTheory.ConvolutionTheory.R2.rt, map_mul, map_ofNat, mul_add, Pi.add_apply]`.
+
+Simplify using `only [Gh]`. Rewrite using `[e1, e2, ψ_add, ψ_rt, one_mul]`.
+-/
 private theorem per_Gh (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀ γ g, Φ (ratGL E 2 γ * g) = Φ g)
     (h : GL (Fin 2) (A E)) : ∀ l ∈ vecLattice ℚ (Fin 2), ∀ x, Gh D Φ h (l + x) = Gh D Φ h x := by
   intro l hl x
@@ -124,6 +187,11 @@ private theorem per_Gh (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀
   simp only [Gh]
   rw [e1, e2, ψ_add, ψ_rt, one_mul]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `hγ`. Establish `e : UpperTheory.ConvolutionTheory.R2.rt (D.δ * b) = UpperTheory.ConvolutionTheory.R2.rt D.δ * UpperTheory.ConvolutionTheory.R2.rt b` using `map_mul _ _ _`. Establish `k1 : D.mkE (matVec !![a, D.δ * b; b, a] x 0) (matVec !![a, D.δ * b; b, a] x 1) = (t : A E) * D.mkE (x 0) (x 1)`. Rewrite using `[ht, D.mkE_mul, mat0, mat1, e]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Gh, Fh]`. Rewrite using `[k1, mat0, ← mul_assoc, n_aE, ← hγ, mul_assoc, hL]`.
+-/
 private theorem pt_id (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀ γ g, Φ (ratGL E 2 γ * g) = Φ g)
     (h : GL (Fin 2) (A E)) (a b : ℚ) (t : (A E)ˣ) (ht : (t : A E) = D.mkE (UpperTheory.ConvolutionTheory.R2.rt a) (UpperTheory.ConvolutionTheory.R2.rt b))
     (hγ : ∃ γ, ratGL E 2 γ = aE t) (x : Fin 2 → A ℚ) :
@@ -139,6 +207,19 @@ private theorem pt_id (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀ 
   simp only [Gh, Fh]
   rw [k1, mat0, ← mul_assoc, n_aE, ← hγ, mul_assoc, hL]
 
+/- English proof (translation)
+Establish `hδ` using `D.δ_ne_zero`. Take `⟨a, ha⟩ : ∃ a : ℚ, 2 * a = -ξ 0` from `⟨-ξ 0 / 2, by ring⟩`. Take `⟨b, hb⟩ : ∃ b : ℚ, 2 * (D.δ * b) = -ξ 1` from `⟨-ξ 1 / (2 * D.δ), by field_simp⟩`. Establish `hab : a ≠ 0 ∨ b ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Take `⟨h1, h2⟩` from `hc`. Use `hξ (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Simplify `ha.symm` using `[h1]`.
+
+Simplify `hb.symm` using `[h2]`. Take `⟨M, hM⟩ : ∃ M : GL (Fin 2) ℚ, (M : Matrix (Fin 2) (Fin 2) ℚ) = !![a, D.δ * b; b, a]` from `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![a, D.δ * b; b, a] (by rw [Matrix.det_fin_two_of]; exact norm_ne D hab), rfl⟩`. Take `⟨t, ht, hγ⟩ : ∃ t : (A E)ˣ, (t : A E) = D.mkE (UpperTheory.ConvolutionTheory.R2.rt a) (UpperTheory.ConvolutionTheory.R2.rt b) ∧ ∃ γ, ratGL E 2 γ = aE t` from `⟨IdeleGroup.diagonal E (Units.mk0 _ (lin_ne D hab)), (D.mkE_rt a b).symm, exists_ratGL_aE _⟩`. Establish `h1` using `setIntegral_comp_matVec M (per_Gh D hL (aE t * h))`. Rewrite `h1` using `[int_Gh, hW, hM]`.
+
+Rewrite using `[vecCoeff, ← h1]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `k2 : (2 : A ℚ) * (UpperTheory.ConvolutionTheory.R2.rt a * x 0 + UpperTheory.ConvolutionTheory.R2.rt (D.δ * b) * x 1) = -pair ξ x`. Establish `e2 : (2 : A ℚ) = UpperTheory.ConvolutionTheory.R2.rt (2 : ℚ)` using `(map_ofNat _ 2).symm`. Establish `e0 : (2 : A ℚ) * UpperTheory.ConvolutionTheory.R2.rt a = -UpperTheory.ConvolutionTheory.R2.rt (ξ 0)`.
+
+Rewrite using `[← map_neg, ← ha, e2]`. Conclude with `(map_mul _ _ _).symm`. Establish `e1 : (2 : A ℚ) * UpperTheory.ConvolutionTheory.R2.rt (D.δ * b) = -UpperTheory.ConvolutionTheory.R2.rt (ξ 1)`. Rewrite using `[← map_neg, ← hb, e2]`. Conclude with `(map_mul _ _ _).symm`.
+
+Rewrite using `[pair, Fin.sum_univ_two]`. Take the linear combination `(x 0) * e0 + (x 1) * e1`. Use `beta_reduce`. Rewrite using `[pt_id D hL h a b t ht hγ x, k2]`. Both sides reduce to the same expression.
+-/
 private theorem coef_zero (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : ∀ γ g, Φ (ratGL E 2 γ * g) = Φ g)
     (hW : ∀ h, WE D Φ h = 0) (h : GL (Fin 2) (A E)) (ξ : Fin 2 → ℚ) (hξ : ξ ≠ 0) :
     vecCoeff (Fh D Φ h) ξ = 0 := by
@@ -174,6 +255,21 @@ private theorem coef_zero (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hL : 
   rw [pt_id D hL h a b t ht hγ x, k2]
   rfl
 
+/- English proof (translation)
+Take `⟨u, v, rfl⟩` from `D.exists_mkE b`. Use `set F := Fh D Φ h with hF`. Establish `hFc : Continuous F` using `cont_Fh D hΦ h`. Establish `hFper : ∀ l ∈ vecLattice ℚ (Fin 2), ∀ x, F (l + x) = F x` using `per_Fh D hL h`. Use `set a : Fin 2 → A ℚ := ![u, v] with ha`.
+
+Establish `hTper : ∀ ξ ∈ vecLattice ℚ (Fin 2), ∀ x, F (ξ + x + a) = F (x + a)` using `fun ξ hξ x => by`. Rewrite using `[add_assoc, hFper ξ hξ]`. Use `set G : (Fin 2 → A ℚ) → ℂ := fun y => F (y + a) - F y with hG`. Establish `hGc : Continuous G` using `(hFc.comp (continuous_id.add continuous_const)).sub hFc`. Establish `hGper : ∀ ξ ∈ vecLattice ℚ (Fin 2), ∀ x, G (ξ + x) = G x` using `fun ξ hξ x => by`.
+
+Simplify using `only [hG]`. Rewrite using `[hTper ξ hξ, hFper ξ hξ]`. Establish `hint : ∀ (f : (Fin 2 → A ℚ) → ℂ), Continuous f → ∀ ξ : Fin 2 → ℚ, IntegrableOn (fun x => f x * (adelicChar ℚ (-pair ξ x) : ℂ)) (vecDomain ℚ (Fin 2)) (vecMeasure ℚ (Fin 2))` using `fun f hf ξ => ((hf.mul (continuous_adelicChar_neg_pair ξ)).continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`. Establish `hcoef : ∀ ξ, vecCoeff G ξ = 0`. Introduce `ξ`.
+
+Establish `e1 : vecCoeff G ξ = vecCoeff (fun x => F (x + a)) ξ - vecCoeff F ξ`. Unfold `vecCoeff`. Use `Eq.trans ?_ (integral_sub (hint _ (hFc.comp (continuous_id.add continuous_const) : Continuous fun x => F (x + a)) ξ) (hint _ hFc ξ))` and prove the remaining obligations. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Use `show (F (x + a) - F x) * _ = F (x + a) * _ - F x * _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, vecCoeff_translate hFper]`. Distinguish the cases in `h1 : ξ = 0`. Establish `hp : pair ξ a = 0`. Simplify using `[pair, h1]`.
+
+Rewrite using `[hp, AddChar.map_zero_eq_one, Circle.coe_one, one_mul, sub_self]`. Rewrite using `[coef_zero D hL hW h ξ h1, mul_zero, sub_zero]`. Establish `hG0` using `congrFun (GlobalTheory.CompanionTheory.AdelicFourier.eq_zero_of_vecCoeff_eq_zero hGc hGper hcoef) 0`. Establish `h1 : F (0 + a) = F 0` using `sub_eq_zero.1 hG0`. Establish `e2 : F (0 + a) = Φ (gl (nU (D.mkE u v)) * h)`.
+
+Simplify using `[hF, Fh, ha]`. Establish `e3 : F 0 = Φ h`. Simplify using `only [hF, Fh, Pi.zero_apply]`. Rewrite using `[D.mkE_zero, n_zero, one_mul]`. Rewrite using `[← e2, h1, e3]`.
+-/
 private theorem n_inv (D : Dat ℚ E) {Φ : GL (Fin 2) (A E) → ℂ} (hΦ : Continuous Φ)
     (hL : ∀ γ g, Φ (ratGL E 2 γ * g) = Φ g) (hW : ∀ h, WE D Φ h = 0) (b : A E) (h : GL (Fin 2) (A E)) :
     Φ (gl (nU b) * h) = Φ h := by
@@ -223,6 +319,13 @@ end UpperTheory.ConvolutionTheory.RankTwoDescent.VanishingCoefficients
 end
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent.VanishingCoefficients in
+/- English proof (translation)
+Introduce `E _ _ D Φ hΦ hL hW h g`. Establish `gm : ∀ x y : G1 E, gl (x * y) = gl x * gl y` using `fun _ _ => Units.ext rfl`. Establish `g1 : gl (1 : G1 E) = 1` using `Units.ext rfl`. Set `H : Subgroup (G1 E)` to `{ carrier := {s | ∀ g, Φ (gl s * g) = Φ g} mul_mem' := fun {x y} hx hy g => by`. Rewrite using `[gm, mul_assoc, hx, hy]`.
+
+Use the proof step `one_mem' := fun g => by rw [g1, one_mul]`. Use the proof step `inv_mem' := fun {x} hx g => by`. Rewrite using `[← hx (gl x⁻¹ * g), ← mul_assoc, ← gm, mul_inv_cancel, g1, one_mul] }`. Establish `hH : H = ⊤` using `eq_top_of_nU_wW H (fun b g => n_inv D hΦ hL hW b g) (fun g => by`. Take `⟨γ, hγ⟩` from `rat_w (E := E)`.
+
+Rewrite using `[← hγ, hL])`. Establish `: h ∈ H` using `hH ▸ Subgroup.mem_top h`. Conclude with `this g`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.killW :
     KillW := by
   intro E _ _ D Φ hΦ hL hW h g

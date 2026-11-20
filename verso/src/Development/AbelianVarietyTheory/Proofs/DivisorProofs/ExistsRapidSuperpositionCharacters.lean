@@ -6,6 +6,17 @@ open scoped FourierTransform ContDiff
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `Z _ _ _ Φ hΦ hc`. Take `⟨m, A, φ, hφ, hint, hinv⟩` from `GlobalTheory.fourier_inversion_real_linear_forms (hc.toSchwartzMap hΦ)`. Set `B : EuclideanSpace ℝ (Fin m) →L[ℝ] (Z →L[ℝ] ℝ)` to `(2 * Real.pi)⁻¹ • A`. Establish `hB : ∀ w z, 2 * Real.pi * B w z = A w z`. Introduce `w z`.
+
+Establish `: (2 * Real.pi) ≠ 0` using `by positivity`. Simplify using `only [B, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨EuclideanSpace ℝ (Fin m), inferInstance, volume, inferInstance, φ, fun w => B w, hφ.measurable, fun z => ?_, fun N => ?_, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(by fun_prop : Continuous fun x => B x z).measurable`.
+
+Use `((hint N).const_mul ((1 + ‖B‖) ^ N)).mono' ?_ (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `(by fun_prop : Continuous fun x => ‖φ x‖ * (1 + ‖B x‖) ^ N).aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), ← mul_assoc, ← mul_pow, mul_comm]`. Use `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) ?_ N) (norm_nonneg _)` and prove the remaining obligations. Establish `h1` using `B.le_opNorm w`.
+
+Use polynomial arithmetic with `[norm_nonneg B, norm_nonneg w]`. Establish `h` using `hinv z`. Establish `h0 : (hc.toSchwartzMap hΦ) z = Φ z` using `rfl`. Rewrite `h` using `[h0]`. Rewrite using `[h]`.
+
+Use `congr 1`. Use extensionality with `w`. Rewrite using `[Real.fourierChar_apply, hB]`.
+-/
 theorem exists_rapid_superposition_characters :
     ∀ (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] (Φ : Z → ℂ), ContDiff ℝ ∞ Φ → HasCompactSupport Φ → ∃ (X : Type) (_ : MeasurableSpace X) (ν : Measure X) (_ : SFinite ν) (κ : X → ℂ) (τ : X → Z →L[ℝ] ℝ), Measurable κ ∧ (∀ z, Measurable fun x => τ x z) ∧ (∀ N : ℕ, Integrable (fun x => ‖κ x‖ * (1 + ‖τ x‖) ^ N) ν) ∧ ∀ z, Φ z = ∫ x, κ x * (𝐞 (τ x z) : ℂ) ∂ν := by
   intro Z _ _ _ Φ hΦ hc

@@ -11,5 +11,8 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RefSum.JetsUb.jetNum_ub | exact GlobalTheory.RefSum.JetsUb.jetNum_ub | (intros; apply GlobalTheory.RefSum.JetsUb.jetNum_ub <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jet_number_upper_weight : Size → Lifts fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → GlobalTheory.RefSum.JetNum (Fm.D x ι) (DF (dat p i) (GlobalTheory.RefSum.thA (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub (GlobalTheory.RefSum.nCol (dat p i)))) (1 / 2500) := by
   first | exact @GlobalTheory.RefSum.JetsUb.jetNum_ub | exact GlobalTheory.RefSum.JetsUb.jetNum_ub | (intros; apply GlobalTheory.RefSum.JetsUb.jetNum_ub <;> assumption)

@@ -25,12 +25,18 @@ def headSub (a n : ℕ) : Submodule F (Fin n → F) where
     intro c v hv i hi
     simp [hv i hi]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_headSub {a n : ℕ} (v : Fin n → F) :
     v ∈ headSub a n ↔ ∀ i : Fin n, a ≤ (i : ℕ) → v i = 0 := Iff.rfl
 
 def InParM (a : ℕ) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) : Prop :=
   ∀ i j : Fin n, (j : ℕ) < a → a ≤ (i : ℕ) → M i j = 0
 
+/- English proof (translation)
+Rewrite using `[mem_headSub]`. Introduce `i hi`. Establish `: i ≠ j` using `by intro h; subst h; omega`. Simplify using `[Pi.single_apply, this]`.
+-/
 theorem single_mem_headSub {a n : ℕ} (j : Fin n) (hj : (j : ℕ) < a) :
     (Pi.single j (1 : F) : Fin n → F) ∈ headSub a n := by
   rw [mem_headSub]
@@ -38,10 +44,18 @@ theorem single_mem_headSub {a n : ℕ} (j : Fin n) (hj : (j : ℕ) < a) :
   have : i ≠ j := by intro h; subst h; omega
   simp [Pi.single_apply, this]
 
+/- English proof (translation)
+Simplify using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem toLin'_apply_single {n : ℕ} (H : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     Matrix.toLin' H (Pi.single j 1) i = H i j := by
   simp [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite `hv`, the goal using `[mem_headSub]`. Introduce `i hi`. Rewrite using `[Matrix.toLin'_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < a`. Rewrite using `[hM i j hj hi, zero_mul]`. Rewrite using `[hv j (by omega), mul_zero]`.
+-/
 theorem mapsTo_headSub {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) (hM : InParM a M) :
     ∀ v ∈ headSub a n, Matrix.toLin' M v ∈ headSub a n := by
   intro v hv
@@ -54,6 +68,11 @@ theorem mapsTo_headSub {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) (hM : InParM a
   · rw [hM i j hj hi, zero_mul]
   · rw [hv j (by omega), mul_zero]
 
+/- English proof (translation)
+Simplify using `only [nilRad, Set.mem_setOf_eq] at hH`. Rewrite using `[← toLin'_apply_single H i j]`. Break down `hij with hi | hj` into its components or cases. Conclude with `(mem_headSub _).1 (hH.1 _) i hi`. Rewrite using `[hH.2 _ (single_mem_headSub j hj)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem entry_eq_zero {a n : ℕ} (H : Matrix (Fin n) (Fin n) F)
     (hH : Matrix.toLin' H ∈ nilRad (headSub a n)) (i j : Fin n) (hij : a ≤ (i : ℕ) ∨ (j : ℕ) < a) :
     H i j = 0 := by
@@ -63,6 +82,9 @@ theorem entry_eq_zero {a n : ℕ} (H : Matrix (Fin n) (Fin n) F)
   · exact (mem_headSub _).1 (hH.1 _) i hi
   · rw [hH.2 _ (single_mem_headSub j hj)]; rfl
 
+/- English proof (translation)
+Simplify using `only [nilRad, Set.mem_setOf_eq] at hh ⊢`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `using A.neg_mem (hh.1 x)`. Simplify using `[hh.2 x hx]`.
+-/
 theorem neg_mem_nilRad {V : Type} [AddCommGroup V] [Module F V] {A : Submodule F V} {h : Module.End F V}
     (hh : h ∈ nilRad A) : -h ∈ nilRad A := by
   simp only [nilRad, Set.mem_setOf_eq] at hh ⊢
@@ -70,6 +92,17 @@ theorem neg_mem_nilRad {V : Type} [AddCommGroup V] [Module F V] {A : Submodule F
   · simpa using A.neg_mem (hh.1 x)
   · simp [hh.2 x hx]
 
+/- English proof (translation)
+Simplify using `only [nilRad, Set.mem_setOf_eq] at hh`. Take `⟨h1, h2⟩` from `hh`. Establish `hres : Function.Surjective (g.restrict hg)`. Rewrite using `[← LinearMap.injective_iff_surjective]`. Introduce `u w huw`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Use `congrArg Subtype.val huw` as an intermediate fact. Simplify `this` using `[LinearMap.restrict_apply]`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.add_apply]`. Establish `hgx : g x ∈ A`. Establish `: g x = -(h x)` using `eq_neg_of_add_eq_zero_left hx`. Rewrite using `[this]`.
+
+Conclude with `A.neg_mem (h1 x)`. Take `⟨u, hu⟩` from `hres ⟨g x, hgx⟩`. Establish `hgu : g u = g x`. Use `congrArg Subtype.val hu` as an intermediate fact. Simplify `this` using `[LinearMap.restrict_apply]`.
+
+Establish `hxA : x ∈ A` using `by rw [← hinj hgu]; exact u.2`. Establish `hgx0 : g x = 0` using `by rw [h2 x hxA, add_zero] at hx; exact hx`. Conclude with `hinj (by rw [hgx0, map_zero])`.
+-/
 theorem injective_add {V : Type} [AddCommGroup V] [Module F V] [FiniteDimensional F V] (A : Submodule F V)
     (g h : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A) (hh : h ∈ nilRad A) (hinj : Function.Injective g) :
     Function.Injective (g + h) := by
@@ -95,12 +128,20 @@ theorem injective_add {V : Type} [AddCommGroup V] [Module F V] [FiniteDimensiona
   have hgx0 : g x = 0 := by rw [h2 x hxA, add_zero] at hx; exact hx
   exact hinj (by rw [hgx0, map_zero])
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← LinearMap.det_toLin', ← LinearMap.isUnit_iff_isUnit_det, Module.End.isUnit_iff]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, LinearMap.injective_iff_surjective.1 h⟩⟩`.
+-/
 theorem isUnit_iff_injective {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     IsUnit M ↔ Function.Injective (Matrix.toLin' M) := by
   rw [Matrix.isUnit_iff_isUnit_det, ← LinearMap.det_toLin', ← LinearMap.isUnit_iff_isUnit_det,
     Module.End.isUnit_iff]
   exact ⟨fun h => h.1, fun h => ⟨h, LinearMap.injective_iff_surjective.1 h⟩⟩
 
+/- English proof (translation)
+Establish `hz : ∀ i j : Fin n, (j : ℕ) < a → H i j = 0` using `fun i j hj => entry_eq_zero H hH i j (Or.inr hj)`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hj hi`. Use `h i j hj hi` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, hz i j hj, add_zero]`. Then use the resulting hypothesis.
+
+Introduce `h i j hj hi`. Rewrite using `[Matrix.add_apply, hz i j hj, add_zero]`. Conclude with `h i j hj hi`.
+-/
 theorem inParM_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
     (hH : Matrix.toLin' H ∈ nilRad (headSub a n)) : InParM a (M + H) ↔ InParM a M := by
   have hz : ∀ i j : Fin n, (j : ℕ) < a → H i j = 0 := fun i j hj => entry_eq_zero H hH i j (Or.inr hj)
@@ -112,6 +153,11 @@ theorem inParM_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
     rw [Matrix.add_apply, hz i j hj, add_zero]
     exact h i j hj hi
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_injective, isUnit_iff_injective, map_add]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hM' : InParM a (M + H)` using `(inParM_add_iff M H hH).2 hM`. Use `injective_add (headSub a n) (Matrix.toLin' M + Matrix.toLin' H) (-Matrix.toLin' H) (by rw [← map_add]; exact mapsTo_headSub _ hM') (neg_mem_nilRad hH) h` as an intermediate fact.
+
+Simplify using `using this`. Introduce `h`. Conclude with `injective_add (headSub a n) _ _ (mapsTo_headSub M hM) hH h`.
+-/
 theorem isUnit_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
     (hH : Matrix.toLin' H ∈ nilRad (headSub a n)) (hM : InParM a M) : IsUnit (M + H) ↔ IsUnit M := by
   rw [isUnit_iff_injective, isUnit_iff_injective, map_add]
@@ -124,6 +170,11 @@ theorem isUnit_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
   · intro h
     exact injective_add (headSub a n) _ _ (mapsTo_headSub M hM) hH h
 
+/- English proof (translation)
+Rewrite using `[inParM_add_iff M H hH]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hp⟩`. Conclude with `⟨(isUnit_add_iff M H hH hp).1 hu, hp⟩`. Introduce and unpack `⟨hu, hp⟩`.
+
+Conclude with `⟨(isUnit_add_iff M H hH hp).2 hu, hp⟩`.
+-/
 theorem unitPar_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
     (hH : Matrix.toLin' H ∈ nilRad (headSub a n)) :
     (IsUnit (M + H) ∧ InParM a (M + H)) ↔ (IsUnit M ∧ InParM a M) := by
@@ -132,6 +183,9 @@ theorem unitPar_add_iff {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
   · rintro ⟨hu, hp⟩; exact ⟨(isUnit_add_iff M H hH hp).1 hu, hp⟩
   · rintro ⟨hu, hp⟩; exact ⟨(isUnit_add_iff M H hH hp).2 hu, hp⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [tl, ent]`. Use `split_ifs with h`. Rewrite using `[Matrix.add_apply, entry_eq_zero H hH _ _ (Or.inr j.2), add_zero]`. Both sides reduce to the same expression.
+-/
 theorem tl_add {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
     (hH : Matrix.toLin' H ∈ nilRad (headSub a n)) : tl a (M + H) = tl a M := by
   ext i j
@@ -142,6 +196,31 @@ theorem tl_add {a n : ℕ} (M H : Matrix (Fin n) (Fin n) F)
 
 end Key
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite F`. Set `ψ : Matrix (Fin n) (Fin n) F → ℂ` to `fun M => psi R (Fin n → F) (Matrix.toLin' M)`. Set `β : Matrix (Fin n) (Fin n) F → ℂ` to `fun M => α (toG (tl a M))`. Set `G : Matrix (Fin n) (Fin n) F → ℂ` to `fun M => if IsUnit M ∧ InParM a M then β M * star (ψ M) else 0`. Establish `stepA : ∑ᶠ p : GL (Fin n) F, (if InPar a p then α (tlG a p) else 0) * star (psiG R n p) = ∑ M, G M`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `himg : (Finset.univ : Finset (GL (Fin n) F)).image (fun p : GL (Fin n) F => p.val) = Finset.univ.filter IsUnit`. Use extensionality with `M`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter]`. Conclude with `Iff.rfl`.
+
+Use `Finset.sum_image (s := (Finset.univ : Finset (GL (Fin n) F))) (g := fun p : GL (Fin n) F => p.val) (f := fun M => (if InParM a M then β M else 0) * star (ψ M)) (fun x _ y _ h => Units.ext h)` as an intermediate fact. Rewrite `this` using `[himg, Finset.sum_filter]`. Apply the tactic sequence `rw [show ∑ M, G M = ∑ M, if IsUnit M then (if InParM a M then β M else 0) * star (ψ M) else 0 from Finset.sum_congr rfl fun M _ => by simp only [G]; split_ifs <;> simp_all]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hA0 : headSub (F` using `F) a n ≠ ⊥ := by`. Introduce `h`. Establish `hmem` using `single_mem_headSub (F := F) (⟨0, by omega⟩ : Fin n) ha`. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Use `congrFun hmem ⟨0, by omega⟩` as an intermediate fact.
+
+Simplify using `at this`. Establish `hAtop : headSub (F` using `F) a n ≠ ⊤ := by`. Introduce `h`. Establish `hmem : (Pi.single (⟨a, han⟩ : Fin n) (1 : F) : Fin n → F) ∈ headSub a n` using `by rw [h]; trivial`. Use `(mem_headSub _).1 hmem ⟨a, han⟩ le_rfl` as an intermediate fact.
+
+Simplify using `at this`. Set `Nfin : Finset (Matrix (Fin n) (Fin n) F)` to `Finset.univ.filter (fun H => Matrix.toLin' H ∈ nilRad (headSub (F := F) a n))`. Establish `hNcoe : (↑Nfin : Set (Matrix (Fin n) (Fin n) F)) = Matrix.toLin' ⁻¹' nilRad (headSub (F` using `F) a n) := by ext; simp [Nfin]`. Establish `fiber : ∀ M, ∑ h ∈ Nfin, G (M + h) = 0`. Introduce `M`.
+
+Distinguish the cases in `hM : IsUnit M ∧ InParM a M`. Establish `e1 : ∀ h ∈ Nfin, G (M + h) = β M * star (ψ (M + h))`. Introduce `h hh`. Establish `hh' : Matrix.toLin' h ∈ nilRad (headSub (F` using `F) a n) := (Finset.mem_filter.1 hh).2`. Establish `hu : IsUnit (M + h) ∧ InParM a (M + h)` using `(unitPar_add_iff M h hh').2 hM`.
+
+Simplify using `only [G, if_pos hu, β, tl_add M h hh']`. Establish `hprim` using `GlobalTheory.CuspGL.isPrimitive_psi F (Fin n → F) R hR (headSub a n) hA0 hAtop (Matrix.toLin' M) (mapsTo_headSub M hM.2)`. Rewrite `hprim` using `[← Set.image_preimage_eq (nilRad (headSub (F := F) a n)) Matrix.toLin'.surjective, finsum_mem_image (Matrix.toLin'.injective.injOn), ← hNcoe, finsum_mem_coe_finset]`. Establish `e2 : ∑ h ∈ Nfin, β M * star (ψ (M + h)) = β M * star (∑ h ∈ Nfin, ψ (M + h))`. Rewrite using `[star_sum, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_congr rfl e1, e2]`. Simplify using `only [ψ, map_add]`. Rewrite using `[hprim, star_zero, mul_zero]`. Use `Finset.sum_eq_zero fun h hh => ?_` and prove the remaining obligations. Establish `hh' : Matrix.toLin' h ∈ nilRad (headSub (F` using `F) a n) := (Finset.mem_filter.1 hh).2`.
+
+Simplify using `only [G]`. Rewrite using `[if_neg]`. Rewrite using `[unitPar_add_iff M h hh']` and apply the resulting hypothesis. Establish `hshift : ∀ h, ∑ M, G (M + h) = ∑ M, G M` using `fun h => Fintype.sum_equiv (Equiv.addRight h) _ _ (fun M => rfl)`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) F) ∈ Nfin`.
+
+Establish `: Matrix.toLin' (0 : Matrix (Fin n) (Fin n) F) ∈ nilRad (headSub (F` using `F) a n) := by`. Rewrite using `[map_zero]`. Simplify using `only [nilRad, Set.mem_setOf_eq, LinearMap.zero_apply]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ _ => by trivial⟩`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, this⟩`.
+
+Establish `hcard : (Nfin.card : ℂ) * ∑ M, G M = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : (Nfin.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem h0)`. Rewrite using `[stepA]`. Conclude with `(mul_eq_zero.1 hcard).resolve_left hne`.
+-/
 theorem sum_inPar_psiG {F : Type} [Field F] [Finite F] (R : F[X] → ℂ) (hR : IsAdditive R) (a n : ℕ)
     (ha : 0 < a) (han : a < n) (α : GL (Fin a) F → ℂ) :
     ∑ᶠ p : GL (Fin n) F, (if InPar a p then α (tlG a p) else 0) * star (psiG R n p) = 0 := by
@@ -222,6 +301,13 @@ end GlobalTheory.Shin.PrimOrth
 
 namespace GlobalTheory.Shin.PrimOrth
 
+/- English proof (translation)
+Unfold `psiG`. Rewrite using `[psi_eq]`. Establish `hc : LinearMap.charpoly (Matrix.toLin' (x : Matrix (Fin 0) (Fin 0) F)) = 1`. Apply `Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic _)` to reduce the goal to its premises. Rewrite using `[LinearMap.charpoly_natDegree]`.
+
+Simplify using the standard rewrite rules. Establish `he : IsEmpty {W : Submodule F (Fin 0 → F) // W ≠ ⊤ ∧ ∀ v ∈ W, Matrix.toLin' (x : Matrix (Fin 0) (Fin 0) F) v ∈ W}`. Use `⟨fun W => W.2.1 (eq_top_iff.2 fun v _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v 0]`. Conclude with `W.1.zero_mem`.
+
+Rewrite using `[hc, finsum_of_isEmpty, sub_zero]`.
+-/
 theorem psiG_zero {F : Type} [Field F] (S : F[X] → ℂ) (x : GL (Fin 0) F) : psiG S 0 x = S 1 := by
   unfold psiG
   rw [psi_eq]
@@ -234,9 +320,27 @@ theorem psiG_zero {F : Type} [Field F] (S : F[X] → ℂ) (x : GL (Fin 0) F) : p
     rw [Subsingleton.elim v 0]; exact W.1.zero_mem
   rw [hc, finsum_of_isEmpty, sub_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gal]`.
+-/
 theorem gal_id {F : Type} [Field F] (n : ℕ) (y : GL (Fin n) F) : gal (RingHom.id F) n y = y := by
   ext i j; simp [gal]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos a with rfl | ha0` into its components or cases. Establish `h0 : ∀ x : GL (Fin n) F, hc 0 n (psiG S 0) (fun _ => 1) n x = 0`. Introduce `x`. Simplify using `[hc, hcTw, psiG_zero, hS]`. Simplify using `only [Nat.sub_zero, h0, zero_mul, finsum_zero]`.
+
+Use `haveI := Fintype.ofFinite (GL (Fin n) F)`. Establish `hcl` using `(GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) 0 0 n (fun _ => 1) (fun _ => 1)).2.2 (rootSum θ k)`. Establish `hR` using `(GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ k).1`. Establish `key : ∀ y : GL (Fin n) F, ∑ x : GL (Fin n) F, (if InPar a (y⁻¹ * x * y) then psiG S a (tlG a (y⁻¹ * x * y)) * 1 else 0) * star (cusp θ n k x) = 0`. Introduce `y`.
+
+Establish `e` using `Fintype.sum_equiv (MulAut.conj y⁻¹).toEquiv (fun x => (if InPar a (y⁻¹ * x * y) then psiG S a (tlG a (y⁻¹ * x * y)) * 1 else 0) * star (cusp θ n k x)) (fun p => (if InPar a p then psiG S a (tlG a p) else 0) * star (cusp θ n k p)) (fun p => by`. Establish `h2 : cusp θ n k (y⁻¹ * p * y) = cusp θ n k p`. Unfold `cusp`. Rewrite using `[hcl.1 p y]`. Simplify using `[MulAut.conj_apply, ← h2])`.
+
+Rewrite using `[e]`. Establish `L` using `sum_inPar_psiG (rootSum θ k) hR a n ha0 (by omega) (psiG S a)`. Rewrite `L` using `[finsum_eq_sum_of_fintype]`. Simplify using `only [cusp, star_mul']`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun x _ => by ring`. Use `_ = 0 := by rw [L, mul_zero]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `hx : ∀ x : GL (Fin n) F, hc a (n - a) (psiG S a) (fun _ => 1) n x = (Nat.card {p : GL (Fin n) F // InPar a p} : ℂ)⁻¹ * ∑ y : GL (Fin n) F, (if InPar a (y⁻¹ * x * y) then psiG S a (tlG a (y⁻¹ * x * y)) * 1 else 0)`. Introduce `x`.
+
+Simplify using `only [hc, hcTw, gal_id, finsum_eq_sum_of_fintype]`. Repeatedly rewrite using `[hx, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_assoc]`.
+
+Rewrite using `[← Finset.mul_sum]`. Use `key y` as an intermediate fact. Simplify using `only [mul_one, mul_assoc] at this ⊢`. Rewrite using `[this, mul_zero]`.
+-/
 theorem sum_hc_cusp {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (S : F[X] → ℂ)
     (hS : S 1 = 0) (n k a : ℕ) (ha : a < n) :
     ∑ᶠ x : GL (Fin n) F, hc a (n - a) (psiG S a) (fun _ => 1) n x * star (cusp θ n k x) = 0 := by
@@ -280,6 +384,11 @@ theorem sum_hc_cusp {F : Type} [Field F] [Finite F] (θ : AlgebraicClosure F →
 
 end GlobalTheory.Shin.PrimOrth
 
+/- English proof (translation)
+Introduce `F _ _ θ S n k hS`. Use `haveI := Fintype.ofFinite (GL (Fin n) F)`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Establish `hz : ∀ a ∈ Finset.range n, ∑ x : GL (Fin n) F, hc a (n - a) (psiG S a) (fun _ => 1) n x * star (cusp θ n k x) = 0`. Introduce `a ha`.
+
+Use `GlobalTheory.Shin.PrimOrth.sum_hc_cusp θ S hS n k a (Finset.mem_range.1 ha)` as an intermediate fact. Rewrite `this` using `[finsum_eq_sum_of_fintype]`. Then use the resulting hypothesis. Repeatedly rewrite using `[GlobalTheory.T.primitiveFunctionCharpolyGL_harishChandra_recursion F S n, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := Finset.univ), Finset.sum_eq_zero hz, sub_zero]`.
+-/
 theorem GlobalTheory.Shin.sum_psiG_mul_star_cusp_eq : ∀ (F : Type) [Field F] [Finite F], ∀ (θ : AlgebraicClosure F →* ℂ)
     (S : F[X] → ℂ) (n k : ℕ), S 1 = 0 →
     ∑ᶠ x, psiG S n x * star (cusp θ n k x) = ∑ᶠ x, chG S n x * star (cusp θ n k x) := by

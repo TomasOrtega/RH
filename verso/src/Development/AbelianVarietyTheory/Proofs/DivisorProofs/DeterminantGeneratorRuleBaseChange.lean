@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 R₀ _ k s t A _ Y ⟨δ₀⟩ hst h6 B _ _ σ Y' φ hY' h δ`. Set `inr : A →ₐ[ℤ] R₀ ⊗[ℤ] A` to `Algebra.TensorProduct.includeRight`. Set `τ : R₀ ⊗[ℤ] A →ₐ[R₀] B` to `Algebra.TensorProduct.lift (Algebra.ofId R₀ B) σ.toIntAlgHom fun _ _ ↦ Commute.all _ _`. Establish `hτinr : (τ : R₀ ⊗[ℤ] A →+* B).comp inr.toRingHom = σ`. Use extensionality with `a`.
+
+Simplify using `[τ, inr]`. Establish `hsp : spMap σ = spMap (τ : R₀ ⊗[ℤ] A →+* B) ≫ spMap inr.toRingHom`. Rewrite using `[← hτinr]`. Simplify using `[spMap, Spec.map_comp]`. Establish `h6C : IsUnit ((6 : ℕ) : R₀ ⊗[ℤ] A)`.
+
+Use `h6.map inr` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨YC, ψ, hYC⟩` from `Obj.exists_isPullBy Y (spMap inr.toRingHom)`. Take `⟨ψ', hψ', -⟩` from `Obj.IsPullBy.cancel (hsp ▸ hY') hYC`. Take `⟨δC, hδC, -⟩` from `hYC.existsUnique_detGen inr.toRingHom δ₀`.
+
+Take `⟨δB, hδB, -⟩` from `hψ'.existsUnique_detGen (τ : R₀ ⊗[ℤ] A →+* B) δC`. Establish `e1` using `s.baseChange _ B τ YC h6C Y' h ψ' δC δB hψ' hδB`. Establish `e2` using `t.baseChange _ B τ YC h6C Y' h ψ' δC δB hψ' hδB`. Establish `e3` using `hst YC ψ hYC h6C δC`. Establish `hB : s.val B Y' h δB = t.val B Y' h δB` using `by rw [e1, e2, e3]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : B, δB.1 = c • δ.1 := by`. Establish `: δB.1 ∈ Submodule.span B {δ.1}` using `by rw [δ.2]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 this`. Conclude with `⟨c, hc.symm⟩`. Rewrite using `[← s.homog B Y' h δ δB c hc, ← t.homog B Y' h δ δB c hc, hB]`.
+-/
 theorem Rule.eq_of_eq_extScalars : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k) (A : Type) [CommRing A] (Y : Obj F 𝔠 (Sp A)), Nonempty Y.DetGen →
     (∀ (YC : Obj F 𝔠 (Sp (R₀ ⊗[ℤ] A))) (ψ : YC.A.left ⟶ Y.A.left),

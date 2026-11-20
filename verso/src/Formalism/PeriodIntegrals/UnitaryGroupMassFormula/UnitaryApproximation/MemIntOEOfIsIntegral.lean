@@ -11,6 +11,11 @@ section General
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [PI.UnitaryApproxDefs.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem cT_smul_one {A : Type} [CommRing A] (ρ : A →+* A) (a : A) :
     PI.UnitaryApproxDefs.cT ρ (a • (1 : Matrix n n A)) = ρ a • 1 := by
   ext i j
@@ -25,9 +30,15 @@ def scU {A : Type} [CommRing A] (a b : A) (h : a * b = 1) : GL n A :=
   ⟨a • 1, b • 1, by rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, h, one_smul],
     by rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, mul_comm, h, one_smul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scU_val {A : Type} [CommRing A] (a b : A) (h : a * b = 1) :
     ((scU (n := n) a b h : GL n A) : Matrix n n A) = a • 1 := rfl
 
+/- English proof (translation)
+Use `show PI.UnitaryApproxDefs.cT ρ ((scU (n := n) a b h : GL n A) : Matrix n n A) * J * ((scU (n := n) a b h : GL n A) : Matrix n n A) = J`. Rewrite using `[scU_val, cT_smul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, mul_comm, hρ, one_smul]`.
+-/
 theorem scU_mem_UJ {A : Type} [CommRing A] (ρ : A →+* A) (J : Matrix n n A) (a b : A) (h : a * b = 1)
     (hρ : ρ a * a = 1) : scU (n := n) a b h ∈ PI.UnitaryApproxDefs.UJ ρ J := by
   show PI.UnitaryApproxDefs.cT ρ ((scU (n := n) a b h : GL n A) : Matrix n n A) * J *
@@ -41,6 +52,9 @@ section Tensor
 
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [PI.UnitaryApproxDefs.sigR, PI.UnitaryApproxDefs.inclE]`.
+-/
 theorem sigR_inclE (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e : E) :
     PI.UnitaryApproxDefs.sigR σ R (PI.UnitaryApproxDefs.inclE (F := F) R e) = PI.UnitaryApproxDefs.inclE (F := F) R (σ e) := by
   first
@@ -51,10 +65,23 @@ end Tensor
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `RingHom.mem_range.2 ⟨⟨x, h⟩, rfl⟩`.
+-/
 theorem mem_intOE_of_isIntegral {x : E} (h : IsIntegral ℤ x) : x ∈ PI.UnitaryApproxDefs.intOE E := RingHom.mem_range.2 ⟨⟨x, h⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_intOE_of_isIntegral (IsIntegral.algebraMap (NumberField.RingOfIntegers.isIntegral_coe a))`.
+-/
 theorem algebraMap_mem_intOE (a : 𝓞 F) : algebraMap F E (a : F) ∈ PI.UnitaryApproxDefs.intOE E := mem_intOE_of_isIntegral (IsIntegral.algebraMap (NumberField.RingOfIntegers.isIntegral_coe a))
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy0, hyint⟩` from `halg.exists_integral_multiple`. Rewrite `hyint` using `[zsmul_eq_mul]`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, mem_intOE_of_isIntegral ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_natAbs]`.
+
+Break down `abs_choice y with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hyint`. Rewrite using `[h]`. Use `push_cast`.
+
+Rewrite using `[neg_mul]`. Conclude with `hyint.neg`.
+-/
 theorem exists_nat_mul (x : E) : ∃ m : ℕ, 0 < m ∧ (m : E) * x ∈ PI.UnitaryApproxDefs.intOE E := by
   have halg : IsAlgebraic ℤ x :=
     (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)
@@ -70,20 +97,35 @@ theorem exists_nat_mul (x : E) : ∃ m : ℕ, 0 < m ∧ (m : E) * x ∈ PI.Unita
     rw [neg_mul]
     exact hyint.neg
 
+/- English proof (translation)
+Take `⟨m, hm, hx⟩` from `exists_nat_mul x`. Use `⟨(m : 𝓞 F), by exact_mod_cast hm.ne', ?_⟩` and prove the remaining obligations. Simplify using `using hx`.
+-/
 theorem exists_int_mul (x : E) :
     ∃ c : 𝓞 F, c ≠ 0 ∧ algebraMap F E (c : F) * x ∈ PI.UnitaryApproxDefs.intOE E := by
   obtain ⟨m, hm, hx⟩ := exists_nat_mul x
   refine ⟨(m : 𝓞 F), by exact_mod_cast hm.ne', ?_⟩
   simpa using hx
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Set.mem_union_left _ ⟨⟨x, hx⟩, rfl⟩)`.
+-/
 theorem inclE_mem_Sv (v : HeightOneSpectrum (𝓞 F)) {x : E} (hx : x ∈ PI.UnitaryApproxDefs.intOE E) :
     PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) x ∈ Sv E v := Subring.subset_closure (Set.mem_union_left _ ⟨⟨x, hx⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Set.mem_union_right _ ⟨⟨t, ht⟩, rfl⟩)`.
+-/
 theorem one_tmul_mem_Sv (v : HeightOneSpectrum (𝓞 F)) {t : v.adicCompletion F}
     (ht : t ∈ v.adicCompletionIntegers F) : (1 : E) ⊗ₜ[F] t ∈ Sv E v := Subring.subset_closure (Set.mem_union_right _ ⟨⟨t, ht⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `inclE_mem_Sv v (algebraMap_mem_intOE d)`.
+-/
 theorem dv_mem_Sv (v : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) : dv E v d ∈ Sv E v := inclE_mem_Sv v (algebraMap_mem_intOE d)
 
+/- English proof (translation)
+Unfold `dv`. Rewrite using `[show ((a * b : 𝓞 F) : F) = (a : F) * (b : F) from rfl, map_mul, map_mul]`.
+-/
 theorem dv_mul (v : HeightOneSpectrum (𝓞 F)) (a b : 𝓞 F) : dv E v (a * b) = dv E v a * dv E v b := by
   unfold dv
   rw [show ((a * b : 𝓞 F) : F) = (a : F) * (b : F) from rfl, map_mul, map_mul]

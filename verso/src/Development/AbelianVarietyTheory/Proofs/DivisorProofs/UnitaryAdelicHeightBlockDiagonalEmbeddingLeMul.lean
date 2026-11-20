@@ -21,6 +21,13 @@ section Generic
 
 variable {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d)
 
+/- English proof (translation)
+Establish `hx` using `one_le_htOf N₁ x`. Establish `hy` using `one_le_htOf N₂ y`. Use `max_le (one_le_mul_of_one_le_of_one_le hx hy) (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[h1]`. Use `(hN _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `(le_htOf N₁ x).trans (le_mul_of_one_le_right' hy)`. Conclude with `(le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)`. Rewrite using `[h2]`. Use `(hN _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(inv_le_htOf N₁ x).trans (le_mul_of_one_le_right' hy)`.
+
+Conclude with `(inv_le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)`.
+-/
 theorem htOf_blk_le {R : Type} [CommRing R] {N₁ : Matrix (Fin p) (Fin p) R → ℝ≥0} {N₂ : Matrix (Fin q) (Fin q) R → ℝ≥0}
     {N : Matrix (Fin d) (Fin d) R → ℝ≥0} (hN : ∀ a b, N (blk e a b) ≤ max (N₁ a) (N₂ b))
     (X : GL (Fin d) R) (x : GL (Fin p) R) (y : GL (Fin q) R)
@@ -40,6 +47,9 @@ theorem htOf_blk_le {R : Type} [CommRing R] {N₁ : Matrix (Fin p) (Fin p) R →
     · exact (inv_le_htOf N₁ x).trans (le_mul_of_one_le_right' hy)
     · exact (inv_le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)
 
+/- English proof (translation)
+Use `show (X : Matrix (Fin d) (Fin d) R).map φ = _`. Rewrite using `[h1, blk_map _ _ _ (map_zero φ)]`. Both sides reduce to the same expression.
+-/
 theorem bc_val_blk {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X : GL (Fin d) R} {x : GL (Fin p) R}
     {y : GL (Fin q) R}
     (h1 : (X : Matrix (Fin d) (Fin d) R) = blk e (x : Matrix (Fin p) (Fin p) R) (y : Matrix (Fin q) (Fin q) R)) :
@@ -49,6 +59,9 @@ theorem bc_val_blk {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X
   rw [h1, blk_map _ _ _ (map_zero φ)]
   rfl
 
+/- English proof (translation)
+Simplify using `only [← map_inv]`. Conclude with `bc_val_blk e φ h2`.
+-/
 theorem bc_inv_blk {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X : GL (Fin d) R} {x : GL (Fin p) R}
     {y : GL (Fin q) R}
     (h2 : ((X⁻¹ : GL (Fin d) R) : Matrix (Fin d) (Fin d) R) =
@@ -59,6 +72,17 @@ theorem bc_inv_blk {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X
   simp only [← map_inv]
   exact bc_val_blk e φ h2
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNNNorm_le_bound _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_mul, coe_nnnorm, coe_nnnorm]`. Take `⟨v, rfl⟩ : ∃ v : Fin d → ℂ, x = WithLp.toLp 2 v` from `⟨x.ofLp, rfl⟩`. Use `set c : ℝ := ((max (opNorm a) (opNorm b) : ℝ≥0) : ℝ) with hcdef`. Establish `hc : 0 ≤ c` using `NNReal.coe_nonneg _`.
+
+Establish `ha : ‖(WithLp.toLp 2 (a *ᵥ fun i => v (e (.inl i))) : EuclideanSpace ℂ (Fin p))‖ ≤ c * ‖(WithLp.toLp 2 (fun i => v (e (.inl i))) : EuclideanSpace ℂ (Fin p))‖`. Rewrite using `[← Matrix.toEuclideanCLM_toLp]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Establish `: ((opNorm a : ℝ≥0) : ℝ) ≤ c` using `by rw [hcdef]; exact_mod_cast le_max_left _ _`. Conclude with `this`.
+
+Establish `hb : ‖(WithLp.toLp 2 (b *ᵥ fun i => v (e (.inr i))) : EuclideanSpace ℂ (Fin q))‖ ≤ c * ‖(WithLp.toLp 2 (fun i => v (e (.inr i))) : EuclideanSpace ℂ (Fin q))‖`. Rewrite using `[← Matrix.toEuclideanCLM_toLp]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Establish `: ((opNorm b : ℝ≥0) : ℝ) ≤ c` using `by rw [hcdef]; exact_mod_cast le_max_right _ _`. Conclude with `this`.
+
+Establish `key : ‖Matrix.toEuclideanCLM (n` using `Fin d) (𝕜 := ℂ) (blk e a b) (WithLp.toLp 2 v)‖ ^ 2 = ‖(WithLp.toLp 2 (a *ᵥ fun i => v (e (.inl i))) : EuclideanSpace ℂ (Fin p))‖ ^ 2 + ‖(WithLp.toLp 2 (b *ᵥ fun i => v (e (.inr i))) : EuclideanSpace ℂ (Fin q))‖ ^ 2 := by`. Rewrite using `[Matrix.toEuclideanCLM_toLp, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, ← e.sum_comp, Fintype.sum_sum_type]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun i _ => ?_ <;>`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, mulVec, dotProduct, ← e.sum_comp, Fintype.sum_sum_type]`. Establish `knorm : ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin d))‖ ^ 2 = ‖(WithLp.toLp 2 (fun i => v (e (.inl i))) : EuclideanSpace ℂ (Fin p))‖ ^ 2 + ‖(WithLp.toLp 2 (fun i => v (e (.inr i))) : EuclideanSpace ℂ (Fin q))‖ ^ 2`.
+
+Rewrite using `[EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, ← e.sum_comp, Fintype.sum_sum_type]`. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hc (norm_nonneg _)) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[key, mul_pow, knorm, mul_add, ← mul_pow, ← mul_pow]`. Conclude with `add_le_add (pow_le_pow_left₀ (norm_nonneg _) ha 2) (pow_le_pow_left₀ (norm_nonneg _) hb 2)`.
+-/
 theorem opNorm_blk_le (a : Matrix (Fin p) (Fin p) ℂ) (b : Matrix (Fin q) (Fin q) ℂ) :
     opNorm (blk e a b) ≤ max (opNorm a) (opNorm b) := by
   refine ContinuousLinearMap.opNNNorm_le_bound _ _ fun x => ?_
@@ -99,6 +123,13 @@ end Generic
 variable (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
 variable {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d)
 
+/- English proof (translation)
+Use `(normFin_le_iff F v).2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, reindex_apply, submatrix_apply]`. Apply the tactic sequence `rcases e.symm i with i | i <;> rcases e.symm j with j | j`. Rewrite using `[fromBlocks_apply₁₁]`. Conclude with `(absFin_le_normFin F v a i j).trans (le_max_left _ _)`.
+
+Rewrite using `[fromBlocks_apply₁₂, Matrix.zero_apply, absFin_zero]`. Conclude with `zero_le`. Rewrite using `[fromBlocks_apply₂₁, Matrix.zero_apply, absFin_zero]`. Conclude with `zero_le`. Rewrite using `[fromBlocks_apply₂₂]`.
+
+Conclude with `(absFin_le_normFin F v b i j).trans (le_max_right _ _)`.
+-/
 theorem normFin_blk_le (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))
     (a : Matrix (Fin p) (Fin p) (Fv F v ⊗[F] E)) (b : Matrix (Fin q) (Fin q) (Fv F v ⊗[F] E)) :
     normFin F v (blk e a b) ≤ max (normFin F v a) (normFin F v b) := by
@@ -110,6 +141,9 @@ theorem normFin_blk_le (v : IsDedekindDomain.HeightOneSpectrum (NumberField.Ring
   · rw [fromBlocks_apply₂₁, Matrix.zero_apply, absFin_zero]; exact zero_le
   · rw [fromBlocks_apply₂₂]; exact (absFin_le_normFin F v b i j).trans (le_max_right _ _)
 
+/- English proof (translation)
+The claim follows from `(normInf_le_iff F w).2 fun τ => by rw [blk_map _ _ _ (map_zero (infEmb τ))] exact (opNorm_blk_le e _ _).trans (max_le_max ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))`.
+-/
 theorem normInf_blk_le (w : InfinitePlace F) (a : Matrix (Fin p) (Fin p) (w.Completion ⊗[F] E))
     (b : Matrix (Fin q) (Fin q) (w.Completion ⊗[F] E)) :
     normInf F w (blk e a b) ≤ max (normInf F w a) (normInf F w b) :=
@@ -118,6 +152,11 @@ theorem normInf_blk_le (w : InfinitePlace F) (a : Matrix (Fin p) (Fin p) (w.Comp
     exact (opNorm_blk_le e _ _).trans
       (max_le_max ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))
 
+/- English proof (translation)
+Unfold `heightGL`. Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← finprod_mul_distrib (finite_mulSupport_htFin F x) (finite_mulSupport_htFin F y)]`. Use `mul_le_mul' (Finset.prod_le_prod' fun w _ => ?_) (finprod_le_finprod' (finite_mulSupport_htFin F _) ?_ fun v => ?_)` and prove the remaining obligations. Conclude with `htOf_blk_le e (normInf_blk_le F e w) _ _ _ (bc_val_blk e _ h1) (bc_inv_blk e _ h2)`. Conclude with `((finite_mulSupport_htFin F x).union (finite_mulSupport_htFin F y)).subset (Function.mulSupport_mul _ _)`.
+
+Conclude with `htOf_blk_le e (normFin_blk_le F e v) _ _ _ (bc_val_blk e _ h1) (bc_inv_blk e _ h2)`.
+-/
 theorem heightGL_blk_le (X : GL (Fin d) (AF F ⊗[F] E)) (x : GL (Fin p) (AF F ⊗[F] E)) (y : GL (Fin q) (AF F ⊗[F] E))
     (h1 : (X : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)) =
       blk e (x : Matrix (Fin p) (Fin p) (AF F ⊗[F] E)) (y : Matrix (Fin q) (Fin q) (AF F ⊗[F] E)))
@@ -134,6 +173,9 @@ theorem heightGL_blk_le (X : GL (Fin d) (AF F ⊗[F] E)) (x : GL (Fin p) (AF F �
   · exact ((finite_mulSupport_htFin F x).union (finite_mulSupport_htFin F y)).subset (Function.mulSupport_mul _ _)
   · exact htOf_blk_le e (normFin_blk_le F e v) _ _ _ (bc_val_blk e _ h1) (bc_inv_blk e _ h2)
 
+/- English proof (translation)
+Introduce `D A B d e J hJ g g₁`. Establish `h` using `heightGL_blk_le D.host.F e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU A B e hJ (g, g₁)).1 (Formalism.L2.Theta.matHom A g) (Formalism.L2.Theta.matHom B g₁) rfl (by show blk e (Formalism.L2.Theta.mt A g⁻¹) (Formalism.L2.Theta.mt B g₁⁻¹) = _`. Simplify using `only [Formalism.L2.Theta.mt, map_inv])`. Use `show ((heightGL D.host.F _ : ℝ≥0) : ℝ) ≤ ((heightGL D.host.F _ : ℝ≥0) : ℝ) * ((heightGL D.host.F _ : ℝ≥0) : ℝ)`. Conclude with `h` after adjusting the coercions.
+-/
 theorem ht_blkU_le : ∀ {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram A B e) (g : GA D A) (g₁ : GA D B),
     (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU A B e hJ (g, g₁)) : ℝ) ≤ GlobalTheory.Grow.height A g * GlobalTheory.Grow.height B g₁ := by

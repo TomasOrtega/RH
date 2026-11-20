@@ -13,6 +13,15 @@ namespace Formalism.FourierDecayAlt.P.CutBP.LimitNormalForms
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `set Bs := p.T.base`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW'` as an intermediate fact. Establish `hN` using `bessel_unipotent_equiv_holds Wp Wq P.k P.r Bs.z Bs.z' cStd Bs.π Bs.π' Bs.μW Bs.μN Bs.μW' F Bs.z_mem Bs.z'_mem Bs.haarN.conc (fun n₀ h => Bs.haarN.left n₀ h)`.
+
+Use `⟨fun g₀ hg₀ => Formalism.FourierDecayAlt.P5.Rad.jf_smoothLev Bs F hF g₀ ⟨hg₀.1, (CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2).2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g _ n hn`. Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, BesselCapelliCommutation.psi_one Bs.z'_mem, mul_one]`. Conclude with `e`.
+
+Introduce `g _ n hn`. Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`. Rewrite `e` using `[Matrix.one_mul, BesselCapelliCommutation.psi_one Bs.z_mem, one_mul]`. Conclude with `e`. Introduce `g _ h hh h' hh'`.
+
+Conclude with `Formalism.FourierDecayAlt.P5.jf_uEquiv Bs F g hh hh'`.
+-/
 theorem jf_mem_ffkb {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) :
@@ -35,6 +44,17 @@ theorem jf_mem_ffkb {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPro
   · intro g _ h hh h' hh'
     exact Formalism.FourierDecayAlt.P5.jf_uEquiv Bs F g hh hh'
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p f hf n`. Apply `jf_mem_ffkb` to reduce the goal to its premises. Establish `hcomp : IsCompact {g : B.Mat P.k P.r | B.gN g ≤ 2 * ((n : ℝ) + 1)}`. Establish `hcont : Continuous (fun g : B.Mat P.k P.r => B.gN g)`. Unfold `B.gN`.
+
+Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))`. Establish `hsub : {g : B.Mat P.k P.r | B.gN g ≤ 2 * ((n : ℝ) + 1)} ⊆ Metric.closedBall (0 : B.Mat P.k P.r) (2 * ((n : ℝ) + 1))`. Introduce `g hg`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(Matrix.norm_le_iff (by positivity)).mpr fun i j => le_trans ?_ hg` and prove the remaining obligations.
+
+Unfold `B.gN`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (g i j))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(isCompact_closedBall _ _).of_isClosed_subset (isClosed_le hcont continuous_const) hsub`. Introduce `A m`. Use `Formalism.FourierDecayAlt.P.JFxG.cptInCC_G (Formalism.FourierDecayAlt.P.CutBP.cutN_ckOn hf n) hcomp ?_ A m` and prove the remaining obligations. Introduce `g hg hgC`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hgC (Formalism.FourierDecayAlt.P.FormNormSumIdentities.cutN_supp f n g hg hne)`.
+-/
 theorem normal_form_jacobi_cutoff : NFJCutFF := by
   intro Wp Wq _ _ _ _ _ _ P p f hf n
   apply jf_mem_ffkb

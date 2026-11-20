@@ -23,6 +23,9 @@ def jacMap₂ {n h : ℕ} (hn : n + h = N) {ρ : Representation ℂ (GL (Fin N) 
     Jacquet ρ (unipRad k (two (stdSum hn))) →ₗ[ℂ] Jacquet σ (unipRad k (two (stdSum hn))) :=
   twMap ρ σ (unipRad k (two (stdSum hn))) 1 f.toLinearMap (fun g v => LinearMap.congr_fun (f.isIntertwining' g) v)
 
+/- English proof (translation)
+Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H x`. Conclude with `congrArg Submodule.Quotient.mk (LinearMap.congr_fun (f.isIntertwining' _) x)`.
+-/
 theorem jacMap₂_comm {n h : ℕ} (hn : n + h = N) {ρ : Representation ℂ (GL (Fin N) k) X}
     {σ : Representation ℂ (GL (Fin N) k) Y} (f : ρ.IntertwiningMap σ) (g : GL (Fin n) k × GL (Fin h) k)
     (v : Jacquet ρ (unipRad k (two (stdSum hn)))) :
@@ -63,16 +66,25 @@ def subProj {ρ : Representation ℂ G X} (S T : Subrepresentation ρ) (hc : IsC
       Submodule.projectionOnto_apply_of_mem_left hc.symm ht', zero_add, map_zero]
     rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.projectionOnto_apply_of_mem_right hc.symm x.2`.
+-/
 theorem subProj_subIncl_left {ρ : Representation ℂ G X} (S T : Subrepresentation ρ)
     (hc : IsCompl S.toSubmodule T.toSubmodule) (x : S.toSubmodule) : subProj S T hc (subIncl S x) = 0 :=
   Submodule.projectionOnto_apply_of_mem_right hc.symm x.2
 
+/- English proof (translation)
+The claim follows from `Submodule.projectionOnto_apply_of_mem_left hc.symm x.2`.
+-/
 theorem subProj_subIncl_right {ρ : Representation ℂ G X} (S T : Subrepresentation ρ)
     (hc : IsCompl S.toSubmodule T.toSubmodule) (x : T.toSubmodule) : subProj S T hc (subIncl T x) = x :=
   Submodule.projectionOnto_apply_of_mem_left hc.symm x.2
 
 variable [TopologicalSpace G]
 
+/- English proof (translation)
+Introduce `v`. Use `hρ (v : X) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `Subtype.ext_iff`.
+-/
 theorem isSmooth_sub {ρ : Representation ℂ G X} (hρ : IsSmooth ρ) (S : Subrepresentation ρ) :
     IsSmooth S.toRepresentation := by
   intro v
@@ -83,6 +95,15 @@ theorem isSmooth_sub {ρ : Representation ℂ G X} (hρ : IsSmooth ρ) (S : Subr
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Set `f : D →ₗ[ℂ] Z` to `e.toLinearEquiv.toLinearMap`. Establish `key : ∀ g y, f (σ g y) = twist τ χ g (f y)` using `fun g y => LinearMap.congr_fun (e.isIntertwining' g) y`. Establish `hinv : ∀ g, ∀ z ∈ I.map f, τ g z ∈ I.map f`. Introduce `g z hz`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hz`.
+
+Establish `h2 : τ g (f y) = (((χ g)⁻¹ : ℂˣ) : ℂ) • twist τ χ g (f y)`. Rewrite using `[twist_apply, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map.2 ⟨σ g y, hI g y hy, key g y⟩)`. Set `S : Subrepresentation τ` to `⟨I.map f, fun g v hv => hinv g v hv⟩`.
+
+Establish `hinjf : Function.Injective (Submodule.map f)` using `Submodule.map_injective_of_injective e.toLinearEquiv.injective`. Break down `hτ.eq_bot_or_eq_top S with hS | hS` into its components or cases. Use `left`. Apply `hinjf` to reduce the goal to its premises. Rewrite using `[Submodule.map_bot]`.
+
+Conclude with `congrArg Subrepresentation.toSubmodule hS`. Use `right`. Apply `hinjf` to reduce the goal to its premises. Rewrite using `[Submodule.map_top, LinearMap.range_eq_top.2 e.toLinearEquiv.surjective]`. Conclude with `congrArg Subrepresentation.toSubmodule hS`.
+-/
 theorem eq_bot_or_eq_top_of_equiv_twist {σ : Representation ℂ G D} {τ : Representation ℂ G Z} {χ : G →* ℂˣ}
     (e : σ.Equiv (twist τ χ)) (hτ : τ.IsIrreducible) (I : Submodule ℂ D) (hI : ∀ g, ∀ y ∈ I, σ g y ∈ I) :
     I = ⊥ ∨ I = ⊤ := by
@@ -111,6 +132,13 @@ theorem eq_bot_or_eq_top_of_equiv_twist {σ : Representation ℂ G D} {τ : Repr
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨a, ha⟩` from `exists_ne (0 : A)`. Establish `hm : DS a ∈ LinearMap.range DS` using `LinearMap.mem_range_self DS a`. Rewrite `hm` using `[h, Submodule.mem_bot]`.
+
+Conclude with `ha (hinj (hm.trans DS.map_zero.symm))`. Introduce `h`. Take `⟨b, hb⟩` from `exists_ne (0 : B)`. Establish `hm : DT b ∈ LinearMap.range DS` using `h ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `hm`.
+
+Apply `hb` to reduce the goal to its premises. Rewrite using `[← h1 b, ← ha, h0]`.
+-/
 theorem range_ne_bot_ne_top (DS : A →ₗ[ℂ] D) (DT : B →ₗ[ℂ] D) (Dp : D →ₗ[ℂ] B) (hinj : Function.Injective DS)
     [Nontrivial A] [Nontrivial B] (h0 : ∀ a, Dp (DS a) = 0) (h1 : ∀ b, Dp (DT b) = b) :
     LinearMap.range DS ≠ ⊥ ∧ LinearMap.range DS ≠ ⊤ := by

@@ -22,12 +22,20 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet (powL
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simp [powLine, constLine]`. Consider the case `succ r ih => simp [powLine, Geo.HermLine.tensor, ih, pow_succ]`.
+-/
 theorem h_powLine {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : Geo.HermLine ι) (r : ℕ)
     (z : (Σ k, ι k) → ℂ) : (powLine A r).h z = A.h z ^ r := by
   induction r with
   | zero => simp [powLine, constLine]
   | succ r ih => simp [powLine, Geo.HermLine.tensor, ih, pow_succ]
 
+/- English proof (translation)
+Establish `hW : (lbPow B r).U j ⊓ (lbPow B r).U j' ⊓ V ≤ B.U (j PUnit.unit) ⊓ B.U (j' PUnit.unit) ⊓ V` using `inf_le_inf_right V (inf_le_inf (pow_le r j) (pow_le r j'))`. Establish `e` using `congrArg (fun t => Semi.res hW t ^ r) (h (j PUnit.unit) (j' PUnit.unit))`. Simplify using `only [map_mul, mul_pow, GlobalTheory.CuspDim.IsoPow.res_res] at e`. Rewrite using `[res_pow_g]`. Simplify using `only [map_pow, GlobalTheory.CuspDim.IsoPow.res_res]`.
+
+Conclude with `e`.
+-/
 theorem frame_pow {Z : Scheme.{0}} (B : LB Z) (r : ℕ) (V : Z.Opens) (u : ∀ i, Γ(Z, B.U i ⊓ V)ˣ)
     (h : ∀ i j, Semi.res (le_inf (inf_le_left.trans inf_le_right) inf_le_right :
           B.U i ⊓ B.U j ⊓ V ≤ B.U j ⊓ V) (u j) =
@@ -52,11 +60,17 @@ theorem frame_pow {Z : Scheme.{0}} (B : LB Z) (r : ℕ) (V : Z.Opens) (u : ∀ i
   simp only [map_pow, GlobalTheory.CuspDim.IsoPow.res_res]
   exact e
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CuspDim.IsoPow.res_res _ _ _`.
+-/
 theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W W' : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) (h' : W' ≤ W) :
     Semi.res h' (blockUnit i j h) = blockUnit i j (h'.trans h) :=
   GlobalTheory.CuspDim.IsoPow.res_res _ _ _
 
+/- English proof (translation)
+Rewrite using `[Units.val_pow_eq_pow_val, CxPts.ev_eq hy, map_pow, ← CxPts.ev_eq hy]`. Conclude with `congrArg (· ^ r) (CxPts.ev_res h hy _)`.
+-/
 theorem ev_res_pow {p : (MP ℤ m n) ⟶ Sp ℤ} {W U : (MP ℤ m n).Opens} (h : W ≤ U) (v : Γ(MP ℤ m n, U)ˣ) (r : ℕ)
     {y : CxPts p σ₀} (hy : y ∈ ptsIn p σ₀ W) :
     CxPts.ev p σ₀ W ((Semi.res h v ^ r : Γ(MP ℤ m n, W)ˣ) : Γ(MP ℤ m n, W)) y =
@@ -64,6 +78,11 @@ theorem ev_res_pow {p : (MP ℤ m n) ⟶ Sp ℤ} {W U : (MP ℤ m n).Opens} (h :
   rw [Units.val_pow_eq_pow_val, CxPts.ev_eq hy, map_pow, ← CxPts.ev_eq hy]
   exact congrArg (· ^ r) (CxPts.ev_res h hy _)
 
+/- English proof (translation)
+Establish `hW : (lbPow B r).U j ⊓ (mchart c ⊓ mchart c') ≤ B.U (j PUnit.unit) ⊓ (mchart c ⊓ mchart c')` using `inf_le_inf_right _ (pow_le r j)`. Establish `e` using `congrArg (fun t => Semi.res hW t ^ r) h`. Simplify using `only [map_mul, mul_pow, map_prod, map_zpow, res_blockUnit, GlobalTheory.CuspDim.IsoPow.res_res] at e`. Simplify using `only [map_pow, GlobalTheory.CuspDim.IsoPow.res_res]`. Use `e.trans (congrArg _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[powLine_a, mul_comm, zpow_mul, zpow_natCast]`. Conclude with `congrArg (fun t => (t ^ A.a k) ^ r) (res_blockUnit _ _ _ _)`.
+-/
 theorem chart_pow {B : LB (MP ℤ m n)} (A : Geo.HermLine (Bk n)) (r : ℕ) (j : PUnit.{1} → B.ι) (c c' : ∀ k, Bk n k)
     (v : Γ(MP ℤ m n, B.U (j PUnit.unit) ⊓ mchart c)ˣ) (v' : Γ(MP ℤ m n, B.U (j PUnit.unit) ⊓ mchart c')ˣ)
     (h : Semi.res (le_inf inf_le_left (inf_le_right.trans inf_le_left) :
@@ -95,6 +114,15 @@ theorem chart_pow {B : LB (MP ℤ m n)} (A : Geo.HermLine (Bk n)) (r : ℕ) (j :
   rw [powLine_a, mul_comm, zpow_mul, zpow_natCast]
   exact congrArg (fun t => (t ^ A.a k) ^ r) (res_blockUnit _ _ _ _)
 
+/- English proof (translation)
+Take `⟨u, h₁, h₂, h₃⟩` from `hM`. Use `⟨fun (j : PUnit.{1} → M.B.ι) c => Semi.res (inf_le_inf_right _ (pow_le (B := M.B) r j)) (u (j PUnit.unit) c) ^ r, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' c`. Conclude with `frame_pow M.B r (mchart c) (fun i => u i c) (fun i j => h₁ i j c) j j'`. Introduce `j c c'`.
+
+Conclude with `chart_pow A r j c c' _ _ (h₂ (j PUnit.unit) c c')`. Introduce `(j : PUnit.{1} → M.B.ι) c y z hz hy`. Establish `hy' : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U (j PUnit.unit) ⊓ mchart c)` using `CxPts.ptsIn_mono (inf_le_inf_right _ (pow_le (B := M.B) r j)) hy`. Establish `e` using `h₃ (j PUnit.unit) c y z hz hy'`. Establish `eφ : ((M.pow r).φ σ₀).φ j y = r * (M.φ σ₀).φ (j PUnit.unit) y`.
+
+Conclude with `((M.φ σ₀).zpow_φ r j y).trans (by simp)`. Establish `ev` using `ev_res_pow (p := mpStr ℤ m n) (inf_le_inf_right (mchart c) (pow_le (B := M.B) r j)) (u (j PUnit.unit) c) r hy`. Use `beta_reduce`. Rewrite using `[h_powLine, e, eφ, show CxPts.ev (mpStr ℤ m n) σ₀ ((M.pow r).B.U j ⊓ mchart c) _ y = _ from ev, norm_pow, mul_pow, mul_pow, ← Finset.prod_pow, ← Real.exp_nat_mul, mul_div_assoc]`. Use `congr 2`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[powLine_a, mul_comm, zpow_mul, zpow_natCast]`.
+-/
 theorem isHermRep_pow (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (A : Geo.HermLine (Bk n)) (r : ℕ)
     (hM : IsHermRep M A) : IsHermRep (M.pow r) (powLine A r) := by
   obtain ⟨u, h₁, h₂, h₃⟩ := hM

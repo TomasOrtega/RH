@@ -12,6 +12,21 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open Formalism.MainNotions.N.PlaceLabelTeichmuller
 namespace UpperTheory.GalC
 attribute [local instance] GlobalTheory.PassOp.factGk GlobalTheory.PassOp.neZeroGk
+/- English proof (translation)
+Take `⟨-, ⟨Q, hDZ, hEig⟩, -, hSer⟩` from `hT`. Establish `h0 : SumRepresentations.tie0 D` using `hP.adm.1.1.1`. Establish `h1 : SumRepresentations.adm1 D` using `hP.adm.1.1.2.2.1`. Establish `h5 : SumRepresentations.adm5 D` using `hP.adm.1.1.2.2.2.2.2.2`. Establish `h41 : _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D` using `hP.Conclusion1.1`.
+
+Set `Xs : ∀ i, Set (D.nd.X i)` to `fun i => {x | ∃ PI, D.naut.ptV i PI = some x ∧ ∃ F ∈ D.naut.typeV i PI, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F ≠ 0}`. Establish `hZ : ∀ i, ∀ x ∈ D.nd.Zgood i, x ∈ D.nd.Z i` using `fun i x hx => (D.Z_tie i x).2 ((D.Zgood_tie i x).1 hx).1`. Establish `hgood : ∀ i, ∀ x ∈ D.nd.Zgood i, x ∈ Xs i` using `fun i x hx => by`. Take `⟨PI, hPI⟩` from `D.naut.pt_surj i x`. Take `⟨F, hF, hF0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (D.naut.typeV_ne i PI)`.
+
+Conclude with `⟨PI, hPI, F, hF, by`. Rewrite using `[(_root_.GlobalTheory.PassOp.onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem D Q hSer h41 h0 h1 h5 i x (hZ i x hx) PI hPI F hF).1 hx]`. Conclude with `hF0⟩`. Use `⟨⟨fun i => (D.nd.Zgood i).Nonempty, Xs, fun i ⟨x, hx⟩ => ⟨x, hgood i x hx⟩⟩, fun _ => Iff.rfl, hgood, fun i x hx ⟨PI, hPI, F, hF, hne⟩ => ?_, fun i _ => ?_, fun i _ P x ⟨PI, hPI, F, hF, hne⟩ hx k w hw => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxg`.
+
+Conclude with `hne ((_root_.GlobalTheory.PassOp.onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem D Q hSer h41 h0 h1 h5 i x hx PI hPI F hF).2 hxg)`. Take `⟨z, hact⟩` from `exists_unit_one_add_generator D (hCen D Q) i`. Use `⟨Q.zO i z, Q.zO_comm i z, fun x hx u hu => ?_, fun x hx u hu => ?_⟩` and prove the remaining obligations. Use `hEig i z x (D.what₂.restRowsFiniteGroupCard : D.nd.O i) (fun PI hPI F hF => by` as an intermediate fact. Rewrite using `[hact, (_root_.GlobalTheory.PassOp.onMt_e0_eq_self_of_mem_zgood_and_eq_zero_of_notMem D Q hSer h41 h0 h1 h5 i x (hZ i x hx) PI hPI F hF).1 hx, map_natCast]) u hu`.
+
+Rewrite using `[this, ← algebraMap_smul (KK D.nd i) (D.what₂.restRowsFiniteGroupCard : D.nd.O i) u, map_natCast, Int.cast_natCast]`. Use `hEig i z x 0 (fun PI hPI F hF => by` as an intermediate fact. Establish `e : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨PI, hPI, F, hF, hne⟩`.
+
+Rewrite using `[hact, e, smul_zero, map_zero, zero_smul]) u hu`. Rewrite using `[this, zero_smul]`. Take `⟨s, hg, hs⟩` from `exists_tuple D _ _ F hne`. Establish `hn` using `nc_of_type D Q hDZ h1 h0 i PI hg (fun k v => exists_type D Q i PI F hF k v _ (hs k v)) k w hw`. Take `⟨Pa, hB⟩` from `h1 i PI`.
+
+Take `⟨Pa', hB'⟩` from `h1 i P`. Establish `hperm : Pa.Perm Pa'` using `((h41 i).2.1 PI P (by rw [hPI]; exact Option.some_ne_none x) (hPI.trans hx.symm)).1 Pa Pa' hB hB'`. Establish `hB2` using `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm.symm hB'`. Establish `hsp` using `GlobalTheory.DepthZeroType.isSplitPl_of_over D k w hw`. Rewrite `hn` using `[← hB.2.2.2.1 w hsp, hB2.2.2.2.1 w hsp]`. Then use the resulting hypothesis.
+-/
 theorem exists_good_alt (hCen : ∀ (D : D7) (_ : PairedCharacterCondition.Pend D), GlobalTheory.Pass.CentralElt D) {D : D7} {nch : NChoice D} (hP : _root_.UpperTheory.GalC.GaloisPreconditions D nch)
     (hT : Tie4 D) : ∃ c : CutD D, c.Good := by
   classical

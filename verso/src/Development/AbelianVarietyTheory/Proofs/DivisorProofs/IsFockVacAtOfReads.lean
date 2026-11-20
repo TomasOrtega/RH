@@ -17,6 +17,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdTh.FockVac
 
+/- English proof (translation)
+Establish `hc : ∀ z w, conj (H z w) = H w z` using `fun z w => by`. Simplify using `only [hH, map_sum, map_mul, conj_ofReal, conj_conj]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `e : (fun t : ℝ => cexp (Real.pi * I * ((∑ b, (H (Z b) (((t : ℂ) • A) b)).im : ℝ) : ℂ)) * (cexp (-(Real.pi / 2 : ℂ) * ∑ b, H ((Z + (t : ℂ) • A) b) ((Z + (t : ℂ) • A) b)) * F (Z + (t : ℂ) • A))) = fun t : ℝ => (fun u : ℂ => cexp (-(Real.pi / 2 : ℂ) * ∑ b, H (Z b) (Z b) + (-(Real.pi …`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Establish `h1 : ∀ b, I * ((H (Z b) (((t : ℂ) • A) b)).im : ℂ) = t * (H (Z b) (A b) - H (A b) (Z b)) / 2` using `fun b => by`. Establish `h2 : H (Z b) (((t : ℂ) • A) b) = t * H (Z b) (A b)`. Simplify using `only [hH, Pi.smul_apply, smul_eq_mul, map_mul, conj_ofReal, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[h2, ← hc (Z b) (A b), Complex.sub_conj, Complex.im_ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ b, H ((Z + (t : ℂ) • A) b) ((Z + (t : ℂ) • A) b) = H (Z b) (Z b) + t * H (Z b) (A b) + t * H (A b) (Z b) + t ^ 2 * H (A b) (A b)` using `fun b => by`.
+
+Simplify using `only [hH, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_mul, map_add, conj_ofReal, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[Complex.ofReal_sum, mul_assoc, Finset.mul_sum]`. Simplify using `only [h1, h3, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_div, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Use `HasDerivAt.comp_ofReal (e := fun u : ℂ => cexp (-(Real.pi / 2 : ℂ) * ∑ b, H (Z b) (Z b) + (-(Real.pi * ∑ b, H (A b) (Z b)) * u + -(Real.pi / 2 : ℂ) * (∑ b, H (A b) (A b)) * u ^ 2)) * F (Z + u • A)) ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_zero]`. Establish `h1 : HasDerivAt (fun u : ℂ => Z + u • A) A 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const A).const_add Z`.
+
+Establish `h2 : HasDerivAt (fun u : ℂ => F (Z + u • A)) (fderiv ℂ F Z A) 0`. Use `(hF (Z + (0 : ℂ) • A)).hasFDerivAt.comp_hasDerivAt (0 : ℂ) h1` as an intermediate fact. Rewrite `this` using `[zero_smul, add_zero]`. Then use the resulting hypothesis. Establish `h3` using `((((hasDerivAt_id (0 : ℂ)).const_mul (-(Real.pi * ∑ b, H (A b) (Z b)))).fun_add ((hasDerivAt_pow 2 (0 : ℂ)).const_mul (-(Real.pi / 2 : ℂ) * (∑ b, H (A b) (A b))))).const_add (-(Real.pi / 2 : ℂ) * ∑ b, H (Z b) (Z b))).cexp.fun_mul h2`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [id, zero_smul, add_zero, mul_zero, mul_one, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Nat.add_one_sub_one, pow_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_translate {n g : ℕ} (c : Fin g → ℝ) (H : (Fin g → ℂ) → (Fin g → ℂ) → ℂ)
     (hH : ∀ z w, H z w = ∑ j, (c j : ℂ) * z j * conj (w j)) (F : (Fin n → Fin g → ℂ) → ℂ) (hF : Differentiable ℂ F)
     (Z A : Fin n → Fin g → ℂ) :
@@ -66,6 +81,17 @@ theorem hasDerivAt_translate {n g : ℕ} (c : Fin g → ℝ) (H : (Fin g → ℂ
     Nat.add_one_sub_one, pow_one]
   ring
 
+/- English proof (translation)
+Introduce `D ψ θ V W r g hr X bas idx hψ hθ hV hev hm hs x s hx0 hinv f φ hf hR τ z`. Take `⟨hd, -, hH⟩` from `hx_of_isONFr _ r g V.rank X bas idx hs hev x hx0`. Take `⟨-, hadd, hline, -⟩` from `RealCoord.zOf_coordinates D ψ θ V W r g hr X bas idx hψ hθ hV hev hm hs x`. Establish `hJ` using `(GlobalTheory.FrameCplx.cplx_of_frame D ψ θ V W r g hr X bas idx hψ hθ hV hev hm hs x s hx0 hinv).2.2 τ z`. Establish `hF` using `GlobalTheory.SW.ThetaHol.differentiable_thA idx hs hR.1 hd`.
+
+Use `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real (WeilVacMove.isTheta_add (WeilVacMove.isTheta_dRho hψ hθ τ z hf) (WeilVacMove.isTheta_smul I (WeilVacMove.isTheta_dRho hψ hθ τ _ hf))) fun w hw => ?_` and prove the remaining obligations. Establish `hw' : w.map (finPart D) = 0` using `hw`. Establish `key : ∀ u, Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ u f w = cexp (-(Real.pi / 2 : ℂ) * ∑ b, hx X bas idx x (zOf θ V W hr X idx x w b) (zOf θ V W hr X idx x w b)) * (-(Real.pi * ∑ b, hx X bas idx x (zOf θ V W hr X idx x (lineAt θ τ u 1) b) (zOf θ V W hr X idx x w b)) * thA X …` using `fun u => by`. Rewrite using `[← (hasDerivAt_translate _ _ hH _ hF _ _).deriv]`. Unfold `Formalism.IndefR.Datum.dRho`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `h0 : (w + lineAt θ τ u t).map (finPart D) = 0`. Rewrite using `[Matrix.map_add _ (finPart D).map_add, hw', (WeilVacMove.isLineAt_lineAt hθ τ u).2.1 t, add_zero]`. Rewrite using `[heisO, GlobalTheory.AdThSympl.psi_symplOH_eq_of_isONFr D ψ θ V W r g hr X bas idx hψ hθ hV hev hm hs x hx0 w _ hw', hR.2 _ h0, hadd, hline]`.
+
+Establish `hI : ∀ a b : Fin g → ℂ, hx X bas idx x (I • a) b = I * hx X bas idx x a b` using `fun a b => by`. Simplify using `only [hH, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[annih, Pi.add_apply, Pi.smul_apply, key, key, hJ, map_smul]`. Simplify using `only [Pi.smul_apply, hI, ← Finset.mul_sum, smul_eq_mul]`.
+
+Take the linear combination `(cexp (-(Real.pi / 2 : ℂ) * ∑ b, hx X bas idx x (zOf θ V W hr X idx x w b) (zOf θ V W hr X idx x w b)) * (-(Real.pi * ∑ b, hx X bas idx x (zOf θ V W hr X idx x (lineAt θ τ z 1) b) (zOf θ V W hr X idx x w b)) * thA X bas idx φ x (zOf θ V W hr X idx x w) + fderiv ℂ (thA X bas idx φ …`.
+-/
 theorem isFockVacAt_of_reads : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ (x : Frame X.Ψ r) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), IsONFr X x → IsInvOf W hr X x s → ∀ (f : WO V W → ℂ) (φ : TF V.rank g), IsThetaFunO ψ V W f → Reads θ V W hr X bas idx f φ x → ∀ τ, IsFockVacAt (heisO ψ V W) θ τ (cplxO 1 (s τ)) f := by
   intro D ψ θ V W r g hr X bas idx hψ hθ hV hev hm hs x s hx0 hinv f φ hf hR τ z
   obtain ⟨hd, -, hH⟩ := hx_of_isONFr _ r g V.rank X bas idx hs hev x hx0

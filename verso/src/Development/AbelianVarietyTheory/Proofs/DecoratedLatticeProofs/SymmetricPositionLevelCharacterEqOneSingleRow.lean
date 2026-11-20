@@ -5,6 +5,21 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 noncomputable section
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ ϖ ρ κ l P hP i₀ g h1 h2`. Establish `hs : simpleSum (g : GL (Fin κ ⊕ Fin l) k) = 0`. Unfold `simpleSum`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`.
+
+Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Conclude with `h2 j hij`. Establish `hne : i ≠ j`. Introduce `e`.
+
+Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1 _ _ (by simpa using hi)]`. Simplify using `[hne]`. Both sides reduce to the same expression.
+
+Establish `hu : superSum Fin.val (g : GL (Fin κ ⊕ Fin l) k).val.toBlocks₁₁ = 0`. Unfold `superSum`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Establish `hne : a ≠ b`.
+
+Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.toBlocks₁₁]`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[h1 _ _ (by simp)]`. Simplify using `[hne]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hP.2 g, hs, hu]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem lam_purerow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (ϖ : kˣ) (ρ κ l : ℕ) (P : TypeDatum k (Fin κ ⊕ Fin l)), GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsSymLevel ψ ϖ ρ P → ∀ (i₀ : Fin l) (g : P.J), (∀ a b, a ≠ Sum.inr i₀ → (g : GL (Fin κ ⊕ Fin l) k).val a b = (1 : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k) a b) → (∀ i : Fin l, i.val = i₀.val + 1 → (g : GL (Fin κ ⊕ Fin l) k).val (Sum.inr i₀) (Sum.inr i) = 0) → P.lam g = 1 := by
   intro k _ _ _ _ ψ ϖ ρ κ l P hP i₀ g h1 h2
   have hs : simpleSum (g : GL (Fin κ ⊕ Fin l) k) = 0 := by

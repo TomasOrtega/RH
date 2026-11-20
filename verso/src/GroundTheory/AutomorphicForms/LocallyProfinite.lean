@@ -12,6 +12,9 @@ section Space
 variable {X : Type*} [TopologicalSpace X] [LocallyCompactSpace X] [T2Space X]
   [TotallyDisconnectedSpace X]
 
+/- English proof (translation)
+Take `⟨K, hK, hKU, hKc⟩` from `local_compact_nhds hU`. Take `⟨V, hV, hxV, hVK⟩` from `loc_compact_Haus_tot_disc_of_zero_dim.mem_nhds_iff.1 hK`. Conclude with `⟨V, hKc.of_isClosed_subset hV.isClosed hVK, hV.isOpen, hxV, hVK.trans hKU⟩`.
+-/
 theorem exists_isCompact_isOpen_subset {x : X} {U : Set X} (hU : U ∈ 𝓝 x) :
     ∃ V : Set X, IsCompact V ∧ IsOpen V ∧ x ∈ V ∧ V ⊆ U := by
   obtain ⟨K, hK, hKU, hKc⟩ := local_compact_nhds hU
@@ -25,6 +28,15 @@ section VanDantzig
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Take `⟨W, hWc, hWo, h1W, hWU⟩` from `exists_isCompact_isOpen_subset hU`. Take `⟨V, hV1, hWV⟩` from `compact_open_separated_mul_right hWc hWo subset_rfl`. Set `H : Subgroup G` to `{ carrier := {x | ∀ w, w ∈ W ↔ w * x ∈ W} one_mem' := fun w => by simp mul_mem' := fun {a b} ha hb w => by rw [ha w, hb (w * a), mul_assoc] inv_mem' := fun {a} ha w => by`. Use `ha (w * a⁻¹)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`.
+
+Conclude with `this.symm }`. Establish `hVH : V ∩ V⁻¹ ⊆ (H : Set G)`. Introduce and unpack `v ⟨hv, hv'⟩ w`. Use `⟨fun hw => hWV (Set.mul_mem_mul hw hv), fun hw => ?_⟩` and prove the remaining obligations. Use `hWV (Set.mul_mem_mul hw (Set.mem_inv.1 hv'))` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hHn : (H : Set G) ∈ 𝓝 (1 : G)` using `mem_of_superset (inter_mem hV1 (inv_mem_nhds_one G hV1)) hVH`. Establish `hHW : (H : Set G) ⊆ W` using `fun x hx => by`. Use `(hx 1).1 h1W` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Set `K : OpenSubgroup G` to `⟨H, H.isOpen_of_mem_nhds hHn⟩`. Conclude with `⟨K, hWc.of_isClosed_subset K.isClosed hHW, hHW.trans hWU⟩`.
+-/
 theorem exists_openSubgroup_isCompact_subset {U : Set G} (hU : U ∈ 𝓝 (1 : G)) :
     ∃ K : OpenSubgroup G, IsCompact (K : Set G) ∧ (K : Set G) ⊆ U := by
   obtain ⟨W, hWc, hWo, h1W, hWU⟩ := exists_isCompact_isOpen_subset hU
@@ -51,12 +63,18 @@ theorem exists_openSubgroup_isCompact_subset {U : Set G} (hU : U ∈ 𝓝 (1 : G
   let K : OpenSubgroup G := ⟨H, H.isOpen_of_mem_nhds hHn⟩
   exact ⟨K, hWc.of_isClosed_subset K.isClosed hHW, hHW.trans hWU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨fun hU => exists_openSubgroup_isCompact_subset hU, fun ⟨K, _, hKU⟩ => mem_of_superset K.mem_nhds_one hKU⟩⟩`.
+-/
 theorem hasBasis_nhds_one_compactOpenSubgroup :
     (𝓝 (1 : G)).HasBasis (fun K : OpenSubgroup G => IsCompact (K : Set G))
       (fun K => (K : Set G)) :=
   ⟨fun _ => ⟨fun hU => exists_openSubgroup_isCompact_subset hU,
     fun ⟨K, _, hKU⟩ => mem_of_superset K.mem_nhds_one hKU⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← map_mul_left_nhds_one g]`. Use `(hasBasis_nhds_one_compactOpenSubgroup (G := G)).map (g * ·) using 2 with K` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_smul_set, smul_eq_mul, Set.mem_image]`.
+-/
 theorem hasBasis_nhds_compactOpenSubgroup (g : G) :
     (𝓝 g).HasBasis (fun K : OpenSubgroup G => IsCompact (K : Set G))
       (fun K => g • (K : Set G)) := by
@@ -65,17 +83,32 @@ theorem hasBasis_nhds_compactOpenSubgroup (g : G) :
   ext x
   simp only [Set.mem_smul_set, smul_eq_mul, Set.mem_image]
 
+/- English proof (translation)
+Take `⟨K, hK, -⟩` from `exists_openSubgroup_isCompact_subset (univ_mem : univ ∈ 𝓝 (1 : G))`. Conclude with `⟨K, hK⟩`.
+-/
 theorem exists_compactOpenSubgroup : ∃ K : OpenSubgroup G, IsCompact (K : Set G) := by
   obtain ⟨K, hK, -⟩ := exists_openSubgroup_isCompact_subset (univ_mem : univ ∈ 𝓝 (1 : G))
   exact ⟨K, hK⟩
 
 omit [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Rewrite using `[OpenSubgroup.coe_inf]`. Conclude with `hK.inter_right L.isClosed`.
+-/
 theorem isCompact_inf_left {K L : OpenSubgroup G} (hK : IsCompact (K : Set G)) :
     IsCompact ((K ⊓ L : OpenSubgroup G) : Set G) := by
   rw [OpenSubgroup.coe_inf]
   exact hK.inter_right L.isClosed
 
+/- English proof (translation)
+Take `⟨L, hLc, hLU⟩` from `exists_openSubgroup_isCompact_subset hU`. Establish `hopen : IsOpen ((fun p : G × G => p.1 * p.2 * p.1⁻¹) ⁻¹' (L : Set G))` using `L.isOpen.preimage (by fun_prop)`. Establish `hsub : (K : Set G) ×ˢ ({1} : Set G) ⊆ (fun p : G × G => p.1 * p.2 * p.1⁻¹) ⁻¹' (L : Set G)`. Introduce and unpack `⟨k, x⟩ ⟨-, hx⟩`. Simplify using `only [mem_singleton_iff] at hx`.
+
+Simplify using `[hx]`. Take `⟨u, v, -, hv, hKu, h1v, huv⟩` from `generalized_tube_lemma hK isCompact_singleton hopen hsub`. Set `N₀ : Subgroup G` to `{ carrier := {x | ∀ k ∈ K, k * x * k⁻¹ ∈ L} one_mem' := fun k _ => by simp mul_mem' := fun {a b} ha hb k hk => by`. Use `mul_mem (ha k hk) (hb k hk)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Use the proof step `inv_mem' := fun {a} ha k hk => by`. Use `inv_mem (ha k hk)` as an intermediate fact. Simplify `this }` using `[mul_assoc]`. Establish `hvN : v ⊆ (N₀ : Set G)` using `fun x hx k hk => huv (show (k, x) ∈ u ×ˢ v from ⟨hKu hk, hx⟩)`. Establish `hN₀n : (N₀ : Set G) ∈ 𝓝 (1 : G)` using `mem_of_superset (hv.mem_nhds (h1v rfl)) hvN`.
+
+Establish `hN₀L : (N₀ : Set G) ⊆ L` using `fun x hx => by simpa using hx 1 K.one_mem`. Set `N : OpenSubgroup G` to `⟨N₀, N₀.isOpen_of_mem_nhds hN₀n⟩`. Use `⟨N, hLc.of_isClosed_subset N.isClosed hN₀L, hN₀L.trans hLU, fun k hk n hn j hj => ?_⟩` and prove the remaining obligations. Use `hn (j * k) (mul_mem hj hk)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem exists_compactOpenSubgroup_normalized {K : Subgroup G} (hK : IsCompact (K : Set G))
     {U : Set G} (hU : U ∈ 𝓝 (1 : G)) :
     ∃ N : OpenSubgroup G, IsCompact (N : Set G) ∧ (N : Set G) ⊆ U ∧

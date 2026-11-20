@@ -23,6 +23,9 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 open GlobalTheory.Orb (archMat)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MaxCptFrame.exists_frame_lines_mem | exact GlobalTheory.MaxCptFrame.exists_frame_lines_mem | (intros; apply GlobalTheory.MaxCptFrame.exists_frame_lines_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_signature_basis_max_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ K : Subgroup (GAd σ J), GlobalTheory.UAut.IsMaxCpt σ J K → ∀ (w : InfinitePlace F) (τ : EmbOver E w),

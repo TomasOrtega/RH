@@ -31,6 +31,13 @@ variable {V V' Q : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Modu
 
 def eigSet (T G : Module.End ℂ V) (t : ℂ) : Set V := {v | ∃ k : ℤ, T v = (k : ℂ) • v ∧ G v = t ^ k • v}
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨k, h1, h2⟩` from `hv`. Use `⟨{k}, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.aeval_apply_of_mem_apply_eq_smul h1, hp k (by simp), h2]`.
+
+Consider the case `zero => exact ⟨∅, fun p _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨s', hs'⟩` from `hy`. Use `⟨s ∪ s', fun p hp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, hs p fun k hk => hp k (by simp [hk]), hs' p fun k hk => hp k (by simp [hk])]`. Consider the case `smul c x _ hx`. Take `⟨s, hs⟩` from `hx`. Conclude with `⟨s, fun p hp => by rw [map_smul, map_smul, hs p hp]⟩`.
+-/
 theorem exists_nodes (T G : Module.End ℂ V) (t : ℂ) (v : V) (hv : v ∈ Submodule.span ℂ (eigSet T G t)) :
     ∃ s : Finset ℤ, ∀ p : Polynomial ℂ, (∀ k ∈ s, p.eval (k : ℂ) = t ^ k) → G v = Polynomial.aeval T p v := by
   induction hv using Submodule.span_induction with
@@ -48,6 +55,13 @@ theorem exists_nodes (T G : Module.End ℂ V) (t : ℂ) (v : V) (hv : v ∈ Subm
     obtain ⟨s, hs⟩ := hx
     exact ⟨s, fun p hp => by rw [map_smul, map_smul, hs p hp]⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_nodes T G t P (hV ▸ Submodule.mem_top)`. Take `⟨s', hs'⟩` from `exists_nodes T' G' t P' (hV' ▸ Submodule.mem_top)`. Establish `hp : ∀ k ∈ s ∪ s', (Lagrange.interpolate (s ∪ s') (fun k : ℤ => (k : ℂ)) (fun k => t ^ k)).eval (k : ℂ) = t ^ k` using `fun k hk => Lagrange.eval_interpolate_at_node (v := fun k : ℤ => (k : ℂ)) _ (Int.cast_injective.injOn) hk`. Rewrite using `[hs _ fun k hk => hp k (by simp [hk]), hs' _ fun k hk => hp k (by simp [hk])]`. Generalize the expression as in `Lagrange.interpolate (s ∪ s') (fun k : ℤ => (k : ℂ)) (fun k => t ^ k) = p`.
+
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C c => simp [hP]`. Consider the case `add p r hp hr => simp only [map_add, LinearMap.add_apply, hp, hr]`. Consider the case `monomial n c ih`. Establish `e : Polynomial.C c * Polynomial.X ^ (n + 1) = Polynomial.X * (Polynomial.C c * Polynomial.X ^ n)` using `by ring`.
+
+Rewrite using `[e, map_mul, map_mul (Polynomial.aeval T'), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `h _ _ ih`.
+-/
 theorem transfer (q : V →ₗ[ℂ] Q) (q' : V' →ₗ[ℂ] Q) (T G : Module.End ℂ V) (T' G' : Module.End ℂ V') (t : ℂ)
     (h : ∀ P P', q P = q' P' → q (T P) = q' (T' P'))
     (hV : Submodule.span ℂ (eigSet T G t) = ⊤) (hV' : Submodule.span ℂ (eigSet T' G' t) = ⊤)
@@ -77,37 +91,64 @@ def rho (S : ι → Matrix (Fin d) (Fin d) ℂ) : Derivation ℂ (Pol ι d a) (P
   mkDerivation ℂ fun y => rowSub S (X y)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[rowSub, smul_eq_C_mul]`.
+-/
 theorem rowSub_X (S : ι → Matrix (Fin d) (Fin d) ℂ) (y : Var ι d a) :
     rowSub S (X y : Pol ι d a) = ∑ i', S y.1 i' y.2.1 • X (y.1, i', y.2.2) := by
   simp [rowSub, smul_eq_C_mul]
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `mkDerivation_X _ _ _`.
+-/
 theorem rho_X (S : ι → Matrix (Fin d) (Fin d) ℂ) (y : Var ι d a) : rho S (X y) = rowSub S (X y) :=
   mkDerivation_X _ _ _
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[rowSub_X, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem rowSub_add_X (S S' : ι → Matrix (Fin d) (Fin d) ℂ) (y : Var ι d a) :
     rowSub (S + S') (X y : Pol ι d a) = rowSub S (X y) + rowSub S' (X y) := by
   simp [rowSub_X, add_smul, Finset.sum_add_distrib]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[rowSub_X, Finset.smul_sum, smul_smul]`.
+-/
 theorem rowSub_smul_X (c : ℂ) (S : ι → Matrix (Fin d) (Fin d) ℂ) (y : Var ι d a) :
     rowSub (c • S) (X y : Pol ι d a) = c • rowSub S (X y) := by
   simp [rowSub_X, Finset.smul_sum, smul_smul]
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `derivation_ext fun y => by simp [rho_X, rowSub_add_X]`.
+-/
 theorem rho_add (S S' : ι → Matrix (Fin d) (Fin d) ℂ) : (rho (S + S') : Derivation ℂ (Pol ι d a) _) = rho S + rho S' :=
   derivation_ext fun y => by simp [rho_X, rowSub_add_X]
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `derivation_ext fun y => by simp [rho_X, rowSub_smul_X]`.
+-/
 theorem rho_smul (c : ℂ) (S : ι → Matrix (Fin d) (Fin d) ℂ) : (rho (c • S) : Derivation ℂ (Pol ι d a) _) = c • rho S :=
   derivation_ext fun y => by simp [rho_X, rowSub_smul_X]
 
+/- English proof (translation)
+The claim follows from `RowIrr.rowSub_rowSub S A P`.
+-/
 theorem rowSub_mul (S A : ι → Matrix (Fin d) (Fin d) ℂ) (P : Pol ι d a) : rowSub S (rowSub A P) = rowSub (S * A) P :=
   RowIrr.rowSub_rowSub S A P
 
+/- English proof (translation)
+The claim follows from `RowIrr.rowSub_one P`.
+-/
 theorem rowSub_one' (P : Pol ι d a) : rowSub (1 : ι → Matrix (Fin d) (Fin d) ℂ) P = P := RowIrr.rowSub_one P
 
+/- English proof (translation)
+Rewrite using `[← rowSub_mul, rowSub_X A, map_sum, map_sum]`. Simplify using `only [map_smul, Derivation.map_smul, rho_X]`.
+-/
 theorem rho_rowSub_X (S A : ι → Matrix (Fin d) (Fin d) ℂ) (y : Var ι d a) :
     rho S (rowSub A (X y)) = rowSub (S * A) (X y) := by
   rw [← rowSub_mul, rowSub_X A, map_sum, map_sum]
@@ -117,6 +158,11 @@ def natSet (S : ι → Matrix (Fin d) (Fin d) ℂ) (t : ℂ) : Set (Pol ι d a) 
   {P | ∃ k : ℕ, rho S P = (k : ℂ) • P ∧ rowSub (1 + (t - 1) • S) P = t ^ k • P}
 
 omit [Fintype ι] in
+/- English proof (translation)
+Take `⟨k, h1, h2⟩` from `hP`. Take `⟨l, h3, h4⟩` from `hR`. Use `⟨k + l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, h1, h3]`. Simplify using `only [smul_eq_mul, mul_smul_comm, Nat.cast_add, add_smul, mul_comm R P]`.
+
+Conclude with `add_comm _ _`. Rewrite using `[map_mul, h2, h4, pow_add, smul_mul_smul_comm]`.
+-/
 theorem natSet_mul {S : ι → Matrix (Fin d) (Fin d) ℂ} {t : ℂ} {P R : Pol ι d a} (hP : P ∈ natSet S t)
     (hR : R ∈ natSet S t) : P * R ∈ natSet S t := by
   obtain ⟨k, h1, h2⟩ := hP
@@ -127,6 +173,19 @@ theorem natSet_mul {S : ι → Matrix (Fin d) (Fin d) ℂ} {t : ℂ} {P R : Pol 
     exact add_comm _ _
   · rw [map_mul, h2, h4, pow_add, smul_mul_smul_comm]
 
+/- English proof (translation)
+Establish `hmul : ∀ R ∈ natSet (a` using `a) S t, ∀ P ∈ Submodule.span ℂ (natSet (a := a) S t), P * R ∈ Submodule.span ℂ (natSet (a := a) S t) := by`. Introduce `R hR P hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem v hv => exact Submodule.subset_span (natSet_mul hv hR)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`. Rewrite using `[eq_top_iff]`.
+
+Introduce `P hP`. Use `clear hP`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c`. Use `Submodule.subset_span ⟨0, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add p r hp hr => exact Submodule.add_mem _ hp hr`. Consider the case `mul_X p y hp`. Establish `e : (X y : Pol ι d a) = rowSub S (X y) + rowSub (1 - S) (X y)`.
+
+Rewrite using `[← rowSub_add_X, add_sub_cancel, rowSub_one']`. Rewrite using `[e, mul_add]`. Use `Submodule.add_mem _ (hmul _ ⟨1, ?_, ?_⟩ _ hp) (hmul _ ⟨0, ?_, ?_⟩ _ hp)` and prove the remaining obligations. Rewrite using `[rho_rowSub_X, hS]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[rowSub_mul, pow_one, ← rowSub_smul_X, add_mul, smul_mul_assoc, hS, one_mul, sub_smul, one_smul, add_sub_cancel]`. Rewrite using `[rho_rowSub_X, mul_sub, hS, mul_one, sub_self, ← rowSub_smul_X]`. Simplify using the standard rewrite rules. Rewrite using `[rowSub_mul, add_mul, smul_mul_assoc, mul_sub S, hS, mul_one, sub_self]`. Simplify using the standard rewrite rules.
+-/
 theorem span_natSet (S : ι → Matrix (Fin d) (Fin d) ℂ) (hS : S * S = S) (t : ℂ) :
     Submodule.span ℂ (natSet (a := a) S t) = ⊤ := by
   have hmul : ∀ R ∈ natSet (a := a) S t, ∀ P ∈ Submodule.span ℂ (natSet (a := a) S t),
@@ -188,6 +247,9 @@ def LieRel : Prop := ∀ (τ : ι) (Z : Matrix (Fin d) (Fin d) ℂ) P P', q P = 
   q (-(rho (Pi.single τ Zᵀ) P) + ((n τ : ℂ) * Z.trace) • P) = q' (rho (Pi.single τ Z) P')
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[hS]`. Simplify using `[h]`.
+-/
 theorem single_idem (τ : ι) {S : Matrix (Fin d) (Fin d) ℂ} (hS : S * S = S) :
     (Pi.single τ S : ι → Matrix (Fin d) (Fin d) ℂ) * Pi.single τ S = Pi.single τ S := by
   funext σ
@@ -196,6 +258,9 @@ theorem single_idem (τ : ι) {S : Matrix (Fin d) (Fin d) ℂ} (hS : S * S = S) 
   · simp [h]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem mulSingle_eq (τ : ι) (S : Matrix (Fin d) (Fin d) ℂ) (c : ℂ) :
     (Pi.mulSingle τ (1 + c • S) : ι → Matrix (Fin d) (Fin d) ℂ) = 1 + c • (Pi.single τ S : ι → Matrix (Fin d) (Fin d) ℂ) := by
   funext σ
@@ -205,6 +270,25 @@ theorem mulSingle_eq (τ : ι) (S : Matrix (Fin d) (Fin d) ℂ) (c : ℂ) :
 
 variable {q q' n}
 
+/- English proof (translation)
+Introduce `P P' h`. Establish `hinv : (1 + (t - 1) • S)⁻¹ = 1 + (t⁻¹ - 1) • S`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hS, smul_smul, add_assoc, ← add_smul]`. Establish `: t⁻¹ - 1 + (t - 1) * (1 + (t⁻¹ - 1)) = 0` using `by field_simp; ring`.
+
+Simplify using `only [smul_add, smul_smul, ← add_smul]`. Establish `h2 : t⁻¹ - 1 + (t - 1 + (t - 1) * (t⁻¹ - 1)) = 0` using `by rw [← this]; ring`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `e1 : (fun σ => ((Pi.mulSingle τ (1 + (t - 1) • S) : ι → Matrix (Fin d) (Fin d) ℂ) σ)⁻¹ᵀ) = 1 + (t⁻¹ - 1) • (Pi.single τ Sᵀ : ι → Matrix (Fin d) (Fin d) ℂ)`.
+
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[hinv]`. Simplify using `[h]`.
+
+Establish `e2 : detChar n (Pi.mulSingle τ (1 + (t - 1) • S) : ι → Matrix (Fin d) (Fin d) ℂ) = t ^ n τ`. Unfold `detChar`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using `[hdet]`. Introduce `σ _ h`.
+
+Simplify using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, mulSingle_eq, ← map_smul]`. Establish `hST : Sᵀ * Sᵀ = Sᵀ` using `by rw [← Matrix.transpose_mul, hS]`. Use `symm`.
+
+Use `transfer q q' (-(rho (Pi.single τ Sᵀ)).toLinearMap + (n τ : ℂ) • 1) (t ^ n τ • (rowSub (1 + (t⁻¹ - 1) • (Pi.single τ Sᵀ : ι → Matrix (Fin d) (Fin d) ℂ))).toLinearMap) (rho (Pi.single τ S)).toLinearMap (rowSub (1 + (t - 1) • (Pi.single τ S : ι → Matrix (Fin d) (Fin d) ℂ))).toLinea …` and prove the remaining obligations. Introduce `P P' h`. Use `hL τ S P P' h` as an intermediate fact. Rewrite `this` using `[htr, mul_one]`. Conclude with `this`.
+
+Rewrite using `[eq_top_iff, ← span_natSet _ (single_idem τ hST) t⁻¹]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨k, h1, h2⟩`. Use `⟨(n τ : ℤ) - k, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(rho _ v) + (n τ : ℂ) • v = _`.
+
+Rewrite using `[h1]`. Use `push_cast`. Use `module`. Express the relevant statement in the definitionally equal form `t ^ n τ • rowSub _ v = _`. Rewrite using `[h2, smul_smul, zpow_sub₀ ht]`.
+
+Simplify using `[div_eq_mul_inv]`. Rewrite using `[eq_top_iff, ← span_natSet _ (single_idem τ hS) t]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨k, h1, h2⟩`. Conclude with `⟨k, by simpa using h1, by simpa using h2⟩`.
+-/
 theorem idem_mem (hL : LieRel q q' n) (τ : ι) (S : Matrix (Fin d) (Fin d) ℂ) (hS : S * S = S) (htr : S.trace = 1)
     (t : ℂ) (ht : t ≠ 0) (hdet : (1 + (t - 1) • S).det = t) :
     (Pi.mulSingle τ (1 + (t - 1) • S) : ι → Matrix (Fin d) (Fin d) ℂ) ∈ good q q' n := by
@@ -251,6 +335,13 @@ theorem idem_mem (hL : LieRel q q' n) (τ : ι) (S : Matrix (Fin d) (Fin d) ℂ)
     rintro v ⟨k, h1, h2⟩
     exact ⟨k, by simpa using h1, by simpa using h2⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Distinguish the cases in `h' : i = k`. Substitute `h'` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h', Ne.symm h']`. Simplify using `only [diagonal_apply_ne _ h, Matrix.add_apply, one_apply_ne h, Matrix.smul_apply, zero_add]`. Rewrite using `[Matrix.single_apply_of_ne, smul_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `h rfl`.
+-/
 theorem diag_one_eq (k : Fin d) (t : ℂ) :
     (diagonal (Pi.mulSingle k t) : Matrix (Fin d) (Fin d) ℂ) = 1 + (t - 1) • Matrix.single k k 1 := by
   ext i j
@@ -263,6 +354,11 @@ theorem diag_one_eq (k : Fin d) (t : ℂ) :
     rw [Matrix.single_apply_of_ne, smul_zero]
     rintro ⟨rfl, rfl⟩; exact h rfl
 
+/- English proof (translation)
+Use `idem_mem hL τ _ (by simp) (by simp) t ht ?_` and prove the remaining obligations. Rewrite using `[← diag_one_eq, det_diagonal, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diag_one_mem (hL : LieRel q q' n) (τ : ι) (k : Fin d) (t : ℂ) (ht : t ≠ 0) :
     (Pi.mulSingle τ (1 + (t - 1) • Matrix.single k k 1) : ι → Matrix (Fin d) (Fin d) ℂ) ∈ good q q' n := by
   refine idem_mem hL τ _ (by simp) (by simp) t ht ?_
@@ -271,6 +367,19 @@ theorem diag_one_mem (hL : LieRel q q' n) (τ : ι) (k : Fin d) (t : ℂ) (ht : 
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Set `K : Submonoid (Matrix (Fin d) (Fin d) ℂ)` to `(good q q' n).comap (MonoidHom.mulSingle (fun _ : ι => Matrix (Fin d) (Fin d) ℂ) τ)`. Express the relevant statement in the definitionally equal form `g ∈ K`. Use `diagonal_transvection_induction_of_det_ne_zero (fun g => g ∈ K) g hg ?_ ?_ fun A B _ _ hA hB => K.mul_mem hA hB` and prove the remaining obligations. Introduce `E hE`. Rewrite `hE` using `[det_diagonal, Finset.prod_ne_zero_iff]`.
+
+Express the relevant statement in the definitionally equal form `E ∈ K.comap (diagonalRingHom (Fin d) ℂ).toMonoidHom`. Rewrite using `[← Finset.univ_prod_mulSingle E]`. Use `Submonoid.prod_mem _ fun k hk => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(diagonal (Pi.mulSingle k (E k)) : Matrix (Fin d) (Fin d) ℂ) ∈ K`. Rewrite using `[diag_one_eq]`.
+
+Conclude with `diag_one_mem hL τ k _ (hE k hk)`. Introduce and unpack `⟨i, l, hil, c⟩`. Establish `e : (1 + ((2 : ℂ)⁻¹ - 1) • Matrix.single i i 1) * (1 + ((2 : ℂ) - 1) • (Matrix.single i i 1 + Matrix.single i l (2 * c))) = transvection i l c`. Simplify using `only [transvection, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, Matrix.single_mul_single_same]`. Establish `: Matrix.single i l (2 * c) = (2 : ℂ) • Matrix.single i l c` using `by simp`.
+
+Rewrite using `[this]`. Use `module`. Express the relevant statement in the definitionally equal form `transvection i l c ∈ K`. Rewrite using `[← e]`. Use `K.mul_mem (diag_one_mem hL τ i _ (by norm_num)) (idem_mem hL τ _ ?_ ?_ 2 two_ne_zero ?_)` and prove the remaining obligations.
+
+Simplify using `[add_mul, mul_add, Matrix.single_mul_single_of_ne, hil.symm]`. Simplify using `[Matrix.trace_single_eq_of_ne, hil]`. Establish `h` using `congrArg det e`. Rewrite `h` using `[det_mul, det_transvection_of_ne _ _ hil, ← diag_one_eq, det_diagonal, Finset.prod_eq_single i]`. Simplify using `only [Pi.mulSingle_eq_same] at h`.
+
+Take the linear combination `2 * h`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem mulSingle_mem (hL : LieRel q q' n) (τ : ι) (g : Matrix (Fin d) (Fin d) ℂ) (hg : g.det ≠ 0) :
     (Pi.mulSingle τ g : ι → Matrix (Fin d) (Fin d) ℂ) ∈ good q q' n := by
   let K : Submonoid (Matrix (Fin d) (Fin d) ℂ) :=
@@ -305,11 +414,25 @@ theorem mulSingle_mem (hL : LieRel q q' n) (τ : ι) (g : Matrix (Fin d) (Fin d)
       · intro b _ hb; simp [hb]
       · simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.noncommProd_mulSingle g]`. Conclude with `Submonoid.noncommProd_mem _ _ _ _ fun τ _ => mulSingle_mem hL τ _ (hg τ)`.
+-/
 theorem mem_good (hL : LieRel q q' n) (g : ι → Matrix (Fin d) (Fin d) ℂ) (hg : ∀ τ, (g τ).det ≠ 0) :
     g ∈ good q q' n := by
   rw [← Finset.noncommProd_mulSingle g]
   exact Submonoid.noncommProd_mem _ _ _ _ fun τ _ => mulSingle_mem hL τ _ (hg τ)
 
+/- English proof (translation)
+Introduce `τ Z P P' hP`. Choose the witnesses or unpack the hypotheses as in `⟨A, B, hA, hB, rfl⟩ : ∃ A B : Matrix (Fin d) (Fin d) ℂ, Aᴴ = -A ∧ Bᴴ = -B ∧ Z = A + Complex.I • B := by`. Use `⟨(2 : ℂ)⁻¹ • (Z - Zᴴ), (-Complex.I / 2) • (Z + Zᴴ), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]`. Establish `: star ((2 : ℂ)⁻¹) = 2⁻¹` using `by simp`.
+
+Rewrite using `[this]`. Use `module`. Simplify using `only [conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose]`. Establish `: star (-Complex.I / 2) = Complex.I / 2` using `by simp`. Rewrite using `[this]`.
+
+Use `module`. Rewrite using `[smul_smul]`. Establish `: Complex.I * (-Complex.I / 2) = 2⁻¹`. Take the linear combination `(-1 / 2 : ℂ) * Complex.I_mul_I`. Rewrite using `[this]`.
+
+Use `module`. Establish `h1` using `h τ A hA P P' hP`. Establish `h2` using `h τ B hB P P' hP`. Simplify using `only [transpose_add, transpose_smul, Pi.single_add, Pi.single_smul', rho_add, rho_smul, Derivation.add_apply, Derivation.smul_apply, map_add, map_smul, map_neg, trace_add, trace_smul, smul_eq_mul] at h1 h2 ⊢`. Rewrite using `[← h1, ← h2]`.
+
+Use `module`.
+-/
 theorem lieRel_of_skew (h : ∀ (τ : ι) (Z : Matrix (Fin d) (Fin d) ℂ), Zᴴ = -Z → ∀ P P', q P = q' P' →
     q (-(rho (Pi.single τ Zᵀ) P) + ((n τ : ℂ) * Z.trace) • P) = q' (rho (Pi.single τ Z) P')) : LieRel q q' n := by
   intro τ Z P P' hP
@@ -340,12 +463,24 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators
 
 variable {D : D7} {a b : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]`.
+-/
 theorem der_sum_apply {R κ : Type} [CommRing R] [Algebra ℂ R] (s : Finset κ) (f : κ → Derivation ℂ R R) (x : R) :
     (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]
 
+/- English proof (translation)
+Establish `: (rho (Pi.single τ Y) : Derivation ℂ (PolF D b a) (PolF D b a)) = ∑ i, ∑ l, Y i l • ∑ j, (X (τ, i, j) : PolF D b a) • pderiv (τ, l, j)`. Use `derivation_ext ?_` and prove the remaining obligations. Introduce and unpack `⟨σ, m, k⟩`. Rewrite using `[rho_X, rowSub_X]`. Simplify using `only [der_sum_apply, Derivation.smul_apply, pderiv_X, smul_eq_mul, Pi.single_apply, Prod.mk.injEq]`.
+
+Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single m, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[Ne.symm hj]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Ne.symm hj]`.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[this]`. Simplify using `only [der_sum_apply, Derivation.smul_apply, smul_eq_mul]`.
+-/
 theorem rho_single_apply (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (P : PolF D b a) :
     rho (Pi.single τ Y) P = ∑ i, ∑ l, Y i l • ∑ j, X (τ, i, j) * pderiv (τ, l, j) P := by
   have : (rho (Pi.single τ Y) : Derivation ℂ (PolF D b a) (PolF D b a)) =
@@ -368,6 +503,11 @@ theorem rho_single_apply (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (
   rw [this]
   simp only [der_sum_apply, Derivation.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, diag_apply, ← Nat.cast_smul_eq_nsmul ℂ] module`. Introduce `l _ hl`.
+
+Simplify using `[Ne.symm hl]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_diag (Y : Matrix (Fin b) (Fin b) ℂ) (c : ℂ) (P : PolF D b a) :
     ∑ i, ∑ l, Y i l • ∑ _j : Fin a, (if i = l then c • P else 0) = ((a : ℂ) * c * Y.trace) • P := by
   rw [Matrix.trace, Finset.mul_sum, Finset.sum_smul]
@@ -378,6 +518,11 @@ theorem sum_diag (Y : Matrix (Fin b) (Fin b) ℂ) (c : ℂ) (P : PolF D b a) :
   · intro l _ hl; simp [Ne.symm hl]
   · simp
 
+/- English proof (translation)
+Rewrite using `[rho_single_apply, ← sum_diag]`. Simplify using `only [fockT, LinearMap.sum_apply, LinearMap.smul_apply, ← Finset.sum_add_distrib, ← smul_add]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases h : i = l <;> simp [raiO, lowO, sgn, h]`.
+-/
 theorem fockT_pos (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (P : PolF D b a) :
     fockT τ (fun _ : Fin a => true) (fun _ : Fin b => true) Y P =
       rho (Pi.single τ Y) P + ((a : ℂ) * (1 / 2) * Y.trace) • P := by
@@ -388,6 +533,11 @@ theorem fockT_pos (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (P : Pol
   refine Finset.sum_congr rfl fun j _ => ?_
   by_cases h : i = l <;> simp [raiO, lowO, sgn, h]
 
+/- English proof (translation)
+Rewrite using `[rho_single_apply, ← sum_diag, Finset.sum_comm]`. Simplify using `only [fockT, LinearMap.sum_apply, LinearMap.smul_apply, ← Finset.sum_add_distrib, ← smul_add, transpose_apply, ← Finset.sum_neg_distrib, ← smul_neg]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using `[raiO, lowO, sgn]`. Use `module`. Simplify using `[raiO, lowO, sgn, h, pderiv_X, Pi.single_apply, Ne.symm h]`.
+-/
 theorem fockT_neg (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (P : PolF D b a) :
     fockT τ (fun _ : Fin a => false) (fun _ : Fin b => true) Y P =
       -(rho (Pi.single τ Yᵀ) P) + ((a : ℂ) * (-1 / 2) * Y.trace) • P := by
@@ -403,6 +553,11 @@ theorem fockT_neg (τ : D.what₂.Tau) (Y : Matrix (Fin b) (Fin b) ℂ) (P : Pol
     module
   · simp [raiO, lowO, sgn, h, pderiv_X, Pi.single_apply, Ne.symm h]
 
+/- English proof (translation)
+Establish `f1 : @Eq (Fin M.rank → Bool) ((GlobalTheory.SquareComm.frSgn true A).ε τ) fun _ => false`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(true ^^ A.ε τ j) = false`. Rewrite using `[hA]`. Both sides reduce to the same expression.
+
+Establish `f3 : B.ε τ = fun _ => true` using `funext hB`. Rewrite using `[← fockT_neg, ← f1, ← f3]`. Both sides reduce to the same expression.
+-/
 theorem actT_true {M X : HSp D} (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (eS : D.what₂.Tau → ℚ) (τ : D.what₂.Tau)
     (hA : ∀ j, A.ε τ j = true) (hB : ∀ i, B.ε τ i = true) (Y : Matrix (Fin X.rank) (Fin X.rank) ℂ)
     (P : PolF D X.rank M.rank) :
@@ -415,6 +570,13 @@ theorem actT_true {M X : HSp D} (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheor
   rw [← fockT_neg, ← f1, ← f3]
   rfl
 
+/- English proof (translation)
+Establish `f1 : @Eq (Fin M.rank → Bool) ((GlobalTheory.SquareComm.frSgn false A).ε τ) fun _ => true`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(false ^^ A.ε τ j) = true`. Rewrite using `[hA]`. Both sides reduce to the same expression.
+
+Establish `f3 : B.ε τ = fun _ => true` using `funext hB`. Establish `h` using `fockT_pos τ (B.fr τ * Y * (B.fr τ)⁻¹) P`. Rewrite using `[← h]`. Unfold `GlobalTheory.RealQuot.actT`. Rewrite using `[f1, f3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem actT_false {M X : HSp D} (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) (eS : D.what₂.Tau → ℚ) (τ : D.what₂.Tau)
     (hA : ∀ j, A.ε τ j = true) (hB : ∀ i, B.ε τ i = true) (Y : Matrix (Fin X.rank) (Fin X.rank) ℂ)
     (P : PolF D X.rank M.rank) :
@@ -430,6 +592,13 @@ theorem actT_false {M X : HSp D} (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheo
   rw [f1, f3]
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit (B.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (B.fr_unit τ)`. Establish `hJ : Formalism.REAL.Jm (B.ε τ) = 1`. Simplify using `[Formalism.REAL.Jm, hB]`. Use `⟨(B.fr τ)⁻¹ * Z * B.fr τ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hu' : IsUnit (B.fr τ)ᴴ.det` using `by rw [det_conjTranspose]; exact hu.star`.
+
+Express the relevant statement in the definitionally equal form `_ * _ + _ * _ = 0`. Rewrite using `[← B.fr_gram, hJ, mul_one, conjTranspose_mul, conjTranspose_mul, conjTranspose_nonsing_inv, hZ]`. Simplify using `only [mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu', Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Simplify using the standard rewrite rules. Simplify using `only [mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_nonsing_inv_cancel_left _ _ hu, mul_one]`.
+
+Rewrite using `[Matrix.trace_mul_comm, ← mul_assoc, Matrix.mul_nonsing_inv _ hu, one_mul]`.
+-/
 theorem exists_lie {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) (τ : D.what₂.Tau) (hB : ∀ i, B.ε τ i = true)
     (Z : Matrix (Fin X.rank) (Fin X.rank) ℂ) (hZ : Zᴴ = -Z) :
     ∃ Y ∈ lieAt X τ, B.fr τ * Y * (B.fr τ)⁻¹ = Z ∧ Y.trace = Z.trace := by
@@ -445,6 +614,9 @@ theorem exists_lie {X : HSp D} (B : GlobalTheory.ChainFr.Fr X) (τ : D.what₂.T
   · simp only [mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_nonsing_inv_cancel_left _ _ hu, mul_one]
   · rw [Matrix.trace_mul_comm, ← mul_assoc, Matrix.mul_nonsing_inv _ hu, one_mul]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take the linear combination `(norm := module) h`.
+-/
 theorem scalar_shift {Q : Type} [AddCommGroup Q] [Module ℂ Q] (x y z : Q) (m m' e e' n t : ℂ)
     (hn : n = e - e' - (m + m') / 2)
     (h : -x + (m * (-1 / 2) * t) • z + (e * t) • z = y + (m' * (1 / 2) * t) • z + (e' * t) • z) :
@@ -452,6 +624,9 @@ theorem scalar_shift {Q : Type} [AddCommGroup Q] [Module ℂ Q] (x y z : Q) (m m
   subst hn
   linear_combination (norm := module) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.inv_eq_left_inv (B := star (κ : Matrix (Fin n) (Fin n) ℂ)) κ.2.1]`. Both sides reduce to the same expression.
+-/
 theorem unitary_inv_transpose {n : ℕ} (κ : Matrix.unitaryGroup (Fin n) ℂ) :
     (κ : Matrix (Fin n) (Fin n) ℂ)⁻¹ᵀ = (κ : Matrix (Fin n) (Fin n) ℂ).map (starRingEnd ℂ) := by
   rw [Matrix.inv_eq_left_inv (B := star (κ : Matrix (Fin n) (Fin n) ℂ)) κ.2.1]
@@ -461,6 +636,15 @@ end Fock
 
 open Matrix in
 
+/- English proof (translation)
+Introduce `D M M' X A A' B eS eS' n₀ Q _ _ q q' hA hA' hB hn hL κ P P' hP`. Establish `hrel : LieRel q q' n₀`. Use `lieRel_of_skew fun τ Z hZ P P' hP => ?_` and prove the remaining obligations. Take `⟨Y, hY, e1, e2⟩` from `exists_lie B τ (hB τ) Z hZ`. Establish `h` using `hL P P' hP τ Y hY`.
+
+Rewrite `h` using `[actT_true A B eS τ (hA τ) (hB τ), actT_false A' B eS' τ (hA' τ) (hB τ), e1, e2]`. Establish `hc : (n₀ τ : ℂ) = (eS τ : ℂ) - eS' τ - ((M.rank : ℂ) + M'.rank) / 2`. Use `congrArg (fun x : ℚ => (x : ℂ)) (hn τ)` as an intermediate fact. Simplify using `using this`. Simplify using `only [map_add, map_neg, map_smul, ← hP] at h`.
+
+Rewrite using `[map_add, map_neg, map_smul]`. Conclude with `scalar_shift _ _ _ _ _ _ _ _ _ hc h`. Establish `hdet : ∀ τ, (κ τ : Matrix (Fin X.rank) (Fin X.rank) ℂ).det ≠ 0` using `fun τ => (Matrix.UnitaryGroup.det_isUnit (κ τ)).ne_zero`. Establish `h` using `mem_good hrel _ hdet P P' hP`. Simplify using `only [unitary_inv_transpose] at h`.
+
+Conclude with `h`.
+-/
 theorem row_transport : ∀ (D : D7) (M M' X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (A' : GlobalTheory.ChainFr.Fr M') (B : GlobalTheory.ChainFr.Fr X)
     (eS eS' : D.what₂.Tau → ℚ) (n₀ : D.what₂.Tau → ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q]
     (q : PolF D X.rank M.rank →ₗ[ℂ] Q) (q' : PolF D X.rank M'.rank →ₗ[ℂ] Q),

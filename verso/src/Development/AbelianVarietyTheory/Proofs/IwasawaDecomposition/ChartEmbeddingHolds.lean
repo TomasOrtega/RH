@@ -18,13 +18,22 @@ def ballPre {Ω C : Type} [Field Ω] [NormedField C] [IsUltrametricDist C] (ι :
     · exact Or.inl h
     · exact Or.inr (inv_le_one_of_one_le₀ h)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballPre {Ω C : Type} [Field Ω] [NormedField C] [IsUltrametricDist C] (ι : Ω →+* C) (x : Ω) :
     x ∈ ballPre ι ↔ ‖ι x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`.
+-/
 theorem val_lt_one_iff {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (x : Ω) :
     A.valuation x < 1 ↔ x = 0 ∨ x⁻¹ ∉ A := by
   rw [← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]
 
+/- English proof (translation)
+Rewrite using `[val_lt_one_iff, mem_ballPre, map_inv₀, norm_inv, not_le]`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h0 : 0 < ‖ι x‖` using `norm_pos_iff.2 ((map_ne_zero ι).2 hx)`. Simplify using `[hx, one_lt_inv₀ h0]`.
+-/
 theorem ballPre_lt_one {Ω C : Type} [Field Ω] [NormedField C] [IsUltrametricDist C] (ι : Ω →+* C) (x : Ω) :
     (ballPre ι).valuation x < 1 ↔ ‖ι x‖ < 1 := by
   rw [val_lt_one_iff, mem_ballPre, map_inv₀, norm_inv, not_le]
@@ -37,15 +46,34 @@ def idl (F : Type) {Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F �
     (A : ValuationSubring Ω) : Ideal (𝓞 F) :=
   (ReciprocityTheory.Gal.primeBelow (F := F) A).under (𝓞 F)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_idl {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) (x : 𝓞 F) :
     x ∈ idl F A ↔ A.valuation (algebraMap F Ω (x : F)) < 1 := Iff.rfl
 
+/- English proof (translation)
+Unfold `idl`. Use `infer_instance`.
+-/
 theorem idl_isPrime {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) :
     (idl F A).IsPrime := by
   unfold idl; infer_instance
 
+/- English proof (translation)
+Use `letI : Algebra F C := f.toAlgebra`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Set `ι₀ : Ω →ₐ[F] C` to `IsAlgClosed.lift`. Establish `hι₀ : ∀ x, (ι₀ : Ω →+* C) (algebraMap F Ω x) = f x` using `fun x => ι₀.commutes x`. Set `A'` to `ballPre (ι₀ : Ω →+* C)`.
+
+Establish `hle : idl F A' ≤ idl F A`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_idl, val_lt_one_iff]`. Use `hx.imp id fun h1 h2 => h1 ?_` and prove the remaining obligations. Rewrite `h2`, the goal using `[← map_inv₀]`.
+
+Rewrite using `[mem_ballPre, hι₀]`. Conclude with `h _ h2`. Establish `hne : idl F A' ≠ ⊥`. Introduce `e`. Establish `: (n : 𝓞 F) ∈ idl F A'`.
+
+Rewrite using `[mem_idl, ballPre_lt_one]`. Simplify using `using hp`. Rewrite `this` using `[e, Ideal.mem_bot]`. Conclude with `hn (by exact_mod_cast this)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨idl F A', idl_isPrime A', hne⟩`.
+
+Establish `heq : idl F A' = idl F A` using `v.isMaximal.eq_of_le (idl_isPrime A).ne_top hle`. Take `⟨g, hg⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_over (A := A) (A' := A') (v := v) (fun x => by rw [← mem_idl, ← heq]) (fun x => by rw [← mem_idl])`. Use `⟨(ι₀ : Ω →+* C).comp (g : Ω →+* Ω), fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← hι₀]`. Conclude with `congrArg _ (g.commutes x)`.
+
+Establish `: g • x ∈ g • A` using `ValuationSubring.smul_mem_pointwise_smul_iff.2 hx`. Rewrite `this` using `[hg]`. Conclude with `this`.
+-/
 theorem exists_ext {F Ω C : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     [NormedField C] [IsUltrametricDist C] [IsAlgClosed C] (A : ValuationSubring Ω) (f : F →+* C)
     (n : ℕ) (hn : n ≠ 0) (hp : ‖(n : C)‖ < 1) (h : ∀ x : F, algebraMap F Ω x ∈ A → ‖f x‖ ≤ 1) :
@@ -84,6 +112,13 @@ end GlobalTheory.LocM.Cht.EmbExt
 
 namespace GlobalTheory.LocM.Cht
 
+/- English proof (translation)
+Introduce `p W F C f hp hW hF h`. Use `haveI : NumberField ↥F := ⟨⟩`. Establish `hle : F ≤ algebraicClosure ℚ ℂ` using `le_algebraicClosure ℚ ℂ F`. Use `letI : Algebra ↥F ↥(algebraicClosure ℚ ℂ) := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ ↥F ↥(algebraicClosure ℚ ℂ) := IsScalarTower.of_algebraMap_eq fun x => by simp`.
+
+Use `haveI : Algebra.IsAlgebraic ℚ ↥(algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`. Use `haveI : IsAlgClosure ↥F ↥(algebraicClosure ℚ ℂ) := ⟨(algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Establish `hpC : ‖(p : ↥C.S)‖ < 1`. Rewrite using `[C.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)`.
+
+Take `⟨ι, h1, h2⟩` from `EmbExt.exists_ext (W.comap (algebraicClosure ℚ ℂ).val.toRingHom) f p hp.ne_zero hpC (fun x hx => h x hx)`. Conclude with `⟨ι, fun x _ => h1 x, fun x hx => h2 x hx⟩`.
+-/
 theorem embSt : EmbSt := by
   intro p W F C f hp hW hF h
   haveI : NumberField ↥F := ⟨⟩

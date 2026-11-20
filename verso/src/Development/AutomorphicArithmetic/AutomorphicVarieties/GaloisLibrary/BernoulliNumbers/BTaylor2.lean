@@ -3,11 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern
 
+/- English proof (translation)
+Establish `hmem : ((t : ℂ)) ∈ Complex.slitPlane` using `Complex.ofReal_mem_slitPlane.2 ht`. Conclude with `(Complex.hasStrictDerivAt_cpow_const (c := c) hmem).hasDerivAt.comp_ofReal`.
+-/
 private lemma hd_cpow (c : ℂ) (t : ℝ) (ht : 0 < t) :
     HasDerivAt (fun x : ℝ => (x : ℂ) ^ c) (c * (t : ℂ) ^ (c - 1)) t := by
   have hmem : ((t : ℂ)) ∈ Complex.slitPlane := Complex.ofReal_mem_slitPlane.2 ht
   exact (Complex.hasStrictDerivAt_cpow_const (c := c) hmem).hasDerivAt.comp_ofReal
 
+/- English proof (translation)
+Establish `hge : ∀ z ∈ Set.uIcc x y, a ≤ z`. Introduce `z hz`. Break down `Set.mem_uIcc.1 hz with h | h` into its components or cases. Conclude with `le_trans hx h.1`. Conclude with `le_trans hy h.1`.
+
+Establish `hder : ∀ z ∈ Set.uIcc x y, HasDerivWithinAt (fun w : ℝ => (w : ℂ) ^ (-s - 1)) ((-s - 1) * (z : ℂ) ^ (-s - 1 - 1)) (Set.uIcc x y) z`. Introduce `z hz`. Conclude with `(hd_cpow (-s - 1) z (lt_of_lt_of_le ha (hge z hz))).hasDerivWithinAt`. Establish `hbd : ∀ z ∈ Set.uIcc x y, ‖(-s - 1) * (z : ℂ) ^ (-s - 1 - 1)‖ ≤ ‖s + 1‖ * a ^ (-s.re - 2)`. Introduce `z hz`.
+
+Establish `hz0 : 0 < z` using `lt_of_lt_of_le ha (hge z hz)`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hz0]`. Establish `h1 : ‖-s - 1‖ = ‖s + 1‖`. Rewrite using `[show -s - 1 = -(s + 1) by ring, norm_neg]`. Establish `h2 : (-s - 1 - 1).re = -s.re - 2` using `by simp; ring`.
+
+Rewrite using `[h1, h2]`. Establish `h3 : z ^ (-s.re - 2) ≤ a ^ (-s.re - 2)` using `Real.rpow_le_rpow_of_nonpos ha (hge z hz) (show -s.re - 2 ≤ 0 by linarith)`. Conclude with `mul_le_mul_of_nonneg_left h3 (norm_nonneg _)`. Conclude with `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hder hbd (convex_uIcc x y) Set.left_mem_uIcc Set.right_mem_uIcc`.
+-/
 private lemma lip (s : ℂ) (a x y : ℝ) (ha : 0 < a) (hx : a ≤ x) (hy : a ≤ y) (hs : -2 ≤ s.re) :
     ‖(y : ℂ) ^ (-s - 1) - (x : ℂ) ^ (-s - 1)‖ ≤ ‖s + 1‖ * a ^ (-s.re - 2) * ‖y - x‖ := by
   have hge : ∀ z ∈ Set.uIcc x y, a ≤ z := by
@@ -34,6 +46,21 @@ private lemma lip (s : ℂ) (a x y : ℝ) (ha : 0 < a) (hx : a ≤ x) (hy : a �
   exact Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hder hbd (convex_uIcc x y)
     Set.left_mem_uIcc Set.right_mem_uIcc
 
+/- English proof (translation)
+Introduce `s a u v ha hu hv hs`. Establish `hge : ∀ z ∈ Set.uIcc u v, a ≤ z`. Introduce `z hz`. Break down `Set.mem_uIcc.1 hz with h | h` into its components or cases. Conclude with `le_trans hu h.1`.
+
+Conclude with `le_trans hv h.1`. Use `set g : ℝ → ℂ := fun x => (x : ℂ) ^ (-s) - (u : ℂ) ^ (-s) + s * ((x : ℂ) - u) * (u : ℂ) ^ (-s - 1) with hg`. Establish `hder : ∀ z ∈ Set.uIcc u v, HasDerivWithinAt g (-s * (z : ℂ) ^ (-s - 1) + s * (u : ℂ) ^ (-s - 1)) (Set.uIcc u v) z`. Introduce `z hz`. Establish `hz0 : 0 < z` using `lt_of_lt_of_le ha (hge z hz)`.
+
+Establish `h1` using `hd_cpow (-s) z hz0`. Establish `h2 : HasDerivAt (fun x : ℝ => s * ((x : ℂ) - u) * (u : ℂ) ^ (-s - 1)) (s * 1 * (u : ℂ) ^ (-s - 1)) z` using `(((hasDerivAt_id z).ofReal_comp.sub_const (u : ℂ)).const_mul s).mul_const _`. Establish `h3` using `(h1.sub_const ((u : ℂ) ^ (-s))).add h2`. Simplify using `only [mul_one] at h3`. Conclude with `h3.hasDerivWithinAt`.
+
+Establish `hbd : ∀ z ∈ Set.uIcc u v, ‖-s * (z : ℂ) ^ (-s - 1) + s * (u : ℂ) ^ (-s - 1)‖ ≤ ‖s‖ * ‖s + 1‖ * a ^ (-s.re - 2) * ‖v - u‖`. Introduce `z hz`. Establish `he : -s * (z : ℂ) ^ (-s - 1) + s * (u : ℂ) ^ (-s - 1) = s * ((u : ℂ) ^ (-s - 1) - (z : ℂ) ^ (-s - 1))` using `by ring`. Rewrite using `[he, norm_mul]`. Establish `hl` using `lip s a z u ha (hge z hz) hu hs`.
+
+Establish `hd : ‖u - z‖ ≤ ‖v - u‖`. Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_sub_comm]`. Conclude with `Set.abs_sub_left_of_mem_uIcc hz`. Establish `hC : 0 ≤ ‖s + 1‖ * a ^ (-s.re - 2)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hder hbd (convex_uIcc u v) Set.left_mem_uIcc Set.right_mem_uIcc`. Establish `hgu : g u = 0` using `by simp [hg]`. Establish `hgv : g v = (v : ℂ) ^ (-s) - (u : ℂ) ^ (-s) + s * ((v : ℂ) - u) * (u : ℂ) ^ (-s - 1)` using `rfl`. Rewrite `key` using `[hgu, sub_zero, hgv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.norm_eq_abs, mul_assoc _ |v - u| |v - u|, ← sq, sq_abs]`.
+-/
 theorem UpperTheory.V.Bern.b_taylor2 :
     ∀ (s : ℂ) (a u v : ℝ), 0 < a → a ≤ u → a ≤ v → -2 ≤ s.re → ‖(v : ℂ) ^ (-s) - (u : ℂ) ^ (-s) + s * ((v : ℂ) - u) * (u : ℂ) ^ (-s - 1)‖ ≤ ‖s‖ * ‖s + 1‖ * a ^ (-s.re - 2) * (v - u) ^ 2 := by
   intro s a u v ha hu hv hs

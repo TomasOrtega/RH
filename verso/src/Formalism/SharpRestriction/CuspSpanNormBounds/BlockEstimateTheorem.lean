@@ -197,6 +197,9 @@ def OrbitValuationBound (Gm : GM) (C C' : ℝ) (Kst : ℕ) : Prop := ∀ x (i : 
 def KudlaFamilyStatement (Gm : GM) (Kst : ℕ) (CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ C C' : ℝ) : Prop :=
   AdmF Fm Gm Kst CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ → OrbitValuationBound Fm Gm C C' Kst
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18⟩, ⟨e1, e2, e3, e4, e5, e6, e7, e8⟩⟩ x i`. Conclude with `h x i ⟨⟨a1 x i, a2 x i, a3 x i, a4 x i, a5 x i, a6 x i, a7 x i, a8 x i, a9 x i, a10 x i, a11 x i, a12 x i, a13 x i, a14 x i, a15 x i, a16 x i, a17 x i, a18 x i⟩, ⟨e1 x i, e2 x i, e3 x i, e4 x i, e5 x i, e6 x i, e7 x i, e8 x i⟩⟩`.
+-/
 theorem familyStatement_of_pointwise (Gm : GM) (Kst : ℕ) (CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ C C' : ℝ)
     (h : ∀ x (i : Fm.Ix x), Stmt (Fm.D x i) Gm Kst CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ C C') :
     KudlaFamilyStatement Fm Gm Kst CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ C C' := by

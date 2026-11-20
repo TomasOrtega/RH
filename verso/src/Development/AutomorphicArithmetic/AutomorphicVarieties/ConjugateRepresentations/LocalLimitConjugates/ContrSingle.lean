@@ -8,6 +8,11 @@ noncomputable section
 
 namespace UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ H`. Establish `h : (f : (Fin q → H) → ℂ) = fun x => ∑ r : Fin q → Fin (Module.finrank ℝ H), (∏ i, b.coord (r i) (x i)) • f fun i => b (r i)`. Use function extensionality and compare the values at `x`. Establish `e : x = fun i => ∑ j, b.coord j (x i) • b j` using `funext fun i => (b.sum_repr (x i)).symm`. Use `conv_lhs => rw [e]`.
+
+Rewrite using `[f.map_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => f.map_smul_univ _ _`. Rewrite using `[h]`. Use `continuous_finset_sum _ fun r _ => Continuous.fun_smul (continuous_finset_prod _ fun i _ => ?_) continuous_const` and prove the remaining obligations. Conclude with `(b.coord (r i)).continuous_of_finiteDimensional.comp (continuous_apply i)`.
+-/
 private theorem multi_cont {H : Type} [AddCommGroup H] [Module ℝ H] [TopologicalSpace H] [IsTopologicalAddGroup H]
     [ContinuousSMul ℝ H] [T2Space H] [FiniteDimensional ℝ H] {q : ℕ} (f : MultilinearMap ℝ (fun _ : Fin q => H) ℂ) :
     Continuous f := by
@@ -28,10 +33,16 @@ private def contr {S : Type} [AddCommGroup S] [Module ℂ S] {d : ℕ} :
     (Fin d → ℂ) →ₗ[ℂ] S ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] S :=
   ∑ i, (LinearMap.proj i : (Fin d → ℂ) →ₗ[ℂ] ℂ).smulRight (Bor.cmp i)
 
+/- English proof (translation)
+Simplify using `[contr, LinearMap.sum_apply, dotProduct, Finset.sum_smul, smul_smul]`.
+-/
 private theorem contr_tmul {S : Type} [AddCommGroup S] [Module ℂ S] {d : ℕ} (v u : Fin d → ℂ) (φ : S) :
     contr v (φ ⊗ₜ[ℂ] u) = (v ⬝ᵥ u) • φ := by
   simp [contr, LinearMap.sum_apply, dotProduct, Finset.sum_smul, smul_smul]
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul φ u => simp [contr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem contr_single {S : Type} [AddCommGroup S] [Module ℂ S] {d : ℕ} (i : Fin d) (m : S ⊗[ℂ] (Fin d → ℂ)) :
     contr (Pi.single i 1) m = Bor.cmp i m := by
   induction m using TensorProduct.induction_on with
@@ -39,6 +50,33 @@ private theorem contr_single {S : Type} [AddCommGroup S] [Module ℂ S] {d : ℕ
   | tmul φ u => simp [contr_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Set `P` to `PiTensorProduct ℝ fun _ : Fin q => H`. Set `A : K → P →ₗ[ℝ] P` to `fun k => PiTensorProduct.map fun _ => ad k`. Set `B : K → (Fin d → ℂ) →ₗ[ℂ] (Fin d → ℂ)` to `fun k => Matrix.toLin' (M k⁻¹)ᵀ`. Set `ρ : Representation ℂ K ((Fin d → ℂ) ⊗[ℝ] P)` to `{ toFun := fun k => TensorProduct.AlgebraTensorModule.map (B k) (A k) map_one' := by`. Establish `h1 : A 1 = LinearMap.id`.
+
+Simplify using `only [A, map_one]`. Conclude with `PiTensorProduct.map_one`. Establish `h2 : B 1 = LinearMap.id` using `by simp [B]`. Rewrite using `[h1, h2, TensorProduct.AlgebraTensorModule.map_id]`. Both sides reduce to the same expression.
+
+Use the proof step `map_mul' := fun k l => by`. Establish `h1 : A (k * l) = A k ∘ₗ A l`. Simplify using `only [A, map_mul]`. Conclude with `PiTensorProduct.map_mul _ _`. Establish `h2 : B (k * l) = B k ∘ₗ B l` using `by simp [B, Matrix.toLin'_mul]`.
+
+Rewrite using `[h1, h2, TensorProduct.AlgebraTensorModule.map_comp]`. Use `rfl }`. Establish `hρ : ∀ k v (X : Fin q → H), ρ k (v ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ X) = ((M k⁻¹)ᵀ *ᵥ v) ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ fun i => ad k (X i)` using `fun k v X => by`. Express the relevant statement in the definitionally equal form `TensorProduct.AlgebraTensorModule.map (B k) (A k) _ = _`. Rewrite using `[TensorProduct.AlgebraTensorModule.map_tmul]`.
+
+Conclude with `congrArg₂ _ rfl (PiTensorProduct.map_tprod _ _)`. Establish `ind : ∀ (p : (Fin d → ℂ) ⊗[ℝ] P → Prop) (h0 : p 0) (ha : ∀ x y, p x → p y → p (x + y)) (ht : ∀ v (X : Fin q → H), p (v ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ X)) (w : (Fin d → ℂ) ⊗[ℝ] P), p w`. Introduce `p h0 ha ht w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact h0`.
+
+Consider the case `add x y hx hy => exact ha x y hx hy`. Consider the case `tmul v t`. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r X => rw [← TensorProduct.smul_tmul]`. Conclude with `ht _ _`.
+
+Consider the case `add x y hx hy => rw [TensorProduct.tmul_add]`. Conclude with `ha _ _ hx hy`. Use `⟨(Fin d → ℂ) ⊗[ℝ] P, inferInstance, inferInstance, Module.Finite.of_restrictScalars_finite ℝ ℂ _, ρ, fun ℓ w => ?_, fun ω hω X i => ?_⟩` and prove the remaining obligations. Proceed by induction on `w using ind with`. Consider the case `h0 => simpa using continuous_const`.
+
+Consider the case `ha x y hx hy => simpa only [map_add] using hx.fun_add hy`. Consider the case `ht v X`. Establish `e : (fun k => ℓ (ρ k (v ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ X))) = fun k => ∑ j, ((M k⁻¹)ᵀ *ᵥ v) j * ((ℓ.restrictScalars ℝ ∘ₗ TensorProduct.mk ℝ (Fin d → ℂ) P (Pi.single j 1)).compMultilinearMap (PiTensorProduct.tprod ℝ)) fun i => ad k (X i)`. Use function extensionality and compare the values at `k`. Rewrite using `[hρ]`.
+
+Generalize the expression as in `(M k⁻¹)ᵀ *ᵥ v = u`. Use `conv_lhs => rw [pi_eq_sum_univ' u]`. Rewrite using `[TensorProduct.sum_tmul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul', map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `continuous_finset_sum _ fun j _ => Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_apply j).comp ((hM.comp continuous_inv).matrix_transpose.matrix_mulVec continuous_const)`. Conclude with `(multi_cont _).comp (continuous_pi fun i => had _)`.
+
+Set `T : (Fin d → ℂ) ⊗[ℝ] P →ₗ[ℂ] S` to `TensorProduct.AlgebraTensorModule.lift { toFun := fun v => (contr v).restrictScalars ℝ ∘ₗ PiTensorProduct.lift ω map_add' := fun u v => by ext; simp map_smul' := fun c v => by ext; simp }`. Establish `hT : ∀ v (Y : Fin q → H), T (v ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ Y) = contr v (ω Y)` using `fun v Y => by`. Conclude with `congrArg (contr v) (PiTensorProduct.lift.tprod (φ := ω) Y)`. Use `⟨T, Pi.single i 1 ⊗ₜ[ℝ] PiTensorProduct.tprod ℝ X, fun k w => ?_, by rw [hT, contr_single]⟩` and prove the remaining obligations. Proceed by induction on `w using ind with`.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`. Consider the case `ht v Y`. Rewrite using `[hρ, hT, hT, hω]`. Proceed by induction on `ω Y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ u`. Rewrite using `[TensorProduct.map_tmul, contr_tmul, contr_tmul, map_smul, Matrix.toLin'_apply, Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec]`.
+-/
 private theorem abs_type {K H S : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     [AddCommGroup H] [Module ℝ H] [TopologicalSpace H] [IsTopologicalAddGroup H]
     [ContinuousSMul ℝ H] [T2Space H] [FiniteDimensional ℝ H] [AddCommGroup S] [Module ℂ S] [Module ℝ S] [IsScalarTower ℝ ℂ S]
@@ -122,6 +160,13 @@ private theorem abs_type {K H S : Type} [Group K] [TopologicalSpace K] [IsTopolo
 
 end UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ q`. Set `ad : Kinf E a →* (Herm E a →ₗ[ℝ] Herm E a)` to `{ toFun := fun k => { toFun := adHerm k map_add' := fun X Y => Subtype.ext (by simp [adHerm, mul_add, add_mul]) map_smul' := fun c X => Subtype.ext (by simp [adHerm]) } map_one' := LinearMap.ext fun X => Subtype.ext (by simp [adHerm]) map_mul' := fun k l => LinearMap.ext fun X => …`. Establish `had : ∀ X, Continuous fun k => ad k X` using `fun X => Continuous.subtype_mk ((continuous_subtype_val.mul continuous_const).mul continuous_subtype_val.star) _`. Establish `hM : Continuous (Ξ.mat.comp (Unitary.toUnits : Kinf E a →* _))`. Use `continuous_matrix fun i j => continuous_iff_continuousAt.2 fun k => ?_` and prove the remaining obligations.
+
+Establish `h` using `(differentiableAt_extGL (Ξ.reg i j) (x := toL (Unitary.toUnits k).val) (Unitary.toUnits k).isUnit).continuousAt`. Establish `h2 : Continuous fun l : Kinf E a => (toL (Unitary.toUnits l).val : Lie E a)` using `continuous_subtype_val`. Establish `h3` using `ContinuousAt.comp (f := fun l : Kinf E a => (toL (Unitary.toUnits l).val : Lie E a)) h h2.continuousAt`. Simplify using `only [Function.comp_def, extGL_val] at h3`. Conclude with `h3`.
+
+Take `⟨W, i1, i2, i3, ρ, h1, h2⟩` from `abs_type q ad had _ hM (cptRep E a)`. Conclude with `⟨W, i1, i2, i3, ρ, h1, fun ω hω => h2 ω.toMultilinearMap hω⟩`.
+-/
 theorem UpperTheory.V.Cj.H.kType :
     UpperTheory.V.Cj.H.KType := by
   intro E _ _ _ a Ξ q

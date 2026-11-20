@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hp` using `h.pair.map (f : R →+* R')`. Rewrite `hp` using `[← RingHom.comp_assoc, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis. Conclude with `h.cont.map _ (fun x hx => (res_eq_zero_iff Λ R' _).mp ((res_map f x).trans ((res_eq_zero_iff Λ R x).mpr hx)))`. Rewrite using `[PD.map_map]`.
+
+Use `h.red using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun x => res_map f x`.
+-/
 private theorem lifts_map {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ]
     [IsLocalRing Λ] {a : O →+* Λ} {c : PD Φ.ι Γ (ResidueField Λ)} {R R' : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R]
     [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] {P : PD Φ.ι Γ R} (h : Φ.Lifts a c P) (f : R →ₐ[Λ] R') :
@@ -17,11 +22,43 @@ private theorem lifts_map {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpac
     convert h.red using 2
     exact RingHom.ext fun x => res_map f x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.pair.mult, h.pair.kill, h.pair.nrm, h.pair.low, h.pair.flag, fun _ _ hs => hs.elim⟩, h.cont, h.red⟩`.
+-/
 private theorem lifts_noMu {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ]
     [IsLocalRing Λ] {a : O →+* Λ} {c : PD Φ.ι Γ (ResidueField Λ)} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R]
     {P : PD Φ.ι Γ R} (h : Φ.Lifts a c P) : Φ.noMu.Lifts a c P :=
   ⟨⟨h.pair.mult, h.pair.kill, h.pair.nrm, h.pair.low, h.pair.flag, fun _ _ hs => hs.elim⟩, h.cont, h.red⟩
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hstd c hres ζ hζ hν R _ _ _ P hP R' _ _ _ P' hP'`. Take `⟨g, hg, -⟩` from `hP'.2 R P (lifts_noMu hP.1)`. Establish `hPψ` using `(X1.muIff Φ l a hstd c hres ζ hζ hν R P (lifts_noMu hP.1)).mp hP.1`. Set `e : Φ.ι × Fin 2 → R'` to `fun p => P'.ψ p.1 (Fin.castLE (by norm_num) p.2) (ζ p.1) - 1`. Set `I : Ideal R'` to `Ideal.span (Set.range e)`.
+
+Establish `hIg : ∀ x ∈ I, g x = 0`. Introduce `x hx`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨v, i⟩, rfl⟩`. Establish `key : ∀ j : Fin 4, g (P'.ψ v j (ζ v)) = P.ψ v j (ζ v)`.
+
+Introduce `j`. Rewrite using `[← hg, PD.map_ψ]`. Both sides reduce to the same expression. Use `fin_cases i`. Simplify using `[e, key, (hPψ v).1]`.
+
+Simplify using `[e, key, (hPψ v).2]`. Conclude with `map_zero g`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add, hx, hy, add_zero]`. Introduce `r x _ hx`.
+
+Rewrite using `[smul_eq_mul, map_mul, hx, mul_zero]`. Establish `hne : I ≠ ⊤`. Introduce `htop`. Establish `h1` using `hIg 1 (htop ▸ Submodule.mem_top)`. Rewrite `h1` using `[map_one]`.
+
+Conclude with `one_ne_zero h1`. Use `haveI : Nontrivial (R' ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hne`. Set `π : R' →ₐ[Λ] R' ⧸ I` to `Ideal.Quotient.mkₐ Λ I`. Use `haveI : IsCO Λ (R' ⧸ I) := co_quot Λ R' (R' ⧸ I) π (Ideal.Quotient.mkₐ_surjective Λ I)`. Establish `hQn : Φ.noMu.Lifts a c (P'.map (π : R' →+* R' ⧸ I))` using `lifts_map hP'.1 π`.
+
+Establish `hQ : Φ.Lifts a c (P'.map (π : R' →+* R' ⧸ I))`. Use `(X1.muIff Φ l a hstd c hres ζ hζ hν (R' ⧸ I) _ hQn).mpr (fun v => ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[PD.map_ψ]`. Establish `hm : e (v, 0) ∈ I` using `Ideal.subset_span ⟨(v, 0), rfl⟩`. Establish `hz` using `(Ideal.Quotient.eq_zero_iff_mem).mpr hm`.
+
+Simplify using `only [e, map_sub, map_one] at hz`. Conclude with `sub_eq_zero.mp hz`. Rewrite using `[PD.map_ψ]`. Establish `hm : e (v, 1) ∈ I` using `Ideal.subset_span ⟨(v, 1), rfl⟩`. Establish `hz` using `(Ideal.Quotient.eq_zero_iff_mem).mpr hm`.
+
+Simplify using `only [e, map_sub, map_one] at hz`. Conclude with `sub_eq_zero.mp hz`. Take `⟨h, hh, -⟩` from `hP.2 (R' ⧸ I) _ hQ`. Take `⟨π', -, huniq⟩` from `hP'.2 (R' ⧸ I) _ hQn`. Establish `hhg : h.comp g = π`.
+
+Rewrite using `[huniq (h.comp g) (by beta_reduce; rw [AlgHom.comp_toRingHom, ← PD.map_map, hg, hh]), huniq π rfl]`. Set `gb : R' ⧸ I →ₐ[Λ] R` to `Ideal.Quotient.liftₐ I g hIg`. Take `⟨i0, -, huniqP⟩` from `hP.2 R P hP.1`. Establish `hgb : gb.comp π = g`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Establish `hid : gb.comp h = AlgHom.id Λ R`. Rewrite using `[huniqP (gb.comp h) (by beta_reduce; rw [AlgHom.comp_toRingHom, ← PD.map_map, hh, PD.map_map, ← AlgHom.comp_toRingHom, hgb, hg]), huniqP (AlgHom.id Λ R) (by beta_reduce; rw [← hg, PD.map_map]; rfl)]`. Use `⟨g, e, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨z, hz⟩` from `Ideal.Quotient.mkₐ_surjective Λ I (h y)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hy` using `congrArg (fun f : R →ₐ[Λ] R => f y) hid`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply] at hy`. Rewrite `hy` using `[← hz]`.
+
+Conclude with `hy`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : π x = 0`. Rewrite using `[← hhg, AlgHom.comp_apply, RingHom.mem_ker.mp hx, map_zero]`.
+
+Conclude with `(Ideal.Quotient.eq_zero_iff_mem).mp hx'`. Introduce `x hx`. Conclude with `RingHom.mem_ker.mpr (hIg x hx)`.
+-/
 theorem UpperTheory.V.Ws.X1.muQuot :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (Φ : Fr O Γ) (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] (a : O →+* Λ), Φ.Std l a → ∀ c : PD Φ.ι Γ (ResidueField Λ), Φ.IsRes ((residue Λ).comp a) c → ∀ ζ : Φ.ι → Γ, (∀ v, MuGen (Φ.Gv v) (Φ.Mu v) (ζ v)) → (∀ v, a (Φ.ν (ζ v)) = 1) → ∀ (R : Type) [CommRing R] [Algebra Λ R] [IsCO Λ R] (P : PD Φ.ι Γ R), Φ.IsDef a c P → ∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (P' : PD Φ.ι Γ R'), Φ.noMu.IsDef a c P' → ∃ (g : R' →ₐ[Λ] R) (e : Φ.ι × Fin 2 → R'), Function.Surjective g ∧ RingHom.ker g = Ideal.span (Set.range e) := by
   intro O Γ _ _ _ _ _ _ Φ l _ Λ _ _ _ _ _ a hstd c hres ζ hζ hν R _ _ _ P hP R' _ _ _ P' hP'

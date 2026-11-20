@@ -28,6 +28,9 @@ noncomputable def fibreIntegral (ν : Measure H) [ν.IsMulLeftInvariant] (f : G 
     rw [← this]
     simp [← mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fibreIntegral_mk (ν : Measure H) [ν.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) :
     fibreIntegral H ν f (g : G ⧸ H) = ∫⁻ h : H, f (g * h) ∂ν := rfl
 
@@ -48,6 +51,9 @@ open scoped ENNReal NNReal in
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [MeasurableSpace G] [BorelSpace G] (H : Subgroup G) in
 omit [MeasurableSpace G] [BorelSpace G] in
+/- English proof (translation)
+Use `continuous_quot_lift _ ?_` and prove the remaining obligations. Conclude with `continuous_quot_mk.comp continuous_inv`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.continuous_invCoset : Continuous (_root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.invCoset H) := by
   refine continuous_quot_lift _ ?_
   exact continuous_quot_mk.comp continuous_inv
@@ -62,6 +68,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [MeasurableSpace G] [BorelSpace G] (H : Subgroup G) in
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Use `haveI := h.finiteOnCompacts`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.IsInvariantRadon.regular [LocallyCompactSpace G]
     [SecondCountableTopology G] [IsClosed (H : Set G)] [MeasurableSpace (G ⧸ H)]
     [BorelSpace (G ⧸ H)] {μ : Measure (G ⧸ H)} (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.IsInvariantRadon H μ) :
@@ -142,17 +151,29 @@ def QuotientMeasures : Prop :=
   InvariantMeasureClause ∧ NormaliseQuotientClause ∧ NormaliseSubgroupClause ∧
     NormaliseGroupClause ∧ DiscreteClause ∧ ModulusClause ∧ CompactClause
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {G : Type} [Group G] (Γ : Subgroup G) (γ : Γ) (g : G) : γ • g = (γ : G) * g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {G : Type} [Group G] (H : Subgroup G) (a g : G) :
     a • (g : G ⧸ H) = ((a * g : G) : G ⧸ H) := rfl
 
+/- English proof (translation)
+Introduce `μ hμ`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Use `map_mul_left_eq_self μ g` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+-/
 example (G : Type) [CommGroup G] [TopologicalSpace G] [MeasurableSpace G] : IsUnimodular G := by
   intro μ hμ
   refine ⟨fun g => ?_⟩
   have := map_mul_left_eq_self μ g
   simpa [mul_comm] using this
 
+/- English proof (translation)
+The claim follows from `Measure.count_ne_zero'' finiteOnCompacts := inferInstance invariant := ⟨fun c s _ => by have h1 := Measure.count_injective_image (f := (MulAction.toPerm c).symm) (MulAction.toPerm c : (G ⧸ H) ≃ (G ⧸ H)).symm.injective s rw [← h1] congr 1 exact (Equiv.image_symm_eq_preimage (MulAc …`.
+-/
 example (G : Type) [Group G] [Finite G] [TopologicalSpace G] (H : Subgroup G)
     [MeasurableSpace (G ⧸ H)] [DiscreteMeasurableSpace (G ⧸ H)] :
     IsInvariantRadon H (Measure.count : Measure (G ⧸ H)) where

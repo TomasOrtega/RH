@@ -15,11 +15,19 @@ section VVMap
 
 variable {K L : Type} [Field K] [Field L] (ι : K →+* L) {σ : Type} [Fintype σ] {n : ℕ} (lam : σ → DomWeight n)
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.blockEmb`. Conclude with `MvPolynomial.map_rename _ _ _`.
+-/
 theorem hfs_map_blockEmb (s : σ) (f : MvPolynomial (Fin n × Fin n) K) :
     MvPolynomial.map ι (Formalism.GradedWeylDivisibility.blockEmb K s f) = Formalism.GradedWeylDivisibility.blockEmb L s (MvPolynomial.map ι f) := by
   unfold Formalism.GradedWeylDivisibility.blockEmb
   exact MvPolynomial.map_rename _ _ _
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, hp, hq]`.
+
+Consider the case `mul_X p v hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X, MvPolynomial.map_X, hp, hg]`.
+-/
 private lemma map_aeval_eq_aeval_map' {α β : Type} (g : α → MvPolynomial β K) (g' : α → MvPolynomial β L)
     (hg : ∀ v, MvPolynomial.map ι (g v) = g' v) (F : MvPolynomial α K) :
     MvPolynomial.map ι (MvPolynomial.aeval g F) = MvPolynomial.aeval g' (MvPolynomial.map ι F) := by
@@ -31,6 +39,15 @@ private lemma map_aeval_eq_aeval_map' {α β : Type} (g : α → MvPolynomial β
   | mul_X p v hp =>
     simp only [map_mul, MvPolynomial.aeval_X, MvPolynomial.map_X, hp, hg]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢`. Rewrite `hf`, the goal using `[Submodule.mem_inf]`. Take `⟨h1, h2⟩` from `hf`. Prove the components needed by the constructor for the conclusion. Rewrite `h1`, the goal using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`.
+
+Introduce `d hd`. Apply `h1` to reduce the goal to its premises. Rewrite `hd` using `[MvPolynomial.coeff_map]`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+
+Rewrite using `[h0, map_zero]`. Simplify using `only [Submodule.mem_iInf] at h2 ⊢`. Introduce `l j hlj`. Establish `h3` using `h2 l j hlj`. Rewrite `h3`, the goal using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+
+Simplify using `only [AlgHom.toLinearMap_apply] at h3 ⊢`. Rewrite using `[← MvPolynomial.map_rename, ← h3]`. Unfold `Formalism.GradedWeylDivisibility.colAddGen`. Use `(map_aeval_eq_aeval_map' ι _ _ (fun v => ?_) f).symm` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma map_mem_dualWeyl' {r m : ℕ} {ν : Fin m → ℕ} {f : MvPolynomial (Fin r × Fin m) K}
     (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl K r m ν) : MvPolynomial.map ι f ∈ Formalism.GradedWeylDivisibility.dualWeyl L r m ν := by
   unfold Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢
@@ -54,6 +71,15 @@ private lemma map_mem_dualWeyl' {r m : ℕ} {ν : Fin m → ℕ} {f : MvPolynomi
     refine (map_aeval_eq_aeval_map' ι _ _ (fun v => ?_) f).symm
     split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `VV Formalism.GradedWeylDivisibility.tensorLat at hF ⊢`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, hG, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨fun s => MvPolynomial.map ι (G s), fun s => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : G s ∈ Formalism.GradedWeylDivisibility.dualWeyl K n n (lam s).natW` using `hG s`. Conclude with `map_mem_dualWeyl' ι h1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun s _ => hfs_map_blockEmb ι s (G s)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem hfs_map_mem_VV {F : Pol K σ n} (hF : F ∈ VV K lam) : MvPolynomial.map ι F ∈ VV L lam := by
   unfold VV Formalism.GradedWeylDivisibility.tensorLat at hF ⊢
   induction hF using Submodule.span_induction with
@@ -78,13 +104,30 @@ def hfsJ : VV K lam →+ VV L lam where
   map_zero' := Subtype.ext (map_zero _)
   map_add' v w := Subtype.ext (map_add _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hfsJ_coe (v : VV K lam) : ((hfsJ ι lam v : VV L lam) : Pol L σ n) = MvPolynomial.map ι (v : Pol K σ n) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hfsJ_coe, Submodule.coe_smul, Submodule.coe_smul, hfsJ_coe, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`.
+-/
 theorem hfsJ_smul (a : K) (v : VV K lam) : hfsJ ι lam (a • v) = ι a • hfsJ ι lam v := by
   apply Subtype.ext
   rw [hfsJ_coe, Submodule.coe_smul, Submodule.coe_smul, hfsJ_coe, MvPolynomial.smul_eq_C_mul,
     MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `hpol : ∑ j ∈ s, g j • MvPolynomial.map ι ((bVV K lam j : VV K lam) : Pol K σ n) = 0`. Establish `h0` using `congrArg (fun v : VV L lam => (v : Pol L σ n)) hg`. Simplify `h0` using `[hfsJ_coe]`.
+
+Establish `hK : ∀ k, ∑ j ∈ s, F.c (g j) k • ((bVV K lam j : VV K lam) : Pol K σ n) = 0`. Introduce `k`. Use extensionality with `d`. Establish `h1` using `congrArg (MvPolynomial.coeff d) hpol`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, MvPolynomial.coeff_map, smul_eq_mul, MvPolynomial.coeff_zero] at h1 ⊢`.
+
+Establish `h2` using `congrArg (fun y => F.c y k) h1`. Simplify using `only [map_sum, map_zero, Finset.sum_apply, Pi.zero_apply] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (g j), F.smul, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hli` using `(bVV K lam).linearIndependent`. Rewrite `hli` using `[linearIndependent_iff']`. Establish `hz : ∀ k, F.c (g i) k = 0`. Introduce `k`.
+
+Use `hli s (fun j => F.c (g j) k) ?_ i hi` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hK k`. Rewrite using `[F.spec (g i)]`. Simplify using `[hz]`.
+-/
 theorem hfsJ_li (F : CoefFrame ι) : LinearIndependent L fun i => hfsJ ι lam (bVV K lam i) := by
   classical
   rw [linearIndependent_iff']
@@ -114,6 +157,9 @@ theorem hfsJ_li (F : CoefFrame ι) : LinearIndependent L fun i => hfsJ ι lam (b
   rw [F.spec (g i)]
   simp [hz]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional L (VV L lam) := Module.Basis.finiteDimensional_of_finite (bVV L lam)`. Rewrite using `[(hfsJ_li ι lam F).span_eq_top_of_card_eq_finrank' (Module.finrank_eq_card_basis (bVV L lam)).symm]`.
+-/
 theorem hfsJ_span (F : CoefFrame ι) : ⊤ ≤ Submodule.span L (Set.range fun i => hfsJ ι lam (bVV K lam i)) := by
   classical
   haveI : FiniteDimensional L (VV L lam) := Module.Basis.finiteDimensional_of_finite (bVV L lam)
@@ -125,12 +171,20 @@ section Act
 
 variable {K L : Type} [Field K] [Field L] (ι : K →+* L) {σ : Type} [Fintype σ] {n : ℕ} (lam : σ → DomWeight n)
 
+/- English proof (translation)
+Unfold `trAct Formalism.GradedWeylDivisibility.blockAct`. Use `map_aeval_eq_aeval_map' ι _ _ (fun v => ?_) F` and prove the remaining obligations. Simplify using `[map_sum, Formalism.UG.bc, Matrix.transpose_apply]`.
+-/
 theorem hfs_map_trAct (g : σ → GL (Fin n) K) (F : Pol K σ n) :
     MvPolynomial.map ι (trAct g F) = trAct (fun τ => Formalism.UG.bc ι (g τ)) (MvPolynomial.map ι F) := by
   unfold trAct Formalism.GradedWeylDivisibility.blockAct
   refine map_aeval_eq_aeval_map' ι _ _ (fun v => ?_) F
   simp [map_sum, Formalism.UG.bc, Matrix.transpose_apply]
 
+/- English proof (translation)
+Unfold `detPow`. Establish `h : Matrix.GeneralLinearGroup.det (Formalism.UG.bc ι g) = Units.map (ι : K →* L) (Matrix.GeneralLinearGroup.det g)`. Use `ext`. Simplify using `[Formalism.UG.bc, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[h, ← map_zpow, Units.coe_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hfs_detPow_bc (g : GL (Fin n) K) (c : ℤ) : detPow L n (Formalism.UG.bc ι g) c = ι (detPow K n g c) := by
   unfold detPow
   have h : Matrix.GeneralLinearGroup.det (Formalism.UG.bc ι g) =
@@ -140,11 +194,17 @@ theorem hfs_detPow_bc (g : GL (Fin n) K) (c : ℤ) : detPow L n (Formalism.UG.bc
   rw [h, ← map_zpow, Units.coe_map]
   rfl
 
+/- English proof (translation)
+Unfold `detTwK`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => hfs_detPow_bc ι (g τ) _`.
+-/
 theorem hfs_detTwK_bc (g : σ → GL (Fin n) K) : detTwK lam (fun τ => Formalism.UG.bc ι (g τ)) = ι (detTwK lam g) := by
   unfold detTwK
   rw [map_prod]
   exact Finset.prod_congr rfl fun τ _ => hfs_detPow_bc ι (g τ) _
 
+/- English proof (translation)
+Unfold `actP`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, hfs_map_trAct, hfs_detTwK_bc]`.
+-/
 theorem hfs_map_actP (g : σ → GL (Fin n) K) (F : Pol K σ n) :
     MvPolynomial.map ι (actP lam g F) = actP lam (fun τ => Formalism.UG.bc ι (g τ)) (MvPolynomial.map ι F) := by
   unfold actP
@@ -152,6 +212,9 @@ theorem hfs_map_actP (g : σ → GL (Fin n) K) (F : Pol K σ n) :
     MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, hfs_map_trAct,
     hfs_detTwK_bc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show actP lam (fun τ => Formalism.UG.bc ι (g τ)) ((hfsJ ι lam v : VV L lam) : Pol L σ n) = MvPolynomial.map ι (actP lam g (v : Pol K σ n))`. Rewrite using `[hfsJ_coe, hfs_map_actP]`.
+-/
 theorem hfs_rhoK (g : σ → GL (Fin n) K) (v : VV K lam) :
     rhoK lam (fun τ => Formalism.UG.bc ι (g τ)) (hfsJ ι lam v) = hfsJ ι lam (rhoK lam g v) := by
   apply Subtype.ext
@@ -161,6 +224,9 @@ theorem hfs_rhoK (g : σ → GL (Fin n) K) (v : VV K lam) :
 
 variable [NumberField K] [NumberField L] {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[embGL, Formalism.UG.bc]`.
+-/
 theorem hfs_embGL (emb : σ → E →+* K) (γ : GL (Fin n) E) :
     embGL (fun τ => ι.comp (emb τ)) γ = fun τ => Formalism.UG.bc ι (embGL emb γ τ) := by
   funext τ
@@ -168,6 +234,11 @@ theorem hfs_embGL (emb : σ → E →+* K) (γ : GL (Fin n) E) :
   ext i j
   simp [embGL, Formalism.UG.bc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((((Formalism.UG.bc ι (g τ))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)).transpose = ((Formalism.UG.bc ι (inside₂ K n (g τ)) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Rewrite using `[← map_inv]`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.bc, inside₂]`.
+-/
 theorem hfs_invTrK (g : σ → GL (Fin n) K) : invTrK (fun τ => Formalism.UG.bc ι (g τ)) = fun τ => Formalism.UG.bc ι (invTrK g τ) := by
   funext τ
   apply Units.ext
@@ -177,12 +248,18 @@ theorem hfs_invTrK (g : σ → GL (Fin n) K) : invTrK (fun τ => Formalism.UG.bc
   ext i j
   simp [Formalism.UG.bc, inside₂]
 
+/- English proof (translation)
+Use `show rhoK lam (embGL (fun τ => ι.comp (emb τ)) γ) (hfsJ ι lam v) = hfsJ ι lam (rhoK lam (embGL emb γ) v)`. Rewrite using `[hfs_embGL]`. Conclude with `hfs_rhoK ι lam _ v`.
+-/
 theorem hfs_rhoV (emb : σ → E →+* K) (γ : GL (Fin n) E) (v : VV K lam) :
     rhoV (fun τ => ι.comp (emb τ)) lam γ (hfsJ ι lam v) = hfsJ ι lam (rhoV emb lam γ v) := by
   show rhoK lam (embGL (fun τ => ι.comp (emb τ)) γ) (hfsJ ι lam v) = hfsJ ι lam (rhoK lam (embGL emb γ) v)
   rw [hfs_embGL]
   exact hfs_rhoK ι lam _ v
 
+/- English proof (translation)
+Use `show rhoK lam (invTrK (embGL (fun τ => ι.comp (emb τ)) γ)) (hfsJ ι lam v) = hfsJ ι lam (rhoK lam (invTrK (embGL emb γ)) v)`. Rewrite using `[hfs_embGL, hfs_invTrK]`. Conclude with `hfs_rhoK ι lam _ v`.
+-/
 theorem hfs_rhoVr (emb : σ → E →+* K) (γ : GL (Fin n) E) (v : VV K lam) :
     rhoVr (fun τ => ι.comp (emb τ)) lam γ (hfsJ ι lam v) = hfsJ ι lam (rhoVr emb lam γ v) := by
   show rhoK lam (invTrK (embGL (fun τ => ι.comp (emb τ)) γ)) (hfsJ ι lam v) =

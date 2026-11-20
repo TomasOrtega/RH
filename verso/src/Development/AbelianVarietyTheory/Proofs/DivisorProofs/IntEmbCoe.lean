@@ -85,11 +85,19 @@ section Lemmas
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h'.1.comp h.1, fun a => by rw [← Category.assoc, h'.2, Category.assoc, h.2, Category.assoc]⟩`.
+-/
 theorem IsActPull.comp {S S' S'' : Scheme.{0}} {G'' : Over S''} [GrpObj G''] {G' : Over S'} [GrpObj G'] {G : Over S}
     [GrpObj G] {i'' : OAct O G''} {i' : OAct O G'} {i : OAct O G} {g : S'' ⟶ S'} {f : S' ⟶ S} {φ' : G''.left ⟶ G'.left}
     {φ : G'.left ⟶ G.left} (h' : IsActPull i'' i' g φ') (h : IsActPull i' i f φ) : IsActPull i'' i (g ≫ f) (φ' ≫ φ) :=
   ⟨h'.1.comp h.1, fun a => by rw [← Category.assoc, h'.2, Category.assoc, h.2, Category.assoc]⟩
 
+/- English proof (translation)
+Use `⟨fun σ => by rw [h'.1, h.1]; push_cast; ring, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨d', hd', e⟩` from `h.2 d hd`. Take `⟨d'', hd'', e'⟩` from `h'.2 d' hd'`. Use `⟨d'', hd'', le_trans ?_ e'⟩` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left e (Nat.cast_nonneg _)`.
+-/
 theorem DegRel.trans {k : Type} [Field k] {C C' C'' : Scheme.{0}} [Algebra k Γ(C, ⊤)] [Algebra k Γ(C', ⊤)]
     [Algebra k Γ(C'', ⊤)] [IsIntegral C] [IsIntegral C'] [IsIntegral C''] {G : Over C} [GrpObj G] [QuasiSeparated G.hom]
     {G' : Over C'} [GrpObj G'] [QuasiSeparated G'.hom] {G'' : Over C''} [GrpObj G''] [QuasiSeparated G''.hom]
@@ -103,10 +111,16 @@ theorem DegRel.trans {k : Type} [Field k] {C C' C'' : Scheme.{0}} [Algebra k Γ(
   rw [mul_assoc]
   exact mul_le_mul_of_nonneg_left e (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => by simp, fun d hd => ⟨d, hd, by simp⟩⟩`.
+-/
 theorem DegRel.refl {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C] {G : Over C} [GrpObj G]
     [QuasiSeparated G.hom] (i : OAct O G) : DegRel k i i 1 :=
   ⟨fun _ => by simp, fun d hd => ⟨d, hd, by simp⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ => Int.castRingHom k, isSplitBy_of_injective (fun _ _ _ => rfl) (by simp)⟩`.
+-/
 example (k : Type) [Field k] : Splits ℤ k :=
   ⟨Unit, inferInstance, fun _ => Int.castRingHom k, isSplitBy_of_injective (fun _ _ _ => rfl) (by simp)⟩
 

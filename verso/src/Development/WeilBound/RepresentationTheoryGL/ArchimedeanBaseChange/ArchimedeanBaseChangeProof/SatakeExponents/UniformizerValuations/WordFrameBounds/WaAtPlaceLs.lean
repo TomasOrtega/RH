@@ -29,6 +29,11 @@ section Frame
 
 variable {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)} {S T : Finset (Pl E)} {F₀ : Frame0 hR π S} (F : RunFrame F₀ T)
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `h0 : Valued.v (u : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 u.ne_zero`. Unfold `ordL at h`. Rewrite `h` using `[dif_neg h0, neg_eq_zero]`. Establish `h1 : WithZero.unzero h0 = 1` using `by simpa using congrArg Multiplicative.ofAdd h`. Rewrite using `[← WithZero.coe_unzero h0, h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem wa_v_one {w : Pl E} (u : (w.adicCompletion E)ˣ)
     (h : ordL (u : w.adicCompletion E) = 0) : Valued.v (u : w.adicCompletion E) = 1 := by
   have h0 : Valued.v (u : w.adicCompletion E) ≠ 0 := (Valuation.ne_zero_iff _).2 u.ne_zero
@@ -38,28 +43,48 @@ theorem wa_v_one {w : Pl E} (u : (w.adicCompletion E)ˣ)
   rw [← WithZero.coe_unzero h0, h1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[F.same.2.2.1]`. Conclude with `F₀.μloc w`.
+-/
 theorem wa_mu_loc (w : Pl E) : F.d.μ w = F₀.μ.loc w := by
   rw [F.same.2.2.1]; exact F₀.μloc w
 
+/- English proof (translation)
+Rewrite using `[wa_mu_loc]`. Conclude with `F₀.hμ.1 _`.
+-/
 theorem wa_mu_unit (w : Pl E) (u : (w.adicCompletion E)ˣ) : ‖((F.d.μ w u : ℂˣ) : ℂ)‖ = 1 := by
   rw [wa_mu_loc]; exact F₀.hμ.1 _
 
+/- English proof (translation)
+Simplify using `only [LocData.B, Finset.mem_union, not_or] at hB`. Take `⟨⟨hT, hS0⟩, hBad⟩` from `hB`. Establish `hun` using `(F₀.good w hw (by rw [← F.same.1]; exact hS0) (by rw [← F.same.2.1]; exact hBad)).2`. Conclude with `⟨hs, hT, hS0, hBad, fun u hu => by rw [wa_mu_loc]; exact hun u (wa_v_one u hu)⟩`.
+-/
 theorem wa_good (w : Pl E) (hw : w ∈ F₀.Sec) (hB : w ∉ F.d.B) (hs : IsSplitAt w) : F.d.Good w := by
   simp only [LocData.B, Finset.mem_union, not_or] at hB
   obtain ⟨⟨hT, hS0⟩, hBad⟩ := hB
   have hun := (F₀.good w hw (by rw [← F.same.1]; exact hS0) (by rw [← F.same.2.1]; exact hBad)).2
   exact ⟨hs, hT, hS0, hBad, fun u hu => by rw [wa_mu_loc]; exact hun u (wa_v_one u hu)⟩
 
+/- English proof (translation)
+Take `⟨-, hT, hS, hB, -⟩` from `hw`. Simplify using `[LocData.B, hT, hS, hB]`.
+-/
 theorem wa_notin_B {w : Pl E} (hw : F.d.Good w) : w ∉ F.d.B := by
   obtain ⟨-, hT, hS, hB, -⟩ := hw
   simp [LocData.B, hT, hS, hB]
 
+/- English proof (translation)
+Break down `x with _ | x | x` into its components or cases. Conclude with `trivial`. Conclude with `trivial`. Conclude with `⟨x.1.2.1, wa_notin_B F x.1.2.2, GlobalTheory.CompanionTheory.MatchWord.isHecke_hU F.d F.ok (if_pos x.1.2.2.1) x.2.1⟩`.
+-/
 theorem wa_ug_ok (x : F.Γ) : (F.ug x).Ok F₀.Sec F.d.B := by
   rcases x with _ | x | x
   · exact trivial
   · exact trivial
   · exact ⟨x.1.2.1, wa_notin_B F x.1.2.2, GlobalTheory.CompanionTheory.MatchWord.isHecke_hU F.d F.ok (if_pos x.1.2.2.1) x.2.1⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨p, -, rfl⟩` from `List.mem_map.1 hx`. Unfold `ul`. Use `split_ifs`. Conclude with `(U.unitary_adjoint_holds E hE n F₀.Sec F₀.lam F.d.KU F.fam F.d.B (F.d.gU F.m) F.R F.levOff _ (wa_ug_ok F p.1)).1`.
+
+Conclude with `wa_ug_ok F p.1`.
+-/
 theorem wa_ul_ok (hE : GlobalTheory.BCT.Unr E) (ws : List (List (F.Γ × Bool))) : ∀ x ∈ lU F ws, x.Ok F₀.Sec F.d.B := by
   intro x hx
   obtain ⟨p, -, rfl⟩ := List.mem_map.1 hx
@@ -68,6 +93,19 @@ theorem wa_ul_ok (hE : GlobalTheory.BCT.Unr E) (ws : List (List (F.Γ × Bool)))
   · exact (U.unitary_adjoint_holds E hE n F₀.Sec F₀.lam F.d.KU F.fam F.d.B (F.d.gU F.m) F.R F.levOff _ (wa_ug_ok F p.1)).1
   · exact wa_ug_ok F p.1
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons p L ih`. Take `⟨x, b⟩` from `p`. Break down `x with u | y | y` into its components or cases.
+
+Establish `hul : ul F (Sum.inl u, b) = Sum.inl (if b then starRingEnd ℂ 1 else 1)`. Apply the tactic sequence `cases b <;> rfl`. Rewrite using `[List.map_cons, hul, U.pu_sph_inl, ih]`. Both sides reduce to the same expression. Establish `hul : ul F (Sum.inr (Sum.inl y), b) = Sum.inl (if b then starRingEnd ℂ (F.dval y) else F.dval y)`.
+
+Apply the tactic sequence `cases b <;> rfl`. Rewrite using `[List.map_cons, hul, U.pu_sph_inl, ih]`. Both sides reduce to the same expression. Establish `hul : ul F (Sum.inr (Sum.inr y), b) = Sum.inr ⟨y.1.1, if b then lstar (F.d.hU y.1.1 y.2.1) else F.d.hU y.1.1 y.2.1⟩`. Apply the tactic sequence `cases b <;> rfl`.
+
+Rewrite using `[List.map_cons, hul]`. Distinguish the cases in `hw : y.1.1 = w`. Substitute `hw` using the available equality. Rewrite using `[U.pu_sph_self, ih]`. Establish `e : atPlace F.d y.1.1 (lt F (Sum.inr (Sum.inr y), b) :: L.map (lt F)) = (y.2.1, y.2.2, b) :: atPlace F.d y.1.1 (L.map (lt F))` using `by simp [atPlace, lt]`.
+
+Rewrite using `[List.map_cons, e]`. Apply the tactic sequence `cases b <;> rfl`. Rewrite using `[U.pu_sph_ne _ _ _ _ hw, ih]`. Establish `e : atPlace F.d w (lt F (Sum.inr (Sum.inr y), b) :: L.map (lt F)) = atPlace F.d w (L.map (lt F))`. Simplify using `[atPlace, lt, hw]`.
+
+Rewrite using `[List.map_cons, e]`.
+-/
 theorem wa_sph_map (L : List (F.Γ × Bool)) (w : Pl E) :
     U.UGen.sph (L.map (ul F)) w = MLM.wordUS F.d w (atPlace F.d w (L.map (lt F))) := by
   induction L with
@@ -97,6 +135,13 @@ theorem wa_sph_map (L : List (F.Γ × Bool)) (w : Pl E) :
           simp [atPlace, lt, hw]
         rw [List.map_cons, e]
 
+/- English proof (translation)
+Proceed by induction on `ws with`. Consider the case `nil => rfl`. Consider the case `cons v ws ih`. Establish `e1 : ls F (v :: ws) = List.replicate F.m (Sum.inl ()) ++ (v.map (lt F) ++ ls F ws)`. Simplify using `[ls]`.
+
+Establish `e2 : atPlace F.d w (List.replicate F.m (Sum.inl () : LL F.d)) = []`. Proceed by induction on `F.m with`. Consider the case `zero => rfl`. Consider the case `succ k ihk => simp [List.replicate_succ, atPlace] at ihk ⊢`. Rewrite using `[e1, List.flatten_cons, List.map_append]`.
+
+Simplify using `only [atPlace, List.filterMap_append] at ih e2 ⊢`. Rewrite using `[e2, ih, List.nil_append]`.
+-/
 theorem wa_atPlace_ls (ws : List (List (F.Γ × Bool))) (w : Pl E) :
     atPlace F.d w (ls F ws) = atPlace F.d w (ws.flatten.map (lt F)) := by
   induction ws with
@@ -112,6 +157,13 @@ theorem wa_atPlace_ls (ws : List (List (F.Γ × Bool))) (w : Pl E) :
     simp only [atPlace, List.filterMap_append] at ih e2 ⊢
     rw [e2, ih, List.nil_append]
 
+/- English proof (translation)
+Proceed by induction on `ws with`. Consider the case `nil => simp [ls]`. Consider the case `cons v ws ih`. Establish `e1 : ls F (v :: ws) = List.replicate F.m (Sum.inl ()) ++ (v.map (lt F) ++ ls F ws)`. Simplify using `[ls]`.
+
+Establish `h2 : (v.map (lt F)).countP Sum.isLeft = 0`. Rewrite using `[List.countP_eq_zero]`. Introduce `a ha`. Take `⟨⟨x, b⟩, -, rfl⟩` from `List.mem_map.1 ha`. Apply the tactic sequence `rcases x with _ | _ | _ <;> simp [lt]`.
+
+Rewrite using `[e1, List.countP_append, List.countP_append, ih, h2, List.countP_replicate, List.length_cons]`. Simplify using `[Sum.isLeft]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_ls (ws : List (List (F.Γ × Bool))) : (ls F ws).countP Sum.isLeft = F.m * ws.length := by
   induction ws with
   | nil => simp [ls]
@@ -127,10 +179,16 @@ theorem count_ls (ws : List (List (F.Γ × Bool))) : (ls F ws).countP Sum.isLeft
     simp [Sum.isLeft]
     ring
 
+/- English proof (translation)
+Rewrite using `[wa_atPlace_ls, lU, wa_sph_map]`.
+-/
 theorem sph_eq (ws : List (List (F.Γ × Bool))) (w : Pl E) :
     U.UGen.sph (lU F ws) w = MLM.wordUS F.d w (atPlace F.d w (ls F ws)) := by
   rw [wa_atPlace_ls, lU, wa_sph_map]
 
+/- English proof (translation)
+Establish `hk1 : 1 ≤ ws.length` using `List.length_pos_iff.2 hws`. Conclude with `h' E hE n F.d F.ok F.mok F₀.Sec F₀.hSec F.levOff F.T_ne (wa_mu_unit F) (fun w hw hB hs => wa_good F w hw hB hs) (ls F ws) F.m ws.length F.m_pos hk1 (count_ls F ws) (lU F ws) (fun w _ => sph_eq F ws w)`.
+-/
 theorem lm (hE : GlobalTheory.BCT.Unr E) (h' : LocMatch) (ws : List (List (F.Γ × Bool))) (hws : ws ≠ []) :
     (∀ w ∈ F.d.B, IsHecke (F.d.KU w) (F.d.gU F.m w)) ∧
     (∃ w ∈ F₀.Sec, ∀ y, U.fam F.d.B F.d.KU (F.d.gU F.m) ws.length (lU F ws) w y ≠ 0 → y.1.val.charpoly.Separable) ∧
@@ -143,6 +201,9 @@ theorem lm (hE : GlobalTheory.BCT.Unr E) (h' : LocMatch) (ws : List (List (F.Γ 
   exact h' E hE n F.d F.ok F.mok F₀.Sec F₀.hSec F.levOff F.T_ne (wa_mu_unit F) (fun w hw hB hs => wa_good F w hw hB hs)
     (ls F ws) F.m ws.length F.m_pos hk1 (count_ls F ws) (lU F ws) (fun w _ => sph_eq F ws w)
 
+/- English proof (translation)
+Take `⟨hHk, hSep, -⟩` from `lm F hE h' ws hws`. Take `⟨hTest, htr⟩` from `U.unitary_words_holds E hE n F₀.Sec F₀.lam F.d.KU F.fam F.d.B (F.d.gU F.m) F.R F.levOff hHk ws.length (lU F ws) (wa_ul_ok F hE ws)`. Conclude with `⟨hTest, htr hSep⟩`.
+-/
 theorem trace_eq (hE : GlobalTheory.BCT.Unr E) (h' : LocMatch) (ws : List (List (F.Γ × Bool))) (hws : ws ≠ []) :
     GlobalTheory.BCT.IsTest (KL n) F.d.KU (U.fam F.d.B F.d.KU (F.d.gU F.m) ws.length (lU F ws)) ∧
     LinearMap.trace ℂ _ ((F.R.u ^ ws.length * ((lU F ws).map F.R.op).prod :

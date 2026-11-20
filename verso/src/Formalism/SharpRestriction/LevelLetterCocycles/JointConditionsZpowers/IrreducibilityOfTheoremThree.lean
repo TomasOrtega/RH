@@ -16,16 +16,25 @@ def GlobalDatumCompatibility (D : D7) : Prop :=
       ∀ w : PlE D.host, ¬ IsSplitPl D.host w → ((2 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) ∧
     ∀ j, 1 ≤ j → j ≤ D.R.m → (letI := D.host.cmStar; (D.sp.V j).IsDefinite)
 
+/- English proof (translation)
+Use `D.R.t_odd.pos` as an intermediate fact. Use `show 1 ≤ D.R.r + D.R.t`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nV_pos (D : D7) : 1 ≤ D.R.nV := by
   have := D.R.t_odd.pos
   show 1 ≤ D.R.r + D.R.t
   omega
 
+/- English proof (translation)
+Use `⟨?_, hc.2.1⟩` and prove the remaining obligations. Use `letI := D.host.cmStar`. Conclude with `D.sp.cm.cmUnram`.
+-/
 theorem hypCM_of (D : D7) (hc : GlobalDatumCompatibility D) : Formalism.MainNotions.SphericalInertData.HypCM D := by
   refine ⟨?_, hc.2.1⟩
   letI := D.host.cmStar
   exact D.sp.cm.cmUnram
 
+/- English proof (translation)
+Introduce `i P`. Take `⟨Pa, h1, h2, h3, h4, h5, h6⟩` from `h45 hc.1 (hypCM_of D hc) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (nV_pos D) (hc.2.2 _ (D.nd.j_range i).1 (D.nd.j_range i).2) (D.nbc.embAV i P) (fun w hw => D.nbc.embAV_sph i P w hw)`. Use `⟨Pa, h1, h2, h3, fun w hw => (h4 w hw).trans (D.nbc.embAV_loc i P w).symm, fun w hw => ⟨(h5 w hw).1, (h5 w hw).2.trans (congrArg _ (D.nbc.embAV_sat i P w).symm)⟩, fun τ => (h6 τ).trans (congrFun (D.nbc.embAV_inf i P) τ).symm⟩` and prove the remaining obligations.
+-/
 theorem base_change_automorphic_of (D : D7) (h45 : Formalism.MainNotions.SphericalInertData.Conclusion1 D) (hc : GlobalDatumCompatibility D) :
     Formalism.MainNotions.SumRepresentations.adm1 D := by
   intro i P
@@ -43,12 +52,20 @@ def LitBNIrr (Γ : Type) [Group Γ] : Prop :=
       ((ρ' g : GL _ _) : Matrix (Fin a) (Fin a) (Formalism.CyclotomicNorms.Fbar ℓ)).charpoly) →
     Formalism.CyclotomicNorms.IrredOn ρ' ⊤ → Formalism.CyclotomicNorms.IrredOn ρ ⊤
 
+/- English proof (translation)
+The claim follows from `Matrix.charpoly_map _ f`.
+-/
 theorem charpoly_mapRep {Γ : Type} [Group Γ] {A B : Type} [CommRing A] [CommRing B] {a : ℕ}
     (f : A →+* B) (ρ : Γ →* GL (Fin a) A) (g : Γ) :
     ((mapRep f ρ g : GL _ _) : Matrix (Fin a) (Fin a) B).charpoly =
       (((ρ g : GL _ _) : Matrix (Fin a) (Fin a) A).charpoly).map f :=
   Matrix.charpoly_map _ f
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : mapRep (fbCast rfl hp hq).toRingHom ρ = ρ`. Use extensionality with `g i j`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `hρ`.
+-/
 theorem irredOn_fbCast {Γ : Type} [Group Γ] {p q : ℕ} (h : p = q) (hp : p.Prime) (hq : q.Prime) {a : ℕ}
     (ρ : Γ →* GL (Fin a) (Fb p hp))
     (hρ : @Formalism.CyclotomicNorms.IrredOn a p ⟨hp⟩ Γ _ ρ ⊤) :
@@ -71,6 +88,15 @@ def GlobalDatumRegularity (D : D7) : Prop :=
         (D.ntypes.iota k v (D.nd.w i) (Formalism.CyclotomicNorms.primeToPart (D.what₂.places.resChar (D.nd.w i))
           (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k)))))
 
+/- English proof (translation)
+Introduce `i σ _ hgood Sig hSig ρ hρ`. Take `⟨-, hw⟩` from `h33 D.ntypes.BB_disj σ hgood (fun k v => (D.ntypes.tg_gen k v).2)`. Take `⟨hirr, -, hroot⟩` from `hw (D.nd.w i)`. Take `⟨-, hcp⟩` from `D.rbar_tie i σ Sig ρ hSig hρ`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `hBN (D.nd.l i) D.R.r _ _ (fun g => ?_) (irredOn_fbCast (D.nd.w_l i) (D.what₂.places.resChar_prime (D.nd.w i)) (D.nd.lPrime i).out _ hirr)` and prove the remaining obligations. Rewrite using `[charpoly_mapRep, charpoly_mapRep]`. Conclude with `(hcp g).symm`. Introduce `k hk v _ hr`. Rewrite `hr` using `[D.ntypes.heckeLoc_gamma_places i k v]`.
+
+Establish `hk' : D.what₂.places.resChar (D.nd.w i) ≠ D.host.g k` using `by rw [D.nd.w_l i]; exact hk`. Rewrite `hr` using `[charpoly_mapRep, ← hcp]`. Establish `hχ : chi1 D.nd i (D.ntypes.tg k v) = ((D.nd.chi i 1 (D.ntypes.tg k v) : (D.nd.O i)ˣ) : D.nd.O i)` using `rfl`. Break down `D.ntypes.chiT_tg i k v hk with h | h` into its components or cases. Rewrite `hr` using `[hχ, hc i k v _ _ hk h]`.
+
+Conclude with `hroot k hk' v _ _ (Or.inl rfl) (hr.of_map (RingEquiv.injective _))`. Rewrite `hr` using `[hχ, hc i k v _ _ hk h]`. Conclude with `hroot k hk' v _ _ (Or.inr rfl) (hr.of_map (RingEquiv.injective _))`.
+-/
 theorem irreducibility_of_theorem_three (D : D7) (h33 : Formalism.MainNotions.ArithmeticCylinders.PointsLemma D) (hBN : LitBNIrr (G D.host.E D.nd.Om))
     (hc : GlobalDatumRegularity D) : Formalism.MainNotions.SumRepresentations.At.IrreducibilityParameter D.nd D.naut := by
   intro i σ _ hgood Sig hSig ρ hρ

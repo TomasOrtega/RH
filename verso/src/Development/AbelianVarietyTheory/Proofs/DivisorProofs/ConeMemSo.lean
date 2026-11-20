@@ -12,6 +12,19 @@ namespace GlobalTheory.ConeSoB
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨ei, ev, hei, hev, hloc⟩` from `he'.loc`. Introduce `Φ' hΦ'`. Proceed by induction on `hΦ' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hφ, hvac, hso, rfl⟩` from `hx`.
+
+Take `⟨hI, c, f₁, ψ, μK₁, μ₁, hK₁, hμ₁, hψ, hψv, hψ1, hcone⟩` from `GlobalTheory.T.config_b_stabilizer_eigen hP B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK μ hμK hμ f φ hφ hvac`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[hcone]`. Use `Submodule.smul_mem _ c (Submodule.subset_span ⟨f₁, ψ, hψ, hψv, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[hψ1]`.
+
+Conclude with `GlobalTheory.T.config_b_stabilizer_theta B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK₁ μ₁ hK₁ hμ₁ _ hso`. Consider the case `zero`. Use `⟨intOK_zero, ?_⟩` and prove the remaining obligations. Establish `h` using `(intOK_lin (B := B) (M := G.M') (om := om') (e := e') (K := K) (μK := μK) (μ := μ) (u := shiftB σ H H') (ν := X.ν) (z := (a - (b + 2)) / 2 + 1) 0 0 intOK_zero intOK_zero).2`. Simplify using `only [zero_smul, add_zero] at h`.
+
+Rewrite using `[h]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `h` using `intOK_lin 1 1 hx.1 hy.1`. Simplify using `only [one_smul] at h`.
+
+Rewrite using `[h.2]`. Conclude with `⟨h.1, add_mem hx.2 hy.2⟩`. Consider the case `smul c x _ hx`. Establish `h` using `intOK_lin c 0 hx.1 hx.1`. Simplify using `only [zero_smul, add_zero] at h`.
+
+Rewrite using `[h.2]`. Conclude with `⟨h.1, Submodule.smul_mem _ c hx.2⟩`.
+-/
 theorem cone_mem_So (hP : GlobalTheory.FunPr.Hypotheses₂) (B : Base F E) {a b : ℕ} (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)) (hC : CfgB B G G₁ H H') (e' : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F b (a + b))
     (he' : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e') (K : Subgroup (UA σ G.V'.J)) (μK : Measure K)

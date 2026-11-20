@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.ArchB
 
+/- English proof (translation)
+Take `⟨E, _, _, ⟨MR⟩⟩` from `lieModel_exists X G ℂ z`. Take `⟨ev, hev, -, -⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ Li M ℂ z hz E MR hξ inferInstance`. Conclude with `⟨MR.pt (ev ⟨e, he⟩), (hev e _).2 ⟨he, rfl⟩⟩`.
+-/
 theorem exists_lieVal {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X} [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] {Li : Type} [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (hξ : IsCptGen ξ)
     (z : Sp ℂ ⟶ X) (hz : genPt ξ ⤳ centre z) {e : Li} (he : e ∈ M.lat ⟨centre z, hz⟩) :
@@ -31,12 +34,18 @@ theorem exists_lieVal {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
   obtain ⟨ev, hev, -, -⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ Li M ℂ z hz E MR hξ inferInstance
   exact ⟨MR.pt (ev ⟨e, he⟩), (hev e _).2 ⟨he, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨_, v', hv', -⟩` from `h`. Conclude with `Submodule.subset_span ⟨v', hv'⟩`.
+-/
 theorem lat_of_lieVal {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X} [GrpObj G]
     {Li : Type} [AddCommGroup Li] [Module Ω Li] {M : LieModel G ξ Li} {z : Sp ℂ ⟶ X} (hz : genPt ξ ⤳ centre z)
     {e : Li} {v : epsAt z ⟶ G} (h : M.ValAt z e v) : e ∈ M.lat ⟨centre z, hz⟩ := by
   obtain ⟨_, v', hv', -⟩ := h
   exact Submodule.subset_span ⟨v', hv'⟩
 
+/- English proof (translation)
+The claim follows from `|(1 / 2) * (Real.log ‖(gramAt h z (Fin.snoc v ve : Fin (i + 1) → (epsAt z ⟶ G))).det‖ - Real.log ‖(gramAt h z v).det‖) - Real.log ‖u‖ - ∑ k, (A.a k : ℝ) * Real.log ‖w ⟨k, c₀ k⟩‖ + Real.log (A.h w)| ≤ C := by intro X Ω _ ξ K _ J _ y G _ _ _ Li _ _ M V r b₀ m i e₀ h A hc hall htie …`.
+-/
 theorem local_bound : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (V : Lat ξ Li) (r : ℕ) (b₀ : Fin r → Li)
@@ -201,6 +210,9 @@ theorem local_bound : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω �
   have h5 := abs_sub_abs_le_abs_sub (D w) (D w₀)
   linarith
 
+/- English proof (translation)
+The claim follows from `|(1 / 2) * (Real.log ‖(gramAt h z (Fin.snoc v ve : Fin (i + 1) → (epsAt z ⟶ G))).det‖ - Real.log ‖(gramAt h z v).det‖) - Real.log ‖u‖ - ∑ k, (A.a k : ℝ) * Real.log ‖w ⟨k, c₀ k⟩‖ + Real.log (A.h w)| ≤ C := by intro X Ω _ ξ K _ J _ y G _ _ _ Li _ _ M V r b₀ m i e₀ h A hc hall htie …`.
+-/
 theorem arch_bound : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (V : Lat ξ Li) (r : ℕ) (b₀ : Fin r → Li)

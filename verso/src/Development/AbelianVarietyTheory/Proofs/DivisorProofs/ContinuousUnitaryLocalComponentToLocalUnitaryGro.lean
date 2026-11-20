@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.BCT
 
+/- English proof (translation)
+Establish `hf : Continuous ((pLoc E w).comp (pFin E))` using `by show Continuous (fun x => pLoc E w (pFin E x))`. Conclude with `(RestrictedProduct.continuous_eval w).comp continuous_snd`. Establish `hm : Continuous (((pLoc E w).comp (pFin E)).mapMatrix : Matrix (Fin n) (Fin n) (Ad E) →+* _)` using `continuous_id.matrix_map hf`. Conclude with `(Continuous.units_map _ hm).comp (continuous_subtype_val.comp continuous_subtype_val)`.
+-/
 theorem cLoc_fin_continuous {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Pl E) :
     Continuous (fun x : finU E n => cLoc w (x : UA E n)) := by
   have hf : Continuous ((pLoc E w).comp (pFin E)) := by
@@ -18,6 +21,9 @@ theorem cLoc_fin_continuous {E : Type} [Field E] [NumberField E] [IsCMField E] {
     continuous_id.matrix_map hf
   exact (Continuous.units_map _ hm).comp (continuous_subtype_val.comp continuous_subtype_val)
 
+/- English proof (translation)
+Establish `: (fun x => toSub H (f x)) = fun x => (⟨f x, hH x⟩ : H)`. Use function extensionality and compare the values at `x`. Simplify using `[toSub, hH x]`. Rewrite using `[this]`. Conclude with `hf.subtype_mk _`.
+-/
 theorem continuous_toSub {X G : Type} [TopologicalSpace X] [Group G] [TopologicalSpace G] (H : Subgroup G) {f : X → G}
     (hf : Continuous f) (hH : ∀ x, f x ∈ H) : Continuous (fun x => toSub H (f x)) := by
   have : (fun x => toSub H (f x)) = fun x => (⟨f x, hH x⟩ : H) := by
@@ -25,11 +31,17 @@ theorem continuous_toSub {X G : Type} [TopologicalSpace X] [Group G] [Topologica
   rw [this]
   exact hf.subtype_mk _
 
+/- English proof (translation)
+The claim follows from `continuous_toSub _ (cLoc_fin_continuous w) hmem`.
+-/
 theorem toSub_cLoc_continuous_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Pl E)
     (hmem : ∀ x : finU E n, cLoc w (x : UA E n) ∈ UL n w) :
     Continuous (fun x : finU E n => toSub (UL n w) (cLoc w (x : UA E n))) :=
   continuous_toSub _ (cLoc_fin_continuous w) hmem
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n w`. Conclude with `toSub_cLoc_continuous_of_mem w (GlobalTheory.T.finiteAdelicUnitaryPoint_localComponent_mem_localUnitary E hE n w)`.
+-/
 theorem toSub_cLoc_fin_continuous : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ,
     ∀ w : Pl E, Continuous (fun x : finU E n => toSub (UL n w) (cLoc w (x : UA E n))) := by
   intro E _ _ _ hE n w

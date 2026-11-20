@@ -8,23 +8,35 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.Glue
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, p.naturality, CommRingCat.comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem app_map {Y Z : Scheme.{0}} (p : Z ⟶ Y) {U V : Y.Opens} (i : U ⟶ V) (a : Γ(Y, V)) :
     (p.app U).hom ((Y.presheaf.map i.op).hom a) =
       (Z.presheaf.map (homOfLE (p.preimage_mono i.le)).op).hom ((p.app V).hom a) := by
   rw [← CommRingCat.comp_apply, p.naturality, CommRingCat.comp_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_map {X : Scheme.{0}} {U V W : X.Opens} (i : V ⟶ U) (j : W ⟶ V) (x : Γ(X, U)) :
     (X.presheaf.map j.op).hom ((X.presheaf.map i.op).hom x) =
       (X.presheaf.map (homOfLE (j.le.trans i.le)).op).hom x := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨U, hU⟩, hUV⟩, hxU⟩`.
+-/
 theorem le_iSup_affine (Y : Scheme.{0}) (V : Y.Opens) :
     V ≤ ⨆ U : {U : Y.affineOpens // U.1 ≤ V}, U.1.1 := by
   intro x hx
   obtain ⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen
   exact TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨U, hU⟩, hUV⟩, hxU⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨U, hU⟩, hUV⟩, hxU⟩`.
+-/
 theorem le_iSup_preimage_affine {Y Z : Scheme.{0}} (p : Z ⟶ Y) (V : Y.Opens) :
     p ⁻¹ᵁ V ≤ ⨆ U : {U : Y.affineOpens // U.1 ≤ V}, p ⁻¹ᵁ U.1.1 := by
   intro x hx
@@ -35,6 +47,19 @@ end GlobalTheory.Mum.Glue
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `Y Z p H`. Establish `inj : ∀ W : Y.Opens, Function.Injective (p.app W).hom`. Introduce `W a b hab`. Use `Y.sheaf.eq_of_locally_eq' (fun U : {U : Y.affineOpens // U.1 ≤ W} ↦ U.1.1) W (fun U ↦ homOfLE U.2) (Glue.le_iSup_affine Y W) a b fun U ↦ ?_` and prove the remaining obligations. Apply `(H U.1.1 U.1.2).1` to reduce the goal to its premises.
+
+Use `show (p.app _).hom ((Y.presheaf.map (homOfLE U.2).op).hom a) = (p.app _).hom ((Y.presheaf.map (homOfLE U.2).op).hom b)`. Rewrite using `[Glue.app_map, Glue.app_map, hab]`. Introduce `V`. Use `⟨inj V, fun f hf ↦ ?_⟩` and prove the remaining obligations. Establish `hV : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)` using `by show (pullback.snd p p ≫ p) ⁻¹ᵁ V = (pullback.fst p p ≫ p) ⁻¹ᵁ V`.
+
+Rewrite using `[pullback.condition]`. Establish `hf'` using `hf hV`. Establish `hU : ∀ U : {U : Y.affineOpens // U.1 ≤ V}, ∃ g : Γ(Y, U.1.1), (p.app U.1.1).hom g = (Z.presheaf.map (homOfLE (p.preimage_mono U.2)).op).hom f`. Introduce `U`. Apply `(H U.1.1 U.1.2).2` to reduce the goal to its premises.
+
+Introduce `h'`. Rewrite using `[Glue.app_map, hf', ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Use `choose g hg using hU`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' (fun U : {U : Y.affineOpens // U.1 ≤ V} ↦ U.1.1) V (fun U ↦ homOfLE U.2) (Glue.le_iSup_affine Y V) g (by`. Introduce `U U'`.
+
+Apply `inj` to reduce the goal to its premises. Use `show (p.app _).hom ((Y.presheaf.map _).hom (g U)) = (p.app _).hom ((Y.presheaf.map _).hom (g U'))`. Rewrite using `[Glue.app_map, Glue.app_map, hg, hg, Glue.map_map, Glue.map_map])`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `Z.sheaf.eq_of_locally_eq' (fun U : {U : Y.affineOpens // U.1 ≤ V} ↦ p ⁻¹ᵁ U.1.1) (p ⁻¹ᵁ V) (fun U ↦ homOfLE (p.preimage_mono U.2)) (Glue.le_iSup_preimage_affine p V) _ _ fun U ↦ ?_` and prove the remaining obligations.
+
+Establish `e` using `Glue.app_map p (homOfLE U.2) s`. Establish `hsU : (Y.presheaf.map (homOfLE U.2).op).hom s = g U` using `hs U`. Rewrite `e` using `[hsU, hg]`. Conclude with `e.symm`.
+-/
 theorem app_injective_and_descent_of_affineOpens : ∀ (Y Z : Scheme.{0}) (p : Z ⟶ Y), (∀ V : Y.Opens, IsAffineOpen V → (Function.Injective (p.app V).hom ∧ ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom)) → ∀ V : Y.Opens, (Function.Injective (p.app V).hom ∧ ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom) := by
   intro Y Z p H
   have inj : ∀ W : Y.Opens, Function.Injective (p.app W).hom := by

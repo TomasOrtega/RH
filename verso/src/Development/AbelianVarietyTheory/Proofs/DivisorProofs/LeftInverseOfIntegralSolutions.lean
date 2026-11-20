@@ -4,6 +4,29 @@ namespace GlobalTheory
 
 open Matrix IsLocalRing
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hπ0 : π ≠ 0` using `hπ.ne_zero`. Establish `hinj0 : Function.Injective (algebraMap V Fr)` using `IsFractionRing.injective V Fr`. Establish `hπF : algebraMap V Fr π ≠ 0`. Introduce `h; exact hπ0 (hinj0 (by rw [h, map_zero]))`.
+
+Use `set k := ResidueField V`. Use `set Ab : Matrix (Fin n) (Fin m) k := A.map (residue V) with hAb`. Establish `hker : LinearMap.ker (Matrix.toLin' Ab) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `cb hcb`.
+
+Rewrite `hcb` using `[Matrix.toLin'_apply]`. Use `choose c hc using fun j => residue_surjective (R := V) (cb j)`. Establish `hcb' : cb = fun j => residue V (c j)` using `funext fun j => (hc j).symm`. Establish `hmem : ∀ i, (A.mulVec c) i ∈ maximalIdeal V`. Introduce `i`.
+
+Rewrite using `[← residue_eq_zero_iff]`. Use `congrFun hcb i` as an intermediate fact. Rewrite `this` using `[hcb']`. Simplify `this` using `[Matrix.mulVec, dotProduct, hAb, map_sum]`. Establish `hmax : maximalIdeal V = Ideal.span {π}` using `hπ.maximalIdeal_eq`.
+
+Establish `hdiv : ∀ i, π ∣ (A.mulVec c) i` using `fun i => by`. Use `hmem i` as an intermediate fact. Rewrite `this` using `[hmax, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose b hb using hdiv`.
+
+Use `set cf : Fin m → Fr := fun j => algebraMap V Fr (c j) / algebraMap V Fr π`. Establish `hcf : (A.map (algebraMap V Fr)).mulVec cf = fun j => algebraMap V Fr (b j)`. Use function extensionality and compare the values at `i`. Establish `h1 : (A.map (algebraMap V Fr)).mulVec cf i = algebraMap V Fr ((A.mulVec c) i) / algebraMap V Fr π`. Simplify using `only [cf, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_div, mul_div_assoc]`.
+
+Rewrite using `[h1, hb i, map_mul, mul_div_assoc, mul_div_cancel₀ _ hπF]`. Establish `hint` using `hA cf b hcf`. Use function extensionality and compare the values at `j`. Take `⟨a, ha⟩` from `hint j`. Establish `: c j = π * a`.
+
+Apply `hinj0` to reduce the goal to its premises. Rewrite using `[map_mul, ha]`. Simplify using `only [cf]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hcb']`.
+
+Simplify using `only [Pi.zero_apply]`. Rewrite using `[this, map_mul, (residue_eq_zero_iff π).2 hπ.not_isUnit, zero_mul]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' Ab) hker`. Use `set Bb : Matrix (Fin m) (Fin n) k := LinearMap.toMatrix' g`. Establish `hBb : Bb * Ab = 1`.
+
+Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Use `choose B₀' hB₀ using fun i j => residue_surjective (R := V) (Bb i j)`. Use `set B₀ : Matrix (Fin m) (Fin n) V := Matrix.of B₀'`. Establish `hB₀' : B₀.map (residue V) = Bb` using `by ext i j; exact hB₀ i j`.
+
+Establish `hdet : IsUnit (B₀ * A).det`. Rewrite using `[← residue_ne_zero_iff_isUnit, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, hB₀', ← hAb, hBb, Matrix.det_one]`. Conclude with `one_ne_zero`. Use `⟨(B₀ * A)⁻¹ * B₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]`.
+-/
 theorem dvr_matrix_exists_leftInverse_of_saturated
     (V Fr : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field Fr]
     [Algebra V Fr] [IsFractionRing V Fr] (n m : ℕ) (A : Matrix (Fin n) (Fin m) V)

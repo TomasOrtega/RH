@@ -6,6 +6,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Introduce `p _ X D pos fd j La G`. Use `show (X.Pj j).natAct _ ((X.Pj j).natAct (fun v => (glInv X j (BOf fd j La) v)⁻¹) G) = G`. Rewrite using `[← LinearMap.comp_apply, ← Formalism.MainNotions.G.LatticeSystems.jd_natAct_mul (X.Pj j)]`. Simplify using `only [mul_inv_cancel]`. Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_natAct_one (X.Pj j)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem natAct_glInv_gmOf : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (fd : FData X D) (j : ℕ) (La : X.Lt j) (G : (X.Pj j).Xsp), (X.Pj j).natAct (glInv X j (BOf fd j La)) (gmOf fd j La G) = G := by
   intro p _ X D pos fd j La G
   show (X.Pj j).natAct _ ((X.Pj j).natAct (fun v => (glInv X j (BOf fd j La) v)⁻¹) G) = G

@@ -29,9 +29,15 @@ structure IrreducibleClosedPair (W : Scheme.{u}) where
 def AgreeNear {W : Scheme.{u}} (I J : W.IdealSheafData) (x : ↥W) : Prop :=
   ∃ U : W.Opens, x ∈ U ∧ I.comap U.ι = J.comap U.ι
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem agreeNear_iff {W : Scheme.{u}} (I J : W.IdealSheafData) (x : ↥W) :
     AgreeNear I J x ↔ ∃ U : W.Opens, x ∈ U ∧ I.comap U.ι = J.comap U.ι := Iff.rfl
 
+/- English proof (translation)
+Take `⟨U, hU, hEq⟩` from `h`. Conclude with `⟨U, hU, hEq.symm⟩`.
+-/
 theorem agreeNear_symm {W : Scheme.{u}} {I J : W.IdealSheafData} {x : ↥W}
     (h : AgreeNear I J x) : AgreeNear J I x := by
   obtain ⟨U, hU, hEq⟩ := h
@@ -87,6 +93,13 @@ structure IdealSheafGeometryHypotheses (V : VanishingAssignment.{u}) : Prop wher
       (T' : Set ↥(U.toScheme)) = U.ι.base ⁻¹' (T : Set ↥W) →
       (V W T).comap U.ι = V U.toScheme T'
 
+/- English proof (translation)
+Establish `h1` using `hV.orderAt_congr W I J x h`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (1 : ℕ∞) ≤ orderAt I x` using `(one_le_orderAt_iff_mem_support I x).2 hx`. Use `(one_le_orderAt_iff_mem_support J x).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← h1]`. Conclude with `hx'`. Introduce `hx`. Establish `hx' : (1 : ℕ∞) ≤ orderAt J x` using `(one_le_orderAt_iff_mem_support J x).2 hx`. Use `(one_le_orderAt_iff_mem_support I x).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `hx'`.
+-/
 theorem mem_support_iff_of_agreeNear {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {W : Scheme.{u}} {I J : W.IdealSheafData} {x : ↥W} (h : AgreeNear I J x) :
     x ∈ (I.support : Set ↥W) ↔ x ∈ (J.support : Set ↥W) := by
@@ -111,6 +124,11 @@ def OrderOneCentersIsolated (V : VanishingAssignment.{u}) {k : Type u} [Field k]
     AgreeNear I (V W ⟨C.S1, C.closed1⟩) C.xi1 → orderAt I C.xi1 = 1 →
     C.xi2 ∈ (I.support : Set ↥W) → False
 
+/- English proof (translation)
+Establish `h1 : Topology.IsInducing ⇑D.subschemeι.base` using `(hV.isClosedEmbedding_subschemeι U.toScheme D).toIsEmbedding.toIsInducing`. Establish `h2 : Topology.IsInducing ⇑U.ι.base` using `(hV.isEmbedding_ι W U).toIsInducing`. Establish `hfun : ⇑(D.subschemeι ≫ U.ι).base = ⇑U.ι.base ∘ ⇑D.subschemeι.base`. Use function extensionality and compare the values at `y`. Conclude with `hV.base_comp _ _ _ D.subschemeι U.ι y`.
+
+Rewrite using `[hfun]`. Conclude with `h2.comp h1`.
+-/
 theorem isInducing_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) :
     Topology.IsInducing ⇑(D.subschemeι ≫ U.ι).base := by
@@ -123,6 +141,9 @@ theorem isInducing_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : Ideal
   rw [hfun]
   exact h2.comp h1
 
+/- English proof (translation)
+The claim follows from `isGenericPoint_preimage_of_isInducing (isInducing_subschemeι_comp_ι hV W U D) hξ hy`.
+-/
 theorem isGenericPoint_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
     (ξ : ↥W) (hξ : IsGenericPoint ξ T) (y : ↥(D.subscheme))
@@ -130,12 +151,24 @@ theorem isGenericPoint_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}
     IsGenericPoint y ((D.subschemeι ≫ U.ι).base ⁻¹' T) :=
   isGenericPoint_preimage_of_isInducing (isInducing_subschemeι_comp_ι hV W U D) hξ hy
 
+/- English proof (translation)
+The claim follows from `hT.preimage (isInducing_subschemeι_comp_ι hV W U D).continuous`.
+-/
 theorem isClosed_preimage_subschemeι_comp_ι {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
     (hT : IsClosed T) :
     IsClosed ((D.subschemeι ≫ U.ι).base ⁻¹' T) :=
   hT.preimage (isInducing_subschemeι_comp_ι hV W U D).continuous
 
+/- English proof (translation)
+Establish `hx : x ∈ Set.range ⇑U.ι.base`. Rewrite using `[hV.range_ι W U]`. Conclude with `hxU`. Take `⟨y₀, hy₀⟩` from `hx`. Establish `hy₀T : y₀ ∈ (D.support : Set ↥(U.toScheme))`.
+
+Use `hT ?_` and prove the remaining obligations. Establish `h' : U.ι.base y₀ ∈ T`. Rewrite using `[hy₀]`. Conclude with `hxT`. Conclude with `h'`.
+
+Establish `hy₀r : y₀ ∈ Set.range ⇑D.subschemeι.base`. Rewrite using `[hV.range_subschemeι U.toScheme D]`. Conclude with `hy₀T`. Take `⟨y, hy⟩` from `hy₀r`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hV.base_comp _ _ _ D.subschemeι U.ι y, hy, hy₀]`.
+-/
 theorem exists_subschemeι_comp_ι_apply_eq_of_mem {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (U : W.Opens) (D : (U.toScheme).IdealSheafData) (T : Set ↥W)
     (hT : U.ι.base ⁻¹' T ⊆ (D.support : Set ↥(U.toScheme)))
@@ -158,6 +191,21 @@ theorem exists_subschemeι_comp_ι_apply_eq_of_mem {V : VanishingAssignment.{u}}
   refine ⟨y, ?_⟩
   rw [hV.base_comp _ _ _ D.subschemeι U.ι y, hy, hy₀]
 
+/- English proof (translation)
+Establish `hopenU : IsOpen ((U : Set ↥W))` using `hV.isOpen_opens W U`. Establish `hxi2U : C.xi2 ∈ (U : Set ↥W)` using `(C.generic2.mem_open_set_iff hopenU).mpr ⟨C.pt, C.mem_second_closed, hptU⟩`. Establish `hZsub : ⇑U.ι.base ⁻¹' (Z.support : Set ↥W) ⊆ (H.support : Set ↥(U.toScheme))`. Rewrite using `[← support_comap_eq]`. Conclude with `hZH`.
+
+Establish `hNsub : ⇑U.ι.base ⁻¹' (N.support : Set ↥W) ⊆ (H.support : Set ↥(U.toScheme))`. Rewrite using `[← support_comap_eq]`. Conclude with `hNsubH`. Take `⟨y0, hy0⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U H (Z.support : Set ↥W) hZsub C.pt hptU hptZ`. Take `⟨y2, hy2⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U H (N.support : Set ↥W) hNsub C.xi2 hxi2U hxi2N`.
+
+Establish `hgen2 : IsGenericPoint y2 ((H.subschemeι ≫ U.ι).base ⁻¹' C.S2)` using `isGenericPoint_preimage_subschemeι_comp_ι hV W U H C.S2 C.xi2 C.generic2 y2 hy2`. Establish `hclosedA : IsClosed (⇑H.subschemeι.base ⁻¹' ((Z.comap U.ι).support : Set ↥(U.toScheme)))` using `(hV.isClosed_support U.toScheme (Z.comap U.ι)).preimage (hV.isClosedEmbedding_subschemeι U.toScheme H).continuous`. Establish `hA : IsClopen (⇑H.subschemeι.base ⁻¹' ((Z.comap U.ι).support : Set ↥(U.toScheme)))` using `⟨hclosedA, hopen⟩`. Establish `hirr : IsIrreducible ((H.subschemeι ≫ U.ι).base ⁻¹' C.S2)`. Rewrite using `[← hgen2.def]`.
+
+Conclude with `isIrreducible_singleton.closure`. Establish `hy0A : y0 ∈ ⇑H.subschemeι.base ⁻¹' ((Z.comap U.ι).support : Set ↥(U.toScheme))`. Rewrite using `[support_comap_eq]`. Use `show U.ι.base (H.subschemeι.base y0) ∈ (Z.support : Set ↥W)`. Rewrite using `[← hV.base_comp _ _ _ H.subschemeι U.ι y0, hy0]`.
+
+Conclude with `hptZ`. Establish `hy0S : y0 ∈ (H.subschemeι ≫ U.ι).base ⁻¹' C.S2` using `by show (H.subschemeι ≫ U.ι).base y0 ∈ C.S2`. Rewrite using `[hy0]`. Conclude with `C.mem_second_closed`. Establish `hsub` using `hirr.isPreirreducible.isPreconnected.subset_isClopen hA ⟨y0, hy0S, hy0A⟩`.
+
+Establish `hy2A : y2 ∈ ⇑H.subschemeι.base ⁻¹' ((Z.comap U.ι).support : Set ↥(U.toScheme))` using `hsub hgen2.mem`. Apply `hxi2Z` to reduce the goal to its premises. Rewrite `hy2A` using `[support_comap_eq]`. Establish `h' : U.ι.base (H.subschemeι.base y2) ∈ (Z.support : Set ↥W)` using `hy2A`. Rewrite `h'` using `[← hV.base_comp _ _ _ H.subschemeι U.ι y2, hy2]`.
+
+Conclude with `h'`.
+-/
 theorem false_of_isOpen_preimage_support {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     (W : Scheme.{u}) (N Z : W.IdealSheafData) (C : IrreducibleClosedPair W) (U : W.Opens)
     (H : (U.toScheme).IdealSheafData)
@@ -207,6 +255,9 @@ theorem false_of_isOpen_preimage_support {V : VanishingAssignment.{u}} (hV : Ide
   rw [← hV.base_comp _ _ _ H.subschemeι U.ι y2, hy2] at h'
   exact h'
 
+/- English proof (translation)
+Introduce `C _ hS1 _ hxi1M _ _ _ _`. Conclude with `hxi1M (h (hS1 C.generic1.mem))`.
+-/
 private theorem orderOneCentersIsolated_of_support_subset {V : VanishingAssignment.{u}} {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (I : W.IdealSheafData) (m : ℕ)
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : (Z.support : Set ↥W) ⊆ Mem) :
@@ -214,6 +265,9 @@ private theorem orderOneCentersIsolated_of_support_subset {V : VanishingAssignme
   intro C _ hS1 _ hxi1M _ _ _ _
   exact hxi1M (h (hS1 C.generic1.mem))
 
+/- English proof (translation)
+Introduce `_ hm1 _ _ _ _ _ _ _`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem orderOneCentersIsolated_of_two_le {V : VanishingAssignment.{u}} {k : Type u} [Field k]
     {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} (I : W.IdealSheafData) (m : ℕ)
     {Mem : Set ↥W} {Z : W.IdealSheafData} (hm : 2 ≤ m) :
@@ -221,6 +275,17 @@ private theorem orderOneCentersIsolated_of_two_le {V : VanishingAssignment.{u}} 
   intro _ hm1 _ _ _ _ _ _ _
   omega
 
+/- English proof (translation)
+Introduce `C hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2I`. Establish `hxi1S : C.xi1 ∈ C.S1` using `C.generic1.mem`. Establish `hM1 : C.xi1 ∉ (M.support : Set ↥W)` using `fun hh => hxi1M (hM hh)`. Establish `hM2 : C.xi2 ∉ (M.support : Set ↥W)` using `fun hh => hxi2M (hM hh)`. Take `⟨Uc, hUcmem, hUctop⟩ : ∃ Uc : W.Opens, C.xi1 ∈ Uc ∧ M.comap Uc.ι = ⊤` from `⟨⟨(M.support : Set ↥W)ᶜ, (hV.isClosed_support W M).isOpen_compl⟩, hM1, comap_ι_eq_top_of_disjoint M _ disjoint_compl_left⟩`.
+
+Establish `hAIN : AgreeNear I N C.xi1` using `⟨Uc, hUcmem, by rw [hI, hV.comap_mul, hUctop, hV.top_mul]⟩`. Establish `hAN : AgreeNear N (V W ⟨C.S1, C.closed1⟩) C.xi1` using `hV.agreeNear_trans W N I (V W ⟨C.S1, C.closed1⟩) C.xi1 (agreeNear_symm hAIN) hagree`. Establish `hM0 : orderAt M C.xi1 = 0` using `(orderAt_eq_zero_iff_not_mem_support M C.xi1).2 hM1`. Establish `hle : orderAt N C.xi1 ≤ 1`. Establish `h2` using `add_orderAt_le_orderAt_mul M N C.xi1`.
+
+Rewrite `h2` using `[hM0, zero_add, ← hI, hord]`. Conclude with `h2`. Establish `hmu1 : (μ : ℕ∞) ≤ orderAt N C.xi1` using `(mem_orderAtLeastLocus_iff N μ C.xi1).1 (hZ (hS1 hxi1S))`. Establish `hμle : μ ≤ 1` using `by exact_mod_cast le_trans hmu1 hle`. Establish `hμ1 : μ = 1` using `by omega`.
+
+Establish `hordN : orderAt N C.xi1 = 1`. Use `le_antisymm hle ?_` and prove the remaining obligations. Rewrite `hmu1` using `[hμ1]`. Conclude with `hmu1` after adjusting the coercions. Establish `hxi2Nmem : C.xi2 ∈ (N.support : Set ↥W)`.
+
+Rewrite `hxi2I` using `[hI, hV.support_mul]`. Break down `(Set.mem_union _ _ _).1 hxi2I with h' | h'` into its components or cases. Conclude with `absurd h' hM2`. Conclude with `h'`. Conclude with `ih C hμ1 hS1 hxi2Z hxi1M hxi2M hAN hordN hxi2Nmem`.
+-/
 private theorem orderOneCentersIsolated_of_eq_mul_of_subset_orderAtLeastLocus {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
@@ -258,6 +323,31 @@ private theorem orderOneCentersIsolated_of_eq_mul_of_subset_orderAtLeastLocus {V
     · exact h'
   exact ih C hμ1 hS1 hxi2Z hxi1M hxi2M hAN hordN hxi2Nmem
 
+/- English proof (translation)
+Establish `hopenU : IsOpen ((U₀ : Set ↥W))` using `hV.isOpen_opens W U₀`. Establish `hxi1U : C.xi1 ∈ (U₀ : Set ↥W)` using `(C.generic1.mem_open_set_iff hopenU).mpr ⟨C.pt, C.mem_first_closed, hptU⟩`. Establish `hxi2U : C.xi2 ∈ (U₀ : Set ↥W)` using `(C.generic2.mem_open_set_iff hopenU).mpr ⟨C.pt, C.mem_second_closed, hptU⟩`. Establish `hrange : Set.range ⇑U₀.ι.base = (U₀ : Set ↥W)` using `hV.range_ι W U₀`. Choose the witnesses or unpack the hypotheses as in `⟨x1, hx1⟩ : ∃ y, U₀.ι.base y = C.xi1 := by`.
+
+Rewrite using `[← Set.mem_range, hrange]`. Conclude with `hxi1U`. Choose the witnesses or unpack the hypotheses as in `⟨x2, hx2⟩ : ∃ y, U₀.ι.base y = C.xi2 := by`. Rewrite using `[← Set.mem_range, hrange]`. Conclude with `hxi2U`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ y, U₀.ι.base y = C.pt := by`. Rewrite using `[← Set.mem_range, hrange]`. Conclude with `hptU`. Establish `hcont : Continuous ⇑U₀.ι.base` using `(hV.isEmbedding_ι W U₀).continuous`. Establish `hg1 : IsGenericPoint x1 (⇑U₀.ι.base ⁻¹' C.S1)` using `isGenericPoint_preimage_of_isInducing (hV.isEmbedding_ι W U₀).toIsInducing C.generic1 hx1`.
+
+Establish `hg2 : IsGenericPoint x2 (⇑U₀.ι.base ⁻¹' C.S2)` using `isGenericPoint_preimage_of_isInducing (hV.isEmbedding_ι W U₀).toIsInducing C.generic2 hx2`. Use `key { S1 := ⇑U₀.ι.base ⁻¹' C.S1 S2 := ⇑U₀.ι.base ⁻¹' C.S2 xi1 := x1 xi2 := x2 pt := x0 closed1 := C.closed1.preimage hcont closed2 := C.closed2.preimage hcont irred1 := by` and prove the remaining obligations. Rewrite using `[← hg1.def]`. Conclude with `isIrreducible_singleton.closure`. Use `irred2 := by`.
+
+Rewrite using `[← hg2.def]`. Conclude with `isIrreducible_singleton.closure`. Use `generic1 := hg1`. Use `generic2 := hg2`. Use `mem_first_closed := by show U₀.ι.base x0 ∈ C.S1`.
+
+Rewrite using `[hx0]`. Conclude with `C.mem_first_closed`. Use `mem_second_closed := by show U₀.ι.base x0 ∈ C.S2`. Rewrite using `[hx0]`. Conclude with `C.mem_second_closed }`.
+
+Use `hm1 ?_ ?_ ?_ ?_ ?_ ?_ ?_`. Rewrite using `[support_comap_eq]`. Conclude with `Set.preimage_mono hS1`. Rewrite using `[support_comap_eq]`. Introduce `hcon`.
+
+Apply `hxi2Z` to reduce the goal to its premises. Establish `h' : U₀.ι.base x2 ∈ (Z.support : Set ↥W)` using `hcon`. Rewrite `h'` using `[hx2]`. Then use the resulting hypothesis. Introduce `hcon`. Apply `hxi1M` to reduce the goal to its premises.
+
+Establish `h' : U₀.ι.base x1 ∈ Mem` using `hcon`. Rewrite `h'` using `[hx1]`. Then use the resulting hypothesis. Introduce `hcon`. Apply `hxi2M` to reduce the goal to its premises. Establish `h' : U₀.ι.base x2 ∈ Mem` using `hcon`.
+
+Rewrite `h'` using `[hx2]`. Then use the resulting hypothesis. Establish `h1 : AgreeNear I (V W ⟨C.S1, C.closed1⟩) (U₀.ι.base x1)`. Rewrite using `[hx1]`. Conclude with `hagree`. Establish `h2` using `hV.agreeNear_comap W U₀ I (V W ⟨C.S1, C.closed1⟩) x1 h1`.
+
+Rewrite `h2` using `[hV.comap_vanishing W ⟨C.S1, C.closed1⟩ U₀ ⟨⇑U₀.ι.base ⁻¹' C.S1, C.closed1.preimage hcont⟩ rfl]`. Conclude with `h2`. Use `show orderAt (I.comap U₀.ι) x1 = 1`. Rewrite using `[hV.orderAt_comap W U₀ I x1, hx1]`. Conclude with `hord`.
+
+Use `show x2 ∈ ((I.comap U₀.ι).support : Set ↥(U₀.toScheme))`. Rewrite using `[support_comap_eq]`. Use `show U₀.ι.base x2 ∈ (I.support : Set ↥W)`. Rewrite using `[hx2]`. Conclude with `hxi2I`.
+-/
 private theorem false_of_orderOneCentersIsolated_comap_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
@@ -338,6 +428,9 @@ private theorem false_of_orderOneCentersIsolated_comap_opens {V : VanishingAssig
     rw [hx2]
     exact hxi2I
 
+/- English proof (translation)
+Introduce `C hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2I`. Establish `hz : C.pt ∈ Z.support` using `hS1 C.mem_first_closed`. Conclude with `false_of_orderOneCentersIsolated_comap_opens hV (U C.pt hz) C (hU C.pt hz) (ih C.pt hz) hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2I`.
+-/
 private theorem orderOneCentersIsolated_of_forall_opens {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
@@ -352,6 +445,43 @@ private theorem orderOneCentersIsolated_of_forall_opens {V : VanishingAssignment
   exact false_of_orderOneCentersIsolated_comap_opens hV (U C.pt hz) C (hU C.pt hz) (ih C.pt hz) hm1 hS1 hxi2Z
     hxi1M hxi2M hagree hord hxi2I
 
+/- English proof (translation)
+Establish `hptZ : C.pt ∈ (Z.support : Set ↥W)` using `hS1 C.mem_first_closed`. Establish `hopenU : IsOpen ((U₀ : Set ↥W))` using `hV.isOpen_opens W U₀`. Establish `hxi1U : C.xi1 ∈ (U₀ : Set ↥W)` using `(C.generic1.mem_open_set_iff hopenU).mpr ⟨C.pt, C.mem_first_closed, hptU⟩`. Establish `hxi2U : C.xi2 ∈ (U₀ : Set ↥W)` using `(C.generic2.mem_open_set_iff hopenU).mpr ⟨C.pt, C.mem_second_closed, hptU⟩`. Establish `hZsub : ⇑U₀.ι.base ⁻¹' (Z.support : Set ↥W) ⊆ (H₀.support : Set ↥(U₀.toScheme))`.
+
+Rewrite using `[← support_comap_eq]`. Conclude with `hZH`. Establish `hNsub : ⇑U₀.ι.base ⁻¹' (N.support : Set ↥W) ⊆ (H₀.support : Set ↥(U₀.toScheme))`. Rewrite using `[← support_comap_eq]`. Conclude with `hNsubH`.
+
+Take `⟨y1, hy1⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U₀ H₀ (Z.support : Set ↥W) hZsub C.xi1 hxi1U (hS1 C.generic1.mem)`. Take `⟨y0, hy0⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U₀ H₀ (Z.support : Set ↥W) hZsub C.pt hptU hptZ`. Take `⟨y2, hy2⟩` from `exists_subschemeι_comp_ι_apply_eq_of_mem hV W U₀ H₀ (N.support : Set ↥W) hNsub C.xi2 hxi2U hxi2N`. Establish `hgen1 : IsGenericPoint y1 ((H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1)` using `isGenericPoint_preimage_subschemeι_comp_ι hV W U₀ H₀ C.S1 C.xi1 C.generic1 y1 hy1`. Establish `hgen2 : IsGenericPoint y2 ((H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S2)` using `isGenericPoint_preimage_subschemeι_comp_ι hV W U₀ H₀ C.S2 C.xi2 C.generic2 y2 hy2`.
+
+Establish `hcl1 : IsClosed ((H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1)` using `isClosed_preimage_subschemeι_comp_ι hV W U₀ H₀ C.S1 C.closed1`. Establish `hcl2 : IsClosed ((H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S2)` using `isClosed_preimage_subschemeι_comp_ι hV W U₀ H₀ C.S2 C.closed2`. Establish `hA1 : AgreeNear Jz ((N.comap U₀.ι).comap H₀.subschemeι) y1`. Use `hloc y1 ?_` and prove the remaining obligations. Rewrite using `[hy1]`.
+
+Conclude with `hxi1M`. Establish `hA2 : AgreeNear ((N.comap U₀.ι).comap H₀.subschemeι) (V H₀.subscheme ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩) y1`. Use `hV.agreeNear_vanishing_restrict W N U₀ H₀ ⟨C.S1, C.closed1⟩ ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩ y1 rfl ?_ ?_` and prove the remaining obligations. Conclude with `fun a ha => hZsub (Set.preimage_mono hS1 ha)`. Rewrite using `[hy1]`.
+
+Conclude with `hagree`. Establish `hA3 : AgreeNear Jz (V H₀.subscheme ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩) y1` using `hV.agreeNear_trans H₀.subscheme Jz ((N.comap U₀.ι).comap H₀.subschemeι) (V H₀.subscheme ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩) y1 hA1 hA2`. Establish `hy1mem : y1 ∈ (Jz.support : Set ↥(H₀.subscheme))`. Use `(mem_support_iff_of_agreeNear hV hA3).2 ?_` and prove the remaining obligations. Rewrite using `[hV.support_vanishing]`.
+
+Conclude with `hgen1.mem`. Establish `hnotcomp : ((H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1) ∉ irreducibleComponents ↥(H₀.subscheme)`. Introduce `hmem`. Use `hV.not_subset_support_of_nonzeroOnComponents H₀.subscheme Jz hcomp _ hmem ?_` and prove the remaining obligations. Rewrite using `[← hgen1.def]`.
+
+Conclude with `(hV.isClosed_support H₀.subscheme Jz).closure_subset_iff.mpr (Set.singleton_subset_iff.mpr hy1mem)`. Establish `hordV : orderAt (V H₀.subscheme ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩) y1 = 1` using `hV.orderAt_vanishing_eq_one k W p U₀ H₀ hH ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩ y1 hgen1 hnotcomp`. Establish `hordJ : orderAt Jz y1 = 1`. Rewrite using `[hV.orderAt_congr H₀.subscheme Jz (V H₀.subscheme ⟨(H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1, hcl1⟩) y1 hA3]`. Conclude with `hordV`.
+
+Establish `hA2' : AgreeNear Jz ((N.comap U₀.ι).comap H₀.subschemeι) y2`. Use `hloc y2 ?_` and prove the remaining obligations. Rewrite using `[hy2]`. Conclude with `hxi2M`. Establish `hy2mem : y2 ∈ (Jz.support : Set ↥(H₀.subscheme))`.
+
+Use `(mem_support_iff_of_agreeNear hV hA2').2 ?_` and prove the remaining obligations. Rewrite using `[support_comap_eq, support_comap_eq]`. Use `show U₀.ι.base (H₀.subschemeι.base y2) ∈ (N.support : Set ↥W)`. Rewrite using `[← hV.base_comp _ _ _ H₀.subschemeι U₀.ι y2, hy2]`. Conclude with `hxi2N`.
+
+Use `key { S1 := (H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S1 S2 := (H₀.subschemeι ≫ U₀.ι).base ⁻¹' C.S2 xi1 := y1 xi2 := y2 pt := y0 closed1 := hcl1 closed2 := hcl2 irred1 := by` and prove the remaining obligations. Rewrite using `[← hgen1.def]`. Conclude with `isIrreducible_singleton.closure`. Use `irred2 := by`. Rewrite using `[← hgen2.def]`.
+
+Conclude with `isIrreducible_singleton.closure`. Use `generic1 := hgen1`. Use `generic2 := hgen2`. Use `mem_first_closed := by show (H₀.subschemeι ≫ U₀.ι).base y0 ∈ C.S1`. Rewrite using `[hy0]`.
+
+Conclude with `C.mem_first_closed`. Use `mem_second_closed := by show (H₀.subschemeι ≫ U₀.ι).base y0 ∈ C.S2`. Rewrite using `[hy0]`. Conclude with `C.mem_second_closed }`. Use `hm1 ?_ ?_ ?_ ?_ ?_ ?_ ?_`.
+
+Rewrite using `[support_comap_eq, support_comap_eq]`. Introduce `a ha`. Use `show U₀.ι.base (H₀.subschemeι.base a) ∈ (Z.support : Set ↥W)`. Rewrite using `[← hV.base_comp _ _ _ H₀.subschemeι U₀.ι a]`. Conclude with `hS1 ha`.
+
+Rewrite using `[support_comap_eq, support_comap_eq]`. Introduce `hcon`. Apply `hxi2Z` to reduce the goal to its premises. Establish `h' : U₀.ι.base (H₀.subschemeι.base y2) ∈ (Z.support : Set ↥W)` using `hcon`. Rewrite `h'` using `[← hV.base_comp _ _ _ H₀.subschemeι U₀.ι y2, hy2]`.
+
+Conclude with `h'`. Introduce `hcon`. Apply `hxi1M` to reduce the goal to its premises. Establish `h' : (H₀.subschemeι ≫ U₀.ι).base y1 ∈ Mem` using `hcon`. Rewrite `h'` using `[hy1]`. Then use the resulting hypothesis.
+
+Introduce `hcon`. Apply `hxi2M` to reduce the goal to its premises. Establish `h' : (H₀.subschemeι ≫ U₀.ι).base y2 ∈ Mem` using `hcon`. Rewrite `h'` using `[hy2]`. Then use the resulting hypothesis. Conclude with `hA3`.
+
+Conclude with `hordJ`. Conclude with `hy2mem`.
+-/
 private theorem false_of_isSmoothDivisor_of_orderOneCentersIsolated {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {N : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
@@ -486,6 +616,11 @@ private theorem false_of_isSmoothDivisor_of_orderOneCentersIsolated {V : Vanishi
   · exact hordJ
   · exact hy2mem
 
+/- English proof (translation)
+Introduce `C hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2N`. Establish `hz : C.pt ∈ Z.support` using `hS1 C.mem_first_closed`. Establish `hptZ : C.pt ∈ (Z.support : Set ↥W)` using `hS1 C.mem_first_closed`. Break down `hJJ : J C.pt hz with _ | Jz` into its components or cases. Conclude with `false_of_isOpen_preimage_support hV W N Z C (U C.pt hz) (H C.pt hz) (hU C.pt hz) hptZ (hZH C.pt hz) (hNsubH C.pt hz) (hJnone C.pt hz hJJ) hxi2Z hxi2N`.
+
+Conclude with `false_of_isSmoothDivisor_of_orderOneCentersIsolated hV C (U C.pt hz) (H C.pt hz) Jz (hU C.pt hz) (hH C.pt hz) (hNsubH C.pt hz) (hZH C.pt hz) (hJcomp C.pt hz Jz hJJ) (hJloc C.pt hz Jz hJJ) (ih C.pt hz Jz hJJ) hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2N`.
+-/
 private theorem orderOneCentersIsolated_of_isSmoothDivisor {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {N : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}
@@ -526,6 +661,15 @@ private theorem orderOneCentersIsolated_of_isSmoothDivisor {V : VanishingAssignm
       (hNsubH C.pt hz) (hZH C.pt hz) (hJcomp C.pt hz Jz hJJ) (hJloc C.pt hz Jz hJJ)
       (ih C.pt hz Jz hJJ) hm1 hS1 hxi2Z hxi1M hxi2M hagree hord hxi2N
 
+/- English proof (translation)
+Use `PrincipalizationCertificate.rec (motive_1 := fun W' p' I' m' Mem' Z' _ => OrderOneCentersIsolated V W' p' I' m' Mem' Z') (motive_2 := fun W' p' N' μ' Mem' Z' _ => OrderOneCentersIsolated V W' p' N' μ' Mem' Z') ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Introduce `W' p' I' m' Mem' Z' hmem`. Conclude with `orderOneCentersIsolated_of_support_subset I' m' hmem`. Introduce `W' p' I' m' Mem' Z' hm`. Conclude with `orderOneCentersIsolated_of_two_le I' m' hm`.
+
+Introduce `W' p' I' m' Mem' Z' M' N' μ' hI' hM' hmu' hZ' hcert' ihc`. Conclude with `orderOneCentersIsolated_of_eq_mul_of_subset_orderAtLeastLocus hV M' N' μ' hI' hM' hmu' hZ' ihc`. Introduce `W' p' I' m' Mem' Z' U' hU' hcert' ihc`. Conclude with `orderOneCentersIsolated_of_forall_opens hV U' hU' ihc`. Introduce `W' p' N' μ' Mem' Z' hmem`.
+
+Conclude with `orderOneCentersIsolated_of_support_subset N' μ' hmem`. Introduce `W' p' N' μ' Mem' Z' hmu`. Conclude with `orderOneCentersIsolated_of_two_le N' μ' hmu`. Introduce `W' p' N' μ' Mem' Z' U' hU' hcert' ihc`. Conclude with `orderOneCentersIsolated_of_forall_opens hV U' hU' ihc`.
+
+Introduce `W' p' N' μ' Mem' Z' U' hU' H' hH' hNH' hZH' J' hJnone' hJcomp' hJloc' hJcert' ihc`. Conclude with `orderOneCentersIsolated_of_isSmoothDivisor hV U' hU' H' hH' hNH' hZH' J' hJnone' hJcomp' hJloc' ihc`.
+-/
 theorem orderOneCentersIsolated_of_principalizationCertificate {V : VanishingAssignment.{u}} (hV : IdealSheafGeometryHypotheses V)
     {k : Type u} [Field k] {W : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}
     {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W} {Z : W.IdealSheafData}

@@ -8,6 +8,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.ShFam.PinPlace
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective R K`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Take `⟨h0, b, hb⟩` from `hc`. Establish `h1 : ϖ * a * b = 1` using `hinj (by rw [map_mul, hb, mul_inv_cancel₀ h0, map_one])`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one (a * b) (by rw [← mul_assoc, h1]))`. Introduce and unpack `(rfl | h)`. Conclude with `⟨0, by simp⟩`.
+
+Break down `ValuationRing.isInteger_or_isInteger R y with ⟨b, rfl⟩ | hb` into its components or cases. Establish `hb : ¬ IsUnit b`. Introduce and unpack `⟨u, rfl⟩`. Use `h ⟨(u⁻¹ : Rˣ), ?_⟩` and prove the remaining obligations. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`.
+
+Establish `hm : b ∈ IsLocalRing.maximalIdeal R` using `hb`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hm`. Conclude with `⟨a, rfl⟩`. Conclude with `absurd hb h`.
+-/
 theorem mem_mul_iff {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) (y : K) :
     (∃ a : R, y = algebraMap R K (ϖ * a)) ↔ y = 0 ∨ y⁻¹ ∉ (algebraMap R K).range := by
@@ -34,12 +43,20 @@ theorem mem_mul_iff {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationR
 
 variable {D : D7} {p : ℕ} [Fact p.Prime] {la : PlL D p} {jc : DV.KW p →+* ℂ}
 
+/- English proof (translation)
+Take `⟨W, h1, h2⟩` from `h`. Rewrite using `[← h2, hyz, h1]`.
+-/
 theorem mem_range_iff (h : JcPin D p la jc) {y : DV.KW p} {z : D.what₂.LL} (hyz : jc y = D.what₂.embLL z) :
     y ∈ (algebraMap (WittVector p (AlgebraicClosure (ZMod p))) (DV.KW p)).range ↔
       la.1.valuation D.what₂.LL z ≤ 1 := by
   obtain ⟨W, h1, h2⟩ := h
   rw [← h2, hyz, h1]
 
+/- English proof (translation)
+Rewrite using `[mem_mul_iff (WittVector.irreducible p) y, mem_range_iff h (y := y⁻¹) (z := z⁻¹) (by rw [map_inv₀, map_inv₀, hyz])]`. Establish `h0 : y = 0 ↔ z = 0`. Rewrite using `[← map_eq_zero_iff jc jc.injective, hyz, map_eq_zero_iff _ D.what₂.embLL.injective]`. Rewrite using `[h0, map_inv₀, not_le]`. Distinguish the cases in `hz : z = 0`.
+
+Simplify using `[hz]`. Establish `hv : 0 < la.1.valuation D.what₂.LL z` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hz)`. Rewrite using `[one_lt_inv₀ hv]`. Simplify using `[hz]`.
+-/
 theorem mem_pW_iff (h : JcPin D p la jc) {y : DV.KW p} {z : D.what₂.LL} (hyz : jc y = D.what₂.embLL z) :
     (∃ a : WittVector p (AlgebraicClosure (ZMod p)),
         y = algebraMap (WittVector p (AlgebraicClosure (ZMod p))) (DV.KW p) (p * a)) ↔
@@ -55,6 +72,11 @@ theorem mem_pW_iff (h : JcPin D p la jc) {y : DV.KW p} {z : D.what₂.LL} (hyz :
     rw [one_lt_inv₀ hv]
     simp [hz]
 
+/- English proof (translation)
+Introduce `D jC h p _ la τ e hτ x`. Establish `hx : jC p la (τ x) = D.what₂.embLL (e x)` using `RingHom.congr_fun hτ (x : D.host.E)`. Establish `he : e x = algebraMap (𝓞 D.what₂.LL) D.what₂.LL (RingOfIntegers.mapRingHom e x)` using `rfl`. Use `⟨(mem_range_iff (h p la) hx).2 ?_, mem_pW_iff (h p la) hx, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+
+Conclude with `la.1.valuation_le_one _`. Rewrite using `[he]`. Conclude with `la.1.valuation_lt_one_iff_mem _`.
+-/
 theorem pinned_reads_place : ∀ (D : D7) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)),
     (∀ (p : ℕ) [Fact p.Prime] (la : PlL D p), JcPin D p la (jC p la)) →
     ∀ (p : ℕ) [Fact p.Prime] (la : PlL D p) (τ : DV.Emb D p) (e : D.host.E →+* D.what₂.LL),
@@ -71,6 +93,15 @@ theorem pinned_reads_place : ∀ (D : D7) (jC : ∀ (p : ℕ) [Fact p.Prime], Pl
   · rw [he]; exact la.1.valuation_le_one _
   · rw [he]; exact la.1.valuation_lt_one_iff_mem _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hb : ¬ IsUnit b`. Introduce and unpack `⟨u, rfl⟩`. Establish `h1` using `congrArg (fun w : WittVector p k => w.coeff 0) u.mul_inv`.
+
+Simplify using `only [WittVector.mul_coeff_zero, WittVector.one_coeff_zero] at h1`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hm : b ∈ IsLocalRing.maximalIdeal (WittVector p k)` using `hb`. Rewrite `hm` using `[(WittVector.irreducible p).maximalIdeal_eq, Ideal.mem_span_singleton]`.
+
+Take `⟨a, rfl⟩` from `hm`. Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[WittVector.mul_coeff_zero]`. Establish `: ((p : WittVector p k)).coeff 0 = 0` using `by simp`.
+
+Rewrite using `[this, zero_mul]`.
+-/
 theorem coeff_zero_eq_zero_iff {k : Type} [Field k] [CharP k p] [PerfectRing k p] (b : WittVector p k) :
     b.coeff 0 = 0 ↔ ∃ a : WittVector p k, b = p * a := by
   constructor
@@ -90,6 +121,11 @@ theorem coeff_zero_eq_zero_iff {k : Type} [Field k] [CharP k p] [PerfectRing k p
     have : ((p : WittVector p k)).coeff 0 = 0 := by simp
     rw [this, zero_mul]
 
+/- English proof (translation)
+Introduce `D jC h p _ la τ e hτ x`. Take `⟨-, h2, -⟩` from `pinned_reads_place D jC h p la τ e hτ x`. Rewrite using `[← h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, h0⟩`.
+
+Take `⟨a, rfl⟩` from `(coeff_zero_eq_zero_iff b).1 h0`. Conclude with `⟨a, hb.symm⟩`. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨p * a, ha.symm, (coeff_zero_eq_zero_iff _).2 ⟨a, rfl⟩⟩`.
+-/
 theorem pinned_tiedFor : ∀ (D : D7) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)),
     (∀ (p : ℕ) [Fact p.Prime] (la : PlL D p), JcPin D p la (jC p la)) → Formalism.L2.Geo.ComplexEmbeddingsCompatible jC := by
   intro D jC h p _ la τ e hτ x

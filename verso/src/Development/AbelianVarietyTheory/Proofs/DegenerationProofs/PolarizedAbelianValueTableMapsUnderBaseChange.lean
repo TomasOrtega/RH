@@ -15,6 +15,9 @@ noncomputable section
 namespace GlobalTheory.OneBasis.TabMap
 open GlobalTheory.FrameGen GlobalTheory.ConstFam GlobalTheory.FrameMove GlobalTheory.OneBasis.Calc
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r q z U h a, gs_eq r z _ h, gs_eq q (r z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r _ z h _).symm`.
+-/
 theorem gs_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (a : Γ(X, U)) :
     gs (r ≫ q) z U a = (r.stalkMap z).hom (gs q (r z) U a) := by
   rw [← gs_pull r q z U h a, gs_eq r z _ h, gs_eq q (r z) U h]
@@ -24,6 +27,13 @@ section
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A']
   {φ : A'.left ⟶ A.left} {T : Over S} {T' : Over S'} {h : T'.left ⟶ T.left}
 
+/- English proof (translation)
+Set `u : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk h (by simpa using hh)`. Set `b : (T ⟶ A) → (T' ⟶ A')` to `fun x => Over.homMk (gp.1.lift (h ≫ x.left) T'.hom (by rw [Category.assoc, Over.w, hh])) (gp.1.lift_snd _ _ _)`. Establish `hb : ∀ x, (b x).left ≫ φ = h ≫ x.left` using `fun x => gp.1.lift_fst _ _ _`. Establish `key : ∀ x y : T' ⟶ A', x.left ≫ φ = y.left ≫ φ → x = y` using `fun x y hxy => by ext1`. Conclude with `gp.1.hom_ext hxy ((Over.w x).trans (Over.w y).symm)`.
+
+Use `⟨MonoidHom.mk' b (fun x y => key _ _ ?_), hb⟩` and prove the remaining obligations. Establish `hu : ∀ z : T ⟶ A, (u ≫ z).left = (b z).left ≫ φ` using `fun z => by`. Rewrite using `[hb]`. Both sides reduce to the same expression. Rewrite using `[← gp.2 T' (b x) (b y) (u ≫ x) (u ≫ y) (hu x) (hu y), hb, ← MonObj.comp_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_ptHom (gp : IsGrpPullback A' A f φ) (hh : h ≫ T.hom = T'.hom ≫ f) :
     ∃ β : (T ⟶ A) →* (T' ⟶ A'), ∀ x, (β x).left ≫ φ = h ≫ x.left := by
   let u : Over.mk (T'.hom ≫ f) ⟶ T := Over.homMk h (by simpa using hh)
@@ -42,6 +52,15 @@ theorem exists_ptHom (gp : IsGrpPullback A' A f φ) (hh : h ≫ T.hom = T'.hom �
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `hJ' : Good L (r z) (fun ψ => J (r ≫ ψ))` using `fun ψ => by`. Use `hJ (r ≫ ψ)` as an intermediate fact. Simplify using `using this`. Establish `H1` using `H (r z) (fun ψ => J (r ≫ ψ)) hJ'`. Rewrite `H1` using `[sval_of s q (r z) _ (fun _ => J (r ≫ q ≫ (snd T A).left)) (fun _ => rfl), val_of e (𝟙 _) (r z) _ (fun _ => J (r ≫ p)) (fun _ => by simp)]`.
+
+Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd T A).left) (r ≫ q)`. Establish `hm'` using `hJ.mem (fun _ : Fin 1 => p) r`. Rewrite using `[sval_of s (r ≫ q) z J (fun _ => J (r ≫ q ≫ (snd T A).left)) (fun _ => by simp), val_of e r z J (fun _ => J (r ≫ p)) (fun _ => rfl)]`. Simplify using `only [Category.assoc] at hm`. Use `(gs_comp r q z _ hm _).trans ?_` and prove the remaining obligations.
+
+Use `erw [H1]`. Rewrite using `[map_mul]`. Use `congr 1`. Use `gs_comp r (𝟙 _) z ⊤ trivial c` as an intermediate fact. Simplify using `using this.symm`.
+
+Use `erw [← gs_unit r z _ hm', ← gs_unit (𝟙 _) (r z) _ (by simpa using hm')]`. Use `gs_comp r (𝟙 _) z (L.wchart (fun _ => p) fun _ => J (r ≫ p)) hm' (e.s fun _ => J (r ≫ p)).val` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this.symm`.
+-/
 theorem sval_all {L : LB A.left} {k : ℤ} {s : LB.Sec (LPow A L k T)} {q : T.left ⟶ (T ⊗ A).left} {p : T.left ⟶ A.left}
     {e : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => p) (fun _ => k))} {c : Γ(T.left, ⊤)}
     (H : ∀ z J, Good L z J → sval (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) s q z J =
@@ -74,6 +93,11 @@ section
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {P : PolAV S} {P' : PolAV S'} {φ : P'.A.left ⟶ P.A.left}
   {w : LB.Iso P'.L (P.L.pull φ)} {T : Over S} {T' : Over S'} {h : T'.left ⟶ T.left}
 
+/- English proof (translation)
+Establish `hl : Lin P.A P.L k (𝟙 T) b c t`. Introduce `z J hJ`. Establish `e` using `(cmb_iff P.isLB b c t).1 H _ (𝟙 _) z J hJ`. Establish `hw : ((𝟙 T) ▷ P.A).left = 𝟙 _` using `by simp`. Rewrite using `[hw]`.
+
+Use `e.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Category.id_comp, gs_eq (fst T P.A).left z ⊤ trivial]`. Both sides reduce to the same expression. Conclude with `cmb_of_lin hφ P.isLB P'.isLB hh (h := 𝟙 T) (p := h) (by simp) hl hb ht`.
+-/
 theorem cmb_move (hφ : φ ≫ P.A.hom = P'.A.hom ≫ f) (hh : h ≫ T.hom = T'.hom ≫ f) {k n : ℕ}
     {b : Fin n → LB.Sec (LPow P.A P.L (k : ℤ) T)} {c : Fin n → Γ(T.left, ⊤)} {t : LB.Sec (LPow P.A P.L (k : ℤ) T)}
     {b' : Fin n → LB.Sec (LPow P'.A P'.L (k : ℤ) T')} {t' : LB.Sec (LPow P'.A P'.L (k : ℤ) T')}
@@ -90,6 +114,19 @@ theorem cmb_move (hφ : φ ≫ P.A.hom = P'.A.hom ≫ f) (hh : h ≫ T.hom = T'.
     rfl
   exact cmb_of_lin hφ P.isLB P'.isLB hh (h := 𝟙 T) (p := h) (by simp) hl hb ht
 
+/- English proof (translation)
+Take `⟨gp, hw, -, hpm⟩` from `R`. Take `⟨e', he', hv⟩` from `exists_gen_through (φ' := fun _ : Fin 1 => x'.left) (φ := fun _ : Fin 1 => x.left) (h := h) (ε := fun _ => 1) hw P.isLB P'.isLB (fun _ => hx) e H.2.1`. Establish `ht : ∀ (z : T'.left) J J', Good P.L z J → Good P'.L z J' → val e h z J = wVal w z J J' x'.left * val e' (𝟙 _) z J'`. Introduce `z J J' hJ hJ'`. Use `hv _ (𝟙 _) z J J' hJ hJ'` as an intermediate fact.
+
+Simplify using `using this`. Establish `hr : ∀ (Z : Scheme.{0}) (r : Z ⟶ (𝟙_ (Over S')).left) (z : Z) J J', Good P.L z J → Good P'.L z J' → rval ρ (r ≫ f) z J = wVal w z J J' (r ≫ eSec P'.A) * rval ρ' r z J'`. Introduce `Z r z J J' hJ hJ'`. Use `pmaps_val (fun _ => PolBaseChange.eSec_comm gp) hpm r hJ hJ'` as an intermediate fact. Simplify using `using this`.
+
+Use `⟨e', isTorsFrame_move gp hw hr hx H he' ht, ?_⟩` and prove the remaining obligations. Introduce `k s s' c hs hval z J' hJ'`. Take `⟨J, hJ⟩` from `exists_good' P.isLB z`. Establish `pf : ∀ {S₀ : Scheme.{0}} {A₀ U : Over S₀} (y : U ⟶ A₀), (ptSecT A₀ y).left ≫ (fst U A₀).left = 𝟙 _` using `fun y => by rw [← Over.comp_left, ptSecT, lift_fst]; rfl`. Establish `ps : ∀ {S₀ : Scheme.{0}} {A₀ U : Over S₀} (y : U ⟶ A₀), (ptSecT A₀ y).left ≫ (snd U A₀).left = y.left` using `fun y => by rw [← Over.comp_left, ptSecT, lift_snd]`.
+
+Establish `c1 : (h ≫ (ptSecT P.A x).left) ≫ (fst T P.A).left = (ptSecT P'.A x').left ≫ (fst T' P'.A).left ≫ h`. Rewrite using `[Category.assoc, pf, ← Category.assoc, pf, Category.comp_id, Category.id_comp]`. Establish `c2 : (h ≫ (ptSecT P.A x).left) ≫ (snd T P.A).left = (ptSecT P'.A x').left ≫ (snd T' P'.A).left ≫ φ`. Rewrite using `[Category.assoc, ps, ← Category.assoc, ps, hx]`. Establish `h1` using `hs _ (ptSecT P'.A x').left (h ≫ (ptSecT P.A x).left) c1 c2 z J J' hJ hJ'`.
+
+Establish `h2` using `sval_all hval h z hJ`. Rewrite `h1` using `[ps]`. Rewrite `h2` using `[h1, val_powFrame, ht z J J' hJ hJ']`. Rewrite using `[val_powFrame]`. Simplify using `only [zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val] at h2 ⊢`.
+
+Apply `((wVal w z J J' x'.left).isUnit.pow k).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_move {ρ ρ'} (R : RigPull P'.A P.A f φ w ρ' ρ) {x : T ⟶ P.A} {x' : T' ⟶ P'.A}
     (hx : x'.left ≫ φ = h ≫ x.left) {n : ℕ} {e} (H : IsTorsFrame P ρ n x e) :
     ∃ e', IsTorsFrame P' ρ' n x' e' ∧ ∀ (k : ℕ) (s : LB.Sec (LPow P.A P.L (k : ℤ) T))
@@ -133,6 +170,31 @@ theorem frame_move {ρ ρ'} (R : RigPull P'.A P.A f φ w ρ' ρ) {x : T ⟶ P.A}
   ring
 end
 
+/- English proof (translation)
+Introduce `hLL R R' _ _ _ _ _ gam A A' ψ ω ρ ρ' hR F F' _ _ _ _ _ _ σ hσ m r th th' τ τ' hth hτ`. Establish `gp` using `hR.1`. Establish `hw` using `hR.2.1`. Establish `hφ : ψ ≫ A.A.hom = A'.A.hom ≫ spMap gam` using `gp.1.w`. Establish `hh : spMap σ ≫ (TFK (R` using `R) F).hom = (TFK (R := R') F').hom ≫ spMap gam := by show spMap σ ≫ spMap (algebraMap (FractionRing R) F) = spMap (algebraMap (FractionRing R') F') ≫ spMap gam`.
+
+Rewrite using `[← spMap_comp, ← spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext hσ`. Take `⟨β, hβ⟩` from `exists_ptHom (T := TFK (R := R) F) (T' := TFK (R := R') F') (h := spMap σ) gp hh`. Establish `thru : ∀ (k : ℕ) (s : SecA A F k), ∃ s' : SecA A' F' k, Thru ω k (T'` using `TFK (R := R') F') (T := TFK (R := R) F) (spMap σ) s s' := fun k s => (existsUnique_thru hφ hw A.isLB A'.isLB hh s).exists`.
+
+Use `⟨β, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k y₁ hk hy₁`. Take `⟨y, rfl⟩ : ∃ y : TFK (R` from `R') F' ⟶ A'.A, y = y₁ := ⟨y₁, rfl⟩`. Establish `hy : y ^ k = 1` using `hy₁`. Establish `hk0 : (k : F) ≠ 0`.
+
+Rewrite using `[← map_natCast (algebraMap (FractionRing R) F), ← map_natCast (algebraMap R (FractionRing R))]`. Introduce `h0`. Rewrite `h0` using `[map_eq_zero_iff _ (algebraMap (FractionRing R) F).injective, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))]`. Conclude with `(Nat.cast_ne_zero.2 (by omega : k ≠ 0)) h0`. Establish `hz : (y.left ≫ ψ) ≫ A.A.hom = spMap σ ≫ (TFK (R` using `R) F).hom := by`.
+
+Rewrite using `[Category.assoc, hφ, ← Category.assoc, Over.w, hh]`. Set `zt : Over.mk (spMap σ ≫ (TFK (R` to `R) F).hom) ⟶ A.A := Over.homMk (y.left ≫ ψ) hz`. Establish `hzy : y.left ≫ ψ = 𝟙 (TFK (R` using `R') F').left ≫ zt.left := by simp [zt]`. Establish `hzk : zt ^ k = 1`. Establish `e1` using `pow_comm gp hzy k`.
+
+Establish `e0` using `pow_comm gp hzy 0`. Rewrite `e1` using `[hy]`. Simplify using `only [pow_zero] at e0`. Use `ext1`. Use `e1.symm.trans e0` as an intermediate fact.
+
+Use `erw [Category.id_comp, Category.id_comp] at this`. Conclude with `this`. Take `⟨x, hxk, hxz⟩` from `(GlobalTheory.torsion_points_field_extension hLL.1 _ A F F' σ (TFK (R := R) F).hom).2 k zt hk0 hzk`. Use `⟨x, hxk, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `gp.1.hom_ext` to reduce the goal to its premises. Use `(hβ x).trans ?_` and prove the remaining obligations. Use `congrArg CommaMorphism.left hxz` as an intermediate fact. Simplify `this` using `[zt]`. Conclude with `(Over.w (β x)).trans (Over.w y).symm`.
+
+Introduce and unpack `x a ⟨hx, t, c, hc, hcmb⟩`. Take `⟨t', ht'⟩` from `thru _ t`. Use `⟨(map_pow β x _).symm.trans ((congrArg β hx).trans (map_one β)), t', σ c, ThMove.thC_move R R' gam A A' ψ ω ρ ρ' hR F F' σ hσ m th th' x (β x) t t' c (hβ x) hth ht' hc, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[cmb_move hφ hh hcmb hτ ht' j]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (spMap σ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (a i)) = (Scheme.ΓSpecIso (CommRingCat.of F')).inv.hom (σ (a i)) from appTop_fnR σ (a i)]`. Both sides reduce to the same expression. Introduce and unpack `k x c ⟨hx, t, hc⟩`. Take `⟨t', ht'⟩` from `thru _ t`.
+
+Conclude with `⟨(map_pow β x _).symm.trans ((congrArg β hx).trans (map_one β)), t', ThMove.thC_move R R' gam A A' ψ ω ρ ρ' hR F F' σ hσ k th th' x (β x) t t' c (hβ x) hth ht' hc⟩`. Introduce and unpack `k x l ⟨e, he, hv⟩`. Take `⟨e', he', hmv⟩` from `frame_move hR (hβ x) he`. Use `⟨e', he', fun j z J' hJ' => ?_⟩` and prove the remaining obligations. Use `hmv (m ^ 2) (τ j) (τ' j) (fnR (l j)) (hτ j) (hv j) z J' hJ'` as an intermediate fact.
+
+Use `erw [gs_spMap] at this`. Conclude with `this`.
+-/
 theorem tab_map : LL → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CharZero R] [CommRing R'] [IsDomain R'] (gam : FractionRing R →+* FractionRing R') (A : PolAV (Sp (FractionRing R))) (A' : PolAV (Sp (FractionRing R'))) (ψ : A'.A.left ⟶ A.A.left) (ω : LB.Iso A'.L (A.L.pull ψ)) ρ ρ', RigPull A'.A A.A (spMap gam) ψ ω ρ' ρ → ∀ (F F' : Type) [Field F] [Field F'] [IsAlgClosed F] [IsAlgClosed F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F'] (σ : F →+* F'), (∀ x, σ (algebraMap (FractionRing R) F x) = algebraMap (FractionRing R') F' (gam x)) → ∀ (m r : ℕ) (th : SecA A F 1) (th' : SecA A' F' 1) (τ : Fin r → SecA A F (m ^ 2)) (τ' : Fin r → SecA A' F' (m ^ 2)), Thru ω 1 (T' := TFK (R := R') F') (T := TFK (R := R) F) (spMap σ) th th' → (∀ i, Thru ω (m ^ 2) (T' := TFK (R := R') F') (T := TFK (R := R) F) (spMap σ) (τ i) (τ' i)) → Tab.Map σ (tab ρ m th τ) (tab ρ' m th' τ') := by
   intro hLL R R' _ _ _ _ _ gam A A' ψ ω ρ ρ' hR F F' _ _ _ _ _ _ σ hσ m r th th' τ τ' hth hτ
   have gp := hR.1

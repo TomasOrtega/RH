@@ -24,6 +24,25 @@ open GlobalTheory.CompanionTheory.Ar.Flat.BdryModel
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily
 
+/- English proof (translation)
+Use `T.semi.smooth` as an intermediate fact. Take `⟨U, hU, hx, -, n', v₀, hv₀⟩` from `GlobalTheory.exists_affine_lieBasis_baseChange Z T.G (y 0 (default : PrimeSpectrum ℂ)) ⊤ trivial`. Establish `h0 : ⊤ ≤ y 0 ⁻¹ᵁ U` using `fun p _ => by`. Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Rewrite using `[this]`.
+
+Conclude with `hx`. Take `⟨ρ₀, hρ₀, hB₀⟩` from `Metric.isOpen_iff.1 (hy U 0).1 0 ⟨Metric.mem_ball_self one_pos, h0⟩`. Take `⟨ρ, hρ, hρ1, hB⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ Metric.ball (0 : Fin n → ℂ) ρ ⊆ {b ∈ Metric.ball 0 1 | ⊤ ≤ y b ⁻¹ᵁ U}` from `⟨min ρ₀ 1, lt_min hρ₀ one_pos, min_le_right _ _, (Metric.ball_subset_ball (min_le_left _ _)).trans hB₀⟩`. Establish `hin : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, (ρ : ℂ) • z ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `fun z hz => by`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Conclude with `mul_lt_of_lt_one_right hρ hz`. Take `⟨t, ⟨m⟩⟩` from `exists_sab hU.fromSpec T`. Establish `hdim : SmoothOfRelativeDimension n' t.G.hom` using `HolChart.smoothDim_of_fibres t n' fun κ _ f t₀ m₀ => by`. Take `⟨q, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m m₀`.
+
+Take `⟨v', -, hv'⟩` from `hv₀ κ f t₀.G _ q.cart`. Conclude with `⟨v', hv'⟩`. Take `⟨v', -, hv'⟩` from `hv₀ Γ(Z, U) (RingHom.id _) t.G m.cm.F (by`. Establish `: spMap (RingHom.id Γ(Z, U)) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`.
+
+Conclude with `m.cart)`. Take `⟨M⟩` from `lieModel_of_isLieBasis v' hv'`. Set `ψ : (Fin n → ℂ) → (Γ(Z, U) →+* ℂ)` to `fun z => if h : ⊤ ≤ y ((ρ : ℂ) • z) ⁻¹ᵁ U then evalHom _ U h else evalHom _ U h0`. Establish `hψ : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (ψ z) ≫ hU.fromSpec = y ((ρ : ℂ) • z)` using `fun z hz => by`. Simplify using `only [ψ, dif_pos (hB (hin z hz)).2]`.
+
+Conclude with `spMap_evalHom _ _ _ _`. Take `⟨tV, ⟨q⟩⟩` from `exists_sab (pullback.snd hU.fromSpec j₀) To`. Take `⟨m₂, e₂⟩` from `GlobalTheory.ObjMaps.exists_sab_comp n₂ q`. Choose the witnesses or unpack the hypotheses as in `⟨q₁, e₁⟩ : ∃ q₁ : SABMap tV T (pullback.fst hU.fromSpec j₀ ≫ hU.fromSpec), q₁.φ = q.φ ≫ n₁.φ := by`. Rewrite using `[pullback.condition]`.
+
+Conclude with `GlobalTheory.ObjMaps.exists_sab_comp n₁ q`. Take `⟨m₁, e₃⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m q₁`. Establish `hpt : ∀ z ∈ punct n a 1, ∃ p : Sp ℂ ⟶ pullback hU.fromSpec j₀, p ≫ pullback.fst _ _ = spMap (ψ z) ∧ p ≫ (pullback.snd _ _ ≫ k₀) ≫ Xo.s = spMap σ` using `fun z hz => by`. Take `⟨p, hp₁, hp₂⟩` from `hp ((ρ : ℂ) • z) ⟨(hB (hin z hz.1)).1, fun i hi => by`. Simplify using `using ⟨hρ.ne', hz.2 i hi⟩⟩`.
+
+Use `⟨pullback.lift (spMap (ψ z)) p ((hψ z hz.1).trans hp₁.symm), pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_snd_assoc, hp₂]`. Take `⟨p₀, -⟩` from `hpt _ (half_mem_punct n a)`. Establish `: Nonempty (Sp ℂ ⟶ pullback hU.fromSpec j₀)` using `⟨p₀⟩`. Use `choose! pt hpt using hpt`.
+
+Use `⟨ρ, { a_le := han, R := Γ(Z, U), t := t, g := n', dim := hdim M := M, ψ := ψ, hol := ⟨Metric.isOpen_ball, fun r => ?_⟩ V := pullback hU.fromSpec j₀, j := pullback.fst _ _, j_open := inferInstance k := pullback.snd _ _ ≫ k₀, tV := tV, m₁ := m₁, m₂ := m₂, pt := pt, pt_eq := hpt }, …` and prove the remaining obligations. Use `(((hy U r).2.comp (f := fun z => (ρ : ℂ) • z) (by fun_prop) (fun z hz => hB (hin z hz)))).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `only [ψ, Function.comp, valAt', dif_pos (hB (hin z hz)).2]`. Both sides reduce to the same expression.
+-/
 theorem exists_tied_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     (Xo : Moduli D l) (σ : KA l →+* ℂ) (Z : Scheme.{0}) (T : SAB H Z) (U₀ : Scheme.{0}) (j₀ : U₀ ⟶ Z) (k₀ : U₀ ⟶ Xo.X)
     (To : SAB H U₀) (n a : ℕ) (y : (Fin n → ℂ) → (Sp ℂ ⟶ Z)) (han : a ≤ n) (hj : IsOpenImmersion j₀)
@@ -90,10 +109,18 @@ theorem exists_tied_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+The claim follows from `Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f :=
   Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
 
+/- English proof (translation)
+Establish `hr : Set.range w ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `e : p = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Rewrite using `[Scheme.Opens.range_ι, e]`. Conclude with `h`.
+
+Conclude with `⟨IsOpenImmersion.lift W.ι w hr, IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem exists_lift_of_centre_mem {X : Scheme.{0}} (W : X.Opens) (w : Sp ℂ ⟶ X) (h : centre w ∈ W) :
     ∃ w' : Sp ℂ ⟶ W.toScheme, w' ≫ W.ι = w := by
   have hr : Set.range w ⊆ Set.range W.ι := by
@@ -103,6 +130,29 @@ theorem exists_lift_of_centre_mem {X : Scheme.{0}} (W : X.Opens) (w : Sp ℂ ⟶
     exact h
   exact ⟨IsOpenImmersion.lift W.ι w hr, IsOpenImmersion.lift_fac _ _ _⟩
 
+/- English proof (translation)
+Take `⟨T, ⟨m⟩⟩` from `exists_sab (hV.fromSpec ≫ π) Y.t`. Set `U₀` to `pullback hV.fromSpec W'.ι`. Set `j₀ : U₀ ⟶ Sp Γ(X', V)` to `pullback.fst _ _`. Set `g₀ : U₀ ⟶ Xo.XF c` to `pullback.snd hV.fromSpec W'.ι ≫ jW`. Establish `hcond : j₀ ≫ hV.fromSpec = pullback.snd hV.fromSpec W'.ι ≫ W'.ι` using `pullback.condition`.
+
+Take `⟨tU, ⟨n₃⟩⟩` from `exists_sab g₀ Y.oF.t`. Take `⟨n₂, e₂⟩` from `GlobalTheory.ObjMaps.exists_sab_comp Y.m0.toSABMap n₃`. Establish `hj : g₀ ≫ Y.jQ ≫ pullback.fst _ _ = j₀ ≫ hV.fromSpec ≫ π`. Establish `: g₀ ≫ Y.j = j₀ ≫ hV.fromSpec ≫ π`. Simplify using `only [g₀, Category.assoc, h1]`.
+
+Rewrite using `[← Category.assoc j₀, hcond, Category.assoc]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨q₁, eq₁⟩ : ∃ q₁ : SABMap tU Y.t (j₀ ≫ hV.fromSpec ≫ π), q₁.φ = n₃.φ ≫ Y.m.φ := by`. Rewrite using `[← hj]`. Conclude with `GlobalTheory.ObjMaps.exists_sab_comp Y.m n₃`.
+
+Take `⟨n₁, e₁⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m q₁`. Establish `hp : ∀ z ∈ punct d a 1, ∃ p : Sp ℂ ⟶ U₀, p ≫ j₀ = spMap (ψ z) ∧ p ≫ (g₀ ≫ pullback.fst _ _) ≫ Xo.s = spMap (σ.comp (IntermediateField.inclusion c.le).toRingHom)`. Introduce `z hz`. Take `⟨w', hw'⟩` from `exists_lift_of_centre_mem W' _ (hpt z hz).2`. Use `⟨pullback.lift (spMap (ψ z)) w' hw'.symm, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (pullback.lift (spMap (ψ z)) w' hw'.symm : Sp ℂ ⟶ U₀) ≫ g₀ = w' ≫ jW`. Simplify using `only [g₀]`. Rewrite using `[← Category.assoc, pullback.lift_snd]`. Establish `ec : pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion c.le).toRingHom` using `pullback.condition`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Category.assoc]`. Use `_ = (w' ≫ jW) ≫ pullback.snd _ _ ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by rw [e, ec]`. Use `_ = w' ≫ (jW ≫ pullback.snd _ _) ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by`. Simplify using `only [Category.assoc]`. Use `_ = (w' ≫ W'.ι) ≫ s' ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by`.
+
+Rewrite using `[h2]`. Simplify using `only [Category.assoc]`. Use `_ = _ := by`. Rewrite using `[hw', spMap_comp', ← (hpt z hz).1]`. Simplify using `only [Category.assoc]`.
+
+Take `⟨ρ, C, i₀, e, mi, me, hρ, hρ1, hej, hek, hψ, hm₂, hm₁⟩` from `exists_tied_chart Xo _ _ T U₀ j₀ (g₀ ≫ pullback.fst _ _) tU d a (fun z => spMap (ψ z)) ha inferInstance n₁ n₂ (ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap hol.1 hol.2) hp`. Take `⟨mR, eR⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m mi`. Use `⟨ρ, C, i₀, mR, e ≫ g₀, me.φ ≫ n₃.φ, hρ, hρ1, hψ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `hek`.
+
+Establish `w2 : g₀ ≫ Y.j = j₀ ≫ hV.fromSpec ≫ π` using `hj`. Rewrite using `[Category.assoc, w2, ← Category.assoc, hej]`. Simplify using `only [Category.assoc]`. Establish `w2 : g₀ ≫ pullback.snd _ _ = j₀ ≫ hV.fromSpec ≫ s'`. Simplify using `only [g₀, Category.assoc, h2]`.
+
+Rewrite using `[← Category.assoc j₀, hcond, Category.assoc]`. Rewrite using `[Category.assoc, w2, ← Category.assoc, hej]`. Simplify using `only [Category.assoc]`. Establish `w3 : n₃.φ ≫ Y.oF.t.G.hom = tU.G.hom ≫ g₀` using `n₃.cart.1.w`. Establish `w4 : me.φ ≫ tU.G.hom = C.tV.G.hom ≫ e` using `me.cart.1.w`.
+
+Rewrite using `[Category.assoc, w3, ← Category.assoc, w4, Category.assoc]`. Rewrite using `[hm₂, e₂, Category.assoc]`. Establish `e5 : C.m₁.φ ≫ mR.φ = me.φ ≫ n₁.φ ≫ m.φ` using `by rw [eR, ← Category.assoc, hm₁, Category.assoc]`. Rewrite using `[e5, ← e₁, eq₁, Category.assoc]`.
+-/
 theorem exists_model_chart (Y : Model Xo c β) (σ : c.F →+* ℂ) {X' : Scheme.{0}} (π : X' ⟶ Y.X) (s' : X' ⟶ Sp c.F)
     (d : ℕ) (W' : X'.Opens) (jW : W'.toScheme ⟶ Xo.XF c) (h1 : jW ≫ Y.j = W'.ι ≫ π)
     (h2 : jW ≫ pullback.snd _ _ = W'.ι ≫ s') (V : X'.Opens) (hV : IsAffineOpen V) (a : ℕ)
@@ -171,6 +221,9 @@ theorem exists_model_chart (Y : Model Xo c β) (σ : c.F →+* ℂ) {X' : Scheme
   · have e5 : C.m₁.φ ≫ mR.φ = me.φ ≫ n₁.φ ≫ m.φ := by rw [eR, ← Category.assoc, hm₁, Category.assoc]
     rw [e5, ← e₁, eq₁, Category.assoc]
 
+/- English proof (translation)
+Establish `hx : Spec.map (CommRingCat.ofHom fR) ≫ xA = 𝟙 _ ≫ f` using `by rw [Category.id_comp]; exact hf`. Establish `t` using `LiePull.tan_pull fR xA _ hx v hv`. Take `⟨u, hu⟩` from `M.onto (LieMove.liftEps h (LieCarrier.epsHom fR xA _ hx ≫ v)) ((LieMove.tan_iff h _).2 (by rw [LieMove.push_lift]; exact t))`. Conclude with `⟨u, by rw [hu, LieMove.liftEps_left]; rfl⟩`.
+-/
 theorem exists_coord {S : Scheme.{0}} {A R L : Type} [CommRing A] [CommRing R] [AddCommGroup L] [Module R L]
     {G : Over S} [GrpObj G] {G' : Over (Sp R)} [GrpObj G'] (xA : Sp A ⟶ S) (fR : A →+* R) (f : Sp R ⟶ S)
     (hf : spMap fR ≫ xA = f) (φ : G'.left ⟶ G.left) (h : IsGrpPullback G' G f φ) (M : LieModel G' (𝟙 (Sp R)) L)
@@ -182,6 +235,21 @@ theorem exists_coord {S : Scheme.{0}} {A R L : Type} [CommRing A] [CommRing R] [
     ((LieMove.tan_iff h _).2 (by rw [LieMove.push_lift]; exact t))
   exact ⟨u, by rw [hu, LieMove.liftEps_left]; rfl⟩
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use `letI := ψ.toAlgebra`. Take `⟨E', i1, i2, ⟨M'⟩⟩` from `GlobalTheory.T.exists_lie_model S G ℂ (spMap ψ ≫ xR)`. Take `⟨j, hj, hlin, hb⟩` from `GlobalTheory.T.lie_model_base_change_map S G R ℂ xR (Fin g → R) E' M M'`. Establish `hv' : v = fun i => M'.pt (j (u i))`.
+
+Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext ((hu i).trans (hj _).symm)`. Establish `hcomb` using `(GlobalTheory.T.lie_model_eigenvectors_action S ℂ G _ E' M').1`. Establish `hind : LinearIndependent ℂ (fun i => j (u i))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+
+Establish `c1 : IsComb (Pi.single i 1) v (v i)`. Rewrite using `[hv']`. Conclude with `(hcomb _ _ _ _).2 (by simp [Pi.single_apply])`. Establish `c2 : IsComb (Pi.single i 1 + c) v (v i)`. Rewrite using `[hv']`.
+
+Conclude with `(hcomb _ _ _ _).2 (by simp [Pi.single_apply, add_smul, Finset.sum_add_distrib, hc])`. Take `⟨c0, -, hun⟩` from `(hv.2 (v i) (hv.1 i))`. Establish `e` using `congrFun ((hun _ c1).trans (hun _ c2).symm) i`. Simplify using `using e`. Establish `hbas` using `(hb hs g (Pi.basisFun R (Fin g))).1`.
+
+Set `L : (Fin g → ℂ) →ₗ[ℂ] E'` to `Fintype.linearCombination ℂ (fun k => j (Pi.basisFun R (Fin g) k))`. Establish `hL : ∀ x : Fin g → R, L (fun k => ψ (x k)) = j x`. Introduce `x`. Establish `ex : x = ∑ k, x k • Pi.basisFun R (Fin g) k` using `((Pi.basisFun R (Fin g)).sum_repr x).symm`. Use `conv_rhs => rw [ex, map_sum]`.
+
+Simplify using `only [L, Fintype.linearCombination_apply, hlin]`. Both sides reduce to the same expression. Use `LinearIndependent.of_comp L ?_` and prove the remaining obligations. Establish `: L ∘ (fun i b => ψ (u i b)) = fun i => j (u i)` using `funext fun i => hL (u i)`. Rewrite using `[this]`.
+
+Conclude with `hind`.
+-/
 theorem indep_of_frame {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (hs : Smooth G.hom) {R : Type}
     [CommRing R] (ψ : R →+* ℂ) (xR : Sp R ⟶ S) (y : Sp ℂ ⟶ S) (hy : spMap ψ ≫ xR = y) {g n : ℕ}
     (M : LieModel G xR (Fin g → R)) (u : Fin n → Fin g → R) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* ℂ)
@@ -221,6 +289,19 @@ theorem indep_of_frame {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
   rw [this]
   exact hind
 
+/- English proof (translation)
+Establish `hq : IsPullback C.m₁.φ C.tV.G.hom C.t.G.hom C.j` using `C.m₁.cart.1`. Establish `hsq : spMap (dualMap ψz) ≫ spMap (algebraMap C.R (DualNumber C.R)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap ψz`. Rewrite using `[← spMap_comp', ← spMap_comp']`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Establish `w : (spMap (dualMap ψz) ≫ (C.M.pt u).left) ≫ C.t.G.hom = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ p) ≫ C.j`. Establish `w₀ : (C.M.pt u).left ≫ C.t.G.hom = spMap (algebraMap C.R (DualNumber C.R)) ≫ 𝟙 _` using `Over.w (C.M.pt u)`. Rewrite using `[Category.assoc, w₀, Category.comp_id, hsq, Category.assoc, hp]`. Establish `l₁ : hq.lift _ _ w ≫ C.m₁.φ = _` using `hq.lift_fst _ _ w`. Establish `l₂ : hq.lift _ _ w ≫ C.tV.G.hom = _` using `hq.lift_snd _ _ w`.
+
+Establish `w₂ : C.m₂.φ ≫ Xo.univ.t.G.hom = C.tV.G.hom ≫ C.k` using `C.m₂.cart.1.w`. Establish `hu₁ : (hq.lift _ _ w ≫ φ₀) ≫ Y.oF.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ p ≫ k'`. Rewrite using `[Category.assoc, h₁, ← Category.assoc, l₂]`. Simplify using `only [Category.assoc]`. Use `⟨Over.homMk (hq.lift _ _ w ≫ C.m₂.φ) ?_, Over.homMk (hq.lift _ _ w ≫ φ₀ ≫ Y.m.φ) ?_, hq.lift _ _ w, ⟨hq.lift _ _ w ≫ φ₀, hu₁, ?_, ?_⟩, rfl, l₁, ?_⟩` and prove the remaining obligations.
+
+Use `show (hq.lift _ _ w ≫ C.m₂.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (p ≫ k') ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, w₂, ← Category.assoc, l₂, ← hk]`. Simplify using `only [Category.assoc]`. Establish `w₃ : Y.m.φ ≫ Y.t.G.hom = Y.oF.t.G.hom ≫ Y.j` using `Y.m.cart.1.w show (hq.lift _ _ w ≫ φ₀ ≫ Y.m.φ) ≫ Y.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (p ≫ k') ≫ Y.j`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[w₃, ← Category.assoc φ₀, h₁, ← Category.assoc, ← Category.assoc, l₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[Category.assoc, h₂]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc]`.
+
+Both sides reduce to the same expression. Use `show hq.lift _ _ w ≫ φ₀ ≫ Y.m.φ = _`. Rewrite using `[h₃, ← Category.assoc, l₁, Category.assoc]`.
+-/
 theorem exists_vec (Y : Model Xo c β) {σ' : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ' n a) (k' : C.V ⟶ Xo.XF c)
     (φ₀ : C.tV.G.left ⟶ Y.oF.t.G.left) {f : Sp C.R ⟶ Y.X} (mR : SABMap C.t Y.t f)
     (hk : k' ≫ pullback.fst _ _ = C.k) (h₁ : φ₀ ≫ Y.oF.t.G.hom = C.tV.G.hom ≫ k')
@@ -261,10 +342,32 @@ theorem exists_vec (Y : Model Xo c β) {σ' : KA l →+* ℂ} {n a : ℕ} (C : B
   · show hq.lift _ _ w ≫ φ₀ ≫ Y.m.φ = _
     rw [h₃, ← Category.assoc, l₁, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[← LiePull.dualMap_comp, spMap_comp']`.
+-/
 theorem spMap_dual {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap (g.comp f)) = spMap (dualMap g) ≫ spMap (dualMap f) := by
   rw [← LiePull.dualMap_comp, spMap_comp']
 
+/- English proof (translation)
+Establish `hs : Smooth Y.t.G.hom` using `Y.t.semi.smooth`. Use `choose u₁ hu₁ using fun i => exists_coord hA.fromSpec fR f hf mR.φ mR.cart C.M (MB.pt (e₁ i)) (MB.tan _)`. Use `choose u₂ hu₂ using fun j => exists_coord hA.fromSpec fR f hf mR.φ mR.cart C.M (MB.pt (e₂ j)) (MB.tan _)`. Establish `hy0 : spMap (C.ψ 0) ≫ 𝟙 _ ≫ f = spMap ((C.ψ 0).comp fR) ≫ hA.fromSpec`. Rewrite using `[Category.id_comp, ← hf, spMap_comp', Category.assoc]`.
+
+Establish `hfr0` using `hframe ((C.ψ 0).comp fR) _ (fun i => LieCarrier.epsHom ((C.ψ 0).comp fR) hA.fromSpec _ rfl ≫ MB.pt (e₁ i)) (fun j => LieCarrier.epsHom ((C.ψ 0).comp fR) hA.fromSpec _ rfl ≫ MB.pt (e₂ j)) rfl (hover 0 (mem_ball_self one_pos)) (fun _ => rfl) (fun _ => rfl)`. Establish `ind₁` using `indep_of_frame hs (C.ψ 0) (𝟙 _ ≫ f) _ hy0 (LieMove.pushModel mR.cart C.M) u₁ Y.t.act _ _ hfr0.1 (fun i => by show spMap (dualMap ((C.ψ 0).comp fR)) ≫ (MB.pt (e₁ i)).left = spMap (dualMap (C.ψ 0)) ≫ (C.M.pt (u₁ i)).left ≫ mR.φ`. Rewrite using `[hu₁, spMap_dual, Category.assoc])`. Establish `ind₂` using `indep_of_frame hs (C.ψ 0) (𝟙 _ ≫ f) _ hy0 (LieMove.pushModel mR.cart C.M) u₂ Y.t.act _ _ hfr0.2 (fun j => by show spMap (dualMap ((C.ψ 0).comp fR)) ≫ (MB.pt (e₂ j)).left = spMap (dualMap (C.ψ 0)) ≫ (C.M.pt (u₂ j)).left ≫ mR.φ`. Rewrite using `[hu₂, spMap_dual, Category.assoc])`.
+
+Establish `key : ∀ z ∈ punct d a 1, ∃ (v : Vecs (C.pt z ≫ k') D.p) (w : Vecs (C.pt z ≫ k') D.q) (v₀ : Fin D.p → (epsAt ((C.pt z ≫ k') ≫ Y.j) ⟶ Y.t.G)) (w₀ : Fin D.q → (epsAt ((C.pt z ≫ k') ≫ Y.j) ⟶ Y.t.G)), IsFramed Set.univ τ σ (C.pt z ≫ k') v w ∧ (∀ i, SameVec Y (C.pt z ≫ k') (v i) (v₀ i) …`. Introduce `z hz`. Establish `hp` using `(C.pt_eq z hz).1`. Use `choose v v₀ uu a1 a2 a3 a4 using fun i => exists_vec Y C k' φ₀ mR hk h₁ h₂ h₃ (C.pt z) (C.ψ z) hp (u₁ i)`. Use `choose w w₀ uw b1 b2 b3 b4 using fun j => exists_vec Y C k' φ₀ mR hk h₁ h₂ h₃ (C.pt z) (C.ψ z) hp (u₂ j)`.
+
+Establish `c1 : ∀ i, (v₀ i).left = spMap (dualMap ((C.ψ z).comp fR)) ≫ (MB.pt (e₁ i)).left` using `fun i => by`. Establish `e₁'` using `a4 i`. Rewrite `e₁'` using `[hu₁ i]`. Establish `q : spMap (dualMap ((C.ψ z).comp fR)) ≫ (MB.pt (e₁ i)).left = spMap (dualMap (C.ψ z)) ≫ spMap (dualMap fR) ≫ (MB.pt (e₁ i)).left`. Rewrite using `[spMap_dual, Category.assoc]`.
+
+Conclude with `e₁'.trans q.symm`. Establish `c2 : ∀ j, (w₀ j).left = spMap (dualMap ((C.ψ z).comp fR)) ≫ (MB.pt (e₂ j)).left` using `fun j => by`. Establish `e₂'` using `b4 j`. Rewrite `e₂'` using `[hu₂ j]`. Establish `q : spMap (dualMap ((C.ψ z).comp fR)) ≫ (MB.pt (e₂ j)).left = spMap (dualMap (C.ψ z)) ≫ spMap (dualMap fR) ≫ (MB.pt (e₂ j)).left`.
+
+Rewrite using `[spMap_dual, Category.assoc]`. Conclude with `e₂'.trans q.symm`. Establish `hy : (C.pt z ≫ k') ≫ Y.j = spMap ((C.ψ z).comp fR) ≫ hA.fromSpec`. Rewrite using `[Category.assoc, hkj, ← Category.assoc, hp, spMap_comp', Category.assoc, hf]`. Establish `hf2` using `hframe ((C.ψ z).comp fR) ((C.pt z ≫ k') ≫ Y.j) v₀ w₀ hy (by rw [hy]; exact hover z hz.1) c1 c2`.
+
+Conclude with `⟨v, w, v₀, w₀, GlobalTheory.T.vectors_at_complex_point E H D l Xo c O β Y τ σ _ v w v₀ w₀ (hsnd z hz) a1 b1 hf2.1 hf2.2, a1, b1, c1, c2, fun i => ⟨uu i, a2 i, a3 i⟩, fun j => ⟨uw j, b2 j, b3 j⟩⟩`. Use `choose v w v₀ w₀ hF hS₁ hS₂ hc₁ hc₂ hl₁ hl₂ using key`. Set `φ : (Fin d → ℂ) → ℂ` to `fun z => if hz : z ∈ punct d a 1 then Φ (C.pt z ≫ k') (v z hz) (w z hz) else 0`. Take `⟨ρ', h₀, hρ', hρ1, hd, hne, hφ⟩` from `GlobalTheory.T.boundary_chart_frame_growth E H D l Xo c τ σ Φ d a C k' u₁ u₂ φ h1 hr2 hr1 hU hk ind₁ ind₂ (fun z hz => ⟨v z hz, w z hz, hF z hz, hl₁ z hz, hl₂ z hz, by simp only [φ, dif_pos hz]⟩)`. Use `⟨ρ', h₀, hρ', hρ1, hd, hne, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz vv ww vv₀ ww₀ s1 s2 t1 t2`. Establish `hz1 : z ∈ punct d a 1` using `⟨ball_subset_ball hρ1 hz.1, hz.2⟩`. Establish `e₀ : vv₀ = v₀ z hz1` using `funext fun i => Over.OverMorphism.ext ((t1 i).trans (hc₁ z hz1 i).symm)`. Establish `f₀ : ww₀ = w₀ z hz1` using `funext fun j => Over.OverMorphism.ext ((t2 j).trans (hc₂ z hz1 j).symm)`. Establish `e₁' : vv = v z hz1` using `funext fun i => SameVec.unique_left (s1 i) (by rw [e₀]; exact hS₁ z hz1 i)`.
+
+Establish `f₁ : ww = w z hz1` using `funext fun j => SameVec.unique_left (s2 j) (by rw [f₀]; exact hS₂ z hz1 j)`. Rewrite using `[hφ z hz]`. Simplify using `only [φ, dif_pos hz1, e₁', f₁]`.
+-/
 theorem chart_unit (Y : Model Xo c β) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (A : Y.X.Opens) (hA : IsAffineOpen A)
     {EB : Type} [AddCommGroup EB] [Module Γ(Y.X, A) EB] (MB : LieModel Y.t.G hA.fromSpec EB) (e₁ : Fin D.p → EB)
     (e₂ : Fin D.q → EB) (h1 : 1 ≤ D.p + D.q) (hr1 : τ (H.rt : E) = H.rt0) (hr2 : σ (tauIn c τ H.rt) = H.rt0)
@@ -361,6 +464,37 @@ theorem chart_unit (Y : Model Xo c β) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (
 
 end GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y τ σ Φ X' π s' d W' jW A hA EB _ _ MB e₁ e₂ x h1 hr1 hr2 hU hπ hsm hsnc hj1 hj2 hxs hxA hframe m B y hB hy hyσ b₀ hb₀ hyb`. Take `⟨V, hV, a, ψ, hVA, ha, hol, h0, -, hpts, hfam⟩` from `GlobalTheory.T.holomorphic_affine_polydisc_chart c.F σ X' s' d ((W' : Set X')ᶜ) hsm hsnc x (π ⁻¹ᵁ A) hxs hxA`. Establish `hpt : ∀ z ∈ punct d a 1, spMap (ψ z) ≫ hV.fromSpec ≫ s' = spMap σ ∧ centre (spMap (ψ z) ≫ hV.fromSpec) ∈ W'` using `fun z hz => ⟨(hpts z hz.1).1, not_not.1 ((hpts z hz.1).2.2 hz)⟩`. Take `⟨ρ, C, i₀, mR, k', φ₀, hρ, hρ1, hψ, hk, hkj, hks, h₁, h₂, h₃⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.exists_model_chart Y σ π s' d W' jW hj1 hj2 V hV a ψ ha hol hpt`. Set `aV : Γ(Y.X, A) →+* Γ(X', V)` to `(π.appLE A V hVA).hom`.
+
+Establish `haV : spMap aV ≫ hA.fromSpec = hV.fromSpec ≫ π` using `IsAffineOpen.SpecMap_appLE_fromSpec π hA hV hVA`. Set `g : Γ(X', V) →+* C.R` to `(Spec.preimage i₀).hom`. Establish `hg : spMap g = i₀` using `Spec.map_preimage i₀`. Establish `hfR : spMap (g.comp aV) ≫ hA.fromSpec = i₀ ≫ hV.fromSpec ≫ π`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp', Category.assoc, haV, hg]`.
+
+Establish `hin : ∀ z ∈ ball (0 : Fin d → ℂ) 1, (ρ : ℂ) • z ∈ ball (0 : Fin d → ℂ) 1` using `fun z hz => by`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Use polynomial arithmetic with `[norm_nonneg z]`. Establish `hover : ∀ z ∈ ball (0 : Fin d → ℂ) 1, (spMap ((C.ψ z).comp (g.comp aV)) ≫ hA.fromSpec) ≫ Y.s = spMap (σ.comp β)` using `fun z hz => by`.
+
+Establish `e : spMap ((C.ψ z).comp (g.comp aV)) ≫ hA.fromSpec = spMap (C.ψ z) ≫ i₀ ≫ hV.fromSpec ≫ π`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp', Category.assoc, hfR]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc, hπ]`.
+
+Use `_ = (spMap (ψ ((ρ : ℂ) • z)) ≫ hV.fromSpec ≫ s') ≫ spMap β := by`. Rewrite using `[hψ z hz]`. Simplify using `only [Category.assoc]`. Use `_ = _ := by rw [(hpts _ (hin z hz)).1, GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp']`. Establish `hsnd : ∀ z ∈ punct d a 1, (C.pt z ≫ k') ≫ pullback.snd _ _ = spMap σ` using `fun z hz => by`.
+
+Rewrite using `[Category.assoc, hks, ← Category.assoc, (C.pt_eq z hz).1, ← Category.assoc, hψ z hz.1]`. Conclude with `(hpts _ (hin z hz.1)).1`. Take `⟨ρ', h₀, hρ', hρ'1, hd, hne, hφ⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.chart_unit Y τ σ Φ A hA MB e₁ e₂ h1 hr1 hr2 hU C (g.comp aV) _ hfR mR k' φ₀ hk (by rw [hkj]) h₁ h₂ h₃ hover hsnd hframe`. Take `⟨ε₁, κ, hε₁, hsub, hκd, hκ0, hκ⟩` from `hfam m B y hB hy hyσ b₀ hb₀ hyb`. Establish `hκc : ContinuousAt κ b₀` using `hκd.continuousOn.continuousAt (ball_mem_nhds _ hε₁)`.
+
+Take `⟨ε₂, hε₂, hb⟩` from `Metric.continuousAt_iff.1 hκc (ρ * ρ') (mul_pos hρ hρ')`. Establish `hρc : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Establish `hn : ∀ b ∈ ball b₀ (min ε₁ ε₂), (ρ : ℂ)⁻¹ • κ b ∈ ball (0 : Fin d → ℂ) ρ'` using `fun b hbε => by`. Establish `h3` using `hb (ball_subset_ball (min_le_right _ _) hbε)`. Rewrite `h3` using `[hκ0, dist_zero_right]`.
+
+Rewrite using `[mem_ball_zero_iff, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ.le, inv_mul_lt_iff₀ hρ]`. Conclude with `h3`. Use `⟨min ε₁ ε₂, fun b => h₀ ((ρ : ℂ)⁻¹ • κ b), lt_min hε₁ hε₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdk : DifferentiableOn ℂ (fun b => (ρ : ℂ)⁻¹ • κ b) (ball b₀ (min ε₁ ε₂))` using `((hκd.mono (ball_subset_ball (min_le_left ε₁ ε₂))).const_smul ((ρ : ℂ)⁻¹)).congr fun _ _ => rfl`. Conclude with `hd.comp hdk hn`.
+
+Conclude with `hne _ (hn b₀ (mem_ball_self (lt_min hε₁ hε₂)))`. Introduce and unpack `b ⟨hbB, hbε⟩`. Establish `hbε₁ : b ∈ ball b₀ ε₁` using `ball_subset_ball (min_le_left _ _) hbε`. Take `⟨hκb, hyb'⟩` from `hκ b hbε₁`. Use `⟨(ψ (κ b)).comp aV, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp', Category.assoc, haV, hyb', Category.assoc]`. Introduce `hW yy v w v₀ w₀ hyj hys hv hw hv₀ hw₀`. Establish `hρz : (ρ : ℂ) • ((ρ : ℂ)⁻¹ • κ b) = κ b` using `smul_inv_smul₀ hρc _`. Establish `hcen : centre (spMap (ψ (κ b)) ≫ hV.fromSpec) ∉ ((W' : Set X')ᶜ)`. Rewrite using `[← hyb']`.
+
+Conclude with `not_not.2 (hW (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial))`. Establish `hκp : κ b ∈ punct d a 1` using `(hpts _ hκb).2.1 hcen`. Establish `hz : (ρ : ℂ)⁻¹ • κ b ∈ punct d a ρ'` using `⟨hn b hbε, fun i hi => by`. Simplify `hκp.2 i hi⟩` using `[hρ.ne']`. Establish `hz1 : (ρ : ℂ)⁻¹ • κ b ∈ punct d a 1` using `⟨ball_subset_ball hρ'1 hz.1, hz.2⟩`.
+
+Establish `hpz` using `(C.pt_eq _ hz1).1`. Establish `hpψ : spMap (C.ψ ((ρ : ℂ)⁻¹ • κ b)) ≫ i₀ = spMap (ψ (κ b))`. Rewrite using `[hψ _ hz1.1, hρz]`. Establish `hyy : yy = C.pt ((ρ : ℂ)⁻¹ • κ b) ≫ k'`. Establish `: IsOpenImmersion Y.jQ` using `Y.jQ_open`.
+
+Rewrite using `[← cancel_mono Y.jQ]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `e1 : yy ≫ Y.j = (C.pt ((ρ : ℂ)⁻¹ • κ b) ≫ k') ≫ Y.j`. Rewrite using `[hyj, hyb', Category.assoc _ k', hkj, ← Category.assoc, hpz, ← Category.assoc (spMap _), hpψ]`. Simplify using `only [Category.assoc]`.
+
+Simplify `e1` using `only [Model.j, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, Y.jQ_over, hys]`. Conclude with `(hsnd _ hz1).symm`. Substitute `hyy` using the available equality. Establish `hf : (ψ (κ b)).comp aV = (C.ψ ((ρ : ℂ)⁻¹ • κ b)).comp (g.comp aV)`.
+
+Establish `e : spMap ((ψ (κ b)).comp aV) = spMap ((C.ψ ((ρ : ℂ)⁻¹ • κ b)).comp (g.comp aV))`. Rewrite using `[← cancel_mono hA.fromSpec, GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp', GlobalTheory.CompanionTheory.Ar.Flat.ChartFamily.spMap_comp', Category.assoc, Category.assoc, hfR, haV, ← Category.assoc (spMap _) i₀, hpψ]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Rewrite `hv₀`, `hw₀` using `[hf]`. Conclude with `hφ _ hz v w v₀ w₀ hv hw hv₀ hw₀`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Flat.flat_unit_along_families : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (X' : Scheme.{0}) (π : X' ⟶ Y.X) (s' : X' ⟶ Sp c.F) (d : ℕ) (W' : X'.Opens) (jW : W'.toScheme ⟶ Xo.XF c) (A : Y.X.Opens) (hA : IsAffineOpen A) (EB : Type) [AddCommGroup EB] [Module Γ(Y.X, A) EB] (MB : LieModel Y.t.G hA.fromSpec EB) (e₁ : Fin D.p → EB) (e₂ : Fin D.q → EB) (x : Sp ℂ ⟶ X'), 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → σ (tauIn c τ H.rt) = H.rt0 → IsUnitAn τ σ Φ → π ≫ Y.s = s' ≫ spMap β → SmoothOfRelativeDimension d s' → Geo.ResK.HasSncCoords s' d (W' : Set X')ᶜ → jW ≫ Y.j = W'.ι ≫ π → jW ≫ pullback.snd _ _ = W'.ι ≫ s' → x ≫ s' = spMap σ → ⊤ ≤ x ⁻¹ᵁ (π ⁻¹ᵁ A) → (∀ (f : Γ(Y.X, A) →+* ℂ) (y : Sp ℂ ⟶ Y.X) (v : Fin D.p → (epsAt y ⟶ Y.t.G)) (w : Fin D.q → (epsAt y ⟶ Y.t.G)), y = spMap f ≫ hA.fromSpec → y ≫ Y.s = spMap (σ.comp β) → (∀ i, (v i).left = spMap (dualMap f) ≫ (MB.pt (e₁ i)).left) → (∀ j, (w j).left = spMap (dualMap f) ≫ (MB.pt (e₂ j)).left) → IsEigFrame Y.t.act y (σ.comp (tauIn c τ)) v ∧ IsEigFrame Y.t.act y (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) w) → ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X')), IsOpen B → IsHolTo B y → (∀ b ∈ B, y b ≫ s' = spMap σ) → ∀ b₀ ∈ B, y b₀ = x → ∃ (ε : ℝ) (h : (Fin m → ℂ) → ℂ), 0 < ε ∧ DifferentiableOn ℂ h (Metric.ball b₀ ε) ∧ h b₀ ≠ 0 ∧ ∀ b ∈ B ∩ Metric.ball b₀ ε, ∃ f : Γ(Y.X, A) →+* ℂ, spMap f ≫ hA.fromSpec = y b ≫ π ∧ (⊤ ≤ y b ⁻¹ᵁ W' → ∀ (yy : Sp ℂ ⟶ Xo.XF c) (v : Vecs yy D.p) (w : Vecs yy D.q) (v₀ : Fin D.p → (epsAt (yy ≫ Y.j) ⟶ Y.t.G)) (w₀ : Fin D.q → (epsAt (yy ≫ Y.j) ⟶ Y.t.G)), yy ≫ Y.j = y b ≫ π → yy ≫ pullback.snd _ _ = spMap σ → (∀ i, SameVec Y yy (v i) (v₀ i)) → (∀ j, SameVec Y yy (w j) (w₀ j)) → (∀ i, (v₀ i).left = spMap (dualMap f) ≫ (MB.pt (e₁ i)).left) → (∀ j, (w₀ j).left = spMap (dualMap f) ≫ (MB.pt (e₂ j)).left) → h b = Φ yy v w) := by
   intro E _ _ _ H D l Xo c O _ β Y τ σ Φ X' π s' d W' jW A hA EB _ _ MB e₁ e₂ x h1 hr1 hr2 hU hπ hsm hsnc hj1 hj2 hxs hxA
     hframe m B y hB hy hyσ b₀ hb₀ hyb

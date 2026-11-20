@@ -5,9 +5,15 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+The claim follows from `NumberField.IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 private theorem tau_cc_eq_conj_tau (τ : E →+* ℂ) (x : E) : τ (cc x) = starRingEnd ℂ (τ x) :=
   NumberField.IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Establish `h` using `congrArg τ (hiso.1 i k)`. Simplify using `only [herm, map_sum, map_mul, map_zero, tau_cc_eq_conj_tau] at h`. Simplify using `only [hermC, Data.emb]`. Conclude with `h`.
+-/
 private theorem hermC_emb_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (τ : E →+* ℂ) (i k : Fin 2) :
     hermC τ X.Gm (Data.emb τ (u i)) (Data.emb τ (u k)) = 0 := by
@@ -16,6 +22,11 @@ private theorem hermC_emb_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E r) (u :
   simp only [hermC, Data.emb]
   exact h
 
+/- English proof (translation)
+Use `Eq.trans ?_ (hermC_emb_emb_eq_zero_of_isIsoPair X u hiso τ i k)` and prove the remaining obligations. Simplify using `only [hermC]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_gram_emb_mul_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (τ : E →+* ℂ) (i k : Fin 2) :
     ∑ j, (∑ l, τ (X.Gm j l) * starRingEnd ℂ (Data.emb τ (u k) l)) * Data.emb τ (u i) j = 0 := by
@@ -26,6 +37,9 @@ private theorem sum_gram_emb_mul_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E 
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `a j`. Simplify using `only [Data.zmat, Matrix.of_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem zmat_eq_one_sub_smul {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) :
     X.zmat u b τ = 1 - (Complex.I * (X.c τ : ℂ)) •
@@ -36,6 +50,9 @@ private theorem zmat_eq_one_sub_smul {r : ℕ} (X : Data E r) (u : Fin 2 → Fin
     Matrix.mul_apply, smul_eq_mul, Fin.sum_univ_two]
   ring
 
+/- English proof (translation)
+Use extensionality with `k i`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]`. Conclude with `sum_gram_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ.1 i k`.
+-/
 private theorem gram_conj_emb_mul_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (τ : X.Ψ) :
     (Matrix.of fun k j => ∑ l, τ.1 (X.Gm j l) * starRingEnd ℂ (Data.emb τ.1 (u k) l)) *
@@ -44,6 +61,9 @@ private theorem gram_conj_emb_mul_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E
   simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]
   exact sum_gram_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ.1 i k
 
+/- English proof (translation)
+Establish `h : V * B * P * (V * B' * P) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, h, smul_zero, Matrix.mul_add, Matrix.add_mul, smul_add, sub_zero]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem one_sub_smul_mul_one_sub_smul_of_mul_eq_zero {n : Type} [Fintype n] [DecidableEq n] (V : Matrix n (Fin 2) ℂ)
     (P : Matrix (Fin 2) n ℂ) (hPV : P * V = 0) (s : ℂ) (B B' : Matrix (Fin 2) (Fin 2) ℂ) :
     (1 - s • (V * B * P)) * (1 - s • (V * B' * P)) = 1 - s • (V * (B + B') * P) := by
@@ -54,6 +74,9 @@ private theorem one_sub_smul_mul_one_sub_smul_of_mul_eq_zero {n : Type} [Fintype
     Matrix.mul_add, Matrix.add_mul, smul_add, sub_zero]
   abel
 
+/- English proof (translation)
+Establish `e : (1 : Matrix n n ℂ) - s • (V * B * P) = 1 + (-(s • (V * B))) * P`. Rewrite using `[Matrix.neg_mul, Matrix.smul_mul, sub_eq_add_neg]`. Establish `h : P * (-(s • (V * B))) = 0`. Rewrite using `[Matrix.mul_neg, Matrix.mul_smul, ← Matrix.mul_assoc, hPV, Matrix.zero_mul, smul_zero, neg_zero]`. Rewrite using `[e, Matrix.det_one_add_mul_comm, h, add_zero, Matrix.det_one]`.
+-/
 private theorem det_one_sub_smul_mul_of_mul_eq_zero {n : Type} [Fintype n] [DecidableEq n] (V : Matrix n (Fin 2) ℂ)
     (P : Matrix (Fin 2) n ℂ) (hPV : P * V = 0) (s : ℂ) (B : Matrix (Fin 2) (Fin 2) ℂ) :
     (1 - s • (V * B * P)).det = 1 := by
@@ -64,6 +87,11 @@ private theorem det_one_sub_smul_mul_of_mul_eq_zero {n : Type} [Fintype n] [Deci
       neg_zero]
   rw [e, Matrix.det_one_add_mul_comm, h, add_zero, Matrix.det_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct, Data.zmat, Matrix.of_apply, sub_mul, ite_mul, one_mul, zero_mul, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]`. Use `congr 1`. Simplify using `only [hermC, Fin.sum_univ_two, Finset.mul_sum, Finset.sum_mul, mul_add, add_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem zmat_mulVec_eq {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) (w : Fin r → ℂ) :
     Matrix.mulVec (X.zmat u b τ) w = fun p => w p - ∑ i, (Complex.I * (X.c τ : ℂ) *
@@ -77,6 +105,9 @@ private theorem zmat_mulVec_eq {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r →
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hermC, Fin.sum_univ_two, map_sub, map_add, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermC_sub_sum_smul_expand {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (w w' : Fin r → ℂ)
     (v : Fin 2 → Fin r → ℂ) (α β : Fin 2 → ℂ) :
     hermC τ G (fun p => w p - ∑ i, α i * v i p) (fun p => w' p - ∑ i, β i * v i p) =
@@ -88,6 +119,9 @@ private theorem hermC_sub_sum_smul_expand {r : ℕ} (τ : E →+* ℂ) (G : Matr
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hermC, map_sum, map_mul, Complex.conj_conj]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← X.Gm_herm y x, tau_cc_eq_conj_tau]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermC_Gm_eq_starRingEnd_swap {r : ℕ} (X : Data E r) (τ : E →+* ℂ) (v w : Fin r → ℂ) :
     hermC τ X.Gm v w = starRingEnd ℂ (hermC τ X.Gm w v) := by
   simp only [hermC, map_sum, map_mul, Complex.conj_conj]
@@ -96,6 +130,11 @@ private theorem hermC_Gm_eq_starRingEnd_swap {r : ℕ} (X : Data E r) (τ : E �
   rw [← X.Gm_herm y x, tau_cc_eq_conj_tau]
   ring
 
+/- English proof (translation)
+Establish `e` using `hermC_sub_sum_smul_expand τ.1 X.Gm w w' (fun i => Data.emb τ.1 (u i)) (fun i => Complex.I * (X.c τ : ℂ) * ∑ k, b τ i k * hermC τ.1 X.Gm w (Data.emb τ.1 (u k))) (fun i => Complex.I * (X.c τ : ℂ) * ∑ k, b τ i k * hermC τ.1 X.Gm w' (Data.emb τ.1 (u k)))`. Use `beta_reduce at e`. Rewrite using `[zmat_mulVec_eq, zmat_mulVec_eq, e]`. Simplify using `only [Fin.sum_univ_two, hermC_emb_emb_eq_zero_of_isIsoPair X u hiso τ.1, mul_zero, add_zero, hermC_Gm_eq_starRingEnd_swap X τ.1 (Data.emb τ.1 (u 0)) w', hermC_Gm_eq_starRingEnd_swap X τ.1 (Data.emb τ.1 (u 1)) w', map_mul, map_add, Complex.conj_I, Complex.conj_ofReal]`. Rewrite using `[← hb τ 0 0, ← hb τ 0 1, ← hb τ 1 0, ← hb τ 1 1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermC_zmat_mulVec_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b) (τ : X.Ψ) (w w' : Fin r → ℂ) :
     hermC τ.1 X.Gm (Matrix.mulVec (X.zmat u b τ) w) (Matrix.mulVec (X.zmat u b τ) w') =
@@ -111,6 +150,9 @@ private theorem hermC_zmat_mulVec_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin
   rw [← hb τ 0 0, ← hb τ 0 1, ← hb τ 1 0, ← hb τ 1 1]
   ring
 
+/- English proof (translation)
+Rewrite using `[zmat_mulVec_eq]`. Use function extensionality and compare the values at `p`. Simplify using `only [hermC_emb_emb_eq_zero_of_isIsoPair X u hiso τ.1, mul_zero, Finset.sum_const_zero, zero_mul, sub_zero]`.
+-/
 private theorem zmat_mulVec_emb_eq_self {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) (i : Fin 2) :
     Matrix.mulVec (X.zmat u b τ) (Data.emb τ.1 (u i)) = Data.emb τ.1 (u i) := by
@@ -118,11 +160,17 @@ private theorem zmat_mulVec_emb_eq_self {r : ℕ} (X : Data E r) (u : Fin 2 → 
   funext p
   simp only [hermC_emb_emb_eq_zero_of_isIsoPair X u hiso τ.1, mul_zero, Finset.sum_const_zero, zero_mul, sub_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 private theorem col_mul_eq_mulVec_col_natDim {r : ℕ} (M N : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
     col (M * N) a = Matrix.mulVec M (col N a) := by
   funext k
   simp only [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [gram, Matrix.of_apply, col_mul_eq_mulVec_col_natDim, hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ]`.
+-/
 private theorem gram_zmat_mul_eq_gram {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b) (τ : X.Ψ)
     (M : Matrix (Fin r) (Fin r) ℂ) :
@@ -130,28 +178,43 @@ private theorem gram_zmat_mul_eq_gram {r : ℕ} (X : Data E r) (u : Fin 2 → Fi
   ext a c
   simp only [gram, Matrix.of_apply, col_mul_eq_mulVec_col_natDim, hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mat_Zb_eq_zmat_mul_mat {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (X.Zb u b x) τ = X.zmat u b τ * mat x τ := rfl
 
+/- English proof (translation)
+Simplify using `only [dmin, mat_Zb_eq_zmat_mul_mat, gram_zmat_mul_eq_gram X u hiso b hb τ]`.
+-/
 private theorem dmin_Zb_eq_dmin {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b)
     (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (X.Zb u b x) τ i = dmin X.Gm x τ i := by
   simp only [dmin, mat_Zb_eq_zmat_mul_mat, gram_zmat_mul_eq_gram X u hiso b hb τ]
 
+/- English proof (translation)
+Rewrite using `[zmat_eq_one_sub_smul X u b τ, zmat_eq_one_sub_smul X u b' τ, zmat_eq_one_sub_smul X u (b + b') τ, one_sub_smul_mul_one_sub_smul_of_mul_eq_zero _ _ (gram_conj_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ), Matrix.of_add_of, Pi.add_apply]`.
+-/
 private theorem zmat_mul_zmat_eq_zmat_add {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b b' : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) :
     X.zmat u b τ * X.zmat u b' τ = X.zmat u (b + b') τ := by
   rw [zmat_eq_one_sub_smul X u b τ, zmat_eq_one_sub_smul X u b' τ, zmat_eq_one_sub_smul X u (b + b') τ,
     one_sub_smul_mul_one_sub_smul_of_mul_eq_zero _ _ (gram_conj_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ), Matrix.of_add_of, Pi.add_apply]
 
+/- English proof (translation)
+Rewrite using `[zmat_eq_one_sub_smul X u b τ]`. Conclude with `det_one_sub_smul_mul_of_mul_eq_zero _ _ (gram_conj_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ) _ _`.
+-/
 private theorem det_zmat_eq_one {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) :
     (X.zmat u b τ).det = 1 := by
   rw [zmat_eq_one_sub_smul X u b τ]
   exact det_one_sub_smul_mul_of_mul_eq_zero _ _ (gram_conj_emb_mul_emb_eq_zero_of_isIsoPair X u hiso τ) _ _
 
+/- English proof (translation)
+Use extensionality with `p j`. Simplify using `only [Data.flowMatV, Data.zmat, Data.uvec, Matrix.of_apply, Fin.sum_univ_two, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add, add_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem flowMatV_uvec_eq_zmat {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (a : X.Ψ → Fin 2 → ℂ) (s : X.Ψ → ℂ) (τ : X.Ψ) :
     X.flowMatV (X.uvec u a τ) τ (s τ) =
@@ -164,6 +227,27 @@ private theorem flowMatV_uvec_eq_zmat {r : ℕ} (X : Data E r) (u : Fin 2 → Fi
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `UnipotentVectorGroup`. Introduce `r X u hiso`. Use `⟨fun b b' x => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ show X.zmat u b τ * (X.zmat u b' τ * mat x τ) = X.zmat u (b + b') τ * mat x τ`. Rewrite using `[← Matrix.mul_assoc, zmat_mul_zmat_eq_zmat_add X u hiso]`.
+
+Establish `hfix` using `zmat_mulVec_emb_eq_self X u hiso b`. Establish `hdom : ∀ x ∈ X.dom, X.Zb u b x ∈ X.dom`. Introduce `x hx`. Simplify using `only [Data.dom, GG, Set.mem_setOf_eq] at hx ⊢`. Introduce `τ`.
+
+Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_Zb_eq_zmat_mul_mat, Matrix.det_mul, det_zmat_eq_one X u hiso b, one_mul]`. Conclude with `(hx τ).1`. Rewrite using `[dmin_Zb_eq_dmin X u hiso b hb]`. Conclude with `(hx τ).2 i`.
+
+Establish `hmaj : ∀ (x : Frame X.Ψ r) (τ : X.Ψ), x ∈ X.dom → X.maj (X.Zb u b x) τ (Data.emb τ.1 (u 0)) = X.maj x τ (Data.emb τ.1 (u 0))`. Introduce `x τ _`. Establish `hv0 : ∀ w, hermC τ.1 X.Gm (Data.emb τ.1 (u 0)) (Matrix.mulVec (X.zmat u b τ) w) = hermC τ.1 X.Gm (Data.emb τ.1 (u 0)) w`. Introduce `w`. Establish `h` using `hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ (Data.emb τ.1 (u 0)) w`.
+
+Rewrite `h` using `[hfix τ 0]`. Then use the resulting hypothesis. Simplify using `only [Data.maj, Data.posPart, Data.gramPos, mat_Zb_eq_zmat_mul_mat, col_mul_eq_mulVec_col_natDim, gram_zmat_mul_eq_gram X u hiso b hb τ, hv0]`. Establish `hD1 : ∀ x ∈ X.FramesOverBasis (u 0), X.Zb u b x ∈ X.FramesOverBasis (u 0)`. Introduce `x hx`. Simplify using `only [Data.FramesOverBasis, Set.mem_setOf_eq] at hx ⊢`.
+
+Use `⟨hdom x hx.1, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hmaj x τ hx.1]`. Conclude with `hx.2 τ`. Use `⟨?_, hfix, fun τ => det_zmat_eq_one X u hiso b τ, hdom, ?_, ?_, hmaj, hD1, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ w w'`.
+
+Conclude with `hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ w w'`. Introduce `x x' h τ`. Establish `key : ∀ y : Frame X.Ψ r, Set.range (fun a : Fin X.p0 => col (mat (X.Zb u b y) τ) (Fin.castLE X.p0_le a)) = (Matrix.mulVecLin (X.zmat u b τ)) '' Set.range (fun a : Fin X.p0 => col (mat y τ) (Fin.castLE X.p0_le a))`. Introduce `y`. Rewrite using `[← Set.range_comp]`.
+
+Use `congr 1`. Rewrite using `[key x, key x', Submodule.span_image, Submodule.span_image, h τ]`. Introduce `la x _`. Simplify using `only [Data.nfac, dmin_Zb_eq_dmin X u hiso b hb x]`. Introduce `a s x`.
+
+Use function extensionality and compare the values at `τ`. Use `show X.zmat u b τ * (X.flowMatV (X.uvec u a τ) τ (s τ) * mat x τ) = X.flowMatV (X.uvec u a τ) τ (s τ) * (X.zmat u b τ * mat x τ)`. Rewrite using `[flowMatV_uvec_eq_zmat X u a s τ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, zmat_mul_zmat_eq_zmat_add X u hiso, zmat_mul_zmat_eq_zmat_add X u hiso, add_comm]`. Introduce `a s x`. Use function extensionality and compare the values at `τ`.
+
+Conclude with `congrArg (fun M => M * mat x τ) (flowMatV_uvec_eq_zmat X u a (fun τ => (s τ : ℂ)) τ)`.
+-/
 theorem unipotent_vector_group : UnipotentVectorGroup (E := E) := by
   unfold UnipotentVectorGroup
   intro r X u hiso

@@ -7,6 +7,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.GenSupp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π s hπ`. Take `⟨h, x, hs, -, hc, e, hsq⟩` from `hπ`. Establish `hd : ∑ a, (x a).1 = N`. Use `Fintype.card_congr e` as an intermediate fact. Simplify `this` using `[Fintype.card_sigma]`.
+
+Take `⟨φ⟩` from `GlobalTheory.T.multiProd_equiv_standard_blocks k (fun a => (x a).1) hd e _ (fun a => (x a).rep)`. Conclude with `⟨h, x, hd, hs, fun a => ⟨(hc a).1, (hc a).2.2⟩, hsq.trans (GlobalTheory.JacStages.isSubquotient_of_equiv φ)⟩`.
+-/
 theorem hasSupport_std : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (s : Multiset (IrrGL k)), HasSupport π s → ∃ (h : ℕ) (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N), Finset.univ.val.map x = s ∧ (∀ a, (x a).IsCusp) ∧ IsSubquotient π (prodIrr x hd) := by
   intro k _ _ _ _ N V _ _ π s hπ
   obtain ⟨h, x, hs, -, hc, e, hsq⟩ := hπ

@@ -7,6 +7,13 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Use `set e : 𝓞 E ≃+* 𝓞 E := RingOfIntegers.mapRingEquiv σ.toRingEquiv with he`. Establish `hc : ∀ x : 𝓞 E, ((e x : 𝓞 E) : E) = σ (x : E)` using `fun x => rfl`. Establish `hfix : ∀ a : 𝓞 F, e (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap (𝓞 F) (𝓞 E) a`. Introduce `a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Rewrite using `[hc]`. Conclude with `σ.commutes (a : F)`. Use `⟨w.comap (e : 𝓞 E →+* 𝓞 E) e.surjective, ?_, ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `e (algebraMap (𝓞 F) (𝓞 E) a) ∈ w.asIdeal ↔ algebraMap (𝓞 F) (𝓞 E) a ∈ w.asIdeal`. Rewrite using `[hfix]`. Introduce `y`. Conclude with `valuation_of_eq_comap σ.toRingEquiv w _ rfl y`.
+-/
 theorem exists_place_valuation_aut (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E ≃ₐ[F] E) (w : HeightOneSpectrum (𝓞 E)) :
     ∃ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 F) = w.under (𝓞 F) ∧
@@ -26,6 +33,17 @@ theorem exists_place_valuation_aut (F E : Type) [Field F] [NumberField F] [Field
   · intro y
     exact valuation_of_eq_comap σ.toRingEquiv w _ rfl y
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ S SE hS`. Take `⟨-, hup, hval⟩` from `places_over F E`. Use `⟨fun x => ⟨fun h => ?_, fun h => ?_⟩, fun σ y hy => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[mem_sUnits]`. Introduce `v hv`.
+
+Take `⟨w, rfl⟩` from `hup v`. Take `⟨e, he, hx⟩` from `hval w`. Establish `h1 : w.valuation E (algebraMap F E (x : F)) = 1` using `h w (fun a => hv ((hS w).1 a))`. Rewrite `h1` using `[hx]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le he.ne').1 h1`.
+
+Rewrite `h`, the goal using `[mem_sUnits]`. Introduce `w hw`. Take `⟨e, he, hx⟩` from `hval w`. Express the relevant statement in the definitionally equal form `w.valuation E (algebraMap F E (x : F)) = 1`. Rewrite using `[hx, h _ (fun a => hw ((hS w).2 a)), one_pow]`.
+
+Rewrite `hy`, the goal using `[mem_sUnits]`. Introduce `w hw`. Take `⟨w', hu, hv⟩` from `exists_place_valuation_aut F E σ w`. Express the relevant statement in the definitionally equal form `w.valuation E (σ (y : E)) = 1`. Rewrite using `[← hv]`.
+
+Conclude with `hy w' (fun a => hw ((hS w).2 (hu ▸ (hS w').1 a)))`.
+-/
 theorem sUnits_over_and_aut : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (S : Finset (HeightOneSpectrum (𝓞 F))) (SE : Finset (HeightOneSpectrum (𝓞 E))), (∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) → (∀ x : Fˣ, Units.map (algebraMap F E : F →* E) x ∈ sUnits E SE ↔ x ∈ sUnits F S) ∧ ∀ (τ : E ≃ₐ[F] E) (y : Eˣ), y ∈ sUnits E SE → Units.map (τ : E →* E) y ∈ sUnits E SE := by
   intro F E _ _ _ _ _ _ S SE hS
   obtain ⟨-, hup, hval⟩ := places_over F E

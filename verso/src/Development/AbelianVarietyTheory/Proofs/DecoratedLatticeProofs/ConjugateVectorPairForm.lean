@@ -21,6 +21,9 @@ open Formalism.L2.SG.JoinSI Formalism.IndefR.Links Formalism.IndefR.AutomorphicE
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `hSp` using the available equality. Take `rfl` from `eq_of_heq h`. Conclude with `inner_spOf s Dc hK Gd wdD pw bR m _ c`.
+-/
 theorem inner_sp {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : Bool) {Bs : DefBase D.what₂.LL} {Df : DefSide Bs}
     (Dc : DefCols Df) (hK : St.LevelSubgroupCharacter) (Gd : GoodOp St) (wdD : Dc.Mem → D.what₂.Word) (pw : ∀ x, PerW St hK (wdD x))
     (bR : ∀ x, Fin (Dc.a x) → (D.mem (wdD x)).A.Mram) (Sp : SPer Dc) (hSp : Sp = spOf s Dc hK Gd wdD pw bR)
@@ -32,6 +35,9 @@ theorem inner_sp {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : Bool) {Bs
   obtain rfl := eq_of_heq h
   exact inner_spOf s Dc hK Gd wdD pw bR m _ c
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Substitute `hdc` using the available equality. Take `rfl` from `eq_of_heq hm`. Take `rfl` from `eq_of_heq hc`. Conclude with `inner_sp s (Dcf z0) hK Gd wdD pw bR (Spf z0) (eq_of_heq hsp) sEE sEEc h e m c`.
+-/
 theorem inner_join {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : Bool) {Bs : DefBase D.what₂.LL} {Z : Type}
     {sd : Z → DefSide Bs} (Dcf : ∀ z, DefCols (sd z)) (Spf : ∀ z, SPer (Dcf z)) (z0 z1 : Z) (hz : z0 = z1)
     (Dc : DefCols (sd z1)) (hdc : Dcf z1 = Dc) (hK : St.LevelSubgroupCharacter) (Gd : GoodOp St)
@@ -48,6 +54,9 @@ theorem inner_join {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (s : Bool) {
   obtain rfl := eq_of_heq hc
   exact inner_sp s (Dcf z0) hK Gd wdD pw bR (Spf z0) (eq_of_heq hsp) sEE sEEc h e m c
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hι`. Both sides reduce to the same expression.
+-/
 theorem iota_symm_eq {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ι : GA D (D.sp.Y 0) ≃* I.GA) (hι : HEq ι (Formalism.IndefR.RationalEmbedding.iota D).toMulEquiv) (x : I.GA) :
     ι.symm x = ((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA h.symm)).symm x := by
@@ -64,6 +73,11 @@ open Formalism.L2.SG.JoinSI Formalism.IndefR.Links Formalism.IndefR.AutomorphicE
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
+/- English proof (translation)
+Establish `hd : (Formalism.L2.SG.ColDict.colDict X p.Tr hK p.hI p.hB).symm y = T`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext hT.symm`. Use `show ((Formalism.L2.SG.PoincareInHH.PoincareSetting.Pu X u hK p.Dt p.hD p.hin p.hlin ((Formalism.L2.SG.ColDict.colDict X p.Tr hK p.hI p.hB).symm y) : HHX X) : L2X X) = _`. Rewrite using `[hd]`.
+
+Both sides reduce to the same expression.
+-/
 theorem op_eq {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {hK : X.LevelSubgroupCharacter} {u : D.what₂.Word} (p : PerW X hK u) (y : (D.mem u).A.Mu0)
     (T : Cu X u hK) (hT : Formalism.L2.SG.ColDict.colDictL X p.Tr hK T = (y : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)) :
     ((p.op y : HHX X) : L2X X) = PuFun X u hK p.Dt T := by
@@ -75,6 +89,13 @@ theorem op_eq {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {hK : X.LevelSubgr
   rw [hd]
   rfl
 
+/- English proof (translation)
+Substitute `hwu` using the available equality. Establish `hi : ∀ i : Fin (W.P.Dc.a (W.P.I.wU w)), Fin.cast (congrArg W.P.Dc.a hc).symm i = i` using `fun i => Fin.ext rfl`. Establish `hfun : (fun i => D.eMu w (D.jN w (W.P.I.eNu w (Pi.single (Fin.cast (congrArg W.P.Dc.a hc).symm i) (1 : D.what₂.LL))))) = (fun i => D.eMu w (D.jN w (W.P.I.eNu w (Pi.single i (1 : D.what₂.LL)))))`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (fun k => D.eMu w (D.jN w (W.P.I.eNu w (Pi.single k (1 : D.what₂.LL))))) (hi i)`.
+
+Rewrite using `[hfun]`. Establish `hr : Fintype.linearCombination ℂ (fun i => D.eMu w (D.jN w (W.P.I.eNu w (Pi.single i (1 : D.what₂.LL))))) x = D.eMu w (colC W w x)`. Use `(Fintype.linearCombination_apply ℂ _ x).trans ?_` and prove the remaining obligations. Simplify using `[colC, map_sum, map_smul]`. Use `op_eq (pwOf W.S W.Q.hin w) _ T ?_` and prove the remaining obligations.
+
+Use `show Formalism.L2.SG.ColDict.colDictL W.S.X (W.S.tr w) W.S.Y.hK T = _`. Use `hT.trans ?_` and prove the remaining obligations. Use `show _ = ((Submodule.inclusion inf_le_left (Fintype.linearCombination ℂ _ x) : (D.mem w).A.Mu0) : (D.mem w).C.cls 0 → (D.mem w).C.Y 0 → ℂ)`. Conclude with `congrArg (fun z : (D.mem w).A.Mram => (z : (D.mem w).C.cls 0 → (D.mem w).C.Y 0 → ℂ)) hr.symm`.
+-/
 theorem op_col (W : RealPack ex) (u w : D.what₂.Word) (hwu : w = u) (hc : W.P.I.wU w = W.P.I.wU u)
     (x : Fin (W.P.Dc.a (W.P.I.wU u)) → ℂ) (T : Cu W.S.X u W.S.Y.hK) (hT : IsCol W u T (colC W u x)) :
     (((pwOf W.S W.Q.hin w).op (ramCrd (fun i => D.eMu w (D.jN w (W.P.I.eNu w
@@ -104,6 +125,11 @@ namespace GlobalTheory.MiTop.PairingL2
 
 open Formalism.L2.SG.JoinSI Formalism.IndefR.Links Formalism.IndefR.AutomorphicEvaluation Formalism.L2.SG.RowsJoinPinned
 
+/- English proof (translation)
+Use `⟨hE.choose, hE.choose_spec.1, fun T => ⟨(hE.choose_spec.2.choose T : EEC St Gd), ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `(hE.choose_spec.2.choose_spec T).1.trans (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `h1 : ι.symm x = (iotaX St h).symm x` using `iota_symm_eq h ι hι x`. Use `show (T : MMap M) hE.choose (ι.symm x * t) = PiTensorProduct.lift (T : MMap M) (PiTensorProduct.tprod ℂ hE.choose) ((iotaX St h).symm x * t)`. Rewrite using `[h1]`.
+
+Conclude with `(congrFun (PiTensorProduct.lift.tprod (φ := (T : MMap M)) hE.choose) _).symm`. Conclude with `((mem_EEC St Gd _).1 (hE.choose_spec.2.choose T).2).1`. Unfold `sEEofTT`. Simplify using `only [dif_pos hE]`. Both sides reduce to the same expression.
+-/
 theorem exists_eval {D : D7} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))}
     {𝓕 : Set (GA D (D.sp.Y 0))} {E : Submodule ℂ (MMap M)} {St : Formalism.L2.SG.HidaSetting.HidaSetting D} {Gd : GoodOp St}
     {ι : GA D (D.sp.Y 0) ≃* St.B.I.GA} {t : GA D (D.sp.Y 0)} {c : ℝ} (hE : EvalTieT M μ 𝓕 E St Gd ι t c)
@@ -123,6 +149,11 @@ theorem exists_eval {D : D7} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SP
     simp only [dif_pos hE]
     rfl
 
+/- English proof (translation)
+Establish `h1 : F = l • φ`. Use `MeasureTheory.Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [hF, hφ, MeasureTheory.Lp.coeFn_smul l φ] with x h1 h2 h3`. Rewrite using `[h1, h3, Pi.smul_apply, h2, hfg]`. Both sides reduce to the same expression.
+
+Establish `h2 : star (l • φ) = starRingEnd ℂ l • star φ` using `(Formalism.L2.SG.RowDict.conjL (muX St)).map_smulₛₗ l φ`. Rewrite using `[inner_smul_left, Submodule.coe_inner, hy, hz, h1, h2, inner_smul_left, starRingEnd_self_apply, mul_assoc]`.
+-/
 theorem inner_smul_star {D : D7} {St : Formalism.L2.SG.HidaSetting.HidaSetting D} (h : St.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (t : GA D (D.sp.Y 0)) (f g : GA D (D.sp.Y 0) → ℂ) (l a : ℂ) (hfg : f = l • g) (F φ P : L2X St)
     (hF : (F : St.B.I.GA → ℂ) =ᵐ[muX St] evS St h t f) (hφ : (φ : St.B.I.GA → ℂ) =ᵐ[muX St] evS St h t g)
@@ -136,6 +167,19 @@ theorem inner_smul_star {D : D7} {St : Formalism.L2.SG.HidaSetting.HidaSetting D
   have h2 : star (l • φ) = starRingEnd ℂ l • star φ := (Formalism.L2.SG.RowDict.conjL (muX St)).map_smulₛₗ l φ
   rw [inner_smul_left, Submodule.coe_inner, hy, hz, h1, h2, inner_smul_left, starRingEnd_self_apply, mul_assoc]
 
+/- English proof (translation)
+Introduce `hDS hCusp D L hT Gi Gl Kc Yd cX ex W hB v hv`. Establish `hM` using `(GlobalTheory.MiTop.botHyp_match W hB).2.2.2.2.2`. Take `⟨v₀, hv₀, hF⟩` from `exists_eval (W.Q.seeEval hB.see.2) W.Q.instEq W.Q.ιS_eq`. Establish `key : ∃ l : ℂ, l ≠ 0 ∧ ∀ e : W.Q.Rl.HE.H, W.Q.Rl.HE.e e ∈ W.Q.Rl.toRealDat.EEat (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true) → rowOf W e (PiTensorProduct.tprod ℂ v₀) = l • rowOf W e (PiTensorProduct.tprod ℂ v)`. Distinguish the cases in `hl : ∃ l : ℂ, l ≠ 0 ∧ PiTensorProduct.tprod ℂ v₀ = l • PiTensorProduct.tprod ℂ v`.
+
+Take `⟨l, hl0, hl⟩` from `hl`. Conclude with `⟨l, hl0, fun e _ => (congrArg (rowOf W e) hl).trans ((rowOf W e).map_smul l _)⟩`. Use `⟨1, one_ne_zero, fun e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : rowOf W e = 0`. Rewrite using `[h0]`.
+
+Conclude with `(smul_zero (1 : ℂ)).symm`. Take `⟨F, h1, h2, -⟩` from `hF ⟨W.Q.Rl.HE.e e, he⟩`. Conclude with `absurd (GlobalTheory.T.unit_vector_rows_conjugate hDS hCusp W hB v₀ v hv hv₀ (rowOf W e) (hM e he) h0 F h1 h2) hl`. Take `⟨l, hl0, hl⟩` from `key`. Use `⟨starRingEnd ℂ (W.Q.uS * (W.Q.κS : ℂ)) * l, mul_ne_zero ?_ hl0, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : W.Q.uS ≠ 0`. Introduce `h`. Use `W.Q.uS_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Conclude with `(map_ne_zero _).2 (mul_ne_zero hu (Complex.ofReal_ne_zero.2 W.Q.seeK.1.ne'))`. Introduce `e he u m hm x x' hx T b hTc hP`. Take `⟨φ, hφ, rfl⟩` from `hP`. Use `(inner_join (twQ W.P) W.Dcf W.Spf (cxW W).zs W.P.Zs W.Q.zs W.P.Dc W.Q.dc W.S.Y.hK W.S.G W.Q.wdD (fun y => pwOf W.S W.Q.hin (W.Q.wdD y)) W.Q.bR (W.Q.sp.trans W.Q.spPin) W.Q.sEE W.Q.sEEc W.Q.sEEj e m (W.P.I.wU u) hm x' x hx.symm).trans (congrArg (cj (twQ W.P)) ?_)` and prove the remaining obligations. Take `⟨F, h1, -, h3⟩` from `hF ⟨W.Q.Rl.HE.e (Tw.out e), he⟩`.
+
+Establish `hz` using `(congrArg (fun b => (((pwOf W.S W.Q.hin (W.Q.wdD (W.P.I.wU u))).op (ramCrd b x) : HHX W.S.X) : L2X W.S.X)) (funext (hB.pins.bR_read (W.P.I.wU u)))).trans (op_col W u (W.Q.wdD (W.P.I.wU u)) (W.Q.wdD_wU u) (W.Q.wU_wdD (W.P.I.wU u)) x T hTc)`. Use `Eq.trans ?_ (inner_smul_star W.Q.instEq _ _ _ l (W.Q.uS * (W.Q.κS : ℂ)) (hl (Tw.out e) he) F φ _ h1 hφ _ _ h3 hz)` and prove the remaining obligations. Conclude with `congrArg (fun y => ⟪Tw.out y, (pwOf W.S W.Q.hin (W.Q.wdD (W.P.I.wU u))).op (ramCrd (W.Q.bR (W.P.I.wU u)) x)⟫_ℂ) (W.Q.seeDef e he)`.
+-/
 theorem pairForm : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → ∀ v : (W.Q.Rl.MY 0).Vec, ConjVec W.S.X W.Q.instEq W.Q.Rl.θ (W.Q.Rl.MY 0) v → PairForm W v := by
   intro hDS hCusp D L hT Gi Gl Kc Yd cX ex W hB v hv
   have hM := (GlobalTheory.MiTop.botHyp_match W hB).2.2.2.2.2

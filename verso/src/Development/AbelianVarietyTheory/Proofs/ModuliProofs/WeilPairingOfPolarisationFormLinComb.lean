@@ -40,6 +40,11 @@ def chartUnflat {X Y Z : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K'] (L :
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Introduce `p`. Take `⟨V, hp, ⟨θx, θy, h1, h2⟩, h3⟩` from `h p`. Use `⟨V, hp, ⟨θy, θx, h2, h1⟩, fun θ₁ θ₂ e₁ e₂ => ?_⟩` and prove the remaining obligations. Establish `H` using `h3 θ₂ θ₁ e₂ e₁`. Unfold `CommIsOf at H ⊢`.
+
+Use `corr_of_val hL fun q J hJ => ?_` and prove the remaining obligations. Establish `e` using `val_corr hJ H (𝟙 _)`. Simplify using `only [val_mul hJ, H1.val_constGen, unitRes, map_inv] at e ⊢`. Rewrite using `[e, mul_inv_cancel_right]`.
+-/
 theorem weilIs_swap {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} {x y : T ⟶ A} {c : Γ(T.left, ⊤)ˣ}
     (h : WeilIs A L k x y c) : WeilIs A L k y x c⁻¹ := by
   intro p
@@ -76,6 +81,19 @@ def charSums (L : LB A.left) (hL : L.IsLB) {T : Over S} (x : T ⟶ A) :
 
 variable {L : LB A.left} (hL : L.IsLB) {T : Over S} (x : T ⟶ A)
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, u, hu, hs, ht⟩` from `h`. Establish `key : ∀ (U : Type) [CommGroup U] (f : ((T ⊗ A).left ⟶ A.left) → U), ∏ k, f (φ k) ^ ε k = 1`. Introduce `U _ f`. Establish `e` using `congrArg (Abelianization.lift (FreeGroup.lift f)) hs`. Simplify `e` using `[map_prod, map_zpow]`.
+
+Use `set p := (fst T A).left with hp_def`. Use `set e := (lift (𝟙 T) (1 : T ⟶ A)).left with he_def`. Establish `hl : ∀ w : T ⟶ A, (lift (𝟙 T) w).left ≫ p = 𝟙 _` using `fun w => by`. Rewrite using `[hp_def, ← Over.comp_left, lift_fst, Over.id_left]`. Establish `hfe : FormEq (fun k => (p ≫ e) ≫ φ k) ε φ ε`.
+
+Introduce `U _ f`. Rewrite using `[key U f]`. Simplify using `using key U (fun ψ => f ((p ≫ e) ≫ ψ))`. Take `⟨u', hu', hv⟩` from `exists_gen hL hfe (LB.pullGen L φ ε u (p ≫ e)) (LB.isGen_pullGen L φ ε u hu _)`. Establish `hall : ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι), Good L z J → val u r z J = val u (r ≫ p ≫ e) z J`.
+
+Introduce `Z r z J hJ`. Rewrite using `[gen_unique hL p e (hl 1) (GlobalTheory.CommutatorPairing.surj_fst hG hA T) hu hu' ?_ Z r z J hJ, hv Z r z J hJ, val_pull hJ]`. Introduce `y J' hJ'`. Rewrite using `[hv _ e y J' hJ', val_pull hJ', ← Category.assoc, hl 1, Category.id_comp]`. Establish `hz : ∀ z : T.left, gm (𝟙 T.left) z ⊤ c = 1`.
+
+Introduce `z`. Take `⟨J, hJ, -⟩` from `exists_good L hL z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `h1` using `ht T (𝟙 T) 1 z J hJ`. Rewrite `h1` using `[hall _ _ z J hJ, hall _ (lift (𝟙 T) 1).left z J hJ, ← Category.assoc, hl, ← Category.assoc, hl, Over.id_left]`. Conclude with `mul_left_cancel (h1.symm.trans (_root_.mul_one _).symm)`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `fn_ext` to reduce the goal to its premises. Introduce `z _`. Rewrite using `[gs_unit _ z ⊤ (by simp) c, gs_unit _ z ⊤ (by simp) 1, hz z, map_one]`.
+-/
 theorem eq_one_of_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {c : Γ(T.left, ⊤)ˣ}
     (h : (1, c) ∈ charSums L hL x) : c = 1 := by
   obtain ⟨K, _, φ, ε, u, hu, hs, ht⟩ := h
@@ -111,6 +129,9 @@ theorem eq_one_of_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {c : Γ(T.left
   intro z _
   rw [gs_unit _ z ⊤ (by simp) c, gs_unit _ z ⊤ (by simp) 1, hz z, map_one]
 
+/- English proof (translation)
+Use `⟨K, inferInstance, fun k => ρ.left ≫ φ k, ε, LB.pullGen L φ ε u ρ.left, LB.isGen_pullGen L φ ε u hu ρ.left, rfl, fun Z t w z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_pull hJ, val_pull hJ]`. Simplify `h Z t w z J hJ` using `only [Over.comp_left]`.
+-/
 theorem pull_mem {B : Over S} {K : Type} [Fintype K] {φ : K → (B.left ⟶ A.left)} {ε : K → ℤ}
     (u : LB.Gen (LB.LinComb L φ ε)) (hu : u.IsGen) (ρ : T ⊗ A ⟶ B) (c : Γ(T.left, ⊤)ˣ)
     (h : ∀ (Z : Over S) (t : Z ⟶ T) (w : Z ⟶ A) (z : Z.left) (J), Good L z J →
@@ -121,11 +142,29 @@ theorem pull_mem {B : Over S} {K : Type} [Fintype K] {φ : K → (B.left ⟶ A.l
   rw [val_pull hJ, val_pull hJ]
   simpa only [Over.comp_left] using h Z t w z J hJ
 
+/- English proof (translation)
+Rewrite using `[← gm_id_pull r z W hz, pullU_res₂, gm_rp₂ r a z U _ _ hz]`.
+-/
 private theorem gm_res_pullU_eq_gm_comp' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (a : Y ⟶ X) (z : Z) (U : X.Opens)
     (W : Y.Opens) (h : W ≤ a ⁻¹ᵁ U) (hz : r z ∈ W) (u : Γ(X, U)ˣ) :
     gm r z W (res h (pullU a U u)) = gm (r ≫ a) z U u := by
   rw [← gm_id_pull r z W hz, pullU_res₂, gm_rp₂ r a z U _ _ hz]
 
+/- English proof (translation)
+Take `⟨j₀, hj₀⟩` from `LB.mem_of_cover hL (a.left p₀)`. Use `set ψ := (fst T A ≫ a).left with hψ_def`. Establish `hψ : ∀ y, ψ y ∈ L.U j₀` using `fun y => by`. Establish `e : (fst T A).left y = p₀` using `hT _`. Use `show a.left ((fst T A).left y) ∈ L.U j₀`.
+
+Rewrite using `[e]`. Conclude with `hj₀`. Establish `hle : ∀ i : PUnit → L.ι, (LB.LinComb L (fun _ : PUnit => ψ) (fun _ => (1 : ℤ))).U i ≤ ψ ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U j₀)` using `fun i y hy => ⟨Set.mem_iInter.1 hy PUnit.unit, hψ y⟩`. Establish `h0 : ∀ y, y ∈ LB.wchart L (fun _ : PUnit => ψ) (fun _ => j₀)` using `fun y => Set.mem_iInter.2 fun _ => hψ y`. Use `⟨PUnit, inferInstance, fun _ => ψ, fun _ => 1, ⟨fun i => res (hle i) (pullU ψ _ (L.g (i PUnit.unit) j₀))⟩, ?_, by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `i i'`. Apply `Units.ext` to reduce the goal to its premises. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[gs_unit _ y _ hy, gs_unit _ y _ hy]`.
+
+Use `congr 1`. Rewrite using `[map_mul]`. Simplify using `only`. Rewrite using `[LB.res_res, LB.res_res, gm_rp₁ _ _ _ _ _ hy, gm_rp₁ _ _ _ _ _ hy]`. Establish `g : gm (𝟙 _) y ((LB.LinComb L (fun _ : PUnit => ψ) (fun _ => (1 : ℤ))).U i ⊓ (LB.LinComb L (fun _ : PUnit => ψ) (fun _ => (1 : ℤ))).U i') ((LB.LinComb L (fun _ : PUnit => ψ) (fun _ => (1 : ℤ))).g i i') = ∏ k : PUnit, gm (𝟙 _ ≫ ψ) y (L.U (i k) ⊓ L.U (i' k)) (L.g (i k) (i' k)) ^ (1 …` using `gm_linComb L _ _ (𝟙 _) y i i' hy.1 hy.2`.
+
+Rewrite using `[g]`. Establish `e` using `trF_trans hL (fun _ : PUnit => ψ) (fun _ => (1 : ℤ)) (𝟙 _) y hy.1 hy.2 (h0 y)`. Simplify using `only [trF, Finset.univ_unique, Finset.prod_singleton, zpow_one, Category.id_comp] at e ⊢`. Conclude with `e.symm`. Introduce `Z t' w z J hJ`.
+
+Establish `key : ∀ r : Z.left ⟶ (T ⊗ A).left, val (⟨fun i => res (hle i) (pullU ψ _ (L.g (i PUnit.unit) j₀))⟩ : LB.Gen (LB.LinComb L (fun _ : PUnit => ψ) (fun _ => 1))) r z J = gm (r ≫ ψ) z (L.U (J (r ≫ ψ)) ⊓ L.U j₀) (L.g (J (r ≫ ψ)) j₀)`. Introduce `r`. Unfold `val`. Conclude with `gm_res_pullU_eq_gm_comp' r ψ z _ _ _ (Good.mem hJ (fun _ : PUnit => ψ) r) _`. Rewrite using `[key, key]`.
+
+Establish `e : ∀ v : Z ⟶ A, (lift t' v).left ≫ ψ = (t' ≫ a).left` using `fun v => by`. Rewrite using `[hψ_def, ← Over.comp_left, lift_fst_assoc]`. Rewrite using `[e, e]`. Simplify using the standard rewrite rules.
+-/
 theorem const_mem (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (a : T ⟶ A) :
     (fr (fst T A ≫ a).left, 1) ∈ charSums L hL x := by
   obtain ⟨j₀, hj₀⟩ := LB.mem_of_cover hL (a.left p₀)
@@ -176,6 +215,15 @@ theorem const_mem (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (a : T ⟶ A) 
 
 variable [IsCommMonObj A]
 
+/- English proof (translation)
+Take `⟨u, hu, hU⟩` from `AdjointOfPairing.exists_gen_pairing hG hA cb p₀ hT n b hb`. Establish `hxf : (x ≫ f) ^ n = 1`. Rewrite using `[← show postHom f T x = x ≫ f from rfl, ← map_pow, hx, map_one]`. Establish `h1` using `pull_mem L.isLB x u hu (lift (fst T A) (snd T A ≫ f)) c (fun Z t w z J hJ => by`. Establish `e` using `hU (x ≫ f) c hxf hc Z t (w ≫ f) z J hJ`.
+
+Establish `l : ∀ v : Z ⟶ A, lift t v ≫ lift (fst T A) (snd T A ≫ f) = lift t (v ≫ f)` using `fun v => by`. Rewrite using `[comp_lift, lift_fst, lift_snd_assoc]`. Rewrite using `[l, l, MonObj.mul_comp, Category.assoc]`. Conclude with `e)`. Establish `h2` using `const_mem L.isLB x p₀ hT 1`.
+
+Establish `h3` using `const_mem L.isLB x p₀ hT b`. Establish `h4` using `(charSums L.L L.isLB x).mul_mem ((charSums L.L L.isLB x).mul_mem h1 h2) ((charSums L.L L.isLB x).inv_mem h3)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ (by simp)` and prove the remaining obligations. Establish `hp : (snd T A ≫ f) ^ n = (snd T A ^ n) ≫ f` using `(map_pow (postHom f (T ⊗ A)) (snd T A) n).symm`.
+
+Establish `h1' : fst T A ≫ (1 : T ⟶ A) = 1` using `by simp`. Simplify using `only [Prod.fst_mul, Prod.fst_inv]`. Rewrite using `[AdjointOfPairing.prod_mulT n b (fst T A) (snd T A ≫ f) (h := fr), hp, h1', mul_comm (fst T A ≫ b)]`. Simplify using `only [diff₂]`. Conclude with `mul_right_comm _ _ _`.
+-/
 theorem diff_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb : CubicalStr A L)
     (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (n : ℕ) (hx : x ^ n = 1) (f : A ⟶ A) [IsMonHom f] (b : T ⟶ A)
     (hb : b ^ n = 1) (c : Γ(T.left, ⊤)ˣ) (hc : WeilIs A L.L n b (x ≫ f) c) :
@@ -202,6 +250,25 @@ theorem diff_mem (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb :
   simp only [diff₂]
   exact mul_right_comm _ _ _
 
+/- English proof (translation)
+Establish `hE : ∀ i, (diff₂ (fun q : T ⊗ A ⟶ A => fr q.left) ((snd T A ^ n) ≫ φ i) (fst T A ≫ y ≫ φ i), (c i)⁻¹) ∈ charSums L.L L.isLB x`. Introduce `i`. Use `haveI := hφ i`. Establish `hb : (y ≫ φ i) ^ n = 1`. Rewrite using `[← show postHom (φ i) T y = y ≫ φ i from rfl, ← map_pow, hy, map_one]`.
+
+Conclude with `diff_mem x hG hA cb p₀ hT n hx (φ i) (y ≫ φ i) hb (c i)⁻¹ (weilIs_swap L.isLB (hc i))`. Establish `hEd : (diff₂ (fun q : T ⊗ A ⟶ A => fr q.left) ((snd T A ^ n) ≫ 𝟙 A) (fst T A ≫ y ≫ s), d⁻¹) ∈ charSums L.L L.isLB x`. Establish `hb : (y ≫ s) ^ n = 1`. Rewrite using `[← show postHom s T y = y ≫ s from rfl, ← map_pow, hy, map_one]`. Establish `hw` using `weilIs_swap L.isLB hd`.
+
+Rewrite `hw` using `[← Category.comp_id x]`. Conclude with `diff_mem x hG hA cb p₀ hT n hx (𝟙 A) (y ≫ s) hb d⁻¹ hw`. Establish `hflat : LBIso (LB.LinComb L.L (fun p : ULift.{0} (Finset (Fin 2)) × I => (psum A (x2 A) p.1.down).left ≫ (φ p.2).left) (fun p => ε p.2 * (-1) ^ (2 - p.1.down.card))) (LB.LinComb L.L (fun J : ULift.{0} (Finset (Fin 2)) => (psum A ![fst A A, snd A A ≫ s] J.down).left) (fun J => (-1 …`. Establish `hN : LBIso (abelian₂ A (LB.LinComb L.L (fun i => (φ i).left) ε)) (LB.LinComb L.L (fun p : ULift.{0} (Finset (Fin 2)) × I => (psum A (x2 A) p.1.down).left ≫ (φ p.2).left) (fun p => ε p.2 * (-1) ^ (2 - p.1.down.card)))` using `lbIso_nested L.isLB _ _ _ _ _ _ (prod_flat _ _ _ _).symm`. Conclude with `LBIso.trans (LB.isLB_linComb L.isLB _ _) (LB.isLB_linComb (LB.isLB_linComb L.isLB _ _) _ _) (LB.isLB_linComb L.isLB _ _) hN.symm hs`.
+
+Take `⟨u, hu⟩` from `NormRos.exists_gen_of_lbIso hflat`. Establish `hF` using `pull_mem L.isLB x u hu (lift (snd T A ^ n) (fst T A ≫ y)) 1 (fun Z t w z J hJ => by`. Establish `e : ∀ v : Z ⟶ A, lift t v ≫ lift (snd T A ^ n) (fst T A ≫ y) = lift (v ^ n) (t ≫ y)` using `fun v => by`. Rewrite using `[comp_lift, lift_fst_assoc, comp_pow, lift_snd]`. Establish `c1 : t ≫ (1 : T ⟶ A) = 1` using `by simpa using comp_pow (1 : T ⟶ A) 0 t`.
+
+Rewrite using `[e, e, mul_pow, ← comp_pow, hx, c1, _root_.one_mul, map_one, _root_.mul_one])`. Establish `cubeP : ∏ J : ULift.{0} (Finset (Fin 2)), fr ((lift (snd T A ^ n) (fst T A ≫ y)).left ≫ (psum A ![fst A A, snd A A ≫ s] J.down).left) ^ ((-1 : ℤ) ^ (2 - J.down.card)) = diff₂ (fun q : T ⊗ A ⟶ A => fr q.left) ((snd T A ^ n) ≫ 𝟙 A) (fst T A ≫ y ≫ s)`. Rewrite using `[prod_square (lift (snd T A ^ n) (fst T A ≫ y)) (fst A A) (snd A A ≫ s) (h := fr), lift_fst, lift_snd_assoc, Category.comp_id, Category.assoc]`. Establish `flatP : ∀ i, ∏ J : ULift.{0} (Finset (Fin 2)), fr ((lift (snd T A ^ n) (fst T A ≫ y)).left ≫ (psum A (x2 A) J.down).left ≫ (φ i).left) ^ ((-1 : ℤ) ^ (2 - J.down.card)) = diff₂ (fun q : T ⊗ A ⟶ A => fr q.left) ((snd T A ^ n) ≫ φ i) (fst T A ≫ y ≫ φ i)`. Introduce `i`.
+
+Use `hφ i` as an intermediate fact. Establish `e` using `prod_square (lift (snd T A ^ n) (fst T A ≫ y)) (fst A A) (snd A A) (h := fun ψ => fr (ψ ≫ (φ i).left))`. Simplify using `only [Category.assoc] at e`. Rewrite using `[show x2 A = ![fst A A, snd A A] from rfl, e, lift_fst, lift_snd]`. Simplify using `only [diff₂, ← Over.comp_left, MonObj.mul_comp, one_comp, Category.assoc]`.
+
+Establish `hQ` using `(charSums L.L L.isLB x).mul_mem ((charSums L.L L.isLB x).mul_mem hEd ((charSums L.L L.isLB x).inv_mem ((charSums L.L L.isLB x).prod_mem (fun i (_ : i ∈ (Finset.univ : Finset I)) => (charSums L.L L.isLB x).zpow_mem (hE i) (ε i))))) ((charSums L.L L.isLB x).inv_mem hF)`. Establish `hz1 : ∀ (a : Abelianization (FreeGroup ((T ⊗ A).left ⟶ A.left)) × (Γ(T.left, ⊤))ˣ) (m : ℤ), (a ^ m).1 = a.1 ^ m` using `fun _ _ => rfl`. Establish `h1` using `eq_one_of_mem L.isLB x hG hA (c := d⁻¹ * ∏ i, c i ^ ε i) (by`. Use `hQ using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Prod.fst_mul, Prod.fst_inv, Prod.fst_prod, hz1]`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[cubeP, Fintype.prod_prod_type, Finset.prod_comm]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, zpow_mul', Finset.prod_zpow, flatP]`.
+
+Conclude with `(mul_inv_cancel _).symm`. Simplify using `[Prod.snd_prod, Finset.prod_inv_distrib])`. Rewrite `h1` using `[inv_mul_eq_one]`. Conclude with `h1`.
+-/
 theorem eq_prod (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} (cb : CubicalStr A L)
     (p₀ : T.left) (hT : ∀ p : T.left, p = p₀) (n : ℕ) (hx : x ^ n = 1) (y : T ⟶ A) (hy : y ^ n = 1)
     {I : Type} [Fintype I] (φ : I → (A ⟶ A)) (hφ : ∀ i, IsMonHom (φ i)) (ε : I → ℤ) (s : A ⟶ A) [IsMonHom s]
@@ -277,6 +344,13 @@ namespace GlobalTheory
 
 open PairingOfForm in
 
+/- English proof (translation)
+Introduce `hl hl2 K _ _ P I _ φ ε s k x y c hk hφ hF hx hy hc`. Take `⟨t, ht⟩` from `P.rigid`. Use `letI := P.isAb.comm`. Use `hF.1` as an intermediate fact. Take `⟨cb⟩` from `(hl.cube (Sp K) P (RigLB.mk P.L t P.isLB ht) rfl).1`.
+
+Take `⟨d, hd, -⟩` from `(hl.weil (Sp K) P k (Out.baseOver (Sp K))).1 x (y ≫ s) hx (by`. Rewrite using `[← show PrimNorm.postHom s _ y = y ≫ s from rfl, ← map_pow, hy, map_one])`. Establish `hsub : Subsingleton (Out.baseOver (Sp K)).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `⟨p₀⟩ : Nonempty (Out.baseOver (Sp K)).left` from `inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `e` using `PairingOfForm.eq_prod x hl.globalFns P.isAb cb p₀ (fun p => Subsingleton.elim p p₀) k hx y hy φ hφ ε s hF.2 (fun i => unitOn (c i)) hc d hd`.
+
+Establish `hu : unitOn (∏ i, c i ^ ε i) = ∏ i, unitOn (c i) ^ ε i`. Unfold `unitOn`. Simplify using `[map_prod, map_zpow]`. Rewrite using `[hu, ← e]`. Conclude with `hd`.
+-/
 theorem weilIs_of_formIs_linComb : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (I : Type) [Fintype I] (φ : I → (P.A ⟶ P.A)) (ε : I → ℤ) (s : P.A ⟶ P.A) (k : ℕ) (x y : Out.baseOver (Sp K) ⟶ P.A) (c : I → Kˣ), (k : K) ≠ 0 → (∀ i, IsMonHom (φ i)) → FormIs P (LB.LinComb P.L (fun i => (φ i).left) ε) s → x ^ k = 1 → y ^ k = 1 → (∀ i, Out.WeilIs P.A P.L k (x ≫ φ i) (y ≫ φ i) (unitOn (c i))) → Out.WeilIs P.A P.L k x (y ≫ s) (unitOn (∏ i, c i ^ ε i)) := by
   intro hl hl2 K _ _ P I _ φ ε s k x y c hk hφ hF hx hy hc
   obtain ⟨t, ht⟩ := P.rigid

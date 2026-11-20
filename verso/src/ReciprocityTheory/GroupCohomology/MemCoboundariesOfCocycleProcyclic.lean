@@ -14,6 +14,15 @@ def tr (M : TRep R G) (f : G × G → M.V) (s : G) : ℕ → M.V
   | 0 => f (1, 1)
   | j + 1 => tr M f s j - f (s ^ j, s)
 
+/- English proof (translation)
+Establish `hc` using `hf.2`. Proceed by induction on `j with`. Consider the case `zero`. Establish `e` using `hc (s ^ i) 1 1`. Simplify using `only [mul_one] at e`.
+
+Rewrite `e` using `[sub_add_cancel, sub_eq_zero]`. Simplify using `only [pow_zero, add_zero]`. Rewrite using `[sub_add_cancel]`. Conclude with `e.symm`. Consider the case `succ j ih`.
+
+Establish `e` using `hc (s ^ i) (s ^ j) s`. Rewrite `e` using `[← pow_add, ← pow_succ, ih]`. Establish `e2 : tr M f s (j + 1) = tr M f s j - f (s ^ j, s)` using `rfl`. Establish `e3 : tr M f s (i + (j + 1)) = tr M f s (i + j) - f (s ^ (i + j), s)` using `rfl`. Rewrite using `[e2, e3, map_sub, ← sub_eq_zero, ← e]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem tr_key (M : TRep R G) (f : G × G → M.V) (hf : f ∈ Z2 M.rho) (s : G) (i j : ℕ) :
     f (s ^ i, s ^ j) = M.rho (s ^ i) (tr M f s j) - tr M f s (i + j) + tr M f s i := by
   have hc := hf.2
@@ -33,6 +42,11 @@ theorem tr_key (M : TRep R G) (f : G × G → M.V) (hf : f ∈ Z2 M.rho) (s : G)
     rw [e2, e3, map_sub, ← sub_eq_zero, ← e]
     abel
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `e : tr M f s (j + (t + 1)) = tr M f s (j + t) - f (s ^ (j + t), s)` using `rfl`. Rewrite using `[e, ih, Finset.sum_range_succ]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem tr_add (M : TRep R G) (f : G × G → M.V) (s : G) (j t : ℕ) :
     tr M f s (j + t) = tr M f s j - ∑ i ∈ Finset.range t, f (s ^ (j + i), s) := by
   induction t with
@@ -56,6 +70,41 @@ universe u
 
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Take `⟨N, -, hNo, hconst, hfix⟩` from `FiniteLevelCohomology.exists_open_normal M (n := 2) (fun v : Fin 2 → G => f (v 0, v 1)) (hf.1.comp ((continuous_apply 0).prodMk (continuous_apply 1)))`. Establish `hbi : ∀ g h w w', w ∈ N → w' ∈ N → f (g * w, h * w') = f (g, h)`. Introduce `g h w w' hw hw'`. Apply the tactic sequence `have := hconst ![g, h] ![w, w'] (fun i => by fin_cases i <;> simpa)`. Simplify using `using this`.
+
+Establish `hfixf : ∀ g h, ∀ a ∈ N, M.rho a (f (g, h)) = f (g, h)`. Introduce `g h a ha`. Simplify using `using hfix ![g, h] a ha`. Use `set T := tr M f s`. Use `set n := N.index`.
+
+Establish `hsn : s ^ n ∈ N` using `by simpa using (zpow_mem_iff hc hs hNo (n : ℤ)).2 dvd_rfl`. Use `set a := ∑ i ∈ Finset.range n, f (s ^ i, s)`. Establish `hwin : ∀ j, ∑ i ∈ Finset.range n, f (s ^ (j + i), s) = a`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp [a]`. Consider the case `succ j ih`. Establish `h1 : ∑ i ∈ Finset.range (n + 1), f (s ^ (j + i), s) = ∑ i ∈ Finset.range n, f (s ^ (j + 1 + i), s) + f (s ^ (j + 0), s)`. Rewrite using `[Finset.sum_range_succ']`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show j + (i + 1) = j + 1 + i by omega]`. Establish `h2` using `Finset.sum_range_succ (fun i => f (s ^ (j + i), s)) n`. Establish `hp : f (s ^ (j + n), s) = f (s ^ (j + 0), s)`. Rewrite using `[pow_add, add_zero]`.
+
+Simplify using `using hbi (s ^ j) s (s ^ n) 1 hsn N.one_mem`. Rewrite using `[← ih]`. Rewrite `h2` using `[hp]`. Conclude with `add_right_cancel (h1.symm.trans h2)`. Establish `hTn : ∀ j t, T (j + n * t) = T j - t • a`.
+
+Introduce `j t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `htadd : ∀ j t, T (j + t) = T j - ∑ i ∈ Finset.range t, f (s ^ (j + i), s)` using `tr_add M f s`.
+
+Rewrite using `[Nat.mul_succ, ← add_assoc, htadd, ih, hwin, succ_nsmul]`. Normalize the expressions using the abelian group laws. Take `⟨k, hk0, hka⟩` from `htor a`. Establish `hn0 : 0 < n` using `index_pos hc hNo`. Take `⟨W0, hW0o, hW0i⟩` from `hidx (n * k) (Nat.mul_pos hn0 hk0)`.
+
+Use `set W := N ⊓ W0`. Establish `hWo : IsOpen (W : Set G)` using `hNo.inter hW0o`. Establish `hWN : W ≤ N` using `inf_le_left`. Establish `hdvd : n * k ∣ W.index` using `hW0i ▸ Subgroup.index_dvd_of_le inf_le_right`. Establish `hper : ∀ j, T (j + W.index) = T j`.
+
+Take `⟨t, ht⟩` from `hdvd`. Introduce `j`. Rewrite using `[ht]`. Use `per_mul _ _ (fun j => ?_) j t` and prove the remaining obligations. Rewrite using `[hTn, hka, sub_zero]`.
+
+Establish `hfixT : ∀ w ∈ N, ∀ j, M.rho w (T j) = T j`. Introduce `w hw j`. Proceed by induction on `j with`. Consider the case `zero => exact hfixf 1 1 w hw`. Consider the case `succ j ih => show M.rho w (T j - f (s ^ j, s)) = T j - f (s ^ j, s)`.
+
+Rewrite using `[map_sub, ih, hfixf _ _ w hw]`. Establish `hex` using `exists_pow hc hs hWo`. Use `⟨desc W hex T, desc_continuous hc hs hWo hex T hper, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Establish `hg` using `Classical.choose_spec (hex g)`.
+
+Establish `hh` using `Classical.choose_spec (hex h)`. Use `set i := Classical.choose (hex g)`. Use `set j := Classical.choose (hex h)`. Establish `hgh : (g * h)⁻¹ * s ^ (i + j) ∈ W`. Establish `e : (g * h)⁻¹ * s ^ (i + j) = (g⁻¹ * s ^ i) * (h⁻¹ * s ^ j)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_rev, pow_add]`. Use `group`. Use `_ = (g⁻¹ * s ^ i) * (h⁻¹ * s ^ j) := by rw [hc h⁻¹ (g⁻¹ * s ^ i), mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `W.mul_mem hg hh`. Establish `e1 : desc W hex T (g * h) = T (i + j)` using `desc_eq hc hs hWo hex _ hper hgh`. Establish `e2 : desc W hex T g = T i` using `rfl`. Establish `e3 : desc W hex T h = T j` using `rfl`. Establish `hgeq : g = s ^ i * (g⁻¹ * s ^ i)⁻¹` using `by group`.
+
+Establish `hheq : h = s ^ j * (h⁻¹ * s ^ j)⁻¹` using `by group`. Rewrite using `[d1_apply, e1, e2, e3]`. Establish `hr : M.rho g (T j) = M.rho (s ^ i) (T j)` using `by conv_lhs => rw [hgeq, map_mul, Module.End.mul_apply]`. Rewrite using `[hfixT _ (hWN (W.inv_mem hg))]`. Establish `hfv : f (g, h) = f (s ^ i, s ^ j)` using `by conv_lhs => rw [hgeq, hheq]`.
+
+Conclude with `hbi _ _ _ _ (hWN (W.inv_mem hg)) (hWN (W.inv_mem hh))`. Rewrite using `[hr, hfv, tr_key M f hf s i j]`.
+-/
 theorem mem_coboundaries_of_cocycle_procyclic [CompactSpace G] [TotallyDisconnectedSpace G] (M : TRep R G)
     [DiscreteTopology M.V] {s : G}
     (hc : ∀ a b : G, a * b = b * a) (hs : Dense (Subgroup.zpowers s : Set G))
@@ -149,6 +198,9 @@ theorem mem_coboundaries_of_cocycle_procyclic [CompactSpace G] [TotallyDisconnec
     exact hbi _ _ _ _ (hWN (W.inv_mem hg)) (hWN (W.inv_mem hh))
   rw [hr, hfv, tr_key M f hf s i j]
 
+/- English proof (translation)
+Establish `hz : ∀ z : H2 M.rho, z = 0`. Introduce `z`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (mem_coboundaries_of_cocycle_procyclic M hc hs hidx htor z.1 z.2)`. Conclude with `⟨fun x y => by rw [hz x, hz y]⟩`.
+-/
 theorem subsingleton_H2_of_procyclic_of_torsion [CompactSpace G] [TotallyDisconnectedSpace G] (M : TRep R G)
     [DiscreteTopology M.V] {s : G}
     (hc : ∀ a b : G, a * b = b * a) (hs : Dense (Subgroup.zpowers s : Set G))

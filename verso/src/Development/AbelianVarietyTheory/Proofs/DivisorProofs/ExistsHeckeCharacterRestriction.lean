@@ -16,6 +16,19 @@ noncomputable section
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Introduce `E _ _ m hm u hint hnorm`. Establish `hm0 : (m : E) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`. Use `set v := (u - 1) / (m : E) with hv`. It suffices to establish `h0 : v = 0 by`. Rewrite `h0` using `[hv, div_eq_zero_iff, or_iff_left hm0, sub_eq_zero]`.
+
+Conclude with `h0`. Establish `hb : ∀ τ : E →+* ℂ, ‖τ v‖ < 1` using `fun τ => by`. Rewrite using `[hv, map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast]`. Establish `h1 : ‖τ u - 1‖ ≤ 2` using `(norm_sub_le _ _).trans (by rw [hnorm, norm_one]; norm_num)`. Establish `h3 : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+
+Rewrite using `[div_lt_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `w : 𝓞 E` to `⟨v, hint⟩`. Establish `hN` using `Algebra.norm_eq_prod_embeddings ℚ ℂ v`. Establish `hZ : ((Algebra.norm ℤ w : ℤ) : ℚ) = Algebra.norm ℚ v` using `Algebra.coe_norm_int w`.
+
+Set `τ₀ : E →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Establish `hprod : ‖∏ τ : E →ₐ[ℚ] ℂ, τ v‖ < 1`. Rewrite using `[norm_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ₀)]`. Establish `hr : ∏ τ ∈ Finset.univ.erase τ₀, ‖τ v‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun τ _ => (hb τ.toRingHom).le)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hprod` using `[← hN, ← hZ]`. Establish `hz : Algebra.norm ℤ w = 0`. Establish `: |((Algebra.norm ℤ w : ℤ) : ℝ)| < 1`. Establish `e : algebraMap ℚ ℂ ((Algebra.norm ℤ w : ℤ) : ℚ) = (((Algebra.norm ℤ w : ℤ) : ℝ) : ℂ)` using `by simp`. Rewrite `hprod` using `[e, Complex.norm_real, Real.norm_eq_abs]`. Then use the resulting hypothesis.
+
+Establish `: |(Algebra.norm ℤ w : ℤ)| < 1` using `by exact_mod_cast this`. Conclude with `Int.abs_lt_one_iff.1 this`. Establish `: w = 0` using `(Algebra.norm_eq_zero_iff).1 hz`. Conclude with `congrArg Subtype.val this`.
+-/
 theorem eq_one_of_congr : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ), 3 ≤ m → ∀ u : E,
     IsIntegral ℤ ((u - 1) / (m : E)) → (∀ τ : E →+* ℂ, ‖τ u‖ = 1) → u = 1 := by
   intro E _ _ m hm u hint hnorm
@@ -56,6 +69,19 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm k hk`. Take `⟨-, htc, h2, hconj⟩` from `hcm`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, σ x ≠ x := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `(InfinitePlace.not_isReal_iff_isComplex.2 (htc.isComplex w)) ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `y`.
+
+Express the relevant statement in the definitionally equal form `star (w.embedding y) = w.embedding y`. Rewrite using `[← hconj, hc]`. Set `f : E →ₗ[F] E` to `σ.toLinearMap - LinearMap.id`. Establish `hV : LinearMap.ker f ≠ ⊤` using `fun h => hx (by`. Establish `: x ∈ LinearMap.ker f` using `h ▸ Submodule.mem_top`.
+
+Rewrite `this` using `[LinearMap.mem_ker]`. Simplify `this)` using `[f, sub_eq_zero]`. Establish `hlt : Module.finrank F (LinearMap.ker f) < 2` using `h2 ▸ Submodule.finrank_lt hV`. Establish `hle : (F ∙ (1 : E)) ≤ LinearMap.ker f`. Rewrite using `[Submodule.span_singleton_le_iff_mem, LinearMap.mem_ker]`.
+
+Simplify using `[f]`. Establish `h1 : Module.finrank F (F ∙ (1 : E)) = 1` using `finrank_span_singleton one_ne_zero`. Establish `heq : (F ∙ (1 : E)) = LinearMap.ker f` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Establish `hk' : k ∈ F ∙ (1 : E)`. Rewrite using `[heq, LinearMap.mem_ker]`.
+
+Simplify using `[f, hk]`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hk'`. Conclude with `⟨a, by rw [← ha, Algebra.smul_def, mul_one]⟩`.
+-/
 theorem mem_range_of_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ k : E, σ k = k → ∃ k₀ : F, algebraMap F E k₀ = k := by
   intro F E _ _ _ _ _ σ hcm k hk
@@ -87,6 +113,11 @@ theorem mem_range_of_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.1 hk'
   exact ⟨a, by rw [← ha, Algebra.smul_def, mul_one]⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ x hx`. Take `⟨Φ, -, hι, hint⟩` from `GlobalTheory.HeckeInhabitant.exists_fin (F := F) (E := E)`. Take `⟨p, hp⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one E x (R := 𝓞 E) fun P => by`. Rewrite using `[← GlobalTheory.HeckeInhabitant.val_alg, ← hι]`. Conclude with `(hint _).1 hx P`.
+
+Rewrite using `[← hp]`. Conclude with `RingOfIntegers.isIntegral_coe p`.
+-/
 theorem isIntegral_of_finPart_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : E), HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E x) ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E → IsIntegral ℤ x := by
   intro F E _ _ _ _ _ x hx
@@ -101,6 +132,27 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ h2 y m s hs he`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Set `A` to `FiniteAdeleRing (𝓞 F) F`. Set `T : A ⊗[F] E →ₗ[F] A` to `TensorProduct.lift ((LinearMap.mul F A).compl₂ ((Algebra.linearMap F A) ∘ₗ (Algebra.trace F E)))`. Establish `hT : ∀ (a : A) (x : E), T (a ⊗ₜ[F] x) = a * algebraMap F A (Algebra.trace F E x)` using `fun a x => rfl`.
+
+Establish `htr1 : Algebra.trace F E 1 = 2`. Rewrite using `[show (1 : E) = algebraMap F E 1 from (map_one _).symm, Algebra.trace_algebraMap, h2]`. Evaluate the numerical expressions. Establish `hnat : ∀ (k : ℕ) (z : A ⊗[F] E), T ((k : A ⊗[F] E) * z) = (k : A) * T z` using `fun k z => by`. Rewrite using `[show ((k : A ⊗[F] E)) * z = (k : F) • z by rw [Algebra.smul_def, map_natCast], T.map_smul, Algebra.smul_def, map_natCast]`.
+
+Establish `hint : ∀ z ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E, T z ∈ HeckeCharacterZeroLocus.ThmBIn.intAf F`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, rfl⟩` from `hz`.
+
+Rewrite using `[hT]`. Establish `hxi : IsIntegral ℤ (Algebra.trace F E (x : E))` using `Algebra.isIntegral_trace x.2`. Set `r : 𝓞 F` to `⟨_, hxi⟩`. Introduce `v`. Rewrite using `[map_mul]`.
+
+Use `mul_mem (ha v) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Algebra.trace F E (x : E) : F) : v.adicCompletion F) ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', show Algebra.trace F E (x : E) = algebraMap (𝓞 F) F r from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_le_one v r`. Consider the case `zero => intro v`.
+
+Rewrite using `[map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => intro v`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem (ha v) (hb v)`.
+
+Consider the case `neg a _ ha => intro v`. Rewrite using `[map_neg, map_neg]`. Conclude with `neg_mem (ha v)`. Use `⟨T s, hint s hs, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg T he`.
+
+Rewrite `e` using `[hT, map_add, hnat, show (1 : A ⊗[F] E) = (1 : A) ⊗ₜ[F] (1 : E) from rfl, hT, htr1, one_mul]`. Establish `h2A : (2 : A) * algebraMap F A (1 / 2) = 1`. Rewrite using `[show (2 : A) = algebraMap F A 2 from (map_ofNat _ 2).symm, ← map_mul]`. Evaluate the numerical expressions. Establish `e2 : y * algebraMap F A 2 = (1 + (m : A) * T s) * algebraMap F A 2`.
+
+Rewrite using `[e, map_ofNat, Nat.cast_mul, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← map_mul]`. Evaluate the numerical expressions.
+
+Use `_ = (1 + (m : A) * T s) * algebraMap F A 2 * algebraMap F A (1 / 2) := by rw [e2]`. Use `_ = 1 + (m : A) * T s := by rw [mul_assoc, ← map_mul]; norm_num`.
+-/
 theorem base_congr_of_tmul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     Module.finrank F E = 2 → ∀ (y : FiniteAdeleRing (𝓞 F) F) (m : ℕ) (s : FiniteAdeleRing (𝓞 F) F ⊗[F] E),
       s ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E → y ⊗ₜ[F] (1 : E) = 1 + ((2 * m : ℕ) : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * s →
@@ -154,12 +206,18 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.open_sigma_stable_unit_neighborhood`.
+-/
 theorem exists_congr_subgroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (m : ℕ), 0 < m → ∃ U : Subgroup (AdeleRing (𝓞 F) F ⊗[F] E)ˣ, IsOpen (U : Set (AdeleRing (𝓞 F) F ⊗[F] E)ˣ) ∧
       (∀ x ∈ U, Units.map (Algebra.TensorProduct.map (AlgHom.id (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F)) σ).toRingHom.toMonoidHom x ∈ U) ∧
       ∀ x ∈ U, ∃ s ∈ HeckeCharacterZeroLocus.ThmBIn.intAE F E,
         HeckeCharacterZeroLocus.ThmBIn.finPart F E (x : AdeleRing (𝓞 F) F ⊗[F] E) = 1 + (m : FiniteAdeleRing (𝓞 F) F ⊗[F] E) * s := GlobalTheory.T.open_sigma_stable_unit_neighborhood
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.idele_character_trivial_on_congruence`.
+-/
 theorem exists_level_of_sign_char : ∀ (F : Type) [Field F] [NumberField F] (φ : (AdeleRing (𝓞 F) F)ˣ →* Circle),
     Continuous φ → (∀ b, φ b = 1 ∨ φ b = -1) → (∀ b : (AdeleRing (𝓞 F) F)ˣ, (b : AdeleRing (𝓞 F) F).2 = 1 → φ b = 1) →
     ∃ m : ℕ, 0 < m ∧ ∀ n : ℕ, 0 < n → m ∣ n → ∀ b : (AdeleRing (𝓞 F) F)ˣ,
@@ -167,6 +225,9 @@ theorem exists_level_of_sign_char : ∀ (F : Type) [Field F] [NumberField F] (φ
       (∃ t ∈ HeckeCharacterZeroLocus.ThmBIn.intAf F, ((b⁻¹ : (AdeleRing (𝓞 F) F)ˣ) : AdeleRing (𝓞 F) F).2 = 1 + (n : FiniteAdeleRing (𝓞 F) F) * t) →
       φ b = 1 := GlobalTheory.T.idele_character_trivial_on_congruence
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.quadratic_character_extends_to_idele_class`.
+-/
 theorem exists_arch_sign_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ η : (AdeleRing (𝓞 F) F)ˣ →* Circle, Continuous η → (∀ b, η (b * b) = 1) →
     ∃ ψ : (AdeleRing (𝓞 F) F ⊗[F] E)ˣ →* Circle, Continuous ψ ∧ (∀ b, ψ (ideleMap F E b) = 1 ∨ ψ (ideleMap F E b) = -1) ∧
@@ -176,6 +237,9 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `haveI : Nontrivial (AF F) := ((Pi.evalRingHom (fun u : InfinitePlace F => u.Completion) w).comp (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))).domain_nontrivial`. Use `haveI : StrongRankCondition (AF F) := commRing_strongRankCondition _`. Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, h2, pow_two]`.
+-/
 theorem norm_algebraMap_sq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (b : AF F) :
     Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) b) = b * b := by
@@ -185,12 +249,18 @@ theorem norm_algebraMap_sq (F E : Type) [Field F] [NumberField F] [Field E] [Num
   haveI : StrongRankCondition (AF F) := commRing_strongRankCondition _
   rw [Algebra.norm_algebraMap, Module.finrank_baseChange, h2, pow_two]
 
+/- English proof (translation)
+Establish `h3 : (z : ℂ) * z = 1` using `by exact_mod_cast congrArg (fun w : Circle => (w : ℂ)) h`. Break down `mul_self_eq_one_iff.1 h3 with h4 | h4` into its components or cases. Conclude with `Or.inl (Circle.ext h4)`. Conclude with `Or.inr (Circle.ext (by rw [h4]; simp))`.
+-/
 theorem sq_eq_one_circle (z : Circle) (h : z * z = 1) : z = 1 ∨ z = -1 := by
   have h3 : (z : ℂ) * z = 1 := by exact_mod_cast congrArg (fun w : Circle => (w : ℂ)) h
   rcases mul_self_eq_one_iff.1 h3 with h4 | h4
   · exact Or.inl (Circle.ext h4)
   · exact Or.inr (Circle.ext (by rw [h4]; simp))
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨continuous_subtype_val, (continuous_subtype_val.comp (continuous_inv : Continuous fun x : Circle => x⁻¹)).congr fun x => Circle.coe_inv x⟩`.
+-/
 theorem continuous_toUnits : Continuous (Circle.toUnits : Circle → ℂˣ) :=
   Units.continuous_iff.2 ⟨continuous_subtype_val, (continuous_subtype_val.comp (continuous_inv : Continuous fun x : Circle => x⁻¹)).congr fun x => Circle.coe_inv x⟩
 
@@ -198,6 +268,51 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Establish `hconj : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)` using `hcm.2.2.2`. Establish `hsq : ∀ b : (AF F)ˣ, η (b * b) = 1` using `fun b => by`. Use `hη.2.2.1 (ideleMap F E b)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Express the relevant statement in the definitionally equal form `(b : AF F) * b = Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) (b : AF F))`. Rewrite using `[norm_algebraMap_sq F E h2]`. Take `⟨ψ, hψc, hψ2, hψη⟩` from `exists_arch_sign_char F E σ hcm η hη.1 hsq`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`.
+
+Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hmapc : Continuous (ideleMap F E)`. Establish `: Continuous (algebraMap (AF F) (AF F ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF F) (AF F ⊗[F] E))`. Conclude with `Continuous.units_map _ this`. Set `φ : (AF F)ˣ →* Circle` to `η / ψ.comp (ideleMap F E)`.
+
+Establish `hφ : ∀ b, φ b = η b / ψ (ideleMap F E b)` using `fun b => rfl`. Establish `hηpm : ∀ b, η b = 1 ∨ η b = -1` using `fun b => sq_eq_one_circle _ (by rw [← map_mul]; exact hsq b)`. Take `⟨m, hm0, hm⟩` from `exists_level_of_sign_char F φ (hη.1.div' (hψc.comp hmapc)) (fun b => by`. Rewrite using `[hφ]`. Apply the tactic sequence `rcases hηpm b with h | h <;> rcases hψ2 b with h' | h' <;> rw [h, h'] <;> simp)`.
+
+Use the proof step `(fun b hb => by rw [hφ, hψη b hb, div_self'])`. Use `set n := 3 * m with hn`. Establish `hn0 : 0 < n` using `by omega`. Use `set M := 2 * n with hM`. Take `⟨U, hUo, hUc, hU⟩` from `exists_congr_subgroup F E σ M (by omega)`.
+
+Set `α : Eˣ × (AF F)ˣ →* (AF F ⊗[F] E)ˣ` to `(Units.map (inclR (F := F) (AF F)).toMonoidHom).coprod (ideleMap F E)`. Set `a : Eˣ × (AF F)ˣ →* ℂˣ` to `(Circle.toUnits.comp η).comp (MonoidHom.snd _ _)`. Establish `hψu : ∀ x, ‖((Circle.toUnits (ψ x) : ℂˣ) : ℂ)‖ = 1` using `fun x => Circle.norm_coe (ψ x)`. Establish `hau : ∀ y, ‖((a y : ℂˣ) : ℂ)‖ = 1` using `fun y => Circle.norm_coe (η y.2)`. Take `⟨χ₀, hχc, hχu, -, hχα⟩` from `GlobalTheory.exists_unitary_char_of_open_subgroup_and_hom (AF F ⊗[F] E)ˣ (Eˣ × (AF F)ˣ) U hUo α a (Circle.toUnits.comp ψ) (continuous_toUnits.comp hψc) hψu hau (fun y hy => by`.
+
+Take `⟨k, b⟩` from `y`. Establish `hxe : α (k, b) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k * ideleMap F E b := rfl`. Use `set x := α (k, b) with hx`. Set `C : (AF F ⊗[F] E)ˣ →* (AF F ⊗[F] E)ˣ` to `Units.map (Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ).toRingHom.toMonoidHom`. Set `kσ : Eˣ` to `Units.map (σ : E →+* E).toMonoidHom k`.
+
+Establish `hCi : C (Units.map (inclR (F` using `F) (AF F)).toMonoidHom k) = Units.map (inclR (F := F) (AF F)).toMonoidHom kσ := by`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((1 : AF F) ⊗ₜ[F] (k : E)) = (1 : AF F) ⊗ₜ[F] σ (k : E)`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+
+Establish `hCb : C (ideleMap F E b) = ideleMap F E b`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id (AF F) (AF F)) σ ((b : AF F) ⊗ₜ[F] (1 : E)) = (b : AF F) ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+
+Establish `hCx : C x = Units.map (inclR (F` using `F) (AF F)).toMonoidHom kσ * ideleMap F E b := by`. Rewrite using `[hxe, map_mul, hCi, hCb]`. Establish `hq : x / C x ∈ U` using `U.div_mem hy (hUc x hy)`. Establish `hq' : x / C x = Units.map (inclR (F` using `F) (AF F)).toMonoidHom (k / kσ) := by`. Rewrite using `[hCx, hxe, mul_div_mul_right_eq_div, map_div]`.
+
+Take `⟨s, hs, hse⟩` from `hU _ hq`. Establish `hkσ0 : σ (k : E) ≠ 0` using `(kσ).ne_zero`. Use `set u : E := (k : E) / σ (k : E) with hu`. Establish `hxq : ((x / C x : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = HeckeCharacterZeroLocus.ThmBIn.incA F E u`. Rewrite using `[hq']`.
+
+Simplify using `only [Units.coe_map, MonoidHom.coe_coe, Units.val_div_eq_div_val]`. Both sides reduce to the same expression. Rewrite `hse` using `[hxq]`. Establish `hM0 : (M : E) ≠ 0` using `by exact_mod_cast (show M ≠ 0 by omega)`. Establish `key : HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E ((u - 1) / M)) = s`.
+
+Establish `h1 : HeckeCharacterZeroLocus.ThmBIn.finPart F E (HeckeCharacterZeroLocus.ThmBIn.incA F E ((M : E))⁻¹) * (M : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = 1`. Rewrite using `[← map_natCast (HeckeCharacterZeroLocus.ThmBIn.finPart F E), ← map_natCast (HeckeCharacterZeroLocus.ThmBIn.incA F E), ← map_mul, ← map_mul, inv_mul_cancel₀ hM0, map_one, map_one]`. Rewrite using `[div_eq_mul_inv, map_mul, map_mul, map_sub, map_sub, map_one, map_one, hse, add_sub_cancel_left, mul_comm, ← mul_assoc, h1, one_mul]`. Establish `hint` using `isIntegral_of_finPart_mem F E _ (key ▸ hs)`. Establish `hnorm : ∀ τ : E →+* ℂ, ‖τ u‖ = 1` using `fun τ => by`.
+
+Establish `hk0 : τ (k : E) ≠ 0` using `(map_ne_zero τ).2 k.ne_zero`. Rewrite using `[hu, map_div₀, hconj, norm_div, norm_star, div_self (norm_ne_zero_iff.2 hk0)]`. Establish `hu1` using `eq_one_of_congr E M (by omega) u hint hnorm`. Establish `hfix : σ (k : E) = k` using `((div_eq_one_iff_eq hkσ0).1 hu1).symm`. Take `⟨k₀, hk₀⟩` from `mem_range_of_fixed F E σ hcm k hfix`.
+
+Establish `hk00 : k₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk₀` using `[map_zero]`. Conclude with `k.ne_zero hk₀.symm`. Set `c : (AF F)ˣ` to `Units.map (algebraMap F (AF F)).toMonoidHom (Units.mk0 k₀ hk00)`.
+
+Establish `hkc : Units.map (inclR (F` using `F) (AF F)).toMonoidHom k = ideleMap F E c := by`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `inclR (F := F) (AF F) (k : E) = algebraMap (AF F) (AF F ⊗[F] E) (algebraMap F (AF F) k₀)`. Rewrite using `[← hk₀, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E).commutes k₀`.
+
+Establish `hxb : x = ideleMap F E (c * b)` using `by rw [hxe, hkc, map_mul]`. Establish `hηc : η c = 1` using `hη.2.1 (Units.mk0 k₀ hk00)`. Establish `hfin : ∀ z : (AF F)ˣ, HeckeCharacterZeroLocus.ThmBIn.finPart F E ((ideleMap F E z : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (z : AF F).2 ⊗ₜ[F] (1 : E)` using `fun z => rfl`. Establish `hcong : ∀ z : (AF F)ˣ, ideleMap F E z ∈ U → ∃ t ∈ HeckeCharacterZeroLocus.ThmBIn.intAf F, (z : AF F).2 = 1 + (n : FiniteAdeleRing (𝓞 F) F) * t`. Introduce `z hz`.
+
+Take `⟨s', hs', hse'⟩` from `hU _ hz`. Rewrite `hse'` using `[hfin]`. Conclude with `base_congr_of_tmul F E h2 _ n s' hs' hse'`. Establish `hφ1` using `hm n hn0 (Dvd.intro_left _ rfl) (c * b) (hcong _ (hxb ▸ hy)) (hcong _ (by rw [map_inv, ← hxb]; exact U.inv_mem hy))`. Rewrite `hφ1` using `[hφ, div_eq_one]`.
+
+Express the relevant statement in the definitionally equal form `Circle.toUnits (η b) = Circle.toUnits (ψ x)`. Rewrite using `[hxb, ← hφ1, map_mul, hηc, one_mul]`. Use the proof step `)`. Use `⟨GlobalTheory.unitaryCharToCircle χ₀ hχu, ⟨Continuous.subtype_mk (Units.continuous_val.comp hχc) _, fun k => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Apply `Circle.ext` to reduce the goal to its premises.
+
+Use `congrArg (fun u : ℂˣ => (u : ℂ)) (hχα (k, 1))` as an intermediate fact. Establish `e : α (k, 1) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom k := by simp [α]`. Rewrite `this` using `[e]`. Express the relevant statement in the definitionally equal form `((χ₀ (Units.map (inclR (F := F) (AF F)).toMonoidHom k) : ℂˣ) : ℂ) = ((1 : Circle) : ℂ)`. Rewrite using `[this]`.
+
+Simplify using `[a]`. Apply `Circle.ext` to reduce the goal to its premises. Use `congrArg (fun u : ℂˣ => (u : ℂ)) (hχα (1, b))` as an intermediate fact. Establish `e : α (1, b) = ideleMap F E b` using `by simp [α]`. Rewrite `this` using `[e]`.
+
+Express the relevant statement in the definitionally equal form `((χ₀ (ideleMap F E b) : ℂˣ) : ℂ) = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem exists_hecke_of_eta (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (η : (AF F)ˣ →* Circle) (hη : IsEta F E η) :
     ∃ χ : Chr F E, IsHecke F E χ ∧ ∀ a, χ (ideleMap F E a) = η a := by
@@ -325,6 +440,11 @@ end GlobalTheory.CMHeckeEta
 
 namespace GlobalTheory.CMHeckeEta
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Establish `h2 : Module.finrank F E = 2` using `hcm.2.2.1`. Take `⟨η, hη, huniq⟩` from `GlobalTheory.IdeleNormChar.globalNormIndexTwo F E h2`. Take `⟨χ, hχ, hres⟩` from `exists_hecke_of_eta F E σ hcm η hη`.
+
+Use `⟨χ, hχ, GlobalTheory.LFun.resEtaPow_of_resEta F E h2 χ 1 ⟨⟨η, hη⟩, fun η' hη' a => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[huniq η' hη', pow_one]`. Conclude with `hres a`.
+-/
 theorem exists_hecke_resEtaPow_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∃ χ : Chr F E, IsHecke F E χ ∧ ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ 1 := by
   intro F E _ _ _ _ _ σ B hB

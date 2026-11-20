@@ -57,6 +57,9 @@ def fib {M : Type} (t : OnePoint ℂ) (y : M) : M × OnePoint ℂ := (y, t)
 
 variable {M : Type} [TopologicalSpace M] {n r s : ℕ} {A : HolAtlas M n}
 
+/- English proof (translation)
+Use `⟨continuous_id.prodMk continuous_const, fun j i => ?_⟩` and prove the remaining obligations. Establish `e : (famAtlas A).e i ∘ fib t ∘ (A.e j).symm = fun v => appendV n 1 ((A.e i.1 ∘ (A.e j).symm) v, sphere.e i.2 t)` using `rfl`. Rewrite using `[e]`. Use `(appendV n 1).differentiable.comp_differentiableOn (DifferentiableOn.prodMk ?_ (differentiableOn_const _))` and prove the remaining obligations. Conclude with `(A.holo j i.1).mono fun v hv => ⟨hv.1, hv.2.1⟩`.
+-/
 theorem isHolo_fib (A : HolAtlas M n) (t : OnePoint ℂ) : (famAtlas A).IsHolo A (fib t) := by
   refine ⟨continuous_id.prodMk continuous_const, fun j i => ?_⟩
   have e : (famAtlas A).e i ∘ fib t ∘ (A.e j).symm =

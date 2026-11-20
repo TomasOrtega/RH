@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwU
 
+/- English proof (translation)
+Introduce `D cc SS cl a b a' b' ha hb N N' M M' Ξ hN hN' h`. Substitute `ha hb` using the available equality. Consider the cases of `eq_of_heq hN`. Consider the cases of `eq_of_heq hN'`. Establish `hx : (fun z => Ξ (homRe rfl rfl z)) = Ξ`.
+
+Use function extensionality and compare the values at `z`. Use `congr 1`. Rewrite using `[hx]`. Conclude with `h`.
+-/
 theorem datLoc_homRe : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) {a b a' b' : ℕ} (ha : a = a') (hb : b = b') (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (M : Submodule (𝓞 D.host.E) (Fin a' → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin b' → D.host.E)) (Ξ : Formalism.L2.Col.HomE D.host.E a' b' → ℂ), HEq N M → HEq N' M' → DatLoc D cc SS cl M M' Ξ → DatLoc D cc SS cl N N' (fun z => Ξ (homRe ha hb z)) := by
   intro D cc SS cl a b a' b' ha hb N N' M M' Ξ hN hN' h
   subst ha hb

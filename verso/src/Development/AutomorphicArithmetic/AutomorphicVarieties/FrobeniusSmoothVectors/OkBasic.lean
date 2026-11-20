@@ -4,6 +4,11 @@ import ReciprocityTheory.GaloisValuations.ArithOfA
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 open scoped Pointwise
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h` using `PadicInt.sub_zmodRepr_mem x`. Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `h`. Establish `e : x = y * l + (x.zmodRepr : ℤ_[l])` using `by rw [hy]; ring`.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 private theorem padic_hom_ext {l : ℕ} [Fact l.Prime] {k : Type} [CommRing k] [CharP k l] (f g : ℤ_[l] →+* k) : f = g := by
   ext x
   have h := PadicInt.sub_zmodRepr_mem x
@@ -13,12 +18,20 @@ private theorem padic_hom_ext {l : ℕ} [Fact l.Prime] {k : Type} [CommRing k] [
   rw [e]
   simp
 
+/- English proof (translation)
+Use `AlgEquiv.ext fun x => j.injective ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, h, h, starRingEnd_self_apply]`. Both sides reduce to the same expression.
+-/
 private theorem cc_sq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {c : G F Ω} {j : Ω →+* ℂ}
     (h : ∀ x, j (c x) = starRingEnd ℂ (j x)) : c * c = 1 := by
   refine AlgEquiv.ext fun x => j.injective ?_
   rw [AlgEquiv.mul_apply, h, h, starRingEnd_self_apply]
   rfl
 
+/- English proof (translation)
+Use `(Int.units_eq_one_or _).resolve_left fun h1 => ?_` and prove the remaining obligations. Establish `h2` using `h δ`. Rewrite `h2` using `[hη, h1, Units.val_one, one_smul]`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2.symm`. Establish `h3` using `congrArg j hδ`.
+
+Rewrite `h3` using `[map_pow, map_neg, map_natCast, hr]`. Establish `h4 : r ^ 2 = -(D : ℝ)` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℝ) < D` using `by exact_mod_cast hD`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 private theorem eta_cc {Ω : Type} [Field Ω] [CharZero Ω] {η : G ℚ Ω →* ℤˣ} {D : ℕ} {δ : Ω} (hD : 0 < D)
     (hδ : δ ^ 2 = -(D : Ω)) (hη : ∀ s : G ℚ Ω, s δ = (η s : ℤ) • δ) {c : G ℚ Ω} {j : Ω →+* ℂ}
     (h : ∀ x, j (c x) = starRingEnd ℂ (j x)) : η c = -1 := by
@@ -32,17 +45,50 @@ private theorem eta_cc {Ω : Type} [Field Ω] [CharZero Ω] {η : G ℚ Ω →* 
   have h5 : (0 : ℝ) < D := by exact_mod_cast hD
   nlinarith [sq_nonneg r]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[valuation_lt_one_iff']`. Simplify `h` using `only [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, map_natCast, map_inv₀]`.
+-/
 private theorem smul_over {Ω : Type} [Field Ω] [CharZero Ω] {l : ℕ} {B : ValuationSubring Ω} (γ : G ℚ Ω)
     (h : B.valuation (l : Ω) < 1) : (γ • B).valuation (l : Ω) < 1 := by
   rw [valuation_lt_one_iff'] at h ⊢
   simpa only [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, map_natCast, map_inv₀] using h
 
+/- English proof (translation)
+Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI : IsGalois F Ω := IsGalois.tower_top_of_isGalois ℚ F Ω`. Use `infer_instance`.
+-/
 private theorem cpt_gal (F Ω : Type) [Field F] [CharZero F] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra F Ω] :
     CompactSpace (G F Ω) := by
   haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω
   haveI : IsGalois F Ω := IsGalois.tower_top_of_isGalois ℚ F Ω
   infer_instance
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG m L _ _ _ _ g₁ Φ hU hL hg₁`. Take `⟨k, S, π, ι, pl, e, c, F, hπ, -⟩` from `hL`. Use `haveI : CompactSpace (G (W.Lp L) Ω) := cpt_gal _ _`. Establish `hq : Topology.IsQuotientMap π` using `F.g.cont.isClosedMap.isQuotientMap F.g.cont F.g.onto`. Establish `hom : ∀ s, Φ.om (ResidueField O) (k.p s) = omO Ω l O s` using `fun s => by`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show (ZMod.castHom (dvd_refl l) (ResidueField O)).comp PadicInt.toZMod (Φ.eps (k.p s) : ℤ_[l]ˣ) = (ZMod.castHom (dvd_pow_self l one_ne_zero) (ResidueField O)).comp (PadicInt.toZModPow 1) (cycZ ℚ Ω l s : ℤ_[l]ˣ)`. Rewrite using `[k.eps, padic_hom_ext ((ZMod.castHom (dvd_refl l) (ResidueField O)).comp PadicInt.toZMod)]`. Establish `hpl : ∀ v, (k.pl v).valuation (l : Ω) < 1` using `fun v => by`. Take `⟨γ, -, h⟩` from `k.pl_conj v`.
+
+Conclude with `h ▸ smul_over γ hG.over_l`. Establish `h0 : ∀ s (h : s ∈ upl Ω L ⊓ η.ker), k.p ⟨s, h.1⟩ ∈ Φ.del.ker` using `fun s h => (k.del _).trans h.2`. Establish `f5 : ¬ ∃ j : ℤ, ∀ g : Φ.G0, Φ.om (ResidueField O) g = Φ.Ψ g ^ j`. Introduce and unpack `⟨j, hj⟩`. Use `hU.f5 ⟨j, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Use `hj ⟨_, h0 s hs⟩` as an intermediate fact. Rewrite `this` using `[hom, k.psi]`. Then use the resulting hypothesis. Take `⟨hσ, hc⟩` from `k.c`. Take `⟨hg, hg0⟩` from `k.g0`. Take `⟨D, δ, hD, -, hδ, hη⟩` from `hG.quad`.
+
+Use `⟨F.del_open, ?_, F.del_c, fun v => ?_, ?_, ?_, ?_, ?_, ?_, fun w => ?_, fun w => ?_, ?_, fun j hj => ?_, fun j hj => ?_, fun v => ?_, f5, fun v g hg => ?_, fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hG.cc`. Rewrite using `[← hc, ← map_mul, ← map_one k.p]`. Conclude with `congrArg k.p (Subtype.ext (cc_sq hj))`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+
+Establish `: Subtype.val ∘ Φ.loc0 v = k.p ∘ k.j v` using `funext (k.j_loc v)`. Conclude with `this ▸ k.p_cont.comp (k.j_cont v)`. Use `hq.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: Φ.eps ∘ π = cycZ (W.Lp L) Ω l` using `funext F.eps`. Conclude with `this ▸ continuous_cycZ _ _ l`.
+
+Conclude with `hq.isOpen_preimage.1 (Subgroup.isOpen_mono (H₂ := Φ.Ψ.ker.comap π) F.K_Ψ F.g.isOpen)`. Rewrite using `[← hc, k.psi]`. Conclude with `hG.even`. Rewrite using `[← hg0, k.psi]`. Conclude with `hg₁`.
+
+Rewrite using `[Fintype.card_congr e, Frame.d, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, ← IsTotallyReal.finrank, ← sum_locDegree l (Finset.univ.image pl) fun v => by`. Rewrite using `[← F.loc.mem, Finset.mem_image]`. Conclude with `⟨fun ⟨a, _, h⟩ => ⟨a, h⟩, fun ⟨a, h⟩ => ⟨a, Finset.mem_univ _, h⟩⟩,`. Use the proof step `Finset.sum_image fun a _ b _ h => F.loc.inj h]`. Conclude with `Finset.sum_congr rfl fun v _ => (F.dv v).symm`.
+
+Take `⟨j, hj, -⟩` from `F.cc w`. Rewrite using `[F.cw, ← map_mul, cc_sq hj, map_one]`. Take `⟨j, hj, -⟩` from `F.cc w`. Rewrite using `[F.cw, hπ _ fun x hx => (c w).commutes ⟨x, hx⟩, k.del]`. Conclude with `eta_cc hD hδ hη hj`.
+
+Assume the negation of the conclusion as `h`. Conclude with `f5 ⟨0, fun g => by_contra fun h' => h ⟨g, by simpa using h'⟩⟩`. Take `⟨s, hs, h⟩` from `hU.f2b j hj`. Conclude with `⟨⟨_, h0 s hs⟩, by rwa [hom, k.psi]⟩`. Take `⟨s, hs, h⟩` from `hU.f2c j hj`.
+
+Use `⟨k.p ⟨s, hs.1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hom, k.psi, Frame.delK, MonoidHom.comp_apply, MonoidHom.mem_ker.1 (h0 s hs), map_one, mul_one]` and apply the resulting hypothesis. Take `⟨s, hs, h⟩` from `hU.f3 _ (hpl v)`. Take `⟨g, hg⟩` from `(k.j_range v ⟨s, hs.2⟩).2 hs.1`. Conclude with `⟨g, by rwa [k.j_loc, k.psi, hg]⟩`.
+
+Take `⟨j, hj⟩` from `hG.Ψ_l`. Establish `h1 : Φ.eps (Φ.loc v g) = 1` using `hg.2`. Establish `h2 : Φ.om (ResidueField O) (Φ.loc v g) = 1` using `by rw [Frame.om, MonoidHom.comp_apply, h1, map_one]`. Rewrite `h2` using `[k.j_loc, hom]`. Rewrite using `[k.j_loc, k.psi, hj _ (hpl v) _ ((k.j_ine v g).1 hg.1), h2, one_pow]`.
+
+Conclude with `k.dv v ▸ hU.deg _ (hpl v)`. Conclude with `⟨(k.pl_all B hG.over_l).exists.choose⟩`.
+-/
 theorem UpperTheory.V.Fr.ok_basic :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] (η : G ℚ Ω →* ℤˣ) (Ψ : G ℚ Ω →* Oˣ) (σ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ) (Hb : Subgroup (G ℚ Ω)), Gen l η Ψ σ B M Hb → ∀ (m : ℕ) (L : Type) [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] (g₁ : G ℚ Ω) (Φ : Frame l (ResidueField O)), UFacts l η Ψ M m (upl Ω L) → Linked l η Ψ σ g₁ B M L Φ → barChar O Ψ g₁ ^ 2 ≠ 1 → IsOpen (Φ.del.ker : Set Φ.Γ) ∧ Φ.c * Φ.c = 1 ∧ Φ.del Φ.c = -1 ∧ (∀ v, Continuous (Φ.loc0 v)) ∧ Continuous Φ.eps ∧ IsOpen (Φ.Ψ.ker : Set Φ.Γ) ∧ Φ.Ψ Φ.c = 1 ∧ Φ.Ψ Φ.g0 ^ 2 ≠ 1 ∧ Fintype.card Φ.Inf = Φ.d ∧ (∀ w, Φ.cw w * Φ.cw w = 1) ∧ (∀ w, Φ.del (Φ.cw w) = -1) ∧ (∃ g : Φ.G0, Φ.om (ResidueField O) g ≠ 1) ∧ (∀ j : ℤ, j = 1 ∨ j = -1 → ∃ g : Φ.G0, Φ.om (ResidueField O) g * Φ.Ψ g ^ j ≠ 1) ∧ (∀ j : ℤ, j = 2 ∨ j = -2 → ∃ g, Φ.om (ResidueField O) g * Φ.Ψ g ^ j * Φ.delK (ResidueField O) g ≠ 1) ∧ (∀ v, ∃ g, Φ.Ψ (Φ.loc v g) ^ 2 ≠ 1) ∧ (¬ ∃ j : ℤ, ∀ g : Φ.G0, Φ.om (ResidueField O) g = Φ.Ψ g ^ j) ∧ (∀ v, ∀ g ∈ Φ.Nv v, Φ.Ψ (Φ.loc v g) = 1) ∧ (∀ v, l ^ m ≤ Φ.dv v) ∧ Nonempty Φ.V := by
   intro Ω _ _ _ l _ O _ _ _ η Ψ σ B M Hb hG m L _ _ _ _ g₁ Φ hU hL hg₁

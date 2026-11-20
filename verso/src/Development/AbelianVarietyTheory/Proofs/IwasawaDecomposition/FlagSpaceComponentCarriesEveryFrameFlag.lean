@@ -14,13 +14,30 @@ open Classical
 
 namespace GlobalTheory.FlagFibre
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem sp_comp {A B C' : Type} [CommRing A] [CommRing B] [CommRing C'] (a : B →+* C') (b : A →+* B) :
     spMap (a.comp b) = spMap a ≫ spMap b := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem sp_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]; exact Spec.map_id _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ i K _ _ χ x hx g g' p hp hc`. Take `⟨L, _, _, ι, s, hs, hV⟩` from `GlobalTheory.T.exists_algClosed_transcendental_specialising_everywhere K`. Take `⟨gL, hgL⟩` from `GlobalTheory.T.exists_genericFrame_transcendental_specialising_two E H Dw l Xo c O β Z K χ (x ≫ genι Z) g g' L ι s hs ((spMap ι ≫ x) ≫ genι Z) (Category.assoc _ _ _)`. Establish `hxL : (spMap ι ≫ x) ≫ genStr Z = spMap (ι.comp χ)`. Rewrite using `[Category.assoc, hx, sp_comp]`.
+
+Take `⟨⟨j, pL⟩, ⟨hpL, hcL⟩, -⟩` from `Φ.lifts L (ι.comp χ) (spMap ι ≫ x) hxL gL`. Establish `spec : ∀ (a : K) (b : EigFrame Z χ (x ≫ genι Z)), (∀ (V : ValuationSubring L) (ιV : K →+* V) (r : V →+* K) (sV : V), (algebraMap V L).comp ιV = ι → r.comp ιV = RingHom.id K → RingHom.ker r = IsLocalRing.maximalIdeal V → algebraMap V L sV = s → r sV = a → ∃ (gV : EigFrame Z (ιV.co …`. Introduce `a b hb`. Take `⟨V, ιV, r, sV, h1, h2, h3, h4, h5⟩` from `hV a`. Take `⟨gV, tL, tk, hTL, hTk⟩` from `hb V ιV r sV h1 h2 h3 h4 h5`.
+
+Establish `hpL' : pL ≫ (Φ.C j).π = spMap (algebraMap V L) ≫ (spMap ιV ≫ x)`. Rewrite using `[hpL, ← Category.assoc, ← sp_comp, h1]`. Take `⟨q, hq1, hq2⟩` from `GlobalTheory.T.exists_flagComponent_point_lift_valuationRing E H Dw l Xo c O β Z F e (Φ.C j) V L (spMap ιV ≫ x) pL hpL'`. Establish `hc' : (Φ.C j).Carries (spMap (algebraMap V L) ≫ q) gL` using `by rw [hq2]; exact hcL`. Establish `hxV : spMap ιV ≫ x ≫ genι Z = q ≫ (Φ.C j).π ≫ genι Z`.
+
+Rewrite using `[← Category.assoc q, hq1, Category.assoc]`. Use `⟨spMap r ≫ q, ?_, GlobalTheory.T.carriedFrames_specialise_flagComponent_localRing E H Dw l Xo c O β Z F e (Φ.C j) V L (algebraMap V L) (IsFractionRing.injective V L) K r h3 q (ιV.comp χ) _ hxV gV (ι.comp χ) _ gL tL hTL hc' χ _ b tk hTk⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hq1, ← Category.assoc, ← sp_comp, h2, sp_id, Category.id_comp]`. Take `⟨p₀, hp₀, hc₀⟩` from `spec 0 g fun V ιV r sV h1 h2 h3 h4 h5 => (hgL V _ ιV r sV h1 h2 h3 h4).1 h5`. Take `⟨p₁, hp₁, hc₁⟩` from `spec 1 g' fun V ιV r sV h1 h2 h3 h4 h5 => (hgL V _ ιV r sV h1 h2 h3 h4).2 h5`.
+
+Take `⟨_, -, hu⟩` from `Φ.lifts K χ x hx g`. Establish `hij : i = j` using `congrArg Sigma.fst ((hu ⟨i, p⟩ ⟨hp, hc⟩).trans (hu ⟨j, p₀⟩ ⟨hp₀, hc₀⟩).symm)`. Substitute `hij` using the available equality. Conclude with `⟨p₁, hp₁, hc₁⟩`.
+-/
 theorem carries_every : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N) (Φ : FlagTor Z e U), ∀ (i : U.Comp) (K : Type) [Field K] [IsAlgClosed K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z), x ≫ genStr Z = spMap χ → ∀ (g g' : EigFrame Z χ (x ≫ genι Z)) (p : Sp K ⟶ (Φ.C i).Y.X), p ≫ (Φ.C i).π = x → (Φ.C i).Carries p g → ∃ p' : Sp K ⟶ (Φ.C i).Y.X, p' ≫ (Φ.C i).π = x ∧ (Φ.C i).Carries p' g' := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ i K _ _ χ x hx g g' p hp hc
   obtain ⟨L, _, _, ι, s, hs, hV⟩ := GlobalTheory.T.exists_algClosed_transcendental_specialising_everywhere K

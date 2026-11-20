@@ -9,6 +9,11 @@ namespace GlobalTheory.RealTheta
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq]`. Establish `h1 : ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) r : 𝓞 E) : E) = algebraMap (maximalRealSubfield E) E (algebraMap (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) r)`. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) E]`. Conclude with `(IsScalarTower.algebraMap_apply (𝓞 (maximalRealSubfield E)) (𝓞 E) E r).symm`.
+
+Rewrite using `[h1]`. Conclude with `(IsCMField.complexConj E).commutes _`.
+-/
 theorem bar_algebraMap (H : Host E) (r : 𝓞 (maximalRealSubfield E)) :
     H.bar (algebraMap _ (𝓞 E) r) = algebraMap _ (𝓞 E) r := by
   apply RingOfIntegers.ext
@@ -20,6 +25,13 @@ theorem bar_algebraMap (H : Host E) (r : 𝓞 (maximalRealSubfield E)) :
   rw [h1]
   exact (IsCMField.complexConj E).commutes _
 
+/- English proof (translation)
+Use `haveI := H.unram`. Set `L : 𝓞 E →ₗ[𝓞 (maximalRealSubfield E)] (𝓞 E ⧸ 𝔭 ^ (n + 1))` to `{ toFun := fun c => Ideal.Quotient.mk _ (c - H.bar c) map_add' := fun a b => by rw [← map_add, map_add H.bar]; congr 1; ring map_smul' := fun r a => by`. Rewrite using `[Algebra.smul_def, map_mul, bar_algebraMap, ← mul_sub, RingHom.id_apply, Algebra.smul_def, map_mul, Ideal.Quotient.mk_algebraMap] }`. Set `D : Derivation (𝓞 (maximalRealSubfield E)) (𝓞 E) (𝓞 E ⧸ 𝔭 ^ (n + 1))` to `Derivation.mk' L fun a b => by show Ideal.Quotient.mk _ (a * b - H.bar (a * b)) = a • Ideal.Quotient.mk _ (b - H.bar b) + b • Ideal.Quotient.mk _ (a - H.bar a)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, ← map_add, Ideal.Quotient.eq]`.
+
+Establish `hab : (a - H.bar a) * (b - H.bar b) ∈ 𝔭 ^ (n + 1)` using `Ideal.pow_le_pow_right (by omega : n + 1 ≤ n + n) (by rw [pow_add]; exact Ideal.mul_mem_mul (h a) (h b))`. Establish `: a * b - H.bar (a * b) - (a * (b - H.bar b) + b * (a - H.bar a)) = -((a - H.bar a) * (b - H.bar b))`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `neg_mem hab`. Establish `hD : D c = 0`. Rewrite using `[← Derivation.liftKaehlerDifferential_comp_D, Subsingleton.elim (KaehlerDifferential.D _ _ c) 0, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 hD`.
+-/
 theorem sub_bar_mem_pow_succ (H : Host E) (𝔭 : Ideal (𝓞 E)) (n : ℕ) (hn : 1 ≤ n)
     (h : ∀ c, c - H.bar c ∈ 𝔭 ^ n) (c : 𝓞 E) : c - H.bar c ∈ 𝔭 ^ (n + 1) := by
   haveI := H.unram
@@ -44,6 +56,13 @@ theorem sub_bar_mem_pow_succ (H : Host E) (𝔭 : Ideal (𝓞 E)) (n : ℕ) (hn 
     rw [← Derivation.liftKaehlerDifferential_comp_D, Subsingleton.elim (KaehlerDifferential.D _ _ c) 0, map_zero]
   exact Ideal.Quotient.eq_zero_iff_mem.1 hD
 
+/- English proof (translation)
+Use `by_contra! h`. Establish `key : ∀ n : ℕ, ∀ c, c - H.bar c ∈ 𝔭 ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h`.
+
+Consider the case `succ n ih => exact sub_bar_mem_pow_succ H 𝔭 (n + 1) (by omega) ih`. Establish `h0 : H.rt - H.bar H.rt = 0`. Establish `hm : H.rt - H.bar H.rt ∈ ⨅ i, 𝔭 ^ i` using `Ideal.mem_iInf.2 fun i => Ideal.pow_le_pow_right (Nat.le_succ i) (key i _)`. Rewrite `hm` using `[Ideal.iInf_pow_eq_bot_of_isDomain 𝔭 h𝔭, Ideal.mem_bot]`. Then use the resulting hypothesis. Rewrite `h0` using `[GlobalTheory.CharRank.bar_rt_neg, sub_neg_eq_add, ← two_mul]`.
+
+Establish `hrt : H.rt = 0` using `(mul_eq_zero.1 h0).resolve_left two_ne_zero`. Establish `hd` using `H.rt_sq`. Rewrite `hd` using `[hrt, zero_pow two_ne_zero, zero_eq_neg, Nat.cast_eq_zero]`. Conclude with `H.d_prime.ne_zero hd`.
+-/
 theorem exists_sub_bar_notMem (H : Host E) {𝔭 : Ideal (𝓞 E)} (h𝔭 : 𝔭 ≠ ⊤) : ∃ c, c - H.bar c ∉ 𝔭 := by
   by_contra! h
   have key : ∀ n : ℕ, ∀ c, c - H.bar c ∈ 𝔭 ^ (n + 1) := by
@@ -69,6 +88,11 @@ open scoped nonZeroDivisors
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Set `f : E →ₗ[ℚ] ℚ` to `(integralBasis E).constr ℚ (fun i => (ψ (RingOfIntegers.basis E i) : ℚ))`. Take `⟨δ, hδ⟩` from `((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).surjective f`. Use `⟨δ, fun u => ?_⟩` and prove the remaining obligations. Establish `h1 : Algebra.trace ℚ E (δ * u) = f u`. Rewrite using `[← hδ, LinearMap.BilinForm.toDual_def, Algebra.traceForm_apply]`.
+
+Rewrite using `[h1]`. Establish `h2 : ((Int.castAddHom ℚ).comp ψ).toIntLinearMap = (f.toAddMonoidHom.comp (algebraMap (𝓞 E) E).toAddMonoidHom).toIntLinearMap`. Use `(RingOfIntegers.basis E).ext fun i => ?_` and prove the remaining obligations. Simplify using `[f, ← integralBasis_apply]`. Conclude with `(LinearMap.congr_fun h2 u)`.
+-/
 theorem exists_trace_eq (ψ : 𝓞 E →+ ℤ) : ∃ δ : E, ∀ u : 𝓞 E, ((ψ u : ℤ) : ℚ) = Algebra.trace ℚ E (δ * u) := by
   let f : E →ₗ[ℚ] ℚ := (integralBasis E).constr ℚ (fun i => (ψ (RingOfIntegers.basis E i) : ℚ))
   obtain ⟨δ, hδ⟩ := ((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).surjective f
@@ -84,6 +108,15 @@ theorem exists_trace_eq (ψ : 𝓞 E →+ ℤ) : ∃ δ : E, ∀ u : 𝓞 E, ((�
 
 open FractionalIdeal in
 
+/- English proof (translation)
+Use `set I := spanSingleton (𝓞 E)⁰ δ * M⁻¹ with hI`. Establish `hIM : I * M = spanSingleton (𝓞 E)⁰ δ`. Rewrite using `[hI, mul_assoc, inv_mul_cancel₀ hM, mul_one]`. Establish `hI1 : I ≤ 1`. Rewrite using `[← mul_inv_cancel₀ hM, hI]`.
+
+Conclude with `mul_le_mul_left (spanSingleton_le_iff_mem.2 hδ) _`. Establish `hnot : ¬ I ≤ (𝔭 : FractionalIdeal (𝓞 E)⁰ E)`. Introduce `h`. Apply `hδ'` to reduce the goal to its premises. Establish `: spanSingleton (𝓞 E)⁰ δ ≤ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M` using `hIM ▸ mul_le_mul_left h M`.
+
+Conclude with `spanSingleton_le_iff_mem.1 this`. Take `⟨y, hyI, hy𝔭⟩` from `SetLike.not_le_iff_exists.1 hnot`. Take `⟨s, rfl⟩` from `(mem_one_iff _).1 (hI1 hyI)`. Use `⟨s, fun hs => hy𝔭 ((mem_coeIdeal _).2 ⟨s, hs, rfl⟩), fun x hx => ?_⟩` and prove the remaining obligations. Establish `: algebraMap (𝓞 E) E s * x ∈ spanSingleton (𝓞 E)⁰ δ` using `hIM ▸ mul_mem_mul hyI hx`.
+
+Take `⟨t, ht⟩` from `(mem_spanSingleton _).1 this`. Conclude with `⟨t, by rw [← ht, Algebra.smul_def, mul_comm]⟩`.
+-/
 theorem exists_local_gen {M : FractionalIdeal (𝓞 E)⁰ E} (hM : M ≠ 0) {𝔭 : Ideal (𝓞 E)} {δ : E} (hδ : δ ∈ M)
     (hδ' : δ ∉ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M) :
     ∃ s : 𝓞 E, s ∉ 𝔭 ∧ ∀ x ∈ M, ∃ t : 𝓞 E, (s : E) * x = δ * t := by
@@ -107,6 +140,11 @@ theorem exists_local_gen {M : FractionalIdeal (𝓞 E)⁰ E} (hM : M ≠ 0) {�
 
 open FractionalIdeal in
 
+/- English proof (translation)
+Use `by_contra! h`. Establish `hle : M ≤ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M` using `fun x hx => h x hx`. Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≤ 𝔭`. Use `mul_le_mul_left hle M⁻¹` as an intermediate fact. Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ hM, mul_one]`. Then use the resulting hypothesis.
+
+Rewrite `h1` using `[← coeIdeal_top, coeIdeal_le_coeIdeal E]`. Conclude with `h𝔭 (top_le_iff.1 h1)`.
+-/
 theorem exists_mem_notMem_mul {M : FractionalIdeal (𝓞 E)⁰ E} (hM : M ≠ 0) {𝔭 : Ideal (𝓞 E)} (h𝔭 : 𝔭 ≠ ⊤) :
     ∃ x ∈ M, x ∉ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M := by
   by_contra! h
@@ -117,17 +155,35 @@ theorem exists_mem_notMem_mul {M : FractionalIdeal (𝓞 E)⁰ E} (hM : M ≠ 0)
   rw [← coeIdeal_top, coeIdeal_le_coeIdeal E] at h1
   exact h𝔭 (top_le_iff.1 h1)
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hx) (FractionalIdeal.mem_coe.2 hy))`.
+-/
 theorem fi_add_mem (N : FractionalIdeal (𝓞 E)⁰ E) {x y : E} (hx : x ∈ N) (hy : y ∈ N) : x + y ∈ N :=
   FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hx) (FractionalIdeal.mem_coe.2 hy))
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.mem_coe.1 (Submodule.sub_mem _ (FractionalIdeal.mem_coe.2 hx) (FractionalIdeal.mem_coe.2 hy))`.
+-/
 theorem fi_sub_mem (N : FractionalIdeal (𝓞 E)⁰ E) {x y : E} (hx : x ∈ N) (hy : y ∈ N) : x - y ∈ N :=
   FractionalIdeal.mem_coe.1 (Submodule.sub_mem _ (FractionalIdeal.mem_coe.2 hx) (FractionalIdeal.mem_coe.2 hy))
 
+/- English proof (translation)
+Use `Submodule.smul_mem (N : Submodule (𝓞 E) E) a (FractionalIdeal.mem_coe.2 hy)` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mem_coe.1 this`.
+-/
 theorem fi_mul_mem (N : FractionalIdeal (𝓞 E)⁰ E) (a : 𝓞 E) {y : E} (hy : y ∈ N) : (a : E) * y ∈ N := by
   have := Submodule.smul_mem (N : Submodule (𝓞 E) E) a (FractionalIdeal.mem_coe.2 hy)
   rw [Algebra.smul_def] at this
   exact FractionalIdeal.mem_coe.1 this
 
+/- English proof (translation)
+Take `⟨x, hx, hx'⟩` from `exists_mem_notMem_mul hM h𝔭.ne_top`. Take `⟨c, hc⟩` from `exists_sub_bar_notMem H h𝔭.ne_top`. Establish `hcc : ∀ y, IsCMField.complexConj E (IsCMField.complexConj E y) = y` using `IsCMField.complexConj_apply_apply E`. Establish `hbar : IsCMField.complexConj E (c : E) = (H.bar c : E)` using `(H.bar_eq c).symm`. Distinguish the cases in `h1 : x + IsCMField.complexConj E x ∈ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M`.
+
+Use `⟨(c : E) * x + IsCMField.complexConj E ((c : E) * x), fi_add_mem _ (fi_mul_mem M c hx) (hconj _ (fi_mul_mem M c hx)), by rw [map_add, hcc, add_comm], fun h2 => hx' ?_⟩` and prove the remaining obligations. Establish `h3 : ((c - H.bar c : 𝓞 E) : E) * x ∈ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M`. Use `fi_sub_mem _ h2 (fi_mul_mem _ (H.bar c) h1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, hbar]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, i, hi, hyi⟩` from `h𝔭.exists_inv hc`. Establish `hyi'` using `congrArg (fun z : 𝓞 E => (z : E)) hyi`. Move the coercions through the operations in `at hyi'`.
+
+Establish `: x = (y : E) * (((c - H.bar c : 𝓞 E) : E) * x) + (i : E) * x` using `by push_cast; linear_combination (-x) * hyi'`. Rewrite using `[this]`. Conclude with `fi_add_mem _ (fi_mul_mem _ y h3) (FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨i, hi, rfl⟩) hx)`. Conclude with `⟨x + IsCMField.complexConj E x, fi_add_mem _ hx (hconj x hx), by rw [map_add, hcc, add_comm], h1⟩`.
+-/
 theorem exists_real_notMem (H : Host E) {M : FractionalIdeal (𝓞 E)⁰ E} (hM : M ≠ 0)
     (hconj : ∀ x ∈ M, IsCMField.complexConj E x ∈ M) {𝔭 : Ideal (𝓞 E)} (h𝔭 : 𝔭.IsMaximal) :
     ∃ δ ∈ M, IsCMField.complexConj E δ = δ ∧ δ ∉ (𝔭 : FractionalIdeal (𝓞 E)⁰ E) * M := by
@@ -152,9 +208,17 @@ theorem exists_real_notMem (H : Host E) {M : FractionalIdeal (𝓞 E)⁰ E} (hM 
       (FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨i, hi, rfl⟩) hx)
   · exact ⟨x + IsCMField.complexConj E x, fi_add_mem _ hx (hconj x hx), by rw [map_add, hcc, add_comm], h1⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) y`.
+-/
 theorem trace_conj (y : E) : Algebra.trace ℚ E (IsCMField.complexConj E y) = Algebra.trace ℚ E y :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) y
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)]`. Introduce `a ha`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Use `hx _ ((FractionalIdeal.mem_one_iff _).2 ⟨H.bar b, rfl⟩)` as an intermediate fact. Rewrite `this`, the goal using `[Algebra.traceForm_apply]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← trace_conj, map_mul, IsCMField.complexConj_apply_apply]`. Conclude with `congrArg (fun y => Algebra.trace ℚ E (x * y)) (H.bar_eq b).symm`.
+-/
 theorem conj_mem_dual (H : Host E) {x : E} (hx : x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) :
     IsCMField.complexConj E x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
   rw [FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)] at hx ⊢
@@ -172,6 +236,27 @@ namespace GlobalTheory.RealTheta
 
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `E _ _ _ H 𝔭 h𝔭`. Establish `h10 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`. Use `set M : FractionalIdeal (𝓞 E)⁰ E := FractionalIdeal.dual ℤ ℚ 1 with hMdef`. Establish `hM : M ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ h10`. Take `⟨δ, hδM, hδc, hδ⟩` from `exists_real_notMem H hM (fun x hx => conj_mem_dual H hx) h𝔭`.
+
+Establish `hint : ∀ x ∈ M, ∀ u : 𝓞 E, ∃ z : ℤ, (z : ℚ) = Algebra.trace ℚ E (x * u)`. Introduce `x hx u`. Rewrite `hx` using `[hMdef, FractionalIdeal.mem_dual h10]`. Take `⟨z, hz⟩` from `hx _ ((FractionalIdeal.mem_one_iff _).2 ⟨u, rfl⟩)`. Conclude with `⟨z, by rw [← Algebra.traceForm_apply, ← hz]; simp⟩`.
+
+Use `choose z hz using hint δ hδM`. Set `θ : 𝓞 E →+ ℤ` to `AddMonoidHom.mk' z fun a b => Int.cast_injective (α := ℚ) (by push_cast; rw [hz, hz, hz]; push_cast; rw [mul_add, map_add])`. Establish `hθ : ∀ u, ((θ u : ℤ) : ℚ) = Algebra.trace ℚ E (δ * u)` using `hz`. Establish `hmemψ : ∀ ψ : 𝓞 E →+ ℤ, ∃ x ∈ M, ∀ u : 𝓞 E, ((ψ u : ℤ) : ℚ) = Algebra.trace ℚ E (x * u)`. Introduce `ψ`.
+
+Take `⟨x, hx⟩` from `exists_trace_eq ψ`. Use `⟨x, (FractionalIdeal.mem_dual h10).2 fun a ha => ?_, hx⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Conclude with `⟨ψ b, by rw [Algebra.traceForm_apply]; simpa using (hx b)⟩`. Take `⟨s, hs, hsM⟩` from `exists_local_gen hM hδM hδ`.
+
+Establish `hθbar : ∀ t, θ (H.bar t) = θ t`. Introduce `t`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[hθ, hθ, H.bar_eq, ← hδc, ← map_mul, trace_conj, hδc]`. Establish `hPs : ∀ ψ : 𝓞 E →+ ℤ, ∃ t : 𝓞 E, ∀ u, ψ (s * u) = θ (t * u)`.
+
+Introduce `ψ`. Take `⟨x, hx, hψ⟩` from `hmemψ ψ`. Take `⟨t, ht⟩` from `hsM x hx`. Use `⟨t, fun u => Int.cast_injective (α := ℚ) ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, hθ]`.
+
+Use `push_cast`. Rewrite using `[← mul_assoc, mul_comm x, ht, mul_assoc]`. Establish `hPbar : ∀ s : 𝓞 E, (∀ ψ : 𝓞 E →+ ℤ, ∃ t : 𝓞 E, ∀ u, ψ (s * u) = θ (t * u)) → ∀ ψ : 𝓞 E →+ ℤ, ∃ t : 𝓞 E, ∀ u, ψ (H.bar s * u) = θ (t * u)`. Introduce `s hs ψ`. Take `⟨t, ht⟩` from `hs (ψ.comp (H.bar : 𝓞 E →+* 𝓞 E).toAddMonoidHom)`.
+
+Use `⟨H.bar t, fun u => ?_⟩` and prove the remaining obligations. Use `ht (H.bar u)` as an intermediate fact. Simplify using `only [AddMonoidHom.comp_apply, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, RingHom.coe_coe, map_mul, bar_bar] at this`. Rewrite using `[this, ← hθbar (t * H.bar u), map_mul, bar_bar]`. Use `⟨θ, hθbar, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hb : H.bar s ∈ 𝔭`. Establish `hsb : s + H.bar s ∉ 𝔭` using `fun h => hs (by have := sub_mem h hb; rwa [add_sub_cancel_right] at this)`. Use `⟨s + H.bar s, hsb, by rwa [map_add, bar_bar, add_comm], fun ψ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hPs ψ`. Take `⟨t', ht'⟩` from `hPbar s hPs ψ`.
+
+Conclude with `⟨t + t', fun u => by rw [add_mul, map_add, ht, ht', add_mul, map_add]⟩`. Conclude with `⟨s, hs, hb, hPs⟩`.
+-/
 theorem exists_bar_inv_trace_gen : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (𝔭 : Ideal (𝓞 E)) (h𝔭 : 𝔭.IsMaximal),
     ∃ θ : 𝓞 E →+ ℤ, (∀ t, θ (H.bar t) = θ t) ∧ ∃ s : 𝓞 E, s ∉ 𝔭 ∧ H.bar s ∉ 𝔭 ∧

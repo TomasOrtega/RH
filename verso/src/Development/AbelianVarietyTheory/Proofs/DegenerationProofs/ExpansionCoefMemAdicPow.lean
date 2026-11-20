@@ -19,6 +19,15 @@ open GlobalTheory.PsiRing
 
 namespace GlobalTheory.PsiRing
 
+/- English proof (translation)
+Set `φ : S →+* X.presheaf.stalk x` to `(p.stalkMap x).hom.comp (((Sp S).presheaf.germ ⊤ (p x) trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom)`. Establish `hφ : ∀ c, φ c = cst p x c` using `fun c => by`. Rewrite using `[cst, gs_stalkMap p x ⊤ trivial, gs_eq _ _ ⊤ trivial]`. Both sides reduce to the same expression. Establish `fl : φ.Flat`.
+
+Use `RingHom.Flat.comp (RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S)).inv)) ?_) (Flat.stalkMap p x)` and prove the remaining obligations. Establish `hU` using `isAffineOpen_top (Sp S)`. Set `_` to `(Sp S).presheaf.algebra_section_stalk (U := ⊤) ⟨p x, trivial⟩`. Use `hU.isLocalization_stalk ⟨p x, trivial⟩` as an intermediate fact. Conclude with `IsLocalization.flat ((Sp S).presheaf.stalk ((⟨p x, trivial⟩ : (⊤ : (Sp S).Opens)) : Sp S)) (hU.primeIdealOf ⟨p x, trivial⟩).asIdeal.primeCompl`.
+
+Set `_` to `φ.toAlgebra`. Establish `: Module.Flat S (X.presheaf.stalk x)` using `fl`. Establish `: IsLocalHom (algebraMap S (X.presheaf.stalk x))` using `⟨fun c hc => by`. Assume the negation of the conclusion as `h`. Conclude with `cst_not_isUnit p x hx h (hφ c ▸ hc)⟩`.
+
+Establish `: Module.FaithfullyFlat S (X.presheaf.stalk x)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective S (X.presheaf.stalk x) ((hφ a).trans (ha.trans (map_zero _).symm))`.
+-/
 theorem eq_zero_of_cst_eq_zero {S : Type} [CommRing S] [IsLocalRing S] {X : Scheme.{0}} (p : X ⟶ Sp S) [Flat p] (x : X)
     (hx : p x = IsLocalRing.closedPoint S) {a : S} (ha : cst p x a = 0) : a = 0 := by
   let φ : S →+* X.presheaf.stalk x := (p.stalkMap x).hom.comp
@@ -41,6 +50,27 @@ theorem eq_zero_of_cst_eq_zero {S : Type} [CommRing S] [IsLocalRing S] {X : Sche
   have : Module.FaithfullyFlat S (X.presheaf.stalk x) := Module.FaithfullyFlat.of_flat_of_isLocalHom
   exact FaithfulSMul.algebraMap_injective S (X.presheaf.stalk x) ((hφ a).trans (ha.trans (map_zero _).symm))
 
+/- English proof (translation)
+Introduce `R _ _ _ I hI D A G _ _ U σ f th hE hth e`. Take `⟨s, hs⟩` from `hE e`. Use `⟨s, fun χ hχ u b hb => ?_⟩` and prove the remaining obligations. Establish `hI' : I ^ (e + 1) ≠ ⊤` using `fun h => hI (top_unique (h ▸ Ideal.pow_le_self e.succ_ne_zero))`. Use `haveI : Nontrivial (R ⧸ I ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2 hI'`.
+
+Use `haveI : IsLocalRing (R ⧸ I ^ (e + 1)) := IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk (I ^ (e + 1))) := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hcl : thick R I e (IsLocalRing.closedPoint _) = IsLocalRing.closedPoint R` using `IsLocalRing.comap_closedPoint (Ideal.Quotient.mk (I ^ (e + 1)))`. Use `haveI := U.semi.smooth`. Use `haveI : Flat (thickObj R I e G).hom := inferInstanceAs (Flat (pullback.snd G.hom (thick R I e)))`.
+
+Take `⟨z₀, hz₀, hnz⟩` from `hth (IsLocalRing.closedPoint R)`. Set `T` to `(Over.map (thick R I e)).obj (thickObj R I e G)`. Set `y : T ⟶ D.P.A` to `(U.gt e).pG`. Set `m : 𝟙_ _ ⊗ D.P.A ⟶ D.P.A` to `snd (𝟙_ _) D.P.A * (cT D _ χ)⁻¹`. Set `τ : D.P.A ⟶ 𝟙_ _ ⊗ D.P.A` to `lift (toUnit _) (𝟙 _ * cT D _ χ)`.
+
+Establish `hc : ∀ {T₁ T₂ : Over (Spec (CommRingCat.of R))} (g : T₁ ⟶ T₂), g ≫ cT D _ χ = cT D _ χ` using `fun g => by`. Rewrite using `[cT, ← Category.assoc, toUnit_unique (g ≫ toUnit _) (toUnit _)]`. Establish `hmτ : m ≫ τ = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `toUnit_unique _ _`.
+
+Rewrite using `[Category.assoc, lift_snd, MonObj.comp_mul, hc, Category.comp_id, inv_mul_cancel_right, Category.id_comp]`. Establish `hyτ : y ≫ τ = lift (toUnit T) (y * cT D T χ)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `toUnit_unique _ _`. Rewrite using `[Category.assoc, lift_snd, MonObj.comp_mul, hc, Category.comp_id, lift_snd]`.
+
+Establish `h1 : D.P.A.hom (m.left z₀) = IsLocalRing.closedPoint R`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w m]`. Conclude with `hz₀`. Take `⟨w, hw, hw'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := D.P.A.hom) (g := thick R I e) (m.left z₀) (IsLocalRing.closedPoint (R ⧸ I ^ (e + 1))) (h1.trans hcl.symm)`. Take `⟨z, rfl⟩` from `(U.gt e).q_surj.1 w`.
+
+Establish `hy : y.left z = m.left z₀` using `hw`. Establish `hz : (thickObj R I e G).hom z = IsLocalRing.closedPoint _`. Rewrite using `[← Over.w (U.gt e).q, Scheme.Hom.comp_apply]`. Conclude with `hw'`. Establish `h2 : (lift (toUnit T) (y * cT D T χ)).left z = z₀`.
+
+Rewrite using `[← hyτ, Over.comp_left, Scheme.Hom.comp_apply, hy, ← Scheme.Hom.comp_apply, ← Over.comp_left, hmτ]`. Both sides reduce to the same expression. Take `⟨J, hJ⟩` from `exists_good_pt (Z := T.left) D.P.isLB z`. Take `⟨JG, hJG⟩` from `exists_good_pt (Z := T.left) U.P.L.isLB z`. Establish `hu` using `(MulPullSec.mem_nonzeroLocus_iff th (lift (toUnit T) (y * cT D T χ)).left z hJ).1 (h2 ▸ hnz)`.
+
+Establish `h0` using `(hs T.left (𝟙 _) (lift (toUnit T) (fstG I e G)).left (lift (toUnit T) y).left (by rw [← Over.comp_left, lift_snd, Category.id_comp]) (by rw [← Over.comp_left, lift_snd, Category.id_comp]) (by rw [← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]) z JG J hJG hJ).1 χ hχ`. Establish `h3` using `hb T y z J hJ`. Rewrite `h3` using `[h0]`. Establish `h4 : cst T.hom z b = 0` using `((Units.isUnit _).mul hu).mul_left_eq_zero.1 h3.symm`. Establish `h5 : cst (thickObj R I e G).hom z (Ideal.Quotient.mk _ b) = 0` using `(cst_comp (thickObj R I e G).hom (Ideal.Quotient.mk (I ^ (e + 1))) z b).symm.trans h4`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (eq_zero_of_cst_eq_zero _ z hz h5)`.
+-/
 theorem coef_mem_pow : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), I ≠ ⊤ → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) (σ : U.SecGT (𝟙_ _) 1) (f : ∀ α, SecBT D (𝟙_ _) 1 α) (th : SecBT D (𝟙_ _) 1 0), U.ExpT (𝟙_ _) 1 σ f → FibNZ (𝟙_ _ ⊗ D.P.A).hom th → ∀ e : ℕ, ∃ s : Finset D.X, ∀ χ ∉ s, ∀ (u : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))) (b : R), Coef D χ u th (f χ) b → b ∈ I ^ (e + 1) := by
   intro R _ _ _ I hI D A G _ _ U σ f th hE hth e
   obtain ⟨s, hs⟩ := hE e

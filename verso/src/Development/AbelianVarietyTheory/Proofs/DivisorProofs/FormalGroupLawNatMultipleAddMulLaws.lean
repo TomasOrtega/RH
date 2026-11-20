@@ -12,14 +12,25 @@ namespace GlobalTheory.NMul
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nmul_zero' (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) :
     nmul μ 0 = fun _ => 0 := rfl
 
+/- English proof (translation)
+Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`.
+-/
 theorem nmul_succ' (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (n : ℕ) :
     nmul μ (n + 1) = op μ (nmul μ n) (fun i => X i) := by
   unfold nmul
   rw [Function.iterate_succ_apply']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro i`. Simplify using `[nmul_zero']`. Consider the case `succ n ih`. Rewrite using `[nmul_succ']`.
+
+Conclude with `(GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ n) (fun i => X i) (fun _ => 0) ih (fun i => constantCoeff_X i) (fun _ => map_zero _)).1`.
+-/
 theorem nmul_const (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw μ) (n : ℕ) :
     ∀ i, constantCoeff (nmul μ n i) = 0 := by
   induction n with
@@ -29,6 +40,11 @@ theorem nmul_const (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsL
     exact (GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ n) (fun i => X i) (fun _ => 0) ih
       (fun i => constantCoeff_X i) (fun _ => map_zero _)).1
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.add_zero, nmul_zero']`. Conclude with `((GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ m) (fun _ => 0) (fun _ => 0) (nmul_const μ hμ m) (fun _ => map_zero _) (fun _ => map_zero _)).2.2.2.1).symm`. Consider the case `succ n ih`.
+
+Rewrite using `[← Nat.add_assoc, nmul_succ', ih, nmul_succ']`. Conclude with `(GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ m) (nmul μ n) (fun i => X i) (nmul_const μ hμ m) (nmul_const μ hμ n) (fun i => constantCoeff_X i)).2.1`.
+-/
 theorem nmul_add (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw μ) (m n : ℕ) :
     nmul μ (m + n) = op μ (nmul μ m) (nmul μ n) := by
   induction n with
@@ -41,6 +57,9 @@ theorem nmul_add (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw
     exact (GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ m) (nmul μ n) (fun i => X i)
       (nmul_const μ hμ m) (nmul_const μ hμ n) (fun i => constantCoeff_X i)).2.1
 
+/- English proof (translation)
+Rewrite using `[nmul_succ', nmul_zero']`. Establish `h` using `GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (fun i => X i) (fun _ => 0) (fun _ => 0) (fun i => constantCoeff_X i) (fun _ => map_zero _) (fun _ => map_zero _)`. Rewrite using `[← h.2.2.1, h.2.2.2.1]`.
+-/
 theorem nmul_one (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw μ) :
     nmul μ 1 = fun i => X i := by
   rw [nmul_succ', nmul_zero']
@@ -48,6 +67,13 @@ theorem nmul_one (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw
     (fun i => constantCoeff_X i) (fun _ => map_zero _) (fun _ => map_zero _)
   rw [← h.2.2.1, h.2.2.2.1]
 
+/- English proof (translation)
+Establish `ha : HasSubst (nmul μ n)` using `hasSubst_of_constantCoeff_zero (nmul_const μ hμ n)`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i`. Rewrite using `[Nat.zero_mul, nmul_zero']`.
+
+Conclude with `(map_zero (substAlgHom (R := R) ha)).symm.trans (by rw [coe_substAlgHom])`. Consider the case `succ m ih`. Introduce `i`. Rewrite using `[Nat.succ_mul, nmul_add μ hμ, nmul_succ']`. Rewrite using `[(GlobalTheory.T.formalGroupLaw_points_commMonoid_subst_hom R d μ hμ (Fin d) (nmul μ m) (fun i => X i) (fun _ => 0) (nmul_const μ hμ m) (fun i => constantCoeff_X i) (fun _ => map_zero _)).2.2.2.2 (Fin d) (nmul μ n) (nmul_const μ hμ n) i]`.
+
+Establish `e1 : (fun j => subst (nmul μ n) (nmul μ m j)) = nmul μ (m * n)` using `funext fun j => (ih j).symm`. Establish `e2 : (fun j => subst (nmul μ n) ((X j : MvPowerSeries (Fin d) R))) = nmul μ n`. Use function extensionality and compare the values at `fun j => subst_X ha j`. Rewrite using `[e1, e2]`.
+-/
 theorem nmul_mul (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw μ) (m n : ℕ) :
     ∀ i, nmul μ (m * n) i = subst (nmul μ n) (nmul μ m i) := by
   have ha : HasSubst (nmul μ n) := hasSubst_of_constantCoeff_zero (nmul_const μ hμ n)
@@ -67,6 +93,9 @@ theorem nmul_mul (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : IsLaw
       funext fun j => subst_X ha j
     rw [e1, e2]
 
+/- English proof (translation)
+Introduce `_ _ _ μ hμ m n` and use `⟨nmul_const μ hμ n, nmul_add μ hμ m n, nmul_mul μ hμ m n, nmul_one μ hμ⟩`.
+-/
 theorem nmul_laws : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
     IsLaw μ → ∀ m n : ℕ, (∀ i, constantCoeff (nmul μ n i) = 0) ∧
       nmul μ (m + n) = op μ (nmul μ m) (nmul μ n) ∧

@@ -10,6 +10,11 @@ open scoped ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory.RSCell
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.WeightSumSplit.wtS_eq`. Consider the case `exact _root_.GlobalTheory.WeightSumSplit.wtS_eq`. Consider the case `(apply _root_.GlobalTheory.WeightSumSplit.wtS_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.WeightSumSplit.wtS_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.WeightSumSplit.wtS_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.WeightSumSplit.wtS_eq ..)`.
+-/
 theorem wtS_eq_sum (N : ℕ) (a : Fin N → ℤ) :
     GlobalTheory.CellDec.wtS N a = ∑ i : Fin N, ((N : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)) * a i := by
   first
@@ -20,6 +25,19 @@ theorem wtS_eq_sum (N : ℕ) (a : Fin N → ℤ) :
   | (intros; apply @_root_.GlobalTheory.WeightSumSplit.wtS_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.WeightSumSplit.wtS_eq ..)
 
+/- English proof (translation)
+Introduce `q hq n α x ν hlast`. Distinguish the cases in `hA : Antitone ν`. Establish `hnn : ∀ i, 0 ≤ ν i` using `fun i => le_trans hlast (hA (Fin.le_last i))`. Establish `hAn : Antitone (fun i => (ν i).toNat)` using `fun i j h => Int.toNat_le_toNat (hA h)`. Rewrite using `[GlobalTheory.RSCell.locFac, if_pos ⟨hA, hnn⟩, GlobalTheory.RSCell.sphZ, if_pos hA, GlobalTheory.JSW.sphW, if_pos hAn]`.
+
+Use `set s := GlobalTheory.JSW.schurAt (fun i => (ν i).toNat) α`. Use `set w : ℤ := GlobalTheory.CellDec.wtS (n + 1) ν with hw`. Establish `hc : (∑ i : Fin (n + 1), ((((n + 1 : ℕ)) : ℂ) - 1 - 2 * ((i : ℕ) : ℂ)) * (((ν i).toNat : ℕ) : ℂ)) = ((w : ℤ) : ℂ)`. Rewrite using `[hw, wtS_eq_sum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (((ν i).toNat : ℕ) : ℂ) = ((ν i : ℤ) : ℂ) by exact_mod_cast Int.toNat_of_nonneg (hnn i)]`. Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hsum : (((∑ i, (ν i).toNat : ℕ)) : ℝ) = ∑ i, (ν i : ℝ)`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Int.toNat_of_nonneg (hnn i)` after adjusting the coercions. Rewrite using `[hc, hsum]`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (zpow_nonneg hq'.le _), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+
+Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hq]`. Establish `hre : (-((w : ℂ)) / 2).re = -(w : ℝ) / 2` using `by simp`. Rewrite using `[hre, mul_pow, ← Real.rpow_natCast ((q : ℝ) ^ (-(w : ℝ) / 2)), ← Real.rpow_mul hq'.le, ← Real.rpow_intCast]`. Establish `h1 : (q : ℝ) ^ (w : ℝ) * (q : ℝ) ^ (-(w : ℝ) / 2 * ((2 : ℕ) : ℝ)) = 1`. Rewrite using `[← Real.rpow_add hq']`.
+
+Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.RSCell.locFac, if_neg (fun h => hA h.1), GlobalTheory.RSCell.sphZ, if_neg hA]`. Simplify using the standard rewrite rules.
+-/
 theorem locFac_eq_wtS_sphZ : ∀ (q : ℕ), 0 < q → ∀ (n : ℕ) (α : Fin (n + 1) → ℂ) (x : ℝ) (ν : Fin (n + 1) → ℤ), 0 ≤ ν (Fin.last n) →
     ENNReal.ofReal ((q : ℝ) ^ GlobalTheory.CellDec.wtS (n + 1) ν) * ENNReal.ofReal ((q : ℝ) ^ (-((∑ i, (ν i : ℝ)) * x))) *
       ‖GlobalTheory.RSCell.sphZ q α ν‖ₑ ^ 2 = GlobalTheory.RSCell.locFac q α x ν := by

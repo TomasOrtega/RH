@@ -50,6 +50,13 @@ def StAdaptQ (u : D.what₂.Word) (p : TypX X) : Prop :=
         l b • Pi.single (pf b) 1) ∧
       LatBasis X p θ (reindex₂ X p Q)
 
+/- English proof (translation)
+Take `⟨θ, hθ, Q, l, hl, h1, h2, hL⟩` from `h`. Establish `hG` using `hC X p θ hθ Q hL`. Set `K : Subgroup (HAp X p)` to `{ carrier := KvX X p mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq] at ha hb ⊢`.
+
+Conclude with `Subgroup.mul_mem _ ha hb`. Use the proof step `one_mem' := by`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq]`. Conclude with `Subgroup.one_mem _`. Use the proof step `inv_mem' := by`.
+
+Introduce `a ha`. Simplify using `only [KvX, Formalism.L2.SG.TypedSets.Kv, Set.mem_setOf_eq] at ha ⊢`. Conclude with `Subgroup.inv_mem _ ha }`. Take `⟨ψ, hψs, hψ1, hψ2⟩` from `hG K rfl`. Conclude with `⟨θ, hθ, idxEquiv X, Q, l, hl, h1, h2, K, rfl, ψ, hψs, hψ1, hψ2⟩`.
+-/
 theorem stAdaptB_of (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAdaptQ X u p) : StAdaptB X u p := by
   obtain ⟨θ, hθ, Q, l, hl, h1, h2, hL⟩ := h
   have hG := hC X p θ hθ Q hL
@@ -69,6 +76,9 @@ theorem stAdaptB_of (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAda
   obtain ⟨ψ, hψs, hψ1, hψ2⟩ := hG K rfl
   exact ⟨θ, hθ, idxEquiv X, Q, l, hl, h1, h2, K, rfl, ψ, hψs, hψ1, hψ2⟩
 
+/- English proof (translation)
+The claim follows from `parabolic_image_of_adapted X u p (stAdaptB_of X hC u p h)`.
+-/
 theorem parabolic_image_of_basis_adapted (hC : LatCoreX) (u : D.what₂.Word) (p : TypX X) (h : StAdaptQ X u p) :
     ParabolicReductionImage X u p :=
   parabolic_image_of_adapted X u p (stAdaptB_of X hC u p h)

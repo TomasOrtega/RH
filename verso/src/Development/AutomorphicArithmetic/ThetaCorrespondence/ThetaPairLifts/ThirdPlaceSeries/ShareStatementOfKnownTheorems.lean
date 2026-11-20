@@ -27,6 +27,21 @@ namespace GlobalTheory.CovTop.ShareRowsNef
 section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end Weights
+/- English proof (translation)
+Introduce `hX hP hSI hKS hG hQ hSL hDG hS hF hD`. Establish `h1` using `hS`. Establish `h2` using `hF`. Establish `h3` using `hD`. Establish `h4` using `_root_.GlobalTheory.T.size_bounds_for_family_alt hS`.
+
+Establish `h5` using `_root_.GlobalTheory.T.valuation_multiplicity_run_estimate_alt hP hG hQ hSI hKS hSL hDG hS hF`. Establish `h6` using `_root_.GlobalTheory.T.birOn_weightPair_both_components_alt hX hG hQ hSI hP hS`. Unfold `_root_.GlobalTheory.CovTop.SizeCondition at h1`. Unfold `_root_.GlobalTheory.CovTop.FlatDegreeCondition _root_.GlobalTheory.CovTop.CoversCondition at h2`. Unfold `_root_.GlobalTheory.CovTop.CoverDegree _root_.GlobalTheory.CovTop.CoversCondition at h3`.
+
+Unfold `_root_.GlobalTheory.CovTop.CoversCondition at h4 h5 h6`. Establish `all` using `_root_.GlobalTheory.CovTop.ShareRowsNef.lifts_and_alt (_root_.GlobalTheory.CovTop.ShareRowsNef.lifts_and_alt (_root_.GlobalTheory.CovTop.ShareRowsNef.lifts_and_alt (_root_.GlobalTheory.CovTop.ShareRowsNef.lifts_and_alt h1 h2) (_root_.GlobalTheory.CovTop.ShareRowsNef.lifts_and_alt …`. Use `clear h1 h2 h3 h4 h5 h6`. Use `Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY u1 hu Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, ⟨_, ⟨_, ⟨_, hs⟩, _, hfl⟩, _, ⟨_, hdg⟩, _, hB⟩, _, ⟨_, hq⟩, _, hz⟩, _, ⟨_, hv⟩, _, hbi⟩` from `h x hx hle ι p hp i`.
+
+Take `⟨hp1, hq1, hf, hqu, hsa, ⟨w, -, hw⟩, hdom⟩` from `hq hi`. Take `⟨hT, hj, -⟩` from `hz hi Y hY`. Take `⟨-, h0, -, hz1⟩` from `(hs.2.2.2.2.2.2 hi).2 u1 hu`. Take `⟨δ, hδ, hδ2⟩` from `hdg hi Y hY u1 hu`. Take `rfl` from `hqu u1 hu`.
+
+Establish `htw` using `(_root_.GlobalTheory.T.twisted_flat_bundle_ranks hP _ p.T hT _ hp1 hq1 hf hj Y _ _ hY.1 _ (hfl hi Y hY)).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, htw]`. Conclude with `_root_.GlobalTheory.CovTop.ShareRowsNef.nef_share_lower_bound hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hbi hi Y hY Z).1`. Establish `hD2 : (2 : ℝ) ≤ CompHt.dimFlag (dat p i)`.
+
+Rewrite using `[GlobalTheory.CompHS.dimFlag_eq]`. Conclude with `two_le_dimFlag hp1 hq1 hf` after adjusting the coercions. Use `_root_.GlobalTheory.CovTop.ShareRowsNef.nef_share_upper_bound hX hP hSI hKS hG hQ hSL hT hp1 hq1 hf hj Y hY.1 _ (hB hi) hsa (fun Z => (hbi hi Y hY Z).1) (hv hi Y hY) h0 ?_ (uM p i) (fun τ => ?_) (fun τ => ?_) Z (hδ.trans_le (hδ2 Z).1)` and prove the remaining obligations. Unfold `zed at hz1`. Establish `: 0 ≤ (CompHt.dimFlag (dat p i) : ℝ) ^ 2 / lenT p i (Fm.parT x hx ι).PP` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hD2 h0]`. Simplify using `using (hdom 0 (by norm_num) τ).1`. Simplify using `using (hdom 0 (by norm_num) τ).2`.
+-/
 theorem share_alt_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →
     GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative →
     _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition := by
@@ -78,6 +93,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt | exact _root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.share_of_deep_good_size_flat_deg_cover_degree : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition := by
   first | exact @_root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt | exact _root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.ShareRowsNef.share_alt_alt <;> assumption)
 end

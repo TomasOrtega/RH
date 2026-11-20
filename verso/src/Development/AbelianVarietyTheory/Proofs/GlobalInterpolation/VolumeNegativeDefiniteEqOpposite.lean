@@ -29,6 +29,11 @@ def stabEquiv (g' : G') : stab Γ K (φ.symm g') ≃ stab Γ' K' g' where
   right_inv γ := by ext; simp
 
 include hΓ hK in
+/- English proof (translation)
+Use `⟨fun x => ?_, fun i j γ γ' k k' h => ?_, fun i => ?_, fun i => Nat.card_congr (stabEquiv φ hΓ hK (g' i))⟩` and prove the remaining obligations. Take `⟨i, γ, k, hx⟩` from `hcov (φ x)`. Use `⟨i, ⟨φ.symm γ, (hΓ _).mpr (by simpa using γ.2)⟩, ⟨φ.symm k, (hK _).mpr (by simpa using k.2)⟩, ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Simplify using `[map_mul, hx]`.
+
+Use `hdisj i j ⟨φ γ, (hΓ _).mp γ.2⟩ ⟨φ γ', (hΓ _).mp γ'.2⟩ ⟨φ k, (hK _).mp k.2⟩ ⟨φ k', (hK _).mp k'.2⟩ ?_` and prove the remaining obligations. Use `congrArg φ h` as an intermediate fact. Simplify `this` using `[map_mul]`. Use `(hfin i).to_subtype` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp (Finite.of_equiv _ (stabEquiv φ hΓ hK (g' i)).symm)`.
+-/
 theorem transport {ι : Type*} (g' : ι → G')
     (hcov : ∀ x : G', ∃ i, ∃ γ : Γ', ∃ k : K', x = (γ : G') * g' i * k)
     (hdisj : ∀ i j (γ γ' : Γ') (k k' : K'), (γ : G') * g' i * k = (γ' : G') * g' j * k' → i = j)
@@ -52,6 +57,23 @@ end GlobalTheory.NegVol
 
 namespace GlobalTheory.NegVol
 
+/- English proof (translation)
+Introduce `D hT W n hW hsig`. Use `set W' := GlobalTheory.NegSpace.neg W with hW'def`. Establish `hW' : W'.SigOK` using `GlobalTheory.T.hermitianSpaceOppositeForm_signatureCondition _ W hW`. Establish `hn : n = W.rank`. Use `Formalism.BasicNotions.sig_sum W hW D.host.φ₀` as an intermediate fact.
+
+Rewrite `this` using `[hsig]`. Simplify using `using this`. Establish `hsig' : ∀ τ, W'.sig τ = (W'.rank, 0)`. Introduce `τ`. Rewrite using `[GlobalTheory.NegSpace.neg_sig, hsig τ, GlobalTheory.NegSpace.neg_rank, ← hn]`.
+
+Take `⟨⟨μ, hμ⟩, hall⟩` from `hT W 0 n hW hsig`. Take `⟨⟨𝓕, h𝓕⟩, hF⟩` from `hall μ hμ`. Take `⟨⟨μ', hμ'⟩, hall'⟩` from `hT W' W'.rank 0 hW' hsig'`. Take `⟨⟨𝓕', h𝓕'⟩, hF'⟩` from `hall' μ' hμ'`. Take `⟨φ, -, hΓ, hS⟩` from `GlobalTheory.T.unitaryGroup_neg_form_compatible D.host.F D.host.E D.sp.cm.sig W.rank W.gram (-W.gram) rfl`.
+
+Take `⟨m, g', hcov', hdisj', -⟩` from `GlobalTheory.T.lattice_stabilizer_doubleCosets_classRest_mass D W' hW' hsig'`. Establish `hfin' : ∀ i, (Unfold.stab (GamA D W') (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W')) (g' i)).Finite` using `fun i => StabFin.stab_finite W' D.sp.cm.sig (fun _ => rfl) (fun τ => D.sp.cm.cmUnram.2.1 τ) hW' hsig' _ (fun k hk y hy => (hk y).mp hy) (g' i)`. Take `⟨hcov, hdisj, hfin, hcard⟩` from `transport φ.toMulEquiv (Γ := GamA D W) (K := StabFin.SFin D.sp.cm.sig W.gram (L0c D W)) (Γ' := (GamA D W' : Subgroup (HA (AF D.host.F) D.sp.cm.sig (-W.gram)))) (K' := (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W') : Subgroup (HA (AF D.host.F) D.sp.cm.sig (-W.gram)))) hΓ (hS _) g' h …`. Establish `hK1 : μ (StabFin.SFin D.sp.cm.sig W.gram (L0c D W) : Set _) = 1` using `GlobalTheory.T.negDefinite_selfDualStabilizer_volume_one D W n hW hsig μ hμ`. Take `⟨θ, hθ⟩` from `hμ'.2.1`.
+
+Take `⟨A, hA⟩` from `(hμ'.2.2 θ hθ).1`. Establish `hK1' : μ' (StabFin.SFin D.sp.cm.sig W'.gram (L0c D W') : Set _) = 1`. Establish `hK : KSub D W' W'.rank 0 θ A = StabFin.SFin D.sp.cm.sig W'.gram (L0c D W')` using `SetLike.coe_injective (StabFin.KSub_eq D W' hW' hsig' θ hθ A hA)`. Rewrite using `[← hK]`. Conclude with `measure_KSub D W' W'.rank μ' hμ' θ hθ A hA`.
+
+Use `Unfold.borelHA D.sp.cm.sig W.gram` as an intermediate fact. Use `Unfold.borelHA D.sp.cm.sig W'.gram` as an intermediate fact. Use `haveI := hμ.1`. Use `haveI := hμ'.1`. Use `haveI := Unfold.measurableMulHA D.sp.cm.sig W.gram`.
+
+Use `haveI := Unfold.measurableMulHA D.sp.cm.sig W'.gram`. Use `haveI : Countable (GamA D W) := Unfold.countableGamma D.sp.cm.sig W.gram`. Use `haveI : Countable (GamA D W') := Unfold.countableGamma D.sp.cm.sig W'.gram`. Establish `e` using `Unfold.measure_fd_toReal μ (StabFin.isOpen_SFin W D.sp.cm.sig).measurableSet hK1 _ hcov hdisj hfin h𝓕`. Establish `e'` using `Unfold.measure_fd_toReal μ' (StabFin.isOpen_SFin W' D.sp.cm.sig).measurableSet hK1' g' hcov' hdisj' hfin' h𝓕'`.
+
+Rewrite `e` using `[hF 𝓕 h𝓕, ENNReal.toReal_ofReal (D.vol_pos W).le]`. Rewrite `e'` using `[hF' 𝓕' h𝓕', ENNReal.toReal_ofReal (D.vol_pos W').le]`. Rewrite using `[e, e']`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (fun k : ℕ => ((k : ℝ))⁻¹) (hcard i)`.
+-/
 theorem vol_neg_eq : ∀ D : D7, VolTie D → ∀ (W : HSpace D.host.E) (n : ℕ), W.SigOK → (∀ τ, W.sig τ = (0, n)) →
     D.vol W = D.vol (GlobalTheory.NegSpace.neg W) := by
   intro D hT W n hW hsig

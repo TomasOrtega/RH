@@ -8,6 +8,25 @@ open AlgebraicGeometry CategoryTheory Limits TopologicalSpace ReciprocityTheory.
 
 namespace GlobalTheory.ProjBlowup
 
+/- English proof (translation)
+Establish `: IsProper (PSpace.str R m)` using `isProper_str R m`. Establish `: LocallyOfFiniteType s`. Take `⟨n, i, hi, rfl⟩` from `hs`. Use `isProper_str R n` as an intermediate fact. Use `infer_instance`.
+
+Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Set `U : X.Opens` to `J.support.compl`. Establish `hU : ∀ x : U.toScheme, U.ι x ∉ J.support` using `fun x => x.2`. Establish `htop : ∀ {W : Scheme.{0}} (g : W ⟶ X), (∀ w, g w ∉ J.support) → J.comap g = ⊤` using `fun g hg => eq_top_of_forall_notMem _ fun w hw => hg w ((mem_support_comap J g w).1 hw)`. Take `⟨φ, hφ, hφσ⟩` from `GlobalTheory.T.exists_proj_map_proportional_sections R X U _ L m σ U.ι (U.ι ≫ s) (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ U.ι hσ) (by rw [htop _ hU]; exact effCartier_top _)`.
+
+Set `b` to `graphClosure.fst s (PSpace.str R m) U.ι φ hφ.symm`. Set `c` to `graphClosure.snd s (PSpace.str R m) U.ι φ hφ.symm`. Set `j` to `graphClosure.incl s (PSpace.str R m) U.ι φ hφ.symm`. Establish `hjb : j ≫ b = U.ι` using `graphClosure.incl_fst ..`. Establish `hjc : j ≫ c = φ` using `graphClosure.incl_snd ..`.
+
+Establish `hbc : Proportional σ b c` using `.of_comp j (by rwa [hjb, hjc])`. Establish `hc : b ≫ s = c ≫ PSpace.str R m` using `graphClosure.condition ..`. Establish `hι : pullback.lift b c hc = graphClosure.ι s (PSpace.str R m) U.ι φ hφ.symm`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst]`.
+
+Both sides reduce to the same expression. Rewrite using `[pullback.lift_snd]`. Both sides reduce to the same expression. Use `⟨_, b, c, hc, ⟨GlobalTheory.T.effCartier_of_proportional_sections R X _ U _ L m σ b c j (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ b hσ) hbc inferInstance inferInstance fun t => ?_, fun W g hg => ?_⟩, hbc, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_comap, ← Scheme.Hom.comp_apply, hjb]`.
+
+Conclude with `hU t`. Take `⟨ψ, hψ, hψσ⟩` from `GlobalTheory.T.exists_proj_map_proportional_sections R X W _ L m σ g (g ≫ s) (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ g hσ) hg`. Establish `hd` using `GlobalTheory.T.isSchemeTheoreticallyDominant_compl_effCartier W _ hg`. Set `d` to `Scheme.Opens.ι (X := W) (J.comap g).support.compl`. Establish `hdU : ∀ t, (d ≫ g) t ∉ J.support` using `fun t ht => t.2 ((mem_support_comap J g _).2 ht)`.
+
+Set `w` to `IsOpenImmersion.lift U.ι (d ≫ g) (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `⟨⟨_, hdU t⟩, rfl⟩)`. Establish `hw : w ≫ U.ι = d ≫ g` using `IsOpenImmersion.lift_fac ..`. Establish `hw' : d ≫ ψ = w ≫ φ` using `GlobalTheory.T.eq_of_proportional_to_generating_sections R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ) (by rw [Category.assoc, hψ, Category.assoc, hφ, reassoc_of% hw]) (hψσ.comp d) (hw ▸ hφσ.comp w)`.
+
+Establish `key : ∀ h : W ⟶ _, h ≫ b = g → d ≫ h = w ≫ j` using `fun h hh => by`. Establish `H` using `graphClosure.isPullback_incl s (PSpace.str R m) U.ι φ hφ.symm`. Establish `e : w ≫ U.ι = (d ≫ h) ≫ b` using `by rw [hw, Category.assoc, hh]`. Establish `h1` using `H.lift_fst w (d ≫ h) e`. Rewrite `h1` using `[Category.comp_id]`.
+
+Rewrite using `[← H.lift_snd w (d ≫ h) e, h1]`. Establish `hl` using `graphClosure.lift_fst s (PSpace.str R m) U.ι φ hφ.symm g ψ hψ.symm d w hw.symm hw'`. Conclude with `⟨_, hl, fun h hh => hom_ext_of_isSchemeTheoreticallyDominant d b ((key h hh).trans (key _ hl).symm) (hh.trans hl.symm)⟩`. Rewrite using `[hι]`. Use `infer_instance`.
+-/
 theorem exists_blowup_graph {R : Type} [CommRing R] [IsNoetherianRing R] {X : Scheme.{0}} (s : X ⟶ Sp R)
     (hs : IsProjOver s) (J : X.IdealSheafData) (L : LB X) (m : ℕ) (σ : Fin (m + 1) → L.Sec) (hσ : Generates J σ) :
     ∃ (G : Scheme.{0}) (b : G ⟶ X) (c : G ⟶ PSpace R m) (hc : b ≫ s = c ≫ PSpace.str R m),
@@ -59,6 +78,11 @@ theorem exists_blowup_graph {R : Type} [CommRing R] [IsNoetherianRing R] {X : Sc
       (hh.trans hl.symm)⟩
   · rw [hι]; infer_instance
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `hb₀.2 X' b hb.1`. Take `⟨e', he', -⟩` from `hb.2 G b₀ hb₀.1`. Establish `h1 : e ≫ e' = 𝟙 X'`. Take `⟨_, -, hu⟩` from `hb.2 X' b hb.1`. Rewrite using `[hu (e ≫ e') (by show (e ≫ e') ≫ b = b; rw [Category.assoc, he', he]), hu (𝟙 X') (Category.id_comp _)]`.
+
+Establish `h2 : e' ≫ e = 𝟙 G`. Take `⟨_, -, hu⟩` from `hb₀.2 G b₀ hb₀.1`. Rewrite using `[hu (e' ≫ e) (by show (e' ≫ e) ≫ b₀ = b₀; rw [Category.assoc, he, he']), hu (𝟙 G) (Category.id_comp _)]`. Conclude with `⟨e, ⟨e', h1, h2⟩, he⟩`.
+-/
 theorem exists_iso_of_blowup {X X' G : Scheme.{0}} (J : X.IdealSheafData) (b : X' ⟶ X) (b₀ : G ⟶ X)
     (hb : FinalTheorems.Blowup b J) (hb₀ : FinalTheorems.Blowup b₀ J) : ∃ e : X' ⟶ G, IsIso e ∧ e ≫ b₀ = b := by
   obtain ⟨e, he, -⟩ := hb₀.2 X' b hb.1
@@ -71,6 +95,13 @@ theorem exists_iso_of_blowup {X X' G : Scheme.{0}} (J : X.IdealSheafData) (b : X
     rw [hu (e' ≫ e) (by show (e' ≫ e) ≫ b₀ = b₀; rw [Category.assoc, he, he']), hu (𝟙 G) (Category.id_comp _)]
   exact ⟨e, ⟨e', h1, h2⟩, he⟩
 
+/- English proof (translation)
+Introduce `R _ _ X X' s J b L₀ m σ hs hb hσ`. Take `⟨G, b₀, c₀, hc₀, hb₀, hp₀, hi₀⟩` from `exists_blowup_graph s hs J L₀ m σ hσ`. Take `⟨e, he, heb⟩` from `exists_iso_of_blowup J b b₀ hb hb₀`. Establish `hc : b ≫ s = (e ≫ c₀) ≫ PSpace.str R m` using `by rw [← heb, Category.assoc, Category.assoc, hc₀]`. Establish `hp : Proportional σ b (e ≫ c₀)` using `heb ▸ hp₀.comp e`.
+
+Establish `hl : pullback.lift b (e ≫ c₀) hc = e ≫ pullback.lift b₀ c₀ hc₀`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, pullback.lift_fst, heb]`. Rewrite using `[pullback.lift_snd, Category.assoc, pullback.lift_snd]`. Use `⟨e ≫ c₀, hc, hp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hl]`. Use `infer_instance`.
+-/
 theorem exists_closedImmersion_of_generates : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X X' : Scheme.{0})
     (s : X ⟶ Sp R) (J : X.IdealSheafData)
     (b : X' ⟶ X) (L₀ : LB X) (m : ℕ) (σ : Fin (m + 1) → L₀.Sec), IsProjOver s → FinalTheorems.Blowup b J →

@@ -19,6 +19,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ArchSch GlobalTheory.ArchSchB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairX.dotProduct_J_c_eq_neg_of_pairing | exact GlobalTheory.PairX.dotProduct_J_c_eq_neg_of_pairing | (intros; apply GlobalTheory.PairX.dotProduct_J_c_eq_neg_of_pairing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.symplectic_pairing_adapted_formula : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d n₁ : ℕ} (X : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ) (JW : Matrix (Fin d) (Fin d) E),
     B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B X X₁ i₀ i₁ →

@@ -12,6 +12,9 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.AnisoRange
 
+/- English proof (translation)
+Use `haveI := V.fd`. Use `⟨Module.finrank D.host.E V.V, ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨W, rfl, -⟩`. Conclude with `Submodule.finrank_le W`.
+-/
 theorem bddAbove_isotropic_dims {D : D7} (V : HSp D) :
     BddAbove {k | ∃ W : Submodule D.host.E V.V, Module.finrank D.host.E W = k ∧ ∀ x ∈ W, ∀ y ∈ W, V.hT x y = 0} := by
   haveI := V.fd
@@ -19,6 +22,9 @@ theorem bddAbove_isotropic_dims {D : D7} (V : HSp D) :
   rintro k ⟨W, rfl, -⟩
   exact Submodule.finrank_le W
 
+/- English proof (translation)
+Use `le_csSup (bddAbove_isotropic_dims V) ⟨Submodule.span D.host.E {v}, finrank_span_singleton hv, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Simplify using `[h]`.
+-/
 theorem one_le_wittIdx {D : D7} (V : HSp D) {v : V.V} (hv : v ≠ 0) (h : V.hT v v = 0) :
     1 ≤ Formalism.MainNotions.SchurIrreducible.wittIdx V := by
   refine le_csSup (bddAbove_isotropic_dims V) ⟨Submodule.span D.host.E {v}, finrank_span_singleton hv, ?_⟩
@@ -27,6 +33,11 @@ theorem one_le_wittIdx {D : D7} (V : HSp D) {v : V.V} (hv : v ≠ 0) (h : V.hT v
   obtain ⟨b, rfl⟩ := Submodule.mem_span_singleton.1 hy
   simp [h]
 
+/- English proof (translation)
+Establish `hσ : ∀ a : D.host.E, ((D.sp.cm.sig : D.host.E →ₐ[D.host.F] D.host.E) : D.host.E →+* D.host.E) a = star a` using `fun _ => rfl`. Simplify using `only [Module.Basis.equivFun_symm_apply, HeckeCharacterZeroLocus.SiegelWeilU.hE, HeckeCharacterZeroLocus.SiegelWeilU.hform, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, hσ, HSpace.gram]`. Simplify using `only [starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_coord {D : D7} (V : HSp D) (x : Fin V.rank → D.host.E) :
     V.hT (V.frame.equivFun.symm x) (V.frame.equivFun.symm x) =
       HeckeCharacterZeroLocus.SiegelWeilU.hE D.sp.cm.sig (HSpace.gram V) x x := by
@@ -41,6 +52,11 @@ theorem hT_coord {D : D7} (V : HSp D) (x : Fin V.rank → D.host.E) :
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce and unpack `D n V ⟨h1, -, h3⟩`. Distinguish the cases in `h : n + 2 ≤ V.rank`. Conclude with `Or.inl h`. Use `Or.inr fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hv : V.frame.equivFun.symm x ≠ 0` using `fun h0 => hne ((map_eq_zero_iff _ V.frame.equivFun.symm.injective).1 h0)`. Use `one_le_wittIdx V hv ((hT_coord V x).trans hx)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem anisoOfRange : PositivityTheory.PfSWUS.AnisoOfRange := by
   rintro D n V ⟨h1, -, h3⟩
   by_cases h : n + 2 ≤ V.rank

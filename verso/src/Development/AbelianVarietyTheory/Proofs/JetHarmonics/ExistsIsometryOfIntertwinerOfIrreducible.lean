@@ -4,6 +4,25 @@ namespace GlobalTheory
 
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial V₁ with hV | hV` into its components or cases. Use `⟨⟨T, fun v => ?_⟩, hT⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v 0]`. Simplify using the standard rewrite rules. Set `p₁ : ι → (V₁ →ₗᵢ[ℂ] V₁)` to `fun i => ⟨(π₁ i : V₁ →ₗ[ℂ] V₁), h₁ i⟩`.
+
+Set `p₂ : ι → (V₂ →ₗᵢ[ℂ] V₂)` to `fun i => ⟨(π₂ i : V₂ →ₗ[ℂ] V₂), h₂ i⟩`. Establish `i₁ : ∀ i a b, ⟪π₁ i a, π₁ i b⟫_ℂ = ⟪a, b⟫_ℂ` using `fun i a b => (p₁ i).inner_map_map a b`. Establish `i₂ : ∀ i a b, ⟪π₂ i a, π₂ i b⟫_ℂ = ⟪a, b⟫_ℂ` using `fun i a b => (p₂ i).inner_map_map a b`. Establish `s₁ : ∀ i, Function.Surjective (π₁ i)` using `fun i => (LinearMap.injective_iff_surjective (f := (π₁ i : V₁ →ₗ[ℂ] V₁))).1 (p₁ i).injective`. Set `X : Module.End ℂ V₁` to `(LinearMap.adjoint (T : V₁ →ₗ[ℂ] V₂)).comp (T : V₁ →ₗ[ℂ] V₂)`.
+
+Establish `hX : ∀ a b, ⟪X a, b⟫_ℂ = ⟪T a, T b⟫_ℂ` using `fun a b => LinearMap.adjoint_inner_left (T : V₁ →ₗ[ℂ] V₂) b (T a)`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue X`. Establish `htop : X.eigenspace c = ⊤`. Use `(hirr _ ?_).resolve_left hc` and prove the remaining obligations. Introduce `i v hv`.
+
+Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Use `ext_inner_right ℂ fun u => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `s₁ i u`. Rewrite using `[hX, hT, hT, i₂, ← hX, hv, ← map_smul, i₁]`. Establish `hall : ∀ v, ‖T v‖ = Real.sqrt ‖c‖ * ‖v‖`.
+
+Introduce `v`. Establish `hv : X v = c • v` using `Module.End.mem_eigenspace_iff.1 (htop ▸ Submodule.mem_top)`. Establish `h` using `hX v v`. Rewrite `h` using `[hv, inner_smul_left]`. Establish `h'` using `congrArg norm h`.
+
+Rewrite `h'` using `[norm_mul, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Simplify using `only [RCLike.norm_conj, norm_pow, RCLike.norm_ofReal, abs_norm, norm_norm, Complex.coe_algebraMap, Complex.norm_real] at h'`. Establish `e : ‖T v‖ ^ 2 = (Real.sqrt ‖c‖ * ‖v‖) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt (norm_nonneg c), h']`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 e`.
+
+Establish `hr : Real.sqrt ‖c‖ ≠ 0`. Introduce `h0`. Take `⟨v, hv⟩` from `exists_ne (0 : V₁)`. Use `hall v` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, norm_eq_zero]`.
+
+Conclude with `hv (T.map_eq_zero_iff.1 this)`. Establish `hr' : (((Real.sqrt ‖c‖)⁻¹ : ℝ) : ℂ) ≠ 0`. Conclude with `inv_ne_zero hr` after adjusting the coercions. Use `⟨⟨T.trans (LinearEquiv.smulOfNeZero ℂ V₂ _ hr'), fun v => ?_⟩, fun i v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(((Real.sqrt ‖c‖)⁻¹ : ℝ) : ℂ) • T v‖ = ‖v‖`.
+
+Rewrite using `[norm_smul, hall, Complex.norm_real, Real.norm_of_nonneg (by positivity), ← mul_assoc, inv_mul_cancel₀ hr, one_mul]`. Express the relevant statement in the definitionally equal form `(((Real.sqrt ‖c‖)⁻¹ : ℝ) : ℂ) • T (π₁ i v) = π₂ i ((((Real.sqrt ‖c‖)⁻¹ : ℝ) : ℂ) • T v)`. Rewrite using `[hT, map_smul]`.
+-/
 theorem exists_isometry_of_intertwiner_of_irreducible
     (V₁ : Type) [NormedAddCommGroup V₁] [InnerProductSpace ℂ V₁] [FiniteDimensional ℂ V₁]
     (V₂ : Type) [NormedAddCommGroup V₂] [InnerProductSpace ℂ V₂] [FiniteDimensional ℂ V₂]

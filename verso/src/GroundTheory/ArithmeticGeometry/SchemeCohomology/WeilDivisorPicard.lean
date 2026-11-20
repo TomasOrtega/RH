@@ -20,10 +20,18 @@ noncomputable def weilDivisorToPic : WeilDivisor X →+ Additive (Pic X) where
     congr 1
     exact (Pic.mk_eq_mk_iff _ _).mpr ⟨(divisorTensorIso D E).symm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma weilDivisorToPic_apply (D : WeilDivisor X) :
     weilDivisorToPic D =
       Additive.ofMul (Pic.mk (divisorSheaf D) (isInvertibleSheaf_divisorSheaf D)) := rfl
 
+/- English proof (translation)
+Use extensionality with `D`. Rewrite using `[AddMonoidHom.mem_ker, weilDivisorToPic_apply, ofMul_eq_zero, Pic.mk_eq_one_iff, ← sub_zero D, ← nonempty_divisorSheaf_iso_iff, sub_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e⟩`. Conclude with `⟨e ≪≫ divisorSheafZeroIso⟩`.
+
+Introduce and unpack `⟨e⟩`. Conclude with `⟨e ≪≫ divisorSheafZeroIso.symm⟩`.
+-/
 theorem ker_weilDivisorToPic : (weilDivisorToPic (X := X)).ker = principalDivisors X := by
   ext D
   rw [AddMonoidHom.mem_ker, weilDivisorToPic_apply, ofMul_eq_zero, Pic.mk_eq_one_iff,
@@ -34,6 +42,11 @@ theorem ker_weilDivisorToPic : (weilDivisorToPic (X := X)).ker = principalDiviso
   · rintro ⟨e⟩
     exact ⟨e ≪≫ divisorSheafZeroIso.symm⟩
 
+/- English proof (translation)
+Introduce `p`. Take `⟨L, hL, hp⟩` from `Pic.exists_mk (Additive.toMul p)`. Take `⟨D, ⟨e⟩⟩` from `exists_iso_divisorSheaf hL`. Use `⟨D, ?_⟩` and prove the remaining obligations. Rewrite using `[weilDivisorToPic_apply, ← ofMul_toMul p, ← hp]`.
+
+Use `congr 1`. Conclude with `(Pic.mk_eq_mk_iff _ hL).mpr ⟨e.symm⟩`.
+-/
 theorem weilDivisorToPic_surjective : Function.Surjective (weilDivisorToPic (X := X)) := by
   intro p
   obtain ⟨L, hL, hp⟩ := Pic.exists_mk (Additive.toMul p)

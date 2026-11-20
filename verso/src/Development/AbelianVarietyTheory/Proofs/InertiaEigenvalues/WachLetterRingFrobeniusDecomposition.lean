@@ -8,6 +8,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.NL.PhiDec
 
+/- English proof (translation)
+Introduce `D HW l _ K s LL h W a`. Take `⟨χ, -, hφ, -⟩` from `GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h`. Take `⟨hdvr, hcomp, hl0, hlu, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Use `choose z hz using fun i : Let K => (GlobalTheory.Cyc.phi_free l ↥(OL LL) hl0 hlu (a i)).exists`. Use `⟨fun j i => z (i + 1) j, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Establish `hi : a i = a (i - 1 + 1)` using `by rw [sub_add_cancel]`. Rewrite using `[hi, hz]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.mul_apply, LocWach.φA, letφ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply]`. Use `show _ = _ * ((HW l).W K s LL h).φ₀ _`. Rewrite using `[hφ]`.
+-/
 theorem phi_dec : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ a : AA K LL, ∃ c : Fin l → AA K LL, a = ∑ j : Fin l, (fun _ => ((1 : PowerSeries ↥(OL LL)) + PowerSeries.X) ^ (j : ℕ) : AA K LL) * W.φA (c j) := by
   intro D HW l _ K s LL h W a
   obtain ⟨χ, -, hφ, -⟩ := GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h

@@ -8,6 +8,9 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Xgp.t_top_flh`.
+-/
 theorem flagHeight_holds : FlagHeight := PositivityTheory.Xgp.t_top_flh
 
 end GlobalTheory.CompanionTheory.Ar.PB

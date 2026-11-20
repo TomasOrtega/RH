@@ -11,6 +11,31 @@ namespace GlobalTheory.HilbTensorUnitary
 
 open GlobalTheory.HilbTensorRep
 
+/- English proof (translation)
+Establish `h1 : σs 1 = 1`. Apply `ext_op hd` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+
+Establish `hmul : ∀ a b, σs (a * b) = (σs a).comp (σs b)`. Introduce `a b`. Apply `ext_op hd` to reduce the goal to its premises. Introduce `x`. Rewrite using `[ContinuousLinearMap.comp_apply, hs, hs, hs]`.
+
+Simplify using `[Pi.mul_apply, map_mul, ContinuousLinearMap.mul_apply]`. Establish `hnorm : ∀ g u, ‖σs g u‖ = ‖u‖`. Introduce `g u`. Establish `key : ⟪σs g u, σs g u⟫_ℂ = ⟪u, u⟫_ℂ`. Rewrite using `[← inner_inv hi hd hs hn g (σs g u) u, ← ContinuousLinearMap.comp_apply, ← hmul, inv_mul_cancel, h1, ContinuousLinearMap.one_apply]`.
+
+Establish `h2 : ‖σs g u‖ ^ 2 = ‖u‖ ^ 2`. Rewrite using `[norm_sq_eq_re_inner (𝕜 := ℂ), norm_sq_eq_re_inner (𝕜 := ℂ), key]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`. Set `S : Submodule ℂ Hs` to `{ carrier := {u | Continuous fun g => σs g u} add_mem' := fun {a b} ha hb => by show Continuous fun g => σs g (a + b)`. Simplify using `only [map_add]`.
+
+Conclude with `ha.add hb`. Use the proof step `zero_mem' := by show Continuous fun g => σs g 0`. Simplify using `only [map_zero]`. Conclude with `continuous_const`. Use the proof step `smul_mem' := fun c a ha => by show Continuous fun g => σs g (c • a)`.
+
+Simplify using `only [map_smul]`. Conclude with `ha.const_smul c }`. Establish `hmemS : ∀ u, u ∈ S ↔ Continuous fun g => σs g u` using `fun u => Iff.rfl`. Establish `htens : ∀ x, tens x ∈ S`. Introduce `x`.
+
+Rewrite using `[hmemS]`. Establish `e : (fun g => σs g (tens x)) = fun g => tens fun i => π i (g i) (x i)`. Use function extensionality and compare the values at `g`. Conclude with `hs g x`. Rewrite using `[e]`.
+
+Conclude with `(continuous_tens hi).comp (continuous_pi fun i => (hc i (x i)).comp (continuous_apply i))`. Establish `hclosed : IsClosed (S : Set Hs)`. Apply `isClosed_of_closure_subset` to reduce the goal to its premises. Introduce `u hu`. Use `show Continuous fun g => σs g u`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨b, hb, hub⟩` from `Metric.mem_closure_iff.1 hu (ε / 3) (by positivity)`.
+
+Establish `hbc : Continuous fun g => σs g b` using `hb`. Use `filter_upwards [Metric.tendsto_nhds.1 hbc.continuousAt (ε / 3) (by positivity)] with g hg`. Establish `d1 : dist (σs g u) (σs g b) = dist u b`. Rewrite using `[dist_eq_norm, ← map_sub, hnorm, ← dist_eq_norm]`. Establish `d2 : dist (σs g0 b) (σs g0 u) = dist u b`.
+
+Rewrite using `[dist_eq_norm, ← map_sub, hnorm, ← dist_eq_norm, dist_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hall : ∀ u, u ∈ S`. Introduce `u`. Establish `hle : (Submodule.span ℂ (Set.range tens) : Set Hs) ⊆ S` using `Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact htens x)`.
+
+Establish `hcl` using `closure_minimal hle hclosed`. Rewrite `hcl` using `[hd.closure_eq]`. Conclude with `hcl (Set.mem_univ u)`. Conclude with `⟨h1, hmul, hnorm, fun u => hall u⟩`.
+-/
 theorem isURep_tensor {ι : Type} [Fintype ι] {H : ι → Type} [∀ i, NormedAddCommGroup (H i)]
     [∀ i, InnerProductSpace ℂ (H i)] {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
     {tens : (∀ i, H i) → Hs} {G : ι → Type} [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)]
@@ -92,6 +117,9 @@ theorem isURep_tensor {ι : Type} [Fintype ι] {H : ι → Type} [∀ i, NormedA
     exact hcl (Set.mem_univ u)
   exact ⟨h1, hmul, hnorm, fun u => hall u⟩
 
+/- English proof (translation)
+Introduce `B hB`. Establish `hmem : ∀ v (g : Formalism.REAL.UJ (B.I.ε v)), uMat g ∈ UJset (B.I.ε v)` using `fun v g => g.2`. Establish `hcu : ∀ v, Continuous fun g : Formalism.REAL.UJ (B.I.ε v) => uMat g` using `fun v => Units.continuous_val.comp continuous_subtype_val`. Conclude with `isURep_tensor (H := B.H) (tens := B.tens) (π := fun v => { toFun := fun g => B.σ v (uMat g) map_one' := (hB v).1.1 map_mul' := fun a b => (hB v).1.2 _ (hmem v a) _ (hmem v b) }) B.tens_spec.1 B.tens_spec.2.2 (fun g x => B.tens_spec.2.1 g x) (fun v g a => (hB v).2.1 _ (hmem v g) a …`.
+-/
 theorem isURep_rows :
     ∀ B : RowsAut, (∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)) → IsURep B.σs := by
   intro B hB

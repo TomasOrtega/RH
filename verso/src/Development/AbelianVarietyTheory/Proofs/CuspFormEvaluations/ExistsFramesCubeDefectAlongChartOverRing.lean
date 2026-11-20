@@ -20,6 +20,11 @@ section Alg
 
 variable {S Ix : Type} [CommRing S]
 
+/- English proof (translation)
+Use `⟨m + 1, le_bot_iff.1 ?_⟩` and prove the remaining obligations. Establish `h1 : I ≤ Ideal.map (Ideal.Quotient.mk (orig S Ix ^ (m + 1))) (orig S Ix)`. Introduce `a ha`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `Ideal.mem_map_of_mem _ (h p ha)`.
+
+Use `(Ideal.pow_right_mono h1 _).trans ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+-/
 theorem nilpotent_of_le (m : ℕ) (I : Ideal (Jet S Ix m))
     (h : ∀ p : MvPolynomial Ix S, Ideal.Quotient.mk _ p ∈ I → p ∈ orig S Ix) : IsNilpotent I := by
   refine ⟨m + 1, le_bot_iff.1 ?_⟩
@@ -30,21 +35,33 @@ theorem nilpotent_of_le (m : ℕ) (I : Ideal (Jet S Ix m))
   refine (Ideal.pow_right_mono h1 _).trans ?_
   rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
+/- English proof (translation)
+Introduce `a`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨Ideal.Quotient.mk _ p, rfl⟩`.
+-/
 theorem trunc_surj (m : ℕ) :
     Function.Surjective ((jetTrunc : Jet S Ix (m + 1) →ₐ[S] Jet S Ix m) : Jet S Ix (m + 1) →+* Jet S Ix m) := by
   intro a
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a
   exact ⟨Ideal.Quotient.mk _ p, rfl⟩
 
+/- English proof (translation)
+The claim follows from `nilpotent_of_le _ _ fun p hp => by have : Ideal.Quotient.mk (orig S Ix ^ (m + 1)) p = 0 := hp exact Ideal.pow_le_self (Nat.succ_ne_zero m) (Ideal.Quotient.eq_zero_iff_mem.1 this)`.
+-/
 theorem trunc_nil (m : ℕ) : IsNilpotent
     (RingHom.ker ((jetTrunc : Jet S Ix (m + 1) →ₐ[S] Jet S Ix m) : Jet S Ix (m + 1) →+* Jet S Ix m)) :=
   nilpotent_of_le _ _ fun p hp => by
     have : Ideal.Quotient.mk (orig S Ix ^ (m + 1)) p = 0 := hp
     exact Ideal.pow_le_self (Nat.succ_ne_zero m) (Ideal.Quotient.eq_zero_iff_mem.1 this)
 
+/- English proof (translation)
+Introduce `a` and use `⟨algebraMap S _ a, (jetAug : Jet S Ix m →ₐ[S] S).commutes a⟩`.
+-/
 theorem aug_surj (m : ℕ) : Function.Surjective ((jetAug : Jet S Ix m →ₐ[S] S) : Jet S Ix m →+* S) :=
   fun a => ⟨algebraMap S _ a, (jetAug : Jet S Ix m →ₐ[S] S).commutes a⟩
 
+/- English proof (translation)
+The claim follows from `nilpotent_of_le _ _ fun p hp => by have h1 : MvPolynomial.aeval (fun _ => (0 : S)) p = 0 := hp have h2 : MvPolynomial.constantCoeff p = 0 := by simpa using h1 simpa [h2] using sub_const_mem_orig p`.
+-/
 theorem aug_nil (m : ℕ) : IsNilpotent (RingHom.ker ((jetAug : Jet S Ix m →ₐ[S] S) : Jet S Ix m →+* S)) :=
   nilpotent_of_le _ _ fun p hp => by
     have h1 : MvPolynomial.aeval (fun _ => (0 : S)) p = 0 := hp
@@ -53,36 +70,57 @@ theorem aug_nil (m : ℕ) : IsNilpotent (RingHom.ker ((jetAug : Jet S Ix m →�
 
 variable (d : ℕ)
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [jetSubstP, jetMap_mk, jetAug_X]`.
+-/
 theorem aug_axis0 (m : ℕ) : (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S).comp (axis0 d m) = jetAug := by
   apply jet_hom_ext
   rintro ⟨i, j⟩
   fin_cases i <;> simp [jetSubstP, jetMap_mk, jetAug_X]
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [jetSubstP, jetMap_mk, jetAug_X]`.
+-/
 theorem aug_axis1 (m : ℕ) : (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S).comp (axis1 d m) = jetAug := by
   apply jet_hom_ext
   rintro ⟨i, j⟩
   fin_cases i <;> simp [jetSubstP, jetMap_mk, jetAug_X]
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression.
+-/
 theorem trunc_axis0 (m : ℕ) : (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _).comp (axis0 d (m + 1)) =
     (axis0 d m).comp (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] _) := by
   apply jet_hom_ext
   intro p
   rfl
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression.
+-/
 theorem trunc_axis1 (m : ℕ) : (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _).comp (axis1 d (m + 1)) =
     (axis1 d m).comp (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] _) := by
   apply jet_hom_ext
   intro p
   rfl
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression.
+-/
 theorem aug_trunc (m : ℕ) : (jetAug : Jet S Ix m →ₐ[S] S).comp (jetTrunc : Jet S Ix (m + 1) →ₐ[S] _) = jetAug := by
   apply jet_hom_ext
   intro p
   rfl
 
+/- English proof (translation)
+Rewrite using `[mul_right_comm a, mul_inv_cancel, _root_.one_mul, inv_mul_cancel]`.
+-/
 theorem cancel₀ {U : Type} [CommGroup U] (a b : U) : a * b⁻¹ * a⁻¹ * b = 1 := by
   rw [mul_right_comm a, mul_inv_cancel, _root_.one_mul, inv_mul_cancel]
 
+/- English proof (translation)
+Rewrite using `[mul_inv_cancel, _root_.one_mul, inv_mul_cancel]`.
+-/
 theorem cancel₁ {U : Type} [CommGroup U] (a b : U) : a * a⁻¹ * b⁻¹ * b = 1 := by
   rw [mul_inv_cancel, _root_.one_mul, inv_mul_cancel]
 
@@ -92,6 +130,11 @@ section Geo
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
 
+/- English proof (translation)
+Take `⟨e, he, hv⟩` from `exists_gen t.PP.isLB (φ' := cφG t ![p, q]) (ε' := cε 2) (fun U _ h => by`. Establish `hc` using `prod_cube2 t.G (fun w : T ⟶ t.G => h w.left) ![p, q]`. Use `Eq.trans ?_ hc.symm` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, ← Over.comp_left, h₁, h₂, h₀, Matrix.cons_val_zero, Matrix.cons_val_one, _root_.mul_one, zpow_neg, zpow_one]`. Use the proof step `ac_rfl)`.
+
+Use the proof step `(LB.mulGen t.PP.L _ _ _ _ (LB.mulGen t.PP.L _ _ _ _ (LB.mulGen t.PP.L _ _ _ _ g₁ (LB.invGen t.PP.L _ _ (LB.pullGen t.PP.L _ _ g₁ s₁.left))) (LB.invGen t.PP.L _ _ (LB.pullGen t.PP.L _ _ g₁ s₂.left))) (LB.pullGen t.PP.L _ _ g₁ s₀.left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ hg₁ (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hg₁ _))) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hg₁ _))) (DVR.pullGen_isGen _ _ _ _ hg₁ _))`. Use `⟨e, he, fun Z r z J hJ => (hv Z r z J hJ).trans ?_⟩` and prove the remaining obligations. Rewrite using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_pull hJ, val_pull hJ, val_pull hJ]`.
+-/
 theorem exists_norm {T : Over X0} (p q : T ⟶ t.G) (s₁ s₂ s₀ : T ⟶ T)
     (h₁ : s₁ ≫ (p * q) = p) (h₂ : s₂ ≫ (p * q) = q) (h₀ : s₀ ≫ (p * q) = 1)
     (g₁ : LB.Gen (LB.LinComb t.PP.L (fun _ : PUnit.{1} => (p * q).left) (fun _ => 1))) (hg₁ : g₁.IsGen) :
@@ -116,6 +159,11 @@ theorem exists_norm {T : Over X0} (p q : T ⟶ t.G) (s₁ s₂ s₀ : T ⟶ T)
 
 variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
 
+/- English proof (translation)
+Take `⟨g0, hg0, -⟩` from `GlobalTheory.NilGen.exists_gen_lift_of_isNilpotent t.G.left t.PP.L t.PP.isLB (Jet S Ix 0) S _ (aug_surj 0) (aug_nil 0) PUnit.{1} (fun _ => (P 0).left) (fun _ => 1) PUnit.{1} (fun _ => (overAt x0 S).hom ≫ eSec t.G) (fun _ => 1) (LB.pullGen t.PP.L (fun _ : PUnit.{1} => eSec t.G) (f …`. Use `congrArg Over.Hom.left h0` as an intermediate fact. Conclude with `Finset.prod_congr rfl fun k _ => congrArg (fun w => h w ^ (1 : ℤ)) this)`. Establish `step` using `fun m (g : LB.Gen (LB.LinComb t.PP.L (fun _ : PUnit.{1} => (P m).left) (fun _ => 1))) (hg : g.IsGen) => GlobalTheory.NilGen.exists_gen_lift_of_isNilpotent t.G.left t.PP.L t.PP.isLB (Jet S Ix (m + 1)) (Jet S Ix m) _ (trunc_surj m) (trunc_nil m) PUnit.{1} (fun _ => (P (m + 1)).left …`. Use `congrArg Over.Hom.left (htr m)` as an intermediate fact.
+
+Conclude with `Finset.prod_congr rfl fun k _ => congrArg (fun w => h w ^ (1 : ℤ)) this)`. Use `choose f hf hc using step`. Set `g₁ : ∀ m, {g : LB.Gen (LB.LinComb t.PP.L (fun _ : PUnit.{1} => (P m).left) (fun _ => 1)) // g.IsGen}` to `fun m => Nat.rec ⟨g0, hg0⟩ (fun m g => ⟨f m g.1 g.2, hf m g.1 g.2⟩) m`. Use `⟨fun m => (g₁ m).1, fun m => (g₁ m).2, fun m Z r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).symm.trans (val_corr hJ (hc m (g₁ m).1 (g₁ m).2) r)`.
+-/
 theorem exists_tower {Ix : Type} (P : ∀ m, overAt x0 (Jet S Ix m) ⟶ t.G)
     (h0 : Formalism.L2.Pj.homAt x0 (jetAug : Jet S Ix 0 →ₐ[S] S) ≫ P 0 = 1)
     (htr : ∀ m, Formalism.L2.Pj.homAt x0 (jetTrunc : Jet S Ix (m + 1) →ₐ[S] Jet S Ix m) ≫ P (m + 1) = P m) :
@@ -143,6 +191,33 @@ theorem exists_tower {Ix : Type} (P : ∀ m, overAt x0 (Jet S Ix m) ⟶ t.G)
 
 end Geo
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t S _ x0 d F act κ _ tg uvec x _ _ hch`. Set `c : ∀ m, Fin 2 → (jOG x0 d m 2 ⟶ jOG x0 d m 1)` to `fun m i => Formalism.L2.Pj.homAt x0 (jetCopy d m i)`. Set `a0 : ∀ m, jOG x0 d m 1 ⟶ jOG x0 d m 2` to `fun m => Formalism.L2.Pj.homAt x0 (axis0 d m)`. Set `a1 : ∀ m, jOG x0 d m 1 ⟶ jOG x0 d m 2` to `fun m => Formalism.L2.Pj.homAt x0 (axis1 d m)`. Set `o : ∀ m n, overAt x0 S ⟶ jOG x0 d m n` to `fun m n => Formalism.L2.Pj.homAt x0 jetAug`.
+
+Set `u : ∀ m n, jOG x0 d m n ⟶ overAt x0 S` to `fun m n => Formalism.L2.Pj.homAt x0 (Algebra.ofId S _)`. Set `tr : ∀ m n, jOG x0 d m n ⟶ jOG x0 d (m + 1) n` to `fun m n => Formalism.L2.Pj.homAt x0 jetTrunc`. Establish `a0c0 : ∀ m, a0 m ≫ c m 0 = u m 1 ≫ o m 1` using `fun m => by`. Simplify using `only [a0, c, u, o, homAt_comp, first_axis_at_first_copy]`. Establish `a0c1 : ∀ m, a0 m ≫ c m 1 = 𝟙 _` using `fun m => by`.
+
+Simplify using `only [a0, c, homAt_comp, first_axis_at_second_copy, homAt_id]`. Establish `a1c0 : ∀ m, a1 m ≫ c m 0 = 𝟙 _` using `fun m => by`. Simplify using `only [a1, c, homAt_comp, second_axis_at_first_copy, homAt_id]`. Establish `a1c1 : ∀ m, a1 m ≫ c m 1 = u m 1 ≫ o m 1` using `fun m => by`. Simplify using `only [a1, c, u, o, homAt_comp, second_axis_at_second_copy]`.
+
+Establish `oa0 : ∀ m, o m 1 ≫ a0 m = o m 2` using `fun m => by`. Simplify using `only [a0, o, homAt_comp, aug_axis0]`. Establish `oa1 : ∀ m, o m 1 ≫ a1 m = o m 2` using `fun m => by`. Simplify using `only [a1, o, homAt_comp, aug_axis1]`. Establish `oc : ∀ m i, o m 2 ≫ c m i = o m 1` using `fun m i => by`.
+
+Simplify using `only [c, o, homAt_comp, aug_copy]`. Establish `a0u : ∀ m, a0 m ≫ u m 2 = u m 1` using `fun m => by`. Simplify using `only [a0, u, homAt_comp, Algebra.comp_ofId]`. Establish `a1u : ∀ m, a1 m ≫ u m 2 = u m 1` using `fun m => by`. Simplify using `only [a1, u, homAt_comp, Algebra.comp_ofId]`.
+
+Establish `tru : ∀ m, tr m 2 ≫ u (m + 1) 2 = u m 2` using `fun m => by`. Simplify using `only [tr, u, homAt_comp, Algebra.comp_ofId]`. Establish `otr : ∀ m, o m 2 ≫ tr m 2 = o (m + 1) 2` using `fun m => by`. Simplify using `only [tr, o, homAt_comp, aug_trunc]`. Establish `trc : ∀ m i, tr m 2 ≫ c (m + 1) i = c m i ≫ tr m 1` using `fun m i => by`.
+
+Simplify using `only [tr, c, homAt_comp, copy_trunc]`. Establish `tra0 : ∀ m, tr m 1 ≫ a0 (m + 1) = a0 m ≫ tr m 2` using `fun m => by`. Simplify using `only [tr, a0, homAt_comp, trunc_axis0]`. Establish `tra1 : ∀ m, tr m 1 ≫ a1 (m + 1) = a1 m ≫ tr m 2` using `fun m => by`. Simplify using `only [tr, a1, homAt_comp, trunc_axis1]`.
+
+Establish `ox : ∀ m, o m 1 ≫ x m = 1` using `hch.zero`. Establish `trx : ∀ m, tr m 1 ≫ x (m + 1) = x m` using `hch.trunc`. Establish `hj : ∀ m i, jptG t x0 d x m i = c m i ≫ x m` using `fun _ _ => rfl`. Take `⟨g₁, hg₁, hg₁t⟩` from `exists_tower t x0 (fun m => jptG t x0 d x m (0 : Fin 2) * jptG t x0 d x m (1 : Fin 2)) (by`. Express the relevant statement in the definitionally equal form `o 0 2 ≫ _ = _`.
+
+Simplify using `only [hj, MonObj.comp_mul, reassoc_of% (oc 0), ox, _root_.mul_one])`. Use the proof step `(fun m => by`. Express the relevant statement in the definitionally equal form `tr m 2 ≫ _ = _`. Simplify using `only [hj, MonObj.comp_mul, reassoc_of% (trc m), trx])`. Establish `key` using `fun m => exists_norm t (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2)) (c m 0 ≫ a1 m) (c m 1 ≫ a0 m) (u m 2 ≫ o m 2) (by simp only [hj, MonObj.comp_mul, Category.assoc, reassoc_of% (a1c0 m), reassoc_of% (a1c1 m), ox, MonObj.comp_one, _root_.mul_one]) (by simp only [hj …`.
+
+Use `choose e he hv using key`. Use `⟨e, he, fun m => corr_of_val t.PP.isLB fun y J hJ => ?_, fun m => ⟨corr_of_val t.PP.isLB fun y J hJ => ?_, corr_of_val t.PP.isLB fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((hv (m + 1) _ _ y J hJ).trans (Eq.trans ?_ (hv m _ _ y J hJ).symm))` and prove the remaining obligations. Establish `e1 : ∀ (s : jOG x0 d m 2 ⟶ jOG x0 d m 2) (s' : jOG x0 d (m + 1) 2 ⟶ jOG x0 d (m + 1) 2), tr m 2 ≫ s' = s ≫ tr m 2 → val (g₁ (m + 1)) ((𝟙 _ ≫ (tr m 2).left) ≫ s'.left) y J = val (g₁ m) (𝟙 _ ≫ s.left) y J`. Introduce `s s' hs`.
+
+Rewrite using `[Category.assoc, ← Over.comp_left, hs, Over.comp_left, ← Category.assoc]`. Conclude with `hg₁t m _ _ y J hJ`. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (hg₁t m _ _ y J hJ) (congrArg _ (e1 _ _ ?_))) (congrArg _ (e1 _ _ ?_))) (e1 _ _ ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc, reassoc_of% (trc m), tra1]`. Simplify using `only [Category.assoc, reassoc_of% (trc m), tra0]`.
+
+Simplify using `only [Category.assoc, reassoc_of% (tru m), otr]`. Use `(val_pull hJ _ _ _).trans ((hv m _ _ y J hJ).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val (g₁ m) (𝟙 _ ≫ (a0 m).left) y J * (val (g₁ m) ((𝟙 _ ≫ (a0 m).left) ≫ _) y J)⁻¹ * (val (g₁ m) ((𝟙 _ ≫ (a0 m).left) ≫ _) y J)⁻¹ * val (g₁ m) ((𝟙 _ ≫ (a0 m).left) ≫ _) y J = 1`. Simplify using `only [Category.id_comp, ← Over.comp_left, reassoc_of% (a0c0 m), reassoc_of% (a0c1 m), reassoc_of% (a0u m), oa1]`. Conclude with `cancel₀ _ _`.
+
+Use `(val_pull hJ _ _ _).trans ((hv m _ _ y J hJ).trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val (g₁ m) (𝟙 _ ≫ (a1 m).left) y J * (val (g₁ m) ((𝟙 _ ≫ (a1 m).left) ≫ _) y J)⁻¹ * (val (g₁ m) ((𝟙 _ ≫ (a1 m).left) ≫ _) y J)⁻¹ * val (g₁ m) ((𝟙 _ ≫ (a1 m).left) ≫ _) y J = 1`. Simplify using `only [Category.id_comp, ← Over.comp_left, reassoc_of% (a1c0 m), reassoc_of% (a1c1 m), reassoc_of% (a1u m), oa0]`. Conclude with `cancel₁ _ _`.
+-/
 theorem exists_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (κ : Type) [Fintype κ] (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (uvec : κ → Fin d → S) (x : ∀ m, jOG x0 d m 1 ⟶ t.G), (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → (∀ a j, MvPowerSeries.constantCoeff (act a j) = 0) → IsChartG t x0 d F act tg uvec x → ∃ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) ∧ FrTrunc t x0 d x e ∧ FrAxes t x0 d x e := by
   intro E _ _ _ H X0 t S _ x0 d F act κ _ tg uvec x _ _ hch
 

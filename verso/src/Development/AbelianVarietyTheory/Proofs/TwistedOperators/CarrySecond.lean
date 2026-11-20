@@ -22,6 +22,11 @@ namespace GlobalTheory.RowEx.CarryTr
 
 open GlobalTheory.Mem
 
+/- English proof (translation)
+Take `⟨c, -, -, -, h1, h2⟩` from `h`. Take `⟨c', -, -, -, h1', h2'⟩` from `h'`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx; simpa using h1' x (by simpa using h2 x hx)`.
+
+Introduce `hx; simpa using h1 x (by simpa using h2' x hx)`.
+-/
 theorem lat_eq_of_sd {D : D7} {V : HSp D} {β β' : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     {Λ Λ' : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : Formalism.IndefR.Links.IsSDFrame V β Λ 1)
     (h' : Formalism.IndefR.Links.IsSDFrame V β' Λ' 1) : Λ = Λ' := by
@@ -35,10 +40,16 @@ theorem lat_eq_of_sd {D : D7} {V : HSp D} {β β' : GL (Fin V.rank) (Formalism.I
 def trGL {D : D7} {R : Type} [Semiring R] {V V' : HSp D} (e : V' = V) (β : GL (Fin V.rank) R) : GL (Fin V'.rank) R :=
   e ▸ β
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem trGL_heq {D : D7} {R : Type} [Semiring R] {V V' : HSp D} (e : V' = V) (β : GL (Fin V.rank) R) :
     HEq (trGL e β) β := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hΛ`. Conclude with `h`.
+-/
 theorem isFrame_tr {D : D7} {V V' : HSp D} (e : V' = V) {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)} (hΛ : HEq Λ' Λ) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     (h : IsFrame β Λ) : IsFrame (trGL e β) Λ' := by
@@ -46,6 +57,9 @@ theorem isFrame_tr {D : D7} {V V' : HSp D} (e : V' = V) {Λ : Submodule (𝓞 D.
 
 open Matrix in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hΛ`. Consider the cases of `hf`. Consider the cases of `hu`. Conclude with `h`.
+-/
 theorem uLat_tr {D : D7} {V V' : HSp D} (e : V' = V) {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)} (hΛ : HEq Λ' Λ) {f : GL (Fin V.rank) D.host.E}
     {f' : GL (Fin V'.rank) D.host.E} (hf : HEq f' f) {u : GfC V} {u' : GfC V'} (hu : HEq u' u)
@@ -57,14 +71,23 @@ theorem uLat_tr {D : D7} {V V' : HSp D} (e : V' = V) {Λ : Submodule (𝓞 D.hos
 
 def trU {D : D7} {V V' : HSp D} (e : V' = V) (x : GfC V) : GfC V' := e ▸ x
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem trU_heq {D : D7} {V V' : HSp D} (e : V' = V) (x : GfC V) : HEq (trU e x) x := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hf`. Conclude with `h`.
+-/
 theorem frOn_tr {D : D7} {V V' : HSp D} (e : V' = V) {f : GL (Fin V.rank) D.host.E} {f' : GL (Fin V'.rank) D.host.E}
     (hf : HEq f' f) (h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) f.1 * V.gram * f.1 = 1) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) f'.1 * V'.gram * f'.1 = 1 := by
   subst e; cases hf; exact h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hu`. Conclude with `h`.
+-/
 theorem uSupp_tr {D : D7} {V V' : HSp D} (e : V' = V) {u : GfC V} {u' : GfC V'} (hu : HEq u' u) {S : Finset ℕ}
     (h : ∃ (P : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e P ∧ SuppAt e V u.1 ∧ ∀ w ∈ P, Off S w) :
     ∃ (P : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e P ∧ SuppAt e V' u'.1 ∧ ∀ w ∈ P, Off S w := by
@@ -72,6 +95,11 @@ theorem uSupp_tr {D : D7} {V V' : HSp D} (e : V' = V) {u : GfC V} {u' : GfC V'} 
 
 open Matrix in
 
+/- English proof (translation)
+Substitute `eA eB` using the available equality. Consider the cases of `hι`. Consider the cases of `ha`. Consider the cases of `hfA`. Consider the cases of `hfB`.
+
+Consider the cases of `huA`. Consider the cases of `huB`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem top_tr {D : D7} {A A' B B' : HSp D} (eA : A' = A) (eB : B' = B) {ι : A.V →ₗ[D.host.E] B.V}
     {ι' : A'.V →ₗ[D.host.E] B'.V} (hι : HEq ι' ι) {a : Matrix (Fin B.rank) (Fin 1) D.host.E}
     {a' : Matrix (Fin B'.rank) (Fin 1) D.host.E} (ha : HEq a' a) (r : A.rank + 1 = B.rank) (r' : A'.rank + 1 = B'.rank)
@@ -94,6 +122,11 @@ abbrev dOf {D : D7} {T : Type} (_ : LevCh D T) : D7 := D
 
 open Matrix in
 
+/- English proof (translation)
+Substitute `eA eB` using the available equality. Consider the cases of `hι`. Consider the cases of `ha`. Consider the cases of `hβ`. Consider the cases of `hγ`.
+
+Conclude with `h`.
+-/
 theorem sumFrame_tr {D : D7} {A A' B B' : HSp D} (eA : A' = A) (eB : B' = B) {c : ℕ} {ι : A.V →ₗ[D.host.E] B.V}
     {ι' : A'.V →ₗ[D.host.E] B'.V} (hι : HEq ι' ι) {a : Matrix (Fin B.rank) (Fin c) D.host.E}
     {a' : Matrix (Fin B'.rank) (Fin c) D.host.E} (ha : HEq a' a) (r : A.rank + c = B.rank) (r' : A'.rank + c = B'.rank)
@@ -107,37 +140,63 @@ theorem sumFrame_tr {D : D7} {A A' B B' : HSp D} (eA : A' = A) (eB : B' = B) {c 
   subst eA eB
   cases hι; cases ha; cases hβ; cases hγ; exact h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hΛ`. Consider the cases of `hβ`. Conclude with `h`.
+-/
 theorem isFrame_tr' {D : D7} {V V' : HSp D} (e : V' = V) {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)} (hΛ : HEq Λ' Λ) {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     {β' : GL (Fin V'.rank) (Formalism.IndefR.Lev.EAf D)} (hβ : HEq β' β) (h : IsFrame β Λ) : IsFrame β' Λ' := by
   subst e; cases hΛ; cases hβ; exact h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem val_heq {D : D7} {V V' : HSp D} (e : V' = V) {u : GfC V} {u' : GfC V'} (h : HEq u' u) : HEq u'.1 u.1 := by
   subst e; cases h; rfl
 
 def trFun {α : Sort _} {F : α → Sort _} {a a' : α} (e : a' = a) (x : F a) : F a' := e ▸ x
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem trFun_heq {α : Sort _} {F : α → Sort _} {a a' : α} (e : a' = a) (x : F a) : HEq (trFun (F := F) e x) x := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem neg_heq {D : D7} {V V' : HSp D} (e : V' = V) {c : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {c' : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V'.rank) ℂ} (h : HEq c' c) : HEq (fun τ => -c' τ) (fun τ => -c τ) := by
   subst e; cases h; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem colLat_heq {D : D7} {V V' : HSp D} (e : V' = V) {f : GL (Fin V.rank) D.host.E} {f' : GL (Fin V'.rank) D.host.E}
     (h : HEq f' f) : HEq ((colLat f' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)) : Set (Fin V'.rank → D.host.E))
       ((colLat f : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E)) := by
   subst e; cases h; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem frC_heq {D : D7} {V V' : HSp D} (e : V' = V) {f : GL (Fin V.rank) D.host.E} {f' : GL (Fin V'.rank) D.host.E}
     (h : HEq f' f) : HEq (fun τ : D.what₂.Tau => (f'.1).map (tauE D τ)) (fun τ : D.what₂.Tau => (f.1).map (tauE D τ)) := by
   subst e; cases h; rfl
 
+/- English proof (translation)
+Substitute `en ek` using the available equality. Consider the cases of `he`. Conclude with `h`.
+-/
 theorem oddGenerator_condition_of_rank_eq_heq {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {n n' k k' : ℕ} (en : n' = n) (ek : k' = k)
     {e : Formalism.MainNotions.TaylorLogMetric.VC D n k → ℂ} {e' : Formalism.MainNotions.TaylorLogMetric.VC D n' k' → ℂ} (he : HEq e' e)
     (h : Formalism.MainNotions.StandardLatticesGL3.oddE0 D cc δ t0 n k e) : Formalism.MainNotions.StandardLatticesGL3.oddE0 D cc δ t0 n' k' e' := by
   subst en ek; cases he; exact h
 
+/- English proof (translation)
+Substitute `eψ eθ eS eT` using the available equality. Consider the cases of `hcS`. Consider the cases of `hcT`. Consider the cases of `hΛS`. Consider the cases of `hΛT`.
+
+Consider the cases of `hf`. Conclude with `h`.
+-/
 theorem vac_tr {D : D7} {ψ ψ' : AddChar (AF D.host.F) ℂ} (eψ : ψ' = ψ) {θ θ' : Formalism.IndefR.Datum.InfFam D} (eθ : θ' = θ)
     {S S' T T' : HSp D} (eS : S' = S) (eT : T' = T)
     {cS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {cS' : D.what₂.Tau → Matrix (Fin S'.rank) (Fin S'.rank) ℂ} (hcS : HEq cS' cS)
@@ -148,6 +207,11 @@ theorem vac_tr {D : D7} {ψ ψ' : AddChar (AF D.host.F) ℂ} (eψ : ψ' = ψ) {�
     (h : Formalism.IndefR.Datum.IsVacO ψ θ S T cS cT ΛS ΛT f) : Formalism.IndefR.Datum.IsVacO ψ' θ' S' T' cS' cT' ΛS' ΛT' f' := by
   subst eψ eθ eS eT; cases hcS; cases hcT; cases hΛS; cases hΛT; cases hf; exact h
 
+/- English proof (translation)
+Substitute `eψ eθ eS eT` using the available equality. Consider the cases of `hcS`. Consider the cases of `hcT`. Consider the cases of `hbS`. Consider the cases of `hbT`.
+
+Consider the cases of `hf`. Consider the cases of `he`. Conclude with `h`.
+-/
 theorem fockVectorNormalisation_of_space_eq_heq {D : D7} {ψ ψ' : AddChar (AF D.host.F) ℂ} (eψ : ψ' = ψ) {θ θ' : Formalism.IndefR.Datum.InfFam D} (eθ : θ' = θ)
     {S S' T T' : HSp D} (eS : S' = S) (eT : T' = T)
     {cS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {cS' : D.what₂.Tau → Matrix (Fin S'.rank) (Fin S'.rank) ℂ} (hcS : HEq cS' cS)
@@ -163,6 +227,9 @@ theorem fockVectorNormalisation_of_space_eq_heq {D : D7} {ψ ψ' : AddChar (AF D
       c * o ((k.prod fun v n => period δ v.1 ^ n) * Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) e') := by
   subst eψ eθ eS eT; cases hcS; cases hcT; cases hbS; cases hbT; cases hf; cases he; exact h
 
+/- English proof (translation)
+Rewrite using `[e]`.
+-/
 theorem rk_eq {D : D7} {V V' : HSp D} (e : V' = V) : V'.rank = V.rank := by rw [e]
 
 end GlobalTheory.RowEx.CarryTr
@@ -173,6 +240,79 @@ open GlobalTheory.Mem GlobalTheory.RowEx.CarryTr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `X X' T T' L L' μ₀ μ₀' ι hL sc G G' hG W W' hW S`. Take `⟨m, hm⟩ : ∃ m, X.toD7.R.m = m` from `⟨_, rfl⟩`. Establish `h2m : 2 ≤ m` using `hm ▸ X.toD7.R.two_le_m`. Take `⟨m', hm'⟩ : ∃ m', X'.toD7.R.m = m'` from `⟨_, rfl⟩`. Take `⟨B, C, Wr, V, Ss, N, Gj⟩` from `X`.
+
+Take `⟨B', C', Wr', V', Ss', N', Gj'⟩` from `X'`. Establish `h` using `hL.pre`. Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`.
+
+Substitute `h` using the available equality. Establish `em : m = m'` using `hm.symm.trans hm'`. Substitute `em` using the available equality. Establish `eQ : ∀ t, L'.Q t = L.Q (ι t)` using `fun t => eq_of_heq (hL.Q t)`. Take `⟨f, f', hf, hC, hC'⟩` from `hL.C`.
+
+Establish `hf' : f' = f` using `eq_of_heq hf`. Substitute `hf'` using the available equality. Establish `eMu0 : ∀ j, 1 ≤ j → j ≤ m → L'.mu0 j = L.mu0 j`. Introduce `j h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+
+Establish `hk : k < _` using `Nat.lt_of_lt_of_le (Nat.lt_succ_self k) (h2.trans_eq hm.symm)`. Establish `a` using `hL.is'.mu0 ⟨k, hk⟩`. Establish `b` using `hL.is.mu0 ⟨k, hk⟩`. Rewrite `a` using `[hC']`. Rewrite `b` using `[hC]`.
+
+Conclude with `GlobalTheory.ChrEqUnique.idc_unique _ _ _ _ a b`. Establish `eXi : ∀ t, L'.xi t = L.xi (ι t)` using `fun t => by`. Establish `a` using `hL.is'.xi t`. Rewrite `a` using `[eq_of_heq (hL.xi t)]`. Conclude with `GlobalTheory.ChrEqUnique.idc_unique _ _ _ _ a (hL.is.xi (ι t))`.
+
+Establish `eMu : ∀ t j, 1 ≤ j → j ≤ m → L'.mu t j = L.mu (ι t) j` using `fun t j h1 h2 => by show L'.mu0 j * L'.xi t = L.mu0 j * L.xi (ι t)`. Rewrite using `[eMu0 j h1 h2, eXi]`. Apply the tactic sequence `try rfl`. Establish `ev0 : G'.pl.v0 = G.pl.v0` using `eq_of_heq hG.v0`. Establish `ew : G'.pl.w = G.pl.w` using `eq_of_heq hG.w`.
+
+Establish `eS0 : G'.pl.S0 = G.pl.S0` using `by unfold ChiGrid.Places.S0; rw [ev0]; rfl`. Apply the tactic sequence `have eW0 : G'.pl.W0 = G.pl.W0 := by unfold ChiGrid.Places.W0; rw [eS0, ew]; try rfl`. Establish `ecos : ∀ w, cosExp G' w = cosExp G w` using `fun w => by`. Unfold `cosExp ChiGrid.Places.depth`. Rewrite using `[eW0, ev0]`.
+
+Both sides reduce to the same expression. Apply the tactic sequence `have eloc : ∀ t, locPl G' t = locPl G (ι t) := fun t => by unfold locPl; rw [eW0, eQ]; try rfl`. Establish `eΛX : L'.ΛX = L.ΛX` using `lat_eq_of_sd hL.is'.βX hL.is.βX`. Establish `eV0 : G'.V (.grid 0 m) = G.V (.grid 0 m)` using `hm ▸ (congrArg LSp.sp (colY_m L')).trans (congrArg LSp.sp (colY_m L)).symm`. Establish `eΛ0 : HEq (G'.Λ (.grid 0 m)) (G.Λ (.grid 0 m))` using `hm ▸ ((congr_arg_heq LSp.lat (colY_m L')).trans (heq_of_eq eΛX)).trans (congr_arg_heq LSp.lat (colY_m L)).symm`.
+
+Establish `eVd : ∀ Y, DefNode m Y → G'.V Y = G.V Y ∧ HEq (G'.Λ Y) (G.Λ Y)`. Introduce and unpack `(⟨_ | i, j⟩ | i | j) hY`. Take `⟨-, rfl⟩` from `hY`. Conclude with `⟨eV0, eΛ0⟩`. Conclude with `⟨eq_of_heq (hG.grid i j).1, (hG.grid i j).2⟩`.
+
+Conclude with `absurd hY id`. Conclude with `⟨eq_of_heq (hG.top j).1, (hG.top j).2⟩`. Take `⟨k, hk⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `eVs : ∀ i j, i ≠ 0 → (G'.sp.Vs i j).sp = (G.sp.Vs i j).sp` using `fun i j h => by`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero h`.
+
+Conclude with `eq_of_heq (hG.grid k j).1`. Establish `eΛs : ∀ i j, i ≠ 0 → HEq (G'.sp.Vs i j).lat (G.sp.Vs i j).lat` using `fun i j h => by`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero h`. Conclude with `(hG.grid k j).2`. Choose the witnesses or unpack the hypotheses as in `⟨B', hB'⟩ : ∃ B' : Frames G', ∀ i j, i ≠ 0 → HEq (B'.β i j) (S.B.β i j) := by`.
+
+Use `⟨⟨fun i j => if h : i = 0 then 1 else trGL (eVs i j h) (S.B.βs i j), fun i j h1 h2 h3 => ?_⟩, fun i j h => ?_⟩` and prove the remaining obligations. Establish `h0 : i ≠ 0` using `by omega`. Simplify using `only [dif_neg h0]`. Conclude with `isFrame_tr _ (eΛs i j h0) (S.B.isFrame i j h1 (h2.trans_eq (hm.trans hm.symm)) (h3.trans_eq (hm.trans hm.symm)))`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero h dsimp only [Frames.β]`.
+
+Rewrite using `[dif_neg h]`. Conclude with `trGL_heq _ _`. Establish `eVt : ∀ j, G'.V (.top j) = G.V (.top j)` using `fun j => eq_of_heq (hG.top j).1`. Establish `eVd' : ∀ Y, DefNode m Y → G'.V Y = G.V Y` using `fun Y h => (eVd Y h).1`. Take `⟨fr', hfr⟩ : ∃ fr' : ∀ Y : Node, GL (Fin (G'.V Y).rank) _, ∀ Y, DefNode m Y → HEq (fr' Y) (S.N.fr Y)` from `⟨fun Y => if h : DefNode m Y then trGL (eVd' Y h) (S.N.fr Y) else 1, fun Y h => by`.
+
+Simplify using `only [dif_pos h]`. Conclude with `trGL_heq _ _⟩`. Take `⟨u', hu'⟩ : ∃ u' : ∀ Y : Node, GfC (D` from `dOf L) (G'.V Y), ∀ Y, DefNode m Y → HEq (u' Y) (S.N.u Y) := ⟨fun Y => if h : DefNode m Y then trU (eVd' Y h) (S.N.u Y) else 1, fun Y h => by`. Simplify using `only [dif_pos h]`. Conclude with `trU_heq _ _⟩`.
+
+Establish `hTd : DefNode m (.top _)` using `hm'.le`. Establish `hGd : DefNode m (.grid _ _)` using `(⟨hm'.le, hm'⟩ : _ ≤ m ∧ _ = m)`. Establish `hTop` using `top_tr (D := dOf L) (eVd' _ hGd) (eVd' _ hTd) hG.topDec.1 hG.topDec.2 G.sp.topDec.rank G'.sp.topDec.rank (hfr _ hGd) (hfr _ hTd) (hu' _ hGd) (hu' _ hTd) S.N.fr_top S.N.fr_last S.N.u_top S.N.u_last`. Choose the witnesses or unpack the hypotheses as in `⟨N', hNS, hN'⟩ : ∃ N' : Std G' Set.univ, N'.S = S.N.S ∧ ∀ Y, DefNode m Y → HEq (N'.fr Y) (S.N.fr Y) ∧ HEq (N'.u Y) (S.N.u Y) := by`. Use `⟨{ S := S.N.S, prime := S.N.prime, off := ?_, unr := ?_, fr := fr', fr_on := ?_, u := ((by with_unfolding_all exact (u' :))), u_supp := ?_, u_lat := ?_, fr_top := ((by with_unfolding_all exact (hTop.1 :))), fr_last := ((by with_unfolding_all exact (hTop.2.1 :))), u_top := ((by wi …` and prove the remaining obligations.
+
+Introduce `w hw`. Take `⟨a, b, c⟩` from `S.N.off w hw`. Conclude with `⟨by rw [eS0]; exact a, fun t _ w' hw' => b (ι t) trivial w' (by rw [← eQ]; exact hw'), c⟩`. Introduce `w hw e he t _ j h1 h2`. Rewrite using `[eMu t j h1 (h2.trans_eq hm')]`.
+
+Conclude with `S.N.unr w hw e he (ι t) trivial j h1 (h2.trans_eq (hm'.trans hm.symm))`. Introduce `Y hY`. Establish `h : DefNode m Y` using `hm' ▸ hY`. Conclude with `(by with_unfolding_all exact (frOn_tr (D := dOf L) (eVd' Y h) (hfr Y h) (S.N.fr_on Y (hm.symm ▸ h)) :))`. Introduce `Y hY`.
+
+Establish `h : DefNode m Y` using `hm' ▸ hY`. Conclude with `(by with_unfolding_all exact (uSupp_tr (D := dOf L) (eVd' Y h) (hu' Y h) (S.N.u_supp Y (hm.symm ▸ h)) :))`. Introduce `Y hY`. Establish `h : DefNode m Y` using `hm' ▸ hY`. Conclude with `(by with_unfolding_all exact (uLat_tr (D := dOf L) (eVd' Y h) (eVd Y h).2 (hfr Y h) (hu' Y h) (S.N.u_lat Y (hm.symm ▸ h)) :))`.
+
+Take `⟨βp', hβp'⟩ : ∃ βp' : ∀ j, GL (Fin (G'.V (.top j)).rank) (Formalism.IndefR.Lev.EAf (dOf L)), ∀ j, HEq (βp' j) (S.βp j)` from `⟨fun j => trGL (eVt j) (S.βp j), fun j => trGL_heq _ _⟩`. Establish `hm0 : ∀ {n : ℕ}, n = m → n ≠ 0` using `fun h => by omega`. Establish `eVm : ∀ j, G'.V (.grid _ j) = G.V (.grid _ j)` using `fun j => by`. Use `(hG.grid k j).1` as an intermediate fact. Rewrite `this` using `[← hk, ← hm']`.
+
+Conclude with `eq_of_heq this`. Establish `eψ : W'.ψ = W.ψ` using `eq_of_heq hW.ψ`. Establish `eθ : W'.θ = W.θ` using `eq_of_heq hW.θ`. Establish `eP : ∀ p, DefPair m p → G'.pS p = G.pS (mapPair ι p) ∧ G'.pT p = G.pT (mapPair ι p)`. Introduce and unpack `(⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩) hp`.
+
+Conclude with `⟨congrArg negSp (eVd' (.grid (i + 1) j) ⟨hp.1, hp.2⟩), eVd' (.grid i j) ⟨by have := hp.1; omega, hp.2⟩⟩`. Conclude with `absurd hp id`. Conclude with `absurd hp id`. Conclude with `⟨eVt j, eVt (j + 1)⟩`. Establish `hmap : ∀ p, DefPair m p → DefPair m (mapPair ι p)`.
+
+Apply the tactic sequence `rintro (⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩) hp <;> exact hp`. Choose the witnesses or unpack the hypotheses as in `⟨e0', he0', ze0'⟩ : ∃ e0' : ∀ p : Pair T', Formalism.MainNotions.TaylorLogMetric.VC (dOf L) (G'.pS p).rank (G'.pT p).rank → ℂ, (∀ p, DefPair m p → HEq (e0' p) (S.Z.e0 (mapPair ι p))) ∧ ∀ p, ¬ DefPair m p → e0' p = 0 := by`. Use `⟨fun p => if h : DefPair m p then trFun (F := fun nk : ℕ × ℕ => Formalism.MainNotions.TaylorLogMetric.VC (dOf L) nk.1 nk.2 → ℂ) (Prod.ext (rk_eq (eP p h).1) (rk_eq (eP p h).2) : ((G'.pS p).rank, (G'.pT p).rank) = ((G.pS (mapPair ι p)).rank, (G.pT (mapPair ι p)).rank)) (S.Z.e0 (ma …` and prove the remaining obligations. Simplify using `only [dif_pos h]`. Conclude with `trFun_heq _ _`.
+
+Simplify using `only [dif_neg h]`. Take `⟨vac', hvac', zvac'⟩ : ∃ vac' : ∀ p : Pair T', Formalism.IndefR.Datum.WO (D` from `dOf L) (G'.pS p) (G'.pT p) → ℂ, (∀ p, DefPair m p → HEq (vac' p) (S.Z.vac (mapPair ι p))) ∧ ∀ p, ¬ DefPair m p → vac' p = 0 := by`. Use `⟨fun p => if h : DefPair m p then trFun (F := fun ST : HSp (dOf L) × HSp (dOf L) => Formalism.IndefR.Datum.WO ST.1 ST.2 → ℂ) (Prod.ext (eP p h).1 (eP p h).2 : (G'.pS p, G'.pT p) = (G.pS (mapPair ι p), G.pT (mapPair ι p))) (S.Z.vac (mapPair ι p)) else 0, fun p h => ?_, fun p h => …` and prove the remaining obligations. Simplify using `only [dif_pos h]`. Conclude with `trFun_heq _ _`.
+
+Simplify using `only [dif_neg h]`. Establish `hDN : ∀ Y, DefNode m Y → DefNode _ Y` using `fun Y h => hm'.symm ▸ h`. Establish `vacDD : ∀ ψ θ (S T : HSp (dOf L)) cS cT LS LT f, Formalism.IndefR.Datum.IsVacO (D` using `dOf L) ψ θ S T cS cT LS LT f → Formalism.IndefR.Datum.IsVacO (D := dOf L') ψ θ S T cS cT LS LT f := by`. Introduce and unpack `ψ θ S T cS cT LS LT f ⟨h1, ⟨hinf, ⟨q, l, c, s⟩, hlat, hfock, hnorm⟩⟩`. Conclude with `⟨(by with_unfolding_all exact (h1 :)), ⟨(by with_unfolding_all exact (hinf :)), ⟨(by with_unfolding_all exact (q :)), (by with_unfolding_all exact (l :)), (by with_unfolding_all exact (c :)), (by with_unfolding_all exact (s :))⟩, (by with_unfolding_all exact (hlat :)), (by with_u …`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Z', hZδ, hZ'⟩ : ∃ Z' : Normal W' N', Z'.δ = S.Z.δ ∧ ∀ p, DefPair m p → HEq (Z'.vac p) (S.Z.vac (mapPair ι p)) ∧ Z'.c0 p = S.Z.c0 (mapPair ι p) := by`. Use `⟨{ δ := S.Z.δ, crv := ((by with_unfolding_all exact (S.Z.crv :))), t0 := S.Z.t0, pt0 := ((by with_unfolding_all exact (S.Z.pt0 :))), e0 := ((by with_unfolding_all exact (e0' :))), e0_is := ?_, vac := ((by with_unfolding_all exact (vac' :))), vac_is := ?_, c0 := fun p => S.Z.c0 (m …` and prove the remaining obligations. Introduce `p hp`. Establish `h : DefPair m p` using `hm' ▸ hp`. Conclude with `(by with_unfolding_all exact (oddGenerator_condition_of_rank_eq_heq (D := dOf L) (rk_eq (eP p h).1) (rk_eq (eP p h).2) (he0' p h) (S.Z.e0_is (mapPair ι p) (hm.symm ▸ hmap p h)) :))`.
+
+Introduce `p hp`. Establish `h : DefPair m p` using `hm' ▸ hp`. Break down `p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩` into its components or cases. Establish `hS` using `eVd' (.grid (i + 1) j) ⟨h.1, h.2⟩`. Establish `hT` using `eVd' (.grid i j) ⟨by have := h.1; omega, h.2⟩`.
+
+Conclude with `(by with_unfolding_all exact (vacDD _ _ _ _ _ _ _ _ _ <| vac_tr (D := dOf L) eψ eθ (congrArg negSp hS) hT (neg_heq hS (hW.cart _ (hDN (.grid (i + 1) j) ⟨h.1, h.2⟩))) (hW.cart _ (hDN (.grid i j) ⟨by have := h.1; omega, h.2⟩)) (colLat_heq hS (hN' (.grid (i + 1) j) ⟨h.1, h.2⟩).1) (c …`. Conclude with `absurd h id`. Conclude with `absurd h id`. Establish `hS` using `eVt j`. Establish `hT` using `eVt (j + 1)`.
+
+Conclude with `(by with_unfolding_all exact (vacDD _ _ _ _ _ _ _ _ _ <| vac_tr (D := dOf L) eψ eθ hS hT (hW.cart _ (hDN (.top j) (by have h' : j + 1 ≤ m := h; show j ≤ m; omega))) (hW.cart _ (hDN (.top (j + 1)) h)) (colLat_heq hS (hN' (.top j) (by have h' : j + 1 ≤ m := h; show j ≤ m; omega)).1 …`. Introduce `p hp`. Establish `h : DefPair m p` using `hm' ▸ hp`. Break down `p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩` into its components or cases. Establish `hS` using `eVd' (.grid (i + 1) j) ⟨h.1, h.2⟩`.
+
+Establish `hT` using `eVd' (.grid i j) ⟨by have := h.1; omega, h.2⟩`. Conclude with `(by with_unfolding_all exact (fockVectorNormalisation_of_space_eq_heq (D := dOf L) eψ eθ (congrArg negSp hS) hT (neg_heq hS (hW.cart _ (hDN (.grid (i + 1) j) ⟨h.1, h.2⟩))) (hW.cart _ (hDN (.grid i j) ⟨by have := h.1; omega, h.2⟩)) (frC_heq hS (hN' (.grid (i + 1) j) ⟨h.1, h.2⟩).1) …`. Conclude with `absurd h id`. Conclude with `absurd h id`. Establish `hS` using `eVt j`.
+
+Establish `hT` using `eVt (j + 1)`. Conclude with `(by with_unfolding_all exact (fockVectorNormalisation_of_space_eq_heq (D := dOf L) eψ eθ hS hT (hW.cart _ (hDN (.top j) (by have h' : j + 1 ≤ m := h; show j ≤ m; omega))) (hW.cart _ (hDN (.top (j + 1)) h)) (frC_heq hS (hN' (.top j) (by have h' : j + 1 ≤ m := h; show j ≤ m; omega) …`. Introduce `t t' j`. Distinguish the cases in `hj : DefPair m (Pair.top t j : Pair T')`. Establish `hj' : DefPair m (Pair.top t' j : Pair T')` using `hj`.
+
+Take `⟨f1, f2, f3⟩` from `S.Z.free (ι t) (ι t') j`. Use `⟨?_, ?_, f3⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (eq_of_heq ((he0' _ hj).trans ((heq_of_eq f1).trans (he0' _ hj').symm)) :))`. Conclude with `(by with_unfolding_all exact (eq_of_heq ((hvac' _ hj).trans ((heq_of_eq f2).trans (hvac' _ hj').symm)) :))`. Establish `hj' : ¬ DefPair m (Pair.top t' j : Pair T')` using `hj`.
+
+Take `⟨_, _, f3⟩` from `S.Z.free (ι t) (ι t') j`. Conclude with `⟨(by with_unfolding_all exact ((ze0' _ hj).trans (ze0' _ hj').symm :)), (by with_unfolding_all exact ((zvac' _ hj).trans (zvac' _ hj').symm :)), f3⟩`. Use `⟨{ B := B', βp := ((by with_unfolding_all exact (βp' :))), βp_is := ?_, row := ?_, last := ?_, N := N', Z := Z', PA := ((by with_unfolding_all exact (S.PA :))), PA_dvd := ((by with_unfolding_all exact (S.PA_dvd :))), PA_one := ((by with_unfolding_all exact (S.PA_one :))) }, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Conclude with `(by with_unfolding_all exact (isFrame_tr' (D := dOf L) (eVt j) (hG.top j).2 (hβp' j) (S.βp_is j hj) :))`.
+
+Introduce `t _ w hw j hj`. Establish `hw' : w ∈ locPl G (ι t)` using `by rw [← eloc]; exact hw`. Establish `h` using `S.row (ι t) trivial w hw' j hj`. Rewrite using `[ecos w]`. Conclude with `(by with_unfolding_all exact (sumFrame_tr (D := dOf L) (eVt j) (eVm j) (hG.rowDec j hj hj).1 (hG.rowDec j hj hj).2 (G.rowDec j hj).rank (G'.rowDec j hj).rank (hβp' j) (hB' _ j (hm0 hm')) h :))`.
+
+Introduce `t _ w hw`. Establish `hw' : w ∈ locPl G (ι t)` using `by rw [← eloc]; exact hw`. Establish `h` using `S.last (ι t) trivial w hw'`. Conclude with `(by with_unfolding_all exact (sumFrame_tr (D := dOf L) (eVd' _ hGd) (eVt _) hG.topDec.1 hG.topDec.2 G.sp.topDec.rank G'.sp.topDec.rank (hB' _ _ (hm0 hm')) (hβp' _) h :))`. Use `⟨fun i j => hB' (i + 1) j (Nat.succ_ne_zero i), fun j => (by with_unfolding_all exact (hβp' j :)), fun Y hY => ?_, hZδ, fun p hp => hZ' p (hm' ▸ hp), (by with_unfolding_all exact ((HEq.refl S.PA) :))⟩` and prove the remaining obligations.
+
+Establish `h : DefNode m Y` using `hm' ▸ hY`. Conclude with `⟨(hN' Y h).1, (by with_unfolding_all exact (val_heq (D := dOf L) (eVd' Y h) (hN' Y h).2 :))⟩`.
+-/
 theorem carryS : CarryS := by
   intro X X' T T' L L' μ₀ μ₀' ι hL sc G G' hG W W' hW S
   obtain ⟨m, hm⟩ : ∃ m, X.toD7.R.m = m := ⟨_, rfl⟩

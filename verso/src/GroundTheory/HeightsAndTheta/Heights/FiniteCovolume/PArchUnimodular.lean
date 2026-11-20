@@ -42,11 +42,21 @@ def fromPi (h : HermitianForm F E W) (v : Basis ι E W) :
     funext w
     simp
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_pi fun w => continuous_subtype_val.comp ((placeEquiv h v w).symm.continuous.comp (continuous_apply w))) _`.
+-/
 theorem continuous_fromPi (h : HermitianForm F E W) (v : Basis ι E W) :
     Continuous (fromPi h v) :=
   Continuous.subtype_mk (continuous_pi fun w => continuous_subtype_val.comp
     ((placeEquiv h v w).symm.continuous.comp (continuous_apply w))) _
 
+/- English proof (translation)
+Establish `hJ : mulEquivHaarChar (conjCME j) * mulEquivHaarChar (conjCME j) = 1`. Rewrite using `[← mulEquivHaarChar_conjCME_mul, hjj, conjCME_one, mulEquivHaarChar_refl]`. Establish `h1 : mulEquivHaarChar (conjCME t⁻¹) = mulEquivHaarChar (conjCME t)`. Rewrite using `[← hjt, mulEquivHaarChar_conjCME_mul, mulEquivHaarChar_conjCME_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2` using `mulEquivHaarChar_conjCME_inv t`. Rewrite `h2` using `[h1]`. Establish `h3 : ((mulEquivHaarChar (conjCME t) : ℝ≥0) : ℝ) * (mulEquivHaarChar (conjCME t) : ℝ) = 1`. Conclude with `h2` after adjusting the coercions. Establish `h4 : (0 : ℝ) ≤ (mulEquivHaarChar (conjCME t) : ℝ)` using `NNReal.coe_nonneg _`.
+
+Establish `h5 : ((mulEquivHaarChar (conjCME t) : ℝ≥0) : ℝ) = 1` using `by nlinarith`. Conclude with `h5` after adjusting the coercions.
+-/
 theorem mulEquivHaarChar_conjCME_eq_one_of_reflect {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
     {t j : G} (hjj : j * j = 1) (hjt : j * t * j = t⁻¹) : mulEquivHaarChar (conjCME t) = 1 := by
@@ -67,6 +77,17 @@ theorem mulEquivHaarChar_conjCME_eq_one_of_reflect {G : Type*} [Group G] [Topolo
   have h5 : ((mulEquivHaarChar (conjCME t) : ℝ≥0) : ℝ) = 1 := by nlinarith
   exact_mod_cast h5
 
+/- English proof (translation)
+Set `f : ∀ w : InfinitePlace E, indefiniteUnitaryGroup (sigP h v w) (sigQ h v w)` to `fun w => placeEquiv h v w ⟨g.1 w, (Subgroup.mem_pi _).1 g.2 w trivial⟩`. Establish `hg : fromPi h v f = g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `[fromPi, f]`.
+
+Set `ks` to `fun w => cartanHomeomorph.symm (f w)`. Set `k : ∀ w : InfinitePlace E, indefiniteUnitaryGroup (sigP h v w) (sigQ h v w)` to `fun w => ((ks w).1 : indefiniteUnitaryGroup _ _)`. Set `s : ∀ w : InfinitePlace E, indefiniteUnitaryGroup (sigP h v w) (sigQ h v w)` to `fun w => upqOfMatrix (ks w).2.1 (ks w).2.2.2`. Set `Jm : ∀ w : InfinitePlace E, indefiniteUnitaryGroup (sigP h v w) (sigQ h v w)` to `fun w => indefJElem _ _`. Establish `hfks : f = k * s` using `funext fun w => (cartanHomeomorph.apply_symm_apply (f w)).symm`.
+
+Establish `eJ : Jm * Jm = 1` using `funext fun w => indefJElem_mul_self`. Establish `eS : Jm * s * Jm = s⁻¹` using `funext fun w => indefJElem_mul_mul_indefJElem (ks w).2`. Set `K : Subgroup (archUnitary h v)` to `(Subgroup.pi Set.univ fun w : InfinitePlace E => maxCompact (indefiniteUnitaryGroup (sigP h v w) (sigQ h v w))).map (fromPi h v)`. Establish `hK : IsCompact (K : Set (archUnitary h v))`. Rewrite using `[Subgroup.coe_map, Subgroup.coe_pi]`.
+
+Conclude with `(isCompact_univ_pi fun w => isCompact_maxCompact_indefiniteUnitary).image (continuous_fromPi h v)`. Establish `hk : fromPi h v k ∈ K` using `Subgroup.mem_map_of_mem _ ((Subgroup.mem_pi _).2 fun w _ => (ks w).1.2)`. Establish `hjj : fromPi h v Jm * fromPi h v Jm = 1` using `by rw [← map_mul, eJ, map_one]`. Establish `hjt : fromPi h v Jm * fromPi h v s * fromPi h v Jm = (fromPi h v s)⁻¹`. Rewrite using `[← map_mul, ← map_mul, eS, map_inv]`.
+
+Rewrite using `[← hg, hfks, map_mul, mulEquivHaarChar_conjCME_mul, mulEquivHaarChar_conjCME_eq_one hK hk, one_mul]`. Conclude with `mulEquivHaarChar_conjCME_eq_one_of_reflect hjj hjt`.
+-/
 theorem mulEquivHaarChar_conjCME_archUnitary (h : HermitianForm F E W) (v : Basis ι E W)
     (g : archUnitary h v) : mulEquivHaarChar (conjCME g) = 1 := by
   let f : ∀ w : InfinitePlace E, indefiniteUnitaryGroup (sigP h v w) (sigQ h v w) :=
@@ -103,6 +124,11 @@ theorem mulEquivHaarChar_conjCME_archUnitary (h : HermitianForm F E W) (v : Basi
 
 end ArchUnimodular
 
+/- English proof (translation)
+Introduce `μ _`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hc : μ.map (conjCME g⁻¹) = μ`. Establish `e` using `mulEquivHaarChar_smul_map μ (conjCME g⁻¹)`. Rewrite `e` using `[ArchUnimodular.mulEquivHaarChar_conjCME_archUnitary, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hfun : (fun x => x * g) = (fun x => g * x) ∘ (conjCME g⁻¹)`. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Establish `hm : Measurable (conjCME g⁻¹)` using `(map_continuous (conjCME g⁻¹)).measurable`. Rewrite using `[hfun, ← Measure.map_map (measurable_const_mul g) hm, hc, map_mul_left_eq_self]`.
+-/
 theorem ArchUnimodular.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     ArchUnimodular.Statement h v := by
   intro μ _
@@ -120,6 +146,9 @@ section Example
 
 open GaussianPlane
 
+/- English proof (translation)
+The claim follows from `ArchUnimodular.proof hG vG muG`.
+-/
 example : muG.IsMulRightInvariant := ArchUnimodular.proof hG vG muG
 
 end Example

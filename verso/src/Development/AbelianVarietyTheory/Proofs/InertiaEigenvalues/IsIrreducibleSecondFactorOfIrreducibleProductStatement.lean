@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrredu
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsComplementaryProductOfIsCuspidal
 open NumberField ReciprocityTheory.Gal Formalism.ConjugateSelfDual IsDedekindDomain GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.CuspRep GlobalTheory.DefiniteBC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmGL.ProdIrr.isIrreducible_of_prod₂ | exact GlobalTheory.SmGL.ProdIrr.isIrreducible_of_prod₂ | (intros; apply GlobalTheory.SmGL.ProdIrr.isIrreducible_of_prod₂ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isIrreducible_second_factor_of_irreducible_product : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : ℕ) (V W U : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U]
     (σ₀ : Representation ℂ (GL (Fin r) k) V) (τ : Representation ℂ (GL (Fin t) k) W)

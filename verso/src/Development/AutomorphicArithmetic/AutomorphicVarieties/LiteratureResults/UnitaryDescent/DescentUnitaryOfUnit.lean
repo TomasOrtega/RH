@@ -22,5 +22,8 @@ def UpperTheory.V.Lit.NTDescentU : Prop :=
         (∀ w, IsSplitAt w → ∀ τ, π.IsLocComp w τ → IsCompAlong σ (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ) ∧
         ∀ φ : E →+* ℂ, ∃ lam, HasWeightAt σ φ lam ∧ π.HasInfChar φ (infOfWeight lam)
 
+/- English proof (translation)
+Introduce `E _ _ _ hE p hp S hS hsp hpS n hn z hz _` and use `h E hE p hp S hS hsp hpS n hn z hz`.
+-/
 theorem UpperTheory.V.Lit.NTDescent.unit (h : NTDescent) : NTDescentU :=
   fun E _ _ _ hE p hp S hS hsp hpS n hn z hz _ => h E hE p hp S hS hsp hpS n hn z hz

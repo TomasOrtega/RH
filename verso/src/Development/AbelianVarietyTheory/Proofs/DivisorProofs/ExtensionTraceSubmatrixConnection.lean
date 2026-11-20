@@ -16,6 +16,11 @@ open scoped ContDiff ComplexOrder Classical
 
 namespace GlobalTheory.StepTrace
 
+/- English proof (translation)
+Introduce and unpack `(a | a) (b | b) h`. Simplify using `only [emb, Sum.elim_inl] at h`. Conclude with `congrArg Sum.inl (Fin.castLE_injective _ h)`. Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd (congrArg Fin.val h) (by simp [Fin.coe_castLE]; exact a.isLt.ne)`.
+
+Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd (congrArg Fin.val h) (by simp [Fin.coe_castLE]; exact (b.isLt.ne).symm)`. Rewrite using `[Subsingleton.elim a b]`.
+-/
 theorem emb_inj {N : ℕ} (i : Fin N) : Function.Injective (emb i) := by
   rintro (a | a) (b | b) h
   · simp only [emb, Sum.elim_inl] at h
@@ -26,6 +31,11 @@ theorem emb_inj {N : ℕ} (i : Fin N) : Function.Injective (emb i) := by
     exact absurd (congrArg Fin.val h) (by simp [Fin.coe_castLE]; exact (b.isLt.ne).symm)
   · rw [Subsingleton.elim a b]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := Fin.castLE i.isLt.le) (fun x _ y _ h => Fin.castLE_injective _ h)]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_Iio]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, rfl⟩; exact Fin.lt_def.2 (by simp)`. Introduce `h; exact ⟨⟨a, Fin.lt_def.1 h⟩, Fin.ext (by simp)⟩`.
+-/
 theorem sum_castLE_eq {N : ℕ} (i : Fin N) (f : Fin N → ℂ) :
     ∑ a : Fin i, f (Fin.castLE i.isLt.le a) = ∑ a ∈ Finset.Iio i, f a := by
   rw [← Finset.sum_image (s := Finset.univ) (g := Fin.castLE i.isLt.le)
@@ -37,6 +47,13 @@ theorem sum_castLE_eq {N : ℕ} (i : Fin N) (f : Fin N → ℂ) :
   · rintro ⟨b, rfl⟩; exact Fin.lt_def.2 (by simp)
   · intro h; exact ⟨⟨a, Fin.lt_def.1 h⟩, Fin.ext (by simp)⟩
 
+/- English proof (translation)
+Introduce `N E _ _ _ _ H p i h2 hp h1 ξ η`. Establish `hinj` using `emb_inj i`. Establish `hS1 : MContDiffAt 1 (fun v => (H v).submatrix (emb i) (emb i)) p` using `(h2.of_le (by norm_num)).submatrix _ _`. Establish `hSp : ∀ᶠ v in 𝓝 p, ((H v).submatrix (emb i) (emb i)).PosDef` using `hp.mono fun v hv => hv.submatrix hinj`. Establish `hS1' : (H p).submatrix (emb i) (emb i) = 1`.
+
+Rewrite using `[h1]`. Conclude with `Matrix.submatrix_one _ hinj`. Rewrite using `[extTrace_eq_sum_of_eq_one hS1 hSp hS1' ξ η, ← sum_castLE_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_one]`. Simplify using `only [conn, h1, transpose_one, inv_one, Matrix.one_mul, transpose_apply]`. Both sides reduce to the same expression.
+-/
 theorem extTrace_step_eq_sum : ∀ {N : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] (H : E → Matrix (Fin N) (Fin N) ℂ) (p : E) (i : Fin N), MContDiffAt 2 H p → (∀ᶠ v in 𝓝 p, (H v).PosDef) → H p = 1 → ∀ ξ η : E, extTrace (fun v => (H v).submatrix (emb i) (emb i)) p ξ η = kappa * ∑ a ∈ Finset.Iio i, conn H p ξ i a * starRingEnd ℂ (conn H p η i a) := by
   intro N E _ _ _ _ H p i h2 hp h1 ξ η
   have hinj := emb_inj i

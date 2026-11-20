@@ -35,17 +35,26 @@ def conjK (cj : E ≃ₐ[ℚ] E) (h : ∀ k : K, ∃ k' : K, cj (algebraMap K E 
       fun k => (Classical.choose_spec (h k)).symm
     rw [hs (x + y), map_add (algebraMap K E) (Classical.choose (h x)), hs x, hs y, map_add, map_add]
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (h k)).symm`.
+-/
 theorem conjK_spec (cj : E ≃ₐ[ℚ] E)
     (h : ∀ k : K, ∃ k' : K, cj (algebraMap K E k) = algebraMap K E k') (k : K) :
     algebraMap K E (conjK cj h k) = cj (algebraMap K E k) :=
   (Classical.choose_spec (h k)).symm
 
+/- English proof (translation)
+Simplify using `only [hf, map_sum, map_mul, conjK_spec]`.
+-/
 theorem sum_conj (cj : E ≃ₐ[ℚ] E)
     (h : ∀ k : K, ∃ k' : K, cj (algebraMap K E k) = algebraMap K E k') {ι : Type} [Fintype ι]
     (v w : ι → K) :
     ∑ i, algebraMap K E (v i) * cj (algebraMap K E (w i)) = algebraMap K E (hf (conjK cj h) v w) := by
   simp only [hf, map_sum, map_mul, conjK_spec]
 
+/- English proof (translation)
+Establish `e : ((s : E) * x) * cj ((t : E) * y) = algebraMap K E ((s * t : ℕ) : K) * (x * cj y)`. Rewrite using `[map_mul cj, map_natCast cj, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem trace_natCast_mul (cj : E ≃ₐ[ℚ] E) (s t : ℕ) (x y : E) :
     Algebra.trace K E (((s : E) * x) * cj ((t : E) * y)) =
       ((s * t : ℕ) : K) * Algebra.trace K E (x * cj y) := by
@@ -58,6 +67,13 @@ end conj
 section rp
 variable {K : Type} [Field K] [NumberField K] {p : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, Nat.coprime_one_left p, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨s, hs, hsT⟩` from `ih fun z hz => h z (Finset.mem_insert_of_mem hz)`. Take `⟨t, ht, hta⟩` from `h a (Finset.mem_insert_self a T)`.
+
+Use `⟨s * t, Nat.Coprime.mul_left hs ht, fun z hz => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hz with rfl | hz` into its components or cases. Establish `e : ((s * t : ℕ) : K) * f z = (s : K) * ((t : K) * f z)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (natCast_mem _ s) hta`.
+
+Establish `e : ((s * t : ℕ) : K) * f z = (t : K) * ((s : K) * f z)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (natCast_mem _ t) (hsT z hz)`.
+-/
 theorem Rp_finset {α : Type} (T : Finset α) (f : α → K) (h : ∀ z ∈ T, Rp K p (f z)) :
     ∃ s : ℕ, Nat.Coprime s p ∧ ∀ z ∈ T, (s : K) * f z ∈ (algebraMap (𝓞 K) K).range := by
   classical
@@ -75,6 +91,9 @@ theorem Rp_finset {α : Type} (T : Finset α) (f : α → K) (h : ∀ z ∈ T, R
       rw [e]
       exact Subring.mul_mem _ (natCast_mem _ t) (hsT z hz)
 
+/- English proof (translation)
+Take `⟨s, hs, h'⟩` from `Rp_finset (p := p) Finset.univ f fun z _ => h z`. Conclude with `⟨s, hs, fun z => h' z (Finset.mem_univ z)⟩`.
+-/
 theorem Rp_fintype {α : Type} [Fintype α] (f : α → K) (h : ∀ z, Rp K p (f z)) :
     ∃ s : ℕ, Nat.Coprime s p ∧ ∀ z, (s : K) * f z ∈ (algebraMap (𝓞 K) K).range := by
   obtain ⟨s, hs, h'⟩ := Rp_finset (p := p) Finset.univ f fun z _ => h z
@@ -85,15 +104,24 @@ end rp
 section main
 variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
 
+/- English proof (translation)
+The claim follows from `(algebraMap K E).injective (by rw [conjK_spec, conjK_spec, hc.1])`.
+-/
 theorem conjK_invol (cj : E ≃ₐ[ℚ] E) (hc : PI.KerIso.IsConj K cj) (k : K) :
     conjK cj hc.2.1 (conjK cj hc.2.1 k) = k :=
   (algebraMap K E).injective (by rw [conjK_spec, conjK_spec, hc.1])
 
+/- English proof (translation)
+Take `⟨P, hP, hpP, a, b, hab, ha, hb⟩` from `hs`. Conclude with `⟨P, hP, hpP, a, b, (algebraMap K E).injective (by rw [conjK_spec, hab]), ha, hb⟩`.
+-/
 theorem splitK_of (cj : E ≃ₐ[ℚ] E) (hc : PI.KerIso.IsConj K cj) {p : ℕ}
     (hs : PI.KerIso.SplitsAt K cj p) : SplitK (conjK cj hc.2.1) p := by
   obtain ⟨P, hP, hpP, a, b, hab, ha, hb⟩ := hs
   exact ⟨P, hP, hpP, a, b, (algebraMap K E).injective (by rw [conjK_spec, hab]), ha, hb⟩
 
+/- English proof (translation)
+The claim follows from `(algebraMap K E).injective (by rw [← sum_conj, hg])`.
+-/
 theorem hf_isom (cj : E ≃ₐ[ℚ] E)
     (h : ∀ k : K, ∃ k' : K, cj (algebraMap K E k) = algebraMap K E k') {n : Type} [Fintype n]
     (g₀ : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K)) (hg : PI.KerIso.IsIsom cj g₀) (x y : Fin 4 → E) :

@@ -12,6 +12,11 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 
 namespace GlobalTheory.Mem.R3
 
+/- English proof (translation)
+Take `⟨n, ρ, hρ, hχ⟩` from `h`. Use `⟨n, ρ.comp e.toMonoidHom, ?_, fun t => hχ (e t)⟩` and prove the remaining obligations. Use `{ toNontrivial := ⟨⟨⊥, ⊤, fun q => ?_⟩⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ.comp e.toMonoidHom)) q :))`. Set `S' : Subrepresentation ρ` to `⟨S.toSubmodule, fun g v hv => by`.
+
+Take `⟨x, rfl⟩` from `e.surjective g`. Conclude with `S.apply_mem_toSubmodule x hv⟩`. Break down `hρ.eq_bot_or_eq_top S' with q | q` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))`.
+-/
 theorem isAbsIrrChar_comp {K G H : Type} [Field K] [Group G] [Group H] (e : G ≃* H) {χ : H → K} (h : IsAbsIrrChar χ) :
     IsAbsIrrChar fun g => χ (e g) := by
   obtain ⟨n, ρ, hρ, hχ⟩ := h
@@ -26,6 +31,9 @@ theorem isAbsIrrChar_comp {K G H : Type} [Field K] [Group G] [Group H] (e : G �
     · exact Or.inl (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))
     · exact Or.inr (Subrepresentation.toSubmodule_injective (congrArg (Subrepresentation.toSubmodule (ρ := ρ)) q :))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using isAbsIrrChar_comp e.symm h, isAbsIrrChar_comp e⟩`.
+-/
 theorem isAbsIrrChar_comp_iff {K G H : Type} [Field K] [Group G] [Group H] (e : G ≃* H) {χ : H → K} :
     (IsAbsIrrChar fun g => χ (e g)) ↔ IsAbsIrrChar χ :=
   ⟨fun h => by simpa using isAbsIrrChar_comp e.symm h, isAbsIrrChar_comp e⟩
@@ -76,6 +84,9 @@ def lev1 : Subgroup (Gc B px) := (Formalism.L2.Col.rPsymF (R := B.R) I.Ch).grp
 
 def chr1 : lev1 I →* B.LLˣ := (Formalism.L2.Col.rPsymF (R := B.R) I.Ch).chr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_A (hX : B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc B px → B.LL)) (tr tr' : TrI B px) :
     (famC I hX U Xg tr).A = (famC I hX U Xg tr').A := rfl
 
@@ -89,19 +100,33 @@ def ValsIn : Prop :=
   (∀ a P, (I.xi a).UnrAt P → ∃ z : B.LL, B.embLL z = (((I.xi a).val P : ℂˣ) : ℂ)) ∧
     ∀ a, ∀ P ∈ I.Q a, ∃ z : B.LL, IsPrimitiveRoot z (Nat.card (kP P))
 
+/- English proof (translation)
+Unfold `tuOf`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+-/
 theorem mem_tuOf {U : Set I.ι} {τ : Tup B.fields.F B.fields.E B.fields.K I.S} : τ ∈ tuOf I U ↔ ∃ a ∈ U, I.tup a = τ := by
   unfold tuOf
   simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
 
+/- English proof (translation)
+The claim follows from `(mem_tuOf I).trans ⟨fun ⟨_, hb, e⟩ => I.tup_inj e ▸ hb, fun h => ⟨a, h, rfl⟩⟩`.
+-/
 theorem tup_mem_tuOf {U : Set I.ι} {a : I.ι} : I.tup a ∈ tuOf I U ↔ a ∈ U :=
   (mem_tuOf I).trans ⟨fun ⟨_, hb, e⟩ => I.tup_inj e ▸ hb, fun h => ⟨a, h, rfl⟩⟩
 
+/- English proof (translation)
+Establish `h' : ∃ a, I.tup a = t.1` using `⟨a, h⟩`. Unfold `ixOf`. Rewrite using `[dif_pos h']`. Conclude with `I.tup_inj (h'.choose_spec.trans h.symm)`.
+-/
 theorem ixOf_eq {U : Set I.ι} {t : TupU I U} {a : I.ι} (h : I.tup a = t.1) : ixOf I U t = a := by
   have h' : ∃ a, I.tup a = t.1 := ⟨a, h⟩
   unfold ixOf
   rw [dif_pos h']
   exact I.tup_inj (h'.choose_spec.trans h.symm)
 
+/- English proof (translation)
+Establish `h : ∃ a, I.tup a = t.1`. Break down `t.2 with h | h` into its components or cases. Conclude with `⟨I.mu0, I.trueColumn_tuple_trivial_eq_one.trans h.symm⟩`. Take `⟨a, -, e⟩` from `(mem_tuOf I).1 h`. Conclude with `⟨a, e⟩`.
+
+Take `⟨a, ha⟩` from `h`. Rewrite using `[ixOf_eq I ha, ha]`.
+-/
 theorem tup_ixOf {U : Set I.ι} (t : TupU I U) : I.tup (ixOf I U t) = t.1 := by
   have h : ∃ a, I.tup a = t.1 := by
     rcases t.2 with h | h
@@ -111,11 +136,22 @@ theorem tup_ixOf {U : Set I.ι} (t : TupU I U) : I.tup (ixOf I U t) = t.1 := by
   obtain ⟨a, ha⟩ := h
   rw [ixOf_eq I ha, ha]
 
+/- English proof (translation)
+The claim follows from `ixOf_eq I I.trueColumn_tuple_trivial_eq_one`.
+-/
 theorem ixOf_mu0F (U : Set I.ι) : ixOf I U (mu0F (X := B.fields) (tuOf I U)) = I.mu0 := ixOf_eq I I.trueColumn_tuple_trivial_eq_one
 
+/- English proof (translation)
+Introduce `t t' h` and use `Subtype.ext ((tup_ixOf I t).symm.trans ((congrArg I.tup h).trans (tup_ixOf I t')))`.
+-/
 theorem ixOf_injective (U : Set I.ι) : Function.Injective (ixOf I U) := fun t t' h =>
   Subtype.ext ((tup_ixOf I t).symm.trans ((congrArg I.tup h).trans (tup_ixOf I t')))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Break down `t.2 with h | h` into its components or cases. Conclude with `Or.inl (ixOf_eq I (I.trueColumn_tuple_trivial_eq_one.trans h.symm))`. Conclude with `Or.inr ((tup_mem_tuOf I).1 (by rw [tup_ixOf]; exact h))`.
+
+Introduce and unpack `(rfl | h)`. Conclude with `⟨_, ixOf_mu0F I U⟩`. Conclude with `⟨⟨I.tup a, Or.inr ((tup_mem_tuOf I).2 h)⟩, ixOf_eq I rfl⟩`.
+-/
 theorem mem_range_ixOf {U : Set I.ι} {a : I.ι} : a ∈ Set.range (ixOf I U) ↔ a = I.mu0 ∨ a ∈ U := by
   constructor
   · rintro ⟨t, rfl⟩
@@ -126,6 +162,9 @@ theorem mem_range_ixOf {U : Set I.ι} {a : I.ι} : a ∈ Set.range (ixOf I U) �
     · exact ⟨_, ixOf_mu0F I U⟩
     · exact ⟨⟨I.tup a, Or.inr ((tup_mem_tuOf I).2 h)⟩, ixOf_eq I rfl⟩
 
+/- English proof (translation)
+Introduce `_ ⟨w, hw, e⟩` and use `⟨w, h hw, e⟩`.
+-/
 theorem usedOf_mono (T : Top.TwDat B) {Wt Wt' : Set B.places.Pl} (h : Wt ⊆ Wt') : usedOf I T Wt ⊆ usedOf I T Wt' :=
   fun _ ⟨w, hw, e⟩ => ⟨w, h hw, e⟩
 
@@ -133,23 +172,49 @@ section Fields
 
 variable (hX : B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc B px → B.LL)) (tr : TrI B px)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem family_infinitePlace : (famC I hX U Xg tr).A.v0 = InfinitePlace.mk B.embLL := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_μ0 : (famC I hX U Xg tr).A.μ0 = mu0F (X := B.fields) (tuOf I U) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_X : (famC I hX U Xg tr).A.X = Xg := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_r : (famC I hX U Xg tr).A.r = B.R.r := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_A_t : (famC I hX U Xg tr).A.t = B.R.t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_trI : (famC I hX U Xg tr).trI = tr := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famC_muVal (j : Fin B.R.m) (t : TupU I U) (P : PlS B px) :
     (famC I hX U Xg tr).A.muVal j t P = I.Ch.muVal j P.1 * xiValOf I t.1 P.1 := rfl
 
 end Fields
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `Units.ne_zero _ (hz.symm.trans (map_zero _))`. Establish `h' : ∃ z : B.LLˣ, ∃ b, I.tup b = I.tup a ∧ B.embLL (z : B.LL) = (((I.xi b).val P : ℂˣ) : ℂ)` using `⟨Units.mk0 z hz0, a, rfl, hz⟩`.
+
+Unfold `xiValOf`. Rewrite using `[dif_pos h']`. Take `⟨b, hb, e⟩` from `h'.choose_spec`. Rewrite using `[e, I.tup_inj hb]`.
+-/
 theorem embLL_xiValOf (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
     (h : ∃ z : B.LL, B.embLL z = (((I.xi a).val P : ℂˣ) : ℂ)) :
     B.embLL (xiValOf I (I.tup a) P : B.LL) = (((I.xi a).val P : ℂˣ) : ℂ) := by
@@ -164,31 +229,52 @@ theorem embLL_xiValOf (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
   obtain ⟨b, hb, e⟩ := h'.choose_spec
   rw [e, I.tup_inj hb]
 
+/- English proof (translation)
+Unfold `psiC`. Rewrite using `[dif_pos h]`.
+-/
 theorem psiC_of_mem {PP : Pl B.host.E} (h : PP ∈ (B.primes px).vGs) : psiC I PP = I.Ch.psi0 ⟨PP, h⟩ := by
   unfold psiC
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `psiC`. Rewrite using `[dif_neg h]`.
+-/
 theorem psiC_of_notMem {PP : Pl B.host.E} (h : PP ∉ (B.primes px).vGs) : psiC I PP = 1 := by
   unfold psiC
   rw [dif_neg h]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.R3.embLL_xiValOf I a P (h.1 a P hP)`.
+-/
 theorem ValsIn.embLL_xiValOf {I : ColIn B px} (h : ValsIn I) (a : I.ι) (P : HeightOneSpectrum (𝓞 B.fields.E))
     (hP : (I.xi a).UnrAt P) : B.embLL (xiValOf I (I.tup a) P : B.LL) = (((I.xi a).val P : ℂˣ) : ℂ) :=
   GlobalTheory.Mem.R3.embLL_xiValOf I a P (h.1 a P hP)
 
+/- English proof (translation)
+Use `Finset.eq_empty_of_forall_notMem fun τ h => ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `(mem_tuOf I).1 h`. Conclude with `ha`.
+-/
 example : tuOf I ∅ = ∅ := by
   refine Finset.eq_empty_of_forall_notMem fun τ h => ?_
   obtain ⟨a, ha, -⟩ := (mem_tuOf I).1 h
   exact ha
 
+/- English proof (translation)
+The claim follows from `(mem_tuOf I).2 ⟨_, rfl, I.trueColumn_tuple_trivial_eq_one⟩`.
+-/
 example : (1 : Tup B.fields.F B.fields.E B.fields.K I.S) ∈ tuOf I {I.mu0} := (mem_tuOf I).2 ⟨_, rfl, I.trueColumn_tuple_trivial_eq_one⟩
 
+/- English proof (translation)
+Establish `e : (((I.xi I.mu0).val P : ℂˣ) : ℂ) = 1`. Rewrite using `[h.trueColumnChoices_heckeChar_reference_eq_one]`. Both sides reduce to the same expression. Rewrite using `[embLL_xiValOf I I.mu0 P ⟨1, by rw [e, map_one]⟩, e]`.
+-/
 example (h : I.Ok) (P : HeightOneSpectrum (𝓞 B.fields.E)) : B.embLL (xiValOf I (I.tup I.mu0) P : B.LL) = 1 := by
   have e : (((I.xi I.mu0).val P : ℂˣ) : ℂ) = 1 := by
     rw [h.trueColumnChoices_heckeChar_reference_eq_one]
     rfl
   rw [embLL_xiValOf I I.mu0 P ⟨1, by rw [e, map_one]⟩, e]
 
+/- English proof (translation)
+The claim follows from `Set.eq_empty_of_forall_notMem fun _ ⟨_, h, _⟩ => h`.
+-/
 example (T : Top.TwDat B) : usedOf I T ∅ = ∅ := Set.eq_empty_of_forall_notMem fun _ ⟨_, h, _⟩ => h
 
 end Base
@@ -225,6 +311,9 @@ def GoodSet (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.
   (∀ χ : Gc X.B px → X.B.LL, χ ∈ Xg ↔ (fun g => χ (eR.symm g)) ∈ Formalism.L2.Col.XgE X.B.embLL X.toD7.ntypes.e0) ∧
     ∀ g, X.B.embLL ((idemOf Xg).coeff g) = X.toD7.ntypes.e0.coeff (eR g)
 
+/- English proof (translation)
+Set `_ : Fintype (G0g X.toD7.nd)` to `Fintype.ofEquiv _ eR.toEquiv`. Use `and_congr_left' (forall_congr' fun χ => iff_congr Iff.rfl ?_)` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.mem_XgE, ← Equiv.sum_comp eR.toEquiv, isAbsIrrChar_comp_iff eR.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem goodSet_iff (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px → X.B.LL)) :
     GoodSet X (px := px) eR Xg ↔
       (∀ χ : Gc X.B px → X.B.LL, χ ∈ Xg ↔ IsAbsIrrChar χ ∧
@@ -235,14 +324,23 @@ theorem goodSet_iff (eR : Gc X.B px ≃* G0g X.toD7.nd) (Xg : Finset (Gc X.B px 
   rw [Formalism.L2.Col.mem_XgE, ← Equiv.sum_comp eR.toEquiv, isAbsIrrChar_comp_iff eR.symm]
   simp
 
+/- English proof (translation)
+The claim follows from `Finset.ext fun χ => (h.1 χ).trans (h'.1 χ).symm`.
+-/
 theorem GoodSet.unique {eR : Gc X.B px ≃* G0g X.toD7.nd} {Xg Xg' : Finset (Gc X.B px → X.B.LL)}
     (h : GoodSet X (px := px) eR Xg) (h' : GoodSet X (px := px) eR Xg') : Xg = Xg' :=
   Finset.ext fun χ => (h.1 χ).trans (h'.1 χ).symm
 
+/- English proof (translation)
+Introduce `χ hχ` and use `((((goodSet_iff X eR Xg).1 h).1 χ).1 hχ).1`.
+-/
 theorem GoodSet.irr {eR : Gc X.B px ≃* G0g X.toD7.nd} {Xg : Finset (Gc X.B px → X.B.LL)}
     (h : GoodSet X (px := px) eR Xg) : ∀ χ ∈ Xg, IsAbsIrrChar χ :=
   fun χ hχ => ((((goodSet_iff X eR Xg).1 h).1 χ).1 hχ).1
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `rfl`.
+-/
 theorem isIdG_refl : IsPlacewiseIdentity X (px := px) (Pg := (X.B.primes px).vGs) (MulEquiv.refl _) := fun _ _ _ _ => rfl
 
 structure GrpAt : Prop where

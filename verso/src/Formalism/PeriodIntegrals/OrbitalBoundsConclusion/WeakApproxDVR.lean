@@ -4,5 +4,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeakApproximationDVR.De
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeakApproximationDVR.BigExistenceHolds
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeakApproximationDVR.RhoProjectionAssembly
 
+/- English proof (translation)
+The claim follows from `PI.WA.weakApproxDVR_of PI.WA.big_existence_holds PI.WA.rho_projection_assembly`.
+-/
 theorem weak_approximation_dvr : PI.WeakApproxDVR :=
   PI.WA.weakApproxDVR_of PI.WA.big_existence_holds PI.WA.rho_projection_assembly

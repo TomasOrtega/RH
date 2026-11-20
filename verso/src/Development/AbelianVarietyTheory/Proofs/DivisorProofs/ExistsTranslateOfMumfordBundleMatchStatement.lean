@@ -7,6 +7,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MumCmp.exists_translate_of_lam | exact GlobalTheory.MumCmp.exists_translate_of_lam | (intros; apply GlobalTheory.MumCmp.exists_translate_of_lam <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_translate_of_mumfordBundle_match : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D₀ D : DegPre R)
   (β : D₀.P.A ≅ D.P.A), IsMonHom β.hom →
   (∃ wΛ : LB.Iso (abelian₂ D₀.P.A D₀.P.L)

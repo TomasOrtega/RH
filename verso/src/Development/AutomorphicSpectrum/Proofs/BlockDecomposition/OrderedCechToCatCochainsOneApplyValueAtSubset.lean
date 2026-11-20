@@ -23,6 +23,9 @@ def SmF (n : ℕ) : Submodule ℂ (Mat n → ℂ) where
   zero_mem' := ⟨contDiffOn_const, fun _ _ => rfl⟩
   smul_mem' c a ha := ⟨contDiffOn_const.smul ha.1, fun g hg => by simp [ha.2 g hg]⟩
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X h.2.1).congr fun g hg => Set.indicator_of_mem hg _, fun g hg => Set.indicator_of_notMem hg _⟩` and prove the remaining obligations.
+-/
 theorem indicator_Rd_mem (X : Mat n) (h : SmF n) : (GLs n).indicator (Rd X h.1) ∈ SmF n := by
   refine ⟨(GlobalTheory.CompanionTheory.RCalc.Rd_contDiffOn X h.2.1).congr fun g hg => Set.indicator_of_mem hg _,
     fun g hg => Set.indicator_of_notMem hg _⟩
@@ -85,17 +88,29 @@ def cyc (f : SmF n) : Submodule ℂ (SmF n) :=
   (Algebra.adjoin ℂ {T : Module.End ℂ (SmF n) | ∃ a b, T = e1 DR a b ∨ T = e2 DR a b}).toSubmodule.map
     (LinearMap.applyₗ f)
 
+/- English proof (translation)
+The claim follows from `(Matrix.UnitaryGroup.det_isUnit k).ne_zero`.
+-/
 theorem unit_mem (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n :=
   (Matrix.UnitaryGroup.det_isUnit k).ne_zero
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem hg _`.
+-/
 theorem DR_apply (X : Mat n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) : (DR X h).1 g = Rd X h.1 g :=
   Set.indicator_of_mem hg _
 
+/- English proof (translation)
+Simplify using `only [e1, LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, Pi.smul_apply, Pi.sub_apply, DR_apply _ _ hg, Eu, Pi.add_apply, if_true, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orderedCechToCatCochainsOne_apply_valueAtSubset (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) : (e1 DR a b h).1 g = Eu true a b h.1 g := by
   simp only [e1, LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, Pi.smul_apply,
     Pi.sub_apply, DR_apply _ _ hg, Eu, Pi.add_apply, if_true, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[f1, DR_apply _ _ hg, Eu]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem liftOneFormsToCompatible_apply (a b : Fin n) (h : SmF n) {g : Mat n} (hg : g ∈ GLs n) : (f1 DR a b h).1 g = Eu false a b h.1 g := by
   simp [f1, DR_apply _ _ hg, Eu]
   ring

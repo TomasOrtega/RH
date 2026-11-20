@@ -20,6 +20,9 @@ namespace GlobalTheory.CompanionTheory.ConeLocal
 section Rep
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hv⟩` from `h`. Take `⟨f', hf', rfl, hv'⟩` from `h'`. Use `⟨f + f', by rw [map_add, hf, hf', add_zero], rfl, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← hv, ← hv']`. Both sides reduce to the same expression.
+-/
 theorem rep_add {a b : IdF A} {j : ℕ} {z z' : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))}
     {c c' : CH.H (sq a b) j} (h : CrystallineSemistableComparison.Pb.Rep a b z c) (h' : CrystallineSemistableComparison.Pb.Rep a b z' c') :
     CrystallineSemistableComparison.Pb.Rep a b (fun s => z s + z' s) (c + c') := by
@@ -29,6 +32,9 @@ theorem rep_add {a b : IdF A} {j : ℕ} {z z' : ∀ s : ComposableArrows C j, A.
   rw [map_add, ← hv, ← hv']
   rfl
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hv⟩` from `h`. Use `⟨r • f, by rw [map_smul, hf, smul_zero], rfl, fun s => ?_⟩` and prove the remaining obligations. Establish `e : Ideal.Quotient.mk (b.S (s.obj (Fin.last j))) (r • z s) = r • Ideal.Quotient.mk (b.S (s.obj (Fin.last j))) (z s)` using `rfl`. Rewrite using `[e, ← hv]`. Both sides reduce to the same expression.
+-/
 theorem rep_smul {a b : IdF A} {j : ℕ} {z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))}
     {c : CH.H (sq a b) j} (r : R) (h : CrystallineSemistableComparison.Pb.Rep a b z c) :
     CrystallineSemistableComparison.Pb.Rep a b (fun s => r • z s) (r • c) := by
@@ -38,11 +44,17 @@ theorem rep_smul {a b : IdF A} {j : ℕ} {z : ∀ s : ComposableArrows C j, A.ob
   rw [e, ← hv]
   rfl
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hv⟩` from `h`. Conclude with `⟨f, hf, rfl, fun s => (hv s).trans (Ideal.Quotient.eq.2 (e s))⟩`.
+-/
 theorem rep_congr {a b : IdF A} {j : ℕ} {z z' : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))}
     {c : CH.H (sq a b) j} (h : CrystallineSemistableComparison.Pb.Rep a b z c) (e : ∀ s, z s - z' s ∈ b.S _) : CrystallineSemistableComparison.Pb.Rep a b z' c := by
   obtain ⟨f, hf, rfl, hv⟩ := h
   exact ⟨f, hf, rfl, fun s => (hv s).trans (Ideal.Quotient.eq.2 (e s))⟩
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hv⟩` from `h`. Take `⟨f', hf', rfl, hv'⟩` from `h'`. Establish `e : f = f'` using `funext fun s => Subtype.ext ((hv s).trans (hv' s).symm)`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rep_unique {a b : IdF A} {j : ℕ} {z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))}
     {c c' : CH.H (sq a b) j} (h : CrystallineSemistableComparison.Pb.Rep a b z c) (h' : CrystallineSemistableComparison.Pb.Rep a b z c') : c = c' := by
   obtain ⟨f, hf, rfl, hv⟩ := h
@@ -51,12 +63,20 @@ theorem rep_unique {a b : IdF A} {j : ℕ} {z : ∀ s : ComposableArrows C j, A.
   subst e
   rfl
 
+/- English proof (translation)
+Use `⟨0, map_zero _, ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.Quotient.mk_zero _).symm`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.2 (e s)).symm`.
+-/
 theorem rep_zero {a b : IdF A} {j : ℕ} {z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))}
     (e : ∀ s, z s ∈ b.S _) : CrystallineSemistableComparison.Pb.Rep a b z 0 := by
   refine ⟨0, map_zero _, ?_, fun s => ?_⟩
   · exact (Submodule.Quotient.mk_zero _).symm
   · exact (Ideal.Quotient.eq_zero_iff_mem.2 (e s)).symm
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Express the relevant statement in the definitionally equal form `Subtype.val (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • ((sq a b).map (toLast i s)).hom (f (face i s)) : sqM a b _) = _`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+
+Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ (i : ℕ) • (sqMap a b (toLast i s) (f (face i s))).1 = _`. Rewrite using `[GlobalTheory.CompanionTheory.GrDelta.sqMap_val a b _ _ _ (hv _)]`.
+-/
 theorem d_val {a b : IdF A} {j : ℕ} (f : CH.Cn (sq a b) j) (z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j)))
     (hv : ∀ s, (show sqM a b _ from f s).1 = Ideal.Quotient.mk _ (z s)) (s : ComposableArrows C (j + 1)) :
     (show sqM a b _ from CH.d _ j f s).1 = Ideal.Quotient.mk _
@@ -70,6 +90,11 @@ theorem d_val {a b : IdF A} {j : ℕ} (f : CH.Cn (sq a b) j) (z : ∀ s : Compos
   change (-1 : ℤ) ^ (i : ℕ) • (sqMap a b (toLast i s) (f (face i s))).1 = _
   rw [GlobalTheory.CompanionTheory.GrDelta.sqMap_val a b _ _ _ (hv _)]
 
+/- English proof (translation)
+Set `f : CH.Cn (sq a b) j` to `fun s => sqMk a b (g s) (hg s)`. Establish `hd0 : CH.d _ j f = 0`. Use function extensionality and compare the values at `s`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[d_val f (fun s => g s) (fun _ => rfl)]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hd s)`. Conclude with `⟨_, f, hd0, rfl, fun _ => rfl⟩`.
+-/
 theorem rep_exists {a b : IdF A} {j : ℕ} (g : CH.Cn (CH.modF A) j) (hg : ∀ s, g s ∈ a.S _)
     (hd : ∀ s, CH.d _ j g s ∈ b.S _) : ∃ c, CrystallineSemistableComparison.Pb.Rep a b (fun s => g s) c := by
   let f : CH.Cn (sq a b) j := fun s => sqMk a b (g s) (hg s)
@@ -80,6 +105,9 @@ theorem rep_exists {a b : IdF A} {j : ℕ} (g : CH.Cn (CH.modF A) j) (hg : ∀ s
     exact Ideal.Quotient.eq_zero_iff_mem.2 (hd s)
   exact ⟨_, f, hd0, rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Set `f : CH.Cn (sq a b) j` to `fun s => sqMk a b (g s) (hg s)`. Use `⟨CH.d _ j f, CH.d_d _ j f, ?_, fun s => d_val f (fun s => g s) (fun _ => rfl) s⟩` and prove the remaining obligations. Use `((Submodule.Quotient.mk_eq_zero _).2 ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CH.d _ j f ∈ (CH.cx _).B (j + 1)`. Conclude with `⟨f, rfl⟩`.
+-/
 theorem rep_d {a b : IdF A} {j : ℕ} (g : CH.Cn (CH.modF A) j) (hg : ∀ s, g s ∈ a.S _) :
     CrystallineSemistableComparison.Pb.Rep a b (fun s => CH.d _ j g s) 0 := by
   let f : CH.Cn (sq a b) j := fun s => sqMk a b (g s) (hg s)
@@ -98,6 +126,11 @@ namespace GlobalTheory.CompanionTheory.ConeLocal
 section Res
 variable {b : Base} {L : b.Fun}
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hv⟩` from `hx`. Use `⟨((incl h).sq (incl_fil _ r) (incl_fil _ r')).pullC j f, ?_, rfl, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[CH.Mor.d_pullC, hf, map_zero]`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ _ _ (show sqM _ _ _ from f (s ⋙ ObjectProperty.ιOfLE h)).1 = _`. Rewrite using `[hv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rep_res {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r r' : ℤ) {j : ℕ}
     {z : ∀ s : ComposableArrows Q.FullSubcategory j, (sP Q).A.obj (s.obj (Fin.last j))} {x : HQ Q r r' j}
     (hx : CrystallineSemistableComparison.Pb.Rep (sFil Q r) (sFil Q r') z x) :
@@ -114,11 +147,19 @@ def resQ {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) {k : ℕ} (f : CH.Cn (
     CH.Cn (CH.modF (sP Q').A) k :=
   fun s => f (s ⋙ ObjectProperty.ιOfLE h)
 
+/- English proof (translation)
+The claim follows from `(CH.Mor.d_pullC (⟨ObjectProperty.ιOfLE h, fun _ => LinearMap.id, fun _ _ => rfl⟩ : CH.Mor (CH.modF (sP Q).A) (CH.modF (sP Q').A) (RingHom.id _)) k f)`.
+-/
 theorem d_resQ {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) {k : ℕ} (f : CH.Cn (CH.modF (sP Q).A) k) :
     CH.d _ k (resQ h f) = resQ h (CH.d _ k f) :=
   (CH.Mor.d_pullC (⟨ObjectProperty.ιOfLE h, fun _ => LinearMap.id, fun _ _ => rfl⟩ :
     CH.Mor (CH.modF (sP Q).A) (CH.modF (sP Q').A) (RingHom.id _)) k f)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Use function extensionality and compare the values at `s`. Establish `e` using `ih fun i => ℓ (Fin.castSucc i)`.
+
+Express the relevant statement in the definitionally equal form `_ = (CH.mulP (sP Q').A).cupC _ (cupListC (sP Q').A fun i => resQ h (ℓ (Fin.castSucc i))) (resQ h (ℓ (Fin.last k))) s`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem cup_resQ {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) {k : ℕ} (ℓ : Fin k → CH.Cn (CH.modF (sP Q).A) 1) :
     resQ h (cupListC (sP Q).A ℓ) = cupListC (sP Q').A fun i => resQ h (ℓ i) := by
   induction k with

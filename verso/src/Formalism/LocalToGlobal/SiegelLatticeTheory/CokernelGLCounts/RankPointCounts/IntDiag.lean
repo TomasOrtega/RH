@@ -10,12 +10,18 @@ section IntM
 
 variable {K : Type*} [CommRing K] (I : Subring K) {n : ℕ}
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `I.sum_mem fun k _ => I.mul_mem (hA i k) (hB k j)`.
+-/
 theorem int_mul {A B : Matrix (Fin n) (Fin n) K} (hA : ∀ i j, A i j ∈ I) (hB : ∀ i j, B i j ∈ I) :
     ∀ i j, (A * B) i j ∈ I := by
   intro i j
   rw [Matrix.mul_apply]
   exact I.sum_mem fun k _ => I.mul_mem (hA i k) (hB k j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hd i`. Conclude with `I.zero_mem`.
+-/
 theorem int_diag {d : Fin n → K} (hd : ∀ a, d a ∈ I) : ∀ i j, Matrix.diagonal d i j ∈ I := by
   intro i j
   rw [Matrix.diagonal_apply]
@@ -35,6 +41,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D)
 
+/- English proof (translation)
+Establish `hν0 : ∀ a : Fin (D.R.rS + 1), IsUnit (pv w.1 a)` using `fun a => IsUnit.mk0 _ (pv_ne' w a)`. Establish `hup` using `cOf_up (fσ_fσ w) (fun a => pv w.1 a) X' hX'.1 hpat hν0`. Establish `hc : IsUp (cOf (fσ w) (fun a => pv w.1 a) X')` using `⟨hup.1, fun a b hab => hup.2 b a hab⟩`. Establish `hcm : ∀ i j, ((cOf (fσ w) (fun a => pv w.1 a) X').map (D.s.atP p).ιE) i j ∈ (D.s.atP p).O`. Introduce `i j`.
+
+Simplify using `only [Matrix.map_apply, cOf, Matrix.of_apply, Ring.inverse_eq_inv', map_mul]`. Conclude with `(D.s.atP p).O.mul_mem ((D.s.atP p).O.mul_mem (hν' _) (hX _ _)) (hν _)`. Establish `hci : ∀ i j, (((cOf (fσ w) (fun a => pv w.1 a) X')⁻¹).map (D.s.atP p).ιE) i j ∈ (D.s.atP p).O`. Introduce `i j`. Rewrite using `[ZsVolGrp.inv_eq_adj (det_up' hc)]`.
+
+Establish `e` using `RingHom.map_adjugate (D.s.atP p).ιE (cOf (fσ w) (fun a => pv w.1 a) X')`. Rewrite `e` using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply]`. Rewrite using `[e]`. Conclude with `ZsVolGrp.adj_mem (D.s.atP p).O hcm i j`. Simplify using `only [gY, Matrix.map_mul]`.
+
+Conclude with `int_mul _ (int_mul _ hU' hci) hU`.
+-/
 theorem gY_int (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) {U₁ X' : PairVal.MatR D} (hX' : IsLo X')
     (hpat : ∀ i j, fσ w j < fσ w i → X' i j = 0) (hU : ∀ i j, (D.s.atP p).ιE (U₁ i j) ∈ (D.s.atP p).O)
     (hU' : ∀ i j, (D.s.atP p).ιE (U₁⁻¹ i j) ∈ (D.s.atP p).O)
@@ -59,6 +74,15 @@ theorem gY_int (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) {U₁ X' : PairVal.
   simp only [gY, Matrix.map_mul]
   exact int_mul _ (int_mul _ hU' hci) hU
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨hgX, hgY, -⟩ : IsLo (gX L₁ X') ∧ IsUp (gY w U₁ X') ∧ True := by`. Establish `hν0 : ∀ a : Fin (D.R.rS + 1), IsUnit (pv w.1 a)` using `fun a => IsUnit.mk0 _ (pv_ne' w a)`. Establish `hup` using `cOf_up (fσ_fσ w) (fun a => pv w.1 a) X' hX'.1 hpat hν0`. Establish `hc : IsUp (cOf (fσ w) (fun a => pv w.1 a) X')` using `⟨hup.1, fun a b hab => hup.2 b a hab⟩`. Conclude with `⟨isLo_mul (isLo_mul hL₁ hX') (isLo_inv hL₁), isUp_mul (isUp_mul (isUp_inv hU₁) (isUp_inv hc)) hU₁, trivial⟩`.
+
+Establish `hgYi` using `gY_int p w hX' hpat hU hU' hν hν' hX`. Establish `hR : (Zd.M p).R = (D.s.atP p).O` using `Formalism.L2.SG.Pf.LMK.R_eq_O (Zd.agree p) hM`. Establish `hlo` using `locL_lo Zd p (isLo_mul hA₀ hgX) (isUp_mul hgY hB₀)`. Establish `hup` using `locR_up Zd p (isLo_mul hA₀ hgX) (isUp_mul hgY hB₀)`. Use `⟨⟨hlo.1, hlo.2, fun i j => ?_⟩, ⟨hup.1, fun a b hab => hup.2 b a hab, fun i j => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hR, locL_L Zd p hM]`. Use `int_mul _ (int_mul _ (int_diag _ hcf) ?_) (int_diag _ hcfi) i j` and prove the remaining obligations. Simplify using `only [gX, Matrix.map_mul]`. Conclude with `int_mul _ hA (int_mul _ (int_mul _ hL hX) hL')`. Rewrite using `[hR, locR_L Zd p hM]`.
+
+Use `int_mul _ (int_mul _ (int_diag _ hcfi) ?_) (int_diag _ hcf) i j` and prove the remaining obligations. Rewrite using `[Matrix.map_mul]`. Conclude with `int_mul _ hgYi hB`.
+-/
 theorem good_at (p : PlF D) (hM : (Zd.M p).split = none) (w : Point D.host.E (D.R.rS + 1))
     {L₁ U₁ A₀ B₀ X' : PairVal.MatR D} (hL₁ : IsLo L₁) (hU₁ : IsUp U₁) (hA₀ : IsLo A₀) (hB₀ : IsUp B₀)
     (hX' : IsLo X') (hpat : ∀ i j, fσ w j < fσ w i → X' i j = 0)

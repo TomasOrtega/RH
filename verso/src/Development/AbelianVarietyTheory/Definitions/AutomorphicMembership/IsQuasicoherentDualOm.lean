@@ -23,6 +23,9 @@ variable {S S' : Scheme.{0}}
 
 def torsUnit (G : Over S) [GrpObj G] (N : ℕ) : 𝟙_ (Over S) ⟶ torsion G N := torsionLift 1 (one_pow N)
 
+/- English proof (translation)
+The claim follows from `(torsionLift_ι _ _).trans (MonObj.one_eq_one G).symm`.
+-/
 theorem torsUnit_ι (G : Over S) [GrpObj G] (N : ℕ) : torsUnit G N ≫ torsion.ι G N = η[G] :=
   (torsionLift_ι _ _).trans (MonObj.one_eq_one G).symm
 
@@ -111,14 +114,26 @@ def embV (σ : E →+* ℂ) : 𝓞 E →+* c.V W := (embK c σ).codRestrict (c.V
     (((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (embK c σ).toIntAlgHom).tower_top)
   exact (show (y : c.F) = embK c σ a from hy) ▸ y.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_embV (σ : E →+* ℂ) (a : 𝓞 E) : (((embV c W σ a : c.V W) : c.F) : ℂ) = σ a := rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem subtype_comp_embV (σ : E →+* ℂ) : (c.V W).subtype.comp (embV c W σ) = embK c σ := RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+Introduce `σ σ' h` and use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => (coe_embV c W σ a).symm.trans ((congrArg (fun f : 𝓞 E →+* c.V W => ((f a : c.F) : ℂ)) h).trans (coe_embV c W σ' a)))`.
+-/
 theorem embV_injective : Function.Injective (embV c W) := fun σ σ' h =>
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a =>
     (coe_embV c W σ a).symm.trans ((congrArg (fun f : 𝓞 E →+* c.V W => ((f a : c.F) : ℂ)) h).trans (coe_embV c W σ' a)))
 
+/- English proof (translation)
+Take `⟨b⟩` from `EigenSplit.nonempty_basis (E := E) (NumberField.Embeddings.card E ℂ)`. Conclude with `EigenSplit.isSplitting_of_isUnit_discr b (EigenSplit.det_sq_eq_discr_of_field (φ := embF c) (fun _ _ h => RingHom.ext fun x => congrArg Subtype.val (RingHom.congr_fun h x)) b) (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E)).isUnit`.
+-/
 theorem isSplitting_embK : IsSplitting (embK c) := by
   classical
   obtain ⟨b⟩ := EigenSplit.nonempty_basis (E := E) (NumberField.Embeddings.card E ℂ)
@@ -126,6 +141,13 @@ theorem isSplitting_embK : IsSplitting (embK c) := by
     (fun _ _ h => RingHom.ext fun x => congrArg Subtype.val (RingHom.congr_fun h x)) b)
     (Int.cast_ne_zero.2 (NumberField.discr_ne_zero E)).isUnit
 
+/- English proof (translation)
+Establish `e (x : c.V W ⊗[ℤ] 𝓞 E) : EigenSplit.splitMap (embK c) ((c.V W).subtype.toIntAlgHom.toLinearMap.rTensor _ x) = fun σ => (EigenSplit.splitMap (embV c W) x σ : c.F)`. Proceed by induction on `x with`. Consider the case `zero => simp [Pi.zero_def]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Both sides reduce to the same expression.
+
+Consider the case `tmul r a`. Use function extensionality and compare the values at `σ`. Rewrite using `[LinearMap.rTensor_tmul, EigenSplit.splitMap_tmul, EigenSplit.splitMap_tmul]`. Both sides reduce to the same expression. Introduce `x y h`.
+
+Use `Module.Flat.rTensor_preserves_injective_linearMap (M := 𝓞 E) (c.V W).subtype.toIntAlgHom.toLinearMap Subtype.val_injective ((isSplitting_embK c).1 ?_)` and prove the remaining obligations. Rewrite using `[e, e, h]`.
+-/
 theorem splitMap_embV_injective : Function.Injective (EigenSplit.splitMap (embV c W)) := by
   have e (x : c.V W ⊗[ℤ] 𝓞 E) : EigenSplit.splitMap (embK c) ((c.V W).subtype.toIntAlgHom.toLinearMap.rTensor _ x) =
       fun σ => (EigenSplit.splitMap (embV c W) x σ : c.F) := by
@@ -156,6 +178,9 @@ variable {Dw} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubrin
 
 instance quasiSeparated_G : QuasiSeparated Z.t.G.hom := have := Z.t.semi; inferInstance
 
+/- English proof (translation)
+The claim follows from `have := Z.t.semi.smooth exists_isFrame_omega Z.t.G x`.
+-/
 theorem exists_isFrame_om (x : Z.X) : ∃ (U : Z.X.Opens) (n : ℕ) (s : Fin n → Γ(Z.om, U)), x ∈ U ∧ VB.IsFrame s :=
   have := Z.t.semi.smooth
   exists_isFrame_omega Z.t.G x
@@ -184,6 +209,11 @@ variable {Z} {n : ℕ} (h : HTOn Z n)
 
 def imHT : Sub (modN Z.om (p ^ n)) := spanSub fun i => h.1 (Module.Free.chooseBasis ℤ Dw.La i)
 
+/- English proof (translation)
+Rewrite using `[← (Module.Free.chooseBasis ℤ Dw.La).sum_repr t, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `res_mem_spanSub (fun i => h.1 (Module.Free.chooseBasis ℤ Dw.La i)) i ⊤` as an intermediate fact. Rewrite `this` using `[resM_self]`.
+
+Conclude with `zsmul_mem this _`.
+-/
 theorem mem_imHT (t : Dw.La) : h.1 t ∈ (imHT h).sec ⊤ := by
   rw [← (Module.Free.chooseBasis ℤ Dw.La).sum_repr t, map_sum]
   refine sum_mem fun i _ => ?_
@@ -192,6 +222,9 @@ theorem mem_imHT (t : Dw.La) : h.1 t ∈ (imHT h).sec ⊤ := by
   rw [resM_self] at this
   exact zsmul_mem this _
 
+/- English proof (translation)
+Use `le_antisymm (fun s hs => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(mem_spanSub_iff _ hU).1 hs`. Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(imHT h).res_mem le_top (mem_imHT h t)`.
+-/
 theorem imHT_le {U : Z.X.Opens} (hU : IsAffineOpen U) :
     (imHT h).sec U = Submodule.span _ (Set.range fun t => resM _ le_top (h.1 t)) := by
   refine le_antisymm (fun s hs => ?_) (Submodule.span_le.2 ?_)
@@ -206,9 +239,15 @@ instance isQuasicoherent_omP : (omP h).toMod.IsQuasicoherent :=
   haveI : (imHT h).toMod.IsQuasicoherent := isQuasicoherent_spanSub _
   isQuasicoherent_preSub _ _
 
+/- English proof (translation)
+The claim follows from `mem_preSub_iff _ _`.
+-/
 theorem mem_omP_iff {U : Z.X.Opens} {s : Γ(Z.om, U)} : s ∈ (omP h).sec U ↔ (red Z n).app U s ∈ (imHT h).sec U :=
   mem_preSub_iff _ _
 
+/- English proof (translation)
+Rewrite using `[mem_omP_iff, map_nsmul, nsmul_sec_modN]`. Conclude with `zero_mem _`.
+-/
 theorem pow_smul_mem_omP {U : Z.X.Opens} (s : Γ(Z.om, U)) : p ^ n • s ∈ (omP h).sec U := by
   rw [mem_omP_iff, map_nsmul, nsmul_sec_modN]
   exact zero_mem _
@@ -216,6 +255,9 @@ theorem pow_smul_mem_omP {U : Z.X.Opens} (s : Γ(Z.om, U)) : p ^ n • s ∈ (om
 def IsLift (t : Dw.La) {U : Z.X.Opens} (s : Γ((omP h).toMod, U)) : Prop :=
   (red Z n).app U ((omP h).incl.app U s) = resM _ le_top (h.1 t)
 
+/- English proof (translation)
+The claim follows from `have ⟨s, hs⟩ := QCoh.surjective_cokernel_π_app (p ^ n • 𝟙 Z.om) hU (resM _ le_top (h.1 t)) ⟨(omP h).mkSec s ((mem_omP_iff h).2 (hs ▸ (imHT h).res_mem le_top (mem_imHT h t))), hs⟩`.
+-/
 theorem exists_isLift (t : Dw.La) {U : Z.X.Opens} (hU : IsAffineOpen U) : ∃ s : Γ((omP h).toMod, U), IsLift h t s :=
   have ⟨s, hs⟩ := QCoh.surjective_cokernel_π_app (p ^ n • 𝟙 Z.om) hU (resM _ le_top (h.1 t))
   ⟨(omP h).mkSec s ((mem_omP_iff h).2 (hs ▸ (imHT h).res_mem le_top (mem_imHT h t))), hs⟩
@@ -226,6 +268,11 @@ variable (Z) (B : Mdl Y i₀) [IsIso B.π] (e : Z.i = B.i)
 
 def toBase : Z.X ⟶ B.X := Z.π ≫ eqToHom (congrArg (fun i => (Y i).X) e) ≫ inv B.π
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨⟨IsPullback.id_horiz _, fun T x y x₀ y₀ hx hy => ?_⟩, fun a => by simp⟩` and prove the remaining obligations. Establish `k : ∀ {b b' : T.left ⟶ (Y i).X} (_ : b = b') (x y : Over.mk b ⟶ (Y i).t.G) (x₀ y₀ : Over.mk b' ⟶ (Y i).t.G), x₀.left = x.left → y₀.left = y.left → (x₀ * y₀).left = (x * y).left`. Introduce and unpack `b _ rfl x y x₀ y₀ hx hy`. Rewrite using `[Over.OverMorphism.ext hx, Over.OverMorphism.ext hy]`.
+
+Conclude with `(k (Category.comp_id _).symm x y x₀ y₀ (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))).trans (Category.comp_id _).symm`.
+-/
 theorem isGrpPullback_cast {i i' : Idx H p} (e : i = i') : IsGrpPullback (Y i).t.G (Y i').t.G
     (eqToHom (congrArg (fun i => (Y i).X) e)) (eqToHom (congrArg (fun i => (Y i).t.G.left) e)) ∧
     ∀ a, ((Y i).t.act.act a).left ≫ eqToHom (congrArg (fun i => (Y i).t.G.left) e) =
@@ -239,19 +286,31 @@ theorem isGrpPullback_cast {i i' : Idx H p} (e : i = i') : IsGrpPullback (Y i).t
   exact (k (Category.comp_id _).symm x y x₀ y₀ (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))).trans
     (Category.comp_id _).symm
 
+/- English proof (translation)
+Simplify using `[toBase]`.
+-/
 theorem toBase_π : toBase Z B e ≫ B.π = Z.π ≫ eqToHom (congrArg (fun i => (Y i).X) e) := by simp [toBase]
 
 def toBaseG : Z.t.G.left ⟶ B.t.G.left :=
   B.tMap.cart.1.lift (Z.tMap.φ ≫ eqToHom (congrArg (fun i => (Y i).t.G.left) e)) (Z.t.G.hom ≫ toBase Z B e)
     (by rw [Category.assoc _ (toBase Z B e), toBase_π]; exact (Z.tMap.cart.comp (isGrpPullback_cast e).1).1.w)
 
+/- English proof (translation)
+The claim follows from `B.tMap.cart.1.lift_fst _ _ _`.
+-/
 theorem toBaseG_φ : toBaseG Z B e ≫ B.tMap.φ = Z.tMap.φ ≫ eqToHom (congrArg (fun i => (Y i).t.G.left) e) :=
   B.tMap.cart.1.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `B.tMap.cart.cancel ((Z.tMap.cart.comp (isGrpPullback_cast e).1).congr (toBase_π Z B e).symm (toBaseG_φ Z B e).symm) (B.tMap.cart.1.lift_snd _ _ _)`.
+-/
 theorem isGrpPullback_toBaseG : IsGrpPullback Z.t.G B.t.G (toBase Z B e) (toBaseG Z B e) :=
   B.tMap.cart.cancel ((Z.tMap.cart.comp (isGrpPullback_cast e).1).congr (toBase_π Z B e).symm (toBaseG_φ Z B e).symm)
     (B.tMap.cart.1.lift_snd _ _ _)
 
+/- English proof (translation)
+Establish `h₁ : toBaseG Z B e ≫ B.tMap.cm.F = Z.tMap.cm.F ≫ _` using `toBaseG_φ Z B e`. Apply `B.tMap.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, B.tMap.act, h₁, reassoc_of% h₁, reassoc_of% Z.tMap.act a, (isGrpPullback_cast e).2]`. Rewrite using `[Category.assoc, Category.assoc, Over.w, (isGrpPullback_toBaseG Z B e).1.w, Over.w_assoc]`.
+-/
 theorem act_toBaseG (a : 𝓞 E) : (Z.t.act.act a).left ≫ toBaseG Z B e = toBaseG Z B e ≫ (B.t.act.act a).left := by
   have h₁ : toBaseG Z B e ≫ B.tMap.cm.F = Z.tMap.cm.F ≫ _ := toBaseG_φ Z B e
   apply B.tMap.cart.1.hom_ext
@@ -282,10 +341,16 @@ end Free
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} (ct : At S κ p) (Z : ct.Mdl)
 
+/- English proof (translation)
+The claim follows from `have := ModelPresentation.isNoetherianRing_place Z.i.c ct.W ct.hp.ne_zero ct.hW inferInstance`.
+-/
 theorem isPrincipalIdealRing_V : IsPrincipalIdealRing (Z.i.c.V ct.W) :=
   have := ModelPresentation.isNoetherianRing_place Z.i.c ct.W ct.hp.ne_zero ct.hW
   inferInstance
 
+/- English proof (translation)
+The claim follows from `have := isPrincipalIdealRing_V ct Z exists_ann_eq_span (embV_injective _ _) (splitMap_embV_injective _ _) σ`.
+-/
 theorem exists_eps (σ : D.host.E →+* ℂ) : ∃ ε, ann (embV Z.i.c ct.W σ) = Submodule.span _ {ε} ∧
     EigenSplit.splitMap (embV Z.i.c ct.W) ε σ ≠ 0 :=
   have := isPrincipalIdealRing_V ct Z
@@ -293,18 +358,30 @@ theorem exists_eps (σ : D.host.E →+* ℂ) : ∃ ε, ann (embV Z.i.c ct.W σ) 
 
 def eps (σ : D.host.E →+* ℂ) : Z.i.c.V ct.W ⊗[ℤ] 𝓞 D.host.E := (exists_eps ct Z σ).choose
 
+/- English proof (translation)
+The claim follows from `(exists_eps ct Z σ).choose_spec.1`.
+-/
 theorem ann_eq_span_eps (σ : D.host.E →+* ℂ) : ann (embV Z.i.c ct.W σ) = Submodule.span _ {eps ct Z σ} :=
   (exists_eps ct Z σ).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(ann_eq_span_eps ct Z σ).ge (Submodule.mem_span_singleton_self _)`.
+-/
 theorem eps_mem (σ : D.host.E →+* ℂ) : eps ct Z σ ∈ ann (embV Z.i.c ct.W σ) :=
   (ann_eq_span_eps ct Z σ).ge (Submodule.mem_span_singleton_self _)
 
 def dif (σ : D.host.E →+* ℂ) : Z.i.c.V ct.W := EigenSplit.splitMap (embV Z.i.c ct.W) (eps ct Z σ) σ
 
+/- English proof (translation)
+The claim follows from `(exists_eps ct Z σ).choose_spec.2`.
+-/
 theorem dif_ne_zero (σ : D.host.E →+* ℂ) : dif ct Z σ ≠ 0 := (exists_eps ct Z σ).choose_spec.2
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `map_eq_smul_idem (embV_injective _ _) (eps_mem ct Z σ) f hf`.
+-/
 theorem map_eps (σ : D.host.E →+* ℂ) {R : Type} [CommRing R] (f : Z.i.c.V ct.W →+* R)
     (hf : IsSplitting fun τ => f.comp (embV Z.i.c ct.W τ)) :
     Algebra.TensorProduct.map f.toIntAlgHom (AlgHom.id ℤ _) (eps ct Z σ) = f (dif ct Z σ) • EigenSplit.idem hf σ :=
@@ -322,6 +399,9 @@ instance isQuasicoherent_epsOm : (epsOm ct h σ).toMod.IsQuasicoherent := isQuas
 
 instance epi_toEps : Epi (toEps ct h σ) := epi_toIm _
 
+/- English proof (translation)
+The claim follows from `have := ct.isLocallyNoetherian Z .of_mono (omP h).incl`.
+-/
 theorem isFiniteQC_omP : IsFiniteQC (omP h).toMod :=
   have := ct.isLocallyNoetherian Z
   .of_mono (omP h).incl
@@ -348,6 +428,9 @@ def htIdl : ct.Idl Z :=
     rw [Scheme.IdealSheafData.support_top] at hx
     exact hx.elim⟩
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (dif_pos H : htIdl ct h = _)`.
+-/
 theorem htIdl_val (H : ∀ x ∈ (htIdeal ct h).support, x ∉ Z.opn) : (htIdl ct h).1 = htIdeal ct h :=
   congrArg Subtype.val (dif_pos H : htIdl ct h = _)
 
@@ -363,6 +446,9 @@ instance free_tSub : Module.Free (Z.i.c.V ct.W) (tSub Z σ) :=
 
 def tSheaf : Z.X.Modules := freeModule Z.X (Fin (Module.finrank (Z.i.c.V ct.W) (tSub Z σ)))
 
+/- English proof (translation)
+The claim follows from `isVB_freeModule_fin _ _`.
+-/
 theorem isVB_tSheaf : IsVB (tSheaf ct Z σ) (Module.finrank (Z.i.c.V ct.W) (tSub Z σ)) := isVB_freeModule_fin _ _
 
 instance isFiniteQC_tSheaf : IsFiniteQC (tSheaf ct Z σ) := (isVB_tSheaf ct Z σ).isFiniteQC
@@ -405,10 +491,16 @@ open Classical in
 def fstMap (m : ℕ) : modN (wSheaf ct h σ) m ⟶ modN (tSheaf ct Z σ) m :=
   if H : ∃ f, IsFst ct h σ (m := m) f then H.choose else 0
 
+/- English proof (translation)
+Rewrite using `[sndMap, dif_pos H]`. Conclude with `H.choose_spec`.
+-/
 theorem isSnd_sndMap {m : ℕ} (H : ∃ g, IsSnd ct h σ (m := m) g) : IsSnd ct h σ (sndMap ct h σ m) := by
   rw [sndMap, dif_pos H]
   exact H.choose_spec
 
+/- English proof (translation)
+Rewrite using `[fstMap, dif_pos H]`. Conclude with `H.choose_spec`.
+-/
 theorem isFst_fstMap {m : ℕ} (H : ∃ f, IsFst ct h σ (m := m) f) : IsFst ct h σ (fstMap ct h σ m) := by
   rw [fstMap, dif_pos H]
   exact H.choose_spec

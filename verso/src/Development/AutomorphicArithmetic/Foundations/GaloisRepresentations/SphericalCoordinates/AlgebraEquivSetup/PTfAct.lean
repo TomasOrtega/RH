@@ -4,6 +4,11 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.HeckeActMem
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Unfold `tyFn`. Distinguish the cases in `ha : a ∈ J`. Establish `hab : a * b ∈ J` using `J.mul_mem ha hb`. Rewrite using `[dif_pos ha, dif_pos hab]`. Establish `: (⟨a * b, hab⟩ : J) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`.
+
+Rewrite using `[this, map_mul, mul_inv, Units.val_mul]`. Establish `hab : a * b ∉ J` using `fun h => ha (by simpa using J.mul_mem h (J.inv_mem hb))`. Rewrite using `[dif_neg ha, dif_neg hab, zero_mul]`.
+-/
 private theorem typeFunction_mul_mem {M : Type} [Group M] (J : Subgroup M) (ψ : J →* ℂˣ) (a b : M) (hb : b ∈ J) :
     tyFn J ψ (a * b) = tyFn J ψ a * (((ψ ⟨b, hb⟩)⁻¹ : ℂˣ) : ℂ) := by
   unfold tyFn
@@ -15,12 +20,26 @@ private theorem typeFunction_mul_mem {M : Type} [Group M] (J : Subgroup M) (ψ :
   · have hab : a * b ∉ J := fun h => ha (by simpa using J.mul_mem h (J.inv_mem hb))
     rw [dif_neg ha, dif_neg hab, zero_mul]
 
+/- English proof (translation)
+Unfold `tyFn`. Rewrite using `[dif_pos J.one_mem]`. Establish `: (⟨1, J.one_mem⟩ : J) = 1` using `rfl`. Rewrite using `[this, map_one, inv_one, Units.val_one]`.
+-/
 private theorem typeFunction_one {M : Type} [Group M] (J : Subgroup M) (ψ : J →* ℂˣ) : tyFn J ψ 1 = 1 := by
   unfold tyFn
   rw [dif_pos J.one_mem]
   have : (⟨1, J.one_mem⟩ : J) = 1 := rfl
   rw [this, map_one, inv_one, Units.val_one]
 
+/- English proof (translation)
+Establish `key : z * w ∈ DoubleCoset.doubleCoset (a * z) (K : Set X) (K : Set X) ↔ w ∈ DoubleCoset.doubleCoset a (K : Set X) (K : Set X)`. Simplify using `only [DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Use `⟨x, hx, y, hy, ?_⟩` and prove the remaining obligations.
+
+Establish `e' : z * w = z * (x * a * y)`. Rewrite using `[e, hz (x * a * y)]`. Establish `h1 : x * (a * z) * y = x * a * (z * y)` using `by group`. Rewrite using `[h1, hz y]`. Use `group`.
+
+Conclude with `mul_left_cancel e'`. Introduce and unpack `⟨x, hx, y, hy, e⟩`. Use `⟨x, hx, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hz (x * a * y)]`. Establish `h1 : x * (a * z) * y = x * a * (z * y)` using `by group`.
+
+Rewrite using `[h1, hz y]`. Use `group`. Unfold `dosetInd`. Distinguish the cases in `hw : w ∈ DoubleCoset.doubleCoset a (K : Set X) (K : Set X)`. Rewrite using `[Set.indicator_of_mem hw, Set.indicator_of_mem (key.mpr hw)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hw, Set.indicator_of_notMem (fun h => hw (key.mp h))]`.
+-/
 private theorem doubleCosetIndicator_central {X : Type} [Group X] (K : Subgroup X) (a z w : X) (hz : ∀ g, z * g = g * z) :
     dosetInd ℂ K (a * z) (z * w) = dosetInd ℂ K a w := by
   have key : z * w ∈ DoubleCoset.doubleCoset (a * z) (K : Set X) (K : Set X) ↔
@@ -46,6 +65,21 @@ private theorem doubleCosetIndicator_central {X : Type} [Group X] (K : Subgroup 
   · rw [Set.indicator_of_mem hw, Set.indicator_of_mem (key.mpr hw)]; rfl
   · rw [Set.indicator_of_notMem hw, Set.indicator_of_notMem (fun h => hw (key.mp h))]
 
+/- English proof (translation)
+Introduce `hidx hfac hadm X M M' _ _ _ T L' Kw hF hAp t z hz V _ _ Φ hΦ g`. Establish `hh : T.L.pr (L'.loc t * z) = 1` using `by rw [map_mul, hAp.1 t, hz.2, one_mul]`. Take `⟨-, hinv⟩` from `hadm X M T _ hh`. Establish `hc0 : ((T.K₀.relIndex T.K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr T.idx`. Establish `h0 : ∀ k ∈ T.K, ∀ x, T.tf (L'.loc t * z) (x * k) • Φ (g * (x * k)) = T.tf (L'.loc t * z) x • Φ (g * x)`.
+
+Introduce `k hk x`. Rewrite using `[(hinv k hk x).2, ← mul_assoc, hΦ k hk, smul_smul, mul_right_comm, Units.inv_mul, one_mul]`. Set `F : X → V` to `fun y => (tyFn T.J T.ψ (T.L.pr y) * dosetInd ℂ T.K (L'.loc t * z) y) • Φ (g * y)`. Establish `hF1 : ∀ y, ((T.K₀.relIndex T.K : ℕ) : ℂ) • (T.tf (L'.loc t * z) y • Φ (g * y)) = F y`. Introduce `y`.
+
+Simplify using `only [F, TyLev.tf]`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel_left₀ hc0]`. Establish `hFinv : ∀ (y : X) (k : T.K), F (y * k) = F y`. Introduce `y k`. Rewrite using `[← hF1, ← hF1, h0 k k.2 y]`.
+
+Set `Ψ : X → V` to `fun y => tyFn T.J T.ψ (T.L.pr y) • Φ (g * z * y)`. Establish `hΨ : ∀ k ∈ T.K, ∀ y, Ψ (y * k) = Ψ y`. Introduce `k hk y`. Simplify using `only [Ψ]`. Rewrite using `[map_mul, typeFunction_mul_mem T.J T.ψ _ _ (T.fact.2 k hk), ← mul_assoc, hΦ k hk, smul_smul, mul_assoc, Units.inv_mul, mul_one]`.
+
+Establish `e1` using `hidx X V T.K T.K₀ T.le T.idx (fun x => T.tf (L'.loc t * z) x • Φ (g * x)) h0`. Establish `e2` using `hfac X M' L' T.K Kw hF t V Ψ hΨ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_finsum]`. Conclude with `finsum_congr fun y => hF1 _`.
+
+Use `_ = ∑ᶠ y : X ⧸ T.K, F (z * y.out) := (Formalism.UG.P.finsum_out_mul T.K z F hFinv).symm`. Use `_ = ∑ᶠ y : X ⧸ T.K, dosetInd ℂ T.K (L'.loc t) y.out • Ψ y.out := by`. Use `finsum_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [F, Ψ]`. Rewrite using `[doubleCosetIndicator_central T.K _ z _ hz.1, map_mul, hz.2, one_mul, smul_smul, ← mul_assoc g z, mul_comm]`.
+
+Use `_ = ∑ᶠ x : M' ⧸ Kw, dosetInd ℂ Kw t x.out • Ψ (L'.loc x.out) := e2`. Use `_ = ∑ᶠ x : M' ⧸ Kw, dosetInd ℂ Kw t x.out • Φ (g * z * L'.loc x.out) := by`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Ψ]`. Rewrite using `[hAp.1, typeFunction_one, one_smul]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pTfAct :
     (∀ (X V : Type) [Group X] [AddCommGroup V] [Module ℂ V] (K K₀ : Subgroup X), K₀ ≤ K → K₀.relIndex K ≠ 0 → ∀ Ψ : X → V, (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ x : X ⧸ K₀, Ψ x.out = ((K₀.relIndex K : ℕ) : ℂ) • ∑ᶠ y : X ⧸ K, Ψ y.out) → (∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (V : Type) [AddCommGroup V] [Module ℂ V] (Ψ : X → V), (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ y : X ⧸ K, dosetInd ℂ K (L'.loc t) y.out • Ψ y.out = ∑ᶠ x : M' ⧸ Kw, dosetInd ℂ Kw t x.out • Ψ (L'.loc x.out)) → TfAdm → TfAct := by
   intro hidx hfac hadm X M M' _ _ _ T L' Kw hF hAp t z hz V _ _ Φ hΦ g

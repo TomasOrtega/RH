@@ -14,6 +14,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FormTies
 
+/- English proof (translation)
+The claim follows from `productsShort_of_oneFactor GlobalTheory.ShortTimesTheta.short_mul_theta_mem_span`.
+-/
 theorem productsShort_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), LawsSh T → OneCover T j → (T.dδ j 0).l₂.A = 1 → ∀ (ka wL wF : WeightFamilies.Wt D j) (Tn : ℕ), WeightAlgebra.IsF' ka wL wF Tn wF.n → ka.n = wF.n + Tn * wL.n → WeightFamilies.dimY D j ≤ Tn → D.R.r ≤ wF.n → ka.n = D.R.nV → ProductsShort (recPJ h j hj) ka wL wF Tn :=
   productsShort_of_oneFactor GlobalTheory.ShortTimesTheta.short_mul_theta_mem_span
 

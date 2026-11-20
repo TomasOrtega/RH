@@ -20,10 +20,20 @@ def OrderAtComapOffExceptionalLocus : Prop :=
       ∀ x' : ↥X', x' ∉ (Blowup.exceptionalIdeal π Z).support →
         ∀ A : T.scheme.IdealSheafData, orderAt (A.comap π) x' = orderAt A (π x')
 
+/- English proof (translation)
+The claim follows from `h.orderAt_comap_off_exceptional`.
+-/
 theorem orderAtComapOffExceptionalLocus_of_monomialGeometryHypotheses (h : MonomialGeometryHypotheses.{u}) :
     OrderAtComapOffExceptionalLocus.{u} :=
   h.orderAt_comap_off_exceptional
 
+/- English proof (translation)
+Introduce `x' hx'`. Rewrite using `[Set.mem_preimage, mem_orderAtLeastLocus_iff]`. Distinguish the cases in `hE : x' ∈ (Blowup.exceptionalIdeal π Z).support`. Establish `hmem : x' ∈ (↑(Z.comap π).support : Set ↥X')`. Rewrite using `[← Blowup.exceptionalIdeal_eq_comap π Z]`.
+
+Conclude with `hE`. Establish `hπx : π x' ∈ (↑Z.support : Set ↥T.scheme)`. Simplify `hmem` using `[AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap]`. Establish `h2 : (μ : ℕ∞) ≤ orderAt J (π x')` using `(mem_orderAtLeastLocus_iff J μ (π x')).1 (hZ hπx)`. Conclude with `le_trans (by exact_mod_cast hc) h2`.
+
+Establish `h1 : orderAt (J.comap π) x' = orderAt J (π x')` using `hgeom T hT X' π Z hπ x' hE J`. Establish `h2` using `add_orderAt_le_orderAt_mul (Blowup.exceptionalIdeal π Z ^ μ) J' x'`. Rewrite `h2` using `[hJ', h1]`. Establish `h3 : (c : ℕ∞) ≤ orderAt J' x'` using `(mem_orderAtLeastLocus_iff J' c x').1 hx'`. Conclude with `le_trans h3 (le_trans le_add_self h2)`.
+-/
 theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (Z : T.scheme.IdealSheafData)
     (X' : Scheme.{u}) (π : X' ⟶ T.scheme) (hπ : Blowup.IsBlowupAlongIdealSheaf π Z)
@@ -49,11 +59,17 @@ theorem orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf (hgeom : Or
     have h3 : (c : ℕ∞) ≤ orderAt J' x' := (mem_orderAtLeastLocus_iff J' c x').1 hx'
     exact le_trans h3 (le_trans le_add_self h2)
 
+/- English proof (translation)
+The claim follows from `congrFun (congrArg (fun f : s.schemeAt i ⟶ s.schemeAt i => (f : ↥(s.schemeAt i) → ↥(s.schemeAt i))) (s.transitionMap_self h)) x`.
+-/
 private theorem transitionMap_refl_apply {X : Scheme.{u}} (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i)
     (x : ↥(s.schemeAt i)) : s.transitionMap h x = x :=
   congrFun (congrArg (fun f : s.schemeAt i ⟶ s.schemeAt i => (f : ↥(s.schemeAt i) → ↥(s.schemeAt i)))
     (s.transitionMap_self h)) x
 
+/- English proof (translation)
+Establish `h` using `s.transitionMap_trans hij hjl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem transitionMap_comp_apply {X : Scheme.{u}} (s : SequenceOfBlowups X) {i j l : ℕ} (hij : i ≤ j)
     (hjl : j ≤ l) (x : ↥(s.schemeAt l)) :
     s.transitionMap hij (s.transitionMap hjl x) = s.transitionMap (hij.trans hjl) x := by
@@ -63,6 +79,9 @@ private theorem transitionMap_comp_apply {X : Scheme.{u}} (s : SequenceOfBlowups
 
 namespace MarkedSequenceOfBlowups
 
+/- English proof (translation)
+Establish `hvi` using `hval i (le_of_lt hi)`. Conclude with `orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf hgeom (T.transformAt s i) hvi (s.toSequenceOfBlowups.center i) (s.toSequenceOfBlowups.schemeAt (i + 1)) (s.toSequenceOfBlowups.transitionMapSucc i) (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism i hi) (s. …`.
+-/
 theorem orderAtLeastLocus_succ_subset_preimage_blowupMorphism (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
     (hval : ∀ i ≤ s.toSequenceOfBlowups.length, (T.transformAt s i).IsAdmissible)
@@ -75,6 +94,15 @@ theorem orderAtLeastLocus_succ_subset_preimage_blowupMorphism (hgeom : OrderAtCo
     (s.toSequenceOfBlowups.isBlowupAlongIdealSheaf_blowupMorphism i hi) (s.ideal i) T.mult (s.center_order i hi)
     (s.ideal (i + 1)) (s.ideal_succ i hi) c hc
 
+/- English proof (translation)
+Use `revert hj`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base`. Introduce `_ x hx`. Rewrite using `[Set.mem_preimage, transitionMap_refl_apply]`.
+
+Conclude with `hx`. Consider the case `succ j hij ih`. Introduce `hj1`. Establish `hjlt : j < s.toSequenceOfBlowups.length` using `Nat.lt_of_succ_le hj1`. Establish `hstep` using `orderAtLeastLocus_succ_subset_preimage_blowupMorphism hgeom T s hval j hjlt c hc`.
+
+Establish `hih` using `ih (le_of_lt hjlt)`. Introduce `x hx`. Rewrite using `[Set.mem_preimage]`. Establish `h1 : s.toSequenceOfBlowups.transitionMapSucc j x ∈ orderAtLeastLocus (s.ideal j) c` using `hstep hx`. Establish `h2 : s.toSequenceOfBlowups.transitionMap hij (s.toSequenceOfBlowups.transitionMapSucc j x) ∈ orderAtLeastLocus (s.ideal i) c` using `hih h1`.
+
+Rewrite `h2` using `[s.toSequenceOfBlowups.blowupMorphism_eq_transitionMap j, transitionMap_comp_apply]`. Conclude with `h2`.
+-/
 theorem orderAtLeastLocus_subset_preimage_transitionMap (hgeom : OrderAtComapOffExceptionalLocus.{u})
     (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
     (hval : ∀ i ≤ s.toSequenceOfBlowups.length, (T.transformAt s i).IsAdmissible)

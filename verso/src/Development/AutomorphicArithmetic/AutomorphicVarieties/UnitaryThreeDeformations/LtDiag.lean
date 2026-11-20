@@ -10,37 +10,63 @@ variable {R : Type} [CommRing R]
 
 private def Up (g : GL (Fin 3) R) : Prop := Matrix.BlockTriangular (g : Matrix (Fin 3) (Fin 3) R) id
 
+/- English proof (translation)
+Use `revert a b`. Evaluate the decidable proposition.
+-/
 private theorem ltd_wt_neg_iff (a b : Fin 3) : wt a b < 0 ↔ b < a := by
   revert a b; decide
 
+/- English proof (translation)
+The claim follows from `Matrix.BlockTriangular.mul hg hh`.
+-/
 private theorem Up.mul {g h : GL (Fin 3) R} (hg : Up g) (hh : Up h) : Up (g * h) :=
   Matrix.BlockTriangular.mul hg hh
 
+/- English proof (translation)
+Use `letI : Invertible (g : Matrix (Fin 3) (Fin 3) R) := g.invertible`. Use `Matrix.blockTriangular_inv_of_blockTriangular hg` as an intermediate fact. Unfold `Up`. Rewrite using `[Matrix.coe_units_inv]` and apply the resulting hypothesis.
+-/
 private theorem Up.inv {g : GL (Fin 3) R} (hg : Up g) : Up g⁻¹ := by
   letI : Invertible (g : Matrix (Fin 3) (Fin 3) R) := g.invertible
   have := Matrix.blockTriangular_inv_of_blockTriangular hg
   unfold Up
   rwa [Matrix.coe_units_inv]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`.
+-/
 private theorem Jc (X : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3) :
     (Jmat R 3 * Xᵀ * Jmat R 3) a b = X b.rev a.rev := by
   fin_cases a <;> fin_cases b <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]
 
+/- English proof (translation)
+Rewrite using `[theta_val, Jc]`.
+-/
 private theorem ltd_theta_apply (g : GL (Fin 3) R) (a b : Fin 3) :
     (theta g : Matrix (Fin 3) (Fin 3) R) a b = ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) b.rev a.rev := by
   rw [theta_val, Jc]
 
+/- English proof (translation)
+Introduce `a b h`. Rewrite using `[ltd_theta_apply]`. Conclude with `hg.inv (Fin.rev_lt_rev.mpr h)`.
+-/
 private theorem Up.theta {g : GL (Fin 3) R} (hg : Up g) : Up (theta g) := by
   intro a b h
   rw [ltd_theta_apply]
   exact hg.inv (Fin.rev_lt_rev.mpr h)
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one]` and apply the resulting hypothesis. Rewrite using `[sgnAct_neg_one]`. Conclude with `hg.theta`.
+-/
 private theorem Up.sgn {g : GL (Fin 3) R} (hg : Up g) (s : ℤˣ) : Up (sgnAct 3 R s g) := by
   rcases Int.units_eq_one_or s with rfl | rfl
   · rwa [sgnAct_one]
   · rw [sgnAct_neg_one]; exact hg.theta
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with h1 | h1` into its components or cases. Rewrite using `[hg (show id b < id a from h1), zero_mul]`. Rewrite using `[hh (show id a < id b from h1), mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem Up.diag_mul {g h : GL (Fin 3) R} (hg : Up g) (hh : Up h) (a : Fin 3) :
     ((g * h : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a a =
       (g : Matrix (Fin 3) (Fin 3) R) a a * (h : Matrix (Fin 3) (Fin 3) R) a a := by
@@ -67,13 +93,22 @@ private def dgl (g : GL (Fin 3) R) (hg : Up g) : GL (Fin 3) R where
     rw [← hg.inv.diag_mul hg, inv_mul_cancel]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dgl_val (g : GL (Fin 3) R) (hg : Up g) : (dgl g hg : Matrix (Fin 3) (Fin 3) R) =
     Matrix.diagonal fun a => (g : Matrix (Fin 3) (Fin 3) R) a a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dgl_inv_val (g : GL (Fin 3) R) (hg : Up g) :
     (((dgl g hg)⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) =
     Matrix.diagonal fun a => ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a a := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul (dgl g hg), dgl_val, dgl_val, dgl_val, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hg.diag_mul hh a`.
+-/
 private theorem dgl_mul {g h : GL (Fin 3) R} (hg : Up g) (hh : Up h) :
     dgl (g * h) (hg.mul hh) = dgl g hg * dgl h hh := by
   apply Units.ext
@@ -82,6 +117,13 @@ private theorem dgl_mul {g h : GL (Fin 3) R} (hg : Up g) (hh : Up h) :
   funext a
   exact hg.diag_mul hh a
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[dgl_val]`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one, sgnAct_one, dgl_val]`. Rewrite using `[sgnAct_neg_one, sgnAct_neg_one]`.
+
+Use extensionality with `a b`. Rewrite using `[ltd_theta_apply, dgl_inv_val]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, ltd_theta_apply]`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ (fun h => hab (Fin.rev_injective h).symm)]`.
+-/
 private theorem dgl_sgn {g : GL (Fin 3) R} (hg : Up g) (s : ℤˣ) :
     dgl (sgnAct 3 R s g) (hg.sgn s) = sgnAct 3 R s (dgl g hg) := by
   apply Units.ext
@@ -123,6 +165,9 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Introduce `R _ _`. Use `⟨Bor R, dgHom R, fun x => ?_, fun x => ⟨rfl, rfl⟩⟩` and prove the remaining obligations. Conclude with `⟨fun h a b hab => h ((ltd_wt_neg_iff a b).1 hab), fun h a b hab => h a b ((ltd_wt_neg_iff a b).2 hab)⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_diag :
     ∀ {R : Type} [CommRing R] [Finite R], ∃ (B : Subgroup (GG 3 R)) (dg : B →* GG 3 R),
       (∀ x : GG 3 R, x ∈ B ↔ ∀ a b, wt a b < 0 → x.mat a b = 0) ∧

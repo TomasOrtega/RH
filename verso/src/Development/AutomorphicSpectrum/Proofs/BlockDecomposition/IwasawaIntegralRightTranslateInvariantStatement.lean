@@ -7,6 +7,9 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RInvL.main | exact GlobalTheory.CompanionTheory.RInvL.main | (intros; apply GlobalTheory.CompanionTheory.RInvL.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_integral_right_translate_invariant : ForS fun F _ _ _ _ _ _ ψ => ∀ f : GL (Fin 2) F → ENNReal, Measurable f → (∀ x h, f (uni2 x * h) = f h) →
   ∀ g : GL (Fin 2) F, ∫⁻ p, ENNReal.ofReal (wR p) * f (hI p * g) ∂mIw ψ = ∫⁻ p, ENNReal.ofReal (wR p) * f (hI p) ∂mIw ψ := by
   first | exact @GlobalTheory.CompanionTheory.RInvL.main | exact GlobalTheory.CompanionTheory.RInvL.main | (intros; apply GlobalTheory.CompanionTheory.RInvL.main <;> assumption)

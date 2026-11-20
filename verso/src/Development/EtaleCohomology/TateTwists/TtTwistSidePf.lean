@@ -18,6 +18,11 @@ def tens_qis : Prop := ∀ (R : Type) [CommRing R] {I I' J T T' : Cx R} [I.IsStr
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `: 𝟙 F = 0` using `h.eq_of_src _ _`. Establish `ha : a = Sec.map (𝟙 F) a` using `rfl`. Establish `hb : b = Sec.map (𝟙 F) b` using `rfl`.
+
+Rewrite using `[ha, hb, this]`. Both sides reduce to the same expression.
+-/
 theorem sec_sub {F : Shv R} (h : IsZero F) (U : Scheme.{0}) : Subsingleton (Sec F U) := by
   constructor; intro a b
   have : 𝟙 F = 0 := h.eq_of_src _ _
@@ -25,6 +30,9 @@ theorem sec_sub {F : Shv R} (h : IsZero F) (U : Scheme.{0}) : Subsingleton (Sec 
   have hb : b = Sec.map (𝟙 F) b := rfl
   rw [ha, hb, this]; rfl
 
+/- English proof (translation)
+Use `⟨F.obj, 𝟙 _, fun U y => LateralTheory.EtaleFoundations.TensFam.loc_top fun V g => ⟨Sec.res g y, rfl⟩, fun U x _ => LateralTheory.EtaleFoundations.TensFam.loc_top fun V g => @Subsingleton.elim _ (sec_sub h V) _ _, fun U _ => ?_⟩` and prove the remaining obligations. Use `haveI := sec_sub h U`. Use `infer_instance`.
+-/
 theorem flat_zero {F : Shv R} (h : IsZero F) : FlatS F := by
   refine ⟨F.obj, 𝟙 _, fun U y => LateralTheory.EtaleFoundations.TensFam.loc_top fun V g => ⟨Sec.res g y, rfl⟩,
     fun U x _ => LateralTheory.EtaleFoundations.TensFam.loc_top fun V g => @Subsingleton.elim _ (sec_sub h V) _ _, fun U _ => ?_⟩
@@ -32,24 +40,44 @@ theorem flat_zero {F : Shv R} (h : IsZero F) : FlatS F := by
   infer_instance
 
 open ZeroObject in
+/- English proof (translation)
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Conclude with `(show FlatS (if (0:ℤ) = 0 then F else 0) by rw [if_pos rfl]; exact hF)`. Conclude with `flat_zero (HomologicalComplex.isZero_single_obj_X _ _ _ _ ht)`.
+-/
 theorem flat_sgl {F : Shv R} (hF : FlatS F) (t : ℤ) : FlatS ((sgl F).X t) := by
   by_cases ht : t = 0
   · subst ht
     exact (show FlatS (if (0:ℤ) = 0 then F else 0) by rw [if_pos rfl]; exact hF)
   · exact flat_zero (HomologicalComplex.isZero_single_obj_X _ _ _ _ ht)
 
+/- English proof (translation)
+The claim follows from `sec_sub (HomologicalComplex.isZero_single_obj_X _ _ _ _ ht) U`.
+-/
 theorem sgl_sub (F : Shv R) {t : ℤ} (ht : t ≠ 0) (U : Scheme.{0}) : Subsingleton (Sec ((sgl F).X t) U) :=
   sec_sub (HomologicalComplex.isZero_single_obj_X _ _ _ _ ht) U
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun f => ModuleCat.Hom.hom f x) (φ.hom.naturality g.op)).symm`.
+-/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
   (congrArg (fun f => ModuleCat.Hom.hom f x) (φ.hom.naturality g.op)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_comp' {F G H : Shv R} (f : F ⟶ G) (g : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (f ≫ g) x = Sec.map g (Sec.map f x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_zero' {F G : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (0 : F ⟶ G) x = 0 := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => exact h0`. Consider the case `add x y hx hy => exact hadd _ _ hx hy`. Consider the case `of p z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simpa using h0`. Consider the case `tmul a b => simpa [DirectSum.lof_eq_of] using ht p a b`. Consider the case `add z1 z2 h1 h2 => rw [map_add]`. Conclude with `hadd _ _ h1 h2`.
+-/
 theorem tens_ind {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (P : Tens I J U w → Prop) (h0 : P 0)
     (hadd : ∀ x y, P x → P y → P (x + y))
     (ht : ∀ p a b, P (DirectSum.lof (ULift.{1} R) _ _ p (a ⊗ₜ b))) (x : Tens I J U w) : P x := by
@@ -62,10 +90,16 @@ theorem tens_ind {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (P : Tens I J U w → P
     | tmul a b => simpa [DirectSum.lof_eq_of] using ht p a b
     | add z1 z2 h1 h2 => rw [map_add]; exact hadd _ _ h1 h2
 
+/- English proof (translation)
+Simplify using `[Pair.lift, DirectSum.toModule_lof]`.
+-/
 theorem lift_lof {I J K : Cx R} (τ : Pair I J K) (U : Scheme.{0}) (w : ℤ) p a b :
     τ.lift U w (DirectSum.lof (ULift.{1} R) _ _ p (a ⊗ₜ b)) = τ.mul U p.1.1 p.1.2 w p.2 a b := by
   simp [Pair.lift, DirectSum.toModule_lof]
 
+/- English proof (translation)
+Rewrite using `[IsZero.iff_id_eq_zero]`. Use extensionality with `U y`. Conclude with `h _ y`.
+-/
 theorem shv_isZero {F : Shv R} (h : ∀ U : Scheme.{0}, ∀ y : Sec F U, y = 0) : IsZero F := by
   rw [IsZero.iff_id_eq_zero]
   ext U y
@@ -82,12 +116,18 @@ noncomputable def T {A B J : Cx (ZMod q)} (ε : B ⟶ J) (U : Scheme.{0}) (w : �
       (fun p => Sec (A.X p.1.1) U ⊗[ULift.{1} (ZMod q)] Sec (J.X p.1.2) U) p).comp
     (TensorProduct.map LinearMap.id ((ε.f p.1.2).hom.app (op U)).hom)
 
+/- English proof (translation)
+Simplify using `[T, DirectSum.toModule_lof]`.
+-/
 theorem T_lof {A B J : Cx (ZMod q)} (ε : B ⟶ J) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (A.X p.1.1) U) (b : Sec (B.X p.1.2) U) :
     T ε U w (DirectSum.lof (ULift.{1} (ZMod q)) _ _ p (a ⊗ₜ b)) =
       DirectSum.lof (ULift.{1} (ZMod q)) _ _ p (a ⊗ₜ Sec.map (ε.f p.1.2) b) := by
   simp [T, DirectSum.toModule_lof]
 
+/- English proof (translation)
+Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, ZMod.natCast_zmod_val]`.
+-/
 theorem smul_eq (c : ULift.{1} (ZMod q)) : c = ((c.down.val : ℕ) : ULift.{1} (ZMod q)) := by
   apply ULift.ext; rw [ULift.down_natCast, ZMod.natCast_zmod_val]
 
@@ -104,6 +144,41 @@ noncomputable def ofFam {F G : Shv (ZMod q)} (φ : ∀ U : Scheme.{0}, Sec F U �
         ext y
         exact (hφ V.unop U.unop g.unop y).symm }
 
+/- English proof (translation)
+Take `⟨μ, hμ, hgen⟩` from `htm q i j k hk`. Take `⟨hJge, ε', hε', hε'gen⟩` from `hJ`. Establish `hMge : M.IsStrictlyGE 0`. Use `(CochainComplex.isStrictlyGE_iff M 0).2 fun w hw => shv_isZero fun U y => ?_` and prove the remaining obligations. Apply `LateralTheory.EtaleFoundations.TensFam.sep` to reduce the goal to its premises.
+
+Take `⟨S, hS, h1⟩` from `hσ.1 U w y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1 V g hg`. Rewrite using `[← hx, show Sec.res g (0 : Sec (M.X w) U) = 0 from map_zero _]`. Use `tens_ind (fun x => σ.lift V w x = 0) (map_zero _) (fun x y hx hy => by rw [map_add, hx, hy, add_zero]) (fun p a b => ?_) x` and prove the remaining obligations.
+
+Rewrite using `[lift_lof]`. Break down `p with ⟨⟨s, t⟩, hst⟩` into its components or cases. Distinguish the cases in `hs : s = 0`. Establish `ht : t < 0` using `by simp only at hst; omega haveI := sec_sub (CochainComplex.isZero_of_isStrictlyGE J 0 t (by omega)) V`. Rewrite using `[Subsingleton.elim b 0, map_zero]`.
+
+Use `haveI := sgl_sub (tw q i) hs V`. Rewrite using `[Subsingleton.elim a 0, map_zero, LinearMap.zero_apply]`. Set `b : ∀ U : Scheme.{0}, Tens (sgl (tw q i)) (sgl (tw q j)) U 0 →+ Sec (M.X 0) U` to `fun U => ((σ.lift U 0).comp (T ε' U 0)).toAddMonoidHom`. Establish `hbv : ∀ U p a c, b U (DirectSum.lof (ULift.{1} (ZMod q)) _ _ p (a ⊗ₜ c)) = σ.mul U p.1.1 p.1.2 0 p.2 a (Sec.map (ε'.f p.1.2) c)`. Introduce `U p a c`.
+
+Simplify using `only [b, LinearMap.toAddMonoidHom_coe, LinearMap.comp_apply, T_lof, lift_lof]`. Establish `hb : ∀ (V U : Scheme.{0}) (g : V ⟶ U) x, Sec.res g (b U x) = b V (Tens.res g 0 x)`. Introduce `V U g x`. Use `tens_ind (fun x => Sec.res g (b U x) = b V (Tens.res g 0 x)) (by simp) (fun x y hx hy => by simp only [map_add, hx, hy]) (fun p a c => ?_) x` and prove the remaining obligations. Rewrite using `[hbv, σ.nat, map_res]`.
+
+Simplify using `only [Tens.res, DirectSum.lmap_lof, TensorProduct.map_tmul]`. Rewrite using `[hbv]`. Take `⟨φ, hφnat, hφlift⟩` from `LateralTheory.EtaleFoundations.etale_tensor_hom_descends_along_tensor_pairing (ZMod q) (ZMod q) μ hμ 0 (M.X 0) b hb`. Establish `hd : ∀ U (y : Sec ((sgl (tw q k)).X 0) U), Sec.map (M.d 0 (0 + 1)) (φ U y) = 0`. Introduce `U y`.
+
+Apply `LateralTheory.EtaleFoundations.TensFam.sep` to reduce the goal to its premises. Take `⟨S, hS, h1⟩` from `hμ.1 U 0 y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `h1 V g hg`. Rewrite using `[show Sec.res g (0 : Sec (M.X (0 + 1)) U) = 0 from map_zero _, map_res, hφnat, ← hx, hφlift]`.
+
+Use `tens_ind (fun x => Sec.map (M.d 0 (0 + 1)) (b V x) = 0) (by simp) (fun x y hx hy => by simp only [map_add, hx, hy, add_zero]) (fun p a c => ?_) x` and prove the remaining obligations. Break down `p with ⟨⟨s, t⟩, hst⟩` into its components or cases. Rewrite using `[hbv]`. Establish `hl` using `σ.leibniz V s t 0 hst a (Sec.map (ε'.f t) c)`. Establish `hz : ∀ (F : Shv (ZMod q)) (m n : ℤ), (sgl F).d m n = 0` using `fun F m n => HomologicalComplex.single_obj_d _ _ _ _ _`.
+
+Rewrite using `[hl, ← map_comp', ε'.comm, map_comp', hz, hz]`. Simplify using `only [map_zero', map_zero, LinearMap.zero_apply, smul_zero, add_zero]`. Set `u : sgl (tw q k) ⟶ M` to `HomologicalComplex.mkHomFromSingle (sglι (tw q k) ≫ ofFam φ hφnat) (by`. Introduce `l hl`. Take `rfl : l = 0 + 1` from `by simp at hl; omega`.
+
+Use extensionality with `U y`. Conclude with `hd _ _)`. Establish `hu0 : ∀ U (z : Sec ((sgl (tw q k)).X 0) U), Sec.map (u.f 0) z = φ U z`. Introduce `U z`. Rewrite using `[HomologicalComplex.mkHomFromSingle_f, ← Category.assoc]`.
+
+Use `show Sec.map (ofFam φ hφnat) (Sec.map ((HomologicalComplex.singleObjXSelf _ 0 (tw q k)).hom ≫ (HomologicalComplex.singleObjXSelf _ 0 (tw q k)).inv) z) = _`. Rewrite using `[Iso.hom_inv_id]`. Both sides reduce to the same expression. Establish `cmp : ∀ (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec ((sgl (tw q i)).X s) U) (c : Sec ((sgl (tw q j)).X t) U), Sec.map (u.f w) (μ.mul U s t w h a c) = σ.mul U s t w h a (Sec.map (ε'.f t) c)`. Introduce `U s t w h a c`.
+
+Distinguish the cases in `hs : s = 0`. Distinguish the cases in `ht : t = 0`. Substitute `hs ht` using the available equality. Take `rfl : w = 0` from `by omega`. Rewrite using `[hu0]`.
+
+Use `hφlift U (DirectSum.lof (ULift.{1} (ZMod q)) _ _ ⟨(0,0), h⟩ (a ⊗ₜ c))` as an intermediate fact. Rewrite `this` using `[lift_lof]`. Rewrite using `[this, hbv]`. Use `haveI := sgl_sub (tw q j) ht U`. Rewrite using `[Subsingleton.elim c 0]`.
+
+Simplify using `only [map_zero]`. Use `haveI := sgl_sub (tw q i) hs U`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Take `⟨μf, hμf, -, hμfT⟩` from `hfl (ZMod q) μ`.
+
+Take `⟨σf, hσf, -, hσfT⟩` from `hfl (ZMod q) σ`. Use `haveI := hJge`. Use `haveI := hε'`. Establish `hcomp : μf.Compat σf ε' (𝟙 _) u`. Introduce `U s t w h a c`.
+
+Rewrite using `[HomologicalComplex.id_f]`. Use `show _ = σf.mul U s t w h (Sec.map (ε'.f s) a) c`. Rewrite using `[hμf U t s w (by omega) c a, hσf U t s w (by omega) c _, Units.smul_def, Units.smul_def, ← cmp]`. Conclude with `map_zsmul ((u.f w).hom.app (op U)).hom _ _`. Establish `hu : QuasiIso u` using `hqis (ZMod q) μf σf (hμfT hμ) (hσfT hσ) (flat_sgl (htf q i)) ε' u hcomp`.
+
+Use `⟨hMge, u, hu, fun U ζ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hgen U ζ, cmp, hε'gen]`.
+-/
 theorem twist_side (htm : tw_mul) (htf : tw_flat) (hfl : flip_ex) (hqis : tens_qis) (i j k : ℤ) (hk : i + j = k)
     {J M : Cx (ZMod q)} (e' : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec (J.X 0) U) (hJ : IsTwRes q j J e')
     (hflat : ∀ t, FlatS (J.X t)) (σ : Pair (sgl (tw q i)) J M) (hσ : σ.IsTensor) :
@@ -200,6 +275,9 @@ theorem twist_side (htm : tw_mul) (htf : tw_flat) (hfl : flip_ex) (hqis : tens_q
 
 end LateralTheory.EtaleFoundations.TwSide
 
+/- English proof (translation)
+Introduce `q _ i j k hk J M e' hJ hflat σ hσ`. Conclude with `LateralTheory.EtaleFoundations.TwSide.twist_side htm htf hfl hqis i j k hk e' hJ hflat σ hσ`.
+-/
 theorem LateralTheory.EtaleFoundations.tt_twist_side_of (htm : LateralTheory.EtaleFoundations.TwSide.tw_mul) (htf : LateralTheory.EtaleFoundations.TwSide.tw_flat)
     (hfl : LateralTheory.EtaleFoundations.TwSide.flip_ex) (hqis : LateralTheory.EtaleFoundations.TwSide.tens_qis) : LateralTheory.EtaleFoundations.tt_twist_side := by
   intro q _ i j k hk J M e' hJ hflat σ hσ

@@ -11,6 +11,15 @@ namespace GlobalTheory.CompanionTheory.SW.BB
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.BB NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d M b N`. Take `⟨⟨h1, h2, h3⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨hR, -, -, -, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)`. Establish `hO` using `(GlobalTheory.T.adelic_tuple_projections F E σ hσ d b 1 M).2.2.2.2.1 ∅`. Use `hB 1 M` as an intermediate fact.
+
+Establish `hc : Continuous (fun (X : Fin 1 → Fin M → AF F ⊗[F] E) (p : Fin 1) (i : Fin M) => (N : AF F ⊗[F] E) * X p i)` using `by fun_prop`. Establish `key : {X : Fin 1 → Fin M → AF F ⊗[F] E | ∀ v, projV v (projFin X) ∈ {X : (Fin 1 → Fin M → Fv F v ⊗[F] E) | (fun p i => (N : Fv F v ⊗[F] E) * X p i) ∈ latV b v}} = (fun (X : Fin 1 → Fin M → AF F ⊗[F] E) (p : Fin 1) (i : Fin M) => (N : AF F ⊗[F] E) * X p i) ⁻¹' intOff b ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, intOff, Finset.notMem_empty, not_false_eq_true, forall_const]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
+
+Establish `: projV v (projFin (fun (p : Fin 1) (i : Fin M) => (N : AF F ⊗[F] E) * X p i)) = fun p i => (N : Fv F v ⊗[F] E) * projV v (projFin X) p i`. Use function extensionality and compare the values at `p i`. Simplify using `only [projV, projFin, map_mul, map_natCast]`. Rewrite using `[this]`. Rewrite using `[key]`.
+
+Conclude with `(hO.preimage hc).measurableSet`.
+-/
 theorem measurableSet_natMul_int : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d M : ℕ) (b : Module.Basis (Fin d) F E) (N : ℕ),
     MeasurableSet {X : Fin 1 → Fin M → AF F ⊗[F] E | ∀ v, projV v (projFin X) ∈

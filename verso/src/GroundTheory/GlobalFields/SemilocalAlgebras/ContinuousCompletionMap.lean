@@ -42,11 +42,17 @@ def completionMap : v.adicCompletion K →+* w.adicCompletion L :=
       (HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (K := K) L v w).continuous).comp
       (HeightOneSpectrum.adicCompletion.equiv K v).toRingHom
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion L w).comp <| UniformSpace.Completion.continuous_map.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion K v)`.
+-/
 theorem continuous_completionMap : Continuous (completionMap v w) :=
   (HeightOneSpectrum.adicCompletion.continuous_ofCompletion L w).comp <|
     UniformSpace.Completion.continuous_map.comp
       (HeightOneSpectrum.adicCompletion.continuous_toCompletion K v)
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UniformSpace.Completion.map _ ((algebraMap K (WithVal (v.valuation K)) x : WithVal _) : UniformSpace.Completion (WithVal (v.valuation K))) = ((algebraMap K (WithVal (w.valuation L)) x : WithVal _) : UniformSpace.Completion (WithVal (w.valuation L)))`. Rewrite using `[UniformSpace.Completion.map_coe (HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (K := K) L v w)]`. Both sides reduce to the same expression.
+-/
 theorem completionMap_algebraMap (x : K) :
     completionMap v w (algebraMap K (v.adicCompletion K) x) =
       algebraMap K (w.adicCompletion L) x := by
@@ -60,6 +66,15 @@ theorem completionMap_algebraMap (x : K) :
     (HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (K := K) L v w)]
   rfl
 
+/- English proof (translation)
+Use `set e := w.asIdeal.ramificationIdx (𝓞 K) with he`. Establish `he0 : e ≠ 0` using `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)).ne'`. Establish `hK : ∀ k : K, Valued.v (completionMap v w (algebraMap K _ k)) = Valued.v (algebraMap K (v.adicCompletion K) k) ^ e`. Introduce `k`. Rewrite using `[completionMap_algebraMap, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), HeightOneSpectrum.algebraMap_adicCompletion, HeightOneSpectrum.algebraMap_adicCompletion]`.
+
+Simplify using `only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Rewrite using `[he, ← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal w.asIdeal v.ne_bot, HeightOneSpectrum.valuation_liesOver L v w]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Establish `hclosed : IsClosed {x : v.adicCompletion K | Valued.v (completionMap v w x) = Valued.v x ^ e}`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`.
+
+Introduce `x0 hx0`. Establish `h0 : x0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `[zero_pow he0] at hx0`. Establish `h1 : Valued.v x0 ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
+
+Establish `h2 : Valued.v (completionMap v w x0) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (completionMap v w).injective).2 h0)`. Use `filter_upwards [Valued.locally_const h1, (continuous_completionMap v w).continuousAt.preimage_mem_nhds (Valued.locally_const h2)] with x hx hx'`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_compl_iff] at hx hx' hx0 ⊢`. Rewrite using `[hx, hx']` and apply the resulting hypothesis. Conclude with `(HeightOneSpectrum.denseRange_algebraMap K v).induction_on x hclosed hK`.
+-/
 theorem valued_completionMap (x : v.adicCompletion K) :
     Valued.v (completionMap v w x) = Valued.v x ^ w.asIdeal.ramificationIdx (𝓞 K) := by
   set e := w.asIdeal.ramificationIdx (𝓞 K) with he
@@ -93,6 +108,9 @@ theorem valued_completionMap (x : v.adicCompletion K) :
 scoped instance algebraCompletion : Algebra (v.adicCompletion K) (w.adicCompletion L) :=
   (completionMap v w).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_completion_eq :
     algebraMap (v.adicCompletion K) (w.adicCompletion L) = completionMap v w := rfl
 

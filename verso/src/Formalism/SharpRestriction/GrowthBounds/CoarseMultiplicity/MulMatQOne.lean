@@ -20,6 +20,9 @@ variable {p n' : ℕ} [Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [IsDomain W
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {jO : W →+* O} {w : O}
 
+/- English proof (translation)
+Unfold `Avec AHH`. Use `push_cast`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_bool, vecH, hhDegs, if_true, Bool.false_eq_true, if_false, add_zero]`. Conclude with `Finset.sum_coe_sort TT (fun s => (hhDeg aT bT s true : ℤ))`.
+-/
 theorem Avec_eq {m : ℕ} (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) :
     (Avec (vecH TT) (hhDegs TT aT bT) : ℤ) = AHH TT aT bT := by
   unfold Avec AHH
@@ -28,6 +31,17 @@ theorem Avec_eq {m : ℕ} (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) :
   simp only [Fintype.sum_bool, vecH, hhDegs, if_true, Bool.false_eq_true, if_false, add_zero]
   exact Finset.sum_coe_sort TT (fun s => (hhDeg aT bT s true : ℤ))
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Establish `hw` using `w_ne hS`. Take `⟨Θ0, hΘ0⟩` from `gen_equiv hS m hm (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) (fun x => la_tw ι σ x.1.val.val h) (fun x => la_tw_det _ _ _ _ hh)`. Establish `hV : VS Kf m (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) = VHH (m` using `m) Kf TT aT bT := rfl`. Set `Θ : ↥((Pol (KK O) (ι` to `TT × Bool) (m + 1) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT)).restrictScalars O) ≃ₗ[O] ↥(VHH (m := m) Kf TT aT bT) := Θ0.trans ((LinearEquiv.ofEq _ _ hV).restrictScalars O)`.
+
+Establish `hΘ : ∀ F, ((Θ F : ↥(VHH (m` using `m) Kf TT aT bT)) : MvPolynomial ((TT × Bool) × (Fin (m + 1) × Fin (m + 1))) Kf) = thF hS m (fun x : TT × Bool => x.2) (fun x => la_tw ι σ x.1.val.val h) F.1 := fun F => hΘ0 F`. Use `⟨Θ, ⟨?_, ?_, ?_⟩, hΘ⟩` and prove the remaining obligations. Introduce `F`. Rewrite using `[gen_A hS m hm (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) (fun x => la_tw ι σ x.1.val.val h) (fun x => la_tw_det _ _ _ _ hh) F.1 F.2, ← hΘ F, ← tensor_lattice_twist_eq hS m (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDeg …`. Both sides reduce to the same expression.
+
+Introduce `g hg e he F i`. Establish `h1 : InWjRg p n' O w 1 (Formalism.MainNotions.ColumnSystems.hhLetters TT) g F.1 i ↔ ∃ y ∈ tensorLat O Kf (fun s : TT × Bool => nablaLTw O Kf m (letterWt m (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT s) s.2) (Mx ι σ w φ 1 (fun x : TT × Bool => x.1.val) h g s)), thF hS m ( …` using `gen_R hS φ hφ m hm 1 (Formalism.MainNotions.ColumnSystems.hhLetters TT) (fun x => x.1.val) (fun _ => rfl) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) h hh g hg F.1 F.2 i`. Rewrite using `[h1, ← hΘ F, ← tens_Le hS φ m 1 (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) (fun x => x.1.val) h hh g hg e he]`. Establish `hA : (Avec (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) : ℤ) = AHH TT aT bT` using `Avec_eq (m := m) TT aT bT`. Establish `h2` using `mem_scale2 (O := O) (VHH (m := m) Kf TT aT bT) (HHten O TT aT bT fun s => LeAt p ι σ w s.val e) (algebraMap O Kf w ^ (i : ℤ)) (algebraMap O Kf w ^ (-AHH TT aT bT)) (zpow_ne_zero _ hw) (zpow_ne_zero _ hw) (Θ F)`.
+
+Establish `e1 : algebraMap O Kf w ^ (i : ℤ) * algebraMap O Kf w ^ (-AHH TT aT bT) = algebraMap O Kf w ^ ((i : ℤ) - (Avec (fun x : TT × Bool => x.2) (Formalism.MainNotions.ColumnSystems.hhDegs TT aT bT) : ℤ))`. Rewrite using `[← zpow_add₀ hw, ← sub_eq_add_neg, ← hA]`. Rewrite `h2` using `[e1]`. Conclude with `h2.symm`. Introduce `e he hsrc`.
+
+Conclude with `(edgePlane p n' W Qq O Kf ι σ jO w hS φ hφ m 1 h hh).1 e he hsrc`.
+-/
 theorem flatTheta (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (m : ℕ)
     (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) (hm : 1 ≤ m) (h : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq)
     (hh : IsUnit h.det) :
@@ -76,25 +90,40 @@ theorem flatTheta (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃
   · intro e he hsrc
     exact (edgePlane p n' W Qq O Kf ι σ jO w hS φ hφ m 1 h hh).1 e he hsrc
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [matQ, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem matQ_one (φ : WF p n' ≃+* W) (k : ℕ) : matQ (Qq := Qq) φ (1 : Matrix (Fin k) (Fin k) (WF p n')) = 1 := by
   ext a b
   simp only [matQ, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[matQ_one]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_matQ_one (φ : WF p n' ≃+* W) {k : ℕ} (h : Matrix (Fin k) (Fin k) Qq) :
     h * ((matQ φ (1 : Matrix (Fin k) (Fin k) (WF p n')))⁻¹).transpose = h := by
   rw [matQ_one]
   simp
 
+/- English proof (translation)
+Simplify using `[IsGLW]`.
+-/
 theorem isGLW_one (k : ℕ) : IsGLW (1 : Matrix (Fin k) (Fin k) (WF p n')) := by
   simp [IsGLW]
 
+/- English proof (translation)
+Consider the cases of `vec`. Simplify using `[Aa, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hM, Matrix.mul_nonsing_inv _ hM]`. Simplify using `[Aa, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hM]`.
+-/
 theorem Aa_dual' {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hM : IsUnit M.det) : Aa vec ((M⁻¹).transpose) * (Aa vec M).transpose = 1 := by
   cases vec
   · simp [Aa, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hM, Matrix.mul_nonsing_inv _ hM]
   · simp [Aa, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hM]
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Rewrite using `[pol_iff hS, lift_eq hS φ hφ 1 (hhLetters TT) (fun x => x.1.val) (fun _ => rfl) g hg F]`. Conclude with `Lin_Pol _ _ ((pol_iff hS _ _ _).1 hF)`.
+-/
 theorem lift_Pol (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (m : ℕ)
     (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) (hg : IsGLW g)
     (F : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O)) (hF : F ∈ Pol (KK O) (m + 1) (hhDegs TT aT bT)) :
@@ -104,6 +133,17 @@ theorem lift_Pol (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+
   rw [pol_iff hS, lift_eq hS φ hφ 1 (hhLetters TT) (fun x => x.1.val) (fun _ => rfl) g hg F]
   exact Lin_Pol _ _ ((pol_iff hS _ _ _).1 hF)
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Establish `hw` using `w_ne hS`. Use `set c := algebraMap O Kf w with hc`. Establish `hF'` using `(pol_iff hS _ _ _).1 hF`. Rewrite using `[lift_eq hS φ hφ 1 (hhLetters TT) (fun x => x.1.val) (fun _ => rfl) 1 (isGLW_one _) F]`.
+
+Establish `hB : Bm ι σ w φ 1 (hhLetters TT).vec (fun x : TT × Bool => x.1.val) (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) = fun x => (if (hhLetters TT).vec x then c else 1) • (Aa ((hhLetters TT).vec x) (la_tw ι σ x.1.val.val h)⁻¹ * Aa ((hhLetters TT).vec x) (Mx ι σ w φ 1 (fun x : TT …`. Use function extensionality and compare the values at `fun x => Bm_eq hw φ 1 (hhLetters TT).vec (fun x : TT × Bool => x.1.val) h hh 1 (isGLW_one _) x`. Rewrite using `[hB, Lin_smul _ _ _ hF', Lin_comp]`. Establish `hprod : ∏ x : TT × Bool, (if (hhLetters TT).vec x then c else 1) ^ hhDegs TT aT bT x = c ^ Avec (vecH TT) (hhDegs TT aT bT)`. Unfold `Avec`.
+
+Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `x _`. Use `show (if x.2 = true then c else 1) ^ _ = c ^ (if x.2 = true then _ else 0)`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[hprod]`. Establish `hfun : (fun x : TT × Bool => Aa ((hhLetters TT).vec x) (la_tw ι σ x.1.val.val h)⁻¹ * Aa ((hhLetters TT).vec x) (Mx ι σ w φ 1 (fun x : TT × Bool => x.1.val) h 1 x)) = fun x : TT × Bool => Aa x.2 (la_tw ι σ x.1.val.val h)⁻¹ * Aa x.2 (la_tw ι σ x.1.val.val h * lb_D (m + 1) 1 c)`. Use function extensionality and compare the values at `x`. Unfold `Mx`. Rewrite using `[mul_matQ_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[hfun]`.
+-/
 theorem lift_one (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (m : ℕ)
     (TT : Finset (Fin n')) (aT bT : Fin n' → ℕ) (h : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit h.det)
     (F : MvPolynomial ((TT × Bool) × Fin (m + 1)) (KK O)) (hF : F ∈ Pol (KK O) (m + 1) (hhDegs TT aT bT)) :

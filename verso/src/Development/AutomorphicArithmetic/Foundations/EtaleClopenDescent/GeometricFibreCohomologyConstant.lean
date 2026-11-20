@@ -16,14 +16,27 @@ def Same (q : ℕ) (i : ℤ) {B Y0 Y1 : Scheme.{0}} (p : Y0 ⟶ B) (g : Y1 ⟶ Y
 section
 variable {q : ℕ} {i : ℤ} {B Y0 Y1 : Scheme.{0}} {p : Y0 ⟶ B} {g : Y1 ⟶ Y0}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun m => (h.1 m).symm, fun m => (h.2.1 m).symm, h.2.2.symm⟩`.
+-/
 theorem Same.symm {S S' : Scheme.{0}} {t : S ⟶ B} {t' : S' ⟶ B} (h : Same q i p g t t') : Same q i p g t' t :=
   ⟨fun m => (h.1 m).symm, fun m => (h.2.1 m).symm, h.2.2.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun m => (h.1 m).trans (h'.1 m), fun m => (h.2.1 m).trans (h'.2.1 m), h.2.2.trans h'.2.2⟩`.
+-/
 theorem Same.trans {S S' S'' : Scheme.{0}} {t : S ⟶ B} {t' : S' ⟶ B} {t'' : S'' ⟶ B} (h : Same q i p g t t')
     (h' : Same q i p g t' t'') : Same q i p g t t'' :=
   ⟨fun m => (h.1 m).trans (h'.1 m), fun m => (h.2.1 m).trans (h'.2.1 m), h.2.2.trans h'.2.2⟩
 end
 
+/- English proof (translation)
+Establish `key : ∀ x, pl q i f1 m (pl q i u m x) = pl q i v m (pl q i f2 m x)` using `fun x => by`. Rewrite using `[← pl_comp, h, pl_comp]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use extensionality with `y`.
+
+Take `⟨x, rfl⟩` from `b2.2 y`. Rewrite using `[← key, hu]`. Simplify using the standard rewrite rules. Introduce `hv`. Use extensionality with `x`.
+
+Apply `b1.1` to reduce the goal to its premises. Rewrite using `[key, hv]`. Simplify using the standard rewrite rules.
+-/
 theorem sq_zero (q : ℕ) (i m : ℤ) {P P' Q Q' : Scheme.{0}} (f1 : P' ⟶ P) (f2 : Q' ⟶ Q) (u : P ⟶ Q) (v : P' ⟶ Q')
     (h : f1 ≫ u = v ≫ f2) (b1 : Function.Bijective (pl q i f1 m)) (b2 : Function.Bijective (pl q i f2 m)) :
     pl q i u m = 0 ↔ pl q i v m = 0 := by
@@ -39,6 +52,11 @@ theorem sq_zero (q : ℕ) (i m : ℤ) {P P' Q Q' : Scheme.{0}} (f1 : P' ⟶ P) (
     apply b1.1
     rw [key, hv]; simp
 
+/- English proof (translation)
+Establish `key : (pl q i f1 m) ∘ (pl q i u m) = (pl q i v m) ∘ (pl q i f2 m)` using `funext fun x => by`. Simplify using `only [Function.comp]`. Rewrite using `[← pl_comp, h, pl_comp]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Conclude with `(Function.Bijective.of_comp_iff _ b2).1 (key ▸ b1.comp hu)`. Introduce `hv`. Conclude with `(Function.Bijective.of_comp_iff' b1 _).1 (key ▸ hv.comp b2)`.
+-/
 theorem sq_bij (q : ℕ) (i m : ℤ) {P P' Q Q' : Scheme.{0}} (f1 : P' ⟶ P) (f2 : Q' ⟶ Q) (u : P ⟶ Q) (v : P' ⟶ Q')
     (h : f1 ≫ u = v ≫ f2) (b1 : Function.Bijective (pl q i f1 m)) (b2 : Function.Bijective (pl q i f2 m)) :
     Function.Bijective (pl q i u m) ↔ Function.Bijective (pl q i v m) := by
@@ -51,6 +69,9 @@ theorem sq_bij (q : ℕ) (i m : ℤ) {P P' Q Q' : Scheme.{0}} (f1 : P' ⟶ P) (f
   · intro hv
     exact (Function.Bijective.of_comp_iff' b1 _).1 (key ▸ hv.comp b2)
 
+/- English proof (translation)
+The claim follows from `(Equiv.ofBijective _ b).subsingleton_congr`.
+-/
 theorem sub_iff (q : ℕ) (i m : ℤ) {P P' : Scheme.{0}} (f : P' ⟶ P) (b : Function.Bijective (pl q i f m)) :
     Subsingleton (Ht q (sch.obj P) m i) ↔ Subsingleton (Ht q (sch.obj P') m i) :=
   (Equiv.ofBijective _ b).subsingleton_congr
@@ -58,39 +79,65 @@ theorem sub_iff (q : ℕ) (i m : ℤ) {P P' : Scheme.{0}} (f : P' ⟶ P) (b : Fu
 abbrev bm {Y B S S' : Scheme.{0}} (p : Y ⟶ B) (t : S ⟶ B) (a : S' ⟶ S) : pullback p (a ≫ t) ⟶ pullback p t :=
   pullback.map p (a ≫ t) p t (𝟙 _) a (𝟙 _) (by simp) (by simp)
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+-/
 @[reassoc] theorem bm_fst {Y B S S' : Scheme.{0}} (p : Y ⟶ B) (t : S ⟶ B) (a : S' ⟶ S) :
     bm p t a ≫ pullback.fst p t = pullback.fst p (a ≫ t) :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[reassoc] theorem bm_snd {Y B S S' : Scheme.{0}} (p : Y ⟶ B) (t : S ⟶ B) (a : S' ⟶ S) :
     bm p t a ≫ pullback.snd p t = pullback.snd p (a ≫ t) ≫ a :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc] theorem fib_fst {Y1 Y0 B S : Scheme.{0}} (g : Y1 ⟶ Y0) (p : Y0 ⟶ B) (s : S ⟶ B) :
     fibMap g p s ≫ pullback.fst p s = pullback.fst (g ≫ p) s ≫ g :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+-/
 @[reassoc] theorem fib_snd {Y1 Y0 B S : Scheme.{0}} (g : Y1 ⟶ Y0) (p : Y0 ⟶ B) (s : S ⟶ B) :
     fibMap g p s ≫ pullback.snd p s = pullback.snd (g ≫ p) s :=
   (pullback.lift_snd _ _ _).trans (Category.comp_id _)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bm_fst, pullbackLeftPullbackSndIso_hom_fst]`. Rewrite using `[Category.assoc, bm_snd, pullbackLeftPullbackSndIso_hom_snd_assoc, pullback.condition]`.
+-/
 theorem fst_eq {Y B S S' : Scheme.{0}} (p : Y ⟶ B) (t : S ⟶ B) (a : S' ⟶ S) :
     pullback.fst (pullback.snd p t) a = (pullbackLeftPullbackSndIso p t a).hom ≫ bm p t a := by
   apply pullback.hom_ext
   · rw [Category.assoc, bm_fst, pullbackLeftPullbackSndIso_hom_fst]
   · rw [Category.assoc, bm_snd, pullbackLeftPullbackSndIso_hom_snd_assoc, pullback.condition]
 
+/- English proof (translation)
+Rewrite `h` using `[fst_eq, Functor.map_comp]`. Conclude with `LateralTheory.KummerTheory.AlgExtPf.eqv_cancel _ h (LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _)`.
+-/
 theorem eqv_bm {q : ℕ} {i : ℤ} {Y B S S' : Scheme.{0}} (p : Y ⟶ B) (t : S ⟶ B) (a : S' ⟶ S)
     (h : Eqv _ (sch.map (pullback.fst (pullback.snd p t) a)) (tw q i)) : Eqv _ (sch.map (bm p t a)) (tw q i) := by
   rw [fst_eq, Functor.map_comp] at h
   exact LateralTheory.KummerTheory.AlgExtPf.eqv_cancel _ h (LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _)
 
+/- English proof (translation)
+Establish `e : pullback.fst (𝟙 S) a = pullback.snd (𝟙 S) a ≫ a` using `by simpa using pullback.condition (f := 𝟙 S) (g := a)`. Rewrite `h` using `[e, Functor.map_comp]`. Conclude with `LateralTheory.KummerTheory.AlgExtPf.eqv_cancel _ h (LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _)`.
+-/
 theorem eqv_base {q : ℕ} {i : ℤ} {S S' : Scheme.{0}} (a : S' ⟶ S)
     (h : Eqv _ (sch.map (pullback.fst (𝟙 S) a)) (tw q i)) : Eqv _ (sch.map a) (tw q i) := by
   have e : pullback.fst (𝟙 S) a = pullback.snd (𝟙 S) a ≫ a := by simpa using pullback.condition (f := 𝟙 S) (g := a)
   rw [e, Functor.map_comp] at h
   exact LateralTheory.KummerTheory.AlgExtPf.eqv_cancel _ h (LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _)
 
+/- English proof (translation)
+Establish `e0` using `eqv_bm p t a h0`. Establish `e1` using `eqv_bm (g ≫ p) t a h1`. Establish `e2` using `eqv_base a h2`. Use `⟨fun m => sub_iff q i m _ (e0 m), fun m => ?_, ?_⟩` and prove the remaining obligations. Use `sq_zero q i m (bm (g ≫ p) t a) (bm p t a) _ _ ?_ (e1 m) (e0 m)` and prove the remaining obligations.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, fib_fst, bm_fst, bm_fst_assoc]`. Simplify using `only [Category.assoc, fib_snd, bm_snd, fib_snd_assoc]`. Conclude with `sq_bij q i 0 (bm (g ≫ p) t a) a _ _ (bm_snd _ _ _) (e1 0) (e2 0)`.
+-/
 theorem same_of {q : ℕ} {i : ℤ} {B Y0 Y1 S S' : Scheme.{0}} (p : Y0 ⟶ B) (g : Y1 ⟶ Y0) (t : S ⟶ B) (a : S' ⟶ S)
     (h0 : Eqv _ (sch.map (pullback.fst (pullback.snd p t) a)) (tw q i))
     (h1 : Eqv _ (sch.map (pullback.fst (pullback.snd (g ≫ p) t) a)) (tw q i))
@@ -105,10 +152,18 @@ theorem same_of {q : ℕ} {i : ℤ} {B Y0 Y1 S S' : Scheme.{0}} (p : Y0 ⟶ B) (
     · simp only [Category.assoc, fib_snd, bm_snd, fib_snd_assoc]
   · exact sq_bij q i 0 (bm (g ≫ p) t a) a _ _ (bm_snd _ _ _) (e1 0) (e2 0)
 
+/- English proof (translation)
+Simplify using `using hq.map (Spec.preimage (t ≫ b)).hom`.
+-/
 theorem unit_of {k R : Type} [Field k] [CommRing R] {q : ℕ} (hq : IsUnit (q : k)) {B : Scheme.{0}} (b : B ⟶ Sp k)
     (t : Sp R ⟶ B) : IsUnit (q : R) := by
   simpa using hq.map (Spec.preimage (t ≫ b)).hom
 
+/- English proof (translation)
+Establish `hr : Set.range t ⊆ Set.range V.ι` using `by simpa using ht`. Set `t' : S ⟶ V` to `IsOpenImmersion.lift V.ι t hr`. Establish `ht' : t' ≫ V.ι = t` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h3 : IsPullback (pullback.fst (p ∣_ V) t' ≫ (p ⁻¹ᵁ V).ι) (pullback.snd (p ∣_ V) t') p (t' ≫ V.ι)` using `(IsPullback.of_hasPullback (p ∣_ V) t').paste_horiz (isPullback_morphismRestrict p V).flip`. Rewrite `h3` using `[ht']`.
+
+Establish `e : pullback.snd p t = h3.isoPullback.inv ≫ pullback.snd (p ∣_ V) t'`. Rewrite using `[IsPullback.isoPullback_inv_snd]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem smooth_snd {Y B S : Scheme.{0}} (p : Y ⟶ B) (V : B.Opens) (hp : Smooth (p ∣_ V)) (t : S ⟶ B)
     (ht : Set.range t ⊆ V) : Smooth (pullback.snd p t) := by
   have hr : Set.range t ⊆ Set.range V.ι := by simpa using ht
@@ -122,6 +177,9 @@ theorem smooth_snd {Y B S : Scheme.{0}} (p : Y ⟶ B) (V : B.Opens) (hp : Smooth
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Use `hp.1` as an intermediate fact. Use `hg.1` as an intermediate fact. Use `smooth_snd p V hp.2 x hx` as an intermediate fact. Use `smooth_snd (g ≫ p) V hg.2 x hx` as an intermediate fact. Conclude with `same_of p g x _ (LateralTheory.Fin.SHInv.etale_cohomology_algebraic_extension_invariance_of_places h2 h3 q L M f hq (pullback.snd p x) i) (LateralTheory.Fin.SHInv.etale_cohomology_algebraic_extension_invariance_of_places h2 h3 q L M f hq (pullback.snd (g ≫ p) x) i) (LateralTheory …`.
+-/
 theorem same_alg (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {B Y0 Y1 : Scheme.{0}} (p : Y0 ⟶ B) (g : Y1 ⟶ Y0)
     (V : B.Opens) (hp : SmP p V) (hg : SmP (g ≫ p) V) {L M : Type} [Field L] [IsAlgClosed L] [Field M] [IsAlgClosed M]
     (hq : IsUnit (q : L)) (x : Sp L ⟶ B) (hx : Set.range x ⊆ V) (f : L →+* M) :
@@ -134,6 +192,13 @@ theorem same_alg (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {B Y0 Y1 : S
     (LateralTheory.Fin.SHInv.etale_cohomology_algebraic_extension_invariance_of_places h2 h3 q L M f hq (pullback.snd (g ≫ p) x) i)
     (LateralTheory.Fin.SHInv.etale_cohomology_algebraic_extension_invariance_of_places h2 h3 q L M f hq (𝟙 _) i)
 
+/- English proof (translation)
+Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback u u' e`. Set `W` to `pullback x x'`. Set `M` to `AlgebraicClosure (W.residueField z)`. Set `w : Sp M ⟶ W` to `Spec.map (CommRingCat.ofHom (algebraMap (W.residueField z) M)) ≫ W.fromSpecResidueField z`. Set `φ : CommRingCat.of L ⟶ CommRingCat.of M` to `Spec.preimage (w ≫ pullback.fst x x')`.
+
+Set `φ' : CommRingCat.of L' ⟶ CommRingCat.of M` to `Spec.preimage (w ≫ pullback.snd x x')`. Establish `a1 : Spec.map (CommRingCat.ofHom φ.hom) = w ≫ pullback.fst x x'` using `Spec.map_preimage _`. Establish `a2 : Spec.map (CommRingCat.ofHom φ'.hom) = w ≫ pullback.snd x x'` using `Spec.map_preimage _`. Establish `s1` using `same_alg h2 h3 p g V hp hg hq x hx (i := i) φ.hom`. Establish `s2` using `same_alg h2 h3 p g V hp hg hq' x' hx' (i := i) φ'.hom`.
+
+Establish `e' : Spec.map (CommRingCat.ofHom φ.hom) ≫ x = Spec.map (CommRingCat.ofHom φ'.hom) ≫ x'`. Rewrite using `[a1, a2]`. Simplify using `only [Category.assoc, pullback.condition]`. Rewrite `s1` using `[e']`. Conclude with `s1.trans s2.symm`.
+-/
 theorem same_img (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {B Y0 Y1 : Scheme.{0}} (p : Y0 ⟶ B) (g : Y1 ⟶ Y0)
     (V : B.Opens) (hp : SmP p V) (hg : SmP (g ≫ p) V) {L L' : Type} [Field L] [IsAlgClosed L] [Field L']
     [IsAlgClosed L'] (hq : IsUnit (q : L)) (hq' : IsUnit (q : L')) (x : Sp L ⟶ B) (x' : Sp L' ⟶ B)
@@ -155,6 +220,11 @@ theorem same_img (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {B Y0 Y1 : S
   rw [e'] at s1
   exact s1.trans s2.symm
 
+/- English proof (translation)
+Use `IsAlgClosed.of_exists_root _ fun f hf hi => ?_` and prove the remaining obligations. Establish `hl : f ∈ Polynomial.lifts (IsLocalRing.residue T)` using `Polynomial.map_surjective _ IsLocalRing.residue_surjective f |>.choose_spec ▸ ⟨_, rfl⟩`. Take `⟨P, hP, hd, hm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hf`. Establish `hd0 : 0 < P.natDegree`. Rewrite using `[hd]`.
+
+Conclude with `hi.natDegree_pos`. Take `⟨a, ha⟩` from `h P hm hd0`. Use `⟨IsLocalRing.residue T a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, Polynomial.eval_map, Polynomial.eval₂_hom, ha, map_zero]`.
+-/
 theorem residue_algClosed {T : Type} [CommRing T] [IsLocalRing T] (h : AIC T) : IsAlgClosed (IsLocalRing.ResidueField T) := by
   refine IsAlgClosed.of_exists_root _ fun f hf hi => ?_
   have hl : f ∈ Polynomial.lifts (IsLocalRing.residue T) :=
@@ -166,6 +236,19 @@ theorem residue_algClosed {T : Type} [CommRing T] [IsLocalRing T] (h : AIC T) : 
   refine ⟨IsLocalRing.residue T a, ?_⟩
   rw [← hP, Polynomial.eval_map, Polynomial.eval₂_hom, ha, map_zero]
 
+/- English proof (translation)
+Set `K` to `B.functionField`. Set `Ka` to `AlgebraicClosure K`. Set `sp0` to `B.presheaf.stalkSpecializes (genericPoint_specializes v)`. Set `f : B.presheaf.stalk v →+* Ka` to `(algebraMap K Ka).comp sp0.hom`. Take `⟨A, hA, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`.
+
+Set `f' : B.presheaf.stalk v →+* A` to `f.codRestrict A.toSubring hA`. Take `⟨hAIC, hH⟩` from `LateralTheory.KummerTheory.ValAIC_of Ka A`. Set `e : FractionRing A ≃ₐ[A] Ka` to `FractionRing.algEquiv A Ka`. Establish `hF : IsAlgClosed (FractionRing A)` using `IsAlgClosed.of_ringEquiv Ka _ e.symm.toRingEquiv`. Establish `hR : IsAlgClosed (IsLocalRing.ResidueField A)` using `residue_algClosed hAIC`.
+
+Use `⟨A, inferInstance, inferInstance, inferInstance, Spec.map (CommRingCat.ofHom f') ≫ B.fromSpecStalk v, hAIC, ⟨hH, inferInstance⟩, hF, hR, ?_, ?_⟩` and prove the remaining obligations. Establish `: Spec.map (CommRingCat.ofHom f') (IsLocalRing.closedPoint A) = IsLocalRing.closedPoint (B.presheaf.stalk v)` using `IsLocalRing.comap_closedPoint f'`. Express the relevant statement in the definitionally equal form `B.fromSpecStalk v (Spec.map (CommRingCat.ofHom f') (IsLocalRing.closedPoint A)) = v`. Rewrite using `[this, Scheme.fromSpecStalk_closedPoint]`. Introduce `u`.
+
+Set `ψ : K →+* FractionRing A` to `(e.symm : Ka →+* FractionRing A).comp (algebraMap K Ka)`. Establish `hψ : (CommRingCat.ofHom f' ≫ CommRingCat.ofHom (algebraMap A (FractionRing A))) = sp0 ≫ CommRingCat.ofHom ψ`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap A (FractionRing A) (f' a) = e.symm (algebraMap K Ka (sp0.hom a))`. Rewrite using `[AlgEquiv.eq_symm_apply]`.
+
+Conclude with `e.commutes (f' a)`. Establish `hc : Spec.map (CommRingCat.ofHom (algebraMap A (FractionRing A))) ≫ Spec.map (CommRingCat.ofHom f') ≫ B.fromSpecStalk v = Spec.map (CommRingCat.ofHom ψ) ≫ B.fromSpecStalk (genericPoint B)`. Rewrite using `[← Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes v), ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, hψ]`. Both sides reduce to the same expression. Rewrite using `[hc]`.
+
+Express the relevant statement in the definitionally equal form `B.fromSpecStalk (genericPoint B) (Spec.map (CommRingCat.ofHom ψ) u) = _`. Establish `: Spec.map (CommRingCat.ofHom ψ) u = IsLocalRing.closedPoint (B.presheaf.stalk (genericPoint B))` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[this, Scheme.fromSpecStalk_closedPoint]`.
+-/
 theorem exists_strictHenselian_absolutely_closed_local_ring {B : Scheme.{0}} [IsIntegral B] (v : B) :
     ∃ (T : Type) (_ : CommRing T) (_ : IsDomain T) (_ : IsLocalRing T) (τ : Sp T ⟶ B),
       AIC T ∧ SH T ∧ IsAlgClosed (FractionRing T) ∧ IsAlgClosed (IsLocalRing.ResidueField T) ∧
@@ -206,11 +289,23 @@ theorem exists_strictHenselian_absolutely_closed_local_ring {B : Scheme.{0}} [Is
       Subsingleton.elim (α := PrimeSpectrum K) _ _
     rw [this, Scheme.fromSpecStalk_closedPoint]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `h ⟨a w, by simp⟩`.
+-/
 theorem range_comp_sub {S S' B : Scheme.{0}} (a : S' ⟶ S) (t : S ⟶ B) {V : Set B} (h : Set.range t ⊆ V) :
     Set.range (a ≫ t) ⊆ V := by
   rintro _ ⟨w, rfl⟩
   exact h ⟨a w, by simp⟩
 
+/- English proof (translation)
+Take `⟨T, _, _, _, τ, hAIC, hSH, hF, hR, hc, hgen⟩` from `exists_strictHenselian_absolutely_closed_local_ring (x (IsLocalRing.closedPoint L))`. Use `hp.1` as an intermediate fact. Use `hg.1` as an intermediate fact. Establish `hτ : Set.range τ ⊆ V`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Establish `h1 : τ w ⤳ τ (IsLocalRing.closedPoint T)` using `(IsLocalRing.specializes_closedPoint w).map τ.continuous`. Rewrite `h1` using `[hc]`. Conclude with `h1.mem_open V.2 (hx ⟨_, rfl⟩)`. Establish `hqT : IsUnit (q : T)` using `unit_of hq b τ`. Set `c : Sp (IsLocalRing.ResidueField T) ⟶ Sp T` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue T))`.
+
+Set `j : Sp (FractionRing T) ⟶ Sp T` to `Spec.map (CommRingCat.ofHom (algebraMap T (FractionRing T)))`. Use `smooth_snd p V hp.2 τ hτ` as an intermediate fact. Use `smooth_snd (g ≫ p) V hg.2 τ hτ` as an intermediate fact. Establish `s1 : Same q i p g τ (c ≫ τ)` using `same_of p g τ c (h2 q T hSH hqT (pullback.snd p τ) i) (h2 q T hSH hqT (pullback.snd (g ≫ p) τ) i) (h2 q T hSH hqT (𝟙 _) i)`. Establish `s2 : Same q i p g τ (j ≫ τ)` using `same_of p g τ j (h3 q T hAIC hqT (pullback.snd p τ) i) (h3 q T hAIC hqT (pullback.snd (g ≫ p) τ) i) (h3 q T hAIC hqT (𝟙 _) i)`.
+
+Establish `hcl : c (IsLocalRing.closedPoint (IsLocalRing.ResidueField T)) = IsLocalRing.closedPoint T` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue T)`. Establish `s3 : Same q i p g x (c ≫ τ)` using `same_img h2 h3 p g V hp hg (unit_of hq b x) (unit_of hq b (c ≫ τ)) x (c ≫ τ) hx (range_comp_sub c τ hτ) (IsLocalRing.closedPoint L) (IsLocalRing.closedPoint (IsLocalRing.ResidueField T)) (by change x _ = τ (c _); rw [hcl, hc])`. Conclude with `⟨FractionRing T, inferInstance, hF, j ≫ τ, range_comp_sub j τ hτ, hgen, s3.trans (s1.symm.trans s2)⟩`.
+-/
 theorem gen_pt (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {k : Type} [Field k] (hq : IsUnit (q : k))
     {B Y0 Y1 : Scheme.{0}} [IsIntegral B] (b : B ⟶ Sp k) (p : Y0 ⟶ B) (g : Y1 ⟶ Y0) (V : B.Opens) (hp : SmP p V)
     (hg : SmP (g ≫ p) V) {L : Type} [Field L] [IsAlgClosed L] (x : Sp L ⟶ B) (hx : Set.range x ⊆ V) :
@@ -242,6 +337,9 @@ theorem gen_pt (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {k : Type} [Fi
       (IsLocalRing.closedPoint L) (IsLocalRing.closedPoint (IsLocalRing.ResidueField T)) (by change x _ = τ (c _); rw [hcl, hc])
   exact ⟨FractionRing T, inferInstance, hF, j ≫ τ, range_comp_sub j τ hτ, hgen, s3.trans (s1.symm.trans s2)⟩
 
+/- English proof (translation)
+Take `⟨F, _, _, y, hy, hyg, s⟩` from `gen_pt h2 h3 hq b p g V hp hg (i := i) x hx`. Take `⟨F', _, _, y', hy', hyg', s'⟩` from `gen_pt h2 h3 hq b p g V hp hg (i := i) x' hx'`. Conclude with `s.trans ((same_img h2 h3 p g V hp hg (unit_of hq b y) (unit_of hq b y') y y' hy hy' (IsLocalRing.closedPoint F) (IsLocalRing.closedPoint F') ((hyg _).trans (hyg' _).symm)).trans s'.symm)`.
+-/
 theorem same_all (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {k : Type} [Field k] (hq : IsUnit (q : k))
     {B Y0 Y1 : Scheme.{0}} [IsIntegral B] (b : B ⟶ Sp k) (p : Y0 ⟶ B) (g : Y1 ⟶ Y0) (V : B.Opens) (hp : SmP p V)
     (hg : SmP (g ≫ p) V) {L L' : Type} [Field L] [IsAlgClosed L] [Field L'] [IsAlgClosed L'] (x : Sp L ⟶ B)
@@ -251,6 +349,19 @@ theorem same_all (h2 : E2) (h3 : E3) {q : ℕ} [NeZero q] {i : ℤ} {k : Type} [
   exact s.trans ((same_img h2 h3 p g V hp hg (unit_of hq b y) (unit_of hq b y') y y' hy hy'
     (IsLocalRing.closedPoint F) (IsLocalRing.closedPoint F') ((hyg _).trans (hyg' _).symm)).trans s'.symm)
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B Y0 Y1 _ b V p g hp hg Ω _ _ s hs C0 C1 c0 γ u0 u1 P0 P1 hc A _ t hA ht`. Take `⟨-, -, -, -, -, -, -, a9, -, -, -, b2, b3, -, -, -, -, -, -, -, -, -, -, -, -, e2, e3⟩` from `hy`. Use `hp.1` as an intermediate fact. Use `hg.1` as an intermediate fact. Establish `hA'` using `hA`.
+
+Take `⟨hHL, hsc⟩` from `hA'`. Establish `hqA : IsUnit (q : A)` using `unit_of hq b t`. Set `res : Sp (IsLocalRing.ResidueField A) ⟶ Sp A` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue A))`. Establish `hqκ : IsUnit (q : IsLocalRing.ResidueField A)` using `unit_of hq b (res ≫ t)`. Use `haveI : IsPurelyInseparable (IsLocalRing.ResidueField A) (AlgebraicClosure (IsLocalRing.ResidueField A)) := (isSepClosed_iff_isPurelyInseparable_algebraicClosure _ _).mp hsc`.
+
+Set `alg : Sp (AlgebraicClosure (IsLocalRing.ResidueField A)) ⟶ Sp (IsLocalRing.ResidueField A)` to `Spec.map (CommRingCat.ofHom (algebraMap (IsLocalRing.ResidueField A) (AlgebraicClosure (IsLocalRing.ResidueField A))))`. Establish `s1 : Same q i p g t (res ≫ t)` using `same_of p g t res (e2 q A hA hqA (pullback.snd p t) i) (e2 q A hA hqA (pullback.snd (g ≫ p) t) i) (e2 q A hA hqA (𝟙 _) i)`. Establish `s2 : Same q i p g (res ≫ t) (alg ≫ res ≫ t)` using `same_of p g (res ≫ t) alg (LateralTheory.Fin.SHInv.etale_purely_inseparable_extension_cohomology_invariant_in_henselizati a9 b2 b3 q _ _ hqκ (pullback.snd p (res ≫ t)) i) (LateralTheory.Fin.SHInv.etale_purely_inseparable_extension_cohomology_invariant_in_henselizati a9 b2 b3 q _ …`. Establish `hx : Set.range (alg ≫ res ≫ t) ⊆ V` using `range_comp_sub alg _ (range_comp_sub res t ht)`. Establish `s3 : Same q i p g s (alg ≫ res ≫ t)` using `same_all e2 e3 hq b p g V hp hg s _ hs hx`.
+
+Establish `S : Same q i p g s t` using `s3.trans (s2.symm.trans s1.symm)`. Set `e0` to `P0.isoPullback`. Set `e1` to `P1.isoPullback`. Establish `b0 : ∀ m, Function.Bijective (pl q i e0.hom m)` using `LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _`. Establish `b1 : ∀ m, Function.Bijective (pl q i e1.hom m)` using `LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _`.
+
+Establish `bi : ∀ m, Function.Bijective (pl q i (𝟙 (Sp Ω)) m)` using `LateralTheory.KummerTheory.AlgExtPf.eqv_sch_iso _ _`. Establish `hsq : e1.hom ≫ fibMap g p s = γ ≫ e0.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, fib_fst, e0, e1, IsPullback.isoPullback_hom_fst, IsPullback.isoPullback_hom_fst_assoc, hc]`. Simplify using `only [Category.assoc, fib_snd, e0, e1, IsPullback.isoPullback_hom_snd]`.
+
+Establish `hsn : e1.hom ≫ pullback.snd (g ≫ p) s = (γ ≫ c0) ≫ 𝟙 _`. Simplify using `only [Category.comp_id, e1, IsPullback.isoPullback_hom_snd]`. Use `⟨fun m h => (S.1 m).1 ((sub_iff q i m e0.hom (b0 m)).2 h), fun m h => (S.2.1 m).1 ?_, fun h => S.2.2.1 ?_⟩` and prove the remaining obligations. Conclude with `(sq_zero q i m e1.hom e0.hom _ _ hsq (b1 m) (b0 m)).2 h`. Conclude with `(sq_bij q i 0 e1.hom (𝟙 _) _ _ hsn (b1 0) (bi 0)).2 h`.
+-/
 theorem leaf : LeafSpec := by
   intro hy q _ k _ hq i B Y0 Y1 _ b V p g hp hg Ω _ _ s hs C0 C1 c0 γ u0 u1 P0 P1 hc A _ t hA ht
   obtain ⟨-, -, -, -, -, -, -, a9, -, -, -, b2, b3, -, -, -, -, -, -, -, -, -, -, -, -, e2, e3⟩ := hy
@@ -294,5 +405,8 @@ end UpperTheory.Cb.BimoduleProjections
 
 end
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Cb.BimoduleProjections.leaf`.
+-/
 theorem UpperTheory.Cb.geometric_fibre_cohomology_constant :
     LateralTheory.E.E4.LeafSpec := UpperTheory.Cb.BimoduleProjections.leaf

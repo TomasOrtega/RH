@@ -4,6 +4,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocallyIffAffi
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecSigmaBijectiveStatement
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `R _ F G f V b h`. Establish `hd : ∀ (V' W : Scheme.{0}) (g : V' ⟶ V) (k : W ⟶ V'), (∃ a : Sec F V', Sec.map f a = Sec.res g b) → ∃ a : Sec F W, Sec.map f a = Sec.res (k ≫ g) b`. Introduce and unpack `V' W g k ⟨a, ha⟩`. Conclude with `⟨Sec.res k a, by rw [map_res, ha, res_res]⟩`. Establish `h2` using `(GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover V (fun W k => ∃ a : Sec F W, Sec.map f a = Sec.res k b) hd).1 h`.
+
+Use `choose Wf k _ het hx a ha using h2`. Take `⟨a', ha'⟩` from `(GlobalTheory.T.sec_sigma_res_bijective R F Wf).2 a`. Use `⟨∐ Wf, Sigma.desc k, a', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: IsZariskiLocalAtSource @Etale` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Conclude with `IsZariskiLocalAtSource.sigmaDesc (P := @Etale) fun i => het i`.
+
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx x`. Use `⟨Sigma.ι Wf x y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Sigma.ι_desc, hy]`. Use `(GlobalTheory.T.sec_sigma_res_bijective R G Wf).1 (funext fun i => ?_) show Sec.res (Sigma.ι Wf i) (Sec.map f a') = Sec.res (Sigma.ι Wf i) (Sec.res (Sigma.desc k) b)` and prove the remaining obligations.
+
+Establish `e : Sec.res (Sigma.ι Wf i) a' = a i` using `congrFun ha' i`. Rewrite using `[← map_res, e, ha, res_res, Sigma.ι_desc]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.coverOne_of :
     CoverOne := by
   intro R _ F G f V b h

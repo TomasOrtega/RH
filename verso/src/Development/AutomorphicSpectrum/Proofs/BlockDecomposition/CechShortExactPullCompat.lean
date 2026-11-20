@@ -5,11 +5,17 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 
 namespace GlobalTheory.CompanionTheory.OmCechDelta
 
+/- English proof (translation)
+Conclude with `NatTrans.naturality_apply a (homOfLE h).op x`.
+-/
 theorem app_res_nat {X : TopCat.{0}} {Q Q₂ : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0}} (a : Q ⟶ Q₂)
     {A B : Opens X} (h : A ≤ B) (x : Q.obj (op B)) :
     a.app (op A) (res Q h x) = res Q₂ h (a.app (op B) x) := by
   exact NatTrans.naturality_apply a (homOfLE h).op x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Conclude with `(app_res_nat a' _ _).trans (congrArg (res Q₂ _) (h _ _).symm)`.
+-/
 theorem push_pullCoch {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y) (U : ι → Opens X)
     (τ : ι → κ) (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i)))
     {P P₂ : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat.{0}} {Q Q₂ : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0}}
@@ -19,6 +25,11 @@ theorem push_pullCoch {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ �
   funext t
   exact (app_res_nat a' _ _).trans (congrArg (res Q₂ _) (h _ _).symm)
 
+/- English proof (translation)
+Introduce `X Y f κ ι V U τ hτ F I Q F' I' Q' g₁ g₂ g₁' g₂' hC hC' φ₁ φ₂ φ₃ h₁₂ h₂₃ n σ`. Take `⟨t, ρ, hρ, ht, hρt, hc⟩` from `hC.delta_spec n σ`. Establish `h1 : push U g₂' n (pullCoch f φ₂ V U τ hτ n t) = pullCoch f φ₃ V U τ hτ n σ.1`. Rewrite using `[push_pullCoch f V U τ hτ g₂ g₂' φ₂ φ₃ h₂₃ n t, ht]`. Establish `h2 : push U g₁' (n + 1) (pullCoch f φ₁ V U τ hτ (n + 1) ρ) = d I' U n (pullCoch f φ₂ V U τ hτ n t)`.
+
+Rewrite using `[push_pullCoch f V U τ hτ g₁ g₁' φ₁ φ₂ h₁₂ (n + 1) ρ, hρt, pullCoch_d]`. Establish `h3 : d F' U (n + 1) (pullCoch f φ₁ V U τ hτ (n + 1) ρ) = 0`. Rewrite using `[← pullCoch_d, hρ, map_zero]`. Rewrite using `[hc, cechPullH_cls]`. Conclude with `hC'.deltaRel_unique ⟨pullCoch f φ₂ V U τ hτ n t, pullCoch f φ₁ V U τ hτ (n + 1) ρ, h3, h1, h2, rfl⟩ (hC'.delta_spec n ⟨pullCoch f φ₃ V U τ hτ n σ.1, pullCoch_mem_cocycles f φ₃ V U τ hτ σ.2⟩)`.
+-/
 theorem cechPullH_delta : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y) (U : ι → Opens X) (τ : ι → κ)
     (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i))) {F I Q : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat.{0}}
     {F' I' Q' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0}} {g₁ : F ⟶ I} {g₂ : I ⟶ Q} {g₁' : F' ⟶ I'} {g₂' : I' ⟶ Q'}

@@ -14,37 +14,61 @@ variable {C : Type u} [Category.{v} C] [Preadditive C]
 private abbrev pb {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (x : Cochain L M n) : Cochain K M n :=
   (Cochain.ofHom h).comp x (zero_add n)
 
+/- English proof (translation)
+The claim follows from `Cochain.comp_add _ _ _ _`.
+-/
 private theorem pb_add {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (x y : Cochain L M n) :
     pb h (x + y) = pb h x + pb h y := Cochain.comp_add _ _ _ _
 
+/- English proof (translation)
+The claim follows from `Cochain.comp_sub _ _ _ _`.
+-/
 private theorem pb_sub {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (x y : Cochain L M n) :
     pb h (x - y) = pb h x - pb h y := Cochain.comp_sub _ _ _ _
 
+/- English proof (translation)
+The claim follows from `Cochain.comp_zero _ _`.
+-/
 private theorem pb_zero {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} :
     pb h (0 : Cochain L M n) = 0 := Cochain.comp_zero _ _
 
+/- English proof (translation)
+Simplify using `only [pb, Cochain.ofHom_comp]`. Conclude with `Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ _`.
+-/
 private theorem pb_comp {K L L' M : CochainComplex C ℤ} (h : K ⟶ L) (k : L ⟶ L') {n : ℤ} (x : Cochain L' M n) :
     pb (h ≫ k) x = pb h (pb k x) := by
   simp only [pb, Cochain.ofHom_comp]
   exact Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ _
 
+/- English proof (translation)
+Simplify using `only [pb, Cochain.ofHom_add]`. Conclude with `Cochain.add_comp _ _ _ _`.
+-/
 private theorem pb_hadd {K L M : CochainComplex C ℤ} (h k : K ⟶ L) {n : ℤ} (x : Cochain L M n) :
     pb (h + k) x = pb h x + pb k x := by
   simp only [pb, Cochain.ofHom_add]
   exact Cochain.add_comp _ _ _ _
 
+/- English proof (translation)
+Use `pb_hadd (h - k) k x` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`.
+-/
 private theorem pb_hsub {K L M : CochainComplex C ℤ} (h k : K ⟶ L) {n : ℤ} (x : Cochain L M n) :
     pb (h - k) x = pb h x - pb k x := by
   have := pb_hadd (h - k) k x
   rw [sub_add_cancel] at this
   rw [this, add_sub_cancel_right]
 
+/- English proof (translation)
+The claim follows from `δ_ofHom_comp _ _ _`.
+-/
 private theorem δ_pb {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (m : ℤ) (x : Cochain L M n) :
     δ n m (pb h x) = pb h (δ n m x) := δ_ofHom_comp _ _ _
 
 private def zp {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (z : Cocycle L M n) : Cocycle K M n :=
   zcomp (Cocycle.ofHom h) z (zero_add n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem zp_coe {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (z : Cocycle L M n) :
     (zp h z).1 = pb h z.1 := rfl
 
@@ -52,6 +76,9 @@ private abbrev cp {K L : CochainComplex C ℤ} (h : K ⟶ L) (M : CochainComplex
     CohomologyClass L M n →+ CohomologyClass K M n :=
   cpre (Cocycle.ofHom h) M n n (zero_add n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cp_mk {K L M : CochainComplex C ℤ} (h : K ⟶ L) {n : ℤ} (z : Cocycle L M n) :
     cp h M n (CohomologyClass.mk z) = CohomologyClass.mk (zp h z) := rfl
 
@@ -70,6 +97,11 @@ private def Rel {P A B E : CochainComplex C ℤ} (I : CochainComplex C ℤ) (p :
 
 variable {P A B E I : CochainComplex C ℤ} {p : P ⟶ A} {q : P ⟶ B} {i : A ⟶ E} {j : B ⟶ E} {n : ℤ}
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `c.mk_surjective`. Take `⟨α, β, h⟩` from `X.e1 n γ.1`. Establish `hδ : pb p (δ n (n + 1) α) = pb q (δ n (n + 1) β)`. Rewrite using `[← δ_pb, ← δ_pb, ← sub_eq_zero, ← δ_sub, h]`. Simplify using the standard rewrite rules.
+
+Take `⟨ζ, h1, h2⟩` from `X.e2 (n + 1) _ _ hδ`. Establish `hz : δ (n + 1) (n + 1 + 1) ζ = 0` using `X.e3 (n + 1 + 1) _ (by rw [← δ_pb, h1, δ_δ]) (by rw [← δ_pb, h2, δ_δ])`. Conclude with `⟨CohomologyClass.mk (Cocycle.mk ζ (n + 1 + 1) rfl hz), γ, Cocycle.mk ζ (n + 1 + 1) rfl hz, α, β, rfl, rfl, h, h1.symm, h2.symm⟩`.
+-/
 private theorem Rel.exists (X : MVX I p q i j) (c : CohomologyClass P I n) : ∃ x, Rel I p q i j n c x := by
   obtain ⟨γ, rfl⟩ := c.mk_surjective
   obtain ⟨α, β, h⟩ := X.e1 n γ.1
@@ -82,6 +114,11 @@ private theorem Rel.exists (X : MVX I p q i j) (c : CohomologyClass P I n) : ∃
   exact ⟨CohomologyClass.mk (Cocycle.mk ζ (n + 1 + 1) rfl hz), γ, Cocycle.mk ζ (n + 1 + 1) rfl hz, α, β, rfl, rfl, h,
     h1.symm, h2.symm⟩
 
+/- English proof (translation)
+Take `⟨γ, ζ, α, β, rfl, rfl, h0, h1, h2⟩` from `h`. Take `⟨γ', ζ', α', β', rfl, rfl, h0', h1', h2'⟩` from `h'`. Use `⟨γ + γ', ζ + ζ', α + α', β + β', CohomologyClass.mk_add _ _, CohomologyClass.mk_add _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pb_add, pb_add, add_sub_add_comm, h0, h0']`. Both sides reduce to the same expression.
+
+Rewrite using `[δ_add, h1, h1', ← pb_add]`. Both sides reduce to the same expression. Rewrite using `[δ_add, h2, h2', ← pb_add]`. Both sides reduce to the same expression.
+-/
 private theorem Rel.add {c c' : CohomologyClass P I n} {x x' : CohomologyClass E I (n + 1)}
     (h : Rel I p q i j n c x) (h' : Rel I p q i j n c' x') : Rel I p q i j n (c + c') (x + x') := by
   obtain ⟨γ, ζ, α, β, rfl, rfl, h0, h1, h2⟩ := h
@@ -94,6 +131,11 @@ private theorem Rel.add {c c' : CohomologyClass P I n} {x x' : CohomologyClass E
   · rw [δ_add, h2, h2', ← pb_add]
     rfl
 
+/- English proof (translation)
+Take `⟨γ, ζ, α, β, rfl, rfl, h0, h1, h2⟩` from `h`. Take `⟨γ', ζ', α', β', rfl, rfl, h0', h1', h2'⟩` from `h'`. Use `⟨γ - γ', ζ - ζ', α - α', β - β', CohomologyClass.mk_sub _ _, CohomologyClass.mk_sub _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pb_sub, pb_sub, sub_sub_sub_comm, h0, h0']`. Both sides reduce to the same expression.
+
+Rewrite using `[δ_sub, h1, h1', ← pb_sub]`. Both sides reduce to the same expression. Rewrite using `[δ_sub, h2, h2', ← pb_sub]`. Both sides reduce to the same expression.
+-/
 private theorem Rel.sub {c c' : CohomologyClass P I n} {x x' : CohomologyClass E I (n + 1)}
     (h : Rel I p q i j n c x) (h' : Rel I p q i j n c' x') : Rel I p q i j n (c - c') (x - x') := by
   obtain ⟨γ, ζ, α, β, rfl, rfl, h0, h1, h2⟩ := h
@@ -106,6 +148,13 @@ private theorem Rel.sub {c c' : CohomologyClass P I n} {x x' : CohomologyClass E
   · rw [δ_sub, h2, h2', ← pb_sub]
     rfl
 
+/- English proof (translation)
+Take `⟨γ, ζ, α, β, hγ, rfl, h0, h1, h2⟩` from `h`. Rewrite `hγ`, the goal using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, τ, hτ⟩` from `hγ`. Take `⟨a, b, hab⟩` from `X.e1 m τ`. Establish `e : pb p α - pb q β = δ m n (pb p a) - δ m n (pb q b)` using `by rw [h0, ← hτ, ← hab, δ_sub]`.
+
+Establish `hc : pb p (α - δ m n a) = pb q (β - δ m n b)`. Rewrite using `[pb_sub, pb_sub, ← δ_pb, ← δ_pb]`. Conclude with `sub_eq_sub_iff_sub_eq_sub.1 e`. Take `⟨c, c1, c2⟩` from `X.e2 n _ _ hc`. Establish `hz : ζ.1 - δ n (n + 1) c = 0` using `X.e3 (n + 1) _ (by rw [pb_sub, ← δ_pb, c1, δ_sub, δ_δ, sub_zero, h1, sub_self]) (by rw [pb_sub, ← δ_pb, c2, δ_sub, δ_δ, sub_zero, h2, sub_self])`.
+
+Conclude with `⟨n, rfl, c, (sub_eq_zero.1 hz).symm⟩`.
+-/
 private theorem Rel.eq_zero (X : MVX I p q i j) {x : CohomologyClass E I (n + 1)}
     (h : Rel I p q i j n 0 x) : x = 0 := by
   obtain ⟨γ, ζ, α, β, hγ, rfl, h0, h1, h2⟩ := h
@@ -122,18 +171,33 @@ private theorem Rel.eq_zero (X : MVX I p q i j) {x : CohomologyClass E I (n + 1)
     (by rw [pb_sub, ← δ_pb, c2, δ_sub, δ_δ, sub_zero, h2, sub_self])
   exact ⟨n, rfl, c, (sub_eq_zero.1 hz).symm⟩
 
+/- English proof (translation)
+Establish `h2` using `h.sub h'`. Rewrite `h2` using `[sub_self]`. Conclude with `sub_eq_zero.1 (Rel.eq_zero X h2)`.
+-/
 private theorem Rel.unique (X : MVX I p q i j) {c : CohomologyClass P I n} {x x' : CohomologyClass E I (n + 1)}
     (h : Rel I p q i j n c x) (h' : Rel I p q i j n c x') : x = x' := by
   have h2 := h.sub h'
   rw [sub_self] at h2
   exact sub_eq_zero.1 (Rel.eq_zero X h2)
 
+/- English proof (translation)
+Use `⟨zp p a - zp q b, 0, a.1, b.1, CohomologyClass.mk_sub _ _, CohomologyClass.mk_zero _ _ _, rfl, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 private theorem Rel.of_cocycles (a : Cocycle A I n) (b : Cocycle B I n) :
     Rel I p q i j n (cp p I n (CohomologyClass.mk a) - cp q I n (CohomologyClass.mk b)) 0 := by
   refine ⟨zp p a - zp q b, 0, a.1, b.1, CohomologyClass.mk_sub _ _, CohomologyClass.mk_zero _ _ _, rfl, ?_, ?_⟩
   · simp
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨γ, ζ, α, β, rfl, rfl, h0, h1, h2⟩` from `h`. Introduce `hz`. Rewrite `hz` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, τ, hτ⟩` from `hz`.
+
+Take `rfl : m = n` from `by omega`. Establish `ha : δ m (m + 1) (α - pb i τ) = 0` using `by rw [δ_sub, δ_pb, hτ, h1, sub_self]`. Establish `hb : δ m (m + 1) (β - pb j τ) = 0` using `by rw [δ_sub, δ_pb, hτ, h2, sub_self]`. Use `⟨CohomologyClass.mk (Cocycle.mk _ (m + 1) rfl ha), CohomologyClass.mk (Cocycle.mk _ (m + 1) rfl hb), ?_⟩` and prove the remaining obligations. Rewrite using `[cp_mk, cp_mk, ← CohomologyClass.mk_sub]`.
+
+Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `γ.1 = pb p (α - pb i τ) - pb q (β - pb j τ)`. Rewrite using `[pb_sub, pb_sub, ← pb_comp, ← pb_comp, X.comm, ← h0]`. Normalize the expressions using the abelian group laws.
+
+Introduce and unpack `⟨a, b, rfl⟩`. Take `⟨a, rfl⟩` from `a.mk_surjective`. Take `⟨b, rfl⟩` from `b.mk_surjective`. Conclude with `Rel.unique X h (Rel.of_cocycles a b)`.
+-/
 private theorem Rel.iff_zero (X : MVX I p q i j) {c : CohomologyClass P I n} {x : CohomologyClass E I (n + 1)}
     (h : Rel I p q i j n c x) : x = 0 ↔ ∃ a b, c = cp p I n a - cp q I n b := by
   constructor
@@ -156,6 +220,15 @@ private theorem Rel.iff_zero (X : MVX I p q i j) {c : CohomologyClass P I n} {x 
     obtain ⟨b, rfl⟩ := b.mk_surjective
     exact Rel.unique X h (Rel.of_cocycles a b)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨ζ, rfl⟩` from `x.mk_surjective`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1`, `h2` using `[cp_mk, CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, α, hα⟩` from `h1`.
+
+Take `⟨m', hm', β, hβ⟩` from `h2`. Take `rfl : m = n` from `by omega`. Take `rfl : m' = m` from `by omega`. Establish `hγ : δ m' (m' + 1) (pb p α - pb q β) = 0`. Establish `e : pb p (pb i ζ.1) = pb q (pb j ζ.1)` using `by rw [← pb_comp, ← pb_comp, X.comm]`.
+
+Establish `hα' : δ m' (m' + 1) α = pb i ζ.1` using `hα`. Establish `hβ' : δ m' (m' + 1) β = pb j ζ.1` using `hβ`. Rewrite using `[δ_sub, δ_pb, δ_pb, hα', hβ', e, sub_self]`. Conclude with `⟨_, Cocycle.mk _ (m' + 1) rfl hγ, ζ, α, β, rfl, rfl, rfl, hα, hβ⟩`. Introduce and unpack `⟨c, γ, ζ, α, β, -, rfl, -, h1, h2⟩`.
+
+Rewrite using `[cp_mk, cp_mk, CohomologyClass.mk_eq_zero_iff, CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨⟨n, rfl, α, h1⟩, ⟨n, rfl, β, h2⟩⟩`.
+-/
 private theorem Rel.iff_pull (X : MVX I p q i j) (x : CohomologyClass E I (n + 1)) :
     (cp i I (n + 1) x = 0 ∧ cp j I (n + 1) x = 0) ↔ ∃ c, Rel I p q i j n c x := by
   constructor
@@ -176,6 +249,9 @@ private theorem Rel.iff_pull (X : MVX I p q i j) (x : CohomologyClass E I (n + 1
     rw [cp_mk, cp_mk, CohomologyClass.mk_eq_zero_iff, CohomologyClass.mk_eq_zero_iff]
     exact ⟨⟨n, rfl, α, h1⟩, ⟨n, rfl, β, h2⟩⟩
 
+/- English proof (translation)
+Take `⟨γ, ζ, α, β, rfl, rfl, h0, e1, e2⟩` from `h`. Use `⟨zp m γ, zp w ζ, pb u α, pb v β, rfl, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zp_coe, ← h0, pb_sub, ← pb_comp, ← pb_comp, ← pb_comp, ← pb_comp, h1, h2]`. Rewrite using `[δ_pb, e1, zp_coe, ← pb_comp, ← pb_comp, h3]`. Rewrite using `[δ_pb, e2, zp_coe, ← pb_comp, ← pb_comp, h4]`.
+-/
 private theorem Rel.nat {P' A' B' E' : CochainComplex C ℤ} {p' : P' ⟶ A'} {q' : P' ⟶ B'} {i' : A' ⟶ E'} {j' : B' ⟶ E'}
     (m : P ⟶ P') (u : A ⟶ A') (v : B ⟶ B') (w : E ⟶ E') (h1 : m ≫ p' = p ≫ u) (h2 : m ≫ q' = q ≫ v)
     (h3 : i ≫ w = u ≫ i') (h4 : j ≫ w = v ≫ j') {c : CohomologyClass P' I n} {x : CohomologyClass E' I (n + 1)}
@@ -186,14 +262,31 @@ private theorem Rel.nat {P' A' B' E' : CochainComplex C ℤ} {p' : P' ⟶ A'} {q
   · rw [δ_pb, e1, zp_coe, ← pb_comp, ← pb_comp, h3]
   · rw [δ_pb, e2, zp_coe, ← pb_comp, ← pb_comp, h4]
 
+/- English proof (translation)
+The claim follows from `Cochain.id_comp _`.
+-/
 private theorem pb_id {K M : CochainComplex C ℤ} {n : ℤ} (x : Cochain K M n) : pb (𝟙 K) x = x := Cochain.id_comp _
 
+/- English proof (translation)
+Use `pb_hsub (0 : K ⟶ L) 0 x` as an intermediate fact. Rewrite `this` using `[sub_zero, sub_self]`. Then use the resulting hypothesis.
+-/
 private theorem pb_hzero {K L M : CochainComplex C ℤ} {n : ℤ} (x : Cochain L M n) : pb (0 : K ⟶ L) x = 0 := by
   have := pb_hsub (0 : K ⟶ L) 0 x
   rwa [sub_zero, sub_self] at this
 
 end Abstract
 
+/- English proof (translation)
+Establish `hl : biprod.lift p (-q) = p ≫ biprod.inl - q ≫ biprod.inr`. Apply the tactic sequence `apply biprod.hom_ext <;> simp`. Establish `hd : biprod.desc i j = biprod.fst ≫ i + biprod.snd ≫ j`. Apply the tactic sequence `apply biprod.hom_ext' <;> simp`. Use `⟨comm, fun n γ => ?_, fun n α β h => ?_, fun n c h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `(GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).1 γ`. Establish `hb' : pb (biprod.lift p (-q)) b = γ` using `hb`. Use `⟨pb biprod.inl b, pb biprod.inr b, ?_⟩` and prove the remaining obligations. Rewrite using `[← pb_comp, ← pb_comp, ← pb_hsub, ← hl, hb']`. Establish `hb1 : pb biprod.inl (pb biprod.fst α + pb biprod.snd β) = α`.
+
+Rewrite using `[pb_add, ← pb_comp, ← pb_comp, biprod.inl_fst, biprod.inl_snd, pb_id, pb_hzero, add_zero]`. Establish `hb2 : pb biprod.inr (pb biprod.fst α + pb biprod.snd β) = β`. Rewrite using `[pb_add, ← pb_comp, ← pb_comp, biprod.inr_fst, biprod.inr_snd, pb_id, pb_hzero, zero_add]`. Establish `hf : pb (biprod.lift p (-q)) (pb biprod.fst α + pb biprod.snd β) = 0`. Rewrite using `[hl, pb_hsub, pb_comp, pb_comp, hb1, hb2, h, sub_self]`.
+
+Take `⟨c, hc⟩` from `(GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).2.1 _ hf`. Establish `hc' : pb (biprod.desc i j) c = pb biprod.fst α + pb biprod.snd β` using `hc`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← biprod.inl_desc i j, pb_comp, hc', hb1]`. Rewrite using `[← biprod.inr_desc i j, pb_comp, hc', hb2]`.
+
+Use `(GlobalTheory.T.etaleCochain_shortExact_of_injective_terms R I hI _ hS n).2.2 c ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pb (biprod.desc i j) c = 0`. Rewrite using `[hd, pb_hadd, pb_comp, pb_comp, h1, h2, pb_zero, pb_zero, add_zero]`.
+-/
 private theorem mvx_of_se {R : Type} [CommRing R] {P A B E I : Cx R} {p : P ⟶ A} {q : P ⟶ B} {i : A ⟶ E} {j : B ⟶ E}
     (comm : p ≫ i = q ≫ j) (w)
     (hS : (ShortComplex.mk (biprod.lift p (-q)) (biprod.desc i j) w).ShortExact) (hI : ∀ n, Injective (I.X n)) :
@@ -222,6 +315,9 @@ private theorem mvx_of_se {R : Type} [CommRing R] {P A B E I : Cx R} {p : P ⟶ 
     change pb (biprod.desc i j) c = 0
     rw [hd, pb_hadd, pb_comp, pb_comp, h1, h2, pb_zero, pb_zero, add_zero]
 
+/- English proof (translation)
+Take `⟨w, hS⟩` from `GlobalTheory.T.etaleSpaceChains_mayerVietoris_shortExact R f g h`. Conclude with `mvx_of_se (by rw [← Functor.map_comp, ← Functor.map_comp, pullback.condition]) w hS (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.1`.
+-/
 private theorem mvx (R : Type) [CommRing R] (F : Shv R) {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (h : Cover2 R f g) :
     MVX (res R F) ((chains R).map (pullback.fst f g)) ((chains R).map (pullback.snd f g)) ((chains R).map f) ((chains R).map g) := by
   obtain ⟨w, hS⟩ := GlobalTheory.T.etaleSpaceChains_mayerVietoris_shortExact R f g h
@@ -230,6 +326,13 @@ private theorem mvx (R : Type) [CommRing R] (F : Shv R) {U V E : Spc} (f : U ⟶
 end UpperTheory.MVd
 
 open UpperTheory.MVd in
+/- English proof (translation)
+Introduce `R _ F n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `U V E f g h`. Establish `X` using `mvx R F f g h`. Take `⟨d, hd, -⟩` from `GlobalTheory.T.exists_mayerVietoris_connecting_exact R F`.
+
+Conclude with `⟨fun c => Rel.exists X c, fun c x x' => Rel.unique X, fun c c' x x' => Rel.add, fun c x hx => Rel.iff_zero X hx, fun x => Rel.iff_pull X x, fun a b => (hd f g h n).1 a b⟩`. Introduce `U V E U' V' E' f g f' g' p u v hu hv _ _ c x hx`. Use `Rel.nat ((chains R).map (pullback.map f g f' g' u v p hu hv)) ((chains R).map u) ((chains R).map v) ((chains R).map p) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.lift_fst]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.lift_snd]`.
+
+Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hu]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hv]`.
+-/
 theorem UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact :
     ∀ (R : Type) [CommRing R] (F : Shv R) (n : ℤ),
         (∀ {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E), Cover2 R f g →

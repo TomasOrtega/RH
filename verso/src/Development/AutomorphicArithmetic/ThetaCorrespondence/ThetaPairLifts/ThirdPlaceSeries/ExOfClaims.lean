@@ -13,6 +13,29 @@ open NumberField IsDedekindDomain GlobalTheory.ChiGrid GlobalTheory.FunObj Globa
 namespace GlobalTheory.BigTop.Fun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hSet hdl hS hR hC hr hI hFD hT hD hB hBS`. Take `⟨c1, h1⟩` from `hSet.atPt hS`. Take `⟨c2, h2⟩` from `hSet.atPt hR`. Take `⟨c3, h3⟩` from `hSet.atPt hC`. Take `⟨c4, h4⟩` from `hr`.
+
+Take `⟨c5, h5⟩` from `Model.gBig_and (Model.gBig_and hT hD) (Model.gBig_and (Model.gBig_and hB hBS) hFD)`. Take `⟨CI, -, hI⟩` from `exists_isIntExp hI`. Use `⟨max (max (max c1 c2) (max c3 c4)) (max c5 CI), fun CF hCF => ?_⟩` and prove the remaining obligations. Establish `k1 : c1 ≤ CF` using `le_trans (by simp) hCF`. Establish `k2 : c2 ≤ CF` using `le_trans (by simp) hCF`.
+
+Establish `k3 : c3 ≤ CF` using `le_trans (by simp) hCF`. Establish `k4 : c4 ≤ CF` using `le_trans (by simp) hCF`. Establish `k5 : c5 ≤ CF` using `le_trans (by simp) hCF`. Establish `k6 : CI ≤ CF` using `le_trans (by simp) hCF`. Take `⟨e0, he0, H⟩` from `(((h1 CF k1).and (h2 CF k2)).and ((h3 CF k3).and (h4 CF k4))).and (hdl.and hSet)`.
+
+Use `⟨e0, he0, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps he hle`. Take `⟨C0, x₀, hg⟩` from `h5 eps CF k5`. Use `⟨K, fun Fm CH hc hL _ => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨y1, g1⟩, ⟨y2, g2⟩⟩, ⟨⟨y3, g3⟩, ⟨y4, g4⟩⟩⟩, ⟨y5, g5⟩, ⟨y6, g6⟩⟩` from `hK Fm CH hc hL`.
+
+Use `⟨max (max (max y1 y2) (max y3 y4)) (max (max y5 y6) x₀), fun x hx hle i p hp G W hW _ hF => ?_⟩` and prove the remaining obligations. Establish `l1 : y1 ≤ x` using `le_trans (by simp) hle`. Establish `l2 : y2 ≤ x` using `le_trans (by simp) hle`. Establish `l3 : y3 ≤ x` using `le_trans (by simp) hle`. Establish `l4 : y4 ≤ x` using `le_trans (by simp) hle`.
+
+Establish `l5 : y5 ≤ x` using `le_trans (by simp) hle`. Establish `l6 : y6 ≤ x` using `le_trans (by simp) hle`. Establish `l7 : x₀ ≤ x` using `le_trans (by simp) hle`. Take `⟨n, a, ha⟩` from `hF`. Establish `hset` using `g6 x hx l6 i p hp ha.eser`.
+
+Establish `hrec : Rec (Fm.L x i)` using `⟨hset.size, hset.host, hset.hF, g5 x hx l5 i p hp⟩`. Take `⟨⟨hTor, hDen⟩, ⟨hBot, hSm⟩, hFd⟩` from `hg C0 le_rfl _ (Fm.L x i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact l7) hrec _ _ _ hset.core.lev G`. Establish `hb : Real.log (Fm.L x i).sc.b = (Fm.L x i).sc.L` using `Real.log_exp _`. Establish `hL1 : 1 ≤ (Fm.L x i).sc.L` using `Real.one_le_rpow (Fm.L x i).sc.one_lt_alt.le (Fm.L x i).sc.eps_pos.le`. Establish `hlog1 : 1 ≤ Real.log (Fm.L x i).sc.b` using `hb ▸ hL1`.
+
+Establish `hrd : Real.log (Fm.D x i).host.rdE ≤ Real.log (Fm.L x i).sc.b`. Establish `e1` using `hset.size.2.2.2.2.2.2.2.2.2.1`. Establish `e2` using `hset.size.2.2.2.2.2.2.2.2.2.2.1`. Rewrite using `[hb]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨dl, hdl⟩` from `hI _ _ _ _ G hSm.1 hlog1 hrd`. Take `⟨δ, t0, hBot'⟩` from `hBot`. Take `⟨_, _, _, _, Λ, hΛ⟩` from `hFd`. Use `TieModel.exists_tie hW a ha (g1 x hx l1 i p hp G W n a ha) (g2 x hx l2 i p hp G W n a ha ha.field) (g3 x hx l3 i p hp G W n a ha) (g4 x hx l4 i p hp G W n a ha) ⟨δ, t0, fun ij => let ⟨P, P', h⟩ := hBot' ij; ⟨P, P', h, trivial, trivial⟩⟩ (fun ij s hs1 hs2 => ?_) ⟨dl, TieModel.isIn …` and prove the remaining obligations. Take `⟨nn, hnn, hfin⟩` from `hDen ij.1 ij.2 s hs1 hs2`.
+
+Take `⟨x0', hx0, hx0ne, -, halg⟩` from `hTor ij.1 ij.2 s hs1 hs2 none`. Establish `hz : ∀ c : Bool, ∃ z, IsTor G ij.1 ij.2 s (nuH G p.P.A3.A.μ0 ij.1 ij.2 * delOf _ c) ((Fm.D x i).what₂.embLL z * x0')` using `fun c => by`. Take `⟨y, hy, -⟩` from `hTor ij.1 ij.2 s hs1 hs2 (some c)`. Take `⟨z, hz⟩` from `ha.sq.toric ij.1 ij.2 s c x0' y hs1 hs2 hx0 hy`. Conclude with `⟨z, by rw [hz, div_mul_cancel₀ _ hx0ne]; exact hy⟩`.
+
+Use `choose zd hzd using hz`. Take `⟨pp, hpp⟩` from `exists_isMinPol (σ := (Fm.D x i).what₂.embLL) (halg Λ hΛ)`. Conclude with `⟨zd, fun w => truncZero (meanVal_vw w pp / 12), nn, ⟨x0', hx0, hx0ne, hzd, Λ, pp, hΛ, hpp, fun w => rfl⟩, hnn, hfin⟩`.
+-/
 theorem ex_of_claims_alt : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.RowClaim.SumOKK → GlobalTheory.RowClaim.SumRatK → GlobalTheory.RowClaim.ConstK → (_root_.GlobalTheory.BigTop.Fun.CharacterAtPoint fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ i j t, GlobalTheory.RowTest.sqRatio ch i j t ∈ Set.range D.what₂.embLL) → GlobalTheory.NormSum.IntSt → FieldDat → TorEx → DenEx → BotEx → BotSmall → _root_.GlobalTheory.BigTop.Fun.ExistsFunctionIn @Fld @Comparison₂ := by
   intro hSet hdl hS hR hC hr hI hFD hT hD hB hBS
   obtain ⟨c1, h1⟩ := hSet.atPt hS

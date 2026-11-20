@@ -23,6 +23,13 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 end GlobalTheory.EndCusp
 namespace GlobalTheory.EndCusp
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t y`. Establish `hm` using `hS.core.models`. Take `⟨h1, h2, h3⟩` from `formX_props R hm.inf hm.cX hm.prX hm.HX ch.cv t y`.
+
+Establish `hθ : ch.W.θ = R.θ` using `hch.toIsBase.weil.θ`. Take `⟨k1, k2, k3⟩` from `props_cast R.θ (fun τ => Node.par D ch.sc.cGap (.grid 0 D.R.m) τ) (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (ch.cv.formX t y) h1 h2 (fun τ => by`. Rewrite using `[show Node.par D ch.sc.cGap (.grid 0 D.R.m) τ = (Ptw D).Dpar D.R.m τ from parV_zero D _ le_rfl τ]`. Conclude with `h3 τ)`. Rewrite using `[hθ]`.
+
+Conclude with `⟨k1, k2, k3⟩`.
+-/
 theorem leadingForm_mem_cuspList : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
   intro _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩
@@ -45,6 +52,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | exact _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | (intros; apply _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.endCusp_leadingForm_listed : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
   first | exact @_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | exact _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | (intros; apply _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList <;> assumption)
 end

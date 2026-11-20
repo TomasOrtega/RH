@@ -17,6 +17,11 @@ def EtaLocD : Prop :=
   ∀ (D : Formalism.BasicNotions.D7) (p : PlF D),
     (if ∀ x : (D.s.atP p).Ep, x ≠ 0 → IsUnit x then (-1 : ℝ) else 1) = etaF D.host.E D.host.F p.asIdeal
 
+/- English proof (translation)
+Unfold `alphaStd`. Rewrite using `[← Finset.prod_union]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_left]`. Introduce `i hi hi'`. Simplify using `only [Finset.mem_Icc] at hi hi'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem alpha_split' {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
     (𝔭 : Ideal (𝓞 F)) {a b : ℕ} (hab : a ≤ b) :
     alphaStd K 𝔭 b = alphaStd K 𝔭 a *
@@ -32,6 +37,13 @@ theorem alpha_split' {K F : Type} [Field K] [NumberField K] [StarRing K] [Field 
     simp only [Finset.mem_Icc] at hi hi'
     omega
 
+/- English proof (translation)
+Introduce `D δ M _ p c hc`. Take `⟨hK, hF, -⟩` from `field_dictionary_holds D`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+
+Establish `hq` using `PI.UnitaryGroupMassFormula.CntFormula.residue_field_card D p`. Establish `hmax : p.asIdeal.IsMaximal` using `p.isMaximal`. Establish `hpos` using `alphaStd_pos hK hF hmax (D.R.k - 1 - c)`. Rewrite using `[eq_div_iff hpos.ne', alpha_split' (K := D.host.E) p.asIdeal (show D.R.k - 1 - c ≤ D.R.r by omega), mul_comm]`. Use `congr 1`.
+
+Unfold `Formalism.L2.SG.DensExact.densProd`. Rewrite using `[hq, hη D p, show D.R.r + 1 - (2 * (D.R.rS + 1) + c) = D.R.k - 1 - c + 1 by omega]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast]`.
+-/
 theorem densProdVal_of (hη : EtaLocD) : DensProdVal := by
   intro D δ M _ p c hc
   obtain ⟨hK, hF, -⟩ := field_dictionary_holds D

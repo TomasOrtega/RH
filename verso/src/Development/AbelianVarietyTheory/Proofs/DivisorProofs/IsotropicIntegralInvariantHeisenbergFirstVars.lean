@@ -12,15 +12,26 @@ namespace GlobalTheory.LagIntTransl
 def liftFst {R : Type} [CommRing R] {κ : Type} (a : (κ → R) × (κ → R)) : (κ ⊕ κ → R) × (κ ⊕ κ → R) :=
   (Sum.elim a.1 0, Sum.elim a.2 0)
 
+/- English proof (translation)
+Simplify using `only [liftFst, Prod.fst_add, Prod.snd_add, Prod.mk_add_mk]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> cases i <;> simp`.
+-/
 theorem liftFst_add {R : Type} [CommRing R] {κ : Type} (a b : (κ → R) × (κ → R)) :
     liftFst (a + b) = liftFst a + liftFst b := by
   simp only [liftFst, Prod.fst_add, Prod.snd_add, Prod.mk_add_mk]
   refine Prod.ext ?_ ?_ <;> funext i <;> cases i <;> simp
 
+/- English proof (translation)
+Simplify using `[liftFst, dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem liftFst_dot {R : Type} [CommRing R] {κ : Type} [Fintype κ] (a b : (κ → R) × (κ → R)) :
     (liftFst a).1 ⬝ᵥ (liftFst b).2 = a.1 ⬝ᵥ b.2 := by
   simp [liftFst, dotProduct, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [boxFun, schr, liftFst, dotProduct, Fintype.sum_sum_type, Function.comp_apply, Sum.elim_inl, Sum.elim_inr, Pi.add_apply, Pi.zero_apply, mul_zero, add_zero, mul_assoc]`. Establish `e1 : (z + Sum.elim a.1 0) ∘ Sum.inl = z ∘ Sum.inl + a.1` using `by funext i; simp`. Establish `e2 : (z + Sum.elim a.1 0) ∘ Sum.inr = z ∘ Sum.inr` using `by funext i; simp`. Rewrite using `[e1, e2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem boxFun_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a : (κ → R) × (κ → R)) (φ₁ φ₂ : (κ → R) → ℂ) :
     boxFun (schr ψ a φ₁) φ₂ = schr ψ (liftFst a) (boxFun φ₁ φ₂) := by
@@ -32,6 +43,11 @@ theorem boxFun_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R
   rw [e1, e2]
   simp
 
+/- English proof (translation)
+Unfold `diagW`. Rewrite using `[boxFun_schr]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h' : (liftFst w).1 ⬝ᵥ (liftFst a).2 = (liftFst a).1 ⬝ᵥ (liftFst w).2`.
+
+Rewrite using `[liftFst_dot, liftFst_dot, h]`. Use `GlobalTheory.MixXEvUniq.schr_add ψ (liftFst w) (liftFst a) h' (boxFun φ₁ φ₂)` as an intermediate fact. Rewrite `this` using `[← liftFst_add]`. Rewrite using `[show ((Sum.elim (w + a).1 0, Sum.elim (w + a).2 0) : (κ ⊕ κ → Fv F v) × (κ ⊕ κ → Fv F v)) = liftFst (w + a) from rfl, this]`. Both sides reduce to the same expression.
+-/
 theorem diagW_schr (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (ψ : AddChar (Fv F v) ℂ)
     (μ : @Measure (κ → Fv F v) (borel _)) (a w : (κ → Fv F v) × (κ → Fv F v)) (h : w.1 ⬝ᵥ a.2 = a.1 ⬝ᵥ w.2)
     (φ₁ φ₂ : (κ → Fv F v) → ℂ) :
@@ -48,6 +64,11 @@ theorem diagW_schr (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [
     this]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ v κ _ ψ μ _ N ν hν j hj y₀ φ₁ φ₂`. Unfold `lagInt`. Establish `h1 : ∀ y, diagW ψ μ (boxFun (schr ψ (j y₀) φ₁) φ₂) (j y) = diagW ψ μ (boxFun φ₁ φ₂) (j (y + y₀))` using `fun y => by`. Rewrite using `[diagW_schr F v κ ψ μ _ _ (hj y y₀), map_add]`. Simplify using `only [h1]`.
+
+Use `letI : MeasurableSpace (Fin N → Fv F v) := borel _`. Use `haveI : BorelSpace (Fin N → Fv F v) := ⟨rfl⟩`. Conclude with `integral_add_right_eq_self (μ := ν) (fun y => diagW ψ μ (boxFun φ₁ φ₂) (j y)) y₀`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (ψ : AddChar (Fv F v) ℂ) (μ : @Measure (κ → Fv F v) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ (N : ℕ) (ν : @Measure (Fin N → Fv F v) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →
     ∀ j : (Fin N → Fv F v) →ₗ[Fv F v] (κ → Fv F v) × (κ → Fv F v), (∀ y y', (j y).1 ⬝ᵥ (j y').2 = (j y').1 ⬝ᵥ (j y).2) →

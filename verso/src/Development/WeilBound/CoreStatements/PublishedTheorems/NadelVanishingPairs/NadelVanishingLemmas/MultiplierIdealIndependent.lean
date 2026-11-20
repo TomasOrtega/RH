@@ -12,6 +12,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Introduce `k _ _ X _ p n hproj η m G Y _ _ s _ K B F hη hm hres hF J`. Establish `key` using `inMultAt_iff_regularAt_logRes k X p n hproj η m G Y s K B F hη hm hres hF`. Unfold `IsMultIdeal`. Use `forall_congr' fun U => forall_congr' fun f => iff_congr Iff.rfl ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H y hy`. Distinguish the cases in `h0 : fnOf U.1 (gen_mem hy) f = 0`. Rewrite using `[h0, map_zero]`. Take `⟨g, hg⟩` from `(-F).exists_isEqn y`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[zero_mul]`. Conclude with `(regAt_zero (X := Y) (x := y))`. Use `(key (s y) (Units.mk0 _ h0)).1 (H (s y) hy _ rfl) y rfl` as an intermediate fact. Simplify using `using this`. Introduce `H x hx u hu`.
+
+Rewrite using `[key]`. Introduce and unpack `y rfl`. Rewrite using `[hu]`. Conclude with `H y hx`.
+-/
 theorem isMultIdeal_iff_regularAt : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y) (F : CartierDiv Y), η ≠ 0 → 0 < m → IsLogRes p n η m G s K B → (∀ z, F.mult z = (pullCart s G - m • K).mult z / (m : ℤ)) → ∀ J : X.IdealSheafData, IsMultIdeal p n η m G J ↔ (∀ (U : X.affineOpens) (f : Γ(X, U.1)), f ∈ J.ideal U ↔ ∀ (y : Y) (hy : s y ∈ U.1), (-F).RegularAt y (functionFieldMap s (fnOf U.1 (gen_mem hy) f))) := by
   intro k _ _ X _ p n hproj η m G Y _ _ s _ K B F hη hm hres hF J
   have key := inMultAt_iff_regularAt_logRes k X p n hproj η m G Y s K B F hη hm hres hF

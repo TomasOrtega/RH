@@ -8,6 +8,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => exact absurd rfl hs`. Consider the case `cons a s ih`. Distinguish the cases in `h0 : s = 0`. Substitute `h0` using the available equality.
+
+Simplify using `using hw a`. Establish `h` using `(siegelSpaceAlgebra_holds (E := E) r X (s.card • la) la 0).2.1 _ (ih h0) _ (hw a).1`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, succ_nsmul, mul_comm]`. Conclude with `h`.
+-/
 theorem multiset_prod_mem_cuspForms {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : Data E r) (la : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.Ψ r → ℂ)
     (hw : ∀ i, w i ∈ X.SS la) (s : Multiset (Fin N)) (hs : s ≠ 0) :
@@ -22,6 +27,17 @@ theorem multiset_prod_mem_cuspForms {E : Type} [Field E] [NumberField E] [IsCMFi
       rw [Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, succ_nsmul, mul_comm]
       exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la N d w p hw hd hp`. Take `⟨⟨h0, hadd, hsmul⟩, -⟩` from `siegelSpaceAlgebra_holds (E := E) r X (d • la) (d • la) 0`. Establish `hmon : ∀ m ∈ p.support, (m.toMultiset.map w).prod ∈ X.SS (d • la)`. Introduce `m hm`. Establish `hc : m.toMultiset.card = d`.
+
+Rewrite using `[Finsupp.card_toMultiset]`. Use `hp (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Use `multiset_prod_mem_cuspForms X la w hw m.toMultiset (by` as an intermediate fact. Introduce `h`.
+
+Rewrite `hc` using `[h]`. Simplify using `at hc`. Use the proof step `omega)`. Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Establish `heq : (fun x => MvPolynomial.eval (fun i => w i x) p) = ∑ m ∈ p.support, p.coeff m • (m.toMultiset.map w).prod`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[MvPolynomial.eval_eq, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by intros; rw [pow_add])]`. Simplify using `[Finsupp.prod, Finset.prod_apply]`.
+
+Rewrite using `[heq]`. Conclude with `Finset.sum_induction _ (fun P => P ∈ X.SS (d • la)) (fun a b ha hb => hadd a ha b hb) h0 (fun m hm => hsmul _ _ (hmon m hm))`.
+-/
 theorem eval_isHomogeneous_mem_cuspForms :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r),
       ∀ (la : Wt X.Ψ r) (N d : ℕ) (w : Fin N → Frame X.Ψ r → ℂ) (p : MvPolynomial (Fin N) ℂ),

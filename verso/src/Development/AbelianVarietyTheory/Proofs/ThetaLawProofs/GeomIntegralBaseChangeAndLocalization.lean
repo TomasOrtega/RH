@@ -11,6 +11,11 @@ open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 
 namespace GlobalTheory.KeyFam
 
+/- English proof (translation)
+Use `haveI := h.1`. Use `⟨inferInstance, fun L _ _ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra K L := ((algebraMap K' L).comp (algebraMap K K')).toAlgebra`. Use `haveI : IsScalarTower K K' L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI := h.2 L`.
+
+Conclude with `(Algebra.TensorProduct.cancelBaseChange K K' L L R).toMulEquiv.isDomain _`.
+-/
 theorem GeomInt.baseChange {K R : Type} [Field K] [CommRing R] [Algebra K R] (h : GeomInt K R)
     (K' : Type) [Field K'] [Algebra K K'] : GeomInt K' (K' ⊗[K] R) := by
   haveI := h.1
@@ -20,6 +25,13 @@ theorem GeomInt.baseChange {K R : Type} [Field K] [CommRing R] [Algebra K R] (h 
   haveI := h.2 L
   exact (Algebra.TensorProduct.cancelBaseChange K K' L L R).toMulEquiv.isDomain _
 
+/- English proof (translation)
+Use `haveI := h.1`. Use `haveI : Algebra.Smooth R (Localization.Away r) := Algebra.Smooth.of_isLocalization_Away r`. Use `⟨Algebra.Smooth.comp K R _, fun L _ _ => ?_⟩` and prove the remaining obligations. Use `haveI := h.2 L`. Use `letI : Algebra (L ⊗[K] R) (L ⊗[K] Localization.Away r) := (Algebra.TensorProduct.map (AlgHom.id L L) (IsScalarTower.toAlgHom K R (Localization.Away r))).toAlgebra`.
+
+Use `haveI : IsScalarTower L (L ⊗[K] R) (L ⊗[K] Localization.Away r) := IsScalarTower.of_algebraMap_eq fun x => by`. Simplify using `[RingHom.algebraMap_toAlgebra]`. Establish `hloc` using `IsLocalization.tensorProduct_tensorProduct_right K L (Submonoid.powers r) (Localization.Away r) (by ext; simp [RingHom.algebraMap_toAlgebra])`. Use `IsLocalization.isDomain_of_le_nonZeroDivisors (hM := ?_) (S := L ⊗[K] Localization.Away r) (M := (Submonoid.powers r).map (Algebra.TensorProduct.includeRight (R := K) (A := L)))` and prove the remaining obligations. Rewrite using `[Submonoid.map_powers]`.
+
+Apply `powers_le_nonZeroDivisors_of_noZeroDivisors` to reduce the goal to its premises. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeRight (R` using `K) (A := L) (B := R)) := Algebra.TensorProduct.includeRight_injective (algebraMap K L).injective`. Conclude with `fun h0 => hr (hinj (by rw [h0, map_zero]))`.
+-/
 theorem GeomInt.away {K R : Type} [Field K] [CommRing R] [Algebra K R] (h : GeomInt K R)
     {r : R} (hr : r ≠ 0) : GeomInt K (Localization.Away r) := by
   haveI := h.1
@@ -43,6 +55,9 @@ theorem GeomInt.away {K R : Type} [Field K] [CommRing R] [Algebra K R] (h : Geom
     Algebra.TensorProduct.includeRight_injective (algebraMap K L).injective
   exact fun h0 => hr (hinj (by rw [h0, map_zero]))
 
+/- English proof (translation)
+Introduce `_ K' _ _ _ _ _ _ h` and use `⟨h.baseChange K', fun _ hr => h.away hr⟩`.
+-/
 theorem geomInt_baseChange_and_away :
     ∀ (K K' R : Type) [Field K] [Field K'] [Algebra K K'] [CommRing R] [Algebra K R],
       GeomInt K R → GeomInt K' (K' ⊗[K] R) ∧ ∀ r : R, r ≠ 0 → GeomInt K (Localization.Away r) :=

@@ -14,6 +14,11 @@ namespace GlobalTheory.HeightCounting.ExpCopy
 
 open GlobalTheory.Mem.R3.Tr
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Consider the cases of `hH`. Substitute `hT` using the available equality. Consider the cases of `hf`. Consider the cases of `ht`.
+
+Consider the cases of `hx`. Both sides reduce to the same expression.
+-/
 theorem sig_heq {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H') {T T' : Type} (hT : T = T')
     {f : T ≃ R.Psi} {f' : T' ≃ R'.Psi} (hf : HEq f f') {t : T} {t' : T'} (ht : HEq t t')
     {x : H.E} {x' : H'.E} (hx : HEq x x') :
@@ -24,6 +29,9 @@ theorem sig_heq {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : H
 section
 variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}
 
+/- English proof (translation)
+Establish `hσ` using `sig_heq h.gal.R h.gal.host h.Tau h.eTau ht hx`. Establish `hy : e (Formalism.L2.NX.embEL0 D' (D'.host.sigmaOf ((D'.eTau t' : D'.R.Psi) : D'.R.GG) x')) = Formalism.L2.NX.embEL0 D (D.host.sigmaOf ((D.eTau t : D.R.Psi) : D.R.GG) x)` using `Subtype.ext (ι.injective ((h.LL0 _).trans (h.map_embE hσ).symm))`. Use `h.sideEmb_heq hi b (Formalism.L2.NX.embEL0 D' (D'.host.sigmaOf ((D'.eTau t' : D'.R.Psi) : D'.R.GG) x'))` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this`.
+-/
 theorem kEmb_heq (h : CopyTw D D' ι e) {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') (b : Bool) {t : D.what₂.Tau}
     {t' : D'.what₂.Tau} (ht : HEq t t') {x : D.host.E} {x' : D'.host.E} (hx : HEq x x') :
     HEq (Formalism.L2.NX.kEmb D i b t x) (Formalism.L2.NX.kEmb D' i' b t' x') := by
@@ -35,6 +43,9 @@ theorem kEmb_heq (h : CopyTw D D' ι e) {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HE
   rw [hy] at this
   exact this
 
+/- English proof (translation)
+Use `h.sideEmb_heq hi b (e.symm z)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem side_heq (h : CopyTw D D' ι e) {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i') (b : Bool) (z : ↥D.LL0) :
     HEq (GlobalTheory.SeriesTie.sideEmb D.ntw i b z) (GlobalTheory.SeriesTie.sideEmb D'.ntw i' b (e.symm z)) := by
   have := h.sideEmb_heq hi b (e.symm z)
@@ -43,6 +54,9 @@ theorem side_heq (h : CopyTw D D' ι e) {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HE
 
 end
 
+/- English proof (translation)
+The claim follows from `(hcs.infG D.naut.etaT (fun _ => 1 / 2) (by rw [hcs.etaT]; exact ⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩) (D.eTau t)).1`.
+-/
 theorem infG_eta {D : D7} {cf : CharFrame D} (hcs : CharSide D cf) (t : D.what₂.Tau) :
     D.naut.infG D.naut.etaT (Formalism.L2.Host.embPsi D.host (D.eTau t)) = {(((1 / 2 : ℚ)) : ℂ)} :=
   (hcs.infG D.naut.etaT (fun _ => 1 / 2) (by rw [hcs.etaT]; exact ⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩) (D.eTau t)).1
@@ -50,6 +64,11 @@ theorem infG_eta {D : D7} {cf : CharFrame D} (hcs : CharSide D cf) (t : D.what�
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Consider the cases of `r`. Use `rename NAut _ => n`. Consider the cases of `n`. Simplify using `only [overD] at hpl`. Consider the cases of `hpl`.
+
+Use `⟨@Formalism.L2.NExpTied.mk (_) (U_eq := (X.U_eq)) (psiU_gen := (X.psiU_gen)) (psiU_side := (X.psiU_side)) (psiU_xi := (X.psiU_xi)) (delU_cont := (X.delU_cont)) (delU_ine := (X.delU_ine)) (thU_empty := (X.thU_empty)) (sgnT := (X.sgnT)) (sgnT_one := (X.sgnT_one)) (Wt := (X.Wt)) (ac …` and prove the remaining obligations. Conclude with `(HEq.refl (X.mtV i j b k Q ψ h1 h2 hA).QP)`. Conclude with `(HEq.refl (X.mtV i j b k Q ψ h1 h2 hA).DP)`. Conclude with `(hR)`.
+-/
 theorem core (D : D7) (r : Rest D) (X : NExpTied D) (hpl : HEq D.naut.plGw (overD D r).naut.plGw)
     (hhw : ∀ i j b (t : D.what₂.Tau), 1 ≤ j → j ≤ D.R.m →
       ∃ lam : Fin D.R.nV → ℤ, Formalism.L2.NX.HWAtF (Formalism.L2.NX.cE D) (X.rhoW i j b).dual ((by exact NX.kEmb (overD D r) i b t)) lam)
@@ -127,6 +146,19 @@ theorem core (D : D7) (r : Rest D) (X : NExpTied D) (hpl : HEq D.naut.plGw (over
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Introduce `D D' ι e h cf cf' _ hcs hcs' X`. Take `⟨r, rfl⟩` from `h.cp.exists_rest`. Establish `hk : ∀ i b t, Formalism.L2.NX.kEmb D i b t = (by with_unfolding_all exact ((Formalism.L2.NX.kEmb (overD D r) ((by with_unfolding_all exact (i :))) b ((by with_unfolding_all exact (t :)))) :))` using `fun i b t => RingHom.ext fun x => (by with_unfolding_all exact (eq_of_heq (α := FractionRing (D.ntw.O i)) (a := Formalism.L2.NX.kEmb D i b t x) (a' := (by with_unfolding_all exact ((Formalism.L2.NX.kEmb (overD D r) ((i)) b ((t)) ((x))) : _))) ((by with_unfolding_all exact ((kEmb_ …`. Take `⟨X', hτ, hM⟩` from `core D r X h.pl (fun i j b t h1 h2 => by`. Use `X.rhoW_hw i j b t h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[hk]`. Conclude with `this)`. Use the proof step `(fun i j b t h1 h2 sh lam hsh hw => by`. Use `X.rhoW_wt i j b t h1 h2 sh lam ?_ ?_` and prove the remaining obligations. Establish `h3 : ({(((1 / 2 : ℚ)) : ℂ)} : Multiset ℂ) = {sh}` using `(infG_eta hcs' ((by with_unfolding_all exact (t :)))).symm.trans (c := {sh}) ((by with_unfolding_all exact (hsh :)))`.
+
+Conclude with `(infG_eta hcs t).trans h3`. Rewrite using `[hk]`. Conclude with `hw)`. Use `⟨X', fun ⟨τ, hτ'⟩ => ?_, fun i i' hi j b k Q Q' hQ ψ ψ' hψ h1 h2 h2' hA' => ?_⟩` and prove the remaining obligations. Establish `hτ2 : X'.tauG = (by with_unfolding_all exact (X.tauG :))` using `(by with_unfolding_all exact ((eq_of_heq (a := X'.tauG) (a' := (by with_unfolding_all exact (X.tauG :))) ((by with_unfolding_all exact (hτ.symm :)))) :))`.
+
+Use `⟨fun j kv => (Units.map e.symm.toRingHom.toMonoidHom).comp ((by with_unfolding_all exact ((τ j ((by with_unfolding_all exact (kv :)))) :))), fun i j b kv x h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hτ2]`. Conclude with `(by with_unfolding_all exact ((hτ' ((by with_unfolding_all exact (i :))) j b ((by with_unfolding_all exact (kv :))) ((by with_unfolding_all exact (x :))) h1 ((by with_unfolding_all exact (h2 :)))).trans (eq_of_heq (α := FractionRing (D.ntw.O ((by with_unfolding_all exact (i :)))) …`. Consider the cases of `hi`. Consider the cases of `hQ`.
+
+Consider the cases of `hψ`. Use `⟨(by with_unfolding_all exact (hA' :)), (hM i j b k Q ψ h1 h2 ((by with_unfolding_all exact (hA' :)))).1, (hM i j b k Q ψ h1 h2 ((by with_unfolding_all exact (hA' :)))).2.1, ?_⟩` and prove the remaining obligations. Introduce `ε ε' hε V V' aV mV aV' mV' hV haV hmV ρ ρ' hρ hR`. Substitute `hV` using the available equality. Consider the cases of `haV`.
+
+Consider the cases of `hmV`. Consider the cases of `hε`. Consider the cases of `hρ`. Conclude with `(by with_unfolding_all exact (((hM i j b k Q ψ h1 h2 ((by with_unfolding_all exact (hA' :)))).2.2 ε V ρ hR) :))`.
+-/
 theorem expTied_copy : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}, CopyAll D D' ι e → ∀ {cf : CharFrame D} {cf' : CharFrame D'}, SameFrame cf cf' → CharSide D cf → CharSide D' cf' → ∀ X : NExpTied D, ∃ X' : NExpTied D', (TauTrue X → TauTrue X') ∧ ∀ (i : D.ntw.Tw) (i' : D'.ntw.Tw), HEq i i' → ∀ (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (Q' : Finset (PlE D'.host)), HEq Q Q' → ∀ (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (ψ' : G D'.host.E D'.nd.Om →* (D'.ntw.Ok i' k)ˣ), HEq ψ ψ' → ∀ (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (h2' : j ≤ D'.R.m) (hA' : NX.AdmTw D' i' k Q' ψ'), ∃ hA : NX.AdmTw D i k Q ψ, HEq (X.mtV i j b k Q ψ h1 h2 hA).QP (X'.mtV i' j b k Q' ψ' h1 h2' hA').QP ∧ HEq (X.mtV i j b k Q ψ h1 h2 hA).DP (X'.mtV i' j b k Q' ψ' h1 h2' hA').DP ∧ ∀ (ε : FractionRing (D.ntw.Ok i k) →+* ℂ) (ε' : FractionRing (D'.ntw.Ok i' k) →+* ℂ), HEq ε ε' → ∀ (V V' : Type) [aV : AddCommGroup V] [mV : Module ℂ V] [aV' : AddCommGroup V'] [mV' : Module ℂ V'], V = V' → HEq aV aV' → HEq mV mV' → ∀ (r : D.nexp.MtV i j b k Q ψ → Formalism.AUTREP.GAf D.host.E D.R.nV → V) (r' : D'.nexp.MtV i' j b k Q' ψ' → Formalism.AUTREP.GAf D'.host.E D'.R.nV → V'), HEq r r' → GlobalTheory.HeightCounting.Reads X i j b k Q ψ h1 h2 hA ε V r → GlobalTheory.HeightCounting.Reads X' i' j b k Q' ψ' h1 h2' hA' ε' V' r' := by
   intro D D' ι e h cf cf' _ hcs hcs' X
   obtain ⟨r, rfl⟩ := h.cp.exists_rest

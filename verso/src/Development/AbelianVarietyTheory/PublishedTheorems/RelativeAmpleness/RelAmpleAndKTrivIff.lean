@@ -18,6 +18,9 @@ def MemKL (L : LB A.left) {T : Over S} (x : T ⟶ A) : Prop :=
   ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧
     ∃ c : LB.Gen ((Out.translDiff A L x).pull ((fst T A).left ⁻¹ᵁ V).ι), c.IsGen
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem kTriv_iff_memKL (L : LB A.left) : Out.KTriv A L ↔
     ∀ (R : Type) [CommRing R] (t : Sp R ⟶ S) (x : Over.mk t ⟶ A), MemKL A L x → x = toUnit _ ≫ η[A] :=
   Iff.rfl
@@ -29,6 +32,19 @@ section
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
   {L : LB A.left} {L' : LB A'.left}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Use `replace hw := (isGen_iff w).1 hw`. Introduce `p`. Take `⟨V, hV, c, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+
+Set `T : Over S` to `Over.mk (T'.hom ≫ f)`. Set `a : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ T` to `Over.homMk (fst T' A').left (by show (fst T' A').left ≫ T'.hom ≫ f = (T' ⊗ A').hom ≫ f`. Rewrite using `[← Category.assoc, Over.w (fst T' A')])`. Set `U : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ T ⊗ A` to `lift a (pushPt h.1.w (snd T' A'))`. Establish `k₁ : U.left ≫ (fst T A).left = (fst T' A').left` using `congrArg (fun q => q.left) (lift_fst a _)`.
+
+Establish `k₂ : U.left ≫ (snd T A).left = (snd T' A').left ≫ φ` using `congrArg (fun q => q.left) (lift_snd a (pushPt h.1.w (snd T' A')))`. Establish `k₃ : U.left ≫ ((fst T A ≫ pushPt h.1.w x) * snd T A).left = ((fst T' A' ≫ x) * snd T' A').left ≫ φ`. Establish `e` using `h.2 (T' ⊗ A') (fst T' A' ≫ x) (snd T' A') (U ≫ fst T A ≫ pushPt h.1.w x) (U ≫ snd T A) (by show U.left ≫ (fst T A).left ≫ x.left ≫ φ = ((fst T' A').left ≫ x.left) ≫ φ`. Rewrite using `[← Category.assoc, k₁, Category.assoc]) k₂`. Rewrite `e` using `[← MonObj.comp_mul]`.
+
+Conclude with `e`. Take `⟨n, hn⟩ : ∃ n : ((fst T' A').left ⁻¹ᵁ V).toScheme ⟶ ((fst T A).left ⁻¹ᵁ V).toScheme, n ≫ ((fst T A).left ⁻¹ᵁ V).ι = ((fst T' A').left ⁻¹ᵁ V).ι ≫ U.left` from `⟨IsOpenImmersion.lift _ (((fst T' A').left ⁻¹ᵁ V).ι ≫ U.left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L _ _ _) c hc`. Set `φ' : Fin 2 → (((fst T' A').left ⁻¹ᵁ V).toScheme ⟶ A'.left)` to `fun k => ((fst T' A').left ⁻¹ᵁ V).ι ≫ (![(lift (fst T' A' ≫ x) (snd T' A') ≫ μ[A']).left, (snd T' A').left] : Fin 2 → _) k`. Take `⟨c₂, h₂⟩` from `gen_chartPull (chartPullSame L (fun k => φ' k ≫ φ) _ ![1, -1] n (fun k => by show (_ ≫ _) ≫ φ = n ≫ _ ≫ _`. Rewrite using `[← Category.assoc n, hn, Category.assoc, Category.assoc]`. Use `fin_cases k`.
+
+Use `exacts [congrArg (_ ≫ ·) k₃.symm, congrArg (_ ≫ ·) k₂.symm])) c₁ h₁`. Take `⟨c₃, h₃⟩` from `exists_down hw hL hL' c₂ h₂`. Conclude with `gen_chartPull (chartPullOut L' _ _ _ φ' fun _ => rfl) c₃ h₃`.
+-/
 theorem memKL_of_push (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
     {T' : Over S'} (x : T' ⟶ A') (hx : MemKL A L (pushPt h.1.w x)) : MemKL A' L' x := by
   obtain ⟨w, hw⟩ := hw
@@ -71,6 +87,13 @@ theorem memKL_of_push (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB
 
 end
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Introduce `s`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `le : ∀ j : Fin 2 → L.ι, LB.wchart L (![(A.hom ⁻¹ᵁ ⊤).ι ≫ (GrpObj.inv : A ⟶ A).left, (A.hom ⁻¹ᵁ ⊤).ι] : Fin 2 → _) j ≤ (A.hom ⁻¹ᵁ ⊤).ι ⁻¹ᵁ ((L.pull (GrpObj.inv : A ⟶ A).left).U (fun _ => j 0) ⊓ L.U (j 1))` using `fun j y hy => ⟨mem_pull.2 (Set.mem_iInter.1 hy 0), Set.mem_iInter.1 hy 1⟩`. Use `gen_chartPull (h := (A.hom ⁻¹ᵁ ⊤).ι) (A := LB.div (L.pull (GrpObj.inv : A ⟶ A).left) L) ⟨fun j => (fun _ => j 0, j 1), le, fun y j j' hj hj' => ?_⟩ w hw` and prove the remaining obligations.
+
+Use `(gm_linComb L _ _ (𝟙 _) y j j' hj hj').trans (Eq.trans ?_ (gm_div L (L.pull (GrpObj.inv : A ⟶ A).left) (A.hom ⁻¹ᵁ ⊤).ι y (fun _ => j 0, j 1) (fun _ => j' 0, j' 1) ⟨le j hj, le j' hj'⟩).symm)` and prove the remaining obligations. Use `(Fin.prod_univ_two _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (gm_pull_g L _ _ y (fun _ => j 0) (fun _ => j' 0) (le j hj).1 (le j' hj').1).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `zpow_one _`.
+
+Rewrite using `[Category.id_comp]`. Conclude with `zpow_neg_one _`.
+-/
 theorem sym_of_lbIso_neg {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left}
     (h : LBIso L (L.pull (GrpObj.inv : A ⟶ A).left)) : Out.Sym A L := by
   obtain ⟨w, hw⟩ := h
@@ -91,6 +114,9 @@ theorem sym_of_lbIso_neg {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left
   · rw [Category.id_comp]
     exact zpow_neg_one _
 
+/- English proof (translation)
+Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _))).symm)` and prove the remaining obligations. Establish `e₁` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `e₂` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`. Conclude with `(eq_mul_inv_of_mul_eq (e₂.trans e₁.symm)).trans (mul_right_comm _ _ _)`.
+-/
 theorem lbIso_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
   refine (gm_res _ y _ hy _).trans (Eq.trans ?_ ((map_mul _ _ _).trans
@@ -99,6 +125,11 @@ theorem lbIso_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   have e₂ := gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2
   exact (eq_mul_inv_of_mul_eq (e₂.trans e₁.symm)).trans (mul_right_comm _ _ _)
 
+/- English proof (translation)
+Introduce `p`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `e : lift (fst T A ≫ (1 : T ⟶ A)) (snd T A) ≫ μ[A] = snd T A`. Express the relevant statement in the definitionally equal form `(fst T A ≫ (1 : T ⟶ A)) * snd T A = snd T A`. Rewrite using `[MonObj.comp_one, _root_.one_mul]`.
+
+Take `⟨c, hc, -⟩` from `exists_gen hL (φ := (PEmpty.elim : PEmpty → ((T ⊗ A).left ⟶ A.left))) (ε := PEmpty.elim) (φ' := (![(lift (fst T A ≫ (1 : T ⟶ A)) (snd T A) ≫ μ[A]).left, (snd T A).left] : Fin 2 → _)) (ε' := ![1, -1]) (fun V _ h => by rw [e]; simp [Fin.prod_univ_two]) (LB.oneGen L) (fun i j => (ma …`. Conclude with `gen_chartPull (chartPullPull _ _ _ rfl) c hc`.
+-/
 theorem memKL_one {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) (T : Over S) :
     MemKL A L (1 : T ⟶ A) := by
   intro p
@@ -113,6 +144,15 @@ theorem memKL_one {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL :
       (_root_.one_mul _))))
   exact gen_chartPull (chartPullPull _ _ _ rfl) c hc
 
+/- English proof (translation)
+Introduce `p`. Take `⟨V, hV, c, hc⟩` from `hx (u.left p)`. Use `⟨u.left ⁻¹ᵁ V, hV, ?_⟩` and prove the remaining obligations. Set `U : T' ⊗ A ⟶ T ⊗ A` to `lift (fst T' A ≫ u) (snd T' A)`. Establish `k₁ : U ≫ fst T A = fst T' A ≫ u` using `lift_fst _ _`.
+
+Establish `k₂ : U ≫ snd T A = snd T' A` using `lift_snd _ _`. Establish `k₃ : U ≫ ((fst T A ≫ x) * snd T A) = (fst T' A ≫ u ≫ x) * snd T' A`. Rewrite using `[MonObj.comp_mul, k₂, ← Category.assoc, k₁, Category.assoc]`. Take `⟨n, hn⟩ : ∃ n : ((fst T' A).left ⁻¹ᵁ (u.left ⁻¹ᵁ V)).toScheme ⟶ ((fst T A).left ⁻¹ᵁ V).toScheme, n ≫ ((fst T A).left ⁻¹ᵁ V).ι = ((fst T' A).left ⁻¹ᵁ (u.left ⁻¹ᵁ V)).ι ≫ U.left` from `⟨IsOpenImmersion.lift _ (((fst T' A).left ⁻¹ᵁ (u.left ⁻¹ᵁ V)).ι ≫ U.left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q.left y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L _ _ _) c hc`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (pullGen_isGen _ _ _ c₁ h₁ n)` and prove the remaining obligations. Use `show n ≫ _ ≫ _ = _`.
+
+Rewrite using `[← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]`.
+-/
 theorem MemKL.comp {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T T' : Over S} {x : T ⟶ A}
     (hx : MemKL A L x) (u : T' ⟶ T) : MemKL A L (u ≫ x) := by
   intro p
@@ -136,6 +176,13 @@ theorem MemKL.comp {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T T
   fin_cases k
   exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]
 
+/- English proof (translation)
+Use `⟨fun hx => ⟨toUnit T, Over.OverMorphism.ext (T.left.affineCover.hom_ext _ _ fun i => ?_)⟩, ?_⟩` and prove the remaining obligations. Take `⟨R, ⟨e⟩⟩ : ∃ R : CommRingCat.{0}, Nonempty (Spec R ≅ T.left.affineCover.X i)` from `⟨_, ⟨(T.left.affineCover.X i).isoSpec.symm⟩⟩`. Set `u : Over.mk ((e.hom ≫ T.left.affineCover.f i) ≫ T.hom) ⟶ T` to `Over.homMk (e.hom ≫ T.left.affineCover.f i) rfl`. Establish `h₁ : u ≫ toUnit T ≫ η[A] = u ≫ x`. Rewrite using `[← Category.assoc, comp_toUnit]`.
+
+Conclude with `(hk R _ (u ≫ x) (hx.comp u)).symm`. Rewrite using `[← cancel_epi e.hom, ← Category.assoc, ← Category.assoc e.hom]`. Conclude with `congrArg (fun q => q.left) h₁`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[toUnit_unique z (toUnit T)]`.
+
+Conclude with `memKL_one hL T`.
+-/
 theorem memKL_iff_of_kTriv {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB)
     (hk : Out.KTriv A L) {T : Over S} (x : T ⟶ A) : MemKL A L x ↔ ∃ z : T ⟶ 𝟙_ (Over S), z ≫ η[A] = x := by
   refine ⟨fun hx => ⟨toUnit T, Over.OverMorphism.ext (T.left.affineCover.hom_ext _ _ fun i => ?_)⟩, ?_⟩
@@ -167,6 +214,17 @@ def KernelFiniteFlatSt : Prop :=
 
 def PolExtSt : Prop := AmpleOfGenericSt ∧ KernelFiniteFlatSt
 
+/- English proof (translation)
+Take `⟨Z, i, -, hfin, hflat, hZ⟩` from `hK V A hA L hL ha`. Use `hA.proper` as an intermediate fact. Use `schemeTheoreticallyDominant_fractionField V K` as an intermediate fact. Set `Y` to `pullback Z.hom (spMap (algebraMap V K))`. Establish `: IsAffine Y` using `isAffine_of_isAffineHom (pullback.snd Z.hom (spMap (algebraMap V K)))`.
+
+Establish `: IsSchemeTheoreticallyDominant (pullback.fst Z.hom (spMap (algebraMap V K)))` using `.of_isPullback (IsPullback.of_hasPullback Z.hom (spMap (algebraMap V K))).flip`. Set `d : Sp Γ(Y, ⊤) ⟶ Z.left` to `Y.isoSpec.inv ≫ pullback.fst Z.hom (spMap (algebraMap V K))`. Set `t : Sp Γ(Y, ⊤) ⟶ Sp K` to `Y.isoSpec.inv ≫ pullback.snd Z.hom (spMap (algebraMap V K))`. Establish `hd : d ≫ Z.hom = t ≫ spMap (algebraMap V K)`. Simplify using `only [d, t, Category.assoc, pullback.condition]`.
+
+Establish `hdi : (d ≫ i.left) ≫ A.hom = t ≫ spMap (algebraMap V K)`. Rewrite using `[Category.assoc, Over.w i, hd]`. Set `x : Over.mk t ⟶ A'` to `Over.homMk (h.1.lift _ _ hdi) (h.1.lift_snd _ _ _)`. Set `z : Over.mk (t ≫ spMap (algebraMap V K)) ⟶ Z` to `Over.homMk d hd`. Establish `hz : z ≫ i = pushPt h.1.w x` using `Over.OverMorphism.ext (h.1.lift_fst _ _ hdi).symm`.
+
+Establish `hx : x = 1` using `hk _ t x (memKL_of_push h hL hL' hw x ((hZ _ _).2 ⟨z, hz⟩))`. Establish `hx' : pushPt h.1.w x = 1` using `(congrArg (pushHom h (Over.mk t)) hx).trans (map_one _)`. Establish `hi : i = toUnit Z ≫ η[A]`. Establish `: IsSchemeTheoreticallyDominant d` using `by dsimp only [d]; infer_instance`. Use `over_ext_of_schemeTheoreticallyDominant d (congrArg (fun q => q.left) (show z ≫ i = z ≫ toUnit Z ≫ η[A] from ?_))` and prove the remaining obligations.
+
+Rewrite using `[hz, hx', ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Introduce `R _ s y hy`. Take `⟨u, rfl⟩` from `(hZ _ y).1 hy`. Rewrite using `[hi, ← Category.assoc, comp_toUnit]`.
+-/
 theorem KernelFiniteFlatSt.kTriv_of_generic (hK : KernelFiniteFlatSt) {V K : Type} [CommRing V] [IsDomain V]
     [IsNoetherianRing V] [Field K] [Algebra V K] [IsFractionRing V K] {A : Over (Sp V)} [GrpObj A]
     (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) (ha : Out.RelAmple A L) {A' : Over (Sp K)} [GrpObj A']
@@ -205,6 +263,9 @@ namespace PolExtSt
 
 variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
 
+/- English proof (translation)
+The claim follows from `have a := hP.1 V K A hA L hL hr hs A' φ h.1 L' hL' hw ha ⟨a, hP.2.kTriv_of_generic hA hL a h hL' hw hk⟩`.
+-/
 theorem relAmple_and_kTriv (hP : PolExtSt) {A : Over (Sp V)} [GrpObj A] (hA : IsAbelianScheme A) {L : LB A.left}
     (hL : L.IsLB) (hr : Out.Rigidified A L) (hs : Out.Sym A L) {A' : Over (Sp K)} [GrpObj A'] {φ : A'.left ⟶ A.left}
     (h : IsGrpPullback A' A (spMap (algebraMap V K)) φ) {L' : LB A'.left} (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ))
@@ -214,6 +275,9 @@ theorem relAmple_and_kTriv (hP : PolExtSt) {A : Over (Sp V)} [GrpObj A] (hA : Is
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨_, w, hs, -⟩` from `t.sym`. Conclude with `hP.relAmple_and_kTriv hA t.PP.isLB ⟨t.PP.rig, t.PP.rigGen⟩ (sym_of_lbIso_neg ⟨w, hs⟩) h hL' hw ha hk`.
+-/
 theorem sab (hP : PolExtSt) (t : SAB H (Sp V)) (hA : IsAbelianScheme t.G) {A' : Over (Sp K)} [GrpObj A']
     {φ : A'.left ⟶ t.G.left} (h : IsGrpPullback A' t.G (spMap (algebraMap V K)) φ) {L' : LB A'.left} (hL' : L'.IsLB)
     (hw : LBIso L' (t.PP.L.pull φ)) (ha : Out.RelAmple A' L') (hk : Out.KTriv A' L') :

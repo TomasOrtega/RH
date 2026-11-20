@@ -15,6 +15,9 @@ section Lemmas
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hdeg, hs⟩`. Conclude with `⟨a, fun k => (hdeg k).symm, ha, hs⟩`. Introduce and unpack `⟨a, hdeg, ha, hs⟩`. Conclude with `⟨a, ha, fun k => (hdeg k).symm, hs⟩`.
+-/
 theorem isSec_iff_isSectionOn (P : Ideal (MRing ι)) (A : HermLine ι) (s : MRing ι) :
     IsSec P A s ↔ IsSectionOn P A s := by
   constructor
@@ -25,10 +28,24 @@ theorem isSec_iff_isSectionOn (P : Ideal (MRing ι)) (A : HermLine ι) (s : MRin
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `Subsingleton.elim _ _`.
+-/
 theorem vecEmpty_eq_elim0 : (![] : Fin 0 → HermLine ι) = Fin.elim0 := Subsingleton.elim _ _
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨a, hdeg, -, -⟩` from `hs`. Establish `hprime : W₀.IsPrime` using `hW₀.1.1.1`. Establish `hle : P ⊔ Ideal.span {s} ≤ W₀` using `hW₀.1.1.2`. Use `choose i hi using hW₀.2`. Establish `ht0 : secOf i a ∉ W₀` using `secOf_not_mem hprime hi a`.
+
+Establish `ht : IsSectionOn P A (secOf i a)` using `⟨a, hdeg, isMultiHomog_secOf i a, fun h => ht0 (le_sup_left.trans hle h)⟩`. Establish `hnot : W₀ ∉ divSupp P (secOf i a)` using `fun h => ht0 (h.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Set `F : ℝ → Family ι` to `fun c W _ _ => if W = W₀ then c else 0`. Establish `hFt : recR (F 1) P (Fin.elim0 : Fin 0 → HermLine ι) A (secOf i a) = recR (F 0) P Fin.elim0 A (secOf i a)`. Unfold `recR`.
+
+Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Establish `hne : W ≠ W₀` using `fun h => hnot (h ▸ hW)`. Simplify using `[F, hne]`. Establish `key` using `(hind (F 1) _ ht).trans (hFt.trans (hind (F 0) _ ht).symm)`.
+
+Unfold `recR at key`. Rewrite `key` using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P s), finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P s)]`. Establish `hmem : W₀ ∈ (divSupp_finite P s).toFinset` using `(Set.Finite.mem_toFinset _).mpr hW₀`. Establish `hsum` using `sub_left_inj.mp key`. Rewrite `hsum` using `[← sub_eq_zero, ← Finset.sum_sub_distrib, Finset.sum_eq_single W₀ (fun W _ hne => by simp [F, hne]) (fun h => absurd hmem h)]`.
+
+Simplify `hsum` using `[F, hh]`.
+-/
 theorem multAt_horizontal_eq_zero {P : Ideal (MRing ι)} {A : HermLine ι} {s : MRing ι}
     (hs : IsSectionOn P A s)
     (hind : ∀ (I : Family ι) (t : MRing ι), IsSectionOn P A t →
@@ -62,6 +79,11 @@ theorem multAt_horizontal_eq_zero {P : Ideal (MRing ι)} {A : HermLine ι} {s : 
     Finset.sum_eq_single W₀ (fun W _ hne => by simp [F, hne]) (fun h => absurd hmem h)] at hsum
   simpa [F, hh] using hsum
 
+/- English proof (translation)
+Unfold `recR`. Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hh : IsHorizontal W`. Rewrite using `[multAt_horizontal_eq_zero hs hind hW hh, zero_mul, zero_mul]`.
+
+Simplify using `[hh]`.
+-/
 theorem recR_family_eq {P : Ideal (MRing ι)} {A : HermLine ι} {s : MRing ι}
     (hs : IsSectionOn P A s)
     (hind : ∀ (I : Family ι) (t : MRing ι), IsSectionOn P A t →
@@ -84,10 +106,22 @@ def IndependenceOfSmoothMetric.Statement : Prop :=
     IsArithVar P 1 → IsSmoothHerm A → IsSectionOn P A s → IsSectionOn P A t →
     recR I P (Fin.elim0 : Fin 0 → HermLine ι) A s = recR I P (Fin.elim0 : Fin 0 → HermLine ι) A t
 
+/- English proof (translation)
+Introduce `K _ ι _ I P A s t hP _ hs ht` and use `h K ι I P A s t hP hs ht`.
+-/
 theorem IndependenceOfSmoothMetric.of_indep (h : GroundTheory.Heights₂.Heights.Inter.RegularityIndependence.Statement) :
     IndependenceOfSmoothMetric.Statement :=
   fun K _ ι _ I P A s t hP _ hs ht => h K ι I P A s t hP hs ht
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hind, hadd⟩ K _ ι _ P hP`. Use `⟨fun I J A s s' hA hs hs' => ?_, fun I A B s t hA hB hs ht => ?_⟩` and prove the remaining obligations. Rewrite `hs`, `hs'` using `[isSec_iff_isSectionOn]`. Simplify using `only [vecEmpty_eq_elim0, rhsR.equiv]`.
+
+Rewrite using `[recR_family_eq hs (fun F t ht => hind K ι F P A s t hP hA hs ht) I J]`. Conclude with `hind K ι J P A s s' hP hA hs hs'`. Rewrite `hs`, `ht` using `[isSec_iff_isSectionOn]`. Simplify using `only [vecEmpty_eq_elim0, rhsR.equiv]`. Conclude with `hadd K ι I P A B s t hP hA hB hs ht`.
+
+Introduce `h`. Use `⟨fun K _ ι _ I P A s t hP hA hs ht => ?_, fun K _ ι _ I P A B s t hP hA hB hs ht => ?_⟩` and prove the remaining obligations. Use `(h K ι P hP).1 I I A s t hA ((isSec_iff_isSectionOn _ _ _).mpr hs) ((isSec_iff_isSectionOn _ _ _).mpr ht)` as an intermediate fact. Simplify `this` using `only [vecEmpty_eq_elim0, rhsR.equiv]`. Use `(h K ι P hP).2 I A B s t hA hB ((isSec_iff_isSectionOn _ _ _).mpr hs) ((isSec_iff_isSectionOn _ _ _).mpr ht)` as an intermediate fact.
+
+Simplify `this` using `only [vecEmpty_eq_elim0, rhsR.equiv]`.
+-/
 theorem R1.equiv_smooth :
     (IndependenceOfSmoothMetric.Statement ∧ GroundTheory.Heights₂.Heights.Inter.RegularityAdditive.Statement) ↔ R1.Statement := by
   constructor
@@ -109,6 +143,9 @@ theorem R1.equiv_smooth :
         ((isSec_iff_isSectionOn _ _ _).mpr ht)
       simpa only [vecEmpty_eq_elim0, rhsR.equiv] using this
 
+/- English proof (translation)
+The claim follows from `R1.equiv_smooth.mp ⟨IndependenceOfSmoothMetric.of_indep h.1, h.2⟩`.
+-/
 theorem R1.of_first
     (h : GroundTheory.Heights₂.Heights.Inter.RegularityIndependence.Statement ∧ GroundTheory.Heights₂.Heights.Inter.RegularityAdditive.Statement) :
     R1.Statement :=

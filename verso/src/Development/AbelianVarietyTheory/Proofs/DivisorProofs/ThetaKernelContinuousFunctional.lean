@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaKernelCont
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP φ hφ g h`. Take `⟨l, hl, hlθ⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n × Fin d)`. Establish `hs` using `hP.weil.isUSplitting`. Take `⟨T, hT⟩` from `hs.adm (g, h) l hl φ hφ`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : pureA F f φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Establish `hmem' : om (g, h) (pureA F f φ) ∈ schA F (Fin n × Fin d)` using `hs.pres (g, h) _ hmem`. Rewrite using `[← hT f, LinearMap.comp_apply, hlθ _ hmem']`. Both sides reduce to the same expression.
+-/
 theorem theta_pureA_clm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ φ ∈ SB (Fin n × Fin d → Af F), ∀ (g : UA σ X.J) (h : UA σ W.J),

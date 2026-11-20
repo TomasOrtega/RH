@@ -15,6 +15,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a o ho z z' Pc Qc _ _ hz hz'`. Establish `hgP : gramP (I.rec7 l Z) = 1` using `(GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.1`. Establish `hG : ∀ τ, gramC (gramP (I.rec7 l Z)) (Formalism.L2.Forms.embT (I.rec7 l Z)) τ = 1` using `fun τ => by`. Rewrite using `[hgP, gramC_one]`. Establish `hsh : shiftOf (sgTG (D` using `I.rec7 l Z) (I.fm l u a)) = shiftOf (I.perIn u a).sgT := by`.
+
+Use `congrArg shiftOf (funext fun τ => ?_)` and prove the remaining obligations. Take `⟨t, ht⟩` from `B.R.t_odd`. Establish `e1 : B.R.m * (B.R.t + 1) / 2 = B.R.m * (t + 1)`. Rewrite using `[ht, show B.R.m * (2 * t + 1 + 1) = 2 * (B.R.m * (t + 1)) by ring]; omega`. Establish `e2 : (B.R.t + 1) / 2 = t + 1` using `by omega`.
+
+Use `show Formalism.L2.Forms.shW _ _ = GlobalTheory.Mem.Col2.shW _ _`. Simplify using `only [Formalism.L2.Forms.shW, GlobalTheory.Mem.Col2.shW]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show ((I.perIn u a).sg τ).w i - ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ) = ((I.perIn u a).sg τ).w i + -((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))`.
+
+Rewrite using `[e1, e2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : nfAll (I.perIn u a).sgT = nfAll (I.fm l u a).sg` using `MetricTie.nfAll_shift _ _ _ fun _ _ => rfl`. Use `show (I.perIn u a).ipP B.fields.emb B.embLL (l.per u a) z z' = _`.
+
+Simplify using `only [PerIn.ipP, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e1 : z c = fun s => fnOf _ (shiftOf (sgTG (D` using `I.rec7 l Z) (I.fm l u a))) (fun τ => (o.1 τ)⁻¹) (Pc c) (id s : Formalism.L2.Forms.FrP (I.rec7 l Z)) := hz c`. Establish `e2 : z' c = fun s => fnOf _ (shiftOf (sgTG (D` using `I.rec7 l Z) (I.fm l u a))) (fun τ => (o.1 τ)⁻¹) (Qc c) (id s : Formalism.L2.Forms.FrP (I.rec7 l Z)) := hz' c`. Use `show (I.perIn u a).wt c * ipVal B.fields.emb B.embLL (I.perIn u a).sgT (z c) (z' c) = _`.
+
+Rewrite using `[e1, e2]`. Conclude with `congrArg₂ (· * ·) rfl (MetricTie.ipVal_step B.fields.emb B.embLL (I.perIn u a).sgT hl hsh hG id (fun _ => rfl) o ho (Pc c) (Qc c))`.
+-/
 theorem GlobalTheory.Mem.Col2.TwP.weightedInner_twisted : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), ∀ (o : Formalism.L2.Forms.FrP (I.rec7 l Z)), o.IsON → ∀ (z z' : (I.per l u a).Wrow) (Pc Qc : (I.fm l u a).clsP → MvPolynomial ((I.rec7 l Z).what₂.Tau × Fin ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1) × Fin ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1)) ℂ), (∀ c, Pc c ∈ CSpan (I.fm l u a).sg) → (∀ c, Qc c ∈ CSpan (I.fm l u a).sg) → (∀ c, GlobalTheory.Mem.Col2.TwP.eWt I l Z u a z c = fnOf _ (shiftOf (sgTG (I.fm l u a))) (fun τ => (o.1 τ)⁻¹) (Pc c)) → (∀ c, GlobalTheory.Mem.Col2.TwP.eWt I l Z u a z' c = fnOf _ (shiftOf (sgTG (I.fm l u a))) (fun τ => (o.1 τ)⁻¹) (Qc c)) → (I.fm l u a).ipP z z' = ∑ c, ((Nat.card ((I.fm l u a).stabilizer₂ c) : ℕ) : ℂ)⁻¹ * nfAll (I.fm l u a).sg (Qc c) (Pc c) := by
   intro B X I hI hP l Z u a o ho z z' Pc Qc _ _ hz hz'
   have hgP : gramP (I.rec7 l Z) = 1 := (GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.1
@@ -46,6 +59,17 @@ theorem GlobalTheory.Mem.Col2.TwP.weightedInner_twisted : ∀ {B : Base} {X : Pr
   exact congrArg₂ (· * ·) rfl (MetricTie.ipVal_step B.fields.emb B.embLL (I.perIn u a).sgT hl hsh hG id (fun _ => rfl) o ho (Pc c) (Qc c))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a bad K okW V hV s x Pc hPc o ho`. Establish `hgP : gramP (I.rec7 l Z) = 1` using `(GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.1`. Establish `hsh : shiftOf (sgTG (D` using `I.rec7 l Z) (I.fm l u a)) = shiftOf (I.perIn u a).sgT := by`. Use `congrArg shiftOf (funext fun τ => ?_)` and prove the remaining obligations. Take `⟨t, ht⟩` from `B.R.t_odd`.
+
+Establish `e1 : B.R.m * (B.R.t + 1) / 2 = B.R.m * (t + 1)`. Rewrite using `[ht, show B.R.m * (2 * t + 1 + 1) = 2 * (B.R.m * (t + 1)) by ring]; omega`. Establish `e2 : (B.R.t + 1) / 2 = t + 1` using `by omega`. Use `show Formalism.L2.Forms.shW _ _ = GlobalTheory.Mem.Col2.shW _ _`. Simplify using `only [Formalism.L2.Forms.shW, GlobalTheory.Mem.Col2.shW]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show ((I.perIn u a).sg τ).w i - ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ) = ((I.perIn u a).sg τ).w i + -((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))`. Rewrite using `[e1, e2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hl : nfAll (I.perIn u a).sgT = nfAll (I.fm l u a).sg` using `MetricTie.nfAll_shift _ _ _ fun _ _ => rfl`. Establish `h` using `@MetricTie.norm_step _ _ _ _ _ _ _ _ _ _ _ B.fields.emb B.embLL (I.perIn u a).sgT (I.stX a) (base_fOk B) (l.per u a).step (l.fmL u a).famP ((I.perIn u a).clFin (l.per u a)) _ hl _ hsh _ _ (fun τ => by rw [hgP, gramC_one]; rfl) (fun y => (y : Formalism.L2.Forms.FrP (I.rec7 l Z))) …`. Establish `e` using `(congrFun (hV ((I.fm l u a).ptEmb x)) c).symm.trans (hPc c)`. Conclude with `congrFun e z) o ho`.
+
+Use `h.trans (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Use `congr 2`. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Mem.Col2.TwP.norm_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), ∀ {bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))} (K : ClassesAtPrimes (I.fm l u a) bad) {okW : (I.rec7 l Z).what₂.places.Pl → Prop} (V : ValuationAtPrimes K okW), (∀ z, V.eW z = GlobalTheory.Mem.Col2.TwP.eWt I l Z u a z) → NormPTieG V := by
   intro B X I hI hP l Z u a bad K okW V hV s x Pc hPc o ho
   have hgP : gramP (I.rec7 l Z) = 1 := (GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.1
@@ -78,6 +102,9 @@ theorem GlobalTheory.Mem.Col2.TwP.norm_tw : ∀ {B : Base} {X : PreX B.toPre} (I
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a Q K hQ hQv hK`. Set `V : ValuationAtPrimes K (okPT (I.rec7 l Z) Q ((I.rec7 l Z).mem u).A.T)` to `{ sg := GlobalTheory.T.rowForms_weight_eq_parameter_sub_rho I hI hP l Z u a eW := GlobalTheory.Mem.Col2.TwP.eWt I l Z u a ptC := GlobalTheory.T.tupleChain_complexForms_eq_algebraicModularForms I hI hP l Z u a Q K hQ hQv hK ipP := GlobalTheory.Mem.Col2.TwP.weightedInner_twisted I …`. Use `⟨V, GlobalTheory.Mem.Col2.TwP.norm_tw I hI hP l Z u a K V fun _ => rfl, fun z c s s' h => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.Col2.TwP.eWt_apply I l Z u a z c s s' h`.
+-/
 theorem GlobalTheory.Mem.Col2.TwP.forms_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClassesAtPrimes (I.fm l u a) (badQ (I.rec7 l Z) Q)), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∀ v ∈ Q, ((((I.rec7 l Z).mem u).A.T : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal) → I.ReadsP a K.lev.Lb K.lev.U K.lev.chi (fun c => (K.y c).1) K.lat (fun c s => (K.stabI c s).1) → ∃ V : ValuationAtPrimes K (okPT (I.rec7 l Z) Q ((I.rec7 l Z).mem u).A.T), NormPTieG V ∧ ∀ z c (s : FrP (I.rec7 l Z)) s', s'.1 = s.1 → V.eW z c s = z c s' := by
   intro B X I hI hP l Z u a Q K hQ hQv hK
   let V : ValuationAtPrimes K (okPT (I.rec7 l Z) Q ((I.rec7 l Z).mem u).A.T) :=

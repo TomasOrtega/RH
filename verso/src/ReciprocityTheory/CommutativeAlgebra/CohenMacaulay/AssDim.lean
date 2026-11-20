@@ -19,12 +19,18 @@ def killedBy (M : Type*) [AddCommGroup M] [Module R M] (p : Ideal R) : Submodule
     intro c z hz a ha
     rw [smul_comm, hz a ha, smul_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_rest.goal1 .. | (apply Bl.general_b_fact_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_rest.goal1 <;> assumption)`.
+-/
 theorem exists_assoc_step {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
     {p : Ideal R} (hp : p ∈ associatedPrimes R M) {x : R} (hx : x ∈ maximalIdeal R)
     (reg : IsSMulRegular M x) :
     ∃ q ∈ associatedPrimes R (QuotSMulTop x M), p < q ∧ x ∈ q ∧ x ∉ p := by
   first | exact Bl.general_b_fact_rest.goal1 .. | (apply Bl.general_b_fact_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_rest.goal1 <;> assumption)
 
+/- English proof (translation)
+The claim follows from `| [], M, _, _, _, _, _, p, hp => by have : p.IsPrime := hp.isPrime have : Nontrivial (R ⧸ p) := Ideal.Quotient.nontrivial_iff.mpr this.ne_top simpa using ringKrullDim_nonneg_of_nontrivial | x :: rs', M, _, _, _, hm, reg, p, hp => by obtain ⟨hreg, hreg'⟩ := (isRegular_cons_iff M x …`.
+-/
 theorem length_le_of_isRegular_of_mem_associatedPrimes : ∀ (rs : List R)
     {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M],
     (∀ r ∈ rs, r ∈ maximalIdeal R) → IsRegular M rs → ∀ {p : Ideal R},
@@ -53,6 +59,9 @@ theorem length_le_of_isRegular_of_mem_associatedPrimes : ∀ (rs : List R)
 
 variable {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
 
+/- English proof (translation)
+Take `⟨rs, hlen, hmem, hreg⟩` from `h`. Substitute `hlen` using the available equality. Conclude with `length_le_of_isRegular_of_mem_associatedPrimes rs hmem hreg hp`.
+-/
 theorem ModDepthGE.le_ringKrullDim_quotient_of_mem_associatedPrimes {n : ℕ}
     (h : ModDepthGE R M n) {p : Ideal R} (hp : p ∈ associatedPrimes R M) :
     (n : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ p) := by

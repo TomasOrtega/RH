@@ -18,6 +18,23 @@ noncomputable section
 
 namespace GlobalTheory.ThetaTransformInj
 
+/- English proof (translation)
+Introduce `D m k d Y Z Mo ψ G e _ hψ _ _ hG`. Establish `hGG : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G⁻¹ = 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hG), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hsur : ∀ u, ∃ x, GlobalTheory.TripleRead.ptO G e x = u`.
+
+Introduce `u`. Use `⟨(HMul.hMul (u.submatrix id e.symm)ᵀ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM G) : Matrix (Fin d) (Fin m) (AE D)), ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.TripleRead.ptO, Matrix.mul_assoc, hGG, Matrix.mul_one, Matrix.transpose_transpose]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `hadd : ∀ (u : Matrix (Fin m) (Fin k) (AE D)) (Φ Ψ : (Fin m × Fin k → AF D.host.F) → ℂ), Mo.co.rho ψ u (Φ + Ψ) = Mo.co.rho ψ u Φ + Mo.co.rho ψ u Ψ`. Introduce `u Φ Ψ`. Use function extensionality and compare the values at `y`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, mul_add]`. Establish `hsmul : ∀ (u : Matrix (Fin m) (Fin k) (AE D)) (c : ℂ) (Φ : (Fin m × Fin k → AF D.host.F) → ℂ), Mo.co.rho ψ u (c • Φ) = c • Mo.co.rho ψ u Φ`.
+
+Introduce `u c Φ`. Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `f : GlobalTheory.WeilM.schA D.host.F (Fin m × Fin k) →ₗ[ℂ] (Matrix (Fin d) (Fin m) (AE D) → ℂ)` to `{ toFun := fun Φ => GlobalTheory.TripleRead.thO Mo ψ G e Φ.1 map_add' := fun Φ Ψ => by`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.TripleRead.thO, Submodule.coe_add, Pi.add_apply, hadd]`. Conclude with `GlobalTheory.WeilM.thetaSum_add _ (GlobalTheory.HeisSchA.rho_mem_schA Mo ψ hψ _ _ Φ.2) (GlobalTheory.HeisSchA.rho_mem_schA Mo ψ hψ _ _ Ψ.2)`. Use the proof step `map_smul' := fun c Φ => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [GlobalTheory.TripleRead.thO, Submodule.coe_smul, Pi.smul_apply, hsmul, smul_eq_mul, RingHom.id_apply]`. Conclude with `GlobalTheory.WeilM.thetaSum_smul _ c _ }`. Take `⟨T, hT⟩` from `LinearMap.exists_extend f`. Establish `hTf : ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F (Fin m × Fin k), T Φ = GlobalTheory.TripleRead.thO Mo ψ G e Φ`. Introduce `Φ hΦ`.
+
+Conclude with `LinearMap.congr_fun hT ⟨Φ, hΦ⟩`. Use `⟨T, hTf, fun Φ hΦ h0 => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hTf Φ hΦ]`. Use `GlobalTheory.ThetaInj.theta_inj Mo ψ hψ (fun u => u) Φ 0 (fun _ => 0) ⟨hΦ, fun u => ?_⟩ ⟨Submodule.zero_mem _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsur u`.
+
+Conclude with `congrFun h0 x`. Simplify using `[GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+-/
 theorem linear_injective : ∀ (D : D7) {m k d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E m} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k}
     (Mo : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Y Z) (ψ : AddChar (AF D.host.F) ℂ) (G : Matrix (Fin m) (Fin m) D.host.E)
     (e : Fin k ≃ Fin d), Mo.IsGood ψ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → Y.J.det ≠ 0 → Z.J.det ≠ 0 → G.det ≠ 0 →

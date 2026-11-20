@@ -18,6 +18,27 @@ noncomputable section
 
 namespace GlobalTheory.DownLift.ShapeOff
 
+/- English proof (translation)
+Establish `hnz : ∀ x, ρ x s ≠ 0`. Introduce `x h`. Use `hρ (-x) x s` as an intermediate fact. Rewrite `this` using `[h, map_zero, neg_add_cancel, h0]`. Conclude with `hs ((smul_eq_zero.mp this.symm).resolve_left (hκ _ _))`.
+
+Establish `hmem : ∀ x : G, -(QuotientAddGroup.mk x : G ⧸ L).out + x ∈ L`. Introduce `x`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`. Use `set k : G → ℂ := fun x => (κ (QuotientAddGroup.mk x : G ⧸ L).out (-(QuotientAddGroup.mk x : G ⧸ L).out + x))⁻¹ with hk`. Establish `hdec1 : ∀ t, (∀ u ∈ L, ρ u t = t) → ∀ x, ρ x t = k x • ρ (QuotientAddGroup.mk x : G ⧸ L).out t`.
+
+Introduce `t ht x`. Use `hρ (QuotientAddGroup.mk x : G ⧸ L).out (-(QuotientAddGroup.mk x : G ⧸ L).out + x) t` as an intermediate fact. Rewrite `this` using `[ht _ (hmem x), add_neg_cancel_left]`. Rewrite using `[this, smul_smul, hk, inv_mul_cancel₀ (hκ _ _), one_smul]`. Use `set I : Finset (G ⧸ L) := c.support.image (fun x => (QuotientAddGroup.mk x : G ⧸ L)) with hI`.
+
+Use `set C : (G ⧸ L) → ℂ := fun y => ∑ x ∈ c.support with (QuotientAddGroup.mk x : G ⧸ L) = y, c x * k x with hC`. Establish `hdec : ∀ t, (∀ u ∈ L, ρ u t = t) → (c.sum fun x z => z • ρ x t) = ∑ y ∈ I, C y • ρ y.out t`. Introduce `t ht`. Unfold `Finsupp.sum`. Establish `e1 : ∑ x ∈ c.support, c x • ρ x t = ∑ x ∈ c.support, (c x * k x) • ρ (QuotientAddGroup.mk x : G ⧸ L).out t`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hdec1 t ht x, smul_smul]`. Rewrite using `[e1, ← Finset.sum_fiberwise_of_maps_to (s := c.support) (t := I) (g := fun x => (QuotientAddGroup.mk x : G ⧸ L)) (fun x hx => Finset.mem_image_of_mem _ hx)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hC, Finset.sum_smul]`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hx).2]`. Establish `hout : ∀ y ∈ I, y.out ∈ X`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Use `sub_mem (hc x hx) (hLX (hmem x))` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub, sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hC0 : ∀ y ∈ I, C y = 0`. Establish `hind` using `GlobalTheory.Hk3.eig_indep (fun u : L => ρ (u : G)) (fun (y : G ⧸ L) (u : L) => γ u y.out) (fun y => ρ y.out s) (fun y u => by rw [hγ, hvac u u.2]) I (by`. Introduce `y hy y' hy' hyy`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hyy` to reduce the goal to its premises. Establish `hm` using `hdist y.out (hout y hy) y'.out (hout y' hy') (fun u hu => hcon ⟨u, hu⟩)`. Rewrite using `[← QuotientAddGroup.out_eq' y, ← QuotientAddGroup.out_eq' y', QuotientAddGroup.eq_iff_sub_mem]`.
+
+Conclude with `hm)`. Use `C (by rw [← hdec s hvac]; exact hsum)`. Introduce `y hy`. Conclude with `(smul_eq_zero.mp (hind y hy)).resolve_right (hnz _)`. Rewrite using `[hdec s' hvac']`.
+
+Conclude with `Finset.sum_eq_zero fun y hy => by rw [hC0 y hy, zero_smul]`.
+-/
 theorem rel_indep {G M : Type} [AddCommGroup G] [AddCommGroup M] [Module ℂ M] (ρ : G → Module.End ℂ M) (κ γ : G → G → ℂ)
     (hκ : ∀ x y, κ x y ≠ 0) (h0 : ∀ s, ρ 0 s = s) (hρ : ∀ x y s, ρ x (ρ y s) = κ x y • ρ (x + y) s)
     (hγ : ∀ x y s, ρ x (ρ y s) = γ x y • ρ y (ρ x s)) (X L : AddSubgroup G) (hLX : L ≤ X)
@@ -79,6 +100,25 @@ variable {D : D7}
 
 open GlobalTheory.ThetaVacuumAE in
 
+/- English proof (translation)
+Take `⟨M, hM, hMx⟩` from `exists_fg_coord S`. Take `⟨N, hN, hNy⟩` from `exists_fg_coord T`. Establish `hA : ((D.host.AA : Submodule (𝓞 D.host.E) D.host.E).restrictScalars ℤ).FG` using `fg_int (FractionalIdeal.fg_of_isNoetherianRing le_rfl _)`. Establish `hJ : (Submodule.span ℤ (Set.range fun p : Fin S.rank × Fin S.rank => S.gram p.1 p.2)).FG` using `Submodule.fg_span (Set.finite_range _)`. Take `⟨G, hG⟩` from `(hA.mul hN).mul (hM.mul hJ)`.
+
+Establish `h1 : ∀ (i : Fin T.rank) (j : Fin S.rank) (e : D.host.E), ∃ Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∀ α ∈ intAf D.host.F, (∀ v ∈ Sb, evalV D.host.F v α = 0) → (Matrix.single i j (pairA D.host.F 0 α ⊗ₜ[D.host.F] e : AE D) : WO S T) ∈ U`. Introduce `i j e`. Establish `hc : Continuous fun α : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F => (Matrix.single i j (pairA D.host.F 0 α ⊗ₜ[D.host.F] e : AE D) : WO S T)`. Use `continuous_pi fun k => continuous_pi fun l => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single, Matrix.of_apply]`.
+
+Use `split_ifs`. Conclude with `continuous_tmul D e`. Conclude with `continuous_const`. Use `exists_finset_of_mem_nhds ((hU.preimage hc).mem_nhds ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.single i j ((0 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D) ∈ U`.
+
+Rewrite using `[TensorProduct.zero_tmul, Matrix.single_zero]`. Conclude with `zero_mem U`. Use `choose Sb hS using h1`. Use `⟨Finset.univ.biUnion fun i => Finset.univ.biUnion fun j => G.biUnion (Sb i j), (AddSubgroup.closure_le _).2 ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, h0, a, ha, x, hx, y, hy, rfl⟩`.
+
+Establish `h2 : ∀ i j, ∀ e ∈ Submodule.span ℤ (G : Set D.host.E), (Matrix.single i j (pairA D.host.F 0 α ⊗ₜ[D.host.F] e : AE D) : WO S T) ∈ U`. Introduce `i j e he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem e he`. Use `hS i j e α hα fun v hv => h0 v (not_not.2 ?_)` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and]`. Conclude with `⟨i, j, e, he, hv⟩`. Consider the case `zero => rw [TensorProduct.tmul_zero, Matrix.single_zero]`. Conclude with `zero_mem U`. Consider the case `add e e' _ _ h h' => rw [TensorProduct.tmul_add, Matrix.single_add]`.
+
+Conclude with `add_mem h h'`. Consider the case `smul n e _ h`. Set `Φ : D.host.E →+ WO S T` to `(Matrix.singleAddMonoidHom i j).comp (TensorProduct.mk D.host.F (AF D.host.F) D.host.E (pairA D.host.F 0 α)).toAddMonoidHom`. Establish `h' : Φ e ∈ U` using `h`. Express the relevant statement in the definitionally equal form `Φ (n • e) ∈ U`.
+
+Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem h' n`. Rewrite using `[SetLike.mem_coe, Matrix.matrix_eq_sum_single (Matrix.of _)]`. Use `sum_mem fun i _ => sum_mem fun j _ => h2 i j _ ?_` and prove the remaining obligations. Rewrite using `[hG]`.
+
+Conclude with `Submodule.mul_mem_mul (Submodule.mul_mem_mul ha (hNy y hy i).1) (sum_mem fun k _ => Submodule.mul_mem_mul (hMx x hx k).2 (Submodule.subset_span ⟨(k, j), rfl⟩))`.
+-/
 theorem exists_latO_le (S T : HSp D) (U : AddSubgroup (WO S T)) (hU : IsOpen (U : Set (WO S T))) :
     ∃ Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)), latO S T (L0c D S) (L0c D T) (fun v => v ∉ Sb) ≤ U := by
   classical
@@ -133,6 +173,11 @@ theorem exists_latO_le (S T : HSp D) (U : AddSubgroup (WO S T)) (hU : IsOpen (U 
 def offIdem (F : Type) [Field F] [NumberField F] (Sb : Finset (HeightOneSpectrum (𝓞 F))) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F :=
   1 - ∑ v ∈ Sb, singleV F v 1
 
+/- English proof (translation)
+Establish `e1 : evalV F w (singleV F w 1) = 1` using `GlobalTheory.StdCharTotReal.single_same w 1`. Establish `e2 : ∀ v, v ≠ w → evalV F w (singleV F v 1) = 0` using `fun v hv => GlobalTheory.StdCharTotReal.single_ne v 1 hv.symm`. Unfold `offIdem`. Rewrite using `[map_sub, map_one, map_sum]`. Use `⟨fun hw => ?_, fun hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single_of_mem w hw fun v _ hv => e2 v hv, e1, sub_self]`. Rewrite using `[Finset.sum_eq_zero fun v hv => e2 v fun h => hw (h ▸ hv), sub_zero]`.
+-/
 theorem evalV_offIdem {F : Type} [Field F] [NumberField F] (Sb : Finset (HeightOneSpectrum (𝓞 F)))
     (w : HeightOneSpectrum (𝓞 F)) :
     (w ∈ Sb → evalV F w (offIdem F Sb) = 0) ∧ (w ∉ Sb → evalV F w (offIdem F Sb) = 1) := by
@@ -144,6 +189,11 @@ theorem evalV_offIdem {F : Type} [Field F] [NumberField F] (Sb : Finset (HeightO
   · rw [Finset.sum_eq_single_of_mem w hw fun v _ hv => e2 v hv, e1, sub_self]
   · rw [Finset.sum_eq_zero fun v hv => e2 v fun h => hw (h ▸ hv), sub_zero]
 
+/- English proof (translation)
+Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F w (offIdem F Sb * offIdem F Sb) = evalV F w (offIdem F Sb)`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w ∈ Sb`. Rewrite using `[(evalV_offIdem Sb w).1 hw, mul_zero]`.
+
+Rewrite using `[(evalV_offIdem Sb w).2 hw, mul_one]`.
+-/
 theorem offIdem_mul_self {F : Type} [Field F] [NumberField F] (Sb : Finset (HeightOneSpectrum (𝓞 F))) :
     offIdem F Sb * offIdem F Sb = offIdem F Sb := by
   refine RestrictedProduct.ext _ _ fun w => ?_
@@ -156,18 +206,35 @@ theorem offIdem_mul_self {F : Type} [Field F] [NumberField F] (Sb : Finset (Heig
 def offE (D : D7) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) : AE D :=
   algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (offIdem D.host.F Sb))
 
+/- English proof (translation)
+Unfold `offE`. Rewrite using `[← RingHom.map_mul]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) (offIdem_mul_self Sb)`.
+-/
 theorem offE_mul_self (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) : offE D Sb * offE D Sb = offE D Sb := by
   unfold offE
   rw [← RingHom.map_mul]
   congr 1
   exact Prod.ext (mul_zero _) (offIdem_mul_self Sb)
 
+/- English proof (translation)
+Unfold `offE`. Rewrite using `[Algebra.algebraMap_eq_smul_one, GlobalTheory.FinTranslate.cA_smul, RingHom.map_one]`.
+-/
 theorem cA_offE (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) : cA D (offE D Sb) = offE D Sb := by
   unfold offE
   rw [Algebra.algebraMap_eq_smul_one, GlobalTheory.FinTranslate.cA_smul, RingHom.map_one]
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Establish `hβ : offIdem D.host.F Sb ∈ intAf D.host.F` using `fun w => by`. Distinguish the cases in `hw : w ∈ Sb`. Rewrite using `[(evalV_offIdem Sb w).1 hw]`. Conclude with `zero_mem _`. Rewrite using `[(evalV_offIdem Sb w).2 hw]`.
+
+Conclude with `one_mem _`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨offIdem D.host.F Sb * α, GlobalTheory.WeilUnramifiedCompare.intAf_mul hβ hα, fun w hw => ?_, a, ha, s, hs, t, ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, (evalV_offIdem Sb w).1 (not_not.1 hw), zero_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 (offIdem D.host.F Sb) ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = _ ⊗ₜ _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`.
+
+Conclude with `Prod.ext (mul_zero _) rfl`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `neg x _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem offE_smul_mem (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {LS : Set (Fin S.rank → D.host.E)}
     {LT : Set (Fin T.rank → D.host.E)} {u : WO S T} (hu : u ∈ latO S T LS LT fun _ => True) :
     offE D Sb • u ∈ latO S T LS LT fun w => w ∉ Sb := by
@@ -190,6 +257,9 @@ theorem offE_smul_mem (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {LS : Se
   | add x x' _ _ h h' => rw [smul_add]; exact add_mem h h'
   | neg x _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Establish `h0 : infPart D (offE D Sb) = 0` using `TensorProduct.zero_tmul _ _`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, ← (GlobalTheory.PlaceModel.isHalf_iff S T).2 hu i j, RingHom.map_mul, h0, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem infPart_of_half (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {u : WO S T}
     (hu : u ∈ GlobalTheory.PlaceModel.half S T (offE D Sb)) : u.map (infPart D) = 0 := by
   have h0 : infPart D (offE D Sb) = 0 := TensorProduct.zero_tmul _ _
@@ -197,6 +267,13 @@ theorem infPart_of_half (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {u : W
   rw [Matrix.map_apply, ← (GlobalTheory.PlaceModel.isHalf_iff S T).2 hu i j, RingHom.map_mul, h0, zero_mul]
   rfl
 
+/- English proof (translation)
+Use `(GlobalTheory.PlaceModel.isHalf_iff S T).1 fun i j => ?_` and prove the remaining obligations. Establish `h1 : algebraMap (AF D.host.F) (AE D) (GlobalTheory.FinTranslate.eInf D) * u i j = 0`. Rewrite using `[← Algebra.smul_def]`. Conclude with `GlobalTheory.FinTranslate.smul_eq_zero_of_inf (congrFun (congrFun hu.1 i) j)`. Establish `h2 : ∀ v ∈ Sb, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F v 1)) * u i j = 0` using `fun v hv => hu.2 v hv _ ⟨_, rfl, GlobalTheory.StdCharTotReal.single_same v 1, fun w hw => GlobalTheory.StdCharTotReal.single_ne v 1 hw⟩ i j`.
+
+Establish `e : pairA D.host.F 0 (offIdem D.host.F Sb) = 1 - GlobalTheory.FinTranslate.eInf D - ∑ v ∈ Sb, pairA D.host.F 0 (singleV D.host.F v 1)`. Establish `e0 : ∑ v ∈ Sb, pairA D.host.F 0 (singleV D.host.F v 1) = pairA D.host.F 0 (∑ v ∈ Sb, singleV D.host.F v 1)` using `(map_sum (AddMonoidHom.inr (Ainf D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) _ _).symm`. Rewrite using `[e0]`. Conclude with `Prod.ext (show (0 : Ainf D.host.F) = 1 - 1 - 0 by ring) (show 1 - ∑ v ∈ Sb, singleV D.host.F v 1 = 1 - 0 - ∑ v ∈ Sb, singleV D.host.F v 1 by rw [sub_zero])`. Unfold `offE`.
+
+Rewrite using `[e, RingHom.map_sub, RingHom.map_sub, RingHom.map_one, map_sum, sub_mul, sub_mul, one_mul, h1, Finset.sum_mul, Finset.sum_eq_zero h2, sub_zero, sub_zero]`.
+-/
 theorem half_of_offPl (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {u : WO S T} (hu : OffPl Sb u) :
     u ∈ GlobalTheory.PlaceModel.half S T (offE D Sb) := by
   refine (GlobalTheory.PlaceModel.isHalf_iff S T).1 fun i j => ?_
@@ -219,6 +296,17 @@ theorem half_of_offPl (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) {u : WO 
 
 open GlobalTheory.PlaceModel in
 
+/- English proof (translation)
+Take `⟨U, hU, hUs⟩` from `hs.level`. Take `⟨U', hU', hUf⟩` from `hf.level`. Take `⟨Sb, hSb⟩` from `exists_latO_le S T (U ⊓ U') (hU.inter hU')`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ (isSelfDualC_latFrame S) (isSelfDualC_latFrame T)).1`. Rewrite `hdual` using `[coe_latFrame, coe_latFrame]`.
+
+Establish `hne : ∀ a, ψ a ≠ 0` using `fun a h => by`. Use `ψ.map_add_eq_mul a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`. Establish `hLU : ∀ u ∈ (latO S T (L0c D S) (L0c D T) fun _ => True) ⊓ half S T (offE D Sb), u ∈ U ⊓ U'` using `fun u hu => by`.
+
+Use `hSb (offE_smul_mem Sb hu.1)` as an intermediate fact. Rewrite `this` using `[(mem_half S T).1 hu.2]`. Then use the resulting hypothesis. Use `⟨Sb, fun c hc hsum => ?_⟩` and prove the remaining obligations. Use `rel_indep (heisL S T ψ) (fun x y => ψ (symplOH S T x y)) (fun x y => ψ (symplO S T x y)) (fun _ _ => hne _) (GlobalTheory.LatVac.heisO_zero ψ) (heisL_heisL S T ψ) (heisL_comm S T ψ) (half S T (offE D Sb)) ((latO S T (L0c D S) (L0c D T) fun _ => True) ⊓ half S T (offE D Sb)) inf_l …` and prove the remaining obligations. Establish `hxy` using `sub_mem hx hy`.
+
+Use `⟨(hdual _ (infPart_of_half Sb hxy)).2 fun u hu => ?_, hxy⟩` and prove the remaining obligations. Establish `h1` using `h (offE D Sb • u) ⟨latO_le_top _ (offE_smul_mem Sb hu), (mem_half S T).2 (by rw [smul_smul, offE_mul_self])⟩`. Simplify using `only [symplO_smul, cA_offE, (mem_half S T).1 hx, (mem_half S T).1 hy] at h1`. Establish `h2 : symplO S T u x = symplO S T u (x - y) + symplO S T u y` using `by rw [← symplO_add_right, sub_add_cancel]`. Rewrite `h1` using `[h2, AddChar.map_add_eq_mul, mul_left_eq_self₀]`.
+
+Rewrite using `[symplO_skew, AddChar.map_neg_eq_inv, h1.resolve_right (hne _), inv_one]`.
+-/
 theorem exists_rel_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {s f : WO S T → ℂ}
     (hs : IsThetaFunO ψ S T s) (hs0 : s ≠ 0) (hf : IsThetaFunO ψ S T f) :
     ∃ Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)), ∀ c : WO S T →₀ ℂ, (∀ u ∈ c.support, OffPl Sb u) →
@@ -250,6 +338,11 @@ theorem exists_rel_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-
   rw [h2, AddChar.map_add_eq_mul, mul_left_eq_self₀] at h1
   rw [symplO_skew, AddChar.map_neg_eq_inv, h1.resolve_right (hne _), inv_one]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t f hf`. Establish `hL` using `hG.core`. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hL.thP.pt_theta i t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`.
+
+Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis. Establish `hv0 : R.vP i t ≠ 0` using `GlobalTheory.AdTh.VecNe.thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βW i)) ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) (hL.thP.vP i t)`. Take `⟨Sb, h⟩` from `exists_rel_off (hL.thP.ωP i t).std hth hv0 hf`. Conclude with `⟨Sb, hf, h⟩`.
+-/
 theorem exists_likeOff : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (f : WO (Vc D i) (Wc D i) → ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f → ∃ Sb : Finset (HeightOneSpectrum (𝓞 D.host.F)), GlobalTheory.DownLift.GenFinite.LikeOff R i t Sb f := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t f hf
   have hL := hG.core

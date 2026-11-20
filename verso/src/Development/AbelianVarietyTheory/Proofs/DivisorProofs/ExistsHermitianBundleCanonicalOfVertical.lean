@@ -16,11 +16,19 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp k
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Introduce `h` and use `h <| by refine (isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of ℂ) y.1).hom _).1 ?_ rw [map_natCast] exact (Nat.cast_ne_zero.2 hp : (p : ℂ) ≠ 0).isUnit`.
+-/
 theorem not_ov_under {p : ℕ} (hp : p ≠ 0) (y : CxPts q σ) : ¬ Ov p (under y) := fun h => h <| by
   refine (isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of ℂ) y.1).hom _).1 ?_
   rw [map_natCast]
   exact (Nat.cast_ne_zero.2 hp : (p : ℂ) ≠ 0).isUnit
 
+/- English proof (translation)
+Establish `h0` using `ratVal_ne_zero hf`. Take `⟨U, hU, a, rfl⟩` from `hf.regAt.exists_fnOf`. Establish `hy : y ∈ ptsIn q σ U` using `mem_ptsIn.2 hU`. Rewrite `h0` using `[ratVal_fnOf hy]`. Establish `hs : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_apply ℝ ℂ ()).norm_sq ℂ`.
+
+Use `⟨U, Unit, inferInstance, fun _ => a, fun v => Real.log (‖v ()‖ ^ 2), {v | ‖v ()‖ ^ 2 ≠ 0}, hy, isOpen_ne_fun hs.continuous continuous_const, pow_ne_zero _ (norm_ne_zero_iff.2 h0), hs.contDiffOn.log fun _ h => h, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn (p := q) (σ := σ) U).mem_nhds hy] with z hz`. Rewrite using `[ratVal_fnOf hz]`.
+-/
 theorem cInfAt_log_ratVal {f : X.functionField} {y : CxPts q σ} (hf : UnitAt (under y) f) :
     CInfAt (fun z : CxPts q σ => Real.log (‖ratVal f z‖ ^ 2)) y := by
   have h0 := ratVal_ne_zero hf
@@ -34,6 +42,11 @@ theorem cInfAt_log_ratVal {f : X.functionField} {y : CxPts q σ} (hf : UnitAt (u
   filter_upwards [(isOpen_ptsIn (p := q) (σ := σ) U).mem_nhds hy] with z hz
   rw [ratVal_fnOf hz]
 
+/- English proof (translation)
+Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Establish `hy : y ∈ ptsIn q σ U` using `mem_ptsIn.2 hU`. Establish `hy' : y' ∈ ptsIn q σ' U`. Express the relevant statement in the definitionally equal form `⊤ ≤ y'.1 ⁻¹ᵁ _`. Rewrite using `[h]`.
+
+Conclude with `fun x _ => hy (Set.mem_univ _)`. Rewrite using `[ratVal_fnOf hy, ratVal_fnOf hy', CxPts.ev_conj h hy, RCLike.norm_conj]`.
+-/
 theorem norm_ratVal_conj {f : X.functionField} {y : CxPts q σ} {y' : CxPts q σ'}
     (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) (hf : RegAt (under y) f) : ‖ratVal f y'‖ = ‖ratVal f y‖ := by
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
@@ -63,6 +76,11 @@ def unitMetric {L : LB X} (hL : L.IsLB) {r : L.ι → X.functionFieldˣ} (hr : I
     change Real.log _ = Real.log _
     rw [norm_ratVal_conj h (hu σ y i hy).regAt]
 
+/- English proof (translation)
+Introduce `k _ X _ q p hp E hE`. Establish `P` using `presents_toLB E`. Establish `off (σ : k →+* ℂ) (y : CxPts q σ) : under y ∉ E.supp` using `fun h => h (hE _ (not_ov_under hp y))`. Use `⟨unitMetric P.isLB P.isRatSec fun σ y i hi => not_not.1 (mt (P.isEqn i _ (mem_ptsIn.1 hi)).mem_supp_iff.2 (off σ y)), _, P.isRatSec, (presents_divOfRatSec P.isLB P.isRatSec).unique P, fun σ y => ⟨mem_offSupp.2 (off σ y), ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.log _ - Real.log (_ ^ 2) / 2 = 0`.
+
+Rewrite using `[Real.log_pow]`. Use `push_cast`. Conclude with `sub_eq_zero.2 (mul_div_cancel_left₀ _ two_ne_zero).symm`.
+-/
 theorem exists_can_of_vert : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (p : ℕ), p ≠ 0 →
     ∀ E : CartierDiv X, Vert p E → ∃ M : HermLB q, Can M E := by
   intro k _ X _ q p hp E hE

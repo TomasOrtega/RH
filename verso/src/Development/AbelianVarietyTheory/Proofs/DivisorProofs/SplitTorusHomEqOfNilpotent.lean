@@ -10,6 +10,19 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A κ _ _ _ π hπ hJ X _ H _ _ i₁ i₂ h₁ h₂ h`. Use `set J := RingHom.ker π`. Use `haveI : IsMonHom i₂⁻¹ := inferInstance`. Use `haveI hf : IsMonHom (i₁ * i₂⁻¹) := GlobalTheory.Serre.isMonHom_mul _ _`. Use `set r : Sp (A ⧸ J) ⟶ Sp A := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))`.
+
+Set `e : A ⧸ J ≃+* κ` to `RingHom.quotientKerEquivOfSurjective hπ`. Establish `hr : r = spMap e.symm.toRingHom ≫ spMap π`. Simplify using `only [r, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, Ideal.Quotient.mk_eq_mk]`. Rewrite using `[RingEquiv.eq_symm_apply]`. Both sides reduce to the same expression. Take `⟨l, hl⟩ : ∃ l, l ≫ SplitTorus.bcMap (spMap π) X = pullback.fst (splitTorus (Sp A) X).hom r` from `⟨_, (SplitTorus.isPullback_bcMap (spMap π) X).lift_fst (pullback.fst (splitTorus (Sp A) X).hom r) (pullback.snd (splitTorus (Sp A) X).hom r ≫ spMap e.symm.toRingHom) (by rw [pullback.condition, Category.assoc, ← hr])⟩`. Set `t : Over.mk (pullback.fst (splitTorus (Sp A) X).hom r ≫ (splitTorus (Sp A) X).hom) ⟶ splitTorus (Sp A) X` to `Over.homMk (pullback.fst (splitTorus (Sp A) X).hom r)`.
+
+Establish `ht : t ≫ i₁ = t ≫ i₂`. Use `ext`. Simplify using `only [t, Over.comp_left, Over.homMk_left]`. Simplify using `only [← hl, Category.assoc, h]`. Establish `ht1 : t ≫ (i₁ * i₂⁻¹) = t ≫ (toUnit _ ≫ η[H])`.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, ht, mul_inv_cancel, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Establish `key` using `splitTorus_hom_eq_one_of_nilpotent A J hJ X H (i₁ * i₂⁻¹) hf (by`. Use `ext`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Over.pullback_map_left, pullback.lift_fst]`. Conclude with `congrArg CommaMorphism.left ht1`. Simplify using `only [Over.pullback_map_left, pullback.lift_snd])`. Rewrite `key` using `[← Hom.one_def, mul_inv_eq_one]`. Conclude with `key`.
+-/
 theorem splitTorus_hom_eq_of_nilpotent : ∀ (A κ : Type) [CommRing A] [IsLocalRing A] [CommRing κ]
     (π : A →+* κ), Function.Surjective π → IsNilpotent (RingHom.ker π) → ∀ (X : Type)
     [AddCommGroup X] (H : Over (Sp A)) [GrpObj H] [IsCommMonObj H]

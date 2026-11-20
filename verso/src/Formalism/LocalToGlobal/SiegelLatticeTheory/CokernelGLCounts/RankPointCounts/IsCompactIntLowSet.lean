@@ -12,6 +12,11 @@ namespace Formalism.L2.SG.Pf.ProdEP2Uni
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hA'le : cj s A ≤ B'` using `hB ▸ cj_le hAB'`. Establish `hA'idx : (cj s A).relIndex B' = A.relIndex B'` using `by rw [← relIndex_cj s A B', hB]`. Establish `e2` using `idxCocycle G A (cj s A) B' hA'le (by rw [hA'idx]; exact hf)`. Establish `e3` using `idxCocycle G A A B' hAB' hf`. Rewrite `e3` using `[idxRatio_self]`.
+
+Rewrite using `[e2, hA'idx, ← e3]`.
+-/
 theorem unimod_of_norm {G : Type} [Group G] (A B' : Subgroup G) (s : G) (hAB' : A ≤ B') (hB : cj s B' = B')
     (hf : A.relIndex B' ≠ 0) : IdxRatio A (cj s A) = 1 := by
   have hA'le : cj s A ≤ B' := hB ▸ cj_le hAB'
@@ -28,20 +33,35 @@ section Mat
 
 def dg (x : (D.s.atP p).Ep) : MP p := Matrix.diagonal fun i => x ^ (i : ℕ)
 
+/- English proof (translation)
+Simplify using `only [dg, Matrix.diagonal_mul_diagonal, mul_pow]`.
+-/
 theorem dg_mul_dg (x y : (D.s.atP p).Ep) : (dg x : MP p) * dg y = dg (x * y) := by
   simp only [dg, Matrix.diagonal_mul_diagonal, mul_pow]
 
+/- English proof (translation)
+Simplify using `[dg]`.
+-/
 theorem dg_one : (dg 1 : MP p) = 1 := by
   simp [dg]
 
+/- English proof (translation)
+Simplify using `only [dg, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem dg_entry (x y : (D.s.atP p).Ep) (m : MP p) (i j : Fin (D.R.rS + 1)) :
     (dg x * m * dg y) i j = x ^ (i : ℕ) * m i j * y ^ (j : ℕ) := by
   simp only [dg, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Rewrite using `[← mul_pow, ← map_mul, inv_mul_cancel₀ ha, map_one, one_pow]`.
+-/
 theorem pow_inv_pow {a : (D.s.atP p).Fp} (ha : a ≠ 0) (k : ℕ) :
     (algebraMap _ (D.s.atP p).Ep a⁻¹) ^ k * (algebraMap _ (D.s.atP p).Ep a) ^ k = 1 := by
   rw [← mul_pow, ← map_mul, inv_mul_cancel₀ ha, map_one, one_pow]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hij`. Rewrite using `[Nat.add_sub_cancel_left, pow_add, mul_comm ((algebraMap _ (D.s.atP p).Ep a) ^ j), mul_assoc, mul_comm ((algebraMap _ (D.s.atP p).Ep a) ^ j), pow_inv_pow ha, mul_one]`.
+-/
 theorem pow_scale {a : (D.s.atP p).Fp} (ha : a ≠ 0) {i j : ℕ} (hij : j ≤ i) :
     (algebraMap _ (D.s.atP p).Ep a) ^ i * (algebraMap _ (D.s.atP p).Ep a⁻¹) ^ j =
       (algebraMap _ (D.s.atP p).Ep a) ^ (i - j) := by
@@ -58,9 +78,15 @@ def tG (a : (D.s.atP p).Fp) (ha : a ≠ 0) : GG p := (tU a ha, MulOpposite.op (t
 
 def KD (a : (D.s.atP p).Fp) (ha : a ≠ 0) : Subgroup (GG p) := cj (tG a ha) (KP M p)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_KP {x : GG p} : x ∈ KP M p ↔
     TieN.IntLow (M p) ((x.1 : GLp p) : MP p) ∧ TieN.IntUp (M p) ((x.2.unop : GLp p) : MP p) := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[KD, mem_cj]`. Use `show TieN.IntLow (M p) (dg (algebraMap _ _ a) * ((x.1 : GLp p) : MP p) * dg (algebraMap _ _ a⁻¹)) ∧ TieN.IntUp (M p) (dg (algebraMap _ _ a⁻¹) * (((x.2.unop : GLp p) : MP p) * dg (algebraMap _ _ a))) ↔ _`. Rewrite using `[← Matrix.mul_assoc]`.
+-/
 theorem mem_KD {a : (D.s.atP p).Fp} (ha : a ≠ 0) {x : GG p} : x ∈ KD M a ha ↔
     TieN.IntLow (M p) (dg (algebraMap _ _ a) * ((x.1 : GLp p) : MP p) * dg (algebraMap _ _ a⁻¹)) ∧
     TieN.IntUp (M p) (dg (algebraMap _ _ a⁻¹) * ((x.2.unop : GLp p) : MP p) * dg (algebraMap _ _ a)) := by
@@ -75,6 +101,11 @@ section Scale
 
 variable {a : (D.s.atP p).Fp}
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `⟨fun i => ?_, fun i j hij => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dg_entry, hl.1 i, mul_one, mul_comm, pow_inv_pow ha]`. Rewrite using `[dg_entry, hl.2.1 i j hij, mul_zero, zero_mul]`. Rewrite using `[dg_entry]`.
+
+Break down `le_or_gt (j : ℕ) i with h | h` into its components or cases. Rewrite using `[mul_right_comm, pow_scale ha h]`. Conclude with `(M p).R.mul_mem ((M p).R.pow_mem (alg_mem_R (M p) ⟨a, haO⟩) _) (hl.2.2 i j)`. Rewrite using `[hl.2.1 i j h, mul_zero, zero_mul]`. Conclude with `(M p).R.zero_mem`.
+-/
 theorem intLow_scale (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {l : MP p} (hl : TieN.IntLow (M p) l) :
     TieN.IntLow (M p) (dg (algebraMap _ _ a) * l * dg (algebraMap _ _ a⁻¹)) := by
   haveI := (D.s.atP p).lf
@@ -88,6 +119,11 @@ theorem intLow_scale (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {l : MP p
     · rw [hl.2.1 i j h, mul_zero, zero_mul]
       exact (M p).R.zero_mem
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `⟨fun i => ?_, fun i j hij => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dg_entry, hρ.1 i, mul_one, pow_inv_pow ha]`. Rewrite using `[dg_entry, hρ.2.1 i j hij, mul_zero, zero_mul]`. Rewrite using `[dg_entry]`.
+
+Break down `le_or_gt (i : ℕ) j with h | h` into its components or cases. Rewrite using `[mul_right_comm, mul_comm ((algebraMap _ (D.s.atP p).Ep a⁻¹) ^ (i : ℕ)), pow_scale ha h]`. Conclude with `(M p).R.mul_mem ((M p).R.pow_mem (alg_mem_R (M p) ⟨a, haO⟩) _) (hρ.2.2 i j)`. Rewrite using `[hρ.2.1 i j h, mul_zero, zero_mul]`. Conclude with `(M p).R.zero_mem`.
+-/
 theorem intUp_scale (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {ρ : MP p} (hρ : TieN.IntUp (M p) ρ) :
     TieN.IntUp (M p) (dg (algebraMap _ _ a⁻¹) * ρ * dg (algebraMap _ _ a)) := by
   haveI := (D.s.atP p).lf
@@ -101,6 +137,15 @@ theorem intUp_scale (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {ρ : MP p
     · rw [hρ.2.1 i j h, mul_zero, zero_mul]
       exact (M p).R.zero_mem
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `⟨fun i => ?_, fun i j hij => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dg_entry, (hl i i).2 rfl, mul_one, mul_comm, pow_inv_pow ha]`. Rewrite using `[dg_entry, (hl i j).1 hij, mul_zero, zero_mul]`. Rewrite using `[dg_entry]`.
+
+Break down `lt_trichotomy (j : ℕ) i with h | h | h` into its components or cases. Rewrite using `[mul_right_comm, pow_scale ha h.le]`. Take `⟨k, hk⟩ : ∃ k, (i : ℕ) - j = k + 1` from `⟨(i : ℕ) - j - 1, by omega⟩`. Rewrite using `[hk, pow_succ, mul_assoc]`. Conclude with `(M p).R.mul_mem ((M p).R.pow_mem (alg_mem_R (M p) ⟨a, haO⟩) _) (hR i j)`.
+
+Establish `hij : j = i` using `Fin.ext h`. Substitute `hij` using the available equality. Rewrite using `[(hl j j).2 rfl, mul_one, mul_comm, pow_inv_pow ha]`. Conclude with `(M p).R.one_mem`. Rewrite using `[(hl i j).1 h, mul_zero, zero_mul]`.
+
+Conclude with `(M p).R.zero_mem`.
+-/
 theorem intLow_scale_of (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {l : MP p} (hl : IsLoUni l)
     (hR : ∀ i j, algebraMap _ (D.s.atP p).Ep a * l i j ∈ (M p).R) :
     TieN.IntLow (M p) (dg (algebraMap _ _ a) * l * dg (algebraMap _ _ a⁻¹)) := by
@@ -121,6 +166,15 @@ theorem intLow_scale_of (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {l : M
     · rw [(hl i j).1 h, mul_zero, zero_mul]
       exact (M p).R.zero_mem
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `⟨fun i => ?_, fun i j hij => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dg_entry, (hρ i i).2 rfl, mul_one, pow_inv_pow ha]`. Rewrite using `[dg_entry, (hρ i j).1 hij, mul_zero, zero_mul]`. Rewrite using `[dg_entry]`.
+
+Break down `lt_trichotomy (i : ℕ) j with h | h | h` into its components or cases. Rewrite using `[mul_right_comm, mul_comm ((algebraMap _ (D.s.atP p).Ep a⁻¹) ^ (i : ℕ)), pow_scale ha h.le]`. Take `⟨k, hk⟩ : ∃ k, (j : ℕ) - i = k + 1` from `⟨(j : ℕ) - i - 1, by omega⟩`. Rewrite using `[hk, pow_succ, mul_assoc]`. Conclude with `(M p).R.mul_mem ((M p).R.pow_mem (alg_mem_R (M p) ⟨a, haO⟩) _) (hR i j)`.
+
+Establish `hij : i = j` using `Fin.ext h`. Substitute `hij` using the available equality. Rewrite using `[(hρ i i).2 rfl, mul_one, pow_inv_pow ha]`. Conclude with `(M p).R.one_mem`. Rewrite using `[(hρ i j).1 h, mul_zero, zero_mul]`.
+
+Conclude with `(M p).R.zero_mem`.
+-/
 theorem intUp_scale_of (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {ρ : MP p} (hρ : IsUpUni ρ)
     (hR : ∀ i j, algebraMap _ (D.s.atP p).Ep a * ρ i j ∈ (M p).R) :
     TieN.IntUp (M p) (dg (algebraMap _ _ a⁻¹) * ρ * dg (algebraMap _ _ a)) := by
@@ -141,6 +195,11 @@ theorem intUp_scale_of (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) {ρ : M
     · rw [(hρ i j).1 h, mul_zero, zero_mul]
       exact (M p).R.zero_mem
 
+/- English proof (translation)
+Establish `hu : ∀ i j, l i j = (algebraMap _ (D.s.atP p).Ep a⁻¹) ^ (i : ℕ) * (dg (algebraMap _ _ a) * l * dg (algebraMap _ _ a⁻¹) : MP p) i j * (algebraMap _ (D.s.atP p).Ep a) ^ (j : ℕ)`. Introduce `i j`. Rewrite using `[dg_entry]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_inv_pow ha, pow_inv_pow ha, one_mul, mul_one]`.
+
+Use `_ = _ := by ring`. Use `⟨fun i => ?_, fun i j hij => ?_, hR⟩` and prove the remaining obligations. Rewrite using `[hu i i, h.1 i, mul_one, pow_inv_pow ha]`. Rewrite using `[hu i j, h.2.1 i j hij, mul_zero, zero_mul]`.
+-/
 theorem intLow_of_scaled (ha : a ≠ 0) {l : MP p}
     (h : TieN.IntLow (M p) (dg (algebraMap _ _ a) * l * dg (algebraMap _ _ a⁻¹))) (hR : ∀ i j, l i j ∈ (M p).R) :
     TieN.IntLow (M p) l := by
@@ -156,6 +215,11 @@ theorem intLow_of_scaled (ha : a ≠ 0) {l : MP p}
   · rw [hu i i, h.1 i, mul_one, pow_inv_pow ha]
   · rw [hu i j, h.2.1 i j hij, mul_zero, zero_mul]
 
+/- English proof (translation)
+Establish `hu : ∀ i j, ρ i j = (algebraMap _ (D.s.atP p).Ep a) ^ (i : ℕ) * (dg (algebraMap _ _ a⁻¹) * ρ * dg (algebraMap _ _ a) : MP p) i j * (algebraMap _ (D.s.atP p).Ep a⁻¹) ^ (j : ℕ)`. Introduce `i j`. Rewrite using `[dg_entry]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_inv_pow ha, pow_inv_pow ha, one_mul, mul_one]`.
+
+Use `_ = _ := by ring`. Use `⟨fun i => ?_, fun i j hij => ?_, hR⟩` and prove the remaining obligations. Rewrite using `[hu i i, h.1 i, mul_one, mul_comm, pow_inv_pow ha]`. Rewrite using `[hu i j, h.2.1 i j hij, mul_zero, zero_mul]`.
+-/
 theorem intUp_of_scaled (ha : a ≠ 0) {ρ : MP p}
     (h : TieN.IntUp (M p) (dg (algebraMap _ _ a⁻¹) * ρ * dg (algebraMap _ _ a))) (hR : ∀ i j, ρ i j ∈ (M p).R) :
     TieN.IntUp (M p) ρ := by
@@ -171,6 +235,9 @@ theorem intUp_of_scaled (ha : a ≠ 0) {ρ : MP p}
   · rw [hu i i, h.1 i, mul_one, mul_comm, pow_inv_pow ha]
   · rw [hu i j, h.2.1 i j hij, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_KD M ha).2 ⟨intLow_scale M ha haO hx.1, intUp_scale M ha haO hx.2⟩`.
+-/
 theorem KP_le_KD (ha : a ≠ 0) (haO : a ∈ 𝒪[(D.s.atP p).Fp]) : KP M p ≤ KD M a ha := fun x hx =>
   (mem_KD M ha).2 ⟨intLow_scale M ha haO hx.1, intUp_scale M ha haO hx.2⟩
 
@@ -178,6 +245,9 @@ end Scale
 
 section Top
 
+/- English proof (translation)
+Distinguish the cases in `h : P`. Simplify `hs` using `[h]`. Simplify using `[h]`.
+-/
 theorem isClosed_imp {X : Type*} [TopologicalSpace X] (P : Prop) {s : Set X} (hs : IsClosed s) :
     IsClosed {x | P → x ∈ s} := by
   by_cases h : P
@@ -185,6 +255,11 @@ theorem isClosed_imp {X : Type*} [TopologicalSpace X] (P : Prop) {s : Set X} (hs
   · simp [h]
 
 include M in
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `e : {m : MP p | IsLoUni m} = ⋂ i, ⋂ j, ({m : MP p | i < j → m ∈ {m : MP p | m i j = 0}} ∩ {m : MP p | i = j → m ∈ {m : MP p | m i j = 1}})`. Use extensionality with `m`. Simplify using `only [IsLoUni, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`.
+
+Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const)).inter (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))`.
+-/
 theorem isClosed_loUni (p : PlF D) : IsClosed {m : MP p | IsLoUni m} := by
   haveI := (D.s.atP p).lf
   haveI := t2E (M p)
@@ -198,6 +273,11 @@ theorem isClosed_loUni (p : PlF D) : IsClosed {m : MP p | IsLoUni m} := by
       (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))
 
 include M in
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `e : {m : MP p | IsUpUni m} = ⋂ i, ⋂ j, ({m : MP p | j < i → m ∈ {m : MP p | m i j = 0}} ∩ {m : MP p | i = j → m ∈ {m : MP p | m i j = 1}})`. Use extensionality with `m`. Simplify using `only [IsUpUni, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`.
+
+Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const)).inter (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))`.
+-/
 theorem isClosed_upUni (p : PlF D) : IsClosed {m : MP p | IsUpUni m} := by
   haveI := (D.s.atP p).lf
   haveI := t2E (M p)
@@ -210,6 +290,11 @@ theorem isClosed_upUni (p : PlF D) : IsClosed {m : MP p | IsUpUni m} := by
     (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const)).inter
       (isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `e : {l : MP p | TieN.IntLow (M p) l} = (⋂ i, {l : MP p | l i i = 1}) ∩ (⋂ i, ⋂ j, {l : MP p | i < j → l ∈ {l : MP p | l i j = 0}}) ∩ ⋂ i, ⋂ j, {l : MP p | l i j ∈ (M p).R}`. Use extensionality with `l`. Simplify using `only [TieN.IntLow, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff, and_assoc]`.
+
+Rewrite using `[e]`. Conclude with `((isClosed_iInter fun i => isClosed_eq (continuous_id.matrix_elem i i) continuous_const).inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))).inter (isClosed_iInter fun i => isClosed_iInter fun j …`.
+-/
 theorem isClosed_intLowSet (hRcl : IsClosed ((M p).R : Set (D.s.atP p).Ep)) :
     IsClosed {l : MP p | TieN.IntLow (M p) l} := by
   haveI := (D.s.atP p).lf
@@ -224,6 +309,11 @@ theorem isClosed_intLowSet (hRcl : IsClosed ((M p).R : Set (D.s.atP p).Ep)) :
       isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))).inter
     (isClosed_iInter fun i => isClosed_iInter fun j => hRcl.preimage (continuous_id.matrix_elem i j))
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `e : {l : MP p | TieN.IntUp (M p) l} = (⋂ i, {l : MP p | l i i = 1}) ∩ (⋂ i, ⋂ j, {l : MP p | j < i → l ∈ {l : MP p | l i j = 0}}) ∩ ⋂ i, ⋂ j, {l : MP p | l i j ∈ (M p).R}`. Use extensionality with `l`. Simplify using `only [TieN.IntUp, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff, and_assoc]`.
+
+Rewrite using `[e]`. Conclude with `((isClosed_iInter fun i => isClosed_eq (continuous_id.matrix_elem i i) continuous_const).inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))).inter (isClosed_iInter fun i => isClosed_iInter fun j …`.
+-/
 theorem isClosed_intUpSet (hRcl : IsClosed ((M p).R : Set (D.s.atP p).Ep)) :
     IsClosed {l : MP p | TieN.IntUp (M p) l} := by
   haveI := (D.s.atP p).lf
@@ -238,6 +328,11 @@ theorem isClosed_intUpSet (hRcl : IsClosed ((M p).R : Set (D.s.atP p).Ep)) :
       isClosed_imp _ (isClosed_eq (continuous_id.matrix_elem i j) continuous_const))).inter
     (isClosed_iInter fun i => isClosed_iInter fun j => hRcl.preimage (continuous_id.matrix_elem i j))
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin (D.R.rS + 1) => Set.univ.pi fun _ : Fin (D.R.rS + 1) => ((M p).R : Set (D.s.atP p).Ep))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hRc`. Use `hK.of_isClosed_subset (isClosed_intLowSet M hRc.isClosed) ?_` and prove the remaining obligations. Introduce `l hl`.
+
+Conclude with `Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j`.
+-/
 theorem isCompact_intLowSet (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) :
     IsCompact {l : MP p | TieN.IntLow (M p) l} := by
   haveI := (D.s.atP p).lf
@@ -249,6 +344,11 @@ theorem isCompact_intLowSet (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) :
   intro l hl
   exact Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := t2E (M p)`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin (D.R.rS + 1) => Set.univ.pi fun _ : Fin (D.R.rS + 1) => ((M p).R : Set (D.s.atP p).Ep))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hRc`. Use `hK.of_isClosed_subset (isClosed_intUpSet M hRc.isClosed) ?_` and prove the remaining obligations. Introduce `l hl`.
+
+Conclude with `Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j`.
+-/
 theorem isCompact_intUpSet (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) :
     IsCompact {l : MP p | TieN.IntUp (M p) l} := by
   haveI := (D.s.atP p).lf
@@ -260,6 +360,15 @@ theorem isCompact_intUpSet (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) :
   intro l hl
   exact Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => hl.2.2 i j
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := topE (M p)`. Use `haveI := t2E (M p)`. Set `ι : GG p → (MP p × (MP p)ᵐᵒᵖ) × (MP p × (MP p)ᵐᵒᵖ)` to `fun x => (Units.embedProduct _ x.1, Units.embedProduct _ x.2.unop)`. Establish `hι : Topology.IsClosedEmbedding ι` using `Units.isClosedEmbedding_embedProduct.prodMap (Units.isClosedEmbedding_embedProduct.comp MulOpposite.opHomeomorph.symm.isClosedEmbedding)`.
+
+Establish `hIL` using `isCompact_intLowSet M hRc`. Establish `hIU` using `isCompact_intUpSet M hRc`. Set `Kset : Set ((MP p × (MP p)ᵐᵒᵖ) × (MP p × (MP p)ᵐᵒᵖ))` to `({l : MP p | TieN.IntLow (M p) l} ×ˢ (MulOpposite.op '' {l : MP p | TieN.IntLow (M p) l})) ×ˢ ({l : MP p | TieN.IntUp (M p) l} ×ˢ (MulOpposite.op '' {l : MP p | TieN.IntUp (M p) l}))`. Establish `hK : IsCompact Kset` using `(hIL.prod (hIL.image MulOpposite.continuous_op)).prod (hIU.prod (hIU.image MulOpposite.continuous_op))`. Establish `hcl : IsClosed (KP M p : Set (GG p))` using `((isClosed_intLowSet M hRc.isClosed).preimage (Units.continuous_val.comp continuous_fst)).inter ((isClosed_intUpSet M hRc.isClosed).preimage (Units.continuous_val.comp (MulOpposite.continuous_unop.comp continuous_snd)))`.
+
+Establish `hsub : (KP M p : Set (GG p)) ⊆ ι ⁻¹' Kset`. Introduce `x hx`. Establish `hx1` using `((mem_KP M).1 hx).1`. Establish `hx2` using `((mem_KP M).1 hx).2`. Establish `hy` using `(mem_KP M).1 ((KP M p).inv_mem hx)`.
+
+Conclude with `⟨⟨hx1, _, hy.1, rfl⟩, hx2, _, hy.2, rfl⟩`. Conclude with `(hι.isCompact_preimage hK).of_isClosed_subset hcl hsub`.
+-/
 theorem isCompact_KP (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) : IsCompact (KP M p : Set (GG p)) := by
   haveI := (D.s.atP p).lf
   haveI := topE (M p)
@@ -288,6 +397,11 @@ theorem isCompact_KP (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) : IsCompac
     exact ⟨⟨hx1, _, hy.1, rfl⟩, hx2, _, hy.2, rfl⟩
   exact (hι.isCompact_preimage hK).of_isClosed_subset hcl hsub
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := topE (M p)`. Rewrite using `[KD, cj, Subgroup.coe_map]`. Use `(isCompact_KP M hRc).image ?_` and prove the remaining obligations. Establish `e : ((MulAut.conj (tG a ha)⁻¹).toMonoidHom : GG p → GG p) = fun x => (tG a ha)⁻¹ * x * (tG a ha)⁻¹⁻¹`.
+
+Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`.
+-/
 theorem isCompact_KD (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) {a : (D.s.atP p).Fp} (ha : a ≠ 0) :
     IsCompact (KD M a ha : Set (GG p)) := by
   haveI := (D.s.atP p).lf
@@ -301,6 +415,19 @@ theorem isCompact_KD (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) {a : (D.s.
   rw [e]
   exact (continuous_const.mul continuous_id).mul continuous_const
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := topE (M p)`. Use `haveI := t2E (M p)`. Establish `hBc : IsCompact ((KD M a ha ⊓ S' : Subgroup (GG p)) : Set (GG p))` using `(isCompact_KD M hRc ha).inter_right hS`. Use `haveI : CompactSpace (KD M a ha ⊓ S' : Subgroup (GG p)) := isCompact_iff_compactSpace.1 hBc`.
+
+Establish `hR : IsOpen ((M p).R : Set (D.s.atP p).Ep)` using `PI.ProdFormulaE.ROpen.isOpen_R (M p)`. Establish `h1 : Continuous fun x : GG p => ((x.1 : GLp p) : MP p)` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous fun x : GG p => ((x.2.unop : GLp p) : MP p)` using `Units.continuous_val.comp (MulOpposite.continuous_unop.comp continuous_snd)`. Set `Eset : Set (GG p)` to `(⋂ i, ⋂ j, (fun x : GG p => ((x.1 : GLp p) : MP p) i j) ⁻¹' ((M p).R : Set _)) ∩ ⋂ i, ⋂ j, (fun x : GG p => ((x.2.unop : GLp p) : MP p) i j) ⁻¹' ((M p).R : Set _)`. Establish `hE : IsOpen Eset` using `(isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hR.preimage (h1.matrix_elem i j)).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hR.preimage (h2.matrix_elem i j))`.
+
+Establish `hopen : IsOpen (((KP M p ⊓ S').subgroupOf (KD M a ha ⊓ S') : Subgroup _) : Set (KD M a ha ⊓ S' : Subgroup (GG p)))`. Establish `e : (((KP M p ⊓ S').subgroupOf (KD M a ha ⊓ S') : Subgroup _) : Set (KD M a ha ⊓ S' : Subgroup (GG p))) = Subtype.val ⁻¹' Eset`. Use extensionality with `y`. Take `⟨hK, hS'⟩` from `Subgroup.mem_inf.1 y.2`. Rewrite `hK` using `[mem_KD]`.
+
+Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Subgroup.mem_inf, Set.mem_preimage, Eset, Set.mem_inter_iff, Set.mem_iInter, mem_KP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hl, hu⟩, -⟩`. Conclude with `⟨hl.2.2, hu.2.2⟩`. Introduce and unpack `⟨hl, hu⟩`.
+
+Conclude with `⟨⟨intLow_of_scaled M ha hK.1 hl, intUp_of_scaled M ha hK.2 hu⟩, hS'⟩`. Rewrite using `[e]`. Conclude with `hE.preimage continuous_subtype_val`. Use `Subgroup.quotient_finite_of_isOpen _ hopen` as an intermediate fact. Use `show ((KP M p ⊓ S').subgroupOf (KD M a ha ⊓ S')).index ≠ 0`.
+
+Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) {a : (D.s.atP p).Fp} (ha : a ≠ 0)
     (S' : Subgroup (GG p)) (hS : IsClosed (S' : Set (GG p))) :
     (KP M p ⊓ S').relIndex (KD M a ha ⊓ S') ≠ 0 := by
@@ -338,6 +465,11 @@ theorem relIndex_ne_zero (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) {a : (
   show ((KP M p ⊓ S').subgroupOf (KD M a ha ⊓ S')).index ≠ 0
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Take `⟨a, ha0, haR⟩` from `common_denom (M p) (fun k : (Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) ⊕ (Fin (D.R.rS + 1) × Fin (D.R.rS + 1)) => Sum.elim (fun ij => ((c.1 : GLp p) : MP p) ij.1 ij.2) (fun ij => ((c.2.unop : GLp p) : MP p) ij.1 ij.2) k)`. Establish `ha : (a : (D.s.atP p).Fp) ≠ 0` using `fun h => ha0 (Subtype.ext h)`. Establish `hcK : c ∈ KD M (a : (D.s.atP p).Fp) ha` using `(mem_KD M ha).2 ⟨intLow_scale_of M ha a.2 hc1 fun i j => haR (Sum.inl (i, j)), intUp_scale_of M ha a.2 hc2 fun i j => haR (Sum.inr (i, j))⟩`. Establish `hB : cj c (KD M (a : (D.s.atP p).Fp) ha ⊓ S') = KD M (a : (D.s.atP p).Fp) ha ⊓ S'`.
+
+Use extensionality with `g`. Rewrite using `[mem_cj, Subgroup.mem_inf, Subgroup.mem_inf, ← mem_cj, ← mem_cj, cj_self hcK, hcS]`. Conclude with `unimod_of_norm _ _ c (inf_le_inf_right S' (KP_le_KD M ha a.2)) hB (relIndex_ne_zero M hRc ha S' hS)`.
+-/
 theorem idxRatio_norm (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) (S' : Subgroup (GG p))
     (hS : IsClosed (S' : Set (GG p))) (c : GG p) (hc1 : IsLoUni ((c.1 : GLp p) : MP p))
     (hc2 : IsUpUni ((c.2.unop : GLp p) : MP p)) (hcS : cj c S' = S') :
@@ -355,6 +487,11 @@ theorem idxRatio_norm (hRc : IsCompact ((M p).R : Set (D.s.atP p).Ep)) (S' : Sub
     rw [mem_cj, Subgroup.mem_inf, Subgroup.mem_inf, ← mem_cj, ← mem_cj, cj_self hcK, hcS]
   exact unimod_of_norm _ _ c (inf_le_inf_right S' (KP_le_KD M ha a.2)) hB (relIndex_ne_zero M hRc ha S' hS)
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := topE (M p)`. Use `haveI := t2E (M p)`. Establish `h1 : Continuous fun x : GG p => ((x.1 : GLp p) : MP p)` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous fun x : GG p => ((x.2.unop : GLp p) : MP p)` using `Units.continuous_val.comp (MulOpposite.continuous_unop.comp continuous_snd)`.
+
+Conclude with `((isClosed_loUni M p).preimage h1).inter (((isClosed_upUni M p).preimage h2).inter (isClosed_eq ((h1.mul continuous_const).mul h2) continuous_const))`.
+-/
 theorem isClosed_StP (w : Point D.host.E (D.R.rS + 1)) :
     IsClosed ((StP M δ u u' w p : Subgroup (GG p)) : Set (GG p)) := by
   haveI := (D.s.atP p).lf
@@ -366,6 +503,13 @@ theorem isClosed_StP (w : Point D.host.E (D.R.rS + 1)) :
   exact ((isClosed_loUni M p).preimage h1).inter (((isClosed_upUni M p).preimage h2).inter
     (isClosed_eq ((h1.mul continuous_const).mul h2) continuous_const))
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Use `haveI := (D.s.atP p).char0`. Establish `hRc` using `R_compact (M p)`. Introduce `s hs`. Establish `hAg : Ag M δ u u' (p` using `p) w = KP M p ⊓ StP M δ u u' w p := by`.
+
+Use extensionality with `x`. Rewrite using `[Ag, Subgroup.mem_map, Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨(mem_KP M).2 hy, y.2⟩`.
+
+Introduce and unpack `⟨hK, hS⟩`. Conclude with `⟨⟨x, hS⟩, hK, rfl⟩`. Rewrite using `[hAg]`. Conclude with `idxRatio_norm M hRc _ (isClosed_StP M δ u u' w) s hs.1 hs.2.1 (cj_self hs)`.
+-/
 theorem unimodAt_holds (w : Point D.host.E (D.R.rS + 1)) : UnimodAt M δ u u' (p := p) w := by
   haveI := (D.s.atP p).lf
   haveI := (D.s.atP p).char0
@@ -384,6 +528,9 @@ theorem unimodAt_holds (w : Point D.host.E (D.R.rS + 1)) : UnimodAt M δ u u' (p
 
 variable (F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
+/- English proof (translation)
+The claim follows from `locIdxC_of_count M δ u u' F0 what₂ fun γ w F' L U hE p => ⟨h γ w F' L U hE p, unimodAt_holds M δ u u' w⟩`.
+-/
 theorem locIdxC_of_countAt (h : ∀ (γ : Formalism.L2.SG.TermDef.Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (L U : Formalism.L2.SG.PairVal.MatR D)
     (hE : Formalism.L2.SG.Pf.ZsVolCut.HypE M δ u u' F0 what₂ γ w F' L U) (p : PlF D),

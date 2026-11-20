@@ -11,40 +11,79 @@ section Lin
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[hv, Matrix.mulVec_add, dotProduct_add]`.
+-/
 private theorem hv_add_l (M : Matrix (Fin n) (Fin n) ℂ) (x x' y : Fin n → ℂ) :
     hv M (x + x') y = hv M x y + hv M x' y := by
   simp [hv, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[hv, star_add, add_dotProduct]`.
+-/
 private theorem hv_add_r (M : Matrix (Fin n) (Fin n) ℂ) (x y y' : Fin n → ℂ) :
     hv M x (y + y') = hv M x y + hv M x y' := by
   simp [hv, star_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hv, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 private theorem hv_smul_l (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x y : Fin n → ℂ) :
     hv M (c • x) y = c * hv M x y := by
   simp [hv, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[hv, star_smul, smul_dotProduct]`.
+-/
 private theorem hv_smul_r (M : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (x y : Fin n → ℂ) :
     hv M x (c • y) = (starRingEnd ℂ) c * hv M x y := by
   simp [hv, star_smul, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hv, Matrix.mulVec_neg, dotProduct_neg]`.
+-/
 private theorem hv_neg_l (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) : hv M (-x) y = -hv M x y := by
   simp [hv, Matrix.mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `[hv, star_neg, neg_dotProduct]`.
+-/
 private theorem hv_neg_r (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) : hv M x (-y) = -hv M x y := by
   simp [hv, star_neg, neg_dotProduct]
 
+/- English proof (translation)
+Establish `e : (starRingEnd ℂ) (hv M x y) = star (star y ⬝ᵥ (M *ᵥ x))` using `rfl`. Rewrite using `[e, ← Matrix.star_dotProduct_star, star_star, Matrix.star_mulVec, h.eq, ← Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 private theorem hv_conj {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) (x y : Fin n → ℂ) :
     hv M y x = (starRingEnd ℂ) (hv M x y) := by
   have e : (starRingEnd ℂ) (hv M x y) = star (star y ⬝ᵥ (M *ᵥ x)) := rfl
   rw [e, ← Matrix.star_dotProduct_star, star_star, Matrix.star_mulVec, h.eq, ← Matrix.dotProduct_mulVec]
   rfl
 
+/- English proof (translation)
+Use `congrArg Complex.im (hv_conj h x x)` as an intermediate fact. Simplify using `only [Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem hv_self_im {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) (x : Fin n → ℂ) :
     (hv M x x).im = 0 := by
   have := congrArg Complex.im (hv_conj h x x)
   simp only [Complex.conj_im] at this
   linarith
 
+/- English proof (translation)
+Establish `hu : IsUnit S.det` using `hS.isUnit`. Use `set c := S⁻¹ *ᵥ y with hc`. Establish `hSc : S *ᵥ c = y` using `by rw [hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `e1 : c = c i₀ • (Pi.single i₀ 1 : Fin n → ℂ) + Function.update c i₀ 0`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `e2 : (fun i => (if i = i₀ then (1 : ℂ) else -1) * c i) = c i₀ • (Pi.single i₀ 1 : Fin n → ℂ) - Function.update c i₀ 0`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+
+Use `⟨c i₀, S *ᵥ Function.update c i₀ 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hSc, e1]`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hz]`. Establish `e3 : Function.update c i₀ 0 = ∑ i, (Function.update c i₀ 0 i) • (Pi.single i 1 : Fin n → ℂ)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e3, Matrix.mulVec_sum]`. Establish `: ∀ (t : Finset (Fin n)) (f : Fin n → Fin n → ℂ), hv M (∑ i ∈ t, f i) z = ∑ i ∈ t, hv M (f i) z`. Introduce `t f`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => simp [hv]`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hv_add_l, ih]`. Rewrite using `[this]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hv_smul_l]`.
+
+Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hp i h, mul_zero]`. Rewrite using `[e2, Matrix.mulVec_sub, Matrix.mulVec_smul, hz]`.
+-/
 private theorem dec_place (M S : Matrix (Fin n) (Fin n) ℂ) (z : Fin n → ℂ) (i₀ : Fin n) (hS : S.det ≠ 0)
     (hz : S *ᵥ Pi.single i₀ 1 = z) (hp : ∀ i, i ≠ i₀ → hv M (S *ᵥ Pi.single i 1) z = 0) (y : Fin n → ℂ) :
     ∃ (a : ℂ) (y' : Fin n → ℂ), y = a • z + y' ∧ hv M y' z = 0 ∧
@@ -93,12 +132,18 @@ section Place
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[hv_smul_l, hv_smul_r]`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp only [map_neg, map_mul, map_one, Complex.conj_I] <;>`. Take the linear combination `(-hv M x y) * Complex.I_sq`.
+-/
 private theorem place_ne_inv (M : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) (hs : s = 1 ∨ s = -1) (x y : Fin n → ℂ) :
     hv M ((-(s * Complex.I)) • x) ((-(s * Complex.I)) • y) = hv M x y := by
   rw [hv_smul_l, hv_smul_r]
   rcases hs with rfl | rfl <;> simp only [map_neg, map_mul, map_one, Complex.conj_I] <;>
     linear_combination (-hv M x y) * Complex.I_sq
 
+/- English proof (translation)
+Rewrite using `[hv_smul_l]`. Establish `: -s * Complex.I * (-(s * Complex.I) * hv M x x) = -hv M x x`. Apply the tactic sequence `rcases hs with rfl | rfl <;> linear_combination (hv M x x) * Complex.I_sq`. Rewrite using `[this, Complex.neg_re]`.
+-/
 private theorem place_ne_pos (M : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) (hs : s = 1 ∨ s = -1) (x : Fin n → ℂ) :
     (-s * Complex.I * hv M ((-(s * Complex.I)) • x) x).re = -(hv M x x).re := by
   rw [hv_smul_l]
@@ -106,6 +151,9 @@ private theorem place_ne_pos (M : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) (hs : s 
     rcases hs with rfl | rfl <;> linear_combination (hv M x x) * Complex.I_sq
   rw [this, Complex.neg_re]
 
+/- English proof (translation)
+Establish `hzy : hv M z y' = 0` using `by rw [hv_conj h y' z, hy, map_zero]`. Simplify using `only [sub_eq_add_neg, hv_add_l, hv_add_r, hv_neg_l, hv_neg_r, hv_smul_l, hv_smul_r, hx, hzy]`. Apply the tactic sequence `constructor <;> ring`.
+-/
 private theorem pair_form {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) {z x' y' : Fin n → ℂ} (a b : ℂ)
     (hx : hv M x' z = 0) (hy : hv M y' z = 0) :
     hv M (a • z - x') (b • z - y') = hv M (a • z + x') (b • z + y') ∧
@@ -114,6 +162,9 @@ private theorem pair_form {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) {
   simp only [sub_eq_add_neg, hv_add_l, hv_add_r, hv_neg_l, hv_neg_r, hv_smul_l, hv_smul_r, hx, hzy]
   constructor <;> ring
 
+/- English proof (translation)
+Rewrite using `[hv_smul_l, hv_smul_r, (pair_form h a b hx hy).1]`. Apply the tactic sequence `rcases hs with rfl | rfl <;> simp only [map_neg, map_mul, map_one, Complex.conj_I] <;>`. Take the linear combination `(-hv M (a • z + x') (b • z + y')) * Complex.I_sq`.
+-/
 private theorem place_eq_inv {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) {z x' y' : Fin n → ℂ} (a b s : ℂ)
     (hs : s = 1 ∨ s = -1) (hx : hv M x' z = 0) (hy : hv M y' z = 0) :
     hv M ((s * Complex.I) • (a • z - x')) ((s * Complex.I) • (b • z - y')) = hv M (a • z + x') (b • z + y') := by
@@ -121,6 +172,9 @@ private theorem place_eq_inv {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian
   rcases hs with rfl | rfl <;> simp only [map_neg, map_mul, map_one, Complex.conj_I] <;>
     linear_combination (-hv M (a • z + x') (b • z + y')) * Complex.I_sq
 
+/- English proof (translation)
+Rewrite using `[hv_smul_l, (pair_form h a a hx hx).2, Complex.mul_conj]`. Establish `: -s * Complex.I * (s * Complex.I * ((Complex.normSq a : ℂ) * hv M z z - hv M x' x')) = (Complex.normSq a : ℂ) * hv M z z - hv M x' x'`. Apply the tactic sequence `rcases hs with rfl | rfl <;>`. Take the linear combination `(-((Complex.normSq a : ℂ) * hv M z z - hv M x' x')) * Complex.I_sq`. Rewrite using `[this, Complex.sub_re, Complex.re_ofReal_mul]`.
+-/
 private theorem place_eq_pos {M : Matrix (Fin n) (Fin n) ℂ} (h : M.IsHermitian) {z x' : Fin n → ℂ} (a s : ℂ)
     (hs : s = 1 ∨ s = -1) (hx : hv M x' z = 0) (him : (hv M z z).im = 0) :
     (-s * Complex.I * hv M ((s * Complex.I) • (a • z - x')) (a • z + x')).re =
@@ -166,6 +220,9 @@ private noncomputable def Eb {P : Type} [Fintype P] (H : P → Matrix (Fin n) (F
       simp only [e, smul_eq_mul, Finset.mul_sum]
       exact Finset.sum_congr rfl fun _ _ => by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem Eb_apply {P : Type} [Fintype P] (H : P → Matrix (Fin n) (Fin n) ℂ) (s : P → ℂ) (r : P → ℝ)
     (x y : P → Fin n → ℂ) :
     Eb H s r x y = ∑ v', r v' * (-(s v') * Complex.I * hv (H v') (x v') (y v')).re := rfl
@@ -197,9 +254,15 @@ private noncomputable def TT {P : Type} (v : P) (S : Matrix (Fin n) (Fin n) ℂ)
       simp [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hS.isUnit]
     · simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem TT_apply {P : Type} (v : P) (S : Matrix (Fin n) (Fin n) ℂ) (hS : S.det ≠ 0) (x : P → Fin n → ℂ) :
     TT v S hS x = Function.update x v (S⁻¹ *ᵥ x v) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem TT_symm_apply {P : Type} (v : P) (S : Matrix (Fin n) (Fin n) ℂ) (hS : S.det ≠ 0)
     (x : P → Fin n → ℂ) : (TT v S hS).symm x = Function.update x v (S *ᵥ x v) := rfl
 
@@ -209,6 +272,41 @@ end UpperTheory.Gal.W2
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Use `set R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ) := (TT v S hS).trans R₀ with hRdef`. Establish `hRa : ∀ x, R x = R₀ (TT v S hS x)` using `fun _ => rfl`. Establish `hJ0 : ∀ x, R.symm (Complex.I • R x) = (TT v S hS).symm (fun v' i => sg v' i * (s v' * Complex.I) * (TT v S hS x) v' i)`. Introduce `x`. Rewrite using `[LinearEquiv.symm_apply_eq, hRa x, hRa, LinearEquiv.apply_symm_apply, hR]`.
+
+Establish `hJne : ∀ x v', v' ≠ v → R.symm (Complex.I • R x) v' = (-(s v' * Complex.I)) • x v'`. Introduce `x v' h`. Rewrite using `[hJ0, TT_symm_apply, Function.update_of_ne h]`. Use function extensionality and compare the values at `i`. Simplify using `only [TT_apply, Function.update_of_ne h, hsg v' h i, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hJv : ∀ x, ∃ (a : ℂ) (y' : Fin n → ℂ), x v = a • z + y' ∧ hv (H v) y' z = 0 ∧ R.symm (Complex.I • R x) v = (s v * Complex.I) • (a • z - y')`. Introduce `x`. Take `⟨a, y', e1, e2, e3⟩` from `dec_place (H v) S z i₀ hS hSz hSp (x v)`. Use `⟨a, y', e1, e2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hJ0, TT_symm_apply, Function.update_self, ← e3, ← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [TT_apply, Function.update_self, hsgv i, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hzim : (hv (H v) z z).im = 0` using `hv_self_im (hH v) z`. Establish `hterm : ∀ x v', 0 ≤ r v' * (-(s v') * Complex.I * hv (H v') (R.symm (Complex.I • R x) v') (x v')).re ∧ (x v' ≠ 0 → 0 < r v' * (-(s v') * Complex.I * hv (H v') (R.symm (Complex.I • R x) v') (x v')).re)`. Introduce `x v'`. Break down `eq_or_ne v' v with rfl | h` into its components or cases. Take `⟨a, y', e1, e2, e3⟩` from `hJv x`.
+
+Rewrite using `[e3, e1, place_eq_pos (hH v') a (s v') (hs v') e2 hzim]`. Establish `hy0 : (hv (H v') y' y').re ≤ 0`. Distinguish the cases in `hy : y' = 0`. Substitute `hy` using the available equality. Simplify using `[hv]`.
+
+Conclude with `(hperp y' hy e2).le`. Establish `ha0 : 0 ≤ Complex.normSq a` using `Complex.normSq_nonneg a`. Establish `hm : 0 ≤ Complex.normSq a * (hv (H v') z z).re` using `mul_nonneg ha0 hz.le`. Use `⟨mul_nonneg (hr v').le (by linarith), fun hx => mul_pos (hr v') ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y' = 0`.
+
+Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hy]`. Simplify using the standard rewrite rules.
+
+Use `mul_pos (Complex.normSq_pos.2 ha) hz` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hperp y' hy e2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hJne x v' h, place_ne_pos (H v') (s v') (hs v')]`.
+
+Establish `hy0 : (hv (H v') (x v') (x v')).re ≤ 0`. Distinguish the cases in `hy : x v' = 0`. Rewrite using `[hy]`. Simplify using `[hv]`. Conclude with `(hneg v' h _ hy).le`.
+
+Use `⟨mul_nonneg (hr v').le (by linarith), fun hx => mul_pos (hr v') ?_⟩` and prove the remaining obligations. Use `hneg v' h _ hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : ∀ x y v', hv (H v') (R.symm (Complex.I • R x) v') (R.symm (Complex.I • R y) v') = hv (H v') (x v') (y v')`. Introduce `x y v'`.
+
+Break down `eq_or_ne v' v with rfl | h` into its components or cases. Take `⟨a, x', e1, e2, e3⟩` from `hJv x`. Take `⟨b, y', f1, f2, f3⟩` from `hJv y`. Rewrite using `[e3, f3, e1, f1, place_eq_inv (hH v') a b (s v') (hs v') e2 f2]`. Rewrite using `[hJne x v' h, hJne y v' h, place_ne_inv (H v') (s v') (hs v')]`.
+
+Take `⟨Hm, h1, h2, h3⟩` from `hJ g ((Eb H s r).compl₁₂ R.symm.toLinearMap R.symm.toLinearMap) (by`. Introduce `a`. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, Eb_apply]`. Use `Finset.sum_eq_zero fun v' _ => ?_` and prove the remaining obligations. Establish `him` using `hv_self_im (hH v') (R.symm a v')`.
+
+Apply the tactic sequence `rcases hs v' with e | e <;> simp [e, Complex.mul_re, him])`. Use the proof step `(by`. Introduce `a b`. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, Eb_apply]`. Use `Finset.sum_congr rfl fun v' _ => ?_` and prove the remaining obligations.
+
+Use `hinv (R.symm a) (R.symm b) v'` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[this])`. Use the proof step `(by`. Introduce `a ha`.
+
+Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, Eb_apply]`. Establish `hx : R.symm a ≠ 0` using `fun h => ha (by simpa using congrArg R h)`. Take `⟨v₁, hv₁⟩` from `Function.ne_iff.1 hx`. Establish `ht` using `hterm (R.symm a)`. Rewrite `ht` using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `Finset.sum_pos' (fun v' _ => (ht v').1) ⟨v₁, Finset.mem_univ _, (ht v₁).2 hv₁⟩)`. Use `⟨Hm, h1, h2, fun x y => ?_⟩` and prove the remaining obligations. Use `h3 (R x) (R y)` as an intermediate fact. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at this`. Conclude with `this`.
+-/
 private theorem core {P : Type} [Fintype P] {n g : ℕ} (hJ : HermOfJ) (H : P → Matrix (Fin n) (Fin n) ℂ)
     (s : P → ℂ) (r : P → ℝ) (v : P) (z : Fin n → ℂ) (i₀ : Fin n) (S : Matrix (Fin n) (Fin n) ℂ)
     (sg : P → Fin n → ℂ) (R₀ : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ))
@@ -311,6 +409,39 @@ private theorem core {P : Type} [Fintype P] {n g : ℕ} (hJ : HermOfJ) (H : P �
 
 end UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hSig hLB hTI hHJ hPT p _ D G L ha v hv1 t₀ ht₀ ρ hρ A B z`. Establish `hz : 0 < (hv (GlobalTheory.LKCx.herm G v B.β) z.1 z.1).re` using `z.2`. Establish `hsig` using `fun v' => hSig p G B v'`. Take `⟨i₀, S, hS, hSz, hSp⟩` from `hLB G.n (GlobalTheory.LKCx.herm G v B.β) z.1 (hsig v).1 hz`. Take `⟨R₀, hR₁, hR₂⟩` from `hTI p D G L ha v hv1 t₀ ht₀ ρ hρ i₀`.
+
+Establish `hPl` using `hPT p D G L ha v hv1 t₀ ht₀`. Establish `hs : ∀ v', sgnV L v' = 1 ∨ sgnV L v' = -1` using `fun v' => by`. Apply the tactic sequence `unfold sgnV; split_ifs <;> simp`. Take `⟨Hm, h1, h2, h3⟩` from `core hHJ (fun v' => GlobalTheory.LKCx.herm G v' B.β) (sgnV L) A.r v z.1 i₀ S (fun v' i => if v' = v ∧ i = i₀ then 1 else -1) R₀ A.r_pos hs (fun v' => (hsig v').1) (fun v' hne x hx => (hsig v').2.2 (fun h => hne (hPl.1 v' h)) x hx) hz (fun x hx hxz => ((hsig v).2.1 hv1).2 z.1 x hz …`. Set `R : Arch G ≃ₗ[ℝ] (Fin D.g → ℂ)` to `(TT v S hS).trans R₀`.
+
+Establish `hRa : ∀ x, R x = R₀ (TT v S hS x)` using `fun _ => rfl`. Set `Q : VQ D →+ (Fin D.g → ℂ)` to `(R.toLinearMap.toAddMonoidHom).comp A.th`. Establish `hQ : ∀ w, Q w = R (A.th w)` using `fun _ => rfl`. Use `⟨Q, R.toLinearMap, ⟨?_, ?_, Hm, h1, h2, ?_⟩, fun w => rfl, ?_⟩` and prove the remaining obligations. Introduce `c w`.
+
+Take `⟨c', rfl⟩` from `hρ.onto c`. Establish `e1 : A.th (actQ D (algebraMap (𝓞 D.F) D.O c') w) = fun v' => v'.embedding (L.e (c' : D.F)) • A.th w v'`. Use function extensionality and compare the values at `v'`. Rewrite using `[← L.rep_F c', A.act, G.psi_F]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Matrix.scalar_apply, Matrix.diagonal_apply]`. Establish `e2 : TT v S hS (fun v' => v'.embedding (L.e (c' : D.F)) • A.th w v') = fun v' => v'.embedding (L.e (c' : D.F)) • (TT v S hS (A.th w)) v'`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+
+Simplify using `[TT_apply, Matrix.mulVec_smul]`. Simplify using `[TT_apply, h]`. Rewrite using `[hQ, hQ, e1, hRa, hRa, e2, hR₂]`. Establish `e : Set.range Q = R '' Set.range A.th`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨A.th w, ⟨w, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨w, rfl⟩, rfl⟩`. Conclude with `⟨w, rfl⟩`.
+
+Establish `e' : (R '' Set.range A.th) = (R.toLinearMap : Arch G →ₗ[ℝ] (Fin D.g → ℂ)) '' Set.range A.th` using `rfl`. Rewrite using `[e, e', ← Submodule.map_span, A.span, Submodule.map_top]`. Conclude with `LinearEquiv.range R`. Introduce `u w`. Rewrite using `[hQ, hQ, hRa, hRa, h3, Eb_apply, formB, A.form]`.
+
+Use `Finset.sum_congr rfl fun v' _ => ?_` and prove the remaining obligations. Rewrite using `[A.act]`. Simplify using `only [hv, GlobalTheory.LKCx.herm, Matrix.mulVec_mulVec]`. Establish `eS : S⁻¹ *ᵥ z.1 = Pi.single i₀ 1`. Rewrite using `[← hSz, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hS.isUnit, Matrix.one_mulVec]`.
+
+Establish `eT : ∀ c : ℂ, TT v S hS (Pi.single v (c • z.1)) = Pi.single v (c • (Pi.single i₀ 1 : Fin G.n → ℂ))`. Introduce `c`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+
+Simplify using `[TT_apply, Matrix.mulVec_smul, eS]`. Simplify using `[TT_apply, h]`. Establish `e1 : TT v S hS (Pi.single v z.1) = Pi.single v (Pi.single i₀ 1 : Fin G.n → ℂ)`. Simplify using `using eT 1`. Establish `e2` using `hR₁ (Pi.single v (Pi.single i₀ 1 : Fin G.n → ℂ))`.
+
+Establish `e3 : (fun v' i => (if v' = v ∧ i = i₀ then (1 : ℂ) else -1) * (sgnV L v' * Complex.I) * (Pi.single v (Pi.single i₀ 1 : Fin G.n → ℂ) : Arch G) v' i) = (Pi.single v ((sgnV L v * Complex.I) • (Pi.single i₀ 1 : Fin G.n → ℂ)) : Arch G)`. Use function extensionality and compare the values at `v' i`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Distinguish the cases in `hi : i = i₀`.
+
+Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `[h]`. Rewrite `e2` using `[e3]`.
+
+Use `show R _ = _ • R _`. Rewrite using `[hRa, hRa, eT, e1]`. Break down `hs v with e | e` into its components or cases. Rewrite `e2`, the goal using `[e]`. Simplify using `using e2`.
+
+Rewrite `e2`, the goal using `[e]`. Establish `e4 : (Pi.single v (((-1 : ℂ) * Complex.I) • (Pi.single i₀ 1 : Fin G.n → ℂ)) : Arch G) = -(Pi.single v (Complex.I • (Pi.single i₀ 1 : Fin G.n → ℂ)) : Arch G)`. Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite `e2` using `[e4, map_neg]`. Rewrite using `[neg_one_mul, neg_smul, ← e2, neg_neg]`.
+-/
 theorem UpperTheory.Gal.W2.rPer_of :
     UpperTheory.Gal.W2.SigB → UpperTheory.Gal.W2.LineBasis → UpperTheory.Gal.W2.TypeIso → UpperTheory.Gal.W2.HermOfJ → UpperTheory.Gal.W2.PlaceT → UpperTheory.Gal.W2.RPer := by
   intro hSig hLB hTI hHJ hPT p _ D G L ha v hv1 t₀ ht₀ ρ hρ A B z

@@ -19,16 +19,28 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, fun _ _ => rfl, fun _ _ => ⟨0, fun _ _ _ => by simp⟩⟩`.
+-/
 private theorem bd_zero : Bd (fun _ : GL (Fin 2) (A E) => (0 : ℂ)) :=
   ⟨continuous_const, fun _ _ => rfl, fun _ _ => ⟨0, fun _ _ _ => by simp⟩⟩
 
+/- English proof (translation)
+Simplify using `[II, UI, mean]`.
+-/
 private theorem ii_zero (N : MeasE E) : II N (fun _ => 0) = 0 := by
   simp [II, UI, mean]
 
+/- English proof (translation)
+Simplify using `using (iiLaws E N Ψ h).1 Ψ' h' 1`.
+-/
 private theorem ii_add (N : MeasE E) {Ψ Ψ' : GL (Fin 2) (A E) → ℂ} (h : Bd Ψ) (h' : Bd Ψ') :
     (II N fun x => Ψ x + Ψ' x) = II N Ψ + II N Ψ' := by
   simpa using (iiLaws E N Ψ h).1 Ψ' h' 1
 
+/- English proof (translation)
+Simplify `(iiLaws E N _ bd_zero).1 Ψ h c` using `[ii_zero]`.
+-/
 private theorem ii_smul (N : MeasE E) {Ψ : GL (Fin 2) (A E) → ℂ} (h : Bd Ψ) (c : ℂ) :
     (II N fun x => c * Ψ x) = c * II N Ψ := by
   simpa [ii_zero] using (iiLaws E N _ bd_zero).1 Ψ h c
@@ -37,6 +49,17 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ D W M N P hn π hπ`. Establish `hb : ∀ (x : span W M π) (y : P.V), Bd fun g => x.1.1 g * y.1.1 g` using `fun x y => (prodBd E D W M N P π x.1 x.2 y.1 y.2).1`. Establish `hc : ∀ (x : span W M π) (y : P.V), PosC fun g => x.1.1 g * y.1.1 g` using `fun x y => (prodBd E D W M N P π x.1 x.2 y.1 y.2).2 hπ hn`. Establish `st : IsStable (span W M π)` using `UpperTheory.ConvolutionTheory.R2.stable ℚ E D W M π`. Set `B : span W M π →ₗ[ℂ] P.V →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun x y => II N fun g => x.1.1 g * y.1.1 g) (fun x x' y => (congrArg (II N) (funext fun g => add_mul (x.1.1 g) (x'.1.1 g) (y.1.1 g))).trans (ii_add N (hb x y) (hb x' y))) (fun c x y => (congrArg (II N) (funext fun g => mul_assoc c (x.1.1 g) (y.1.1 g))).trans (ii_ …`.
+
+Establish `hB : ∀ x y, B x y = II N fun g => x.1.1 g * y.1.1 g` using `fun _ _ => rfl`. Use `⟨B, ⟨st, P.stable, fun k x y => ?_, fun k x y => ?_, fun X x y => ?_⟩, hB, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(iiLaws E N _ (hb x y)).2 (hc x y) (finGL E 2 k)`. Conclude with `(iiLaws E N _ (hb x y)).2 (hc x y) (infGL E 2 (Unitary.toUnits k))`. Conclude with `iiLie E N x.1 y.1 X (hb x y) (hc x y) (hb ⟨_, st (.lie X) _ x.2⟩ y) (hb x ⟨_, P.stable (.lie X) _ y.2⟩)`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hcx` using `UpperTheory.ConvolutionTheory.R2.H.spanCont ℚ E D W M π x.1 x.2`. Establish `hk` using `killW E D x.1.1 hcx.1 hcx.2 hx`. Establish `h0 : ∀ t : (A E)ˣ, (mean N fun g => x.1.1 (g * aE t) * y.1.1 (g * aE t)) = 0`. Introduce `t`.
+
+Establish `e : ∫ h in N.D, y.1.1 (gl h * aE t) ∂N.μ = 0` using `meanZero decE E D W M N P y.1 y.2 (aE t)`. Use `show ∫ h in N.D, x.1.1 (gl h * aE t) * y.1.1 (gl h * aE t) ∂N.μ = 0`. Simplify using `only [hk]`. Rewrite using `[integral_const_mul, e, mul_zero]`. Use `show (II N fun g => x.1.1 g * y.1.1 g) = 0`.
+
+Simplify using `[II, UI, h0]`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.pairEx :
     PairEx := by
   intro E _ _ _ D W M N P hn π hπ

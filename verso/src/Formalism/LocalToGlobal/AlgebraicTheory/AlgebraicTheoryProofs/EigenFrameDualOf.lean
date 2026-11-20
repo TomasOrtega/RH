@@ -13,6 +13,11 @@ open Formalism.L2.Ker (Amb DVar)
 
 namespace CapelliMinorMembership
 
+/- English proof (translation)
+Establish `hq : ‖(N : ℚ_[p])‖ = 1`. Conclude with `Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 h)`. Establish `e1 : ‖(N : PadicAlgCl p)‖ = 1`. Rewrite using `[← hq, ← PadicAlgCl.norm_extends]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← e1, ← PadicComplex.norm_extends]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_natCast (p : ℕ) [Fact p.Prime] {N : ℕ} (h : ¬ p ∣ N) : ‖(N : ℂ_[p])‖ = 1 := by
   have hq : ‖(N : ℚ_[p])‖ = 1 := by
     exact Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 h)
@@ -24,10 +29,20 @@ theorem norm_natCast (p : ℕ) [Fact p.Prime] {N : ℕ} (h : ¬ p ∣ N) : ‖(N
 
 end CapelliMinorMembership
 
+/- English proof (translation)
+Introduce `E _ _ p _ ι hd τ₀`. Conclude with `h p E _ (NumberField.RingOfIntegers.basis E) ι hd τ₀`.
+-/
 theorem eigenFrameDual_of (h : ReciprocityTheory.EigenFramesTheory.EigenFrameDual.{0, 0}) : EigenFrameDual := by
   intro E _ _ p _ ι hd τ₀
   exact h p E _ (NumberField.RingOfIntegers.basis E) ι hd τ₀
 
+/- English proof (translation)
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hα : α = α₁`. Substitute `hα` using the available equality. Distinguish the cases in `hβ : β = β₁`. Substitute `hβ` using the available equality.
+
+Distinguish the cases in `h' : β = β' ∧ α = α'`. Simplify using `only [vecE, h', and_self, if_true]`. Rewrite using `[map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [RingEquiv.coe_toRingHom]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[vecE, h']`. Simplify using `[vecE, hβ, Ne.symm hβ]`. Simplify using `[vecE, hα, Ne.symm hα]`.
+-/
 theorem CapelliMinorMembership.key_term {X : Fields} (A : Amb X) {a b : ℕ} {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {n₀ : ℕ}
     (hn0 : (n₀ : ℂ_[p]) ≠ 0) (r : X.Tau → Module.Free.ChooseBasisIndex ℤ (𝓞 X.E) → ℂ_[p])
     (τ₁ τ : X.Tau) (β₁ β' β : Fin b) (α₁ α' α : Fin a) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 X.E)) :
@@ -53,11 +68,31 @@ theorem CapelliMinorMembership.key_term {X : Fields} (A : Amb X) {a b : ℕ} {p 
     · simp [vecE, hβ, Ne.symm hβ]
   · simp [vecE, hα, Ne.symm hα]
 
+/- English proof (translation)
+Simplify using `[Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+-/
 theorem CapelliMinorMembership.collapse {K κ B C : Type} [AddCommMonoid K] [Fintype κ] [Fintype B] [DecidableEq B]
     [Fintype C] [DecidableEq C] (g : κ → K) (β₁ : B) (α₁ : C) :
     ∑ i, ∑ β : B, ∑ α : C, (if α = α₁ then (if β = β₁ then g i else 0) else 0) = ∑ i, g i := by
   simp [Finset.sum_ite_eq', Finset.sum_ite_eq]
 
+/- English proof (translation)
+Introduce `X A a b N N' L p _ ι hd hinj hcD hn`. Take `⟨n₀, hn₀, hv⟩` from `hn`. Use `choose r hr1 hr2 using fun τ : X.Tau => h X.E p ι hd (X.embC A.σ₀ τ)`. Establish `hn0 : (n₀ : ℂ_[p]) ≠ 0`. Introduce `h0`.
+
+Use `CapelliMinorMembership.norm_natCast p hn₀` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Use `⟨Module.Free.ChooseBasisIndex ℤ (𝓞 X.E) × Fin b × Fin a, inferInstance, fun j => (n₀ : ℂ) • vecE A.σ₀ ((NumberField.RingOfIntegers.basis X.E j.1 : 𝓞 X.E) : X.E) j.2.1 j.2.2, fun j k => if j.2.1 = k.2.1 ∧ j.2.2 = k.2.2 then ι (A.cD k.1) * r k.1 j.1 * (n₀ : ℂ_[p])⁻¹ else 0, fun j = …` and prove the remaining obligations. Introduce `j k dsimp only split_ifs`.
+
+Rewrite using `[norm_mul, norm_mul, norm_inv, CapelliMinorMembership.norm_natCast p hn₀, inv_one, mul_one] first`. Consider the case `exact mul_le_one₀ (hcD _) (norm_nonneg _) (hr1 _ _)`. Consider the case `nlinarith [norm_nonneg (ι (A.cD k.1)), norm_nonneg (r k.1 j.1), hcD k.1, hr1 k.1 j.1]`. Simplify using the standard rewrite rules. Introduce `i k`.
+
+Take `⟨τ₁, β₁, α₁⟩` from `i`. Take `⟨τ, β', α'⟩` from `k`. Unfold `frameM`. Simplify using `only [Fintype.sum_prod_type]`. Simplify using `only [CapelliMinorMembership.key_term A ι hn0 r]`.
+
+Use `(CapelliMinorMembership.collapse _ β₁ α₁).trans ?_` and prove the remaining obligations. Distinguish the cases in `hc : β₁ = β' ∧ α₁ = α'`. Use `(Finset.sum_congr rfl (fun i _ => if_pos hc)).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hr2 τ (X.embC A.σ₀ τ₁)]`. Take `⟨rfl, rfl⟩` from `hc`.
+
+Distinguish the cases in `ht : τ₁ = τ`. Substitute `ht` using the available equality. Simplify using the standard rewrite rules. Establish `hne : X.embC A.σ₀ τ₁ ≠ X.embC A.σ₀ τ` using `fun e => ht (hinj e)`. Rewrite using `[if_neg hne, mul_zero, if_neg]`.
+
+Introduce `he`. Conclude with `ht (Prod.mk.inj he).1`. Use `(Finset.sum_congr rfl (fun i _ => if_neg hc)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const_zero, if_neg]`. Introduce `he`.
+
+Establish `h2` using `(Prod.mk.inj he).2`. Conclude with `hc ⟨(Prod.mk.inj h2).1, (Prod.mk.inj h2).2⟩`.
+-/
 theorem kerFrame_of (h : EigenFrameDual) : KerFrame := by
   intro X A a b N N' L p _ ι hd hinj hcD hn
   obtain ⟨n₀, hn₀, hv⟩ := hn

@@ -23,6 +23,11 @@ open GlobalTheory.CellDec GlobalTheory.ZEul
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n : ℕ, a = -((n + 1 : ℕ) : ℤ)` from `⟨(-a - 1).toNat, by omega⟩`. Establish `h0 : ϖ ≠ 0` using `fun e => by simp [IsUnifV, e] at h`. Establish `h1 : Valued.v ϖ < 1`. Rewrite using `[h]; exact (by decide : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) < 1)`. Rewrite using `[zpow_neg, zpow_natCast, map_inv₀, map_pow]`.
+
+Establish `hp : Valued.v ϖ ^ (n + 1) < 1` using `pow_lt_one₀ zero_le' h1 (Nat.succ_ne_zero n)`. Establish `hp0 : Valued.v ϖ ^ (n + 1) ≠ 0` using `pow_ne_zero _ ((Valuation.ne_zero_iff _).2 h0)`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 hp0)).2 hp`.
+-/
 theorem one_lt_v_zpow {v : HeightOneSpectrum (𝓞 E)} {ϖ : v.adicCompletion E} (h : IsUnifV E v ϖ) {a : ℤ}
     (ha : a < 0) : 1 < Valued.v (ϖ ^ a) := by
   obtain ⟨n, rfl⟩ : ∃ n : ℕ, a = -((n + 1 : ℕ) : ℤ) := ⟨(-a - 1).toNat, by omega⟩
@@ -40,6 +45,43 @@ namespace GlobalTheory.CellLastRow
 
 open GlobalTheory.CellDec GlobalTheory.ZEul
 
+/- English proof (translation)
+Introduce `E _ _ _ m S ϖ hϖ N hlat hloc l g hg`. Take `⟨u, hu, k, hk, rfl⟩` from `hg`. Establish `hk' : ∀ v ∉ S, compV E (m + 1) v k ∈ GlobalTheory.LFun.KGL v (m + 1)`. Simplify `hk` using `only [US, Subgroup.mem_iInf, Subgroup.mem_comap]`. Use `set c : (Af E)ˣ := adl ϖ (Finsupp.mapRange (fun x : Fin (m + 1) → ℤ => x (Fin.last m)) rfl l.1) with hc`.
+
+Establish `hev : ∀ (x : Af E) v, x v = pLoc E v x` using `fun _ _ => rfl`. Establish `hcv : ∀ v, pLoc E v (c : Af E) = ((ϖ v ^ l.1 v (Fin.last m) : (v.adicCompletion E)ˣ) : v.adicCompletion E)`. Introduce `v`. Express the relevant statement in the definitionally equal form `((ϖ v ^ (Finsupp.mapRange (fun x : Fin (m + 1) → ℤ => x (Fin.last m)) rfl l.1) v : (v.adicCompletion E)ˣ) : v.adicCompletion E) = _`. Rewrite using `[Finsupp.mapRange_apply]`.
+
+Establish `hrow : ∀ i, lastRow (u * k) i = (k : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) i`. Introduce `i`. Use `congrFun (GlobalTheory.RSLocalPart.single_vecMul_unip (ℓ := Fin.last m) (fun j => Fin.le_last j) hu k) i` as an intermediate fact. Simplify `this` using `[lastRow, Units.val_mul, Matrix.single_one_vecMul]`. Establish `hrow' : ∀ i, GlobalTheory.RSJ.pFin E (lastRow (tl (m + 1) ϖ l.1 * (u * k)) i) = (c : Af E) * GlobalTheory.RSJ.pFin E (lastRow (u * k) i)`.
+
+Introduce `i`. Simplify using `only [lastRow, tl_eq_diagT, Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_mul, map_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.RSJ.pFin E (1 - sFin E 1 + sFin E (c : Af E)) = _`. Rewrite using `[map_add, map_sub, map_one]`.
+
+Express the relevant statement in the definitionally equal form `1 - 1 + (c : Af E) = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hcomp : ∀ v i, pLoc E v (GlobalTheory.RSJ.pFin E (lastRow (u * k) i)) = (compV E (m + 1) v k).val (Fin.last m) i`. Introduce `v i`. Rewrite using `[hrow]`.
+
+Both sides reduce to the same expression. Establish `hint : ∀ v ∉ S, ∀ i j, (compV E (m + 1) v k).val i j ∈ v.adicCompletionIntegers E`. Introduce `v hv i j`. Take `⟨k0, hk0⟩` from `hk' v hv`. Rewrite using `[← hk0]`.
+
+Conclude with `(k0.val i j).2`. Establish `hinv : ∀ v ∉ S, ∀ i j, ((compV E (m + 1) v k)⁻¹).val i j ∈ v.adicCompletionIntegers E`. Introduce `v hv i j`. Take `⟨k0, hk0⟩` from `hk' v hv`. Rewrite using `[← hk0, ← map_inv]`.
+
+Conclude with `((k0⁻¹).val i j).2`. Establish `hδ : ∀ v (i : Fin (m + 1)), pLoc E v (if (i : ℕ) + 1 = m + 1 then (1 : Af E) else 0) ∈ v.adicCompletionIntegers E`. Introduce `v i`. Use `split_ifs`. Rewrite using `[map_one]`.
+
+Conclude with `one_mem _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Use `⟨fun hpos => ?_, fun ⟨w, hw⟩ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i : Fin (m + 1), (GlobalTheory.RSJ.pFin E (lastRow (tl (m + 1) ϖ l.1 * (u * k)) i) - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ GlobalTheory.RSJ.natLat E N ↔ GlobalTheory.RSJ.pFin E (lastRow (u * k) i) - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ GlobalTheory.RSJ.natLat E N)`.
+
+Introduce `i`. Use `(hloc _ _ (fun v hv => ?_) (fun v hv => ?_) (fun v hv => ?_)).symm` and prove the remaining obligations. Rewrite using `[hev, hev, map_sub, map_sub, hrow', map_mul, hcv, l.2 v hv]`. Simplify using the standard rewrite rules. Rewrite using `[hev, map_sub, hcomp]`.
+
+Conclude with `sub_mem (hint v hv _ _) (hδ v i)`. Rewrite using `[hev, map_sub, hrow', map_mul, hcomp, hcv]`. Use `sub_mem (mul_mem ?_ (hint v hv _ _)) (hδ v i)` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, ← Int.toNat_of_nonneg (hpos v), zpow_natCast]`. Conclude with `pow_mem (GlobalTheory.LFun.mem_Ov_of_isUnifV (hϖ v)) _`.
+
+Unfold `GlobalTheory.RSJ.indN`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (fun i => (key i).1 (h1 i)) h2`. Conclude with `absurd (fun i => (key i).2 (h2 i)) h1`.
+
+Both sides reduce to the same expression. Establish `hwS : w ∉ S` using `fun h => by`. Establish `h0` using `l.2 w h`. Rewrite `hw` using `[h0]`. Conclude with `lt_irrefl _ hw`.
+
+Establish `hex : ∃ j, ¬ Valued.v ((compV E (m + 1) w k).val (Fin.last m) j) < 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1 : ((compV E (m + 1) w k).val * ((compV E (m + 1) w k)⁻¹).val) (Fin.last m) (Fin.last m) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_apply_eq]`.
+
+Rewrite `h1` using `[Matrix.mul_apply]`. Establish `h2 : Valued.v (∑ j, (compV E (m + 1) w k).val (Fin.last m) j * ((compV E (m + 1) w k)⁻¹).val j (Fin.last m)) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le (hcon j) (hinv w hwS j (Fin.last m))`.
+
+Rewrite `h2` using `[h1, map_one]`. Conclude with `lt_irrefl _ h2`. Take `⟨j, hj⟩` from `hex`. Establish `hj1 : Valued.v ((compV E (m + 1) w k).val (Fin.last m) j) = 1` using `le_antisymm (hint w hwS _ _) (not_lt.1 hj)`. Unfold `GlobalTheory.RSJ.indN`.
+
+Rewrite using `[if_neg]`. Introduce `hall`. Establish `hz` using `hlat _ (hall j) w`. Simplify using `only at hz`. Rewrite `hz` using `[hev, map_sub, hrow', map_mul, hcomp, hcv]`.
+
+Establish `ha` using `add_mem hz (hδ w j)`. Rewrite `ha` using `[sub_add_cancel, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hj1, mul_one, Units.val_zpow_eq_zpow_val]`. Conclude with `not_le.2 (one_lt_v_zpow (hϖ w) hw) ha`.
+-/
 theorem indN_lastRow_tl : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ),
     (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) → ∀ N : ℕ,

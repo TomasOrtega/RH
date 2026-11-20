@@ -20,6 +20,21 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 
 namespace PositivityTheory.PrwZar.Z2
 
+/- English proof (translation)
+Use `⟨fun y => ?_⟩` and prove the remaining obligations. Establish `hcl : IsClosed (Set.range f)` using `f.isClosedMap.isClosed_range`. It suffices to establish `hη : genericPoint Y ∈ Set.range f by`. Establish `hsub : closure ({genericPoint Y} : Set Y) ⊆ Set.range f` using `closure_minimal (Set.singleton_subset_iff.mpr hη) hcl`. Establish `hc : closure ({genericPoint Y} : Set Y) = Set.univ` using `genericPoint_spec Y`.
+
+Rewrite `hsub` using `[hc]`. Conclude with `hsub (Set.mem_univ y)`. Assume the negation of the conclusion as `hη`. Establish `hmono : StrictMono f` using `GlobalTheory.FiniteEndFlat.strictMono_of_locallyQuasiFinite f`. Set `F : WithTop X → Y` to `fun a => WithTop.recTopCoe (genericPoint Y) (fun x => f x) a`.
+
+Establish `hF : StrictMono F`. Introduce `a b hab`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => exact absurd hab (not_top_lt)`. Consider the case `coe a`.
+
+Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top`. Use `lt_of_le_of_ne (genericPoint_specializes (f a)) ?_` and prove the remaining obligations. Introduce `h`. Establish `hi : Inseparable (f a) (genericPoint Y)` using `h.symm`.
+
+Conclude with `hη ⟨a, hi.eq⟩`. Consider the case `coe b => exact hmono (WithTop.coe_lt_coe.mp hab)`. Establish `h1` using `Order.coheight_le_coheight_apply_of_strictMono F hF (o : WithTop X)`. Rewrite `h1` using `[Order.coheight_coe_withTop]`. Establish `hfo : IsClosed ({f o} : Set Y)`.
+
+Use `f.isClosedMap _ ho` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Establish `e1` using `hX o ho`. Establish `e2` using `hY (f o) hfo`. Rewrite `e1`, `e2` using `[ringKrullDim_stalk_eq_coheight]`.
+
+Establish `e1' : Order.coheight o = g` using `by exact_mod_cast e1`. Establish `e2' : Order.coheight (f o) = g` using `by exact_mod_cast e2`. Express the relevant statement in the definitionally equal form `Order.coheight o + 1 ≤ Order.coheight (f o) at h1`. Rewrite `h1` using `[e1', e2']`. Conclude with `absurd h1 (by norm_cast; omega)`.
+-/
 theorem surj_of_finite_dimS {X Y : Scheme.{0}} [IrreducibleSpace X] [IrreducibleSpace Y]
     [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (f : X ⟶ Y) [IsFinite f] (g : ℕ)
     (hX : ∀ x : X, IsClosed ({x} : Set X) → ringKrullDim (X.presheaf.stalk x) = g)
@@ -62,6 +77,9 @@ theorem surj_of_finite_dimS {X Y : Scheme.{0}} [IrreducibleSpace X] [Irreducible
   rw [e1', e2'] at h1
   exact absurd h1 (by norm_cast; omega)
 
+/- English proof (translation)
+Establish `hc : IsClosed ({IsLocalRing.closedPoint Ω} : Set (Sp Ω))` using `isClosed_singleton`. Establish `h1` using `(η[G].left).isClosedEmbedding.isClosedMap _ hc`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Conclude with `(Set.image_singleton).symm`.
+-/
 theorem isClosed_originS {Ω : Type} [Field Ω] {G : Over (Sp Ω)} [GrpObj G] [IsProper G.hom] :
     IsClosed ({η[G].left (IsLocalRing.closedPoint Ω)} : Set G.left) := by
   have hc : IsClosed ({IsLocalRing.closedPoint Ω} : Set (Sp Ω)) := isClosed_singleton
@@ -69,6 +87,13 @@ theorem isClosed_originS {Ω : Type} [Field Ω] {G : Over (Sp Ω)} [GrpObj G] [I
   convert h1 using 1
   exact (Set.image_singleton).symm
 
+/- English proof (translation)
+Use `haveI := hG.smooth`. Use `haveI := hG'.smooth`. Use `haveI := hG.proper`. Use `haveI := hG'.proper`. Use `haveI := hf`.
+
+Use `haveI : AlgebraicGeometry.IsIntegral G.left := GlobalTheory.isIntegral_of_isAbelianScheme_field Ω G hG`. Use `haveI : AlgebraicGeometry.IsIntegral G'.left := GlobalTheory.isIntegral_of_isAbelianScheme_field Ω G' hG'`. Use `haveI : IsLocallyNoetherian G.left := LocallyOfFiniteType.isLocallyNoetherian G.hom`. Use `haveI : IsLocallyNoetherian G'.left := LocallyOfFiniteType.isLocallyNoetherian G'.hom`. Establish `hsurj : Surjective f.left` using `surj_of_finite_dimS f.left g (fun x hx => GlobalTheory.CutDegree.ringKrullDim_stalk hgG hx) (fun y hy => GlobalTheory.CutDegree.ringKrullDim_stalk hgG' hy) _ (isClosed_originS (G := G))`.
+
+Use `haveI := hsurj`. Conclude with `⟨GlobalTheory.SS.flat_of_isDominant_grpHom Ω G G' f, hsurj⟩`.
+-/
 theorem flat_surj_of_finite {Ω : Type} [Field Ω] [IsAlgClosed Ω] {G G' : Over (Sp Ω)} [GrpObj G] [GrpObj G']
     (hG : IsAbelianScheme G) (hG' : IsAbelianScheme G') (g : ℕ) (hgG : SmoothOfRelativeDimension g G.hom)
     (hgG' : SmoothOfRelativeDimension g G'.hom) (f : G ⟶ G') [IsMonHom f] (hf : IsFinite f.left) :

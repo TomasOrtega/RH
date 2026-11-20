@@ -16,6 +16,13 @@ namespace AmpleTwistLocal
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun q _ => q ∈ chartRing S x I) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, he, rfl⟩`. Establish `hee : e' = e` using `by omega`. Substitute `hee` using the available equality. Conclude with `⟨f, s, e', hs, hf, hse, rfl⟩`.
+
+Conclude with `Subalgebra.zero_mem _`. Introduce `a b _ _ ha hb`. Conclude with `Subalgebra.add_mem _ ha hb`. Introduce `a q _ hq`. Rewrite using `[chartRing_smul_def]`.
+
+Conclude with `Subalgebra.mul_mem _ a.2 hq`.
+-/
 theorem mem_chartRing_of_mem_zero {I : Chart x} {q : Ω} (hq : q ∈ twistMod S x 0 I) :
     q ∈ chartRing S x I := by
   refine Submodule.span_induction (p := fun q _ => q ∈ chartRing S x I) ?_ ?_ ?_ ?_ hq
@@ -29,6 +36,17 @@ theorem mem_chartRing_of_mem_zero {I : Chart x} {q : Ω} (hq : q ∈ twistMod S 
     rw [chartRing_smul_def]
     exact Subalgebra.mul_mem _ a.2 hq
 
+/- English proof (translation)
+Proceed by induction on `d generalizing w with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `w ∈ twistMod S x 0 I at hw`. Establish `h` using `Submodule.smul_mem ((H.pow c).sub I) (⟨w, mem_chartRing_of_mem_zero hw⟩ : chartRing S x I) hz`. Rewrite `h` using `[chartRing_smul_def]`.
+
+Rewrite using `[Nat.add_zero, mul_comm]` and apply the resulting hypothesis. Consider the case `succ d ih`. Express the relevant statement in the definitionally equal form `w ∈ Submodule.span _ _ at hw`. Use `Submodule.span_induction (p := fun w _ => z * w ∈ ((H.pow (c + d)).twist H).sub I) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`.
+
+Use `Submodule.subset_span ⟨q, hq, z * y, ih hy, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a w _ hw`. Rewrite using `[chartRing_smul_def, mul_left_comm, ← chartRing_smul_def]`.
+
+Conclude with `Submodule.smul_mem _ a hw`.
+-/
 theorem mul_mem_pow (H : SubSystem S x Ω) (I : Chart x) {c : ℕ} {z : Ω}
     (hz : z ∈ (H.pow c).sub I) (d : ℕ) {w : Ω} (hw : w ∈ (H.pow d).sub I) :
     z * w ∈ (H.pow (c + d)).sub I := by
@@ -52,6 +70,11 @@ theorem mul_mem_pow (H : SubSystem S x Ω) (I : Chart x) {c : ℕ} {z : Ω}
       rw [chartRing_smul_def, mul_left_comm, ← chartRing_smul_def]
       exact Submodule.smul_mem _ a hw
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `one_mem_twistMod_zero I`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `mul_mem_pow H I ih m hh`.
+-/
 theorem pow_mem_pow (H : SubSystem S x Ω) (I : Chart x) {m : ℕ} {h : Ω}
     (hh : h ∈ (H.pow m).sub I) (n : ℕ) : h ^ n ∈ (H.pow (m * n)).sub I := by
   induction n with
@@ -62,6 +85,13 @@ theorem pow_mem_pow (H : SubSystem S x Ω) (I : Chart x) {m : ℕ} {h : Ω}
     rw [pow_succ, Nat.mul_succ]
     exact mul_mem_pow H I ih m hh
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Use `Submodule.span_induction (p := fun z _ => z * w ∈ (Q.twist (H.pow (c + d))).sub I) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Use `Submodule.subset_span ⟨q * w, mul_mem_pow H I hq d hw, y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zero_mul]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[add_mul]`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Rewrite using `[chartRing_smul_def, mul_assoc, ← chartRing_smul_def]`. Conclude with `Submodule.smul_mem _ a hz`.
+-/
 theorem mul_mem_twist_pow (Q H : SubSystem S x Ω) (I : Chart x) {c d : ℕ} {z w : Ω}
     (hz : z ∈ (Q.twist (H.pow c)).sub I) (hw : w ∈ (H.pow d).sub I) :
     z * w ∈ (Q.twist (H.pow (c + d))).sub I := by
@@ -77,6 +107,21 @@ theorem mul_mem_twist_pow (Q H : SubSystem S x Ω) (I : Chart x) {c d : ℕ} {z 
     rw [chartRing_smul_def, mul_assoc, ← chartRing_smul_def]
     exact Submodule.smul_mem _ a hz
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x H A Q b j`. Distinguish the cases in `h0 : A.h j = 0`. Use `⟨0, fun n _ I y _ => ⟨1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h0, pow_one, mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Take `⟨p, s, hs, hgen⟩` from `hA S Ω N x H A Q b j h0`. Establish `hhI : ∀ I : Chart x, A.h j ∈ (H.pow A.m).sub I` using `fun I => (Submodule.mem_iInf _).mp (A.mem_secs j) I`. Use `choose k hk using hs`. Use `⟨Finset.univ.sup fun q : Fin p × Chart x => k q.1 q.2, fun n hn I y hy => ?_⟩` and prove the remaining obligations. Establish `hglob : ∀ t, s t * A.h j ^ n ∈ (Q.twist (H.pow (b + A.m * n))).secs`.
+
+Introduce `t`. Use `(Submodule.mem_iInf _).mpr fun I' => ?_` and prove the remaining obligations. Establish `hle : k t I' ≤ n` using `le_trans (Finset.le_sup (f := fun q : Fin p × Chart x => k q.1 q.2) (Finset.mem_univ (t, I'))) hn`. Establish `h1` using `mul_mem_twist_pow Q.toSubSystem H.toSubSystem I' (hk t I') (pow_mem_pow H.toSubSystem I' (hhI I') (n - k t I'))`. Establish `e1 : s t * A.h j ^ k t I' * A.h j ^ (n - k t I') = s t * A.h j ^ n`.
+
+Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hle]`. Establish `e2 : b + A.m * k t I' + A.m * (n - k t I') = b + A.m * n`. Rewrite using `[add_assoc, ← mul_add, Nat.add_sub_cancel' hle]`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1`.
+
+Establish `hpn : A.h j ^ n ≠ 0` using `pow_ne_zero n h0`. Take `⟨e, g, hg, hz⟩` from `hgen I (y / A.h j ^ n) n (by rwa [div_mul_cancel₀ y hpn])`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `hy' : y = A.h j ^ n * ∑ t, g t * s t`. Rewrite using `[← hz]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hy', Finset.mul_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Establish `e3 : A.h j ^ n * (g t * s t) * A.h j ^ e = (s t * A.h j ^ n) * (g t * A.h j ^ e)` using `by ring`. Rewrite using `[e3]`.
+
+Conclude with `Submodule.mul_mem_mul (Submodule.subset_span (hglob t)) (hg t)`.
+-/
 theorem proof (hA : AmpleAffineGen.Statement.{u, w}) : AmpleTwistLocal.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x H A Q b j
   classical

@@ -387,6 +387,9 @@ def SmallRankBound.Statement : Prop :=
 def SmallRankWeakHypothesis.Statement : Prop :=
   ¬ ∀ k m j' N : ℕ, 2 ≤ m → m + 3 ≤ k → j' ≤ m → N = k + m - 1 → 3 * j' ≤ N - 1
 
+/- English proof (translation)
+Use `⟨?_, isHomogeneous_one _ _⟩` and prove the remaining obligations. Simplify using `[IsPowerSumDecomposition]`.
+-/
 theorem LemmaA.hypotheses_inhabited :
     IsPowerSumDecomposition 1 1 (blockPowerSum 1 1 1 0)
         (fun k τ => if k = 1 ∧ τ = 0 then 1 else 0) ∧
@@ -394,29 +397,50 @@ theorem LemmaA.hypotheses_inhabited :
   refine ⟨?_, isHomogeneous_one _ _⟩
   simp [IsPowerSumDecomposition]
 
+/- English proof (translation)
+Introduce `_ _ _` and use `le_rfl`.
+-/
 theorem rectangle_antitone_inhabited : Antitone (rectangle 2 3) := fun _ _ _ => le_rfl
 
+/- English proof (translation)
+Use `⟨by norm_num, le_rfl, ?_, by simp⟩` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 theorem SchurPowerSumCoefficient.hypotheses_inhabited :
     1 ≤ 3 ∧ 3 ≤ 3 ∧ Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∑ i, (![2, 1] : Fin 2 → ℕ) i = 3 := by
   refine ⟨by norm_num, le_rfl, ?_, by simp⟩
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all
 
+/- English proof (translation)
+Use `⟨?_, by simp⟩` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 theorem CharacterBound.hypotheses_inhabited :
     Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∀ q ∈ [2, 1], 1 ≤ q := by
   refine ⟨?_, by simp⟩
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem Section2.hypotheses_inhabited :
     1 ≤ 2 ∧ 1 ≤ 1 ∧ (1 : Fin 2) ≠ 0 ∧ 2 ≤ 1 + 1 := by decide
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 theorem Section3.hypotheses_inhabited :
     4 * ((1 : ℕ) : ℝ) * (((1 + 1 : ℕ)) : ℝ) ^ 2 ≤ 16 ∧ (16 : ℝ) < 17 := by norm_num
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem PlueckerHadamard.hypotheses_inhabited :
     ∀ i j, ‖(Matrix.of fun (_ : Fin 2) (_ : Fin 3) => (1 : ℂ)) i j‖ = 1 := by simp
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem SmallRankBound.hypotheses_inhabited :
     2 ≤ 2 ∧ 2 ^ 4 ≤ 16 ∧ 2 ≤ 2 ∧ 17 = 16 + 2 - 1 := by decide
 

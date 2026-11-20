@@ -7,6 +7,15 @@ namespace LateralTheory.E.LeafCoordsPointPf
 open LateralTheory.E.LeafCoordsPf
 open scoped Pointwise
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hL`. Establish `key : ∀ T : Finset M, T ⊆ S → ∃ h ∉ P, ∀ g ∈ T, h • g ∈ N`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, fun h1 => hP.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by simp⟩`.
+
+Consider the case `insert a T ha ih`. Introduce `hT`. Take `⟨h, hh, hg⟩` from `ih (fun x hx => hT (Finset.mem_insert_of_mem hx))`. Take `⟨s, hs, hsa⟩` from `H a (Submodule.subset_span (hT (Finset.mem_insert_self a T)))`. Use `⟨s * h, fun H' => (hP.mem_or_mem H').elim hs hh, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg'`. Break down `Finset.mem_insert.mp hg' with rfl | hg'` into its components or cases. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem h hsa`. Rewrite using `[mul_smul]`.
+
+Conclude with `N.smul_mem s (hg g hg')`. Take `⟨h, hh, hg⟩` from `key S subset_rfl`. Use `⟨h, hh, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: Submodule.span B (S : Set M) ≤ N.comap (h • LinearMap.id)` using `Submodule.span_le.mpr fun g hgS => by simpa using hg g hgS`. Simplify using `using this hx`.
+-/
 theorem clear {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (P : Ideal B) (hP : P.IsPrime)
     (L N : Submodule B M) (hL : L.FG) (H : ∀ x ∈ L, ∃ s ∉ P, s • x ∈ N) :
     ∃ h ∉ P, ∀ x ∈ L, h • x ∈ N := by
@@ -37,6 +46,13 @@ def LeafCoordsPointLoc : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [Comm
     (∀ j, t j ∈ I) ∧ (∀ x ∈ I, ∃ s ∉ P, s • x ∈ Ideal.span (Set.range t) ⊔ P • I) ∧
     (∀ ω : Ω[B⁄A], ∃ s ∉ P, s • ω ∈ Submodule.span B (Set.range (dyt (A := A) y t)) ⊔ P • ⊤)
 
+/- English proof (translation)
+Introduce `d e A B _ _ _ I hB hBI P hP hIP`. Take `⟨t, y, ht, hI, hΩ⟩` from `hLoc d e A B I hB hBI P hP hIP`. Take `⟨h1, hh1, h1I⟩` from `clear P hP I _ (ideal_fg I _ _ hB hBI) hI`. Use `hB.isStandardSmooth` as an intermediate fact. Take `⟨h2, hh2, h2Ω⟩` from `clear P hP ⊤ _ Module.Finite.fg_top (fun ω _ => hΩ ω)`.
+
+Use `⟨h1 * h2, fun H => (hP.mem_or_mem H).elim hh1 hh2, t, y, ht, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ show (h1 * h2) • x ∈ _`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ h2 (h1I x hx)`. Introduce and unpack `_ ⟨x, -, rfl⟩ show (h1 * h2) • x ∈ _`.
+
+Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ h1 (h2Ω x trivial)`.
+-/
 theorem LeafCoordsPoint_of (hLoc : LeafCoordsPointLoc) : LeafCoordsPoint := by
   intro d e A B _ _ _ I hB hBI P hP hIP
   obtain ⟨t, y, ht, hI, hΩ⟩ := hLoc d e A B I hB hBI P hP hIP

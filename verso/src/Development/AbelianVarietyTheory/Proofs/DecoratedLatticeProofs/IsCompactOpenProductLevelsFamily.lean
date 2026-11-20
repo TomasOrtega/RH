@@ -16,6 +16,31 @@ namespace GlobalTheory.QVal.LevCO
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set P : GlobalTheory.FinPl.Pl D → Prop := fun p => ∃ i, (q i).v = p with hPdef`. Establish `hA : GlobalTheory.FinPl.grpAt V P = GlobalTheory.FinPl.grpAt V (fun p => ∃ i, p = (q i).v)`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `propext ⟨fun ⟨i, h⟩ => ⟨i, h.symm⟩, fun ⟨i, h⟩ => ⟨i, h.symm⟩⟩`.
+
+Take `⟨Ψ, hc, -, -, huniq⟩` from `GlobalTheory.FixLev.exists_section V k q hq Y F`. Set `lh : ∀ i, GA D V →* GL (Y i) (k i)` to `fun i => GlobalTheory.FixLev.locHom (q i) V (F i)`. Establish `hlh_self : ∀ i g, lh i (gl i g) = g` using `fun i g => Units.ext (GlobalTheory.FixLev.frame_cancel (F i) ((GlobalTheory.FixLev.locHom_spec _ _ _ _).symm.trans (hgl i g).2))`. Establish `hmat_ne : ∀ i j, i ≠ j → ∀ g, (mt V (gl j g)).map (q i).pr = 1` using `fun i j hij g => GlobalTheory.T.matrix_proj_eq_one_of_suppAt_distinct_finitePlace D (k i) (k j) (q i) (q j) V (gl j g) (fun e => hij (hq e)) (hgl j g).1`. Establish `hlh_ne : ∀ i j, i ≠ j → ∀ g, lh i (gl j g) = 1` using `fun i j hij g => Units.ext (by show (F i).γ * (mt V (gl j g)).map (q i).pr * (F i).β = 1`.
+
+Rewrite using `[hmat_ne i j hij g, Matrix.mul_one, (F i).γβ])`. Use `set H := ⨆ i, (L i).map (gl i) with hHdef`. Establish `hglA : ∀ i g, gl i g ∈ GlobalTheory.FinPl.grpAt V P` using `fun i g => GlobalTheory.T.mem_supportedSubgroup_of_suppAt_splitPlace_mem D (k i) (q i) V _ (hgl i g).1 P ⟨i, rfl⟩`. Establish `hHL : ∀ x ∈ H, ∀ i, lh i x ∈ L i`. Introduce `x hx i`.
+
+Establish `hle : H ≤ (L i).comap (lh i)` using `iSup_le fun j => Subgroup.map_le_iff_le_comap.2 fun g hg => by show lh i (gl j g) ∈ L i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[hlh_self]`. Conclude with `hg`.
+
+Rewrite using `[hlh_ne i j hij]`. Conclude with `one_mem _`. Conclude with `hle hx`. Set `Φ : (∀ i, GL (Y i) (k i)) → GA D V` to `fun y => ((List.finRange r).map fun i => gl i (y i)).prod`. Establish `hΦA : ∀ y, Φ y ∈ GlobalTheory.FinPl.grpAt V P` using `fun y => Subgroup.list_prod_mem _ fun z hz => by`.
+
+Take `⟨i, -, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hglA i (y i)`. Establish `hΦH : ∀ y, (∀ i, y i ∈ L i) → Φ y ∈ H` using `fun y hy => Subgroup.list_prod_mem _ fun z hz => by`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hz`. Conclude with `Subgroup.mem_iSup_of_mem i (Subgroup.mem_map_of_mem _ (hy i))`.
+
+Establish `hΦloc : ∀ y i, (mt V (Φ y)).map (q i).pr = (F i).β * (y i).val * (F i).γ` using `fun y i => by show (mt V ((List.finRange r).map fun i => gl i (y i)).prod).map (q i).pr = _`. Rewrite using `[GlobalTheory.FixLev.map_mt_list_prod, List.map_map]`. Conclude with `(GlobalTheory.FixLev.list_prod_single (fun i' => (mt V (gl i' (y i'))).map (q i).pr) i (fun i' hi' => hmat_ne i i' (Ne.symm hi') _) _ (List.nodup_finRange r) (List.mem_finRange i)).trans (hgl i (y i)).2`. Establish `hΨΦ : ∀ y, Ψ y = Φ y` using `fun y => huniq (Φ y) (by rw [← hA]; exact hΦA y) y (hΦloc y)`. Establish `hx_eq : ∀ x ∈ GlobalTheory.FinPl.grpAt V P, Ψ (fun i => lh i x) = x` using `fun x hx => huniq x (by rw [← hA]; exact hx) _ fun i => GlobalTheory.FixLev.locHom_spec _ _ _ x`.
+
+Establish `hmem : ∀ x : GlobalTheory.FinPl.grpAt V P, (x : GA D V) ∈ H ↔ ∀ i, lh i x ∈ L i` using `fun x => ⟨fun h => hHL _ h, fun h => by rw [← hx_eq x x.2, hΨΦ]; exact hΦH _ h⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hset : ((H.subgroupOf (GlobalTheory.FinPl.grpAt V P) : Subgroup _) : Set (GlobalTheory.FinPl.grpAt V P)) = ⋂ i, (fun g : GlobalTheory.FinPl.grpAt V P => lh i g.1) ⁻¹' (L i : Set _)`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_iInter, Set.mem_preimage]`.
+
+Conclude with `hmem g`. Rewrite using `[hset]`. Conclude with `isOpen_iInter_of_finite fun i => (hL i).1.preimage ((GlobalTheory.FixLev.continuous_locHom _ _ _).comp continuous_subtype_val)`. Rewrite using `[Subtype.isCompact_iff]`. Establish `himg : (((↑) : GlobalTheory.FinPl.grpAt V P → GA D V) '' ((H.subgroupOf (GlobalTheory.FinPl.grpAt V P) : Subgroup _) : Set (GlobalTheory.FinPl.grpAt V P))) = Ψ '' Set.pi Set.univ fun i => (L i : Set _)`.
+
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx' : (x : GA D V) ∈ H` using `Subgroup.mem_subgroupOf.1 hx`. Conclude with `⟨fun i => lh i x, fun i _ => hHL _ hx' i, hx_eq x x.2⟩`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨⟨Ψ y, ?_⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hΨΦ]`. Conclude with `hΦA y`. Use `show Ψ y ∈ H`.
+
+Rewrite using `[hΨΦ]`. Conclude with `hΦH y fun i => hy i (Set.mem_univ _)`. Rewrite using `[himg]`. Conclude with `(isCompact_univ_pi fun i => (hL i).2).image hc`.
+-/
 theorem isCO_iSup_map (V : HSp D) {r : ℕ} (k : Fin r → Type) [∀ i, Field (k i)] [∀ i, ValuativeRel (k i)]
     [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)] (q : ∀ i, GlobalTheory.FinPl.SplitPt D (k i))
     (hq : Function.Injective fun i => (q i).v) (Y : Fin r → Type) [∀ i, Fintype (Y i)] [∀ i, DecidableEq (Y i)]
@@ -99,6 +124,9 @@ theorem isCO_iSup_map (V : HSp D) {r : ℕ} (k : Fin r → Type) [∀ i, Field (
     rw [himg]
     exact (isCompact_univ_pi fun i => (hL i).2).image hc
 
+/- English proof (translation)
+Introduce `D ψ σ S r Q hinj`. Conclude with `⟨isCO_iSup_map S.J.W (fun i => (Q i).k) (fun i => (Q i).q) hinj _ (fun i => (Q i).F.G₁) (fun i => (Q i).gl₁) (fun i g => (Q i).loc₁ g) (fun i => (Q i).L₁.J) (fun i => (Q i).co₁), isCO_iSup_map S.B'.V (fun i => (Q i).k) (fun i => (Q i).q) hinj _ (fun i => (Q i).F.G₂) (fun i => (Q …`.
+-/
 theorem isCO_levJ_levB : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (r : ℕ) (Q : Fin r → QStep S),
     Function.Injective (fun i => (Q i).q.v) → IsCO (levJ Q) ∧ IsCO (levB Q) := by
   intro D ψ σ S r Q hinj

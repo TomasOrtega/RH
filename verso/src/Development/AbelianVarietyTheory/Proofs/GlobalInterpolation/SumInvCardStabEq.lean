@@ -18,10 +18,24 @@ def stabConjEquiv {G : Type} [Group G] (Γ K : Subgroup G) (g : G) (γ₀ : Γ) 
   left_inv δ := by ext; simp [mul_assoc]
   right_inv δ := by ext; simp [mul_assoc]
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (stabConjEquiv Γ K g γ₀ k)`.
+-/
 theorem card_stab_eq {G : Type} [Group G] (Γ K : Subgroup G) (g : G) (γ₀ : Γ) (k : K) :
     Nat.card (Unfold.stab Γ K ((γ₀ : G) * g * k)) = Nat.card (Unfold.stab Γ K g) :=
   Nat.card_congr (stabConjEquiv Γ K g γ₀ k)
 
+/- English proof (translation)
+Introduce `G _ Γ K n m g g' hcov hdisj hcov' hdisj'`. Use `choose e γe ke he using fun i => hcov' (g i)`. Use `choose f γf kf hf using fun j => hcov (g' j)`. Establish `hfe : ∀ i, f (e i) = i`. Introduce `i`.
+
+Use `symm`. Use `hdisj i (f (e i)) 1 (γe i * γf (e i)) 1 (kf (e i) * ke i) ?_` and prove the remaining obligations. Establish `h1` using `he i`. Rewrite `h1` using `[hf (e i)]`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_one, Subgroup.coe_mul]`.
+
+Simplify `h1` using `only [mul_assoc]`. Establish `hef : ∀ j, e (f j) = j`. Introduce `j`. Use `symm`. Use `hdisj' j (e (f j)) 1 (γf j * γe (f j)) 1 (ke (f j) * kf j) ?_` and prove the remaining obligations.
+
+Establish `h1` using `hf j`. Rewrite `h1` using `[he (f j)]`. Simplify using `only [OneMemClass.coe_one, one_mul, mul_one, Subgroup.coe_mul]`. Simplify `h1` using `only [mul_assoc]`. Set `σ : Fin n ≃ Fin m` to `⟨e, f, hfe, hef⟩`.
+
+Use `Fintype.sum_equiv σ _ _ (fun i => ?_)` and prove the remaining obligations. Use `show ((Nat.card (Unfold.stab Γ K (g i)) : ℝ))⁻¹ = ((Nat.card (Unfold.stab Γ K (g' (e i))) : ℝ))⁻¹`. Rewrite using `[he i, card_stab_eq]`.
+-/
 theorem sum_inv_card_stab_eq : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (n m : ℕ) (g : Fin n → G) (g' : Fin m → G), (∀ x : G, ∃ i, ∃ γ : Γ, ∃ k : K, x = (γ : G) * g i * k) → (∀ i j (γ γ' : Γ) (k k' : K), (γ : G) * g i * k = (γ' : G) * g j * k' → i = j) → (∀ x : G, ∃ i, ∃ γ : Γ, ∃ k : K, x = (γ : G) * g' i * k) → (∀ i j (γ γ' : Γ) (k k' : K), (γ : G) * g' i * k = (γ' : G) * g' j * k' → i = j) → ∑ i, ((Nat.card (Unfold.stab Γ K (g i)) : ℝ))⁻¹ = ∑ j, ((Nat.card (Unfold.stab Γ K (g' j)) : ℝ))⁻¹ := by
   intro G _ Γ K n m g g' hcov hdisj hcov' hdisj'
   choose e γe ke he using fun i => hcov' (g i)

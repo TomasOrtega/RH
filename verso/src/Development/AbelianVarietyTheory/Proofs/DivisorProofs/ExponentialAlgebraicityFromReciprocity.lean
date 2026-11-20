@@ -13,6 +13,9 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4` and use `expAlg_of_serAlg (serAlg_of_ref (GlobalTheory.T.rational_series_of_reciprocity_hypotheses h1 h2 h3 h4) (GlobalTheory.T.scaleRoot_of_cuspRapidDecay_of_reciprocity_of_rayClassField h1 h2 h3 h4))`.
+-/
 theorem expAlg : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → ExpAlg := fun h1 h2 h3 h4 =>
   expAlg_of_serAlg (serAlg_of_ref (GlobalTheory.T.rational_series_of_reciprocity_hypotheses h1 h2 h3 h4) (GlobalTheory.T.scaleRoot_of_cuspRapidDecay_of_reciprocity_of_rayClassField h1 h2 h3 h4))

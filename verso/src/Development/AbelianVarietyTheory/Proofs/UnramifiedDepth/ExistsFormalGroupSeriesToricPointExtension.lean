@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Establish `: (MonoidHom.toAdditiveRight χ).toIntLinearMap = (MonoidHom.toAdditiveRight χ').toIntLinearMap` using `β.ext fun j => congrArg Additive.ofMul (Units.ext (h j))`. Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Conclude with `congrArg Additive.toMul (LinearMap.congr_fun this y.toAdd)`.
+-/
 private theorem chi_ext {X S : Type} [AddCommGroup X] [CommRing S] {r : ℕ} (β : Module.Basis (Fin r) ℤ X)
     (χ χ' : Multiplicative X →* Sˣ)
     (h : ∀ j, (χ (Multiplicative.ofAdd (β j)) : S) = χ' (Multiplicative.ofAdd (β j))) : χ = χ' := by
@@ -29,6 +32,9 @@ private theorem chi_ext {X S : Type} [AddCommGroup X] [CommRing S] {r : ℕ} (β
   refine MonoidHom.ext fun y => ?_
   exact congrArg Additive.toMul (LinearMap.congr_fun this y.toAdd)
 
+/- English proof (translation)
+Use `⟨MonoidHom.toAdditiveRight.symm (β.constr ℤ (fun j => Additive.ofMul (ht j).isUnit_one_add.unit)).toAddMonoidHom, fun j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Additive.toMul (β.constr ℤ (fun j => Additive.ofMul (ht j).isUnit_one_add.unit) (β j)) : Sˣ) : S) = _`. Rewrite using `[Module.Basis.constr_basis]`. Both sides reduce to the same expression.
+-/
 private theorem chi_ex {X S : Type} [AddCommGroup X] [CommRing S] {r : ℕ} (β : Module.Basis (Fin r) ℤ X)
     (t : Fin r → S) (ht : ∀ i, IsNilpotent (t i)) :
     ∃ χ : Multiplicative X →* Sˣ, ∀ j, (χ (Multiplicative.ofAdd (β j)) : S) = 1 + t j := by
@@ -55,6 +61,27 @@ private def pairAlg (R : Type) {S : Type} [CommRing R] [CommRing S] [Algebra R S
     change _ ∈ J
     simp
 
+/- English proof (translation)
+Set `J : Ideal S` to `Ideal.span (Set.range t)`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : IsNilpotent J := by`. Use `(Ideal.FG.isNilpotent_iff_le_nilradical ⟨(Set.finite_range t).toFinset, by simp [J]⟩).2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `ht i`. Set `P : Type` to `pairAlg R J`. Set `ρ : P →ₐ[R] S` to `(AlgHom.fst R S S).comp (pairAlg R J).val`. Set `τ : P →ₐ[R] S` to `(AlgHom.snd R S S).comp (pairAlg R J).val`. Set `σ : S →ₐ[R] P` to `((AlgHom.id R S).prod (AlgHom.id R S)).codRestrict _ (fun y => by`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ J`. Use the proof step `simp)`. Establish `hinj : ∀ p : P, ρ p = 0 → τ p = 0 → p = 0` using `fun p h1 h2 => Subtype.ext (Prod.ext h1 h2)`. Establish `hker : IsNilpotent (RingHom.ker ρ)`. Use `⟨N + 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff]`. Introduce `p hp`. Establish `h1 : RingHom.ker ρ ≤ J.comap τ` using `fun q hq => by`. Establish `h2 : τ q - ρ q ∈ J` using `q.2`. Rewrite `hq` using `[RingHom.mem_ker]`.
+
+Rewrite `h2` using `[hq, sub_zero]`. Then use the resulting hypothesis. Establish `h2` using `Ideal.pow_le_self (I := RingHom.ker ρ) (Nat.succ_ne_zero N) hp`. Establish `h3` using `Ideal.le_comap_pow τ (N + 1) (Ideal.pow_right_mono h1 (N + 1) hp)`. Rewrite `h3` using `[pow_succ, hN, zero_mul, Ideal.mem_comap, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `hinj p h2 h3`.
+
+Establish `hP : ∃ k, Kills I k P`. Take `⟨k, hk⟩` from `h`. Conclude with `⟨k, fun c hc => hinj _ (by rw [AlgHom.commutes, hk c hc]) (by rw [AlgHom.commutes, hk c hc])⟩`. Set `u : Fin r → P` to `fun j => ⟨(0, t j), by`. Express the relevant statement in the definitionally equal form `t j - 0 ∈ J`.
+
+Rewrite using `[sub_zero]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩⟩`. Establish `hnil : ∀ p : P, ρ p = 0 → IsNilpotent p` using `fun p hp => by`. Take `⟨n, hn⟩` from `hker`. Use `Ideal.pow_mem_pow (show p ∈ RingHom.ker ρ from hp) n` as an intermediate fact.
+
+Rewrite `this` using `[hn]`. Conclude with `⟨n, this⟩`. Take `⟨χ₁, hχ₁⟩` from `chi_ex β u (fun j => hnil _ rfl)`. Establish `h1 : (Units.map (ρ : P →* S)).comp χ₁ = 1` using `chi_ext β _ _ fun j => by`. Express the relevant statement in the definitionally equal form `ρ (χ₁ _ : P) = 1`.
+
+Rewrite using `[hχ₁, map_add, map_one]`. Conclude with `add_zero _`. Take `⟨a, ha, hz⟩` from `hx.surj P S ρ σ (AlgHom.ext fun _ => rfl) hker (E.i P hP χ₁) (by rw [← E.i_nat P S ρ hP h, h1, map_one])`. Use `⟨fun i => τ (a i), fun i => (hnil _ (ha i)).map τ, fun χ hχ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx.nat P S τ a (fun i => hnil _ (ha i)), ← hz, ← E.i_nat P S τ hP h]`.
+
+Use `congr 1`. Use `chi_ext β _ _ fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = τ (χ₁ _ : P)`. Rewrite using `[hχ₁, map_add, map_one, hχ]`. Both sides reduce to the same expression.
+-/
 private theorem coord_ex {R : Type} [CommRing R] {I : Ideal R} {G B : Over (Spec (CommRingCat.of R))} [GrpObj G]
     [GrpObj B] {X : Type} [AddCommGroup X] (E : PtExt I G B X) {d r : ℕ} {F : Fin d → PS R 2 d} {x : Fam G d}
     (hx : NilChart G F x) (β : Module.Basis (Fin r) ℤ X) (S : Type) [CommRing S] [Algebra R S]
@@ -113,6 +140,41 @@ private theorem coord_ex {R : Type} [CommRing R] {I : Ideal R} {G B : Over (Spec
   rw [hχ₁, map_add, map_one, hχ]
   rfl
 
+/- English proof (translation)
+Introduce `R _ I hI G _ _ B _ _ X _ E d g F FB x xB hx _ r β`. Establish `hc : ∀ (S : Type) [CommRing S] [Algebra R S] (t : Fin r → S), ∃ b : Fin d → S, ∀ h : ∃ k, Kills I k S, (∀ i, IsNilpotent (t i)) → (∀ i, IsNilpotent (b i)) ∧ ∀ χ : Multiplicative X →* Sˣ, (∀ j, (χ (Multiplicative.ofAdd (β j)) : S) = 1 + t j) → E.i S h χ = x S b`. Introduce `S _ _ t`. Distinguish the cases in `h : (∃ k, Kills I k S) ∧ ∀ i, IsNilpotent (t i)`. Take `⟨b, hb⟩` from `coord_ex E hx β S h.1 t h.2`.
+
+Conclude with `⟨b, fun _ _ => hb⟩`. Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Use `choose c hc using hc`. Establish `hJ : ∀ j : Fin d, ∃ f : PS R 1 r, ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin 1 → Fin r → S), True → (∃ k, Kills I k S) → (∀ i j, IsNilpotent (a i j)) → c S (a 0) j = nv (algebraMap R S) f a`. Introduce `j`.
+
+Use `exists_series_of_natural R I hI 1 r (fun _ _ _ => True) (fun _ _ => trivial) (fun S _ _ a => c S (a 0) j) ?_` and prove the remaining obligations. Introduce `S _ _ S' _ _ φ a _ _ _ h ha`. Establish `h' : ∃ k, Kills I k S'`. Take `⟨k, hk⟩` from `h`. Conclude with `⟨k, fun c hc => by rw [← φ.commutes, hk c hc, map_zero]⟩`.
+
+Take `⟨χ, hχ⟩` from `chi_ex β (a 0) (ha 0)`. Take `⟨h1, h2⟩` from `hc S (a 0) h (ha 0)`. Take `⟨h3, h4⟩` from `hc S' (fun j => φ (a 0 j)) h' (fun i => (ha 0 i).map φ)`. Establish `h5` using `h4 ((Units.map (φ : S →* S')).comp χ) fun j => by`. Express the relevant statement in the definitionally equal form `φ (χ _ : S) = _`.
+
+Rewrite using `[hχ, map_add, map_one]`. Rewrite `h5` using `[E.i_nat S S' φ h h', h2 χ hχ, hx.nat S S' φ _ h1]`. Conclude with `congrFun (hx.inj S' _ _ (fun i => (h1 i).map φ) h3 h5) j`. Use `choose J hJ using hJ`. Establish `hJ' : ∀ (S : Type) [CommRing S] [Algebra R S] (t : Fin r → S), (∃ k, Kills I k S) → (∀ i, IsNilpotent (t i)) → (fun j => nv (algebraMap R S) (J j) ![t]) = c S t`.
+
+Introduce `S _ _ t h ht`. Use function extensionality and compare the values at `j`. Conclude with `(hJ j S ![t] trivial h (fun i => by fin_cases i; exact ht)).symm`. Establish `h0 : ∀ j, MvPowerSeries.constantCoeff (J j) = 0`. Introduce `j`.
+
+Establish `: (MvPowerSeries.C (MvPowerSeries.constantCoeff (J j)) : PS R 1 r) = 0`. Use `eq_of_nv_eq R I inferInstance 1 r _ _ fun S _ _ k hk _ a ha => ?_` and prove the remaining obligations. Take `⟨ψ, h1, h2, -⟩` from `(nv_calculus R S (algebraMap R S) 1 r a ha).1`. Rewrite using `[← h1, ← h1, h2, map_zero]`. Establish `hz : ∀ i : Fin r, IsNilpotent ((0 : Fin r → S) i)` using `fun _ => IsNilpotent.zero`.
+
+Take `⟨h3, h4⟩` from `hc S 0 ⟨k, hk⟩ hz`. Establish `h5` using `h4 1 (fun j => by simp)`. Rewrite `h5` using `[map_one, ← hx.zero S]`. Establish `h6` using `congrFun ((hJ' S 0 ⟨k, hk⟩ hz).trans (hx.inj S _ _ (fun _ => IsNilpotent.zero) h3 h5).symm) j`. Rewrite `h6` using `[(nv_calculus R S (algebraMap R S) 1 r ![0] (fun i => by fin_cases i; exact hz)).2.2.2.2.2 (fun i _ i' _ => by fin_cases i; simp)]`.
+
+Simplify using `using h6`. Simplify using `using congrArg MvPowerSeries.constantCoeff this`. Use `⟨J, ⟨h0, fun j => ?_⟩, fun S _ _ h χ t ht hχ => ?_⟩` and prove the remaining obligations. Use `eq_of_nv_eq R I inferInstance 2 r _ _ fun S _ _ k hk _ a ha => ?_` and prove the remaining obligations. Establish `h : ∃ k, Kills I k S` using `⟨k, hk⟩`.
+
+Take `⟨⟨ψ, hψ, -, hX⟩, -, hs, -⟩` from `nv_calculus R S (algebraMap R S) 2 r a ha`. Establish `hev : ∀ (p : Fin r → PS R 2 r) (t : Fin r → S), (∀ i, MvPowerSeries.constantCoeff (p i) = 0) → (∀ i, ψ (p i) = t i) → (∀ i, IsNilpotent (t i)) → ∀ i, nv (algebraMap R S) (ev (n` using `2) ![p] (J i)) a = c S t i := by`. Introduce `p t hp hpt ht i`. Rewrite using `[← hJ' S t h ht]`. Use `(hs 1 r ![p] (J i) (fun i => by fin_cases i; exact hp)).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i j`. Use `fin_cases i`. Conclude with `(hψ _).symm.trans (hpt j)`. Establish `hcc : ∀ (l : Fin 2) (i : Fin d), MvPowerSeries.constantCoeff (ev (n` using `2) ![pt R r l] (J i)) = 0 := by`.
+
+Introduce `l i`. Establish `hp : ∀ q : Fin 1 × Fin r, MvPowerSeries.constantCoeff ((![pt R r l] : Fin 1 → Pt R 2 r) q.1 q.2) = 0`. Introduce and unpack `⟨q, q'⟩`. Use `fin_cases q`. Simplify using `[pt]`.
+
+Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hp) hp (h0 i)`. Establish `hn : ∀ i, IsNilpotent (a 0 i + a 1 i + a 0 i * a 1 i)` using `fun i => (Commute.all _ _).isNilpotent_add ((Commute.all _ _).isNilpotent_add (ha 0 i) (ha 1 i)) ((Commute.all _ _).isNilpotent_mul_left (ha 1 i))`. Apply the tactic sequence `rw [hev (gmF R r) _ (fun i => by simp [gmF]) (fun i => by simp [gmF, hX]) hn, hs _ _ _ _ (fun l => by fin_cases l <;> exact hcc _)]`. Take `⟨χ₀, hχ₀⟩` from `chi_ex β (a 0) (ha 0)`. Take `⟨χ₁, hχ₁⟩` from `chi_ex β (a 1) (ha 1)`.
+
+Take `⟨n0, e0⟩` from `hc S (a 0) h (ha 0)`. Take `⟨n1, e1⟩` from `hc S (a 1) h (ha 1)`. Take `⟨n2, e2⟩` from `hc S _ h hn`. Establish `e3` using `e2 (χ₀ * χ₁) fun j => by`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, hχ₀, hχ₁]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `e3` using `[map_mul, e0 _ hχ₀, e1 _ hχ₁, hx.law S _ _ n0 n1]`. Establish `n3 : ∀ k, IsNilpotent (nv (algebraMap R S) (F.F k) ![c S (a 0), c S (a 1)])` using `fun k => ((nv_calculus R S (algebraMap R S) 2 d _ (fun l => by fin_cases l`. Conclude with `n0`. Conclude with `n1)).2.1 _ (F.const k)).1`.
+
+Rewrite using `[← congrFun (hx.inj S _ _ n3 n2 e3) j]`. Use `congr 1`. Use function extensionality and compare the values at `l i`. Use `fin_cases l`. Conclude with `(hev (pt R r 0) (a 0) (fun i => by simp [pt]) (fun i => hX (0, i)) (ha 0) i).symm`.
+
+Conclude with `(hev (pt R r 1) (a 1) (fun i => by simp [pt]) (fun i => hX (1, i)) (ha 1) i).symm`. Rewrite using `[hJ' S t h ht]`. Conclude with `(hc S t h ht).2 χ hχ`.
+-/
 theorem exists_series_torus : ∀ (R : Type) [CommRing R] (I : Ideal R) [IsAdicComplete I R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B] (X : Type) [AddCommGroup X] (E : PtExt I G B X) (d g : ℕ) (F : FGLaw R d) (FB : FGLaw R g) (x : Fam G d) (xB : Fam B g), NilChart G F.F x → NilChart B FB.F xB → ∀ (r : ℕ) (β : Module.Basis (Fin r) ℤ X), ∃ J : Fin d → PS R 1 r, IsHomF (gmF R r) F.F J ∧ (∀ (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S) (χ : Multiplicative X →* Sˣ) (t : Fin r → S), (∀ i, IsNilpotent (t i)) → (∀ j, (χ (Multiplicative.ofAdd (β j)) : S) = 1 + t j) → E.i S h χ = x S (fun j => nv (algebraMap R S) (J j) ![t])) := by
   intro R _ I hI G _ _ B _ _ X _ E d g F FB x xB hx _ r β
   classical

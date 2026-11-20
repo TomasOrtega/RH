@@ -14,6 +14,11 @@ namespace GlobalTheory.FieldSize.WeberUnram
 set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Establish `hab : IsAbelianGalois K M` using `IsAbelianGalois.of_algHom f`. Use `letI : Algebra M R := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K M R := IsScalarTower.of_algebraMap_eq (fun x => (f.commutes x).symm)`. Use `haveI : CharZero M := charZero_of_injective_algebraMap (algebraMap K M).injective`. Use `haveI : FiniteDimensional K M := FiniteDimensional.left K M R`.
+
+Use `haveI : FiniteDimensional ℚ M := Module.Finite.trans K M`. Use `haveI nf : NumberField M := ⟨⟩`. Conclude with `⟨nf, hab, fun 𝔭 h => _root_.GlobalTheory.RayMaximal.unramIn_of_tower (L := M) (M := R) h⟩`.
+-/
 theorem _root_.GlobalTheory.FieldSize.WeberUnram.of_algHom {K M R : Type} [Field K] [NumberField K]
     [Field M] [Algebra K M] [Field R] [NumberField R]
     [Algebra K R] [IsAbelianGalois K R] (f : M →ₐ[K] R) :

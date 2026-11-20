@@ -13,12 +13,18 @@ namespace GlobalTheory.ExpBallCompare
 
 variable {P Q : ℕ}
 
+/- English proof (translation)
+The claim follows from `(Finset.single_le_sum (f := fun j => ‖Z i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem entry_le_l1 (Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (i j) : ‖Z i j‖ ≤ l1 Z :=
   (Finset.single_le_sum (f := fun j => ‖Z i j‖) (fun _ _ => norm_nonneg _)
     (Finset.mem_univ j)).trans
     (Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖)
       (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Unfold `l1`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun j _ => norm_add_le _ _`.
+-/
 theorem l1_add_le (Z W : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     l1 (Z + W) ≤ l1 Z + l1 W := by
   unfold l1
@@ -27,9 +33,15 @@ theorem l1_add_le (Z W : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
   rw [← Finset.sum_add_distrib]
   exact Finset.sum_le_sum fun j _ => norm_add_le _ _
 
+/- English proof (translation)
+Simplify using `[l1]`.
+-/
 theorem l1_neg (Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) : l1 (-Z) = l1 Z := by
   simp [l1]
 
+/- English proof (translation)
+Establish `hS' : S ∈ 𝓝 (0 : (Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ)` using `hS`. Take `⟨δ, hδ, h⟩` from `Metric.mem_nhds_iff.1 hS'`. Use `⟨δ, hδ, fun Z hZ => h ?_⟩` and prove the remaining obligations. Conclude with `mem_ball_zero_iff.2 ((pi_norm_lt_iff hδ).2 fun i => (pi_norm_lt_iff hδ).2 fun j => (entry_le_l1 Z i j).trans_lt hZ)`.
+-/
 theorem exists_l1_ball {S : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)} (hS : S ∈ 𝓝 0) :
     ∃ δ > 0, ∀ Z, l1 Z < δ → Z ∈ S := by
   have hS' : S ∈ 𝓝 (0 : (Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ) := hS
@@ -38,11 +50,25 @@ theorem exists_l1_ball {S : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)
   exact mem_ball_zero_iff.2 ((pi_norm_lt_iff hδ).2 fun i => (pi_norm_lt_iff hδ).2 fun j =>
     (entry_le_l1 Z i j).trans_lt hZ)
 
+/- English proof (translation)
+Establish `h` using `(hasFDerivAt_exp_zero (𝕂 := ℂ) (𝔸 := A)).isLittleO`. Simplify using `using h`.
+-/
 theorem exp_isLittleO (A : Type) [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A] :
     (fun Z : A => NormedSpace.exp Z - 1 - Z) =o[𝓝 0] fun Z => Z := by
   have h := (hasFDerivAt_exp_zero (𝕂 := ℂ) (𝔸 := A)).isLittleO
   simpa using h
 
+/- English proof (translation)
+Set `: NormedRing (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` to `Matrix.linftyOpNormedRing`. Set `: NormedAlgebra ℂ (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Establish `: CompleteSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` using `FiniteDimensional.complete ℂ _`. Establish `hrow : ∀ (Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) i, ∑ j, ‖Z i j‖ ≤ ‖Z‖`. Introduce `Z i`.
+
+Rewrite using `[Matrix.linfty_opNorm_def]`. Use `Finset.le_sup (f := fun i => ∑ j, ‖Z i j‖₊) (Finset.mem_univ i)` as an intermediate fact. Establish `h2` using `NNReal.coe_le_coe.2 this`. Simplify using `using h2`. Establish `h1 : ∀ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, l1 Z ≤ (P + Q : ℝ) * ‖Z‖`.
+
+Introduce `Z`. Use `Finset.sum_le_card_nsmul Finset.univ (fun i => ∑ j, ‖Z i j‖) ‖Z‖ fun i _ => hrow Z i` as an intermediate fact. Simplify `this` using `[l1]`. Establish `h2 : ∀ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, ‖Z‖ ≤ l1 Z`. Introduce `Z`.
+
+Rewrite using `[Matrix.linfty_opNorm_def]`. Establish `: (Finset.univ.sup fun i => ∑ j, ‖Z i j‖₊) ≤ ∑ i, ∑ j, ‖Z i j‖₊` using `Finset.sup_le fun i _ => Finset.single_le_sum (f := fun i => ∑ j, ‖Z i j‖₊) (fun _ _ => by positivity) (Finset.mem_univ i)`. Establish `h2` using `NNReal.coe_le_coe.2 this`. Simplify `h2` using `[l1]`. Establish `hN : (0 : ℝ) < P + Q + 1` using `by positivity`.
+
+Establish `h3` using `(exp_isLittleO (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)).def (div_pos hε hN)`. Use `filter_upwards [h3] with Z hZ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eventually_l1_exp {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ in 𝓝 0,
       l1 (NormedSpace.exp Z - 1 - Z) ≤ ε * l1 Z := by
@@ -76,6 +102,13 @@ theorem eventually_l1_exp {ε : ℝ} (hε : 0 < ε) :
     _ = ε * ‖Z‖ := by field_simp
     _ ≤ ε * l1 Z := mul_le_mul_of_nonneg_left (h2 Z) hε.le
 
+/- English proof (translation)
+Establish `ht0 : 0 < t` using `by linarith`. Establish `hε : 0 < 1 - t⁻¹` using `sub_pos.2 (inv_lt_one_of_one_lt₀ ht)`. Take `⟨δ, hδ, h⟩` from `exists_l1_ball ((eventually_l1_exp (P := P) (Q := Q) hε).and (eventually_l1_exp (sub_pos.2 ht)))`. Use `⟨δ, hδ, fun Z hZ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h Z hZ`.
+
+Prove the components needed by the constructor for the conclusion. Use `l1_add_le (NormedSpace.exp Z - 1 - Z) Z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `l1_add_le (NormedSpace.exp Z - 1) (-(NormedSpace.exp Z - 1 - Z))` as an intermediate fact.
+
+Rewrite `this` using `[l1_neg, ← sub_eq_add_neg, sub_sub_cancel]`. Establish `h3 : t⁻¹ * l1 Z ≤ l1 (NormedSpace.exp Z - 1)` using `by linarith`. Conclude with `(inv_mul_le_iff₀ ht0).1 h3`.
+-/
 theorem exists_l1_exp {t : ℝ} (ht : 1 < t) : ∃ δ > 0,
     ∀ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, l1 Z < δ →
       l1 (NormedSpace.exp Z - 1) ≤ t * l1 Z ∧ l1 Z ≤ t * l1 (NormedSpace.exp Z - 1) := by
@@ -94,6 +127,11 @@ theorem exists_l1_exp {t : ℝ} (ht : 1 < t) : ∃ δ > 0,
     have h3 : t⁻¹ * l1 Z ≤ l1 (NormedSpace.exp Z - 1) := by linarith
     exact (inv_mul_le_iff₀ ht0).1 h3
 
+/- English proof (translation)
+Rewrite `hS` using `[GlobalTheory.UpqTopology.isClosedEmbedding_mat.isInducing.nhds_eq_comap]`. Take `⟨T, hT, hTS⟩` from `hS`. Establish `h1 : UpqT.mat (1 : UpqT P Q) = 1` using `rfl`. Establish `c : Continuous fun Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ => Z + 1` using `continuous_id.add continuous_const`. Take `⟨δ, hδ, h⟩` from `exists_l1_ball (c.continuousAt.preimage_mem_nhds (x := 0) (t := T) (by rw [zero_add, ← h1]; exact hT))`.
+
+Use `⟨δ, hδ, fun g hg => hTS ?_⟩` and prove the remaining obligations. Simplify using `using h _ hg`.
+-/
 theorem exists_gauge_ball {S : Set (UpqT P Q)} (hS : S ∈ 𝓝 (1 : UpqT P Q)) :
     ∃ δ > 0, ∀ g, gauge g < δ → g ∈ S := by
   rw [GlobalTheory.UpqTopology.isClosedEmbedding_mat.isInducing.nhds_eq_comap] at hS
@@ -106,6 +144,17 @@ theorem exists_gauge_ball {S : Set (UpqT P Q)} (hS : S ∈ 𝓝 (1 : UpqT P Q)) 
   refine ⟨δ, hδ, fun g hg => hTS ?_⟩
   simpa using h _ hg
 
+/- English proof (translation)
+Introduce `P Q t ht`. Establish `ht0 : 0 < t` using `by linarith`. Take `⟨δ, hδ, h⟩` from `exists_l1_exp (P := P) (Q := Q) ht`. Take `⟨η, hη, h'⟩` from `exists_gauge_ball (GlobalTheory.ExpBallNhds.exp_ballU_mem_nhds P Q δ hδ)`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hδ hη)] with r hr`.
+
+Take `⟨hr0, hr1⟩` from `hr`. Establish `hrδ : r < δ` using `hr1.trans_le (min_le_left _ _)`. Establish `hrη : r < η` using `hr1.trans_le (min_le_right _ _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `g ⟨X, hX, hg⟩`.
+
+Establish `hX' : l1 (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) < t⁻¹ * r` using `hX`. Establish `h1 : t⁻¹ * r ≤ r` using `mul_le_of_le_one_left hr0.le (inv_lt_one_of_one_lt₀ ht).le`. Establish `h2` using `(h X (by linarith)).1`. Establish `h3` using `(lt_inv_mul_iff₀ ht0).1 hX'`. Use `show l1 (UpqT.mat g - 1) < r`.
+
+Rewrite using `[hg]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `g hg`. Establish `hg' : l1 (UpqT.mat g - 1) < r` using `hg`. Take `⟨X, hX, hgX⟩` from `h' g (lt_trans hg hrη)`.
+
+Use `⟨X, ?_, hgX⟩` and prove the remaining obligations. Establish `h2` using `(h X hX).2`. Rewrite `hg'` using `[hgX]`. Conclude with `h2.trans_lt (mul_lt_mul_of_pos_left hg' ht0)`.
+-/
 theorem expBall_compare : ∀ (P Q : ℕ) (t : ℝ), 1 < t → ∀ᶠ r in 𝓝[>] (0 : ℝ), expBall P Q (t⁻¹ * r) ⊆ {g : UpqT P Q | gauge g < r} ∧ {g : UpqT P Q | gauge g < r} ⊆ expBall P Q (t * r) := by
   intro P Q t ht
   have ht0 : 0 < t := by linarith

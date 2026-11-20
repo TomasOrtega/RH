@@ -13,6 +13,13 @@ open scoped NumberField.AdeleRing ENNReal
 
 namespace GlobalTheory.CompanionTheory.UnfoldingAlt
 
+/- English proof (translation)
+Establish `hv : ∀ i j, ((ti g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) j i` using `fun _ _ => rfl`. Establish `hi : ∀ i j, (((ti g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = (g : Matrix (Fin n) (Fin n) E) j i` using `fun _ _ => rfl`. Use `le_antisymm (locHeight_le (one_le_locHeight g) (fun i j => ?_) fun i j => ?_) (locHeight_le (one_le_locHeight _) (fun i j => ?_) fun i j => ?_)` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `norm_inv_apply_le_locHeight g j i`.
+
+Rewrite using `[hi]`. Conclude with `norm_apply_le_locHeight g j i`. Rewrite using `[← hi]`. Conclude with `norm_inv_apply_le_locHeight (ti g) j i`. Rewrite using `[← hv]`.
+
+Conclude with `norm_apply_le_locHeight (ti g) j i`.
+-/
 theorem locHeight_ti {E : Type*} [NormedField E] {n : ℕ} (g : GL (Fin n) E) :
     locHeight (ti g) = locHeight g := by
   have hv : ∀ i j, ((ti g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j =
@@ -26,6 +33,9 @@ theorem locHeight_ti {E : Type*} [NormedField E] {n : ℕ} (g : GL (Fin n) E) :
   · rw [← hi]; exact norm_inv_apply_le_locHeight (ti g) j i
   · rw [← hv]; exact norm_apply_le_locHeight (ti g) j i
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) b a)).1 w = (((infAt w g)⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) b a`. Rewrite using `[← Reduction.infAt_inv]`. Both sides reduce to the same expression.
+-/
 theorem infAt_ti {K : Type*} [Field K] [NumberField K] {n : ℕ} (w : InfinitePlace K)
     (g : AdelicGLn.AdelicGL K n) : infAt w (ti g) = ti (infAt w g) := by
   apply Units.ext
@@ -35,6 +45,9 @@ theorem infAt_ti {K : Type*} [Field K] [NumberField K] {n : ℕ} (w : InfinitePl
   rw [← Reduction.infAt_inv]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((g⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) b a)).2 v = (((finAt v g)⁻¹ : GL (Fin n) (v.adicCompletion K)) : Matrix (Fin n) (Fin n) (v.adicCompletion K)) b a`. Rewrite using `[← Reduction.finAt_inv]`. Both sides reduce to the same expression.
+-/
 theorem finAt_ti {K : Type*} [Field K] [NumberField K] {n : ℕ} (v : HeightOneSpectrum (𝓞 K))
     (g : AdelicGLn.AdelicGL K n) : finAt v (ti g) = ti (finAt v g) := by
   apply Units.ext
@@ -45,10 +58,16 @@ theorem finAt_ti {K : Type*} [Field K] [NumberField K] {n : ℕ} (v : HeightOneS
   rw [← Reduction.finAt_inv]
   rfl
 
+/- English proof (translation)
+Simplify using `only [height, infAt_ti, finAt_ti, locHeight_ti]`.
+-/
 theorem height_ti {K : Type*} [Field K] [NumberField K] {n : ℕ} (g : AdelicGLn.AdelicGL K n) :
     height (ti g) = height g := by
   simp only [height, infAt_ti, finAt_ti, locHeight_ti]
 
+/- English proof (translation)
+Introduce and unpack `φ ⟨C, N, h⟩`. Conclude with `⟨C, N, fun g => by simpa only [height_ti] using h (ti g)⟩`.
+-/
 theorem hasModerateGrowth_comp_ti :
     ∀ φ : G3 → ℂ, HasModerateGrowth φ → HasModerateGrowth (fun g : G3 => φ (ti g)) := by
   rintro φ ⟨C, N, h⟩

@@ -10,5 +10,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MassDegree.chernInt_eq_topSelf | exact GlobalTheory.MassDegree.chernInt_eq_topSelf | (intros; apply GlobalTheory.MassDegree.chernInt_eq_topSelf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chernMass_eq_selfIntersection_lineBundle : ∀ (Y : Var ℂ) (L : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L), φ.IsCInf → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = (topSelfIntersection ℂ L Y.dim : ℝ) := by
   first | exact @GlobalTheory.MassDegree.chernInt_eq_topSelf | exact GlobalTheory.MassDegree.chernInt_eq_topSelf | (intros; apply GlobalTheory.MassDegree.chernInt_eq_topSelf <;> assumption)

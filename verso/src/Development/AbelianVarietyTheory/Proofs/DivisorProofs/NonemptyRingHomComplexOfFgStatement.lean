@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg | exact GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg | (intros; apply GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_ringHom_complex_of_fg' : ∀ (K : Type) [Field K] [CharZero K] (k : IntermediateField ℚ K), k.FG → Nonempty (k →+* ℂ) := by
   first | exact @GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg | exact GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg | (intros; apply GlobalTheory.FGFieldEmb.nonempty_ringHom_complex_of_fg <;> assumption)

@@ -7,6 +7,27 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `F _ _ E _ _ c δ hE ν _ _ g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, q, hq, rfl⟩`. Establish `hdet : ∀ x : UG c (stdJ ν E), (mat c x).det ≠ 0` using `fun x => ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit (x : GL (ν ⊕ ν) E))).ne_zero`. Establish `hp0 : mat c p = fromBlocks (mat c p).toBlocks₁₁ (mat c p).toBlocks₁₂ 0 (mat c p).toBlocks₂₂`.
+
+Rewrite using `[← (mem_sieg c).1 hp, fromBlocks_toBlocks]`. Establish `hq0 : mat c q = fromBlocks (mat c q).toBlocks₁₁ (mat c q).toBlocks₁₂ 0 (mat c q).toBlocks₂₂`. Rewrite using `[← (mem_sieg c).1 hq, fromBlocks_toBlocks]`. Establish `hpd` using `hdet p`. Establish `hqd` using `hdet q`.
+
+Rewrite `hpd` using `[hp0, det_fromBlocks_zero₂₁]`. Rewrite `hqd` using `[hq0, det_fromBlocks_zero₂₁]`. Express the relevant statement in the definitionally equal form `(mat c p * stdJ ν E * mat c q).toBlocks₂₁.det ≠ 0`. Rewrite using `[hp0, hq0]`. Simplify using `only [stdJ, fromBlocks_multiply, toBlocks_fromBlocks₂₁]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[det_neg, det_mul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (mul_ne_zero (right_ne_zero_of_mul hpd) (left_ne_zero_of_mul hqd))`. Introduce `hC set A := (mat c g).toBlocks₁₁ with hA set B := (mat c g).toBlocks₁₂ with hB set C := (mat c g).toBlocks₂₁ with hCdef set D := (mat c g).toBlocks₂₂ with hD`. Establish `hg0 : mat c g = fromBlocks A B C D` using `(fromBlocks_toBlocks _).symm`.
+
+Establish `hrel : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E` using `(mem_UG_iff c _).mp g.2`. Establish `hkey : C * (D.map c)ᵀ = D * (C.map c)ᵀ`. Establish `h` using `congrArg Matrix.toBlocks₂₂ hrel`. Rewrite `h` using `[hg0]`. Simplify using `only [stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, toBlocks_fromBlocks₂₂] at h`.
+
+Simplify using `at h`. Conclude with `(neg_add_eq_zero.1 h).symm`. Establish `hCu : IsUnit C` using `(Matrix.isUnit_iff_isUnit_det C).2 (isUnit_iff_ne_zero.2 hC)`. Establish `hCs : IsUnit (C.map c)ᵀ`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_transpose]`.
+
+Conclude with `(hCu.map (RingHom.mapMatrix (c : E →+* E))).map detMonoidHom`. Establish `hCC : C * C⁻¹ = 1` using `Matrix.mul_nonsing_inv C (isUnit_iff_ne_zero.2 hC)`. Use `set v := C⁻¹ * D with hv`. Establish `hvh : (v.map c)ᵀ = v`. Apply `hCu.mul_left_cancel` to reduce the goal to its premises.
+
+Apply `hCs.mul_right_cancel` to reduce the goal to its premises. Establish `e1 : ((v.map c)ᵀ) * (C.map c)ᵀ = (D.map c)ᵀ`. Rewrite using `[hv, Matrix.map_mul, transpose_mul, Matrix.mul_assoc, ← transpose_mul, ← Matrix.map_mul, hCC, Matrix.map_one _ (map_zero c) (map_one c), transpose_one, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc, e1, hkey, hv, ← Matrix.mul_assoc, hCC, Matrix.one_mul]`. Set `q` to `unip c v hvh`.
+
+Establish `hq : q ∈ sieg c ν`. Express the relevant statement in the definitionally equal form `(fromBlocks (1 : Matrix ν ν E) v 0 1).toBlocks₂₁ = 0`. Rewrite using `[toBlocks_fromBlocks₂₁]`. Use `⟨g * q⁻¹ * (weyl c ν)⁻¹, ?_, q, hq, by group⟩` and prove the remaining obligations. Rewrite using `[mem_sieg]`.
+
+Express the relevant statement in the definitionally equal form `(mat c g * fromBlocks 1 (-v) 0 1 * -stdJ ν E).toBlocks₂₁ = 0`. Rewrite using `[hg0]`. Simplify using `only [stdJ, fromBlocks_neg, fromBlocks_multiply, toBlocks_fromBlocks₂₁]`. Simplify using the standard rewrite rules. Rewrite using `[hv, ← Matrix.mul_assoc, hCC, Matrix.one_mul, neg_add_cancel]`.
+-/
 theorem inCell_iff_det_ne_zero : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E]
     (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (g : UG c (stdJ ν E)),
     InCell c g ↔ ((mat c g).toBlocks₂₁).det ≠ 0 := by

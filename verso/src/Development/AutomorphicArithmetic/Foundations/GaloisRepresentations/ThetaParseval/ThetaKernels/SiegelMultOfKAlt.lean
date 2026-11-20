@@ -13,6 +13,25 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl PositivityTheory.RgEis
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
+/- English proof (translation)
+Introduce `hSec hWL hD hDI hCM hGT hBd _ hPar hSg`. Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hres b K a hb hK ha s₁ f hf`. Take `⟨⟨ε, hε⟩, t₀, ht₀⟩` from `hb`. Establish `hb' : IsFrame2 σ Y b` using `⟨⟨ε, hε⟩, t₀, ht₀⟩`. Establish `hcm` using `hB.cm`.
+
+Establish `hunr` using `hB.unram`. Establish `hgood : (adCM σ χ).Good` using `hCM F E σ χ c hcm hunr hχ hres`. Take `⟨-, -, -, ht2', hlc', hsc', hKc⟩` from `hGT E (AE F E) (adCM σ χ) hgood (Fin n) ε`. Set `Φ` to `frameEquiv (Y := Y) χ ε b hε`. Establish `hΓ : ∀ x, x ∈ rat2 σ Y ↔ Φ x ∈ (adCM σ χ).uΓ ε (Fin n)` using `rat_iff χ ε b hε`.
+
+Establish `hKK : ∀ x, x ∈ K ↔ Φ x ∈ (adCM σ χ).uK ε (Fin n)` using `fun x => GlobalTheory.T.standard_compact_frame_equiv F E σ n Y hD hDI hcm χ ε b hε B K hK x`. Establish `hIP : ∀ x, (∃ t, IsPar x t) ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))` using `GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hε t₀ ht₀`. Establish `hPP : ∀ x, x ∈ par2 σ Y ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `: par2 σ Y ≤ ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))).comap Φ.toMonoidHom` using `(Subgroup.closure_le _).2 fun p hp => (hIP p).1 hp`. Conclude with `this hx`. Introduce `hx`. Conclude with `Subgroup.subset_closure ((hIP x).2 hx)`.
+
+Establish `hH` using `fun x => uH_eq hD hBd χ hgood ε b hε t₀ ht₀ K hKK a ha x`. Establish `hiwa : Iwa ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))) ((adCM σ χ).uK ε (Fin n))`. Introduce `y`. Take `⟨p, t, hp, k, hk, e⟩` from `ha.iwa (Φ.symm y)`. Use `⟨Φ p, (hIP p).1 ⟨t, hp⟩, Φ k, (hKK k).1 hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← e, MulEquiv.apply_symm_apply]`. Take `⟨-, hparU⟩` from `hPar E (AE F E) (adCM σ χ) hgood (Fin n) ε (Set.univ : Set (Fin n))`. Take `⟨hIP', hIH, -⟩` from `hparU (by rwa [inf_idem])`. Rewrite `hIP'` using `[inf_idem]`. Use `haveI := ht2'`.
+
+Use `haveI := hlc'`. Establish `hW` using `hSg F E σ χ c hcm hunr hχ hres ε (Fin n) (by simpa using hn) hiwa`. Take `⟨σ₀, hσ₀⟩` from `_root_.GlobalTheory.CompanionTheory.GodementH.godement_sum_k F E σ B n Y r s hB hn hY b K a hb' hK ha`. Use `eis_from_U hSec hWL Φ (continuous_frameEquiv χ ε b hε) _ _ _ ((adCM σ χ).uC ε (Fin n)) ((adCM σ χ).uH ε (Set.univ : Set (Fin n))) hKc hIP' hIH ?_ K a χ s₁ f hf hΓ hKK hPP hIP hH (continuous_frameEquiv_symm χ ε b hε) ?_ ⟨σ₀, fun σ' h => ?_⟩` and prove the remaining obligations. Simplify using `using hW`.
+
+Introduce `p t hp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (((adCM σ χ).χ (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hε p).1) : Circle) : ℂ) = _`. Rewrite using `[GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hε t₀ ht₀ p t hp]`. Both sides reduce to the same expression.
+
+Use `ha.val p t hp 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨C, N, h⟩` from `hσ₀ σ' h`. Conclude with `⟨C, N, fun x => (h x).2⟩`.
+-/
 theorem siegelMult_of_k : SecLaw → WallLaw → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → SgAll →
     _root_.SiegelEisensteinSeries.BRoad.SiegelMult_k := by
   intro hSec hWL hD hDI hCM hGT hBd _ hPar hSg

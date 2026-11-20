@@ -9,6 +9,11 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Establish `h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop)`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc]`. Simplify using `[← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Use `conv_lhs => rw [h]`. Rewrite using `[gp]`.
+
+Use `erw [Scheme.fromSpecStalk_toSpecΓ_assoc]`. Use `erw [← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem gp_comp_eq_spMap_cst (X : Scheme.{0}) [IsIntegral X] (R : Type) [CommRing R] (p : X ⟶ Sp R) :
     gp X ≫ p = spMap (cst p) := by
   have h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop) := by

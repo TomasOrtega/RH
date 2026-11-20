@@ -12,6 +12,25 @@ namespace GlobalTheory.ColPeriod
 open NumberField IsDedekindDomain Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.L2.DIV Polynomial
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `hd`. Use `haveI := Fact.mk hp`. Take `⟨g, hg⟩` from `exists_prime_orderOf_dvd_card' p hd`. Set `A : Module.End ℚ (Sp E n)` to `((f g : Sp E n ≃ₗ[E] Sp E n) : Sp E n →ₗ[E] Sp E n).restrictScalars ℚ`. Establish `hApow : ∀ (k : ℕ) (x : Sp E n), (A ^ k) x = (f (g ^ k)) x`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`.
+
+Rewrite using `[pow_succ, pow_succ, map_mul, Module.End.mul_apply, ih]`. Both sides reduce to the same expression. Establish `hA : A ^ p = 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hApow, ← hg, pow_orderOf_eq_one, map_one]`.
+
+Both sides reduce to the same expression. Establish `h1 : minpoly ℚ A ∣ cyclotomic p ℚ * (X - 1)`. Rewrite using `[cyclotomic_prime_mul_X_sub_one]`. Conclude with `minpoly.dvd _ _ (by simp [hA])`. Establish `hint : IsIntegral ℚ A` using `Algebra.IsIntegral.isIntegral A`.
+
+Establish `hdeg : (minpoly ℚ A).natDegree ≤ Module.finrank ℚ E * n`. Establish `h2` using `natDegree_le_of_dvd (LinearMap.minpoly_dvd_charpoly A) (LinearMap.charpoly_monic A).ne_zero`. Rewrite `h2` using `[LinearMap.charpoly_natDegree, ← Module.finrank_mul_finrank ℚ E (Sp E n)]`. Simplify using `using h2`. Establish `hirr` using `cyclotomic.irreducible_rat hp.pos`.
+
+Establish `hcop : IsCoprime (minpoly ℚ A) (cyclotomic p ℚ)`. Use `(hirr.coprime_iff_not_dvd.2 fun h => ?_).symm` and prove the remaining obligations. Establish `h2` using `natDegree_le_of_dvd h (minpoly.ne_zero hint)`. Rewrite `h2` using `[natDegree_cyclotomic, Nat.totient_prime hp]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨q, hq⟩` from `hcop.dvd_of_dvd_mul_left h1`. Establish `h3 : A = 1`. Establish `h4` using `congrArg (aeval A) hq`. Rewrite `h4` using `[map_mul, minpoly.aeval, zero_mul]`. Simplify `h4` using `[sub_eq_zero]`.
+
+Establish `h5 : f g = f 1`. Rewrite using `[map_one]`. Use `LinearEquiv.ext fun x => ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun h3 x`. Rewrite `hg` using `[hf h5, orderOf_one]`.
+
+Conclude with `hp.one_lt.ne hg`.
+-/
 theorem not_dvd_card_of_injective {E : Type} [Field E] [NumberField E] {n : ℕ} {G : Type} [Group G] [Finite G]
     (f : G →* (Sp E n ≃ₗ[E] Sp E n)) (hf : Function.Injective f) {p : ℕ} (hp : p.Prime)
     (hb : Module.finrank ℚ E * n + 1 < p) : ¬ p ∣ Nat.card G := by
@@ -57,6 +76,11 @@ section Stab
 
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.mulVec_injective (funext fun c => ?_)` and prove the remaining obligations. Take `⟨x, -, hx⟩` from `d.2.be_surj w c`. Use `congrFun (congrFun (congrArg Deco.be e) w) x` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `(h w).1.mulVec (d.1.be w x) = d.1.be w x at this`. Rewrite `this` using `[hx]`. Simplify using `using this`.
+-/
 theorem glg_eq_one_of_fix (d : DecoSet X.E n ST SG) (h : GLG X.E n SG) (e : d.1.act 1 h = d.1) : h = 1 := by
   funext w
   apply Units.ext
@@ -67,6 +91,11 @@ theorem glg_eq_one_of_fix (d : DecoSet X.E n ST SG) (h : GLG X.E n SG) (e : d.1.
   rw [hx] at this
   simpa using this
 
+/- English proof (translation)
+Use `not_dvd_card_of_injective (((UF X.E n).subtype.comp (MonoidHom.fst _ _)).comp (Subgroup.subtype _)) ?_ hp hb` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_one]`. Introduce and unpack `⟨⟨γ, h⟩, hs⟩ h1`. Establish `h2 : γ = 1` using `Subtype.ext h1`. Substitute `h2` using the available equality.
+
+Establish `h3 : h.1 = 1` using `glg_eq_one_of_fix d h.1 (congrArg Subtype.val hs)`. Conclude with `Subtype.ext (Prod.ext rfl (Subtype.ext h3))`.
+-/
 theorem not_dvd_card_stab_form (Λ : LevFam X.E X.K n SG) (d : DecoSet X.E n ST SG)
     [Finite (MulAction.stabilizer (FormG Λ) d)] {p : ℕ} (hp : p.Prime) (hb : Module.finrank ℚ X.E * n + 1 < p) :
     ¬ p ∣ Nat.card (MulAction.stabilizer (FormG Λ) d) := by
@@ -84,6 +113,15 @@ section Pair
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Set `_ : StarRing K` to `starRingOfComm`. Establish `h` using `(GlobalTheory.TransDual.nabDelDual K ι n lam (fun _ => 1) M (fun _ => by simp) (fun _ => by simp) hM).1`. Establish `e : (fun τ => hdualFr (1 : Matrix (Fin n) (Fin n) K) (M τ)) = fun τ => dualFr (M τ)`. Use function extensionality and compare the values at `τ`. Use extensionality with `φ`.
+
+Express the relevant statement in the definitionally equal form `(∀ y ∈ M τ, star y ⬝ᵥ ((1 : Matrix (Fin n) (Fin n) K) *ᵥ φ) ∈ _) ↔ ∀ x ∈ M τ, φ ⬝ᵥ x ∈ _`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, dotProduct_comm]`. Both sides reduce to the same expression. Rewrite `h` using `[e]`.
+
+Rewrite `hx` using `[← h]`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at hx`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hx`. Establish `h2` using `hx y hy`. Rewrite `h2` using `[pairK_apply, pairP_trivial, pairingBSymm_holds]`.
+
+Rewrite using `[pairBK_apply]`. Conclude with `h2`.
+-/
 theorem pairBK_mem_one (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K))
     (hM : ∀ τ, Submodule.IsLattice K (M τ)) {x y : VV K lam} (hx : x ∈ delK lam fun τ => dualFr (M τ))
     (hy : y ∈ nabK lam M) : pairBK lam x y ∈ (1 : Submodule (𝓞 K) K) := by
@@ -106,6 +144,13 @@ theorem pairBK_mem_one (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K)
   exact h2
 
 omit [Fintype ι] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `h _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem z hz => obtain ⟨y, hy, rfl⟩ := hz`. Conclude with `h y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [dotProduct_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+
+Consider the case `smul c y _ hy => rw [dotProduct_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 theorem mem_dualFr_tauLat {E : Type} [Field E] [NumberField E] (emb : ι → E →+* K) (τ : ι)
     (L : Submodule (𝓞 E) (Fin n → E)) (φ : Fin n → K) :
     φ ∈ dualFr (tauLat emb τ L) ↔ ∀ y ∈ L, φ ⬝ᵥ (fun a => emb τ (y a)) ∈ (1 : Submodule (𝓞 K) K) := by
@@ -121,6 +166,19 @@ theorem mem_dualFr_tauLat {E : Type} [Field E] [NumberField E] (emb : ι → E �
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[mem_dualFr_tauLat]`. Express the relevant statement in the definitionally equal form `_ ↔ (fun a : Fin n => φ a.castSucc) ∈ dualFr (tauLat emb τ L) ∧ ∃ c : 𝓞 K, φ (Fin.last n) = (c : K) * 1`. Rewrite using `[mem_dualFr_tauLat]`. Establish `e : ∀ y : Sp E (n + 1), φ ⬝ᵥ (fun a => emb τ (y a)) = (fun a : Fin n => φ a.castSucc) ⬝ᵥ (fun a => emb τ (initL E n y a)) + φ (Fin.last n) * emb τ (y (Fin.last n))`.
+
+Introduce `y`. Simplify using `only [dotProduct, Fin.sum_univ_castSucc]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `h (incl E n y) ((mem_tilN _ _).2 ⟨by simpa using hy, 0, by simp⟩)` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `using this`. Use `h (eLast E n) ((mem_tilN _ _).2 ⟨by simp, 1, by simp⟩)` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Simplify using `only [initL_eLast, Pi.zero_apply, map_zero, eLast_last, map_one, mul_one] at this`. Establish `h0 : (fun a : Fin n => φ a.castSucc) ⬝ᵥ (fun _ => (0 : K)) = 0` using `dotProduct_zero _`. Rewrite `this` using `[h0, zero_add]`. Take `⟨c, hc⟩` from `Submodule.mem_one.1 this`.
+
+Conclude with `⟨c, by rw [mul_one]; exact hc.symm⟩`. Introduce and unpack `⟨h1, c, hc⟩ y hy`. Take `⟨h2, r, hr⟩` from `(mem_tilN _ _).1 hy`. Rewrite using `[e]`. Use `Submodule.add_mem _ (h1 _ h2) ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, ← hr, mul_one]`. Conclude with `Submodule.mem_one.2 ⟨c * RingOfIntegers.mapRingHom (emb τ) r, by rw [map_mul]; rfl⟩`.
+-/
 theorem dualFr_tauLat_tilN {E : Type} [Field E] [NumberField E] [StarRing E] (emb : ι → E →+* K) (τ : ι)
     (L : Submodule (𝓞 E) (Sp E n)) :
     dualFr (tauLat emb τ (tilN L)) = Br.sumLat rfl (dualFr (tauLat emb τ L)) 1 := by
@@ -153,6 +211,11 @@ theorem dualFr_tauLat_tilN {E : Type} [Field E] [NumberField E] [StarRing E] (em
     rw [hc, ← hr, mul_one]
     exact Submodule.mem_one.2 ⟨c * RingOfIntegers.mapRingHom (emb τ) r, by rw [map_mul]; rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Submodule.mem_one.1 h`. Establish `h1 : w.valuation K (s : K) = 1`. Use `(w.valuation_eq_one_iff_notMem (K := K) (r := s)).2 hs` as an intermediate fact. Conclude with `this`. Establish `h2 : w.valuation K (algebraMap (𝓞 K) K c) ≤ 1` using `w.valuation_le_one (K := K) c`.
+
+Rewrite `h2` using `[hc, Algebra.smul_def, map_mul]`. Express the relevant statement in the definitionally equal form `w.valuation K (s : K) * _ ≤ 1 at h2`. Rewrite `h2` using `[h1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem valuation_le_one_of_smul (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) {x : K}
     (h : s • x ∈ (1 : Submodule (𝓞 K) K)) : w.valuation K x ≤ 1 := by
   obtain ⟨c, hc⟩ := Submodule.mem_one.1 h
@@ -166,6 +229,13 @@ theorem valuation_le_one_of_smul (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (
 
 end Pair
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Rewrite `hx` using `[(GlobalTheory.GO.use₃ lam hp _ w hw).2]`. Express the relevant statement in the definitionally equal form `x ∈ localization₂ w.asIdeal (delAtr X.emb lam (DecoSet.til (ST := ST) pi d).1.N) at hx`. Rewrite `hx` using `[DecoSet.til_val d hT hG]`. Take `⟨s, hs, hsx⟩` from `hx`.
+
+Express the relevant statement in the definitionally equal form `s • x ∈ delK lam fun τ => dualFr (tauLat X.emb τ (tilN d.1.N)) at hsx`. Simplify using `only [dualFr_tauLat_tilN] at hsx`. Establish `h1` using `hB hI hS _ (fun _ => 1) (fun _ => one_ne_zero) _ hsx`. Establish `h2` using `pairBK_mem_one sg _ (fun τ => GlobalTheory.TauLat.tauLatLattice X.E X.K X.Tau n X.emb τ _ d.2.lat) h1 hy`. Establish `h3 : Br.brAt rfl lam sg (fun _ => (1 : X.K)) = Br.brStd rfl lam sg` using `by simp [Br.brAt]`.
+
+Rewrite `h2` using `[h3, LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LinearMap.smul_apply]`. Establish `h4` using `valuation_le_one_of_smul w hs h2`. Rewrite using `[Br.brAt, LinearMap.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, map_prod]`. Simplify using `only [map_zpow₀, ht, one_zpow, Finset.prod_const_one, one_mul]`. Conclude with `h4`.
+-/
 theorem valuation_pair_br_le_one {X : Fields} {N n : ℕ} (hN : N = n + 1) (lam : X.Tau → DomWeight N)
     (sg : X.Tau → DomWeight n) (hB : Br.BrIntegral X.K hN lam sg) (hI : ∀ τ, Br.Interlace hN (lam τ) (sg τ))
     (hS : ∀ τ, Br.SameShift (lam τ) (sg τ)) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} {pi : 𝓞 X.E}
@@ -196,6 +266,9 @@ section Period
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
 
+/- English proof (translation)
+Unfold `divs at h`. Use `split_ifs at h with h1`. Simplify using `using h`. Simplify using `at h`.
+-/
 theorem mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
   unfold divs at h
@@ -203,15 +276,36 @@ theorem mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : Heigh
   · simpa using h
   · simp at h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GO.natCast_notMem_of_coprime ((Nat.coprime_primes ha hp).2 h) w hw`.
+-/
 theorem natCast_notMem_of_ne {E : Type} [Field E] [NumberField E] {a p : ℕ} (ha : a.Prime) (hp : p.Prime) (h : a ≠ p)
     (w : HeightOneSpectrum (𝓞 E)) (hw : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) : ((a : ℕ) : 𝓞 E) ∉ w.asIdeal :=
   GlobalTheory.GO.natCast_notMem_of_coprime ((Nat.coprime_primes ha hp).2 h) w hw
 
+/- English proof (translation)
+Rewrite using `[← hPr.piT_norm u]`. Conclude with `Q.asIdeal.mul_mem_right _ h`.
+-/
 theorem T_mem_of_piT_mem (hPr : Pr.Ok) (u : Pr.Word) {Q : HeightOneSpectrum (𝓞 X.E)} (h : Pr.piT u ∈ Q.asIdeal) :
     ((Pr.T u : ℕ) : 𝓞 X.E) ∈ Q.asIdeal := by
   rw [← hPr.piT_norm u]
   exact Q.asIdeal.mul_mem_right _ h
 
+/- English proof (translation)
+Introduce `h`. Establish `hT` using `T_mem_of_piT_mem hPr u h`. Break down `Finset.mem_union.1 v.2 with h1 | h1` into its components or cases. Establish `h2 : ∃ i, v.1 ∈ Pr.vG i`. Break down `Finset.mem_union.1 h1 with h2 | h2` into its components or cases.
+
+Use `exacts [⟨0, h2⟩, ⟨1, h2⟩]`. Take `⟨i, hi⟩` from `h2`. Establish `h3 : ((Pr.g i : ℕ) : 𝓞 X.E) ∈ v.1.asIdeal`. Rewrite using `[← hPr.piG_norm i]`. Conclude with `v.1.asIdeal.mul_mem_left _ (mem_divs hi)`.
+
+Conclude with `natCast_notMem_of_ne (hPr.T_prime u) (hPr.g_prime i) (hPr.T_ne_g u i) v.1 h3 hT`. Unfold `QE at h1 split_ifs at h1 with h2`. Take `⟨v0, hv0, e⟩` from `Finset.mem_image.1 h1`. Establish `hv1 : v0 ∈ Qprime (mu : Chr X.F X.E X.K)` using `by simpa using hv0`. Establish `hgood : GoodPl X.E S v0`.
+
+Assume the negation of the conclusion as `hn`. Establish `h4` using `(Subgroup.mem_inf.1 mu.2).2`. Conclude with `hv1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h4 v0) hn)`. Establish `h5 : ((Pr.T u : ℕ) : 𝓞 X.F) ∈ v0.asIdeal`. Rewrite using `[← hsel v0, e, Ideal.under_def, Ideal.mem_comap, map_natCast]`.
+
+Conclude with `hT`. Apply `hgood.2.2` to reduce the goal to its premises. Establish `h6 : ringChar (𝓞 X.F ⧸ v0.asIdeal) ∣ Pr.T u`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk v0.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h5`.
+
+Use `haveI := v0.isPrime`. Break down `(Nat.dvd_prime (hPr.T_prime u)).1 h6 with h7 | h7` into its components or cases. Conclude with `absurd h7 CharP.ringChar_ne_one`. Express the relevant statement in the definitionally equal form `ringChar (𝓞 X.F ⧸ v0.asIdeal) ∈ S`. Rewrite using `[h7]`.
+
+Conclude with `hS`. Simplify using `at h1`.
+-/
 theorem piT_notMem_rowSG (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hS : Pr.T u ∈ S) (v : rowSG Pr sel mu) :
     Pr.piT u ∉ v.1.asIdeal := by
   classical
@@ -249,6 +343,9 @@ theorem piT_notMem_rowSG (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hS : 
         exact hS
     · simp at h1
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.GO.natCast_notMem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm w hw`. Establish `h2 : w.valuation K (algebraMap (𝓞 K) K (a : 𝓞 K)) = 1` using `(w.valuation_eq_one_iff_notMem (K := K)).2 h1`. Rewrite `h2` using `[map_natCast]`. Rewrite using `[map_inv₀, h2, inv_one]`.
+-/
 theorem valuation_inv_natCast {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {p a : ℕ} (hp : p.Prime)
     (hw : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal) (h : ¬ p ∣ a) : w.valuation K ((a : K))⁻¹ = 1 := by
   have h1 := GlobalTheory.GO.natCast_notMem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 h).symm w hw
@@ -256,15 +353,32 @@ theorem valuation_inv_natCast {K : Type} [Field K] [NumberField K] (w : HeightOn
   rw [map_natCast] at h2
   rw [map_inv₀, h2, inv_one]
 
+/- English proof (translation)
+The claim follows from `(@Nat.card_eq_fintype_card _ (h.fintypeStab _)).symm`.
+-/
 theorem wt_eq_card {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} (h : S.Ok) (s : S.Sec) (c : S.Cl) :
     (S.toCSDOf h s).wt c = Nat.card (MulAction.stabilizer S.G (s.rep c)) :=
   (@Nat.card_eq_fintype_card _ (h.fintypeStab _)).symm
 
+/- English proof (translation)
+Simplify using `only [GSD.csOf, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem csOf_apply₂ {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} (h : S.Ok) (s : S.Sec) {M M' : Type}
     [AddCommGroup M] [Module K M] [AddCommGroup M'] [Module K M'] (B : S.D → (M →ₗ[K] M' →ₗ[K] K)) (x : M) (y : M') :
     S.csOf h s B x y = letI := h.fintypeCl; ∑ c : S.Cl, (((S.toCSDOf h s).wt c : K))⁻¹ * B (s.rep c) x y := by
   simp only [GSD.csOf, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Set `_` to `hP.fintypeCl`. Establish `e : PtilE W Ch sel mu P hP u ψ F = ∑ c : (mtildeGSD W Ch sel mu P).Cl, ((((mtildeGSD W Ch sel mu P).toCSDOf hP (mtildeGSD W Ch sel mu P).outSec).wt c : X.K))⁻¹ * pairBK W.sgTrue (brC W u (ψ.1 ((mtildeGSD W Ch sel mu P).outSec.rep c))) (F.1 ((mtildeGSD W Ch sel mu P).outSec.rep c) …` using `csOf_apply₂ hP (mtildeGSD W Ch sel mu P).outSec _ ψ.1 F.1`. Rewrite using `[e]`. Use `Valuation.map_sum_le _ fun c _ => ?_` and prove the remaining obligations. Establish `hE : Module.finrank ℚ X.E = 2 * X.f`.
+
+Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, ← hX.card_Tau, mul_comm]`. Both sides reduce to the same expression. Use `haveI := hP.fin_stab ((mtildeGSD W Ch sel mu P).outSec.rep c)`. Establish `h1` using `not_dvd_card_stab_form (rowTy Ch sel mu P).inv ((mtildeGSD W Ch sel mu P).outSec.rep c) hp (lt_of_le_of_lt (by rw [hE]; gcongr; omega) hb)`. Rewrite using `[map_mul, valuation_inv_natCast w hp hw (by rw [wt_eq_card]; exact h1), one_mul]`.
+
+Use `valuation_pair_br_le_one (N_m_succ R) _ _ hB hI hSh (ST := Pr.vT u) (pi := Pr.piT u) (fun Q hQ => ?_) (piT_notMem_rowSG sel mu hPr hsel u hS) (p := p) (fun Q hQ h => ?_) w hw _ (fun τ => ?_) _ (hψ _) (hF _)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `hPr.piT_cop u`. Conclude with `Q.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Q.1.asIdeal.add_mem (Q.1.asIdeal.mul_mem_left _ (mem_divs Q.2)) (Q.1.asIdeal.mul_mem_left _ hQ)))`. Conclude with `natCast_notMem_of_ne (hPr.T_prime u) hp hpT Q h (T_mem_of_piT_mem hPr u (mem_divs hQ))`. Establish `h2 : RingOfIntegers.mapRingHom (X.emb τ) (X.conjO (Pr.piT u)) ∉ w.asIdeal`.
+
+Introduce `h`. Use `natCast_notMem_of_ne (hPr.T_prime u) hp hpT w hw ?_` and prove the remaining obligations. Establish `h3` using `congrArg (RingOfIntegers.mapRingHom (X.emb τ)) (hPr.piT_norm u)`. Rewrite `h3` using `[map_mul, map_natCast]`. Rewrite using `[← h3]`.
+
+Conclude with `w.asIdeal.mul_mem_left _ h`. Conclude with `(w.valuation_eq_one_iff_notMem (K := X.K)).2 h2`.
+-/
 theorem valuation_PtilE_le_one (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (u : Pr.Word) (hS : Pr.T u ∈ S)
     (hB : Br.BrIntegral X.K (N_m_succ R) (W.lamTrue u R.m) W.sgTrue)
     (hI : ∀ τ, Br.Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ))

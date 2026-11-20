@@ -35,6 +35,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l l₂ : Geo.Tor.Level H}
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Assume the negation of the conclusion as `h0`.
+
+Establish `h3 : t.im = 0`. Establish `: t.re * t.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h0`. Rewrite `h1` using `[h3]`. Use polynomial arithmetic with `[mul_self_nonneg t.re]`.
+-/
 theorem re_eq_zero_of_sq {d : ℕ} {t : ℂ} (hd : 0 < d) (h : t ^ 2 = -(d : ℂ)) : t.re = 0 := by
   have h1 := congrArg Complex.re h
   have h2 := congrArg Complex.im h
@@ -48,6 +53,17 @@ theorem re_eq_zero_of_sq {d : ℕ} {t : ℂ} (hd : 0 < d) (h : t ^ 2 = -(d : ℂ
   rw [h3] at h1
   nlinarith [mul_self_nonneg t.re]
 
+/- English proof (translation)
+Take `⟨σ, rfl⟩ : ∃ σ : c.F →+* ℂ, inst = σ.toAlgebra` from `⟨algebraMap c.F ℂ, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Set `ρ : KA l` to `(baseKA l).ρ`. Set `u : KA l` to `(1 + ρ) / (1 - ρ)`. Set `g₀ : Γ(Xo.XF c, ⊤)` to `(pullback.fst _ _ ≫ t : Xo.XF c ⟶ Sp (KA l)).appTop.hom (toΓ (KA l) u)`.
+
+Establish `hre : ∀ β : KA l →+* ℂ, (β ρ).re = 0` using `fun β => re_eq_zero_of_sq H.d_prime.pos (by rw [← map_pow, (baseKA l).ρ_sq]; simp)`. Establish `hne : ∀ β : KA l →+* ℂ, 1 - β ρ ≠ 0` using `fun β h => by`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `[hre β] at this`. Establish `hval : ∀ (z : FrPt Xo c ℂ) (β : KA l →+* ℂ), z.x ≫ t = Geo.Tor.spMap β → evR Xo c (fnRule g₀) z = (1 + β ρ) / (1 - β ρ)` using `fun z β hβ => by`.
+
+Establish `h1 : fnAt (basePt z) g₀ = fnAt (basePt z ≫ pullback.fst _ _ ≫ t) (toΓ (KA l) u)` using `rfl`. Establish `h2 : fnAt (𝟙 (Sp (KA l))) (toΓ (KA l) u) = u`. Simplify using `[fnAt, toΓ]`. Rewrite using `[evR_fnRule, h1, basePt, pullback.lift_fst_assoc, hβ, ← Category.comp_id (Geo.Tor.spMap β), fnAt_comp, h2]`. Simplify using `[u]`.
+
+Establish `h1 : ∀ z : FrPt Xo c (CAt σ), ‖Formalism.L2.PjFree.toC (evR Xo c (fnRule g₀) z)‖ = 1` using `fun z => by`. Take `⟨β, hβ⟩` from `LevelFibre.exists_spMap (A := KA l) (B := ℂ) (z.x ≫ t)`. Use `(congrArg norm (hval z β hβ)).trans ?_` and prove the remaining obligations. Rewrite using `[norm_div, div_eq_one_iff_eq (norm_ne_zero_iff.2 (hne β)), Complex.norm_def, Complex.norm_def]`. Simplify using `[Complex.normSq_apply, hre β]`.
+
+Take `⟨β, hβ⟩` from `LevelFibre.exists_spMap (y.x ≫ t)`. Take `⟨β', hβ'⟩` from `LevelFibre.exists_spMap (y'.x ≫ t)`. Establish `h` using `evR_eq_of_marked σ hσ hA₂ (fnRule_mem g₀) h1 hr hs hm x hx x' hx' y y' A A' hk hk'`. Rewrite `h` using `[hval y β hβ, hval y' β' hβ', div_eq_div_iff (hne β) (hne β')]`. Rewrite using `[hβ, hβ', MarkLift.emb_ext hA (β := β) (β' := β') (by linear_combination (1 / 2 : ℂ) * h)]`.
+-/
 theorem comp_eq_of_marked {Xo : Moduli Dw l₂} {c : Coeff l₂} [inst : Algebra c.F ℂ] (hσ : GoodEmb c (algebraMap c.F ℂ))
     (hA : l.A = 1) (hA₂ : l₂.A = 1) (t : Xo.X ⟶ Sp (KA l)) {r g : ℕ} {X : Data E r}
     {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r} {e : Fin g ≃ Lt1 Dw} {L : Lt E r} (hr : 1 ≤ r)
@@ -82,6 +98,37 @@ theorem comp_eq_of_marked {Xo : Moduli Dw l₂} {c : Coeff l₂} [inst : Algebra
   rw [hval y β hβ, hval y' β' hβ', div_eq_div_iff (hne β) (hne β')] at h
   rw [hβ, hβ', MarkLift.emb_ext hA (β := β) (β' := β') (by linear_combination (1 / 2 : ℂ) * h)]
 
+/- English proof (translation)
+Take `⟨y₃, h₃⟩` from `hlev.2.2.2.2.2.2.1 ℂ hk y`. Take `⟨A₃, ex₃, rd₃, mk₃, hm₃, hmk₃, ho₃⟩` from `MarkLift.anFib_lift_ex E H Dw l Xo c n d hk hlev r g X bas idx e x L y A hsym hx hL y₃ h₃ mk hmk`. Break down `Nat.eq_zero_or_pos (Dw.p + Dw.q) with h0 | hpq` into its components or cases. Use `haveI := Dw.fin haveI := Dw.proj haveI : Subsingleton Dw.La := Module.finrank_zero_iff.1 (Dw.rank.trans h0)`. Establish `: mk₂ = mk₃` using `LinearMap.ext fun a => by rw [Subsingleton.elim a 0, map_zero, map_zero]`.
+
+Conclude with `⟨y₃, A₃, h₃, this ▸ hmk₃, rd₃⟩`. Take `⟨hd, hM, hc, hI, hI', hE, hlift, hrest⟩` from `id hlev`. Take `⟨k, hk₁, hk₂⟩` from `MarkLift.exists_aut hd hm hm₃ hm₂ ho₃ ho₂`. Take `⟨ρ, ν, iρ, hν⟩` from `LevelActionLaws.exists_move hpq (by rw [hA₂]; exact Nat.coprime_one_left _) d.Xo₂ k`. Establish `hpd : d.pd = d.l₂.M / l.M`.
+
+Rewrite using `[hM, Nat.mul_div_cancel_left _ (lt_of_lt_of_le (by norm_num) l.three_le)]`. Establish `L₁ : OverMove.Lev d.m` using `⟨hpd ▸ hE.1, hE.2⟩`. Establish `hρs : inv ρ ≫ d.Xo₂.s = d.Xo₂.s` using `by rw [IsIso.inv_comp_eq, hν.1]`. Establish `hM0 : (d.l₂.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (LevelFibre.level_pos d.l₂).ne'`. Establish `hper : ∀ u t, t ∈ L → A.ex (pv X idx x ((d.l₂.M : E)⁻¹ • (u + d.l₂.M • t))) = A.ex (pv X idx x ((d.l₂.M : E)⁻¹ • u))` using `fun u t ht => by`.
+
+Rewrite using `[smul_add, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hM0, one_smul, pv, per_add]`. Conclude with `(A.ex_add (pv X idx x _) (pv X idx x t)).trans (by rw [(A.ex_ker _).2 ⟨t, ht, rfl⟩, _root_.mul_one])`. Establish `hpres : ∀ (f : Dw.La →ₗ[𝓞 E] Dw.La) a, a ∈ Mfr d.l₂ • (⊤ : Submodule (𝓞 E) Dw.La) → f a ∈ Mfr d.l₂ • (⊤ : Submodule (𝓞 E) Dw.La)` using `fun f a ha => by`. Use `Submodule.mem_map_of_mem (f := f) ha` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `key : ∀ {ρ' : d.Xo₂.X ⟶ Xo.X} (m' : SABMap d.Xo₂.univ.t Xo.univ.t ρ') (w : FrPt d.Xo₂ d.c₂ ℂ) (B : AnFib X bas idx e x L w), (∀ z, (B.ex z).left ≫ m'.φ = (A.ex z).left) → (∀ a, (w.x ≫ (d.Xo₂.univ.eta (liftLa k a)).left) ≫ m'.φ = (y₃.x ≫ (d.Xo₂.univ.eta a).left) ≫ d.m.φ) → B.Marke …`. Introduce `ρ' m' w B hB hw a' ha'`. Establish `ha` using `hpres (liftLa k.symm) a' ha'`. Establish `hδ : liftLa k (liftLa k.symm a') - a' ∈ d.l₂.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`.
+
+Rewrite using `[← Submodule.Quotient.eq]`. Establish `h1` using `liftLa_spec k (liftLa k.symm a')`. Rewrite `h1` using `[liftLa_spec k.symm a', k.apply_symm_apply]`. Conclude with `h1`. Take `⟨u, hu, v, hv, huv⟩` from `LevelFibre.level_split d.l₂`.
+
+Take `⟨b, -, hb⟩` from `MarkLift.modN_of_mem_half d.l₂ hu (Submodule.sub_mem _ (hpres (liftLa k) _ ha) ha')`. Take `⟨b', hb'⟩` from `MarkLift.modN_of_mem_bar d.l₂ hv hδ`. Establish `e₀ : mk₂ (liftLa k (liftLa k.symm a')) = mk₂ a' + d.l₂.M • mk₂ (b + b')`. Rewrite using `[← map_nsmul, smul_add, ← hb, ← hb', ← add_smul, huv, one_smul, ← map_add, add_sub_cancel]`. Take `⟨t, ht, e₁⟩` from `hk₂ _ ha`.
+
+Establish `e₂` using `(hper _ t ht).symm.trans ((congrArg (fun q => A.ex (pv X idx x ((d.l₂.M : E)⁻¹ • q))) (e₁.symm.trans e₀)).trans (hper _ _ (hm₂.mem _)))`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (hB _).symm` and prove the remaining obligations. Rewrite using `[← e₂, ← ex₃, ← hmk₃ _ ha, levPt, levPt, LevelFibre.unit_left, LevelFibre.unit_left, ← LevelActionLaws.eta_congr d.Xo₂ hδ]`.
+
+Conclude with `hw _`. Rewrite using `[Over.w, Over.w]`. Take `⟨m', hm'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ d.m ν`. Establish `hm'' : m'.φ = ν.φ ≫ d.m.φ` using `hm'`. Set `d' : DeltaDat Xo c n` to `{ d with r := ρ ≫ d.r, m := m' }`.
+
+Establish `hfix : ∀ a, (d.Xo₂.univ.eta (liftLa k a) ^ d.pd).left = (d.Xo₂.univ.eta a ^ d.pd).left` using `fun a => by`. Apply `d.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hE.1, hE.1, LevelActionLaws.eta_congr Xo (hk₁ a)]`. Rewrite using `[LevelFibre.sec_w, LevelFibre.sec_w]`. Establish `hl' : ∀ (K : Type) [Field K] [Algebra c.F K] [Algebra d.c₂.F K], (∀ a : c.F, algebraMap d.c₂.F K (d.eF a) = algebraMap c.F K a) → ∀ (y : FrPt Xo c K) (w : FrPt d.Xo₂ d.c₂ K), FrOver d w y → ∃ w' : FrPt d.Xo₂ d.c₂ K, w'.x = w.x ≫ inv ρ ∧ FrOver d' w' y` using `fun K _ _ _ hK y w hw => (frames_lift_to_cover firstFiveLaws.1 E H Dw l Xo c n d').1 K hK y _ (by change (w.x ≫ inv ρ) ≫ ρ ≫ d.r = _; rw [Category.assoc, IsIso.inv_hom_id_assoc, hw.1]) (by change (w.x ≫ inv ρ) ≫ d.Xo₂.s = _; rw [Category.assoc, hρs, w.x_over])`.
+
+Establish `hlev' : d'.IsLev`. Use `⟨hd, hM, hc, hI, hI', ⟨fun a => ?_, fun a => ?_⟩, fun K _ _ _ _ hK y => ?_, hrest⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(d.Xo₂.univ.eta a ^ d.pd).left ≫ m'.φ = (ρ ≫ d.r) ≫ _`. Rewrite using `[hm'', ← hfix, ← Category.assoc, OverMove.pow_left_comp ν (hν.2.1 a), Category.assoc, hE.1, Category.assoc]`. Express the relevant statement in the definitionally equal form `(d.Xo₂.univ.etaA a ^ (d.l₂.A / l.A)).left ≫ m'.φ = (ρ ≫ d.r) ≫ _`.
+
+Rewrite using `[hm'', ← Category.assoc, OverMove.pow_left_comp ν (σ := d.Xo₂.univ.etaA a) (hν.2.2 a), Category.assoc, hE.2, Category.assoc]`. Take `⟨w, hw⟩` from `hlift K hK y`. Take `⟨w', -, hw'⟩` from `hl' K hK y w hw`. Conclude with `⟨w', hw'⟩`. Take `⟨y₄, hy₄, h₄⟩` from `hl' ℂ hk y y₃ h₃`.
+
+Establish `hyρ : y₄.x ≫ ρ = y₃.x` using `by rw [hy₄, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Take `⟨A₄, ex₄, -⟩` from `MarkLift.anFib_lift_ex E H Dw l Xo c n d' hk hlev' r g X bas idx e x L y A hsym hx hL y₄ h₄ mk hmk`. Establish `hA₄ : A₄.Marked mk₂` using `key m' y₄ A₄ ex₄ fun a => by`. Rewrite using `[hm'', ← Category.assoc, Category.assoc y₄.x, hν.2.1, ← Category.assoc y₄.x, hyρ]`. Establish `hs` using `comp_eq_of_marked hσ hA hA₂ (d.r ≫ Xo.s) hr hsym hm₂.mem hx hx₀ A₄ A₀ hA₄ hA₀`.
+
+Rewrite `hs` using `[← Category.assoc z₀.x, h₀.1, y₀.x_over, ← y.x_over, ← h₃.1, ← hyρ, ← Category.assoc]`. Take `⟨hb, hη⟩` from `MarkLift.move_fibre L₁ hν hk₁ (x := y₄.x) rfl hs.symm`. Rewrite `hb`, `hη` using `[hyρ]`. Take `⟨y₂, hy₂, h₂⟩` from `(frames_lift_to_cover firstFiveLaws.1 E H Dw l Xo c n d).1 ℂ hk y y₄.x (hb.symm.trans h₃.1) y₄.x_over`. Take `⟨A₂, ex₂, rd₂, -⟩` from `MarkLift.anFib_lift_ex E H Dw l Xo c n d hk hlev r g X bas idx e x L y A hsym hx hL y₂ h₂ mk hmk`.
+
+Conclude with `⟨y₂, A₂, h₂, key d.m y₂ A₂ ex₂ fun a => by rw [hy₂, hη], rd₂⟩`.
+-/
 theorem exists_lift_of_reached {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n) [Algebra c.F ℂ]
     [Algebra d.c₂.F ℂ] (hk : ∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = algebraMap c.F ℂ t)
     (hσ : GoodEmb d.c₂ (algebraMap d.c₂.F ℂ)) (hlev : d.IsLev) (hA : l.A = 1) (hA₂ : d.l₂.A = 1) {r g : ℕ} (hr : 1 ≤ r)
@@ -190,6 +237,13 @@ namespace GlobalTheory.ClsVal.Const
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `const_of_norm_factor_unitFr E r X la {q : (Frame X.Ψ r → ℂ) × (Frame X.Ψ r → ℂ) // DifferentiableOn ℂ q.1 X.dom ∧ DifferentiableOn ℂ q.2 X.dom ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, q.1 (rmul x b) = bchar la b * q.1 x ∧ q.2 (rmul x b) = bchar la b * q.2 x) ∧ ∀ x hx hu, q.1 x = κ x hx h …`. Distinguish the cases in `h : ‖C‖ = ρ`. Conclude with `⟨C, h, fun R T h1 h2 h3 h4 => hC ⟨⟨R, T⟩, h1, h2, h3, h4⟩⟩`. Use `⟨ρ, by simp [hρ.le], fun R T h1 h2 h3 h4 x hx => ?_⟩` and prove the remaining obligations. Establish `h5 : ∀ y ∈ X.dom, R y = C * T y` using `hC ⟨⟨R, T⟩, h1, h2, h3, h4⟩`.
+
+Take `⟨b, hb, hxb, hu⟩` from `exists_unitFr_rmul X hx`. Establish `h6 : T (rmul x b) = 0`. Assume the negation of the conclusion as `h0`. Conclude with `h (by rw [mul_right_cancel₀ h0 ((h5 _ hxb).symm.trans (h4 _ hxb hu)), hκ])`. Rewrite `h6` using `[(h3 x hx b hb).2, mul_eq_zero, or_iff_right (bchar_ne_zero_of_mem_bor la hb)]`.
+
+Rewrite using `[h5 x hx, h6, mul_zero, mul_zero]`.
+-/
 theorem exists_const (X : Data E r) (la : Wt X.Ψ r) (ρ : ℝ) (hρ : 0 < ρ)
     (κ : ∀ x ∈ X.dom, IsUnitFr X x → ℂ) (hκ : ∀ x hx hu, ‖κ x hx hu‖ = ρ) :
     ∃ C : ℂ, ‖C‖ = ρ ∧ ∀ R T : Frame X.Ψ r → ℂ, DifferentiableOn ℂ R X.dom → DifferentiableOn ℂ T X.dom →
@@ -211,9 +265,15 @@ theorem exists_const (X : Data E r) (la : Wt X.Ψ r) (ρ : ℝ) (hρ : 0 < ρ)
   rw [(h3 x hx b hb).2, mul_eq_zero, or_iff_right (bchar_ne_zero_of_mem_bor la hb)] at h6
   rw [h5 x hx, h6, mul_zero, mul_zero]
 
+/- English proof (translation)
+The claim follows from `(isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 a`.
+-/
 theorem isSB_smul_tf (a : ℂ) {φ : TF n g} (h : IsSB φ) : IsSB (a • φ) :=
   (isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 a
 
+/- English proof (translation)
+Take `⟨⟨v', hv'⟩, -, h, -⟩` from `TensVac.vacua E r X g bas idx n hs hn w hw hw' L hL M Λ hΛ`. Use `finsum_induction (fun φ : TF n g => IsSB φ) isSB_zero (fun φ ψ h h' => (isSB_algebra_haar_linear ℚ _ _ φ ψ h h').1) fun q => isSB_smul_tf _ ((heisG_laws E r X g bas idx n hs hn).2.2.2 _ _ ?_).1` and prove the remaining obligations. Rewrite using `[h v hv v' hv']`. Conclude with `isSB_smul_tf _ hv'.1`.
+-/
 theorem isSB_gphi {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
     (hs : IsSympl X bas) (hn : Even n) {w : E} (hw : IsIntegral ℤ w) (hw' : w + cc w = 1) {L : Lt E r}
     (hL : SelfD X L) {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {v : TF n g} (hv : IsSB v) {Q : Type}
@@ -229,6 +289,29 @@ end GlobalTheory.ClsVal.Const
 
 open GlobalTheory.ClsVal.Const in
 
+/- English proof (translation)
+Introduce `hCI E _ _ _ H Dw l Xo c σ r U hσ hU hr1 hA1 W k n a hdom Dc hDe v hv`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hn : Even n` using `hdom.2`. Take `⟨-, hL, hmk, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU hr1 W k`. Establish `hw : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`.
+
+Establish `hw' : (H.w0 : E) + cc (H.w0 : E) = 1`. Rewrite using `[cc, ← H.bar_eq]`. Conclude with `congrArg (fun t : 𝓞 E => (t : E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` after adjusting the coercions. Take `⟨ρ, hρ, hnorm⟩` from `VacNorm.norm_factor_eq E r _ _ Dc.bas Dc.idx n Dc.sympl hn _ hw hw' _ hL v hv`. Establish `hpt : ∀ x (hx : x ∈ (U.X k).dom), IsUnitFr (U.X k) x → ∃ κ : ℂ, ‖κ‖ = ρ ∧ ∃ (A : AnFib (U.X k) Dc.bas Dc.idx W.e x (U.X k).Λ (unC U k ⟨x, hx⟩)) (θ : (Fin W.g → ℂ) → ℂ), A.Marked (W.mark k) ∧ A.Reads 1 (unC U k ⟨x, hx⟩).s θ ∧ ∀ z : Fin n → Fin W.g → ℂ, ∏ b, θ (z b) = κ * thA (U.X …`.
+
+Introduce `x hx hux`. Take `⟨A, hA, θ, hθ, hmean⟩` from `uw_anFib E H Dw l Xo c σ r U hσ hU hr1 W k Dc.bas Dc.idx Dc.sympl (hDe ▸ Dc.per_eq) (hDe ▸ Dc.ty_eq) ⟨x, hx⟩ hux`. Establish `hT` using `isTheta1_of_reads_generator E H Dw l Xo c r _ _ Dc.bas Dc.idx W.e x _ _ A Dc.sympl hx hL θ hθ`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA E r _ _ Dc.bas Dc.idx n Dc.sympl hn _ hw hw' _ hL v hv x hx θ hT`. Conclude with `⟨κ, hnorm x hx hux θ κ hT hmean hκ, A, θ, hA, hθ, hκ⟩`.
+
+Use `choose κ hκ hpt using hpt`. Take `⟨C, hC, hCe⟩` from `Const.exists_const (U.X k) (Formalism.L2.PjFree.laU U a n k) ρ hρ κ hκ`. Use `⟨C, fun x hx hu θ κ' h1 h2 h3 => (hnorm x hx hu θ κ' h1 h2 h3).trans hC.symm, norm_pos_iff.1 (hC ▸ hρ), ?_⟩` and prove the remaining obligations. Introduce `d _ halg hlev hA2 hnab cv _ hcv mk₂ hmk₂ hover hK Cl _ w La Nc gam vol ep Vs _ _ io xs hlat hP Y hY f hf hcls x hx`. Establish `hM : 0 < d.l₂.M` using `lt_of_lt_of_le (by norm_num) d.l₂.three_le`.
+
+Establish `hth` using `fun j => theta_holomorphic_weight E r _ _ _ Dc.hr Dc.bas Dc.idx n Dc.sympl hn _ _ _ (isSB_gphi Dc.idx Dc.sympl hn hw hw' hL ((GenLatCmp.genLat_vset E n (La j).La).2.1 _ (Nc j) hM (hlat j).1 (hlat j).2.1 (hlat j).2.2) hv.1 (fun q => σ (w j q)) (Y j)) _ (Dc.mem _ (hP j))`. Rewrite `hth` using `[Dc.wt_eq]`. Establish `hsec` using `hU.2.2.2.2.1 a n hdom f hf k`. Rewrite using `[_root_.mul_assoc]`. Use `hCe (Formalism.L2.PjFree.rdU U f k) (fun x => cv mk₂ * clsSum σ (U.X k) Dc.hr Dc.bas Dc.idx Dc.eL w La Nc gam vol ep (fun j => io (xs j)) (U.X k).Λ v Y x) hsec.1 ?_ (fun x hx b hb => ⟨hsec.2.1 x hx b hb, ?_⟩) ?_ x hx` and prove the remaining obligations.
+
+Conclude with `(DifferentiableOn.fun_sum fun j _ => (hth j).1.const_mul _).const_mul _`. Simplify using `only [clsSum]`. Rewrite using `[mul_left_comm]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(hth j).2.1 x hx b hb, mul_left_comm]`. Both sides reduce to the same expression. Introduce `x hx hux`. Take `⟨A, θ, hA, hθ, hprod⟩` from `hpt x hx hux`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y₂, A₂, hy₂, hA₂, hrd⟩ : ∃ (y₂ : FrPt d.Xo₂ d.c₂ ℂ) (A₂ : AnFib (U.X k) Dc.bas Dc.idx W.e x (U.X k).Λ y₂), FrOver d y₂ (unC U k ⟨x, hx⟩) ∧ A₂.Marked mk₂ ∧ ∀ θ, A.Reads 1 (unC U k ⟨x, hx⟩).s θ → A₂.Reads 1 y₂.s θ := by`. Distinguish the cases in `hK' : Dw.p = Dw.q → ∀ h : KA l ≤ KA d.l₂, d.r ≫ Xo.s = d.Xo₂.s ≫ Geo.Tor.spMap (IntermediateField.inclusion h).toRingHom`. Conclude with `MarkLift.exists_lift_marked E H Dw l Xo c n d halg hlev hA1 hA2 hK' r _ _ Dc.bas Dc.idx W.e x _ _ A Dc.sympl hx hL _ mk₂ hmk hA hmk₂ hover`. Take `⟨hpq, hK''⟩` from `Classical.not_imp.1 hK'`. Take `⟨x₀, z₀, A₀, h₀, hA₀⟩` from `(hK hpq).resolve_left hK''`.
+
+Establish `hσ₂ : GoodEmb d.c₂ (algebraMap d.c₂.F ℂ)`. Establish `h1 : d.eF (IntermediateField.inclusion c.le (baseKA l).ρ) = IntermediateField.inclusion d.c₂.le (baseKA d.l₂).ρ` using `Subtype.ext rfl`. Express the relevant statement in the definitionally equal form `algebraMap d.c₂.F ℂ (IntermediateField.inclusion d.c₂.le (baseKA d.l₂).ρ) = _`. Rewrite using `[← h1, halg]`. Conclude with `hσ`.
+
+Conclude with `Reach.exists_lift_of_reached d halg hσ₂ hlev hA1 hA2 hr1 A Dc.sympl hx hL hmk hA hmk₂ hover x₀.2 A₀ h₀ hA₀`. Establish `hval` using `GlobalTheory.T.classSum_eval_complex_point_eq_classical hCI E H Dw l Xo c n d halg hnab r _ _ Dc.bas Dc.idx W.e x _ _ y₂ A₂ hy₂ Dc.sympl hx hL _ Dc.hr Dc.eL hU.1 hn (hDe ▸ Dc.dir_eq) θ v _ (hrd θ hθ) hv hprod mk₂ hmk₂ hA₂ Cl w La Nc gam vol ep Vs io xs a hlat hP Y hY f hcls`. Establish `hrd' : Formalism.L2.PjFree.rdU U f k x = evR Xo c f (unC U k ⟨x, hx⟩)` using `dif_pos hx`. Rewrite `hval` using `[hcv x hx y₂ A₂ mk₂ hmk₂ hA₂]`. Rewrite using `[hrd', hval, mul_comm (cv mk₂), _root_.mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ClsVal.rdU_eq_const_mul_clsSum : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → l.A = 1 → ∀ (W : UW U) (k : U.Comp) (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), Dom a n → ∀ (Dc : Dic Dw c σ (U.X k) W.g Dw.p n a), Dc.e = W.e → ∀ v : TF n W.g, IsVac (U.X k) Dc.bas (H.w0 : E) (tens (stdL E n) (U.X k).Λ) v → ∃ C : ℂ, (∀ x ∈ (U.X k).dom, IsUnitFr (U.X k) x → ∀ (θ : (Fin W.g → ℂ) → ℂ) (κ : ℂ), IsTheta1 (U.X k) Dc.bas Dc.idx (H.w0 : E) x (U.X k).Λ θ → MeanOne (U.X k) Dc.bas Dc.idx x (U.X k).Λ θ → (∀ z : Fin n → Fin W.g → ℂ, ∏ b, θ (z b) = κ * thA (U.X k) Dc.bas Dc.idx v x z) → ‖κ‖ = ‖C‖) ∧ C ≠ 0 ∧ ∀ (d : DeltaDat Xo c n) [Algebra d.c₂.F ℂ], (∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = σ t) → d.IsLev → d.l₂.A = 1 → (∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) → ∀ cv : (Dw.La →ₗ[𝓞 E] (Fin r → E)) → ℂ, (∀ mk, ‖cv mk‖ = 1) → CvIs d (U.X k) Dc.bas Dc.idx W.e (U.X k).Λ cv → ∀ mk₂ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark d.l₂ (U.X k).Λ mk₂ → MarkOver l d.l₂ (U.X k).Λ (W.mark k) mk₂ → (Dw.p = Dw.q → (∀ h : KA l ≤ KA d.l₂, d.r ≫ Xo.s = d.Xo₂.s ≫ Geo.Tor.spMap (IntermediateField.inclusion h).toRingHom) ∨ ∃ (x₀ : (U.X k).dom) (y₂ : FrPt d.Xo₂ d.c₂ ℂ) (A₂ : AnFib (U.X k) Dc.bas Dc.idx W.e x₀ (U.X k).Λ y₂), (letI : Algebra c.F ℂ := σ.toAlgebra; FrOver d y₂ (unC U k x₀)) ∧ A₂.Marked mk₂) → ∀ (Cl : Type) [Fintype Cl] (w : Cl → (Fin n → LevQ Dw d.l₂) → c.F) (La : Cl → GenLat E n) (Nc gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F) (Vs : Type) [AddCommGroup Vs] [Module c.F Vs] (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (xs : Cl → Vs), LatsOK d.l₂.M La Nc → (∀ j, io (xs j) ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))) → ∀ Y : Cl → (Fin n → LevQ Dw d.l₂) → Matrix (Fin n) (Fin r) E, (∀ j, IsRoots d.l₂ (U.X k).Λ mk₂ (Nc j) (Y j)) → ∀ f ∈ sec Xo c a n, IsThClsD Xo c d w La Nc gam vol ep io xs f → ∀ x ∈ (U.X k).dom, Formalism.L2.PjFree.rdU U f k x = C * cv mk₂ * clsSum σ (U.X k) Dc.hr Dc.bas Dc.idx Dc.eL w La Nc gam vol ep (fun j => io (xs j)) (U.X k).Λ v Y x := by
   intro hCI E _ _ _ H Dw l Xo c σ r U hσ hU hr1 hA1 W k n a hdom Dc hDe v hv
   letI : Algebra c.F ℂ := σ.toAlgebra

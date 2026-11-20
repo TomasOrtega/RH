@@ -28,6 +28,9 @@ def LeafTerms : Prop := E4.Hyps → ∀ (R : Type) [CommRing R] (F : Shv R) {Y X
   (r : ℕ) (m : ℤ), (∀ (Z : Scheme.{0}) (g : Z ⟶ X), IsProper g → Finite (H R (sch.obj Z) F m)) →
   Finite (HK R ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).obj (((chains R).obj (cech f)).X (-(r : ℤ)))) F m)
 
+/- English proof (translation)
+Introduce `hy R _ F Y X f _ n hE hfin`. Use `h2 hy R F f n hE ?_` and prove the remaining obligations. Use `h1 hy R ((chains R).obj (cech f)) F n ?_` and prove the remaining obligations. Introduce `r hr hrn`. Conclude with `h3 hy R F f r (n - r) (fun Z g hg => hfin Z g hg (n - r) (by omega))`.
+-/
 theorem goal_of (h1 : LeafFilt) (h2 : LeafCompare) (h3 : LeafTerms) : E4.LeafSS := by
   intro hy R _ F Y X f _ n hE hfin
   refine h2 hy R F f n hE ?_

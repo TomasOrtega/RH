@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.SchANonzero
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_schwartz_one (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ Φ : SchwartzMap V ℂ, Φ 0 = 1 := by
   let b : ContDiffBump (0 : V) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -21,21 +26,35 @@ theorem exists_schwartz_one (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V
 def intPts (F : Type) [Field F] [NumberField F] (κ : Type) : Set (κ → FiniteAdeleRing (𝓞 F) F) :=
   Set.pi Set.univ fun _ => {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_intPts (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] : IsOpen (intPts F κ) :=
   isOpen_set_pi Set.finite_univ fun _ _ =>
     RestrictedProduct.isOpen_forall_mem
       (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))
       (fun v => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+The claim follows from `isCompact_univ_pi fun _ => GlobalTheory.AdeleCocompact.isCompact_integral F`.
+-/
 theorem isCompact_intPts (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] : IsCompact (intPts F κ) :=
   isCompact_univ_pi fun _ => GlobalTheory.AdeleCocompact.isCompact_integral F
 
+/- English proof (translation)
+Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))`. Conclude with `(isCompact_intPts F κ).isClosed`.
+-/
 theorem isClosed_intPts (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] : IsClosed (intPts F κ) := by
   haveI : T2Space (FiniteAdeleRing (𝓞 F) F) :=
     inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
       (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))
   exact (isCompact_intPts F κ).isClosed
 
+/- English proof (translation)
+Use `⟨?_, HasCompactSupport.intro' (isCompact_intPts F κ) (isClosed_intPts F κ) fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ intPts F κ`. Conclude with `⟨intPts F κ, isOpen_intPts F κ, hx, fun y hy => by`.
+
+Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use the proof step `rfl⟩`. Conclude with `⟨(intPts F κ)ᶜ, (isClosed_intPts F κ).isOpen_compl, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+-/
 theorem indicator_intPts_mem_SB (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     (intPts F κ).indicator (1 : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by
   refine ⟨?_, HasCompactSupport.intro' (isCompact_intPts F κ) (isClosed_intPts F κ)
@@ -48,6 +67,13 @@ theorem indicator_intPts_mem_SB (F : Type) [Field F] [NumberField F] (κ : Type)
   · exact ⟨(intPts F κ)ᶜ, (isClosed_intPts F κ).isOpen_compl, hx, fun y hy => by
       rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩
 
+/- English proof (translation)
+Introduce `F _ _ κ _`. Take `⟨f, hf⟩` from `exists_schwartz_one (κ → mixedEmbedding.mixedSpace F)`. Use `⟨pureA F f ((intPts F κ).indicator 1), Submodule.subset_span ⟨f, _, indicator_intPts_mem_SB F κ, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : (fun i : κ => ((0 : κ → AdeleRing (𝓞 F) F) i).2) ∈ intPts F κ` using `fun i _ v => by show (0 : FiniteAdeleRing (𝓞 F) F) v ∈ v.adicCompletionIntegers F`. Conclude with `zero_mem (v.adicCompletionIntegers F)`.
+
+Simplify using `only [pureA]`. Rewrite using `[Set.indicator_of_mem h0]`. Establish `hz : (fun i : κ => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) i).1) = 0`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`.
+
+Conclude with `map_zero _`. Rewrite using `[hz, hf]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_mem_schA_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ φ ∈ schA F κ, φ 0 ≠ 0 := by
   intro F _ _ κ _

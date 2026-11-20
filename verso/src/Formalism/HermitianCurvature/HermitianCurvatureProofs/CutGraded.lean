@@ -20,14 +20,23 @@ def smSubM (r : ℕ) (TT : ℝ) (m : ℕ∞) : Subalgebra ℂ (MA.Qp r TT → �
   add_mem' {f g} hf hg := (hf.add hg).congr fun x hx => by simp [MA.ext, hx]
   algebraMap_mem' z := (contDiffOn_const (c := z)).congr fun x hx => by simp [MA.ext, hx]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smSubM_top : smSubM r TT ⊤ = MA.smSub r TT := rfl
 
+/- English proof (translation)
+Introduce `f hf`. Use `show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)`. Conclude with `(show ContDiffOn ℝ MA.sm (MA.ext f) (MA.Qset r TT) from hf).of_le (WithTop.coe_le_coe.mpr le_top)`.
+-/
 theorem smSub_le (m : ℕ∞) : MA.smSub r TT ≤ smSubM r TT m := by
   intro f hf
   show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)
   exact (show ContDiffOn ℝ MA.sm (MA.ext f) (MA.Qset r TT) from hf).of_le
     (WithTop.coe_le_coe.mpr le_top)
 
+/- English proof (translation)
+Introduce `f hf`. Use `show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)`. Conclude with `(show ContDiffOn ℝ (smM m') (MA.ext f) (MA.Qset r TT) from hf).of_le (WithTop.coe_le_coe.mpr h)`.
+-/
 theorem smSubM_mono {m m' : ℕ∞} (h : m ≤ m') : smSubM r TT m' ≤ smSubM r TT m := by
   intro f hf
   show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)
@@ -100,6 +109,11 @@ def JetLin : Prop :=
     (d : ℕ∞) ≤ m → ∀ u ∈ smSubM r TT m, ∀ z : ℂ,
       actJ m (a + b) u = actJ m a u + actJ m b u ∧ actJ m (z • a) u = z • actJ m a u
 
+/- English proof (translation)
+Introduce `r TT d a ha m hd g`. Use function extensionality and compare the values at `q`. Establish `hex : ∃ g' : MA.SmQ r TT, JetEq m q g'.1 g.1` using `⟨g, fun _ _ => rfl⟩`. Unfold `actJ`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `h r TT d a ha m hd q _ g (Classical.choose_spec hex)`.
+-/
 theorem jetAgree_of_local (h : JetLocal) : JetAgree := by
   intro r TT d a ha m hd g
   funext q
@@ -108,6 +122,9 @@ theorem jetAgree_of_local (h : JetLocal) : JetAgree := by
   rw [dif_pos hex]
   exact h r TT d a ha m hd q _ g (Classical.choose_spec hex)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨u, hu⟩, fun _ _ => rfl⟩`.
+-/
 theorem jetExists_top (r : ℕ) (TT : ℝ) (u : MA.Qp r TT → ℂ) (hu : u ∈ smSubM r TT ⊤) (q : MA.Qp r TT) :
     ∃ g : MA.SmQ r TT, JetEq ⊤ q g.1 u :=
   ⟨⟨u, hu⟩, fun _ _ => rfl⟩
@@ -157,6 +174,9 @@ def truncatedEnergyAtOrder (l : ℕ) (j : M.Ty P → MA.Qp P.r P.TT → ℂ) (c 
 
 end En
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iff.rfl, rfl⟩`.
+-/
 theorem level_system_admissibility_indep (P : M.Par) (l : ℕ) (L : R.LevelData (MA.A P (MA.DQ P)) P.r)
     (j j' : M.Ty P → MA.SmQ P.r P.TT) (lam : Fin (P.k + 2 * P.r + 1) → ℝ) (α β Lb : ℝ) (c : LE.Cut) (N : ℕ)
     (w : List (Bool × ℝ)) :
@@ -192,6 +212,9 @@ def FFlM {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAdd
     ∀ g ∈ Q.Glev k r i ∩ Dm, ∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ h' ∈ Formalism.QuantumDeterminants.UWset k r z',
       J (h * g * h') = (π h).comp ((J g).comp (π' h'))}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fflM_top {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
     (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp)) (π' : Q.Mx k r → (Wq →L[ℂ] Wq))
     (i : Fin (r + 1)) (Dm : Set (Q.Mx k r)) : FFlM ⊤ k r z z' π π' i Dm = Q.FFl k r z z' π π' i Dm := rfl

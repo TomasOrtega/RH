@@ -9,10 +9,16 @@ namespace PI.BICNZ
 
 open Formalism.FourierDecayAlt.B Formalism.QuantumDeterminants Formalism.MainNotions.S.Pv.BetaCut
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+-/
 theorem sf_of_haar {k r : ℕ} {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
   infer_instance
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ, ih, iteratedDeriv_succ]`. Conclude with `deriv_const_mul_field' a`.
+-/
 theorem itD_const_mul (a : ℂ) (f : ℝ → ℂ) (n : ℕ) :
     iteratedDeriv n (fun y => a * f y) = fun y => a * iteratedDeriv n f y := by
   induction n with
@@ -21,6 +27,13 @@ theorem itD_const_mul (a : ℂ) (f : ℝ → ℂ) (n : ℕ) :
     rw [iteratedDeriv_succ, ih, iteratedDeriv_succ]
     exact deriv_const_mul_field' a
 
+/- English proof (translation)
+Establish `e3 : ∀ (K : ℂ) (u : ℝ → ℂ) (t : ℝ), iteratedDeriv 2 (fun x => K * u x) t = K * iteratedDeriv 2 u t`. Introduce `K u t`. Rewrite using `[itD_const_mul]`. Establish `e1 : ∀ x, iteratedDeriv 2 (fun y => c * f x * g y) t₂ = c * f x * iteratedDeriv 2 g t₂` using `fun x => e3 (c * f x) g t₂`. Establish `e2 : (fun x => c * f x * g t₂ - iteratedDeriv 2 (fun y => c * f x * g y) t₂) = fun x => (c * (g t₂ - iteratedDeriv 2 g t₂)) * f x`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Use `show (c * f t₁ * g t₂ - iteratedDeriv 2 (fun y => c * f t₁ * g y) t₂) - iteratedDeriv 2 (fun x => c * f x * g t₂ - iteratedDeriv 2 (fun y => c * f x * g y) t₂) t₁ = _`. Rewrite using `[e2, e3, e3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem oneMinusDD_prod (c : ℂ) (f g : ℝ → ℂ) (t₁ t₂ : ℝ) :
     oneMinusDD (fun a b => c * f a * g b) t₁ t₂ =
       c * (f t₁ - iteratedDeriv 2 f t₁) * (g t₂ - iteratedDeriv 2 g t₂) := by
@@ -39,6 +52,9 @@ theorem oneMinusDD_prod (c : ℂ) (f g : ℝ → ℂ) (t₁ t₂ : ℝ) :
   rw [e2, e3, e3]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hs : t ∈ tsupport D.χ` using `subset_tsupport _ hne`. Use `(D.χ_supp hs).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chi_eq_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) {t : ℝ} (ht : t ≤ 0) : D.χ t = 0 := by
   by_contra hne
@@ -46,10 +62,22 @@ theorem chi_eq_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPro
   have := (D.χ_supp hs).1
   linarith
 
+/- English proof (translation)
+The claim follows from `IsCompact.of_isClosed_subset isCompact_Icc (isClosed_tsupport _) (D.χ_supp.trans Set.Ioo_subset_Icc_self)`.
+-/
 theorem chi_hasCompactSupport {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) : HasCompactSupport D.χ :=
   IsCompact.of_isClosed_subset isCompact_Icc (isClosed_tsupport _) (D.χ_supp.trans Set.Ioo_subset_Icc_self)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Simplify using `only [regBracket, H1, H2]`. Distinguish the cases in `ha : 0 < a`. Distinguish the cases in `hb : 0 < b`. Establish `h` using `hΦ (a, b) ha hb dsimp only at h`.
+
+Rewrite using `[h]`. Establish `hk : (a * b) ^ kap k r = a ^ kap k r * b ^ kap k r` using `by first`. Consider the case `exact mul_pow a b _`. Consider the case `exact Real.mul_rpow ha.le hb.le`. Rewrite using `[hk]`.
+
+Simplify using `only [Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : D.χ b = 0` using `chi_eq_zero D (not_lt.mp hb)`. Simplify using `[h0]`. Establish `h0 : D.χ a = 0` using `chi_eq_zero D (not_lt.mp ha)`.
+
+Simplify using `[h0]`.
+-/
 theorem regBracket_eq {k r : ℕ} {Wp Wq H : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (D : RealPlaceData k r Wp Wq) (σ : Mat k r → (H →L[ℂ] H)) (v v' : H) (ξ : Wp) (ξ' : Wq)
@@ -79,6 +107,9 @@ theorem regBracket_eq {k r : ℕ} {Wp Wq H : Type} [NormedAddCommGroup Wp] [Inne
   · have h0 : D.χ a = 0 := chi_eq_zero D (not_lt.mp ha)
     simp [h0]
 
+/- English proof (translation)
+Establish `h1 : HasCompactSupport (fun t : ℝ => D.χ t * t ^ kap k r)` using `(chi_hasCompactSupport D).mul_right`. Establish `h2 : HasCompactSupport (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ))` using `h1.comp_left Complex.ofReal_zero`. Conclude with `h2.mul_right (f' := fun t : ℝ => Lf D σ v ξ (x.1, conjM (aDil k r t) x.2))`.
+-/
 theorem hasCompactSupport_left_profile {k r : ℕ} {Wp Wq H : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (D : RealPlaceData k r Wp Wq) (σ : Mat k r → (H →L[ℂ] H)) (v : H) (ξ : Wp) (x : Mt k r × Mt k r) :
@@ -87,6 +118,9 @@ theorem hasCompactSupport_left_profile {k r : ℕ} {Wp Wq H : Type} [NormedAddCo
   have h2 : HasCompactSupport (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ)) := h1.comp_left Complex.ofReal_zero
   exact h2.mul_right (f' := fun t : ℝ => Lf D σ v ξ (x.1, conjM (aDil k r t) x.2))
 
+/- English proof (translation)
+Establish `h1 : HasCompactSupport (fun t : ℝ => D.χ t * t ^ kap k r)` using `(chi_hasCompactSupport D).mul_right`. Establish `h2 : HasCompactSupport (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ))` using `h1.comp_left Complex.ofReal_zero`. Conclude with `h2.mul_right (f' := fun t : ℝ => Rf D σ v' ξ' (x.1, conjM (aDil k r t) x.2))`.
+-/
 theorem hasCompactSupport_right_profile {k r : ℕ} {Wp Wq H : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (D : RealPlaceData k r Wp Wq) (σ : Mat k r → (H →L[ℂ] H)) (v' : H) (ξ' : Wq) (x : Mt k r × Mt k r) :
@@ -95,6 +129,15 @@ theorem hasCompactSupport_right_profile {k r : ℕ} {Wp Wq H : Type} [NormedAddC
   have h2 : HasCompactSupport (fun t : ℝ => ((D.χ t * t ^ kap k r : ℝ) : ℂ)) := h1.comp_left Complex.ofReal_zero
   exact h2.mul_right (f' := fun t : ℝ => Rf D σ v' ξ' (x.1, conjM (aDil k r t) x.2))
 
+/- English proof (translation)
+Use `haveI := sf_of_haar D.haarW`. Use `haveI := sf_of_haar D.haarN`. Use `haveI := sf_of_haar D.haarW'`. Establish `hW : ∀ᵐ x ∂D.μW, Matrix.of x ∈ UWset k r D.z`. Rewrite using `[ae_iff]`.
+
+Conclude with `D.haarW.conc`. Establish `hN : ∀ᵐ x ∂D.μN, Matrix.of x ∈ Nset k r`. Rewrite using `[ae_iff]`. Conclude with `D.haarN.conc`. Establish `hW' : ∀ᵐ x ∂D.μW', Matrix.of x ∈ UWset k r D.z'`.
+
+Rewrite using `[ae_iff]`. Conclude with `D.haarW'.conc`. Establish `h1 : ∀ᵐ q ∂(D.μW.prod D.μN), Matrix.of q.1 ∈ UWset k r D.z ∧ Matrix.of q.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hW).and (Measure.quasiMeasurePreserving_snd.ae hN)`. Establish `h2 : ∀ᵐ q ∂(D.μW'.prod D.μN), Matrix.of q.1 ∈ UWset k r D.z' ∧ Matrix.of q.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hW').and (Measure.quasiMeasurePreserving_snd.ae hN)`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hp1 hp2`.
+
+Conclude with `⟨hp1.1, hp1.2, hp2.1, hp2.2⟩`.
+-/
 theorem ae_inSS {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) :
     ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), D.inSS p := by
@@ -118,6 +161,9 @@ theorem ae_inSS {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduct
     with p hp1 hp2
   exact ⟨hp1.1, hp1.2, hp2.1, hp2.2⟩
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_split (t₁ t₂ a b : ℝ) :
     Complex.exp (Complex.I * (((1 : ℝ) * t₁ * a - (1 : ℝ) * t₂ * b : ℝ) : ℂ)) =
       Complex.exp (Complex.I * ((a * t₁ : ℝ) : ℂ)) * Complex.exp (Complex.I * ((-b * t₂ : ℝ) : ℂ)) := by
@@ -126,6 +172,25 @@ theorem exp_split (t₁ t₂ a b : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS`. Take `⟨d, hd, hΦ⟩` from `hP k r Wp Wq D ε lm H σ hHC hDS`. Use `⟨d, hd, fun v v' ξ ξ' hv hv' => ?_⟩` and prove the remaining obligations. Use `haveI := sf_of_haar D.haarW`. Use `haveI := sf_of_haar D.haarN`.
+
+Use `haveI := sf_of_haar D.haarW'`. Establish `hpt : ∀ p : SS k r, D.inSS p → ((((1 + (1 : ℝ) ^ 2 * lam k r D.z (Matrix.of p.1.2) ^ 2)⁻¹ * (1 + (1 : ℝ) ^ 2 * lam k r D.z' (Matrix.of p.2.2) ^ 2)⁻¹ : ℝ) : ℂ) * ∫ t : ℝ × ℝ, oneMinusDD (regBracket D (coefM σ v v' ξ ξ') (coefM σ v v' ξ ξ') p) t.1 t.2 * Complex.exp (Complex.I * ((( …`. Introduce `p hp`. Use `set a := lam k r D.z (Matrix.of p.1.2) with ha`. Use `set b := lam k r D.z' (Matrix.of p.2.2) with hb`.
+
+Establish `hreg` using `regBracket_eq D σ v v' ξ ξ' d p (fun t h1 h2 => hΦ v v' ξ ξ' p hp t h1 h2)`. Establish `hA : ContDiff ℝ 2 (H1 D σ v ξ p.1)` using `hL k r Wp Wq D ε lm H σ hHC hDS v ξ hv p.1 hp.1 hp.2.1`. Establish `hB : ContDiff ℝ 2 (H2 D σ v' ξ' p.2)` using `hR k r Wp Wq D ε lm H σ hHC hDS v' ξ' hv' p.2 hp.2.2.1 hp.2.2.2`. Establish `iA` using `Formalism.FourierDecayAlt.P.integration_by_parts_regularised (H1 D σ v ξ p.1) hA (hasCompactSupport_left_profile D σ v ξ p.1) a`. Establish `iB` using `Formalism.FourierDecayAlt.P.integration_by_parts_regularised (H2 D σ v' ξ' p.2) hB (hasCompactSupport_right_profile D σ v' ξ' p.2) (-b)`.
+
+Establish `hsplit : (∫ t : ℝ × ℝ, oneMinusDD (regBracket D (coefM σ v v' ξ ξ') (coefM σ v v' ξ ξ') p) t.1 t.2 * Complex.exp (Complex.I * (((1 : ℝ) * t.1 * a - (1 : ℝ) * t.2 * b : ℝ) : ℂ))) = (d : ℂ)⁻¹ * ((∫ s : ℝ, (H1 D σ v ξ p.1 s - iteratedDeriv 2 (H1 D σ v ξ p.1) s) * Complex.exp (Comple …`. Rewrite using `[hreg]`. Establish `e : ∀ t : ℝ × ℝ, oneMinusDD (fun a' b' => (d : ℂ)⁻¹ * H1 D σ v ξ p.1 a' * H2 D σ v' ξ' p.2 b') t.1 t.2 * Complex.exp (Complex.I * (((1 : ℝ) * t.1 * a - (1 : ℝ) * t.2 * b : ℝ) : ℂ)) = (d : ℂ)⁻¹ * (((H1 D σ v ξ p.1 t.1 - iteratedDeriv 2 (H1 D σ v ξ p.1) t.1) * Complex.exp (Complex. …`. Introduce `t`. Rewrite using `[oneMinusDD_prod, exp_split]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[integral_const_mul, Measure.volume_eq_prod]`. Use `congr 1`. Conclude with `integral_prod_mul (μ := (volume : Measure ℝ)) (ν := (volume : Measure ℝ)) (fun s => (H1 D σ v ξ p.1 s - iteratedDeriv 2 (H1 D σ v ξ p.1) s) * Complex.exp (Complex.I * ((a * s : ℝ) : ℂ))) (fun s => (H2 D σ v' ξ' p.2 s - iteratedDeriv 2 (H2 D σ v' ξ' p.2) s) * Complex.exp (Complex. …`.
+
+Rewrite using `[hsplit, iA, iB]`. Unfold `I1 I2`. Rewrite using `[← ha, ← hb]`. Establish `h1 : (1 + a ^ 2 : ℝ) ≠ 0` using `by positivity`. Establish `h2 : (1 + b ^ 2 : ℝ) ≠ 0` using `by positivity`.
+
+Establish `hw : ((1 + (1 : ℝ) ^ 2 * a ^ 2)⁻¹ * (1 + (1 : ℝ) ^ 2 * b ^ 2)⁻¹) * ((1 + a ^ 2) * (1 + (-b) ^ 2)) = (1 : ℝ)`. Rewrite using `[neg_sq, one_pow, one_mul, one_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hw' : ((((1 + (1 : ℝ) ^ 2 * a ^ 2)⁻¹ * (1 + (1 : ℝ) ^ 2 * b ^ 2)⁻¹ : ℝ) : ℂ)) * (((1 + a ^ 2 : ℝ) : ℂ) * ((1 + (-b) ^ 2 : ℝ) : ℂ)) = 1`. Conclude with `hw` after adjusting the coercions.
+
+Take the linear combination `((d : ℂ)⁻¹ * (∫ t : ℝ, H1 D σ v ξ p.1 t * Complex.exp (Complex.I * ((a * t : ℝ) : ℂ))) * (∫ t : ℝ, H2 D σ v' ξ' p.2 t * Complex.exp (Complex.I * ((-b * t : ℝ) : ℂ)))) * hw'`. Unfold `betaInf betaInfTau RealPlaceData.μSS`. Use `(integral_congr_ae (g := fun p : SS k r => (d : ℂ)⁻¹ * (I1 D σ v ξ p.1 * I2 D σ v' ξ' p.2)) ?_).trans ?_` and prove the remaining obligations. Use `filter_upwards [ae_inSS D] with p hp`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `hpt p hp`. Rewrite using `[integral_const_mul, mul_assoc]`. Use `congr 1`. Conclude with `integral_prod_mul (μ := D.μW.prod D.μN) (ν := D.μW'.prod D.μN) (I1 D σ v ξ) (I2 D σ v' ξ')`.
+-/
 theorem betaFactor_of (hP : PhiAt) (hL : LeftProfileContDiffTwo) (hR : RightProfileContDiffTwo) : BetaFactor := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS
   obtain ⟨d, hd, hΦ⟩ := hP k r Wp Wq D ε lm H σ hHC hDS

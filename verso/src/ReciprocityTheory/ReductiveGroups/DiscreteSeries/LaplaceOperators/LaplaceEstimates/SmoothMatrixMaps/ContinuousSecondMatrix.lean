@@ -18,6 +18,9 @@ open Formalism.QuantumDeterminants
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Rewrite using `[@Matrix.frobenius_norm_def, frob, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_two]`.
+-/
 theorem frob_eq_frobenius {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     frob g = @Norm.norm _ Matrix.frobeniusSeminormedAddCommGroup.toNorm g := by
   rw [@Matrix.frobenius_norm_def, frob, Real.sqrt_eq_rpow]
@@ -25,23 +28,40 @@ theorem frob_eq_frobenius {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Real.rpow_two]
 
+/- English proof (translation)
+Rewrite using `[frob_eq_frobenius, frob_eq_frobenius, frob_eq_frobenius]`. Conclude with `@Matrix.frobenius_norm_mul _ _ _ _ _ _ _ _ a b`.
+-/
 theorem frob_mul_le {n : ℕ} (a b : Matrix (Fin n) (Fin n) ℂ) : frob (a * b) ≤ frob a * frob b := by
   rw [frob_eq_frobenius, frob_eq_frobenius, frob_eq_frobenius]
   exact @Matrix.frobenius_norm_mul _ _ _ _ _ _ _ _ a b
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem frob_nonneg {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ frob g := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `frob`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_id.matrix_elem i j).norm).pow 2)`.
+-/
 theorem frob_cont {n : ℕ} : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => frob g) := by
   unfold frob
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ =>
     continuous_finsetSum _ fun j _ => ((continuous_id.matrix_elem i j).norm).pow 2)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.gN frob`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq]`.
+-/
 theorem gN_eq_frob {k r : ℕ} (g : Mat k r) : Formalism.FourierDecayAlt.B.gN g = frob g := by
   unfold Formalism.FourierDecayAlt.B.gN frob
   congr 1
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hFc : ContinuousAt F g` using `hF.continuousOn.continuousAt (hU.mem_nhds hgU)`. Use `(hFc.continuousWithinAt (s := UJset ε)).congr_of_eventuallyEq ?_ (hfF g hgU hg)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hU.mem_nhds hgU)] with y hy hyU`.
+
+Conclude with `hfF y hyU hy`.
+-/
 theorem smooth_contOn {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : Formalism.REAL.SmoothOnG ε f) : ContinuousOn f (UJset ε) := by
   intro g hg
@@ -51,6 +71,9 @@ theorem smooth_contOn {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n
   filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hU.mem_nhds hgU)] with y hy hyU
   exact hfF y hyU hy
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _), ← add_smul]`. Use `congr 2`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem exp_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t u : ℝ) :
     NormedSpace.exp ((u : ℂ) • X) =
       NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (((u - t : ℝ) : ℂ) • X) := by
@@ -59,6 +82,13 @@ theorem exp_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t u : ℝ) :
   push_cast
   ring_nf
 
+/- English proof (translation)
+Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hγ` using `Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X`. Establish `hγ0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp [NormedSpace.exp_zero]`. Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`.
+
+Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X)))`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hmem] with t ht`. Conclude with `hfF _ ht (Formalism.REAL.indefinite_unitary_mul_mem ε hg (Formalism.REAL.exp_indefinite_unitary_holds _ ε X hX t))`. Rewrite using `[Formalism.REAL.right_derivative_extends _ ε f F U g X hU hgU hg hF hfF hX]`.
+
+Conclude with `hcomp.congr_of_eventuallyEq hev`.
+-/
 theorem hasDeriv_curve {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : Formalism.REAL.SmoothOnG ε f) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (hX : Formalism.REAL.inG ε X) :
@@ -80,6 +110,11 @@ theorem hasDeriv_curve {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin 
   rw [Formalism.REAL.right_derivative_extends _ ε f F U g X hU hgU hg hF hfF hX]
   exact hcomp.congr_of_eventuallyEq hev
 
+/- English proof (translation)
+Establish `hg' : Formalism.REAL.inUJ ε (g * NormedSpace.exp ((t : ℂ) • X))` using `Formalism.REAL.indefinite_unitary_mul_mem ε hg (Formalism.REAL.exp_indefinite_unitary_holds _ ε X hX t)`. Establish `h0` using `hasDeriv_curve hf hg' hX`. Establish `h1 : HasDerivAt (fun s : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((s : ℂ) • X))) (Formalism.REAL.Rd X f (g * NormedSpace.exp ((t : ℂ) • X))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h0`.
+
+Establish `h2` using `h1.comp_sub_const t t`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.mul_assoc, ← exp_shift X t u]`.
+-/
 theorem hasDeriv_curve_at {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : Formalism.REAL.SmoothOnG ε f) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (hX : Formalism.REAL.inG ε X) (t : ℝ) :
@@ -96,6 +131,11 @@ theorem hasDeriv_curve_at {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (F
   simp only
   rw [Matrix.mul_assoc, ← exp_shift X t u]
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun t => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun u : ℝ => NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((u : ℂ) • X)) (NormedSpace.exp ((t : ℂ) • X) * X) (t - t)`. Rewrite using `[sub_self]`. Conclude with `Formalism.REAL.hasDerivAt_mul_exp_smul_zero _ X`. Use `((h1.comp_sub_const t t).continuousAt).congr (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← exp_shift X t u]`.
+-/
 theorem curve_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := by
   refine continuous_iff_continuousAt.2 fun t => ?_
@@ -106,6 +146,13 @@ theorem curve_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
   simp only
   rw [← exp_shift X t u]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Rd`. Establish `h : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • ((s : ℂ) • X)))) = (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) ∘ (fun t => s * t)`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, smul_smul]`. Use `congr 3`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[h]`. Use `deriv_comp_mul_left s (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0` as an intermediate fact. Simplify using `only [mul_zero] at this`.
+
+Rewrite using `[show ((fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) ∘ fun t => s * t) = (fun x => (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (s * x)) from rfl, this, Complex.real_smul]`.
+-/
 theorem rd_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ)
     (s : ℝ) : Formalism.REAL.Rd ((s : ℂ) • X) f g = (s : ℂ) * Formalism.REAL.Rd X f g := by
   unfold Formalism.REAL.Rd
@@ -122,6 +169,11 @@ theorem rd_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (
     (fun x => (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (s * x)) from rfl, this,
     Complex.real_smul]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, g i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hg (Matrix.ext h)`. Unfold `frob`.
+
+Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frob_pos {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ≠ 0) : 0 < frob g := by
   obtain ⟨i, j, hij⟩ : ∃ i j, g i j ≠ 0 := by
     by_contra h
@@ -136,6 +188,9 @@ theorem frob_pos {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : g ≠ 0) : 0 <
         Finset.single_le_sum (f := fun i' => ∑ j', ‖g i' j'‖ ^ 2) (fun _ _ => by positivity)
           (Finset.mem_univ i)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Unfold `Formalism.REAL.inUJ at hg`. Establish `h` using `congrFun (congrFun hg ⟨0, hn⟩) ⟨0, hn⟩`. Simplify using `only [Matrix.mul_zero, Matrix.zero_apply, Formalism.REAL.Jm, Matrix.diagonal_apply_eq] at h`. Apply the tactic sequence `split_ifs at h <;> norm_num at h`.
+-/
 theorem ne_zero_of_inUJ {n : ℕ} (hn : 0 < n) {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : Formalism.REAL.inUJ ε g) : g ≠ 0 := by
   rintro rfl
@@ -144,10 +199,18 @@ theorem ne_zero_of_inUJ {n : ℕ} (hn : 0 < n) {ε : Fin n → Bool} {g : Matrix
   simp only [Matrix.mul_zero, Matrix.zero_apply, Formalism.REAL.Jm, Matrix.diagonal_apply_eq] at h
   split_ifs at h <;> norm_num at h
 
+/- English proof (translation)
+Use `show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_UH (k r : ℕ) : (1 : Mat k r) ∈ UH (Hpk k r) := by
   show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r
   simp
 
+/- English proof (translation)
+Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by rw [ha', hb']`.
+-/
 theorem uh_mul' {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
   show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
@@ -157,6 +220,13 @@ theorem uh_mul' {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b �
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Take `⟨hPu, hPe⟩` from `hP`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Unfold `Formalism.REAL.inUJ`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [hPe, ha']`. Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [h1]; simp`.
+-/
 theorem inUJ_conj {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : Formalism.REAL.inUJ ε (P * a * P⁻¹) := by
   obtain ⟨hPu, hPe⟩ := hP
@@ -172,6 +242,9 @@ theorem inUJ_conj {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [h1]; simp
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ`. Simplify using the standard rewrite rules.
+-/
 theorem one_inUJ {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   unfold Formalism.REAL.inUJ; simp
 
@@ -179,6 +252,11 @@ section Int
 
 variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)}
 
+/- English proof (translation)
+Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hW.2.2.1`.
+
+Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`. Rewrite using `[ae_iff]`. Simplify using `using hN.2.2.1`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`.
+-/
 theorem ae_supp (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hN : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN) :
     ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r := by
   have : SigmaFinite μW := hW.1
@@ -192,19 +270,36 @@ theorem ae_supp (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hN : 
 def suppA (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Set (Mt k r × Mt k r) :=
   {p | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r}
 
+/- English proof (translation)
+The claim follows from `continuous_fst`.
+-/
 theorem continuous_first_matrix : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)) := continuous_fst
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem continuous_second_matrix : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mat k r)) := continuous_snd
 
+/- English proof (translation)
+The claim follows from `IsClosed.inter (IsClosed.preimage continuous_first_matrix (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).closed) (IsClosed.preimage continuous_second_matrix (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed)`.
+-/
 theorem suppA_closed : IsClosed (suppA k r z) :=
   IsClosed.inter (IsClosed.preimage continuous_first_matrix (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).closed)
     (IsClosed.preimage continuous_second_matrix (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).closed)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul ((continuous_first_matrix.matrix_mul continuous_second_matrix).matrix_mul continuous_const)).matrix_mul continuous_const`.
+-/
 theorem cont_gp (P x : Mat k r) :
     Continuous (fun p : Mt k r × Mt k r => P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) :=
   (continuous_const.matrix_mul ((continuous_first_matrix.matrix_mul continuous_second_matrix).matrix_mul continuous_const)).matrix_mul
     continuous_const
 
+/- English proof (translation)
+Establish `hell : ∀ a, Continuous fun g : Mat k r => Formalism.MainNotions.S.ellA k r z g a`. Introduce `a`. Unfold `Formalism.MainNotions.S.ellA`. Use `split_ifs`. Conclude with `continuous_id.matrix_elem _ _`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `continuous_finsetSum _ fun j _ => (continuous_id.matrix_elem _ _).mul continuous_const`. Unfold `Formalism.MainNotions.S.psiGen`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_finsetSum _ fun a _ => continuous_const.mul (hell a)))))`.
+-/
 theorem psiGen_cont (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) :
     Continuous (Formalism.MainNotions.S.psiGen k r z c) := by
   have hell : ∀ a, Continuous fun g : Mat k r => Formalism.MainNotions.S.ellA k r z g a := by
@@ -221,6 +316,9 @@ theorem psiGen_cont (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) :
 variable {u : Fin k → ℝ} {Vp : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
   {c : Fin r → ℂ} {π : Mat k r → (Vp →L[ℂ] Vp)}
 
+/- English proof (translation)
+Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Establish `hU` using `hcTypeW_uRep k r z u Vp π hz hT hπ`. Unfold `chiInv Formalism.MainNotions.S.psiGen`. Rewrite using `[norm_smul, norm_star, Complex.norm_exp_I_mul_ofReal, one_mul, hU.2.1 _ ((Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).inv_mem _ hh)]`.
+-/
 theorem chi_norm (hB : IsBData z c u π μW μN) {h : Mat k r} (hh : h ∈ UWset k r z) (m : Mat k r) (ξ : Vp) :
     ‖chiInv (Formalism.MainNotions.S.psiGen k r z c) π h m ξ‖ = ‖ξ‖ := by
   obtain ⟨hz, hT, hc, hπ, hW, hN⟩ := hB
@@ -229,6 +327,15 @@ theorem chi_norm (hB : IsBData z c u π μW μN) {h : Mat k r} (hh : h ∈ UWset
   rw [norm_smul, norm_star, Complex.norm_exp_I_mul_ofReal, one_mul,
     hU.2.1 _ ((Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).inv_mem _ hh)]
 
+/- English proof (translation)
+Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Establish `hU` using `hcTypeW_uRep k r z u Vp π hz hT hπ`. Establish `hWc` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (ae_supp hW hN)]`. Use `ContinuousOn.aestronglyMeasurable ?_ suppA_closed.measurableSet` and prove the remaining obligations.
+
+Use `ContinuousOn.smul ?_ ?_` and prove the remaining obligations. Use `hG.comp ((cont_gp P x).matrix_mul continuous_const).continuousOn ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `Formalism.REAL.indefinite_unitary_mul_mem ε (inUJ_conj hP (uh_mul' (uh_mul' hp.1.1 hp.2.1) hx)) he`. Unfold `chiInv`.
+
+Use `ContinuousOn.smul ((continuous_star.comp ((psiGen_cont z c).comp continuous_second_matrix)).continuousOn) ?_` and prove the remaining obligations. Establish `hinv : ContinuousOn (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)⁻¹) (suppA k r z)`. Introduce `p hp`. Establish `hdet : IsUnit (Matrix.of p.1 : Mat k r).det` using `hWc.unit _ hp.1`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations.
+
+Use `(continuousAt_matrix_inv _ ?_).comp continuous_first_matrix.continuousAt` and prove the remaining obligations. Rewrite using `[← hdet.unit_spec]`. Conclude with `NormedRing.inverse_continuousAt hdet.unit`. Conclude with `(hU.2.2 ξ).comp hinv (fun p hp => hWc.inv_mem _ hp.1)`.
+-/
 theorem aesm_int {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     (hB : IsBData z c u π μW μN) {x : Mat k r} (hx : x ∈ UH (Hpk k r)) (ξ : Vp)
     (G : Mat k r → ℂ) (hG : ContinuousOn G (UJset ε)) (e : Mat k r) (he : Formalism.REAL.inUJ ε e) :
@@ -254,8 +361,28 @@ theorem aesm_int {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formali
       exact NormedRing.inverse_continuousAt hdet.unit
     exact (hU.2.2 ξ).comp hinv (fun p hp => hWc.inv_mem _ hp.1)
 
+/- English proof (translation)
+Unfold `S0.bS S0.nS`. Check the signs of the components of the expression.
+-/
 theorem bS_nonneg : 0 ≤ S0.bS k r := by unfold S0.bS S0.nS; positivity
 
+/- English proof (translation)
+Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Establish `hIS` using `S0.IntS.intS_of_sIntFin (Mult1.S0.sIntFin Mult1.multiplicity_one_hypotheses_hold)`. Establish `hI` using `hIS k r z μW μN hz hT hW hN 1 (one_mem_UH k r) x hx (a - 1) hb`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Use `set K := frob P⁻¹ * frob P with hKdef`.
+
+Establish `hK : ∀ g : Mat k r, frob g ≤ K * frob (P * g * P⁻¹)`. Introduce `g`. Establish `hg : P⁻¹ * (P * g * P⁻¹) * P = g`. Simplify using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.nonsing_inv_mul_cancel_left _ _ hd]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `ha1 : 1 ≤ a` using `by linarith [bS_nonneg (k := k) (r := r)]`. Use `Integrable.mono' (hI.const_mul (K ^ (a - 1))) ?_ ?_` and prove the remaining obligations. Conclude with `((frob_cont.comp (cont_gp P x)).measurable.pow_const _).aestronglyMeasurable`. Use `filter_upwards [ae_supp hW hN] with p hp`. Establish `hgU : Matrix.of p.1 * Matrix.of p.2 * x ∈ UH (Hpk k r)` using `uh_mul' (uh_mul' hp.1.1 hp.2.1) hx`.
+
+Establish `hJ` using `inUJ_conj hP hgU`. Establish `hn : 0 < 2 * r + k + 1` using `by omega`. Establish `hG0 : 0 < frob (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹)` using `frob_pos _ (ne_zero_of_inUJ hn hJ)`. Establish `hg0 : 0 < frob (Matrix.of p.1 * Matrix.of p.2 * x)`. Use `frob_pos _ ?_` and prove the remaining obligations.
+
+Introduce `h`. Apply `ne_zero_of_inUJ hn hJ` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hKg` using `hK (Matrix.of p.1 * Matrix.of p.2 * x)`.
+
+Establish `hK0 : 0 < K`. Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Establish `: K * frob (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hle hG0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hle : frob (Matrix.of p.1 * Matrix.of p.2 * x) / K ≤ frob (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹)`. Rewrite using `[div_le_iff₀ hK0]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.norm_of_nonneg (Real.rpow_nonneg hG0.le _)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[inv_one, Matrix.one_mul, gN_eq_frob, Real.div_rpow hg0.le hK0.le, neg_sub, div_eq_mul_inv, ← Real.rpow_neg hK0.le, neg_sub, mul_comm]`.
+-/
 theorem int_bound {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     (hB : IsBData z c u π μW μN) {x : Mat k r} (hx : x ∈ UH (Hpk k r)) (a : ℝ) (hb : S0.bS k r < a - 1) :
     Integrable (fun p : Mt k r × Mt k r => frob (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) ^ (1 - a))

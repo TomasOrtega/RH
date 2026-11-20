@@ -13,6 +13,15 @@ noncomputable section
 namespace CrystallineSemistableComparison.RelativeAugmentedComplex
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Set `P` to `(Functor.const (Discrete PUnit.{1})).obj M`. Set `F` to `(Functor.const D).obj M`. Set `a : Mor P F (RingHom.id R)` to `⟨(Functor.const D).obj ⟨PUnit.unit⟩, fun _ => LinearMap.id, fun _ _ => rfl⟩`. Set `b : Mor F P (RingHom.id R)` to `⟨(Functor.const _).obj Z, fun _ => LinearMap.id, fun _ _ => rfl⟩`. Establish `hi : Limits.IsInitial (⟨PUnit.unit⟩ : Discrete PUnit.{1})` using `Limits.IsInitial.ofUniqueHom (fun _ => 𝟙 _) fun _ _ => Subsingleton.elim _ _`.
+
+Establish `h0` using `CrystallineSemistableComparison.P.initial P _ hi`. Establish `h1 : ∀ n x, a.pull n (b.pull n x) = x` using `fun n x => by`. Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) b a n x).1, ← CrystallineSemistableComparison.P.prism (Mor.id F) (b.comp a) ⟨fun T => hZ.from T, fun _ _ _ => hZ.hom_ext _ _⟩ (fun _ _ => rfl) n x]`. Conclude with `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) b a n x).2`. Establish `h2 : ∀ n x, b.pull n (a.pull n x) = x` using `fun n x => by`.
+
+Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) a b n x).1, ← CrystallineSemistableComparison.P.prism (Mor.id P) (a.comp b) ⟨fun T => 𝟙 _, fun _ _ _ => Subsingleton.elim _ _⟩ (fun _ _ => rfl) n x]`. Conclude with `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) a b n x).2`. Establish `h3 : ∀ n, UpTo (1 : R) (a.hom.mapH n)` using `fun n => (CrystallineSemistableComparison.P.upTo_alg _ (LinearMap.id (R := R)) 1 1).2.2.2.2.2 ⟨Function.LeftInverse.injective (h2 n), Function.RightInverse.surjective (h1 n)⟩`. Establish `h4` using `(CrystallineSemistableComparison.P.res_transfer a.hom _ 1 1 h3).1 h0`. Rewrite `h4` using `[one_mul]`.
+
+Conclude with `h4`.
+-/
 theorem terminal_res {D : Type u} [Category.{v} D] (Z : D) (hZ : Limits.IsTerminal Z) (M : ModuleCat.{w} R) :
     (cx ((Functor.const D).obj M)).ResUpTo 1 (aug ((Functor.const D).obj M) fun _ => (LinearMap.id : M →ₗ[R] M)) := by
   let P := (Functor.const (Discrete PUnit.{1})).obj M
@@ -43,6 +52,9 @@ def mkS {j : I} {q : ℕ} (c : ComposableArrows C q) (a : ∀ k, j ⟶ π.obj (c
   obj k := StructuredArrow.mk (a k)
   map φ := StructuredArrow.homMk (c.map φ) (h φ)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mkS_congr {j : I} {q : ℕ} (f : Cn (relF π F j) q) (c : ComposableArrows C q) {a a' : ∀ k, j ⟶ π.obj (c.obj k)}
     (h' : ∀ {k k' : Fin (q + 1)} (φ : k ⟶ k'), a' k ≫ π.map (c.map φ) = a' k')
     (e : a = a') : @Eq (F.obj (c.obj (Fin.last q))) (f (mkS π c a (e ▸ h'))) (f (mkS π c a' h')) := by
@@ -86,6 +98,9 @@ def st {j : I} {q : ℕ} (c : ComposableArrows C q) (a : j ⟶ π.obj (c.obj 0))
   mkS π c (fun k => a ≫ π.map (c.map (homOfLE (Fin.zero_le k)))) fun φ => by
     rw [Category.assoc, ← π.map_comp, ← c.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, ← π.map_comp, ← c.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem st_w {j : I} {q : ℕ} (c : ComposableArrows C q) (a : j ⟶ π.obj (c.obj 0)) {k k' : Fin (q + 1)} (φ : k ⟶ k') :
     (a ≫ π.map (c.map (homOfLE (Fin.zero_le k)))) ≫ π.map (c.map φ) = a ≫ π.map (c.map (homOfLE (Fin.zero_le k'))) := by
   rw [Category.assoc, ← π.map_comp, ← c.map_comp]; rfl
@@ -94,6 +109,9 @@ def ov {Z : I} {p : ℕ} (i : ComposableArrows I p) (a : i.obj (Fin.last p) ⟶ 
   mkO i (fun k => i.map (homOfLE (Fin.le_last k)) ≫ a) fun φ => by
     rw [← Category.assoc, ← i.map_comp]; rfl
 
+/- English proof (translation)
+Establish `e : ∀ (a : ∀ k, (s ⋙ Over.forget Z).obj k ⟶ Z) h (e : a = fun k => (s.obj k).hom), mkO (s ⋙ Over.forget Z) a h = s`. Introduce `a h e`. Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `e _ _ (funext fun k => Over.w (s.map _))`.
+-/
 theorem ov_eq {Z : I} {p : ℕ} (s : ComposableArrows (Over Z) p) : ov (s ⋙ Over.forget Z) (s.obj (Fin.last p)).hom = s := by
   have e : ∀ (a : ∀ k, (s ⋙ Over.forget Z).obj k ⟶ Z) h (e : a = fun k => (s.obj k).hom), mkO (s ⋙ Over.forget Z) a h = s := by
     intro a h e; subst e; rfl
@@ -103,6 +121,11 @@ def cmp {p q : ℕ} (f : Cn (relCn π F q) p) (c : ComposableArrows C q) :
     Cn ((Functor.const (Over (π.obj (c.obj 0)))).obj (F.obj (c.obj (Fin.last q)))) p :=
   fun s => f (s ⋙ Over.forget _) (st π c (s.obj (Fin.last p)).hom)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Establish `key : ∀ f : Cn (relCn π F q) p, @Eq (F.obj (x.obj (Fin.last q)).right) (f i x) (cmp π F f (x ⋙ StructuredArrow.proj _ _) (ov i (x.obj 0).hom))` using `fun f => by`. Use `mkS_congr π F (f i) (x ⋙ StructuredArrow.proj _ _) (a := fun k => (x.obj k).hom) (a' := fun k => (i.map (𝟙 _) ≫ (x.obj 0).hom) ≫ π.map (x.map (homOfLE (Fin.zero_le k))).right) (st_w π (x ⋙ StructuredArrow.proj _ _) _) (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[i.map_id, Category.id_comp]`. Conclude with `(StructuredArrow.w _).symm`.
+
+Conclude with `(key f).trans ((congrFun (h _) _).trans (key g).symm)`.
+-/
 theorem cmp_inj {p q : ℕ} (f g : Cn (relCn π F q) p) (h : ∀ c, cmp π F f c = cmp π F g c) : f = g := by
   funext i x
   have key : ∀ f : Cn (relCn π F q) p, @Eq (F.obj (x.obj (Fin.last q)).right) (f i x)
@@ -114,6 +137,9 @@ theorem cmp_inj {p q : ℕ} (f g : Cn (relCn π F q) p) (h : ∀ c, cmp π F f c
     exact (StructuredArrow.w _).symm
   exact (key f).trans ((congrFun (h _) _).trans (key g).symm)
 
+/- English proof (translation)
+Use `⟨fun i x => g (x ⋙ StructuredArrow.proj _ _) (ov i (x.obj 0).hom), fun c => funext fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g c (ov (s ⋙ Over.forget _) ((s.obj (Fin.last p)).hom ≫ π.map (c.map (𝟙 0)))) = g c s`. Rewrite using `[c.map_id, π.map_id, Category.comp_id, ov_eq]`.
+-/
 theorem cmp_surj {p q : ℕ} (g : ∀ c : ComposableArrows C q,
     Cn ((Functor.const (Over (π.obj (c.obj 0)))).obj (F.obj (c.obj (Fin.last q)))) p) :
     ∃ f : Cn (relCn π F q) p, ∀ c, cmp π F f c = g c := by
@@ -121,6 +147,11 @@ theorem cmp_surj {p q : ℕ} (g : ∀ c : ComposableArrows C q,
   change g c (ov (s ⋙ Over.forget _) ((s.obj (Fin.last p)).hom ≫ π.map (c.map (𝟙 0)))) = g c s
   rw [c.map_id, π.map_id, Category.comp_id, ov_eq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `(∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • (relRes π F (GlobalTheory.CatH.toLast k (s ⋙ Over.forget _))).pullC q (f (GlobalTheory.CatH.face k (s ⋙ Over.forget _)))) (st π c (s.obj (Fin.last (p + 1))).hom) = ∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • cmp π F f c (GlobalTheory.CatH.face …`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => congrArg (fun z : F.obj (c.obj (Fin.last q)) => (-1 : ℤ) ^ (k : ℕ) • z) (a₁ := (relRes π F (GlobalTheory.CatH.toLast k (s ⋙ Over.forget _))).pullC q (f (GlobalTheory.CatH.face k (s ⋙ Over.forget _))) (st π c (s.obj (Fin.last (p + 1))).hom)) ?_` and prove the remaining obligations. Use `mkS_congr π F (f (GlobalTheory.CatH.face k (s ⋙ Over.forget _))) c (a := fun l => (GlobalTheory.CatH.toLast k s).left ≫ (s.obj (Fin.last (p + 1))).hom ≫ π.map (c.map (homOfLE (Fin.zero_le l)))) (a' := fun l => ((GlobalTheory.CatH.face k s).obj (Fin.last p)).hom ≫ π.map (c.map (ho …` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, Over.w]`.
+-/
 theorem cmp_d {p q : ℕ} (f : Cn (relCn π F q) p) (c : ComposableArrows C q) :
     cmp π F (d _ p f) c = d _ p (cmp π F f c) := by
   funext s
@@ -136,6 +167,15 @@ theorem cmp_d {p q : ℕ} (f : Cn (relCn π F q) p) (c : ComposableArrows C q) :
     (funext fun l => ?_)
   rw [← Category.assoc, Over.w]
 
+/- English proof (translation)
+Establish `T` using `fun c : ComposableArrows C q => terminal_res (R := R) _ (Over.mkIdTerminal (X := π.obj (c.obj 0))) (F.obj (c.obj (Fin.last q)))`. Establish `he : ∀ (f : Cn F q) c, cmp π F ((relAugRow π F).ε q f) c = aug _ (fun _ => LinearMap.id) (f c)` using `fun f c => rfl`. Use `⟨(relAugRow π F).hε q, fun f hf => funext fun c => (T c).2.1 _ (by rw [← he, hf]; rfl), fun f hf => ?_, fun n f hf => ?_⟩` and prove the remaining obligations. Use `choose g hg using fun c => (T c).2.2.1 (cmp π F f c) (by`. Express the relevant statement in the definitionally equal form `d _ 0 _ = 0`.
+
+Rewrite using `[← cmp_d, show d (relCn π F q) 0 f = 0 from hf]`. Use the proof step `rfl)`. Conclude with `⟨g, cmp_inj π F _ _ fun c => by rw [he, hg, one_smul, one_smul]⟩`. Use `choose g hg using fun c => (T c).2.2.2 n (cmp π F f c) (by`. Express the relevant statement in the definitionally equal form `d _ (n + 1) _ = 0`.
+
+Rewrite using `[← cmp_d, show d (relCn π F q) (n + 1) f = 0 from hf]`. Use the proof step `rfl)`. Take `⟨g', hg'⟩` from `cmp_surj π F g`. Use `⟨g', cmp_inj π F _ _ fun c => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cmp π F (d _ n g') c = _`.
+
+Rewrite using `[cmp_d, hg', one_smul]`. Conclude with `(hg c).trans (one_smul _ _)`.
+-/
 theorem row_res (q : ℕ) : ((relCx π F).dcx.row q).ResUpTo 1 ((relAugRow π F).ε q) := by
   have T := fun c : ComposableArrows C q => terminal_res (R := R) _ (Over.mkIdTerminal (X := π.obj (c.obj 0))) (F.obj (c.obj (Fin.last q)))
   have he : ∀ (f : Cn F q) c, cmp π F ((relAugRow π F).ε q f) c = aug _ (fun _ => LinearMap.id) (f c) := fun f c => rfl
@@ -168,6 +208,21 @@ def relHom : DCx.Hom (relCx π F).dcx (relCx (m.G ⋙ π) F').dcx (RingHom.id R)
     exact Finset.sum_congr rfl fun k _ => by rw [map_zsmul]; rfl
   cv p q g := funext fun i => (relMor π m _).d_pullC q (g i)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ q).1 x`. Establish `ha' : ∀ i, d (relF π F _) q (a i) = 0` using `fun i => congrFun ha i`. Establish `hb` using `((CrystallineSemistableComparison.P.cls_surj ((relCx (m.G ⋙ π) F').dcx.col p) q).2.1 (((relHom π m).col p).f q a) (by rw [Cx.Hom.comm, ha, map_zero])).1 hx`.
+
+Establish `key : ∀ i, s • a i ∈ (cx (relF π F (i.obj (Fin.last p)))).B q` using `fun i => by`. Use `((CrystallineSemistableComparison.P.cls_surj (cx (relF π F _)) q).2.1 (s • a i) (by rw [map_smul]; exact (congrArg _ (ha' i)).trans (smul_zero _))).1 ?_` and prove the remaining obligations. Use `(h _).1 ((cx (relF π F _)).cls (a i) (ha' i)) ?_` and prove the remaining obligations. Use `((CrystallineSemistableComparison.P.cls_surj (cx (relF (m.G ⋙ π) F' _)) q).2.1 ((relMor π m _).pullC q (a i)) (by change d _ q _ = 0; rw [Mor.d_pullC, ha', map_zero])).2 ?_` and prove the remaining obligations. Consider the cases of `q with`.
+
+Consider the case `zero => exact congrFun (show ((relHom π m).col p).f 0 a = 0 from hb) i`. Consider the case `succ q => obtain ⟨y, hy⟩ := hb`. Conclude with `⟨y i, congrFun hy i⟩`. Use `((CrystallineSemistableComparison.P.cls_surj ((relCx π F).dcx.col p) q).2.1 (s • a) (by rw [map_smul, ha, smul_zero])).2 ?_` and prove the remaining obligations. Consider the cases of `q with`.
+
+Consider the case `zero => exact funext fun i => key i`. Consider the case `succ q => choose y hy using key`. Conclude with `⟨y, funext hy⟩`. Introduce `x`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ q).1 x`.
+
+Establish `hb' : ∀ i, d (relF (m.G ⋙ π) F' _) q (b i) = 0` using `fun i => congrFun hb i`. Establish `key : ∀ i : ComposableArrows I p, ∃ a : Cn (relF π F (i.obj (Fin.last p))) q, d _ q a = 0 ∧ (relMor π m _).pullC q a - (show Cn (relF (m.G ⋙ π) F' (i.obj (Fin.last p))) q from s • b i) ∈ (cx (relF (m.G ⋙ π) F' (i.obj (Fin.last p)))).B q` using `fun i => by`. Take `⟨y, hy⟩` from `(h _).2 ((cx (relF (m.G ⋙ π) F' _)).cls (b i) (hb' i))`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ q).1 y`. Conclude with `⟨a, ha, ((CrystallineSemistableComparison.P.cls_surj (cx (relF (m.G ⋙ π) F' _)) q).2.2.1 _ (s • b i) (by change d _ q ((relMor π m _).pullC q a) = 0; rw [Mor.d_pullC, show d _ q a = 0 from ha, map_zero]) (by rw [map_smul]; exact (congrArg _ (hb' i)).trans (smul_zero _))).1 hy⟩`.
+
+Use `choose a ha hab using key`. Use `⟨((relCx π F).dcx.col p).cls a (funext ha), ?_⟩` and prove the remaining obligations. Use `((CrystallineSemistableComparison.P.cls_surj ((relCx (m.G ⋙ π) F').dcx.col p) q).2.2.1 (((relHom π m).col p).f q a) (s • b) (by rw [Cx.Hom.comm]; exact (congrArg _ (funext ha)).trans (map_zero _)) (by rw [map_smul, hb, smul_zero])).2 ?_` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => exact funext fun i => hab i`.
+
+Consider the case `succ q => choose y hy using hab`. Conclude with `⟨y, funext hy⟩`.
+-/
 theorem col_upTo (s : R) (p q : ℕ) (h : ∀ i, UpTo s ((relMor π m i).pull q)) : UpTo s (((relHom π m).col p).mapH q) := by
   constructor
   · intro x hx
@@ -208,6 +263,15 @@ theorem col_upTo (s : R) (p q : ℕ) (h : ∀ i, UpTo s ((relMor π m i).pull q)
 end CrystallineSemistableComparison.RelativeAugmentedComplex
 
 open CrystallineSemistableComparison.RelativeAugmentedComplex in
+/- English proof (translation)
+Introduce `R _ C _ C' _ I _ F F' π m s n h`. Establish `h1` using `CrystallineSemistableComparison.P.dc_row (relAugRow π F) 1 (row_res π F) n`. Establish `h2` using `CrystallineSemistableComparison.P.dc_row (relAugRow (m.G ⋙ π) F') 1 (row_res _ F') n`. Establish `h3` using `CrystallineSemistableComparison.P.dc_map_col (relHom π m) s n fun p q hpq => col_upTo π m s p q fun i => h i q (by omega)`. Rewrite `h1`, `h2` using `[one_pow]`.
+
+Establish `h4` using `(CrystallineSemistableComparison.P.upTo_alg _ _ _ _).1 h1 h3`. Establish `e : (relHom π m).tot.mapH n ∘ₗ (relAugRow π F).edge.mapH n = (relAugRow (m.G ⋙ π) F').edge.mapH n ∘ₗ m.pull n`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ n).1 x`. Use `congrArg Submodule.Quotient.mk (Subtype.ext (Subtype.ext (funext fun p => funext fun q => ?_)))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(relHom π m).f p q ((relCx π F).dcx.sgl 0 n ((relAugRow π F).ε n a) p q) = (relCx (m.G ⋙ π) F').dcx.sgl 0 n ((relAugRow (m.G ⋙ π) F').ε n (m.pullC n a)) p q`. Distinguish the cases in `hpq : p = 0 ∧ q = n`. Take `⟨rfl, rfl⟩` from `hpq`. Rewrite using `[DCx.sgl_self, DCx.sgl_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[DCx.sgl_ne _ _ (by omega), DCx.sgl_ne _ _ (by omega), map_zero]`. Rewrite `h4` using `[e]`. Establish `h5` using `(CrystallineSemistableComparison.P.upTo_alg _ _ _ _).2.2.1 h2 h4`. Rewrite `h5` using `[one_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem CrystallineSemistableComparison.P.rel : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {I : Type t} [Category.{t'} I] {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w'} R} (π : C ⥤ I) (m : Mor F F' (RingHom.id R)) (s : R) (n : ℕ), (∀ i, ∀ q ≤ n + 1, UpTo s ((relMor π m i).pull q)) → UpTo (s ^ (2 * n + 3)) (m.pull n) := by
   intro R _ C _ C' _ I _ F F' π m s n h
   have h1 := CrystallineSemistableComparison.P.dc_row (relAugRow π F) 1 (row_res π F) n

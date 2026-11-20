@@ -10,6 +10,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PosOne.SymComb.symDbl_comb | exact GlobalTheory.PosOne.SymComb.symDbl_comb | (intros; apply GlobalTheory.PosOne.SymComb.symDbl_comb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.symmetricDoubleIntegral_finite_combination : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ),
     c + 1 = 2 * ρ → ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (ν : Measure k), IsSelfDual ψ ν →

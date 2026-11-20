@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.CellMass
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `j hj ρ hρ`. Take `⟨-, -, -, h4, h5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (ch.G.V (.grid D.R.m j))`. Take `⟨-, -, -, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (ch.G.V (.top j))`. Take `⟨c1, c2, c3, c4, c5, π, σ, hπ, hσ, hπσ, hker, hpr⟩` from `GlobalTheory.T.rowPeriodSubgroup_finitePoints_semidirect ch j hj`.
+
+Take `⟨κ, la, ν, hκ, hla, hν, h⟩` from `GlobalTheory.T.haar_trace_conj_eq_const_mul_kernel_image _ _ _ π σ c1 c2 c3 c4 c5 hπ hσ hπσ hker ρ hρ`. Conclude with `⟨κ, la, ν, hκ, hla, hν, fun b => by rw [hpr b]; exact h b⟩`.
+-/
 theorem cell_fubini : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ j ∈ idx D,
     ∀ ρ : Measure ((rowGrp ch.G j).subgroupOf (GfC (ch.G.V (.grid D.R.m j)))), ρ.IsHaarMeasure →
     ∃ (κ : ℝ) (la : Measure ((rowN ch.G j).subgroupOf (GfC (ch.G.V (.grid D.R.m j))))) (ν : Measure (GfC (ch.G.V (.top j)))),

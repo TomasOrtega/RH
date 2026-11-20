@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨ι, hι, hr, -⟩` from `zmodToQZ l (n.factorization l)`. Establish `hcop : ¬ l ∣ n / l ^ n.factorization l` using `Nat.not_dvd_ordCompl hl hn`. Establish `hu : IsUnit ((n / l ^ n.factorization l : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`.
+
+Conclude with `(Nat.Prime.coprime_iff_not_dvd hl).2 hcop`. Establish `key : ∀ x : QZ l, (n : ℤ) • x = 0 ↔ x ∈ Set.range ι`. Introduce `x`. Rewrite using `[hr, natCast_zsmul, ← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Use `conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self n l, mul_comm, Nat.cast_mul, mul_smul]`.
+
+Rewrite using `[hu.smul_eq_zero, Nat.cast_pow]`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight key)]`. Conclude with `(Nat.card_range_of_injective hι).trans (Nat.card_zmod _)`.
+-/
 private theorem cardTors (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0) :
     Nat.card {x : QZ l // (n : ℤ) • x = 0} = l ^ n.factorization l := by
   have hl : l.Prime := Fact.out
@@ -19,11 +26,19 @@ private theorem cardTors (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0) :
   rw [Nat.card_congr (Equiv.subtypeEquivRight key)]
   exact (Nat.card_range_of_injective hι).trans (Nat.card_zmod _)
 
+/- English proof (translation)
+Rewrite using `[← cardTors l n hn, ← Nat.card_congr (ZMod.lift n)]`. Conclude with `(Nat.card_congr ((zmultiplesHom (QZ l)).subtypeEquiv fun x => by simp)).symm`.
+-/
 private theorem cardZmod (l : ℕ) [Fact l.Prime] (n : ℕ) (hn : n ≠ 0) :
     Nat.card (ZMod n →+ QZ l) = l ^ n.factorization l := by
   rw [← cardTors l n hn, ← Nat.card_congr (ZMod.lift n)]
   exact (Nat.card_congr ((zmultiplesHom (QZ l)).subtypeEquiv fun x => by simp)).symm
 
+/- English proof (translation)
+Introduce `l _ A _ _`. Take `⟨ι, _, n, hn, ⟨e⟩⟩` from `AddCommGroup.equiv_directSum_zmod_of_finite' A`. Establish `hn0 : ∀ i, n i ≠ 0` using `fun i => by have := hn i; omega`. Establish `h1 : Nat.card A = ∏ i, n i`. Rewrite using `[Nat.card_congr (e.toEquiv.trans DFinsupp.equivFunOnFintype), Nat.card_pi]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : (A →+ QZ l) ≃ (∀ i, ZMod (n i) →+ QZ l)` using `(AddEquiv.addMonoidHomCongrLeftEquiv e).trans (DFinsupp.liftAddHom).toEquiv.symm`. Rewrite using `[Nat.card_congr e2, Nat.card_pi, h1, Nat.factorization_prod fun i _ => hn0 i, Finsupp.finset_sum_apply, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => cardZmod l _ (hn0 i)`.
+-/
 theorem UpperTheory.V.Kum.cardHomQZ :
     ∀ (l : ℕ) [Fact l.Prime] (A : Type) [AddCommGroup A] [Finite A], Nat.card (A →+ QZ l) = l ^ (Nat.card A).factorization l := by
   intro l _ A _ _

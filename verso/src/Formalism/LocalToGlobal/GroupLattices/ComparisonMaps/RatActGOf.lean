@@ -9,6 +9,19 @@ namespace Formalism.L2.G.Cmp
 
 open Formalism.MainNotions.G
 
+/- English proof (translation)
+Establish `hinv : ∀ v s a b, e ((((g v s)⁻¹ : GL (Fin (P.m + 1)) LL) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) LL) a b) = P.gPos v s (((A v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) a b`. Introduce `v s a b`. Establish `h1 : Matrix.GeneralLinearGroup.map e ((g v s)⁻¹) = gPosGL P v s ((A v)⁻¹)`. Rewrite using `[map_inv, map_inv, hg]`. Establish `h2` using `congrArg (fun M : GL (Fin (P.m + 1)) Kf => (M : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) Kf) a b) h1`.
+
+Conclude with `h2`. Establish `hdet : ∀ v s, e ((g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) LL).det) = (P.gPos v s (A v : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v))).det`. Introduce `v s`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Establish `h2` using `congrArg (fun M : GL (Fin (P.m + 1)) Kf => (M : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) Kf)) (hg v s)`. Conclude with `h2`. Establish `hsub : ∀ R : XR P LL, MvPolynomial.map e (substR P LL (fun v s => (((g v s)⁻¹ : GL (Fin (P.m + 1)) LL) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) LL)) R) = P.subst (fun v s => P.gPos v s (((A v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v))) (M …`. Introduce `R`. Proceed by induction on `R using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp [substR, Places.subst]`. Consider the case `add f q hf hq => simp only [map_add, hf, hq]`. Consider the case `mul_X f x hf`. Simplify using `only [map_mul, hf]`. Use `congr 1`.
+
+Simplify using `only [substR, Places.subst, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, hinv]`. Simplify using `only [natActR, Places.natAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, hsub]`. Use `congr 2`. Simplify using `only [map_prod, map_zpow₀, hdet]`.
+
+Both sides reduce to the same expression.
+-/
 theorem natAct_rat {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     (P : Places p O Kf) {LL : Type} [Field LL] (e : LL →+* Kf) (A : ∀ v, GL (Fin (P.m + 1)) (P.Qq v))
     (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) LL)
@@ -54,6 +67,11 @@ def RatLev : Prop :=
     Matrix.GeneralLinearGroup.map e g = gPosGL G.P v s ((G.lev i).act v γ)) ∧
   ∀ (i : G.comp) (γ : (G.lev i).Γ), ∃ a : LL, e a = algebraMap G.O G.Kf ((G.lev i).χ γ : G.O)
 
+/- English proof (translation)
+Introduce `i γ ξ hξ`. Take `⟨Q, hQ⟩` from `hξ`. Use `choose g hg using fun v s => h.1 i γ v s`. Take `⟨a, ha⟩` from `h.2 i γ`. Use `⟨a • natActR G.P LL g Q, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, natAct_rat G.P e (fun v => (G.lev i).act v γ) g hg Q, hQ, ← MvPolynomial.smul_eq_C_mul, ha, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem ratActG_of (h : RatLev G e) : RatActG G e := by
   intro i γ ξ hξ
   obtain ⟨Q, hQ⟩ := hξ

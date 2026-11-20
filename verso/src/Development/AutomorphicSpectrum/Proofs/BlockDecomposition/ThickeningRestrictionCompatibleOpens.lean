@@ -5,6 +5,11 @@ open GlobalTheory.ProjSpace GlobalTheory.QCoh.Qcqs GlobalTheory.Cartier GlobalTh
 
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
+/- English proof (translation)
+Introduce `R _ I Y β hβ L w hL e V W V' W' hV hW h h' x`. Establish `key` using `SecOnR.pull_restrict (M := L (e + 1)) (toR_w I Y β hβ e) h h' hV hW x`. Apply `(SecOnR.linEquiv (toR I Y e) (SecOn.congr (hL e).1 (LB.isLB_pull (hL (e + 1)).1 (β e)) (w e) (hL e).2 W')).injective` to reduce the goal to its premises. Simplify using `only [redL, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[key]`.
+
+Take `⟨y, hy⟩` from `(SecOnR.linEquiv (toR I Y e) (SecOn.congr (hL e).1 (LB.isLB_pull (hL (e + 1)).1 (β e)) (w e) (hL e).2 V')).surjective (SecOnR.pull (L (e + 1)) (toR_w I Y β hβ e) V V' hV x)`. Rewrite using `[← hy, LinearEquiv.symm_apply_apply]`. Conclude with `(SecOn.congr_restrict (hL e).1 (LB.isLB_pull (hL (e + 1)).1 (β e)) (w e) (hL e).2 h' y).symm`.
+-/
 theorem redL_restrict : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) (L : ∀ e, LB (Y e).left) (w : ∀ e, LB.Iso (L e) ((L (e + 1)).pull (β e))) (hL : ∀ e, (L e).IsLB ∧ (w e).IsGen) (e : ℕ) (V W : (Y (e + 1)).left.Opens) (V' W' : (Y e).left.Opens) (hV : V' ≤ β e ⁻¹ᵁ V) (hW : W' ≤ β e ⁻¹ᵁ W) (h : W ≤ V) (h' : W' ≤ V') (x : SecOnR (toR I Y (e + 1)) (L (e + 1)) V), redL I Y β hβ L w hL e W W' hW (SecOnR.restrict _ _ h x) = SecOnR.restrict _ _ h' (redL I Y β hβ L w hL e V V' hV x) := by
   intro R _ I Y β hβ L w hL e V W V' W' hV hW h h' x
   have key := SecOnR.pull_restrict (M := L (e + 1)) (toR_w I Y β hβ e) h h' hV hW x

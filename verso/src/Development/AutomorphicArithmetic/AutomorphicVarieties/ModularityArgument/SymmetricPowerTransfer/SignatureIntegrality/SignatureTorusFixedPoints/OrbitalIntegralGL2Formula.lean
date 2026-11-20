@@ -10,20 +10,42 @@ open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil Upp
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[dg, val_diagT, Matrix.diagonal_apply, Matrix.one_apply, GeneralLinearGroup.scalar]`.
+-/
 private theorem scal_eq (z : kˣ) : GeneralLinearGroup.scalar (Fin 2) z = dg (fun _ : Fin 2 => z) := by
   ext i j
   simp [dg, val_diagT, Matrix.diagonal_apply, Matrix.one_apply, GeneralLinearGroup.scalar]
 
+/- English proof (translation)
+Use extensionality with `: 1`. Simplify using `only [Units.val_mul]`. Conclude with `(Matrix.scalar_commute (n := Fin 2) (z : k) (fun _ => Commute.all _ _) (g : Matrix (Fin 2) (Fin 2) k))`.
+-/
 private theorem scal_comm (z : kˣ) (g : GL (Fin 2) k) :
     GeneralLinearGroup.scalar (Fin 2) z * g = g * GeneralLinearGroup.scalar (Fin 2) z := by
   ext : 1
   simp only [Units.val_mul]
   exact (Matrix.scalar_commute (n := Fin 2) (z : k) (fun _ => Commute.all _ _) (g : Matrix (Fin 2) (Fin 2) k))
 
+/- English proof (translation)
+Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 private theorem sdom2 {x y : kˣ} (h : valuation k (x : k) < valuation k (y : k)) : SDom ![x, y] := by
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all
 
+/- English proof (translation)
+Take `⟨j, hj, s, hs, E⟩` from `contract k V 2 (MonoidHom.id _) (pres_id V 2) d hd _ h`. Take `⟨s', hs', rfl⟩` from `Subgroup.mem_map.mp hs`. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_implies] at hs'`. Establish `hv : ∀ i, valuation k ((s' i : kˣ) : k) = 1` using `fun i => V.H_le (hs' i)`. Establish `hE : (w * j)⁻¹ * dg ![a, b] * (w * j) = dg (fun i => z * s' i * d i)`.
+
+Establish `c` using `scal_comm z j⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [MonoidHom.id_apply, ← mul_assoc]`. Rewrite using `[c]`. Use `group`.
+
+Use `_ = dg (fun i => z * s' i * d i) := by`. Rewrite using `[E, scal_eq]`. Simplify using `only [dg, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[mul_assoc]`. Establish `hsd : SDom (fun i => z * s' i * d i)`. Introduce `i i' hii`. Simplify using `only [Units.val_mul, map_mul, hv, mul_one]`. Establish `hz0 : valuation k (z : k) ≠ 0` using `by simp`.
+
+Conclude with `mul_lt_mul_of_pos_left (hd i i' hii) (zero_lt_iff.mpr hz0)`. Take `⟨hab', u, hu⟩` from `conjDiag k 2 ![a, b] _ (sdom2 hab) hsd (w * j) hE`. Use `⟨u, j⁻¹, inv_mem hj, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu] group`. Establish `h0 : a = z * s' 0 * d 0` using `congrFun hab' 0`.
+
+Rewrite using `[h0, mul_right_comm, mul_div_cancel_left]`. Conclude with `hs' 0`. Establish `h1 : b = z * s' 1 * d 1` using `congrFun hab' 1`. Rewrite using `[h1, mul_right_comm, mul_div_cancel_left]`. Conclude with `hs' 1`.
+-/
 private theorem key (V : Lev k) {d : Fin 2 → kˣ} (hd : SDom d) {a b z : kˣ}
     (hab : valuation k (a : k) < valuation k (b : k)) {w : GL (Fin 2) k}
     (h : (GeneralLinearGroup.scalar (Fin 2) z)⁻¹ * (w⁻¹ * dg ![a, b] * w) ∈ V.DC d) :
@@ -62,6 +84,15 @@ private theorem key (V : Lev k) {d : Fin 2 → kˣ} (hd : SDom d) {a b z : kˣ}
     rw [h1, mul_right_comm, mul_div_cancel_left]
     exact hs' 1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hpq (u 0 / u 1)`. Establish `hz : GeneralLinearGroup.scalar (Fin 2) (u 1 / q t) ∈ V.ZJ 2` using `by show _ ∈ (GeneralLinearGroup.scalar (Fin 2)).range ⊔ V.J 2`. Conclude with `Subgroup.mem_sup_left (MonoidHom.mem_range.mpr ⟨_, rfl⟩)`. Establish `hzj : GeneralLinearGroup.scalar (Fin 2) (u 1 / q t) * j ∈ V.ZJ 2`. Use `mul_mem hz ?_` and prove the remaining obligations.
+
+Use `show _ ∈ (GeneralLinearGroup.scalar (Fin 2)).range ⊔ V.J 2`. Conclude with `Subgroup.mem_sup_right hj`. Use `⟨t, _, hzj, ?_⟩` and prove the remaining obligations. Establish `h0 : u 0 = p t / q t * u 1` using `by rw [ht, div_mul_cancel]`. Establish `hu : u = ![p t, q t] * fun _ => u 1 / q t`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use `show u 0 = p t * (u 1 / q t)`. Rewrite using `[h0, mul_div_assoc', div_mul_eq_mul_div]`. Use `show u 1 = q t * (u 1 / q t)`.
+
+Rewrite using `[mul_div_cancel]`. Rewrite using `[hι, scal_eq]`. Use `conv_lhs => rw [hu]`. Simplify using `only [dg, map_mul]`. Use `group`.
+-/
 private theorem orbit_of {T : Type} [Group T] (V : Lev k) {p q : T →* kˣ}
     (hpq : ∀ x : kˣ, ∃ t, p t / q t = x) {g₀ : GL (Fin 2) k} {ι : T →* GL (Fin 2) k}
     (hι : ∀ s, ι s = g₀ * dg ![p s, q s] * g₀⁻¹) {u : Fin 2 → kˣ} {j : GL (Fin 2) k} (hj : j ∈ V.J 2) :
@@ -88,11 +119,17 @@ private theorem orbit_of {T : Type} [Group T] (V : Lev k) {p q : T →* kˣ}
   simp only [dg, map_mul]
   group
 
+/- English proof (translation)
+Simplify using `only [orb, h]`.
+-/
 private theorem orb_congr' {T G : Type} [Group T] [Group G] (ι : T →* G) (C : Subgroup T) (θ : G →* G) (U : Subgroup G)
     {f f' : G → ℂ} (δ : G) (h : ∀ y, f (y⁻¹ * δ * θ y) = f' (y⁻¹ * δ * θ y)) :
     orb ι C θ U f δ = orb ι C θ U f' δ := by
   simp only [orb, h]
 
+/- English proof (translation)
+Unfold `orb wcount`. Simplify using `only [mul_left_comm _ c]`. Conclude with `(smul_finsum c _).symm`.
+-/
 private theorem orb_smul' {T G : Type} [Group T] [Group G] (ι : T →* G) (C : Subgroup T) (θ : G →* G) (U : Subgroup G)
     (c : ℂ) (f : G → ℂ) (δ : G) :
     orb ι C θ U (fun g => c * f g) δ = c * orb ι C θ U f δ := by
@@ -100,15 +137,24 @@ private theorem orb_smul' {T G : Type} [Group T] [Group G] (ι : T →* G) (C : 
   simp only [mul_left_comm _ c]
   exact (smul_finsum c _).symm
 
+/- English proof (translation)
+Simplify using `[orb, wcount]`.
+-/
 private theorem orb_zero' {T G : Type} [Group T] [Group G] (ι : T →* G) (C : Subgroup T) (θ : G →* G) (U : Subgroup G)
     (δ : G) : orb ι C θ U (fun _ => 0) δ = 0 := by
   simp [orb, wcount]
 
+/- English proof (translation)
+Establish `hp : 0 < valuation k (x : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `h.trans ((one_lt_inv₀ hp).2 h)`.
+-/
 private theorem inv_gt {x : kˣ} (h : valuation k (x : k) < 1) : valuation k (x : k) < valuation k ((x⁻¹ : kˣ) : k) := by
   have hp : 0 < valuation k (x : k) := zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero)
   rw [Units.val_inv_eq_inv_val, map_inv₀]
   exact h.trans ((one_lt_inv₀ hp).2 h)
 
+/- English proof (translation)
+Establish `e : (g₀⁻¹ * y)⁻¹ * dg ![a, b] * (g₀⁻¹ * y) = y⁻¹ * (g₀ * dg ![a, b] * g₀⁻¹) * MonoidHom.id _ y`. Simplify using `only [MonoidHom.id_apply]`. Use `group`. Take `⟨u, j, hj, hw, h1, h2⟩` from `key V hd hab (w := g₀⁻¹ * y) (z := z) (by rw [e]; exact h)`. Conclude with `⟨u, j, hj, by rw [← hw]; group, h1, h2⟩`.
+-/
 private theorem key' (V : Lev k) {d : Fin 2 → kˣ} (hd : SDom d) {a b z : kˣ}
     (hab : valuation k (a : k) < valuation k (b : k)) (g₀ y : GL (Fin 2) k)
     (h : (GeneralLinearGroup.scalar (Fin 2) z)⁻¹ * (y⁻¹ * (g₀ * dg ![a, b] * g₀⁻¹) * MonoidHom.id _ y) ∈ V.DC d) :
@@ -118,6 +164,9 @@ private theorem key' (V : Lev k) {d : Fin 2 → kˣ} (hd : SDom d) {a b z : kˣ}
   obtain ⟨u, j, hj, hw, h1, h2⟩ := key V hd hab (w := g₀⁻¹ * y) (z := z) (by rw [e]; exact h)
   exact ⟨u, j, hj, by rw [← hw]; group, h1, h2⟩
 
+/- English proof (translation)
+Use `⟨{g₀}, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hf _ hy`. Take `⟨u, j, hj, rfl, -, -⟩` from `key' V hd hab g₀ y hz`. Take `⟨t, v, hv, e⟩` from `orbit_of V hpq hι (u := u) hj`. Conclude with `⟨t, g₀, by simp, v, hv, e⟩`.
+-/
 private theorem fin_of {T : Type} [Group T] (V : Lev k) {d : Fin 2 → kˣ} (hd : SDom d) {a b : kˣ}
     (hab : valuation k (a : k) < valuation k (b : k)) {p q : T →* kˣ}
     (hpq : ∀ x : kˣ, ∃ t, p t / q t = x) {g₀ : GL (Fin 2) k} {ι : T →* GL (Fin 2) k}
@@ -132,6 +181,51 @@ private theorem fin_of {T : Type} [Group T] (V : Lev k) {d : Fin 2 → kˣ} (hd 
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ V χ hχ t ht T _ p q hpq g₀ ι hι a ha`. Establish `hpq' : ∀ x : kˣ, ∃ s, p s / q s = x` using `fun x => by`. Take `⟨s, hs⟩` from `hpq x`. Conclude with `⟨s, by simpa using hs⟩`. Establish `htd : SDom ![t, t⁻¹]` using `sdom2 (inv_gt ht)`.
+
+Establish `haa : valuation k (a : k) < valuation k ((a⁻¹ : kˣ) : k)` using `inv_gt ha`. Establish `ht1 : SDom ![t, 1]` using `sdom2 (by simpa using ht)`. Use `⟨⟨?_, ?_⟩, fun b hb => ?_⟩` and prove the remaining obligations. Use `fin_of V htd haa hpq' hι (V.quaternionDoubleCosetIndicator t) (fun g hg => ⟨1, ?_⟩)` and prove the remaining obligations. Establish `hm : g ∈ V.DC ![t, t⁻¹]`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hg (by simp [Lev.quaternionDoubleCosetIndicator, Glob.one, hn])`. Simplify using `using hm`. Establish `h1H : ∀ u ∈ V.H, (1 : kˣ →* ℂˣ) u = 1` using `fun _ _ => rfl`. Establish `E` using `(orbZ k V 1 h1H ![t, t⁻¹] htd T p q hpq g₀ ι hι a a⁻¹ haa).2`.
+
+Distinguish the cases in `hat : a / t ∈ V.H`. Establish `hX : ∀ y : GL (Fin 2) k, V.quaternionDoubleCosetIndicator t (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y) = V.fZ 1 ![t, t⁻¹] (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y)`. Introduce `y`. Establish `hiff : y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y ∈ V.DC ![t, t⁻¹] ↔ ∃ z : kˣ, (GeneralLinearGroup.scalar (Fin 2) z)⁻¹ * (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y) ∈ V.DC ![t, t⁻¹]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hm`. Conclude with `⟨1, by simpa using hm⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨u, j, hj, rfl, -, -⟩` from `key' V htd haa g₀ y hz`. Establish `hr : dg ![a / t, (a / t)⁻¹] ∈ V.J 2`.
+
+Establish `hm : dg ![a / t, (a / t)⁻¹] ∈ V.TH 2`. Use `Subgroup.mem_map_of_mem _ ?_` and prove the remaining obligations. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_implies]`. Introduce `i`. Use `fin_cases i`.
+
+Conclude with `hat`. Conclude with `inv_mem hat`. Use `show _ ∈ (glIwa k 2).N ⊔ V.TH 2 ⊔ (glIwa k 2).Nm V.c`. Conclude with `Subgroup.mem_sup_left (Subgroup.mem_sup_right hm)`. Use `⟨j⁻¹, inv_mem hj, dg ![a / t, (a / t)⁻¹] * j, mul_mem hr hj, ?_⟩` and prove the remaining obligations.
+
+Establish `hD : dg ![a, a⁻¹] = dg u * (dg ![t, t⁻¹] * dg ![a / t, (a / t)⁻¹]) * (dg u)⁻¹`. Simplify using `only [dg, ← map_mul, ← map_inv]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Use `show a = u 0 * (t * (a / t)) * (u 0)⁻¹`. Rewrite using `[mul_div_cancel, mul_inv_cancel_comm]`. Use `show a⁻¹ = u 1 * (t⁻¹ * (a / t)⁻¹) * (u 1)⁻¹`. Rewrite using `[← mul_inv, mul_div_cancel, mul_inv_cancel_comm]`. Rewrite using `[hD]`.
+
+Simplify using `only [MonoidHom.id_apply]`. Use `group`. Distinguish the cases in `hm : y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y ∈ V.DC ![t, t⁻¹]`. Simplify using `only [Lev.quaternionDoubleCosetIndicator, Lev.fZ, Glob.one]`. Rewrite using `[if_pos hm, dif_pos (hiff.mp hm)]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Lev.quaternionDoubleCosetIndicator, Lev.fZ, Glob.one]`. Rewrite using `[if_neg hm, dif_neg (mt hiff.mpr hm)]`. Rewrite using `[orb_congr' ι _ _ _ _ hX, E]`. Establish `hsq : a / a⁻¹ / (![t, t⁻¹] 0 / ![t, t⁻¹] 1) = (a / t) * (a / t)`.
+
+Use `ext`. Simplify using `[Units.val_div_eq_div_val]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsq, if_pos (mul_mem hat hat)]`. Simplify using `[Glob.one, hat]`.
+
+Establish `hX : ∀ y : GL (Fin 2) k, V.quaternionDoubleCosetIndicator t (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y) = (fun _ => (0 : ℂ)) (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y)`. Introduce `y`. Simplify using `only [Lev.quaternionDoubleCosetIndicator, Glob.one]`. Rewrite using `[if_neg]`. Introduce `hm`.
+
+Establish `hz : (GeneralLinearGroup.scalar (Fin 2) (1 : kˣ))⁻¹ * (y⁻¹ * (g₀ * dg ![a, a⁻¹] * g₀⁻¹) * MonoidHom.id _ y) ∈ V.DC ![t, t⁻¹]`. Simplify using `using hm`. Take `⟨u, j, hj, -, h0, -⟩` from `key' V htd haa g₀ y hz`. Apply `hat` to reduce the goal to its premises. Simplify using `using h0`.
+
+Rewrite using `[orb_congr' (f' := fun _ => (0 : ℂ)) ι _ _ _ _ hX, orb_zero']`. Simplify using `[Glob.one, hat]`. Establish `h1a : 1 < valuation k ((a⁻¹ : kˣ) : k)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.mpr (by simp))).mpr ha`.
+
+Establish `hvb : valuation k (b : k) = valuation k ((a⁻¹ : kˣ) : k)`. Rewrite using `[hb]`. Conclude with `Valuation.map_add_eq_of_lt_right _ (by simpa using h1a)`. Establish `habb : valuation k ((a * b : kˣ) : k) < valuation k (b : k)`. Rewrite using `[Units.val_mul, map_mul]`.
+
+Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.mpr (by simp)) ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `fin_of V ht1 habb hpq' hι (V.twistedCentralTestFunction χ t) (fun g hg => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hg` to reduce the goal to its premises.
+
+Simplify using `only [Lev.twistedCentralTestFunction, Lev.fZ]`. Rewrite using `[dif_neg hn, mul_zero]`. Establish `hχH : ∀ u ∈ V.H, χ u = 1` using `fun u hu => hχ u (V.H_le hu)`. Establish `E` using `(orbZ k V χ hχH ![t, 1] ht1 T p q hpq g₀ ι hι (a * b) b habb).2`. Establish `hfk : V.twistedCentralTestFunction χ t = fun g => (((χ t)⁻¹ : ℂˣ) : ℂ) * V.fZ χ ![t, 1] g` using `rfl`.
+
+Rewrite using `[hfk, orb_smul', E]`. Establish `hq : a * b / b / (![t, 1] 0 / ![t, 1] 1) = a / t` using `by simp`. Rewrite using `[hq]`. Distinguish the cases in `hat : a / t ∈ V.H`. Rewrite using `[if_pos hat]`.
+
+Establish `hvat : valuation k (a : k) = valuation k (t : k)`. Establish `h1 : valuation k ((a / t : kˣ) : k) = 1` using `V.H_le hat`. Rewrite `h1` using `[Units.val_div_eq_div_val, map_div₀, div_eq_one_iff_eq (by simp)]`. Conclude with `h1`. Establish `htb : t * b ∈ Uo k` using `by show valuation k ((t * b : kˣ) : k) = 1`.
+
+Rewrite using `[Units.val_mul, map_mul, hvb, ← hvat, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_cancel₀ (by simp)]`. Establish `hc : (χ t)⁻¹ * χ (![t, 1] 1 / b) = 1`. Use `hχ _ htb` as an intermediate fact. Simplify using `only [map_mul] at this`. Use `show (χ t)⁻¹ * χ (1 / b) = 1`.
+
+Rewrite using `[one_div, map_inv, ← mul_inv, this, inv_one]`. Simplify using `only [Glob.one, if_pos hat]`. Rewrite using `[mul_left_comm, ← Units.val_mul, hc, Units.val_one]`. Simplify using `[Glob.one, hat]`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.orbital_integral_degree_one : UpperTheory.V.Z.Sym.Sig.OrbitalIntegralGL2Formula := by
   intro k _ _ _ _ V χ hχ t ht T _ p q hpq g₀ ι hι a ha
   have hpq' : ∀ x : kˣ, ∃ s, p s / q s = x := fun x => by

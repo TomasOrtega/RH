@@ -4,6 +4,11 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Con
 import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
+/- English proof (translation)
+Introduce `D J hJ x`. Rewrite using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.mpr hJ)]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `(FractionalIdeal.mem_one_iff _).mp (h _ ((FractionalIdeal.mem_coeIdeal _).mpr ⟨y, hy, rfl⟩))`.
+
+Introduce `h z hz`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hz`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr (h y hy)`.
+-/
 theorem UpperTheory.Reformulated.B.Qf38.mem_inv_coe :
     ∀ (D : Formalism.BasicNotions.D7) {J : Ideal (NumberField.RingOfIntegers D.host.E)},
     J ≠ ⊥ →

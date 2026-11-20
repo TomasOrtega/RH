@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.SiegLev
 
+/- English proof (translation)
+Introduce `h n N F j hn hN hdvd hj hfin het`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hN0 : N ≠ 0` using `by rintro rfl; exact (Nat.not_odd_zero hN)`. Use `haveI : IsDedekindDomain (cycAway n) := GlobalTheory.CycAwayReg.isDedekindDomain_cycAway n`. Take `⟨Ga, _, _, ρ, ν, h1, hmul, hν1, hνmul, hover, hlow, hfree, htrans⟩` from `GlobalTheory.T.siegelFamily_similitudeGroup_action_free_transitive h n N F j hn hN hdvd hj`.
+
+Establish `hjf : j.Finite` using `(IsFinite.SpecMap_iff _).1 hfin`. Establish `hq : IsQProjOver (F.s ≫ spMap j)` using `(GlobalTheory.isQProjOver_baseChange_and_finite_restrict _ _ j F.X (F.s ≫ spMap j)).2 F.s hjf F.qproj`. Take `⟨Y, π, sY, hπ, hG, hsep, hft, -⟩` from `GlobalTheory.T.exists_galoisCover_quotient_freeFiniteAction (cycAway n) F.X (F.s ≫ spMap j) Ga ρ hq h1 hmul hover hfree`. Establish `hqY : IsQProjOver sY` using `GlobalTheory.T.isQProjOver_target_galoisCover_noetherian (cycAway n) F.X Y π sY Ga ρ hG hsep hft (by rw [hπ]; exact hq)`. Establish `hsm : SmoothOfRelativeDimension (h * (h + 1) / 2) (π ≫ sY)`.
+
+Rewrite using `[hπ]`. Use `haveI := F.smooth`. Use `haveI : SmoothOfRelativeDimension 0 (spMap j) := inferInstance`. Use `smoothOfRelativeDimension_comp (h * (h + 1) / 2) 0 F.s (spMap j)` as an intermediate fact. Rewrite `this` using `[Nat.add_zero]`. Then use the resulting hypothesis.
+
+Establish `hsY : SmoothOfRelativeDimension (h * (h + 1) / 2) sY` using `GlobalTheory.T.smoothOfRelativeDimension_descent_etaleCover (cycAway n) F.X Y π sY _ hG.etale hG.onto hft hsm`. Take `⟨c, hc, hlowc⟩` from `GlobalTheory.T.principal_siegel_lower_level_descends_galois h n N (cycAway n) (cycAway N) (cycBase hn0) (zetaAway N) j F.X Y F.s π sY F.univ Ga ρ ν hN0 (isUnit_natCast hN0) hdvd (by rw [cycBase_ζ]; exact hj) hπ hG (by rw [hπ]; exact hq) hft F.princ hν1 hνmul hlow`. Use `⟨⟨Y, sY, hsY, hqY, c, hc, π, hπ, hG.fin, hG.etale, hG.onto, hlowc, ?_⟩⟩` and prove the remaining obligations. Introduce `R _ _ y y' s' c' h₀ h₁ h₂`. Take `⟨a, rfl⟩` from `htrans R y y' s' c' h₀ h₁ h₂`.
+
+Rewrite using `[Category.assoc, hG.inv]`.
+-/
 theorem nonempty_sQuot : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j : cycAway n →+* cycAway N), 3 ≤ n → Odd N → n ∣ N →
     j (zetaAway n) = zetaAway N ^ (N / n) → IsFinite (spMap j) → Etale (spMap j) → Nonempty (SQuot F n (zetaAway n) j) := by
   intro h n N F j hn hN hdvd hj hfin het
@@ -47,6 +58,9 @@ theorem nonempty_sQuot : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j : cycA
   obtain ⟨a, rfl⟩ := htrans R y y' s' c' h₀ h₁ h₂
   rw [Category.assoc, hG.inv]
 
+/- English proof (translation)
+The claim follows from `nonempty_sQuot`.
+-/
 example : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j : cycAway n →+* cycAway N), 3 ≤ n → Odd N → n ∣ N → j (zetaAway n) = zetaAway N ^ (N / n) → IsFinite (spMap j) → Etale (spMap j) → Nonempty (SQuot F n (zetaAway n) j) := nonempty_sQuot
 
 end GlobalTheory.SiegLev

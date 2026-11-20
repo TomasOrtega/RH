@@ -114,6 +114,19 @@ def CompactSupportClassMembership : Prop :=
           B.InCC (B.AB S.G.k S.G.r) 5 (B.opApply Θ F) ∧ B.InCC (B.AB S.G.k S.G.r) 5 (B.opAdj Θ F') ∧
           B.beta (T v).base (B.opApply Θ F) F' = B.beta (T v).base F (B.opAdj Θ F')
 
+/- English proof (translation)
+Take `⟨C1, hF'⟩` from `hF`. Take `⟨C2, h1'⟩` from `h1`. Use `⟨max C1 C2, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he Θs hΘs K hK J hJ hKt`. Establish `hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀` using `⟨isBuiltPlace_mono (le_max_left _ _) hB.1, hB.2⟩`.
+
+Establish `hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀` using `⟨isBuiltPlace_mono (le_max_right _ _) hB.1, hB.2⟩`. Establish `stab` using `hF' E Wp Wq S T f χ ν' m₀ top A₀ hB1 v`. Establish `hmem : ∀ Θs : List (B.DiffOp S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))), (∀ Θ ∈ Θs, IsAAOp S T v Θ) → applyL S v Θs K ∈ smoothFormsPositiveCone S T v`. Introduce `Θs`. Proceed by induction on `Θs with`.
+
+Consider the case `nil => intro _`. Conclude with `hK`. Consider the case `cons Θ Θs ih`. Introduce `h`. Conclude with `(stab Θ (h Θ (by simp)) _ (ih fun Θ' hΘ' => h Θ' (by simp [hΘ']))).1`.
+
+Establish `key : ∀ Θs : List (B.DiffOp S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))), (∀ Θ ∈ Θs, IsAAOp S T v Θ) → ∀ J ∈ smoothFormsPositiveCone S T v, (∀ π, trJ S T v e (applyL S v Θs K) π ∈ MA.Test (D.parOf S v).r (D.parOf S v).TT) ∧ MA.ipA (D.parOf S v) (trJ S T v e (applyL S v Θs K)) (trJ S …`. Introduce `Θs`. Proceed by induction on `Θs with`. Consider the case `nil => intro _ J _`. Conclude with `⟨hKt, rfl⟩`.
+
+Consider the case `cons Θ Θs ih`. Introduce `h J hJ`. Establish `hΘ : IsAAOp S T v Θ` using `h Θ (by simp)`. Establish `hrest : ∀ Θ' ∈ Θs, IsAAOp S T v Θ'` using `fun Θ' hΘ' => h Θ' (by simp [hΘ'])`. Establish `hX` using `hmem Θs hrest`.
+
+Take `⟨ihT, ihE⟩` from `ih hrest (B.opAdj Θ J) (stab Θ hΘ J hJ).2`. Take `⟨hT, hE⟩` from `h1' E Wp Wq S T f χ ν' m₀ top A₀ hB2 v e he Θ hΘ (applyL S v Θs K) hX J hJ (stab Θ hΘ _ hX).1 (stab Θ hΘ J hJ).2 ihT`. Conclude with `⟨hT, hE.trans ihE⟩`. Conclude with `key Θs hΘs J hJ`.
+-/
 theorem sAPairL_of_one (hF : JAFFStable) (h1 : SAPairOne) : SAPairL := by
   obtain ⟨C1, hF'⟩ := hF
   obtain ⟨C2, h1'⟩ := h1

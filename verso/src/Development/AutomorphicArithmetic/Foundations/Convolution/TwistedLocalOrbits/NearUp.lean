@@ -22,6 +22,17 @@ open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SplitWeil GlobalT
 
 namespace UpperTheory.ConvolutionTheory.Loc.NearIdentityAscent
 
+/- English proof (translation)
+Use `⟨fun s => ?_, HasCompactSupport.intro (hU.image hp) h2⟩` and prove the remaining obligations. Rewrite using `[← isClosed_compl_iff, ← Set.preimage_compl]`. Generalize the expression as in `sᶜ = t`. Establish `hc : IsClosed (a ⁻¹' t)`. Rewrite using `[← isOpen_compl_iff, ← Set.preimage_compl]`.
+
+Conclude with `ha _`. Establish `e : f ⁻¹' t = p '' (U ∩ a ⁻¹' t) ∪ ((p '' U)ᶜ ∩ {_y | (0 : ℂ) ∈ t})`. Use extensionality with `y`. Distinguish the cases in `hy : y ∈ p '' U`. Take `⟨u, hu, rfl⟩` from `hy`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Or.inl ⟨u, ⟨hu, by rwa [Set.mem_preimage, h1 u hu] at h⟩, rfl⟩`. Introduce and unpack `(⟨u', ⟨hu', h⟩, e⟩ | ⟨h, -⟩)`. Rewrite using `[Set.mem_preimage, ← e, h1 u' hu']`.
+
+Conclude with `h`. Conclude with `absurd ⟨u, hu, rfl⟩ h`. Rewrite using `[Set.mem_preimage, h2 y hy]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => Or.inr ⟨hy, h⟩`.
+
+Introduce and unpack `(⟨u', ⟨hu', -⟩, e⟩ | ⟨-, h⟩)`. Conclude with `absurd ⟨u', hu', e⟩ hy`. Conclude with `h`. Rewrite using `[e]`. Conclude with `((hU.inter_right hc).image hp).isClosed.union (ho.isClosed_compl.inter isClosed_const)`.
+-/
 private theorem sb_of_push {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space Y] {U : Set X} (hU : IsCompact U)
     {p : X → Y} (hp : Continuous p) (ho : IsOpen (p '' U)) {a : X → ℂ} (ha : IsLocallyConstant a) {f : Y → ℂ}
     (h1 : ∀ u ∈ U, f (p u) = a u) (h2 : ∀ y, y ∉ p '' U → f y = 0) : f ∈ SB Y := by
@@ -51,6 +62,11 @@ private theorem sb_of_push {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y
   rw [e]
   exact ((hU.inter_right hc).image hp).isClosed.union (ho.isClosed_compl.inter isClosed_const)
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `u₀`. Establish `h : ∀ᶠ u in nhds u₀, ∀ κ ∈ K, φ (κ⁻¹ * u * θ κ) = φ (κ⁻¹ * u₀ * θ κ)`. Use `hK.eventually_forall_of_forall_eventually fun κ _ => ?_` and prove the remaining obligations. Establish `h1` using `(hφ.comp_continuous (f := fun z : G × G => z.2⁻¹ * z.1 * θ z.2) (by fun_prop)).eventually_eq (u₀, κ)`.
+
+Establish `h2` using `(hφ.comp_continuous (f := fun z : G × G => z.2⁻¹ * u₀ * θ z.2) (by fun_prop)).eventually_eq (u₀, κ)`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Conclude with `hz1.trans hz2.symm`. Use `filter_upwards [h] with u hu`. Conclude with `setIntegral_congr_fun hm hu`.
+-/
 private theorem avg_locConst {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     (μ : Measure G) {θ : G → G} (hθ : Continuous θ) {K : Set G} (hK : IsCompact K) (hm : MeasurableSet K) {φ : G → ℂ}
     (hφ : IsLocallyConstant φ) : IsLocallyConstant fun u => ∫ κ in K, φ (κ⁻¹ * u * θ κ) ∂μ := by
@@ -65,6 +81,11 @@ private theorem avg_locConst {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   filter_upwards [h] with u hu
   exact setIntegral_congr_fun hm hu
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator hm, ← integral_indicator hm, ← integral_mul_left_eq_self ((K : Set G).indicator F) z]`. Use `congr 1`. Use function extensionality and compare the values at `κ`. Distinguish the cases in `h : κ ∈ K`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (K.mul_mem hz h)]`.
+
+Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem fun h' => h ((K.mul_mem_cancel_left hz).1 h')]`.
+-/
 private theorem set_left {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G) (hm : MeasurableSet (K : Set G)) (F : G → ℂ) {z : G} (hz : z ∈ K) :
     ∫ κ in (K : Set G), F (z * κ) ∂μ = ∫ κ in (K : Set G), F κ ∂μ := by
@@ -77,14 +98,31 @@ private theorem set_left {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
 
 variable {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ}
 
+/- English proof (translation)
+Introduce `x y h` and use `by ext i j exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)`.
+-/
 private theorem incl_inj : Function.Injective (incl : GL (Fin n) k → GL (Fin n) E) := fun x y h => by
   ext i j
   exact (algebraMap k E).injective (congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) h)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `σ.commutes _`.
+-/
 private theorem sigma_incl (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) : sigmaGL σ (incl y : GL (Fin n) E) = incl y := by
   ext i j
   exact σ.commutes _
 
+/- English proof (translation)
+Establish `key : ∀ a b : k, valuation E (algebraMap k E a) ≤ valuation E (algebraMap k E b) ↔ valuation k a ≤ valuation k b` using `fun a b => by`. Rewrite using `[← Valuation.Compatible.vle_iff_le, ← Valuation.Compatible.vle_iff_le, ValuativeExtension.vle_iff_vle]`. Take `⟨x, hx⟩` from `valuation_surjective (K := k) (uniformizer k)`. Establish `h1 : valuation k x < 1` using `hx ▸ uniformizer_lt_one`. Establish `h0 : x ≠ 0` using `fun h => by`.
+
+Rewrite `hx` using `[h, map_zero]`. Conclude with `uniformizer_ne_zero hx.symm`. Establish `h2 : valuation E (algebraMap k E x) < 1`. Use `key 1 x` as an intermediate fact. Rewrite `this` using `[map_one, map_one, map_one]`.
+
+Conclude with `lt_of_not_ge fun h => (not_le.2 h1) (this.1 h)`. Take `⟨m, hm⟩` from `exists_pow_lt₀ h2 (Units.mk0 s hs)`. Use `⟨valuation k (x ^ m), zero_lt_iff.2 (by simpa using fun h => absurd h h0), fun g hg i j => ?_⟩` and prove the remaining obligations. Establish `e : ((incl g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j = algebraMap k E ((g : Matrix (Fin n) (Fin n) k) i j - (1 : Matrix (Fin n) (Fin n) k) i j)`. Rewrite using `[map_sub]`.
+
+Use `congr 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[e]`. Use `((key _ _).2 (hg i j)).trans ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`.
+
+Conclude with `hm.le`.
+-/
 private theorem small [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [ValuativeExtension k E] {s : ValueGroupWithZero E} (hs : s ≠ 0) :
     ∃ ρ : ValueGroupWithZero k, 0 < ρ ∧ ∀ g ∈ ball n ρ, (incl g : GL (Fin n) E) ∈ ball n s := by
@@ -114,6 +152,39 @@ private theorem small [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLoc
 end UpperTheory.ConvolutionTheory.Loc.NearIdentityAscent
 
 open UpperTheory.ConvolutionTheory.Loc.NearIdentityAscent UpperTheory.ConvolutionTheory.Loc.BallG UpperTheory.V.Z.Tf.Orb in
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n _ _ _ _ μE μk hμE hμk`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap k E).injective`. Take `⟨hc, -, hb⟩` from `bridge k E σ`. Establish `hj` using `(hb n).2.2.2.1`. Take `⟨_, _, _, -⟩` from `gLTop E n`.
+
+Take `⟨_, _, _, -⟩` from `gLTop k n`. Establish `hθ : Continuous (sigmaGL σ : GL (Fin n) E → GL (Fin n) E)` using `((extCont k E).2.2 n).2 σ`. Take `⟨r, hr0, hr⟩` from `exists_radius (w := valuation E (Module.finrank k E : E)) ((Valuation.ne_zero_iff _).mpr (Nat.cast_ne_zero.mpr hc.pos.ne'))`. Establish `hr1 : r < 1` using `hr.trans_le (valuation_natCast_le_one (E := E) (Module.finrank k E))`. Establish `hs0 : r * valuation E (Module.finrank k E : E) ≠ 0` using `(mul_pos hr0 (hr0.trans hr)).ne'`.
+
+Take `⟨ρ, hρ, hρb⟩` from `small (k := k) (n := n) hs0`. Use `⟨ρ, hρ, fun f hf hs => ?_⟩` and prove the remaining obligations. Use `set K := ballSub n r hr1 with hK`. Establish `hKo : IsOpen (K : Set (GL (Fin n) E))` using `isOpen_ball hr0.ne'`. Establish `hKc : IsCompact (K : Set (GL (Fin n) E))` using `isCompact_ball hr1`.
+
+Use `set K' : Subgroup (GL (Fin n) k) := K.comap (incl : GL (Fin n) k →* GL (Fin n) E) with hK'`. Establish `hKo' : IsOpen (K' : Set (GL (Fin n) k))` using `hKo.preimage hj.continuous`. Establish `hKc' : IsCompact (K' : Set (GL (Fin n) k))` using `hj.isCompact_preimage hKc`. Use `set A : GL (Fin n) k → ℂ := fun u => ∫ κ in (K' : Set (GL (Fin n) k)), f (κ⁻¹ * u * id κ) ∂μk with hA`. Establish `hAl : IsLocallyConstant A` using `avg_locConst μk continuous_id hKc' hKo'.measurableSet hf.1`.
+
+Use `set c : ℂ := ((μE.real (K : Set (GL (Fin n) E)) : ℝ) : ℂ) with hcd`. Establish `hc0 : c ≠ 0` using `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hKo.measure_ne_zero μE ⟨1, one_mem _⟩, hKc.measure_ne_top⟩)`. Set `p : GL (Fin n) E × GL (Fin n) k → GL (Fin n) E` to `fun z => z.1⁻¹ * incl z.2 * sigmaGL σ z.1`. Set `U : Set (GL (Fin n) E × GL (Fin n) k)` to `(K : Set _) ×ˢ (K' : Set _)`. Set `a : GL (Fin n) E × GL (Fin n) k → ℂ` to `fun z => c⁻¹ * A (z.2 ^ Module.finrank k E)`.
+
+Set `φ : GL (Fin n) E → ℂ` to `fun g => if h : ∃ z ∈ U, p z = g then a h.choose else 0`. Establish `wd : ∀ z ∈ U, ∀ z' ∈ U, p z = p z' → a z = a z'`. Introduce and unpack `⟨κ, u⟩ ⟨hκ, hu⟩ ⟨κ', u'⟩ ⟨hκ', hu'⟩ e`. Establish `e1 : (κ * κ'⁻¹)⁻¹ * incl u * sigmaGL σ (κ * κ'⁻¹) = incl u'`. Rewrite using `[map_mul, map_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `((hb n).2.2.1 hgen (κ * κ'⁻¹)).mp (rigidNear E n σ _ hc r hr _ hu _ hu' (sigma_incl σ u) (sigma_incl σ u') _ e1)`. Establish `hxK : x ∈ K'` using `by show incl x ∈ K`. Rewrite using `[hx]`. Conclude with `K.mul_mem hκ (K.inv_mem hκ')`.
+
+Rewrite `e1` using `[← hx, sigma_incl, ← map_inv, ← map_mul, ← map_mul]`. Establish `e2` using `incl_inj e1`. Use `show c⁻¹ * A (u ^ _) = c⁻¹ * A (u' ^ _)`. Use `congr 1`. Establish `e3 : u' ^ Module.finrank k E = x⁻¹ * u ^ Module.finrank k E * x`.
+
+Use `conj_pow (a := x⁻¹) (b := u) (i := Module.finrank k E)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Rewrite using `[← e2, this]`. Rewrite using `[hA, e3]`. Use `(set_left μk K' hKo'.measurableSet (fun κ => f (κ⁻¹ * u ^ Module.finrank k E * id κ)) hxK).symm.trans ?_` and prove the remaining obligations.
+
+Simplify using `only [id, mul_inv_rev, mul_assoc]`. Establish `h1 : ∀ z ∈ U, φ (p z) = a z` using `fun z hz => by`. Establish `h : ∃ z' ∈ U, p z' = p z` using `⟨z, hz, rfl⟩`. Simplify using `only [φ, dif_pos h]`. Conclude with `wd _ h.choose_spec.1 _ hz h.choose_spec.2`.
+
+Establish `h2 : ∀ g, g ∉ p '' U → φ g = 0` using `fun g h => dif_neg h`. Establish `ho : IsOpen (p '' U)`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨⟨κ, u⟩, ⟨hκ, hu⟩, rfl⟩`. Establish `hO : IsOpen ((fun g => (incl u)⁻¹ * κ * g * (sigmaGL σ κ)⁻¹) ⁻¹' ball n (r * valuation E (Module.finrank k E : E)))` using `(isOpen_ball hs0).preimage (by fun_prop)`.
+
+Use `Filter.mem_of_superset (hO.mem_nhds ?_) fun g hg => ?_` and prove the remaining obligations. Establish `: (incl u)⁻¹ * κ * p (κ, u) * (sigmaGL σ κ)⁻¹ = 1` using `by simp only [p]; group`. Rewrite using `[Set.mem_preimage, this]`. Conclude with `fun i j => by simp`. Take `⟨κ', hκ', u', hu', hf', e⟩` from `openNear E n σ _ hc r r hr le_rfl (incl u) hu (sigma_incl σ u) _ hg`.
+
+Take `⟨u', rfl⟩` from `((hb n).2.2.1 hgen u').mp hf'`. Use `⟨(κ' * κ, u * u'), ⟨K.mul_mem hκ' hκ, K'.mul_mem hu hu'⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = κ'⁻¹ * _ * sigmaGL σ κ' at e`. Simplify using `only [p, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hφ : φ ∈ SB (GL (Fin n) E)` using `sb_of_push (hKc.prod hKc') (p := p) (by have := hj.continuous; fun_prop) ho (a := a) ((hAl.comp_continuous (f := fun z : GL (Fin n) E × GL (Fin n) k => z.2 ^ Module.finrank k E) (by fun_prop)).comp fun z => c⁻¹ * z) h1 h2`. Use `⟨φ, hφ, nearCore k E σ hgen n μE μk hμE hμk r hr K rfl hKo hKc φ hφ f hf (fun g hg => ?_) (fun g hg => ?_) fun u hu => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hg (h2 g ?_)` and prove the remaining obligations. Introduce and unpack `⟨⟨κ, u⟩, ⟨hκ, hu⟩, rfl⟩`.
+
+Conclude with `h ⟨κ, hκ, u, hu, rfl⟩`. Take `⟨u, hu, hf', huq⟩` from `exists_fixed_root hc.isom hr (hρb g (hs hg)) (sigma_incl σ g)`. Take `⟨u, rfl⟩` from `((hb n).2.2.1 hgen u).mp hf'`. Conclude with `⟨u, hu, incl_inj (by rw [map_pow, huq])⟩`. Rewrite using `[setIntegral_congr_fun (μ := μE) hKo.measurableSet (g := fun _ => c⁻¹ * A (u ^ Module.finrank k E)) (fun κ hκ => h1 (κ, u) ⟨hκ, hu⟩), setIntegral_const, Complex.real_smul, ← hcd, mul_inv_cancel_left₀ hc0]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.Loc.nearUp :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
         [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

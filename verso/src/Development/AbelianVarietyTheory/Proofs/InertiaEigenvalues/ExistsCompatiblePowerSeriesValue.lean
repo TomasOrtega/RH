@@ -17,11 +17,19 @@ section General
 
 variable {A R : Type*} [CommRing A] [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `Ideal.mem_span_singleton.1 (hL M)`. Rewrite `h` using `[Finset.sum_congr rfl (fun i _ => mul_comm (w ^ i) (b i))]`. Then use the resulting hypothesis.
+-/
 theorem dvd_of_limit (w L : A) (b : ℕ → A) (hL : ∀ n, L - ∑ i ∈ range n, w ^ i * b i ∈ Ideal.span {w ^ n})
     (M : ℕ) : w ^ M ∣ L - ∑ j ∈ range M, b j * w ^ j := by
   have h := Ideal.mem_span_singleton.1 (hL M)
   rwa [Finset.sum_congr rfl (fun i _ => mul_comm (w ^ i) (b i))] at h
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h0`. Consider the case `succ n ih`. Introduce `M`.
+
+Take `⟨z, hz⟩` from `ih M`. Take `⟨z', rfl⟩` from `hφ.2 z`. Use `⟨z', hφ.1 ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_sum, map_mul, map_pow, hι, hω, hy]`. Conclude with `hz`.
+-/
 theorem chain_dvd (φ : A →+* A) (hφ : Function.Bijective φ) (ι : R →+* A) (hι : ∀ c, φ (ι c) = ι c)
     (ω y : ℕ → A) (c : ℕ → R) (hω : ∀ n, φ (ω (n + 1)) = ω n) (hy : ∀ n, φ (y (n + 1)) = y n)
     (h0 : ∀ M, ω 0 ^ M ∣ y 0 - ∑ j ∈ range M, ι (c j) * ω 0 ^ j) :
@@ -45,6 +53,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.LTTilt
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `h.exists_right_inv`. Establish `e : ‖(c : ℂ_[l])‖ * ‖(d : ℂ_[l])‖ = 1`. Rewrite using `[← norm_mul]`. Establish `: (c : ℂ_[l]) * (d : ℂ_[l]) = 1` using `congrArg Subtype.val hd`. Rewrite using `[this, norm_one]`.
+
+Establish `hd1` using `norm_OC_le_one d`. Use polynomial arithmetic with `[norm_nonneg (c : ℂ_[l]), norm_nonneg (d : ℂ_[l])]`.
+-/
 theorem one_le_norm_of_isUnit {c : OC l} (h : IsUnit c) : 1 ≤ ‖(c : ℂ_[l])‖ := by
   obtain ⟨d, hd⟩ := h.exists_right_inv
   have e : ‖(c : ℂ_[l])‖ * ‖(d : ℂ_[l])‖ = 1 := by
@@ -54,6 +67,11 @@ theorem one_le_norm_of_isUnit {c : OC l} (h : IsUnit c) : 1 ≤ ‖(c : ℂ_[l])
   have hd1 := norm_OC_le_one d
   nlinarith [norm_nonneg (c : ℂ_[l]), norm_nonneg (d : ℂ_[l])]
 
+/- English proof (translation)
+Establish `ha0 : 0 ≤ a`. Establish `h1` using `h 1`. Rewrite `h1` using `[pow_one]`. Combine the linear relations using `[norm_nonneg (x - u)]`. Establish `hlim : Filter.Tendsto (fun M : ℕ => 2 * a ^ M) Filter.atTop (nhds 0)`.
+
+Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one ha0 ha).const_mul 2`. Use `ge_of_tendsto' hlim h` as an intermediate fact. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+-/
 theorem eq_of_norm_le {x u : ℂ_[l]} {a : ℝ} (ha : a < 1)
     (h : ∀ M : ℕ, ‖x - u‖ ≤ 2 * a ^ M) : x = u := by
   have ha0 : 0 ≤ a := by
@@ -65,6 +83,13 @@ theorem eq_of_norm_le {x u : ℂ_[l]} {a : ℝ} (ha : a < 1)
   have := ge_of_tendsto' hlim h
   exact sub_eq_zero.1 (norm_le_zero_iff.1 this)
 
+/- English proof (translation)
+Use `Subtype.ext (eq_of_norm_le hw fun M => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `hd M`. Establish `h1 : θ y - ∑ j ∈ range M, a (c j) * θ w ^ j = θ w ^ M * θ z`. Use `congrArg θ hz` as an intermediate fact. Simplify `this` using `only [map_sub, map_sum, map_mul, map_pow, hθι]`.
+
+Establish `h2 : ‖(θ y : ℂ_[l]) - ((∑ j ∈ range M, a (c j) * θ w ^ j : OC l) : ℂ_[l])‖ ≤ ‖(θ w : ℂ_[l])‖ ^ M`. Establish `e : (θ y : ℂ_[l]) - ((∑ j ∈ range M, a (c j) * θ w ^ j : OC l) : ℂ_[l]) = (((θ w ^ M * θ z : OC l)) : ℂ_[l])` using `by rw [← h1]; push_cast; rfl`. Rewrite using `[e]`. Use `push_cast`. Rewrite using `[norm_mul, norm_pow]`.
+
+Conclude with `mul_le_of_le_one_right (by positivity) (norm_OC_le_one _)`. Establish `h3` using `norm_tail_le (fun i => a (c i)) (θ w) (u : ℂ_[l]) hS M`. Establish `h4` using `norm_sub_le_norm_sub_add_norm_sub (θ y : ℂ_[l]) ((∑ j ∈ range M, a (c j) * θ w ^ j : OC l) : ℂ_[l]) (u : ℂ_[l])`. Rewrite `h4` using `[norm_sub_rev (((∑ j ∈ range M, a (c j) * θ w ^ j : OC l) : ℂ_[l]))]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eval_eq {A R : Type*} [CommRing A] [CommRing R] (θ : A →+* OC l) (ι : R →+* A) (a : R →+* OC l)
     (hθι : ∀ c, θ (ι c) = a c) (w y : A) (c : ℕ → R) (u : OC l) (hw : ‖(θ w : ℂ_[l])‖ < 1)
     (hS : HasSum (fun i => ((a (c i) * θ w ^ i : OC l) : ℂ_[l])) (u : ℂ_[l]))
@@ -93,6 +118,11 @@ end GlobalTheory.FrobChainSeries
 
 open GlobalTheory.FrobChainSeries in
 
+/- English proof (translation)
+Introduce `l _ K ω G u hω hθ hS`. Establish `hnu : ¬ IsUnit (red K (ω 0))` using `fun h => absurd (hθ 0) (not_lt.2 (one_le_norm_of_isUnit (((isUnit_iff_red _).2 h).map (thetaK K))))`. Use `haveI := complete_single hnu`. Take `⟨L, hL⟩` from `GlobalTheory.Per.AinfComplete.summ_of_precomplete (ω 0) (fun i => inO K (PowerSeries.coeff i G))`. Set `r` to `Function.surjInv (frobq_bijective K).2`.
+
+Establish `hy : ∀ n, frobq K (r^[n + 1] L) = r^[n] L` using `fun n => by`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `Function.surjInv_eq (frobq_bijective K).2 _`. Establish `hd` using `chain_dvd (frobq K).toRingHom (frobq_bijective K) (inO K) (frobq_inO K) ω (fun n => r^[n] L) (fun j => PowerSeries.coeff j G) hω hy (dvd_of_limit (ω 0) L _ hL)`. Conclude with `⟨fun n => r^[n] L, hy, fun n => eval_eq (thetaK K) (inO K) (intToOC K) (thetaK_inO (K := K)) (ω n) _ _ (u n) (hθ n) (hS n) (hd n), hd 0⟩`.
+-/
 theorem GlobalTheory.FrobChainSeries.main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (ω : ℕ → AK K) (G : PowerSeries ↥(OL K)) (u : ℕ → OC l),
     (∀ n, frobq K (ω (n + 1)) = ω n) → (∀ n, ‖((thetaK K (ω n) : OC l) : ℂ_[l])‖ < 1) →
     (∀ n, HasSum (fun i => ((intToOC K (PowerSeries.coeff i G) * thetaK K (ω n) ^ i : OC l) : ℂ_[l])) (u n : ℂ_[l])) →

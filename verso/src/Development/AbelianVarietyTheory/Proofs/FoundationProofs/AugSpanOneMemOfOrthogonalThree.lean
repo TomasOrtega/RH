@@ -12,6 +12,17 @@ abbrev augSpan (S : Γ →* Matrix (Fin m) (Fin m) K) : Submodule K (Matrix (Fin
 def Stable (S : Γ →* Matrix (Fin m) (Fin m) K) (P : Submodule K (Fin m → K)) : Prop :=
   ∀ g, ∀ v ∈ P, S g *ᵥ v ∈ P
 
+/- English proof (translation)
+Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Proceed by induction on `hC using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨h, rfl⟩` from `hy`. Establish `e : (S g - 1) * (S h - 1) = (S (g * h) - 1) - (S g - 1) - (S h - 1)`. Rewrite using `[map_mul]`. Use `noncomm_ring`. Rewrite using `[e]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a y _ hy => rw [Matrix.mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hy`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [Matrix.smul_mul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem mul_mem_augSpan (S : Γ →* Matrix (Fin m) (Fin m) K) {A C : Matrix (Fin m) (Fin m) K}
     (hA : A ∈ augSpan S) (hC : C ∈ augSpan S) : A * C ∈ augSpan S := by
   induction hA using Submodule.span_induction with
@@ -32,6 +43,13 @@ theorem mul_mem_augSpan (S : Γ →* Matrix (Fin m) (Fin m) K) {A C : Matrix (Fi
   | add x y _ _ hx hy => rw [add_mul]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [Matrix.smul_mul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Introduce `v hv`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `P.sub_mem (hP g v hv) hv`. Consider the case `zero => intro v _`. Rewrite using `[Matrix.zero_mulVec]`. Conclude with `P.zero_mem`. Consider the case `add x y _ _ hx hy => intro v hv`.
+
+Rewrite using `[Matrix.add_mulVec]`. Conclude with `P.add_mem (hx v hv) (hy v hv)`. Consider the case `smul a x _ hx => intro v hv`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `P.smul_mem a (hx v hv)`.
+-/
 theorem augSpan_preserves (S : Γ →* Matrix (Fin m) (Fin m) K) {P : Submodule K (Fin m → K)}
     (hP : Stable S P) {T : Matrix (Fin m) (Fin m) K} (hT : T ∈ augSpan S) :
     ∀ v ∈ P, T *ᵥ v ∈ P := by
@@ -48,6 +66,11 @@ theorem augSpan_preserves (S : Γ →* Matrix (Fin m) (Fin m) K) {P : Submodule 
 def Good (S : Γ →* Matrix (Fin m) (Fin m) K) (P : Submodule K (Fin m → K)) : Prop :=
   ∃ T ∈ augSpan S, ∀ v ∈ P, T *ᵥ v = v
 
+/- English proof (translation)
+Take `⟨T₁, h₁, e₁⟩` from `gL`. Take `⟨T₂, h₂, e₂⟩` from `gP`. Use `⟨T₁ + T₂ - T₁ * T₂, Submodule.sub_mem _ (Submodule.add_mem _ h₁ h₂) (mul_mem_augSpan S h₁ h₂), ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hv`.
+
+Establish `hTa : T₂ *ᵥ a ∈ L` using `augSpan_preserves S hL h₂ a ha`. Simplify using `only [Matrix.sub_mulVec, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_add, e₁ a ha, e₂ b hb, e₁ _ hTa]`. Normalize the expressions using the abelian group laws.
+-/
 theorem good_sup (S : Γ →* Matrix (Fin m) (Fin m) K) {L P : Submodule K (Fin m → K)}
     (hL : Stable S L) (hP : Stable S P) (gL : Good S L) (gP : Good S P) : Good S (L ⊔ P) := by
   obtain ⟨T₁, h₁, e₁⟩ := gL
@@ -61,14 +84,25 @@ theorem good_sup (S : Γ →* Matrix (Fin m) (Fin m) K) {L P : Submodule K (Fin 
     e₁ a ha, e₂ b hb, e₁ _ hTa]
   abel
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Submodule.zero_mem _, fun v hv => by rw [(Submodule.mem_bot K).mp hv, Matrix.mulVec_zero]⟩`.
+-/
 theorem good_bot (S : Γ →* Matrix (Fin m) (Fin m) K) : Good S ⊥ :=
   ⟨0, Submodule.zero_mem _, fun v hv => by
     rw [(Submodule.mem_bot K).mp hv, Matrix.mulVec_zero]⟩
 
+/- English proof (translation)
+Introduce `g v hv` and use `⟨hL g v hv.1, hP g v hv.2⟩`.
+-/
 theorem stable_inf (S : Γ →* Matrix (Fin m) (Fin m) K) {L P : Submodule K (Fin m → K)}
     (hL : Stable S L) (hP : Stable S P) : Stable S (L ⊓ P) :=
   fun g v hv => ⟨hL g v hv.1, hP g v hv.2⟩
 
+/- English proof (translation)
+Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Introduce `n hn`. Establish `e : S g *ᵥ (S g⁻¹ *ᵥ n) = n`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`.
+
+Use `hv _ (hQ g⁻¹ n hn)` as an intermediate fact. Rewrite using `[← e, hinv]`. Conclude with `this`.
+-/
 theorem stable_orthogonal (S : Γ →* Matrix (Fin m) (Fin m) K)
     (B : LinearMap.BilinForm K (Fin m → K))
     (hinv : ∀ g v w, B (S g *ᵥ v) (S g *ᵥ w) = B v w) {Q : Submodule K (Fin m → K)}
@@ -88,6 +122,17 @@ namespace GlobalTheory.AugCore
 
 variable {K : Type} [Field K] {Γ : Type} [Group Γ]
 
+/- English proof (translation)
+Use `set Z := Q ⊓ B.orthogonal Q with hZ`. Establish `hZs : Stable S Z` using `stable_inf S hQ hQo`. Establish `hZle : Z ≤ B.orthogonal Z`. Introduce `z hz`. Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff]`.
+
+Introduce `n hn`. Conclude with `(LinearMap.BilinForm.mem_orthogonal_iff.mp hz.2) n hn.1`. Establish `h3 : Module.finrank K (Fin 3 → K) = 3` using `Module.finrank_fin_fun K`. Establish `hfo : Module.finrank K (B.orthogonal Z) = 3 - Module.finrank K Z`. Rewrite using `[LinearMap.BilinForm.finrank_orthogonal hB, h3]`.
+
+Establish `hmono` using `Submodule.finrank_mono hZle`. Assume the negation of the conclusion as `hne`. Take `⟨y, hyZ, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hsp : (K ∙ y) ≤ Z` using `(Submodule.span_singleton_le_iff_mem y Z).mpr hyZ`. Establish `h1 : Module.finrank K (K ∙ y) = 1` using `finrank_span_singleton hy0`.
+
+Establish `hspm` using `Submodule.finrank_mono hsp`. Establish `hZ1 : Module.finrank K Z = 1` using `by omega`. Establish `heq : (K ∙ y) = Z` using `Submodule.eq_of_le_of_finrank_eq hsp (by rw [h1, hZ1])`. Apply `hiso y hy0` to reduce the goal to its premises. Introduce `g`.
+
+Establish `: S g *ᵥ y ∈ (K ∙ y)` using `by rw [heq]; exact hZs g y hyZ`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp this`. Conclude with `⟨c, hc.symm⟩`. Conclude with `(LinearMap.BilinForm.mem_orthogonal_iff.mp hyZ.2) y hyZ.1`.
+-/
 theorem inf_orthogonal_eq_bot (S : Γ →* Matrix (Fin 3) (Fin 3) K)
     (B : LinearMap.BilinForm K (Fin 3 → K)) (hB : B.Nondegenerate)
     (hiso : ∀ y : Fin 3 → K, y ≠ 0 → (∀ g, ∃ c : K, S g *ᵥ y = c • y) → B y y ≠ 0)
@@ -118,6 +163,11 @@ theorem inf_orthogonal_eq_bot (S : Γ →* Matrix (Fin 3) (Fin 3) K)
     exact ⟨c, hc.symm⟩
   · exact (LinearMap.BilinForm.mem_orthogonal_iff.mp hyZ.2) y hyZ.1
 
+/- English proof (translation)
+Establish `h3 : Module.finrank K (Fin 3 → K) = 3` using `Module.finrank_fin_fun K`. Establish `key` using `Submodule.finrank_sup_add_finrank_inf_eq Q (B.orthogonal Q)`. Rewrite `key` using `[inf_orthogonal_eq_bot S B hB hiso hQ hQo, finrank_bot, LinearMap.BilinForm.finrank_orthogonal hB, h3]`. Establish `hle` using `Submodule.finrank_le Q`. Rewrite `hle` using `[h3]`.
+
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sup_orthogonal_eq_top (S : Γ →* Matrix (Fin 3) (Fin 3) K)
     (B : LinearMap.BilinForm K (Fin 3 → K)) (hB : B.Nondegenerate)
     (hiso : ∀ y : Fin 3 → K, y ≠ 0 → (∀ g, ∃ c : K, S g *ᵥ y = c • y) → B y y ≠ 0)
@@ -132,6 +182,27 @@ theorem sup_orthogonal_eq_top (S : Γ →* Matrix (Fin 3) (Fin 3) K)
   apply Submodule.eq_top_of_finrank_eq
   rw [h3]; omega
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `P hP hn`. Distinguish the cases in `hirr : ∀ Q : Submodule K (Fin 3 → K), Q ≤ P → Stable S Q → Q = ⊥ ∨ Q = P`.
+
+Distinguish the cases in `hbot : P = ⊥`. Rewrite using `[hbot]`. Conclude with `good_bot S`. Establish `hnt : ∃ g, ∃ v ∈ P, S g *ᵥ v ≠ v`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Apply `hbot` to reduce the goal to its premises. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`. Conclude with `hfix v (fun g => hc g v hv)`.
+
+Conclude with `GlobalTheory.T.exists_augmentationSpan_eq_id_on_irreducible S P hP hirr hnt`. Use `push_neg at hirr`. Take `⟨Q, hQP, hQs, hQ0, hQne⟩` from `hirr`. Establish `hQo : Stable S (B.orthogonal Q)` using `stable_orthogonal S B hinv hQs`. Use `set R := P ⊓ B.orthogonal Q with hR`.
+
+Establish `hRs : Stable S R` using `stable_inf S hP hQo`. Establish `htop` using `sup_orthogonal_eq_top S B hB hiso hQs hQo`. Establish `hinf` using `inf_orthogonal_eq_bot S B hB hiso hQs hQo`. Establish `hQR : Q ⊔ R = P`. Apply `le_antisymm (sup_le hQP inf_le_left)` to reduce the goal to its premises.
+
+Introduce `v hv`. Establish `hvt : v ∈ Q ⊔ B.orthogonal Q` using `by rw [htop]; trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hvt`. Establish `hbP : b ∈ P`. Use `P.sub_mem hv (hQP ha)` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `Submodule.mem_sup.mpr ⟨a, ha, b, ⟨hbP, hb⟩, rfl⟩`. Establish `hQlt : Module.finrank K Q < n`. Rewrite using `[← hn]`. Conclude with `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hQP hQne)`.
+
+Establish `hRne : R ≠ P`. Introduce `hRP`. Apply `hQ0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← hinf]`. Introduce `x hx`.
+
+Establish `: x ∈ R` using `by rw [hRP]; exact hQP hx`. Conclude with `⟨hx, this.2⟩`. Establish `hRlt : Module.finrank K R < n`. Rewrite using `[← hn]`. Conclude with `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne inf_le_left hRne)`.
+
+Establish `g` using `good_sup S hQs hRs (ih _ hQlt Q hQs rfl) (ih _ hRlt R hRs rfl)`. Rewrite `g` using `[hQR]`. Then use the resulting hypothesis.
+-/
 theorem good_of_stable (S : Γ →* Matrix (Fin 3) (Fin 3) K) [IsAlgClosed K]
     (B : LinearMap.BilinForm K (Fin 3 → K)) (hB : B.Nondegenerate)
     (hinv : ∀ g v w, B (S g *ᵥ v) (S g *ᵥ w) = B v w)
@@ -185,6 +256,11 @@ theorem good_of_stable (S : Γ →* Matrix (Fin 3) (Fin 3) K) [IsAlgClosed K]
 
 end GlobalTheory.AugCore
 
+/- English proof (translation)
+Introduce `K _ _ _ Γ _ S B hB _ hinv hfix hiso`. Take `⟨T, hT, hTv⟩` from `GlobalTheory.AugCore.good_of_stable S B hB hinv hfix hiso _ ⊤ (fun _ _ _ => trivial) rfl`. Establish `e : T = 1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.one_mulVec]`. Conclude with `hTv v trivial`. Conclude with `(congrArg (· ∈ Submodule.span K (Set.range fun g => S g - 1)) e).mp hT`.
+-/
 theorem GlobalTheory.augSpan_one_mem_of_orthogonal_three : ∀ {K : Type} [Field K] [IsAlgClosed K] [CharZero K] {Γ : Type} [Group Γ] (S : Γ →* Matrix (Fin 3) (Fin 3) K) (B : LinearMap.BilinForm K (Fin 3 → K)), B.Nondegenerate → B.IsSymm → (∀ g v w, B (S g *ᵥ v) (S g *ᵥ w) = B v w) → (∀ v : Fin 3 → K, (∀ g, S g *ᵥ v = v) → v = 0) → (∀ y : Fin 3 → K, y ≠ 0 → (∀ g, ∃ c : K, S g *ᵥ y = c • y) → B y y ≠ 0) → (1 : Matrix (Fin 3) (Fin 3) K) ∈ Submodule.span K (Set.range fun g => S g - 1) := by
   intro K _ _ _ Γ _ S B hB _ hinv hfix hiso
   obtain ⟨T, hT, hTv⟩ := GlobalTheory.AugCore.good_of_stable S B hB hinv hfix hiso _ ⊤

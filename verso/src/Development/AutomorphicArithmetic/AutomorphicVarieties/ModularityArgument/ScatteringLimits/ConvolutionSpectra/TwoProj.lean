@@ -4,6 +4,23 @@ import GroundTheory.AutomorphicForms.TraceNormComp
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ Λ E Λ' E' Y hs h1 h2 h3 h4 h5 h6 h7 h8 t1 t2 t3 t4`. Establish `key : ∀ A B Z : H →L[ℂ] H, A * A = A → B * B = B → A * B = 0 → B * A = 0 → IsTraceClass ((A + B) * Z * (A + B)) → IsTraceClass (A * Z * A) ∧ trace ((A + B) * Z * (A + B)) = trace (A * Z * A) + trace (B * Z * B)`. Introduce `A B Z a b ab ba h`. Establish `e1 : A * ((A + B) * Z * (A + B)) * A = A * Z * A`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_add A A, a, ab, add_zero, mul_assoc, add_mul, a, ba, add_zero]`.
+
+Establish `e2 : B * ((A + B) * Z * (A + B)) * B = B * Z * B`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_add B A, b, ba, zero_add, mul_assoc, add_mul, b, ab, zero_add]`. Use `set Q := (A + B) * Z * (A + B) with hQ`. Establish `e3 : Q = A * Q + B * Q`. Rewrite using `[← add_mul, hQ, ← mul_assoc, ← mul_assoc, add_mul A B (A + B), mul_add A, mul_add B, a, b, ab, ba, add_zero, zero_add]`.
+
+Establish `c : ∀ P : H →L[ℂ] H, P * P = P → trace (P * Q) = trace (P * Q * P)` using `fun P hP => by`. Use `trace_comp_comm (h.comp_left P) P` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (P * (P * Q)) = trace (P * Q * P) at this`. Rewrite `this` using `[← mul_assoc, hP]`. Then use the resulting hypothesis. Use `⟨e1 ▸ (h.comp_left A).comp_right A, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e1, ← e2, ← c A a, ← c B b]`. Use `conv_lhs => rw [e3]`. Conclude with `trace_add (h.comp_left A) (h.comp_left B)`. Establish `hT : IsTraceClass ((Λ + E) * Y * (Λ + E))`. Establish `: (Λ + E) * Y * (Λ + E) = Λ * (Y * Λ) + (Λ * (Y * E) + E * Y * (Λ + E))` using `by noncomm_ring`.
+
+Rewrite using `[this]`. Conclude with `t1.add ((t3.comp_left Λ).add (t2.comp_right (Λ + E)))`. Take `⟨-, k1⟩` from `key Λ E Y h1 h2 h5 h6 hT`. Rewrite `hT`, `k1` using `[hs]`. Take `⟨k2, k3⟩` from `key Λ' E' Y h3 h4 h7 h8 hT`.
+
+Establish `c1 : trace (E * Y * E) = trace (E * Y)`. Use `trace_comp_comm t2 E` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (E * (E * Y)) = trace (E * Y * E) at this`. Rewrite using `[← this, ← mul_assoc]`. Conclude with `congrArg (fun Z => trace (Z * Y)) h2`.
+
+Establish `c2 : trace (E' * Y * E') = trace (Y * E')`. Use `trace_comp_comm t4 E'` as an intermediate fact. Express the relevant statement in the definitionally equal form `trace (E' * (Y * E')) = trace (Y * E' * E') at this`. Rewrite using `[mul_assoc, this, mul_assoc]`. Conclude with `congrArg (fun Z => trace (Y * Z)) h4`.
+
+Use `⟨k2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `trace (Λ * (Y * Λ)) + trace (E * Y) = trace (Λ' * (Y * Λ')) + trace (Y * E')`. Rewrite using `[← mul_assoc, ← mul_assoc, ← c1, ← c2, ← k1, k3]`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.twoProj :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (Λ E Λ' E' Y : H →L[ℂ] H), Λ + E = Λ' + E' → Λ ∘L Λ = Λ → E ∘L E = E → Λ' ∘L Λ' = Λ' → E' ∘L E' = E' →
       Λ ∘L E = 0 → E ∘L Λ = 0 → Λ' ∘L E' = 0 → E' ∘L Λ' = 0 → IsTraceClass (Λ ∘L Y ∘L Λ) → IsTraceClass (E ∘L Y) →

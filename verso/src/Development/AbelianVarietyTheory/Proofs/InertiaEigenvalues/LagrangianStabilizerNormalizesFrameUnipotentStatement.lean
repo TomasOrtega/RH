@@ -13,5 +13,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RallisCusp.conj_mem_NI | exact GlobalTheory.RallisCusp.conj_mem_NI | (intros; apply GlobalTheory.RallisCusp.conj_mem_NI <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lagrangianStabilizer_normalizes_frameUnipotent : ∀ (D : D7) (W : HSp D) (Y : Lag W) (s : ℕ) (I : Matrix (Fin W.rank) (Fin s) D.host.E), IsIsoFrame W I → Submodule.span D.host.E (Set.range I.transpose) = Y.1.comap (LinearMap.inl D.host.E _ _) → ∀ γ : GQ W, GlobalTheory.RallisCusp.lagAct W γ Y = Y → ∀ n ∈ NI W I, (γ : GA D W) * n * (γ : GA D W)⁻¹ ∈ NI W I := by
   first | exact @GlobalTheory.RallisCusp.conj_mem_NI | exact GlobalTheory.RallisCusp.conj_mem_NI | (intros; apply GlobalTheory.RallisCusp.conj_mem_NI <;> assumption)

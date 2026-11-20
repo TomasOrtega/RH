@@ -17,6 +17,9 @@ variable {K Ω : Type u} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [Is
 def gsAutExtend (S : Set (HeightOneSpectrum (𝓞 K))) (σ : galUnramifiedOutside K Ω S) : Gal(Ω/K) :=
   (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω S) Ω σ).choose
 
+/- English proof (translation)
+Establish `h` using `(AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω S) Ω σ).choose_spec`. Use `conv_rhs => rw [← h]`. Conclude with `(AlgEquiv.restrictNormal_commutes (gsAutExtend S σ) (maxUnramifiedOutside K Ω S) y).symm`.
+-/
 theorem gsAutExtend_apply (σ : galUnramifiedOutside K Ω S) (y : maxUnramifiedOutside K Ω S) :
     gsAutExtend S σ (y : Ω) = ((σ y : maxUnramifiedOutside K Ω S) : Ω) := by
   have h := (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω S) Ω σ).choose_spec
@@ -27,6 +30,9 @@ def gsResFun (T : Set (HeightOneSpectrum (𝓞 K))) (σ : galUnramifiedOutside K
     galUnramifiedOutside K Ω T :=
   AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω T) (gsAutExtend S σ)
 
+/- English proof (translation)
+Rewrite using `[gsResFun, AlgEquiv.restrictNormalHom_apply]`. Conclude with `gsAutExtend_apply σ ⟨x, maxUnramifiedOutside_mono h x.2⟩`.
+-/
 theorem gsResFun_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) (x : maxUnramifiedOutside K Ω T) :
     ((gsResFun T σ x : maxUnramifiedOutside K Ω T) : Ω) =
       ((σ ⟨x, maxUnramifiedOutside_mono h x.2⟩ : maxUnramifiedOutside K Ω S) : Ω) := by
@@ -51,11 +57,17 @@ def gsRes (h : T ⊆ S) : galUnramifiedOutside K Ω S →* galUnramifiedOutside 
     rw [AlgEquiv.mul_apply (gsResFun T σ), gsResFun_apply h (σ * τ) x,
       gsResFun_apply h σ (gsResFun T τ x), e, AlgEquiv.mul_apply]
 
+/- English proof (translation)
+The claim follows from `gsResFun_apply h σ x`.
+-/
 theorem gsRes_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) (x : maxUnramifiedOutside K Ω T) :
     ((gsRes h σ x : maxUnramifiedOutside K Ω T) : Ω) =
       ((σ ⟨x, maxUnramifiedOutside_mono h x.2⟩ : maxUnramifiedOutside K Ω S) : Ω) :=
   gsResFun_apply h σ x
 
+/- English proof (translation)
+Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]`.
+-/
 theorem gsRes_restrictNormalHom (h : T ⊆ S) (σ : Gal(Ω/K)) :
     gsRes h (AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) σ) =
       AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω T) σ := by
@@ -64,11 +76,17 @@ theorem gsRes_restrictNormalHom (h : T ⊆ S) (σ : Gal(Ω/K)) :
   apply Subtype.val_injective
   rw [gsRes_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]
 
+/- English proof (translation)
+Introduce `τ` and use `⟨AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) (gsAutExtend T τ), by rw [gsRes_restrictNormalHom] exact (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω T) Ω τ).choose_spec⟩`.
+-/
 theorem gsRes_surjective (h : T ⊆ S) : Function.Surjective (gsRes (Ω := Ω) h) := fun τ =>
   ⟨AlgEquiv.restrictNormalHom (maxUnramifiedOutside K Ω S) (gsAutExtend T τ), by
     rw [gsRes_restrictNormalHom]
     exact (AlgEquiv.restrictNormalHom_surjective (K₁ := maxUnramifiedOutside K Ω T) Ω τ).choose_spec⟩
 
+/- English proof (translation)
+Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply hUT, gsRes_apply hTS, gsRes_apply]`.
+-/
 theorem gsRes_gsRes (hTS : T ⊆ S) (hUT : U ⊆ T) (σ : galUnramifiedOutside K Ω S) :
     gsRes hUT (gsRes hTS σ) = gsRes (hUT.trans hTS) σ := by
   apply AlgEquiv.ext
@@ -76,6 +94,13 @@ theorem gsRes_gsRes (hTS : T ⊆ S) (hUT : U ⊆ T) (σ : galUnramifiedOutside K
   apply Subtype.val_injective
   rw [gsRes_apply hUT, gsRes_apply hTS, gsRes_apply]
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ x`. Apply `Subtype.val_injective` to reduce the goal to its premises. Use `gsRes_apply h σ x` as an intermediate fact.
+
+Rewrite `this` using `[hσ]`. Conclude with `this.symm`. Introduce `hσ`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+
+Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[gsRes_apply, hσ x, AlgEquiv.one_apply]`.
+-/
 theorem mem_ker_gsRes (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) :
     σ ∈ (gsRes (Ω := Ω) h).ker ↔
       ∀ x : maxUnramifiedOutside K Ω T, σ ⟨x, maxUnramifiedOutside_mono h x.2⟩ =
@@ -93,6 +118,11 @@ theorem mem_ker_gsRes (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) :
     apply Subtype.val_injective
     rw [gsRes_apply, hσ x, AlgEquiv.one_apply]
 
+/- English proof (translation)
+Establish `hq : Topology.IsQuotientMap (AlgEquiv.restrictNormalHom (F` using `K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) := (InfiniteGalois.restrictNormalHom_continuous _).isClosedMap.isQuotientMap (InfiniteGalois.restrictNormalHom_continuous _) (AlgEquiv.restrictNormalHom_surjective Ω)`. Rewrite using `[hq.continuous_iff]`. Establish `e : ⇑(gsRes h) ∘ ⇑(AlgEquiv.restrictNormalHom (F` using `K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) = ⇑(AlgEquiv.restrictNormalHom (F := K) (K₁ := Ω) (maxUnramifiedOutside K Ω T)) :=`. Use function extensionality and compare the values at `(gsRes_restrictNormalHom h)`. Rewrite using `[e]`.
+
+Conclude with `InfiniteGalois.restrictNormalHom_continuous _`.
+-/
 theorem continuous_gsRes (h : T ⊆ S) : Continuous (gsRes (Ω := Ω) h) := by
   have hq : Topology.IsQuotientMap
       (AlgEquiv.restrictNormalHom (F := K) (K₁ := Ω) (maxUnramifiedOutside K Ω S)) :=
@@ -109,6 +139,9 @@ def gsResCont (h : T ⊆ S) : galUnramifiedOutside K Ω S →ₜ* galUnramifiedO
   ⟨gsRes h, continuous_gsRes h⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsResCont_apply (h : T ⊆ S) (σ : galUnramifiedOutside K Ω S) : gsResCont h σ = gsRes h σ :=
   rfl
 

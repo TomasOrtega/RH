@@ -4,6 +4,9 @@ namespace GroundTheory.LocalField
 
 open ValuativeRel WithZero
 
+/- English proof (translation)
+The claim follows from `IsValuativeTopology.of_mem_nhds_zero_iff_vle (Valued.v : Valuation R Γ₀) fun {s} => by simpa using (Valued.hasBasis_nhds_zero R Γ₀).mem_iff (t := s)`.
+-/
 theorem isValuativeTopology_of_valued {R : Type*} [CommRing R] [ValuativeRel R]
     {Γ₀ : Type*} [LinearOrderedCommGroupWithZero Γ₀] [Valued R Γ₀]
     [(Valued.v : Valuation R Γ₀).Compatible] : IsValuativeTopology R :=
@@ -14,6 +17,11 @@ namespace Padic
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hx, hy]`. Rewrite using `[Padic.norm_eq_zpow_neg_valuation hx, Padic.norm_eq_zpow_neg_valuation hy, zpow_le_zpow_iff_right₀ (by exact_mod_cast hp.out.one_lt)]`.
+
+Simplify using `[hx, hy, -exp_neg]`.
+-/
 theorem mulValuation_le_iff_norm_le (x y : ℚ_[p]) :
     Padic.mulValuation x ≤ Padic.mulValuation y ↔ ‖x‖ ≤ ‖y‖ := by
   by_cases hx : x = 0
@@ -51,6 +59,9 @@ instance : (Valued.v : Valuation K⸨X⸩ ℤᵐ⁰).Compatible := .ofValuation 
 
 instance : IsValuativeTopology K⸨X⸩ := isValuativeTopology_of_valued
 
+/- English proof (translation)
+Simplify using `using valuation_single_zpow (K := K) 1`.
+-/
 theorem valued_X : Valued.v (single 1 1 : K⸨X⸩) = exp (-1 : ℤ) := by
   simpa using valuation_single_zpow (K := K) 1
 
@@ -65,16 +76,29 @@ section Finite
 
 variable {K}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Valued.v f ≤ 1 ↔ _`. Simplify using `using valuation_le_iff_coeff_lt_eq_zero (K := K) (D := 0) (f := f)`.
+-/
 theorem mem_integer_iff (f : K⸨X⸩) :
     f ∈ Valued.integer K⸨X⸩ ↔ ∀ n : ℤ, n < 0 → f.coeff n = 0 := by
   change Valued.v f ≤ 1 ↔ _
   simpa using valuation_le_iff_coeff_lt_eq_zero (K := K) (D := 0) (f := f)
 
+/- English proof (translation)
+Rewrite using `[mem_integer_iff]`. Introduce `n hn`. Simplify using `[HahnSeries.C_apply, hn.ne]`.
+-/
 theorem C_mem_integer (c : K) : (HahnSeries.C c : K⸨X⸩) ∈ Valued.integer K⸨X⸩ := by
   rw [mem_integer_iff]
   intro n hn
   simp [HahnSeries.C_apply, hn.ne]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _`. Rewrite using `[Ideal.Quotient.eq, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Establish `hx` using `(mem_integer_iff (x : K⸨X⸩)).mp x.2`. Establish `: Valued.v (HahnSeries.C ((x : K⸨X⸩).coeff 0) - (x : K⸨X⸩)) ≤ exp (-1 : ℤ)`. Rewrite using `[valuation_le_iff_coeff_lt_eq_zero]`.
+
+Introduce `n hn`. Break down `lt_or_eq_of_le (show n ≤ 0 by omega) with h | rfl` into its components or cases. Simplify using `[HahnSeries.C_apply, h.ne, hx n h]`. Simplify using `[HahnSeries.C_apply]`. Use `lt_of_le_of_lt this ?_` and prove the remaining obligations.
+
+Rewrite using `[← exp_zero, exp_lt_exp]`. Evaluate the numerical expressions.
+-/
 theorem residue_C_coeff_zero (x : Valued.integer K⸨X⸩) :
     IsLocalRing.residue _ ⟨HahnSeries.C ((x : K⸨X⸩).coeff 0), C_mem_integer _⟩ =
       IsLocalRing.residue _ x := by

@@ -22,10 +22,18 @@ namespace GlobalTheory.WeilL2Words.StdTheta
 def negSum (F : Type) [Field F] [NumberField F] : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ :=
   -(∑ w : {w : InfinitePlace F // w.IsReal}, (LinearMap.proj w).comp (LinearMap.fst ℝ _ _))
 
+/- English proof (translation)
+Simplify using `[negSum]`.
+-/
 theorem negSum_apply (F : Type) [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     negSum F z = -∑ w, z.1 w := by
   simp [negSum]
 
+/- English proof (translation)
+Establish `h1 : z.1 ≠ 0`. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Use `Prod.ext h0 (funext fun w => absurd (IsTotallyReal.isReal w.1) ?_)` and prove the remaining obligations. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 w.2`.
+
+Take `⟨w, hw⟩` from `Function.ne_iff.1 h1`. Use `⟨(Pi.single w 1, 0), ?_⟩` and prove the remaining obligations. Rewrite using `[negSum_apply]`. Simplify `hw` using `[Pi.single_apply]`.
+-/
 theorem negSum_nondeg (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (z : mixedEmbedding.mixedSpace F)
     (hz : z ≠ 0) : ∃ u, negSum F (z * u) ≠ 0 := by
   have h1 : z.1 ≠ 0 := by
@@ -38,6 +46,11 @@ theorem negSum_nondeg (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (z 
   rw [negSum_apply]
   simpa [Pi.single_apply] using hw
 
+/- English proof (translation)
+Use `haveI := D.sp.cm.totReal`. Establish `e1 : ∀ ρ, Formalism.L2.Fam.ThC.th0 D ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) = InfinitePlace.Completion.extensionEmbedding (GlobalTheory.AdelicU.placeOf D ρ) (x (GlobalTheory.AdelicU.placeOf D ρ))`. Introduce `ρ`. Use `show Formalism.L2.Fam.ThC.projAt (tauE D ρ) (x ⊗ₜ[D.host.F] (1 : D.host.E)) = _`. Rewrite using `[Formalism.L2.Fam.ThC.projAt_tmul, map_one, mul_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun ρ _ => e1 ρ, (GlobalTheory.AdelicU.placeOf_bijective D).sum_comp (fun w => InfinitePlace.Completion.extensionEmbedding w (x w)), Complex.ofReal_sum]`. Use `(Fintype.sum_equiv (Equiv.subtypeUnivEquiv fun w : InfinitePlace D.host.F => IsTotallyReal.isReal w) _ _ fun w => ?_).symm` and prove the remaining obligations. Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Conclude with `InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (x w.1)`.
+-/
 theorem cmTypeComponents_sum_eq_realCoordinates_sum (D : D7) (x : Ainf D.host.F) :
     ∑ ρ, Formalism.L2.Fam.ThC.th0 D ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) =
       ((∑ w, (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F x).1 w : ℝ) : ℂ) := by
@@ -56,6 +69,13 @@ theorem cmTypeComponents_sum_eq_realCoordinates_sum (D : D7) (x : Ainf D.host.F)
   rw [InfiniteAdeleRing.ringEquiv_mixedSpace_apply]
   exact InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (x w.1)
 
+/- English proof (translation)
+Introduce `D ψ hψ`. Use `haveI := D.sp.cm.totReal`. Establish `h` using `Formalism.L2.Fam.ThC.allSome_fam.1 hψ.2`. Use `⟨negSum D.host.F, negSum_nondeg D.host.F, fun z => ?_⟩` and prove the remaining obligations. Establish `hx` using `h ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm z)`.
+
+Rewrite `hx` using `[cmTypeComponents_sum_eq_realCoordinates_sum, RingEquiv.apply_symm_apply]`. Use `show psiInf D.host.F ψ ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm z) = _`. Rewrite using `[hx, negSum_apply]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isStdInf_of_isStdChar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     GlobalTheory.WeilL2Words.IsStdInf D.host.F ψ := by
   intro D ψ hψ

@@ -11,6 +11,17 @@ namespace GlobalTheory
 open Filter Topology in
 open Filter Topology TopologicalSpace TensorProduct in
 
+/- English proof (translation)
+Introduce `E _ _ W D _ _ x y h`. Rewrite using `[← sub_eq_zero]`. Use `set z := x - y with hz`. Establish `hzp : ∀ (p : E) (hp : p ∈ W), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (_root_.GlobalTheory.AnPer.Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) z = 0` using `fun p hp => by`. Rewrite using `[hz, map_sub, h p hp, sub_self]`.
+
+Set `b` to `Module.Free.chooseBasis ℂ D`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := _root_.GlobalTheory.AnPer.Hol W) b`. Establish `hc : ∀ i, e z i = 0`. Introduce `i`. Apply `_root_.GlobalTheory.AnPer.Hol.ext_fn` to reduce the goal to its premises.
+
+Introduce `p hp`. Establish `hzero : (0 : _root_.GlobalTheory.AnPer.Hol W).fn p = 0`. Rewrite using `[← _root_.GlobalTheory.AnPer.Hol.ev_apply p hp, map_zero]`. Establish `h0` using `hzp p hp`. Rewrite `h0` using `[← e.symm_apply_apply z, TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum, map_sum]`.
+
+Simplify using `only [Algebra.TensorProduct.lift_tmul, AlgHom.id_apply, AlgHom.comp_apply, _root_.GlobalTheory.AnPer.Hol.ev_apply, Algebra.ofId_apply] at h0`. Establish `h1 : ∑ j ∈ (e z).support, (e z j).fn p • b j = 0`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`.
+
+Distinguish the cases in `hi : i ∈ (e z).support`. Rewrite using `[linearIndependent_iff'.1 b.linearIndependent (e z).support (fun j => (e z j).fn p) h1 i hi, hzero]`. Rewrite using `[Finsupp.notMem_support_iff.1 hi]`. Conclude with `e.injective (by rw [map_zero]; exact Finsupp.ext hc)`.
+-/
 theorem _root_.GlobalTheory.tensor_hol_ext_of_values :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Opens E) (D : Type) [CommRing D] [Algebra ℂ D] (x y : D ⊗[ℂ] _root_.GlobalTheory.AnPer.Hol W), (∀ (p : E) (hp : p ∈ W), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (_root_.GlobalTheory.AnPer.Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) x = Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (_root_.GlobalTheory.AnPer.Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) y) → x = y := by
   intro E _ _ W D _ _ x y h

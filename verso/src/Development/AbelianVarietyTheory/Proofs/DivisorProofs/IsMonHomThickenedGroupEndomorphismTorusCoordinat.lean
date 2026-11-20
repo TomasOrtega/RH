@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.Mum.EndThick
 
+/- English proof (translation)
+Rewrite using `[eq_mul_inv_of_mul_eq m₁, eq_mul_inv_of_mul_eq m₂, eq_mul_inv_of_mul_eq r, ex, ey]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem commGroup_torusCoordinate_mul_identity {U : Type} [CommGroup U] {vxy wXY ux uy vX vY wx wy c₁ c₂ uxy : U}
     (m₁ : wXY * c₁ = vX * vY) (m₂ : vxy * c₂ = wx * wy) (r : uxy * c₁ = c₂ * (ux * uy))
     (ex : vX = wx * ux) (ey : vY = wy * uy) : vxy * uxy = wXY := by
@@ -24,6 +27,23 @@ theorem commGroup_torusCoordinate_mul_identity {U : Type} [CommGroup U] {vxy wXY
 
 open GlobalTheory.TorusCoord GlobalTheory.OLinearCompare in
 
+/- English proof (translation)
+Introduce `R _ _ I D e G _ _ g a a' _ _ h' hc u hu h₀ F hF`. Take `⟨hF₁, hF₂⟩` from `hF`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `him : ∀ {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x : T ⟶ thickObj R I e G), im g (x ≫ F) = im g x ≫ a` using `fun x => Over.OverMorphism.ext ((Category.assoc x.left F.left _).trans ((congrArg (x.left ≫ ·) hF₁).trans (Category.assoc _ _ _).symm))`. Establish `hU : ∀ {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x : T ⟶ thickObj R I e G) (χ : D.X) (z : T.left) (J : (T.left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → val (LB.pullGen D.P.L _ _ u (lift (toUnit _ ≫ D.c χ) g.pG).left) x.left z J = val₂ u z J (cPt T χ) (im g x)` using `fun x χ z J hJ => val_pull_lift u χ g.pG ((Over.map (thick R I e)).map x) hJ`.
+
+Establish `mul : ∀ (T) (x y : T ⟶ thickObj R I e G), (x * y) ≫ F = (x ≫ F) * (y ≫ F)`. Introduce `T x y`. Use `Over.OverMorphism.ext (ext_of_val g _ _ ?_ fun χ z J hJ => ?_)` and prove the remaining obligations. Establish `: im g ((x * y) ≫ F) = im g ((x ≫ F) * (y ≫ F))`. Rewrite using `[him, im_mul, im_mul, him, him, MonObj.mul_comp]`.
+
+Conclude with `congrArg (·.left) this`. Establish `e₁` using `hF₂ χ _ (x * y).left z J hJ`. Establish `ex` using `hF₂ χ _ x.left z J hJ`. Establish `ey` using `hF₂ χ _ y.left z J hJ`. Establish `m₁` using `val_t_mul_points g hG χ (x ≫ F) (y ≫ F) z J hJ`.
+
+Establish `m₂` using `val_t_mul_points g hG (h' χ) x y z J hJ`. Establish `r` using `(ros_add D.cub hG D.P.isAb a' a u hu h₀ hJ (im g x) (im g y) (cPt T χ)).2`. Establish `c₁ : cubeVal g χ z J (x ≫ F) (y ≫ F) = cubV D.cub z J (cPt T χ) (im g x ≫ a) (im g y ≫ a)`. Unfold `cubeVal`. Rewrite using `[him, him]`.
+
+Establish `c₂ : cubeVal g (h' χ) z J x y = cubV D.cub z J (cPt T χ ≫ a') (im g x) (im g y)`. Unfold `cubeVal`. Use `congr 1`. Use `show toUnit _ ≫ D.c (h' χ) = (toUnit _ ≫ D.c χ) ≫ a'`. Rewrite using `[hc, Category.assoc]`.
+
+Rewrite `m₁` using `[c₁]`. Rewrite `m₂` using `[c₂]`. Rewrite `e₁` using `[hU _ χ z J hJ, im_mul]`. Rewrite `ex`, `ey` using `[hU _ χ z J hJ]`. Use `e₁.trans (commGroup_torusCoordinate_mul_identity m₁ m₂ r ex ey)` and prove the remaining obligations.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ _ ⟶ thickObj R I e G) ≫ F = 1` using `mul_eq_left.1 h.symm`. Simplify `h'` using `only [Hom.one_def, toUnit_unit, Category.id_comp]`.
+
+Establish `h` using `mul _ (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem isMonHom_of_isCoordEnd : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (a a' : D.P.A ⟶ D.P.A) [IsMonHom a] [IsMonHom a'] (h' : D.X →+ D.X), (∀ χ, D.c (h' χ) = D.c χ ≫ a') → ∀ (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A a' a) rosatiε)), u.IsGen → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L) → ∀ (F : thickObj R I e G ⟶ thickObj R I e G), IsCoordEnd g a a' h' u F → IsMonHom F := by
   intro R _ _ I D e G _ _ g a a' _ _ h' hc u hu h₀ F hF
   obtain ⟨hF₁, hF₂⟩ := hF

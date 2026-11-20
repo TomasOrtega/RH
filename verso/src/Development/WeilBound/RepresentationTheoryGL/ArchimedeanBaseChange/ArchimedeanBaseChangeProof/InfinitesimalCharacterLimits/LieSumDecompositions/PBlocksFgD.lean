@@ -14,29 +14,47 @@ def HExp (U : Submodule ℂ (Sm E (r + s))) (T : Sm E (r + s) →ₗ[ℂ] Sm E (
     (∀ i, b i ∈ Submodule.span ℂ (BlockDerivatives.lsF r s (T ψ) k g)) ∧ (∀ i, q i ∈ BlockDerivatives.rsF r s (T ψ) k g) ∧
     ∀ m : GA E r × GA E s, (T ψ).1 (lev (Ad E) r s m * BlockDerivatives.yp k g) = ∑ i, (b i).1 m.1 * (q i).1 m.2
 
+/- English proof (translation)
+Introduce and unpack `ℓ ⟨m₂, h⟩`. Conclude with `⟨m₂, Subtype.ext (funext fun m₁ => by rw [h, left_slice_apply, rt_apply])⟩`.
+-/
 theorem lsF_yp (F : Sm E (r + s)) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
     ∀ ℓ ∈ BlockDerivatives.lsF r s F k g, ∃ m₂, ℓ = sl0 m₂ (rt E (r + s) (BlockDerivatives.yp k g) F) := by
   rintro ℓ ⟨m₂, h⟩
   exact ⟨m₂, Subtype.ext (funext fun m₁ => by rw [h, left_slice_apply, rt_apply])⟩
 
+/- English proof (translation)
+Introduce and unpack `ℓ ⟨m₁, h⟩`. Conclude with `⟨m₁, Subtype.ext (funext fun m₂ => by rw [h, right_slice_apply, rt_apply])⟩`.
+-/
 theorem rsF_yp (F : Sm E (r + s)) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
     ∀ ℓ ∈ BlockDerivatives.rsF r s F k g, ∃ m₁, ℓ = sl1 m₁ (rt E (r + s) (BlockDerivatives.yp k g) F) := by
   rintro ℓ ⟨m₁, h⟩
   exact ⟨m₁, Subtype.ext (funext fun m₂ => by rw [h, right_slice_apply, rt_apply])⟩
 
+/- English proof (translation)
+Rewrite using `[yp_one, map_one, Module.End.one_apply]`.
+-/
 theorem rt_one {a : ℕ} (F : Sm E a) : rt E a (BlockDerivatives.yp 1 1) F = F := by
   rw [yp_one, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `ℓ hℓ`. Take `⟨m₂, h⟩` from `lsF_yp F 1 1 ℓ hℓ`. Conclude with `⟨m₂, by rw [h, rt_one]⟩`.
+-/
 theorem lsF_one (F : Sm E (r + s)) : ∀ ℓ ∈ BlockDerivatives.lsF r s F 1 1, ∃ m₂, ℓ = sl0 m₂ F := by
   intro ℓ hℓ
   obtain ⟨m₂, h⟩ := lsF_yp F 1 1 ℓ hℓ
   exact ⟨m₂, by rw [h, rt_one]⟩
 
+/- English proof (translation)
+Introduce `ℓ hℓ`. Take `⟨m₁, h⟩` from `rsF_yp F 1 1 ℓ hℓ`. Conclude with `⟨m₁, by rw [h, rt_one]⟩`.
+-/
 theorem rsF_one (F : Sm E (r + s)) : ∀ ℓ ∈ BlockDerivatives.rsF r s F 1 1, ∃ m₁, ℓ = sl1 m₁ F := by
   intro ℓ hℓ
   obtain ⟨m₁, h⟩ := rsF_yp F 1 1 ℓ hℓ
   exact ⟨m₁, by rw [h, rt_one]⟩
 
+/- English proof (translation)
+Take `⟨n, b, q, hb, hq, he⟩` from `hexp ψ hψ 1 1`. Use `⟨n, b, q, hb, hq, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← he m, yp_one, mul_one]`.
+-/
 theorem exp_one {U : Submodule ℂ (Sm E (r + s))} {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)} (hexp : HExp U T)
     {ψ : Sm E (r + s)} (hψ : ψ ∈ U) :
     ∃ (n : ℕ) (b : Fin n → Sm E r) (q : Fin n → Sm E s),
@@ -46,15 +64,24 @@ theorem exp_one {U : Submodule ℂ (Sm E (r + s))} {T : Sm E (r + s) →ₗ[ℂ]
   refine ⟨n, b, q, hb, hq, fun m => ?_⟩
   rw [← he m, yp_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[act_cpt_eq, act_fin_eq, rt_yp_rt, mul_one, one_mul]`.
+-/
 theorem rt_yp_eq {a : ℕ} (k : Kinf E a) (g : GL (Fin a) (Af E)) (φ : Sm E a) :
     rt E a (BlockDerivatives.yp k g) φ = act (.cpt k) (act (.fin g) φ) := by
   rw [act_cpt_eq, act_fin_eq, rt_yp_rt, mul_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[rt_yp_eq]`. Conclude with `hU _ _ (hU _ _ hφ)`.
+-/
 theorem rt_yp_mem {a : ℕ} {U : Submodule ℂ (Sm E a)} (hU : IsStable U) (k : Kinf E a) (g : GL (Fin a) (Af E))
     {φ : Sm E a} (hφ : φ ∈ U) : rt E a (BlockDerivatives.yp k g) φ ∈ U := by
   rw [rt_yp_eq]
   exact hU _ _ (hU _ _ hφ)
 
+/- English proof (translation)
+Rewrite using `[rt_yp_eq, rt_yp_eq, hT _ _ (hU _ _ hφ), hT _ _ hφ]`.
+-/
 theorem T_rt_yp {a : ℕ} {U : Submodule ℂ (Sm E a)} (hU : IsStable U) {T : Sm E a →ₗ[ℂ] Sm E a}
     (hT : ∀ o, ∀ φ ∈ U, T (act o φ) = act o (T φ)) (k : Kinf E a) (g : GL (Fin a) (Af E)) {φ : Sm E a}
     (hφ : φ ∈ U) : T (rt E a (BlockDerivatives.yp k g) φ) = rt E a (BlockDerivatives.yp k g) (T φ) := by
@@ -80,6 +107,23 @@ def Mright (U : Submodule ℂ (Sm E (r + s))) (T : Sm E (r + s) →ₗ[ℂ] Sm E
   smul_mem' := fun c a ha => ⟨U.smul_mem c ha.1, fun k g m₁ => by
     rw [map_smul, map_smul, map_smul]; exact W.smul_mem c (ha.2 k g m₁)⟩
 
+/- English proof (translation)
+Introduce and unpack `o ψ ⟨hψU, hψ⟩`. Consider the cases of `o with`. Consider the case `fin h`. Use `⟨hU.1 _ _ hψU, fun k g m₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[act_fin_eq, rt_yp_rt, mul_one]`.
+
+Conclude with `hψ k (g * h) m₂`. Consider the case `cpt κ`. Use `⟨hU.1 _ _ hψU, fun k g m₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[act_cpt_eq, rt_yp_rt, mul_one]`. Conclude with `hψ (k * κ) g m₂`.
+
+Consider the case `lie X`. Use `⟨hU.1 _ _ hψU, fun k g m₂ => ?_⟩` and prove the remaining obligations. Take `⟨X', hX'⟩` from `rt_lie_yp k g X`. Establish `hψ'U : rt E (r + s) (BlockDerivatives.yp k g) ψ ∈ U` using `rt_yp_mem hU.1 k g hψU`. Establish `e1 : rt E (r + s) (BlockDerivatives.yp k g) (act (.lie X) ψ) = lie E (r + s) X' (rt E (r + s) (BlockDerivatives.yp k g) ψ)` using `LinearMap.congr_fun hX' ψ`.
+
+Rewrite using `[e1]`. Establish `e2` using `hT.equiv (.lie X') _ hψ'U`. Express the relevant statement in the definitionally equal form `T (lie E (r + s) X' _) = lie E (r + s) X' _ at e2`. Rewrite using `[e2]`. Use `set ψ' := rt E (r + s) (BlockDerivatives.yp k g) ψ with hψ'`.
+
+Establish `hP : ∀ m₂, sl0 m₂ (T ψ') ∈ W` using `fun m₂ => hψ k g m₂`. Take `⟨n, b, q, hb, -, he⟩` from `exp_one hexp hψ'U`. Establish `hsub : BlockDerivatives.lsF r s (T ψ') 1 1 ⊆ W` using `fun ℓ hℓ => by`. Take `⟨m, rfl⟩` from `lsF_one _ ℓ hℓ`. Conclude with `hP m`.
+
+Establish `hbW : ∀ i, b i ∈ W` using `fun i => (Submodule.span_le.2 hsub) (hb i)`. Rewrite using `[lie_split, map_add]`. Use `W.add_mem (key_left W hW (T ψ') (hT.unipInv ψ' hψ'U) hP b q hbW he _ (par_low X') m₂) ?_` and prove the remaining obligations. Establish `e3` using `hT.equiv (.lie (toL (skw X'))) _ hψ'U`. Express the relevant statement in the definitionally equal form `T (lie E (r + s) (toL (skw X')) ψ') = lie E (r + s) (toL (skw X')) (T ψ') at e3`.
+
+Rewrite using `[← e3]`. Establish `: FiniteDimensional ℂ (GlobalTheory.CuspRep.LocEx.orbSpan ψ')` using `(hU.2 ψ' hψ'U).kfin`. Establish `hmem` using `lie_mem_orbSpan ψ' (skw X') (skw_skew X')`. Establish `hle : GlobalTheory.CuspRep.LocEx.orbSpan ψ' ≤ W.comap (sl0 m₂ ∘ₗ T)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨κ, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `sl0 m₂ (T (act (.cpt κ) ψ')) ∈ W`. Rewrite using `[act_cpt_eq, hψ', rt_yp_rt, one_mul]`. Conclude with `hψ (κ * k) g m₂)`. Conclude with `hle hmem`.
+-/
 theorem Mleft_stable {U : Submodule ℂ (Sm E (r + s))} (hU : IsAutSt U) {c : ℂ}
     {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)} (hT : IsSliceMap U c T) (hexp : HExp U T) (W : Submodule ℂ (Sm E r))
     (hW : IsStable W) : IsStable (Mleft U T W) := by
@@ -124,6 +168,23 @@ theorem Mleft_stable {U : Submodule ℂ (Sm E (r + s))} (hU : IsAutSt U) {c : �
       exact hψ (κ * k) g m₂)
     exact hle hmem
 
+/- English proof (translation)
+Introduce and unpack `o ψ ⟨hψU, hψ⟩`. Consider the cases of `o with`. Consider the case `fin h`. Use `⟨hU.1 _ _ hψU, fun k g m₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[act_fin_eq, rt_yp_rt, mul_one]`.
+
+Conclude with `hψ k (g * h) m₁`. Consider the case `cpt κ`. Use `⟨hU.1 _ _ hψU, fun k g m₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[act_cpt_eq, rt_yp_rt, mul_one]`. Conclude with `hψ (k * κ) g m₁`.
+
+Consider the case `lie X`. Use `⟨hU.1 _ _ hψU, fun k g m₁ => ?_⟩` and prove the remaining obligations. Take `⟨X', hX'⟩` from `rt_lie_yp k g X`. Establish `hψ'U : rt E (r + s) (BlockDerivatives.yp k g) ψ ∈ U` using `rt_yp_mem hU.1 k g hψU`. Establish `e1 : rt E (r + s) (BlockDerivatives.yp k g) (act (.lie X) ψ) = lie E (r + s) X' (rt E (r + s) (BlockDerivatives.yp k g) ψ)` using `LinearMap.congr_fun hX' ψ`.
+
+Rewrite using `[e1]`. Establish `e2` using `hT.equiv (.lie X') _ hψ'U`. Express the relevant statement in the definitionally equal form `T (lie E (r + s) X' _) = lie E (r + s) X' _ at e2`. Rewrite using `[e2]`. Use `set ψ' := rt E (r + s) (BlockDerivatives.yp k g) ψ with hψ'`.
+
+Establish `hP : ∀ m₁, sl1 m₁ (T ψ') ∈ W` using `fun m₁ => hψ k g m₁`. Take `⟨n, b, q, -, hq, he⟩` from `exp_one hexp hψ'U`. Establish `hqW : ∀ i, q i ∈ W` using `fun i => by`. Take `⟨m, hm⟩` from `rsF_one _ _ (hq i)`. Rewrite using `[hm]`.
+
+Conclude with `hP m`. Rewrite using `[lie_split, map_add]`. Use `W.add_mem (key_right W hW (T ψ') (hT.unipInv ψ' hψ'U) hP b q hqW he _ (par_low X') m₁) ?_` and prove the remaining obligations. Establish `e3` using `hT.equiv (.lie (toL (skw X'))) _ hψ'U`. Express the relevant statement in the definitionally equal form `T (lie E (r + s) (toL (skw X')) ψ') = lie E (r + s) (toL (skw X')) (T ψ') at e3`.
+
+Rewrite using `[← e3]`. Establish `: FiniteDimensional ℂ (GlobalTheory.CuspRep.LocEx.orbSpan ψ')` using `(hU.2 ψ' hψ'U).kfin`. Establish `hmem` using `lie_mem_orbSpan ψ' (skw X') (skw_skew X')`. Establish `hle : GlobalTheory.CuspRep.LocEx.orbSpan ψ' ≤ W.comap (sl1 m₁ ∘ₗ T)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨κ, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `sl1 m₁ (T (act (.cpt κ) ψ')) ∈ W`. Rewrite using `[act_cpt_eq, hψ', rt_yp_rt, one_mul]`. Conclude with `hψ (κ * k) g m₁)`. Conclude with `hle hmem`.
+-/
 theorem Mright_stable {U : Submodule ℂ (Sm E (r + s))} (hU : IsAutSt U) {c : ℂ}
     {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)} (hT : IsSliceMap U c T) (hexp : HExp U T) (W : Submodule ℂ (Sm E s))
     (hW : IsStable W) : IsStable (Mright U T W) := by

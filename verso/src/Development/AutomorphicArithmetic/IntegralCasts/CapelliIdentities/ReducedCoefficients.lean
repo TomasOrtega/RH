@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DvrOfNo
 
 namespace UpperTheory.Reformulated.B.CoefficientRingContainingIntegers
 
+/- English proof (translation)
+Establish `hD : IsDiscreteValuationRing (integralClosure ℤ_[l] K)` using `UpperTheory.dvr_of_norm_integral K (fun x hx => UpperTheory.padicAlgCl_isIntegral_of_norm_le_one x hx)`. Establish `hF : Module.Finite ℤ_[l] (integralClosure ℤ_[l] K)` using `IsIntegralClosure.finite ℤ_[l] ℚ_[l] K (integralClosure ℤ_[l] K)`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`.
+
+Use `⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h1 => ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 (UpperTheory.padicAlgCl_isIntegral_of_norm_le_one x h1), rfl⟩`.
+-/
 theorem rc_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : UpperTheory.V.HV.Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O := by
   have hD : IsDiscreteValuationRing (integralClosure ℤ_[l] K) := UpperTheory.dvr_of_norm_integral K (fun x hx => UpperTheory.padicAlgCl_isIntegral_of_norm_le_one x hx)

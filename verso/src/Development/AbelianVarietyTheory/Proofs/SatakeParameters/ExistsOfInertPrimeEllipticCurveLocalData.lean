@@ -17,6 +17,13 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 
 namespace GlobalTheory.KerStd
 
+/- English proof (translation)
+Introduce `p _ g2 g3 s2 ε σ F hC d _ hd`. Take `⟨-, hg2, hg3, hε, hth, hσ, hF, hN⟩` from `hC`. Establish `hff` using `Formalism.L2.Th1.D.FAux.ffs (l := p) Formalism.L2.Th1.D.first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Establish `hp : p.Prime` using `Fact.out`. Establish `hd0 : d ≠ 0` using `NeZero.ne d`.
+
+Establish `h1 : 1 < p ^ d` using `Nat.one_lt_pow hd0 hp.one_lt`. Take `⟨ζ, hζ⟩` from `Formalism.L2.Th1.D.kurRoots p (p ^ d - 1) (by omega) (fun hdv => by`. Establish `h2 : p ∣ p ^ d` using `dvd_pow_self p hd0`. Establish `h3 : p ∣ 1`. Use `Nat.dvd_sub h2 hdv` as an intermediate fact.
+
+Rewrite `this` using `[Nat.sub_sub_self h1.le]`. Then use the resulting hypothesis. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h3))`. Take `⟨om, oms, hO, hT⟩` from `Formalism.L2.Th1.D.trDualExists (MaximalUnramifiedExtension p) p d σ hσ hd ζ hζ`. Conclude with `⟨om, oms, ζ, hσ, hF, hff.1, hff.2.1, hO, hT, hζ⟩`.
+-/
 theorem BeData.exists_of_curveData : ∀ (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p)
     (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)), CurveData p g2 g3 s2 ε σ F → ∀ (d : ℕ) [NeZero d], Even d →
     ∃ (om oms : Fin (d / 2) → MaximalUnramifiedExtension p) (ζ : MaximalUnramifiedExtension p), BeData p d σ F (cob F (phFF p g2 g3 s2 ε)) om oms ζ := by

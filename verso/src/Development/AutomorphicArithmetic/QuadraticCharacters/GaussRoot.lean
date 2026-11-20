@@ -7,6 +7,21 @@ namespace HostParam
 
 namespace SlopeTestRemainingChoices.GaussRoot
 
+/- English proof (translation)
+Use `haveI : NeZero d := ⟨hd.out.ne_zero⟩`. Establish `hζ1 : ζ ^ d = 1` using `hζ.pow_eq_one`. Set `χ : MulChar (ZMod d) K` to `(quadraticChar (ZMod d)).ringHomComp (Int.castRingHom K)`. Set `ψ : AddChar (ZMod d) K` to `AddChar.zmodChar d hζ1`. Establish `hchar : ringChar (ZMod d) ≠ 2`.
+
+Rewrite using `[ZMod.ringChar_zmod_n]`. Use linear arithmetic over natural numbers and integers. Establish `hχ1 : χ ≠ 1` using `(MulChar.ringHomComp_ne_one_iff Int.cast_injective).mpr (quadraticChar_ne_one hchar)`. Establish `hχq : χ.IsQuadratic` using `(quadraticChar_isQuadratic (ZMod d)).comp _`. Establish `hψ : ψ.IsPrimitive` using `AddChar.zmodChar_primitive_of_primitive_root d hζ`.
+
+Use `⟨gaussSum χ ψ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gaussSum_sq hχ1 hχq hψ, ZMod.card]`. Establish `hm : χ (-1) = -1`. Simplify using `only [χ, MulChar.ringHomComp_apply, quadraticChar_neg_one hchar, ZMod.card, ZMod.χ₄_nat_three_mod_four hd4]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Introduce `σ a ha hσ`. Establish `hσψ : ∀ x : ZMod d, σ (ψ x) = ψ (a * x)`. Introduce `x`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Set `u : (ZMod d)ˣ` to `ZMod.unitOfCoprime a ha`. Establish `hG : σ (gaussSum χ ψ) = gaussSum χ (ψ.mulShift u)`.
+
+Simplify using `only [gaussSum, map_sum, map_mul, AddChar.mulShift_apply]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[hσψ]`. Simplify using `[χ, u]`. Rewrite using `[hG, gaussSum_mulShift_eq, hχq.inv]`.
+
+Simplify using `[χ, u]`.
+-/
 theorem exists_gauss {K : Type} [Field K] [CharZero K] {d : ℕ} [hd : Fact d.Prime]
     (hd4 : d % 4 = 3) {ζ : K} (hζ : IsPrimitiveRoot ζ d) :
     ∃ G : K, G ^ 2 = -(d : K) ∧ ∀ (σ : K →+* K) (a : ℕ), a.Coprime d → σ ζ = ζ ^ a →
@@ -48,9 +63,15 @@ theorem exists_gauss {K : Type} [Field K] [CharZero K] {d : ℕ} [hd : Fact d.Pr
     rw [hG, gaussSum_mulShift_eq, hχq.inv]
     simp [χ, u]
 
+/- English proof (translation)
+The claim follows from `sq_eq_sq_iff_eq_or_eq_neg.mp (ha.trans hb.symm)`.
+-/
 theorem eq_or_neg {K : Type} [Field K] {a b c : K} (ha : a ^ 2 = c) (hb : b ^ 2 = c) :
     a = b ∨ a = -b := sq_eq_sq_iff_eq_or_eq_neg.mp (ha.trans hb.symm)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `: (d : K) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne_zero`. Apply `this` to reduce the goal to its premises. Rewrite using `[← neg_eq_zero, ← hb]`. Simplify using the standard rewrite rules.
+-/
 theorem ne_zero {K : Type} [Field K] [CharZero K] {d : ℕ} (hd : d.Prime) {b : K}
     (hb : b ^ 2 = -(d : K)) : b ≠ 0 := by
   rintro rfl

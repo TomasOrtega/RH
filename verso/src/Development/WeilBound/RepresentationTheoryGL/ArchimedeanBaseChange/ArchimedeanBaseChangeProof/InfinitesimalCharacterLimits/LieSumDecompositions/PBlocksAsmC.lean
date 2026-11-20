@@ -11,6 +11,9 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockAssembly
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ} {U : Submodule ℂ (Sm E (r + s))} {c : ℂ}
   {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)}
 
+/- English proof (translation)
+Use `⟨⟨by rw [Multiset.card_map]; exact (mem_adm.1 hσ τ).2, fun u φ hφ => ?_⟩, (Multiset.nodup_of_le (mem_adm.1 hσ τ).1 (hmmN τ)).map (add_left_injective sh)⟩` and prove the remaining obligations. Rewrite using `[hX φ hφ τ u, Multiset.map_map]`. Use `congr 2`. Conclude with `Multiset.map_congr rfl fun z _ => by simp only [Function.comp_apply]; ring`.
+-/
 theorem inf_piece {a : ℕ} {X : Submodule ℂ (Sm E a)} {σ : (E →+* ℂ) → Multiset ℂ} {sh : ℂ}
     (mm : (E →+* ℂ) → Multiset ℂ) (hmmN : ∀ τ, (mm τ).Nodup) (hσ : σ ∈ adm mm a)
     (hX : ∀ φ ∈ X, ∀ τ w, cap τ w φ = ((σ τ).map (fun z => w + sh + z)).prod • φ) (τ : E →+* ℂ) :
@@ -21,6 +24,17 @@ theorem inf_piece {a : ℕ} {X : Submodule ℂ (Sm E a)} {σ : (E →+* ℂ) →
   congr 2
   exact Multiset.map_congr rfl fun z _ => by simp only [Function.comp_apply]; ring
 
+/- English proof (translation)
+Establish `hXle : (LS U T).map z ≤ LS U T`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `(hzE φ hφ).1`. Establish `hXE : ∀ φ ∈ (LS U T).map z, ∀ τ w, cap τ w φ = ((σ τ).map (fun x => w + (s : ℂ) / 2 + x)).prod • φ`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+
+Conclude with `(hzE φ hφ).2`. Establish `hinf` using `inf_piece mm hmmN hσ hXE`. Take `⟨S₁, hS₁, hgen⟩` from `hfg`. Establish `haut : ∀ φ ∈ (LS U T).map z, IsAutForm φ` using `fun φ hφ => BlockSlices.LS_aut hT φ (hXle hφ)`. Use `BlockTwistCharacters.hyp_tw (-(s : ℂ) / 2) ⟨isStable_map (BlockSlices.LS_stable hU hT) hzc, haut⟩ (finGen_map hzc S₁ hS₁ hgen) ⟨_, hinf τ⟩ (fun τ' => ⟨_, hinf τ'⟩) ?_ (BlockTwistCharacters.centIm_left _ hpE fun φ hφ => LS_cent hT φ (hXle hφ))` and prove the remaining obligations.
+
+Use `BlockTwistCharacters.nonPos_tw _ _ haut fun φ hφ r' hr' hrr c' hc' => ?_` and prove the remaining obligations. Establish `hb` using `LS_exp hU hNP hT φ (hXle hφ) r' hr' hrr c' hc'`. Establish `hd` using `d_pos (E := E)`. Establish `h2 : c'.re / (Module.finrank ℚ E : ℝ) ≤ (r' : ℝ) * (((r + s : ℕ) : ℝ) - r') / 2`. Rewrite using `[div_le_iff₀ hd]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `pE`. Establish `e : (-(s : ℂ) / 2).re = -(s : ℝ) / 2` using `by simp`. Rewrite using `[e]`. Move the coercions through the operations in `at h2 ⊢`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hyp_left (hU : IsAutSt U) (hNP : NonPos U) (hT : IsSliceMap U c T) (hpE : pE E (r + s) r c = 0)
     (mm : (E →+* ℂ) → Multiset ℂ) (hmmN : ∀ τ, (mm τ).Nodup) {σ : (E →+* ℂ) → Multiset ℂ} (hσ : σ ∈ adm mm r)
     {z : Module.End ℂ (Sm E r)} (hzc : ∀ o, Commute z (act o))
@@ -51,6 +65,17 @@ theorem hyp_left (hU : IsAutSt U) (hNP : NonPos U) (hT : IsSliceMap U c T) (hpE 
   push_cast at h2 ⊢
   nlinarith
 
+/- English proof (translation)
+Establish `hXle : (RS U T).map z ≤ RS U T`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `(hzE φ hφ).1`. Establish `hXE : ∀ φ ∈ (RS U T).map z, ∀ τ w, cap τ w φ = ((ρ τ).map (fun x => w + -(r : ℂ) / 2 + x)).prod • φ`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+
+Conclude with `(hzE φ hφ).2`. Establish `hinf` using `inf_piece mm hmmN hρ hXE`. Take `⟨S₁, hS₁, hgen⟩` from `hfg`. Establish `haut : ∀ φ ∈ (RS U T).map z, IsAutForm φ` using `fun φ hφ => BlockSlices.RS_aut hT φ (hXle hφ)`. Use `BlockTwistCharacters.hyp_tw ((r : ℂ) / 2) ⟨isStable_map (BlockSlices.RS_stable hU hT) hzc, haut⟩ (finGen_map hzc S₁ hS₁ hgen) ⟨_, hinf τ⟩ (fun τ' => ⟨_, hinf τ'⟩) ?_ (BlockTwistCharacters.centIm_right _ hpE fun φ hφ => RS_cent hT φ (hXle hφ))` and prove the remaining obligations.
+
+Use `BlockTwistCharacters.nonPos_tw _ _ haut fun φ hφ r₂ hr₂ hrs c₂ hc₂ => ?_` and prove the remaining obligations. Establish `hb` using `RS_exp hU hNP hT φ (hXle hφ) r₂ hr₂ hrs c₂ hc₂`. Establish `hd` using `d_pos (E := E)`. Establish `hc` using `BlockTwistCharacters.re_of_pE (E := E) hpE`. Establish `h2 : c₂.re / (Module.finrank ℚ E : ℝ) ≤ ((r + r₂ : ℕ) : ℝ) * (((r + s : ℕ) : ℝ) - ((r + r₂ : ℕ) : ℝ)) / 2 - (r : ℝ) * s / 2`.
+
+Rewrite using `[div_le_iff₀ hd]`. Establish `e3 : (((r + r₂ : ℕ) : ℝ) * (((r + s : ℕ) : ℝ) - ((r + r₂ : ℕ) : ℝ)) / 2 - (r : ℝ) * s / 2) * (Module.finrank ℚ E : ℝ) = (Module.finrank ℚ E : ℝ) * (((r + r₂ : ℕ) : ℝ) * (((r + s : ℕ) : ℝ) - ((r + r₂ : ℕ) : ℝ))) / 2 - (r : ℝ) * s * (Module.finrank ℚ E : ℝ) / 2` using `by ring`. Rewrite using `[e3, ← hc]`. Conclude with `hb`. Unfold `pE`.
+
+Establish `e : ((r : ℂ) / 2).re = (r : ℝ) / 2` using `by simp`. Rewrite using `[e]`. Move the coercions through the operations in `at h2 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hyp_right (hU : IsAutSt U) (hNP : NonPos U) (hT : IsSliceMap U c T) (hpE : pE E (r + s) r c = 0)
     (mm : (E →+* ℂ) → Multiset ℂ) (hmmN : ∀ τ, (mm τ).Nodup) {ρ : (E →+* ℂ) → Multiset ℂ} (hρ : ρ ∈ adm mm s)
     {z : Module.End ℂ (Sm E s)} (hzc : ∀ o, Commute z (act o))

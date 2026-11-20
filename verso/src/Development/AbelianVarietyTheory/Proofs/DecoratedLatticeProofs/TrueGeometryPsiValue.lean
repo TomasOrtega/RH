@@ -29,6 +29,17 @@ namespace GlobalTheory.FamTraceChiColChar
 
 open GlobalTheory.LocMod.PinEx GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Establish `tp : 0 < valuation k (t : k)` using `zero_lt_iff.2 ((map_ne_zero _).2 t.ne_zero)`. Establish `hpv : valuation k p = valuation k (t : k)`. Use `Valuation.map_eq_of_sub_lt _ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]` and apply the resulting hypothesis. Establish `p0 : p ≠ 0` using `fun e => by`.
+
+Rewrite `hpv` using `[e, map_zero]`. Conclude with `tp.ne hpv`. Establish `h1 : valuation k (((t : k) - p) * (t : k)⁻¹) ≤ valuation k (t : k)` using `(ht _).1 (by`. Rewrite using `[map_mul, map_inv₀, mul_inv_lt_iff₀ tp, one_mul]`. Conclude with `hp)`.
+
+Establish `triv : ψ (((t : k) - p) * (t : k)⁻¹ * p⁻¹ * y) = 1` using `(hψ 1).2 (by simp) _ (by`. Rewrite using `[map_one, map_mul, map_mul _ _ p⁻¹, map_inv₀, hpv]`. Use `mul_le_one' ?_ hy` and prove the remaining obligations. Rewrite using `[mul_inv_le_iff₀ tp, one_mul]`. Conclude with `h1)`.
+
+Establish `e : p⁻¹ * y = ((t⁻¹ : kˣ) : k) * y + ((t : k) - p) * (t : k)⁻¹ * p⁻¹ * y`. Use `t.ne_zero` as an intermediate fact. Rewrite using `[Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, AddChar.map_add_eq_mul, triv, mul_one]`.
+-/
 theorem chr_unif_congr {k : Type} [Field k] [ValuativeRel k] {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {t : kˣ} (ht : IsUnif t)
     {p y : k} (hp : valuation k ((t : k) - p) < valuation k (t : k)) (hy : valuation k y ≤ 1) :
     ψ (((t⁻¹ : kˣ) : k) * y) = ψ (p⁻¹ * y) := by
@@ -54,6 +65,13 @@ theorem chr_unif_congr {k : Type} [Field k] [ValuativeRel k] {ψ : AddChar k Cir
     ring
   rw [e, AddChar.map_add_eq_mul, triv, mul_one]
 
+/- English proof (translation)
+Take `⟨hv, hi, -⟩` from `place_facts q h`. Establish `h1 : valuation k (prO q z - prO q (s * b)) < 1`. Rewrite using `[← map_sub, ← prO_lt q h]`. Conclude with `hz`. Rewrite using `[← prO_apply, GlobalTheory.LevelUnif.chr_near hψ ht h1, chr_unif_congr hψ ht htp (prO_le q h _), hc, ← GlobalTheory.SplitDegOneChar.psiE_sec_pr_eq_exp D k q PP p hp hN hsq hv hi Ψ hΨ ((b : D.host.E) / (p : D.host.E)) b (by rw [sub_self]; exact ⟨0, 1, (Ideal.ne_top_iff_one _).1 PP …`.
+
+Establish `e1 : ((p : k))⁻¹ * prO q (s * b) = q.pr (incA D ((s : D.host.E) * ((b : D.host.E) / (p : D.host.E))))`. Express the relevant statement in the definitionally equal form `_ = (q.pr.comp (incA D)) _`. Rewrite using `[map_mul, map_mul, map_div₀, map_intCast, map_intCast, map_natCast]`. Express the relevant statement in the definitionally equal form `_ = prO q s * _`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `psiE Ψ (incA D D.host.xi0 * q.sec (q.pr _)) = psiE Ψ (q.sec (q.pr (incA D _)))`. Rewrite using `[q.sec_pr, q.sec_pr, mul_left_comm, ← map_mul, ← mul_assoc D.host.xi0, hs, one_mul]`.
+-/
 theorem weil_unif_eq_exp {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt q.e PP) {ψ : AddChar k Circle}
     (hψ : HasConductor ψ 1) {Ψ : AddChar (AF D.host.F) ℂ} (hΨ : IsStdChar D Ψ (-1)) (hc : (ofSplit q).IsChar Ψ ψ)
@@ -77,6 +95,15 @@ theorem weil_unif_eq_exp {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topolog
   change psiE Ψ (incA D D.host.xi0 * q.sec (q.pr _)) = psiE Ψ (q.sec (q.pr (incA D _)))
   rw [q.sec_pr, q.sec_pr, mul_left_comm, ← map_mul, ← mul_assoc D.host.xi0, hs, one_mul]
 
+/- English proof (translation)
+Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Take `⟨P', hP, ρ, hPu, hres⟩` from `TC.GLev0.exists_w (X := X) G hG j _ h`. Establish `hwP : P' = P` using `TC.GLev0.vGs_inj (X := X) hPP (TC.GLev0.mem_vGs.2 ⟨j, hP⟩) hPu`. Substitute `hwP` using the available equality. Establish `hq : Formalism.L2.Col.qOf P' = B.host.g j` using `hPr.vG_norm j _ hP`.
+
+Use `⟨by rw [hq]; exact hPr.g_prime j, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `TC.GLev0.exists_natCast (X := X) hPP (Ideal.Quotient.mk _ z)`. Take `⟨b, hb⟩` from `TC.GLev0.exists_natCast (X := X) hPP (Formalism.L2.Col.redP P' B.host.xi0 * n)`. Establish `hred` using `Formalism.L2.Col.reduction_spec P' (a := B.host.xi0) (r := 1) hsP (by rw [map_one, mul_comm]; exact hs)`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.eq, map_mul, Int.cast_natCast, map_natCast, hb, ← mul_assoc, hred, map_one, one_mul, hn]`. Take `⟨hh, e⟩` from `hres (Formalism.UG.inclE (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F) (z : B.host.E)) (Ideal.Quotient.mk _ z) (by rw [adAt_inclE]; exact hasRes_coe _ z)`. Establish `ew : w = ⟨_, hh⟩` using `Subtype.ext hw`. Establish `e2 : IsLocalRing.residue _ w = (n : Formalism.L2.Forms.kv B.host.F _)`. Rewrite using `[ew]`.
+
+Conclude with `e.trans ((congrArg ρ hn.symm).trans (map_natCast ρ n))`. Establish `e3` using `hpsi j _ h ⟨_, hPP⟩ rfl n`. Establish `e4` using `hI.weil ⟨_, hPP⟩ (n : _) (b : ℤ) ((hb.symm).trans (Int.cast_natCast b).symm)`. Rewrite using `[e2]`. Conclude with `e3.trans e4`.
+-/
 theorem columnCharacter_reduction_eq_exp {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : TC B X) (hI : I.Ok)
     (G : Formalism.L2.Forms.GLoc B.host.F B.host.E B.sp.cm.sig B.host.g) (hG : G.piG = X.piG)
     (hpsi : ∀ j v h (w : {w // w ∈ (B.primes X).vGs}), w.1.under (𝓞 B.host.F) = v → ∀ n : ℕ,
@@ -111,6 +138,15 @@ theorem columnCharacter_reduction_eq_exp {B : GlobalTheory.Mem.Base} {X : Global
   rw [e2]
   exact e3.trans e4
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ i j h z w hw`. Take `⟨hS⟩` from `hA.tr.std`. Establish `hR` using `(ha.tie row col).2`. Establish `hPP : (a.pl i).1 ∈ (B.primes X).vGs` using `(hA.lev.2.1 _).1 (a.pl i).2`. Establish `hid` using `(hR.idem i).1`.
+
+Establish `hsq` using `GlobalTheory.LevelUnif.norm_notMem_sq (D := I.rec7 l Z) (hA.lev.1.1 _ (a.pl i).2)`. Establish `hu` using `GlobalTheory.LevelUnif.unif_of_read (D := I.rec7 l Z) _ _ _ hR hA.lev.1 i`. Take `⟨s, hs⟩` from `GlobalTheory.Mem.TypePrimes.Red.exists_hostXi0_inverse_integer (I.rec7 l Z).host`. Establish `hsP : s ∉ (a.pl i).1.asIdeal` using `fun hm => by`. Establish `h1` using `(prO_lt (a.G i).q hid s).1 hm`.
+
+Establish `h2` using `xi_unit (a.G i).q (a.G i).unit (GlobalTheory.LocMod.Witness.xi_ne _)`. Establish `h3 : (ofSplit (a.G i).q).xi * prO (a.G i).q s = 1` using `(((a.G i).q.pr.comp (incA (I.rec7 l Z))).map_mul _ _).symm.trans ((congrArg ((a.G i).q.pr.comp (incA (I.rec7 l Z))) hs).trans (map_one _))`. Establish `h4` using `congrArg (valuation (a.G i).k) h3`. Rewrite `h4` using `[map_mul, h2, one_mul, map_one]`. Conclude with `h1.ne h4`.
+
+Take `⟨hp, b, hz, e⟩` from `columnCharacter_reduction_eq_exp I hA.tr.ok (F0 W u).gl (hS u).gl.piG (hS u).gl.psi (a.pl i).1 hPP j h z w hw hs hsP`. Conclude with `(weil_unif_eq_exp (a.G i).q hid (a.G i).S.cond W.Q.stdChar (a.G i).char hp rfl hsq (a.G i).S.unif hu hs hz).trans e.symm`.
+-/
 theorem psi_uniformizer_eq_psi_zero : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ (i : Fin a.n) (j : Fin 2) (h : ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).asIdeal) (z : 𝓞 (I.rec7 l Z).host.E) (w : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletionIntegers (I.rec7 l Z).host.F), (w : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletion (I.rec7 l Z).host.F) = (F0 W u).gl.phi j _ h ((z : (I.rec7 l Z).host.E) ⊗ₜ[(I.rec7 l Z).host.F] (1 : ((a.pl i).1.under (𝓞 (I.rec7 l Z).host.F)).adicCompletion (I.rec7 l Z).host.F)) → ((a.G i).S.ψ ((((a.G i).S.ϖ⁻¹ : (a.G i).kˣ) : (a.G i).k) * (ofSplit (a.G i).q).pr (z : (I.rec7 l Z).host.E)) : ℂ) = (F0 W u).gl.psi0 j _ h (IsLocalRing.residue _ w) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ i j h z w hw
   obtain ⟨hS⟩ := hA.tr.std

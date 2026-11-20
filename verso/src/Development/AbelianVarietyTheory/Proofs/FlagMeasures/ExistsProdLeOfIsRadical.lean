@@ -7,6 +7,11 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 
 namespace GlobalTheory.RowLev.SqfCrt
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 h`. Establish `hsplit : y = a • y + b • y` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[hsplit]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_smul]`.
+
+Conclude with `Submodule.smul_mem_smul ha hB`. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hb hA`.
+-/
 theorem mem_mul_smul_of_coprime {S M : Type*} [CommRing S] [AddCommGroup M] [Module S M] (N : Submodule S M)
     {A B : Ideal S} (h : IsCoprime A B) {y : M} (hA : y ∈ A • N) (hB : y ∈ B • N) : y ∈ (A * B) • N := by
   obtain ⟨a, ha, b, hb, hab⟩ := Ideal.isCoprime_iff_exists.1 h
@@ -18,6 +23,11 @@ theorem mem_mul_smul_of_coprime {S M : Type*} [CommRing S] [AddCommGroup M] [Mod
   · rw [mul_comm, Submodule.mul_smul]
     exact Submodule.smul_mem_smul hb hA
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa [Ideal.one_eq_top, Submodule.top_smul] using hy`. Consider the case `@insert a T haT ih`. Rewrite using `[Finset.prod_insert haT]`. Use `mem_mul_smul_of_coprime N ?_ (h a (Finset.mem_insert_self a T)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` and prove the remaining obligations.
+
+Conclude with `IsCoprime.prod_right fun i hi => hJ a i fun hai => haT (hai ▸ hi)`.
+-/
 theorem mem_prod_smul_of_coprime {S M ι : Type*} [CommRing S] [AddCommGroup M] [Module S M] (N : Submodule S M)
     (J : ι → Ideal S) (hJ : ∀ i j, i ≠ j → IsCoprime (J i) (J j)) {y : M} (hy : y ∈ N) (T : Finset ι)
     (h : ∀ i ∈ T, y ∈ J i • N) : y ∈ (∏ i ∈ T, J i) • N := by
@@ -29,6 +39,11 @@ theorem mem_prod_smul_of_coprime {S M ι : Type*} [CommRing S] [AddCommGroup M] 
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
     exact IsCoprime.prod_right fun i hi => hJ a i fun hai => haT (hai ▸ hi)
 
+/- English proof (translation)
+Establish `hfin` using `Ideal.finite_factors h0`. Use `⟨hfin.toFinset, fun u hu => Ideal.le_of_dvd ((Set.Finite.mem_toFinset hfin).1 hu), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Apply `hr` to reduce the goal to its premises. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`.
+
+Introduce and unpack `P ⟨hle, hP⟩`. Establish `hP0 : P ≠ ⊥` using `fun hb => h0 (le_bot_iff.1 (hb ▸ hle))`. Set `v : HeightOneSpectrum R` to `⟨P, hP, hP0⟩`. Establish `hv : v ∈ hfin.toFinset` using `(Set.Finite.mem_toFinset hfin).2 (Ideal.dvd_iff_le.2 hle)`. Conclude with `(Ideal.prod_le_inf.trans (Finset.inf_le hv)) hx`.
+-/
 theorem exists_prod_le_of_isRadical {R : Type*} [CommRing R] [IsDedekindDomain R] {𝔞 : Ideal R} (h0 : 𝔞 ≠ ⊥)
     (hr : 𝔞.IsRadical) : ∃ T : Finset (HeightOneSpectrum R), (∀ u ∈ T, 𝔞 ≤ u.asIdeal) ∧
       ∏ u ∈ T, u.asIdeal ≤ 𝔞 := by
@@ -43,6 +58,11 @@ theorem exists_prod_le_of_isRadical {R : Type*} [CommRing R] [IsDedekindDomain R
   have hv : v ∈ hfin.toFinset := (Set.Finite.mem_toFinset hfin).2 (Ideal.dvd_iff_le.2 hle)
   exact (Ideal.prod_le_inf.trans (Finset.inf_le hv)) hx
 
+/- English proof (translation)
+Unfold `extId`. Rewrite using `[Ideal.map]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, hz⟩`. Conclude with `⟨a, ha, Subtype.ext hz.symm⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 theorem extId_eq_image (I : AutInst) (𝔞 : Ideal (𝓞 I.E)) : extId I 𝔞 = 𝔞.map (Inhab.psi I.F I.E) := by
   unfold extId
   rw [Ideal.map]
@@ -54,6 +74,9 @@ theorem extId_eq_image (I : AutInst) (𝔞 : Ideal (𝓞 I.E)) : extId I 𝔞 = 
   · rintro ⟨a, ha, rfl⟩
     exact ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Establish `hmax : u.asIdeal ⊔ v.asIdeal = ⊤` using `u.isMaximal.coprime_of_ne v.isMaximal fun e => huv (HeightOneSpectrum.ext e)`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, ← Ideal.map_sup, hmax, Ideal.map_top]`.
+-/
 private theorem isCoprime_map_of_ne {R S : Type*} [CommRing R] [IsDedekindDomain R] [CommRing S]
     (f : R →+* S) {u v : HeightOneSpectrum R} (huv : u ≠ v) :
     IsCoprime (u.asIdeal.map f) (v.asIdeal.map f) := by
@@ -61,6 +84,11 @@ private theorem isCoprime_map_of_ne {R S : Type*} [CommRing R] [IsDedekindDomain
     u.isMaximal.coprime_of_ne v.isMaximal fun e => huv (HeightOneSpectrum.ext e)
   rw [Ideal.isCoprime_iff_sup_eq, ← Ideal.map_sup, hmax, Ideal.map_top]
 
+/- English proof (translation)
+Establish `hprod : ∀ T' : Finset (HeightOneSpectrum R), ∏ u ∈ T', u.asIdeal.map f = (∏ u ∈ T', u.asIdeal).map f`. Introduce `T'`. Proceed by induction on `T' using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, Ideal.one_eq_top, Ideal.one_eq_top, Ideal.map_top]`. Consider the case `@insert a T' haT ih => rw [Finset.prod_insert haT, Finset.prod_insert haT, Ideal.map_mul, ih]`.
+
+Rewrite using `[hprod]`. Conclude with `Ideal.map_mono hle`.
+-/
 private theorem prod_map_le_map_of_prod_le {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (T : Finset (HeightOneSpectrum R)) {𝔞 : Ideal R} (hle : ∏ u ∈ T, u.asIdeal ≤ 𝔞) :
     ∏ u ∈ T, u.asIdeal.map f ≤ 𝔞.map f := by
@@ -73,6 +101,9 @@ private theorem prod_map_le_map_of_prod_le {R S : Type*} [CommRing R] [CommRing 
   rw [hprod]
   exact Ideal.map_mono hle
 
+/- English proof (translation)
+Take `⟨T, hT, hle⟩` from `exists_prod_le_of_isRadical h0 hr`. Establish `hmem : y ∈ (∏ u ∈ T, u.asIdeal.map f) • N` using `mem_prod_smul_of_coprime (ι := HeightOneSpectrum R) N (fun u => u.asIdeal.map f) (fun _ _ huv => isCoprime_map_of_ne f huv) hy T fun u hu => h u (hT u hu)`. Conclude with `Submodule.smul_mono_left (prod_map_le_map_of_prod_le f T hle) hmem`.
+-/
 private theorem mem_map_smul_of_forall_mem_map_smul {R S M : Type*} [CommRing R] [IsDedekindDomain R] [CommRing S]
     [AddCommGroup M] [Module S M] (f : R →+* S) (N : Submodule S M) {𝔞 : Ideal R} (h0 : 𝔞 ≠ ⊥)
     (hr : 𝔞.IsRadical) {y : M} (hy : y ∈ N)
@@ -83,6 +114,15 @@ private theorem mem_map_smul_of_forall_mem_map_smul {R S M : Type*} [CommRing R]
       (fun _ _ huv => isCoprime_map_of_ne f huv) hy T fun u hu => h u (hT u hu)
   exact Submodule.smul_mono_left (prod_map_le_map_of_prod_le f T hle) hmem
 
+/- English proof (translation)
+Introduce `I m hm hrad y hy`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0 : Ideal.span {(m : 𝓞 I.E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `key : y ∈ (Ideal.span {(m : 𝓞 I.E)}).map (Inhab.psi I.F I.E) • I.Lf` using `mem_map_smul_of_forall_mem_map_smul (Inhab.psi I.F I.E) I.Lf h0 hrad hy fun u hu => by`. Rewrite using `[← extId_eq_image I]`. Conclude with `h u (hu (Ideal.mem_span_singleton_self _))`. Rewrite `key` using `[Ideal.map_span, Set.image_singleton, map_natCast, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+
+Take `⟨z, hz, hzy⟩` from `key`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzy, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Introduce and unpack `⟨z, hz, rfl⟩ u hu`. Establish `hm' : (m : IntAf I.F I.E) ∈ extId I u.asIdeal`.
+
+Rewrite using `[extId_eq_image, ← map_natCast (Inhab.psi I.F I.E)]`. Conclude with `Ideal.mem_map_of_mem _ hu`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (IntAf I.F I.E)]`. Conclude with `Submodule.smul_mem_smul hm' hz`.
+-/
 theorem mem_extId_smul_forall_iff : ∀ (I : AutInst) (m : ℕ), 1 ≤ m → (Ideal.span {(m : 𝓞 I.E)}).IsRadical →
     ∀ y ∈ I.Lf, (∀ u : HeightOneSpectrum (𝓞 I.E), (m : 𝓞 I.E) ∈ u.asIdeal → y ∈ extId I u.asIdeal • I.Lf) ↔
       ∃ z ∈ I.Lf, y = (m : (I.E ⊗[I.F] Af I.F)) • z := by

@@ -13,6 +13,13 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ _ E _ _ _ H _ D l Xo σ g ty Fu A lin cst halt hdim`. Use `⟨0, fun w i P y₀ π fr _ hP hy hF => ?_⟩` and prove the remaining obligations. Substitute `hy` using the available equality. Establish `hrk : Module.finrank ℤ A.La = 2 * g`. Rewrite using `[A.finrank_La, ← Module.finrank_mul_finrank ℝ ℂ A.V, Complex.finrank_real_complex, hdim]`.
+
+Take `⟨h, gam, h1, h2, h3, -, h5⟩` from `fibre_hom_eq_exponential Fu i hP hdim hrk A.EF A.EF_bijective (A.Pw w) π hF.add hF.hol hF.per fr hF.fr_hol (fun j v hv => ((hF.frm v).1 j hv).ne_zero) (fun j j' v hv => (hF.frm v).2 j j' hv) (lin w) (cst w) (fun a j v hv => hF.fac a v j hv) (halt w)`. Take `⟨h6, gamO, h7⟩` from `h5 (fun e => A.actV e) hF.act (A.Pw_smul w)`. Use `⟨fun y => ?_, h.toContinuousLinearEquiv, gamO.symm, fun v => ?_, fun u => ?_, fun u v => ?_, h6⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Fu.ex_onto i P hP y`. Conclude with `⟨h.symm z, by rw [h1, h.apply_symm_apply]⟩`.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `P u = h _`. Rewrite using `[h2, ← h7, gamO.apply_symm_apply]`. Rewrite using `[← h3, ← h7, ← h7, gamO.apply_symm_apply, gamO.apply_symm_apply]`.
+-/
 theorem fibre_comparison : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo σ ty) (A : AnArc (𝓞 E)) (lin : ℂ → A.La → A.V →ₗ[ℂ] ℂ) (cst : ℂ → A.La → ℂ) , (∀ w la la', lin w la (A.Pw w la') - lin w la' (A.Pw w la) = -(2 * Real.pi * Complex.I) * A.EF la la') → Module.finrank ℂ A.V = g → ∃ T₀ : ℝ, ∀ (w : ℂ) (i : Fin Fu.n) (P : (Fu.Di i).La →+ (Fin g → ℂ)) (y₀ : Sp ℂ ⟶ Xo.X) (π : A.V → (Over.mk y₀ ⟶ Xo.univ.t.G)) fr, T₀ < w.im → IsPeriod (Fu.Di i) ty P → Fu.u i P = y₀ → IsFibAt A Xo.univ.t lin cst w y₀ π fr → Function.Surjective π ∧ ∃ (h : A.V ≃L[ℂ] (Fin g → ℂ)) (gam : (Fu.Di i).La ≃ₗ[𝓞 E] A.La), (∀ v, (Fu.ex i P (h v)).left = (π v).left) ∧ (∀ u, P u = h (A.Pw w (gam u))) ∧ (∀ u v, A.EF (gam u) (gam v) = (Fu.Di i).EF u v) ∧ ∀ (e : 𝓞 E) v k, h (A.actV e v) k = ty k (e : E) * h v k := by
   intro _ _ E _ _ _ H _ D l Xo σ g ty Fu A lin cst halt hdim
   refine ⟨0, fun w i P y₀ π fr _ hP hy hF => ?_⟩

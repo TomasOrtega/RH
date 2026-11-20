@@ -11,6 +11,15 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v g h hg hh w φ hφ`. Establish `hA : ActsEx` using `GlobalTheory.T.theta_action_exists hK`. Establish `hψ : Continuous B.ψ` using `hP.base.std.1`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨R, h0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (Fin n × Fin d) v`.
+
+Establish `hact : actAB (cA σ) (g, h) (partFin v w) = partFin v (mat g * w * (mat h)ᵀ)` using `by show mat g * (GlobalTheory.LatVac.liftV v 1 • w) * (mat h)ᵀ = GlobalTheory.LatVac.liftV v 1 • (mat g * w * (mat h)ᵀ)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Establish `hψ₁` using `locOp_mem v (M.co.rho B.ψ (partFin v w)) φ`. Establish `hψ₂` using `locOp_mem v (om (g, h)) φ`. Establish `key : tens (evFin F v) (locOp v (om (g, h)) (locOp v (M.co.rho B.ψ (partFin v w)) φ)) R = tens (evFin F v) (locOp v (M.co.rho B.ψ (partFin v (mat g * w * (mat h)ᵀ))) (locOp v (om (g, h)) φ)) R`.
+
+Rewrite using `[← acts_locOp_om hA hP hg hh hψ₁ R (hR _ hψ₁), ← (locOp_rho M.co hψ v w hφ).1 R (hR _ hφ), hS.impl (g, h) _ _ (hR _ hφ).2, hact, acts_locOp_om hA hP hg hh hφ R (hR _ hφ), (locOp_rho M.co hψ v (mat g * w * (mat h)ᵀ) hψ₂).1 R (hR _ hψ₂)]`. Use function extensionality and compare the values at `t`. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hrz : R (fun i => GlobalTheory.LatVac.liftV v (t i)) = R 0` using `by simpa using (hR φ hφ).1 0 _ hz`. Establish `e` using `congrFun key fun i => GlobalTheory.LatVac.liftV v (t i)`.
+
+Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hrz] at e`. Conclude with `mul_right_cancel₀ h0 e`.
+-/
 theorem locOp_weil_rho : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (v : Pl F) (g : UA σ X.J) (h : UA σ W.J), g ∈ UAt σ X (evFin F v) →

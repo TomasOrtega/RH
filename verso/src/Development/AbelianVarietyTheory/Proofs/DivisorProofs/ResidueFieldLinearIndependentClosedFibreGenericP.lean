@@ -16,16 +16,27 @@ noncomputable section
 
 namespace GlobalTheory.Desc.ResInj
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Desc.cst, GlobalTheory.AbLaw.cst, fnOf, RingHom.comp_apply, Scheme.Hom.appLE, CommRingCat.hom_comp]`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`.
+-/
 theorem cst_eq_fnOf {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (p : X ⟶ Sp R) (V : X.Opens)
     (hV : genericPoint X ∈ V) (r : R) : GlobalTheory.Desc.cst p r = fnOf V hV (GlobalTheory.AbLaw.cst p V r) := by
   simp only [GlobalTheory.Desc.cst, GlobalTheory.AbLaw.cst, fnOf, RingHom.comp_apply, Scheme.Hom.appLE, CommRingCat.hom_comp]
   rw [TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Use `⟨fun ⟨a, ha, e⟩ => ?_, fun h => ⟨_, h, algebraMap_germ hx b⟩⟩` and prove the remaining obligations. Rewrite `ha` using `[IsFractionRing.injective (X.presheaf.stalk x) X.functionField (e.trans (algebraMap_germ hx b).symm)]`. Then use the resulting hypothesis.
+-/
 theorem zeroAt_fnOf_iff {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} {x : X} (hx : x ∈ U) (b : Γ(X, U)) :
     ZeroAt x (fnOf U (gen_mem hx) b) ↔ (X.presheaf.germ U x hx).hom b ∈ maximalIdeal (X.presheaf.stalk x) := by
   refine ⟨fun ⟨a, ha, e⟩ => ?_, fun h => ⟨_, h, algebraMap_germ hx b⟩⟩
   rwa [IsFractionRing.injective (X.presheaf.stalk x) X.functionField (e.trans (algebraMap_germ hx b).symm)] at ha
 
+/- English proof (translation)
+Establish `hreg : RegAt x (GlobalTheory.Desc.cst p r)` using `regAt_fnOf (U := ⊤) trivial trivial _`. Use `zeroAt_iff.2 ⟨hreg, fun hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `(unitAt_fnOf_iff (U := ⊤) trivial trivial _).1 hu`. Establish `h2 : x ∈ p ⁻¹ᵁ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)`. Rewrite using `[Scheme.Hom.preimage_basicOpen]`.
+
+Conclude with `h1`. Establish `h3 : p x ∈ (Sp R).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)` using `h2`. Rewrite `h3` using `[basicOpen_eq_of_affine, hx]`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 h3 hr`.
+-/
 theorem cst_zeroAt (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp R) (x : X)
     (hx : p x = closedPoint R) (r : R) (hr : r ∈ maximalIdeal R) : ZeroAt x (GlobalTheory.Desc.cst p r) := by
   have hreg : RegAt x (GlobalTheory.Desc.cst p r) := regAt_fnOf (U := ⊤) trivial trivial _
@@ -39,6 +50,11 @@ theorem cst_zeroAt (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) [IsI
 
 end GlobalTheory.Desc.ResInj
 
+/- English proof (translation)
+Introduce `X _ x n u hu`. Use `choose W hxW s hs using fun i => (hu i).exists_fnOf`. Set `W₀ : X.Opens` to `⟨⋂ i, (W i : Set X), isOpen_iInter_of_finite fun i => (W i).isOpen⟩`. Establish `hx₀ : x ∈ W₀` using `Set.mem_iInter.2 hxW`. Take `⟨U, hU, hxU, hUW⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (Scheme.isBasis_affineOpens X)) hx₀`.
+
+Establish `hle : ∀ i, U ≤ W i` using `fun i z hz => Set.mem_iInter.1 (hUW hz) i`. Use `⟨U, hxU, hU, fun i => resG X (hle i) (s i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[fnOf_resG, hs]`.
+-/
 theorem GlobalTheory.Desc.ResInj.exists_affine_fnOf : ∀ (X : Scheme.{0}) [IsIntegral X] (x : X) (n : ℕ) (u : Fin n → X.functionField), (∀ i, GlobalTheory.Cartier.RegAt x (u i)) → ∃ (U : X.Opens) (hx : x ∈ U), IsAffineOpen U ∧ ∃ s : Fin n → Γ(X, U), ∀ i, GlobalTheory.Cartier.fnOf U (GlobalTheory.Cartier.gen_mem hx) (s i) = u i := by
   intro X _ x n u hu
   choose W hxW s hs using fun i => (hu i).exists_fnOf
@@ -49,6 +65,17 @@ theorem GlobalTheory.Desc.ResInj.exists_affine_fnOf : ∀ (X : Scheme.{0}) [IsIn
   refine ⟨U, hxU, hU, fun i => resG X (hle i) (s i), fun i => ?_⟩
   rw [fnOf_resG, hs]
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ hsm hgc y hy hdim U hyU hU b hb`. Use `haveI : Nonempty U := ⟨⟨y, hyU⟩⟩`. Use `letI : Algebra R Γ(G.left, U) := (GlobalTheory.AbLaw.cst G.hom U).toAlgebra`. Use `haveI : Module.Flat R Γ(G.left, U) := GlobalTheory.AbLaw.flat_cst G.hom hU`. Set `p` to `hU.primeIdealOf ⟨y, hyU⟩`.
+
+Use `letI : Algebra Γ(G.left, U) (G.left.presheaf.stalk y) := G.left.presheaf.algebra_section_stalk ⟨y, hyU⟩`. Use `haveI hloc := hU.isLocalization_stalk ⟨y, hyU⟩`. Establish `hmem : ∀ c : Γ(G.left, U), (G.left.presheaf.germ U y hyU).hom c ∈ maximalIdeal (G.left.presheaf.stalk y) ↔ c ∈ p.asIdeal`. Introduce `c`. Conclude with `IsLocalization.AtPrime.to_map_mem_maximal_iff (G.left.presheaf.stalk y) p.asIdeal c`.
+
+Establish `hle : (maximalIdeal R).map (algebraMap R Γ(G.left, U)) ≤ p.asIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Rewrite using `[Ideal.mem_comap, ← hmem, ← GlobalTheory.Desc.ResInj.zeroAt_fnOf_iff hyU]`. Use `GlobalTheory.Desc.ResInj.cst_zeroAt R G.left G.hom y hy t ht` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.Desc.ResInj.cst_eq_fnOf G.hom U (gen_mem hyU)]`. Then use the resulting hypothesis. Establish `hd : ringKrullDim (Localization.AtPrime p.asIdeal) = 1`. Rewrite using `[← hdim]`. Conclude with `ringKrullDim_eq_of_ringEquiv (IsLocalization.algEquiv p.asIdeal.primeCompl (Localization.AtPrime p.asIdeal) (G.left.presheaf.stalk y)).toRingEquiv`. Establish `e` using `GlobalTheory.T.eq_map_maximalIdeal_of_ringKrullDim_eq_one' R Γ(G.left, U) p.asIdeal hle hd (GlobalTheory.T.isDomain_sections_quot_maximalIdeal_smooth_connected R G hsm hgc U hU y hyU hy)`.
+
+Establish `: b ∈ p.asIdeal` using `(hmem b).1 hb`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem GlobalTheory.Desc.ResInj.mem_map_of_germ_mem : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (G : Over (Sp R)) [IsIntegral G.left], Smooth G.hom → GeometricallyConnected G.hom → ∀ y : G.left, G.hom y = closedPoint R → ringKrullDim (G.left.presheaf.stalk y) = 1 → ∀ (U : G.left.Opens) (hy : y ∈ U), IsAffineOpen U → ∀ b : Γ(G.left, U), (G.left.presheaf.germ U y hy).hom b ∈ maximalIdeal (G.left.presheaf.stalk y) → b ∈ (maximalIdeal R).map (GlobalTheory.AbLaw.cst G.hom U) := by
   intro R _ _ _ G _ hsm hgc y hy hdim U hyU hU b hb
   haveI : Nonempty U := ⟨⟨y, hyU⟩⟩
@@ -74,6 +101,27 @@ theorem GlobalTheory.Desc.ResInj.mem_map_of_germ_mem : ∀ (R : Type) [CommRing 
   rw [e] at this
   exact this
 
+/- English proof (translation)
+Introduce `T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hpff y y' hy hy' hdy hdy' n u hu hind d hz`. Establish `hπy : π y' = y` using `GlobalTheory.T.baseChange_sends_closedFibre_genericPoint_dvr T D a ha hm H H' π θ hH hpb hpff y y' hy hy' hdy hdy'`. Take `⟨U, hyU, hUa, x, hx⟩` from `GlobalTheory.Desc.ResInj.exists_affine_fnOf H.left y n u hu`. Use `set V : H'.left.Opens := π ⁻¹ᵁ U with hVdef`. Establish `hy'V : y' ∈ V` using `by show π y' ∈ U; rw [hπy]; exact hyU`.
+
+Establish `hgU : genericPoint H.left ∈ U` using `gen_mem hyU`. Establish `hgV : genericPoint H'.left ∈ V` using `gen_mem hy'V`. Use `letI : Algebra T D := a.toAlgebra`. Use `letI : Algebra T Γ(H.left, U) := (GlobalTheory.AbLaw.cst H.hom U).toAlgebra`. Use `letI : Algebra D Γ(H'.left, V) := (GlobalTheory.AbLaw.cst H'.hom V).toAlgebra`.
+
+Use `letI : Algebra Γ(H.left, U) Γ(H'.left, V) := (π.app U).hom.toAlgebra`. Use `letI : Algebra T Γ(H'.left, V) := ((GlobalTheory.AbLaw.cst H'.hom V).comp a).toAlgebra`. Use `haveI : IsScalarTower T D Γ(H'.left, V) := .of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower T Γ(H.left, U) Γ(H'.left, V) := .of_algebraMap_eq fun r => by`. Establish `e` using `GlobalTheory.AbLaw.appLE_cst hpb.w (V := U) (V' := V) le_rfl r`.
+
+Rewrite `e` using `[Scheme.Hom.appLE_eq_app]`. Conclude with `e.symm`. Use `haveI : Algebra.IsPushout T D Γ(H.left, U) Γ(H'.left, V) := by`. Establish `po` using `GlobalTheory.AbLaw.isPushout_cst hpb hUa (V' := V) rfl`. Rewrite `po` using `[Scheme.Hom.appLE_eq_app]`.
+
+Conclude with `CommRingCat.isPushout_iff_isPushout.mp po`. Establish `hsm : Smooth H'.hom` using `MorphismProperty.of_isPullback hpb hH.smooth`. Establish `hgc : GeometricallyConnected H'.hom` using `MorphismProperty.of_isPullback hpb hH.geomConnected`. Establish `hindA : ∀ c : Fin n → T, ∑ i, c i • x i ∈ (maximalIdeal T).map (algebraMap T Γ(H.left, U)) → ∀ i, c i ∈ maximalIdeal T`. Introduce `c hc`.
+
+Apply `hind c` to reduce the goal to its premises. Establish `hle : (maximalIdeal T).map (algebraMap T Γ(H.left, U)) ≤ Ideal.comap (H.left.presheaf.germ U y hyU).hom (maximalIdeal _)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, ← GlobalTheory.Desc.ResInj.zeroAt_fnOf_iff hyU]`.
+
+Use `GlobalTheory.Desc.ResInj.cst_zeroAt T H.left H.hom y hy t ht` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Desc.ResInj.cst_eq_fnOf H.hom U hgU]`. Then use the resulting hypothesis. Establish `h1` using `hle hc`. Rewrite `h1` using `[Ideal.mem_comap, ← GlobalTheory.Desc.ResInj.zeroAt_fnOf_iff hyU]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_sum, Algebra.smul_def, map_mul, hx]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Desc.ResInj.cst_eq_fnOf H.hom U hgU]`. Both sides reduce to the same expression. Establish `hd` using `GlobalTheory.T.pushout_residue_linearIndependent' T D Γ(H.left, U) Γ(H'.left, V) hm n x hindA d`.
+
+Apply `hd` to reduce the goal to its premises. Apply `GlobalTheory.Desc.ResInj.mem_map_of_germ_mem D H' hsm hgc y' hy' hdy' V hy'V (GlobalTheory.AbLaw.isAffineOpen_preimage_of_isPullback hpb hUa)` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.Desc.ResInj.zeroAt_fnOf_iff hy'V]`. Use `hz using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sum, Algebra.smul_def, map_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hx i, ← GlobalTheory.Desc.fnOf_app_of_pff H.left H'.left π θ hpff U hgU hgV, GlobalTheory.Desc.ResInj.cst_eq_fnOf H'.hom V hgV]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Desc.ResInj.residue_linearIndependent : ∀ (T D : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [CommRing D] [IsDomain D] [IsDiscreteValuationRing D] (a : T →+* D), a.Flat → (maximalIdeal T).map a = maximalIdeal D → ∀ (H : Over (Sp T)) [GrpObj H] [IsIntegral H.left] (H' : Over (Sp D)) [GrpObj H'] [IsIntegral H'.left] (π : H'.left ⟶ H.left) (θ : H.left.functionField →+* H'.left.functionField), IsSemiAbelian H → IsPullback π H'.hom H.hom (spMap a) → PFF (𝟙 _) π θ → ∀ (y : H.left) (y' : H'.left), H.hom y = closedPoint T → H'.hom y' = closedPoint D → ringKrullDim (H.left.presheaf.stalk y) = 1 → ringKrullDim (H'.left.presheaf.stalk y') = 1 → ∀ (n : ℕ) (u : Fin n → H.left.functionField), (∀ i, GlobalTheory.Cartier.RegAt y (u i)) → (∀ c : Fin n → T, GlobalTheory.Cartier.ZeroAt y (∑ i, GlobalTheory.Desc.cst H.hom (c i) * u i) → ∀ i, c i ∈ maximalIdeal T) → ∀ d : Fin n → D, GlobalTheory.Cartier.ZeroAt y' (∑ i, GlobalTheory.Desc.cst H'.hom (d i) * θ (u i)) → ∀ i, d i ∈ maximalIdeal D := by
   intro T D _ _ _ _ _ _ a ha hm H _ _ H' _ _ π θ hH hpb hpff y y' hy hy' hdy hdy' n u hu hind d hz
   have hπy : π y' = y := GlobalTheory.T.baseChange_sends_closedFibre_genericPoint_dvr T D a ha hm H H' π θ hH hpb hpff y y' hy hy' hdy hdy'

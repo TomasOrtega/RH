@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.SstPer.Cob
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(l : WittVector l R)}) (WittVector l R)) _ fun n => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n x)`. Establish `hx : x = (x.appr n : ℤ_[l]) + y * (l : ℤ_[l]) ^ n` using `by rw [hy]; ring`. Establish `h : f x - g x = (f y - g y) * (l : WittVector l R) ^ n`. Establish `hf` using `congrArg f hx`.
+
+Establish `hg` using `congrArg g hx`. Simplify using `only [map_add, map_mul, map_pow, map_natCast] at hf hg`. Rewrite using `[hf, hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.zero, h, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem padicInt_hom_ext_pt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [CharP R l] [PerfectRing R l]
     (f g : ℤ_[l] →+* WittVector l R) (x : ℤ_[l]) : f x = g x := by
   refine sub_eq_zero.1 (IsHausdorff.haus
@@ -36,6 +43,11 @@ def texp {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matrix (Fin d
     Matrix (Fin d) (Fin d) S :=
   ∑ n ∈ Finset.range d, (ψ ((n.factorial : ℚ)⁻¹) * x ^ n) • N ^ n
 
+/- English proof (translation)
+Use `letI : Algebra ℚ S := ψ.toAlgebra`. Establish `h : (x • N) ^ d = 0` using `by rw [smul_pow, hN, smul_zero]`. Rewrite using `[IsNilpotent.exp_eq_sum h, texp]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[smul_pow, ← algebraMap_smul S ((n.factorial : ℚ)⁻¹), smul_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem texp_eq_exp {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matrix (Fin d) (Fin d) S)
     (hN : N ^ d = 0) (x : S) :
     letI : Algebra ℚ S := ψ.toAlgebra
@@ -47,6 +59,9 @@ theorem texp_eq_exp {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Ma
   rw [smul_pow, ← algebraMap_smul S ((n.factorial : ℚ)⁻¹), smul_smul]
   rfl
 
+/- English proof (translation)
+Use `letI : Algebra ℚ S := ψ.toAlgebra`. Establish `hn : ∀ w : S, IsNilpotent (w • N)` using `fun w => ⟨d, by rw [smul_pow, hN, smul_zero]⟩`. Rewrite using `[texp_eq_exp ψ N hN, texp_eq_exp ψ N hN, texp_eq_exp ψ N hN, add_smul, IsNilpotent.exp_add_of_commute (((Commute.refl N).smul_left x).smul_right y) (hn x) (hn y)]`.
+-/
 theorem texp_mul {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matrix (Fin d) (Fin d) S)
     (hN : N ^ d = 0) (x y : S) : texp ψ N x * texp ψ N y = texp ψ N (x + y) := by
   letI : Algebra ℚ S := ψ.toAlgebra
@@ -54,6 +69,9 @@ theorem texp_mul {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matri
   rw [texp_eq_exp ψ N hN, texp_eq_exp ψ N hN, texp_eq_exp ψ N hN, add_smul,
     IsNilpotent.exp_add_of_commute (((Commute.refl N).smul_left x).smul_right y) (hn x) (hn y)]
 
+/- English proof (translation)
+Rewrite using `[texp, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_assoc]`.
+-/
 theorem sum_eq_smul_texp {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matrix (Fin d) (Fin d) S)
     (A x : S) :
     ∑ n ∈ Finset.range d, (A * ψ ((n.factorial : ℚ)⁻¹) * x ^ n) • N ^ n = A • texp ψ N x := by
@@ -61,6 +79,9 @@ theorem sum_eq_smul_texp {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [smul_smul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[sum_eq_smul_texp, sum_eq_smul_texp, sum_eq_smul_texp, Matrix.smul_mul, Matrix.mul_smul, texp_mul ψ N hN, smul_smul, smul_smul, mul_comm A B]`. Use `congr 2`. Take the linear combination `(-z) * hpv`.
+-/
 theorem texp_cocycle {S : Type} [CommRing S] (ψ : ℚ →+* S) {d : ℕ} (N : Matrix (Fin d) (Fin d) S)
     (hN : N ^ d = 0) (A B q p v z Y : S) (hpv : p * v = q) :
     (∑ n ∈ Finset.range d, (A * ψ ((n.factorial : ℚ)⁻¹) * (q * z) ^ n) • N ^ n) *
@@ -75,6 +96,11 @@ end GlobalTheory.SstPer.Cob
 
 namespace GlobalTheory.SstPer.Cob
 
+/- English proof (translation)
+Rewrite using `[← RingHom.mapMatrix_apply, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `e : h.mapMatrix ((a n * x ^ n) • M ^ n) = h (a n * x ^ n) • h.mapMatrix (M ^ n)`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, map_pow, map_mul, map_pow, RingHom.mapMatrix_apply]`.
+-/
 theorem map_sum_smul_pow {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) {d : ℕ}
     (a : ℕ → R) (x : R) (M : Matrix (Fin d) (Fin d) R) :
     (∑ n ∈ Finset.range d, (a n * x ^ n) • M ^ n).map h =
@@ -85,6 +111,9 @@ theorem map_sum_smul_pow {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) 
     ext i j; simp
   rw [e, map_pow, map_mul, map_pow, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul_matrix {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) {d : ℕ} (c : R)
     (M : Matrix (Fin d) (Fin d) R) : (c • M).map h = h c • M.map h := by
   ext i j; simp
@@ -94,6 +123,11 @@ variable {l : ℕ} [Fact l.Prime]
 def qD (C : Core l) : ℚ →+* Per.BdRp l :=
   (C.o.comp (algebraMap ℚ_[l] (Om l))).comp (algebraMap ℚ ℚ_[l])
 
+/- English proof (translation)
+Rewrite using `[← C.o_sec.z, ecoef_val h]`. Establish `e : ecoefQ l k₀ k n = algebraMap ℚ ℚ_[l] ((l : ℚ) ^ k₀ * (n.factorial : ℚ)⁻¹ * (((l : ℚ)⁻¹) ^ k) ^ n)`. Simplify using `only [ecoefQ, map_mul, map_pow, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Simplify using `only [qD, RingHom.comp_apply, map_mul, map_pow, map_natCast]`.
+-/
 theorem aDp_zA_ecoef (C : Core l) {k₀ k n : ℕ} (h : ‖ecoefQ l k₀ k n‖ ≤ 1) :
     aDp l (Per.zA l (ecoef l k₀ k n)) =
       (l : Per.BdRp l) ^ k₀ * qD C ((n.factorial : ℚ)⁻¹) * (qD C ((l : ℚ)⁻¹) ^ k) ^ n := by
@@ -110,6 +144,9 @@ end GlobalTheory.SstPer.Cob
 namespace GlobalTheory.SstPer.Cob
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[hH, AlgHom.commutes, padicInt_hom_ext_pt (algebraMap ℤ_[l] (Ainf l)) (Per.zA l)]`. Rewrite using `[map_mul, map_pow, map_neg, map_one, map_mul, map_pow, map_neg, map_one, aDp_zA_ecoef C hn]`. Simplify using `only [map_mul, map_pow, map_natCast, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_Λ (C : Core l) {K : FinExt l} (bk : BK K) {I : Ideal (Per.BdRp l)} (H : bk.S →+* Per.BdRp l ⧸ I)
     (hH : ∀ w, H (PowerSeries.C w) = Ideal.Quotient.mk I (aDp l (wA l bk.a w))) {KK L n : ℕ}
     (hn : ‖ecoefQ l KK L n‖ ≤ 1) :
@@ -125,6 +162,51 @@ end GlobalTheory.SstPer.Cob
 
 namespace GlobalTheory.SstPer.Cob
 
+/- English proof (translation)
+Introduce `l _ K bk P AI T C _ d k k₀ Mn c hk hMn hlog m`. Take `⟨k', s, hEs, hs⟩` from `hlog m`. Take `⟨e, m', hm', hd⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.factorial_ne_zero d) l (Fact.out : l.Prime).ne_one`. Establish `hnorm : ∀ n < d, ‖ecoefQ l (e + (k' + k) * d) (k' + k) n‖ ≤ 1` using `fun n hn => ecoefQ_norm_le (k' + k) hm' hd hn`. Set `cf : ℕ → bk.S` to `fun n => PowerSeries.C (algebraMap ℤ_[l] (Wq l bk.a) ((-1) ^ n * ecoef l (e + (k' + k) * d) (k' + k) n))`.
+
+Set `Λ : Matrix (Fin d) (Fin d) bk.S` to `∑ n ∈ Finset.range d, (cf n * s ^ n) • (Mn.map PowerSeries.C) ^ n`. Use `⟨e + (k' + k) * d, Λ, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Break down `d with _ | d` into its components or cases. Conclude with `i.elim0`.
+
+Establish `h0 : ecoef l (e + (k' + k) * (d + 1)) (k' + k) 0 = (l : ℤ_[l]) ^ (e + (k' + k) * (d + 1))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[ecoef_val (hnorm 0 d.succ_pos)]`. Simplify using `[ecoefQ]`. Establish `hc0 : cf 0 = (l : bk.S) ^ (e + (k' + k) * (d + 1))`.
+
+Simplify using `only [cf, pow_zero, one_mul, h0, map_pow, map_natCast]`. Establish `hΛ : Λ - (l : bk.S) ^ (e + (k' + k) * (d + 1)) • (1 : Matrix (Fin (d + 1)) (Fin (d + 1)) bk.S) = ∑ n ∈ Finset.range d, (cf (n + 1) * s ^ (n + 1)) • (Mn.map PowerSeries.C) ^ (n + 1)`. Simplify using `only [Λ]`. Rewrite using `[Finset.sum_range_succ', hc0, pow_zero, pow_zero, mul_one, add_sub_cancel_right]`. Rewrite using `[hΛ, Matrix.sum_apply]`.
+
+Use `Finset.dvd_sum fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left (hEs.trans (dvd_pow_self s n.succ_ne_zero)) _) _`. Introduce `g i j`. Set `I` to `Per.FilP l m`.
+
+Set `Θ : Per.Acris l →+* Per.BdRp l ⧸ I` to `(Ideal.Quotient.mk I).comp C.j`. Set `ψ : ℚ →+* Per.BdRp l ⧸ I` to `(Ideal.Quotient.mk I).comp (qD C)`. Set `lam : Per.BdRp l ⧸ I` to `ψ ((l : ℚ)⁻¹)`. Set `φ : bk.S →+* Per.Acris l` to `(algebraMap (Ainf l) (Per.Acris l)).comp bk.ev`. Set `H0 : bk.S →+* Per.BdRp l ⧸ I` to `(Ideal.Quotient.mk I).comp ((aDp l).comp bk.ev)`.
+
+Set `H1 : bk.S →+* Per.BdRp l ⧸ I` to `(Ideal.Quotient.mk I).comp ((aDp l).comp ((Per.σA (g : GQ l)).comp bk.ev))`. Set `N : Matrix (Fin d) (Fin d) (Per.BdRp l ⧸ I)` to `(Mn.map PowerSeries.C).map H0`. Set `z : Per.BdRp l ⧸ I` to `Ideal.Quotient.mk I (aDp l (Per.zA l (c g)) * C.j C.t)`. Set `Y : Per.BdRp l ⧸ I` to `Ideal.Quotient.mk I (aDp l (bk.ev s))`. Establish `hj : ∀ x : Ainf l, C.j (algebraMap (Ainf l) (Per.Acris l) x) = aDp l x` using `fun x => by`.
+
+Establish `h` using `C.j_cris.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) x)`. Rewrite `h` using `[← GlobalTheory.RingIface.tower, Subalgebra.coe_algebraMap]`. Conclude with `h`. Establish `hσ : ∀ x : Ainf l, sigA (g : GQ l) (algebraMap (Ainf l) (Per.Acris l) x) = algebraMap (Ainf l) (Per.Acris l) (Per.σA (g : GQ l) x)` using `fun x => (GlobalTheory.CrisMaps.sigA_extends (g : GQ l)).alg x`. Establish `hC0 : ∀ w, H0 (PowerSeries.C w) = Ideal.Quotient.mk I (aDp l (wA l bk.a w))` using `fun w => by`.
+
+Simplify using `only [H0, RingHom.comp_apply, bk.ev_C]`. Establish `hC1 : ∀ w, H1 (PowerSeries.C w) = Ideal.Quotient.mk I (aDp l (wA l bk.a w))` using `fun w => by`. Simplify using `only [H1, RingHom.comp_apply, bk.ev_C, bk.gal_w]`. Establish `m0 : (Λ.map φ).map Θ = Λ.map H0`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply, Θ, φ, H0, RingHom.comp_apply, hj]`. Establish `m1 : ((Λ.map φ).map (sigA (g : GQ l))).map Θ = Λ.map H1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Θ, φ, H1, RingHom.comp_apply, hσ, hj]`. Establish `hN : N ^ d = 0`.
+
+Simplify using `only [N, ← RingHom.mapMatrix_apply, ← map_pow, hMn, map_zero]`. Establish `hN1 : (Mn.map PowerSeries.C).map H1 = N`. Use extensionality with `a b`. Simplify using `only [N, Matrix.map_apply, hC0, hC1]`. Establish `hNk : (Mn.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)).map Θ = N`.
+
+Use extensionality with `a b`. Simplify using `only [N, Matrix.map_apply, hC0, Θ, RingHom.comp_apply, hj, bk.ev_C]`. Establish `hY : H1 s = Y + (l : Per.BdRp l ⧸ I) ^ k' * z`. Establish `h` using `(Ideal.Quotient.eq_zero_iff_mem (I := I)).2 (hs g)`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at h`.
+
+Simplify using `only [H1, Y, z, RingHom.comp_apply, map_mul]`. Take the linear combination `h`. Establish `e0 : (Λ.map φ).map Θ = ∑ n ∈ Finset.range d, ((l : Per.BdRp l ⧸ I) ^ (e + (k' + k) * d) * ψ ((n.factorial : ℚ)⁻¹) * (-(lam ^ (k' + k)) * Y) ^ n) • N ^ n`. Rewrite using `[m0]`. Use `show (∑ n ∈ Finset.range d, (cf n * s ^ n) • (Mn.map PowerSeries.C) ^ n).map H0 = _`.
+
+Rewrite using `[map_sum_smul_pow H0 cf s]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[show H0 (cf n) = _ from coef_Λ C bk H0 hC0 (hnorm n (Finset.mem_range.1 hn))]`. Simplify using `only [ψ, lam, RingHom.comp_apply]`. Use `congr 1`.
+
+Simplify using `only [H0, Y, RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ((Λ.map φ).map (sigA (g : GQ l))).map Θ = ∑ n ∈ Finset.range d, ((l : Per.BdRp l ⧸ I) ^ (e + (k' + k) * d) * ψ ((n.factorial : ℚ)⁻¹) * (-(lam ^ (k' + k)) * (Y + (l : Per.BdRp l ⧸ I) ^ k' * z)) ^ n) • N ^ n`. Rewrite using `[m1]`. Use `show (∑ n ∈ Finset.range d, (cf n * s ^ n) • (Mn.map PowerSeries.C) ^ n).map H1 = _`.
+
+Rewrite using `[map_sum_smul_pow H1 cf s, hN1, hY]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[show H1 (cf n) = _ from coef_Λ C bk H1 hC1 (hnorm n (Finset.mem_range.1 hn))]`. Simplify using `only [ψ, lam, RingHom.comp_apply]`. Use `congr 1`.
+
+Rewrite using `[mul_pow (-_) (Y + _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `eK : (kap C bk k₀ k Mn (c g)).map Θ = ∑ n ∈ Finset.range d, ((l : Per.BdRp l ⧸ I) ^ k₀ * ψ ((n.factorial : ℚ)⁻¹) * (lam ^ k * z) ^ n) • N ^ n`. Unfold `kap`. Rewrite using `[map_sum_smul_pow Θ (fun n => algebraMap (Ainf l) (Per.Acris l) (Per.zA l (ecoef l k₀ k n))), hNk]`.
+
+Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `h1 : Θ (algebraMap (Ainf l) (Per.Acris l) (Per.zA l (ecoef l k₀ k n))) = (l : Per.BdRp l ⧸ I) ^ k₀ * ψ ((n.factorial : ℚ)⁻¹) * (lam ^ k) ^ n`. Simplify using `only [Θ, RingHom.comp_apply, hj]`. Rewrite using `[aDp_zA_ecoef C (hk n (Finset.mem_range.1 hn))]`. Simplify using `only [ψ, lam, map_mul, map_pow, map_natCast, RingHom.comp_apply]`.
+
+Establish `h2 : Θ (algebraMap (Ainf l) (Per.Acris l) (Per.zA l (c g)) * C.t) = z`. Simplify using `only [Θ, z, RingHom.comp_apply, map_mul, hj]`. Rewrite using `[h1, h2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpv : lam ^ (k' + k) * (l : Per.BdRp l ⧸ I) ^ k' = lam ^ k`. Establish `hl : lam * (l : Per.BdRp l ⧸ I) = 1`. Establish `h` using `congrArg ψ (inv_mul_cancel₀ (by exact_mod_cast (Fact.out : l.Prime).ne_zero : (l : ℚ) ≠ 0))`. Rewrite `h` using `[map_mul, map_natCast, map_one]`. Conclude with `h`.
+
+Rewrite using `[pow_add, mul_comm (lam ^ k'), mul_assoc, ← mul_pow, hl, one_pow, mul_one]`. Establish `hz : (kap C bk k₀ k Mn (c g) * (Λ.map φ).map (sigA (g : GQ l)) - (l : Per.Acris l) ^ k₀ • Λ.map φ).map Θ = 0`. Rewrite using `[← RingHom.mapMatrix_apply, map_sub, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, map_smul_matrix, eK, e1, e0, texp_cocycle ψ N hN _ _ _ _ _ z Y hpv, map_pow, map_natCast, sub_self]`. Establish `hij` using `congrFun (congrFun hz i) j`. Rewrite `hij` using `[Matrix.map_apply]`.
+
+Conclude with `(Ideal.Quotient.eq_zero_iff_mem).1 hij`.
+-/
 theorem cocycle_cob : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (d k k₀ : ℕ) (Mn : Matrix (Fin d) (Fin d) (Wq l bk.a)) (c : ↥(GK K) → ℤ_[l]), (∀ i < d, ‖GlobalTheory.SstPer.ecoefQ l k₀ k i‖ ≤ 1) → Mn ^ d = 0 → (∀ m : ℕ, ∃ (k : ℕ) (s : bk.S), bk.E ∣ s ∧ ∀ g : ↥(GK K), aDp l (Per.σA (g : GQ l) (bk.ev s) - bk.ev s) - (l : Per.BdRp l) ^ k * (aDp l (Per.zA l (c g)) * C.j C.t) ∈ Per.FilP l m) → ∀ m : ℕ, ∃ (kk : ℕ) (Λ : Matrix (Fin d) (Fin d) (bk.S)), (∀ i j, bk.E ∣ (Λ - (l : bk.S) ^ kk • (1 : Matrix (Fin d) (Fin d) (bk.S))) i j) ∧ ∀ (g : ↥(GK K)) i j, C.j ((GlobalTheory.SstPer.kap C bk k₀ k Mn (c g) * (Λ.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)).map (sigA (g : GQ l)) - (l : Per.Acris l) ^ k₀ • Λ.map ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev)) i j) ∈ Per.FilP l m := by
   intro l _ K bk P AI T C _ d k k₀ Mn c hk hMn hlog m
   obtain ⟨k', s, hEs, hs⟩ := hlog m

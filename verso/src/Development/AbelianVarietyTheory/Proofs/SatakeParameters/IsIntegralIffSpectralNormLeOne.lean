@@ -16,6 +16,11 @@ section localPart
 variable {K F : Type} [Field K] [NumberField K] [Field F] [NumberField F]
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `v.valuation_surjective K (WithZero.exp (-1))`. Establish `hxv : Valued.v (algebraMap K (v.adicCompletion K) x) = WithZero.exp (-1)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans hx`. Use `⟨algebraMap K _ x, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hxv` using `[h0, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hxv.symm`. Rewrite using `[hxv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+-/
 theorem exists_ne_zero_valued_lt_one (v : HeightOneSpectrum (𝓞 K)) :
     ∃ c : v.adicCompletion K, c ≠ 0 ∧ Valued.v c < 1 := by
   obtain ⟨x, hx⟩ := v.valuation_surjective K (WithZero.exp (-1))
@@ -28,6 +33,15 @@ theorem exists_ne_zero_valued_lt_one (v : HeightOneSpectrum (𝓞 K)) :
   · rw [hxv, ← WithZero.exp_zero, WithZero.exp_lt_exp]
     norm_num
 
+/- English proof (translation)
+Take `⟨c, hc0, hc1⟩` from `exists_ne_zero_valued_lt_one v`. Establish `hN : ∀ N : ℕ, ‖f c‖ * ‖f x‖ ^ N < 1`. Introduce `N`. Establish `h1 : Valued.v (c * x ^ N) < 1`. Rewrite using `[Valuation.map_mul, Valuation.map_pow]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one₀ zero_le hx)) hc1`. Establish `h2` using `GlobalTheory.ConjParahoric.val_lt_one_map f hf h1`. Rewrite `h2` using `[← Valued.toNormedField.norm_lt_one_iff]`. Simplify `h2` using `[map_mul, map_pow, norm_mul, norm_pow]`. Assume the negation of the conclusion as `hgt`.
+
+Rewrite `hgt` using `[← Valued.toNormedField.norm_le_one_iff, not_le]`. Establish `hfc : 0 < ‖f c‖` using `norm_pos_iff.2 ((map_ne_zero f).2 hc0)`. Take `⟨N, hN'⟩` from `pow_unbounded_of_one_lt (‖f c‖⁻¹) hgt`. Use `hN N` as an intermediate fact. Establish `h3 : 1 < ‖f c‖ * ‖f x‖ ^ N`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem valued_map_le_one (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
     {x : v.adicCompletion K} (hx : Valued.v x ≤ 1) : Valued.v (f x) ≤ 1 := by
   obtain ⟨c, hc0, hc1⟩ := exists_ne_zero_valued_lt_one v
@@ -55,6 +69,9 @@ def intMap (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f
     (fun x => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2
       (valued_map_le_one f hf ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2)))
 
+/- English proof (translation)
+Use `IsIntegral.map_of_comp_eq (intMap f hf) b.toRingHom ?_ hy` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[IsScalarTower.algebraMap_apply (v.adicCompletionIntegers K) (v.adicCompletion K) (Kbar v), IsScalarTower.algebraMap_apply (v'.adicCompletionIntegers F) (v'.adicCompletion F) (Kbar v'), hb]`. Both sides reduce to the same expression.
+-/
 theorem isIntegral_map (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
     (b : Kbar v ≃+* Kbar v') (hb : ∀ x, b (algebraMap _ _ x) = algebraMap _ _ (f x)) {y : Kbar v}
     (hy : IsIntegral (v.adicCompletionIntegers K) y) :
@@ -66,6 +83,9 @@ theorem isIntegral_map (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : 
     IsScalarTower.algebraMap_apply (v'.adicCompletionIntegers F) (v'.adicCompletion F) (Kbar v'), hb]
   rfl
 
+/- English proof (translation)
+Rewrite `hx` using `[isIntegral_algebraMap_iff (algebraMap (v'.adicCompletion F) (Kbar v')).injective]`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 y.2`.
+-/
 theorem valued_le_one_of_isIntegral {x : v'.adicCompletion F}
     (hx : IsIntegral (v'.adicCompletionIntegers F) (algebraMap (v'.adicCompletion F) (Kbar v') x)) :
     Valued.v x ≤ 1 := by
@@ -80,6 +100,13 @@ section spectral
 variable {K F : Type} [Field K] [NumberField K] [Field F] [NumberField F]
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+Establish `hyK : IsIntegral (v.adicCompletion K) y` using `Algebra.IsIntegral.isIntegral y`. Rewrite using `[spectralNorm, spectralValue_le_one_iff (minpoly.monic hyK)]`. Prove the components needed by the constructor for the conclusion. Introduce `hy n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' (v.adicCompletion K) hy, coeff_map]`.
+
+Conclude with `Valued.toNormedField.norm_le_one_iff.2 ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((minpoly (v.adicCompletionIntegers K) y).coeff n).2)`. Introduce `h`. Establish `hl : minpoly (v.adicCompletion K) y ∈ lifts (algebraMap (v.adicCompletionIntegers K) (v.adicCompletion K))`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`.
+
+Conclude with `⟨⟨_, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (Valued.toNormedField.norm_le_one_iff.1 (h n))⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl (minpoly.monic hyK)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, ← aeval_map_algebraMap (v.adicCompletion K), hq, minpoly.aeval]`.
+-/
 theorem isIntegral_iff_spectralNorm_le_one (y : Kbar v) :
     IsIntegral (v.adicCompletionIntegers K) y ↔ spectralNorm (v.adicCompletion K) (Kbar v) y ≤ 1 := by
   have hyK : IsIntegral (v.adicCompletion K) y := Algebra.IsIntegral.isIntegral y
@@ -100,6 +127,15 @@ theorem isIntegral_iff_spectralNorm_le_one (y : Kbar v) :
     refine ⟨q, hqm, ?_⟩
     rw [← aeval_def, ← aeval_map_algebraMap (v.adicCompletion K), hq, minpoly.aeval]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ0, hϖ1⟩` from `exists_ne_zero_valued_lt_one v`. Use `letI : NontriviallyNormedField (v.adicCompletion K) := NontriviallyNormedField.ofNormNeOne ⟨ϖ, hϖ0, (Valued.toNormedField.norm_lt_one_iff.2 hϖ1).ne⟩`. Establish `hmul : ∀ a b : Kbar v, spectralNorm (v.adicCompletion K) (Kbar v) (a * b) = spectralNorm (v.adicCompletion K) (Kbar v) a * spectralNorm (v.adicCompletion K) (Kbar v) b` using `fun a b => spectralAlgNorm_mul a b`. Establish `hy1 : 1 < spectralNorm (v.adicCompletion K) (Kbar v) y`. Rewrite `hy` using `[isIntegral_iff_spectralNorm_le_one, not_le]`.
+
+Conclude with `hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy isIntegral_zero`. Establish `hinv : spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ * spectralNorm (v.adicCompletion K) (Kbar v) y = 1`.
+
+Rewrite using `[← hmul, inv_mul_cancel₀ hy0, spectralNorm_one]`. Establish `hlt : spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ < 1`. Rewrite using `[eq_inv_of_mul_eq_one_left hinv]`. Conclude with `inv_lt_one_of_one_lt₀ hy1`. Establish `hc' : 0 < ‖c‖` using `norm_pos_iff.2 hc`.
+
+Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hc' hlt`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Establish `hs0 : 0 ≤ spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹` using `spectralNorm_nonneg _`. Rewrite using `[isIntegral_iff_spectralNorm_le_one, hmul, spectralNorm_extends, isPowMul_spectralNorm _ (by omega : 1 ≤ n + 1)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_isIntegral_mul_inv_pow {y : Kbar v} (hy : ¬ IsIntegral (v.adicCompletionIntegers K) y)
     {c : v.adicCompletion K} (hc : c ≠ 0) :
     ∃ N : ℕ, IsIntegral (v.adicCompletionIntegers K) (algebraMap _ (Kbar v) c⁻¹ * y⁻¹ ^ N) := by
@@ -133,6 +169,17 @@ theorem exists_isIntegral_mul_inv_pow {y : Kbar v} (hy : ¬ IsIntegral (v.adicCo
     _ ≤ ‖c⁻¹‖ * ‖c‖ := mul_le_mul_of_nonneg_left hn.le (norm_nonneg _)
     _ = 1 := by rw [norm_inv, inv_mul_cancel₀ hc'.ne']
 
+/- English proof (translation)
+Use `⟨fun h => ?_, isIntegral_map f hf b hb⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Take `⟨c, hc0, hc1⟩` from `exists_ne_zero_valued_lt_one v`. Take `⟨N, hN⟩` from `exists_isIntegral_mul_inv_pow hy hc0`. Establish `h1` using `isIntegral_map f hf b hb hN`.
+
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy isIntegral_zero`. Establish `hby0 : b y ≠ 0` using `(map_ne_zero b).2 hy0`. Establish `h2 : IsIntegral (v'.adicCompletionIntegers F) (algebraMap (v'.adicCompletion F) (Kbar v') (f c)⁻¹)`.
+
+Establish `e : algebraMap (v'.adicCompletion F) (Kbar v') (f c)⁻¹ = b y ^ N * b (algebraMap (v.adicCompletion K) (Kbar v) c⁻¹ * y⁻¹ ^ N)`. Rewrite using `[map_mul, map_pow, map_inv₀ b y, hb, map_inv₀ f, inv_pow, mul_left_comm, mul_inv_cancel₀ (pow_ne_zero _ hby0), mul_one]`. Rewrite using `[e]`. Conclude with `(h.pow N).mul h1`. Establish `h3` using `valued_le_one_of_isIntegral h2`.
+
+Establish `h4` using `GlobalTheory.ConjParahoric.val_lt_one_map f hf hc1`. Establish `hfc : f c ≠ 0` using `(map_ne_zero f).2 hc0`. Establish `h5 : Valued.v (f c * (f c)⁻¹) < 1`. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h3) h4`.
+
+Rewrite `h5` using `[mul_inv_cancel₀ hfc, Valuation.map_one]`. Conclude with `lt_irrefl _ h5`.
+-/
 theorem isIntegral_map_iff (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
     (b : Kbar v ≃+* Kbar v') (hb : ∀ x, b (algebraMap _ _ x) = algebraMap _ _ (f x)) (y : Kbar v) :
     IsIntegral (v'.adicCompletionIntegers F) (b y) ↔ IsIntegral (v.adicCompletionIntegers K) y := by

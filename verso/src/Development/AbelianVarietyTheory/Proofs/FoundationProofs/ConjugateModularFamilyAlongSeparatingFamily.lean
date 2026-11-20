@@ -12,6 +12,35 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `g ι _ act act' m k N t t' F hN hA hA' ht ht' hF htF hc hq`. Establish `key : ∀ i j, t i = t j ↔ t' i = t' j`. Introduce `i j`. Take `⟨a, ha, ha'⟩` from `hc i`. Take `⟨b, hb, hb'⟩` from `hc j`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hab : a = b` using `HasQ.coeff_unique hN ha (h ▸ hb)`. Substitute `hab` using the available equality. Conclude with `HasQ.fun_unique ha' hb'`.
+
+Introduce `h`. Establish `hab : (fun n => g (a n)) = fun n => g (b n)` using `HasQ.coeff_unique hN ha' (h ▸ hb')`. Establish `: a = b` using `funext fun n => g.injective (congrFun hab n)`. Substitute `this` using the available equality. Conclude with `HasQ.fun_unique ha hb`.
+
+Set `s : Setoid ι` to `Setoid.ker t`. Set `κ` to `Quotient s`. Establish `hs : ∀ i j, (Quotient.mk s i = Quotient.mk s j) ↔ t i = t j` using `fun i j => ⟨fun h => Quotient.exact h, fun h => Quotient.sound h⟩`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Set `actκ : κ → SL(2, ℤ) → κ` to `fun c γ => Quotient.lift (fun i => Quotient.mk s (act i γ)) (fun i j (h : t i = t j) => by`.
+
+Apply `(hs _ _).2` to reduce the goal to its premises. Rewrite using `[← ht i γ, ← ht j γ, h]) c`. Set `actκ' : κ → SL(2, ℤ) → κ` to `fun c γ => Quotient.lift (fun i => Quotient.mk s (act' i γ)) (fun i j (h : t i = t j) => by`. Apply `(hs _ _).2` to reduce the goal to its premises. Rewrite using `[key, ← ht' i γ, ← ht' j γ, (key i j).1 h]) c`.
+
+Set `tκ : κ → ℍ → ℂ` to `fun c => Quotient.lift t (fun i j (h : t i = t j) => h) c`. Set `tκ' : κ → ℍ → ℂ` to `fun c => Quotient.lift t' (fun i j (h : t i = t j) => (key i j).1 h) c`. Set `Fκ : κ → ℍ → ℂ` to `fun c => Quotient.lift F (fun i j (h : t i = t j) => htF i j h) c`. Establish `bij : ∀ (a : ι → SL(2, ℤ) → ι) (aκ : κ → SL(2, ℤ) → κ), ActBij a → (∀ i γ, aκ (Quotient.mk s i) γ = Quotient.mk s (a i γ)) → ActBij aκ`. Introduce `a aκ hB hcomp γ`.
+
+Rewrite using `[← Finite.surjective_iff_bijective]`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i`. Take `⟨j, hj⟩` from `(hB γ).2 i`.
+
+Conclude with `⟨Quotient.mk s j, by simp only [hcomp, hj]⟩`. Establish `hAκ : ActBij actκ` using `bij act actκ hA (fun _ _ => rfl)`. Establish `hAκ' : ActBij actκ'` using `bij act' actκ' hA' (fun _ _ => rfl)`. Establish `htκ : IsFam actκ m tκ`. Introduce `c γ`.
+
+Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i => exact ht i γ`. Establish `htκ' : IsFam actκ' m tκ'`. Introduce `c γ`. Proceed by induction on `c using Quotient.inductionOn with`.
+
+Consider the case `h i => exact ht' i γ`. Establish `hFκ : IsFam actκ k Fκ`. Introduce `c γ`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i => exact hF i γ`.
+
+Establish `hinj : Function.Injective tκ`. Introduce `c d h`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i`. Proceed by induction on `d using Quotient.inductionOn with`.
+
+Consider the case `h j => exact (hs i j).2 h`. Establish `hcκ : ∀ c, QConj g N (tκ c) (tκ' c)`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i => exact hc i`.
+
+Establish `hqκ : ∀ c, ∃ a, HasQ N (Fκ c) a`. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn with`. Consider the case `h i => exact hq i`. Take `⟨G, hG, hGc⟩` from `GlobalTheory.T.exists_conjugate_family_of_injective g κ actκ actκ' m k N tκ tκ' Fκ hN hAκ hAκ' htκ htκ' hFκ hinj hcκ hqκ`.
+
+Use `⟨fun i => G (Quotient.mk s i), ?_, fun i => hGc (Quotient.mk s i)⟩` and prove the remaining obligations. Introduce `i γ`. Conclude with `hG (Quotient.mk s i) γ`.
+-/
 theorem conj_family_sep : ∀ (g : ℂ ≃+* ℂ) (ι : Type) [Fintype ι] (act act' : ι → SL(2, ℤ) → ι) (m k N : ℕ) (t t' F : ι → ℍ → ℂ), 0 < N → ActBij act → ActBij act' → IsFam act m t → IsFam act' m t' → IsFam act k F → (∀ i j, t i = t j → F i = F j) → (∀ i, QConj g N (t i) (t' i)) → (∀ i, ∃ a, HasQ N (F i) a) → ∃ F' : ι → ℍ → ℂ, IsFam act' k F' ∧ ∀ i, QConj g N (F i) (F' i) := by
   intro g ι _ act act' m k N t t' F hN hA hA' ht ht' hF htF hc hq
   classical

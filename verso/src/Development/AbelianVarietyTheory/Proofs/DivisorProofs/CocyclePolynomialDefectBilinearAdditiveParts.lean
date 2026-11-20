@@ -13,6 +13,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R X _ _ _ _ w π π' h`. Establish `key : ∀ k : ℕ, 1 ≤ k → ∀ mu mu' α : X, 2 * (k : R) * (w (mu + mu') α - w mu α - w mu' α) + 2 * (k : R) ^ 2 * (π (mu + mu') - π mu - π mu' - w mu' mu) + 2 * (k : R) * (π' (mu + mu') - π' mu - π' mu') = 0`. Introduce `k hk mu mu' α`. Establish `e` using `h k hk mu mu' α`. Simplify using `only [map_add, map_nsmul, nsmul_eq_mul] at e`.
+
+Take the linear combination `e`. Establish `hAB : ∀ mu mu' : X, π (mu + mu') - π mu - π mu' - w mu' mu = 0 ∧ π' (mu + mu') - π' mu - π' mu' = 0`. Introduce `mu mu'`. Establish `h1` using `key 1 le_rfl mu mu' 0`. Establish `h2` using `key 2 (by norm_num) mu mu' 0`.
+
+Simplify using `only [map_zero] at h1 h2`. Move the coercions through the operations in `at h1 h2`. Establish `h4 : (4 : R) * (π (mu + mu') - π mu - π mu' - w mu' mu) = 0`. Take the linear combination `h2 - 2 * h1`. Establish `hA : π (mu + mu') - π mu - π mu' - w mu' mu = 0` using `(mul_eq_zero.mp h4).resolve_left (by norm_num)`.
+
+Use `⟨hA, ?_⟩` and prove the remaining obligations. Establish `h2' : (2 : R) * (π' (mu + mu') - π' mu - π' mu') = 0`. Take the linear combination `h1 - 2 * hA`. Conclude with `(mul_eq_zero.mp h2').resolve_left (by norm_num)`. Establish `hw : ∀ mu mu' α : X, w (mu + mu') α = w mu α + w mu' α`.
+
+Introduce `mu mu' α`. Establish `e` using `key 1 le_rfl mu mu' α`. Take `⟨hA, hB⟩` from `hAB mu mu'`. Move the coercions through the operations in `at e`. Establish `e2 : (2 : R) * (w (mu + mu') α - w mu α - w mu' α) = 0`.
+
+Take the linear combination `e - 2 * hA - 2 * hB`. Use `(mul_eq_zero.mp e2).resolve_left (by norm_num)` as an intermediate fact. Take the linear combination `this`. Use `⟨hw, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `mu mu'`.
+
+Establish `a` using `(hAB mu mu').1`. Establish `b` using `(hAB mu' mu).1`. Rewrite `b` using `[add_comm mu' mu]`. Take the linear combination `a - b`. Introduce `mu mu'`.
+
+Take the linear combination `(hAB mu mu').2`. Introduce `mu mu'`. Take the linear combination `(hAB mu mu').1`.
+-/
 theorem cocycle_polynomial_defect : ∀ (R X : Type) [CommRing R] [IsDomain R] [CharZero R] [AddCommGroup X] (w : X → X →+ R) (π π' : X → R), (∀ (k : ℕ), 1 ≤ k → ∀ mu mu' α : X, 2 * (k : R) * w (mu + mu') α + 2 * (k : R) ^ 2 * π (mu + mu') + 2 * (k : R) * π' (mu + mu') = (2 * (k : R) * w mu α + 2 * (k : R) ^ 2 * π mu + 2 * (k : R) * π' mu) + (2 * (k : R) * w mu' (α + k • mu) + 2 * (k : R) ^ 2 * π mu' + 2 * (k : R) * π' mu')) → (∀ mu mu' α, w (mu + mu') α = w mu α + w mu' α) ∧ (∀ mu mu', w mu mu' = w mu' mu) ∧ (∀ mu mu', π' (mu + mu') = π' mu + π' mu') ∧ ∀ mu mu', π (mu + mu') = π mu + π mu' + w mu' mu := by
   intro R X _ _ _ _ w π π' h
   have key : ∀ k : ℕ, 1 ≤ k → ∀ mu mu' α : X,

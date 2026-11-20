@@ -15,12 +15,21 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`.
+-/
 theorem contDiff_expM : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) :=
   contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt
 
+/- English proof (translation)
+The claim follows from `contDiff_pi.2 fun j => contDiff_apply ℝ ℝ (Fin.castSucc j)`.
+-/
 theorem contDiff_init {k : ℕ} : ContDiff ℝ ∞ fun t : Fin (k + 1) → ℝ => Fin.init t :=
   contDiff_pi.2 fun j => contDiff_apply ℝ ℝ (Fin.castSucc j)
 
+/- English proof (translation)
+The claim follows from `| 0, Xs => by have e : pr Xs = fun _ => 1 := funext (pr_zero Xs) rw [e] exact contDiff_const | k + 1, Xs => by have e : pr Xs = fun t => pr (Fin.init Xs) (Fin.init t) * NormedSpace.exp (t (Fin.last k) • Xs (Fin.last k)) := funext (pr_succ Xs) rw [e] exact ((contDiff_pr (Fin.init …`.
+-/
 theorem contDiff_pr : ∀ {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ), ContDiff ℝ ∞ (pr Xs)
   | 0, Xs => by
     have e : pr Xs = fun _ => 1 := funext (pr_zero Xs)
@@ -33,6 +42,9 @@ theorem contDiff_pr : ∀ {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ),
     exact ((contDiff_pr (Fin.init Xs)).comp contDiff_init).mul
       (contDiff_expM.comp ((contDiff_apply ℝ ℝ (Fin.last k)).smul contDiff_const))
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, m => m.elim0 | k + 1, Xs, hX, m => by refine Fin.lastCases ?_ (fun m' => ?_) m · refine ⟨fun _ => Xs (Fin.last k), contDiff_const, fun _ => hX _, fun t s => ?_⟩ have e1 : Fin.init (t + s • Pi.single (Fin.last k) (1:ℝ)) = Fin.init t := by funext j simp [Fin.init, Pi.sin …`.
+-/
 theorem coord {Hm : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit Hm.det) : ∀ {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ),
     (∀ j, Xs j ∈ lieH Hm) → ∀ m : Fin k, ∃ Y : (Fin k → ℝ) → Matrix (Fin n) (Fin n) ℂ, ContDiff ℝ ∞ Y ∧
       (∀ t, Y t ∈ lieH Hm) ∧
@@ -82,9 +94,15 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 variable {n : ℕ} {Hm : Matrix (Fin n) (Fin n) ℂ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {ι : Type} {v : ι → H} {δ : Matrix (Fin n) (Fin n) ℂ → ι → ι}
 
+/- English proof (translation)
+Simplify using `using hs i 0 0`.
+-/
 theorem v_zero (hs : ∀ i (c : ℝ) X, v (δ ((c : ℂ) • X) i) = (c : ℂ) • v (δ X i)) (i : ι) : v (δ 0 i) = 0 := by
   simpa using hs i 0 0
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using v_zero hs i`. Consider the case `insert b s hb ih => rw [Finset.sum_insert hb, Finset.sum_insert hb, ha, ih]`.
+-/
 theorem v_sum (ha : ∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i))
     (hs : ∀ i (c : ℝ) X, v (δ ((c : ℂ) • X) i) = (c : ℂ) • v (δ X i)) {β : Type} (s : Finset β)
     (f : β → Matrix (Fin n) (Fin n) ℂ) (i : ι) : v (δ (∑ b ∈ s, f b) i) = ∑ b ∈ s, v (δ (f b) i) := by
@@ -93,6 +111,11 @@ theorem v_sum (ha : ∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i))
   | empty => simpa using v_zero hs i
   | insert b s hb ih => rw [Finset.sum_insert hb, Finset.sum_insert hb, ha, ih]
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Rewrite using `[v_sum ha hs]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[v_sum ha hs]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `e : single a c (Y a c) = ((Y a c).re : ℂ) • single a c 1 + ((Y a c).im : ℂ) • (Complex.I • single a c 1)`. Rewrite using `[smul_smul, ← add_smul, Matrix.smul_single, smul_eq_mul, mul_one, Complex.re_add_im]`. Rewrite using `[e, ha, hs, hs]`.
+-/
 theorem v_expand (ha : ∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i))
     (hs : ∀ i (c : ℝ) X, v (δ ((c : ℂ) • X) i) = (c : ℂ) • v (δ X i)) (Y : Matrix (Fin n) (Fin n) ℂ) (i : ι) :
     v (δ Y i) = ∑ a, ∑ c, (((Y a c).re : ℂ) • v (δ (single a c 1) i) +
@@ -106,6 +129,21 @@ theorem v_expand (ha : ∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i))
     rw [smul_smul, ← add_smul, Matrix.smul_single, smul_eq_mul, mul_one, Complex.re_add_im]
   rw [e, ha, hs, hs]
 
+/- English proof (translation)
+Use `choose Y hY hYl hYe using coord hu Xs hX`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `i`. Simplify using `only [Nat.cast_zero, contDiff_zero]`.
+
+Conclude with `(hσ.2.2 (v i)).comp_continuous (contDiff_pr Xs).continuous fun t => pr_mem hu Xs hX t`. Consider the case `succ N ih`. Introduce `i`. Set `D : Fin k → (Fin k → ℝ) → H` to `fun m t => ∑ a, ∑ c, ((Y m t a c).re • σ (pr Xs t) (v (δ (single a c 1) i)) + (Y m t a c).im • σ (pr Xs t) (v (δ (Complex.I • single a c 1) i)))`. Establish `hD : ∀ m, ContDiff ℝ N (D m)`.
+
+Introduce `m`. Establish `he : ∀ a c, ContDiff ℝ ∞ fun t => Y m t a c` using `fun a c => (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a c)).contDiff.comp (hY m)`. Use `ContDiff.sum fun a _ => ContDiff.sum fun c _ => ?_` and prove the remaining obligations. Conclude with `((contDiff_infty.1 (Complex.reCLM.contDiff.comp (he a c)) N).smul (ih _)).add ((contDiff_infty.1 (Complex.imCLM.contDiff.comp (he a c)) N).smul (ih _))`. Establish `hpart : ∀ y m, HasDerivAt (fun s : ℝ => σ (pr Xs (y + s • Pi.single m (1:ℝ))) (v i)) (D m y) 0`.
+
+Introduce `y m`. Establish `e : (fun s : ℝ => σ (pr Xs (y + s • Pi.single m (1:ℝ))) (v i)) = fun s => σ (pr Xs y) (σ (NormedSpace.exp (s • Y m y)) (v i))`. Use function extensionality and compare the values at `s`. Rewrite using `[hYe, hσ.1.2 _ (pr_mem hu Xs hX y) _ (exp_mem hu (hYl m y) s)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Establish `h1 : HasDerivAt (fun s : ℝ => σ (pr Xs y) (σ (NormedSpace.exp (s • Y m y)) (v i))) (σ (pr Xs y) (v (δ (Y m y) i))) 0` using `((σ (pr Xs y)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hd _ (hYl m y) i)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use `show _ = σ (pr Xs y) (v (δ (Y m y) i))`. Rewrite using `[v_expand ha hs (Y m y) i, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
+
+Use `⟨fun y => ∑ m, (ContinuousLinearMap.proj m : (Fin k → ℝ) →L[ℝ] ℝ).smulRight (D m y), ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `ContDiff.sum fun m _ => contDiff_const.smulRight (hD m)`. Conclude with `PI.UnitaryGroupMassFormula.JCC.Ck.partials_continuous_differentiable k H Set.univ _ D isOpen_univ (fun m => (hD m).continuous.continuousOn) (fun y _ m => hpart y m) y trivial`.
+-/
 theorem crit_nat (hu : IsUnit Hm.det) (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ)
     (ha : ∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i))
     (hs : ∀ i (c : ℝ) X, v (δ ((c : ℂ) • X) i) = (c : ℂ) • v (δ X i))
@@ -156,6 +194,9 @@ theorem crit_nat (hu : IsUnit Hm.det) (hσ : Formalism.MainNotions.S.IsURepOn (F
 
 end Main
 
+/- English proof (translation)
+Introduce `n Hm H _ _ σ ι v δ hdet hσ ha hs hd i k Xs hX`. Establish `hu : IsUnit Hm.det` using `isUnit_iff_ne_zero.2 hdet`. Conclude with `contDiff_infty.2 fun N => crit_nat hu hσ ha hs hd Xs hX N i`.
+-/
 theorem smoothVec_of_closed_family : ∀ (n : ℕ) (Hm : Matrix (Fin n) (Fin n) ℂ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ι : Type) (v : ι → H) (δ : Matrix (Fin n) (Fin n) ℂ → ι → ι), Hm.det ≠ 0 → Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ → (∀ i X Y, v (δ (X + Y) i) = v (δ X i) + v (δ Y i)) → (∀ i (c : ℝ) X, v (δ ((c : ℂ) • X) i) = (c : ℂ) • v (δ X i)) → (∀ X, Xᴴ * Hm + Hm * X = 0 → ∀ i, HasDerivAt (fun t : ℝ => σ (NormedSpace.exp (t • X)) (v i)) (v (δ X i)) 0) → ∀ i, Formalism.L2.Theta.SmoothVec {X | Xᴴ * Hm + Hm * X = 0} σ (v i) := by
   intro n Hm H _ _ σ ι v δ hdet hσ ha hs hd i k Xs hX
   have hu : IsUnit Hm.det := isUnit_iff_ne_zero.2 hdet

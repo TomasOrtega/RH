@@ -53,6 +53,11 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LFun.isSplit_iff, Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, w', hne, h, h'⟩ e`. Establish `e' : Formalism.DivisionValues.conjPl P = P` using `HeightOneSpectrum.ext e`. Establish `a` using `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq h`.
+
+Establish `b` using `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq h'`. Rewrite `a`, `b` using `[e', or_self]`. Conclude with `hne (a.trans b.symm)`. Introduce `h`. Conclude with `⟨P, Formalism.DivisionValues.conjPl P, fun e => h (congrArg HeightOneSpectrum.asIdeal e).symm, rfl, (GlobalTheory.LevelPlaces.under_eq_of_isConjPl (GlobalTheory.GoodPrimes.isConjPl_iff.2 rfl)).symm⟩`.
+-/
 theorem isSplit_iff_conj (P : HeightOneSpectrum (𝓞 D.host.E)) :
     IsSplit (E := D.host.E) (P.under (𝓞 D.host.F)) ↔ Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal ≠ P.asIdeal := by
   rw [GlobalTheory.LFun.isSplit_iff, Formalism.DivisionValues.GluingInclusion.conjIdeal_eq]

@@ -17,6 +17,19 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.FibreUnram
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Take `⟨e⟩` from `GlobalTheory.adicCompletion_quotient_ringEquiv A (maximalIdeal A) q`. Use `haveI : IsDomain (A ⧸ q) := Ideal.Quotient.isDomain q`. Use `haveI hess : @Algebra.EssFiniteType ℤ (A ⧸ q) _ _ (Ring.toIntAlgebra _) := by`. Use `letI := Ring.toIntAlgebra (A ⧸ q)`.
+
+Use `haveI : IsScalarTower ℤ A (A ⧸ q) := .of_algebraMap_eq fun z => by simp`. Conclude with `Algebra.EssFiniteType.comp ℤ A (A ⧸ q)`. Establish `hj : (maximalIdeal A).map (Ideal.Quotient.mk q) ≤ Ideal.jacobson (⊥ : Ideal (A ⧸ q))` using `by haveI : IsLocalRing (A ⧸ q) := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+
+Use `Ideal.mem_comap.mpr (IsLocalRing.maximalIdeal_le_jacobson _ ?_)` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (hu.unit⁻¹ : (A ⧸ q)ˣ).1`. Establish `h1 : Ideal.Quotient.mk q (a * b) = 1`.
+
+Rewrite using `[map_mul, hb]`. Conclude with `hu.mul_val_inv`. Establish `h2 : a * b - 1 ∈ q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1, map_one, sub_self]`. Establish `h3 : a * b - 1 ∈ maximalIdeal A` using `IsLocalRing.le_maximalIdeal (Ideal.IsPrime.ne_top ‹_›) h2`.
+
+Establish `h4 : (1 : A) ∈ maximalIdeal A`. Use `(maximalIdeal A).sub_mem ((maximalIdeal A).mul_mem_right b ha) h3` as an intermediate fact. Simplify using `using this`. Conclude with `(Ideal.ne_top_iff_one _).mp (IsLocalRing.maximalIdeal.isMaximal A).ne_top h4`. Use `haveI := GlobalTheory.CompletionReduced.isReduced_adicCompletion (A ⧸ q) _ hj`.
+
+Conclude with `isReduced_of_injective e.toRingHom e.injective`.
+-/
 theorem isReduced_adicCompletion_quotient {A : Type} [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A]
     (q : Ideal A) [q.IsPrime] :
     IsReduced (AdicCompletion (maximalIdeal A) A ⧸ q.map (algebraMap A (AdicCompletion (maximalIdeal A) A))) := by
@@ -47,6 +60,23 @@ theorem isReduced_adicCompletion_quotient {A : Type} [CommRing A] [IsLocalRing A
   haveI := GlobalTheory.CompletionReduced.isReduced_adicCompletion (A ⧸ q) _ hj
   exact isReduced_of_injective e.toRingHom e.injective
 
+/- English proof (translation)
+Establish `L1` using `@GlobalTheory.T.exists_adic_completion_lift`. Establish `L2` using `@GlobalTheory.T.finite_of_residue_finite_complete`. Establish `L3` using `@GlobalTheory.T.flat_of_completion_flat`. Establish `L4` using `@GlobalTheory.T.formallyUnramified_of_residue`. Establish `L6a` using `@GlobalTheory.T.height_one_comap_minimal`.
+
+Establish `L6b` using `@GlobalTheory.T.reduced_ideal_map_maximal`. Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Take `⟨hfl, hm, hfin⟩` from `hφ`. Take `⟨hRn, -, hRc, -⟩` from `hR`. Use `haveI := hRn`.
+
+Use `haveI := GlobalTheory.CdvrExt.isLocalHom_of_map_maximalIdeal φ hm`. Establish `hinj` using `GlobalTheory.CdvrExt.injective_of_flat_local φ hfl`. Use `haveI : IsDomain A := hinj.isDomain φ`. Establish `fg : (maximalIdeal A).FG` using `IsNoetherian.noetherian _`. Use `haveI : IsNoetherianRing (AdicCompletion (maximalIdeal A) A) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`.
+
+Use `set B := AdicCompletion (maximalIdeal A) A with hB`. Use `set ι := algebraMap A B with hι`. Establish `hmB` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Establish `hBc : IsAdicComplete (maximalIdeal B) B`. Rewrite using `[hmB]`.
+
+Conclude with `AdicCompletion.isAdicComplete_self _ fg`. Establish `hιfl : ι.Flat` using `RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _)`. Take `⟨ψ, hψ⟩` from `L1 φ hRc hm`. Establish `hmψ : (maximalIdeal B).map ψ = maximalIdeal R`. Rewrite using `[hmB, Ideal.map_map, hψ, hm]`.
+
+Establish `hres : ((residue R).comp ψ).Finite`. Establish `: ((residue R).comp ψ).comp ι = (residue R).comp φ` using `by rw [RingHom.comp_assoc, hψ]`. Rewrite `hfin` using `[← this]`. Conclude with `RingHom.Finite.of_comp_finite hfin`. Establish `hψfin` using `L2 ψ hBc hRc hmψ hres`.
+
+Establish `hψfl` using `L3 ψ hψfin (by rw [hψ]; exact hfl)`. Establish `hψu` using `L4 ι ψ hψfin hmψ (by rw [hψ]; exact hu)`. Establish `hqq : Q.comap φ = Q.comap (ψ.comp ι)` using `by rw [hψ]`. Establish `hmin` using `L6a ι ψ hιfl hψfl Q hQ (hqq ▸ hq)`. Establish `hJ : (Q.comap φ).map ι ≤ Q.comap ψ`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap, hψ]`. Establish `hred` using `isReduced_adicCompletion_quotient (A := A) (Q.comap φ)`. Establish `key` using `L6b ψ hψfin hψu Q ((Q.comap φ).map ι) hJ hred (fun P hP h1 h2 => hmin P hP (hqq ▸ h1) h2)`. Rewrite `key` using `[Ideal.map_map, RingHom.comp_assoc, hψ]`. Conclude with `key`.
+-/
 theorem map_comap_eq_maximalIdeal
     {A R : Type} [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing R] [IsDomain R]
     [IsLocalRing R] (φ : A →+* R) (hR : IsCN R) (hφ : IsEtaleCompletion φ)
@@ -97,6 +127,9 @@ end GlobalTheory.FibreUnram
 
 namespace GlobalTheory.FibreUnram
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z R _ _ _ ξ hR hφ hu Q _ hQ hq`. Take `⟨-, hess⟩` from `GlobalTheory.GModStalk.charZero_essFiniteType_stalk E H D l Xo c Z (ξ (closedPoint R))`. Conclude with `map_comap_eq_maximalIdeal (Scheme.stalkClosedPointTo ξ).hom hR hφ hu Q hQ hq`.
+-/
 theorem stalk_map_comap_eq_maximalIdeal : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → ∀ (Q : Ideal R) [Q.IsPrime], Q.height = 1 → Q.comap (Scheme.stalkClosedPointTo ξ).hom ≠ ⊥ → (Q.comap (Scheme.stalkClosedPointTo ξ).hom).map ((algebraMap R (Localization.AtPrime Q)).comp (Scheme.stalkClosedPointTo ξ).hom) = maximalIdeal (Localization.AtPrime Q) := by
   intro E _ _ _ H D l Xo c Z R _ _ _ ξ hR hφ hu Q _ hQ hq
   obtain ⟨-, hess⟩ := GlobalTheory.GModStalk.charZero_essFiniteType_stalk E H D l Xo c Z (ξ (closedPoint R))

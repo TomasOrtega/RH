@@ -9,6 +9,9 @@ namespace GlobalTheory.FinGL
 
 open Formalism.L2.DIV Module
 
+/- English proof (translation)
+Establish `: Finite (GL (Fin r) F)` using `inferInstance`. Use `infer_instance`.
+-/
 theorem finiteDimensional_coindV_blockTri {F : Type} [Field F] [Fintype F] {r : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) :
     FiniteDimensional ℂ (Representation.coindV (blockTri (κ := F) b).subtype σ) := by
@@ -16,6 +19,11 @@ theorem finiteDimensional_coindV_blockTri {F : Type} [Field F] [Fintype F] {r : 
   have : Finite (GL (Fin r) F) := inferInstance
   infer_instance
 
+/- English proof (translation)
+Establish `hfd` using `finiteDimensional_coindV_blockTri b σ`. Proceed by induction on `ρ with`. Consider the case `zero`. Rewrite using `[GlobalTheory.T.symmetricPositionCharMultiplicity_eq_sum_degenerateWhittaker F ψ hψ r _ (parInd b σ) k (by omega)]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[GlobalTheory.T.degenerateWhittakerDim_parabolicInduction_cuspidal F ψ hψ r V b σ hσ j (Or.inl (by omega)), GlobalTheory.T.levi_whittaker_eq_one_of_cuspidal F ψ hψ r V b σ hσ, mul_one, mul_comm]`. Consider the case `succ ρ ih`. Rewrite using `[← GlobalTheory.T.symmetricPositionCharMultiplicity_succ_eq F ψ hψ r _ (parInd b σ) ρ k (by omega)]`. Conclude with `ih (by omega)`.
+-/
 theorem nPos_parInd (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1) (r : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ)
     (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ) (ρ k : ℕ) (h : ρ + k + 1 ≤ r) :

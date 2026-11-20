@@ -17,18 +17,29 @@ section ModeG
 
 variable {D : D7} (Z : LocDat D) (p : PlF D) (g : Formalism.MainNotions.S.Loc.SplitG (Z.M p).L)
 
+/- English proof (translation)
+Establish `hb : X.BlockTriangular id` using `fun i j hij => h1 i j hij`. Rewrite using `[Matrix.det_of_upperTriangular hb]`. Simplify using `[h2]`.
+-/
 theorem det_upper {X : Formalism.L2.SG.LsDatumB.MatP D p} (h1 : ∀ a b, b < a → X a b = 0) (h2 : ∀ a, X a a = 1) :
     X.det = 1 := by
   have hb : X.BlockTriangular id := fun i j hij => h1 i j hij
   rw [Matrix.det_of_upperTriangular hb]
   simp [h2]
 
+/- English proof (translation)
+Establish `hb : X.BlockTriangular OrderDual.toDual` using `fun i j hij => h1 i j hij`. Rewrite using `[Matrix.det_of_lowerTriangular X hb]`. Simplify using `[h2]`.
+-/
 theorem det_lower {X : Formalism.L2.SG.LsDatumB.MatP D p} (h1 : ∀ a b, a < b → X a b = 0) (h2 : ∀ a, X a a = 1) :
     X.det = 1 := by
   have hb : X.BlockTriangular OrderDual.toDual := fun i j hij => h1 i j hij
   rw [Matrix.det_of_lowerTriangular X hb]
   simp [h2]
 
+/- English proof (translation)
+Take `⟨o, ho, he⟩` from `hc`. Use `mem_R_of Z p g hs (by rw [AlgEquiv.apply_symm_apply]; exact (comp_mem Z p g hx).1) (by rw [AlgEquiv.apply_symm_apply]; exact (comp_mem Z p g hy).2) ⟨(g.e o).1, (comp_mem Z p g ho).1, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.apply_symm_apply]`. Establish `h` using `congrArg (fun t => (g.e t).1) he`. Simplify using `only [map_sub, map_mul, AlgEquiv.commutes, g.e_cj, Prod.fst_sub, Prod.swap_prod_mk, Prod.fst_mul, Prod.fst_swap, Prod.algebraMap_apply] at h`.
+
+Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem lmat_mem_R (hs : (Z.M p).split = some g) {x y : (D.s.atP p).Ep} (hx : x ∈ (Z.M p).L.O)
     (hy : y ∈ (Z.M p).L.O)
     (hc : ∃ o ∈ (Z.M p).L.O, x - (Z.M p).L.cj y = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * o) :

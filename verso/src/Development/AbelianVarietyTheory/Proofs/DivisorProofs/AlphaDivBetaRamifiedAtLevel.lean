@@ -22,6 +22,17 @@ noncomputable section
 
 namespace GlobalTheory.TwistRam
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j w P hP hu hS`. Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `hchi : (G.ch.chiH (D.R.m - i)).UnrAt w` using `G.ch.unr _ hm.1 hm.2 w hS`. Establish `hmu : (L.C.mu0 j).UnrAt w` using `(L.C.isMu0 j).unr _ fun k hk => hS (by`. Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hk`. Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr (Or.inl h))`. Establish `hxi : ¬ (L.xiH t).UnrAt w`. Use `(hL.Q_ram t w).2 ?_` and prove the remaining obligations. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq (P := P) (Q := w) hu.symm with h | h` into its components or cases. Conclude with `Or.inl (h ▸ hP)`.
+
+Conclude with `Or.inr ⟨P, hP, GlobalTheory.GoodPrimes.isConjPl_iff.2 h⟩`. Establish `e0 : alpha G t i j / beta G i j = G.nu t i (j + 1)` using `mul_div_mul_right_eq_div _ _ _`. Rewrite using `[e0, GlobalTheory.LFun.unrAt_iff_of_chrEq (GlobalTheory.FunObj.SqNum.chrEq_nu G t i j hL)]`. Introduce `hn`. Apply `hxi` to reduce the goal to its premises.
+
+Establish `e : L.xiH t = GlobalTheory.FunObj.SqNum.nuH G t i j * G.ch.chiH (D.R.m - i) / L.C.mu0 j`. Rewrite using `[GlobalTheory.FunObj.SqNum.nuH, div_mul_cancel, mul_div_cancel_left]`. Rewrite using `[e, div_eq_mul_inv]`. Conclude with `(hn.mul hchi).mul hmu.inv`.
+-/
 theorem not_unrAt_alpha_div_beta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.E)), P ∈ L.Q t →
       P.under (𝓞 D.host.F) = w.under (𝓞 D.host.F) → w.under (𝓞 D.host.F) ∉ G.pl.S0 →

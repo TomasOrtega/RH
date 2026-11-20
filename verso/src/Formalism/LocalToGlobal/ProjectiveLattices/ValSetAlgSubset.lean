@@ -13,6 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 def trivialClassCondition (T : CDVR) (io : c.F →+* T.Fr) (_y : IntFr Xo c T io) : Prop := True
 
+/- English proof (translation)
+Unfold `valSet`. Introduce and unpack `v ⟨⟨x, hx⟩, rfl⟩`. Use `⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨T, io, e, h1, y, -, h2⟩` from `hx`. Conclude with `⟨T, io, e, h1, y, trivial, h2⟩`.
+-/
 theorem valSet_alg_subset (la : HeightOneSpectrum (𝓞 c.F)) :
     valSet Xo c (algCls Xo c) la ⊆ valSet Xo c (trivialClassCondition Xo c) la := by
 
@@ -44,6 +47,9 @@ def regular₂ {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) : Prop :=
 
 variable {Xo c}
 
+/- English proof (translation)
+Introduce `la v hv`. Establish `h1` using `h.1`. Unfold `ReciprocityTheory.ChartRestriction.G.T0.RegLaw at h1`. Conclude with `(h1.1 ⟨(a, n), hd⟩ ⟨f, hf⟩ (fun la' y => h0 la' y.1 y.2)).1 la ⟨v, hv⟩`.
+-/
 theorem regular₂.int {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (h : regular₂ Xo c U) {a n} (hd : Dom a n)
     {f : Rul Xo c} (hf : f ∈ cusp Xo c U a n)
     (h0 : ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f) :

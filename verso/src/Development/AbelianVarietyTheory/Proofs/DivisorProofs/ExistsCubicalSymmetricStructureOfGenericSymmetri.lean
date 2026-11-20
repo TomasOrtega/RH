@@ -24,6 +24,21 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CubSymPkg
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ G _ _ hG hP L hL hS`. Establish `laws : Out.Laws` using `GlobalTheory.lawsAndExpansions.1.1`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`.
+
+Establish `: Flat (jK R)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Establish `: QuasiCompact (jK R)` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))))`.
+
+Establish `hN : Geo.Tor.IsNormalScheme (Sp R)` using `GlobalTheory.ZJ.isNormalScheme_sp R`. Set `A` to `(Over.pullback (jK R)).obj G`. Set `F : A.left ⟶ G.left` to `pullback.fst G.hom (jK R)`. Establish `gp : IsGrpPullback A G (jK R) F` using `isGrpPullback_pullback G (jK R)`. Establish `hsA : IsSemiAbelian A` using `Geo.Tor.IsSemiAbelian.pullback (jK R) G hG`.
+
+Establish `: IsProper A.hom` using `hP`. Establish `hA : IsAbelianScheme A` using `Geo.Tor.AbelianSchemeGerms.isAbelianScheme_of_proper A hsA`. Establish `hM : (L.pull F).IsLB` using `pull_isLB hL F`. Take `⟨rA, hrA⟩` from `DVR.exists_gen_of_isLB_local _ (pull_isLB hM (eSec A))`. Set `LA : RigLB A` to `⟨L.pull F, rA, hM, hrA⟩`.
+
+Take `⟨t, ht⟩` from `GlobalTheory.GenericAmpleDvr.triv_theta hA hM`. Take `⟨t', ht', hn⟩` from `AbLaw.Cube.exists_normalised hM t ht`. Set `cA : CubicalStr A LA` to `AbLaw.Cube.cubicalOfNormalised laws.globalFns hA LA t' ht' hn`. Take `⟨s₀, hs₀⟩` from `(GlobalTheory.ZV.symB_iff_exists_gen _).1 ((GlobalTheory.ZV.symB_iff_sym hM).2 hS)`. Take `⟨s₁, hs₁, hr₁⟩` from `GlobalTheory.AbPackage.exists_rigidified_sym hM s₀ hs₀`.
+
+Establish `symA : LA.IsSymmetric` using `(GlobalTheory.isSymmetric_iff_exists_gen _ A LA).2 ⟨s₁, hs₁, hr₁⟩`. Take `⟨r, hr⟩` from `DVR.exists_gen_of_isLB_local _ (pull_isLB hL (eSec G))`. Set `L' : RigLB G` to `⟨L, r, hL, hr⟩`. Establish `hw : PGen (GlobalTheory.UU.pullIso L F)` using `(isGen_iff _).1 (GlobalTheory.UU.pullIso_isGen hL F)`. Take `⟨c', -⟩` from `GlobalTheory.DenseCubeExt.exists_cubical (L := LA) hN gp cA L' hw`.
+
+Take `⟨s, hs, hrs⟩` from `(GlobalTheory.isSymmetric_iff_exists_gen _ G L').1 (GlobalTheory.DenseCubeExt.isSymmetric (L := LA) hN gp L' hw symA)`. Conclude with `⟨⟨L', c', s, hs, hrs, GlobalTheory.T.symmetry_cubicalBundle_of_dense_abelian_normal_base hN (jK R) G A F gp laws.globalFns hA L' c' s hs hrs⟩, rfl⟩`.
+-/
 theorem exists_cp_of_generic_sym : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R], ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → IsProper (pullback.snd G.hom (jK R)) → ∀ L : LB G.left, L.IsLB → Out.Sym ((Over.pullback (jK R)).obj G) (L.pull (pullback.fst G.hom (jK R))) → ∃ P : GlobalTheory.UU.CP G, P.L.L = L := by
   intro R _ _ _ _ _ G _ _ hG hP L hL hS
   have laws : Out.Laws := GlobalTheory.lawsAndExpansions.1.1

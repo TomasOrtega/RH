@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.Fr
 
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
+/- English proof (translation)
+The claim follows from `instDecomp_of (placeDecomp_of exponent_fixed_instance adapted_basis_instance) frame_gram_instance`.
+-/
 theorem place_decomposition_instance : InstDecomp :=
   instDecomp_of (placeDecomp_of exponent_fixed_instance adapted_basis_instance) frame_gram_instance
 

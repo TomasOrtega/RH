@@ -9,6 +9,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Use `set l := 5 / 7 * Real.exp (-a) / q with hl`. Establish `l0 : 0 < l` using `by positivity`. Establish `i1 : IntegrableOn (fun y => Real.exp (-2 * y)) (Ioi a)` using `integrableOn_exp_mul_Ioi (by norm_num) a`. Establish `i2 : IntegrableOn (fun y => l / 2 * (Real.exp (2 * y) * ‖g y‖ ^ 2) + (2 * l)⁻¹ * Real.exp (-2 * y)) (Ioi a)` using `(h.1.integrableOn.const_mul _).add (i1.const_mul _)`. Establish `pt : ∀ y, ‖g y‖ ≤ l / 2 * (Real.exp (2 * y) * ‖g y‖ ^ 2) + (2 * l)⁻¹ * Real.exp (-2 * y)` using `fun y => by`.
+
+Establish `e1 : Real.exp (-2 * y) = (Real.exp (2 * y))⁻¹` using `by rw [← Real.exp_neg]; ring_nf`. Establish `e0` using `Real.exp_pos (2 * y)`. Rewrite using `[e1]`. Use `set E := Real.exp (2 * y)`. Rewrite using `[← sub_nonneg]`.
+
+Establish `: l / 2 * (E * ‖g y‖ ^ 2) + (2 * l)⁻¹ * E⁻¹ - ‖g y‖ = (l * E * ‖g y‖ - 1) ^ 2 / (2 * l * E)` using `by field_simp; ring`. Rewrite using `[this]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_add (h.1.integrableOn.const_mul _) (i1.const_mul _), integral_const_mul, integral_const_mul, integral_exp_mul_Ioi (by norm_num)]`. Establish `h1 : ∫ y in Ioi a, Real.exp (2 * y) * ‖g y‖ ^ 2 ≤ q ^ 2` using `(setIntegral_le_integral h.1 (Eventually.of_forall fun y => by positivity)).trans h.2`. Use `(add_le_add (mul_le_mul_of_nonneg_left h1 (by positivity)) le_rfl).trans_eq ?_` and prove the remaining obligations. Establish `e1 : Real.exp (-2 * a) = Real.exp (-a) ^ 2` using `by rw [← Real.exp_nat_mul]; congr 1; push_cast; ring`. Establish `e0` using `Real.exp_pos (-a)`.
+
+Rewrite using `[e1, hl]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem half {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (g : L V) (q a : ℝ) (hq : 0 < q) (h : WLe 2 g q) :
     ∫⁻ y in Ioi a, ‖g y‖ₑ ≤ ENNReal.ofReal (99 / 140 * Real.exp (-a) * q) := by
   set l := 5 / 7 * Real.exp (-a) / q with hl
@@ -41,6 +52,39 @@ private theorem half {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
         rw [e1, hl]
         field_simp; ring
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M φ e p Q α β φc φs φi hQ hp hαβ`. Use `set g : L V := M.J.symm (M.J' p) with hg`. Establish `hcut : ∀ a : ℝ, ‖cut V (Ioi a) g‖ ≤ ‖cut W (Iic (2 * M.T₀ - a)) p‖` using `fun a => by`. Establish `h1` using `cutLaws (V := W) (Iic (2 * M.T₀ - a)) (Ioi (2 * M.T₀ - a)) measurableSet_Iic measurableSet_Ioi`. Establish `h2` using `h1.2.2.1 (Iic_disjoint_Ioi le_rfl)`.
+
+Rewrite `h2` using `[Iic_union_Ioi, h1.2.2.2.1]`. Establish `h3 : p = cut W (Iic (2 * M.T₀ - a)) p + cut W (Ioi (2 * M.T₀ - a)) p` using `DFunLike.congr_fun h2 p`. Establish `h4` using `DFunLike.congr_fun ((projLaws M).2.2.2.2.2.2.2 a (2 * M.T₀ - a) (by linarith)).1 (M.J' p)`. Express the relevant statement in the definitionally equal form `M.J (cut V (Ioi a) (M.J.symm (M.J' (cut W (Ioi (2 * M.T₀ - a)) (M.J'.symm (M.J' p)))))) = 0 at h4`. Rewrite `h4` using `[M.J'.symm_apply_apply, M.J.map_eq_zero_iff]`.
+
+Establish `h5 : cut V (Ioi a) g = cut V (Ioi a) (M.J.symm (M.J' (cut W (Iic (2 * M.T₀ - a)) p)))`. Rewrite using `[hg]`. Use `conv_lhs => rw [h3]`. Rewrite using `[map_add, map_add, map_add, h4, add_zero]`. Rewrite using `[h5]`.
+
+Use `((cutLaws (V := V) (Ioi a) (Ioi a) measurableSet_Ioi measurableSet_Ioi).2.2.2.2.2.1 _).trans_eq ?_` and prove the remaining obligations. Rewrite using `[M.J.symm.norm_map, M.J'.norm_map]`. Establish `hw` using `wBound g p (2 * M.T₀) Q hcut hp`. Establish `φcs : HasCompactSupport φ` using `HasCompactSupport.intro (isCompact_Icc (a := -(1 / 2)) (b := 1 / 2)) fun x hx => φs x (by rw [mem_Icc, ← abs_le, not_le] at hx; exact hx)`. Establish `φI : Integrable φ` using `φc.integrable_of_hasCompactSupport φcs`.
+
+Establish `hsv` using `((svSpec (V := V)).1 φ (φc.memLp_of_hasCompactSupport φcs) e).1`. Establish `gm : Measurable fun y => ‖g y‖ₑ` using `(Lp.stronglyMeasurable g).enorm`. Establish `hcor : ∀ s, ‖M.cor φ e p s‖ₑ ≤ ∫⁻ x, ‖φ x‖ₑ * ‖e‖ₑ * ‖g (x + s)‖ₑ` using `fun s => by`. Establish `e1 : M.J' p = M.J g` using `by rw [hg, M.J.apply_symm_apply]`. Rewrite using `[Sc.cor, e1, M.hJ, M.J.inner_map_map, L2.inner_def]`.
+
+Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hsv, sh_ae V s g] with x h1 h2`. Rewrite using `[h1, h2, ← enorm_smul]`. Conclude with `enorm_inner_le _ _`. Establish `main : ∀ q, Real.exp (2 * M.T₀) * Q < q → ‖∫ s in α..β, M.cor φ e p s‖ ≤ 6 / 5 * ‖e‖ * Real.exp (-α) * q`.
+
+Introduce `q hq`. Establish `q0 : 0 ≤ Real.exp (2 * M.T₀) * Q` using `by positivity`. Establish `q1 : 0 < q` using `q0.trans_lt hq`. Establish `hB` using `half g q (α - 1 / 2) q1 ⟨hw.1, hw.2.trans (pow_le_pow_left₀ q0 hq.le 2)⟩`. Use `set B := 99 / 140 * Real.exp (-(α - 1 / 2)) * q with hBd`.
+
+Establish `B0 : 0 ≤ B` using `by positivity`. Establish `h1 : ‖∫ s in α..β, M.cor φ e p s‖ₑ ≤ ENNReal.ofReal (‖e‖ * B)`. Rewrite using `[intervalIntegral.integral_of_le hαβ]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : 1 / 2 < |x|`. Simplify using `[φs x hx]`. Establish `gx : Measurable fun s => ‖g (x + s)‖ₑ` using `gm.comp (measurable_const.add measurable_id)`. Rewrite using `[lintegral_const_mul _ gx, mul_assoc]`. Use `gcongr`.
+
+Use `le_trans ?_ hB` and prove the remaining obligations. Rewrite using `[← lintegral_indicator measurableSet_Ioc, ← lintegral_indicator measurableSet_Ioi, ← lintegral_add_left_eq_self (fun y => (Ioi (α - 1 / 2)).indicator (fun y => ‖g y‖ₑ) y) x]`. Use `lintegral_mono fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ Ioc α β`. Establish `h7 : x + s ∈ Ioi (α - 1 / 2)`.
+
+Establish `h5` using `(abs_le.1 (not_lt.1 hx)).1`. Establish `h6` using `hs.1`. Rewrite using `[mem_Ioi]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[indicator_of_mem hs]`.
+
+Conclude with `(indicator_of_mem h7 fun y => ‖g y‖ₑ).ge`. Rewrite using `[indicator_of_notMem hs]`. Conclude with `bot_le`. Use `_ = (∫⁻ x, ‖φ x‖ₑ) * (‖e‖ₑ * ENNReal.ofReal B) := lintegral_mul_const _ φc.measurable.enorm`. Use `_ ≤ 1 * (‖e‖ₑ * ENNReal.ofReal B) := by gcongr`.
+
+Rewrite using `[← ofReal_integral_norm_eq_lintegral_enorm φI]`. Conclude with `ENNReal.ofReal_le_one.2 φi`. Use `_ = _ := by rw [one_mul, ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm_eq_enorm]`. Rewrite `h1` using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Establish `h2 : Real.exp (1 / 2) ≤ 169 / 100`. Use `(pow_le_pow_iff_left₀ (Real.exp_pos _).le (by norm_num) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions. Combine the linear relations using `[Real.exp_one_lt_d9]`.
+
+Establish `h3 : Real.exp (-(α - 1 / 2)) = Real.exp (-α) * Real.exp (1 / 2)` using `by rw [← Real.exp_add]; ring_nf`. Rewrite using `[hBd, h3]`. Establish `h4 : 0 ≤ ‖e‖ * Real.exp (-α) * q` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 h4]`. Use `ge_of_tendsto (x := 𝓝[>] (Real.exp (2 * M.T₀) * Q)) (((continuous_const (y := 6 / 5 * ‖e‖ * Real.exp (-α))).mul continuous_id).tendsto _ |>.mono_left nhdsWithin_le_nhds) (eventually_mem_nhdsWithin.mono fun q hq => main q hq)` as an intermediate fact.
+
+Use `this.trans_eq ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, id]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.tailB :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (φ : ℝ → ℂ) (e : V) (p : L W) (Q α β : ℝ), Continuous φ → (∀ x, 1 / 2 < |x| → φ x = 0) → ∫ x, ‖φ x‖ ≤ 1 → 0 ≤ Q →
       WLe (-2) p Q → α ≤ β → ‖∫ s in α..β, M.cor φ e p s‖ ≤ 6 / 5 * ‖e‖ * Real.exp (2 * M.T₀) * Q * Real.exp (-α) := by

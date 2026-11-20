@@ -26,6 +26,9 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Clocx
 
+/- English proof (translation)
+Set `l : G.left ⟶ G.left` to `hp.1.lift (gm ≫ f.left) G.hom (by rw [Category.assoc, Over.w f, hp.1.w])`. Set `fR : G ⟶ G` to `Over.homMk l (hp.1.lift_snd _ _ _)`. Establish `e : fR.left ≫ gm = gm ≫ f.left` using `hp.1.lift_fst _ _ _`. Conclude with `⟨fR, PullGtPf.isMonHom_of_grpPullback hp hp f fR e, e⟩`.
+-/
 theorem exists_pull_endo {S S' : Scheme.{0}} {s : S' ⟶ S} {G : Over S'} {H : Over S} [GrpObj G] [GrpObj H]
     {gm : G.left ⟶ H.left} (hp : IsGrpPullback G H s gm) (f : H ⟶ H) [IsMonHom f] :
     ∃ fR : G ⟶ G, IsMonHom fR ∧ fR.left ≫ gm = gm ≫ f.left := by
@@ -34,6 +37,9 @@ theorem exists_pull_endo {S S' : Scheme.{0}} {s : S' ⟶ S} {G : Over S'} {H : O
   have e : fR.left ≫ gm = gm ≫ f.left := hp.1.lift_fst _ _ _
   exact ⟨fR, PullGtPf.isMonHom_of_grpPullback hp hp f fR e, e⟩
 
+/- English proof (translation)
+Set `e : G ≅ (Over.pullback s).obj H` to `Over.isoMk hp.1.isoPullback (by simp)`. Use `haveI : IsMonHom e.hom := PullGtPf.isMonHom_of_grpPullback hp (isGrpPullback_pullback H s) (𝟙 H) e.hom (by simp [e])`. Conclude with `GlobalTheory.isSemiAbelian_of_grpIso e (IsSemiAbelian.pullback s H hH)`.
+-/
 theorem isSemiAbelian_of_isGrpPullback {S S' : Scheme.{0}} {s : S' ⟶ S} {G : Over S'} {H : Over S} [GrpObj G]
     [IsCommMonObj G] [GrpObj H] {gm : G.left ⟶ H.left} (hp : IsGrpPullback G H s gm) (hH : IsSemiAbelian H) :
     IsSemiAbelian G := by
@@ -42,6 +48,9 @@ theorem isSemiAbelian_of_isGrpPullback {S S' : Scheme.{0}} {s : S' ⟶ S} {G : O
     (by simp [e])
   exact GlobalTheory.isSemiAbelian_of_grpIso e (IsSemiAbelian.pullback s H hH)
 
+/- English proof (translation)
+Establish `h1 : p ^ a.toNat ∣ p ^ b.toNat` using `(hx.symm.dvd.trans hxy).trans hy.dvd`. Rewrite `h1` using `[pow_dvd_pow_iff hp.ne_zero hp.not_isUnit]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_assoc_pow {V' : Type} [CommRing V'] [IsDomain V'] {p x y : V'} (hp : Irreducible p) {a b : ℤ}
     (ha : 0 ≤ a) (hb : 0 ≤ b) (hx : Associated x (p ^ a.toNat)) (hy : Associated y (p ^ b.toNat)) (hxy : x ∣ y) :
     a ≤ b := by
@@ -49,6 +58,13 @@ theorem le_of_assoc_pow {V' : Type} [CommRing V'] [IsDomain V'] {p x y : V'} (hp
   rw [pow_dvd_pow_iff hp.ne_zero hp.not_isUnit] at h1
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩ u i`. Conclude with `⟨φ w u i, by simp [map_add, map_nsmul]⟩`. Introduce `h choose d hd using h`. Use `⟨φ.symm d, φ.injective ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `u i`. Use `hd u i` as an intermediate fact. Simplify using `only [map_add, map_nsmul, AddEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `φ y u i = φ y' u i + N • d u i`. Rewrite using `[nsmul_eq_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem congMod_iff {X A B : Type} [AddCommGroup X] (φ : X ≃+ (A → B → ℤ)) (N : ℕ) (y y' : X) :
     CongMod N y y' ↔ ∀ u i, (N : ℤ) ∣ φ y u i - φ y' u i := by
   constructor
@@ -64,6 +80,19 @@ theorem congMod_iff {X A B : Type} [AddCommGroup X] (φ : X ≃+ (A → B → �
     rw [nsmul_eq_mul]
     linarith
 
+/- English proof (translation)
+Take `⟨pV, hpV⟩ : ∃ p : Sp V', p = IsLocalRing.closedPoint V'` from `⟨_, rfl⟩`. Establish `hpt` using `congrArg (fun φ : Sp V' ⟶ X => φ pV) hsq`. Simplify using `only [Scheme.Hom.comp_apply] at hpt`. Establish `h1 : (spMap h) pV = closedPoint V` using `hpV ▸ IsLocalRing.comap_closedPoint h`. Rewrite `hpt` using `[h1, hξ]`.
+
+Establish `h2` using `(X.fromSpecStalk x).isEmbedding.injective (hpt.trans (Scheme.fromSpecStalk_closedPoint (x := x)).symm)`. Establish `h3 : (maximalIdeal (X.presheaf.stalk x)) ≤ (maximalIdeal V').comap (g'.comp j)`. Use `congrArg PrimeSpectrum.asIdeal h2` as an intermediate fact. Introduce `a ha`. Establish `e : ((spMap j) ((spMap g') pV)).asIdeal = (maximalIdeal V').comap (g'.comp j)` using `by subst hpV; rfl`.
+
+Rewrite using `[← e, this]`. Conclude with `ha`. Take `⟨e, he⟩` from `hj`. Establish `hm : maximalIdeal R ≤ (maximalIdeal (X.presheaf.stalk x)).map j`. Introduce `r hr`.
+
+Establish `hr' : e.symm r ∈ maximalIdeal (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x))`. Introduce `hu`. Conclude with `hr (by simpa using hu.map e)`. Rewrite `hr'` using `[AdicCompletion.maximalIdeal_eq_map]`. Use `Ideal.mem_map_of_mem (e : _ →+* R) hr'` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.map_map]`. Establish `hj' : (e : AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x) →+* R).comp (algebraMap _ _) = j` using `RingHom.ext fun a => he a`. Rewrite `this` using `[hj']`. Simplify using `using this`. Introduce `r hr`.
+
+Establish `h4 : (maximalIdeal (X.presheaf.stalk x)).map (g'.comp j) ≤ maximalIdeal V'` using `Ideal.map_le_iff_le_comap.2 h3`. Rewrite `h4` using `[← Ideal.map_map]`. Conclude with `h4 (Ideal.mem_map_of_mem g' (hm hr))`.
+-/
 theorem mem_maximalIdeal_of_square {X : Scheme.{0}} (x : X) [IsNoetherianRing (X.presheaf.stalk x)] {R : Type}
     [CommRing R] [IsLocalRing R] (j : X.presheaf.stalk x →+* R) (hj : IsCpl j) {V V' : Type} [CommRing V]
     [IsLocalRing V] [CommRing V'] [IsLocalRing V'] (h : V →+* V') [IsLocalHom h] (g' : R →+* V') (ξ : Sp V ⟶ X)
@@ -104,6 +133,19 @@ end GlobalTheory.Poinc.Clocx
 
 namespace GlobalTheory.Poinc.Clocx
 
+/- English proof (translation)
+Use `set v := RatModel.valLoc ξ x hs (M.stalkEquiv x a) with hv`. Establish `e1 : M.val (jK T.V ≫ ξ) (M.stalkHom x a) = algebraMap T.V (FractionRing T.V) v` using `RatModel.val_spMap_comp (algebraMap T.V (FractionRing T.V)) ξ hs (M.stalkEquiv x a)`. Establish `e2 : M.val (spMap ((algebraMap V' (FractionRing V')).comp h) ≫ ξ) (M.stalkHom x a) = (algebraMap V' (FractionRing V')).comp h v` using `RatModel.val_spMap_comp _ ξ hs (M.stalkEquiv x a)`. Establish `e3 : spMap ((algebraMap V' (FractionRing V')).comp h) ≫ ξ = jK V' ≫ spMap g' ≫ M.Z.fromSpecStalk x`. Rewrite using `[hsq, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `e2` using `[e3, GlobalTheory.Poinc.Sep.GalVal.val_stalkHom]`. Establish `e4 : h v = g' a` using `(IsFractionRing.injective V' (FractionRing V') e2).symm`.
+
+Establish `hv0 : v ≠ 0`. Introduce `h0`. Rewrite `e4` using `[h0, map_zero]`. Rewrite `ha` using `[← e4]`. Conclude with `pow_ne_zero q hirr.ne_zero (ha.eq_zero_iff.1 rfl)`.
+
+Take `⟨k, u, hku⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv0 T.irr`. Establish `hk : k = q`. Establish `h5 : Associated (h T.ϖ ^ k) (h T.ϖ ^ q)`. Establish `: Associated (h T.ϖ ^ k) (h v)`. Rewrite using `[hku, map_mul, map_pow]`.
+
+Conclude with `⟨(Units.map h.toMonoidHom u), by simp [mul_comm]⟩`. Conclude with `(this.trans (e4 ▸ ha))`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(pow_dvd_pow_iff hirr.ne_zero hirr.not_isUnit).1 h5.dvd`. Conclude with `(pow_dvd_pow_iff hirr.ne_zero hirr.not_isUnit).1 h5.symm.dvd`.
+
+Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hku, hk, mul_comm]`.
+-/
 theorem ordEq_of_assoc {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ} {o' Ω : Type} [CommRing o']
     [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) (x : M.Z) (T : Trait F) (ξ : Sp T.V ⟶ M.Z)
     (hs : ξ (IsLocalRing.closedPoint T.V) ⤳ x) {V' : Type} [CommRing V'] [IsDomain V'] (h : T.V →+* V')
@@ -141,6 +183,11 @@ theorem ordEq_of_assoc {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g 
   refine ⟨u, ?_⟩
   rw [e1, hku, hk, mul_comm]
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `hm : a ∈ maximalIdeal V` using `hna`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`. Take `⟨b, rfl⟩` from `hm`.
+
+Rewrite `ha` using `[map_mul]`. Conclude with `hh.not_isUnit (isUnit_of_mul_isUnit_left ha)`.
+-/
 theorem isLocalHom_of_irreducible {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing V']
     (h : V →+* V') {ϖ : V} (hϖ : Irreducible ϖ) (hh : Irreducible (h ϖ)) : IsLocalHom h := by
   refine ⟨fun a ha => ?_⟩
@@ -155,6 +202,49 @@ end GlobalTheory.Poinc.Clocx
 
 open GlobalTheory.Poinc.Clocx GlobalTheory.Poinc.Eq8.DiagMat in
 
+/- English proof (translation)
+Introduce `g n hg hn hodd F W hW o' Ω _ _ _ _ S ρ u hBig hsharp _ hN M U₀ EE FinalForm hAdm hEE x hx`. Establish `hU : (U₀ : Set M.Z).Nonempty` using `hAdm.1.ne`. Take `⟨c, pr, hSB⟩` from `(sharpOver_iff F W ρ.P u).1 hsharp`. Take `⟨R, _, _, _, j, G, _, _, gm, D, A, U, hB, hcpl, hpb, hLB, hpsiU⟩` from `GlobalTheory.Poinc.CompletedStalk.exists_completion_unif o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx`. Use `haveI : CharZero R := hB.2`.
+
+Establish `hRi : IsIntegrallyClosed R` using `hB.1.2.2.1`. Establish `hGsemi : IsSemiAbelian G` using `isSemiAbelian_of_isGrpPullback hpb FinalForm.semi`. Establish `hm : ∀ a b, ∃ (mab : D.toPre.X →+ D.toPre.X), ∃ (f : FinalForm.G ⟶ FinalForm.G) (fR : G ⟶ G), MatOn FinalForm pr a b f ∧ IsMonHom fR ∧ fR.left ≫ gm = gm ≫ f.left ∧ EndChar U fR mab`. Introduce `a b`. Take `⟨f, hf⟩` from `matOn_exists o' Ω S ρ M U₀ EE FinalForm hU c.A pr hSB.2.1 hSB.2.2.1 a b`.
+
+Use `haveI : IsMonHom f := hf.1`. Take `⟨fR, hfR, hfR'⟩` from `exists_pull_endo hpb f`. Take `⟨mab, hmab⟩` from `endChar_exists_of_isMonHom R hB G hGsemi D A U fR hfR`. Conclude with `⟨mab, f, fR, hf, hfR, hfR', hmab⟩`. Use `choose m hm using hm`.
+
+Establish `key` using `fun (T : Trait F) (ξ : Sp T.V ⟶ M.Z) (hT : ThroughU M U₀ FinalForm.u₀ u T ξ) (hs : ξ (IsLocalRing.closedPoint T.V) ⤳ x) => GlobalTheory.T.exists_surjective_diagonal_lattice_map_trait g n hg hn hodd F W hW o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx u c pr hSB R j hB hcpl G gm h …`. Take `⟨T₀, ξ₀, hT₀, hξ₀⟩` from `GlobalTheory.Poinc.TraitCen.exists_trait_cen g n _ (zetaAway n) F o' Ω M U₀ hU (Sp S.R) FinalForm.u₀ u x hx`. Take `⟨V₀, _, _, _, h₀, g₀, ρ₀, hh₀, hirr₀, hsq₀, hρ₀s, hord₀, hrel₀⟩` from `key T₀ ξ₀ hT₀ (hξ₀ ▸ specializes_rfl)`. Use `haveI := GlobalTheory.Poinc.TraitCen.isNoetherianRing_stalk M x`. Use `haveI := isLocalHom_of_irreducible h₀ T₀.irr hirr₀`.
+
+Establish `hloc₀` using `mem_maximalIdeal_of_square x j hcpl h₀ g₀ ξ₀ hξ₀ hsq₀`. Establish `hρ₀i : Function.Injective ρ₀`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Assume the negation of the conclusion as `hy0`.
+
+Take `⟨r, hr, -, hrm, -⟩` from `(GlobalTheory.PsiCoordLocal.main R D hRi y).1`. Establish `h1` using `(hord₀ y r hr).2`. Establish `h0 : qW W T₀.β (ρ₀ y) = 0` using `by rw [hy]; simp [qW]`. Rewrite `h1` using `[h0, Int.toNat_zero, pow_zero, associated_one_iff_isUnit]`. Conclude with `(hloc₀ r (hrm hy0)) h1`.
+
+Set `e₀ : D.toPre.X ≃+ (Fin 8 → T₀.D.toPre.X)` to `AddEquiv.ofBijective ρ₀ ⟨hρ₀i, hρ₀s⟩`. Set `rk` to `Module.finrank ℤ T₀.D.toPre.X`. Set `ι : T₀.D.toPre.X ≃ₗ[ℤ] (Fin rk → ℤ)` to `(Module.finBasis ℤ T₀.D.toPre.X).equivFun`. Set `κE : D.toPre.X ≃+ (Fin 8 → Fin rk → ℤ)` to `e₀.trans (AddEquiv.piCongrRight fun _ => ι.toAddEquiv)`. Establish `hκ : ∀ y u, κE y u = ι (ρ₀ y u)` using `fun _ _ => rfl`.
+
+Establish `hκ' : ∀ y u, ι.symm (κE y u) = ρ₀ y u` using `fun y u => by rw [hκ]; exact ι.symm_apply_apply _`. Set `cz : (Fin 8 → Fin rk → ZMod S.N) → (Fin 8 → Fin rk → ℤ)` to `fun cl u i => ((cl u i).val : ℤ)`. Establish `hcz : ∀ cl u i, ((cz cl u i : ℤ) : ZMod S.N) = cl u i` using `fun cl u i => by simp [cz]`. Establish `hQ : ∀ cl : Fin 8 → Fin rk → ZMod S.N, ∃ (mu : D.toPre.X) (ee : Ω) (aa : M.Z.presheaf.stalk x), CongMod S.N mu (κE.symm (cz cl)) ∧ (∀ α, CongMod S.N α (κE.symm (cz cl)) → ∀ r s, PsiCoord D.toPre mu r → PsiCoord D.toPre α s → r ∣ s) ∧ ee ≠ 0 ∧ (∃ (T₁ : AddSubgroup S.Gam) (c' : T₁ …`. Introduce `cl`.
+
+Take `⟨mu, h1, h2, ee, aa, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_minimal_psiCoordinate_associated_fourierPower o' Ω S ρ hBig M U₀ EE FinalForm hAdm hEE x hx R j hB hcpl G gm hpb D A U hLB hpsiU (κE.symm (cz cl))`. Conclude with `⟨mu, ee, aa, h1, h2, h3, h4, h5, h6⟩`. Use `choose mu ee aa hmuC hmuMin hee hFF hEa hassoc using hQ`. Establish `hcong : ∀ cl (y : D.toPre.X), CongMod S.N y (κE.symm (cz cl)) ↔ ∀ u i, ((κE y u i : ℤ) : ZMod S.N) = cl u i`. Introduce `cl y`.
+
+Rewrite using `[congMod_iff κE]`. Simplify using `only [AddEquiv.apply_symm_apply]`. Use `forall_congr' fun u => forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← hcz cl u i, eq_comm, ZMod.intCast_eq_intCast_iff_dvd_sub]`. Set `b₀ : LinearMap.BilinForm ℤ (Fin rk → ℤ)` to `T₀.β.compl₁₂ ι.symm.toLinearMap ι.symm.toLinearMap`.
+
+Establish `hqb : ∀ v, qW W b₀ v = qW W T₀.β (fun u => ι.symm (v u))` using `fun v => rfl`. Establish `cmp : ∀ (T : Trait F) (V' : Type) [CommRing V'] [IsDomain V'] (h : T.V →+* V') (g' : R →+* V') (ρT : D.toPre.X →+ (Fin 8 → T.D.toPre.X)), Irreducible (h T.ϖ) → (∀ y r, PsiCoord D.toPre y r → 0 ≤ qW W T.β (ρT y) ∧ Associated (g' r) (h T.ϖ ^ (qW W T.β (ρT y)).toNat)) → ∀ cl y, Cong …`. Introduce `T V' _ _ h g' ρT hirr hord cl y hy`. Take `⟨r₁, hr₁, -⟩` from `(GlobalTheory.PsiCoordLocal.main R D hRi (mu cl)).1`. Take `⟨r₂, hr₂, -⟩` from `(GlobalTheory.PsiCoordLocal.main R D hRi y).1`.
+
+Take `⟨h1, a1⟩` from `hord _ _ hr₁`. Take `⟨h2, a2⟩` from `hord _ _ hr₂`. Conclude with `le_of_assoc_pow hirr h1 h2 a1 a2 (map_dvd g' (hmuMin cl y hy r₁ r₂ hr₁ hr₂))`. Use `⟨rk, b₀, fun cl => κE (mu cl), ee, Trait.finrank_le_of_three_le g n F hn T₀, fun _ _ => T₀.symm _ _, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`.
+
+Conclude with `Trait.beta_pos g n _ (zetaAway n) F T₀ (ι.symm v) ((LinearEquiv.map_ne_zero_iff ι.symm).2 hv)`. Introduce `cl u i`. Conclude with `(hcong cl (mu cl)).1 (hmuC cl) u i`. Introduce `cl α hα`. Establish `hy : CongMod S.N (κE.symm α) (κE.symm (cz cl))` using `(hcong cl _).2 (by simpa using hα)`.
+
+Establish `h1` using `cmp T₀ V₀ h₀ g₀ ρ₀ hirr₀ hord₀ cl _ hy`. Establish `e1 : (fun u => ι.symm (κE (mu cl) u)) = ρ₀ (mu cl)` using `funext (hκ' _)`. Establish `e2 : (fun u => ι.symm (α u)) = ρ₀ (κE.symm α)`. Use function extensionality and compare the values at `u`. Rewrite using `[← hκ', AddEquiv.apply_symm_apply]`.
+
+Rewrite using `[hqb, hqb, e1, e2]`. Conclude with `h1`. Introduce `cl`. Conclude with `⟨hee cl, hFF cl⟩`. Introduce `T ξ hT hs`.
+
+Take `⟨V', _, _, _, h, g', ρT, hinj, hirr, hsq, hsurj, hord, hrel⟩` from `key T ξ hT hs`. Take `⟨πT, hπs, hπ⟩` from `exists_diag_of_matRel W hW D.toPre.X T₀.D.toPre.X T.D.toPre.X m e₀ ρT hsurj (fun a b y => hrel₀ a b y) hrel`. Set `π : (Fin rk → ℤ) →+ T.D.toPre.X` to `πT.comp ι.symm.toLinearMap.toAddMonoidHom`. Establish `hqπ : ∀ v, qW W (T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap) v = qW W T.β (fun u => πT (ι.symm (v u)))` using `fun v => rfl`. Establish `hρT : ∀ y, (fun u => πT (ι.symm (κE y u))) = ρT y` using `fun y => funext fun u => by`.
+
+Rewrite using `[hκ', hπ]`. Both sides reduce to the same expression. Use `⟨π, hπs.comp ι.symm.surjective, ?_, ?_⟩` and prove the remaining obligations. Introduce `cl α hα`. Establish `hy : CongMod S.N (κE.symm α) (κE.symm (cz cl))` using `(hcong cl _).2 (by simpa using hα)`.
+
+Establish `h1` using `cmp T V' h g' ρT hirr hord cl _ hy`. Establish `e2 : (fun u => πT (ι.symm (α u))) = ρT (κE.symm α)` using `by rw [← hρT, AddEquiv.apply_symm_apply]`. Rewrite using `[hqπ, hqπ, hρT, e2]`. Conclude with `h1`. Introduce `cl`.
+
+Rewrite using `[hqπ, hρT]`. Take `⟨r₁, hr₁, -⟩` from `(GlobalTheory.PsiCoordLocal.main R D hRi (mu cl)).1`. Take `⟨h1, a1⟩` from `hord _ _ hr₁`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hEa cl]`.
+
+Establish `hsq' : spMap (g'.comp j) ≫ M.Z.fromSpecStalk x = spMap h ≫ ξ`. Rewrite using `[← hsq, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Conclude with `ordEq_of_assoc M x T ξ hs h (g'.comp j) hinj hirr hsq' (aa cl) _ (((hassoc cl r₁ hr₁).map g').trans a1)`.
+-/
 theorem GlobalTheory.Poinc.Clocx.exists_at_closedPoint : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X), S.Big → SharpOver F W ρ.P u → (∀ w, (spMap S.R.val.toRingHom ≫ u) w ∈ genericPoints F.X) → ∀ (_ : NeZero S.N) (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∃ (r : ℕ) (b₀ : LinearMap.BilinForm ℤ (Fin r → ℤ)) (μ : (Fin 8 → Fin r → ZMod S.N) → (Fin 8 → Fin r → ℤ)) (e : (Fin 8 → Fin r → ZMod S.N) → Ω), r ≤ g ∧ (∀ x y, b₀ x y = b₀ y x) ∧ (∀ x, x ≠ 0 → 0 < b₀ x x) ∧ (∀ c u i, ((μ c u i : ℤ) : ZMod S.N) = c u i) ∧ (∀ c (α : Fin 8 → Fin r → ℤ), (∀ u i, ((α u i : ℤ) : ZMod S.N) = c u i) → qW W b₀ (μ c) ≤ qW W b₀ α) ∧ (∀ c, e c ≠ 0 ∧ ∃ (T₀ : AddSubgroup S.Gam) (c' : T₀ →+ ZMod S.N) (κ : S.J × (T₀ → ZMod ((S.r * S.N) ^ 2))) (x₀ : S.Gam), S.IsoFree T₀ ∧ e c = S.FF T₀ c' κ / S.th x₀) ∧ ∀ (T : Trait F) (ξ : Sp T.V ⟶ M.Z), ThroughU M U₀ FinalForm.u₀ u T ξ → ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∃ π : (Fin r → ℤ) →+ T.D.toPre.X, Function.Surjective π ∧ (∀ c (α : Fin 8 → Fin r → ℤ), (∀ u i, ((α u i : ℤ) : ZMod S.N) = c u i) → qW W (T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap) (μ c) ≤ qW W (T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap) α) ∧ ∀ c, 0 ≤ qW W (T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap) (μ c) ∧ OrdEq M T ξ (e c ^ S.N) (qW W (T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap) (μ c)).toNat := by
   intro g n hg hn hodd F W hW o' Ω _ _ _ _ S ρ u hBig hsharp _ hN M U₀ EE FinalForm hAdm hEE x hx
   have hU : (U₀ : Set M.Z).Nonempty := hAdm.1.ne

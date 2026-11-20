@@ -18,6 +18,9 @@ section Discrete
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf, mem_stabilizer, mem_stabilizer]`. Rewrite using `[mem_stabilizer, tensor_ρ_tmul, hg.1, hg.2]`.
+-/
 theorem stabilizer_inf_le_stabilizer_tmul (A B : Rep.{u} k G) (a : A) (b : B) :
     stabilizer A.ρ a ⊓ stabilizer B.ρ b ≤
       stabilizer (A ⊗ B).ρ (a ⊗ₜ[k] b : (A ⊗ B : Rep k G)) := by
@@ -46,6 +49,11 @@ variable [IsTopologicalGroup G]
 
 section LocallyConstant
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hpre : Continuous fun y : Fin n → G => fun i : Fin p => y ⟨i, by omega⟩` using `continuous_pi fun i => continuous_apply _`. Establish `hsuf : Continuous fun y : Fin n → G => fun j : Fin q => y ⟨p + j, by omega⟩` using `continuous_pi fun j => continuous_apply _`. Establish `hP : Continuous fun y : Fin n → G => Fin.partialProd y ⟨p, by omega⟩` using `(continuous_apply _).comp (continuous_partialProd (G := G) n)`.
+
+Establish `e1 : ∀ᶠ y in nhds x, f (fun i : Fin p => y ⟨i, by omega⟩) = f (fun i : Fin p => x ⟨i, by omega⟩)` using `hpre.continuousAt.eventually (hf.eventually_eq _)`. Establish `e2 : ∀ᶠ y in nhds x, g (fun j : Fin q => y ⟨p + j, by omega⟩) = g (fun j : Fin q => x ⟨p + j, by omega⟩)` using `hsuf.continuousAt.eventually (hg.eventually_eq _)`. Establish `e3 : ∀ᶠ y in nhds x, B.ρ (Fin.partialProd y ⟨p, by omega⟩) (g fun j : Fin q => x ⟨p + j, by omega⟩) = B.ρ (Fin.partialProd x ⟨p, by omega⟩) (g fun j : Fin q => x ⟨p + j, by omega⟩)` using `hP.continuousAt.eventually ((isLocallyConstant_apply B _).eventually_eq _)`. Use `filter_upwards [e1, e2, e3] with y h1 h2 h3`. Rewrite using `[cupCochain_apply, cupCochain_apply, h1, h2, h3]`.
+-/
 theorem isLocallyConstant_cupCochain {A B : Rep.{u} k G} [IsDiscreteRep B] {p q n : ℕ}
     (h : p + q = n) {f : (Fin p → G) → A} {g : (Fin q → G) → B} (hf : IsLocallyConstant f)
     (hg : IsLocallyConstant g) : IsLocallyConstant (cupCochain h f g) := by
@@ -73,11 +81,17 @@ theorem isLocallyConstant_cupCochain {A B : Rep.{u} k G} [IsDiscreteRep B] {p q 
 variable {A B : Rep.{u} k G} {p q n : ℕ}
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+The claim follows from `(cupₗ h).map_zero₂ g`.
+-/
 theorem cupCochain_zero_left (h : p + q = n) (g : (Fin q → G) → B) :
     cupCochain h (0 : (Fin p → G) → A) g = 0 :=
   (cupₗ h).map_zero₂ g
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+The claim follows from `(cupₗ h f).map_zero`.
+-/
 theorem cupCochain_zero_right (h : p + q = n) (f : (Fin p → G) → A) :
     cupCochain h f (0 : (Fin q → G) → B) = 0 :=
   (cupₗ h f).map_zero
@@ -98,31 +112,52 @@ def mkCochain [IsDiscreteRep A] {i : ℕ} (c : (Fin i → G) → A) (hc : IsLoca
 variable [IsDiscreteRep A]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_mkCochain {i : ℕ} (c : (Fin i → G) → A) (hc : IsLocallyConstant c) :
     cochainOf A (mkCochain A c hc) = c :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(a : locallyConstantCochains A i).2`.
+-/
 theorem isLocallyConstant_cochainOf {i : ℕ} (a : (cochainsComplex A).X i) :
     IsLocallyConstant (cochainOf A a) :=
   (a : locallyConstantCochains A i).2
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext h @[simp]`.
+-/
 theorem cochainOf_injective {i : ℕ} : Function.Injective (cochainOf A (i := i)) :=
   fun _ _ h => Subtype.ext h
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem cochainOf_add {i : ℕ} (a b : (cochainsComplex A).X i) :
     cochainOf A (a + b) = cochainOf A a + cochainOf A b :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem cochainOf_smul {i : ℕ} (c : k) (a : (cochainsComplex A).X i) :
     cochainOf A (c • a) = c • cochainOf A a :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_zero {i : ℕ} : cochainOf A (0 : (cochainsComplex A).X i) = 0 :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[cochainsComplex_d]`. Both sides reduce to the same expression.
+-/
 theorem cochainOf_d {i : ℕ} (a : (cochainsComplex A).X i) :
     cochainOf A ((cochainsComplex A).d i (i + 1) a) =
       (inhomogeneousCochains.d A i).hom (cochainOf A a) := by
@@ -144,6 +179,9 @@ def cupLocallyConstant (h : p + q = n) :
     (fun c f g => cochainOf_injective ((cupₗ h (cochainOf A f)).map_smul c (cochainOf B g)))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_cupLocallyConstant (h : p + q = n) (f : (cochainsComplex A).X p)
     (g : (cochainsComplex B).X q) :
     cochainOf (A ⊗ B) (cupLocallyConstant h f g) = cupCochain h (cochainOf A f) (cochainOf B g) :=
@@ -160,21 +198,33 @@ variable (A p) in
 def cocycleι : cocycles A p →ₗ[k] (cochainsComplex A).X p :=
   ((cochainsComplex A).iCycles p).hom
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.mono_iff_injective ((cochainsComplex A).iCycles p)).1 inferInstance`.
+-/
 theorem cocycleι_injective : Function.Injective (cocycleι A p) :=
   (ModuleCat.mono_iff_injective ((cochainsComplex A).iCycles p)).1 inferInstance
 
+/- English proof (translation)
+Rewrite using `[← cochainOf_d]`. Establish `h` using `congrArg (fun φ => φ.hom x) ((cochainsComplex A).iCycles_d p (p + 1))`. Conclude with `congrArg (cochainOf A) h`.
+-/
 theorem d_cocycleι (x : cocycles A p) :
     (inhomogeneousCochains.d A p).hom (cochainOf A (cocycleι A p x)) = 0 := by
   rw [← cochainOf_d]
   have h := congrArg (fun φ => φ.hom x) ((cochainsComplex A).iCycles_d p (p + 1))
   exact congrArg (cochainOf A) h
 
+/- English proof (translation)
+Rewrite using `[← cochainOf_d]`. Conclude with `congrArg (fun φ => cochainOf A (φ.hom a)) ((cochainsComplex A).toCycles_i i (i + 1))`.
+-/
 theorem cochainOf_cocycleι_toCycles {i : ℕ} (a : (cochainsComplex A).X i) :
     cochainOf A (cocycleι A (i + 1) ((cochainsComplex A).toCycles i (i + 1) a)) =
       (inhomogeneousCochains.d A i).hom (cochainOf A a) := by
   rw [← cochainOf_d]
   exact congrArg (fun φ => cochainOf A (φ.hom a)) ((cochainsComplex A).toCycles_i i (i + 1))
 
+/- English proof (translation)
+Rewrite using `[d_cupCochain, d_cocycleι, d_cocycleι, cupCochain_zero_left, cupCochain_zero_right, smul_zero, add_zero]`.
+-/
 theorem isCocycle_cupCochain (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     (inhomogeneousCochains.d (A ⊗ B) n).hom
       (cupCochain h (cochainOf A (cocycleι A p x)) (cochainOf B (cocycleι B q y))) = 0 := by
@@ -187,6 +237,9 @@ def cupCocyclesAlt (h : p + q = n) (x : cocycles A p) (y : cocycles B q) : cocyc
       apply cochainOf_injective (A := A ⊗ B)
       exact (cochainOf_d (A := A ⊗ B) _).trans (isCocycle_cupCochain h x y))
 
+/- English proof (translation)
+The claim follows from `(cochainsComplex (A ⊗ B)).i_cyclesMk _ _ _ _`.
+-/
 theorem cocycle_inclusion_cupCocycles (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     cocycleι (A ⊗ B) n (cupCocyclesAlt h x y) =
       cupLocallyConstant h (cocycleι A p x) (cocycleι B q y) :=
@@ -201,11 +254,17 @@ def cupCocycles (h : p + q = n) :
     (fun c x y => cocycleι_injective (by simp [cocycle_inclusion_cupCocycles]))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `cocycle_inclusion_cupCocycles h x y`.
+-/
 theorem cocycleι_cupCocycles (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     cocycleι (A ⊗ B) n (cupCocycles h x y) =
       cupLocallyConstant h (cocycleι A p x) (cocycleι B q y) :=
   cocycle_inclusion_cupCocycles h x y
 
+/- English proof (translation)
+Substitute `hi hm hmn` using the available equality. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cocycleι_toCycles, cochainOf_cocycleι_toCycles, cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι, cupCochain_zero_right, smul_zero, add_zero]`.
+-/
 theorem cupCocycles_toCycles_left (h : p + q = n) {i m : ℕ} (hi : i + 1 = p) (hm : i + q = m)
     (hmn : m + 1 = n) (a : (cochainsComplex A).X i) (y : cocycles B q) :
     cupCocycles h ((cochainsComplex A).toCycles i p a) y =
@@ -217,6 +276,9 @@ theorem cupCocycles_toCycles_left (h : p + q = n) {i m : ℕ} (hi : i + 1 = p) (
     cochainOf_cocycleι_toCycles, cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι,
     cupCochain_zero_right, smul_zero, add_zero]
 
+/- English proof (translation)
+Substitute `hj hm hmn` using the available equality. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[map_smul, cochainOf_smul, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cocycleι_toCycles, cochainOf_cocycleι_toCycles, cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι, cupCochain_zero_left, zero_add, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, on …`.
+-/
 theorem cupCocycles_toCycles_right (h : p + q = n) {j m : ℕ} (hj : j + 1 = q) (hm : p + j = m)
     (hmn : m + 1 = n) (x : cocycles A p) (b : (cochainsComplex B).X j) :
     cupCocycles h x ((cochainsComplex B).toCycles j q b) =
@@ -236,15 +298,24 @@ section Cohomology
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] {p q n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.epi_iff_surjective ((cochainsComplex A).homologyπ p)).1 inferInstance`.
+-/
 theorem cohomologyπ_surjective (A : Rep.{u} k G) [IsDiscreteRep A] (p : ℕ) :
     Function.Surjective (cohomologyπ A p) :=
   (ModuleCat.epi_iff_surjective ((cochainsComplex A).homologyπ p)).1 inferInstance
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom a) ((cochainsComplex A).toCycles_comp_homologyπ i p)`.
+-/
 theorem cohomologyπ_toCycles (A : Rep.{u} k G) [IsDiscreteRep A] (i p : ℕ)
     (a : (cochainsComplex A).X i) :
     cohomologyπ A p ((cochainsComplex A).toCycles i p a) = 0 :=
   congrArg (fun φ => φ.hom a) ((cochainsComplex A).toCycles_comp_homologyπ i p)
 
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨x, rfl⟩` from `cohomologyπ_surjective A p z`. Conclude with `hfg x`.
+-/
 theorem cohomology_linearMap_ext {M : Type*} [AddCommGroup M] [Module k M]
     {f g : cohomology A p →ₗ[k] M} (hfg : ∀ x, f (cohomologyπ A p x) = g (cohomologyπ A p x)) :
     f = g := by
@@ -256,6 +327,9 @@ def cocyclesHom {M : Type u} [AddCommGroup M] [Module k M] (L : cocycles A p →
     (cochainsComplex A).cycles p ⟶ ModuleCat.of k M :=
   ModuleCat.ofHom L
 
+/- English proof (translation)
+Distinguish the cases in `hr : (ComplexShape.up ℕ).Rel ((ComplexShape.up ℕ).prev p) p`. Use extensionality with `a`. Conclude with `hL _ hr a`. Rewrite using `[(cochainsComplex A).toCycles_eq_zero hr]`. Conclude with `zero_comp`.
+-/
 theorem toCycles_cocyclesHom {M : Type u} [AddCommGroup M] [Module k M]
     (L : cocycles A p →ₗ[k] M)
     (hL : ∀ i, i + 1 = p → ∀ a, L ((cochainsComplex A).toCycles i p a) = 0) :
@@ -272,6 +346,9 @@ def descCohomologyHom {M : Type u} [AddCommGroup M] [Module k M] (L : cocycles A
   ((cochainsComplex A).homologyIsCokernel _ p rfl).desc
     (CokernelCofork.ofπ (cocyclesHom L) (toCycles_cocyclesHom L hL))
 
+/- English proof (translation)
+The claim follows from `Cofork.IsColimit.π_desc ((cochainsComplex A).homologyIsCokernel _ p rfl)`.
+-/
 theorem π_descCohomologyHom {M : Type u} [AddCommGroup M] [Module k M] (L : cocycles A p →ₗ[k] M)
     (hL : ∀ i, i + 1 = p → ∀ a, L ((cochainsComplex A).toCycles i p a) = 0) :
     cohomologyπ A p ≫ descCohomologyHom L hL = cocyclesHom L :=
@@ -283,6 +360,9 @@ def descCohomology {M : Type u} [AddCommGroup M] [Module k M] (L : cocycles A p 
   (descCohomologyHom L hL).hom
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (π_descCohomologyHom L hL) x`.
+-/
 theorem descCohomology_cohomologyπ {M : Type u} [AddCommGroup M] [Module k M]
     (L : cocycles A p →ₗ[k] M)
     (hL : ∀ i, i + 1 = p → ∀ a, L ((cochainsComplex A).toCycles i p a) = 0) (x : cocycles A p) :
@@ -293,15 +373,24 @@ def cupCocyclesπ (h : p + q = n) :
     cocycles A p →ₗ[k] cocycles B q →ₗ[k] cohomology (A ⊗ B) n :=
   (cupCocycles h).compr₂ (cohomologyπ (A ⊗ B) n).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cupCocyclesπ_apply (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     cupCocyclesπ h x y = cohomologyπ (A ⊗ B) n (cupCocycles h x y) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[cupCocyclesπ_apply, cupCocycles_toCycles_left h hi rfl (by omega), cohomologyπ_toCycles]`.
+-/
 theorem cupCocyclesπ_toCycles_left (h : p + q = n) (i : ℕ) (hi : i + 1 = p)
     (a : (cochainsComplex A).X i) (y : cocycles B q) :
     cupCocyclesπ h ((cochainsComplex A).toCycles i p a) y = 0 := by
   rw [cupCocyclesπ_apply, cupCocycles_toCycles_left h hi rfl (by omega), cohomologyπ_toCycles]
 
+/- English proof (translation)
+Rewrite using `[cupCocyclesπ_apply, cupCocycles_toCycles_right h hj rfl (by omega), map_smul, cohomologyπ_toCycles, smul_zero]`.
+-/
 theorem cupCocyclesπ_toCycles_right (h : p + q = n) (x : cocycles A p) (j : ℕ) (hj : j + 1 = q)
     (b : (cochainsComplex B).X j) :
     cupCocyclesπ h x ((cochainsComplex B).toCycles j q b) = 0 := by
@@ -313,6 +402,9 @@ def cupProductCocycleClass (h : p + q = n) : cohomology B q →ₗ[k] cocycles A
     ext x
     exact cupCocyclesπ_toCycles_right h x j hj b
 
+/- English proof (translation)
+Rewrite using `[cupProductCocycleClass, descCohomology_cohomologyπ]`. Both sides reduce to the same expression.
+-/
 theorem cup_cohomology_class (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     cupProductCocycleClass h (cohomologyπ B q y) x = cupCocyclesπ h x y := by
   rw [cupProductCocycleClass, descCohomology_cohomologyπ]
@@ -326,6 +418,9 @@ def cup (h : p + q = n) : cohomology A p →ₗ[k] cohomology B q →ₗ[k] coho
     rfl
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[cup, descCohomology_cohomologyπ, LinearMap.flip_apply, cup_cohomology_class]`. Both sides reduce to the same expression.
+-/
 theorem cup_cohomologyπ (h : p + q = n) (x : cocycles A p) (y : cocycles B q) :
     cup h (cohomologyπ A p x) (cohomologyπ B q y) = cohomologyπ (A ⊗ B) n (cupCocycles h x y) := by
   rw [cup, descCohomology_cohomologyπ, LinearMap.flip_apply, cup_cohomology_class]

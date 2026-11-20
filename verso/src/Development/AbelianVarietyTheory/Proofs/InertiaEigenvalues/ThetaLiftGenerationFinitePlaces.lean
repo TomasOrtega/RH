@@ -22,6 +22,11 @@ namespace GlobalTheory.DownLift.GenFinite
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `e : ∀ h : GA D (Vc D i), thetaKO (R.ωP i t) h g (R.ωP i t (1, g') f) = thetaKO (R.ωP i t) h (g * g') f`. Introduce `h`. Establish `hm : ((h, g) : GA D (Vc D i) × GA D (Wc D i)) * (1, g') = (h, g * g')`. Rewrite using `[Prod.mk_mul_mk, mul_one]`. Use `show R.ωP i t (h, g) (R.ωP i t (1, g') f) 0 = R.ωP i t (h, g * g') f 0`.
+
+Rewrite using `[← hm, map_mul, Module.End.mul_apply]`. Simplify using `only [downInt, e]`.
+-/
 theorem downInt_transl (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f : WO (Vc D i) (Wc D i) → ℂ)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) (g g' : GA D (Wc D i)) :
     downInt R i t y (R.ωP i t (1, g') f) l g = downInt R i t y f l (g * g') := by
@@ -33,6 +38,9 @@ theorem downInt_transl (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i
     rw [← hm, map_mul, Module.End.mul_apply]
   simp only [downInt, e]
 
+/- English proof (translation)
+Unfold `downInt`. Rewrite using `[← integral_add hf hf']`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_add, Pi.add_apply, add_mul]`.
+-/
 theorem downInt_add (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f f' : WO (Vc D i) (Wc D i) → ℂ)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i))
     (hf : IntegrableOn (fun h => thetaKO (R.ωP i t) h g f * l (R.extV i t y h)) (R.fdV i t) (R.νV i t))
@@ -44,6 +52,9 @@ theorem downInt_add (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t)
   funext h
   simp only [thetaKO, map_add, Pi.add_apply, add_mul]
 
+/- English proof (translation)
+Unfold `downInt`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem downInt_smul (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (c : ℂ) (f : WO (Vc D i) (Wc D i) → ℂ)
     (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)) :
     downInt R i t y (c • f) l g = c * downInt R i t y f l g := by
@@ -57,6 +68,27 @@ end GlobalTheory.DownLift.GenFinite
 
 namespace GlobalTheory.DownLift.GenFinite
 
+/- English proof (translation)
+Introduce `hH D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hNC hvan`. Introduce and unpack `⟨f, l, g, hf, hne⟩`. Apply `hne` to reduce the goal to its premises. Establish `hθ : ∀ (p : GA D (Vc D i) × GA D (Wc D i)) (φ : WO (Vc D i) (Wc D i) → ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) φ → IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.ωP i t p φ)` using `fun p φ hφ => (hP i t).datum.om_pres p φ hφ`. Set `Pr : (WO (Vc D i) (Wc D i) → ℂ) → Prop` to `fun φ => IsThetaFunO R.ψ (Vc D i) (Wc D i) φ ∧ ∀ (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y φ l g = 0`.
+
+Establish `hint` using `GlobalTheory.T.integrableOn_downwardThetaLift_integrand D G Pl0 T A Ks R F hG hP i t y`. Establish `hadd : ∀ φ φ', Pr φ → Pr φ' → Pr (φ + φ')`. Introduce `φ φ' h1 h2`. Use `⟨theta_add h1.1 h2.1, fun l g => ?_⟩` and prove the remaining obligations. Rewrite using `[downInt_add R i t y φ φ' l g (hint φ l g h1.1) (hint φ' l g h2.1), h1.2 l g, h2.2 l g, add_zero]`.
+
+Establish `hsmul : ∀ (c : ℂ) φ, Pr φ → Pr (c • φ)`. Introduce `c φ h1`. Conclude with `⟨theta_smul c h1.1, fun l g => by rw [downInt_smul, h1.2 l g, mul_zero]⟩`. Establish `hzero : Pr 0` using `⟨by simpa using theta_smul (0 : ℂ) hf, fun l g => by simpa using downInt_smul R i t y 0 f l g⟩`. Establish `hspan : ∀ s : Set (WO (Vc D i) (Wc D i) → ℂ), (∀ φ ∈ s, Pr φ) → ∀ φ ∈ Submodule.span ℂ s, Pr φ`.
+
+Introduce `s hs φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => exact hzero`. Consider the case `add x y' _ _ hx hy => exact hadd x y' hx hy`.
+
+Consider the case `smul c x _ hx => exact hsmul c x hx`. Establish `hGen : ∀ φ ∈ Gen R i t, Pr φ`. Introduce and unpack `φ ⟨g', f', hf', rfl⟩`. Conclude with `⟨hθ _ _ hf'.1, fun l g => by rw [downInt_transl]; exact hvan f' hf' l (g * g')⟩`. Establish `hAvg : ∀ φ ∈ AvgIm R i t, Pr φ`.
+
+Introduce and unpack `φ ⟨PP, a, ha, tr, ε, hε, κ, hκ, f', hf', rfl⟩`. Use `⟨?_, fun l g => GlobalTheory.T.level_averages_theta_pair_zero_without_character D G Pl0 T A Ks R F hG hP i t y hNC PP a ha tr ε hε κ hκ f' hf' l g⟩` and prove the remaining obligations. Unfold `avgW`. Conclude with `theta_sum _ _ f' hf' fun k _ => theta_smul _ (hθ _ _ hf')`. Establish `hType : ∀ φ, TypeVec R i t φ → Pr φ`.
+
+Introduce `φ hφ`. Use `hspan _ ?_ φ (GlobalTheory.T.thetaFunction_levelType_mem_span_averages D G Pl0 T A Ks R F hG hP i t φ hφ)` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`. Conclude with `hspan _ hGen x (GlobalTheory.T.thetaFunction_levelType_mem_span_translates hH D G Pl0 T A Ks R F hG hP i t x hx.1 hx.2)`. Conclude with `hAvg x hx`.
+
+Establish `hDiff : ∀ φ ∈ TypeDiff R i t, Pr φ`. Introduce and unpack `φ ⟨κ, hκ, f', hf', rfl⟩`. Use `⟨theta_sub (hθ _ _ hf') (theta_smul _ hf'), fun l g => ?_⟩` and prove the remaining obligations. Establish `e : R.ωP i t (κ, 1) f' - (levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ • f' = R.ωP i t (κ, 1) f' + (-(levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹) • f'`. Rewrite using `[neg_smul, sub_eq_add_neg]`.
+
+Rewrite using `[e, downInt_add R i t y _ _ l g (hint _ l g (hθ _ _ hf')) (hint _ l g (theta_smul _ hf')), downInt_smul, GlobalTheory.T.downwardLift_level_acts_by_inverse_character D G Pl0 T A Ks R F hG hP i t y f' hf' κ hκ l g]`. Expand and normalize the polynomial expressions, which then agree. Use `(hspan _ ?_ f (GlobalTheory.T.thetaFunction_mem_span_levelType_differences D G Pl0 T A Ks R F hG hP i t f hf)).2 l g` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`. Conclude with `hType x hx`.
+
+Conclude with `hDiff x hx`.
+-/
 theorem genFin : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, GenFin R i t := by
   intro hH D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hNC hvan
   rintro ⟨f, l, g, hf, hne⟩

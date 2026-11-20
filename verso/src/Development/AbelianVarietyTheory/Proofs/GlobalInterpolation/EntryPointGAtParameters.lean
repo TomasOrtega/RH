@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT Globa
 
 namespace GlobalTheory.Fc.RL
 
+/- English proof (translation)
+Use `RowE.of_all fun κ K β c b _ _ hl => ?_` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Establish `h1` using `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R1.P_hDcPtG s.1 s.2.1 c s.2.2) he`. Use `cast h1.symm ?_` and prove the remaining obligations. Use `show GlobalTheory.Cp.DcPtG _`.
+
+Establish `hP : b'.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x` using `congrArg RPk.P w.y.eq`. Rewrite using `[hP]`. Conclude with `(GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1`.
+-/
 theorem rowE_dcPt_linked {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm hL) (Q : V4.Slot) :
     RowE Q (IsLinked p) (fun _ => R1.P_hDcPtG) := by
   refine RowE.of_all fun κ K β c b _ _ hl => ?_
@@ -19,6 +24,9 @@ theorem rowE_dcPt_linked {hL : GlobalTheory.Published.LocalLanglandsGL} (p : Prm
   rw [hP]
   exact (GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1
 
+/- English proof (translation)
+Introduce `hL N S Γ`. Conclude with `At.of_row (RowE.row (rowE_dcPt_linked _ _))`.
+-/
 theorem at_hDcPtG : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP),
     RL.At (prmR N S Γ) R1.DecompositionConditionAtBundlePoints := by
   intro hL N S Γ

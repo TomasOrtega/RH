@@ -16,6 +16,23 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.P
 
 namespace GlobalTheory.DenseInvFrob
 
+/- English proof (translation)
+Use `set v := w.under (𝓞 (maximalRealSubfield E)) with hv`. Use `set p : Ideal (𝓞 (maximalRealSubfield E)) := v.asIdeal with hp`. Use `haveI : p.IsPrime := v.isPrime`. Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Use `haveI hlo : w.asIdeal.LiesOver p := ⟨rfl⟩`.
+
+Assume the negation of the conclusion as `hns`. Establish `hfin : (p.primesOver (𝓞 E)).Finite` using `Algebra.QuasiFinite.finite_primesOver p`. Set `_ : Fintype (p.primesOver (𝓞 E))` to `hfin.fintype`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank p (𝓞 E)`. Establish `hrank : Module.finrank (𝓞 (maximalRealSubfield E)) (𝓞 E) = 2`.
+
+Rewrite using `[← Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) (𝓞 E) E).symm`. Rewrite `hsum` using `[hrank]`. Establish `hf1 : w.asIdeal.inertiaDeg (𝓞 (maximalRealSubfield E)) = 1`. Use `Ideal.inertiaDeg_tower (R := ℤ) p w.asIdeal` as an intermediate fact.
+
+Rewrite `this` using `[hf]`. Conclude with `Nat.eq_one_of_mul_eq_one_left this.symm`. Establish `he1 : w.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1`. Use `Ideal.ramificationIdx_tower (R := ℤ) p w.asIdeal` as an intermediate fact. Rewrite `this` using `[he]`.
+
+Conclude with `Nat.eq_one_of_mul_eq_one_left this.symm`. Establish `hPmem : w.asIdeal ∈ p.primesOver (𝓞 E)` using `⟨inferInstance, hlo⟩`. Establish `huniq : ∀ q : p.primesOver (𝓞 E), q = ⟨w.asIdeal, hPmem⟩`. Introduce `q`. Establish `hq : q.1.IsPrime` using `q.2.1`.
+
+Establish `hql : q.1.LiesOver p` using `q.2.2`. Establish `hne : q.1 ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot q.1`. Set `u : HeightOneSpectrum (𝓞 E)` to `⟨q.1, hq, hne⟩`. Assume the negation of the conclusion as `hqw`. Apply `hns` to reduce the goal to its premises.
+
+Use `⟨u, fun h => hqw (Subtype.ext (congrArg HeightOneSpectrum.asIdeal h)), ?_⟩` and prove the remaining obligations. Use `ext1`. Simplify using `only [HeightOneSpectrum.under_asIdeal]`. Conclude with `hql.over.symm`. Rewrite `hsum` using `[Finset.sum_eq_single ⟨w.asIdeal, hPmem⟩ (fun b _ hb => absurd (huniq b) hb) (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Simplify using `only [he1, hf1, mul_one] at hsum`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isSplitAt_of_inertiaDeg_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E]
     (w : HeightOneSpectrum (𝓞 E)) (hf : w.asIdeal.inertiaDeg ℤ = 1)
     (he : w.asIdeal.ramificationIdx ℤ = 1) : IsSplitAt w := by

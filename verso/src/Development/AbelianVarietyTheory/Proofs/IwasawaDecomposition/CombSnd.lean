@@ -24,12 +24,20 @@ section Group
 variable {S : Type} [CommRing S] {X : Scheme.{0}} {x : Sp S ⟶ X} {G : Over X} {G' : Over (Sp S)} [GrpObj G]
   [GrpObj G'] {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Unfold `IsTangent at hw`. Rewrite using `[GlobalTheory.ArcLie.le_iff_fst, ← Category.assoc, hw]`. Conclude with `hV`.
+-/
 theorem tan_le (h : IsGrpPullback G' G x φ) (w : epsR S ⟶ G') (hw : IsTangent w) (V : G.left.Opens)
     (hV : ⊤ ≤ ((η[G']).left ≫ φ) ⁻¹ᵁ V) : ⊤ ≤ (w.left ≫ φ) ⁻¹ᵁ V := by
   unfold IsTangent at hw
   rw [GlobalTheory.ArcLie.le_iff_fst, ← Category.assoc, hw]
   exact hV
 
+/- English proof (translation)
+Take `⟨u, hu, hp⟩` from `(ReciprocityTheory.ChartRestriction.G.Chart.comb_push h c v w).1 hc`. Establish `e1 : (show Sp S ⟶ G'.left from (1 : Over.mk (𝟙 (Sp S)) ⟶ G').left) = (η[G']).left`. Establish `: (1 : Over.mk (𝟙 (Sp S)) ⟶ G') = η[G']`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Establish `key` using `GlobalTheory.ArcLie.snd_comb_lift h (x' := 𝟙 (Sp S)) (Category.id_comp x) (fun k => (v k).left) (fun k => by rw [Category.comp_id]; exact Over.w (v k)) (fun k => (ReciprocityTheory.ChartRestriction.G.Chart.tan_push h (v k)).1 (hv k)) c w.left (by rw [Category.comp_id]; exact Over …`. Rewrite using `[GlobalTheory.HolHom.valR_comp, key]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [GlobalTheory.HolHom.valR_comp]`.
+-/
 theorem comb_snd [IsCommMonObj G'] (h : IsGrpPullback G' G x φ) {n : ℕ} (v : Fin n → (epsR S ⟶ G'))
     (hv : ∀ k, IsTangent (v k)) (c : Fin n → S) (w : epsR S ⟶ G') (hc : IsLieComb c v w) (V : G.left.Opens)
     (hV : ⊤ ≤ ((η[G']).left ≫ φ) ⁻¹ᵁ V) (f : Γ(G.left, V)) :

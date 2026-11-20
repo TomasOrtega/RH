@@ -93,6 +93,9 @@ def trivR (v : InfinitePlace K) (m f T Mw : ℕ) (hb gE : ℝ) (Q : Finset ℕ) 
   R := stdLat K _
   ψ := ((Pi.basisFun K (Fin (rT f T))).dualBasis.equivFun : Module.Dual K (Fin (rT f T) → K) ≃ₗ[K] (Fin (rT f T) → K)).toLinearMap
 
+/- English proof (translation)
+Take `⟨a', rfl⟩` from `ha`. Take `⟨c', rfl⟩` from `hc`. Conclude with `⟨a' * c', by simp⟩`.
+-/
 theorem int_mul {a c : K} (ha : a ∈ Set.range (algebraMap (𝓞 K) K)) (hc : c ∈ Set.range (algebraMap (𝓞 K) K)) :
     a * c ∈ Set.range (algebraMap (𝓞 K) K) := by
   obtain ⟨a', rfl⟩ := ha
@@ -171,6 +174,9 @@ def ObjT (k Sc : ℝ) (btH : H → ℝ) (bN : H → Fin m → Fin (PhiSet (H := 
   bt := fun t => btH t
   VV := fun _ _ => ∅
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+-/
 theorem sum_top (φ : H → ℝ) : ∑ t ∈ TT.map (topPhi H), φ t.1.2 = ∑ t ∈ TT, φ t := by
   rw [Finset.sum_map]; rfl
 

@@ -16,6 +16,11 @@ open Classical
 
 namespace GlobalTheory.ThK.EvPolKill
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hψ hM hM₁ hE ei ev hev hl u hu f`. Establish `hm : ∀ t : ℝ, realAd F t * realAd F 1 = realAd F t` using `fun t => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ 1) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t)`. Rewrite using `[map_one, map_one, mul_one]`.
+
+Conclude with `mul_zero (0 : Af F)`. Establish `h` using `GlobalTheory.ThK.ModelPol.ei_dOp_eq_zero_of_inv B M M₁ ι ι' I e hψ hM hM₁ hE ei ev hev hl (realAd F 1 • u) (hu 1) (at_partInf u) (fun t => by rw [smul_smul, hm]; exact hu t) f`. Rewrite using `[← coordI_one M u]`. Conclude with `h`.
+-/
 theorem ei_dOp_coordI_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))

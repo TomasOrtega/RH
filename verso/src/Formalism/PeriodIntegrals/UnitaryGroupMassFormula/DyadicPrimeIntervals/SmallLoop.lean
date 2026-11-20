@@ -7,6 +7,9 @@ def force (x : Nat) (f : Nat → Bool) : Bool :=
   | 0 => f 0
   | k + 1 => f (k + 1)
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> rfl`.
+-/
 theorem force_eq (x : Nat) (f : Nat → Bool) : force x f = f x := by
   cases x <;> rfl
 

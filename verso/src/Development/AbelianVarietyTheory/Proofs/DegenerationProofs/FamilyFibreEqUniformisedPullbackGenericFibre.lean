@@ -10,10 +10,22 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Trait
 
 namespace GlobalTheory.Ex.GenericFibre
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `P.U.gen_hom` as an intermediate fact. Use `⟨?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback t.G (jK R))).congr (Category.id_comp _) rfl`.
+
+Establish `hgi : P.U.gen.inv.left ≫ P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hext : LBIso (P.A.L.pull P.U.gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK R)))`. Establish `h` using `P.U.ext`. Rewrite `h` using `[P.bundle]`.
+
+Conclude with `h`. Establish `h1 : LBIso (P.A.L.pull (P.U.gen.inv.left ≫ P.U.gen.hom.left)) (t.PP.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)))` using `LBIso.chartPull (Geo.Tor.chartPullSame P.A.L _ (fun _ => P.U.gen.hom.left) _ P.U.gen.inv.left fun _ => rfl) (Geo.Tor.chartPullSame t.PP.L _ (fun _ => pullback.fst t.G.hom (jK R)) _ P.U.gen.inv.left fun _ => rfl) hext`. Conclude with `LBIso.chartPull (Geo.Tor.chartPullUnpull P.A.L _ hgi) (Geo.Tor.chartPullSame t.PP.L _ _ _ (𝟙 _) fun _ => (Category.id_comp _).symm) h1`. Establish `e : P.oA.act a ≫ P.U.gen.inv = P.U.gen.inv ≫ (Over.pullback (jK R)).map (t.act.act a)`. Rewrite using `[Iso.comp_inv_eq, Category.assoc]`.
+
+Conclude with `((Iso.inv_comp_eq _).2 (P.lin.ext a)).symm`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`.
+-/
 theorem unif_generic {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R]
     [IsDomain R] {I : Ideal R} {t : SAB H (Sp R)} (P : PELUnif I t) :
     IsGrpPullback P.A.A t.G (jK R) (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R)) ∧
@@ -43,6 +55,19 @@ theorem unif_generic {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     rw [← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]
     exact congrArg _ (pullback.lift_fst _ _ _)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y R _ _ I t χ m P F _ _ y hy o φ₀ hφ₀ hL₀ ha₀`. Use `letI := H.starRing`. Take `⟨g₁, l₁, a₁⟩` from `unif_generic P`. Use `set ψ := P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) with hψ`. Establish `g₂ : IsGrpPullback P.A.A Y.t.G (jK R ≫ χ) (ψ ≫ m.φ)` using `g₁.comp m.cart`.
+
+Establish `g₃ : IsGrpPullback o.P.A Y.t.G (jFK (R` using `R) F ≫ jK R ≫ χ) (φ₀ ≫ Y.m.φ) := (hφ₀.comp Y.m.cart).congr hy rfl`. Establish `w₁ : (φ₀ ≫ Y.m.φ) ≫ Y.t.G.hom = (o.P.A.hom ≫ jFK (R` using `R) F) ≫ jK R ≫ χ := g₃.1.w.trans (Category.assoc _ _ _).symm`. Take `⟨φ, e₁, e₂⟩ : ∃ φ : o.P.A.left ⟶ P.A.A.left, φ ≫ ψ ≫ m.φ = φ₀ ≫ Y.m.φ ∧ φ ≫ P.A.A.hom = o.P.A.hom ≫ jFK (R` from `R) F := ⟨g₂.1.lift _ _ w₁, g₂.1.lift_fst _ _ _, g₂.1.lift_snd _ _ _⟩`. Establish `lm : LBIso t.PP.L (Y.t.PP.L.pull m.φ)`. Take `⟨w, hw, -⟩` from `m.lin`.
+
+Conclude with `⟨w, hw⟩`. Establish `lY : LBIso Y.oF.t.PP.L (Y.t.PP.L.pull Y.m.φ)`. Take `⟨w, hw, -⟩` from `Y.m.lin`. Conclude with `⟨w, hw⟩`. Establish `l₂ : LBIso P.A.L (Y.t.PP.L.pull (ψ ≫ m.φ))` using `LBIso.trans P.A.isLB (pull_isLB t.PP.isLB _) (pull_isLB Y.t.PP.isLB _) l₁ (lbIso_pull lm ψ rfl)`.
+
+Establish `l₃ : LBIso o.P.L (Y.t.PP.L.pull (φ₀ ≫ Y.m.φ))` using `LBIso.trans o.P.isLB (pull_isLB Y.oF.t.PP.isLB _) (pull_isLB Y.t.PP.isLB _) hL₀ (lbIso_pull lY φ₀ rfl)`. Use `⟨φ, g₂.cancel (g₃.congr rfl e₁.symm) e₂, LBIso.trans o.P.isLB (pull_isLB Y.t.PP.isLB _) (pull_isLB P.A.isLB _) l₃ (lbIso_pull l₂ φ e₁.symm).symm, fun x => g₂.1.hom_ext ?_ ?_, ?_⟩` and prove the remaining obligations. Establish `a₂ : (P.oA.act x).left ≫ ψ = ψ ≫ (t.act.act x).left` using `(a₁ x).trans (Category.assoc _ _ _).symm`. Establish `a₃ : (P.oA.act x).left ≫ ψ ≫ m.φ = (ψ ≫ m.φ) ≫ (Y.t.act.act x).left`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ m.φ) a₂).trans ((Category.assoc _ _ _).trans ((congrArg (ψ ≫ ·) (m.act x)).trans (Category.assoc _ _ _).symm)))`.
+
+Establish `a₄ : (o.oa.act x).left ≫ φ₀ ≫ Y.m.φ = (φ₀ ≫ Y.m.φ) ≫ (Y.t.act.act x).left`. Rewrite using `[← Category.assoc, ha₀ x, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (Y.m.act x)`. Rewrite using `[Category.assoc, e₁, a₄, Category.assoc φ, a₃, ← Category.assoc φ, e₁]`. Rewrite using `[Category.assoc, e₂, Category.assoc, Over.w, e₂, ← Category.assoc, Over.w]`.
+
+Rewrite using `[← e₁, hψ, Category.assoc]`.
+-/
 theorem fibre_eq_generic_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (t : SAB H (Sp R)) (χ : Sp R ⟶ Y.X) (m : SABMap t Y.t χ) (P : PELUnif I t) (F : Type) [Field F] [Algebra (FractionRing R) F] (y : Sp F ⟶ Xo.XF c), y ≫ Y.j = jFK (R := R) F ≫ jK R ≫ χ → ∀ (o : Full D F) (φ₀ : o.P.A.left ⟶ Y.oF.t.G.left), IsGrpPullback o.P.A Y.oF.t.G y φ₀ → LBIso o.P.L (Y.oF.t.PP.L.pull φ₀) → (letI := H.starRing; ∀ x, (o.oa.act x).left ≫ φ₀ = φ₀ ≫ (Y.oF.t.act.act x).left) → ∃ φ : o.P.A.left ⟶ P.A.A.left, IsGrpPullback o.P.A P.A.A (jFK (R := R) F) φ ∧ LBIso o.P.L (P.A.L.pull φ) ∧ (letI := H.starRing; ∀ x, (o.oa.act x).left ≫ φ = φ ≫ (P.oA.act x).left) ∧ φ ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) ≫ m.φ = φ₀ ≫ Y.m.φ := by
   intro E _ _ _ H D l Xo c O _ β Y R _ _ I t χ m P F _ _ y hy o φ₀ hφ₀ hL₀ ha₀
   letI := H.starRing

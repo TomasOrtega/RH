@@ -15,6 +15,9 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.WeilPairing
 
+/- English proof (translation)
+Introduce `D ψ S T χ χ' om hW v p f f' hf hf'`. Take `⟨hμ, h𝓕, -⟩` from `v.covol`. Establish `h𝓕' : IsAddFundamentalDomain (ratL T S) v.𝓕 v.μ` using `h𝓕`. Conclude with `GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hW.std S T v.μ v.𝓕 hμ h𝓕' (om p) (fun g hg => hW.om_pres p g hg) (fun g hg => hW.om_unit v.μ v.𝓕 hμ h𝓕' p g hg) f f' hf hf'`.
+-/
 theorem thPair_om_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om S T), IsWeilDatumO ψ S T χ χ' om → ∀ (v : VolM D T.rank S.rank) p f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → thPair v.μ v.𝓕 (om p f) (om p f') = thPair v.μ v.𝓕 f f' := by
   intro D ψ S T χ χ' om hW v p f f' hf hf'
   obtain ⟨hμ, h𝓕, -⟩ := v.covol

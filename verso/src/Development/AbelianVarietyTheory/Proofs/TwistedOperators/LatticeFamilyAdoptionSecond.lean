@@ -30,6 +30,9 @@ def avg (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t : P →* F
 
 def grp (a : Γ →* Module.End F M) (c : Γ → F) : Module.End F M := ∑ g, c g • a g
 
+/- English proof (translation)
+Establish `: ∀ u : P, ((((t u)⁻¹ : Fˣ) : F) • a (u : Γ)) x = x` using `fun u => by`. Rewrite using `[LinearMap.smul_apply, hx u, smul_smul, Units.inv_mul, one_smul]`. Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, this, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul F, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem avg_fix (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t : P →* Fˣ)
     (hc : (Fintype.card P : F) ≠ 0) {x : M} (hx : ∀ u : P, a (u : Γ) x = ((t u : Fˣ) : F) • x) :
     avg a P t x = x := by
@@ -38,6 +41,11 @@ theorem avg_fix (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t : 
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, this, Finset.sum_const, Finset.card_univ]
   rw [← Nat.cast_smul_eq_nsmul F, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Rewrite using `[smul_comm]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft v) _ _ fun u => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul, map_mul, Module.End.mul_apply, mul_inv_rev, Units.val_mul, smul_smul]`. Use `congr 1`. Rewrite using `[mul_left_comm, Units.mul_inv, mul_one]`.
+-/
 theorem avg_type (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t : P →* Fˣ) (v : P) (y : M) :
     a (v : Γ) (avg a P t y) = ((t v : Fˣ) : F) • avg a P t y := by
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]
@@ -51,6 +59,11 @@ theorem avg_type (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t :
 
 variable (a : Γ →* Module.End F M) (P : Subgroup Γ) [Fintype P] (t : P →* Fˣ) (E : Module.End F M)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨fun u => ?_, ⟨_, rfl⟩⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun A : Module.End F M => A (avg a P t y)) (hcom u)`. Simplify using `only [Module.End.mul_apply] at h ⊢`.
+
+Rewrite using `[h, avg_type, map_smul]`. Introduce and unpack `⟨h, y, rfl⟩`. Use `⟨E y, ?_⟩` and prove the remaining obligations. Establish `h2 : E (E y) = E y` using `congrArg (fun A : Module.End F M => A y) hE`. Rewrite using `[Module.End.mul_apply, avg_fix a P t hc h, h2]`.
+-/
 theorem mem_range_iff_type (hc : (Fintype.card P : F) ≠ 0) (hE : E * E = E)
     (hcom : ∀ u : P, a (u : Γ) * E = E * a (u : Γ)) (x : M) :
     x ∈ LinearMap.range (E * avg a P t) ↔
@@ -66,6 +79,9 @@ theorem mem_range_iff_type (hc : (Fintype.card P : F) ≠ 0) (hE : E * E = E)
     have h2 : E (E y) = E y := congrArg (fun A : Module.End F M => A y) hE
     rw [Module.End.mul_apply, avg_fix a P t hc h, h2]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨avg a P t y, fun u => avg_type a P t u y, rfl⟩`. Introduce and unpack `⟨y, h, rfl⟩`. Conclude with `⟨y, by rw [Module.End.mul_apply, avg_fix a P t hc h]⟩`.
+-/
 theorem mem_range_iff_image (hc : (Fintype.card P : F) ≠ 0) (x : M) :
     x ∈ LinearMap.range (E * avg a P t) ↔
       ∃ y, (∀ u : P, a (u : Γ) y = ((t u : Fˣ) : F) • y) ∧ E y = x := by
@@ -88,34 +104,55 @@ variable (O K'') in
 def ext (A : Module.End K Fm) : Module.End K'' (K'' ⊗[O] Fm) :=
   LinearMap.baseChange K'' (A.restrictScalars O)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ext_tmul (A : Module.End K Fm) (x : K'') (m : Fm) :
     ext O K'' A (x ⊗ₜ[O] m) = x ⊗ₜ[O] A m := rfl
 
+/- English proof (translation)
+Use `IsLocalization.tensorProduct_compatibleSMul (nonZeroDivisors O) K K'' Fm` as an intermediate fact. Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def]`.
+-/
 theorem tmul_smul_frac (c : K) (x : K'') (m : Fm) :
     x ⊗ₜ[O] (c • m) = (algebraMap K K'' c * x) ⊗ₜ[O] m := by
   have := IsLocalization.tensorProduct_compatibleSMul (nonZeroDivisors O) K K'' Fm
   rw [← TensorProduct.smul_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x m`. Both sides reduce to the same expression.
+-/
 theorem ext_mul (A B : Module.End K Fm) : ext O K'' (A * B) = ext O K'' A * ext O K'' B := by
   apply TensorProduct.AlgebraTensorModule.ext
   intro x m
   rfl
 
+/- English proof (translation)
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x m`. Both sides reduce to the same expression.
+-/
 theorem ext_one : ext O K'' (1 : Module.End K Fm) = 1 := by
   apply TensorProduct.AlgebraTensorModule.ext
   intro x m
   rfl
 
+/- English proof (translation)
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x m`. Simplify using `[TensorProduct.tmul_add]`.
+-/
 theorem ext_add (A B : Module.End K Fm) : ext O K'' (A + B) = ext O K'' A + ext O K'' B := by
   apply TensorProduct.AlgebraTensorModule.ext
   intro x m
   simp [TensorProduct.tmul_add]
 
+/- English proof (translation)
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x m`. Simplify using the standard rewrite rules.
+-/
 theorem ext_zero : ext O K'' (0 : Module.End K Fm) = 0 := by
   apply TensorProduct.AlgebraTensorModule.ext
   intro x m
   simp
 
+/- English proof (translation)
+Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x m`. Simplify using `[tmul_smul_frac, TensorProduct.smul_tmul', smul_eq_mul]`. Rewrite using `[Algebra.smul_def]`.
+-/
 theorem ext_smul (c : K) (A : Module.End K Fm) :
     ext O K'' (c • A) = algebraMap K K'' c • ext O K'' A := by
   apply TensorProduct.AlgebraTensorModule.ext
@@ -123,6 +160,9 @@ theorem ext_smul (c : K) (A : Module.End K Fm) :
   simp [tmul_smul_frac, TensorProduct.smul_tmul', smul_eq_mul]
   rw [Algebra.smul_def]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ext_zero`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ext_add, ih]`.
+-/
 theorem ext_sum {ι : Type} (s : Finset ι) (A : ι → Module.End K Fm) :
     ext O K'' (∑ i ∈ s, A i) = ∑ i ∈ s, ext O K'' (A i) := by
   classical
@@ -130,6 +170,13 @@ theorem ext_sum {ι : Type} (s : Finset ι) (A : ι → Module.End K Fm) :
   | empty => simpa using ext_zero
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ext_add, ih]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul x m`. Rewrite using `[ext_tmul]`. Establish `: x ⊗ₜ[O] A m = x • ((1 : K'') ⊗ₜ[O] A m)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.tmul_mem_baseChange_of_mem _ ⟨m, rfl⟩)`. Rewrite using `[Submodule.baseChange_eq_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨m, rfl⟩, rfl⟩`. Conclude with `⟨(1 : K'') ⊗ₜ[O] m, rfl⟩`.
+-/
 theorem range_ext (A : Module.End K Fm) :
     LinearMap.range (ext O K'' A) =
       ((LinearMap.range A).restrictScalars O).baseChange K'' := by
@@ -166,6 +213,31 @@ variable {LL O K K'' Fm WL Γ : Type} [Field LL] [CharZero LL] [AddCommGroup WL]
   [Field K''] [Algebra O K''] [Algebra K K''] [IsScalarTower O K K'']
   [AddCommGroup Fm] [Module K Fm] [Module O Fm] [IsScalarTower O K Fm] [Group Γ] [Fintype Γ]
 
+/- English proof (translation)
+Establish `extmul : ∀ (A B : Module.End K Fm) (z : K'' ⊗[O] Fm),`. Use extensionality with `O K'' (A * B) z = ext O K'' A (ext O K'' B z) := fun A B z => by rw [ext_mul]; rfl`. Set `aLh : Γ →* Module.End LL WL` to `{ toFun := aL map_one' := by`. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hc, map_one, ext_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun g h => by`. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hc, map_mul, extmul, Module.End.mul_apply, hc, hc] }`. Establish `hcL : (Fintype.card P : LL) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hcK : (Fintype.card P : K) ≠ 0` using `fun h => hcL (σ.injective (by`. Rewrite using `[map_natCast, map_zero]`. Use `congrArg (algebraMap K K'') h` as an intermediate fact.
+
+Rewrite using `[map_natCast, map_zero] at this))` and apply the resulting hypothesis. Establish `hfE : ∀ x, f (grp aLh cL x) = ext O K'' (grp aF cF) (f x)` using `fun x => by`. Simplify using `only [grp, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, ext_sum, ext_smul]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [hcf]; congr 1; exact hc g x`. Establish `hfA : ∀ x, f (avg aLh P tL x) = ext O K'' (avg aF P tF) (f x)` using `fun x => by`.
+
+Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, ext_sum, ext_smul]`. Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast]`. Use `congr 1`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Establish `e1 : σ ((((tL u)⁻¹ : LLˣ)) : LL) = algebraMap K K'' ((((tF u)⁻¹ : Kˣ)) : K)`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, ht]`. Rewrite using `[e1]`. Use `congr 1`. Conclude with `hc u x`. Establish `hEL : grp aLh cL * grp aLh cL = grp aLh cL`.
+
+Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, hfE, hfE, ← extmul, hE]`. Establish `hcomL : ∀ u : P, aLh (u : Γ) * grp aLh cL = grp aLh cL * aLh (u : Γ)` using `fun u => by`. Use extensionality with `x`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hfE]`. Express the relevant statement in the definitionally equal form `f (aL u _) = _`. Rewrite using `[hc, hfE, ← extmul, hcom, extmul]`. Express the relevant statement in the definitionally equal form `_ = ext O K'' (grp aF cF) (f (aL u x))`.
+
+Rewrite using `[hc]`. Establish `hWr : (Wg : Set WL) = LinearMap.range (grp aLh cL * avg aLh P tL)`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, hW, SetLike.mem_coe, mem_range_iff_type aLh P tL _ hcL hEL hcomL]`. Both sides reduce to the same expression.
+
+Establish `hVr : V = LinearMap.range (grp aF cF * avg aF P tF)`. Use extensionality with `x`. Rewrite using `[hV, mem_range_iff_image aF P tF _ hcK]`. Establish `hr : LinearMap.range (ext O K'' (grp aF cF * avg aF P tF)) = Submodule.map (ext O K'' (grp aF cF * avg aF P tF)) (Submodule.span K'' (Set.range f))`. Rewrite using `[hspan, LinearMap.range_eq_map]`.
+
+Rewrite using `[hWr, hVr, ← range_ext, hr, Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`.
+
+Use `⟨f y, ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hfE, hfA, extmul]`. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Use `⟨_, ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hfE, hfA, extmul]`.
+-/
 theorem span_image_good (σ : LL →+* K'') (f : WL →ₛₗ[σ] K'' ⊗[O] Fm) (hinj : Function.Injective f)
     (hspan : Submodule.span K'' (Set.range f) = ⊤)
     (aF : Γ →* Module.End K Fm) (aL : Γ → Module.End LL WL)
@@ -245,6 +317,9 @@ end Main
 
 section Lat
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (σ (a : LL))` using `(a.2 : IsIntegral ℤ (a : LL)).map σ.toIntAlgHom`. Establish `h2 : IsIntegral Oe (σ (a : LL))` using `h.tower_top`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨r, hr.symm⟩`.
+-/
 theorem integers_embed {LL Oe K'' : Type} [Field LL] [NumberField LL] [CommRing Oe] [IsDomain Oe]
     [IsIntegrallyClosed Oe] [Field K''] [Algebra Oe K''] [IsFractionRing Oe K''] (σ : LL →+* K'') (a : 𝓞 LL) :
     ∃ r : Oe, σ (a : LL) = algebraMap Oe K'' r := by
@@ -257,6 +332,11 @@ variable {LL Oe K'' V T : Type} [Field LL] [NumberField LL] [AddCommGroup V] [Mo
   [IsScalarTower (𝓞 LL) LL V] [CommRing Oe] [IsDomain Oe] [Field K''] [Algebra Oe K''] [IsFractionRing Oe K'']
   [AddCommGroup T] [Module K'' T] [Module Oe T] [IsScalarTower Oe K'' T]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11; revert Oe K'' T h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 M x hx; exact @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span)`. Consider the case `exact @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span`. Consider the case `exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span`. Consider the case `(apply _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span ..)`.
+-/
 theorem exists_smul_mem (M : Submodule Oe T) {x : T} (hx : x ∈ Submodule.span K'' (M : Set T)) :
     ∃ c : Oe, c ≠ 0 ∧ c • x ∈ M := by
   first
@@ -268,6 +348,25 @@ theorem exists_smul_mem (M : Submodule Oe T) {x : T} (hx : x ∈ Submodule.span 
   | (intros; apply @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span ..)
 
+/- English proof (translation)
+Establish `hmem : ∀ x, eM x ∈ VV` using `fun x => hVV ▸ Submodule.subset_span ⟨x, rfl⟩`. Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨S, rfl⟩` from `hFG classical`. Use `⟨S.image eM, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `Submodule.subset_span ⟨x, Submodule.subset_span hx, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe] at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span (by simpa using ⟨x, h, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Take `⟨r, hr⟩` from `hint a`. Establish `: eM (a • x) = r • eM x`. Rewrite using `[← algebraMap_smul LL a x, map_smulₛₗ]`.
+
+Express the relevant statement in the definitionally equal form `σ (a : LL) • eM x = _`. Rewrite using `[hr, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `hmem x`. Establish `hle : Set.range eM ⊆ (Submodule.span K'' ((Submodule.span Oe (eM '' (L : Set V)) : Submodule Oe T) : Set T) : Set T)`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ Submodule.span LL (L : Set V)` using `hsp ▸ Submodule.mem_top`.
+
+Simplify using `only [SetLike.mem_coe]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span (Submodule.subset_span ⟨x, h, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hx' : x ∈ VV` using `hx`. Rewrite `hx'` using `[← hVV]`.
+
+Conclude with `exists_smul_mem _ (Submodule.span_le.2 hle hx')`.
+-/
 theorem isLatIn_span (σ : LL →+* K'') (hint : ∀ a : 𝓞 LL, ∃ r : Oe, σ (a : LL) = algebraMap Oe K'' r)
     (eM : V →ₛₗ[σ] T) (L : Submodule (𝓞 LL) V) (hFG : L.FG) (hsp : Submodule.span LL (L : Set V) = ⊤)
     (VV : Submodule K'' T) (hVV : Submodule.span K'' (Set.range eM) = VV) :
@@ -340,6 +439,15 @@ variable {Ks LL WL : Type} [Field Ks] [Field LL] [Algebra Ks LL]
   [Field K''] [Algebra O K''] [Algebra K K''] [IsScalarTower O K K'']
   {Fm : Type} [AddCommGroup Fm] [Module K Fm] [Module O Fm] [IsScalarTower O K Fm]
 
+/- English proof (translation)
+Take `⟨b'', hb⟩` from `h _ (Basis.ofVectorSpace LL WL)`. Use `set b := Basis.ofVectorSpace LL WL with hbdef`. Establish `hsum : ∀ x, e x = ∑ i ∈ (b.repr x).support, emb (b.repr x i) • b'' i` using `fun x => by conv_lhs => rw [← b.linearCombination_repr x]`. Simplify using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smulₛₗ, hb]`. Prove the components needed by the constructor for the conclusion.
+
+Use `(injective_iff_map_eq_zero e).2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[hsum]`. Establish `h0` using `linearIndependent_iff'.1 b''.linearIndependent _ _ hx`. Establish `: b.repr x = 0`. Use extensionality with `i`.
+
+Assume the negation of the conclusion as `hi`. Establish `hm : i ∈ (b.repr x).support` using `Finsupp.mem_support_iff.2 hi`. Conclude with `hi ((map_eq_zero emb).1 (h0 i hm))`. Simplify using `using this`. Rewrite using `[eq_top_iff, ← b''.span_eq]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨b i, (hb i).symm⟩`.
+-/
 theorem inj_span_of_carries {emb : LL →+* K''} (e : WL →ₛₗ[emb] K'' ⊗[O] Fm) (h : CarriesBases O e) :
     Function.Injective e ∧ Submodule.span K'' (Set.range e) = ⊤ := by
   classical
@@ -363,6 +471,15 @@ theorem inj_span_of_carries {emb : LL →+* K''} (e : WL →ₛₗ[emb] K'' ⊗[
     rintro _ ⟨i, rfl⟩
     exact ⟨b i, (hb i).symm⟩
 
+/- English proof (translation)
+Take `⟨n, b, hbK, -, -, -, hsp⟩` from `hF`. Establish `hx : x ∈ Submodule.span LL (Set.range b)` using `hsp ▸ Submodule.mem_top`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun LL).1 hx`. Set `f : Fin n → WK` to `fun k => ⟨b k, hbK k⟩`. Establish `e1` using `he (Fin n) a f`.
+
+Establish `e2` using `he (Fin n) (fun k => cL * a k) (fun k => rK (f k))`. Establish `e3 : cL • rL (∑ k, a k • b k) = ∑ k, (cL * a k) • ((rK (f k) : WK) : WL)`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hr (f k), mul_smul]`.
+
+Establish `e4 : ∑ k, a k • b k = ∑ k, a k • ((f k : WK) : WL)` using `rfl`. Rewrite using `[e3, e2, e4, e1, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ext_tmul]`. Establish `e5 : aF (eF.symm ((1 : K) ⊗ₜ[Ks] f k)) = cK • eF.symm ((1 : K) ⊗ₜ[Ks] rK (f k))`.
+
+Apply `eF.injective` to reduce the goal to its premises. Rewrite using `[ha, LinearEquiv.apply_symm_apply, map_smul, LinearEquiv.apply_symm_apply, LinearMap.baseChange_tmul]`. Rewrite using `[e5, tmul_smul_frac, map_mul, hc]`.
+-/
 theorem ext_intertwine (hF : IsForm LL WK) {emb : LL →+* K''} (eF : Fm ≃ₗ[K] K ⊗[Ks] WK)
     (e : WL →ₛₗ[emb] K'' ⊗[O] Fm) (he : IsExt O emb eF e)
     (rK : Module.End Ks WK) (rL : Module.End LL WL) (hr : ∀ f : WK, rL (f : WL) = (rK f : WK))
@@ -403,6 +520,23 @@ variable {LL Ks Ks' WL WL' G G' : Type} [Field LL] [NumberField LL] [Field Ks] [
   {W W' : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)]
   [∀ σ, NormedAddCommGroup (W' σ)] [∀ σ, InnerProductSpace ℂ (W' σ)] [Group G] [Group G']
 
+/- English proof (translation)
+Take `⟨n, b, hb, -, hs, hl, ht⟩` from `h`. Establish `hmem : ∀ z ∈ Submodule.span Ks' (Set.range b), I.e.symm z ∈ Submodule.span Ks (Set.range fun k => I.e.symm (b k))`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z h`.
+
+Take `⟨k, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `h1 : c • x = algebraMap Ks LL (I.eK.symm c) • x`. Rewrite using `[← I.eK_LL, RingEquiv.apply_symm_apply, algebraMap_smul]`. Rewrite using `[h1, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Establish `hli : LinearIndependent LL fun k => I.e.symm (b k)` using `hl.map' I.e.symm.toLinearMap I.e.symm.ker`. Use `⟨n, fun k => I.e.symm (b k), fun k => ?_, ?_, le_antisymm ?_ ?_, hli, ?_⟩` and prove the remaining obligations. Rewrite using `[I.wk, LinearEquiv.apply_symm_apply]`. Conclude with `hs ▸ Submodule.subset_span ⟨k, rfl⟩`. Conclude with `hli.restrict_scalars (fun a c h => (algebraMap Ks LL).injective (by simpa [Algebra.smul_def] using h))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[SetLike.mem_coe, I.wk, LinearEquiv.apply_symm_apply]`. Conclude with `hs ▸ Submodule.subset_span ⟨k, rfl⟩`. Introduce `x hx`.
+
+Use `hmem (I.e x) (hs ▸ (I.wk x).1 hx)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : I.e x ∈ Submodule.span LL (Set.range b)` using `ht ▸ Submodule.mem_top`.
+
+Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun LL).1 hx`. Establish `: x = ∑ k, a k • I.e.symm (b k)`. Apply `I.e.injective` to reduce the goal to its premises. Rewrite using `[← ha, map_sum]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem isKsForm_of_iso {A : FormsL LL Ks WL W G} {A' : FormsL LL Ks' WL' W' G'} (I : FormsIso A A')
     (h : A'.IsKsForm) : A.IsKsForm := by
   obtain ⟨n, b, hb, -, hs, hl, ht⟩ := h
@@ -479,6 +613,13 @@ variable {c w}
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `letI algK : Algebra S.Ks (FractionRing (D.ntw.O (c.twI w))) := (ιK S (c.twI w) (c.sd w)).toAlgebra`. Establish `hcomp : (c.embW w).comp (algebraMap S.Ks D.what₂.LL) = (algebraMap (FractionRing (D.ntw.O (c.twI w))) (FractionRing (c.Oe w))).comp (algebraMap S.Ks (FractionRing (D.ntw.O (c.twI w))))` using `GlobalTheory.Proof.FractionFieldEmbeddingCompat.embCompat D c ht S.Ks S.kKs S.kKs_spec w (ιK S (c.twI w) (c.sd w)) rfl`. Set `eF' : D.nexp.Fm (c.twI w) j (c.sd w) ≃ₗ[FractionRing (D.ntw.O (c.twI w))] FractionRing (D.ntw.O (c.twI w)) ⊗[S.Ks] (S.A j).WK` to `eF`. Take `⟨⟨e, he, -⟩, hcar, -⟩` from `GlobalTheory.SemilinearExt.semilinearExtension S.Ks D.what₂.LL (S.WL j) (S.A j).WK hks (D.ntw.O (c.twI w)) (FractionRing (D.ntw.O (c.twI w))) (FractionRing (c.Oe w)) (c.embW w) hcomp (D.nexp.Fm (c.twI w) j (c.sd w)) eF'`. Take `⟨h1, h2⟩` from `inj_span_of_carries e (hcar e he)`.
+
+Use `⟨e, h1, h2, fun n a f => he (Fin n) a f, fun s x => ?_⟩` and prove the remaining obligations. Establish `hc : c.embW w ((((S.A j).chi s)⁻¹ : D.what₂.LLˣ).val) = algebraMap (FractionRing (D.ntw.O (c.twI w))) (FractionRing (c.Oe w)) ((readLL0 S (c.twI w) (c.sd w) (chiL S j chi s))⁻¹)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(congrArg Inv.inv (GlobalTheory.Proof.FractionFieldEmbeddingCompat.embW_eq_of_tie ht w (chiL S j chi s))).trans (map_inv₀ (algebraMap (FractionRing (D.ntw.O (c.twI w))) (FractionRing (c.Oe w))) _).symm`. Use `ext_intertwine hks eF' e he (rhoKG S j rho s) ((S.A j).ρ s) (fun f => rfl) _ _ hc _ (fun y => ?_) x` and prove the remaining obligations.
+
+Establish `h3` using `hact (S.eG s) y`. Use `h3.trans ?_` and prove the remaining obligations. Establish `h4 : actG S (c.twI w) j (c.sd w) rho chi (S.eG s) (eF y) = actEnd S (c.twI w) j (c.sd w) rho chi (S.eG.symm (S.eG s)) (eF y)` using `rfl`. Rewrite using `[h4, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem stage1 (ht : NChTie D c) (j : ℕ) (S : RatDat D.ntw) (hks : (S.A j).IsKsForm)
     (rho : RhoStab S j) (chi : ChiInLL0 S j)
     (eF : D.nexp.Fm (c.twI w) j (c.sd w) ≃ₗ[FractionRing (D.ntw.O (c.twI w))] Fm S (c.twI w) j (c.sd w))
@@ -529,11 +670,17 @@ namespace GlobalTheory.CompanionTheory.LatSpan
 section Alg
 variable {k A G : Type} [Field k] [Ring A] [Algebra k A] [Group G]
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.lift_apply]`. Conclude with `Finsupp.sum_fintype _ _ (fun _ => zero_smul _ _)`.
+-/
 theorem lift_eq_sum [Fintype G] (F : G →* A) (x : MonoidAlgebra k G) :
     MonoidAlgebra.lift k A G F x = ∑ g, x.coeff g • F g := by
   rw [MonoidAlgebra.lift_apply]
   exact Finsupp.sum_fintype _ _ (fun _ => zero_smul _ _)
 
+/- English proof (translation)
+Establish `e : F g = MonoidAlgebra.lift k A G F (MonoidAlgebra.single g 1)`. Rewrite using `[MonoidAlgebra.lift_single, one_smul]`. Rewrite using `[e, ← map_mul, ← map_mul, h]`.
+-/
 theorem lift_comm (F : G →* A) (x : MonoidAlgebra k G) (h : ∀ y, x * y = y * x) (g : G) :
     F g * MonoidAlgebra.lift k A G F x = MonoidAlgebra.lift k A G F x * F g := by
   have e : F g = MonoidAlgebra.lift k A G F (MonoidAlgebra.single g 1) := by
@@ -557,6 +704,39 @@ attribute [local instance] algKK
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨e, h1, h2, h3, h4⟩` from `stage1 (w := w) ht j S (isKsForm_of_iso fi hks') rho chi eF hact`. Use `⟨e, h3, ?_⟩` and prove the remaining obligations. Use `letI : Fintype P0 := Fintype.ofFinite _`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv Gp I.toEquiv`. Set `Fh : G0g D.nd →* Module.End (FractionRing (D.ntw.O (c.twI w))) (D.nexp.Fm (c.twI w) j (c.sd w))` to `LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp (D.nexp.actG (c.twI w) j (c.sd w))`.
+
+Set `aF : Gp →* Module.End (FractionRing (D.ntw.O (c.twI w))) (D.nexp.Fm (c.twI w) j (c.sd w))` to `Fh.comp I.toMonoidHom`. Set `aL : Gp → Module.End D.what₂.LL WL'` to `fun h => ((A'.chi h)⁻¹ : D.what₂.LLˣ).val • A'.ρ h`. Set `φ : P0 →* D.nexp.U` to `{ toFun := fun p => ⟨I p, (hlvl _).1 p.2⟩ map_one' := Subtype.ext (map_one I) map_mul' := fun a b => Subtype.ext (map_mul I (a : Gp) (b : Gp)) }`. Set `tF : P0 →* (FractionRing (D.ntw.O (c.twI w)))ˣ` to `(D.nexp.psiU (c.twI w) (c.sd w)).comp φ`. Set `cF : Gp → FractionRing (D.ntw.O (c.twI w))` to `fun h => (D.nexp.eAlg (c.twI w) (c.sd w)).coeff (I h)`.
+
+Establish `hEq : grp aF cF = NForms.eG D (c.twI w) j (c.sd w)`. Unfold `NForms.eG`. Rewrite using `[lift_eq_sum]`. Conclude with `Fintype.sum_equiv I.toEquiv _ _ fun h => rfl`. Set `f : WL' →ₛₗ[c.embW w] FractionRing (c.Oe w) ⊗[D.ntw.O (c.twI w)] D.nexp.Fm (c.twI w) j (c.sd w)` to `e.comp fi.e.symm.toLinearMap`.
+
+Establish `key` using `span_image_good (O := D.ntw.O (c.twI w)) (K := FractionRing (D.ntw.O (c.twI w))) (K'' := FractionRing (c.Oe w)) (c.embW w) f (h1.comp fi.e.symm.injective) ?_ aF aL ?_ P0 ψ tF ?_ eC cF ?_ ?_ ?_ (NForms.V0 D (c.twI w) j (c.sd w)) ?_ (A'.Wgood P0 ψ eC) ?_`. Conclude with `key`. Rewrite using `[eq_top_iff, ← h2]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨fi.e x, by simp [f]⟩`. Introduce `h y`. Establish `hs : fi.eG (fi.eG.symm h) = h` using `MulEquiv.apply_symm_apply _ _`. Establish `k1 : fi.e.symm (aL h y) = ((((S.A j).chi (fi.eG.symm h))⁻¹ : D.what₂.LLˣ).val) • (S.A j).ρ (fi.eG.symm h) (fi.e.symm y)`. Apply `fi.e.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, map_smul, fi.rho, hs, LinearEquiv.apply_symm_apply, ← fi.chi, hs]`. Both sides reduce to the same expression. Establish `k2` using `h4 (fi.eG.symm h) (fi.e.symm y)`. Rewrite `k2` using `[← hgeq, hs, ← k1]`. Conclude with `k2`.
+
+Introduce `u`. Take `⟨x, hx1, hx2⟩` from `hpsi u ((hlvl _).1 u.2)`. Rewrite using `[← hx1, GlobalTheory.Proof.FractionFieldEmbeddingCompat.embW_eq_of_tie ht w x, ← hx2]`. Both sides reduce to the same expression. Introduce `h`.
+
+Rewrite using `[heC, GlobalTheory.Proof.FractionFieldEmbeddingCompat.embW_eq_of_tie ht w]`. Express the relevant statement in the definitionally equal form `_ = fracExt c w ((D.nexp.eAlg (c.twI w) (c.sd w)).coeff (I h))`. Rewrite using `[D.nexp.eAlg_def]`. Both sides reduce to the same expression. Rewrite using `[hEq]`.
+
+Unfold `NForms.eG`. Rewrite using `[← map_mul, D.nexp.eAlg_idem]`. Introduce `u`. Rewrite using `[hEq]`. Conclude with `lift_comm Fh _ (D.nexp.eAlg_central _ _) _`.
+
+Introduce `x`. Rewrite using `[hEq]`. Establish `hy : ∀ y, y ∈ NForms.Fm0 D (c.twI w) j (c.sd w) ↔ ∀ u : P0, aF (u : Gp) y = ((tF u : (FractionRing (D.ntw.O (c.twI w)))ˣ) : FractionRing (D.ntw.O (c.twI w))) • y`. Introduce `y`. Rewrite using `[NForms.Fm0, Submodule.mem_iInf]`.
+
+Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h u`. Conclude with `h (φ u)`. Introduce `h u`.
+
+Establish `hu : I.symm (u : G0g D.nd) ∈ P0` using `(hlvl _).2 (by simp)`. Establish `h5` using `h ⟨_, hu⟩`. Establish `e5 : φ ⟨_, hu⟩ = u` using `Subtype.ext (I.apply_symm_apply _)`. Express the relevant statement in the definitionally equal form `D.nexp.actG (c.twI w) j (c.sd w) ((φ ⟨_, hu⟩ : D.nexp.U) : G0g D.nd) y = ((D.nexp.psiU (c.twI w) (c.sd w) (φ ⟨_, hu⟩) : (FractionRing (D.ntw.O (c.twI w)))ˣ) : FractionRing (D.ntw.O (c.twI w))) • y at h5`. Rewrite `h5` using `[e5]`.
+
+Conclude with `h5`. Simplify using `only [NForms.V0, Submodule.mem_map, hy]`. Introduce `x`. Establish `hsum : (∑ g, eC g • aL g) = A'.eOp eC` using `Finset.sum_congr rfl fun g _ => (mul_smul _ _ _).symm`. Rewrite using `[hsum]`.
+
+Express the relevant statement in the definitionally equal form `x ∈ A'.typeP P0 ψ ∧ x ∈ LinearMap.range (A'.eOp eC) ↔ _`. Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[FormsL.mem_typeP]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Express the relevant statement in the definitionally equal form `((A'.chi (p : Gp))⁻¹ : D.what₂.LLˣ).val • A'.ρ (p : Gp) x = _`. Rewrite using `[h, smul_smul, ← Units.val_mul, inv_mul_cancel_left]`. Introduce `h`. Establish `h' : ((A'.chi (p : Gp))⁻¹ : D.what₂.LLˣ).val • A'.ρ (p : Gp) x = ((ψ p : D.what₂.LLˣ) : D.what₂.LL) • x` using `h`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Use `_ = _ := by rw [h', smul_smul, Units.val_mul]`.
+-/
 theorem stage2 (ht : NChTie D c) {Gp : Type} [Group Gp] [Fintype Gp] (I : Gp ≃* G0g D.nd)
     (S : RatDat D.ntw) (j : ℕ)
     {Ks' WL' : Type} [Field Ks'] [NumberField Ks'] [Algebra Ks' D.what₂.LL] [AddCommGroup WL'] [Module D.what₂.LL WL']
@@ -684,6 +864,9 @@ namespace GlobalTheory.CompanionTheory.LatSpan
 
 attribute [local instance] algKK
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem heq_cast {R : Type} {n m : ℕ} (h : n = m) (z : Fin m → R) : HEq z (z ∘ Fin.cast h) := by
   subst h
   rfl
@@ -691,6 +874,29 @@ theorem heq_cast {R : Type} {n m : ℕ} (h : n = m) (z : Fin m → R) : HEq z (z
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B hPin hRec jD eM hN hjD hSum w j hne h1 h2`. Take `⟨i, rfl⟩ : ∃ i : Fin D.R.m, j = (i : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Establish `hgrp` using `P.tied.div.grp`. Establish `hIe : P.I.eG = B.Q.Rl.eG.trans B.Q.cG` using `hPin.eGtie`. Establish `hC : ∀ h, (Formalism.L2.DIV.idemOf P.A3.A.X).coeff h = ((D.nexp.eLL0 (P.I.eG h) : D.LL0) : D.what₂.LL)` using `fun h => D.what₂.embLL.injective ((hgrp.e0 h).trans (D.nStage_trivialCharacter_coeff_eq _).symm)`.
+
+Take `⟨e, he1, he2⟩` from `stage2 (w := w) hN P.I.eG B.Q.Sx ((i : ℕ) + 1) (B.Q.Rl.FW i) (B.Q.nexp.fi i) (B.fw.ks i) (fun s => by rw [hIe]; exact B.Q.nexp.geq i s) (B.Q.nexp.rho _ h1 h2) (B.Q.nexp.chi _ h1 h2) (B.Q.nexp.eF _ _ _ h1 h2) (B.Q.nexp.act _ _ _ h1 h2) (fun g => (Formalism.L2.DIV.idemOf P.A3.A.X). …`. Take `⟨x, hx1, hx2⟩` from `hgrp.psi0 u hu (ex.nch.twI w) (ex.nch.sd w)`. Conclude with `⟨x, hx1, hx2⟩)`. Establish `hd` using `Formalism.IndefR.dWL_eq B.Q i`. Establish `hForm` using `isKsForm_of_iso (B.Q.nexp.fi i) (B.fw.ks i)`.
+
+Establish `heM : ∀ x, eM w ((i : ℕ) + 1) x = e (jD ((i : ℕ) + 1) x)`. Introduce `x`. Take `⟨n, b, hbK, -, -, -, hsp⟩` from `hForm`. Establish `hx : jD ((i : ℕ) + 1) x ∈ Submodule.span D.what₂.LL (Set.range b)` using `hsp ▸ Submodule.mem_top`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun D.what₂.LL).1 hx`.
+
+Set `f : Fin n → FmK B.Q.Sx ((i : ℕ) + 1)` to `fun k => ⟨b k, hbK k⟩`. Establish `h5` using `hSum w ((i : ℕ) + 1) h1 h2 x n a f ha.symm`. Rewrite using `[h5, ← ha]`. Conclude with `(he1 n a f).symm`. Establish `hWg : (B.Q.Rl.FW i).Wgood P.P0 P.ψ0⁻¹ (fun g => (Formalism.L2.DIV.idemOf P.A3.A.X).coeff g) = B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i` using `rfl`.
+
+Establish `hrange : Set.range (eM w ((i : ℕ) + 1)) = (fun y => e ((B.Q.nexp.fi i).e.symm y)) '' ((B.Q.Rl.FW i).Wgood P.P0 P.ψ0⁻¹ (fun g => (Formalism.L2.DIV.idemOf P.A3.A.X).coeff g) : Set _)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨(B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hjD i x _ (heq_cast hd ((P.JM.eW i).symm x))]`. Rewrite using `[SetLike.mem_coe, hWg]`. Simplify using `only [Formalism.IndefR.NX.jDL, Fintype.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Module.finBasis D.what₂.LL _ k).2`. Simplify using `only [LinearEquiv.symm_apply_apply, heM]`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, hWg]`. Set `Bs` to `Module.finBasis D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)`. Set `z : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL` to `Bs.equivFun ⟨y, hy⟩`. Set `x` to `P.JM.eW i (z ∘ Fin.cast hd.symm)`.
+
+Establish `hH : HEq ((P.JM.eW i).symm x) z`. Simplify using `only [x, LinearEquiv.symm_apply_apply]`. Conclude with `(heq_cast hd.symm z).symm`. Establish `h6` using `hjD i x z hH`. Establish `h7 : Formalism.IndefR.NX.jDL B.Q.Rl B.Q.F.lv2 i z = y`.
+
+Simplify using `only [Formalism.IndefR.NX.jDL, Fintype.linearCombination_apply]`. Establish `h8` using `Bs.sum_equivFun ⟨y, hy⟩`. Establish `h9 : ((∑ k, Bs.equivFun ⟨y, hy⟩ k • Bs k : B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i) : Fin (B.Q.Rl.nW i) → D.what₂.LL) = y` using `congrArg Subtype.val h8`. Rewrite `h9` using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `h9`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[heM]`. Express the relevant statement in the definitionally equal form `e _ = e ((B.Q.nexp.fi i).e.symm y)`. Rewrite using `[← h7, ← h6, LinearEquiv.symm_apply_apply]`. Use `isLatIn_span (ex.nch.embW w) (integers_embed _) (eM w ((i : ℕ) + 1)) (Y.MjH ((i : ℕ) + 1)).L (Y.MjH_good _).2.1 (Y.MjH_good _).2.2 _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hrange]`. Conclude with `he2`.
+-/
 theorem lattice_of_lifts : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q) (jD : ∀ j, (Y.MjH j).V →ₗ[D.what₂.LL] B.Q.Sx.WL j) (eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), NChTie D ex.nch → (∀ (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V) (y : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL), HEq ((P.JM.eW i).symm x) y → (B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x) = jDL B.Q.Rl B.Q.F.lv2 i y) → (∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V) (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK B.Q.Sx j), jD j x = ∑ k, a k • (show ↥(B.Q.Sx.A j).WK from f k).1 → eM w j x = ∑ k, ex.nch.embW w (a k) ⊗ₜ[D.ntw.O (ex.nch.twI w)] (B.Q.nexp.eF (ex.nch.twI w) j (ex.nch.sd w) h1 h2).symm ((1 : KB B.Q.Sx (ex.nch.twI w) (ex.nch.sd w)) ⊗ₜ[B.Q.Sx.Ks] f k)) → ∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → NForms.IsLatIn (Submodule.span (ex.nch.Oe w) (eM w j '' ((Y.MjH j).L : Set (Y.MjH j).V))) ((((NForms.V0 D (ex.nch.twI w) j (ex.nch.sd w)).restrictScalars (D.ntw.O (ex.nch.twI w))).baseChange (FractionRing (ex.nch.Oe w))).restrictScalars (ex.nch.Oe w)) := by
   intro D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B hPin hRec jD eM hN hjD hSum w j hne h1 h2
   obtain ⟨i, rfl⟩ : ∃ i : Fin D.R.m, j = (i : ℕ) + 1 := ⟨⟨j - 1, by omega⟩, by simp; omega⟩
@@ -767,6 +973,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Numb
 open Formalism.L2.Rows
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts | exact GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts | (intros; apply GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts <;> as …`.
+-/
 theorem _root_.GlobalTheory.Adopt.lattice_family_adoption_second : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q) (jD : ∀ j, (Y.MjH j).V →ₗ[D.what₂.LL] B.Q.Sx.WL j) (eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), NChTie D ex.nch → (∀ (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V) (y : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL), HEq ((P.JM.eW i).symm x) y → (B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x) = jDL B.Q.Rl B.Q.F.lv2 i y) → (∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V) (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK B.Q.Sx j), jD j x = ∑ k, a k • (show ↥(B.Q.Sx.A j).WK from f k).1 → eM w j x = ∑ k, ex.nch.embW w (a k) ⊗ₜ[D.ntw.O (ex.nch.twI w)] (B.Q.nexp.eF (ex.nch.twI w) j (ex.nch.sd w) h1 h2).symm ((1 : KB B.Q.Sx (ex.nch.twI w) (ex.nch.sd w)) ⊗ₜ[B.Q.Sx.Ks] f k)) → ∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → NForms.IsLatIn (Submodule.span (ex.nch.Oe w) (eM w j '' ((Y.MjH j).L : Set (Y.MjH j).V))) ((((NForms.V0 D (ex.nch.twI w) j (ex.nch.sd w)).restrictScalars (D.ntw.O (ex.nch.twI w))).baseChange (FractionRing (ex.nch.Oe w))).restrictScalars (ex.nch.Oe w)) := by
   first | exact @GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts | exact GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts | (intros; apply GroupAverageFixedPoints.GlobalTheory.CompanionTheory.LatSpan.lattice_of_lifts <;> assumption)
 

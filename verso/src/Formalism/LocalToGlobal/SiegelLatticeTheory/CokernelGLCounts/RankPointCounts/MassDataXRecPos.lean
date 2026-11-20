@@ -10,6 +10,13 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 
 namespace Formalism.L2.SG.Pf.MassDataX
 
+/- English proof (translation)
+Establish `hC` using `Formalism.L2.SG.Pf.MassDataX.classFinite_holds X u`. Establish `hS` using `MassDataMassesW.stabFinite_of Formalism.L2.SG.Pf.MassDataX.hinfCompact_holds Formalism.L2.SG.Pf.MassDataX.kCompactOpen_holds X u`. Use `show 0 < massCl (MassDataMassesW.GamH X u) (MassDataMassesW.KH X u)`. Unfold `massCl`. Use `haveI := hC`.
+
+Use `letI : Fintype (DoubleCoset.Quotient (G := ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) (MassDataMassesW.GamH X u : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) (MassDataMassesW.KH X u : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))) := …`. Rewrite using `[finsum_eq_sum_of_fintype]`. Apply `Finset.sum_pos` to reduce the goal to its premises. Introduce `c _ haveI := hS (Quotient.out c)`. Apply `inv_pos.mpr` to reduce the goal to its premises.
+
+Conclude with `Nat.card_pos` after adjusting the coercions. Conclude with `Finset.univ_nonempty_iff.mpr ⟨Quot.mk _ 1⟩`.
+-/
 theorem massH_pos {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     0 < massH X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) (frameOf X u) := by
   classical
@@ -31,6 +38,11 @@ theorem massH_pos {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     exact_mod_cast Nat.card_pos
   · exact Finset.univ_nonempty_iff.mpr ⟨Quot.mk _ 1⟩
 
+/- English proof (translation)
+Establish `hx : ∀ v, ∃ y : X.Vloc u v, y ≠ 0` using `fun v => by haveI := (X.piLoc_type u v).1`. Conclude with `exists_ne 0`. Use `choose x hx using hx`. Establish `hne : X.tensU u x ≠ 0`. Introduce `h0`.
+
+Establish `h` using `X.tensU_inner u x x`. Rewrite `h` using `[h0, inner_zero_left]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun v _ => inner_self_ne_zero.mpr (hx v)) h.symm`. Conclude with `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨_, hne⟩`.
+-/
 theorem finrank_Vpi_pos {D : D7} (X : HidaSetting D) (u : D.what₂.Word) : 0 < Module.finrank ℂ (X.Vpi u) := by
   classical
   have hx : ∀ v, ∃ y : X.Vloc u v, y ≠ 0 := fun v => by

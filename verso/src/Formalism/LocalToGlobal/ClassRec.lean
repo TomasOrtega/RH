@@ -32,6 +32,9 @@ structure RecT (ex : Extra D L hT Gi Gl K Y cX) where
 
 def TiedRec (ex : Extra D L hT Gi Gl K Y cX) : Prop := Nonempty (RecT ex)
 
+/- English proof (translation)
+The claim follows from `let ⟨R⟩ := h; ⟨R.T⟩`.
+-/
 theorem TiedRec.tiedSK {ex : Extra D L hT Gi Gl K Y cX} (h : TiedRec ex) : LinkedFamilyKernelCondition ex :=
   let ⟨R⟩ := h; ⟨R.T⟩
 
@@ -40,14 +43,26 @@ end
 def LayerTwoFamilyClass : FamClass := fun {_} Fm =>
   (∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, TiedRec (Fm.ex x hx i)) ∧ LinkedFamiliesAligned Fm
 
+/- English proof (translation)
+Take `⟨⟨x0, h⟩, _⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => (h x hx hx0 i).tiedSK⟩`.
+-/
 theorem LayerTwoFamilyClass.c2sk {eps : ℝ} {Fm : FamP eps} (h : LayerTwoFamilyClass Fm) : LinkedFamiliesKernelFrame Fm := by
   obtain ⟨⟨x0, h⟩, _⟩ := h
   exact ⟨x0, fun x hx hx0 i => (h x hx hx0 i).tiedSK⟩
 
+/- English proof (translation)
+The claim follows from `h.c2sk.c2s`.
+-/
 theorem LayerTwoFamilyClass.c2s {eps : ℝ} {Fm : FamP eps} (h : LayerTwoFamilyClass Fm) : LinkedFamiliesLevelClass Fm := h.c2sk.c2s
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem LayerTwoFamilyClass.c2sa {eps : ℝ} {Fm : FamP eps} (h : LayerTwoFamilyClass Fm) : LinkedFamiliesAligned Fm := h.2
 
+/- English proof (translation)
+The claim follows from `gTiedF_of_C2S Fm h.c2s`.
+-/
 theorem gTiedF_of_C2Rec {eps : ℝ} (Fm : FamP eps) (h : LayerTwoFamilyClass Fm) : G.GroupCompatibilityFamily Fm := gTiedF_of_C2S Fm h.c2s
 
 end Formalism.L2

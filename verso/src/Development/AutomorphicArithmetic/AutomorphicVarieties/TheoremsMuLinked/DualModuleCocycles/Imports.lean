@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
+/- English proof (translation)
+Introduce `O R X _ _ _ _ _ n _ G _ x δ ρ τ c c₀ d hc₀ hspan htr hd y hy`. Take `⟨k1, k2⟩` from `kill0 ρ c₀ hc₀ hspan`. Establish `hs : ∀ g : G, repR x ρ (MonoidAlgebra.single g 1) = ρ g`. Introduce `g`. Rewrite using `[repR_single, map_one, one_smul]`.
+
+Establish `h1 : repR x ρ y = 0`. Apply `k1` to reduce the goal to its premises. Introduce `g`. Rewrite using `[← hs, ← map_mul, htr, hy, map_zero]`. Use `⟨h1, k2 X (d y) ?_⟩` and prove the remaining obligations.
+
+Introduce `g`. Establish `e` using `hd.mul (MonoidAlgebra.single g 1) y`. Rewrite `e` using `[h1, hs]`. Establish `hb0 : bar X (0 : Matrix (Fin n) (Fin n) O) = 0`. Use extensionality with `i j`.
+
+Simplify using `[bar]`. Rewrite `e` using `[hb0, Matrix.mul_zero, zero_add]`. Rewrite using `[← e, hd.tr, hy, map_zero, smul_zero]`.
+-/
 theorem UpperTheory.V.Th.Coc.kill :
     ∀ {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} [IsDomain O] {G : Type} [Group G] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ : G →* Matrix (Fin n) (Fin n) O) (τ : MonoidAlgebra R G → R) (c c₀ : O) (d : MonoidAlgebra R G →+ Matrix (Fin n) (Fin n) X), c₀ ≠ 0 → (∀ Z : Matrix (Fin n) (Fin n) O, c₀ • Z ∈ Submodule.span O (Set.range ρ)) → (∀ y, (repR x ρ y).trace = x (τ y)) → IsLift x δ (repR x ρ) τ c d → ∀ y, (∀ g, τ ((MonoidAlgebra.single g 1) * y) = 0) → repR x ρ y = 0 ∧ c₀ • d y = 0 := by
   intro O R X _ _ _ _ _ n _ G _ x δ ρ τ c c₀ d hc₀ hspan htr hd y hy

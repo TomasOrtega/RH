@@ -19,6 +19,13 @@ open scoped TensorProduct Matrix
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1 : ∀ y ∈ LinearMap.range (LinearMap.adjoint (X.θ' j t)), inner ℂ y (X.jL j t f) = 0`. Rewrite using `[← hZ.2 j t]`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨z, hz, rfl⟩ := hy`.
+
+Conclude with `hf z hz`. Consider the case `zero => exact inner_zero_left _`. Consider the case `add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [inner_smul_left, ha, mul_zero]`. Establish `h2` using `h1 _ ⟨X.θ' j t (X.jL j t f), rfl⟩`.
+
+Rewrite `h2` using `[LinearMap.adjoint_inner_left, inner_self_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem cx_eq_zero {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     (hZ : X.RatZ) (j : Bs.J) (t : Bs.Tup) (f : A.FL j t)
     (hf : ∀ z ∈ X.Zl j t, inner ℂ (X.jL j t z) (X.jL j t f) = 0) : X.θ' j t (X.jL j t f) = 0 := by
@@ -38,11 +45,17 @@ section Real
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+The claim follows from `((hM.HV i t).2.2 (jVx R i t x) (jVx R i t y)).trans ((congrArg₂ (Bridge.adInner _ _ _) (hM.jV i t x) (hM.jV i t y)).trans (GlobalTheory.PresBasic.isom (R.B.L i t).pres x y))`.
+-/
 theorem inner_jV (hM : R.IsModels) (i : Fin D.R.m) (t : T0) (x y : (A.MtCSD i t).Forms) :
     inner ℂ (jVx R i t x) (jVx R i t y) = D.what₂.embLL ((A.MtCSD i t).csum x.1 y.1) :=
   ((hM.HV i t).2.2 (jVx R i t x) (jVx R i t y)).trans
     ((congrArg₂ (Bridge.adInner _ _ _) (hM.jV i t x) (hM.jV i t y)).trans (GlobalTheory.PresBasic.isom (R.B.L i t).pres x y))
 
+/- English proof (translation)
+The claim follows from `cx_eq_zero (R.toCx F) hZ i t f fun z hz => (congrArg (cj (twAt D.what₂.embLL A.v0)) ((inner_jV hM i t z f).trans ((congrArg D.what₂.embLL (hf z hz)).trans (map_zero _)))).trans (map_zero _)`.
+-/
 theorem thG_eq_zero (hM : R.IsModels) (hZ : R.LRatZ F) (i : Fin D.R.m) (t : T0) (f : (A.MtCSD i t).Forms)
     (hf : ∀ z : (A.MtCSD i t).Forms, z ∈ liftSub R F i t → (A.MtCSD i t).csum z.1 f.1 = 0) :
     R.thG i t (jVx R i t f) = 0 :=
@@ -50,9 +63,17 @@ theorem thG_eq_zero (hM : R.IsModels) (hZ : R.LRatZ F) (i : Fin D.R.m) (t : T0) 
     (congrArg (cj (twAt D.what₂.embLL A.v0)) ((inner_jV hM i t z f).trans
       ((congrArg D.what₂.embLL (hf z hz)).trans (map_zero _)))).trans (map_zero _)
 
+/- English proof (translation)
+The claim follows from `map_sub (R.jV i t) x y`.
+-/
 theorem jVx_sub (i : Fin D.R.m) (t : T0) (x y : (A.MtCSD i t).Forms) :
     jVx R i t (x - y : (A.MtCSD i t).Forms) = jVx R i t x - jVx R i t y := map_sub (R.jV i t) x y
 
+/- English proof (translation)
+Use `sub_eq_zero.1 ((map_sub (R.thG i t) _ _).symm.trans ((congrArg (R.thG i t) (jVx_sub i t _ _).symm).trans ?_))` and prove the remaining obligations. Use `thG_eq_zero hM hZ i t _ fun z hz => ?_` and prove the remaining obligations. Establish `h` using `orth_good_sub_proj (OntoChain.blockHyp (F := F) hOk i t) (Z := liftSub R F i t) (fun g => hS.2 i t (Sum.inr g)) x ⟨z, hz, rfl⟩`. Rewrite `h` using `[CyclotomicLifting.hform_eq_csum, CSD.I_apply, CSD.I_apply, map_sub]`. Unfold `BlockDat.fE at h`.
+
+Rewrite `h` using `[← Matrix.mulVec_mulVec]`. Use `Eq.trans (congrArg₂ (fun a b => (A.MtCSD i t).csum a b) ?_ rfl) h` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((A.MtCSD i t).basis.equivFun.symm_apply_apply z).symm`.
+-/
 theorem thG_good {s : ℕ} (hOk : A.fam.Ok s) (hM : R.IsModels) (hS : R.LStable F) (hZ : R.LRatZ F) (i : Fin D.R.m) (t : T0)
     (x : Fin (srcDim A i t F.P0 F.ψ0⁻¹) → D.what₂.LL) :
     R.thG i t (jVx R i t (srcForm A i t F.P0 F.ψ0⁻¹
@@ -69,13 +90,26 @@ theorem thG_good {s : ℕ} (hOk : A.fam.Ok s) (hM : R.IsModels) (hS : R.LStable 
   refine Eq.trans (congrArg₂ (fun a b => (A.MtCSD i t).csum a b) ?_ rfl) h
   exact congrArg Subtype.val ((A.MtCSD i t).basis.equivFun.symm_apply_apply z).symm
 
+/- English proof (translation)
+The claim follows from `sgAt_mk _ R.hv0`.
+-/
 theorem sign_at_base_place_eq_embedding (R : RealDat D A Ks) : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
 
+/- English proof (translation)
+Use `(hM.HW i _).1.comp ((injective_iff_map_eq_zero ((R.FW i).j (sg0 D A))).2 fun x hx => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `((hU i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 hne)).ne_zero 0 hx`.
+-/
 theorem adForm_injective (hM : R.IsModels) (hU : R.LUnif) (i : Fin D.R.m) : Function.Injective (adForm R i) := by
   refine (hM.HW i _).1.comp ((injective_iff_map_eq_zero ((R.FW i).j (sg0 D A))).2 fun x hx => ?_)
   by_contra hne
   exact ((hU i (sg0 D A)).1 1 (fun _ => x) (linearIndependent_unique_iff.2 hne)).ne_zero 0 hx
 
+/- English proof (translation)
+Unfold `adForm`. Rewrite using `[Arith.FormsL.eOp_apply, map_sum, map_sum]`. Simplify using `only [map_smulₛₗ, RingHom.id_apply, (hU i (sg0 D A)).2.2, smul_smul]`. Establish `e : ∀ g, (sg0 D A) ((idemOf A.X).coeff g * (((R.FW i).chi g)⁻¹ : D.what₂.LLˣ)) * (sg0 D A) (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) = RealDat.eC (A` using `A) (sg0 D A) g := fun g => by`. Rewrite using `[← map_mul, mul_assoc, Units.inv_mul, mul_one]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[sum_apply]`. Use `show _ = (R.eWf i (sg0 D A)) ((R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) x) v)`.
+
+Unfold `RealDat.eWf gaL`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem adForm_eOp (hU : R.LUnif) (i : Fin D.R.m) (x : Fin (R.nW i) → D.what₂.LL) :
     adForm R i ((R.FW i).eOp (fun g => (idemOf A.X).coeff g) x) =
       Mult.postOn _ (R.eWf i (sg0 D A)) (adForm R i x) := by
@@ -93,6 +127,11 @@ theorem adForm_eOp (hU : R.LUnif) (i : Fin D.R.m) (x : Fin (R.nW i) → D.what�
   rw [LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Apply `adForm_injective hM hU i` to reduce the goal to its premises. Establish `h1 : adForm R i (a • thetaOp R F i t x) = D.what₂.embLL a • adForm R i (thetaOp R F i t x)`. Unfold `adForm`. Rewrite using `[map_smulₛₗ, map_smul, sign_at_base_place_eq_embedding R]`. Rewrite using `[adForm_eOp hU, hθ, map_smul, h1]`.
+
+Use `congrArg _ ((hP.thG i t _).symm.trans (congrArg (R.HW i (sg0 D A)).e ?_))` and prove the remaining obligations. Conclude with `(thG_good hOk hM hS hZ i t x).trans (OntoChain.j_thetaOp h5 hr i t x).symm`.
+-/
 theorem eOp_classSum {s : ℕ} (hOk : A.fam.Ok s) (hM : R.IsModels) (hP : R.IsThP) (hU : R.LUnif) (hS : R.LStable F)
     (hZ : R.LRatZ F) (h5 : R.LTheta F) (hr : R.LRatTh F) (i : Fin D.R.m) (t : T0) (a : D.what₂.LL)
     {θ : (Fin (srcDim A i t F.P0 F.ψ0⁻¹) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW i) → D.what₂.LL)}
@@ -107,6 +146,13 @@ theorem eOp_classSum {s : ℕ} (hOk : A.fam.Ok s) (hM : R.IsModels) (hP : R.IsTh
   refine congrArg _ ((hP.thG i t _).symm.trans (congrArg (R.HW i (sg0 D A)).e ?_))
   exact (thG_good hOk hM hS hZ i t x).trans (OntoChain.j_thetaOp h5 hr i t x).symm
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `(OntoChain.mem_base_iff hG.levels g).1 hg`. Establish `h1` using `(OntoChain.mem_pi_unip_iff R _).2 ⟨u, hu, rfl⟩`. Use `Units.ext (D.what₂.embLL.injective ?_)` and prove the remaining obligations. Rewrite using `[hG.chiW, Units.val_one, map_one, OntoChain.eG_mirIncl]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+
+Establish `h2` using `h1 v (Set.mem_univ v)`. Establish `h3 : Matrix.GeneralLinearGroup.det (mirToGL R u v) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular h2.1]`. Conclude with `Finset.prod_eq_one fun k _ => h2.2 k`.
+
+Rewrite using `[h3, map_one, Units.val_one]`.
+-/
 theorem chi_eq_one (hG : R.IsGrp F) (i : Fin D.R.m) {g : G} (hg : g ∈ F.P0) : (R.FW i).chi g = 1 := by
   obtain ⟨u, hu, rfl⟩ := (OntoChain.mem_base_iff hG.levels g).1 hg
   have h1 := (OntoChain.mem_pi_unip_iff R _).2 ⟨u, hu, rfl⟩

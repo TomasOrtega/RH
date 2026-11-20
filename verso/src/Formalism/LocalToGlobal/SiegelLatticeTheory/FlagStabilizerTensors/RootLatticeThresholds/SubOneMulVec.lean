@@ -14,13 +14,22 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
   (v : InfinitePlace X.B.I.F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gv_eq : GX X u u' D.host.rdE (gamW X u u' w) v =
     Gv (Tw u) (Tw u') (Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v)) := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+-/
 theorem sub_one_mulVec (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) (x : Fin X.B.I.n → ℂ) :
     (M - 1) *ᵥ x = M *ᵥ x - x := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `[Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Matrix.one_apply]`.
+-/
 theorem frame_diff {m : ℕ} {N : ℕ} (V : Fin (m + 1) → Fin N → ℂ) (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (a' : Fin (m + 1)) : ∑ a'', A a'' a' • V a'' - V a' = ∑ a'', (A - 1) a'' a' • V a'' := by
   simp [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Matrix.one_apply]
@@ -30,6 +39,15 @@ section Main
 variable (hw : OkPt X u u' w)
 
 include hw in
+/- English proof (translation)
+Use `set Z := Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) with hZd`. Establish `hG : 0 < Gv (Tw u) (Tw u') Z`. Rewrite using `[← gv_eq X u u' w v]`. Conclude with `hw.2 v`. Establish `hdet : IsUnit Z.det`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hD : Dl Z (D.R.rS + 1) = Z.det`. Unfold `Formalism.L2.SG.RealObj.Dl`. Rewrite using `[dif_pos le_rfl]`.
+
+Use `congr 1`. Establish `hnn : (0 : ℝ) ≤ (Tw u : ℝ) * (Tw u' : ℝ) * ‖Dl Z D.R.rS‖ ^ 2` using `mul_nonneg (mul_nonneg (Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u).le (Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos (D := D) u').le) (sq_nonneg _)`. Unfold `Gv at hG`. Rewrite `hG` using `[hD, h0, norm_zero, zero_pow two_ne_zero, zero_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `gap_of_G Z hdet _ _ hG`.
+-/
 theorem hgap_w : 1 - ((Tw u : ℝ) : ℂ) * (Tw u' : ℝ) *
     ((Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v))⁻¹ (Fin.last D.R.rS) (Fin.last D.R.rS) *
       starRingEnd ℂ ((Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v))⁻¹ (Fin.last D.R.rS) (Fin.last D.R.rS))) ≠ 0 := by
@@ -53,6 +71,11 @@ theorem hgap_w : 1 - ((Tw u : ℝ) : ℂ) * (Tw u' : ℝ) *
   exact gap_of_G Z hdet _ _ hG
 
 include hw in
+/- English proof (translation)
+Establish `hC : IsUB (blkW w) (Cw w c)`. Use `⟨fun i => by simp [Cw], fun i j h => ?_⟩` and prove the remaining obligations. Simplify using `only [Cw, Matrix.of_apply] at h`. Use `split_ifs at h with h1 h2`. Conclude with `⟨le_of_eq h1, by rw [h1]⟩`.
+
+Conclude with `⟨le_of_lt h2.1, h2.2⟩`. Conclude with `absurd rfl h`. Conclude with `Yc_unitary (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Tw u : ℝ) (Tw u' : ℝ) (piW w) (blkW w) (fun a b => gram_frm (X := X) v u D.host.rdE a b) (fun a b => hGG_w (X := X) (u := u) (u' := u') (w := w) v a b) (fun a => piW_invol (w := w) a) (fun a => piW_blk (w := w) a) (fun a b h hab …`.
+-/
 theorem yM_unit (c : FreeE w → ℂ) :
     (Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) *
       Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) = Formalism.REAL.Jm (X.B.I.ε v) :=
@@ -71,6 +94,9 @@ theorem yM_unit (c : FreeE w → ℂ) :
     (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v c b) (hgap_w X u u' w v hw) hC
 
 include hw in
+/- English proof (translation)
+The claim follows from `Yc_F (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Tw u : ℝ) (Tw u' : ℝ) (piW w) (fun a b => gram_frm (X := X) v u D.host.rdE a b) (fun a b => hGG_w (X := X) (u := u) (u' := u') (w := w) v a b) (fun a => piW_invol (w := w) a) (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v …`.
+-/
 theorem yM_F (c : FreeE w → ℂ) (a : Fin (D.R.rS + 1)) :
     Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) *ᵥ Fw X u v a =
       ∑ a', Am (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) a' a • Fw X u v a' :=
@@ -80,6 +106,9 @@ theorem yM_F (c : FreeE w → ℂ) (a : Fin (D.R.rS + 1)) :
     (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v c b) (hgap_w X u u' w v hw) a
 
 include hw in
+/- English proof (translation)
+The claim follows from `Yc_G (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Tw u : ℝ) (Tw u' : ℝ) (piW w) (fun a b => gram_frm (X := X) v u D.host.rdE a b) (fun a b => hGG_w (X := X) (u := u) (u' := u') (w := w) v a b) (fun a => piW_invol (w := w) a) (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v …`.
+-/
 theorem yM_G (c : FreeE w → ℂ) (b : Fin (D.R.rS + 1)) :
     Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) *ᵥ Gw X u u' w v b =
       ∑ b', Cw w c b' b • Gw X u u' w v b' :=
@@ -89,18 +118,27 @@ theorem yM_G (c : FreeE w → ℂ) (b : Fin (D.R.rS + 1)) :
     (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v c b) (hgap_w X u u' w v hw) b
 
 include hw in
+/- English proof (translation)
+Unfold `Am`. Conclude with `isUB_A (piW w) (fun a => piW_invol (w := w) a) (fun a => piW_blk (w := w) a) (fun a b h hab => piW_anti (w := w) a b h hab) (Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v)) (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v c b) (isUB_Cw w c)`.
+-/
 theorem yM_isUB_A (c : FreeE w → ℂ) : IsUB (blkW w) (Am (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c)) := by
   unfold Am
   exact isUB_A (piW w) (fun a => piW_invol (w := w) a) (fun a => piW_blk (w := w) a)
     (fun a b h hab => piW_anti (w := w) a b h hab) (Zm (X.B.I.ε v) (Fw X u v) (Gw X u u' w v))
     (fun c b => hZ_w (X := X) (u := u) (u' := u') (w := w) hw v c b) (isUB_Cw w c)
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[← Fin.lt_last_iff_ne_last]`. Conclude with `Iff.rfl`.
+-/
 theorem lt_last_set : {a : Fin (D.R.rS + 1) | a ≠ Fin.last D.R.rS} = {a | a.1 < D.R.rS} := by
   ext a
   simp only [Set.mem_setOf_eq]
   rw [← Fin.lt_last_iff_ne_last]
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `hr : (D.host.rdE : ℂ) ≠ 0` using `by exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D).ne'`. Simplify using `only [frm, famSc, fam, Fin.coe_castSucc, Fin.snoc_castSucc, smul_smul]`. Rewrite using `[mul_inv_cancel₀ (pow_ne_zero _ hr), one_smul]`.
+-/
 theorem e_eq (b : Fin D.R.rS) : rv X.B.I v (X.eR b) =
     ((D.host.rdE : ℂ) ^ (D.R.rS - b.1)) • frm X u D.host.rdE v b.castSucc := by
   have hr : (D.host.rdE : ℂ) ≠ 0 := by exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D).ne'
@@ -108,6 +146,23 @@ theorem e_eq (b : Fin D.R.rS) : rv X.B.I v (X.eR b) =
   rw [mul_inv_cancel₀ (pow_ne_zero _ hr), one_smul]
 
 include hw in
+/- English proof (translation)
+Establish `hr : (D.host.rdE : ℂ) ≠ 0` using `by exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D).ne'`. Establish `hF : ∀ b : Fin D.R.rS, Fw X u v b.castSucc = ((D.host.rdE : ℂ) ^ (D.R.rS - b.1))⁻¹ • rv X.B.I v (X.eR b)`. Introduce `b`. Use `show frm X u D.host.rdE v b.castSucc = _`. Rewrite using `[e_eq X u v b, smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hr), one_smul]`.
+
+Establish `hspan : ∀ k, k ≤ D.R.rS → Submodule.span ℂ (Fw X u v '' {a | a.1 < k}) ≤ spanLt (fun a => rv X.B.I v (X.eR a)) k`. Introduce `k hk`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `ha' : a.1 < k` using `ha`.
+
+Take `⟨b, rfl⟩ : ∃ b : Fin D.R.rS, a = b.castSucc` from `⟨⟨a.1, by omega⟩, Fin.ext rfl⟩`. Rewrite using `[hF b]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, ha', rfl⟩)`. Establish `hA` using `yM_isUB_A X u u' w v hw c`. Establish `hcol : ∀ a' : Fin (D.R.rS + 1), Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) *ᵥ Fw X u v a' - Fw X u v a' ∈ spanLt (fun a => rv X.B.I v (X.eR a)) a'.1`.
+
+Introduce `a'`. Rewrite using `[yM_F X u u' w v hw c a', frame_diff]`. Conclude with `hspan a'.1 (Nat.lt_succ_iff.mp a'.2) (comb_mem X u v hA a')`. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `show (Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c) - 1) *ᵥ rv X.B.I v (X.eR a) ∈ _`.
+
+Establish `he : rv X.B.I v (X.eR a) = ((D.host.rdE : ℂ) ^ (D.R.rS - a.1)) • Fw X u v a.castSucc`. Rewrite using `[hF a, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hr), one_smul]`. Rewrite using `[sub_one_mulVec X, he, Matrix.mulVec_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (hcol a.castSucc)`. Establish `hz : Fw X u v (Fin.last D.R.rS) = rv X.B.I v (X.zR u)`.
+
+Simplify using `[Fw, frm, famSc, fam]`. Rewrite using `[sub_one_mulVec X, ← hz]`. Conclude with `hcol (Fin.last D.R.rS)`. Establish `hx : ∀ a, a ≠ Fin.last D.R.rS → hJ (X.B.I.ε v) (Fw X u v a) y = 0`. Introduce `a ha`.
+
+Take `⟨b, rfl⟩ : ∃ b : Fin D.R.rS, a = b.castSucc` from `⟨⟨a.1, Fin.val_lt_last ha⟩, Fin.ext rfl⟩`. Rewrite using `[hF b, hJs_l, hy b, mul_zero]`. Establish `hp` using `Yc_perpF (ε := X.B.I.ε v) (F := Fw X u v) (G := Gw X u u' w v) (T := (Tw u : ℝ)) (T' := (Tw u' : ℝ)) (π := piW w) (blk := blkW w) (hFF := fun a b => gram_frm (X := X) v u D.host.rdE a b) (hGG := fun a b => hGG_w (X := X) (u := u) (u' := u') (w := w) v a b) (hπ := fun a => piW_inv …`. Rewrite `hp` using `[lt_last_set]`. Rewrite using `[sub_one_mulVec X]`.
+
+Conclude with `hspan D.R.rS le_rfl hp`.
+-/
 theorem inN_u (c : FreeE w → ℂ) :
     InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))
       (Yc (X.B.I.ε v) (Fw X u v) (Gw X u u' w v) (Cw w c)) := by

@@ -9,12 +9,18 @@ namespace GlobalTheory.OriginBoxVac
 section Alg
 variable {k : Type} [Field k] [ValuativeRel k]
 
+/- English proof (translation)
+Establish `hu : valuation k (u : k) ≠ 0` using `by simp`. Rewrite using `[Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀, ← one_mul (valuation k (u : k))⁻¹, le_mul_inv_iff₀ (zero_lt_iff.2 hu), mul_comm]`.
+-/
 theorem unit_mul_mem_integer_iff (u : kˣ) (x : k) :
     (u : k) * x ∈ 𝒪[k] ↔ valuation k x ≤ valuation k ((u⁻¹ : kˣ) : k) := by
   have hu : valuation k (u : k) ≠ 0 := by simp
   rw [Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀,
     ← one_mul (valuation k (u : k))⁻¹, le_mul_inv_iff₀ (zero_lt_iff.2 hu), mul_comm]
 
+/- English proof (translation)
+Establish `h : ϖ ^ (A - B - a) = (ϖ ^ a)⁻¹ * ϖ ^ A * (ϖ ^ B)⁻¹`. Rewrite using `[_root_.zpow_sub, _root_.zpow_sub]`. Use `group`. Rewrite using `[h, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_eq (ϖ : kˣ) (a A B : ℤ) (x : k) :
     (((ϖ ^ a)⁻¹ : kˣ) : k) * (((ϖ ^ A : kˣ) : k) * x * (((ϖ ^ B)⁻¹ : kˣ) : k)) =
       ((ϖ ^ (A - B - a) : kˣ) : k) * x := by
@@ -22,6 +28,9 @@ theorem scale_eq (ϖ : kˣ) (a A B : ℤ) (x : k) :
     rw [_root_.zpow_sub, _root_.zpow_sub]; group
   rw [h, Units.val_mul, Units.val_mul]; ring
 
+/- English proof (translation)
+Rewrite using `[scale_eq, unit_mul_mem_integer_iff, ← _root_.zpow_neg, show -(A - B - a) = a - A + B by ring]`.
+-/
 theorem scaled_mem_iff (ϖ : kˣ) (a A B : ℤ) (x : k) :
     (((ϖ ^ a)⁻¹ : kˣ) : k) * (((ϖ ^ A : kˣ) : k) * x * (((ϖ ^ B)⁻¹ : kˣ) : k)) ∈ 𝒪[k] ↔
       valuation k x ≤ valuation k ((ϖ ^ (a - A + B) : kˣ) : k) := by
@@ -29,6 +38,9 @@ theorem scaled_mem_iff (ϖ : kˣ) (a A B : ℤ) (x : k) :
 
 end Alg
 
+/- English proof (translation)
+Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp [basePt, Free, Kept] at h ⊢ <;> omega`.
+-/
 theorem basePt_zero_of_var {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
     {c : ℕ} (r : n ⊕ Fin c) (s : n' ⊕ Fin (c + 1)) (h : Free (c / 2 + 1) (r, s) ∨ Kept (r, s)) :
     basePt c (0 : Matrix n n' k) r s = 0 := by
@@ -38,6 +50,9 @@ end GlobalTheory.OriginBoxVac
 
 namespace GlobalTheory.OriginBoxVac
 
+/- English proof (translation)
+Establish `h1 : ((g b.src)⁻¹).val = diagonal fun i => (((ds i)⁻¹ : kˣ) : k)` using `by rw [hsrc]; rfl`. Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val]`. Rewrite using `[h1, ht, diagGL_val, diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+-/
 theorem moveArgs_one_entry {k : Type} [Field k] (G : Grid k) (g : G.VertexGroup) (z : G.Args) (b : Edge)
     (dt : Fin (G.rank b.tgt) → kˣ) (ds : Fin (G.rank b.src) → kˣ) (ht : g b.tgt = diagGL dt)
     (hsrc : g b.src = diagGL ds) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
@@ -51,6 +66,29 @@ end GlobalTheory.OriginBoxVac
 namespace GlobalTheory.OriginBox
 open GlobalTheory.OriginBoxVac
 
+/- English proof (translation)
+Use `set M := G.moveArgs .one g (fill hs 0 0 e) with hMdef`. Establish `hM : ∀ (j : ℕ) (r : Fin (G.rank (G.m, j))) (s : Fin (G.rank (G.m, j + 1))), M (.theta G.m j) r s = ((ϖ ^ vtxExp a a' (G.m - 1 - j) (topRank G j) r : kˣ) : k) * downMap hs 0 e j s r * (((ϖ ^ vtxExp a a' (G.m - 1 - (j + 1)) (topRank G (j + 1)) s)⁻¹ : kˣ) : k)`. Introduce `j r s`. Apply the tactic sequence `rw [hMdef, moveArgs_one_entry G g _ (.theta G.m j) (fun x => ϖ ^ vtxExp a a' (G.m - 1 - j) (topRank G j) x) (fun x => ϖ ^ vtxExp a a' (G.m - 1 - (j + 1)) (topRank G (j + 1)) x) (hg j) (hg (j + 1)), fill_theta, transpose_apply]`. Establish `hE : ∀ (j : ℕ) (hj : j < G.m - 1) (r' : Fin (topRank G j) ⊕ Fin (G.m - 2 - j + 1)) (s' : Fin (topRank G (j + 1)) ⊕ Fin (G.m - 2 - j)), M (.theta G.m j) (frame (b` using `G.rank (G.m, j)) (by have := topRank_add hs j; omega) r') (frame (b := G.rank (G.m, j + 1)) (by have := topRank_add hs (j + 1); omega) s') = ((ϖ ^ auxiliaryVectorUniformizerExponent a a' (G.m - 2 - j + 1) r' : kˣ) : k) * stepPt ((0 : ColArgs G) j) (e ⟨j, hj⟩) s' r' * (((ϖ ^ auxil …`.
+
+Introduce `j hj r' s'`. Rewrite using `[hM, show G.m - 1 - j = G.m - 2 - j + 1 by omega, vtxExp_frame, show G.m - 1 - (j + 1) = G.m - 2 - j by omega, vtxExp_frame]`. Use `congr 2`. Simplify using `only [downMap, dif_pos hj, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Establish `hbox : ∀ (j : ℕ) (hj : j < G.m - 1) (r' : Fin (topRank G j) ⊕ Fin (G.m - 2 - j + 1)) (s' : Fin (topRank G (j + 1)) ⊕ Fin (G.m - 2 - j)) (hv : Free ((G.m - 2 - j) / 2 + 1) (s', r') ∨ Kept (s', r')), (((ϖ ^ a)⁻¹ : kˣ) : k) * M (.theta G.m j) (frame (b` using `G.rank (G.m, j)) (by have := topRank_add hs j; omega) r') (frame (b := G.rank (G.m, j + 1)) (by have := topRank_add hs (j + 1); omega) s') ∈ 𝒪[k] ↔ valuation k (e ⟨j, hj⟩ ⟨(s', r'), hv⟩) ≤ valuation k ((ϖ ^ boxExp G a a' ⟨j, hj⟩ ⟨(s', r'), hv⟩ : kˣ) : k) := by`.
+
+Introduce `j hj r' s' hv`. Rewrite using `[hE, scaled_mem_iff]`. Simplify using `only [stepPt, Matrix.add_apply, of_apply, dif_pos hv, Pi.zero_apply, basePt_zero_of_var s' r' hv, zero_add]`. Both sides reduce to the same expression. Establish `key : (∀ b ∈ oppositePath G.m, ∀ i j, (((ϖ ^ a)⁻¹ : kˣ) : k) * M b i j ∈ 𝒪[k]) ↔ e ∈ box G ϖ a a'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H j _ v _`. Establish `hb : Edge.theta G.m j ∈ oppositePath G.m` using `by have := j.2; simp [oppositePath]; omega`. Conclude with `(hbox j j.2 v.1.2 v.1.1 v.2).1 (H _ hb _ _)`. Introduce `he b hb r s`.
+
+Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse] at hb`. Break down `hb with ⟨i, -, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Establish `h0 : M (.ex i G.m) = 0`. Simplify using `only [hMdef, Grid.moveArgs, fill_ex, Pi.zero_apply, transpose_zero, Matrix.mul_zero, Matrix.zero_mul]`. Simplify using `[h0]`.
+
+Break down `Nat.lt_or_ge j (G.m - 1) with hj' | hj'` into its components or cases. Take `⟨r', rfl⟩` from `(frame (a := topRank G j) (c := G.m - 2 - j + 1) (b := G.rank (G.m, j)) (by have := topRank_add hs j; omega)).surjective r`. Take `⟨s', rfl⟩` from `(frame (a := topRank G (j + 1)) (c := G.m - 2 - j) (b := G.rank (G.m, j + 1)) (by have := topRank_add hs (j + 1); omega)).surjective s`. Distinguish the cases in `hv : Free ((G.m - 2 - j) / 2 + 1) (s', r') ∨ Kept (s', r')`. Conclude with `(hbox j hj' r' s' hv).2 (he ⟨j, hj'⟩ trivial ⟨(s', r'), hv⟩ trivial)`.
+
+Rewrite using `[hE j hj', scale_eq]`. Simplify using `only [stepPt, Matrix.add_apply, of_apply, dif_neg hv, add_zero, Pi.zero_apply]`. Apply the tactic sequence `rcases s' with s' | l <;> rcases r' with r' | i`. Simplify using `[basePt]`. Simplify using `[basePt]`.
+
+Simplify using `[basePt]`. Simplify using `only [basePt, fromBlocks_apply₂₂, of_apply] split_ifs with hli`. Establish `h0 : auxiliaryVectorUniformizerExponent a a' (G.m - 2 - j + 1) (Sum.inr i : Fin (topRank G j) ⊕ _) - auxiliaryVectorUniformizerExponent a a' (G.m - 2 - j) (Sum.inr l : Fin (topRank G (j + 1)) ⊕ _) - a = 0`. Simplify using `only [auxiliaryVectorUniformizerExponent, hli]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hjm : j + 1 = G.m` using `by omega`.
+
+Establish `h0 : M (.theta G.m j) r s = 0`. Rewrite using `[hM]; simp [downMap, show ¬ j < G.m - 1 by omega, hjm]`. Simplify using `[h0]`. Distinguish the cases in `he : e ∈ box G ϖ a a'`. Rewrite using `[Set.indicator_of_mem he]`.
+
+Conclude with `Set.indicator_of_mem (s := {z : G.Args | ∀ b ∈ oppositePath G.m, ∀ i j, (((ϖ ^ a)⁻¹ : kˣ) : k) * z b i j ∈ 𝒪[k]}) (key.2 he) _`. Rewrite using `[Set.indicator_of_notMem he]`. Conclude with `Set.indicator_of_notMem (s := {z : G.Args | ∀ b ∈ oppositePath G.m, ∀ i j, (((ϖ ^ a)⁻¹ : kˣ) : k) * z b i j ∈ 𝒪[k]}) (fun h => he (key.1 h)) _`.
+-/
 theorem indicator_moveArgs_origin {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (G : Grid k) (hs : 1 ≤ G.s) (ϖ : kˣ) (a a' : ℤ) (g : G.VertexGroup)
     (hg : ∀ j, g (G.m, j) = colDiag G ϖ a a' j) (e : Vars G) :

@@ -6,6 +6,61 @@ namespace Formalism.L2.Pj.RegB
 
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.T0 ReciprocityTheory.ChartRestriction.G.T0.KrullColonIdeal
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, hxs⟩` from `IsLocalization.surj (nonZeroDivisors R) x`. Simplify using `only at hxs`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `hs0 : (s : R) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Establish `hsK : algebraMap R K (s : R) ≠ 0`.
+
+Introduce `h; apply hs0; exact hinj (by rw [h, map_zero])`. Distinguish the cases in `hex : ∃ t : R, t ∉ qq ∧ t * a ∈ Ideal.span {(s : R)}`. Take `⟨t, ht, hta⟩` from `hex`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hta`. Use `⟨r, t, ht, ?_⟩` and prove the remaining obligations.
+
+Apply `mul_right_cancel₀ hsK` to reduce the goal to its premises. Rewrite using `[mul_assoc, mul_comm (algebraMap R K t), ← mul_assoc, hxs, ← map_mul, ← map_mul, mul_comm a t, ← hr, mul_comm]`. Use `push Not at hex`. Establish `hab0 : colonI (s : R) a ≤ qq`. Introduce `t ht`.
+
+Assume the negation of the conclusion as `htq`. Conclude with `hex t htq ht`. Set `S : Set (Ideal R)` to `{J | ∃ c, J = colonI (s : R) c ∧ J ≤ qq ∧ colonI (s : R) a ≤ J}`. Establish `hS : S.Nonempty` using `⟨colonI (s : R) a, a, rfl, hab0, le_rfl⟩`. Take `⟨J, ⟨b, rfl, hJq, hab⟩, hmax⟩` from `(wellFounded_gt (α := Ideal R)).has_min S hS`.
+
+Establish `hsat : ∀ r : R, r ∉ qq → colonI (s : R) (r * b) = colonI (s : R) b`. Introduce `r hr`. Establish `hle : colonI (s : R) b ≤ colonI (s : R) (r * b)`. Introduce `y hy`. Rewrite `*` using `[mem_colonI]`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hy`. Establish `hq' : colonI (s : R) (r * b) ≤ qq`. Introduce `y hy`. Rewrite `hy` using `[mem_colonI, ← mul_assoc]`.
+
+Establish `: y * r ∈ qq` using `hJq hy`. Break down `hq.mem_or_mem this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hr`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hmax _ ⟨r * b, rfl, hq', hab.trans hle⟩ (lt_of_le_of_ne hle (Ne.symm hne))`. Use `set P := colonI (s : R) b with hPdef`. Establish `hPne : P ≠ ⊤` using `fun h => hq.ne_top (top_le_iff.1 (h ▸ hJq))`. Establish `hb : b ∉ Ideal.span {(s : R)}`. Introduce `hb`.
+
+Apply `hPne` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[mem_colonI]`. Conclude with `Ideal.mul_mem_left _ _ hb`.
+
+Establish `hprime : ∀ q1 q2 : R, q1 * q2 ∈ P → q1 ∈ P ∨ q2 ∈ P`. Introduce `q1 q2 hq12`. Distinguish the cases in `h1 : q1 ∈ P`. Conclude with `Or.inl h1`. Use `right`.
+
+Establish `hle : P ≤ colonI (s : R) (q1 * b)`. Introduce `y hy`. Rewrite `*` using `[mem_colonI]`. Rewrite using `[mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hy`.
+
+Establish `hq' : colonI (s : R) (q1 * b) ≤ qq`. Introduce `y hy`. Assume the negation of the conclusion as `hyq`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hsat y hyq, mem_colonI]`.
+
+Rewrite `hy` using `[mem_colonI]`. Establish `: q1 * (y * b) = y * (q1 * b)` using `by ring`. Rewrite using `[this]`. Conclude with `hy`. Establish `heq : P = colonI (s : R) (q1 * b)`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hmax _ ⟨q1 * b, rfl, hq', hab.trans hle⟩ (lt_of_le_of_ne hle hne)`. Rewrite using `[heq, mem_colonI]`. Rewrite `hq12` using `[mem_colonI]`. Establish `: q2 * (q1 * b) = q1 * q2 * b` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `hq12`. Establish `hPp : P.IsPrime` using `⟨hPne, fun {q1 q2} h => hprime q1 q2 h⟩`. Establish `hsP : (s : R) ∈ P`. Rewrite using `[mem_colonI]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hPbot : P ≠ ⊥`. Introduce `h`. Apply `hs0` to reduce the goal to its premises. Rewrite `hsP` using `[h]`.
+
+Conclude with `(Submodule.mem_bot R).mp hsP`. Establish `hle1 : P.height ≤ 1`. Distinguish the cases in `hA : ∀ q ∈ P, ∀ t : R, q * b = t * s → t ∈ P`. It suffices to derive a contradiction. Set `y : K` to `algebraMap R K b / algebraMap R K s`.
+
+Set `N : Submodule R K` to `Submodule.map (Algebra.linearMap R K) P`. Establish `hN : N ≠ ⊥`. Introduce `h`. Establish `: algebraMap R K (s : R) ∈ N` using `⟨s, hsP, rfl⟩`. Rewrite `this` using `[h]`.
+
+Conclude with `hsK ((Submodule.mem_bot R).mp this)`. Establish `hNfg : N.FG` using `(IsNoetherian.noetherian P).map _`. Establish `hint : IsIntegral R y`. Use `isIntegral_of_smul_mem_submodule N hN hNfg y ?_` and prove the remaining obligations. Introduce and unpack `n ⟨q, hq, rfl⟩`.
+
+Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp ((mem_colonI).mp hq)`. Use `⟨t, hA q hq t ht.symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.linearMap_apply, smul_eq_mul, y]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← map_mul, ← map_mul, ht, mul_comm]`.
+
+Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Apply `hb` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨r, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr]`.
+
+Simplify using `only [y]`. Clear the denominators using the available nonvanishing facts. Use `push Not at hA`. Take `⟨u, hu, t, hut, htP⟩` from `hA`. Establish `: (Ideal.span {u}).IsPrincipal` using `⟨⟨u, rfl⟩⟩`.
+
+Apply `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {u}) P` to reduce the goal to its premises. Use `⟨⟨hPp, (Ideal.span_singleton_le_iff_mem _).mpr hu⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQ, huQ⟩ hQP q hq`. Take `⟨tq, htq⟩` from `Ideal.mem_span_singleton'.mp ((mem_colonI).mp hq)`. Establish `key : q * t = u * tq`.
+
+Apply `mul_right_cancel₀ hs0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hu' : u ∈ Q` using `(Ideal.span_singleton_le_iff_mem _).mp huQ`. Establish `: q * t ∈ Q` using `by rw [key]; exact Ideal.mul_mem_right _ _ hu'`. Break down `hQ.mem_or_mem this with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd (hQP h) htP`. Establish `hne0 : P.height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `hPbot`.
+
+Establish `h1 : P.height = 1` using `le_antisymm hle1 (Order.one_le_iff_ne_zero.mpr hne0)`. Take `⟨a', s', hs'P, hxs'⟩` from `hx P hPp h1 hJq`. It suffices to derive a contradiction. Apply `hs'P` to reduce the goal to its premises. Apply `hab` to reduce the goal to its premises.
+
+Rewrite using `[mem_colonI, Ideal.mem_span_singleton']`. Use `⟨a', hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hxs', ← hxs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_loc_of_heightOne {R K : Type*} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (qq : Ideal R) [hq : qq.IsPrime]
     (x : K) (hx : ∀ p : Ideal R, p.IsPrime → p.height = 1 → p ≤ qq →

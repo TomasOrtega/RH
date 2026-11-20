@@ -5,14 +5,23 @@ namespace GlobalTheory.Cyc.FontW
 def Dv (l r : ℕ) (M : Type*) [AddCommGroup M] : AddSubgroup M :=
   (nsmulAddMonoidHom (l ^ r) : M →+ M).range
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Dv {l r : ℕ} {M : Type*} [AddCommGroup M] {x : M} :
     x ∈ Dv l r M ↔ ∃ y, l ^ r • y = x := Iff.rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `mem_Dv.1 hx`. Conclude with `mem_Dv.2 ⟨f y, (map_nsmul f _ _).symm⟩`.
+-/
 theorem Dv_map {l r : ℕ} {M M' F : Type*} [AddCommGroup M] [AddCommGroup M'] [FunLike F M M']
     [AddMonoidHomClass F M M'] (f : F) {x : M} (hx : x ∈ Dv l r M) : f x ∈ Dv l r M' := by
   obtain ⟨y, rfl⟩ := mem_Dv.1 hx
   exact mem_Dv.2 ⟨f y, (map_nsmul f _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `mem_Dv.1 hx`. Conclude with `mem_Dv.2 ⟨a • y, smul_comm _ _ _⟩`.
+-/
 theorem Dv_smul {l r : ℕ} {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M] (a : A) {x : M}
     (hx : x ∈ Dv l r M) : a • x ∈ Dv l r M := by
   obtain ⟨y, rfl⟩ := mem_Dv.1 hx
@@ -22,6 +31,11 @@ def Cpl (l : ℕ) (M : Type*) [AddCommGroup M] : Prop :=
   (∀ x : M, (∀ r, x ∈ Dv l r M) → x = 0) ∧
     ∀ f : ℕ → M, (∀ r, f (r + 1) - f r ∈ Dv l r M) → ∃ L, ∀ r, L - f r ∈ Dv l r M
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `e.injective (by rw [map_zero]; exact h.1 _ fun r => Dv_map e (hx r))`. Take `⟨L, hL⟩` from `h.2 (fun r => e (f r)) fun r => by`. Rewrite using `[← map_sub]`. Conclude with `Dv_map e (hf r)`.
+
+Use `⟨e.symm L, fun r => ?_⟩` and prove the remaining obligations. Use `Dv_map e.symm (hL r)` as an intermediate fact. Rewrite `this` using `[map_sub, e.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem Cpl.equiv {l : ℕ} {M M' : Type*} [AddCommGroup M] [AddCommGroup M'] (e : M ≃+ M')
     (h : Cpl l M') : Cpl l M := by
   refine ⟨fun x hx => ?_, fun f hf => ?_⟩
@@ -32,6 +46,11 @@ theorem Cpl.equiv {l : ℕ} {M M' : Type*} [AddCommGroup M] [AddCommGroup M'] (e
     have := Dv_map e.symm (hL r)
     rwa [map_sub, e.symm_apply_apply] at this
 
+/- English proof (translation)
+Use `⟨fun x hx => funext fun i => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `h.1 _ fun r => Dv_map (Pi.evalAddMonoidHom (fun _ : ι => M) i) (hx r)`. Use `choose L hL using fun i => h.2 (fun r => f r i) fun r => Dv_map (Pi.evalAddMonoidHom (fun _ : ι => M) i) (hf r)`. Use `⟨L, fun r => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun i => mem_Dv.1 (hL i r)`.
+
+Conclude with `mem_Dv.2 ⟨y, funext hy⟩`.
+-/
 theorem Cpl.pi {l : ℕ} {M : Type*} [AddCommGroup M] (ι : Type*) (h : Cpl l M) : Cpl l (ι → M) := by
   refine ⟨fun x hx => funext fun i => ?_, fun f hf => ?_⟩
   · exact h.1 _ fun r => Dv_map (Pi.evalAddMonoidHom (fun _ : ι => M) i) (hx r)
@@ -41,6 +60,9 @@ theorem Cpl.pi {l : ℕ} {M : Type*} [AddCommGroup M] (ι : Type*) (h : Cpl l M)
     choose y hy using fun i => mem_Dv.1 (hL i r)
     exact mem_Dv.2 ⟨y, funext hy⟩
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis R P`. Conclude with `Cpl.equiv ((TensorProduct.equivFinsuppOfBasisLeft b).toAddEquiv.trans Finsupp.addEquivFunOnFinite) (h.pi _)`.
+-/
 theorem Cpl.tensor_left {l : ℕ} {R P M : Type*} [CommRing R] [AddCommGroup P] [Module R P]
     [Module.Free R P] [Module.Finite R P] [AddCommGroup M] [Module R M] (h : Cpl l M) :
     Cpl l (TensorProduct R P M) := by
@@ -49,11 +71,21 @@ theorem Cpl.tensor_left {l : ℕ} {R P M : Type*} [CommRing R] [AddCommGroup P] 
   exact Cpl.equiv ((TensorProduct.equivFinsuppOfBasisLeft b).toAddEquiv.trans
     Finsupp.addEquivFunOnFinite) (h.pi _)
 
+/- English proof (translation)
+The claim follows from `Cpl.equiv (TensorProduct.comm R M P).toAddEquiv h.tensor_left`.
+-/
 theorem Cpl.tensor_right {l : ℕ} {R P M : Type*} [CommRing R] [AddCommGroup P] [Module R P]
     [Module.Free R P] [Module.Finite R P] [AddCommGroup M] [Module R M] (h : Cpl l M) :
     Cpl l (TensorProduct R M P) :=
   Cpl.equiv (TensorProduct.comm R M P).toAddEquiv h.tensor_left
 
+/- English proof (translation)
+Establish `key : ∀ (r : ℕ) (x : WittVector p k), x ∈ Dv p r (WittVector p k) ↔ x ∈ ((Ideal.span {(p : WittVector p k)}) ^ r • ⊤ : Submodule (WittVector p k) (WittVector p k))`. Introduce `r x`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton', mem_Dv]`. Simplify using `[mul_comm]`. Use `⟨fun x hx => ?_, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Conclude with `IsHausdorff.haus (I := Ideal.span {(p : WittVector p k)}) inferInstance x fun n => SModEq.zero.2 ((key n x).1 (hx n))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := Ideal.span {(p : WittVector p k)}) inferInstance (f := f) ((AdicCompletion.isAdicCauchy_iff _ _ f).2 fun n => by`. Rewrite using `[SModEq.sub_mem, ← key, ← neg_sub]`. Conclude with `neg_mem (hf n))`. Use `⟨L, fun r => ?_⟩` and prove the remaining obligations.
+
+Use `hL r` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, ← key]`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`.
+-/
 theorem cpl_witt (p : ℕ) [Fact p.Prime] (k : Type*) [CommRing k] [CharP k p] [PerfectRing k p] :
     Cpl p (WittVector p k) := by
   have key : ∀ (r : ℕ) (x : WittVector p k), x ∈ Dv p r (WittVector p k) ↔
@@ -72,6 +104,13 @@ theorem cpl_witt (p : ℕ) [Fact p.Prime] (k : Type*) [CommRing k] [CharP k p] [
     rw [SModEq.sub_mem, ← key] at this
     rw [← neg_sub]; exact neg_mem this
 
+/- English proof (translation)
+Use `choose π hπ huniq using hS`. Use `Finset.sum_nbij' (fun s => π (σ * s)) (fun t => π (σ⁻¹ * t)) (fun s _ => (hπ _).1) (fun s _ => (hπ _).1) (fun s hs => ?_) (fun t ht => ?_) (fun s _ => ?_)` and prove the remaining obligations. Use `(huniq _ s ⟨hs, ?_⟩).symm` and prove the remaining obligations. Use `N.inv_mem (hπ (σ * s)).2` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Use `(huniq _ t ⟨ht, ?_⟩).symm` and prove the remaining obligations. Use `N.inv_mem (hπ (σ⁻¹ * t)).2` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use `hf (π (σ * s)) _ (hπ (σ * s)).2` as an intermediate fact. Rewrite using `[← this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_translate {G X : Type*} [Group G] [AddCommMonoid X] (N : Subgroup G) (S : Finset G)
     (hS : ∀ h, ∃! s, s ∈ S ∧ s⁻¹ * h ∈ N) (f : G → X) (hf : ∀ g, ∀ n ∈ N, f (g * n) = f g) (σ : G) :
     ∑ s ∈ S, f (σ * s) = ∑ s ∈ S, f s := by
@@ -92,6 +131,23 @@ section Avg
 variable {G A M : Type*} [Group G] [CommRing A] [AddCommGroup M] [Module A M] (l : ℕ)
   (𝓕 : Filter G) (a : G → A → A) (ρ : G → M →+ M)
 
+/- English proof (translation)
+Take `⟨N, hN, hNF, hNW, S, hS, β, hβ, hsum⟩` from `htr _ (hcont (k + 1))`. Establish `hβ' : ∀ g, ∀ n ∈ N, a (g * n) β = a g β` using `fun g n hn => by rw [amul, hβ n hn]`. Establish `hρ : ∀ σ, ρ σ (∑ s ∈ S, a s β • c s) = ∑ s ∈ S, a (σ * s) β • ρ σ (c s)`. Introduce `σ`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun s _ => by rw [semi, amul]`. Use `⟨-∑ s ∈ S, a s β • c s, neg_mem (sum_mem fun s _ => Dv_smul _ (hk s)), fun r => ?_, fun σ => ?_⟩` and prove the remaining obligations. Take `⟨N', hN', hNF', hNW', -⟩` from `htr _ (hcont r) filter_upwards [hNF, hNF'] with n hn hn'`. Use `sub_mem (hNW' hn') ?_` and prove the remaining obligations. Rewrite using `[map_neg, hρ, neg_sub_neg, ← Finset.sum_sub_distrib]`.
+
+Use `sum_mem fun s _ => ?_` and prove the remaining obligations. Establish `h1 : n * s = s * (s⁻¹ * n * s)` using `by group`. Establish `h2 : a (n * s) β = a s β`. Rewrite using `[h1]; exact hβ' _ _ (by simpa using hN.conj_mem n hn s⁻¹)`. Rewrite using `[h2, ← smul_sub]`.
+
+Use `Dv_smul _ ?_` and prove the remaining obligations. Establish `h3 : c s - ρ n (c s) = c n - ρ s (c (s⁻¹ * n * s))`. Establish `h4` using `hc n s`. Rewrite `h4` using `[h1, hc]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, h4]`.
+
+Rewrite using `[h3]`. Conclude with `sub_mem (hNW' hn') (Dv_map _ (hNW' (by simpa using hN'.conj_mem n hn' s⁻¹)))`. Establish `h1 : ∑ s ∈ S, a (σ * s) β = 1`. Rewrite using `[sum_translate N S hS (fun g => a g β) hβ' σ, hsum]`. Establish `h2 : c σ - (ρ σ (-∑ s ∈ S, a s β • c s) - -∑ s ∈ S, a s β • c s) = ∑ s ∈ S, a (σ * s) β • c (σ * s) - ∑ s ∈ S, a s β • c s`.
+
+Rewrite using `[map_neg, hρ]`. Simplify using `only [hc, smul_add, Finset.sum_add_distrib, ← Finset.sum_smul, h1, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2, ← QuotientAddGroup.eq_iff_sub_mem]`. Establish `h3` using `sum_translate N S hS (fun g => QuotientAddGroup.mk' (Dv l (k + 1) M) (a g β • c g)) (fun g n hn => by`.
+
+Rewrite using `[hβ' g n hn]`. Use `QuotientAddGroup.eq_iff_sub_mem.2 ?_` and prove the remaining obligations. Rewrite using `[hc, smul_add, add_sub_cancel_left]`. Conclude with `Dv_smul _ (Dv_map _ (hNW hn))) σ`. Rewrite `h3` using `[← map_sum, ← map_sum]`.
+
+Conclude with `h3`.
+-/
 theorem avg_step (amul : ∀ g h β, a (g * h) β = a g (a h β))
     (ρmul : ∀ g h x, ρ (g * h) x = ρ g (ρ h x))
     (semi : ∀ g β x, ρ g (β • x) = a g β • ρ g x)
@@ -143,6 +199,15 @@ theorem avg_step (amul : ∀ g h β, a (g * h) β = a g (a h β))
     rw [← map_sum, ← map_sum] at h3
     exact h3
 
+/- English proof (translation)
+Set `P : ℕ → M → Prop` to `fun k b => (∀ r, {g | c g - (ρ g b - b) ∈ Dv l r M} ∈ 𝓕) ∧ ∀ g, c g - (ρ g b - b) ∈ Dv l k M`. Establish `h0 : P 0 0` using `⟨by simpa using hcont, fun g => mem_Dv.2 ⟨_, by rw [pow_zero, one_smul]⟩⟩`. Establish `hstep : ∀ k b, P k b → ∃ b', P (k + 1) b' ∧ b' - b ∈ Dv l k M`. Introduce `k b hb`. Take `⟨d, hd, h1, h2⟩` from `avg_step l 𝓕 a ρ amul ρmul semi htr (fun g => c g - (ρ g b - b)) (fun g h => by simp only [hc, ρmul, map_sub]; abel) hb.1 k hb.2`.
+
+Establish `e : ∀ g, c g - (ρ g (b + d) - (b + d)) = c g - (ρ g b - b) - (ρ g d - d)` using `fun g => by`. Rewrite using `[map_add]`. Normalize the expressions using the abelian group laws. Use `⟨b + d, ⟨?_, ?_⟩, by simpa using hd⟩` and prove the remaining obligations. Simplify `h1` using `only [e]`.
+
+Simplify `h2` using `only [e]`. Use `choose nx hnx using hstep`. Set `f : (k : ℕ) → {b // P k b}` to `fun k => Nat.rec ⟨0, h0⟩ (fun k b => ⟨nx k b.1 b.2, (hnx k b.1 b.2).1⟩) k`. Take `⟨L, hL⟩` from `hM.2 (fun k => (f k).1) fun k => (hnx k (f k).1 (f k).2).2`. Use `⟨L, fun g => sub_eq_zero.1 (hM.1 _ fun r => ?_)⟩` and prove the remaining obligations.
+
+Establish `e : c g - (ρ g L - L) = (c g - (ρ g (f r).1 - (f r).1)) - (ρ g (L - (f r).1) - (L - (f r).1))`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem ((f r).2.2 g) (sub_mem (Dv_map _ (hL r)) (hL r))`.
+-/
 theorem avg_cob (hM : Cpl l M) (amul : ∀ g h β, a (g * h) β = a g (a h β))
     (ρmul : ∀ g h x, ρ (g * h) x = ρ g (ρ h x))
     (semi : ∀ g β x, ρ g (β • x) = a g β • ρ g x)

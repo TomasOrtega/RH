@@ -2,6 +2,11 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetNeZeroOfIsIdent
 open NumberField MeasureTheory Matrix GlobalTheory.SUVol ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.CovTop.VolUp GlobalTheory.CovTop.VolUp.FrameBox
 
+/- English proof (translation)
+Use `⟨fun h => by simp [h], fun h => ?_⟩` and prove the remaining obligations. Establish `e : S = b * (a * S * c) * d`. Simplify using `only [← mul_assoc, hba, one_mul]`. Rewrite using `[mul_assoc, hcd, mul_one]`. Rewrite using `[e, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem conj_zero_iff' {R : Type} [Ring R] (a b c d S : R) (hba : b * a = 1) (hcd : c * d = 1) :
     S = 0 ↔ a * S * c = 0 := by
   refine ⟨fun h => by simp [h], fun h => ?_⟩
@@ -9,12 +14,20 @@ private theorem conj_zero_iff' {R : Type} [Ring R] (a b c d S : R) (hba : b * a 
     simp only [← mul_assoc, hba, one_mul]; rw [mul_assoc, hcd, mul_one]
   rw [e, h]; simp
 
+/- English proof (translation)
+Establish `: a * (b * (y * a) * g + g * (c * z * d)) * c = (a * b) * y * (a * g * c) + (a * g * c) * z * (d * c)`. Simplify using `only [mul_add, add_mul, mul_assoc]`. Rewrite using `[this, hab, hdc, one_mul, mul_one]`.
+-/
 private theorem expand' {R : Type} [Ring R] (a b c d y z g : R) (hab : a * b = 1) (hdc : d * c = 1) :
     a * (b * (y * a) * g + g * (c * z * d)) * c = y * (a * g * c) + (a * g * c) * z := by
   have : a * (b * (y * a) * g + g * (c * z * d)) * c = (a * b) * y * (a * g * c) + (a * g * c) * z * (d * c) := by
     simp only [mul_add, add_mul, mul_assoc]
   rw [this, hab, hdc, one_mul, mul_one]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, permM, Equiv.apply_eq_iff_eq_symm_apply, diagonal_apply, Formalism.UG.Jpq]`. Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab; rw [if_pos rfl]; rcases e.symm a with i | i <;> simp`. Rewrite using `[if_neg hab]`.
+
+Establish `h` using `e.symm.injective.ne hab`. Use `revert h`. Generalize the expression as in `e.symm a = i`. Generalize the expression as in `e.symm b = j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> intro h <;> simp_all [one_apply]`.
+-/
 private theorem permJ' {r : ℕ} (p q : ℕ) (e : Fin p ⊕ Fin q ≃ Fin r) :
     (permM e)ᵀ * Formalism.UG.Jpq p q * permM e = diagonal (fun a => if (e.symm a).isLeft then (1:ℂ) else -1) := by
   ext a b
@@ -30,6 +43,29 @@ private theorem permJ' {r : ℕ} (p q : ℕ) (e : Fin p ⊕ Fin q ≃ Fin r) :
 
 namespace GlobalTheory.CovTop.VolUp.FrameBox
 
+/- English proof (translation)
+Introduce `E _ _ _ r κ p q Ψ G x σ A e hI Y`. Rewrite using `[Submodule.mem_comap, GlobalTheory.SUVol.DensOne.mem_realLie_iff]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Establish `hdet` using `(det_ne_zero_of_isIdent hI τ).1`. Take `⟨h1, h2⟩` from `hI (σ.symm τ)`.
+
+Rewrite `h1`, `h2` using `[Equiv.apply_symm_apply]`. Use `set P := permM (e (σ.symm τ)) with hP`. Use `set J := Formalism.UG.Jpq (p (σ.symm τ)) (q (σ.symm τ)) with hJdef`. Use `set M := mat x τ with hMdef`. Use `set B := A (σ.symm τ) with hBdef`.
+
+Use `set Gt := G.map τ.1 with hGt`. Use `set Yt : Matrix (Fin r) (Fin r) ℂ := Matrix.of fun a b => Y (τ, a, b) with hYt`. Establish `hu : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `set N := M⁻¹ with hN`. Establish `hMN : M * N = 1` using `Matrix.mul_nonsing_inv M hu`.
+
+Establish `hNM : N * M = 1` using `Matrix.nonsing_inv_mul M hu`. Establish `hX : Matrix.of (fromFrame x Y τ) = M * Yt * N` using `rfl`. Rewrite using `[hX]`. Use `set D : Matrix (Fin r) (Fin r) ℂ := diagonal (fun a => ((sgnR σ e τ a : ℝ) : ℂ)) with hD`. Establish `hPJP : Pᵀ * J * P = D`.
+
+Rewrite using `[hP, hJdef, permJ', hD]`. Apply the tactic sequence `congr 1; funext a; simp only [sgnR]; split_ifs <;> simp`. Establish `hPc : Pᴴ = Pᵀ`. Apply the tactic sequence `ext i j; simp only [hP, permM, conjTranspose_apply, transpose_apply, of_apply]; split_ifs <;> simp`. Establish `hMt : (Mᴴ)ᵀ = M.map (starRingEnd ℂ)` using `by ext i j; simp`.
+
+Establish `hG' : Gt = -(Bᴴ * J * B)ᵀ` using `by rw [h1, transpose_neg, transpose_transpose, neg_neg]`. Establish `hH : Mᵀ * Gt * M.map (starRingEnd ℂ) = -D`. Rewrite using `[hG', ← hMt, Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[show Mᵀ * (Bᴴ * J * B)ᵀ * (Mᴴ)ᵀ = (Mᴴ * (Bᴴ * J * B) * M)ᵀ by simp only [transpose_mul, Matrix.mul_assoc]]`. Establish `: Mᴴ * (Bᴴ * J * B) * M = Pᵀ * J * P`.
+
+Rewrite using `[← hPc, ← h2, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hPJP, hD, diagonal_transpose]`. Establish `hc1 : M.map (starRingEnd ℂ) * N.map (starRingEnd ℂ) = 1`. Rewrite using `[← Matrix.map_mul, hMN, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hc2 : N.map (starRingEnd ℂ) * M.map (starRingEnd ℂ) = 1`. Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `ht1 : Mᵀ * Nᵀ = 1` using `by rw [← transpose_mul, hNM, transpose_one]`. Establish `ht2 : Nᵀ * Mᵀ = 1` using `by rw [← transpose_mul, hMN, transpose_one]`. Establish `htr : (M * Yt * N).trace = ∑ a, Y (τ, a, a)`.
+
+Rewrite using `[trace_mul_comm, ← Matrix.mul_assoc, hNM, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[htr, and_comm]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[conj_zero_iff' Mᵀ Nᵀ (M.map (starRingEnd ℂ)) (N.map (starRingEnd ℂ)) _ ht2 hc1]`.
+
+Rewrite using `[transpose_mul, transpose_mul, Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[expand' _ _ _ _ _ _ _ ht1 hc2, hH]`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, ← neg_add, neg_eq_zero, ← Matrix.ext_iff]`. Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Rewrite using `[eq_comm (b := (0 : Matrix (Fin r) (Fin r) ℂ) a b)]`.
+
+Simplify using `[hD, hYt, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Conclude with `eq_comm`.
+-/
 theorem mem_comap_realLie_iff_skewCond : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (κ : Type)
     (p q : κ → ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (σ : κ ≃ Ψ)
     (A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ) (e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r),

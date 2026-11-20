@@ -7,6 +7,15 @@ open scoped Matrix Classical
 
 namespace UpperTheory.Gal.W2
 
+/- English proof (translation)
+Set `f : (F →+* ℂ) → (𝓞 F →* ℂ)` to `fun τ => (τ.comp (algebraMap (𝓞 F) F)).toMonoidHom`. Establish `hf : Function.Injective f`. Introduce `σ τ hστ`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 F))` to reduce the goal to its premises. Use extensionality with `c`.
+
+Conclude with `DFunLike.congr_fun hστ c`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 F) ℂ).comp f hf`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `key` using `hli (fun τ => (N τ : ℂ) - m τ) (by`. Use function extensionality and compare the values at `c`.
+
+Establish `hc` using `h c`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply]`. Simplify using `only [f, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.coe_comp, Function.comp_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_zero]`. Conclude with `hc)`.
+
+Introduce `τ`. Use `key τ` as an intermediate fact. Rewrite `this` using `[sub_eq_zero]`. Conclude with `this` after adjusting the coercions.
+-/
 private theorem emb_eq_of_coeffs {F : Type} [Field F] [NumberField F] (N m : (F →+* ℂ) → ℕ)
     (h : ∀ c : 𝓞 F, ∑ τ : F →+* ℂ, (N τ : ℂ) * τ (c : F) = ∑ τ : F →+* ℂ, (m τ : ℂ) * τ (c : F)) :
     ∀ τ, N τ = m τ := by
@@ -30,6 +39,25 @@ private theorem emb_eq_of_coeffs {F : Type} [Field F] [NumberField F] (N m : (F 
   rw [sub_eq_zero] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `F _ _ O _ bar g ρ a n t₀ ε hS H Sb ty ev hD`. Take `⟨hdet, hρ, -⟩` from `hD`. Establish `hU : IsUnit Sb.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `htr : ∀ c : 𝓞 F, (ρ (a c)).trace = ∑ τ : F →+* ℂ, ((Finset.univ.filter (fun i => ty i = τ)).card : ℂ) * τ (c : F)`. Introduce `c`.
+
+Establish `e1 : ρ (a c) = Sb * Matrix.diagonal (fun i => (ty i) (c : F)) * Sb⁻¹`. Rewrite using `[← hρ c, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hU, Matrix.mul_one]`. Rewrite using `[e1, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul, Matrix.trace_diagonal]`. Rewrite using `[← Finset.sum_fiberwise Finset.univ ty (fun i => (ty i) (c : F))]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun _ => τ (c : F)) (fun i hi => by`. Rewrite using `[(Finset.mem_filter.mp hi).2]), Finset.sum_const, nsmul_eq_mul]`. Establish `hcount : ∀ τ, (Finset.univ.filter (fun i => ty i = τ)).card = typeMult n t₀ ε τ`. Use `emb_eq_of_coeffs _ _ (fun c => ?_)` and prove the remaining obligations. Rewrite using `[← htr c, hS.tr c]`.
+
+Establish `hcard : ∀ τ, (evAt ty ev τ).card = typeMult n t₀ ε τ`. Introduce `τ`. Rewrite using `[← hcount τ, evAt, Multiset.card_map]`. Both sides reduce to the same expression. Establish `hconj : ∀ τ : F →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => star_star τ`.
+
+Introduce `τ`. Use `⟨hcard τ, ?_⟩` and prove the remaining obligations. Rewrite using `[evFull, Multiset.card_add, Multiset.card_map, hcard, hcard]`. Establish `hpos` using `hS.pos`. Distinguish the cases in `h0 : τ = t₀`.
+
+Substitute `h0` using the available equality. Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `hS.cx τ`. Simplify using `only [typeMult, if_true, if_neg hne]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h1 : τ = ComplexEmbedding.conjugate t₀`.
+
+Substitute `h1` using the available equality. Rewrite using `[hconj]`. Simplify using `only [typeMult, if_neg h0, if_true]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ComplexEmbedding.conjugate τ ≠ t₀`.
+
+Introduce `e`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← e, hconj]`. Establish `h3 : ComplexEmbedding.conjugate τ ≠ ComplexEmbedding.conjugate t₀`. Introduce `e`.
+
+Apply `h0` to reduce the goal to its premises. Rewrite using `[← hconj τ, e, hconj]`. Simplify using `only [typeMult, if_neg h0, if_neg h1, if_neg h2, if_neg h3]`. Rewrite using `[← Nat.mul_add, hS.eps τ h0 h1, Nat.mul_one]`.
+-/
 theorem typeCount_of : TypeCount := by
   intro F _ _ O _ bar g ρ a n t₀ ε hS H Sb ty ev hD
   obtain ⟨hdet, hρ, -⟩ := hD

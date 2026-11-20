@@ -7,6 +7,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `F _ _ _ _ M _ _ p e v hv hOrd σ hσ`. Establish `hc : (0 : ℤ) ≤ ⌈v⌉` using `Int.ceil_nonneg hv`. Establish `hn : ((⌈v⌉.toNat : ℕ) : ℝ) = ((⌈v⌉ : ℤ) : ℝ)`. Conclude with `Int.toNat_of_nonneg hc` after adjusting the coercions. Establish `hσn : σ ∈ upperRamificationGroup F ↥M ((⌈v⌉.toNat : ℕ) : ℝ)`.
+
+Rewrite using `[hn, ← upperRamificationGroup_eq_ceil]`. Conclude with `hσ`. Establish `hpow` using `GlobalTheory.T.pow_mem_upperRamificationGroup_abelian_nat' F M p e ⌈v⌉.toNat hOrd σ hσn`. Establish `hvn : v ≤ ((⌈v⌉.toNat : ℕ) : ℝ)`. Rewrite using `[hn]`.
+
+Conclude with `Int.le_ceil v`. Establish `hle : min (2 * v) (v + e) ≤ ((min (2 * ⌈v⌉.toNat) (⌈v⌉.toNat + e) : ℕ) : ℝ)`. Use `push_cast`. Conclude with `min_le_min (by linarith) (by linarith)`. Conclude with `upperRamificationGroup_antitone F ↥M hle hpow`.
+-/
 theorem pow_mem_upperRamificationGroup_real : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (M : IntermediateField F (SeparableClosure F)) [FiniteDimensional F ↥M] [IsAbelianGalois F ↥M] (p e : ℕ) (v : ℝ), 0 ≤ v → OrdIs F p e → ∀ σ ∈ upperRamificationGroup F ↥M v, σ ^ p ∈ upperRamificationGroup F ↥M (min (2 * v) (v + e)) := by
   intro F _ _ _ _ M _ _ p e v hv hOrd σ hσ
 

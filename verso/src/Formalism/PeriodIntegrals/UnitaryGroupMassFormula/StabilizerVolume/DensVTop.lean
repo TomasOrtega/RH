@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensAl
 
 namespace PI.VolStabS
 
+/- English proof (translation)
+The claim follows from `densV_of_filt henselCount_holds cosDens_holds tensAll_holds hF`.
+-/
 theorem densV_of_gram (hF : GramFilt) : DensV :=
   densV_of_filt henselCount_holds cosDens_holds tensAll_holds hF
 

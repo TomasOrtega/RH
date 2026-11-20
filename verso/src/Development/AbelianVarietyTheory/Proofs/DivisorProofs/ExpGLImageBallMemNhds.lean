@@ -7,6 +7,15 @@ noncomputable section
 
 namespace GlobalTheory.GLFin
 
+/- English proof (translation)
+Introduce `E _ _ _ a ε hε`. Use `letI : NormedRing (Matrix (Fin a) (Fin a) (Cinf E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin a) (Fin a) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _`. Establish `hd : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin a) (Fin a) (Cinf E) → _) ((ContinuousLinearEquiv.refl ℝ (Matrix (Fin a) (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E) →L[ℝ] _)) 0` using `hasStrictFDerivAt_exp_zero`.
+
+Establish `hmap0` using `hd.map_nhds_eq_of_equiv`. Rewrite `hmap0` using `[NormedSpace.exp_zero]`. Establish `hmap : Filter.map (NormedSpace.exp : Matrix (Fin a) (Fin a) (Cinf E) → _) (nhds 0) = nhds (1 : Matrix (Fin a) (Fin a) (Cinf E))` using `hmap0`. Establish `hopen : IsOpen {X : Matrix (Fin a) (Fin a) (Cinf E) | ‖(Matrix.of.symm X : Lie E a)‖ < ε}` using `isOpen_lt (continuous_norm.comp (continuous_id : Continuous fun X : Lie E a => X)) continuous_const`. Establish `hball : {X : Matrix (Fin a) (Fin a) (Cinf E) | ‖(Matrix.of.symm X : Lie E a)‖ < ε} ∈ nhds (0 : Matrix (Fin a) (Fin a) (Cinf E))` using `hopen.mem_nhds (by simpa using hε)`.
+
+Establish `himg : (NormedSpace.exp : Matrix (Fin a) (Fin a) (Cinf E) → _) '' {X : Matrix (Fin a) (Fin a) (Cinf E) | ‖(Matrix.of.symm X : Lie E a)‖ < ε} ∈ nhds (1 : Matrix (Fin a) (Fin a) (Cinf E))` using `hmap ▸ Filter.image_mem_map hball`. Establish `hpre` using `Units.continuous_val.continuousAt.preimage_mem_nhds (x := (1 : GL (Fin a) (Cinf E))) himg`. Use `Filter.mem_of_superset hpre ?_` and prove the remaining obligations. Introduce and unpack `u ⟨X, hX, hXu⟩`. Use `⟨Matrix.of.symm X, hX, Units.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.ExpDeriv.expGL_val, one_smul]`. Conclude with `hXu`.
+-/
 theorem expGL_image_ball_mem_nhds : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∀ ε : ℝ, 0 < ε →
     (fun X : Lie E a => GlobalTheory.ExpDeriv.expGL X 1) '' {X | ‖X‖ < ε} ∈ nhds (1 : GL (Fin a) (Cinf E)) := by
   intro E _ _ _ a ε hε

@@ -10,6 +10,11 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp [zero_pow (pow_ne_zero _ hl.ne_zero)]⟩`. Consider the case `insert a s ha ih`. Take `⟨r1, h1⟩` from `ih`. Take `⟨r2, h2⟩` from `exists_add_pow_prime_pow_eq hl (x a) (∑ b ∈ s, x b) β`.
+
+Use `⟨r1 - x a * (∑ b ∈ s, x b) * r2, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h2]`. Take the linear combination `h1`.
+-/
 theorem special_frob_sum {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) {ι : Type*}
     (s : Finset ι) (x : ι → R) (β : ℕ) :
     ∃ r : R, (∑ a ∈ s, x a ^ (l ^ β)) - (∑ a ∈ s, x a) ^ (l ^ β) = (l : R) * r := by
@@ -23,6 +28,11 @@ theorem special_frob_sum {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) {ι :
     rw [Finset.sum_insert ha, Finset.sum_insert ha, h2]
     linear_combination h1
 
+/- English proof (translation)
+Introduce `R _ l hl ι _ u w j β`. Take `⟨r, h⟩` from `special_frob_sum hl Finset.univ (fun a => u a ^ (l ^ j) * w a) β`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_add]`.
+-/
 theorem frobenius_congruence : FrobCong.{u, v} := by
   intro R _ l hl ι _ u w j β
   obtain ⟨r, h⟩ := special_frob_sum hl Finset.univ (fun a => u a ^ (l ^ j) * w a) β
@@ -32,6 +42,13 @@ theorem frobenius_congruence : FrobCong.{u, v} := by
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [mul_pow, ← pow_mul, ← pow_add]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg (MvPolynomial.coeff (∑ c, E c c)) h`. Rewrite `h2` using `[Matrix.det_apply, MvPolynomial.coeff_sum, MvPolynomial.coeff_zero]`. Simplify using `only [Matrix.of_apply, ← MvPolynomial.monomial_sum_one] at h2`. Rewrite `h2` using `[Finset.sum_eq_single (1 : Equiv.Perm n)]`.
+
+Simplify using `[MvPolynomial.coeff_monomial] at h2`. Introduce `p _ hp`. Establish `hne : ∑ c, E (p c) c ≠ ∑ c, E c c` using `fun he => hp (hE (by simpa using he))`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign p) with hs | hs <;>`. Simplify using `[hs, MvPolynomial.coeff_monomial, hne]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem special_det_monomial_ne_zero {n σ R : Type*} [Fintype n] [DecidableEq n] [CommRing R]
     [Nontrivial R] (E : n → n → σ →₀ ℕ)
     (hE : Function.Injective fun p : Equiv.Perm n => ∑ c, E (p c) c) :
@@ -49,6 +66,13 @@ theorem special_det_monomial_ne_zero {n σ R : Type*} [Fintype n] [DecidableEq n
       simp [hs, MvPolynomial.coeff_monomial, hne]
   · simp
 
+/- English proof (translation)
+Introduce `l hl J j hj`. Establish `hM : (Matrix.of fun (i a : Fin J) => (MvPolynomial.X a : MvPolynomial (Fin J) (ZMod l)) ^ (l ^ j i)) = Matrix.of fun r c => MvPolynomial.monomial (Finsupp.single c (l ^ j r)) (1 : ZMod l)`. Use extensionality with `r c`. Simplify using `[MvPolynomial.X_pow_eq_monomial]`. Rewrite using `[hM]`.
+
+Use `special_det_monomial_ne_zero _ ?_` and prove the remaining obligations. Introduce `p q h`. Simplify using `only at h`. Use extensionality with `c`. Establish `hc` using `DFunLike.congr_fun h c`.
+
+Simplify using `only [Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hc`. Conclude with `congrArg _ (hj (Nat.pow_right_injective hl.out.two_le hc))`.
+-/
 theorem special_independence : SpecialIndep := by
   intro l hl J j hj
   have hM : (Matrix.of fun (i a : Fin J) =>
@@ -65,6 +89,23 @@ theorem special_independence : SpecialIndep := by
     Finset.sum_ite_eq', Finset.mem_univ, if_true] at hc
   exact congrArg _ (hj (Nat.pow_right_injective hl.out.two_le hc))
 
+/- English proof (translation)
+Introduce `l hl T _ _ J j hj N0 hN`. Establish `hcard : Fintype.card (Σ t, Fin (J t)) ≤ Fintype.card (Fin N0)`. Simplify `hN` using `[Fintype.card_sigma]`. Take `⟨f⟩` from `Function.Embedding.nonempty_of_card_le hcard`. Use `⟨f, f.injective, ?_⟩` and prove the remaining obligations.
+
+Use `set g : (Σ t, Fin (J t)) → ℕ := fun r => l ^ j r.1 r.2 with hg`. Establish `hM : (Matrix.of fun (r c : Σ t, Fin (J t)) => (MvPolynomial.X (r.1, f c) : MvPolynomial (T × Fin N0) (ZMod l)) ^ (l ^ j r.1 r.2)) = Matrix.of fun r c => MvPolynomial.monomial (Finsupp.single (r.1, f c) (g r)) (1 : ZMod l)`. Use extensionality with `r c`. Simplify using `[MvPolynomial.X_pow_eq_monomial, hg]`. Rewrite using `[hM]`.
+
+Use `special_det_monomial_ne_zero _ ?_` and prove the remaining obligations. Establish `hS : ∀ (p : Equiv.Perm (Σ t, Fin (J t))) (t : T) (c : Σ t, Fin (J t)), (∑ c', Finsupp.single ((p c').1, f c') (g (p c'))) (t, f c) = if (p c).1 = t then g (p c) else 0`. Introduce `p t c`. Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single c]`. Simplify using `only [Finsupp.single_apply, Prod.mk.injEq, and_true]`.
+
+Introduce `c' _ hc'`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `he`. Conclude with `hc' (f.injective (Prod.mk.inj he).2)`. Simplify using the standard rewrite rules.
+
+Establish `hgpos : ∀ r, g r ≠ 0` using `fun r => pow_ne_zero _ hl.out.ne_zero`. Establish `hginj : ∀ a b : (Σ t, Fin (J t)), a.1 = b.1 → g a = g b → a = b`. Introduce and unpack `⟨t, x⟩ ⟨t', y⟩ h1 h2`. Simplify using `only at h1`. Substitute `h1` using the available equality.
+
+Establish `h3 : j t x = j t y` using `Nat.pow_right_injective hl.out.two_le h2`. Rewrite using `[hj t h3]`. Introduce `p q h`. Simplify using `only at h`. Use `ext1 c`.
+
+Establish `hc` using `DFunLike.congr_fun h ((p c).1, f c)`. Rewrite `hc` using `[hS p, hS q, if_pos rfl]`. Distinguish the cases in `ht : (q c).1 = (p c).1`. Rewrite `hc` using `[if_pos ht]`. Conclude with `hginj _ _ ht.symm hc`.
+
+Rewrite `hc` using `[if_neg ht]`. Conclude with `absurd hc (hgpos _)`.
+-/
 theorem special_rank : SpecialRank := by
   intro l hl T _ _ J j hj N0 hN
   have hcard : Fintype.card (Σ t, Fin (J t)) ≤ Fintype.card (Fin N0) := by
@@ -114,6 +155,9 @@ variable {R : Type*} [CommRing R] {σ : Type*} [Fintype σ] [DecidableEq σ] {ι
 
 def spLdeg (lt : ι → σ) (t : σ) (n : ι →₀ ℕ) : ℕ := ∑ k, if lt k = t then n k else 0
 
+/- English proof (translation)
+Unfold `spLdeg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem spLdeg_add (lt : ι → σ) (t : σ) (n n' : ι →₀ ℕ) :
     spLdeg lt t (n + n') = spLdeg lt t n + spLdeg lt t n' := by
   unfold spLdeg
@@ -121,6 +165,11 @@ theorem spLdeg_add (lt : ι → σ) (t : σ) (n n' : ι →₀ ℕ) :
   refine Finset.sum_congr rfl fun k _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `spLdeg`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ hk'`. Simplify using `[Ne.symm hk']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem spLdeg_single (lt : ι → σ) (t : σ) (k : ι) (c : ℕ) :
     spLdeg lt t (Finsupp.single k c) = if lt k = t then c else 0 := by
   unfold spLdeg
@@ -130,9 +179,15 @@ theorem spLdeg_single (lt : ι → σ) (t : σ) (k : ι) (c : ℕ) :
     simp [Ne.symm hk']
   · simp
 
+/- English proof (translation)
+Simplify using `[spLdeg]`.
+-/
 theorem spLdeg_zero (lt : ι → σ) (t : σ) : spLdeg lt t 0 = 0 := by
   simp [spLdeg]
 
+/- English proof (translation)
+Unfold `spLdeg at h`. Use `(Finset.sum_eq_zero_iff.mp h) k (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem spLdeg_eq_zero (lt : ι → σ) (n : ι →₀ ℕ) (k : ι) (h : spLdeg lt (lt k) n = 0) :
     n k = 0 := by
   unfold spLdeg at h
@@ -141,6 +196,9 @@ theorem spLdeg_eq_zero (lt : ι → σ) (n : ι →₀ ℕ) (k : ι) (h : spLdeg
 
 variable (lt : ι → σ) (N : σ → ι → R)
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`.
+-/
 theorem spCoeff_lin (s : σ) (n : ι →₀ ℕ) :
     MvPowerSeries.coeff n (∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) =
       ∑ k, N s k * if n = Finsupp.single k 1 then 1 else 0 := by
@@ -148,6 +206,11 @@ theorem spCoeff_lin (s : σ) (n : ι →₀ ℕ) :
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]
 
+/- English proof (translation)
+Rewrite `h` using `[spCoeff_lin]`. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Distinguish the cases in `he : n = Finsupp.single k 1`. Rewrite `hk` using `[if_pos he, mul_one]`. Conclude with `⟨k, hk, he⟩`.
+
+Rewrite `hk` using `[if_neg he, mul_zero]`. Conclude with `absurd rfl hk`.
+-/
 theorem spCoeff_lin_ne (s : σ) (n : ι →₀ ℕ)
     (h : MvPowerSeries.coeff n (∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) ≠ 0) :
     ∃ k, N s k ≠ 0 ∧ n = Finsupp.single k 1 := by
@@ -162,6 +225,15 @@ theorem spCoeff_lin_ne (s : σ) (n : ι →₀ ℕ)
 variable {lt N} (hN : ∀ s k, N s k ≠ 0 → lt k = s)
 include hN
 
+/- English proof (translation)
+Proceed by induction on `e generalizing n with`. Consider the case `zero`. Rewrite `h` using `[pow_zero, MvPowerSeries.coeff_one]`. Use `split_ifs at h with hn`. Apply the tactic sequence `intro t; subst hn; rw [spLdeg_zero]; split_ifs <;> rfl`.
+
+Conclude with `absurd rfl h`. Consider the case `succ e ih`. Rewrite `h` using `[pow_succ, MvPowerSeries.coeff_mul]`. Take `⟨p, hp, hp'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Establish `h1 : MvPowerSeries.coeff p.1 ((∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) ^ e) ≠ 0` using `left_ne_zero_of_mul hp'`.
+
+Establish `h2` using `right_ne_zero_of_mul hp'`. Take `⟨k, hk, hk2⟩` from `spCoeff_lin_ne N s p.2 h2`. Establish `hks` using `hN s k hk`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Introduce `t`.
+
+Rewrite using `[← hp, spLdeg_add, ih p.1 h1 t, hk2, spLdeg_single, hks]`. Apply the tactic sequence `split_ifs with h3 h4 h4 <;> first | omega | (subst h3; exact absurd rfl h4) | exact absurd h4.symm h3`.
+-/
 theorem spPow_ldeg (s : σ) (e : ℕ) (n : ι →₀ ℕ)
     (h : MvPowerSeries.coeff n ((∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) ^ e) ≠ 0) :
     ∀ t, spLdeg lt t n = if t = s then e else 0 := by
@@ -184,6 +256,17 @@ theorem spPow_ldeg (s : σ) (e : ℕ) (n : ι →₀ ℕ)
     rw [← hp, spLdeg_add, ih p.1 h1 t, hk2, spLdeg_single, hks]
     split_ifs with h3 h4 h4 <;> first | omega | (subst h3; exact absurd rfl h4) | exact absurd h4.symm h3
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on generalizing n with`. Consider the case `empty`. Rewrite `h` using `[Finset.prod_empty, MvPowerSeries.coeff_one]`. Use `split_ifs at h with hn`. Introduce `t`.
+
+Substitute `hn` using the available equality. Rewrite using `[spLdeg_zero]`. Simplify using the standard rewrite rules. Conclude with `absurd rfl h`. Consider the case `insert a S ha ih`.
+
+Rewrite `h` using `[Finset.prod_insert ha, MvPowerSeries.coeff_mul]`. Take `⟨p, hp, hp'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Establish `h1` using `left_ne_zero_of_mul hp'`. Establish `h2` using `right_ne_zero_of_mul hp'`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Introduce `t`. Rewrite using `[← hp, spLdeg_add, spPow_ldeg hN a (e a) p.1 h1 t, ih p.2 h2 t]`. Distinguish the cases in `hta : t = a`. Substitute `hta` using the available equality. Simplify using `[ha]`.
+
+Simplify using `[hta]`.
+-/
 theorem spProd_ldeg (S : Finset σ) (e : σ → ℕ) (n : ι →₀ ℕ)
     (h : MvPowerSeries.coeff n
       (∏ t ∈ S, (∑ k, MvPowerSeries.C (N t k) * MvPowerSeries.X k) ^ e t) ≠ 0) :
@@ -206,6 +289,21 @@ theorem spProd_ldeg (S : Finset σ) (e : σ → ℕ) (n : ι →₀ ℕ)
     · subst hta; simp [ha]
     · simp [hta]
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[pow_succ, MvPowerSeries.coeff_mul, Finset.sum_eq_single (Finsupp.single i a, Finsupp.single i 1)]`. Rewrite using `[ih, spCoeff_lin, pow_succ]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[if_neg, mul_zero]`.
+
+Introduce `he`. Conclude with `hk ((Finsupp.single_left_inj one_ne_zero).mp he).symm`. Simplify using the standard rewrite rules. Introduce and unpack `⟨p1, p2⟩ hp hne`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Distinguish the cases in `h2 : MvPowerSeries.coeff p2 (∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) = 0`. Rewrite using `[h2, mul_zero]`. It suffices to derive a contradiction. Take `⟨k, -, hk2⟩` from `spCoeff_lin_ne N s p2 h2`. Substitute `hk2` using the available equality.
+
+Establish `hki : k = i`. Assume the negation of the conclusion as `hki`. Use `DFunLike.congr_fun hp k` as an intermediate fact. Simplify using `[Ne.symm hki] at this`. Substitute `hki` using the available equality.
+
+Apply `hne` to reduce the goal to its premises. Establish `: p1 = Finsupp.single k a`. Rewrite `hp` using `[show a + 1 = a + 1 from rfl, Finsupp.single_add]`. Conclude with `add_right_cancel hp`. Rewrite using `[this]`.
+
+Introduce `h exfalso`. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal, ← Finsupp.single_add]`.
+-/
 theorem spPow_single (s : σ) (i : ι) (a : ℕ) :
     MvPowerSeries.coeff (Finsupp.single i a)
       ((∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) ^ a) = N s i ^ a := by
@@ -244,6 +342,21 @@ theorem spPow_single (s : σ) (i : ι) (a : ℕ) :
       exfalso; apply h
       rw [Finset.HasAntidiagonal.mem_antidiagonal, ← Finsupp.single_add]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_eq_single (Finsupp.single i a, Finsupp.single j b)]`. Rewrite using `[spPow_single hN, spPow_single hN]`. Introduce and unpack `⟨p1, p2⟩ hp hne`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h1 : MvPowerSeries.coeff p1 ((∑ k, MvPowerSeries.C (N (lt i) k) * MvPowerSeries.X k) ^ a) = 0`.
+
+Rewrite using `[h1, zero_mul]`. Distinguish the cases in `h2 : MvPowerSeries.coeff p2 ((∑ k, MvPowerSeries.C (N (lt j) k) * MvPowerSeries.X k) ^ b) = 0`. Rewrite using `[h2, mul_zero]`. It suffices to derive a contradiction. Establish `l1` using `spPow_ldeg hN (lt i) a p1 h1`.
+
+Establish `l2` using `spPow_ldeg hN (lt j) b p2 h2`. Establish `z1 : ∀ k, lt k ≠ lt i → p1 k = 0` using `fun k hk => spLdeg_eq_zero lt p1 k (by rw [l1, if_neg hk])`. Establish `z2 : ∀ k, lt k ≠ lt j → p2 k = 0` using `fun k hk => spLdeg_eq_zero lt p2 k (by rw [l2, if_neg hk])`. Establish `e1 : p1 = Finsupp.single i a`. Use extensionality with `k`.
+
+Establish `hk` using `DFunLike.congr_fun hp k`. Simplify using `only [Finsupp.add_apply] at hk`. Distinguish the cases in `hki : lt k = lt i`. Establish `hkj : lt k ≠ lt j` using `hki ▸ hij`. Establish `hkj' : j ≠ k` using `fun h => hkj (h ▸ rfl)`.
+
+Rewrite `hk` using `[z2 k hkj, add_zero]`. Rewrite using `[hk]`. Simplify using `[Finsupp.single_apply, hkj']`. Establish `hki' : i ≠ k` using `fun h => hki (h ▸ rfl)`. Rewrite using `[z1 k hki, Finsupp.single_apply, if_neg hki']`.
+
+Establish `e2 : p2 = Finsupp.single j b`. Rewrite `hp` using `[e1]`. Conclude with `add_left_cancel hp`. Conclude with `hne (by rw [e1, e2])`. Introduce `h`.
+
+It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+-/
 theorem spPair (i j : ι) (a b : ℕ) (hij : lt i ≠ lt j) :
     MvPowerSeries.coeff (Finsupp.single i a + Finsupp.single j b)
       ((∑ k, MvPowerSeries.C (N (lt i) k) * MvPowerSeries.X k) ^ a *
@@ -282,6 +395,15 @@ theorem spPair (i j : ι) (a b : ℕ) (hij : lt i ≠ lt j) :
     exact hne (by rw [e1, e2])
   · intro h; exfalso; apply h; rw [Finset.HasAntidiagonal.mem_antidiagonal]
 
+/- English proof (translation)
+Establish `hsub : MvPowerSeries.HasSubst (fun s => ∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k : σ → MvPowerSeries ι R)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Rewrite using `[MvPowerSeries.coeff_subst hsub, finsum_eq_single _ (Finsupp.single (lt i) a + Finsupp.single (lt j) b)]`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (by rw [pow_zero]), Finsupp.prod_single_index (by rw [pow_zero]), smul_eq_mul, spPair hN i j a b hij]`. Introduce `dd hdd`. Establish `hz : MvPowerSeries.coeff (Finsupp.single i a + Finsupp.single j b) (dd.prod fun s e => (∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) ^ e) = 0`.
+
+Assume the negation of the conclusion as `hne`. Apply `hdd` to reduce the goal to its premises. Establish `hl` using `spProd_ldeg hN dd.support dd _ hne`. Use extensionality with `t`. Establish `ht` using `hl t`.
+
+Rewrite `ht` using `[spLdeg_add, spLdeg_single, spLdeg_single]`. Establish `hdt : (if t ∈ dd.support then dd t else 0) = dd t` using `by split_ifs with hm`. Both sides reduce to the same expression. Conclude with `(Finsupp.notMem_support_iff.mp hm).symm`. Rewrite `ht` using `[hdt]`.
+
+Rewrite using `[← ht, Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply]`. Rewrite using `[hz, smul_zero]`.
+-/
 theorem spCore (f : MvPowerSeries σ R) (i j : ι) (a b : ℕ) (hij : lt i ≠ lt j) :
     MvPowerSeries.coeff (Finsupp.single i a + Finsupp.single j b)
       (MvPowerSeries.subst (fun s => ∑ k, MvPowerSeries.C (N s k) * MvPowerSeries.X k) f) =
@@ -314,6 +436,9 @@ theorem spCore (f : MvPowerSeries σ R) (i j : ι) (a b : ℕ) (hij : lt i ≠ l
 
 end Pure
 
+/- English proof (translation)
+Introduce `K _ l d N0 N1 _ _ ι _ _ lt M hM be i j α β hij`. Unfold `bSum pureMon`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Conclude with `spCore (N := fun s k => M (s, ab.1, ab.2) k) (fun s k h => hM _ _ h) be i j _ _ hij`.
+-/
 theorem pure_weight_formula : PureFormula.{u, v} := by
   intro K _ l d N0 N1 _ _ ι _ _ lt M hM be i j α β hij
   unfold bSum pureMon
@@ -335,6 +460,9 @@ def spEx (o : Option (Fin m)) (c : Fin (p + 1)) : Fin m × Fin (p + 1) →₀ �
 def spCo (top : Fin (p + 1) → R) (o : Option (Fin m)) (c : Fin (p + 1)) : R :=
   o.elim (top c) (fun _ => 1)
 
+/- English proof (translation)
+Consider the cases of `o`. Use `show MvPolynomial.C (top c) = MvPolynomial.monomial 0 (top c)`. Conclude with `MvPolynomial.C_apply`. Simplify using `[spV, spEx, spCo, MvPolynomial.X]`.
+-/
 theorem spV_eq (top : Fin (p + 1) → R) (o : Option (Fin m)) (c : Fin (p + 1)) :
     spV top o c = MvPolynomial.monomial (spEx o c) (spCo top o c) := by
   cases o
@@ -342,12 +470,36 @@ theorem spV_eq (top : Fin (p + 1) → R) (o : Option (Fin m)) (c : Fin (p + 1)) 
     exact MvPolynomial.C_apply
   · simp [spV, spEx, spCo, MvPolynomial.X]
 
+/- English proof (translation)
+Consider the cases of `o`. Simplify using `[spEx]`. Simplify using `[spEx, Finsupp.single_apply]`.
+-/
 theorem spEx_apply (o : Option (Fin m)) (c c' : Fin (p + 1)) (k : Fin m) :
     spEx o c (k, c') = if o = some k ∧ c = c' then 1 else 0 := by
   cases o
   · simp [spEx]
   · simp [spEx, Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `hrow : A = fun i => ∑ o, (MvPolynomial.C (cf i o) : MvPolynomial (Fin m × Fin (p + 1)) R) • spV top o`. Use function extensionality and compare the values at `i c`. Rewrite using `[hA]`. Simplify using `[Finset.sum_apply, smul_eq_mul]`. Establish `hdet : A.det = ∑ r : Fin (p + 1) → Option (Fin m), (∏ i, (MvPolynomial.C (cf i (r i)) : MvPolynomial (Fin m × Fin (p + 1)) R)) • (Matrix.of fun i => spV top (r i)).det`.
+
+Rewrite using `[hrow]`. Use `show Matrix.detRowAlternating (fun i => ∑ o, (MvPolynomial.C (cf i o) : MvPolynomial (Fin m × Fin (p + 1)) R) • spV top o) = _`. Rewrite using `[← AlternatingMap.coe_multilinearMap, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+
+Both sides reduce to the same expression. Introduce `mono hmono k`. Rewrite `hmono` using `[hdet]`. Take `⟨r, -, hr⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hmono)`. Establish `hr' : mono ∈ (Matrix.of fun i => spV top (r i)).det.support`.
+
+Rewrite `hr` using `[← map_prod, smul_eq_mul, MvPolynomial.C_mul']`. Conclude with `MvPolynomial.support_smul hr`. Distinguish the cases in `hinj : Function.Injective r`. Rewrite `hr'` using `[Matrix.det_apply]`. Take `⟨s, -, hs⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hr')`.
+
+Establish `hs' : mono ∈ (∏ c, (Matrix.of fun i => spV top (r i)) (s c) c).support`. Break down `Int.units_eq_one_or (Equiv.Perm.sign s) with h | h` into its components or cases. Rewrite `hs` using `[h, one_smul]`. Then use the resulting hypothesis. Rewrite `hs` using `[h, Units.neg_smul, one_smul, MvPolynomial.support_neg]`. Then use the resulting hypothesis. Simplify using `only [Matrix.of_apply, spV_eq, ← MvPolynomial.monomial_sum_prod] at hs'`.
+
+Establish `he` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hs')`. Substitute `he` using the available equality. Establish `hval : ∀ c, (∑ c', spEx (r (s c')) c') (k, c) = if r (s c) = some k then 1 else 0`. Introduce `c`. Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single c]`.
+
+Rewrite using `[spEx_apply]`. Simplify using the standard rewrite rules. Introduce `c' _ hc'`. Rewrite using `[spEx_apply]`. Simplify using `[hc']`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hval]`. Rewrite using `[Finset.sum_boole]`. Simplify using `only [Nat.cast_id]`. Use `Finset.card_le_one.mpr fun a ha b hb => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb`. Conclude with `s.injective (hinj (ha.trans hb.symm))`. It suffices to derive a contradiction. Simplify using `only [Function.Injective, not_forall] at hinj`. Take `⟨i1, i2, h12, hne⟩` from `hinj`.
+
+Establish `h0 : (Matrix.of fun i => spV top (r i)).det = 0` using `Matrix.det_zero_of_row_eq hne (by show spV top (r i1) = spV top (r i2); rw [h12])`. Rewrite `hr'` using `[h0]`. Simplify using `at hr'`.
+-/
 theorem spMinor (top : Fin (p + 1) → R) (A : Matrix (Fin (p + 1)) (Fin (p + 1))
       (MvPolynomial (Fin m × Fin (p + 1)) R)) (cf : Fin (p + 1) → Option (Fin m) → R)
     (hA : ∀ i c, A i c = ∑ o, MvPolynomial.C (cf i o) * spV top o c) :
@@ -407,6 +559,11 @@ theorem spMinor (top : Fin (p + 1) → R) (A : Matrix (Fin (p + 1)) (Fin (p + 1)
 
 end Minor
 
+/- English proof (translation)
+Introduce `R _ m p top T mono hmono k`. Use `spMinor top _ (fun i o => Fin.cases (o.elim 1 (fun _ => 0)) (fun i' => o.elim 0 (T i')) i) ?_ mono hmono k` and prove the remaining obligations. Introduce `i c`. Use `Fin.cases ?_ (fun i' => ?_) i` and prove the remaining obligations. Simplify using `[spV, Fintype.sum_option]`.
+
+Simplify using `[spV, Fintype.sum_option]`.
+-/
 theorem minor_degree_bound : MinorDeg.{u} := by
   intro R _ m p top T mono hmono k
   classical

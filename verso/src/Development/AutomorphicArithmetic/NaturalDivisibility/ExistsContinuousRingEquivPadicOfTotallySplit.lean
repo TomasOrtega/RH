@@ -5,11 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqZeroOfForallLe
 
 open NumberField IsDedekindDomain Formalism.BasicNotions GroundTheory.Global.SemiLocal
 
+/- English proof (translation)
+Rewrite using `[Rat.HeightOneSpectrum.natGenerator_dvd_iff, ← map_natCast (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) n, Ideal.apply_mem_of_equiv_iff]`.
+-/
 private theorem natGen_dvd_iff (x : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ) :
     Rat.HeightOneSpectrum.natGenerator x ∣ n ↔ ((n : ℕ) : 𝓞 ℚ) ∈ x.asIdeal := by
   rw [Rat.HeightOneSpectrum.natGenerator_dvd_iff,
     ← map_natCast (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) n, Ideal.apply_mem_of_equiv_iff]
 
+/- English proof (translation)
+Rewrite using `[Equiv.eq_symm_apply, ← natGen_dvd_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(Nat.prime_dvd_prime_iff_eq (Rat.HeightOneSpectrum.prime_natGenerator x) P.2).1 h`.
+
+Introduce `h`. Rewrite using `[← h]`. Conclude with `dvd_refl _`.
+-/
 private theorem mem_iff_eq (P : Nat.Primes) (x : HeightOneSpectrum (𝓞 ℚ)) :
     (((P : ℕ) : ℕ) : 𝓞 ℚ) ∈ x.asIdeal ↔ x = (Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm P := by
   rw [Equiv.eq_symm_apply, ← natGen_dvd_iff]
@@ -21,6 +29,23 @@ private theorem mem_iff_eq (P : Nat.Primes) (x : HeightOneSpectrum (𝓞 ℚ)) :
     rw [← h]
     exact dvd_refl _
 
+/- English proof (translation)
+Introduce `E _ _ w p hp hw hcard`. Set `P : Nat.Primes` to `⟨p, hp.out⟩`. Set `v : HeightOneSpectrum (𝓞 ℚ)` to `(Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm P`. Establish `hpv : ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal` using `(mem_iff_eq P v).2 rfl`. Establish `hlies : ∀ u : HeightOneSpectrum (𝓞 E), u ∈ placesOver E p ↔ u.asIdeal.LiesOver v.asIdeal`.
+
+Introduce `u`. Use `show ((p : ℕ) : 𝓞 E) ∈ u.asIdeal ↔ _`. Rewrite using `[Ideal.liesOver_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Establish `hmem : ((p : ℕ) : 𝓞 ℚ) ∈ u.asIdeal.under (𝓞 ℚ)`. Rewrite using `[Ideal.under, Ideal.mem_comap, map_natCast]`. Conclude with `hu`. Set `q : HeightOneSpectrum (𝓞 ℚ)` to `{ asIdeal := u.asIdeal.under (𝓞 ℚ) isPrime := inferInstance ne_bot := by`. Introduce `h`.
+
+Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hp.out.ne_zero (by exact_mod_cast hmem) }`. Establish `hq : q = v` using `(mem_iff_eq P q).1 hmem`. Rewrite using `[← hq]`. Introduce `h`.
+
+Rewrite `hpv` using `[h, Ideal.under, Ideal.mem_comap, map_natCast]`. Conclude with `hpv`. Use `haveI : w.asIdeal.LiesOver v.asIdeal := (hlies w).1 hw`. Establish `hcardS : Fintype.card (PlacesOver E v) = Module.finrank ℚ E`. Rewrite using `[← hcard, ← Nat.card_coe_set_eq, ← Nat.card_eq_fintype_card]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun u => (hlies u).symm)`. Establish `hone : ∀ u : PlacesOver E v, (u : HeightOneSpectrum (𝓞 E)).asIdeal.ramificationIdx (𝓞 ℚ) * (u : HeightOneSpectrum (𝓞 E)).asIdeal.inertiaDeg (𝓞 ℚ) = 1`. Establish `hsum` using `sum_ramificationIdx_mul_inertiaDeg (K := ℚ) E v`. Introduce `u`. Establish `hpos : ∀ u' : PlacesOver E v, 1 ≤ (u' : HeightOneSpectrum (𝓞 E)).asIdeal.ramificationIdx (𝓞 ℚ) * (u' : HeightOneSpectrum (𝓞 E)).asIdeal.inertiaDeg (𝓞 ℚ)` using `fun u' => Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt` using `Finset.sum_lt_sum (s := Finset.univ) (f := fun _ : PlacesOver E v => 1) (fun u' _ => hpos u') ⟨u, Finset.mem_univ _, lt_of_le_of_ne (hpos u) (Ne.symm hne)⟩`. Rewrite `hlt` using `[hsum, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one, hcardS]`. Conclude with `lt_irrefl _ hlt`. Establish `hrank : Module.finrank (v.adicCompletion ℚ) (w.adicCompletion E) = 1`.
+
+Rewrite using `[finrank_eq_ramificationIdx_mul_inertiaDeg]`. Conclude with `hone ⟨w, inferInstance⟩`. Establish `hsurj : Function.Surjective (completionMap v w)` using `Algebra.surjective_algebraMap_iff.2 (Subalgebra.bot_eq_top_of_finrank_eq_one hrank).symm`. Use `⟨(Padic.adicCompletionEquiv (𝓞 ℚ) P).toRingEquiv.trans (RingEquiv.ofBijective (completionMap v w) ⟨(completionMap v w).injective, hsurj⟩), ?_⟩` and prove the remaining obligations. Conclude with `(continuous_completionMap v w).comp (Padic.adicCompletionEquiv (𝓞 ℚ) P).continuous`.
+-/
 theorem UpperTheory.exists_continuous_ringEquiv_padic_of_totally_split :
     ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (p : ℕ) [Fact p.Prime], w ∈ placesOver E p → (placesOver E p).ncard = Module.finrank ℚ E → ∃ i : ℚ_[p] ≃+* w.adicCompletion E, Continuous i := by
   intro E _ _ w p hp hw hcard

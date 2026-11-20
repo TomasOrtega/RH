@@ -19,6 +19,19 @@ open GlobalTheory.CompanionTheory.Ar.Flat.UnitChart
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C n`. Use `⟨0, C n, homog_C n, fun L _ v _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`.
+
+Take `⟨m, G, hG, ea⟩` from `ha`. Take `⟨n, G', hG', eb⟩` from `hb`. Use `⟨m + n, G * cMon c n + G' * cMon c m, homog_add (homog_mul hG (homog_cMon c n)) ?_, fun L _ v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm m n]`. Conclude with `homog_mul hG' (homog_cMon c m)`.
+
+Establish `hadd : ∏ k, v ⟨k, c k⟩ ^ (m + n) k = (∏ k, v ⟨k, c k⟩ ^ m k) * ∏ k, v ⟨k, c k⟩ ^ n k`. Simplify using `[pow_add, Finset.prod_mul_distrib]`. Rewrite using `[hadd, map_add, map_add, map_mul, map_mul, aeval_cMon, aeval_cMon, ← ea L v hv, ← eb L v hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X a p ha`.
+
+Take `⟨m, G, hG, ea⟩` from `ha`. Use `⟨m + Pi.single p.1 1, G * X p, homog_mul hG (homog_X p), fun L _ v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : ∏ k, v ⟨k, c k⟩ ^ (Pi.single p.1 1 : K → ℕ) k = v ⟨p.1, c p.1⟩`. Rewrite using `[Fintype.prod_eq_single p.1]`. Simplify using the standard rewrite rules.
+
+Introduce `k hk`. Simplify using `[Pi.single_apply, hk]`. Establish `hadd : ∏ k, v ⟨k, c k⟩ ^ (m + Pi.single p.1 1 : K → ℕ) k = (∏ k, v ⟨k, c k⟩ ^ m k) * v ⟨p.1, c p.1⟩`. Rewrite using `[← h1]`. Simplify using `[pow_add, Finset.prod_mul_distrib]`.
+
+Rewrite using `[hadd, map_mul, map_mul, aeval_X, aeval_X, ← ea L v hv]`. Clear denominators, using `[hv p.1]` for the nonvanishing conditions.
+-/
 theorem exists_form (c : ∀ k, J k) (g : MRing J) :
     ∃ (m : K → ℕ) (G : MRing J), IsMultiHomog G m ∧ ∀ (L : Type) [Field L] (v : (Σ k, J k) → L),
       (∀ k, v ⟨k, c k⟩ ≠ 0) →
@@ -53,9 +66,17 @@ theorem exists_form (c : ∀ k, J k) (g : MRing J) :
     rw [hadd, map_mul, map_mul, aeval_X, aeval_X, ← ea L v hv]
     field_simp [hv p.1]
 
+/- English proof (translation)
+Simplify using `[evC, MvPolynomial.aeval_def, MvPolynomial.eval_map, MvPolynomial.eval₂_eq']`.
+-/
 theorem evC_eq_aeval (w : (Σ k, J k) → ℂ) (f : MRing J) : evC w f = aeval w f := by
   simp [evC, MvPolynomial.aeval_def, MvPolynomial.eval_map, MvPolynomial.eval₂_eq']
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`.
+
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `Algebra.subset_adjoin ⟨Function.update c k i, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.prod_update_div (β := J) (fun k (b : J k) => y ⟨k, b⟩) c hc k i` as an intermediate fact. Simplify using `using this`.
+-/
 theorem segre_chart {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     Algebra.adjoin ℤ (Set.range fun j : (∀ k, J k) => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) = chartRingZ y c := by
   classical
@@ -73,6 +94,11 @@ theorem segre_chart {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, 
 def ratMap {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) : MRing J →ₐ[ℤ] chartRingZ y c :=
   aeval fun p => ⟨y p / y ⟨p.1, c p.1⟩, Algebra.subset_adjoin ⟨p, rfl⟩⟩
 
+/- English proof (translation)
+Establish `: (chartRingZ y c).val.comp (ratMap y c) = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[ratMap]`. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ratMap_coe {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (g : MRing J) :
     (ratMap y c g : Ω) = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) g := by
   have : (chartRingZ y c).val.comp (ratMap y c) = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) := by
@@ -82,6 +108,11 @@ theorem ratMap_coe {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J
   rw [← this]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨r, hr⟩`. Establish `h : r ∈ (aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) : MRing J →ₐ[ℤ] Ω).range`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Conclude with `hr`. Take `⟨g, rfl⟩` from `h`.
+
+Conclude with `⟨g, Subtype.ext (ratMap_coe y c g)⟩`.
+-/
 theorem ratMap_surjective {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) :
     Function.Surjective (ratMap y c) := by
   rintro ⟨r, hr⟩
@@ -91,6 +122,15 @@ theorem ratMap_surjective {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : �
   obtain ⟨g, rfl⟩ := h
   exact ⟨g, Subtype.ext (ratMap_coe y c g)⟩
 
+/- English proof (translation)
+Set `φw : MRing J →+* ℂ` to `(aeval (fun p : Σ k, J k => w p / w ⟨p.1, c p.1⟩) : MRing J →ₐ[ℤ] ℂ).toRingHom`. Establish `hker : RingHom.ker (ratMap y c).toRingHom ≤ RingHom.ker φw`. Introduce `g hg`. Take `⟨m, G, hG, e⟩` from `exists_form c g`. Establish `hy0 : aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) g = 0`.
+
+Rewrite using `[← ratMap_coe]`. Establish `: ratMap y c g = 0` using `hg`. Simplify using `[this]`. Establish `hG0 : aeval y G = 0` using `by rw [← e Ω y hc, hy0, zero_mul]`. Establish `hmem : G ∈ mCoordIdeal y` using `mem_of_aeval_eq_zero hG hG0`.
+
+Establish `hwG : aeval w G = 0`. Rewrite using `[← evC_eq_aeval]`. Conclude with `hw.2 G hmem`. Establish `hprod : ∏ k, w ⟨k, c k⟩ ^ m k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hwc k)`. Rewrite `hwG` using `[← e ℂ w hwc]`.
+
+Conclude with `(mul_eq_zero.1 hwG).resolve_right hprod`. Use `⟨(ratMap y c).toRingHom.liftOfSurjective (ratMap_surjective y c) ⟨φw, hker⟩, fun g => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ g`.
+-/
 theorem exists_chartEval {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : ∀ k, J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (w : (Σ k, J k) → ℂ) (hw : w ∈ mcPts (mCoordIdeal y)) (hwc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
     ∃ e : chartRingZ y c →+* ℂ, ∀ g : MRing J,
@@ -123,10 +163,24 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 def ev (ξ : Spec (CommRingCat.of Ω) ⟶ X) (U : X.Opens) (h : genPt ξ ∈ U) : Γ(X, U) →+* Ω :=
   (X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ).hom
 
+/- English proof (translation)
+The claim follows from `genMap_germ_eq_stalk_closed ξ q U hq h s`.
+-/
 theorem genMap_germ {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (h : genPt ξ ∈ U) (q : Cpt ξ) (hq : q.1 ∈ U)
     (s : Γ(X, U)) : genMap ξ q (X.presheaf.germ U q.1 hq s) = ev ξ U h s :=
   genMap_germ_eq_stalk_closed ξ q U hq h s
 
+/- English proof (translation)
+Set `I : Ideal Γ(X, U)` to `{ carrier := {s | ∃ r, a * ev ξ U h s = ev ξ U h r} add_mem' := by`. Introduce and unpack `s t ⟨r, hr⟩ ⟨r', hr'⟩`. Conclude with `⟨r + r', by rw [map_add, map_add, mul_add, hr, hr']⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `t s ⟨r, hr⟩`. Conclude with `⟨t * r, by rw [smul_eq_mul, map_mul, map_mul, ← hr]; ring⟩ }`. Distinguish the cases in `hd : I = ⊤`. Take `⟨r, hr⟩ : (1 : Γ(X, U)) ∈ I` from `hd ▸ Submodule.mem_top`. Conclude with `⟨r, by simpa using hr.symm⟩`.
+
+It suffices to derive a contradiction. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I hd`. Set `y : PrimeSpectrum Γ(X, U)` to `⟨P, hP.isPrime⟩`. Establish `hy : hU.fromSpec y ∈ U`. Establish `: hU.fromSpec y ∈ Set.range hU.fromSpec` using `⟨y, rfl⟩`.
+
+Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `q : Cpt ξ` to `⟨hU.fromSpec y, sp _ hy⟩`. Use `letI := X.presheaf.algebra_section_stalk (⟨hU.fromSpec y, hy⟩ : U)`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk (hU.fromSpec y)) y.asIdeal := hU.isLocalization_stalk' y hy`. Take `⟨t, ht⟩` from `ha q hy`.
+
+Take `⟨⟨r, s⟩, e⟩` from `IsLocalization.surj y.asIdeal.primeCompl t`. Use `s.2 (hIP ⟨r, ?_⟩)` and prove the remaining obligations. Rewrite using `[← genMap_germ h q hy, ← genMap_germ h q hy, ← ht, ← map_mul]`. Conclude with `congrArg _ e`.
+-/
 theorem exists_ev_eq {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (h : genPt ξ ∈ U)
     (sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q) (a : Ω) (ha : ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q) :
     ∃ s, ev ξ U h s = a := by
@@ -157,6 +211,9 @@ theorem exists_ev_eq {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hU : I
     rw [← genMap_germ h q hy, ← genMap_germ h q hy, ← ht, ← map_mul]
     exact congrArg _ e
 
+/- English proof (translation)
+Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`.
+-/
 theorem germ_closedPoint {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X) (U : X.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) :
     X.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo f =
@@ -164,6 +221,15 @@ theorem germ_closedPoint {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X
   rw [Scheme.germ_stalkClosedPointTo]
   simp [Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]
 
+/- English proof (translation)
+Set `z : Spec (CommRingCat.of ℂ) ⟶ X` to `Spec.map (CommRingCat.ofHom ε) ≫ hU.fromSpec`. Establish `hz : z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ U`. Establish `: z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ Set.range hU.fromSpec` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Use `⟨z, hz, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `hfs : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `by rw [hU.fromSpec_preimage_self]`. Establish `h1 : hU.fromSpec.appLE U ⊤ hfs = (Scheme.ΓSpecIso Γ(X, U)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+
+Establish `h2 : z.appLE U ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem z hz).ge = hU.fromSpec.appLE U ⊤ hfs ≫ (Spec.map (CommRingCat.ofHom ε)).appTop`. Use `Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom ε)) hU.fromSpec U ⊤ ⊤ hfs (fun _ _ => trivial)` as an intermediate fact. Rewrite using `[Scheme.Hom.appTop]`. Rewrite using `[← Scheme.Hom.appLE_eq_app (f := Spec.map (CommRingCat.ofHom ε)) (U := ⊤)]`. Conclude with `this.symm`.
+
+Establish `key : X.presheaf.germ U _ hz ≫ Scheme.stalkClosedPointTo z = CommRingCat.ofHom ε`. Rewrite using `[germ_closedPoint z U hz, h2, h1, Category.assoc, Scheme.ΓSpecIso_naturality]`. Conclude with `(Scheme.ΓSpecIso Γ(X, U)).inv_hom_id_assoc _`. Conclude with `congrArg (fun f => f.hom s) key`.
+-/
 theorem exists_pt {U : X.Opens} (hU : IsAffineOpen U) (ε : Γ(X, U) →+* ℂ) :
     ∃ (z : Spec (CommRingCat.of ℂ) ⟶ X) (hz : z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ U), ∀ s,
       (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz s) = ε s := by
@@ -197,6 +263,13 @@ open GlobalTheory.CompanionTheory.Ar.Flat.UnitChart
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Establish `hunit : IsUnit (X.presheaf.germ U _ hz sv)` using `isUnit_of_map_unit (Scheme.stalkClosedPointTo z).hom _ (IsUnit.mk0 _ hv)`. Take `⟨t, ht⟩` from `hunit.exists_right_inv`. Set `q : Cpt ξ` to `⟨z (IsLocalRing.closedPoint (CommRingCat.of ℂ)), sp _ hz⟩`. Establish `h1 : ev ξ U hη sv * genMap ξ q t = 1`. Rewrite using `[← genMap_germ hη q hz, ← map_mul, ht, map_one]`.
+
+Establish `h2 : (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz sv) * (Scheme.stalkClosedPointTo z).hom t = 1`. Rewrite using `[← map_mul, ht, map_one]`. Use `⟨sp _ hz, X.presheaf.germ U _ hz su * t, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `genMap ξ q _ = _`. Rewrite using `[map_mul, genMap_germ hη q hz, div_eq_mul_inv, inv_eq_of_mul_eq_one_right h1]`.
+
+Rewrite using `[map_mul, div_eq_mul_inv, inv_eq_of_mul_eq_one_right h2]`.
+-/
 theorem valAt_quot {ξ : Spec (CommRingCat.of Ω) ⟶ X} {U : X.Opens} (hη : genPt ξ ∈ U)
     (sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q) (z : Spec (CommRingCat.of ℂ) ⟶ X)
     (hz : z (IsLocalRing.closedPoint (CommRingCat.of ℂ)) ∈ U) (su sv : Γ(X, U))
@@ -222,6 +295,11 @@ end Core
 
 section Main
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Establish `h0 : r (algebraMap ℤ (𝓞 F) n) = 0` using `hn`.
+
+Establish `: (n : ℂ) = 0` using `by simpa using h0`. Simplify using `using this`.
+-/
 theorem ringInt_injective {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+* ℂ) : Function.Injective r := by
   rw [RingHom.injective_iff_ker_eq_bot]
   refine Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_
@@ -231,12 +309,20 @@ theorem ringInt_injective {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+*
   have : (n : ℂ) = 0 := by simpa using h0
   simpa using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsFractionRing.lift (K := F) (ringInt_injective r), RingHom.ext fun a => by simp only [RingHom.comp_apply] exact IsFractionRing.lift_algebraMap (K := F) (ringInt_injective r) a⟩`.
+-/
 theorem exists_ext_frac {F : Type} [Field F] [NumberField F] (r : 𝓞 F →+* ℂ) :
     ∃ r' : F →+* ℂ, r'.comp (algebraMap (𝓞 F) F) = r :=
   ⟨IsFractionRing.lift (K := F) (ringInt_injective r), RingHom.ext fun a => by
     simp only [RingHom.comp_apply]
     exact IsFractionRing.lift_algebraMap (K := F) (ringInt_injective r) a⟩
 
+/- English proof (translation)
+Set `r : 𝓞 F →+* ℂ` to `(Spec.preimage (z ≫ s)).hom`. Establish `hr : z ≫ s = spMap r`. Simplify using `[r, spMap]`. Take `⟨r', hr'⟩` from `exists_ext_frac r`. Use `⟨pullback.lift z (spMap r') ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[hr, ← hr']`. Simplify using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem exists_lift_genFibre {F : Type} [Field F] [NumberField F] {W : Scheme.{0}}
     (s : W ⟶ Spec (CommRingCat.of (𝓞 F))) (z : Spec (CommRingCat.of ℂ) ⟶ W) :
     ∃ u : Spec (CommRingCat.of ℂ) ⟶ pullback s (spMap (algebraMap (𝓞 F) F)), u ≫ pullback.fst _ _ = z := by
@@ -248,6 +334,9 @@ theorem exists_lift_genFibre {F : Type} [Field F] [NumberField F] {W : Scheme.{0
   rw [hr, ← hr']
   simp [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Set `p : Spec (CommRingCat.of Ω')` to `IsLocalRing.closedPoint Ω'`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem genPt_dominates {X' X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
     {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {f : X' ⟶ X} {i : Ω →+* Ω'}
     (h : Dominates ξ' ξ f i) : f (genPt ξ') = genPt ξ := by

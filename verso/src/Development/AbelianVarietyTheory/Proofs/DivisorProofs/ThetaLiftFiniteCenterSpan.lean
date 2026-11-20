@@ -21,6 +21,11 @@ open GlobalTheory.ThK.FiniteLevelDerivatives GlobalTheory.ThetaFacInf GlobalTheo
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨y, hy, hMy⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `hy' : star y ≠ 0` using `by simpa using hy`. Use `h.2.2 (star y) hy'` as an intermediate fact. Rewrite `this` using `[star_star, hMy, dotProduct_zero]`.
+
+Simplify using `at this`.
+-/
 theorem det_ne_zero_of_isCartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M.det ≠ 0 := by
   intro h0
   obtain ⟨y, hy, hMy⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr h0
@@ -31,6 +36,9 @@ theorem det_ne_zero_of_isCartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h
 
 variable {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV hT`. Use `(hKP.howeDualityReal F E σ hT.base.cm a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.std hT.geo.hV.herm (fun h0 => det_ne_zero_of_isCartan (hT.geo.hV.cartan w) ?_) hT.geo.hW.skew (fun h0 => det_ne_zero_of_isCartan (hT.geo.hW.cartan w) ?_) hp.resX hp.resW hp.hX hp.hW hT.wei …` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`.
+-/
 theorem chains (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') : ∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ _), StrictMono N →
     (∀ i, GlobalTheory.Published.ThetaSubInf G.M B.ψ B.emb om (N i)) → m ≤ L := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -42,11 +50,31 @@ theorem chains (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') : ∃ L 
   · rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
   · rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[show ((g, h * k) : UA σ G.V.J × UA σ G.W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]`.
+-/
 theorem I_mul_right (Φ : Fn F a (a + a')) (h k : UA σ G.W.J) : G.M.I om Φ (h * k) = G.M.I om (om (1, k) Φ) h := by
   unfold Model.I theta
   congr 1; funext g
   rw [show ((g, h * k) : UA σ G.V.J × UA σ G.W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hs : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hD : ∀ f ∈ G.M.Pol B.ψ B.emb, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ PolData B G.M` using `fun f hf => Submodule.subset_span ⟨f, hf, φ, hSB, hev, rfl⟩`. Establish `lin` using `GlobalTheory.T.theta_integral_linear_in_polynomial_datum F E σ B a a' G X om om' hKP hT`. Establish `lin0 : G.M.I om 0 = 0`.
+
+Use `lin 0 (zero_mem _) 0 (zero_mem _) 1` as an intermediate fact. Simplify using `using this`. Set `T₀ : G.M.Pol B.ψ B.emb →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `{ toFun := fun g x => G.M.I om (pureL φ g.1) ((toGAd hσ G.W.J hc).symm x) map_add' := fun g g' => funext fun x => by`. Use `congrFun (lin _ (hD _ g.2) _ (hD _ g'.2) 1) ((toGAd hσ G.W.J hc).symm x)` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`.
+
+Rewrite using `[Submodule.coe_add, map_add]`. Conclude with `this`. Use the proof step `map_smul' := fun r g => funext fun x => by`. Use `congrFun (lin _ (hD _ g.2) 0 (zero_mem _) r) ((toGAd hσ G.W.J hc).symm x)` as an intermediate fact. Rewrite `this` using `[add_zero, lin0, add_zero]`.
+
+Rewrite using `[Submodule.coe_smul, map_smul]`. Conclude with `this }`. Take `⟨T, hT₀⟩` from `LinearMap.exists_extend T₀`. Establish `eT : ∀ g ∈ G.M.Pol B.ψ B.emb, T g = fun x => G.M.I om (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) ((toGAd hσ G.W.J hc).symm x)` using `fun g hg => LinearMap.congr_fun hT₀ ⟨g, hg⟩`. Take `⟨hP1, hP2, hP3, hP4⟩` from `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hT`.
+
+Rewrite using `[← eT f hf]`. Use `zfin_of_thetaSub hσ hT.base.cm G.M B.ψ B.emb om hc (GlobalTheory.T.polynomial_data_countable_rank hKP.base F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hp) (chains hKP hT) hP1 hP2 hP3 hP4 T (fun g hg => ?_) (fun γ hγ g hg g₁ hg₁ h => ?_) (fun k hk g hg g₁ hg₁ h => ?_) (fun γ hγ …` and prove the remaining obligations. Rewrite using `[eT g hg]`. Conclude with `GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT c hc hcc _ (hD g hg)`. Establish `e : derL om (fun t => γ (Multiplicative.ofAdd t)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ`.
+
+Use function extensionality and compare the values at `fun y => (hasDerivAt_pure φ hSB hs h y).deriv`. Use `(GlobalTheory.T.theta_integral_lie_derivative_invariant F E σ B a a' G X om om' hKP hT _ (hD g hg) [γ] (by simpa using hγ)).2 (by simp)` as an intermediate fact. Simplify using `only [List.map_cons, List.map_nil, List.foldr_cons, List.foldr_nil, e] at this`. Rewrite using `[eT g₁ hg₁, this]`. Both sides reduce to the same expression.
+
+Rewrite using `[eT g hg, eT g₁ hg₁, ← acts_pure φ hSB hs h, GlobalTheory.ThetaIntegralInv.integral_translate hKP.base hp k _ (GlobalTheory.ThKDer.polData_le hT.geo.hM (hD g hg))]`. Take `⟨Φ₂, h2, d2⟩` from `GlobalTheory.ThKDer.exists_der hKP hT hγ _ (hD g₁ hg₁)`. Use `GlobalTheory.ThKDer.hasDerivAt_I hKP hT hγ (hD g hg) (hD g₁ hg₁) h2 (GlobalTheory.ThKDer.kerDer F E σ B a a' G X om om' hKP hT γ hγ g hg g₁ h φ hSB hev) d2 ((toGAd hσ G.W.J hc).symm x)` as an intermediate fact. Simplify `this` using `only [eT g hg, eT g₁ hg₁, map_mul, MulEquiv.symm_apply_apply]`. Rewrite using `[eT g hg, eT g₁ hg₁, ← acts_pure φ hSB hs h]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, MulEquiv.symm_apply_apply, I_mul_right]`.
+-/
 theorem zfin_pure (hσ : ∀ x, σ (σ x) = x) (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {c : E} (hc : c ≠ 0) (hcc : σ c = -c)
     (φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _)
     (hev : ∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) {f : SInf F (Fin a × Fin (a + a'))} (hf : f ∈ G.M.Pol B.ψ B.emb) :
@@ -100,6 +128,17 @@ theorem zfin_pure (hσ : ∀ x, σ (σ x) = x) (hKP : GlobalTheory.ThK.KP) (hT :
     funext x
     simp only [map_mul, MulEquiv.symm_apply_apply, I_mul_right]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcc Φ hΦ`. Establish `lin` using `GlobalTheory.T.theta_integral_linear_in_polynomial_datum F E σ B a a' G X om om' hKP hT`. Establish `lin0 : G.M.I om 0 = 0`. Use `lin 0 (zero_mem _) 0 (zero_mem _) 1` as an intermediate fact. Simplify using `using this`.
+
+Establish `sm` using `GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT c hc hcc`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, hf, φ, hSB, hev, rfl⟩` from `h`. Conclude with `zfin_pure hσ hKP hT hc hcc φ hSB hev hf`.
+
+Consider the case `zero`. Rewrite using `[lin0]`. Conclude with `zfin_zero`. Consider the case `add Φ Ψ hΦ hΨ h1 h2`. Use `lin Φ hΦ Ψ hΨ 1` as an intermediate fact.
+
+Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`. Conclude with `zfin_add (sm Φ hΦ) (sm Ψ hΨ) h1 h2`. Consider the case `smul r Φ hΦ h1`. Use `lin Φ hΦ 0 (zero_mem _) r` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, lin0, add_zero]`. Rewrite using `[this]`. Conclude with `zfin_smul r h1`.
+-/
 theorem zfin_thetaIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

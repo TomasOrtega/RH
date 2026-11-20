@@ -28,16 +28,25 @@ def lat0 (m : ℕ) : AddSubgroup (Fin (m + 1) → k) where
     rw [Valuation.map_neg]
     exact ha i
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_univ_pi, cball, Set.mem_setOf_eq]`. Conclude with `Iff.rfl`.
+-/
 theorem coe_standard_lattice (m : ℕ) : (lat0 k m : Set (Fin (m + 1) → k)) = Set.univ.pi fun _ => cball (1 : kˣ) := by
   ext x
   simp only [Set.mem_univ_pi, cball, Set.mem_setOf_eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `IsLat`. Rewrite using `[coe_standard_lattice]`. Conclude with `⟨isCompact_univ_pi fun _ => isCompact_cball _, isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball _⟩`.
+-/
 theorem isLattice_standard_lattice (m : ℕ) : IsLat (lat0 k m) := by
   unfold IsLat
   rw [coe_standard_lattice]
   exact ⟨isCompact_univ_pi fun _ => isCompact_cball _, isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball _⟩
 
+/- English proof (translation)
+Unfold `IsLat at *`. Rewrite using `[AddSubgroup.add_normal]`. Conclude with `⟨h1.1.add h2.1, h2.2.add_left⟩`.
+-/
 theorem isLat_sup {m : ℕ} {A₁ A₂ : AddSubgroup (Fin (m + 1) → k)} (h1 : IsLat A₁) (h2 : IsLat A₂) :
     IsLat (A₁ ⊔ A₂) := by
   unfold IsLat at *
@@ -50,17 +59,31 @@ section Transport
 
 variable {ψ : AddChar k Circle} {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Conclude with `h`.
+-/
 theorem kills_congr {a b : ℕ} (hab : a = b) {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (h : Kills ψ π a B) : Kills ψ π b B := by
   subst hab; exact h
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Substitute `hst` using the available equality. Conclude with `h`.
+-/
 theorem mirEq_congr {a b : ℕ} (hab : a = b) {ha : a + 1 ≤ N} {hb : b + 1 ≤ N} {s t : ℝ} (hst : s = t)
     {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (h : MirEq π a ha s B) : MirEq π b hb t B := by
   subst hab; subst hst; exact h
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Substitute `hst` using the available equality. Conclude with `h`.
+-/
 theorem lvl_congr {a b : ℕ} (hab : a = b) {ha : a + 2 ≤ N} {hb : b + 2 ≤ N} {s t : ℝ} (hst : s = t)
     {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (h : Lvl k ψ π a ha s B) : Lvl k ψ π b hb t B := by
   subst hab; subst hst; exact h
 
+/- English proof (translation)
+Introduce `v w`. Take `⟨A₁, hA₁, -, hB1⟩` from `hB v w`. Take `⟨A₂, hA₂, -, hI2⟩` from `hI v w`. Establish `hL` using `isLat_sup hA₁ hA₂`. Rewrite using `[hI2 _ hL le_sup_right, hB1 _ hL le_sup_left, hIc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDens_smul {m : ℕ} {h : m + 2 ≤ N} {A₀ : AddSubgroup (Fin (m + 1) → k)} {B B' I C : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
     (hB : IsDens ψ h π A₀ B B') (hI : IsDens ψ h π A₀ I C) (c : ℂ) (hIc : ∀ v w, I v w = c * B v w) :
     ∀ v w, C v w = c * B' v w := by
@@ -91,8 +114,14 @@ def chain (hUD : UDens k) {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 :
 variable (hUD : UDens k) {ψ : AddChar k Circle} (hψc : Continuous ψ) (hψ1 : ψ ≠ 1) {N : ℕ} {V : Type}
   [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chain_zero : chain hUD hψc hψ1 π hs B 0 = B := rfl
 
+/- English proof (translation)
+Establish `hh : ∃ hN : d + 2 ≤ N, Lvl k ψ π (N - 2 - d) (by omega) (d : ℝ) (chain hUD hψc hψ1 π hs B d)` using `⟨hN, hL⟩`. Simplify using `only [chain, dif_pos hh]`. Conclude with `Classical.choose_spec (hUD ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) hL (lat0 k (N - 2 - d)) (isLattice_standard_lattice _))`.
+-/
 theorem chain_succ (d : ℕ) (hN : d + 2 ≤ N)
     (hL : Lvl k ψ π (N - 2 - d) (by omega) (d : ℝ) (chain hUD hψc hψ1 π hs B d)) :
     IsDens ψ (by omega : N - 2 - d + 2 ≤ N) π (lat0 k (N - 2 - d)) (chain hUD hψc hψ1 π hs B d)
@@ -107,6 +136,11 @@ theorem chain_succ (d : ℕ) (hN : d + 2 ≤ N)
   exact Classical.choose_spec (hUD ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ)
     (chain hUD hψc hψ1 π hs B d) hL (lat0 k (N - 2 - d)) (isLattice_standard_lattice _))
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `hB`. Unfold `IsPsd`. Use `⟨h1, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`.
+
+Conclude with `(h2 v hv).le`.
+-/
 theorem isPsd_of_inv (hB : IsInvForm π B) : IsPsd B := by
   obtain ⟨h1, h2, -⟩ := hB
   unfold IsPsd
@@ -115,6 +149,9 @@ theorem isPsd_of_inv (hB : IsInvForm π B) : IsPsd B := by
   · simp [hv]
   · exact (h2 v hv).le
 
+/- English proof (translation)
+The claim follows from `| 0, hd => by refine ⟨isPsd_of_inv π B hB, ?_, ?_⟩ · refine kills_congr (a := N) (by omega) ?_ intro v hv w rw [twKer_derUnip_self ψ π] at hv rw [(Submodule.mem_bot ℂ).1 hv] simp · intro p _ v w simp [chain_zero, hB.2.2] | d + 1, hd => by obtain ⟨h1, h2, h3, h4, -⟩ := chain_succ …`.
+-/
 theorem chain_lvl (hB : IsInvForm π B) :
     ∀ d (hd : d + 2 ≤ N), Lvl k ψ π (N - 2 - d) (by omega) (d : ℝ) (chain hUD hψc hψ1 π hs B d)
   | 0, hd => by

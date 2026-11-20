@@ -6,6 +6,9 @@ open scoped ContDiff
 
 namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
+/- English proof (translation)
+Introduce `_ _ _ _ hz hz'` and use `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus hz hz'`.
+-/
 theorem positive_domain_is_domain : IsDomOmPlus := fun _ _ _ _ hz hz' =>
   Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus hz hz'
 

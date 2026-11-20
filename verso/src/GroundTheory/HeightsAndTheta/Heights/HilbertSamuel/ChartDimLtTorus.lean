@@ -12,6 +12,43 @@ namespace ChartDimLt
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Set `: CommRing (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `Ideal.Quotient.commRing 𝔮`. Establish `: IsDomain (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `Ideal.Quotient.isDomain 𝔮`. Set `y : (Σ k, ι k) → MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `fun q => C (Ideal.Quotient.mk 𝔮 (X q))`. Set `θ : (MvPolynomial (Σ k, ι k) ℂ) →ₐ[ℂ] MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` to `aeval (fun q => (X q.1 : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) * y q)`. Establish `hy : ∀ f : (MvPolynomial (Σ k, ι k) ℂ), aeval y f = C (Ideal.Quotient.mk 𝔮 f)`.
+
+Introduce `f`. Establish `: (aeval y : (MvPolynomial (Σ k, ι k) ℂ) →ₐ[ℂ] MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = (IsScalarTower.toAlgHom ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))).comp (Ideal.Quotient.mkₐ ℂ 𝔮)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`. Simplify using `[y, MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[this]`. Simplify using `[MvPolynomial.algebraMap_eq]`. Establish `hJθ : J ≤ RingHom.ker θ`. Take `⟨S, hS, hJS⟩` from `hJ`. Establish `hle : Ideal.span S ≤ RingHom.ker θ`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Establish `hfJ : f ∈ J` using `by rw [hJS]; exact Ideal.subset_span hf`. Establish `hf𝔮 : f ∈ 𝔮` using `h𝔮 (Ideal.mem_sup_left hfJ)`.
+
+Use `show θ f = 0`. Simplify using `only [θ]`. Rewrite using `[ReciprocityTheory.AnForm.R.aeval_smul_of_isMultiHomog ha (X : K → MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) y, hy, Ideal.Quotient.eq_zero_iff_mem.mpr hf𝔮, map_zero, mul_zero]`. Rewrite using `[hJS]`. Conclude with `hle`.
+
+Establish `hdimR : ringKrullDim θ.range ≤ ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ J)`. Set `g : (MvPolynomial (Σ k, ι k) ℂ) ⧸ J →+* θ.range` to `Ideal.Quotient.lift J (θ.rangeRestrict : (MvPolynomial (Σ k, ι k) ℂ) →+* θ.range) (fun a ha => Subtype.ext (by simpa using hJθ ha))`. Use `ringKrullDim_le_of_surjective g ?_` and prove the remaining obligations. Introduce `x`. Take `⟨a, ha⟩` from `θ.rangeRestrict_surjective x`.
+
+Conclude with `⟨Ideal.Quotient.mk J a, ha⟩`. Establish `: Algebra.FiniteType ℂ θ.range` using `Algebra.FiniteType.of_surjective θ.rangeRestrict θ.rangeRestrict_surjective`. Establish `: Algebra.FiniteType ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ 𝔮) (Ideal.Quotient.mkₐ_surjective ℂ 𝔮)`. Take `⟨sA, hAdim, hAtr⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`. Take `⟨sR, hRdim, hRtr⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := θ.range)`.
+
+Establish `: FaithfulSMul ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)` using `(faithfulSMul_iff_algebraMap_injective ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)).mpr (algebraMap ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)).injective`. Establish `: FaithfulSMul (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `(faithfulSMul_iff_algebraMap_injective (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))).mpr (MvPolynomial.C_injective K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`. Establish `: FaithfulSMul ℂ θ.range` using `(faithfulSMul_iff_algebraMap_injective ℂ θ.range).mpr (algebraMap ℂ θ.range).injective`. Establish `: FaithfulSMul θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `(faithfulSMul_iff_algebraMap_injective θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))).mpr Subtype.val_injective`. Establish `hT1 : trdeg ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) + trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = trdeg ℂ (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `trdeg_add_eq ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)`.
+
+Establish `h1 : ∀ k, Ideal.Quotient.mk 𝔮 (X ⟨k, p k⟩ : (MvPolynomial (Σ k, ι k) ℂ)) = 1`. Introduce `k`. Rewrite using `[← map_one (Ideal.Quotient.mk 𝔮), Ideal.Quotient.eq]`. Conclude with `h𝔮 (Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩))`. Establish `hXk : ∀ k, (X k : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) ∈ θ.range`.
+
+Introduce `k`. Use `(θ.mem_range).mpr ⟨X ⟨k, p k⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [θ, y, aeval_X, h1, map_one, mul_one]`. Establish `hXq : ∀ q, (X q.1 : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) * y q ∈ θ.range` using `fun q => (θ.mem_range).mpr ⟨X q, by simp only [θ, aeval_X]⟩`. Set `AC` to `Subalgebra.algebraicClosure θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))`.
+
+Establish `hRAC : ∀ t ∈ θ.range, t ∈ AC` using `fun t ht => (Subalgebra.mem_algebraicClosure _ _).mpr (isAlgebraic_algebraMap (⟨t, ht⟩ : θ.range))`. Establish `hyAC : ∀ q, y q ∈ AC` using `fun q => (Subalgebra.mem_algebraicClosure _ _).mpr (IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero (X_ne_zero q.1)) ((Subalgebra.mem_algebraicClosure _ _).mp (hRAC _ (hXk q.1))) ((Subalgebra.mem_algebraicClosure _ _).mp (hRAC _ (hXq q))))`. Establish `hCAC : ∀ f : (MvPolynomial (Σ k, ι k) ℂ), C (Ideal.Quotient.mk 𝔮 f) ∈ AC`. Introduce `f`. Use `MvPolynomial.induction_on (motive := fun f => C (Ideal.Quotient.mk 𝔮 f) ∈ AC) f ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `c`. Apply `hRAC` to reduce the goal to its premises. Use `(θ.mem_range).mpr ⟨C c, ?_⟩` and prove the remaining obligations. Simplify using `only [θ, aeval_C, MvPolynomial.algebraMap_apply]`. Both sides reduce to the same expression.
+
+Introduce `f g hf hg`. Rewrite using `[map_add, map_add]`. Conclude with `AC.add_mem hf hg`. Introduce `f q hf`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `AC.mul_mem hf (hyAC q)`. Establish `hall : ∀ t : MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮), t ∈ AC`. Introduce `t`. Use `MvPolynomial.induction_on (motive := fun t => t ∈ AC) t ?_ ?_ ?_` and prove the remaining obligations. Introduce `a`.
+
+Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `hCAC f`. Introduce `f g hf hg`. Conclude with `AC.add_mem hf hg`. Introduce `f k hf`.
+
+Conclude with `AC.mul_mem hf (hRAC _ (hXk k))`. Establish `: Algebra.IsAlgebraic θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `⟨fun t => (Subalgebra.mem_algebraicClosure _ _).mp (hall t)⟩`. Establish `hT2 : trdeg ℂ θ.range + trdeg θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = trdeg ℂ (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮))` using `trdeg_add_eq ℂ θ.range`. Establish `h0 : trdeg θ.range (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = 0` using `trdeg_eq_zero`. Rewrite `hT2` using `[h0, add_zero]`.
+
+Establish `hK : trdeg (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮) (MvPolynomial K (MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔮)) = (Fintype.card K : Cardinal)`. Rewrite using `[MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id, Cardinal.mk_fintype]`. Rewrite `hT1` using `[hK, hAtr, ← hT2, hRtr]`. Establish `hnat : sA + Fintype.card K = sR` using `by exact_mod_cast hT1`. Use `⟨sA, hAdim, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hnat, ← hRdim]`. Conclude with `hdimR`.
+-/
 theorem exists_dim_add_card_le {J : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     (hJ : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal J) (p : (k : K) → ι k)
     (𝔮 : Ideal (MvPolynomial (Σ k, ι k) ℂ)) [𝔮.IsPrime] (h𝔮 : ReciprocityTheory.AnForm.R.chartIdeal J p ≤ 𝔮) :

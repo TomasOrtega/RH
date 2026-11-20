@@ -5,6 +5,17 @@ open Filter Topology
 namespace GlobalTheory
 
 open Filter Topology in
+/- English proof (translation)
+Use `set g : ℝ → ℂ := fun s => F (Function.update y i s) - s • d i t with hg`. Establish `hmem : ∀ s ∈ Metric.ball (t i) δ, dist (Function.update y i s) t < δ`. Introduce `s hs`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `m`.
+
+Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality. Simplify using `using hs`. Rewrite using `[Function.update_of_ne hm]`. Conclude with `lt_of_le_of_lt (dist_le_pi_dist y t m) hy`.
+
+Establish `hderiv : ∀ s ∈ Metric.ball (t i) δ, HasDerivWithinAt g (d i (Function.update y i s) - d i t) (Metric.ball (t i) δ) s`. Introduce `s _`. Establish `h1` using `hF i (Function.update y i s)`. Simplify using `only [Function.update_idem, Function.update_self] at h1`. Establish `h2 : HasDerivAt (fun u : ℝ => u • d i t) ((1 : ℝ) • d i t) s` using `(hasDerivAt_id s).smul_const (d i t)`.
+
+Rewrite `h2` using `[one_smul]`. Conclude with `(h1.sub h2).hasDerivWithinAt`. Establish `hbound : ∀ s ∈ Metric.ball (t i) δ, ‖d i (Function.update y i s) - d i t‖ ≤ ε` using `fun s hs => hgood _ (hmem s hs)`. Establish `key` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le hderiv hbound (convex_ball (t i) δ) (Metric.mem_ball.2 ha) (Metric.mem_ball.2 hb)`. Establish `hdiff : g b - g a = F (Function.update y i b) - F (Function.update y i a) - (b - a) • d i t`.
+
+Simplify using `only [hg, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite `key` using `[hdiff, Real.norm_eq_abs]`. Conclude with `key`.
+-/
 private theorem norm_update_sub_update_sub_smul_le {k : ℕ} (F : (Fin k → ℝ) → ℂ)
     (d : Fin k → (Fin k → ℝ) → ℂ)
     (hF : ∀ i t, HasDerivAt (fun s : ℝ => F (Function.update t i s)) (d i t) (t i))
@@ -43,6 +54,37 @@ private theorem norm_update_sub_update_sub_smul_le {k : ℕ} (F : (Fin k → ℝ
 
 open Filter Topology in
 
+/- English proof (translation)
+Introduce `k F d hF hd t`. Rewrite using `[hasFDerivAt_iff_isLittleO_nhds_zero, Asymptotics.isLittleO_iff]`. Introduce `c hc`. Use `set ε : ℝ := c / (k + 1) with hε`. Establish `hεpos : 0 < ε` using `div_pos hc (by positivity)`.
+
+Establish `hev : ∀ᶠ z in 𝓝 t, ∀ i, dist (d i z) (d i t) < ε` using `eventually_all.2 fun i => (hd i).continuousAt.eventually (Metric.ball_mem_nhds (d i t) hεpos)`. Take `⟨δ, hδ, hδgood⟩` from `Metric.eventually_nhds_iff.1 hev`. Establish `hgood : ∀ i z, dist z t < δ → ‖d i z - d i t‖ ≤ ε` using `fun i z hz => (dist_eq_norm (d i z) (d i t) ▸ (hδgood hz i)).le`. Rewrite using `[Metric.eventually_nhds_iff]`. Use `⟨δ, hδ, fun h hh => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hh` using `[dist_zero_right]`. Use `set p : ℕ → (Fin k → ℝ) := fun j m => if (m : ℕ) < j then t m + h m else t m with hp`. Use `set a : ℕ → ℂ := fun j => if hj : j < k then h ⟨j, hj⟩ • d ⟨j, hj⟩ t else 0 with ha`. Establish `hp0 : p 0 = t`. Use function extensionality and compare the values at `m`.
+
+Simplify using `[hp]`. Establish `hpk : p k = t + h`. Use function extensionality and compare the values at `m`. Simplify using `[hp, m.isLt]`. Establish `hsumL : (∑ i, (ContinuousLinearMap.proj i : (Fin k → ℝ) →L[ℝ] ℝ).smulRight (d i t)) h = ∑ j ∈ Finset.range k, a j`.
+
+Rewrite using `[Finset.sum_range]`. Simplify using `[ha, ContinuousLinearMap.sum_apply]`. Establish `htel : F (t + h) - F t = ∑ j ∈ Finset.range k, (F (p (j + 1)) - F (p j))`. Rewrite using `[Finset.sum_range_sub (fun j => F (p j)) k, hpk, hp0]`. Establish `hpdist : ∀ j, dist (p j) t < δ`.
+
+Introduce `j`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `m`. Simplify using `only [hp]`. Use `split_ifs`.
+
+Rewrite using `[Real.dist_eq, add_sub_cancel_left]`. Conclude with `lt_of_le_of_lt (by simpa using norm_le_pi_norm h m) hh`. Simplify using `using hδ`. Establish `hstep : ∀ j ∈ Finset.range k, ‖F (p (j + 1)) - F (p j) - a j‖ ≤ ε * ‖h‖`. Introduce `j hj`.
+
+Establish `hjk : j < k` using `Finset.mem_range.1 hj`. Use `set i : Fin k := ⟨j, hjk⟩ with hi`. Establish `haj : a j = ((t i + h i) - t i) • d i t`. Simplify using `[ha, hjk, hi]`. Establish `hnext : p (j + 1) = Function.update (p j) i (t i + h i)`.
+
+Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality. Simplify using `[hp, hi]`. Establish `hm' : (m : ℕ) ≠ j` using `fun e => hm (Fin.ext e)`.
+
+Rewrite using `[Function.update_of_ne hm]`. Simplify using `only [hp]`. Establish `: (m : ℕ) < j + 1 ↔ (m : ℕ) < j` using `by omega`. Simplify using `only [this]`. Establish `hcur : p j = Function.update (p j) i (t i)`.
+
+Use `symm`. Rewrite using `[Function.update_eq_self_iff]`. Simplify using `[hp, hi]`. Establish `hx : dist (t i + h i) (t i) < δ`. Rewrite using `[Real.dist_eq, add_sub_cancel_left]`.
+
+Conclude with `lt_of_le_of_lt (by simpa using norm_le_pi_norm h i) hh`. Establish `hmain` using `norm_update_sub_update_sub_smul_le F d hF i t (p j) hδ (hgood i) (hpdist j) (a := t i) (b := t i + h i) (by rw [dist_self]; exact hδ) hx`. Rewrite using `[haj, hnext]`. Use `conv_lhs => rw [hcur]`. Rewrite using `[Function.update_idem]`.
+
+Use `hmain.trans ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[add_sub_cancel_left]`. Simplify using `using norm_le_pi_norm h i`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hsumL, htel, ← Finset.sum_sub_distrib]`. Use `_ ≤ ∑ j ∈ Finset.range k, ‖F (p (j + 1)) - F (p j) - a j‖ := norm_sum_le _ _`. Use `_ ≤ ∑ j ∈ Finset.range k, ε * ‖h‖ := Finset.sum_le_sum hstep`. Use `_ = k * (ε * ‖h‖) := by simp`. Use `_ ≤ c * ‖h‖ := by`.
+
+Rewrite using `[← mul_assoc]`. Use `gcongr`. Rewrite using `[hε, mul_div_assoc']`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem _root_.GlobalTheory.hasFDerivAt_of_continuous_partials :
     ∀ (k : ℕ) (F : (Fin k → ℝ) → ℂ) (d : Fin k → (Fin k → ℝ) → ℂ),
       (∀ i t, HasDerivAt (fun s : ℝ => F (Function.update t i s)) (d i t) (t i)) →

@@ -8,12 +8,18 @@ open IsLocalRing Polynomial
 
 variable {O B X : Type} [CommRing O] [CommRing B] [Algebra O B] [AddCommGroup X] [Module O X]
 
+/- English proof (translation)
+Establish `h1 : δ 1 = 0`. Use `h 1 1` as an intermediate fact. Simplify using `using this`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+-/
 private theorem der_alg {x : B →ₐ[O] O} {δ : B →ₗ[O] X} (h : IsDer x δ) (c : O) : δ (algebraMap O B c) = 0 := by
   have h1 : δ 1 = 0 := by
     have := h 1 1
     simpa using this
   rw [Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem s hs => exact hS s hs`. Consider the case `algebraMap c => exact der_alg h c`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]`. Consider the case `mul a b _ _ ha hb => rw [h, ha, hb, smul_zero, smul_zero, add_zero]`.
+-/
 private theorem der_adjoin {x : B →ₐ[O] O} {δ : B →ₗ[O] X} (h : IsDer x δ) {S : Set B} (hS : ∀ s ∈ S, δ s = 0)
     {a : B} (ha : a ∈ Algebra.adjoin O S) : δ a = 0 := by
   induction ha using Algebra.adjoin_induction with
@@ -22,6 +28,19 @@ private theorem der_adjoin {x : B →ₐ[O] O} {δ : B →ₗ[O] X} (h : IsDer x
   | add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]
   | mul a b _ _ ha hb => rw [h, ha, hb, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `IsNoetherian.noetherian (RingHom.ker x : Ideal B)`. Establish `key : ∀ p ∈ Submodule.span B (s : Set B), δ p ∈ Submodule.span O (δ '' (s : Set B))`. Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem a ha => exact Submodule.subset_span ⟨a, ha, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a ha0 ha`. Rewrite `ha0` using `[hs]`.
+
+Establish `: x a = 0` using `ha0`. Rewrite using `[smul_eq_mul, h, this, zero_smul, add_zero]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `: LinearMap.range δ = Submodule.span O (δ '' (s : Set B))`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨b, rfl⟩`. Establish `hb : b - algebraMap O B (x b) ∈ Submodule.span B (s : Set B)`. Rewrite using `[hs]`. Use `show x _ = 0`. Simplify using the standard rewrite rules.
+
+Use `key _ hb` as an intermediate fact. Rewrite `this` using `[map_sub, der_alg h, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, _, rfl⟩`. Conclude with `⟨b, rfl⟩`.
+
+Rewrite using `[this]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`.
+-/
 private theorem der_fg [IsNoetherianRing B] {x : B →ₐ[O] O} {δ : B →ₗ[O] X} (h : IsDer x δ) :
     (LinearMap.range δ).FG := by
   obtain ⟨s, hs⟩ := IsNoetherian.noetherian (RingHom.ker x : Ideal B)
@@ -49,6 +68,17 @@ private theorem der_fg [IsNoetherianRing B] {x : B →ₐ[O] O} {δ : B →ₗ[O
   rw [this]
   exact Submodule.fg_span (s.finite_toSet.image _)
 
+/- English proof (translation)
+Establish `hx : ∀ a ∈ maximalIdeal B, x a ∈ maximalIdeal O`. Introduce `a ha hu`. Establish `h1 : a - algebraMap O B (x a) ∈ maximalIdeal B`. Introduce `hu'`. Use `hu'.map x` as an intermediate fact.
+
+Simplify using `at this`. Establish `h2 : algebraMap O B (x a) ∈ maximalIdeal B` using `by simpa using Ideal.sub_mem _ ha h1`. Conclude with `h2 (hu.map _)`. Establish `hle : LinearMap.range δ ≤ maximalIdeal O • LinearMap.range δ`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Take `⟨a, ha, hb⟩` from `hgen b`. Establish `e : δ b = δ (b - a)` using `by rw [map_sub, der_adjoin h hS ha, sub_zero]`. Rewrite using `[e]`. Rewrite `hb` using `[pow_two]`. Use `Submodule.mul_induction_on hb (fun m hm k hk => ?_) (fun m k hm hk => ?_)` and prove the remaining obligations.
+
+Rewrite using `[h]`. Conclude with `add_mem (Submodule.smul_mem_smul (hx m hm) ⟨k, rfl⟩) (Submodule.smul_mem_smul (hx k hk) ⟨m, rfl⟩)`. Rewrite using `[map_add]`. Conclude with `add_mem hm hk`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal O) _ (der_fg h) hle (maximalIdeal_le_jacobson _)` as an intermediate fact.
+
+Establish `hb : δ b ∈ LinearMap.range δ` using `⟨b, rfl⟩`. Rewrite `hb` using `[this]`. Simplify using `using hb`.
+-/
 private theorem der_zero [IsNoetherianRing B] [IsLocalRing O] [IsLocalRing B] [IsLocalHom (algebraMap O B)]
     {x : B →ₐ[O] O} {δ : B →ₗ[O] X} (h : IsDer x δ) {S : Set B} (hS : ∀ s ∈ S, δ s = 0)
     (hgen : ∀ b : B, ∃ a ∈ Algebra.adjoin O S, b - a ∈ maximalIdeal B ^ 2) (b : B) : δ b = 0 := by
@@ -76,6 +106,13 @@ private theorem der_zero [IsNoetherianRing B] [IsLocalRing O] [IsLocalRing B] [I
   rw [this] at hb
   simpa using hb
 
+/- English proof (translation)
+Take `⟨g, hg, hd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd q hq 0`. Use `⟨aeval a g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_algHom_apply, hx]`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+
+Rewrite using `[dvd_iff_isRoot]`. Simplify `h0` using `[coe_aeval_eq_eval]`. Use `set k := rootMultiplicity 0 q`. Establish `hgA : aeval a g ∈ A` using `(Algebra.adjoin_le (Set.singleton_subset_iff.2 ha)) (aeval_mem_adjoin_singleton O a)`. Apply `hred _ (A.mul_mem hgA ha) (k + 1)` to reduce the goal to its premises.
+
+Establish `e : (aeval a g * a) ^ (k + 1) = (aeval a g ^ k * a) * aeval a q` using `by conv_rhs => rw [hg]`. Simplify using `only [map_mul, map_pow, map_sub, aeval_X, aeval_C, map_zero, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.mul_mem_left _ hI`.
+-/
 private theorem kill_red [IsDomain O] (x : B →ₐ[O] O) (I : Ideal B) (A : Subalgebra O B)
     (hred : ∀ t ∈ A, ∀ k : ℕ, t ^ k ∈ I → t ∈ I) {a : B} (ha : a ∈ A) (hx : x a = 0)
     (q : O[X]) (hq : q ≠ 0) (hI : aeval a q ∈ I) : ∃ s : B, x s ≠ 0 ∧ s * a ∈ I := by
@@ -96,6 +133,33 @@ private theorem kill_red [IsDomain O] (x : B →ₐ[O] O) (I : Ideal B) (A : Sub
     rw [e]
     exact I.mul_mem_left _ hI
 
+/- English proof (translation)
+Use `set P : Ideal B := RingHom.ker x with hP`. Take `⟨s, hs⟩` from `IsNoetherian.noetherian P`. Establish `h' : ∀ a : B, ∃ c : O, c ≠ 0 ∧ (a ∈ P → c • a ∈ P * P ⊔ I)`. Introduce `a`. Distinguish the cases in `ha : x a = 0`.
+
+Take `⟨c, h1, h2⟩` from `h a ha`. Conclude with `⟨c, h1, fun _ => h2⟩`. Conclude with `⟨1, one_ne_zero, fun h => absurd h ha⟩`. Use `choose f hf0 hf using h'`. Use `set c : O := ∏ a ∈ s, f a`.
+
+Establish `hc : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hf0 a`. Establish `hcP : ∀ a ∈ P, algebraMap O B c * a ∈ P * P ⊔ I`. Introduce `a ha`. Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Establish `haP : a ∈ P` using `hs ▸ Submodule.subset_span ha`. Take `⟨d, hd⟩ : f a ∣ c` from `Finset.dvd_prod_of_mem f ha`. Rewrite using `[hd, mul_comm (f a), map_mul, mul_assoc, ← Algebra.smul_def (f a)]`. Conclude with `Ideal.mul_mem_left _ _ (hf a haP)`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => rw [smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ ha`.
+
+Set `N : Submodule B (B ⧸ I)` to `Submodule.map (Submodule.mkQ I) P`. Set `φ : Module.End B N` to `algebraMap B _ (algebraMap O B c)`. Establish `hφ : LinearMap.range φ ≤ P • ⊤`. Introduce and unpack `_ ⟨⟨_, a, ha, rfl⟩, rfl⟩`. Take `⟨y, hy, z, hz, e⟩` from `Submodule.mem_sup.1 (hcP a ha)`.
+
+Rewrite using `[Submodule.mem_smul_top_iff]`. Establish `: ((φ ⟨_, a, ha, rfl⟩ : N) : B ⧸ I) = Submodule.mkQ I y` using `by show algebraMap O B c • Submodule.mkQ I a = _`. Rewrite using `[← map_smul, smul_eq_mul, ← e, map_add]`. Establish `: Submodule.mkQ I z = 0` using `(Submodule.Quotient.mk_eq_zero I).2 hz`. Rewrite using `[this, add_zero]`.
+
+Rewrite using `[this]`. Use `Submodule.mul_induction_on hy (fun m hm k hk => ?_) (fun m k hm hk => ?_)` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, map_smul]`. Conclude with `Submodule.smul_mem_smul hm ⟨k, hk, rfl⟩`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hm hk`. Take `⟨p, hp, -, hco, hev⟩` from `LinearMap.exists_monic_and_coeff_mem_pow_and_aeval_eq_zero_of_range_le_smul B φ P hφ`. Use `⟨p.eval (algebraMap O B c), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `e : p.map (x : B →+* O) = Polynomial.X ^ p.natDegree`. Use extensionality with `k`.
+
+Rewrite using `[coeff_map, coeff_X_pow]`. Break down `lt_trichotomy k p.natDegree with hk | hk | hk` into its components or cases. Rewrite using `[if_neg hk.ne]`. Conclude with `Ideal.pow_le_self (Nat.sub_ne_zero_of_lt hk) (hco k)`. Rewrite using `[if_pos hk, hk, hp.coeff_natDegree, map_one]`.
+
+Rewrite using `[if_neg hk.ne', coeff_eq_zero_of_natDegree_lt hk, map_zero]`. Establish `e2 : x (p.eval (algebraMap O B c)) = c ^ p.natDegree`. Use `(eval₂_at_apply (x : B →+* O) (algebraMap O B c) (p := p)).symm` as an intermediate fact. Rewrite `this` using `[eval₂_eq_eval_map, e]`. Simplify using `using this`.
+
+Rewrite using `[e2]`. Conclude with `pow_ne_zero _ hc`. Use `congrArg (fun ψ : Module.End B N => ((ψ ⟨_, a, ha, rfl⟩ : N) : B ⧸ I)) hev` as an intermediate fact. Simplify using `only [φ, aeval_algebraMap_apply, coe_aeval_eq_eval] at this`. Establish `h2 : p.eval (algebraMap O B c) • Submodule.mkQ I a = 0` using `this`.
+
+Rewrite `h2` using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero I).1 h2`.
+-/
 private theorem det_trick [IsDomain O] [IsNoetherianRing B] (x : B →ₐ[O] O) (I : Ideal B)
     (h : ∀ a, x a = 0 → ∃ c : O, c ≠ 0 ∧ c • a ∈ RingHom.ker x * RingHom.ker x ⊔ I) :
     ∃ t : B, x t ≠ 0 ∧ ∀ a, x a = 0 → t * a ∈ I := by
@@ -161,6 +225,27 @@ private theorem det_trick [IsDomain O] [IsNoetherianRing B] (x : B →ₐ[O] O) 
     rw [← map_smul] at h2
     exact (Submodule.Quotient.mk_eq_zero I).1 h2
 
+/- English proof (translation)
+Apply `det_trick x I` to reduce the goal to its premises. Set `K : Ideal B` to `RingHom.ker x * RingHom.ker x ⊔ I`. Set `N : Submodule O B` to `{ carrier := {a | ∃ c : O, c ≠ 0 ∧ c • a ∈ K} add_mem' := by`. Introduce and unpack `a b ⟨c, hc, ha⟩ ⟨d, hd, hb⟩`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_of_tower_mem _ _ ha`. Rewrite using `[mul_smul]`.
+
+Conclude with `Submodule.smul_of_tower_mem _ _ hb`. Use the proof step `zero_mem' := ⟨1, one_ne_zero, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r a ⟨c, hc, ha⟩`. Conclude with `⟨c, hc, by rw [smul_comm]; exact Submodule.smul_of_tower_mem _ _ ha⟩ }`.
+
+Establish `hKN : ∀ a ∈ K, a ∈ N` using `fun a ha => ⟨1, one_ne_zero, by simpa using ha⟩`. Set `δ : B →ₗ[O] B ⧸ N` to `N.mkQ ∘ₗ (LinearMap.id - (Algebra.linearMap O B) ∘ₗ x.toLinearMap)`. Establish `hδ : ∀ b, δ b = N.mkQ (b - algebraMap O B (x b))` using `fun b => rfl`. Establish `hδ0 : ∀ b, x b = 0 → (δ b = 0 ↔ b ∈ N)`. Introduce `b hb`.
+
+Rewrite using `[hδ, hb, map_zero, sub_zero]`. Conclude with `Submodule.Quotient.mk_eq_zero N`. Establish `hk : ∀ b, x (b - algebraMap O B (x b)) = 0` using `fun b => by simp`. Establish `hD : IsDer x δ`. Introduce `a b`.
+
+Rewrite using `[hδ, hδ, hδ, ← map_smul, ← map_smul, ← map_add]`. Apply `(Submodule.Quotient.eq N).2` to reduce the goal to its premises. Apply `hKN` to reduce the goal to its premises. Establish `e : a * b - algebraMap O B (x (a * b)) - (x a • (b - algebraMap O B (x b)) + x b • (a - algebraMap O B (x a))) = (a - algebraMap O B (x a)) * (b - algebraMap O B (x b))`. Simplify using `only [Algebra.smul_def, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mem_sup_left (Ideal.mul_mem_mul (hk a) (hk b))`. Establish `htf : ∀ (c : O) (y : B ⧸ N), c ≠ 0 → c • y = 0 → y = 0`. Introduce `c y hc hy`.
+
+Take `⟨a, rfl⟩` from `N.mkQ_surjective y`. Rewrite `hy` using `[← map_smul]`. Take `⟨d, hd, h⟩` from `(Submodule.Quotient.mk_eq_zero N).1 hy`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 ⟨d * c, mul_ne_zero hd hc, by rwa [mul_smul]⟩`. Establish `h0 : ∀ s ∈ S0, δ s = 0`.
+
+Introduce `s hs`. Establish `hsA : s - algebraMap O B (x s) ∈ Algebra.adjoin O S0` using `sub_mem (Algebra.subset_adjoin hs) (Subalgebra.algebraMap_mem _ _)`. Take `⟨q, hq, hqI⟩` from `hint (s - algebraMap O B (x s))`. Take `⟨t, ht, hta⟩` from `kill_red x I _ hred hsA (hk s) q hq hqI`. Establish `h1 : δ (t * (s - algebraMap O B (x s))) = 0` using `(hδ0 _ (by rw [map_mul, hk, mul_zero])).2 (hKN _ (Ideal.mem_sup_right hta))`.
+
+Rewrite `h1` using `[hD, hk, zero_smul, add_zero, map_sub, der_alg hD, sub_zero]`. Conclude with `htf _ _ ht h1`. Introduce `a ha`. Conclude with `(hδ0 a ha).1 (der_zero hD (hder _ δ hD htf h0) hgen a)`.
+-/
 private theorem core [IsDomain O] [IsLocalRing O] [IsNoetherianRing B] [IsLocalRing B] [IsLocalHom (algebraMap O B)]
     (x : B →ₐ[O] O) (I : Ideal B) (S0 S : Set B)
     (hint : ∀ a : B, ∃ q : O[X], q ≠ 0 ∧ aeval a q ∈ I)
@@ -221,6 +306,17 @@ private theorem core [IsDomain O] [IsLocalRing O] [IsNoetherianRing B] [IsLocalR
   intro a ha
   exact (hδ0 a ha).1 (der_zero hD (hder _ δ hD htf h0) hgen a)
 
+/- English proof (translation)
+Set `φ : Module.End Λ M` to `{ toFun := fun m => a • m map_add' := fun m k => smul_add _ _ _ map_smul' := fun r m => by simp only [RingHom.id_apply, hl]; rw [smul_comm] }`. Take `⟨p, hp, hev⟩` from `LinearMap.exists_monic_and_aeval_eq_zero Λ φ`. Establish `hpow : ∀ (k : ℕ) (m : M), (φ ^ k) m = a ^ k • m`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih => intro m`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ih, mul_smul]`. Both sides reduce to the same expression. Establish `key : ∀ (p : Λ[X]) (m : M), aeval φ p m - aeval a (p.map (ξ : Λ →+* O)) • m ∈ (RingHom.ker ξ • ⊤ : Submodule Λ M)`.
+
+Introduce `p m`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[Polynomial.map_add, map_add, map_add, add_smul, LinearMap.add_apply, add_sub_add_comm]`. Conclude with `add_mem hp hq`.
+
+Consider the case `monomial k c`. Establish `e : aeval φ (monomial k c) m - aeval a ((monomial k c).map (ξ : Λ →+* O)) • m = (c - algebraMap O Λ (ξ c)) • (a ^ k • m)`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, Module.End.mul_apply, hpow, sub_smul, hl (algebraMap O Λ (ξ c)), AlgHom.commutes, mul_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem_smul (by show ξ _ = 0; simp) trivial`. Use `⟨p.map (ξ : Λ →+* O), (hp.map _).ne_zero, fun m => ?_⟩` and prove the remaining obligations. Use `key p m` as an intermediate fact. Rewrite `this` using `[hev, LinearMap.zero_apply, zero_sub]`. Conclude with `neg_mem_iff.1 this`.
+-/
 private theorem integ {Λ M : Type} [CommRing Λ] [Algebra O Λ] [Nontrivial O] [AddCommGroup M] [Module B M] [Module Λ M]
     [Module.Finite Λ M] (lam : Λ →ₐ[O] B) (hl : ∀ (a : Λ) (m : M), a • m = lam a • m) (ξ : Λ →ₐ[O] O) (a : B) :
     ∃ q : O[X], q ≠ 0 ∧ ∀ m : M, aeval a q • m ∈ (RingHom.ker ξ • ⊤ : Submodule Λ M) := by
@@ -257,6 +353,11 @@ private theorem integ {Λ M : Type} [CommRing Λ] [Algebra O Λ] [Nontrivial O] 
 end UpperTheory.V.Th.EtaleDerivations
 
 open UpperTheory.V.Th.EtaleDerivations UpperTheory.V.Pa UpperTheory.V.W UpperTheory.V.Alg in
+/- English proof (translation)
+Introduce `l _ L G0 n O _ _ _ _ _ r B _ _ _ u J D b y x hn hmap hgen hctrl`. Set `I : Ideal B` to `{ carrier := {a | ∀ m : b.M, a • m ∈ wtSub b x} add_mem' := fun ha hb m => by rw [add_smul]; exact add_mem (ha m) (hb m) zero_mem' := fun m => by rw [zero_smul]; exact zero_mem _ smul_mem' := fun c a ha m => by rw [smul_eq_mul, mul_comm, mul_smul]; exact ha _ }`. Take `⟨c, hc, hψ⟩` from `trPsi l L G0 n O y hn`. Use `haveI := b.fin`. Use `core x I {a : B | ∃ i g, a = u.D.lam i (MonoidAlgebra.single g 1)} (pairVals u) (fun a => integ b.lam b.smul_lam (x.comp b.lam) a) hctrl (hgen 2) ?_` and prove the remaining obligations.
+
+Introduce `Y _ _ δ hδ htf h0 s hs`. Break down `hs with hs | ⟨v, i, g, rfl⟩` into its components or cases. Conclude with `h0 s hs`. Conclude with `htf c _ hc (hψ G0 (Glob.Hom.refl G0) r B u x hmap Y δ hδ (fun g => h0 _ ⟨1, g, rfl⟩) v i g)`.
+-/
 theorem UpperTheory.V.Th.etOf :
     EtOf := by
   intro l _ L G0 n O _ _ _ _ _ r B _ _ _ u J D b y x hn hmap hgen hctrl

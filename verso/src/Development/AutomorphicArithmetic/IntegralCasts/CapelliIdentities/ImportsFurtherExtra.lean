@@ -1,6 +1,35 @@
 import Mathlib
 
 open MeasureTheory in
+/- English proof (translation)
+Introduce `K _ _ _ _ μ _ _ S h1 hmul hstar hsep f hf`. Establish `hint : ∀ g : C(K, ℂ), Integrable (fun x => g x) μ` using `fun g => (BoundedContinuousFunction.mkOfCompact g).integrable μ`. Establish `hint' : ∀ a : C(K, ℂ), Integrable (fun x => a x * f x) μ` using `fun a => hint (a * f)`. Set `L0 : C(K, ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun a => ∫ x, a x * f x ∂μ map_add' := fun a b => by`. Simplify using `only [ContinuousMap.add_apply, add_mul]`.
+
+Conclude with `integral_add (hint' a) (hint' b)`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul, mul_assoc, RingHom.id_apply]`. Conclude with `integral_const_mul c _ }`. Establish `hL : Continuous L0`.
+
+Use `(L0.mkContinuous (‖f‖ * μ.real Set.univ) fun a => ?_).continuous` and prove the remaining obligations. Establish `: ‖∫ x, a x * f x ∂μ‖ ≤ (‖a‖ * ‖f‖) * μ.real Set.univ`. Use `norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (a.norm_coe_le_norm x) (f.norm_coe_le_norm x) (norm_nonneg _) (norm_nonneg _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hspan : ∀ a ∈ StarAlgebra.adjoin ℂ S, a ∈ Submodule.span ℂ S`. Introduce `a ha`. Proceed by induction on `ha using StarAlgebra.adjoin_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`.
+
+Consider the case `algebraMap r`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy`.
+
+Establish `h` using `Submodule.mul_mem_mul hx hy`. Rewrite `h` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, v, hv, rfl⟩`. Conclude with `hmul u hu v hv`.
+
+Consider the case `star x _ hx => clear * - hx hstar`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (hstar y hy)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [star_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [star_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Establish `hker : Submodule.span ℂ S ≤ LinearMap.ker L0` using `Submodule.span_le.2 fun a ha => hf a ha`. Establish `hsp : (StarAlgebra.adjoin ℂ S).SeparatesPoints`.
+
+Introduce `x y hxy`. Take `⟨a, ha, hne⟩` from `hsep x y hxy`. Conclude with `⟨a, ⟨a, StarAlgebra.subset_adjoin ℂ S ha, rfl⟩, hne⟩`. Establish `htop` using `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ hsp`. Establish `hall : ∀ a : C(K, ℂ), L0 a = 0`.
+
+Introduce `a`. Establish `ha : a ∈ closure (StarAlgebra.adjoin ℂ S : Set C(K, ℂ))`. Establish `: a ∈ (StarAlgebra.adjoin ℂ S).topologicalClosure`. Rewrite using `[htop]`. Conclude with `StarSubalgebra.mem_top`.
+
+Conclude with `this`. Conclude with `closure_minimal (t := {b | L0 b = 0}) (fun b hb => hker (hspan b hb)) (isClosed_eq hL continuous_const) ha`. Establish `h0 : ∫ x, ‖f x‖ ^ 2 ∂μ = 0`. Establish `h` using `hall (star f)`. Express the relevant statement in the definitionally equal form `∫ x, (star f) x * f x ∂μ = 0 at h`.
+
+Establish `e : (fun x => (star f) x * f x) = fun x => ((‖f x‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Simplify using `only [ContinuousMap.star_apply, RCLike.star_def]`. Rewrite using `[Complex.conj_mul']`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[e, integral_complex_ofReal]`. Conclude with `h` after adjusting the coercions. Establish `hc : Continuous fun x => ‖f x‖ ^ 2` using `by fun_prop`. Establish `hi : Integrable (fun x => ‖f x‖ ^ 2) μ` using `(BoundedContinuousFunction.mkOfCompact ⟨_, hc⟩).integrable μ`.
+
+Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => by positivity) hi).1 h0`. Establish `heq` using `(hc.ae_eq_iff_eq μ continuous_zero).1 hae`. Use extensionality with `x`. Simplify using `using congrFun heq x`.
+-/
 theorem UpperTheory.Reformulated.B.Qo7.eq_zero_of_orth :
     ∀ {K : Type} [inst : TopologicalSpace K] [CompactSpace K]
     [inst_2 : MeasurableSpace K] [BorelSpace K] (μ : MeasureTheory.Measure K) [MeasureTheory.IsFiniteMeasure μ]

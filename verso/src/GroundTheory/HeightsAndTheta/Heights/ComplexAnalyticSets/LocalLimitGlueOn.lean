@@ -6,6 +6,25 @@ namespace GroundTheory.Heights₂.Heights
 open Filter Topology Set Function
 open scoped ContDiff Manifold
 
+/- English proof (translation)
+Use `choose N hN hNf using hloc`. Take `⟨ρ, hρ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, E) (isClosed_tsupport f) (fun p : tsupport f => interior (N p.1 p.2)) (fun _ => isOpen_interior) (fun x hx => mem_iUnion.2 ⟨⟨x, hx⟩, mem_interior_iff_mem_nhds.2 (hN x hx)⟩)`. Take `⟨g, hg⟩ : ∃ g : tsupport f → E → ℝ, g = fun i x => ρ i x * f x` from `⟨_, rfl⟩`. Establish `hgs : ∀ i, ContDiff ℝ ∞ (g i)` using `fun i => by`. Rewrite using `[hg]`.
+
+Conclude with `(ρ i).contMDiff.contDiff.mul hf`. Establish `hgc : ∀ i, HasCompactSupport (g i)` using `fun i => by`. Rewrite using `[hg]`. Conclude with `hfc.mul_left`. Establish `hgN : ∀ i, tsupport (g i) ⊆ N i.1 i.2` using `fun i => by`.
+
+Rewrite using `[hg]`. Conclude with `tsupport_mul_subset_left.trans ((hρ i).trans interior_subset)`. Establish `hfin : {i | (support (ρ i) ∩ tsupport f).Nonempty}.Finite` using `ρ.locallyFinite.finite_nonempty_inter_compact hfc`. Establish `hsum : f = ∑ i ∈ hfin.toFinset, g i`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Finset.sum_apply, hg]`. Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hx : x ∈ tsupport f`. Rewrite using `[← finsum_eq_sum_of_support_subset (fun i => ρ i x), ρ.sum_eq_one hx, one_mul]`. Introduce `i hi`.
+
+Simplify using `only [Set.Finite.coe_toFinset, mem_ofPred_eq]`. Conclude with `⟨x, hi, hx⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, mul_zero]`. Establish `hT0 : ∀ᶠ ε in l, T ε 0 = 0` using `by filter_upwards [hT 0 0 contDiff_const HasCompactSupport.zero contDiff_const HasCompactSupport.zero] with ε h`. Simplify using `using h`.
+
+Establish `hL0 : L 0 = 0`. Simplify using `using hL 0 0 contDiff_const HasCompactSupport.zero contDiff_const HasCompactSupport.zero`. Establish `key : ∀ s : Finset (tsupport f), ContDiff ℝ ∞ (∑ i ∈ s, g i) ∧ HasCompactSupport (∑ i ∈ s, g i) ∧ (∀ᶠ ε in l, T ε (∑ i ∈ s, g i) = ∑ i ∈ s, T ε (g i)) ∧ L (∑ i ∈ s, g i) = ∑ i ∈ s, L (g i)` using `by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨contDiff_const, HasCompactSupport.zero, hT0, hL0⟩`. Consider the case `insert a s ha ih`. Take `⟨h1, h2, h3, h4⟩` from `ih`.
+
+Simplify using `only [Finset.sum_insert ha]`. Use `⟨(hgs a).add h1, (hgc a).add h2, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hT (g a) _ (hgs a) (hgc a) h1 h2, h3] with ε e1 e2`. Rewrite using `[e1, e2]`. Rewrite using `[hL (g a) _ (hgs a) (hgc a) h1 h2, h4]`.
+
+Take `⟨-, -, hTs, hLs⟩` from `key hfin.toFinset`. Rewrite using `[hsum, hLs]`. Conclude with `(tendsto_finsetSum _ fun i _ => hNf i.1 i.2 (g i) (hgs i) (hgc i) (hgN i)).congr' (hTs.mono fun ε h => h.symm)`.
+-/
 theorem tendsto_of_forall_local_on_tsupport {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {ι : Type*} {l : Filter ι} (T : ι → (E → ℝ) → ℝ) (L : (E → ℝ) → ℝ)
     (hT : ∀ f g : E → ℝ, ContDiff ℝ ∞ f → HasCompactSupport f → ContDiff ℝ ∞ g →

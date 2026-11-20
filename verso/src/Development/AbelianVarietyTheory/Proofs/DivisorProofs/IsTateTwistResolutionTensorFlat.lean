@@ -16,15 +16,31 @@ namespace GlobalTheory.EtC
 section
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.hom z) (ψ.hom.naturality g.op)`.
+-/
 theorem sec_map_res' {F G : Shv R} (ψ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (z : Sec F U) :
     Sec.map ψ (Sec.res g z) = Sec.res g (Sec.map ψ z) :=
   congrArg (fun f => f.hom z) (ψ.hom.naturality g.op)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_map_comp' {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_map_id' {F : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (𝟙 F) x = x := rfl
 
+/- English proof (translation)
+Take `⟨P, φ, hs, hi, hf⟩` from `h`. Use `⟨P, φ ≫ i.hom.hom, ?_, ?_, hf⟩` and prove the remaining obligations. Introduce `U y`. Take `⟨S, hS, hP⟩` from `hs U (Sec.map i.inv y)`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hP V g hg`. Use `⟨x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map i.hom ((φ.app (op V)).hom x) = Sec.res g y`. Rewrite using `[hx, sec_map_res', ← sec_map_comp', i.inv_hom_id, sec_map_id']`. Introduce `U x hx`.
+
+Use `hi U x ?_` and prove the remaining obligations. Establish `h1 : Sec.map i.inv (Sec.map i.hom ((φ.app (op U)).hom x)) = Sec.map i.inv (0 : Sec N U)` using `congrArg (Sec.map i.inv) hx`. Rewrite `h1` using `[← sec_map_comp', i.hom_inv_id, sec_map_id']`. Conclude with `h1.trans (map_zero _)`.
+-/
 theorem flatS_of_iso {M N : Shv R} (i : M ≅ N) (h : FlatS M) : FlatS N := by
   obtain ⟨P, φ, hs, hi, hf⟩ := h
   refine ⟨P, φ ≫ i.hom.hom, ?_, ?_, hf⟩
@@ -42,6 +58,11 @@ theorem flatS_of_iso {M N : Shv R} (i : M ≅ N) (h : FlatS M) : FlatS N := by
     rw [← sec_map_comp', i.hom_inv_id, sec_map_id'] at h1
     exact h1.trans (map_zero _)
 
+/- English proof (translation)
+Establish `hsub : ∀ U : Scheme.{0}, Subsingleton (Sec M U)` using `fun U => by`. Establish `h1 : IsZero M.obj` using `(sheafToPresheaf _ _).map_isZero h`. Conclude with `ModuleCat.subsingleton_of_isZero (((evaluation _ _).obj (op U)).map_isZero h1)`. Use `⟨M.obj, 𝟙 _, fun U y => ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => ⟨Sec.res g y, rfl⟩⟩, fun U x _ => ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => (hsub V).elim _ _⟩, fun U _ => ?_⟩` and prove the remaining obligations. Use `haveI := hsub U`.
+
+Express the relevant statement in the definitionally equal form `Module.Flat _ (Sec M U)`. Use `infer_instance`.
+-/
 theorem flatS_of_isZero {M : Shv R} (h : IsZero M) : FlatS M := by
   have hsub : ∀ U : Scheme.{0}, Subsingleton (Sec M U) := fun U => by
     have h1 : IsZero M.obj := (sheafToPresheaf _ _).map_isZero h
@@ -52,6 +73,9 @@ theorem flatS_of_isZero {M : Shv R} (h : IsZero M) : FlatS M := by
   change Module.Flat _ (Sec M U)
   infer_instance
 
+/- English proof (translation)
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Conclude with `flatS_of_iso (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).symm h`. Conclude with `flatS_of_isZero (HomologicalComplex.isZero_single_obj_X _ _ _ _ ht)`.
+-/
 theorem flatS_sgl {F : Shv R} (h : FlatS F) (t : ℤ) : FlatS ((sgl F).X t) := by
   by_cases ht : t = 0
   · subst ht
@@ -60,6 +84,19 @@ theorem flatS_sgl {F : Shv R} (h : FlatS F) (t : ℤ) : FlatS ((sgl F).X t) := b
 
 end
 
+/- English proof (translation)
+Introduce `q _ i j k hk I J T e e' hI hJ hflat τ hτ`. Take `⟨hIge, εI, hεI, heI⟩` from `hI`. Take `⟨hJge, εJ, hεJ, heJ⟩` from `hJ`. Take `⟨μ, hμ, hμgen⟩` from `GlobalTheory.T.tateTwist_mul_isTensorPairing q i j k hk`. Take `⟨T₁, τ₁, hτ₁⟩` from `GlobalTheory.T.exists_isTensor_etaleSheafComplexPairing (ZMod q) (sgl (tw q i)) J`.
+
+Establish `hTge : T.IsStrictlyGE 0` using `(GlobalTheory.T.isTensor_universal_property (ZMod q) τ hτ).2.1 hIge hJge`. Take `⟨u₁, hu₁, -⟩` from `(GlobalTheory.T.isTensor_universal_property (ZMod q) μ hμ).1 τ₁ (𝟙 _) εJ`. Take `⟨u₂, hu₂, -⟩` from `(GlobalTheory.T.isTensor_universal_property (ZMod q) τ₁ hτ₁).1 τ εI (𝟙 J)`. Take `⟨ν, hμν, -, hνt⟩` from `GlobalTheory.T.exists_isFlip_sheafComplexPairing (ZMod q) μ`. Take `⟨ν₁, hν₁, -, hν₁t⟩` from `GlobalTheory.T.exists_isFlip_sheafComplexPairing (ZMod q) τ₁`.
+
+Establish `hflati : ∀ t, FlatS ((sgl (tw q i)).X t)` using `flatS_sgl (flatS_tw q i)`. Establish `hid : ∀ {K : Cx (ZMod q)} (t : ℤ) {U : Scheme.{0}} (x : Sec (K.X t) U), Sec.map (HomologicalComplex.Hom.f (𝟙 K) t) x = x` using `fun _ _ _ => rfl`. Use `haveI := hIge`. Use `haveI := hJge`. Use `haveI := hεI`.
+
+Use `haveI := hεJ`. Establish `hc : ν.Compat ν₁ εJ (𝟙 _) u₁`. Introduce `U s t w h a b`. Rewrite using `[hμν U t s w (by omega) b a, hid, hν₁ U t s w (by omega) b (Sec.map (εJ.f s) a), Units.smul_def, Units.smul_def]`. Establish `h1` using `hu₁ U t s w (by omega) b a`.
+
+Rewrite `h1` using `[hid]`. Rewrite using `[← h1]`. Conclude with `map_zsmul ((u₁.f w).hom.app (op U)).hom _ _`. Establish `hq1 : QuasiIso u₁` using `GlobalTheory.T.tensor_flat_complex_preserves_quasiIso (ZMod q) ν ν₁ (hνt hμ) (hν₁t hτ₁) hflati εJ u₁ hc`. Establish `hq2 : QuasiIso u₂` using `GlobalTheory.T.tensor_flat_complex_preserves_quasiIso (ZMod q) τ₁ τ hτ₁ hτ hflat εI u₂ hu₂`.
+
+Use `⟨hTge, u₁ ≫ u₂, quasiIso_comp (hφ := hq1) (hφ' := hq2) _ _, fun U ζ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hμgen U ζ]`. Express the relevant statement in the definitionally equal form `Sec.map (u₂.f 0) (Sec.map (u₁.f 0) _) = _`. Rewrite using `[hu₁ U 0 0 0 (add_zero 0), hu₂ U 0 0 0 (add_zero 0), hid, hid, heI, heJ]`.
+-/
 theorem isTwRes_tensor : ∀ (q : ℕ) [NeZero q] (i j k : ℤ), i + j = k → ∀ {I J T : Cx (ZMod q)} (e : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec (I.X 0) U) (e' : ∀ U : Scheme.{0}, Prim q Γ(U, ⊤) → Sec (J.X 0) U), IsTwRes q i I e → IsTwRes q j J e' → (∀ t, FlatS (J.X t)) → ∀ τ : Pair I J T, τ.IsTensor → IsTwRes q k T fun U ζ => τ.mul U 0 0 0 (add_zero 0) (e U ζ) (e' U ζ) := by
   intro q _ i j k hk I J T e e' hI hJ hflat τ hτ
   obtain ⟨hIge, εI, hεI, heI⟩ := hI

@@ -37,6 +37,13 @@ open GlobalTheory.LiftRows
 
 namespace GlobalTheory.PosShort
 
+/- English proof (translation)
+Introduce `hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD hGreen eps heps`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.LiftRows.goodForms_definite_exist (GlobalTheory.DefFree.goodVectorsDefinite hGreen) eps heps`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s L hP hLe hLx hSz hOk hCh hEx hHost hcc hQ hGT hTR hPG hIB hRT`. Establish `hGiven` using `GlobalTheory.GivenOfTop.given_of_top R F hOk hCh hEx hHost ⟨L, ⟨hP⟩⟩ hcc hQ hGT`.
+
+Take `⟨hCore, hSF, -, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hCh hEx`. Establish `hFix` using `GlobalTheory.FixAllGood.fixAll_of_good R F hCh hEx`. Take `⟨-, hInj⟩` from `GlobalTheory.T.thetaLift_adjoint_scalarFormula_injective hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD R.toRealDat F.lv2 hGiven hcc hCh.allPl hFix R.SF hSF`. Establish `hW` using `hx₀ D L hP hLe hLx hSz R.toRealDat F.lv2 hGiven`. Establish `hRows` using `GlobalTheory.RowsNeProof.rowsNe R.toRealDat F.lv2 s hOk.1 hCore (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCusp R.toRealDat) R.SF hSF hTR hW`.
+
+Conclude with `GlobalTheory.RowsPosRed.pos_of_rows R F hOk hCh hEx hInj hRows hPG hIB hRT`.
+-/
 theorem pos_short : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilSiegelFormulaUnitary → (∀ D' : Formalism.BasicNotions.D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D') → GlobalTheory.Published.SiegelEisensteinContinuation → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.GreenCuspidal → ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, ∀ (L : SizeData₂ D) (_ : ParameterChoice' D L), L.sc.eps = eps → x₀ ≤ L.sc.x → Formalism.MainNotions.SizesAt L → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → HostHyp D → D.host.ccK = ⊤ → FWT.QGuard R.toRealDat → GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes R.toRealDat → GlobalTheory.TrCopy.TRLev R.toRealDat F.lv2 R.SF → R.PGEquiv F → (R.toCx3 F).zs.InBlock → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) := by
   intro hDS hHCF hHCM hCW hCusp hHowe hWS hSWc hSEc hUD hGreen eps heps
   obtain ⟨x₀, hx₀⟩ := GlobalTheory.LiftRows.goodForms_definite_exist (GlobalTheory.DefFree.goodVectorsDefinite hGreen) eps heps

@@ -5,6 +5,13 @@ namespace ReciprocityTheory.L2DbarEstimates.C
 open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `moll_le n`. Use `⟨C, fun t ht x z => ?_⟩` and prove the remaining obligations. Establish `hvol : volume.real (closedBall x t) = volume.real (ball (0 : V n) t)`. Break down `subsingleton_or_nontrivial (V n) with hV | hV` into its components or cases. Establish `h1 : closedBall x t = univ` using `eq_univ_of_forall fun y => by`.
+
+Rewrite using `[Subsingleton.elim y x]`. Conclude with `mem_closedBall_self ht.le`. Establish `h2 : ball (0 : V n) t = univ` using `eq_univ_of_forall fun y => by`. Rewrite using `[Subsingleton.elim y 0]`. Conclude with `mem_ball_self ht`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [measureReal_def]`. Rewrite using `[Measure.addHaar_closedBall_eq_addHaar_ball, Measure.addHaar_ball_center]`. Rewrite using `[hvol]`. Conclude with `hC t ht z`.
+-/
 theorem moll_le_closedBall (n : ℕ) :
     ∃ C : ℝ, ∀ t : ℝ, 0 < t → ∀ x z : V n,
       moll n t z ≤ C / volume.real (closedBall x t) := by
@@ -22,6 +29,17 @@ theorem moll_le_closedBall (n : ℕ) :
   rw [hvol]
   exact hC t ht z
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `moll_le_closedBall n`. Use `filter_upwards [IsUnifLocDoublingMeasure.ae_tendsto_average_norm_sub (μ := volume) hu.locallyIntegrable 1] with x hx`. Establish `hpos : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t` using `self_mem_nhdsWithin`. Establish `hav : Tendsto (fun t : ℝ => ⨍ y in closedBall x t, ‖u y - u x‖) (𝓝[>] 0) (𝓝 0)` using `hx (l := 𝓝[>] (0 : ℝ)) (fun _ => x) id tendsto_id (by filter_upwards [hpos] with t ht`. Conclude with `mem_closedBall_self (by simp only [id, one_mul]; exact ht.le))`.
+
+Establish `hg : Tendsto (fun t : ℝ => ∫ y, moll n t (x - y)) (𝓝[>] 0) (𝓝 1)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hpos] with t ht`. Use `show (1 : ℝ) = ∫ y, moll n t (x - y)`. Rewrite using `[integral_sub_left_eq_self (moll n t) volume x, moll_integral n ht]`.
+
+Establish `hsupp : ∀ᶠ t in 𝓝[>] (0 : ℝ), Function.support (fun y => moll n t (x - y)) ⊆ closedBall x t` using `by filter_upwards [hpos] with t ht`. Introduce `y hy`. Establish `h` using `moll_tsupport n ht (subset_tsupport (moll n t) (show x - y ∈ Function.support (moll n t) from hy))`. Rewrite `h` using `[mem_closedBall, dist_zero_right]`. Rewrite using `[mem_closedBall, dist_comm, dist_eq_norm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbd : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ y, |moll n t (x - y)| ≤ C / volume.real (closedBall x t)` using `by filter_upwards [hpos] with t ht`. Introduce `y`. Rewrite using `[abs_of_nonneg (moll_nonneg _ _ _)]`. Conclude with `hC t ht x _`.
+
+Establish `key` using `tendsto_integral_smul_of_tendsto_average_norm_sub (μ := volume) (a := fun t => closedBall x t) (g := fun t y => moll n t (x - y)) C hav (Eventually.of_forall fun _ => hu.integrableOn) hg hsupp hbd`. Use `key.congr (fun t => ?_)` and prove the remaining obligations. Simplify using `only [mollify, Complex.real_smul]`.
+-/
 theorem mollify_tendsto_ae {n : ℕ} {u : V n → ℂ} (hu : Integrable u) :
     ∀ᵐ x, Tendsto (fun t => mollify n t u x) (𝓝[>] 0) (𝓝 (u x)) := by
   obtain ⟨C, hC⟩ := moll_le_closedBall n

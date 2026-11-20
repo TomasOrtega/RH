@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.HeckeFrob
 
+/- English proof (translation)
+Establish `hc : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x` using `fun x => by`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`. Conclude with `Formalism.HC.HostAx.conjE_apply _ _ _`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+
+Use extensionality with `x`. Establish `hy : ((IsCMField.ringOfIntegersComplexConj D.host.E x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[hc]`. Both sides reduce to the same expression. Rewrite using `[h x _ hy]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem conjSplit_w (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host) (h : IsConjPl D.host w s.w) :
     (conjSplit s).w = w := by
   have hc : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x := fun x => by
@@ -29,6 +36,13 @@ theorem conjSplit_w (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host) (h : IsC
   rw [h x _ hy]
   exact Iff.rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `hsub : ∀ F : GAf L n → W, Function.support (fun cc : GAf L n ⧸ J => if hc : ∃ x ∈ Dset, (x : GAf L n ⧸ J) = cc then F (g * hc.choose) else 0) ⊆ (hfin.toFinset : Set (GAf L n ⧸ J))`. Introduce `F cc hcc`. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `hn`.
+
+Apply `hcc` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hn ⟨x, hx, rfl⟩`.
+
+Rewrite using `[Pi.add_apply]`. Simplify using `only [NG.heckeD]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsub _), finsum_eq_sum_of_support_subset _ (hsub _), finsum_eq_sum_of_support_subset _ (hsub _), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun cc _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem heckeD_add (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) {W : Type} [AddCommGroup W]
     [Module ℂ W] (J : Subgroup (GAf L n)) (Dset : Set (GAf L n))
     (hfin : ((fun x : GAf L n => (x : GAf L n ⧸ J)) '' Dset).Finite) (f f' : GAf L n → W) :
@@ -54,12 +68,20 @@ theorem heckeD_add (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) 
   refine Finset.sum_congr rfl fun cc _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[NG.heckeD]`.
+-/
 theorem heckeD_zero (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) {W : Type} [AddCommGroup W]
     [Module ℂ W] (J : Subgroup (GAf L n)) (Dset : Set (GAf L n)) :
     NG.heckeD J Dset (0 : GAf L n → W) = 0 := by
   funext g
   simp [NG.heckeD]
 
+/- English proof (translation)
+Establish `key : ∀ t : Finset (Fin m), NG.tN J s ϖ k (∑ j ∈ t, F j) = ∑ j ∈ t, NG.tN J s ϖ k (F j)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [NG.tN, heckeD_zero]`. Consider the case `insert a t ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Simplify using `only [NG.tN]`. Rewrite using `[heckeD_add L n J _ hfin, smul_add]`. Conclude with `key Finset.univ`.
+-/
 theorem tN_sum {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W]
     [Module ℂ W] (J : Subgroup (GAf L n)) (s : SplitPlace L) (ϖ : s.v.adicCompletion (maximalRealSubfield L)) (k : ℕ)
     (hfin : ((fun x : GAf L n => (x : GAf L n ⧸ J)) '' tSet L n s ϖ k).Finite) {m : ℕ} (F : Fin m → GAf L n → W) :
@@ -75,6 +97,9 @@ theorem tN_sum {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W :
       rw [heckeD_add L n J _ hfin, smul_add]
   exact key Finset.univ
 
+/- English proof (translation)
+Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hn, Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (by omega)]`. Simplify using `only [pow_zero, Multiset.esymm, Multiset.powersetCard_zero_left, Multiset.map_singleton, Multiset.prod_zero, Multiset.sum_singleton, map_one, one_mul, Nat.sub_zero]`. Use `congr 1`. Use `Finset.sum_congr (by ext; simp only [Finset.mem_Icc, Finset.mem_Ico]; omega) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_neg, map_one, mul_assoc]`.
+-/
 theorem prod_eq_vieta (n : ℕ) (β : Multiset ℂ) (hn : Multiset.card β = n) :
     (β.map fun a => X - C a).prod = X ^ n + ∑ k ∈ Finset.Icc 1 n, C ((-1 : ℂ) ^ k * β.esymm k) * X ^ (n - k) := by
   rw [Multiset.prod_X_sub_X_eq_sum_esymm, hn, Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (by omega)]
@@ -87,12 +112,18 @@ theorem prod_eq_vieta (n : ℕ) (β : Multiset ℂ) (hn : Multiset.card β = n) 
 section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `heq_of_eq (congrArg (Sigma.mk n) (eq_of_heq he))`.
+-/
 theorem cls_heq {E : Type} [Field E] [NumberField E] {n : ℕ} {a b : HeightOneSpectrum (𝓞 E)} (h : a = b)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (a.adicCompletion E))) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (b.adicCompletion E)))
     (he : HEq σ.cl τ.cl) : HEq (GlobalTheory.LocLanglands.cls σ) (GlobalTheory.LocLanglands.cls τ) := by
   subst h
   exact heq_of_eq (congrArg (Sigma.mk n) (eq_of_heq he))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CuspRep.ParLaws.rec_eq_diag (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL h) hα]`. Establish `hu : (GlobalTheory.WeilDeligne.WD.mk (GlobalTheory.WeilDeligne.WDRep.diag h fun i => (α i)⁻¹)).unr` using `(GlobalTheory.WeilDeligne.WD.unr_mk _).2 (GlobalTheory.WeilDeligne.WDRep.unr_diag _)`. Use `⟨(GlobalTheory.WeilDeligne.WD.unr_tw _ _).2 hu, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeilDeligne.WD.frobEig_tw _ _ hu, GlobalTheory.WeilDeligne.WD.frobEig_diag]`. Simplify using `[twEig]`.
+-/
 theorem galSide (hL : GlobalTheory.Published.LocalLanglandsGL) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) {n : ℕ}
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion E))) (α : Fin n → ℂˣ) (hα : GlobalTheory.SmGL.HasSatake σ.ρ α) :
@@ -105,6 +136,17 @@ theorem galSide (hL : GlobalTheory.Published.LocalLanglandsGL) {E Ω : Type} [Fi
   rw [GlobalTheory.WeilDeligne.WD.frobEig_tw _ _ hu, GlobalTheory.WeilDeligne.WD.frobEig_diag]
   simp [twEig]
 
+/- English proof (translation)
+Take `⟨i, T, hic, hcomp, hinj, hmem, heq⟩` from `hσ`. Establish `hf'` using `GlobalTheory.T.autRep_isotypic_splitPlace_localComponent L n π (conjSplit s) σ i T hinj hmem heq f hf`. Take `⟨m, Tj, ej, hTj, hej, hsum⟩` from `GlobalTheory.T.splitPlace_fixed_vector_sum_spherical_images L n π (conjSplit s) σ i hic hcomp f hf' hfix`. Establish `hne : ∃ j, ej j ≠ 0`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hsum]`. Simplify using `[h]`. Establish `hsph : GlobalTheory.SmGL.IsSpherical σ.ρ`.
+
+Take `⟨j, hj⟩` from `hne`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨ej j, hej j, hj⟩`. Establish `hR` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL hp`. Take `⟨α, hα⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake_of_unr hR ((GlobalTheory.CuspRep.ParLaws.unr_iff hR σ).2 hsph)`. Use `⟨α, hα, fun k hk1 hk2 => ?_⟩` and prove the remaining obligations.
+
+Establish `hfin` using `GlobalTheory.T.finite_heckeDoubleCoset_cosets_at_splitPlace L n s ϖ hu J hJ k`. Establish `key : ((normV (conjSplit s).w : ℕ) : ℂ) ^ (k * (k - 1) / 2) • NG.tN J s ϖ k f = (twEig (conjSplit s).w α).esymm k • f` using `by conv_lhs => rw [hsum]`. Rewrite using `[tN_sum J s ϖ k hfin, Finset.smul_sum, hsum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => GlobalTheory.T.split_place_hecke_operator_eigenvalue_conj_spherical L n s ϖ hu J hJ σ α hα i hic hcomp (Tj j) (hTj j) (ej j) (hej j) k hk1 hk2`. Rewrite `key` using `[hc k hk1 hk2, smul_smul]`.
+
+Conclude with `smul_left_injective ℂ hf0 key`.
+-/
 theorem heckeSide (hL : GlobalTheory.Published.LocalLanglandsGL) {L : Type} [Field L] [NumberField L] [IsCMField L] {Ω : Type}
     [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {A : ValuationSubring Ω} {n : ℕ} (π : NG.AutRep L n) (s : SplitPlace L)
     (ϖ : s.v.adicCompletion (maximalRealSubfield L)) (hu : IsUnif L s.v ϖ) (J : Subgroup (GAf L n))
@@ -139,6 +181,15 @@ theorem heckeSide (hL : GlobalTheory.Published.LocalLanglandsGL) {L : Type} [Fie
   rw [hc k hk1 hk2, smul_smul] at key
   exact smul_left_injective ℂ hf0 key
 
+/- English proof (translation)
+Introduce `hL D π s w ϖ hcw hu J hJ f hf hf0 hfix c hc x hx`. Establish `hw` using `conjSplit_w D s w hcw`. Substitute `hw` using the available equality. Take `⟨σc, hσc, huniq⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV π (conjSplit s)`. Take `⟨s', σ', h', hσ', hxe⟩` from `hx`.
+
+Establish `hh` using `huniq π s' h' σ' (NG.AutRep.iso_equivalence.refl π) hσ'`. Establish `hxc : x = GlobalTheory.LocLanglands.cls σc` using `eq_of_heq (hxe.symm.trans (cls_heq h' σ' σc hh))`. Substitute `hxc` using the available equality. Take `⟨α, hα, heig⟩` from `heckeSide hL π s ϖ hu J hJ f hf hf0 hfix c hc (D.nd.plOm.2 _) σc hσc`. Take `⟨hun, hfe⟩` from `galSide hL (D.nd.plOm.2 _) σc α hα`.
+
+Use `⟨hun, ?_⟩` and prove the remaining obligations. Rewrite using `[hfe, prod_eq_vieta D.R.nV _ (by simp [twEig])]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Finset.mem_Icc.1 hk`.
+
+Rewrite using `[mul_assoc, heig k hk1 hk2]`.
+-/
 theorem locPol_eq : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E)
     (w : PlE D.host) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)),
     IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → ∀ J : Subgroup (GAf D.host.E D.R.nV),

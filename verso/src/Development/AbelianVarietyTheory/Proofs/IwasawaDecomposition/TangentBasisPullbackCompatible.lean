@@ -25,8 +25,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Ty
 
 def ptMap {S : Type} [CommRing S] (y : Sp S ⟶ Sp K) : K →+* S := (Spec.preimage y).hom
 
+/- English proof (translation)
+The claim follows from `Spec.map_preimage y`.
+-/
 theorem spMap_ptMap {S : Type} [CommRing S] (y : Sp S ⟶ Sp K) : spMap (ptMap y) = y := Spec.map_preimage y
 
+/- English proof (translation)
+Establish `h : spMap (φ.comp (ptMap y)) = spMap (ptMap y')`. Rewrite using `[spMap_ptMap y', ← e]`. Use `conv_rhs => rw [← spMap_ptMap y]`. Conclude with `Spec.map_comp _ _`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h).symm`.
+-/
 theorem ptMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') (y : Sp S ⟶ Sp K) (y' : Sp S' ⟶ Sp K)
     (e : spMap φ ≫ y = y') : ptMap y' = φ.comp (ptMap y) := by
   have h : spMap (φ.comp (ptMap y)) = spMap (ptMap y') := by
@@ -37,6 +43,17 @@ theorem ptMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') (y
 
 variable {tK} in
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Establish `hp : ∃ t' : SAB H (Sp S), Nonempty (SABMap t' tK (spMap f))`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap f) tK`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨t', ⟨m⟩⟩` from `hp`.
+
+Take `⟨v', hb, hv'⟩` from `GlobalTheory.exists_isLieBasis_baseChange K S f tK.G t'.G m.φ m.cart tK.semi.smooth d v hv`. Set `u : Fin d → TanM (spMap f) tK.G` to `fun j => mkT (pushHom m.cart (epsR S) (v' j)) ((PullbackSections.isTangent_iff m.cart _).1 (hb.1 j))`. Establish `hcomb : ∀ (a : Fin d → S) (w : epsR S ⟶ t'.G), IsLieComb a v' w ↔ pushHom m.cart (epsR S) w = tv (∑ i, a i • u i)` using `fun a w => by`. Rewrite using `[PullbackSections.isLieComb_iff m.cart, tv_sum']`. Both sides reduce to the same expression.
+
+Establish `hbij : Function.Bijective (Fintype.linearCombination S u)`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Take `⟨p, hp⟩` from `PullbackSections.push_surj m.cart (tv W)`. Establish `ht : IsTangent p` using `(PullbackSections.isTangent_iff m.cart p).2 (by rw [hp]; exact tv_mem W)`.
+
+Use `(existsUnique_congr fun a => ?_).1 (hb.2 p ht)` and prove the remaining obligations. Rewrite using `[hcomb, hp, Fintype.linearCombination_apply]`. Conclude with `⟨fun e => (tanM_ext e).symm, fun e => by rw [e]⟩`. Set `e` to `LinearEquiv.ofBijective _ hbij`. Establish `he : ∀ j, (Pi.basisFun S (Fin d)).map e j = u j` using `fun j => by`.
+
+Simplify using `[e, Fintype.linearCombination_apply_single]`. Conclude with `⟨(Pi.basisFun S (Fin d)).map e, fun j => by rw [he]; exact hv' j⟩`.
+-/
 theorem exists_basis {d : ℕ} {v : Fin d → (epsR K ⟶ tK.G)} (hv : IsLieBasis v) {S : Type} [CommRing S]
     (f : K →+* S) (x : Sp S ⟶ Sp K) (hx : spMap f = x) :
     ∃ b : Module.Basis (Fin d) S (TanM x tK.G), ∀ j, (tv (b j)).left = spMap (dualMap f) ≫ (v j).left := by
@@ -65,6 +82,9 @@ theorem exists_basis {d : ℕ} {v : Fin d → (epsR K ⟶ tK.G)} (hv : IsLieBasi
     simp [e, Fintype.linearCombination_apply_single]
   exact ⟨(Pi.basisFun S (Fin d)).map e, fun j => by rw [he]; exact hv' j⟩
 
+/- English proof (translation)
+Take `⟨d, v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_isLieBasis tK.G tK.semi.smooth`. Establish `hB` using `fun (S : Type) [CommRing S] (y : Sp S ⟶ Sp K) => exists_basis hv (ptMap y) y (spMap_ptMap y)`. Use `⟨d, fun S _ y => (hB S y).choose, fun S S' _ _ φ y y' e j => ?_⟩` and prove the remaining obligations. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, (hB S y).choose_spec j, (hB S' y').choose_spec j, ptMap_comp φ y y' e, GlobalTheory.FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+-/
 theorem exists_lieFrame (tK : SAB H (Sp K)) :
     ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),
       Module.Basis (Fin d) S (ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM y tK.G)),
@@ -77,6 +97,9 @@ theorem exists_lieFrame (tK : SAB H (Sp K)) :
   rw [tanPull_left, (hB S y).choose_spec j, (hB S' y').choose_spec j, ptMap_comp φ y y' e, GlobalTheory.FlagMod.dualMap_comp,
     ← spMap_comp', Category.assoc]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ tK` and use `exists_lieFrame tK`.
+-/
 theorem lieFrame_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     (tK : SAB H (Sp K)), ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),
       Module.Basis (Fin d) S (ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM y tK.G)),

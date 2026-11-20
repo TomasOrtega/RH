@@ -21,6 +21,9 @@ def globalSection (F : X.Modules) (m : Γ(F, ⊤)) : F.sections :=
     rw [← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]
     rfl)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.presheaf.map (homOfLE h₂).op) ((F.presheaf.map (homOfLE h₁).op) m) = (F.presheaf.map (homOfLE (h₂.trans h₁)).op) m`. Rewrite using `[← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma resF_comp (F : X.Modules) {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (m : Γ(F, U)) :
     resF F h₂ (resF F h₁ m) = resF F (h₂.trans h₁) m := by
   change (F.presheaf.map (homOfLE h₂).op) ((F.presheaf.map (homOfLE h₁).op) m) =
@@ -28,6 +31,9 @@ private lemma resF_comp (F : X.Modules) {U V W : X.Opens} (h₁ : V ≤ U) (h₂
   rw [← ConcreteCategory.comp_apply, ← F.presheaf.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `h : SheafOfModules.ιFree k ≫ F.freeHomEquiv.symm t = F.unitHomEquiv.symm (t k)`. Simplify using `using (SheafOfModules.unitHomEquiv_symm_freeHomEquiv_apply (F.freeHomEquiv.symm t) k).symm`. Establish `h2 : (F.freeHomEquiv.symm t).val.app (op W) ((SheafOfModules.ιFree k).val.app (op W) a) = (SheafOfModules.ιFree k ≫ F.freeHomEquiv.symm t).val.app (op W) a` using `rfl`. Rewrite using `[h2, h]`. Both sides reduce to the same expression.
+-/
 lemma freeHomEquiv_symm_app_ιFree (F : X.Modules) {κ : Type u} (t : κ → F.sections) (k : κ)
     (W : X.Opens) (a : Γ(X, W)) :
     (F.freeHomEquiv.symm t).val.app (op W) ((SheafOfModules.ιFree k).val.app (op W) a) =
@@ -39,6 +45,25 @@ lemma freeHomEquiv_symm_app_ιFree (F : X.Modules) {κ : Type u} (t : κ → F.s
   rw [h2, h]
   rfl
 
+/- English proof (translation)
+Use `Fintype.ofFinite κ` as an intermediate fact. Set `t : κ → F.sections` to `fun k => globalSection F (s k)`. Set `π` to `F.freeHomEquiv.symm t`. Establish `hsurj : Sheaf.IsLocallySurjective ((SheafOfModules.toSheaf X.ringCatSheaf).map π)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `U m`. Rewrite using `[Opens.mem_grothendieckTopology]`. Introduce `x hxU`. Establish `hx : x ∈ iSup V` using `by rw [hcov]; trivial`. Take `⟨i, hxi⟩` from `Opens.mem_iSup.1 hx`.
+
+Take `⟨f, hfle, hxf⟩` from `(hV i).exists_basicOpen_le (V := U ⊓ V i) ⟨x, ⟨hxU, hxi⟩⟩ hxi`. Establish `hDU : X.basicOpen f ≤ U` using `hfle.trans inf_le_left`. Use `⟨X.basicOpen f, homOfLE hDU, ?_, hxf⟩` and prove the remaining obligations. Take `⟨e, m', hm'⟩` from `qcoh_exists_res_eq F (hV i) f (resF F hDU m)`. Establish `hm'span : m' ∈ Submodule.span Γ(X, V i) (Set.range fun k => resF F (le_top : V i ≤ ⊤) (s k))`.
+
+Rewrite using `[hs i]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hm'span`. Take `⟨w, hw⟩ : IsUnit (resO (X.basicOpen_le f) f ^ e)` from `(X.toRingedSpace.isUnit_res_basicOpen f).pow e`. Set `a : κ → Γ(X, X.basicOpen f)` to `fun k => ((w⁻¹ : (Γ(X, X.basicOpen f))ˣ) : Γ(X, X.basicOpen f)) * resO (X.basicOpen_le f) (c k)`.
+
+Establish `h₁ : resF F (X.basicOpen_le f) m' = ∑ k, resO (X.basicOpen_le f) (c k) • resF F (le_top : X.basicOpen f ≤ ⊤) (s k)`. Rewrite using `[← hc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[resF_smul, resF_comp]`. Establish `h₂ : ((w : Γ(X, X.basicOpen f))) • resF F hDU m = ∑ k, resO (X.basicOpen_le f) (c k) • resF F (le_top : X.basicOpen f ≤ ⊤) (s k)`.
+
+Rewrite using `[← h₁, hm', hw]`. Establish `key : resF F hDU m = ∑ k, a k • resF F (le_top : X.basicOpen f ≤ ⊤) (s k)`. Establish `: resF F hDU m = ((w⁻¹ : (Γ(X, X.basicOpen f))ˣ) : Γ(X, X.basicOpen f)) • ((w : Γ(X, X.basicOpen f)) • resF F hDU m)`. Rewrite using `[← mul_smul, Units.inv_mul, one_smul]`. Rewrite using `[this, h₂, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul]`. Establish `hsum : (π.val.app (op (X.basicOpen f))) (∑ k, (SheafOfModules.ιFree k).val.app (op (X.basicOpen f)) (a k)) = ∑ k, a k • resF F (le_top : X.basicOpen f ≤ ⊤) (s k)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[freeHomEquiv_symm_app_ιFree]`. Both sides reduce to the same expression. Conclude with `⟨∑ k, (SheafOfModules.ιFree k).val.app (op (X.basicOpen f)) (a k), hsum.trans key.symm⟩`. Establish `hπ : Epi π` using `⟨fun g h hgh => (SheafOfModules.toSheaf X.ringCatSheaf).map_injective (by`. Rewrite using `[← cancel_epi ((SheafOfModules.toSheaf X.ringCatSheaf).map π)]`.
+
+Use `congrArg (SheafOfModules.toSheaf X.ringCatSheaf).map hgh` as an intermediate fact. Conclude with `((SheafOfModules.toSheaf X.ringCatSheaf).map_comp π g).symm.trans (this.trans ((SheafOfModules.toSheaf X.ringCatSheaf).map_comp π h)))⟩`. Conclude with `⟨{ I := κ, s := t, epi := hπ }, ⟨inferInstance⟩⟩`.
+-/
 theorem exists_generatingSections (F : X.Modules) [F.IsQuasicoherent] {ι : Type u}
     (V : ι → X.Opens) (hV : ∀ i, IsAffineOpen (V i)) (hcov : iSup V = ⊤)
     {κ : Type u} [Finite κ] (s : κ → Γ(F, ⊤))
@@ -97,6 +122,9 @@ theorem exists_generatingSections (F : X.Modules) [F.IsQuasicoherent] {ι : Type
       (this.trans ((SheafOfModules.toSheaf X.ringCatSheaf).map_comp π h)))⟩
   exact ⟨{ I := κ, s := t, epi := hπ }, ⟨inferInstance⟩⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `h`. Establish `he : Epi e.hom` using `inferInstance`. Conclude with `⟨@SheafOfModules.GeneratingSections.ofEpi _ _ _ _ _ _ F G σ e.hom he, @SheafOfModules.GeneratingSections.instIsFiniteTypeOfEpi _ _ _ _ _ _ F G σ e.hom he hσ⟩`.
+-/
 theorem exists_generatingSections_of_iso {F G : X.Modules} (e : F ≅ G)
     (h : ∃ σ : F.GeneratingSections, σ.IsFiniteType) :
     ∃ σ : G.GeneratingSections, σ.IsFiniteType := by

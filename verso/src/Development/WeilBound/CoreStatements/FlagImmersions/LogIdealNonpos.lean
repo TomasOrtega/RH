@@ -16,6 +16,9 @@ namespace RootFieldNumerics.RF
 
 namespace Num
 
+/- English proof (translation)
+The claim follows from `|((p : ℝ) - q) / 2 * (Real.eulerMascheroniConstant + Real.log (2 * Real.pi) - l - L)| + ((p + q : ℕ) : ℝ) * Real.log 2 ≤ ((p + q : ℕ) : ℝ) * (3 / 2 * l + |L| / 2) := by have hc := OnHodge.const_le have hγ := Real.one_half_lt_eulerMascheroniConstant have h2 : 0 < Real.log 2 := Rea …`.
+-/
 theorem value_bound (p q : ℕ) (l L : ℝ) (h7 : Real.log 7 / 2 ≤ l) :
     |((p : ℝ) - q) / 2 * (Real.eulerMascheroniConstant + Real.log (2 * Real.pi) - l - L)| +
       ((p + q : ℕ) : ℝ) * Real.log 2 ≤ ((p + q : ℕ) : ℝ) * (3 / 2 * l + |L| / 2) := by
@@ -41,6 +44,17 @@ theorem value_bound (p q : ℕ) (l L : ℝ) (h7 : Real.log 7 / 2 ≤ l) :
   push_cast
   nlinarith
 
+/- English proof (translation)
+Use `set N : ℝ := (n : ℝ) with hN`. Establish `hN0 : 0 ≤ N * Real.log 2` using `mul_nonneg (Nat.cast_nonneg _) (Real.log_pos one_lt_two).le`. Take `⟨hv2, hd2⟩` from `hd 2 h2`. Establish `hv2'` using `mul_nonneg hN0 hv2`. Simplify using `only [cP, if_true, Nat.cast_ofNat] at hd2`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨e, he, he'⟩ : ∃ e : ℝ, |e| ≤ N * Real.log 2 ∧ |d 2 - e| ≤ (N + N * v 2) * Real.log 2 := by`. Rewrite `hd2` using `[abs_le]`. Break down `le_total 0 (d 2) with h | h` into its components or cases. Conclude with `⟨N * Real.log 2, (abs_of_nonneg hN0).le, abs_le.2 ⟨by nlinarith, by nlinarith⟩⟩`. Conclude with `⟨-(N * Real.log 2), by rw [abs_neg, abs_of_nonneg hN0], abs_le.2 ⟨by nlinarith, by nlinarith⟩⟩`.
+
+Use `⟨_ + e, fun r => d r - if r = 2 then e else 0, v, (abs_add_le _ _).trans ((add_le_add le_rfl he).trans hb), ?_, fun r hr => ⟨(hd r hr).1, ?_⟩, hv⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq' bad 2, if_pos h2]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h : r = 2`. Substitute `h` using the available equality.
+
+Establish `: ((2 : ℕ) : ℝ) - 1 = 1` using `by norm_num`. Simplify using `only [if_true, this, div_one]`. Conclude with `he'` after adjusting the coercions. Use `(hd r hr).2` as an intermediate fact. Simplify using `only [cP, if_neg h] at this ⊢`.
+
+Rewrite using `[sub_zero, div_eq_mul_one_div]` and apply the resulting hypothesis.
+-/
 theorem near_of (n : ℕ) (bad : Finset ℕ) (h2 : 2 ∈ bad) (rd L h₀ : ℝ) (d v : ℕ → ℝ)
     (hb : |h₀| + (n : ℝ) * Real.log 2 ≤ (n : ℝ) * (3 / 2 * Real.log rd + |L| / 2))
     (hd : ∀ r ∈ bad, 0 ≤ v r ∧ |d r| ≤ ((n : ℝ) * cP r + (n : ℝ) * v r) * Real.log r)
@@ -69,8 +83,14 @@ theorem near_of (n : ℕ) (bad : Finset ℕ) (h2 : 2 ∈ bad) (rd L h₀ : ℝ) 
 
 def extP (g : Nat.Primes → ℝ) (n : ℕ) : ℝ := if h : n.Prime then g ⟨n, h⟩ else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos ℓ.2`.
+-/
 theorem extendFromPrimes_coe (g : Nat.Primes → ℝ) (ℓ : Nat.Primes) : extP g ℓ = g ℓ := dif_pos ℓ.2
 
+/- English proof (translation)
+Use `⟨bad.preimage (fun ℓ : Nat.Primes => (ℓ : ℕ)) Subtype.val_injective.injOn, fun ℓ => Finset.mem_preimage, fun G => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.sum_preimage (fun ℓ : Nat.Primes => (ℓ : ℕ)) bad Subtype.val_injective.injOn G fun x hx hn => absurd ⟨⟨x, hb x hx⟩, rfl⟩ hn).symm`.
+-/
 theorem exists_primes (bad : Finset ℕ) (hb : ∀ ℓ ∈ bad, ℓ.Prime) :
     ∃ B : Finset Nat.Primes, (∀ ℓ, ℓ ∈ B ↔ (ℓ : ℕ) ∈ bad) ∧ ∀ G : ℕ → ℝ, ∑ ℓ ∈ bad, G ℓ = ∑ ℓ ∈ B, G ℓ := by
   refine ⟨bad.preimage (fun ℓ : Nat.Primes => (ℓ : ℕ)) Subtype.val_injective.injOn, fun ℓ => Finset.mem_preimage,
@@ -78,6 +98,9 @@ theorem exists_primes (bad : Finset ℕ) (hb : ∀ ℓ ∈ bad, ℓ.Prime) :
   exact (Finset.sum_preimage (fun ℓ : Nat.Primes => (ℓ : ℕ)) bad Subtype.val_injective.injOn G
     fun x hx hn => absurd ⟨⟨x, hb x hx⟩, rfl⟩ hn).symm
 
+/- English proof (translation)
+Use `HeightOneSpectrum.eq_of_valuation_isEquiv_valuation (K := F) ?_` and prove the remaining obligations. Rewrite using `[Valuation.isEquiv_iff_val_le_one]`. Introduce `a`. Rewrite using `[h, valuation_placeOf_le_one_iff]`.
+-/
 theorem place_eq {F : Type} [Field F] [NumberField F] {p : ℕ} [Fact p.Prime] (κ : F →+* ℂ_[p])
     (v : HeightOneSpectrum (𝓞 F)) (h : ∀ a : F, v.valuation F a ≤ 1 ↔ ‖κ a‖ ≤ 1) : v = placeOf κ := by
   refine HeightOneSpectrum.eq_of_valuation_isEquiv_valuation (K := F) ?_
@@ -85,6 +108,9 @@ theorem place_eq {F : Type} [Field F] [NumberField F] {p : ℕ} [Fact p.Prime] (
   intro a
   rw [h, valuation_placeOf_le_one_iff]
 
+/- English proof (translation)
+Take `⟨a, -, -, -, e⟩` from `GlobalTheory.T.padic_logIdeal_max_element E ℓ (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) (j.injective.comp RingOfIntegers.coe_injective) differentIdeal_ne_bot`. Rewrite using `[e]`. Use `Real.log_nonpos (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `(valuation_placeOf_le_one_iff j (a : E)).1 ((placeOf j).valuation_le_one a)`.
+-/
 theorem logIdeal_nonpos {E : Type} [Field E] [NumberField E] (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) :
     logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) ≤ 0 := by
   obtain ⟨a, -, -, -, e⟩ := GlobalTheory.T.padic_logIdeal_max_element E ℓ (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))
@@ -96,6 +122,47 @@ theorem logIdeal_nonpos {E : Type} [Field E] [NumberField E] (ℓ : Nat.Primes) 
 end Num
 
 open Num in
+/- English proof (translation)
+Introduce `E _ _ _ H p q F F' _ _ _ _ ι σ N r bad hσ h2 hbp hAd hdeg hloc`. Use `choose π hπ using fun v : HeightOneSpectrum (𝓞 F') => v.valuation_exists_uniformizer F'`. Set `N' : LogNorms F'` to `⟨fun s => N.inf (s.comp ι), fun ℓ κ' => (r (placeOf κ') : ℝ) * Real.log ‖κ' (π (placeOf κ'))‖⟩`. Take `⟨hAd', hdeg'⟩` from `deg_eq_places F' N' r (by`. Introduce `ℓ κ' v π' hv hπ'`.
+
+Take `rfl` from `place_eq κ' v hv`. Establish `h0 : π' ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ'` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ'.symm`.
+
+Use `log_norm_eq_of_valuation κ' (n := 1) (hπ _) hπ' h0` as an intermediate fact. Use `show _ * _ = _`. Rewrite using `[this]`. Use the proof step `simp)`. Establish `hgoal : ((r.sum fun v x => (x : ℝ) * Real.log (Ideal.absNorm v.asIdeal)) - ∑ s : F' →+* ℂ, N.inf (s.comp ι)) / (Module.finrank ℚ F' : ℝ) = N'.deg` using `hdeg'.symm`.
+
+Rewrite using `[hgoal]`. Take `⟨hext, hextA⟩` from `GlobalTheory.T.logNorms_ext_degree_adelic F F' ι N`. Establish `hAdx : (N.ext ι).IsAdelic` using `hextA.2 hAd`. Establish `hl` using `fun (ℓ : Nat.Primes) (κ' : F' →+* ℂ_[ℓ]) => hloc ℓ κ' (placeOf κ') (π _) (valuation_placeOf_le_one_iff κ') (hπ _)`. Establish `hn' : (0 : ℝ) < Module.finrank ℚ F'` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hnE : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Take `⟨B, hB, hBs⟩` from `exists_primes bad hbp`. Set `f : E →+* F'` to `IsFractionRing.lift (A := 𝓞 E) (g := ι.comp σ) (ι.injective.comp hσ)`. Establish `hf : ∀ a : 𝓞 E, f (algebraMap (𝓞 E) E a) = ι (σ a)` using `fun a => IsFractionRing.lift_algebraMap _ a`. Set `g : Nat.Primes → ℝ` to `fun ℓ => -(N'.finSum ℓ - (N.ext ι).finSum ℓ) / Module.finrank ℚ F'`.
+
+Set `w : Nat.Primes → ℝ` to `fun ℓ => -∑ j : E →+* ℂ_[ℓ], logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))`. Establish `hw0 : ∀ ℓ, 0 ≤ w ℓ` using `fun ℓ => neg_nonneg.2 (Finset.sum_nonpos fun j _ => logIdeal_nonpos ℓ j)`. Establish `hlog : ∀ ℓ : Nat.Primes, 0 < Real.log (ℓ : ℕ)` using `fun ℓ => Real.log_pos (by exact_mod_cast ℓ.2.one_lt)`. Establish `hsupp : ∀ M : LogNorms F', M.IsAdelic → (Function.support M.finSum).Finite` using `fun M hM => Set.Finite.subset hM fun ℓ hℓ => by`. Assume the negation of the conclusion as `hc`.
+
+Simplify using `only [Set.mem_setOf_eq, not_exists, not_not] at hc`. Conclude with `hℓ (by simp [LogNorms.finSum, hc])`. Establish `hsplit : N'.deg = N.deg + ∑ ℓ ∈ bad, extP g ℓ`. Rewrite using `[hBs, ← hext]`. Simplify using `only [extendFromPrimes_coe, g]`.
+
+Establish `e1 : ∑ᶠ ℓ, (N'.finSum ℓ - (N.ext ι).finSum ℓ) = ∑ ℓ ∈ B, (N'.finSum ℓ - (N.ext ι).finSum ℓ)`. Use `finsum_eq_sum_of_support_subset _ fun ℓ hℓ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `hℓ (sub_eq_zero.2 (Finset.sum_congr rfl fun κ' _ => ?_))` and prove the remaining obligations. Conclude with `(hl ℓ κ').1 fun h => hc ((hB ℓ).2 h)`.
+
+Rewrite `e1` using `[finsum_sub_distrib (hsupp _ hAd') (hsupp _ hAdx)]`. Rewrite using `[← Finset.sum_div, Finset.sum_neg_distrib, ← e1]`. Establish `e2 : ∑ s, N'.inf s = ∑ s, (N.ext ι).inf s` using `rfl`. Simplify using `only [LogNorms.deg]`. Rewrite using `[e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Establish `hrd : hostRd E = rootDiscr E` using `OnHodge.hostRd_eq E`. Use `near_of (p + q) bad h2 _ _ _ _ (extP fun ℓ => w ℓ / Module.finrank ℚ E / Real.log (ℓ : ℕ)) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hdeg]`.
+
+Use `value_bound p q _ _ ?_` and prove the remaining obligations. Establish `h7 : (7 : ℝ) ≤ H.d`. Use `H.d_mod` as an intermediate fact. Establish `: 7 ≤ H.d` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Establish `h1` using `(GlobalTheory.T.sqrt_discriminant_bounds_cm_field E H).2`. Rewrite using `[hrd, ← Real.log_sqrt (by norm_num)]`. Conclude with `Real.log_le_log (Real.sqrt_pos.2 (by norm_num)) ((Real.sqrt_le_sqrt h7).trans h1)`. Introduce `n hn`. Take `⟨ℓ, rfl⟩ : ∃ ℓ : Nat.Primes, (ℓ : ℕ) = n` from `⟨⟨n, hbp n hn⟩, rfl⟩`.
+
+Rewrite using `[extendFromPrimes_coe, extendFromPrimes_coe]`. Use `⟨div_nonneg (div_nonneg (hw0 ℓ) hnE.le) (hlog ℓ).le, ?_⟩` and prove the remaining obligations. Establish `hk : ∀ κ' : F' →+* ℂ_[ℓ], |N'.fin ℓ κ' - (N.ext ι).fin ℓ κ'| ≤ ((p + q : ℕ) : ℝ) * (cP ℓ * Real.log (ℓ : ℕ) - logIdeal ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)))` using `fun κ' => by`. Take `⟨a, ha, ha0, -, e⟩` from `GlobalTheory.T.padic_logIdeal_max_element E ℓ ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) ((κ'.comp f).injective.comp RingOfIntegers.coe_injective) differentIdeal_ne_bot`. Rewrite using `[e, RingHom.comp_apply, RingHom.comp_apply, hf]`.
+
+Conclude with `(hl ℓ κ').2 hn a ha ha0`. Establish `hfib` using `GlobalTheory.T.sum_embeddings_base_change E F' ℂ_[ℓ] f fun j => logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))`. Establish `hs : |N'.finSum ℓ - (N.ext ι).finSum ℓ| ≤ ((p + q : ℕ) : ℝ) * (Module.finrank ℚ F' * (cP ℓ * Real.log (ℓ : ℕ)) - ∑ κ' : F' →+* ℂ_[ℓ], logIdeal ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)))`. Simplify using `only [LogNorms.finSum]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun κ' _ => hk κ').trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul]`. Establish `hS : ∑ κ' : F' →+* ℂ_[ℓ], logIdeal ((κ'.comp f).comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) = -(Module.finrank ℚ F' * (w ℓ / Module.finrank ℚ E))`. Apply `mul_left_cancel₀ hnE.ne'` to reduce the goal to its premises. Rewrite using `[hfib]`.
+
+Simplify using `only [w]`. Clear the denominators using the available nonvanishing facts. Rewrite `hs` using `[hS]`. Simplify using `only [g]`. Rewrite using `[abs_div, abs_neg, abs_of_pos hn', div_le_iff₀ hn']`.
+
+Use `hs.trans (le_of_eq ?_)` and prove the remaining obligations. Use `(hlog ℓ).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hBs]`.
+
+Simplify using `only [extendFromPrimes_coe]`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.different_ideal_log_sum_root_discriminant E`. Establish `hwf : (Function.support w).Finite` using `hfin.subset fun ℓ hℓ => fun h => hℓ (by simp only [w]; rw [h, neg_zero])`. Establish `hws : ∑ᶠ ℓ, w ℓ = Module.finrank ℚ E * Real.log (rootDiscr E)`. Simplify using `only [w]`.
+
+Rewrite using `[finsum_neg_distrib, hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ∑ ℓ ∈ B, w ℓ ≤ ∑ᶠ ℓ, w ℓ`. Rewrite using `[finsum_eq_sum_of_support_subset w (s := B ∪ hwf.toFinset) (fun ℓ hℓ => by simp [hℓ])]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left fun ℓ _ _ => hw0 ℓ`.
+
+Rewrite using `[Finset.sum_congr rfl fun ℓ _ => div_mul_cancel₀ _ (hlog ℓ).ne', ← Finset.sum_div, div_le_iff₀ hnE, hrd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numerics : Numerics := by
   intro E _ _ _ H p q F F' _ _ _ _ ι σ N r bad hσ h2 hbp hAd hdeg hloc
   classical

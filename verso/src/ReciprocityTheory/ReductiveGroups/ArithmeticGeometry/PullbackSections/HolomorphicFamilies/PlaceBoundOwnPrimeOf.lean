@@ -6,6 +6,13 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj
 
+/- English proof (translation)
+Establish `hg` using `Nat.gcd_eq_gcd_ab a b`. Establish `h1 : ((Nat.gcd a b : ℕ) : ℤ) = 1` using `by rw [hab]; rfl`. Establish `e : (1 : 𝓞 K) = (a : 𝓞 K) * ((Nat.gcdA a b : ℤ) : 𝓞 K) + (b : 𝓞 K) * ((Nat.gcdB a b : ℤ) : 𝓞 K)`. Establish `: ((1 : ℤ) : 𝓞 K) = (((a : ℤ) * Nat.gcdA a b + (b : ℤ) * Nat.gcdB a b : ℤ) : 𝓞 K)`. Rewrite using `[← hg, h1]`.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hone : (1 : 𝓞 K) ∈ la.asIdeal`. Rewrite using `[e]`. Conclude with `la.asIdeal.add_mem (la.asIdeal.mul_mem_right _ ha) (la.asIdeal.mul_mem_right _ hb)`.
+
+Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hone)`.
+-/
 theorem not_both_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {a b : ℕ}
     (hab : Nat.Coprime a b) (ha : (a : 𝓞 K) ∈ la.asIdeal) (hb : (b : 𝓞 K) ∈ la.asIdeal) : False := by
   have hg := Nat.gcd_eq_gcd_ab a b
@@ -20,6 +27,11 @@ theorem not_both_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectru
     exact la.asIdeal.add_mem (la.asIdeal.mul_mem_right _ ha) (la.asIdeal.mul_mem_right _ hb)
   exact la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hone)
 
+/- English proof (translation)
+Distinguish the cases in `hp : (p : K) = 0`. Simplify using `[vLa, hp]`. Unfold `vLa`. Establish `e : (p : K) = ((p : 𝓞 K) : K)` using `by simp`. Rewrite `hp`, the goal using `[e]`.
+
+Establish `h1` using `la.valuation_le_one (K := K) (p : 𝓞 K)`. Establish `h2 : (la.valuation K) ((p : 𝓞 K) : K) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hp`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr h1`. Rewrite `h3` using `[WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vLa_nat_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) :
     0 ≤ vLa la (p : K) := by
   by_cases hp : (p : K) = 0

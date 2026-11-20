@@ -12,6 +12,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.BcLie GlobalTheory.CovTest GlobalTheory.Mean4O GlobalTheory.Cartier GlobalTheory.TrueCx
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `hA : (R.submatrix σ id).BlockTriangular id` using `fun a i h => hR a i h`. Establish `e (cf : Fin m → K) (j) : (R.submatrix σ id *ᵥ cf) j = (R *ᵥ cf) (σ j)` using `rfl`. Establish `hdet : IsUnit (R.submatrix σ id).det`. Rewrite using `[det_of_upperTriangular hA]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => hd k).isUnit`.
+
+Use `invertibleOfIsUnitDet _ hdet` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Take `⟨e1, -⟩` from `Guard.tri_mulVec (blockTriangular_inv_of_blockTriangular hA) (i := b) (cf := Pi.single b 1) (fun k hk => Pi.single_eq_of_ne hk.ne' _)`. Establish `e3 : R.submatrix σ id *ᵥ ((R.submatrix σ id)⁻¹ *ᵥ Pi.single b 1) = Pi.single b 1`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`.
+
+Establish `e2` using `(Guard.tri_mulVec hA e1).2`. Rewrite `e2` using `[e3, Pi.single_eq_same]`. Use `⟨_, right_ne_zero_of_mul_eq_one e2.symm, e1, fun j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `hσ j`. Rewrite using `[← e, e3]`.
+
+Distinguish the cases in `h : j = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[← norm_inv, ← eq_inv_of_mul_eq_one_left e2.symm]`.
+
+Both sides reduce to the same expression. Introduce and unpack `_ ⟨cf, h0, h1, h2, rfl⟩`. Establish `h3` using `h2 (σ b)`. Rewrite `h3` using `[← e, (Guard.tri_mulVec hA h1).2, norm_mul]`. Rewrite using `[← one_div, le_div_iff₀ (norm_pos_iff.2 h0)]`.
+
+Conclude with `h3`.
+-/
 private theorem lin_key {K : Type} [NormedField K] {m : ℕ} (σ : Fin m → Fin m) (hσ : Function.Surjective σ)
     {R : Matrix (Fin m) (Fin m) K} (hR : IsTri (R.submatrix σ id)) (hd : ∀ a, R (σ a) a ≠ 0) (b : Fin m) :
     IsLeast {r : ℝ | ∃ cf : Fin m → K, cf b ≠ 0 ∧ (∀ k, b < k → cf k = 0) ∧ (∀ j, ‖(R *ᵥ cf) j‖ ≤ 1) ∧ r = ‖cf b‖⁻¹}
@@ -42,6 +55,13 @@ private theorem lin_key {K : Type} [NormedField K] {m : ℕ} (σ : Fin m → Fin
     rw [← one_div, le_div_iff₀ (norm_pos_iff.2 h0)]
     exact h3
 
+/- English proof (translation)
+Consider the cases of `dual`. Use `invertibleOfIsUnitDet _ hQ` as an intermediate fact. Establish `hA : Q.BlockTriangular id` using `fun a i hi => h a i hi`. Establish `hB` using `blockTriangular_inv_of_blockTriangular hA`. Use `⟨fun a i hi => hB hi, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(Guard.tri_mulVec hB (i := a) (cf := fun k => Q k a) (fun k hk => hA hk)).2`. Establish `h2 : (Q⁻¹ *ᵥ fun k => Q k a) a = (Q⁻¹ * Q) a a` using `rfl`. Rewrite `h1` using `[h2, nonsing_inv_mul _ hQ, one_apply_eq]`. Simplify `h1.symm` using `[pos, lieMat]`. Use `⟨fun a i hi => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `h i.rev a.rev (Fin.rev_lt_rev.2 hi)` as an intermediate fact. Simplify `this` using `[pos, lieMat]`. Use `hd a` as an intermediate fact. Simplify using `only [pos, lieMat, cond_true, transpose_apply] at this ⊢`. Rewrite using `[_root_.zpow_neg_one, inv_mul_cancel₀ this]`.
+-/
 private theorem lin_lie {K : Type} [Field K] {m : ℕ} (dual : Bool) {Q : Matrix (Fin m) (Fin m) K} (hQ : IsUnit Q.det)
     (h : IsTri ((lieMat dual Q).submatrix (pos dual) id)) (hd : ∀ a, lieMat dual Q (pos dual a) a ≠ 0) :
     IsTri (Q⁻¹.submatrix (pos dual) id) ∧ ∀ a,
@@ -62,6 +82,11 @@ private theorem lin_lie {K : Type} [Field K] {m : ℕ} (dual : Bool) {Q : Matrix
       simp only [pos, lieMat, cond_true, transpose_apply] at this ⊢
       rw [_root_.zpow_neg_one, inv_mul_cancel₀ this]
 
+/- English proof (translation)
+Rewrite using `[← (lin_key σ hσ hR hd b).csInf_eq, grNorm]`. Use `congr 1`. Use extensionality with `r`. Use `exists_congr fun cf => and_congr_right fun _ => and_congr_right fun _ => and_congr_left fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, hc⟩`. Conclude with `(hΛ _ w (tanLinG u' hu' u R cf w h hc)).1 hw`. Introduce `hc`. Take `⟨w, -, hw⟩` from `Guard.exists_comb hu cf`. Conclude with `⟨w, (hΛ _ w (tanLinG u' hu' u R cf w h hw)).2 hc, hw⟩`.
+-/
 private theorem gr_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {K : Type} [NontriviallyNormedField K] {x : Sp K ⟶ X}
     {Λ : Set (Sp (DualNumber K) ⟶ t.G.left)} {m : ℕ} {u u' : Fin m → (Sp (DualNumber K) ⟶ t.G.left)}
@@ -82,6 +107,13 @@ private theorem gr_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
     obtain ⟨w, -, hw⟩ := Guard.exists_comb hu cf
     exact ⟨w, (hΛ _ w (tanLinG u' hu' u R cf w h hw)).2 hc, hw⟩
 
+/- English proof (translation)
+Establish `hW : ⊤ ≤ yt ⁻¹ᵁ (L.U (k PUnit.unit) ⊓ L.U (k' PUnit.unit))` using `le_inf_pre h h'`. Establish `hb` using `Glue.below_mem N hy hW`. Establish `hb' : below y.1 ∈ (L.pull N.j).U k ⊓ (L.pull N.j).U k'` using `⟨Set.mem_iInter.2 fun _ => hb.1, Set.mem_iInter.2 fun _ => hb.2⟩`. Establish `l : (L.pull N.j).U k ⊓ (L.pull N.j).U k' ≤ N.j ⁻¹ᵁ (L.U (k PUnit.unit) ⊓ L.U (k' PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `hp : ((L.pull N.j).g k k').val = resG Y.X l (N.j.app _ (L.g (k PUnit.unit) (k' PUnit.unit)).val)`.
+
+Establish `: (L.pull N.j).g k k' = res l (pullU N.j _ (L.g (k PUnit.unit) (k' PUnit.unit)))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `e` using `hs k k' (gen_mem hb')`. Rewrite `e` using `[hp, fnOf_resG]`. Rewrite using `[e, mul_div_cancel_right₀ _ (s k').ne_zero]`. Conclude with `⟨regAt_fnOf (U := N.j ⁻¹ᵁ (L.U (k PUnit.unit) ⊓ L.U (k' PUnit.unit))) hb _ _, Glue.w_le_one N hy hW _ _⟩`.
+-/
 private theorem w_div_le {F : Type} [Field F] [NumberField F] {Y : Var F} (N : GlobalTheory.TrueGeo.Model Y) {L : LB N.X}
     {s : (L.pull N.j).ι → Y.Fnˣ} (hs : Cartier.IsRatSec (L.pull N.j) s) {v : HeightOneSpectrum (𝓞 F)} {ε : Ext v}
     {y : AlgPt Y} {yt : Sp ε.O ⟶ N.X} (hy : spMap ε.O.subtype ≫ yt = y.1 ≫ N.j) (k k' : (L.pull N.j).ι)
@@ -105,6 +137,11 @@ private theorem w_div_le {F : Type} [Field F] [NumberField F] {Y : Var F} (N : G
   rw [e, mul_div_cancel_right₀ _ (s k').ne_zero]
   exact ⟨regAt_fnOf (U := N.j ⁻¹ᵁ (L.U (k PUnit.unit) ⊓ L.U (k' PUnit.unit))) hb _ _, Glue.w_le_one N hy hW _ _⟩
 
+/- English proof (translation)
+Take `⟨a, a'⟩` from `w_div_le N hs hy k k' h h'`. Take `⟨b, b'⟩` from `w_div_le N hs hy k' k h' h`. Use `⟨a, le_antisymm a' ?_⟩` and prove the remaining obligations. Establish `e` using `CutModel.valAt_mul y.1 a b`. Rewrite `e` using `[div_mul_div_cancel₀ (s k').ne_zero, div_self (s k).ne_zero, ← map_one (algebraMap (Y.X.presheaf.stalk (below y.1)) Y.X.functionField), CutModel.valAt_algebraMap, map_one]`.
+
+Establish `e'` using `congrArg ε.w e`. Rewrite `e'` using `[map_one, map_mul]`. Rewrite using `[e']`. Conclude with `mul_le_of_le_one_right (ε.w.nonneg _) b'`.
+-/
 private theorem w_div_eq {F : Type} [Field F] [NumberField F] {Y : Var F} (N : GlobalTheory.TrueGeo.Model Y) {L : LB N.X}
     {s : (L.pull N.j).ι → Y.Fnˣ} (hs : Cartier.IsRatSec (L.pull N.j) s) {v : HeightOneSpectrum (𝓞 F)} {ε : Ext v}
     {y : AlgPt Y} {yt : Sp ε.O ⟶ N.X} (hy : spMap ε.O.subtype ≫ yt = y.1 ≫ N.j) (k k' : (L.pull N.j).ι)
@@ -121,6 +158,9 @@ private theorem w_div_eq {F : Type} [Field F] [NumberField F] {Y : Var F} (N : G
   rw [e']
   exact mul_le_of_le_one_right (ε.w.nonneg _) b'
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Simplify using `[lnStep, lat]`.
+-/
 private theorem step_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {X : Scheme.{0}} (t : SAB H X) {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K]
     (x : Sp K ⟶ X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber K) ⟶ t.G.left)) (p : ℕ) {b : Bool}
@@ -129,6 +169,35 @@ private theorem step_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   subst hb
   simp [lnStep, lat]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C N τ M dual A fl i s kind Ro w hw hL hF hS hLat hk v _ ε y yt k hy hU`. Take `⟨hp, -, hlog⟩` from `ioOf_spec F v ε`. Take `⟨ch, hx, hch⟩` from `(UpperTheory.exists_adapted_flag_charts N.X M _ fl).1 (yt (IsLocalRing.closedPoint ε.O))`. Establish `hc : ⊤ ≤ yt ⁻¹ᵁ ch.U` using `(Scheme.preimage_eq_top_of_closedPoint_mem yt hx).ge`. Establish `hb` using `Glue.below_mem N hy hc`.
+
+Take `⟨t0, ht0⟩` from `hch i`. Establish `hfr` using `(UpperTheory.exists_adapted_flag_charts N.X M _ fl).2 ch hch i t0 ht0`. Establish `hs` using `hS.2 ch hch (gen_le N.j hb) t0 ht0 hfr`. Take `⟨a1, a2⟩` from `w_div_eq N hS.1 hy k (fun _ => (⟨ch.U, _, hfr⟩ : Chart (fl.gr i) 1)) hU hc`. Generalize the expression as in `s (fun _ => (⟨ch.U, _, hfr⟩ : Chart (fl.gr i) 1)) = sg at hs a1 a2`.
+
+Take `⟨φ', f', hf'⟩` from `hL.2 ch _ hb`. Apply the tactic sequence `have hn : (cond dual (-1) 1 : ℤ) ≠ 0 := by cases dual <;> simp`. Establish `hexp : expo Dw w = Pi.single (⟨τ, pos dual i⟩ : Letter Dw) (cond dual (-1) 1)`. Use function extensionality and compare the values at `x`. Rewrite using `[hw, expo, Finsupp.sum_single_index (by simp)]`.
+
+Simplify using `[letterOf, Pi.single_apply, eq_comm]`. Introduce `φ f t ψ hψ hT hE`. Establish `hsum : (w.sum fun a n => (n : ℝ) * lnStep Z.t (spMap ψ ≫ stalkPt C.Y (below y.1) ≫ C.π ≫ genι Z) (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) (resP v) (a.1 (resP v)) a.2.2) = ((cond dual (-1) 1 : ℤ) : ℝ) * Real.log (grNorm Z.t (spMap ψ ≫ stalkPt C.Y (below y.1) ≫ C.π ≫ genι Z) (latDR …`. Rewrite using `[hw]`. Conclude with `(Finsupp.sum_single_index (by simp)).trans (congrArg _ (step_eq _ _ _ _ (hk _) τ (pos dual i)))`.
+
+Rewrite using `[hsum]`. Substitute `hψ` using the available equality. Take `rfl : φ' = φ` from `RingHom.ext fun a => toFn_injective _ ((RingHom.congr_fun hf'.1 a).symm.trans (RingHom.congr_fun hT.2.1 a))`. Take `⟨h1, h2⟩` from `UpperTheory.chart_frame_divisor E H Dw l Xo c O β Z F e C τ N.X N.j M dual A fl hL hF ch hch _ hb φ' f f' t hT hf'`. Establish `hQ` using `f.isUnit_det_co f' τ`.
+
+Establish `hQ' : IsUnit ((f.co f' τ).map (valP ε y)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hQ.map _`. Establish `hm` using `lieMat_map dual (valP ε y) hQ`. Establish `hne : ∀ a, valP ε y (lieMat dual (f.co f' τ) (pos dual a) a) ≠ 0` using `fun a => ((h2 a).1.map _).ne_zero`.
+
+Take `⟨h3, h4⟩` from `lin_lie dual hQ' (fun a j h => by`. Rewrite using `[hm]; exact (congrArg (valP ε y) (h1 a j h)).trans (map_zero _)) (fun a => by rw [hm]; exact hne a)`. Establish `hR : ((f.co f' τ).map (valP ε y))⁻¹ = (f'.co f τ).map (valP ε y)` using `inv_eq_left_inv (by`. Rewrite using `[← Matrix.map_mul, EigFrame.co_mul, EigFrame.co_self, Matrix.map_one _ (map_zero _) (map_one _)])`. Establish `h5` using `gr_eq (fun j => FactorDepth.isTanAtG_map Z.t (valP ε y) (f.tan τ j)) (fun j => FactorDepth.isTanAtG_map Z.t (valP ε y) (f'.tan τ j)) (hLat ch v ε y yt hy hc φ' f' hf') (pos dual) (fun a => ⟨_, pos_pos dual a⟩) (R := ((f.co f' τ).map (valP ε y))⁻¹) (fun j => by rw [hR]; exact LatD …`.
+
+Use `h4 (pos dual a)` as an intermediate fact. Rewrite `this` using `[pos_pos, h0, _root_.zero_zpow _ hn, zero_mul]`. Conclude with `zero_ne_one this) (pos dual i)`. Establish `h6` using `congrArg (fun z => Real.log ‖z‖) (h4 i)`. Establish `h7` using `left_ne_zero_of_mul_eq_one (h4 i)`.
+
+Rewrite `h6` using `[hm, map_apply]`. Simplify using `only [norm_mul, norm_one, Real.log_one] at h6`. Rewrite `h6` using `[Real.log_mul (norm_ne_zero_iff.2 h7) (norm_ne_zero_iff.2 (hne i)), norm_zpow, Real.log_zpow]`. Rewrite using `[h5, pos_pos, eq_neg_of_add_eq_zero_left h6]`. Establish `hP : (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw w x) = t τ (pos dual i) ^ (cond dual (-1) 1 : ℤ)`.
+
+Rewrite using `[hexp, Finset.prod_eq_single ⟨τ, pos dual i⟩ (fun b _ hb => by simp [hb]) (by simp), Pi.single_eq_same]`. Establish `hD : divOf C (expo Dw w) = (cond dual (-1) 1 : ℤ) • C.gr τ (pos dual i)`. Rewrite using `[hexp, divOf, Finset.sum_eq_single ⟨τ, pos dual i⟩ (fun b _ hb => by simp [hb]) (by simp), Pi.single_eq_same]`. Establish `hg : (divOf C (expo Dw w)).IsEqn (below y.1) (eqn (divOf C (expo Dw w)) (below y.1))` using `(CartierDiv.exists_isEqn _ _).choose_spec`. Establish `hu` using `hg.iff_unitAt.1 (hD ▸ (hE τ (pos dual i)).zsmul _)`.
+
+Take `⟨⟨V, hV⟩, h8⟩` from `h2 i`. Rewrite using `[hP]`. Generalize the expression as in `t τ (pos dual i) ^ (cond dual (-1) 1 : ℤ) = T at h8 hu ⊢`. Generalize the expression as in `eqn (divOf C (expo Dw w)) (below y.1) = g at hu ⊢`. Rewrite `h8`, the goal using `[← hV]`.
+
+Establish `hV0 : toFn (below y.1) (V : C.Y.X.presheaf.stalk (below y.1)) * toFn (below y.1) (V⁻¹ : _ˣ) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `e1 : ((g⁻¹ * s k : C.Y.Fnˣ) : C.Y.Fn) = (T : C.Y.Fn) / g * ((s k : C.Y.Fn) / sg * toFn (below y.1) (V⁻¹ : _ˣ))`. Establish `: (sg : C.Y.Fn) = T * toFn (below y.1) (V⁻¹ : _ˣ)`. Take the linear combination `(-(sg : C.Y.Fn)) * hV0 - sg * toFn (below y.1) (V⁻¹ : _ˣ) * h8 + T * toFn (below y.1) (V⁻¹ : _ˣ) * hs`.
+
+Establish `h9` using `sg.ne_zero`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, mul_left_comm, div_mul_eq_mul_div (T : C.Y.Fn), ← this]`. Clear the denominators using the available nonvanishing facts. Establish `r1 : RegAt (below y.1) (toFn (below y.1) (V⁻¹ : _ˣ))` using `⟨_, rfl⟩`. Establish `n1 : valAt y.1 ((T : C.Y.Fn) / g) ≠ 0` using `fun h => (CutModel.valAt_eq_zero_iff y.1 hu.regAt).1 h hu`.
+
+Establish `n2 : (Scheme.stalkClosedPointTo y.1).hom (V⁻¹ : _ˣ) = ((Scheme.stalkClosedPointTo y.1).hom V)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Establish `n3 : (Scheme.stalkClosedPointTo y.1).hom V ≠ 0` using `(V.isUnit.map _).ne_zero`. Rewrite using `[e1, CutModel.valAt_mul y.1 hu.regAt (a1.mul r1), CutModel.valAt_mul y.1 a1 r1, CutModel.valAt_algebraMap, n2, map_mul, map_mul, a2, one_mul, Real.log_mul (ε.w.ne_zero n1) (ε.w.ne_zero (inv_ne_zero n3)), map_inv₀, Real.log_inv, hlog ((Scheme.stalkClosedPointTo y.1).hom V), Units. …`. Both sides reduce to the same expression.
+-/
 private theorem core :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (N : GlobalTheory.TrueGeo.Model C.Y) (τ : E →+* ℂ) (M : N.X.Modules) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) C.Y.Fn) (fl : Vert.Flag M (Dw.mult τ)) (i : Fin (Dw.mult τ)) (s : ((fl.root i).pull N.j).ι → C.Y.Fnˣ) (kind : ℕ → Bool) (Ro : Option ℝ) (w : Pad.Sym E →₀ ℤ), w = Finsupp.single (kind, Ro, Sum.inl (τ, (pos dual i : ℕ))) (cond dual (-1) 1) → IsLie C.f0 τ N.j dual A → IsFlag (genericPt C.Y ≫ N.j) dual A fl → IsGrSec N.j dual A fl i s → IsLat C.f0 τ N.j dual A → (∀ p, kind p = false) → ∀ (v : HeightOneSpectrum (𝓞 F)) [Fact (resP v).Prime] (ε : Ext v) (y : AlgPt C.Y) (yt : Sp ε.O ⟶ N.X) (k : ((fl.root i).pull N.j).ι), spMap ε.O.subtype ≫ yt = y.1 ≫ N.j → ⊤ ≤ yt ⁻¹ᵁ (fl.root i).U (k PUnit.unit) →
       ∀ (φ : c.F →+* C.Y.X.presheaf.stalk (below y.1)) (f : StalkFrame C.π (below y.1) φ)
@@ -226,6 +295,9 @@ private theorem core :
     ← div_eq_mul_inv, mul_neg]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C N τ M dual A fl i s kind Ro w hw hL hF hS hLat hk v ε y yt k hy hU`. Establish `spec` using `(C.gr_spec (below y.1)).choose_spec.choose_spec.choose_spec`. Conclude with `(dif_pos (residueCharacteristic_prime v)).trans (@core E _ _ _ H Dw l Xo c O _ β Z F _ _ e C N τ M dual A fl i s kind Ro w hw hL hF hS hLat hk v (_) ε y yt k hy hU _ _ _ _ rfl spec.1 spec.2)`.
+-/
 theorem UpperTheory.true_model_chart_divisor_alt :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (N : GlobalTheory.TrueGeo.Model C.Y) (τ : E →+* ℂ) (M : N.X.Modules) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) C.Y.Fn) (fl : Vert.Flag M (Dw.mult τ)) (i : Fin (Dw.mult τ)) (s : ((fl.root i).pull N.j).ι → C.Y.Fnˣ) (kind : ℕ → Bool) (Ro : Option ℝ) (w : Pad.Sym E →₀ ℤ), w = Finsupp.single (kind, Ro, Sum.inl (τ, (pos dual i : ℕ))) (cond dual (-1) 1) → IsLie C.f0 τ N.j dual A → IsFlag (genericPt C.Y ≫ N.j) dual A fl → IsGrSec N.j dual A fl i s → IsLat C.f0 τ N.j dual A → (∀ p, kind p = false) → ∀ (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v) (y : AlgPt C.Y) (yt : Sp ε.O ⟶ N.X) (k : ((fl.root i).pull N.j).ι), spMap ε.O.subtype ≫ yt = y.1 ≫ N.j → ⊤ ≤ yt ⁻¹ᵁ (fl.root i).U (k PUnit.unit) → lgOf C w v ε y = Real.log (ε.w (valAt y.1 (((eqn (divOf C (expo Dw w)) (below y.1))⁻¹ * s k : C.Y.Fnˣ) : C.Y.Fn))) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e C N τ M dual A fl i s kind Ro w hw hL hF hS hLat hk v ε y yt k hy hU

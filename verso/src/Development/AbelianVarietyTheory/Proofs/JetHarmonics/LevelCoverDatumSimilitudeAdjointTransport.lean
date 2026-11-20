@@ -12,6 +12,11 @@ namespace GlobalTheory.DatumCoverAdjoint
 
 open GlobalTheory.DatumInverseCharacter
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨b, hb⟩` from `hφ a`. Establish `h1 : φ b ∈ Submodule.map φ (Submodule.span R (x '' s) ⊔ (K • ⊤ : Submodule R M))` using `Submodule.mem_map_of_mem (by rw [h]; exact Submodule.mem_top)`. Rewrite `h1` using `[Submodule.map_sup, Submodule.map_span, Set.image_image, Submodule.map_smul'']`.
+
+Establish `h2 : φ b ∈ Submodule.span R ((fun i => φ (x i)) '' s) ⊔ (K • ⊤ : Submodule R M)` using `SetLike.le_def.1 (sup_le_sup le_rfl (Submodule.smul_mono le_rfl le_top)) h1`. Use `sub_mem h2 (Submodule.mem_sup_right hb)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem span_image_sup_eq_top {R M J : Type} [CommRing R] [AddCommGroup M] [Module R M] (K : Ideal R)
     (φ : M →ₗ[R] M) (hφ : ∀ a, ∃ b, φ b - a ∈ (K • ⊤ : Submodule R M)) (x : J → M) (s : Set J)
     (h : Submodule.span R (x '' s) ⊔ (K • ⊤ : Submodule R M) = ⊤) :
@@ -27,6 +32,31 @@ theorem span_image_sup_eq_top {R M J : Type} [CommRing R] [AddCommGroup M] [Modu
   have := sub_mem h2 (Submodule.mem_sup_right hb)
   rwa [sub_sub_cancel] at this
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c n d hM hb ph ψ x₀ hpin g hg`. Take `⟨-, -, -, -, -, hφ⟩` from `hpin`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hM₁ : 0 < l.M` using `by have := l.three_le; omega`. Establish `hpd : 0 < d.pd` using `Nat.pos_of_mul_pos_left (hM ▸ hM₂)`.
+
+Establish `hIJ` using `half_prod hM hb`. Establish `hspan : ∀ (l' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H), ((l'.M : ℕ) : 𝓞 E) ∈ l'.Mb * l'.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `fun l' => by`. Rewrite using `[l'.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hbI : d.l₂.Mb ≤ d.I` using `hb ▸ (Ideal.mul_le_inf.trans inf_le_right)`.
+
+Establish `hbM : d.l₂.Mb ≤ l.Mb` using `hb ▸ (Ideal.mul_le_inf.trans inf_le_left)`. Establish `hmb : ((d.l₂.M : ℕ) : 𝓞 E) ∈ d.l₂.Mb` using `(Ideal.mul_le_inf.trans inf_le_left) (hspan d.l₂)`. Establish `hmJ : ((d.l₂.M : ℕ) : 𝓞 E) ∈ Mfr l` using `Ideal.map_mono hbM ((Ideal.mul_le_inf.trans inf_le_right) (hspan d.l₂))`. Take `⟨g', hg'⟩` from `g.inv d.l₂.M hM₂`. Use `set f := g.f d.l₂.M with hf`.
+
+Take `⟨σ, hσ⟩` from `exists_quot_equiv Dw hmb f g' hg'`. Take `⟨fa, hfa⟩` from `exists_adjoint Dw f`. Take `⟨ga, hga⟩` from `exists_adjoint Dw g'`. Establish `hsurj : ∀ a, ∃ b, ga b - a ∈ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)` using `fun a => ⟨fa a, mem_of_modN Dw hmJ (modN_of_dvd Dw hM₂ fun v => by`. Rewrite using `[map_sub, LinearMap.sub_apply, hga, hfa, ← map_sub]`.
+
+Conclude with `dvd_of_modN Dw a (hg' v).2)⟩`. Use `⟨σ.toEquiv, hσ, fun rk x0 hx => ⟨fun b => ga (x0 b), span_image_sup_eq_top (Mfr l) ga hsurj x0 _ hx, fun q => ?_⟩⟩` and prove the remaining obligations. Establish `hq : ∀ b, f (levRep (σ.toEquiv.symm (q b))) - levRep (q b) ∈ (d.l₂.Mb • ⊤ : Submodule (𝓞 E) Dw.La)`. Introduce `b`. Rewrite using `[← Submodule.Quotient.eq, ← hσ, levRep_spec, levRep_spec]`.
+
+Conclude with `σ.apply_symm_apply _`. Establish `hz : zetaM c ^ pairL (l` using `l) x0 (fun b => levRep (σ.toEquiv.symm (q b))) = zetaM c ^ pairL (l := l) (fun b => ga (x0 b)) (fun b => levRep (q b)) := by`. Use `zpow_congr hM₁ (root_pow c dvd_rfl) ?_` and prove the remaining obligations. Unfold `pairL`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hga, g'.map_smul, ← map_sub, ← smul_sub]`. Use `dvd_right Dw l.prod (cSep_mem l) _ ?_` and prove the remaining obligations. Use `set a := levRep (σ.toEquiv.symm (q b))`. Establish `h1 : g' (f a - levRep (q b)) ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)`.
+
+Use `Submodule.mem_map_of_mem (f := g') (hq b)` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono hbM le_top this`. Establish `h2 : g' (f a) - a ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)` using `mem_of_modN Dw (hbM hmb) (hg' a).1`. Use `sub_mem h1 h2` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Establish `hroot` using `root_pow d.c₂ (N := d.pd) (hM ▸ Dvd.intro_left _ rfl)`. Establish `hδ : d.eF (d.φδ (fun b => σ.toEquiv.symm (q b))) = d.eF (d.φδ q)`.
+
+Rewrite using `[hφ, hφ]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Use `congr 1`. Use `zpow_congr hpd hroot ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.dvd_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← smul_sub]`. Use `dvd_right Dw hIJ (cHalf_mem d.I) _ ?_` and prove the remaining obligations. Use `sub_mem (Submodule.smul_mono hbI le_rfl (hq b)) (hg (levRep (σ.toEquiv.symm (q b))))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Unfold `DeltaDat.w`. Rewrite using `[hz, map_mul, map_mul, hδ]`.
+-/
 theorem datum_adjoint : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.l₂.M = l.M * d.pd → d.l₂.Mb = l.Mb * d.I → ∀ (ph : (Fin n → LaJ Xo c d) → c.F) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (x₀ : Fin n → LaJ Xo c d), d.PhiPin ph ψ x₀ → ∀ g : Sim Dw, (∀ a, g.f d.l₂.M a - a ∈ d.I • (⊤ : Submodule (𝓞 E) Dw.La)) → ∃ σq : LevQ Dw d.l₂ ≃ LevQ Dw d.l₂, (∀ a, σq (Submodule.Quotient.mk a) = Submodule.Quotient.mk (g.f d.l₂.M a)) ∧ ∀ (rk : Bool) (x0 : Fin n → Dw.La), AdmX (l := l) rk x0 → ∃ x0' : Fin n → Dw.La, AdmX (l := l) rk x0' ∧ ∀ q : Fin n → LevQ Dw d.l₂, d.w x0 (fun b => σq.symm (q b)) = d.w x0' q := by
   intro E _ _ _ H Dw l Xo c n d hM hb ph ψ x₀ hpin g hg
   obtain ⟨-, -, -, -, -, hφ⟩ := hpin

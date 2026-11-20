@@ -6,6 +6,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Set `j` to `IsScalarTower.toAlgHom ℂ K L`. Set `e : B →+* B.map j` to `(B.equivMapOfInjective j j.toRingHom.injective).toAlgHom.toRingHom`. Use `letI : Algebra B (B.map j) := e.toAlgebra`. Use `haveI : IsScalarTower B (B.map j) L := .of_algebraMap_eq fun a => rfl`. Use `haveI : Algebra.IsIntegral B (B.map j) := ⟨fun b => by`.
+
+Take `⟨a, rfl⟩` from `(B.equivMapOfInjective j j.toRingHom.injective).surjective b`. Conclude with `isIntegral_algebraMap (x := a)⟩`. Conclude with `⟨fun h => isIntegral_trans y h, fun h => h.tower_top⟩`.
+-/
 private theorem isIntegral_map_iff {K L : Type} [Field K] [Field L] [Algebra ℂ K] [Algebra ℂ L] [Algebra K L]
     [IsScalarTower ℂ K L] (B : Subalgebra ℂ K) (y : L) :
     IsIntegral (B.map (IsScalarTower.toAlgHom ℂ K L)) y ↔ IsIntegral B y := by
@@ -18,6 +23,13 @@ private theorem isIntegral_map_iff {K L : Type} [Field K] [Field L] [Algebra ℂ
     exact isIntegral_algebraMap (x := a)⟩
   exact ⟨fun h => isIntegral_trans y h, fun h => h.tower_top⟩
 
+/- English proof (translation)
+Use `letI : Algebra Z.functionField Y.functionField := j.toRingHom.toAlgebra`. Use `letI : Algebra F Y.functionField := ((algebraMap Z.functionField Y.functionField).comp (algebraMap F Z.functionField)).toAlgebra`. Use `haveI : IsScalarTower ℂ Z.functionField Y.functionField := .of_algebraMap_eq fun r => (j.commutes r).symm`. Use `haveI : IsScalarTower F Z.functionField Y.functionField := .of_algebraMap_eq fun r => rfl`. Use `haveI : IsScalarTower ℂ F Y.functionField := .of_algebraMap_eq fun r => by`.
+
+Express the relevant statement in the definitionally equal form `algebraMap ℂ Y.functionField r = j (algebraMap F Z.functionField (algebraMap ℂ F r))`. Rewrite using `[← IsScalarTower.algebraMap_apply ℂ F Z.functionField, j.commutes]`. Establish `hjeq : IsScalarTower.toAlgHom ℂ Z.functionField Y.functionField = j` using `AlgHom.ext fun _ => rfl`. Establish `e : rB ℂ Y.functionField x = R2 x j`. Use function extensionality and compare the values at `I`.
+
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `IsIntegral (rA ℂ x I) y ↔ IsIntegral ((rB ℂ Z.functionField x I).map j) y`. Rewrite using `[UpperTheory.A.isIntegral_rB_iff (K := Z.functionField) x I y, ← hjeq, isIntegral_map_iff]`. Rewrite using `[← e]`. Conclude with `(UpperTheory.A.isFinCover_pull hc hK hL (fun V hV hV' g => (hj V hV hV' g).symm) hx hU).2`.
+-/
 private theorem dualNumberPoint_preimage_top_of_reduction {d : ℕ} {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ}
     [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] {c : Y ⟶ Z} (hc : c ≫ s = s') [IsFinite c] [Etale c]
     [instK : Algebra ℂ Z.functionField] [instL : Algebra ℂ Y.functionField] (hK : instK = ffAlg s) (hL : instL = ffAlg s')
@@ -45,6 +57,9 @@ private theorem dualNumberPoint_preimage_top_of_reduction {d : ℕ} {Z Y : Schem
   rw [← e]
   exact (UpperTheory.A.isFinCover_pull hc hK hL (fun V hV hV' g => (hj V hV hV' g).symm) hx hU).2
 
+/- English proof (translation)
+Introduce `d Z Y _ _ s s' _ _ hP c1 c2 h1 h2 _ _ _ _ instK instL hK hL _ _ g1 j2 g2 F _ _ _ _ _ _ _ x U hx hU`. Conclude with `dualNumberPoint_preimage_top_of_reduction h2 hK hL j2 g2 x U hx hU`.
+-/
 theorem UpperTheory.etaleCorrespondence_functionField_statement_one :
     ∀ (d : ℕ) (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] (hP : IsProjOver s) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1] [IsFinite c2] [Etale c2] [instK : Algebra ℂ Z.functionField] [instL : Algebra ℂ Y.functionField] (hK : instK = ffAlg s) (hL : instL = ffAlg s') [Algebra Z.functionField Y.functionField] [IsScalarTower ℂ Z.functionField Y.functionField] (g1 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c1 ⁻¹ᵁ V) (g : Γ(Z, V)), (Y.presheaf.germ (c1 ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c1.app V).hom g) = algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom g)) (j2 : Z.functionField →ₐ[ℂ] Y.functionField) (g2 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c2 ⁻¹ᵁ V) (g : Γ(Z, V)), j2 ((Z.presheaf.germ V (genericPoint Z) hV).hom g) = (Y.presheaf.germ (c2 ⁻¹ᵁ V) (genericPoint Y) hV').hom (c2.app V g)) (F : Type) [Field F] [Algebra ℂ F] [Algebra F Z.functionField] [Algebra F Y.functionField] [IsScalarTower ℂ F Z.functionField] [IsScalarTower F Z.functionField Y.functionField] [IsScalarTower ℂ F Y.functionField] (x : Fin (d + 1) → F) (U : Fin (d + 1) → Z.Opens) (hx : IsFinCover ℂ Z.functionField x) (hU : IsAffCover s U (rB ℂ Z.functionField x)), IsAffCover s' (fun i => c2 ⁻¹ᵁ U i) (R2 x j2) := by
   intro d Z Y _ _ s s' _ _ hP c1 c2 h1 h2 _ _ _ _ instK instL hK hL _ _ g1 j2 g2 F _ _ _ _ _ _ _ x U hx hU

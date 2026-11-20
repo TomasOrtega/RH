@@ -20,17 +20,34 @@ def hl (H : HermSp M V) (y : V) : V →ₗ[E] E where
   map_add' a b := H.h_add_left a b y
   map_smul' a x := H.h_smul_left a x y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma hl_apply (y x : V) : hl H y x = H.h x y := rfl
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, h, map_zero]`.
+-/
 lemma h_swap_zero {x y : V} (h : H.h x y = 0) : H.h y x = 0 := by
   rw [H.h_herm, h, map_zero]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]`.
+-/
 lemma h_smul_right (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+-/
 lemma h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [H.h_herm, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv x hx`. Conclude with `hv x (Submodule.subset_span hx)`. Introduce `hv x hx`. Establish `: Submodule.span E s ≤ LinearMap.ker (hl H v)` using `Submodule.span_le.2 fun y hy => h_swap_zero (hv y hy)`.
+
+Conclude with `h_swap_zero (this hx)`.
+-/
 lemma mem_perp_span (s : Set V) (v : V) :
     v ∈ H.perp (Submodule.span E s) ↔ ∀ x ∈ s, H.h v x = 0 := by
   constructor
@@ -42,27 +59,48 @@ lemma mem_perp_span (s : Set V) (v : V) :
 
 variable (Fr : LocNG.FrameD H r)
 
+/- English proof (translation)
+Unfold `HermSp.X`. Rewrite using `[mem_perp_span]`. Simplify using `[LocNG.FrameD.e]`.
+-/
 lemma mem_perpX (v : V) : v ∈ H.perp (H.X Fr.f) ↔ ∀ a, H.h v (Fr.e a) = 0 := by
   unfold HermSp.X
   rw [mem_perp_span]
   simp [LocNG.FrameD.e]
 
+/- English proof (translation)
+The claim follows from `Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`.
+-/
 lemma h_ee (a b : Fin r) : H.h (Fr.e a) (Fr.e b) = 0 :=
   Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)
 
+/- English proof (translation)
+The claim follows from `Fr.h_es a b`.
+-/
 lemma h_e_es (a b : Fin r) : H.h (Fr.e a) (Fr.es b) = if a = b then 1 else 0 := Fr.h_es a b
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, h_e_es]`. Distinguish the cases in `h : a = b`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 lemma h_es_e (a b : Fin r) : H.h (Fr.es a) (Fr.e b) = if a = b then 1 else 0 := by
   rw [H.h_herm, h_e_es]
   by_cases h : a = b
   · simp [h]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 lemma e_mem_X (a : Fin r) : Fr.e a ∈ H.X Fr.f := Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(mem_perpX Fr _).2 fun a => Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last a).ne)`.
+-/
 lemma z_perp : Fr.z ∈ H.perp (H.X Fr.f) :=
   (mem_perpX Fr _).2 fun a => Fr.h_iso _ _ (Or.inr (Fin.castSucc_lt_last a).ne)
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(mem_perpX Fr _).2 fun b => h_ee Fr a b`.
+-/
 lemma X_le_perp : H.X Fr.f ≤ H.perp (H.X Fr.f) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨a, rfl⟩
@@ -71,31 +109,55 @@ lemma X_le_perp : H.X Fr.f ≤ H.perp (H.X Fr.f) := by
 noncomputable def prL : V →ₗ[E] V :=
   LinearMap.id - ∑ a, (hl H (Fr.es a)).smulRight (Fr.e a) - ∑ a, (hl H (Fr.e a)).smulRight (Fr.es a)
 
+/- English proof (translation)
+Simplify using `[prL, LocNG.FrameD.prF, hl_apply]`.
+-/
 lemma prL_apply (v : V) : prL Fr v = Fr.prF v := by
   simp [prL, LocNG.FrameD.prF, hl_apply]
 
+/- English proof (translation)
+Rewrite using `[← hl_apply]`. Simplify using `only [LocNG.FrameD.prF, map_sub, map_sum, map_smul, hl_apply, h_ee, h_es_e]`. Simplify using the standard rewrite rules.
+-/
 lemma h_prF_e (v : V) (b : Fin r) : H.h (Fr.prF v) (Fr.e b) = 0 := by
   rw [← hl_apply]
   simp only [LocNG.FrameD.prF, map_sub, map_sum, map_smul, hl_apply, h_ee, h_es_e]
   simp
 
+/- English proof (translation)
+Rewrite using `[← hl_apply]`. Simplify using `only [LocNG.FrameD.prF, map_sub, map_sum, map_smul, hl_apply, Fr.h_ss, h_e_es]`. Simplify using the standard rewrite rules.
+-/
 lemma h_prF_es (v : V) (b : Fin r) : H.h (Fr.prF v) (Fr.es b) = 0 := by
   rw [← hl_apply]
   simp only [LocNG.FrameD.prF, map_sub, map_sum, map_smul, hl_apply, Fr.h_ss, h_e_es]
   simp
 
+/- English proof (translation)
+The claim follows from `(mem_perpX Fr _).2 (h_prF_e Fr v)`.
+-/
 lemma prF_perp (v : V) : Fr.prF v ∈ H.perp (H.X Fr.f) := (mem_perpX Fr _).2 (h_prF_e Fr v)
 
+/- English proof (translation)
+Simplify using `[LocNG.FrameD.prF, h1, h2]`.
+-/
 lemma prF_of (v : V) (h1 : ∀ a, H.h v (Fr.e a) = 0) (h2 : ∀ a, H.h v (Fr.es a) = 0) :
     Fr.prF v = v := by
   simp [LocNG.FrameD.prF, h1, h2]
 
+/- English proof (translation)
+Simplify using `[LocNG.FrameD.prF, h_ee, h_e_es]`.
+-/
 lemma prF_e (a : Fin r) : Fr.prF (Fr.e a) = 0 := by
   simp [LocNG.FrameD.prF, h_ee, h_e_es]
 
+/- English proof (translation)
+Simplify using `[LocNG.FrameD.prF, Fr.h_ss, h_es_e]`.
+-/
 lemma prF_es (a : Fin r) : Fr.prF (Fr.es a) = 0 := by
   simp [LocNG.FrameD.prF, Fr.h_ss, h_es_e]
 
+/- English proof (translation)
+Establish `: H.X Fr.f ≤ LinearMap.ker (prL Fr)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(prL_apply Fr _).trans (prF_e Fr a)`. Conclude with `(prL_apply Fr v).symm.trans (this hv)`.
+-/
 lemma prF_X {v : V} (hv : v ∈ H.X Fr.f) : Fr.prF v = 0 := by
   have : H.X Fr.f ≤ LinearMap.ker (prL Fr) := by
     refine Submodule.span_le.2 ?_
@@ -103,19 +165,31 @@ lemma prF_X {v : V} (hv : v ∈ H.X Fr.f) : Fr.prF v = 0 := by
     exact (prL_apply Fr _).trans (prF_e Fr a)
   exact (prL_apply Fr v).symm.trans (this hv)
 
+/- English proof (translation)
+Rewrite `hv` using `[mem_perpX]`. Simplify using `only [LocNG.FrameD.prF, hv, zero_smul, Finset.sum_const_zero, sub_zero, sub_sub_cancel]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (e_mem_X Fr a)`.
+-/
 lemma sub_prF {v : V} (hv : v ∈ H.perp (H.X Fr.f)) : v - Fr.prF v ∈ H.X Fr.f := by
   rw [mem_perpX] at hv
   simp only [LocNG.FrameD.prF, hv, zero_smul, Finset.sum_const_zero, sub_zero, sub_sub_cancel]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (e_mem_X Fr a)
 
+/- English proof (translation)
+Unfold `HermSp.mkW`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Both sides reduce to the same expression.
+-/
 lemma mkW_eq (x y : ↥(H.perp (H.X Fr.f))) :
     H.mkW Fr.f x = H.mkW Fr.f y ↔ (x : V) - y ∈ H.X Fr.f := by
   unfold HermSp.mkW
   rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]
   rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 lemma mkW_surj : Function.Surjective (H.mkW Fr.f) := Submodule.mkQ_surjective _
 
+/- English proof (translation)
+The claim follows from `((mkW_eq Fr _ _).2 (sub_prF Fr x.2)).symm`.
+-/
 lemma mkW_prF (x : ↥(H.perp (H.X Fr.f))) :
     H.mkW Fr.f ⟨Fr.prF x, prF_perp Fr x⟩ = H.mkW Fr.f x :=
   ((mkW_eq Fr _ _).2 (sub_prF Fr x.2)).symm
@@ -124,9 +198,17 @@ noncomputable def sec : H.Wb Fr.f →ₗ[E] V :=
   Submodule.liftQ _ ((prL Fr).comp (H.perp (H.X Fr.f)).subtype) fun x hx =>
     (prL_apply Fr _).trans (prF_X Fr hx)
 
+/- English proof (translation)
+The claim follows from `prL_apply Fr _`.
+-/
 lemma sec_mkW (x : ↥(H.perp (H.X Fr.f))) : sec Fr (H.mkW Fr.f x) = Fr.prF x :=
   prL_apply Fr _
 
+/- English proof (translation)
+Introduce `a b hab`. Take `⟨a, rfl⟩` from `mkW_surj Fr a`. Take `⟨b, rfl⟩` from `mkW_surj Fr b`. Rewrite `hab` using `[sec_mkW, sec_mkW]`. Rewrite using `[← mkW_prF Fr a, ← mkW_prF Fr b]`.
+
+Use `congr 1`. Conclude with `Subtype.ext hab`.
+-/
 lemma sec_inj : Function.Injective (sec Fr) := by
   intro a b hab
   obtain ⟨a, rfl⟩ := mkW_surj Fr a
@@ -139,6 +221,9 @@ lemma sec_inj : Function.Injective (sec Fr) := by
 noncomputable def pre (L : Submodule M.L.O (H.Wb Fr.f)) : Submodule M.L.O V :=
   (L.comap ((H.mkW Fr.f).restrictScalars M.L.O)).map ((H.perp (H.X Fr.f)).subtype.restrictScalars M.L.O)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.2, hx⟩`. Introduce and unpack `⟨hv, h⟩`. Conclude with `⟨⟨v, hv⟩, h, rfl⟩`.
+-/
 lemma mem_pre (L : Submodule M.L.O (H.Wb Fr.f)) (v : V) :
     v ∈ pre Fr L ↔ ∃ hv : v ∈ H.perp (H.X Fr.f), H.mkW Fr.f ⟨v, hv⟩ ∈ L := by
   constructor
@@ -147,11 +232,21 @@ lemma mem_pre (L : Submodule M.L.O (H.Wb Fr.f)) (v : V) :
   · rintro ⟨hv, h⟩
     exact ⟨⟨v, hv⟩, h, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mem_pre]`. Conclude with `⟨fun ⟨_, h⟩ => h, fun h => ⟨x.2, h⟩⟩`.
+-/
 lemma coe_mem_pre (L : Submodule M.L.O (H.Wb Fr.f)) (x : ↥(H.perp (H.X Fr.f))) :
     (x : V) ∈ pre Fr L ↔ H.mkW Fr.f x ∈ L := by
   rw [mem_pre]
   exact ⟨fun ⟨_, h⟩ => h, fun h => ⟨x.2, h⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨x, rfl⟩` from `mkW_surj Fr w`. Establish `h : ((sec Fr).restrictScalars M.L.O) (H.mkW Fr.f x) = Fr.prF x` using `sec_mkW Fr x`. Rewrite using `[h]`.
+
+Use `⟨(mem_pre Fr L _).2 ⟨prF_perp Fr x, ?_⟩, h_prF_es Fr x⟩` and prove the remaining obligations. Rewrite using `[mkW_prF]`. Conclude with `hw`. Introduce and unpack `⟨hv, h2⟩`. Take `⟨hv, hL⟩` from `(mem_pre Fr L v).1 hv`.
+
+Use `⟨_, hL, ?_⟩` and prove the remaining obligations. Conclude with `(sec_mkW Fr ⟨v, hv⟩).trans (prF_of Fr v ((mem_perpX Fr v).1 hv) h2)`.
+-/
 lemma mem_map_sec (L : Submodule M.L.O (H.Wb Fr.f)) (v : V) :
     v ∈ L.map ((sec Fr).restrictScalars M.L.O) ↔ v ∈ pre Fr L ∧ ∀ a, H.h v (Fr.es a) = 0 := by
   constructor
@@ -166,6 +261,23 @@ lemma mem_map_sec (L : Submodule M.L.O (H.Wb Fr.f)) (v : V) :
     refine ⟨_, hL, ?_⟩
     exact (sec_mkW Fr ⟨v, hv⟩).trans (prF_of Fr v ((mem_perpX Fr v).1 hv) h2)
 
+/- English proof (translation)
+Establish `hite : ∀ a b : Fin r, (if a = b then (1 : E) else 0) ∈ M.L.O` using `fun a b => by split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨h1, h2, w, hw, hL⟩`. Establish `hv : v = ∑ a, H.h v (Fr.es a) • Fr.e a + Fr.prF v + ∑ a, H.h v (Fr.e a) • Fr.es a`. Simplify using `only [LocNG.FrameD.prF]`. Normalize the expressions using the abelian group laws. Rewrite using `[SetLike.mem_coe, hv]`.
+
+Use `Submodule.add_mem_sup (Submodule.add_mem_sup ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ (⟨_, h1 a⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)`. Use `⟨_, hL, (sec_mkW Fr w).trans ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `prF_of Fr _ (h_prF_e Fr v) (h_prF_es Fr v)`.
+
+Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ (⟨_, h2 a⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)`. Use `sup_le (sup_le (Submodule.span_mono ?_) ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨fun b => ?_, fun b => ?_, 0, (prF_e Fr a).symm, by simp⟩` and prove the remaining obligations. Rewrite using `[h_e_es]`.
+
+Conclude with `hite a b`. Rewrite using `[h_ee]`. Conclude with `zero_mem _`. Introduce `v hv`. Take `⟨hv, h2⟩` from `(mem_map_sec Fr L v).1 hv`.
+
+Take `⟨hv, hL⟩` from `(mem_pre Fr L v).1 hv`. Establish `h1` using `(mem_perpX Fr v).1 hv`. Use `Submodule.subset_span ⟨fun b => ?_, fun b => ?_, ⟨v, hv⟩, (prF_of Fr v h1 h2).symm, hL⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `zero_mem _`.
+
+Rewrite using `[h1]`. Conclude with `zero_mem _`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨fun b => ?_, fun b => ?_, 0, (prF_es Fr a).symm, by simp⟩` and prove the remaining obligations. Rewrite using `[Fr.h_ss]`.
+
+Conclude with `zero_mem _`. Rewrite using `[h_es_e]`. Conclude with `hite a b`.
+-/
 lemma lamStd_eq (L : Submodule M.L.O (H.Wb Fr.f)) :
     Fr.LamStd L = Submodule.span M.L.O (Set.range Fr.e) ⊔ L.map ((sec Fr).restrictScalars M.L.O) ⊔
       Submodule.span M.L.O (Set.range Fr.es) := by
@@ -204,6 +316,25 @@ lemma lamStd_eq (L : Submodule M.L.O (H.Wb Fr.f)) :
       · rw [Fr.h_ss]; exact zero_mem _
       · rw [h_es_e]; exact hite a b
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp`. Set `I : Ideal M.L.O` to `{ carrier := {c | ∃ y ∈ pre Fr L, H.h Fr.z y = (c : E)} zero_mem' := ⟨0, zero_mem _, h_swap_zero (H.h_zero_left _)⟩ add_mem' := by`. Introduce and unpack `a b ⟨y, hy, ha⟩ ⟨y', hy', hb⟩`. Conclude with `⟨y + y', add_mem hy hy', by rw [h_add_right, ha, hb]; rfl⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨y, hy, hb⟩`. Use `⟨(⟨M.L.cj a, hcj _ a.2⟩ : M.L.O) • y, Submodule.smul_mem _ _ hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.h Fr.z (M.L.cj a • y) = (a : E) * b`. Rewrite using `[h_smul_right, M.L.cj_cj, hb] }`.
+
+Take `⟨c, hc⟩` from `(IsPrincipalIdealRing.principal I).principal`. Establish `hmul : ∀ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L → ∃ b : M.L.O, (b : E) * c = H.h Fr.z y`. Introduce `y hy`. Establish `hI : (⟨_, (hsd _).1 hz y hy⟩ : M.L.O) ∈ I` using `⟨y, (coe_mem_pre Fr L y).2 hy, rfl⟩`. Rewrite `hI` using `[hc]`.
+
+Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.1 hI`. Conclude with `⟨b, congrArg Subtype.val hb⟩`. Take `⟨a, ha⟩` from `hmul _ hz`. Establish `hzz : H.h Fr.z Fr.z = -(algebraMap F E Fr.T)` using `Fr.h_zz`. Establish `hu : (-(algebraMap F E Fr.T⁻¹) * a) * (c : E) = 1`.
+
+Rewrite using `[mul_assoc, ha]`. Express the relevant statement in the definitionally equal form `_ * H.h Fr.z Fr.z = 1`. Rewrite using `[hzz, neg_mul_neg, ← map_mul, inv_mul_cancel₀ hT, map_one]`. Use `set u : E := -(algebraMap F E Fr.T⁻¹) * a`. Establish `huz : H.mkW Fr.f (u • ⟨Fr.z, z_perp Fr⟩) ∈ L`.
+
+Use `(hsd _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hmul y hy`. Express the relevant statement in the definitionally equal form `H.h (u • Fr.z) y ∈ _`. Rewrite using `[H.h_smul_left, ← hb, mul_left_comm, hu, mul_one]`. Conclude with `b.2`.
+
+Establish `hunit` using `hp c _ huz (by rw [map_smul, smul_smul, mul_comm, hu, one_smul])`. Establish `h1 : (1 : M.L.O) ∈ I`. Rewrite using `[hc]`. Conclude with `(Ideal.eq_top_iff_one _).1 (Ideal.span_singleton_eq_top.2 hunit)`. Conclude with `h1`.
+
+Introduce and unpack `⟨y0, hy0, h1⟩ c y hy hzy`. Take `⟨hy0, hL⟩` from `(mem_pre Fr L y0).1 hy0`. Rewrite `hzy` using `[← map_smul, mkW_eq]`. Establish `h2 : hl H y0 (Fr.z - (c : E) • (y : V)) = 0` using `h_swap_zero (hy0 _ hzy)`. Rewrite `h2` using `[map_sub, map_smul, hl_apply, hl_apply, h1, sub_eq_zero]`.
+
+Conclude with `IsUnit.of_mul_eq_one (⟨_, (hsd y).1 hy ⟨y0, hy0⟩ hL⟩ : M.L.O) (Subtype.ext h2.symm)`.
+-/
 lemma prim_iff (hcj : ∀ x ∈ M.L.O, M.L.cj x ∈ M.L.O) (hpir : IsPrincipalIdealRing M.L.O)
     (hT : Fr.T ≠ 0) (L : Submodule M.L.O (H.Wb Fr.f))
     (hsd : ∀ x : ↥(H.perp (H.X Fr.f)),
@@ -261,15 +392,24 @@ section Transport
 
 variable {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Rewrite using `[← c.e.injective h]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨v, h, rfl⟩`.
+-/
 lemma mem_lat (Λ : Submodule M.L.O V) (v : V) : c.e v ∈ c.lat Λ ↔ v ∈ Λ := by
   constructor
   · rintro ⟨y, hy, h⟩
     rwa [← c.e.injective h]
   · intro h; exact ⟨v, h, rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_lat c _ v`.
+-/
 lemma mem_inn (L : Submodule M.L.O (H.Wb Fr.f)) (v : V) : c.e v ∈ c.inn Fr.f L ↔ v ∈ pre Fr L :=
   mem_lat c _ v
 
+/- English proof (translation)
+Introduce `L L' h`. Use extensionality with `w`. Take `⟨x, rfl⟩` from `mkW_surj Fr w`. Rewrite using `[← coe_mem_pre, ← coe_mem_pre, ← mem_inn Fr c, ← mem_inn Fr c, h]`.
+-/
 lemma inn_inj : Function.Injective (c.inn Fr.f) := by
   intro L L' h
   ext w
@@ -278,6 +418,13 @@ lemma inn_inj : Function.Injective (c.inn Fr.f) := by
 
 variable (g : Fin (r + 1) → S.V) (gs : Fin r → S.V)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a`. Rewrite using `[← c.h_eq, ← hgs]`. Conclude with `h _ (Submodule.subset_span ⟨a, rfl⟩)`. Introduce `h y hy`.
+
+Take `⟨y, rfl⟩` from `c.e.surjective y`. Establish `: Submodule.span E (Set.range gs) ≤ (LinearMap.ker (hl H v)).map (c.e : V →ₗ[E] S.V)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, h_swap_zero (h a), (hgs a).symm⟩`.
+
+Take `⟨y', hy', he⟩` from `this hy`. Rewrite using `[← c.e.injective he]`. Conclude with `(c.h_eq v y').trans (h_swap_zero hy')`.
+-/
 lemma mem_perp_es (hgs : ∀ a, gs a = c.e (Fr.es a)) (v : V) :
     c.e v ∈ perp M.L S.Hm (Submodule.span E (Set.range gs)) ↔ ∀ a, H.h v (Fr.es a) = 0 := by
   constructor
@@ -294,6 +441,9 @@ lemma mem_perp_es (hgs : ∀ a, gs a = c.e (Fr.es a)) (v : V) :
     rw [← c.e.injective he]
     exact (c.h_eq v y').trans (h_swap_zero hy')
 
+/- English proof (translation)
+Use extensionality with `v`. Take `⟨v, rfl⟩` from `c.e.surjective v`. Rewrite using `[mem_lat, mem_map_sec, Submodule.mem_inf, mem_inn, Submodule.restrictScalars_mem, mem_perp_es Fr c gs hgs]`.
+-/
 lemma inn_inf (hgs : ∀ a, gs a = c.e (Fr.es a)) (L : Submodule M.L.O (H.Wb Fr.f)) :
     c.inn Fr.f L ⊓ (perp M.L S.Hm (Submodule.span E (Set.range gs))).restrictScalars M.L.O =
       c.lat (L.map ((sec Fr).restrictScalars M.L.O)) := by
@@ -302,6 +452,11 @@ lemma inn_inf (hgs : ∀ a, gs a = c.e (Fr.es a)) (L : Submodule M.L.O (H.Wb Fr.
   rw [mem_lat, mem_map_sec, Submodule.mem_inf, mem_inn, Submodule.restrictScalars_mem,
     mem_perp_es Fr c gs hgs]
 
+/- English proof (translation)
+Unfold `Frames.stdLat`. Rewrite using `[inn_inf Fr c gs hgs, lamStd_eq]`. Unfold `Coord.lat`. Rewrite using `[Submodule.map_sup, Submodule.map_sup, Submodule.map_span, Submodule.map_span, ← Set.range_comp, ← Set.range_comp]`. Establish `h1 : (fun j : Fin r => g j.castSucc) = ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O) ∘ Fr.e` using `funext fun a => hg _`.
+
+Establish `h2 : gs = ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O) ∘ Fr.es` using `funext fun a => hgs _`. Rewrite using `[h1, h2]`.
+-/
 lemma lat_lamStd (hg : ∀ a, g a = c.e (Fr.f a)) (hgs : ∀ a, gs a = c.e (Fr.es a))
     (L : Submodule M.L.O (H.Wb Fr.f)) :
     c.lat (Fr.LamStd L) = S.stdLat g gs (c.inn Fr.f L) := by
@@ -315,6 +470,13 @@ lemma lat_lamStd (hg : ∀ a, g a = c.e (Fr.f a)) (hgs : ∀ a, gs a = c.e (Fr.e
   have h2 : gs = ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O) ∘ Fr.es := funext fun a => hgs _
   rw [h1, h2]
 
+/- English proof (translation)
+Use `⟨((A.comap ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O)).comap ((H.perp (H.X Fr.f)).subtype.restrictScalars M.L.O)).map ((H.mkW Fr.f).restrictScalars M.L.O), ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Take `⟨v, rfl⟩` from `c.e.surjective v`. Rewrite using `[mem_inn, mem_pre]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Conclude with `⟨(CoordUnip.mem_perp S c.e Fr g c.h_eq hg v).2 (hA.2.1 _ hv), _, hv, rfl⟩`. Introduce and unpack `⟨hv, y, hy, hyv⟩`. Establish `h1 : (y : V) - v ∈ H.X Fr.f` using `(mkW_eq Fr y ⟨v, hv⟩).1 hyv`. Establish `h2` using `hA.1 _ ((CoordUnip.mem_X S c.e Fr g hg _).1 h1)`.
+
+Establish `h3 : c.e y ∈ A` using `hy`. Establish `h4` using `A.sub_mem h3 h2`. Rewrite `h4` using `[map_sub, sub_sub_cancel]`. Then use the resulting hypothesis.
+-/
 lemma inn_surj (hg : ∀ a, g a = c.e (Fr.f a)) (A : Submodule M.L.O S.V) (hA : S.IsInner g gs A) :
     ∃ L, A = c.inn Fr.f L := by
   refine ⟨((A.comap ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O)).comap
@@ -332,6 +494,29 @@ lemma inn_surj (hg : ∀ a, g a = c.e (Fr.f a)) (A : Submodule M.L.O S.V) (hA : 
     have h4 := A.sub_mem h3 h2
     rwa [map_sub, sub_sub_cancel] at h4
 
+/- English proof (translation)
+Establish `hsw : ∀ x y, H.h x y ∈ M.L.O → H.h y x ∈ M.L.O` using `fun x y h => by`. Rewrite using `[H.h_herm]`. Conclude with `hcj _ h`. Establish `hfg : L.FG ↔ (c.inn Fr.f L ⊓ (perp M.L S.Hm (Submodule.span E (Set.range gs))).restrictScalars M.L.O).FG`. Rewrite using `[inn_inf Fr c gs hgs]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(h.map _).map _`. Introduce `h`. Conclude with `Submodule.fg_of_fg_map_injective ((sec Fr).restrictScalars M.L.O) (sec_inj Fr) (Submodule.fg_of_fg_map_injective ((c.e : V →ₗ[E] S.V).restrictScalars M.L.O) c.e.injective h)`.
+
+Establish `hsd : (∀ x : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f x ∈ L ↔ ∀ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L → H.h x y ∈ M.L.O) ↔ ∀ y ∈ perp M.L S.Hm (S.spanTo g r), (∀ x ∈ c.inn Fr.f L, S.h x y ∈ M.L.O) ↔ y ∈ c.inn Fr.f L`. Establish `key : ∀ x : ↥(H.perp (H.X Fr.f)), (∀ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L → H.h x y ∈ M.L.O) ↔ ∀ y ∈ c.inn Fr.f L, S.h y (c.e x) ∈ M.L.O`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+
+Take `⟨y, rfl⟩` from `c.e.surjective y`. Take `⟨hy, hL⟩` from `(mem_pre Fr L y).1 ((mem_inn Fr c L y).1 hy)`. Rewrite using `[c.h_eq]`. Conclude with `hsw _ _ (h ⟨y, hy⟩ hL)`. Introduce `h y hy`.
+
+Use `h _ ((mem_inn Fr c L y).2 ((coe_mem_pre Fr L y).2 hy))` as an intermediate fact. Rewrite `this` using `[c.h_eq]`. Conclude with `hsw _ _ this`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+
+Take `⟨y, rfl⟩` from `c.e.surjective y`. Establish `hy'` using `(CoordUnip.mem_perp S c.e Fr g c.h_eq hg y).2 hy`. Conclude with `((key ⟨y, hy'⟩).symm.trans (h ⟨y, hy'⟩).symm).trans ((coe_mem_pre Fr L ⟨y, hy'⟩).symm.trans (mem_inn Fr c L y).symm)`. Introduce `h x`. Rewrite using `[key, h _ ((CoordUnip.mem_perp S c.e Fr g c.h_eq hg x).1 x.2), mem_inn, coe_mem_pre]`.
+
+Establish `hz : g (Fin.last r) ∈ c.inn Fr.f L ↔ H.mkW Fr.f ⟨Fr.z, z_perp Fr⟩ ∈ L`. Rewrite using `[hg, mem_inn]`. Conclude with `coe_mem_pre Fr L ⟨Fr.z, z_perp Fr⟩`. Establish `hy : (∃ y ∈ pre Fr L, H.h Fr.z y = 1) ↔ ∃ y ∈ c.inn Fr.f L, S.h (g (Fin.last r)) y = 1`. Rewrite using `[hg]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨c.e y, (mem_inn Fr c L y).2 hy, (c.h_eq _ _).trans h⟩`. Introduce and unpack `⟨y, hy, h⟩`. Take `⟨y, rfl⟩` from `c.e.surjective y`.
+
+Conclude with `⟨y, (mem_inn Fr c L y).1 hy, (c.h_eq _ _).symm.trans h⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, ⟨_, _⟩, rfl, h3, h4⟩`. Use `⟨fun x hx => ?_, fun x hx => ?_, hfg.1 h1, hsd.1 h2, hz.2 h3, hy.1 ((prim_iff Fr hcj hpir hT L h2 h3).1 h4)⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `c.e.surjective x`.
+
+Establish `hx'` using `(CoordUnip.mem_X S c.e Fr g hg x).2 hx`. Rewrite using `[mem_inn, mem_pre]`. Use `⟨X_le_perp Fr hx', ?_⟩` and prove the remaining obligations. Rewrite using `[(mkW_eq Fr _ 0).2 (by simpa using hx'), map_zero]`. Conclude with `zero_mem _`.
+
+Take `⟨x, rfl⟩` from `c.e.surjective x`. Take `⟨hx', -⟩` from `(mem_pre Fr L x).1 ((mem_inn Fr c L x).1 hx)`. Conclude with `(CoordUnip.mem_perp S c.e Fr g c.h_eq hg x).1 hx'`. Introduce and unpack `⟨-, -, h1, h2, h3, h4⟩`. Conclude with `⟨hfg.2 h1, hsd.2 h2, ⟨Fr.z, z_perp Fr⟩, rfl, hz.1 h3, (prim_iff Fr hcj hpir hT L (hsd.2 h2) (hz.1 h3)).2 (hy.2 h4)⟩`.
+-/
 lemma isInner_iff (hcj : ∀ x ∈ M.L.O, M.L.cj x ∈ M.L.O) (hpir : IsPrincipalIdealRing M.L.O)
     (hT : Fr.T ≠ 0) (hg : ∀ a, g a = c.e (Fr.f a)) (hgs : ∀ a, gs a = c.e (Fr.es a))
     (L : Submodule M.L.O (H.Wb Fr.f)) : Fr.IsInner L ↔ S.IsInner g gs (c.inn Fr.f L) := by
@@ -400,6 +585,11 @@ lemma isInner_iff (hcj : ∀ x ∈ M.L.O, M.L.cj x ∈ M.L.O) (hpir : IsPrincipa
 
 end Transport
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c`. Use `letI := hM.loc`. Use `letI := hM.char0`. Establish `hO` using `GlobalTheory.UnramOrder.order_facts M.L S.ϖ S.ϖ_irr`. Establish `hT : P.B.T ≠ 0` using `by rw [← c.T'_eq]; exact S.T'.ne_zero`.
+
+Conclude with `⟨inn_inj P.B c, isInner_iff P.B c S.f' S.es' (fun x hx => (hO.2.1 x hx).1) hO.2.2.2.1 hT c.f'_eq c.es'_eq, inn_surj P.B c S.f' S.es' c.f'_eq, lat_lamStd P.B c S.f' S.es' c.f'_eq c.es'_eq⟩`.
+-/
 theorem transport : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), ∀ (S : Frames M.L r k) (c : Coord P S), Function.Injective (c.inn P.B.f) ∧ (∀ L, P.B.IsInner L ↔ S.IsInner S.f' S.es' (c.inn P.B.f L)) ∧ (∀ A, S.IsInner S.f' S.es' A → ∃ L, A = c.inn P.B.f L) ∧ ∀ L, c.lat (P.B.LamStd L) = S.stdLat S.f' S.es' (c.inn P.B.f L) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c
   letI := hM.loc

@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TransNZ.exists_ne | exact GlobalTheory.TransNZ.exists_ne | (intros; apply GlobalTheory.TransNZ.exists_ne <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_translate_thetaPullback_ne_zero : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn K) (m : ℕ), Odd m → 3 ≤ m →
     ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)), (∀ z : baseOver (Sp K) ⟶ x.P.A, z ^ (m ^ 2) = 1 → ∃ i, pt i = z) →
     ∀ (th : LB.Sec (LPow x.P.A x.P.L ((1 : ℕ) : ℤ) (baseOver (Sp K)))), IsPolAVSectionInverseImage x.P (baseOver (Sp K)) x.th th →

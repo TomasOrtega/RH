@@ -5,6 +5,39 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.Pst.NoLog
 
+/- English proof (translation)
+Introduce `l _ P _ K b b' hb h`. Use `haveI := K.2`. Use `haveI : Finite (GQ l ⧸ GK K) := Subgroup.quotient_finite_of_isOpen _ K.1.fixingSubgroup_isOpen`. Use `haveI := Fintype.ofFinite (GQ l ⧸ GK K)`. Set `ι : P.R.B →+* FractionRing P.R.B` to `algebraMap P.R.B (FractionRing P.R.B)`.
+
+Establish `hι : Function.Injective ι` using `IsFractionRing.injective P.R.B (FractionRing P.R.B)`. Set `e : GQ l → FractionRing P.R.B ≃+* FractionRing P.R.B` to `fun g => IsFractionRing.ringEquivOfRingEquiv (A := P.R.B) (B := P.R.B) (P.actQ g).toRingEquiv`. Establish `he : ∀ g z, e g (ι z) = ι (P.actQ g z)` using `fun g z => IsFractionRing.ringEquivOfRingEquiv_algebraMap _ _`. Establish `hmul : ∀ s g z, e s (e g z) = e (s * g) z`. Introduce `s g`.
+
+Establish `: (e s).toRingHom.comp (e g).toRingHom = (e (s * g)).toRingHom`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors P.R.B)` to reduce the goal to its premises. Use extensionality with `z`. Use `show e s (e g (ι z)) = e (s * g) (ι z)`. Rewrite using `[he, he, he, map_mul, AlgEquiv.mul_apply]`.
+
+Introduce `z`. Conclude with `RingHom.congr_fun this z`. Establish `hne : ∀ g (z : P.R.B), z ≠ 0 → ι (P.actQ g z) ≠ 0` using `fun g z hz => (map_ne_zero_iff ι hι).2 ((map_ne_zero_iff _ (P.actQ g).injective).2 hz)`. Set `T : GQ l → FractionRing P.R.B` to `fun g => ι ((kummer P g : ℚ_[l]) • P.tB)`. Establish `hT : ∀ s g, e s (T g) = T (s * g) - T s`.
+
+Introduce `s g`. Simplify using `only [T, he, map_smul, localPrime_galoisAction_periodT, kummer_mul, smul_smul, add_smul, map_add]`. Rewrite using `[mul_comm]`. Normalize the expressions using the abelian group laws. Set `f : FractionRing P.R.B` to `ι b' / ι b`.
+
+Establish `hb0 : ι b ≠ 0` using `(map_ne_zero_iff ι hι).2 hb`. Establish `hf : ∀ g ∈ GK K, e g f - f = T g`. Introduce `g hg`. Establish `h1` using `congrArg ι (h g hg)`. Simplify using `only [map_sub, map_mul] at h1`.
+
+Establish `h2` using `hne g b hb`. Simplify using `only [f, map_div₀, he]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`. Set `Fn : GQ l → FractionRing P.R.B` to `fun g => e g f - T g`.
+
+Establish `h1 : ∀ s g, e s (Fn g) = Fn (s * g) + T s`. Introduce `s g`. Simplify using `only [Fn, map_sub, hmul, hT]`. Normalize the expressions using the abelian group laws. Establish `h2 : ∀ g (k : ↥(GK K)), Fn (g * k) = Fn g`.
+
+Introduce `g k`. Establish `e1 : Fn k = f` using `by simp only [Fn, ← hf k k.2]; abel`. Use `h1 g k` as an intermediate fact. Rewrite `this` using `[e1]`. Simplify using `only [Fn] at this ⊢`.
+
+Take the linear combination `-this`. Establish `h3 : ∀ g, Fn (QuotientGroup.mk g : GQ l ⧸ GK K).out = Fn g` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (GK K) g`. Rewrite using `[hk, h2]`. Establish `hnB : ((Fintype.card (GQ l ⧸ GK K) : ℕ) : P.R.B) ≠ 0` using `by haveI := nontrivial_B P`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] P.R.B)]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective ℚ_[l] P.R.B)).2 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`. Establish `hn : ((Fintype.card (GQ l ⧸ GK K) : ℕ) : FractionRing P.R.B) ≠ 0`. Rewrite using `[← map_natCast ι]`. Conclude with `(map_ne_zero_iff ι hι).2 hnB`.
+
+Set `fa : FractionRing P.R.B` to `((Fintype.card (GQ l ⧸ GK K) : ℕ) : FractionRing P.R.B)⁻¹ * ∑ q : GQ l ⧸ GK K, Fn q.out`. Establish `hfa : ∀ s, e s fa - fa = T s`. Introduce `s`. Establish `h4 : ∑ q : GQ l ⧸ GK K, Fn (s * q.out) = ∑ q : GQ l ⧸ GK K, Fn q.out` using `Fintype.sum_equiv (MulAction.toPerm s) _ _ fun q => by`. Rewrite using `[MulAction.toPerm_apply, ← MulAction.Quotient.mk_smul_out, h3, smul_eq_mul]`.
+
+Simplify using `only [fa, map_mul, map_inv₀, map_natCast, map_sum, h1]`. Rewrite using `[Finset.sum_add_distrib, h4, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, x, hx, hxy⟩` from `IsFractionRing.div_surjective (A := P.R.B) fa`.
+
+Establish `hx0 : x ≠ 0` using `nonZeroDivisors.ne_zero hx`. Use `⟨x, y, hx0, fun g => ?_⟩` and prove the remaining obligations. Establish `hxy' : ι y / ι x = fa` using `hxy`. Establish `k` using `hfa g`. Rewrite `k` using `[← hxy', map_div₀, he, he]`.
+
+Establish `k1` using `hne g x hx0`. Establish `k2 : ι x ≠ 0` using `(map_ne_zero_iff ι hι).2 hx0`. Apply `hι` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul]`. Clear denominators, using `at k` for the nonvanishing conditions.
+
+Take the linear combination `k`.
+-/
 theorem exists_full_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) [IsDomain P.R.B] (K : FinExt l) (b b' : P.R.B), b ≠ 0 →
     (∀ g ∈ GK K, b * P.actQ g b' - P.actQ g b * b' = b * P.actQ g b * ((kummer P g : ℚ_[l]) • P.tB)) →
     ∃ x y : P.R.B, x ≠ 0 ∧ ∀ g : GQ l, x * P.actQ g y - P.actQ g x * y = x * P.actQ g x * ((kummer P g : ℚ_[l]) • P.tB) := by

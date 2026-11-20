@@ -14,6 +14,9 @@ variable {R : Type} [CommRing R] {G : Type} [TopologicalSpace G] [AddCommGroup G
   {M : Type w} [AddCommGroup M] [Module R M]
 
 omit [TopologicalSpace G] in
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`.
+-/
 theorem rho_comm (ρ : Multiplicative G →* (M →ₗ[R] M)) (g h : G) (x : M) :
     ρ (Multiplicative.ofAdd g) (ρ (Multiplicative.ofAdd h) x) =
       ρ (Multiplicative.ofAdd h) (ρ (Multiplicative.ofAdd g) x) := by
@@ -38,10 +41,16 @@ def tw [IsTopologicalAddGroup G] (ρ : Multiplicative G →* (M →ₗ[R] M)) (v
       c • (ρ (Multiplicative.ofAdd v) (f _) - f x)
     rw [map_smul, smul_sub]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tw_apply [IsTopologicalAddGroup G] (ρ : Multiplicative G →* (M →ₗ[R] M)) (v : G) (n : ℕ)
     (f : (lcCos R G M).cx.X n) (x : Fin (n + 1) → G) :
     tw ρ v n f x = ρ (Multiplicative.ofAdd v) (f fun j => x j - v) - f x := rfl
 
+/- English proof (translation)
+Introduce `g hg x`. Establish `e : (fun j => (fun i => g + x i) j - v) = fun i => g + (fun j => x j - v) i`. Use function extensionality and compare the values at `i`. Conclude with `add_sub_assoc _ _ _`. Rewrite using `[tw_apply, tw_apply, e, hf g hg, hf g hg, map_sub, rho_comm]`.
+-/
 theorem tw_mem [IsTopologicalAddGroup G] (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) (v : G)
     (n : ℕ) (f : (lcCos R G M).cx.X n) (hf : f ∈ eqv ρ S n) : tw ρ v n f ∈ eqv ρ S n := by
   intro g hg x
@@ -50,6 +59,9 @@ theorem tw_mem [IsTopologicalAddGroup G] (ρ : Multiplicative G →* (M →ₗ[R
     exact add_sub_assoc _ _ _
   rw [tw_apply, tw_apply, e, hf g hg, hf g hg, map_sub, rho_comm]
 
+/- English proof (translation)
+Use `LocallyConstant.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[tw_apply, lc_d_apply, lc_d_apply, lc_d_apply, map_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[tw_apply, map_zsmul, smul_sub]`.
+-/
 theorem tw_d [IsTopologicalAddGroup G] (ρ : Multiplicative G →* (M →ₗ[R] M)) (v : G) (n : ℕ)
     (f : (lcCos R G M).cx.X n) :
     (lcCos R G M).d n (tw ρ v n f) = tw ρ v (n + 1) ((lcCos R G M).d n f) := by
@@ -80,6 +92,9 @@ def invB (ρ : Multiplicative G →* (M →ₗ[R] M)) (S : Set G) (v : G) : invS
       ρ (Multiplicative.ofAdd v) x - x
     rw [map_sub, rho_comm, hx g hg]
 
+/- English proof (translation)
+Establish `e : eqv ρ S = eqv ρ S'` using `funext h`. Unfold `Res at hr ⊢`. Rewrite using `[← e]`. Conclude with `hr`.
+-/
 theorem Res.congr (ρ : Multiplicative G →* (M →ₗ[R] M)) {S S' : Set G} (D : Submodule R M) (t : R)
     (h : ∀ n, eqv ρ S n = eqv ρ S' n) (hr : Res ρ S D t) : Res ρ S' D t := by
   have e : eqv ρ S = eqv ρ S' := funext h

@@ -25,9 +25,15 @@ open CrystallineSemistableComparison CrystallineSemistableComparison.Onto Crysta
 
 variable {K : Type} [CommRing K] {Z : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `T hT x hx` and use `k (hT hx)`.
+-/
 theorem inU_mono (q : Z ⟶ Spec (CommRingCat.of K)) {V V' : Z.Opens} (k : V' ≤ V) : inU q V' ≤ inU q V :=
   fun T hT x hx => k (hT hx)
 
+/- English proof (translation)
+Simplify using `only [ev, GlobalTheory.Cris.evalAt, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem ev_res (q : Z ⟶ Spec (CommRingCat.of K)) {V V' : Z.Opens} (k : V' ≤ V) (T : Thick (smFun Z q))
     (h : inU q V' T) (h' : inU q V T) (g : Γ(Z, V)) :
     ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T h ((Z.presheaf.map (homOfLE k).op).hom g) =
@@ -36,12 +42,18 @@ theorem ev_res (q : Z ⟶ Spec (CommRingCat.of K)) {V V' : Z.Opens} (k : V' ≤ 
   congr 1
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun T g => (Ideal.Quotient.mk_surjective (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.obj T.property g)).choose, fun T g => (Ideal.Quotient.mk_surjective (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.obj T.property …`.
+-/
 theorem lifts_nonempty (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : Nonempty (Lifts q V) :=
   ⟨⟨fun T g => (Ideal.Quotient.mk_surjective
       (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.obj T.property g)).choose,
     fun T g => (Ideal.Quotient.mk_surjective
       (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T.obj T.property g)).choose_spec⟩⟩
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hz⟩` from `h`. Take `⟨f', hf', rfl, hz'⟩` from `h'`. Establish `e : f = f'` using `funext fun s => Subtype.ext ((hz s).trans (hz' s).symm)`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rep_unique {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) {j : ℕ}
     {z : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c c' : CH.H (sq a b) j}
     (h : Rep a b z c) (h' : Rep a b z c') : c = c' := by
@@ -51,12 +63,24 @@ theorem rep_unique {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C 
   subst e
   rfl
 
+/- English proof (translation)
+Take `⟨Λ⟩` from `lifts_nonempty q V`. Conclude with `rep_unique (A := (inU q V).ι ⋙ thA (smFun Z q)) ((thFil (smFun Z q) (a : ℤ)).res (inU q V).ι) ((thFil (smFun Z q) ((a : ℤ) + 1)).res (inU q V).ι) (h Λ) (h' Λ)`.
+-/
 theorem isForm_unique (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) {a : ℕ} {g₀ : Sec q V} {g : Fin a → Sec q V}
     {c c' : HV q V a a} (h : IsForm q V g₀ g c) (h' : IsForm q V g₀ g c') : c = c' := by
   obtain ⟨Λ⟩ := lifts_nonempty q V
   exact rep_unique (A := (inU q V).ι ⋙ thA (smFun Z q)) ((thFil (smFun Z q) (a : ℤ)).res (inU q V).ι)
     ((thFil (smFun Z q) ((a : ℤ) + 1)).res (inU q V).ι) (h Λ) (h' Λ)
 
+/- English proof (translation)
+Introduce `Λ'`. Take `⟨Λ₀⟩` from `lifts_nonempty q V`. Set `Λ : Lifts q V` to `{ v := fun T g => if h : inU q V' T.obj then Λ'.v ⟨T.obj, h⟩ (φ g) else Λ₀.v T g hv := fun T g => by`. Distinguish the cases in `h : inU q V' T.obj`. Simplify using `only [dif_pos h]`.
+
+Use `(Λ'.hv ⟨T.obj, h⟩ (φ g)).trans ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `ev_res q k T.obj h T.property g`. Simplify using `only [dif_neg h]`. Conclude with `Λ₀.hv T g }`.
+
+Establish `hv : ∀ (T : (inU q V').FullSubcategory) (g : Sec q V), Λ.v ((ObjectProperty.ιOfLE (inU_mono q k)).obj T) g = Λ'.v T (φ g)` using `fun T g => dif_pos T.property`. Establish `hz` using `GlobalTheory.CompanionTheory.ConeRep.rep_resB (thA (smFun Z q)) (thFil (smFun Z q) (a : ℤ)) (thFil (smFun Z q) ((a : ℤ) + 1)) (inU_mono q k) (Λ.form g₀ g) c (hc Λ)`. Establish `e : Λ'.form (φ g₀) (fun j => φ (g j)) = resB (thA (smFun Z q)) (inU_mono q k) (Λ.form g₀ g)`. Use function extensionality and compare the values at `s`. Simplify using `only [Lifts.form, resB]`.
+
+Use `congrArg₂ (· * ·) (hv _ _).symm (Finset.prod_congr rfl fun k' _ => ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) (congrArg _ (hv _ _).symm) (congrArg _ (hv _ _).symm)`. Conclude with `e ▸ hz`.
+-/
 theorem isForm_res (q : Z ⟶ Spec (CommRingCat.of K)) {V V' : Z.Opens} (k : V' ≤ V) (φ : Sec q V →ₐ[K] Sec q V')
     (hφ : ∀ g, φ g = (Z.presheaf.map (homOfLE k).op).hom g) {a : ℕ} {g₀ : Sec q V} {g : Fin a → Sec q V}
     {c : HV q V a a} (hc : IsForm q V g₀ g c) :
@@ -85,11 +109,17 @@ theorem isForm_res (q : Z ⟶ Spec (CommRingCat.of K)) {V V' : Z.Opens} (k : V' 
     exact congrArg₂ (· - ·) (congrArg _ (hv _ _).symm) (congrArg _ (hv _ _).symm)
   exact e ▸ hz
 
+/- English proof (translation)
+Substitute `h h'` using the available equality. Conclude with `heq_of_eq (ObjectProperty.hom_ext _ (eq_of_heq hh))`.
+-/
 theorem fs_hom_heq {C : Type 1} [Category.{0} C] {P : ObjectProperty C} {S₁ S₂ S₁' S₂' : P.FullSubcategory}
     (h : S₁ = S₂) (h' : S₁' = S₂') (f : S₁ ⟶ S₁') (g : S₂ ⟶ S₂') (hh : HEq f.hom g.hom) : HEq f g := by
   subst h h'
   exact heq_of_eq (ObjectProperty.hom_ext _ (eq_of_heq hh))
 
+/- English proof (translation)
+Use `Functor.hext (fun T => ?_) (fun T T' f => ?_)` and prove the remaining obligations. Conclude with `ObjectProperty.FullSubcategory.ext (GlobalTheory.CompanionTheory.HodgePull.obj_id T.obj)`. Use `fs_hom_heq (ObjectProperty.FullSubcategory.ext (GlobalTheory.CompanionTheory.HodgePull.obj_id T.obj)) (ObjectProperty.FullSubcategory.ext (GlobalTheory.CompanionTheory.HodgePull.obj_id T'.obj)) _ _ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.HodgePull.hom_heq (GlobalTheory.CompanionTheory.HodgePull.obj_id T.obj) (GlobalTheory.CompanionTheory.HodgePull.obj_id T'.obj) _ _ HEq.rfl`.
+-/
 theorem morV_G (q : Z ⟶ Spec (CommRingCat.of K)) {P P' : ObjectProperty (Thick (smFun Z q))} (k : P' ≤ P) (a : ℕ)
     (h : ∀ T, P' T → P ((smS (𝟙 Z) (Category.id_comp q)).G.obj T)) :
     (morV (𝟙 Z) (Category.id_comp q) a h).G = (resU (G q a) k).G := by
@@ -99,6 +129,9 @@ theorem morV_G (q : Z ⟶ Spec (CommRingCat.of K)) {P P' : ObjectProperty (Thick
       (ObjectProperty.FullSubcategory.ext (GlobalTheory.CompanionTheory.HodgePull.obj_id T'.obj)) _ _ ?_
     exact GlobalTheory.CompanionTheory.HodgePull.hom_heq (GlobalTheory.CompanionTheory.HodgePull.obj_id T.obj) (GlobalTheory.CompanionTheory.HodgePull.obj_id T'.obj) _ _ HEq.rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Establish `hs : s ⋙ (morV (𝟙 Z) (Category.id_comp q) a h).G = s ⋙ (resU (G q a) k).G`. Rewrite using `[morV_G q k a h]`. Conclude with `(GlobalTheory.CompanionTheory.HodgePull.τ_id a _ _).trans (eq_of_heq (congr_arg_heq z hs))`.
+-/
 theorem morV_pullC (q : Z ⟶ Spec (CommRingCat.of K)) {P P' : ObjectProperty (Thick (smFun Z q))} (k : P' ≤ P) (a n : ℕ)
     (h : ∀ T, P' T → P ((smS (𝟙 Z) (Category.id_comp q)).G.obj T)) (z : CH.Cn (P.ι ⋙ G q a) n) :
     (morV (𝟙 Z) (Category.id_comp q) a h).pullC n z = (resU (G q a) k).pullC n z := by
@@ -107,12 +140,22 @@ theorem morV_pullC (q : Z ⟶ Spec (CommRingCat.of K)) {P P' : ObjectProperty (T
     rw [morV_G q k a h]
   exact (GlobalTheory.CompanionTheory.HodgePull.τ_id a _ _).trans (eq_of_heq (congr_arg_heq z hs))
 
+/- English proof (translation)
+Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg (Submodule.Quotient.mk (p := _)) (Subtype.ext (morV_pullC q k a n h z))`.
+-/
 theorem morV_pull (q : Z ⟶ Spec (CommRingCat.of K)) {P P' : ObjectProperty (Thick (smFun Z q))} (k : P' ≤ P) (a n : ℕ)
     (h : ∀ T, P' T → P ((smS (𝟙 Z) (Category.id_comp q)).G.obj T)) (x : HU (G q a) P n) :
     (morV (𝟙 Z) (Category.id_comp q) a h).pull n x = (resU (G q a) k).pull n x := by
   obtain ⟨⟨z, hz⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact congrArg (Submodule.Quotient.mk (p := _)) (Subtype.ext (morV_pullC q k a n h z))
 
+/- English proof (translation)
+Introduce `Λ`. Set `Λ' : Om.L2.LiftsT q` to `⟨fun T g => Λ.v ⟨T, Om.L2.inTop q T⟩ g, fun T g => Λ.hv ⟨T, Om.L2.inTop q T⟩ g⟩`. Take `⟨f, hf, hcf, hz⟩` from `hc Λ'`. Establish `hf' : CH.d (G q a) a f = 0` using `hf`. Establish `hb : CH.d ((inU q ⊤).ι ⋙ G q a) a ((CH.Mor.restrict (G q a) (inU q ⊤).ι).pullC a f) = 0`.
+
+Rewrite using `[(CH.Mor.restrict (G q a) (inU q ⊤).ι).d_pullC, hf', map_zero]`. Establish `hcl : (CH.Mor.restrict (G q a) (inU q ⊤).ι).pull a c = (CH.cx ((inU q ⊤).ι ⋙ G q a)).cls ((CH.Mor.restrict (G q a) (inU q ⊤).ι).pullC a f) hb`. Establish `hc' : c = (CH.cx (G q a)).cls f hf'` using `hcf`. Rewrite using `[hc']`. Both sides reduce to the same expression.
+
+Conclude with `⟨(CH.Mor.restrict (G q a) (inU q ⊤).ι).pullC a f, hb, hcl, fun s => hz (s ⋙ (inU q ⊤).ι)⟩`.
+-/
 theorem isForm_top (q : Z ⟶ Spec (CommRingCat.of K)) {a : ℕ} (g₀ : Γ(Z, ⊤)) (g : Fin a → Γ(Z, ⊤)) (c : Hdg q a a)
     (hc : Om.L2.IsFormT q g₀ g c) :
     IsForm q ⊤ (a := a) g₀ g ((CH.Mor.restrict (G q a) (inU q ⊤).ι).pull a c) := by
@@ -129,6 +172,11 @@ theorem isForm_top (q : Z ⟶ Spec (CommRingCat.of K)) {a : ℕ} (g₀ : Γ(Z, �
     rfl
   exact ⟨(CH.Mor.restrict (G q a) (inU q ⊤).ι).pullC a f, hb, hcl, fun s => hz (s ⋙ (inU q ⊤).ι)⟩
 
+/- English proof (translation)
+Establish `hs` using `(GlobalTheory.CompanionTheory.OntoForms.formLaws K A A a).1`. Establish `e : (omMap ψ₁ a).comp (omMap φ₁ a) = (omMap ψ₂ a).comp (omMap φ₂ a)`. Use `LinearMap.ext_on hs ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g₀, g, rfl⟩`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[((GlobalTheory.CompanionTheory.OntoForms.formLaws K A B₁ a).2 φ₁).1, ((GlobalTheory.CompanionTheory.OntoForms.formLaws K A B₂ a).2 φ₂).1, ((GlobalTheory.CompanionTheory.OntoForms.formLaws K B₁ C a).2 ψ₁).1, ((GlobalTheory.CompanionTheory.OntoForms.formLaws K B₂ C a).2 ψ₂).1]`. Simplify using `only [h]`. Conclude with `LinearMap.congr_fun e ω`.
+-/
 theorem omMap_cross {K A B₁ B₂ C : Type} [CommRing K] [CommRing A] [CommRing B₁] [CommRing B₂] [CommRing C] [Algebra K A]
     [Algebra K B₁] [Algebra K B₂] [Algebra K C] (φ₁ : A →ₐ[K] B₁) (φ₂ : A →ₐ[K] B₂) (ψ₁ : B₁ →ₐ[K] C) (ψ₂ : B₂ →ₐ[K] C)
     (h : ∀ g, ψ₁ (φ₁ g) = ψ₂ (φ₂ g)) (a : ℕ) (ω : Om K A a) :
@@ -143,6 +191,11 @@ theorem omMap_cross {K A B₁ B₂ C : Type} [CommRing K] [CommRing A] [CommRing
     simp only [h]
   exact LinearMap.congr_fun e ω
 
+/- English proof (translation)
+Establish `h : ∀ T, inU q V' T → inU q V ((smS (𝟙 X) (Category.id_comp q)).G.obj T)` using `fun T hT => by`. Establish `e : (smS (𝟙 X) (Category.id_comp q)).G.obj T = T` using `GlobalTheory.CompanionTheory.HodgePull.obj_id T`. Rewrite using `[e]`. Conclude with `inU_mono q k T hT`. Take `⟨φ, h1, h2⟩` from `hN K X X q q (𝟙 X) (Category.id_comp q) V V' k h`.
+
+Use `⟨φ, fun g => ?_, fun e e' he he' ω => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using `[Scheme.Hom.appLE]`. Rewrite using `[← morV_pull q (inU_mono q k) a a h]`. Conclude with `h2 a e e' he he' ω`.
+-/
 theorem res_key (hN : OmNat) (K : Type) [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (a : ℕ)
     {V V' : X.Opens} (k : V' ≤ V) :
     ∃ φ : Sec q V →ₐ[K] Sec q V', (∀ g, φ g = (X.presheaf.map (homOfLE k).op).hom g) ∧
@@ -159,6 +212,33 @@ theorem res_key (hN : OmNat) (K : Type) [Field K] {X : Scheme.{0}} (q : X ⟶ Sp
   · rw [← morV_pull q (inU_mono q k) a a h]
     exact h2 a e e' he he' ω
 
+/- English proof (translation)
+Introduce `hA hN K _ _ X q _ _ a`. Take `⟨U⟩` from `(Pb.cov_ex q).1 inferInstance`. Establish `hAff2 : ∀ α β, IsAffineOpen (U.U α ⊓ U.U β)` using `fun α β => by`. Establish `h` using `U.inter {α, β} ⟨α, by simp⟩`. Rewrite `h` using `[Finset.iInf_insert, Finset.iInf_singleton]`. Then use the resulting hypothesis.
+
+Establish `hc1 : ∀ α, Nonempty (Coord q (U.U α) (U.d α))` using `fun α => ⟨U.c α⟩`. Establish `hc2 : ∀ α β, Nonempty (Coord q (U.U α ⊓ U.U β) (U.d α))` using `fun α β => ⟨(Pb.coord_res (U.c α) inf_le_left (hAff2 α β)).choose⟩`. Establish `van : ∀ S : Finset U.ι, S.Nonempty → ∀ j < a, Subsingleton (HV q (⨅ α ∈ S, U.U α) a j)`. Introduce and unpack `S hS j hj`. Take `⟨α₀, h₀⟩` from `id hS`.
+
+Conclude with `(hA K X q _ (U.d α₀) ⟨(Pb.coord_res (U.c α₀) (iInf₂_le α₀ h₀) (U.inter S hS)).choose⟩ a).1 j (by omega)`. Use `choose E hE hEb using fun α => (hA K X q _ _ (hc1 α) a).2`. Use `choose E₂ hE₂ hE₂b using fun α β => (hA K X q _ _ (hc2 α β) a).2`. Use `choose φ hφ hφn using fun α => res_key hN K q a (le_top : U.U α ≤ ⊤)`. Use `choose ψ₁ hψ₁ hψ₁n using fun α β => res_key hN K q a (inf_le_left : U.U α ⊓ U.U β ≤ U.U α)`.
+
+Use `choose ψ₂ hψ₂ hψ₂n using fun α β => res_key hN K q a (inf_le_right : U.U α ⊓ U.U β ≤ U.U β)`. Establish `hk : ∀ α, inU q (U.U α) ≤ inU q ⊤` using `fun α => inU_mono q le_top`. Establish `hk₁ : ∀ α β, inU q (U.U α ⊓ U.U β) ≤ inU q (U.U α)` using `fun α β => inU_mono q inf_le_left`. Establish `hk₂ : ∀ α β, inU q (U.U α ⊓ U.U β) ≤ inU q (U.U β)` using `fun α β => inU_mono q inf_le_right`. Take `⟨hinj, hglue⟩` from `GlobalTheory.CompanionTheory.CechDeg.om_cech q U.U U.cover a van hk hk₁ hk₂`.
+
+Take `⟨finj, fglue⟩` from `GlobalTheory.CompanionTheory.FormsGlue.forms_glue q U.U (fun α => (U.c α).affine) U.cover φ ψ₁ ψ₂ hφ hψ₁ hψ₂ a`. Set `R : HV q ⊤ a a →ₗ[K] ∀ α, HV q (U.U α) a a` to `LinearMap.pi fun α => (resU (G q a) (hk α)).pull a`. Set `Eo : Om K (Sec q ⊤) a →ₗ[K] ∀ α, HV q (U.U α) a a` to `LinearMap.pi fun α => (E α).comp (omMap (φ α) a)`. Establish `hRinj : Function.Injective R` using `hinj`. Establish `hcompat : ∀ ω α β, (resU (G q a) (hk₁ α β)).pull a (Eo ω α) = (resU (G q a) (hk₂ α β)).pull a (Eo ω β)`.
+
+Introduce `ω α β`. Establish `e₁` using `hψ₁n α β _ _ (hE α) (hE₂ α β) (omMap (φ α) a ω)`. Establish `e₂` using `hψ₂n α β _ _ (hE β) (hE₂ α β) (omMap (φ β) a ω)`. Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Use `congrArg _ (omMap_cross _ _ _ _ (fun g => ?_) a ω)` and prove the remaining obligations.
+
+Rewrite using `[hψ₁, hψ₂, hφ, hφ]`. Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE le_top).op ≫ X.presheaf.map (homOfLE inf_le_left).op).hom g) = ((X.presheaf.map (homOfLE le_top).op ≫ X.presheaf.map (homOfLE inf_le_right).op).hom g)`. Rewrite using `[← X.presheaf.map_comp, ← X.presheaf.map_comp]`. Both sides reduce to the same expression. Establish `hmem : ∀ ω, Eo ω ∈ LinearMap.range R` using `fun ω => by`.
+
+Take `⟨x, hx⟩` from `hglue (Eo ω) (hcompat ω)`. Conclude with `⟨x, funext hx⟩`. Set `e : Om K (Sec q ⊤) a →ₗ[K] HV q ⊤ a a` to `((LinearEquiv.ofInjective R hRinj).symm : LinearMap.range R →ₗ[K] HV q ⊤ a a).comp (Eo.codRestrict _ hmem)`. Establish `hRe : ∀ ω, R (e ω) = Eo ω` using `fun ω => congrArg Subtype.val ((LinearEquiv.ofInjective R hRinj).apply_symm_apply (Eo.codRestrict _ hmem ω))`. Use `⟨e, fun g₀ g => ?_, fun ω ω' h => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `GlobalTheory.CompanionTheory.OmCls.main q (a := a) g₀ g`. Establish `hc'` using `isForm_top q g₀ g c hc`. Establish `key : e (form K g₀ g) = (CH.Mor.restrict (G q a) (inU q ⊤).ι).pull a c`. Use `hRinj (funext fun α => ?_)` and prove the remaining obligations. Rewrite using `[hRe]`.
+
+Establish `h1` using `isForm_res q le_top (φ α) (hφ α) hc'`. Establish `h2` using `hE α (φ α g₀) fun j => φ α (g j)`. Use `Eq.trans ?_ (isForm_unique q _ h2 h1)` and prove the remaining obligations. Conclude with `congrArg (E α) (((GlobalTheory.CompanionTheory.OntoForms.formLaws K _ _ a).2 (φ α)).1 g₀ g)`. Rewrite using `[key]`.
+
+Conclude with `hc'`. Use `finj (funext fun α => (hEb α).1 ?_)` and prove the remaining obligations. Use `congrFun ((hRe ω).symm.trans ((congrArg R h).trans (hRe ω'))) α` as an intermediate fact. Conclude with `this`. Use `choose y hy using fun α => (hEb α).2 (R x α)`.
+
+Take `⟨ω, hω⟩` from `fglue y fun α β => (hE₂b α β).1 (by`. Rewrite using `[← hψ₁n α β _ _ (hE α) (hE₂ α β), ← hψ₂n α β _ _ (hE β) (hE₂ α β), hy, hy]`. Express the relevant statement in the definitionally equal form `(resU (G q a) (hk₁ α β)).pull a ((resU (G q a) (hk α)).pull a x) = (resU (G q a) (hk₂ α β)).pull a ((resU (G q a) (hk β)).pull a x)`. Rewrite using `[← CrystallineSemistableComparison.Onto.resU_pull_trans (G q a) (hk α) (hk₁ α β) (inU_mono q le_top), ← CrystallineSemistableComparison.Onto.resU_pull_trans (G q a) (hk β) (hk₂ α β) (inU_mono q le_top)])`. Use `⟨ω, hRinj (funext fun α => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[hRe]`. Express the relevant statement in the definitionally equal form `E α (omMap (φ α) a ω) = R x α`. Rewrite using `[hω, hy]`.
+-/
 theorem om_top : AffOm → OmNat → ∀ (K : Type) [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [IsAffine X] [Smooth q] (a : ℕ),
     ∃ e : Om K (Sec q ⊤) a →ₗ[K] HV q ⊤ a a, IsOm q ⊤ a e ∧ Function.Bijective e := by

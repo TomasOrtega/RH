@@ -9,6 +9,11 @@ section
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [chains, chainsXIso, Functor.comp_map]`. Rewrite using `[ComplexShape.embeddingDownNat.extendFunctor_map (C := Shv R)]`. Use `erw [HomologicalComplex.extendMap_f _ _ (i := p) (i' := -(p : ℤ)) rfl]`. Simplify using `only [chainsN]`. Use `erw [Iso.inv_hom_id_assoc]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem chainsXIso_inv_map {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
     (chainsXIso R E p).inv ≫ ((chains R).map f).f (-(p : ℤ)) =
       (free R).map (f.app (op (SimplexCategory.mk p))) ≫ (chainsXIso R E' p).inv := by
@@ -20,6 +25,9 @@ theorem chainsXIso_inv_map {E E' : Spc} (f : E ⟶ E') (p : ℕ) :
   simp
   rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (ULift.up x))) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map g))`. Establish `h2 : (((freeP R).map g).app (op U)).hom (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (g.app (op U) x))` using `ModuleCat.free_map_apply (R := ULift.{1} R) _ _`. Conclude with `h.symm.trans (congrArg ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom h2)`.
+-/
 theorem free_map_freeGen {P Q : PSh} (g : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((free R).map g).hom.app (op U)).hom (freeGen R P U x) = freeGen R Q U (g.app (op U) x) := by
   have h := congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (ULift.up x)))
@@ -29,6 +37,9 @@ theorem free_map_freeGen {P Q : PSh} (g : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (
     ModuleCat.free_map_apply (R := ULift.{1} R) _ _
   exact h.symm.trans (congrArg ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom h2)
 
+/- English proof (translation)
+Simplify using `only [ev]`. Rewrite using `[Cochain.comp_v _ _ (zero_add n) (-(p : ℤ)) (-(p : ℤ)) s (add_zero _) h, Cochain.ofHom_v, ← Category.assoc, chainsXIso_inv_map, Category.assoc]`. Rewrite using `[← free_map_freeGen]`. Both sides reduce to the same expression.
+-/
 theorem ev_pull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)) p s h U x =
@@ -39,6 +50,9 @@ theorem ev_pull {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (α : Cochain (
   rw [← free_map_freeGen]
   rfl
 
+/- English proof (translation)
+Use `ConcreteCategory.congr_hom (congr_app (f.naturality (SimplexCategory.subinterval j l h).op) (op U)) x` as an intermediate fact. Simplify using `only [Sx.sub]`. Conclude with `this`.
+-/
 theorem sub_pull {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (f.app (op (SimplexCategory.mk l))).app (op U) (x.sub j l h) =
       Sx.sub (E := E') (N := N) ((f.app (op (SimplexCategory.mk N))).app (op U) x) j l h := by
@@ -46,6 +60,9 @@ theorem sub_pull {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx 
   simp only [Sx.sub]
   exact this
 
+/- English proof (translation)
+Introduce `N w h U x`. Rewrite using `[ev_pull, hγ]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_pull, ev_pull, sub_pull, sub_pull]`.
+-/
 theorem isAW_pull {I J K : Cx R} (μ : Pair I J K) {E E' : Spc} (f : E ⟶ E') {n m k : ℤ} (hk : n + m = k)
     (α : Cochain ((chains R).obj E') I n) (β : Cochain ((chains R).obj E') J m) (γ : Cochain ((chains R).obj E') K k)
     (hγ : μ.IsAW hk α β γ) :
@@ -57,10 +74,16 @@ theorem isAW_pull {I J K : Cx R} (μ : Pair I J K) {E E' : Spc} (f : E ⟶ E') {
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [ev_pull, ev_pull, sub_pull, sub_pull]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_mk {E E' : Spc} (f : E ⟶ E') (F : Shv R) (n : ℤ) (z : Cocycle ((chains R).obj E') (res R F) n) :
     pull R f F n (CohomologyClass.mk z) = CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) z (zero_add n)) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zcomp_ofHom_val {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (z : Cocycle ((chains R).obj E') I n) :
     (zcomp (Cocycle.ofHom ((chains R).map f)) z (zero_add n)).1 = (Cochain.ofHom ((chains R).map f)).comp z.1 (zero_add n) :=
   rfl
@@ -68,6 +91,11 @@ theorem zcomp_ofHom_val {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (z : Co
 end
 
 open CupProductRingLaws in
+/- English proof (translation)
+Introduce `q _ E E' f n m i j a b`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`. Take `⟨γ, hγ⟩` from `(hc (ZMod q) (twPair q i j) E' rfl).1 α β`. Establish `e1 : cup q (CohomologyClass.mk α) (CohomologyClass.mk β) = CohomologyClass.mk γ` using `(hc (ZMod q) (twPair q i j) E' rfl).2 α β γ hγ`.
+
+Establish `hAW` using `isAW_pull (twPair q i j) f rfl α.1 β.1 γ.1 hγ`. Rewrite `hAW` using `[← zcomp_ofHom_val, ← zcomp_ofHom_val, ← zcomp_ofHom_val]`. Establish `e2` using `(hc (ZMod q) (twPair q i j) E rfl).2 _ _ _ hAW`. Rewrite using `[e1, pull_mk, pull_mk, pull_mk]`. Conclude with `e2.symm`.
+-/
 theorem LeafNatCup_of (hc : LeafCupSpec) : LeafNatCup := by
   intro q _ E E' f n m i j a b
   obtain ⟨α, rfl⟩ := a.mk_surjective

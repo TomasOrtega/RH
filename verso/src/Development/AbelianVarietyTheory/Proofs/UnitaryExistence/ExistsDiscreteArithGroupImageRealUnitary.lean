@@ -13,17 +13,26 @@ open GlobalTheory.PeterssonCompare
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show mat (frameOf X 1) τ = mat (baseFr X) τ`. Rewrite using `[mat_frameOf]`. Simplify using the standard rewrite rules.
+-/
 theorem frameOf_one : frameOf X 1 = baseFr X := by
   funext τ
   show mat (frameOf X 1) τ = mat (baseFr X) τ
   rw [mat_frameOf]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = mat y τ`. Simplify using the standard rewrite rules.
+-/
 theorem lact_one_fr (y : Frame X.Ψ r) : lact (1 : GL (Fin r) E) y = y := by
   funext τ
   show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = mat y τ
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem lact_mul_fr (a b : GL (Fin r) E) (y : Frame X.Ψ r) : lact (a * b) y = lact a (lact b y) := by
   funext τ
   show ((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ =
@@ -46,6 +55,11 @@ def image : Subgroup (RealGrp X) where
 def smallSet : Set (RealGrp X) :=
   {s | ∀ (τ : X.Ψ) (a b : Fin r), ‖(mat (frameOf X s) τ * (mat (baseFr X) τ)⁻¹) a b‖ < 2}
 
+/- English proof (translation)
+Unfold `smallSet`. Simplify using `only [Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_` and prove the remaining obligations. Use `isOpen_lt (Continuous.norm ?_) continuous_const` and prove the remaining obligations. Establish `h : Continuous fun s : RealGrp X => mat (baseFr X) τ * ((s τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (mat (baseFr X) τ)⁻¹` using `(continuous_const.matrix_mul (Units.continuous_val.comp (continuous_subtype_val.comp (continuous_apply τ)))).matrix_mul continuous_const`.
+
+Conclude with `h.matrix_elem a b`.
+-/
 theorem isOpen_smallSet : IsOpen (smallSet X) := by
   unfold smallSet
   simp only [Set.setOf_forall]
@@ -57,11 +71,19 @@ theorem isOpen_smallSet : IsOpen (smallSet X) := by
       (continuous_subtype_val.comp (continuous_apply τ)))).matrix_mul continuous_const
   exact h.matrix_elem a b
 
+/- English proof (translation)
+Introduce `τ a b`. Rewrite using `[frameOf_one, Matrix.mul_nonsing_inv _ (det_baseFr X τ).isUnit, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem one_mem_smallSet : (1 : RealGrp X) ∈ smallSet X := by
   intro τ a b
   rw [frameOf_one, Matrix.mul_nonsing_inv _ (det_baseFr X τ).isUnit, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := frameOf X) ?_ (frameOf_injective X).injOn` and prove the remaining obligations. Use `(((GlobalTheory.LatFin.latFin (E := E)).2 r X 2).image fun γ => lact γ (baseFr X)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, ⟨⟨γ, hγ, e⟩, hs⟩, rfl⟩`. Use `⟨γ, ⟨X.Γ_stab γ hγ, fun τ a b => ?_⟩, e⟩` and prove the remaining obligations. Establish `h1 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (baseFr X) τ = mat (frameOf X s) τ` using `congrFun e τ`.
+
+Establish `h2` using `hs τ a b`. Rewrite `h2` using `[← h1, Matrix.mul_nonsing_inv_cancel_right _ _ (det_baseFr X τ).isUnit]`. Conclude with `h2.le`.
+-/
 theorem finite_image_inter : ((image X : Set (RealGrp X)) ∩ smallSet X).Finite := by
   refine Set.Finite.of_finite_image (f := frameOf X) ?_ (frameOf_injective X).injOn
   refine (((GlobalTheory.LatFin.latFin (E := E)).2 r X 2).image fun γ => lact γ (baseFr X)).subset ?_
@@ -72,6 +94,11 @@ theorem finite_image_inter : ((image X : Set (RealGrp X)) ∩ smallSet X).Finite
   rw [← h1, Matrix.mul_nonsing_inv_cancel_right _ _ (det_baseFr X τ).isUnit] at h2
   exact h2.le
 
+/- English proof (translation)
+Introduce `E _ _ _ r X`. Use `⟨image X, fun _ => Iff.rfl, smallSet X \ (((image X : Set (RealGrp X)) ∩ smallSet X) \ {1}), ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isOpen_smallSet X).sdiff ((finite_image_inter X).subset Set.diff_subset).isClosed).mem_nhds ⟨one_mem_smallSet X, fun h => h.2 rfl⟩`. Introduce `w hw hW`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hW.2 ⟨⟨hw, hW.1⟩, hne⟩`.
+-/
 theorem exists_discrete_image : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), ∃ Λ : Subgroup (RealGrp X), (∀ s, s ∈ Λ ↔ ∃ γ ∈ X.Γ, lact γ (baseFr X) = frameOf X s) ∧ ∃ W ∈ 𝓝 (1 : RealGrp X), ∀ w ∈ Λ, w ∈ W → w = 1 := by
   intro E _ _ _ r X
   refine ⟨image X, fun _ => Iff.rfl, smallSet X \ (((image X : Set (RealGrp X)) ∩ smallSet X) \ {1}), ?_, ?_⟩

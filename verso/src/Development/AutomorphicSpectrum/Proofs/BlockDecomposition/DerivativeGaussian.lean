@@ -23,10 +23,22 @@ def toEuc : (M23 × (Fin 2 → ℂ)) →ₗ[ℝ] EuclideanSpace ℝ RIdx :=
   (WithLp.linearEquiv 2 ℝ (RIdx → ℝ)).symm.toLinearMap ∘ₗ
     LinearMap.pi fun i => Real.sqrt 2 • (rc i.2 ∘ₗ cz i.1)
 
+/- English proof (translation)
+Simplify using `[toEuc]`.
+-/
 theorem toEuc_apply (p : M23 × (Fin 2 → ℂ)) (i : RIdx) :
     toEuc p i = Real.sqrt 2 * rc i.2 (cz i.1 p) := by
   simp [toEuc]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Establish `hs : Real.sqrt 2 ≠ 0` using `by positivity`. Establish `key : ∀ i : CIdx, cz i p = 0`. Introduce `i`.
+
+Establish `h0` using `toEuc_apply p (i, false)`. Establish `h1` using `toEuc_apply p (i, true)`. Rewrite `h0`, `h1` using `[hp]`. Simplify using `only [PiLp.zero_apply] at h0 h1`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Use `(mul_eq_zero.1 h0.symm).resolve_left hs` as an intermediate fact. Simplify `this` using `[rc]`. Use `(mul_eq_zero.1 h1.symm).resolve_left hs` as an intermediate fact. Simplify `this` using `[rc]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `r c`. Simplify `key (.inl (r, c))` using `[cz]`. Use function extensionality and compare the values at `a`. Simplify `key (.inr a)` using `[cz]`.
+-/
 theorem toEuc_injective : Function.Injective toEuc := by
   rw [injective_iff_map_eq_zero]
   intro p hp
@@ -48,6 +60,9 @@ theorem toEuc_injective : Function.Injective toEuc := by
   · funext a
     simpa [cz] using key (.inr a)
 
+/- English proof (translation)
+Simplify using `[Module.finrank_prod, Module.finrank_pi_fintype, Complex.finrank_real_complex]`.
+-/
 theorem finrank_eq :
     Module.finrank ℝ (M23 × (Fin 2 → ℂ)) = Module.finrank ℝ (EuclideanSpace ℝ RIdx) := by
   simp [Module.finrank_prod, Module.finrank_pi_fintype, Complex.finrank_real_complex]
@@ -55,8 +70,16 @@ theorem finrank_eq :
 def euc : (M23 × (Fin 2 → ℂ)) ≃L[ℝ] EuclideanSpace ℝ RIdx :=
   (LinearMap.linearEquivOfInjective toEuc toEuc_injective finrank_eq).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem euc_apply (p : M23 × (Fin 2 → ℂ)) : euc p = toEuc p := rfl
 
+/- English proof (translation)
+Establish `hs : Real.sqrt 2 ^ 2 = 2` using `Real.sq_sqrt (by norm_num)`. Establish `hz : ∀ z : ℂ, ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2` using `fun z => by`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[euc_apply, EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, Fintype.sum_sum_type, Fintype.sum_prod_type]`.
+
+Simplify using `only [toEuc_apply, Fintype.sum_bool, Real.norm_eq_abs, sq_abs, mul_pow, hs, rc, cz, hz, mul_add, Finset.mul_sum]`. Simplify using `[Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem euc_norm_sq (p : M23 × (Fin 2 → ℂ)) :
     ‖euc p‖ ^ 2 = 2 * (∑ r, ∑ c, ‖p.1 r c‖ ^ 2 + ∑ a, ‖p.2 a‖ ^ 2) := by
   have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
@@ -73,6 +96,9 @@ def gaussK : Sw :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ euc
     (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ RIdx))
 
+/- English proof (translation)
+Rewrite using `[gaussK, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, euc_norm_sq, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussK_apply (p : M23 × (Fin 2 → ℂ)) :
     gaussK p = Complex.exp (-(2 * Real.pi : ℂ) *
       ((∑ r, ∑ c, ‖p.1 r c‖ ^ 2 + ∑ a, ‖p.2 a‖ ^ 2 : ℝ) : ℂ)) := by
@@ -86,6 +112,9 @@ def polyK (k : ℕ) (p : M23 × (Fin 2 → ℂ)) : ℂ :=
   (crd 0 0 p * crd 1 1 p - crd 0 1 p * crd 1 0 p) ^ (2 * k - 2) *
     (crqc 0 p * crdc 0 0 p + crqc 1 p * crdc 1 0 p) ^ (4 * k - 4)
 
+/- English proof (translation)
+Establish `h1 : (fun p => crd 0 0 p * crd 1 1 p - crd 0 1 p * crd 1 0 p).HasTemperateGrowth` using `((crd_temperate 0 0).mul (crd_temperate 1 1)).sub ((crd_temperate 0 1).mul (crd_temperate 1 0))`. Establish `h2 : (fun p => crqc 0 p * crdc 0 0 p + crqc 1 p * crdc 1 0 p).HasTemperateGrowth` using `((crqc_temperate 0).mul (crdc_temperate 0 0)).add ((crqc_temperate 1).mul (crdc_temperate 1 0))`. Conclude with `(h1.pow _).mul (h2.pow _)`.
+-/
 theorem polyK_temperate (k : ℕ) : (polyK k).HasTemperateGrowth := by
   have h1 : (fun p => crd 0 0 p * crd 1 1 p - crd 0 1 p * crd 1 0 p).HasTemperateGrowth :=
     ((crd_temperate 0 0).mul (crd_temperate 1 1)).sub ((crd_temperate 0 1).mul (crd_temperate 1 0))
@@ -93,6 +122,9 @@ theorem polyK_temperate (k : ℕ) : (polyK k).HasTemperateGrowth := by
     ((crqc_temperate 0).mul (crdc_temperate 0 0)).add ((crqc_temperate 1).mul (crdc_temperate 1 0))
   exact (h1.pow _).mul (h2.pow _)
 
+/- English proof (translation)
+Introduce `k` and use `⟨SchwartzMap.smulLeftCLM ℂ (polyK k) gaussK, fun p => by rw [SchwartzMap.smulLeftCLM_apply_apply (polyK_temperate k), gaussK_apply, smul_eq_mul] simp [polyK, gauK, crd, crdc, crqc, map_add, map_mul]⟩`.
+-/
 theorem dGauK : DGau := fun k =>
   ⟨SchwartzMap.smulLeftCLM ℂ (polyK k) gaussK, fun p => by
     rw [SchwartzMap.smulLeftCLM_apply_apply (polyK_temperate k), gaussK_apply, smul_eq_mul]

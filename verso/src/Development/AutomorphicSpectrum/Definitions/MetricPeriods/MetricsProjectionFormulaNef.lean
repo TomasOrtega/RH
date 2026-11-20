@@ -33,6 +33,9 @@ def combLine {σ : Type} [Fintype σ] (A : σ → HermLine ι) (n : σ → ℤ) 
     rw [Finset.prod_comm]
     simp only [Finset.prod_zpow]
 
+/- English proof (translation)
+Unfold `combLine GlobalTheory.CompanionTheory.Ar.Top.combLine`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem combLine_eq_top {σ : Type} [Fintype σ] (A : σ → HermLine ι) (n : σ → ℤ) :
     combLine A n = GlobalTheory.CompanionTheory.Ar.Top.combLine A n := by
   unfold combLine GlobalTheory.CompanionTheory.Ar.Top.combLine
@@ -40,12 +43,21 @@ theorem combLine_eq_top {σ : Type} [Fintype σ] (A : σ → HermLine ι) (n : �
   funext k
   simp [Finset.sum_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem combLine_a {σ : Type} [Fintype σ] (A : σ → HermLine ι) (n : σ → ℤ) (k : K) :
     (combLine A n).a k = ∑ x, n x * (A x).a k := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem combLine_h {σ : Type} [Fintype σ] (A : σ → HermLine ι) (n : σ → ℤ) (z : (Σ k, ι k) → ℂ) :
     (combLine A n).h z = ∏ x, (A x).h z ^ n x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨funext fun k => by simp [combLine_a, sub_eq_add_neg], fun z => by simp [combLine_h, div_eq_mul_inv]⟩`.
+-/
 theorem combLine_div (A B : HermLine ι) :
     (combLine ![A, B] ![1, -1]).a = A.a - B.a ∧ ∀ z, (combLine ![A, B] ![1, -1]).h z = A.h z / B.h z :=
   ⟨funext fun k => by simp [combLine_a, sub_eq_add_neg], fun z => by simp [combLine_h, div_eq_mul_inv]⟩
@@ -60,6 +72,9 @@ def degNumDe (w : Fin e → σ) : ℝ := S.degNum w / S.nComp
 
 def degPolyDe [Fintype σ] : MvPolynomial σ ℝ := formPoly e S.degNumDe
 
+/- English proof (translation)
+Set `_ : ChartedSpace (Fin e → ℂ) S.X` to `{ atlas := Set.range S.A.chart chartAt := fun x => S.A.chart (S.A.cover x).choose mem_chart_source := fun x => (S.A.cover x).choose_spec chart_mem_atlas := fun _ => ⟨_, rfl⟩ }`. Use `ChartedSpace.locallyConnectedSpace (Fin e → ℂ) S.X` as an intermediate fact. Use `infer_instance`.
+-/
 theorem finite_components : Finite (ConnectedComponents S.X) := by
   let _ : ChartedSpace (Fin e → ℂ) S.X :=
     { atlas := Set.range S.A.chart
@@ -69,21 +84,36 @@ theorem finite_components : Finite (ConnectedComponents S.X) := by
   have := ChartedSpace.locallyConnectedSpace (Fin e → ℂ) S.X
   infer_instance
 
+/- English proof (translation)
+Use `S.finite_components` as an intermediate fact. Conclude with `Nat.card_pos`.
+-/
 theorem nComp_pos [Nonempty S.X] : 0 < S.nComp := by
   have := S.finite_components
   exact Nat.card_pos
 
+/- English proof (translation)
+The claim follows from `Nat.card_unique`.
+-/
 theorem nComp_eq_one [ConnectedSpace S.X] : S.nComp = 1 :=
   Nat.card_unique
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nComp_comap {σ' : Type} (f : σ' → σ) : (S.comap f).nComp = S.nComp := rfl
 
 end AnSys
 
+/- English proof (translation)
+Simplify using `only [formPoly, Finset.smul_sum, map_mul, smul_eq_C_mul, mul_assoc]`.
+-/
 theorem formPoly_const_mul {σ : Type} [Fintype σ] (n : ℕ) (c : ℝ) (a : (Fin n → σ) → ℝ) :
     formPoly n (fun w => c * a w) = c • formPoly n a := by
   simp only [formPoly, Finset.smul_sum, map_mul, smul_eq_C_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `h : (S.nComp : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 S.nComp_pos.ne'`. Rewrite using `[AnSys.degPolyDe, ← formPoly_const_mul, AnSys.degPoly]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[AnSys.degNumDe, mul_div_cancel₀ _ h]`.
+-/
 theorem AnSys.degPoly_eq {e : ℕ} {σ : Type} [Fintype σ] (S : AnSys e σ) [Nonempty S.X] :
     S.degPoly = (S.nComp : ℝ) • S.degPolyDe := by
   have h : (S.nComp : ℝ) ≠ 0 := Nat.cast_ne_zero.2 S.nComp_pos.ne'
@@ -144,6 +174,9 @@ def PBDe [Fintype σ] : MvPolynomial σ ℝ := formPoly (D + 1) (Re.limNumDe II)
 
 include Re in
 
+/- English proof (translation)
+Take `⟨z, hz, hJ⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.exists_mcPts_not_mem_mcPts Re.arith Re.R.nondeg`. Take `⟨x, -⟩` from `Re.R.surj z hz hJ`. Conclude with `⟨Re.π x⟩`.
+-/
 theorem nonempty_base : Nonempty S.X := by
   obtain ⟨z, hz, hJ⟩ :=
     GroundTheory.Heights₂.Heights.HilbertSamuel.exists_mcPts_not_mem_mcPts Re.arith Re.R.nondeg
@@ -152,21 +185,39 @@ theorem nonempty_base : Nonempty S.X := by
 
 include Re in
 
+/- English proof (translation)
+The claim follows from `haveI := Re.nonempty_base S.nComp_pos`.
+-/
 theorem nComp_pos : 0 < S.nComp :=
   haveI := Re.nonempty_base
   S.nComp_pos
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos Re.nComp_pos Re.deg_pos`.
+-/
 theorem de_pos : 0 < Re.de := Nat.mul_pos Re.nComp_pos Re.deg_pos
 
+/- English proof (translation)
+Rewrite using `[numDe, num, de, Nat.cast_mul, div_div, mul_comm]`.
+-/
 theorem numDe_eq (t : ℝ) (w : Fin (D + 1) → σ) : Re.numDe II t w = Re.num II t w / S.nComp := by
   rw [numDe, num, de, Nat.cast_mul, div_div, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[numDe_eq, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]`.
+-/
 theorem num_eq (t : ℝ) (w : Fin (D + 1) → σ) : Re.num II t w = S.nComp * Re.numDe II t w := by
   rw [numDe_eq, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]
 
+/- English proof (translation)
+Rewrite using `[limNumDe, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]`.
+-/
 theorem limNum_eq (w : Fin (D + 1) → σ) : Re.limNum II w = S.nComp * Re.limNumDe II w := by
   rw [limNumDe, mul_div_cancel₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [num_eq, limNum_eq]`. Conclude with `h.const_mul _`. Simplify using `only [numDe_eq, limNumDe]`. Conclude with `h.div_const _`.
+-/
 theorem tendsto_numDe_iff (w : Fin (D + 1) → σ) :
     Tendsto (fun t => Re.numDe II t w) (𝓝[>] 0) (𝓝 (Re.limNumDe II w)) ↔
       Tendsto (fun t => Re.num II t w) (𝓝[>] 0) (𝓝 (Re.limNum II w)) := by
@@ -176,6 +227,9 @@ theorem tendsto_numDe_iff (w : Fin (D + 1) → σ) :
   · simp only [numDe_eq, limNumDe]
     exact h.div_const _
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun t => Re.num II t w) (𝓝[>] 0) (𝓝 (S.nComp * L))`. Simplify using `only [num_eq]`. Conclude with `h.const_mul _`. Rewrite using `[limNumDe, limNum, h1.limUnder_eq, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]`.
+-/
 theorem limNumDe_eq_of_tendsto {w : Fin (D + 1) → σ} {L : ℝ}
     (h : Tendsto (fun t => Re.numDe II t w) (𝓝[>] 0) (𝓝 L)) : Re.limNumDe II w = L := by
   have h1 : Tendsto (fun t => Re.num II t w) (𝓝[>] 0) (𝓝 (S.nComp * L)) := by
@@ -183,18 +237,27 @@ theorem limNumDe_eq_of_tendsto {w : Fin (D + 1) → σ} {L : ℝ}
     exact h.const_mul _
   rw [limNumDe, limNum, h1.limUnder_eq, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 Re.nComp_pos.ne')]
 
+/- English proof (translation)
+Rewrite using `[FTDe, ← formPoly_const_mul, FT]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `Re.num_eq II t w`.
+-/
 theorem FT_eq [Fintype σ] (t : ℝ) : Re.FT II t = (S.nComp : ℝ) • Re.FTDe II t := by
   rw [FTDe, ← formPoly_const_mul, FT]
   congr 1
   funext w
   exact Re.num_eq II t w
 
+/- English proof (translation)
+Rewrite using `[PBDe, ← formPoly_const_mul, PB]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `Re.limNum_eq II w`.
+-/
 theorem PB_eq [Fintype σ] : Re.PB II = (S.nComp : ℝ) • Re.PBDe II := by
   rw [PBDe, ← formPoly_const_mul, PB]
   congr 1
   funext w
   exact Re.limNum_eq II w
 
+/- English proof (translation)
+Simplify using `[de, PB_eq, FT_eq, S.nComp_eq_one]`.
+-/
 theorem PBDe_of_connected [Fintype σ] [ConnectedSpace S.X] :
     Re.de = Re.deg ∧ Re.PBDe II = Re.PB II ∧ ∀ t, Re.FTDe II t = Re.FT II t := by
   simp [de, PB_eq, FT_eq, S.nComp_eq_one]
@@ -217,11 +280,20 @@ def comap {σ' : Type} (f : σ' → σ) : Realis (S.comap f) P where
   line_smooth a := Re.line_smooth (f a)
   line_eq a := Re.line_eq (f a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem de_comap {σ' : Type} (f : σ' → σ) : (Re.comap f).de = Re.de := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem numDe_comap {σ' : Type} (f : σ' → σ) (t : ℝ) (w : Fin (D + 1) → σ') :
     (Re.comap f).numDe II t w = Re.numDe II t (f ∘ w) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem limNumDe_comap {σ' : Type} (f : σ' → σ) (w : Fin (D + 1) → σ') :
     (Re.comap f).limNumDe II w = Re.limNumDe II (f ∘ w) := rfl
 
@@ -243,6 +315,11 @@ def Realis.PBsDe (k : ℕ) : MvPolynomial (Option (Ψ × Fin N)) ℝ := scaleS k
 
 def Realis.PBwtDe : MvPolynomial (Ψ × Fin N) ℝ := toWt ((Re.comap some).PBDe II)
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [scaleS]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p o hp`. Simplify using `only [map_mul, hp, eval_X]`.
+
+Use `congr 1`. Apply the tactic sequence `cases o <;> simp [scaleS, div_eq_inv_mul]`.
+-/
 theorem eval_scaleS {τ : Type} (k : ℕ) (Q : MvPolynomial (Option τ) ℝ) (lam : τ → ℝ) (s : ℝ) :
     eval (fun o : Option τ => o.elim s lam) (scaleS k Q) = eval (fun o : Option τ => o.elim (s / k) lam) Q := by
   induction Q using MvPolynomial.induction_on with
@@ -253,14 +330,23 @@ theorem eval_scaleS {τ : Type} (k : ℕ) (Q : MvPolynomial (Option τ) ℝ) (la
     congr 1
     cases o <;> simp [scaleS, div_eq_inv_mul]
 
+/- English proof (translation)
+Rewrite using `[Realis.PBwt, Realis.PB_eq, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem Realis.PBwt_eq : Re.PBwt II = (S.nComp : ℝ) • Re.PBwtDe II := by
   rw [Realis.PBwt, Realis.PB_eq, map_smul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Realis.PBs, Realis.PB_eq, map_smul, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem Realis.scaleS_PBs (k : ℕ) : scaleS k (Re.PBs II) = (S.nComp : ℝ) • Re.PBsDe II k := by
   rw [Realis.PBs, Realis.PB_eq, map_smul, map_smul]
   rfl
 
+/- English proof (translation)
+Establish `h : (S.nComp : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Re.nComp_pos.ne'`. Rewrite using `[← eval_scaleS, Realis.scaleS_PBs, smul_eval, mul_div_cancel_left₀ _ h]`.
+-/
 theorem Realis.eval_PBsDe (k : ℕ) (lam : Ψ × Fin N → ℝ) (s : ℝ) :
     eval (fun o => o.elim s lam) (Re.PBsDe II k) = eval (fun o => o.elim (s / k) lam) (Re.PBs II) / S.nComp := by
   have h : (S.nComp : ℝ) ≠ 0 := Nat.cast_ne_zero.2 Re.nComp_pos.ne'
@@ -272,12 +358,18 @@ def NefAt (P : Ideal (MRing ι)) (p : ℕ) (a : K → ℤ) : Prop :=
   ∀ W : Ideal (MRing ι), IsMultiProjPrime W → P ≤ W → charOf W = p →
     ringKrullDim (MRing ι ⧸ W) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞) → 0 ≤ geoNum 1 W fun _ => a
 
+/- English proof (translation)
+Establish `hI : (W.comap (C : ℤ →+* MRing ι)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `h0 : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) ≠ 0` using `fun e => h (by simp [charOf, e])`. Rewrite `hI` using `[← Ideal.span_singleton_generator (W.comap (C : ℤ →+* MRing ι)), Ideal.span_singleton_prime h0]`. Conclude with `Int.prime_iff_natAbs_prime.1 hI`.
+-/
 theorem prime_charOf_of_ne_zero {W : Ideal (MRing ι)} (hW : W.IsPrime) (h : charOf W ≠ 0) : (charOf W).Prime := by
   have hI : (W.comap (C : ℤ →+* MRing ι)).IsPrime := Ideal.comap_isPrime _ _
   have h0 : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) ≠ 0 := fun e => h (by simp [charOf, e])
   rw [← Ideal.span_singleton_generator (W.comap (C : ℤ →+* MRing ι)), Ideal.span_singleton_prime h0] at hI
   exact Int.prime_iff_natAbs_prime.1 hI
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h p hp W h1 h2 h3 h4 => h W h1 h2 (h3 ▸ hp.ne_zero) h4, fun h W h1 h2 h3 h4 => h _ (prime_charOf_of_ne_zero h1.1 h3) W h1 h2 rfl h4⟩`.
+-/
 theorem nefOnFibres_iff_nefAt (P : Ideal (MRing ι)) (a : K → ℤ) :
     NefOnFibres P a ↔ ∀ p : ℕ, p.Prime → NefAt P p a :=
   ⟨fun h p hp W h1 h2 h3 h4 => h W h1 h2 (h3 ▸ hp.ne_zero) h4,
@@ -291,6 +383,9 @@ def VertClose (P : Ideal (MRing ι)) (T : Finset ℕ) (α : ℕ → ℝ) (A B : 
     ∀ W, charOf W ∈ T →
       |(divCycle P f W : ℝ) - divCycle P g W| ≤ α (charOf W) * divCycle P (C (charOf W : ℤ)) W
 
+/- English proof (translation)
+Take `⟨f, g, df, dg, hf, hg, hfP, hgP, hd, hn, h1, h2⟩` from `h`. Use `⟨g, f, dg, df, hg, hf, hgP, hfP, fun k => by linarith [hd k], fun z hz => (hn z hz).symm, fun W hW => (h1 W hW).symm, fun W hW => ?_⟩` and prove the remaining obligations. Rewrite using `[abs_sub_comm]`. Conclude with `h2 W hW`.
+-/
 theorem VertClose.symm {P : Ideal (MRing ι)} {T : Finset ℕ} {α : ℕ → ℝ} {A B : HermLine ι}
     (h : VertClose P T α A B) : VertClose P T α B A := by
   obtain ⟨f, g, df, dg, hf, hg, hfP, hgP, hd, hn, h1, h2⟩ := h
@@ -311,38 +406,89 @@ def Inputs : Prop :=
 
 namespace Inputs
 
+/- English proof (translation)
+The claim follows from `h.1.1`.
+-/
 theorem convergence (h : Inputs) : ConvergenceStatement := h.1.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.1`.
+-/
 theorem convergenceSigned (h : Inputs) : ConvergenceSignedStatement := h.1.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.1`.
+-/
 theorem convergenceRate (h : Inputs) : ConvergenceRateStatement := h.1.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.2.1`.
+-/
 theorem unifInt (h : Inputs) : UnifIntStatement := h.1.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.2.2.1`.
+-/
 theorem pullback (h : Inputs) : PullbackStatement := h.1.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.1.2.2.2.2.2`.
+-/
 theorem regGlobal (h : Inputs) : RegGlobalStatement := h.1.2.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `h.2.1.1`.
+-/
 theorem resExists (h : Inputs) : ResExistsStatement := h.2.1.1
 
+/- English proof (translation)
+The claim follows from `h.2.1.2.1`.
+-/
 theorem degree (h : Inputs) : ReciprocityTheory.ChartRestriction.G.Geo.DegreeStatement := h.2.1.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.1.2.2`.
+-/
 theorem height (h : Inputs) : ArithmeticIntersectionNonneg := h.2.1.2.2
 
+/- English proof (translation)
+The claim follows from `h.2.2.1.1`.
+-/
 theorem ratR (h : Inputs) : ReciprocityTheory.ChartRestriction.G.AI.I2.RatRStatement := h.2.2.1.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.1.2`.
+-/
 theorem metricLocal (h : Inputs) : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement := h.2.2.1.2
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.1.1`.
+-/
 theorem projFormula (h : Inputs) : ReciprocityTheory.ChartRestriction.G.AI.I4.PFStatement := h.2.2.2.1.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.1.2.1`.
+-/
 theorem lineFibre (h : Inputs) : ReciprocityTheory.ChartRestriction.G.AI.I4.LineFibreStatement := h.2.2.2.1.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.1.2.2`.
+-/
 theorem fibreDim (h : Inputs) : ReciprocityTheory.ChartRestriction.G.AI.I4.FibreDimStatement := h.2.2.2.1.2.2
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.1`.
+-/
 theorem kleimanNef (h : Inputs) : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KleimanNefIntersectionNonneg := h.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.1`.
+-/
 theorem kleimanNefF (h : Inputs) : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KleimanNefFStatement := h.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2`.
+-/
 theorem siuZ (h : Inputs) : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.SiuZStatement := h.2.2.2.2.2.2
 
 end Inputs

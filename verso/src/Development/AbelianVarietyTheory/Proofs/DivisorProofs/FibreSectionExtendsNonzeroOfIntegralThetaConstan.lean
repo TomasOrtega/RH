@@ -20,25 +20,40 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.OmExt
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨pt, H⟩`.
+-/
 theorem thList_cast {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))) (m : ℕ)
     {K : Type} [Field K] {x y : Sp K ⟶ S} (e : x = y) (θ : SecAt G L x) {N : ℕ} (pt : Fin N → (Over.mk x ⟶ G))
     (c : Fin N → K) (H : ThList G L ρ m x θ pt c) : ∃ pt' : Fin N → (Over.mk y ⟶ G), ThList G L ρ m y (e ▸ θ) pt' c := by
   subst e; exact ⟨pt, H⟩
 
+/- English proof (translation)
+Rewrite using `[RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective V (FractionRing V)).comp hφ`.
+-/
 theorem inj_comp {R V : Type} [CommRing R] [CommRing V] [IsDomain V] (φ : R →+* V) (hφ : Function.Injective φ) :
     Function.Injective ((algebraMap V (FractionRing V)).comp φ) := by
   rw [RingHom.coe_comp]; exact (IsFractionRing.injective V (FractionRing V)).comp hφ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsFractionRing.lift (inj_comp φ hφ), RingHom.ext fun r => by rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap]⟩`.
+-/
 theorem exists_fracMap {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V)
     (hφ : Function.Injective φ) : ∃ φK : FractionRing R →+* FractionRing V,
       φK.comp (algebraMap R (FractionRing R)) = (algebraMap V (FractionRing V)).comp φ :=
   ⟨IsFractionRing.lift (inj_comp φ hφ), RingHom.ext fun r => by
     rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap]⟩
 
+/- English proof (translation)
+The claim follows from `ThetaRuleCompare.sec_ext fun j => congrFun (congrArg Subtype.val h) j`.
+-/
 theorem secAt_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) {R : Type} [CommRing R] {x : Sp R ⟶ S}
     {τ₁ τ₂ : SecAt G L x} (h : SecM.ofSec G τ₁ = SecM.ofSec G τ₂) : τ₁ = τ₂ :=
   ThetaRuleCompare.sec_ext fun j => congrFun (congrArg Subtype.val h) j
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `rfl : u₁ = u₂` from `Over.OverMorphism.ext hu`. Both sides reduce to the same expression.
+-/
 theorem cast_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) {Z : Scheme.{0}} {T : Over S}
     (σ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) T)) {y₁ y₂ : Z ⟶ S} (e : y₁ = y₂) (u₁ : Over.mk y₁ ⟶ T) (u₂ : Over.mk y₂ ⟶ T)
     (hu : u₁.left = u₂.left) :
@@ -47,6 +62,9 @@ theorem cast_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) {Z :
   obtain rfl : u₁ = u₂ := Over.OverMorphism.ext hu
   rfl
 
+/- English proof (translation)
+Simplify using `only [SecAt.pull]`. Rewrite using `[ThetaRuleCompare.pullS_comp, ThetaRuleCompare.pullS_comp]`. Use `cast_pullS G L σ h _ _ ?_` and prove the remaining obligations. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[← spMap_comp, ← spMap_comp, hc]`.
+-/
 theorem pull_pull_cast {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) {R V K K' : Type} [CommRing R]
     [CommRing V] [CommRing K] [CommRing K'] (χ : Sp R ⟶ S) (σ : SecAt G L χ) (φ : R →+* V) (a : R →+* K)
     (b : V →+* K') (φK : K →+* K') (h : spMap φK ≫ spMap a ≫ χ = spMap b ≫ spMap φ ≫ χ)
@@ -58,6 +76,13 @@ theorem pull_pull_cast {S : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) 
   simp only [Over.comp_left, Over.homMk_left]
   rw [← spMap_comp, ← spMap_comp, hc]
 
+/- English proof (translation)
+Establish `hDom : IsDominant (spMap (algebraMap V (FractionRing V)))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))).trans_le bot_le)⟩`. Establish `hSD : IsSchemeTheoreticallyDominant (spMap (algebraMap V (FractionRing V)))` using `(isSchemeTheoreticallyDominant_iff_isDominant _).2 hDom`. Establish `hFl : Flat (fst (Over.mk x) G).left` using `inferInstanceAs (Flat (pullback.fst x G.hom))`. Set `ιK : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap V (FractionRing V))) rfl`. Establish `hP` using `ThetaRuleCompare.isPullback_whisker (A := G) ιK`.
+
+Use `ThetaRuleCompare.sec_ext fun j => BundleExt.fn_ext_dense (spMap (algebraMap V (FractionRing V))) (fst (Over.mk x) G).left fun Z ρ r z hrz hz => ?_` and prove the remaining obligations. Set `ρ' : Z ⟶ (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ x) ⊗ G).left` to `hP.lift ρ r hrz.symm`. Establish `hfac : ρ' ≫ (ιK ▷ G).left = ρ` using `hP.lift_fst _ _ _`. Establish `hz' : ρ' z ∈ (LPow G L ((1 : ℕ) : ℤ) (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ x))).U j` using `ThetaRuleCompare.chart_ge ιK j (show (ιK ▷ G).left (ρ' z) ∈ _ by rw [← Scheme.Hom.comp_apply, hfac]; exact hz)`. Rewrite using `[← hfac, ← ThetaRuleCompare.gs_pullS ιK τ₁ ρ' z j hz', ← ThetaRuleCompare.gs_pullS ιK τ₂ ρ' z j hz']`.
+
+Conclude with `congrArg (fun u : SecAt G L (spMap (algebraMap V (FractionRing V)) ≫ x) => gs ρ' z _ (u.f j)) h`.
+-/
 theorem secAt_eq_of_generic {S : Scheme.{0}} (G : Over S) [GrpObj G] [Flat G.hom] (L : LB G.left) {V : Type}
     [CommRing V] [IsDomain V] (x : Sp V ⟶ S) (τ₁ τ₂ : SecAt G L x)
     (h : SecAt.pull G L τ₁ (algebraMap V (FractionRing V)) = SecAt.pull G L τ₂ (algebraMap V (FractionRing V))) :
@@ -81,6 +106,11 @@ theorem secAt_eq_of_generic {S : Scheme.{0}} (G : Over S) [GrpObj G] [Flat G.hom
   exact congrArg (fun u : SecAt G L (spMap (algebraMap V (FractionRing V)) ≫ x) => gs ρ' z _ (u.f j)) h
 
 open GlobalTheory.VVRank GlobalTheory.EmbPull TopologicalSpace in
+/- English proof (translation)
+Take `⟨j, hj, u⟩` from `(mem_nonzeroLocus _ z).1 hz`. Establish `q` using `gs_pullTo (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => a) th (h ▷ G).left (fun _ => whisker_snd_left G h) (𝟙 _) z j hj`. Rewrite `q` using `[Category.id_comp]`. Establish `q'` using `q.trans (gs_stalkMap (h ▷ G).left z _ (wchart_le_of_eq _ (fun _ => whisker_snd_left G h) j hj) _)`. Use `(mem_nonzeroLocus _ _).2 ⟨j, wchart_le_of_eq (φ := fun _ : Fin 1 => (snd T G).left) _ (fun _ => whisker_snd_left G h) j hj, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(isUnit_map_iff _ _).1 (q' ▸ u)`.
+-/
 theorem mem_nonzeroLocus_of_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (a : ℤ) {T T' : Over S}
     (h : T' ⟶ T) (th : LB.Sec (LPow G L a T)) (z : (T' ⊗ G).left) (hz : z ∈ nonzeroLocus (VVRank.pullS G a h th)) :
     (h ▷ G).left z ∈ nonzeroLocus th := by
@@ -93,6 +123,9 @@ theorem mem_nonzeroLocus_of_pullS {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : 
     (fun _ => whisker_snd_left G h) j hj, ?_⟩
   exact (isUnit_map_iff _ _).1 (q' ▸ u)
 
+/- English proof (translation)
+Use `show PrimeSpectrum.comap (φ₀.comp (algebraMap R (Localization.AtPrime s.asIdeal))) (IsLocalRing.closedPoint V) = s`. Rewrite using `[PrimeSpectrum.comap_comp_apply, IsLocalRing.comap_closedPoint]`. Use `ext1`. Rewrite using `[PrimeSpectrum.comap_asIdeal]`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+-/
 theorem spMap_closedPoint {R : Type} [CommRing R] (s : PrimeSpectrum R) {V : Type} [CommRing V] [IsLocalRing V]
     (φ₀ : Localization.AtPrime s.asIdeal →+* V) [IsLocalHom φ₀] :
     (spMap (φ₀.comp (algebraMap R (Localization.AtPrime s.asIdeal)))).base (IsLocalRing.closedPoint V) = s := by
@@ -102,6 +135,27 @@ theorem spMap_closedPoint {R : Type} [CommRing R] (s : PrimeSpectrum R) {V : Typ
   rw [PrimeSpectrum.comap_asIdeal]
   exact Localization.AtPrime.comap_maximalIdeal
 
+/- English proof (translation)
+Introduce `E _ _ _ H S t g m N R _ _ _ _ _ χ θ pt c hodd h3 hm hPol hT hunit`. Establish `key : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (φ : R →+* V) (φK : FractionRing R →+* FractionRing V) (h : spMap φK ≫ spMap (algebraMap R (FractionRing R)) ≫ χ = spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ), φK.comp (algebraMap R …`. Introduce `V _ _ _ hV φ φK h hc`. Take `⟨pt₁, -, hT₁⟩` from `GlobalTheory.T.isThetaConstantListOfFibre_pullback_field_extension S t.G t.PP.L t.PP.rig t.PP.isLB t.PP.rigGen m N _ _ φK _ θ pt _ hT`. Take `⟨pt₂, hT₂⟩` from `thList_cast t.G t.PP.L t.PP.rig m h _ pt₁ _ hT₁`.
+
+Establish `hPF : PolFib t.G t.PP.L g (spMap φK ≫ spMap (algebraMap R (FractionRing R)) ≫ χ)` using `(GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback S S t.G t.PP.L t.G t.PP.L (𝟙 S) (𝟙 _) t.PP.isLB t.PP.isLB (SiegLower.isGrpPullback_id _) (SiegLower.lbIso_pull_id t.PP.isLB) g (FractionRing R) _).2 _ φK hPol`. Establish `hPF' : PolFib t.G t.PP.L g (spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ)` using `h ▸ hPF`. Establish `hm' : IsUnit (m : V)` using `by simpa using hm.map φ`. Establish `hcv : ∀ r, φK (algebraMap R (FractionRing R) r) = algebraMap V (FractionRing V) (φ r)` using `fun r => congrArg (· r) hc`. Establish `hPrim : Prim (algebraMap V (FractionRing V)) (fun a => φK (algebraMap R (FractionRing R) (c a)))`.
+
+Take `⟨a, u, hu⟩` from `hunit`. Use `⟨fun b => ?_, a, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hcv]`. Conclude with `RingHom.isIntegralElem_map _`.
+
+Simplify using `only`. Rewrite using `[← hu]`. Conclude with `((u.isUnit.map (algebraMap R (FractionRing R))).map φK).ne_zero`. Simplify using `only`. Rewrite using `[← hu, hcv, show (algebraMap V (FractionRing V) (φ ↑u))⁻¹ = ((algebraMap V (FractionRing V)).comp φ) ↑u⁻¹ from (map_units_inv ((algebraMap V (FractionRing V)).comp φ) u).symm, RingHom.comp_apply]`.
+
+Conclude with `RingHom.isIntegralElem_map _`. Conclude with `GlobalTheory.T.exists_nonzero_section_closed_fibre_of_primitive_theta E H S t g m N V hV (spMap φ ≫ χ) (h ▸ SecAt.pull t.G t.PP.L θ φK) pt₂ _ hodd h3 hm' hPF' hT₂ hPrim`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_section_of_extends_over_complete_dvrs S t.G t.PP.L t.PP.isLB t.semi R χ θ (fun V _ _ _ hV φ φK h hc => (key V hV φ φK h hc).imp fun _ h' => h'.1)`. Use `⟨σ, hσ, fun s => ?_⟩` and prove the remaining obligations. Take `⟨p, hps⟩ : ∃ p : PrimeSpectrum R, (p : Sp R) = s` from `⟨s, rfl⟩`.
+
+Establish `hinjp : Function.Injective (algebraMap R (Localization.AtPrime p.asIdeal))` using `IsLocalization.injective _ p.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : CharZero (Localization.AtPrime p.asIdeal) := charZero_of_injective_algebraMap hinjp`. Take `⟨V, _, _, _, φ₀, hV, hinj, hloc⟩` from `GlobalTheory.DvrDom.exists_cdvr_dominating (Localization.AtPrime p.asIdeal)`. Take `⟨φ, hφdef⟩ : ∃ φ : R →+* V, φ = φ₀.comp (algebraMap R (Localization.AtPrime p.asIdeal))` from `⟨_, rfl⟩`. Establish `hφ : Function.Injective φ`.
+
+Rewrite using `[hφdef, RingHom.coe_comp]`. Conclude with `hinj.comp hinjp`. Take `⟨φK, hc⟩` from `exists_fracMap φ hφ`. Establish `h : spMap φK ≫ spMap (algebraMap R (FractionRing R)) ≫ χ = spMap (algebraMap V (FractionRing V)) ≫ spMap φ ≫ χ`. Rewrite using `[← Category.assoc, ← Category.assoc, ← spMap_comp, ← spMap_comp, hc]`.
+
+Take `⟨σV, hσV, z, hz₁, hz₂⟩` from `key V hV φ φK h hc`. Establish `hθ : SecAt.pull t.G t.PP.L σ (algebraMap R (FractionRing R)) = θ` using `secAt_ext t.G t.PP.L hσ`. Establish `hFl : Flat t.G.hom` using `by haveI := t.semi.smooth; infer_instance`. Establish `e₁` using `pull_pull_cast t.G t.PP.L χ σ φ (algebraMap R (FractionRing R)) (algebraMap V (FractionRing V)) φK h hc`. Rewrite `e₁` using `[hθ]`.
+
+Establish `heq : SecAt.pull t.G t.PP.L σ φ = σV` using `secAt_eq_of_generic t.G t.PP.L _ _ _ (secAt_ext t.G t.PP.L (e₁.trans hσV.symm))`. Substitute `heq` using the available equality. Use `⟨((Over.homMk (spMap φ) rfl : Over.mk (spMap φ ≫ χ) ⟶ Over.mk χ) ▷ t.G).left z, ?_, mem_nonzeroLocus_of_pullS t.G _ _ σ z hz₂⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, whiskerRight_fst, Over.comp_left, Scheme.Hom.comp_apply, hz₁]`. Use `show (spMap φ) (IsLocalRing.closedPoint V) = s`.
+
+Rewrite using `[← hps, hφdef]`. Conclude with `spMap_closedPoint p φ₀`.
+-/
 theorem om_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (g m N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (χ : Sp R ⟶ S) (θ : SecAt t.G t.PP.L (spMap (algebraMap R (FractionRing R)) ≫ χ)) (pt : Fin N → (Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ t.G)) (c : Fin N → R), Odd m → 3 ≤ m → IsUnit (m : R) → PolFib t.G t.PP.L g (spMap (algebraMap R (FractionRing R)) ≫ χ) → ThList t.G t.PP.L t.PP.rig m _ θ pt (fun a => algebraMap R (FractionRing R) (c a)) → (∃ a, IsUnit (c a)) → ∃ σ : SecAt t.G t.PP.L χ, SecM.ofSec t.G (SecAt.pull t.G t.PP.L σ (algebraMap R (FractionRing R))) = SecM.ofSec t.G θ ∧ ∀ s : Sp R, ∃ z : (Over.mk χ ⊗ t.G).left, (fst (Over.mk χ) t.G).left z = s ∧ z ∈ nonzeroLocus σ := by
   intro E _ _ _ H S t g m N R _ _ _ _ _ χ θ pt c hodd h3 hm hPol hT hunit
   have key : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (φ : R →+* V)

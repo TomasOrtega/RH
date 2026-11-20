@@ -24,6 +24,45 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ThetaTrace GlobalTheo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hu hu'` using the available equality. Establish `hCk : ψp.ker = C` using `hk.2.2.2.2.2.1`. Take `⟨gam, h, hg1, hg2, -, hex⟩` from `GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog E H Dw l Xo _ g _ F i₁ i₂ Pm Pm' p C ψ ψp hP hP' hp hC2 hk`. Establish `eadd` using `F.ex_add i₁ Pm hP`. Establish `eadd'` using `F.ex_add i₂ Pm' hP'`.
+
+Establish `eker` using `F.ex_ker i₁ Pm hP`. Establish `eker'` using `F.ex_ker i₂ Pm' hP'`. Establish `hspan : Submodule.span ℝ (Pm.range : Set (Fin g → ℂ)) = ⊤`. Rewrite using `[AddMonoidHom.coe_range]`. Conclude with `hP.2.2.2.1`.
+
+Establish `hsmul : ∀ (d : ℂ) z w, hermForm (d • Hm) z w = d * hermForm Hm z w` using `fun d z w => by`. Simplify using `only [hermForm, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin g) (Fin g) ℂ, ∀ z, M *ᵥ z = h z` from `⟨LinearMap.toMatrix' h.toLinearMap, fun z => by rw [LinearMap.toMatrix'_mulVec]; rfl⟩`. Establish `hpR : ((p : ℂ) ^ 2) = (((p : ℝ) ^ 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hHH : ∀ z w, hermForm Hm' (h z) (h w) = ((p : ℂ) ^ 2) * hermForm Hm z w`.
+
+Establish `key` using `GlobalTheory.UnitFrameGen.hermForm_eq_of_im _ hspan (((p : ℂ) ^ 2) • Hm) Hm' M (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨a', rfl⟩`. Rewrite using `[hM, hM, ← hg2, ← hg2, him', hg1, hsmul, hpR, Complex.im_ofReal_mul, him]`. Use `push_cast`. Use the proof step `ring)`.
+
+Introduce `z w`. Rewrite using `[← hM, ← hM, key, hsmul]`. Establish `hpow : ∀ (m : ℕ) w, F.ex i₁ Pm (m • w) = F.ex i₁ Pm w ^ m` using `fun m w => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, pow_zero]`.
+
+Conclude with `(eker 0).2 ⟨0, map_zero Pm⟩`. Consider the case `succ m ih => rw [succ_nsmul, eadd, ih, pow_succ]`. Establish `hL : ∀ a ∈ Pm.range, h a ∈ Pm'.range`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨gam a, hg2 a⟩`.
+
+Establish `hhol` using `GlobalTheory.ClassUniq.isHolTo_ex F i₁ Pm hP`. Establish `hhol'` using `GlobalTheory.ClassUniq.isHolTo_ex F i₂ Pm' hP'`. Establish `hfr` using `GlobalTheory.T.heckeIsogeny_appellHumbertFrame_pull_eq_transition_mul E H Dw l Xo (F.u i₁ Pm) (F.u i₂ Pm') p ψp b g Pm.range Pm'.range (F.ex i₁ Pm) (F.ex i₂ Pm') h hspan hhol hhol' eadd (fun a ha => (eker a).2 ha) hex hL hb0 hbt hbr (hbh g _ hhol) Hm χl fr hH hd hn hc h0 (by rint …`. Use `choose wm hwm using fun m => F.ex_onto i₁ Pm hP (cr m)`. Establish `hwmΛ : ∀ m, ∃ b', h (wm m) = Pm' b'` using `fun m => by`.
+
+Establish `e1 : F.ex i₂ Pm' (h (wm m)) = 1`. Rewrite using `[hex, hwm, ← MonoidHom.mem_ker, hCk]`. Conclude with `hr.1 m`. Take `⟨b', hb'⟩` from `(eker' _).1 e1`. Conclude with `⟨b', hb'.symm⟩`.
+
+Establish `hder : ∀ (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ pullback Xo.univ.t.G.hom (F.u i₁ Pm)), v ≫ pullback.snd _ _ = spMap (algebraMap ℂ (DualNumber ℂ)) → IsDerivAt0 (fun z => (F.ex i₁ Pm z).left) w (v ≫ pullback.fst _ _) → IsDerivAt0 (fun z => (F.ex i₂ Pm' z).left) (h w) (v ≫ ψ ≫ pul …`. Introduce `w v hvs hdv`. Establish `hfst : ∀ z, fibPt Xo.univ.t.G (F.ex i₁ Pm z) ≫ pullback.fst _ _ = (F.ex i₁ Pm z).left` using `fun z => pullback.lift_fst _ _ _`. Establish `d0 : IsDerivAt0 (fun z => fibPt Xo.univ.t.G (F.ex i₁ Pm z)) w v`. Use `FibreDeriv.isDerivAt0_of_isPullback (IsPullback.of_hasPullback Xo.univ.t.G.hom (F.u i₁ Pm)) (fun z => pullback.lift_snd _ _ _) ?_ hvs ?_` and prove the remaining obligations.
+
+Use `ExpChain.isHolTo_ex F i₁ Pm hP using 2 with z` and compare the differences between its conclusion and the goal. Conclude with `hfst z`. Use `hdv using 2 with z` and compare the differences between its conclusion and the goal. Conclude with `hfst z`. Establish `d1` using `FibreDeriv.isDerivAt0_comp d0 (ψ ≫ pullback.fst _ _)`.
+
+Establish `e1 : ∀ z, fibPt Xo.univ.t.G (F.ex i₁ Pm z) ≫ ψ ≫ pullback.fst _ _ = (F.ex i₂ Pm' (h z)).left` using `fun z => by`. Rewrite using `[← Category.assoc, hk.2.2.1, hex]`. Conclude with `pullback.lift_fst _ _ _`. Simplify using `only [e1] at d1`. Conclude with `(ExpChain.isDerivAt0_comp_linear _ (ExpChain.isHolTo_ex F i₂ Pm' hP') h.toLinearMap w _).1 d1`.
+
+Establish `hinj : ∀ m m' a, (p : ℂ) • wm m - (p : ℂ) • wm m' = Pm a → m = m'`. Introduce `m m' a hma`. Establish `e1 : cr m * (cr m')⁻¹ = F.ex i₁ Pm (wm m - wm m')`. Rewrite using `[mul_inv_eq_iff_eq_mul, ← hwm, ← hwm, ← eadd, sub_add_cancel]`. Establish `e2 : (cr m * (cr m')⁻¹) ^ p = 1`.
+
+Rewrite using `[e1, ← hpow, ← Nat.cast_smul_eq_nsmul ℂ, smul_sub, hma]`. Conclude with `(eker _).2 ⟨a, rfl⟩`. Conclude with `(hr.2 (cr m) (hr.1 m)).unique (by rw [mul_inv_cancel, one_pow]) e2`. Use `⟨h, wm, fun a => ⟨gam a, (hg2 a).symm⟩, hHH, hwmΛ, hinj, fun w => ?_, hder⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (F.ex i₂ Pm' (h w)).left`.
+
+Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Establish `hjz : ⊤ ≤ (ψp (F.ex i₁ Pm w)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [← hex]; exact hj`. Use `choose jm hjm using fun m => GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB ((cr m * F.ex i₁ Pm w) ^ p).left`. Establish `hsum` using `hbv (F.ex i₁ Pm w) j jm hjz hjm`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk (F.u i₂ Pm'))) (ψp (F.ex i₁ Pm w)))`.
+
+Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk (F.u i₂ Pm'))) (ψp (F.ex i₁ Pm w)))`. Rewrite `hsum`, `e1`, `e2` using `[← hex]`. Rewrite `hsum` using `[hv' j (h w) _ e1 e2 hj]`. Rewrite using `[_root_.mul_assoc, hsum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Establish `hq : cr m * F.ex i₁ Pm w = F.ex i₁ Pm (w + wm m)` using `by rw [← hwm, ← eadd, add_comm]`. Establish `hpw : F.ex i₁ Pm (w + wm m) ^ p = F.ex i₁ Pm ((p : ℂ) • (w + wm m))`. Rewrite using `[Nat.cast_smul_eq_nsmul, hpow]`. Establish `hjm'` using `hjm m`. Rewrite `hjm'`, the goal using `[hq, hpw]`.
+
+Establish `f1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 (Over.mk (F.u i₁ Pm))) (F.ex i₁ Pm ((p : ℂ) • (w + wm m))))`. Establish `f2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 (Over.mk (F.u i₁ Pm))) (F.ex i₁ Pm ((p : ℂ) • (w + wm m))))`. Rewrite using `[hv (jm m) _ _ f1 f2 hjm']`. Take `⟨b', hb'⟩` from `hwmΛ m`. Establish `hjw : ⊤ ≤ (F.ex i₂ Pm' (h (w + wm m))).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`.
+
+Rewrite using `[map_add, eadd', hb', (eker' _).2 ⟨b', rfl⟩, _root_.mul_one]`. Conclude with `hj`. Establish `hf` using `hfr (w + wm m) j (jm m) hjw hjm'`. Rewrite `hf` using `[map_add]`. Rewrite using `[hf]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core_reps (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (P : Ideal (𝓞 E)) (p i : ℕ)
     (yx zx : Sp ℂ ⟶ Xo.X) (ys : LB.Sec (PPx yx)) (zs : LB.Sec (PPx zx)) (C : Subgroup (Over.mk yx ⟶ Xo.univ.t.G))
@@ -198,6 +237,41 @@ theorem core_reps (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U _ _ P p i k k' x x' C z t hA hK hz hb ht1 g e F ik Pm Pm' hP hP' hu hu' hdu hdu' Hm χl fr θ hH hpos him hd hn hc h0 ha hv Hm' χl' fr' θ' hHm' _ _ him' hd' _ hc' h0' ha' hv'`. Take `⟨ψ, ψp, n, cr, b, hk, hL, hr, hb0, hbt, hbr, hbh, hbv⟩` from `GlobalTheory.HeckeLiftScalar.hkPtC_values_lie E H Dw l Xo c σ p (U.un k x) z C hz`. Establish `hcard : n = Ideal.absNorm P ^ i`. Use `letI := fieldCAt σ`. Use `haveI := algClosedCAt σ`.
+
+Conclude with `GlobalTheory.ThetaTrace.card_reps hA.2.2.1.pos hK hr`. Substitute `hcard` using the available equality. Take `⟨hzx, hcfB, hbc⟩` from `hb`. Establish `hS : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by simp [spMap]`.
+
+Establish `hbc' : GlobalTheory.Frames.SecBC (RingHom.id ℂ) (Formalism.L2.PjFree.toC (t none : CAt σ)) (U.un k' x').x z.x (U.un k' x').s z.s`. Take `⟨pm, p1, p2, p3⟩` from `hbc`. Conclude with `⟨pm, p1, by rw [hid]; exact p2.trans (Category.comp_id _).symm, p3⟩`. Establish `hv'' : ∀ j w (pt : Sp ℂ ⟶ Gx z.x), pt ≫ Formalism.L2.PjFree.gxFst z.x = (F.ex (ik k') Pm' w).left → pt ≫ Formalism.L2.PjFree.gxSnd z.x = 𝟙 (Sp ℂ) → ⊤ ≤ (F.ex (ik k') Pm' w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → valAt' pt ((PPx z.x).U (fun _ => j)) (z.s.f (fun _ => j)) = Formalism.L2.PjFr …`. Introduce `j w pt e1 e2 hj`.
+
+Establish `hw0' : (F.ex (ik k') Pm' w).left ≫ Xo.univ.t.G.hom = ((U.un k' x').x : Sp ℂ ⟶ Xo.X)` using `(Over.w (F.ex (ik k') Pm' w)).trans hu'.symm`. Conclude with `GlobalTheory.ThetaPtChg.val_of_secBC hS (Xo := Xo) _ _ hzx _ _ _ hbc' (Over.homMk (F.ex (ik k') Pm' w).left hw0') j _ _ (fun pt' h1 h2 => hv' j w pt' h1 h2 hj) (fun pt' h1 h2 => by`. Take `rfl : pt' = pt` from `Limits.pullback.hom_ext (h2.trans e2.symm) (h1.trans e1.symm)`. Use the proof step `rfl)`. Take `⟨h, wm, hPm, hHH, hwmΛ, hinj, hval, hder⟩` from `core_reps E H Dw l Xo c σ P p i (U.un k x).x z.x (U.un k x).s z.s C ψ ψp cr b _ hA.2.2.1 (fun a ha => GlobalTheory.HkPts.pow_eq_one hA.2.2.2.1 hK ha) hk hr hb0 hbt hbr hbh hbv g e F (ik k) (ik k') Pm Pm' hP hP' hu (hzx.trans hu') Hm χl fr θ hH him hd hn hc h0 ha hv Hm' χl' fr' θ' …`.
+
+Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hA.2.2.1.ne_zero`. Use `choose cf hcf1 hcf2 hcf3 using hcfB`. Establish `hcol : ∀ τ m, h (Pi.single (e.symm ⟨τ, m⟩) 1) = ∑ j, ((p : ℂ) * Formalism.L2.PjFree.toC (cf τ m j)) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ)`. Introduce `τ m`. Take `⟨wv, hw1, hw2, hw3⟩` from `hL τ m`.
+
+Establish `d2` using `hder (Pi.single (e.symm ⟨τ, m⟩) 1) wv hw2 (by have q := hdu τ m; rw [← hw1] at q; exact q)`. Establish `d1` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F _ Pm' hP' _ ((U.un k' x').u τ) _ (hdu' τ) (cf τ m) (z.u τ m)).1 (hu' ▸ hcf3 τ m)`. Establish `d3` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_smul d1 (p : ℂ)`. Establish `e1 : spMap (epsMul (1 : ℂ)) = 𝟙 _`. Establish `e0 : epsMul (1 : ℂ) = RingHom.id _`.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `ext <;> simp [epsMul]`. Rewrite using `[e0]`. Apply the tactic sequence `first | rfl | exact Spec.map_id _ | simp [spMap] | (rw [CommRingCat.ofHom_id]; exact Spec.map_id _)`.
+
+Establish `e3 : spMap (epsMul (p : ℂ)) ≫ z.u τ m = wv ≫ ψ ≫ pullback.fst _ _`. Rewrite using `[hw3]`. Use `(spMap_epsMul_comp (p : ℂ) ((p : ℂ)⁻¹) _).trans ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel₀ hp0, e1]`. Conclude with `Category.id_comp _`.
+
+Rewrite `d3` using `[e3]`. Establish `tn` using `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ Pm' hP'`. Rewrite using `[(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d3, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(smul_smul (p : ℂ) (Formalism.L2.PjFree.toC (cf τ m j)) (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`.
+
+Establish `hflag : h = LinearEquiv.smulOfNeZero ℂ (Fin g → ℂ) (p : ℂ) hp0`. Use `GlobalTheory.FlagEq.eq_of_flag_of_hermForm e Hm hpos h _ ?_ (fun τ j => Pi.single (e.symm ⟨τ, j⟩) 1) (p : ℂ) hp0 ?_ ?_` and prove the remaining obligations. Introduce `u w`. Substitute `hHm'` using the available equality. Rewrite using `[hHH]`.
+
+Simplify using `only [LinearEquiv.smulOfNeZero_apply, hermForm, Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Establish `hs : star (p : ℂ) = p` using `by simp`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ m`.
+
+Rewrite using `[hcol]`. Establish `hdiag : Formalism.L2.PjFree.toC (cf τ m m) = 1`. Rewrite using `[hcf1, ht1 _ (by simp)]`. Both sides reduce to the same expression. Establish `key : ∀ j : Fin (Dw.mult τ), ((p : ℂ) * Formalism.L2.PjFree.toC (cf τ m j)) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ) = (if j < m then ((p : ℂ) * Formalism.L2.PjFree.toC (cf τ m j)) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ) else 0) + (if j = m then (p : ℂ) • (Pi.single (e.sym …`.
+
+Introduce `j`. Break down `lt_trichotomy j m with hj | rfl | hj` into its components or cases. Simplify using `[hj, hj.ne]`. Simplify using `[hdiag]`. Establish `h0j : cf τ m j = 0` using `hcf2 τ m j hj`.
+
+Establish `: Formalism.L2.PjFree.toC (cf τ m j) = 0` using `by rw [h0j]; rfl`. Simplify using `[this, not_lt.2 hj.le, hj.ne']`. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j), Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ m, if_pos (Finset.mem_univ _), add_sub_cancel_right, ← Finset.sum_filter]`. Use `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, ?_, rfl⟩)` and prove the remaining obligations. Simplify using `using hj`.
+
+Introduce `τ m`. Simplify using the standard rewrite rules. Establish `hh : ∀ v, h v = (p : ℂ) • v` using `fun v => by rw [hflag]; rfl`. Use `⟨wm, fun a => ?_, fun m => ?_, hinj, fun w => ?_⟩` and prove the remaining obligations. Take `⟨b', hb'⟩` from `hPm a`.
+
+Conclude with `⟨b', by rw [← hh]; exact hb'⟩`. Take `⟨b', hb'⟩` from `hwmΛ m`. Conclude with `⟨b', by rw [← hh]; exact hb'⟩`. Take `⟨j, hj1, hj2⟩` from `hval w`. Use `⟨j, by rw [← hh]; exact hj1, ?_⟩` and prove the remaining obligations.
+
+Simplify `hj2` using `only [hh]`.
+-/
 theorem hecke_lift_reps : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U →
   ∀ (P : Ideal (𝓞 E)) (p i : ℕ) (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom) (C : Subgroup (Over.mk (U.un k x).x ⟶ Xo.univ.t.G)) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ),
     admitted l P p → Xo.univ.t.HeckeKer (Over.mk (U.un k x).x) Dw P p i C → HkPtC p (U.un k x) C z → FrBor t (U.un k' x') z →

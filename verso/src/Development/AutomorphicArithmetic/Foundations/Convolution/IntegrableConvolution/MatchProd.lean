@@ -9,6 +9,11 @@ open MeasureTheory NumberField IsDedekindDomain
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.SemiLocal
 open PositivityTheory.Rg.Tf.Geo
 
+/- English proof (translation)
+Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ' μ`. Establish `hK : (Measure.haarScalarFactor μ' μ : ENNReal) = 1`. Use `congrArg (fun ν : Measure G => ν K) e` as an intermediate fact. Simplify `this.symm` using `[h, h']`. Establish `h1 : Measure.haarScalarFactor μ' μ = 1` using `by exact_mod_cast hK`.
+
+Rewrite using `[e, h1, one_smul]`.
+-/
 private lemma haar_unique {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ μ' : Measure G) [μ.IsHaarMeasure] [μ'.IsHaarMeasure]
     (K : Set G) (h : μ K = 1) (h' : μ' K = 1) : μ' = μ := by
@@ -19,6 +24,9 @@ private lemma haar_unique {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   have h1 : Measure.haarScalarFactor μ' μ = 1 := by exact_mod_cast hK
   rw [e, h1, one_smul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[UpperTheory.ConvolutionTheory.GM.cmp, UpperTheory.ConvolutionTheory.L1.Split.comp, hD]`.
+-/
 private lemma cmp_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E ≃ₐ[F] E} {m n : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} (D : UpperTheory.ConvolutionTheory.L1.Split (incFin E v) (galFin σ v) m)
     (w : Fin (m + 1) ≃ PlacesOver E v)
@@ -28,6 +36,31 @@ private lemma cmp_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   ext a b
   simp [UpperTheory.ConvolutionTheory.GM.cmp, UpperTheory.ConvolutionTheory.L1.Split.comp, hD]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hσ m hm n v w₀ hs`. Take `⟨D, w, hw0, hD⟩` from `UpperTheory.ConvolutionTheory.L1.finSplit F E σ hσ m hm v w₀ hs`. Use `⟨w, hw0, ?_⟩` and prove the remaining obligations. Introduce `h hh iF bF mF hHaar hvol iE' bE' iF' bF' mE mF' hE hF' hmE hmF'`. Take `rfl : iF' = iF` from `by rw [bF'.measurable_eq, bF.measurable_eq]`.
+
+Use `haveI := hHaar`. Use `haveI := hF'`. Use `haveI := hE`. Establish `hmm : mF' = mF` using `haar_unique mF mF' _ hvol hmF'`. Rewrite using `[hmm]`.
+
+Establish `hsl` using `fun i => UpperTheory.ConvolutionTheory.L1.splitLoc F E v (w i) (hs (w i)) n`. Use `set φ : Fin (m + 1) → GL (Fin n) (v.adicCompletion F) → ℂ := fun i g => h (w i) (mapGL n (completionMap v (w i).1) g) with hφ`. Establish `hφc : ∀ i, Continuous (φ i) ∧ HasCompactSupport (φ i)`. Introduce `i`. Take `⟨⟨e, he⟩, -⟩` from `hsl i`.
+
+Establish `: φ i = h (w i) ∘ e` using `funext fun g => by simp [hφ, he]`. Rewrite using `[this]`. Conclude with `⟨(hh _).1.comp e.continuous, (hh _).2.comp_homeomorph e.toHomeomorph⟩`. Take `⟨c, hc, hμ, hM, hT⟩` from `UpperTheory.ConvolutionTheory.L1.matchFin F E σ m v D n mE mF hE hHaar`. Take `⟨hc1, hc2, hT'⟩` from `hT φ hφc`.
+
+Take `⟨-, -, -, hgc, hcc, -⟩` from `UpperTheory.ConvolutionTheory.L1.glueBasic _ _ (incFin E v) (galFin σ v) m D n`. Establish `hpf : UpperTheory.ConvolutionTheory.GM.prodFn h = D.tens n φ`. Use function extensionality and compare the values at `g`. Simplify using `only [UpperTheory.ConvolutionTheory.GM.prodFn, UpperTheory.ConvolutionTheory.L1.Split.tens]`. Rewrite using `[← finprod_comp_equiv w, finprod_eq_prod_of_fintype]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [cmp_eq D w hD i g]`. Establish `hU : ∀ g, g ∈ unitSet E n v ↔ ∀ i, D.comp n i g ∈ GLnLocal.integralGL (v.adicCompletion F) n`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg i`.
+
+Establish `h1 : UpperTheory.ConvolutionTheory.GM.cmp (w i) g ∈ GLnLocal.integralGL ((w i).1.adicCompletion E) n` using `hg (w i)`. Rewrite `h1` using `[cmp_eq D w hD i g]`. Conclude with `((hsl i).2.1 _).1 h1`. Introduce `hg u`. Take `⟨i, rfl⟩` from `w.surjective u`.
+
+Establish `h1` using `((hsl i).2.1 _).2 (hg i)`. Rewrite `h1` using `[← cmp_eq D w hD i g]`. Conclude with `h1`. Establish `hcomp` using `(UpperTheory.ConvolutionTheory.L1.glueBasic _ _ (incFin E v) (galFin σ v) m D n).1`. Establish `hset : D.glue n ⁻¹' unitSet E n v = Set.pi Set.univ fun _ => (GLnLocal.integralGL (v.adicCompletion F) n : Set _)`.
+
+Use extensionality with `g`. Simplify using `[hU, hcomp]`. Establish `hKm : MeasurableSet (GLnLocal.integralGL (v.adicCompletion F) n : Set (GL (Fin n) (v.adicCompletion F)))` using `(GLnLocal.isOpen_integralGL _ n).measurableSet`. Establish `hmeas : MeasurableSet (unitSet E n v)`. Establish `: unitSet E n v = ⋂ i, D.comp n i ⁻¹' (GLnLocal.integralGL (v.adicCompletion F) n : Set _)`.
+
+Use extensionality with `g`. Simplify using `[hU]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun i => (hcc i).measurable hKm`. Establish `hpi : Measure.pi (fun _ : Fin (m + 1) => mF) (Set.pi Set.univ fun _ => (GLnLocal.integralGL (v.adicCompletion F) n : Set _)) = 1`.
+
+Rewrite using `[Measure.pi_pi]`. Simplify using `[hvol]`. Establish `hone : ENNReal.ofReal c = 1`. Establish `h1` using `hmE`. Rewrite `h1` using `[hμ, Measure.smul_apply, Measure.map_apply hgc.measurable hmeas, hset, hpi]`.
+
+Simplify using `using h1`. Establish `hc1' : c = 1` using `ENNReal.ofReal_eq_one.1 hone`. Establish `hfin` using `hM (D.tens n φ) hc1 hc2`. Rewrite `hfin` using `[hT', hc1', ← hpf, ← hm]`. Simplify using `using hfin`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.matchProd :
     UpperTheory.ConvolutionTheory.L1.MatchProd := by
   intro F E _ _ _ _ _ _ σ hσ m hm n v w₀ hs

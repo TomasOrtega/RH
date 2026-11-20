@@ -13,6 +13,9 @@ namespace Gram
 
 open Pts Calc Formalism.HermitianLattices.IntegralLatticeDensity
 
+/- English proof (translation)
+Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression.
+-/
 theorem coe_sum_nm {O : Type} [CommRing O] [StarRing O] {n : Type} [Fintype n] (a : n → O) :
     ((∑ i, nm (a i) : saRing O) : O) = ∑ i, star (a i) * a i := by
   rw [AddSubmonoidClass.coe_finsetSum]
@@ -21,6 +24,11 @@ theorem coe_sum_nm {O : Type} [CommRing O] [StarRing O] {n : Type} [Fintype n] (
 end Gram
 
 open Pts Calc Gram Formalism.HermitianLattices.IntegralLatticeDensity in
+/- English proof (translation)
+Introduce `K _ _ R l linv ph hFr O _ _ τ hE hB hF1 hN hA n _ k A σ u hu`. Establish `D : Data R l linv τ` using `⟨hFr.1, hFr.2.1, hE, hB⟩`. Establish `key` using `Formalism.HermitianLattices.WeilRepresentation.gram_expansion (saRing O) O (ptsSub D σ) (Ser τ σ ⧸ lgSub D σ) (phi D ph) nm (cob_add D hF1) (fun α a b => cob_adj D (hA α) a b) (fun α u => phi_norm D (hN α) u) n k A (fun j => toM D (u j) (hu j))`. Simplify using `only [cob_phi, pt_smul, pt_toM] at key`. Unfold `phi at key`.
+
+Simplify using `only [pt_sum, pt_toM, ← cls_smul, coe_sum_nm] at key`. Simplify using `only [← cls_sum] at key`. Rewrite `key` using `[← cls_add, cls_eq]`. Conclude with `key`.
+-/
 theorem gram_formula : GramFormula := by
   intro K _ _ R l linv ph hFr O _ _ τ hE hB hF1 hN hA n _ k A σ u hu
   have D : Data R l linv τ := ⟨hFr.1, hFr.2.1, hE, hB⟩
@@ -42,6 +50,9 @@ open USideA IntegralMvPolynomialLemmas Pts
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Unfold `lam dblInt`. Rewrite using `[map_add, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_lam (e : PowerSeries K) (s2 : K) :
     PowerSeries.constantCoeff (lam e s2) = 0 := by
   unfold lam dblInt

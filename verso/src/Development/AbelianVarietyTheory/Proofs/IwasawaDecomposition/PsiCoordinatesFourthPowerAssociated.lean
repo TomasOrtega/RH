@@ -28,10 +28,16 @@ variable {R : Type} [CommRing R] [IsDomain R]
 def cstHom {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) : R →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ (q ⁻¹ᵁ ⊤) z trivial).hom.comp ((q.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
 
+/- English proof (translation)
+The claim follows from `gs_eq q z ⊤ trivial _`.
+-/
 theorem cst_eq_cstHom {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (a : R) :
     cst q z a = cstHom q z a :=
   gs_eq q z ⊤ trivial _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hu` using `IntegralExpansionLocal.isUnit_cst_of_ne_zero p z (sub_ne_zero.2 hne)`. Rewrite `hu` using `[cst_eq_cstHom, map_sub, ← cst_eq_cstHom, ← cst_eq_cstHom, h, sub_self]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem cst_inj {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of (FractionRing R))) (z : Z) {a b : R}
     (h : cst (p ≫ jK R) z a = cst (p ≫ jK R) z b) : a = b := by
   by_contra hne
@@ -39,6 +45,11 @@ theorem cst_inj {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of (FractionRing R
   rw [cst_eq_cstHom, map_sub, ← cst_eq_cstHom, ← cst_eq_cstHom, h, sub_self] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.toMonoidHom (res hV g), ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_res q z hV trivial g, ← gs_unit q z ⊤ trivial]`. Simplify using `only [cst, Units.coe_map, MonoidHom.coe_coe]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = ((Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).inv).hom _`.
+
+Rewrite using `[Iso.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 theorem gm_top {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) {V : (Spec (CommRingCat.of R)).Opens}
     (hV : ⊤ ≤ V) (g : Γ(Spec (CommRingCat.of R), V)ˣ) : ∃ u : Rˣ, (gm q z V g).val = cst q z (u : R) := by
   refine ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.toMonoidHom (res hV g), ?_⟩
@@ -49,6 +60,9 @@ theorem gm_top {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) {V :
   rw [Iso.hom_inv_id]
   rfl
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Rewrite using `[← gm_pull q x z V (hV trivial) g]`. Conclude with `gm_top q z hV _`.
+-/
 theorem gm_of_top {Z X : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (x : Spec (CommRingCat.of R) ⟶ X)
     {f : Z ⟶ X} (hf : f = q ≫ x) {V : X.Opens} (hV : ⊤ ≤ x ⁻¹ᵁ V) (g : Γ(X, V)ˣ) :
     ∃ u : Rˣ, (gm f z V g).val = cst q z (u : R) := by
@@ -64,6 +78,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Establish `m₁ : p z ∈ LB.wchart D.P.L (K` using `PUnit) (fun _ => D.xK χ) j := h trivial`. Establish `hto : ∀ a, DegPre.toOpen (R` using `R) ⊤ a = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a := fun a => by`. Simplify using `[DegPre.toOpen]`. Rewrite using `[val_of (D.psi χ) p z J j (fun _ => hJ)]`. Use `(gs_unit p z _ m₁ _).symm.trans ((gs_res p z h trivial _).symm.trans ?_)` and prove the remaining obligations.
+
+Use `(congrArg (gs p z _) e.symm).trans ((gs_pull p (jK R) z ⊤ trivial _).trans ?_)` and prove the remaining obligations. Rewrite using `[hto]`. Both sides reduce to the same expression.
+-/
 theorem val_psi_of_coord (D : DegPre R) (χ : D.X) {r : R} {j : PUnit → D.P.L.ι}
     (h : jK R ⁻¹ᵁ ⊤ ≤ (LB.LinComb D.P.L (K := PUnit) (fun _ => D.xK χ) (fun _ => -1)).U j)
     (e : ((jK R).app ⊤).hom (DegPre.toOpen (R := R) ⊤ r) =
@@ -78,6 +97,9 @@ theorem val_psi_of_coord (D : DegPre R) (χ : D.X) {r : R} {j : PUnit → D.P.L.
   refine (congrArg (gs p z _) e.symm).trans ((gs_pull p (jK R) z ⊤ trivial _).trans ?_)
   rw [hto]; rfl
 
+/- English proof (translation)
+Establish `C : IsCub (th D z J)` using `isCub_cubV D.cub hJ`. Establish `t0` using `tau_mul σ hJ hB 0 0 χ`. Rewrite `t0` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`. Establish `τ0 : val (D.tau 0 χ) (σ.left ≫ jFK (R` using `R) F) z J = 1 := mul_eq_left.1 t0.symm`. Rewrite using `[val_famMult σ hJ, UUA.val_powGen', UUA.val_powGen', tau_symm σ hJ, τ0, _root_.one_mul]`.
+-/
 theorem val_famMult_two {D : DegPre R} (hB : D.TauBimult) {F : Type} [Field F] [Algebra (FractionRing R) F]
     {T : Over (Spec (CommRingCat.of R))} (σ : T ⟶ TF (R := R) F) {z : T.left}
     {J : (T.left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) (χ : D.X) :
@@ -89,6 +111,9 @@ theorem val_famMult_two {D : DegPre R} (hB : D.TauBimult) {F : Type} [Field F] [
   have τ0 : val (D.tau 0 χ) (σ.left ≫ jFK (R := R) F) z J = 1 := mul_eq_left.1 t0.symm
   rw [val_famMult σ hJ, UUA.val_powGen', UUA.val_powGen', tau_symm σ hJ, τ0, _root_.one_mul]
 
+/- English proof (translation)
+Establish `e1 : p ≫ (toUnit (TK R)).left = p ≫ jK R`. Use `congr 1`. Rewrite using `[DegPre.rigK, val_pull hJ, e1]`. Rewrite using `[val_of D.rig (p ≫ jK R) z J (fun _ => J ((p ≫ jK R) ≫ eSec D.P.A)) (fun _ => rfl)]`. Conclude with `gm_top _ z (fun y _ => Set.mem_iInter.2 fun _ => h trivial) _`.
+-/
 theorem val_rigK_of_top (D : DegPre R) {Z : Scheme.{0}} (p : Z ⟶ (TK R).left) (z : Z)
     (J : (Z ⟶ D.P.A.left) → D.P.L.ι) (hJ : Good D.P.L z J)
     (h : ⊤ ≤ (eSec D.P.A) ⁻¹ᵁ D.P.L.U (J ((p ≫ jK R) ≫ eSec D.P.A))) :
@@ -99,6 +124,9 @@ theorem val_rigK_of_top (D : DegPre R) {Z : Scheme.{0}} (p : Z ⟶ (TK R).left) 
   rw [val_of D.rig (p ≫ jK R) z J (fun _ => J ((p ≫ jK R) ≫ eSec D.P.A)) (fun _ => rfl)]
   exact gm_top _ z (fun y _ => Set.mem_iInter.2 fun _ => h trivial) _
 
+/- English proof (translation)
+Take `⟨J, hJ, e⟩` from `exists_good P.L P.isLB z (K := {q : Spec (CommRingCat.of R) ⟶ P.A.left // q ≫ P.A.hom = 𝟙 _}) (fun q => t ≫ q.1) (fun q => pk q.1) (fun a' b' h => by`. Establish `: a'.1 = b'.1` using `GC.vpt_ext F P a'.2 b'.2 (by rw [← ha, Category.assoc, Category.assoc, h])`. Rewrite using `[this]) (fun q => hpk q.1 q.2 trivial)`. Conclude with `⟨J, hJ, fun q hq => e ⟨q, hq⟩⟩`.
+-/
 theorem exists_good_pts (P : PolAV (Spec (CommRingCat.of R))) (F : Type) [Field F] [Algebra (FractionRing R) F]
     {Z : Scheme.{0}} (t : Z ⟶ Spec (CommRingCat.of R)) (a : Spec (CommRingCat.of F) ⟶ Z) (ha : a ≫ t = DegPre.jFR F)
     (z : Z) (pk : (Spec (CommRingCat.of R) ⟶ P.A.left) → P.L.ι)
@@ -114,6 +142,47 @@ end GlobalTheory.PsiFourthCoord
 
 open GlobalTheory.PsiFourthCoord ReciprocityTheory.ChartRestriction.G.DVR in
 
+/- English proof (translation)
+Introduce `R _ _ _ D D' Φ w _ nu mu z H r r' hr hr'`. Use `set π := (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left ≫ jFK (R := R) (FractionRing R) with hπdef`. Establish `hπ : π ≫ jK R = (DegPre.BF D.toPre (FractionRing R)).hom` using `(Category.assoc _ _ _).trans (Over.w (fst (TF (R := R) (FractionRing R)) D.toPre.P.A))`. Establish `za : (DegPre.zF D.toPre (FractionRing R)).left ≫ (π ≫ jK R) = DegPre.jFR (FractionRing R)`. Rewrite using `[hπ]`.
+
+Conclude with `Over.w (DegPre.zF D.toPre (FractionRing R))`. Take `⟨j, hj, h, e⟩` from `hr`. Take `⟨j', hj', h', e'⟩` from `hr'`. Use `choose pk hpk using fun q : Spec (CommRingCat.of R) ⟶ D.toPre.P.A.left => GC.exists_chart_top D.toPre.P.L D.toPre.P.isLB q`. Use `choose pk' hpk' using fun q : Spec (CommRingCat.of R) ⟶ D'.toPre.P.A.left => GC.exists_chart_top D'.toPre.P.L D'.toPre.P.isLB q`.
+
+Set `pkD : (Spec (CommRingCat.of R) ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι` to `fun q => if q = (D.toPre.c nu).left then j PUnit.unit else pk q`. Set `pkD' : (Spec (CommRingCat.of R) ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι` to `fun q => if q = (D'.toPre.c mu).left then j' PUnit.unit else pk' q`. Establish `hpkD : ∀ q, q ≫ D.toPre.P.A.hom = 𝟙 _ → ⊤ ≤ q ⁻¹ᵁ D.toPre.P.L.U (pkD q)` using `fun q _ => by`. Distinguish the cases in `hq : q = (D.toPre.c nu).left`. Substitute `hq` using the available equality.
+
+Simplify using `only [pkD, if_pos rfl]`. Conclude with `hj`. Simplify using `only [pkD, if_neg hq]`. Conclude with `(hpk q).ge`. Establish `hpkD' : ∀ q, q ≫ D'.toPre.P.A.hom = 𝟙 _ → ⊤ ≤ q ⁻¹ᵁ D'.toPre.P.L.U (pkD' q)` using `fun q _ => by`.
+
+Distinguish the cases in `hq : q = (D'.toPre.c mu).left`. Substitute `hq` using the available equality. Simplify using `only [pkD', if_pos rfl]`. Conclude with `hj'`. Simplify using `only [pkD', if_neg hq]`.
+
+Conclude with `(hpk' q).ge`. Take `⟨J, hJ, eJ⟩` from `exists_good_pts D.toPre.P (FractionRing R) (π ≫ jK R) _ za z pkD hpkD`. Take `⟨J', hJ', eJ'⟩` from `exists_good_pts D'.toPre.P (FractionRing R) (π ≫ jK R) _ za z pkD' hpkD'`. Establish `HH` using `H J J' hJ hJ'`. Establish `pc : ∀ {X : Over (Spec (CommRingCat.of R))} (x : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ X), x.left ≫ X.hom = 𝟙 _` using `fun x => Over.w x`.
+
+Establish `hc : (D.toPre.c nu).left ≫ D.toPre.P.A.hom = 𝟙 _` using `pc _`. Establish `hc' : (D'.toPre.c mu).left ≫ D'.toPre.P.A.hom = 𝟙 _` using `pc _`. Establish `he : eSec D.toPre.P.A ≫ D.toPre.P.A.hom = 𝟙 _` using `pc η[D.toPre.P.A]`. Establish `he' : eSec D'.toPre.P.A ≫ D'.toPre.P.A.hom = 𝟙 _` using `pc η[D'.toPre.P.A]`. Establish `hcΦ : ((D'.toPre.c mu).left ≫ Φ.hom.left) ≫ D.toPre.P.A.hom = 𝟙 _`.
+
+Rewrite using `[Category.assoc, Over.w Φ.hom]`. Conclude with `hc'`. Establish `heΦ : (eSec D'.toPre.P.A ≫ Φ.hom.left) ≫ D.toPre.P.A.hom = 𝟙 _`. Rewrite using `[Category.assoc, Over.w Φ.hom]`. Conclude with `he'`.
+
+Establish `V1` using `val_psi_of_coord D.toPre nu h e π z J (by`. Rewrite using `[show π ≫ D.toPre.xK nu = (π ≫ jK R) ≫ (D.toPre.c nu).left from (Category.assoc _ _ _).symm, eJ _ hc]`. Simplify using `only [pkD, if_pos rfl])`. Establish `V1'` using `val_psi_of_coord D'.toPre mu h' e' π z J' (by`. Rewrite using `[show π ≫ D'.toPre.xK mu = (π ≫ jK R) ≫ (D'.toPre.c mu).left from (Category.assoc _ _ _).symm, eJ' _ hc']`.
+
+Simplify using `only [pkD', if_pos rfl])`. Take `⟨a, V2⟩` from `val_rigK_of_top D.toPre π z J hJ (by rw [eJ _ he]; exact hpkD _ he)`. Take `⟨a', V2'⟩` from `val_rigK_of_top D'.toPre π z J' hJ' (by rw [eJ' _ he']; exact hpkD' _ he')`. Establish `hψ : (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) mu).left = (π ≫ jK R) ≫ (D'.toPre.c mu).left`. Rewrite using `[hπ, cP, Over.comp_left]`.
+
+Both sides reduce to the same expression. Establish `hψ1 : (1 : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A).left = (π ≫ jK R) ≫ eSec D'.toPre.P.A`. Rewrite using `[hπ]`. Both sides reduce to the same expression. Establish `O1 : ∃ b : Rˣ, (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) mu).left).val = cst (π ≫ jK R) z b`.
+
+Establish `k1 : J ((ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) mu).left ≫ Φ.hom.left) = pkD ((D'.toPre.c mu).left ≫ Φ.hom.left)` using `by rw [hψ, Category.assoc]; exact eJ _ hcΦ`. Establish `k2 : J' (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) mu).left = pkD' (D'.toPre.c mu).left` using `by rw [hψ]; exact eJ' _ hc'`. Unfold `ExpTrans.om Geo.Tor.gw`. Use `gm_of_top (π ≫ jK R) z (D'.toPre.c mu).left hψ (fun y _ => ?_) _` and prove the remaining obligations. Use `⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun _ => ?_, Set.mem_iInter.2 fun _ => ?_⟩` and prove the remaining obligations.
+
+Establish `m` using `hpkD _ hcΦ (show y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)`. Rewrite `m` using `[← k1]`. Conclude with `m`. Establish `m` using `hpkD' _ hc' (show y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)`. Rewrite `m` using `[← k2]`.
+
+Conclude with `m`. Establish `O2 : ∃ b : Rˣ, (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (1 : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A).left).val = cst (π ≫ jK R) z b`. Establish `k1 : J ((1 : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A).left ≫ Φ.hom.left) = pkD (eSec D'.toPre.P.A ≫ Φ.hom.left)` using `by rw [hψ1, Category.assoc]; exact eJ _ heΦ`. Establish `k2 : J' (1 : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A).left = pkD' (eSec D'.toPre.P.A)`. Rewrite using `[hψ1]`.
+
+Conclude with `eJ' _ he'`. Unfold `ExpTrans.om Geo.Tor.gw`. Use `gm_of_top (π ≫ jK R) z (eSec D'.toPre.P.A) hψ1 (fun y _ => ?_) _` and prove the remaining obligations. Use `⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun _ => ?_, Set.mem_iInter.2 fun _ => ?_⟩` and prove the remaining obligations. Establish `m` using `hpkD _ heΦ (show y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)`.
+
+Rewrite `m` using `[← k1]`. Conclude with `m`. Establish `m` using `hpkD' _ he' (show y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)`. Rewrite `m` using `[← k2]`. Conclude with `m`.
+
+Take `⟨b, O1⟩` from `O1`. Take `⟨b', O2⟩` from `O2`. Rewrite `HH` using `[val_famMult_two D'.tau_bimult _ hJ', val_famMult_two D.tau_bimult _ hJ]`. Use `set Ωc := ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) mu).left`. Use `set Ω1 := ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (1 : DegPre.BF D.toPre (FractionRing R) ⟶ D'.toPre.P.A).left`.
+
+Establish `HH2 : (val (D'.toPre.psi mu) π z J' ^ 2 * val D'.toPre.rigK π z J' ^ 2) ^ 2 * Ω1 ^ 2 = Ωc ^ 2 * (val (D.toPre.psi nu) π z J ^ 2 * val D.toPre.rigK π z J ^ 2) ^ 2`. Rewrite using `[HH, mul_pow, inv_pow, mul_right_comm, inv_mul_cancel_right]`. Establish `V` using `congrArg Units.val HH2`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at V`. Rewrite `V` using `[V1, V1', V2, V2', O1, O2]`.
+
+Establish `V' : cst (π ≫ jK R) z (r' ^ 4 * ((a' : R) ^ 4 * (b' : R) ^ 2)) = cst (π ≫ jK R) z ((b : R) ^ 2 * (a : R) ^ 4 * r ^ 4)`. Simplify using `only [cst_eq_cstHom, map_mul, map_pow] at V ⊢`. Take the linear combination `V`. Establish `hR` using `cst_inj π z V'`. Use `⟨(b ^ 2 * a ^ 4) * (a' ^ 4 * b' ^ 2)⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `k : r ^ 4 * ((b ^ 2 * a ^ 4 : Rˣ) : R) = r' ^ 4 * ((a' ^ 4 * b' ^ 2 : Rˣ) : R)`. Use `push_cast`. Take the linear combination `-hR`. Rewrite using `[Units.val_mul, ← _root_.mul_assoc, k, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`.
+-/
 theorem GlobalTheory.psi_coord_fourth_associated : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D D' : DegData R (maximalIdeal R)) (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso (LB.LinComb D'.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D'.toPre.P.A.left) (fun _ => 2)) ((LB.LinComb D.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D.toPre.P.A.left) (fun _ => 2)).pull Φ.hom.left)), w.IsGen → ∀ (nu : D.toPre.X) (mu : D'.toPre.X) (z : (DegPre.BF D.toPre (FractionRing R)).left), (∀ (J : ((DegPre.BF D.toPre (FractionRing R)).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : ((DegPre.BF D.toPre (FractionRing R)).left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Geo.Tor.Good D.toPre.P.L z J → Geo.Tor.Good D'.toPre.P.L z J' → val (DegPre.famMult D'.toPre (FractionRing R) 2 (mu) 0) (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left z J' ^ 2 = (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ReciprocityTheory.ChartRestriction.G.DVR.cP D'.toPre (DegPre.BF D.toPre (FractionRing R)) (mu)).left * (ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (1 : (DegPre.BF D.toPre (FractionRing R)) ⟶ D'.toPre.P.A).left)⁻¹) ^ 2 * val (DegPre.famMult D.toPre (FractionRing R) 2 (nu) 0) (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left z J ^ 2) → ∀ (r r' : R), PsiCoord D.toPre nu r → PsiCoord D'.toPre mu r' → Associated (r ^ 4) (r' ^ 4) := by
   intro R _ _ _ D D' Φ w _ nu mu z H r r' hr hr'
   classical

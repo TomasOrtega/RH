@@ -50,16 +50,35 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
 open scoped Classical
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_sub, Pi.sub_apply, AddSubgroupClass.coe_sub]`.
+-/
 theorem evalF_sub {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {ι : Type} (w : ι → A.Pt → Ev n)
     (P Q : MvPolynomial ι ℝ) : evalF A w (P - Q) = evalF A w P - evalF A w Q := by
   funext x
   simp only [evalF, fld, map_sub, Pi.sub_apply, AddSubgroupClass.coe_sub]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_mul, Pi.mul_apply, MulMemClass.coe_mul]`.
+-/
 theorem evalF_mul {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {ι : Type} (w : ι → A.Pt → Ev n)
     (P Q : MvPolynomial ι ℝ) : evalF A w (P * Q) = evalF A w P * evalF A w Q := by
   funext x
   simp only [evalF, fld, map_mul, Pi.mul_apply, MulMemClass.coe_mul]
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX E h H fl A σ Z Z' ⟨W, hW⟩`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ hX.isProjOver`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver`. Take `⟨hL, hE, -⟩` from `GlobalTheory.T.firstChern_form_properties k X p D hX σ`.
+
+Take `⟨hω, hc, hc₁, hc₂, -, -, -, hd⟩` from `hE E h H fl fl`. Establish `hev` using `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ D (hX.atlas σ)).2.2.2.1 (Fin 4) (fam4 hX σ H fl A)`. Establish `f0 : ∀ i, (hX.atlas σ).IsForm (fld _ (fam4 hX σ H fl A i))`. Introduce `i`. Use `fin_cases i`.
+
+Use `exacts [(hL _ A).1.1, (hL _ A).1.1, (hL _ A).1.1, hc.1]`. Establish `f1 : ∀ i, (hX.atlas σ).del (fld _ (fam4 hX σ H fl A i)) = 0`. Introduce `i`. Use `fin_cases i`. Use `exacts [(hL _ A).2.1, (hL _ A).2.1, (hL _ A).2.1, hc₁]`.
+
+Establish `f2 : ∀ i, (hX.atlas σ).dbar (fld _ (fam4 hX σ H fl A i)) = 0`. Introduce `i`. Use `fin_cases i`. Use `exacts [(hL _ A).2.2.1, (hL _ A).2.2.1, (hL _ A).2.2.1, hc₂]`. Establish `hX3 : evalF (hX.atlas σ) (fam4 hX σ H fl A) (MvPolynomial.X 3 - MvPolynomial.X 1 * MvPolynomial.X 2) = (hX.atlas σ).ddc (fld _ (omF hX σ h fl))`.
+
+Rewrite using `[hd]`. Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_sub, map_mul, map_X, aeval_X]`. Both sides reduce to the same expression. Establish `e` using `GlobalTheory.T.integral_sub_of_isForm' (hX.atlas σ) _ _ (hev Z f0).1 (hev Z' f0).1`.
+
+Rewrite `e` using `[← evalF_sub, hW, evalF_mul, hX3, GlobalTheory.T.integral_ddc_closed_form_zero (hX.atlas σ) _ _ hω.1 (hev W f0).1 ((hev W f0).2.1 f1) ((hev W f0).2.2 f2)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_evalForm_flag_family_eq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsRegVar p D) (E : X.Modules) (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2) (A : HermLB p) (σ : k →+* ℂ)
     (Z Z' : MvPolynomial (Fin 4) ℝ),

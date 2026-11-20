@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.GLq.LabelUnique
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.mod_add_div n m, pow_add, pow_mul, hu, one_pow, mul_one]`.
+-/
 theorem pow_mod_eq {M : Type*} [Monoid M] {u : M} {m : ℕ} (hu : u ^ m = 1) (n : ℕ) :
     u ^ (n % m) = u ^ n := by
   conv_rhs => rw [← Nat.mod_add_div n m, pow_add, pow_mul, hu, one_pow, mul_one]
@@ -22,9 +25,41 @@ def chr (m : ℕ) [NeZero m] (u : ℂˣ) (hu : u ^ m = 1) : Multiplicative (ZMod
     simp only [toAdd_mul]
     rw [ZMod.val_add, pow_mod_eq hu, pow_add]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hm]`. Conclude with `zero_ne_one h`.
+-/
 theorem ne_zero_of_pow {ζ : ℂ} {m : ℕ} (hm : m ≠ 0) (h : ζ ^ m = 1) : ζ ≠ 0 := by
   rintro rfl; rw [zero_pow hm] at h; exact zero_ne_one h
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0` using `by omega`. Use `haveI : Fact (1 < m) := ⟨hm⟩`. Set `u : ℕ → ℂˣ` to `fun i => Units.mk0 (ζ i) (ne_zero_of_pow hm0 (hu i))`. Set `u' : ℕ → ℂˣ` to `fun i => Units.mk0 (ζ' i) (ne_zero_of_pow hm0 (hu' i))`. Establish `huu : ∀ i, u i ^ m = 1` using `fun i => Units.ext (by simp [u, hu i])`.
+
+Establish `huu' : ∀ i, u' i ^ m = 1` using `fun i => Units.ext (by simp [u', hu' i])`. Set `θ : ℕ → (Multiplicative (ZMod m) →* ℂˣ)` to `fun i => chr m (u i) (huu i)`. Set `θ' : ℕ → (Multiplicative (ZMod m) →* ℂˣ)` to `fun i => chr m (u' i) (huu' i)`. Establish `hθ : ∀ i z, ((θ i z : ℂˣ) : ℂ) = ζ i ^ (Multiplicative.toAdd z).val` using `fun i z => by`. Simplify using `[θ, chr, u]`.
+
+Establish `hθ' : ∀ i z, ((θ' i z : ℂˣ) : ℂ) = ζ' i ^ (Multiplicative.toAdd z).val` using `fun i z => by`. Simplify using `[θ', chr, u']`. Set `S` to `(Finset.range d).image θ ∪ (Finset.range d).image θ'`. Set `c : (Multiplicative (ZMod m) →* ℂˣ) → ℂ` to `fun φ => (((Finset.range d).filter (fun i => θ i = φ)).card : ℂ) - (((Finset.range d).filter (fun i => θ' i = φ)).card : ℂ)`. Establish `fib : ∀ (t : ℕ → (Multiplicative (ZMod m) →* ℂˣ)), (∀ i ∈ Finset.range d, t i ∈ S) → ∀ z, ∑ φ ∈ S, (((Finset.range d).filter (fun i => t i = φ)).card : ℂ) * (φ z : ℂ) = ∑ i ∈ Finset.range d, ((t i z : ℂˣ) : ℂ)`.
+
+Introduce `t ht z`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to ht]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun i hi => by rw [(Finset.mem_filter.1 hi).2]), Finset.sum_const, nsmul_eq_mul]`. Establish `hsum : ∀ z, ∑ φ ∈ S, c φ * (φ z : ℂ) = ∑ i ∈ Finset.range d, ζ i ^ (Multiplicative.toAdd z).val - ∑ i ∈ Finset.range d, ζ' i ^ (Multiplicative.toAdd z).val`.
+
+Introduce `z`. Simplify using `only [c, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[fib θ (fun i hi => Finset.mem_union_left _ (Finset.mem_image_of_mem _ hi)) z, fib θ' (fun i hi => Finset.mem_union_right _ (Finset.mem_image_of_mem _ hi)) z]`. Simplify using `only [hθ, hθ']`. Establish `hS : S.card ≤ 2 * d`.
+
+Use `(Finset.card_union_le _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `(Finset.card_image_le (s := Finset.range d) (f := θ))`. Establish `h2` using `(Finset.card_image_le (s := Finset.range d) (f := θ'))`. Simplify using `only [Finset.card_range] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hzero : ∀ z, ∑ φ ∈ S, c φ * (φ z : ℂ) = 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `key` using `GlobalTheory.GLm.card_le_card_mul_card_support (Multiplicative (ZMod m)) S c hne`. Establish `hcard : Fintype.card (Multiplicative (ZMod m)) = m`.
+
+Simplify using `[ZMod.card]`. Establish `hsupp : (Finset.univ.filter fun z : Multiplicative (ZMod m) => ∑ θ ∈ S, c θ * (θ z : ℂ) ≠ 0).card ≤ B.card`. Use `Finset.card_le_card_of_injOn (fun z => Multiplicative.toAdd z) ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz'` using `(Finset.mem_filter.1 hz).2`.
+
+Assume the negation of the conclusion as `hB'`. Apply `hz'` to reduce the goal to its premises. Rewrite using `[hsum z, h _ hB', sub_self]`. Introduce `a _ b _ hab`. Conclude with `hab`.
+
+Rewrite `key` using `[hcard]`. Establish `: S.card * (Finset.univ.filter fun z : Multiplicative (ZMod m) => ∑ θ ∈ S, c θ * (θ z : ℂ) ≠ 0).card ≤ 2 * d * B.card` using `Nat.mul_le_mul hS hsupp`. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (fun φ : Multiplicative (ZMod m) →* ℂˣ => (Units.coeHom ℂ).comp φ)`. Introduce `φ ψ hφψ`.
+
+Conclude with `MonoidHom.ext fun z => Units.ext (DFunLike.congr_fun hφψ z)`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative (ZMod m)) ℂ).comp _ hinj`. Rewrite `hli` using `[linearIndependent_iff']`. Establish `hmem : θ' 0 ∈ S` using `Finset.mem_union_right _ (Finset.mem_image_of_mem _ (by simpa using hd))`. Establish `hc0` using `hli S c (by`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Simplify `hzero z) (θ' 0) hmem` using `[smul_eq_mul]`. Simplify using `only [c, sub_eq_zero, Nat.cast_inj] at hc0`. Establish `hpos : 0 < ((Finset.range d).filter (fun i => θ' i = θ' 0)).card` using `Finset.card_pos.2 ⟨0, Finset.mem_filter.2 ⟨by simpa using hd, rfl⟩⟩`.
+
+Rewrite `hpos` using `[← hc0]`. Take `⟨i, hi⟩` from `Finset.card_pos.1 hpos`. Take `⟨hi1, hi2⟩` from `Finset.mem_filter.1 hi`. Use `⟨i, by simpa using hi1, ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ : Multiplicative (ZMod m) →* ℂˣ => ((φ (Multiplicative.ofAdd 1) : ℂˣ) : ℂ)) hi2` as an intermediate fact.
+
+Simplify using `only [hθ, hθ', toAdd_ofAdd, ZMod.val_one, pow_one] at this`. Conclude with `this.symm`.
+-/
 theorem exists_eq_of_sum_eq {m d : ℕ} [NeZero m] (hm : 1 < m) (ζ ζ' : ℕ → ℂ)
     (hu : ∀ i, ζ i ^ m = 1) (hu' : ∀ i, ζ' i ^ m = 1) (hd : 0 < d) (B : Finset (ZMod m))
     (hB : 2 * d * B.card < m)
@@ -114,16 +149,25 @@ namespace GlobalTheory.GLq.LabelUnique
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Unfold `Formalism.CyclotomicNorms.rootsBar at hx`. Rewrite `hx` using `[mem_roots (Polynomial.map_ne_zero hP), IsRoot, eval_map]`. Rewrite using `[aeval_def]`. Conclude with `hx`.
+-/
 theorem aeval_eq_zero_of_mem {P : (ZMod g)[X]} (hP : P ≠ 0) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) : aeval x P = 0 := by
   unfold Formalism.CyclotomicNorms.rootsBar at hx
   rw [mem_roots (Polynomial.map_ne_zero hP), IsRoot, eval_map] at hx
   rw [aeval_def]; exact hx
 
+/- English proof (translation)
+The claim follows from `(minpoly.eq_of_irreducible_of_monic hP.2.1 (aeval_eq_zero_of_mem hP.1.ne_zero hx) hP.1).symm`.
+-/
 theorem minpoly_eq_of_mem {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) : minpoly (ZMod g) x = P :=
   (minpoly.eq_of_irreducible_of_monic hP.2.1 (aeval_eq_zero_of_mem hP.1.ne_zero hx) hP.1).symm
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h` using `minpoly_eq_of_mem hP hx`. Rewrite `h` using `[minpoly.zero]`. Conclude with `hP.2.2.1 (by rw [← h]; simp)`.
+-/
 theorem ne_zero_of_mem {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) : x ≠ 0 := by
   rintro rfl
@@ -131,6 +175,11 @@ theorem ne_zero_of_mem {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Fo
   rw [minpoly.zero] at h
   exact hP.2.2.1 (by rw [← h]; simp)
 
+/- English proof (translation)
+Establish `hdeg : (P.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))).degree ≠ 0`. Rewrite using `[degree_map]`. Conclude with `(natDegree_pos_iff_degree_pos.mp (by rw [hP.2.2.2]; exact hd)).ne'`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ hdeg`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Unfold `Formalism.CyclotomicNorms.rootsBar`. Conclude with `(mem_roots (Polynomial.map_ne_zero hP.1.ne_zero)).2 hx`.
+-/
 theorem exists_mem {d : ℕ} (hd : 0 < d) {P : (ZMod g)[X]} (hP : IsPrimeLab d P) :
     ∃ x, x ∈ Formalism.CyclotomicNorms.rootsBar P := by
   have hdeg : (P.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))).degree ≠ 0 := by
@@ -141,6 +190,9 @@ theorem exists_mem {d : ℕ} (hd : 0 < d) {P : (ZMod g)[X]} (hP : IsPrimeLab d P
   unfold Formalism.CyclotomicNorms.rootsBar
   exact (mem_roots (Polynomial.map_ne_zero hP.1.ne_zero)).2 hx
 
+/- English proof (translation)
+Establish `h0` using `ne_zero_of_mem hP hx`. Establish `hfix : x ^ (g ^ d) = x` using `(GlobalTheory.GLm.SubfieldCount.natDegree_dvd_iff x d).1 (by rw [minpoly_eq_of_mem hP hx, hP.2.2.2])`. Establish `hpos : 0 < g ^ d` using `pow_pos (Fact.out : g.Prime).pos d`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, one_mul, hfix]`.
+-/
 theorem pow_sub_one_eq_one {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) : x ^ (g ^ d - 1) = 1 := by
   have h0 := ne_zero_of_mem hP hx
@@ -150,6 +202,9 @@ theorem pow_sub_one_eq_one {d : ℕ} {P : (ZMod g)[X]} (hP : IsPrimeLab d P) {x 
   apply mul_right_cancel₀ h0
   rw [← pow_succ, Nat.sub_add_cancel hpos, one_mul, hfix]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simpa using hx`. Consider the case `succ i ih`. Rewrite using `[pow_succ, pow_mul, ← expand_aeval, ZMod.expand_card, map_pow, ih, zero_pow]`. Conclude with `(Fact.out : g.Prime).ne_zero`.
+-/
 theorem aeval_pow_eq_zero {P : (ZMod g)[X]} {x : Formalism.CyclotomicNorms.Fbar g} (hx : aeval x P = 0) (i : ℕ) :
     aeval (x ^ (g ^ i)) P = 0 := by
   induction i with
@@ -158,6 +213,11 @@ theorem aeval_pow_eq_zero {P : (ZMod g)[X]} {x : Formalism.CyclotomicNorms.Fbar 
     rw [pow_succ, pow_mul, ← expand_aeval, ZMod.expand_card, map_pow, ih, zero_pow]
     exact (Fact.out : g.Prime).ne_zero
 
+/- English proof (translation)
+Establish `hex : ∃ n' : ℕ, L.gen d ^ n = L.gen d ^ n'` using `⟨n, rfl⟩`. Unfold `thetaOf`. Rewrite using `[dif_pos hex]`. Establish `hs` using `hex.choose_spec`. Establish `h1 : 1 < g ^ d` using `Nat.one_lt_pow hd.ne' (Fact.out : g.Prime).one_lt`.
+
+Establish `hfo : IsOfFinOrder (L.gen d)` using `orderOf_pos_iff.mp (by rw [L.gen_order d hd]; omega)`. Rewrite `hs` using `[hfo.pow_eq_pow_iff_modEq, L.gen_order d hd]`. Rewrite using `[← pow_mod_eq hw n, ← pow_mod_eq hw hex.choose]`. Conclude with `congrArg _ hs.symm`.
+-/
 theorem thetaOf_gen_pow (L : LabelDatum g) (d : ℕ) (hd : 0 < d) (w : Formalism.CyclotomicNorms.Fbar g)
     (hw : L.teich w ^ (g ^ d - 1) = 1) (n : ℕ) :
     thetaOf L d w (L.gen d ^ n) = L.teich w ^ n := by
@@ -171,6 +231,37 @@ theorem thetaOf_gen_pow (L : LabelDatum g) (d : ℕ) (hd : 0 < d) (w : Formalism
   rw [← pow_mod_eq hw n, ← pow_mod_eq hw hex.choose]
   exact congrArg _ hs.symm
 
+/- English proof (translation)
+Take `⟨hPl, hc, hval⟩` from `h`. Take `⟨hPl', -, hval'⟩` from `h'`. Establish `hd : 0 < d` using `hc.1`. Use `set m := g ^ d - 1 with hmdef`. Establish `hgd : 5 ≤ g ^ d` using `le_trans hg (Nat.le_self_pow hd.ne' g)`.
+
+Establish `hm : 1 < m` using `by omega`. Use `haveI : NeZero m := ⟨by omega⟩`. Take `⟨x, hx⟩` from `exists_mem hd hPl`. Take `⟨x', hx'⟩` from `exists_mem hd hPl'`. Establish `hx1` using `pow_sub_one_eq_one hPl hx`.
+
+Establish `hx1'` using `pow_sub_one_eq_one hPl' hx'`. Set `γ` to `L.gen d`. Establish `hord : orderOf γ = m` using `L.gen_order d hd`. Establish `hγm : γ ^ m = 1` using `by rw [← hord]; exact pow_orderOf_eq_one _`. Establish `hfo : IsOfFinOrder γ` using `orderOf_pos_iff.mp (by rw [hord]; omega)`.
+
+Establish `hγ0 : γ ≠ 0`. Introduce `h0; rw [h0, zero_pow (by omega)] at hγm; exact zero_ne_one hγm`. Establish `hteich : ∀ w : Formalism.CyclotomicNorms.Fbar g, w ^ m = 1 → ∀ i, L.teich (w ^ (g ^ i)) ^ m = 1`. Introduce `w hw i`. Rewrite using `[← map_pow, ← pow_mul, mul_comm, pow_mul, hw, one_pow, map_one]`.
+
+Set `B : Finset (ZMod m)` to `Finset.univ.filter fun k => (minpoly (ZMod g) (γ ^ k.val)).natDegree ≠ d`. Establish `hB : 2 * d * B.card < m`. Use `lt_of_le_of_lt (Nat.mul_le_mul_left _ ?_) (GlobalTheory.GLm.card_proper_subfield_elements_lt g d hg hd)` and prove the remaining obligations. Set `S0 : Set (Formalism.CyclotomicNorms.Fbar g)` to `{z | z ≠ 0 ∧ z ^ (g ^ d) = z ∧ (minpoly (ZMod g) z).natDegree ≠ d}`. Establish `hfin : S0.Finite`.
+
+Use `(nthRoots m (1 : Formalism.CyclotomicNorms.Fbar g)).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨hz0, hz, -⟩`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Rewrite using `[mem_nthRoots (by omega)]`. Apply `mul_right_cancel₀ hz0` to reduce the goal to its premises.
+
+Rewrite using `[← pow_succ, one_mul, hmdef, Nat.sub_add_cancel (by omega), hz]`. Establish `hinj : Set.InjOn (fun k : ZMod m => γ ^ k.val) B`. Introduce `a _ b _ hab`. Establish `hab' : γ ^ a.val = γ ^ b.val` using `hab`. Use `(hfo.pow_eq_pow_iff_modEq.1 hab')` as an intermediate fact.
+
+Rewrite `this` using `[hord]`. Apply `ZMod.val_injective` to reduce the goal to its premises. Establish `ha` using `ZMod.val_lt a`. Establish `hb` using `ZMod.val_lt b`. Unfold `Nat.ModEq at this`.
+
+Rewrite `this` using `[Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `Set.ncard_le_ncard ?_ hfin` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hz`.
+
+Take `⟨k, hk, rfl⟩` from `hz`. Use `⟨pow_ne_zero _ hγ0, ?_, (Finset.mem_filter.1 hk).2⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, show g ^ d = m + 1 by omega, pow_succ, hγm, one_mul]`. Use `_ = _ := rfl`. Establish `hsums : ∀ k : ZMod m, k ∉ B → ∑ i ∈ Finset.range d, L.teich (x ^ (g ^ i)) ^ k.val = ∑ i ∈ Finset.range d, L.teich (x' ^ (g ^ i)) ^ k.val`.
+
+Introduce `k hk`. Establish `hdeg : (minpoly (ZMod g) (γ ^ k.val)).natDegree = d`. Assume the negation of the conclusion as `hne`. Conclude with `hk (Finset.mem_filter.2 ⟨Finset.mem_univ _, hne⟩)`. Take `⟨y, hy, hz⟩` from `GlobalTheory.GLm.exists_irreducible_charpoly_mem_rootsBar g d (γ ^ k.val) (pow_ne_zero _ hγ0) hdeg`.
+
+Establish `e1` using `hval x hx y hy _ hz`. Establish `e2` using `hval' x' hx' y hy _ hz`. Rewrite `e2` using `[e1]`. Establish `hsgn : ((-1 : ℂ) ^ (d - 1)) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `e3` using `mul_left_cancel₀ hsgn e2`.
+
+Establish `conv : ∀ w : Formalism.CyclotomicNorms.Fbar g, w ^ m = 1 → ∀ i, thetaOf L d w ((γ ^ k.val) ^ (g ^ i)) = L.teich (w ^ (g ^ i)) ^ k.val`. Introduce `w hw i`. Establish `hw' : L.teich w ^ m = 1` using `by simpa using hteich w hw 0`. Rewrite using `[← pow_mul, thetaOf_gen_pow L d hd w hw', map_pow, ← pow_mul, mul_comm]`. Simplify using `only [conv x hx1, conv x' hx1'] at e3`.
+
+Conclude with `e3`. Take `⟨i, hi, hieq⟩` from `exists_eq_of_sum_eq hm (fun i => L.teich (x ^ (g ^ i))) (fun i => L.teich (x' ^ (g ^ i))) (hteich x hx1) (hteich x' hx1') hd B hB hsums`. Simplify using `only [pow_zero, pow_one] at hieq`. Establish `hxe : x' = x ^ (g ^ i)` using `L.teich_inj _ _ (ne_zero_of_mem hPl' hx') (pow_ne_zero _ (ne_zero_of_mem hPl hx)) hieq`. Establish `h1 : aeval x' P = 0`.
+
+Rewrite using `[hxe]`. Conclude with `aeval_pow_eq_zero (aeval_eq_zero_of_mem hPl.1.ne_zero hx) i`. Establish `h2` using `minpoly.eq_of_irreducible_of_monic hPl.2.1 h1 hPl.1`. Rewrite using `[h2, minpoly_eq_of_mem hPl' hx']`.
+-/
 theorem label_eq (L : LabelDatum g) (hg : 5 ≤ g) (d : ℕ) (P P' : (ZMod g)[X]) (χ : Gn g d → ℂ)
     (h : IsCuspOf L P χ) (h' : IsCuspOf L P' χ) : P = P' := by
   obtain ⟨hPl, hc, hval⟩ := h
@@ -260,6 +351,11 @@ end GlobalTheory.GLq.LabelUnique
 
 namespace GlobalTheory.GLq
 
+/- English proof (translation)
+Introduce `g _ L hg d P P' χ χ' h`. Use `⟨fun h' => LabelUnique.label_eq L hg d P P' χ h h', fun hG h' => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ, -, hall⟩` from `hG g L d h.2.1.1`. Take `⟨Q, hQ, rfl⟩` from `hall χ h.2.1`. Take `⟨Q', hQ', rfl⟩` from `hall χ' h'.2.1`.
+
+Establish `e1` using `LabelUnique.label_eq L hg d P Q _ h (hτ Q hQ).1`. Establish `e2` using `LabelUnique.label_eq L hg d P Q' _ h' (hτ Q' hQ').1`. Rewrite using `[← e1, ← e2]`.
+-/
 theorem isCuspOf_label_unique : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g → ∀ (d : ℕ)
     (P P' : (ZMod g)[X]) (χ χ' : Gn g d → ℂ), IsCuspOf L P χ →
       (IsCuspOf L P' χ → P = P') ∧ (Green → IsCuspOf L P χ' → χ = χ') := by

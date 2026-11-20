@@ -23,12 +23,24 @@ def hdiff (ts : List (Deg k × R)) (F : GMod B R k) (m : Deg k) : ℤ :=
   ∑ I ∈ (Finset.univ : Finset (Fin ts.length)).powerset,
     (-1 : ℤ) ^ I.card * ((Module.length B (F.gr (m - ∑ i ∈ I, (ts.get i).1))).toNat : ℤ)
 
+/- English proof (translation)
+Establish `: (Finset.univ : Finset (Fin ([] : List (Deg k × R)).length)) = ∅` using `rfl`. Rewrite using `[hdiff, this, Finset.powerset_empty, Finset.sum_singleton, Finset.sum_empty, sub_zero, Finset.card_empty, pow_zero, one_mul]`.
+-/
 theorem hdiff_nil (F : GMod B R k) (m : Deg k) :
     hdiff ([] : List (Deg k × R)) F m = ((Module.length B (F.gr m)).toNat : ℤ) := by
   have : (Finset.univ : Finset (Fin ([] : List (Deg k × R)).length)) = ∅ := rfl
   rw [hdiff, this, Finset.powerset_empty, Finset.sum_singleton, Finset.sum_empty, sub_zero,
     Finset.card_empty, pow_zero, one_mul]
 
+/- English proof (translation)
+Use `show ∑ I ∈ (Finset.univ : Finset (Fin (ts.length + 1))).powerset, (-1 : ℤ) ^ I.card * ((Module.length B (F.gr (m - ∑ i ∈ I, (((d, s) :: ts).get i).1))).toNat : ℤ) = _`. Rewrite using `[hdiff, hdiff, sum_powerset_fin_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Establish `hsum : ∀ J : Finset (Fin ts.length), ∑ i ∈ J.image Fin.succ, (((d, s) :: ts).get i).1 = ∑ j ∈ J, (ts.get j).1` using `fun J => by`. Rewrite using `[Finset.sum_image (fun a _ b _ hab => Fin.succ_injective _ hab)]`. Both sides reduce to the same expression.
+
+Establish `h0 : ∀ J : Finset (Fin ts.length), (0 : Fin (ts.length + 1)) ∉ J.image Fin.succ` using `fun J => by`. Simplify using `only [mem_image, not_exists, not_and]`. Conclude with `fun j _ => Fin.succ_ne_zero j`. Use `congr 1`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsum, Finset.card_image_of_injective _ (Fin.succ_injective _)]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_insert (h0 J), Finset.card_insert_of_notMem (h0 J), hsum, Finset.card_image_of_injective _ (Fin.succ_injective _), pow_succ]`. Establish `: m - d - ∑ j ∈ J, (ts.get j).1 = m - ((((d, s) :: ts).get (0 : Fin (ts.length + 1))).1 + ∑ j ∈ J, (ts.get j).1)` using `by show _ = m - (d + _)`. Rewrite using `[sub_sub]`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hdiff_cons (d : Deg k) (s : R) (ts : List (Deg k × R)) (F : GMod B R k) (m : Deg k) :
     hdiff ((d, s) :: ts) F m = hdiff ts F m - hdiff ts F (m - d) := by
   show ∑ I ∈ (Finset.univ : Finset (Fin (ts.length + 1))).powerset,
@@ -56,12 +68,18 @@ theorem hdiff_cons (d : Deg k) (s : R) (ts : List (Deg k × R)) (F : GMod B R k)
     rw [this]
     ring
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[eventually_atTop]`. Take `⟨a, ha⟩` from `h`. Conclude with `⟨a + d, fun b hb => ha _ (le_sub_iff_add_le.mpr hb)⟩`.
+-/
 theorem ev_shift {p : Deg k → Prop} (d : Deg k) (h : ∀ᶠ m in atTop, p m) :
     ∀ᶠ m in atTop, p (m - d) := by
   rw [eventually_atTop] at h ⊢
   obtain ⟨a, ha⟩ := h
   exact ⟨a + d, fun b hb => ha _ (le_sub_iff_add_le.mpr hb)⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h`. Use `⟨N, hN.trans (sup_le_sup_left ?_ _)⟩` and prove the remaining obligations. Rewrite using `[secs, Ideal.span_le]`. Introduce and unpack `x ⟨d, hd⟩`. Conclude with `absurd hd List.not_mem_nil`.
+-/
 theorem admissible_of_admissible_nil [IsLocalRing B] (𝒜 : Deg k → Submodule B R) {J : Ideal R}
     (ts : List (Deg k × R)) (h : admitted 𝒜 [] J) : admitted 𝒜 ts J := by
   obtain ⟨N, hN⟩ := h
@@ -86,6 +104,9 @@ def sesSubQuo (F : GMod B R k) (N : Submodule R F.M) : SES (F.sub N) F (F.quo N)
 
 def mulS (F : GMod B R k) (s : R) (d : Deg k) : (F.shift d).M →ₗ[R] F.M := LinearMap.lsmul R F.M s
 
+/- English proof (translation)
+Introduce `m x hx`. Establish `hx' : x ∈ F.gr (m - d)` using `hx`. Establish `h` using `hF.smul_mem hs hx'`. Rewrite `h` using `[show d + (m - d) = m by abel]`. Then use the resulting hypothesis.
+-/
 theorem mulS_gr (𝒜 : Deg k → Submodule B R) {F : GMod B R k} (hF : F.IsGr 𝒜) {s : R} {d : Deg k}
     (hs : s ∈ 𝒜 d) : E7.IsGrHom (F.shift d) F (mulS F s d) := by
   intro m x hx
@@ -95,6 +116,13 @@ theorem mulS_gr (𝒜 : Deg k → Submodule B R) {F : GMod B R k} (hF : F.IsGr �
 
 end Gen
 
+/- English proof (translation)
+Establish `hFd` using `(hGr k X F hF).2.1 d`. Take `⟨hq, ha⟩` from `(hGr k X F hF).2.2 d s hs`. Establish `g` using `mulS_gr X.𝒜 hF hs`. Establish `hI` using `((hGr k X F hF).1 _ (g.range_hom hFd.internal)).1`. Establish `hAt : admitted X.𝒜 ts F.Ann` using `admissible_of_admissible_nil X.𝒜 ts hA`.
+
+Establish `e1` using `hE1 k X ts (F.ann s d) (F.shift d) _ hV ha hFd hI (E7.sesOfKer (G := F.shift d) (H := F) (LinearMap.ker (LinearMap.lsmul X.R F.M s)) (mulS F s d) (fun _ => Iff.rfl) g hFd.internal hF.internal) hAt`. Establish `e2` using `hE1 k X ts _ F (F.quot s) hV hI hF hq (sesSubQuo F (LinearMap.range (LinearMap.lsmul X.R F.M s))) hAt`. Use `filter_upwards [e1, e2] with m h1 h2`. Rewrite `h1` using `[chi_shift]`. Use `show chi ts (F.quot s) m - chi ts (F.ann s d) m = _`.
+
+Establish `h2' : chi ts F m = chi ts (F.sub (LinearMap.range (mulS F s d))) m + chi ts (F.quot s) m` using `h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem step (hE1 : EulerAdditivityExactSequence) (hGr : RuleGr) {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R))
     (F : X.Mod) (d : Deg k) (s : X.R) (hV : Valid X.𝒜 ts) (hs : s ∈ X.𝒜 d) (hF : F.IsGr X.𝒜)
     (hA : admitted X.𝒜 [] F.Ann) :
@@ -119,6 +147,13 @@ end Sm
 
 open Sm in
 
+/- English proof (translation)
+Introduce `k X ts`. Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F _ _ _`. Use `Eventually.of_forall fun m => ?_` and prove the remaining obligations.
+
+Conclude with `(hdiff_nil F m).symm`. Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F hV hF hA`. Establish `hs : s ∈ X.𝒜 d` using `(hV (d, s) List.mem_cons_self).2`.
+
+Establish `hV' : Valid X.𝒜 ts` using `fun p hp => hV p (List.mem_cons_of_mem _ hp)`. Establish `h0 : ∀ᶠ m in atTop, chi ts F m = hdiff ts F m` using `ih F hV' hF hA`. Use `filter_upwards [step (euler_additivity_of_rules ruleGr ruleFin ruleIso) ruleGr X ts F d s hV' hs hF hA, h0, ev_shift d h0] with m h1 h2 h3`. Rewrite using `[h1, h2, h3]`. Conclude with `(hdiff_cons d s ts F m).symm`.
+-/
 theorem ruleSmall : RuleSmall := by
   intro k X ts
   induction ts with

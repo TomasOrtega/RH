@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.KleimanStep
 
+/- English proof (translation)
+Introduce `hC hHS k _ X _ p D hX hD hlow C c hnef hc`. Take `⟨A, hA, hAn, -⟩` from `GlobalTheory.AmpleNefSmall.exists_ample_nef_smallSec hC k X p D hX`. Take `⟨α, hα, hlim⟩` from `GlobalTheory.SelfInterGrowth.main hC k X p D hX C A c hc`. Use `ge_of_tendsto' hlim fun n => div_nonneg ?_ (by positivity)` and prove the remaining obligations. Establish `hpow` using `GlobalTheory.NefPow.isNef_pow hC k X p D hX C n hnef`.
+
+Establish `htens` using `GlobalTheory.T.hermLineBundle_isNef_tens hC k X p D hX _ _ hpow hAn`. Establish `hamp` using `GlobalTheory.T.isAmple_tensor_of_nef_fibres_ample k X p D hX _ A hpow.vertical hA`. Take `⟨h, hh, he⟩` from `hα n`. Rewrite using `[← he]`. Conclude with `GlobalTheory.T.height_genericPoint_nonneg_ample_semiPositive hC hHS k X p D hX hD _ h hamp htens.semiPos hh (hlow _ h htens hh)`.
+-/
 theorem selfInter_nonneg : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → 1 ≤ D →
     (∀ (C : HermLB p) (h : X → ℝ), C.IsNef D → C.IsArithHeight h → ∀ z, z ≠ genericPoint X → 0 ≤ h z) →

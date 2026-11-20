@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 
 open UpperTheory.V.FW
 
+/- English proof (translation)
+Use `letI : Fintype Q := Fintype.ofFinite Q`. Use `letI : Module (ZMod 2) W := AddCommGroup.zmodModule h2`. Set `φ : (Q → ZMod 2) →ₗ[ZMod 2] W` to `Fintype.linearCombination (ZMod 2) v`. Establish `hs : Function.Surjective φ`. Introduce `w`.
+
+Take `⟨x, rfl⟩` from `hψ w`. Express the relevant statement in the definitionally equal form `ψ x ∈ (LinearMap.range φ).toAddSubgroup`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `single g n`. Establish `: (MonoidAlgebra.single g n : MonoidAlgebra ℤ G) = n • MonoidAlgebra.single g 1` using `by simp`. Rewrite using `[this, map_zsmul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations.
+
+Rewrite using `[hv]`. Conclude with `⟨Pi.single (p g) 1, by simp [φ]⟩`. Use `⟨Finite.of_surjective φ hs, ?_⟩` and prove the remaining obligations. Use `Nat.card_le_card_of_surjective φ hs` as an intermediate fact. Simplify `this` using `[Nat.card_fun]`.
+-/
 private theorem gen2 {G Q W : Type} [Group G] [Finite Q] [AddCommGroup W] (h2 : ∀ w : W, 2 • w = 0)
     (ψ : MonoidAlgebra ℤ G →+ W) (hψ : Function.Surjective ψ) (p : G → Q) (v : Q → W)
     (hv : ∀ g, ψ (MonoidAlgebra.single g 1) = v (p g)) :
@@ -33,16 +42,29 @@ private noncomputable def kap {G : Type} [CommGroup G] (J : G) : MonoidAlgebra �
   map_zero' := by ext g; simp
   map_add' a b := by ext g; simp [add_mul]
 
+/- English proof (translation)
+Establish `: J⁻¹ = J` using `inv_eq_of_mul_eq_one_right hJ`. Simplify using `[kap, mul_add, this, mul_comm J g]`.
+-/
 private theorem kap_apply {G : Type} [CommGroup G] {J : G} (hJ : J * J = 1) (x : MonoidAlgebra ℤ G) (g : G) :
     kap J x g = (x.coeff g : ZMod 2) + (x.coeff (J * g) : ZMod 2) := by
   have : J⁻¹ = J := inv_eq_of_mul_eq_one_right hJ
   simp [kap, mul_add, this, mul_comm J g]
 
+/- English proof (translation)
+Use extensionality with `h`. Simplify using `[kap_apply hJ, mul_left_comm]`.
+-/
 private theorem kap_single_mul {G : Type} [CommGroup G] {J : G} (hJ : J * J = 1) (x : MonoidAlgebra ℤ G) (g : G) :
     kap J (MonoidAlgebra.single g 1 * x) = fun h => kap J x (g⁻¹ * h) := by
   ext h
   simp [kap_apply hJ, mul_left_comm]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩ g`. Rewrite using `[kap_apply hJ, kap_apply hJ, ← mul_assoc, hJ, one_mul, add_comm]`. Introduce `f hf`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin G`.
+
+Use `⟨MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm fun g => if e g < e (J * g) then ((f g).val : ℤ) else 0), ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Establish `hne : e g ≠ e (J * g)` using `fun h => hJ1 (by simpa using e.injective h)`. Establish `hfg : f (J * g) = f g` using `hf g`. Rewrite using `[kap_apply hJ]`.
+
+Simplify using `only [MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm, ← mul_assoc, hJ, one_mul]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Simplify using `[h, h.le]`. Simplify using `[h, h.le, hfg]`.
+-/
 private theorem kap_range {G : Type} [CommGroup G] [Finite G] {J : G} (hJ : J * J = 1) (hJ1 : J ≠ 1) :
     (kap J).range = evenF J := by
   classical
@@ -61,6 +83,37 @@ private theorem kap_range {G : Type} [CommGroup G] [Finite G] {J : G} (hJ : J * 
     · simp [h, h.le]
     · simp [h, h.le, hfg]
 
+/- English proof (translation)
+Introduce `G _ _ J γ θ N S hJ hJ1 hS hθ hN`. Establish `hdbl : ∀ y, kap J (y + y) ∈ S` using `fun y => by`. Establish `: kap J (y + y) = 0`. Rewrite using `[map_add]`. Use extensionality with `g`.
+
+Simplify using `[CharTwo.add_self_eq_zero]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Set `I : Ideal (MonoidAlgebra ℤ G)` to `{ (S.comap (kap J)).toAddSubmonoid with smul_mem' := fun r x hx => by`. Express the relevant statement in the definitionally equal form `kap J (r * x) ∈ S`.
+
+Proceed by induction on `r using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_mul, map_add]`. Conclude with `add_mem ha hb`. Consider the case `single g n`.
+
+Establish `: (MonoidAlgebra.single g n : MonoidAlgebra ℤ G) = n • MonoidAlgebra.single g 1` using `by simp`. Rewrite using `[this, smul_mul_assoc, map_zsmul, kap_single_mul hJ]`. Conclude with `zsmul_mem (hS _ hx _) _ }`. Establish `hI : ∀ x, x ∈ I ↔ kap J x ∈ S` using `fun x => Iff.rfl`. Establish `hNI : (MonoidAlgebra.of ℤ G γ - 1) ^ N ∈ I`.
+
+Use `Ideal.span_le.2 ?_ hN` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl | rfl)`. Conclude with `hθ`. Express the relevant statement in the definitionally equal form `kap J _ ∈ S`. Establish `: kap J (1 + MonoidAlgebra.of ℤ G J) = kap J (1 + 1)`.
+
+Use extensionality with `g`. Establish `h1 : MonoidAlgebra.of ℤ G J * MonoidAlgebra.of ℤ G J = 1` using `by rw [← map_mul, hJ, map_one]`. Establish `: (1 + MonoidAlgebra.of ℤ G J) * (1 + MonoidAlgebra.of ℤ G J) = (1 + 1) * (1 + MonoidAlgebra.of ℤ G J)`. Take the linear combination `h1`. Simplify using `only [kap, AddMonoidHom.coe_mk, ZeroHom.coe_mk, this]`.
+
+Rewrite using `[this]`. Conclude with `hdbl 1`. Express the relevant statement in the definitionally equal form `kap J _ ∈ S`. Establish `: ((2 : ℕ) : MonoidAlgebra ℤ G) = 1 + 1` using `by norm_num`. Rewrite using `[this]`.
+
+Conclude with `hdbl 1`. Establish `hidx : S.relIndex (evenF J) = Nat.card (MonoidAlgebra ℤ G ⧸ I)`. Rewrite using `[← kap_range hJ hJ1, ← AddSubgroup.index_comap]`. Both sides reduce to the same expression. Establish `h2 : ∀ w : MonoidAlgebra ℤ G ⧸ I, 2 • w = 0` using `fun w => by`.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Rewrite using `[two_nsmul, ← map_add, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hdbl x`. Use `haveI hfin : Finite (MonoidAlgebra ℤ G ⧸ I) := (gen2 h2 (Ideal.Quotient.mk I).toAddMonoidHom Ideal.Quotient.mk_surjective id (fun g => Ideal.Quotient.mk I (MonoidAlgebra.single g 1)) fun _ => rfl).1`. Use `set t : MonoidAlgebra ℤ G ⧸ I := Ideal.Quotient.mk I (MonoidAlgebra.of ℤ G γ - 1) with ht`.
+
+Set `T : AddMonoid.End (MonoidAlgebra ℤ G ⧸ I)` to `Module.toAddMonoidEnd (MonoidAlgebra ℤ G ⧸ I) (MonoidAlgebra ℤ G ⧸ I) t`. Establish `hT : T ^ N = 0`. Establish `: t ^ N = 0` using `by rw [ht, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact hNI`. Rewrite using `[← map_pow, this, map_zero]`. Rewrite using `[hidx]`.
+
+Use `(nilCard _ T N hT).trans (Nat.pow_le_pow_left ?_ N)` and prove the remaining obligations. Set `ψ : MonoidAlgebra ℤ G →+ (MonoidAlgebra ℤ G ⧸ I) ⧸ AddMonoidHom.range T` to `(QuotientAddGroup.mk' _).comp (Ideal.Quotient.mk I).toAddMonoidHom`. Establish `hstep : ∀ g, ψ (MonoidAlgebra.single (γ * g) 1) = ψ (MonoidAlgebra.single g 1)` using `fun g => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `(QuotientAddGroup.eq_zero_iff _).2 ⟨Ideal.Quotient.mk I (MonoidAlgebra.single g 1), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `t * _ = Ideal.Quotient.mk I _`. Rewrite using `[ht, ← map_mul, sub_mul]`. Simplify using `[MonoidAlgebra.single_mul_single]`. Establish `hpow : ∀ (n : ℕ) g, ψ (MonoidAlgebra.single (γ ^ n * g) 1) = ψ (MonoidAlgebra.single g 1)` using `fun n g => by`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', mul_assoc, hstep, ih]`. Use `(gen2 (Q := G ⧸ Subgroup.zpowers γ) ?_ ψ ?_ QuotientGroup.mk (fun q => ψ (MonoidAlgebra.single q.out 1)) ?_).2` and prove the remaining obligations. Introduce `w`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk'_surjective _ w`.
+
+Rewrite using `[← map_nsmul, h2, map_zero]`. Conclude with `(QuotientAddGroup.mk'_surjective _).comp Ideal.Quotient.mk_surjective`. Introduce `g`. Take `⟨⟨h, hh⟩, e⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.zpowers γ) g`. Take `⟨n, rfl⟩` from `(mem_powers_iff_mem_zpowers.2 hh)`.
+
+Simplify using `only at e ⊢`. Rewrite using `[e, mul_comm, hpow]`.
+-/
 theorem UpperTheory.V.FW.sgnAlg :
     ∀ (G : Type) [CommGroup G] [Finite G] (J γ : G) (θ : MonoidAlgebra ℤ G) (N : ℕ) (S : AddSubgroup (G → ZMod 2)), J * J = 1 → J ≠ 1 → (∀ f ∈ S, ∀ g, (fun x => f (g * x)) ∈ S) → (fun g => (((θ * (1 + MonoidAlgebra.of ℤ G J)).coeff g : ℤ) : ZMod 2)) ∈ S → (MonoidAlgebra.of ℤ G γ - 1) ^ N ∈ Ideal.span {θ, 1 + MonoidAlgebra.of ℤ G J, ((2 : ℕ) : MonoidAlgebra ℤ G)} → S.relIndex (evenF J) ≤ (2 ^ (Subgroup.zpowers γ).index) ^ N := by
   intro G _ _ J γ θ N S hJ hJ1 hS hθ hN

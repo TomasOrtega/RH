@@ -5,6 +5,17 @@ namespace GlobalTheory.LatticeSumMembership
 
 open Formalism.MainNotions.TaylorLogMetric
 
+/- English proof (translation)
+Introduce `D T N N' L L' y hy`. Unfold `Formalism.MainNotions.TaylorLogMetric.La at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, A, hA, rfl⟩` from `hx`.
+
+Conclude with `⟨1, fun _ => A, fun _ => w, fun _ => hA, fun _ => hw, by simp⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun j => j.elim0, by simp⟩`. Consider the case `add x z _ _ ihx ihz`. Take `⟨r₁, b₁, w₁, hb₁, hw₁, rfl⟩` from `ihx`. Take `⟨r₂, b₂, w₂, hb₂, hw₂, rfl⟩` from `ihz`.
+
+Use `⟨r₁ + r₂, Fin.append b₁ b₂, Fin.append w₁ w₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hb₁ i`. Simplify using `using hb₂ i`.
+
+Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `using hw₁ i`. Simplify using `using hw₂ i`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using the standard rewrite rules. Consider the case `neg x _ ihx`. Take `⟨r, b, w, hb, hw, rfl⟩` from `ihx`. Use `⟨r, b, fun j => -w j, hb, fun j => T.abelian₂.neg_mem (hw j), ?_⟩` and prove the remaining obligations. Simplify using `[neg_smul, Finset.sum_neg_distrib]`.
+-/
 theorem La_mem_sum :
     ∀ (D : Formalism.BasicNotions.D7) (T : Formalism.MainNotions.TaylorLogMetric.Tor D) {N N' : ℕ}
       (L : Submodule (NumberField.RingOfIntegers ((Formalism.BasicNotions.D7.host D).E)) (Fin N → (Formalism.BasicNotions.D7.host D).E))

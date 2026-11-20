@@ -12,17 +12,28 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein.Divi
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `h1` using `(Associates.count_ne_zero_iff_dvd w.ne_bot v.irreducible).1 h0`. Conclude with `h (HeightOneSpectrum.ext (associated_iff_eq.1 ((v.prime.dvd_prime_iff_associated w.prime).1 h1)))`.
+-/
 theorem ordI_ne {v w : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) : ordI v w.asIdeal = 0 := by
   by_contra h0
   have h1 := (Associates.count_ne_zero_iff_dvd w.ne_bot v.irreducible).1 h0
   exact h (HeightOneSpectrum.ext (associated_iff_eq.1 ((v.prime.dvd_prime_iff_associated w.prime).1 h1)))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `h1` using `(Associates.count_ne_zero_iff_dvd top_ne_bot v.irreducible).1 h0`. Conclude with `v.isPrime.ne_top (top_le_iff.1 (Ideal.dvd_iff_le.1 h1))`.
+-/
 theorem ordI_top (v : HeightOneSpectrum (𝓞 F)) : ordI v (⊤ : Ideal (𝓞 F)) = 0 := by
   by_contra h0
   have h1 := (Associates.count_ne_zero_iff_dvd top_ne_bot v.irreducible).1 h0
   exact v.isPrime.ne_top (top_le_iff.1 (Ideal.dvd_iff_le.1 h1))
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, Ideal.one_eq_top, ordI_top]; split_ifs <;> rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Fresh.ordI_mul_of_ne_bot v (pow_ne_zero _ w.ne_bot) w.ne_bot, ih]`. Distinguish the cases in `h : v = w`.
+
+Rewrite using `[if_pos h, if_pos h, h, Fresh.ordI_asIdeal_self]`. Rewrite using `[if_neg h, if_neg h, ordI_ne h]`.
+-/
 theorem ordI_pow (v w : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     ordI v (w.asIdeal ^ k) = if v = w then k else 0 := by
   induction k with
@@ -33,6 +44,9 @@ theorem ordI_pow (v w : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     · rw [if_pos h, if_pos h, h, Fresh.ordI_asIdeal_self]
     · rw [if_neg h, if_neg h, ordI_ne h]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]`. Introduce `w _`. Conclude with `pow_ne_zero _ w.ne_bot`.
+-/
 theorem prodS_ne_bot (T : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpectrum (𝓞 F) → ℕ) :
     (∏ w ∈ T, w.asIdeal ^ p w) ≠ ⊥ := by
   rw [← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]
@@ -40,6 +54,13 @@ theorem prodS_ne_bot (T : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpe
   exact pow_ne_zero _ w.ne_bot
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Ideal.one_eq_top, ordI_top]`. Simplify using the standard rewrite rules. Consider the case `insert a T ha ih`. Rewrite using `[Finset.prod_insert ha, Fresh.ordI_mul_of_ne_bot v (pow_ne_zero _ a.ne_bot) (prodS_ne_bot T p), ordI_pow, ih]`.
+
+Distinguish the cases in `h1 : v = a`. Substitute `h1` using the available equality. Simplify using `[ha]`. Distinguish the cases in `h2 : v ∈ T`. Simplify using `[h1, h2]`.
+
+Simplify using `[h1, h2]`.
+-/
 theorem ordI_prodS (T : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpectrum (𝓞 F) → ℕ)
     (v : HeightOneSpectrum (𝓞 F)) : ordI v (∏ w ∈ T, w.asIdeal ^ p w) = if v ∈ T then p v else 0 := by
   classical
@@ -54,6 +75,11 @@ theorem ordI_prodS (T : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpect
       · simp [h1, h2]
       · simp [h1, h2]
 
+/- English proof (translation)
+Establish `key : Associates.mk I = Associates.mk J`. Use `Associates.eq_of_eq_counts (Associates.mk_ne_zero.2 hI) (Associates.mk_ne_zero.2 hJ) fun p hp => ?_` and prove the remaining obligations. Take `⟨P, rfl⟩` from `Associates.exists_rep p`. Establish `hP : Irreducible P` using `Associates.irreducible_mk.1 hp`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨P, Ideal.isPrime_of_prime hP.prime, hP.ne_zero⟩`.
+
+Use `h v` as an intermediate fact. Unfold `ordI at this`. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 key)`.
+-/
 theorem eq_of_ordI {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h : ∀ w : HeightOneSpectrum (𝓞 F), ordI w I = ordI w J) :
     I = J := by
   classical
@@ -67,6 +93,9 @@ theorem eq_of_ordI {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h :
     convert this using 2
   exact associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 key)
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `h`. Establish `hr : r ≠ ⊥` using `fun h0 => hm (by rw [h0, Ideal.bot_mul])`. Establish `hs : s ≠ ⊥` using `fun h0 => hm (by rw [h0, Ideal.mul_bot])`. Rewrite using `[Fresh.ordI_mul_of_ne_bot w hr hs]`. Conclude with `Nat.le_add_right _ _`.
+-/
 theorem ordI_le_of_dvd {r m : Ideal (𝓞 F)} (hm : m ≠ ⊥) (h : r ∣ m) (w : HeightOneSpectrum (𝓞 F)) :
     ordI w r ≤ ordI w m := by
   obtain ⟨s, rfl⟩ := h
@@ -75,6 +104,9 @@ theorem ordI_le_of_dvd {r m : Ideal (𝓞 F)} (hm : m ≠ ⊥) (h : r ∣ m) (w 
   rw [Fresh.ordI_mul_of_ne_bot w hr hs]
   exact Nat.le_add_right _ _
 
+/- English proof (translation)
+Use `UniqueFactorizationMonoid.fintypeSubtypeDvd m hm` as an intermediate fact. Conclude with `Set.finite_coe_iff.1 (Finite.of_fintype {r // r ∣ m})`.
+-/
 theorem dvd_fin {m : Ideal (𝓞 F)} (hm : m ≠ ⊥) : {r : Ideal (𝓞 F) | r ∣ m}.Finite := by
   have := UniqueFactorizationMonoid.fintypeSubtypeDvd m hm
   exact Set.finite_coe_iff.1 (Finite.of_fintype {r // r ∣ m})
@@ -84,6 +116,9 @@ open Classical in
 def ext (S : Finset (HeightOneSpectrum (𝓞 F))) (p : S → ℕ) (w : HeightOneSpectrum (𝓞 F)) : ℕ :=
   if h : w ∈ S then p ⟨w, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[ordI_prodS]`. Unfold `ext`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem ordI_prod_ext (S : Finset (HeightOneSpectrum (𝓞 F))) (p : S → ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     ordI v (∏ w ∈ S, w.asIdeal ^ ext S p w) = ext S p v := by
   classical
@@ -91,6 +126,33 @@ theorem ordI_prod_ext (S : Finset (HeightOneSpectrum (𝓞 F))) (p : S → ℕ) 
   unfold ext
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_coe_sort S, Finset.prod_univ_sum]`. Unfold `divS`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (dvd_fin hm)]`. Use `symm`. Use `Finset.sum_nbij' (fun p => ∏ w ∈ S, w.asIdeal ^ ext S p w) (fun r => fun w : S => ordI w.1 r) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Establish `hp' : ∀ w : S, p w ≤ ordI w.1 m` using `fun w => by`. Use `Fintype.mem_piFinset.1 hp w` as an intermediate fact. Rewrite `this` using `[Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨∏ w ∈ S, w.asIdeal ^ (ordI w m - ext S p w), ?_⟩` and prove the remaining obligations. Establish `hne : (∏ w ∈ S, w.asIdeal ^ ext S p w) * (∏ w ∈ S, w.asIdeal ^ (ordI w m - ext S p w)) ≠ ⊥`. Rewrite using `[Ne, Ideal.mul_eq_bot, not_or]`. Conclude with `⟨prodS_ne_bot _ _, prodS_ne_bot _ _⟩`.
+
+Use `eq_of_ordI hm hne fun v => ?_` and prove the remaining obligations. Rewrite using `[Fresh.ordI_mul_of_ne_bot v (prodS_ne_bot _ _) (prodS_ne_bot _ _), ordI_prod_ext, ordI_prodS]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[if_pos hv]`. Establish `h1 : ext S p v = p ⟨v, hv⟩` using `by unfold ext; rw [dif_pos hv]`.
+
+Establish `h2 : p ⟨v, hv⟩ ≤ ordI v m` using `hp' ⟨v, hv⟩`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hv, hS v hv]`. Unfold `ext`.
+
+Rewrite using `[dif_neg hv]`. Introduce `r hr`. Rewrite `hr` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `w`.
+
+Rewrite using `[Finset.mem_range]`. Conclude with `Nat.lt_succ_of_le (ordI_le_of_dvd hm hr w)`. Introduce `p _`. Use function extensionality and compare the values at `w`. Rewrite using `[ordI_prod_ext]`.
+
+Unfold `ext`. Rewrite using `[dif_pos w.2]`. Introduce `r hr`. Rewrite `hr` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Establish `hr0 : r ≠ ⊥` using `fun h0 => hm (by rw [h0] at hr; exact zero_dvd_iff.1 hr)`.
+
+Use `eq_of_ordI (prodS_ne_bot _ _) hr0 fun v => ?_` and prove the remaining obligations. Rewrite using `[ordI_prod_ext]`. Unfold `ext`. Use `split_ifs with hv`. Both sides reduce to the same expression.
+
+Use `ordI_le_of_dvd hm hr v` as an intermediate fact. Rewrite `this` using `[hS v hv]`. Use linear arithmetic over natural numbers and integers. Introduce `p _`. Unfold `chiI`.
+
+Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S)]`. Rewrite using `[← Finset.prod_coe_sort S]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[ordI_prod_ext]`. Unfold `ext L4.chiW`.
+
+Rewrite using `[dif_pos w.2]`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Use `beta_reduce`.
+
+Rewrite using `[ordI_prod_ext]`. Unfold `ext`. Rewrite using `[dif_neg fun h => hvS (Finset.mem_coe.2 h), pow_zero]`.
+-/
 theorem divS_eq (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) {m : Ideal (𝓞 F)} (hm : m ≠ ⊥)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (hS : ∀ w ∉ S, ordI w m = 0) :
     divS ω c m = ∏ w ∈ S, ∑ j ∈ Finset.range (ordI w m + 1), L4.chiW ω c w ^ j := by
@@ -165,6 +227,21 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 open DivisorSumOrder
 
+/- English proof (translation)
+Introduce `F _ _ _ ω c z m S hz hS`. Unfold `coefAt`. Distinguish the cases in `hpos : ∀ w ∈ S, 0 ≤ m w`. Rewrite using `[if_pos hpos]`. Establish `hex : ∃ 𝔪, GenD z 𝔪`.
+
+Use `⟨∏ w ∈ S, w.asIdeal ^ (m w).toNat, prodS_ne_bot _ _, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hz w, ordI_prodS]`. Use `congr 1`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[if_pos hw, Int.toNat_of_nonneg (hpos w hw)]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg hw, hS w hw]`. Both sides reduce to the same expression. Rewrite using `[dif_pos hex]`. Establish `hspec` using `hex.choose_spec`.
+
+Use `set 𝔪 := hex.choose`. Establish `hord : ∀ w, (ordI w 𝔪 : ℤ) = m w`. Introduce `w`. Establish `h` using `(hspec.2 w).symm.trans (hz w)`. Rewrite `h` using `[WithZero.exp_inj]`.
+
+Unfold `dd at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[divS_eq ω c hspec.1 S fun w hw => by have := hord w; rw [hS w hw] at this; omega]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use `hord w` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hpos, dif_neg]`. Introduce and unpack `⟨𝔪, -, h𝔪⟩`. Apply `hpos` to reduce the goal to its premises.
+
+Introduce `w _`. Establish `h` using `(h𝔪 w).symm.trans (hz w)`. Rewrite `h` using `[WithZero.exp_inj]`. Unfold `dd at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem coefficient_divisor_holds : CoefDiv := by
   intro F _ _ _ ω c z m S hz hS
   classical

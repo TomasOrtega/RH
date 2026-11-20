@@ -13,6 +13,11 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ _ Y _ q jm _ hq n _ ch y hy`. Establish `hA` using `(manifold s.T.Z σ).isAlgAtlas_finAtlas`. Take `⟨kk, hk⟩` from `(manifold s.T.Z σ).finAtlas.cover (up jm hq σ y)`. Take `⟨c0, hc0⟩` from `hA kk`. Establish `hk0 : up jm hq σ y ∈ c0.e.source` using `by rw [hc0] at hk; exact hk`.
+
+Take `⟨-, hanF, hinjF⟩` from `GlobalTheory.UpMeas.up_fin jm hq σ ch c0 hy hk0`. Take `⟨ψ, hψ, hyψ, -⟩` from `GlobalTheory.UpMeas.exists_straightening (manifold s.T.Z σ).finAtlas (GlobalTheory.UpMeas.isEmbedding_up jm hq σ).isInducing ch.finChart hy c0.finChart (hA.isCompatChart c0) hk0 hanF hinjF isOpen_univ (Set.mem_univ _) rfl`. Conclude with `⟨ψ, hψ, hyψ⟩`.
+-/
 theorem GlobalTheory.HorComp.exists_straightening_range_up : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp (𝓞 κ.c.F)) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → ∀ (ch : AlgChart q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F)) n) (y : CxPts q (σ.comp (algebraMap (𝓞 κ.c.F) κ.c.F))), y ∈ ch.e.source → ∃ ψ, GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions.IsStraightening (manifold s.T.Z σ).finAtlas (Set.range (up jm hq σ)) n ψ ∧ up jm hq σ y ∈ ψ.source := by
   intro D A N j S κ s σ _ Y _ q jm _ hq n _ ch y hy
   have hA := (manifold s.T.Z σ).isAlgAtlas_finAtlas

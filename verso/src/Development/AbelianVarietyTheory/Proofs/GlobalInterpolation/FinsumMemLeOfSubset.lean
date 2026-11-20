@@ -5,6 +5,9 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 
 namespace GlobalTheory.ZeroWindow
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum f hT, finsum_mem_eq_finite_toFinset_sum f (hT.subset h)]`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun i _ _ => hf i` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.Finite.mem_toFinset] at hx ⊢`. Conclude with `h hx`.
+-/
 theorem finsum_mem_le_of_subset {S T : Set ℂ} (hT : T.Finite) (h : S ⊆ T) (f : ℂ → ℝ)
     (hf : ∀ x, 0 ≤ f x) : ∑ᶠ x ∈ S, f x ≤ ∑ᶠ x ∈ T, f x := by
   rw [finsum_mem_eq_finite_toFinset_sum f hT, finsum_mem_eq_finite_toFinset_sum f (hT.subset h)]
@@ -13,6 +16,11 @@ theorem finsum_mem_le_of_subset {S T : Set ℂ} (hT : T.Finite) (h : S ⊆ T) (f
   simp only [Set.Finite.mem_toFinset] at hx ⊢
   exact h hx
 
+/- English proof (translation)
+Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `a : (ρ - (2 + t * I)).re = ρ.re - 2` using `by simp`. Establish `b : (ρ - (2 + t * I)).im = ρ.im - t` using `by simp`. Rewrite using `[a, b]`. Apply the tactic sequence `have : |ρ.re - 2| ≤ 2 := by rw [abs_le]; constructor <;> linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_sub_le {ρ : ℂ} {t : ℝ} (h0 : 0 < ρ.re) (h1 : ρ.re < 1) (h2 : |ρ.im - t| ≤ 1) :
     ‖ρ - (2 + t * I)‖ ≤ 7 / 2 := by
   refine (Complex.norm_le_abs_re_add_abs_im _).trans ?_
@@ -23,6 +31,9 @@ theorem norm_sub_le {ρ : ℂ} {t : ℝ} (h0 : 0 < ρ.re) (h1 : ρ.re < 1) (h2 :
   linarith
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
+/- English proof (translation)
+Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `hre : (ρ - (2 + (t : ℂ) * I)).re = ρ.re - 2` using `by simp`. Establish `him : (ρ - (2 + (t : ℂ) * I)).im = ρ.im - t` using `by simp`. Rewrite using `[hre, him, abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma norm_sub_two_add_le_of_mem_strip {ρ : ℂ} {t : ℝ} (h0 : 0 < ρ.re) (h1 : ρ.re < 1)
     (ht : |ρ.im - t| ≤ 1) : ‖ρ - (2 + (t : ℂ) * I)‖ ≤ 7 / 2 := by
   refine (Complex.norm_le_abs_re_add_abs_im _).trans ?_
@@ -32,6 +43,9 @@ private lemma norm_sub_two_add_le_of_mem_strip {ρ : ℂ} {t : ℝ} (h0 : 0 < ρ
   linarith
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
+/- English proof (translation)
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum f (hD.subset hSD), finsum_mem_eq_finite_toFinset_sum f hD]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (by simpa using hSD) (fun x _ _ => hf x)`.
+-/
 private lemma finsum_mem_le_of_subset_of_nonneg {S D : Set ℂ} (f : ℂ → ℝ)
     (hf : ∀ x, 0 ≤ f x) (hD : D.Finite) (hSD : S ⊆ D) :
     ∑ᶠ x ∈ S, f x ≤ ∑ᶠ x ∈ D, f x := by
@@ -40,6 +54,25 @@ private lemma finsum_mem_le_of_subset_of_nonneg {S D : Set ℂ} (f : ℂ → ℝ
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 
+/- English proof (translation)
+Take `⟨C1, hC1, hL⟩` from `_root_.GlobalTheory.LWide.logDeriv_LFunction_strip`. Take `⟨C2, hC2, hZ⟩` from `_root_.GlobalTheory.ZetaWide.main`. Use `⟨max C1 C2, lt_max_of_lt_left hC1, fun N _ χ hχ t => ?_⟩` and prove the remaining obligations. Use `set s : ℂ := 2 + (t : ℂ) * I with hs`. Establish `hsre : s.re = 2` using `by simp [hs]`.
+
+Establish `hsim : s.im = t` using `by simp [hs]`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Establish `ht2 : (2 : ℝ) ≤ |t| + 2` using `by linarith [abs_nonneg t]`. Distinguish the cases in `h1χ : χ = 1`. Establish `hN : N = 1`.
+
+Establish `h` using `hχ`. Rewrite `h` using `[DirichletCharacter.isPrimitive_def, h1χ, DirichletCharacter.conductor_one]`. Conclude with `h.symm`. Substitute `hN` using the available equality. Establish `hLz : LFunction χ = riemannZeta` using `LFunction_modOne_eq`.
+
+Establish `hs1 : s ≠ 1`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Rewrite `this` using `[hsre]`. Evaluate the numerical expressions using `at this`.
+
+Take `⟨hfin, hsum, -⟩` from `hZ s (by rw [hsre]; norm_num) (by rw [hsre]) hs1 (riemannZeta_ne_zero_of_one_le_re (by rw [hsre]; norm_num))`. Rewrite `hfin`, `hsum` using `[hsim]`. Establish `hsub : {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ LFunction χ ρ = 0} ⊆ {w : ℂ | ‖w - (2 + (t : ℂ) * I)‖ ≤ 7 / 2 ∧ w ≠ 1 ∧ riemannZeta w = 0}`. Introduce and unpack `ρ ⟨h0, h1, h2, h3⟩`. Use `⟨norm_sub_two_add_le_of_mem_strip h0 h1 h2, ?_, by rwa [hLz] at h3⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Simplify using `at h1`. Use `⟨hfin.subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hLz]`.
+
+Conclude with `finsum_mem_le_of_subset_of_nonneg _ (fun _ => Nat.cast_nonneg _) hfin (by rw [hLz] at hsub; exact hsub)`. Use `_ ≤ C2 * Real.log (|t| + 2) := hsum`. Use `_ ≤ max C1 C2 * Real.log (((1 : ℕ) : ℝ) * (|t| + 2)) := by`. Rewrite using `[Nat.cast_one, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.log_nonneg (by linarith))`.
+
+Establish `hLs : LFunction χ s ≠ 0` using `LFunction_ne_zero_of_one_le_re χ (Or.inl h1χ) (by rw [hsre]; norm_num)`. Take `⟨hfin, hsum, -⟩` from `hL N χ h1χ s (by rw [hsre]; norm_num) (by rw [hsre]) hLs`. Rewrite `hfin`, `hsum` using `[hsim]`. Establish `hsub : {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ LFunction χ ρ = 0} ⊆ {w : ℂ | ‖w - (2 + (t : ℂ) * I)‖ ≤ 7 / 2 ∧ LFunction χ w = 0}`. Introduce and unpack `ρ ⟨h0, h1, h2, h3⟩`.
+
+Conclude with `⟨norm_sub_two_add_le_of_mem_strip h0 h1 h2, h3⟩`. Use `⟨hfin.subset hsub, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.ZeroWindow.count_zeros_window : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N]
     (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ t : ℝ,
     {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ LFunction χ ρ = 0}.Finite ∧

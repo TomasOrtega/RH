@@ -14,6 +14,21 @@ namespace GlobalTheory.CompanionTheory.PosDefNorm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hinv : ∀ x, ρ (invol Q x) = conj (ρ x)`. Establish `h : (ρ.comp (invol Q : Fld Q →+* Fld Q)) = (starRingEnd ℂ).comp ρ`. Use `AdjoinRoot.ringHom_ext (RingHom.ext fun e => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (invol Q (algebraMap E (Fld Q) e)) = conj (ρ (algebraMap E (Fld Q) e))`. Rewrite using `[invol_algebraMap]`.
+
+Conclude with `IsCMField.complexEmbedding_complexConj E (ρ.comp (algebraMap E (Fld Q))) e`. Express the relevant statement in the definitionally equal form `ρ (invol Q (alpha Q)) = conj (ρ (alpha Q))`. Rewrite using `[invol_alpha, map_inv₀]`. Conclude with `Complex.inv_eq_conj hn`. Conclude with `fun x => DFunLike.congr_fun h x`.
+
+Set `ρF : maximalRealSubfield E →+* ℂ` to `ρ.comp (algebraMap (maximalRealSubfield E) (Fld Q))`. Set `w` to `InfinitePlace.mk ρF`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Use `letI : Algebra (maximalRealSubfield E) ℂ := ρF.toAlgebra`. Set `g : w.Completion →ₐ[maximalRealSubfield E] ℂ` to `⟨InfinitePlace.Completion.extensionEmbedding w, fun a => (InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ a)).trans (DFunLike.congr_fun (InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 hw)) a)⟩`.
+
+Establish `hg : ∀ a, conj (g a) = g a` using `fun a => by`. Establish `: g a = (InfinitePlace.Completion.extensionEmbeddingOfIsReal hw a : ℂ)` using `(InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw a).symm`. Rewrite using `[this, Complex.conj_ofReal]`. Set `f` to `(Algebra.TensorProduct.productMap g (⟨ρ, fun _ => rfl⟩ : Fld Q →ₐ[maximalRealSubfield E] ℂ)).toRingHom`. Establish `hf : ∀ a e, f (a ⊗ₜ e) = g a * ρ e` using `fun _ _ => rfl`.
+
+Establish `hfi : ∀ t, f (involBase Q w.Completion t) = conj (f t)` using `fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[involBase, Algebra.TensorProduct.map_tmul, hf, hf, map_mul, hg]`.
+
+Conclude with `congrArg _ (hinv e)`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Take `⟨z, hz⟩` from `hz w`. Establish `h1` using `congrArg f hz`. Rewrite `h1` using `[map_mul, hfi, hf, map_one, one_mul, Complex.mul_conj]`.
+
+Establish `h2 : f (z : w.Completion ⊗[maximalRealSubfield E] Fld Q) ≠ 0` using `(z.isUnit.map f).ne_zero`. Rewrite using `[← h1]`. Conclude with `Complex.normSq_pos.2 h2` after adjusting the coercions.
+-/
 theorem norm_value_pos {r : ℕ} (Q : SelfRecip E r) (ρ : Fld Q →+* ℂ) (hn : ‖ρ (alpha Q)‖ = 1) (y : Fld Q)
     (hz : ∀ u : InfinitePlace (maximalRealSubfield E), ∃ z : (u.Completion ⊗[maximalRealSubfield E] Fld Q)ˣ,
       (z : u.Completion ⊗[maximalRealSubfield E] Fld Q) *
@@ -58,12 +73,18 @@ theorem norm_value_pos {r : ℕ} (Q : SelfRecip E r) (ρ : Fld Q →+* ℂ) (hn 
   rw [← h1]
   exact_mod_cast Complex.normSq_pos.2 h2
 
+/- English proof (translation)
+Use `letI : Algebra E ℂ := τ.toAlgebra`. Establish `hi : IsIntegral E μ` using `⟨P, hP, h⟩`. Conclude with `⟨minpoly E μ, minpoly.monic hi, minpoly.irreducible hi, minpoly.dvd E μ h, minpoly.aeval E μ⟩`.
+-/
 theorem exists_irreducible_factor (P : E[X]) (hP : P.Monic) (τ : E →+* ℂ) (μ : ℂ) (h : eval₂ τ μ P = 0) :
     ∃ R : E[X], R.Monic ∧ Irreducible R ∧ R ∣ P ∧ eval₂ τ μ R = 0 := by
   letI : Algebra E ℂ := τ.toAlgebra
   have hi : IsIntegral E μ := ⟨P, hP, h⟩
   exact ⟨minpoly E μ, minpoly.monic hi, minpoly.irreducible hi, minpoly.dvd E μ h, minpoly.aeval E μ⟩
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, mul_add, add_mul]`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, aeval_monomial, Units.conj_pow]`. Simplify using `only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm]`.
+-/
 theorem aeval_units_conj {n : ℕ} (u : (Matrix (Fin n) (Fin n) ℂ)ˣ) (A : Matrix (Fin n) (Fin n) ℂ) (p : ℂ[X]) :
     aeval ((u : Matrix (Fin n) (Fin n) ℂ) * A * ((u⁻¹ : _ˣ) : Matrix (Fin n) (Fin n) ℂ)) p =
       (u : Matrix (Fin n) (Fin n) ℂ) * aeval A p * ((u⁻¹ : _ˣ) : Matrix (Fin n) (Fin n) ℂ) := by
@@ -73,6 +94,27 @@ theorem aeval_units_conj {n : ℕ} (u : (Matrix (Fin n) (Fin n) ℂ)ˣ) (A : Mat
     rw [aeval_monomial, aeval_monomial, Units.conj_pow]
     simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm]
 
+/- English proof (translation)
+Establish `hU' : U * Uᴴ = 1` using `mul_eq_one_comm.1 hU`. Take `⟨r, hr⟩` from `GlobalTheory.BCT.ClsFin.exists_aeval_of_comm U Uᴴ hs (hU'.trans hU.symm)`. Establish `hdiv : U.charpoly ∣ X * r - 1`. Use `GlobalTheory.ClassParam.charpoly_dvd_of_aeval U hs _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, aeval_X, ← hr, hU', map_one, sub_self]`.
+
+Establish `hrv : ∀ μ : ℂ, U.charpoly.IsRoot μ → r.eval μ = conj μ` using `fun μ hμ => by`. Take `⟨t, ht⟩` from `hdiv`. Establish `h1` using `congrArg (eval μ) ht`. Establish `h0 : eval μ U.charpoly = 0` using `hμ`. Rewrite `h1` using `[eval_mul, h0, zero_mul, eval_sub, eval_mul, eval_X, eval_one, sub_eq_zero]`.
+
+Rewrite using `[← Complex.inv_eq_conj (hn μ hμ)]`. Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `hcT : (aeval U p)ᴴ = aeval U ((p.map (starRingEnd ℂ)).comp r)`. Establish `h1` using `GlobalTheory.NormInert.cT_aeval (starRingEnd ℂ) U p`. Establish `h2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, cT (starRingEnd ℂ) M = Mᴴ` using `fun M => rfl`.
+
+Rewrite `h1` using `[h2, h2, hr, ← aeval_comp]`. Conclude with `h1`. Establish `hzero : aeval U (p - (p.map (starRingEnd ℂ)).comp r) = 0`. Distinguish the cases in `h0 : p - (p.map (starRingEnd ℂ)).comp r = 0`. Rewrite using `[h0, map_zero]`.
+
+Establish `hd : U.charpoly ∣ p - (p.map (starRingEnd ℂ)).comp r`. Use `(IsAlgClosed.splits _).dvd_of_roots_le_roots U.charpoly_monic.ne_zero ?_` and prove the remaining obligations. Rewrite using `[Multiset.le_iff_subset (nodup_roots hs)]`. Introduce `μ hμ`. Establish `hμ'` using `isRoot_of_mem_roots hμ`.
+
+Rewrite using `[mem_roots h0, IsRoot.def, eval_sub, eval_comp, hrv μ hμ', sub_eq_zero, eval_map]`. Establish `h3 : eval₂ (starRingEnd ℂ) (conj μ) p = conj (eval μ p)`. Rewrite using `[eval, Polynomial.hom_eval₂, RingHom.comp_id]`. Rewrite using `[h3]`. Conclude with `(Complex.conj_eq_iff_im.2 (Complex.pos_iff.1 (hp μ hμ')).2.symm).symm`.
+
+Take `⟨t, ht⟩` from `hd`. Rewrite using `[ht, map_mul, Matrix.aeval_self_charpoly, zero_mul]`. Establish `hH : (aeval U p).IsHermitian`. Rewrite using `[Matrix.IsHermitian, hcT]`. Rewrite `hzero` using `[map_sub, sub_eq_zero]`.
+
+Conclude with `hzero.symm`. Rewrite using `[hH.posDef_iff_eigenvalues_pos]`. Introduce `i`. Use `haveI : Nonempty (Fin n) := ⟨i⟩`. Establish `h1 : ((hH.eigenvalues i : ℝ) : ℂ) ∈ spectrum ℂ (aeval U p)`.
+
+Use `hH.eigenvalues_mem_spectrum_real i` as an intermediate fact. Rewrite `this` using `[← spectrum.preimage_algebraMap ℂ]`. Conclude with `this`. Rewrite `h1` using `[spectrum.map_polynomial_aeval_of_nonempty _ _ (spectrum.nonempty_of_isAlgClosed_of_finiteDimensional ℂ U)]`. Take `⟨μ, hμ, e⟩` from `h1`.
+
+Establish `h2` using `hp μ (Matrix.mem_spectrum_iff_isRoot_charpoly.1 hμ)`. Rewrite `h2` using `[show eval μ p = ((hH.eigenvalues i : ℝ) : ℂ) from e]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem posDef_aeval {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (hU : Uᴴ * U = 1) (hs : U.charpoly.Separable)
     (hn : ∀ μ : ℂ, U.charpoly.IsRoot μ → ‖μ‖ = 1) (p : ℂ[X])
     (hp : ∀ μ : ℂ, U.charpoly.IsRoot μ → 0 < p.eval μ) : (aeval U p).PosDef := by
@@ -126,11 +168,21 @@ theorem posDef_aeval {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (hU : Uᴴ * U =
   exact_mod_cast h2
 
 open scoped MatrixOrder Matrix.Norms.L2Operator in
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hT.nonneg`. Conclude with `⟨y, rfl⟩`.
+-/
 theorem exists_factor {n : ℕ} {T : Matrix (Fin n) (Fin n) ℂ} (hT : T.PosSemidef) :
     ∃ S : Matrix (Fin n) (Fin n) ℂ, T = Sᴴ * S := by
   obtain ⟨y, rfl⟩ := CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hT.nonneg
   exact ⟨y, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Polynomial.map_add, map_add, ← hp, ← hq]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Consider the case `monomial k a`. Rewrite using `[aeval_monomial, Polynomial.map_monomial, aeval_monomial]`. Establish `e : (A.map τ) ^ k = (A ^ k).map τ` using `by rw [Matrix.map_pow]`. Rewrite using `[e]`. Use extensionality with `i j`.
+
+Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem map_aeval {n : ℕ} (τ : E →+* ℂ) (A : Matrix (Fin n) (Fin n) E) (p : E[X]) :
     (aeval A p).map τ = aeval (A.map τ) (p.map τ) := by
   induction p using Polynomial.induction_on' with
@@ -145,6 +197,31 @@ theorem map_aeval {n : ℕ} (τ : E →+* ℂ) (A : Matrix (Fin n) (Fin n) E) (p
     ext i j
     simp [Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ n γ₀ hell H₀ _ _ hiso hdef m _ hz τ`. Take `⟨Q, hQ, hHQ⟩` from `hdef τ`. Establish `h2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, cT (starRingEnd ℂ) M = Mᴴ` using `fun M => rfl`. Rewrite `hHQ` using `[h2]`. Use `set A := γ₀.val.map τ with hA`.
+
+Establish `hiso' : Aᴴ * (Qᴴ * Q) * A = Qᴴ * Q`. Establish `h` using `congrArg (fun M => M.map τ) hiso`. Simplify using `only [Matrix.map_mul] at h`. Establish `e : (cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val).map τ = Aᴴ`. Use extensionality with `i j`.
+
+Conclude with `IsCMField.complexEmbedding_complexConj E τ (γ₀.val j i)`. Rewrite `h` using `[e, hHQ]`. Conclude with `h`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `((Matrix.isUnit_iff_isUnit_det Q).2 (isUnit_iff_ne_zero.2 hQ)).unit`. Establish `hu : (u : Matrix (Fin n) (Fin n) ℂ) = Q` using `rfl`.
+
+Take `⟨Qi, hQi⟩ : ∃ Qi : Matrix (Fin n) (Fin n) ℂ, Qi = ((u⁻¹ : _ˣ) : Matrix (Fin n) (Fin n) ℂ)` from `⟨_, rfl⟩`. Establish `e1 : Q * Qi = 1` using `by rw [hQi, ← hu]; exact u.mul_inv`. Establish `e2 : Qi * Q = 1` using `by rw [hQi, ← hu]; exact u.inv_mul`. Establish `hconj` using `aeval_units_conj u A (m.map τ)`. Establish `hchar` using `Matrix.charpoly_units_conj u A`.
+
+Rewrite `hchar` using `[← Matrix.coe_units_inv]`. Rewrite `hconj`, `hchar` using `[hu, ← hQi]`. Establish `hAc : A.charpoly = γ₀.val.charpoly.map τ` using `Matrix.charpoly_map _ _`. Take `⟨U, hUd⟩ : ∃ U, U = Q * A * Qi` from `⟨_, rfl⟩`. Rewrite `hconj`, `hchar` using `[← hUd]`.
+
+Establish `hU : Uᴴ * U = 1`. Establish `e3 : Qiᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, e1, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hUd, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Qiᴴ * Qᴴ) * (Q * Qi) := by rw [hiso']; simp only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [e1, e3, Matrix.mul_one]`. Establish `hroot : ∀ μ : ℂ, U.charpoly.IsRoot μ → (γ₀.val.charpoly.map τ).IsRoot μ` using `fun μ h => by`. Rewrite `h` using `[hchar, hAc]`. Then use the resulting hypothesis. Establish `hnorm : ∀ μ : ℂ, U.charpoly.IsRoot μ → ‖μ‖ = 1` using `fun μ h => hell.2.2.2 τ μ ((mem_roots (Polynomial.map_ne_zero hell.1.ne_zero)).2 (hroot μ h))`. Establish `hsep : U.charpoly.Separable`.
+
+Rewrite using `[hchar, hAc]`. Conclude with `hell.2.2.1.map`. Establish `hp : ∀ μ : ℂ, U.charpoly.IsRoot μ → 0 < (m.map τ).eval μ` using `fun μ h => by`. Establish `h0 : eval₂ τ μ γ₀.val.charpoly = 0`. Rewrite using `[← eval_map]`.
+
+Conclude with `hroot μ h`. Take `⟨R, Rm, Ri, Rd, Re⟩` from `exists_irreducible_factor _ hell.1 τ μ h0`. Set `S : SelfRecip E R.natDegree` to `⟨R, GlobalTheory.SelfRecipFactor.isSelfRecip_of_dvd_ell E n _ hell R Rm Ri Rd⟩`. Set `ρ : Fld S →+* ℂ` to `AdjoinRoot.lift τ μ Re`. Establish `hα : ρ (alpha S) = μ` using `AdjoinRoot.lift_root Re`.
+
+Establish `hm : ρ (AdjoinRoot.mk S.1 m : Fld S) = eval₂ τ μ m` using `AdjoinRoot.lift_mk Re m`. Use `norm_value_pos S ρ (by rw [hα]; exact hnorm μ h) _ (hz _ S Rd)` as an intermediate fact. Rewrite `this` using `[hm, ← eval_map]`. Then use the resulting hypothesis. Establish `hT` using `posDef_aeval U hU hsep hnorm (m.map τ) hp`. Take `⟨S, hS⟩` from `exists_factor hT.posSemidef`.
+
+Establish `hdetS : S.det ≠ 0` using `fun h => by`. Use `hT.det_pos` as an intermediate fact. Rewrite `this` using `[hS, Matrix.det_mul, h, mul_zero]`. Conclude with `lt_irrefl _ this`. Use `⟨S * Q, by rw [Matrix.det_mul]; exact mul_ne_zero hdetS hQ, ?_⟩` and prove the remaining obligations.
+
+Establish `e4 : Q * aeval A (m.map τ) = (Sᴴ * S) * Q`. Rewrite using `[← hS, hconj, Matrix.mul_assoc, e2, Matrix.mul_one]`. Rewrite using `[Matrix.map_mul, hHQ, map_aeval, h2, conjTranspose_mul, Matrix.mul_assoc, e4]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H₀ : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H₀ * γ₀.val = H₀ → (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H₀.map τ = cT (starRingEnd ℂ) Q * Q) → ∀ m : E[X], (∀ (r : ℕ) (Q : SelfRecip E r), Q.1 ∣ γ₀.val.charpoly → invol Q (AdjoinRoot.mk Q.1 m : Fld Q) = (AdjoinRoot.mk Q.1 m : Fld Q)) → (∀ (r : ℕ) (Q : SelfRecip E r), Q.1 ∣ γ₀.val.charpoly → ∀ u : InfinitePlace (maximalRealSubfield E), ∃ z : (u.Completion ⊗[(maximalRealSubfield E)] Fld Q)ˣ, (z : u.Completion ⊗[(maximalRealSubfield E)] Fld Q) * involBase Q u.Completion (z : u.Completion ⊗[(maximalRealSubfield E)] Fld Q) = 1 ⊗ₜ (AdjoinRoot.mk Q.1 m : Fld Q)) → ∀ τ : E →+* ℂ, ∃ Q' : Matrix (Fin n) (Fin n) ℂ, Q'.det ≠ 0 ∧ (H₀ * aeval γ₀.val m).map τ = cT (starRingEnd ℂ) Q' * Q' := by
   intro E _ _ _ n γ₀ hell H₀ _ _ hiso hdef m _ hz τ
   obtain ⟨Q, hQ, hHQ⟩ := hdef τ

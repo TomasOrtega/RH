@@ -13,15 +13,30 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v)) Valued.v).le_one_iff_le_one`.
+-/
 theorem pla_le_one_iff {v : Pl F} (x : Fv F v) :
     ValuativeRel.valuation (Fv F v) x ≤ 1 ↔ x ∈ v.adicCompletionIntegers F := by
   haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v)) Valued.v).le_one_iff_le_one
 
+/- English proof (translation)
+The claim follows from `(continuous_splitProj t).comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evFin F v).toLinearMap (fun a b => map_mul (evFin F v) a b) ((RestrictedProduct.continuous_eval v).comp continuous_snd))`.
+-/
 theorem pla_continuous (v : Pl F) (t : E →ₐ[F] Fv F v) : Continuous (piW t) :=
   (continuous_splitProj t).comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evFin F v).toLinearMap
     (fun a b => map_mul (evFin F v) a b) ((RestrictedProduct.continuous_eval v).comp continuous_snd))
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Eventually.of_forall fun v t => by rw [map_zero]; exact zero_mem _`. Consider the case `add y z hy hz => filter_upwards [hy, hz] with v h h' t using by rw [map_add]; exact add_mem (h t) (h' t)`. Consider the case `tmul a e`. Establish `: Algebra.IsAlgebraic ℤ E` using `IsFractionRing.comap_isAlgebraic_iff.2 (inferInstance : Algebra.IsAlgebraic ℚ E)`.
+
+Take `⟨d, hd, hi⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) e).exists_integral_multiple`. Establish `hd' : (d : F) ≠ 0` using `Int.cast_ne_zero.2 hd`. Establish `h1 : ∀ᶠ v : Pl F in cofinite, algebraMap F (Fv F v) (d : F)⁻¹ ∈ v.adicCompletionIntegers F` using `(algebraMap F (Af F) (d : F)⁻¹).2`. Establish `h2 : ∀ᶠ v : Pl F in cofinite, evFin F v a ∈ v.adicCompletionIntegers F` using `a.2.2`. Use `filter_upwards [h1, h2] with v hv hv' t`.
+
+Establish `h3 : t (d • e) ∈ v.adicCompletionIntegers F` using `apply_coe_mem t (⟨d • e, hi⟩ : 𝓞 E)`. Establish `h4 : t e = algebraMap F (Fv F v) (d : F)⁻¹ * t (d • e)`. Rewrite using `[← Int.cast_smul_eq_zsmul F, map_smul, Algebra.smul_def, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hd', map_one, one_mul]`. Use `show evFin F v a * t e ∈ _`. Rewrite using `[h4]`.
+
+Conclude with `mul_mem hv' (mul_mem hv h3)`.
+-/
 theorem pla_int (z : AE F E) : ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, piW t z ∈ v.adicCompletionIntegers F := by
   induction z using TensorProduct.induction_on with
   | zero => exact Eventually.of_forall fun v t => by rw [map_zero]; exact zero_mem _
@@ -41,6 +56,11 @@ theorem pla_int (z : AE F E) : ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] 
     rw [h4]
     exact mul_mem hv' (mul_mem hv h3)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h`. Use `⟨pla_continuous, fun z => (pla_int z).mono fun v hv t => (pla_le_one_iff _).2 (hv t), fun χ T hχ v hv t x hx => ?_, fun hf => ?_⟩` and prove the remaining obligations. Use `hχ (splitPrime t) (fun hm => hv (splitPrime_under t ▸ hm)) _ ?_` and prove the remaining obligations. Establish `h1 : Valued.v (complMap (splitPrime_under t) (x : Fv F v)) ≤ 1` using `complMap_mem _ ((pla_le_one_iff _).1 hx.le)`. Establish `h2 : Valued.v (complMap (splitPrime_under t) ((x : Fv F v)⁻¹)) ≤ 1` using `complMap_mem _ ((pla_le_one_iff _).1 (by rw [map_inv₀, hx, inv_one]))`.
+
+Establish `h3 : Valued.v (complMap (splitPrime_under t) (x : Fv F v)) ≠ 0` using `by simp`. Rewrite `h2` using `[map_inv₀, map_inv₀, inv_le_one₀ (zero_lt_iff.2 h3)]`. Conclude with `le_antisymm h1 h2`. Take `⟨v, hv, hn⟩` from `GlobalTheory.Orb.exists_split_place_notMem h hf.toFinset`. Conclude with `hv (hf.mem_toFinset.2 hn)`.
+-/
 theorem places : Places := by
   intro F E _ _ _ _ _ σ h
   refine ⟨pla_continuous, fun z => (pla_int z).mono fun v hv t => (pla_le_one_iff _).2 (hv t), fun χ T hχ v hv t x hx => ?_,

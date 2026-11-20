@@ -26,6 +26,11 @@ open GlobalTheory.FinTranslate GlobalTheory.FockCompare
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add a b ha hb => rw [smul_add, RingHom.map_add, ha, hb, add_zero]`. Consider the case `tmul a x`. Rewrite using `[TensorProduct.smul_tmul']`.
+
+Use `show (sndA D.host.F (eInf D • a)) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[show sndA D.host.F (eInf D • a) = 0 from zero_mul _, TensorProduct.zero_tmul]`.
+-/
 theorem finPart_eInf_smul (a : AE D) : finPart D (eInf D • a) = 0 := by
   induction a using TensorProduct.induction_on with
   | zero => simp only [smul_zero, map_zero]
@@ -35,6 +40,11 @@ theorem finPart_eInf_smul (a : AE D) : finPart D (eInf D • a) = 0 := by
     show (sndA D.host.F (eInf D • a)) ⊗ₜ[D.host.F] x = 0
     rw [show sndA D.host.F (eInf D • a) = 0 from zero_mul _, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero]`. Consider the case `add a b ha hb => rw [smul_add, RingHom.map_add, ha, hb, RingHom.map_add]`. Consider the case `tmul a x`. Rewrite using `[TensorProduct.smul_tmul']`.
+
+Use `show (fstA D.host.F (eInf D • a)) ⊗ₜ[D.host.F] x = (fstA D.host.F a) ⊗ₜ[D.host.F] x`. Rewrite using `[show fstA D.host.F (eInf D • a) = fstA D.host.F a from one_mul _]`.
+-/
 theorem infPart_eInf_smul (a : AE D) : infPart D (eInf D • a) = infPart D a := by
   induction a using TensorProduct.induction_on with
   | zero => simp only [smul_zero]
@@ -44,6 +54,9 @@ theorem infPart_eInf_smul (a : AE D) : infPart D (eInf D • a) = infPart D a :=
     show (fstA D.host.F (eInf D • a)) ⊗ₜ[D.host.F] x = (fstA D.host.F a) ⊗ₜ[D.host.F] x
     rw [show fstA D.host.F (eInf D • a) = fstA D.host.F a from one_mul _]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Use `hσ.ext (eInf D • a) (finPart_eInf_smul a) fun τ => by rw [infPart_eInf_smul, h]` as an intermediate fact. Rewrite using `[← infPart_eInf_smul, this, map_zero]`.
+-/
 theorem infPart_eq_zero {θ : InfFam D} (hθ : IsInfFam θ) {a : AE D} (h : ∀ τ, θ τ (infPart D a) = 0) :
     infPart D a = 0 := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ
@@ -52,6 +65,17 @@ theorem infPart_eq_zero {θ : InfFam D} (hθ : IsInfFam θ) {a : AE D} (h : ∀ 
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Set `U : Submodule ℂ (WO S T → ℂ)` to `{ carrier := {g | IsThetaFunO ψ S T g} add_mem' := fun ha hb => GlobalTheory.OrientedHeis.theta_add ha hb zero_mem' := GlobalTheory.OrientedHeis.theta_zero smul_mem' := fun c _ hg => GlobalTheory.OrientedHeis.theta_smul c hg }`. Establish `h0 : F₀ 0 = 0`. Use `hlin 1 0 0 GlobalTheory.OrientedHeis.theta_zero GlobalTheory.OrientedHeis.theta_zero` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, add_zero]`. Conclude with `left_eq_add.1 this`.
+
+Set `L₀ : U →ₗ[ℂ] (WO S T → ℂ)` to `{ toFun := fun g => F₀ g map_add' := fun a b => by`. Use `hlin 1 a b a.2 b.2` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Then use the resulting hypothesis. Use the proof step `map_smul' := fun c a => by`. Use `hlin c a 0 a.2 GlobalTheory.OrientedHeis.theta_zero` as an intermediate fact.
+
+Rewrite using `[add_zero, h0, add_zero] at this }` and apply the resulting hypothesis. Take `⟨L, hL⟩` from `L₀.exists_extend`. Establish `hL' : ∀ g, IsThetaFunO ψ S T g → L g = F₀ g` using `fun g hg => LinearMap.congr_fun hL ⟨g, hg⟩`. Establish `hr : ∀ w : WO S T, (eInf D • w).map (finPart D) = 0` using `fun w => Matrix.ext fun i j => finPart_eInf_smul (w i j)`. Establish `hf : ∀ w : WO S T, (w - eInf D • w).map (infPart D) = 0` using `fun w => Matrix.ext fun i j => by show infPart D (w i j - eInf D • w i j) = 0`.
+
+Rewrite using `[RingHom.map_sub, infPart_eInf_smul, sub_self]`. Set `F : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)` to `LinearMap.pi fun w => (LinearMap.proj (eInf D • w) : (WO S T → ℂ) →ₗ[ℂ] ℂ) ∘ₗ L ∘ₗ heisL S T ψ (w - eInf D • w)`. Establish `hF : ∀ g w, F g w = L (heisO ψ S T (w - eInf D • w) g) (eInf D • w)` using `fun _ _ => rfl`. Use `⟨F, fun f h => funext fun w => ?_, fun u hu f => funext fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hL' _ (isThetaFunO_heisO hψ.1.1 hψ.1.2.1 h (hf w)), hcomm _ (hf w) f h, heisO, symplOH_real_fin (hf w) (hr w), ψ.map_zero_eq_one, one_mul, add_sub_cancel]`.
+
+Establish `e : symplOH S T w u = symplOH S T (w - eInf D • w) u` using `by conv_lhs => rw [← sub_add_cancel w (eInf D • w)]`. Rewrite using `[symplOH_add_left, symplOH_real_fin hu (hr w), add_zero]`. Rewrite using `[hF, heisO_heisO, map_smul, heisO, hF, smul_add, smul_fin hu, add_zero, e, add_sub_right_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_extension (hψ : IsStdChar D ψ (-1)) (F₀ : (WO S T → ℂ) → (WO S T → ℂ))
     (hlin : ∀ (c : ℂ) f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → F₀ (c • f + g) = c • F₀ f + F₀ g)
     (hcomm : ∀ u : WO S T, u.map (infPart D) = 0 → ∀ f, IsThetaFunO ψ S T f →
@@ -94,6 +118,17 @@ theorem exists_extension (hψ : IsStdChar D ψ (-1)) (F₀ : (WO S T → ℂ) �
     rw [hF, heisO_heisO, map_smul, heisO, hF, smul_add, smul_fin hu, add_zero, e, add_sub_right_comm]
     rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨om, J, h1, h2, -, -, -, h3⟩` from `GlobalTheory.OrientedRealForm.exists_real_form D ψ θ S T sS sT hψ hθ hS hT`. Set `z : RW T S` to `fun τ' _ _ => if τ' = τ then 1 else 0`. Establish `hz : z ≠ 0` using `fun h => by simpa [z] using congrFun (congrFun (congrFun h τ) i) j`. Establish `hz' : ∀ τ', τ' ≠ τ → z τ' = 0` using `fun τ' h => by`.
+
+Use function extensionality and compare the values at `a b`. Simplify using `[z, h]`. Establish `hp` using `h3 z hz`. Establish `key : ∀ x : RW T S, (∀ τ', τ' ≠ τ → x τ' = 0) → heisO ψ S T (iotaW σ T S x) g = g` using `fun x hx => hg _ (hσ.real_iota T S x) fun τ' h a b => (congrFun (congrFun (congrFun (hσ.pi_iota T S x) τ') a) b).trans (by rw [hx τ' h]; rfl)`. Establish `a1 : ∀ τ', τ' ≠ τ → ((om z (J z))⁻¹ • z) τ' = 0` using `fun τ' h => by rw [Pi.smul_apply, hz' τ' h, smul_zero]`.
+
+Establish `a2 : ∀ τ', τ' ≠ τ → (J z) τ' = 0` using `fun τ' h => by`. Rewrite using `[h2, hz' τ' h]`. Use `show Complex.I • (sT τ' * (0 : Matrix (Fin T.rank) (Fin S.rank) ℂ) * sS τ') = 0`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul, smul_zero]`. Establish `a3` using `key ((om z (J z))⁻¹ • z + J z) fun τ' h => by rw [Pi.add_apply, a1 τ' h, a2 τ' h, add_zero]`.
+
+Establish `e` using `heisO_heisO S T ψ (iotaW σ T S ((om z (J z))⁻¹ • z)) (iotaW σ T S (J z)) g`. Rewrite `a3` using `[map_add]`. Rewrite `e` using `[key _ a2, key _ a1, h1 _ _ (hσ.real_iota T S _), hσ.pi_iota, hσ.pi_iota, map_smul, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hp.ne', Complex.ofReal_one, mul_one, Complex.exp_neg, Complex.exp_pi_mul_I]`. Use `erw [a3] at e`. Use function extensionality and compare the values at `w`.
+
+Use `congrFun e w` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Use `show g w = 0`. Take the linear combination `(1 / 2 : ℂ) * this`.
+-/
 theorem eq_zero_of_fixed (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -128,6 +163,11 @@ theorem eq_zero_of_fixed (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
   show g w = 0
   linear_combination (1 / 2 : ℂ) * this
 
+/- English proof (translation)
+Establish `h : ∀ t, halfInd e Λ t ≠ 0 → t ∈ Λ ∧ IsHalf e t` using `fun t ht => by`. Assume the negation of the conclusion as `hn`. Conclude with `ht (if_neg hn)`. Use `⟨fun t ht => (h t ht).2, 1, one_pos, fun u hu hu' t => ?_, fun t ht => by rw [one_smul]; exact (h t ht).1⟩` and prove the remaining obligations. Rewrite using `[one_smul]`.
+
+Unfold `halfInd`. Use `if_congr (and_congr (Λ.add_mem_cancel_right hu) (forall₂_congr fun i j => ?_)) rfl rfl` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, mul_add, hu' i j, add_left_inj]`.
+-/
 theorem isSBHalf_halfInd (e : AE D) (Λ : AddSubgroup (WO S T)) : IsSBHalf e Λ (halfInd e Λ) := by
   have h : ∀ t, halfInd e Λ t ≠ 0 → t ∈ Λ ∧ IsHalf e t := fun t ht => by
     by_contra hn
@@ -138,6 +178,23 @@ theorem isSBHalf_halfInd (e : AE D) (Λ : AddSubgroup (WO S T)) : IsSBHalf e Λ 
   refine if_congr (and_congr (Λ.add_mem_cancel_right hu) (forall₂_congr fun i j => ?_)) rfl rfl
   rw [Matrix.add_apply, mul_add, hu' i j, add_left_inj]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `h1 : ∃ i j τ, θ τ (infPart D (x i j)) ≠ 0` using `by by_contra! h`. Conclude with `hx' (Matrix.ext fun i j => infPart_eq_zero hθ (h i j))`. Take `⟨i, j, τ, h1⟩` from `h1`. Establish `hc : θ τ (infPart D (cA D e)) = starRingEnd ℂ (θ τ (infPart D e))` using `comp_cA hθ τ e`.
+
+Establish `h2 : θ τ (infPart D (cA D e)) = 1`. Break down `hx with hx | hx` into its components or cases. Use `congrArg (fun a => θ τ (infPart D a)) (hx i j)` as an intermediate fact. Simplify using `only [RingHom.map_mul] at this`. Rewrite using `[hc, (mul_eq_right₀ h1).1 this, map_one]`.
+
+Use `congrArg (fun a => θ τ (infPart D a)) (hx i j)` as an intermediate fact. Simplify using `only [RingHom.map_mul] at this`. Conclude with `(mul_eq_right₀ h1).1 this`. Use `eq_zero_of_fixed hψ hθ hS hT τ i j fun y hy hy' => ?_` and prove the remaining obligations. Establish `h3 : IsHalf (cA D e) y` using `fun a b => by`.
+
+Establish `hf : finPart D (y a b) = 0` using `congrFun (congrFun hy a) b`. Rewrite using `[← sub_eq_zero]`. Use `hσ.ext _ (by rw [RingHom.map_sub, RingHom.map_mul, hf, mul_zero, sub_zero]) fun τ' => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_sub, RingHom.map_mul]`. Distinguish the cases in `h : τ' = τ`.
+
+Rewrite using `[h, h2, one_mul, sub_self]`. Rewrite using `[hy' τ' h, mul_zero, sub_zero]`. Rewrite using `[← hTm.modul Φ hΦ y h3]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Distinguish the cases in `ht : Φ t = 0`. Rewrite using `[ht, mul_zero]`. Take `⟨-, k, hk, -, h4⟩` from `hΦ`. Establish `h5 : t.map (infPart D) = 0` using `Matrix.ext fun a b => infPart_eq_zero hθ fun τ' => by`. Establish `h6 : infPart D (k • t a b) = 0` using `congrFun (congrFun (hΛ _ (h4 t ht)) a) b`.
+
+Establish `h7` using `congrArg (θ τ') h6`. Establish `h9 : θ τ' (infPart D (k • t a b)) = k • θ τ' (infPart D (t a b))` using `((θ τ').comp (infPart D)).toAddMonoidHom.map_nsmul k (t a b)`. Rewrite `h7` using `[h9, RingHom.map_zero, nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h7).resolve_left (Nat.cast_ne_zero.2 hk.ne')`. Establish `h8 : symplO S T t y = 0` using `Prod.ext (GlobalTheory.OrientedHeis.fst_symplO (Or.inl h5)) (GlobalTheory.OrientedHeis.snd_symplO (Or.inr hy))`.
+
+Rewrite using `[h8, ψ.map_zero_eq_one, one_mul]`.
+-/
 theorem placeModel_eq_zero (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -185,6 +242,15 @@ theorem placeModel_eq_zero (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     Prod.ext (GlobalTheory.OrientedHeis.fst_symplO (Or.inl h5)) (GlobalTheory.OrientedHeis.snd_symplO (Or.inr hy))
   rw [h8, ψ.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Take `⟨⟨Tm, hT⟩, hall⟩` from `h`. Establish `hT' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ c (F f₀) (F ∘ₗ Tm)` using `{ trans := fun Φ hΦ x hx => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hT.trans Φ hΦ x hx, hF x (Or.inl hx)]`. Use `modul := fun Φ hΦ y hy => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hT.modul Φ hΦ y hy, hF y (Or.inr hy)]`.
+
+Use `vac := by rw [LinearMap.comp_apply, hT.vac] }`. Use `⟨⟨_, hT'⟩, fun T₁ h₁ => ?_⟩` and prove the remaining obligations. Establish `hh : ∀ x a b d, heisO ψ S T x (a + (b - d)) = heisO ψ S T x a + (heisO ψ S T x b - heisO ψ S T x d)` using `fun x a b d => ((heisL S T ψ x).map_add _ _).trans (congrArg _ ((heisL S T ψ x).map_sub _ _))`. Establish `h₂ : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ c f₀ (Tm + (T₁ - F ∘ₗ Tm))` using `{ trans := fun Φ hΦ x hx => by`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sub_apply, hT.trans Φ hΦ x hx, h₁.trans Φ hΦ x hx, hT'.trans Φ hΦ x hx, hh]`.
+
+Use `modul := fun Φ hΦ y hy => by`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sub_apply, hT.modul Φ hΦ y hy, h₁.modul Φ hΦ y hy, hT'.modul Φ hΦ y hy, hh]`. Use `vac := by rw [LinearMap.add_apply, LinearMap.sub_apply, hT.vac, h₁.vac, hT'.vac, sub_self, add_zero] }`. Establish `e1 : f = Tm Φ` using `hall Tm hT`. Establish `e2 : f = (Tm + (T₁ - F ∘ₗ Tm)) Φ` using `hall _ h₂`.
+
+Rewrite `e2` using `[LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, ← e1]`. Conclude with `(sub_eq_zero.1 (left_eq_add.1 e2)).symm`.
+-/
 theorem isThetaAt_map {e : AE D} {Λ : AddSubgroup (WO S T)} {c : ℂ} {f₀ Φ f : WO S T → ℂ}
     (F : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ))
     (hF : ∀ x, IsHalf e x ∨ IsHalf (cA D e) x → ∀ g, F (heisO ψ S T x g) = heisO ψ S T x (F g))
@@ -213,6 +279,15 @@ theorem isThetaAt_map {e : AE D} {Λ : AddSubgroup (WO S T)} {c : ℂ} {f₀ Φ 
   rw [LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, ← e1] at e2
   exact (sub_eq_zero.1 (left_eq_add.1 e2)).symm
 
+/- English proof (translation)
+Take `⟨F, hF, hF'⟩` from `exists_extension hψ (fun g => pureTensorO ψ θ S T sS sT BS BT g P) (fun c f g hf hg => GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT c hf hg P) (fun u hu f hf => ((finite_translate D ψ θ S T hψ hθ f hf).2 u hu).2 sS BS sT BT P)`. Establish `hf` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hψ hθ h h₀`. Establish `e₀ : F f₀ = pureTensorO ψ θ S T sS sT BS BT f₀ P` using `hF f₀ h₀`. Establish `e₁ : F f = pureTensorO ψ θ S T sS sT BS BT f P` using `hF f hf`. Rewrite using `[← e₀, ← e₁]`.
+
+Distinguish the cases in `hx : ∀ x : WO S T, IsHalf e x ∨ IsHalf (cA D e) x → x.map (infPart D) = 0`. Conclude with `isThetaAt_map F (fun x h => hF' x (hx x h)) h`. Use `push_neg at hx`. Take `⟨x, hx, hx'⟩` from `hx`. Take `⟨Tm, hTm⟩` from `h.1`.
+
+Establish `a : f₀ = 0`. Rewrite using `[← hTm.vac, one_smul]`. Conclude with `placeModel_eq_zero hψ hθ hS hT hΛ hTm hx hx' (isSBHalf_halfInd e Λ)`. Establish `b : f = 0` using `(h.2 Tm hTm).trans (placeModel_eq_zero hψ hθ hS hT hΛ hTm hx hx' hΦ)`. Substitute `a b` using the available equality.
+
+Rewrite using `[map_zero]` and apply the resulting hypothesis.
+-/
 theorem isThetaAt_pureTensorO (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
@@ -241,6 +316,9 @@ theorem isThetaAt_pureTensorO (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     subst a b
     rwa [map_zero]
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ t e v f P j φ hv h => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨GlobalTheory.GalLift.Vec.theta_pureTensorO ch.W.ψ_std ch.W.θ_is _ _ _ _ hv (P j), h.1, isThetaAt_pureTensorO ch.W.ψ_std ch.W.θ_is (ch.W.cart_is (.grid D.R.m j) ⟨le_rfl, j.2.le⟩) (ch.W.cart_is (.grid D.R.m (j + 1)) ⟨le_rfl, j.2⟩) _ _ (fun _ hu => GlobalTheory.VacGood.infPart_latO …`.
+-/
 theorem main : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (e : AE D) (v f : SchDown ch.G t) (P : PolDown ch.G) (j : Fin D.R.m) (φ : WO (ch.G.pS (.mu t D.R.m j)) (ch.G.pT (.mu t D.R.m j)) → ℂ), IsThetaFunO ch.W.ψ _ _ (v j) → IsLocVec ch.W (.mu t D.R.m j) e (v j) φ (f j) → IsThetaFunO ch.W.ψ _ _ (fockD ch.W t v P j) ∧ IsLocVec ch.W (.mu t D.R.m j) e (fockD ch.W t v P j) φ (fockD ch.W t f P j) := by
   refine ⟨0, fun _ _ _ => ⟨0, fun D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ t e v f P j φ hv h => ?_⟩⟩
   exact ⟨GlobalTheory.GalLift.Vec.theta_pureTensorO ch.W.ψ_std ch.W.θ_is _ _ _ _ hv (P j), h.1,

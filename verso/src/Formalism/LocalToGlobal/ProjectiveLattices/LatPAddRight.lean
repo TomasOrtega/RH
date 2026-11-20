@@ -53,6 +53,9 @@ def lattice₂ (hN : N3Tower T) : ∀ {Z : MdlC}, Pt T Z → LatB E
 
 abbrev YlatP (hN : N3Tower T) {Z : MdlC} (y : Pt T Z) : Type := (lattice₂ hN y).Y
 
+/- English proof (translation)
+The claim follows from `| .xm, y => hb y.1 y.2.1 y.2.2 _ | .yy, y => hb y.1 y.2.1 y.2.2.1 _ | .xn n, y => hd n y.1 y.2.1 y.2.2 _`.
+-/
 theorem latticeAt_cases (hN : N3Tower T) (Q : LatB E → Prop)
     (hb : ∀ v (C : SCF p) (P : PtC (T.Y v) C) (A : DatAt (T.Y v) P), Q A.toLatB)
     (hd : ∀ n w (C : SCF p) (P : PtC (T.YN n w) C) (A : DatAt (T.YN n w) P), Q A.toLatB) :
@@ -61,16 +64,25 @@ theorem latticeAt_cases (hN : N3Tower T) (Q : LatB E → Prop)
   | .yy, y => hb y.1 y.2.1 y.2.2.1 _
   | .xn n, y => hd n y.1 y.2.1 y.2.2 _
 
+/- English proof (translation)
+The claim follows from `latticeAt_cases hN (fun L => ∀ a a' b : L.Y, L.beta (a + a') b = L.beta a b + L.beta a' b) (fun v C P A => hA.1 v C P A) (fun n w C P A => hA.2 n w C P A) y a a' b`.
+-/
 theorem latticeAt_form_add_left (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a a' b : YlatP hN y) :
     (lattice₂ hN y).beta (a + a') b = (lattice₂ hN y).beta a b + (lattice₂ hN y).beta a' b :=
   latticeAt_cases hN (fun L => ∀ a a' b : L.Y, L.beta (a + a') b = L.beta a b + L.beta a' b)
     (fun v C P A => hA.1 v C P A) (fun n w C P A => hA.2 n w C P A) y a a' b
 
+/- English proof (translation)
+The claim follows from `latticeAt_cases hN (fun L => ∀ a b : L.Y, L.beta a b = L.beta b a) (fun _ _ _ A a b => betaAt_symm _ _ _ a b) (fun _ _ _ _ A a b => betaAt_symm _ _ _ a b) y a b`.
+-/
 theorem latticeAt_form_symm (hN : N3Tower T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
     (lattice₂ hN y).beta a b = (lattice₂ hN y).beta b a :=
   latticeAt_cases hN (fun L => ∀ a b : L.Y, L.beta a b = L.beta b a)
     (fun _ _ _ A a b => betaAt_symm _ _ _ a b) (fun _ _ _ _ A a b => betaAt_symm _ _ _ a b) y a b
 
+/- English proof (translation)
+Rewrite using `[latticeAt_form_symm, latticeAt_form_add_left hN hA, latticeAt_form_symm hN y b a, latticeAt_form_symm hN y b' a]`.
+-/
 theorem latticeAt_form_add_right (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b b' : YlatP hN y) :
     (lattice₂ hN y).beta a (b + b') = (lattice₂ hN y).beta a b + (lattice₂ hN y).beta a b' := by
   rw [latticeAt_form_symm, latticeAt_form_add_left hN hA, latticeAt_form_symm hN y b a, latticeAt_form_symm hN y b' a]
@@ -82,13 +94,22 @@ def beP (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) : YlatP hN y �
       ext b
       simp [latticeAt_form_add_left hN hA y a a' b])).toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latticeForm_apply (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
     beP hN hA y a b = (lattice₂ hN y).beta a b := rfl
 
+/- English proof (translation)
+The claim follows from `latticeAt_form_symm hN y a b`.
+-/
 theorem latticeForm_symm (hN : N3Tower T) (hA : AddTow T) {Z : MdlC} (y : Pt T Z) (a b : YlatP hN y) :
     beP hN hA y a b = beP hN hA y b a :=
   latticeAt_form_symm hN y a b
 
+/- English proof (translation)
+Conclude with `latticeAt_cases hN (fun L => ∀ (x x' : 𝓞 E), (x' : E) = cj (x : E) → ∀ a b : L.Y, L.beta (x • a) b = L.beta a (x' • b)) (fun v C P A => hB.1 v C P A) (fun n w C P A => hB.2 n w C P A) y x x' hx a b`.
+-/
 theorem latticeForm_smul_left_eq_conj_smul_right (hN : N3Tower T) (hA : AddTow T) {cj : E → E} (hB : BalTow T cj) {Z : MdlC} (y : Pt T Z)
     (x x' : 𝓞 E) (hx : (x' : E) = cj (x : E)) (a b : YlatP hN y) :
     beP hN hA y (x • a) b = beP hN hA y a (x' • b) := by
@@ -96,6 +117,9 @@ theorem latticeForm_smul_left_eq_conj_smul_right (hN : N3Tower T) (hA : AddTow T
     (fun L => ∀ (x x' : 𝓞 E), (x' : E) = cj (x : E) → ∀ a b : L.Y, L.beta (x • a) b = L.beta a (x' • b))
     (fun v C P A => hB.1 v C P A) (fun n w C P A => hB.2 n w C P A) y x x' hx a b
 
+/- English proof (translation)
+Conclude with `latticeAt_cases hN (fun L => ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ L.Y), ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * L.beta (b i) (b k)) (fun v C P A => hP.1 v C P A) (fun n w C P A => hP.2 n w C P A) y`.
+-/
 theorem latticeForm_posDef (hN : N3Tower T) (hA : AddTow T) (hP : PosDefTow T) {Z : MdlC} (y : Pt T Z) :
     ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ (YlatP hN y)),
       ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * beP hN hA y (b i) (b k) := by
@@ -104,6 +128,9 @@ theorem latticeForm_posDef (hN : N3Tower T) (hA : AddTow T) (hP : PosDefTow T) {
       ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * L.beta (b i) (b k))
     (fun v C P A => hP.1 v C P A) (fun n w C P A => hP.2 n w C P A) y
 
+/- English proof (translation)
+Conclude with `latticeAt_cases hN (fun L => ∃ ρ : ℕ, Module.finrank ℤ L.Y = 2 * (Module.finrank ℚ E / 2) * ρ ∧ (1 ≤ j → j + 1 ≤ r → ρ ≤ j ∧ ρ + j ≤ r)) (fun v C P A => hR.1 v C P A) (fun n w C P A => hR.2 n w C P A) y`.
+-/
 theorem exists_finrank_lattice_eq_mul (hN : N3Tower T) {r j : ℕ} (hR : RankTow T r j) {Z : MdlC} (y : Pt T Z) :
     ∃ ρ : ℕ, Module.finrank ℤ (YlatP hN y) = 2 * (Module.finrank ℚ E / 2) * ρ ∧
       (1 ≤ j → j + 1 ≤ r → ρ ≤ j ∧ ρ + j ≤ r) := by

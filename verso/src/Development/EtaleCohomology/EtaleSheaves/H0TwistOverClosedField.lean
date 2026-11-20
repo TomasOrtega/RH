@@ -94,6 +94,11 @@ def LeafGhost : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], 
   ∀ (n : ℤ) (a : Ht q (sch.obj Y0) n i), pl q i (pullback.fst p ι) n a = 0 →
     ∃ b : Ht q (sch.obj B) n i, pl q i (g2 ≫ g1 ≫ p) n b = pl q i (g2 ≫ g1) n a
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.finite_iff_finite_ker_range r]`. Use `⟨?_, inferInstance⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.finite_iff_finite_ker_range (φ.comp r.ker.subtype)]`. Prove the components needed by the constructor for the conclusion. Conclude with `Finite.of_injective (fun x : (φ.comp r.ker.subtype).ker => (⟨x.1.1, x.2⟩ : φ.ker)) (fun x y hxy => Subtype.ext (Subtype.ext (congrArg (fun z : φ.ker => z.1) hxy)))`.
+
+Establish `: (Set.range ψ).Finite` using `Set.finite_range _`. Use `Set.Finite.subset this ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `h a.1 a.2`.
+-/
 theorem fin_of {A C D E : Type*} [AddCommGroup A] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] (φ : A →+ C)
     (r : A →+ D) (ψ : E →+ C) [Finite D] [Finite E] (hk : Finite φ.ker) (h : ∀ a, r a = 0 → ∃ b, ψ b = φ a) : Finite A := by
   rw [AddMonoidHom.finite_iff_finite_ker_range r]
@@ -107,10 +112,34 @@ theorem fin_of {A C D E : Type*} [AddCommGroup A] [AddCommGroup C] [AddCommGroup
     rintro _ ⟨a, rfl⟩
     exact h a.1 a.2
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, ← Functor.map_comp]`.
+-/
 theorem pl_comp (q : ℕ) (i : ℤ) {Z Y X : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (m : ℤ) (x : Ht q (sch.obj X) m i) :
     pl q i (g ≫ f) m x = pl q i g m (pl q i f m x) := by
   rw [← pull_comp, ← Functor.map_comp]
 
+/- English proof (translation)
+Introduce `a1 a2 a3 a4 a5 a7 a8 a9 a10 a11 b1 b2 b3 b4 b5 b7 c1 c2 c3 c4 c5 d1 d2 d3 e1 e2 e3`. Establish `hy : Hyps` using `⟨a1, a2, a3, a4, a5, a7, a8, a9, a10, a11, b1, b2, b3, b4, b5, b7, c1, c2, c3, c4, c5, d1, d2, d3, e1, e2, e3⟩`. Introduce `q _ k _ _ hq X p _ n i`. Establish `step : ∀ n : ℤ, (∀ (X : Scheme.{0}) (p : X ⟶ Sp k), IsProper p → ∀ m < n, Finite (Ht q (sch.obj X) m i)) → ∀ (e : WithBot ℕ∞) (X : Scheme.{0}) (p : X ⟶ Sp k), IsProper p → topologicalKrullDim X ≤ e → Finite (Ht q (sch.obj X) n i)`. Introduce `n Q`.
+
+Establish `ker : ∀ (X Y : Scheme.{0}) (p : X ⟶ Sp k) (f : Y ⟶ X), IsProper p → IsProper f → Surjective f → Finite (pl q i f n).ker` using `fun X Y p f _ _ _ => hSS hy _ _ f n (hDesc hy q k hq p f i) (fun Z g _ => Q Z (g ≫ p) inferInstance)`. Introduce `e`. Proceed by induction on `e using WellFoundedLT.induction with`. Consider the case `ind e IH`. Establish `int : ∀ (X : Scheme.{0}) (p : X ⟶ Sp k), IsProper p → IsIntegral X → topologicalKrullDim X ≤ e → Finite (Ht q (sch.obj X) n i)`.
+
+Introduce `X p _ _ he`. Break down `le_or_gt (topologicalKrullDim X) 0 with h0 | h0` into its components or cases. Conclude with `hPt hy q k hq p h0 n i`. Take `⟨Ω, _, _, _, C0, c0, hc0, hall⟩` from `hGeo k p h0`. Establish `hΩ : IsUnit (q : Ω)` using `by simpa using hq.map (algebraMap k Ω)`.
+
+Establish `hc : ∀ {C : Scheme.{0}} (c : C ⟶ Sp Ω), IsCurve c → _` using `fun c => hCurve hy q Ω hΩ i (fun B _ _ _ _ => hKum hy q Ω B hΩ (hU q Ω B) (hPic hy q Ω B hΩ) i) c`. Take `⟨C1, γ1, hc1, s1, z1⟩` from `hKill hy q Ω hΩ c0 hc0 2 i (by norm_num) (hc c0 hc0).2.1`. Take `⟨C2, γ2, hc2, s2, z2⟩` from `hKill hy q Ω hΩ (γ1 ≫ c0) hc1 1 i (by norm_num) (hc _ hc1).1`. Take `⟨B, W, Y0, Y1, Y2, b, ι, V, π, g1, g2, h, s, u0, u1, u2, _, _, _, hV, hs, m0, m1, m2, f1, f2, dB, dW, P0, P1, P2, w1, w2⟩` from `hall C1 C2 γ1 γ2 hc1 hc2 s1 s2`. Use `m0.1` as an intermediate fact.
+
+Use `hc2.1` as an intermediate fact. Establish `fB` using `IH _ (dB.trans_le he) B b inferInstance le_rfl`. Establish `fW` using `IH _ (dW.trans_le he) (pullback π ι) (pullback.fst π ι ≫ π ≫ b) inferInstance le_rfl`. Establish `G` using `hGhost hy q k hq i b ι V hV π g1 g2 m0.1 m1.1 m2.1 (fun A _ t hA ht => by`. Establish `S1` using `hSpec hy q k hq i b V π g1 m0 m1 Ω s hs c0 γ1 u0 u1 P0 P1 w1 A t hA ht`.
+
+Establish `S2` using `hSpec hy q k hq i b V (g1 ≫ π) g2 m1 m2 Ω s hs (γ1 ≫ c0) γ2 u1 u2 P1 P2 w2 A t hA ht`. Conclude with `⟨fun m hm => S1.1 m ((hc c0 hc0).2.2 m hm), S1.2.1 2 z1, S2.2.1 1 z2, S2.2.2 ((hH0 hy q Ω hΩ i).2 _)⟩) n`. Use `fin_of (pl q i (g2 ≫ g1 ≫ h) n) (pl q i (pullback.fst π ι ≫ h) n) (pl q i (g2 ≫ g1 ≫ π) n) (ker X Y2 p _ inferInstance f1 f2) (fun a ha => ?_)` and prove the remaining obligations. Rewrite `ha` using `[pl_comp]`. Take `⟨x, hx⟩` from `G _ ha`.
+
+Conclude with `⟨x, by rw [hx, ← pl_comp, Category.assoc]⟩`. Introduce `X p _ he`. Take `⟨Y, f, f1, f2, f3⟩` from `hComp hy q k p n i (fun Z ι _ _ => int Z (ι ≫ p) inferInstance inferInstance (ι.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans he))`. Use `ker X Y p f inferInstance f1 f2` as an intermediate fact. Rewrite using `[AddMonoidHom.finite_iff_finite_ker_range (pl q i f n)]`.
+
+Conclude with `⟨this, inferInstance⟩`. Establish `all : ∀ (N : ℕ) (X : Scheme.{0}) (p : X ⟶ Sp k), IsProper p → ∀ m < (N : ℤ), Finite (Ht q (sch.obj X) m i)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Introduce `X p _ m hm`. Use `(a9 (ZMod q) (tw q i)).1 (sch.obj X) m (by simpa using hm)` as an intermediate fact. Conclude with `Finite.of_subsingleton`. Consider the case `succ N IH`. Introduce `X p hp m hm`.
+
+Break down `lt_or_eq_of_le (show m ≤ N by omega) with h | h` into its components or cases. Conclude with `IH X p hp m h`. Substitute `h` using the available equality. Conclude with `step _ IH _ X p hp le_rfl`. Conclude with `all (n.toNat + 1) X p inferInstance n (by omega)`.
+-/
 theorem goal_of (hH0 : H0TwistOverClosedField) (hPt : LeafPt) (hComp : LeafComp) (hDesc : LeafDesc) (hSS : LeafSS) (hU : LeafUnits)
     (hPic : LeafPic) (hKum : LeafKum) (hCurve : LeafCurve) (hKill : LeafKill) (hGeo : LeafGeo) (hSpec : LeafSpec)
     (hGhost : LeafGhost) : LateralTheory.E.EtaleChapterEFour := by

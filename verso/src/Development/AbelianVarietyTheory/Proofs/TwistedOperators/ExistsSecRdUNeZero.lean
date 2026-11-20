@@ -25,6 +25,21 @@ open scoped ComplexConjugate Classical
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {H : Host E} {Dw : Datum H}
   {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Establish `hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2` using `GlobalTheory.chartIndependence_unconditional`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Take `⟨W⟩` from `nonempty_uw hU`. Take `⟨-, hL, hmk, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU hr1 W k`. Establish `hw : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`.
+
+Establish `hw'` using `ThRead.cmHost_idempotent_trace_eq_one H`. Establish `hD : Dom (0 : (E →+* ℂ) × ℕ → ℕ) n` using `⟨fun _ => antitone_const, hn⟩`. Take `⟨Dc, he, -⟩` from `exists_dic E H Dw l c σ r W.g n (U.X k) 0 W.e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 hL hD`. Establish `hs` using `Dc.sympl`. Take `⟨v, hv⟩` from `(GlobalTheory.SW.TensVac.vacua E r (U.X k) W.g Dc.bas Dc.idx n hs hn _ hw hw' _ hL 1 _ (GlobalTheory.SW.Base.stdL_mem_Vset n 1)).1`.
+
+Take `⟨A, hA, ϑ, hϑ, hmean⟩` from `uw_anFib E H Dw l Xo c σ r U hσ hU hr1 W k Dc.bas Dc.idx hs (he ▸ Dc.per_eq) (he ▸ Dc.ty_eq) x hux`. Establish `hT` using `isTheta1_of_reads_generator E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 _ _ A hs x.2 hL ϑ hϑ`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA E r (U.X k) W.g Dc.bas Dc.idx n hs hn _ hw hw' _ hL v hv x.1 x.2 ϑ hT`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨Y, hY⟩` from `(DualMark.dual_marking E H Dw l r (U.X k) _ (W.mark k) _ hL hmk (Complex.isPrimitiveRoot_exp l.M hM.ne')).2.2.2.2 n l.M hM`.
+
+Take `⟨q, hq⟩` from `exists_root_ne_zero hs hL x.2 hmk hY hT (ne_zero_of_meanOne hmean)`. Take `⟨_, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond E H Dw l Xo c`. Establish `hLaw : Laws` using `GlobalTheory.allSixLaws.1`. Establish `hP` using `one_mem_harmA (Dw := Dw) c n`. Take `⟨f, hf⟩` from `(existsUnique_thRule Xo c nab (GlobalTheory.thValTot_of_chartIndep hLaw hC E H Dw l Xo c nab hnab) (fun b => levRep (q b)) hP).exists`.
+
+Use `⟨f, GlobalTheory.thetaRule_mem_sec hLaw hC E H Dw l Xo c nab hnab 0 n f ⟨_, _, hP, hf⟩, ?_⟩` and prove the remaining obligations. Establish `hval` using `thVal_eq_thP hC E H Dw l Xo c r W.g (U.X k) Dc.bas Dc.idx W.e x.1 _ _ A hs x.2 hL Dw.p n Dc.hr Dc.eL hU.1 hn (he ▸ Dc.dir_eq) nab hnab ϑ v _ hϑ hv hκ (W.mark k) hmk hA (fun b => levRep (q b)) (Y q) (fun b => by`. Take `⟨⟨a', ha', hq, hy⟩, hj⟩` from `hY q b`. Conclude with `⟨⟨a', ha', (Submodule.Quotient.eq _).1 (hq.trans (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q b))).symm), hy⟩, hj⟩) 0 1 hP _`. Use the proof step `(ThRead.thValAt_evR hC Xo c nab hnab _ hP hf ℂ (unC U k x))`.
+
+Establish `h2` using `(fock_laws E r _ _ Dc.bas Dc.idx n hs hn x.1 x.2 1 ϑ).2.2.2.2 (fun _ => ϑ) _ v hv.1 hκ (Y q) 0`. Establish `h3 : κ * thA (U.X k) Dc.bas Dc.idx (heisG (U.X k) Dc.bas (Y q) v) x.1 0 ≠ 0`. Use `h2 ▸ Finset.prod_ne_zero_iff.2 fun b _ => ?_` and prove the remaining obligations. Rewrite using `[fock, Pi.zero_apply, zero_add, zero_add]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (hq b)`.
+
+Rewrite `hval` using `[map_one, map_one, thP, polyDeriv_one]`. Conclude with `fun h0 => h3 (hval.symm.trans ((dif_pos x.2).symm.trans h0))`.
+-/
 theorem exists_sec_rdU_ne_zero (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U)
     (hr1 : 1 ≤ r) (k : U.Comp) (n : ℕ) (hn : Even n) (x : (U.X k).dom) (hux : IsUnitFr (U.X k) x.1) :
     ∃ f ∈ sec Xo c 0 n, Formalism.L2.PjFree.rdU U f k x.1 ≠ 0 := by
@@ -94,10 +109,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[map_mul, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem finHom_mulVec_mul (V : HSp D) (κ κ' : GA D V) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom V (κ * κ')).1 *ᵥ z = (finHom V κ).1 *ᵥ ((finHom V κ').1 *ᵥ z) := by
   rw [map_mul, Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem finHom_mulVec_one (V : HSp D) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom V 1).1 *ᵥ z = z := by
   rw [map_one, Units.val_one, Matrix.one_mulVec]

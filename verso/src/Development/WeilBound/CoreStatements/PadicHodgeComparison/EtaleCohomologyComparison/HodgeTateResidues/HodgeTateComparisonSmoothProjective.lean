@@ -14,8 +14,14 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace CrystallineSemistableComparison.HT
 
+/- English proof (translation)
+The claim follows from `ht_of lvEx kFin dlog_class_exists_unique kTop h`.
+-/
 theorem hodgeTate_of_etale_side (h : EtSideS) : HodgeTateMapExists := ht_of lvEx kFin dlog_class_exists_unique kTop h
 
+/- English proof (translation)
+The claim follows from `hodgeTate_of_etale_side fun l _ K _ => (etSide (zIn formalIn h4 h8) l K).1`.
+-/
 theorem hodgeTate_comparison_smooth_projective (h4 : GlobalTheory.EtC.E4) (h8 : GlobalTheory.EtC.E8) : HodgeTateMapExists :=
   hodgeTate_of_etale_side fun l _ K _ => (etSide (zIn formalIn h4 h8) l K).1
 

@@ -10,6 +10,29 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
+/- English proof (translation)
+Take `⟨t, ht0, ht⟩` from `hβ`. Set `vec : X × X → Fin (m + 1) → ℤ` to `fun p => Fin.snoc (α := fun _ => ℤ) (fun i => γ i p.1 p.2) (-(β p.1 p.2))`. Take `⟨r, v, hreal, -⟩` from `GlobalTheory.MinkWeylReal.cone_orthant_fg (m + 1) ∅ (Set.range vec) Set.finite_empty`. Set `T : Fin (m + 1) → ℝ` to `Fin.snoc (α := fun _ => ℝ) t 1`. Establish `hpt : ∀ y z : X, (β y z : ℝ) = ∑ i, t i * (γ i y z : ℝ)`.
+
+Introduce `y z`. Establish `h` using `LinearMap.congr_fun (LinearMap.congr_fun ht y) z`. Simplify `h` using `[toReal, LinearMap.sum_apply]`. Establish `hT : (∀ i, 0 ≤ T i) ∧ (∀ a ∈ (∅ : Set (Fin (m + 1) → ℤ)), ∑ i, (a i : ℝ) * T i ≤ 0) ∧ (∀ b ∈ Set.range vec, ∑ i, (b i : ℝ) * T i = 0)`. Use `⟨fun i => ?_, fun a ha => absurd ha (Set.notMem_empty a), ?_⟩` and prove the remaining obligations.
+
+Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[T]`. Simplify `ht0 j` using `[T]`. Introduce and unpack `_ ⟨⟨y, z⟩, rfl⟩`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `only [vec, T, Fin.snoc_castSucc, Fin.snoc_last]`. Establish `h2 : ∑ x, ((γ x y z : ℤ) : ℝ) * t x = ∑ i, t i * (γ i y z : ℝ)` using `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h3` using `hpt y z`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨c, hc0, hTc⟩` from `(hreal T).1 hT`. Establish `hlast : (1 : ℝ) = ∑ k, c k * (v k (Fin.last m) : ℝ)`. Establish `h` using `congrFun hTc (Fin.last m)`. Simplify `h` using `[T, Finset.sum_apply]`. Establish `hex : ∃ k, 0 < v k (Fin.last m)`.
+
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `: ∑ k, c k * (v k (Fin.last m) : ℝ) = 0` using `Finset.sum_eq_zero fun k _ => by`. Establish `: v k (Fin.last m) = 0` using `Nat.le_zero.1 (hno k)`. Simplify using `[this]`.
+
+Rewrite `hlast` using `[this]`. Conclude with `one_ne_zero hlast`. Take `⟨k, hk⟩` from `hex`. Establish `hv` using `(hreal (fun i => (v k i : ℝ))).2 ⟨Pi.single k 1, fun j => by`. Distinguish the cases in `h : j = k`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h], by`. Rewrite using `[Finset.sum_eq_single k (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp)]`. Use the proof step `simp⟩`.
+
+Use `⟨v k (Fin.last m), fun i => v k i.castSucc, hk, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Establish `h` using `hv.2.2 (vec (y, z)) ⟨(y, z), rfl⟩`. Rewrite `h` using `[Fin.sum_univ_castSucc]`. Simplify using `only [vec, Fin.snoc_castSucc, Fin.snoc_last] at h`.
+
+Establish `h' : ∑ i, γ i y z * (v k i.castSucc : ℤ) + -(β y z) * (v k (Fin.last m) : ℤ) = 0`. Conclude with `h` after adjusting the coercions. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul]`. Use `push_cast`. Establish `h2 : ∑ i, (v k i.castSucc : ℤ) * γ i y z = ∑ i, γ i y z * (v k i.castSucc : ℤ)` using `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+
+Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_nat_comb_of_toReal_mem_rcone (X : Type) [AddCommGroup X] (m : ℕ)
     (γ : Fin m → LinearMap.BilinForm ℤ X) (β : LinearMap.BilinForm ℤ X) (hβ : toReal β ∈ rcone γ) :
     ∃ (k : ℕ) (c : Fin m → ℕ), 0 < k ∧ k • β = ∑ i, c i • γ i := by

@@ -10,19 +10,37 @@ section Split
 
 variable (K : Type) [Field K] [NumberField K] (p : ℕ)
 
+/- English proof (translation)
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+-/
 theorem pI_ne_bot (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ) ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]
   exact_mod_cast hp.ne_zero
 
+/- English proof (translation)
+The claim follows from `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`.
+-/
 theorem pI_max (hp : p.Prime) : (span {(p : ℤ)} : Ideal ℤ).IsMaximal :=
   PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (span {(p : ℤ)} : Ideal ℤ) = I.under ℤ` using `hI.over`. Rewrite `h1` using `[h, Ideal.under, Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 K)).injective_int]`. Conclude with `pI_ne_bot p hp h1`.
+-/
 theorem liesOver_ne_bot (hp : p.Prime) (I : Ideal (𝓞 K)) (hI : I.LiesOver (span {(p : ℤ)})) : I ≠ ⊥ := by
   intro h
   have h1 : (span {(p : ℤ)} : Ideal ℤ) = I.under ℤ := hI.over
   rw [h, Ideal.under, Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 K)).injective_int] at h1
   exact pI_ne_bot p hp h1
 
+/- English proof (translation)
+Use `haveI := pI_max p hp`. Use extensionality with `P`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Ideal.primesOver]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hle : (span {(p : ℤ)} : Ideal ℤ) ≤ v.asIdeal.under ℤ`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 K) (p : ℤ) ∈ v.asIdeal`. Simplify using `using hv`.
+
+Conclude with `(pI_max p hp).eq_of_le (v.isPrime.comap (algebraMap ℤ (𝓞 K))).ne_top hle`. Introduce and unpack `⟨hPp, hPl⟩`. Use `⟨⟨P, hPp, liesOver_ne_bot K p hp P hPl⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : (p : ℤ) ∈ P.under ℤ`. Rewrite using `[← hPl.over]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using h1`.
+-/
 theorem img_places (hp : p.Prime) :
     (fun v : HeightOneSpectrum (𝓞 K) => v.asIdeal) '' {v | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal} =
       (span {(p : ℤ)}).primesOver (𝓞 K) := by
@@ -44,6 +62,9 @@ theorem img_places (hp : p.Prime) :
       exact Ideal.mem_span_singleton_self _
     simpa using h1
 
+/- English proof (translation)
+Use `haveI := pI_max p hp`. Rewrite using `[← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset (pI_ne_bot p hp), ← img_places K p hp, Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h)]`.
+-/
 theorem ncard_places (hp : p.Prime) :
     ({v : HeightOneSpectrum (𝓞 K) | ((p : ℕ) : 𝓞 K) ∈ v.asIdeal}).ncard =
       (IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K)).card := by
@@ -51,10 +72,18 @@ theorem ncard_places (hp : p.Prime) :
   rw [← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset (pI_ne_bot p hp), ← img_places K p hp,
     Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h)]
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_span, Set.image_singleton, Ne, Ideal.span_singleton_eq_bot, map_natCast]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+-/
 theorem map_pI_ne_bot (hp : p.Prime) : map (algebraMap ℤ (𝓞 K)) (span {(p : ℤ)}) ≠ ⊥ := by
   rw [Ideal.map_span, Set.image_singleton, Ne, Ideal.span_singleton_eq_bot, map_natCast]
   exact_mod_cast hp.ne_zero
 
+/- English proof (translation)
+Use `haveI := pI_max p hp`. Take `⟨hPp, hPl⟩` from `(IsDedekindDomain.mem_primesOverFinset_iff (pI_ne_bot p hp) (𝓞 K)).mp hP`. Establish `he : 0 < (span {(p : ℤ)}).ramificationIdx' P`. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx _ _ (pI_ne_bot p hp)]`. Conclude with `Ideal.ramificationIdx_pos P ℤ`.
+
+Establish `hf : 0 < (span {(p : ℤ)}).inertiaDeg' P` using `Ideal.inertiaDeg'_pos _ _`. Conclude with `Nat.mul_pos he hf`.
+-/
 theorem ef_pos (hp : p.Prime) (P : Ideal (𝓞 K)) (hP : P ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K)) :
     1 ≤ (span {(p : ℤ)}).ramificationIdx' P * (span {(p : ℤ)}).inertiaDeg' P := by
   haveI := pI_max p hp
@@ -65,12 +94,18 @@ theorem ef_pos (hp : p.Prime) (P : Ideal (𝓞 K)) (hP : P ∈ IsDedekindDomain.
   have hf : 0 < (span {(p : ℤ)}).inertiaDeg' P := Ideal.inertiaDeg'_pos _ _
   exact Nat.mul_pos he hf
 
+/- English proof (translation)
+Use `haveI := pI_max p hp`. Conclude with `Ideal.sum_ramification_inertia (𝓞 K) ℚ K (pI_ne_bot p hp)`.
+-/
 theorem sum_ef (hp : p.Prime) :
     ∑ P ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K),
       (span {(p : ℤ)}).ramificationIdx' P * (span {(p : ℤ)}).inertiaDeg' P = Module.finrank ℚ K := by
   haveI := pI_max p hp
   exact Ideal.sum_ramification_inertia (𝓞 K) ℚ K (pI_ne_bot p hp)
 
+/- English proof (translation)
+Introduce `P hP`. Establish `h1 : ∑ _Q ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K), 1 = ∑ Q ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K), (span {(p : ℤ)}).ramificationIdx' Q * (span {(p : ℤ)}).inertiaDeg' Q`. Rewrite using `[sum_ef K p hp, ← h, Finset.sum_const, smul_eq_mul, mul_one]`. Conclude with `((Finset.sum_eq_sum_iff_of_le (fun Q hQ => ef_pos K p hp Q hQ)).mp h1 P hP).symm`.
+-/
 theorem ef_one_of_card (hp : p.Prime)
     (h : (IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K)).card = Module.finrank ℚ K) :
     ∀ P ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K),
@@ -82,6 +117,9 @@ theorem ef_one_of_card (hp : p.Prime)
     rw [sum_ef K p hp, ← h, Finset.sum_const, smul_eq_mul, mul_one]
   exact ((Finset.sum_eq_sum_iff_of_le (fun Q hQ => ef_pos K p hp Q hQ)).mp h1 P hP).symm
 
+/- English proof (translation)
+Rewrite using `[← sum_ef K p hp, Finset.sum_congr rfl h, Finset.sum_const, smul_eq_mul, mul_one]`.
+-/
 theorem card_of_ef_one (hp : p.Prime)
     (h : ∀ P ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K),
       (span {(p : ℤ)}).ramificationIdx' P * (span {(p : ℤ)}).inertiaDeg' P = 1) :
@@ -90,6 +128,19 @@ theorem card_of_ef_one (hp : p.Prime)
 
 variable (L : Type) [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Introduce `P hP`. Use `haveI := pI_max p hp`. Take `⟨hPp, hPl⟩` from `(IsDedekindDomain.mem_primesOverFinset_iff (pI_ne_bot p hp) (𝓞 K)).mp hP`. Establish `hPne : P ≠ ⊥` using `liesOver_ne_bot K p hp P hPl`. Use `haveI : P.IsMaximal := hPp.isMaximal hPne`.
+
+Take `⟨Q, hQm, hQl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) P`. Use `haveI := hQl`. Use `haveI hQp : Q.LiesOver (span {(p : ℤ)}) := Ideal.LiesOver.trans Q P _`. Establish `hQ : Q ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 L)` using `(IsDedekindDomain.mem_primesOverFinset_iff (pI_ne_bot p hp) (𝓞 L)).mpr ⟨hQm.isPrime, hQp⟩`. Establish `h1` using `hL Q hQ`.
+
+Establish `hmapP : Ideal.map (algebraMap (𝓞 K) (𝓞 L)) P ≠ ⊥`. Introduce `h`. Apply `hPne` to reduce the goal to its premises. Establish `h2 : P ≤ (Ideal.map (algebraMap (𝓞 K) (𝓞 L)) P).comap (algebraMap (𝓞 K) (𝓞 L))` using `Ideal.le_comap_map`. Rewrite `h2` using `[h, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 K) (𝓞 L))]`.
+
+Conclude with `le_bot_iff.mp h2`. Establish `hle : Ideal.map (algebraMap (𝓞 K) (𝓞 L)) P ≤ Q`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Conclude with `le_of_eq hQl.over`. Establish `he` using `Ideal.ramificationIdx'_algebra_tower (p := span {(p : ℤ)}) (P := P) (Q := Q) hmapP (map_pI_ne_bot L p hp) hle`.
+
+Establish `hf` using `Ideal.inertiaDeg'_algebra_tower (span {(p : ℤ)}) P Q`. Rewrite `h1` using `[he, hf]`. Establish `h3 : ((span {(p : ℤ)}).ramificationIdx' P * (span {(p : ℤ)}).inertiaDeg' P) * (P.ramificationIdx' Q * P.inertiaDeg' Q) = 1`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `Nat.eq_one_of_mul_eq_one_right h3`.
+-/
 theorem ef_one_sub (hp : p.Prime)
     (hL : ∀ Q ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 L),
       (span {(p : ℤ)}).ramificationIdx' Q * (span {(p : ℤ)}).inertiaDeg' Q = 1) :
@@ -126,6 +177,15 @@ theorem ef_one_sub (hp : p.Prime)
     ring
   exact Nat.eq_one_of_mul_eq_one_right h3
 
+/- English proof (translation)
+Use `haveI := pI_max p hp`. Establish `hL : (IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 L)).card = Module.finrank ℚ L`. Rewrite using `[← ncard_places L p hp]`. Conclude with `h`. Establish `hefK` using `ef_one_sub K p L hp (ef_one_of_card L p hp hL)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← card_of_ef_one K p hp hefK, ← ncard_places K p hp]`. Conclude with `Nat.card_coe_set_eq _`. Introduce `v hv`. Establish `hmem : v.asIdeal ∈ IsDedekindDomain.primesOverFinset (span {(p : ℤ)}) (𝓞 K)`.
+
+Rewrite using `[← Finset.mem_coe, IsDedekindDomain.coe_primesOverFinset (pI_ne_bot p hp), ← img_places K p hp]`. Conclude with `⟨v, hv, rfl⟩`. Take `⟨hPp, hPl⟩` from `(IsDedekindDomain.mem_primesOverFinset_iff (pI_ne_bot p hp) (𝓞 K)).mp hmem`. Establish `hf1 : (span {(p : ℤ)}).inertiaDeg' v.asIdeal = 1` using `Nat.eq_one_of_mul_eq_one_left (hefK _ hmem)`. Establish `hn` using `Ideal.absNorm_eq_pow_inertiaDeg' (R := 𝓞 K) (p := p) v.asIdeal hp`.
+
+Rewrite `hn` using `[hf1, pow_one]`. Rewrite using `[← hn, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem splits_sub (hp : p.Prime)
     (h : ({w : HeightOneSpectrum (𝓞 L) | ((p : ℕ) : 𝓞 L) ∈ w.asIdeal}).ncard = Module.finrank ℚ L) :
     Nat.card {v : HeightOneSpectrum (𝓞 K) // ((p : ℕ) : 𝓞 K) ∈ v.asIdeal} = Module.finrank ℚ K ∧

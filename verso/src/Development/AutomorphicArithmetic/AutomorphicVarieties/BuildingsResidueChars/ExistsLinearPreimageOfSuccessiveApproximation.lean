@@ -1,5 +1,30 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `A M ι _ _ _ _ I _ V σ hV hI hsep hstep j f hf`. Set `a' : ℕ → M → ι → A` to `fun k g => if h : g ∈ V k then (hstep k g h).choose else 0`. Establish `ha' : ∀ k g, g ∈ V k → (∀ i, a' k g i ∈ I ^ k) ∧ g - σ (a' k g) ∈ V (k + 1)`. Introduce `k g h`. Simplify using `only [a', dif_pos h]`.
+
+Conclude with `(hstep k g h).choose_spec`. Set `r : ℕ → M` to `fun n => Nat.rec f (fun n g => g - σ (a' (j + n) g)) n`. Establish `hrs : ∀ n, r (n + 1) = r n - σ (a' (j + n) (r n))` using `fun n => rfl`. Establish `hr : ∀ n, r n ∈ V (j + n)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact hf`. Consider the case `succ n ih`. Rewrite using `[hrs, ← add_assoc]`. Conclude with `(ha' _ _ ih).2`.
+
+Set `b : ℕ → ι → A` to `fun n => a' (j + n) (r n)`. Establish `hb : ∀ n i, b n i ∈ I ^ (j + n)` using `fun n => (ha' _ _ (hr n)).1`. Establish `hrsum : ∀ N, r N = f - σ (∑ n ∈ Finset.range N, b n)`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => simp [r]`. Consider the case `succ N ih => show r N - σ (b N) = f - σ (∑ n ∈ Finset.range (N + 1), b n)`. Rewrite using `[ih, Finset.sum_range_succ, map_add]`. Normalize the expressions using the abelian group laws. Establish `hlim : ∀ i, ∃ L : A, ∀ n, (∑ k ∈ Finset.range n, b k i) ≡ L [SMOD (I ^ n • ⊤ : Submodule A A)]`.
+
+Introduce `i`. Use `IsPrecomplete.prec (inferInstance : IsPrecomplete I A) ?_` and prove the remaining obligations. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, ← neg_sub, Submodule.neg_mem_iff, ← Finset.sum_Ico_eq_sub _ hmn]`. Use `Submodule.sum_mem _ (fun k hk => ?_)` and prove the remaining obligations.
+
+Establish `hmk : m ≤ j + k`. Use `(Finset.mem_Ico.mp hk).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `using Submodule.smul_mem_smul (Ideal.pow_le_pow_right hmk (hb k i)) (Submodule.mem_top : (1 : A) ∈ (⊤ : Submodule A A))`. Use `choose L hL using hlim`.
+
+Use `⟨L, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `SModEq.sub_mem.mp (hL i j)`. Establish `h2 : (∑ k ∈ Finset.range j, b k i) ∈ I ^ j` using `Submodule.sum_mem _ (fun k _ => Ideal.pow_le_pow_right (by omega) (hb k i))`. Establish `h1' : (∑ k ∈ Finset.range j, b k i) - L i ∈ I ^ j`. Simplify `h1` using `[smul_eq_mul, Ideal.mul_top]`.
+
+Simplify using `using Submodule.sub_mem _ h2 h1'`. Establish `h0 : f - σ L = 0`. Apply `hsep` to reduce the goal to its premises. Introduce `N`. Establish `hv : ∀ i, ((∑ n ∈ Finset.range N, b n) - L) i ∈ I ^ N`.
+
+Introduce `i`. Use `SModEq.sub_mem.mp (hL i N)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, smul_eq_mul, Ideal.mul_top]`. Establish `hσ : σ ((∑ n ∈ Finset.range N, b n) - L) ∈ (I ^ N • ⊤ : Submodule A M)` using `by set v := (∑ n ∈ Finset.range N, b n) - L`. Rewrite using `[pi_eq_sum_univ v, map_sum]`.
+
+Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (hv i) Submodule.mem_top`. Establish `e : f - σ L = r N + σ ((∑ n ∈ Finset.range N, b n) - L)`. Rewrite using `[hrsum, map_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hV (by omega : N ≤ j + N) (hr N)) (hI N hσ)`. Conclude with `(sub_eq_zero.mp h0).symm`.
+-/
 theorem UpperTheory.exists_linear_preimage_of_successive_approximation :
     ∀ (A M ι : Type) [CommRing A] [AddCommGroup M] [Module A M] [Fintype ι] (I : Ideal A) [IsAdicComplete I A] (V : ℕ → Submodule A M) (σ : (ι → A) →ₗ[A] M), Antitone V → (∀ k, (I ^ k • ⊤ : Submodule A M) ≤ V k) → (∀ f, (∀ k, f ∈ V k) → f = 0) → (∀ j, ∀ f ∈ V j, ∃ a : ι → A, (∀ i, a i ∈ I ^ j) ∧ f - σ a ∈ V (j + 1)) → ∀ j, ∀ f ∈ V j, ∃ a : ι → A, (∀ i, a i ∈ I ^ j) ∧ σ a = f := by
   intro A M ι _ _ _ _ I _ V σ hV hI hsep hstep j f hf

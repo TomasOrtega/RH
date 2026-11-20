@@ -22,10 +22,18 @@ def linearEquivHomeomorph (L : (ι → F) ≃ₗ[F] (ι → F)) : (ι → F) ≃
   continuous_toFun := L.toLinearMap.continuous_on_pi
   continuous_invFun := L.symm.toLinearMap.continuous_on_pi
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, distribHaarChar_eq_modulus]`.
+-/
 theorem distribHaarChar_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) :
     distribHaarChar (ι → F) L = modulus (LinearEquiv.det L : F) := by
   rw [GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq, distribHaarChar_eq_modulus]
 
+/- English proof (translation)
+Establish `hL : Measurable (L : (ι → F) → (ι → F))` using `(linearEquivHomeomorph L).continuous.measurable`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hL hs, Measure.smul_apply]`. Establish `hpre : (L : (ι → F) → (ι → F)) ⁻¹' s = L⁻¹ • s`. Use extensionality with `x`.
+
+Simplify using `[Set.mem_smul_set_iff_inv_smul_mem, LinearEquiv.smul_def]`. Rewrite using `[hpre, ← distribHaarChar_mul, map_inv, distribHaarChar_linearEquiv, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem map_linearEquiv_selfDualPi (L : (ι → F) ≃ₗ[F] (ι → F)) :
     Measure.map L (selfDualPi ι ψ) =
       ((modulus (LinearEquiv.det L : F))⁻¹ : ℝ≥0) • selfDualPi ι ψ := by
@@ -39,6 +47,9 @@ theorem map_linearEquiv_selfDualPi (L : (ι → F) ≃ₗ[F] (ι → F)) :
   rw [hpre, ← distribHaarChar_mul, map_inv, distribHaarChar_linearEquiv, ENNReal.smul_def,
     smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `integral_map_equiv (μ := selfDualPi ι ψ) (linearEquivHomeomorph L).toMeasurableEquiv g`. Establish `he : ((linearEquivHomeomorph L).toMeasurableEquiv : (ι → F) → (ι → F)) = L` using `rfl`. Rewrite `h` using `[he, map_linearEquiv_selfDualPi, integral_smul_nnreal_measure]`. Rewrite using `[← h, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem integral_comp_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) (g : (ι → F) → ℂ) :
     ∫ x, g (L x) ∂selfDualPi ι ψ =
       (((modulus (LinearEquiv.det L : F))⁻¹ : ℝ≥0) : ℝ) * ∫ x, g x ∂selfDualPi ι ψ := by
@@ -47,6 +58,11 @@ theorem integral_comp_linearEquiv (L : (ι → F) ≃ₗ[F] (ι → F)) (g : (ι
   rw [he, map_linearEquiv_selfDualPi, integral_smul_nnreal_measure] at h
   rw [← h, NNReal.smul_def, Complex.real_smul]
 
+/- English proof (translation)
+Use `set G := Matrix.GeneralLinearGroup.mkOfDetNeZero P hP`. Establish `h1 : ∀ x, GroundTheory.Automorphic.Measures.glEquiv G x = P *ᵥ x` using `fun x => GroundTheory.Automorphic.Measures.glEquiv_apply G x`. Establish `h2 : (LinearEquiv.det (GroundTheory.Automorphic.Measures.glEquiv G) : F) = P.det`. Rewrite using `[GroundTheory.Automorphic.Measures.det_glEquiv]`. Both sides reduce to the same expression.
+
+Use `integral_comp_linearEquiv (ψ := ψ) (GroundTheory.Automorphic.Measures.glEquiv G) g` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Conclude with `this`.
+-/
 theorem integral_comp_mulVec {P : Matrix ι ι F} (hP : P.det ≠ 0) (g : (ι → F) → ℂ) :
     ∫ x, g (P *ᵥ x) ∂selfDualPi ι ψ =
       (((modulus P.det)⁻¹ : ℝ≥0) : ℝ) * ∫ x, g x ∂selfDualPi ι ψ := by

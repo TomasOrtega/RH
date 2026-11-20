@@ -18,11 +18,17 @@ section Comparison
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] {p q n : ℕ}
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (cochainsComplexι A) p) x`.
+-/
 theorem cohomologyToGroupCohomology_cohomologyπ (x : cocycles A p) :
     cohomologyToGroupCohomology A p (cohomologyπ A p x) =
       groupCohomology.π A p (HomologicalComplex.cyclesMap (cochainsComplexι A) p x) :=
   ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (cochainsComplexι A) p) x
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (HomologicalComplex.cyclesMap_i (cochainsComplexι A) p) x`.
+-/
 theorem iCocycles_cyclesMap_cochainsComplexι (x : cocycles A p) :
     groupCohomology.iCocycles A p (HomologicalComplex.cyclesMap (cochainsComplexι A) p x) =
       cochainOf A (cocycleι A p x) :=
@@ -34,12 +40,18 @@ section Levels
 
 variable (U : OpenNormalSubgroup G) {p q n : ℕ}
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (inflationCochains A U) p) z`.
+-/
 theorem inflation_π (A : Rep.{u} k G) [IsDiscreteRep A]
     (z : groupCohomology.cocycles (A.quotientToInvariants (U : Subgroup G)) p) :
     inflation A U p (groupCohomology.π _ p z) =
       cohomologyπ A p (HomologicalComplex.cyclesMap (inflationCochains A U) p z) :=
   ConcreteCategory.congr_hom (HomologicalComplex.homologyπ_naturality (inflationCochains A U) p) z
 
+/- English proof (translation)
+The claim follows from `congrArg (fun ψ => cochainOf A (ψ.hom z)) (HomologicalComplex.cyclesMap_i (inflationCochains A U) p)`.
+-/
 theorem cochainOf_cocycleι_cyclesMap_inflationCochains (A : Rep.{u} k G) [IsDiscreteRep A]
     (z : groupCohomology.cocycles (A.quotientToInvariants (U : Subgroup G)) p) :
     cochainOf A (cocycleι A p (HomologicalComplex.cyclesMap (inflationCochains A U) p z)) =
@@ -48,6 +60,9 @@ theorem cochainOf_cocycleι_cyclesMap_inflationCochains (A : Rep.{u} k G) [IsDis
   congrArg (fun ψ => cochainOf A (ψ.hom z))
     (HomologicalComplex.cyclesMap_i (inflationCochains A U) p)
 
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression.
+-/
 theorem inflationCochains_comp_cochainsMap {A A' : Rep.{u} k G} [IsDiscreteRep A]
     [IsDiscreteRep A'] (f : A ⟶ A') :
     inflationCochains A U ≫ cochainsMap f =
@@ -56,6 +71,9 @@ theorem inflationCochains_comp_cochainsMap {A A' : Rep.{u} k G} [IsDiscreteRep A
   ext n x : 3
   rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => HomologicalComplex.homologyMap φ n) (inflationCochains_comp_cochainsMap U f)`. Simplify using `only [HomologicalComplex.homologyMap_comp] at h`. Conclude with `h`.
+-/
 theorem inflation_comp_cohomologyMap {A A' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep A']
     (f : A ⟶ A') (n : ℕ) :
     inflation A U n ≫ cohomologyMap f n =
@@ -66,6 +84,9 @@ theorem inflation_comp_cohomologyMap {A A' : Rep.{u} k G} [IsDiscreteRep A] [IsD
   simp only [HomologicalComplex.homologyMap_comp] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (inflation_comp_cohomologyMap U f n) x`.
+-/
 theorem cohomologyMap_inflation {A A' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep A']
     (f : A ⟶ A') (x : groupCohomology (A.quotientToInvariants (U : Subgroup G)) n) :
     cohomologyMap f n (inflation A U n x) =
@@ -75,6 +96,13 @@ theorem cohomologyMap_inflation {A A' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscre
 
 variable (A B : Rep.{u} k G) [IsDiscreteRep A] [IsDiscreteRep B]
 
+/- English proof (translation)
+Use `groupCohomology_induction_on x fun x => ?_` and prove the remaining obligations. Use `groupCohomology_induction_on y fun y => ?_` and prove the remaining obligations. Rewrite using `[inflation_π, inflation_π, cup_cohomologyπ, GroundTheory.GroupCoh.cupH_π, GroundTheory.GroupCoh.map_π_apply, inflation_π]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+
+Rewrite using `[cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cyclesMap_inflationCochains, cochainOf_cocycleι_cyclesMap_inflationCochains, cochainOf_cocycleι_cyclesMap_inflationCochains, GroundTheory.GroupCoh.iCocycles_cocyclesMap, GroundTheory.GroupCoh.iCocycles_cupCoc …`. Use function extensionality and compare the values at `g`. Simplify using `only [GroundTheory.GroupCoh.cupCochain_apply]`. Establish `hP : Fin.partialProd (fun i => (g i : G ⧸ (U : Subgroup G))) ⟨p, by omega⟩ = ((Fin.partialProd g ⟨p, by omega⟩ : G) : G ⧸ (U : Subgroup G))` using `partialProd_comp_monoidHom (QuotientGroup.mk' (U : Subgroup G)) g _`. Rewrite using `[hP]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cup_inflation (h : p + q = n)
     (x : groupCohomology (A.quotientToInvariants (U : Subgroup G)) p)
     (y : groupCohomology (B.quotientToInvariants (U : Subgroup G)) q) :

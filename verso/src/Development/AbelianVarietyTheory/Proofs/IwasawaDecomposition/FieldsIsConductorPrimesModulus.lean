@@ -10,6 +10,9 @@ open Formalism.L2.Col
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Introduce `B X j`. Conclude with `UpperTheory.Ram.isCond_condN B.host j`.
+-/
 theorem Base.fields_isCond : ∀ (B : Base) (X : PreX B.toPre), B.fields.IsCond (B.primes X).cond := by
   intro B X j
   exact UpperTheory.Ram.isCond_condN B.host j

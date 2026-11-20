@@ -27,12 +27,20 @@ section Char
 
 variable {F : Type} [Field F] [NumberField F] {l : ℕ} [Fact l.Prime] {w : Plc F}
 
+/- English proof (translation)
+Establish `h3` using `(j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one hy)`. Rewrite `h3` using `[map_zero]`. Rewrite using `[← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]`. Conclude with `h3.congr fun n => by simp`.
+-/
 private theorem norm_lt (j : Emb l w) (y : w.adicCompletion F) (hy : Valued.v y < 1) : ‖j.1 y‖ < 1 := by
   have h3 := (j.2.tendsto 0).comp (Valued.tendsto_zero_pow_of_v_lt_one hy)
   rw [map_zero] at h3
   rw [← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]
   exact h3.congr fun n => by simp
 
+/- English proof (translation)
+Establish `hpos : 0 < ‖j.1 π‖` using `norm_pos_iff.mpr ((map_ne_zero j.1).mpr h0)`. Assume the negation of the conclusion as `hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (‖j.1 π‖⁻¹) (not_le.1 hlt)`. Establish `h4` using `norm_lt j (π * y ^ n) (by rwa [map_mul, map_pow, hy, one_pow, mul_one])`. Rewrite `h4` using `[map_mul, map_pow, norm_mul, norm_pow]`.
+
+Rewrite `hn` using `[inv_lt_iff_one_lt_mul₀' hpos]`. Conclude with `lt_asymm hn h4`.
+-/
 private theorem norm_le (j : Emb l w) {π : w.adicCompletion F} (h0 : π ≠ 0) (hπ : Valued.v π < 1)
     (y : w.adicCompletion F) (hy : Valued.v y = 1) : ‖j.1 y‖ ≤ 1 := by
   have hpos : 0 < ‖j.1 π‖ := norm_pos_iff.mpr ((map_ne_zero j.1).mpr h0)
@@ -43,6 +51,25 @@ private theorem norm_le (j : Emb l w) {π : w.adicCompletion F} (h0 : π ≠ 0) 
   rw [inv_lt_iff_one_lt_mul₀' hpos] at hn
   exact lt_asymm hn h4
 
+/- English proof (translation)
+Use `haveI := finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite (Emb l w)`. Take `⟨p, hp⟩` from `w.valuation_exists_uniformizer F`. Establish `hv : Valued.v (algebraMap F (w.adicCompletion F) p) = WithZero.exp (-1 : ℤ)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w p).trans hp`. Establish `h0 : algebraMap F (w.adicCompletion F) p ≠ 0` using `fun e => by`.
+
+Rewrite `hv` using `[e, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `h1 : Valued.v (algebraMap F (w.adicCompletion F) p) < 1`. Rewrite using `[hv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Set `π : (w.adicCompletion F)ˣ` to `Units.mk0 _ h0`. Set `n : (w.adicCompletion F)ˣ → ℤ` to `fun x => WithZero.log (Valued.v (x : w.adicCompletion F))`. Establish `hne : ∀ x : (w.adicCompletion F)ˣ, Valued.v (x : w.adicCompletion F) ≠ 0` using `fun x => (map_ne_zero _).2 x.ne_zero`. Set `u : (w.adicCompletion F)ˣ →* (w.adicCompletion F)ˣ` to `MonoidHom.mk' (fun x => x * π ^ n x) fun x y => by`. Establish `: n (x * y) = n x + n y`.
+
+Simplify using `only [n, Units.val_mul, map_mul, WithZero.log_mul (hne x) (hne y)]`. Rewrite using `[this, zpow_add, mul_mul_mul_comm]`. Establish `hu : ∀ x, Valued.v (u x : w.adicCompletion F) = 1` using `fun x => by`. Express the relevant statement in the definitionally equal form `Valued.v ((x * π ^ n x : (w.adicCompletion F)ˣ) : w.adicCompletion F) = 1`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_mk0, hv, ← WithZero.exp_zsmul, ← WithZero.exp_log (hne x), ← WithZero.exp_add]`.
+
+Simplify using `[n]`. Establish `hn : IsLocallyConstant n` using `(IsLocallyConstant.iff_eventually_eq _).2 fun x => by filter_upwards [Units.continuous_val.continuousAt.preimage_mem_nhds (Valued.locally_const (hne x))] with y hy`. Conclude with `congrArg WithZero.log hy`. Establish `huc : Continuous u` using `continuous_id.mul (hn.comp fun m => π ^ m).continuous`. Set `α : (w.adicCompletion F)ˣ →* (Qbar l)ˣ` to `∏ τ : Emb l w, (Units.map τ.1.toMonoidHom) ^ wt τ`.
+
+Establish `hα : ∀ x, α x = ∏ τ : Emb l w, (Units.map τ.1.toMonoidHom x) ^ wt τ` using `fun x => by`. Simplify using `only [α, MonoidHom.finsetProd_apply, MonoidHom.zpow_apply]`. Establish `hα' : ∀ x, (α x : Qbar l) = ∏ τ : Emb l w, τ.1 (x : w.adicCompletion F) ^ wt τ` using `fun x => by`. Rewrite using `[hα, Units.coe_prod]`. Simplify using the standard rewrite rules.
+
+Establish `hαc : Continuous α`. Rewrite using `[show (α : _ → _) = _ from funext hα]`. Conclude with `continuous_finset_prod _ fun τ _ => (Continuous.units_map τ.1.toMonoidHom τ.2).zpow _`. Use `⟨α.comp u, hαc.comp huc, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, hα', norm_prod]`.
+
+Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `a1` using `norm_le τ h0 h1 _ (hu x)`. Establish `a2` using `norm_le τ h0 h1 (u x : w.adicCompletion F)⁻¹ (by rw [map_inv₀, hu, inv_one])`. Rewrite `a2` using `[map_inv₀, norm_inv, inv_le_one₀ (norm_pos_iff.2 ((map_ne_zero τ.1).2 (u x).ne_zero))]`. Rewrite using `[norm_zpow, le_antisymm a1 a2, one_zpow]`.
+
+Establish `: u x = x`. Establish `h2 : n x = 0` using `(congrArg WithZero.log hx).trans WithZero.log_one`. Establish `h3 : u x = x * π ^ n x` using `rfl`. Rewrite using `[h3, h2, zpow_zero, mul_one]`. Rewrite using `[MonoidHom.comp_apply, this, hα', finprod_eq_prod_of_fintype]`.
+-/
 private theorem exists_char (wt : Emb l w → ℤ) : ∃ ξ : (w.adicCompletion F)ˣ →* (Qbar l)ˣ, Continuous ξ ∧
     (∀ x, ‖(ξ x : Qbar l)‖ = 1) ∧ ∀ x : (w.adicCompletion F)ˣ, Valued.v (x : w.adicCompletion F) = 1 →
       (ξ x : Qbar l) = ∏ᶠ τ : Emb l w, τ.1 (x : w.adicCompletion F) ^ wt τ := by
@@ -101,6 +128,13 @@ end Char
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
   {A : ValuationSubring Ω} {w : Plc F}
 
+/- English proof (translation)
+Take `⟨ξ, hξ, hn, hu⟩` from `exists_char wt`. Take `⟨κ, ⟨hc, hκ⟩, -⟩` from `laExists H h a ha ξ hξ hn`. Use `⟨κ, hc, by simp, fun a' ha' σ => ?_⟩` and prove the remaining obligations. Take `⟨art, hart⟩` from `H F Ω`. Establish `hinj` using `GlobalTheory.ArtinLocalInj.artin_localIdele_injective GlobalTheory.Published.chevalleyUnits' F Ω art hart w`.
+
+Take `rfl : a' = a` from `MonoidHom.ext fun σ => hinj ((ha'.glob art hart _).trans (ha.glob art hart _).symm)`. Establish `h2` using `ha.ord_eq (ineIncl h σ)`. Rewrite `h2` using `[deg_ineIncl, neg_zero]`. Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `h3` using `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one.1 (GlobalTheory.SmGL.ord_eq_zero_iff.1 h2)`.
+
+Rewrite using `[MonoidHom.one_apply, mul_one, hκ, hu _ h3]`. Simplify using `only [Pi.neg_apply, neg_neg]`.
+-/
 private theorem exists_wt (H : GlobalArtinReciprocity) (h : IsPlaceOver A w)
     {a : Weil h →* (w.adicCompletion F)ˣ} (ha : IsLocalArtin h a) (wt : Emb l w → ℤ) :
     ∃ κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ, Continuous κ ∧ IsWtPart h κ (-wt) 1 := by
@@ -120,6 +154,15 @@ private theorem exists_wt (H : GlobalArtinReciprocity) (h : IsPlaceOver A w)
   rw [MonoidHom.one_apply, mul_one, hκ, hu _ h3]
   simp only [Pi.neg_apply, neg_neg]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Establish `hadd : ∀ a b : Om l, ‖a + b‖ ≤ max ‖a‖ ‖b‖` using `IsUltrametricDist.norm_add_le_max`. Rewrite using `[(iqBasic l).2.2.1]`. Introduce `x hx`. Take `⟨y, hy⟩` from `(GlobalTheory.PlaceBridge.denseRange_embedding j).exists_dist_lt x one_pos`.
+
+Rewrite `hy` using `[dist_eq_norm]`. Establish `hjy : ‖j y‖ ≤ 1`. Establish `e : j y = x + -(x - j y)` using `by ring`. Rewrite using `[e]`. Conclude with `(hadd _ _).trans (max_le hx (by rw [norm_neg]; exact hy.le))`.
+
+Establish `hgy : ‖σ (j y) - j y‖ < 1`. Rewrite using `[hi, ← map_sub, GlobalTheory.DecLocal.norm_lt_one_iff A j hj]`. Conclude with `h.2 y ((A.valuation_le_one_iff y).2 ((hj y).2 hjy))`. Establish `e : σ x - x = σ (x - j y) + ((σ (j y) - j y) + -(x - j y))`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(hadd _ _).trans_lt (max_lt (by rw [GlobalTheory.PlaceBridge.norm_algEquiv]; exact hy) ((hadd _ _).trans_lt (max_lt hgy ?_)))` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hy`.
+-/
 private theorem mem_Iq {j : Ω →+* Om l} (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) (g : G F Ω) (σ : GQ l)
     (hi : ∀ y, σ (j y) = j (g y)) (h : g ∈ Ine (F := F) A) : σ ∈ Iq l := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
@@ -142,6 +185,17 @@ private theorem mem_Iq {j : Ω →+* Om l} (hj : ∀ x, x ∈ A ↔ ‖j x‖ �
     ((hadd _ _).trans_lt (max_lt hgy ?_)))
   rw [norm_neg]; exact hy
 
+/- English proof (translation)
+Use `haveI := K.2`. Use `haveI := L.2`. Use `haveI : IsModuleTopology ℚ_[l] (Fin n → ↥L.1) := isModuleTopologyOfFiniteDimensional`. Establish `hφ : IsOpenEmbedding (GK K).subtype` using `(IntermediateField.fixingSubgroup_isOpen K.1).isOpenEmbedding_subtypeVal`. Take `⟨k1, k2⟩` from `UpperTheory.ddR_le_fil_and_inf_fil_eq_bot_of_hodgeTate_mult (PP l) hs ρ hfin`.
+
+Establish `hD : Ddr (GK K).subtype ρ = DdR ((PP l).PD K) ρ`. Unfold `Ddr DdR`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Establish `: UpperTheory.V.Loc.actD (GK K).subtype ρ g = actVdR ((PP l).PD K) ρ g`. Unfold `UpperTheory.V.Loc.actD actVdR`.
+
+Use `congr 1`. Conclude with `LinearMap.ext fun b => ((PP l).PD_actdR K g b).symm`. Rewrite using `[this]`. Establish `hF : ∀ i, FilT ↥L.1 (Fin n → ↥L.1) i = FilV ((PP l).PD K) (LL` using `↥L.1) (V := Fin n → ↥L.1) i := fun i => by`. Establish `: (((PP l).PD (botExt l)).Fil i).restrictScalars ℚ_[l] = (((PP l).PD K).Fil i).restrictScalars ℚ_[l]` using `SetLike.coe_injective ((PP l).PD_Fil _ _ i)`.
+
+Unfold `FilT FilV`. Rewrite using `[this]`. Use `drWt0 H (GK K).subtype hφ ρ hc ((isCrIff K ρ).2.2 ((GlobalTheory.PstCoeff.isDR_resQ_iff (PP l) ρ).2 hd)) ?_ ?_` and prove the remaining obligations. Rewrite using `[FilD, hD, hF]`. Conclude with `inf_eq_left.2 (k1 0 fun τ c hc => hm τ c hc.ne)`.
+
+Rewrite using `[FilD, hD, hF]`. Conclude with `k2 0 fun τ c hc => hm τ c hc.ne'`.
+-/
 private theorem rep_zero (H : DeRhamPotSemistable) {K L : FinExt l}
     (hs : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ L.1) {n : ℕ}
     (ρ : Representation ↥L.1 ↥(GK K) (Fin n → ↥L.1)) (hc : ReciprocityTheory.Gal.ContAction ρ) (hd : IsDR ((PP l).PD K) ρ)
@@ -174,6 +228,19 @@ private theorem rep_zero (H : DeRhamPotSemistable) {K L : FinExt l}
   · rw [FilD, hD, hF]
     exact k2 0 fun τ c hc => hm τ c hc.ne'
 
+/- English proof (translation)
+Establish `key : ∀ (L : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1), ∃ τ : Emb l w, IsInduced Bw (τ.1.comp (algebraMap F (w.adicCompletion F))) τ'` using `fun L τ' => by`. Set `t : F →+* Om l` to `(L.1.val.comp τ').toRingHom.comp ((Bw.j.comp (algebraMap F Ω)).codRestrict Bw.Kw.1 Bw.j_E)`. Establish `ht : IsInduced Bw t τ'` using `fun _ => rfl`. Take `⟨J, hJ, e, -⟩` from `KStar.IdealValuations.exists_completion_map w t (ht.norm_lt_one_iff h hj)`. Conclude with `⟨⟨J, hJ⟩, fun x => (e x).trans (ht x)⟩`.
+
+Take `⟨τ₀, -⟩` from `key Bw.Kw (AlgHom.id _ _)`. Take `⟨L, r, hm, hd, -⟩` from `hJ τ₀`. Establish `hval : ∀ g, ((r g : Matrix (Fin 1) (Fin 1) ↥L.1) 0 0 : Om l) = η g` using `fun g => by`. Use `congrArg (fun f : ↥(Dec (F := F) A) →* GL (Fin 1) (Om l) => ((f g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) 0 0) hm.2` as an intermediate fact. Simplify `this` using `[mapRep, rk1]`.
+
+Establish `hc' : Continuous fun g => ((r g : GL (Fin 1) ↥L.1) : Matrix (Fin 1) (Fin 1) ↥L.1)`. Use `continuous_matrix fun i j => continuous_induced_rng.2 ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Conclude with `(Units.continuous_val.comp hη).congr fun g => (hval g).symm`. Take `⟨U, hU, hU'⟩` from `rep_zero H (fun τ y => hm.1 (Bw.LL_split τ y)) (Bw.repE L r) ((hc'.comp (Bw.e_symm_cont.comp continuous_fst)).matrix_mulVec continuous_snd) ((GlobalTheory.TwistAbove.isDR_iff Bw _ r).2 hd) (finiteDimensional_DdR _ _ hd) fun τ' c hc => by`.
+
+Take `⟨τ, hτ⟩` from `key L τ'`. Establish `h1` using `IsJumpsAt.count_eq (PP l) hm hτ (hJ τ) c`. Rewrite `h1` using `[Multiset.count_eq_zero.2 (by simpa using hc)]`. Conclude with `h1.symm`. Set `i : ↥(Ine (F` to `F) A) →* ↥(Dec (F := F) A) := Subgroup.inclusion (Ine_le_Dec A)`.
+
+Establish `hi : Continuous i` using `continuous_subtype_val.subtype_mk _`. Use `Subgroup.isOpen_mono (H₁ := U.comap (Bw.e.toMonoidHom.comp i)) (fun σ hσ => ?_) (hU.preimage (Bw.e_cont.comp hi))` and prove the remaining obligations. Establish `h1` using `hU' _ hσ (mem_Iq hj (σ : G F Ω) _ (Bw.e_comm (i σ)) σ.2)`. Establish `h2 : (r (Bw.e.symm (Bw.e (i σ))) : Matrix (Fin 1) (Fin 1) ↥L.1).mulVec (fun _ => 1) 0 = 1` using `congrFun (LinearMap.congr_fun h1 fun _ => 1) 0`. Rewrite `h2` using `[MulEquiv.symm_apply_apply]`.
+
+Use `Units.ext ((hval (i σ)).symm.trans ?_)` and prove the remaining obligations. Simplify `h2` using `[Matrix.mulVec, dotProduct]`.
+-/
 private theorem char_zero (H : DeRhamPotSemistable) (h : IsPlaceOver A w) (η : ↥(Dec (F := F) A) →* (Qbar l)ˣ)
     (hη : Continuous η) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
     (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw)
@@ -216,6 +283,15 @@ private theorem char_zero (H : DeRhamPotSemistable) (h : IsPlaceOver A w) (η : 
 end UpperTheory.V.Loc.LaConv
 
 open UpperTheory.V.Loc.LaConv in
+/- English proof (translation)
+Introduce `H1 H2 H3 H4 F Ω _ _ _ _ _ l _ A w h κ hκ O _ _ _ Bw hj wt hJ`. Distinguish the cases in `hex : ∃ a, IsLocalArtin h a`. Use `swap`. Conclude with `⟨1, by simp, fun a ha => absurd ⟨a, ha⟩ hex⟩`. Take `⟨a, ha⟩` from `hex`.
+
+Take `⟨κ₀, hc, hw⟩` from `exists_wt H1 h ha wt`. Establish `h0` using `(laDeRham H1 H2 H3 H4 h κ₀ hc _ ⟨1, hw⟩ O Bw hj).2.2`. Establish `h1` using `char_zero H4 h (κ * κ₀) (hκ.mul hc) Bw hj fun τ => by`. Use `(GlobalTheory.TwistAbove.twist_above l (PP l) (AIP l) (tiedP l) F Ω _ O Bw 1 (GlobalTheory.TripleGal.rk1 κ) (GlobalTheory.TripleGal.rk1 (κ * κ₀)) κ₀ (fun g => by` as an intermediate fact. Use extensionality with `i j`.
+
+Simplify using `[GlobalTheory.TripleGal.rk1, Matrix.diagonal_apply, mul_comm])).2.2.2 _ _ _ (hJ τ) (h0 τ)`. Simplify using `using this`. Establish `h2` using `(laMul h).2.2 (κ * κ₀) ((κ * κ₀).comp ((Subgroup.inclusion (Weil_le_Dec h)).comp (ineIncl h)))⁻¹ (Subgroup.isOpen_mono (fun σ hσ => inv_eq_one.2 hσ) h1) fun σ => mul_inv_cancel _`. Establish `h3` using `((laMul h).1 _ _ _ _ _ _ h2 ((laMul h).1 _ _ _ _ _ _ hw hw).2).1`. Rewrite `h3` using `[mul_inv_cancel_right, neg_neg, zero_add]`.
+
+Conclude with `⟨_, h3⟩`.
+-/
 theorem UpperTheory.V.Loc.laConv :
     GlobalArtinReciprocity → HeckeLAdicCharacter → HeckeLAdicCharacterDeRham → DeRhamPotSemistable → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous κ → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) (wt : Emb l w → ℤ), (∀ τ : Emb l w, GlobalTheory.Pst.IsJumpsAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) (τ.1.comp (algebraMap F (w.adicCompletion F))) {wt τ}) → IsLocAlg h κ wt := by
   intro H1 H2 H3 H4 F Ω _ _ _ _ _ l _ A w h κ hκ O _ _ _ Bw hj wt hJ

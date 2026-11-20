@@ -11,6 +11,13 @@ namespace GlobalTheory
 
 namespace SemiAbTorsion
 
+/- English proof (translation)
+Set `f : {x : G // x ^ n = 1} → {b : B // b ^ n = 1}` to `fun x => ⟨q x.1, by rw [← map_pow, x.2, map_one]⟩`. Use `Set.finite_univ_iff.mp (Set.Finite.of_finite_fibers f (Set.toFinite _) fun b hb => ?_)` and prove the remaining obligations. Take `⟨x₀, -, rfl⟩` from `hb`. Rewrite using `[Set.univ_inter, ← Set.finite_coe_iff]`. Establish `key : ∀ x : f ⁻¹' {f x₀}, ∃ t : {t : T // t ^ n = 1}, i t.1 = x.1.1 / x₀.1`.
+
+Introduce `x`. Establish `hx : q x.1.1 = q x₀.1` using `congrArg Subtype.val x.2`. Take `⟨t, ht⟩` from `hk (x.1.1 / x₀.1) (by rw [map_div, hx, div_self'])`. Use `⟨⟨t, hi ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[map_pow, ht, div_pow, x.1.2, x₀.2, map_one, div_one]`.
+
+Use `choose g hg using key`. Use `Finite.of_injective g fun x y h => Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `hg x` as an intermediate fact. Rewrite `this` using `[h, hg y]`. Conclude with `(div_left_inj.mp this).symm`.
+-/
 theorem finite_pow_eq_one_of_extension {T G B : Type*} [Group T] [CommGroup G] [Group B]
     (i : T →* G) (q : G →* B) (hi : Function.Injective i) (hk : ∀ x, q x = 1 → ∃ t, i t = x)
     (n : ℕ) (hT : Finite {t : T // t ^ n = 1}) (hB : Finite {b : B // b ^ n = 1}) :
@@ -32,6 +39,11 @@ theorem finite_pow_eq_one_of_extension {T G B : Type*} [Group T] [CommGroup G] [
   rw [h, hg y] at this
   exact (div_left_inj.mp this).symm
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨by omega⟩`. Use `haveI : AddGroup.FG X := Module.Finite.iff_addGroup_fg.mp inferInstance`. Take `⟨S, hS⟩` from `(Group.fg_def.mp (inferInstance : Group.FG (Multiplicative X)))`. Set `g : {t : Multiplicative X →* Rˣ // t ^ n = 1} → (S → rootsOfUnity n R)` to `fun t s => ⟨t.1 s.1, (mem_rootsOfUnity _ _).2 (by simpa using DFunLike.congr_fun t.2 s.1)⟩`. Use `Finite.of_injective g fun a b h => Subtype.ext ?_` and prove the remaining obligations.
+
+Use `MonoidHom.eq_of_eqOn_dense hS fun s hs => ?_` and prove the remaining obligations. Conclude with `congrArg Subtype.val (congrFun h ⟨s, hs⟩)`.
+-/
 theorem finite_chars_pow_eq_one (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (R : Type)
     [CommRing R] [IsDomain R] {n : ℕ} (hn : 1 ≤ n) :
     Finite {t : Multiplicative X →* Rˣ // t ^ n = 1} := by
@@ -44,6 +56,9 @@ theorem finite_chars_pow_eq_one (X : Type) [AddCommGroup X] [Module.Finite ℤ X
   refine MonoidHom.eq_of_eqOn_dense hS fun s hs => ?_
   exact congrArg Subtype.val (congrFun h ⟨s, hs⟩)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(inferInstance : Algebra.FiniteType ℤ A).out`. Use `Finite.of_injective (fun (φ : A →+* F) (s : S) => φ s.1) fun a b h => ?_` and prove the remaining obligations. Establish `: a.toIntAlgHom = b.toIntAlgHom` using `AlgHom.ext_of_adjoin_eq_top hS fun s hs => congrFun h ⟨s, hs⟩`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+-/
 theorem finite_ringHom (A F : Type) [CommRing A] [CommRing F] [Finite F]
     [Algebra.FiniteType ℤ A] : Finite (A →+* F) := by
   obtain ⟨S, hS⟩ := (inferInstance : Algebra.FiniteType ℤ A).out
@@ -53,6 +68,13 @@ theorem finite_ringHom (A F : Type) [CommRing A] [CommRing F] [Finite F]
   ext x
   exact DFunLike.congr_fun this x
 
+/- English proof (translation)
+Establish `h : LocallyOfFiniteType (hV.fromSpec ≫ π)` using `inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hV.fromSpec ≫ π)`. Rewrite `h` using `[← hφ, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `e : φ.hom = algebraMap ℤ Γ(X, V)` using `RingHom.ext_int _ _`. Establish `h' : (algebraMap ℤ Γ(X, V)).FiniteType` using `e ▸ h`.
+
+Establish `: Algebra.FiniteType ℤ Γ(X, V)` using `RingHom.finiteType_algebraMap.mp h'`. Use `haveI := finite_ringHom Γ(X, V) F`. Use `(Set.finite_range fun ψ : Γ(X, V) →+* F => Spec.map (CommRingCat.ofHom ψ) ≫ hV.fromSpec).subset fun f hf => ?_` and prove the remaining obligations. Establish `hf' : Set.range f ⊆ Set.range hV.fromSpec` using `by rw [hV.range_fromSpec]; exact hf`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hV.fromSpec f hf')`.
+
+Use `⟨ψ.hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map ψ ≫ _ = _`. Rewrite using `[hψ, IsOpenImmersion.lift_fac]`.
+-/
 theorem finite_hom_range_subset {X : Scheme.{0}} (π : X ⟶ Sp ℤ) [LocallyOfFiniteType π]
     (F : CommRingCat.{0}) [Finite F] (V : X.Opens) (hV : IsAffineOpen V) :
     {f : Spec F ⟶ X | Set.range f ⊆ V}.Finite := by
@@ -71,6 +93,17 @@ theorem finite_hom_range_subset {X : Scheme.{0}} (π : X ⟶ Sp ℤ) [LocallyOfF
   change Spec.map ψ ≫ _ = _
   rw [hψ, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Set `pt : Sp F` to `default`. Establish `hpt : ∀ y : Sp F, y = pt` using `fun y => Subsingleton.elim _ _`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (t pt)) isOpen_univ`. Establish `hc : IsCompact (G.hom ⁻¹ᵁ U : Set G.left)` using `QuasiCompact.isCompact_preimage (f := G.hom) _ U.isOpen hU.isCompact`. Take `⟨s, hs, hsU⟩` from `(isCompact_iff_finite_and_eq_biUnion_affineOpens).mp hc`.
+
+Establish `hfin : (⋃ V ∈ s, {f : Sp F ⟶ G.left | Set.range f ⊆ V.1}).Finite` using `hs.biUnion fun V _ => finite_hom_range_subset (G.hom ≫ π) (CommRingCat.of F) V.1 V.2`. Use `haveI := hfin.to_subtype`. Establish `hm : ∀ x : Over.mk t ⟶ G, x.left ∈ ⋃ V ∈ s, {f : Sp F ⟶ G.left | Set.range f ⊆ V.1}`. Introduce `x`. Establish `h1 : x.left pt ∈ G.hom ⁻¹ᵁ U`.
+
+Express the relevant statement in the definitionally equal form `(x.left ≫ G.hom) pt ∈ U`. Rewrite using `[Over.w x]`. Conclude with `hxU`. Rewrite `h1` using `[hsU]`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at h1`.
+
+Take `⟨V, hV, hx⟩` from `h1`. Use `Set.mem_biUnion hV ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hpt y]`. Conclude with `hx`.
+
+Conclude with `Finite.of_injective (fun x => (⟨x.left, hm x⟩ : (⋃ V ∈ s, {f : Sp F ⟶ G.left | Set.range f ⊆ V.1} : Set _))) fun a b h => Over.OverMorphism.ext (congrArg Subtype.val h)`.
+-/
 theorem finite_points_over {Z : Scheme.{0}} (π : Z ⟶ Sp ℤ) [LocallyOfFiniteType π] (G : Over Z)
     [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] (F : Type) [Field F] [Finite F]
     (t : Sp F ⟶ Z) : Finite (Over.mk t ⟶ G) := by
@@ -102,6 +135,9 @@ theorem finite_points_over {Z : Scheme.{0}} (π : Z ⟶ Sp ℤ) [LocallyOfFinite
     {f : Sp F ⟶ G.left | Set.range f ⊆ V.1} : Set _)))
     fun a b h => Over.OverMorphism.ext (congrArg Subtype.val h)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_points {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (g : T ⟶ A)
     (n : ℕ) : f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
@@ -112,6 +148,23 @@ end SemiAbTorsion
 
 open SemiAbTorsion
 
+/- English proof (translation)
+Introduce `hB`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `K _ _ G _ _ ⟨E⟩ n hn`. Use `letI := E.addCommGroup`. Use `letI := E.finite`.
+
+Use `letI := E.grpB`. Use `haveI := E.q_hom`. Use `haveI := E.i_hom`. Establish `hk` using `E.isKernel`. Use `finite_pow_eq_one_of_extension (IsMonHom.monoidHom E.i (𝟙_ (Over (Sp K)))) (IsMonHom.monoidHom E.q (𝟙_ (Over (Sp K)))) ?_ ?_ n ?_ (hB K E.B E.isAbelian n hn)` and prove the remaining obligations.
+
+Introduce `a b h`. Conclude with `hk.hom_ext h (toUnit_unique _ _)`. Introduce `x hx`. Establish `hx' : x ≫ E.q = 1` using `hx`. Conclude with `⟨hk.lift x (toUnit _) (by rw [hx', Hom.one_def]), hk.lift_fst _ _ _⟩`.
+
+Use `haveI : IsDomain Γ((𝟙_ (Over (Sp K))).left, ⊤) := inferInstanceAs (IsDomain Γ(Sp K, ⊤)) haveI := finite_chars_pow_eq_one E.X Γ((𝟙_ (Over (Sp K))).left, ⊤) hn`. Set `e` to `splitTorusPointsEquiv (Sp K) E.X (𝟙_ (Over (Sp K)))`. Use `Finite.of_injective (fun t => (⟨e t.1, by rw [← map_pow, t.2, map_one]⟩ : {t : Multiplicative E.X →* Γ((𝟙_ (Over (Sp K))).left, ⊤)ˣ // t ^ n = 1})) ?_` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (e.injective (congrArg Subtype.val h))`.
+
+Introduce `Z π _ G _ _ _ w hw haveI : Finite (G.left.residueField w) := (jacobson_closedPoints_tools_int G.left (G.hom ≫ π)).2.1 w hw`. Set `t₀ : Sp (G.left.residueField w) ⟶ Z` to `G.left.fromSpecResidueField w ≫ G.hom`. Use `haveI := finite_points_over π G (G.left.residueField w) t₀`. Set `x₀ : Over.mk t₀ ⟶ G` to `Over.homMk (G.left.fromSpecResidueField w) rfl`. Use `⟨Nat.card (Over.mk t₀ ⟶ G), Nat.card_pos, fun K _ t x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨z, φ⟩, hz⟩` from `(Scheme.SpecToEquivOfField K G.left).symm.surjective x.left`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hz`. Choose the witnesses or unpack the hypotheses as in `rfl : z = w := by`. Establish `: x.left (default : Sp K) ∈ ({w} : Set G.left)` using `hx ▸ Set.mem_range_self _`. Rewrite `this` using `[← hz]`.
+
+Establish `h2 : (Spec.map φ ≫ G.left.fromSpecResidueField z) (default : Sp K) ∈ Set.range (G.left.fromSpecResidueField z)` using `⟨_, rfl⟩`. Rewrite `h2` using `[Scheme.range_fromSpecResidueField]`. Conclude with `h2.symm.trans this`. Set `u : Over.mk t ⟶ Over.mk t₀` to `Over.homMk (Spec.map φ) (by`. Express the relevant statement in the definitionally equal form `Spec.map φ ≫ G.left.fromSpecResidueField z ≫ G.hom = t`.
+
+Rewrite using `[← Category.assoc, hz]`. Conclude with `Over.w x)`. Establish `hu : x = u ≫ x₀` using `Over.OverMorphism.ext hz.symm`. Rewrite using `[hu, ← comp_pow_points, pow_card_eq_one', MonObj.comp_one]`.
+-/
 theorem semiAbelian_torsion_finite_and_closedPoint_finiteOrder : (∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, 1 ≤ n → Finite {x : 𝟙_ (Over (Sp K)) ⟶ B // x ^ n = 1}) → (∀ (K : Type) [Field K] [IsAlgClosed K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G], Nonempty (TorusExtension G) → ∀ n : ℕ, 1 ≤ n → Finite {x : 𝟙_ (Over (Sp K)) ⟶ G // x ^ n = 1}) ∧ (∀ (Z : Scheme.{0}) (π : Z ⟶ Sp ℤ) [LocallyOfFiniteType π] (G : Over Z) [GrpObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] (w : G.left), IsClosed ({w} : Set G.left) → ∃ n : ℕ, 1 ≤ n ∧ ∀ (K : Type) [Field K] (t : Sp K ⟶ Z) (x : Over.mk t ⟶ G), Set.range x.left = {w} → x ^ n = 1) := by
   intro hB
   refine ⟨?_, ?_⟩

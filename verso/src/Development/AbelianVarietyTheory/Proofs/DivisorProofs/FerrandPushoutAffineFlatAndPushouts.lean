@@ -5,6 +5,17 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits
 
 namespace GlobalTheory.SchlessingerAffine
 
+/- English proof (translation)
+Establish `hk : RingHom.ker (e.hom ≫ g ≫ e'.hom).hom = Ideal.map e.inv.hom (RingHom.ker g.hom)`. Use extensionality with `x`. Establish `hinj : Function.Injective e'.hom.hom` using `e'.commRingCatIsoToRingEquiv.injective`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Rewrite `hx` using `[RingHom.mem_ker]`. Establish `hx' : g.hom (e.hom.hom x) = 0`. Apply `hinj` to reduce the goal to its premises. Simplify using `using hx`. Establish `: x = e.inv.hom (e.hom.hom x)`.
+
+Express the relevant statement in the definitionally equal form `x = (e.hom ≫ e.inv).hom x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem _ hx'`. Introduce `hx`.
+
+Rewrite using `[RingHom.mem_ker]`. Establish `hle : Ideal.map e.inv.hom (RingHom.ker g.hom) ≤ RingHom.ker (e.hom ≫ g ≫ e'.hom).hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `z hz`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker] at hz ⊢`.
+
+Express the relevant statement in the definitionally equal form `(e'.hom.hom (g.hom ((e.inv ≫ e.hom).hom z))) = 0`. Simplify using `[hz]`. Conclude with `hle hx`. Rewrite using `[hk]`. Conclude with `h.map (Ideal.mapHom e.inv.hom)`.
+-/
 theorem nilKer {A B C D : CommRingCat.{0}} (e : A ≅ B) (g : B ⟶ C) (e' : C ≅ D)
     (h : IsNilpotent (RingHom.ker g.hom)) : IsNilpotent (RingHom.ker (e.hom ≫ g ≫ e'.hom).hom) := by
   have hk : RingHom.ker (e.hom ≫ g ≫ e'.hom).hom = Ideal.map e.inv.hom (RingHom.ker g.hom) := by
@@ -30,14 +41,23 @@ theorem nilKer {A B C D : CommRingCat.{0}} (e : A ≅ B) (g : B ⟶ C) (e' : C �
   rw [hk]
   exact h.map (Ideal.mapHom e.inv.hom)
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← Scheme.ΓSpecIso_naturality]`. Simplify using the standard rewrite rules.
+-/
 theorem appTop_eq (R S : CommRingCat.{0}) (f : R ⟶ S) :
     (Spec.map f).appTop = (Scheme.ΓSpecIso R).hom ≫ f ≫ (Scheme.ΓSpecIso S).inv := by
   rw [← Category.assoc, ← Scheme.ΓSpecIso_naturality]; simp
 
+/- English proof (translation)
+Rewrite using `[appTop_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_comp_appTop (R S : CommRingCat.{0}) (f : R ⟶ S) :
     (Scheme.ΓSpecIso R).inv ≫ (Spec.map f).appTop = f ≫ (Scheme.ΓSpecIso S).inv := by
   rw [appTop_eq]; simp
 
+/- English proof (translation)
+Rewrite using `[appTop_eq]`. Establish `h1` using `(Scheme.ΓSpecIso R).commRingCatIsoToRingEquiv.surjective`. Establish `h2` using `(Scheme.ΓSpecIso S).symm.commRingCatIsoToRingEquiv.surjective`. Conclude with `(h2.comp h).comp h1`.
+-/
 theorem surjTop {R S : CommRingCat.{0}} (f : R ⟶ S) (h : Function.Surjective f) :
     Function.Surjective (Spec.map f).appTop := by
   rw [appTop_eq]
@@ -45,11 +65,17 @@ theorem surjTop {R S : CommRingCat.{0}} (f : R ⟶ S) (h : Function.Surjective f
   have h2 := (Scheme.ΓSpecIso S).symm.commRingCatIsoToRingEquiv.surjective
   exact (h2.comp h).comp h1
 
+/- English proof (translation)
+Rewrite using `[appTop_eq]`. Conclude with `nilKer (Scheme.ΓSpecIso R) f (Scheme.ΓSpecIso S).symm h`.
+-/
 theorem nilTop {R S : CommRingCat.{0}} (f : R ⟶ S) (h : IsNilpotent (RingHom.ker f.hom)) :
     IsNilpotent (RingHom.ker (Spec.map f).appTop.hom) := by
   rw [appTop_eq]
   exact nilKer (Scheme.ΓSpecIso R) f (Scheme.ΓSpecIso S).symm h
 
+/- English proof (translation)
+Substitute `hO` using the available equality. Use `GlobalTheory.AffBaseChange.isPushout_appLE_of_isPullback_of_isAffine X X' S S' f g p q h inferInstance inferInstance W hW` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.app_eq_appLE]`. Then use the resulting hypothesis.
+-/
 theorem pushout_of_eq (X X' S S' : Scheme.{0}) (f : X' ⟶ X) (g : X' ⟶ S') (p : X ⟶ S) (q : S' ⟶ S)
     (h : IsPullback f g p q) [IsAffine S] [IsAffine S'] (W : X.Opens) (hW : IsAffineOpen W)
     (O : X'.Opens) (hO : f ⁻¹ᵁ W = O) :
@@ -64,6 +90,15 @@ end GlobalTheory.SchlessingerAffine
 
 open GlobalTheory.SchlessingerAffine in
 
+/- English proof (translation)
+Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hs₁ hs₂ hn₁ hn₂ Y₁ Y₂ Y₀ p₁ p₂ p₀ i₁ i₂ h₁ h₂ hF₁ hF₂ Y j₁ j₂ hw hj₁ hj₂ hV y hy₁ hy₂ V hVa`. Establish `hU₁ : IsAffineOpen (j₁ ⁻¹ᵁ V)` using `hVa.preimage j₁`. Establish `hU₂ : IsAffineOpen (j₂ ⁻¹ᵁ V)` using `hVa.preimage j₂`. Establish `hPT : IsPullback (Spec.map f₁).appTop (Spec.map f₂).appTop (Spec.map g₁).appTop (Spec.map g₂).appTop` using `IsPullback.of_iso hP (Scheme.ΓSpecIso P).symm (Scheme.ΓSpecIso R₁).symm (Scheme.ΓSpecIso R₂).symm (Scheme.ΓSpecIso R₀).symm (inv_comp_appTop _ _ f₁).symm (inv_comp_appTop _ _ f₂).symm (inv_comp_appTop _ _ g₁).symm (inv_comp_appTop _ _ g₂).symm`. Establish `q₁` using `pushout_of_eq Y₁ Y₀ (Spec R₁) (Spec R₀) i₁ p₀ p₁ (Spec.map g₁) h₁ (j₁ ⁻¹ᵁ V) hU₁ ((i₁ ≫ j₁) ⁻¹ᵁ V) rfl`.
+
+Establish `q₂` using `pushout_of_eq Y₂ Y₀ (Spec R₂) (Spec R₀) i₂ p₀ p₂ (Spec.map g₂) h₂ (j₂ ⁻¹ᵁ V) hU₂ ((i₁ ≫ j₁) ⁻¹ᵁ V) (by rw [hw]; rfl)`. Establish `c₁ : y.appLE ⊤ V (fun _ _ => trivial) ≫ j₁.app V = (Spec.map f₁).appTop ≫ p₁.appLE ⊤ (j₁ ⁻¹ᵁ V) (fun _ _ => trivial)`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `(Scheme.Hom.appLE_comp_appLE j₁ y _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Scheme.Hom.appLE_comp_appLE p₁ (Spec.map f₁) _ _ _ _ _).symm` and prove the remaining obligations.
+
+Simplify using `only [hy₁]`. Establish `c₂ : y.appLE ⊤ V (fun _ _ => trivial) ≫ j₂.app V = (Spec.map f₂).appTop ≫ p₂.appLE ⊤ (j₂ ⁻¹ᵁ V) (fun _ _ => trivial)`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `(Scheme.Hom.appLE_comp_appLE j₂ y _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Scheme.Hom.appLE_comp_appLE p₂ (Spec.map f₂) _ _ _ _ _).symm` and prove the remaining obligations.
+
+Simplify using `only [hy₂]`. Conclude with `GlobalTheory.T.schlessinger_flat_fibreProduct _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hPT (surjTop g₁ hs₁) (surjTop g₂ hs₂) (nilTop g₁ hn₁) (nilTop g₂ hn₂) q₁ q₂ (p₁.flat_appLE (isAffineOpen_top _) hU₁ le_top) (p₂.flat_appLE (isAffineOpen_top _) hU₂ le_top) (hV V) c₁ c₂`.
+-/
 theorem GlobalTheory.SchlessingerAffine.flat_and_pushouts : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → Function.Surjective g₁ → Function.Surjective g₂ → IsNilpotent (RingHom.ker g₁.hom) → IsNilpotent (RingHom.ker g₂.hom) → ∀ (Y₁ Y₂ Y₀ : Scheme.{0}) (p₁ : Y₁ ⟶ Spec R₁) (p₂ : Y₂ ⟶ Spec R₂) (p₀ : Y₀ ⟶ Spec R₀) (i₁ : Y₀ ⟶ Y₁) (i₂ : Y₀ ⟶ Y₂), IsPullback i₁ p₀ p₁ (Spec.map g₁) → IsPullback i₂ p₀ p₂ (Spec.map g₂) → Flat p₁ → Flat p₂ → ∀ (Y : Scheme.{0}) (j₁ : Y₁ ⟶ Y) (j₂ : Y₂ ⟶ Y) (hw : i₁ ≫ j₁ = i₂ ≫ j₂), IsClosedImmersion j₁ → IsClosedImmersion j₂ → (∀ V : Y.Opens, IsPullback (j₁.app V) (j₂.app V) (i₁.appLE (j₁ ⁻¹ᵁ V) ((i₁ ≫ j₁) ⁻¹ᵁ V) le_rfl) (i₂.appLE (j₂ ⁻¹ᵁ V) ((i₁ ≫ j₁) ⁻¹ᵁ V) (by rw [hw]; exact le_rfl))) → ∀ (y : Y ⟶ Spec P), j₁ ≫ y = p₁ ≫ Spec.map f₁ → j₂ ≫ y = p₂ ≫ Spec.map f₂ → ∀ V : Y.Opens, IsAffineOpen V → (y.appLE ⊤ V (fun _ _ => trivial)).hom.Flat ∧ IsPushout (y.appLE ⊤ V (fun _ _ => trivial)) (Spec.map f₁).appTop (j₁.app V) (p₁.appLE ⊤ (j₁ ⁻¹ᵁ V) (fun _ _ => trivial)) ∧ IsPushout (y.appLE ⊤ V (fun _ _ => trivial)) (Spec.map f₂).appTop (j₂.app V) (p₂.appLE ⊤ (j₂ ⁻¹ᵁ V) (fun _ _ => trivial)) := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hs₁ hs₂ hn₁ hn₂ Y₁ Y₂ Y₀ p₁ p₂ p₀ i₁ i₂ h₁ h₂ hF₁ hF₂ Y j₁ j₂ hw
     hj₁ hj₂ hV y hy₁ hy₂ V hVa

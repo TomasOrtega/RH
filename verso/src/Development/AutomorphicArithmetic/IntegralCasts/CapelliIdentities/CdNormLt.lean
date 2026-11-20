@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLtOne
 
+/- English proof (translation)
+Introduce `l _ c R _ _ _ y a ha`. Conclude with `UpperTheory.Reformulated.B.NormLtOne.norm_lt_one y a ha`.
+-/
 theorem UpperTheory.Reformulated.B.Gs5b.cd_norm_lt :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (c : UpperTheory.V.HV.Coef l) {R : Type} [inst_1 : CommRing R] [inst_2 : IsLocalRing R]
       [inst_3 : Algebra (↥c.O) R] (y : R →ₐ[↥c.O] PadicAlgCl l),

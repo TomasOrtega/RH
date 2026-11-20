@@ -8,6 +8,11 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW
 
+/- English proof (translation)
+Introduce `D L C j ε τ φ hR i`. Distinguish the cases in `h : Thick D.host (letter τ φ i)`. Conclude with `Or.inl ((GlobalTheory.T.twistedDualOrbitPageWord_thick_iff_thickEmbedding L C j ε τ φ hR i).2 h)`. Use `right`. Establish `h1` using `(GlobalTheory.T.maxSizeAtNonThickPlace_le_and_bound L C hR).2 _ j h`.
+
+Use `show szT (hcAt D (letter τ φ i)) j (pos ε (letter τ φ i)) ≤ ((wHat D : ℕ) : ℤ)`. Unfold `szT wHat`. Use `push_cast`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem pageWord_thickOr : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) (τ φ : D.R.GG),
     Roomy L C → (pageWord L j ε τ φ).ThickOr := by
   intro D L C j ε τ φ hR i

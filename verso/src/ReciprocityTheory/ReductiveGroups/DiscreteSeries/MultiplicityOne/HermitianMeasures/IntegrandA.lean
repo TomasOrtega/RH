@@ -15,6 +15,9 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup
 
 end frob
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ig_uh_mul {k r : ℕ} {a b : Lap.Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -24,6 +27,11 @@ theorem ig_uh_mul {k r : ℕ} {a b : Lap.Mat k r} (ha : a ∈ UH (Hpk k r)) (hb 
   calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.ellA`. Use `split_ifs with h`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `continuous_finset_sum _ (fun j _ => ?_)` and prove the remaining obligations.
+
+Conclude with `Continuous.mul (by exact (continuous_apply j).comp (continuous_apply _)) continuous_const`.
+-/
 theorem ig_ellA_continuous (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     Continuous fun g : Lap.Mat k r => Formalism.MainNotions.S.ellA k r z g a := by
   unfold Formalism.MainNotions.S.ellA
@@ -33,6 +41,9 @@ theorem ig_ellA_continuous (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (a : Fi
     refine continuous_finset_sum _ (fun j _ => ?_)
     exact Continuous.mul (by exact (continuous_apply j).comp (continuous_apply _)) continuous_const
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.psiGen`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_const.mul (ig_ellA_continuous k r z a)))))`.
+-/
 theorem ig_psiGen_continuous (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) :
     Continuous (Formalism.MainNotions.S.psiGen k r z c) := by
   unfold Formalism.MainNotions.S.psiGen

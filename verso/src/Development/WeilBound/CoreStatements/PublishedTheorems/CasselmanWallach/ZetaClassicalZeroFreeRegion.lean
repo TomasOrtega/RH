@@ -6,11 +6,17 @@ open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Th
 
 namespace PositivityTheory.CW
 
+/- English proof (translation)
+Simplify using `[sobNorm, List.map_append, List.sum_append]`.
+-/
 private theorem sobNorm_append' {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx n → H →L[ℂ] H) (S A : List (List (Mx n))) (w : H) :
     sobNorm σ (S ++ A) w = sobNorm σ S w + sobNorm σ A w := by
   simp [sobNorm, List.map_append, List.sum_append]
 
+/- English proof (translation)
+Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `x hx`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`.
+-/
 private theorem sobNorm_nonneg' {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx n → H →L[ℂ] H) (S : List (List (Mx n))) (w : H) : 0 ≤ sobNorm σ S w := by
   apply List.sum_nonneg
@@ -18,6 +24,17 @@ private theorem sobNorm_nonneg' {n : ℕ} {H : Type} [NormedAddCommGroup H] [Inn
   obtain ⟨l, -, rfl⟩ := List.mem_map.1 hx
   exact norm_nonneg _
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ℕ, ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ 0 ≤ C ∧ ∀ w, Sm ε σ w → ∑ j ∈ s, p j (T w) ≤ C * sobNorm σ S w`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨[], 0, fun l hl => by simp at hl, le_rfl, fun w _ => by simp⟩`. Consider the case `insert j s hj ih`.
+
+Take `⟨S, C, hS, hC, hb⟩` from `ih`. Take `⟨S₁, C₁, hS₁, hb₁⟩` from `hT j`. Use `⟨S₁ ++ S, max C₁ 0 + C, ?_, by positivity, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Break down `List.mem_append.1 hl with h | h` into its components or cases.
+
+Conclude with `hS₁ l h`. Conclude with `hS l h`. Introduce `w hw`. Rewrite using `[Finset.sum_insert hj, sobNorm_append']`. Establish `h1` using `hb₁ w hw`.
+
+Establish `h2` using `hb w hw`. Establish `n1` using `sobNorm_nonneg' σ S₁ w`. Establish `n2` using `sobNorm_nonneg' σ S w`. Establish `h3 : C₁ * sobNorm σ S₁ w ≤ max C₁ 0 * sobNorm σ S₁ w` using `mul_le_mul_of_nonneg_right (le_max_left _ _) n1`. Use polynomial arithmetic with `[mul_nonneg (le_max_right C₁ 0) n2, mul_nonneg hC n1]`.
+
+Take `⟨s, C0, -, hle⟩` from `Seminorm.bound_of_continuous hp q hq`. Take `⟨S, C, hS, hC, hb⟩` from `key s`. Use `⟨S, C0 * C, hS, mul_nonneg C0.2 hC, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hsup : (s.sup p) (T w) ≤ ∑ j ∈ s, p j (T w)` using `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => apply_nonneg _ _) (fun i hi => Finset.single_le_sum (f := fun j => p j (T w)) (fun _ _ => apply_nonneg _ _) hi)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_sobNorm_bound_of_sobBdOn_continuous_seminorm {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E]
     (σ : Mx n → H →L[ℂ] H) (p : ℕ → Seminorm ℂ E) (hp : WithSeminorms p) (T : H →ₗ[ℂ] E)
@@ -58,6 +75,49 @@ private theorem exists_sobNorm_bound_of_sobBdOn_continuous_seminorm {n : ℕ} {�
     _ ≤ (C0 : ℝ) * (C * sobNorm σ S w) := mul_le_mul_of_nonneg_left (hb w hw) C0.2
     _ = C0 * C * sobNorm σ S w := by ring
 
+/- English proof (translation)
+Introduce `hD0 n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hDens T hT hSob w hw`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJu : IsUnit (Formalism.REAL.Jm ε)` using `⟨⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hU' : IsURepOn (Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε)) σ` using `hU`. Establish `hp` using `hπ.withSeminorms`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `k hk`. Establish `hkU : k ∈ Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε)` using `by show kᴴ * Formalism.REAL.Jm ε * k = Formalism.REAL.Jm ε`. Establish `h1 : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Rewrite using `[mul_assoc, ← hk.2, ← mul_assoc, ← Matrix.star_eq_conjTranspose, h1, one_mul]`. Establish `hkUJ : k ∈ UJset ε` using `hkU`.
+
+Set `T' : H →ₗ[ℂ] E` to `T ∘ₗ (σ k).toLinearMap - (π k).toLinearMap ∘ₗ T`. Establish `hT' : ∀ v, T' v = T (σ k v) - π k (T v)` using `fun _ => rfl`. Establish `hsob : SobBdOn ε σ (Sm ε σ) p T'`. Introduce `i`. Take `⟨S₁, C₁, hS₁, hb₁⟩` from `hSob i`.
+
+Take `⟨S₂, C₂, hS₂, hC₂, hb₂⟩` from `exists_sobNorm_bound_of_sobBdOn_continuous_seminorm σ p hp T hSob ((p i).comp (π k).toLinearMap) ((hp.continuous_seminorm i).comp (π k).continuous)`. Use `⟨S₁.map (List.map fun X => k⁻¹ * X * k) ++ S₂, max C₁ 0 + C₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Break down `List.mem_append.1 hl with h | h` into its components or cases. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 h`.
+
+Introduce `Y hY`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hY`. Conclude with `conj_mem_lie hJu hkU (hS₁ l' hl' X hX)`. Conclude with `hS₂ l h`. Introduce `v hv`.
+
+Establish `hsv : σ k v ∈ smooth (Formalism.REAL.Jm ε) σ` using `translate_mem hJu hU' hkU hv`. Establish `heq : sobNorm σ S₁ (σ k v) = sobNorm σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v`. Unfold `sobNorm`. Rewrite using `[List.map_map]`. Use `congr 1`.
+
+Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l hl`. Simplify using `only [Function.comp_apply]`. Rewrite using `[word_translate hJu hU' hkU hv l (fun X hX => hS₁ l hl X hX), hU.2.1 k hkUJ, List.foldr_map]`. Establish `h1` using `hb₁ (σ k v) hsv`.
+
+Establish `h2` using `hb₂ v hv`. Establish `n1` using `sobNorm_nonneg' σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v`. Establish `n2` using `sobNorm_nonneg' σ S₂ v`. Rewrite `h1` using `[heq]`. Rewrite using `[hT', sobNorm_append']`.
+
+Establish `h3 : (p i) (T (σ k v) - π k (T v)) ≤ p i (T (σ k v)) + p i (π k (T v))` using `map_sub_le_add _ _ _`. Establish `h4 : ((p i).comp (π k).toLinearMap) (T v) = p i (π k (T v))` using `rfl`. Rewrite `h2` using `[h4]`. Establish `h5 : C₁ * sobNorm σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v ≤ max C₁ 0 * sobNorm σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v` using `mul_le_mul_of_nonneg_right (le_max_left _ _) n1`. Use polynomial arithmetic with `[mul_nonneg (le_max_right C₁ 0) n2, mul_nonneg hC₂ n1]`.
+
+Establish `h0` using `hD0 n ε H σ hU hI E p π dπ hπ hDens T' hsob (fun v hv => by rw [hT', hT.1 k hk v hv, sub_self]) w hw`. Rewrite `h0` using `[hT']`. Conclude with `sub_eq_zero.1 h0`. Introduce `X hX`. Take `⟨L, hL⟩` from `exists_word hJu hU' [X] (fun Y hY => by`.
+
+Rewrite `hY` using `[List.mem_singleton]`. Rewrite using `[hY]`. Conclude with `hX)`. Set `f : smooth (Formalism.REAL.Jm ε) σ →ₗ[ℂ] E` to `T ∘ₗ (smooth (Formalism.REAL.Jm ε) σ).subtype ∘ₗ L - (dπ X).toLinearMap ∘ₗ T ∘ₗ (smooth (Formalism.REAL.Jm ε) σ).subtype`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f`.
+
+Establish `hgw : ∀ v (hv : Sm ε σ v), g v = T (dRep σ X v) - dπ X (T v)`. Introduce `v hv`. Establish `h` using `LinearMap.congr_fun hg ⟨v, hv⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h`. Rewrite using `[h]`.
+
+Simplify using `only [f, LinearMap.sub_apply, LinearMap.comp_apply, Submodule.subtype_apply, hL, List.foldr_cons, List.foldr_nil, ContinuousLinearMap.coe_coe]`. Establish `hsob : SobBdOn ε σ (Sm ε σ) p g`. Introduce `i`. Take `⟨S₁, C₁, hS₁, hb₁⟩` from `hSob i`. Take `⟨S₂, C₂, hS₂, hC₂, hb₂⟩` from `exists_sobNorm_bound_of_sobBdOn_continuous_seminorm σ p hp T hSob ((p i).comp (dπ X).toLinearMap) ((hp.continuous_seminorm i).comp (dπ X).continuous)`.
+
+Use `⟨S₁.map (fun l => l ++ [X]) ++ S₂, max C₁ 0 + C₂, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Break down `List.mem_append.1 hl with h | h` into its components or cases. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 h`. Introduce `Y hY`.
+
+Break down `List.mem_append.1 hY with h' | h'` into its components or cases. Conclude with `hS₁ l' hl' Y h'`. Rewrite using `[List.mem_singleton.1 h']`. Conclude with `hX`. Conclude with `hS₂ l h`.
+
+Introduce `v hv`. Establish `hdv : Sm ε σ (dRep σ X v)` using `dRep_mem hJu hU' hv hX`. Establish `heq : sobNorm σ S₁ (dRep σ X v) = sobNorm σ (S₁.map (fun l => l ++ [X])) v`. Unfold `sobNorm`. Rewrite using `[List.map_map]`.
+
+Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l _`. Simplify using `[List.foldr_append]`. Establish `h1` using `hb₁ (dRep σ X v) hdv`.
+
+Establish `h2` using `hb₂ v hv`. Establish `n1` using `sobNorm_nonneg' σ (S₁.map (fun l => l ++ [X])) v`. Establish `n2` using `sobNorm_nonneg' σ S₂ v`. Rewrite `h1` using `[heq]`. Rewrite using `[hgw v hv, sobNorm_append']`.
+
+Establish `h3 : (p i) (T (dRep σ X v) - dπ X (T v)) ≤ p i (T (dRep σ X v)) + p i (dπ X (T v))` using `map_sub_le_add _ _ _`. Establish `h4 : ((p i).comp (dπ X).toLinearMap) (T v) = p i (dπ X (T v))` using `rfl`. Rewrite `h2` using `[h4]`. Establish `h5 : C₁ * sobNorm σ (S₁.map (fun l => l ++ [X])) v ≤ max C₁ 0 * sobNorm σ (S₁.map (fun l => l ++ [X])) v` using `mul_le_mul_of_nonneg_right (le_max_left _ _) n1`. Use polynomial arithmetic with `[mul_nonneg (le_max_right C₁ 0) n2, mul_nonneg hC₂ n1]`.
+
+Establish `h0` using `hD0 n ε H σ hU hI E p π dπ hπ hDens g hsob (fun v hv => by rw [hgw v (hDens.1 v hv), hT.2 X hX v hv, sub_self]) w hw`. Rewrite `h0` using `[hgw w hw]`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem d3 : D3 := by
   intro hD0 n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hDens T hT hSob w hw
   have hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by

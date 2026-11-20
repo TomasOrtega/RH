@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.PendOf.CenKey
 
+/- English proof (translation)
+Establish `: (⨆ P ∈ s, D.naut.typeV i P) ≤ (⨆ P ∈ s, D.naut.typeV i P).comap (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c)`. Use `iSup₂_le fun P hP G hG => ?_` and prove the remaining obligations. Conclude with `le_biSup (D.naut.typeV i) hP (h i P c G hG)`. Conclude with `this hF`.
+-/
 theorem stable (D : D7) (i : D.nd.Loc) (h : OnMtPreservesTypeV D) (c : MonoidAlgebra ℂ (G0g D.nd))
     (s : Set (D.naut.AV i)) (F : D.what₂.Mt (D.nd.mu i) (D.nd.j i))
     (hF : F ∈ ⨆ P ∈ s, D.naut.typeV i P) :
@@ -16,6 +19,13 @@ theorem stable (D : D7) (i : D.nd.Loc) (h : OnMtPreservesTypeV D) (c : MonoidAlg
     exact le_biSup (D.naut.typeV i) hP (h i P c G hG)
   exact this hF
 
+/- English proof (translation)
+Establish `hu : u ∈ ⨆ x, heckeEig (D.nd.T i) (D.nd.act i) x`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hu using Submodule.iSup_induction' with`. Consider the case `mem x u hu`.
+
+Establish `hle : typeSum D i (some x) ≤ ⨆ P ∈ {P | D.naut.ptV i P ≠ none}, D.naut.typeV i P`. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Establish `hP' : D.naut.ptV i P = some x` using `hP`. Conclude with `le_biSup (D.naut.typeV i) (show P ∈ {P | D.naut.ptV i P ≠ none} from by simp [hP'])`. Conclude with `hle (S.eig x u hu)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+-/
 theorem phi_mem (D : D7) (i : D.nd.Loc) (S : Sec D i)
     (u : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
     S.Φ u ∈ ⨆ P ∈ {P | D.naut.ptV i P ≠ none}, D.naut.typeV i P := by
@@ -32,6 +42,11 @@ theorem phi_mem (D : D7) (i : D.nd.Loc) (S : Sec D i)
   | zero => rw [map_zero]; exact Submodule.zero_mem _
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
 
+/- English proof (translation)
+Introduce `D i S h c x y hxy`. Establish `hd : Disjoint (⨆ P ∈ {P | D.naut.ptV i P ≠ none}, D.naut.typeV i P) (⨆ P ∈ {P | D.naut.ptV i P = none}, D.naut.typeV i P)` using `(D.naut.typeV_indep i).disjoint_biSup_biSup (Set.disjoint_left.2 fun P h1 h2 => h1 h2)`. Establish `h1` using `Submodule.sub_mem _ (phi_mem D i S (D.nd.prMt i y)) (stable D i h c _ _ (phi_mem D i S (D.nd.prMt i x)))`. Establish `h2` using `Submodule.sub_mem _ (stable D i h c {P | D.naut.ptV i P = none} _ (S.split x)) (S.split y)`. Establish `e : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (D.what₂.jMt _ _ x - S.Φ (D.nd.prMt i x)) - (D.what₂.jMt _ _ y - S.Φ (D.nd.prMt i y)) = S.Φ (D.nd.prMt i y) - D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (S.Φ (D.nd.prMt i x))`.
+
+Rewrite using `[map_sub, hxy]`. Normalize the expressions using the abelian group laws. Rewrite `h2` using `[e]`. Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 hd _ h1 h2)`.
+-/
 theorem phi_onMt : ∀ (D : D7) (i : D.nd.Loc) (S : Sec D i), OnMtPreservesTypeV D →
     ∀ (c : MonoidAlgebra ℂ (G0g D.nd)) (x y : D.what₂.MtL (D.nd.mu i) (D.nd.j i)),
     D.what₂.jMt _ _ y = D.ntypes.onMt (D.nd.mu i) (D.nd.j i) c (D.what₂.jMt _ _ x) →

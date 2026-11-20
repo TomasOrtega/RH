@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.ThKCont
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM Φ hΦ`. Establish `hT` using `hM.triple`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Establish `hS : Φ ∈ schA F (Fin a' × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM' hΦ.1`. Establish `hcont` using `(((GlobalTheory.T.theta_basic_properties hKP.base) F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hP).1 Φ hS).1`.
+
+Take `⟨C, k, hC⟩` from `(GlobalTheory.T.schwartz_orbit_decay hKP) F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hP Φ hΦ.2 0`. Establish `hfin : G.M'.μ G.M'.dom < ⊤` using `GlobalTheory.UnitaryVol.measure_dom_lt_top F E σ B a a' G X om om' hKP.siegelSetUnitary hT`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : Fact (G.M'.μ G.M'.dom < ⊤) := ⟨hfin⟩`. Establish `hbd : ∀ g h, ‖theta om' Φ g h‖ ≤ C * (ht h : ℝ) ^ k` using `fun g h => by simpa using hC g h`.
+
+Establish `hC0 : 0 ≤ C`. Establish `h1 : (1 : ℝ) ≤ ht (1 : UA σ G.W.J)` using `by exact_mod_cast GlobalTheory.AdelicU.one_le_heightGL (F := F) (1 : UA σ G.W.J).1`. Establish `h2` using `(norm_nonneg _).trans (hbd 1 1)`. Conclude with `nonneg_of_mul_nonneg_left h2 (pow_pos (lt_of_lt_of_le one_pos h1) k)`. Establish `hht : Continuous fun h : UA σ G.W.J => (ht h : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`.
+
+Use `haveI : FirstCountableTopology (UA σ G.W.J) := by`. Establish `: SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))` using `inferInstanceAs (SecondCountableTopology (Fin (a + a') → Fin (a + a') → AE F E))`. Establish `: SecondCountableTopology (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (GL (Fin (a + a')) (AE F E))` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `: SecondCountableTopology (UA σ G.W.J)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`.
+
+Conclude with `@TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ this`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `h0`. Establish `hev : ∀ᶠ h in 𝓝 h0, (ht h : ℝ) < ht h0 + 1` using `hht.continuousAt.eventually (gt_mem_nhds (lt_add_one _))`. Unfold `Model.I`.
+
+Use `continuousAt_of_dominated (bound := fun _ => C * ((ht h0 : ℝ) + 1) ^ k) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun h => (hcont.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`. Use `filter_upwards [hev] with h hh`. Use `ae_of_all _ fun g => (hbd g h).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `integrable_const _`. Conclude with `ae_of_all _ fun g => (hcont.comp (continuous_const.prodMk continuous_id)).continuousAt`.
+-/
 theorem continuous_I_so : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

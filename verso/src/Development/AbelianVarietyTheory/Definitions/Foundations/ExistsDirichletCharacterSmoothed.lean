@@ -42,9 +42,15 @@ def PinChi (e : ℕ) (A : ValuationSubring Ω) (_W : R2 Ω l) (c : Coef l) (ν :
       ¬ Cg (n₀ + r) (∑ x ∈ (Finset.range (l ^ r)).filter (fun x => ¬ l ∣ x),
           φ (x : ZMod l) * ((x : Qbar l) ^ e) * mass L r ξ x) 0
 
+/- English proof (translation)
+Simplify using `[htv, hζ]`.
+-/
 example (j : Ω →+* Qbar l) (ζ : Ω) (hζ : ζ ≠ 0) (b : ℕ) : htv j ζ (fun _ : Unit => Polynomial.X) (fun _ => 1) b = 1 := by
   simp [htv, hζ]
 
+/- English proof (translation)
+Simplify using `[smoothedLayer]`.
+-/
 example (r : ℕ) (s : G ℚ Ω) (x : (ZMod (l ^ r))ˣ) :
     smoothedLayer (fun (_ : G ℚ Ω) (_ : (ZMod (l ^ r))ˣ) => (1 : Qbar l)) s x = -((l : ℕ) : Qbar l) := by
   simp [smoothedLayer]

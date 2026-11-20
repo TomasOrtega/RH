@@ -43,6 +43,9 @@ end Formalism.TruncatedSeriesCounting.WachCoordinates
 
 namespace Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h_coefficient_bound, expBound_statement, second_exponent_bound, first_sigma_valuation_bound, g_coeff_valuation_statement, g_ideal_valuation_statement, ramified_valuation_inequality, length_pi_zero_bound, column_chain_bound, submodule_generator_count, column_assembly_bound⟩`.
+-/
 theorem ramified_coefficient_chain_bounds : HCoef ∧ ExpBound ∧ MaxZeroExponentInequality ∧ TwoIntervalValuationSumBound ∧ LemmaGVal ∧ LemmaGIdeal ∧ RamifiedValuationInequality ∧ LenPi0 ∧ ColChain ∧ SubGen ∧ ColAssembly :=
   ⟨h_coefficient_bound, expBound_statement, second_exponent_bound, first_sigma_valuation_bound, g_coeff_valuation_statement, g_ideal_valuation_statement, ramified_valuation_inequality, length_pi_zero_bound, column_chain_bound, submodule_generator_count, column_assembly_bound⟩
 
@@ -66,6 +69,9 @@ end Formalism.TruncatedSeriesCounting.R9
 
 namespace Formalism.TruncatedSeriesCounting.X
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨q_numerical_identity, truncation_signature_bound, truncation_remainder_bound, arc_exponential_identity, saturation_criterion, unit_coefficient_power_mod⟩`.
+-/
 theorem pX_conditions : QaNum ∧ TruncSig ∧ TruncRem1 ∧ ArcExp ∧ SatA ∧ UnitCoefficientPowerMod :=
   ⟨q_numerical_identity, truncation_signature_bound, truncation_remainder_bound, arc_exponential_identity, saturation_criterion, unit_coefficient_power_mod⟩
 

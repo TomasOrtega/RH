@@ -16,6 +16,31 @@ noncomputable section
 
 namespace GlobalTheory.TensorLatO
 
+/- English proof (translation)
+Unfold `IsSBHalf at hΦ ⊢`. Take `⟨hΦs, kΦ, hkΦ, hΦi, hΦl⟩` from `hΦ`. Take `⟨N, hN, hΨi, hΨl⟩` from `GlobalTheory.SBUnif.uniform k Y Y' Ψ hΨ`. Establish `hud : ∀ u : WO S T, p.up FS FT (p.down FS FT u) = u.map (fun a => p.e * a)`. Introduce `u`.
+
+Unfold `Place.down Place.up`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.βγ, Matrix.one_mul, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Use extensionality with `i j`. Conclude with `p.ι_π _`. Establish `hupn : ∀ (n : ℕ) (X : Matrix Y Y' k), p.up FS FT (n • X) = n • p.up FS FT X` using `fun n X => map_nsmul (Witness.upH p FS FT) n X`.
+
+Establish `hdownn : ∀ (n : ℕ) (u : WO S T), p.down FS FT (n • u) = n • p.down FS FT u` using `fun n u => map_nsmul (Witness.downH p FS FT) n u`. Establish `hsupp : ∀ t, p.tensorAt FS FT Φ Ψ t ≠ 0 → Φ (t - p.up FS FT (p.down FS FT t)) ≠ 0 ∧ Ψ (p.down FS FT t) ≠ 0` using `fun t ht => ⟨left_ne_zero_of_mul ht, right_ne_zero_of_mul ht⟩`. Use `⟨fun t ht => ?_, kΦ * (N * B * A), Nat.mul_pos hkΦ (Nat.mul_pos (Nat.mul_pos hN hB) hA), fun u hu hhu t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨h1, -⟩` from `hsupp t ht`. Establish `hs` using `hΦs _ h1`.
+
+Establish `hw` using `Witness.up_half p FS FT (p.down FS FT t)`. Introduce `i j`. Establish `a1` using `hs i j`. Establish `a2` using `hw i j`. Establish `e1 : t i j = (t - p.up FS FT (p.down FS FT t)) i j + p.up FS FT (p.down FS FT t) i j`.
+
+Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[e1]`. Take the linear combination `(1 - p.e) * a1 + (1 - e) * a2 + (p.up FS FT (p.down FS FT t) i j + (t - p.up FS FT (p.down FS FT t)) i j) * he`. Use `set X := p.down FS FT u with hX`. Establish `hXL : p.up FS FT X ∈ L` using `by rw [hX, hud]; exact hMap u hu`.
+
+Establish `hYi : ∀ r q, (((kΦ * A : ℕ) : k) • ((B : k) • X)) r q ∈ 𝒪[k]` using `fun r q => by`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_mem (natCast_mem _ _) (hBL u hu r q)`. Establish `hd : p.down FS FT (t + (kΦ * (N * B * A)) • u) = p.down FS FT t + (kΦ * (N * B * A)) • X`. Rewrite using `[Witness.down_add, hdownn]`.
+
+Establish `e3 : p.down FS FT t + (kΦ * (N * B * A)) • X = p.down FS FT t + (N : k) • (((kΦ * A : ℕ) : k) • ((B : k) • X))`. Use `congr 1`. Rewrite using `[← Nat.cast_smul_eq_nsmul k, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set w : WO S T := (N * B * A) • (u - p.up FS FT X) with hw`. Establish `e2 : t + (kΦ * (N * B * A)) • u - p.up FS FT (p.down FS FT t + (kΦ * (N * B * A)) • X) = (t - p.up FS FT (p.down FS FT t)) + kΦ • w`. Rewrite using `[Witness.up_add, hupn, hw, smul_smul, nsmul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hwL : w ∈ L` using `nsmul_mem (sub_mem hu hXL) _`. Establish `hwH : IsHalf e w`. Introduce `i j`. Rewrite using `[hw, hX, hud, Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, nsmul_eq_mul]`. Take the linear combination `((N * B * A : ℕ) : AE D) * hhu i j - ((N * B * A : ℕ) : AE D) * u i j * he`.
+
+Use `show Φ (t + (kΦ * (N * B * A)) • u - p.up FS FT (p.down FS FT (t + (kΦ * (N * B * A)) • u))) * Ψ (p.down FS FT (t + (kΦ * (N * B * A)) • u)) = Φ (t - p.up FS FT (p.down FS FT t)) * Ψ (p.down FS FT t)`. Rewrite using `[hd, e2, e3, hΦi w hwL hwH, hΨi _ _ hYi]`. Take `⟨h1, h2⟩` from `hsupp t ht`. Establish `a1` using `hΦl _ h1`. Establish `a2 : A • p.up FS FT (N • p.down FS FT t) ∈ L` using `hAL _ fun r q => by`.
+
+Rewrite using `[Matrix.smul_apply, nsmul_eq_mul]`. Conclude with `hΨl _ h2 r q`. Rewrite `a2` using `[hupn]`. Establish `e1 : (kΦ * (N * B * A)) • t = (N * B * A) • (kΦ • (t - p.up FS FT (p.down FS FT t))) + kΦ • (B • (A • (N • p.up FS FT (p.down FS FT t))))`. Rewrite using `[smul_smul, smul_smul, smul_smul, smul_smul, mul_comm (N * B * A) kΦ, show kΦ * B * A * N = kΦ * (N * B * A) by ring, ← nsmul_add, sub_add_cancel]`.
+
+Rewrite using `[e1]`. Conclude with `add_mem (nsmul_mem a1 _) (nsmul_mem (nsmul_mem a2 B) kΦ)`.
+-/
 theorem isSBHalf_tensorAt_of_bounds {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : Place D k) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (L : AddSubgroup (WO S T))
@@ -101,6 +126,29 @@ noncomputable section
 
 namespace GlobalTheory.TensorLatO
 
+/- English proof (translation)
+Introduce `D ψ S T M M' hS hT P e he Φ hΦ Ψ hΨ`. Use `set L := latO S T (M : Set (Fin S.rank → D.host.E)) (M' : Set (Fin T.rank → D.host.E)) fun _ => True with hL`. Use `set q := P.q with hq`. Establish `hee : q.e * q.e = q.e` using `q.split.1`. Establish `hMap : ∀ u ∈ L, u.map (fun a => (ofSplit q).e * a) ∈ L` using `fun u hu => by`.
+
+Establish `h` using `GlobalTheory.SplitScalar.idem_smul_mem (LS := (M : Set (Fin S.rank → D.host.E))) (LT := (M' : Set (Fin T.rank → D.host.E))) hee u hu`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Both sides reduce to the same expression. Take `⟨N₀, hN₀, h₀⟩` from `GlobalTheory.FinPl.RdInt.exists_nat_mul_mem_fin (Sum.elim (fun x : Fin T.rank × P.Y => P.FT.β x.1 x.2) (fun x : P.Y' × Fin S.rank => P.FS.γ x.1 x.2))`.
+
+Take `⟨K, hK, hmul⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO (S := S) (T := T) hS.1 hT.1`. Establish `hAL : ∀ X : Matrix P.Y P.Y' P.k, (∀ r q, X r q ∈ 𝒪[P.k]) → (K * (N₀ * N₀)) • (ofSplit q).up P.FS P.FT X ∈ L`. Introduce `X hX`. Establish `hent` using `GlobalTheory.FinPl.RdInt.entry_mem P.FT.β P.FS.γ (fun i a => h₀ (Sum.inl (i, a))) (fun a j => h₀ (Sum.inr (a, j))) X hX`. Establish `hh : IsHalf q.e ((N₀ * N₀) • (ofSplit q).up P.FS P.FT X)` using `fun i j => by`.
+
+Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm]`. Conclude with `congrArg _ (Witness.up_half (ofSplit q) P.FS P.FT X i j)`. Establish `hui : ∀ i j, toEAf D (((N₀ * N₀) • (ofSplit q).up P.FS P.FT X) i j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `i j`. Establish `h1 : ((N₀ * N₀) • (ofSplit q).up P.FS P.FT X) i j = q.sec (((N₀ * N₀ : ℕ) : P.k) * (P.FT.β * X * P.FS.γ) i j)`.
+
+Rewrite using `[← nsmul_eq_mul, map_nsmul]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `GlobalTheory.PlaceCoord.toEAf_mem ((q.int_iff _).1 (hent i j))`. Establish `h1` using `hmul _ (GlobalTheory.PlaceDatum.infPart_of_half (GlobalTheory.PlaceCoord.infPart_split q.split) hh) hui`.
+
+Rewrite using `[mul_nsmul']` and apply the resulting hypothesis. Take `⟨M₀, hM₀, hden⟩` from `GlobalTheory.PlaceDatum.exists_den_latO (S := S) (T := T) hS.1.fg hT.1.fg`. Take `⟨K₁, hK₁, h₁⟩` from `GlobalTheory.FinPl.RdBound.exists_nat_mul_mem_family (fun x : P.Y × Fin T.rank => P.FT.γ x.1 x.2)`. Take `⟨K₂, hK₂, h₂⟩` from `GlobalTheory.FinPl.RdBound.exists_nat_mul_mem_family (fun x : Fin S.rank × P.Y' => P.FS.β x.1 x.2)`. Establish `hBL : ∀ u ∈ L, ∀ i j, ((K₁ * M₀ * K₂ : ℕ) : P.k) * (ofSplit q).down P.FS P.FT u i j ∈ 𝒪[P.k]`.
+
+Introduce `u hu i j`. Establish `heu` using `GlobalTheory.SplitScalar.idem_smul_mem (LS := (M : Set (Fin S.rank → D.host.E))) (LT := (M' : Set (Fin T.rank → D.host.E))) hee u hu`. Establish `hint : ∀ a b, (M₀ : P.k) * q.pr (u a b) ∈ 𝒪[P.k]` using `fun a b => by`. Rewrite using `[q.int_iff]`. Establish `h1 : q.sec ((M₀ : P.k) * q.pr (u a b)) = (M₀ : AE D) * (q.e • u) a b`.
+
+Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, q.sec_pr]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, map_natCast]`.
+
+Conclude with `hden _ heu a b`. Express the relevant statement in the definitionally equal form `(_ : P.k) * (P.FT.γ * Matrix.map u q.pr * P.FS.β) i j ∈ 𝒪[P.k]`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `sum_mem fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `sum_mem fun a _ => ?_` and prove the remaining obligations. Establish `e : ((K₁ * M₀ * K₂ : ℕ) : P.k) * (P.FT.γ i a * Matrix.map u q.pr a b * P.FS.β b j) = ((K₁ : P.k) * P.FT.γ i a) * ((M₀ : P.k) * q.pr (u a b)) * ((K₂ : P.k) * P.FS.β b j)`. Rewrite using `[Matrix.map_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (h₁ (i, a)) (hint a b)) (h₂ (b, j))`. Conclude with `isSBHalf_tensorAt_of_bounds (ofSplit q) P.FS P.FT L e he hMap (K * (N₀ * N₀)) (K₁ * M₀ * K₂) (Nat.mul_pos hK (Nat.mul_pos hN₀ hN₀)) (Nat.mul_pos (Nat.mul_pos hK₁ hM₀) hK₂) hAL hBL Φ hΦ Ψ hΨ`.
+-/
 theorem isSBHalf_tensorAt_latO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (M : Lat S) (M' : Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (P : LocPl ψ S T M M') (e : AE D), e * P.q.e = 0 → ∀ Φ : WO S T → ℂ, IsSBHalf e (latO S T (M : Set _) (M' : Set _) fun _ => True) Φ → ∀ Ψ ∈ SB (Matrix P.Y P.Y' P.k), IsSBHalf (e + P.q.e) (latO S T (M : Set _) (M' : Set _) fun _ => True) ((ofSplit P.q).tensorAt P.FS P.FT Φ Ψ) := by
   classical
   intro D ψ S T M M' hS hT P e he Φ hΦ Ψ hΨ

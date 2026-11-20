@@ -12,6 +12,11 @@ section
 variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] [IsTopologicalGroup G]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator hS, ← integral_indicator hT, ← integral_mul_left_eq_self (T.indicator f) y]`. Use `congr 1`. Use extensionality with `x`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((h x).1 hx)]`.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h' => hx ((h x).2 h'))]`.
+-/
 private theorem setInt_shift {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (m : Measure G) [m.IsMulLeftInvariant]
     (f : G → E) (y : G) {S T : Set G} (hS : MeasurableSet S) (hT : MeasurableSet T) (h : ∀ x, x ∈ S ↔ y * x ∈ T) :
     ∫ x in S, f (y * x) ∂m = ∫ x in T, f x ∂m := by
@@ -22,6 +27,21 @@ private theorem setInt_shift {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   · rw [Set.indicator_of_mem hx, Set.indicator_of_mem ((h x).1 hx)]
   · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h' => hx ((h x).2 h'))]
 
+/- English proof (translation)
+Establish `hmeas : MeasurableSet (J : Set G)` using `hJo.measurableSet`. Establish `hint : IntegrableOn (fun j => π j v) (J : Set G) m` using `(π.continuous_orbit v).continuousOn.integrableOn_compact' hJ hmeas`. Establish `hcl : IsClosed (W : Set H)`. Establish `: (W : Set H) = ⋂ j ∈ J, {v | π j v = v}`. Use extensionality with `v`.
+
+Simplify using `[hW]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun j _ => isClosed_eq (π j).continuous continuous_id`. Establish `hA : (∫ j in (J : Set G), π j v ∂m) ∈ W`. Rewrite using `[hW]`.
+
+Introduce `j₀ hj₀`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint]`. Use `setInt_shift m (fun j => π j v) j₀ hmeas hmeas (fun x => by` as an intermediate fact. Simplify using `[Subgroup.mul_mem_cancel_left J hj₀])`. Simplify `this` using `[UnitaryRep.map_mul_apply]`.
+
+Establish `hin : ∀ w ∈ W, ⟪w, ∫ j in (J : Set G), π j v ∂m⟫_ℂ = ⟪w, v⟫_ℂ`. Introduce `w hw`. Rewrite using `[← integral_inner hint w]`. Establish `: ∀ j ∈ (J : Set G), ⟪w, π j v⟫_ℂ = ⟪w, v⟫_ℂ`. Introduce `j hj`.
+
+Rewrite using `[UnitaryRep.inner_map_right, (hW w).1 hw _ (J.inv_mem hj)]`. Rewrite using `[setIntegral_congr_fun hmeas this]`. Simplify using `[Measure.real, hm]`. Establish `hP : prj W v = ∫ j in (J : Set G), π j v ∂m`. Express the relevant statement in the definitionally equal form `W.topologicalClosure.starProjection v = _`.
+
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (Submodule.le_topologicalClosure _ hA) ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[hcl.submodule_topologicalClosure_eq]`. Rewrite using `[inner_sub_left, ← inner_conj_symm, ← inner_conj_symm _ w, hin w hw]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hP, integral_inner hint u]`.
+-/
 private theorem avg (π : UnitaryRep G H) (m : Measure G) [m.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts m]
     (J : Subgroup G) (hJ : IsCompact (J : Set G)) (hJo : IsOpen (J : Set G)) (hm : m J = 1)
     (W : Submodule ℂ H) (hW : ∀ v, v ∈ W ↔ ∀ j ∈ J, π j v = v) (u v : H) :
@@ -59,6 +79,33 @@ private theorem avg (π : UnitaryRep G H) (m : Measure G) [m.IsMulLeftInvariant]
     simp
   rw [hP, integral_inner hint u]
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ J) := QuotientGroup.discreteTopology hJo`. Use `set S : Set (G ⧸ J) := {c | ∃ k ∈ J, c = QuotientGroup.mk (k * x)} with hSdef`. Establish `hSfin : S.Finite`. Establish `e : S = (fun k : G => (QuotientGroup.mk (k * x) : G ⧸ J)) '' (J : Set G)`. Use extensionality with `c`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`.
+
+Rewrite using `[e]`. Conclude with `(hJ.image (QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const))).finite_of_discrete`. Use `set D : Set G := {g | ∃ a ∈ J, ∃ b ∈ J, g = a * x * b} with hDdef`. Set `P : G ⧸ J → Set G` to `fun c => QuotientGroup.mk ⁻¹' {c}`. Establish `hPo : ∀ c, IsOpen (P c)` using `fun c => (isOpen_discrete {c}).preimage QuotientGroup.continuous_mk`.
+
+Establish `hPmem : ∀ (c : G ⧸ J) (h : G), h ∈ (J : Set G) ↔ c.out * h ∈ P c`. Introduce `c h`. Establish `: (QuotientGroup.mk (c.out * h) : G ⧸ J) = c ↔ h ∈ J` using `by conv_lhs => rhs; rw [← QuotientGroup.out_eq' c]`. Rewrite using `[QuotientGroup.eq]`. Simplify using the standard rewrite rules.
+
+Conclude with `this.symm`. Establish `hD : D = ⋃ c ∈ hSfin.toFinset, P c`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.Finite.mem_toFinset, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨QuotientGroup.mk (a * x), ⟨a, ha, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (a * x * b) : G ⧸ J) = QuotientGroup.mk (a * x)`. Rewrite using `[QuotientGroup.eq]`. Simplify `J.inv_mem hb` using `[mul_assoc]`.
+
+Introduce and unpack `⟨c, ⟨k, hk, rfl⟩, hg⟩`. Establish `hg' : (QuotientGroup.mk g : G ⧸ J) = QuotientGroup.mk (k * x)` using `hg`. Use `QuotientGroup.eq.1 hg'.symm` as an intermediate fact. Conclude with `⟨k, hk, _, this, by group⟩`. Establish `hDm : MeasurableSet D`.
+
+Rewrite using `[hD]`. Conclude with `Finset.measurableSet_biUnion _ fun c _ => (hPo c).measurableSet`. Establish `hcont : Continuous fun g => ⟪u, π g v⟫_ℂ` using `continuous_const.inner (π.continuous_orbit v)`. Establish `hPint : ∀ c, IntegrableOn (fun g => ⟪u, π g v⟫_ℂ) (P c) m`. Introduce `c`.
+
+Establish `e : P c = (fun h => c.out * h) '' (J : Set G)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨c.out⁻¹ * g, (hPmem c _).2 (by simpa using hg), by simp⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `(hPmem c h).1 hh`. Establish `hc : IsCompact (P c)`. Rewrite using `[e]`. Conclude with `hJ.image (continuous_const.mul continuous_id)`.
+
+Conclude with `hcont.continuousOn.integrableOn_compact' hc (hPo c).measurableSet`. Establish `hind : (fun g => D.indicator (1 : G → ℂ) g * ⟪u, π g v⟫_ℂ) = D.indicator fun g => ⟪u, π g v⟫_ℂ`. Use extensionality with `g`. Apply the tactic sequence `by_cases hg : g ∈ D <;> simp [hg]`. Rewrite using `[hind, integral_indicator hDm, hD, integral_biUnion_finset _ (fun c _ => (hPo c).measurableSet) ?_ (fun c _ => hPint c), finsum_mem_eq_finite_toFinset_sum _ hSfin, ContinuousLinearMap.sum_apply, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← setInt_shift m (fun g => ⟪u, π g v⟫_ℂ) c.out hJo.measurableSet (hPo c).measurableSet (hPmem c)]`. Rewrite using `[UnitaryRep.inner_map_right, ← avg π m J hJ hJo hm W hW]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [UnitaryRep.map_mul_apply]`.
+
+Conclude with `(UnitaryRep.inner_map_right π _ _ _).symm`. Introduce `c _ d _ hcd`. Use `Set.disjoint_left.2 fun g hg hg' => hcd ?_` and prove the remaining obligations. Conclude with `(hg : _ = c).symm.trans hg'`.
+-/
 private theorem main (π : UnitaryRep G H) (m : Measure G) [m.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts m]
     (J : Subgroup G) (hJ : IsCompact (J : Set G)) (hJo : IsOpen (J : Set G)) (hm : m J = 1)
     (W : Submodule ℂ H) (hW : ∀ v, v ∈ W ↔ ∀ j ∈ J, π j v = v) (x : G) (u v : H) :
@@ -134,6 +181,13 @@ private theorem main (π : UnitaryRep G H) (m : Measure G) [m.IsMulLeftInvariant
 end
 end UpperTheory.ConvolutionTheory.C.HopfExpansion
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ w _ _ m _ J x hJ hm u v`. Set `φ : Gw n w →* normOneGL K n` to `(MultiplicityOne.finProj K n).comp (AdelicGLn.localEmbedding w)`. Establish `hφ : Continuous φ` using `MultiplicityOne.continuous_finProj.comp (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).1`. Set `π : UnitaryRep (Gw n w) (LL μ)` to `(rightRegularRep (rationalGLOne K n) μ).compHom φ hφ`. Establish `hπ : ∀ x, π x = rhoL μ w x` using `fun _ => rfl`.
+
+Establish `hW : ∀ v, v ∈ fixL μ w J ↔ ∀ j ∈ J, π j v = v`. Introduce `v`. Simplify using `only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h j hj`.
+
+Simplify `h _ ⟨j, hj, rfl⟩` using `[hπ, rhoL]`. Introduce and unpack `h _ ⟨j, hj, rfl⟩`. Simplify `h j hj` using `[hπ, rhoL]`. Conclude with `HopfExpansion.main π m J hJ.1 hJ.2 hm (fixL μ w J) hW x u v`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.hopOloc :
     UpperTheory.ConvolutionTheory.C.HopOloc := by
   intro K _ _ n μ _ w _ _ m _ J x hJ hm u v

@@ -28,6 +28,9 @@ def ConeVol : Prop :=
   ∀ (k : ℕ) (T' : ℝ), 0 < T' → ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧
     ∀ E, MeasurableSet E → volume (coneSh k T' E) = c * hqI k T' E
 
+/- English proof (translation)
+Introduce `k T' hT'`. Take `⟨c1, h10, h1t, h1⟩` from `hH k T' hT'`. Take `⟨c2, h20, h2t, h2⟩` from `hV k T' hT'`. Use `⟨c1 / c2, ENNReal.div_pos h10 h2t |>.ne', ENNReal.div_ne_top h1t h20, fun E hE => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 E hE, h2 E hE, ← mul_assoc, ENNReal.div_mul_cancel h20 h2t]`.
+-/
 theorem coneForm_of (hH : HypTh) (hV : ConeVol) : ConeForm := by
   intro k T' hT'
   obtain ⟨c1, h10, h1t, h1⟩ := hH k T' hT'

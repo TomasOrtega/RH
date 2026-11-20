@@ -4,6 +4,23 @@ open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta
 
 namespace UpperTheory.Lit.Bur.CWCombo
 
+/- English proof (translation)
+Establish `hnn : ∀ (L : List (List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))) (v : H), 0 ≤ (L.map fun w => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ w v‖).sum := fun L v => List.sum_nonneg (by`. Introduce `x hx`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _)`. Establish `key : ∀ s : Finset ι, ∃ (C : ℝ) (Ws : List (List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))), (∀ w ∈ Ws, ∀ X ∈ w, PI.UpqRep.InLieHpk k r X) ∧ ∀ v ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, ‖∑ i ∈ s, l i v • b i‖ ≤ C * (Ws.map fun w => ‖PI.UpqRep.dsigW (k := k) (r := r) σ w v‖).sum := by`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, [], by simp, by simp⟩`. Consider the case `insert i s hi ih`. Take `⟨C, Ws, hW, hb⟩` from `ih`.
+
+Take `⟨S, D, hS, hD⟩` from `hl i`. Use `⟨|D| * ‖b i‖ + |C|, S ++ Ws, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw X hX`. Break down `List.mem_append.1 hw with h | h` into its components or cases. Conclude with `hS w h X hX`.
+
+Conclude with `hW w h X hX`. Introduce `v hv`. Establish `e : ‖l i v‖ ≤ D * (S.map fun w => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ w v‖).sum := by`. Use `hD v (hs v hv)` as an intermediate fact. Simplify `this` using `only [dsigW_eq]`.
+
+Establish `h1` using `hnn S v`. Establish `h2` using `hnn Ws v`. Establish `h3` using `hb v hv`. Rewrite using `[Finset.sum_insert hi, List.map_append, List.sum_append]`. Use `set P := (S.map fun w => ‖PI.UpqRep.dsigW (k := k) (r := r) σ w v‖).sum`.
+
+Use `set Q := (Ws.map fun w => ‖PI.UpqRep.dsigW (k := k) (r := r) σ w v‖).sum`. Establish `hbn : 0 ≤ ‖b i‖` using `norm_nonneg _`. Establish `e1 : ‖l i v • b i‖ ≤ |D| * ‖b i‖ * P`. Rewrite using `[norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e2 : ‖∑ j ∈ s, l j v • b j‖ ≤ |C| * Q` using `h3.trans (mul_le_mul_of_nonneg_right (le_abs_self C) h2)`. Establish `a1 : 0 ≤ |D| * ‖b i‖ * Q` using `mul_nonneg (mul_nonneg (abs_nonneg _) hbn) h2`. Establish `a2 : 0 ≤ |C| * P` using `mul_nonneg (abs_nonneg _) h1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨C, Ws, hW, hb⟩` from `key Finset.univ`.
+
+Conclude with `⟨C, Ws, hW, fun v hv => by rw [hB v hv]; exact hb v hv⟩`.
+-/
 theorem isCWCont_of_sobCont {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hs : ∀ v, v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ → SmoothVec (lieG (Formalism.QuantumDeterminants.Hpk k r)) σ v)
@@ -63,5 +80,8 @@ end UpperTheory.Lit.Bur.CWCombo
 
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont | exact UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont | (intros; apply UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont <;> assumption)`.
+-/
 theorem _root_.UpperTheory.Lit.Bur.casselmanWallachCont_finite_sum_sobolev_forms : ∀ {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} (hs : ∀ v, v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ → SmoothVec (lieG (Formalism.QuantumDeterminants.Hpk k r)) σ v) {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {ι : Type} [Fintype ι] (l : ι → H →ₗ[ℂ] ℂ) (b : ι → Wp) (hl : ∀ i, Sobolev₂ (lieG (Formalism.QuantumDeterminants.Hpk k r)) σ (l i)) {B : H → Wp} (hB : ∀ v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ, B v = ∑ i, l i v • b i), PI.BesselMapUniq.IsCWCont (k := k) (r := r) σ B := by
   first | exact @UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont | exact UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont | (intros; apply UpperTheory.Lit.Bur.CWCombo.isCWCont_of_sobCont <;> assumption)

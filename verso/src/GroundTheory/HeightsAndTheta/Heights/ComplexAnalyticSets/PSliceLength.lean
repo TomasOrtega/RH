@@ -9,6 +9,17 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Matrix ComplexSets
 
+/- English proof (translation)
+Introduce `n d J W u hJ hdim hu hW`. Establish `hWp : W.IsPrime` using `hW.1.1`. Take `⟨f₁, hf₁W, hf₁⟩` from `hR n d J W u hJ hdim hu hW`. Take `⟨f₂, hf₂W, hf₂⟩` from `hM n d J W u hJ hdim hu hW`. Establish `hf : f₁ * f₂ ∉ W` using `fun h => (hWp.mem_or_mem h).elim hf₁W hf₂W`.
+
+Establish `hUo : IsOpen {x : Fin n → ℂ | eval x (f₁ * f₂) ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval (p := f₁ * f₂)) continuous_const`. Use `⟨{x | eval x (f₁ * f₂) ≠ 0}, hUo, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `t ht`.
+
+Assume the negation of the conclusion as `hempty`. Rewrite `hempty` using `[Set.not_nonempty_iff_eq_empty]`. Apply `hf` to reduce the goal to its premises. Use `hV n W (f₁ * f₂) x hWp hx ?_` and prove the remaining obligations. Use `filter_upwards [ht] with y hyt hyW`.
+
+Assume the negation of the conclusion as `hne`. Establish `hy : y ∈ t ∩ (zeroSet W ∩ {x | eval x (f₁ * f₂) ≠ 0})` using `⟨hyt, hyW, hne⟩`. Rewrite `hy` using `[hempty]`. Conclude with `hy`. Introduce and unpack `q ⟨hqW, hqf⟩`.
+
+Rewrite `hqf` using `[Set.mem_ofPred_eq, map_mul, mul_ne_zero_iff]`. Take `⟨O₁, hO₁o, hO₁d, hO₁⟩` from `hf₁ q hqW hqf.1`. Take `⟨O₂, -, hO₂d, hO₂⟩` from `hf₂ q hqW hqf.2`. Conclude with `(hO₁d.inter_of_isOpen_left hO₂d hO₁o).mono fun L hL => ⟨hO₁ L hL.1, hO₂ L hL.2⟩`.
+-/
 theorem SliceLength.proof (hV : IndefiniteRowSideFullHecke.ComplexSets.VanishNearPoint.Statement)
     (hR : SliceReducedGeneral.Statement) (hM : SliceMultGeneral.Statement) :
     SliceLength.Statement := by

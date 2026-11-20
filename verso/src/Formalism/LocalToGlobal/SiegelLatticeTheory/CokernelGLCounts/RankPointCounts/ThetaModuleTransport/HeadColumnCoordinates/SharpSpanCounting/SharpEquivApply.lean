@@ -11,6 +11,9 @@ section O
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[L.O_def]`. Conclude with `hx.map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])`.
+-/
 theorem cj_mem_O (L : LocE F E) {x : E} (hx : x ∈ L.O) : L.cj x ∈ L.O := by
   rw [L.O_def] at hx ⊢
   exact hx.map ((L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])
@@ -23,12 +26,21 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+-/
 theorem h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+-/
 theorem h_smul_right (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm 0 x, H.h_zero_left, map_zero]`.
+-/
 theorem h_zero_right (x : V) : H.h x 0 = 0 := by
   rw [H.h_herm 0 x, H.h_zero_left, map_zero]
 
@@ -37,6 +49,9 @@ def hLm (y : V) : V →ₗ[E] E where
   map_add' x x' := H.h_add_left x x' y
   map_smul' a x := by simp [H.h_smul_left]
 
+/- English proof (translation)
+Use `map_sum (hLm H y) (fun i => c i • g i) s` as an intermediate fact. Simplify using `only [map_smul, smul_eq_mul] at this`. Conclude with `this`.
+-/
 theorem h_sum_left {ι : Type} (s : Finset ι) (c : ι → E) (g : ι → V) (y : V) :
     H.h (∑ i ∈ s, c i • g i) y = ∑ i ∈ s, c i * H.h (g i) y := by
   have := map_sum (hLm H y) (fun i => c i • g i) s
@@ -50,6 +65,9 @@ def pairing {ι : Type} (g : ι → V) : V →ₗ[E] (ι → E) where
 
 def gramH {ι : Type} (g : ι → V) : Matrix ι ι E := Matrix.of fun i j => H.h (g i) (g j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[pairing, gramH, Matrix.vecMul, dotProduct, h_sum_left H]`.
+-/
 theorem pairing_sum {ι : Type} [Fintype ι] (g : ι → V) (c : ι → E) :
     pairing H g (∑ i, c i • g i) = Matrix.vecMul c (gramH H g) := by
   funext j
@@ -60,6 +78,15 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 def pairSpan (g : ι → V) : Submodule.span E (Set.range g) →ₗ[E] (ι → E) :=
   (pairing H g).comp (Submodule.span E (Set.range g)).subtype
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 x.2`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 y.2`. Establish `h1 : Matrix.vecMul c (gramH H g) = Matrix.vecMul d (gramH H g)`.
+
+Rewrite using `[← pairing_sum, ← pairing_sum, hc, hd]`. Conclude with `hxy`. Establish `h2 : c = d`. Use `congrArg (fun w => Matrix.vecMul w (gramH H g)⁻¹) h1` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hG]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hc, ← hd, h2]`. Introduce `y`. Use `⟨⟨∑ i, (Matrix.vecMul y (gramH H g)⁻¹) i • g i, (Submodule.mem_span_range_iff_exists_fun E).2 ⟨_, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show pairing H g (∑ i, (Matrix.vecMul y (gramH H g)⁻¹) i • g i) = y`.
+
+Rewrite using `[pairing_sum, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hG, Matrix.vecMul_one]`.
+-/
 theorem pairSpan_bij (g : ι → V) (hG : IsUnit (gramH H g).det) :
     Function.Bijective (pairSpan H g) := by
   constructor
@@ -83,6 +110,9 @@ def pairEquiv (g : ι → V) (hG : IsUnit (gramH H g).det) :
     Submodule.span E (Set.range g) ≃ₗ[E] (ι → E) :=
   LinearEquiv.ofBijective (pairSpan H g) (pairSpan_bij H g hG)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairEquiv_apply (g : ι → V) (hG : IsUnit (gramH H g).det)
     (x : Submodule.span E (Set.range g)) (i : ι) : pairEquiv H g hG x i = H.h x (g i) := rfl
 
@@ -94,6 +124,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun i => h2 _ (Submodule.subset_span ⟨i, rfl⟩)⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `h2 i`. Consider the case `zero => rw [h_zero_right]`. Conclude with `M.L.O.zero_mem`.
+
+Consider the case `add x y _ _ hx hy => rw [h_add_right]`. Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Subring.smul_def, h_smul_right]`. Conclude with `M.L.O.mul_mem (cj_mem_O M.L a.2) hx`.
+-/
 theorem mem_MMsharp_iff {r : ℕ} (t : Term V M r) (u : V) :
     u ∈ MMsharp H t ↔ u ∈ Submodule.span E (Set.range (H.MMfam t)) ∧
       ∀ i, H.h u (H.MMfam t i) ∈ M.L.O := by
@@ -109,6 +146,9 @@ theorem mem_MMsharp_iff {r : ℕ} (t : Term V M r) (u : V) :
     | smul a x _ hx =>
       rw [Subring.smul_def, h_smul_right]; exact M.L.O.mul_mem (cj_mem_O M.L a.2) hx
 
+/- English proof (translation)
+Unfold `MMo`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Simplify using `only [Subring.smul_def]`.
+-/
 theorem mem_MMo_iff {r : ℕ} (t : Term V M r) (u : V) :
     u ∈ MMo H t ↔ ∃ c : Fin (r + 1) ⊕ Fin (r + 1) → M.L.O, ∑ i, (c i : E) • H.MMfam t i = u := by
   unfold MMo
@@ -141,6 +181,9 @@ def sharpEquiv {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det
     rw [pairEquiv_apply] at this
     exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sharpEquiv_apply {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det)
     (u : ↥(MMsharp H t)) (i) : (sharpEquiv H t hG u i : E) = H.h u (H.MMfam t i) := rfl
 
@@ -157,6 +200,15 @@ def relSub {r : ℕ} (t : Term V M r) : Submodule M.L.O (Fin (r + 1) ⊕ Fin (r 
     refine ⟨a • c, fun j => ?_⟩
     simp only [Pi.smul_apply, smul_eq_mul, Subring.coe_mul, hc j, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨c, hc⟩` from `(mem_MMo_iff H t u).1 hu`. Use `⟨c, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.coe_coe, sharpEquiv_apply, ← hc, h_sum_left]`. Introduce and unpack `⟨c, hc⟩`. Establish `hs : (∑ i, (c i : E) • H.MMfam t i) ∈ MMsharp H t`. Rewrite using `[mem_MMsharp_iff]`. Use `⟨Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h_sum_left, ← hc j]`. Conclude with `(y j).2`. Use `⟨⟨_, hs⟩, (mem_MMo_iff H t _).2 ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.coe_coe, sharpEquiv_apply, h_sum_left, ← hc j]`.
+-/
 theorem map_sharp_MMo {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det) :
     ((MMo H t).comap (MMsharp H t).subtype).map (sharpEquiv H t hG : _ →ₗ[M.L.O] _) =
       relSub H t := by
@@ -180,6 +232,9 @@ def ddEquiv {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det) :
     DDt H t ≃ₗ[M.L.O] (Fin (r + 1) ⊕ Fin (r + 1) → M.L.O) ⧸ relSub H t :=
   Submodule.Quotient.equiv _ _ (sharpEquiv H t hG) (map_sharp_MMo H t hG)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ddEquiv_mk {r : ℕ} (t : Term V M r) (hG : IsUnit (gramH H (H.MMfam t)).det)
     (u : ↥(MMsharp H t)) :
     ddEquiv H t hG (ddMk H t u) = Submodule.Quotient.mk (sharpEquiv H t hG u) := rfl

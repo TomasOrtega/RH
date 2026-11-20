@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.RowSizeClosing
 
+/- English proof (translation)
+Introduce `D h` and use `GlobalTheory.RowSatakeBound.rowSize_of_component D.nd D.naut h`.
+-/
 theorem rowSize_of_unitarySphericalComponent :
     ∀ (D : D7), GlobalTheory.RowSatakeBound.UnitarySphericalComponent D.nd D.naut → GlobalTheory.RowCopy.RowSize D :=
   fun D h => GlobalTheory.RowSatakeBound.rowSize_of_component D.nd D.naut h

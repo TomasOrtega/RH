@@ -9,13 +9,28 @@ open scoped TensorProduct
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by rintro _ ⟨γ, rfl⟩; exact (height_pos _).le⟩`.
+-/
 private theorem qht_bdd (g : GA E a) :
     BddBelow (Set.range fun γ : GL (Fin a) E => height (K := E) (ratGL E a γ * (retractOne g : KernelIndexFullLattice.G1 E a).1)) :=
   ⟨0, by rintro _ ⟨γ, rfl⟩; exact (height_pos _).le⟩
 
+/- English proof (translation)
+The claim follows from `le_ciInf fun _ => (height_pos _).le`.
+-/
 private theorem qht_nonneg (g : GA E a) : 0 ≤ qht g :=
   le_ciInf fun _ => (height_pos _).le
 
+/- English proof (translation)
+Establish `h0` using `KernelIndexFullLattice.brCusp_holds E a φ hφ`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `Reduction.exists_siegelSet (K := E) a`. Take `⟨C, hC⟩` from `exists_norm_le_height_pow_neg_siegel h0 hω hωB ht N`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, _, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hxe⟩` from `hsieg g.1`.
+
+Establish `hγx : AdelicGLn.diagonal E a γ * g.1 ∈ Reduction.normOneGL E a` using `mul_mem (Reduction.rationalGL_le_normOneGL ⟨γ, rfl⟩) g.2`. Establish `h` using `hC b hb ρ hρ hs kk hkk _ hγx hxe`. Rewrite `h` using `[h0.1.isLeftInvariant γ g.1]`. Establish `hp` using `height_pos (AdelicGLn.diagonal E a γ * g.1)`. Establish `hq : qht (E` using `E) (a := a) g.1 ≤ height (AdelicGLn.diagonal E a γ * g.1) := by`.
+
+Establish `h1` using `ciInf_le (qht_bdd (E := E) (a := a) g.1) γ`. Rewrite `h1` using `[retractOne_coe]`. Unfold `qht`. Rewrite using `[retractOne_coe]`. Conclude with `h1`.
+
+Rewrite `h` using `[le_mul_inv_iff₀ (pow_pos hp N)]`. Conclude with `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (qht_nonneg _) hq N) (norm_nonneg _)).trans h`.
+-/
 private theorem decay {φ : Sm E a} (hφ : IsCuspForm φ) (N : ℕ) :
     ∃ C : ℝ, ∀ g : KernelIndexFullLattice.G1 E a, ‖φ.1 g.1‖ * qht (E := E) (a := a) g.1 ^ N ≤ C := by
   have h0 := KernelIndexFullLattice.brCusp_holds E a φ hφ
@@ -37,6 +52,9 @@ private theorem decay {φ : Sm E a} (hφ : IsCuspForm φ) (N : ℕ) :
   rw [le_mul_inv_iff₀ (pow_pos hp N)] at h
   exact (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (qht_nonneg _) hq N) (norm_nonneg _)).trans h
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, Submodule.coe_add]`. Consider the case `tmul φ v => simp [ev, mul_comm]`.
+-/
 private theorem ev_cmp {d : ℕ} (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (g : GA E a) (i : Fin d) :
     ev m g i = (cmp i m).1 g := by
   induction m using TensorProduct.induction_on with
@@ -44,6 +62,9 @@ private theorem ev_cmp {d : ℕ} (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (g : GA E
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy, Submodule.coe_add]
   | tmul φ v => simp [ev, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp`.
+-/
 private theorem cmp_rTensor {d : ℕ} (T : Module.End ℂ (Sm E a)) (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (i : Fin d) :
     cmp i (T.rTensor _ m) = T (cmp i m) := by
   induction m using TensorProduct.induction_on with
@@ -51,6 +72,11 @@ private theorem cmp_rTensor {d : ℕ} (T : Module.End ℂ (Sm E a)) (m : Sm E a 
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul φ v => simp
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hm`. Consider the case `cons X l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, mem_tens]`. Introduce `i`.
+
+Rewrite using `[smA_apply, cmp_rTensor]`. Conclude with `π.stable (.lie X) _ (mem_tens.1 ih i)`.
+-/
 private theorem prodA_mem (π : CuspSub E a) (Ξ : AlgRep E a) (l : List (Lie E a)) (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))
     (hm : m ∈ tens Ξ.d π.V) : (l.map (smA Ξ)).prod m ∈ tens Ξ.d π.V := by
   induction l with
@@ -61,6 +87,11 @@ private theorem prodA_mem (π : CuspSub E a) (Ξ : AlgRep E a) (l : List (Lie E 
     rw [smA_apply, cmp_rTensor]
     exact π.stable (.lie X) _ (mem_tens.1 ih i)
 
+/- English proof (translation)
+Use `choose C hC using fun i => decay (π.cusp _ (mem_tens.1 hm i)) N`. Use `⟨∑ i, C i, fun g => ?_⟩` and prove the remaining obligations. Establish `hq : 0 ≤ qht (E` using `E) (a := a) g.1 ^ N := pow_nonneg (qht_nonneg _) N`. Establish `h1 : ‖ev m g.1‖ ≤ ∑ i, ‖(cmp i m).1 g.1‖`. Use `(pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun i _ => norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[ev_cmp]`. Conclude with `Finset.single_le_sum (f := fun i => ‖(cmp i m).1 g.1‖) (fun i _ => norm_nonneg _) (Finset.mem_univ i)`. Use `(mul_le_mul_of_nonneg_right h1 hq).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun i _ => hC i g`.
+-/
 private theorem decay_tens (π : CuspSub E a) {d : ℕ} (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (hm : m ∈ tens d π.V) (N : ℕ) :
     ∃ C : ℝ, ∀ g : KernelIndexFullLattice.G1 E a, ‖ev m g.1‖ * qht (E := E) (a := a) g.1 ^ N ≤ C := by
   choose C hC using fun i => decay (π.cusp _ (mem_tens.1 hm i)) N
@@ -76,6 +107,9 @@ private theorem decay_tens (π : CuspSub E a) {d : ℕ} (m : Sm E a ⊗[ℂ] (Fi
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a π Ξ q ω hω l X N`. Conclude with `decay_tens π _ (prodA_mem π Ξ l (ω X) (hω X)) N`.
+-/
 theorem UpperTheory.V.Lit.Geo.cuspRapid :
     CuspRapid := by
   intro E _ _ _ a π Ξ q ω hω l X N

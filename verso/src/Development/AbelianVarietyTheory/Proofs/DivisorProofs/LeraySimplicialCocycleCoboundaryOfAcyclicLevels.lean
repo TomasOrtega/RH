@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory.EtC.LerayInj
 
+/- English proof (translation)
+Take `⟨cl, -, hcl, hcl0, -⟩` from `GlobalTheory.T.etaleSpaceCohomology_presheaf_classes_as_cocycles R F`. Take `⟨-, -, -, -, -, hpos⟩` from `GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `_`. Conclude with `⟨β₀, h₀, fun p q hpq hp => (hpos E p (by omega)).eq_of_src _ _⟩`. Consider the case `succ k ih`. Introduce `hk`. Take `⟨β, hβ, hv⟩` from `ih (by omega)`.
+
+Establish `hqk : (((n - k : ℕ) : ℤ)) = (n : ℤ) - k` using `by omega`. Set `t : (free R).obj (E.obj (op ⦋k⦌)) ⟶ (res R F).X ((n - k : ℕ) : ℤ)` to `(chainsXIso R E k).inv ≫ β.v (-(k : ℤ)) ((n - k : ℕ) : ℤ) (by omega)`. Establish `ht : t ≫ (res R F).d ((n - k : ℕ) : ℤ) (((n - k : ℕ) : ℤ) + 1) = 0`. Establish `e` using `Cochain.congr_v hβ (-(k : ℤ)) (((n - k : ℕ) : ℤ) + 1) (by omega)`. Rewrite `e` using `[δ_v n N hN β (-(k : ℤ)) (((n - k : ℕ) : ℤ) + 1) (by omega) ((n - k : ℕ) : ℤ) (-(k : ℤ) + 1) (by omega) rfl, hc _ _ _ (by omega), hv (-(k : ℤ) + 1) (((n - k : ℕ) : ℤ) + 1) (by omega) (by omega), comp_zero, smul_zero, add_zero]`.
+
+Simplify using `only [t, Category.assoc, e, comp_zero]`. Establish `h0 : cl _ _ t ht = cl _ _ 0 zero_comp` using `(hH k (n - k) (by omega) (by omega) _).trans (hcl0 _ _).symm`. Take `⟨y, hy⟩` from `((hcl _ _ _ _ _ _).1 h0)`. Rewrite `hy` using `[zero_add]`. Set `γ : Cochain ((chains R).obj E) (res R F) ((n : ℤ) - 1)` to `Cochain.single (p := -(k : ℤ)) (q := ((n - k : ℕ) : ℤ) - 1) ((chainsXIso R E k).hom ≫ y) ((n : ℤ) - 1)`.
+
+Use `⟨β - δ ((n : ℤ) - 1) n γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_sub, δ_δ, sub_zero, hβ]`. Introduce `p q hpq hp`. Rewrite using `[Cochain.sub_v, Cochain.δ_single _ ((n : ℤ) - 1) n (by omega) (-(k : ℤ) - 1) ((n - k : ℕ) : ℤ) (by omega) (by omega), Cochain.add_v, Cochain.units_smul_v]`. Distinguish the cases in `hpk : p = -(k : ℤ)`.
+
+Substitute `hpk` using the available equality. Take `rfl : q = ((n - k : ℕ) : ℤ)` from `by omega`. Rewrite using `[Cochain.single_v, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), smul_zero, add_zero]`. Establish `hb : β.v (-(k : ℤ)) ((n - k : ℕ) : ℤ) hpq = (chainsXIso R E k).hom ≫ t`. Simplify using `only [t, Iso.hom_inv_id_assoc]`.
+
+Rewrite using `[hb, hy, Category.assoc, sub_self]`. Rewrite using `[hv p q hpq (by omega), Cochain.single_v_eq_zero _ _ _ _ _ hpk, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), smul_zero, add_zero, sub_zero]`.
+-/
 theorem peel (R : Type) [CommRing R] (F : Shv R) (E : Spc) (n : ℕ)
     (hH : ∀ k m : ℕ, 0 < m → k + m = n → ∀ y : H R (disc.obj (E.obj (op ⦋k⦌))) F m, y = 0)
     (N : ℤ) (hN : (n : ℤ) + 1 = N)
@@ -61,6 +76,29 @@ end GlobalTheory.EtC.LerayInj
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ F E n hH`. Take `⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩` from `GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `s ⟨z, hz0, hz⟩`. Rewrite `hz0` using `[CohomologyClass.mk_eq_zero_iff]`.
+
+Take `⟨m, hm, β, hβ⟩` from `hz0`. Establish `e` using `Cochain.congr_v hβ (-((0 : ℕ) : ℤ)) 0 (by simp)`. Establish `h1 : β.v (-((0 : ℕ) : ℤ)) (-1) (by omega) = 0` using `(hneg (-1) (by norm_num)).eq_of_tgt _ _`. Establish `h2 : ((chains R).obj E).d (-((0 : ℕ) : ℤ)) 1 = 0` using `(hpos E 1 (by norm_num)).eq_of_tgt _ _`. Rewrite `e` using `[δ_v m _ hm β _ 0 _ (-1) 1 (by omega) (by omega), h1, h2, zero_comp, zero_comp, smul_zero, add_zero]`.
+
+Establish `e' : (↑z : Cochain ((chains R).obj E) (res R F) ((0 : ℕ) : ℤ)).v (-((0 : ℕ) : ℤ)) 0 (by simp) = (chainsXIso R E 0).hom ≫ s ≫ resι R F`. Rewrite using `[show (↑z : Cochain ((chains R).obj E) (res R F) ((0 : ℕ) : ℤ)) = z.1 from rfl, hz, Cochain.single_v]`. Rewrite `e` using `[e']`. Establish `e2 : s ≫ resι R F = 0 ≫ resι R F`. Rewrite using `[zero_comp]`.
+
+Conclude with `(cancel_epi (chainsXIso R E 0).hom).1 (by rw [← e, comp_zero])`. Conclude with `(cancel_mono (resι R F)).1 e2`. Introduce and unpack `s ⟨z, hz0, hz⟩`. Rewrite `hz0` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, β₀, hβ₀⟩` from `hz0`.
+
+Take `rfl : m = (n : ℤ)` from `by push_cast at hm; omega`. Establish `hzv : ∀ (p q : ℤ) (hpq : p + ((n + 1 : ℕ) : ℤ) = q), (↑z : Cochain ((chains R).obj E) (res R F) ((n + 1 : ℕ) : ℤ)).v p q hpq = (Cochain.single (p` using `-((n + 1 : ℕ) : ℤ)) (q := 0) ((chainsXIso R E (n + 1)).hom ≫ s ≫ resι R F) ((n + 1 : ℕ) : ℤ)).v p q hpq := by`. Introduce `p q hpq`. Rewrite using `[show (↑z : Cochain ((chains R).obj E) (res R F) ((n + 1 : ℕ) : ℤ)) = z.1 from rfl, hz]`. Take `⟨β, hβ, hv⟩` from `LerayInj.peel R F E n hH ((n + 1 : ℕ) : ℤ) (by push_cast; rfl) z (fun p q hpq hp => by rw [hzv, Cochain.single_v_eq_zero _ _ _ _ _ hp]) β₀ hβ₀ n le_rfl`.
+
+Set `b` to `β.v (-(n : ℤ)) 0 (by omega)`. Establish `hb : b ≫ (res R F).d 0 1 = 0`. Establish `e` using `Cochain.congr_v hβ (-(n : ℤ)) 1 (by push_cast; omega)`. Rewrite `e` using `[δ_v (n : ℤ) _ (by push_cast; rfl) β (-(n : ℤ)) 1 _ 0 (-(n : ℤ) + 1) (by omega) rfl, hv (-(n : ℤ) + 1) 1 (by omega) (by omega), comp_zero, smul_zero, add_zero, hzv, Cochain.single_v_eq_zero _ _ _ _ _ (by omega)]`. Conclude with `e`.
+
+Use `haveI : Mono (ShortComplex.mk _ _ w).f := hmono`. Set `t' : ((chains R).obj E).X (-(n : ℤ)) ⟶ F` to `hex.lift b hb`. Establish `ht' : t' ≫ resι R F = b` using `hex.lift_f b hb`. Establish `e` using `Cochain.congr_v hβ (-((n + 1 : ℕ) : ℤ)) 0 (by omega)`. Establish `h1 : β.v (-((n + 1 : ℕ) : ℤ)) (-1) (by omega) = 0` using `(hneg (-1) (by norm_num)).eq_of_tgt _ _`.
+
+Rewrite `e` using `[δ_v (n : ℤ) _ (by push_cast; rfl) β _ 0 _ (-1) (-(n : ℤ)) (by omega) (by push_cast; omega), h1, zero_comp, zero_add, hzv, Cochain.single_v]`. Rewrite `e` using `[show β.v (-(n : ℤ)) 0 (by omega) = b from rfl, ← ht']`. Establish `hD : ((chainsN R).obj E).d (n + 1) n = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (SimplicialObject.δ E i)` using `AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq _ _`. Set `D : (free R).obj (E.obj (op ⦋n + 1⦌)) ⟶ (free R).obj (E.obj (op ⦋n⦌))` to `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (SimplicialObject.δ E i)`. Establish `hd : ((chains R).obj E).d (-((n + 1 : ℕ) : ℤ)) (-(n : ℤ)) = (chainsXIso R E (n + 1)).hom ≫ D ≫ (chainsXIso R E n).inv` using `(HomologicalComplex.extend_d_eq _ _ rfl rfl).trans (congrArg (fun D' => (chainsXIso R E (n + 1)).hom ≫ D' ≫ (chainsXIso R E n).inv) hD)`.
+
+Rewrite `e` using `[hd]`. Establish `hs : s = (((n + 1 : ℕ) : ℤ).negOnePow : ℤ) • (D ≫ (chainsXIso R E n).inv ≫ t')`. Apply `(cancel_epi (chainsXIso R E (n + 1)).hom).1` to reduce the goal to its premises. Apply `(cancel_mono (resι R F)).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← e]`.
+
+Simplify using `only [Units.smul_def, Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc]`. Use `⟨(((n + 1 : ℕ) : ℤ).negOnePow : ℤ) • ((chainsXIso R E n).inv ≫ t'), ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Simplify using `only [D, cobd, Preadditive.sum_comp, Preadditive.comp_zsmul, Preadditive.zsmul_comp, Finset.smul_sum, smul_smul, Category.assoc]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`.
+-/
 theorem leray_inj : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc) (n : ℕ),
     (∀ k m : ℕ, 0 < m → k + m = n → ∀ y : H R (disc.obj (E.obj (op ⦋k⦌))) F m, y = 0) →
     (∀ s : (free R).obj (E.obj (op ⦋0⦌)) ⟶ F, IsCls s 0 → s = 0) ∧

@@ -16,6 +16,9 @@ namespace GlobalTheory.Mem.GaloisStage
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `h : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_placesOver (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have h : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -24,6 +27,11 @@ theorem finite_placesOver (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p
   refine (Ideal.finite_factors h).subset fun v hv => ?_
   exact Ideal.dvd_span_singleton.2 hv
 
+/- English proof (translation)
+Establish `hfin` using `finite_placesOver F hl.out.ne_zero`. Establish `hun : UnramOutside (hfin.toFinset : Set (HeightOneSpectrum (𝓞 F))) (cycZ F Ω l)`. Rewrite using `[unramOutside_iff _ _ (continuous_cycZ F Ω l)]`. Introduce `v hv A hA σ hσ`. Establish `hv' : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal` using `by simpa [placesOver] using hv`.
+
+Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hv' hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨hfin.toFinset, hfin.coe_toFinset, fun v => placeOf Ω v.1, fun v => isPlaceOver_placeOf Ω v.1, QuotientGroup.lift _ (cycZ F Ω l) hun, MonoidHom.ext fun _ => rfl⟩⟩`.
+-/
 theorem nonempty_lData (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] : Nonempty (Formalism.GaloisCohomology.LData F Ω l) := by
   have hfin := finite_placesOver F hl.out.ne_zero
@@ -37,6 +45,9 @@ theorem nonempty_lData (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algeb
   exact ⟨⟨hfin.toFinset, hfin.coe_toFinset, fun v => placeOf Ω v.1, fun v => isPlaceOver_placeOf Ω v.1,
     QuotientGroup.lift _ (cycZ F Ω l) hun, MonoidHom.ext fun _ => rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.IsAlgebraic.trans ℚ F Ω`.
+-/
 theorem isAlgebraic_rat (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     [CharZero Ω] : Algebra.IsAlgebraic ℚ Ω :=
   Algebra.IsAlgebraic.trans ℚ F Ω
@@ -45,6 +56,11 @@ variable {R : Ranks}
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap H.E Ω).injective`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed H.E`. Establish `: Algebra.IsAlgebraic ℚ Ω` using `isAlgebraic_rat H.E Ω`. Establish `: IsAlgClosure ℚ Ω` using `⟨inferInstance, inferInstance⟩`. Establish `: IsGalois ℚ Ω` using `{}`.
+
+Set `j : Ω →+* ℂ` to `(IsAlgClosed.lift : Ω →ₐ[ℚ] ℂ).toRingHom`. Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) j ((starRingEnd ℂ).comp j) (Subsingleton.elim _ _)`. Establish `h : ∀ x, j (σ.symm x) = starRingEnd ℂ (j x)` using `fun x => RingHom.congr_fun hσ x`. Use `⟨σ.symm.toRingEquiv, ⟨j, h⟩, fun x => ⟨H.conj x, j.injective ?_⟩⟩` and prove the remaining obligations. Conclude with `(h _).trans (H.conjE_apply (j.comp (algebraMap H.E Ω)) x).symm`.
+-/
 theorem exists_isCMConjOm (H : Host R) (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] :
     ∃ c : Ω ≃+* Ω, IsCMConjOm H.E Ω c := by
   have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap H.E Ω).injective
@@ -59,12 +75,22 @@ theorem exists_isCMConjOm (H : Host R) (Ω : Type) [Field Ω] [Algebra H.E Ω] [
   refine ⟨σ.symm.toRingEquiv, ⟨j, h⟩, fun x => ⟨H.conj x, j.injective ?_⟩⟩
   exact (h _).trans (H.conjE_apply (j.comp (algebraMap H.E Ω)) x).symm
 
+/- English proof (translation)
+Use `ext1 x`. Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.mul_apply, H.conjE_apply, H.conjE_apply, Complex.conj_conj]`. Both sides reduce to the same expression.
+-/
 theorem conj_mul_conj (H : Host R) : H.conj * H.conj = 1 := by
   ext1 x
   apply H.φ₀.injective
   rw [AlgEquiv.mul_apply, H.conjE_apply, H.conjE_apply, Complex.conj_conj]
   rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `H.conjE_apply H.φ₀ H.sqrtMinusD`. Establish `h2 : H.φ₀ H.sqrtMinusD ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow, Host.sqrtMinusD, H.sqd_sq]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : H.φ₀ H.sqrtMinusD = starRingEnd ℂ (H.φ₀ H.sqrtMinusD)`. Rewrite using `[← h1]`. Conclude with `congrArg H.φ₀ (AlgEquiv.congr_fun h H.sqrtMinusD).symm`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h3.symm`. Rewrite `h2` using `[hr]`.
+
+Establish `h4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h2`. Establish `h5 : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 theorem conj_ne_one (H : Host R) : H.conj ≠ 1 := by
   intro h
   have h1 := H.conjE_apply H.φ₀ H.sqrtMinusD
@@ -80,6 +106,17 @@ theorem conj_ne_one (H : Host R) : H.conj ≠ 1 := by
   have h5 : (0 : ℝ) < H.d := by exact_mod_cast H.hyp.2.1.pos
   nlinarith [sq_nonneg r]
 
+/- English proof (translation)
+Use `letI : LinearOrder S := LinearOrder.lift' (Fintype.equivFin S) (Fintype.equivFin S).injective`. Set `T : Finset S` to `Finset.univ.filter fun x => x < c x`. Establish `h1 : T.card = Tᶜ.card`. Use `Finset.card_bij (fun x _ => c x) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [T, Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and, hc] at hx ⊢`. Conclude with `not_lt.2 hx.le`. Introduce `x _ y _ h`. Rewrite using `[← hc x, h, hc]`. Introduce `y hy`.
+
+Use `⟨c y, ?_, hc y⟩` and prove the remaining obligations. Simplify using `only [T, Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and, hc] at hy ⊢`. Conclude with `lt_of_le_of_ne (not_lt.1 hy) (hne y)`. Establish `h2` using `Finset.card_add_card_compl T`. Establish `h3 : T.card = n` using `by omega`.
+
+Set `e` to `(T.equivFinOfCardEq h3).symm`. Use `⟨fun i => (e i : S), Subtype.val_injective.comp e.injective, fun i j h => ?_⟩` and prove the remaining obligations. Establish `hi : (e i : S) < c (e i)` using `(Finset.mem_filter.1 (e i).2).2`. Establish `hj : (e j : S) < c (e j)` using `(Finset.mem_filter.1 (e j).2).2`. Establish `h' : c (e i) = e j` using `h`.
+
+Rewrite `hj` using `[← h', hc]`. Conclude with `lt_asymm hi hj`.
+-/
 theorem exists_transversal {S : Type} [Fintype S] (c : S → S) (hc : ∀ x, c (c x) = x) (hne : ∀ x, c x ≠ x)
     {n : ℕ} (hn : Fintype.card S = 2 * n) :
     ∃ e : Fin n → S, Function.Injective e ∧ ∀ i j, c (e i) ≠ e j := by
@@ -107,6 +144,21 @@ theorem exists_transversal {S : Type} [Fintype S] (c : S → S) (hc : ∀ x, c (
   rw [← h', hc] at hj
   exact lt_asymm hi hj
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hG : IsGalois ℚ H.E` using `H.galois`. Use `Formalism.FrobeniusOrbits.SplitK.span_prime p` as an intermediate fact. Establish `: IsGaloisGroup (H.E ≃ₐ[ℚ] H.E) ℤ (𝓞 H.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ H.E`. Establish `hp0 : Ideal.span {(p : ℤ)} ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Take `⟨⟨P, hP1, hP2⟩⟩` from `(inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)))`. Establish `hr : Set.range (fun σ : H.E ≃ₐ[ℚ] H.E => σ • P) = Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 H.E)`. Use extensionality with `Q`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`. Conclude with `⟨inferInstance, inferInstance⟩`. Introduce and unpack `⟨hQ1, hQ2⟩`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) P Q (H.E ≃ₐ[ℚ] H.E)`.
+
+Establish `hinj : Function.Injective (fun σ : H.E ≃ₐ[ℚ] H.E => σ • P)`. Rewrite `hs` using `[GlobalTheory.HostSplit.ncard_placesOver H.E hp, ← hr, ← IsGalois.card_aut_eq_finrank, ← Set.image_univ, ← Set.ncard_univ]`. Conclude with `Set.injOn_univ.1 (Set.injOn_of_ncard_image_eq hs)`. Establish `hcard : Fintype.card (H.E ≃ₐ[ℚ] H.E) = 2 * R.f`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, H.finrank_cmField, Ranks.f, Ranks.n]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he, he'⟩` from `exists_transversal (fun σ => H.conj * σ) (fun σ => by rw [← mul_assoc, conj_mul_conj, one_mul]) (fun σ h => conj_ne_one H (mul_eq_right.1 h)) hcard`. Use `⟨fun i => ⟨e i • P, inferInstance, Ideal.ne_bot_of_liesOver_of_ne_bot hp0 _⟩, fun i => ?_, fun i j h => he (hinj (congrArg HeightOneSpectrum.asIdeal h)), fun i j h => he' i j (hinj ?_)⟩` and prove the remaining obligations. Establish `h3 : (p : ℤ) ∈ (e i • P).under ℤ`. Rewrite using `[← Ideal.over_def (e i • P) (Ideal.span {(p : ℤ)})]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Establish `h4 : algebraMap ℤ (𝓞 H.E) ((p : ℕ) : ℤ) ∈ e i • P` using `h3`. Rewrite `h4` using `[map_natCast]`. Conclude with `h4`. Use extensionality with `y show y ∈ (H.conj * e i) • P ↔ y ∈ e j • P`.
+
+Use `h (H.conj⁻¹ • y) y (by` as an intermediate fact. Rewrite using `[← Formalism.TwoAdicCyclotomicDecomposition.odd_coe_smul, smul_inv_smul])`. Rewrite using `[mul_smul, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `this`.
+-/
 theorem exists_places (H : Host R) {p : ℕ} (hp : p.Prime)
     (hs : (placesOver H.E p).ncard = Module.finrank ℚ H.E) :
     ∃ e : Fin R.f → PlE H, (∀ i, e i ∈ placesOver H.E p) ∧ Function.Injective e ∧
@@ -153,13 +205,24 @@ theorem exists_places (H : Host R) {p : ℕ} (hp : p.Prime)
     rw [mul_smul, Ideal.mem_pointwise_smul_iff_inv_smul_mem]
     exact this
 
+/- English proof (translation)
+The claim follows from `Formalism.FrobeniusOrbits.SplitK.finrank_K H.hyp.2.1.pos (H.sqd_sq)`.
+-/
 theorem finrank_K (H : Host R) : Module.finrank ℚ H.K = 2 :=
   Formalism.FrobeniusOrbits.SplitK.finrank_K H.hyp.2.1.pos (H.sqd_sq)
 
+/- English proof (translation)
+The claim follows from `discr_eq_neg_of_sq_eq (finrank_K H) H.hyp.2.1.squarefree (by have := H.hyp.2.2.2.1; omega) (Formalism.FrobeniusOrbits.SplitK.bK_sq (H.sqd_sq))`.
+-/
 theorem discr_K (H : Host R) : NumberField.discr H.K = -(H.d : ℤ) :=
   discr_eq_neg_of_sq_eq (finrank_K H) H.hyp.2.1.squarefree (by have := H.hyp.2.2.2.1; omega)
     (Formalism.FrobeniusOrbits.SplitK.bK_sq (H.sqd_sq))
 
+/- English proof (translation)
+Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `hmod : ∀ m : ℕ, 1 < m → m ∣ H.QS * H.q * H.d → p % m = 1`. Introduce `m hm hdv`. Rewrite using `[← Nat.mod_mod_of_dvd p hdv, hc]`. Conclude with `Nat.mod_eq_of_lt hm`.
+
+Establish `h4 : p % 4 = 1` using `hmod 4 (by norm_num) ((((pow_dvd_pow 2 (Nat.le_add_left 2 R.e)).trans H.tower_dvd).mul_right _).mul_right _)`. Establish `hd : p % H.d = 1` using `hmod _ (by omega) (dvd_mul_left _ _)`. Rewrite using `[finrank_K, GlobalTheory.HostSplit.ncard_placesOver H.K hp]`. Conclude with `(Formalism.FrobeniusOrbits.SplitK.clause H.hyp.2.1 (by omega) (H.sqd_sq) p hp).2 (Or.inr ⟨by omega, GlobalTheory.HostSplit.jacobiSym_neg_eq_one (by omega) h4 hd⟩)`.
+-/
 theorem split_K (H : Host R) {p : ℕ} (hp : p.Prime) (hc : p % (H.QS * H.q * H.d) = 1) :
     (placesOver H.K p).ncard = Module.finrank ℚ H.K := by
   have hd16 : H.d % 16 = 7 := H.hyp.2.2.2.1
@@ -174,6 +237,11 @@ theorem split_K (H : Host R) {p : ℕ} (hp : p.Prime) (hc : p % (H.QS * H.q * H.
   exact (Formalism.FrobeniusOrbits.SplitK.clause H.hyp.2.1 (by omega) (H.sqd_sq) p hp).2
     (Or.inr ⟨by omega, GlobalTheory.HostSplit.jacobiSym_neg_eq_one (by omega) h4 hd⟩)
 
+/- English proof (translation)
+Take `⟨j⟩` from `GlobalTheory.WittFracComplex.nonempty_ringHom_complex g`. Set `W` to `WittVector g (AlgebraicClosure (ZMod g))`. Set `i : W →+* FractionRing W` to `algebraMap W (FractionRing W)`. Establish `j' : FractionRing W →+* ℂ` using `j`. Use `⟨(j'.comp i).toMonoidHom.comp (WittVector.teichmuller g), fun x y _ _ h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : j' (i (WittVector.teichmuller g x)) = j' (i (WittVector.teichmuller g y))` using `h`. Establish `h2` using `IsFractionRing.injective W (FractionRing W) (j'.injective h1)`. Establish `h3` using `congrArg (fun w : W => w.coeff 0) h2`. Simplify using `using h3`.
+-/
 theorem exists_teichC (g : ℕ) [Fact g.Prime] : ∃ t : Formalism.CyclotomicNorms.Fbar g →* ℂ,
     ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y := by
   obtain ⟨j⟩ := GlobalTheory.WittFracComplex.nonempty_ringHom_complex g
@@ -186,6 +254,11 @@ theorem exists_teichC (g : ℕ) [Fact g.Prime] : ∃ t : Formalism.CyclotomicNor
   have h3 := congrArg (fun w : W => w.coeff 0) h2
   simpa using h3
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `IntermediateField.adjoin.finiteDimensional hint` as an intermediate fact. Establish `: Finite (IntermediateField.adjoin (ZMod g) {x})` using `Module.finite_of_finite (ZMod g)`. Set `y : IntermediateField.adjoin (ZMod g) {x}` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun h => hx (congrArg Subtype.val h)`.
+
+Establish `h1 : IsOfFinOrder (Units.mk0 y hy)` using `isOfFinOrder_of_finite _`. Conclude with `((IntermediateField.adjoin (ZMod g) {x}).val.toMonoidHom.comp (Units.coeHom _)).isOfFinOrder h1`.
+-/
 theorem isOfFinOrder_fbar (g : ℕ) [Fact g.Prime] {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ≠ 0) : IsOfFinOrder x := by
   have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
   have := IntermediateField.adjoin.finiteDimensional hint
@@ -195,10 +268,30 @@ theorem isOfFinOrder_fbar (g : ℕ) [Fact g.Prime] {x : Formalism.CyclotomicNorm
   have h1 : IsOfFinOrder (Units.mk0 y hy) := isOfFinOrder_of_finite _
   exact ((IntermediateField.adjoin (ZMod g) {x}).val.toMonoidHom.comp (Units.coeHom _)).isOfFinOrder h1
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.RingHomOfIsIntegral.nonempty_ringHom l`.
+-/
 theorem nonempty_reduction (l : ℕ) [hl : Fact l.Prime] :
     Nonempty (integralClosure ℤ ℂ →+* Formalism.CyclotomicNorms.Fbar l) :=
   _root_.GlobalTheory.RingHomOfIsIntegral.nonempty_ringHom l
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_teichC g`. Take `⟨ρ⟩` from `nonempty_reduction l`. Establish `hint : ∀ x, t x ∈ integralClosure ℤ ℂ`. Introduce `x`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases.
+
+Establish `h : t 0 * t 0 = t 0` using `by rw [← map_mul, mul_zero]`. Break down `eq_or_ne (t 0) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_mem _`. Rewrite using `[(mul_eq_left₀ h0).1 h]`.
+
+Conclude with `one_mem _`. Use `IsIntegral.of_pow (isOfFinOrder_fbar g hx).orderOf_pos ?_` and prove the remaining obligations. Rewrite using `[← map_pow, pow_orderOf_eq_one, map_one]`. Conclude with `isIntegral_one`. Set `t' : Formalism.CyclotomicNorms.Fbar g →* integralClosure ℤ ℂ` to `t.codRestrict (integralClosure ℤ ℂ) hint`.
+
+Use `⟨ρ.toMonoidHom.comp t', fun x y hx hy cx cy h => ?_⟩` and prove the remaining obligations. Establish `hz : x * y⁻¹ ≠ 0` using `mul_ne_zero hx (inv_ne_zero hy)`. Use `set n := orderOf (x * y⁻¹) with hn`. Establish `hnpos : 0 < n` using `(isOfFinOrder_fbar g hz).orderOf_pos`. Establish `hcop : n.Coprime l`.
+
+Use `Nat.Coprime.coprime_dvd_left ?_ (Nat.Coprime.mul_left cx cy)` and prove the remaining obligations. Use `orderOf_dvd_of_pow_eq_one ?_` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, pow_mul, pow_orderOf_eq_one, mul_comm (orderOf x), pow_mul, pow_orderOf_eq_one]`. Simplify using the standard rewrite rules. Establish `hprim : IsPrimitiveRoot (t' (x * y⁻¹)) n`.
+
+Use `⟨by rw [← map_pow, hn, pow_orderOf_eq_one, map_one], fun m hm => orderOf_dvd_of_pow_eq_one ?_⟩` and prove the remaining obligations. Use `ht _ _ (pow_ne_zero _ hz) one_ne_zero ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_one]`. Conclude with `congrArg Subtype.val hm`. Establish `: NeZero ((n : ℕ) : Formalism.CyclotomicNorms.Fbar l)` using `⟨fun h0 => (Nat.Prime.coprime_iff_not_dvd hl.out).1 hcop.symm ((CharP.cast_eq_zero_iff _ l n).1 h0)⟩`.
+
+Establish `h1 : ρ (t' (x * y⁻¹)) = 1`. Establish `h2 : ρ (t' x) = ρ (t' y)` using `h`. Rewrite using `[map_mul, map_mul, h2, ← map_mul, ← map_mul, mul_inv_cancel₀ hy, map_one, map_one]`. Establish `h3 : IsPrimitiveRoot (1 : Formalism.CyclotomicNorms.Fbar l) n`. Rewrite using `[← isRoot_cyclotomic_iff, ← h1, ← map_cyclotomic n ρ]`.
+
+Conclude with `(hprim.isRoot_cyclotomic hnpos).map`. Establish `h4 : n = 1` using `h3.unique IsPrimitiveRoot.one`. Conclude with `(mul_inv_eq_one₀ hy).1 (orderOf_eq_one_iff.1 h4)`.
+-/
 theorem exists_iota (g l : ℕ) [Fact g.Prime] [hl : Fact l.Prime] : ∃ ι : Formalism.CyclotomicNorms.Fbar g →* Formalism.CyclotomicNorms.Fbar l,
     ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → (orderOf x).Coprime l → (orderOf y).Coprime l →
       ι x = ι y → x = y := by
@@ -244,12 +337,18 @@ section Records
 
 variable {H : Host R} {what₂ : Rows.Data R}
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Use `R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_r (R : Ranks) : 2 ≤ R.r := by
   have := R.two_le_m
   have := R.m_add_three_le_k
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression.
+-/
 theorem f_pos (R : Ranks) : 0 < R.f := by
   unfold Ranks.f Ranks.n
   positivity
@@ -260,12 +359,18 @@ def lData (H : Host R) (p : ℕ) [Fact p.Prime] : Formalism.GaloisCohomology.LDa
 def shaTrue (H : Host R) (p e : ℕ) : ℚ :=
   if hp : p.Prime then haveI : Fact p.Prime := ⟨hp⟩; ((Formalism.GaloisCohomology.shaLen (lData H p) (e : ℤ)).toNat : ℚ) else 0
 
+/- English proof (translation)
+Unfold `shaTrue`. Use `split_ifs`. Conclude with `Nat.cast_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem shaTrue_nonneg (H : Host R) (p e : ℕ) : 0 ≤ shaTrue H p e := by
   unfold shaTrue
   split_ifs
   · exact Nat.cast_nonneg _
   · exact le_rfl
 
+/- English proof (translation)
+Establish `h : (X - 1 : K[X]).Monic` using `by simpa using monic_X_sub_C (1 : K)`. Establish `h' : (X - 1 : K[X]).natDegree = 1` using `by simpa using natDegree_X_sub_C (1 : K)`. Conclude with `⟨h.pow n, by rw [h.natDegree_pow, h', mul_one]⟩`.
+-/
 theorem monic_unip {K : Type} [CommRing K] [Nontrivial K] (n : ℕ) :
     ((X - 1 : K[X]) ^ n).Monic ∧ ((X - 1 : K[X]) ^ n).natDegree = n := by
   have h : (X - 1 : K[X]).Monic := by simpa using monic_X_sub_C (1 : K)
@@ -368,11 +473,17 @@ def UnrPar.scale (a : UnrPar) (c : ℂ) (hc : c ≠ 0) : UnrPar :=
 def UnrPar.add (a b : UnrPar) : UnrPar :=
   ⟨a.1 + b.1, fun h => (Multiset.mem_add.1 h).elim a.2 b.2⟩
 
+/- English proof (translation)
+Establish `: Finite (𝓞 H.E ⧸ w.asIdeal)` using `Ring.HasFiniteQuotients.finiteQuotient w.ne_bot`. Establish `h : normV w ≠ 0` using `Nat.card_pos.ne'`. Conclude with `fun h0 => h (by exact_mod_cast ((Complex.cpow_eq_zero_iff _ _).1 h0).1)`.
+-/
 theorem normV_cpow_ne_zero (w : PlE H) (s : ℂ) : ((normV w : ℕ) : ℂ) ^ s ≠ 0 := by
   have : Finite (𝓞 H.E ⧸ w.asIdeal) := Ring.HasFiniteQuotients.finiteQuotient w.ne_bot
   have h : normV w ≠ 0 := Nat.card_pos.ne'
   exact fun h0 => h (by exact_mod_cast ((Complex.cpow_eq_zero_iff _ _).1 h0).1)
 
+/- English proof (translation)
+Simplify using `using normV_cpow_ne_zero w 1`.
+-/
 theorem normV_ne_zero (w : PlE H) : ((normV w : ℕ) : ℂ) ≠ 0 := by
   simpa using normV_cpow_ne_zero w 1
 
@@ -785,10 +896,16 @@ open Classical in
 def unipSer (K : Type) [Field K] (r : ℕ) (A : Type) [Ring A] (f : K[X]) : A :=
   if f = (X - 1) ^ r then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[coeff_zero_eq_eval_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem unip_coeff_zero (K : Type) [Field K] (r : ℕ) : ((X - 1 : K[X]) ^ r).coeff 0 ≠ 0 := by
   rw [coeff_zero_eq_eval_zero]
   simp
 
+/- English proof (translation)
+Establish `hfin : {f : K[X] | f.Monic ∧ f.natDegree = r ∧ f.coeff 0 ≠ 0}.Finite` using `(Set.finite_range (Formalism.CyclotomicNorms.monicOf (K := K) (N := r))).subset fun f hf => ⟨_, Formalism.CyclotomicNorms.Sqf.monicOf_coeffs f hf.1 hf.2.1⟩`. Use `⟨hfin.toFinset, fun f => hfin.mem_toFinset, ?_⟩` and prove the remaining obligations. Unfold `unipSer`. Rewrite using `[Finset.sum_ite_eq', if_pos]`. Conclude with `hfin.mem_toFinset.2 ⟨(monic_unip r).1, (monic_unip r).2, unip_coeff_zero K r⟩`.
+-/
 theorem unipSer_sum (K : Type) [Field K] [Finite K] (r : ℕ) (A : Type) [Ring A] :
     ∃ S : Finset K[X], (∀ f, f ∈ S ↔ f.Monic ∧ f.natDegree = r ∧ f.coeff 0 ≠ 0) ∧
       ∑ f ∈ S, unipSer K r A f = 1 := by
@@ -801,6 +918,11 @@ theorem unipSer_sum (K : Type) [Field K] [Finite K] (r : ℕ) (A : Type) [Ring A
   rw [Finset.sum_ite_eq', if_pos]
   exact hfin.mem_toFinset.2 ⟨(monic_unip r).1, (monic_unip r).2, unip_coeff_zero K r⟩
 
+/- English proof (translation)
+Use `if_neg fun h => ?_` and prove the remaining obligations. Establish `h1 : IsUnit (X - 1 : K[X])` using `hf _ (by rw [h, ← sq]; exact pow_dvd_pow _ hr)`. Establish `h2` using `natDegree_eq_zero_of_isUnit h1`. Establish `h3` using `(monic_unip (K := K) 1).2`. Rewrite `h3` using `[pow_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem unipSer_of_squarefree {K : Type} [Field K] {r : ℕ} (hr : 2 ≤ r) (A : Type) [Ring A] {f : K[X]}
     (hf : Squarefree f) : unipSer K r A f = 0 := by
   refine if_neg fun h => ?_
@@ -810,6 +932,9 @@ theorem unipSer_of_squarefree {K : Type} [Field K] {r : ℕ} (hr : 2 ≤ r) (A :
   rw [pow_one] at h3
   omega
 
+/- English proof (translation)
+Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.map_pow, Polynomial.map_sub, map_X, Polynomial.map_one, roots_pow, ← C_1, roots_X_sub_C, Multiset.nsmul_singleton]`.
+-/
 theorem rootsBar_unip (g : ℕ) [Fact g.Prime] (n : ℕ) :
     Formalism.CyclotomicNorms.rootsBar ((X - 1 : (ZMod g)[X]) ^ n) = Multiset.replicate n 1 := by
   unfold Formalism.CyclotomicNorms.rootsBar
@@ -893,6 +1018,13 @@ def nTypes (N : NData R H what₂) [IsEmpty N.Loc] (pl : ∀ k, N.PlG k → PlE 
   heckeLoc_gamma_places := fun i => isEmptyElim i
   chiT_tg := fun i => isEmptyElim i
 
+/- English proof (translation)
+Establish `hne : Nonempty (N.PlG 0)`. Rewrite using `[← Fintype.card_pos_iff, N.card_PlG]`. Conclude with `f_pos R`. Take `⟨v⟩` from `hne`. Use extensionality with `g`.
+
+Simplify using `only [NTypes.e0, Finsupp.equivFunOnFinite_symm_apply_apply, MonoidAlgebra.coeff_ofCoeff]`. Use `finsum_eq_zero_of_forall_eq_zero fun a => ?_` and prove the remaining obligations. Use `split_ifs with hg`. Use `Finset.prod_eq_zero (Finset.mem_univ ⟨0, v⟩) ?_` and prove the remaining obligations. Rewrite using `[h _ _ ((hg 0).1.2.1 v)]`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem idempotent_good_tuples_eq_zero {N : NData R H what₂} {A : NAut N} (T : NTypes A)
     (h : ∀ k f, Squarefree f → T.eSer k f = 0) : T.e0 = 0 := by
   have hne : Nonempty (N.PlG 0) := by
@@ -908,6 +1040,9 @@ theorem idempotent_good_tuples_eq_zero {N : NData R H what₂} {A : NAut N} (T :
     rfl
   · rfl
 
+/- English proof (translation)
+Use `⟨fun μ => ?_, fun μ j => ?_⟩` and prove the remaining obligations. Rewrite using `[h, h1, NTypes.onAmb, dif_pos (zero_mem _)]`. Conclude with `(map_zero (T.cenAmb μ)).symm`. Rewrite using `[h, h2, NTypes.onMt, dif_pos (zero_mem _)]`. Conclude with `(map_zero (T.cenMt μ j)).symm`.
+-/
 theorem good_tuple_condition_of_idempotent_zero {N : NData R H what₂} {A : NAut N} (T : NTypes A) (h : T.e0 = 0)
     (h1 : ∀ μ, what₂.eOp μ = 0) (h2 : ∀ μ j, what₂.eMt μ j = 0) : T.IdempotentMatchesAction := by
   refine ⟨fun μ => ?_, fun μ j => ?_⟩
@@ -918,6 +1053,17 @@ theorem good_tuple_condition_of_idempotent_zero {N : NData R H what₂} {A : NAu
 
 end Types
 
+/- English proof (translation)
+Establish `hsp` using `fun k => (GlobalTheory.HostSplit.split_of_one_mod B.R B.host _ (B.host.g_prime k) (B.g_cond k)).1`. Set `nd : NData B.R B.host W.what₂` to `nData B.host W.what₂ hsha hsp rfl`. Use `haveI : IsEmpty nd.Loc := inferInstanceAs (IsEmpty Empty)`. Use `choose pl h1 h2 h3 using fun k => exists_places B.host (B.host.g_prime k) (hsp k)`. Use `choose tg htg using fun (k : Fin 2) (v : nd.PlG k) => GlobalTheory.TameInertiaGen.exists_tameGenAt B.host.E nd.Om (pl k v) (nd.plOm.1 (pl k v)) (nd.plOm.2 _)`.
+
+Set `tw` to `nTw B.LL0 nd`. Use `haveI : IsEmpty tw.Tw := inferInstanceAs (IsEmpty Empty)`. Set `T` to `nTypes nd pl h1 h2 h3 B.g_cond B.BB_disj tg htg`. Establish `hT : T.e0 = 0` using `idempotent_good_tuples_eq_zero T fun k f hf => @unipSer_of_squarefree _ (@ZMod.instField _ ⟨B.host.g_prime k⟩) _ (two_le_r B.R) _ _ f hf`. Conclude with `⟨{ toLocStage := L nd := nd ntw := tw naut := nAut nd pl h1 h2 h3 nbc := nBC _ nexp := nExp tw ntypes := T nStage_trivialCharacter_compat := good_tuple_condition_of_idempotent_zero T hT hOp hMt nStage_trivialCharacter_coeff_eq := fun g => by`.
+
+Rewrite using `[hT]`. Conclude with `map_zero B.embLL`. Use `nth := nTh _`. Use `nbr := fun i => i.elim`. Use `nbr_ind := fun i => i.elim`.
+
+Use `self_good := fun i => i.elim`. Use `ntwbr := fun i => i.elim`. Use `ntwbr_ind := fun i => i.elim`. Use `loc_tie := fun i => i.elim`. Use `bc_tie := fun i => i.elim`.
+
+Use `rbar_tie := fun i => i.elim`. Use `mtpar_tie := fun i => i.elim`. Use `Z_tie := fun i => i.elim`. Use `Zgood_tie := fun i => i.elim`. Use `etaJ_tie := fun j w a b => (heta j w a b).trans Finset.sum_empty.symm }, rfl⟩`.
+-/
 theorem exists_nStage_of_rows (B : Base) (C : Cols B) (W : RowsRest B C) (L : LocStage)
     (hsha : ∀ p e, W.shaLen p e = shaTrue B.host p e) (heta : ∀ j w, 1 ≤ j → j ≤ B.R.m → W.etaJ j w = 0)
     (hOp : ∀ μ, W.eOp μ = 0) (hMt : ∀ μ j, W.eMt μ j = 0) :
@@ -973,10 +1119,16 @@ def adapt {B : Base} {C : Cols B} (W : RowsRest B C) : RowsRest B C :=
     eMt_sa := fun _ _ => LinearMap.IsSymmetric.zero
     eMt_LL := fun μ j _ => ⟨0, map_zero (W.jMt μ j)⟩ }
 
+/- English proof (translation)
+The claim follows from `exists_nStage_of_rows B C (adapt W) L (fun _ _ => rfl) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl)`.
+-/
 theorem exists_nStage_adapt (B : Base) (C : Cols B) (W : RowsRest B C) (L : LocStage) :
     ∃ N : NStage B C (adapt W), N.toLocStage = L :=
   exists_nStage_of_rows B C (adapt W) L (fun _ _ => rfl) (fun _ _ _ _ => rfl) (fun _ => rfl) (fun _ _ => rfl)
 
+/- English proof (translation)
+Introduce `B C W L` and use `⟨adapt W, rfl, exists_nStage_adapt B C W L⟩`.
+-/
 theorem exists_nStage : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (L : LocStage),
     ∃ W' : RowsRest B C, W' = adapt W ∧ ∃ N : NStage B C W', N.toLocStage = L :=
   fun B C W L => ⟨adapt W, rfl, exists_nStage_adapt B C W L⟩

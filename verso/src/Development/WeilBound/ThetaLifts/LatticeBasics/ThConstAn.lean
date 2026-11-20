@@ -26,6 +26,13 @@ def Ker (θ : UA σ X.J → UA σ W.J → ℂ) : Prop :=
 
 variable {θ : UA σ X.J → UA σ W.J → ℂ} {φ : UA σ W.J → ℂ} {μ : Measure (UA σ W.J)} {D : Set (UA σ W.J)}
 
+/- English proof (translation)
+Take `⟨-, hi, C, k, hC⟩` from `hθ`. Take `⟨C', hC'⟩` from `hφ.2.2 k`. Establish `h0 : 0 ≤ C'` using `le_trans (by positivity) (hC' 1)`. Use `⟨|C| * C', k, by positivity, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖θ g h‖ ≤ |C| * (ht g : ℝ) ^ k * (qht h : ℝ) ^ k`.
+
+Use `Monotone.map_ciInf_of_continuousAt (f := fun x : ℝ≥0 => |C| * (ht g : ℝ) ^ k * (x : ℝ) ^ k) (g := fun γ : ratU σ W.J => ht (γ.1 * h)) (by fun_prop) (fun x y hxy => by` as an intermediate fact. Establish `: (x : ℝ) ≤ y` using `hxy`. Simplify using `only`. Use the proof step `gcongr) (OrderBot.bddBelow _)`. Use `le_of_le_of_eq (le_ciInf fun γ => ?_) this.symm` and prove the remaining obligations.
+
+Rewrite using `[← hi 1 (one_mem _) γ.1 γ.2, one_mul, mul_assoc, ← mul_pow]`. Conclude with `(hC _ _).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Rewrite using `[norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Ker.bd (hθ : Ker θ) (hφ : IsRapid φ) : ∃ (K : ℝ) (k : ℕ), 0 ≤ K ∧ ∀ g h, ‖φ h * star (θ g h)‖ ≤ K * (ht g : ℝ) ^ k := by
   obtain ⟨-, hi, C, k, hC⟩ := hθ
   obtain ⟨C', hC'⟩ := hφ.2.2 k
@@ -45,14 +52,25 @@ theorem Ker.bd (hθ : Ker θ) (hφ : IsRapid φ) : ∃ (K : ℝ) (k : ℕ), 0 �
     _ ≤ |C| * (ht g : ℝ) ^ k * C' := mul_le_mul_of_nonneg_left (hC' h) (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `(hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable`.
+-/
 theorem Ker.meas (hθ : Ker θ) (hφ : IsRapid φ) (g) : AEStronglyMeasurable (fun h => φ h * star (θ g h)) (μ.restrict D) :=
   (hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable
 
+/- English proof (translation)
+Take `⟨K, k, -, hK⟩` from `hθ.bd hφ`. Conclude with `Measure.integrableOn_of_bounded hD.ne (hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable (Eventually.of_forall (hK g))`.
+-/
 theorem Ker.int (hθ : Ker θ) (hφ : IsRapid φ) (hD : μ D < ⊤) (g) : IntegrableOn (fun h => φ h * star (θ g h)) D μ := by
   obtain ⟨K, k, -, hK⟩ := hθ.bd hφ
   exact Measure.integrableOn_of_bounded hD.ne (hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable
     (Eventually.of_forall (hK g))
 
+/- English proof (translation)
+Take `⟨K, k, h0, hK⟩` from `hθ.bd hφ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Take `⟨Ω, hΩ, hg⟩` from `exists_compact_mem_nhds g`. Take `⟨C, hC⟩` from `hb Ω hΩ`. Use `continuousAt_of_dominated (bound := fun _ => K * (C : ℝ) ^ k) (Eventually.of_forall (hθ.meas hφ)) ?_ (integrableOn_const hD.ne) (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [hg] with x hx`. Use `Eventually.of_forall fun h => (hK x h).trans ?_` and prove the remaining obligations. Establish `: (ht x : ℝ) ≤ C` using `hC x hx`. Use `gcongr`. Conclude with `(continuous_const.mul (hθ.1.comp (Continuous.prodMk_left h)).star).continuousAt`.
+-/
 theorem Ker.cont [LocallyCompactSpace (UA σ X.J)] [FirstCountableTopology (UA σ X.J)]
     (hb : ∀ Ω : Set (UA σ X.J), IsCompact Ω → ∃ C : ℝ≥0, ∀ g ∈ Ω, ht g ≤ C) (hθ : Ker θ) (hφ : IsRapid φ) (hD : μ D < ⊤) :
     Continuous fun g => pet μ D φ (θ g) := by
@@ -68,18 +86,34 @@ theorem Ker.cont [LocallyCompactSpace (UA σ X.J)] [FirstCountableTopology (UA �
     gcongr
   · exact (continuous_const.mul (hθ.1.comp (Continuous.prodMk_left h)).star).continuousAt
 
+/- English proof (translation)
+Rewrite using `[theta, theta, ← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem theta_act (om : Rep σ X W) (Ψ : Fn F n d) (u g : UA σ X.J) (h x : UA σ W.J) :
     theta om (om (u, h) Ψ) g x = theta om Ψ (g * u) (x * h) := by
   rw [theta, theta, ← Module.End.mul_apply, ← map_mul]; rfl
 
+/- English proof (translation)
+Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hp _ _ hΦ) (hp _ _ hΨ)`.
+-/
 theorem theta_add {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F _) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _)
     (hΨ : Ψ ∈ schA F _) (g h) : theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h := by
   simp only [theta, map_add]
   exact thetaSum_add F (hp _ _ hΦ) (hp _ _ hΨ)
 
+/- English proof (translation)
+Simplify using `only [theta, map_smul, thetaSum_smul]`.
+-/
 theorem theta_smul (om : Rep σ X W) (c : ℂ) (Φ : Fn F n d) (g h) : theta om (c • Φ) g h = c * theta om Φ g h := by
   simp only [theta, map_smul, thetaSum_smul]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `P.subtype.exists_leftInverse_of_injective P.ker_subtype`. Take `⟨q', hq'⟩` from `(schA F (Fin n × Fin d)).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Establish `i` using `fun (a : Q) (b : Fn F n d) => (hk _ (q' b).2).int (hr _ (q a).2) hD g`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => th om μ D (C (q a)) (q' b) g) (fun a a' b => ?_) (fun c a b => ?_) (fun a b b' => ?_) fun c a b => ?_, fun Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Simplify using `only [th, pet, map_add, Submodule.coe_add, Pi.add_apply, add_mul]`.
+
+Conclude with `integral_add (i a b) (i a' b)`. Simplify using `only [th, pet, map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul, RingHom.id_apply]`. Simplify using `only [th, pet, map_add, Submodule.coe_add, theta_add hp (q' b).2 (q' b').2, star_add, mul_add]`. Conclude with `integral_add (i a b) (i a b')`. Simplify using `only [th, pet, map_smul, Submodule.coe_smul, theta_smul, star_mul', smul_eq_mul, mul_left_comm _ (star c), integral_const_mul]`.
+
+Both sides reduce to the same expression. Establish `e : q Φ = ⟨Φ, hΦ⟩` using `LinearMap.congr_fun hq ⟨Φ, hΦ⟩`. Establish `e' : q' Ψ = ⟨Ψ, hΨ⟩` using `LinearMap.congr_fun hq' ⟨Ψ, hΨ⟩`. Express the relevant statement in the definitionally equal form `th om μ D (C (q Φ)) (q' Ψ) g = _`. Rewrite using `[e, e']`.
+-/
 theorem exists_form {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F _)
     (hk : ∀ Ψ ∈ schA F (Fin n × Fin d), Ker (theta om Ψ)) (hD : μ D < ⊤) {Q : Type} [AddCommGroup Q] [Module ℂ Q]
     (P : Submodule ℂ Q) (C : Q →ₗ[ℂ] (UA σ W.J → ℂ)) (hr : ∀ Φ ∈ P, IsRapid (C Φ)) (g : UA σ X.J) :
@@ -102,6 +136,9 @@ theorem exists_form {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × F
     change th om μ D (C (q Φ)) (q' Ψ) g = _
     rw [e, e']
 
+/- English proof (translation)
+Simplify using `only [th, pet, theta_act, mul_one]`. Conclude with `PositivityTheory.ThKF.L2.integral_right hD (fun x => φ x * star (theta om Ψ g x)) (fun γ hγ x => by`. Rewrite using `[hφ.2.1 γ hγ, ← hθ.2.1 1 (one_mem _) γ hγ g x, one_mul]) h`.
+-/
 theorem th_right [μ.IsHaarMeasure] [μ.IsMulRightInvariant] [Countable (ratU σ W.J)] (hD : IsFundamentalDomain (ratU σ W.J) D μ)
     {om : Rep σ X W} {Ψ : Fn F n d} (hθ : Ker (theta om Ψ)) (hφ : IsRapid φ) (g h) :
     th om μ D (fun x => φ (x * h)) (om (1, h) Ψ) g = th om μ D φ Ψ g := by
@@ -109,6 +146,9 @@ theorem th_right [μ.IsHaarMeasure] [μ.IsMulRightInvariant] [Countable (ratU σ
   exact PositivityTheory.ThKF.L2.integral_right hD (fun x => φ x * star (theta om Ψ g x)) (fun γ hγ x => by
     rw [hφ.2.1 γ hγ, ← hθ.2.1 1 (one_mem _) γ hγ g x, one_mul]) h
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `((LinearMap.ker f).liftQ g h ∘ₗ f.quotKerEquivRange.symm.toLinearMap).exists_extend`. Use `⟨C, fun x => (LinearMap.congr_fun hC ⟨f x, x, rfl⟩).trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg ((LinearMap.ker f).liftQ g h) (f.quotKerEquivRange_symm_apply_image x ⟨x, rfl⟩)`.
+-/
 theorem exists_fac {P A Z : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup A] [Module ℂ A] [AddCommGroup Z] [Module ℂ Z]
     (f : P →ₗ[ℂ] A) (g : P →ₗ[ℂ] Z) (h : ∀ x, f x = 0 → g x = 0) : ∃ C : A →ₗ[ℂ] Z, ∀ x, C (f x) = g x := by
   obtain ⟨C, hC⟩ := ((LinearMap.ker f).liftQ g h ∘ₗ f.quotKerEquivRange.symm.toLinearMap).exists_extend

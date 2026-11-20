@@ -8,6 +8,9 @@ open scoped BigOperators
 
 namespace GlobalTheory.NormSum.Denom
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := C)).integer :=
@@ -15,6 +18,9 @@ theorem norm_le_one {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C}
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `h1` using `PadicComplex.norm_extends' p (N : ℚ_[p])`. Establish `h2 : (((N : ℚ_[p]) : PadicAlgCl p) : ℂ_[p]) = (N : ℂ_[p])` using `by simp`. Establish `h3 : ‖(N : ℚ_[p])‖ = (p : ℝ) ^ (-(padicValNat p N : ℤ))`. Rewrite using `[Padic.norm_eq_zpow_neg_valuation (by exact_mod_cast hN), Padic.valuation_natCast]`. Rewrite using `[← h2, h1, h3, Nat.factorization_def _ Fact.out, ← Real.rpow_intCast, Int.cast_neg, Int.cast_natCast]`.
+-/
 theorem norm_natCast (p : ℕ) [Fact p.Prime] {N : ℕ} (hN : N ≠ 0) :
     ‖(N : ℂ_[p])‖ = (p : ℝ) ^ (-(N.factorization p : ℝ)) := by
   have h1 := PadicComplex.norm_extends' p (N : ℚ_[p])
@@ -28,6 +34,11 @@ variable {E : Type} [Field E] [NumberField E]
 
 def InCodiff (x : E) : Prop := ∀ y : 𝓞 E, ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E (x * y)
 
+/- English proof (translation)
+Introduce `y`. Take `⟨n, hn⟩` from `hx ⟨σ.symm y, map_isIntegral_int σ.symm y.isIntegral_coe⟩`. Use `⟨n, hn.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.trace_eq_of_algEquiv σ, map_mul]`. Use `congr 2`.
+
+Conclude with `σ.apply_symm_apply _`.
+-/
 theorem InCodiff.gal {x : E} (hx : InCodiff x) (σ : E ≃ₐ[ℚ] E) : InCodiff (σ x) := by
   intro y
   obtain ⟨n, hn⟩ := hx ⟨σ.symm y, map_isIntegral_int σ.symm y.isIntegral_coe⟩
@@ -36,6 +47,13 @@ theorem InCodiff.gal {x : E} (hx : InCodiff x) (σ : E ≃ₐ[ℚ] E) : InCodiff
   congr 2
   exact σ.apply_symm_apply _
 
+/- English proof (translation)
+Establish `h1 : (a : E) ∈ IsLocalization.coeSubmodule E (differentIdeal ℤ (𝓞 E))` using `(IsLocalization.mem_coeSubmodule E _).2 ⟨a, ha, rfl⟩`. Rewrite `h1` using `[coeSubmodule_differentIdeal ℤ ℚ, Submodule.mem_div_iff_forall_mul_mem]`. Establish `h2 : x ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `b hb`.
+
+Take `⟨y, rfl⟩` from `Submodule.mem_one.1 hb`. Take `⟨n, hn⟩` from `hx y`. Conclude with `⟨n, hn⟩`. Take `⟨z, hz⟩` from `Submodule.mem_one.1 (h1 x h2)`. Rewrite using `[← hz]`.
+
+Conclude with `z.isIntegral_coe`.
+-/
 theorem InCodiff.mul_different {x : E} (hx : InCodiff x) {a : 𝓞 E}
     (ha : a ∈ differentIdeal ℤ (𝓞 E)) : IsIntegral ℤ ((a : E) * x) := by
   have h1 : (a : E) ∈ IsLocalization.coeSubmodule E (differentIdeal ℤ (𝓞 E)) :=
@@ -51,6 +69,13 @@ theorem InCodiff.mul_different {x : E} (hx : InCodiff x) {a : 𝓞 E}
   rw [← hz]
   exact z.isIntegral_coe
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `zero => intro a _`. Simplify using `using a.isIntegral_coe`. Consider the case `succ h ih`. Introduce `a ha`.
+
+Rewrite `ha` using `[pow_succ]`. Use `Submodule.mul_induction_on ha (fun u hu v hv => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Use `(ih u hu).mul (hx.mul_different hv)` as an intermediate fact. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, pow_succ, mul_mul_mul_comm]`. Conclude with `this`.
+
+Use `hu.add hv` as an intermediate fact. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_add, add_mul]`. Conclude with `this`.
+-/
 theorem InCodiff.mul_different_pow {x : E} (hx : InCodiff x) (h : ℕ) :
     ∀ a ∈ differentIdeal ℤ (𝓞 E) ^ h, IsIntegral ℤ ((a : E) * x ^ h) := by
   induction h with
@@ -66,6 +91,19 @@ theorem InCodiff.mul_different_pow {x : E} (hx : InCodiff x) (h : ℕ) :
       rw [RingOfIntegers.coe_eq_algebraMap, map_add, add_mul]
       exact this
 
+/- English proof (translation)
+Establish `hne : differentIdeal ℤ (𝓞 E) ∈ nonZeroDivisors (Ideal (𝓞 E))` using `mem_nonZeroDivisors_iff_ne_zero.2 differentIdeal_ne_bot`. Use `⟨Fintype.card (ClassGroup (𝓞 E)), Fintype.card_pos, fun x hx => ?_⟩` and prove the remaining obligations. Use `set h := Fintype.card (ClassGroup (𝓞 E))`. Establish `hpr : (differentIdeal ℤ (𝓞 E) ^ h).IsPrincipal`. Rewrite using `[← ClassGroup.mk0_eq_one_iff (pow_mem hne h)]`.
+
+Establish `: (⟨differentIdeal ℤ (𝓞 E) ^ h, pow_mem hne h⟩ : nonZeroDivisors (Ideal (𝓞 E))) = ⟨differentIdeal ℤ (𝓞 E), hne⟩ ^ h` using `rfl`. Rewrite using `[this, map_pow, pow_card_eq_one]`. Take `⟨a, ha⟩` from `hpr`. Establish `hmem : a ∈ differentIdeal ℤ (𝓞 E) ^ h`. Rewrite using `[ha]`.
+
+Conclude with `Submodule.mem_span_singleton_self a`. Establish `hN : (Algebra.norm ℤ a).natAbs = (discr E).natAbs ^ h`. Rewrite using `[← Ideal.absNorm_span_singleton, ← absNorm_differentIdeal E (𝓞 E), ← map_pow, ha]`. Establish `h1 : ∀ σ : E ≃ₐ[ℚ] E, IsIntegral ℤ (σ (a : E) * x ^ h)` using `fun σ => by`. Use `map_isIntegral_int σ ((hx.gal σ.symm).mul_different_pow h a hmem)` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2 : IsIntegral ℤ (∏ σ : E ≃ₐ[ℚ] E, (σ (a : E) * x ^ h))` using `IsIntegral.prod _ fun σ _ => h1 σ`. Rewrite `h2` using `[Finset.prod_mul_distrib, ← Algebra.norm_eq_prod_automorphisms, Finset.prod_const, Finset.card_univ, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, ← pow_mul, ← Algebra.coe_norm_int]`. Rewrite using `[← Nat.cast_pow, ← hN]`. Establish `h3 : algebraMap ℚ E ((Algebra.norm ℤ a : ℤ) : ℚ) = ((Algebra.norm ℤ a : ℤ) : E)` using `by simp`.
+
+Rewrite `h2` using `[h3]`. Break down `Int.natAbs_eq (Algebra.norm ℤ a) with h4 | h4` into its components or cases. Rewrite `h2` using `[h4]`. Simplify using `using h2`. Rewrite `h2` using `[h4]`.
+
+Use `h2.neg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_discr_pow_mul_isIntegral [IsGalois ℚ E] :
     ∃ h : ℕ, 0 < h ∧ ∀ x : E, InCodiff x →
       IsIntegral ℤ ((((discr E).natAbs : ℕ) : E) ^ h * x ^ (h * Module.finrank ℚ E)) := by
@@ -100,6 +138,11 @@ theorem exists_discr_pow_mul_isIntegral [IsGalois ℚ E] :
     have := h2.neg
     simpa using this
 
+/- English proof (translation)
+Take `⟨h, hh, H⟩` from `exists_discr_pow_mul_isIntegral (E := E)`. Establish `h1` using `norm_le_one (map_isIntegral_int ρ (H x hx))`. Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Rewrite `h1` using `[map_mul, map_pow, map_pow, map_natCast, norm_mul, norm_pow, norm_pow, norm_natCast p hd, mul_comm h, pow_mul, ← mul_pow, pow_le_one_iff_of_nonneg (by positivity) hh.ne']`. Establish `hp : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`.
+
+Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Rewrite `h1` using `[Real.rpow_neg hp.le, inv_mul_le_iff₀ (by positivity), mul_one]`. Rewrite using `[← pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) hn.ne', ← Real.rpow_mul_natCast hp.le, div_mul_cancel₀ _ (by exact_mod_cast hn.ne')]`. Conclude with `h1`.
+-/
 theorem InCodiff.norm_le [IsGalois ℚ E] {x : E} (hx : InCodiff x) (p : ℕ) [Fact p.Prime] (ρ : E →+* ℂ_[p]) :
     ‖ρ x‖ ≤ (p : ℝ) ^ (((discr E).natAbs.factorization p : ℝ) / Module.finrank ℚ E) := by
   obtain ⟨h, hh, H⟩ := exists_discr_pow_mul_isIntegral (E := E)
@@ -114,6 +157,21 @@ theorem InCodiff.norm_le [IsGalois ℚ E] {x : E} (hx : InCodiff x) (p : ℕ) [F
     div_mul_cancel₀ _ (by exact_mod_cast hn.ne')]
   exact h1
 
+/- English proof (translation)
+Set `ι` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `b` to `integralBasis E`. Set `b'` to `(Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) b`. Establish `hb : ∀ i j, Algebra.trace ℚ E (b' i * b j) = if j = i then 1 else 0` using `fun i j => by`. Rewrite using `[← Algebra.traceForm_apply]`.
+
+Conclude with `LinearMap.BilinForm.apply_dualBasis_left _ _ _ _`. Set `e` to `Fintype.equivFin ι`. Use `⟨Fintype.card ι, fun k => RingOfIntegers.basis E (e.symm k), fun k => b' (e.symm k), fun k y => ?_, fun σ τ => ?_⟩` and prove the remaining obligations. Use `⟨(RingOfIntegers.basis E).repr y (e.symm k), ?_⟩` and prove the remaining obligations. Establish `: (y : E) = ∑ j, (RingOfIntegers.basis E).repr y j • b j` using `by conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr y]`.
+
+Simplify using `[b, integralBasis_apply]`. Rewrite using `[this, Finset.mul_sum, map_sum]`. Simplify using `only [mul_smul_comm, map_zsmul, hb]`. Simplify using the standard rewrite rules. Set `A : Matrix ι (E →ₐ[ℚ] ℂ) ℂ` to `Matrix.of fun i φ => φ (b' i)`.
+
+Set `B : Matrix (E →ₐ[ℚ] ℂ) ι ℂ` to `Matrix.of fun φ j => φ (b j)`. Establish `hAB : A * B = 1`. Use extensionality with `i j`. Use `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := b' i * b j)` as an intermediate fact. Rewrite `this` using `[hb]`.
+
+Simplify using `only [Matrix.mul_apply, A, B, Matrix.of_apply, ← map_mul, ← this, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Establish `hcard : Fintype.card ι = Fintype.card (E →ₐ[ℚ] ℂ)`.
+
+Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis b]`. Establish `hBA : B * A = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hcard)).1 hAB`. Use `congrFun (congrFun hBA σ.toRatAlgHom) τ.toRatAlgHom` as an intermediate fact. Simplify using `only [Matrix.mul_apply, A, B, Matrix.of_apply, Matrix.one_apply] at this`. Rewrite `this` using `[← e.symm.sum_comp]`.
+
+Establish `h2 : σ.toRatAlgHom = τ.toRatAlgHom ↔ σ = τ` using `⟨fun h => RingHom.ext fun x => DFunLike.congr_fun h x, fun h => by rw [h]⟩`. Simplify using `only [h2] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[b, integralBasis_apply, mul_comm]`.
+-/
 theorem exists_dual_pair : ∃ (m : ℕ) (w : Fin m → 𝓞 E) (w' : Fin m → E), (∀ k, InCodiff (w' k)) ∧
     ∀ σ τ : E →+* ℂ, ∑ k, τ (w' k) * σ (w k) = if σ = τ then 1 else 0 := by
   let ι := Module.Free.ChooseBasisIndex ℤ (𝓞 E)
@@ -155,6 +213,15 @@ theorem exists_dual_pair : ∃ (m : ℕ) (w : Fin m → 𝓞 E) (w' : Fin m → 
     refine Finset.sum_congr rfl fun k _ => ?_
     simp [b, integralBasis_apply, mul_comm]
 
+/- English proof (translation)
+Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+
+Use `Submodule.subset_span ⟨1, ?_, Matrix.single i j (w : D.host.E), Submodule.subset_span ?_, by simp⟩` and prove the remaining obligations. Establish `: (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤ D.host.AA0`. Unfold `Host.AA0`. Conclude with `one_le_inv₀ (by simpa [pos_iff_ne_zero] using hb) |>.2 FractionalIdeal.coeIdeal_le_one`. Conclude with `this (FractionalIdeal.one_mem_one _)`.
+
+Introduce `x hx s _`. Establish `hj : x j ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)` using `hx j trivial`. Rewrite using `[Matrix.single_mulVec, Function.update_apply]`. Use `split_ifs`. Conclude with `Submodule.smul_mem _ w hj`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem single_mem_YYl (D : D7) (a d : ℕ) (i : Fin d) (j : Fin a) (w : 𝓞 D.host.E) :
     Matrix.single i j (w : D.host.E) ∈ YYl D (stdL D a) (stdL D d) := by
   have hb : D.host.𝔟 ≠ ⊥ := by
@@ -174,6 +241,19 @@ theorem single_mem_YYl (D : D7) (a d : ℕ) (i : Fin d) (j : Fin a) (w : 𝓞 D.
     · exact Submodule.smul_mem _ w hj
     · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `D.host.hostE_isGalois` as an intermediate fact. Establish `hd : (discr D.host.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero _)`. Use `⟨(discr D.host.E).natAbs.primeFactors, fun p => ((discr D.host.E).natAbs.factorization p : ℝ) / Module.finrank ℚ D.host.E, fun l hl => Nat.prime_of_mem_primeFactors hl, fun l => by positivity, fun l hl => ?_, le_of_eq ?_, ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[← Nat.support_factorization, Finsupp.notMem_support_iff]`. Simplify using `[hl]`.
+
+Establish `h1 : |(discr D.host.E : ℝ)| = ((discr D.host.E).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `Host.rdE`.
+
+Rewrite using `[h1, Real.log_rpow (by positivity), Real.log_nat_eq_sum_factorization, Finsupp.sum, Nat.support_factorization, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Introduce `p _ lam a d k`. Take `⟨m, w, w', hw', horth⟩` from `exists_dual_pair (E := D.host.E)`. Establish `halg : ∀ x, embT D k.1 x ∈ Qbar` using `fun x => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D k.1).toRatAlgHom)`.
+
+Set `φ : D.host.E →+* Qbar` to `(embT D k.1).codRestrict Qbar halg`. Use `⟨m, fun i => φ (w' i), fun i => Matrix.single k.2.1 k.2.2 (w i : D.host.E), fun i => single_mem_YYl D a d _ _ _, fun i => (hw' i).norm_le p (lam.comp φ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ s t`. Establish `hinj : embT D τ = embT D k.1 ↔ τ = k.1` using `⟨fun h => D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h)), fun h => by rw [h]⟩`. Establish `h2` using `horth (embT D τ) (embT D k.1)`.
+
+Simplify using `only [hinj] at h2`. Simplify using `only [coordV, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.single_apply]`. Distinguish the cases in `hst : k.2.1 = s ∧ k.2.2 = t`. Simplify using `only [hst, and_self, if_true, and_true]`. Conclude with `h2.symm`.
+
+Establish `: ¬ (τ = k.1 ∧ s = k.2.1 ∧ t = k.2.2)` using `fun h => hst ⟨h.2.1.symm, h.2.2.symm⟩`. Simplify using `[hst, this]`.
+-/
 theorem exists_letters (D : D7) : ∃ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl := by
   have := D.host.hostE_isGalois
   have hd : (discr D.host.E).natAbs ≠ 0 := Int.natAbs_ne_zero.2 (discr_ne_zero _)
@@ -207,6 +287,13 @@ theorem exists_letters (D : D7) : ∃ (S : Finset ℕ) (dl : ℕ → ℝ), Lette
     · have : ¬ (τ = k.1 ∧ s = k.2.1 ∧ t = k.2.2) := fun h => hst ⟨h.2.1.symm, h.2.2.symm⟩
       simp [hst, this]
 
+/- English proof (translation)
+Establish `h` using `factRd D.R D.host`. Establish `h1 : (1 : ℝ) ≤ (2 : ℝ) ^ ((D.R.e : ℝ) + 1 - (2 : ℝ) ^ (-(D.R.e : ℝ)))`. Apply `Real.one_le_rpow (by norm_num)` to reduce the goal to its premises. Establish `: (2 : ℝ) ^ (-(D.R.e : ℝ)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by simp)`. Establish `: (0 : ℝ) ≤ D.R.e` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (0 : ℝ) ≤ D.host.d` using `Nat.cast_nonneg _`. Establish `h2 : Real.sqrt (D.host.d : ℝ) ≤ D.host.rdE` using `(le_mul_of_one_le_left (Real.sqrt_nonneg _) h1).trans h.1`. Establish `h3` using `Real.sq_sqrt hd`. Establish `h4` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) h2 2`.
+
+Conclude with `⟨h3 ▸ h4, (Real.sqrt_nonneg _).trans h2⟩`.
+-/
 theorem d_le_rd_sq (D : D7) : (D.host.d : ℝ) ≤ D.host.rdE ^ 2 ∧ 0 ≤ D.host.rdE := by
   have h := factRd D.R D.host
   have h1 : (1 : ℝ) ≤ (2 : ℝ) ^ ((D.R.e : ℝ) + 1 - (2 : ℝ) ^ (-(D.R.e : ℝ))) := by
@@ -226,6 +313,13 @@ end GlobalTheory.NormSum.Denom
 
 namespace GlobalTheory.NormSum
 
+/- English proof (translation)
+Introduce `D _`. Take `⟨h1, h0⟩` from `Denom.d_le_rd_sq D`. Establish `hd : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_le`. Use `⟨Denom.exists_letters D, ?_, by nlinarith, ?_, D.what₂.card_Tau, ?_⟩` and prove the remaining obligations. Use `Real.log_le_log (by linarith) h1` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_pow]`. Conclude with `this` after adjusting the coercions. Unfold `fF Ranks.f Ranks.n`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[D.host.finrank_cmField]`. Unfold `fF Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem letters_and_sizes : ∀ (D : D7), admG1 D → (∃ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl) ∧ Real.log D.host.d ≤ 2 * Real.log D.host.rdE ∧ 1 ≤ D.host.rdE ∧ 1 ≤ fF D ∧ Fintype.card D.what₂.Tau = fF D ∧ Module.finrank ℚ D.host.E = 2 * fF D := by
   intro D _
   obtain ⟨h1, h0⟩ := Denom.d_le_rd_sq D

@@ -10,22 +10,48 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.LogSupMultiple
 
+/- English proof (translation)
+Break down `hx.eq_or_lt with rfl | hpos` into its components or cases. Conclude with `(Real.exp_pos b).le`. Conclude with `(Real.log_le_iff_le_exp hpos).1 h`.
+-/
 theorem le_exp_of_log_le {x b : ℝ} (h : Real.log x ≤ b) (hx : 0 ≤ x) : x ≤ Real.exp b := by
   rcases hx.eq_or_lt with rfl | hpos
   · exact (Real.exp_pos b).le
   · exact (Real.log_le_iff_le_exp hpos).1 h
 
+/- English proof (translation)
+Break down `hx.eq_or_lt with rfl | hpos` into its components or cases. Simplify using `using hb`. Conclude with `(Real.log_le_iff_le_exp hpos).2 h`.
+-/
 theorem log_le_of_le_exp {x b : ℝ} (h : x ≤ Real.exp b) (hx : 0 ≤ x) (hb : 0 ≤ b) : Real.log x ≤ b := by
   rcases hx.eq_or_lt with rfl | hpos
   · simpa using hb
   · exact (Real.log_le_iff_le_exp hpos).2 h
 
+/- English proof (translation)
+The claim follows from `Finset.le_sum_of_subadditive (B.supN j w σ) (le_of_eq ((B.supN_eq_zero j w σ 0).2 rfl)) (B.supN_add j w σ) s F`.
+-/
 theorem supN_sum_le {D : D7} (B : WeightFamilies.Prov D) (j : ℕ) (w : WeightFamilies.Wt D j) (σ : B.KO →+* ℂ) {ι : Type}
     (s : Finset ι) (F : ι → B.Cusp j w) :
     B.supN j w σ (∑ i ∈ s, F i) ≤ ∑ i ∈ s, B.supN j w σ (F i) :=
     Finset.le_sum_of_subadditive (B.supN j w σ) (le_of_eq ((B.supN_eq_zero j w σ 0).2 rfl))
       (B.supN_add j w σ) s F
 
+/- English proof (translation)
+Introduce `D B j w`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ s F a b _ hs hF hb ha`. Rewrite using `[B.supN_smul]`. Establish `hF0` using `B.supN_nonneg j w σ F`.
+
+Establish `h1 : ‖σ s‖ ≤ Real.exp a` using `le_exp_of_log_le hs (norm_nonneg _)`. Establish `h2 : B.supN j w σ F ≤ Real.exp b` using `le_exp_of_log_le hF hF0`. Use `log_le_of_le_exp ?_ (mul_nonneg (norm_nonneg _) hF0) (add_nonneg ha hb)` and prove the remaining obligations. Rewrite using `[Real.exp_add]`. Conclude with `mul_le_mul h1 h2 hF0 (Real.exp_pos a).le`.
+
+Introduce `σ N c F b hb hc hF`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Rewrite using `[Fin.sum_univ_zero, (B.supN_eq_zero j w σ 0).2 rfl]`. Simplify using `using hb`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hNpos : (0 : ℝ) < N` using `by linarith`. Establish `hsum : B.supN j w σ (∑ i, (c i : B.KO) • F i) ≤ (N : ℝ) * ((N : ℝ) * Real.exp b)`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+
+Rewrite using `[B.supN_smul, map_natCast, Complex.norm_natCast]`. Conclude with `mul_le_mul (by exact_mod_cast hc i) (le_exp_of_log_le (hF i) (B.supN_nonneg _ _ _ _)) (B.supN_nonneg _ _ _ _) hNpos.le`. Use `_ = (N : ℝ) * ((N : ℝ) * Real.exp b) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hexp : Real.exp (2 * Real.log N + b) = (N : ℝ) * ((N : ℝ) * Real.exp b)`.
+
+Rewrite using `[Real.exp_add, two_mul, Real.exp_add, Real.exp_log hNpos]`. Expand and normalize the polynomial expressions, which then agree. Use `log_le_of_le_exp ?_ (B.supN_nonneg _ _ _ _) ?_` and prove the remaining obligations. Rewrite using `[hexp]`. Conclude with `hsum`.
+
+Use `Real.log_nonneg hN1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `b`. Establish `hcard : (Fintype.card (B.KO →+* ℂ) : ℝ) ≠ 0`. Establish `: 0 < Fintype.card (B.KO →+* ℂ)` using `Fintype.card_pos`.
+
+Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Conclude with `mul_div_cancel_left₀ b hcard`.
+-/
 theorem log_supN_bounds : ∀ (D : D7) (B : WeightFamilies.Prov D) (j : ℕ) (w : WeightFamilies.Wt D j), (∀ (σ : B.KO →+* ℂ) (s : B.KO) (F : B.Cusp j w) (a b : ℝ), 0 ≤ a + b → Real.log ‖σ s‖ ≤ a → Real.log (B.supN j w σ F) ≤ b → 0 ≤ b → 0 ≤ a → Real.log (B.supN j w σ (s • F)) ≤ a + b) ∧ (∀ (σ : B.KO →+* ℂ) (N : ℕ) (c : Fin N → ℕ) (F : Fin N → B.Cusp j w) (b : ℝ), 0 ≤ b → (∀ i, c i ≤ N) → (∀ i, Real.log (B.supN j w σ (F i)) ≤ b) → Real.log (B.supN j w σ (∑ i, (c i : B.KO) • F i)) ≤ 2 * Real.log N + b) ∧ ∀ b : ℝ, (∑ _σ : B.KO →+* ℂ, b) / (Fintype.card (B.KO →+* ℂ) : ℝ) = b := by
   intro D B j w
   refine ⟨?_, ?_, ?_⟩

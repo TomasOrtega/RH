@@ -8,6 +8,13 @@ open scoped ContDiff Classical
 
 namespace GlobalTheory.NormChar
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h1`. Establish `h2 : 1 < Module.finrank K M` using `by have := Module.finrank_pos (R := K) (M := M); omega`. Take `⟨T, hT, hc⟩` from `GlobalTheory.T.ncard_primesOver_eq_finrank_of_trivial_frobenius K M`. Use `GlobalTheory.T.not_forall_exists_two_degree_one_primes_over K M (S ∪ T) (hS.union hT) fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_union, not_or] at hv`.
+
+Take `⟨hn, hN⟩` from `hc v hv.2 (h v hv.1)`. Rewrite `h2` using `[← hn]`. Use `v.isMaximal` as an intermediate fact. Take `⟨P, P', hP, hP', hne⟩` from `(Set.one_lt_ncard_iff (IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M))).1 h2`. Use `hP.2` as an intermediate fact.
+
+Use `hP'.2` as an intermediate fact. Conclude with `⟨⟨P, hP.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, ⟨P', hP'.1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P'⟩, fun e => hne (congrArg HeightOneSpectrum.asIdeal e), hP.2, hP'.2, hN P hP, hN P' hP'⟩`.
+-/
 theorem split_trivial (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [IsGalois K M]
     (S : Set (HeightOneSpectrum (𝓞 K))) (hS : S.Finite)
     (h : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S → ∀ P ∈ v.asIdeal.primesOver (𝓞 M), ∀ x : 𝓞 M,
@@ -29,6 +36,11 @@ theorem split_trivial (K M : Type) [Field K] [NumberField K] [Field M] [NumberFi
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial in
 open scoped ContDiff Classical in
 
+/- English proof (translation)
+Use `⟨fun σ a x => ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1 : ((a • x : 𝓞 L) : L) = algebraMap K L a * x`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Establish `h3 : ((σ • (a • x) : 𝓞 L) : L) = σ ((a • x : 𝓞 L) : L)` using `rfl`. Rewrite using `[h3, h1, Algebra.smul_def]`. Use `push_cast`. Rewrite using `[map_mul, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.NormChar.smulComm (K L : Type) [Field K] [Field L] [Algebra K L] :
     SMulCommClass (L ≃ₐ[K] L) (𝓞 K) (𝓞 L) := by
   refine ⟨fun σ a x => ?_⟩
@@ -43,6 +55,17 @@ theorem _root_.GlobalTheory.NormChar.smulComm (K L : Type) [Field K] [Field L] [
 
 attribute [local instance] smulComm
 
+/- English proof (translation)
+Use `set M := IntermediateField.fixedField H with hM`. Establish `: IsGalois K M` using `IsGalois.of_fixedField_normal_subgroup H`. Establish `h1 : Module.finrank K M = 1`. Use `split_trivial K M S hS fun v hv P hP x => ?_` and prove the remaining obligations. Use `hP.1` as an intermediate fact.
+
+Use `hP.2` as an intermediate fact. Take `⟨Q, hQ, hQ'⟩` from `(inferInstance : Nonempty (P.primesOver (𝓞 L)))`. Establish `hQv : Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q P v.asIdeal`. Establish `hne : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Establish `: Finite (𝓞 L ⧸ Q)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`.
+
+Take `⟨σ, hσ⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 K) (L ≃ₐ[K] L) Q`. Establish `hH` using `h v hv Q hQ hQv σ hσ`. Establish `h5 : Nat.card (𝓞 K ⧸ Q.under (𝓞 K)) = Ideal.absNorm v.asIdeal`. Rewrite using `[← hQv.over, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h6` using `hσ (algebraMap (𝓞 M) (𝓞 L) x)`.
+
+Rewrite `h6` using `[h5]`. Establish `h7 : (MulSemiringAction.toAlgHom (𝓞 K) (𝓞 L) σ) (algebraMap (𝓞 M) (𝓞 L) x) = algebraMap (𝓞 M) (𝓞 L) x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(x : M).2 ⟨σ, hH⟩`. Rewrite `h6` using `[h7]`.
+
+Rewrite using `[hQ'.over, Ideal.mem_comap, map_sub, map_pow, ← neg_mem_iff, neg_sub]`. Conclude with `h6`. Establish `h2 : M = ⊥` using `IntermediateField.finrank_eq_one_iff.1 h1`. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField H, ← hM, h2, IntermediateField.fixingSubgroup_bot]`.
+-/
 theorem eq_top_of_frob (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
     (H : Subgroup (L ≃ₐ[K] L)) [H.Normal] (S : Set (HeightOneSpectrum (𝓞 K))) (hS : S.Finite)
     (h : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S → ∀ Q : Ideal (𝓞 L), Q.IsPrime → Q.LiesOver v.asIdeal →
@@ -72,6 +95,23 @@ theorem eq_top_of_frob (K L : Type) [Field K] [NumberField K] [Field L] [NumberF
   have h2 : M = ⊥ := IntermediateField.finrank_eq_one_iff.1 h1
   rw [← IntermediateField.fixingSubgroup_fixedField H, ← hM, h2, IntermediateField.fixingSubgroup_bot]
 
+/- English proof (translation)
+Introduce `K _ _ m hm hirr χ hχ`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: NeZero m` using `⟨hm.ne_zero⟩`. Set `L` to `CyclotomicField m K`.
+
+Establish `: IsGalois K L` using `IsCyclotomicExtension.isGalois {m} K L`. Set `e` to `IsCyclotomicExtension.autEquivPow L hirr`. Establish `hz` using `IsCyclotomicExtension.zeta_spec m K L`. Establish `hm0 : Ideal.span {(m : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hm.ne_zero` after adjusting the coercions. Establish `hH` using `eq_top_of_frob K L (χ.comp e.toMonoidHom).ker {v | v.asIdeal ∣ Ideal.span {(m : 𝓞 K)}} (Ideal.finite_factors hm0) (fun v hv Q hQ hQv σ hσ => by`. Establish `hζ` using `hz.toInteger_isPrimitiveRoot`. Establish `hmQ : (m : 𝓞 L) ∉ Q`. Introduce `hmQ`.
+
+Apply `hv` to reduce the goal to its premises. Rewrite using `[Set.mem_ofPred_eq, Ideal.dvd_span_singleton, hQv.over, Ideal.mem_comap, map_natCast]`. Conclude with `hmQ`. Establish `h3` using `AlgHom.IsArithFrobAt.apply_of_pow_eq_one hσ hζ.pow_eq_one hmQ`. Establish `h5 : Nat.card (𝓞 K ⧸ Q.under (𝓞 K)) = Ideal.absNorm v.asIdeal`.
+
+Rewrite using `[← hQv.over, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h3` using `[h5]`. Establish `h4 : σ (IsCyclotomicExtension.zeta m K L) = IsCyclotomicExtension.zeta m K L ^ Ideal.absNorm v.asIdeal`. Use `congrArg (fun y : 𝓞 L => (y : L)) h3` as an intermediate fact. Conclude with `this`.
+
+Establish `h6` using `hz.autToPow_spec K σ`. Rewrite `h6` using `[h4]`. Establish `h7 : ((hz.autToPow K σ : (ZMod m)ˣ) : ZMod m).val ≡ Ideal.absNorm v.asIdeal [MOD m]`. Use `(hz.isOfFinOrder hm.ne_zero).pow_eq_pow_iff_modEq.1 h6` as an intermediate fact. Rewrite `this` using `[← hz.eq_orderOf]`. Then use the resulting hypothesis.
+
+Use `hcon v (e σ) ?_` and prove the remaining obligations. Rewrite using `[← (ZMod.natCast_eq_natCast_iff _ _ _).2 h7, ZMod.natCast_zmod_val]`. Use the proof step `rfl)`. Apply `hχ` to reduce the goal to its premises. Use `ext1 u`.
+
+Establish `: e.symm u ∈ (χ.comp e.toMonoidHom).ker` using `hH ▸ Subgroup.mem_top _`. Simplify using `using this`.
+-/
 theorem exists_prime_norm_char_ne_one : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ), m.Prime → Irreducible (cyclotomic m K) → ∀ χ : (ZMod m)ˣ →* ℂˣ, χ ≠ 1 → ∃ (P : HeightOneSpectrum (𝓞 K)) (u : (ZMod m)ˣ), (u : ZMod m) = (Ideal.absNorm P.asIdeal : ℕ) ∧ χ u ≠ 1 := by
   intro K _ _ m hm hirr χ hχ
   by_contra hcon

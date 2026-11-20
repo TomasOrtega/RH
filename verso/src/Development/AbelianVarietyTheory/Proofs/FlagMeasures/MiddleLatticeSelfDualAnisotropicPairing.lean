@@ -9,6 +9,9 @@ namespace GlobalTheory.St.G.MidLat
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Establish `h` using `S.herm.eq x y`. Simplify `h` using `[starRingEnd_apply]`.
+-/
 theorem hconj (x y : S.V) : star (S.hT x y) = S.hT y x := by
   have h := S.herm.eq x y
   simpa [starRingEnd_apply] using h
@@ -16,6 +19,9 @@ theorem hconj (x y : S.V) : star (S.hT x y) = S.hT y x := by
 def prj (e f : Fin r → S.V) : S.V →ₗ[E] S.V :=
   LinearMap.id - ∑ a, (S.hT (f a)).smulRight (e a) - ∑ a, (S.hT (e a)).smulRight (f a)
 
+/- English proof (translation)
+Simplify using `[prj, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+-/
 theorem prj_apply (e f : Fin r → S.V) (y : S.V) :
     prj e f y = y - ∑ a, S.hT (f a) y • e a - ∑ a, S.hT (e a) y • f a := by
   simp [prj, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]
@@ -24,36 +30,60 @@ variable {e f : Fin r → S.V} (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ 
   (hef : ∀ a b, S.hT (e a) (f b) = if a = b then 1 else 0)
 
 include hef in
+/- English proof (translation)
+Apply the tactic sequence `rw [← hconj, hef]; split_ifs <;> simp`.
+-/
 theorem hfe (a b : Fin r) : S.hT (f a) (e b) = if b = a then 1 else 0 := by
   rw [← hconj, hef]; split_ifs <;> simp
 
 include hee hef in
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Simplify using `[hfe hef, hee]`.
+-/
 theorem prj_e (b : Fin r) : prj e f (e b) = 0 := by
   rw [prj_apply]; simp [hfe hef, hee]
 
 include hff hef in
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Simplify using `[hff, hef]`.
+-/
 theorem prj_f (b : Fin r) : prj e f (f b) = 0 := by
   rw [prj_apply]; simp [hff, hef]
 
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Simplify using `[(hy _).1, (hy _).2]`.
+-/
 theorem prj_perp {y : S.V} (hy : ∀ a, S.hT (e a) y = 0 ∧ S.hT (f a) y = 0) : prj e f y = y := by
   rw [prj_apply]; simp [(hy _).1, (hy _).2]
 
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Simplify using `[map_sub, map_sum, (hy _).1, (hy _).2]`.
+-/
 theorem pair_prj {y : S.V} (hy : ∀ a, S.hT (e a) y = 0 ∧ S.hT (f a) y = 0) (x : S.V) :
     S.hT (prj e f x) y = S.hT x y := by
   rw [prj_apply]; simp [map_sub, map_sum, (hy _).1, (hy _).2]
 
 include hee hef in
+/- English proof (translation)
+Establish `h : Submodule.span E (Set.range e) ≤ LinearMap.ker (prj e f)` using `Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact prj_e hee hef b)`. Conclude with `h hs`.
+-/
 theorem prj_spanE {s : S.V} (hs : s ∈ Submodule.span E (Set.range e)) : prj e f s = 0 := by
   have h : Submodule.span E (Set.range e) ≤ LinearMap.ker (prj e f) :=
     Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact prj_e hee hef b)
   exact h hs
 
 include hff hef in
+/- English proof (translation)
+Establish `h : Submodule.span E (Set.range f) ≤ LinearMap.ker (prj e f)` using `Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact prj_f hff hef b)`. Conclude with `h hs`.
+-/
 theorem prj_spanF {s : S.V} (hs : s ∈ Submodule.span E (Set.range f)) : prj e f s = 0 := by
   have h : Submodule.span E (Set.range f) ≤ LinearMap.ker (prj e f) :=
     Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact prj_f hff hef b)
   exact h hs
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem latSpanS_le_span (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (v : Fin r → S.V) :
     latSpanS aa v ≤ (Submodule.span E (Set.range v)).restrictScalars (𝓞 E) := by
   refine Submodule.span_le.2 ?_
@@ -64,6 +94,41 @@ end GlobalTheory.St.G.MidLat
 
 open GlobalTheory.St.G.MidLat in
 
+/- English proof (translation)
+Introduce `D X u`. Establish `hprjL : ∀ y ∈ (VS D).L0, prj X.eX X.fY y ∈ X.Lb`. Introduce `y hy`. Rewrite `hy` using `[X.Lam_split]`. Take `⟨y1, hy1, t, ht, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Take `⟨s, hs, l, hl, rfl⟩` from `Submodule.mem_sup.1 hy1`. Establish `hs'` using `latSpanS_le_span _ _ hs`. Establish `ht'` using `latSpanS_le_span _ _ ht`. Rewrite using `[map_add, map_add, prj_spanE X.ee X.ef hs', prj_spanF X.ff X.ef ht', zero_add, add_zero, prj_perp (fun a => X.Lb_perp l hl a)]`. Conclude with `hl`.
+
+Establish `hLbL : X.Lb ≤ (VS D).L0`. Rewrite using `[X.Lam_split]`. Conclude with `le_sup_right.trans le_sup_left`. Establish `h1 : ∀ y : (VS D).V, (∀ a, (VS D).hT (X.eX a) y = 0 ∧ (VS D).hT (X.fY a) y = 0) → ((y ∈ (VS D).L0 ↔ y ∈ X.Lb) ∧ ((∀ x ∈ X.Lb, (VS D).hT x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → y ∈ X.Lb))`. Introduce `y hy`.
+
+Use `⟨⟨fun h => ?_, fun h => hLbL h⟩, fun hint => ?_⟩` and prove the remaining obligations. Use `hprjL y h` as an intermediate fact. Rewrite `this` using `[prj_perp hy]`. Then use the resulting hypothesis. Establish `hU : Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0 = (VS D).L0` using `(VS D).baseLattice_isUnimodular`. Establish `hyL : y ∈ (VS D).L0`.
+
+Rewrite using `[← hU]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Introduce `x hx`. Take `⟨o, ho⟩` from `hint _ (hprjL x hx)`. Conclude with `⟨o, by rw [ho, pair_prj hy]⟩`.
+
+Use `hprjL y hyL` as an intermediate fact. Rewrite `this` using `[prj_perp hy]`. Then use the resulting hypothesis. Use `⟨h1, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Set `σ : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (starRingEnd D.host.E)`. Establish `hσ : ∀ o : 𝓞 D.host.E, ((σ o : 𝓞 D.host.E) : D.host.E) = star (o : D.host.E)` using `fun o => rfl`.
+
+Set `J : Ideal (𝓞 D.host.E)` to `(LinearMap.range (((VS D).hT (X.zu u)).restrictScalars (𝓞 D.host.E) ∘ₗ X.Lb.subtype)).comap (Algebra.linearMap (𝓞 D.host.E) D.host.E)`. Establish `hJ : ∀ o, o ∈ J ↔ ∃ x ∈ X.Lb, (VS D).hT (X.zu u) x = (o : D.host.E)`. Introduce `o`. Simplify using `only [J, Submodule.mem_comap, LinearMap.mem_range, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, Subtype.exists, exists_prop]`. Distinguish the cases in `hJt : J = ⊤`.
+
+Take `⟨x, hx, hx1⟩` from `(hJ 1).1 (hJt ▸ Submodule.mem_top)`. Conclude with `⟨x, hx, by rw [hx1]; simp⟩`. It suffices to derive a contradiction. Take `⟨M, hM, hJM⟩` from `Ideal.exists_le_maximal J hJt`. Establish `hM0 : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)`.
+
+Take `⟨c, hc, hc1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := D.host.E) hM0 hM.ne_top`. Establish `hc'` using `(FractionalIdeal.mem_inv_iff (by rwa [ne_eq, FractionalIdeal.coeIdeal_eq_zero])).1 hc`. Establish `hU : Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0 = (VS D).L0` using `(VS D).baseLattice_isUnimodular`. Establish `hzL : X.zu u ∈ X.Lb` using `X.zu_Lb u`. Establish `hwperp : ∀ a, (VS D).hT (X.eX a) (star c • X.zu u) = 0 ∧ (VS D).hT (X.fY a) (star c • X.zu u) = 0`.
+
+Introduce `a`. Conclude with `⟨by rw [map_smul, smul_eq_mul, (X.zu_orth u a).1, mul_zero], by rw [map_smul, smul_eq_mul, (X.zu_orth u a).2, mul_zero]⟩`. Establish `hwLb : star c • X.zu u ∈ X.Lb`. Use `(h1 _ hwperp).2 ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hxd : x ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0` using `by rw [hU]; exact hLbL hx`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one] at hxd`. Take `⟨o, ho⟩` from `hxd (X.zu u) (hLbL hzL)`. Establish `hoM : o ∈ M` using `hJM ((hJ o).2 ⟨x, hx, ho.symm⟩)`. Take `⟨o', ho'⟩` from `(FractionalIdeal.mem_one_iff _).1 (hc' _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨o, hoM, rfl⟩))`.
+
+Use `⟨σ o', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((σ o' : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[hσ]`. Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 D.host.E) D.host.E o') = _`. Rewrite using `[ho', map_smul, smul_eq_mul, ← hconj (X.zu u) x, ← ho, star_mul, mul_comm]`.
+
+Establish `hprim` using `(X.Fu_fixed u).2.2.2.2 (star c)`. Simplify using `only at hprim`. Rewrite `hprim` using `[X.flagZVector u]`. Establish `horth : star c • X.zu u ∈ Formalism.MainNotions.S.Lat.orth (Formalism.MainNotions.S.Lat.hS D) (Formalism.MainNotions.S.Lat.Xsp (⟨X.Fu u, X.zu u⟩ : Formalism.MainNotions.S.Lat.LFlag (VS D) D.R.rS (((D.mem u).A.T : ℕ) : D.host.E)))`. Simplify using `only [Formalism.MainNotions.S.Lat.orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Introduce `x hx`. Establish `hX : Formalism.MainNotions.S.Lat.Xsp (⟨X.Fu u, X.zu u⟩ : Formalism.MainNotions.S.Lat.LFlag (VS D) D.R.rS (((D.mem u).A.T : ℕ) : D.host.E)) = Submodule.span D.host.E (Set.range X.eX)` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e u]`. Rewrite `hx` using `[hX]`. Establish `hle : Submodule.span D.host.E (Set.range X.eX) ≤ LinearMap.ker ((VS D).hT (star c • X.zu u))` using `Submodule.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `show (VS D).hT (star c • X.zu u) (X.eX a) = 0`. Rewrite using `[← hconj, (hwperp a).1, star_zero])`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker]`.
+
+Rewrite using `[← hconj, this, star_zero]`. Take `⟨o, ho⟩` from `hprim ⟨Submodule.mem_sup_left ⟨hLbL hwLb, horth⟩, horth⟩`. Apply `hc1` to reduce the goal to its premises. Use `(FractionalIdeal.mem_one_iff _).2 ⟨σ o, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((σ o : 𝓞 D.host.E) : D.host.E) = c`.
+
+Rewrite using `[hσ, ho, star_star]`. Use `hprjL y hy` as an intermediate fact. Rewrite `this` using `[prj_apply]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.St.G.midLat_selfDual_pairing : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), (∀ y : (VS D).V, (∀ a, (VS D).hT (X.eX a) y = 0 ∧ (VS D).hT (X.fY a) y = 0) → ((y ∈ (VS D).L0 ↔ y ∈ X.Lb) ∧ ((∀ x ∈ X.Lb, (VS D).hT x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → y ∈ X.Lb))) ∧ (∃ x ∈ X.Lb, (VS D).hT (X.zu u) x = 1) ∧ ∀ y ∈ (VS D).L0, y - ∑ a, (VS D).hT (X.fY a) y • X.eX a - ∑ a, (VS D).hT (X.eX a) y • X.fY a ∈ X.Lb := by
   intro D X u
   have hprjL : ∀ y ∈ (VS D).L0, prj X.eX X.fY y ∈ X.Lb := by

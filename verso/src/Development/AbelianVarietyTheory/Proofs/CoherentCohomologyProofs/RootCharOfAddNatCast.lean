@@ -6,6 +6,9 @@ open scoped BigOperators
 
 variable {B : Type*} [CommMonoid B] {I : Type*} [Fintype I] {n : ℕ} [NeZero n]
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_add, ← pow_add, ← pow_eq_pow_mod _ hx]`.
+-/
 theorem pow_val_add {x : B} (hx : x ^ n = 1) (a b : ZMod n) :
     x ^ (a + b).val = x ^ a.val * x ^ b.val := by
   rw [ZMod.val_add, ← pow_add, ← pow_eq_pow_mod _ hx]

@@ -11,6 +11,15 @@ namespace Formalism.NG
 
 universe u v w x
 
+/- English proof (translation)
+Introduce `O _ _ _ X X' T T' Z p q b hT hZ d _ _ R' _ hdet NN _ _ g₀ n hspan hφ π' ρπ hρπ α _ _ bl hbl ρk hsurj hblk _ hcard`. Take `⟨m, P, ⟨eM⟩⟩` from `hF R' NN g₀ n hspan`. Establish `hφ' : ∀ x', p x' ∉ Z → ∃ φ : Coker P →ₗ[R'] EvalSp O d R' x', φ ≠ 0`. Introduce `x' hx`. Take `⟨φ, hφ0⟩` from `hφ x' hx`.
+
+Use `⟨φ.comp eM.symm.toLinearMap, fun h => hφ0 ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hy` using `LinearMap.congr_fun h (eM y)`. Simplify using `using hy`. Establish `hcard' : ((Fintype.card (Fin g₀) * ∑ k : α, Fintype.card {a // bl a = k} : ℕ) : Cardinal) < Cardinal.mk (IsLocalRing.ResidueField O)`.
+
+Rewrite using `[Fintype.card_fin]`. Conclude with `hcard`. Use `(globalConcrete O X X' T T' Z p q b hT hZ d R' (Fin m) (Fin g₀) P (fun Θ => hdet (Fin g₀) Θ) hφ' π' ρπ hρπ α bl hbl ρk hsurj hblk hcard').trans (le_of_eq (Finset.sum_congr rfl fun k _ => ?_))` and prove the remaining obligations. Establish `hk` using `kerHomRect R' O (Fin m) (Fin g₀) {a // bl a = k} (ρk k).toRingHom P`. Set `eqv : (Coker P →ₗ[R'] LatQ O {a // bl a = k} (ρk k).toRingHom) ≃ₗ[O] (NN →ₗ[R'] LatQ O {a // bl a = k} (ρk k).toRingHom)` to `{ toFun := fun f => f.comp eM.toLinearMap invFun := fun f => f.comp eM.symm.toLinearMap map_add' := fun _ _ => LinearMap.ext fun _ => rfl map_smul' := fun _ _ => LinearMap.ext fun _ => rfl left_inv := fun f => LinearMap.ext fun y => congrArg f (eM.apply_symm_apply y) right_inv := …`.
+
+Conclude with `hk.trans eqv.length_eq`.
+-/
 theorem globalModule_of (hF : StatFinPres.{max u w, x}) : StatGlobalModule.{u, v, w, x} := by
   intro O _ _ _ X X' T T' Z p q b hT hZ d _ _ R' _ hdet NN _ _ g₀ n hspan hφ π' ρπ hρπ α _ _ bl hbl
     ρk hsurj hblk _ hcard
@@ -40,6 +49,9 @@ theorem globalModule_of (hF : StatFinPres.{max u w, x}) : StatGlobalModule.{u, v
       right_inv := fun f => LinearMap.ext fun y => congrArg f (eM.symm_apply_apply y) }
   exact hk.trans eqv.length_eq
 
+/- English proof (translation)
+The claim follows from `globalModule_of finPres`.
+-/
 theorem globalModule : StatGlobalModule := globalModule_of finPres
 
 end Formalism.NG

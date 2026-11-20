@@ -102,36 +102,62 @@ abbrev twCP (S : Scheme.{0}) (χ : X) : CP (splitTorus S X) := (CP.triv (splitTo
 
 abbrev twTriv (S : Scheme.{0}) (χ ψ : X) : CubTriv (twCP S χ).c (𝟙 _) := (CubTriv.triv (𝟙 _)).twist ψ
 
+/- English proof (translation)
+The claim follows from `CubTriv.twist_even_twistSym (CubTriv.triv_even _) ψ`.
+-/
 theorem twTriv_even (S : Scheme.{0}) (ψ : X) : (twTriv S (-(ψ + ψ)) ψ).Even :=
   CubTriv.twist_even_twistSym (CubTriv.triv_even _) ψ
 
+/- English proof (translation)
+Introduce `_` and use `trivial`.
+-/
 theorem good_triv {Y Z : Scheme.{0}} (z : Z) (J) : Good (Inh.trivLB Y) z J := fun _ => trivial
 
+/- English proof (translation)
+The claim follows from `(val_scaleGen (L := Inh.trivLB _) (charUnit S X χ) _ r (good_triv z J)).trans ((congrArg (_ * ·) (val_unitGen _ _ _ _ _)).trans (_root_.mul_one _))`.
+-/
 theorem val_sym_twCP (χ : X) {Z : Scheme.{0}} (r : Z ⟶ (splitTorus S X).left) (z : Z) (J) :
     val (twCP S χ).sym r z J = gm r z ⊤ (charUnit S X χ) :=
   (val_scaleGen (L := Inh.trivLB _) (charUnit S X χ) _ r (good_triv z J)).trans
     ((congrArg (_ * ·) (val_unitGen _ _ _ _ _)).trans (_root_.mul_one _))
 
+/- English proof (translation)
+The claim follows from `(CubTriv.val_twist (CubTriv.triv (𝟙 _)) ψ t (good_triv z J)).trans ((congrArg (_ * ·) (val_unitGen _ _ _ _ _)).trans (_root_.mul_one _))`.
+-/
 theorem val_twTriv (χ ψ : X) {T : Over S} (t : T ⟶ splitTorus S X) (z : T.left) (J) :
     val (twTriv S χ ψ).s t.left z J = gm (𝟙 T.left) z ⊤ (chV t ψ) :=
   (CubTriv.val_twist (CubTriv.triv (𝟙 _)) ψ t (good_triv z J)).trans
     ((congrArg (_ * ·) (val_unitGen _ _ _ _ _)).trans (_root_.mul_one _))
 
+/- English proof (translation)
+The claim follows from `(congrArg (gm r z _) (_root_.mul_one _)).trans (gm_res r z _ (show r z ∈ ((Inh.trivLB Y).pull F).U (fun _ => j) ⊓ (Inh.trivLB Y').U k from ⟨mem_pull.2 trivial, trivial⟩) u)`.
+-/
 theorem gw_scale {Y Y' Z : Scheme.{0}} (F : Y' ⟶ Y) (u : Γ(Y', ⊤)ˣ) (r : Z ⟶ Y') (z : Z) (j k) :
     gw (L := Inh.trivLB Y) (L' := Inh.trivLB Y') (F := F) (scaleGen u ⟨fun _ => 1⟩) r z j k = gm r z ⊤ u :=
   (congrArg (gm r z _) (_root_.mul_one _)).trans
     (gm_res r z _ (show r z ∈ ((Inh.trivLB Y).pull F).U (fun _ => j) ⊓ (Inh.trivLB Y').U k from
       ⟨mem_pull.2 trivial, trivial⟩) u)
 
+/- English proof (translation)
+The claim follows from `have : TwoUniqueSums X := twoUniqueSums_of_free X GroupConn.connectedSpace_of_section (splitTorus S X).hom (η : 𝟙_ (Over S) ⟶ splitTorus S X).left (Over.w _)`.
+-/
 theorem connectedSpace_torus (S : Scheme.{0}) [ConnectedSpace S] (X : Type) [AddCommGroup X] [Module.Free ℤ X] :
     ConnectedSpace (splitTorus S X).left :=
   have : TwoUniqueSums X := twoUniqueSums_of_free X
   GroupConn.connectedSpace_of_section (splitTorus S X).hom (η : 𝟙_ (Over S) ⟶ splitTorus S X).left (Over.w _)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (SplitTorus.mul_left_bcMap f X T x y _ _ rfl rfl).symm`.
+-/
 theorem toBase_mul_bcMap (f : S' ⟶ S) (T : Over S') (x y : T ⟶ splitTorus S' X) :
     toBase (bcMap_hom f X) (x * y) = toBase (bcMap_hom f X) x * toBase (bcMap_hom f X) y :=
   Over.OverMorphism.ext (SplitTorus.mul_left_bcMap f X T x y _ _ rfl rfl).symm
 
+/- English proof (translation)
+Establish `h` using `IsCPMap.triv (toBase_mul_bcMap (X := X) f)`. Use `⟨h.mul, h.gen, fun T z J' J hJ' hJ W hW => ?_⟩` and prove the remaining obligations. Take `⟨a, -, c⟩` from `h.vals T z J' J hJ' hJ W hW`. Use `⟨a, fun x => ?_, c⟩` and prove the remaining obligations. Establish `e : ∀ x, W x = 1` using `fun x => (hW x).trans (map_one _)`.
+
+Rewrite using `[e, e, val_sym_twCP, val_sym_twCP, _root_.mul_one, _root_.one_mul]`. Conclude with `(gm_pull x.left (bcMap f X) z ⊤ trivial _).symm.trans (congrArg _ (Units.ext (bcMap_charUnit f χ)))`.
+-/
 theorem isCPMap_bcMap (f : S' ⟶ S) (χ : X) :
     IsCPMap (twCP S' χ) (twCP S χ) f (bcMap f X) (bcMap_hom f X) ⟨fun _ => 1⟩ := by
   have h := IsCPMap.triv (toBase_mul_bcMap (X := X) f)
@@ -142,11 +168,20 @@ theorem isCPMap_bcMap (f : S' ⟶ S) (χ : X) :
   rw [e, e, val_sym_twCP, val_sym_twCP, _root_.mul_one, _root_.one_mul]
   exact (gm_pull x.left (bcMap f X) z ⊤ trivial _).symm.trans (congrArg _ (Units.ext (bcMap_charUnit f χ)))
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← chV_add, neg_add_cancel, chV_zero])`.
+-/
 theorem chV_neg {Z : Over S} (t : Z ⟶ splitTorus S X) (χ : X) : chV t (-χ) = (chV t χ)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← chV_add, neg_add_cancel, chV_zero])
 
+/- English proof (translation)
+Rewrite using `[chV, map_one]`. Both sides reduce to the same expression.
+-/
 theorem chV_one {Z : Over S} (χ : X) : chV (1 : Z ⟶ splitTorus S X) χ = 1 := by rw [chV, map_one]; rfl
 
+/- English proof (translation)
+Use `(val_scaleGen _ _ _ (good_triv z J)).trans ?_` and prove the remaining obligations. Rewrite using `[val_unitGen, _root_.mul_one, gm_top]`. Use `congrArg _ (Units.ext ?_)` and prove the remaining obligations. Use `show (lift t x).left.appTop.hom (chV _ χ).val = _`. Rewrite using `[chV_val, chV_val, Rosenlicht.over_appTop_comp, lift_fst]`.
+-/
 theorem val_fst {G : Over S} {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → ((splitTorus S X ⊗ G).left ⟶ Y))
     (ε : K → ℤ) (χ : X) {T : Over S} (t : T ⟶ splitTorus S X) (x : T ⟶ G) (z : T.left) (J) :
     val (scaleGen (chV (fst (splitTorus S X) G) χ) (unitGen φ ε)) (lift t x).left z J =
@@ -179,10 +214,16 @@ def twDesc (S : Scheme.{0}) (ψ : X) : (TQ.torus S X).Desc (twCP S (-(ψ + ψ)))
       simp only [ofMul_mul, ofMul_inv, ofMul_one]
       abel
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ F _ mul P` and use `by obtain ⟨_, _, _, _, _, _, _, h⟩ := exists_isCPMap P mul _ (pull_isLB P.L.isLB F) _ (pullIso_isGen P.L.isLB F) exact ⟨_, _, rfl, h⟩`.
+-/
 example : CPPullSt := fun _ _ _ _ _ _ _ _ _ F _ mul P => by
   obtain ⟨_, _, _, _, _, _, _, h⟩ := exists_isCPMap P mul _ (pull_isLB P.L.isLB F) _ (pullIso_isGen P.L.isLB F)
   exact ⟨_, _, rfl, h⟩
 
+/- English proof (translation)
+Take `⟨w'', a, b⟩` from `(isCPMap_bcMap f χ).exists_comp (isCPMap_bcMap f' χ) hw''`. Conclude with `⟨_, _, w'', isCPMap_bcMap f χ, isCPMap_bcMap f' χ, b, a⟩`.
+-/
 example {S'' : Scheme.{0}} (f : S' ⟶ S) (f' : S'' ⟶ S') (χ : X)
     (hw'' : (bcMap f' X ≫ bcMap f X) ≫ (splitTorus S X).hom = (splitTorus S'' X).hom ≫ f' ≫ f) :
     ∃ w w' w'', IsCPMap (twCP S' χ) (twCP S χ) f (bcMap f X) (bcMap_hom f X) w ∧
@@ -195,12 +236,20 @@ abbrev SQ : Scheme.{0} := Spec (CommRingCat.of ℚ)
 
 instance : ConnectedSpace (splitTorus SQ ℤ).left := connectedSpace_torus _ _
 
+/- English proof (translation)
+Simplify using `only [hU, ← chV_val, chV_mul, chV_one, Units.val_mul, Units.val_one, true_and]`. Use `intros`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (χ : X) (T : Over S) (U : (T ⟶ splitTorus S X) → Γ(T.left, ⊤))
     (hU : ∀ x, U x = x.left.appTop.hom (charUnit S X χ).val) :
     U 1 = 1 ∧ ∀ x y v, U (x * y * v) * U x * U y * U v = U (x * y) * U (x * v) * U (y * v) := by
   simp only [hU, ← chV_val, chV_mul, chV_one, Units.val_mul, Units.val_one, true_and]
   intros; ring
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h T U hU => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_point_two`. Establish `a` using `(h _ (fun x => (chV x n).val) (fun x => chV_val x n)).2.1 t`. Establish `b : chV t (n + n) = 1`. Rewrite using `[chV_add]`.
+
+Conclude with `(congrArg (· * chV t n) ((Units.ext a).symm.trans (chV_inv t n))).trans (inv_mul_cancel _)`. Take `rfl : n = 0` from `by have := ht _ b; omega`. Conclude with `Units.ext ((by simp : _ = (𝟙 (splitTorus SQ ℤ) :).left.appTop.hom _).trans ((chV_val (𝟙 _) 0).symm.trans (congrArg Units.val (chV_zero _))))`. Simplify using `only [hU, h, Units.val_one, map_one, _root_.mul_one, implies_true, and_self]`.
+-/
 example (n : ℤ) : (∀ (T : Over SQ) (U : (T ⟶ splitTorus SQ ℤ) → Γ(T.left, ⊤)),
     (∀ x, U x = x.left.appTop.hom (charUnit SQ ℤ n).val) → U 1 = 1 ∧ (∀ x, U x⁻¹ = U x) ∧
       ∀ x y v, U (x * y * v) * U x * U y * U v = U (x * y) * U (x * v) * U (y * v)) ↔ charUnit SQ ℤ n = 1 := by
@@ -215,11 +264,17 @@ example (n : ℤ) : (∀ (T : Over SQ) (U : (T ⟶ splitTorus SQ ℤ) → Γ(T.l
       ((chV_val (𝟙 _) 0).symm.trans (congrArg Units.val (chV_zero _))))
   · simp only [hU, h, Units.val_one, map_one, _root_.mul_one, implies_true, and_self]
 
+/- English proof (translation)
+Rewrite using `[← lift_comp_fst_snd p, point_eq_of_subsingleton (p ≫ fst _ _) 1, s.val_one_left hJ, s'.val_one_left hJ]`.
+-/
 example [Subsingleton X] {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L}
     {i : splitTorus S X ⟶ G} [IsMonHom i] (s s' : BiTriv c i) {T : Over S} (p : T ⟶ splitTorus S X ⊗ G) (z : T.left)
     (J) (hJ : Good L.L z J) : val s.s p.left z J = val s'.s p.left z J := by
   rw [← lift_comp_fst_snd p, point_eq_of_subsingleton (p ≫ fst _ _) 1, s.val_one_left hJ, s'.val_one_left hJ]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_point_two`. Use `ht n (unit_ext fun z _ => ?_)` and prove the remaining obligations. Establish `a` using `s.val_one_right (good_triv z fun _ => PUnit.unit) t`. Rewrite `a` using `[hs]`. Conclude with `(val_fst _ _ n t 1 z _).symm.trans (a.trans (map_one _).symm)`.
+-/
 example (n : ℤ) (s : BiTriv (trivCub (splitTorus SQ ℤ)) (𝟙 _))
     (hs : s.s = scaleGen (chV (fst _ _) n) (unitGen _ _)) : n = 0 := by
   obtain ⟨t, ht⟩ := exists_point_two
@@ -228,12 +283,18 @@ example (n : ℤ) (s : BiTriv (trivCub (splitTorus SQ ℤ)) (𝟙 _))
   rw [hs] at a
   exact (val_fst _ _ n t 1 z _).symm.trans (a.trans (map_one _).symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, ⟨BiTriv.triv _⟩⟩`.
+-/
 example (k : Type) [Field k] : Smooth (splitTorus (Spec (CommRingCat.of k)) ℤ).hom ∧
     GeometricallyConnected (splitTorus (Spec (CommRingCat.of k)) ℤ).hom ∧
     IsMonHom (𝟙 (splitTorus (Spec (CommRingCat.of k)) ℤ)) ∧
     Nonempty (BiTriv (trivCub (splitTorus (Spec (CommRingCat.of k)) ℤ)) (𝟙 _)) :=
   ⟨inferInstance, inferInstance, inferInstance, ⟨BiTriv.triv _⟩⟩
 
+/- English proof (translation)
+Use `SplitTorus.connectedSpace_of_isLocalRing A` as an intermediate fact. Establish `: ConnectedSpace (Spec (CommRingCat.of (A ⧸ J)))` using `SplitTorus.connectedSpace_quotient J fun x hx => by`. Take `⟨n, hn⟩` from `hJ`. Conclude with `⟨n, Ideal.mem_bot.1 (hn ▸ Ideal.pow_mem_pow hx n :)⟩`. Conclude with `⟨connectedSpace_torus _ _, SplitTorus.isGrpPullback_bcMap _ _, ⟨_, isCPMap_bcMap _ _⟩, torusCompat_bcMap _, ⟨BiTriv.triv _⟩, ⟨BiTriv.triv _⟩, ⟨_, twTriv_even _ ψ⟩, ⟨_, twTriv_even _ ψ⟩⟩`.
+-/
 theorem lift_torus (A : Type) [CommRing A] [IsLocalRing A] (J : Ideal A) (hJ : IsNilpotent J) (X : Type)
     [AddCommGroup X] [Module.Free ℤ X] (ψ : X) :
     ConnectedSpace (splitTorus (Spec (CommRingCat.of (A ⧸ J))) X).left ∧
@@ -251,6 +312,11 @@ theorem lift_torus (A : Type) [CommRing A] [IsLocalRing A] (J : Ideal A) (hJ : I
   exact ⟨connectedSpace_torus _ _, SplitTorus.isGrpPullback_bcMap _ _, ⟨_, isCPMap_bcMap _ _⟩, torusCompat_bcMap _,
     ⟨BiTriv.triv _⟩, ⟨BiTriv.triv _⟩, ⟨_, twTriv_even _ ψ⟩, ⟨_, twTriv_even _ ψ⟩⟩
 
+/- English proof (translation)
+Establish `: Fact (1 < 4)` using `⟨by norm_num⟩`. Use `⟨IsLocalRing.of_isUnit_or_isUnit_one_sub_self (by decide), ⟨2, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Evaluate the decidable proposition. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`.
+
+Evaluate the decidable proposition. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Evaluate the decidable proposition.
+-/
 example : IsLocalRing (ZMod 4) ∧ IsNilpotent (Ideal.span {(2 : ZMod 4)}) ∧ Ideal.span {(2 : ZMod 4)} ≠ ⊤ ∧
     Ideal.span {(2 : ZMod 4)} ≠ ⊥ := by
   have : Fact (1 < 4) := ⟨by norm_num⟩
@@ -259,6 +325,9 @@ example : IsLocalRing (ZMod 4) ∧ IsNilpotent (Ideal.span {(2 : ZMod 4)}) ∧ I
   · rw [Ne, Ideal.span_singleton_eq_top]; decide
   · rw [Ne, Ideal.span_singleton_eq_bot]; decide
 
+/- English proof (translation)
+Establish `e : val (BiTriv.triv (𝟙 (splitTorus S X))).s (lift t (t' ≫ 𝟙 _)).left z J = 1` using `val_unitGen _ _ _ _ _`. Rewrite using `[e, val_twTriv, val_twTriv, val_twTriv, chV_mul, map_mul, _root_.one_mul]`.
+-/
 example (χ ψ : X) (T : Over S) (t t' : T ⟶ splitTorus S X) (z : T.left) (J) :
     val (twTriv S χ ψ).s (t * t').left z J =
       val (BiTriv.triv (𝟙 (splitTorus S X))).s (lift t (t' ≫ 𝟙 _)).left z J * val (twTriv S χ ψ).s t.left z J *
@@ -266,6 +335,11 @@ example (χ ψ : X) (T : Over S) (t t' : T ⟶ splitTorus S X) (z : T.left) (J) 
   have e : val (BiTriv.triv (𝟙 (splitTorus S X))).s (lift t (t' ≫ 𝟙 _)).left z J = 1 := val_unitGen _ _ _ _ _
   rw [e, val_twTriv, val_twTriv, val_twTriv, chV_mul, map_mul, _root_.one_mul]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h ▸ twTriv_even _ _⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_point_two`. Establish `: n + n + -(m + m) = 0` using `ht _ (unit_ext fun z _ => by`. Establish `a` using `((val_twTriv _ _ _ _ _).symm.trans (h _ t z _ (good_triv z fun _ => PUnit.unit))).trans (congrArg₂ (· * ·) ((val_sym_twCP _ _ _ _).trans (gm_charUnit _ _ _)) (val_twTriv _ _ _ _ _))`. Rewrite `a` using `[Category.comp_id, chV_inv, map_inv]`.
+
+Rewrite using `[chV_add, chV_add, map_mul, map_mul, map_one, _root_.mul_assoc, mul_comm _ (gm _ z ⊤ (chV t (-(m + m)))), ← a, mul_inv_cancel])`. Use linear arithmetic over natural numbers and integers.
+-/
 example (m n : ℤ) : (twTriv SQ (-(m + m)) n).Even ↔ n = m := by
   refine ⟨fun h => ?_, fun h => h ▸ twTriv_even _ _⟩
   obtain ⟨t, ht⟩ := exists_point_two
@@ -282,10 +356,16 @@ abbrev chAct (S : Scheme.{0}) (χ : X) : LB.Gen (LB.LinComb (Inh.trivLB (splitTo
       (snd (splitTorus S X) (splitTorus S X)).left] ![1, -1]) :=
   scaleGen (chV (fst _ _) χ) (unitGen _ _)
 
+/- English proof (translation)
+The claim follows from `val_fst _ _ χ t x z J`.
+-/
 theorem val_chAct (χ : X) {T : Over S} (t x : T ⟶ splitTorus S X) (z : T.left) (J) :
     val (chAct S χ) (lift t x).left z J = gm (𝟙 T.left) z ⊤ (chV t χ) :=
   val_fst _ _ χ t x z J
 
+/- English proof (translation)
+Use `⟨scaleGen_isGen _ (unitGen_isGen _ _), fun T t t' x z J => ?_, Inh.trivLB _, scaleGen (charUnit S X (-χ)) ⟨fun _ => 1⟩, Inh.trivLB_isLB _, scaleGen_isGen _ (TQ.Desc.triv (TQ.torus S X)).map.gen, fun T t x z J j => ?_⟩` and prove the remaining obligations. Rewrite using `[val_chAct, val_chAct, val_chAct, chV_mul, map_mul]`. Establish `e : t ≫ (TQ.torus S X).i = t` using `Category.comp_id t`. Rewrite using `[gw_scale, gw_scale, val_chAct, gm_charUnit, gm_charUnit, e, chV_mul, chV_neg t, map_mul, map_inv, mul_right_comm, inv_mul_cancel, _root_.one_mul]`.
+-/
 example (χ : X) : (chAct S χ).IsGen ∧
     (∀ (T : Over S) (t t' : T ⟶ splitTorus S X) (x : T ⟶ splitTorus S X) (z : T.left) (J),
       val (chAct S χ) (lift (t * t') x).left z J =
@@ -302,18 +382,27 @@ example (χ : X) : (chAct S χ).IsGen ∧
     rw [gw_scale, gw_scale, val_chAct, gm_charUnit, gm_charUnit, e, chV_mul, chV_neg t, map_mul, map_inv,
       mul_right_comm, inv_mul_cancel, _root_.one_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨connectedSpace_torus _ _, ⟨BiTriv.triv _⟩, ⟨_, twTriv_even S ψ⟩, ⟨twDesc S ψ⟩⟩`.
+-/
 example [ConnectedSpace S] [Module.Free ℤ X] (ψ : X) : ConnectedSpace (splitTorus S X).left ∧
     Nonempty (BiTriv (twCP S (-(ψ + ψ))).c (TQ.torus S X).i) ∧
     (∃ σ : CubTriv (twCP S (-(ψ + ψ))).c (TQ.torus S X).i, σ.Even) ∧
     Nonempty ((TQ.torus S X).Desc (twCP S (-(ψ + ψ)))) :=
   ⟨connectedSpace_torus _ _, ⟨BiTriv.triv _⟩, ⟨_, twTriv_even S ψ⟩, ⟨twDesc S ψ⟩⟩
 
+/- English proof (translation)
+The claim follows from `have : TwoUniqueSums X := twoUniqueSums_of_free X ⟨GroupConn.connectedSpace_tensor _ A, (TQ.prod X A hA).exists_desc M⟩`.
+-/
 example [ConnectedSpace S] [Module.Free ℤ X] (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     [ConnectedSpace A.left] (M : CP (TQ.prod X A hA).B) :
     ConnectedSpace (splitTorus S X ⊗ A).left ∧ ∃ (P : CP (splitTorus S X ⊗ A)) (D : (TQ.prod X A hA).Desc P), D.M = M :=
   have : TwoUniqueSums X := twoUniqueSums_of_free X
   ⟨GroupConn.connectedSpace_tensor _ A, (TQ.prod X A hA).exists_desc M⟩
 
+/- English proof (translation)
+Establish `key : ∀ g (_ : 𝟙 S' ≫ f = g) (hg), ∃ w, IsCPMap P' M g (Q.q.left ≫ β) hg w`. Introduce and unpack `_ rfl hg`. Conclude with `(h.exists_comp D.map hg).imp fun _ => And.right`. Conclude with `key f (Category.id_comp f) hw`.
+-/
 theorem exists_isCPMap_comp (f : S' ⟶ S) {G' : Over S'} [GrpObj G'] [IsCommMonObj G'] (Q : TQ G' X) {P' : CP G'}
     (D : Q.Desc P') {B : Over S} [GrpObj B] [IsCommMonObj B] (M : CP B) (β : Q.B.left ⟶ B.left)
     (hβ : β ≫ B.hom = Q.B.hom ≫ f) (hw) {v} (h : IsCPMap D.M M f β hβ v) :
@@ -323,12 +412,18 @@ theorem exists_isCPMap_comp (f : S' ⟶ S) {G' : Over S'} [GrpObj G'] [IsCommMon
     exact (h.exists_comp D.map hg).imp fun _ => And.right
   exact key f (Category.id_comp f) hw
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsCPMap.id (twDesc S ψ).M).mul, exists_isCPMap_comp _ _ _ _ _ _ _ (IsCPMap.id _), _, IsCPMap.id _⟩`.
+-/
 example (ψ : X) (hβ : 𝟙 _ ≫ (TQ.torus S X).B.hom = (TQ.torus S X).B.hom ≫ 𝟙 S) (hw) :
     (∀ (T : Over S) (x y : T ⟶ (TQ.torus S X).B), toBase hβ (x * y) = toBase hβ x * toBase hβ y) ∧
     (∃ w, IsCPMap (twCP S (-(ψ + ψ))) (twDesc S ψ).M (𝟙 S) ((TQ.torus S X).q.left ≫ 𝟙 _) hw w) ∧
     ∃ v, IsCPMap (twDesc S ψ).M (twDesc S ψ).M (𝟙 S) (𝟙 _) hβ v :=
   ⟨(IsCPMap.id (twDesc S ψ).M).mul, exists_isCPMap_comp _ _ _ _ _ _ _ (IsCPMap.id _), _, IsCPMap.id _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, Inh.trivLB_isLB _, (TQ.prod X A hA).genWt_triv (chV (fst _ _) χ) (isWt_of_retraction (fst _ _) (lift_fst _ _) χ), unitGen _ _, unitGen_isGen _ _⟩`.
+-/
 example (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (χ : X) :
     ∃ (N : LB (TQ.prod X A hA).B.left) (t : LB.Gen (N.pull (TQ.prod X A hA).q.left)), N.IsLB ∧
       (TQ.prod X A hA).GenWt N t χ ∧ ∃ u : LB.Gen (abelian₂ (TQ.prod X A hA).B N), u.IsGen :=

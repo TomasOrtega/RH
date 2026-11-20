@@ -6,6 +6,15 @@ namespace PositivityTheory.Xgn.TensorDomain
 open Polynomial
 open scoped IntermediateField
 
+/- English proof (translation)
+Establish `hF : IsIntegral F θ` using `hθ.tower_top`. Establish `hd : minpoly F θ ∣ (minpoly k θ).map (algebraMap k F)` using `minpoly.dvd_map_of_isScalarTower k F θ`. Establish `h1` using `integralClosure.mem_lifts_of_monic_of_dvd_map F (minpoly.monic hθ) (minpoly.monic hF) hd`. Establish `h2 : minpoly F θ ∈ lifts (algebraMap k F)`. Rewrite `h1`, the goal using `[lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Take `⟨y, hy⟩` from `h1 n`. Rewrite using `[← hy]`. Conclude with `h _ (IsIntegral.isAlgebraic y.2)`. Take `⟨q, hq, hdeg, hm⟩` from `lifts_and_natDegree_eq_and_monic h2 (minpoly.monic hF)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `natDegree_le_of_dvd hd ((minpoly.monic hθ).map _).ne_zero` as an intermediate fact. Rewrite `this` using `[natDegree_map]`. Then use the resulting hypothesis. Rewrite using `[← hdeg]`. Use `natDegree_le_of_dvd (minpoly.dvd k θ ?_) hm.ne_zero` and prove the remaining obligations.
+
+Rewrite using `[← aeval_map_algebraMap F, hq, minpoly.aeval]`.
+-/
 theorem natDegree_minpoly_eq {k F A : Type} [Field k] [Field F] [Field A] [Algebra k F]
     [Algebra F A] [Algebra k A] [IsScalarTower k F A]
     (h : ∀ x : F, IsAlgebraic k x → x ∈ (algebraMap k F).range)
@@ -29,6 +38,17 @@ theorem natDegree_minpoly_eq {k F A : Type} [Field k] [Field F] [Field A] [Algeb
     refine natDegree_le_of_dvd (minpoly.dvd k θ ?_) hm.ne_zero
     rw [← aeval_map_algebraMap F, hq, minpoly.aeval]
 
+/- English proof (translation)
+Establish `: Algebra.IsIntegral K (algebraicClosure K L).toSubalgebra` using `(algebraicClosure.isAlgebraic K L).isIntegral`. Use `Subalgebra.LinearDisjoint.of_linearDisjoint_finite_left _ _ fun B hB _ => ?_` and prove the remaining obligations. Establish `halg : B.IsAlgebraic` using `fun x hx => (mem_algebraicClosure_iff (F := K)).1 (hB hx)`. Set `M : IntermediateField K L` to `halg.toIntermediateField`. Use `haveI : FiniteDimensional K M := ‹Module.Finite K B›`.
+
+Express the relevant statement in the definitionally equal form `M.LinearDisjoint Ω`. Take `⟨θ, hθ⟩` from `Field.exists_primitive_element K M`. Establish `hi : IsIntegral K (θ : L)` using `(Algebra.IsIntegral.isIntegral (R := K) θ).map M.val`. Establish `e : K⟮(θ : L)⟯ = M`. Use `congrArg (IntermediateField.lift (F := M)) hθ` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[← e]`. Use `IntermediateField.LinearDisjoint.of_basis_left (IntermediateField.adjoin.powerBasis hi).basis ?_` and prove the remaining obligations. Establish `hd` using `natDegree_minpoly_eq (F := Ω) h hi`. Establish `hl` using `linearIndependent_pow (K := Ω) (θ : L)`.
+
+Rewrite `hl` using `[hd]`. Establish `he : (K⟮(θ : L)⟯.val ∘ (IntermediateField.adjoin.powerBasis hi).basis) = fun i : Fin (IntermediateField.adjoin.powerBasis hi).dim => (θ : L) ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[he]`.
+
+Conclude with `hl`.
+-/
 theorem linearDisjoint_algebraicClosure {K Ω L : Type} [Field K] [CharZero K] [Field Ω] [Field L]
     [Algebra K Ω] [Algebra Ω L] [Algebra K L] [IsScalarTower K Ω L]
     (h : ∀ a : Ω, IsAlgebraic K a → a ∈ (algebraMap K Ω).range) :
@@ -58,6 +78,13 @@ theorem linearDisjoint_algebraicClosure {K Ω L : Type} [Field K] [CharZero K] [
   rw [he]
   exact hl
 
+/- English proof (translation)
+Set `S` to `Localization.Away a`. Use `haveI : IsDomain S := IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors ha)`. Use `haveI : Algebra.FiniteType A S := IsLocalization.finiteType_of_monoid_fg (Submonoid.powers a) S`. Use `haveI : Algebra.FiniteType k S := Algebra.FiniteType.trans (S := A) inferInstance inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal S`.
+
+Use `letI : Field (S ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k (S ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (S ⧸ m)`. Set `ψ : (S ⧸ m) →ₐ[k] k` to `IsAlgClosed.lift`. Use `⟨(ψ.comp (Ideal.Quotient.mkₐ k m)).comp (IsScalarTower.toAlgHom k A S), ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap A S a)` using `IsLocalization.Away.algebraMap_isUnit a`.
+
+Conclude with `(hu.map (ψ.comp (Ideal.Quotient.mkₐ k m))).ne_zero`.
+-/
 theorem exists_point (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [IsDomain A]
     [Algebra k A] [Algebra.FiniteType k A] {a : A} (ha : a ≠ 0) : ∃ φ : A →ₐ[k] k, φ a ≠ 0 := by
   let S := Localization.Away a
@@ -73,6 +100,19 @@ theorem exists_point (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [IsDoma
   have hu : IsUnit (algebraMap A S a) := IsLocalization.Away.algebraMap_isUnit a
   exact (hu.map (ψ.comp (Ideal.Quotient.mkₐ k m))).ne_zero
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace k F`. Set `B` to `Algebra.TensorProduct.basis A b`. Use `haveI : Nontrivial (A ⊗[k] F) := (Algebra.TensorProduct.includeRight_injective (R := k) (A := A) (B := F) (algebraMap k A).injective).nontrivial`. Use `haveI : NoZeroDivisors (A ⊗[k] F) := ⟨fun {x y} hxy => by`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_or]`. Take `⟨hx, hy⟩` from `hc`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, B.repr x i ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Conclude with `hx (B.repr.map_eq_zero_iff.1 (Finsupp.ext fun i => not_not.1 fun h => hn ⟨i, h⟩))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ i, B.repr y i ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Conclude with `hy (B.repr.map_eq_zero_iff.1 (Finsupp.ext fun i => not_not.1 fun h => hn ⟨i, h⟩))`. Take `⟨φ, hφ⟩` from `exists_point k A (mul_ne_zero hi hj)`. Set `Φ : A ⊗[k] F →ₐ[k] F` to `Algebra.TensorProduct.lift ((Algebra.ofId k F).comp φ) (AlgHom.id k F) fun _ _ => Commute.all _ _`.
+
+Establish `key : ∀ z i, φ (B.repr z i) = b.repr (Φ z) i`. Introduce `z i`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => simp only [map_add, Finsupp.add_apply, hu, hv]`.
+
+Consider the case `tmul a f`. Establish `h1 : Φ (a ⊗ₜ f) = φ a • f` using `by simp [Φ, Algebra.smul_def]`. Rewrite using `[h1, map_smul]`. Simplify using `[B, Algebra.TensorProduct.basis_repr_tmul]`. Establish `h0 : Φ x * Φ y = 0` using `by rw [← map_mul, hxy, map_zero]`.
+
+Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, key, key]`. Apply the tactic sequence `rcases mul_eq_zero.1 h0 with h | h <;> simp [h]⟩`. Use `haveI : IsDomain (A ⊗[k] F) := NoZeroDivisors.to_isDomain _`. Conclude with `(Algebra.TensorProduct.comm k F A).toMulEquiv.isDomain`.
+-/
 theorem isDomain_tensor_of_isAlgClosed (k A : Type) [Field k] [IsAlgClosed k] [CommRing A]
     [IsDomain A] [Algebra k A] [Algebra.FiniteType k A] (F : Type) [Field F] [Algebra k F] :
     IsDomain (F ⊗[k] A) := by
@@ -111,6 +151,11 @@ theorem isDomain_tensor_of_isAlgClosed (k A : Type) [Field k] [IsAlgClosed k] [C
   haveI : IsDomain (A ⊗[k] F) := NoZeroDivisors.to_isDomain _
   exact (Algebra.TensorProduct.comm k F A).toMulEquiv.isDomain
 
+/- English proof (translation)
+Set `L` to `AlgebraicClosure F`. Set `j : Ω →ₐ[k] L` to `IsAlgClosed.lift`. Use `letI : Algebra Ω L := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower k Ω L := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `haveI := isDomain_tensor_of_isAlgClosed Ω (Ω ⊗[k] S) L`.
+
+Use `haveI : IsDomain (L ⊗[k] S) := (Algebra.TensorProduct.cancelBaseChange k Ω L L S).symm.toMulEquiv.isDomain _`. Set `φ` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom k F L) (AlgHom.id k S)`. Establish `hφ : Function.Injective φ` using `Module.Flat.rTensor_preserves_injective_linearMap (M := S) (IsScalarTower.toAlgHom k F L).toLinearMap (algebraMap F L).injective`. Conclude with `Function.Injective.isDomain φ.toRingHom hφ`.
+-/
 theorem isDomain_tensor_of_closure (k Ω S : Type) [Field k] [Field Ω] [IsAlgClosed Ω] [Algebra k Ω]
     [Algebra.IsAlgebraic k Ω] [CommRing S] [Algebra k S] [Algebra.FiniteType k S]
     [IsDomain (Ω ⊗[k] S)] (F : Type) [Field F] [Algebra k F] : IsDomain (F ⊗[k] S) := by
@@ -127,6 +172,11 @@ theorem isDomain_tensor_of_closure (k Ω S : Type) [Field k] [Field Ω] [IsAlgCl
       (IsScalarTower.toAlgHom k F L).toLinearMap (algebraMap F L).injective
   exact Function.Injective.isDomain φ.toRingHom hφ
 
+/- English proof (translation)
+Set `N` to `algebraicClosure K (AlgebraicClosure Ω)`. Use `haveI : IsDomain (N ⊗[K] Ω) := (linearDisjoint_algebraicClosure h).isDomain`. Use `haveI : IsAlgClosed N := IsAlgClosure.isAlgClosed K`. Set `φ` to `Algebra.TensorProduct.map (AlgHom.id K N) j`. Establish `hφ : Function.Injective φ` using `Module.Flat.lTensor_preserves_injective_linearMap (M := N) j.toLinearMap hj`.
+
+Use `haveI : IsDomain (N ⊗[K] A) := Function.Injective.isDomain φ.toRingHom hφ`. Conclude with `isDomain_tensor_of_closure K N A F`.
+-/
 theorem isDomain_tensor {K A Ω : Type} [Field K] [CharZero K] [CommRing A] [Field Ω] [Algebra K A]
     [Algebra K Ω] [Algebra.FiniteType K A] (j : A →ₐ[K] Ω) (hj : Function.Injective j)
     (h : ∀ a : Ω, IsAlgebraic K a → a ∈ (algebraMap K Ω).range) (F : Type) [Field F]
@@ -140,6 +190,17 @@ theorem isDomain_tensor {K A Ω : Type} [Field K] [CharZero K] [CommRing A] [Fie
   haveI : IsDomain (N ⊗[K] A) := Function.Injective.isDomain φ.toRingHom hφ
   exact isDomain_tensor_of_closure K N A F
 
+/- English proof (translation)
+Use `haveI : Nontrivial (L ⊗[K] F) := (Algebra.TensorProduct.includeRight_injective (R := K) (A := L) (B := F) (algebraMap K L).injective).nontrivial`. Use `haveI : NoZeroDivisors (L ⊗[K] F) := ⟨fun {u v} huv => by`. Take `⟨Su, rfl⟩` from `TensorProduct.exists_finset u`. Take `⟨Sv, rfl⟩` from `TensorProduct.exists_finset v`. Set `T : Finset F` to `(Su ∪ Sv).image Prod.snd`.
+
+Set `A` to `Algebra.adjoin K (T : Set F)`. Use `haveI : Algebra.FiniteType K A := (Subalgebra.fg_iff_finiteType A).1 (Subalgebra.fg_adjoin_finset T)`. Use `haveI := isDomain_tensor A.val Subtype.val_injective h L`. Set `φ` to `Algebra.TensorProduct.map (AlgHom.id K L) A.val`. Establish `hφ : Function.Injective φ` using `Module.Flat.lTensor_preserves_injective_linearMap (M := L) A.val.toLinearMap Subtype.val_injective`.
+
+Establish `hr : ∀ S : Finset (L × F), S ⊆ Su ∪ Sv → (∑ q ∈ S, q.1 ⊗ₜ[K] q.2) ∈ φ.range` using `fun S hS => sum_mem fun q hq => ⟨q.1 ⊗ₜ ⟨q.2, Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (hS hq)))⟩, rfl⟩`. Take `⟨a, ha⟩` from `hr Su Finset.subset_union_left`. Take `⟨b, hb⟩` from `hr Sv Finset.subset_union_right`. Establish `ha' : φ a = _` using `ha`. Establish `hb' : φ b = _` using `hb`.
+
+Rewrite `huv` using `[← ha', ← hb', ← map_mul, map_eq_zero_iff _ hφ]`. Rewrite using `[← ha', ← hb']`. Break down `mul_eq_zero.1 huv with h0 | h0` into its components or cases. Use `left`. Rewrite using `[h0, map_zero]`.
+
+Use `right`. Rewrite using `[h0, map_zero]⟩`. Conclude with `NoZeroDivisors.to_isDomain _`.
+-/
 theorem isDomain_of_algClosed {K L F : Type} [Field K] [Field L] [Field F] [Algebra K L]
     [Algebra K F] [CharZero K] (h : ∀ a : F, IsAlgebraic K a → a ∈ (algebraMap K F).range) :
     IsDomain (L ⊗[K] F) := by
@@ -175,6 +236,9 @@ theorem isDomain_of_algClosed {K L F : Type} [Field K] [Field L] [Field F] [Alge
 
 end PositivityTheory.Xgn.TensorDomain
 
+/- English proof (translation)
+Introduce `K Ω C _ _ _ _ _ _ h`. Use `haveI : IsDomain (C ⊗[K] Ω) := PositivityTheory.Xgn.TensorDomain.isDomain_of_algClosed h`. Conclude with `(Algebra.TensorProduct.comm K Ω C).toMulEquiv.isDomain`.
+-/
 theorem PositivityTheory.Xgn.tensor_algebraically_closed_domain : ∀ (K Ω C : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [Field C] [Algebra K C], (∀ a : Ω, IsAlgebraic K a → a ∈ (algebraMap K Ω).range) → IsDomain (Ω ⊗[K] C) := by
   intro K Ω C _ _ _ _ _ _ h
   haveI : IsDomain (C ⊗[K] Ω) := PositivityTheory.Xgn.TensorDomain.isDomain_of_algClosed h

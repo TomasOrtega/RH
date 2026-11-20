@@ -23,11 +23,20 @@ abbrev ChartLoc := Localization.Away (X i : MvPolynomial (Fin (n + 1)) A)
 def dehom : MvPolynomial (Fin (n + 1)) A →+* MvPolynomial {j // j ≠ i} A :=
   eval₂Hom C (fun j => if h : j = i then 1 else X ⟨j, h⟩)
 
+/- English proof (translation)
+Simplify using `[dehom]`.
+-/
 lemma dehom_X_self : dehom A i (X i) = 1 := by simp [dehom]
 
+/- English proof (translation)
+Simplify using `[dehom, h]`.
+-/
 lemma dehom_X_of_ne (j : Fin (n + 1)) (h : j ≠ i) : dehom A i (X j) = X ⟨j, h⟩ := by
   simp [dehom, h]
 
+/- English proof (translation)
+Simplify using `[dehom]`.
+-/
 lemma dehom_C (a : A) : dehom A i (C a) = C a := by simp [dehom]
 
 def chartToPoly : Chart A i →+* MvPolynomial {j // j ≠ i} A :=
@@ -55,10 +64,16 @@ variable (A : Type u) [CommRing A] {n : ℕ} (i : Fin (n + 1))
 local notation "Pn" => MvPolynomial (Fin (n + 1)) A
 local notation "xinv" => IsLocalization.Away.invSelf (S := ChartLoc A i) (X i : MvPolynomial (Fin (n + 1)) A)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.mul_invSelf _`.
+-/
 lemma algebraMap_X_mul_invSelf :
     algebraMap (MvPolynomial (Fin (n + 1)) A) (ChartLoc A i) (X i) * xinv = 1 :=
   IsLocalization.Away.mul_invSelf _
 
+/- English proof (translation)
+Rewrite using `[coordinate, Away.val_mk, Localization.mk_eq_mk', IsLocalization.mk'_eq_mul_mk'_one, IsLocalization.Away.invSelf]`. Use `congr 2`. Conclude with `Subtype.ext (pow_one _)`.
+-/
 lemma val_coordinate (j : {j // j ≠ i}) :
     (coordinate A i j).val = algebraMap Pn (ChartLoc A i) (X j.1) * xinv := by
   rw [coordinate, Away.val_mk, Localization.mk_eq_mk', IsLocalization.mk'_eq_mul_mk'_one,
@@ -66,11 +81,21 @@ lemma val_coordinate (j : {j // j ≠ i}) :
   congr 2
   exact Subtype.ext (pow_one _)
 
+/- English proof (translation)
+Simplify using `[polyToChart, fromZeroRingHom]`. Both sides reduce to the same expression.
+-/
 lemma val_polyToChart_C (a : A) :
     (polyToChart A i (C a)).val = algebraMap Pn (ChartLoc A i) (C a) := by
   simp [polyToChart, fromZeroRingHom]
   rfl
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, dehom_C, HomogeneousLocalization.algebraMap_apply]`. Rewrite using `[val_polyToChart_C]`. Simplify using `[scaleMap]`.
+
+Introduce `j`. Simplify using `only [RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[dehom_X_self, map_one, val_one]`.
+
+Simplify using `only [scaleMap, coe_eval₂Hom, eval₂_X]`. Conclude with `(algebraMap_X_mul_invSelf A j).symm`. Rewrite using `[dehom_X_of_ne A i j h]`. Simplify using `only [polyToChart, coe_eval₂Hom, eval₂_X, scaleMap]`. Conclude with `val_coordinate A i ⟨j, h⟩`.
+-/
 lemma scaleMap_eq :
     (algebraMap (Chart A i) (ChartLoc A i)).comp ((polyToChart A i).comp (dehom A i)) =
       scaleMap A i := by
@@ -90,6 +115,11 @@ lemma scaleMap_eq :
       simp only [polyToChart, coe_eval₂Hom, eval₂_X, scaleMap]
       exact val_coordinate A i ⟨j, h⟩
 
+/- English proof (translation)
+Establish `hdeg : e.degree = ∑ j ∈ e.support, e j` using `rfl`. Establish `hinv : (e.prod fun _ k => xinv ^ k) * algebraMap Pn (ChartLoc A i) (X i ^ e.degree) = 1`. Rewrite using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum, map_pow, ← hdeg, ← mul_pow, mul_comm, algebraMap_X_mul_invSelf, one_pow]`. Simplify using `only [scaleMap, coe_eval₂Hom, eval₂_monomial, RingHom.comp_apply]`. Repeatedly rewrite using `[mul_pow]`.
+
+Rewrite using `[Finsupp.prod_mul, mul_assoc, mul_assoc, hinv, mul_one, monomial_eq, map_mul, map_finsuppProd]`. Simplify using `only [map_pow]`.
+-/
 lemma scaleMap_monomial (e : Fin (n + 1) →₀ ℕ) (c : A) :
     scaleMap A i (monomial e c) * algebraMap Pn (ChartLoc A i) (X i ^ e.degree) =
       algebraMap Pn (ChartLoc A i) (monomial e c) := by
@@ -102,6 +132,11 @@ lemma scaleMap_monomial (e : Fin (n + 1) →₀ ℕ) (c : A) :
   rw [Finsupp.prod_mul, mul_assoc, mul_assoc, hinv, mul_one, monomial_eq, map_mul, map_finsuppProd]
   simp only [map_pow]
 
+/- English proof (translation)
+Establish `hh : a.IsHomogeneous m` using `(mem_homogeneousSubmodule m a).1 ha`. Use `conv_lhs => rw [a.as_sum]`. Use `conv_rhs => rw [a.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun e he => ?_)` and prove the remaining obligations.
+
+Establish `hdeg : e.degree = m`. Use `hh (mem_support_iff.mp he)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[← hdeg]`. Conclude with `scaleMap_monomial A i e _`.
+-/
 lemma scaleMap_homog {m : ℕ} {a : Pn} (ha : a ∈ grading A n m) :
     scaleMap A i a * algebraMap Pn (ChartLoc A i) (X i ^ m) = algebraMap Pn (ChartLoc A i) a := by
   have hh : a.IsHomogeneous m := (mem_homogeneousSubmodule m a).1 ha
@@ -115,6 +150,9 @@ lemma scaleMap_homog {m : ℕ} {a : Pn} (ha : a ∈ grading A n m) :
   rw [← hdeg]
   exact scaleMap_monomial A i e _
 
+/- English proof (translation)
+Use `Localization.awayLift_mk (dehom A i) (X i) a 1 (by rw [dehom_X_self, one_mul]) m` as an intermediate fact. Simplify using `only [chartToPoly, RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply, Away.val_mk]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one]`.
+-/
 lemma chartToPoly_mk (m : ℕ) (a : Pn) (ha : a ∈ grading A n (m • 1)) :
     chartToPoly A i (Away.mk (grading A n) (X_mem i) m a ha) = dehom A i a := by
   have := Localization.awayLift_mk (dehom A i) (X i) a 1 (by rw [dehom_X_self, one_mul]) m
@@ -123,10 +161,18 @@ lemma chartToPoly_mk (m : ℕ) (a : Pn) (ha : a ∈ grading A n (m • 1)) :
   refine this.trans ?_
   rw [one_pow, mul_one]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+-/
 lemma chartToPoly_algebraMap (a : Pn) (h) :
     Localization.awayLift (dehom A i) (X i) h (algebraMap Pn (ChartLoc A i) a) = dehom A i a :=
   IsLocalization.Away.lift_eq _ _ a
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, chartToPoly, HomogeneousLocalization.algebraMap_apply]`. Rewrite using `[val_polyToChart_C, chartToPoly_algebraMap, dehom_C]`. Introduce `j`.
+
+Simplify using `only [RingHom.comp_apply, RingHom.id_apply, polyToChart, coe_eval₂Hom, eval₂_X, coordinate]`. Rewrite using `[chartToPoly_mk, dehom_X_of_ne A i j.1 j.2]`.
+-/
 lemma chartToPoly_polyToChart : (chartToPoly A i).comp (polyToChart A i) = RingHom.id _ := by
   apply MvPolynomial.ringHom_ext
   · intro a
@@ -138,6 +184,11 @@ lemma chartToPoly_polyToChart : (chartToPoly A i).comp (polyToChart A i) = RingH
       coordinate]
     rw [chartToPoly_mk, dehom_X_of_ne A i j.1 j.2]
 
+/- English proof (translation)
+Use extensionality with `z : 1`. Take `⟨m, a, ha, rfl⟩` from `Away.mk_surjective (grading A n) (X_mem i) z`. Rewrite using `[RingHom.comp_apply, chartToPoly_mk, RingHom.id_apply]`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun φ => φ a) (scaleMap_eq A i)`.
+
+Simplify using `only [RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply] at h1`. Rewrite using `[h1, Away.val_mk, Localization.mk_eq_mk', IsLocalization.eq_mk'_iff_mul_eq]`. Use `scaleMap_homog A i (m := m) (a := a) (by simpa using ha)` as an intermediate fact. Conclude with `this`.
+-/
 lemma polyToChart_chartToPoly : (polyToChart A i).comp (chartToPoly A i) = RingHom.id _ := by
   ext z : 1
   obtain ⟨m, a, ha, rfl⟩ := Away.mk_surjective (grading A n) (X_mem i) z

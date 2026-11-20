@@ -7,6 +7,11 @@ namespace PI.AprimeInfW
 
 open MeasureTheory Matrix
 
+/- English proof (translation)
+Establish `h1 : N * (N ^ 2)⁻¹ = N⁻¹`. Rewrite using `[pow_two, mul_inv, ← mul_assoc, mul_inv_cancel₀ hN, one_mul]`. Establish `h2 : 1 / P ^ 2 * N⁻¹ = (P ^ 2 * N)⁻¹`. Rewrite using `[one_div, mul_inv]`. Rewrite using `[h1, h2, inv_pow, inv_inv, one_div, mul_pow, mul_pow, mul_pow, mul_inv, inv_pow, inv_inv, ← pow_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_alg (N P : ℝ) (k m : ℕ) (hN : N ≠ 0) (hP : P ≠ 0) :
     ((1 / P * N) ^ k)⁻¹ * (((P * N) ^ m)⁻¹ * ((1 / P ^ 2 * (N * (N ^ 2)⁻¹)) ^ m)⁻¹) = P ^ m * P ^ k / N ^ k := by
   have h1 : N * (N ^ 2)⁻¹ = N⁻¹ := by
@@ -17,6 +22,9 @@ theorem const_alg (N P : ℝ) (k m : ℕ) (hN : N ≠ 0) (hP : P ≠ 0) :
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun i => i ∈ S) f, Finset.sum_eq_zero (fun i _ => hf i.1 i.2), zero_add]`. Conclude with `(Equiv.sum_comp eU (fun i => f i)).symm`.
+-/
 private theorem sum_eq_sum_compl_equiv_of_eq_zero_on {n m : ℕ} (S : Finset (Fin n)) (eU : Fin m ≃ {i // i ∉ S})
     (f : Fin n → ℂ) (hf : ∀ i ∈ S, f i = 0) : ∑ i, f i = ∑ c, f (eU c) := by
   classical
@@ -24,24 +32,40 @@ private theorem sum_eq_sum_compl_equiv_of_eq_zero_on {n m : ℕ} (S : Finset (Fi
     Finset.sum_eq_zero (fun i _ => hf i.1 i.2), zero_add]
   exact (Equiv.sum_comp eU (fun i => f i)).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [rowsM, hi, Matrix.mul_apply]`.
+-/
 private theorem rowsM_mul {n k m : ℕ} (S : Finset (Fin n)) (eS : Fin k ≃ ↥S)
     (eU : Fin m ≃ {i // i ∉ S}) (X : Matrix (Fin k) (Fin m) ℂ) (Y Z : Matrix (Fin m) (Fin m) ℂ) :
     rowsM S eS eU X Y * Z = rowsM S eS eU (X * Z) (Y * Z) := by
   ext i j
   by_cases hi : i ∈ S <;> simp [rowsM, hi, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [rowsM, hi]`.
+-/
 private theorem rowsM_add_rowsM {n k m : ℕ} (S : Finset (Fin n)) (eS : Fin k ≃ ↥S)
     (eU : Fin m ≃ {i // i ∉ S}) (X X' : Matrix (Fin k) (Fin m) ℂ) (Y Y' : Matrix (Fin m) (Fin m) ℂ) :
     rowsM S eS eU X Y + rowsM S eS eU X' Y' = rowsM S eS eU (X + X') (Y + Y') := by
   ext i j
   by_cases hi : i ∈ S <;> simp [rowsM, hi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [rowsM, hi]`.
+-/
 private theorem smul_rowsM {n k m : ℕ} (S : Finset (Fin n)) (eS : Fin k ≃ ↥S)
     (eU : Fin m ≃ {i // i ∉ S}) (c : ℂ) (X : Matrix (Fin k) (Fin m) ℂ) (Y : Matrix (Fin m) (Fin m) ℂ) :
     c • rowsM S eS eU X Y = rowsM S eS eU (c • X) (c • Y) := by
   ext i j
   by_cases hi : i ∈ S <;> simp [rowsM, hi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, sum_eq_sum_compl_equiv_of_eq_zero_on S eU _ (fun l hl => by rw [hw l hl, mul_zero])]`. Distinguish the cases in `hi : i ∈ S`. Take `⟨a, rfl⟩ : ∃ a, ((eS a : ↥S) : Fin n) = i` from `⟨eS.symm ⟨i, hi⟩, by simp⟩`. Rewrite using `[rowsM_S]`.
+
+Simplify using `only [xi_SU, Matrix.mul_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, rfl⟩ : ∃ a, ((eU a : {i // i ∉ S}) : Fin n) = i` from `⟨eU.symm ⟨i, hi⟩, by simp⟩`. Rewrite using `[rowsM_U, Matrix.mul_apply]`.
+
+Simplify using `only [xi_UU, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem xiF_mul_eq_rowsM {n k m : ℕ} {η : Type} [Fintype η] (ε : Fin n → Bool) (S : Finset (Fin n))
     (eS : Fin k ≃ ↥S) (eU : Fin m ≃ {i // i ∉ S}) (H : EuclideanSpace ℝ η →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ)
     (w : Matrix (Fin n) (Fin m) ℂ) (hw : ∀ i ∈ S, ∀ b, w i b = 0)
@@ -62,6 +86,9 @@ private theorem xiF_mul_eq_rowsM {n k m : ℕ} {η : Type} [Fintype η] (ε : Fi
     refine Finset.sum_congr rfl fun b _ => ?_
     ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hi : i ∈ S`. Simplify using `[rowsM, hi, Matrix.mul_apply, hw i hi]`. Simplify using `[rowsM, hi, Matrix.mul_apply]`.
+-/
 private theorem mul_eq_rowsM_zero_of_zero_on {n k m : ℕ} (S : Finset (Fin n)) (eS : Fin k ≃ ↥S)
     (eU : Fin m ≃ {i // i ∉ S}) (w : Matrix (Fin n) (Fin m) ℂ) (hw : ∀ i ∈ S, ∀ b, w i b = 0)
     (X : Matrix (Fin m) (Fin m) ℂ) :
@@ -71,6 +98,9 @@ private theorem mul_eq_rowsM_zero_of_zero_on {n k m : ℕ} (S : Finset (Fin n)) 
   · simp [rowsM, hi, Matrix.mul_apply, hw i hi]
   · simp [rowsM, hi, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, sum_eq_sum_compl_equiv_of_eq_zero_on S eU _ (fun i hi => by rw [hw i hi b, mul_zero])]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.REAL.Jm, Matrix.mul_diagonal, sgn, Matrix.conjTranspose_apply]`.
+-/
 private theorem conjTranspose_mul_Jm_mul_eq_of_zero_on {n m : ℕ} (ε : Fin n → Bool) (S : Finset (Fin n))
     (eU : Fin m ≃ {i // i ∉ S}) (w : Matrix (Fin n) (Fin m) ℂ) (hw : ∀ i ∈ S, ∀ b, w i b = 0) :
     wᴴ * Formalism.REAL.Jm ε * w = (Matrix.of fun b j => w (eU b) j)ᴴ *
@@ -80,6 +110,9 @@ private theorem conjTranspose_mul_Jm_mul_eq_of_zero_on {n m : ℕ} (ε : Fin n �
   refine Finset.sum_congr rfl fun c _ => ?_
   simp [Formalism.REAL.Jm, Matrix.mul_diagonal, sgn, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ), Matrix.of (cpx (reim Z)) = Z`. Introduce `p q Z`. Use extensionality with `a b`. Conclude with `cpx_reim Z a b`. Rewrite using `[rsL_apply, h1, h1]`.
+-/
 private theorem rsL_reim_eq_reim_rowsM {n k m : ℕ} (S : Finset (Fin n)) (eS : Fin k ≃ ↥S)
     (eU : Fin m ≃ {i // i ∉ S}) (X : Matrix (Fin k) (Fin m) ℂ) (Y : Matrix (Fin m) (Fin m) ℂ) :
     rsL S eS eU (reim X, reim Y) = reim (rowsM S eS eU X Y) := by
@@ -89,6 +122,15 @@ private theorem rsL_reim_eq_reim_rowsM {n k m : ℕ} (S : Finset (Fin n)) (eS : 
     exact cpx_reim Z a b
   rw [rsL_apply, h1, h1]
 
+/- English proof (translation)
+Establish `hWu : IsUnit W0.det` using `isUnit_iff_ne_zero.mpr hW`. Establish `hWHu : IsUnit W0ᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hW)`. Establish `hDinv : Dg⁻¹ = Dg` using `Matrix.inv_eq_left_inv hD`.
+
+Establish `hG : W0 * (W0ᴴ * Dg * W0)⁻¹ = Dg * W0ᴴ⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, hDinv, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hWu, Matrix.one_mul]`. Establish `hB : (((Real.sqrt 2 : ℝ) : ℂ) • W0)ᴴ * Hz * (((Real.sqrt 2 : ℝ) : ℂ) • W0) = (2 : ℂ) • (W0ᴴ * Hz * W0)`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`. Evaluate the numerical expressions. Rewrite using `[hG, hB]`. Establish `hP : W0ᴴ⁻¹ * W0ᴴ = 1` using `Matrix.nonsing_inv_mul _ hWHu`. Simplify using `only [Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc W0ᴴ⁻¹ W0ᴴ, hP, Matrix.one_mul]`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem dg_smul_mul_add_half_eq_half_mul_add {m : ℕ} (W0 Dg Hz Ht : Matrix (Fin m) (Fin m) ℂ) (hW : W0.det ≠ 0)
     (hD : Dg * Dg = 1) :
     Dg * (Complex.I • Hz) * W0 + (1 / 2 : ℂ) • (W0 * (W0ᴴ * Dg * W0)⁻¹ * Ht) =
@@ -117,15 +159,24 @@ private theorem dg_smul_mul_add_half_eq_half_mul_add {m : ℕ} (W0 Dg Hz Ht : Ma
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `(reimE (r := p) (m := q)).symm_apply_apply Z`.
+-/
 private theorem of_reimE_reim {p q : ℕ} (Z : Matrix (Fin p) (Fin q) ℂ) :
     Matrix.of ((reimE (r := p) (m := q)).symm (reim Z)) = Z :=
   (reimE (r := p) (m := q)).symm_apply_apply Z
 
+/- English proof (translation)
+The claim follows from `(reimL (n := p) (m := q)).continuous_of_finiteDimensional.congr fun Y => reimL_apply Y`.
+-/
 private theorem continuous_reim {p q : ℕ} : Continuous (fun Y : Matrix (Fin p) (Fin q) ℂ => reim Y) :=
   (reimL (n := p) (m := q)).continuous_of_finiteDimensional.congr fun Y => reimL_apply Y
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Substitute `hBdef hA2def` using the available equality. Rewrite using `[hLΛ, xiF_mul_eq_rowsM ε S eS eU H w hw, mul_eq_rowsM_zero_of_zero_on S eS eU w hw, rowsM_mul, smul_rowsM, rowsM_add_rowsM, psiLp_apply, of_reimE_reim, ← cpx_eq, rsL_reim_eq_reim_rowsM, congH_spec, conjTranspose_mul_Jm_mul_eq_of_zero_on ε S eU w hw, ← hW0def, ← hDgdef]`. Use `congr 2`. Rewrite using `[Matrix.zero_mul, smul_zero, add_zero]`. Conclude with `dg_smul_mul_add_half_eq_half_mul_add W0 Dg (H z2) (H t) hW0 hDD`.
+-/
 private theorem key_lemma_12 {n m : ℕ} {ι η : Type} [Fintype ι] [Fintype η] (ε : Fin n → Bool)
     (S : Finset (Fin n)) (eS : Fin S.card ≃ ↥S) (eU : Fin m ≃ {i // i ∉ S})
     (w : Matrix (Fin n) (Fin m) ℂ) (hw : ∀ i ∈ S, ∀ b, w i b = 0)
@@ -152,6 +203,11 @@ private theorem key_lemma_12 {n m : ℕ} {ι η : Type} [Fintype ι] [Fintype η
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hc2 : Continuous fun y : EuclideanSpace ℝ (Fin m × Fin m × Bool) => Matrix.of ((reimE (r` using `m) (m := m)).symm y) := (reimE (r := m) (m := m)).symm.toLinearMap.continuous_of_finiteDimensional`. Establish `hmulLm : Measurable fun y : EuclideanSpace ℝ (Fin m × Fin m × Bool) => reim (A2 * Matrix.of ((reimE (r` using `m) (m := m)).symm y)) := (continuous_reim.comp (continuous_const.matrix_mul hc2)).measurable`. Establish `hpsim : Measurable (psiLp H)` using `(psiLp H).continuous_of_finiteDimensional.measurable`. Establish `hcgm : Measurable (congH H hH hnH hsH B)` using `(congH H hH hnH hsH B).continuous_of_finiteDimensional.measurable`. Establish `hPm : Measurable (Prod.map (congH H hH hnH hsH B) (id : EuclideanSpace ℝ η → EuclideanSpace ℝ η))` using `Measurable.prodMap hcgm measurable_id`.
+
+Establish `hcg : (volume : Measure (EuclideanSpace ℝ η × EuclideanSpace ℝ η)).map (Prod.map (congH H hH hnH hsH B) id) = ENNReal.ofReal (Complex.normSq B.det ^ m)⁻¹ • volume`. Rewrite using `[Measure.volume_eq_prod, ← Measure.map_prod_map _ _ hcgm measurable_id, cong_factor H hH hnH hsH B hB, Measure.map_id, Measure.prod_smul_left]`. Establish `e : (fun p => reim (A2 * Matrix.of ((reimE (r` using `m) (m := m)).symm (psiLp H (Prod.map (congH H hH hnH hsH B) id p))))) = (fun y => reim (A2 * Matrix.of ((reimE (r := m) (m := m)).symm y))) ∘ (psiLp H) ∘ (Prod.map (congH H hH hnH hsH B) id) := rfl`. Rewrite using `[e, ← Measure.map_map hmulLm (hpsim.comp hPm), ← Measure.map_map hpsim hPm, hcg, Measure.map_smul, (psi_mp H hH hnH hsH).map_eq, Measure.map_smul, map_mulL A2 hA, smul_smul]`.
+-/
 private theorem map_volume_reim_block_eq_of_det_ne_zero {m : ℕ} {η : Type} [Fintype η]
     (H : EuclideanSpace ℝ η →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ) (hH : ∀ t, (H t)ᴴ = H t)
     (hnH : ∀ t, ∑ i, ∑ j, ‖H t i j‖ ^ 2 = ‖t‖ ^ 2) (hsH : ∀ M : Matrix (Fin m) (Fin m) ℂ, Mᴴ = M → ∃ t, H t = M)
@@ -184,6 +240,9 @@ private theorem map_volume_reim_block_eq_of_det_ne_zero {m : ℕ} {η : Type} [F
   rw [e, ← Measure.map_map hmulLm (hpsim.comp hPm), ← Measure.map_map hpsim hPm, hcg,
     Measure.map_smul, (psi_mp H hH hnH hsH).map_eq, Measure.map_smul, map_mulL A2 hA, smul_smul]
 
+/- English proof (translation)
+Establish `h4 : (1 / 4 : ℝ) ^ m * N⁻¹ = 1 / ((2 : ℝ) ^ m) ^ 2 * (N * (N ^ 2)⁻¹)`. Rewrite using `[show N * (N ^ 2)⁻¹ = N⁻¹ by rw [sq, mul_inv, ← mul_assoc, mul_inv_cancel₀ hN, one_mul], show ((2 : ℝ) ^ m) ^ 2 = 4 ^ m by rw [← pow_mul, mul_comm, pow_mul]; norm_num, _root_.one_div_pow]`. Rewrite using `[h4, const_alg N (2 ^ m) k m hN (by positivity), ← pow_mul, ← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem inv_pow_mul_inv_pow_eq_two_pow_div_pow (N : ℝ) (m k : ℕ) (hN : N ≠ 0) :
     ((1 / (2 : ℝ) ^ m * N) ^ k)⁻¹ * ((((2 : ℝ) ^ m * N) ^ m)⁻¹ * (((1 / 4 : ℝ) ^ m * N⁻¹) ^ m)⁻¹) =
       2 ^ ((m + k) * m) / N ^ k := by
@@ -197,6 +256,47 @@ private theorem inv_pow_mul_inv_pow_eq_two_pow_div_pow (N : ℝ) (m k : ℕ) (hN
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `n m ε S w ι η _ _ L H hn hw hG hL hnL hLs hH hnH hsH`. Establish `hcardU : Fintype.card {i // i ∉ S} = m`. Simplify using `only [Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_coe]`. Use linear arithmetic over natural numbers and integers. Take `⟨eS⟩ : Nonempty (Fin S.card ≃ ↥S)` from `⟨S.equivFin.symm⟩`.
+
+Take `⟨eU⟩ : Nonempty (Fin m ≃ {i // i ∉ S})` from `⟨(Fintype.equivFinOfCardEq hcardU).symm⟩`. Take `⟨W0, hW0def⟩ : ∃ X : Matrix (Fin m) (Fin m) ℂ, X = Matrix.of fun b j => w (eU b) j` from `⟨_, rfl⟩`. Take `⟨Dg, hDgdef⟩ : ∃ X : Matrix (Fin m) (Fin m) ℂ, X = Matrix.diagonal fun a => sgn ε (eU a)` from `⟨_, rfl⟩`. Take `⟨B, hBdef⟩ : ∃ X : Matrix (Fin m) (Fin m) ℂ, X = ((Real.sqrt 2 : ℝ) : ℂ) • W0` from `⟨_, rfl⟩`. Take `⟨A2, hA2def⟩ : ∃ X : Matrix (Fin m) (Fin m) ℂ, X = (1 / 2 : ℂ) • (Dg * W0ᴴ⁻¹)` from `⟨_, rfl⟩`.
+
+Establish `hgram : wᴴ * Formalism.REAL.Jm ε * w = W0ᴴ * Dg * W0`. Rewrite using `[hW0def, hDgdef]`. Conclude with `conjTranspose_mul_Jm_mul_eq_of_zero_on ε S eU w hw`. Establish `hDD : Dg * Dg = 1`. Rewrite using `[hDgdef, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [sgn]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hDnorm : ‖Dg.det‖ = 1`.
+
+Rewrite using `[hDgdef, Matrix.det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [sgn]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hW0 : W0.det ≠ 0`.
+
+Introduce `h0`. Apply `hG` to reduce the goal to its premises. Rewrite using `[hgram, Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Establish `hWHu : IsUnit W0ᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`.
+
+Conclude with `isUnit_iff_ne_zero.mpr (star_ne_zero.mpr hW0)`. Establish `hDdet : Dg.det ≠ 0`. Introduce `h`. Rewrite `hDnorm` using `[h, norm_zero]`. Conclude with `zero_ne_one hDnorm`.
+
+Establish `hBdet : B.det ≠ 0`. Rewrite using `[hBdef, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 2)).ne')) hW0`. Establish `hA2det : A2.det ≠ 0`. Rewrite using `[hA2def, Matrix.det_smul, Matrix.det_mul]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (mul_ne_zero hDdet (Matrix.isUnit_nonsing_inv_det _ hWHu).ne_zero)`. Establish `hR : (r2 • W0).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.mpr (inv_pos.mpr (Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 2))).ne')) hW0`. Take `⟨Λ, hΛ, hLΛ⟩` from `dom_exists (ε := ε) (S := S) (eS := eS) (eU := eU) (H := H) L hL hnL hLs hH hnH hsH`.
+
+Establish `hc1 : Continuous fun y : EuclideanSpace ℝ (Fin S.card × Fin m × Bool) => Matrix.of ((reimE (r` using `S.card) (m := m)).symm y) := (reimE (r := S.card) (m := m)).symm.toLinearMap.continuous_of_finiteDimensional`. Establish `hc2 : Continuous fun y : EuclideanSpace ℝ (Fin m × Fin m × Bool) => Matrix.of ((reimE (r` using `m) (m := m)).symm y) := (reimE (r := m) (m := m)).symm.toLinearMap.continuous_of_finiteDimensional`. Establish `hΦ1m : Measurable fun y : EuclideanSpace ℝ (Fin S.card × Fin m × Bool) => reim (Matrix.of ((reimE (r` using `S.card) (m := m)).symm y) * (r2 • W0)) := (continuous_reim.comp (hc1.matrix_mul continuous_const)).measurable`. Establish `hmulLm : Measurable fun y : EuclideanSpace ℝ (Fin m × Fin m × Bool) => reim (A2 * Matrix.of ((reimE (r` using `m) (m := m)).symm y)) := (continuous_reim.comp (continuous_const.matrix_mul hc2)).measurable`. Establish `hpsim : Measurable (psiLp H)` using `(psiLp H).continuous_of_finiteDimensional.measurable`.
+
+Establish `hcgm : Measurable (congH H hH hnH hsH B)` using `(congH H hH hnH hsH B).continuous_of_finiteDimensional.measurable`. Establish `hPm : Measurable (Prod.map (congH H hH hnH hsH B) (id : EuclideanSpace ℝ η → EuclideanSpace ℝ η))` using `Measurable.prodMap hcgm measurable_id`. Establish `hΦ2m : Measurable fun p : EuclideanSpace ℝ η × EuclideanSpace ℝ η => reim (A2 * Matrix.of ((reimE (r` using `m) (m := m)).symm (psiLp H (Prod.map (congH H hH hnH hsH B) id p)))) := hmulLm.comp (hpsim.comp hPm)`. Establish `hLc : Continuous L` using `L.continuous_of_finiteDimensional`. Establish `hHc : Continuous H` using `H.continuous_of_finiteDimensional`.
+
+Establish `hFc : Continuous fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => L z.1 * w + (1 / 2 : ℂ) • (w * (wᴴ * Formalism.REAL.Jm ε * w)⁻¹ * H z.2)`. Establish `h1 : Continuous fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => L z.1 * w` using `(hLc.comp continuous_fst).matrix_mul continuous_const`. Establish `h2 : Continuous fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => w * (wᴴ * Formalism.REAL.Jm ε * w)⁻¹ * H z.2` using `continuous_const.matrix_mul (hHc.comp continuous_snd)`. Establish `h3 : Continuous fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => (1 / 2 : ℂ) • (w * (wᴴ * Formalism.REAL.Jm ε * w)⁻¹ * H z.2)` using `h2.const_smul (1 / 2 : ℂ)`. Conclude with `h1.add h3`.
+
+Establish `hFm : Measurable fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => reim (L z.1 * w + (1 / 2 : ℂ) • (w * (wᴴ * Formalism.REAL.Jm ε * w)⁻¹ * H z.2))` using `(continuous_reim.comp hFc).measurable`. Establish `hrsm : Measurable (rsL S eS eU)` using `(rsL S eS eU).continuous_of_finiteDimensional.measurable`. Establish `hΦm` using `Measurable.prodMap hΦ1m hΦ2m`. Establish `hPre : MeasurePreserving (Prod.map Λ (id : EuclideanSpace ℝ η → EuclideanSpace ℝ η)) (volume : Measure ((EuclideanSpace ℝ (Fin S.card × Fin m × Bool) × EuclideanSpace ℝ η) × EuclideanSpace ℝ η)) (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η))`. Rewrite using `[Measure.volume_eq_prod (EuclideanSpace ℝ (Fin S.card × Fin m × Bool) × EuclideanSpace ℝ η) (EuclideanSpace ℝ η), Measure.volume_eq_prod (EuclideanSpace ℝ ι) (EuclideanSpace ℝ η)]`.
+
+Conclude with `hΛ.prod (MeasurePreserving.id _)`. Establish `hAssoc` using `measurePreserving_prodAssoc (volume : Measure (EuclideanSpace ℝ (Fin S.card × Fin m × Bool))) (volume : Measure (EuclideanSpace ℝ η)) (volume : Measure (EuclideanSpace ℝ η))`. Establish `hfun : (fun z : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => reim (L z.1 * w + (1 / 2 : ℂ) • (w * (wᴴ * Formalism.REAL.Jm ε * w)⁻¹ * H z.2))) ∘ Prod.map Λ id = (rsL S eS eU) ∘ (Prod.map (fun y : EuclideanSpace ℝ (Fin S.card × Fin m × Bool) => reim (Matrix.of ((reimE (r` using `S.card) (m := m)).symm y) * (r2 • W0))) (fun p : EuclideanSpace ℝ η × EuclideanSpace ℝ η => reim (A2 * Matrix.of ((reimE (r := m) (m := m)).symm (psiLp H (Prod.map (congH H hH hnH hsH B) id p)))))) ∘ (MeasurableEquiv.prodAssoc) := by`. Use function extensionality and compare the values at `⟨⟨z1, z2⟩, t⟩`. Conclude with `key_lemma_12 ε S eS eU w hw L H hH hnH hsH Λ hLΛ W0 Dg B A2 hW0def hDgdef hBdef hA2def hW0 hDD z1 z2 t`.
+
+Rewrite using `[← hPre.map_eq, Measure.map_map hFm hPre.measurable, hfun, ← Measure.map_map hrsm (hΦm.comp MeasurableEquiv.prodAssoc.measurable), ← Measure.map_map hΦm MeasurableEquiv.prodAssoc.measurable, Measure.volume_eq_prod (EuclideanSpace ℝ (Fin S.card × Fin m × Bool) × EuclideanSpace ℝ η …`. Use `congr 1`. Establish `hN : Complex.normSq W0.det ≠ 0` using `(Complex.normSq_pos.mpr hW0).ne'`. Establish `e1 : Complex.normSq (r2 • W0).det = 1 / (2 : ℝ) ^ m * Complex.normSq W0.det`. Rewrite using `[Matrix.det_smul, Fintype.card_fin, map_mul, map_pow]`.
+
+Use `congr 1`. Simplify using `only [r2, Complex.normSq_ofReal]`. Rewrite using `[← mul_inv, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2), one_div, inv_pow]`. Establish `e2 : Complex.normSq B.det = (2 : ℝ) ^ m * Complex.normSq W0.det`. Rewrite using `[hBdef, Matrix.det_smul, Fintype.card_fin, map_mul, map_pow, Complex.normSq_ofReal, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`.
+
+Establish `hdinv : Complex.normSq (W0ᴴ⁻¹).det = (Complex.normSq W0.det)⁻¹`. Establish `h1 : (W0ᴴ⁻¹).det * W0ᴴ.det = 1`. Rewrite using `[← Matrix.det_mul, Matrix.nonsing_inv_mul _ hWHu, Matrix.det_one]`. Establish `h3` using `congrArg Complex.normSq h1`. Rewrite `h3` using `[map_mul, map_one, Matrix.det_conjTranspose, Complex.star_def, Complex.normSq_conj]`.
+
+Conclude with `eq_inv_of_mul_eq_one_left h3`. Establish `hDsq : Complex.normSq Dg.det = 1`. Rewrite using `[Complex.normSq_eq_norm_sq, hDnorm, one_pow]`. Establish `h12 : Complex.normSq (1 / 2 : ℂ) = 1 / 4`. Rewrite using `[show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; ring, Complex.normSq_ofReal]`.
+
+Evaluate the numerical expressions. Establish `e3 : Complex.normSq A2.det = (1 / 4) ^ m * (Complex.normSq W0.det)⁻¹`. Rewrite using `[hA2def, Matrix.det_smul, Fintype.card_fin, Matrix.det_mul, map_mul, map_mul, map_pow, hDsq, hdinv, h12, one_mul]`. Establish `e4 : ‖(wᴴ * Formalism.REAL.Jm ε * w).det‖ = Complex.normSq W0.det`. Rewrite using `[hgram, Matrix.det_mul, Matrix.det_mul, norm_mul, norm_mul, hDnorm, mul_one, Matrix.det_conjTranspose, norm_star, Complex.normSq_eq_norm_sq, sq]`.
+
+Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.mpr (pow_nonneg (Complex.normSq_nonneg _) _)), ← ENNReal.ofReal_mul (inv_nonneg.mpr (pow_nonneg (Complex.normSq_nonneg _) _))]`. Use `congr 1`. Rewrite using `[e1, e2, e3, e4, show n * m = (m + S.card) * m from congrArg (· * m) hn, inv_pow_mul_inv_pow_eq_two_pow_div_pow _ m S.card hN]`.
+-/
 theorem placeJac_holds : PlaceJac := by
   intro n m ε S w ι η _ _ L H hn hw hG hL hnL hLs hH hnH hsH
   classical

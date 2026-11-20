@@ -12,6 +12,13 @@ namespace UpperTheory.Gal.W2.Seed
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Plc E}
 
+/- English proof (translation)
+Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `y`. Rewrite using `[Set.mem_setOf_eq, DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, b, hb, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[e, Units.val_mul, Units.val_mul, ht]`. Both sides reduce to the same expression. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+
+Use `⟨a, ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, ht]`. Both sides reduce to the same expression.
+-/
 private theorem tj_eq {ϖ : w.adicCompletion E} {i : ℕ} (t : GLw n w)
     (ht : t.val = Matrix.diagonal fun k : Fin n => if (k : ℕ) < i then ϖ else 1) :
     Tj ℂ n (Ov E w) ϖ i = dosetInd ℂ (KGL w n) t := by
@@ -29,6 +36,15 @@ private theorem tj_eq {ϖ : w.adicCompletion E} {i : ℕ} (t : GLw n w)
     rw [Units.val_mul, Units.val_mul, ht]
     rfl
 
+/- English proof (translation)
+Establish `h' : invT n _ t = t⁻¹`. Use `congrArg (invT n _) h` as an intermediate fact. Rewrite `this` using `[UpperTheory.Gal.CertificateRingHomMap.invT_invT']`. Conclude with `this.symm`. Establish `key : invT n _ a ∈ DoubleCoset.doubleCoset t (KGL w n : Set (GLw n w)) (KGL w n) ↔ a ∈ DoubleCoset.doubleCoset t⁻¹ (KGL w n : Set (GLw n w)) (KGL w n)`.
+
+Rewrite using `[DoubleCoset.mem_doubleCoset, DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, l, hl, e⟩`. Use `⟨_, UpperTheory.Gal.CertificateRingHomMap.invT_mem_KGL hk, _, UpperTheory.Gal.CertificateRingHomMap.invT_mem_KGL hl, ?_⟩` and prove the remaining obligations. Use `congrArg (invT n _) e` as an intermediate fact.
+
+Rewrite `this` using `[UpperTheory.Gal.CertificateRingHomMap.invT_invT', map_mul, map_mul, h']`. Then use the resulting hypothesis. Introduce and unpack `⟨k, hk, l, hl, rfl⟩`. Conclude with `⟨_, UpperTheory.Gal.CertificateRingHomMap.invT_mem_KGL hk, _, UpperTheory.Gal.CertificateRingHomMap.invT_mem_KGL hl, by rw [map_mul, map_mul, h]⟩`. Unfold `dosetInd`. Distinguish the cases in `hm : a ∈ DoubleCoset.doubleCoset t⁻¹ (KGL w n : Set (GLw n w)) (KGL w n)`.
+
+Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (key.2 hm)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm (key.1 h))]`.
+-/
 private theorem dos_invT (t : GLw n w) (h : invT n _ t⁻¹ = t) (a : GLw n w) :
     dosetInd ℂ (KGL w n) t (invT n _ a) = dosetInd ℂ (KGL w n) t⁻¹ a := by
   have h' : invT n _ t = t⁻¹ := by
@@ -50,6 +66,13 @@ private theorem dos_invT (t : GLw n w) (h : invT n _ t⁻¹ = t) (a : GLw n w) :
   · rw [Set.indicator_of_mem hm, Set.indicator_of_mem (key.2 hm)]; rfl
   · rw [Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm (key.1 h))]
 
+/- English proof (translation)
+Establish `key : a * k ∈ DoubleCoset.doubleCoset t (KGL w n : Set (GLw n w)) (KGL w n) ↔ a ∈ DoubleCoset.doubleCoset t (KGL w n : Set (GLw n w)) (KGL w n)`. Rewrite using `[DoubleCoset.mem_doubleCoset, DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, l, hl, e⟩`. Conclude with `⟨u, hu, l * k⁻¹, (KGL w n).mul_mem hl ((KGL w n).inv_mem hk), by`.
+
+Rewrite using `[← mul_assoc, ← e, mul_inv_cancel_right]⟩`. Introduce and unpack `⟨u, hu, l, hl, rfl⟩`. Conclude with `⟨u, hu, l * k, (KGL w n).mul_mem hl hk, by simp only [mul_assoc]⟩`. Unfold `dosetInd`. Distinguish the cases in `hm : a ∈ DoubleCoset.doubleCoset t (KGL w n : Set (GLw n w)) (KGL w n)`.
+
+Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (key.2 hm)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm (key.1 h))]`.
+-/
 private theorem dos_mul (t a k : GLw n w) (hk : k ∈ KGL w n) :
     dosetInd ℂ (KGL w n) t (a * k) = dosetInd ℂ (KGL w n) t a := by
   have key : a * k ∈ DoubleCoset.doubleCoset t (KGL w n : Set (GLw n w)) (KGL w n) ↔
@@ -66,6 +89,13 @@ private theorem dos_mul (t a k : GLw n w) (hk : k ∈ KGL w n) :
   · rw [Set.indicator_of_mem hm, Set.indicator_of_mem (key.2 hm)]; rfl
   · rw [Set.indicator_of_notMem hm, Set.indicator_of_notMem (fun h => hm (key.1 h))]
 
+/- English proof (translation)
+Set `f : GLw n w ⧸ KGL w n → GLw n w ⧸ KGL w n` to `fun c => QuotientGroup.mk (invT n _ c.out)`. Establish `hf : Function.Involutive f` using `fun c => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KGL w n) (invT n _ c.out)`. Simplify using `only [f]`. Rewrite using `[hk, map_mul, UpperTheory.Gal.CertificateRingHomMap.invT_invT', QuotientGroup.mk_mul_of_mem _ (UpperTheory.Gal.CertificateRingHomMap.invT_mem_KGL k.2), QuotientGroup.out_eq']`.
+
+Establish `hshift : ∀ c, F (invT n _ c.out) = F ((Function.Involutive.toPerm f hf c).out)` using `fun c => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KGL w n) (invT n _ c.out)`. Rewrite using `[Function.Involutive.coe_toPerm]`. Simplify using `only [f]`. Rewrite using `[hk, hF _ _ k.2]`.
+
+Rewrite using `[finsum_congr hshift]`. Conclude with `finsum_comp_equiv (Function.Involutive.toPerm f hf) (f := fun c => F c.out)`.
+-/
 private theorem finsum_invT {M : Type} [AddCommMonoid M] (F : GLw n w → M)
     (hF : ∀ a, ∀ k ∈ KGL w n, F (a * k) = F a) :
     ∑ᶠ c : GLw n w ⧸ KGL w n, F (invT n _ c.out) = ∑ᶠ c : GLw n w ⧸ KGL w n, F c.out := by
@@ -85,6 +115,21 @@ private theorem finsum_invT {M : Type} [AddCommMonoid M] (F : GLw n w → M)
 
 end UpperTheory.Gal.W2.Seed
 
+/- English proof (translation)
+Introduce `hT E _ _ _ n hn x U w₀ Up V w hw hF i hi t ht z hz B hB g`. Take `⟨-, s2, -, s4⟩` from `V.form.sat w hw hF.2.1 hF.2.2.1 B hB`. Take `⟨ϖ, hϖ, htd⟩` from `ht`. Take `⟨hT1, hT2⟩` from `hT E n`. Establish `hcen` using `V.kap.cen w hF.2.2.2.1 hF.2.2.2.2 z hz`.
+
+Establish `hpow : ∀ (j : ℕ) (G : GUf E n), V.Φ (G * z ^ j) = (((V.κ.val w : ℂˣ) : ℂ)⁻¹ ^ j) • V.Φ G`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro G`. Simplify using the standard rewrite rules.
+
+Consider the case `succ j ih`. Introduce `G`. Rewrite using `[pow_succ, ← mul_assoc, hcen, ih, smul_smul, pow_succ, mul_comm]`. Establish `hinv : invT n _ t⁻¹ = t`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.invT_val, inv_inv, htd, Matrix.diagonal_transpose]`. Use `set G' : GUf E n := UpperTheory.Gal.CertificateRingHomMap.th g * z ^ i with hG'`. Set `Fn : GLw n w → Module.Dual ℂ V.W.Sp` to `fun a => dosetInd ℂ (KGL w n) t a • V.Φ (G' * UpperTheory.Gal.CertificateRingHomMap.loc hw a)`. Establish `hFn : ∀ a, ∀ k ∈ KGL w n, Fn (a * k) = Fn a` using `fun a k hk => by`. Establish `h1 : V.Φ (G' * UpperTheory.Gal.CertificateRingHomMap.loc hw a * UpperTheory.Gal.CertificateRingHomMap.loc hw k) = V.Φ (G' * UpperTheory.Gal.CertificateRingHomMap.loc hw a)` using `congrFun (GlobalTheory.LGrp.mem_fixed.1 s2 k hk) _`.
+
+Simplify using `only [Fn]`. Rewrite using `[UpperTheory.Gal.W2.Seed.dos_mul _ _ _ hk, map_mul, ← mul_assoc, h1]`. Establish `hterm : ∀ c : GLw n w ⧸ KGL w n, dosetInd ℂ (KGL w n) t⁻¹ c.out • V.Φ (UpperTheory.Gal.CertificateRingHomMap.th (g * (z ^ i)⁻¹ * UpperTheory.Gal.CertificateRingHomMap.loc hw c.out)) = Fn (invT n _ c.out)` using `fun c => by`. Simplify using `only [Fn]`. Rewrite using `[UpperTheory.Gal.W2.Seed.dos_invT t hinv, map_mul, map_mul, hT1, map_inv, map_pow, hT2 hn x w z hz, inv_pow, inv_inv]`.
+
+Establish `hev` using `congrFun (s4 ϖ hϖ i hi) G'`. Unfold `heckeVec at hev`. Rewrite `hev` using `[finsum_apply (GlobalTheory.LFun.finite_heckeVec (Final.GLintComm E w n) (GlobalTheory.LFun.Tj_mem_hecke hϖ i) _ V.Φ), UpperTheory.Gal.W2.Seed.tj_eq t htd]`. Rewrite using `[finsum_congr hterm, UpperTheory.Gal.W2.Seed.finsum_invT Fn hFn]`. Use `Eq.trans hev ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, hG', hpow, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.W2.Seed.tEig_of_thLoc :
     UpperTheory.Gal.CertificateRingHomMap.ThLoc → TEig := by
   intro hT E _ _ _ n hn x U w₀ Up V w hw hF i hi t ht z hz B hB g

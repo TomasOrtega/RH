@@ -7,6 +7,17 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set g : V n → ℂ := fun v => ((φ v : ℝ) : ℂ) with hg`. Establish `hg2 : ContDiffAt ℝ 2 g z` using `Complex.ofRealCLM.contDiff.contDiffAt.comp z hf`. Establish `hgc : (fun w => conj (g w)) = g` using `funext fun w => by simp [g]`. Establish `hH : (cHess n g z).IsHermitian`. Use extensionality with `j k`.
+
+Simplify using `only [Matrix.conjTranspose_apply, cHess, Matrix.of_apply]`. Use `show conj (wd n k (wdb n j g) z) = wd n j (wdb n k g) z`. Establish `h1 : (fun w => conj (wdb n j g w)) = wd n j g`. Use function extensionality and compare the values at `w`. Rewrite using `[← ChartWirtingerDerivatives.wd_conj' n j g w, hgc]`.
+
+Rewrite using `[← ChartWirtingerDerivatives.wdb_conj' n k (wdb n j g) z, h1, comm_wd_wdb g z hg2 j k]`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hH fun y => ?_` and prove the remaining obligations. Establish `hre : dotProduct (star y) (Matrix.mulVec (cHess n g z) y) = leviV n g z (fun k => conj (y k))`. Simplify using `only [dotProduct, Matrix.mulVec, leviV, cHess, Matrix.of_apply, Finset.mul_sum, Pi.star_apply, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `him` using `hH.im_star_dotProduct_mulVec_self y`. Use `Complex.le_def.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hre]`.
+
+Conclude with `hL _`. Simplify using `using him.symm`.
+-/
 theorem cHess_posSemidef_of_levi_nonneg (n : ℕ) (φ : V n → ℝ) (z : V n) (hf : ContDiffAt ℝ 2 φ z)
     (hL : ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun v => (φ v : ℂ)) z ξ).re) :
     (cHess n (fun v => (φ v : ℂ)) z).PosSemidef := by

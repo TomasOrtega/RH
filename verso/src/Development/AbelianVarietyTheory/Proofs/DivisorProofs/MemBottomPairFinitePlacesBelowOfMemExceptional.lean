@@ -30,6 +30,11 @@ noncomputable section
 
 namespace GlobalTheory.BottomIPData
 
+/- English proof (translation)
+Establish `hw : G.pl.w v ∈ locPl G t`. Unfold `locPl GlobalTheory.ChiGrid.Places.W0`. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv)`. Unfold `sfB`. Simplify using `only [Finset.mem_image]`.
+
+Conclude with `⟨_, hw, G.pl.under_w hv⟩`.
+-/
 private theorem mem_bottomPairFinitePlacesBelow_of_mem_exceptional {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T)
     {v : FinPl D} (hv : v ∈ G.pl.S0) : v ∈ sfB G t := by
   classical
@@ -40,6 +45,9 @@ private theorem mem_bottomPairFinitePlacesBelow_of_mem_exceptional {D : D7} {T :
   simp only [Finset.mem_image]
   exact ⟨_, hw, G.pl.under_w hv⟩
 
+/- English proof (translation)
+Unfold `sfB`. Simplify using `only [Finset.mem_image]`. Conclude with `⟨w, hw, rfl⟩`.
+-/
 private theorem under_mem_sfB {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T)
     {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ locPl G t) : w.under (𝓞 D.host.F) ∈ sfB G t := by
   classical
@@ -47,6 +55,19 @@ private theorem under_mem_sfB {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalT
   simp only [Finset.mem_image]
   exact ⟨w, hw, rfl⟩
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hw' : w.under (𝓞 D.host.F) ∉ sfB G t` using `hw`. Establish `hv : w.under (𝓞 D.host.F) ∉ G.pl.S0` using `fun h => hw' (mem_bottomPairFinitePlacesBelow_of_mem_exceptional G t h)`. Establish `hQ : ∀ P ∈ Lc.Q t, P.under (𝓞 D.host.F) ≠ w.under (𝓞 D.host.F)` using `fun P hP e => hw' (e ▸ under_mem_sfB G t (by unfold locPl; exact Finset.mem_union_right _ hP))`. Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`.
+
+Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `hχ : GlobalTheory.LFun.UnrAt (G.ch.chi (D.R.m - i)) w` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq _ h1 h2) w).2 (G.ch.unr _ h1 h2 w hv)`. Establish `hμ0 : GlobalTheory.LFun.UnrAt (Lc.mu0 ((j : ℕ) + 1)) w`. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.mu0 j) w).2 ((Lc.C.isMu0 j).unr w fun k hk => hv ?_)` and prove the remaining obligations. Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal`.
+
+Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`. Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`.
+
+Conclude with `Or.inl hk'`. Conclude with `Or.inr (Or.inl hk')`. Establish `hξ : GlobalTheory.LFun.UnrAt (Lc.xi t) w`. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Break down `(hL.Q_ram t w).1 hn with hq | ⟨P', hq, hc⟩` into its components or cases. Conclude with `hQ w hq rfl`. Conclude with `hQ P' hq (GlobalTheory.BotTripleUnr.under_eq_of_isConjPl hc)`. Establish `e : betaB G i j / alphaB Lc i j t = G.ch.chi (D.R.m - i) * (Lc.mu0 ((j : ℕ) + 1) * Lc.xi t)⁻¹`. Unfold `betaB alphaB`.
+
+Rewrite using `[mul_div_mul_right_eq_div, div_eq_mul_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hχ.mul (hμ0.mul hξ).inv`.
+-/
 private theorem unrOff_betaB_div_alphaB {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc)
     {μ₀ : T} (hL : Lc.Is μ₀) (i j : Fin D.R.m) (t : T) :
     GlobalTheory.LFun.UnrOff (betaB G i j / alphaB Lc i j t) ((sfB G t : Finset (FinPl D)) : Set (FinPl D)) := by
@@ -83,6 +104,9 @@ private theorem unrOff_betaB_div_alphaB {D : D7} {T : Type} {Lc : LevCh D T} {sc
   rw [e]
   exact hχ.mul (hμ0.mul hξ).inv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FockSph.isLatVac_pureTensorO_off hvac.2.inf BS BT hvac he hth Sf hP (fun φ => (hpt φ).1) φ`.
+-/
 private theorem isSphOff_pureTensorO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (S T : HSp D) (sS : RealMat S) (sT : RealMat T)
     (BS : RealMat S) (BT : RealMat T) (LS : Lat S) (LT : Lat T) {f₀ Φ f : WO S T → ℂ}
     (hvac : IsVacO ψ θ S T sS sT LS LT f₀) {e : AE D} {Pset : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e Pset)
@@ -92,6 +116,13 @@ private theorem isSphOff_pureTensorO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {
     IsSphOff ψ S T LS LT Sf (pureTensorO ψ θ S T sS sT BS BT f φ) :=
   GlobalTheory.FockSph.isLatVac_pureTensorO_off hvac.2.inf BS BT hvac he hth Sf hP (fun φ => (hpt φ).1) φ
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X hX t P`. Establish `h` using `isBottomTri_is hX`. Establish `hψ : IsStdChar D W.ψ (-1)` using `h.isVac.1`. Establish `hθ : IsInfFam W.θ` using `h.isVac.2.inf`.
+
+Establish `cS : ∀ τ, IsCartanInv (gramAt D (GlobalTheory.Grid.neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (h.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (h.rigW.2.2 τ).1`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f t)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (h.fst t) h.isVac.2.theta`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (h.idem t)`. Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f t)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (h.fst t) h.isVac.2.theta hf (h.isVac.2.fock τ)`.
+
+Establish `hpt` using `GlobalTheory.FockSph.isFockVec_pureTensorO (S := GlobalTheory.Grid.neg A) (T := WW) (sS := fun τ => -X.rA.s τ) (sT := X.rW.s) hψ hθ cS cT X.rA.B X.rW.B hf hv`. Establish `hs` using `isSphOff_pureTensorO (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.rA.Λ X.rW.Λ h.isVac (h.idem t) (h.fst t) (sfB G t) (fun PP hPP => under_mem_sfB G t hPP) hpt P`. Conclude with `⟨GlobalTheory.RowTest.isSelfDualC_neg' h.rigA.1, h.rigW.1, fun v _ h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2, unrOff_betaB_div_alphaB G hL i j t, hs, hs⟩`.
+-/
 theorem _root_.GlobalTheory.T.unramifiedInnerProductData_definiteBottom_largeGrids : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∀ P : PolF D WW.rank A.rank, Unram W.ψ (GlobalTheory.Grid.neg A) WW (GlobalTheory.BottomIPData.betaB G i j / GlobalTheory.BottomIPData.alphaB Lc i j t) X.rA.Λ X.rW.Λ (GlobalTheory.BottomIPData.sfB G t) (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P) (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P) := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G => ?_⟩⟩

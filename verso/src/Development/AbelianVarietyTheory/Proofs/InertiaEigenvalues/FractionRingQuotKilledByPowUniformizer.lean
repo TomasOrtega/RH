@@ -7,6 +7,13 @@ open ReciprocityTheory.Gal
 
 namespace GlobalTheory.ShapeNeg
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) y`. Establish `hb : (b : O) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨a * ((u⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.eq_mk'_iff_mul_eq, ← map_mul]`. Use `congr 1`.
+
+Rewrite using `[hu]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ko_killed_by_pow_uniformizer : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}, Irreducible ϖ →
     ∀ x : Formalism.NG.KO O, ∃ n : ℕ, ϖ ^ n • x = 0 := by
   intro O _ _ _ ϖ hϖ x

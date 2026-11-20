@@ -2,6 +2,15 @@ import Mathlib
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F _ _ _ x v`. Establish `hc : v.IsComplex` using `NumberField.IsTotallyComplex.isComplex v`. Establish `hne : v.embedding ≠ NumberField.ComplexEmbedding.conjugate v.embedding`. Introduce `h`. Conclude with `(NumberField.InfinitePlace.isComplex_iff.mp hc) (NumberField.ComplexEmbedding.isReal_iff.mpr h.symm)`.
+
+Establish `hset : (Finset.univ.filter fun φ : F →+* ℂ => NumberField.InfinitePlace.mk φ = v) = {v.embedding, NumberField.ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h' : NumberField.InfinitePlace.mk v.embedding = NumberField.InfinitePlace.mk φ`. Rewrite using `[NumberField.InfinitePlace.mk_embedding, h]`. Break down `NumberField.InfinitePlace.mk_eq_iff.mp h' with h1 | h1` into its components or cases. Conclude with `Or.inl h1.symm`. Conclude with `Or.inr h1.symm`.
+
+Introduce and unpack `(h | h)`. Rewrite using `[h, NumberField.InfinitePlace.mk_embedding]`. Rewrite using `[h, NumberField.InfinitePlace.mk_conjugate_eq, NumberField.InfinitePlace.mk_embedding]`. Rewrite using `[hset, Finset.sum_pair hne, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`.
+-/
 theorem UpperTheory.Reformulated.B.SumOverPlacesFibre.sum_fibre_place :
     ∀ (F : Type) [inst : Field F]
     [inst_1 : NumberField F] [NumberField.IsTotallyComplex F] (x : F) (v : NumberField.InfinitePlace F),

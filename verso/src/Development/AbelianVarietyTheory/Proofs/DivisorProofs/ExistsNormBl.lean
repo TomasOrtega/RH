@@ -16,6 +16,31 @@ noncomputable section
 
 namespace GlobalTheory.NormBlowupField
 
+/- English proof (translation)
+Introduce `K _ _ Z z hz hZ J W hWd hWJ`. Take `⟨X', b, hb, hbs, hiso⟩` from `GlobalTheory.ProjBlowup.exists_blowup z hz J`. Use `haveI : LocallyOfFiniteType (b ≫ z) := by`. Take `⟨m, i, hi, e⟩` from `hbs`. Use `isProper_str K m` as an intermediate fact.
+
+Rewrite using `[← e]`. Use `infer_instance`. Use `haveI : IsLocallyNoetherian X' := LocallyOfFiniteType.isLocallyNoetherian (b ≫ z)`. Set `V : X'.Opens` to `b ⁻¹ᵁ W`. Use `haveI hbW : IsIso (b ∣_ W) := hiso W fun x hx hJ => hWJ x hJ hx`.
+
+Use `haveI hoi : IsOpenImmersion (V.ι ≫ b) := by`. Rewrite using `[← morphismRestrict_ι]`. Use `infer_instance`. Use `haveI hN : GlobalTheory.IsNormalScheme V.toScheme := .of_isOpenImmersion (V.ι ≫ b)`. Use `haveI : IsReduced V.toScheme := by`.
+
+Conclude with `inferInstance`. Use `haveI hfin : IsFinite V.ι.fromNormalization := isFinite_fromNormalization_of_genericPoints (o := CommRingCat.of K) V.ι (b ≫ z) (fun x _ => charZero_of_injective_ringHom (f := ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ (V.ι ≫ b ≫ z).appTop ≫ V.toScheme.presheaf.germ ⊤ x trivial ≫ …`. Set `ν` to `V.ι.fromNormalization`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme V.ι.normalization` using `IsNormalScheme.pred _`. Establish `hν : IsIso (ν ∣_ V)`.
+
+Establish `H` using `isPullback_toNormalization_of_mono (𝟙 _) V.ι V.ι (Category.id_comp _).symm`. Establish `e` using `IsPullback.isoIsPullback_hom_fst _ _ (isPullback_morphismRestrict V.ι.fromNormalization V) H.flip`. Rewrite using `[← e]`. Use `infer_instance`. Establish `hd : Dense ((ν ⁻¹ᵁ V : V.ι.normalization.Opens) : Set V.ι.normalization)`.
+
+Use `V.ι.toNormalization.denseRange.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `V.ι.fromNormalization (V.ι.toNormalization x) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `x.2`.
+
+Establish `hVd : Dense (V : Set X')` using `GlobalTheory.NormBlowupInt.dense_preimage_of_blowup J b hb hiso W hWd`. Take `⟨D, hD⟩` from `EffCartierData.exists_idealSheaf_eq hb.1`. Establish `hK : D.KeepsRegular ν`. Use `D.keepsRegular_of_dense ν (fun y => (hS y).1) (hd.mono fun t ht => ?_)` and prove the remaining obligations. Use `show ν t ∉ D.idealSheaf.support`.
+
+Rewrite using `[hD, GlobalTheory.ProjBlowup.mem_support_comap]`. Conclude with `fun h => hWJ _ h ht`. Establish `hproj : IsProjOver ((ν ≫ b) ≫ z)`. Rewrite using `[Category.assoc]`. Conclude with `isProjOver_comp_of_isFinite ν hbs`.
+
+Establish `hprop : IsProper (ν ≫ b)` using `by haveI : IsProper z := by`. Take `⟨m, i, hi, e⟩` from `hz`. Use `isProper_str K m` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+
+Use `haveI : IsProper ((ν ≫ b) ≫ z) := by`. Take `⟨m, i, hi, e⟩` from `hproj`. Use `isProper_str K m` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+
+Conclude with `IsProper.of_comp (ν ≫ b) z`. Use `⟨V.ι.normalization, ν ≫ b, D.pull ν hK, ⟨inferInstance, X', b, ν, V, hb, rfl, hfin, hVd, hd, hν⟩, hproj, hprop, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[EffCartierData.idealSheaf_pull, hD, Scheme.IdealSheafData.comap_comp]`. Rewrite using `[morphismRestrict_comp]`. Conclude with `IsIso.comp_isIso' hν hbW`.
+
+Use `hd using 1` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `[V]`.
+-/
 theorem exists_normBl : ∀ (K : Type) [Field K] [CharZero K] (Z : Scheme.{0}) (z : Z ⟶ Sp K),
     IsProjOver z → GlobalTheory.IsNormalScheme Z → ∀ (J : Z.IdealSheafData) (W : Z.Opens),
     Dense (W : Set Z) → (∀ x ∈ J.support, x ∉ W) → ∃ (S : Scheme.{0}) (π : S ⟶ Z)

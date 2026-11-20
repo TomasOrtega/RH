@@ -6,6 +6,19 @@ open scoped Nat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V _ _ _ F F0 hp hb`. Establish `hp' : ∀ v, Tendsto (fun m => (F m - F0) v) atTop (𝓝 0)` using `fun v => by`. Simplify using `using tendsto_sub_nhds_zero_iff.2 (hp v)`. Establish `hb' : ∀ k n : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ m in (atTop : Filter ℕ), ∀ v, ‖v‖ ^ k * ‖iteratedFDeriv ℝ n (⇑(F m - F0)) v‖ ≤ C`. Introduce `k n`.
+
+Take `⟨C, hC⟩` from `hb k n`. Use `⟨|C| + SchwartzMap.seminorm ℂ k n F0, by positivity, Eventually.of_forall fun m v => ?_⟩` and prove the remaining obligations. Establish `key : SchwartzMap.seminorm ℂ k n (F m) ≤ |C|` using `SchwartzMap.seminorm_le_bound ℂ k n _ (abs_nonneg C) fun v => (hC m v).trans (le_abs_self C)`. Use `(SchwartzMap.le_seminorm ℂ k n (F m - F0) v).trans ((map_sub_le_add _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `add_le_add key le_rfl`.
+
+Rewrite using `[(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨D, hD0, hD⟩` from `hb' (k + 1) n`. Use `set R : ℝ := D / (ε / 2) + 1 with hR`. Establish `hR0 : 0 < R` using `by positivity`.
+
+Use `filter_upwards [hD, eventually_forall_norm_iteratedFDeriv_le hp' hb' n (ε / 2 / R ^ k) (by positivity)] with x hx hs`. Use `lt_of_le_of_lt ?_ (half_lt_self hε)` and prove the remaining obligations. Use `SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : ‖v‖ ≤ R`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `push_neg at hv`. Establish `h0` using `hx v`. Use `set a := ‖v‖ ^ k * ‖iteratedFDeriv ℝ n (⇑(F x - F0)) v‖ with ha`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `h1 : ‖v‖ * a ≤ D` using `by rw [ha, ← mul_assoc, ← pow_succ']; exact h0`.
+
+Establish `h2 : R * (ε / 2) = D + ε / 2` using `by rw [hR]; field_simp`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem schwartz_tendsto_of_pointwise_of_uniform_bound :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (F : ℕ → SchwartzMap V ℂ) (F0 : SchwartzMap V ℂ),

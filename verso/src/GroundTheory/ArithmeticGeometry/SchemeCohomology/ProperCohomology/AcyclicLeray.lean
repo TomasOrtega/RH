@@ -22,6 +22,9 @@ def HAcyclicOn (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) : Pr
 
 variable {U}
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `Ext.covariant_sequence_exact₃ (freeSheaf (Opens.grothendieckTopology X) V) hS ((H'.equiv₀ S.X₃ V).symm y) rfl (Subsingleton.elim (α := S.X₁.H' 1 V) _ _)`. Establish `key : H'.equiv₀ S.X₃ V (x.comp (Ext.mk₀ S.g) (add_zero 0)) = S.g.hom.app (op V) (H'.equiv₀ S.X₂ V x)` using `H'.equiv₀_naturality S.g V x`. Conclude with `⟨H'.equiv₀ S.X₂ V x, by rw [← key, hx, AddEquiv.apply_symm_apply]⟩`.
+-/
 lemma surjective_app_of_subsingleton_H'
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (V : Opens X) [Subsingleton (S.X₁.H' 1 V)] : Function.Surjective (S.g.hom.app (op V)) := by
@@ -32,6 +35,11 @@ lemma surjective_app_of_subsingleton_H'
       S.g.hom.app (op V) (H'.equiv₀ S.X₂ V x) := H'.equiv₀_naturality S.g V x
   exact ⟨H'.equiv₀ S.X₂ V x, by rw [← key, hx, AddEquiv.apply_symm_apply]⟩
 
+/- English proof (translation)
+Use `subsingleton_of_forall_eq 0 fun y => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `Ext.covariant_sequence_exact₃ (freeSheaf (Opens.grothendieckTopology X) V) hS y rfl (Subsingleton.elim (α := S.X₁.H' (q + 2) V) _ _)`. Establish `: Subsingleton (S.X₂.H' (q + 1) V)` using `H'.subsingleton_of_injective S.X₂ q V`. Establish `hx0 : x = 0` using `Subsingleton.elim (α := S.X₂.H' (q + 1) V) _ _`. Rewrite using `[← hx, hx0, Ext.zero_comp]`.
+
+Both sides reduce to the same expression.
+-/
 lemma subsingleton_H'_of_injective
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})} (hS : S.ShortExact)
     [Injective S.X₂] (V : Opens X) (q : ℕ) [Subsingleton (S.X₁.H' (q + 2) V)] :
@@ -46,6 +54,9 @@ lemma subsingleton_H'_of_injective
 
 variable (U)
 
+/- English proof (translation)
+The claim follows from `isCechShortExact_of_surjective (injectiveSequence_shortExact G) U fun i => have : Subsingleton ((injectiveSequence G).X₁.H' 1 (inter U i)) := hG i 0 surjective_app_of_subsingleton_H'.{w'} (injectiveSequence_shortExact G) _`.
+-/
 lemma injectiveSequence_isCechShortExact_of_acyclic
     (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) (hG : HAcyclicOn.{w, w'} U G) :
     IsCechShortExact U (injectiveSequence G).f.hom (injectiveSequence G).g.hom :=
@@ -53,6 +64,9 @@ lemma injectiveSequence_isCechShortExact_of_acyclic
     have : Subsingleton ((injectiveSequence G).X₁.H' 1 (inter U i)) := hG i 0
     surjective_app_of_subsingleton_H'.{w'} (injectiveSequence_shortExact G) _
 
+/- English proof (translation)
+Introduce `i q` and use `have : Subsingleton ((injectiveSequence G).X₁.H' (q + 2) (inter U i)) := hG i (q + 1) have : Injective (injectiveSequence G).X₂ := inferInstanceAs (Injective (Injective.under G)) subsingleton_H'_of_injective (injectiveSequence_shortExact G) _ q`.
+-/
 lemma injectiveSequence_hAcyclicOn
     (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) (hG : HAcyclicOn.{w, w'} U G) :
     HAcyclicOn.{w, w'} U (injectiveSequence G).X₃ := fun i q =>
@@ -71,6 +85,9 @@ def cechHEquivOfAcyclic : ∀ (n : ℕ) (G : Sheaf (Opens.grothendieckTopology X
       (injectiveSequence_isCechShortExact_of_acyclic U G hG) (injectiveSequence_cechAcyclic G U) m
       (cechHEquivOfAcyclic (m + 1) _ (injectiveSequence_hAcyclicOn U G hG))
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _, φ, x => cechHZeroEquivH_naturality U φ hU x | 1, G, G', hG, hG', φ, x => cechHOneEquiv_naturality (S := injectiveSequence G) (S' := injectiveSequence G') U hU (injectiveSequence_shortExact G) (injectiveSequence_isCechShortExact_of_acyclic U G hG) (injectiveSequen …`.
+-/
 theorem cechHEquivOfAcyclic_naturality : ∀ (n : ℕ)
     {G G' : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}}
     (hG : HAcyclicOn.{w, w'} U G) (hG' : HAcyclicOn.{w, w'} U G') (φ : G ⟶ G')
@@ -113,6 +130,9 @@ variable [∀ V : X.Opens,
     HasExt.{w'} (Sheaf ((Opens.grothendieckTopology X.toTopCat).over V) AddCommGrpCat.{u})]
   [∀ V : X.Opens, HasExt.{w'} (Sheaf (Opens.grothendieckTopology V.toScheme.toTopCat) AddCommGrpCat.{u})]
 
+/- English proof (translation)
+Introduce `{n} i q` and use `by have := h n i q rw [inter_eq_iInf] exact subsingleton_H'_of_restrict.{w'} (⨅ a, U (i a)) F (q + 1)`.
+-/
 lemma hAcyclicOn_of_restrict (F : X.Modules)
     (h : ∀ (n : ℕ) (i : Fin (n + 1) → ι) (q : ℕ),
       Subsingleton (Sheaf.H.{w'} (modulesAb (F.restrict (⨅ a, U (i a)).ι)) (q + 1))) :

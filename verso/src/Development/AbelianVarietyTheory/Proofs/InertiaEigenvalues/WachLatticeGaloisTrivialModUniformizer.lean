@@ -9,6 +9,9 @@ namespace GlobalTheory.NL.WachLatticeTrivialModUniformizer
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm l _ K s LL h T hT`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.NL.GamModX.gam_mod_π_mod_X D HW F Cm l K s LL h T hT`. Use `⟨(wach_gamma_stable_first _ T).1, (wach_gamma_stable_first _ T).2, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `h3 x hx`. Conclude with `⟨y, hy, e.symm⟩`.
+-/
 theorem wachLattice_galois_trivial_mod_uniformizer : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), P2 D HW F := by
   intro D HW F Cm l _ K s LL h T hT

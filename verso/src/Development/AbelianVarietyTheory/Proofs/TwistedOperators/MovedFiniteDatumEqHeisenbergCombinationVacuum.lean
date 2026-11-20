@@ -24,6 +24,13 @@ open GlobalTheory.FinPl (Moves Lat)
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy' : ∀ i, (mt V g *ᵥ y) i ∈ GlobalTheory.FinPl.idAt D (fun _ => True)` using `fun i => GlobalTheory.VacMove.mulVec_mem_idAt _ hy i`. Prove the components needed by the constructor for the conclusion. Introduce `hyΛ`. Use `GlobalTheory.HatLatV.mem_latV_of_hatL D V M _ _ hy' ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat]`. Conclude with `(h _).1 (GlobalTheory.LatVHat.latV_mem_hatL D V Λ _ y hyΛ)`. Introduce `hyM`. Use `GlobalTheory.HatLatV.mem_latV_of_hatL D V Λ _ y hy ?_` and prove the remaining obligations. Use `(h _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat]`. Conclude with `GlobalTheory.LatVHat.latV_mem_hatL D V M _ _ hyM`.
+-/
 theorem moves_of_hat (V : HSp D) (g : GA D V) (Λ M : Lat V)
     (h : ∀ z, z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔ (Lev.finE V g).val *ᵥ z ∈ Formalism.L2.Herm.hatL (F := D.host.F) M) :
     Moves V g Λ M (fun _ => True) := by
@@ -40,10 +47,18 @@ theorem moves_of_hat (V : HSp D) (g : GA D V) (Λ M : Lat V)
     rw [← GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat]
     exact GlobalTheory.LatVHat.latV_mem_hatL D V M _ _ hyM
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[GfC, MonoidHom.mem_ker]`. Conclude with `hg`.
+-/
 theorem negGA_mem_GfC (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   rw [GfC, MonoidHom.mem_ker] at hg ⊢
   exact hg
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : IsHalf e x`. Rewrite using `[GlobalTheory.StdHalfLat.actO_eq_self_of_half ha ha' (GlobalTheory.StdHalfLat.suppAt_inv' hb) (GlobalTheory.StdHalfLat.suppAt_inv' hb') hx]`. Establish `h0 : Φ x = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hx (hΦ x hne)`. Rewrite using `[h0]`. Assume the negation of the conclusion as `hne`. Conclude with `hx (GlobalTheory.MovedVac.halfBack D S T _ _ e x (hΦ _ hne))`.
+-/
 theorem datum_fixed {S T : HSp D} {e a a' : AE D} (ha : e * (a + cA D a) = 0) (ha' : e * (a' + cA D a') = 0)
     {b : GA D S} {b' : GA D T} (hb : SuppAt a S b) (hb' : SuppAt a' T b') {Φ : WO S T → ℂ} (hΦ : ∀ x, Φ x ≠ 0 → IsHalf e x) :
     (fun x => Φ (actO S T b⁻¹ b'⁻¹ x)) = Φ := by
@@ -57,6 +72,9 @@ theorem datum_fixed {S T : HSp D} {e a a' : AE D} (ha : e * (a + cA D a) = 0) (h
     by_contra hne
     exact hx (GlobalTheory.MovedVac.halfBack D S T _ _ e x (hΦ _ hne))
 
+/- English proof (translation)
+Establish `h1 : mt T h * mt T h⁻¹ = 1`. Rewrite using `[← GlobalTheory.VacMove.mt_mul₀, mul_inv_cancel, GlobalTheory.VacMove.mt_one₀]`. Establish `h2 : mt S g * mt S g⁻¹ = 1`. Rewrite using `[← GlobalTheory.VacMove.mt_mul₀, mul_inv_cancel, GlobalTheory.VacMove.mt_one₀]`. Rewrite using `[GlobalTheory.VacMove.actO_eq, GlobalTheory.VacMove.actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+-/
 private theorem actO_actO_inv_inv (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ u) = u := by
   have h1 : mt T h * mt T h⁻¹ = 1 := by
@@ -66,10 +84,20 @@ private theorem actO_actO_inv_inv (S T : HSp D) (g : GA D S) (h : GA D T) (u : W
   rw [GlobalTheory.VacMove.actO_eq, GlobalTheory.VacMove.actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul,
     Matrix.mul_assoc, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[two_nsmul, two_nsmul, GlobalTheory.VacMove.actO_eq, GlobalTheory.VacMove.actO_eq, Matrix.mul_add, Matrix.add_mul]`.
+-/
 private theorem actO_two_nsmul' (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (2 • x) = 2 • actO S T g h x := by
   rw [two_nsmul, two_nsmul, GlobalTheory.VacMove.actO_eq, GlobalTheory.VacMove.actO_eq, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Take `⟨hv1, hv2⟩` from `hv`. Establish `key : ∀ w c : WO S T, actO S T b b' c = w → heisO ψ S T c f₀ = f₀ → heisO ψ S T w (om (b, b') f₀) = om (b, b') f₀`. Introduce `w c hc hfix`. Rewrite using `[← hc, ← hW.om_heis b b' c f₀ hf, hfix]`. Use `⟨fun u hu => ?_, fun e he u hu hue => ?_⟩` and prove the remaining obligations.
+
+Establish `hu0` using `GlobalTheory.VacMove.actO_mem_latO hM hΛ hM' hΛ' (GlobalTheory.VacMove.moves_inv hb) (GlobalTheory.VacMove.moves_inv hb') hu`. Use `key _ (2 • actO S T b⁻¹ b'⁻¹ u) ?_ (hv1 _ hu0)` and prove the remaining obligations. Rewrite using `[actO_two_nsmul', actO_actO_inv_inv]`. Establish `hu0` using `GlobalTheory.VacMove.actO_mem_latO hM hΛ hM' hΛ' (GlobalTheory.VacMove.moves_inv hb) (GlobalTheory.VacMove.moves_inv hb') hu`. Establish `hc : IsHalf e (actO S T b⁻¹ b'⁻¹ u)`.
+
+Apply `GlobalTheory.MovedVac.halfBack D S T b b' e` to reduce the goal to its premises. Rewrite using `[actO_actO_inv_inv]`. Conclude with `hue`. Conclude with `key u _ (actO_actO_inv_inv S T b b' u) (hv2 e he _ hu0 hc)`.
+-/
 theorem isLatVac_move {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {b : GA D S} {b' : GA D T} (hb : Moves S b Λ M fun _ => True)
@@ -92,6 +120,11 @@ theorem isLatVac_move {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : 
       exact hue
     exact key u _ (actO_actO_inv_inv S T b b' u) (hv2 e he _ hu0 hc)
 
+/- English proof (translation)
+Establish `hstd : IsStdChar D ψ (-1)` using `hW.std`. Take `⟨θ, hθ⟩` from `hstd.2.1`. Establish `hfT : IsThetaFunO ψ S T f` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hstd hθ hf hf₀`. Establish `hth` using `GlobalTheory.VacMove.isThetaAt_moveLat D ψ S T χS χT om hW Λ M Λ' M' hΛ hM hΛ' hM' b hbf b' hbf' hb hb' e Φ f₀ f (GlobalTheory.PlaceDatum.idemSum_mul_self he) (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.infPart_of_idemSum he) hf₀ hfT hf`. Rewrite `hth` using `[datum_fixed ha ha' hs hs' hΦ.1]`.
+
+Take `⟨⟨Tm, hTm⟩, hall⟩` from `hth`. Rewrite using `[hall Tm hTm, hg.2 Tm hTm]`.
+-/
 theorem om_eq_of_isThetaAt {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {b : GA D S} {b' : GA D T} (hbf : b ∈ GfC S) (hbf' : b' ∈ GfC T)
@@ -110,6 +143,9 @@ theorem om_eq_of_isThetaAt {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS �
   obtain ⟨⟨Tm, hTm⟩, hall⟩ := hth
   rw [hall Tm hTm, hg.2 Tm hTm]
 
+/- English proof (translation)
+Conclude with `⟨h.2.theta, h.2.lat⟩`.
+-/
 private theorem isThetaFunO_and_isLatVac_of_isVacO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     {ΛS : Set (Fin S.rank → D.host.E)} {ΛT : Set (Fin T.rank → D.host.E)} {f : WO S T → ℂ}
@@ -117,18 +153,27 @@ private theorem isThetaFunO_and_isLatVac_of_isVacO {ψ : AddChar (AF D.host.F) �
     IsThetaFunO ψ S T f ∧ IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) f := by
   exact ⟨h.2.theta, h.2.lat⟩
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[GlobalTheory.ChiGrid.mt_negGA]`. Conclude with `h y hy`.
+-/
 private theorem moves_negSp_negGA_of_moves {V : HSp D} {g : GA D V} {Λ M : Lat V} (h : Moves V g Λ M fun _ => True) :
     Moves (negSp V) (negGA V g) Λ M fun _ => True := by
   intro y hy
   rw [GlobalTheory.ChiGrid.mt_negGA]
   exact h y hy
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[GlobalTheory.ChiGrid.mt_negGA]`. Conclude with `h i j`.
+-/
 private theorem suppAt_negSp_negGA_of_suppAt {V : HSp D} {a : AE D} {g : GA D V} (h : SuppAt a V g) :
     SuppAt a (negSp V) (negGA V g) := by
   intro i j
   rw [GlobalTheory.ChiGrid.mt_negGA]
   exact h i j
 
+/- English proof (translation)
+Take `⟨a, ha, hs⟩` from `hk`. Take `⟨a', ha', hs'⟩` from `hk'`. Conclude with `om_eq_of_isThetaAt hW hΛ hM hΛ' hM' hbf hbf' hb hb' he ha ha' hs hs' hΦ hf₀ hf (hc _ (hW.om_pres _ _ hf₀) (isLatVac_move hW hΛ hM hΛ' hM' hb hb' hf₀ hv))`.
+-/
 private theorem moved_core_lemma_3 {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {b : GA D S} {b' : GA D T} (hbf : b ∈ GfC S) (hbf' : b' ∈ GfC T)
@@ -147,6 +192,19 @@ private theorem moved_core_lemma_3 {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D
   exact om_eq_of_isThetaAt hW hΛ hM hΛ' hM' hbf hbf' hb hb' he ha ha' hs hs' hΦ hf₀ hf
     (hc _ (hW.om_pres _ _ hf₀) (isLatVac_move hW hΛ hM hΛ' hM' hb hb' hf₀ hv))
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hset ch _ t p hp d c hz hvec hcomb`. Establish `hL` using `hset.core.lev`. Establish `hnodes` using `GlobalTheory.FunObj.DefPair.nodes hp`. Take `⟨f, hf⟩` from `hvec`. Establish `hvd : ch.S.Z.vec d = f`.
+
+Unfold `GlobalTheory.FunObj.Normal.vec`. Rewrite using `[GlobalTheory.FunObj.FinDatum.vec_eq ch.W hf, hz, ← Prod.one_eq_mk, map_one]`. Both sides reduce to the same expression. Unfold `movedVec`. Rewrite using `[hvd]`.
+
+Consider the cases of `p with`. Consider the case `chi i j`. Establish `hX` using `hnodes.1`. Establish `hY` using `hnodes.2`. Take `⟨hf₀, hv⟩` from `isThetaFunO_and_isLatVac_of_isVacO (ch.S.Z.vac_is (.chi i j) hp)`.
+
+Conclude with `moved_core_lemma_3 (ch.W.om_is (.chi i j) (by simp only [DefPair, Pair.InRange, Node.InRange] at hp ⊢; omega)) (GlobalTheory.ChiGrid.isSelfDualC_neg (GlobalTheory.FunObj.Std.selfDual ch.S.N hY)) (GlobalTheory.ChiGrid.isSelfDualC_neg (GlobalTheory.FunObj.DefNode.selfDual ch.G hL h …`. Take `⟨a, ha, hs⟩` from `GlobalTheory.StdHalfLat.exists_kill ch.S.N (Set.mem_univ t) d hY`. Conclude with `⟨a, ha, suppAt_negSp_negGA_of_suppAt hs⟩)`. Use the proof step `(GlobalTheory.StdHalfLat.exists_kill ch.S.N (Set.mem_univ t) d hX)`. Use the proof step `d.sb hf₀ hv hf c hcomb.2.2`.
+
+Consider the case `mu t' i j => exact False.elim hp`. Consider the case `core i => exact False.elim hp`. Consider the case `top t' j`. Establish `hX` using `hnodes.1`. Establish `hY` using `hnodes.2`.
+
+Take `⟨hf₀, hv⟩` from `isThetaFunO_and_isLatVac_of_isVacO (ch.S.Z.vac_is (.top t' j) hp)`. Conclude with `moved_core_lemma_3 (ch.W.om_is (.top t' j) (by simp only [DefPair, Pair.InRange, Node.InRange] at hp ⊢; omega)) (GlobalTheory.FunObj.Std.selfDual ch.S.N hX) (GlobalTheory.FunObj.DefNode.selfDual ch.G hL hX) (GlobalTheory.FunObj.Std.selfDual ch.S.N hY) (GlobalTheory.FunObj.DefNode …`.
+-/
 theorem movedVec_eq_comb : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → ∀ (t : T) (p : Pair T), DefPair D.R.m p → ∀ (d : FinDatum ch.G t p) (c : WO (ch.G.pS p) (ch.G.pT p) →₀ ℂ), d.z = 1 → ch.S.Z.HasVec d → IsCombOf ch.W d c → movedVec t ch.S.toGridChoice d = comb ch.W.ψ _ _ c (ch.W.om p (ch.G.toPair p (ch.S.N.u p.small).1 (ch.S.N.u p.big).1) (ch.S.Z.vac p)) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hset ch _ t p hp d c hz hvec hcomb
   have hL := hset.core.lev

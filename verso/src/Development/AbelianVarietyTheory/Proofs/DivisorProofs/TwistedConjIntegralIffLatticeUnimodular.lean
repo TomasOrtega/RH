@@ -15,6 +15,13 @@ section Mat
 
 variable {L : Type} [Field L] {a : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, fun h => ⟨⟨Matrix.of fun i j => ⟨_, h.1 i j⟩, Matrix.of fun i j => ⟨_, h.2 i j⟩, ?_, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨fun i j => (y.1 i j).2, fun i j => ((y⁻¹).1 i j).2⟩`. Use `Matrix.map_injective S.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`. Use `Matrix.map_injective S.subtype_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `x.inv_mul`.
+-/
 theorem mem_GLint_iff' {S : Subring L} {x : GL (Fin a) L} :
     x ∈ GLint (Fin a) S ↔ (∀ i j, x.1 i j ∈ S) ∧ ∀ i j, (x⁻¹).1 i j ∈ S := by
   refine ⟨?_, fun h => ⟨⟨Matrix.of fun i j => ⟨_, h.1 i j⟩, Matrix.of fun i j => ⟨_, h.2 i j⟩, ?_, ?_⟩, rfl⟩⟩
@@ -29,16 +36,35 @@ theorem mem_GLint_iff' {S : Subring L} {x : GL (Fin a) L} :
     rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact x.inv_mul
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => S.mul_mem (hM i j) (hv j)`.
+-/
 theorem mulVec_mem {S : Subring L} {M : Matrix (Fin a) (Fin a) L} {v : Fin a → L}
     (hM : ∀ i j, M i j ∈ S) (hv : ∀ j, v j ∈ S) (i : Fin a) : (M *ᵥ v) i ∈ S := by
   simp only [Matrix.mulVec, dotProduct]
   exact Subring.sum_mem _ fun j _ => S.mul_mem (hM i j) (hv j)
 
+/- English proof (translation)
+Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[S.one_mem]`. Simplify using `[Pi.single_eq_of_ne hk, S.zero_mem]`.
+-/
 theorem single_mem (S : Subring L) (j k : Fin a) : (Pi.single j (1 : L) : Fin a → L) k ∈ S := by
   by_cases hk : k = j
   · subst hk; simp [S.one_mem]
   · simp [Pi.single_eq_of_ne hk, S.zero_mem]
 
+/- English proof (translation)
+Rewrite using `[mem_GLint_iff']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ u`. Prove the components needed by the constructor for the conclusion. Introduce `hu i`.
+
+Conclude with `mulVec_mem h1 (fun j => (hS _).2 (hu j)) i`. Introduce `hY j`. Establish `e1 : (c ∘ u) = (Y⁻¹).1 *ᵥ (Y.1 *ᵥ (c ∘ u))`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `h` using `mulVec_mem h2 hY j`.
+
+Rewrite `h` using `[← e1]`. Conclude with `(hS _).1 h`. Introduce `h`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `hcu : c ∘ (Pi.single j (1 : L) : Fin a → L) = Pi.single j 1`.
+
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Establish `h3` using `(h _).1 (single_mem S j) i`. Rewrite `h3` using `[hcu, Matrix.mulVec_single_one]`. Simplify `h3` using `[Matrix.col]`. Establish `hY : Y.1 *ᵥ ((Y⁻¹).1 *ᵥ Pi.single j 1) = Pi.single j 1`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Establish `hcc : c ∘ (c ∘ ((Y⁻¹).1 *ᵥ Pi.single j 1)) = (Y⁻¹).1 *ᵥ Pi.single j 1` using `funext fun k => hc _`. Establish `h2` using `(h (c ∘ ((Y⁻¹).1 *ᵥ Pi.single j 1))).2 (by rw [hcc, hY]; exact single_mem S j) i`. Establish `h4` using `(hS _).1 h2`. Rewrite `h4` using `[Matrix.mulVec_single_one]`. Simplify `h4` using `[Matrix.col]`.
+-/
 theorem mem_GLint_iff_dual {S : Subring L} (c : L →+* L) (hc : ∀ x, c (c x) = x) (hS : ∀ x, c x ∈ S ↔ x ∈ S)
     (Y : GL (Fin a) L) :
     Y ∈ GLint (Fin a) S ↔ ∀ u : Fin a → L, (∀ j, u j ∈ S) ↔ ∀ i, (Y.1 *ᵥ (c ∘ u)) i ∈ S := by
@@ -72,6 +98,11 @@ theorem mem_GLint_iff_dual {S : Subring L} (c : L →+* L) (hc : ∀ x, c (c x) 
       rw [Matrix.mulVec_single_one] at h4
       simpa [Matrix.col] using h4
 
+/- English proof (translation)
+Rewrite using `[mem_GLint_iff', mem_GLint_iff']`. Establish `h1 : (invT a L x).1 = (x⁻¹).1ᵀ` using `rfl`. Establish `h2 : ((invT a L x)⁻¹).1 = x.1ᵀ` using `rfl`. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.transpose_apply]`.
+
+Conclude with `⟨fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩, fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩⟩`.
+-/
 theorem invT_mem_iff {S : Subring L} (x : GL (Fin a) L) :
     invT a L x ∈ GLint (Fin a) S ↔ x ∈ GLint (Fin a) S := by
   rw [mem_GLint_iff', mem_GLint_iff']
@@ -81,6 +112,11 @@ theorem invT_mem_iff {S : Subring L} (x : GL (Fin a) L) :
   simp only [Matrix.transpose_apply]
   exact ⟨fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩, fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩⟩
 
+/- English proof (translation)
+Rewrite using `[mem_GLint_iff']`. Establish `h2 : ((PhiU a L)⁻¹).1 = (GlobalTheory.Tw.Phi a L)ᵀ` using `rfl`. Establish `h1 : (PhiU a L).1 = GlobalTheory.Tw.Phi a L` using `rfl`. Rewrite using `[h1, h2]`. Apply the tactic sequence `refine ⟨fun i j => ?_, fun i j => ?_⟩ <;>`.
+
+Simplify using `only [Matrix.transpose_apply, GlobalTheory.Tw.Phi, Matrix.of_apply] split_ifs`. Conclude with `S.pow_mem (S.neg_mem S.one_mem) _`. Conclude with `S.zero_mem`.
+-/
 theorem PhiU_mem (S : Subring L) : PhiU a L ∈ GLint (Fin a) S := by
   rw [mem_GLint_iff']
   have h2 : ((PhiU a L)⁻¹).1 = (GlobalTheory.Tw.Phi a L)ᵀ := rfl
@@ -104,23 +140,41 @@ section Herm
 
 variable {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) (β : B.A) {a : ℕ}
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm, mul_add, add_mul, map_add]`.
+-/
 theorem herm_add_left (y y' z : B.A) : B.herm β (y + y') z = B.herm β y z + B.herm β y' z := by
   simp [GlobalTheory.UnitLemma.InvAlg.herm, mul_add, add_mul, map_add]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm]`.
+-/
 theorem herm_zero_left (z : B.A) : B.herm β 0 z = 0 := by
   simp [GlobalTheory.UnitLemma.InvAlg.herm]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.UnitLemma.InvAlg.herm]`. Rewrite using `[mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]`.
+-/
 theorem herm_smul_left (t : K.E) (y z : B.A) : B.herm β (t • y) z = t * B.herm β y z := by
   simp only [GlobalTheory.UnitLemma.InvAlg.herm]
   rw [mul_smul_comm, smul_mul_assoc, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.UnitLemma.InvAlg.herm]`. Rewrite using `[Algebra.smul_def, (B.σ).map_mul, B.σ_alg, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul]`.
+-/
 theorem herm_smul_right (t : K.E) (y z : B.A) : B.herm β y (t • z) = K.c t * B.herm β y z := by
   simp only [GlobalTheory.UnitLemma.InvAlg.herm]
   rw [Algebra.smul_def, (B.σ).map_mul, B.σ_alg, ← Algebra.smul_def, mul_smul_comm, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm, Finset.mul_sum, Finset.sum_mul, map_sum]`.
+-/
 theorem herm_sum_left (f : Fin a → B.A) (z : B.A) : B.herm β (∑ i, f i) z = ∑ i, B.herm β (f i) z := by
   simp [GlobalTheory.UnitLemma.InvAlg.herm, Finset.mul_sum, Finset.sum_mul, map_sum]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.UnitLemma.InvAlg.herm, Finset.mul_sum, Finset.sum_mul, map_sum]`.
+-/
 theorem herm_sum_right (y : B.A) (f : Fin a → B.A) : B.herm β y (∑ i, f i) = ∑ i, B.herm β y (f i) := by
   simp [GlobalTheory.UnitLemma.InvAlg.herm, Finset.mul_sum, Finset.sum_mul, map_sum]
 
@@ -129,6 +183,9 @@ end Herm
 variable {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory.UnitLemma.UQ}
   (e : K.E ≃+* w.adicCompletion E) {a : ℕ} {B : GlobalTheory.UnitLemma.InvAlg K} (b : Module.Basis (Fin a) K.E B.A)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr y, ← b.sum_repr z]`. Rewrite using `[herm_sum_left]`. Repeatedly rewrite using `[herm_smul_left, herm_sum_right, herm_smul_right]`. Simplify using `only [map_sum, map_mul, hc, crd, GlobalTheory.TwLat.gram, dotProduct, Matrix.mulVec, Function.comp_apply, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+-/
 theorem herm_crd (c : w.adicCompletion E →+* w.adicCompletion E) (hc : ∀ x, e (K.c x) = c (e x)) (β : B.A)
     (y z : B.A) :
     e (B.herm β y z) = crd e b y ⬝ᵥ (GlobalTheory.TwLat.gram e b β *ᵥ (c ∘ crd e b z)) := by
@@ -144,6 +201,51 @@ end GlobalTheory.TwOrbUnimod
 namespace GlobalTheory.TwOrbUnimod
 open GlobalTheory.TwOrbLat
 
+/- English proof (translation)
+Introduce `E _ _ _ w hw K e he hO a B β b δ hG q`. Use `set F := w.adicCompletion E`. Use `set c := cj w`. Establish `hS : ∀ x : F, x ∈ Ov E w ↔ Valued.v x ≤ 1` using `fun x => by`. Simplify using `only [Ov]`.
+
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers E w`. Consider the case `exact Valued.mem_integer_iff _ _`. Establish `hR : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ e x ∈ Ov E w` using `fun x => by rw [hO, hS]`.
+
+Establish `hc2 : ∀ x, c (c x) = x` using `fun x => by`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← he, ← he, K.c_c]`. Establish `hcR : ∀ x, K.c x ∈ (algebraMap K.O K.E).range ↔ x ∈ (algebraMap K.O K.E).range`. Establish `h1 : ∀ x, x ∈ (algebraMap K.O K.E).range → K.c x ∈ (algebraMap K.O K.E).range`.
+
+Introduce and unpack `_ ⟨o, rfl⟩`. Take `⟨o', ho'⟩` from `K.c_int o`. Conclude with `⟨o', ho'.symm⟩`. Conclude with `fun x => ⟨fun h => K.c_c x ▸ h1 _ h, h1 x⟩`. Establish `hcS : ∀ x, c x ∈ Ov E w ↔ x ∈ Ov E w` using `fun x => by`.
+
+Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← he, ← hR, ← hR, hcR]`. Establish `hGram : GlobalTheory.TwLat.gram e b (β : B.A) = ((δ.val * GlobalTheory.Tw.Phi a F)⁻¹)ᵀ`. Conclude with `Matrix.ext fun i j => (hG i j).symm`. Use `set Yg : GLw a w := invT a F (q⁻¹ * (δ * PhiU a F) * invT a F (GeneralLinearGroup.map c q)) with hYg`.
+
+Establish `hY : Yg.val = q.valᵀ * GlobalTheory.TwLat.gram e b (β : B.A) * q.val.map c`. Rewrite using `[hGram]`. Use `show ((q⁻¹ * (δ * PhiU a F) * invT a F (GeneralLinearGroup.map c q))⁻¹).valᵀ = _`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, ← map_inv (invT a F)]`. Simplify using `only [Units.val_mul, Matrix.transpose_mul]`.
+
+Establish `h2 : (invT a F (GeneralLinearGroup.map c q)⁻¹).val = (GeneralLinearGroup.map c q).valᵀ` using `by show ((GeneralLinearGroup.map c q)⁻¹⁻¹).valᵀ = _`. Rewrite using `[inv_inv]`. Rewrite using `[h2, Matrix.transpose_transpose, Matrix.coe_units_inv, Units.val_mul]`. Both sides reduce to the same expression. Establish `step1 : q⁻¹ * δ * thL a w q ∈ GlobalTheory.LFun.KGL w a ↔ Yg ∈ GlobalTheory.LFun.KGL w a`.
+
+Establish `hth : thL a w q = PhiU a F * invT a F (GeneralLinearGroup.map c q) * (PhiU a F)⁻¹`. Simplify using `only [GlobalTheory.BCT.thL, if_neg hw]`. Both sides reduce to the same expression. Establish `hP : PhiU a F ∈ GlobalTheory.LFun.KGL w a` using `PhiU_mem _`. Rewrite using `[hth, show q⁻¹ * δ * (PhiU a F * invT a F (GeneralLinearGroup.map c q) * (PhiU a F)⁻¹) = (q⁻¹ * (δ * PhiU a F) * invT a F (GeneralLinearGroup.map c q)) * (PhiU a F)⁻¹ by group, Subgroup.mul_mem_cancel_right _ (inv_mem hP), hYg, invT_mem_iff]`.
+
+Establish `step2 : (∀ z, z ∈ GlobalTheory.TwLat.lat e b q ↔ ∀ y ∈ GlobalTheory.TwLat.lat e b q, B.herm β y z ∈ (algebraMap K.O K.E).range) ↔ ∀ u : Fin a → F, (∀ j, u j ∈ Ov E w) ↔ ∀ i, (Yg.1 *ᵥ (c ∘ u)) i ∈ Ov E w` using `by set y : Fin a → B.A := fun j => ofCrd e b fun i => q.val i j with hy`. Establish `hcrdy : ∀ j, crd e b (y j) = fun i => q.val i j` using `fun j => crd_ofCrd e b _`. Establish `hL : GlobalTheory.TwLat.lat e b q = Submodule.span K.O (Set.range y)` using `latOf_eq e b q`. Establish `hcomb : ∀ t : Fin a → K.E, crd e b (∑ j, t j • y j) = q.val *ᵥ fun j => e (t j)`. Introduce `t`.
+
+Rewrite using `[crd_sum]`. Use function extensionality and compare the values at `i`. Simplify using `[crd_smul, hcrdy, Finset.sum_apply, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hinv : ∀ u v : Fin a → F, q.val *ᵥ u = q.val *ᵥ v → u = v`. Introduce `u v h`.
+
+Use `congrArg (fun x => (q⁻¹).val *ᵥ x) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Set `zOf : (Fin a → F) → B.A` to `fun u => ofCrd e b (q.val *ᵥ u)`. Establish `hz : ∀ u, crd e b (zOf u) = q.val *ᵥ u` using `fun u => crd_ofCrd e b _`. Establish `hsurj : ∀ z, ∃ u, z = zOf u` using `fun z => ⟨(q⁻¹).val *ᵥ crd e b z, by`.
+
+Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[hz, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`. Establish `hmem : ∀ u, zOf u ∈ GlobalTheory.TwLat.lat e b q ↔ ∀ j, u j ∈ Ov E w`. Introduce `u`. Rewrite using `[hL, Submodule.mem_span_range_iff_exists_fun]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Establish `h1 : (∑ j, f j • y j) = ∑ j, (algebraMap K.O K.E (f j)) • y j` using `Finset.sum_congr rfl fun j _ => (algebraMap_smul K.E (f j) (y j)).symm`. Establish `h2` using `congrArg (crd e b) (h1.symm.trans hf)`. Rewrite `h2` using `[hcomb, hz]`.
+
+Establish `h3` using `hinv _ _ h2`. Introduce `j`. Rewrite using `[← h3]`. Conclude with `(hR _).1 ⟨f j, rfl⟩`. Introduce `hu choose o ho using fun j => (hR (e.symm (u j))).2 (by rw [RingEquiv.apply_symm_apply]; exact hu j)`.
+
+Use `⟨o, ?_⟩` and prove the remaining obligations. Apply `crd_injective e b` to reduce the goal to its premises. Rewrite using `[show (∑ j, o j • y j) = ∑ j, (algebraMap K.O K.E (o j)) • y j from Finset.sum_congr rfl fun j _ => (algebraMap_smul K.E (o j) (y j)).symm, hcomb, hz]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[ho, RingEquiv.apply_symm_apply]`. Establish `hdual : ∀ z, (∀ x ∈ GlobalTheory.TwLat.lat e b q, B.herm β x z ∈ (algebraMap K.O K.E).range) ↔ ∀ i, B.herm β (y i) z ∈ (algebraMap K.O K.E).range`. Introduce `z`. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i`. Conclude with `h _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`.
+
+Conclude with `h i`. Consider the case `zero => rw [herm_zero_left]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx' => rw [herm_add_left]`. Conclude with `add_mem hx hx'`.
+
+Consider the case `smul o x _ hx => rw [← algebraMap_smul K.E o x, herm_smul_left]`. Conclude with `mul_mem ⟨o, rfl⟩ hx`. Establish `hform : ∀ u i, e (B.herm β (y i) (zOf u)) = (Yg.1 *ᵥ (c ∘ u)) i`. Introduce `u i`. Rewrite using `[herm_crd e b c he, hcrdy, hz, hY]`.
+
+Establish `hcu : c ∘ (q.val *ᵥ u) = q.val.map c *ᵥ (c ∘ u)` using `funext fun k => RingHom.map_mulVec c _ _ k`. Rewrite using `[hcu, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h u`.
+
+Rewrite using `[← hmem, h, hdual]`. Conclude with `forall_congr' fun i => by rw [hR, hform]`. Introduce `h z`. Take `⟨u, rfl⟩` from `hsurj z`. Rewrite using `[hmem, hdual, h u]`.
+
+Conclude with `forall_congr' fun i => by rw [hR, hform]`. Rewrite using `[step1, step2]`. Conclude with `mem_GLint_iff_dual c hc2 hcS Yg`.
+-/
 theorem twist_integral_iff_unimodular : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (a : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K) (β : B.Aˣ) (b : Module.Basis (Fin a) K.E B.A) (δ : GLw a w), (∀ i j, ((δ.val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹)ᵀ i j = e (B.herm β (b i) (b j))) → ∀ q : GLw a w, (q⁻¹ * δ * thL a w q ∈ GlobalTheory.LFun.KGL w a ↔ ∀ z, z ∈ GlobalTheory.TwLat.lat e b q ↔ ∀ y ∈ GlobalTheory.TwLat.lat e b q, B.herm β y z ∈ (algebraMap K.O K.E).range) := by
   intro E _ _ _ w hw K e he hO a B β b δ hG q
   set F := w.adicCompletion E

@@ -11,6 +11,13 @@ namespace GlobalTheory.FlagZ
 
 variable {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a : κ → ι) (l : κ → Fin (N + 1))
 
+/- English proof (translation)
+Take `⟨ψ, rfl⟩` from `Spec.map_surjective s`. Set `g : ι → GL (Fin N) K` to `fun τ => GeneralLinearGroup.map ψ.hom (univGL ι N τ)`. Establish `hg : Spec.map ψ ≫ orbit a l = flagPt a l g`. Rewrite using `[← flagPt_univGL]`. Conclude with `spMap_flagPt a l ψ.hom _`.
+
+Use `choose k b hb hkb using fun τ => GlobalTheory.ValIwasawa.iwasawa V K N (g τ)`. Establish `e : flagPt a l g = Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ flagPt a l k`. Establish `: g = (fun τ => GeneralLinearGroup.map (algebraMap V K) (k τ)) * b` using `funext hkb`. Rewrite using `[this, flagPt_mul a l _ b fun c i j h₁ h₂ => hb (a c) (h₁.trans_le h₂)]`. Conclude with `(spMap_flagPt a l (algebraMap V K) k).symm`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hu` using `GlobalTheory.ProjSpace.existsUnique_extend_of_isProjOver (V := V) (K := K) (isProjOver_str a l) (Int.castRingHom V) (flagPt a l g) (toZ_ext _ _)`. Conclude with `hu.unique ⟨toZ_ext _ _, w.symm.trans hg⟩ ⟨toZ_ext _ _, e.symm⟩`.
+-/
 theorem exists_eq_flagPt_of_valuationRing (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K]
     [Algebra V K] [IsFractionRing V K] (s : Sp K ⟶ Sp (GLRing ι N)) (t : Sp V ⟶ Part a l)
     (w : s ≫ orbit a l = Spec.map (CommRingCat.ofHom (algebraMap V K)) ≫ t) :
@@ -30,6 +37,13 @@ theorem exists_eq_flagPt_of_valuationRing (V K : Type) [CommRing V] [IsDomain V]
     (Int.castRingHom V) (flagPt a l g) (toZ_ext _ _)
   exact hu.unique ⟨toZ_ext _ _, w.symm.trans hg⟩ ⟨toZ_ext _ _, e.symm⟩
 
+/- English proof (translation)
+Set `φ : (Part a l).presheaf.stalk y ⟶ (Sp (GLRing ι N)).residueField x'` to `(Part a l).presheaf.stalkSpecializes h ≫ (orbit a l).stalkMap x' ≫ (Sp (GLRing ι N)).residue x'`. Take `⟨A, hA, hA_local⟩` from `exists_factor_valuationRing φ.hom`. Set `χ : (Part a l).presheaf.stalk y ⟶ .of A` to `CommRingCat.ofHom (φ.hom.codRestrict _ hA)`. Establish `w : (Sp (GLRing ι N)).fromSpecResidueField x' ≫ orbit a l = Spec.map (CommRingCat.ofHom (algebraMap A ((Sp (GLRing ι N)).residueField x'))) ≫ Spec.map χ ≫ (Part a l).fromSpecStalk y`. Rewrite using `[Scheme.fromSpecResidueField, Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Scheme.SpecMap_stalkSpecializes_fromSpecStalk h]`.
+
+Repeatedly rewrite using `[← Spec.map_comp_assoc]`. Both sides reduce to the same expression. Take `⟨k, hk⟩` from `exists_eq_flagPt_of_valuationRing a l A ((Sp (GLRing ι N)).residueField x') _ _ w`. Use `⟨spMap (evalGL k) (closedPoint A), ?_⟩` and prove the remaining obligations. Establish `h₁ : Spec.map χ (closedPoint A) = closedPoint ((Part a l).presheaf.stalk y)` using `comap_closedPoint (S := A) (φ.hom.codRestrict A.toSubring hA)`.
+
+Establish `h₂ : (Spec.map χ ≫ (Part a l).fromSpecStalk y) (closedPoint A) = y` using `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg ((Part a l).fromSpecStalk y) h₁).trans (Part a l).fromSpecStalk_closedPoint)`. Rewrite `h₂` using `[hk]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans h₂`.
+-/
 theorem mem_range_orbit_of_specializes (x' : Sp (GLRing ι N)) (y : Part a l) (h : orbit a l x' ⤳ y) :
     y ∈ Set.range (orbit a l) := by
   let φ : (Part a l).presheaf.stalk y ⟶ (Sp (GLRing ι N)).residueField x' :=
@@ -53,6 +67,9 @@ theorem mem_range_orbit_of_specializes (x' : Sp (GLRing ι N)) (y : Part a l) (h
   rw [hk] at h₂
   exact (Scheme.Hom.comp_apply _ _ _).symm.trans h₂
 
+/- English proof (translation)
+Introduce `ι κ _ _ N a l y`. Establish `hd : DenseRange (orbit a l)` using `(orbit a l).denseRange`. Establish `hη` using `(genericPoint_spec (Sp (GLRing ι N))).image (orbit a l).continuous`. Rewrite `hη` using `[Set.image_univ, hd.closure_range]`. Conclude with `mem_range_orbit_of_specializes a l _ y (hη.specializes (Set.mem_univ y))`.
+-/
 theorem surjective_orbit : ∀ (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1)),
     Function.Surjective (orbit a l) := by
   intro ι κ _ _ N a l y

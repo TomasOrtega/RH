@@ -19,6 +19,9 @@ open GlobalTheory.LatJet (EisExp IsEis FR)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N L hs hN hL τ c t v κ hτ`. Take `⟨𝔞, 𝔟, x, rfl⟩` from `GlobalTheory.T.exists_split_of_hilbertLatticeHasLevel F N L hN hL`. Take `⟨Z, a, -, ha⟩` from `GlobalTheory.T.exists_hilbertEisenstein_fourierCoeffFamily hE F hf 𝔞 𝔟 s hs`. Conclude with `GlobalTheory.T.hilbertEisensteinLatticeJet_split_direction_add F (2 * s) 𝔞 𝔟 _ a x τ c t v κ (even_two_mul s) ha hτ`.
+-/
 theorem jet_add_dir_of_hasLevel : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F →
     ∀ (s N : ℕ) (L : Lat F), 1 ≤ s → 0 < N → HasLevel N L → ∀ (τ c t v : ℂ) (κ : Emb F → ℕ), 0 < τ.im →
     jet (2 * s) L κ τ (c + v) t = ∑ μ ∈ Finset.Iic κ, ((∏ i, rco (2 * s) (κ i) (μ i) : ℤ) : ℂ) * v ^ (∑ i, (κ i - μ i)) * jet (2 * s) L μ τ c t := by

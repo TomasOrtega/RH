@@ -19,11 +19,17 @@ def Coeq : Prop := ∀ (A B C : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A 
   ∃ (E : CommRingCat.{0}) (gE : A ⟶ E) (φE : E →+* Ω) (w : C ⟶ E), Et gE ∧ φE.comp gE.hom = ι ∧
     gC ≫ w = gE ∧ φE.comp w.hom = φC ∧ u ≫ w = v ≫ w
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(f ≫ g).hom.Etale`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hf hg`.
+-/
 theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f) (hg : Et g) : Et (f ≫ g) := by
   change (f ≫ g).hom.Etale
   rw [CommRingCat.hom_comp]
   exact RingHom.Etale.stableUnderComposition _ _ hf hg
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(𝟙 A : A ⟶ A).hom.Etale`. Rewrite using `[CommRingCat.hom_id]`. Conclude with `(RingHom.etale_algebraMap (R := A) (S := A)).mpr inferInstance`.
+-/
 theorem et_id (A : CommRingCat.{0}) : Et (𝟙 A) := by
   change (𝟙 A : A ⟶ A).hom.Etale
   rw [CommRingCat.hom_id]
@@ -51,8 +57,14 @@ instance cat : SmallCategory (Obj ι M tM) where
   comp_id f := Subtype.ext (Category.comp_id _)
   assoc f g h := Subtype.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_val {X Y Z : Obj ι M tM} (f : X ⟶ Y) (g : Y ⟶ Z) :
     (show Hm X Z from f ≫ g).1 = (show Hm X Y from f).1 ≫ (show Hm Y Z from g).1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_val (X : Obj ι M tM) : (show Hm X X from 𝟙 X).1 = 𝟙 _ := rfl
 
 def Dfun : Obj ι M tM ⥤ CommRingCat.{0} where
@@ -61,6 +73,29 @@ def Dfun : Obj ι M tM ⥤ CommRingCat.{0} where
 
 end Cat
 
+/- English proof (translation)
+Introduce `A Ω _ ι`. Take `⟨N, M, tM, hEt, hmod⟩` from `hM A`. Establish `into : ∀ (B : CommRingCat.{0}) (g : A ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = ι → ∃ (X : Obj ι M tM) (e : B ≅ M X.n), g ≫ e.hom = tM X.n ∧ X.φ.comp e.hom.hom = φB`. Introduce `B g hg φB hφB`. Take `⟨n, e, he⟩` from `hmod B g hg`.
+
+Use `⟨⟨n, φB.comp e.inv.hom, ?_⟩, e, he, ?_⟩` and prove the remaining obligations. Establish `h1 : (φB.comp e.inv.hom).comp (g ≫ e.hom).hom = φB.comp (g ≫ e.hom ≫ e.inv).hom`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_assoc]`. Rewrite using `[← he, h1, Iso.hom_inv_id, Category.comp_id, hφB]`. Use `show (φB.comp e.inv.hom).comp e.hom.hom = φB`.
+
+Rewrite using `[RingHom.comp_assoc, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, RingHom.comp_id]`. Use `haveI : IsFilteredOrEmpty (Obj ι M tM) := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `X Y`. Take `⟨E, gE, φE, p, q, hE, hφE, hp, hq, hpφ, hqφ⟩` from `hP A (M X.n) (M Y.n) Ω ι (tM X.n) (tM Y.n) (hEt _) (hEt _) X.φ Y.φ X.hφ Y.hφ`.
+
+Take `⟨Z, e, he, heφ⟩` from `into E gE hE φE hφE`. Use `⟨Z, (⟨p ≫ e.hom, ?_, ?_⟩ : Hm X Z), (⟨q ≫ e.hom, ?_, ?_⟩ : Hm Y Z), trivial⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hp, he]`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hpφ]`. Rewrite using `[← Category.assoc, hq, he]`.
+
+Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hqφ]`. Introduce `X Y f g`. Take `⟨E, gE, φE, w, hE, hφE, hw, hwφ, huv⟩` from `hC A (M X.n) (M Y.n) Ω ι (tM X.n) (tM Y.n) (hEt _) (hEt _) X.φ Y.φ X.hφ Y.hφ (show Hm X Y from f).1 (show Hm X Y from g).1 (show Hm X Y from f).2.1 (show Hm X Y from g).2.1 (show Hm X Y from f).2.2 (show Hm X Y from g).2.2`. Take `⟨Z, e, he, heφ⟩` from `into E gE hE φE hφE`. Use `⟨Z, (⟨w ≫ e.hom, ?_, ?_⟩ : Hm Y Z), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hw, he]`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hwφ]`. Apply `Subtype.ext show (show Hm X Y from f).1 ≫ (w ≫ e.hom) = (show Hm X Y from g).1 ≫ (w ≫ e.hom)` to reduce the goal to its premises. Rewrite using `[← Category.assoc, huv, Category.assoc]`. Use `haveI : Nonempty (Obj ι M tM) := by`.
+
+Take `⟨X, _, _, _⟩` from `into A (𝟙 A) (et_id A) ι (by simp)`. Conclude with `⟨X⟩`. Use `haveI : IsFiltered (Obj ι M tM) := {}`. Set `D : Obj ι M tM ⥤ CommRingCat.{0}` to `Dfun`. Set `t : (Functor.const (Obj ι M tM)).obj A ⟶ D` to `{ app := fun X => tM X.n naturality := by`.
+
+Introduce `X Y f`. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map]`. Conclude with `((show Hm X Y from f).2.1).symm }`. Use `⟨Obj ι M tM, inferInstance, inferInstance, D, t, fun X => X.φ, fun X => hEt X.n, fun X => X.hφ, fun X Y f => (show Hm X Y from f).2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `B g hg φB hφB`.
+
+Take `⟨X, e, he, heφ⟩` from `into B g hg φB hφB`. Conclude with `⟨X, e.hom, he, heφ⟩`. Introduce `X B g hg φB hφB`. Set `g' : M X.n ⟶ B` to `g`. Establish `hg' : Et g'` using `hg`.
+
+Establish `hφB' : φB.comp g'.hom = X.φ` using `hφB`. Establish `hφ' : φB.comp (tM X.n ≫ g').hom = ι`. Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, hφB', X.hφ]`. Take `⟨Y, e, he, heφ⟩` from `into B (tM X.n ≫ g') (et_comp (hEt _) hg') φB hφ'`. Use `⟨Y, (⟨g' ≫ e.hom, by rw [← Category.assoc, he], ?_⟩ : Hm X Y), e.hom, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hφB']`.
+-/
 theorem Sys2_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.AbsorbPf.Sys2 := by
   intro A Ω _ ι
   obtain ⟨N, M, tM, hEt, hmod⟩ := hM A
@@ -124,6 +159,9 @@ theorem Sys2_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.AbsorbPf.
     refine ⟨Y, (⟨g' ≫ e.hom, by rw [← Category.assoc, he], ?_⟩ : Hm X Y), e.hom, rfl⟩
     rw [CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hφB']
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.AbsorbPf.etaleAbsorbing_of_strongFilteredEtaleSystemExists (Sys2_of hM hP hC)`.
+-/
 theorem Absorb_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.ColimPf.Absorb :=
   LateralTheory.E.AbsorbPf.etaleAbsorbing_of_strongFilteredEtaleSystemExists (Sys2_of hM hP hC)
 

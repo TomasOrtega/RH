@@ -18,14 +18,23 @@ def chartSubst {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι
     MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] MvPolynomial (Fin m) ℂ :=
   bind₁ (fun p : Σ k, ι k => (X (σ.symm (Function.update i p.1 p.2)) : MvPolynomial (Fin m) ℂ))
 
+/- English proof (translation)
+Simplify using `[chartSubst]`.
+-/
 theorem chartSubst_X {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) (p : Σ k, ι k) :
     chartSubst σ i (X p) = X (σ.symm (Function.update i p.1 p.2)) := by
   simp [chartSubst]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartSection_eq_chartSubst [Fintype K] [∀ k, Fintype (ι k)] {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
     (i : (k : K) → ι k) (s : MRing ι) :
     chartSection σ i s = chartSubst σ i (map (Int.castRingHom ℂ) s) := rfl
 
+/- English proof (translation)
+Rewrite using `[chartSubst_X]`. Use `congr 2`.
+-/
 example : chartSubst (Fintype.equivFin ((k : Unit) → PBlk 3 k)).symm (fun _ => 0) (X ⟨(), 0⟩) =
     X ((Fintype.equivFin ((k : Unit) → PBlk 3 k)).symm.symm (fun _ => 0)) := by
   rw [chartSubst_X]

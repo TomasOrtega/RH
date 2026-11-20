@@ -8,6 +8,11 @@ open GlobalTheory.PRep Module
 
 namespace PositivityTheory.rg.gu.whit
 
+/- English proof (translation)
+Distinguish the cases in `hf : Module.Finite ℂ W`. Rewrite using `[Module.dual_rank_eq, Cardinal.lift_id]`. Establish `h0 : Cardinal.aleph0 ≤ Module.rank ℂ W` using `not_lt.1 (fun h => hf (rank_lt_aleph0_iff.1 h))`. Establish `h1` using `rank_lt_rank_dual h0`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `absurd (h0.trans h) (not_le.2 Cardinal.one_lt_aleph0)`. Introduce `h`. Conclude with `absurd ((h0.trans h1.le).trans h) (not_le.2 Cardinal.one_lt_aleph0)`.
+-/
 theorem rank_le_one_iff_dual (W : Type) [AddCommGroup W] [Module ℂ W] :
     Module.rank ℂ W ≤ 1 ↔ Module.rank ℂ (Module.Dual ℂ W) ≤ 1 := by
   by_cases hf : Module.Finite ℂ W
@@ -20,6 +25,15 @@ theorem rank_le_one_iff_dual (W : Type) [AddCommGroup W] [Module ℂ W] :
     · intro h
       exact absurd ((h0.trans h1.le).trans h) (not_le.2 Cardinal.one_lt_aleph0)
 
+/- English proof (translation)
+Establish `hE : GroundTheory.Automorphic.Whittaker.equivariantFunctionals ρ (fun u : N => ((θ u : ℂˣ) : ℂ)) = (twKer ρ N θ).dualAnnihilator`. Use extensionality with `ℓ`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, v, rfl⟩` from `hx`. Rewrite using `[map_sub, map_smul, h n v, smul_eq_mul, sub_self]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_zero]`. Introduce `h n v`. Use `h _ (Submodule.subset_span ⟨n, v, rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`.
+
+Conclude with `this`. Rewrite using `[rank_le_one_iff_dual, hE, ← (Submodule.dualQuotEquivDualAnnihilator _).rank_eq]`.
+-/
 theorem rank_twJacquet_le_one_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (N : Subgroup G) (θ : N →* ℂˣ) :
     Module.rank ℂ (TwJacquet ρ N θ) ≤ 1 ↔

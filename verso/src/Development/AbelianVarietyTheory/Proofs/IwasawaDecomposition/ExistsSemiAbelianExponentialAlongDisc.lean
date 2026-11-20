@@ -13,22 +13,37 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open Filter Topology GlobalTheory.TangentOrigin GlobalTheory.RelChart
 
+/- English proof (translation)
+Conclude with `fun m g A R _ _ ψ B φ b₀ e a a_1 a_2 a_3 a_4 => EtaleFamily.exists_holomorphic_sections m g A R ψ B φ b₀ e a a_1 a_2 a_3 a_4`.
+-/
 private theorem etale_chart_lemma : ∀ (m g : ℕ) (A R : Type) [CommRing A] [CommRing R] (ψ : MvPolynomial (Fin g) A →+* R) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →+* ℂ)) (b₀ : Fin m → ℂ) (e : R →+* ℂ), ψ.Etale → IsOpen B → b₀ ∈ B → (∀ a, DifferentiableOn ℂ (fun b => φ b a) B) → (∀ a, e (ψ (MvPolynomial.C a)) = φ b₀ a) → ∃ (N : Set ((Fin m → ℂ) × (Fin g → ℂ))) (σ : (Fin m → ℂ) × (Fin g → ℂ) → (R →+* ℂ)) (n : ℕ) (f : Fin n → R) (O : Set ((Fin m → ℂ) × (Fin n → ℂ))), IsOpen N ∧ IsOpen O ∧ (b₀, fun j => e (f j)) ∈ O ∧ (∀ a, DifferentiableOn ℂ (fun q => σ q a) N) ∧ (∀ q ∈ N, q.1 ∈ B ∧ (∀ a, σ q (ψ (MvPolynomial.C a)) = φ q.1 a) ∧ ∀ i, σ q (ψ (MvPolynomial.X i)) = q.2 i) ∧ ∀ (b : Fin m → ℂ) (x : R →+* ℂ), (∀ a, x (ψ (MvPolynomial.C a)) = φ b a) → (b, fun j => x (f j)) ∈ O → (b, fun i => x (ψ (MvPolynomial.X i))) ∈ N ∧ σ (b, fun i => x (ψ (MvPolynomial.X i))) = x := by
   exact fun m g A R _ _ ψ B φ b₀ e a a_1 a_2 a_3 a_4 =>
     EtaleFamily.exists_holomorphic_sections m g A R ψ B φ b₀ e a a_1 a_2 a_3 a_4
 
+/- English proof (translation)
+Introduce `Z X p _ z`. Conclude with `H1.exists_dim p z`.
+-/
 private theorem exists_open_smoothOfRelativeDimension : ∀ (Z X : Scheme.{0}) (p : Z ⟶ X) [Smooth p] (z : Z), ∃ (g : ℕ) (W : Z.Opens), z ∈ W ∧ SmoothOfRelativeDimension g (W.ι ≫ p) := by
   intro Z X p _ z
   exact H1.exists_dim p z
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RelChart.exists_chart_with_parameters etale_chart_lemma`.
+-/
 private theorem chart_lemma_4 : ∀ (m g : ℕ) (Z X : Scheme.{0}) (p : Z ⟶ X) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (z₀ : Sp ℂ ⟶ Z), SmoothOfRelativeDimension g p → IsOpen B → b₀ ∈ B → IsHolTo B y → z₀ ≫ p = y b₀ → ∃ (U : Z.Opens) (t : Fin g → Γ(Z, U)) (n : ℕ) (f : Fin n → Γ(Z, U)) (N : Set ((Fin m → ℂ) × (Fin g → ℂ))) (O : Set ((Fin m → ℂ) × (Fin n → ℂ))) (σ : (Fin m → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ Z)), IsOpen N ∧ IsOpen O ∧ ⊤ ≤ z₀ ⁻¹ᵁ U ∧ (b₀, fun j => valAt' z₀ U (f j)) ∈ O ∧ IsHolTo N σ ∧ (∀ q ∈ N, σ q ≫ p = y q.1 ∧ ⊤ ≤ σ q ⁻¹ᵁ U ∧ ∀ i, valAt' (σ q) U (t i) = q.2 i) ∧ (∀ (b : Fin m → ℂ) (x : Sp ℂ ⟶ Z), x ≫ p = y b → ⊤ ≤ x ⁻¹ᵁ U → (b, fun j => valAt' x U (f j)) ∈ O → (b, fun i => valAt' x U (t i)) ∈ N ∧ σ (b, fun i => valAt' x U (t i)) = x) ∧ ∀ (v v' : Sp (DualNumber ℂ) ⟶ Z) (h : ⊤ ≤ v ⁻¹ᵁ U) (h' : ⊤ ≤ v' ⁻¹ᵁ U), v ≫ p = v' ≫ p → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v' → (∀ i, GlobalTheory.TangentOrigin.evalPt v U h (t i) = GlobalTheory.TangentOrigin.evalPt v' U h' (t i)) → v = v' :=
   GlobalTheory.RelChart.exists_chart_with_parameters etale_chart_lemma
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem valAt'_presheaf_map_eqToHom {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {V V' : Y.Opens} (h : V = V')
     (s : Γ(Y, V')) : valAt' x V ((Y.presheaf.map (eqToHom h).op).hom s) = valAt' x V' s := by
   subst h
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem evalPt_eqToHom {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ Y) {V V' : Y.Opens} (h : V = V')
     (hV : ⊤ ≤ v ⁻¹ᵁ V) (hV' : ⊤ ≤ v ⁻¹ᵁ V') (s : Γ(Y, V')) :
     GlobalTheory.TangentOrigin.evalPt v V hV ((Y.presheaf.map (eqToHom h).op).hom s) =
@@ -36,21 +51,33 @@ private theorem evalPt_eqToHom {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ Y) 
   subst h
   simp
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.appIso_inv_app]`. Both sides reduce to the same expression.
+-/
 private theorem app_appIso_inv_eq_presheaf_map {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : Scheme.{0}).Opens) (s : Γ(W, U')) :
     (W.ι.app (W.ι ''ᵁ U')).hom ((W.ι.appIso U').inv.hom s) =
       ((W : Scheme.{0}).presheaf.map (eqToHom (W.ι.preimage_image_eq U')).op).hom s := by
   rw [← Scheme.Hom.appIso_inv_app]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointUnif.valAt'_comp, app_appIso_inv_eq_presheaf_map, valAt'_presheaf_map_eqToHom]`.
+-/
 private theorem valAt'_ι_appIso_inv {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : Scheme.{0}).Opens) (x : Sp ℂ ⟶ W)
     (s : Γ(W, U')) : valAt' (x ≫ W.ι) (W.ι ''ᵁ U') ((W.ι.appIso U').inv.hom s) = valAt' x U' s := by
   rw [GlobalTheory.PointUnif.valAt'_comp, app_appIso_inv_eq_presheaf_map, valAt'_presheaf_map_eqToHom]
 
+/- English proof (translation)
+Use `show x ⁻¹ᵁ (W.ι ⁻¹ᵁ (W.ι ''ᵁ U')) = x ⁻¹ᵁ U'`. Rewrite using `[Scheme.Hom.preimage_image_eq]`.
+-/
 private theorem preimage_comp_ι_image_eq_preimage {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : Scheme.{0}).Opens) {R : Type}
     [CommRing R] (x : Sp R ⟶ W) : (x ≫ W.ι) ⁻¹ᵁ (W.ι ''ᵁ U') = x ⁻¹ᵁ U' := by
   show x ⁻¹ᵁ (W.ι ⁻¹ᵁ (W.ι ''ᵁ U')) = x ⁻¹ᵁ U'
   rw [Scheme.Hom.preimage_image_eq]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointUnif.evalPt_comp, app_appIso_inv_eq_presheaf_map]`. Conclude with `evalPt_eqToHom v (W.ι.preimage_image_eq U') h h' s`.
+-/
 private theorem evalPt_ι_appIso_inv {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : Scheme.{0}).Opens)
     (v : Sp (DualNumber ℂ) ⟶ W) (h : ⊤ ≤ (v ≫ W.ι) ⁻¹ᵁ (W.ι ''ᵁ U')) (h' : ⊤ ≤ v ⁻¹ᵁ U') (s : Γ(W, U')) :
     GlobalTheory.TangentOrigin.evalPt (v ≫ W.ι) (W.ι ''ᵁ U') h ((W.ι.appIso U').inv.hom s) =
@@ -58,6 +85,9 @@ private theorem evalPt_ι_appIso_inv {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : S
   rw [GlobalTheory.PointUnif.evalPt_comp, app_appIso_inv_eq_presheaf_map]
   exact evalPt_eqToHom v (W.ι.preimage_image_eq U') h h' s
 
+/- English proof (translation)
+Use `⟨IsOpenImmersion.lift W.ι x ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨b, -, hb⟩` from `hx (show a ∈ (⊤ : (Sp R).Opens) from trivial)`. Conclude with `⟨b, hb⟩`.
+-/
 private theorem exists_lift_through_opens_ι {Z : Scheme.{0}} (W : Z.Opens) (U' : (W : Scheme.{0}).Opens) {R : Type}
     [CommRing R] (x : Sp R ⟶ Z) (hx : ⊤ ≤ x ⁻¹ᵁ (W.ι ''ᵁ U')) : ∃ x' : Sp R ⟶ W, x' ≫ W.ι = x := by
   refine ⟨IsOpenImmersion.lift W.ι x ?_, IsOpenImmersion.lift_fac _ _ _⟩
@@ -65,6 +95,23 @@ private theorem exists_lift_through_opens_ι {Z : Scheme.{0}} (W : Z.Opens) (U' 
   obtain ⟨b, -, hb⟩ := hx (show a ∈ (⊤ : (Sp R).Opens) from trivial)
   exact ⟨b, hb⟩
 
+/- English proof (translation)
+Take `⟨g, W, hzW, hWsm⟩` from `exists_open_smoothOfRelativeDimension Z X p (z₀.base default)`. Establish `hz₀W : Set.range z₀.base ⊆ Set.range W.ι.base`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Subsingleton.elim a default, Scheme.Opens.range_ι]`. Conclude with `hzW`.
+
+Take `⟨z₀', rfl⟩ : ∃ z₀' : Sp ℂ ⟶ W, z₀' ≫ W.ι = z₀` from `⟨_, IsOpenImmersion.lift_fac _ _ hz₀W⟩`. Take `⟨U', t', n, f', N, O, σ', hN, hO, hU', hO', hσ', hσN', hinv', hun'⟩` from `chart_lemma_4 m g W X (W.ι ≫ p) B y b₀ z₀' hWsm hB hb₀ hy (by rw [← Category.assoc]; exact hz₀)`. Use `⟨g, W.ι ''ᵁ U', fun i => (W.ι.appIso U').inv.hom (t' i), n, fun j => (W.ι.appIso U').inv.hom (f' j), N, O, fun q => σ' q ≫ W.ι, hN, hO, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[preimage_comp_ι_image_eq_preimage]`. Conclude with `hU'`.
+
+Simplify using `only [valAt'_ι_appIso_inv]`. Conclude with `hO'`. Conclude with `isHolTo_of_holAt hN fun q hq => HolAt.post ⟨N, hN, hq, hσ'⟩ W.ι`. Introduce `q hq`. Take `⟨h1, h2, h3⟩` from `hσN' q hq`.
+
+Use `⟨by rw [Category.assoc]; exact h1, by rw [preimage_comp_ι_image_eq_preimage]; exact h2, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[valAt'_ι_appIso_inv]`. Conclude with `h3 i`. Introduce `b x hxp hxU hxO`. Take `⟨x', rfl⟩` from `exists_lift_through_opens_ι W U' x hxU`.
+
+Rewrite `hxU` using `[preimage_comp_ι_image_eq_preimage]`. Simplify using `only [valAt'_ι_appIso_inv] at hxO ⊢`. Take `⟨h1, h2⟩` from `hinv' b x' (by rw [← Category.assoc]; exact hxp) hxU hxO`. Conclude with `⟨h1, by rw [h2]⟩`. Introduce `v v' hv hv' hp h0 he`.
+
+Take `⟨w, rfl⟩` from `exists_lift_through_opens_ι W U' v hv`. Take `⟨w', rfl⟩` from `exists_lift_through_opens_ι W U' v' hv'`. Establish `hw : ⊤ ≤ w ⁻¹ᵁ U'` using `by rw [← preimage_comp_ι_image_eq_preimage W U' w]; exact hv`. Establish `hw' : ⊤ ≤ w' ⁻¹ᵁ U'` using `by rw [← preimage_comp_ι_image_eq_preimage W U' w']; exact hv'`. Establish `hp' : w ≫ W.ι ≫ p = w' ≫ W.ι ≫ p` using `by simpa only [Category.assoc] using hp`.
+
+Establish `h0' : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ w = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ w'` using `(cancel_mono W.ι).mp (by simpa only [Category.assoc] using h0)`. Establish `he' : ∀ i, GlobalTheory.TangentOrigin.evalPt w U' hw (t' i) = GlobalTheory.TangentOrigin.evalPt w' U' hw' (t' i)`. Introduce `i`. Rewrite using `[← evalPt_ι_appIso_inv W U' w hv hw, ← evalPt_ι_appIso_inv W U' w' hv' hw']`. Conclude with `he i`.
+
+Rewrite using `[hun' w w' hw hw' hp' h0' he']`.
+-/
 theorem exists_chart_of_smooth (m : ℕ) (Z X : Scheme.{0}) (p : Z ⟶ X) (B : Set (Fin m → ℂ))
     (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (z₀ : Sp ℂ ⟶ Z) [Smooth p] (hB : IsOpen B) (hb₀ : b₀ ∈ B)
     (hy : IsHolTo B y) (hz₀ : z₀ ≫ p = y b₀) :
@@ -109,6 +156,23 @@ theorem exists_chart_of_smooth (m : ℕ) (Z X : Scheme.{0}) (p : Z ⟶ X) (B : S
       exact he i
     rw [hun' w w' hw hw' hp' h0' he']
 
+/- English proof (translation)
+Use `haveI := hsm`. Establish `hy' : HolAt y b₀` using `⟨B, hB, hb₀, hy⟩`. Take `⟨g, U, t, n, f, N, O, σ, hN, hO, hU, hO₀, hσ, hσN, hinv, hun⟩` from `exists_chart_of_smooth m G.left X G.hom B y b₀ (1 : Over.mk (y b₀) ⟶ G).left hB hb₀ hy (Over.w (1 : Over.mk (y b₀) ⟶ G))`. Take `⟨s, hs1, hs2, hs3⟩` from `exists_centred_chart (G := G) (t := t) (f := f) hy' hN hU hO₀ hσ hσN hinv`. Take `⟨B', e, r, Q, L, hB'o, hb₀', -, -, hQ, hadd, hprop, hinv'⟩` from `exists_global_exp (G := G) (t := t) (f := f) GlobalTheory.exists_param_exp_log_pi (hB.mem_nhds hb₀) hy' hO hU hO₀ hs1 hs2 hs3`.
+
+Use `⟨g, B', e, hB'o, hb₀', fun b hb => ?_, fun z₀ hz₀ => ?_⟩` and prove the remaining obligations. Take `⟨hhol, hU1, hO1, hQ1, hder, -, -, -⟩` from `hprop b hb`. Establish `he0 : e b 0 = 1`. Establish `h` using `hadd b 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `hhol' : IsHolTo Set.univ (fun z => pt (e b z))` using `isHolTo_of_holAt isOpen_univ fun z _ => (hhol z).comp (φ := fun v : Fin g → ℂ => (b, v)) (analyticAt_const.prod analyticAt_id)`. Take `⟨ht1, ht2⟩` from `GlobalTheory.vertical_derivative_in_coordinates X G (y b) g (e b) hhol'`. Establish `hU0 : ⊤ ≤ (show Sp ℂ ⟶ G.left from (e b 0).left) ⁻¹ᵁ U`. Rewrite using `[he0]`.
+
+Conclude with `hU1`. Establish `hfd : fderiv ℂ (fun z i => valAt' (e b z).left U (t i)) 0 = ContinuousLinearMap.id ℂ (Fin g → ℂ)` using `hder.fderiv`. Establish `hinj : Function.Injective (fderiv ℂ (fun z i => valAt' (e b z).left U (t i)) 0)`. Rewrite using `[hfd]`. Introduce `a a' h`.
+
+Simplify using `using h`. Set `φ : Multiplicative (Fin g → ℂ) →* (Over.mk (y b) ⟶ G)` to `{ toFun := fun z => e b (Multiplicative.toAdd z) map_one' := he0 map_mul' := fun z w => hadd b _ _ }`. Establish `hH : φ.range = ⊤`. Use `GlobalTheory.OpenSubgroupPts.subgroup_eq_top_of_nhds_one X G (y b) φ.range U (Fin n ⊕ Fin g) (Sum.elim f t) {c | (b, fun j => c (Sum.inl j)) ∈ O ∧ (b, (fun i => c (Sum.inr i)) - crd U t (pt (1 : Over.mk (y b) ⟶ G))) ∈ Q} hsm hcon ?_ hU1 ?_ ?_` and prove the remaining obligations. Conclude with `(hO.preimage (by fun_prop)).inter (hQ.preimage (by fun_prop))`.
+
+Use `⟨hO1, ?_⟩ show (b, crd U t (pt (1 : Over.mk (y b) ⟶ G)) - crd U t (pt (1 : Over.mk (y b) ⟶ G))) ∈ Q` and prove the remaining obligations. Rewrite using `[sub_self]`. Conclude with `hQ1`. Introduce `a ha1 ha2`. Conclude with `MonoidHom.mem_range.mpr ⟨Multiplicative.ofAdd (L (b, crd0 t a)), hinv' b a ha1 ha2.1 ha2.2⟩`.
+
+Establish `hsurj : Function.Surjective (e b)`. Introduce `a`. Take `⟨z, hz⟩` from `MonoidHom.mem_range.mp (hH ▸ Subgroup.mem_top a)`. Conclude with `⟨Multiplicative.toAdd z, hz⟩`. Conclude with `⟨hhol, hadd b, hsurj, hhol', ht1, (ht2 U t hU0 hun).mpr hinj⟩`.
+
+Take `⟨hhol, hU1, hO1, hQ1, -, hL0, hL, -⟩` from `hprop b₀ hb₀'`. Conclude with `exists_lift (G := G) (y := y) (U := U) (t := t) (f := f) (O := O) (e := e) (Q := Q) (L := L) (β := fun w => w) (x := fun w => (1 : Over.mk (y w) ⟶ G)) (w₀ := b₀) (z₀ := z₀) hO hQ hadd hinv' analyticAt_id (HolAt.one hy') hz₀ (hhol z₀) hU1 hO1 hQ1 hL0 hL`.
+-/
 theorem exists_relative_exp_of_smooth (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (m : ℕ)
     (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (hsm : Smooth G.hom)
     (hcon : GeometricallyConnected G.hom) (hB : IsOpen B) (hb₀ : b₀ ∈ B) (hy : IsHolTo B y) :
@@ -180,6 +244,19 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col dmin Wt)
 open scoped CategoryTheory.MonObj
 
+/- English proof (translation)
+Introduce `X G _ y r hG hr hy`. Use `haveI := hG.comm`. Set `c : ℂ → (Fin 1 → ℂ)` to `fun u _ => u`. Establish `hcA : ∀ u, AnalyticAt ℂ c u` using `fun u => (ContinuousLinearMap.pi fun _ : Fin 1 => ContinuousLinearMap.id ℂ ℂ).analyticAt u`. Set `y' : (Fin 1 → ℂ) → (Sp ℂ ⟶ X)` to `fun b => y (b 0)`.
+
+Set `B : Set (Fin 1 → ℂ)` to `(fun b : Fin 1 → ℂ => b 0) ⁻¹' Metric.ball 0 r`. Establish `hBo : IsOpen B` using `Metric.isOpen_ball.preimage (continuous_apply 0)`. Establish `hb0 : (0 : Fin 1 → ℂ) ∈ B` using `by show (0 : ℂ) ∈ Metric.ball (0 : ℂ) r`. Conclude with `Metric.mem_ball_self hr`. Establish `hy' : IsHolTo B y'` using `isHolTo_of_holAt hBo fun b hb => HolAt.comp (a := y) (φ := fun b : Fin 1 → ℂ => b 0) ⟨_, Metric.isOpen_ball, hb, hy⟩ ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt b)`.
+
+Take `⟨g, B', e', hB'o, hb0', hprop, hfin⟩` from `exists_relative_exp_of_smooth X G 1 B y' 0 hG.smooth hG.geomConnected hBo hb0 hy'`. Take `⟨ε, hε, hεB⟩` from `Metric.isOpen_iff.mp hB'o 0 hb0'`. Establish `hcB : ∀ u ∈ Metric.ball (0 : ℂ) (min ε r), c u ∈ B'`. Introduce `u hu`. Apply `hεB` to reduce the goal to its premises.
+
+Rewrite using `[Metric.mem_ball, dist_zero_right]`. Use `show ‖(fun _ : Fin 1 => u)‖ < ε`. Rewrite using `[pi_norm_const]`. Rewrite `hu` using `[Metric.mem_ball, dist_zero_right]`. Conclude with `lt_of_lt_of_le hu (min_le_left _ _)`.
+
+Use `⟨g, min ε r, fun u => e' (c u), lt_min hε hr, min_le_right _ _, ?_, fun u hu => (hprop (c u) (hcB u hu)).2, ?_⟩` and prove the remaining obligations. Use `isHolTo_of_holAt (Metric.isOpen_ball.prod isOpen_univ) fun q hq => ?_` and prove the remaining obligations. Conclude with `((hprop (c q.1) (hcB q.1 hq.1)).1 q.2).comp (φ := fun q : ℂ × (Fin g → ℂ) => (c q.1, q.2)) (((ContinuousLinearMap.pi fun _ : Fin 1 => ContinuousLinearMap.fst ℂ ℂ (Fin g → ℂ)).prod (ContinuousLinearMap.snd ℂ ℂ (Fin g → ℂ))).analyticAt q)`. Introduce `z₀ hz₀`. Take `⟨ζ, h1, h2, h3⟩` from `hfin z₀ hz₀`.
+
+Conclude with `⟨fun u => ζ (c u), h1, AnalyticAt.comp (f := c) (x := (0 : ℂ)) h2 (hcA 0), (hcA 0).continuousAt.tendsto.eventually h3⟩`.
+-/
 theorem exists_exp_along_disc : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (y : ℂ → (Sp ℂ ⟶ X)) (r : ℝ), IsSemiAbelian G → 0 < r → IsHolTo (Metric.ball (0 : ℂ) r) y → ∃ (g : ℕ) (ρ : ℝ) (e : ∀ u, (Fin g → ℂ) → (Over.mk (y u) ⟶ G)), 0 < ρ ∧ ρ ≤ r ∧ IsHolTo (Metric.ball (0 : ℂ) ρ ×ˢ Set.univ) (fun q : ℂ × (Fin g → ℂ) => (show Sp ℂ ⟶ G.left from (e q.1 q.2).left)) ∧ (∀ u ∈ Metric.ball (0 : ℂ) ρ, (∀ z w, e u (z + w) = e u z * e u w) ∧ Function.Surjective (e u) ∧ IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ G.left from (e u z).left)) ∧ (∀ w, ∃! v : epsPt (y u) ⟶ G, IsDerivAt0 (fun z => (e u z).left) w v.left) ∧ (∀ v : epsPt (y u) ⟶ G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e u 0).left → ∃! w, IsDerivAt0 (fun z => (e u z).left) w v.left)) ∧ ∀ z₀, e 0 z₀ = 1 → ∃ ζ : ℂ → (Fin g → ℂ), ζ 0 = z₀ ∧ AnalyticAt ℂ ζ 0 ∧ ∀ᶠ u in 𝓝 (0 : ℂ), e u (ζ u) = 1 := by
   intro X G _ y r hG hr hy
   haveI := hG.comm

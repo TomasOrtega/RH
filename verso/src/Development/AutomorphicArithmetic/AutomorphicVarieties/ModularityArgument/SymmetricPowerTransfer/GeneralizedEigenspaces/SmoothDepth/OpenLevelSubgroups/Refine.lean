@@ -15,12 +15,18 @@ open UpperTheory.V.Z.Sym.Al
 
 namespace UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ComplexCommonEigenvectorOfFinrankEq.common_eig f hc`.
+-/
 private theorem common_eig {ι M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M]
     (f : ι → Module.End ℂ M) (hc : ∀ i j, Commute (f i) (f j)) :
     ∀ (n : ℕ) (W : Submodule ℂ M), Module.finrank ℂ W = n → W ≠ ⊥ → (∀ i, ∀ x ∈ W, f i x ∈ W) →
       ∃ v ∈ W, v ≠ 0 ∧ ∀ i, ∃ c : ℂ, f i v = c • v :=
   _root_.UpperTheory.Reformulated.B.ComplexCommonEigenvectorOfFinrankEq.common_eig f hc
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h0 : valuation k (t : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 t.ne_zero`. Establish `h1 : valuation k (t : k) < (valuation k (t : k))⁻¹` using `ht.trans (one_lt_inv₀ (zero_lt_iff.2 h0) |>.2 ht)`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | simpa using h1`.
+-/
 private theorem sdom_pair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (t : kˣ) (ht : valuation k (t : k) < 1) : Sig.SDom ![t, t⁻¹] := by
   intro i j hij
@@ -29,6 +35,9 @@ private theorem sdom_pair {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     ht.trans (one_lt_inv₀ (zero_lt_iff.2 h0) |>.2 ht)
   fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | simpa using h1
 
+/- English proof (translation)
+Introduce `i j hij`. Break down `hij.lt_or_eq with h | rfl` into its components or cases. Conclude with `(hd i j h).le`. Conclude with `le_rfl`.
+-/
 private theorem dom_of_sdom {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (d : Fin n → kˣ) (hd : Sig.SDom d) : AlgebraTools.Dom d := by
   intro i j hij
@@ -36,12 +45,36 @@ private theorem dom_of_sdom {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   · exact (hd i j h).le
   · exact le_rfl
 
+/- English proof (translation)
+Introduce `i j hij`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' (h i j hij) (h' i j hij)`.
+-/
 private theorem dom_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (d d' : Fin n → kˣ) (h : AlgebraTools.Dom d) (h' : AlgebraTools.Dom d') : AlgebraTools.Dom (d * d') := by
   intro i j hij
   simp only [Pi.mul_apply, Units.val_mul, map_mul]
   exact mul_le_mul' (h i j hij) (h' i j hij)
 
+/- English proof (translation)
+Use `choose! χ hχ using heig`. Establish `uniq : ∀ c c' : ℂ, c • v = c' • v → c = c'` using `fun c c' h => smul_left_injective ℂ hv h`. Establish `hmulχ : ∀ d d', AlgebraTools.Dom d → AlgebraTools.Dom d' → χ (d * d') = χ d * χ d'`. Introduce `d d' h h'`. Apply `uniq` to reduce the goal to its premises.
+
+Rewrite using `[← hχ _ (dom_mul d d' h h'), hmul d d' h h', Module.End.mul_apply, hχ d' h', map_smul, hχ d h, smul_smul, mul_comm]`. Establish `hunit : ∀ d, (∀ i, d i ∈ Hi.Uo k) → χ d = 1`. Introduce `d hd`. Apply `uniq` to reduce the goal to its premises. Rewrite using `[← hχ d (hdomU d hd), hone d hd, one_smul]`.
+
+Both sides reduce to the same expression. Establish `hexpo : ∀ (ψ : Fin 2 → kˣ →* ℂˣ) (d : Fin 2 → kˣ), expo ψ d ≠ 0` using `fun ψ d => Units.ne_zero _`. Establish `hχb : ∀ t : kˣ, valuation k (t : k) < 1 → χ ![t, t⁻¹] = expo ![b, 1] ![t, t⁻¹]`. Introduce `t ht`. Apply `uniq` to reduce the goal to its premises.
+
+Rewrite using `[← hχ _ (dom_of_sdom _ (sdom_pair t ht)), hb t ht]`. Establish `hne : ∀ d, Sig.SDom d → χ d ≠ 0`. Introduce `d hd h0`. Establish `hlt : valuation k (d 0 : k) < valuation k (d 1 : k)` using `hd 0 1 (by decide)`. Set `z : Fin 2 → kˣ` to `fun _ => d 0 * d 1`.
+
+Establish `hz : AlgebraTools.Dom z` using `fun _ _ _ => le_rfl`. Establish `hz' : AlgebraTools.Dom z⁻¹` using `fun _ _ _ => le_rfl`. Establish `hzz : χ z * χ z⁻¹ = 1`. Rewrite using `[← hmulχ _ _ hz hz', mul_inv_cancel]`. Conclude with `hunit 1 fun _ => one_mem _`.
+
+Establish `hz0 : χ z ≠ 0` using `left_ne_zero_of_mul_eq_one hzz`. Set `t : kˣ` to `d 0 / d 1`. Establish `ht : valuation k (t : k) < 1`. Establish `h1 : valuation k (d 1 : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 (d 1).ne_zero`. Simplify using `only [t, Units.val_div_eq_div_val, map_div₀]`.
+
+Conclude with `(div_lt_one₀ (zero_lt_iff.2 h1)).2 hlt`. Establish `hdd : d * d = z * ![t, t⁻¹]`. Establish `e0 : d 0 * d 0 = d 0 * d 1 * (d 0 / d 1)` using `by rw [mul_assoc, mul_div_cancel]`. Establish `e1 : d 1 * d 1 = d 0 * d 1 * (d 0 / d 1)⁻¹`. Rewrite using `[inv_div, mul_comm (d 0), mul_assoc, mul_div_cancel]`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e0`. Conclude with `e1`. Establish `hs` using `sdom_pair t ht`.
+
+Establish `key : χ d * χ d = χ z * χ ![t, t⁻¹]`. Rewrite using `[← hmulχ d d (dom_of_sdom d hd) (dom_of_sdom d hd), hdd, hmulχ _ _ hz (dom_of_sdom _ hs)]`. Rewrite `key` using `[h0, zero_mul, hχb t ht]`. Conclude with `mul_ne_zero hz0 (hexpo _ _) key.symm`. Take `⟨ψ, hψ1, hψ2⟩` from `extChar k 2 χ hne (fun d d' h h' => hmulχ d d' (dom_of_sdom d h) (dom_of_sdom d' h')) (fun d x h hx => by rw [hmulχ d x (dom_of_sdom d h) (hdomU x hx), hunit x hx, mul_one])`.
+
+Use `⟨ψ, hψ1, (unrSmooth k).2 ψ b fun t ht => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ2 _ (sdom_pair t ht), hχb t ht]`. Rewrite using `[hχ d (dom_of_sdom d hd), hψ2 d hd]`.
+-/
 private theorem loc_char {k M : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [AddCommGroup M] [Module ℂ M] (u : (Fin 2 → kˣ) → Module.End ℂ M) (b : kˣ →* ℂˣ) (v : M) (hv : v ≠ 0)
     (hmul : ∀ d d', AlgebraTools.Dom d → AlgebraTools.Dom d' → u (d * d') = u d * u d')
@@ -106,6 +139,27 @@ private theorem loc_char {k M : Type} [Field k] [ValuativeRel k] [TopologicalSpa
 
 end UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Introduce `L _ _ _ V _ _ _ R U hU S hS hloc b φ hφ hAF hE`. Take `⟨u, hu_op, hu_mul, hu_one, hu_comm⟩` from `afOps L 2 V R U hU.1 S hS hloc`. Use `haveI : FiniteDimensional ℂ (AF R (lev U S iw)) := afFin L 2 V R (lev U S iw) ((cof L 2).2.2.1 U hU S iw)`. Establish `hdomU : ∀ (w : Plc L) (d : Fin 2 → (Kw w)ˣ), (∀ i, d i ∈ Hi.Uo (Kw w)) → AlgebraTools.Dom d`. Introduce `w d hd i j _`.
+
+Conclude with `((hd i).trans (hd j).symm).le`. Establish `hpair : ∀ (w : Plc L) (t : (Kw w)ˣ), valuation (Kw w) (t : Kw w) < 1 → AlgebraTools.Dom ![t, t⁻¹]` using `fun w t ht => dom_of_sdom _ (sdom_pair t ht)`. Establish `hcomm : ∀ w ∈ S, ∀ w' ∈ S, ∀ (d : Fin 2 → (Kw w)ˣ) (d' : Fin 2 → (Kw w')ˣ), AlgebraTools.Dom d → AlgebraTools.Dom d' → Commute (u w d) (u w' d')`. Introduce `w hw w' hw' d d' hd hd'`. Distinguish the cases in `h : w = w'`.
+
+Substitute `h show u w d * u w d' = u w d' * u w d` using the available equality. Rewrite using `[← hu_mul w hw d d' hd hd', ← hu_mul w hw d' d hd' hd, mul_comm d d']`. Conclude with `hu_comm w hw w' hw' h d d' hd hd'`. Set `E : Submodule ℂ (AF R (lev U S iw))` to `{ carrier := {m | ∀ w ∈ S, ∀ t : (Kw w)ˣ, valuation (Kw w) (t : Kw w) < 1 → u w ![t, t⁻¹] m = expo ![b w, 1] ![t, t⁻¹] • m} add_mem' := fun {x y} hx hy w hw t ht => by rw [map_add, hx w hw t ht, hy w hw t ht, smul_add] zero_mem' := fun w _ t _ => by simp smul_mem' := fun c x hx w …`. Establish `hmemE : ∀ m, m ∈ E ↔ ∀ w ∈ S, ∀ t : (Kw w)ˣ, valuation (Kw w) (t : Kw w) < 1 → u w ![t, t⁻¹] m = expo ![b w, 1] ![t, t⁻¹] • m` using `fun _ => Iff.rfl`.
+
+Set `φ₀ : AF R (lev U S iw)` to `⟨φ, hAF⟩`. Establish `hφ₀ : φ₀ ∈ E`. Use `(hmemE _).2 fun w hw t ht => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hu_op w hw _ (hpair w t ht)]`. Conclude with `hE w hw t ht`.
+
+Establish `hφ₀0 : φ₀ ≠ 0` using `fun h => hφ (congrArg Subtype.val h)`. Establish `hE0 : E ≠ ⊥` using `fun h => hφ₀0 (by`. Use `hφ₀` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this)`.
+
+Set `ι : Type` to `Σ w : {w // w ∈ S}, {d : Fin 2 → (Kw w.1)ˣ // AlgebraTools.Dom d}`. Set `f : ι → Module.End ℂ (AF R (lev U S iw))` to `fun i => u i.1.1 i.2.1`. Take `⟨v, hvE, hv0, hveig⟩` from `common_eig f (fun i j => hcomm i.1.1 i.1.2 j.1.1 j.1.2 i.2.1 j.2.1 i.2.2 j.2.2) _ E rfl hE0 (fun i x hx => (hmemE _).2 fun w hw t ht => by`. Establish `hc` using `(hcomm i.1.1 i.1.2 w hw i.2.1 ![t, t⁻¹] i.2.2 (hpair w t ht)).eq`. Use `congrArg (fun g : Module.End ℂ (AF R (lev U S iw)) => g x) hc` as an intermediate fact.
+
+Simplify using `only [Module.End.mul_apply] at this`. Use `show u w ![t, t⁻¹] (u i.1.1 i.2.1 x) = _`. Rewrite using `[← this, (hmemE x).1 hx w hw t ht]`. Conclude with `map_smul _ _ _)`. Establish `hloc' : ∀ w : Plc L, ∃ ψ : Fin 2 → (Kw w)ˣ →* ℂˣ, w ∈ S → (∀ i, ∀ x ∈ Hi.Uo (Kw w), ψ i x = 1) ∧ ψ 0 / ψ 1 = b w ∧ ∀ d, Sig.SDom d → u w d v = expo ψ d • v`.
+
+Introduce `w`. Distinguish the cases in `hw : w ∈ S`. Take `⟨ψ, h⟩` from `loc_char (u w) (b w) v hv0 (hu_mul w hw) (hu_one w hw) (hdomU w) (fun d hd => hveig ⟨⟨w, hw⟩, ⟨d, hd⟩⟩) ((hmemE v).1 hvE w hw)`. Conclude with `⟨ψ, fun _ => h⟩`. Conclude with `⟨1, fun h => absurd h hw⟩`.
+
+Use `choose ψ hψ using hloc'`. Use `⟨(v : UA L 2 → V), ψ, fun h => hv0 (Subtype.ext h), v.2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hψ w hw`. Use `⟨h1, h2, fun d hd => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (h3 d hd)` as an intermediate fact.
+
+Rewrite `this` using `[hu_op w hw d (dom_of_sdom d hd) v]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.refine :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin 2) ℂ) V) (U : Subgroup (UA L 2)), IsLevel U →
         ∀ S : Finset (Plc L), Places (S : Set (Plc L)) → (∀ w ∈ S, locU 2 w ⊓ Kall L 2 ≤ U) →

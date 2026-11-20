@@ -4,13 +4,24 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[pk, dif_pos h]`. Conclude with `Finset.min'_mem I h`.
+-/
 private lemma pk_mem' {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk I ∈ I := by
   rw [pk, dif_pos h]
   exact Finset.min'_mem I h
 
+/- English proof (translation)
+Simplify using `[pk]`.
+-/
 private lemma pk_zero' {d : ℕ} : pk ({0} : Finset (Fin (d + 1))) = 0 := by
   simp [pk]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Use `⟨fun l => ∑ b ∈ Finset.univ.filter (fun b => f b = l), a b, fun l => R.sum_mem fun b _ => ha b, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_mul]`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := f) (f := fun b => a b * r (f b))]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Rewrite using `[(Finset.mem_filter.mp hb).2]`.
+-/
 private lemma inSp_sub {S κ κ' : Type} [CommRing S] [Algebra ℂ S] [Fintype κ] [Fintype κ']
     (R : Subalgebra ℂ S) (r : κ → S) (f : κ' → κ) {g : S} (h : InSp R (fun a => r (f a)) g) : InSp R r g := by
   classical
@@ -21,6 +32,9 @@ private lemma inSp_sub {S κ κ' : Type} [CommRing S] [Algebra ℂ S] [Fintype �
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun b hb => ?_
   rw [(Finset.mem_filter.mp hb).2]
 
+/- English proof (translation)
+Use `⟨fun l' => if l' = l then 1 else 0, fun l' => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Simplify using the standard rewrite rules.
+-/
 private lemma inSp_self {S κ : Type} [CommRing S] [Algebra ℂ S] [Fintype κ]
     (R : Subalgebra ℂ S) (r : κ → S) (l : κ) : InSp R r (r l) := by
   classical
@@ -31,6 +45,9 @@ private lemma inSp_self {S κ : Type} [CommRing S] [Algebra ℂ S] [Fintype κ]
     · exact R.zero_mem
   · simp
 
+/- English proof (translation)
+Introduce `c hc`. Establish `H` using `hRS S E T.act κ (T.M I J) (T.u n (pk I) (pk J)) (T.r n z (pk I) (pk J)) z (fun l => rfl) m c`. Conclude with `H.2.2.1.2 (h (H.2.1.1 hc))`.
+-/
 private lemma col_of_kos (hRS : RS) {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) {κ : Type} [LinearOrder κ] [Fintype κ] (n : κ → ℕ × ℕ) (z : κ → S) (I J : Finset (Fin (d + 1))) (m : ℤ)
     (h : (kos T.act (T.M I J) (T.r n z (pk I) (pk J))).Z m ≤ (kos T.act (T.M I J) (T.r n z (pk I) (pk J))).B m) :
@@ -39,6 +56,11 @@ private lemma col_of_kos (hRS : RS) {d : ℕ} {S E : Type} [CommRing S] [Algebra
   have H := hRS S E T.act κ (T.M I J) (T.u n (pk I) (pk J)) (T.r n z (pk I) (pk J)) z (fun l => rfl) m c
   exact H.2.2.1.2 (h (H.2.1.1 hc))
 
+/- English proof (translation)
+Introduce `i j l`. Break down `hl : ofLex l with a | a` into its components or cases. Use `h i j a` as an intermediate fact. Simplify `this` using `[Sys.r, Sys.u, app, hl]`. Use `h' i j a` as an intermediate fact.
+
+Simplify `this` using `[Sys.r, Sys.u, app, hl]`.
+-/
 private lemma admissible_append {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (T : Sys d S E) {κ κ' : Type} [LinearOrder κ] [LinearOrder κ'] (n : κ → ℕ × ℕ) (z : κ → S)
     (n' : κ' → ℕ × ℕ) (z' : κ' → S) (h : T.admitted n z) (h' : T.admitted n' z') : T.admitted (app n n') (app z z') := by
@@ -54,16 +76,25 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K'] {d : ℕ}
   (x : Fin (d + 1) → Fˣ) (j2 : K →ₐ[ℂ] K')
 
+/- English proof (translation)
+Use `ext`. Simplify using `[sysZ, sysY, gS, ← IsScalarTower.algebraMap_apply]`.
+-/
 private lemma gS_X (i : Fin (d + 1)) :
     Units.map ((gS j2 : K ⊗[ℂ] K →ₐ[ℂ] K') : K ⊗[ℂ] K →* K') ((sysZ K x 0).X i) = (sysY x j2 d).X i := by
   ext
   simp [sysZ, sysY, gS, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[sysZ, sysY, gS]`.
+-/
 private lemma gS_Y (i : Fin (d + 1)) :
     Units.map ((gS j2 : K ⊗[ℂ] K →ₐ[ℂ] K') : K ⊗[ℂ] K →* K') ((sysZ K x 0).Y i) = (sysY x j2 d).Y i := by
   ext
   simp [sysZ, sysY, gS]
 
+/- English proof (translation)
+Simplify using `only [Sys.r, Sys.u, map_mul]`. Use `congr 1`. Use `congrArg (fun v : K'ˣ => ((v⁻¹ : K'ˣ) : K')) (show Units.map ((gS j2 : K ⊗[ℂ] K →ₐ[ℂ] K') : K ⊗[ℂ] K →* K') ((sysZ K x 0).X i ^ (n k).1 * (sysZ K x 0).Y j ^ (n k).2) = (sysY x j2 d).X i ^ (n k).1 * (sysY x j2 d).Y j ^ (n k).2 by` as an intermediate fact. Rewrite using `[map_mul, map_pow, map_pow, gS_X x j2, gS_Y x j2])`. Simplify `this` using `[Units.coe_map_inv]`.
+-/
 private lemma gS_r {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : κ → K ⊗[ℂ] K) (i j : Fin (d + 1)) (k : κ) :
     gS j2 ((sysZ K x 0).r n z i j k) = (sysY x j2 d).r n (fun l => gS j2 (z l)) i j k := by
   simp only [Sys.r, Sys.u, map_mul]
@@ -75,11 +106,17 @@ private lemma gS_r {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : κ 
       rw [map_mul, map_pow, map_pow, gS_X x j2, gS_Y x j2])
   simpa [Units.coe_map_inv] using this
 
+/- English proof (translation)
+Substitute `hi` using the available equality. Simplify using `[Sys.r, Sys.u, n10, gT, sysY, tt, div_eq_mul_inv]`.
+-/
 private lemma rT (i j : Fin (d + 1)) (l : Fin d) (hi : i = 0) :
     (sysY x j2 d).r n10 (gT x j2) i j l = tt K' x l := by
   subst hi
   simp [Sys.r, Sys.u, n10, gT, sysY, tt, div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `hr : ∀ l, (sysY x j2 d).r n z (pk I) (pk J) l ∈ RY (xv x) j2 I J` using `((hOk d K' (DR ℂ K') (sysY x j2 d) κ n z hG ha).2.1 I J _ (pk_mem' hI) _ (pk_mem' hJ)).1`. Establish `hk` using `hKE F K K' d x j2 h0 κ ((sysY x j2 d).r n z (pk I) (pk J)) I J hI hr`. Conclude with `⟨fun h m hm => col_of_kos hRS _ n z I J m (hk.1 h m hm), fun h m => col_of_kos hRS _ n z I J m fun c hc => hk.2.1 m c hc fun e he => absurd he (h e)⟩`.
+-/
 private lemma cols_gen (hKE : YKE) (hOk : SysOk) (hRS : RS) (h0 : Y0 x j2) (hG : (sysY x j2 d).Good)
     {κ : Type} [LinearOrder κ] [Fintype κ] (n : κ → ℕ × ℕ) (z : κ → K') (ha : (sysY x j2 d).admitted n z)
     (I J : Finset (Fin (d + 1))) (hI : I.Nonempty) (hJ : J.Nonempty) :
@@ -96,6 +133,25 @@ private lemma cols_gen (hKE : YKE) (hOk : SysOk) (hRS : RS) (h0 : Y0 x j2) (hG :
 
 end
 
+/- English proof (translation)
+Introduce `hKE hPtG hPtT hFix hGM hTh hOk hRS hRY F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY κ _ _ n z hZ`. Establish `h0 : Y0 x j2` using `hY.toY0`. Establish `hG : (sysY x j2 d).Good` using `(hRY F K K' d x j2 h0).2.1 d`. Establish `hA0 : (sysY x j2 d).admitted n11 (sysY x j2 d).mu` using `(hTh d K' (DR ℂ K') (sysY x j2 d) hG).1`. Establish `hAz : (sysY x j2 d).admitted n (fun l => gS j2 (z l))` using `fun i j k => by`.
+
+Establish `h2` using `(hGM F K K' d x j2 h0 0 (Nat.zero_le _)).2.2.1 {i} {j} _ (hZ.adm i j k)`. Rewrite `h2` using `[gS_r]`. Conclude with `h2`. Establish `hA1 : (sysY x j2 d).admitted (app n11 n) (gG x j2 z)` using `admissible_append _ _ _ _ _ hA0 hAz`. Establish `hA2 : (sysY x j2 d).admitted n10 (gT x j2)` using `fun i j l => by`.
+
+Use `hG.memX {i} {j} (Finset.singleton_nonempty j) i (Finset.mem_singleton_self i) l.succ` as an intermediate fact. Simplify `this` using `[Sys.r, Sys.u, n10, gT]`. Establish `hA3 : (sysY x j2 d).admitted (app (app n11 n) n10) (app (gG x j2 z) (gT x j2))` using `admissible_append _ _ _ _ _ hA1 hA2`. Use `⟨hA1, hA2, hA3, fun I J hI hJ => ?_⟩` and prove the remaining obligations. Establish `c1` using `cols_gen x j2 hKE hOk hRS h0 hG _ _ hA1 I J hI hJ`.
+
+Establish `c2` using `cols_gen x j2 hKE hOk hRS h0 hG _ _ hA2 I J hI hJ`. Establish `c3` using `cols_gen x j2 hKE hOk hRS h0 hG _ _ hA3 I J hI hJ`. Establish `hi` using `pk_mem' hI`. Establish `hj` using `pk_mem' hJ`. Establish `pG : ∀ e : RY (xv x) j2 I J →ₐ[ℂ] ℂ, (∀ l, Val (RY (xv x) j2 I J) e ((sysY x j2 d).r (app n11 n) (gG x j2 z) (pk I) (pk J) l) 0) → J = {0} ∧ ∃ e0 ∈ Fx, Over x j2 e e0` using `fun e he => hPtG F K K' d x j2 Fx A hY κ n z hZ I J _ hi _ hj e he`.
+
+Establish `pT : ∀ e : RY (xv x) j2 I J →ₐ[ℂ] ℂ, (∀ l, Val (RY (xv x) j2 I J) e ((sysY x j2 d).r n10 (gT x j2) (pk I) (pk J) l) 0) → ∃ e0, Over x j2 e e0` using `fun e he => hPtT F K K' d x j2 h0 I J _ hi _ hj e he`. Use `⟨c1.1 ?_, c2.1 ?_, c3.1 ?_, fun hne m => ⟨c1.2 ?_ m, c3.2 ?_ m⟩⟩` and prove the remaining obligations. Introduce `e he`. Take `⟨hJ0, e0, he0, hO⟩` from `pG e he`. Use `⟨e0, hO, fun l => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hO.1, hJ0, pk_zero']`. Take `⟨N, -, -, -, hN⟩` from `hFix F K K' d x j2 Fx A hY e0 he0`. Conclude with `inSp_sub _ ((sysY x j2 d).r (app n11 n) (gG x j2 z) 0 0) (fun a => toLex (Sum.inl (dj 0 a))) (hN l)`. Introduce `e he`. Take `⟨e0, hO⟩` from `pT e he`.
+
+Use `⟨e0, hO, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← rT x j2 (pk I) (pk J) l (by rw [hO.1, pk_zero'])]`. Conclude with `inSp_self _ _ l`. Introduce `e he`. Take `⟨e0, hO⟩` from `pT e fun l => he (toLex (Sum.inr l))`.
+
+Use `⟨e0, hO, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← rT x j2 (pk I) (pk J) l (by rw [hO.1, pk_zero'])]`. Conclude with `inSp_sub _ ((sysY x j2 d).r (app (app n11 n) n10) (app (gG x j2 z) (gT x j2)) (pk I) (pk J)) (fun a => toLex (Sum.inr a)) (inSp_self _ ((sysY x j2 d).r n10 (gT x j2) (pk I) (pk J)) l)`. Introduce `e he`. Take `⟨hJ0, e0, -, hO⟩` from `pG e he`.
+
+Conclude with `hne.elim (fun h => h hO.1) (fun h => h hJ0)`. Introduce `e he`. Take `⟨hJ0, e0, -, hO⟩` from `pG e fun l => he (toLex (Sum.inl l))`. Conclude with `hne.elim (fun h => h hO.1) (fun h => h hJ0)`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.yCols_of :
     YKE → PtG → PtT → FixLoc → GMap → ThMuLat → SysOk → RS → RYBasic → YCols := by
   intro hKE hPtG hPtT hFix hGM hTh hOk hRS hRY F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY κ _ _ n z hZ

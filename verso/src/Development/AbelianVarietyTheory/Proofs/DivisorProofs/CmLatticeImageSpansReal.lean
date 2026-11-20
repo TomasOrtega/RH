@@ -8,6 +8,11 @@ namespace GlobalTheory.CMSpan
 
 open ComplexConjugate
 
+/- English proof (translation)
+Establish `hz : (Pi.single j z : Fin n → ℂ) = z.re • (Pi.single j (1:ℂ) : Fin n → ℂ) + z.im • (Pi.single j Complex.I : Fin n → ℂ)`. Use extensionality with `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[Complex.ext_iff]`.
+
+Simplify using `[h]`. Rewrite using `[hz, map_add, map_smul, map_smul]`. Simplify using `only [map_div₀, map_sub, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem functional_single {n : ℕ} (f : (Fin n → ℂ) →ₗ[ℝ] ℝ) (j : Fin n) (z : ℂ) :
     ((f (Pi.single j z) : ℝ) : ℂ) =
       (((f (Pi.single j 1) : ℂ) - Complex.I * (f (Pi.single j Complex.I) : ℂ)) / 2) * z +
@@ -22,6 +27,9 @@ theorem functional_single {n : ℕ} (f : (Fin n → ℂ) →ₗ[ℝ] ℝ) (j : F
   simp only [map_div₀, map_sub, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Introduce `h` and use `IsTotallyComplex.complexEmbedding_not_isReal σ (ComplexEmbedding.isReal_iff.2 h)`.
+-/
 theorem conjugate_ne_self {E : Type} [Field E] [IsTotallyComplex E] (σ : E →+* ℂ) :
     ComplexEmbedding.conjugate σ ≠ σ := fun h =>
   IsTotallyComplex.complexEmbedding_not_isReal σ (ComplexEmbedding.isReal_iff.2 h)
@@ -32,6 +40,13 @@ namespace GlobalTheory.CMSpan
 
 open ComplexConjugate
 
+/- English proof (translation)
+Establish `hTC : IsTotallyComplex E` using `IsCMField.to_isTotallyComplex`. Apply the tactic sequence `rintro (i | i) (j | j) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `congrArg Sum.inl ((hφ (φ i)).unique (Or.inl rfl) (Or.inl h))`. Establish `hij : i = j` using `(hφ (φ i)).unique (Or.inl rfl) (Or.inr h)`. Substitute `hij` using the available equality.
+
+Conclude with `absurd h.symm (conjugate_ne_self (φ i))`. Establish `hij : j = i` using `(hφ (φ j)).unique (Or.inl rfl) (Or.inr h.symm)`. Substitute `hij` using the available equality. Conclude with `absurd h (conjugate_ne_self (φ j))`. Establish `h' : φ i = φ j`.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `congrArg (fun σ : E →+* ℂ => conj (σ x)) h` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `congrArg Sum.inr ((hφ (φ i)).unique (Or.inl rfl) (Or.inl h'))`.
+-/
 theorem cmType_embeddings_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type}
     (φ : I → E →+* ℂ) (hφ : IsCMType φ) :
     Function.Injective (Sum.elim φ (fun i => ComplexEmbedding.conjugate (φ i))) := by
@@ -50,6 +65,27 @@ theorem cmType_embeddings_injective {E : Type} [Field E] [NumberField E] [IsCMFi
       simpa [ComplexEmbedding.conjugate_coe_eq] using this
     exact congrArg Sum.inr ((hφ (φ i)).unique (Or.inl rfl) (Or.inl h'))
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ n e L hL Λ hΛ`. Take `⟨N, hN, hNL⟩` from `hL`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hfk⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `hkill : ∀ x : E, f (fun j ↦ φ (e j) x) = 0`.
+
+Introduce `x`. Take `⟨y, hy0, hyint⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset E)`. Set `z : 𝓞 E` to `⟨y • x, hyint x (Finset.mem_singleton_self x)⟩`. Establish `hmem : (fun j ↦ φ (e j) ((N : E) * algebraMap (𝓞 E) E z)) ∈ Λ` using `(hΛ _).2 ⟨_, hNL z, rfl⟩`. Establish `h0` using `hfk (Submodule.subset_span hmem)`.
+
+Rewrite `h0` using `[LinearMap.mem_ker]`. Establish `hsm : (fun j ↦ φ (e j) ((N : E) * algebraMap (𝓞 E) E z)) = ((N : ℝ) * (y : ℝ)) • (fun j ↦ φ (e j) x)`. Use extensionality with `j`. Simplify using `[z, zsmul_eq_mul, Complex.real_smul, mul_assoc]`. Rewrite `h0` using `[hsm, map_smul, smul_eq_mul]`.
+
+Establish `hNy : (N : ℝ) * (y : ℝ) ≠ 0` using `mul_ne_zero (by exact_mod_cast hN.ne') (by exact_mod_cast hy0)`. Conclude with `(mul_eq_zero.1 h0).resolve_left hNy`. Use `set c : Fin n → ℂ := fun j => ((f (Pi.single j 1) : ℂ) - Complex.I * (f (Pi.single j Complex.I) : ℂ)) / 2 with hc`. Establish `hexp : ∀ w : Fin n → ℂ, ((f w : ℝ) : ℂ) = ∑ j, (c j * w j + conj (c j) * conj (w j))`. Introduce `w`.
+
+Use `conv_lhs => rw [← Finset.univ_sum_single w]`. Rewrite using `[map_sum, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => functional_single f j (w j)`. Set `ψ : I ⊕ I → (E →* ℂ)` to `fun a => ((Sum.elim φ (fun i => ComplexEmbedding.conjugate (φ i)) a : E →+* ℂ) : E →* ℂ)`. Establish `hψ : Function.Injective ψ`.
+
+Introduce `a b h`. Apply `cmType_embeddings_injective φ hφ` to reduce the goal to its premises. Conclude with `RingHom.ext fun x => DFunLike.congr_fun h x`. Establish `hli` using `(linearIndependent_monoidHom E ℂ).comp ψ hψ`. Set `g : I ⊕ I → ℂ` to `Sum.elim (fun i => c (e.symm i)) (fun i => conj (c (e.symm i)))`.
+
+Establish `hg : ∑ a, g a • (fun x => ψ a x) = 0`. Use function extensionality and compare the values at `x`. Establish `hx` using `hexp (fun j ↦ φ (e j) x)`. Rewrite `hx` using `[hkill x, Complex.ofReal_zero]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Fintype.sum_sum_type, g, ψ, Sum.elim_inl, Sum.elim_inr, MonoidHom.coe_coe, ComplexEmbedding.conjugate_coe_eq]`.
+
+Rewrite using `[← Finset.sum_add_distrib, ← e.sum_comp]`. Simplify using `using hx.symm`. Establish `hc0 : ∀ j, c j = 0`. Introduce `j`. Use `Fintype.linearIndependent_iff.1 hli g hg (Sum.inl (e j))` as an intermediate fact.
+
+Simplify `this` using `[g]`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `hw` using `hexp w`. Simplify using `only [hc0, zero_mul, map_zero, add_zero, Finset.sum_const_zero] at hw`.
+
+Simplify using `using hw`.
+-/
 theorem span_real_eq_top : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     (φ : I → E →+* ℂ), IsCMType φ →
     ∀ (n : ℕ) (e : Fin n ≃ I) (L : Submodule (OF E) E),

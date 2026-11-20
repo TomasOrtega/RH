@@ -17,6 +17,11 @@ namespace GlobalTheory.Mem.R3.RowChr
 section Blocks
 variable {κ K : Type} [CommRing κ] [Field K]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `blkOf`. Use `split_ifs with h`. Conclude with `Formalism.L2.Col.coarse_of_lt h`. Establish `hi` using `i.2`.
+
+Establish `h1 : i.val - r < m * t` using `by omega`. Establish `ht : 0 < t` using `Nat.pos_of_ne_zero fun e => by simp [e] at h1`. Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h), Formalism.L2.Col.blkIdx_replicate ht m _ h1]`.
+-/
 theorem coarse_eq_blkOf {n r t m : ℕ} (hn : n = r + m * t) :
     (fun i : Fin n => Formalism.L2.Col.coarse r (List.replicate m t) i.val) = blkOf r t := by
   funext i
@@ -28,6 +33,11 @@ theorem coarse_eq_blkOf {n r t m : ℕ} (hn : n = r + m * t) :
     have ht : 0 < t := Nat.pos_of_ne_zero fun e => by simp [e] at h1
     rw [Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h), Formalism.L2.Col.blkIdx_replicate ht m _ h1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `blk2`. Use `split_ifs with h`. Conclude with `Formalism.L2.Col.coarse_of_lt h`. Establish `hi` using `i.2`.
+
+Establish `h1 : i.val - r < b` using `by omega`. Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h)]`. Simplify using `[Formalism.L2.Col.blkIdx, h1]`.
+-/
 theorem coarseBlockIndex_eq_twoBlock {n r b : ℕ} (hn : n = r + b) :
     (fun i : Fin n => Formalism.L2.Col.coarse r [b] i.val) = blk2 r := by
   funext i
@@ -39,6 +49,9 @@ theorem coarseBlockIndex_eq_twoBlock {n r b : ℕ} (hn : n = r + b) :
     rw [Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h)]
     simp [Formalism.L2.Col.blkIdx, h1]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[diag_block_det_val c (show M.1 ∈ blockTri (fun i : Fin n => β i.val) from M.2)]`. Both sides reduce to the same expression.
+-/
 theorem blockDeterminant_eq_diagonalBlockDet {n : ℕ} {β : ℕ → ℕ} {b : Fin n → ℕ} (e : (fun i : Fin n => β i.val) = b) (c : ℕ)
     (M : Formalism.L2.Col.btG n κ β) : Formalism.L2.Col.blkDet n κ β c M = dBlk b c M.1 := by
   subst e
@@ -46,6 +59,13 @@ theorem blockDeterminant_eq_diagonalBlockDet {n : ℕ} {β : ℕ → ℕ} {b : F
   rw [diag_block_det_val c (show M.1 ∈ blockTri (fun i : Fin n => β i.val) from M.2)]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.blkDet_val, Units.val_one]`. Use `(congrArg Matrix.det (a₂ := 1) ?_).trans Matrix.det_one` and prove the remaining obligations. Use extensionality with `i j`. Establish `hi : ¬ i.1.val < r` using `fun hi => by`.
+
+Establish `h1` using `i.2`. Rewrite `h1` using `[Formalism.L2.Col.coarse_of_lt hi]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply]`. Rewrite using `[Formalism.L2.Col.diagEmb_val, Formalism.L2.Col.diagMat_of_not_left _ _ hi]`.
+
+Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`.
+-/
 theorem blkDet_diagEmb {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r) κ) (s : ℕ) :
     Formalism.L2.Col.blkDet n κ (Formalism.L2.Col.coarse r bl) (s + 1) ⟨_, Formalism.L2.Col.diagEmb_mem_blockUT h bl g⟩ = 1 := by
   apply Units.ext
@@ -60,12 +80,22 @@ theorem blkDet_diagEmb {n r : ℕ} (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r)
   rw [Formalism.L2.Col.diagEmb_val, Formalism.L2.Col.diagMat_of_not_left _ _ hi]
   simp only [Matrix.one_apply, Subtype.ext_iff]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem reindex_refl {n : ℕ} (R : GL (Fin n) κ) :
     Units.map (Matrix.reindexAlgEquiv κ κ (finCongr (rfl : n = n))).toMonoidHom R = R := by
   apply Units.ext
   ext i j
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite `hu` using `[reindex_refl]`. Establish `hd` using `Formalism.L2.Col.diagEmb_mem_blockUT hr (List.replicate m t) g`. Establish `hb` using `Formalism.L2.Col.HK_le_blockUT _ _ _ _ hm`. Establish `hR : R ∈ Formalism.L2.Col.blockUT a κ r (List.replicate m t)`.
+
+Establish `: R = Formalism.L2.Col.diagEmb κ hr g * u⁻¹` using `by rw [hu]; group`. Rewrite using `[this]`. Conclude with `mul_mem hd (inv_mem hb)`. Establish `e1 : (Subgroup.inclusion (Formalism.L2.Col.HK_le_blockUT a κ r (List.replicate m t)) ⟨u, hm⟩) = (⟨R, hR⟩ : Formalism.L2.Col.blockUT a κ r (List.replicate m t))⁻¹ * ⟨_, hd⟩` using `Subtype.ext hu`. Rewrite using `[MonoidHom.inv_apply, Formalism.L2.Col.lamKJ, Formalism.L2.Col.lamK, MonoidHom.comp_apply, e1, map_mul, map_inv, Formalism.L2.Col.detChar_apply, Formalism.L2.Col.detChar_apply, List.length_replicate]`.
+
+Simplify using `only [blkDet_diagEmb, map_one, Finset.prod_const_one, mul_one, inv_inv]`. Conclude with `Finset.prod_congr rfl fun s _ => by rw [blockDeterminant_eq_diagonalBlockDet (coarse_eq_blkOf hn)]`.
+-/
 theorem lamKJ_inv {a n r t m : ℕ} (e : a = n) (hn : n = r + m * t) (hr : r ≤ n) (χ : ℕ → κˣ →* Kˣ)
     (R : GL (Fin a) κ) (g : GL (Fin r) κ) (u : GL (Fin n) κ)
     (hu : u = (Units.map (Matrix.reindexAlgEquiv κ κ (finCongr e)).toMonoidHom R)⁻¹ * Formalism.L2.Col.diagEmb κ hr g)
@@ -86,6 +116,11 @@ theorem lamKJ_inv {a n r t m : ℕ} (e : a = n) (hn : n = r + m * t) (hr : r ≤
   simp only [blkDet_diagEmb, map_one, Finset.prod_const_one, mul_one, inv_inv]
   exact Finset.prod_congr rfl fun s _ => by rw [blockDeterminant_eq_diagonalBlockDet (coarse_eq_blkOf hn)]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite `hu` using `[reindex_refl, mul_one]`. Establish `hR : R ∈ Formalism.L2.Col.HQ κ a r b`. Establish `: R = u⁻¹` using `by rw [hu, inv_inv]`. Rewrite using `[this]`.
+
+Conclude with `inv_mem hm`. Establish `e1 : (⟨u, hm⟩ : Formalism.L2.Col.HQ κ a r b) = (⟨R, hR⟩ : Formalism.L2.Col.HQ κ a r b)⁻¹` using `Subtype.ext hu`. Rewrite using `[inv_inv, e1, map_inv, Formalism.L2.Col.lamQ_apply, blockDeterminant_eq_diagonalBlockDet (coarseBlockIndex_eq_twoBlock hn)]`.
+-/
 theorem lamQ_inv {a n r b : ℕ} (e : a = n) (hn : n = r + b) (ξ : κˣ →* Kˣ)
     (R : GL (Fin a) κ) (u : GL (Fin n) κ)
     (hu : u = (Units.map (Matrix.reindexAlgEquiv κ κ (finCongr e)).toMonoidHom R)⁻¹ * 1)
@@ -102,6 +137,13 @@ theorem lamQ_inv {a n r b : ℕ} (e : a = n) (hn : n = r + b) (ξ : κˣ →* K�
 
 end Blocks
 
+/- English proof (translation)
+Introduce `X px I U L hI hL w hw s c`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : kP w)`. Establish `hy0 : (y : X.B.fields.E) ≠ 0`. Introduce `h0`. Establish `: y = 0` using `by exact_mod_cast h0`.
+
+Rewrite `hy` using `[this, map_zero]`. Use `haveI : Nontrivial (kP w) := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`. Conclude with `c.ne_zero hy.symm`. Establish `h1` using `(hI.ch_tied.mu0 s).atg ⟨w, hw⟩ (Units.mk0 _ hy0) y c rfl hy.symm`. Establish `h2` using `hL.is.chi s w (hL.Pg ▸ hw) y (Units.mk0 _ hy0) c rfl hy.symm`.
+
+Establish `h3 : L.C.mu0 s = I.C.mu0 s` using `by rw [hL.C]; rfl`. Rewrite `h2` using `[h3]`. Establish `h4 : (((L.chi ((s : ℕ) + 1) w c)⁻¹ : ℂˣ) : ℂ) = X.B.embLL (((I.Ch.chi s ⟨w, hw⟩ c)⁻¹ : X.B.fields.Kˣ) : X.B.fields.K)` using `(congrArg Units.val h2).trans h1`. Rewrite `h4` using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, _root_.inv_inj]`. Conclude with `h4.symm`.
+-/
 theorem embLL_chi : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →
     ∀ (w : Pl X.B.fields.E) (hw : w ∈ (X.B.primes px).vGs) (s : Fin X.B.R.m) (c : (kP w)ˣ),
@@ -123,6 +165,13 @@ theorem embLL_chi : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B p
   rw [Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, _root_.inv_inj] at h4
   exact h4.symm
 
+/- English proof (translation)
+Introduce `X px I U L hI hL t P hP c`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : kP P)`. Establish `hy0 : (y : X.B.fields.E) ≠ 0`. Introduce `h0`. Establish `: y = 0` using `by exact_mod_cast h0`.
+
+Rewrite `hy` using `[this, map_zero]`. Use `haveI : Nontrivial (kP P) := Ideal.Quotient.nontrivial_iff.2 P.isPrime.ne_top`. Conclude with `c.ne_zero hy.symm`. Establish `hr` using `hI.xi_reads (ixOf I U t)`. Rewrite `hr` using `[tup_ixOf, ← hL.xiH t]`.
+
+Establish `h1` using `GlobalTheory.NormOneUnit.resChar_eq hr (hL.is.xi_tame t) P c y (Units.mk0 _ hy0) rfl hy`. Establish `h2` using `hL.is.xiR t P hP y (Units.mk0 _ hy0) c rfl hy.symm`. Conclude with `h1.trans (congrArg Units.val h2).symm`.
+-/
 theorem embLL_resChar : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →
     ∀ (t : TupU I U) (P : Pl X.B.fields.E), P ∈ L.Q t → ∀ (c : (kP P)ˣ),
@@ -142,6 +191,13 @@ theorem embLL_resChar : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X
   have h2 := hL.is.xiR t P hP y (Units.mk0 _ hy0) c rfl hy.symm
   exact h1.trans (congrArg Units.val h2).symm
 
+/- English proof (translation)
+Introduce `X px I U L hI hL t P hP hw`. Take `⟨k, hk⟩` from `(hL.is.Pg P).1 (hL.Pg ▸ hw)`. Take `⟨⟨p, hp, hc, -, hne⟩, -⟩` from `hL.is.Q_pl t P hP`. Establish `h1 : ((X.toD7.host.g k : ℕ) : 𝓞 X.B.fields.E) ∈ P.asIdeal`. Establish `h0` using `L.C.P.pb_over k`.
+
+Rewrite `h0` using `[← show _ = L.C.P.pb k from hk]`. Establish `h2` using `Ideal.mem_comap.1 h0`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h2 : ((p : ℕ) : 𝓞 X.B.fields.E) ∈ P.asIdeal`. Establish `h0` using `Ideal.absNorm_mem P.asIdeal`.
+
+Rewrite `h0` using `[show Ideal.absNorm P.asIdeal = p from hc]`. Then use the resulting hypothesis. Establish `h3 : IsCoprime ((p : ℕ) : 𝓞 X.B.fields.E) ((X.toD7.host.g k : ℕ) : 𝓞 X.B.fields.E)` using `Nat.Coprime.cast ((Nat.coprime_primes hp (X.toD7.host.g_prime k)).2 (hne k))`. Take `⟨a, b, hab⟩` from `h3`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h2) (Ideal.mul_mem_left _ _ h1)))`.
+-/
 theorem notMem_vGs : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →
     ∀ (t : TupU I U) (P : Pl X.B.fields.E), P ∈ L.Q t → P ∉ (X.B.primes px).vGs := by
@@ -161,6 +217,13 @@ theorem notMem_vGs : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B 
   obtain ⟨a, b, hab⟩ := h3
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h2) (Ideal.mul_mem_left _ _ h1)))
 
+/- English proof (translation)
+Establish `h1 : ∏ w, f w = ∏ w : Formalism.L2.Col.uSG A B, (fun P => if P ∈ A then a P else b P) w.1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : w.1 ∈ A`. Simplify using `only [h, if_true]`. Conclude with `ha w h`.
+
+Simplify using `only [h, if_false]`. Conclude with `hb w h ((Finset.mem_union.mp w.2).resolve_left h)`. Rewrite using `[h1, Finset.prod_coe_sort (Formalism.L2.Col.uSG A B) (fun P => if P ∈ A then a P else b P)]`. Establish `h2 : Disjoint A B` using `Finset.disjoint_right.2 fun P hP => hd P hP`. Rewrite using `[Finset.prod_union h2]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun P hP => if_pos hP`. Conclude with `Finset.prod_congr rfl fun P hP => if_neg (hd P hP)`.
+-/
 theorem prod_uSG {E : Type} [Field E] [NumberField E] {M : Type} [CommMonoid M] {A B : Finset (HeightOneSpectrum (𝓞 E))}
     (hd : ∀ P ∈ B, P ∉ A) (f : Formalism.L2.Col.uSG A B → M) (a b : HeightOneSpectrum (𝓞 E) → M)
     (ha : ∀ w : Formalism.L2.Col.uSG A B, w.1 ∈ A → f w = a w.1) (hb : ∀ w : Formalism.L2.Col.uSG A B, w.1 ∉ A → w.1 ∈ B → f w = b w.1) :
@@ -178,11 +241,19 @@ theorem prod_uSG {E : Type} [Field E] [NumberField E] {M : Type} [CommMonoid M] 
   · exact Finset.prod_congr rfl fun P hP => if_pos hP
   · exact Finset.prod_congr rfl fun P hP => if_neg (hd P hP)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lam_congr {κ K : Type} [CommRing κ] [Field K] {n : ℕ} {l l' : Formalism.L2.Col.Lev κ K n} (e : l = l') (u : GL (Fin n) κ)
     (h : u ∈ l.inv.H) : l.inv.lam ⟨u, h⟩ = l'.lam⁻¹ ⟨u, e ▸ h⟩ := by
   subst e
   rfl
 
+/- English proof (translation)
+Establish `h2 : ext1 (flagL (L.datXt t)).P.H (flagL (L.datXt t)).P.chi (rTup L.βX (flagL (L.datXt t)) x) = 1`. Use `(extendOne_of_mem _ (Subgroup.mem_top _)).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Unfold `levFn`. Rewrite using `[h2, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem levFn_flagL {D : D7} {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (t : T) (x : GL (Fin D.sp.X'.rank) (Lev.EAf D)) :
     levFn L.βX (flagL (L.datXt t)) x =
       (∏ PP ∈ L.Pg, ∏ c ∈ Finset.range D.R.m, L.chi (c + 1) PP (dBlk (blkOf D.R.r D.R.t) (c + 1) (redFn L.βX PP x))) *
@@ -194,6 +265,15 @@ theorem levFn_flagL {D : D7} {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (
   rw [h2, one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hn` using `Formalism.L2.Col.rank_X'_eq R`. Rewrite using `[Formalism.L2.Col.LevFam.chr_apply, map_prod]`. Use `prod_uSG hd _ _ _ (fun w hw => ?_) (fun w hw hw' => ?_)` and prove the remaining obligations. Establish `e'` using `Formalism.L2.Col.LevFam.glue_of_mem (Formalism.L2.Col.rowTyK (R := R) Ch) (Formalism.L2.Col.rowTyQ R (mu : Formalism.L2.DIV.Chr X.F X.E X.K) _) w hw`. Use `(congrArg σ ((lam_congr e' _ _).trans (lamKJ_inv e hn (Formalism.L2.Col.r_le_X' R) _ (M w.1) (g ⟨w.1, hw⟩) _ ?_ _))).trans ?_` and prove the remaining obligations.
+
+Use `show (z w)⁻¹ * Formalism.L2.Col.extGLG _ _ w = _`. Rewrite using `[Formalism.L2.Col.extGLG_of_mem _ w hw, hz w]`. Both sides reduce to the same expression. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+
+Establish `hs'` using `Finset.mem_range.1 hs`. Rewrite using `[Formalism.L2.Col.chiAt, Formalism.L2.Col.extChi, dif_pos hs']`. Conclude with `hχ w.1 hw ⟨s, hs'⟩ _`. Establish `e'` using `Formalism.L2.Col.LevFam.glue_of_not (Formalism.L2.Col.rowTyK (R := R) Ch) (Formalism.L2.Col.rowTyQ R (mu : Formalism.L2.DIV.Chr X.F X.E X.K) _) w hw`. Use `(congrArg σ ((lam_congr e' _ _).trans (lamQ_inv e hn _ (M w.1) _ ?_ _))).trans ?_` and prove the remaining obligations.
+
+Use `show (z w)⁻¹ * Formalism.L2.Col.extGLG _ _ w = _`. Rewrite using `[Formalism.L2.Col.extGLG_of_not _ w hw, hz w]`. Rewrite using `[map_inv, hξ w.1 hw']`.
+-/
 theorem chr_inv_eq {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {R : Ranks} (Ch : Formalism.L2.Col.Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
     (hd : ∀ P ∈ Formalism.L2.Col.QE sel (mu : Formalism.L2.DIV.Chr X.F X.E X.K), P ∉ Pr.vGs)
@@ -230,6 +310,9 @@ theorem chr_inv_eq {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X
       rw [Formalism.L2.Col.extGLG_of_not _ w hw, hz w]
     · rw [map_inv, hξ w.1 hw']
 
+/- English proof (translation)
+Substitute `hA hB` using the available equality. Conclude with `levFn_flagL L t _`.
+-/
 theorem ch_eq {D : D7} {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (t : T) (q : (levEnv D.sp.X' L.βX (L.datXt t)).Q)
     {A B : Finset (Pl D.host.E)} (hA : L.Pg = A) (hB : L.Q t = B) :
     (levEnv D.sp.X' L.βX (L.datXt t)).ch q =
@@ -239,10 +322,16 @@ theorem ch_eq {D : D7} {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (t : T)
   subst hA hB
   exact levFn_flagL L t _
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val h`.
+-/
 theorem emb_of_map (X : Stages) {x : X.B.fields.Kˣ} {y : ℂˣ}
     (h : Units.map (X.B.embLL : X.B.fields.K →+* ℂ).toMonoidHom x = y) :
     X.toD7.what₂.embLL (x : X.B.fields.K) = (y : ℂ) := congrArg Units.val h
 
+/- English proof (translation)
+Introduce `X px I U L eG hI hV hL hG t q hz hu`. Establish `hQ : L.Q t = Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr X.B.fields.F X.B.fields.E X.B.fields.K)`. Rewrite using `[hL.Q t, ColIn.Q, tup_ixOf]`. Establish `h1` using `chr_inv_eq I.Ch I.sel t.1 (fun P hP => notMem_vGs X px I U L hI hL t P (hQ ▸ hP)) (RowAd.rank_X' X) (fun P => redFn L.βX P (Formalism.UG.bc (swapAE X.toD7) q.1.1)) _ _ (RowDeco.redG_ptE X I L hL t q hz) hu (Units.map (X.B.embLL : X.B.fields.K →+* ℂ).toMonoidHom) L.chi (L.xiR t) ( …`. Conclude with `emb_of_map X (h1.trans (ch_eq L t q hL.Pg hQ).symm)`.
+-/
 theorem chr_eq_ch : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r),
     I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG →

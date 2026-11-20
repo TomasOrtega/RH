@@ -24,6 +24,9 @@ def ofCharts (L : LB X) (hL : L.IsLB) {n : ℕ} (f : Fin n → L.ι) (hf : ⨆ i
 
 def cls (L : FinLB X) : Pic X := CechPic.cls L.lb L.isLB
 
+/- English proof (translation)
+The claim follows from `(cls_eq_iff _ hL).2 (iso_of_chart hL ⟨f, fun _ => le_rfl, fun _ _ _ _ _ => rfl⟩)`.
+-/
 theorem cls_ofCharts (L : LB X) (hL : L.IsLB) {n : ℕ} (f : Fin n → L.ι) (hf : ⨆ i, L.U (f i) = ⊤) :
     (ofCharts L hL f hf).cls = CechPic.cls L hL :=
   (cls_eq_iff _ hL).2 (iso_of_chart hL ⟨f, fun _ => le_rfl, fun _ _ _ _ _ => rfl⟩)
@@ -31,9 +34,15 @@ theorem cls_ofCharts (L : LB X) (hL : L.IsLB) {n : ℕ} (f : Fin n → L.ι) (hf
 def ofFintype (L : LB X) (hL : L.IsLB) [Fintype L.ι] : FinLB X :=
   ofCharts L hL (Fintype.equivFin L.ι).symm ((Fintype.equivFin L.ι).symm.iSup_comp.trans hL.cover)
 
+/- English proof (translation)
+The claim follows from `cls_ofCharts _ _ _ _`.
+-/
 theorem cls_ofFintype (L : LB X) (hL : L.IsLB) [Fintype L.ι] : (ofFintype L hL).cls = CechPic.cls L hL :=
   cls_ofCharts _ _ _ _
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun i => (L.U i : Set X)) (fun i => (L.U i).isOpen) fun x _ => Set.mem_iUnion.2 (LB.mem_of_cover hL x)`. Use `⟨s.card, fun i => (s.equivFin.symm i).1, top_le_iff.1 fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`. Conclude with `Opens.mem_iSup.2 ⟨s.equivFin ⟨i, hi⟩, by simpa using hx⟩`.
+-/
 theorem exists_charts [CompactSpace X] {L : LB X} (hL : L.IsLB) :
     ∃ (n : ℕ) (f : Fin n → L.ι), ⨆ i, L.U (f i) = ⊤ := by
   obtain ⟨s, hs⟩ := isCompact_univ.elim_finite_subcover (fun i => (L.U i : Set X)) (fun i => (L.U i).isOpen)
@@ -42,15 +51,24 @@ theorem exists_charts [CompactSpace X] {L : LB X} (hL : L.IsLB) :
   obtain ⟨i, hi, hx⟩ := Set.mem_iUnion₂.1 (hs (Set.mem_univ x))
   exact Opens.mem_iSup.2 ⟨s.equivFin ⟨i, hi⟩, by simpa using hx⟩
 
+/- English proof (translation)
+Introduce `c` and use `by obtain ⟨L, hL, rfl⟩ := cls_surj c obtain ⟨n, f, hf⟩ := exists_charts hL exact ⟨_, cls_ofCharts L hL f hf⟩`.
+-/
 theorem cls_surjective [CompactSpace X] : Function.Surjective (cls (X := X)) := fun c => by
   obtain ⟨L, hL, rfl⟩ := cls_surj c
   obtain ⟨n, f, hf⟩ := exists_charts hL
   exact ⟨_, cls_ofCharts L hL f hf⟩
 
+/- English proof (translation)
+The claim follows from `CechPic.cls_eq_iff _ _`.
+-/
 theorem cls_eq_iff {L M : FinLB X} : L.cls = M.cls ↔ LBIso L.lb M.lb := CechPic.cls_eq_iff _ _
 
 def dual (L : FinLB X) : FinLB X := ⟨L.n, L.U, fun i j => (L.g i j)⁻¹, isLB_dual L.isLB⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lb_dual (L : FinLB X) : L.dual.lb = CechPic.dual L.lb := rfl
 
 variable (X) in
@@ -60,32 +78,69 @@ def triv : FinLB X := ofFintype (LB.triv X) (LB.isLB_triv X)
 def tens (L M : FinLB X) : FinLB X :=
   @ofFintype X (CechPic.tens L.lb M.lb) (isLB_tens L.isLB M.isLB) (inferInstanceAs (Fintype (Fin L.n × Fin M.n)))
 
+/- English proof (translation)
+The claim follows from `CechPic.cls_dual L.isLB _`.
+-/
 @[simp] theorem cls_dual (L : FinLB X) : L.dual.cls = -L.cls := CechPic.cls_dual L.isLB _
 
+/- English proof (translation)
+The claim follows from `cls_ofFintype _ _`.
+-/
 @[simp] theorem cls_triv : (triv X).cls = 0 := cls_ofFintype _ _
 
+/- English proof (translation)
+The claim follows from `@cls_ofFintype X (CechPic.tens L.lb M.lb) _ (inferInstanceAs (Fintype (Fin L.n × Fin M.n)))`.
+-/
 @[simp] theorem cls_tens (L M : FinLB X) : (L.tens M).cls = L.cls + M.cls :=
   @cls_ofFintype X (CechPic.tens L.lb M.lb) _ (inferInstanceAs (Fintype (Fin L.n × Fin M.n)))
 
+/- English proof (translation)
+The claim follows from `(CechPic.cls_eq_iff _ (Semi.LB.isLB_pull L.isLB f)).2 (L.lbIso_pull f)`.
+-/
 @[simp] theorem cls_pull (L : FinLB X) (f : Y ⟶ X) : (L.pull f).cls = CechPic.pull f L.cls :=
   (CechPic.cls_eq_iff _ (Semi.LB.isLB_pull L.isLB f)).2 (L.lbIso_pull f)
 
 def c1 (L : FinLB X) : PicSym X := Vert.c1 L.lb L.isLB
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem c1_eq (L : FinLB X) : L.c1 = firstChernPic L.cls := rfl
 
+/- English proof (translation)
+Simplify using `[c1_eq]`.
+-/
 @[simp] theorem firstChern_dual (L : FinLB X) : L.dual.c1 = -L.c1 := by simp [c1_eq]
 
+/- English proof (translation)
+Simplify using `[c1_eq]`.
+-/
 @[simp] theorem firstChern_trivial : (triv X).c1 = 0 := by simp [c1_eq]
 
+/- English proof (translation)
+Simplify using `[c1_eq]`.
+-/
 @[simp] theorem firstChernTensor (L M : FinLB X) : (L.tens M).c1 = L.c1 + M.c1 := by simp [c1_eq]
 
+/- English proof (translation)
+Rewrite using `[c1_eq, c1_eq, cls_eq_iff.2 h]`.
+-/
 theorem firstChernCongr {L M : FinLB X} (h : LBIso L.lb M.lb) : L.c1 = M.c1 := by
   rw [c1_eq, c1_eq, cls_eq_iff.2 h]
 
+/- English proof (translation)
+Simplify using `[c1_eq, picSymPull_c1Pic]`.
+-/
 @[simp] theorem pullback_firstChern (L : FinLB X) (f : Y ⟶ X) : picSymPull f L.c1 = (L.pull f).c1 := by
   simp [c1_eq, picSymPull_c1Pic]
 
+/- English proof (translation)
+Use `choose σ hσ using cls_surjective (X := X)`. Establish `h (L : FinLB X) : φ (σ L.cls) = φ L` using `hiso _ _ (cls_eq_iff.1 (hσ _))`. Set `f : Pic X →+ A` to `AddMonoidHom.mk' (fun c => φ (σ c)) fun a b => by`. Rewrite using `[← hadd, ← h ((σ a).tens (σ b)), cls_tens, hσ, hσ]`. Use `⟨symLift (f.comp (smallPicEquiv X).toAddMonoidHom), fun L => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Use `(symLift_symOf _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (σ (smallPicEquiv X (smallCls _ _))) = _`. Rewrite using `[smallPicEquiv_smallCls]`. Conclude with `h L`. Use `AlgHom.toLinearMap_injective (picSym_linearMap_ext fun n g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [AlgHom.toLinearMap_apply, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (symLift_symOf _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = φ (σ (smallPicEquiv X ((smallPicEquiv X).symm (g i))))`. Rewrite using `[AddEquiv.apply_symm_apply, ← hψ, c1_eq, hσ]`.
+-/
 theorem existsUnique_lift [CompactSpace X] {A : Type} [CommRing A] [Algebra ℚ A] (φ : FinLB X → A)
     (hiso : ∀ L M : FinLB X, LBIso L.lb M.lb → φ L = φ M) (hadd : ∀ L M, φ (L.tens M) = φ L + φ M) :
     ∃! ψ : PicSym X →ₐ[ℚ] A, ∀ L : FinLB X, ψ L.c1 = φ L := by
@@ -105,6 +160,9 @@ theorem existsUnique_lift [CompactSpace X] {A : Type} [CommRing A] [Algebra ℚ 
     change _ = φ (σ (smallPicEquiv X ((smallPicEquiv X).symm (g i))))
     rw [AddEquiv.apply_symm_apply, ← hψ, c1_eq, hσ]
 
+/- English proof (translation)
+Introduce `x` and use `by have hx : x ∈ _ := (span_prod_symOf (G := SmallPic X)).ge Submodule.mem_top refine (Submodule.span_le (p := (MvPolynomial.aeval (R := ℚ) (c1 (X := X))).range.toSubmodule)).2 ?_ hx rintro _ ⟨s, rfl⟩ refine Subalgebra.multiset_prod_mem _ fun y hy => ?_ obtain ⟨c, -, rfl⟩ := Mult …`.
+-/
 theorem aeval_firstChern_surjective [CompactSpace X] :
     Function.Surjective (MvPolynomial.aeval (R := ℚ) (c1 (X := X))) := fun x => by
   have hx : x ∈ _ := (span_prod_symOf (G := SmallPic X)).ge Submodule.mem_top
@@ -117,6 +175,13 @@ theorem aeval_firstChern_surjective [CompactSpace X] :
 
 end FinLB
 
+/- English proof (translation)
+Establish `h₁ : U.ι ''ᵁ W₀ ≤ V`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hW hy`. Establish `h₂ : U.ι ''ᵁ T ≤ G ⊓ V`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `e hy`. Establish `h₃ : G ⊓ U.ι ''ᵁ W₀ ≤ U.ι ''ᵁ T`. Introduce and unpack `_ ⟨hg, y, hy, rfl⟩`. Conclude with `⟨y, hG ⟨hg, hy⟩, rfl⟩`. Use `⟨_, h₁, b, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[Scheme.Opens.ι_appLE]`. Establish `h₄ : resG X h₂ a = resG X (U.ι.image_mono hT) b * resG X h₂ c` using `h`. Simplify `congrArg (resG X h₃) h₄` using `only [map_mul, resG_resG]`.
+-/
 theorem exists_mul_of_opens {X : Scheme.{0}} (U : X.Opens) {G V : X.Opens} {W₀ T : U.toScheme.Opens} (hT : T ≤ W₀)
     (hW : W₀ ≤ U.ι ⁻¹ᵁ V) (e : T ≤ U.ι ⁻¹ᵁ (G ⊓ V)) (hG : U.ι ⁻¹ᵁ G ⊓ W₀ ≤ T) {a c : Γ(X, G ⊓ V)}
     {b : Γ(U.toScheme, W₀)} (h : (U.ι.appLE _ _ e).hom a = resG _ hT b * (U.ι.appLE _ _ e).hom c) {x : U.toScheme}
@@ -183,17 +248,29 @@ variable {Z} (P P' P'' : VPair Z)
 
 def eqn (i : P.M.ι) {W : Z.X.Opens} (h : W ≤ Z.gen ⊓ P.M.U i) : Γ(Z.X, W) := resG Z.X h (coord P.t i)
 
+/- English proof (translation)
+The claim follows from `(P.isUnit i).map _`.
+-/
 theorem isUnit_eqn (i : P.M.ι) {W : Z.X.Opens} (h : W ≤ Z.gen ⊓ P.M.U i) : IsUnit (P.eqn i h) :=
   (P.isUnit i).map _
 
+/- English proof (translation)
+The claim follows from `resG_resG _ _ _`.
+-/
 @[simp] theorem resG_eqn (i : P.M.ι) {W W' : Z.X.Opens} (h : W ≤ Z.gen ⊓ P.M.U i) (h' : W' ≤ W) :
     resG Z.X h' (P.eqn i h) = P.eqn i (h'.trans h) := resG_resG _ _ _
 
+/- English proof (translation)
+The claim follows from `LB.coord_rel P.t i j hi hj hij`.
+-/
 theorem eqn_rel (i j : P.M.ι) {W : Z.X.Opens} (hi : W ≤ Z.gen ⊓ P.M.U i)
     (hj : W ≤ Z.gen ⊓ P.M.U j) (hij : W ≤ P.M.U i ⊓ P.M.U j) :
     P.eqn i hi = resG Z.X hij (P.M.g i j : Γ(Z.X, P.M.U i ⊓ P.M.U j)) * P.eqn j hj :=
   LB.coord_rel P.t i j hi hj hij
 
+/- English proof (translation)
+Rewrite using `[P.eqn_rel i j hi hj (h.trans hij), P'.eqn_rel i' j' hi' hj' (h.trans hij'), mul_mul_mul_comm, Units.val_mul, map_mul, val_res, val_res, resG_resG, resG_resG]`.
+-/
 theorem eqn_mul_rel (i j : P.M.ι) (i' j' : P'.M.ι) {W V : Z.X.Opens} (hi : W ≤ Z.gen ⊓ P.M.U i)
     (hj : W ≤ Z.gen ⊓ P.M.U j) (hi' : W ≤ Z.gen ⊓ P'.M.U i') (hj' : W ≤ Z.gen ⊓ P'.M.U j')
     (h : W ≤ V) (hij : V ≤ P.M.U i ⊓ P.M.U j) (hij' : V ≤ P'.M.U i' ⊓ P'.M.U j') :
@@ -246,6 +323,9 @@ def IsSum : Prop := ∀ (i : P.M.ι) (j : P'.M.ι) (k : P''.M.ι),
       resG Z.X inf_le_right u * (P.eqn i (inf_le_inf_left _ (inf_le_left.trans inf_le_left)) *
         P'.eqn j (inf_le_inf_left _ (inf_le_left.trans inf_le_right)))
 
+/- English proof (translation)
+Introduce `i j k` and use `⟨res (le_inf (inf_le_right.trans inf_le_left) (inf_le_left.trans inf_le_left)) (P.M.g k.1 i) * res (le_inf (inf_le_right.trans inf_le_right) (inf_le_left.trans inf_le_right)) (P'.M.g k.2 j), by refine Eq.trans ?_ (eqn_mul_rel P P' k.1 i k.2 j (inf_le_inf_left _ (inf_le_right.tran …`.
+-/
 theorem isSum_add : IsSum P P' (P.add P') := fun i j k =>
   ⟨res (le_inf (inf_le_right.trans inf_le_left)
     (inf_le_left.trans inf_le_left)) (P.M.g k.1 i) * res (le_inf (inf_le_right.trans inf_le_right)
@@ -255,6 +335,9 @@ theorem isSum_add : IsSum P P' (P.add P') := fun i j k =>
         _ _ _ _)
       exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (resG_eqn _ _ _ _) (resG_eqn _ _ _ _))⟩
 
+/- English proof (translation)
+Use `fun i j k => ⟨res (le_inf (inf_le_left.trans inf_le_right) (inf_le_left.trans inf_le_left)) (P.M.g j i), ?_⟩` and prove the remaining obligations. Rewrite using `[val_res, resG_resG, ← mul_assoc]`. Use `Eq.trans ?_ (congrArg (· * _) (P.eqn_rel j i (inf_le_inf_left _ (inf_le_left.trans inf_le_right)) _ _))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Z.X _ 1 = resG Z.X _ (coord P.t j) * resG Z.X _ ((P.isUnit j).unit⁻¹).val`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one, map_one]`.
+-/
 theorem isSum_neg : IsSum P P.neg (zero Z) := by
   refine fun i j k =>
     ⟨res (le_inf (inf_le_left.trans inf_le_right) (inf_le_left.trans inf_le_left)) (P.M.g j i), ?_⟩
@@ -264,10 +347,16 @@ theorem isSum_neg : IsSum P P.neg (zero Z) := by
   change resG Z.X _ 1 = resG Z.X _ (coord P.t j) * resG Z.X _ ((P.isUnit j).unit⁻¹).val
   rw [← map_mul, IsUnit.mul_val_inv, map_one, map_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨idIso P.M, idIso_isGen P.isLB, fun p q => P.eqn_rel p q _ _ _⟩`.
+-/
 theorem IsIsom.refl : IsIsom P P := ⟨idIso P.M, idIso_isGen P.isLB, fun p q => P.eqn_rel p q _ _ _⟩
 
 variable {P P'} in
 
+/- English proof (translation)
+Introduce `i _ k` and use `by obtain ⟨w, -, hw⟩ := H refine ⟨res (le_inf inf_le_right (inf_le_left.trans inf_le_left)) (Twist.isoUnit w k i), ?_⟩ have := congrArg (resG Z.X (inf_le_inf_left _ (le_inf inf_le_right (inf_le_left.trans inf_le_left)) : Z.gen ⊓ (P.M.U i ⊓ ⊤ ⊓ P'.M.U k) ≤ _)) (hw k i) simp only [ …`.
+-/
 theorem IsIsom.isSum (H : IsIsom P P') : IsSum P (zero Z) P' := fun i _ k => by
   obtain ⟨w, -, hw⟩ := H
   refine ⟨res (le_inf inf_le_right (inf_le_left.trans inf_le_left)) (Twist.isoUnit w k i), ?_⟩
@@ -277,6 +366,9 @@ theorem IsIsom.isSum (H : IsIsom P P') : IsSum P (zero Z) P' := fun i _ k => by
   refine this.trans (congrArg₂ (· * ·) (resG_resG _ _ _).symm ?_)
   exact (mul_one _).symm.trans (congrArg _ (map_one _).symm)
 
+/- English proof (translation)
+Introduce `i _ k` and use `⟨res (le_inf inf_le_right (inf_le_left.trans inf_le_left)) (P.M.g (f k) i), by rw [val_res, resG_resG] exact (P.eqn_rel (f k) i _ _ _).trans (congrArg _ ((mul_one _).symm.trans (congrArg _ (map_one _).symm)))⟩`.
+-/
 theorem isSum_ofCharts {n : ℕ} (f : Fin n → P.M.ι) (hf : ⨆ i, P.M.U (f i) = ⊤) :
     IsSum P (zero Z) (P.ofCharts f hf) := fun i _ k =>
   ⟨res (le_inf inf_le_right (inf_le_left.trans inf_le_left)) (P.M.g (f k) i), by
@@ -306,15 +398,24 @@ def comp (C : Z.Comp) : Model O where
 
 def compι (C : Z.Comp) : (Z.comp C).X ⟶ Z.X := C.opens.ι
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compι_str (C : Z.Comp) : Z.compι C ≫ Z.str = (Z.comp C).str := rfl
 
 instance : Fintype Z.Comp := @Fintype.ofFinite _ (IsNormalScheme.finite_irreducibleComponents Z.X)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent⟩`.
+-/
 theorem exists_comp (x : Z.X) : ∃ C : Z.Comp, x ∈ C.opens :=
   ⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent⟩
 
 variable {Z} in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x ∈ Z.X.basicOpen (Z.str.appTop ((Scheme.ΓSpecIso (.of O)).inv g)) ↔ _`. Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Both sides reduce to the same expression.
+-/
 theorem mem_basicOpen_const {x : Z.X} {g : O} : x ∈ Z.X.basicOpen (Z.const g) ↔ g ∉ (Z.str x).asIdeal := by
   change x ∈ Z.X.basicOpen (Z.str.appTop ((Scheme.ΓSpecIso (.of O)).inv g)) ↔ _
   rw [← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]
@@ -322,27 +423,45 @@ theorem mem_basicOpen_const {x : Z.X} {g : O} : x ∈ Z.X.basicOpen (Z.const g) 
 
 variable {Z} in
 
+/- English proof (translation)
+Use `⟨fun h => by_contra fun h' => h (PrimeSpectrum.ext (eq_maximalIdeal ((Z.str x).isPrime.isMaximal h'))), fun h h' => ?_⟩` and prove the remaining obligations. Conclude with `IsDiscreteValuationRing.not_a_field O ((congrArg PrimeSpectrum.asIdeal h').symm.trans h)`.
+-/
 theorem mem_gen_iff_eq_bot {x : Z.X} : x ∈ Z.gen ↔ (Z.str x).asIdeal = ⊥ := by
   refine ⟨fun h => by_contra fun h' => h (PrimeSpectrum.ext
     (eq_maximalIdeal ((Z.str x).isPrime.isMaximal h'))), fun h h' => ?_⟩
   exact IsDiscreteValuationRing.not_a_field O ((congrArg PrimeSpectrum.asIdeal h').symm.trans h)
 
+/- English proof (translation)
+Introduce `_ hx` and use `mem_basicOpen_const.2 (by rwa [mem_gen_iff_eq_bot.1 hx])`.
+-/
 theorem gen_le_basicOpen {g : O} (hg : g ≠ 0) : Z.gen ≤ Z.X.basicOpen (Z.const g) :=
   fun _ hx => mem_basicOpen_const.2 (by rwa [mem_gen_iff_eq_bot.1 hx])
 
+/- English proof (translation)
+The claim follows from `(Z.gen_le_basicOpen hg).antisymm fun _ hx h => mem_basicOpen_const.1 hx (h ▸ hm)`.
+-/
 theorem gen_eq_basicOpen {g : O} (hg : g ≠ 0) (hm : g ∈ maximalIdeal O) : Z.gen = Z.X.basicOpen (Z.const g) :=
   (Z.gen_le_basicOpen hg).antisymm fun _ hx h => mem_basicOpen_const.1 hx (h ▸ hm)
 
+/- English proof (translation)
+Rewrite using `[← resG_resG (Z.X.basicOpen_le (Z.const g)) (h.trans (Z.gen_le_basicOpen hg))]`. Conclude with `(Z.X.toRingedSpace.isUnit_res_basicOpen _).map _`.
+-/
 theorem isUnit_const {g : O} (hg : g ≠ 0) {V : Z.X.Opens} (h : V ≤ Z.gen) :
     IsUnit (resG Z.X (le_top : V ≤ ⊤) (Z.const g)) := by
   rw [← resG_resG (Z.X.basicOpen_le (Z.const g)) (h.trans (Z.gen_le_basicOpen hg))]
   exact (Z.X.toRingedSpace.isUnit_res_basicOpen _).map _
 
+/- English proof (translation)
+The claim follows from `have ⟨C, hC⟩ := Z.exists_comp x ⟨Z.compι C (genericPoint _), (Z.comp C).genericPoint_mem_gen, (genericPoint_specializes (show (Z.comp C).X from ⟨x, hC⟩)).map (Z.compι C).continuous⟩`.
+-/
 theorem exists_specializes (x : Z.X) : ∃ y ∈ Z.gen, y ⤳ x :=
   have ⟨C, hC⟩ := Z.exists_comp x
   ⟨Z.compι C (genericPoint _), (Z.comp C).genericPoint_mem_gen,
     (genericPoint_specializes (show (Z.comp C).X from ⟨x, hC⟩)).map (Z.compι C).continuous⟩
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun a ha => eq_zero_of_basicOpen_eq_bot a (eq_bot_iff.2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `Z.exists_specializes x`. Establish `hy' : y ∈ Z.X.basicOpen a` using `hyx.mem_open (Z.X.basicOpen a).isOpen hx`. Establish `: y ∈ Z.X.basicOpen (resG Z.X h a)` using `(Z.X.basicOpen_res a (homOfLE h).op).ge ⟨hW ⟨hy, Z.X.basicOpen_le a hy'⟩, hy'⟩`. Simplify using `[ha] at this`.
+-/
 theorem resG_injective {V W : Z.X.Opens} (h : W ≤ V) (hW : Z.gen ⊓ V ≤ W) : Function.Injective (resG Z.X h) := by
   refine (injective_iff_map_eq_zero _).2 fun a ha => eq_zero_of_basicOpen_eq_bot a (eq_bot_iff.2 fun x hx => ?_)
   obtain ⟨y, hy, hyx⟩ := Z.exists_specializes x
@@ -351,6 +470,11 @@ theorem resG_injective {V W : Z.X.Opens} (h : W ≤ V) (hW : Z.gen ⊓ V ≤ W) 
     (Z.X.basicOpen_res a (homOfLE h).op).ge ⟨hW ⟨hy, Z.X.basicOpen_le a hy'⟩, hy'⟩
   simp [ha] at this
 
+/- English proof (translation)
+Use `choose W hW b hx hb using h`. Take `⟨c, hc, -⟩` from `Z.X.sheaf.existsUnique_gluing' (fun x : V => W x.1 x.2) V (fun x => homOfLE (hW x.1 x.2)) (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'⟩, hx x hx'⟩) (fun x => b x.1 x.2) fun x y => Z.resG_injective inf_le_right le_rfl <| by`. Establish `h₁` using `congrArg (resG Z.X (inf_le_inf_left Z.gen (inf_le_left : W x.1 x.2 ⊓ W y.1 y.2 ≤ _))) (hb x.1 x.2)`. Establish `h₂` using `congrArg (resG Z.X (inf_le_inf_left Z.gen (inf_le_right : W x.1 x.2 ⊓ W y.1 y.2 ≤ _))) (hb y.1 y.2)`. Simplify using `only [resG_resG] at h₁ h₂`.
+
+Conclude with `(resG_resG _ _ _).trans (h₁.trans (h₂.symm.trans (resG_resG _ _ _).symm))`. Use `⟨c, Z.X.sheaf.eq_of_locally_eq' (fun x : V => Z.gen ⊓ W x.1 x.2) _ (fun x => homOfLE (inf_le_inf_left _ (hW x.1 x.2))) (fun x hx' => Opens.mem_iSup.2 ⟨⟨x, hx'.2⟩, hx'.1, hx x hx'.2⟩) _ _ fun x => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hb x.1 x.2)` and prove the remaining obligations. Rewrite using `[← hc x]`. Conclude with `(resG_resG _ _ _).trans (resG_resG _ _ _).symm`.
+-/
 theorem exists_extension {V : Z.X.Opens} (a : Γ(Z.X, Z.gen ⊓ V))
     (h : ∀ x ∈ V, ∃ (W : Z.X.Opens) (hW : W ≤ V) (b : Γ(Z.X, W)), x ∈ W ∧
       resG Z.X inf_le_right b = resG Z.X (inf_le_inf_left Z.gen hW) a) :
@@ -375,9 +499,15 @@ section Over
 variable {Z} {B : Model O} {f : B.X ⟶ Z.X} (hf : f ≫ Z.str = B.str)
 include hf
 
+/- English proof (translation)
+Rewrite using `[gen, ← Scheme.Hom.comp_preimage, hf]`. Both sides reduce to the same expression.
+-/
 theorem preimage_gen : f ⁻¹ᵁ Z.gen = B.gen := by
   rw [gen, ← Scheme.Hom.comp_preimage, hf]; rfl
 
+/- English proof (translation)
+Rewrite using `[Model.const, Model.const_eq, ← hf, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem appTop_const (g : O) : f.appTop (Z.const g) = B.const g := by
   rw [Model.const, Model.const_eq, ← hf, Scheme.Hom.comp_appTop]; rfl
 
@@ -409,12 +539,18 @@ def pull : VertDiv B where
 
 variable (P) in
 
+/- English proof (translation)
+Rewrite using `[eqn, LB.appLE_resG]`. Conclude with `(resG_resG _ _ _).trans (LB.resG_appLE f (LB.pull_inf_le f _ j) _ _)`.
+-/
 theorem eqn_pull (j : (P.pull hf).M.ι) {W : B.X.Opens} (h : W ≤ B.gen ⊓ (P.pull hf).M.U j) {V : Z.X.Opens}
     (hV : V ≤ Z.gen ⊓ P.M.U (j ⟨⟩)) (e : W ≤ f ⁻¹ᵁ V) :
     (P.pull hf).eqn j h = (f.appLE V W e).hom (P.eqn (j ⟨⟩) hV) := by
   rw [eqn, LB.appLE_resG]
   exact (resG_resG _ _ _).trans (LB.resG_appLE f (LB.pull_inf_le f _ j) _ _)
 
+/- English proof (translation)
+Introduce `i j k` and use `by obtain ⟨u, hu⟩ := H (i ⟨⟩) (j ⟨⟩) (k ⟨⟩) have e : (P.pull hf).M.U i ⊓ (P'.pull hf).M.U j ⊓ (P''.pull hf).M.U k ≤ f ⁻¹ᵁ (P.M.U (i ⟨⟩) ⊓ P'.M.U (j ⟨⟩) ⊓ P''.M.U (k ⟨⟩)) := inf_le_inf (inf_le_inf (LB.pull_U_le f i) (LB.pull_U_le f j)) (LB.pull_U_le f k) have e' : B.gen ⊓ ((P.pull …`.
+-/
 theorem IsSum.pull (H : IsSum P P' P'') : VertDiv.IsSum (P.pull hf) (P'.pull hf) (P''.pull hf) := fun i j k => by
   obtain ⟨u, hu⟩ := H (i ⟨⟩) (j ⟨⟩) (k ⟨⟩)
   have e : (P.pull hf).M.U i ⊓ (P'.pull hf).M.U j ⊓ (P''.pull hf).M.U k ≤
@@ -428,9 +564,17 @@ theorem IsSum.pull (H : IsSum P P' P'') : VertDiv.IsSum (P.pull hf) (P'.pull hf)
     eqn_pull _ hf j _ (inf_le_inf_left _ (inf_le_left.trans inf_le_right)) e', hu, map_mul, map_mul, LB.appLE_resG]
   exact congrArg (· * _) (LB.resG_appLE f e _ _).symm
 
+/- English proof (translation)
+Simplify using `using ((IsIsom.refl (zero Z)).isSum.pull hf).cls_eq`.
+-/
 @[simp] theorem cls_pull_zero : ((zero Z).pull hf).cls = 0 := by
   simpa using ((IsIsom.refl (zero Z)).isSum.pull hf).cls_eq
 
+/- English proof (translation)
+Rewrite using `[← VertDiv.cls_const, ← add_zero (VertDiv.const B g hg).cls, ← VertDiv.cls_zero B]`. Use `VertDiv.IsSum.cls_eq fun i j k => ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[eqn_pull _ hf k _ le_rfl (inf_le_inf (preimage_gen hf).ge (inf_le_right.trans (LB.pull_U_le f k)))]`. Express the relevant statement in the definitionally equal form `(f.appLE _ _ _).hom (resG _ _ (resG _ _ _)) = resG _ _ 1 * (resG _ _ (resG _ _ _) * resG _ _ 1)`. Rewrite using `[map_one, map_one, one_mul, mul_one, resG_resG, resG_resG, LB.appLE_resG, ← appTop_const hf]`.
+
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cls_pull_const (g : O) (hg : g ≠ 0) : ((const Z g hg).pull hf).cls = B.div g hg := by
   rw [← VertDiv.cls_const, ← add_zero (VertDiv.const B g hg).cls, ← VertDiv.cls_zero B]
   refine VertDiv.IsSum.cls_eq fun i j k => ⟨1, ?_⟩
@@ -441,6 +585,11 @@ theorem IsSum.pull (H : IsSum P P' P'') : VertDiv.IsSum (P.pull hf) (P'.pull hf)
 
 end Pull
 
+/- English proof (translation)
+Use `⟨⟨fun p => u p.1 p.2⟩, fun p q => ?_, hu⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `res _ (u p.1 p.2) = res _ _ * (res _ _)⁻¹ * res _ (u q.1 q.2)`. Rewrite using `[mul_right_comm, eq_mul_inv_iff_mul_eq]`. Use `Units.ext (Z.resG_injective inf_le_right le_rfl ?_)` and prove the remaining obligations. Establish `hp` using `congrArg (resG Z.X (inf_le_inf_left _ inf_le_left : Z.gen ⊓ (P'.M.U p.1 ⊓ P.M.U p.2 ⊓ (P'.M.U q.1 ⊓ P.M.U q.2)) ≤ _)) (hu p.1 p.2)`.
+
+Establish `hq` using `congrArg (resG Z.X (inf_le_inf_left _ inf_le_right : Z.gen ⊓ (P'.M.U p.1 ⊓ P.M.U p.2 ⊓ (P'.M.U q.1 ⊓ P.M.U q.2)) ≤ _)) (hu q.1 q.2)`. Simplify using `only [map_mul, resG_eqn, resG_resG] at hp hq`. Rewrite `hp` using `[P'.eqn_rel p.1 q.1 _ (inf_le_inf_left _ (inf_le_right.trans inf_le_left)) (inf_le_right.trans (inf_le_inf inf_le_left inf_le_left)), hq, P.eqn_rel p.2 q.2 _ (inf_le_inf_left _ (inf_le_right.trans inf_le_right)) (inf_le_right.trans (inf_le_inf inf_le_right inf_le_right)), ← mul_a …`. Simplify using `only [Units.val_mul, map_mul, val_res, resG_resG]`. Conclude with `(congrArg _ (resG_resG _ _ _)).trans (((P.isUnit_eqn _ _).mul_right_cancel hp).symm.trans (congrArg (· * _) (resG_resG _ _ _).symm))`.
+-/
 theorem isIsom_of_units (u : ∀ (p : P'.M.ι) (q : P.M.ι), Γ(Z.X, P'.M.U p ⊓ P.M.U q)ˣ)
     (hu : ∀ p q, P'.eqn p (inf_le_inf_left _ inf_le_left : Z.gen ⊓ (P'.M.U p ⊓ P.M.U q) ≤ _) =
       resG Z.X inf_le_right (u p q).val * P.eqn q (inf_le_inf_left _ inf_le_right)) : IsIsom P P' := by
@@ -461,6 +610,11 @@ theorem isIsom_of_units (u : ∀ (p : P'.M.ι) (q : P.M.ι), Γ(Z.X, P'.M.U p �
   exact (congrArg _ (resG_resG _ _ _)).trans (((P.isUnit_eqn _ _).mul_right_cancel hp).symm.trans
     (congrArg (· * _) (resG_resG _ _ _).symm))
 
+/- English proof (translation)
+Establish `hq` using `P.isUnit_eqn q (inf_le_inf_left _ inf_le_right : Z.gen ⊓ (P'.M.U p ⊓ P.M.U q) ≤ _)`. Take `⟨b, hb⟩` from `Z.exists_extension (P'.eqn p (inf_le_inf_left _ inf_le_left) * (hq.unit⁻¹).val) fun x hx => by`. Take `⟨C, hC⟩` from `Z.exists_comp x`. Take `⟨w, -, hw⟩` from `h C`. Establish `e₀ : (P'.pull (Z.compι_str C)).M.U (fun _ => p) ⊓ (P.pull (Z.compι_str C)).M.U (fun _ => q) ≤ Z.compι C ⁻¹ᵁ (P'.M.U p ⊓ P.M.U q)` using `inf_le_inf (LB.pull_U_le _ _) (LB.pull_U_le _ _)`.
+
+Establish `e : (Z.comp C).gen ⊓ ((P'.pull (Z.compι_str C)).M.U (fun _ => p) ⊓ (P.pull (Z.compι_str C)).M.U (fun _ => q)) ≤ Z.compι C ⁻¹ᵁ (Z.gen ⊓ (P'.M.U p ⊓ P.M.U q))` using `inf_le_inf (preimage_gen (Z.compι_str C)).ge e₀`. Use `(eqn_pull P' (Z.compι_str C) (fun _ => p) _ (inf_le_inf_left _ inf_le_left) e).symm.trans ((hw (fun _ => p) (fun _ => q)).trans (congrArg _ (eqn_pull P (Z.compι_str C) (fun _ => q) _ (inf_le_inf_left _ inf_le_right) e)))` as an intermediate fact. Take `⟨W, hW, b, hxW, hb⟩` from `exists_mul_of_opens C.opens inf_le_right e₀ e (inf_le_inf_right _ (preimage_gen (Z.compι_str C)).le) this (x := ⟨x, hC⟩) ⟨mem_pull.2 hx.1, mem_pull.2 hx.2⟩`. Conclude with `⟨W, hW, b, hxW, by rw [map_mul, hb, mul_assoc, ← map_mul, IsUnit.mul_val_inv, map_one, mul_one]⟩`. Conclude with `⟨b, by rw [hb, mul_assoc, IsUnit.val_inv_mul, mul_one]⟩`.
+-/
 theorem exists_ratio (h : ∀ C, ((P.pull (Z.compι_str C))).IsIsom (P'.pull (Z.compι_str C))) (p : P'.M.ι) (q : P.M.ι) :
     ∃ b : Γ(Z.X, P'.M.U p ⊓ P.M.U q),
       P'.eqn p (inf_le_inf_left _ inf_le_left : Z.gen ⊓ (P'.M.U p ⊓ P.M.U q) ≤ _) =
@@ -482,6 +636,11 @@ theorem exists_ratio (h : ∀ C, ((P.pull (Z.compι_str C))).IsIsom (P'.pull (Z.
     exact ⟨W, hW, b, hxW, by rw [map_mul, hb, mul_assoc, ← map_mul, IsUnit.mul_val_inv, map_one, mul_one]⟩
   exact ⟨b, by rw [hb, mul_assoc, IsUnit.val_inv_mul, mul_one]⟩
 
+/- English proof (translation)
+Use `choose b hb using exists_ratio fun C => VertDiv.cls_eq_iff.1 (h C)`. Use `choose b' hb' using exists_ratio fun C => VertDiv.cls_eq_iff.1 (h C).symm`. Use `isIsom_of_units (fun p q => Units.mkOfMulEqOne (b p q) (resG Z.X (inf_comm _ _).le (b' q p)) (Z.resG_injective inf_le_right le_rfl ?_)) hb` and prove the remaining obligations. Establish `h₁` using `congrArg (resG Z.X (inf_le_inf_left Z.gen (inf_comm (P'.M.U p) (P.M.U q)).le)) (hb' q p)`. Simplify using `only [map_mul, resG_eqn, resG_resG] at h₁`.
+
+Use `(P'.isUnit_eqn p (inf_le_inf_left _ inf_le_left)).mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[map_one, one_mul, map_mul, resG_resG, mul_assoc, ← h₁]`. Conclude with `(hb p q).symm`.
+-/
 theorem isIsom_of_comp (h : ∀ C, (P.pull (Z.compι_str C)).cls = (P'.pull (Z.compι_str C)).cls) : IsIsom P P' := by
   choose b hb using exists_ratio fun C => VertDiv.cls_eq_iff.1 (h C)
   choose b' hb' using exists_ratio fun C => VertDiv.cls_eq_iff.1 (h C).symm
@@ -498,6 +657,9 @@ variable (P) in
 def toProd : SmallPic Z.X × ∀ C, (Z.comp C).VDivZ :=
   (smallCls P.M P.isLB, fun C => (P.pull (Z.compι_str C)).cls)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => isIsom_of_comp (congrFun (congrArg Prod.snd h)), fun h => Prod.ext ((smallCls_eq_iff _ _).2 ⟨h.choose, h.choose_spec.1⟩) (funext fun C => by simpa [toProd] using (h.isSum.pull (Z.compι_str C)).cls_eq.symm)⟩`.
+-/
 theorem toProd_eq_iff : P.toProd = P'.toProd ↔ IsIsom P P' :=
   ⟨fun h => isIsom_of_comp (congrFun (congrArg Prod.snd h)), fun h => Prod.ext
     ((smallCls_eq_iff _ _).2 ⟨h.choose, h.choose_spec.1⟩) (funext fun C => by
@@ -505,17 +667,26 @@ theorem toProd_eq_iff : P.toProd = P'.toProd ↔ IsIsom P P' :=
 
 variable (P P') in
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_add (smallPicEquiv Z.X).symm (cls _ P.isLB) (cls _ P'.isLB)) (funext fun C => ((isSum_add P P').pull (Z.compι_str C)).cls_eq)`.
+-/
 theorem toProd_add : (P.add P').toProd = P.toProd + P'.toProd :=
   Prod.ext (map_add (smallPicEquiv Z.X).symm (cls _ P.isLB) (cls _ P'.isLB))
     (funext fun C => ((isSum_add P P').pull (Z.compι_str C)).cls_eq)
 
 variable (Z) in
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_zero (smallPicEquiv Z.X).symm) (funext fun C => cls_pull_zero (Z.compι_str C))`.
+-/
 theorem toProd_zero : (zero Z).toProd = 0 :=
   Prod.ext (map_zero (smallPicEquiv Z.X).symm) (funext fun C => cls_pull_zero (Z.compι_str C))
 
 variable (P) in
 
+/- English proof (translation)
+The claim follows from `Prod.ext ((congrArg (smallPicEquiv Z.X).symm (cls_dual P.isLB _)).trans (map_neg _ _)) (funext fun C => eq_neg_of_add_eq_zero_right ((P.isSum_neg.pull (Z.compι_str C)).cls_eq.symm.trans (cls_pull_zero _)))`.
+-/
 theorem toProd_neg : P.neg.toProd = -P.toProd :=
   Prod.ext ((congrArg (smallPicEquiv Z.X).symm (cls_dual P.isLB _)).trans (map_neg _ _)) (funext fun C =>
     eq_neg_of_add_eq_zero_right ((P.isSum_neg.pull (Z.compι_str C)).cls_eq.symm.trans (cls_pull_zero _)))
@@ -542,22 +713,42 @@ variable (P) in
 
 def cls : Z.VDivZ := ⟨P.toProd, P, rfl⟩
 
+/- English proof (translation)
+Introduce `⟨_, P, h⟩` and use `⟨P, Subtype.ext h⟩`.
+-/
 theorem cls_surjective : Function.Surjective (cls (Z := Z)) := fun ⟨_, P, h⟩ => ⟨P, Subtype.ext h⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext_iff.trans toProd_eq_iff`.
+-/
 theorem cls_eq_iff : P.cls = P'.cls ↔ IsIsom P P' := Subtype.ext_iff.trans toProd_eq_iff
 
 variable (P P') in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (P.toProd_add P')`.
+-/
 @[simp] theorem cls_add : (P.add P').cls = P.cls + P'.cls := Subtype.ext (P.toProd_add P')
 
 variable (Z) in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (toProd_zero Z)`.
+-/
 @[simp] theorem cls_zero : (zero Z).cls = 0 := Subtype.ext (toProd_zero Z)
 
 variable (P) in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext P.toProd_neg`.
+-/
 @[simp] theorem cls_neg : P.neg.cls = -P.cls := Subtype.ext P.toProd_neg
 
+/- English proof (translation)
+Rewrite using `[← cls_add]`. Use `⟨fun h => cls_eq_iff.2 (isIsom_of_comp fun C => (h.pull _).cls_eq.trans ((isSum_add P P').pull _).cls_eq.symm), fun h i j k => ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `cls_eq_iff.1 h.symm`. Use `⟨res (inf_comm _ _).le (Twist.isoUnit w k (i, j)), ?_⟩` and prove the remaining obligations. Use `congrArg (resG Z.X (inf_le_inf_left Z.gen (inf_comm (P.M.U i ⊓ P'.M.U j) (P''.M.U k)).le)) (hw k (i, j))` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, resG_eqn, resG_eqn]`. Use `this.trans (congrArg₂ (· * ·) ((resG_resG _ _ _).trans (resG_resG _ _ _).symm) ?_)` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (resG_eqn _ _ _ _) (resG_eqn _ _ _ _))`.
+-/
 theorem isSum_iff : IsSum P P' P'' ↔ P''.cls = P.cls + P'.cls := by
   rw [← cls_add]
   refine ⟨fun h => cls_eq_iff.2 (isIsom_of_comp fun C =>
@@ -569,6 +760,9 @@ theorem isSum_iff : IsSum P P' P'' ↔ P''.cls = P.cls + P'.cls := by
   refine this.trans (congrArg₂ (· * ·) ((resG_resG _ _ _).trans (resG_resG _ _ _).symm) ?_)
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (resG_eqn _ _ _ _) (resG_eqn _ _ _ _))
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `cls_surjective D`. Take `⟨n, f, hf⟩` from `FinLB.exists_charts P.isLB`. Conclude with `⟨FinLB.ofCharts P.M P.isLB f hf, _, (P.ofCharts f hf).isUnit, (isSum_iff.1 (P.isSum_ofCharts f hf)).trans (by simp)⟩`.
+-/
 theorem exists_finLB (D : Z.VDivZ) : ∃ (M : FinLB Z.X) (t : Γ(toMod M.lb, Z.gen)) (h : ∀ i, IsUnit (coord t i)),
     cls ⟨M.lb, M.isLB, t, h⟩ = D := by
   obtain ⟨P, rfl⟩ := cls_surjective D
@@ -587,6 +781,9 @@ def vLift : Z.VDivZ →+ A :=
   AddMonoidHom.mk' (fun D => φ (VPair.cls_surjective D).choose) fun D D' => h _ _ _ (VPair.isSum_iff.2 (by
     simp only [(VPair.cls_surjective _).choose_spec]))
 
+/- English proof (translation)
+Establish `h₀ : φ (.zero Z) = 0` using `by simpa using h _ _ _ (VPair.IsIsom.refl (.zero Z)).isSum`. Conclude with `(h P _ _ (VPair.cls_eq_iff.1 (VPair.cls_surjective P.cls).choose_spec.symm).isSum).trans (by simp [h₀])`.
+-/
 @[simp] theorem vLift_cls (P : VPair Z) : vLift φ h P.cls = φ P := by
   have h₀ : φ (.zero Z) = 0 := by simpa using h _ _ _ (VPair.IsIsom.refl (.zero Z)).isSum
   exact (h P _ _ (VPair.cls_eq_iff.1 (VPair.cls_surjective P.cls).choose_spec.symm).isSum).trans (by simp [h₀])
@@ -603,25 +800,46 @@ def div (g : O) (hg : g ≠ 0) : Z.VDivZ := (VPair.const Z g hg).cls
 
 variable {Z}
 
+/- English proof (translation)
+The claim follows from `smallPicEquiv_smallCls _ _`.
+-/
 @[simp] theorem vCls_cls (P : VPair Z) : Z.vCls P.cls = cls P.M P.isLB := smallPicEquiv_smallCls _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vRes_cls (P : VPair Z) (C : Z.Comp) : Z.vRes C P.cls = (P.pull (Z.compι_str C)).cls := rfl
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `VPair.cls_surjective D`. Take `⟨P', rfl⟩` from `VPair.cls_surjective D'`. Conclude with `VPair.cls_eq_iff.2 (VPair.isIsom_of_comp fun C => by simpa only [vRes_cls] using h C)`.
+-/
 theorem vDivZ_ext {D D' : Z.VDivZ} (h : ∀ C, Z.vRes C D = Z.vRes C D') : D = D' := by
   obtain ⟨P, rfl⟩ := VPair.cls_surjective D
   obtain ⟨P', rfl⟩ := VPair.cls_surjective D'
   exact VPair.cls_eq_iff.2 (VPair.isIsom_of_comp fun C => by simpa only [vRes_cls] using h C)
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `VPair.cls_surjective D`. Rewrite using `[vRes_cls, VertDiv.vCls_cls, vCls_cls]`. Both sides reduce to the same expression.
+-/
 theorem vCls_vRes (D : Z.VDivZ) (C : Z.Comp) : (Z.comp C).vCls (Z.vRes C D) = pull (Z.compι C) (Z.vCls D) := by
   obtain ⟨P, rfl⟩ := VPair.cls_surjective D
   rw [vRes_cls, VertDiv.vCls_cls, vCls_cls]
   rfl
 
+/- English proof (translation)
+The claim follows from `(vRes_cls _ C).trans (VPair.cls_pull_const (Z.compι_str C) g hg)`.
+-/
 @[simp] theorem vRes_div (g : O) (hg : g ≠ 0) (C : Z.Comp) : Z.vRes C (Z.div g hg) = (Z.comp C).div g hg :=
   (vRes_cls _ C).trans (VPair.cls_pull_const (Z.compι_str C) g hg)
 
+/- English proof (translation)
+The claim follows from `vCls_cls _`.
+-/
 @[simp] theorem vCls_div (g : O) (hg : g ≠ 0) : Z.vCls (Z.div g hg) = 0 := vCls_cls _
 
+/- English proof (translation)
+The claim follows from `vDivZ_ext fun C => by rw [map_nsmul, vRes_div, vRes_div, Model.div_eq_addVal_smul _ hϖ]`.
+-/
 theorem div_eq_addVal_smul {ϖ g : O} (hϖ : Irreducible ϖ) (hg : g ≠ 0) :
     Z.div g hg = (IsDiscreteValuationRing.addVal O g).toNat • Z.div ϖ hϖ.ne_zero :=
   vDivZ_ext fun C => by rw [map_nsmul, vRes_div, vRes_div, Model.div_eq_addVal_smul _ hϖ]
@@ -629,9 +847,15 @@ theorem div_eq_addVal_smul {ϖ g : O} (hϖ : Irreducible ϖ) (hg : g ≠ 0) :
 def vPull {B : Model O} {f : B.X ⟶ Z.X} (hf : f ≫ Z.str = B.str) : Z.VDivZ →+ B.VDivZ :=
   vLift (fun P => (P.pull hf).cls) fun _ _ _ h => (h.pull hf).cls_eq
 
+/- English proof (translation)
+The claim follows from `vLift_cls _ _ P`.
+-/
 @[simp] theorem vPull_cls {B : Model O} {f : B.X ⟶ Z.X} (hf : f ≫ Z.str = B.str) (P : VPair Z) :
     vPull hf P.cls = (P.pull hf).cls := vLift_cls _ _ P
 
+/- English proof (translation)
+Use `(Submodule.span_le (p := (symDeg (SmallPic Y) n).comap (picSymPull f).toLinearMap)).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `Submodule.subset_span ⟨fun i => smallPull f (g i), by simp [picSymPull]⟩`.
+-/
 theorem picSymPull_mem_symDeg {X Y : Scheme.{0}} (f : Y ⟶ X) {n : ℕ} {x : PicSym X} (hx : x ∈ symDeg (SmallPic X) n) :
     picSymPull f x ∈ symDeg (SmallPic Y) n := by
   refine (Submodule.span_le (p := (symDeg (SmallPic Y) n).comap (picSymPull f).toLinearMap)).2 ?_ hx
@@ -644,12 +868,18 @@ def vDeg (d : ℕ) : Z.VDivZ →+ (PicSym Z.X →ₗ[ℚ] ℚ) :=
   ∑ C ∈ Finset.univ.filter fun C : Z.Comp => (Z.comp C).relDim = d,
     (LinearMap.lcomp ℚ ℚ (picSymPull (Z.compι C)).toLinearMap).toAddMonoidHom.comp ((Z.comp C).vDeg.comp (Z.vRes C))
 
+/- English proof (translation)
+Rewrite using `[vDeg, AddMonoidHom.finset_sum_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem vDeg_apply (d : ℕ) (D : Z.VDivZ) (x : PicSym Z.X) : Z.vDeg d D x =
     ∑ C ∈ Finset.univ.filter fun C : Z.Comp => (Z.comp C).relDim = d,
       (Z.comp C).vDeg (Z.vRes C D) (picSymPull (Z.compι C) x) := by
   rw [vDeg, AddMonoidHom.finset_sum_apply, LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[vDeg_apply, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(Model.vDeg_eq_zero _ (Ne.symm h) (picSymPull_mem_symDeg _ hx)).symm`.
+-/
 theorem vDeg_of_mem {d : ℕ} (D : Z.VDivZ) {x : PicSym Z.X} (hx : x ∈ symDeg (SmallPic Z.X) d) :
     Z.vDeg d D x = ∑ C, (Z.comp C).vDeg (Z.vRes C D) (picSymPull (Z.compι C) x) := by
   rw [vDeg_apply, Finset.sum_filter]
@@ -658,12 +888,18 @@ theorem vDeg_of_mem {d : ℕ} (D : Z.VDivZ) {x : PicSym Z.X} (hx : x ∈ symDeg 
   · rfl
   · exact (Model.vDeg_eq_zero _ (Ne.symm h) (picSymPull_mem_symDeg _ hx)).symm
 
+/- English proof (translation)
+Rewrite using `[vDeg_apply]`. Conclude with `Finset.sum_eq_zero fun C hC => Model.vDeg_eq_zero _ ((Finset.mem_filter.1 hC).2 ▸ hn) (picSymPull_mem_symDeg _ hx)`.
+-/
 theorem vDeg_eq_zero {d n : ℕ} (D : Z.VDivZ) (hn : n ≠ d) {x : PicSym Z.X} (hx : x ∈ symDeg (SmallPic Z.X) n) :
     Z.vDeg d D x = 0 := by
   rw [vDeg_apply]
   exact Finset.sum_eq_zero fun C hC => Model.vDeg_eq_zero _ ((Finset.mem_filter.1 hC).2 ▸ hn)
     (picSymPull_mem_symDeg _ hx)
 
+/- English proof (translation)
+Rewrite using `[vDeg_apply, Finset.filter_true_of_mem fun C _ => h C]`.
+-/
 theorem vDeg_of_relDim {d : ℕ} (h : ∀ C, (Z.comp C).relDim = d) (D : Z.VDivZ) (x : PicSym Z.X) :
     Z.vDeg d D x = ∑ C, (Z.comp C).vDeg (Z.vRes C D) (picSymPull (Z.compι C) x) := by
   rw [vDeg_apply, Finset.filter_true_of_mem fun C _ => h C]

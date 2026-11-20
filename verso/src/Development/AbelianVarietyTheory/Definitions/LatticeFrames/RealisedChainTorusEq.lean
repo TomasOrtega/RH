@@ -41,28 +41,48 @@ structure SameHost (D D' : D7) : Prop where
     (D.host.art (ZMod.unitOfCoprime p h)).1 = (D'.host.art (ZMod.unitOfCoprime p h')).1 ∧
       (D.R.iotaInv (D.host.art (ZMod.unitOfCoprime p h)).2).val = (D'.R.iotaInv (D'.host.art (ZMod.unitOfCoprime p h')).2).val
 
+/- English proof (translation)
+Use `show D.host.QS * D.host.q * D.host.d = D'.host.QS * D'.host.q * D'.host.d`. Rewrite using `[h.QS_eq, h.q_eq, h.d_eq]`.
+-/
 theorem SameHost.condN_eq {D D' : D7} (h : SameHost D D') : D.host.condN = D'.host.condN := by
   show D.host.QS * D.host.q * D.host.d = D'.host.QS * D'.host.q * D'.host.d
   rw [h.QS_eq, h.q_eq, h.d_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+-/
 theorem SameHost.refl (D : D7) : SameHost D D := ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.symm, h.2.symm, h.3.symm, h.4.symm, h.5.symm, h.6.symm, h.7.symm, h.8.symm, h.9.symm, fun p k k' => ⟨(h.art_eq p k' k).1.symm, (h.art_eq p k' k).2.symm⟩⟩`.
+-/
 theorem SameHost.symm {D D' : D7} (h : SameHost D D') : SameHost D' D :=
   ⟨h.1.symm, h.2.symm, h.3.symm, h.4.symm, h.5.symm, h.6.symm, h.7.symm, h.8.symm, h.9.symm,
     fun p k k' => ⟨(h.art_eq p k' k).1.symm, (h.art_eq p k' k).2.symm⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.trans h'.1, h.2.trans h'.2, h.3.trans h'.3, h.4.trans h'.4, h.5.trans h'.5, h.6.trans h'.6, h.7.trans h'.7, h.8.trans h'.8, h.9.trans h'.9, fun p k k'' => have k' : Nat.Coprime p D'.host.condN := h.condN_eq ▸ k ⟨(h.art_eq p k k').1.trans (h'.art_eq p k' k'').1, (h.art_eq p k …`.
+-/
 theorem SameHost.trans {D D' D'' : D7} (h : SameHost D D') (h' : SameHost D' D'') : SameHost D D'' :=
   ⟨h.1.trans h'.1, h.2.trans h'.2, h.3.trans h'.3, h.4.trans h'.4, h.5.trans h'.5, h.6.trans h'.6, h.7.trans h'.7, h.8.trans h'.8,
     h.9.trans h'.9, fun p k k'' =>
       have k' : Nat.Coprime p D'.host.condN := h.condN_eq ▸ k
       ⟨(h.art_eq p k k').1.trans (h'.art_eq p k' k'').1, (h.art_eq p k k').2.trans (h'.art_eq p k' k'').2⟩⟩
 
+/- English proof (translation)
+Establish `hm : (t : D.R.A).val ∈ D'.host.TT.image Formalism.HC.Frame.A.val` using `h.TT_eq ▸ Finset.mem_image_of_mem _ t.2`. Take `⟨s, hs, e⟩` from `Finset.mem_image.1 hm`. Conclude with `⟨⟨s, hs⟩, e.symm⟩`.
+-/
 theorem SameHost.exists_top {D D' : D7} (h : SameHost D D') (t : D.host.TT) :
     ∃ t' : D'.host.TT, (t : D.R.A).val = (t' : D'.R.A).val := by
   have hm : (t : D.R.A).val ∈ D'.host.TT.image Formalism.HC.Frame.A.val := h.TT_eq ▸ Finset.mem_image_of_mem _ t.2
   obtain ⟨s, hs, e⟩ := Finset.mem_image.1 hm
   exact ⟨⟨s, hs⟩, e.symm⟩
 
+/- English proof (translation)
+Introduce `τ τ' t t' h h' e e' ht`. Establish `h1 : t = t'` using `Subtype.ext (Formalism.HC.Frame.A.val_injective _ ht)`. Substitute `h1` using the available equality. Establish `h2 : τ = τ'` using `D.eTau.injective (Subtype.ext (e.trans e'.symm))`. Substitute `h2` using the available equality.
+
+Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem SameTops.refl (D : D7) : SameTops D D := by
   intro τ τ' t t' h h' e e' ht
   have h1 : t = t' := Subtype.ext (Formalism.HC.Frame.A.val_injective _ ht)
@@ -76,9 +96,17 @@ structure SameWord (D : D7) (u : D.what₂.Word) (D' : D7) (u' : D'.what₂.Word
   unitVector_val_eq : D.host.u0.val = D'.host.u0.val
   hc_eq : ∀ (τ : D.what₂.Tau) (τ' : D'.what₂.Tau), HEq (D.eTau τ) (D'.eTau τ') → HEq (D.hcW u τ) (D'.hcW u' τ')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SameHost.refl D, rfl, fun τ τ' h => by rw [D.eTau.injective (eq_of_heq h)]⟩`.
+-/
 theorem SameWord.refl (D : D7) (u : D.what₂.Word) : SameWord D u D u :=
   ⟨SameHost.refl D, rfl, fun τ τ' h => by rw [D.eTau.injective (eq_of_heq h)]⟩
 
+/- English proof (translation)
+Establish `key : ∀ (R R' : Ranks), R = R' → ∀ g : R.Psi, ∃ g' : R'.Psi, HEq g g'`. Introduce and unpack `R _ rfl g`. Conclude with `⟨g, HEq.rfl⟩`. Take `⟨g', hg⟩` from `key _ _ h.host.R_eq (D.eTau τ)`. Establish `e : HEq (D.eTau τ) (D'.eTau (D'.eTau.symm g'))` using `by rw [Equiv.apply_symm_apply]; exact hg`.
+
+Conclude with `⟨_, e, h.hc_eq _ _ e⟩`.
+-/
 theorem SameWord.exists_place {D D' : D7} {u : D.what₂.Word} {u' : D'.what₂.Word} (h : SameWord D u D' u') (τ : D.what₂.Tau) :
     ∃ τ' : D'.what₂.Tau, HEq (D.eTau τ) (D'.eTau τ') ∧ HEq (D.hcW u τ) (D'.hcW u' τ') := by
   have key : ∀ (R R' : Ranks), R = R' → ∀ g : R.Psi, ∃ g' : R'.Psi, HEq g g' := by
@@ -88,6 +116,13 @@ theorem SameWord.exists_place {D D' : D7} {u : D.what₂.Word} {u' : D'.what₂.
   have e : HEq (D.eTau τ) (D'.eTau (D'.eTau.symm g')) := by rw [Equiv.apply_symm_apply]; exact hg
   exact ⟨_, e, h.hc_eq _ _ e⟩
 
+/- English proof (translation)
+Establish `key : ∀ (R R' : Ranks), R = R' → ∀ (g : R.Psi) (g' : R'.Psi) (t : R.A) (t' : R'.A), (g : R.GG) = R.tau1 t → (g' : R'.GG) = R'.tau1 t' → t.val = t'.val → HEq g g'`. Introduce and unpack `R _ rfl g g' t t' e e' ht`. Take `rfl : t = t'` from `Formalism.HC.Frame.A.val_injective _ ht`. Conclude with `heq_of_eq (Subtype.ext (e.trans e'.symm))`. Establish `key2 : ∀ (R R' : Ranks), R = R' → ∀ (p : HCParam R) (p' : HCParam R'), HEq p p' → ∀ (k : 0 < R.k) (k' : 0 < R'.k), p.u ⟨0, k⟩ = p'.u ⟨0, k'⟩ ∧ p.u ⟨R.k - 1, by omega⟩ = p'.u ⟨R'.k - 1, by omega⟩`.
+
+Introduce and unpack `R _ rfl p p' e k k'`. Take `rfl` from `eq_of_heq e`. Conclude with `⟨rfl, rfl⟩`. Introduce `τ τ' t t' k k' e e' ht`. Use `key2 _ _ h.host.R_eq _ _ (h.hc_eq τ τ' (key _ _ h.host.R_eq _ _ _ _ e e' ht)) k k'` as an intermediate fact.
+
+Rewrite `this` using `[D.hcW_first u τ k, D'.hcW_first u' τ' k', D.hcW_last u τ k, D'.hcW_last u' τ' k']`. Conclude with `this`.
+-/
 theorem SameWord.sameTops {D D' : D7} {u : D.what₂.Word} {u' : D'.what₂.Word} (h : SameWord D u D' u') : SameTops D D' := by
   have key : ∀ (R R' : Ranks), R = R' → ∀ (g : R.Psi) (g' : R'.Psi) (t : R.A) (t' : R'.A),
       (g : R.GG) = R.tau1 t → (g' : R'.GG) = R'.tau1 t' → t.val = t'.val → HEq g g' := by
@@ -116,6 +151,9 @@ structure Pts where
 
 namespace Pts
 
+/- English proof (translation)
+Introduce `y` and use `⟨y, le_rfl, h y⟩`.
+-/
 theorem ne_of_forall {Ix : ℝ → Type} (h : ∀ x, Nonempty (Ix x)) : ∀ y, ∃ x, y ≤ x ∧ Nonempty (Ix x) :=
   fun y => ⟨y, le_rfl, h y⟩
 
@@ -154,6 +192,9 @@ def Covered : Prop :=
 
 variable {F}
 
+/- English proof (translation)
+Take `⟨x₀, h⟩` from `h`. Use `⟨max x₀ x₁, fun x hx i₀ u₀ hu => ?_⟩` and prove the remaining obligations. Take `⟨i, h1, h2, u, h3⟩` from `h x (le_of_max_le_left hx) i₀ u₀ hu`. Conclude with `⟨i, h1, h2, u, hq x (le_of_max_le_right hx) i u h3⟩`.
+-/
 theorem SomeAt.mono {Q Q' : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.SomeAt Q) (x₁ : ℝ)
     (hq : ∀ x, x₁ ≤ x → ∀ i u, Q x (F.D x i) u → Q' x (F.D x i) u) : F.SomeAt Q' := by
   obtain ⟨x₀, h⟩ := h
@@ -161,6 +202,9 @@ theorem SomeAt.mono {Q Q' : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.
   obtain ⟨i, h1, h2, u, h3⟩ := h x (le_of_max_le_left hx) i₀ u₀ hu
   exact ⟨i, h1, h2, u, hq x (le_of_max_le_right hx) i u h3⟩
 
+/- English proof (translation)
+Take `⟨x₀, h⟩` from `h`. Use `⟨x₀, fun x hx ⟨i₀⟩ => ?_⟩` and prove the remaining obligations. Take `⟨i, -, -, u, hu⟩` from `h x hx i₀ 0 (F.D x i₀).R.ord_pos`. Conclude with `⟨i, u, hu⟩`.
+-/
 theorem SomeAt.exists {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.SomeAt Q) :
     ∃ x₀ : ℝ, ∀ x, x₀ ≤ x → Nonempty (F.Ix x) → ∃ (i : F.Ix x) (u : (F.D x i).what₂.Word), Q x (F.D x i) u := by
   obtain ⟨x₀, h⟩ := h
@@ -168,18 +212,27 @@ theorem SomeAt.exists {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.S
   obtain ⟨i, -, -, u, hu⟩ := h x hx i₀ 0 (F.D x i₀).R.ord_pos
   exact ⟨i, u, hu⟩
 
+/- English proof (translation)
+Take `⟨x₀, h⟩` from `h.exists`. Take `⟨x, hx, hne⟩` from `F.Ix_ne (max x₀ y)`. Conclude with `⟨x, le_of_max_le_right hx, h x (le_of_max_le_left hx) hne⟩`.
+-/
 theorem SomeAt.exists_ge {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.SomeAt Q) (y : ℝ) :
     ∃ x, y ≤ x ∧ ∃ (i : F.Ix x) (u : (F.D x i).what₂.Word), Q x (F.D x i) u := by
   obtain ⟨x₀, h⟩ := h.exists
   obtain ⟨x, hx, hne⟩ := F.Ix_ne (max x₀ y)
   exact ⟨x, le_of_max_le_right hx, h x (le_of_max_le_left hx) hne⟩
 
+/- English proof (translation)
+Take `⟨x₀, h⟩` from `h`. Use `⟨x₀, fun x hx i₀ u₀ hu => ?_⟩` and prove the remaining obligations. Take `⟨i, h1, h2, -⟩` from `h x hx i₀ u₀ hu`. Conclude with `⟨i, h1, h2⟩`.
+-/
 theorem SomeAt.covered {Q : ℝ → ∀ D : D7, D.what₂.Word → Prop} (h : F.SomeAt Q) : F.Covered := by
   obtain ⟨x₀, h⟩ := h
   refine ⟨x₀, fun x hx i₀ u₀ hu => ?_⟩
   obtain ⟨i, h1, h2, -⟩ := h x hx i₀ u₀ hu
   exact ⟨i, h1, h2⟩
 
+/- English proof (translation)
+Take `⟨x₀, h⟩` from `h`. Take `⟨x₁, hc⟩` from `hc`. Use `⟨max x₀ x₁, fun x hx i₀ u₀ hu => ?_⟩` and prove the remaining obligations. Take `⟨i, h1, h2⟩` from `hc x (le_of_max_le_right hx) i₀ u₀ hu`. Conclude with `⟨i, h1, h2, h x (le_of_max_le_left hx) i⟩`.
+-/
 theorem RKAll.rkWin (h : F.RKAll) (hc : F.Covered) : F.RKWin := by
   obtain ⟨x₀, h⟩ := h
   obtain ⟨x₁, hc⟩ := hc
@@ -187,30 +240,48 @@ theorem RKAll.rkWin (h : F.RKAll) (hc : F.Covered) : F.RKWin := by
   obtain ⟨i, h1, h2⟩ := hc x (le_of_max_le_right hx) i₀ u₀ hu
   exact ⟨i, h1, h2, h x (le_of_max_le_left hx) i⟩
 
+/- English proof (translation)
+Take `⟨CR, CT, h⟩` from `h`. Conclude with `h.mono 0 fun _ _ _ _ h => h.2`.
+-/
 theorem RKRoom.rkWin {ε : ℝ} (h : F.RKRoom ε) : F.RKWin := by
   obtain ⟨CR, CT, h⟩ := h
   exact h.mono 0 fun _ _ _ _ h => h.2
 
+/- English proof (translation)
+Take `⟨CR, CT, h⟩` from `h`. Take `⟨x₁, hT⟩` from `hT`. Conclude with `⟨CR, CT, h.mono x₁ fun x hx i u h => ⟨_, u, hT x hx i, SameWord.refl _ u, h.1, h.2⟩⟩`.
+-/
 theorem RKRoom.over {ε : ℝ} {Tr : ℝ → D7 → Prop} (h : F.RKRoom ε) (hT : F.Within Tr) : F.RKRoomOver Tr ε := by
   obtain ⟨CR, CT, h⟩ := h
   obtain ⟨x₁, hT⟩ := hT
   exact ⟨CR, CT, h.mono x₁ fun x hx i u h => ⟨_, u, hT x hx i, SameWord.refl _ u, h.1, h.2⟩⟩
 
+/- English proof (translation)
+Take `⟨CT, h⟩` from `h`. Take `⟨x₁, hT⟩` from `hT`. Conclude with `⟨CT, h.mono x₁ fun x hx i u h => ⟨_, u, hT x hx i, SameWord.refl _ u, h.1, h.2⟩⟩`.
+-/
 theorem RKWeak.over {ε : ℝ} {Tr : ℝ → D7 → Prop} (h : F.RKWeak ε) (hT : F.Within Tr) : F.RKWeakOver Tr ε := by
   obtain ⟨CT, h⟩ := h
   obtain ⟨x₁, hT⟩ := hT
   exact ⟨CT, h.mono x₁ fun x hx i u h => ⟨_, u, hT x hx i, SameWord.refl _ u, h.1, h.2⟩⟩
 
+/- English proof (translation)
+Take `⟨CR, CT, h⟩` from `h`. Conclude with `⟨CR, CT, h.mono 0 fun x _ _ _ ⟨D', u', h1, h2⟩ => ⟨D', u', hT x D' h1, h2⟩⟩`.
+-/
 theorem RKRoomOver.mono {ε : ℝ} {Tr Tr' : ℝ → D7 → Prop} (h : F.RKRoomOver Tr ε) (hT : ∀ x D, Tr x D → Tr' x D) :
     F.RKRoomOver Tr' ε := by
   obtain ⟨CR, CT, h⟩ := h
   exact ⟨CR, CT, h.mono 0 fun x _ _ _ ⟨D', u', h1, h2⟩ => ⟨D', u', hT x D' h1, h2⟩⟩
 
+/- English proof (translation)
+Take `⟨CT, h⟩` from `h`. Conclude with `⟨CT, h.mono 0 fun x _ _ _ ⟨D', u', h1, h2⟩ => ⟨D', u', hT x D' h1, h2⟩⟩`.
+-/
 theorem RKWeakOver.mono {ε : ℝ} {Tr Tr' : ℝ → D7 → Prop} (h : F.RKWeakOver Tr ε) (hT : ∀ x D, Tr x D → Tr' x D) :
     F.RKWeakOver Tr' ε := by
   obtain ⟨CT, h⟩ := h
   exact ⟨CT, h.mono 0 fun x _ _ _ ⟨D', u', h1, h2⟩ => ⟨D', u', hT x D' h1, h2⟩⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨CR, CT, h⟩`. Take `⟨x, -, i, u, D', u', h1, -, -, h2⟩` from `h.exists_ge 0`. Conclude with `hT _ _ _ h1 h2`.
+-/
 theorem not_rkRoomOver {ε : ℝ} {Tr : ℝ → D7 → Prop} (hT : ∀ x D u, Tr x D → ¬ RK D u) : ¬ F.RKRoomOver Tr ε := by
   rintro ⟨CR, CT, h⟩
   obtain ⟨x, -, i, u, D', u', h1, -, -, h2⟩ := h.exists_ge 0
@@ -218,6 +289,9 @@ theorem not_rkRoomOver {ε : ℝ} {Tr : ℝ → D7 → Prop} (hT : ∀ x D u, Tr
 
 end Pts
 
+/- English proof (translation)
+Establish `h1 : dU D u < 2 * rkC (D.mem u).C (D.mem u).A (D.mem u).P` using `h`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Establish `h2 : (dU D u : ℝ) < 2 * (rkC (D.mem u).C (D.mem u).A (D.mem u).P : ℝ)` using `by exact_mod_cast h1`. Establish `h3 : (0 : ℝ) ≤ (dU D u : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem RK.share {D : D7} {u : D.what₂.Word} (h : RK D u) {ρ : ℝ} (hρ : ρ ≤ 1 / 2) : RKShare ρ D u := by
   have h1 : dU D u < 2 * rkC (D.mem u).C (D.mem u).A (D.mem u).P := h
   refine ⟨by omega, ?_⟩
@@ -225,6 +299,11 @@ theorem RK.share {D : D7} {u : D.what₂.Word} (h : RK D u) {ρ : ℝ} (hρ : ρ
   have h3 : (0 : ℝ) ≤ (dU D u : ℝ) := by positivity
   nlinarith
 
+/- English proof (translation)
+Take `⟨x₁, hx₁⟩` from `Filter.eventually_atTop.1 (((tendsto_rpow_atTop (by linarith : 0 < 12 * ε)).eventually_ge_atTop (max C 2)).and (Filter.eventually_gt_atTop (0 : ℝ)))`. Use `⟨x₁, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h1, h0⟩` from `hx₁ x hx`. Establish `e : x ^ (13 * ε) = x ^ (12 * ε) * x ^ ε` using `by rw [← Real.rpow_add h0]; ring_nf`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (le_of_max_le_left h1) (Real.rpow_pos_of_pos h0 _).le`. Rewrite using `[Real.rpow_neg h0.le, one_div]`. Conclude with `inv_anti₀ (by norm_num) (le_of_max_le_right h1)`.
+-/
 theorem room_le_and_share_le {ε : ℝ} (hε : 0 < ε) (C : ℝ) :
     ∃ x₁ : ℝ, ∀ x, x₁ ≤ x → C * x ^ ε ≤ x ^ (13 * ε) ∧ x ^ (-(12 * ε)) ≤ 1 / 2 := by
   obtain ⟨x₁, hx₁⟩ := Filter.eventually_atTop.1
@@ -238,18 +317,27 @@ theorem room_le_and_share_le {ε : ℝ} (hε : 0 < ε) (C : ℝ) :
   · rw [Real.rpow_neg h0.le, one_div]
     exact inv_anti₀ (by norm_num) (le_of_max_le_right h1)
 
+/- English proof (translation)
+Establish `h1` using `(D.mem u).A.Dstar_pos`. Establish `h2 : (0 : ℝ) < (D.mem u).A.duStar` using `by exact_mod_cast (D.mem u).A.duStar_pos`. Unfold `ColumnsAtT.Xu`. Check the signs of the components of the expression.
+-/
 theorem Xu_pos (D : D7) (u : D.what₂.Word) : 0 < (D.mem u).A.Xu := by
   have h1 := (D.mem u).A.Dstar_pos
   have h2 : (0 : ℝ) < (D.mem u).A.duStar := by exact_mod_cast (D.mem u).A.duStar_pos
   unfold ColumnsAtT.Xu
   positivity
 
+/- English proof (translation)
+Use `R.m_add_three_le_k` as an intermediate fact. Establish `h1 : 0 < R.k` using `by omega`. Establish `h2 : 0 < R.f` using `Nat.mul_pos two_pos R.ord_pos`. Check the signs of the components of the expression.
+-/
 theorem f_mul_k_pos (R : Ranks) : (0 : ℝ) < (R.f : ℝ) * R.k := by
   have := R.m_add_three_le_k
   have h1 : 0 < R.k := by omega
   have h2 : 0 < R.f := Nat.mul_pos two_pos R.ord_pos
   positivity
 
+/- English proof (translation)
+Establish `hf` using `f_mul_k_pos D.R`. Use `(D.T_win u).2.trans_lt (mul_lt_mul_of_pos_left ?_ (by positivity))` and prove the remaining obligations. Unfold `ColumnsAtT.Tstar`. Conclude with `mul_lt_of_lt_one_right (Xu_pos D u) (Real.rpow_lt_one_of_one_lt_of_neg (D.mem u).A.one_lt_gammaP (div_neg_of_neg_of_pos (by norm_num) hf))`.
+-/
 theorem T_lt_cap (D : D7) (u : D.what₂.Word) :
     ((D.mem u).A.T : ℝ) < (1 + 1 / ((D.R.f : ℝ) * D.R.k)) * (D.mem u).A.Xu := by
   have hf := f_mul_k_pos D.R
@@ -258,6 +346,11 @@ theorem T_lt_cap (D : D7) (u : D.what₂.Word) :
   exact mul_lt_of_lt_one_right (Xu_pos D u)
     (Real.rpow_lt_one_of_one_lt_of_neg (D.mem u).A.one_lt_gammaP (div_neg_of_neg_of_pos (by norm_num) hf))
 
+/- English proof (translation)
+Establish `hG : 0 < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hs : 0 < (D.mem u).A.Tstar` using `mul_pos (Xu_pos D u) (Real.rpow_pos_of_pos hG _)`. Use `le_trans (le_of_eq ?_) (Real.log_le_log hs (D.T_win u).1)` and prove the remaining obligations. Unfold `ColumnsAtT.Tstar`. Rewrite using `[Real.log_mul (Xu_pos D u).ne' (Real.rpow_pos_of_pos hG _).ne', Real.log_rpow hG]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem le_log_alt (D : D7) (u : D.what₂.Word) :
     Real.log (D.mem u).A.Xu - 2 * Real.log (D.mem u).A.GamP / ((D.R.f : ℝ) * D.R.k) ≤ Real.log ((D.mem u).A.T : ℝ) := by
   have hG : 0 < (D.mem u).A.GamP := lt_trans one_pos (D.mem u).A.one_lt_gammaP
@@ -271,6 +364,9 @@ namespace Pts
 
 variable {F : Pts}
 
+/- English proof (translation)
+Use `⟨CR, CT, SomeAt.mono h x₁ fun x hx i u h => ⟨⟨le_trans ?_ (le_log_alt _ u), (hb x hx i u).2⟩, h⟩⟩` and prove the remaining obligations. Use `(div_le_iff₀ (f_mul_k_pos (F.D x i).R)).2 (hb x hx i u).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem RKWin.rkRoom {ε : ℝ} (h : F.RKWin) (CR CT x₁ : ℝ) (hb : ∀ x, x₁ ≤ x → ∀ (i : F.Ix x) u,
     2 * Real.log ((F.D x i).mem u).A.GamP ≤ CR * x ^ ε * (((F.D x i).R.f : ℝ) * (F.D x i).R.k) ∧
       Real.log (((F.D x i).mem u).A.T : ℝ) ≤ CT * (F.D x i).R.m * x ^ ε) : F.RKRoom ε := by
@@ -278,18 +374,29 @@ theorem RKWin.rkRoom {ε : ℝ} (h : F.RKWin) (CR CT x₁ : ℝ) (hb : ∀ x, x�
   have := (div_le_iff₀ (f_mul_k_pos (F.D x i).R)).2 (hb x hx i u).1
   linarith
 
+/- English proof (translation)
+Take `⟨CR, CT, h⟩` from `h`. Take `⟨x₁, hx₁⟩` from `room_le_and_share_le hε CR`. Conclude with `⟨CT, h.mono x₁ fun x hx i u h => ⟨⟨le_trans (sub_le_sub_left (hx₁ x hx).1 _) h.1.1, h.1.2⟩, h.2.share (hx₁ x hx).2⟩⟩`.
+-/
 theorem RKRoom.rkWeak {ε : ℝ} (h : F.RKRoom ε) (hε : 0 < ε) : F.RKWeak ε := by
   obtain ⟨CR, CT, h⟩ := h
   obtain ⟨x₁, hx₁⟩ := room_le_and_share_le hε CR
   exact ⟨CT, h.mono x₁ fun x hx i u h =>
     ⟨⟨le_trans (sub_le_sub_left (hx₁ x hx).1 _) h.1.1, h.1.2⟩, h.2.share (hx₁ x hx).2⟩⟩
 
+/- English proof (translation)
+Take `⟨CR, CT, h⟩` from `h`. Take `⟨x₁, hx₁⟩` from `room_le_and_share_le hε CR`. Conclude with `⟨CT, h.mono x₁ fun x hx i u ⟨D', u', h1, h2, h3, h4⟩ => ⟨D', u', h1, h2, ⟨le_trans (sub_le_sub_left (hx₁ x hx).1 _) h3.1, h3.2⟩, h4.share (hx₁ x hx).2⟩⟩`.
+-/
 theorem RKRoomOver.rkWeakOver {ε : ℝ} {Tr : ℝ → D7 → Prop} (h : F.RKRoomOver Tr ε) (hε : 0 < ε) : F.RKWeakOver Tr ε := by
   obtain ⟨CR, CT, h⟩ := h
   obtain ⟨x₁, hx₁⟩ := room_le_and_share_le hε CR
   exact ⟨CT, h.mono x₁ fun x hx i u ⟨D', u', h1, h2, h3, h4⟩ =>
     ⟨D', u', h1, h2, ⟨le_trans (sub_le_sub_left (hx₁ x hx).1 _) h3.1, h3.2⟩, h4.share (hx₁ x hx).2⟩⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨x₀, h⟩`. Establish `hn : 1 < D.R.n`. Establish `h1` using `(Nat.le_of_dvd D.host.QS_pos D.host.tower_dvd).trans D.host.QS_le`. Establish `h2 : 1 < 2 ^ (D.R.e + 2)` using `Nat.one_lt_two_pow (by omega)`. Assume the negation of the conclusion as `hc`.
+
+Establish `h3 : D.R.n ^ 2 ≤ 1 ^ 2` using `Nat.pow_le_pow_left (by omega) 2`. Use linear arithmetic over natural numbers and integers. Take `⟨_, h0, -⟩` from `h x₀ le_rfl () 0 (lt_trans one_pos hn)`. Take `⟨_, h1, -⟩` from `h x₀ le_rfl () 1 hn`. Conclude with `zero_ne_one (h0.symm.trans h1)`.
+-/
 example (D : D7) : ¬ (single fun _ => D).Covered := by
   rintro ⟨x₀, h⟩
   have hn : 1 < D.R.n := by
@@ -302,9 +409,15 @@ example (D : D7) : ¬ (single fun _ => D).Covered := by
   obtain ⟨_, h1, -⟩ := h x₀ le_rfl () 1 hn
   exact zero_ne_one (h0.symm.trans h1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨x₀, h⟩ => h x₀ le_rfl (), fun h => ⟨0, fun _ _ _ => h⟩⟩`.
+-/
 example (D : D7) : (single fun _ => D).RKAll ↔ ∃ u, RK D u :=
   ⟨fun ⟨x₀, h⟩ => h x₀ le_rfl (), fun h => ⟨0, fun _ _ _ => h⟩⟩
 
+/- English proof (translation)
+The claim follows from `not_rkRoomOver fun _ _ _ h => h.elim`.
+-/
 example (ε : ℝ) : ¬ F.RKRoomOver (fun _ _ => False) ε := not_rkRoomOver fun _ _ _ h => h.elim
 
 end Pts
@@ -319,6 +432,9 @@ def HypEx : Prop := ∀ δ : ℝ, 0 < δ → ∃ ε : ℝ, 0 < ε ∧ ε < δ �
 
 def ClsInhabited : Prop := ∀ δ : ℝ, 0 < δ → ∃ ε : ℝ, 0 < ε ∧ ε < δ ∧ ε < 1 / 52 ∧ ∃ F : Fam ε, Cl ε F
 
+/- English proof (translation)
+Introduce `δ hδ`. Take `⟨ε, h0, h1, h2, F, hF⟩` from `hi δ hδ`. Conclude with `⟨ε, h0, h1, h2, F, hF, h ε h0 h2 F hF⟩`.
+-/
 theorem hypEx_of_hypAll (h : HypAll Fam Cl pts Form) (hi : ClsInhabited Fam Cl) : HypEx Fam Cl pts Form := by
   intro δ hδ
   obtain ⟨ε, h0, h1, h2, F, hF⟩ := hi δ hδ

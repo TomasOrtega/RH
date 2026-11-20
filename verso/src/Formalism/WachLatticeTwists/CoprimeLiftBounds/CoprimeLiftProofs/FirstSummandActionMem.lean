@@ -11,6 +11,11 @@ open Formalism.NG
 section T1
 variable {A T' G : Type*} [Ring A] [CommRing T'] [Algebra T' A] [Group G]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `LinearMap.mem_range.mp b.2`. Rewrite `hx` using `[LinearMap.mulLeft_apply]`. Use `show _ ∈ LinearMap.range (LinearMap.mulLeft O e₁)`. Rewrite using `[LinearMap.mem_range]`. Use `⟨((ε g : Oˣ) : O) • (((χ g : T'ˣ) : T') • (x * r g⁻¹)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mulLeft_apply, mul_smul_comm, mul_smul_comm, ← mul_assoc, hx]`.
+-/
 lemma first_summand_action_mem (O : Type*) [CommRing O] [Algebra O A] (r : G →* A) (χ : G →* T'ˣ) (e₁ : A)
     (ε : G →* Oˣ) (g : G) (b : FirstSummandSubmodule O e₁) :
     ((ε g : Oˣ) : O) • (((χ g : T'ˣ) : T') • ((b : A) * r g⁻¹)) ∈ FirstSummandSubmodule O e₁ := by
@@ -45,6 +50,9 @@ def firstSummandRep (O : Type*) [CommRing O] [Algebra O A] (r : G →* A) (χ : 
 
 end T1
 
+/- English proof (translation)
+Introduce `O A T' G _ _ _ _ _ _ r χ e₁ ε`. Conclude with `⟨firstSummandRep O r χ e₁ ε, fun g b => rfl⟩`.
+-/
 theorem t1 : FirstSummandRepresentation := by
   intro O A T' G _ _ _ _ _ _ r χ e₁ ε
   exact ⟨firstSummandRep O r χ e₁ ε, fun g b => rfl⟩

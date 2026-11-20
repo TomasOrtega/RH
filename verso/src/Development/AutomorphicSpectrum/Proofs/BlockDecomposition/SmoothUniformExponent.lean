@@ -5,6 +5,23 @@ universe w w' w'' t t' v u v' u' v'' u''
 
 namespace GlobalTheory.CompanionTheory.SmoothUniform
 
+/- English proof (translation)
+Introduce `R _ l _ k M _ _ ρ n hsm f`. Establish `hl : (1 : ℝ) < (l : ℝ)`. Conclude with `(Fact.out : l.Prime).one_lt` after adjusting the coercions. Establish `hfin : (Set.range f).Finite` using `f.range_finite`. Use `choose A hA using hsm`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a₁, ha₁⟩ : ∃ a₁ : ℕ, ∀ m ∈ Set.range f, A m ≤ a₁ := by`. Take `⟨b, hb⟩` from `(hfin.image A).bddAbove`. Conclude with `⟨b, fun m hm => hb (Set.mem_image_of_mem A hm)⟩`. Take `⟨δ, hδ, hball⟩` from `lebesgue_number_lemma_of_metric (s := (Set.univ : Set (Fin (n + 1) → Fin k → ℤ_[l]))) (c := fun m : M => f ⁻¹' {m}) isCompact_univ (fun m => f.isLocallyConstant.isOpen_fiber m) (fun x _ => Set.mem_iUnion.2 ⟨f x, rfl⟩)`. Take `⟨a₂, ha₂⟩ : ∃ a₂ : ℕ, (1 / (l : ℝ)) ^ a₂ < δ` from `exists_pow_lt_of_lt_one hδ (by`.
+
+Rewrite using `[div_lt_one (by linarith)]`. Conclude with `hl)`. Use `⟨max a₁ a₂, fun g x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hnorm : ‖(l : ℤ_[l]) ^ (max a₁ a₂) • g‖ < δ`. Establish `hle : ‖(l : ℤ_[l]) ^ (max a₁ a₂) • g‖ ≤ (1 / (l : ℝ)) ^ a₂`.
+
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `h1 : ‖(l : ℤ_[l]) ^ (max a₁ a₂)‖ = (1 / (l : ℝ)) ^ (max a₁ a₂)`. Rewrite using `[PadicInt.norm_p_pow, zpow_neg, zpow_natCast, one_div, inv_pow]`. Establish `h2 : (1 / (l : ℝ)) ^ (max a₁ a₂) ≤ (1 / (l : ℝ)) ^ a₂` using `pow_le_pow_of_le_one (by positivity) (by rw [div_le_one (by linarith)]; exact hl.le) (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `[Pi.smul_apply, norm_mul]`. Use `_ ≤ ‖(l : ℤ_[l]) ^ (max a₁ a₂)‖ * 1 := mul_le_mul_of_nonneg_left (PadicInt.norm_le_one _) (norm_nonneg _)`. Use `_ ≤ (1 / (l : ℝ)) ^ a₂ := by rw [mul_one, h1]; exact h2`. Conclude with `hle.trans_lt ha₂`. Take `⟨m, hm⟩` from `hball x (Set.mem_univ x)`.
+
+Establish `hx : f x = m` using `hm (Metric.mem_ball_self hδ)`. Establish `hy : f (fun i => (l : ℤ_[l]) ^ (max a₁ a₂) • g + x i) = m`. Apply `hm` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Use `lt_of_le_of_lt ?_ hnorm` and prove the remaining obligations.
+
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hx, hy]`. Establish `hle : A (f x) ≤ max a₁ a₂` using `(ha₁ _ ⟨x, rfl⟩).trans (le_max_left _ _)`. Establish `hsplit : (l : ℤ_[l]) ^ (max a₁ a₂) • g = (l : ℤ_[l]) ^ (A (f x)) • ((l : ℤ_[l]) ^ (max a₁ a₂ - A (f x)) • g)`.
+
+Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' hle]`. Rewrite using `[hsplit]`. Conclude with `hA (f x) _`.
+-/
 theorem smooth_uniform_exponent : ∀ {R : Type} [CommRing R] (l : ℕ) [Fact l.Prime] (k : ℕ) {M : Type w} [AddCommGroup M] [Module R M] (ρ : Multiplicative (Fin k → ℤ_[l]) →* (M →ₗ[R] M)) (n : ℕ), (∀ x : M, ∃ a : ℕ, ∀ g : Fin k → ℤ_[l], ρ (Multiplicative.ofAdd ((l : ℤ_[l]) ^ a • g)) x = x) → ∀ f : LocallyConstant (Fin (n + 1) → Fin k → ℤ_[l]) M, ∃ a : ℕ, ∀ (g : Fin k → ℤ_[l]) (x : Fin (n + 1) → Fin k → ℤ_[l]), f (fun i => (l : ℤ_[l]) ^ a • g + x i) = f x ∧ ρ (Multiplicative.ofAdd ((l : ℤ_[l]) ^ a • g)) (f x) = f x := by
   intro R _ l _ k M _ _ ρ n hsm f
   have hl : (1 : ℝ) < (l : ℝ) := by

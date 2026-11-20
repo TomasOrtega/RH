@@ -13,10 +13,24 @@ variable {E V : Type} [Field E] [AddCommGroup V] [Module E V] {σ : E →+* E}
 def IsIsom (B : V →ₛₗ[σ] V →ₗ[E] E) (γ : V →ₗ[E] V) : Prop :=
   ∀ z w, B (γ z) (γ w) = B z w
 
+/- English proof (translation)
+Introduce `z w` and use `by simp only [LinearMap.comp_apply, hγ _ _, hδ _ _]`.
+-/
 theorem IsIsom.comp {B : V →ₛₗ[σ] V →ₗ[E] E} {γ δ : V →ₗ[E] V} (hγ : IsIsom B γ)
     (hδ : IsIsom B δ) : IsIsom B (γ ∘ₗ δ) := fun z w => by
   simp only [LinearMap.comp_apply, hγ _ _, hδ _ _]
 
+/- English proof (translation)
+Use `set v := x - y with hv`. Use `set a := B v x with ha`. Establish `hsa : σ a = B x v` using `hB _ _`. Establish `hsa0 : σ a ≠ 0` using `(map_ne_zero σ).2 h0`. Establish `hvv : B v v = a + σ a`.
+
+Rewrite using `[hsa, ha, hv]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hxy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hγ : ∀ z, (LinearMap.id - (a⁻¹ • B v).smulRight v : V →ₗ[E] V) z = z - (a⁻¹ * B v z) • v`.
+
+Introduce `z`. Simplify using the standard rewrite rules. Use `⟨LinearMap.id - (a⁻¹ • B v).smulRight v, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z w`. Establish `hzv : B z v = σ (B v z)` using `(hB v z).symm`.
+
+Rewrite using `[hγ, hγ]`. Simplify using `only [map_sub, LinearMap.sub_apply, map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, map_mul, map_inv₀, hvv, hzv, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hγ, ← ha, inv_mul_cancel₀ h0, one_smul, hv, sub_sub_cancel]`.
+
+Introduce `z hz`. Rewrite using `[hγ, hz]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_quasiRefl (B : V →ₛₗ[σ] V →ₗ[E] E) (hσ : ∀ x, σ (σ x) = x)
     (hB : ∀ x y, σ (B x y) = B y x) (x y : V) (hxy : B x x = B y y) (h0 : B (x - y) x ≠ 0) :
     ∃ γ : V →ₗ[E] V, IsIsom B γ ∧ γ x = y ∧ ∀ z, B (x - y) z = 0 → γ z = z := by
@@ -46,6 +60,17 @@ theorem exists_quasiRefl (B : V →ₛₗ[σ] V →ₗ[E] E) (hσ : ∀ x, σ (�
     rw [hγ, hz]
     simp
 
+/- English proof (translation)
+Distinguish the cases in `h0 : B (x - y) x = 0`. Establish `h1 : B (x - -y) x ≠ 0`. Introduce `h1`. Apply `hq` to reduce the goal to its premises. Simplify using `only [map_sub, map_neg, LinearMap.sub_apply, LinearMap.neg_apply] at h0 h1`.
+
+Establish `h3 : 2 * B x x = 0` using `by linear_combination h0 + h1`. Conclude with `(mul_eq_zero.1 h3).resolve_left h2`. Establish `h4 : B (-y - y) (-y) ≠ 0`. Establish `h5 : B (-y - y) (-y) = 2 * B y y`. Simplify using `only [map_sub, map_neg, LinearMap.sub_apply, LinearMap.neg_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5, ← hxy]`. Conclude with `mul_ne_zero h2 hq`. Take `⟨γ₁, i1, e1, f1⟩` from `exists_quasiRefl B hσ hB x (-y) (by simpa using hxy) h1`. Take `⟨γ₂, i2, e2, f2⟩` from `exists_quasiRefl B hσ hB (-y) y (by simp) h4`.
+
+Use `⟨γ₂ ∘ₗ γ₁, i2.comp i1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[e1, e2]`. Introduce `z hx hy`. Establish `g1 : γ₁ z = z` using `f1 z (by simp [hx, hy])`. Establish `g2 : γ₂ z = z` using `f2 z (by simp [hy])`.
+
+Simplify using `[g1, g2]`. Take `⟨γ, i, e, f⟩` from `exists_quasiRefl B hσ hB x y hxy h0`. Conclude with `⟨γ, i, e, fun z hx hy => f z (by simp [hx, hy])⟩`.
+-/
 theorem exists_isom_of_eq (B : V →ₛₗ[σ] V →ₗ[E] E) (hσ : ∀ x, σ (σ x) = x)
     (hB : ∀ x y, σ (B x y) = B y x) (h2 : (2 : E) ≠ 0) (x y : V) (hxy : B x x = B y y)
     (hq : B x x ≠ 0) :
@@ -76,30 +101,58 @@ theorem exists_isom_of_eq (B : V →ₛₗ[σ] V →ₗ[E] E) (hσ : ∀ x, σ (
 
 def lin {n : ℕ} (X : Fin n → V) (c : Fin n → E) : V := ∑ a, c a • X a
 
+/- English proof (translation)
+Simplify using `[lin, map_sum, LinearMap.sum_apply]`.
+-/
 theorem form_lin_left (B : V →ₛₗ[σ] V →ₗ[E] E) {n : ℕ} (X : Fin n → V) (c : Fin n → E) (z : V) :
     B (lin X c) z = ∑ a, σ (c a) * B (X a) z := by
   simp [lin, map_sum, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[lin, map_sum]`.
+-/
 theorem form_lin_right (B : V →ₛₗ[σ] V →ₗ[E] E) {n : ℕ} (X : Fin n → V) (c : Fin n → E) (z : V) :
     B z (lin X c) = ∑ a, c a * B z (X a) := by
   simp [lin, map_sum]
 
+/- English proof (translation)
+Simplify using `[lin, Pi.single_apply, ite_smul]`.
+-/
 theorem lin_single {n : ℕ} (X : Fin n → V) (a : Fin n) : lin X (Pi.single a (1 : E)) = X a := by
   simp [lin, Pi.single_apply, ite_smul]
 
+/- English proof (translation)
+Simplify using `[lin, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem lin_add {n : ℕ} (X : Fin n → V) (c d : Fin n → E) : lin X (c + d) = lin X c + lin X d := by
   simp [lin, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[lin, Finset.smul_sum, mul_smul]`.
+-/
 theorem lin_smul {n : ℕ} (X : Fin n → V) (t : E) (c : Fin n → E) : lin X (t • c) = t • lin X c := by
   simp [lin, Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Simplify using `[lin, sub_smul, Finset.sum_sub_distrib]`.
+-/
 theorem lin_sub {n : ℕ} (X : Fin n → V) (c d : Fin n → E) : lin X (c - d) = lin X c - lin X d := by
   simp [lin, sub_smul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun a _ => Submodule.smul_mem (Submodule.span E (Set.range X)) _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem lin_mem_span {n : ℕ} (X : Fin n → V) (c : Fin n → E) :
     lin X c ∈ Submodule.span E (Set.range X) :=
   Submodule.sum_mem _ fun a _ => Submodule.smul_mem (Submodule.span E (Set.range X)) _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hX` to reduce the goal to its premises. Introduce `a b`. Assume the negation of the conclusion as `hs`.
+
+Establish `hu : B (X a) (X a) = 0` using `by simpa [lin_single] using hc (Pi.single a (1 : E))`. Establish `hv : B (X b) (X b) = 0` using `by simpa [lin_single] using hc (Pi.single b (1 : E))`. Use `set s := B (X a) (X b) with hsdef`. Establish `hba : B (X b) (X a) = σ s` using `(hB _ _).symm`. Establish `h` using `hc (Pi.single a (1 : E) + s⁻¹ • Pi.single b (1 : E))`.
+
+Rewrite `h` using `[lin_add, lin_smul, lin_single, lin_single]`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, hu, hv, hba, ← hsdef, map_inv₀, RingHom.id_apply] at h`. Establish `hσs : σ s ≠ 0` using `(map_ne_zero σ).2 hs`. Simplify using `only [mul_zero, add_zero, zero_add, inv_mul_cancel₀ hs, inv_mul_cancel₀ hσs] at h`. Conclude with `h2 (by linear_combination h)`.
+-/
 theorem exists_norm_ne_zero (B : V →ₛₗ[σ] V →ₗ[E] E) (hB : ∀ x y, σ (B x y) = B y x)
     (h2 : (2 : E) ≠ 0) {n : ℕ} (X : Fin n → V) (hX : ¬ ∀ a b, B (X a) (X b) = 0) :
     ∃ c : Fin n → E, B (lin X c) (lin X c) ≠ 0 := by
@@ -127,6 +180,45 @@ section Induct
 variable {E V : Type} [Field E] [AddCommGroup V] [Module E V] [FiniteDimensional E V]
   {σ : E →+* E}
 
+/- English proof (translation)
+Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `X Y hk hG hN`. Distinguish the cases in `hX : ∀ a b, B (X a) (X b) = 0`. Use `⟨LinearMap.id, fun _ _ => rfl, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hN (Pi.single a (1 : E)) (fun b => by rw [lin_single]; exact hX b a)`. Rewrite `h` using `[lin_single, lin_single]`. Simplify using `[h.1, h.2]`. Take `⟨c, hc⟩` from `exists_norm_ne_zero B hB h2 X hX`. Use `set x := lin X c with hx`.
+
+Use `set y := lin Y c with hy`. Establish `hXY : ∀ a, B x (X a) = B y (Y a)`. Introduce `a`. Rewrite using `[hx, hy, form_lin_left, form_lin_left]`. Simplify using `only [hG]`.
+
+Establish `hxy : B x x = B y y`. Combine the equalities or inequalities in the displayed calculation. Establish `hXY' : ∀ a, B (X a) x = B (Y a) y`. Introduce `a`. Rewrite using `[← hB x, ← hB y, hXY]`.
+
+Use `set q := B x x with hq`. Use `set t : Fin n → E := fun a => B x (X a) with ht`. Use `set X' : Fin n → V := fun a => X a - (t a / q) • x with hX'`. Use `set Y' : Fin n → V := fun a => Y a - (t a / q) • y with hY'`. Establish `hty : ∀ a, B y (Y a) = t a` using `fun a => (hXY a).symm`.
+
+Establish `hyy : B y y = q` using `hxy.symm`. Establish `hx0 : ∀ a, B x (X' a) = 0`. Introduce `a`. Establish `e : B x (X a) = t a` using `rfl`. Simplify using `only [hX', map_sub, map_smul, smul_eq_mul, e, ← hq]`.
+
+Rewrite using `[div_mul_cancel₀ _ hc, sub_self]`. Establish `hy0 : ∀ a, B y (Y' a) = 0`. Introduce `a`. Simplify using `only [hY', map_sub, map_smul, smul_eq_mul, hty, hyy]`. Rewrite using `[div_mul_cancel₀ _ hc, sub_self]`.
+
+Establish `hG' : ∀ a b, B (X' a) (X' b) = B (Y' a) (Y' b)`. Introduce `a b`. Simplify using `only [hX', hY', map_sub, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hG a b, hXY' a, hty, hyy]`. Rewrite using `[← hq, show B x (X b) = t b from rfl]`. Establish `hspan : Submodule.span E (Set.range X') < Submodule.span E (Set.range X)`.
+
+Establish `hxm : x ∈ Submodule.span E (Set.range X)` using `lin_mem_span X c`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨a, rfl⟩) (Submodule.smul_mem _ _ hxm)`.
+
+Introduce `he`. Rewrite `hxm` using `[← he]`. Establish `hz : ∀ w ∈ Submodule.span E (Set.range X'), B x w = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem w hw => obtain ⟨a, rfl⟩ := hw`. Conclude with `hx0 a`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul s u _ hu => simp [hu]`.
+
+Conclude with `hc (hz x hxm)`. Establish `hlt : Module.finrank E (Submodule.span E (Set.range X')) < k`. Rewrite using `[← hk]`. Conclude with `Submodule.finrank_lt_finrank_of_lt hspan`. Establish `hlinX : ∀ d : Fin n → E, lin X' d = lin X (d - ((∑ a, d a * t a) / q) • c)`.
+
+Introduce `d`. Rewrite using `[lin_sub, lin_smul, ← hx]`. Simplify using `only [lin, hX', smul_sub, Finset.sum_sub_distrib, smul_smul, ← Finset.sum_smul]`. Use `congr 2`. Simplify using `only [Finset.sum_div, mul_div_assoc]`.
+
+Establish `hlinY : ∀ d : Fin n → E, lin Y' d = lin Y (d - ((∑ a, d a * t a) / q) • c)`. Introduce `d`. Rewrite using `[lin_sub, lin_smul, ← hy]`. Simplify using `only [lin, hY', smul_sub, Finset.sum_sub_distrib, smul_smul, ← Finset.sum_smul]`. Use `congr 2`.
+
+Simplify using `only [Finset.sum_div, mul_div_assoc]`. Establish `hN' : ∀ d : Fin n → E, (∀ a, B (X' a) (lin X' d) = 0) → lin X' d = 0 ∧ lin Y' d = 0`. Introduce `d hd`. Rewrite using `[hlinX, hlinY]`. Apply `hN` to reduce the goal to its premises.
+
+Introduce `a`. Establish `h0 : B x (lin X' d) = 0`. Rewrite using `[form_lin_right]`. Simplify using `[hx0]`. Establish `h1` using `hd a`.
+
+Establish `e : X' a = X a - (t a / q) • x` using `rfl`. Rewrite `h1` using `[e]`. Simplify using `only [map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul] at h1`. Rewrite using `[← hlinX]`. Rewrite `h1` using `[h0, mul_zero, sub_zero]`.
+
+Conclude with `h1`. Take `⟨γ₁, i1, e1⟩` from `ih _ hlt X' Y' rfl hG' hN'`. Establish `hx1 : B (γ₁ x) (γ₁ x) = B y y` using `by rw [i1]; exact hxy`. Take `⟨γ₂, i2, e2, f2⟩` from `exists_isom_of_eq B hσ hB h2 (γ₁ x) y hx1 (by rw [i1]; exact hc)`. Use `⟨γ₂ ∘ₗ γ₁, i2.comp i1, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `hXa : X a = X' a + (t a / q) • x` using `by simp [hX']`. Establish `hYa : Y a = Y' a + (t a / q) • y` using `by simp [hY']`. Establish `hf : γ₂ (Y' a) = Y' a` using `f2 _ (by rw [← e1 a, i1]; exact hx0 a) (hy0 a)`. Rewrite using `[LinearMap.comp_apply, hXa, map_add, map_smul, e1, map_add, map_smul, hf, e2, ← hYa]`.
+-/
 theorem exists_isom_tuple (B : V →ₛₗ[σ] V →ₗ[E] E) (hσ : ∀ x, σ (σ x) = x)
     (hB : ∀ x y, σ (B x y) = B y x) (h2 : (2 : E) ≠ 0) {n : ℕ} (k : ℕ) :
     ∀ X Y : Fin n → V, Module.finrank E (Submodule.span E (Set.range X)) = k →
@@ -250,9 +342,15 @@ def formB (s : E →+* E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
       simp only [hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formB_apply (s : E →+* E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → E) :
     formB s J x y = hform s J x y := rfl
 
+/- English proof (translation)
+Simplify using `only [formB_apply, hform, map_sum, map_mul, hs, hJ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem formB_conj (s : E →+* E) (hs : ∀ x, s (s x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : ∀ i j, s (J j i) = J i j) (x y : Fin M → E) :
     s (formB s J x y) = formB s J y x := by
@@ -260,11 +358,23 @@ theorem formB_conj (s : E →+* E) (hs : ∀ x, s (s x) = x) {M : ℕ} (J : Matr
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, hform, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem cT_mul_mul_apply (s : E →+* E) {M : ℕ} (J g : Matrix (Fin M) (Fin M) E) (i j : Fin M) :
     (cT s g * J * g) i j = hform s J (fun k => g k i) (fun k => g k j) := by
   simp only [Matrix.mul_apply, cT, hform, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use `set m := LinearMap.toMatrix' γ with hm`. Establish `hmv : ∀ z, m *ᵥ z = γ z` using `fun z => LinearMap.toMatrix'_mulVec γ z`. Establish `hu : cT s m * J * m = J`. Use extensionality with `i j`. Establish `hcol : ∀ i, (fun k => m k i) = γ (Pi.single i 1)`.
+
+Introduce `i`. Rewrite using `[← hmv]`. Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[cT_mul_mul_apply, hcol, hcol, ← formB_apply, hγ, formB_apply]`.
+
+Simplify using `[hform, Pi.single_apply]`. Establish `hdet : m.det ≠ 0`. Introduce `h0`. Apply `hJ` to reduce the goal to its premises. Use `congrArg Matrix.det hu` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `this.symm`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero m hdet, ?_, hmv⟩` and prove the remaining obligations. Conclude with `hu`.
+-/
 theorem exists_mem_UJ (s : E →+* E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0)
     (γ : (Fin M → E) →ₗ[E] (Fin M → E)) (hγ : IsIsom (formB s J) γ) :
     ∃ g ∈ UJ s J, ∀ z, (g : Matrix (Fin M) (Fin M) E) *ᵥ z = γ z := by
@@ -290,6 +400,19 @@ theorem exists_mem_UJ (s : E →+* E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (
 
 end Concrete
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ n X Y hG hdet`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hσ : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x`. Introduce `x`. Apply `τ.injective` to reduce the goal to its premises.
+
+Establish `h` using `hcm.2.2.2`. Simplify using `only [RingHom.coe_coe]`. Rewrite using `[h, h, star_star]`. Establish `hB : ∀ x y, (σ : E →+* E) (formB (σ : E →+* E) J x y) = formB (σ : E →+* E) J y x` using `formB_conj _ hσ J hJ.1`. Establish `hgram : ∀ (Z : Fin n → Fin M → E) a b, formB (σ : E →+* E) J (Z a) (Z b) = gramE σ J Z a b` using `fun _ _ _ => rfl`.
+
+Establish `hker : ∀ c : Fin n → E, (∀ a, formB (σ : E →+* E) J (X a) (lin X c) = 0) → lin X c = 0 ∧ lin Y c = 0`. Introduce `c hc`. Establish `h0 : c = 0`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hdet` to reduce the goal to its premises. Use extensionality with `a`.
+
+Use `hc a` as an intermediate fact. Rewrite `this` using `[form_lin_right]`. Simplify using `only [hgram] at this`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Substitute `h0` using the available equality. Simplify using `[lin]`. Take `⟨γ, hγ, hXY⟩` from `exists_isom_tuple (formB (σ : E →+* E) J) hσ hB two_ne_zero _ X Y rfl (fun a b => by rw [hgram, hgram, hG]) hker`. Take `⟨g, hg, hgz⟩` from `exists_mem_UJ _ J hJ.2 γ hγ`.
+
+Conclude with `⟨g, hg, fun a => by rw [hgz, hXY]⟩`.
+-/
 theorem witt_tuple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (X Y : Fin n → Fin M → E), gramE σ J X = gramE σ J Y → (gramE σ J X).det ≠ 0 → ∃ g ∈ UJ (σ : E →+* E) J, ∀ a, (g : Matrix (Fin M) (Fin M) E) *ᵥ X a = Y a := by
   intro F E _ _ _ _ _ σ hcm M J hJ n X Y hG hdet
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance

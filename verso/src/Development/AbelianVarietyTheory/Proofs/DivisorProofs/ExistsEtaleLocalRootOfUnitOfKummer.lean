@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 noncomputable section
 namespace GlobalTheory.EtC.KumRoots
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Use `choose R hR hRQ using fun (V : Scheme.{0}) (g : V ⟶ U) (hg : S.arrows g) => h V g (hSP V g hg)`. Use `⟨Sieve.bind S.arrows (fun V g hg => R V g hg), Scheme.etaleTopology.bind_covering hS (fun V g hg => hR V g hg), ?_⟩` and prove the remaining obligations. Introduce and unpack `W f ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `hRQ V g hg W k hk`.
+-/
 theorem loc_bind {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W k => Q W (k ≫ g)) : Loc U Q := by
   obtain ⟨S, hS, hSP⟩ := hP
@@ -17,15 +20,26 @@ theorem loc_bind {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
 
 abbrev unitsP : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} ℤ) := Scheme.Γ ⋙ unitsF
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitSec_eq {U : Scheme.{0}} (u : (Γ(U, ⊤))ˣ) :
     unitSec u = ((toSheafify Scheme.etaleTopology unitsP).app (op U)).hom (ULift.up (Additive.ofMul u)) := rfl
 
+/- English proof (translation)
+Use `ConcreteCategory.congr_hom ((toSheafify Scheme.etaleTopology unitsP).naturality g.op) (ULift.up (Additive.ofMul u))` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem res_unitSec {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Sec.res g (unitSec u) = unitSec (Units.map g.appTop.hom.toMonoidHom u) := by
   have := ConcreteCategory.congr_hom ((toSheafify Scheme.etaleTopology unitsP).naturality g.op)
     (ULift.up (Additive.ofMul u))
   exact this.symm
 
+/- English proof (translation)
+Establish `h1 : (ULift.up (Additive.ofMul (v ^ q)) : unitsP.obj (op U)) = (q : ℤ) • ULift.up (Additive.ofMul v)`. Apply `ULift.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Additive.ofMul (v ^ q) = (q : ℤ) • Additive.ofMul v`. Rewrite using `[natCast_zsmul, ofMul_pow]`. Express the relevant statement in the definitionally equal form `_ = (q : ℤ) • unitSec v`.
+
+Rewrite using `[unitSec_eq, unitSec_eq, h1]`. Conclude with `map_zsmul ((toSheafify Scheme.etaleTopology unitsP).app (op U)).hom (q : ℤ) _`.
+-/
 theorem unitSec_pow {U : Scheme.{0}} (q : ℕ) (v : (Γ(U, ⊤))ˣ) :
     unitSec (v ^ q) = Sec.map ((q : ℤ) • 𝟙 Gm) (unitSec v) := by
   have h1 : (ULift.up (Additive.ofMul (v ^ q)) : unitsP.obj (op U)) = (q : ℤ) • ULift.up (Additive.ofMul v) := by
@@ -40,11 +54,17 @@ end GlobalTheory.EtC.KumRoots
 
 namespace GlobalTheory.EtC.KumRoots
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Gm.obj.map (k ≫ g).op).hom x = (Gm.obj.map k.op).hom ((Gm.obj.map g.op).hom x)`. Rewrite using `[op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem res_comp {V W U : Scheme.{0}} (g : V ⟶ U) (k : W ⟶ V) (x : Sec Gm U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
   change (Gm.obj.map (k ≫ g).op).hom x = (Gm.obj.map k.op).hom ((Gm.obj.map g.op).hom x)
   rw [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(k ≫ f).appTop.hom (u : Γ(U, ⊤)) = k.appTop.hom (f.appTop.hom u)`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem units_map_comp {X W U : Scheme.{0}} (k : X ⟶ W) (f : W ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Units.map (k ≫ f).appTop.hom.toMonoidHom u =
       Units.map k.appTop.hom.toMonoidHom (Units.map f.appTop.hom.toMonoidHom u) := by
@@ -52,6 +72,13 @@ theorem units_map_comp {X W U : Scheme.{0}} (k : X ⟶ W) (f : W ⟶ U) (u : (Γ
   change (k ≫ f).appTop.hom (u : Γ(U, ⊤)) = k.appTop.hom (f.appTop.hom u)
   rw [Scheme.Hom.comp_appTop]; rfl
 
+/- English proof (translation)
+Introduce `q _ hyp U hq u`. Use `loc_bind (hyp U hq (unitSec u)) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨c, hc⟩`. Use `loc_bind (P := fun W h => ∃ v : (Γ(W, ⊤))ˣ, unitSec v = Sec.res h c) ⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology unitsP) (U := op V) c, ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `W h ⟨t, ht⟩`.
+
+Conclude with `⟨Additive.toMul t.down, ht⟩`. Introduce and unpack `W h ⟨v, hv⟩`. Establish `heq : unitSec (v ^ q) = unitSec (Units.map (h ≫ g).appTop.hom.toMonoidHom u)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `heq` using `[unitSec_eq, unitSec_eq]`.
+
+Use `⟨_, Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology unitsP) (X := op W) _ _ heq, ?_⟩` and prove the remaining obligations. Introduce `X k hk`. Establish `hk' : Units.map k.appTop.hom.toMonoidHom (v ^ q) = Units.map k.appTop.hom.toMonoidHom (Units.map (h ≫ g).appTop.hom.toMonoidHom u)` using `congrArg (fun z : ULift.{1} (Additive (Γ(X, ⊤))ˣ) => Additive.toMul z.down) hk`. Use `⟨Units.map k.appTop.hom.toMonoidHom v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hk', Category.assoc, units_map_comp k (h ≫ g)]`.
+-/
 theorem roots : ∀ (q : ℕ) [NeZero q],
     (∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ b : Sec Gm U, Loc U fun V g => ∃ c : Sec Gm V, Sec.map ((q : ℤ) • 𝟙 Gm) c = Sec.res g b) →
     ∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ u : (Γ(U, ⊤))ˣ,

@@ -22,6 +22,9 @@ def quotAct (M : GKMod p q) (N : Submodule ℂ M.V) (hN : ∀ Z, N ≤ N.comap (
     ext x
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotAct_mk (M : GKMod p q) (N : Submodule ℂ M.V) (hN : ∀ Z, N ≤ N.comap (M.act Z))
     (Z : Mat p q) (x : M.V) : quotAct M N hN Z (N.mkQ x) = N.mkQ (M.act Z x) := rfl
 
@@ -54,6 +57,23 @@ def quotMod (M : GKMod p q) (N : Submodule ℂ M.V) (hN : ∀ Z, N ≤ N.comap (
       rw [quotAct_mk, ← map_smul, ← map_sub, hy a, map_zero]
     exact h (M.wts x)
 
+/- English proof (translation)
+Set `N : Submodule ℂ M.V` to `LinearMap.ker E`. Establish `hN : ∀ Z, N ≤ N.comap (M.act Z)`. Introduce `Z x hx`. Establish `hx' : E x = 0` using `hx`. Use `show E (M.act Z x) = 0`.
+
+Establish `h` using `hE Z x (M.act Z x)`. Rewrite `h` using `[hx', inner_zero_left]`. Conclude with `inner_self_eq_zero.mp h`. Set `Eb : M.V ⧸ N →ₗ[ℂ] H` to `N.liftQ E le_rfl`. Establish `hEb : ∀ x, Eb (N.mkQ x) = E x` using `fun x => N.liftQ_apply E x`.
+
+Establish `hinj : Function.Injective Eb`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `v hv`. Take `⟨x, rfl⟩` from `N.mkQ_surjective v`. Rewrite `hv` using `[LinearMap.mem_ker, hEb]`.
+
+Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_ker.mpr hv`. Establish `hact : ∀ Z x, quotAct M N hN Z (N.mkQ x) = N.mkQ (M.act Z x)` using `quotAct_mk M N hN`. Set `ip : M.V ⧸ N →ₗ⋆[ℂ] M.V ⧸ N →ₗ[ℂ] ℂ` to `((innerₛₗ ℂ).comp Eb).compl₂ Eb`. Set `A : UGKMod p q` to `{ M := quotMod M N hN ip := ip herm := by`.
+
+Introduce `v w`. Use `show star (inner ℂ (Eb v) (Eb w)) = inner ℂ (Eb w) (Eb v)`. Conclude with `inner_conj_symm (Eb w) (Eb v)`. Use `pos := by`. Introduce `v hv`.
+
+Establish `hne : Eb v ≠ 0` using `fun h0 => hv (hinj (h0.trans (map_zero Eb).symm))`. Establish `h : 0 < RCLike.re (inner ℂ (Eb v) (Eb v))`. Rewrite using `[inner_self_eq_norm_sq]`. Conclude with `pow_pos (norm_pos_iff.mpr hne) 2`. Use `show 0 < (inner ℂ (Eb v) (Eb v)).re`.
+
+Conclude with `h`. Use `adj := by`. Introduce `Z v w`. Take `⟨x, rfl⟩` from `N.mkQ_surjective v`. Take `⟨y, rfl⟩` from `N.mkQ_surjective w`.
+
+Use `show inner ℂ (Eb (quotAct M N hN Z (N.mkQ x))) (Eb (N.mkQ y)) = inner ℂ (Eb (N.mkQ x)) (Eb (quotAct M N hN (adjZ Z) (N.mkQ y)))`. Rewrite using `[hact, hact, hEb, hEb, hEb, hEb]`. Conclude with `hE Z x y }`. Conclude with `⟨A, N.mkQ, Eb, N.mkQ_surjective, hinj, hEb, fun Z x => (hact Z x).symm⟩`.
+-/
 theorem exists_unitary_quotient (p q : ℕ) (M : GKMod p q) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (E : M.V →ₗ[ℂ] H)
     (hE : ∀ Z x y, inner ℂ (E (M.act Z x)) (E y) = inner ℂ (E x) (E (M.act (adjZ Z) y))) :

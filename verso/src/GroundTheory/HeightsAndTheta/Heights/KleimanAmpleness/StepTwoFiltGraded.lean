@@ -35,11 +35,24 @@ variable (x) in
 
 def laurentSingle (c : ℤ) (m : E) : LaurentSpace x E := Finsupp.single c m
 
+/- English proof (translation)
+The claim follows from `Finsupp.single_apply`.
+-/
 theorem laurentSingle_apply (c a : ℤ) (m : E) :
     laurentSingle x c m a = if c = a then m else 0 := Finsupp.single_apply
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem laurent_smul_def (p : Poly S N) (m : LaurentSpace x E) : p • m = laurentAct S x E p m := rfl
 
+/- English proof (translation)
+Proceed by induction on `d generalizing c with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `(laurentShift x E ^ d) (Finsupp.mapDomain (· + 1) (Finsupp.single c m)) = _`.
+
+Rewrite using `[Finsupp.mapDomain_single]`. Express the relevant statement in the definitionally equal form `(laurentShift x E ^ d) (laurentSingle x (c + 1) m) = _`. Rewrite using `[ih]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem laurentShift_pow_single (d : ℕ) (c : ℤ) (m : E) :
     (laurentShift x E ^ d) (laurentSingle x c m) = laurentSingle x (c + d) m := by
   induction d generalizing c with
@@ -54,6 +67,9 @@ theorem laurentShift_pow_single (d : ℕ) (c : ℤ) (m : E) :
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[laurent_smul_def, laurentAct, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `(Polynomial.aeval (laurentShift x E)) (cone x f) _ = _`. Rewrite using `[cone_of_isHomogeneous x hf, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, Module.End.mul_apply, laurentShift_pow_single, Module.algebraMap_end_apply]`. Conclude with `Finsupp.smul_single _ _ _`.
+-/
 theorem laurent_smul_single {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) (c : ℤ) (m : E) :
     f • laurentSingle x c m = laurentSingle x (c + d) (aeval x f • m) := by
   rw [laurent_smul_def, laurentAct, RingHom.comp_apply]
@@ -64,6 +80,11 @@ theorem laurent_smul_single {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) (c
 
 variable [Module S E] [IsScalarTower S Ω E]
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [smul_add, Finsupp.add_apply, ha, hb, Finsupp.add_apply, smul_add]`. Consider the case `single a m`. Express the relevant statement in the definitionally equal form `(f • laurentSingle x a m) c = aeval x f • laurentSingle x a m (c - d)`.
+
+Rewrite using `[laurent_smul_single hf, laurentSingle_apply, laurentSingle_apply]`. Distinguish the cases in `h : a = c - d`. Rewrite using `[if_pos (by omega), if_pos h]`. Rewrite using `[if_neg (by omega), if_neg h, smul_zero]`.
+-/
 theorem laurent_smul_apply_of_isHomogeneous {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d)
     (m : LaurentSpace x E) (c : ℤ) : (f • m) c = aeval x f • m (c - d) := by
   induction m using Finsupp.induction_linear with
@@ -76,6 +97,9 @@ theorem laurent_smul_apply_of_isHomogeneous {f : Poly S N} {d : ℕ} (hf : f.IsH
     · rw [if_pos (by omega), if_pos h]
     · rw [if_neg (by omega), if_neg h, smul_zero]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent f]`. Rewrite using `[Finset.sum_smul, Finsupp.finsetSum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => laurent_smul_apply_of_isHomogeneous (homogeneousComponent_isHomogeneous i f) m c`.
+-/
 theorem laurent_smul_apply (f : Poly S N) (m : LaurentSpace x E) (c : ℤ) :
     (f • m) c = ∑ i ∈ Finset.range (f.totalDegree + 1),
       aeval x (homogeneousComponent i f) • m (c - i) := by
@@ -91,6 +115,9 @@ instance : IsScalarTower S (Poly S N) (LaurentSpace x E) where
     rw [AlgHom.commutes, Polynomial.algebraMap_apply, Polynomial.aeval_C,
       Module.algebraMap_end_apply, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite `hp` using `[primeOf_eq, RingHom.mem_ker]`. Rewrite using `[laurent_smul_def, laurentAct, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `(Polynomial.aeval (laurentShift x E)) (cone x p) m = 0`. Rewrite using `[hp, map_zero, LinearMap.zero_apply]`.
+-/
 theorem laurent_smul_eq_zero {p : Poly S N} (hp : p ∈ primeOf (S := S) x) (m : LaurentSpace x E) :
     p • m = 0 := by
   rw [primeOf_eq, RingHom.mem_ker] at hp
@@ -120,9 +147,17 @@ def FinGradedSub.laurent (M : FinGradedSub (S := S) (x := x) E) :
     have := M.smul_mem i (c - i) _ _ (homogeneousComponent_isHomogeneous i f) (hm (c - i))
     rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem FinGradedSub.mem_laurent {M : FinGradedSub (S := S) (x := x) E} {m : LaurentSpace x E} :
     m ∈ M.laurent ↔ ∀ c, m c ∈ M.piece c := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[FinGradedSub.mem_laurent]`. Introduce `a`. Rewrite using `[laurentSingle_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `hz`. Conclude with `zero_mem _`.
+-/
 theorem laurentSingle_mem {M : FinGradedSub (S := S) (x := x) E} {c : ℤ} {z : E} (hz : z ∈ M.piece c) :
     laurentSingle x c z ∈ M.laurent := by
   rw [FinGradedSub.mem_laurent]
@@ -149,9 +184,15 @@ def quotIota (c : ℤ) : M₁.piece c →ₗ[S] quotLaurent M₁ M₂ where
     apply Subtype.ext
     exact (Finsupp.smul_single _ _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotIota_apply (c : ℤ) (z : M₁.piece c) :
     quotIota M₁ M₂ c z = Submodule.Quotient.mk ⟨laurentSingle x c z, laurentSingle_mem z.2⟩ := rfl
 
+/- English proof (translation)
+Rewrite using `[quotIota_apply, quotIota_apply, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Conclude with `laurent_smul_single hf c (z : E)`.
+-/
 theorem smul_quotIota {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) {c : ℤ} (z : M₁.piece c) :
     f • quotIota M₁ M₂ c z =
       quotIota M₁ M₂ (c + d) ⟨aeval x f • (z : E), M₁.smul_mem d c f z hf z.2⟩ := by
@@ -161,6 +202,11 @@ theorem smul_quotIota {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) {c : ℤ
   rw [Submodule.coe_smul]
   exact laurent_smul_single hf c (z : E)
 
+/- English proof (translation)
+Rewrite using `[quotIota_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `FinGradedSub.mem_laurent.mp h c` as an intermediate fact. Rewrite `this` using `[laurentSingle_apply, if_pos rfl]`. Then use the resulting hypothesis.
+
+Conclude with `laurentSingle_mem`.
+-/
 theorem quotIota_eq_zero_iff {c : ℤ} (z : M₁.piece c) :
     quotIota M₁ M₂ c z = 0 ↔ (z : E) ∈ M₂.piece c := by
   rw [quotIota_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]
@@ -178,10 +224,16 @@ def quotProj (c : ℤ) : quotLaurent M₁ M₂ →+ quotLaurent M₁ M₂ :=
   QuotientAddGroup.lift _ ((quotIota M₁ M₂ c).comp (laurentCoeff M₁ c)).toAddMonoidHom
     fun _ hm => AddMonoidHom.mem_ker.mpr ((quotIota_eq_zero_iff M₁ M₂ _).mpr (hm c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotProj_mk (c : ℤ) (m : M₁.laurent) :
     quotProj M₁ M₂ c (Submodule.Quotient.mk m) =
       quotIota M₁ M₂ c ⟨(m : LaurentSpace x E) c, m.2 c⟩ := rfl
 
+/- English proof (translation)
+Establish `h : (⟨laurentSingle x c (z : E) c, FinGradedSub.mem_laurent.mp (laurentSingle_mem z.2) c⟩ : M₁.piece c) = z` using `Subtype.ext (by change laurentSingle x c (z : E) c = (z : E); rw [laurentSingle_apply, if_pos rfl])`. Conclude with `congrArg (quotIota M₁ M₂ c) h`.
+-/
 theorem quotProj_iota_self (c : ℤ) (z : M₁.piece c) :
     quotProj M₁ M₂ c (quotIota M₁ M₂ c z) = quotIota M₁ M₂ c z := by
   have h : (⟨laurentSingle x c (z : E) c, FinGradedSub.mem_laurent.mp (laurentSingle_mem z.2) c⟩ :
@@ -189,6 +241,9 @@ theorem quotProj_iota_self (c : ℤ) (z : M₁.piece c) :
     Subtype.ext (by change laurentSingle x c (z : E) c = (z : E); rw [laurentSingle_apply, if_pos rfl])
   exact congrArg (quotIota M₁ M₂ c) h
 
+/- English proof (translation)
+Establish `h0 : (⟨laurentSingle x c' (z : E) c, FinGradedSub.mem_laurent.mp (laurentSingle_mem z.2) c⟩ : M₁.piece c) = 0` using `Subtype.ext (by change laurentSingle x c' (z : E) c = 0; rw [laurentSingle_apply, if_neg h])`. Conclude with `(congrArg (quotIota M₁ M₂ c) h0).trans (map_zero _)`.
+-/
 theorem quotProj_iota_ne {c c' : ℤ} (h : c' ≠ c) (z : M₁.piece c') :
     quotProj M₁ M₂ c (quotIota M₁ M₂ c' z) = 0 := by
   have h0 : (⟨laurentSingle x c' (z : E) c, FinGradedSub.mem_laurent.mp (laurentSingle_mem z.2) c⟩ :
@@ -198,10 +253,20 @@ theorem quotProj_iota_ne {c c' : ℤ} (h : c' ≠ c) (z : M₁.piece c') :
 
 def quotPiece (c : ℤ) : Submodule S (quotLaurent M₁ M₂) := LinearMap.range (quotIota M₁ M₂ c)
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨_, (quotProj_mk M₁ M₂ c m).symm⟩`.
+-/
 theorem quotProj_mem (c : ℤ) (y : quotLaurent M₁ M₂) : quotProj M₁ M₂ c y ∈ quotPiece M₁ M₂ c := by
   obtain ⟨m, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   exact ⟨_, (quotProj_mk M₁ M₂ c m).symm⟩
 
+/- English proof (translation)
+Proceed by induction on `v using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `of c' y`. Rewrite using `[DirectSum.coeAddMonoidHom_of]`.
+
+Take `⟨z, hz⟩` from `LinearMap.mem_range.mp y.2`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Rewrite using `[DirectSum.of_eq_same, ← hz, quotProj_iota_self]`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (Ne.symm h), ← hz, quotProj_iota_ne M₁ M₂ h]`.
+
+Both sides reduce to the same expression. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, DirectSum.add_apply, Submodule.coe_add]`.
+-/
 theorem quotProj_coe (c : ℤ) (v : DirectSum ℤ fun c => quotPiece M₁ M₂ c) :
     quotProj M₁ M₂ c (DirectSum.coeAddMonoidHom (quotPiece M₁ M₂) v) = (v c : quotLaurent M₁ M₂) := by
   induction v using DirectSum.induction_on with
@@ -216,6 +281,9 @@ theorem quotProj_coe (c : ℤ) (v : DirectSum ℤ fun c => quotPiece M₁ M₂ c
       rfl
   | add a b ha hb => rw [map_add, map_add, ha, hb, DirectSum.add_apply, Submodule.coe_add]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `(Finsupp.sum_single (m : LaurentSpace x E)).symm`.
+-/
 theorem laurent_eq_sum (m : M₁.laurent) :
     m = ∑ c ∈ (m : LaurentSpace x E).support,
       (⟨laurentSingle x c ((m : LaurentSpace x E) c), laurentSingle_mem (m.2 c)⟩ : M₁.laurent) := by
@@ -223,6 +291,13 @@ theorem laurent_eq_sum (m : M₁.laurent) :
   rw [Submodule.coe_sum]
   exact (Finsupp.sum_single (m : LaurentSpace x E)).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `v w hvw`. Use `DFinsupp.ext fun c => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← quotProj_coe, ← quotProj_coe, hvw]`. Introduce `y`.
+
+Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `AddMonoidHom.mem_mrange.mp ?_` and prove the remaining obligations. Rewrite using `[laurent_eq_sum M₁ m, ← Submodule.mkQ_apply, map_sum]`. Use `AddSubmonoid.sum_mem _ fun c _ => ⟨DirectSum.of (fun c => quotPiece M₁ M₂ c) c ⟨quotIota M₁ M₂ c ⟨_, FinGradedSub.mem_laurent.mp m.2 c⟩, LinearMap.mem_range_self _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[DirectSum.coeAddMonoidHom_of]`.
+
+Both sides reduce to the same expression.
+-/
 theorem quotPiece_isInternal : DirectSum.IsInternal (quotPiece M₁ M₂) := by
   constructor
   · intro v w hvw
@@ -244,6 +319,15 @@ def quotLaurentGraded : GradedPMod S N (quotLaurent M₁ M₂) where
     obtain ⟨z, rfl⟩ := hy
     exact ⟨_, (smul_quotIota M₁ M₂ hf z).symm⟩
 
+/- English proof (translation)
+Take `⟨n, deg, gen, hgen, hspan⟩` from `M₁.fg`. Establish `hfg : M₁.laurent.FG`. Use `⟨Finset.univ.image fun j => laurentSingle x (deg j) (gen j), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `_ hz`.
+
+Take `⟨j, -, rfl⟩` from `Finset.mem_coe.mp hz |> Finset.mem_image.mp`. Conclude with `laurentSingle_mem (hgen j)`. Introduce `m hm`. Rewrite using `[← (Finsupp.sum_single m)]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : Submodule.span S {z | ∃ (j : Fin n) (f : Poly S N) (e : ℕ), f.IsHomogeneous e ∧ (e : ℤ) + deg j = c ∧ z = aeval x f • gen j} ≤ ((Submodule.span (Poly S N) ((Finset.univ.image fun j => laurentSingle x (deg j) (gen j) : Finset (LaurentSpace x E)) : Set (LaurentSpace x E))).res …`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, f, e, hf, rfl, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Submodule.restrictScalars_mem, Finsupp.lsingle_apply]`. Express the relevant statement in the definitionally equal form `laurentSingle x _ _ ∈ _`.
+
+Rewrite using `[add_comm (e : ℤ) (deg j), ← laurent_smul_single hf]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ (Finset.mem_univ j))))`. Conclude with `h1 (hspan c (hm c))`. Establish `: Module.Finite (Poly S N) M₁.laurent` using `Module.Finite.iff_fg.mpr hfg`. Conclude with `Module.Finite.of_surjective (Submodule.mkQ _) (Submodule.mkQ_surjective _)`.
+-/
 theorem quotLaurent_finite : Module.Finite (Poly S N) (quotLaurent M₁ M₂) := by
   classical
   obtain ⟨n, deg, gen, hgen, hspan⟩ := M₁.fg
@@ -272,6 +356,9 @@ theorem quotLaurent_finite : Module.Finite (Poly S N) (quotLaurent M₁ M₂) :=
   have : Module.Finite (Poly S N) M₁.laurent := Module.Finite.iff_fg.mpr hfg
   exact Module.Finite.of_surjective (Submodule.mkQ _) (Submodule.mkQ_surjective _)
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_smul, laurent_smul_eq_zero hp]`. Conclude with `zero_mem _`.
+-/
 theorem quotLaurent_smul_eq_zero {p : Poly S N} (hp : p ∈ primeOf (S := S) x) (y : quotLaurent M₁ M₂) :
     p • y = 0 := by
   obtain ⟨m, rfl⟩ := Submodule.Quotient.mk_surjective _ y
@@ -279,6 +366,11 @@ theorem quotLaurent_smul_eq_zero {p : Poly S N} (hp : p ∈ primeOf (S := S) x) 
     Submodule.coe_subtype, Submodule.coe_smul, laurent_smul_eq_zero hp]
   exact zero_mem _
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, FinGradedSub.mem_laurent]`. Introduce `c`. Express the relevant statement in the definitionally equal form `(f • (m : LaurentSpace x E)) c ∈ M₂.piece c`. Rewrite using `[laurent_smul_apply_of_isHomogeneous hf]`.
+
+Use `hJ (c - e) _ (m.2 (c - e))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem quotLaurent_smul_eq_zero_of {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e)
     (hJ : ∀ (a : ℤ), ∀ z ∈ M₁.piece a, aeval x f • z ∈ M₂.piece (a + e)) (y : quotLaurent M₁ M₂) :
     f • y = 0 := by
@@ -298,6 +390,9 @@ section Filt
 variable {x : Fin (N + 1) → Ω} {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E]
   [IsScalarTower S Ω E]
 
+/- English proof (translation)
+Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem FinGradedSub.eq_of_piece_eq {A B : FinGradedSub (S := S) (x := x) E} (h : A.piece = B.piece) :
     A = B := by
   cases A
@@ -312,6 +407,9 @@ def filtPiece (A : Submodule (Poly S N) (quotLaurent M₁ M₂)) (c : ℤ) : Sub
 
 variable {M₁ M₂}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`. Introduce and unpack `⟨h, hA⟩`. Conclude with `⟨⟨z, h⟩, hA, rfl⟩`.
+-/
 theorem mem_filtPiece {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} {c : ℤ} {z : E} :
     z ∈ filtPiece M₁ M₂ A c ↔ ∃ h : z ∈ M₁.piece c, quotIota M₁ M₂ c ⟨z, h⟩ ∈ A := by
   constructor
@@ -320,16 +418,27 @@ theorem mem_filtPiece {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} {c : �
   · rintro ⟨h, hA⟩
     exact ⟨⟨z, h⟩, hA, rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_filtPiece.trans ⟨fun ⟨_, h⟩ => h, fun h => ⟨z.2, h⟩⟩`.
+-/
 theorem coe_mem_filtPiece {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} {c : ℤ} (z : M₁.piece c) :
     (z : E) ∈ filtPiece M₁ M₂ A c ↔ quotIota M₁ M₂ c z ∈ A :=
   mem_filtPiece.trans ⟨fun ⟨_, h⟩ => h, fun h => ⟨z.2, h⟩⟩
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨h, hA⟩` from `mem_filtPiece.mp hz`. Conclude with `mem_filtPiece.mpr ⟨h, hAB hA⟩`.
+-/
 theorem filtPiece_mono {A B : Submodule (Poly S N) (quotLaurent M₁ M₂)} (hAB : A ≤ B) (c : ℤ) :
     filtPiece M₁ M₂ A c ≤ filtPiece M₁ M₂ B c := by
   intro z hz
   obtain ⟨h, hA⟩ := mem_filtPiece.mp hz
   exact mem_filtPiece.mpr ⟨h, hAB hA⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[mem_filtPiece]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h0⟩`. Conclude with `(quotIota_eq_zero_iff M₁ M₂ ⟨z, h⟩).mp ((Submodule.mem_bot _).mp h0)`.
+
+Introduce `hz`. Conclude with `⟨hle c hz, (Submodule.mem_bot _).mpr ((quotIota_eq_zero_iff M₁ M₂ ⟨z, hle c hz⟩).mpr hz)⟩`.
+-/
 theorem filtPiece_bot (hle : ∀ c, M₂.piece c ≤ M₁.piece c) (c : ℤ) :
     filtPiece M₁ M₂ ⊥ c = M₂.piece c := by
   ext z
@@ -340,11 +449,17 @@ theorem filtPiece_bot (hle : ∀ c, M₂.piece c ≤ M₁.piece c) (c : ℤ) :
   · intro hz
     exact ⟨hle c hz, (Submodule.mem_bot _).mpr ((quotIota_eq_zero_iff M₁ M₂ ⟨z, hle c hz⟩).mpr hz)⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Rewrite using `[mem_filtPiece]`. Conclude with `⟨fun ⟨h, _⟩ => h, fun h => ⟨h, Submodule.mem_top⟩⟩`.
+-/
 theorem filtPiece_top (c : ℤ) : filtPiece M₁ M₂ ⊤ c = M₁.piece c := by
   ext z
   rw [mem_filtPiece]
   exact ⟨fun ⟨h, _⟩ => h, fun h => ⟨h, Submodule.mem_top⟩⟩
 
+/- English proof (translation)
+Take `⟨h, hA⟩` from `mem_filtPiece.mp hz`. Use `mem_filtPiece.mpr ⟨M₁.smul_mem d c f z hf h, ?_⟩` and prove the remaining obligations. Establish `key` using `A.smul_mem f hA`. Rewrite `key` using `[smul_quotIota M₁ M₂ hf]`. Conclude with `key`.
+-/
 theorem filtPiece_smul_mem (A : Submodule (Poly S N) (quotLaurent M₁ M₂)) {d : ℕ} {c : ℤ} {f : Poly S N}
     {z : E} (hf : f.IsHomogeneous d) (hz : z ∈ filtPiece M₁ M₂ A c) :
     aeval x f • z ∈ filtPiece M₁ M₂ A (c + d) := by
@@ -354,6 +469,11 @@ theorem filtPiece_smul_mem (A : Submodule (Poly S N) (quotLaurent M₁ M₂)) {d
   rw [smul_quotIota M₁ M₂ hf] at key
   exact key
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent r, Finset.sum_smul, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[smul_quotIota M₁ M₂ (homogeneousComponent_isHomogeneous i r), quotProj_iota_self]`.
+
+Rewrite using `[smul_quotIota M₁ M₂ (homogeneousComponent_isHomogeneous i r), quotProj_iota_ne M₁ M₂ h]`.
+-/
 theorem quotProj_smul_iota (r : Poly S N) {e : ℤ} (g : M₁.piece e) (c : ℤ) :
     quotProj M₁ M₂ c (r • quotIota M₁ M₂ e g) = ∑ i ∈ Finset.range (r.totalDegree + 1),
       if e + i = c then homogeneousComponent i r • quotIota M₁ M₂ e g else 0 := by
@@ -364,6 +484,9 @@ theorem quotProj_smul_iota (r : Poly S N) {e : ℤ} (g : M₁.piece e) (c : ℤ)
     rw [smul_quotIota M₁ M₂ (homogeneousComponent_isHomogeneous i r), quotProj_iota_self]
   · rw [smul_quotIota M₁ M₂ (homogeneousComponent_isHomogeneous i r), quotProj_iota_ne M₁ M₂ h]
 
+/- English proof (translation)
+Rewrite using `[quotProj_smul_iota]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Conclude with `zero_mem _`.
+-/
 theorem quotProj_smul_iota_mem (r : Poly S N) {e : ℤ} (g : M₁.piece e) (c : ℤ) :
     quotProj M₁ M₂ c (r • quotIota M₁ M₂ e g) ∈ Submodule.span (Poly S N) {quotIota M₁ M₂ e g} := by
   rw [quotProj_smul_iota]
@@ -377,11 +500,17 @@ variable (M₁ M₂) in
 def IsProjStable (A : Submodule (Poly S N) (quotLaurent M₁ M₂)) : Prop :=
   ∀ y ∈ A, ∀ c, quotProj M₁ M₂ c y ∈ A
 
+/- English proof (translation)
+Introduce `y hy c`. Rewrite using `[(Submodule.mem_bot _).mp hy, map_zero]`. Conclude with `zero_mem _`.
+-/
 theorem isProjStable_bot : IsProjStable M₁ M₂ ⊥ := by
   intro y hy c
   rw [(Submodule.mem_bot _).mp hy, map_zero]
   exact zero_mem _
 
+/- English proof (translation)
+Introduce `y hy c`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hb`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (hA a ha c)) (Submodule.mem_sup_right (quotProj_smul_iota_mem r g c))`.
+-/
 theorem isProjStable_sup {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} (hA : IsProjStable M₁ M₂ A)
     {e : ℤ} (g : M₁.piece e) :
     IsProjStable M₁ M₂ (A ⊔ Submodule.span (Poly S N) {quotIota M₁ M₂ e g}) := by
@@ -392,6 +521,21 @@ theorem isProjStable_sup {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} (hA 
   exact add_mem (Submodule.mem_sup_left (hA a ha c))
     (Submodule.mem_sup_right (quotProj_smul_iota_mem r g c))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨hz1, hzA⟩` from `mem_filtPiece.mp hz`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hzA`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hb`.
+
+Use `set w : E := (r • laurentSingle x e (g : E)) c with hwdef`. Establish `hw : w ∈ Submodule.span S {z | ∃ (f : Poly S N) (d : ℕ), f.IsHomogeneous d ∧ e + d = c ∧ z = aeval x f • (g : E)}`. Rewrite using `[hwdef, laurent_smul_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[laurentSingle_apply]`.
+
+Use `split_ifs with h`. Conclude with `Submodule.subset_span ⟨_, i, homogeneousComponent_isHomogeneous i r, by omega, rfl⟩`. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Establish `hw1 : w ∈ M₁.piece c` using `FinGradedSub.mem_laurent.mp (M₁.laurent.smul_mem r (laurentSingle_mem g.2)) c`.
+
+Establish `key : quotIota M₁ M₂ c ⟨z, hz1⟩ = quotProj M₁ M₂ c a + quotIota M₁ M₂ c ⟨w, hw1⟩`. Rewrite using `[← quotProj_iota_self M₁ M₂ c ⟨z, hz1⟩, ← hab, map_add]`. Use `congr 1`. Establish `hzw : z - w ∈ filtPiece M₁ M₂ A c`. Use `mem_filtPiece.mpr ⟨sub_mem hz1 hw1, ?_⟩` and prove the remaining obligations.
+
+Establish `hs : (⟨z - w, sub_mem hz1 hw1⟩ : M₁.piece c) = ⟨z, hz1⟩ - ⟨w, hw1⟩` using `rfl`. Rewrite using `[hs, map_sub, key, add_sub_cancel_right]`. Conclude with `hA a ha c`. Rewrite using `[← sub_add_cancel z w]`. Conclude with `add_mem (Submodule.mem_sup_left hzw) (Submodule.mem_sup_right hw)`.
+
+Use `sup_le (filtPiece_mono le_sup_left c) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, d, hf, rfl, rfl⟩`. Use `mem_filtPiece.mpr ⟨M₁.smul_mem d e f g hf g.2, ?_⟩` and prove the remaining obligations. Establish `h2 : f • quotIota M₁ M₂ e g ∈ A ⊔ Submodule.span (Poly S N) {quotIota M₁ M₂ e g}` using `Submodule.smul_mem _ f (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`.
+
+Rewrite `h2` using `[smul_quotIota M₁ M₂ hf]`. Conclude with `h2`.
+-/
 theorem filtPiece_sup {A : Submodule (Poly S N) (quotLaurent M₁ M₂)} (hA : IsProjStable M₁ M₂ A) {e : ℤ}
     (g : M₁.piece e) (c : ℤ) :
     filtPiece M₁ M₂ (A ⊔ Submodule.span (Poly S N) {quotIota M₁ M₂ e g}) c =

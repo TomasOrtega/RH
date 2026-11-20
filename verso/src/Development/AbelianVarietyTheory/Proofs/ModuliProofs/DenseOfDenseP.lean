@@ -17,6 +17,9 @@ variable {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {R R' : Type} [CommRing
 
 abbrev loc (f : R) : R →+* Localization.Away f := algebraMap R (Localization.Away f)
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (x : B →+* C) (y : A →+* B) :
     spMap (x.comp y) = spMap x ≫ spMap y := by
   unfold spMap
@@ -125,10 +128,16 @@ def PolFam (A : Over (Sp R)) [GrpObj A] (L : LB A.left) (act : J → (A ⟶ A))
 
 variable {b Mat κ β v}
 
+/- English proof (translation)
+Simplify using `only [Good, spMap_comp, Category.assoc, RingHom.comp_apply]`.
+-/
 theorem good_comp (ρ : R →+* R') {K : Type} [Field K] (x : R' →+* K) {s : Sp K ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) :
     Good b Mat κ (ρ.comp β) (fun a => ρ (v a)) x t ↔ Good b Mat κ β v (x.comp ρ) t := by
   simp only [Good, spMap_comp, Category.assoc, RingHom.comp_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨K, hF, hA, x, t, hk, hs, hth⟩`. Conclude with `⟨K, hF, hA, x, _, t, hk, rfl, hs, hth⟩`. Introduce and unpack `⟨K, hF, hA, x, s, t, hk, ⟨rfl, hs, hth⟩⟩`. Conclude with `⟨K, hF, hA, x, t, hk, hs, hth⟩`.
+-/
 theorem mem_objPrimes {q : Ideal R} : q ∈ objPrimes b Mat κ β v ↔
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (x : R →+* K) (s : Sp K ⟶ Sp o) (t : TObj g (N' ^ 2) J b s),
       RingHom.ker x = q ∧ Good b Mat κ β v x t := by
@@ -138,10 +147,20 @@ theorem mem_objPrimes {q : Ideal R} : q ∈ objPrimes b Mat κ β v ↔
   · rintro ⟨K, hF, hA, x, s, t, hk, ⟨rfl, hs, hth⟩⟩
     exact ⟨K, hF, hA, x, t, hk, hs, hth⟩
 
+/- English proof (translation)
+Take `⟨K, hF, -, x, -, rfl, -⟩` from `h`. Conclude with `RingHom.ker_isPrime x`.
+-/
 theorem isPrime_of_mem {q : Ideal R} (h : q ∈ objPrimes b Mat κ β v) : q.IsPrime := by
   obtain ⟨K, hF, -, x, -, rfl, -⟩ := h
   exact RingHom.ker_isPrime x
 
+/- English proof (translation)
+Take `⟨K, hF, hA, x, s, t, hk, hg⟩` from `mem_objPrimes.1 h`. Establish `hu : IsUnit (x f)`. Use `isUnit_iff_ne_zero.2 fun h0 => hf ?_` and prove the remaining obligations. Rewrite using `[← hk]`. Conclude with `h0`.
+
+Set `y : Localization.Away f →+* K` to `IsLocalization.Away.lift f hu`. Establish `hy : y.comp (loc f) = x` using `IsLocalization.Away.lift_comp f hu`. Use `⟨RingHom.ker y, mem_objPrimes.2 ⟨K, hF, hA, y, s, t, rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[good_comp, hy]`. Conclude with `hg`.
+
+Rewrite using `[RingHom.comap_ker, hy, hk]`.
+-/
 theorem exists_mem_loc {q : Ideal R} (h : q ∈ objPrimes b Mat κ β v) {f : R} (hf : f ∉ q) :
     ∃ q₁ ∈ objPrimes b Mat κ ((loc f).comp β) (fun a => loc f (v a)), q₁.comap (loc f) = q := by
   obtain ⟨K, hF, hA, x, s, t, hk, hg⟩ := mem_objPrimes.1 h
@@ -156,6 +175,17 @@ theorem exists_mem_loc {q : Ideal R} (h : q ∈ objPrimes b Mat κ β v) {f : R}
     exact hg
   · rw [RingHom.comap_ker, hy, hk]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨⟨a, c⟩, hc⟩` from `IsLocalization.surj (Submonoid.powers f) g`. Establish `hfa : f * a = 0`. Apply `h` to reduce the goal to its premises. Introduce `p hp _`.
+
+Distinguish the cases in `hfp : f ∈ p`. Conclude with `p.mul_mem_right a hfp`. Take `⟨q₁, hq₁, hcomap⟩` from `exists_mem_loc hp hfp`. Establish `hgq : g ∈ q₁` using `hg q₁ hq₁ (isPrime_of_mem hq₁)`. Establish `haq : algebraMap R (Localization.Away f) a ∈ q₁`.
+
+Rewrite using `[← hc]`. Conclude with `q₁.mul_mem_right _ hgq`. Establish `: a ∈ p`. Rewrite using `[← hcomap]`. Conclude with `haq`.
+
+Conclude with `p.mul_mem_left f this`. Establish `hloc : algebraMap R (Localization.Away f) a = 0`. Establish `h1` using `congrArg (algebraMap R (Localization.Away f)) hfa`. Rewrite `h1` using `[map_mul, map_zero]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit f).mul_right_eq_zero.1 h1`.
+
+Establish `hcu : IsUnit (algebraMap R (Localization.Away f) (c : R))` using `IsLocalization.map_units (Localization.Away f) c`. Simplify using `only at hc`. Rewrite `hc` using `[hloc]`. Conclude with `hcu.mul_left_eq_zero.1 hc`.
+-/
 theorem densePrimes_localization (h : DenseP (objPrimes b Mat κ β v)) (f : R) :
     DenseP (objPrimes b Mat κ ((loc f).comp β) (fun a => loc f (v a))) := by
   intro g hg
@@ -184,17 +214,28 @@ theorem densePrimes_localization (h : DenseP (objPrimes b Mat κ β v)) (f : R) 
   rw [hloc] at hc
   exact hcu.mul_left_eq_zero.1 hc
 
+/- English proof (translation)
+Take `⟨q₁, hq₁, hcomap⟩` from `exists_mem_loc h.2 hf`. Conclude with `⟨q₁, ⟨densePrimes_localization h.1 f, hq₁⟩, hcomap⟩`.
+-/
 theorem Den.loc {q₀ : Ideal R} (h : Den b Mat κ β v q₀) {f : R} (hf : f ∉ q₀) :
     ∃ q₁, Den b Mat κ ((loc f).comp β) (fun a => loc f (v a)) q₁ ∧ q₁.comap (loc f) = q₀ := by
   obtain ⟨q₁, hq₁, hcomap⟩ := exists_mem_loc h.2 hf
   exact ⟨q₁, ⟨densePrimes_localization h.1 f, hq₁⟩, hcomap⟩
 
+/- English proof (translation)
+Introduce `K _ _ x s t hg`. Conclude with `h K (x.comp ρ) s t ((good_comp ρ x t).1 hg)`.
+-/
 theorem FibData.comp {m : ℕ} {p : Ix g (N' ^ 2) → Ix g (N' ^ 2) → R} {Hh : Type} {hh : Hh → Ix g (N' ^ 2)}
     {Q : Polynomial ℚ} {d : ℕ} (h : FibData b Mat κ β v m p hh Q d) (ρ : R →+* R') :
     FibData b Mat κ (ρ.comp β) (fun a => ρ (v a)) m (fun c a => ρ (p c a)) hh Q d := by
   intro K _ _ x s t hg
   exact h K (x.comp ρ) s t ((good_comp ρ x t).1 hg)
 
+/- English proof (translation)
+Establish `hv : PrimeSpectrum.vanishingIdeal {p : PrimeSpectrum R | p.asIdeal ∈ P} = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite using `[Ideal.mem_bot]`. Use `h a fun p hp hpr => ?_` and prove the remaining obligations.
+
+Conclude with `(PrimeSpectrum.mem_vanishingIdeal _ _).1 ha ⟨p, hpr⟩ hp`. Establish `hc : closure {p : PrimeSpectrum R | p.asIdeal ∈ P} = Set.univ`. Rewrite using `[← PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hv]`. Simplify using the standard rewrite rules. Conclude with `dense_iff_closure_eq.2 hc`.
+-/
 theorem dense_of_denseP {P : Set (Ideal R)} (h : DenseP P) : Dense {p : Sp R | p.asIdeal ∈ P} := by
   have hv : PrimeSpectrum.vanishingIdeal {p : PrimeSpectrum R | p.asIdeal ∈ P} = ⊥ := by
     rw [eq_bot_iff]

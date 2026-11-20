@@ -16,9 +16,15 @@ variable {k ρ : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 def cur (X : Q.Mx k ρ) (y : Mt k ρ) (t : ℝ) : Mt k ρ :=
   Matrix.of.symm (Matrix.of y * NormedSpace.exp ((t : ℂ) • X))
 
+/- English proof (translation)
+Simplify using `[cur, NormedSpace.exp_zero]`.
+-/
 theorem cur_zero (X : Q.Mx k ρ) (y : Mt k ρ) : cur X y 0 = y := by
   simp [cur, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Establish `hc : Commute ((s : ℂ) • X) ((t : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`. Establish `e : NormedSpace.exp (((s + t : ℝ) : ℂ) • X) = NormedSpace.exp ((s : ℂ) • X) * NormedSpace.exp ((t : ℂ) • X)`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hc, Complex.ofReal_add, add_smul]`. Unfold `cur`. Rewrite using `[Equiv.apply_symm_apply, e, Matrix.mul_assoc]`.
+-/
 theorem cur_add (X : Q.Mx k ρ) (y : Mt k ρ) (s t : ℝ) : cur X (cur X y s) t = cur X y (s + t) := by
   have hc : Commute ((s : ℂ) • X) ((t : ℂ) • X) := ((Commute.refl X).smul_left _).smul_right _
   have e : NormedSpace.exp (((s + t : ℝ) : ℂ) • X) =
@@ -27,10 +33,18 @@ theorem cur_add (X : Q.Mx k ρ) (y : Mt k ρ) (s t : ℝ) : cur X (cur X y s) t 
   unfold cur
   rw [Equiv.apply_symm_apply, e, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `Formalism.REAL.hasDerivAt_mul_exp_smul_zero (Matrix.of y) X`.
+-/
 theorem cur_hasDerivAt0 (X : Q.Mx k ρ) (y : Mt k ρ) :
     HasDerivAt (cur X y) (Matrix.of.symm (Matrix.of y * X)) 0 :=
   Formalism.REAL.hasDerivAt_mul_exp_smul_zero (Matrix.of y) X
 
+/- English proof (translation)
+Establish `h0` using `cur_hasDerivAt0 X (cur X y s)`. Rewrite `h0` using `[← sub_self s]`. Establish `h1` using `h0.comp_sub_const s s`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show cur X y t = cur X (cur X y s) (t - s)`.
+
+Rewrite using `[cur_add, add_sub_cancel]`.
+-/
 theorem cur_hasDerivAt (X : Q.Mx k ρ) (y : Mt k ρ) (s : ℝ) :
     HasDerivAt (cur X y) (Matrix.of.symm (Matrix.of (cur X y s) * X)) s := by
   have h0 := cur_hasDerivAt0 X (cur X y s)
@@ -55,6 +69,11 @@ def dirL (X : Q.Mx k ρ) : Par × Mt k ρ →L[ℝ] Par × Mt k ρ :=
   (ContinuousLinearMap.inr ℝ Par (Mt k ρ)).comp
     ((LinearMap.toContinuousLinearMap (mulX X)).comp (ContinuousLinearMap.snd ℝ Par (Mt k ρ)))
 
+/- English proof (translation)
+Establish `hc` using `cur_hasDerivAt0 X q.2`. Establish `hγ : HasDerivAt (fun t : ℝ => ((q.1, cur X q.2 t) : Par × Mt k ρ)) (dirL X q) 0` using `(hasDerivAt_const (0 : ℝ) q.1).prodMk hc`. Establish `hγ0 : ((q.1, cur X q.2 0) : Par × Mt k ρ) = q` using `by rw [cur_zero]`. Establish `hFd : DifferentiableAt ℝ F q` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hq)`. Establish `hcomp` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ hγ0.symm`.
+
+Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, ((q.1, cur X q.2 t) : Par × Mt k ρ) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hU.mem_nhds hq)`. Use `filter_upwards [hmem] with t ht`. Conclude with `hfF _ ht (Formalism.FourierDecayAlt.P.Qx3.glev_mul hqG (hX t))`.
+-/
 theorem rdv_local {X : Q.Mx k ρ} (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev (Fin.last ρ) X) {f : Par → Q.Mx k ρ → E}
     {U : Set (Par × Mt k ρ)} {F : Par × Mt k ρ → E} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F U)
     (hfF : ∀ q ∈ U, Matrix.of q.2 ∈ Q.Glev k ρ (Fin.last ρ) → f q.1 (Matrix.of q.2) = F q)
@@ -72,6 +91,11 @@ theorem rdv_local {X : Q.Mx k ρ} (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev (
   filter_upwards [hmem] with t ht
   exact hfF _ ht (Formalism.FourierDecayAlt.P.Qx3.glev_mul hqG (hX t))
 
+/- English proof (translation)
+Take `⟨U, F, hUo, hqU, hF, hgF⟩` from `hg (m y₀) hU (hG y₀)`. Establish `hcF : ContinuousAt F (m y₀)` using `hF.continuousOn.continuousAt (hUo.mem_nhds hqU)`. Establish `h` using `ContinuousAt.comp (g := F) (f := m) (x := y₀) hcF hm`. Use `h.congr ?_` and prove the remaining obligations. Establish `hmem : ∀ᶠ y in 𝓝 y₀, m y ∈ U` using `hm.preimage_mem_nhds (hUo.mem_nhds hqU)`.
+
+Use `filter_upwards [hmem] with y hy`. Conclude with `(hgF (m y) hy (hG y)).symm`.
+-/
 theorem parFam_contAt_comp {Y : Type} [TopologicalSpace Y] {U₀ : Set (Par × Mt k ρ)} {g : Par × Mt k ρ → E}
     (hg : PBI.ParFam k ρ U₀ g) {m : Y → Par × Mt k ρ} {y₀ : Y} (hm : ContinuousAt m y₀) (hU : m y₀ ∈ U₀)
     (hG : ∀ y, Matrix.of (m y).2 ∈ Q.Glev k ρ (Fin.last ρ)) : ContinuousAt (fun y => g (m y)) y₀ := by
@@ -83,6 +107,9 @@ theorem parFam_contAt_comp {Y : Type} [TopologicalSpace Y] {U₀ : Set (Par × M
   filter_upwards [hmem] with y hy
   exact (hgF (m y) hy (hG y)).symm
 
+/- English proof (translation)
+Introduce `q₀ hq₀ hG₀`. Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf q₀ hq₀ hG₀`. Use `⟨U, fun q => fderiv ℝ F q (dirL X q), hU, hqU, ?_, fun q hq hqG => ?_⟩` and prove the remaining obligations. Conclude with `(hF.fderiv_of_isOpen (m := ∞) hU Formalism.REAL.withTop_enat_infty_add_one_le_infty).clm_apply (ContinuousLinearMap.contDiff (n := ∞) (dirL (Par := Par) (k := k) (ρ := ρ) X)).contDiffOn`. Conclude with `(rdv_local hX hU hF hfF hq hqG).deriv`.
+-/
 theorem rdv_parFam {X : Q.Mx k ρ} (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev (Fin.last ρ) X) {U₀ : Set (Par × Mt k ρ)}
     {f : Par → Q.Mx k ρ → E} (hf : PBI.ParFam k ρ U₀ (fun q => f q.1 (Matrix.of q.2))) :
     PBI.ParFam k ρ U₀ (fun q => RdV X (f q.1) (Matrix.of q.2)) := by
@@ -93,6 +120,11 @@ theorem rdv_parFam {X : Q.Mx k ρ} (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev 
       (ContinuousLinearMap.contDiff (n := ∞) (dirL (Par := Par) (k := k) (ρ := ρ) X)).contDiffOn
   · exact (rdv_local hX hU hF hfF hq hqG).deriv
 
+/- English proof (translation)
+Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf _ hq hG`. Establish `h0` using `rdv_local hX hU hF hfF hqU hG`. Establish `h1 : HasDerivAt (fun t : ℝ => f Z (Matrix.of (cur X (cur X y s) t))) (RdV X (f Z) (Matrix.of (cur X y s))) 0` using `h0.differentiableAt.hasDerivAt`. Rewrite `h1` using `[← sub_self s]`. Establish `h2` using `h1.comp_sub_const s s`.
+
+Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show f Z (Matrix.of (cur X y t)) = f Z (Matrix.of (cur X (cur X y s) (t - s)))`. Rewrite using `[cur_add, add_sub_cancel]`.
+-/
 theorem hasDerivAt_right_derivative_curve {X : Q.Mx k ρ} (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev (Fin.last ρ) X) {U₀ : Set (Par × Mt k ρ)}
     {f : Par → Q.Mx k ρ → E} (hf : PBI.ParFam k ρ U₀ (fun q => f q.1 (Matrix.of q.2))) (Z : Par) (y : Mt k ρ)
     (s : ℝ) (hq : (Z, cur X y s) ∈ U₀) (hG : Matrix.of (cur X y s) ∈ Q.Glev k ρ (Fin.last ρ)) :
@@ -109,6 +141,25 @@ theorem hasDerivAt_right_derivative_curve {X : Q.Mx k ρ} (hX : Formalism.Fourie
 
 end RdV
 
+/- English proof (translation)
+Introduce `Par _ _ _ _ _ U₀ hU₀ f hf`. Establish `hD` using `rdv_parFam hX hf`. Use `⟨hD, fun q hq hG W hW hqW hz => ?_, fun ν _ Kp hKp hν fi y V hV hyV hyG hKV hi => ?_⟩` and prove the remaining obligations. Use `show deriv (fun t : ℝ => f q.1 (Matrix.of (cur X q.2 t))) 0 = 0`. Establish `hγ : ContinuousAt (fun t : ℝ => ((q.1, cur X q.2 t) : Par × Mt k ρ)) 0` using `continuousAt_const.prodMk (cur_hasDerivAt0 X q.2).continuousAt`.
+
+Establish `hγ0 : ((q.1, cur X q.2 0) : Par × Mt k ρ) = q` using `by rw [cur_zero]`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, ((q.1, cur X q.2 t) : Par × Mt k ρ) ∈ W` using `hγ.preimage_mem_nhds (by rw [hγ0]; exact hW.mem_nhds hqW)`. Establish `hev : (fun t : ℝ => f q.1 (Matrix.of (cur X q.2 t))) =ᶠ[𝓝 0] (fun _ => (0 : E))` using `by filter_upwards [hmem] with t ht`. Conclude with `hz _ ht (Formalism.FourierDecayAlt.P.Qx3.glev_mul hG (hX t))`. Rewrite using `[hev.deriv_eq, deriv_const]`.
+
+Establish `hGt : ∀ t : ℝ, Matrix.of (cur X y t) ∈ Q.Glev k ρ (Fin.last ρ)` using `fun t => Formalism.FourierDecayAlt.P.Qx3.glev_mul hyG (hX t)`. Establish `hpre : cur X y ⁻¹' V ∈ 𝓝 (0 : ℝ)` using `(cur_hasDerivAt0 X y).continuousAt.preimage_mem_nhds (by rw [cur_zero]; exact hV.mem_nhds hyV)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp hpre`. Establish `hδ : 0 < ε / 2` using `half_pos hε`. Establish `hcb : Metric.closedBall (0 : ℝ) (ε / 2) ⊆ cur X y ⁻¹' V` using `fun t ht => hball (Metric.closedBall_subset_ball (half_lt_self hε) ht)`.
+
+Establish `hUt : ∀ t ∈ Metric.closedBall (0 : ℝ) (ε / 2), ∀ Z ∈ Kp, (Z, cur X y t) ∈ U₀` using `fun t ht Z hZ => hKV ⟨hZ, hcb ht⟩`. Establish `hcont : ContinuousOn (fun p : Par × ℝ => RdV X (f p.1) (Matrix.of (cur X y p.2))) (Kp ×ˢ Metric.closedBall (0 : ℝ) (ε / 2))`. Introduce `p hp`. Establish `hm : ContinuousAt (fun p : Par × ℝ => ((p.1, cur X y p.2) : Par × Mt k ρ)) p` using `continuous_fst.continuousAt.prodMk (ContinuousAt.comp (g := cur X y) (f := Prod.snd) (x := p) (cur_hasDerivAt X y p.2).continuousAt continuous_snd.continuousAt)`. Conclude with `(parFam_contAt_comp (g := fun q => RdV X (f q.1) (Matrix.of q.2)) hD hm (hUt p.2 hp.2 p.1 hp.1) (fun p => hGt p.2)).continuousWithinAt`.
+
+Take `⟨C, hC⟩` from `(hKp.prod (isCompact_closedBall (0 : ℝ) (ε / 2))).exists_bound_of_continuousOn hcont`. Establish `hae : ∀ᵐ Z ∂ν, Z ∈ Kp`. Rewrite using `[ae_iff]`. Simplify `hν` using `[Set.compl_def]`. Establish `hb : Metric.ball (0 : ℝ) (ε / 2) ∈ 𝓝 (0 : ℝ)` using `Metric.ball_mem_nhds 0 hδ`.
+
+Establish `hin : ∀ t ∈ Metric.ball (0 : ℝ) (ε / 2), t ∈ Metric.closedBall (0 : ℝ) (ε / 2)` using `fun t ht => Metric.ball_subset_closedBall ht`. Establish `hF_int : ∀ t ∈ Metric.closedBall (0 : ℝ) (ε / 2), Integrable (fun Z => f Z (Matrix.of (cur X y t))) ν` using `fun t ht => parFam_integrable (f := fun q => f q.1 (Matrix.of q.2)) hf hKp hν (hGt t) (fun Z hZ => hUt t ht Z hZ)`. Establish `h0c : (0 : ℝ) ∈ Metric.closedBall (0 : ℝ) (ε / 2)` using `Metric.mem_closedBall_self hδ.le`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν) (F := fun t Z => f Z (Matrix.of (cur X y t))) (F' := fun t Z => RdV X (f Z) (Matrix.of (cur X y t))) (x₀ := 0) (bound := fun _ => C) hb (by filter_upwards [hb] with t ht`. Conclude with `(hF_int t (hin t ht)).aestronglyMeasurable)`.
+
+Use the proof step `(hF_int 0 h0c)`. Use the proof step `((parFam_integrable (f := fun q => RdV X (f q.1) (Matrix.of q.2)) hD hKp hν (hGt 0) (fun Z hZ => hUt 0 h0c Z hZ)).aestronglyMeasurable)`. Use the proof step `(by filter_upwards [hae] with Z hZ`. Introduce `t ht`. Conclude with `hC (Z, t) ⟨hZ, hin t ht⟩)`.
+
+Use the proof step `(integrable_const C)`. Use the proof step `(by filter_upwards [hae] with Z hZ`. Introduce `t ht`. Conclude with `hasDerivAt_right_derivative_curve hX hf Z y t (hUt t (hin t ht) Z hZ) (hGt t))`. Use `show deriv (fun t : ℝ => fi (Matrix.of (cur X y t))) 0 = ∫ Z, RdV X (f Z) (Matrix.of y) ∂ν`.
+
+Establish `hev : (fun t : ℝ => fi (Matrix.of (cur X y t))) =ᶠ[𝓝 0] (fun t => ∫ Z, f Z (Matrix.of (cur X y t)) ∂ν)` using `by filter_upwards [hb] with t ht`. Conclude with `hi (cur X y t) (hcb (hin t ht)) (hGt t)`. Rewrite using `[hev.deriv_eq, key.2.deriv, cur_zero]`.
+-/
 theorem parOK_rdV {k ρ : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {X : Q.Mx k ρ}
     (hX : Formalism.FourierDecayAlt.P.Qx3.LieLev (Fin.last ρ) X) : ParOK k ρ (E := E) (RdV X) := by
   intro Par _ _ _ _ _ U₀ hU₀ f hf

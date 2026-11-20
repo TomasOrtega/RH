@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.FlatSup
 
+/- English proof (translation)
+Rewrite using `[h.lintegral_eq_tsum'' f, ← lintegral_tsum]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `fun γ => (hf.comp (measurable_const_mul γ.1)).aemeasurable`.
+-/
 theorem lintegral_le_of_tsum {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [Countable Γ] (ν : Measure G) [ν.IsMulLeftInvariant] {𝓤 : Set G} (h : IsFundamentalDomain Γ 𝓤 ν)
     (h1 : ν 𝓤 = 1) (f : G → ENNReal) (hf : Measurable f) (B : ENNReal) (hB : ∀ u, ∑' γ : Γ, f (γ.1 * u) ≤ B) :
@@ -27,6 +30,11 @@ theorem lintegral_le_of_tsum {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
       _ = B := by rw [setLIntegral_const, h1, mul_one]
   · exact fun γ => (hf.comp (measurable_const_mul γ.1)).aemeasurable
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `mem_ratMx.1 ha`. Take `⟨b, rfl⟩` from `mem_ratMx.1 hb`. Rewrite `h` using `[← rat_mul, ← rat_mul]`. Establish `h2` using `rat_injective h`. Establish `hi : Function.Injective x.mulVec` using `Matrix.mulVec_injective_iff.2 hx`.
+
+Use `congrArg rat (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h3 : x *ᵥ (fun k => a k j) = x *ᵥ (fun k => b k j)`. Use function extensionality and compare the values at `l`. Conclude with `congrFun (congrFun h2 l) j`. Conclude with `congrFun (hi h3) i`.
+-/
 theorem rat_cancel {D : D7} {m ρ : ℕ} {x : Matrix (Fin m) (Fin ρ) D.host.E} (hx : LinearIndependent D.host.E x.transpose)
     {a b : Mx D ρ ρ} (ha : a ∈ ratMx D ρ ρ) (hb : b ∈ ratMx D ρ ρ)
     (h : (rat x : Mx D m ρ) ⬝ a = (rat x : Mx D m ρ) ⬝ b) : a = b := by
@@ -41,6 +49,25 @@ theorem rat_cancel {D : D7} {m ρ : ℕ} {x : Matrix (Fin m) (Fin ρ) D.host.E} 
     exact congrFun (congrFun h2 l) j
   exact congrFun (hi h3) i
 
+/- English proof (translation)
+Take `⟨C, A, hC⟩` from `GlobalTheory.T.mixedCoordinate_absSum_weilTranslate_moderateGrowth D ψ V W s.χV s.χW s.om s.weil V₀ ρ dV s.vS Φ hΦ`. Take `⟨om', hW'⟩` from `(GlobalTheory.T.weilDatum_descends_to_wittCore D ψ V W s.χV s.χW s.om s.weil).1 V₀ ρ dV`. Establish `hMS` using `GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ V V₀ W ρ dV s.χV s.χW s.om om' s.weil hW' s.vS.μ s.vS.𝓕 s.vS.covol`. Establish `hmix` using `(GlobalTheory.T.weilMixedCoordinates_continuous_bounded_supNorm D ψ V V₀ W W₀ ρ σ dV dW s.vS s.vT s.χV s.χW s.om s.weil Φ hΦ).1`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.UnitU.cocompact D ρ`.
+
+Take `⟨c, hc⟩` from `exists_height_le_of_isCompact V (hK.image (dV.continuous_levi.comp continuous_subtype_val))`. Establish `hc'1 : 1 ≤ max c 1` using `le_max_right _ _`. Establish `hC₀0 : 0 ≤ max C 0` using `le_max_right _ _`. Use `⟨max C 0 * max c 1 ^ A, A, mul_nonneg hC₀0 (pow_nonneg (zero_le_one.trans hc'1) _), fun g h w => ?_⟩` and prove the remaining obligations. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`.
+
+Use `haveI : Countable (UXQ D ρ) := (GlobalTheory.UnitU.rational D ρ).1`. Take `⟨hH, 𝓤, h𝓤, h1⟩` from `s.vU.unit`. Establish `hval : Continuous fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hxu : Continuous fun u : UX D ρ => (rat x : Mx D W.rank ρ) ⬝ u.1.1` using `continuous_const.matrix_mul hval`. Use `lintegral_le_of_tsum (UXQ D ρ) s.vU.ν h𝓤 h1 _ ?_ _ fun u => ?_` and prove the remaining obligations.
+
+Establish `hf : Continuous fun u : UX D ρ => (((g, h), ((rat x : Mx D W.rank ρ) ⬝ u.1.1, w)) : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W)` using `continuous_const.prodMk (hxu.prodMk continuous_const)`. Establish `h2` using `hmix.comp hf`. Simplify using `only [Function.comp_def] at h2`. Conclude with `h2.enorm.measurable`. Take `⟨γ₀, hγ₀, k, hk, rfl⟩` from `hcov u`.
+
+Establish `hp : ((dV.levi k.1 * g, h) : GA D V × GA D W) = (dV.levi k.1, 1) * (g, h)` using `by simp`. Establish `hom : s.om (dV.levi k.1 * g, h) Φ = s.om (dV.levi k.1, 1) (s.om (g, h) Φ)`. Rewrite using `[hp, map_mul, Module.End.mul_apply]`. Set `φ : UXQ D ρ → ratMx D W.rank ρ` to `fun γ => ⟨(rat x : Mx D W.rank ρ) ⬝ (γ.1 * γ₀).1.1, ratMx_mul (rat_mem x) (mul_mem γ.2 hγ₀).1⟩`. Establish `hφ : Function.Injective φ` using `fun a b hab => by`.
+
+Establish `h3` using `rat_cancel hx (mul_mem a.2 hγ₀).1 (mul_mem b.2 hγ₀).1 (congrArg Subtype.val hab)`. Conclude with `Subtype.ext (mul_right_cancel (Subtype.ext (Units.ext h3)))`. Establish `key : ∀ γ : UXQ D ρ, dV.mixS W ψ s.vS.μ s.vS.𝓕 (s.om (g, h) Φ) ((rat x : Mx D W.rank ρ) ⬝ (γ.1 * (γ₀ * k)).1.1) = dV.mixS W ψ s.vS.μ s.vS.𝓕 (s.om (dV.levi k.1 * g, h) Φ) (φ γ)`. Introduce `γ`. Rewrite using `[hom, GlobalTheory.Unf.TermLaw.mixS_levi_uni dV (hMS _ (s.weil.om_pres _ _ hΦ)) k.2, ← mul_assoc]`.
+
+Use `congr 1`. Conclude with `(Matrix.mul_assoc _ _ _).symm`. Simplify using `only [key]`. Use `(ENNReal.tsum_comp_le_tsum_of_injective hφ (fun y : ratMx D W.rank ρ => ‖dV.mixS W ψ s.vS.μ s.vS.𝓕 (s.om (dV.levi k.1 * g, h) Φ) y w‖ₑ)).trans ((hC _ h w).trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Establish `hk' : height V (dV.levi k.1) ≤ max c 1` using `(hc _ ⟨k, hk, rfl⟩).trans (le_max_left _ _)`.
+
+Establish `hkg : height V (dV.levi k.1 * g) ≤ max c 1 * height V g` using `(height_mul_le V _ _).trans (mul_le_mul_of_nonneg_right hk' (height_pos V g).le)`. Establish `hx0 : 0 ≤ height V (dV.levi k.1 * g) * height W h` using `mul_nonneg (height_pos V _).le (height_pos W h).le`. Establish `hx1 : height V (dV.levi k.1 * g) * height W h ≤ max c 1 * (height V g * height W h)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hkg (height_pos W h).le`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uni_bound (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
     (s : Step ψ V V₀ W W₀ ρ σ) (x : Matrix (Fin W.rank) (Fin ρ) D.host.E) (hx : LinearIndependent D.host.E x.transpose)
     (Φ : WO V W → ℂ) (hΦ : IsThetaFunO ψ V W Φ) : ∃ (C : ℝ) (A : ℕ), 0 ≤ C ∧ ∀ g h (w : WO V₀ W),
@@ -97,11 +124,36 @@ theorem uni_bound (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W W₀ : HSp
           mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hx0 hx1 _) hC₀0
       _ = _ := by rw [mul_pow, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sfinite_haar {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [LocallyCompactSpace G]
     [SecondCountableTopology G] (ν : Measure G) [ν.IsHaarMeasure] : SFinite ν := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem sfinite_fin {G : Type} [MeasurableSpace G] (ν : Measure G) [IsFiniteMeasure ν] : SFinite ν := inferInstance
 
+/- English proof (translation)
+Introduce `D ψ V V₀ W W₀ ρ σ dV dW s x hx Φ hΦ`. Take `⟨C, A, hC0, hC⟩` from `uni_bound D ψ V V₀ W W₀ ρ σ dV dW s x hx Φ hΦ`. Use `⟨C, A, fun g h y w => ?_⟩` and prove the remaining obligations. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `s.weil.std.1.2.1`. Establish `hne : ∀ a, ‖ψ a‖ₑ = 1` using `fun a => by rw [← ofReal_norm, hn, ENNReal.ofReal_one]`.
+
+Establish `hmix` using `(GlobalTheory.T.weilMixedCoordinates_continuous_bounded_supNorm D ψ V V₀ W W₀ ρ σ dV dW s.vS s.vT s.χV s.χW s.om s.weil Φ hΦ).1`. Establish `hT` using `s.vT.covol`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.UnitU.topology D ρ`. Take `⟨j1, j2, j3, j4, -⟩` from `lattice_Mx D σ V₀.rank`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`.
+
+Use `haveI : BorelSpace (Mx D σ V₀.rank) := ⟨rfl⟩`. Use `haveI := s.vU.unit.1`. Use `haveI : IsFiniteMeasure (s.vT.μ.restrict s.vT.𝓕) := ⟨by rw [Measure.restrict_apply_univ, hT.2.2]; exact ENNReal.one_lt_top⟩`. Use `haveI := sfinite_haar s.vU.ν`. Use `haveI := sfinite_fin (s.vT.μ.restrict s.vT.𝓕)`.
+
+Set `F : UX D ρ → Mx D σ V₀.rank → ENNReal` to `fun u ξ => ‖dV.mixS W ψ s.vS.μ s.vS.𝓕 (s.om (g, h) Φ) ((rat x : Mx D W.rank ρ) ⬝ u.1.1) (dW.incX V₀ ξ + dW.incAdj V₀ y + dW.inc0 V₀ w)‖ₑ`. Establish `hval : Continuous fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hxu : Continuous fun u : UX D ρ => (rat x : Mx D W.rank ρ) ⬝ u.1.1` using `continuous_const.matrix_mul hval`. Establish `hX : Continuous (dW.incX V₀)` using `continuous_const.matrix_mul continuous_id`. Establish `hFm : Measurable (Function.uncurry F)`.
+
+Establish `hf : Continuous fun p : UX D ρ × Mx D σ V₀.rank => (((g, h), ((rat x : Mx D W.rank ρ) ⬝ p.1.1.1, dW.incX V₀ p.2 + dW.incAdj V₀ y + dW.inc0 V₀ w)) : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W)` using `continuous_const.prodMk ((hxu.comp continuous_fst).prodMk (((hX.comp continuous_snd).add continuous_const).add continuous_const))`. Establish `h2` using `hmix.comp hf`. Simplify using `only [Function.comp_def] at h2`. Conclude with `h2.enorm.measurable`. Establish `h1 : ∀ u : UX D ρ, ‖flatFun ψ dV dW s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (rat x) y (s.om (g, h) Φ) w u‖ₑ ≤ ∫⁻ ξ in s.vT.𝓕, F u ξ ∂s.vT.μ`.
+
+Introduce `u`. Unfold `flatFun evalAt`. Establish `e1 : ‖star (psiUni ψ u.1)‖ₑ = 1`. Rewrite using `[← ofReal_norm, norm_star, show ‖psiUni ψ u.1‖ = 1 from hn _, ENNReal.ofReal_one]`. Rewrite using `[enorm_mul, e1, one_mul]`.
+
+Unfold `GlobalTheory.MixModel.HypDec.mixT`. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun ξ => le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[dW.integrandT_eq, enorm_mul, hne, one_mul]`. Establish `h2 : ‖flatS dV dW s (rat x) y (s.om (g, h) Φ) w‖ₑ ≤ ENNReal.ofReal (C * (height V g * height W h) ^ A)`.
+
+Unfold `flatS flatAt`. Use `(enorm_integral_le_lintegral_enorm _).trans ((lintegral_mono h1).trans ?_)` and prove the remaining obligations. Rewrite using `[lintegral_lintegral_swap hFm.aemeasurable]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[← ofReal_norm]`.
+
+Conclude with `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hC0 (pow_nonneg (mul_nonneg (height_pos V g).le (height_pos W h).le) _))).1 h2`.
+-/
 theorem flat_sup_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (s : Step ψ V V₀ W W₀ ρ σ) (x : Matrix (Fin W.rank) (Fin ρ) D.host.E), LinearIndependent D.host.E x.transpose → ∀ Φ, IsThetaFunO ψ V W Φ → ∃ (C : ℝ) (A : ℕ), ∀ g h y w, ‖flatS dV dW s (rat x) y (s.om (g, h) Φ) w‖ ≤ C * (height V g * height W h) ^ A := by
   intro D ψ V V₀ W W₀ ρ σ dV dW s x hx Φ hΦ
   obtain ⟨C, A, hC0, hC⟩ := uni_bound D ψ V V₀ W W₀ ρ σ dV dW s x hx Φ hΦ

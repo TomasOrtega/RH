@@ -8,6 +8,11 @@ noncomputable section
 
 def midCut (χ' χ : ℝ → ℝ) : ℝ → ℝ := fun x => (χ' x + χ x) / 2
 
+/- English proof (translation)
+Take `⟨c1, ⟨d1, hd1, z1⟩, o1⟩` from `h'`. Take `⟨c2, ⟨d2, hd2, z2⟩, o2⟩` from `h`. Use `⟨by unfold midCut; exact (c1.add c2).div_const 2, ⟨min d1 d2, lt_min hd1 hd2, fun x hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [midCut, z1 x (lt_of_lt_of_le hx (min_le_left _ _)), z2 x (lt_of_lt_of_le hx (min_le_right _ _))]`. Evaluate the numerical expressions.
+
+Simplify using `only [midCut, o1 x hx, o2 x hx]`. Evaluate the numerical expressions.
+-/
 theorem isCut0_midCut {χ' χ : ℝ → ℝ} (h' : C6.IsCut0 χ') (h : C6.IsCut0 χ) : C6.IsCut0 (midCut χ' χ) := by
   obtain ⟨c1, ⟨d1, hd1, z1⟩, o1⟩ := h'
   obtain ⟨c2, ⟨d2, hd2, z2⟩, o2⟩ := h
@@ -54,6 +59,19 @@ def NFTopMidAll : Prop :=
         topPD p (D.cutF p.T.base χ' (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε)
           (D.cutF p.T.base χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε) w c / 2
 
+/- English proof (translation)
+Introduce `hA Cb`. Take `⟨C1, H1⟩` from `s1 hA Cb`. Take `⟨C2, H2⟩` from `s2 Cb`. Take `⟨C3, H3⟩` from `s3 Cb`. Use `⟨max C1 (max C2 C3), ?_⟩` and prove the remaining obligations.
+
+Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH χ' hχ' w hw hN ε hε`. Establish `m1 : C1 ≤ max C1 (max C2 C3)` using `le_max_left _ _`. Establish `m2 : C2 ≤ max C1 (max C2 C3)` using `le_max_of_le_right (le_max_left _ _)`. Establish `m3 : C3 ≤ max C1 (max C2 C3)` using `le_max_of_le_right (le_max_right _ _)`. Establish `hχ : C6.IsCut0 χ` using `hH.1`.
+
+Establish `hm` using `isCut0_midCut hχ' hχ`. Use `set F' := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hF'`. Take `⟨iu, qu⟩` from `H1 Wp Wq P p f A₀ p₀ χ' Y N (nfHyp_mono hH m1 hχ') w hw hN ε hε`. Take `⟨iv, qv⟩` from `H1 Wp Wq P p f A₀ p₀ χ Y N (nfHyp_mono hH m1 hχ) w hw hN ε hε`. Take `⟨im, qm⟩` from `H1 Wp Wq P p f A₀ p₀ (midCut χ' χ) Y N (nfHyp_mono hH m1 hm) w hw hN ε hε`.
+
+Establish `hpair` using `H2 Wp Wq P p f A₀ p₀ χ Y N (nfHyp_mono hH m2 hχ) χ' hχ' w hw hN ε hε`. Establish `htop` using `H3 Wp Wq P p f A₀ p₀ χ Y N (nfHyp_mono hH m3 hχ) χ' hχ' w hw hN ε hε`. Establish `e : topPD p (D.cutF p.T.base χ' F' ε) (D.cutF p.T.base χ F' ε) w = fun c => 2 * topD p (D.cutF p.T.base (midCut χ' χ) F' ε) w c - topD p (D.cutF p.T.base χ' F' ε) w c / 2 - topD p (D.cutF p.T.base χ F' ε) w c / 2`. Use function extensionality and compare the values at `c`. Use `htop c` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi1 : Integrable (fun c => 2 * topD p (D.cutF p.T.base (midCut χ' χ) F' ε) w c)` using `im.const_mul 2`. Establish `hi2 : Integrable (fun c => topD p (D.cutF p.T.base χ' F' ε) w c / 2)` using `iu.div_const 2`. Establish `hi3 : Integrable (fun c => topD p (D.cutF p.T.base χ F' ε) w c / 2)` using `iv.div_const 2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `(hi1.sub hi2).sub hi3`. Establish `hi12 : Integrable (fun c => 2 * topD p (D.cutF p.T.base (midCut χ' χ) F' ε) w c - topD p (D.cutF p.T.base χ' F' ε) w c / 2)` using `hi1.sub hi2`. Rewrite using `[e, integral_sub hi12 hi3, integral_sub hi1 hi2, integral_const_mul, integral_div, integral_div, ← qu, ← qv, ← qm, hpair]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nfPolFormAll_of (s1 : NFPolQuadAll) (s2 : NFPairMidAll) (s3 : NFTopMidAll) : NFPolFormAll := by
   intro hA Cb
   obtain ⟨C1, H1⟩ := s1 hA Cb

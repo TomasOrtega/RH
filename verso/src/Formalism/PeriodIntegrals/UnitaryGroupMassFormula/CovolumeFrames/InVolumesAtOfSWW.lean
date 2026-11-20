@@ -20,6 +20,13 @@ section GenW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ}
   {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Establish `hA` using `hV hJ a ha haM X0 hT hdet`. Unfold `Formalism.L2.SG.Volumes.VolStabAt AllSome at hA`. Establish `hB` using `(((hA.2 ψ hψ).2 μ hμ).2 νX hν).2 μ' ⟨hμ', hc⟩`. Take `⟨G, hG⟩` from `hB.1`. Take `⟨G', hG'⟩` from `(hB.2 G hG).1`.
+
+Establish `hex : ∃ 𝓕 : Set (HA (AF F) σ J), IsFundamentalDomain (HFinIn (AF F) σ J) 𝓕 μ` using `⟨G, hG⟩`. Establish `hr : ratIn F E σ M J (stabT (AF F) σ J X0) = ratOf (K` using `stabT (AF F) σ J X0) := by`. Use extensionality with `x`. Use `show x ∈ ((HFinIn (AF F) σ J) ⊓ stabT (AF F) σ J X0).subgroupOf (stabT (AF F) σ J X0) ↔ x ∈ (HFinIn (AF F) σ J).comap (stabT (AF F) σ J X0).subtype`. Conclude with `⟨fun h => h.1, fun h => ⟨h, x.2⟩⟩`.
+
+Establish `hex' : ∃ 𝓕 : Set (stabT (AF F) σ J X0), IsFundamentalDomain (ratOf (K` using `stabT (AF F) σ J X0)) 𝓕 μ' := ⟨G', by rw [← hr]; exact hG'⟩`. Simplify using `only [covol, covolBy, dif_pos hex, dif_pos hex']`. Use `split_ifs with h`. Conclude with `congrArg ENNReal.toReal ((hB.2 h.choose h.choose_spec).2 hex'.choose (by rw [hr]; exact hex'.choose_spec))`. Conclude with `(h ⟨G, hG⟩).elim`.
+-/
 theorem covol_eq_covolBy_w (hV : Formalism.L2.SG.Pf.NcWeil.VolStabW F E σ M J) (hJ : IsHermND σ J) {a : ℕ}
     (ha : 1 ≤ a) (haM : 2 * a < M) (X0 : Fin a → Fin M → E)
     (hT : ∀ i j, σ (gramE σ J X0 j i) = gramE σ J X0 i j)
@@ -50,6 +57,11 @@ theorem covol_eq_covolBy_w (hV : Formalism.L2.SG.Pf.NcWeil.VolStabW F E σ M J) 
 
 end GenW
 
+/- English proof (translation)
+Introduce `D X`. Rewrite using `[X.n_eq]`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem stepSizeW : ∀ {D : D7} (X : HidaSetting D), 4 * D.R.rS + 5 ≤ X.B.I.n := by
   intro D X
   rw [X.n_eq]
@@ -62,6 +74,13 @@ def SWXW : Prop := ∀ {D : D7} (X : HidaSetting D),
   Formalism.MainNotions.UnusedSlot34.SWa1 X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J ∧
     Formalism.L2.SG.Pf.NcWeil.SWc1W X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J
 
+/- English proof (translation)
+Introduce `D X hb hK FdN FdN' u u' X0 L A`. Introduce `_hX ψ hψ hT1 νH hνH hcH hT1' νH' hνH' hcH' hTB νB hdet hνB hcB hN hN'`. Establish `hs` using `stepSizeW X`. Establish `hn` using `X.measG_norm`. Establish `eB` using `covol_eq_covolBy_w (hV X) (stepHerm X) (a := 2 * D.R.rS + 2) (by omega) (by omega) X0 hTB hdet hψ hn.1 hνB (hn.2.2.2.2.1 X0) hcB`.
+
+Establish `eH` using `covol_eq_covolBy_w (hV X) (stepHerm X) (a := D.R.rS + 1 + D.R.rS) (by omega) (by omega) _ hT1 (hG X u hT1) hψ hn.1 hνH (X.measW_norm u).1 hcH`. Establish `eH'` using `covol_eq_covolBy_w (hV X) (stepHerm X) (a := D.R.rS + 1 + D.R.rS) (by omega) (by omega) _ hT1' (hG X u' hT1') hψ hn.1 hνH' (X.measW_norm u').1 hcH'`. Use `⟨?_, hN, hN'⟩` and prove the remaining obligations. Use `show covol (X.measG.μB X0) * covolBy (G := HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) (HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) X.measG.μG = covol (X.measW u).μH * covol (X.measW u').μH`. Rewrite using `[eB]`.
+
+Conclude with `(congrArg₂ (· * ·) eH eH').symm`.
+-/
 theorem inVolumesAt_of_w
     (hV : ∀ {D : D7} (X : HidaSetting D),
       Formalism.L2.SG.Pf.NcWeil.VolStabW X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J)

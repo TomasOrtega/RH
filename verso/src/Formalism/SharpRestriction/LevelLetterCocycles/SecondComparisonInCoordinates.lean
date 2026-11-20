@@ -23,24 +23,41 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 abbrev RingA (W : LocWach PD LL O v n) : Prop :=
   Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))
 
+/- English proof (translation)
+The claim follows from `(h9 hs hp).2.2 hK`.
+-/
 theorem delta_invariants_ring_and_module (hs : W.s = 1) (hp : PD.p ≠ 2) (hK : Module.finrank K₀ K = 1)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.p9 W T) : RingA W ∧ Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀ :=
   (h9 hs hp).2.2 hK
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sm {V : Type} [AddCommGroup V] [Module (PowerSeries O) V] (a : PowerSeries O)
     (S : Submodule (PowerSeries O) V) (x : V) : x ∈ Formalism.ExponentWindows.E.sm a S ↔ ∃ y ∈ S, a • y = x :=
   Iff.rfl
 
+/- English proof (translation)
+Unfold `LocWach.Q`. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+-/
 theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
   unfold LocWach.Q
   rw [hs]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qP, LocWach.π₀]`.
+-/
 theorem Eat_q :
     Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qP W := by
   funext i
   simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, qP, LocWach.π₀]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[Eat_q]`. Establish `e : qP W ^ k • x = ((w⁻¹ : (LetA O n)ˣ) : LetA O n) ^ k • (W.Q ^ k • x)`. Rewrite using `[smul_smul, Q_eq_q hs, hw, ← mul_pow, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `S.smul_mem _ h`.
+-/
 theorem qP_pow_mem (hs : W.s = 1) (hR : RingA W) (S : Submodule (LetA O n) (W.DD T)) {x : W.DD T}
     {k : ℕ} (h : W.Q ^ k • x ∈ S) : qP W ^ k • x ∈ S := by
   obtain ⟨w, hw⟩ := hR.2.2.2.2.1
@@ -50,6 +67,9 @@ theorem qP_pow_mem (hs : W.s = 1) (hR : RingA W) (S : Submodule (LetA O n) (W.DD
   rw [e]
   exact S.smul_mem _ h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [C.t_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, C.t_add, ih]`.
+-/
 theorem Coord.t_sum (C : Coord W I T) (i : ZMod n) {κ : Type} (s : Finset κ) (f : κ → C.V) :
     C.t i (∑ j ∈ s, f j) = ∑ j ∈ s, C.t i (f j) := by
   classical
@@ -57,18 +77,30 @@ theorem Coord.t_sum (C : Coord W I T) (i : ZMod n) {κ : Type} (s : Finset κ) (
   | empty => simp [C.t_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, C.t_add, ih]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx, fun δ hδ => C.t_Δ i x δ hδ⟩`.
+-/
 theorem t_mem_NΔ (C : Coord W I T) (i : ZMod n) {x : C.V} (hx : x ∈ (latOf C).N i) :
     C.t i x ∈ W.NΔ T := ⟨hx, fun δ hδ => C.t_Δ i x δ hδ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C.t i x, hx, C.t_letter i x⟩`.
+-/
 theorem t_mem_Nl (C : Coord W I T) (i : ZMod n) {x : C.V} (hx : x ∈ (latOf C).N i) :
     C.t i x ∈ W.Nl T i := ⟨C.t i x, hx, C.t_letter i x⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `C.t_surj i ((letE i : LetA O n) • b) (by rw [smul_smul, letE_mul_self]) (fun δ hδ => by rw [γD_smulA, γA_letE, hb.2 δ hδ])`. Conclude with `⟨y, by rw [mem_N, hy]; exact (W.N T).smul_mem _ hb.1, hy⟩`.
+-/
 theorem exists_t_letE (C : Coord W I T) (i : ZMod n) {b : W.DD T} (hb : b ∈ W.NΔ T) :
     ∃ y : C.V, y ∈ (latOf C).N i ∧ C.t i y = (letE i : LetA O n) • b := by
   obtain ⟨y, hy⟩ := C.t_surj i ((letE i : LetA O n) • b) (by rw [smul_smul, letE_mul_self])
     (fun δ hδ => by rw [γD_smulA, γA_letE, hb.2 δ hδ])
   exact ⟨y, by rw [mem_N, hy]; exact (W.N T).smul_mem _ hb.1, hy⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[letE, h]`. Simplify using `[letE, hk]`.
+-/
 theorem mul_letE_eq (a : LetA O n) (i : ZMod n) (f : PowerSeries O) (h : I.ι f = a i) :
     a * letE i = I.d f * letE i := by
   funext k
@@ -76,10 +108,20 @@ theorem mul_letE_eq (a : LetA O n) (i : ZMod n) (f : PowerSeries O) (h : I.ι f 
   · subst hk; simp [letE, h]
   · simp [letE, hk]
 
+/- English proof (translation)
+The claim follows from `hFull (a i) fun δ hδ => congrFun (ha δ hδ) i`.
+-/
 theorem exists_ι_of_AΔ (hFull : I.Full) {a : LetA O n} (ha : a ∈ W.AΔ) (i : ZMod n) :
     ∃ f : PowerSeries O, I.ι f = a i :=
   hFull (a i) fun δ hδ => congrFun (ha δ hδ) i
 
+/- English proof (translation)
+Introduce `i x hx`. Establish `hg : W.gamK = W.gam` using `W.gamK_eq_one hs hp`. Take `⟨x', hx', he⟩` from `hmod.2 _ (t_mem_NΔ C i hx)`. Take `⟨y, hyN, hy⟩` from `exists_t_letE C i hx'`. Use `(mem_sm _ _ _).2 ⟨y, hyN, C.t_inj i ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : C.t i ((latOf C).γ i x - x) = W.π₀ • x'`. Rewrite using `[C.t_sub, t_γ, hg]`. Conclude with `he`. Establish `h2` using `C.t_letter i ((latOf C).γ i x - x)`. Rewrite `h2` using `[h1]`.
+
+Rewrite using `[C.t_smul, hy, I.d_X, h1, smul_comm, h2]`.
+-/
 theorem gamma_sub_one_in_coordinates (hs : W.s = 1) (hp : PD.p ≠ 2) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (C : Coord W I T) :
     (latOf C).P9 := by
   intro i x hx
@@ -94,6 +136,11 @@ theorem gamma_sub_one_in_coordinates (hs : W.s = 1) (hp : PD.p ≠ 2) (hmod : Fo
   rw [h1] at h2
   rw [C.t_smul, hy, I.d_X, h1, smul_comm, h2]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[mem_N, C.t_smul, map_pow, I.d_q, t_φ]`. Establish `h1` using `qP_pow_mem hs hR (W.N T) (h5.1 i _ (t_mem_Nl C (i - 1) hx))`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[pow_add, mul_comm, mul_smul]`.
+
+Conclude with `(W.N T).smul_mem _ h1`.
+-/
 theorem first_comparison_in_coordinates (hs : W.s = 1) (hR : RingA W) {M h : ZMod n → ℕ} (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h)
     (C : Coord W I T) (i : ZMod n) (m : ℕ) (hm : M i ≤ m) : (latOf C).P5M i m := by
   intro x hx
@@ -103,6 +150,9 @@ theorem first_comparison_in_coordinates (hs : W.s = 1) (hR : RingA W) {M h : ZMo
   rw [pow_add, mul_comm, mul_smul]
   exact (W.N T).smul_mem _ h1
 
+/- English proof (translation)
+Introduce `i u hu`. Use `(h6 hses).2.2.2.1 (C.t i u) ?_` and prove the remaining obligations. Rewrite using `[← R.hι.coord_hom_map_trace]`. Conclude with `hu`.
+-/
 theorem extension_lattice_intersection {C : Coord W I T} {C₀ : Coord W I W.one} (R : RealExt C C₀) (hE : R.Exact)
     (hses : IsSESLat (Qp := Qp) R.ι R.π) (h6 : Formalism.MainNotions.DeltaInvariantLattices.wachShortExact W R.ι R.π) : (R.ext hE).P6 := by
   intro i u hu
@@ -110,6 +160,19 @@ theorem extension_lattice_intersection {C : Coord W I T} {C₀ : Coord W I W.one
   rw [← R.hι.coord_hom_map_trace]
   exact hu
 
+/- English proof (translation)
+Take `⟨⟨r, b, hb, huniq, hspan⟩, -⟩` from `hmod`. Use `⟨r, fun i => ?_⟩` and prove the remaining obligations. Use `choose e heN he using fun j => exists_t_letE C i (hb j)`. Establish `hsum : ∀ f : Fin r → PowerSeries O, C.t i (∑ j, f j • e j) = ∑ j, (I.d (f j) * letE i) • b j`. Introduce `f`.
+
+Rewrite using `[C.t_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [C.t_smul, he, smul_smul]`. Use `⟨e, Fintype.linearIndependent_iff.2 fun f hf j => ?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : W.DD T) = ∑ j, (I.d (f j) * letE i) • b j`. Rewrite using `[← hsum, hf, C.t_zero]`.
+
+Establish `h0' : (0 : W.DD T) = ∑ j, ((0 : Fin r → LetA O n) j) • b j` using `by simp`. Use `(huniq 0 (W.N T).zero_mem).unique h0 h0'` as an intermediate fact. Establish `h1` using `congrFun (congrFun this j) i`. Establish `h2 : I.ι (f j) = 0` using `by simpa [letE] using h1`. Conclude with `hInj (by rw [h2, map_zero])`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `heN j`. Introduce `x hx`. Take `⟨a, ha, hxa⟩` from `hspan _ (t_mem_NΔ C i hx)`.
+
+Use `choose f hf using fun j => exists_ι_of_AΔ hFull (ha j) i`. Establish `hx' : x = ∑ j, f j • e j`. Apply `C.t_inj i` to reduce the goal to its premises. Rewrite using `[hsum, ← C.t_letter i x, hxa, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul, mul_comm, mul_letE_eq (a j) i (f j) (hf j)]`.
+
+Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem free_uniform (hInj : I.Inj) (hFull : I.Full) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀)
     (C : Coord W I T) : ∃ r : ℕ, ∀ i, ∃ e : Fin r → C.V, LinearIndependent (PowerSeries O) e ∧
       Submodule.span (PowerSeries O) (Set.range e) = (latOf C).N i := by
@@ -142,20 +205,36 @@ theorem free_uniform (hInj : I.Inj) (hFull : I.Full) (hmod : Formalism.MainNotio
     rw [hx']
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Take `⟨r, h⟩` from `free_uniform hInj hFull hmod C`. Take `⟨e, h1, h2⟩` from `h i`. Conclude with `⟨r, e, h1, h2⟩`.
+-/
 theorem free_of (hInj : I.Inj) (hFull : I.Full) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (C : Coord W I T)
     (i : ZMod n) : (latOf C).Free i := by
   obtain ⟨r, h⟩ := free_uniform hInj hFull hmod C
   obtain ⟨e, h1, h2⟩ := h i
   exact ⟨r, e, h1, h2⟩
 
+/- English proof (translation)
+Introduce `τ i hτ` and use `H i τ hτ`.
+-/
 theorem jumpsLet_of {M h : ZMod n → ℕ}
     (H : ∀ i, JumpsAtE PD T W.emb i (Set.Icc (-(M i : ℤ)) (h i))) : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h :=
   fun τ i hτ => H i τ hτ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[LocWach.γA, letγ, map_mul]`.
+-/
 theorem γA_mul (g h : W.Gam) (a : LetA O n) : W.γA (g * h) a = W.γA g (W.γA h a) := by
   funext k
   simp [LocWach.γA, letγ, map_mul]
 
+/- English proof (translation)
+Take `⟨a, ha, ha1⟩` from `(W.DelF_def δ').1 hδ'`. Prove the components needed by the constructor for the conclusion. Introduce `hδ`. Take `⟨b, hb, hb1⟩` from `(W.DelF_def δ).1 hδ`. Use `(W.DelF_def _).2 ⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, pow_mul, ha1, one_pow, one_mul, mul_comm a b, pow_mul, hb1, one_pow]`. Introduce `hδ`. Take `⟨c, hc, hc1⟩` from `(W.DelF_def _).1 hδ`. Use `(W.DelF_def _).2 ⟨a * c, Nat.mul_pos ha hc, ?_⟩` and prove the remaining obligations. Establish `h1 : (δ' * δ) ^ (a * c) = 1` using `by rw [mul_comm a c, pow_mul, hc1, one_pow]`.
+
+Rewrite `h1` using `[mul_pow, pow_mul, ha1, one_pow, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_DelF_mul {δ' : W.Gam} (hδ' : δ' ∈ W.DelF) (δ : W.Gam) :
     δ ∈ W.DelF ↔ δ' * δ ∈ W.DelF := by
   obtain ⟨a, ha, ha1⟩ := (W.DelF_def δ').1 hδ'
@@ -170,6 +249,11 @@ theorem mem_DelF_mul {δ' : W.Gam} (hδ' : δ' ∈ W.DelF) (δ : W.Gam) :
     have h1 : (δ' * δ) ^ (a * c) = 1 := by rw [mul_comm a c, pow_mul, hc1, one_pow]
     rwa [mul_pow, pow_mul, ha1, one_pow, one_mul] at h1
 
+/- English proof (translation)
+Introduce `δ' hδ'`. Rewrite using `[map_sum]`. Use `Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ?_) (fun δ _ => ?_)` and prove the remaining obligations. Conclude with `mem_DelF_mul hδ' δ`. Rewrite using `[← γA_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_γA_mem (c : LetA O n) : ∑ δ ∈ W.DelF, W.γA δ c ∈ W.AΔ := by
   intro δ' hδ'
   rw [map_sum]
@@ -178,6 +262,13 @@ theorem sum_γA_mem (c : LetA O n) : ∑ δ ∈ W.DelF, W.γA δ c ∈ W.AΔ := 
   · rw [← γA_mul]
     rfl
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hΔ`. Use `⟨fun j => ((u⁻¹ : Oˣ) : O) • ∑ δ ∈ W.DelF, W.γA δ (c j), fun j => W.AΔ.smul_mem (sum_γA_mem (c j)) _, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ δ ∈ W.DelF, z = ∑ j, W.γA δ (c j) • w j`. Introduce `δ hδ`. Rewrite using `[← hz δ hδ, h, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [γD_smulA, hw j δ hδ]`. Establish `h2 : ((W.DelF.card : ℕ) : O) • z = ∑ j, (∑ δ ∈ W.DelF, W.γA δ (c j)) • w j`. Simplify using `only [Finset.sum_smul]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_congr rfl h1, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `h3 : z = ((u⁻¹ : Oˣ) : O) • (((W.DelF.card : ℕ) : O) • z)`.
+
+Rewrite using `[smul_smul, ← hu, Units.inv_mul, one_smul]`. Rewrite using `[h3, h2, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_assoc]`.
+-/
 theorem average (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {r : ℕ} (c : Fin r → LetA O n)
     (w : Fin r → W.DD T) (hw : ∀ j, ∀ δ ∈ W.DelF, W.γD T δ (w j) = w j) {z : W.DD T}
     (hz : ∀ δ ∈ W.DelF, W.γD T δ z = z) (h : z = ∑ j, c j • w j) :
@@ -197,6 +288,11 @@ theorem average (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {r : ℕ} (c : Fin r �
   rw [h3, h2, Finset.smul_sum]
   exact Finset.sum_congr rfl fun j _ => by rw [smul_assoc]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Take `⟨a, ha⟩` from `hb x hx`. Establish `e : W.φD T (((letE (i - 1) : LetA O n) • (LinearMap.id : W.DD T →ₗ[LetA O n] W.DD T)) x) = ∑ j, W.φA (a j) • W.φD T ((letE (i - 1) : LetA O n) • b j)`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, ha, Finset.smul_sum, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_comm, φD_smulA]`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem φspan_le {r : ℕ} (b : Fin r → W.DD T)
     (hb : ∀ x ∈ W.N T, ∃ a : Fin r → LetA O n, x = ∑ j, a j • b j) (i : ZMod n) :
     Formalism.MainNotions.DeltaInvariantLattices.φspan W T (W.Nl T (i - 1)) ≤
@@ -211,6 +307,17 @@ theorem φspan_le {r : ℕ} (b : Fin r → W.DD T)
   rw [SetLike.mem_coe, e]
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨⟨r, b, hb, huniq, -⟩, -⟩` from `hmod`. Use `choose e heN he using fun j => exists_t_letE C (i - 1) (hb j)`. Establish `h1` using `qP_pow_mem hs hR _ (h5.2.1 i _ (t_mem_Nl C i hx))`. Establish `h2 : qP W ^ m • C.t i x ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T (W.Nl T (i - 1))`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h1`. Establish `h3` using `φspan_le b (fun x hx => (huniq x hx).exists) i h2`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (LetA O n)).1 h3`.
+
+Establish `hz : C.t i (I.Bs.q ^ m • x) = qP W ^ m • C.t i x` using `by rw [C.t_smul, map_pow, I.d_q]`. Establish `hw : ∀ j, W.φD T ((letE (i - 1) : LetA O n) • b j) = C.t i ((latOf C).φ i (e j))`. Introduce `j`. Rewrite using `[t_φ, he]`. Simplify using `only [hw] at hc`.
+
+Take `⟨d, hd, hzd⟩` from `average hΔ c (fun j => C.t i ((latOf C).φ i (e j))) (fun j δ hδ => C.t_Δ i _ δ hδ) (fun δ hδ => C.t_Δ i (I.Bs.q ^ m • x) δ hδ) (by rw [hz, hc])`. Use `choose f hf using fun j => exists_ι_of_AΔ hFull (hd j) i`. Establish `hx' : I.Bs.q ^ m • x = ∑ j, f j • (latOf C).φ i (e j)`. Apply `C.t_inj i` to reduce the goal to its premises. Rewrite using `[C.t_sum, hzd]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[C.t_smul, ← C.t_letter i ((latOf C).φ i (e j)), smul_smul, smul_smul, mul_letE_eq (d j) i (f j) (hf j)]`. Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨e j, heN j, rfl⟩)`.
+-/
 theorem second_comparison_in_coordinates (hs : W.s = 1) (hR : RingA W) (hFull : I.Full)
     (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) {M h : ZMod n → ℕ}
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (C : Coord W I T) (i : ZMod n) (m : ℕ) (hm : h i ≤ m) :
@@ -244,10 +351,24 @@ theorem second_comparison_in_coordinates (hs : W.s = 1) (hR : RingA W) (hFull : 
   exact Submodule.sum_mem _ fun j _ =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨e j, heN j, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[(h9 hs hp).1, hK, Nat.div_one]`.
+-/
 theorem card_DelF (hs : W.s = 1) (hp : PD.p ≠ 2) (hK : Module.finrank K₀ K = 1)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.p9 W T) : W.DelF.card = PD.p - 1 := by
   rw [(h9 hs hp).1, hK, Nat.div_one]
 
+/- English proof (translation)
+Establish `hcancel : ∀ x y : W.DD T, I.d a • x = I.d a • y → x = y`. Introduce `x y h`. Rewrite `h` using `[← algebraMap_smul W.EE (I.d a) x, ← algebraMap_smul W.EE (I.d a) y]`. Conclude with `hu.smul_left_cancel.1 h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `x y h`. Apply `C.t_inj 0` to reduce the goal to its premises. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← C.t_smul, ← C.t_smul]`. Conclude with `congrArg _ h`.
+
+Introduce `x`. Take `⟨u, hu'⟩` from `hu`. Establish `hay : I.d a • (((u⁻¹ : W.EEˣ) : W.EE) • C.t 0 x) = C.t 0 x`. Rewrite using `[← algebraMap_smul W.EE (I.d a), ← hu', smul_smul, Units.mul_inv, one_smul]`. Take `⟨z, hz⟩` from `C.t_surj 0 (((u⁻¹ : W.EEˣ) : W.EE) • C.t 0 x) (by`.
+
+Apply `hcancel` to reduce the goal to its premises. Rewrite using `[smul_comm, hay, C.t_letter])`. Use the proof step `(by`. Introduce `δ hδ`. Apply `hcancel` to reduce the goal to its premises.
+
+Establish `h1 : W.γD T δ (I.d a • (((u⁻¹ : W.EEˣ) : W.EE) • C.t 0 x)) = I.d a • W.γD T δ (((u⁻¹ : W.EEˣ) : W.EE) • C.t 0 x)`. Rewrite using `[γD_smulA, I.γA_Δ δ hδ]`. Rewrite using `[← h1, hay, C.t_Δ 0 x δ hδ])`. Conclude with `⟨z, C.t_inj 0 (by rw [C.t_smul, hz, hay])⟩`.
+-/
 theorem inv_of_isUnit (C : Coord W I T) (a : PowerSeries O)
     (hu : IsUnit (algebraMap (LetA O n) W.EE (I.d a))) : (latOf C).Inv a := by
   have hcancel : ∀ x y : W.DD T, I.d a • x = I.d a • y → x = y := by
@@ -277,18 +398,32 @@ theorem inv_of_isUnit (C : Coord W I T) (a : PowerSeries O)
         rw [← h1, hay, C.t_Δ 0 x δ hδ])
     exact ⟨z, C.t_inj 0 (by rw [C.t_smul, hz, hay])⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.1`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`.
+-/
 theorem isUnit_π₀ (hR : RingA W) : IsUnit (algebraMap (LetA O n) W.EE W.π₀) := by
   obtain ⟨w, hw⟩ := hR.2.2.1
   rw [hw, map_mul, map_pow]
   exact (w.isUnit.map _).mul (W.EE_π.pow _)
 
+/- English proof (translation)
+The claim follows from `inv_of_isUnit C _ (by rw [I.d_X]; exact isUnit_π₀ hR)`.
+-/
 theorem invX_of (hR : RingA W) (C : Coord W I T) : (latOf C).Inv PowerSeries.X :=
   inv_of_isUnit C _ (by rw [I.d_X]; exact isUnit_π₀ hR)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.FirstBlockLemmaI.goal1 .. | (apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.Fi …`.
+-/
 theorem isUnit_add_of_mem_jacobson {R : Type} [CommRing R] {u z : R} (hu : IsUnit u)
     (hz : z ∈ (⊥ : Ideal R).jacobson) : IsUnit (u + z) := by
   first | exact Bl.FirstBlockLemmaI.goal1 .. | (apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaI.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z hu hz | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z hu | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› | exact @Bl.FirstBlockLemmaI.goal1 R
 
+/- English proof (translation)
+Use `W.EE_complete` as an intermediate fact. Take `⟨u, P, hu, hmon, hdeg, hdiv, he⟩` from `hT.2.1 s`. Rewrite using `[he, map_mul]`. Use `(hu.map _).mul ?_` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_algebraMap_apply W.EE W.π₀ P, Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hmon.coeff_natDegree, one_smul, add_comm]`.
+
+Use `isUnit_add_of_mem_jacobson ((isUnit_π₀ hR).pow _) (IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) ?_)` and prove the remaining obligations. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hdiv k (by rw [← hdeg]; exact Finset.mem_range.1 hk)`. Rewrite using `[hc, mul_smul, Algebra.smul_def, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem isUnit_pS (hR : RingA W) (hT : ToolsAlg W) (s : ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE (pS W s)) := by
   have := W.EE_complete
@@ -304,10 +439,28 @@ theorem isUnit_pS (hR : RingA W) (hT : ToolsAlg W) (s : ℕ) :
   rw [hc, mul_smul, Algebra.smul_def, map_natCast]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `inv_of_isUnit C _ (by rw [I.d_p]; exact isUnit_pS hR hT s)`.
+-/
 theorem invP_of (hR : RingA W) (hT : ToolsAlg W) (C : Coord W I T) (s : ℕ) :
     (latOf C).Inv (I.Bs.p s) :=
   inv_of_isUnit C _ (by rw [I.d_p]; exact isUnit_pS hR hT s)
 
+/- English proof (translation)
+Use `W.EE_complete` as an intermediate fact. Establish `hp' : ((PD.p : ℕ) : PowerSeries O) ≠ 0`. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Use `congrArg PowerSeries.constantCoeff h` as an intermediate fact.
+
+Simplify using `using this`. Establish `key : ∀ k : ℕ, x ∈ Ideal.span {((PD.p : ℕ) : W.EE) ^ k}`. Introduce `k`. Take `⟨a, m, ham⟩` from `W.EE_dense x k`. Establish `h1 : algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) * a) ∈ Ideal.span {((PD.p : ℕ) : W.EE) ^ (k + 1)}`.
+
+Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 ham`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨-y, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (LetA O n) W.EE a = x * algebraMap (LetA O n) W.EE (letπ ^ m) - y * ((PD.p : ℕ) : W.EE) ^ k`. Rewrite using `[hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_natCast, e, mul_sub, ← mul_assoc, hx, zero_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩` from `W.EE_sat _ _ h1`. Establish `h2 : a = ((PD.p : ℕ) : LetA O n) ^ k * b`.
+
+Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun hb i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply] at h3 ⊢`. Apply `mul_left_cancel₀ hp'` to reduce the goal to its premises. Rewrite using `[h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : algebraMap (LetA O n) W.EE a ∈ Ideal.span {((PD.p : ℕ) : W.EE) ^ k}`. Rewrite using `[h2, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `h5` using `Ideal.add_mem _ ham h4`.
+
+Rewrite `h5` using `[sub_add_cancel, map_pow]`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ (W.EE_π.pow m)).1 h5`. Use `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {((PD.p : ℕ) : W.EE)}) W.EE) x fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]`. Conclude with `key k`.
+-/
 theorem p_regular_EE [IsDomain O] (hp0 : ((PD.p : ℕ) : O) ≠ 0) (x : W.EE)
     (hx : ((PD.p : ℕ) : W.EE) * x = 0) : x = 0 := by
   have := W.EE_complete
@@ -348,6 +501,13 @@ theorem p_regular_EE [IsDomain O] (hp0 : ((PD.p : ℕ) : O) ≠ 0) (x : W.EE)
   rw [SModEq.zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]
   exact key k
 
+/- English proof (translation)
+Introduce `x hx`. Apply `C.t_inj 0` to reduce the goal to its premises. Rewrite using `[C.t_zero]`. Establish `h1 : ((PD.p : ℕ) : W.EE) • C.t 0 x = 0`. Establish `h` using `congrArg (C.t 0) hx`.
+
+Rewrite `h` using `[C.t_smul, C.t_zero, Formalism.ExponentWindows.E.Base.lc, I.d_C, I.ℓ_eq, algebraMap_smul, ← algebraMap_smul W.EE, map_natCast]`. Conclude with `h`. Use `(W.DD_free T).1` as an intermediate fact. Apply `(Module.Free.chooseBasis W.EE (W.DD T)).repr.injective` to reduce the goal to its premises. Use extensionality with `k`.
+
+Establish `h2` using `congrArg (fun y => (Module.Free.chooseBasis W.EE (W.DD T)).repr y k) h1`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply] at h2`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Conclude with `p_regular_EE hp0 _ h2`.
+-/
 theorem ltors_of [IsDomain O] (hp0 : ((PD.p : ℕ) : O) ≠ 0) (C : Coord W I T) : (latOf C).LTors := by
   intro x hx
   apply C.t_inj 0
@@ -367,6 +527,9 @@ theorem ltors_of [IsDomain O] (hp0 : ((PD.p : ℕ) : O) ≠ 0) (C : Coord W I T)
 
 section Abstract
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right_form.goal1 .. | (apply Bl.general_b_fact_right_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_rig …`.
+-/
 theorem linIndep_of_mutual {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [Module R V]
     {r : ℕ} (e w : Fin r → V) (he : LinearIndependent R e) {α β : R} (hα : α ≠ 0) (hβ : β ≠ 0)
     (h1 : ∀ a, β • w a ∈ Submodule.span R (Set.range e))
@@ -378,6 +541,9 @@ variable {O' : Type} [CommRing O'] {B' : Formalism.ExponentWindows.E.Base O'} {n
 
 def Pp (B' : Formalism.ExponentWindows.E.Base O') : Submonoid (PowerSeries O') := Submonoid.closure (Set.range B'.p)
 
+/- English proof (translation)
+Proceed by induction on `ha using Submonoid.closure_induction with`. Consider the case `mem x hx => obtain ⟨s, rfl⟩ := hx`. Conclude with `hp s`. Consider the case `one => exact one_ne_zero`. Consider the case `mul x y _ _ hx hy => exact mul_ne_zero hx hy`.
+-/
 theorem Pp_ne_zero [IsDomain O'] (hp : ∀ s, B'.p s ≠ 0) {a : PowerSeries O'} (ha : a ∈ Pp B') :
     a ≠ 0 := by
   induction ha using Submonoid.closure_induction with
@@ -385,6 +551,11 @@ theorem Pp_ne_zero [IsDomain O'] (hp : ∀ s, B'.p s ≠ 0) {a : PowerSeries O'}
   | one => exact one_ne_zero
   | mul x y _ _ hx hy => exact mul_ne_zero hx hy
 
+/- English proof (translation)
+Proceed by induction on `ha using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨s, rfl⟩` from `hx`. Conclude with `Submonoid.subset_closure ⟨s + 1, by`. Simplify using `only [Formalism.ExponentWindows.E.Base.p, Function.iterate_succ_apply']⟩`.
+
+Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem Pp_φ {a : PowerSeries O'} (ha : a ∈ Pp B') : B'.φ a ∈ Pp B' := by
   induction ha using Submonoid.closure_induction with
   | mem x hx =>
@@ -394,8 +565,24 @@ theorem Pp_φ {a : PowerSeries O'} (ha : a ∈ Pp B') : B'.φ a ∈ Pp B' := by
   | one => rw [map_one]; exact one_mem _
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure ⟨0, rfl⟩`.
+-/
 theorem q_mem_Pp : B'.q ∈ Pp B' := Submonoid.subset_closure ⟨0, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `h0 : c + ((0 : ℕ) : ZMod n') = c` using `by simp`. Use `⟨1, one_mem _, 1, one_mem _, fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, one_smul, ← he]`.
+
+Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Rewrite `hx` using `[h0, ← he]`. Rewrite using `[one_smul]`. Conclude with `hx`. Consider the case `succ k ih`.
+
+Take `⟨α, hα, β, hβ, h1, h2⟩` from `ih`. Establish `hi : c + ((k + 1 : ℕ) : ZMod n') - 1 = c + ((k : ℕ) : ZMod n')`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨B'.φ α * B'.q ^ h (c + ((k + 1 : ℕ) : ZMod n')), mul_mem (Pp_φ hα) (pow_mem q_mem_Pp _), B'.q ^ m (c + ((k + 1 : ℕ) : ZMod n')) * B'.φ β, mul_mem (pow_mem q_mem_Pp _) (Pp_φ hβ), fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `hM (c + ((k + 1 : ℕ) : ZMod n')) (β • L.phiIt c k (e a)) (by rw [hi]; exact h1 a)`. Rewrite `h3` using `[L.φ_semi, smul_smul]`. Conclude with `h3`. Establish `h4 : Submodule.span (PowerSeries O') (L.φ (c + ((k + 1 : ℕ) : ZMod n')) '' (L.N (c + ((k + 1 : ℕ) : ZMod n') - 1) : Set V)) ≤ (Submodule.span (PowerSeries O') (Set.range fun a => L.phiIt c (k + 1) (e a))).comap (LinearMap.lsmul (PowerSeries O') V (B'.φ α))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, hi]`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun (PowerSeries O')).1 (h2 y hy)`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.lsmul_apply, ← L.φ_semi, ← hcf, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[L.φ_semi]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h5` using `h4 (hh _ x hx)`. Rewrite `h5` using `[Submodule.mem_comap, LinearMap.lsmul_apply, smul_smul]`. Conclude with `h5`.
+-/
 theorem pull_mutual (L : Formalism.ExponentWindows.E.Lat B' n' V) (m h : ZMod n' → ℕ) (hM : ∀ i, L.P5M i (m i))
     (hh : ∀ i, L.FrobeniusCobounded i (h i)) (c : ZMod n') {r : ℕ} (e : Fin r → V)
     (he : Submodule.span (PowerSeries O') (Set.range e) = L.N c) (k : ℕ) :
@@ -438,6 +625,9 @@ theorem pull_mutual (L : Formalism.ExponentWindows.E.Lat B' n' V) (m h : ZMod n'
       rw [Submodule.mem_comap, LinearMap.lsmul_apply, smul_smul] at h5
       exact h5
 
+/- English proof (translation)
+Take `⟨e, -, he⟩` from `hfree c`. Take `⟨e', hli, he'⟩` from `hfree (c + ((k : ℕ) : ZMod n'))`. Take `⟨α, hα, β, hβ, h1, h2⟩` from `pull_mutual L m h hM hh c e he k`. Use `⟨r, e, he, linIndep_of_mutual e' _ hli (Pp_ne_zero hp hα) (Pp_ne_zero hp hβ) (fun a => by rw [he']; exact h1 a) (fun l => h2 _ (by rw [← he']; exact Submodule.subset_span ⟨l, rfl⟩))⟩` and prove the remaining obligations.
+-/
 theorem pullback_free_of_comparison [IsDomain O'] (L : Formalism.ExponentWindows.E.Lat B' n' V) (hp : ∀ s, B'.p s ≠ 0) {r : ℕ}
     (hfree : ∀ i, ∃ e : Fin r → V, LinearIndependent (PowerSeries O') e ∧
       Submodule.span (PowerSeries O') (Set.range e) = L.N i)
@@ -452,6 +642,9 @@ theorem pullback_free_of_comparison [IsDomain O'] (L : Formalism.ExponentWindows
 
 end Abstract
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `isUnit_pS hR hT s`. Rewrite `h1` using `[← I.d_p, h0, map_zero, map_zero]`. Establish `: Nontrivial W.EE` using `W.EE_inj.nontrivial`. Conclude with `not_isUnit_zero h1`.
+-/
 theorem p_ne_zero [Nontrivial O] (hR : RingA W) (hT : ToolsAlg W) (I : BaseId W) (s : ℕ) :
     I.Bs.p s ≠ 0 := by
   intro h0
@@ -460,6 +653,9 @@ theorem p_ne_zero [Nontrivial O] (hR : RingA W) (hT : ToolsAlg W) (I : BaseId W)
   have : Nontrivial W.EE := W.EE_inj.nontrivial
   exact not_isUnit_zero h1
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ PD.p` using `PD.hp.one_lt.le`. Establish `h2 : IsUnit (1 - ((PD.p : ℕ) : O))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ hnu`. Rewrite using `[hcard, Nat.cast_sub h1, Nat.cast_one, ← neg_sub]`. Conclude with `h2.neg`.
+-/
 theorem cardΔ_of [IsLocalRing O] (hnu : ¬ IsUnit ((PD.p : ℕ) : O)) (hcard : W.DelF.card = PD.p - 1) :
     IsUnit ((W.DelF.card : ℕ) : O) := by
   have h1 : 1 ≤ PD.p := PD.hp.one_lt.le
@@ -491,6 +687,11 @@ structure LocalWachInputs (W : LocWach PD LL O v n) (I : BaseId W) : Prop where
 
   full : I.Full
 
+/- English proof (translation)
+Take `⟨hR, hmod⟩` from `delta_invariants_ring_and_module Q.s_one Q.p_ne_two Q.unram (Q.P9 T hcrys)`. Establish `h5` using `Q.P5 T M h hcrys (jumpsLet_of hJ)`. Establish `hM : ∀ i m, M i ≤ m → (latOf C).P5M i m` using `fun i m hm => first_comparison_in_coordinates Q.s_one hR h5 C i m hm`. Establish `hh : ∀ i m, h i ≤ m → (latOf C).FrobeniusCobounded i m` using `fun i m hm => second_comparison_in_coordinates Q.s_one hR Q.full Q.cardΔ hmod h5 C i m hm`. Take `⟨r, hfree⟩` from `free_uniform Q.inj Q.full hmod C`.
+
+Conclude with `⟨gamma_sub_one_in_coordinates Q.s_one Q.p_ne_two hmod C, hM, hh, fun i => free_of Q.inj Q.full hmod C i, fun c k => pullback_free_of_comparison (latOf C) (p_ne_zero hR Q.tools I) hfree M h (fun i => hM i _ le_rfl) (fun i => hh i _ le_rfl) c k, ltors_of Q.p_ne_zero C, invX_of hR C …`.
+-/
 theorem lat_items [IsDomain O] (Q : LocalWachInputs W I) (hcrys : IsCrys PD T.ρ) {M h : ZMod n → ℕ}
     (hJ : ∀ i, JumpsAtE PD T W.emb i (Set.Icc (-(M i : ℤ)) (h i))) (C : Coord W I T) :
     (latOf C).P9 ∧ (∀ i m, M i ≤ m → (latOf C).P5M i m) ∧ (∀ i m, h i ≤ m → (latOf C).FrobeniusCobounded i m) ∧
@@ -516,6 +717,15 @@ def boxM (Gp S η : ℕ) (ty : ZMod n → LT) (i : ZMod n) : ℕ :=
 def boxH (Gp S η : ℕ) (ty : ZMod n → LT) (i : ZMod n) : ℕ :=
   Formalism.ExponentWindows.E.hJ Gp S η (kdOf ty i) (bbOf ty i)
 
+/- English proof (translation)
+Introduce `a ha`. Establish `hi` using `hS i`. Unfold `boxM boxH kdOf bbOf`. Consider the cases of `hty : ty i with`. Consider the case `thin`.
+
+Rewrite `ha` using `[hty]`. Simplify using `only [LT.win, Formalism.ExponentWindows.E.hJ, Set.mem_union, Set.mem_Icc, Set.mem_singleton_iff] at ha ⊢`. Use linear arithmetic over natural numbers and integers. Consider the case `up b`. Rewrite `ha`, `hi` using `[hty]`.
+
+Simplify using `only [LT.win, LT.ok, LT.size, Formalism.ExponentWindows.E.hJ, Set.mem_union, Set.mem_Icc, Set.mem_singleton_iff, reduceCtorEq, or_false] at ha hi ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Consider the case `down b`. Rewrite `ha`, `hi` using `[hty]`.
+
+Simplify using `only [LT.win, LT.ok, LT.size, Formalism.ExponentWindows.E.hJ, Set.mem_union, Set.mem_Icc, Set.mem_singleton_iff, reduceCtorEq, or_false] at ha hi ⊢`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem win_sub_box {g Gp S η h : ℕ} {ty : ZMod n → LT} (hη : η ≤ g) (hS : SizesOK g S h ty)
     (i : ZMod n) : (ty i).win Gp S η ∪ {0} ⊆
       Set.Icc (-(boxM Gp S η ty i : ℤ)) (boxH Gp S η ty i) := by
@@ -540,6 +750,13 @@ theorem win_sub_box {g Gp S η h : ℕ} {ty : ZMod n → LT} (hη : η ≤ g) (h
     push_cast
     omega
 
+/- English proof (translation)
+Establish `hi` using `hS i`. Unfold `boxM`. Consider the cases of `hty : ty i with`. Consider the case `thin => simp only`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `up b => simp only`. Use linear arithmetic over natural numbers and integers. Consider the case `down b`. Rewrite `hi` using `[hty]`. Simplify using `only [LT.ok, LT.size, reduceCtorEq, or_false] at hi ⊢`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem boxM_le {g Gp S η h : ℕ} {ty : ZMod n → LT} (hG : Gp ≤ g) (hη : η ≤ g) (hg : g ≤ h)
     (hS : SizesOK g S h ty) (i : ZMod n) : boxM Gp S η ty i ≤ h := by
   have hi := hS i
@@ -552,25 +769,40 @@ theorem boxM_le {g Gp S η h : ℕ} {ty : ZMod n → LT} (hG : Gp ≤ g) (hη : 
     simp only [LT.ok, LT.size, reduceCtorEq, or_false] at hi ⊢
     omega
 
+/- English proof (translation)
+Unfold `boxM`. Rewrite using `[h]`.
+-/
 theorem boxM_thin {Gp S η : ℕ} {ty : ZMod n → LT} {i : ZMod n} (h : ty i = LT.thin) :
     boxM Gp S η ty i = Gp := by
   unfold boxM
   rw [h]
 
+/- English proof (translation)
+Unfold `boxH Formalism.ExponentWindows.E.HArc Formalism.ExponentWindows.E.kindAt Formalism.ExponentWindows.E.sizeAt`. Apply the tactic sequence `cases kdOf ty (c - (s : ZMod n)) <;> simp only [Formalism.ExponentWindows.E.hJ, Formalism.ExponentWindows.G.HK] <;> omega`.
+-/
 theorem boxH_le_HArc (g Gp S η : ℕ) (ty : ZMod n → LT) (c : ZMod n) (s : ℕ) :
     boxH Gp S η ty (c - (s : ZMod n)) ≤ Formalism.ExponentWindows.E.HArc g Gp S η (kdOf ty) (bbOf ty) c s := by
   unfold boxH Formalism.ExponentWindows.E.HArc Formalism.ExponentWindows.E.kindAt Formalism.ExponentWindows.E.sizeAt
   cases kdOf ty (c - (s : ZMod n)) <;> simp only [Formalism.ExponentWindows.E.hJ, Formalism.ExponentWindows.G.HK] <;> omega
 
+/- English proof (translation)
+Introduce `τ hτ a ha` and use `hA (h τ hτ a ha)`.
+-/
 theorem jumpsAtE_mono {i : ZMod n} {emb : ZMod n → (K₀ →ₐ[Qp] LL)} {A A' : Set ℤ}
     (h : JumpsAtE PD T emb i A) (hA : A ⊆ A') : JumpsAtE PD T emb i A' :=
   fun τ hτ a ha => hA (h τ hτ a ha)
 
+/- English proof (translation)
+The claim follows from `jumpsAtE_mono (hK i) (win_sub_box hη hS i)`.
+-/
 theorem box_of_kind {g Gp S η h : ℕ} {ty : ZMod n → LT} (hη : η ≤ g) (hS : SizesOK g S h ty)
     (hK : ∀ i, JumpsAtE PD T W.emb i ((ty i).win Gp S η ∪ {0})) (i : ZMod n) :
     JumpsAtE PD T W.emb i (Set.Icc (-(boxM Gp S η ty i : ℤ)) (boxH Gp S η ty i)) :=
   jumpsAtE_mono (hK i) (win_sub_box hη hS i)
 
+/- English proof (translation)
+Take `⟨h9, hM, hh, hfree, hpull, hlt, hX, hP⟩` from `lat_items Q hcrys (box_of_kind (η_le_gPar Gp S η) hS hK) C`. Conclude with `{ prim := { p9 := h9 p5M := fun i => hM i h (boxM_le (G_le_gPar Gp S η) (η_le_gPar Gp S η) hg hS i) frobeniusBounded_after := fun c hc k h1 h2 => hM _ Gp (boxM_thin (hC.2.2.2.2 c hc k h1 h2)).le pullFree := fun c _ => hpull c j free := hfree ltors := hlt } invX := hX invP := hP p …`.
+-/
 theorem finalLat_of [IsDomain O] (Q : LocalWachInputs W I) (hcrys : IsCrys PD T.ρ) {j Gp S η h : ℕ}
     {ty : ZMod n → LT} {cuts : Finset (ZMod n)} {arcLen : ZMod n → ℕ}
     (hC : CutsOK n j ty cuts arcLen) (hg : gPar Gp S η ≤ h) (hS : SizesOK (gPar Gp S η) S h ty)
@@ -590,12 +822,18 @@ theorem finalLat_of [IsDomain O] (Q : LocalWachInputs W I) (hcrys : IsCrys PD T.
       invP := hP
       p5h := fun i => hh i _ le_rfl }
 
+/- English proof (translation)
+Introduce `τ hτ a ha` and use `h τ hτ a (hH.1 T₁ T₂ F h₁ h₂ hon τ a ha)`.
+-/
 theorem kind_quot {T₁ T₂ : LocLat G Qp LL O} (hH : HodgeExact PD LL O) (F : LatHom T₁.L T₂.L)
     (h₁ : CrysLat PD T₁) (h₂ : CrysLat PD T₂) (hon : F.Onto) {i : ZMod n}
     {emb : ZMod n → (K₀ →ₐ[Qp] LL)} {A : Set ℤ} (h : JumpsAtE PD T₁ emb i A) :
     JumpsAtE PD T₂ emb i A :=
   fun τ hτ a ha => h τ hτ a (hH.1 T₁ T₂ F h₁ h₂ hon τ a ha)
 
+/- English proof (translation)
+Introduce `τ hτ a ha`. Break down `((hH.2.1 T Y W.one ι π hses hY).2.2 τ a).1 ha with h1 | h1` into its components or cases. Conclude with `Or.inl (h τ hτ a h1)`. Conclude with `Or.inr (hH.2.2 W.one W.one_triv τ a h1)`.
+-/
 theorem jumps_ext (hH : HodgeExact PD LL O) {Y : LocLat G Qp LL O} (ι : LatHom T.L Y.L)
     (π : LatHom Y.L W.one.L) (hses : IsSESLat (Qp := Qp) ι π) (hY : CrysLat PD Y) {i : ZMod n}
     {emb : ZMod n → (K₀ →ₐ[Qp] LL)} {A : Set ℤ} (h : JumpsAtE PD T emb i A) :
@@ -605,6 +843,9 @@ theorem jumps_ext (hH : HodgeExact PD LL O) {Y : LocLat G Qp LL O} (ι : LatHom 
   · exact Or.inl (h τ hτ a h1)
   · exact Or.inr (hH.2.2 W.one W.one_triv τ a h1)
 
+/- English proof (translation)
+Take `⟨hT, hO1, -⟩` from `hH.2.1 T R.Y W.one R.ι R.π hses hY`. Take `⟨h9, hM, hh, -, hpull, -, -, -⟩` from `lat_items Q hY.2.2.2 (box_of_kind (η_le_gPar Gp S η) hS fun i => jumps_ext hH R.ι R.π hses hY (hK i)) R.CY`. Conclude with `{ lift := hlift p9 := h9 p6 := extension_lattice_intersection R hE hses (Q.P6.2.2 T R.Y W.one R.ι R.π hT.2.2.2 hY.2.2.2 hO1.2.2.2) frobeniusBounded_after := fun c hc k h1 h2 => hM _ Gp (boxM_thin (hC.2.2.2.2 c hc k h1 h2)).le frobeniusCobounded_arc := fun c _ s _ => hh _ _ (boxH_ …`.
+-/
 theorem primExt_of [IsDomain O] (Q : LocalWachInputs W I) (hH : HodgeExact PD LL O) {j Gp S η h rr : ℕ}
     {ty : ZMod n → LT} {cuts : Finset (ZMod n)} {arcLen : ZMod n → ℕ}
     (hC : CutsOK n j ty cuts arcLen) (hS : SizesOK (gPar Gp S η) S h ty)
@@ -629,6 +870,17 @@ def UnitGen (W : LocWach PD LL O v n) (e : W.DD W.one) : Prop :=
   W.N W.one = Submodule.span (LetA O n) {e} ∧ W.φD W.one e = e ∧ (∀ g, W.γD W.one g e = e) ∧
     ∀ a : LetA O n, a • e = 0 → a = 0
 
+/- English proof (translation)
+Take `⟨hN, hφ, hγ, hfree⟩` from `he`. Use `⟨fun i => C₀.t_inj i ?_, fun i => C₀.t_inj i ?_, fun i => le_antisymm ?_ ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[t_φ, he₀, he₀, φD_smulA, φA_letE, hφ]`. Rewrite using `[t_γ, he₀, γD_smulA, γA_letE, hγ]`. Introduce `x hx`.
+
+Establish `hx' : C₀.t i x ∈ Submodule.span (LetA O n) {e}` using `by rw [← hN]; exact hx`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hx'`. Establish `haΔ : a ∈ W.AΔ`. Introduce `δ hδ`. Establish `h1` using `C₀.t_Δ i x δ hδ`.
+
+Rewrite `h1` using `[← ha, γD_smulA, hγ, ← sub_eq_zero, ← sub_smul]`. Conclude with `sub_eq_zero.1 (hfree _ h1)`. Take `⟨f, hf⟩` from `exists_ι_of_AΔ hFull haΔ i`. Establish `hx2 : x = f • e₀`. Apply `C₀.t_inj i` to reduce the goal to its premises.
+
+Rewrite using `[C₀.t_smul, he₀, smul_smul, ← mul_letE_eq a i f hf, ← C₀.t_letter i x, ← ha, smul_smul, mul_comm]`. Rewrite using `[hx2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Rewrite using `[Submodule.span_singleton_le_iff_mem, mem_N, he₀, hN]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+
+Establish `h1` using `congrArg (C₀.t 0) ha`. Rewrite `h1` using `[C₀.t_smul, C₀.t_zero, he₀, smul_smul]`. Establish `h2` using `congrFun (hfree _ h1) 0`. Establish `h3 : I.ι a = 0` using `by simpa [letE] using h2`. Conclude with `hInj (by rw [h3, map_zero])`.
+-/
 theorem primUnit_of (hInj : I.Inj) (hFull : I.Full) {e : W.DD W.one} (he : UnitGen W e)
     (C₀ : Coord W I W.one) (e₀ : C₀.V) (he₀ : ∀ i, C₀.t i e₀ = (letE i : LetA O n) • e) :
     Formalism.ExponentWindows.E.PrimUnit (latOf C₀) e₀ := by
@@ -659,9 +911,17 @@ theorem primUnit_of (hInj : I.Inj) (hFull : I.Full) {e : W.DD W.one} (he : UnitG
     have h3 : I.ι a = 0 := by simpa [letE] using h2
     exact hInj (by rw [h3, map_zero])
 
+/- English proof (translation)
+Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) h).toLinearEquiv.finrank_eq, Module.finrank_self]`.
+-/
 theorem unram_of (h : Function.Bijective (algebraMap K₀ K)) : Module.finrank K₀ K = 1 := by
   rw [← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) h).toLinearEquiv.finrank_eq, Module.finrank_self]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((PD.p : ℕ) : LL) = 0`. Rewrite using `[← map_natCast (algebraMap O LL), h, map_zero]`. Establish `h2` using `W.v_l`. Rewrite `h2` using `[h1, AddValuation.map_zero]`.
+
+Conclude with `WithTop.top_ne_one h2`.
+-/
 theorem p_ne_zero_of (W : LocWach PD LL O v n) : ((PD.p : ℕ) : O) ≠ 0 := by
   intro h
   have h1 : ((PD.p : ℕ) : LL) = 0 := by

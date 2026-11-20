@@ -35,6 +35,9 @@ def joinIdxEquiv : (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) ≃ Option (Σ k, ι
 def joinPolyEquiv : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R ≃+* Polynomial (MRing ι R) :=
   ((renameEquiv R (joinIdxEquiv (ι := ι))).trans (optionEquivLeft R (Σ k, ι k))).toRingEquiv
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[joinPolyEquiv, optionEquivLeft_C]`. Introduce `p`. Simplify using `[joinPolyEquiv, joinIdxEquiv, liftVar, optionEquivLeft_X_some]`.
+-/
 theorem joinPolyEquiv_comp_rename :
     (joinPolyEquiv (R := R) (ι := ι)).toRingHom.comp (rename (R := R) (liftVar (ι := ι) ptIdx)).toRingHom =
       Polynomial.C := by
@@ -44,6 +47,9 @@ theorem joinPolyEquiv_comp_rename :
   · intro p
     simp [joinPolyEquiv, joinIdxEquiv, liftVar, optionEquivLeft_X_some]
 
+/- English proof (translation)
+Rewrite using `[← joinPolyEquiv_comp_rename, ← RingHom.comp_assoc]`. Apply the tactic sequence `ext x <;> simp`.
+-/
 theorem rename_eq_symm_comp_C :
     (rename (R := R) (liftVar (ι := ι) ptIdx)).toRingHom =
       (joinPolyEquiv (R := R) (ι := ι)).symm.toRingHom.comp Polynomial.C := by
@@ -58,31 +64,56 @@ set_option hygiene false in
 
 local notation "ε" => rename (R := R) (liftVar (ι := ι) ptIdx)
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun joinPolyEquiv_comp_rename x`.
+-/
 theorem joinPolyEquiv_rename (x : MRing ι R) : joinPolyEquiv (ε x) = Polynomial.C x :=
   RingHom.congr_fun joinPolyEquiv_comp_rename x
 
+/- English proof (translation)
+Establish `h : I.map ε = I.map (ε).toRingHom` using `rfl`. Rewrite using `[h, rename_eq_symm_comp_C, ← Ideal.map_map]`. Conclude with `Ideal.map_symm _`.
+-/
 theorem map_rename_eq (I : Ideal (MRing ι R)) :
     I.map ε = (I.map (Polynomial.C : MRing ι R →+* _)).comap (joinPolyEquiv (R := R) (ι := ι)).toRingHom := by
   have h : I.map ε = I.map (ε).toRingHom := rfl
   rw [h, rename_eq_symm_comp_C, ← Ideal.map_map]
   exact Ideal.map_symm _
 
+/- English proof (translation)
+Rewrite using `[map_rename_eq]`. Both sides reduce to the same expression.
+-/
 theorem mem_map_rename_iff (I : Ideal (MRing ι R)) (x) :
     x ∈ I.map ε ↔ joinPolyEquiv x ∈ I.map (Polynomial.C : MRing ι R →+* _) := by
   rw [map_rename_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_map_rename_iff, joinPolyEquiv_rename, ← Ideal.mem_comap, comap_C_map_C_polynomial]`.
+-/
 theorem rename_mem_map_rename_iff (I : Ideal (MRing ι R)) (x : MRing ι R) : ε x ∈ I.map ε ↔ x ∈ I := by
   rw [mem_map_rename_iff, joinPolyEquiv_rename, ← Ideal.mem_comap, comap_C_map_C_polynomial]
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `rename_mem_map_rename_iff I x`.
+-/
 theorem comap_map_rename (I : Ideal (MRing ι R)) : (I.map ε).comap ε = I := by
   ext x
   exact rename_mem_map_rename_iff I x
 
+/- English proof (translation)
+Rewrite using `[map_rename_eq]`. Use `infer_instance`.
+-/
 theorem isPrime_map_rename (Q : Ideal (MRing ι R)) [Q.IsPrime] : (Q.map ε).IsPrime := by
   rw [map_rename_eq]
   infer_instance
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hW`. Establish `: W.IsPrime` using `hW.1.1`. Take `⟨Q, hQ, hQle⟩` from `Ideal.exists_minimalPrimes_le (Ideal.map_le_iff_le_comap.mp hW.1.2)`. Establish `: Q.IsPrime` using `hQ.1.1`.
+
+Establish `hle : Q.map ε ≤ W` using `Ideal.map_le_iff_le_comap.mpr hQle`. Conclude with `⟨Q, hQ, le_antisymm hle (hW.2 ⟨isPrime_map_rename Q, Ideal.map_mono hQ.1.2⟩ hle)⟩`. Introduce and unpack `⟨Q, hQ, rfl⟩`. Establish `: Q.IsPrime` using `hQ.1.1`. Use `⟨⟨isPrime_map_rename Q, Ideal.map_mono hQ.1.2⟩, fun W hW hWle => ?_⟩` and prove the remaining obligations.
+
+Establish `: W.IsPrime` using `hW.1`. Establish `h1 : W.comap ε ≤ Q` using `(Ideal.comap_mono hWle).trans (comap_map_rename Q).le`. Conclude with `Ideal.map_le_iff_le_comap.mpr (hQ.2 ⟨inferInstance, Ideal.map_le_iff_le_comap.mp hW.2⟩ h1)`.
+-/
 theorem mem_minimalPrimes_map_rename_iff (J : Ideal (MRing ι R))
     (W : Ideal (MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R)) :
     W ∈ (J.map ε).minimalPrimes ↔ ∃ Q ∈ J.minimalPrimes, Q.map ε = W := by
@@ -100,6 +131,17 @@ theorem mem_minimalPrimes_map_rename_iff (J : Ideal (MRing ι R))
     have h1 : W.comap ε ≤ Q := (Ideal.comap_mono hWle).trans (comap_map_rename Q).le
     exact Ideal.map_le_iff_le_comap.mpr (hQ.2 ⟨inferInstance, Ideal.map_le_iff_le_comap.mp hW.2⟩ h1)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h k`. Take `⟨i, hi⟩` from `h (.inl k)`. Use `⟨i, fun hx => hi ?_⟩` and prove the remaining obligations. Establish `hX : (X ⟨.inl k, i⟩ : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R) = ε (X ⟨k, i⟩)`.
+
+Simplify using `[liftVar]`. Rewrite using `[hX]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Introduce `h k`. Break down `k with k | u` into its components or cases.
+
+Take `⟨i, hi⟩` from `h k`. Use `⟨i, fun hx => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← rename_mem_map_rename_iff Q]`. Simplify `hx` using `[liftVar]`. Use `⟨(0 : Fin 1), fun hx => hQ ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[mem_map_rename_iff]`. Establish `hX : joinPolyEquiv (R` using `R) (ι := ι) (X ⟨.inr u, (0 : Fin 1)⟩ : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R) = Polynomial.X := by`. Consider the cases of `u`. Simplify using `[joinPolyEquiv, joinIdxEquiv, optionEquivLeft_X_none]`. Rewrite `hx` using `[hX, Ideal.mem_map_C_iff]`.
+
+Establish `h1` using `hx 1`. Rewrite `h1` using `[Polynomial.coeff_X_one]`. Conclude with `(Ideal.eq_top_iff_one Q).mpr h1`.
+-/
 theorem isRelevant_map_rename_iff (Q : Ideal (MRing ι R)) (hQ : Q ≠ ⊤) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant (Q.map ε) ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant Q := by
   constructor
@@ -127,6 +169,15 @@ theorem isRelevant_map_rename_iff (Q : Ideal (MRing ι R)) (hQ : Q ≠ ⊤) :
       rw [Polynomial.coeff_X_one] at h1
       exact (Ideal.eq_top_iff_one Q).mpr h1
 
+/- English proof (translation)
+Establish `hm : ∀ I : Ideal (MRing ι R), I.map ε = (I.map (Polynomial.C : MRing ι R →+* _)).map ((ψ).symm : Polynomial (MRing ι R) →+* MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R)`. Introduce `I`. Rewrite using `[map_rename_eq]`. Conclude with `(Ideal.map_symm (joinPolyEquiv (R := R) (ι := ι))).symm`. Establish `hf : ε f = (ψ).symm (Polynomial.C f)`.
+
+Rewrite using `[← joinPolyEquiv_rename, RingEquiv.symm_apply_apply]`. Use `haveI : (Q.map (Polynomial.C : MRing ι R →+* _)).IsPrime := Ideal.isPrime_map_C_of_isPrime`. Establish `hQp : ((Q.map (Polynomial.C : MRing ι R →+* _)).map ((ψ).symm : Polynomial (MRing ι R) →+* MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R)).IsPrime`. Rewrite using `[← hm]`. Conclude with `isPrime_map_rename Q`.
+
+Use `haveI := hQp`. Establish `key` using `GroundTheory.Heights₂.Heights.Targets.ExistsUniqueRelabel.length_map (ψ).symm (P.map (Polynomial.C : MRing ι R →+* _)) (Q.map (Polynomial.C : MRing ι R →+* _)) (Ideal.map_mono hPQ) (Polynomial.C f)`. Establish `hsup : P.map (Polynomial.C : MRing ι R →+* _) ⊔ Ideal.span {Polynomial.C f} = (P ⊔ Ideal.span {f}).map (Polynomial.C : MRing ι R →+* _)`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Rewrite `key` using `[hsup, PolynomialLocalizedLength.full (MRing ι R) Q (P ⊔ Ideal.span {f})]`.
+
+Rewrite using `[hm P, hm Q, hf]`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.multAt`. Rewrite using `[dif_pos hQp, dif_pos ‹Q.IsPrime›]`. Conclude with `congrArg ENat.toNat key`.
+-/
 theorem multAt_map_rename (P Q : Ideal (MRing ι R)) [Q.IsPrime] (hPQ : P ≤ Q) (f : MRing ι R) :
     ReciprocityTheory.ChartRestriction.G.Geo.multAt (P.map ε ⊔ Ideal.span {ε f}) (Q.map ε) =
       ReciprocityTheory.ChartRestriction.G.Geo.multAt (P ⊔ Ideal.span {f}) Q := by
@@ -158,6 +209,21 @@ end JoinDivCycle
 
 open JoinDivCycle in
 
+/- English proof (translation)
+Introduce `R _ _ K _ ι _ P f`. Establish `hinj : Function.Injective (Ideal.map (rename (R` using `R) (liftVar (ι := ι) ptIdx))) := fun I I' h => by`. Rewrite using `[← comap_map_rename I, ← comap_map_rename I']`. Conclude with `congrArg (Ideal.comap (rename (R := R) (liftVar (ι := ι) ptIdx))) h`. Establish `hsup : P.map (rename (R` using `R) (liftVar (ι := ι) ptIdx)) ⊔ Ideal.span {rename (R := R) (liftVar (ι := ι) ptIdx) f} = (P ⊔ Ideal.span {f}).map (rename (R := R) (liftVar (ι := ι) ptIdx)) := by`.
+
+Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Establish `hsupp : ∀ Q, Q.map (rename (R` using `R) (liftVar (ι := ι) ptIdx)) ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp (P.map (rename (R := R) (liftVar (ι := ι) ptIdx))) (rename (R := R) (liftVar (ι := ι) ptIdx) f) ↔ Q ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P f := by`. Introduce `Q`. Use `show (_ ∈ _ ∧ _) ↔ (_ ∈ _ ∧ _)`. Rewrite using `[hsup, mem_minimalPrimes_map_rename_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨Q₀, hQ₀, h⟩, hr⟩`. Take `rfl` from `hinj h`. Conclude with `⟨hQ₀, (isRelevant_map_rename_iff Q₀ hQ₀.1.1.ne_top).1 hr⟩`. Introduce and unpack `⟨hQ, hr⟩`.
+
+Conclude with `⟨⟨Q, hQ, rfl⟩, (isRelevant_map_rename_iff Q hQ.1.1.ne_top).2 hr⟩`. Use extensionality with `W`. Distinguish the cases in `hW : ∃ Q : Ideal (MRing ι R), Q.map (rename (R := R) (liftVar (ι := ι) ptIdx)) = W`. Take `⟨Q, rfl⟩` from `hW`. Rewrite using `[Finsupp.mapDomain_apply hinj]`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `hQ : Q ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P f`. Use `haveI : Q.IsPrime := hQ.1.1.1`. Rewrite using `[if_pos ((hsupp Q).2 hQ), if_pos hQ, multAt_map_rename P Q (le_sup_left.trans hQ.1.1.2) f]`. Rewrite using `[if_neg (fun h => hQ ((hsupp Q).1 h)), if_neg hQ]`.
+
+Rewrite using `[Finsupp.mapDomain_of_notMem_range _ _ (by rintro ⟨Q, hQ⟩; exact hW ⟨Q, hQ⟩)]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hmin, -⟩`. Rewrite `hmin` using `[hsup, mem_minimalPrimes_map_rename_iff]`.
+
+Take `⟨Q, -, hQ⟩` from `hmin`. Conclude with `hW ⟨Q, hQ⟩`.
+-/
 theorem JoinDivCycle.proof : JoinDivCycle.Statement := by
   intro R _ _ K _ ι _ P f
   classical

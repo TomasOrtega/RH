@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Introduce `hP hA hR hS hL hT`. Use `rowAt_of_ratStep ?_ (GlobalTheory.T.thetaSeries_base_twisted_universal_rational hA hR hS)` and prove the remaining obligations. Conclude with `AtTw.imp (AtTw.and hL hT) fun Fm x hx i p hp hM w _ j h => GlobalTheory.T.exists_rational_data_realization hP Fm x hx i p hp hM _ j (ratHyp0_at_point Fm x hx i p hp hM _ h.2.2.2 h.1 j)`.
+-/
 theorem rowAt_of : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → LowAt → TwAdm → RowAt := by
   intro hP hA hR hS hL hT

@@ -7,5 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Lat
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.RunIn
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.noCommonZero_of_chartIndep | exact GlobalTheory.noCommonZero_of_chartIndep | (intros; apply GlobalTheory.noCommonZero_of_chartIndep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaGenerators_noCommonZero_of_chartIndependence : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → NoCommonZeroSt := by
   first | exact @GlobalTheory.noCommonZero_of_chartIndep | exact GlobalTheory.noCommonZero_of_chartIndep | (intros; apply GlobalTheory.noCommonZero_of_chartIndep <;> assumption)

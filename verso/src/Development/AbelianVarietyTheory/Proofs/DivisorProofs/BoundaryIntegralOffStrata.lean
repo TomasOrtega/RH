@@ -17,6 +17,11 @@ section Analytic
 open Set Filter Topology MeasureTheory ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions GlobalTheory.TruncCoord GlobalTheory.RegToResolution
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hs : HasStrictFDerivAt θ (J : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) a` using `hJ ▸ hθ.hasStrictFDerivAt`. Set `Θ₀` to `hs.toOpenPartialHomeomorph θ`. Establish `ha : a ∈ Θ₀.source` using `hs.mem_toOpenPartialHomeomorph_source`. Establish `hsymm : AnalyticAt ℂ Θ₀.symm (Θ₀ a)` using `Θ₀.analyticAt_symm' ha hθ hJ`. Establish `hO : IsOpen ({x | AnalyticAt ℂ θ x} ∩ (Θ₀.source ∩ Θ₀ ⁻¹' {w | AnalyticAt ℂ Θ₀.symm w}))` using `(isOpen_analyticAt ℂ θ).inter (Θ₀.isOpen_inter_preimage (isOpen_analyticAt ℂ _))`.
+
+Use `⟨Θ₀.restrOpen _ hO, rfl, ⟨ha, hθ, ha, hsymm⟩, fun x hx => hx.2.1, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `hw.2.2.2`. Rewrite `h` using `[mem_preimage, mem_setOf_eq]`. Express the relevant statement in the definitionally equal form `AnalyticAt ℂ Θ₀.symm (Θ₀ (Θ₀.symm w)) at h`. Rewrite `h` using `[Θ₀.right_inv hw.1]`. Then use the resulting hypothesis.
+-/
 theorem exists_local_biholo {d : ℕ} {θ : (Fin d → ℂ) → Fin d → ℂ} {a : Fin d → ℂ} (hθ : AnalyticAt ℂ θ a)
     (J : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ)) (hJ : fderiv ℂ θ a = J) :
     ∃ Θ : OpenPartialHomeomorph (Fin d → ℂ) (Fin d → ℂ), ⇑Θ = θ ∧ a ∈ Θ.source ∧ AnalyticOnNhd ℂ Θ Θ.source ∧
@@ -33,6 +38,13 @@ theorem exists_local_biholo {d : ℕ} {θ : (Fin d → ℂ) → Fin d → ℂ} {
   change AnalyticAt ℂ Θ₀.symm (Θ₀ (Θ₀.symm w)) at h
   rwa [Θ₀.right_inv hw.1] at h
 
+/- English proof (translation)
+Establish `hnd : n ≤ d` using `by simpa using LinearMap.finrank_le_finrank_of_injective (f := L.toLinearMap) hL`. Use `⟨hnd, ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩ : ∃ p : (Fin n → ℂ) →L[ℂ] (Fin d → ℂ), padZero n d = p` from `⟨_, padZero_eq_clm n d⟩`. Establish `hpi : Function.Injective p.toLinearMap` using `fun z w h => by`. Use `congrArg (truncCoord n d) (show p z = p w from h)` as an intermediate fact.
+
+Rewrite `this` using `[← hp, truncCoord_padZero hnd, truncCoord_padZero hnd]`. Then use the resulting hypothesis. Take `⟨g, hg⟩` from `Submodule.exists_linearEquiv_restrict_eq ((LinearEquiv.ofInjective p.toLinearMap hpi).symm.trans (LinearEquiv.ofInjective L.toLinearMap hL))`. Use `⟨g.toContinuousLinearEquiv, fun z => ?_⟩` and prove the remaining obligations. Use `hg (LinearEquiv.ofInjective p.toLinearMap hpi z)` as an intermediate fact. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, LinearEquiv.ofInjective_apply] at this`.
+
+Rewrite using `[hp]`. Conclude with `this.symm`.
+-/
 theorem exists_equiv_pad {n d : ℕ} (L : (Fin n → ℂ) →L[ℂ] (Fin d → ℂ)) (hL : Function.Injective L) :
     n ≤ d ∧ ∃ J : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ), ∀ z, J (padZero n d z) = L z := by
   have hnd : n ≤ d := by simpa using LinearMap.finrank_le_finrank_of_injective (f := L.toLinearMap) hL
@@ -51,6 +63,27 @@ theorem exists_equiv_pad {n d : ℕ} (L : (Fin n → ℂ) →L[ℂ] (Fin d → �
 
 variable {d n : ℕ} {X M : Type} [TopologicalSpace X] [TopologicalSpace M]
 
+/- English proof (translation)
+Use `set F := χ ∘ u ∘ e.symm with hFd`. Take `⟨hnd, J, hJ⟩` from `exists_equiv_pad _ hinj`. Take `⟨p, hp⟩ : ∃ p : (Fin n → ℂ) →L[ℂ] (Fin d → ℂ), padZero n d = p` from `⟨_, padZero_eq_clm n d⟩`. Establish `htp : ∀ z, truncCoord n d (p z) = z` using `fun z => hp ▸ truncCoord_padZero hnd z`. Set `K : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)` to `(J : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)).comp (ContinuousLinearMap.id ℂ _ - p.comp (truncCoord n d))`.
+
+Set `θ : (Fin d → ℂ) → Fin d → ℂ` to `fun v => F (truncCoord n d v) + K v`. Establish `hθp : ∀ z, θ (p z) = F z` using `fun z => by simp [θ, K, htp]`. Establish `hF' : AnalyticAt ℂ F (truncCoord n d (p (e y)))` using `by rwa [htp]`. Establish `hθ : AnalyticAt ℂ θ (p (e y))` using `(hF'.comp ((truncCoord n d).analyticAt _)).add (K.analyticAt _)`. Establish `hθJ : fderiv ℂ θ (p (e y)) = J`.
+
+Use `(hF'.differentiableAt.hasFDerivAt.comp _ (truncCoord n d).hasFDerivAt).add K.hasFDerivAt` as an intermediate fact. Use `this.fderiv.trans ?_` and prove the remaining obligations. Use `ext1 v`. Simplify using `[K, htp, ← hJ, hp]`. Take `⟨Θ, hΘ, ha, hΘ₁, hΘ₂⟩` from `exists_local_biholo hθ J hθJ`.
+
+Take `⟨O₁, hO₁, hO₁e⟩` from `hu.isOpen_iff.1 (e.isOpen_inter_preimage (Θ.open_source.preimage p.continuous))`. Set `ψ₀` to `χ.trans Θ.symm`. Establish `hT : IsOpen (e.target ∩ e.symm ⁻¹' (u ⁻¹' (χ.source ∩ W)))` using `e.isOpen_inter_preimage_symm ((χ.open_source.inter hW).preimage hu.continuous)`. Establish `hO` using `(hW.inter hO₁).inter (ψ₀.isOpen_inter_preimage (hT.preimage (truncCoord n d).continuous))`. Establish `key : ∀ m, u m ∈ O₁ → m ∈ e.source ∧ χ (u m) ∈ Θ.target ∧ ψ₀ (u m) = p (e m)` using `fun m hm => by`.
+
+Establish `hm' : m ∈ e.source ∩ e ⁻¹' (p ⁻¹' Θ.source)` using `hO₁e ▸ hm`. Establish `h₁ : χ (u m) = Θ (p (e m))` using `by rw [hΘ, hθp, hFd]; simp [e.left_inv hm'.1]`. Use `⟨hm'.1, h₁ ▸ Θ.map_source hm'.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Θ.symm (χ (u m)) = _`. Rewrite using `[h₁, Θ.left_inv hm'.2]`.
+
+Establish `hy₁ : u y ∈ O₁` using `show y ∈ u ⁻¹' O₁ from hO₁e ▸ ⟨hy, ha⟩`. Establish `hy₀ : u y ∈ ψ₀.source` using `⟨hχy, (key y hy₁).2.1⟩`. Use `⟨ψ₀.restrOpen _ hO, ⟨hnd, fun k => ⟨fun v hv => ?_, fun v hv => ?_⟩, ?_⟩, ⟨hy₀, ⟨hyW, hy₁⟩, hy₀, ?_⟩, fun m hm => ⟨(key m hm.2.1.2).1, (hZ.le ⟨hm.2.1.1, m, rfl⟩).2, hp ▸ (key m hm.2.1.2).2.2⟩⟩` and prove the remaining obligations. Conclude with `AnalyticAt.comp (g := Θ.symm) (f := χ ∘ (A.chart k).symm) (hΘ₂ _ hv.2.1.2) ((hχ k).1 v ⟨hv.1, hv.2.1.1⟩)`. Conclude with `AnalyticAt.comp (g := A.chart k ∘ χ.symm) (f := Θ) ((hχ k).2 (Θ v) ⟨hv.1.1.2, hv.2⟩) (hΘ₁ v hv.1.1.1)`.
+
+Use extensionality with `x`. Use `⟨fun hx => ⟨hx.2, fun k hk => ?_⟩, fun hx => ⟨?_, hx.1⟩⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(hZ.ge ⟨hx.2.2.1.1, hx.1⟩).2`. Express the relevant statement in the definitionally equal form `ψ₀ (u m) k = 0`. Rewrite using `[(key m hx.2.2.1.2).2.2, ← hp]`.
+
+Simplify using `[padZero, not_lt.2 hk]`. Establish `h₁ : p (truncCoord n d (ψ₀ x)) = ψ₀ x` using `hp ▸ padZero_truncCoord _ hx.2`. Establish `h₂ : truncCoord n d (ψ₀ x) ∈ e.target ∩ e.symm ⁻¹' (u ⁻¹' (χ.source ∩ W))` using `hx.1.2.2.2`. Establish `h₃ : χ x = χ (u (e.symm (truncCoord n d (ψ₀ x))))`. Express the relevant statement in the definitionally equal form `_ = F _`.
+
+Rewrite using `[← hθp, h₁, ← hΘ]`. Conclude with `(Θ.right_inv hx.1.1.2).symm`. Establish `h₄` using `χ.injOn hx.1.1.1 h₂.2.1 h₃`. Conclude with `(hZ.le ⟨hx.1.2.1.1, _, h₄.symm⟩).2`. Rewrite using `[mem_preimage, mem_preimage, (key y hy₁).2.2, htp]`.
+
+Conclude with `⟨e.map_source hy, by simpa [e.left_inv hy] using ⟨hχy, hyW⟩⟩`.
+-/
 theorem exists_straightening (A : FinHolAtlas d X) {u : M → X} (hu : IsInducing u)
     (e : OpenPartialHomeomorph M (Fin n → ℂ)) {y : M} (hy : y ∈ e.source)
     (χ : OpenPartialHomeomorph X (Fin d → ℂ)) (hχ : IsCompatChart A χ) (hχy : u y ∈ χ.source)
@@ -108,6 +141,23 @@ theorem exists_straightening (A : FinHolAtlas d X) {u : M → X} (hu : IsInducin
   · rw [mem_preimage, mem_preimage, (key y hy₁).2.2, htp]
     exact ⟨e.map_source hy, by simpa [e.left_inv hy] using ⟨hχy, hyW⟩⟩
 
+/- English proof (translation)
+Break down `G.eq_empty_or_nonempty with rfl | ⟨y₀, hy₀⟩` into its components or cases. Rewrite `hG` using `[compl_empty, Measure.measure_univ_eq_zero]`. Simplify using `[hG]`. Use `choose N hN hyN a ψ e hψ hx hB using fun y : G => h y y.2`. Take `⟨T, hT, hTS⟩` from `TopologicalSpace.isOpen_iUnion_countable N hN`.
+
+Take `⟨g, hg⟩` from `(hT.insert ⟨y₀, hy₀⟩).exists_eq_range (insert_nonempty _ _)`. Use `set D := disjointed (N ∘ g) with hD`. Establish `hDm : ∀ k, MeasurableSet (D k)` using `MeasurableSet.disjointed fun k => (hN _).measurableSet`. Establish `hDN : ∀ k, D k ⊆ N (g k)` using `disjointed_subset (N ∘ g)`. Establish `hcov : G ⊆ ⋃ k, D k`.
+
+Rewrite using `[hD, iUnion_disjointed]`. Introduce `y hy`. Take `⟨l, hl, hy⟩` from `mem_iUnion₂.1 (hTS.ge (mem_iUnion.2 ⟨⟨y, hy⟩, hyN _⟩))`. Take `⟨k, rfl⟩` from `hg.le (mem_insert_of_mem _ hl)`. Conclude with `mem_iUnion.2 ⟨k, hy⟩`.
+
+Establish `hae : ∀ᵐ x ∂μ, x ∈ ⋃ k, D k` using `measure_mono_null (compl_subset_compl.2 hcov) hG`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae, lintegral_iUnion hDm (disjoint_disjointed _)]`. Use `ENNReal.tsum_le_of_sum_range_le fun r => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_fiberwise (s := Finset.range r) (g := fun k => a (g k))]`. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations.
+
+Use `set s := (Finset.range r).filter fun k => a (g k) = b with hs`. Set `ι : Fin s.card → ℕ` to `fun j => s.equivFin.symm j`. Establish `hι : ∀ j, a (g (ι j)) = b` using `fun j => (Finset.mem_filter.1 (s.equivFin.symm j).2).2`. Establish `him : ∀ k, param n (ψ (g k)) '' (e (g k) '' D k) = u '' D k` using `fun k => by`. Rewrite using `[image_image]`.
+
+Conclude with `image_congr fun x hx' => (hx _ x (hDN k hx')).2.1`. Establish `hfam : IsPieceFamily A (Zs b) n (S b) (fun j => ψ (g (ι j))) fun j => e (g (ι j)) '' D (ι j)`. Use `⟨fun j => hι j ▸ hψ _, fun j => (hB _ _ (hDm _) (hDN _)).1, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Introduce and unpack `j _ ⟨x, hx', rfl⟩`. Take `⟨h₁, h₂, h₃⟩` from `hx _ x (hDN _ hx')`.
+
+Conclude with `⟨h₁, by rw [h₂, ← hι j]; exact h₃⟩`. Use `show Disjoint (param n (ψ (g (ι i))) '' (e (g (ι i)) '' D (ι i))) (param n (ψ (g (ι j))) '' (e (g (ι j)) '' D (ι j)))`. Rewrite using `[him, him]`. Conclude with `(disjoint_image_iff hu).2 (disjoint_disjointed _ fun h => hij (s.equivFin.symm.injective (Subtype.ext h)))`. Use `le_iSup_of_le s.card (le_iSup_of_le _ (le_iSup_of_le _ (le_iSup_of_le hfam ?_)))` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_coe_sort s, ← s.equivFin.symm.sum_comp]`. Conclude with `Finset.sum_le_sum fun j _ => (hB _ _ (hDm _) (hDN _)).2`.
+-/
 theorem lintegral_le_sum [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] (A : FinHolAtlas d X) {m : ℕ}
     (Zs S : Fin m → Set X) (P : LocPot X) (f : X → ℝ≥0∞) (μ : Measure M) {u : M → X} (hu : Function.Injective u)
     {G : Set M} (hG : μ Gᶜ = 0)
@@ -173,6 +223,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
+/- English proof (translation)
+Establish `h₁ : IsEmbedding fun y : CxPts q (σ.comp β) => y.1 ≫ j` using `(isEmbedding_comp_of_isClosedImmersion (C := ℂ) j).comp IsEmbedding.subtypeVal`. Establish `h₂ : Continuous fun x : CxPts (genStr Z) σ => x.1 ≫ genι Z` using `(continuous_comp (genι Z)).comp continuous_subtype_val`. Establish `e : (fun x : CxPts (genStr Z) σ => x.1 ≫ genι Z) ∘ up j hj σ = fun y => y.1 ≫ j`. Use function extensionality and compare the values at `fun y => up_ι j hj σ y`. Use `⟨IsInducing.of_comp (continuous_up j hj σ) h₂ (e ▸ h₁.isInducing), fun y y' h => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun x : CxPts (genStr Z) σ => x.1 ≫ genι Z) h` as an intermediate fact. Simplify using `only [up_ι] at this`. Conclude with `h₁.injective this`.
+-/
 theorem isEmbedding_up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q)
     (σ : c.F →+* ℂ) : IsEmbedding (up j hj σ) := by
   have h₁ : IsEmbedding fun y : CxPts q (σ.comp β) => y.1 ≫ j :=
@@ -186,6 +241,25 @@ theorem isEmbedding_up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClo
   simp only [up_ι] at this
   exact h₁.injective this
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Establish `P₁` using `IsPullback.of_hasPullback j (genι Z)`. Establish `P₂ : IsPullback (genι Z) (genStr Z) Z.s (spMap β)` using `IsPullback.of_hasPullback Z.s (spMap β)`. Establish `HP` using `P₁.paste_vert P₂`. Use `set i := pullback.snd j (genι Z)`.
+
+Use `set bc := bcMap HP.w σ`. Establish `hm : ∀ z, (bc z).1 = z.1 ≫ pullback.fst j (genι Z)` using `fun _ => rfl`. Establish `hui : ∀ z, up j rfl σ (bc z) = PtsOver.map i rfl (spMap σ) z` using `fun z => by`. Use `Subtype.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[up_ι]`.
+
+Express the relevant statement in the definitionally equal form `(z.1 ≫ pullback.fst j (genι Z)) ≫ j = (z.1 ≫ i) ≫ genι Z`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[(up j rfl σ (bc z)).2]`. Conclude with `z.2.symm`. Take `⟨z, rfl⟩` from `(bijective_bcMap HP σ).2 y`.
+
+Take `⟨c', hz', hU, hx⟩` from `ch.exists_baseChange HP hm hy`. Establish `he : ∀ w, w ∈ c'.e.source → bc w ∈ ch.e.source → ch.e (bc w) = c'.e w` using `fun w h₁ h₂ => by`. Use extensionality with `a`. Rewrite using `[ch.apply_eq _ h₂, c'.apply_eq _ h₁, hx, ev_appLE_of_comp hm hU _ (c'.source_subset h₁)]`. Establish `hbc : Continuous bc` using `continuous_of_comp hm`.
+
+Establish `hO : IsOpen (c'.e.target ∩ c'.e.symm ⁻¹' (bc ⁻¹' ch.e.source ∩ bc ⁻¹' (up j rfl σ ⁻¹' c0.e.source)))` using `c'.e.isOpen_inter_preimage_symm ((ch.e.open_source.preimage hbc).inter ((c0.e.open_source.preimage (continuous_up j rfl σ)).preimage hbc))`. Establish `hzO : c'.e z ∈ c'.e.target ∩ c'.e.symm ⁻¹' (bc ⁻¹' ch.e.source ∩ bc ⁻¹' (up j rfl σ ⁻¹' c0.e.source))` using `⟨c'.e.map_source hz', by rw [mem_preimage, c'.e.left_inv hz']; exact ⟨hy, hy0⟩⟩`. Establish `hsymm : ∀ v ∈ c'.e.target ∩ c'.e.symm ⁻¹' (bc ⁻¹' ch.e.source ∩ bc ⁻¹' (up j rfl σ ⁻¹' c0.e.source)), ch.e.symm v = bc (c'.e.symm v)` using `fun v hv => by`. Use `he _ (c'.e.map_target hv.1) hv.2.1` as an intermediate fact. Rewrite `this` using `[c'.e.right_inv hv.1]`.
+
+Use `conv_lhs => rw [← this]`. Conclude with `ch.e.left_inv hv.2.1`. Establish `hyz : ch.e (bc z) = c'.e z` using `he z hz' hy`. Establish `hev : c0.e ∘ up j rfl σ ∘ ch.e.symm =ᶠ[𝓝 (c'.e z)] c0.e ∘ PtsOver.map i rfl (spMap σ) ∘ c'.e.symm` using `by filter_upwards [hO.mem_nhds hzO] with v hv`. Simplify using `only [Function.comp_apply, hsymm v hv, hui]`.
+
+Establish `hdiff` using `AlgChart.holo_map (f := i) (m := PtsOver.map i rfl (spMap σ)) (fun _ => rfl) c' c0`. Establish `hO' : IsOpen (c'.e.target ∩ c'.e.symm ⁻¹' (PtsOver.map i rfl (spMap σ) ⁻¹' c0.e.source))` using `c'.e.isOpen_inter_preimage_symm (c0.e.open_source.preimage (PtsOver.continuous_map i rfl (spMap σ)))`. Rewrite using `[hyz]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev.eventuallyEq_nhds, hO.mem_nhds hzO] with v hv hv'`.
+
+Use `(hdiff.differentiableAt (hO'.mem_nhds ⟨hv'.1, ?_⟩)).congr_of_eventuallyEq hv` and prove the remaining obligations. Use `show PtsOver.map i rfl (spMap σ) (c'.e.symm v) ∈ c0.e.source`. Rewrite using `[← hui]`. Conclude with `hv'.2.2`. Rewrite using `[hev.fderiv_eq]`.
+
+Use `GlobalTheory.ImmInj.fderiv_injective c.F _ _ _ _ _ _ i inferInstance rfl σ c' c0 z hz' (by rw [← hui]; exact hy0)` as an intermediate fact. Conclude with `this`.
+-/
 theorem up_holo {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q)
     (σ : c.F →+* ℂ) {D D' : ℕ} (ch : AlgChart q (σ.comp β) D) (c0 : AlgChart (genStr Z) σ D') {y : CxPts q (σ.comp β)}
     (hy : y ∈ ch.e.source) (hy0 : up j hj σ y ∈ c0.e.source) :
@@ -252,6 +326,15 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hc : ∀ i, chartMeas (e i) (ρ i) F = 0` using `fun i => by`. Rewrite using `[chartMeas_apply (e i) (ρ i) hF]`. Use `(setLIntegral_congr_fun (measurableSet_image _ ((e i).open_source.measurableSet.inter hF) inter_subset_left) ?_).trans (lintegral_zero)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show ρ i ((e i).symm (e i y)) = 0`.
+
+Rewrite using `[(e i).left_inv hy.1, h0 i y hy]`. Establish `hle : glueMeas e ρ ≤ (glueMeas e ρ).restrict Fᶜ`. Use `iSup_le fun i => Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hB]`. Combine the equalities or inequalities in the displayed calculation.
+
+Distinguish the cases in `h : y ∈ F`. Conclude with `Or.inr h`. Conclude with `Or.inl ⟨hy, h⟩`. Use `_ ≤ chartMeas (e i) (ρ i) (B ∩ Fᶜ) + chartMeas (e i) (ρ i) F := measure_union_le _ _`. Use `_ = chartMeas (e i) (ρ i) (B ∩ Fᶜ) := by rw [hc i, add_zero]`.
+
+Use `_ ≤ glueMeas e ρ (B ∩ Fᶜ) := Measure.le_iff'.1 (le_iSup (fun i => chartMeas (e i) (ρ i)) i) _`. Establish `h` using `Measure.le_iff'.1 hle F`. Rewrite `h` using `[Measure.restrict_apply hF, inter_compl_self, measure_empty]`. Conclude with `nonpos_iff_eq_zero.1 h`.
+-/
 theorem glueMeas_eq_zero {n : ℕ} {M ι : Type} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (e : ι → OpenPartialHomeomorph M (V n)) (ρ : ι → M → ℝ≥0∞) {F : Set M} (hF : MeasurableSet F)
     (h0 : ∀ i, ∀ y ∈ (e i).source ∩ F, ρ i y = 0) : glueMeas e ρ F = 0 := by
@@ -279,6 +362,21 @@ theorem glueMeas_eq_zero {n : ℕ} {M ι : Type} [TopologicalSpace M] [Measurabl
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {τ : k →+* ℂ} {n : ℕ}
 
+/- English proof (translation)
+Establish `hpre : ch.finChart '' B = toV n ⁻¹' (ch.e '' B)`. Use extensionality with `z`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+
+Introduce and unpack `⟨x, hx, h⟩`. Conclude with `⟨x, hx, (toV n).injective (by rw [ch.toV_finChart]; exact h)⟩`. Establish `hm` using `measurableSet_image ch.e hB hBs`. Use `⟨hpre ▸ hm.preimage (toV n).continuous.measurable, ?_⟩` and prove the remaining obligations. Use `set g : CxPts q τ → ℝ≥0∞ := fun y => ENNReal.ofReal (ρ ch y)`.
+
+Establish `hpart : (GlobalTheory.MixDens.part ρ).restrict B = (chartMeas ch.e g).restrict B`. Use extensionality with `T hT`. Rewrite using `[Measure.restrict_apply hT, Measure.restrict_apply hT]`. Unfold `GlobalTheory.MixDens.part`. Conclude with `glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`.
+
+Rewrite using `[hρ.1 c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) ch (hT.inter hB) (inter_subset_right.trans hBs)`. Establish `hT` using `ch.e.open_target.measurableSet`. Establish `hgm : AEMeasurable (g ∘ ch.e.symm) (volume.restrict ch.e.target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hρ.2 ch)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpart, lintegral_indicator hB]`.
+
+Use `_ ≤ ∫⁻ v, B.indicator F (ch.e.symm v) ∂(volume.restrict ch.e.target).withDensity (g ∘ ch.e.symm) := lintegral_map_le _ _`. Use `_ = ∫⁻ v in ch.e.target, (g ∘ ch.e.symm) v * B.indicator F (ch.e.symm v) := by`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable₀ _ hgm (.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Both sides reduce to the same expression. Use `_ ≤ ∫⁻ v in ch.e.target, (ch.e '' B).indicator (fun v => g (ch.e.symm v) * F (ch.e.symm v)) v := by`.
+
+Use `setLIntegral_mono' hT fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `h : ch.e.symm v ∈ B`. Establish `: v ∈ ch.e '' B` using `⟨_, h, ch.e.right_inv hv⟩`. Simplify using `[indicator_of_mem h, indicator_of_mem this]`. Simplify using `[indicator_of_notMem h]`.
+
+Use `_ ≤ ∫⁻ v, (ch.e '' B).indicator (fun v => g (ch.e.symm v) * F (ch.e.symm v)) v := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ v in ch.e '' B, g (ch.e.symm v) * F (ch.e.symm v) := lintegral_indicator hm _`. Use `_ = _ := by`. Rewrite using `[hpre]`. Conclude with `(measurePreserving_toV.setLIntegral_comp_preimage_emb (toV n).toHomeomorph.measurableEmbedding (fun v => g (ch.e.symm v) * F (ch.e.symm v)) _).symm`.
+-/
 theorem setLIntegral_part_le [SecondCountableTopology (CxPts q τ)] {ρ : AlgChart q τ n → CxPts q τ → ℝ}
     (hρ : IsMDens ρ) (ch : AlgChart q τ n) {B : Set (CxPts q τ)} (hB : MeasurableSet B) (hBs : B ⊆ ch.e.source)
     (F : CxPts q τ → ℝ≥0∞) : MeasurableSet (ch.finChart '' B) ∧
@@ -324,6 +422,13 @@ theorem setLIntegral_part_le [SecondCountableTopology (CxPts q τ)] {ρ : AlgCha
         exact (measurePreserving_toV.setLIntegral_comp_preimage_emb (toV n).toHomeomorph.measurableEmbedding
           (fun v => g (ch.e.symm v) * F (ch.e.symm v)) _).symm
 
+/- English proof (translation)
+Establish `hpar : ∀ x' ∈ N, param n ψ (ch.finChart x') = u x'` using `fun x' hx' => by`. Rewrite using `[param, ← (hψ x' hx').2, ψ.left_inv (hψ x' hx').1]`. Establish `hO : IsOpen (ch.finChart.target ∩ ch.finChart.symm ⁻¹' N)` using `ch.finChart.isOpen_inter_preimage_symm hN`. Establish `hxO : ch.finChart x ∈ ch.finChart.target ∩ ch.finChart.symm ⁻¹' N` using `⟨ch.finChart.map_source hx, by rw [mem_preimage, ch.finChart.left_inv hx]; exact hxN⟩`. Establish `hev : (fun z' => P.φ (u x) (param n ψ z')) =ᶠ[𝓝 (ch.finChart x)] (fun v => P.φ (u x) (u (ch.e.symm v))) ∘ toV n` using `by filter_upwards [hO.mem_nhds hxO] with z' hz'`.
+
+Use `hpar _ hz'.2` as an intermediate fact. Rewrite `this` using `[ch.finChart.right_inv hz'.1]`. Simplify using `only [Function.comp_apply, this]`. Both sides reduce to the same expression. Unfold `paramDens`.
+
+Rewrite using `[hpar x hxN, maDens_congr_eventuallyEq (fun _ => hev), maDens, ReciprocityTheory.AnForm.A.mdisc_const, potDens, if_pos hxS, potMat, ← ch.toV_finChart x, cHess_eq_hessC (by rwa [ch.toV_finChart])]`.
+-/
 theorem paramDens_eq_potDens {X : Type} [TopologicalSpace X] {d : ℕ} {P : LocPot X} {S : Set X}
     {u : CxPts q τ → X} (ch : AlgChart q τ n) {ψ : OpenPartialHomeomorph X (Fin d → ℂ)} {N : Set (CxPts q τ)}
     (hN : IsOpen N) (hψ : ∀ x ∈ N, u x ∈ ψ.source ∧ ψ (u x) = padZero n d (ch.finChart x)) {x : CxPts q τ}
@@ -351,6 +456,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
+/- English proof (translation)
+Take `⟨hd, hinj⟩` from `up_holo j hj σ ch c0 hy hy0`. Take `⟨s, hs, hsd⟩` from `Filter.eventually_iff_exists_mem.1 hd`. Establish `hdo : DifferentiableOn ℂ (c0.e ∘ up j hj σ ∘ ch.e.symm) s` using `fun v hv => (hsd v hv).differentiableWithinAt`. Establish `han : AnalyticAt ℂ (c0.e ∘ up j hj σ ∘ ch.e.symm) (ch.e y)`. Take `⟨t, hts, ht, hyt⟩` from `mem_nhds_iff.1 hs`.
+
+Conclude with `(SCV.analyticOnNhd_iff_differentiableOn ht).2 (hdo.mono hts) _ hyt`. Use `set E1 := EuclideanSpace.equiv (Fin D) ℂ`. Use `set E0 := EuclideanSpace.equiv (Fin D') ℂ`. Establish `hfun : c0.finChart ∘ up j hj σ ∘ ch.finChart.symm = E0 ∘ (c0.e ∘ up j hj σ ∘ ch.e.symm) ∘ E1.symm` using `rfl`. Establish `hpt : ch.finChart y = E1 (ch.e y)` using `rfl`.
+
+Use `⟨han, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun, hpt]`. Conclude with `((E0 : V D' →L[ℂ] (Fin D' → ℂ)).analyticAt _).comp (AnalyticAt.comp_of_eq han ((E1.symm : (Fin D → ℂ) →L[ℂ] V D).analyticAt _) (E1.symm_apply_apply _))`. Rewrite using `[hfun, hpt, E0.comp_fderiv, E1.symm.comp_right_fderiv, E1.symm_apply_apply]`. Introduce `a b hab`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe] at hab`. Conclude with `E1.symm.injective (hinj (E0.injective hab))`.
+-/
 theorem up_fin {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q)
     (σ : c.F →+* ℂ) {D D' : ℕ} (ch : AlgChart q (σ.comp β) D) (c0 : AlgChart (genStr Z) σ D') {y : CxPts q (σ.comp β)}
     (hy : y ∈ ch.e.source) (hy0 : up j hj σ y ∈ c0.e.source) :
@@ -376,6 +490,13 @@ theorem up_fin {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmer
     simp only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe] at hab
     exact E1.symm.injective (hinj (E0.injective hab))
 
+/- English proof (translation)
+Take `⟨kk, hk⟩` from `A.cover (up j hj σ x)`. Take `⟨c0, hc0⟩` from `hA kk`. Establish `hk0 : up j hj σ x ∈ c0.e.source` using `by rw [hc0] at hk; exact hk`. Apply the tactic sequence `have hg1 : ContDiffAt ℝ 2 (g ∘ (A.chart kk).symm) (A.chart kk (up j hj σ x)) := ((hg kk).contDiffAt (((A.chart kk).isOpen_inter_preimage_symm hW).mem_nhds ⟨(A.chart kk).map_source hk, by rw [mem_preimage, (A.chart kk).left_inv hk]; exact hxW⟩)).of_le (by first | exact_mod_cast (l …`. Establish `han` using `(up_fin j hj σ ch c0 hx hk0).1`.
+
+Establish `hg2 : ContDiffAt ℝ 2 (A.chart kk ∘ up j hj σ ∘ ch.e.symm) (ch.e x)`. Rewrite using `[hc0]`. Conclude with `((((EuclideanSpace.equiv (Fin D') ℂ : V D' →L[ℂ] (Fin D' → ℂ)).analyticAt _).comp han).contDiffAt).restrict_scalars ℝ`. Establish `hO : IsOpen (ch.e.target ∩ ch.e.symm ⁻¹' (up j hj σ ⁻¹' (A.chart kk).source))` using `ch.e.isOpen_inter_preimage_symm ((A.chart kk).open_source.preimage (continuous_up j hj σ))`. Establish `heq : (A.chart kk ∘ up j hj σ ∘ ch.e.symm) (ch.e x) = A.chart kk (up j hj σ x)`.
+
+Simplify using `only [Function.comp_apply, ch.e.left_inv hx]`. Rewrite `hg1` using `[← heq]`. Use `(hg1.comp (ch.e x) hg2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds ⟨ch.e.map_source hx, by rw [mem_preimage, ch.e.left_inv hx]; exact hk⟩] with v hv`. Simplify using `only [Function.comp_apply, (A.chart kk).left_inv hv.2]`.
+-/
 theorem contDiffAt_pull {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) [IsClosedImmersion j] (hj : j ≫ Z.s = q)
     (σ : c.F →+* ℂ) {D D' : ℕ} {A : FinHolAtlas D' (CxPts (genStr Z) σ)} (hA : IsAlgAtlas A)
     (ch : AlgChart q (σ.comp β) D) {x : CxPts q (σ.comp β)} (hx : x ∈ ch.e.source) {g : CxPts (genStr Z) σ → ℝ}
@@ -417,6 +538,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (CxPts q (σ.comp β)) := CxPts.secondCountableTopology_of_isProjOver _ hY.isProjOver`. Establish `hA : IsAlgAtlas R.finAtlas` using `R.isAlgAtlas_finAtlas`. Establish `hemb` using `isEmbedding_up jm hq σ`. Establish `hu` using `continuous_up jm hq σ`. Use `set u := up jm hq σ with hudef`.
+
+Use `set ρ : AlgChart q (σ.comp β) n → CxPts q (σ.comp β) → ℝ := potDens P Bdᶜ u with hρdef`. Use `set Cs : Set (CxPts q (σ.comp β)) := {x | ∃ ch : AlgChart q (σ.comp β) n, x ∈ ch.e.source} with hCsdef`. Establish `hCs : IsOpen Cs`. Establish `: Cs = ⋃ ch : AlgChart q (σ.comp β) n, ch.e.source`. Use extensionality with `x`.
+
+Simplify using `[Cs]`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun ch => ch.e.open_source`. Use `set G := {x : CxPts q (σ.comp β) | x.1 (IsLocalRing.closedPoint ℂ) ∉ T₀} ∩ (Cs ∩ u ⁻¹' Bdᶜ) with hGdef`. Establish `hF : MeasurableSet (Cs ∩ u ⁻¹' Bdᶜ)ᶜ` using `(hCs.inter (hBd.isOpen_compl.preimage hu)).measurableSet.compl`.
+
+Establish `hF0 : GlobalTheory.MixDens.part ρ (Cs ∩ u ⁻¹' Bdᶜ)ᶜ = 0`. Unfold `GlobalTheory.MixDens.part`. Use `glueMeas_eq_zero _ _ hF fun ch x hx => ?_` and prove the remaining obligations. Establish `: u x ∈ Bd`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hx.2 ⟨⟨ch, hx.1⟩, h⟩`. Simplify using `[hρdef, potDens, this]`. Establish `hT0` using `GlobalTheory.MixDensNull.part_over_closed Oz Y q n hY T₀ hT₀ hgen (σ.comp β) ρ`. Establish `hG : GlobalTheory.MixDens.part ρ Gᶜ = 0`. Use `measure_mono_null (fun x hx => ?_) (measure_union_null hT0 hF0)` and prove the remaining obligations.
+
+Distinguish the cases in `h : x.1 (IsLocalRing.closedPoint ℂ) ∈ T₀`. Conclude with `Or.inl h`. Conclude with `Or.inr fun h' => hx ⟨h, h'⟩`. Use `lintegral_le_sum R.finAtlas Zs (fun a => regularLocus R.finAtlas (Zs a) n \ Bd) P f _ hemb.injective hG ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hyT, ⟨ch, hyc⟩, hyBd⟩`.
+
+Take `⟨a, W, hW, hyW, hZW⟩` from `hZs y hyT`. Take `⟨kk, hk⟩` from `R.finAtlas.cover (u y)`. Take `⟨c0, hc0⟩` from `hA kk`. Establish `hk0 : u y ∈ c0.e.source` using `by rw [hc0] at hk; exact hk`. Take `⟨-, hanF, hinjF⟩` from `up_fin jm hq σ ch c0 hyc hk0`.
+
+Take `⟨ψ, hψ, hyψ, hkey⟩` from `exists_straightening R.finAtlas hemb.isInducing ch.finChart hyc c0.finChart (hA.isCompatChart c0) hk0 hanF hinjF hW hyW hZW`. Establish `hNo : IsOpen (u ⁻¹' ψ.source ∩ u ⁻¹' Bdᶜ)` using `(ψ.open_source.preimage hu).inter (hBd.isOpen_compl.preimage hu)`. Establish `hpar : ∀ x, u x ∈ ψ.source → param n ψ (ch.finChart x) = u x` using `fun x hx => by`. Rewrite using `[param, ← (hkey x hx).2.2, ψ.left_inv hx]`. Use `⟨_, hNo, ⟨hyψ, hyBd⟩, a, ψ, ch.finChart, hψ, fun x hx => ⟨?_, hpar x hx.1, ⟨(hkey x hx.1).2.1, ψ, hψ, hx.1⟩, hx.2⟩, fun B hB hBN => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (hkey x hx.1).2.2]`. Conclude with `ψ.map_source hx.1`. Establish `hBs : B ⊆ ch.e.source` using `fun x hx => (hkey x (hBN hx).1).1`. Take `⟨hm, hle⟩` from `setLIntegral_part_le hρ ch hB hBs (fun x => f (u x))`. Use `⟨hm, hle.trans (setLIntegral_mono' hm ?_)⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hxs` using `hBs hx`. Take `⟨hxψ, hxBd⟩` from `hBN hx`. Take `⟨W', hW', hxW', -, hsm⟩` from `hP (u x) hxBd`. Establish `hC` using `contDiffAt_pull jm hq σ hA ch hxs hW' hxW' hsm`.
+
+Establish `hd` using `paramDens_eq_potDens (P := P) (S := Bdᶜ) ch (ψ := ψ) (N := u ⁻¹' ψ.source) (ψ.open_source.preimage hu) (fun x' hx' => ⟨hx', (hkey x' hx').2.2⟩) hxψ hxs hxBd hC`. Rewrite using `[ch.finChart.left_inv hxs, hpar x hxψ, hd, mul_comm (f (u x))]`. Use `gcongr`. Conclude with `(ENNReal.ofReal_le_ofReal (le_abs_self _)).trans_eq (Real.enorm_eq_ofReal_abs _).symm`.
+-/
 theorem lintegral_up_le {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp Oz} (jm : Y ⟶ Z.X) [IsClosedImmersion jm]
     (hq : jm ≫ Z.s = q) (σ : c.F →+* ℂ) {D' : ℕ} (R : AnRead (genStr Z) σ D') [CompactSpace (CxPts (genStr Z) σ)]
     (n : ℕ) (hY : IsArithVar q n) (m : ℕ) (Zs : Fin m → Set (CxPts (genStr Z) σ)) (T₀ : Set Y) (hT₀ : IsClosed T₀)
@@ -502,6 +646,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ _ Y _ q jm _ hq n hY m Zs T₀ hT₀ hgen hZs P Bd hBd hP hρ f`. Conclude with `GlobalTheory.UpMeas.lintegral_up_le jm hq σ (manifold s.T.Z σ) n hY m Zs T₀ hT₀ hgen hZs P Bd hBd hP hρ f`.
+-/
 theorem GlobalTheory.UpMeas.lintegral_up_le_regIntegral : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp _) (jm : Y ⟶ s.T.Z.X) [IsClosedImmersion jm] (hq : jm ≫ s.T.Z.s = q) (n : ℕ), IsArithVar q n → ∀ (m : ℕ) (Zs : Fin m → Set (CxPts (genStr s.T.Z) σ)) (T₀ : Set Y), IsClosed T₀ → genericPoint Y ∉ T₀ → (∀ y : CxPts q (σ.comp _), y.1 (IsLocalRing.closedPoint ℂ) ∉ T₀ → ∃ a W, IsOpen W ∧ up jm hq σ y ∈ W ∧ W ∩ Set.range (up jm hq σ) = W ∩ Zs a) → ∀ (P : LocPot (CxPts (genStr s.T.Z) σ)) (Bd : Set (CxPts (genStr s.T.Z) σ)), IsClosed Bd → (∀ y, y ∉ Bd → ∃ W, IsOpen W ∧ y ∈ W ∧ W ⊆ P.U y ∧ ((manifold s.T.Z σ).finAtlas).SmoothOn W (P.φ y)) → IsMDens (D := n) (potDens P Bdᶜ (up jm hq σ)) → ∀ f : CxPts (genStr s.T.Z) σ → ℝ≥0∞, ∫⁻ y, f (up jm hq σ y) ∂part (D := n) (potDens P Bdᶜ (up jm hq σ)) ≤ ∑ a, regIntegral (manifold s.T.Z σ).finAtlas (Zs a) n P (regularLocus (manifold s.T.Z σ).finAtlas (Zs a) n \ Bd) f := by
   intro D A N j S κ s σ _ Y _ q jm _ hq n hY m Zs T₀ hT₀ hgen hZs P Bd hBd hP hρ f
   exact GlobalTheory.UpMeas.lintegral_up_le jm hq σ (manifold s.T.Z σ) n hY m Zs T₀ hT₀ hgen hZs P Bd hBd hP hρ f

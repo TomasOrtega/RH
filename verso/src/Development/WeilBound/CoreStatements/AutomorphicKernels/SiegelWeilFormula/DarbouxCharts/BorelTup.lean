@@ -17,6 +17,17 @@ local instance (priority := high) measTup' {F : Type} [Field F] [NumberField F] 
 
 local instance borelTup' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] : BorelSpace (κ → AF F) := ⟨rfl⟩
 
+/- English proof (translation)
+Establish `hn : ∀ k : ℂ, ‖hv.toLp v + k • hu.toLp u‖ = ‖hv'.toLp v' + k • hu'.toLp u'‖`. Introduce `k`. Rewrite using `[← MemLp.toLp_const_smul, ← MemLp.toLp_add, ← MemLp.toLp_const_smul, ← MemLp.toLp_add, Lp.norm_toLp, Lp.norm_toLp]`. Use `congr 1`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`.
+
+Use `congr 1`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `h k`. Establish `hi : ∀ {a b : α → ℂ} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ), ∫ x, a x * star (b x) ∂μ = inner ℂ (hb.toLp b) (ha.toLp a)`. Introduce `a b ha hb`.
+
+Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with x hxa hxb`. Rewrite using `[hxa, hxb]`. Simplify using `[mul_comm]`.
+
+Rewrite using `[hi hu hv, hi hu' hv', inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]`. Establish `e1` using `hn 1`. Establish `e2` using `hn (-1)`. Establish `e3` using `hn (-RCLike.I)`. Establish `e4` using `hn RCLike.I`.
+
+Simplify using `only [one_smul, neg_smul, ← sub_eq_add_neg] at e1 e2 e3 e4`. Rewrite using `[e1, e2, e3, e4]`.
+-/
 private theorem integral_mul_star_eq_of_lintegral_norm_sq_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} {u v u' v' : α → ℂ}
     (hu : MemLp u 2 μ) (hv : MemLp v 2 μ) (hu' : MemLp u' 2 μ) (hv' : MemLp v' 2 μ)
     (h : ∀ k : ℂ, ∫⁻ x, ‖v x + k * u x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖v' x + k * u' x‖ₑ ^ 2 ∂μ) :
@@ -47,6 +58,21 @@ private theorem integral_mul_star_eq_of_lintegral_norm_sq_eq {α : Type*} [Measu
   simp only [one_smul, neg_smul, ← sub_eq_add_neg] at e1 e2 e3 e4
   rw [e1, e2, e3, e4]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν x Φ hΦ Φ' hΦ'`. Take `⟨τ, S0, S0', C, hS, hT⟩` from `T_chart d`. Establish `hU` using `d.ok.dbl.weil.2.1`. Establish `hom : ∀ Ψ ∈ d.sch, d.om x Ψ ∈ d.sch` using `fun Ψ hΨ => hU.pres x Ψ hΨ`. Take `⟨hμ0, hmap⟩` from `map_haar d τ ν hν`.
+
+Use `set μ0 := Measure.map (cmap d τ) ν with hμ0def`. Establish `key : ∀ Ψ ∈ d.sch, ∀ Ψ' ∈ d.sch, ∫ X, d.T Ψ X * star (d.T Ψ' X) ∂ν = ∫ y, (C * S0 Ψ y) * star (C * S0 Ψ' y) ∂μ0`. Introduce `Ψ hΨ Ψ' hΨ'`. Rewrite using `[← hmap (fun y => (C * S0 Ψ y) * star (C * S0 Ψ' y))]`. Use `integral_congr_ae (ae_of_all _ fun X => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hT Ψ hΨ X, hT Ψ' hΨ' X]`. Both sides reduce to the same expression. Establish `hN : ∀ Ψ ∈ d.sch, ∫⁻ y, ‖S0 (d.om x Ψ) y‖ₑ ^ 2 ∂μ0 = ∫⁻ y, ‖S0 Ψ y‖ₑ ^ 2 ∂μ0`. Take `⟨c, -, -, hc⟩` from `hS.norm μ0 μ0 hμ0 hμ0`. Introduce `Ψ hΨ`.
+
+Rewrite using `[hc _ (hom Ψ hΨ), hc _ hΨ, hU.unit μ0 hμ0 x Ψ hΨ]`. Establish `hL : ∀ Ψ ∈ d.sch, MemLp (fun y => C * S0 Ψ y) 2 μ0` using `fun Ψ hΨ => (schA_memLp_two F d.κ μ0 hμ0 _ (hS.pres Ψ hΨ)).const_mul C`. Rewrite using `[key _ (hom Φ hΦ) _ (hom Φ' hΦ'), key _ hΦ _ hΦ']`. Use `integral_mul_star_eq_of_lintegral_norm_sq_eq (hL _ (hom Φ hΦ)) (hL _ (hom Φ' hΦ')) (hL _ hΦ) (hL _ hΦ') fun k => ?_` and prove the remaining obligations. Establish `hmem : Φ' + k • Φ ∈ d.sch` using `d.sch.add_mem hΦ' (d.sch.smul_mem k hΦ)`.
+
+Establish `e1 : ∀ y, C * S0 (d.om x Φ') y + k * (C * S0 (d.om x Φ) y) = C * S0 (d.om x (Φ' + k • Φ)) y`. Introduce `y`. Simplify using `only [map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ y, C * S0 Φ' y + k * (C * S0 Φ y) = C * S0 (Φ' + k • Φ) y`.
+
+Introduce `y`. Simplify using `only [map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1, e2, enorm_mul, mul_pow]`. Establish `hC : ‖C‖ₑ ^ 2 ≠ ⊤` using `by simp`.
+
+Rewrite using `[lintegral_const_mul' _ _ hC, lintegral_const_mul' _ _ hC, hN _ hmem]`.
+-/
 theorem tUnit : TUnit := by
   intro F E _ _ _ _ _ σ d ν hν x Φ hΦ Φ' hΦ'
   obtain ⟨τ, S0, S0', C, hS, hT⟩ := T_chart d

@@ -16,12 +16,22 @@ open GlobalTheory
 
 namespace GlobalTheory.CompanionTheory.MPDict
 
+/- English proof (translation)
+Rewrite using `[ptIdeal, Geo.mCoordIdeal, RingHom.mem_ker, Geo.mConeMap, MvPolynomial.aeval_C, eq_intCast, ← map_intCast (MvPolynomial.C : (MP ℤ m n).residueField x →+* MvPolynomial (Fin (m + 1)) ((MP ℤ m n).residueField x)) c, MvPolynomial.C_eq_zero]`.
+-/
 private theorem C_mem_ptIdeal_iff_intCast_residueField_eq_zero (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) (c : ℤ) :
     (MvPolynomial.C c : Geo.MRing (Bk n)) ∈ ptIdeal x ↔ ((c : ℤ) : (MP ℤ m n).residueField x) = 0 := by
   rw [ptIdeal, Geo.mCoordIdeal, RingHom.mem_ker, Geo.mConeMap, MvPolynomial.aeval_C, eq_intCast,
     ← map_intCast (MvPolynomial.C : (MP ℤ m n).residueField x →+* MvPolynomial (Fin (m + 1)) ((MP ℤ m n).residueField x)) c,
     MvPolynomial.C_eq_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : (ptIdeal x).comap (MvPolynomial.C : ℤ →+* Geo.MRing (Bk n)) = ⊥` using `h`. Use `charZero_of_inj_zero fun k hk => ?_` and prove the remaining obligations. Establish `hm : ((k : ℤ)) ∈ (ptIdeal x).comap (MvPolynomial.C : ℤ →+* Geo.MRing (Bk n))`.
+
+Rewrite using `[Ideal.mem_comap, C_mem_ptIdeal_iff_intCast_residueField_eq_zero]`. Conclude with `hk` after adjusting the coercions. Rewrite `hm` using `[h', Ideal.mem_bot]`. Conclude with `hm` after adjusting the coercions. Introduce `h show (ptIdeal x).comap (MvPolynomial.C : ℤ →+* Geo.MRing (Bk n)) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `c hc`. Rewrite using `[Ideal.mem_bot]`. Rewrite `hc` using `[Ideal.mem_comap, C_mem_ptIdeal_iff_intCast_residueField_eq_zero]`. Conclude with `Int.cast_eq_zero.mp hc`.
+-/
 theorem ptIdeal_isHorizontal_iff (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) :
     Geo.IsHorizontal (ptIdeal x) ↔ CharZero ((MP ℤ m n).residueField x) := by
   constructor

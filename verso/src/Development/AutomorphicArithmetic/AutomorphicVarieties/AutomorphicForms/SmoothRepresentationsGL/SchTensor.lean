@@ -8,6 +8,47 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Introduce `hS V M _ _ _ _ _ _ h hh hhc α`. Set `S : Set (V × M → ℂ)` to `{F | ∃ (f : V → ℂ) (β : 𝓢(M, ℂ)), ContDiff ℝ ∞ f ∧ HasCompactSupport f ∧ F = fun p => f p.1 * β p.2}`. Set `A : Set (V × M → ℂ)` to `(Submodule.span ℂ S : Set (V × M → ℂ))`. Establish `hgen : ∀ F ∈ S, (∃ C, ∀ x, ‖F x‖ ≤ C) ∧ Differentiable ℝ F ∧ (∀ v : V × M, (fun x => fderiv ℝ F x v) ∈ A) ∧ ∀ l : V × M →L[ℝ] ℝ, (fun x => (l x : ℂ) * F x) ∈ A`. Introduce and unpack `F ⟨f, β, hf, hfc, rfl⟩`.
+
+Establish `hfd : Differentiable ℝ f` using `hf.differentiable (by simp)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨Cf, hCf⟩` from `hfc.exists_bound_of_continuous hf.continuous`. Take `⟨Cb, hCb⟩ : ∃ C, ∀ y, ‖β y‖ ≤ C` from `⟨‖β.toBoundedContinuousFunction‖, fun y => by`. Simplify using `using β.toBoundedContinuousFunction.norm_coe_le_norm y⟩`.
+
+Use `⟨Cf * Cb, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hCf _) (hCb _) (norm_nonneg _) (le_trans (norm_nonneg _) (hCf p.1))`. Conclude with `(hfd.comp differentiable_fst).mul (β.differentiable.comp differentiable_snd)`. Introduce `v`.
+
+Establish `hder : ∀ p : V × M, fderiv ℝ (fun p : V × M => f p.1 * β p.2) p v = fderiv ℝ f p.1 v.1 * β p.2 + f p.1 * (LineDeriv.lineDerivOp v.2 β : 𝓢(M, ℂ)) p.2`. Introduce `p`. Establish `h1 : HasFDerivAt (fun p : V × M => f p.1) ((fderiv ℝ f p.1).comp (ContinuousLinearMap.fst ℝ V M)) p` using `(hfd p.1).hasFDerivAt.comp p hasFDerivAt_fst`. Establish `h2 : HasFDerivAt (fun p : V × M => β p.2) ((fderiv ℝ β p.2).comp (ContinuousLinearMap.snd ℝ V M)) p` using `(β.differentiableAt).hasFDerivAt.comp p hasFDerivAt_snd`. Rewrite using `[show (fun p : V × M => f p.1 * β p.2) = (fun p => f p.1) * (fun p => β p.2) from rfl, (h1.mul h2).fderiv, SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfe : (fun x => fderiv ℝ (fun p : V × M => f p.1 * β p.2) x v) = (fun p : V × M => (fun ξ => fderiv ℝ f ξ v.1) p.1 * β p.2) + (fun p : V × M => f p.1 * (LineDeriv.lineDerivOp v.2 β : 𝓢(M, ℂ)) p.2)`. Use extensionality with `p`. Rewrite using `[hder]`.
+
+Both sides reduce to the same expression. Rewrite using `[hfe]`. Use `(Submodule.span ℂ S).add_mem (Submodule.subset_span ⟨fun ξ => fderiv ℝ f ξ v.1, β, ?_, ?_, rfl⟩) (Submodule.subset_span ⟨f, LineDeriv.lineDerivOp v.2 β, hf, hfc, rfl⟩)` and prove the remaining obligations. Conclude with `((contDiff_infty_iff_fderiv.mp hf).2).clm_apply contDiff_const`. Conclude with `(hfc.fderiv ℝ).comp_left (g := fun L : V →L[ℝ] ℂ => L v.1) (by simp)`.
+
+Introduce `l`. Set `l1 : V →L[ℝ] ℝ` to `l.comp (ContinuousLinearMap.inl ℝ V M)`. Set `l2 : M →L[ℝ] ℝ` to `l.comp (ContinuousLinearMap.inr ℝ V M)`. Establish `hl : ∀ p : V × M, l p = l1 p.1 + l2 p.2`. Introduce `p`.
+
+Simplify using `only [l1, l2, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply]`. Rewrite using `[← map_add]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Establish `htg : Function.HasTemperateGrowth (fun y : M => ((l2 y : ℝ) : ℂ))` using `by fun_prop`.
+
+Establish `hfe : (fun x : V × M => (l x : ℂ) * (f x.1 * β x.2)) = (fun p : V × M => (fun ξ => ((l1 ξ : ℝ) : ℂ) * f ξ) p.1 * β p.2) + (fun p : V × M => f p.1 * (SchwartzMap.smulLeftCLM ℂ (fun y : M => ((l2 y : ℝ) : ℂ)) β) p.2)`. Use extensionality with `p`. Simplify using `only [Pi.add_apply, SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul, hl p]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hfe]`. Use `(Submodule.span ℂ S).add_mem (Submodule.subset_span ⟨fun ξ => ((l1 ξ : ℝ) : ℂ) * f ξ, β, ?_, ?_, rfl⟩) (Submodule.subset_span ⟨f, SchwartzMap.smulLeftCLM ℂ (fun y : M => ((l2 y : ℝ) : ℂ)) β, hf, hfc, rfl⟩)` and prove the remaining obligations. Conclude with `(Complex.ofRealCLM.contDiff.comp l1.contDiff).mul hf`. Conclude with `hfc.mul_left`. Establish `hclosed : ∀ F ∈ A, (∃ C, ∀ x, ‖F x‖ ≤ C) ∧ Differentiable ℝ F ∧ (∀ v : V × M, (fun x => fderiv ℝ F x v) ∈ A) ∧ ∀ l : V × M →L[ℝ] ℝ, (fun x => (l x : ℂ) * F x) ∈ A`.
+
+Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF => exact hgen F hF`. Consider the case `zero`. Use `⟨⟨0, fun x => by simp⟩, differentiable_const 0, fun v => ?_, fun l => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : (fun x => fderiv ℝ (0 : V × M → ℂ) x v) = 0`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Conclude with `(Submodule.span ℂ S).zero_mem`.
+
+Establish `h0 : (fun x => (l x : ℂ) * (0 : V × M → ℂ) x) = 0`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Conclude with `(Submodule.span ℂ S).zero_mem`.
+
+Consider the case `add F G _ _ hF hG`. Take `⟨⟨C1, hC1⟩, hd1, hv1, hl1⟩` from `hF`. Take `⟨⟨C2, hC2⟩, hd2, hv2, hl2⟩` from `hG`. Use `⟨⟨C1 + C2, fun x => (norm_add_le _ _).trans (add_le_add (hC1 x) (hC2 x))⟩, hd1.add hd2, fun v => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `he : (fun x => fderiv ℝ (F + G) x v) = (fun x => fderiv ℝ F x v) + (fun x => fderiv ℝ G x v)`.
+
+Use extensionality with `x`. Rewrite using `[fderiv_add (hd1 x) (hd2 x)]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `(Submodule.span ℂ S).add_mem (hv1 v) (hv2 v)`.
+
+Establish `he : (fun x => (l x : ℂ) * (F + G) x) = (fun x => (l x : ℂ) * F x) + (fun x => (l x : ℂ) * G x)`. Use extensionality with `x`. Simplify using `[mul_add]`. Rewrite using `[he]`. Conclude with `(Submodule.span ℂ S).add_mem (hl1 l) (hl2 l)`.
+
+Consider the case `smul c F _ hF`. Take `⟨⟨C1, hC1⟩, hd1, hv1, hl1⟩` from `hF`. Use `⟨⟨‖c‖ * C1, fun x => ?_⟩, hd1.const_smul c, fun v => ?_, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC1 x) (norm_nonneg _)`.
+
+Establish `he : (fun x => fderiv ℝ (c • F) x v) = c • (fun x => fderiv ℝ F x v)`. Use extensionality with `x`. Rewrite using `[fderiv_const_smul (hd1 x) c]`. Both sides reduce to the same expression. Rewrite using `[he]`.
+
+Conclude with `(Submodule.span ℂ S).smul_mem c (hv1 v)`. Establish `he : (fun x => (l x : ℂ) * (c • F) x) = c • (fun x => (l x : ℂ) * F x)`. Use extensionality with `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he]`. Conclude with `(Submodule.span ℂ S).smul_mem c (hl1 l)`. Take `⟨G, hG⟩` from `hS (V × M) A hclosed _ (Submodule.subset_span ⟨h, α, hh, hhc, rfl⟩)`. Conclude with `⟨G, fun ξ y => by rw [hG]⟩`.
+-/
 theorem UpperTheory.V.Af.Smo.schTensor :
     UpperTheory.V.Af.Smo.SchOfClosed → UpperTheory.V.Af.Smo.SchTensor := by
   intro hS V M _ _ _ _ _ _ h hh hhc α

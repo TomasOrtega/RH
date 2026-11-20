@@ -8,16 +8,33 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.LC
 
+/- English proof (translation)
+Introduce `R hR`. Rewrite using `[mul_add, (momLin m n c hc (R * P) (R * Q) 1).1, hP R hR, hQ R hR, add_zero]`.
+-/
 private theorem nullSec_add' {m n : ℕ} {ε : Fin m → Bool} {c : ℝ} (hc : 0 < c) {P Q : PX m n}
     (hP : NullSec ε c P) (hQ : NullSec ε c Q) : NullSec ε c (P + Q) := by
   intro R hR
   rw [mul_add, (momLin m n c hc (R * P) (R * Q) 1).1, hP R hR, hQ R hR, add_zero]
 
+/- English proof (translation)
+Introduce `R hR`. Rewrite using `[mul_smul_comm, (momLin m n c hc (R * P) 0 r).2, hP R hR, mul_zero]`.
+-/
 private theorem nullSec_smul' {m n : ℕ} {ε : Fin m → Bool} {c : ℝ} (hc : 0 < c) {P : PX m n}
     (r : ℂ) (hP : NullSec ε c P) : NullSec ε c (r • P) := by
   intro R hR
   rw [mul_smul_comm, (momLin m n c hc (R * P) 0 r).2, hP R hR, mul_zero]
 
+/- English proof (translation)
+Establish `hlin` using `(fockBasic m n c hc).1`. Take `⟨a₁, a₂, a₃, a₄, a₅, hk⟩` from `fockK_of fockBasic m n ε c hc`. Establish `hN` using `nullStable m n ε c hc`. Establish `hw' : w ∈ Algebra.adjoin ℂ (Set.range fun ij : Fin n × Fin n => KopL ε ij.1 ij.2)` using `hw`. Use `clear hw`.
+
+Proceed by induction on `hw' using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨i, j⟩, rfl⟩` from `hx`. Introduce `p hp`. Use `show NullSec ε c (fock c (KopL ε i j p))`.
+
+Rewrite using `[hk i j p]`. Take `⟨h1, h2, h3, h4⟩` from `hN i j _ hp`. Conclude with `nullSec_add' hc (nullSec_add' hc (nullSec_add' hc (nullSec_add' hc (nullSec_smul' hc _ h4) (nullSec_smul' hc _ h1)) (nullSec_smul' hc _ h2)) (nullSec_smul' hc _ h3)) (nullSec_smul' hc _ hp)`. Consider the case `algebraMap r`. Introduce `p hp`.
+
+Rewrite using `[Module.algebraMap_end_apply, hlin.map_smul]`. Conclude with `nullSec_smul' hc r hp`. Consider the case `add x y _ _ hx hy`. Introduce `p hp`. Rewrite using `[LinearMap.add_apply, hlin.map_add]`.
+
+Conclude with `nullSec_add' hc (hx p hp) (hy p hp)`. Consider the case `mul x y _ _ hx hy`. Introduce `p hp`. Conclude with `hx _ (hy p hp)`.
+-/
 private theorem nullSec_fock_apply_of_mem_kAlg {m n : ℕ} {ε : Fin m → Bool} {c : ℝ} (hc : 0 < c)
     (w : Module.End ℂ (PX m n)) (hw : w ∈ kAlg ε) :
     ∀ p : PX m n, NullSec ε c (fock c p) → NullSec ε c (fock c (w p)) := by
@@ -48,6 +65,15 @@ private theorem nullSec_fock_apply_of_mem_kAlg {m n : ℕ} {ε : Fin m → Bool}
     intro p hp
     exact hx _ (hy p hp)
 
+/- English proof (translation)
+Introduce `m n ε c hc lam hlam P hP`. Take `⟨hlin, hbij, -⟩` from `fockBasic m n c hc`. Set `F : PX m n →ₗ[ℂ] PX m n` to `hlin.mk' _`. Set `Λ : PX m n →ₗ[ℂ] ℂ` to `lam.comp F`. Establish `hΛ : ∀ (a b : Fin m) (p : PX m n), Λ (Dop ε c a b p) = 0`.
+
+Introduce `a b p`. Use `show lam (fock c (Dop ε c a b p)) = 0`. Rewrite using `[← fockHOp_of fockBasic m n ε c hc a b p]`. Conclude with `hlam a b _`. Take `⟨p, rfl⟩` from `hbij.2 P`.
+
+Take `⟨w, hw, hval⟩` from `hC m n ε c hc Λ hΛ p`. Establish `h1 : lam (fock c p) = contr c (w p)` using `hval`. Rewrite using `[h1]`. Establish `hM` using `fockMom_of_basic fockBasic m n c hc`. Establish `h0 : mom c (fock c (w p)) = 0`.
+
+Simplify using `using nullSec_fock_apply_of_mem_kAlg hc w hw p hP 1 (Subalgebra.one_mem _)`. Rewrite `h0` using `[hM.2]`. Conclude with `(mul_eq_zero.mp h0).resolve_left hM.1`.
+-/
 theorem lc_of_core (hC : CoreLC) : PositivityTheory.Rg.Sw.LC := by
   intro m n ε c hc lam hlam P hP
   obtain ⟨hlin, hbij, -⟩ := fockBasic m n c hc

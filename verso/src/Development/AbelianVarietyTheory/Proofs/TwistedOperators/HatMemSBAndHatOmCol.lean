@@ -7,6 +7,19 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.IndefiniteRowSideFullHecke.OmegaColumnSlices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν ε hψ hν hε n _ _ μz h φ hφ`. Use `haveI := hν.1`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Establish `hε0 : ε ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hε`. Prove the components needed by the constructor for the conclusion. Establish `hF` using `FourierPi.fourier_mem_SB (Measure.pi fun _ : n => ν) hψ hφ`. Establish `e : hat ψ ν ε φ = (fun y : n → k => ∫ x, φ x * (ψ (x ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ : n => ν)) ∘ (Homeomorph.smulOfNeZero ε hε0 : (n → k) ≃ₜ (n → k))`.
+
+Use function extensionality and compare the values at `η`. Simplify using `only [hat, Function.comp, Homeomorph.smulOfNeZero_apply, dotProduct_smul, smul_eq_mul, dotProduct_comm η]`. Rewrite using `[e]`. Conclude with `⟨hF.1.comp_continuous (Homeomorph.continuous _), hF.2.comp_homeomorph _⟩`. Use function extensionality and compare the values at `η`.
+
+Establish `key` using `integral_comp_mulVec_eq_smul ν h⁻¹ (fun y => φ y * (ψ (ε * ((η ᵥ* h.val) ⬝ᵥ y)) : ℂ))`. Establish `e1 : ∀ y : n → k, (η ᵥ* h.val) ⬝ᵥ ((h⁻¹).val *ᵥ y) = η ⬝ᵥ y`. Introduce `y`. Rewrite using `[← dotProduct_mulVec, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Simplify using `only [e1] at key`.
+
+Establish `hp` using `nabs_pos' (Matrix.GeneralLinearGroup.det h)`. Establish `e2 : (nabs k (Matrix.GeneralLinearGroup.det h⁻¹))⁻¹ = nabs k (Matrix.GeneralLinearGroup.det h)`. Simplify using `[nabs]`. Establish `e3 : nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(1 : ℝ) / 2) * nabs k (Matrix.GeneralLinearGroup.det h) = nabs k (Matrix.GeneralLinearGroup.det h) ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.rpow_add_one hp.ne']`.
+
+Evaluate the numerical expressions. Simplify using `only [hat, omCol, omRow, mul_assoc, integral_const_mul]`. Rewrite using `[key, e2, ← e3, Complex.real_smul, Complex.ofReal_mul, mul_assoc]`.
+-/
 theorem hat_mem_SB_and_hat_omCol : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k) (ε : k), HasConductor ψ 1 → IsUnitVol ν → valuation k ε = 1 → ∀ (n : Type) [Fintype n] [DecidableEq n] (μz : kˣ →* ℂˣ) (h : GL n k), ∀ φ ∈ SB (n → k), hat ψ ν ε φ ∈ SB (n → k) ∧ hat ψ ν ε (omCol μz h φ) = omRow μz h (hat ψ ν ε φ) := by
   intro k _ _ _ _ _ _ ψ ν ε hψ hν hε n _ _ μz h φ hφ
   haveI := hν.1

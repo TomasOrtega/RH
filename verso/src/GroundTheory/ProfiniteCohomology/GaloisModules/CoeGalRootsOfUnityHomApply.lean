@@ -24,6 +24,9 @@ def intRep {V : Type u} [AddCommGroup V] (φ : G →* AddMonoid.End V) :
     simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intRep_apply {V : Type u} [AddCommGroup V] (φ : G →* AddMonoid.End V) (g : G) (x : V) :
     intRep.{w} φ g x = φ g x :=
   rfl
@@ -33,6 +36,9 @@ def intRepOfMonoidEnd {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) :
   intRep.{w} ((monoidEndToAdditive M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intRepOfMonoidEnd_apply {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) (g : G)
     (x : Additive M) :
     intRepOfMonoidEnd.{w} φ g x = Additive.ofMul (φ g x.toMul) :=
@@ -44,6 +50,9 @@ def zRepOfMonoidEnd {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) :
     ((monoidEndToAdditive M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zRepOfMonoidEnd_apply {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) (g : G)
     (x : Additive M) :
     zRepOfMonoidEnd φ g x = Additive.ofMul (φ g x.toMul) :=
@@ -65,6 +74,9 @@ def galUnitsHom : Gal(L/K) →* Monoid.End Lˣ where
     rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_galUnitsHom_apply (σ : Gal(L/K)) (u : Lˣ) :
     ((galUnitsHom K L σ u : Lˣ) : L) = σ u :=
   rfl
@@ -79,6 +91,9 @@ def galRootsOfUnityHom (n : ℕ) : Gal(L/K) →* Monoid.End (rootsOfUnity n L) w
     rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_galRootsOfUnityHom_apply (n : ℕ) (σ : Gal(L/K)) (ζ : rootsOfUnity n L) :
     (((galRootsOfUnityHom K L n σ ζ : Lˣ)) : L) = σ (ζ : Lˣ) :=
   rfl
@@ -104,33 +119,54 @@ abbrev galRootsOfUnityZ (n : ℕ) : Rep.{u} ℤ Gal(L/K) :=
 variable {K L}
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galAdd_ρ_apply (σ : Gal(L/K)) (x : L) : (galAdd K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galAddInt_ρ_apply (σ : Gal(L/K)) (x : L) : (galAddInt.{w} K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galAddZ_ρ_apply (σ : Gal(L/K)) (x : L) : (galAddZ K L).ρ σ x = σ x :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galUnits_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
     (galUnits.{w} K L).ρ σ x = Additive.ofMul (galUnitsHom K L σ x.toMul) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galUnitsZ_ρ_apply (σ : Gal(L/K)) (x : Additive Lˣ) :
     (galUnitsZ K L).ρ σ x = Additive.ofMul (galUnitsHom K L σ x.toMul) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem galRootsOfUnity_ρ_apply (n : ℕ) (σ : Gal(L/K)) (x : Additive (rootsOfUnity n L)) :
     (galRootsOfUnity.{w} K L n).ρ σ x = Additive.ofMul (galRootsOfUnityHom K L n σ x.toMul) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galRootsOfUnityZ_ρ_apply (n : ℕ) (σ : Gal(L/K)) (x : Additive (rootsOfUnity n L)) :
     (galRootsOfUnityZ K L n).ρ σ x = Additive.ofMul (galRootsOfUnityHom K L n σ x.toMul) :=
   rfl

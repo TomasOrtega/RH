@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.HermConstLift
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h : u • (mat k - 1) = 0` using `hk u hu`. Establish `h1 : mat g⁻¹ * mat g = 1`. Rewrite using `[← show mat (g⁻¹ * g) = mat g⁻¹ * mat g from rfl, inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `e : mat (g⁻¹ * k * g) - 1 = mat g⁻¹ * (mat k - 1) * mat g`. Rewrite using `[show mat (g⁻¹ * k * g) = mat g⁻¹ * mat k * mat g from rfl, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`. Use `show u • (mat (g⁻¹ * k * g) - 1) = 0`. Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem conj_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {V : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {k : UA σ V.J} (hk : k ∈ UAt σ V ev) (g : UA σ V.J) :
     g⁻¹ * k * g ∈ UAt σ V ev := by
@@ -29,6 +34,31 @@ theorem conj_mem_UAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   show u • (mat (g⁻¹ * k * g) - 1) = 0
   rw [e, ← Matrix.smul_mul, ← Matrix.mul_smul, h, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n V r s hB hV T φ hφ hrat hloc`. Establish `hA : ∀ y g : UA σ V.J, (mat y).det = 1 → φ (y * g) = φ g`. Introduce `y g hy`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Establish `hy1 : y = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mat y = 1`. Use `interval_cases n`. Use extensionality with `i`.
+
+Conclude with `i.elim0`. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hi hj` using the available equality.
+
+Rewrite `hy` using `[Matrix.det_unique]`. Simplify using `using hy`. Rewrite using `[hy1, one_mul]`. Take `⟨v, hvT, hvs, hτ⟩` from `GlobalTheory.SplitAway.exists_splitsFully_notMem F E T`. Establish `hcl` using `GlobalTheory.T.strong_approximation_det_one hKP.base.strongApproxSU F E σ B n V r s hB hV hn v hτ y hy`.
+
+Establish `hf : Continuous fun x : UA σ V.J => φ (x * g)` using `hφ.comp (continuous_mul_right g)`. Establish `hmem : y ∈ {x | φ (x * g) = φ g}`. Use `(isClosed_eq hf continuous_const).closure_subset_iff.2 ?_ hcl` and prove the remaining obligations. Introduce and unpack `x ⟨γ, hγ, k, hk, rfl⟩`. Use `show φ (γ * k * g) = φ g`.
+
+Rewrite using `[mul_assoc, hrat γ hγ, show k * g = g * (g⁻¹ * k * g) by group]`. Conclude with `hloc v hvT hvs g _ (conj_mem_UAt hk g)`. Conclude with `hmem`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Introduce `g g'`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `i.elim0`.
+
+Take `⟨sec, hsc, hdet, hsrat, hsloc⟩` from `GlobalTheory.T.norm_one_idele_section F E σ B n V r s hB hV hn`. Set `D : UA σ V.J →* (AE F E)ˣ` to `Matrix.GeneralLinearGroup.det.comp (Subgroup.subtype _)`. Establish `hD : ∀ x : UA σ V.J, ((D x : (AE F E)ˣ) : AE F E) = (mat x).det` using `fun x => rfl`. Establish `hDm : ∀ x : UA σ V.J, D x ∈ GlobalTheory.NormOneIdele.N1 F E σ` using `fun x => by`. Rewrite using `[GlobalTheory.NormOneIdele.mem_normOneIdeles, hD]`.
+
+Conclude with `GlobalTheory.T.unitary_det_norm_one_bis F E σ B n V r s hV x`. Set `dt : UA σ V.J → GlobalTheory.NormOneIdele.N1 F E σ` to `fun x => ⟨D x, hDm x⟩`. Establish `key : ∀ g, φ g = φ (sec (dt g))`. Introduce `g`. Establish `hsd : D (sec (dt g)) = D g` using `Units.ext (by rw [hD, hdet])`.
+
+Establish `hy : (mat (g * (sec (dt g))⁻¹)).det = 1`. Rewrite using `[← hD, map_mul, map_inv, hsd, mul_inv_cancel, Units.val_one]`. Establish `h` using `hA (g * (sec (dt g))⁻¹) (sec (dt g)) hy`. Rewrite `h` using `[inv_mul_cancel_right]`. Conclude with `h`.
+
+Establish `hψ` using `GlobalTheory.T.norm_one_character_split_places hKP F E σ hB.cm hB.galois T (fun z => φ (sec z)) (hφ.comp hsc) (fun γ z hγ => by show φ (sec (γ * z)) = φ (sec z)`. Rewrite using `[map_mul]`. Conclude with `hrat _ (hsrat γ hγ) _)`. Use the proof step `(fun v hvT hvs z k hk => by show φ (sec (z * k)) = φ (sec z)`. Rewrite using `[map_mul]`.
+
+Conclude with `hloc v hvT hvs _ _ (hsloc v k hk))`. Introduce `g g'`. Rewrite using `[key g, key g']`. Conclude with `hψ _ _`.
+-/
 theorem constant_of_invariant : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n : ℕ) (V : Spc F E n) (r s : ℕ), B.IsGood σ → V.IsHerm σ B r s → ∀ (T : Finset (Pl F)) (φ : UA σ V.J → ℂ), Continuous φ →
     (∀ γ ∈ ratU σ V.J, ∀ g, φ (γ * g) = φ g) →

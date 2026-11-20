@@ -17,6 +17,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis
 
 open CategoryTheory.Limits
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ y t' m1 g hg`. Establish `wa : m1.φ ≫ Xo.univ.t.G.hom = (t'.G.hom ≫ Small.ptF y) ≫ pullback.fst _ _`. Rewrite using `[m1.cart.1.w, Category.assoc, Small.ptF_fst]`. Set `a : t'.G.left ⟶ Y.oF.t.G.left` to `Y.m0.cart.1.lift m1.φ (t'.G.hom ≫ Small.ptF y) wa`. Establish `ha1 : a ≫ Y.m0.toSABMap.φ = m1.φ` using `IsPullback.lift_fst _ _ _ _`.
+
+Establish `ha2 : a ≫ Y.oF.t.G.hom = t'.G.hom ≫ Small.ptF y` using `IsPullback.lift_snd _ _ _ _`. Establish `gpa : IsGrpPullback t'.G Y.oF.t.G (Small.ptF y) a` using `IsGrpPullback.cancel Y.m0.cart (m1.cart.congr (Small.ptF_fst y).symm ha1.symm) ha2`. Establish `gpY : IsGrpPullback t'.G Y.t.G (g ≫ f) (a ≫ Y.m.φ)` using `(gpa.comp Y.m.cart).congr hg rfl`. Establish `wb : (a ≫ Y.m.φ) ≫ Y.t.G.hom = (t'.G.hom ≫ g) ≫ f`. Rewrite using `[gpY.1.w, Category.assoc]`.
+
+Set `b : t'.G.left ⟶ tX.G.left` to `m.cart.1.lift (a ≫ Y.m.φ) (t'.G.hom ≫ g) wb`. Establish `hb1 : b ≫ m.φ = a ≫ Y.m.φ` using `IsPullback.lift_fst _ _ _ _`. Establish `hb2 : b ≫ tX.G.hom = t'.G.hom ≫ g` using `IsPullback.lift_snd _ _ _ _`. Establish `acta : ∀ r, (t'.act.act r).left ≫ a = a ≫ (Y.oF.t.act.act r).left`. Introduce `r`.
+
+Apply `Y.m0.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ha1, Y.m0.act r, ← Category.assoc, ha1, m1.act r]`. Rewrite using `[Category.assoc, Category.assoc, ha2, Over.w (Y.oF.t.act.act r), ha2, ← Category.assoc, Over.w (t'.act.act r)]`. Use `⟨b, IsGrpPullback.cancel m.cart (gpY.congr rfl hb1.symm) hb2, fun r => ?_, fun τ i u' h1 h2 => ?_⟩` and prove the remaining obligations. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hb1, m.act r, ← Category.assoc b, hb1, Category.assoc, ← Y.m.act r, ← Category.assoc, acta r, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hb2, Over.w (tX.act.act r), hb2, ← Category.assoc, Over.w (t'.act.act r)]`. Establish `e : u' ≫ a = Small.tanF Y y τ i`. Apply `Small.eq_tanF` to reduce the goal to its premises. Rewrite using `[Category.assoc, ha1, h1]`.
+
+Rewrite using `[Category.assoc, ha2, ← Category.assoc, h2]`. Rewrite using `[hb1, ← Category.assoc, e]`. Both sides reduce to the same expression.
+-/
 theorem genFibre_pullback_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (X : Scheme.{0}) (tX : SAB H X) (f : X ⟶ Y.X) (m : SABMap tX Y.t f) (F : Type) [Field F] [Algebra c.F F] (y : FrPt Xo c F) (t' : SAB H (Spec (CommRingCat.of F))) (m1 : SABMap t' Xo.univ.t y.x) (g : Spec (CommRingCat.of F) ⟶ X), Small.ptY Y y = g ≫ f → ∃ b : t'.G.left ⟶ tX.G.left, IsGrpPullback t'.G tX.G g b ∧ (∀ a, (t'.act.act a).left ≫ b = b ≫ (tX.act.act a).left) ∧ ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) (u' : Spec (CommRingCat.of (DualNumber F)) ⟶ t'.G.left), u' ≫ m1.φ = y.u τ i → u' ≫ t'.G.hom = Spec.map (CommRingCat.ofHom (algebraMap F (DualNumber F))) → u' ≫ b ≫ m.φ = Small.tanY Y y τ i := by
   intro E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ y t' m1 g hg
   have wa : m1.φ ≫ Xo.univ.t.G.hom = (t'.G.hom ≫ Small.ptF y) ≫ pullback.fst _ _ := by

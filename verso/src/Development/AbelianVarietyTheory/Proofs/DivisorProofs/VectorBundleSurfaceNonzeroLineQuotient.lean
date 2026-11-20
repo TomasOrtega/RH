@@ -12,6 +12,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Proof.Div.vector_bundle_surface_nonzero_line_quotient
 
+/- English proof (translation)
+Introduce `k _ T _ _ hT E r hE`. Take `⟨A, hA⟩` from `(isProper_and_exists_isAmpleLB_of_isProjOver hT.isProjOver).2`. Use `hE.dual.isFiniteQC` as an intermediate fact. Take `⟨n, m, ψ, hψ⟩` from `(hA.eventually_exists_epi_sigma (dual E)).exists`. Establish `hM : IsVB (toMod (lbZPow A (-n))) 1` using `isVB_toMod (Twist.isLB_lbZPow hA.isLB (-n))`.
+
+Establish `hne : ¬ IsZero (dual E)` using `fun hz => by haveI : Nonempty T := IsIntegral.nonempty`. Use `hE.dual.rank_unique (isVB_zero_iff.2 hz)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, Sigma.ι (fun _ : Fin m => toMod (lbZPow A (-n))) i ≫ ψ ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `h0 : ψ = 0` using `Sigma.hom_ext _ _ fun i => by simp [h i]`. Substitute `h0` using the available equality. Conclude with `hne (IsZero.of_epi_zero (∐ fun _ : Fin m => toMod (lbZPow A (-n))) (dual E))`. Use `set χ := Sigma.ι (fun _ : Fin m => toMod (lbZPow A (-n))) i ≫ ψ with hχ`.
+
+Use `⟨dual (toMod (lbZPow A (-n))), cartierDualToBidual E ≫ dualMap χ, hM.dual, fun h0 => hi ?_⟩` and prove the remaining obligations. Use `hE.isIso_toBidual_of_local_frames` as an intermediate fact. Use `hE.dual.isIso_toBidual_of_local_frames` as an intermediate fact. Establish `h1 : dualMap χ = 0`. Rewrite using `[← cancel_epi (cartierDualToBidual E), h0, comp_zero]`.
+
+Establish `h2 : χ ≫ cartierDualToBidual (dual E) = 0`. Rewrite using `[toBidual_naturality_dualSheafTranspose, h1, dualMap_zero, comp_zero]`. Rewrite using `[← cancel_mono (cartierDualToBidual (dual E)), h2, zero_comp]`.
+-/
 theorem exists_hom_isVB_one_ne_zero : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)]
     [IsIntegral T], IsProjSurface k T → ∀ (E : T.Modules) (r : ℕ), IsVB E (r + 1) →
       ∃ (L : T.Modules) (φ : E ⟶ L), IsVB L 1 ∧ φ ≠ 0 := by

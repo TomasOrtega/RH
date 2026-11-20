@@ -32,6 +32,15 @@ def mulLeft {t : ℕ} (n : ℕ) (α : GL (Fin t) (AE D)) : Mx D t n ≃ₜ+ Mx D
   continuous_toFun := continuous_const.matrix_mul continuous_id
   continuous_invFun := continuous_const.matrix_mul continuous_id
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `hp`. Establish `hu` using `mt_unitary T p`. Establish `h1 : adj (mt T p ⬝ d.jX) ⬝ (gA T ⬝ (mt T p ⬝ d.j0)) = 0`. Rewrite using `[adj_mul, Matrix.mul_assoc, cancel₃ hu, d.wittDecomp_gram_X_anisotropic]`. Establish `h2 : d.pY ⬝ (mt T p ⬝ d.j0) = 0`.
+
+Rewrite `h1` using `[hα, adj_mul, Matrix.mul_assoc]`. Establish `h3` using `congrArg (fun z : Mx D t T'.rank => adj (α⁻¹).1 ⬝ z) h1`. Simplify using `only [← Matrix.mul_assoc (adj (α⁻¹).1), ← adj_mul, Units.mul_inv, adj_one, Matrix.one_mul, Matrix.mul_zero] at h3`. Rewrite using `[d.pY_eq, Matrix.mul_assoc, h3]`. Establish `h4 : mt T p ⬝ d.j0 = d.jX ⬝ (d.pX ⬝ (mt T p ⬝ d.j0)) + d.j0 ⬝ (d.p0 ⬝ (mt T p ⬝ d.j0))` using `by conv_lhs => rw [← Matrix.one_mul (mt T p ⬝ d.j0), ← d.sum_eq_one]`.
+
+Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h2, Matrix.mul_zero, add_zero]`. Establish `h5 : adj (mt T p ⬝ d.j0) ⬝ (gA T ⬝ (mt T p ⬝ d.j0)) = gA T'`. Rewrite using `[adj_mul, Matrix.mul_assoc, cancel₃ hu, d.gram_00]`. Generalize the expression as in `d.pX ⬝ (mt T p ⬝ d.j0) = β at h4`. Generalize the expression as in `d.p0 ⬝ (mt T p ⬝ d.j0) = g at h4`.
+
+Rewrite `h5` using `[h4]`. Simplify using `only [adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₃ d.gram_XX, cancel₃ d.wittDecomp_gram_X_anisotropic, cancel₃ d.gram_0X, cancel₃ d.gram_00, Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero] at h5`. Conclude with `⟨β, ofMat T' g h5, h4⟩`.
+-/
 theorem exists_valuation_adapted_index {T T' : HSp D} {t : ℕ} (d : HypDec T T' t) {p : GA D T} (hp : p ∈ stab d) :
     ∃ (β : Mx D t T'.rank) (g : GA D T'), mt T p ⬝ d.j0 = d.jX ⬝ β + d.j0 ⬝ mt T' g := by
   obtain ⟨α, hα⟩ := hp

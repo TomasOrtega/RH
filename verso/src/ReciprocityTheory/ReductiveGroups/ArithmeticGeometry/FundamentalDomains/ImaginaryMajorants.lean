@@ -13,6 +13,11 @@ open MajorantConjugateTransfer FlowMatrixMajorants RankOneBoostIsometries BoostL
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `hP : X.ppos z τ (X.colP z τ d) = X.colP z τ d`. Establish `h` using `X.ppos_eq_of z τ (X.gramPos_det_ne hz τ) (X.colP z τ d) (fun a => if a = d then 1 else 0) (fun b => by`. Rewrite using `[show (∑ a, (if a = d then (1 : ℂ) else 0) • col (mat z τ) (Fin.castLE X.p0_le a)) = X.colP z τ d by simp [Data.colP]]`. Rewrite using `[sub_self, hermC_zero_left])`. Rewrite using `[h]`.
+
+Simplify using `[Data.colP]`. Simplify using `only [Data.jp, hP]`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jp_col {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) (d : Fin X.p0) :
     X.jp z τ (X.colP z τ d) = X.colP z τ d := by
   have hP : X.ppos z τ (X.colP z τ d) = X.colP z τ d := by
@@ -28,6 +33,37 @@ theorem jp_col {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) (d : Fin X.p0) 
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `set e := Data.emb τ.1 ξ with he_def`. Take `⟨hm, hff, hef, hfe⟩` from `plane_facts X τ hz hee he0`. Use `set f := X.jp z τ e with hf_def`. Use `set m := X.maj z τ e with hm_def`. Use `set q := 1 + X.c τ * b τ * m with hq_def`.
+
+Use `set σ := Real.sqrt q with hσ_def`. Establish `hσ : 0 < σ` using `Real.sqrt_pos.mpr hq`. Establish `hσ2 : σ ^ 2 = q` using `Real.sq_sqrt hq.le`. Use `set T := X.flowMat ξ τ (I * (b τ : ℂ))`. Establish `hT : ∀ v, Matrix.mulVec T v = v + (((X.c τ * b τ : ℝ) : ℂ) * hermC τ.1 X.Gm v e) • e`.
+
+Introduce `v`. Rewrite using `[Data.flowMat_mulVec]`. Use `congr 2`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcb : X.c τ * b τ = (σ ^ 2 - 1) / m`. Rewrite using `[hσ2, hq_def]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set B := boost X τ e f m σ`. Use `set B' := boost X τ e f m σ⁻¹`. Use `set P := X.ppos z τ e with hP_def`. Use `set γ : Fin X.p0 → ℂ := fun j => ∑ b, hermC τ.1 X.Gm e (X.colP z τ b) * (X.gramPos z τ)⁻¹ b j`.
+
+Establish `hPsum : P = ∑ j, γ j • X.colP z τ j` using `rfl`. Establish `hPef : P = (1 / 2 : ℂ) • (e + f)`. Use function extensionality and compare the values at `k`. Simplify using `only [hf_def, Data.jp, Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul, ← hP_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hPe : hermC τ.1 X.Gm P e = (m / 2 : ℝ)`. Rewrite using `[hPef, hC_smul_left, hC_add_left, hee, hfe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hPf : hermC τ.1 X.Gm P f = (m / 2 : ℝ)`.
+
+Rewrite using `[hPef, hC_smul_left, hC_add_left, hef, hff]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmC : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hσC : (σ : ℂ) ≠ 0` using `by exact_mod_cast hσ.ne'`.
+
+Establish `hcol : ∀ d, Matrix.mulVec T (X.colP z τ d) = X.colP (X.flow ξ (fun τ => I * (b τ : ℂ)) z) τ d`. Introduce `d`. Rewrite using `[show X.colP (X.flow ξ (fun τ => I * (b τ : ℂ)) z) τ d = col (mat (X.flow ξ (fun τ => I * (b τ : ℂ)) z) τ) (Fin.castLE X.p0_le d) from rfl, Data.col_flow]`. Both sides reduce to the same expression. Establish `hzf : ∀ d, hermC τ.1 X.Gm (X.colP z τ d) f = hermC τ.1 X.Gm (X.colP z τ d) e`.
+
+Introduce `d`. Rewrite using `[hf_def, ← X.hermC_jp_left hz, jp_col X hz τ d]`. Establish `hi : ∀ d, Matrix.mulVec T (X.colP z τ d) = Matrix.mulVec B (X.colP z τ d) + (((σ - 1) : ℂ) * (2 * hermC τ.1 X.Gm (X.colP z τ d) e / m)) • Matrix.mulVec B P`. Introduce `d`. Rewrite using `[hT, boost_mulVec, boost_mulVec, hzf, hPe, hPf, hPef, hcb]`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hii : ∀ d, Matrix.mulVec B (X.colP z τ d) = Matrix.mulVec T (X.colP z τ d) - (((1 - σ⁻¹) : ℂ) * (2 * hermC τ.1 X.Gm (X.colP z τ d) e / m)) • Matrix.mulVec T P`. Introduce `d`. Rewrite using `[hT, hT, boost_mulVec, hzf, hPe, hPef, hcb]`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `H2 : ∀ a, ∃ L : Fin X.p0 → ℂ, X.colP (X.flow ξ (fun τ => I * (b τ : ℂ)) z) τ a = ∑ c, L c • Matrix.mulVec B (X.colP z τ c)`. Introduce `a`.
+
+Use `⟨fun j => (if j = a then 1 else 0) + ((σ - 1) : ℂ) * (2 * hermC τ.1 X.Gm (X.colP z τ a) e / m) * γ j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcol, hi, hPsum, Data.mulVec_lin]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_smul, ← Finset.smul_sum]`. Establish `H1 : ∀ c, ∃ K : Fin X.p0 → ℂ, Matrix.mulVec B (X.colP z τ c) = ∑ a, K a • X.colP (X.flow ξ (fun τ => I * (b τ : ℂ)) z) τ a`. Introduce `c`.
+
+Use `⟨fun j => (if j = c then 1 else 0) - ((1 - σ⁻¹) : ℂ) * (2 * hermC τ.1 X.Gm (X.colP z τ c) e / m) * γ j, ?_⟩` and prove the remaining obligations. Rewrite using `[hii, hPsum, Data.mulVec_lin]`. Simplify using `only [hcol, sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, mul_smul, ← Finset.smul_sum]`. Establish `hmt` using `maj_transfer X hz hy τ B B' (boost_comp X τ hm hee hff hef hfe hσ) (boost_isom X τ hm hee hff hef hfe hσ) H1 H2 w`. Conclude with `hmt`.
+-/
 theorem maj_imag_eq {z : Frame X.Ψ r} (hz : z ∈ X.dom) (ξ : Fin r → E) (b : X.Ψ → ℝ)
     (hy : X.flow ξ (fun τ => I * (b τ : ℂ)) z ∈ X.dom) (τ : X.Ψ)
     (hee : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0) (he0 : Data.emb τ.1 ξ ≠ 0)
@@ -112,6 +148,9 @@ theorem maj_imag_eq {z : Frame X.Ψ r} (hz : z ∈ X.dom) (ξ : Fin r → E) (b 
     (boost_isom X τ hm hee hff hef hfe hσ) H1 H2 w
   exact hmt
 
+/- English proof (translation)
+Rewrite using `[maj_imag_eq X hz ξ b hy τ hee he0 hq w]`. Establish `hσ : 0 < Real.sqrt (1 + X.c τ * b τ * X.maj z τ (Data.emb τ.1 ξ))` using `Real.sqrt_pos.2 hq`. Establish `h` using `boost_lower (X := X) (z := z) (τ := τ) (e := Data.emb τ.1 ξ) hz hee he0 hσ w`. Rewrite `h` using `[Real.sq_sqrt hq.le]`. Then use the resulting hypothesis.
+-/
 theorem maj_imag_flow {z : Frame X.Ψ r} (hz : z ∈ X.dom) (ξ : Fin r → E) (b : X.Ψ → ℝ)
     (hy : X.flow ξ (fun τ => I * (b τ : ℂ)) z ∈ X.dom) (τ : X.Ψ)
     (hee : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0) (he0 : Data.emb τ.1 ξ ≠ 0)

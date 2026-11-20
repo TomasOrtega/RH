@@ -16,14 +16,23 @@ def eT (X : PT E) (n : ℕ) : (Fin n → Vsp X.dim) ≃ₗ[ℂ] EuclideanSpace �
   left_inv v := rfl
   right_inv w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eT_apply (X : PT E) (n : ℕ) (v : Fin n → Vsp X.dim) (p : Fin n × Idx X.dim) :
     eT X n v p = v p.1 p.2 := rfl
 
+/- English proof (translation)
+Simplify using `only [Hf, HC, eT_apply]`. Rewrite using `[Fintype.sum_prod_type]`.
+-/
 theorem Hf_eT (X : PT E) (n : ℕ) (v w : Fin n → Vsp X.dim) :
     Hf (eT X n v) (eT X n w) = HC v w := by
   simp only [Hf, HC, eT_apply]
   rw [Fintype.sum_prod_type]
 
+/- English proof (translation)
+Simplify using `only [Fintype.card_sigma, Fintype.card_prod, Fintype.card_fin, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_eq (X : PT E) (n : ℕ) :
     Fintype.card (Σ _ : Fin n, Fin (2 * Fintype.card (Idx X.dim))) =
       2 * Fintype.card (Fin n × Idx X.dim) := by
@@ -35,12 +44,22 @@ def bT (X : PT E) (n : ℕ) :
     Basis (Fin (2 * Fintype.card (Fin n × Idx X.dim))) ℝ (EuclideanSpace ℂ (Fin n × Idx X.dim)) :=
   ((Bn X n).map ((eT X n).restrictScalars ℝ)).reindex (Fintype.equivFinOfCardEq (card_eq X n))
 
+/- English proof (translation)
+Simplify using `[bT, Basis.map_repr]`.
+-/
 theorem bT_repr (X : PT E) (n : ℕ) (w : EuclideanSpace ℂ (Fin n × Idx X.dim))
     (j : Fin (2 * Fintype.card (Fin n × Idx X.dim))) :
     (bT X n).repr w j =
       (Bn X n).repr ((eT X n).symm w) ((Fintype.equivFinOfCardEq (card_eq X n)).symm j) := by
   simp [bT, Basis.map_repr]
 
+/- English proof (translation)
+Rewrite using `[lat, Basis.mem_span_iff_repr_mem]`. Simplify using `only [bT_repr]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`. Rewrite using `[PT.L, lat, Basis.mem_span_iff_repr_mem]`.
+
+Introduce `i`. Use `h ((Fintype.equivFinOfCardEq (card_eq X n)) ⟨k, i⟩)` as an intermediate fact. Simplify `this` using `[Bn, Pi.basis_repr]`. Introduce `h j`. Generalize the expression as in `(Fintype.equivFinOfCardEq (card_eq X n)).symm j = p`.
+
+Take `⟨k, i⟩` from `p`. Establish `hk` using `h k`. Rewrite `hk` using `[PT.L, lat, Basis.mem_span_iff_repr_mem]`. Simplify `hk i` using `[Bn, Pi.basis_repr]`.
+-/
 theorem mem_latT (X : PT E) (n : ℕ) (w : EuclideanSpace ℂ (Fin n × Idx X.dim)) :
     w ∈ lat (bT X n) ↔ ∀ k, (eT X n).symm w k ∈ X.L := by
   rw [lat, Basis.mem_span_iff_repr_mem]
@@ -58,6 +77,11 @@ theorem mem_latT (X : PT E) (n : ℕ) (w : EuclideanSpace ℂ (Fin n × Idx X.di
     rw [PT.L, lat, Basis.mem_span_iff_repr_mem] at hk
     simpa [Bn, Pi.basis_repr] using hk i
 
+/- English proof (translation)
+Rewrite using `[mem_latT, LinearEquiv.symm_apply_apply]`. Introduce `k'`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `using hl`.
+
+Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem single_mem (X : PT E) (n : ℕ) (k : Fin n) {l : Vsp X.dim} (hl : l ∈ X.L) :
     eT X n (Pi.single k l) ∈ lat (bT X n) := by
   rw [mem_latT, LinearEquiv.symm_apply_apply]
@@ -107,6 +131,11 @@ def YT (X : PT E) (n q : ℕ) : GT (Fin n × Idx X.dim) where
   ka := fun γ => (∏ k, (X.eps ((eT X n).symm γ k) : ℂ)) ^ q
   ka_abs := fun x hx => by rw [norm_pow, nA_epsprod_norm X ((mem_latT X n x).mp hx), one_pow]
 
+/- English proof (translation)
+Use `⟨hF.1.comp (LinearMap.toContinuousLinearMap ((eT X n).symm : EuclideanSpace ℂ (Fin n × Idx X.dim) →ₗ[ℂ] (Fin n → Vsp X.dim))).differentiable, fun γ hγ v => ?_⟩` and prove the remaining obligations. Establish `hγ'` using `(mem_latT X n γ).mp hγ`. Use `show F ((eT X n).symm (v + γ)) = (∏ k, (X.eps ((eT X n).symm γ k) : ℂ)) ^ q * cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * F ((eT X n).symm v)`. Rewrite using `[map_add, hF.2 _ hγ' _]`. Establish `e1 : Hf v γ = HC ((eT X n).symm v) ((eT X n).symm γ)`.
+
+Rewrite using `[← Hf_eT, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `e2 : Hf γ γ = HC ((eT X n).symm γ) ((eT X n).symm γ)`. Rewrite using `[← Hf_eT, LinearEquiv.apply_symm_apply]`. Rewrite using `[e1, e2]`.
+-/
 theorem sec_map (X : PT E) {q n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : F ∈ X.Sec q n) :
     (fun w => F ((eT X n).symm w)) ∈ (YT X n q).Sec q := by
   refine ⟨hF.1.comp (LinearMap.toContinuousLinearMap
@@ -127,6 +156,9 @@ def secMap (X : PT E) (q n : ℕ) : X.Sec q n →ₗ[ℂ] (YT X n q).Sec q where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `F G h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `congrArg (fun H : (YT X n q).Sec q => H.1 (eT X n v)) h` as an intermediate fact. Simplify `this` using `[secMap]`.
+-/
 theorem secMap_inj (X : PT E) (q n : ℕ) : Function.Injective (secMap X q n) := by
   intro F G h
   apply Subtype.ext
@@ -134,6 +166,11 @@ theorem secMap_inj (X : PT E) (q n : ℕ) : Function.Injective (secMap X q n) :=
   have := congrArg (fun H : (YT X n q).Sec q => H.1 (eT X n v)) h
   simpa [secMap] using this
 
+/- English proof (translation)
+Introduce `E _ _ X q n hq`. Take `⟨hfd, hr⟩` from `dim (Fin n × Idx X.dim) (YT X n q) q hq`. Establish `hinj` using `secMap_inj X q n`. Use `⟨Module.Finite.of_injective (secMap X q n) hinj, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Fintype.card_prod, Fintype.card_fin, mul_comm]`.
+-/
 theorem stepD : StepD := by
   intro E _ _ X q n hq
   obtain ⟨hfd, hr⟩ := dim (Fin n × Idx X.dim) (YT X n q) q hq

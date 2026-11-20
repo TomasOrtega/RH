@@ -2,6 +2,37 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ R m w k hspan hk R' hR'`. Establish `h : R ≤ R'`. Rewrite using `[hR']`. Introduce `x hx`. Conclude with `Algebra.subset_adjoin (Or.inl hx)`.
+
+Establish `hrat : ∀ i, (w i : Ω) / (w k : Ω) ∈ R'`. Introduce `i`. Rewrite using `[hR']`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩)`. Establish `hinv : (w k : Ω)⁻¹ ∈ R'`.
+
+Establish `h1 : (1 : R) ∈ Ideal.span (Set.range w)` using `by rw [hspan]; trivial`. Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h1`. Establish `h2 : ∑ i, (a i : Ω) * (w i : Ω) = 1`. Use `congrArg (fun x : R => (x : Ω)) ha` as an intermediate fact. Simplify using `using this`.
+
+Establish `h3 : (w k : Ω)⁻¹ = ∑ i, (a i : Ω) * ((w i : Ω) / (w k : Ω))`. Simplify using `only [← mul_div_assoc, ← Finset.sum_div, h2, one_div]`. Rewrite using `[h3]`. Conclude with `R'.sum_mem fun i _ => R'.mul_mem (h (a i).2) (hrat i)`. Use `letI : Algebra R R' := (Subalgebra.inclusion h).toRingHom.toAlgebra`.
+
+Use `haveI : IsScalarTower K R R' := IsScalarTower.of_algebraMap_eq fun x => rfl`. Establish `halg : ∀ x : R, ((algebraMap R R' x : R') : Ω) = x` using `fun x => rfl`. Establish `hsurj : ∀ z : Ω, z ∈ R' → ∃ (n : ℕ) (a : R), z * (w k : Ω) ^ n = a`. Introduce `z hz`. Rewrite `hz` using `[hR']`.
+
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with hx | ⟨i, rfl⟩` into its components or cases. Conclude with `⟨0, ⟨x, hx⟩, by simp⟩`. Conclude with `⟨1, w i, by field_simp⟩`.
+
+Consider the case `algebraMap r => exact ⟨0, algebraMap K R r, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`. Take `⟨n', b, hb⟩` from `hy`. Use `⟨n + n', a * w k ^ n' + b * w k ^ n, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨n, a, ha⟩` from `hx`.
+
+Take `⟨n', b, hb⟩` from `hy`. Use `⟨n + n', a * b, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← ha, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `haveI hloc : IsLocalization.Away (w k) R' := by`. Use `IsLocalization.Away.mk (w k) ?_ ?_ ?_` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one ⟨_, hinv⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[halg, hk]`.
+
+Introduce `s`. Take `⟨n, a, ha⟩` from `hsurj s s.2`. Use `⟨n, a, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify `ha` using `[halg]`. Introduce `a b hab`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (a : Ω) = b` using `by rw [← halg a, ← halg b, hab]`. Rewrite using `[Subtype.ext this]`. Use `⟨h, hinv, fun hs => ?_, fun L _ _ ψ hψ => ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.Smooth R R' := Algebra.Smooth.of_isLocalization_Away (w k)`.
+
+Conclude with `Algebra.Smooth.comp K R R'`. Establish `hu : IsUnit ((ψ : R →+* L) (w k))` using `isUnit_iff_ne_zero.2 hψ`. Set `φ : R' →+* L` to `IsLocalization.Away.lift (w k) hu`. Establish `hφ : ∀ x : R, φ (algebraMap R R' x) = ψ x` using `fun x => IsLocalization.Away.lift_eq (w k) hu x`. Use `⟨{ φ with commutes' := fun r => ?_ }, ?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `φ (algebraMap K R' r) = _`. Rewrite using `[IsScalarTower.algebraMap_apply K R R', hφ, AlgHom.commutes]`. Use extensionality with `x`. Conclude with `hφ x`. Express the relevant statement in the definitionally equal form `φ ⟨_, hi⟩ = _`.
+
+Rewrite using `[eq_div_iff hψ, ← hφ, ← hφ, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[halg, hk]`.
+-/
 theorem adjoin_ratios_of_span_eq_top :
     ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (R : Subalgebra K Ω) (m : ℕ) (w : Fin m → R) (k : Fin m), Ideal.span (Set.range w) = ⊤ → (w k : Ω) ≠ 0 → ∀ R' : Subalgebra K Ω, R' = Algebra.adjoin K ((R : Set Ω) ∪ Set.range fun i => (w i : Ω) / (w k : Ω)) → ∃ h : R ≤ R', (w k : Ω)⁻¹ ∈ R' ∧ (Algebra.Smooth K R → Algebra.Smooth K R') ∧ ∀ (L : Type) [Field L] [Algebra K L] (ψ : R →ₐ[K] L), ψ (w k) ≠ 0 → ∃ ψ' : R' →ₐ[K] L, ψ'.comp (Subalgebra.inclusion h) = ψ ∧ ∀ i (hi : (w i : Ω) / (w k : Ω) ∈ R'), ψ' ⟨_, hi⟩ = ψ (w i) / ψ (w k) := by
   intro K Ω _ _ _ R m w k hspan hk R' hR'

@@ -20,6 +20,23 @@ noncomputable section
 
 namespace GlobalTheory.LogFlat
 
+/- English proof (translation)
+Introduce `l _ C g y ϖ x n a b hyx hϖ ha hb m`. Establish `hmul : ∀ u v : Per.Fl l, rootT (u * v) m = rootT u m * rootT v m`. Introduce `u v`. Simplify using `only [rootT, iterate_map_mul, map_mul]`. Establish `hpow : ∀ u : Per.Fl l, rootT (u ^ n) m = rootT u m ^ n`.
+
+Introduce `u`. Simplify using `only [rootT, iterate_map_pow, map_pow]`. Establish `hζ : rootT C.ε m ^ (l ^ m) = 1`. Rewrite using `[rootT_pow_eq_untilt]`. Conclude with `(core_isEps l C).1`.
+
+Establish `hϖm : rootT ϖ m ≠ 0`. Introduce `h0`. Apply `hϖ` to reduce the goal to its premises. Rewrite using `[← rootT_pow_eq_untilt, h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Establish `hζ0 : ∀ k : ℕ, rootT C.ε m ^ k ≠ 0`.
+
+Introduce `k h0`. Establish `: rootT C.ε m = 0` using `pow_eq_zero_iff'.mp h0 |>.1`. Rewrite `hζ` using `[this, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Conclude with `zero_ne_one hζ`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Use `set A := (PadicInt.toZModPow m a).val`. Use `set B := (PadicInt.toZModPow m b).val`. Use `set Cc := (PadicInt.toZModPow m ((n : ℤ_[l]) * a - b)).val`. Establish `hexp : rootT C.ε m ^ (n * A) = rootT C.ε m ^ (B + Cc)`. Rewrite using `[pow_eq_pow_mod (n * A) hζ, pow_eq_pow_mod (B + Cc) hζ]`.
+
+Use `congr 1`. Rewrite using `[← ZMod.natCast_eq_natCast_iff']`. Simplify using `only [A, B, Cc, Nat.cast_mul, Nat.cast_add, ZMod.natCast_val, ZMod.cast_id', id, map_sub, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : rootT ((Per.σF g y) ^ n) m = rootT (Per.σF g ϖ * Per.σF g x) m`.
+
+Rewrite using `[← map_pow, ← map_mul, hyx]`. Rewrite `h1` using `[hpow, hmul, ha, hb, mul_pow, ← pow_mul, ← hpow y, hyx, hmul, mul_comm A n, hexp]`. Establish `h2 : rootT C.ε m ^ B * (rootT ϖ m * rootT ((Per.σF g) x) m) = rootT C.ε m ^ B * (rootT ϖ m * (rootT C.ε m ^ Cc * rootT x m))`. Rewrite `h1` using `[pow_add]`. Take the linear combination `-h1`.
+
+Establish `h3` using `mul_left_cancel₀ (hζ0 B) h2`. Conclude with `mul_left_cancel₀ hϖm h3`.
+-/
 theorem rootT_cocycle_of_pow_eq_mul : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (g : GQ l) (y ϖ x : Per.Fl l) (n : ℕ) (a b : ℤ_[l]),
     y ^ n = ϖ * x → ϖ.untilt ≠ 0 →
     (∀ m, rootT (Per.σF g y) m = rootT C.ε m ^ (PadicInt.toZModPow m a).val * rootT y m) →
@@ -59,6 +76,13 @@ theorem rootT_cocycle_of_pow_eq_mul : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) 
   have h3 := mul_left_cancel₀ (hζ0 B) h2
   exact mul_left_cancel₀ hϖm h3
 
+/- English proof (translation)
+Introduce `l _ P C hζ ϖ hr g m`. Establish `hit : ∀ k : ℕ, ((frobeniusEquiv (Per.Fl l) l).symm)^[k] (Per.σF g ϖ) = Per.σF g (((frobeniusEquiv (Per.Fl l) l).symm)^[k] ϖ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rfl`.
+
+Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, RingHom.map_frobeniusEquiv_symm]`. Establish `hsig : rootT (Per.σF g ϖ) m = Per.σO g (rootT ϖ m)`. Rewrite using `[rootT, hit, GlobalTheory.RingBasics.untilt_σF]`. Both sides reduce to the same expression. Rewrite using `[hsig]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ((Per.σO g (rootT ϖ m) : Per.OC l) : ℂ_[l]) = Per.σC g (rootT ϖ m : ℂ_[l])` using `GlobalTheory.RingIface.sigO_coe l g _`. Establish `h2 : Per.σC g (algebraMap (Om l) ℂ_[l] (lRoot l m)) = algebraMap (Om l) ℂ_[l] (g (lRoot l m))` using `GlobalTheory.RingBasics.σC_coe g _`. Use `push_cast`. Rewrite using `[h1, hr, h2, isKummer_kummer P g m, map_mul, map_pow, C.ε_root, hζ]`.
+-/
 theorem rootT_σF_tilt_l : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (C : Core l), C.ζ = P.ζQ → ∀ ϖ : Per.Fl l,
     (∀ m : ℕ, (rootT ϖ m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (lRoot l m)) → ∀ (g : GQ l) (m : ℕ),
     rootT (Per.σF g ϖ) m = rootT C.ε m ^ (PadicInt.toZModPow m (kummer P g)).val * rootT ϖ m := by
@@ -80,6 +104,21 @@ theorem rootT_σF_tilt_l : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (C : Co
   push_cast
   rw [h1, hr, h2, isKummer_kummer P g m, map_mul, map_pow, C.ε_root, hζ]
 
+/- English proof (translation)
+Introduce `l _ K bk P AI T C hF _`. Take `⟨ϖ, hr⟩` from `GlobalTheory.Pst.NoLog.exists_tilt (lRoot l) (lRoot_succ l) l (lRoot_zero l)`. Establish `hϖ : ϖ.untilt = ((l : ℕ) : Per.OC l)` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[lRoot_zero, map_natCast]`.
+
+Conclude with `this.trans (SubringClass.coe_natCast _ _).symm)`. Take `⟨x, hxu, hx⟩` from `GlobalTheory.T.tilt_uniformizer_pow_eq_mul_unit l K bk ϖ hϖ`. Take `⟨cπ, hcπ, hfix⟩` from `GlobalTheory.T.exists_kummer_cocycle_tilt_uniformizer l K bk C`. Take `⟨bx, hφ, hgal⟩` from `GlobalTheory.T.exists_teichmuller_log_unit_bcris l C x hxu`. Establish `hϖ0 : ϖ.untilt ≠ 0`.
+
+Rewrite using `[hϖ]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Use `⟨T.eB.symm bx, fun g => (bk.Ep.natDegree : ℤ_[l]) * cπ g, ⟨fun g => ?_, ?_⟩, fun g hg => by simp [hfix g hg], GlobalTheory.T.exists_truncLog_gal_mod_filP l K bk C cπ hcπ⟩` and prove the remaining obligations. Establish `hx'` using `rootT_cocycle_of_pow_eq_mul l C (g : GQ l) bk.flat ϖ x bk.Ep.natDegree (cπ g) (kummer P g) hx hϖ0 (hcπ g) (rootT_σF_tilt_l l P C hF.ζ ϖ hr g)`. Establish `h1` using `hgal (g : GQ l) _ hx'`.
+
+Establish `h2 : P.actQ (g : GQ l) (T.eB.symm bx) = T.eB.symm bx + (((bk.Ep.natDegree : ℤ_[l]) * cπ g - kummer P g : ℤ_[l]) : ℚ_[l]) • P.tB`. Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.actB, RingEquiv.apply_symm_apply, h1, map_add, RingEquiv.apply_symm_apply, Algebra.smul_def, map_mul, T.zB, hF.t]`. Rewrite using `[map_add, actSt_X, actSt_C, h2, Polynomial.C_add]`. Establish `key : ((kummer P (g : GQ l) : ℤ_[l]) : ℚ_[l]) • P.tB + (((bk.Ep.natDegree : ℤ_[l]) * cπ g - kummer P g : ℤ_[l]) : ℚ_[l]) • P.tB = (((bk.Ep.natDegree : ℤ_[l]) * cπ g : ℤ_[l]) : ℚ_[l]) • P.tB`.
+
+Rewrite using `[← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show _ = _ + Polynomial.C ((((bk.Ep.natDegree : ℤ_[l]) * cπ g : ℤ_[l]) : ℚ_[l]) • P.tB)`.
+
+Rewrite using `[← key, Polynomial.C_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : P.φB (T.eB.symm bx) = (l : P.R.B) * T.eB.symm bx`. Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.frob, RingEquiv.apply_symm_apply, hφ, map_mul, map_natCast, RingEquiv.apply_symm_apply]`.
+
+Rewrite using `[map_add, phiSt_X, phiSt_C, h2, mul_add, Polynomial.C_mul, map_natCast]`.
+-/
 theorem exists_log_flat_pow_Bst : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (_ : True), ∃ (b : P.R.B) (c : ↥(GK K) → ℤ_[l]), ((∀ g : ↥(GK K), actSt P (g : GQ l) (Polynomial.X + Polynomial.C b) = Polynomial.X + Polynomial.C b + Polynomial.C ((c g : ℚ_[l]) • P.tB)) ∧ phiSt P (Polynomial.X + Polynomial.C b) = (l : Bst P) * (Polynomial.X + Polynomial.C b)) ∧ (∀ g, bk.FixFlat g → c g = 0) ∧ ∀ m : ℕ, ∃ (k : ℕ) (s : bk.S), bk.E ∣ s ∧ ∀ g : ↥(GK K), aDp l (Per.σA (g : GQ l) (bk.ev s) - bk.ev s) - (l : Per.BdRp l) ^ k * (aDp l (Per.zA l (c g)) * C.j C.t) ∈ Per.FilP l m := by
   intro l _ K bk P AI T C hF _
   obtain ⟨ϖ, hr⟩ := GlobalTheory.Pst.NoLog.exists_tilt (lRoot l) (lRoot_succ l) l (lRoot_zero l)

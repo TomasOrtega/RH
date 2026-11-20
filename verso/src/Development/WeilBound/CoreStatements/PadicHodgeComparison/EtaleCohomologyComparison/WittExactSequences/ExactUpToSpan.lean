@@ -17,9 +17,17 @@ section Abs
 
 variable {R : Type} [CommRing R] {p : ℕ}
 
+/- English proof (translation)
+The claim follows from `ObjectProperty.hom_ext _ (CommAlgCat.hom_ext (AlgHom.ext h))`.
+-/
 theorem pf_ext {X Y : PfC p R} {f g : X ⟶ Y} (h : ∀ x, f.hom.hom x = g.hom.hom x) : f = g :=
   ObjectProperty.hom_ext _ (CommAlgCat.hom_ext (AlgHom.ext h))
 
+/- English proof (translation)
+Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => intro z _`. Conclude with `zero_smul R z`.
+
+Consider the case `add x y _ _ hx hy => intro z hz`. Rewrite using `[add_smul, hx z hz, hy z hz, add_zero]`. Consider the case `smul a x _ hx => intro z hz`. Rewrite using `[smul_eq_mul, mul_smul, hx z hz, smul_zero]`.
+-/
 theorem injUpTo_span {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N] (S : Set R)
     (f : M →ₗ[R] N) (h : ∀ s ∈ S, InjUpTo s f) : ∀ s ∈ Ideal.span S, InjUpTo s f := by
   intro s hs
@@ -29,6 +37,13 @@ theorem injUpTo_span {M N : Type*} [AddCommGroup M] [AddCommGroup N] [Module R M
   | add x y _ _ hx hy => intro z hz; rw [add_smul, hx z hz, hy z hz, add_zero]
   | smul a x _ hx => intro z hz; rw [smul_eq_mul, mul_smul, hx z hz, smul_zero]
 
+/- English proof (translation)
+Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => intro z _; exact ⟨0, by rw [map_zero, zero_smul]⟩`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `z hz`. Take `⟨u, hu⟩` from `hx z hz`. Take `⟨v, hv⟩` from `hy z hz`. Conclude with `⟨u + v, by rw [map_add, hu, hv, add_smul]⟩`. Consider the case `smul a x _ hx`.
+
+Introduce `z hz`. Take `⟨u, hu⟩` from `hx z hz`. Conclude with `⟨a • u, by rw [map_smul, hu, smul_eq_mul, mul_smul]⟩`.
+-/
 theorem exactUpTo_span {M N P : Type*} [AddCommGroup M] [AddCommGroup N] [AddCommGroup P] [Module R M] [Module R N]
     [Module R P] (S : Set R) (f : M →ₗ[R] N) (g : N →ₗ[R] P) (h : ∀ s ∈ S, ExactUpTo s f g) :
     ∀ s ∈ Ideal.span S, ExactUpTo s f g := by
@@ -67,6 +82,9 @@ def univMap (n : ℕ) (X : PfC p R) (x : A ⟶ X) (y : Fin n → (pfOb (R := R) 
         rw [IsScalarTower.algebraMap_apply R A.obj (K n)]
         exact (RingHom.congr_fun h _).trans (x.hom.hom.commutes c) })
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec ((hι n).ex X.obj x.hom.hom.toRingHom (fun i => (y i).hom.hom.toRingHom) (fun i => RingHom.ext fun c => congrArg (fun φ => φ.hom.hom c) (hxy i)))`.
+-/
 theorem univMap_spec (n : ℕ) (X : PfC p R) (x : A ⟶ X) (y : Fin n → (pfOb (R := R) B hB ⟶ X))
     (hxy : ∀ i, pfFrom A B hB ≫ y i = x) :
     (univMap A B hB K hK ι hι n X x y hxy).hom.hom.toRingHom.comp (algebraMap A.obj (K n)) = x.hom.hom.toRingHom ∧
@@ -102,6 +120,11 @@ def mkPowers : Powers j A where
         (fun i => RingHom.ext fun c => (congrArg (fun φ => φ.hom.hom c) (hz.2 i)).trans
           (RingHom.congr_fun (hs.2 i) c).symm)) c
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add u v hu hv => rw [map_add, map_add, hu, hv]`. Consider the case `tmul a b`. Rewrite using `[Powers.dK, LinearMap.lTensor_tmul, LinearMap.restrictScalars_apply, alt, LinearMap.sum_apply, LinearMap.sum_apply, TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply]`. Conclude with `(map_zsmul (TensorProduct.mk R N (K (n + 1)) a) _ _).symm`.
+-/
 theorem mkPowers_dK (N : Type) [AddCommGroup N] [Module R N] (n : ℕ) (w : N ⊗[R] K n) :
     (mkPowers j A B hB K hK ι hι δ hδ hrel h0 h1).dK j (tensF p R N) n w = ((alt (δ n)).restrictScalars R).lTensor N w := by
   induction w using TensorProduct.induction_on with
@@ -116,6 +139,15 @@ theorem mkPowers_dK (N : Type) [AddCommGroup N] [Module R N] (n : ℕ) (w : N �
 
 end Abs
 
+/- English proof (translation)
+Use `choose K iK aK ι hι using fun n => Leaf.wp_ex A.obj B n`. Set `_ : ∀ n, Algebra R (K n)` to `fun n => ((algebraMap A.obj (K n)).comp (algebraMap R A.obj)).toAlgebra`. Establish `_ : ∀ n, IsScalarTower R A.obj (K n)` using `fun n => IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨h0, h1, δ, hδ⟩` from `Leaf.wp_cof A.obj B K ι hι`. Establish `hrel` using `Leaf.wp_rel A.obj B K ι δ hι hδ`.
+
+Establish `hK : ∀ n, Pf p (K n)` using `fun n => Leaf.wp_pf p A.obj B (K n) n (ι n) (hι n) A.property hB`. Take `⟨hc1, hc2⟩` from `Leaf.cech_tens p R r N A.obj B K ι δ hr hdiv A.property hB hC hι hδ`. Use `⟨mkPowers j A B hB K hK ι hι δ hδ hrel h0 h1, H1, fun s hs => ⟨?_, fun n => ?_⟩, H3⟩` and prove the remaining obligations. Use `injUpTo_span _ _ (fun s' hs' => ?_) s hs` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hs'`.
+
+Introduce `w hw`. Rewrite `hw` using `[mkPowers_dK]`. Conclude with `hc1 w hw k`. Use `exactUpTo_span _ _ _ (fun s' hs' => ?_) s hs` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hs'`.
+
+Introduce `w hw`. Rewrite `hw` using `[mkPowers_dK]`. Take `⟨x, hx⟩` from `hc2 n w hw k`. Conclude with `⟨x, (mkPowers_dK j A B hB K hK ι hι δ hδ hrel h0 h1 N n x).trans hx⟩`.
+-/
 theorem powers_abs {R : Type} [CommRing R] [IsDomain R] [ValuationRing R] (p : ℕ) [Fact p.Prime]
     {T : Type u'} [Category.{v'} T] (j : T ⥤ PfC p R)
     (r : ℕ → R) (hr : IsRt p r) (hdiv : ∀ a : R, a ≠ 0 → ∃ M : ℕ, a ∣ r 0 ^ M)

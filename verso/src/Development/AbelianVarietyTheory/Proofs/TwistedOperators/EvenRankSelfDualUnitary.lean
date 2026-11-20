@@ -35,24 +35,39 @@ section Arith
 
 variable {F : Type} [NormedField F] {lam : Qbar →+* F}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, by rw [show (⟨1, one_mem _⟩ : Qbar) = 1 from rfl, map_one, norm_one]⟩`.
+-/
 theorem NormOne.one : NormOne lam 1 := ⟨one_mem _, by
   rw [show (⟨1, one_mem _⟩ : Qbar) = 1 from rfl, map_one, norm_one]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hx`. Take `⟨h3, h4⟩` from `hy`. Use `⟨mul_mem h1 h3, ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨x * y, mul_mem h1 h3⟩ : Qbar) = ⟨x, h1⟩ * ⟨y, h3⟩ from rfl, map_mul, norm_mul, h2, h4, one_mul]`.
+-/
 theorem NormOne.mul {x y : ℂ} (hx : NormOne lam x) (hy : NormOne lam y) : NormOne lam (x * y) := by
   obtain ⟨h1, h2⟩ := hx
   obtain ⟨h3, h4⟩ := hy
   refine ⟨mul_mem h1 h3, ?_⟩
   rw [show (⟨x * y, mul_mem h1 h3⟩ : Qbar) = ⟨x, h1⟩ * ⟨y, h3⟩ from rfl, map_mul, norm_mul, h2, h4, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using NormOne.one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hx`.
+-/
 theorem NormOne.pow {x : ℂ} (hx : NormOne lam x) (n : ℕ) : NormOne lam (x ^ n) := by
   induction n with
   | zero => simpa using NormOne.one
   | succ n ih => rw [pow_succ]; exact ih.mul hx
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (NormOne lam) (fun _ _ => NormOne.mul) NormOne.one fun i _ => h i`.
+-/
 theorem NormOne.prod {ι : Type} (s : Finset ι) {f : ι → ℂ} (h : ∀ i, NormOne lam (f i)) :
     NormOne lam (∏ i ∈ s, f i) :=
   Finset.prod_induction f (NormOne lam) (fun _ _ => NormOne.mul) NormOne.one fun i _ => h i
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hx`. Establish `h3 : x ∈ Qbar` using `mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 h1).of_pow hn)`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[show (⟨x ^ n, h1⟩ : Qbar) = ⟨x, h3⟩ ^ n from rfl, map_pow, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+-/
 theorem NormOne.of_pow {x : ℂ} {n : ℕ} (hn : 0 < n) (hx : NormOne lam (x ^ n)) : NormOne lam x := by
   obtain ⟨h1, h2⟩ := hx
   have h3 : x ∈ Qbar := mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 h1).of_pow hn)
@@ -60,15 +75,24 @@ theorem NormOne.of_pow {x : ℂ} {n : ℕ} (hn : 0 < n) (hx : NormOne lam (x ^ n
   rw [show (⟨x ^ n, h1⟩ : Qbar) = ⟨x, h3⟩ ^ n from rfl, map_pow, norm_pow] at h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
+/- English proof (translation)
+The claim follows from `NormOne.of_pow hn (hx ▸ NormOne.one)`.
+-/
 theorem NormOne.root {x : ℂ} {n : ℕ} (hn : 0 < n) (hx : x ^ n = 1) : NormOne lam x :=
   NormOne.of_pow hn (hx ▸ NormOne.one)
 
+/- English proof (translation)
+Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[q])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem norm_le_one_of_int {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := ℂ_[q])).integer x := hx.tower_top
   have h2 := (Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1
   have h3 : ‖x‖₊ ≤ 1 := h2
   exact_mod_cast h3
 
+/- English proof (translation)
+Establish `e : ((n : ℕ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q])` using `(map_natCast _ n).symm`. Rewrite using `[e]`. Establish `h : ‖algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q])‖ = ‖((n : ℕ) : ℚ_[q])‖` using `PadicComplex.norm_extends' (p := q) _`. Rewrite using `[h]`. Conclude with `Padic.norm_natCast_eq_one_iff.mpr hn.symm`.
+-/
 theorem norm_nat_eq_one {q : ℕ} [Fact q.Prime] {n : ℕ} (hn : n.Coprime q) : ‖(n : ℂ_[q])‖ = 1 := by
   have e : ((n : ℕ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℕ) : ℚ_[q]) := (map_natCast _ n).symm
   rw [e]
@@ -83,12 +107,23 @@ variable {D : D7} {N N' : ℕ}
 def via {F : Type} [NormedField F] (lam : Qbar →+* F) (φ : D.host.E →+* ℂ) : D.host.E →+* F :=
   lam.comp (φ.codRestrict Qbar (emb_mem D φ))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨emb_mem D φ a, h⟩`.
+-/
 theorem normOne_emb {F : Type} [NormedField F] (lam : Qbar →+* F) (φ : D.host.E →+* ℂ) {a : D.host.E}
     (h : ‖via lam φ a‖ = 1) : NormOne lam (φ a) := ⟨emb_mem D φ a, h⟩
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul, Matrix.mem_unitaryGroup_iff.1 A.2, Matrix.det_one]`.
+-/
 theorem det_mul_det_star (A : Matrix.unitaryGroup (Fin N) D.host.E) : A.1.det * (star A.1).det = 1 := by
   rw [← Matrix.det_mul, Matrix.mem_unitaryGroup_iff.1 A.2, Matrix.det_one]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun x => ‖ρ x‖) (det_mul_det_star A)`. Establish `e : ‖ρ (star A.1).det‖ = ‖ρ A.1.det‖`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose, emb_star, RCLike.norm_conj]`. Simplify using `only [map_mul, norm_mul, map_one, norm_one, e] at h`. Rewrite using `[e, and_self]`.
+
+Use polynomial arithmetic with `[norm_nonneg (ρ A.1.det)]`.
+-/
 theorem norm_det_complex (ρ : D.host.E →+* ℂ) (A : Matrix.unitaryGroup (Fin N) D.host.E) :
     ‖ρ A.1.det‖ = 1 ∧ ‖ρ (star A.1).det‖ = 1 := by
   have h := congrArg (fun x => ‖ρ x‖) (det_mul_det_star A)
@@ -98,12 +133,22 @@ theorem norm_det_complex (ρ : D.host.E →+* ℂ) (A : Matrix.unitaryGroup (Fin
   rw [e, and_self]
   nlinarith [norm_nonneg (ρ A.1.det)]
 
+/- English proof (translation)
+Establish `hr : ∀ x : D.host.E, x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ x` using `fun x => ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Simplify using `only [stdL, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]`. Conclude with `forall_congr' fun k => hr (x k)`.
+-/
 theorem mem_stdL (x : Fin N → D.host.E) : x ∈ stdL D N ↔ ∀ k, IsIntegral ℤ (x k) := by
   have hr : ∀ x : D.host.E, x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ x := fun x =>
     ⟨by rintro ⟨a, rfl⟩; exact a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
   simp only [stdL, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one]
   exact forall_congr' fun k => hr (x k)
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ ((s : D.host.E) • A).det`. Use `IsIntegral.det fun i j => ?_` and prove the remaining obligations. Establish `hj : (Pi.single j 1 : Fin N → D.host.E) ∈ stdL D N`. Rewrite using `[mem_stdL]`. Introduce `k`.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Simplify using `using (mem_stdL _).1 (h _ hj) i`.
+
+Establish `h2 : ‖ρ ((s : D.host.E) • A).det‖ ≤ 1` using `norm_le_one_of_int (by convert map_isIntegral_int ρ h1; exact Subsingleton.elim _ _)`. Rewrite `h2` using `[Matrix.det_smul, map_mul, map_pow, map_natCast, norm_mul, norm_pow, norm_nat_eq_one hs, one_pow, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem norm_det_le {q : ℕ} [Fact q.Prime] (ρ : D.host.E →+* ℂ_[q]) (A : Matrix (Fin N) (Fin N) D.host.E) {s : ℕ}
     (hs : s.Coprime q) (h : ∀ x ∈ stdL D N, (s : D.host.E) • A.mulVec x ∈ stdL D N) : ‖ρ A.det‖ ≤ 1 := by
   have h1 : IsIntegral ℤ ((s : D.host.E) • A).det := by
@@ -120,6 +165,15 @@ theorem norm_det_le {q : ℕ} [Fact q.Prime] (ρ : D.host.E →+* ℂ_[q]) (A : 
     norm_le_one_of_int (by convert map_isIntegral_int ρ h1; exact Subsingleton.elim _ _)
   rwa [Matrix.det_smul, map_mul, map_pow, map_natCast, norm_mul, norm_pow, norm_nat_eq_one hs, one_pow, one_mul] at h2
 
+/- English proof (translation)
+Take `⟨s, hs, a1, a2⟩` from `h1`. Take `⟨t, ht, b1, b2⟩` from `h2`. Establish `c1 : ‖ρ A.1.det‖ ≤ 1`. Use `norm_det_le ρ _ (Nat.Coprime.mul_left ht hs) fun x hx => ?_` and prove the remaining obligations. Use `b1 _ ((PullbackComparison.mem_smulLat A.1 M _).2 ⟨_, a2 x hx, rfl⟩)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_smul, smul_smul, ← Nat.cast_mul]`. Then use the resulting hypothesis. Establish `c2 : ‖ρ (star A.1).det‖ ≤ 1`. Use `norm_det_le ρ _ (Nat.Coprime.mul_left hs ht) fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `(PullbackComparison.mem_smulLat A.1 M _).1 (b2 x hx)`. Establish `e2 : y = (t : D.host.E) • (star A.1).mulVec x`.
+
+Rewrite using `[← Matrix.mulVec_smul, ← e, Matrix.mulVec_mulVec, Matrix.mem_unitaryGroup_iff'.1 A.2, Matrix.one_mulVec]`. Use `a1 y hy` as an intermediate fact. Rewrite `this` using `[e2, smul_smul, ← Nat.cast_mul]`. Then use the resulting hypothesis. Establish `h` using `congrArg (fun x => ‖ρ x‖) (det_mul_det_star A)`. Simplify using `only [map_mul, norm_mul, map_one, norm_one] at h`.
+
+Apply the tactic sequence `constructor <;> nlinarith [norm_nonneg (ρ A.1.det), norm_nonneg (ρ (star A.1).det)]`.
+-/
 theorem norm_det_padic {q : ℕ} [Fact q.Prime] (ρ : D.host.E →+* ℂ_[q]) (A : Matrix.unitaryGroup (Fin N) D.host.E)
     {M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} (h1 : EqAt D q M (stdL D N))
     (h2 : EqAt D q (SDLat.smulLat A.1 M) (stdL D N)) : ‖ρ A.1.det‖ = 1 ∧ ‖ρ (star A.1).det‖ = 1 := by
@@ -140,6 +194,9 @@ theorem norm_det_padic {q : ℕ} [Fact q.Prime] (ρ : D.host.E →+* ℂ_[q]) (A
   simp only [map_mul, norm_mul, map_one, norm_one] at h
   constructor <;> nlinarith [norm_nonneg (ρ A.1.det), norm_nonneg (ρ (star A.1).det)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `P.map (embT D τ) * B.map (embT D τ) * Q.map (embT D τ) = (P * B * Q).map (embT D τ)`. Simplify using `only [Matrix.map_mul]`.
+-/
 theorem mulV_embV (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N') (Fin N') D.host.E)
     (Q : Matrix (Fin N) (Fin N) D.host.E) (B : Matrix (Fin N') (Fin N) D.host.E) :
     GlobalTheory.RatEqui.mulV D P Q (embV D (tor0 D cc δ) B) = embV D (tor0 D cc δ) (P * B * Q) := by
@@ -147,6 +204,13 @@ theorem mulV_embV (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N') (
   change P.map (embT D τ) * B.map (embT D τ) * Q.map (embT D τ) = (P * B * Q).map (embT D τ)
   simp only [Matrix.map_mul]
 
+/- English proof (translation)
+Take `⟨-, h2, -, -, h5⟩` from `GlobalTheory.OnCoord.coords_of_orthonormal_basis D hG ⊤ 1 N N' r b hb`. Set `e : VC D N N' ≃ₗ[ℂ] (Fin r → ℂ)` to `LinearEquiv.ofBijective (LinearMap.pi fun j => GlobalTheory.PullNorm.coordLin D (tor0 D ⊤ 1) b j) h5`. Establish `he : ∀ z j, e z j = coordB D (tor0 D ⊤ 1) b j z` using `fun _ _ => rfl`. Use `((D.host.φ₀.comp (algebraMap D.host.K D.host.E)).map_det _).trans ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.TwoSidedDet.det_mulV, ← LinearMap.det_conj _ e, ← LinearMap.det_toLin']`.
+
+Use `congr 1`. Use `LinearMap.pi_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations. Establish `hi : e.symm (Pi.single i 1) = embV D (tor0 D ⊤ 1) (b i)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[he, h2, Pi.single_apply, if_congr (eq_comm (a := i)) rfl rfl]`. Use function extensionality and compare the values at `j`. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single, LinearEquiv.coe_coe, Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Rewrite using `[hi, he, mulV_embV, GlobalTheory.OnCoord.coord_emb hG]`. Both sides reduce to the same expression.
+-/
 theorem det_move (hG : admG1 D) (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) (Fin N) D.host.E) {r : ℕ}
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : OnB D b) :
     D.host.φ₀ (((Matrix.of fun i j => hYY D (P * b j * Q) (b i)).det : D.host.K) : D.host.E) =
@@ -171,14 +235,25 @@ theorem det_move (hG : admG1 D) (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Mat
 
 variable (A : Matrix.unitaryGroup (Fin N) D.host.E) (A' : Matrix.unitaryGroup (Fin N') D.host.E)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff'.1 A'.2, Matrix.one_mul, Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff'.1 A.2, Matrix.mul_one]`.
+-/
 theorem back (B : Matrix (Fin N') (Fin N) D.host.E) : star A'.1 * (A'.1 * B * star A.1) * A.1 = B := by
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff'.1 A'.2, Matrix.one_mul, Matrix.mul_assoc,
     Matrix.mem_unitaryGroup_iff'.1 A.2, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff.1 A'.2, Matrix.one_mul, Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff.1 A.2, Matrix.mul_one]`.
+-/
 theorem forth (B : Matrix (Fin N') (Fin N) D.host.E) : A'.1 * (star A'.1 * B * A.1) * star A.1 = B := by
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mem_unitaryGroup_iff.1 A'.2, Matrix.one_mul, Matrix.mul_assoc,
     Matrix.mem_unitaryGroup_iff.1 A.2, Matrix.mul_one]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `ortho_pull (star A.1) (star A'.1) (by rw [star_star]; exact Matrix.mem_unitaryGroup_iff'.1 A.2) (by rw [star_star]; exact Matrix.mem_unitaryGroup_iff'.1 A'.2) b hb.1` as an intermediate fact. Simplify `this` using `only [star_star]`. Establish `e : (Set.range fun j => A'.1 * b j * star A.1) = PQK A'.1 (star A.1) '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← Submodule.map_span, hb.2, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `fun B => ⟨_, forth A A' B⟩`.
+-/
 theorem onB_move {r : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : OnB D b) :
     OnB D (fun j => A'.1 * b j * star A.1) := by
   refine ⟨?_, ?_⟩
@@ -194,20 +269,37 @@ variable (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
 
 def push : VC D N N' ≃+ VC D N N' := (tPullEquiv cc δ A A').symm.toAddEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem push_symm (z : VC D N N') : (push A A' cc δ).symm z = tPull D (tor0 D cc δ) A.1 A'.1 z := rfl
 
+/- English proof (translation)
+The claim follows from `Hf_tPull cc δ _ _ (Matrix.mem_unitaryGroup_iff.1 A.2) (Matrix.mem_unitaryGroup_iff.1 A'.2) x y`.
+-/
 theorem hf_symm (x y : VC D N N') :
     Hf D (tor0 D cc δ) ((push A A' cc δ).symm x) ((push A A' cc δ).symm y) = Hf D (tor0 D cc δ) x y :=
   Hf_tPull cc δ _ _ (Matrix.mem_unitaryGroup_iff.1 A.2) (Matrix.mem_unitaryGroup_iff.1 A'.2) x y
 
+/- English proof (translation)
+Rewrite using `[← hf_symm A A', AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]`.
+-/
 theorem hf_push (x y : VC D N N') :
     Hf D (tor0 D cc δ) (push A A' cc δ x) (push A A' cc δ y) = Hf D (tor0 D cc δ) x y := by
   rw [← hf_symm A A', AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[push_symm, PullbackComparison.tPull_smul, tPull_embV, back]`.
+-/
 theorem symm_emb (w : ℂ) (B : Matrix (Fin N') (Fin N) D.host.E) :
     (push A A' cc δ).symm (w • embV D (tor0 D cc δ) (A'.1 * B * star A.1)) = w • embV D (tor0 D cc δ) B := by
   rw [push_symm, PullbackComparison.tPull_smul, tPull_embV, back]
 
+/- English proof (translation)
+Use `GlobalTheory.RatEquiv.closure_iff _ ?_ ?_ x` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, j, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, j, ?_⟩` and prove the remaining obligations. Rewrite using `[← symm_emb A A', AddEquiv.apply_symm_apply]`. Introduce and unpack `_ ⟨w, hw, j, rfl⟩`.
+
+Conclude with `AddSubgroup.subset_closure ⟨w, hw, j, symm_emb A A' cc δ w _⟩`.
+-/
 theorem push_LaB {r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (x : VC D N N') :
     push A A' cc δ x ∈ LaB D (tor0 D cc δ) (fun j => A'.1 * b j * star A.1) ↔ x ∈ LaB D (tor0 D cc δ) b := by
   refine GlobalTheory.RatEquiv.closure_iff _ ?_ ?_ x
@@ -217,12 +309,20 @@ theorem push_LaB {r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (x :
   · rintro _ ⟨w, hw, j, rfl⟩
     exact AddSubgroup.subset_closure ⟨w, hw, j, symm_emb A A' cc δ w _⟩
 
+/- English proof (translation)
+Rewrite using `[mem_La_smulLat_iff, ← push_symm, AddEquiv.symm_apply_apply]`.
+-/
 theorem push_La (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
     (x : VC D N N') :
     push A A' cc δ x ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (SDLat.smulLat A.1 M) (SDLat.smulLat A'.1 M') ↔
       x ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) M M' := by
   rw [mem_La_smulLat_iff, ← push_symm, AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Unfold `pullB`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `h` using `hf_symm A A' cc δ z ((1 : ℂ) • embV D (tor0 D cc δ) (A'.1 * b j * star A.1))`.
+
+Rewrite `h` using `[symm_emb, one_smul, one_smul]`. Establish `ha : ((area (tor0 D cc δ).abelian₂ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (GlobalTheory.UnitaryTheta.area_pos D cc δ hC).ne'`. Conclude with `((div_left_inj' ha).1 h).symm`.
+-/
 theorem pullB_move (hC : Crv D cc δ) {r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (g : ℂ → ℂ) :
     pullB D (tor0 D cc δ) (fun j => A'.1 * b j * star A.1) g =
       fun z => pullB D (tor0 D cc δ) b g ((push A A' cc δ).symm z) := by
@@ -236,6 +336,21 @@ theorem pullB_move (hC : Crv D cc δ) {r : ℕ} (b : Fin r → Matrix (Fin N') (
     Complex.ofReal_ne_zero.2 (GlobalTheory.UnitaryTheta.area_pos D cc δ hC).ne'
   exact ((div_left_inj' ha).1 h).symm
 
+/- English proof (translation)
+Take `⟨b, κ, hb, -, he⟩` from `hE`. Establish `hb'` using `onB_move A A' hb`. Take `⟨hP, hP0, -⟩` from `GlobalTheory.UnitaryTheta.pullB_mem D cc δ hC t0 ht N N' _ b hb`. Establish `hKb : KLat D (tor0 D cc δ) (LaB D (tor0 D cc δ) b)` using `Or.inl ⟨_, b, hb, rfl⟩`. Establish `hKb' : KLat D (tor0 D cc δ) (LaB D (tor0 D cc δ) fun j => A'.1 * b j * star A.1)` using `Or.inl ⟨_, _, hb', rfl⟩`.
+
+Establish `hK0 : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N')` using `Or.inr ⟨_, _, GlobalTheory.MovedVacuum.sd_stdL D N, GlobalTheory.MovedVacuum.sd_stdL D N', rfl⟩`. Establish `hK1 : KLat D (tor0 D cc δ) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) M M')` using `Or.inr ⟨_, _, hM, hM', rfl⟩`. Establish `hK2 : KLat D (tor0 D cc δ) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (SDLat.smulLat A.1 M) (SDLat.smulLat A'.1 M'))` using `Or.inr ⟨_, _, GlobalTheory.UnitaryBases.isSDLat_smulLat A hM, GlobalTheory.UnitaryBases.isSDLat_smulLat A' hM', rfl⟩`. Take `⟨c, ζ, m, hm, hζ, hc, hpull⟩` from `GlobalTheory.UnitaryTheta.const_sq_eq_det D cc δ hC t0 ht N N' _ b _ hb hb'`. Rewrite `hc` using `[det_move hI.g1 _ _ hb]`.
+
+Take `⟨μ₁, hμ₁, hI₁⟩` from `hI.mu cc δ hC N N' _ _ _ hKb hK0 hK1 _ hP`. Take `⟨μ₂, hμ₂, hI₂⟩` from `hI.mu cc δ hC N N' _ _ _ hKb hK0 hK2 _ hP`. Take `⟨μ₃, hμ₃, hI₃⟩` from `hI.mu cc δ hC N N' _ _ _ hKb hKb' hK2 _ hP`. Express the relevant statement in the definitionally equal form `e0 = fun z => κ * Iop D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) (La0 D (tor0 D cc δ) N N') (pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0)) z at he`. Take `⟨-, hH, -, hII⟩` from `hI.uni cc δ hC N N' _ _ hKb hK1 _ hP`.
+
+Establish `hH0 : Iop D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) M M') (pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0)) ≠ 0`. Introduce `h`. Rewrite `hII` using `[h]`. Rewrite `hP0` using `[← hII]`. Simplify using `[Iop, Formalism.MainNotions.TaylorLogMetric.U] at hP0`.
+
+Use `⟨c * μ₁ * μ₃ * μ₂ ^ 7, fun F _ lam h => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `h8 : 0 < 8` using `by norm_num`. Use `(((NormOne.of_pow two_pos ?_).mul (.root h8 hμ₁)).mul (.root h8 hμ₃)).mul ((NormOne.root h8 hμ₂).pow 7)` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `(NormOne.root hm hζ).mul (NormOne.prod _ fun τ => ((normOne_emb lam _ (h τ).1).pow N).mul ((normOne_emb lam _ (h τ).2).pow N'))`.
+
+Establish `h1` using `GlobalTheory.RatEquiv.iop_transport (tor0 D cc δ) (push A A' cc δ) (hf_push A A' cc δ) (push_LaB A A' cc δ b) (push_La A A' cc δ M M') hP hH hH0 ((push A A' cc δ).symm z)`. Rewrite `h1` using `[← pullB_move A A' cc δ hC, AddEquiv.apply_symm_apply, hpull, GlobalTheory.RatEquiv.Iop_smul, hI₃, push_symm]`. Rewrite using `[he, GlobalTheory.RatEquiv.Iop_smul, GlobalTheory.RatEquiv.Iop_smul, hI₁, hI₂]`. Use `beta_reduce at h1 ⊢`. Rewrite using `[← h1]`.
+
+Take the linear combination `(-(c * μ₁ * μ₃ * κ * Iop D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (SDLat.smulLat A.1 M) (SDLat.smulLat A'.1 M')) (pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0)) z)) * hμ₂`.
+-/
 theorem iop_move (hI : GlobalTheory.NormSum.Inp D) {t0 : ℂ} (hC : Crv D cc δ) (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0)
     {e0 : VC D N N' → ℂ} (hE : ThetaVectorUpToUnits D (tor0 D cc δ) t0 (stdL D N) (stdL D N') e0)
     {M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -287,6 +402,11 @@ theorem iop_move (hI : GlobalTheory.NormSum.Inp D) {t0 : ℂ} (hC : Crv D cc δ)
       (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D cc δ) (SDLat.smulLat A.1 M) (SDLat.smulLat A'.1 M'))
       (pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0)) z)) * hμ₂
 
+/- English proof (translation)
+Introduce `_ hI D δ t0 hC ht N N' e0 he _ M M' hM hM' A A'`. Take `⟨ε, h1, h2⟩` from `iop_move A A' D.host.ccK δ (hI D) hC ht he.2.2.2.1 hM hM'`. Establish `hc : ∀ σ : Qbar →+* ℂ, NormOne σ ε` using `fun σ => h1 ℂ σ fun τ => ⟨(norm_det_complex _ A').1, (norm_det_complex _ A).2⟩`. Use `⟨ε, ⟨(hc (algebraMap Qbar ℂ)).1, fun σ => (hc σ).2⟩, fun q _ a1 a2 a3 a4 lam => ?_, h2⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `h1 ℂ_[q] lam fun τ => ⟨(norm_det_padic _ A' a2 a4).1, (norm_det_padic _ A a1 a3).2⟩`.
+
+Rewrite using `[lamC, dif_pos h3]`. Conclude with `h4`.
+-/
 theorem iop_pull_rat : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {δ t0 : ℂ}, Crv D D.host.ccK δ →
     GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0 → ∀ {N N' : ℕ} {e0 : VC D N N' → ℂ}, oddE0 D D.host.ccK δ t0 N N' e0 → Even (N * N') →
     ∀ (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D M → SD D M' →

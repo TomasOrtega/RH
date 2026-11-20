@@ -17,6 +17,61 @@ local notation "𝒪" => HeightOneSpectrum.adicCompletionIntegers F v
 local notation "𝓴" => IsLocalRing.ResidueField (HeightOneSpectrum.adicCompletionIntegers F v)
 local notation "res" => IsLocalRing.residue (HeightOneSpectrum.adicCompletionIntegers F v)
 
+/- English proof (translation)
+Establish `hLoc` using `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : SecondCountableTopology (Fv F v) := hLoc.2.2.1`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨-, -, -, hcard⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hlam`. Establish `hq0 : Ideal.absNorm v.asIdeal ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Use `haveI : Finite 𝓴 := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq0)`. Use `letI : Fintype 𝓴 := Fintype.ofFinite _`. Establish `hBint : ∀ i j, (BO.map phi) i j ∈ v.adicCompletionIntegers F` using `fun i j => (BO i j).2`.
+
+Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, map_zero]`. Conclude with `zero_ne_one h2`. Set `c : 𝒪` to `⟨2⁻¹, by show Valued.v ((2 : Fv F v)⁻¹) ≤ 1; rw [map_inv₀, h2, inv_one]⟩`.
+
+Establish `hc : (c : Fv F v) = 2⁻¹` using `rfl`. Establish `hc2 : c * 2 = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : (phi : 𝒪 →+* Fv F v) (c * 2) = phi c * phi 2` using `map_mul _ _ _`. Establish `e2 : (phi : 𝒪 →+* Fv F v) 2 = 2` using `map_ofNat _ 2`.
+
+Establish `e3 : phi c = (2 : Fv F v)⁻¹` using `hc`. Rewrite `e` using `[e2, e3, inv_mul_cancel₀ h20]`. Conclude with `e`. Establish `hr1 : res c * 2 = 1`. Use `congrArg res hc2` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Then use the resulting hypothesis. Establish `hr : res c = 2⁻¹` using `eq_inv_of_mul_eq_one_left hr1`. Use `set sb : 𝓴 := res s with hsb`. Establish `hsb0 : sb ≠ 0`. Introduce `h0`.
+
+Establish `h'` using `(res_eq_zero_iff _).1 h0`. Rewrite `h'` using `[hsu]`. Conclude with `lt_irrefl _ h'`. Set `qk : (ι → 𝓴) → 𝓴` to `fun y => (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y))`. Set `Fl : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => qk y = sb`.
+
+Establish `hN : Nat.card {y : ι → 𝓴 // (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y)) = sb} = Fl.card` using `Nat.subtype_card Fl (fun x => by simp [Fl, qk])`. Take `⟨π, hπ⟩` from `GlobalTheory.CompanionTheory.SW.GBall.exists_unif v`. Establish `hprimeq : {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) ∈ A} = {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) ∈ A}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx, hQ⟩`. Use `⟨hx, ?_, hQ⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnp`. Establish `h5` using `GlobalTheory.CompanionTheory.SW.GBall.q_nonprim h2 hBint hπ hx hnp`. Establish `hlt : Valued.v ((2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) - s) < Valued.v (s : Fv F v)` using `hAs hQ`.
+
+Establish `hv` using `Valuation.map_eq_of_sub_lt Valued.v hlt`. Rewrite `h5` using `[hv, hsu]`. Establish `hlt1 : WithZero.exp (-2 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.2 (by norm_num)`.
+
+Conclude with `absurd h5 (not_le.2 hlt1)`. Introduce and unpack `⟨hx, -, hQ⟩`. Conclude with `⟨hx, hQ⟩`. Establish `hAs1 : A ⊆ {z | Valued.v (z - s) < 1}` using `fun z hz => by`. Use `hAs hz` as an intermediate fact.
+
+Rewrite `this` using `[hsu]`. Conclude with `this`. Rewrite using `[hprimeq, hN]`. Use `set Qf : (ι → Fv F v) → Fv F v := fun x => (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) with hQf`. Establish `hQc : Continuous Qf`.
+
+Use `continuous_const.mul ?_` and prove the remaining obligations. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Set `P : (ι → 𝓴) → Set (ι → Fv F v)` to `fun y => {x | (∀ i, Valued.v (x i - lf y i) < 1) ∧ Qf x ∈ A}`. Set `T0 : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => y ≠ 0`. Establish `hS : {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) ∈ A} = ⋃ y ∈ T0, P y`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h3, h4⟩`. Take `⟨y, hy, h⟩` from `(cover x).1 ⟨h1, h3⟩`.
+
+Conclude with `⟨y, Finset.mem_filter.2 ⟨Finset.mem_univ _, hy⟩, h, h4⟩`. Introduce and unpack `⟨y, hy, h, h4⟩`. Take `⟨h1, h3⟩` from `(cover x).2 ⟨y, (Finset.mem_filter.1 hy).2, h⟩`. Conclude with `⟨h1, h3, h4⟩`. Establish `hball : MeasurableSet {a : Fv F v | Valued.v a < 1}`.
+
+Establish `h` using `(Valued.isOpen_ball (Fv F v) 1).measurableSet`. Simplify `h` using `[Valuation.restrict_lt_iff_lt_embedding]`. Establish `hmeas : ∀ y ∈ T0, MeasurableSet (P y)`. Introduce `y _`. Establish `e : P y = (⋂ i, (fun x : ι → Fv F v => x i - lf y i) ⁻¹' {a | Valued.v a < 1}) ∩ Qf ⁻¹' A`.
+
+Use extensionality with `x`. Simplify using `[P]`. Rewrite using `[e]`. Use `(MeasurableSet.iInter fun i => ?_).inter (hQc.measurable hA)` and prove the remaining obligations. Conclude with `((continuous_apply i).sub continuous_const).measurable hball`.
+
+Establish `hdisj : Set.PairwiseDisjoint (↑T0) P`. Introduce `y _ y' _ hne`. Conclude with `Set.disjoint_left.2 fun x hx hx' => hne (eq_of_close x y y' hx.1 hx'.1)`. Establish `hclass : ∀ y ∈ T0, (Measure.pi fun _ : ι => lam) (P y) = if qk y = sb then ((Ideal.absNorm v.asIdeal : ℝ≥0∞)⁻¹ ^ (Fintype.card ι - 1)) * lam A else 0`. Introduce `y hy`.
+
+Establish `hy0 : y ≠ 0` using `(Finset.mem_filter.1 hy).2`. Take `⟨hint, hprim⟩` from `(cover (lf y)).2 ⟨y, hy0, fun i => by simp⟩`. Take `⟨a, haQ, har⟩` from `res_Q c hc hr BO y`. Establish `key` using `GlobalTheory.T.primitive_vector_quadratic_level_measure F v lam hlam h2 ι (BO.map phi) hBs hBint hBdet (lf y) hint hprim A hA`. Establish `hkey : (Measure.pi fun _ : ι => lam) (P y) = _` using `key`.
+
+Rewrite using `[hkey]`. Establish `hcl : Valued.v ((s : Fv F v) - Qf (lf y)) < 1 ↔ qk y = sb`. Use `res_eq_iff s a` as an intermediate fact. Rewrite `this` using `[har]`. Rewrite using `[show Qf (lf y) = (a : Fv F v) from haQ.symm]`.
+
+Conclude with `⟨fun h => (this.2 h).symm, fun h => this.1 h.symm⟩`. Use `split_ifs with he`. Establish `hlt` using `hcl.2 he`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = A`. Use `Set.inter_eq_left.2 fun z hz => ?_` and prove the remaining obligations.
+
+Establish `h5 : Valued.v (z - s) < 1` using `hAs1 hz`. Establish `h6` using `Valuation.map_add_lt _ h5 hlt`. Establish `e : z - s + (s - Qf (lf y)) = z - Qf (lf y)` using `by ring`. Rewrite `h6` using `[e]`. Conclude with `h6`.
+
+Rewrite using `[this]`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = ∅`. Use `Set.eq_empty_iff_forall_notMem.2 fun z hz => he (hcl.1 ?_)` and prove the remaining obligations. Establish `h5 : Valued.v (z - s) < 1` using `hAs1 hz.1`. Establish `h6 : Valued.v (z - Qf (lf y)) < 1` using `hz.2`.
+
+Establish `h7` using `Valuation.map_sub_lt _ h6 h5`. Establish `e : z - Qf (lf y) - (z - s) = s - Qf (lf y)` using `by ring`. Rewrite `h7` using `[e]`. Conclude with `h7`. Rewrite using `[this, measure_empty, mul_zero]`.
+
+Rewrite using `[hS, measure_biUnion_finset hdisj hmeas, Finset.sum_congr rfl hclass, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hT : T0.filter (fun y => qk y = sb) = Fl`. Use extensionality with `y`. Simplify using `only [T0, Fl, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `fun h => h.2`. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hsb0` to reduce the goal to its premises.
+
+Rewrite using `[← h]`. Simplify using `[qk]`. Rewrite using `[hT, mul_assoc]`.
+-/
 theorem dens_exact (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
     (ι : Type) [Fintype ι] [DecidableEq ι] (BO : Matrix ι ι 𝒪) (hBs : (BO.map phi).IsSymm)
     (hBdet : Valued.v (BO.map phi).det = 1) (s : 𝒪) (hsu : Valued.v (s : Fv F v) = 1)

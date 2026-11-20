@@ -18,6 +18,13 @@ variable {O : Type} [CommRing O] (R : Type) [CommRing R] [Algebra O R]
   {M M' M'' : Type} [AddCommGroup M] [AddCommGroup M'] [AddCommGroup M'']
   [Module O M] [Module O M'] [Module O M'']
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp [UnitDualParts.extMul, TensorLatticeUnitPart.extBil]`. Consider the case `add x y hx hy`. Simplify using `only [UnitDualParts.extMul, TensorLatticeUnitPart.extBil, add_tmul, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Consider the case `tmul r a`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp [UnitDualParts.extMul, TensorLatticeUnitPart.extBil]`. Consider the case `add x y hx hy`. Simplify using `only [UnitDualParts.extMul, TensorLatticeUnitPart.extBil, tmul_add, map_add] at hx hy ⊢`.
+
+Rewrite using `[hx, hy]`. Consider the case `tmul r' a' => rw [UnitDualParts.extMul_tmul, TensorLatticeUnitPart.extBil_tmul, TensorProduct.lift.tmul]`.
+-/
 theorem extMul_eq (b : M →ₗ[O] M' →ₗ[O] M'') (u : R ⊗[O] M) (w : R ⊗[O] M') :
     UnitDualParts.extMul R (TensorProduct.lift b) u w = TensorLatticeUnitPart.extBil R b u w := by
   induction u using TensorProduct.induction_on with
@@ -33,6 +40,9 @@ theorem extMul_eq (b : M →ₗ[O] M' →ₗ[O] M'') (u : R ⊗[O] M) (w : R ⊗
       rw [hx, hy]
     | tmul r' a' => rw [UnitDualParts.extMul_tmul, TensorLatticeUnitPart.extBil_tmul, TensorProduct.lift.tmul]
 
+/- English proof (translation)
+Rewrite using `[UnitDualParts.extPair, TensorLatticeUnitPart.extForm, extMul_eq]`.
+-/
 theorem extPair_eq (b : M →ₗ[O] M' →ₗ[O] O) (u : R ⊗[O] M) (w : R ⊗[O] M') :
     UnitDualParts.extPair R b u w = TensorLatticeUnitPart.extForm R b u w := by
   rw [UnitDualParts.extPair, TensorLatticeUnitPart.extForm, extMul_eq]
@@ -52,6 +62,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
     {V'' : Type} [AddCommGroup V''] [Module LL V''] [Module Qp V''] [IsScalarTower Qp LL V'']
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [CrystallineSubrepresentation.tensorB]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem tensorB_comp (f : V →ₗ[LL] V') (g : V' →ₗ[LL] V'') (x : V ⊗[Qp] B) :
     CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) g (CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) f x) =
       CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) (g.comp f) x := by
@@ -60,10 +73,16 @@ theorem tensorB_comp (f : V →ₗ[LL] V') (g : V' →ₗ[LL] V'') (x : V ⊗[Qp
   | tmul v b => simp [CrystallineSubrepresentation.tensorB]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Simplify using `[CrystallineSubrepresentation.tensorB]`.
+-/
 theorem tensorB_id (x : V ⊗[Qp] B) :
     CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) (LinearMap.id : V →ₗ[LL] V) x = x := by
   simp [CrystallineSubrepresentation.tensorB]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [CrystallineSubrepresentation.tensorB]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`.
+-/
 theorem tensorB_zero (x : V ⊗[Qp] B) :
     CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) (0 : V →ₗ[LL] V') x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -71,6 +90,9 @@ theorem tensorB_zero (x : V ⊗[Qp] B) :
   | tmul v b => simp [CrystallineSubrepresentation.tensorB]
   | add a b ha hb => simp only [map_add, ha, hb, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [CrystallineSubrepresentation.tensorB, add_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tensorB_add (f g : V →ₗ[LL] V') (x : V ⊗[Qp] B) :
     CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) (f + g) x =
       CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) f x + CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) g x := by
@@ -79,10 +101,20 @@ theorem tensorB_add (f g : V →ₗ[LL] V') (x : V ⊗[Qp] B) :
   | tmul v b => simp [CrystallineSubrepresentation.tensorB, add_tmul]
   | add a b ha hb => simp only [map_add, ha, hb]; abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_DcrisMap {ρ : Representation LL G V} {ρ' : Representation LL G V'} {f : V →ₗ[LL] V'}
     (hf : CrystallineSubrepresentation.IsEquivariant ρ ρ' f) (x : ↥(Dcris PD ρ)) :
     (CrystallineSubrepresentation.DcrisMap PD hf x : V' ⊗[Qp] B) = CrystallineSubrepresentation.tensorB (Qp := Qp) (B := B) f x := rfl
 
+/- English proof (translation)
+Establish `h1 : CrystallineSubrepresentation.IsEquivariant ρ ρ' e.toLinearMap` using `he`. Establish `h2 : CrystallineSubrepresentation.IsEquivariant ρ' ρ e.symm.toLinearMap` using `fun g x => by`. Apply `e.injective` to reduce the goal to its premises. Simplify using `[he]`. Set `E : ↥(Dcris PD ρ) ≃ₗ[LL] ↥(Dcris PD ρ')` to `LinearEquiv.ofLinear (CrystallineSubrepresentation.DcrisMap PD h1) (CrystallineSubrepresentation.DcrisMap PD h2) (by`.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, coe_DcrisMap, tensorB_comp, LinearMap.id_apply]`. Rewrite using `[show e.toLinearMap.comp e.symm.toLinearMap = LinearMap.id by ext; simp, tensorB_id])`. Use the proof step `(by`. Use extensionality with `x`.
+
+Simplify using `only [LinearMap.comp_apply, coe_DcrisMap, tensorB_comp, LinearMap.id_apply]`. Rewrite using `[show e.symm.toLinearMap.comp e.toLinearMap = LinearMap.id by ext; simp, tensorB_id])`. Unfold `IsCrys at h ⊢`. Rewrite using `[← E.finrank_eq, ← e.finrank_eq, h]`.
+-/
 theorem isCrys_of_equiv {ρ : Representation LL G V} {ρ' : Representation LL G V'} (e : V ≃ₗ[LL] V')
     (he : ∀ g x, e (ρ g x) = ρ' g (e x)) (h : IsCrys PD ρ) : IsCrys PD ρ' := by
   have h1 : CrystallineSubrepresentation.IsEquivariant ρ ρ' e.toLinearMap := he
@@ -102,6 +134,13 @@ theorem isCrys_of_equiv {ρ : Representation LL G V} {ρ' : Representation LL G 
   unfold IsCrys at h ⊢
   rw [← E.finrank_eq, ← e.finrank_eq, h]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (finrank LL ↥(Dcris PD ρ)) with h0 | h0` into its components or cases. Use `PD.finK₀` as an intermediate fact. Establish `hK : 0 < finrank Qp K₀` using `Module.finrank_pos`. Unfold `IsCrys at h`. Establish `hV : finrank LL V = 0`.
+
+Rewrite `h` using `[h0]`. Break down `Nat.mul_eq_zero.mp h.symm with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `: Subsingleton V` using `Module.finrank_zero_iff.mp hV`.
+
+Use `infer_instance`. Conclude with `Module.finite_of_finrank_pos h0`.
+-/
 theorem finite_Dcris [FiniteDimensional LL V] {ρ : Representation LL G V} (h : IsCrys PD ρ) :
     Module.Finite LL ↥(Dcris PD ρ) := by
   rcases Nat.eq_zero_or_pos (finrank LL ↥(Dcris PD ρ)) with h0 | h0
@@ -117,6 +156,15 @@ theorem finite_Dcris [FiniteDimensional LL V] {ρ : Representation LL G V} (h : 
     infer_instance
   · exact Module.finite_of_finrank_pos h0
 
+/- English proof (translation)
+Use `finite_Dcris PD h` as an intermediate fact. Use `finite_Dcris PD h'` as an intermediate fact. Establish `e1 : CrystallineSubrepresentation.IsEquivariant ρ (ρ.prod ρ') (LinearMap.inl LL V V')` using `fun g x => by`. Simplify using `[Representation.prod]`. Establish `e2 : CrystallineSubrepresentation.IsEquivariant ρ' (ρ.prod ρ') (LinearMap.inr LL V V')` using `fun g x => by`.
+
+Simplify using `[Representation.prod]`. Establish `p1 : CrystallineSubrepresentation.IsEquivariant (ρ.prod ρ') ρ (LinearMap.fst LL V V')` using `fun g x => by`. Simplify using `[Representation.prod]`. Establish `p2 : CrystallineSubrepresentation.IsEquivariant (ρ.prod ρ') ρ' (LinearMap.snd LL V V')` using `fun g x => by`. Simplify using `[Representation.prod]`.
+
+Set `E : (↥(Dcris PD ρ) × ↥(Dcris PD ρ')) ≃ₗ[LL] ↥(Dcris PD (ρ.prod ρ'))` to `LinearEquiv.ofLinear ((CrystallineSubrepresentation.DcrisMap PD e1).coprod (CrystallineSubrepresentation.DcrisMap PD e2)) ((CrystallineSubrepresentation.DcrisMap PD p1).prod (CrystallineSubrepresentation.DcrisMap PD p2)) (by`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coprod_apply, LinearMap.prod_apply, Function.prod, Submodule.coe_add, coe_DcrisMap, tensorB_comp, LinearMap.id_apply]`. Apply the tactic sequence `rw [← tensorB_add, show (LinearMap.inl LL V V').comp (LinearMap.fst LL V V') + (LinearMap.inr LL V V').comp (LinearMap.snd LL V V') = LinearMap.id by ext <;> simp, tensorB_id])`. Use the proof step `(by`.
+
+Use `LinearMap.ext fun x => Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coprod_apply, LinearMap.prod_apply, Function.prod, Prod.fst_add, Prod.snd_add, Submodule.coe_add, coe_DcrisMap, map_add, tensorB_comp, LinearMap.id_apply, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, tensorB_id, tensorB_zero, add_zero]`. Simplify using `only [LinearMap.comp_apply, LinearMap.coprod_apply, LinearMap.prod_apply, Function.prod, Prod.fst_add, Prod.snd_add, Submodule.coe_add, coe_DcrisMap, map_add, tensorB_comp, LinearMap.id_apply, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, tensorB_id, tensorB_zero, zero_add])`. Unfold `IsCrys at h h' ⊢`. Rewrite using `[← E.finrank_eq, Module.finrank_prod, Module.finrank_prod, h, h', mul_add]`.
+-/
 theorem isCrys_prod [FiniteDimensional LL V] [FiniteDimensional LL V']
     {ρ : Representation LL G V} {ρ' : Representation LL G V'}
     (h : IsCrys PD ρ) (h' : IsCrys PD ρ') : IsCrys PD (ρ.prod ρ') := by
@@ -163,9 +211,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isSumLat_iff {T T' T'' : LocLat G Qp LL O} (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L) :
     UnitDualParts.IsSumLat i i' ↔ TensorLatticeUnitPart.IsSumLat i i' := Iff.rfl
 
+/- English proof (translation)
+Establish `h : TensorProduct.lift (TensorProduct.curry m.toLinearMap) = m.toLinearMap`. Use extensionality with `x y`. Simplify using the standard rewrite rules. Use `⟨h, ?_, fun g x y => hm g x y⟩` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `m.bijective`.
+-/
 theorem isTensorLat_curry {T T' T'' : LocLat G Qp LL O} (m : ↥T.L.T ⊗[O] ↥T'.L.T ≃ₗ[O] ↥T''.L.T)
     (hm : UnitDualParts.IsTensorLat m) :
     TensorProduct.lift (TensorProduct.curry m.toLinearMap) = m.toLinearMap ∧
@@ -176,11 +232,17 @@ theorem isTensorLat_curry {T T' T'' : LocLat G Qp LL O} (m : ↥T.L.T ⊗[O] ↥
   rw [h]
   exact m.bijective
 
+/- English proof (translation)
+Introduce `g x y` and use `by simpa using hb.2 g x y`.
+-/
 theorem isTensorLat_ofBijective {T T' T'' : LocLat G Qp LL O}
     (b : ↥T.L.T →ₗ[O] ↥T'.L.T →ₗ[O] ↥T''.L.T) (hb : TensorLatticeUnitPart.IsTensorLat b) :
     UnitDualParts.IsTensorLat (LinearEquiv.ofBijective (TensorProduct.lift b) hb.1) := fun g x y => by
   simpa using hb.2 g x y
 
+/- English proof (translation)
+The claim follows from `isCrys_of_equiv PD (LinearEquiv.ofBijective (i.f.coprod i'.f) hs.1) (fun g x => by simp [Representation.prod, i.equiv, i'.equiv]) (isCrys_prod PD h h')`.
+-/
 theorem isCrys_of_isSumLat {T T' T'' : LocLat G Qp LL O} (i : LatHom T.L T''.L)
     (i' : LatHom T'.L T''.L) (h : IsCrys PD T.ρ) (h' : IsCrys PD T'.ρ) (hs : TensorLatticeUnitPart.IsSumLat i i') :
     IsCrys PD T''.ρ :=
@@ -199,6 +261,23 @@ def DualLatCrys : Prop :=
   ∀ (T T' : LocLat G Qp LL O) (Pr : T.V →ₗ[LL] T'.V →ₗ[LL] LL),
     IsCrys PD T.ρ → IsDualLat T.L T'.L Pr → IsCrys PD T'.ρ
 
+/- English proof (translation)
+Rewrite using `[← isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) LL]`. Use `⟨fun s => ?_, fun y => ?_, fun {x y} h => ⟨1, by rw [Subtype.ext h]⟩⟩` and prove the remaining obligations. Use `(IsLocalization.map_units LL s).map (algebraMap LL (Module.End LL T.V))` as an intermediate fact. Rewrite `this`, the goal using `[Module.End.isUnit_iff]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hy : y ∈ Submodule.span LL (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`. Establish `: ∃ s : nonZeroDivisors O, (s : O) • y ∈ T.L.T`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact ⟨1, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨t, ht⟩` from `hy`.
+
+Use `⟨s * t, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, Submonoid.coe_mul]`. Use `T.L.T.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `T.L.T.smul_mem _ hs`.
+
+Rewrite using `[mul_smul]`. Conclude with `T.L.T.smul_mem _ ht`. Consider the case `smul c x _ hx`. Take `⟨s, hs⟩` from `hx`. Take `⟨⟨a, t⟩, hc⟩` from `IsLocalization.surj (nonZeroDivisors O) c`.
+
+Use `⟨s * t, ?_⟩` and prove the remaining obligations. Establish `: ((s * t : nonZeroDivisors O) : O) • c • x = a • (s : O) • x`. Rewrite using `[← algebraMap_smul LL a, ← algebraMap_smul LL (s : O), ← algebraMap_smul LL ((s * t : nonZeroDivisors O) : O), smul_smul, smul_smul, Submonoid.coe_mul, map_mul]`. Simplify using `only at hc`. Rewrite using `[← hc]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `T.L.T.smul_mem _ hs`. Take `⟨s, hs⟩` from `this`.
+
+Conclude with `⟨(⟨_, hs⟩, s), rfl⟩`.
+-/
 theorem isBaseChange_lat [IsFractionRing O LL] (T : LocLat G Qp LL O) :
     IsBaseChange LL T.L.T.subtype := by
   rw [← isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) LL]
@@ -238,6 +317,15 @@ theorem isBaseChange_lat [IsFractionRing O LL] (T : LocLat G Qp LL O) :
     obtain ⟨s, hs⟩ := this
     exact ⟨(⟨_, hs⟩, s), rfl⟩
 
+/- English proof (translation)
+Introduce `T T' T'' b hT hT' hb`. Set `e : T.V ⊗[LL] T'.V ≃ₗ[LL] T''.V` to `(TensorProduct.congr (isBaseChange_lat T).equiv.symm (isBaseChange_lat T').equiv.symm).trans ((AlgebraTensorModule.distribBaseChange O LL ↥T.L.T ↥T'.L.T).symm.trans (((LinearEquiv.ofBijective (TensorProduct.lift b) hb.1).baseChange O LL _ _).trans (isBaseChange_lat T'').equiv))`. Establish `he : ∀ (x : ↥T.L.T) (y : ↥T'.L.T), e ((x : T.V) ⊗ₜ[LL] (y : T'.V)) = (b x y : T''.V)`. Introduce `x y`. Establish `hx : (isBaseChange_lat T).equiv.symm (x : T.V) = 1 ⊗ₜ[O] x` using `(isBaseChange_lat T).equiv_symm_apply x`.
+
+Establish `hy : (isBaseChange_lat T').equiv.symm (y : T'.V) = 1 ⊗ₜ[O] y` using `(isBaseChange_lat T').equiv_symm_apply y`. Simplify using `[e, hx, hy, IsBaseChange.equiv_tmul]`. Use `isCrys_of_equiv PD e (fun g z => ?_) (h T.V T.ρ T'.V T'.ρ hT hT')` and prove the remaining obligations. Establish `key : TensorProduct.curry (e.toLinearMap.comp ((T.ρ.tprod T'.ρ) g)) = TensorProduct.curry ((T''.ρ g).comp e.toLinearMap)`. Use `LinearMap.ext_on T.L.span fun x hx => LinearMap.ext_on T'.L.span fun y hy => ?_` and prove the remaining obligations.
+
+Establish `h1` using `he (T.actT g ⟨x, hx⟩) (T'.actT g ⟨y, hy⟩)`. Establish `h2` using `he ⟨x, hx⟩ ⟨y, hy⟩`. Rewrite `h1` using `[hb.2]`. Express the relevant statement in the definitionally equal form `e (T.ρ g x ⊗ₜ[LL] T'.ρ g y) = T''.ρ g (e (x ⊗ₜ[LL] y))`. Rewrite using `[h2]`.
+
+Conclude with `h1`. Conclude with `LinearMap.congr_fun (TensorProduct.curry_injective key) z`.
+-/
 theorem tensorLatCrys_of [IsFractionRing O LL] (h : CrystallineSubrepresentation.TensorCrys PD LL) :
     TensorLatCrys PD LL O := by
   intro T T' T'' b hT hT' hb
@@ -265,6 +353,13 @@ theorem tensorLatCrys_of [IsFractionRing O LL] (h : CrystallineSubrepresentation
     exact h1
   exact LinearMap.congr_fun (TensorProduct.curry_injective key) z
 
+/- English proof (translation)
+Introduce and unpack `T T' Pr hT ⟨hG, -, h2, hr, -⟩`. Establish `hinj : Function.Injective Pr.flip`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Conclude with `h2 y fun x => LinearMap.congr_fun hy x`.
+
+Establish `hbij : Function.Bijective Pr.flip` using `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [← hr]; exact (Subspace.dual_finrank_eq (K := LL) (V := T.V)).symm)).mp hinj⟩`. Set `e : T'.V ≃ₗ[LL] Module.Dual LL T.V` to `LinearEquiv.ofBijective Pr.flip hbij`. Use `isCrys_of_equiv PD e.symm (fun g f => ?_) (h T.V T.ρ hT)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective f`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[e.apply_symm_apply, e.symm_apply_apply]`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Pr (T.ρ g⁻¹ x) y = Pr x (T'.ρ g y)`. Rewrite using `[← hG g]`. Simplify using the standard rewrite rules.
+-/
 theorem dualLatCrys_of (h : CrystallineSubrepresentation.DualCrys PD LL) : DualLatCrys PD LL O := by
   rintro T T' Pr hT ⟨hG, -, h2, hr, -⟩
   have hinj : Function.Injective Pr.flip := by
@@ -287,9 +382,25 @@ theorem dualLatCrys_of (h : CrystallineSubrepresentation.DualCrys PD LL) : DualL
 variable {W : LocWach PD LL O v n} {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem unit_iff (E : EtTie W RA RW inclR φR gR πA) : UnitDualParts.UnitFor E ↔ TensorLatticeUnitPart.UnitAt W E :=
   Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h T T' T'' i i' hT hT' hs`. Take `⟨σ, h1, h2, h3, h4⟩` from `h T T' T'' hT hT' i i' hs`. Use `⟨isCrys_of_isSumLat i i' hT hT' hs, ?_, fun x y => ?_, fun g x y => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `: ⇑((W.map i).coprod (W.map i')) = σ`.
+
+Use function extensionality and compare the values at `p`. Conclude with `(h1 p.1 p.2).symm`. Rewrite using `[this]`. Conclude with `σ.bijective`. Rewrite using `[← h1, ← h1, h2]`.
+
+Rewrite using `[← h1, ← h1, h3]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨⟨x, y⟩, rfl⟩` from `σ.surjective z`. Conclude with `⟨x, ((h4 x y).mp hz).1, y, ((h4 x y).mp hz).2, h1 x y⟩`.
+
+Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Rewrite using `[← h1]`. Conclude with `(h4 x y).mpr ⟨hx, hy⟩`. Introduce `h T T' T'' hT hT' i i' hs`. Take `⟨-, h1, h2, h3, h4⟩` from `h T T' T'' i i' hT hT' hs`.
+
+Use `⟨LinearEquiv.ofBijective _ h1, fun x y => rfl, h2, h3, fun x y => ?_⟩` and prove the remaining obligations. Use `(h4 _).trans ⟨?_, fun h => ⟨x, h.1, y, h.2, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x', hx', y', hy', hxy⟩`. Establish `: (x, y) = (x', y')` using `h1.1 hxy`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj this`.
+
+Conclude with `⟨hx', hy'⟩`.
+-/
 theorem sum_iff : UnitDualParts.SumFor W ↔ TensorLatticeUnitPart.SumAt W := by
   constructor
   · intro h T T' T'' i i' hT hT' hs
@@ -318,6 +429,23 @@ theorem sum_iff : UnitDualParts.SumFor W ↔ TensorLatticeUnitPart.SumAt W := by
     obtain ⟨rfl, rfl⟩ := Prod.mk.inj this
     exact ⟨hx', hy'⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun T T' T'' hT hT' m hm => ?_, fun T T' T'' b hT hT' hb => (h T T' T'' b hT hT' hb).1⟩` and prove the remaining obligations. Take `⟨hl, hb⟩` from `isTensorLat_curry m hm`. Take `⟨-, β, h1, h2, h3, h4, -, βN, h5, h6⟩` from `h T T' T'' _ hT hT' hb`.
+
+Use `⟨β, fun x y => ?_, h2, h3, h4, LinearEquiv.ofBijective _ h6, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ← extMul_eq, hl]`. Rewrite using `[← h5]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h, hc⟩ T T' T'' b hT hT' hb`.
+
+Take `⟨μ, h1, h2, h3, h4, ν, hν⟩` from `h T T' T'' hT hT' _ (isTensorLat_ofBijective b hb)`. Use `⟨hc T T' T'' b hT hT' hb, μ, fun x y => ?_, h2, h3, h4, ?_, TensorProduct.curry ν.toLinearMap, fun x y => hν x y, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ← extMul_eq]`. Both sides reduce to the same expression. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `z hz`. Take `⟨w, hw⟩` from `ν.surjective ⟨z, hz⟩`. Establish `hz' : z = ((ν w : ↥(W.N T'')) : W.DD T'')` using `by rw [hw]`. Rewrite using `[hz']`. Use `clear hw hz' hz`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [hν]`. Conclude with `Submodule.subset_span ⟨x, x.2, y, y.2, rfl⟩`. Consider the case `add a b ha hb => rw [map_add, Submodule.coe_add]`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨x, hx, y, hy, rfl⟩`. Use `hν ⟨x, hx⟩ ⟨y, hy⟩` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[← this]`. Conclude with `(ν _).2`. Establish `: TensorProduct.lift (TensorProduct.curry ν.toLinearMap) = ν.toLinearMap`. Use extensionality with `x y`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `ν.bijective`.
+-/
 theorem tensor_iff (E : EtTie W RA RW inclR φR gR πA) :
     TensorLatticeUnitPart.TensorAt W E ↔ UnitDualParts.TensorFor E ∧ TensorLatCrys PD LL O := by
   constructor
@@ -356,6 +484,15 @@ theorem tensor_iff (E : EtTie W RA RW inclR φR gR πA) :
       rw [this]
       exact ν.bijective
 
+/- English proof (translation)
+Use `choose c hc using hv`. Establish `hl : ∀ (a : A) (x : D) (y : D'), b (a • x) y = algebraMap A R a * b x y`. Introduce `a x y`. Rewrite using `[← algebraMap_smul R a x, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Establish `hr : ∀ (a : A) (x : D) (y : D'), b x (a • y) = algebraMap A R a * b x y`.
+
+Introduce `a x y`. Rewrite using `[← algebraMap_smul R a y, map_smul, smul_eq_mul]`. Set `d : ↥N' →ₗ[A] ↥N →ₗ[A] A` to `LinearMap.mk₂ A (fun y x => c y y.2 x x.2) (fun y y' x => hinj (by rw [map_add, ← hc, ← hc, ← hc, Submodule.coe_add, map_add])) (fun a y x => hinj (by rw [smul_eq_mul, map_mul, ← hc, ← hc, Submodule.coe_smul, hr])) (fun y x x' => hinj (by`. Rewrite using `[map_add, ← hc, ← hc, ← hc, Submodule.coe_add, map_add, LinearMap.add_apply]))`. Use the proof step `(fun a y x => hinj (by rw [smul_eq_mul, map_mul, ← hc, ← hc, Submodule.coe_smul, hl]))`.
+
+Establish `hd : ∀ (x : ↥N) (y : ↥N'), b (x : D) (y : D') = algebraMap A R (d y x)` using `fun x y => hc y y.2 x x.2`. Use `⟨LinearEquiv.ofBijective d ⟨?_, fun f => ?_⟩, hd⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Use `Subtype.ext (hi y fun x hx => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hd ⟨x, hx⟩ y, hy, LinearMap.zero_apply, map_zero]`. Take `⟨y, hy, hf⟩` from `hs f`. Use `⟨⟨y, hy⟩, LinearMap.ext fun x => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← hd, hf]`.
+-/
 theorem exists_dualEquiv {A R D D' : Type} [CommRing A] [CommRing R] [Algebra A R]
     [AddCommGroup D] [Module R D] [Module A D] [IsScalarTower A R D]
     [AddCommGroup D'] [Module R D'] [Module A D'] [IsScalarTower A R D']
@@ -389,6 +526,13 @@ theorem exists_dualEquiv {A R D D' : Type} [CommRing A] [CommRing R] [Algebra A 
     refine ⟨⟨y, hy⟩, LinearMap.ext fun x => hinj ?_⟩
     rw [← hd, hf]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun T T' hT Pr hP => ?_, fun T T' Pr hT hP => (h T T' Pr hT hP).1⟩` and prove the remaining obligations. Take `⟨-, PT, h0, β, h1, h2, h2', h3, h4, h5, h6⟩` from `h T T' Pr hT hP`. Use `⟨PT, β, fun x y => (h0 x y).symm, fun x y => by rw [h1, extPair_eq], h2, h2', h3, h4, h5, exists_dualEquiv W.EE_inj _ _ β (fun y hy => (h5 y).mp hy) (fun y hy => ?_) h6⟩` and prove the remaining obligations.
+
+Apply `h2'.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(W.N_base T hT).algHom_ext _ _ fun x => hy x x.2`. Introduce and unpack `⟨h, hc⟩ T T' Pr hT hP`. Take `⟨PT, β, h0, h1, h2, h2', h3, h4, h5, δ, hδ⟩` from `h T T' hT Pr hP`.
+
+Use `⟨hc T T' Pr hT hP, PT, fun x y => (h0 x y).symm, β, fun x y => by rw [h1, extPair_eq], h2, h2', h3, h4, h5, fun f => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `δ.surjective f`. Conclude with `⟨y, y.2, fun x => hδ x y⟩`.
+-/
 theorem dual_iff (E : EtTie W RA RW inclR φR gR πA) :
     TensorLatticeUnitPart.DualAt W E ↔ UnitDualParts.DualFor E ∧ DualLatCrys PD LL O := by
   constructor
@@ -416,16 +560,28 @@ def TensorDualCrys : Prop :=
   ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL →
     TensorLatCrys (P.PD K) ↥LL.1 ↥(OL LL) ∧ DualLatCrys (P.PD K) ↥LL.1 ↥(OL LL)
 
+/- English proof (translation)
+Introduce `K _ LL _` and use `by obtain ⟨_, -, -, -, -, -, hF⟩ := GlobalTheory.Per.integers_completeDVR l LL exact ⟨tensorLatCrys_of (hT K LL), dualLatCrys_of (hD K LL)⟩`.
+-/
 theorem tensorDualCrys_of (hT : CrystallineSubrepresentation.LocTensorCrys l P) (hD : CrystallineSubrepresentation.LocDualCrys l P) :
     TensorDualCrys l P := fun K _ LL _ => by
   obtain ⟨_, -, -, -, -, -, hF⟩ := GlobalTheory.Per.integers_completeDVR l LL
   exact ⟨tensorLatCrys_of (hT K LL), dualLatCrys_of (hD K LL)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem unitPart_iff : UnitDualParts.UnitPart l P AI H F ↔ TensorLatticeUnitPart.UnitPart l P AI H F := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h K s LL hg => sum_iff.mp (h K s LL hg), fun h K s LL hg => sum_iff.mpr (h K s LL hg)⟩`.
+-/
 theorem sumPart_iff : UnitDualParts.SumPart l P H ↔ TensorLatticeUnitPart.SumPart l P H :=
   ⟨fun h K s LL hg => sum_iff.mp (h K s LL hg), fun h K s LL hg => sum_iff.mpr (h K s LL hg)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨⟨h1, (sumPart_iff l P H).mpr h2, fun K s LL hg => ((tensor_iff _).mp (h3 K s LL hg)).1, fun K s LL hg => ((dual_iff _).mp (h4 K s LL hg)).1⟩, fun K s LL hg => ⟨((tensor_iff _).mp (h3 K s LL hg)).2, ((dual_iff _).mp (h4 K s LL hg)).2⟩⟩`. Introduce and unpack `⟨⟨h1, h2, h3, h4⟩, hc⟩`. Conclude with `⟨h1, (sumPart_iff l P H).mp h2, fun K s LL hg => (tensor_iff _).mpr ⟨h3 K s LL hg, (hc K s LL hg).1⟩, fun K s LL hg => (dual_iff _).mpr ⟨h4 K s LL hg, (hc K s LL hg).2⟩⟩`.
+-/
 theorem wachMonoidal_iff :
     TensorLatticeUnitPart.WachMonoidal l P AI H F ↔ UnitDualParts.UnitSumTensorDual l P AI H F ∧ TensorDualCrys l P := by
   constructor
@@ -439,10 +595,16 @@ theorem wachMonoidal_iff :
       fun K s LL hg => (tensor_iff _).mpr ⟨h3 K s LL hg, (hc K s LL hg).1⟩,
       fun K s LL hg => (dual_iff _).mpr ⟨h4 K s LL hg, (hc K s LL hg).2⟩⟩
 
+/- English proof (translation)
+The claim follows from `((wachMonoidal_iff l P AI H F).mp h).1`.
+-/
 theorem unitSumTensorDual_of_wachMonoidal (h : TensorLatticeUnitPart.WachMonoidal l P AI H F) :
     UnitDualParts.UnitSumTensorDual l P AI H F :=
   ((wachMonoidal_iff l P AI H F).mp h).1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (wachMonoidal_iff l P AI H F).mpr ⟨h, tensorDualCrys_of l P hT hD⟩, unitSumTensorDual_of_wachMonoidal l P AI H F⟩`.
+-/
 theorem equiv_of_stability (hT : CrystallineSubrepresentation.LocTensorCrys l P) (hD : CrystallineSubrepresentation.LocDualCrys l P) :
     UnitDualParts.UnitSumTensorDual l P AI H F ↔ TensorLatticeUnitPart.WachMonoidal l P AI H F :=
   ⟨fun h => (wachMonoidal_iff l P AI H F).mpr ⟨h, tensorDualCrys_of l P hT hD⟩,

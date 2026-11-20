@@ -14,6 +14,17 @@ open scoped TensorProduct Pointwise
 namespace GlobalTheory.AdForm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a Ch A hA ψ θ x vac c₀ hX k _ _ _ _ ι p β Q hStd J hPl j hj α γ cT hReps e he`. Establish `hjm : j ≤ B.R.m` using `Nat.le_of_succ_le hj`. Establish `hL0 : ∀ z, z ∈ (x j).L ↔ z ∈ intVec (I.rec7 l Z) _` using `(hX.xs j hjm).2.2`. Establish `hL1 : ∀ z, z ∈ (x (j + 1)).L ↔ z ∈ intVec (I.rec7 l Z) _` using `(hX.xs (j + 1) hj).2.2`. Establish `hvac` using `hX.vc j (by omega)`.
+
+Establish `hS0 : ((x j).L : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) = intVec (I.rec7 l Z) _` using `by ext z; exact hL0 z`. Establish `hS1 : ((x (j + 1)).L : Set (Fin ((I.rec7 l Z).sp.X (j + 1)).rank → (I.rec7 l Z).host.E)) = intVec (I.rec7 l Z) _` using `by ext z; exact hL1 z`. Establish `hV : Vac ψ _ _ (x j).L (x (j + 1)).L (fun v => ∃ i, v = (p i).v) (vac j)`. Use `⟨hvac.2.theta, ?_⟩` and prove the remaining obligations. Establish `hle : latO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) ((x j).L : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) ((x (j + 1)).L : Set (Fin ((I.rec7 l Z).sp.X (j + 1)).rank → (I.rec7 l Z).host.E)) (fun v => ∃ i, v = (p i).v) ≤ stdHom _ _`.
+
+Rewrite using `[hS0, hS1]`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨a, ha, -, rest⟩`. Conclude with `⟨a, ha, fun _ h => absurd trivial h, rest⟩`. Conclude with `⟨fun u hu => hvac.2.lat.1 u (hle hu), fun e' he' u hu hh => hvac.2.lat.2 e' he' u (hle hu) hh⟩`.
+
+Establish `hO` using `hReps.2 (vac j) hV`. Take `⟨eq, heq⟩` from `hStd.1`. Establish `hF` using `GlobalTheory.T.putInSplitPlaces_datum_product_on_half (I.rec7 l Z) k ι p J hPl _ _ ψ hX.std _ _ (β j) (β (j + 1)) (x j).L (x (j + 1)).L (GlobalTheory.T.integral_coordinate_vectors_chain_space_selfDual I hOk l Z j hjm _ hL0) (GlobalTheory.T.integral_coordinate_vectors_chain_space_ …`. Establish `hval` using `GlobalTheory.T.chartBasePoints_levelDatum_eq_local_prod I hOk hPins l Z u a Ch A hA k ι p β Q _ hStd J hPl j hj α γ`. Use `hF using 2 with z` and compare the differences between its conclusion and the goal.
+
+Conclude with `hval z`.
+-/
 theorem twVec' : TwVec' := by
   intro B X I hOk hPins l Z u a Ch A hA ψ θ x vac c₀ hX k _ _ _ _ ι p β Q hStd J hPl j hj α γ cT hReps e he
   have hjm : j ≤ B.R.m := Nat.le_of_succ_le hj

@@ -4,6 +4,9 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.BoxTail
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast x 400, ← Real.rpow_mul hx.le, ← Real.rpow_natCast x 399, ← Real.rpow_add hx]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tail_num_rpow (x ε : ℝ) (hx : 0 < x) :
     (x ^ 400) ^ (1 - 1 / 400 + ε / 1600 : ℝ) = x ^ 399 * x ^ (ε / 4) := by
   rw [← Real.rpow_natCast x 400, ← Real.rpow_mul hx.le, ← Real.rpow_natCast x 399,
@@ -12,6 +15,9 @@ theorem tail_num_rpow (x ε : ℝ) (hx : 0 < x) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `hx.ne'`. Establish `hQ0 : Q ≠ 0` using `hQ.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tail_num_alg (x Q K l a g : ℝ) (hx : 0 < x) (hQ : 0 < Q) :
     x * ((K * l * (l * (1 / x ^ 2) * (x ^ 399 * a) + (x ^ 400) ^ 2 / Q)
           + x ^ 400 * (1 / x ^ 2) * (x ^ 400 * (1 / x ^ 2) + 1) * g / x ^ 400)
@@ -21,6 +27,17 @@ theorem tail_num_alg (x Q K l a g : ℝ) (hx : 0 < x) (hQ : 0 < Q) :
   have hQ0 : Q ≠ 0 := hQ.ne'
   field_simp
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hx1 : 1 ≤ x` using `by linarith`. Establish `hp : 0 < x ^ 398` using `by positivity`. Establish `hp1 : 1 ≤ x ^ 398` using `one_le_pow₀ hx1`. Establish `hA : x ^ 400 + x ^ 400 * (1 / x ^ 2) = x ^ 398 * (x ^ 2 + 1)`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hsq : x ^ 2 + 1 ≤ x ^ 3` using `by nlinarith`. Establish `hA1 : x ^ 398 * (x ^ 2 + 1) ≤ x ^ 401`. Establish `: x ^ 401 = x ^ 398 * x ^ 3` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hsq hp.le`. Establish `hApos : 0 < x ^ 398 * (x ^ 2 + 1)` using `by positivity`. Establish `hAge : 1 ≤ x ^ 398 * (x ^ 2 + 1)` using `by nlinarith`. Establish `hL0 : 0 ≤ Real.log (x ^ 398 * (x ^ 2 + 1))` using `Real.log_nonneg hAge`. Establish `hL1 : Real.log (x ^ 398 * (x ^ 2 + 1)) ≤ 401 * x`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Real.log_le_sub_one_of_pos hx0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx399 : x ≤ x ^ 399`. Establish `: x ^ 399 = x * x ^ 398` using `by ring`.
+
+Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hA, div_le_iff₀ (by positivity : (0:ℝ) < x ^ 399)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tail_num_third (x : ℝ) (hx : 3 ≤ x) :
     (x ^ 398 + 1) * Real.log (x ^ 400 + x ^ 400 * (1 / x ^ 2)) / x ^ 399 ≤ 802 := by
   have hx0 : 0 < x := by linarith
@@ -53,6 +70,13 @@ theorem tail_num_third (x : ℝ) (hx : 3 ≤ x) :
     _ = 401 * x ^ 399 + 401 * x := by ring
     _ ≤ 802 * x ^ 399 := by linarith
 
+/- English proof (translation)
+Establish `hs : 0 < ε / 6` using `by positivity`. Establish `h1 : Filter.Tendsto (fun x : ℝ => x ^ (ε / 6)) Filter.atTop Filter.atTop` using `tendsto_rpow_atTop hs`. Establish `h2` using `(tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero (404 / (ε / 6)) 1 one_pos).comp h1`. Establish `hc : ε / 6 * (404 / (ε / 6)) = (404 : ℝ)` using `by field_simp`. Establish `h3 : Filter.Tendsto (fun x : ℝ => x ^ 404 * Real.exp (-(x ^ (ε / 6)))) Filter.atTop (nhds 0)`.
+
+Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_gt_atTop 0] with x hx`. Simplify using `only [Function.comp, neg_mul, one_mul]`. Rewrite using `[← Real.rpow_mul hx.le, hc]`. Use `congr 1`.
+
+Conclude with `Real.rpow_natCast x 404` after adjusting the coercions. Establish `h4 : Filter.Tendsto (fun x : ℝ => K * (x ^ 404 * Real.exp (-(x ^ (ε / 6))))) Filter.atTop (nhds 0)`. Simplify using `using h3.const_mul K`. Conclude with `h4.eventually (Iic_mem_nhds (by norm_num : (0 : ℝ) < 1 / 3))`.
+-/
 theorem tail_num_exp (ε K : ℝ) (hε : 0 < ε) :
     ∀ᶠ x : ℝ in Filter.atTop, K * (x ^ 404 * Real.exp (-(x ^ (ε / 6)))) ≤ 1 / 3 := by
   have hs : 0 < ε / 6 := by positivity
@@ -73,6 +97,25 @@ theorem tail_num_exp (ε K : ℝ) (hε : 0 < ε) :
     simpa using h3.const_mul K
   exact h4.eventually (Iic_mem_nhds (by norm_num : (0 : ℝ) < 1 / 3))
 
+/- English proof (translation)
+Establish `hq : 0 < ε / 4` using `by positivity`. Establish `hev : ∀ᶠ x : ℝ in Filter.atTop, K * (x ^ 404 * Real.exp (-(x ^ (ε / 6)))) ≤ 1 / 3 ∧ K + 803 ≤ x ^ (ε / 4)` using `(tail_num_exp ε K hε).and ((tendsto_rpow_atTop hq).eventually (Filter.eventually_ge_atTop (K + 803)))`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 hev`. Use `⟨max N 3, le_max_right _ _, ?_⟩` and prove the remaining obligations. Introduce `x Q hx hQ hlo hhi`.
+
+Establish `hxN : N ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx3 : 3 ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hx1 : 1 ≤ x` using `by linarith`. Take `⟨hexp, hy⟩` from `hN x hxN`.
+
+Rewrite using `[tail_num_rpow x ε hx0, tail_num_alg x Q K (Real.log Q) (x ^ (ε / 4)) (Real.log (x ^ 400 + x ^ 400 * (1 / x ^ 2))) hx0 hQ]`. Use `set y := x ^ (ε / 4) with hydef`. Use `set l := Real.log Q with hldef`. Establish `hs0 : 0 < x ^ (ε / 6)` using `Real.rpow_pos_of_pos hx0 _`. Establish `hl0 : 0 ≤ l` using `by linarith`.
+
+Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `ht1 : K * l ^ 2 * y ≤ K * y ^ 3`. Establish `: l ^ 2 ≤ y ^ 2` using `pow_le_pow_left₀ hl0 hhi 2`. Establish `h' : l ^ 2 * y ≤ y ^ 2 * y` using `mul_le_mul_of_nonneg_right this hy0`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hyx : y ≤ x`. Use `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith : ε / 4 ≤ 1)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hlx : l ≤ x` using `le_trans hhi hyx`. Establish `hQinv : 1 / Q ≤ Real.exp (-(x ^ (ε / 6)))`.
+
+Establish `hQe : Real.exp (x ^ (ε / 6)) ≤ Q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_neg, ← one_div]`. Conclude with `one_div_le_one_div_of_le (Real.exp_pos _) hQe`. Establish `ht2 : K * (l * x ^ 403 / Q) ≤ 1 / 3`.
+
+Establish `hin : l * x ^ 403 / Q ≤ x ^ 404 * Real.exp (-(x ^ (ε / 6)))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_trans (mul_le_mul_of_nonneg_left hin hK) hexp`. Establish `ht3` using `tail_num_third x hx3`. Establish `hpow : x ^ ε = y * y * y * y`.
+
+Rewrite using `[hydef, ← Real.rpow_add hx0, ← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hy1 : 803 ≤ y` using `by linarith`. Establish `hy3 : y ≤ y ^ 3` using `by nlinarith`.
+
+Establish `hfin : K * y ^ 3 + 1 / 3 + 802 ≤ y * y * y * y`. Establish `: (K + 803) * y ^ 3 ≤ y * y ^ 3` using `mul_le_mul_of_nonneg_right hy (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hpow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tail_num (ε K : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1) (hK : 0 ≤ K) : ∃ x₀ : ℝ, 3 ≤ x₀ ∧
     ∀ x Q : ℝ, x₀ ≤ x → 0 < Q → x ^ (ε / 6) ≤ Real.log Q → Real.log Q ≤ x ^ (ε / 4) →
       x * ((K * Real.log Q * (Real.log Q * (1 / x ^ 2) * (x ^ 400) ^ (1 - 1 / 400 + ε / 1600) + (x ^ 400) ^ 2 / Q)

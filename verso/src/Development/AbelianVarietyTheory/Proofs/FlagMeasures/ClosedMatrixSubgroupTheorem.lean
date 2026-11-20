@@ -16,6 +16,9 @@ section Banach
 
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `hm _ ih _ ha`.
+-/
 theorem pow_mem_of_mul {S : Set 𝔸} (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) {a : 𝔸} (ha : a ∈ S) (n : ℕ) :
     a ^ n ∈ S := by
   induction n with
@@ -36,6 +39,19 @@ def lieSub (S : Set 𝔸) (hc : IsClosed S) (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a 
     intro c X hX t
     rw [smul_smul]; exact hX _
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Establish `key : ∀ t : ℝ, 0 ≤ t → NormedSpace.exp (t • u) ∈ S`. Introduce `t ht`. Establish `hpos : ∀ n, 0 < ‖y n‖` using `fun n => norm_pos_iff.2 (hne n)`. Establish `hn0 : Tendsto (fun n => ‖y n‖) atTop (𝓝 0)` using `by simpa using hy0.norm`.
+
+Establish `hk : Tendsto (fun n => ((⌊t / ‖y n‖⌋₊ : ℕ) : ℝ) * ‖y n‖) atTop (𝓝 t)`. Establish `hl : Tendsto (fun n => t - ‖y n‖) atTop (𝓝 t)` using `by simpa using hn0.const_sub t`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le hl tendsto_const_nhds (fun n => ?_) (fun n => ?_)` and prove the remaining obligations. Establish `h` using `(Nat.lt_floor_add_one (t / ‖y n‖)).le`. Rewrite `h` using `[div_le_iff₀ (hpos n)]`.
+
+Use `show t - ‖y n‖ ≤ _`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `Nat.floor_le (div_nonneg ht (hpos n).le)`. Rewrite `h` using `[le_div_iff₀ (hpos n)]`. Conclude with `h`.
+
+Establish `hlim` using `(NormedSpace.exp_continuous.tendsto _).comp (hk.smul hu)`. Use `hc.mem_of_tendsto hlim (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Establish `e : (((⌊t / ‖y n‖⌋₊ : ℕ) : ℝ) * ‖y n‖) • ‖y n‖⁻¹ • y n = (⌊t / ‖y n‖⌋₊ : ℕ) • y n`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel₀ (hpos n).ne', mul_one, Nat.cast_smul_eq_nsmul]`. Simplify using `only [Function.comp]`.
+
+Rewrite using `[e, NormedSpace.exp_nsmul]`. Conclude with `pow_mem_of_mul h1 hm (hS n) _`. Break down `le_total 0 t with ht | ht` into its components or cases. Conclude with `key t ht`. Use `hi _ (key (-t) (by linarith))` as an intermediate fact.
+
+Rewrite `this` using `[neg_smul, neg_neg]`. Then use the resulting hypothesis.
+-/
 theorem exp_smul_mem_of_tendsto {S : Set 𝔸} (hc : IsClosed S) (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
     (hi : ∀ Z : 𝔸, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S) {y : ℕ → 𝔸} {u : 𝔸}
     (hy0 : Tendsto y atTop (𝓝 0)) (hne : ∀ n, y n ≠ 0) (hS : ∀ n, NormedSpace.exp (y n) ∈ S)
@@ -67,6 +83,13 @@ theorem exp_smul_mem_of_tendsto {S : Set 𝔸} (hc : IsClosed S) (h1 : (1 : 𝔸
   · have := hi _ (key (-t) (by linarith))
     rwa [neg_smul, neg_neg] at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_eventually]`. Take `⟨y, hy0, hy⟩` from `exists_seq_forall_of_frequently hcon`. Use `push_neg at hy`. Use `haveI : ProperSpace 𝔸 := FiniteDimensional.proper ℝ 𝔸`.
+
+Establish `hsph : ∀ n, ‖y n‖⁻¹ • y n ∈ Metric.sphere (0 : 𝔸) 1` using `fun n => by`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 (hy n).2.2)]`. Take `⟨u, hu1, φ, hφ, hu⟩` from `(isCompact_sphere (0 : 𝔸) 1).tendsto_subseq hsph`. Establish `huL : u ∈ lieSub S hc h1 hm` using `exp_smul_mem_of_tendsto hc h1 hm hi (y := y ∘ φ) (hy0.comp hφ.tendsto_atTop) (fun n => (hy _).2.2) (fun n => (hy _).2.1) hu`. Establish `huW : u ∈ W` using `W.closed_of_finiteDimensional.mem_of_tendsto hu (Eventually.of_forall fun n => W.smul_mem _ (hy _).1)`.
+
+Establish `h0 : u = 0` using `(Submodule.disjoint_def.1 hW) u huL huW`. Rewrite `hu1` using `[h0]`. Simplify using `at hu1`.
+-/
 theorem eventually_eq_zero [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : IsClosed S) (h1 : (1 : 𝔸) ∈ S)
     (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) (hi : ∀ Z : 𝔸, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S)
     {W : Submodule ℝ 𝔸} (hW : Disjoint (lieSub S hc h1 hm) W) :
@@ -88,6 +111,11 @@ theorem eventually_eq_zero [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : IsC
   rw [h0] at hu1
   simp at hu1
 
+/- English proof (translation)
+Establish `hexp : HasStrictFDerivAt NormedSpace.exp (1 : 𝔸 →L[ℝ] 𝔸) (0 : 𝔸)` using `hasStrictFDerivAt_exp_zero`. Establish `h1 : HasStrictFDerivAt (fun z => NormedSpace.exp (p z)) ((1 : 𝔸 →L[ℝ] 𝔸).comp p) 0` using `HasStrictFDerivAt.comp (0 : 𝔸) (by rw [map_zero]; exact hexp) p.hasStrictFDerivAt`. Establish `h2 : HasStrictFDerivAt (fun z => NormedSpace.exp (z - p z)) ((1 : 𝔸 →L[ℝ] 𝔸).comp (ContinuousLinearMap.id ℝ 𝔸 - p)) 0` using `HasStrictFDerivAt.comp (0 : 𝔸) (f := fun z => z - p z) (by rw [map_zero, sub_zero]; exact hexp) (ContinuousLinearMap.id ℝ 𝔸 - p).hasStrictFDerivAt`. Establish `h3` using `h1.mul' h2`. Establish `h4 : HasStrictFDerivAt (fun z => NormedSpace.exp (p z) * NormedSpace.exp (z - p z)) ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) 0`.
+
+Use `h3.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `z`. Simplify using `[NormedSpace.exp_zero]`. Establish `h5` using `h4.map_nhds_eq_of_equiv`. Simplify `h5` using `[NormedSpace.exp_zero]`.
+-/
 theorem map_exp_mul_exp (p : 𝔸 →L[ℝ] 𝔸) :
     map (fun z => NormedSpace.exp (p z) * NormedSpace.exp (z - p z)) (𝓝 0) = 𝓝 (1 : 𝔸) := by
   have hexp : HasStrictFDerivAt NormedSpace.exp (1 : 𝔸 →L[ℝ] 𝔸) (0 : 𝔸) := hasStrictFDerivAt_exp_zero
@@ -106,6 +134,17 @@ theorem map_exp_mul_exp (p : 𝔸 →L[ℝ] 𝔸) :
   have h5 := h4.map_nhds_eq_of_equiv
   simpa [NormedSpace.exp_zero] using h5
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Take `⟨W, hW⟩` from `(lieSub S hc h1 hm).exists_isCompl`. Set `p : 𝔸 →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap ((lieSub S hc h1 hm).projection W hW)`. Establish `hpL : ∀ z, p z ∈ lieSub S hc h1 hm` using `fun z => Submodule.projection_apply_mem hW z`. Establish `hqW : ∀ z, z - p z ∈ W` using `fun z => by`.
+
+Establish `h` using `Submodule.projection_add_projection_eq_self hW z`. Establish `e : z - p z = W.projection _ hW.symm z`. Rewrite using `[sub_eq_iff_eq_add']`. Conclude with `h.symm`. Rewrite using `[e]`.
+
+Conclude with `Submodule.projection_apply_mem hW.symm z`. Rewrite using `[← map_exp_mul_exp p, eventually_map]`. Establish `hp0 : Tendsto p (𝓝 0) (𝓝 0)` using `by simpa using p.continuous.tendsto 0`. Establish `hq0 : Tendsto (fun z => z - p z) (𝓝 0) (𝓝 (0 : 𝔸))` using `by simpa using (tendsto_id (x := 𝓝 (0 : 𝔸))).sub hp0`. Use `filter_upwards [hp0.eventually hU, hq0.eventually (eventually_eq_zero hc h1 hm hi hW.disjoint)] with z hz1 hz2 hg`.
+
+Establish `hneg : NormedSpace.exp (-p z) ∈ S` using `by simpa using hpL z (-1)`. Establish `hq : NormedSpace.exp (z - p z) ∈ S`. Establish `h` using `hm _ hneg _ hg`. Rewrite `h` using `[← mul_assoc, ← NormedSpace.exp_add_of_commute (Commute.refl (p z)).neg_left, neg_add_cancel, NormedSpace.exp_zero, one_mul]`. Then use the resulting hypothesis. Use `⟨p z, hz1, hpL z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz2 (hqW z) hq, NormedSpace.exp_zero, mul_one]`.
+-/
 theorem eventually_exists_exp [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : IsClosed S) (h1 : (1 : 𝔸) ∈ S)
     (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) (hi : ∀ Z : 𝔸, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S)
     {U : Set 𝔸} (hU : U ∈ 𝓝 (0 : 𝔸)) :
@@ -133,11 +172,27 @@ theorem eventually_exists_exp [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : 
 
 end Banach
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, realifyFun]`.
+-/
 theorem unrealify_realify {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) :
     unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) = X := by
   ext i j
   apply Complex.ext <;> simp [unrealify, realifyFun]
 
+/- English proof (translation)
+Set `_` to `Matrix.linftyOpNormedRing (n := Fin m) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin m) (α := ℂ)`. Establish `hc : CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `hL : ∀ X, X ∈ lieOf S ↔ X ∈ lieSub S hS.1 hS.2.1 hS.2.2.1` using `fun X => by`. Simplify using `only [lieOf, Set.mem_setOf_eq, Complex.coe_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hL]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨X, hX, rfl⟩` from `hx`.
+
+Rewrite using `[unrealify_realify]`. Conclude with `(hL X).1 hX`. Consider the case `zero`. Establish `e : unrealify (0 : EuclideanSpace ℝ (Fin m × Fin m × Bool)) = 0`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `e : unrealify (x + y) = unrealify x + unrealify y`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Establish `e : unrealify (c • x) = c • unrealify x`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem unrealify_mem_lieOf {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS : PI.IsMatGroup S)
     {x : EuclideanSpace ℝ (Fin m × Fin m × Bool)} (hx : x ∈ lieE S) : unrealify x ∈ lieOf S := by
   let _ := Matrix.linftyOpNormedRing (n := Fin m) (α := ℂ)
@@ -163,6 +218,11 @@ theorem unrealify_mem_lieOf {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS
       ext i j; apply Complex.ext <;> simp [unrealify]
     rw [e]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `hi : ∀ Z : Matrix (Fin m) (Fin m) ℂ, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S` using `fun Z hZ => by`. Rewrite using `[Matrix.exp_neg]`. Conclude with `(hS.2.2.2 _ hZ).1`. Set `_` to `Matrix.linftyOpNormedRing (n := Fin m) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin m) (α := ℂ)`.
+
+Establish `hc : CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `h` using `eventually_exists_exp hS.1 hS.2.1 hS.2.2.1 hi hU`. Simplify using `only [lieOf, Set.mem_setOf_eq, Complex.coe_smul]`. Conclude with `h`.
+-/
 theorem eventually_exists_exp_matrix {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS : PI.IsMatGroup S)
     {U : Set (Matrix (Fin m) (Fin m) ℂ)} (hU : U ∈ 𝓝 (0 : Matrix (Fin m) (Fin m) ℂ)) :
     ∀ᶠ g in 𝓝 (1 : Matrix (Fin m) (Fin m) ℂ), g ∈ S → ∃ X ∈ U, X ∈ lieOf S ∧ NormedSpace.exp X = g := by
@@ -175,6 +235,19 @@ theorem eventually_exists_exp_matrix {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) 
   simp only [lieOf, Set.mem_setOf_eq, Complex.coe_smul]
   exact h
 
+/- English proof (translation)
+Introduce `m S hS`. Use `⟨fun X => unrealify_mem_lieOf hS X.2, fun ρ hρ => ?_⟩` and prove the remaining obligations. Set `R : Matrix (Fin m) (Fin m) ℂ → EuclideanSpace ℝ (Fin m × Fin m × Bool)` to `fun X => (WithLp.equiv 2 _).symm (realifyFun X)`. Establish `hR : Continuous R`. Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun p => ?_)` and prove the remaining obligations.
+
+Take `⟨i, j, b⟩` from `p`. Consider the cases of `b`. Simplify using `only [realifyFun]`. Simplify using the standard rewrite rules. Use `fun_prop`.
+
+Simplify using `only [realifyFun]`. Simplify using the standard rewrite rules. Use `fun_prop`. Establish `hR0 : R 0 = 0`. Use extensionality with `p`.
+
+Simplify using `[R, realifyFun]`. Establish `hU : R ⁻¹' Metric.ball 0 ρ ∈ 𝓝 (0 : Matrix (Fin m) (Fin m) ℂ)` using `hR.continuousAt.preimage_mem_nhds (by rw [hR0]; exact Metric.ball_mem_nhds _ hρ)`. Establish `h` using `eventually_exists_exp_matrix hS hU`. Take `⟨δ, hδ, hb⟩` from `(Metric.eventually_nhds_iff (α := Fin m → Fin m → ℂ)).1 h`. Use `⟨δ, hδ, fun g hg hgδ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨X, hXU, hXL, rfl⟩` from `@hb g (by`. Use `(dist_pi_lt_iff hδ).2 fun i => (dist_pi_lt_iff hδ).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Conclude with `hgδ i j) hg`. Use `⟨⟨R X, Submodule.subset_span ⟨X, hXL, rfl⟩⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_ball_zero_iff]`. Conclude with `mem_ball_zero_iff.1 hXU`. Simplify using `only [R]`. Rewrite using `[unrealify_realify]`.
+-/
 theorem closed_subgroup : ∀ (m : ℕ) (S : Set (Matrix (Fin m) (Fin m) ℂ)), PI.IsMatGroup S → (∀ X : lieE S, unrealify (X : EuclideanSpace ℝ _) ∈ lieOf S) ∧ ∀ ρ : ℝ, 0 < ρ → ∃ δ : ℝ, 0 < δ ∧ ∀ g ∈ S, (∀ i j, ‖(g - 1) i j‖ < δ) → Matrix.of.symm g ∈ expSet S (Metric.ball 0 ρ) := by
   intro m S hS
   refine ⟨fun X => unrealify_mem_lieOf hS X.2, fun ρ hρ => ?_⟩

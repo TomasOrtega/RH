@@ -79,9 +79,15 @@ def LimW : Prop :=
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → (∃ B, (CG.mk π).HasSat w B) →
         ClauseAt .crys π ι r w ∧ ClauseAt .dR π ι r w)
 
+/- English proof (translation)
+Introduce `_ h` and use `absurd h (Finset.notMem_empty _)`.
+-/
 theorem apartAll_empty (w : HeightOneSpectrum (𝓞 E)) : ApartAll (∅ : Finset (HeightOneSpectrum (𝓞 E))) w :=
   fun _ h => absurd h (Finset.notMem_empty _)
 
+/- English proof (translation)
+Introduce `⟨_, x, hx⟩` and use `by have h := sq_nonneg x push_cast at hx linarith`.
+-/
 example : ¬ ImQ ℚ 1 := fun ⟨_, x, hx⟩ => by
   have h := sq_nonneg x
   push_cast at hx

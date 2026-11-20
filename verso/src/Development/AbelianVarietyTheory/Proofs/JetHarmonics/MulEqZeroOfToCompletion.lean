@@ -27,6 +27,9 @@ section General
 variable {O : Type} [CommRing O] {G : Over (Spec (CommRingCat.of O))} [GrpObj G] [IsCommMonObj G]
   {R : Type} [CommRing R] (α : RingAct G R)
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => Subtype.ext_iff`.
+-/
 theorem isEig_iff (τ : R →+* O) (x : LieG G) :
     IsEig G α τ x ↔ ∀ a : R, x.1 ≫ α.act a = ptMap (dualScale (τ a)) ≫ x.1 :=
   forall_congr' fun _ => Subtype.ext_iff
@@ -37,11 +40,19 @@ def eigEquiv (τ : R →+* O) : LieTau G α τ ≃ LieEig α τ :=
 def funEquiv (τ : R →+* O) : (LieTau G α τ → O) ≃ₗ[O] (LieEig α τ → O) :=
   LinearEquiv.funCongrLeft O O (eigEquiv α τ).symm
 
+/- English proof (translation)
+Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_map_restr (τ : R →+* O) (S : Submodule O (LieG G → O)) :
     (S.map (restr G α τ)).map (funEquiv α τ).toLinearMap = S.map (restrictEig α τ) := by
   rw [← Submodule.map_comp]
   rfl
 
+/- English proof (translation)
+Use `⟨fun x y z h => ?_, fun c x z h => ?_⟩` and prove the remaining obligations. Use `hf.1 x.1 y.1 (h ▸ z.1.2) show f z.1 = f x.1 + f y.1` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+
+Use `hf.2 c x.1 (h ▸ z.1.2) show f z.1 = c * f x.1` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Conclude with `Subtype.ext h`.
+-/
 theorem restrictEig_mem (τ : R →+* O) {f : LieG G → O} (hf : f ∈ omega G) :
     restrictEig α τ f ∈ omegaEig α τ := by
   refine ⟨fun x y z h => ?_, fun c x z h => ?_⟩
@@ -52,6 +63,9 @@ theorem restrictEig_mem (τ : R →+* O) {f : LieG G → O} (hf : f ∈ omega G)
     show f z.1 = c * f x.1
     rw [← this]; congr 1; exact Subtype.ext h
 
+/- English proof (translation)
+Rewrite using `[omTau, map_map_restr]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `restrictEig_mem α τ hf`.
+-/
 theorem map_omTau_le (τ : R →+* O) :
     (omTau G α τ).map (funEquiv α τ).toLinearMap ≤ omegaEig α τ := by
   rw [omTau, map_map_restr]
@@ -67,6 +81,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems (Lie Cota
 variable {O : Type} [CommRing O] [IsLocalRing O] {G : Over (Spec (CommRingCat.of O))} [GrpObj G]
   [IsCommMonObj G] {R : Type} [CommRing R] (α : RingAct G R)
 
+/- English proof (translation)
+The claim follows from `(lieEquiv G).injective (Subtype.ext h)`.
+-/
 theorem lie_ext {x y : Lie G} (h : (lieEquiv G x).1 = (lieEquiv G y).1) : x = y :=
   (lieEquiv G).injective (Subtype.ext h)
 
@@ -88,6 +105,9 @@ def eigSub (τ : R →+* O) : Submodule O (Lie G) where
 def subEquiv (τ : R →+* O) : eigSub α τ ≃ LieEig α τ :=
   (lieEquiv G).subtypeEquiv fun x => forall_congr' fun a => by rw [lieEquiv_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subEquiv_val (τ : R →+* O) (x : eigSub α τ) :
     (subEquiv α τ x).1 = lieEquiv G x.1 := rfl
 
@@ -96,13 +116,28 @@ def ofDual (τ : R →+* O) : Module.Dual O (eigSub α τ) →ₗ[O] (LieEig α 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg F ((subEquiv α τ).symm_apply_apply x)`.
+-/
 theorem ofDual_apply (τ : R →+* O) (F : Module.Dual O (eigSub α τ)) (x : eigSub α τ) :
     ofDual α τ F (subEquiv α τ x) = F x :=
   congrArg F ((subEquiv α τ).symm_apply_apply x)
 
+/- English proof (translation)
+Introduce `F F' h` and use `LinearMap.ext fun x => by rw [← ofDual_apply, h, ofDual_apply]`.
+-/
 theorem ofDual_injective (τ : R →+* O) : Function.Injective (ofDual α τ) := fun F F' h =>
   LinearMap.ext fun x => by rw [← ofDual_apply, h, ofDual_apply]
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, rfl⟩`. Use `⟨fun x y z h => ?_, fun c x z h => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(subEquiv α τ).surjective x`.
+
+Take `⟨y, rfl⟩` from `(subEquiv α τ).surjective y`. Take `⟨z, rfl⟩` from `(subEquiv α τ).surjective z`. Establish `: z = x + y` using `Subtype.ext (lie_ext (h.trans (lieEquiv_add x.1 y.1).symm))`. Rewrite using `[ofDual_apply, ofDual_apply, ofDual_apply, this, map_add]`. Take `⟨x, rfl⟩` from `(subEquiv α τ).surjective x`.
+
+Take `⟨z, rfl⟩` from `(subEquiv α τ).surjective z`. Establish `: z = c • x` using `Subtype.ext (lie_ext (h.trans (lieEquiv_smul c x.1).symm))`. Rewrite using `[ofDual_apply, ofDual_apply, this, map_smul, smul_eq_mul]`. Introduce and unpack `⟨h₁, h₂⟩`. Use `⟨⟨⟨fun x => g (subEquiv α τ x), fun x y => h₁ _ _ _ (lieEquiv_add x.1 y.1)⟩, fun c x => h₂ _ _ _ (lieEquiv_smul c x.1)⟩, funext fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg g ((subEquiv α τ).apply_symm_apply x)`.
+-/
 theorem range_ofDual (τ : R →+* O) : LinearMap.range (ofDual α τ) = omegaEig α τ := by
   ext g
   constructor
@@ -122,6 +157,9 @@ theorem range_ofDual (τ : R →+* O) : LinearMap.range (ofDual α τ) = omegaEi
       fun c x => h₂ _ _ _ (lieEquiv_smul c x.1)⟩, funext fun x => ?_⟩
     exact congrArg g ((subEquiv α τ).apply_symm_apply x)
 
+/- English proof (translation)
+The claim follows from `((LinearEquiv.ofInjective _ (ofDual_injective α τ)).trans (LinearEquiv.ofEq _ _ (range_ofDual α τ))).finrank_eq.symm`.
+-/
 theorem eigRank_eq (τ : R →+* O) :
     eigRank α τ = Module.finrank O (Module.Dual O (eigSub α τ)) :=
   ((LinearEquiv.ofInjective _ (ofDual_injective α τ)).trans
@@ -133,6 +171,15 @@ section Valuation
 
 open GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems (Lie Cotangent)
 
+/- English proof (translation)
+Establish `h1 : Submodule.torsion O (M ⧸ N) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨c, hc⟩`. Take `⟨x, rfl⟩` from `N.mkQ_surjective x`. Rewrite `hc` using `[Submonoid.smul_def, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero N).2 (hN _ x (nonZeroDivisors.coe_ne_zero c) hc)`. Use `haveI : Module.Flat O (M ⧸ N) := Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 h1`. Use `haveI : Module.Free O (M ⧸ N) := Module.free_of_flat_of_isLocalRing`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Establish `hmem : ∀ x, (LinearMap.id - s ∘ₗ N.mkQ : M →ₗ[O] M) x ∈ N` using `fun x => by`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Use `LinearMap.congr_fun hs (N.mkQ x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, this, sub_self]`. Use `⟨(LinearMap.id - s ∘ₗ N.mkQ).codRestrict N hmem, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `[(Submodule.Quotient.mk_eq_zero N).2 x.2]`.
+-/
 theorem exists_retraction {O : Type} [CommRing O] [IsDomain O] [ValuationRing O] {M : Type}
     [AddCommGroup M] [Module O M] [Module.Finite O M] (N : Submodule O M)
     (hN : ∀ (c : O) (x : M), c ≠ 0 → c • x ∈ N → x ∈ N) :
@@ -160,6 +207,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [ValuationRing O]
   {G : Over (Spec (CommRingCat.of O))} [GrpObj G]
   [IsCommMonObj G] {R : Type} [CommRing R] (α : RingAct G R)
 
+/- English proof (translation)
+Introduce `a`. Take `⟨y, hy⟩` from `(lieEquiv G).surjective (dAct α a (lieEquiv G x))`. Establish `hy' : (lieEquiv G y).1 = (lieEquiv G x).1 ≫ α.act a` using `congrArg Subtype.val hy`. Establish `h : c • y = c • τ a • x`. Use `lie_ext ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, ← hx a, lieEquiv_smul, lieEquiv_smul, hy', Category.assoc]`. Establish `h' : y = τ a • x` using `LinearMap.ext fun m => mul_left_cancel₀ hc (LinearMap.congr_fun h m)`. Rewrite using `[← hy', h']`.
+-/
 theorem eigSub_saturated (τ : R →+* O) (c : O) (x : Lie G) (hc : c ≠ 0)
     (hx : c • x ∈ eigSub α τ) : x ∈ eigSub α τ := by
   intro a
@@ -173,11 +225,17 @@ theorem eigSub_saturated (τ : R →+* O) (c : O) (x : Lie G) (hc : c ≠ 0)
 
 variable [Smooth G.hom]
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `finite_projective_of_smooth (G := G)`. Conclude with `exists_retraction _ (eigSub_saturated α τ)`.
+-/
 theorem exists_retraction_eigSub (τ : R →+* O) :
     ∃ r : Lie G →ₗ[O] eigSub α τ, r ∘ₗ (eigSub α τ).subtype = LinearMap.id := by
   obtain ⟨h₁, h₂⟩ := finite_projective_of_smooth (G := G)
   exact exists_retraction _ (eigSub_saturated α τ)
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `finite_projective_of_smooth (G := G)`. Take `⟨r, hr⟩` from `exists_retraction_eigSub α τ`. Use `haveI : Module.Finite O (eigSub α τ) := Module.Finite.of_surjective r fun x => ⟨x.1, LinearMap.congr_fun hr x⟩`. Use `haveI : Module.Projective O (eigSub α τ) := Module.Projective.of_split _ r hr`. Conclude with `⟨inferInstance, Module.free_of_flat_of_isLocalRing⟩`.
+-/
 theorem finite_free_eigSub (τ : R →+* O) :
     Module.Finite O (eigSub α τ) ∧ Module.Free O (eigSub α τ) := by
   obtain ⟨h₁, h₂⟩ := finite_projective_of_smooth (G := G)
@@ -187,6 +245,11 @@ theorem finite_free_eigSub (τ : R →+* O) :
   haveI : Module.Projective O (eigSub α τ) := Module.Projective.of_split _ r hr
   exact ⟨inferInstance, Module.free_of_flat_of_isLocalRing⟩
 
+/- English proof (translation)
+Use `le_antisymm (map_omTau_le α τ) ?_` and prove the remaining obligations. Rewrite using `[omTau, map_map_restr, ← range_ofDual]`. Introduce and unpack `_ ⟨F, rfl⟩`. Take `⟨r, hr⟩` from `exists_retraction_eigSub α τ`. Use `⟨cotangentBidualToTangentFunction G (F ∘ₗ r), range_cotangentBidualToTangentFunction.le ⟨_, rfl⟩, funext fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `(subEquiv α τ).surjective x`. Rewrite using `[ofDual_apply]`. Conclude with `(cotangentBidualToTangentFunction_apply (F ∘ₗ r) x.1).trans (congrArg F (LinearMap.congr_fun hr x))`.
+-/
 theorem map_omTau (τ : R →+* O) :
     (omTau G α τ).map (funEquiv α τ).toLinearMap = omegaEig α τ := by
   refine le_antisymm (map_omTau_le α τ) ?_
@@ -201,6 +264,9 @@ theorem map_omTau (τ : R →+* O) :
 def omEquiv (τ : R →+* O) : omTau G α τ ≃ₗ[O] omegaEig α τ :=
   (funEquiv α τ).ofSubmodules _ _ (map_omTau α τ)
 
+/- English proof (translation)
+The claim follows from `(omEquiv α τ).finrank_eq`.
+-/
 theorem rTau_eq (τ : R →+* O) : rTau G α τ = eigRank α τ := (omEquiv α τ).finrank_eq
 
 def cokerEquiv (p : ℕ) (τ : R →+* O) :
@@ -219,12 +285,27 @@ section Places
 
 variable {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPadic_apply (a : 𝓞 E) : toPadic p E a = (1 : ℤ_[p]) ⊗ₜ[ℤ] a := rfl
 
+/- English proof (translation)
+Simplify using `[toPadic_apply, tauExt]`.
+-/
 theorem tauExt_toPadic {O : Type} [CommRing O] [Algebra ℤ_[p] O] (τ : 𝓞 E →+* O) (a : 𝓞 E) :
     tauExt τ (toPadic p E a) = τ a := by
   simp [toPadic_apply, tauExt]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul z a`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n z)`. Use `⟨(z.appr n : 𝓞 E) * a, c ⊗ₜ a, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∀ (m : ℕ) (u : ℤ_[p]), (m : PadicOrder p E) * u ⊗ₜ a = ((m : ℤ_[p]) * u) ⊗ₜ a`. Introduce `m u`. Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, TensorProduct.smul_tmul']`. Rewrite using `[map_mul, map_natCast, toPadic_apply, ← Nat.cast_pow, h1, h1, ← TensorProduct.add_tmul]`. Use `congr 1`.
+
+Use `push_cast`. Take the linear combination `-hc`. Consider the case `add x y hx hy`. Take `⟨a, u, rfl⟩` from `hx`. Take `⟨b, w, rfl⟩` from `hy`.
+
+Conclude with `⟨a + b, u + w, by rw [map_add]; ring⟩`.
+-/
 theorem exists_approx (n : ℕ) (x : PadicOrder p E) :
     ∃ (a : 𝓞 E) (y : PadicOrder p E), x = toPadic p E a + (p : PadicOrder p E) ^ n * y := by
   induction x using TensorProduct.induction_on with
@@ -247,10 +328,18 @@ theorem exists_approx (n : ℕ) (x : PadicOrder p E) :
 abbrev plId (p : ℕ) [Fact p.Prime] (w : HeightOneSpectrum (𝓞 E)) : Ideal (PadicOrder p E) :=
   w.asIdeal.map (toPadic p E)
 
+/- English proof (translation)
+Simplify using `using Ideal.mem_map_of_mem (toPadic p E) hw`.
+-/
 theorem p_mem_plId {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) :
     (p : PadicOrder p E) ∈ plId p w := by
   simpa using Ideal.mem_map_of_mem (toPadic p E) hw
 
+/- English proof (translation)
+Establish `h1 : (p : 𝓞 E) ∈ M.comap (toPadic p E)` using `by simpa [Ideal.mem_comap] using hp`. Set `w : HeightOneSpectrum (𝓞 E)` to `⟨M.comap (toPadic p E), inferInstance, fun h => by`. Rewrite `h1` using `[h, Ideal.mem_bot, Nat.cast_eq_zero]`. Conclude with `(Fact.out : p.Prime).ne_zero h1⟩`. Use `⟨w, h1, rfl, le_antisymm (fun x hx => ?_) Ideal.map_comap_le⟩` and prove the remaining obligations.
+
+Take `⟨a, y, rfl⟩` from `exists_approx 1 x`. Rewrite `hx`, the goal using `[pow_one]`. Establish `: toPadic p E a ∈ M` using `(M.add_mem_iff_left (M.mul_mem_right _ hp)).1 hx`. Conclude with `add_mem (Ideal.mem_map_of_mem _ this) (Ideal.mul_mem_right _ _ (p_mem_plId (w := w) h1))`.
+-/
 theorem exists_eq_plId (M : Ideal (PadicOrder p E)) [M.IsPrime] (hp : (p : PadicOrder p E) ∈ M) :
     ∃ w : HeightOneSpectrum (𝓞 E), IsOver p w ∧ w.asIdeal = M.comap (toPadic p E) ∧
       M = plId p w := by
@@ -264,6 +353,11 @@ theorem exists_eq_plId (M : Ideal (PadicOrder p E)) [M.IsPrime] (hp : (p : Padic
   have : toPadic p E a ∈ M := (M.add_mem_iff_left (M.mul_mem_right _ hp)).1 hx
   exact add_mem (Ideal.mem_map_of_mem _ this) (Ideal.mul_mem_right _ _ (p_mem_plId (w := w) h1))
 
+/- English proof (translation)
+Rewrite using `[Ideal.jacobson, Ideal.mem_sInf]`. Introduce and unpack `M ⟨-, hM⟩`. Establish `hp : (p : PadicOrder p E) ∈ M`. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.map_maximalIdeal_le_maximal (R := ℤ_[p]) _ M hM` as an intermediate fact. Rewrite `this` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`.
+
+Conclude with `this (Ideal.subset_span rfl)`. Take `⟨w, hw, -, rfl⟩` from `exists_eq_plId M hp`. Conclude with `hx w hw`.
+-/
 theorem mem_jacobson {x : PadicOrder p E} (hx : ∀ w, IsOver p w → x ∈ plId p w) :
     x ∈ (⊥ : Ideal (PadicOrder p E)).jacobson := by
   rw [Ideal.jacobson, Ideal.mem_sInf]
@@ -275,6 +369,9 @@ theorem mem_jacobson {x : PadicOrder p E} (hx : ∀ w, IsOver p w → x ∈ plId
   obtain ⟨w, hw, -, rfl⟩ := exists_eq_plId M hp
   exact hx w hw
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers w`. Take `⟨φ⟩` from `GlobalTheory.nonempty_padicInt_ringHom_of_isAdicComplete (IsLocalRing.maximalIdeal (Ow w)) p (by`. Rewrite using `[← map_natCast (algebraMap (𝓞 E) (Ow w))]`. Conclude with `fun h => (GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff w _).1 h hw)`. Conclude with `⟨φ.toAlgebra, trivial⟩`.
+-/
 theorem exists_toCompletion {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) :
     ∃ _ : Algebra ℤ_[p] (Ow w), True := by
   haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers w
@@ -284,6 +381,9 @@ theorem exists_toCompletion {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) :
       exact fun h => (GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff w _).1 h hw)
   exact ⟨φ.toAlgebra, trivial⟩
 
+/- English proof (translation)
+Take `⟨u, -, h1, h2⟩` from `exists_eq_plId ((IsLocalRing.maximalIdeal O).comap (tauExt (p := p) τ)) (by rw [Ideal.mem_comap, map_natCast, ← map_natCast τ]; exact (hτ _).1 hw)`. Rewrite using `[h2]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[h1, Ideal.mem_comap, Ideal.mem_comap, tauExt_toPadic, hτ]`.
+-/
 theorem comap_tauExt {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
     {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) (τ : 𝓞 E →+* O)
     (hτ : ∀ a, a ∈ w.asIdeal ↔ τ a ∈ IsLocalRing.maximalIdeal O) :
@@ -295,20 +395,40 @@ theorem comap_tauExt {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
   ext a
   rw [h1, Ideal.mem_comap, Ideal.mem_comap, tauExt_toPadic, hτ]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff, not_not]`.
+-/
 theorem mem_iff_algebraMap (w : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) :
     a ∈ w.asIdeal ↔ algebraMap (𝓞 E) (Ow w) a ∈ IsLocalRing.maximalIdeal (Ow w) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff,
     not_not]
 
+/- English proof (translation)
+Take `⟨_, -⟩` from `exists_toCompletion hw`. Rewrite using `[← comap_tauExt hw _ (mem_iff_algebraMap w)]`. Use `infer_instance`.
+-/
 theorem plId_isPrime {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) : (plId p w).IsPrime := by
   obtain ⟨_, -⟩ := exists_toCompletion hw
   rw [← comap_tauExt hw _ (mem_iff_algebraMap w)]
   infer_instance
 
+/- English proof (translation)
+Introduce `h` and use `(plId_isPrime hw).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem h he.2.1))`.
+-/
 theorem not_mem_of_isPlaceIdem {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w)
     {e : PadicOrder p E} (he : IsPlaceIdem p w e) : e ∉ plId p w := fun h =>
   (plId_isPrime hw).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem h he.2.1))
 
+/- English proof (translation)
+Establish `hp0 : Ideal.span {(p : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Conclude with `(Fact.out : p.Prime).ne_zero`. Establish `hfin : {u : HeightOneSpectrum (𝓞 E) | IsOver p u}.Finite` using `(Ideal.finite_factors hp0).subset fun u hu => Ideal.dvd_span_singleton.2 hu`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hfin.toFinset) (fun u => u.asIdeal) (fun _ => 1) (fun u _ => u.prime) (fun u _ u' _ h h' => h (HeightOneSpectrum.ext h')) (fun u => if u.1 = w then 1 else 0)`.
+
+Establish `ha1 : toPadic p E a - 1 ∈ plId p w`. Use `Ideal.mem_map_of_mem (toPadic p E) (ha w (hfin.mem_toFinset.2 hw))` as an intermediate fact. Simplify using `using this`. Establish `ha0 : ∀ u, IsOver p u → u ≠ w → toPadic p E a ∈ plId p u` using `fun u hu h => by`. Use `Ideal.mem_map_of_mem (toPadic p E) (ha u (hfin.mem_toFinset.2 hu))` as an intermediate fact.
+
+Simplify `this` using `[h]`. Use `set x := toPadic p E a`. Establish `hj : x * x - x ∈ (⊥ : Ideal (PadicOrder p E)).jacobson` using `mem_jacobson fun u hu => by`. Rewrite using `[← mul_sub_one]`. Distinguish the cases in `h : u = w`.
+
+Conclude with `Ideal.mul_mem_left _ _ (h ▸ ha1)`. Conclude with `Ideal.mul_mem_right _ _ (ha0 u hu h)`. Take `⟨N, -, hN⟩` from `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_pow_mem_map_maximalIdeal (R := ℤ_[p]) _ (x * x - x) fun M hM => Ideal.mem_sInf.1 hj ⟨bot_le, hM⟩`. Use `haveI := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := ℤ_[p]) (PadicOrder p E)`. Take `⟨e, s, he, hs⟩` from `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_idempotent_henselian _ x N (by rw [pow_succ]; exact Ideal.mul_mem_right _ _ hN)`.
+
+Use `⟨e, he, ?_, fun u hu h => ?_⟩` and prove the remaining obligations. Rewrite using `[show e - 1 = (1 + s * x) * (x - 1) by linear_combination hs]`. Conclude with `Ideal.mul_mem_left _ _ ha1`. Rewrite using `[show e = (1 + s * (x - 1)) * x by linear_combination hs]`. Conclude with `Ideal.mul_mem_left _ _ (ha0 u hu h)`.
+-/
 theorem exists_isPlaceIdem {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) :
     ∃ e, IsPlaceIdem p w e := by
   classical
@@ -344,6 +464,9 @@ theorem exists_isPlaceIdem {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) :
   · rw [show e = (1 + s * (x - 1)) * x by linear_combination hs]
     exact Ideal.mul_mem_left _ _ (ha0 u hu h)
 
+/- English proof (translation)
+Use `(IsIdempotentElem.iff_eq_zero_or_one.1 (he.1.map (tauExt τ))).resolve_left fun h => ?_` and prove the remaining obligations. Use `not_mem_of_isPlaceIdem hw he ?_` and prove the remaining obligations. Rewrite using `[← comap_tauExt hw τ hτ, Ideal.mem_comap, h]`. Conclude with `zero_mem _`.
+-/
 theorem tauExt_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Algebra ℤ_[p] O]
     {w : HeightOneSpectrum (𝓞 E)} (hw : IsOver p w) {e : PadicOrder p E} (he : IsPlaceIdem p w e)
     (τ : 𝓞 E →+* O) (hτ : ∀ a, a ∈ w.asIdeal ↔ τ a ∈ IsLocalRing.maximalIdeal O) :
@@ -360,10 +483,16 @@ section Completion
 variable {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E]
   {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `Valuation.valuationSubring.integers _`.
+-/
 theorem integers_Ow (w : HeightOneSpectrum (𝓞 E)) :
     (Valued.v : Valuation (w.adicCompletion E) _).Integers (Ow w) :=
   Valuation.valuationSubring.integers _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap (𝓞 E) (Ow w) a : Ow w) : w.adicCompletion E) = _`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`.
+-/
 theorem valued_algebraMap (a : 𝓞 E) :
     Valued.v (algebraMap (Ow w) (w.adicCompletion E) (algebraMap (𝓞 E) (Ow w) a)) =
       w.intValuation a := by
@@ -374,6 +503,17 @@ theorem valued_algebraMap (a : 𝓞 E) :
 
 variable [Algebra ℤ_[p] (Ow w)]
 
+/- English proof (translation)
+Set `I` to `IsLocalRing.maximalIdeal ℤ_[p]`. Use `haveI : IsPrecomplete I (PadicOrder p E) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isPrecomplete_finite_module I _`. Establish `hI : I.map (algebraMap ℤ_[p] (Ow w)) = Ideal.span {(p : Ow w)}`. Rewrite using `[show I = _ from PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`. Use `haveI : IsHausdorff I (Ow w) := by`.
+
+Rewrite using `[← IsHausdorff.map_algebraMap_iff (S := Ow w)]`. Use `IsHausdorff.of_le_jacobson _ _ ?_` and prove the remaining obligations. Rewrite using `[hI, IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top, Ideal.span_singleton_le_iff_mem, ← map_natCast (algebraMap (𝓞 E) (Ow w))]`. Conclude with `(mem_iff_algebraMap w _).1 hw`. Use `surjective_of_mkQ_comp_surjective (I := I) (f := (tauExt (p := p) (algebraMap (𝓞 E) (Ow w))).toLinearMap) fun y => ?_` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Establish `hp0 : w.intValuation (p : 𝓞 E) ≠ 0` using `w.intValuation_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Take `⟨r, hr⟩` from `GlobalTheory.Idele.exists_valued_sub_le w (a := (y : w.adicCompletion E)) y.2 (-(w.intValuation (p : 𝓞 E)).log).toNat`. Establish `hd : (p : Ow w) ∣ y - algebraMap (𝓞 E) (Ow w) r`. Use `(integers_Ow w).dvd_of_le ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (algebraMap (𝓞 E) (Ow w)), valued_algebraMap]`. Use `le_trans hr ?_` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hp0]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨toPadic p E r, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, tauExt_toPadic, eq_comm, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Ideal.smul_top_eq_map, hI]`. Conclude with `Ideal.mem_span_singleton.2 hd`.
+-/
 theorem toCompletion_surjective (hw : IsOver p w) :
     Function.Surjective (tauExt (p := p) (algebraMap (𝓞 E) (Ow w))) := by
   let I := IsLocalRing.maximalIdeal ℤ_[p]
@@ -406,6 +546,19 @@ theorem toCompletion_surjective (hw : IsOver p w) :
     Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, Ideal.smul_top_eq_map, hI]
   exact Ideal.mem_span_singleton.2 hd
 
+/- English proof (translation)
+Set `J` to `(⊥ : Ideal (PadicOrder p E)).jacobson`. Use `haveI : IsNoetherianRing (PadicOrder p E) := Algebra.FiniteType.isNoetherianRing ℤ_[p] _`. Establish `hH : IsHausdorff J (PadicOrder p E)` using `IsHausdorff.of_le_jacobson _ _ le_rfl`. Establish `hJ : Ideal.span {e} * plId p w ≤ J`. Use `Ideal.mul_le.2 fun a ha b hb => mem_jacobson fun u hu => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : u = w`. Conclude with `Ideal.mul_mem_left _ _ (h ▸ hb)`. Conclude with `Ideal.mul_mem_right _ _ ((Ideal.span_singleton_le_iff_mem _).2 (he.2.2 u hu h) ha)`. Use `hH.haus _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`.
+
+Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`. Take `⟨a, y, rfl⟩` from `exists_approx (n + 1) x`. Establish `ha : a ∈ w.asIdeal ^ (n + 1)`.
+
+Rewrite `hx` using `[map_add, map_mul, map_pow, map_natCast, tauExt_toPadic, add_eq_zero_iff_eq_neg]`. Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← valued_algebraMap]`. Use `le_trans ((integers_Ow w).le_of_dvd (x := algebraMap (𝓞 E) (Ow w) ((p : 𝓞 E) ^ (n + 1))) ?_) ?_` and prove the remaining obligations. Rewrite using `[hx, map_pow, map_natCast]`. Conclude with `(dvd_mul_right _ _).neg_right`.
+
+Rewrite using `[valued_algebraMap, HeightOneSpectrum.intValuation_le_pow_iff_mem]`. Conclude with `Ideal.pow_mem_pow hw _`. Rewrite using `[mul_add]`. Use `add_mem (Ideal.pow_right_mono hJ _ ?_) (Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (mem_jacobson fun u hu => p_mem_plId hu) _)))` and prove the remaining obligations. Rewrite using `[mul_pow, ← he.1.pow_succ_eq n, ← Ideal.map_pow]`.
+
+Use `Ideal.mul_mem_mul (Ideal.pow_mem_pow ?_ _) (Ideal.mem_map_of_mem _ ha)` and prove the remaining obligations. Rewrite using `[he.1.pow_succ_eq]`. Conclude with `Ideal.subset_span rfl`.
+-/
 theorem mul_eq_zero_of_toCompletion (hw : IsOver p w) {e : PadicOrder p E}
     (he : IsPlaceIdem p w e) {x : PadicOrder p E}
     (hx : tauExt (p := p) (algebraMap (𝓞 E) (Ow w)) x = 0) : e * x = 0 := by
@@ -448,6 +601,9 @@ section Conj
 
 variable {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[conjInt]`.
+-/
 theorem conjInt_conjInt (a : 𝓞 E) : conjInt E (conjInt E a) = a := by
   ext
   simp [conjInt]
@@ -462,9 +618,17 @@ theorem conjInt_conjInt (a : 𝓞 E) : conjInt E (conjInt E a) = a := by
 variable [StarRing (𝓞 E)] (hs : ∀ a : 𝓞 E, star a = conjInt E a)
 include hs
 
+/- English proof (translation)
+Rewrite using `[← hs]`. Both sides reduce to the same expression.
+-/
 theorem sig_tmul (z : ℤ_[p]) (a : 𝓞 E) : sig p (𝓞 E) (z ⊗ₜ a) = z ⊗ₜ conjInt E a := by
   rw [← hs]; rfl
 
+/- English proof (translation)
+Establish `: plId p w ≤ (plId p (conjPlace w)).comap (sig p (𝓞 E))`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, toPadic_apply, sig_tmul hs]`. Use `Ideal.mem_map_of_mem (toPadic p E) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `conjInt E (conjInt E a) ∈ w.asIdeal`. Rewrite using `[conjInt_conjInt]` and apply the resulting hypothesis. Conclude with `this hx`.
+-/
 theorem sig_mem {w : HeightOneSpectrum (𝓞 E)} {x : PadicOrder p E} (hx : x ∈ plId p w) :
     sig p (𝓞 E) x ∈ plId p (conjPlace w) := by
   have : plId p w ≤ (plId p (conjPlace w)).comap (sig p (𝓞 E)) := by

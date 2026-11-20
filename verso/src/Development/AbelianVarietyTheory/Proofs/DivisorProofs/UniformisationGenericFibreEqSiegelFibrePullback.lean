@@ -14,17 +14,29 @@ open GlobalTheory.TInj
 
 namespace GlobalTheory.TInj.GenPull
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M h h rfl) (chartPullSame L _ _ _ h fun _ => rfl) H`.
+-/
 theorem pull_comp_iso {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {F : Y ⟶ X} (H : LBIso M (L.pull F)) (h : Z ⟶ Y) :
     LBIso (M.pull h) (L.pull (h ≫ F)) :=
   LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M h h rfl) (chartPullSame L _ _ _ h fun _ => rfl) H
 
+/- English proof (translation)
+The claim follows from `e ▸ GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL a)`.
+-/
 theorem pull_congr_iso {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {a b : Y ⟶ X} (e : a = b) :
     LBIso (L.pull a) (L.pull b) := e ▸ GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL a)
 
+/- English proof (translation)
+The claim follows from `pull_comp_iso (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL a)) b`.
+-/
 theorem pull_pull_iso {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶ X) (b : Z ⟶ Y) :
     LBIso ((L.pull a).pull b) (L.pull (b ≫ a)) :=
   pull_comp_iso (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL a)) b
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hL)`.
+-/
 theorem pull_id_iso {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L (L.pull (𝟙 X)) :=
   LBIso.chartPull (chartPullId _) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hL)
 
@@ -32,6 +44,29 @@ end GlobalTheory.TInj.GenPull
 
 open GlobalTheory.TInj.GenPull in
 
+/- English proof (translation)
+Introduce `X g n B _ ζ sX c R _ _ V _ _ J J' D₀ A₀ G₀ _ _ U₀ f D hD A U hU y₀ α₀ hO κ hκ`. Set `G` to `(Over.pullback (specOf f)).obj G₀`. Set `p` to `pullback.fst G.hom (jK V)`. Set `q` to `pullback.fst G₀.hom (specOf f)`. Set `p₀` to `pullback.fst G₀.hom (jK R)`.
+
+Establish `hsq : jK V ≫ specOf f = κ ≫ jK R` using `hκ.symm`. Set `κG : pullback G.hom (jK V) ⟶ pullback G₀.hom (jK R)` to `pullback.lift (p ≫ q) (pullback.snd _ _ ≫ κ) (by`. Establish `c1 : q ≫ G₀.hom = G.hom ≫ specOf f` using `pullback.condition`. Establish `c2 : p ≫ G.hom = pullback.snd G.hom (jK V) ≫ jK V` using `pullback.condition`. Rewrite using `[Category.assoc, c1, ← Category.assoc, c2, Category.assoc, hsq, Category.assoc])`.
+
+Establish `hκf : κG ≫ p₀ = p ≫ q` using `pullback.lift_fst _ _ _`. Establish `w : κG ≫ ((Over.pullback (jK R)).obj G₀).hom = ((Over.pullback (jK V)).obj G).hom ≫ κ` using `pullback.lift_snd _ _ _`. Establish `hκG : IsGrpPullback ((Over.pullback (jK V)).obj G) ((Over.pullback (jK R)).obj G₀) κ κG` using `(isGrpPullback_pullback G₀ (jK R)).cancel (((isGrpPullback_pullback G (jK V)).comp (isGrpPullback_pullback G₀ (specOf f))).congr hsq hκf.symm) w`. Establish `: IsMonHom U.gen.hom` using `U.gen_hom`. Establish `: IsMonHom U₀.gen.hom` using `U₀.gen_hom`.
+
+Establish `: IsMonHom U.gen.symm.hom` using `show IsMonHom U.gen.inv by infer_instance`. Establish `hu : IsGrpPullback A.A ((Over.pullback (jK V)).obj G) (𝟙 _) U.gen.inv.left` using `isGrpPullback_of_iso U.gen.symm`. Establish `hg : IsGrpPullback ((Over.pullback (jK R)).obj G₀) A₀.A (𝟙 _) U₀.gen.hom.left` using `isGrpPullback_of_iso U₀.gen`. Set `π : A.A.left ⟶ A₀.A.left` to `U.gen.inv.left ≫ κG ≫ U₀.gen.hom.left`. Establish `hπ : IsGrpPullback A.A A₀.A κ π` using `(hu.comp (hκG.comp hg)).congr (by simp) rfl`.
+
+Take `⟨hO₁, α₀₂, sα₀, hΛ₀⟩` from `hO`. Establish `hLG : U.LG.L.IsLB` using `U.LG.isLB`. Establish `hLG₀ : U₀.LG.L.IsLB` using `U₀.LG.isLB`. Take `⟨wL, hwL, -⟩` from `hU.lg`. Establish `E1 : LBIso (A.L.pull U.gen.hom.left) (U.LG.L.pull p)` using `U.ext`.
+
+Establish `E2 : LBIso (U.LG.L.pull p) (U₀.LG.L.pull (p ≫ (Iso.refl G).hom.left ≫ q))` using `pull_comp_iso ⟨wL, hwL⟩ p`. Establish `E4 : LBIso (U₀.LG.L.pull (p ≫ (Iso.refl G).hom.left ≫ q)) (U₀.LG.L.pull (κG ≫ p₀))` using `pull_congr_iso hLG₀ (by rw [hκf, Iso.refl_hom, Over.id_left, Category.id_comp])`. Establish `E3 : LBIso ((A₀.L.pull U₀.gen.hom.left).pull κG) (U₀.LG.L.pull (κG ≫ p₀))` using `pull_comp_iso U₀.ext κG`. Establish `E5` using `pull_pull_iso A₀.isLB U₀.gen.hom.left κG`. Establish `hA₀g` using `pull_isLB A₀.isLB U₀.gen.hom.left`.
+
+Establish `X1 : LBIso (A.L.pull U.gen.hom.left) (A₀.L.pull (κG ≫ U₀.gen.hom.left))` using `LBIso.trans (pull_isLB A.isLB _) (pull_isLB hLG _) (pull_isLB A₀.isLB _) E1 (LBIso.trans (pull_isLB hLG _) (pull_isLB hLG₀ _) (pull_isLB A₀.isLB _) E2 (LBIso.trans (pull_isLB hLG₀ _) (pull_isLB hLG₀ _) (pull_isLB A₀.isLB _) E4 (LBIso.trans (pull_isLB hLG₀ _) (pull_isLB hA₀g _) (p …`. Establish `X2 : LBIso ((A.L.pull U.gen.hom.left).pull U.gen.inv.left) (A₀.L.pull π)` using `pull_comp_iso X1 _`. Establish `X3 : LBIso A.L ((A.L.pull U.gen.hom.left).pull U.gen.inv.left)` using `LBIso.trans A.isLB (pull_isLB A.isLB _) (pull_isLB (pull_isLB A.isLB _) _) (pull_id_iso A.isLB) (LBIso.trans (pull_isLB A.isLB _) (pull_isLB A.isLB _) (pull_isLB (pull_isLB A.isLB _) _) (pull_congr_iso A.isLB (by rw [← Over.comp_left, Iso.inv_hom_id, Over.id_left])) (pull_pull_is …`. Establish `hA : LBIso A.L (A₀.L.pull π)` using `LBIso.trans A.isLB (pull_isLB (pull_isLB A.isLB _) _) (pull_isLB A₀.isLB _) X3 X2`. Establish `sπ` using `GlobalTheory.LamPull.exists_isSquare hπ.1.w`.
+
+Establish `hΛ` using `GlobalTheory.LamPull.lbIso_lam_pull hπ A₀.isLB A.isLB hA sπ`. Establish `hΛA : (abelian₂ A.A A.L).IsLB` using `DVR.linComb_isLB _ A.isLB _ _`. Establish `hΛA₀ : (abelian₂ A₀.A A₀.L).IsLB` using `DVR.linComb_isLB _ A₀.isLB _ _`. Use `⟨π ≫ α₀, ⟨hπ.comp hO₁, _ ≫ α₀₂, ⟨?_, ?_⟩, LBIso.trans hΛA (pull_isLB hΛA₀ _) (pull_isLB c.isLB _) hΛ (pull_comp_iso hΛ₀ _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, sα₀.1, ← Category.assoc, sπ.1, Category.assoc]`.
+
+Rewrite using `[Category.assoc, sα₀.2, ← Category.assoc, sπ.2, Category.assoc]`. Introduce `Z x x₀ hx`. Establish `: Mono (jK R)` using `GlobalTheory.GenericBundleDescent.mono_jK R`. Establish `: Mono p₀` using `pullback.fst_of_mono`. Establish `h1 : x ≫ U.gen.inv.left ≫ κG = x₀ ≫ U₀.gen.inv.left`.
+
+Apply `(cancel_mono p₀).1` to reduce the goal to its premises. Simplify using `only [Category.assoc, hκf]`. Conclude with `hx`. Use `show x ≫ (U.gen.inv.left ≫ κG ≫ U₀.gen.hom.left) ≫ α₀ = x₀ ≫ α₀`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Category.assoc, Category.assoc x, h1]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc U₀.gen.inv.left, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`.
+-/
 theorem GlobalTheory.TInj.overPt_genPull : ∀ {X : Scheme.{0}} {g n : ℕ} {B : Type} [CommRing B] {ζ : B} {sX : X ⟶ Sp B} (c : SiegPre g n ζ sX) (R : Type) [CommRing R] [IsDomain R] (V : Type) [CommRing V] [IsDomain V] (J : Ideal R) (J' : Ideal V) (D₀ : DegData R J) (A₀ : PolAV (Sp (FractionRing R))) (G₀ : Over (Sp R)) [GrpObj G₀] [IsCommMonObj G₀] (U₀ : Unif J D₀ A₀ G₀) (f : R →+* V) (D : DegData V J') (hD : IsPullDeg f D₀.toPre D.toPre) (A : PolAV (Sp (FractionRing V))) (U : Unif J' D A ((Over.pullback (specOf f)).obj G₀)), IsPullUnif f hD (Iso.refl _) U₀ U → ∀ (y₀ : Sp (FractionRing R) ⟶ X) (α₀ : A₀.A.left ⟶ c.A.left), OverPt c A₀ y₀ α₀ → ∀ κ : Sp (FractionRing V) ⟶ Sp (FractionRing R), κ ≫ jK R = jK V ≫ spMap f → ∃ α : A.A.left ⟶ c.A.left, OverPt c A (κ ≫ y₀) α ∧ ∀ (Z : Scheme.{0}) (x : Z ⟶ A.A.left) (x₀ : Z ⟶ A₀.A.left), x ≫ U.gen.inv.left ≫ pullback.fst ((Over.pullback (specOf f)).obj G₀).hom (jK V) ≫ pullback.fst G₀.hom (specOf f) = x₀ ≫ U₀.gen.inv.left ≫ pullback.fst G₀.hom (jK R) → x ≫ α = x₀ ≫ α₀ := by
   intro X g n B _ ζ sX c R _ _ V _ _ J J' D₀ A₀ G₀ _ _ U₀ f D hD A U hU y₀ α₀ hO κ hκ
   let G := (Over.pullback (specOf f)).obj G₀

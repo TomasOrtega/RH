@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `σ _ I k hI hk`. Take `⟨h', hh', hloc⟩` from `hproj σ I k hI hk`. Use `⟨h', hh', fun U φ ψ hU hφd hφi hφZ hψ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨t, ht, rfl⟩, hz⟩`. Take `⟨W, hWo, hzW, A, hA⟩` from `hloc (φ t) (hφZ ht) hz`.
+
+Establish `hU'o : IsOpen (U ∩ φ ⁻¹' W)` using `hφd.continuousOn.isOpen_inter_preimage hU hWo`. Establish `hfd : DifferentiableOn ℂ (fun s => A (φ s)) (U ∩ φ ⁻¹' W)` using `A.differentiable.differentiableOn.comp (hφd.mono Set.inter_subset_left) (Set.mapsTo_univ _ _)`. Establish `hfi : Set.InjOn (fun s => A (φ s)) (U ∩ φ ⁻¹' W)` using `fun s hs s' hs' hss' => hφi hs.1 hs'.1 (hA ⟨hφZ hs.1, hs.2⟩ ⟨hφZ hs'.1, hs'.2⟩ hss')`. Take `⟨hOo, g, hgd, hgf⟩` from `hinv k _ _ hU'o hfd hfi`. Use `⟨W ∩ A ⁻¹' ((fun s => A (φ s)) '' (U ∩ φ ⁻¹' W)), hWo.inter (hOo.preimage A.continuous), ⟨hzW, t, ⟨ht, hzW⟩, rfl⟩, fun y => g (A y), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hgd.comp A.differentiable.differentiableOn fun y hy => hy.2`. Introduce and unpack `_ ⟨⟨⟨s, hs, rfl⟩, -⟩, hsW, -⟩ show ψ (φ s) = g (A (φ s))`. Rewrite using `[hψ s hs, hgf s ⟨hs, hsW⟩]`.
+-/
 theorem BranchInverseOffHypersurface.proof (hinv : InjectiveHolomorphicInverse.Statement)
     (hproj : ProjectionInjectiveOffHypersurface.Statement) :
     BranchInverseOffHypersurface.Statement := by

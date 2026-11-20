@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.FunObj.StdDatum
 
+/- English proof (translation)
+Introduce `h`. Establish `hc` using `GlobalTheory.EtaProduct.cA_of_fixed (GlobalTheory.HeckeDetChar.isPlIdem he) h`. Establish `h0 : e = 0`. Use `he.1.2.1` as an intermediate fact. Rewrite `this` using `[hc, he.1.1]`.
+
+Conclude with `this`. Apply `P.ne_bot` to reduce the goal to its premises. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hx0`. Use `(he.2 x hx0).1 hx` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul, map_zero]`. Conclude with `this (zero_mem _)`.
+-/
 theorem conj_smul_ne_of_isIdemAt {D : D7} {e : Formalism.L2.Theta.AE D} {P : HeightOneSpectrum (𝓞 D.host.E)}
     (he : Formalism.L2.NTheta.IsIdemAt e P) : D.host.conj • P.asIdeal ≠ P.asIdeal := by
   intro h
@@ -29,6 +36,17 @@ theorem conj_smul_ne_of_isIdemAt {D : D7} {e : Formalism.L2.Theta.AE D} {P : Hei
   rw [h0, zero_mul, map_zero] at this
   exact this (zero_mem _)
 
+/- English proof (translation)
+Introduce `D T L P`. Establish `hF : ∀ I : Ideal (𝓞 D.host.E), (D.host.conj • I).under (𝓞 D.host.F) = I.under (𝓞 D.host.F)` using `GlobalTheory.PlaceOverPair.under_smul_of_fix D.host.conj (fun x => (D.host.conjE_mem_hostF_iff _).1 x.2)`. Unfold `GlobalTheory.FunObj.SqNum.condE`. Rewrite using `[Finset.smul_prod']`. Use `IsCoprime.prod_left fun v hv => IsCoprime.prod_right fun v' hv' => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_pow']`. Use `IsCoprime.pow ?_` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Establish `hm : (D.host.conj • (P.w v').asIdeal).IsMaximal`. Use `(P.w v').isPrime` as an intermediate fact.
+
+Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => (P.w v').ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Use `Ideal.IsMaximal.coprime_of_ne (P.w v).isMaximal hm fun heq => ?_` and prove the remaining obligations. Establish `hvv : v = v'`.
+
+Establish `a` using `congrArg HeightOneSpectrum.asIdeal (P.under_w hv)`. Establish `b` using `congrArg HeightOneSpectrum.asIdeal (P.under_w hv')`. Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[← a, ← b]`. Use `show Ideal.under _ _ = Ideal.under _ _`.
+
+Rewrite using `[heq, hF]`. Substitute `hvv` using the available equality. Take `⟨e, he⟩` from `P.w_split v hv`. Conclude with `conj_smul_ne_of_isIdemAt he heq.symm`.
+-/
 theorem condE_isCoprime_conj : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L),
     IsCoprime (condE P) (D.host.conj • condE P) := by
   intro D T L P

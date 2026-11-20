@@ -12,6 +12,11 @@ namespace GlobalTheory.CompanionTheory.GJMeas
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `Continuous.matrix_det Units.continuous_val`. Establish `: Continuous fun g : GL (Fin 2) F => ((g⁻¹ : GL (Fin 2) F).val).det` using `Continuous.matrix_det (Units.continuous_val.comp continuous_inv)`. Use `this using 2 with g` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem continuous_detUnit : Continuous (GeneralLinearGroup.det : GL (Fin 2) F → Fˣ) := by
   rw [Units.continuous_iff]
   constructor
@@ -22,6 +27,11 @@ theorem continuous_detUnit : Continuous (GeneralLinearGroup.det : GL (Fin 2) F �
     rw [← map_inv]
     rfl
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hopen : IsOpen ((fun x : GL (Fin 2) F => g⁻¹ * x) ⁻¹' (U : Set (GL (Fin 2) F)))` using `U.isOpen.preimage (continuous_const.mul continuous_id)`. Establish `hmem : ((fun x : GL (Fin 2) F => g⁻¹ * x) ⁻¹' (U : Set (GL (Fin 2) F))) ∈ nhds g` using `hopen.mem_nhds (by simpa using U.one_mem)`. Establish `hev : (fun _ : GL (Fin 2) F => W g) =ᶠ[nhds g] W` using `by filter_upwards [hmem] with x hx`.
+
+Use `h g (g⁻¹ * x) hx` as an intermediate fact. Simplify using `using this.symm`. Conclude with `(continuousAt_const).congr hev`.
+-/
 theorem continuous_of_rightInvariant (W : GL (Fin 2) F → ℂ) (U : OpenSubgroup (GL (Fin 2) F))
     (h : ∀ g, ∀ u ∈ U, W (g * u) = W g) : Continuous W := by
   rw [continuous_iff_continuousAt]
@@ -36,6 +46,11 @@ theorem continuous_of_rightInvariant (W : GL (Fin 2) F → ℂ) (U : OpenSubgrou
     simpa using this.symm
   exact (continuousAt_const).congr hev
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g : GL (Fin 2) F => ((modulus (((GeneralLinearGroup.det g : Fˣ)) : F) : ℝ) : ℂ)`. Establish `h2 : Continuous fun g : GL (Fin 2) F => modulus (((GeneralLinearGroup.det g : Fˣ)) : F)` using `continuous_modulus.comp (Units.continuous_val.comp continuous_detUnit)`. Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp h2)`. Use `h1.cpow continuous_const fun g => ?_` and prove the remaining obligations. Use `Complex.ofReal_mem_slitPlane.2 ?_` and prove the remaining obligations.
+
+Conclude with `modulus_pos (Units.ne_zero _)` after adjusting the coercions.
+-/
 theorem continuous_mp_det (z : ℂ) :
     Continuous fun g : GL (Fin 2) F => mp (GeneralLinearGroup.det g) z := by
   have h1 : Continuous fun g : GL (Fin 2) F =>
@@ -47,6 +62,29 @@ theorem continuous_mp_det (z : ℂ) :
   refine Complex.ofReal_mem_slitPlane.2 ?_
   exact_mod_cast modulus_pos (Units.ne_zero _)
 
+/- English proof (translation)
+Take `⟨hlc, hcs⟩` from `hΦ`. Establish `hΦc : Continuous Φ` using `hlc.continuous`. Take `⟨C, hC⟩` from `hcs.exists_bound_of_continuous hΦc`. Establish `hrow : Continuous fun X : Matrix (Fin 2) (Fin 2) F => (X 0 : Fin 2 → F)` using `continuous_pi fun j => continuous_id.matrix_elem 0 j`. Use `set K : Set (Fin 2 → F) := (fun X : Matrix (Fin 2) (Fin 2) F => (X 0 : Fin 2 → F)) '' tsupport Φ with hKdef`.
+
+Establish `hK : IsCompact K` using `hcs.isCompact.image hrow`. Establish `hcoe : Continuous fun z : Circle => (z : ℂ)` using `by first`. Consider the case `fun_prop`. Consider the case `exact continuous_subtype_val`. Consider the case `exact continuous_induced_dom`.
+
+Establish `hψi : Continuous fun x : F => ((ψ⁻¹ x : Circle) : ℂ)`. Establish `: (fun x : F => ((ψ⁻¹ x : Circle) : ℂ)) = fun x : F => ((ψ (-x) : Circle) : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[AddChar.inv_apply]`. Rewrite using `[this]`.
+
+Conclude with `hcoe.comp (hψ.comp continuous_neg)`. Establish `hrows : ∀ r : Fin 2 → F, Continuous fun g : GL (Fin 2) F => what₂ r (fun j => g.val 0 j / (g.val).det)`. Introduce `r`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`.
+
+Simplify `continuous_const` using `[what₂]`. Establish `hdet : Continuous fun g : GL (Fin 2) F => (g.val).det` using `Continuous.matrix_det Units.continuous_val`. Establish `hent : Continuous fun g : GL (Fin 2) F => g.val 0 j` using `Units.continuous_val.matrix_elem 0 j`. Establish `h : Continuous fun g : GL (Fin 2) F => g.val 0 j / (g.val).det` using `hent.div hdet fun g => (Matrix.GeneralLinearGroup.det g).ne_zero`. Simplify `h` using `[what₂]`.
+
+Establish `hcont2 : ∀ g : GL (Fin 2) F, Continuous fun r : Fin 2 → F => Φ (what₂ r (fun j => g.val 0 j / (g.val).det)) * ((ψ⁻¹ (r 0 * g.val 1 1 - r 1 * g.val 1 0) : Circle) : ℂ)`. Introduce `g`. Use `(hΦc.comp ?_).mul (hψi.comp ?_)` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_ fin_cases i` and prove the remaining obligations. Simplify `continuous_apply j` using `[what₂]`.
+
+Simplify `continuous_const` using `[what₂]`. Conclude with `((continuous_apply 0).mul continuous_const).sub ((continuous_apply 1).mul continuous_const)`. Unfold `phd`. Use `continuous_of_dominated (bound := K.indicator fun _ => C) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun g => (hcont2 g).aestronglyMeasurable`.
+
+Use `fun g => Filter.Eventually.of_forall fun r => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ K`. Rewrite using `[Set.indicator_of_mem hr, norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hC _`. Rewrite using `[Set.indicator_of_notMem hr]`.
+
+Establish `h0 : Φ (what₂ r (fun j => g.val 0 j / (g.val).det)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hr ⟨_, subset_tsupport _ hne, rfl⟩`. Simplify using `[h0]`. Use `haveI : IsFiniteMeasureOnCompacts (LFS.vol2 ψ) := by`.
+
+Unfold `LFS.vol2`. Use `infer_instance`. Use `(integrable_indicator_iff hK.measurableSet).2 ?_` and prove the remaining obligations. Conclude with `integrableOn_const hK.measure_lt_top.ne`. Use `Filter.Eventually.of_forall fun r => ?_` and prove the remaining obligations.
+
+Use `(hΦc.comp (hrows r)).mul (hψi.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_const.mul (Units.continuous_val.matrix_elem 1 1)).sub (continuous_const.mul (Units.continuous_val.matrix_elem 1 0))`.
+-/
 theorem continuous_phd (ψ : AddChar F Circle) (hψ : Continuous ψ)
     (Φ : Matrix (Fin 2) (Fin 2) F → ℂ) (hΦ : SB2 Φ) : Continuous (phd ψ Φ) := by
   obtain ⟨hlc, hcs⟩ := hΦ
@@ -112,6 +150,11 @@ theorem continuous_phd (ψ : AddChar F Circle) (hψ : Continuous ψ)
     exact (continuous_const.mul (Units.continuous_val.matrix_elem 1 1)).sub
       (continuous_const.mul (Units.continuous_val.matrix_elem 1 0))
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : GL (Fin 2) F => ((((ω * μ) (GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ)`. Establish `hωμ : Continuous (ω * μ : Fˣ →* ℂˣ)`. Establish `: ((ω * μ : Fˣ →* ℂˣ) : Fˣ → ℂˣ) = fun a => ω a * μ a` using `rfl`. Rewrite using `[this]`. Conclude with `hω.mul hμ`.
+
+Conclude with `Units.continuous_val.comp (continuous_inv.comp (hωμ.comp continuous_detUnit))`. Unfold `gjdI`. Conclude with `(((continuous_phd ψ hψ Φ hΦ).mul hW).mul hc).mul (continuous_mp_det _)`.
+-/
 theorem continuous_gjdI (ψ : AddChar F Circle) (hψ : Continuous ψ)
     (Φ : Matrix (Fin 2) (Fin 2) F → ℂ) (hΦ : SB2 Φ) (W : GL (Fin 2) F → ℂ) (hW : Continuous W)
     (ω μ : Fˣ →* ℂˣ) (hω : Continuous ω) (hμ : Continuous μ) (s : ℂ) :
@@ -126,6 +169,9 @@ theorem continuous_gjdI (ψ : AddChar F Circle) (hψ : Continuous ψ)
   unfold gjdI
   exact (((continuous_phd ψ hψ Φ hΦ).mul hW).mul hc).mul (continuous_mp_det _)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ω G V' hω hV W hWV μ hμ Φ hΦ s`. Take `⟨U, hU⟩` from `hV.smooth W hWV`. Conclude with `(continuous_gjdI ψ hψ.1 Φ hΦ W (continuous_of_rightInvariant W U hU) ω μ hω.1 hμ.1 s).aestronglyMeasurable`.
+-/
 theorem aestronglyMeasurable_gjdI : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),
     IsStd ψ → ∀ (ω : Fˣ →* ℂˣ) (G : (Fˣ →* ℂˣ) → ℂ → ℂ) (V' : Submodule ℂ (GL (Fin 2) F → ℂ)),

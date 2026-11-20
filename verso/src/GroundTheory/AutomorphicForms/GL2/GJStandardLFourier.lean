@@ -19,6 +19,15 @@ open GodementJacquet GLnLocal GJMatrix GroundTheory.Global GroundTheory.LocalFie
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Function.comp_apply, localTensor]`. Distinguish the cases in `h : ∀ p, z p ∈ (𝒪[F] : Set F)`. Rewrite using `[integralIndicator, Set.indicator_of_mem]`. Use `(Finset.prod_eq_one fun p _ ↦ ?_).symm` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (by rw [coe_valBall_zero]; exact h p)]`.
+
+Rewrite using `[mem_integralMatrixSet]`. Introduce `i j`. Conclude with `h (i, j)`. Use `push Not at h`. Take `⟨p, hp⟩` from `h`.
+
+Rewrite using `[integralIndicator, Set.indicator_of_notMem]`. Use `(Finset.prod_eq_zero (Finset.mem_univ p) ?_).symm` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem (by rw [coe_valBall_zero]; exact hp)]`. Rewrite using `[mem_integralMatrixSet]`. Introduce `hall`.
+
+Conclude with `hp (hall p.1 p.2)`.
+-/
 theorem integralIndicator_comp_symm {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (z : Fin n × Fin n → F) :
     (integralIndicator F n ∘ (matrixCoordHomeomorph (Fin n) F).symm) z =
@@ -40,6 +49,15 @@ theorem integralIndicator_comp_symm {F : Type*} [Field F] [ValuativeRel F] [Topo
       intro hall
       exact hp (hall p.1 p.2)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Rewrite using `[localMatrixFourier_eq]`. Establish `hfun : integralIndicator F n ∘ (matrixCoordHomeomorph (Fin n) F).symm = localTensor (fun _ : Fin n × Fin n ↦ (valBall F 0 : Set F).indicator fun _ ↦ (1 : ℂ))`. Use function extensionality and compare the values at `(integralIndicator_comp_symm (n := n))`. Rewrite using `[hfun, localFourierPi_localTensor]`.
+
+Establish `hloc : localFourier (selfDualMeasure ψ) ψ ((valBall F 0 : Set F).indicator fun _ ↦ (1 : ℂ)) = (valBall F 0 : Set F).indicator fun _ ↦ (1 : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[localFourier_indicator_valBall (selfDualMeasure ψ) hψ hψ1 0 x, h0, sub_zero, selfDualMeasure_real_valBall_zero, h0]`. Simplify using the standard rewrite rules. Simplify using `only [hloc]`.
+
+Use `integralIndicator_comp_symm (F := F) (n := n) (matrixCoordT y)` as an intermediate fact. Rewrite using `[← this]`. Use `show integralIndicator F n (Matrix.of fun i j ↦ y j i) = integralIndicator F n y`. Unfold `integralIndicator`. Distinguish the cases in `hy : ∀ i j, y i j ∈ 𝒪[F]`.
+
+Rewrite using `[Set.indicator_of_mem (show (Matrix.of fun i j ↦ y j i) ∈ integralMatrixSet F n from mem_integralMatrixSet.2 fun i j ↦ hy j i), Set.indicator_of_mem (show y ∈ integralMatrixSet F n from mem_integralMatrixSet.2 hy)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show (Matrix.of fun i j ↦ y j i) ∉ integralMatrixSet F n from fun h ↦ hy fun i j ↦ mem_integralMatrixSet.1 h j i), Set.indicator_of_notMem (show y ∉ integralMatrixSet F n from fun h ↦ hy (mem_integralMatrixSet.1 h))]`.
+-/
 theorem localMatrixFourier_integralIndicator_of_conductor {F : Type*} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
     {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (h0 : addCharConductor ψ = 0) :
@@ -77,16 +95,25 @@ def ramifiedPlaces : Finset (HeightOneSpectrum (𝓞 K)) :=
   (Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (K := K)
     ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K))).toFinset
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hv ((Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (K := K) ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K))).mem_toFinset.2 h)`.
+-/
 theorem differentExp_eq_zero {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPlaces K) :
     differentExp v = 0 := by
   by_contra h
   exact hv ((Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (K := K)
     ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K))).mem_toFinset.2 h)
 
+/- English proof (translation)
+Rewrite using `[addCharConductor_localAdelicChar, differentExp_eq_zero hv, neg_zero]`.
+-/
 theorem addCharConductor_eq_zero {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPlaces K) :
     addCharConductor (localAdelicChar K v) = 0 := by
   rw [addCharConductor_localAdelicChar, differentExp_eq_zero hv, neg_zero]
 
+/- English proof (translation)
+The claim follows from `localMatrixFourier_integralIndicator_of_conductor (continuous_localAdelicChar v) (localAdelicChar_ne_one v) (addCharConductor_eq_zero hv)`.
+-/
 theorem localMatrixFourier_integralIndicator {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPlaces K) :
     localMatrixFourier (localAdelicChar K v) (integralIndicator (v.adicCompletion K) n) =
       integralIndicator (v.adicCompletion K) n :=
@@ -139,6 +166,9 @@ instance isAddHaarMeasure_finMatHaar : (finMatHaar K n).IsAddHaarMeasure := by
   unfold finMatHaar
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Set.ext fun _ ↦ ⟨fun h i _ j _ ↦ (mem_integralMatrices F n).1 h i j, fun h ↦ (mem_integralMatrices F n).2 fun i j ↦ h i (Set.mem_univ i) j (Set.mem_univ j)⟩`.
+-/
 theorem coe_integralMatrices_eq_pi {F : Type*} [Field F] [ValuativeRel F] :
     (integralMatrices F n : Set (Matrix (Fin n) (Fin n) F)) =
       (Set.univ.pi fun _ : Fin n ↦ Set.univ.pi fun _ : Fin n ↦ (𝒪[F] : Set F) :
@@ -152,6 +182,9 @@ def matVol (v : HeightOneSpectrum (𝓞 K)) : ℝ≥0∞ :=
   matrixMeasure (selfDualMeasure (localAdelicChar K v))
     (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))
 
+/- English proof (translation)
+Rewrite using `[matVol, coe_integralMatrices_eq_pi, matrixMeasure]`. Use `erw [Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi]`.
+-/
 theorem matVol_eq (v : HeightOneSpectrum (𝓞 K)) :
     matVol K n v = ∏ _i : Fin n, ∏ _j : Fin n,
       selfDualMeasure (localAdelicChar K v) (𝒪[v.adicCompletion K] : Set (v.adicCompletion K)) := by
@@ -159,15 +192,24 @@ theorem matVol_eq (v : HeightOneSpectrum (𝓞 K)) :
   erw [Measure.pi_pi]
   simp_rw [Measure.pi_pi]
 
+/- English proof (translation)
+Rewrite using `[matVol_eq, selfDualMeasure_integers]`. Use `Finset.prod_ne_zero_iff.2 fun _ _ ↦ Finset.prod_ne_zero_iff.2 fun _ _ ↦ ?_` and prove the remaining obligations. Conclude with `ENNReal.coe_ne_zero.2 (selfDualMeasure_coeff_ne_zero _)`.
+-/
 theorem matVol_ne_zero (v : HeightOneSpectrum (𝓞 K)) : matVol K n v ≠ 0 := by
   rw [matVol_eq, selfDualMeasure_integers]
   refine Finset.prod_ne_zero_iff.2 fun _ _ ↦ Finset.prod_ne_zero_iff.2 fun _ _ ↦ ?_
   exact ENNReal.coe_ne_zero.2 (selfDualMeasure_coeff_ne_zero _)
 
+/- English proof (translation)
+Rewrite using `[matVol_eq, selfDualMeasure_integers]`. Conclude with `ENNReal.prod_ne_top fun _ _ ↦ ENNReal.prod_ne_top fun _ _ ↦ ENNReal.coe_ne_top`.
+-/
 theorem matVol_ne_top (v : HeightOneSpectrum (𝓞 K)) : matVol K n v ≠ ⊤ := by
   rw [matVol_eq, selfDualMeasure_integers]
   exact ENNReal.prod_ne_top fun _ _ ↦ ENNReal.prod_ne_top fun _ _ ↦ ENNReal.coe_ne_top
 
+/- English proof (translation)
+Rewrite using `[matVol_eq, selfDualMeasure_integers, addCharConductor_eq_zero hv]`. Simplify using the standard rewrite rules.
+-/
 theorem matVol_of_notMem {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPlaces K) : matVol K n v = 1 := by
   rw [matVol_eq, selfDualMeasure_integers, addCharConductor_eq_zero hv]
   simp
@@ -190,17 +232,26 @@ instance isAddHaarMeasure_locMeas (v : HeightOneSpectrum (𝓞 K)) : (locMeas K 
   Measure.IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 (matVol_ne_top v))
     (ENNReal.inv_ne_top.2 (matVol_ne_zero v))
 
+/- English proof (translation)
+Rewrite using `[locMeas, Measure.smul_apply, smul_eq_mul, ← matVol, ENNReal.inv_mul_cancel (matVol_ne_zero v) (matVol_ne_top v)]`.
+-/
 theorem locMeas_integralMatrices (v : HeightOneSpectrum (𝓞 K)) :
     locMeas K n v (integralMatrices (v.adicCompletion K) n :
       Set (Matrix (Fin n) (Fin n) (v.adicCompletion K))) = 1 := by
   rw [locMeas, Measure.smul_apply, smul_eq_mul, ← matVol, ENNReal.inv_mul_cancel (matVol_ne_zero v)
     (matVol_ne_top v)]
 
+/- English proof (translation)
+Rewrite using `[locMeas, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul, Complex.ofReal_inv]`.
+-/
 theorem integral_locMeas (v : HeightOneSpectrum (𝓞 K)) (f : Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ) :
     ∫ x, f x ∂locMeas K n v =
       ((matVol K n v).toReal : ℂ)⁻¹ * ∫ x, f x ∂matrixMeasure (selfDualMeasure (localAdelicChar K v)) := by
   rw [locMeas, integral_smul_measure, ENNReal.toReal_inv, Complex.real_smul, Complex.ofReal_inv]
 
+/- English proof (translation)
+Rewrite using `[finiteAdelicChar_apply, adelicChar_eq_prod, finiteAdeleInr_fst, finiteAdeleInr_snd]`. Establish `h0 : ∏ w : InfinitePlace K, infiniteAdelicChar K w ((0 : InfiniteAdeleRing K) w) = 1` using `Finset.prod_eq_one fun w _ ↦ by`. Rewrite using `[show (0 : InfiniteAdeleRing K) w = 0 from rfl, AddChar.map_zero_eq_one]`. Rewrite using `[h0, one_mul]`. Conclude with `MonoidHom.map_finprod_of_preimage_one Circle.coeHom (fun x hx ↦ Subtype.ext hx) _`.
+-/
 theorem finiteAdelicChar_eq_finprod (a : FiniteAdeleRing (𝓞 K) K) :
     (finiteAdelicChar K a : ℂ) = ∏ᶠ v, (localAdelicChar K v (a v) : ℂ) := by
   rw [finiteAdelicChar_apply, adelicChar_eq_prod, finiteAdeleInr_fst, finiteAdeleInr_snd]
@@ -214,6 +265,9 @@ def entriesAtT (v : HeightOneSpectrum (𝓞 K)) (z : Fin n × Fin n → FiniteAd
     Matrix (Fin n) (Fin n) (v.adicCompletion K) :=
   Matrix.of fun i j ↦ z (j, i) v
 
+/- English proof (translation)
+Establish `h : (∑ p, x p * z p) v = ∑ p, x p v * z p v` using `map_sum (RestrictedProduct.evalRingHom (fun w : HeightOneSpectrum (𝓞 K) ↦ w.adicCompletion K) v) _ _`. Rewrite using `[h, Matrix.trace, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem sum_mul_apply_eq_trace (x z : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K)
     (v : HeightOneSpectrum (𝓞 K)) :
     (∑ p, x p * z p) v = Matrix.trace (entriesAt v x * entriesAtT v z) := by
@@ -229,12 +283,18 @@ def finConstF : ℝ :=
       (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))} *
     ∏ v ∈ ramifiedPlaces K, ((matVol K n v).toReal)⁻¹
 
+/- English proof (translation)
+Rewrite using `[coe_integralMatrices_eq_pi, ← coe_valBall_zero]`. Conclude with `isCompact_univ_pi fun _ ↦ isCompact_univ_pi fun _ ↦ isCompact_valBall 0`.
+-/
 theorem isCompact_integralMatrices (v : HeightOneSpectrum (𝓞 K)) :
     IsCompact (integralMatrices (v.adicCompletion K) n :
       Set (Matrix (Fin n) (Fin n) (v.adicCompletion K))) := by
   rw [coe_integralMatrices_eq_pi, ← coe_valBall_zero]
   exact isCompact_univ_pi fun _ ↦ isCompact_univ_pi fun _ ↦ isCompact_valBall 0
 
+/- English proof (translation)
+Use `mul_ne_zero (RestrictedAddHaar.measureReal_setOf_forall_mem_pos (G := fun v : HeightOneSpectrum (𝓞 K) ↦ Matrix (Fin n) (Fin n) (v.adicCompletion K)) (fun v ↦ (integralMatrices (v.adicCompletion K) n).toAddSubgroup) (fact_isOpen_integralMatrices (K := K) (n := n)).out isCompact_in …` and prove the remaining obligations.
+-/
 theorem finConstF_ne_zero : finConstF K n ≠ 0 := by
   refine mul_ne_zero (RestrictedAddHaar.measureReal_setOf_forall_mem_pos
     (G := fun v : HeightOneSpectrum (𝓞 K) ↦ Matrix (Fin n) (Fin n) (v.adicCompletion K))
@@ -243,6 +303,53 @@ theorem finConstF_ne_zero : finConstF K n ≠ 0 := by
     (Finset.prod_ne_zero_iff.2 fun v _ ↦ inv_ne_zero (ENNReal.toReal_pos (matVol_ne_zero v)
       (matVol_ne_top v)).ne')
 
+/- English proof (translation)
+Use `set C : ∀ v : HeightOneSpectrum (𝓞 K), AddSubgroup (Matrix (Fin n) (Fin n) (v.adicCompletion K)) := fun v ↦ (integralMatrices (v.adicCompletion K) n).toAddSubgroup with hCdef`. Use `set F : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ := fun v M ↦ Φ v M * (localAdelicChar K v (Matrix.trace (M * entriesAtT v z)) : ℂ) with hFdef`. Use `set H : (Πʳ v : HeightOneSpectrum (𝓞 K), [Matrix (Fin n) (Fin n) (v.adicCompletion K), (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))]) → ℂ := fun X ↦ ∏ᶠ v : HeightOneSpectrum (𝓞 K), F v (X v) with hHdef`. Establish `hΦ1 : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S → ∀ M ∈ integralMatrices (v.adicCompletion K) n, Φ v M = 1`. Introduce `v hv M hM`.
+
+Rewrite using `[h0 v hv, integralIndicator, Set.indicator_of_mem (mem_integralMatrixSet.2 ((mem_integralMatrices _ n).1 hM))]`. Both sides reduce to the same expression. Establish `hψ1 : ∀ v : HeightOneSpectrum (𝓞 K), ∀ M ∈ integralMatrices (v.adicCompletion K) n, entriesAtT v z ∈ integralMatrices (v.adicCompletion K) n → (localAdelicChar K v (Matrix.trace (M * entriesAtT v z)) : ℂ) = 1`. Introduce `v M hM hW`. Establish `hMW : M * entriesAtT v z ∈ integralMatrices (v.adicCompletion K) n` using `mul_mem hM hW`.
+
+Establish `htr : Matrix.trace (M * entriesAtT v z) ∈ v.adicCompletionIntegers K`. Rewrite using `[Matrix.trace]`. Use `sum_mem fun i _ ↦ ?_` and prove the remaining obligations. Use `(mem_integralMatrices _ n).1 hMW i i` as an intermediate fact. Conclude with `(mem_valuationInteger_iff v _).1 this`.
+
+Rewrite using `[localAdelicChar_eq_one_of_mem (mem_localInvDifferent_of_mem htr)]`. Both sides reduce to the same expression. Establish `hWint : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ (finite_setOf_not_integral z).toFinset → entriesAtT v z ∈ integralMatrices (v.adicCompletion K) n`. Introduce `v hv`. Rewrite using `[mem_integralMatrices]`.
+
+Introduce `i j`. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨(j, i), fun h' ↦ h ((mem_valuationInteger_iff v _).2 h')⟩`.
+
+Establish `hXfin : ∀ X : (Πʳ v : HeightOneSpectrum (𝓞 K), [Matrix (Fin n) (Fin n) (v.adicCompletion K), (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))]), {v : HeightOneSpectrum (𝓞 K) | X v ∉ integralMatrices (v.adicCompletion K) n}.Finite` using `fun X ↦ Filter.eventually_cofinite.1 X.2`. Use `set R := ramifiedPlaces K with hRdef`. Use `set Bz := (finite_setOf_not_integral z).toFinset with hBzdef`. Use `set T := S ∪ R ∪ Bz with hTdef`. Establish `hbox : ∀ X ∈ RestrictedAddHaar.box C T, H X = ∏ v ∈ T, F v (X v)`.
+
+Introduce `X hX`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Apply `hv` to reduce the goal to its premises. Establish `hvS : v ∉ S` using `fun h ↦ hvT (Finset.mem_union_left _ (Finset.mem_union_left _ h))`.
+
+Establish `hvB : v ∉ Bz` using `fun h ↦ hvT (Finset.mem_union_right _ h)`. Establish `hXv : X v ∈ integralMatrices (v.adicCompletion K) n` using `hX v hvT`. Use `show Φ v (X v) * _ = 1`. Rewrite using `[hΦ1 v hvS _ hXv, hψ1 v _ hXv (hWint v hvB), one_mul]`. Establish `hzero : ∀ X, X ∉ RestrictedAddHaar.box C S → H X = 0`.
+
+Introduce `X hX`. Simplify using `only [RestrictedAddHaar.mem_box, not_forall] at hX`. Take `⟨v, hvS, hXv⟩` from `hX`. Use `finprod_eq_zero _ v ?_ ?_` and prove the remaining obligations. Use `show Φ v (X v) * _ = 0`.
+
+Rewrite using `[h0 v hvS, integralIndicator, Set.indicator_of_notMem, zero_mul]`. Conclude with `fun h ↦ hXv ((mem_integralMatrices _ n).2 (mem_integralMatrixSet.1 h))`. Use `(((hXfin X).union S.finite_toSet).union Bz.finite_toSet).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [mem_union, mem_ofPred_eq, Finset.mem_coe, not_or, not_not] at hc`.
+
+Apply `hw` to reduce the goal to its premises. Use `show Φ w (X w) * _ = 1`. Rewrite using `[hΦ1 w hc.1.2 _ hc.1.1, hψ1 w _ hc.1.1 (hWint w hc.2), one_mul]`. Establish `hfin1 : ∀ x : Fin n × Fin n → FiniteAdeleRing (𝓞 K) K, (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ Φ v (entriesAt v x)).Finite`. Introduce `x`.
+
+Use `((finite_setOf_not_integral x).union S.finite_toSet).subset fun w hw ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [mem_union, mem_ofPred_eq, Finset.mem_coe, not_or, not_exists, not_not] at hc`. Apply `hw` to reduce the goal to its premises. Use `show Φ w (entriesAt w x) = 1`.
+
+Rewrite using `[h0 w hc.2]`. Conclude with `integralIndicator_entriesAt fun ij ↦ hc.1 ij`. Establish `hfin2 : ∀ a : FiniteAdeleRing (𝓞 K) K, (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ (localAdelicChar K v (a v) : ℂ)).Finite`. Introduce `a`. Use `(Filter.eventually_cofinite.1 a.2).subset fun w hw ↦ ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Apply `hw` to reduce the goal to its premises. Establish `h1 : localAdelicChar K w (a w) = 1` using `localAdelicChar_eq_one_of_mem (mem_localInvDifferent_of_mem (not_not.1 hc))`. Use `show ((localAdelicChar K w (a w) : Circle) : ℂ) = 1`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression. Establish `h1 : finiteFourierPi K (tensorFin Φ) z = ∫ X, H X ∂finMatHaar K n`. Rewrite using `[finiteFourierPi, finMatHaar, show (finiteMeasurePi K (ι := Fin n × Fin n)).map (finMatEquiv K n) = (finiteMeasurePi K (ι := Fin n × Fin n)).map (finMatHomeomorph K n).toMeasurableEquiv from rfl, integral_map_equiv]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Use `show (∏ᶠ v, Φ v (entriesAt v x)) * (finiteAdelicChar K (∑ p, x p * z p) : ℂ) = ∏ᶠ v : HeightOneSpectrum (𝓞 K), F v (finMatHomeomorph K n x v)`.
+
+Rewrite using `[finiteAdelicChar_eq_finprod, ← finprod_mul_distrib (hfin1 x) (hfin2 _)]`. Use `finprod_congr fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[sum_mul_apply_eq_trace]`. Both sides reduce to the same expression. Establish `hST : S ⊆ T` using `fun v h ↦ Finset.mem_union_left _ (Finset.mem_union_left _ h)`.
+
+Establish `h2 : ∫ X, H X ∂finMatHaar K n = ∫ X in (RestrictedAddHaar.box C T : Set (Πʳ v : HeightOneSpectrum (𝓞 K), [Matrix (Fin n) (Fin n) (v.adicCompletion K), (integralMatrices (v.adicCompletion K) n : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K)))])), H X ∂finMatHaar K n` using `(setIntegral_eq_integral_of_forall_compl_eq_zero fun X hX ↦ hzero X fun h ↦ hX (RestrictedAddHaar.box_mono C hST h)).symm`. Establish `hFc : ∀ v, Measurable (F v)`. Introduce `v`. Establish `hΦc : Continuous (Φ v)`. Distinguish the cases in `hv : v ∈ S`.
+
+Conclude with `(hS v hv).1.continuous`. Rewrite using `[h0 v hv]`. Conclude with `isSchwartzBruhat_integralIndicator.1.continuous`. Conclude with `(hΦc.mul (continuous_subtype_val.comp ((continuous_localAdelicChar v).comp ((continuous_id.matrix_mul continuous_const).matrix_trace)))).measurable`. Establish `hν1 : ∀ v : HeightOneSpectrum (𝓞 K), locMeas K n v ((C v : AddSubgroup (Matrix (Fin n) (Fin n) (v.adicCompletion K))) : Set (Matrix (Fin n) (Fin n) (v.adicCompletion K))) = 1` using `fun v ↦ locMeas_integralMatrices v`.
+
+Establish `h3` using `RestrictedAddHaar.setIntegral_box (G := fun v : HeightOneSpectrum (𝓞 K) ↦ Matrix (Fin n) (Fin n) (v.adicCompletion K)) C (fact_isOpen_integralMatrices (K := K) (n := n)).out isCompact_integralMatrices (finMatHaar K n) (fun v ↦ locMeas K n v) hν1 F hFc T H hbox`. Rewrite using `[h1, h2]`. Use `h3.trans ?_` and prove the remaining obligations. Establish `hint : ∀ v, ∫ M, F v M ∂locMeas K n v = ((matVol K n v).toReal : ℂ)⁻¹ * localMatrixFourier (localAdelicChar K v) (Φ v) (entriesAtT v z)` using `fun v ↦ by`. Rewrite using `[integral_locMeas]`.
+
+Both sides reduce to the same expression. Repeatedly rewrite using `[hint, Finset.prod_mul_distrib]`. Establish `hRT : R ⊆ T` using `fun v h ↦ Finset.mem_union_left _ (Finset.mem_union_right _ h)`. Establish `hκ : ∏ v ∈ T, ((matVol K n v).toReal : ℂ)⁻¹ = ∏ v ∈ R, ((matVol K n v).toReal : ℂ)⁻¹` using `(Finset.prod_subset hRT fun v _ hvR ↦ by rw [matVol_of_notMem hvR]; simp).symm`. Establish `hL : ∏ v ∈ T, localMatrixFourier (localAdelicChar K v) (Φ v) (entriesAtT v z) = ∏ᶠ v : HeightOneSpectrum (𝓞 K), localMatrixFourier (localAdelicChar K v) (Φ v) (entriesAtT v z)`.
+
+Use `(finprod_eq_prod_of_mulSupport_subset _ fun v hv ↦ ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Apply `hv` to reduce the goal to its premises. Establish `hvS : v ∉ S` using `fun h ↦ hvT (Finset.mem_union_left _ (Finset.mem_union_left _ h))`. Establish `hvR : v ∉ R` using `fun h ↦ hvT (Finset.mem_union_left _ (Finset.mem_union_right _ h))`.
+
+Establish `hvB : v ∉ Bz` using `fun h ↦ hvT (Finset.mem_union_right _ h)`. Use `show localMatrixFourier (localAdelicChar K v) (Φ v) (entriesAtT v z) = 1`. Rewrite using `[h0 v hvS, localMatrixFourier_integralIndicator hvR, integralIndicator, Set.indicator_of_mem (mem_integralMatrixSet.2 ((mem_integralMatrices _ n).1 (hWint v hvB)))]`. Both sides reduce to the same expression. Rewrite using `[hκ, hL, finConstF]`.
+
+Use `push_cast`. Express the relevant statement in the definitionally equal form `(?a : ℂ) * ((?p : ℂ) * (?l : ℂ)) = ?a * ?p * ?l`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finiteFourierPi_tensorFin (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)
     (hS : ∀ v ∈ S, IsSchwartzBruhat (Φ v))
@@ -407,12 +514,22 @@ def swapCLE : (Fin n × Fin n → mixedSpace K) ≃L[ℝ] (Fin n × Fin n → mi
 def archMatrixFourier (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) : 𝓢(Fin n × Fin n → mixedSpace K, ℂ) :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (swapCLE K n) (mixedFourierPiSchwartz K φ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem entriesAtT_finPartPi_matrixCoordT (v : HeightOneSpectrum (𝓞 K))
     (y : Matrix (Fin n) (Fin n) 𝔸[K]) :
     entriesAtT v (finPartPi (matrixCoordT y)) = localMat v y := by
   ext i j
   rfl
 
+/- English proof (translation)
+Use `⟨(finConstF K n : ℂ), Complex.ofReal_ne_zero.2 finConstF_ne_zero, fun φ S Φ hS h0 ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `hcoord : coordFun (matrixTensor φ Φ) = schwartzBruhatTensorPi φ (tensorFin Φ)`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression.
+
+Rewrite using `[adelicMatrixFourier_eq, hcoord, adelicFourierPi_schwartzBruhatTensorPi, Pi.smul_apply, smul_eq_mul]`. Use `show (mixedFourierPiSchwartz K φ) (infPartPi (matrixCoordT y)) * finiteFourierPi K (tensorFin Φ) (finPartPi (matrixCoordT y)) = _`. Rewrite using `[finiteFourierPi_tensorFin S Φ hS h0, matrixTensor]`. Repeatedly rewrite using `[entriesAtT_finPartPi_matrixCoordT]`. Establish `harch : archSchwartz (archMatrixFourier φ) (archMat y) = (mixedFourierPiSchwartz K φ) (infPartPi (matrixCoordT y))`.
+
+Rewrite using `[archSchwartz, archMatrixFourier, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`. Both sides reduce to the same expression. Rewrite using `[harch]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_adelicMatrixFourier_matrixTensor : ∃ C : ℂ, C ≠ 0 ∧
     ∀ (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ)) (S : Finset (HeightOneSpectrum (𝓞 K)))
       (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ),
@@ -436,6 +553,11 @@ theorem exists_adelicMatrixFourier_matrixTensor : ∃ C : ℂ, C ≠ 0 ∧
   rw [harch]
   ring
 
+/- English proof (translation)
+Use `⟨fun v _ ↦ ?_, fun v hv ↦ ?_⟩` and prove the remaining obligations. Establish `hΦ : IsSchwartzBruhat (Φ v)`. Distinguish the cases in `hvS : v ∈ S`. Conclude with `hS v hvS`. Rewrite using `[h0 v hvS]`.
+
+Conclude with `isSchwartzBruhat_integralIndicator`. Conclude with `hΦ.localMatrixFourier (continuous_localAdelicChar v) (localAdelicChar_ne_one v)`. Rewrite `hv` using `[Finset.mem_union, not_or]`. Rewrite using `[h0 v hv.1, localMatrixFourier_integralIndicator hv.2]`.
+-/
 theorem localMatrixFourier_tensor_hyps (S : Finset (HeightOneSpectrum (𝓞 K)))
     (Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ)
     (hS : ∀ v ∈ S, IsSchwartzBruhat (Φ v))

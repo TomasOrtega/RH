@@ -18,6 +18,15 @@ def Φ (z : V (nd X)) : V (nd X) := D.zOf (cpt X (rmul x1' b1) z)
 
 def β (z : V (nd X)) : Frame X.Ψ r := D.bOf (cpt X (rmul x1' b1) z)
 
+/- English proof (translation)
+Establish `h0 : cpt X (rmul x1' b1) 0 = rmul x1' b1`. Use function extensionality and compare the values at `τ`. Use `show (mat (rmul x1' b1) τ * mat (nmat X 0) τ : Matrix (Fin r) (Fin r) ℂ) = rmul x1' b1 τ`. Rewrite using `[IW.nmat_zero, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Establish `hx0 : cpt X x1' 0 = x1'`. Use function extensionality and compare the values at `τ`. Use `show (mat x1' τ * mat (nmat X 0) τ : Matrix (Fin r) (Fin r) ℂ) = x1' τ`. Rewrite using `[IW.nmat_zero, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Establish `hdom : x1' ∈ X.dom` using `IW.orth_mem_dom X x1' ho'`. Establish `hO : (0 : V (nd X)) ∈ OmF X x1'` using `by show cpt X x1' 0 ∈ X.dom`. Rewrite using `[hx0]`. Conclude with `hdom`. Establish `hu` using `(D.uniq 0 hO b1 hb1).1`.
+
+Rewrite `hu` using `[hx0]`. Rewrite using `[h0]`. Conclude with `⟨OntoS.dom_rmul X hdom hb1, hu⟩`.
+-/
 theorem cell_zero (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) :
     cpt X (rmul x1' b1) 0 ∈ ExtFPf.cell D := by
   have h0 : cpt X (rmul x1' b1) 0 = rmul x1' b1 := by
@@ -40,6 +49,11 @@ theorem cell_zero (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) :
   rw [h0]
   exact ⟨OntoS.dom_rmul X hdom hb1, hu⟩
 
+/- English proof (translation)
+Establish `hopen : IsOpen {z : V (nd X) | cpt X (rmul x1' b1) z ∈ ExtFPf.cell D}`. Establish `h1` using `ExF.isOpen_OmF (X := X) (rmul x1' b1)`. Establish `h2 : IsOpen {z : V (nd X) | D.Δ (cpt X (rmul x1' b1) z) ≠ 0}` using `isOpen_ne_fun (D.hΔ.continuous.comp (MI.continuous_cpt (X := X) _)) continuous_const`. Conclude with `h1.inter h2`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 hopen 0 (cell_zero X b1 D ho' hb1)`.
+
+Conclude with `⟨ρ, hρ, fun z hz => hball hz⟩`.
+-/
 theorem exists_ball (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) :
     ∃ ρ1 : ℝ, 0 < ρ1 ∧ ∀ z ∈ Metric.ball (0 : V (nd X)) ρ1, cpt X (rmul x1' b1) z ∈ ExtFPf.cell D := by
   have hopen : IsOpen {z : V (nd X) | cpt X (rmul x1' b1) z ∈ ExtFPf.cell D} := by
@@ -50,11 +64,29 @@ theorem exists_ball (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) :
   obtain ⟨ρ, hρ, hball⟩ := Metric.isOpen_iff.1 hopen 0 (cell_zero X b1 D ho' hb1)
   exact ⟨ρ, hρ, fun z hz => hball hz⟩
 
+/- English proof (translation)
+The claim follows from `D.split _ hz.1 hz.2`.
+-/
 theorem split {z : V (nd X)} (hz : cpt X (rmul x1' b1) z ∈ ExtFPf.cell D) :
     Φ X b1 D z ∈ OmF X x1' ∧ β X b1 D z ∈ Bor X.Ψ r ∧
       cpt X (rmul x1' b1) z = rmul (cpt X x1' (Φ X b1 D z)) (β X b1 D z) :=
   D.split _ hz.1 hz.2
 
+/- English proof (translation)
+Establish `hN2u : IsUnit N2.det`. Rewrite using `[Matrix.det_of_lowerTriangular N2 hN2t]`. Simplify using `[hd2]`. Establish `h3 : N1 * B1⁻¹ = N2 * B2⁻¹`. Establish `e : A * (N1 * B1⁻¹) = A * (N2 * B2⁻¹)`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB1, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB2]`. Establish `e'` using `congrArg (fun M => A⁻¹ * M) e`. Rewrite `e'` using `[Matrix.nonsing_inv_mul_cancel_left _ _ hA, Matrix.nonsing_inv_mul_cancel_left _ _ hA]`. Then use the resulting hypothesis. Establish `hk : N2⁻¹ * N1 = B2⁻¹ * B1`. Establish `e3 : N1 = N1 * B1⁻¹ * B1`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB1, Matrix.mul_one]`. Rewrite using `[e3, h3, Matrix.mul_assoc N2, ← Matrix.mul_assoc N2⁻¹, Matrix.nonsing_inv_mul _ hN2u, Matrix.one_mul]`. Establish `hPlow : (N2⁻¹ * N1).BlockTriangular OrderDual.toDual` using `by haveI := Matrix.invertibleOfIsUnitDet N2 hN2u`. Conclude with `(Matrix.blockTriangular_inv_of_blockTriangular hN2t).mul hN1t`. Establish `hPup : (N2⁻¹ * N1).BlockTriangular id` using `by haveI := Matrix.invertibleOfIsUnitDet B2 hB2`.
+
+Rewrite using `[hk]`. Conclude with `(Matrix.blockTriangular_inv_of_blockTriangular hB2t).mul hB1t`. Establish `hoff : ∀ a c, a ≠ c → (N2⁻¹ * N1) a c = 0`. Introduce `a c hac`. Break down `lt_or_gt_of_ne hac with h | h` into its components or cases.
+
+Conclude with `hPlow (show OrderDual.toDual c < OrderDual.toDual a from h)`. Conclude with `hPup h`. Establish `hN1 : N1 = N2 * (N2⁻¹ * N1)` using `(Matrix.mul_nonsing_inv_cancel_left N2 N1 hN2u).symm`. Establish `hsum : ∀ a c, (N2 * (N2⁻¹ * N1)) a c = N2 a c * (N2⁻¹ * N1) c c`. Introduce `a c`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single c (fun k _ hk => by rw [hoff k c hk, mul_zero]) (by simp)]`. Establish `hPd : ∀ c, (N2⁻¹ * N1) c c = 1`. Introduce `c`. Establish `e` using `congrFun (congrFun hN1 c) c`. Rewrite `e` using `[hsum, hd1, hd2, one_mul]`.
+
+Conclude with `e.symm`. Use extensionality with `a c`. Establish `e` using `congrFun (congrFun hN1 a) c`. Rewrite `e` using `[hsum, hPd, mul_one]`. Conclude with `e`.
+-/
 private theorem eq_of_unipotent_lower_mul_eq_upper {n : ℕ} (A C B1 B2 N1 N2 : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A.det)
     (hB1 : IsUnit B1.det) (hB2 : IsUnit B2.det) (hB1t : B1.BlockTriangular id) (hB2t : B2.BlockTriangular id)
     (hN1t : N1.BlockTriangular OrderDual.toDual) (hN2t : N2.BlockTriangular OrderDual.toDual)
@@ -99,6 +131,17 @@ private theorem eq_of_unipotent_lower_mul_eq_upper {n : ℕ} (A C B1 B2 N1 N2 : 
   rw [hsum, hPd, mul_one] at e
   exact e
 
+/- English proof (translation)
+Introduce `z1 hz1 z2 hz2 hΦ`. Take `⟨-, hB1, e1⟩` from `split X b1 D hz1`. Take `⟨-, hB2, e2⟩` from `split X b1 D hz2`. Rewrite `e1` using `[hΦ]`. Establish `hlow : ∀ (z : V (nd X)) (τ : X.Ψ), (mat (nmat X z) τ).BlockTriangular OrderDual.toDual`.
+
+Introduce `z τ a c hac`. Establish `hac' : a < c` using `hac`. Simplify using `[mat, nmat, not_lt.2 hac'.le, hac'.ne]`. Establish `hdiag : ∀ (z : V (nd X)) (τ : X.Ψ) (a : Fin r), mat (nmat X z) τ a a = 1`. Introduce `z τ a`.
+
+Simplify using `[mat, nmat]`. Establish `hup : ∀ b ∈ Bor X.Ψ r, ∀ τ : X.Ψ, (mat b τ).BlockTriangular id`. Introduce `b hb τ a c hac`. Conclude with `(hb τ).2 a c hac`. Establish `hN : ∀ τ, mat (nmat X z1) τ = mat (nmat X z2) τ`.
+
+Introduce `τ`. Conclude with `eq_of_unipotent_lower_mul_eq_upper (mat (rmul x1' b1) τ) (mat (cpt X x1' (Φ X b1 D z2)) τ) (mat (β X b1 D z1) τ) (mat (β X b1 D z2) τ) _ _ (isUnit_iff_ne_zero.2 (hx1 τ).1) (isUnit_iff_ne_zero.2 (hB1 τ).1) (isUnit_iff_ne_zero.2 (hB2 τ).1) (hup _ hB1 τ) (hup _ hB2 τ) (hlow z1 τ) (h …`. Use extensionality with `i`. Take `⟨⟨τ, ⟨⟨a, c⟩, hac⟩⟩, rfl⟩ : ∃ e : Ent X, Fintype.equivFin (Ent X) e = i` from `⟨(Fintype.equivFin (Ent X)).symm i, (Fintype.equivFin (Ent X)).apply_symm_apply i⟩`. Establish `e` using `congrFun (congrFun (hN τ) a) c`.
+
+Simplify `e` using `[mat, nmat, hac]`.
+-/
 theorem Φ_injOn (hx1 : rmul x1' b1 ∈ X.dom) :
     Set.InjOn (Φ X b1 D) {z | cpt X (rmul x1' b1) z ∈ ExtFPf.cell D} := by
   intro z1 hz1 z2 hz2 hΦ

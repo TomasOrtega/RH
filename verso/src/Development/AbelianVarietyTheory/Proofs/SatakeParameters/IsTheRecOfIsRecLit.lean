@@ -14,6 +14,17 @@ open GlobalTheory.LocLanglands.FieldCompat GlobalTheory.LocLanglands.TransportGL
 
 namespace GlobalTheory.TheRecTransport
 
+/- English proof (translation)
+Establish `key : ∀ g (l : Module.Dual ℂ V), e.symm.dualMap (ρ.dual g l) = ρ'.dual (f g) (e.symm.dualMap l)`. Introduce `g l`. Use extensionality with `v`. Take `⟨v, rfl⟩` from `e.surjective v`. Use `show l (ρ g⁻¹ (e.symm (e v))) = l (e.symm (ρ' (f g)⁻¹ (e v)))`.
+
+Rewrite using `[← map_inv f, ← he, e.symm_apply_apply, e.symm_apply_apply]`. Establish `hmap : (smoothPart ρ.dual).map (e.symm.dualMap : Module.Dual ℂ V →ₗ[ℂ] Module.Dual ℂ V') = smoothPart ρ'.dual`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((show IsOpen {g | ρ.dual g l = l} from hl).preimage hf').mem_nhds (by show ρ.dual (f' 1) l = l` and prove the remaining obligations.
+
+Rewrite using `[map_one, map_one]`. Use the proof step `rfl)) fun g hg => ?_)`. Establish `h1 : ρ.dual (f' g) l = l` using `hg`. Use `show ρ'.dual g (e.symm.dualMap l) = e.symm.dualMap l`. Rewrite using `[← hff g, ← key, h1]`.
+
+Introduce `l' hl'`. Take `⟨l, rfl⟩` from `e.symm.dualMap.surjective l'`. Use `⟨l, mem_smoothPart_of_nhds (Filter.mem_of_superset (((show IsOpen {g | ρ'.dual g (e.symm.dualMap l) = e.symm.dualMap l} from hl').preimage hf).mem_nhds (by show ρ'.dual (f 1) _ = _` and prove the remaining obligations. Rewrite using `[map_one, map_one]`. Use the proof step `rfl)) fun g hg => ?_), rfl⟩`.
+
+Establish `h1 : ρ'.dual (f g) (e.symm.dualMap l) = e.symm.dualMap l` using `hg`. Use `show ρ.dual g l = l`. Apply `e.symm.dualMap.injective` to reduce the goal to its premises. Rewrite using `[key, h1]`. Conclude with `⟨e.symm.dualMap.ofSubmodules _ _ hmap, fun g l => Subtype.ext (key g l)⟩`.
+-/
 theorem exists_contra_equiv {H H' V V' : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [Group H'] [TopologicalSpace H'] [IsTopologicalGroup H'] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     (f : H →* H') (f' : H' →* H) (hf : Continuous f) (hf' : Continuous f') (hff : ∀ g, f (f' g) = g)
@@ -54,6 +65,11 @@ section Rep
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
+/- English proof (translation)
+Take `⟨m, π₀, π', e, h1, rfl, he⟩` from `H`. Take `rfl : n = m` from `congrArg Sigma.fst h1`. Take `⟨φ⟩` from `(IrrGL.of_eq_of (π := π.ρ) (σ := π₀.ρ) (hs := π.smooth) (hi := π.irr) (hs' := π₀.smooth) (hi' := π₀.irr)).1 h1`. Use `⟨π', φ.toLinearEquiv.trans e, rfl, fun g v => ?_⟩` and prove the remaining obligations. Establish `h2 : φ.toLinearEquiv (π.ρ g v) = π₀.ρ g (φ.toLinearEquiv v)` using `φ.toIntertwiningMap.isIntertwining _ _ g v`.
+
+Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, h2, he]`.
+-/
 theorem exists_of_repRel {i : k ≃+* k'} {n : ℕ} (π : IrrRep (GL (Fin n) k)) {x' : IrrGL k'} (H : RepRel i (cls π) x') :
     ∃ (π' : IrrRep (GL (Fin n) k')) (e : π.V ≃ₗ[ℂ] π'.V), x' = cls π' ∧
       ∀ g v, e (π.ρ g v) = π'.ρ (GeneralLinearGroup.map i.toRingHom g) (e v) := by
@@ -65,10 +81,16 @@ theorem exists_of_repRel {i : k ≃+* k'} {n : ℕ} (π : IrrRep (GL (Fin n) k))
   have h2 : φ.toLinearEquiv (π.ρ g v) = π₀.ρ g (φ.toLinearEquiv v) := φ.toIntertwiningMap.isIntertwining _ _ g v
   rw [LinearEquiv.trans_apply, LinearEquiv.trans_apply, h2, he]
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_matrix fun a b => hi.comp (continuous_id.matrix_elem a b))`.
+-/
 theorem continuous_glMap (i : k ≃+* k') (hi : Continuous i) (n : ℕ) :
     Continuous (GeneralLinearGroup.map (n := Fin n) i.toRingHom) :=
   Continuous.units_map _ (continuous_matrix fun a b => hi.comp (continuous_id.matrix_elem a b))
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_contra_equiv (GeneralLinearGroup.map (n := Fin n) i.toRingHom) (GeneralLinearGroup.map (n := Fin n) i.symm.toRingHom) (continuous_glMap i hi n) (continuous_glMap i.symm hs n) (map_map_symm i) π.ρ π'.ρ e he`. Use `⟨.mk (u.symm.trans (φ.toLinearEquiv.trans d)) fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ g v, φ.toLinearEquiv (τ.ρ g v) = contra π.ρ g (φ.toLinearEquiv v)` using `fun g v => φ.toIntertwiningMap.isIntertwining _ _ g v`. Use `show d (φ.toLinearEquiv (u.symm (τ'.ρ g v))) = contra π'.ρ g (d (φ.toLinearEquiv (u.symm v)))`. Rewrite using `[symm_rel i τ τ' u hu, h2, hd, map_map_symm]`.
+-/
 theorem contra_transport (i : k ≃+* k') (hi : Continuous i) (hs : Continuous i.symm) {n : ℕ}
     (π τ : IrrRep (GL (Fin n) k)) (π' τ' : IrrRep (GL (Fin n) k'))
     (e : π.V ≃ₗ[ℂ] π'.V) (he : ∀ g v, e (π.ρ g v) = π'.ρ (GeneralLinearGroup.map i.toRingHom g) (e v))
@@ -83,6 +105,13 @@ theorem contra_transport (i : k ≃+* k') (hi : Continuous i) (hs : Continuous i
   show d (φ.toLinearEquiv (u.symm (τ'.ρ g v))) = contra π'.ρ g (d (φ.toLinearEquiv (u.symm v)))
   rw [symm_rel i τ τ' u hu, h2, hd, map_map_symm]
 
+/- English proof (translation)
+Rewrite `H` using `[← cls_rep x]`. Take `⟨π', e, rfl, he⟩` from `exists_of_repRel _ H`. Introduce `z v`. Set `φ` to `equivRep π'`. Establish `h2 : ∀ g v, φ.toLinearEquiv (π'.ρ g v) = π'.cl.rep.ρ g (φ.toLinearEquiv v)` using `fun g v => φ.toIntertwiningMap.isIntertwining _ _ g v`.
+
+Take `⟨v, rfl⟩` from `φ.toLinearEquiv.surjective v`. Take `⟨v, rfl⟩` from `e.surjective v`. Establish `hz : GeneralLinearGroup.scalar (Fin x.1) z = GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.scalar (Fin x.1) (Units.map i.symm.toRingHom.toMonoidHom z))`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [GeneralLinearGroup.scalar, Matrix.diagonal_apply, hab]`.
+
+Use `show π'.cl.rep.ρ (GeneralLinearGroup.scalar (Fin x.1) z) (φ.toLinearEquiv (e v)) = _`. Rewrite using `[← h2, hz, ← he, hω, map_smul, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem central_transport (i : k ≃+* k') {x : IrrGL k} {x' : IrrGL k'} (H : RepRel i x x') {ω : kˣ →* ℂˣ}
     (hω : HasCentralChar x.rep ω) :
     HasCentralChar x'.rep (ω.comp (Units.map i.symm.toRingHom.toMonoidHom)) := by
@@ -110,6 +139,15 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
   {φ : Ω ≃+* Ω'} {j : E →+* E'} {i : w.adicCompletion E ≃+* w'.adicCompletion E'}
 
+/- English proof (translation)
+Take `⟨c, hc, hdegc, hq, hsm⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i P`. Establish `hd1 : ∀ σ, deg (c.symm.toMonoidHom σ) = deg σ` using `fun σ => by`. Use `hdegc (c.symm σ)` as an intermediate fact. Simplify using `only [MulEquiv.apply_symm_apply] at this`. Simplify using `using this.symm`.
+
+Establish `hs1 : ∀ (M : Type) [Monoid M] (g : Weil h →* M), GlobalTheory.WeilDeligne.IsSmooth g → GlobalTheory.WeilDeligne.IsSmooth (g.comp c.symm.toMonoidHom)` using `fun M _ g hg => by`. Establish `e : (g.comp c.symm.toMonoidHom).comp c.toMonoidHom = g` using `by ext σ; simp`. Establish `hg' : GlobalTheory.WeilDeligne.IsSmooth ((g.comp c.symm.toMonoidHom).comp c.toMonoidHom)` using `by rwa [e]`. Conclude with `(hsm M _).mpr hg'`. Establish `hF : ∀ y, S y = GlobalTheory.WDTransport.pullWD c.symm.toMonoidHom hd1 hq.symm hs1 y` using `fun y => by`.
+
+Take `⟨n, b, rfl⟩` from `WD.exists_rep y`. Use `(hS _ _).1 ⟨n, b, GlobalTheory.WDTransport.pull c.symm.toMonoidHom hd1 hq.symm hs1 b, rfl, (GlobalTheory.WDTransport.pullWD_mk _ _ _ _ b).symm, rfl, fun σ σ' hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hc σ σ').mp hσ]`. Simplify using the standard rewrite rules. Take `⟨n, b, rfl⟩` from `WD.exists_rep y`.
+
+Rewrite using `[hF, hF, WD.lpDual_mk, GlobalTheory.WDTransport.pullWD_mk, GlobalTheory.WDTransport.pullWD_mk, WD.lpDual_mk]`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Use `show b.ρ.dual (c.symm.toMonoidHom σ) v = Representation.dual (b.ρ.comp c.symm.toMonoidHom) σ v`. Simplify using `only [Representation.dual_apply, MonoidHom.comp_apply, map_inv]`.
+-/
 theorem equiv_lpDual (P : PlaceIso A w A' w' φ j i) (S : WD h ≃ WD h') (hS : ∀ y y', WDRel φ y y' ↔ S y = y')
     (y : WD h) : S y.lpDual = (S y).lpDual := by
   obtain ⟨c, hc, hdegc, hq, hsm⟩ := GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω' A' w' h' φ j i P

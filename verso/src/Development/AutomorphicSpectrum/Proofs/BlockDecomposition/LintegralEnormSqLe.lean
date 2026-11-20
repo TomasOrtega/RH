@@ -4,6 +4,13 @@ open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.Dblock
 
+/- English proof (translation)
+Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two hg (aemeasurable_const (b := (1 : ℝ≥0∞)))`. Establish `h1 : (∫⁻ a, ((g * fun _ => (1 : ℝ≥0∞)) : α → ℝ≥0∞) a ∂μ) = ∫⁻ x, g x ∂μ` using `by simp`. Establish `h2 : (∫⁻ _a, (1 : ℝ≥0∞) ^ (2 : ℝ) ∂μ) = μ Set.univ` using `by simp`. Establish `h3 : (∫⁻ a, g a ^ (2 : ℝ) ∂μ) = ∫⁻ x, g x ^ 2 ∂μ`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Conclude with `ENNReal.rpow_two _`. Rewrite `h` using `[h1, h2, h3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+
+Rewrite using `[mul_comm]`.
+-/
 theorem lintegral_enorm_sq_le {α : Type} [MeasurableSpace α] (μ : Measure α) (g : α → ℝ≥0∞)
     (hg : AEMeasurable g μ) :
     (∫⁻ x, g x ∂μ) ^ 2 ≤ μ Set.univ * ∫⁻ x, g x ^ 2 ∂μ := by
@@ -24,6 +31,15 @@ theorem lintegral_enorm_sq_le {α : Type} [MeasurableSpace α] (μ : Measure α)
         norm_num
         rw [mul_comm]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ν s = 0`. Simplify using `[h0]`. Distinguish the cases in `htop : ν s = ⊤`. Simplify using `[Measure.real, htop]`. Distinguish the cases in `hf : IntegrableOn f s ν`.
+
+Establish `hcs` using `lintegral_enorm_sq_le (ν.restrict s) (fun x => ‖f x‖ₑ) hf.1.enorm`. Rewrite `hcs` using `[Measure.restrict_apply_univ]`. Establish `hz : ‖∫ x in s, f x ∂ν‖ₑ ≤ ∫⁻ x in s, ‖f x‖ₑ ∂ν` using `enorm_integral_le_lintegral_enorm _`. Establish `hc : ‖((ν.real s : ℝ) : ℂ)⁻¹‖ₑ = (ν s)⁻¹`. Establish `hne : ((ν.real s : ℝ) : ℂ) ≠ 0`.
+
+Simplify using `[Measure.real, ENNReal.toReal_eq_zero_iff, h0, htop]`. Rewrite using `[enorm_inv hne]`. Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg measureReal_nonneg, Measure.real, ENNReal.ofReal_toReal htop]`. Rewrite using `[enorm_mul, hc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.inv_mul_cancel h0 htop]`. Simplify using the standard rewrite rules. Rewrite using `[integral_undef hf]`. Simplify using the standard rewrite rules.
+-/
 theorem enorm_mean_sq_mul_le {α : Type} [MeasurableSpace α] (ν : Measure α) (s : Set α)
     (f : α → ℂ) :
     ‖((ν.real s : ℝ) : ℂ)⁻¹ * ∫ x in s, f x ∂ν‖ₑ ^ 2 * ν s ≤ ∫⁻ x in s, ‖f x‖ₑ ^ 2 ∂ν := by

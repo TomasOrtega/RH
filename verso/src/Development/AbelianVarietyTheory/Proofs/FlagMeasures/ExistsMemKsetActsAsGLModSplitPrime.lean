@@ -13,6 +13,9 @@ open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical
 
 namespace GlobalTheory.RowLev
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `[Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR_af (I : AutInst) (x : I.E ⊗[I.F] Af I.F) :
     Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.sigR I.cm.sig (Af I.F) x) = x := by
   induction x using TensorProduct.induction_on with
@@ -21,6 +24,11 @@ theorem sigR_sigR_af (I : AutInst) (x : I.E ⊗[I.F] Af I.F) :
     simp [Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hs : ∀ a : I.E, Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F` using `I.F) (Af I.F) a) = Formalism.UG.inclE (F := I.F) (Af I.F) (star a) := by`. Introduce `a`. Apply the tactic sequence `simp [Formalism.UG.sigR, Formalism.UG.inclE, Formalism.BasicNotions.CMData.sig] <;> rfl`. Establish `hJ` using `I.J_herm`. Unfold `Formalism.UG.IsHerm Formalism.UG.cT at hJ ⊢`.
+
+Use extensionality with `i j`. Establish `h` using `congrArg (fun M => M i j) hJ`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, starRingEnd_apply] at h ⊢`. Rewrite using `[hs, h]`.
+-/
 theorem isHerm_af (I : AutInst) :
     Formalism.UG.IsHerm (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))) := by
   have hs : ∀ a : I.E, Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) a) =
@@ -34,12 +42,28 @@ theorem isHerm_af (I : AutInst) :
   simp only [Matrix.transpose_apply, Matrix.map_apply, starRingEnd_apply] at h ⊢
   rw [hs, h]
 
+/- English proof (translation)
+Establish `h : (I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F))).det = Formalism.UG.inclE (F := I.F) (Af I.F) I.J.det := (RingHom.map_det _ _).symm`. Rewrite using `[h]`. Conclude with `(Ne.isUnit I.J_det).map _`.
+-/
 theorem isUnit_det_af (I : AutInst) : IsUnit (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))).det := by
   have h : (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))).det = Formalism.UG.inclE (F := I.F) (Af I.F) I.J.det :=
     (RingHom.map_det _ _).symm
   rw [h]
   exact (Ne.isUnit I.J_det).map _
 
+/- English proof (translation)
+Introduce `I N p w fr hN hp hw hw' M`. Substitute `hN` using the available equality. Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨ε, hεε, h1ε, hεu, hεt, hεσ⟩` from `GlobalTheory.T.exists_prime_idempotent_integralAdeles I w`. Establish `hA` using `GlobalTheory.RowLev.intAf_approx_inter_unit_conj I 1 le_rfl`.
+
+Establish `hL` using `GlobalTheory.AdelicLattice.adelicLattice_spec I 1 le_rfl`. Establish `hX` using `GlobalTheory.RowLev.extId_mul_sup_natCast_conj I`. Establish `hker : ∀ z, fr.r z = 0 ↔ z ∈ extId I w.asIdeal` using `fun z => by`. Rewrite using `[← RingHom.mem_ker, fr.ker_r]`. Establish `hrε : fr.r ε = 1`.
+
+Establish `h0 : fr.r (1 - ε) = 0` using `(hker _).2 h1ε`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h0.symm`. Take `⟨x, hxU, hxS, hact, htriv⟩` from `GlobalTheory.T.exists_unitary_stabilizer_lift_of_split_idempotent (I.E ⊗[I.F] Af I.F) (Formalism.UG.sigR I.cm.sig (Af I.F)) (IntAf I.F I.E) I.n (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))) I.Lf (ZMod p) fr.r fr.c ε (fun a => sigR_sigR_af I a) (fun a ha => hA.2.2.2 a ha) (is …`. Use `⟨⟨x, hxU⟩, hxS, fun y h => hact y h, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu hcu y hy`. Take `⟨z, hz, e⟩` from `htriv y hy`. Take `⟨u', hu'⟩` from `hX.2.2.2.1 u`. Establish `hu'w : u' ≠ w`. Introduce and unpack `rfl`.
+
+Conclude with `hcu (hX.2.2.2.2.1 u u' hu')`. Take `⟨z', hz', hz'e⟩` from `hX.2.2.2.2.2.2 u' u (hX.2.2.2.2.1 u u' hu') ε (hεu u' hu'w)`. Establish `hmem : ε + z' ∈ extId I u.asIdeal` using `add_mem (hεu u hu) hz'`. Establish `hfin : (I.fmat ⟨x, hxU⟩ - 1) *ᵥ y = (ε + z') • z`. Express the relevant statement in the definitionally equal form `((x : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) - 1) *ᵥ y = _`.
+
+Rewrite using `[e, ← hz'e]`. Both sides reduce to the same expression. Rewrite using `[hfin]`. Conclude with `Submodule.smul_mem_smul hmem hz`.
+-/
 theorem exists_mem_Kset_actsAs_trivial_away : ∀ (I : AutInst) (N p : ℕ) (w : HeightOneSpectrum (𝓞 I.E)) (fr : PlFrame I N p w), I.n = N → p.Prime → Ideal.absNorm w.asIdeal = p → ¬ IsConj I w w → ∀ M : GL (Fin N) (ZMod p), ∃ x ∈ I.Kset, (∀ (y : I.Lf) (h : I.fmat x *ᵥ (y : Fin I.n → _) ∈ I.Lf), fr.c ⟨_, h⟩ = (M : Matrix (Fin N) (Fin N) (ZMod p)) *ᵥ fr.c y) ∧ ∀ u : HeightOneSpectrum (𝓞 I.E), u ≠ w → ¬ IsConj I w u → ∀ y ∈ I.Lf, (I.fmat x - 1) *ᵥ y ∈ extId I u.asIdeal • I.Lf := by
   intro I N p w fr hN hp hw hw' M
   subst hN

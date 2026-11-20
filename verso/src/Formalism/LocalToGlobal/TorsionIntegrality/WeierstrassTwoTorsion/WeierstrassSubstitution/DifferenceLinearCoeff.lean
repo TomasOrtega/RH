@@ -19,6 +19,9 @@ section Diag
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+Establish `h : (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1]) = (MvPowerSeries.X : Fin 2 → MvPowerSeries (Fin 2) R)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Simplify using `only [h, MvPowerSeries.subst_self, id_eq]`.
+-/
 theorem subst_XX (G : MvPowerSeries (Fin 2) R) :
     G.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1] = G := by
   have h : (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1])
@@ -27,10 +30,16 @@ theorem subst_XX (G : MvPowerSeries (Fin 2) R) :
     fin_cases i <;> rfl
   simp only [h, MvPowerSeries.subst_self, id_eq]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [he]`.
+-/
 theorem eq_single0 (e : Fin 2 →₀ ℕ) (he : e 1 = 0) : e = Finsupp.single 0 (e 0) := by
   ext i
   fin_cases i <;> simp [he]
 
+/- English proof (translation)
+Establish `h0 : cc (f - MvPowerSeries.C (cc f)) = 0` using `by simp`. Establish `h1` using `MvPowerSeries.constantCoeff_subst_eq_zero ha ha' h0`. Rewrite `h1` using `[MvPowerSeries.subst_sub ha, MvPowerSeries.subst_C, map_sub, MvPowerSeries.constantCoeff_C, sub_eq_zero]`. Conclude with `h1`.
+-/
 theorem cc_subst {σ τ : Type*} {a : σ → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a)
     (ha' : ∀ i, cc (a i) = 0) (f : MvPowerSeries σ R) : cc (f.subst a) = cc f := by
   have h0 : cc (f - MvPowerSeries.C (cc f)) = 0 := by simp
@@ -39,6 +48,15 @@ theorem cc_subst {σ τ : Type*} {a : σ → MvPowerSeries τ R} (ha : MvPowerSe
     sub_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0]` using `hasSubst2 (by simp) (by simp)`. Establish `hprod : ∀ d : Fin 2 →₀ ℕ, (d.prod fun s n => (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0] s) ^ n) = MvPowerSeries.X 0 ^ d 0 * 0 ^ d 1`. Introduce `d`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _), Fin.prod_univ_two]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_single _ e]`. Rewrite using `[hprod, he, pow_zero, mul_one, MvPowerSeries.coeff_X_pow]`. Rewrite using `[if_pos (eq_single0 e he), smul_eq_mul, mul_one]`. Introduce `d hd`. Rewrite using `[hprod]`.
+
+Break down `Nat.eq_zero_or_pos (d 1) with h1 | h1` into its components or cases. Rewrite using `[h1, pow_zero, mul_one, MvPowerSeries.coeff_X_pow, if_neg, smul_zero]`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[eq_single0 d h1]`.
+
+Conclude with `h.symm`. Rewrite using `[zero_pow h1.ne', mul_zero, map_zero, smul_zero]`.
+-/
 theorem coeff_subst_X0_zero (H : MvPowerSeries (Fin 2) R) (e : Fin 2 →₀ ℕ) (he : e 1 = 0) :
     MvPowerSeries.coeff e (H.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0]) =
       MvPowerSeries.coeff e H := by
@@ -64,6 +82,9 @@ theorem coeff_subst_X0_zero (H : MvPowerSeries (Fin 2) R) (e : Fin 2 →₀ ℕ)
       exact h.symm
     · rw [zero_pow h1.ne', mul_zero, map_zero, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.X_dvd_iff]`. Introduce `m hm`. Rewrite using `[← coeff_subst_X0_zero H m hm, h, map_zero]`.
+-/
 theorem X_one_dvd_of_subst_X_zero_eq_zero (H : MvPowerSeries (Fin 2) R)
     (h : H.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0] = 0) :
     (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) R) ∣ H := by
@@ -71,6 +92,19 @@ theorem X_one_dvd_of_subst_X_zero_eq_zero (H : MvPowerSeries (Fin 2) R)
   intro m hm
   rw [← coeff_subst_X0_zero H m hm, h, map_zero]
 
+/- English proof (translation)
+Establish `c0 : cc (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R) = 0` using `by simp`. Establish `hτ : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 + MvPowerSeries.X 0]` using `hasSubst2 c0 (by simp)`. Establish `hτ' : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 - MvPowerSeries.X 0]` using `hasSubst2 c0 (by simp)`. Establish `hε : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0]` using `hasSubst2 c0 (by simp)`. Take `⟨H', hH'⟩ : ∃ H', H' = H.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 + MvPowerSeries.X 0]` from `⟨_, rfl⟩`.
+
+Establish `e1 : H'.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0] = 0`. Rewrite using `[hH', MvPowerSeries.subst_comp_subst_apply hτ hε]`. Establish `: (fun i => MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), 0] (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 + MvPowerSeries.X 0] i)) = ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 0]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using `[MvPowerSeries.subst_X hε]`. Simplify using `[MvPowerSeries.subst_add hε, MvPowerSeries.subst_X hε]`. Rewrite using `[this]`. Conclude with `h`. Take `⟨Q', hQ'⟩` from `X_one_dvd_of_subst_X_zero_eq_zero H' e1`.
+
+Establish `hback : H'.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 - MvPowerSeries.X 0] = H`. Rewrite using `[hH', MvPowerSeries.subst_comp_subst_apply hτ hτ']`. Establish `: (fun i => MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 - MvPowerSeries.X 0] (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 + MvPowerSeries.X 0] i)) = ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X …`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using `[MvPowerSeries.subst_X hτ']`. Simplify using `[MvPowerSeries.subst_add hτ', MvPowerSeries.subst_X hτ']`. Rewrite using `[this]`. Conclude with `subst_XX H`. Use `⟨Q'.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 1 - MvPowerSeries.X 0], ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← hback]`. Rewrite using `[hQ', MvPowerSeries.subst_mul hτ', MvPowerSeries.subst_X hτ']`. Simplify using the standard rewrite rules.
+-/
 theorem div_diag (H : MvPowerSeries (Fin 2) R)
     (h : H.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 0] = 0) :
     ∃ Q, H = (MvPowerSeries.X 1 - MvPowerSeries.X 0) * Q := by
@@ -110,6 +144,11 @@ theorem div_diag (H : MvPowerSeries (Fin 2) R)
   rw [hQ', MvPowerSeries.subst_mul hτ', MvPowerSeries.subst_X hτ']
   simp
 
+/- English proof (translation)
+Establish `h10 : ¬ (Finsupp.single (1 : Fin 2) 1 ≤ Finsupp.single (0 : Fin 2) 1)`. Introduce `h`. Use `h 1` as an intermediate fact. Simplify using `at this`. Use `show MvPowerSeries.coeff (Finsupp.single 0 1) ((MvPowerSeries.X 0 - MvPowerSeries.X 1) * n) = cc n`.
+
+Rewrite using `[sub_mul, map_sub, MvPowerSeries.X_def, MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul, MvPowerSeries.coeff_monomial_mul, if_pos le_rfl, if_neg h10, tsub_self, one_mul, sub_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+-/
 theorem coeff_lin (n : MvPowerSeries (Fin 2) R) :
     MvPowerSeries.coeff (Finsupp.single 0 1) ((U₁ - U₂) * n) = cc n := by
   classical
@@ -128,9 +167,17 @@ section Diff
 
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem X_cc (i : Fin 2) : cc (MvPowerSeries.X i : MvPowerSeries (Fin 2) R) = 0 := by
   simp
 
+/- English proof (translation)
+Establish `hs` using `hasSubst2 hp hq`. Unfold `diff2`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst2 (X_cc 0) (iSer_subst_cc W (X_cc 1))) hs]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Simplify using `[MvPowerSeries.subst_X hs]`. Simplify using `[Fgl2.mvsubst_psubst (HasSubst.X 1) hs, MvPowerSeries.subst_X hs]`.
+-/
 theorem difference_subst {τ : Type*} {p q : MvPowerSeries τ R} (hp : cc p = 0) (hq : cc q = 0) :
     (diff2 W).subst ![p, q]
       = MvPowerSeries.subst (![p, (iSer W).subst q] : Fin 2 → MvPowerSeries τ R) (fgl W) := by
@@ -144,6 +191,11 @@ theorem difference_subst {τ : Type*} {p q : MvPowerSeries τ R} (hp : cc p = 0)
   · simp [MvPowerSeries.subst_X hs]
   · simp [Fgl2.mvsubst_psubst (HasSubst.X 1) hs, MvPowerSeries.subst_X hs]
 
+/- English proof (translation)
+Rewrite using `[difference_subst W (X_cc 0) (X_cc 0)]`. Establish `h` using `congrArg (PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R)) (fglInv R W)`. Establish `hX : HasSubst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R)` using `HasSubst.X 0`. Rewrite `h` using `[PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (Fgl2.hasSubst_X_iSer W) hX.const, ← coe_substAlgHom hX, map_zero]`. Rewrite using `[← h]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `(PowerSeries.subst_X hX).symm`. Both sides reduce to the same expression.
+-/
 theorem difference_diagonal : (diff2 W).subst
     ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) R), MvPowerSeries.X 0] = 0 := by
   rw [difference_subst W (X_cc 0) (X_cc 0)]
@@ -158,6 +210,11 @@ theorem difference_diagonal : (diff2 W).subst
   · exact (PowerSeries.subst_X hX).symm
   · rfl
 
+/- English proof (translation)
+Establish `he : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) 1 = 0` using `by simp`. Rewrite using `[← coeff_subst_X0_zero _ _ he, difference_subst W (X_cc 0) (map_zero _)]`. Establish `h0 : (iSer W).subst (0 : MvPowerSeries (Fin 2) R) = 0`. Establish `hz : HasSubst (0 : MvPowerSeries (Fin 2) R)` using `HasSubst.of_constantCoeff_zero (map_zero _)`. Rewrite using `[iSer, subst_mul hz, subst_X hz, zero_mul]`.
+
+Rewrite using `[h0, coeff_subst_X0_zero _ _ he]`. Conclude with `(fglChord R W).2.2.2.2.2.1`.
+-/
 theorem difference_linear_coeff : MvPowerSeries.coeff (Finsupp.single 0 1) (diff2 W) = 1 := by
   have he : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) 1 = 0 := by simp
   rw [← coeff_subst_X0_zero _ _ he, difference_subst W (X_cc 0) (map_zero _)]
@@ -167,12 +224,20 @@ theorem difference_linear_coeff : MvPowerSeries.coeff (Finsupp.single 0 1) (diff
   rw [h0, coeff_subst_X0_zero _ _ he]
   exact (fglChord R W).2.2.2.2.2.1
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `div_diag (diff2 W) (difference_diagonal W)`. Establish `h : diff2 W = (U₁ - U₂) * -Q` using `by rw [hQ]; ring`. Use `⟨-Q, ?_, h⟩` and prove the remaining obligations. Rewrite using `[← coeff_lin, ← h, difference_linear_coeff]`.
+-/
 theorem first : ∃ n₁ : MvPowerSeries (Fin 2) R, cc n₁ = 1 ∧ diff2 W = (U₁ - U₂) * n₁ := by
   obtain ⟨Q, hQ⟩ := div_diag (diff2 W) (difference_diagonal W)
   have h : diff2 W = (U₁ - U₂) * -Q := by rw [hQ]; ring
   refine ⟨-Q, ?_, h⟩
   rw [← coeff_lin, ← h, difference_linear_coeff]
 
+/- English proof (translation)
+Establish `hi` using `iSer_subst_cc W (X_cc (R := R) 0)`. Establish `hs` using `hasSubst2 (X_cc (R := R) 1) hi`. Establish `h1` using `congrArg (MvPowerSeries.subst ![(U₂ : MvPowerSeries (Fin 2) R), (iSer W).subst (U₁ : MvPowerSeries (Fin 2) R)]) h`. Rewrite `h1` using `[difference_subst W (X_cc 1) hi, MvPowerSeries.subst_mul hs, MvPowerSeries.subst_sub hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs, ← PowerSeries.subst_comp_subst_apply (HasSubst.of_constantCoeff_zero' (iSer_cc W)) (HasSubst.X 0), (iSerSpec R W).2.2.1, PowerSeries.subst_ …`. Rewrite using `[Fgl2.fgl_symm W]`.
+
+Conclude with `h1`.
+-/
 theorem second {n₁ : MvPowerSeries (Fin 2) R} (h : diff2 W = (U₁ - U₂) * n₁) :
     fgl W = (U₂ - (iSer W).subst (U₁ : MvPowerSeries (Fin 2) R))
       * n₁.subst ![(U₂ : MvPowerSeries (Fin 2) R), (iSer W).subst (U₁ : MvPowerSeries (Fin 2) R)] := by
@@ -193,6 +258,9 @@ end Q1
 
 open Q1 CubeR
 
+/- English proof (translation)
+Introduce `R _ W`. Take `⟨n₁, h0, h⟩` from `first W`. Use `⟨n₁, _, h0, ?_, h, second W h⟩` and prove the remaining obligations. Rewrite using `[cc_subst (hasSubst2 (X_cc 1) (iSer_subst_cc W (X_cc 0))) (Fin.forall_fin_two.2 ⟨X_cc 1, iSer_subst_cc W (X_cc 0)⟩), h0]`.
+-/
 theorem formal_group_difference : FglDiff.{u} := by
   intro R _ W
   obtain ⟨n₁, h0, h⟩ := first W
@@ -200,6 +268,25 @@ theorem formal_group_difference : FglDiff.{u} := by
   rw [cc_subst (hasSubst2 (X_cc 1) (iSer_subst_cc W (X_cc 0)))
     (Fin.forall_fin_two.2 ⟨X_cc 1, iSer_subst_cc W (X_cc 0)⟩), h0]
 
+/- English proof (translation)
+Introduce `R _ W S h1 h2 h3 h4 h6`. Set `WS : WeierstrassCurve S` to `⟨⟨W.a₁, h1⟩, ⟨W.a₂, h2⟩, ⟨W.a₃, h3⟩, ⟨W.a₄, h4⟩, ⟨W.a₆, h6⟩⟩`. Apply the tactic sequence `have hW : WS.map S.subtype = W := by ext <;> rfl`. Establish `mem : ∀ {σ : Type} (c : MvPowerSeries σ S) (d : σ →₀ ℕ), MvPowerSeries.coeff d (MvPowerSeries.map S.subtype c) ∈ S`. Introduce `σ c d`.
+
+Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff d c).2`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc, h⟩` from `cubeTwoR S WS`. Use `⟨MvPowerSeries.map S.subtype c, mem c, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPowerSeries.constantCoeff_map, hc, map_neg, map_one]`. Use `congrArg (MvPowerSeries.map S.subtype) (show lhs2 WS = c * fgl WS * diff2 WS from h)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_quadratic_lhs, map_diff2, Fgl1.fgl_map, hW]`. Conclude with `this`. Take `⟨e, he, h⟩` from `cubeThreeR S WS`.
+
+Use `⟨MvPowerSeries.map S.subtype e, mem e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.constantCoeff_map, he, map_neg, map_one]`. Use `congrArg (MvPowerSeries.map S.subtype) (show lhs3 WS = e * sum3 WS * (MvPowerSeries.X 0 - MvPowerSeries.X 1) * (MvPowerSeries.X 0 - MvPowerSeries.X 2) * (MvPowerSeries.X 1 - MvPowerSeries.X 2) from h)` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_cubic_lhs, map_cubic_sum, MvPowerSeries.map_X, hW] at this`. Conclude with `this`.
+
+Take `⟨n₁, h0, h⟩` from `first WS`. Establish `hi` using `iSer_subst_cc WS (X_cc (R := S) 0)`. Establish `hs` using `hasSubst2 (X_cc (R := S) 1) hi`. Establish `h'` using `second WS h`. Use `⟨MvPowerSeries.map S.subtype n₁, MvPowerSeries.map S.subtype (n₁.subst ![(U₂ : MvPowerSeries (Fin 2) S), (iSer WS).subst (U₁ : MvPowerSeries (Fin 2) S)]), mem _, mem _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPowerSeries.constantCoeff_map, h0, map_one]`. Rewrite using `[MvPowerSeries.constantCoeff_map, cc_subst hs (Fin.forall_fin_two.2 ⟨X_cc 1, hi⟩), h0, map_one]`. Use `congrArg (MvPowerSeries.map S.subtype) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_diff2, MvPowerSeries.map_X, MvPowerSeries.map_X, hW]`. Conclude with `this`.
+
+Use `congrArg (MvPowerSeries.map S.subtype) h'` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, Fgl1.fgl_map, PowerSeries.map_subst (HasSubst.X 0), CurveSer.map_iSer, MvPowerSeries.map_X, MvPowerSeries.map_X, hW]`. Conclude with `this`. Introduce and unpack `n ⟨h, hh, hn⟩ k`. Establish `hu : IsUnit ((n : ℤ) : S)`.
+
+Use `IsUnit.of_mul_eq_one (⟨h, hh⟩ : S) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hn`. Use `(divSpec.{u, u} S WS n hu).2.2.2.2.1 R S.subtype` as an intermediate fact. Rewrite `this` using `[hW]`.
+
+Rewrite using `[← this, coeff_map]`. Conclude with `(coeff k (divSer WS n)).2`.
+-/
 theorem cube_mem' : CubeMem.{u} := by
   intro R _ W S h1 h2 h3 h4 h6
   let WS : WeierstrassCurve S := ⟨⟨W.a₁, h1⟩, ⟨W.a₂, h2⟩, ⟨W.a₃, h3⟩, ⟨W.a₄, h4⟩, ⟨W.a₆, h6⟩⟩

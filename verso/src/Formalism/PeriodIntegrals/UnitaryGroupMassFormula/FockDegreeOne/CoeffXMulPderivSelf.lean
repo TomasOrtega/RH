@@ -12,6 +12,13 @@ def sgnL {p q r s : ℕ} (l : Ln p q r s) : ℚ := if linePos l = true then 1 el
 def wtv {p q r s : ℕ} (β : Ln p q r s →₀ ℕ) (c : Ix p q) : ℚ :=
   ∑ d : Ix r s, sgnL ((c, d) : Ln p q r s) * (β (c, d) : ℚ) + kShift r s c
 
+/- English proof (translation)
+Rewrite using `[coeff_X_mul']`. Distinguish the cases in `h : l ∈ β.support`. Rewrite using `[if_pos h, coeff_pderiv]`. Establish `h1 : 1 ≤ β l` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp h)`. Establish `hle : Finsupp.single l 1 ≤ β` using `Finsupp.single_le_iff.mpr h1`.
+
+Rewrite using `[tsub_add_cancel_of_le hle, Finsupp.tsub_apply, Finsupp.single_eq_same, mul_comm]`. Use `congr 1`. Rewrite using `[Nat.cast_sub h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg h]`. Establish `h0 : β l = 0` using `by simpa [Finsupp.mem_support_iff] using h`. Simplify using `[h0]`.
+-/
 theorem coeff_X_mul_pderiv_self {σ : Type*} (l : σ) (P : MvPolynomial σ ℂ) (β : σ →₀ ℕ) :
     coeff β (X l * pderiv l P) = (β l : ℂ) * coeff β P := by
   classical
@@ -29,6 +36,11 @@ theorem coeff_X_mul_pderiv_self {σ : Type*} (l : σ) (P : MvPolynomial σ ℂ) 
     have h0 : β l = 0 := by simpa [Finsupp.mem_support_iff] using h
     simp [h0]
 
+/- English proof (translation)
+Rewrite `h` using `[coeff_X_mul']`. Distinguish the cases in `hs : l ∈ γ.support`. Rewrite `h` using `[if_pos hs, coeff_pderiv]`. Use `⟨γ - Finsupp.single l 1 + Finsupp.single l' 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff]`.
+
+Conclude with `left_ne_zero_of_mul h`. Establish `hle : Finsupp.single l 1 ≤ γ` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs))`. Rewrite using `[add_right_comm, tsub_add_cancel_of_le hle]`. Rewrite `h` using `[if_neg hs]`. Conclude with `absurd rfl h`.
+-/
 theorem coeff_X_mul_pderiv_ne {σ : Type*} (l l' : σ) (P : MvPolynomial σ ℂ) (γ : σ →₀ ℕ)
     (h : coeff γ (X l * pderiv l' P) ≠ 0) :
     ∃ β ∈ P.support, β + Finsupp.single l 1 = γ + Finsupp.single l' 1 := by
@@ -45,12 +57,22 @@ theorem coeff_X_mul_pderiv_ne {σ : Type*} (l l' : σ) (P : MvPolynomial σ ℂ)
   · rw [if_neg hs] at h
     exact absurd rfl h
 
+/- English proof (translation)
+Unfold `wtv`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Nat.cast_add, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wtv_add {p q r s : ℕ} (β γ : Ln p q r s →₀ ℕ) (c : Ix p q) :
     wtv (β + γ) c = wtv β c + wtv γ c - kShift r s c := by
   unfold wtv
   simp only [Finsupp.coe_add, Pi.add_apply, Nat.cast_add, mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Unfold `wtv`. Use `congr 1`. Establish `key : ∀ d : Ix r s, sgnL ((c, d) : Ln p q r s) * ((Finsupp.single l 1 ((c, d) : Ln p q r s) : ℕ) : ℚ) = if d = l.2 ∧ l.1 = c then sgnL l else 0`. Introduce `d`. Distinguish the cases in `h1 : d = l.2 ∧ l.1 = c`.
+
+Take `⟨rfl, rfl⟩` from `h1`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1]`. Establish `hne : l ≠ ((c, d) : Ln p q r s)` using `fun he => h1 ⟨by rw [he], by rw [he]⟩`. Simplify using `[Finsupp.single_apply, hne]`.
+
+Repeatedly rewrite using `[key]`. Apply the tactic sequence `by_cases h : l.1 = c <;> simp [h]`.
+-/
 theorem wtv_single {p q r s : ℕ} (l : Ln p q r s) (c : Ix p q) :
     wtv (Finsupp.single l 1) c = (if l.1 = c then sgnL l else 0) + kShift r s c := by
   unfold wtv
@@ -67,6 +89,9 @@ theorem wtv_single {p q r s : ℕ} (l : Ln p q r s) (c : Ix p q) :
   simp_rw [key]
   by_cases h : l.1 = c <;> simp [h]
 
+/- English proof (translation)
+Establish `h1` using `wtv_add β (Finsupp.single l 1) c`. Establish `h2` using `wtv_add γ (Finsupp.single l' 1) c`. Rewrite `h1` using `[h]`. Rewrite `h1` using `[h2, wtv_single, wtv_single]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wtv_shift {p q r s : ℕ} (l l' : Ln p q r s) (β γ : Ln p q r s →₀ ℕ)
     (h : β + Finsupp.single l 1 = γ + Finsupp.single l' 1) (c : Ix p q) :
     wtv γ c = wtv β c + (if l.1 = c then sgnL l else 0) - (if l'.1 = c then sgnL l' else 0) := by
@@ -76,9 +101,23 @@ theorem wtv_shift {p q r s : ℕ} (l l' : Ln p q r s) (β γ : Ln p q r s →₀
   rw [h2, wtv_single, wtv_single] at h1
   linarith
 
+/- English proof (translation)
+Apply the tactic sequence `cases c <;> trivial`.
+-/
 theorem sameBlock_refl' {p q : ℕ} (c : Ix p q) : sameBlock c c := by
   cases c <;> trivial
 
+/- English proof (translation)
+Establish `hline : ∀ l : Ln p q r s, coeff β (omE l l P) = (((sgnL l * β l + sgnL l / 2 : ℚ)) : ℂ) * coeff β P`. Introduce `l`. Distinguish the cases in `hl : linePos l = true`. Simplify using `only [omE, raiB, lowB, hl, if_true, LinearMap.add_apply, Module.End.mul_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, LinearMap.smul_apply, Module.End.one_apply, coeff_add, coeff_smul, smul_eq_mul, coeff_X_mul_pderiv_self, sgnL]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hl' : linePos l = false` using `by simpa using hl`. Establish `e : coeff β (pderiv l (X l * P)) = ((β l : ℂ) + 1) * coeff β P`. Rewrite using `[coeff_pderiv, add_comm β, coeff_X_mul, mul_comm]`. Simplify using `only [omE, raiB, lowB, hl', Bool.false_eq_true, if_false, if_true, LinearMap.add_apply, Module.End.mul_apply, LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, LinearMap.smul_apply, Module.End.one_apply, coeff_add, coeff_neg, coeff_smul, smul_eq_mul, e, sgnL]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[fockAct1_Eab_apply, coeff_sum]`. Repeatedly rewrite using `[hline]`. Rewrite using `[← Finset.sum_mul]`.
+
+Use `congr 1`. Unfold `wtv`. Use `push_cast`. Rewrite using `[Finset.sum_add_distrib]`. Use `congr 1`.
+
+Consider the cases of `c with`. Consider the case `inl i => simp [kShift, cPair, sgnL, linePos, Fintype.sum_sum_type]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inr i => simp [kShift, cPair, sgnL, linePos, Fintype.sum_sum_type]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_Ecc {p q r s : ℕ} (c : Ix p q) (P : Pol p q r s) (β : Ln p q r s →₀ ℕ) :
     coeff β (fockAct1 p q r s (Eab c c) P) = ((wtv β c : ℚ) : ℂ) * coeff β P := by
   classical
@@ -111,6 +150,17 @@ theorem coeff_Ecc {p q r s : ℕ} (c : Ix p q) (P : Pol p q r s) (β : Ln p q r 
   | inl i => simp [kShift, cPair, sgnL, linePos, Fintype.sum_sum_type]; ring
   | inr i => simp [kShift, cPair, sgnL, linePos, Fintype.sum_sum_type]; ring
 
+/- English proof (translation)
+Rewrite `hγ` using `[fockAct1_Eab_apply, mem_support_iff, coeff_sum]`. Take `⟨d, -, hd⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hγ`. Establish `hne' : ((a, d) : Ln p q r s) ≠ (b, d)` using `fun h => hne (Prod.ext_iff.mp h).1`. Establish `hpos : linePos ((a, d) : Ln p q r s) = linePos ((b, d) : Ln p q r s)`. Apply the tactic sequence `cases a <;> cases b <;> cases d <;> simp_all [sameBlock, linePos]`.
+
+Simplify using `only [omE, if_neg hne', add_zero, Module.End.mul_apply] at hd`. Distinguish the cases in `hl : linePos ((a, d) : Ln p q r s) = true`. Establish `hl2 : linePos ((b, d) : Ln p q r s) = true` using `hpos ▸ hl`. Simplify using `only [raiB, lowB, hl, hl2, if_true, LinearMap.mulLeft_apply, Derivation.coeFn_coe] at hd`. Take `⟨β, hβ, hsum⟩` from `coeff_X_mul_pderiv_ne _ _ P γ hd`.
+
+Use `⟨β, hβ, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[wtv_shift _ _ β γ hsum c]`. Simplify using `[sgnL, hl, hl2]`. Establish `hl1 : linePos ((a, d) : Ln p q r s) = false` using `by simpa using hl`. Establish `hl2 : linePos ((b, d) : Ln p q r s) = false` using `hpos ▸ hl1`.
+
+Establish `e : pderiv ((a, d) : Ln p q r s) (X ((b, d) : Ln p q r s) * P) = X ((b, d) : Ln p q r s) * pderiv ((a, d) : Ln p q r s) P`. Rewrite using `[Derivation.leibniz, pderiv_X, Pi.single_apply, if_neg hne'.symm]`. Simplify using `[mul_comm]`. Simplify using `only [raiB, lowB, hl1, hl2, Bool.false_eq_true, if_false, LinearMap.mulLeft_apply, LinearMap.neg_apply, Derivation.coeFn_coe, e, coeff_neg, ne_eq, neg_eq_zero] at hd`. Take `⟨β, hβ, hsum⟩` from `coeff_X_mul_pderiv_ne _ _ P γ hd`.
+
+Use `⟨β, hβ, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[wtv_shift _ _ β γ hsum c]`. Simplify using `[sgnL, hl1, hl2]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem wt_Eab {p q r s : ℕ} (a b : Ix p q) (hab : sameBlock a b) (hne : a ≠ b)
     (P : Pol p q r s) (γ : Ln p q r s →₀ ℕ) (hγ : γ ∈ (fockAct1 p q r s (Eab a b) P).support) :
     ∃ β ∈ P.support, ∀ c, wtv γ c =
@@ -147,6 +197,11 @@ theorem wt_Eab {p q r s : ℕ} (a b : Ix p q) (hab : sameBlock a b) (hne : a ≠
 def IsWt {p q r s : ℕ} (ν : Ix p q → ℚ) (P : Pol p q r s) : Prop :=
   ∀ β ∈ P.support, ∀ c, wtv β c = ν c
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[coeff_Ecc, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hβ : β ∈ P.support`. Rewrite using `[hP β hβ c]`. Establish `h0 : coeff β P = 0` using `by simpa [mem_support_iff] using hβ`.
+
+Rewrite using `[h0, mul_zero, mul_zero]`.
+-/
 theorem Ecc_of_wt {p q r s : ℕ} {ν : Ix p q → ℚ} {P : Pol p q r s} (hP : IsWt ν P) (c : Ix p q) :
     fockAct1 p q r s (Eab c c) P = ((ν c : ℚ) : ℂ) • P := by
   ext β
@@ -156,6 +211,9 @@ theorem Ecc_of_wt {p q r s : ℕ} {ν : Ix p q → ℚ} {P : Pol p q r s} (hP : 
   · have h0 : coeff β P = 0 := by simpa [mem_support_iff] using hβ
     rw [h0, mul_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `γ hγ c`. Take `⟨β, hβ, h⟩` from `wt_Eab a b hab hne P γ hγ`. Rewrite using `[h c, hP β hβ c]`.
+-/
 theorem wt_Eab_of {p q r s : ℕ} {ν : Ix p q → ℚ} {P : Pol p q r s} (hP : IsWt ν P)
     (a b : Ix p q) (hab : sameBlock a b) (hne : a ≠ b) :
     IsWt (fun c => ν c + (if a = c then 1 else 0) - (if b = c then 1 else 0))

@@ -5,6 +5,9 @@ import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacqu
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.Exh.langlandsMultisegments_of_seg CompanionTheory.RgGu.segmentRepresentation`.
+-/
 theorem langlandsMultisegments_outright : GlobalTheory.Published.LanglandsMultisegments :=
   CompanionTheory.Exh.langlandsMultisegments_of_seg CompanionTheory.RgGu.segmentRepresentation
 

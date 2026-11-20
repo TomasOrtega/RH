@@ -20,11 +20,21 @@ noncomputable section
 
 namespace GlobalTheory.StdPairPlaces
 
+/- English proof (translation)
+Establish `hn : ¬ p ∣ H.condN` using `not_dvd_of_splitK hp h`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).2 hn`.
+-/
 theorem coprime_of_splitK {φ : Formalism.HC.Frame} {H : Formalism.HC.HostRaw φ} {p : ℕ} (hp : p.Prime)
     (h : primeClass H p = PrimeClass.splitK) : Nat.Coprime p (H.QS * H.q * H.d) := by
   have hn : ¬ p ∣ H.condN := not_dvd_of_splitK hp h
   exact (Nat.Prime.coprime_iff_not_dvd hp).2 hn
 
+/- English proof (translation)
+Introduce `D large₂ hR T L sc G μ₀ hL t w hw`. Take `⟨⟨Pm, -, -⟩, -⟩` from `hR.size`. Establish `hsp : ∀ p : ℕ, p.Prime → p ∈ D.host.levelPrimes → Nat.Coprime p (D.host.QS * D.host.q * D.host.d)` using `fun p hp h => coprime_of_splitK hp (Pm.level_split p h)`. Establish `hdvd : D.host.QS * D.host.q * D.host.d ∣ LevelStarExponents.condE D` using `dvd_rfl`. Break down `GlobalTheory.FunObj.Good.locPl_cases hw with ⟨a, -⟩ | ⟨-, -, b⟩` into its components or cases.
+
+Break down `G.pl.mem_S0_of_sum_eq.1 a with a | a` into its components or cases. Use `GlobalTheory.HalfCompare.not_mem_of_coprime w (b := q0 D) ?_ ((GlobalTheory.FunObj.Good.natCast_mem_under w _).1 (a ▸ G.pl.basePlace_over_qZero))` and prove the remaining obligations. Conclude with `(GlobalTheory.FunObj.StdDatum.HalfDiff.coprime_of_mod (leastSplitAuxiliaryPrimeThetaChain_spec D).2.1 (hdvd.mul_left _)).symm`. Simplify using `only [S1_mem_OmF, GlobalTheory.FunObj.Good.natCast_mem_under] at a`. Break down `a with a | a | a | a` into its components or cases.
+
+Conclude with `GlobalTheory.HalfCompare.not_mem_of_coprime w (GlobalTheory.FunObj.StdDatum.HalfDiff.coprime_of_mod (D.ntypes.g_cond 0) dvd_rfl).symm a`. Conclude with `GlobalTheory.HalfCompare.not_mem_of_coprime w (GlobalTheory.FunObj.StdDatum.HalfDiff.coprime_of_mod (D.ntypes.g_cond 1) dvd_rfl).symm a`. Conclude with `GlobalTheory.HalfCompare.not_mem_of_coprime w (hsp _ D.host.pde_prime D.host.pde_level.1).symm a`. Conclude with `GlobalTheory.HalfCompare.not_mem_of_coprime w (hsp _ D.host.pde'_prime D.host.pde_level.2).symm a`. Conclude with `fun h => (hL.Q_off t w b).1 (GlobalTheory.HalfCompare.mem_of_dvd h ⟨D.sp.T, by ring⟩)`.
+-/
 theorem natCast_two_q_d_notMem : ∀ {D : D7} (large₂ : SizeData₂ D), GlobalTheory.SqTop.Rec large₂ → ∀ {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) {μ₀ : T},
     L.Is μ₀ → ∀ (t : T), ∀ w ∈ locPl G t, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by
   intro D large₂ hR T L sc G μ₀ hL t w hw

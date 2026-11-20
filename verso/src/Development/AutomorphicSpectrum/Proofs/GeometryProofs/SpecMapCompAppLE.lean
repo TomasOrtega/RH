@@ -13,6 +13,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.InvDer
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appLE]`. Establish `e1 : ∀ h' : ⊤ ≤ Spec.map χ ⁻¹ᵁ (q ⁻¹ᵁ U), (Spec.map χ).appLE (q ⁻¹ᵁ U) ⊤ h' = (Spec A).presheaf.map (homOfLE hq).op ≫ (Spec.map χ).appTop`. Introduce `h'`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, Category.assoc, Category.assoc, Scheme.ΓSpecIso_naturality, Scheme.Hom.appLE]`. Simplify using `only [Category.assoc]`.
+-/
 private theorem specMap_comp_appLE' {Y : Scheme.{0}} {A B : CommRingCat.{0}} (χ : A ⟶ B) (q : Spec A ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ (Spec.map χ ≫ q) ⁻¹ᵁ U) (hq : ⊤ ≤ q ⁻¹ᵁ U) :
     (Spec.map χ ≫ q).appLE U ⊤ h ≫ (Scheme.ΓSpecIso B).hom =
@@ -29,13 +34,22 @@ private theorem specMap_comp_appLE' {Y : Scheme.{0}} {A B : CommRingCat.{0}} (χ
 def ev {C : Type} [CommRing C] {X : Scheme.{0}} (y : Sp C ⟶ X) (V : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ V) : Γ(X, V) →+* C :=
   (Scheme.ΓSpecIso (CommRingCat.of C)).hom.hom.comp (y.appLE V ⊤ h).hom
 
+/- English proof (translation)
+Introduce `p _` and use `h (show spMap ψ p ∈ (⊤ : (Sp C).Opens) from trivial)`.
+-/
 theorem top_comp {C C' : Type} [CommRing C] [CommRing C'] {X : Scheme.{0}} (ψ : C →+* C') (y : Sp C ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ V) : ⊤ ≤ (spMap ψ ≫ y) ⁻¹ᵁ V := fun p _ => h (show spMap ψ p ∈ (⊤ : (Sp C).Opens) from trivial)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ev_congr {C : Type} [CommRing C] {X : Scheme.{0}} {y y' : Sp C ⟶ X} (e : y = y') (V : X.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ V) (h' : ⊤ ≤ y' ⁻¹ᵁ V) : ev y V h = ev y' V h' := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `e` using `specMap_comp_appLE' (CommRingCat.ofHom ψ) y V h' h`. Conclude with `congrArg (fun m => m.hom g) e`.
+-/
 theorem ev_comp {C C' : Type} [CommRing C] [CommRing C'] {X : Scheme.{0}} (ψ : C →+* C') (y : Sp C ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ V) (h' : ⊤ ≤ (spMap ψ ≫ y) ⁻¹ᵁ V) (g : Γ(X, V)) : ev (spMap ψ ≫ y) V h' g = ψ (ev y V h g) := by
   have e := specMap_comp_appLE' (CommRingCat.ofHom ψ) y V h' h
@@ -43,12 +57,21 @@ theorem ev_comp {C C' : Type} [CommRing C] [CommRing C'] {X : Scheme.{0}} (ψ : 
 
 def bmap {R C : Type} [CommRing R] [CommRing C] (b : Sp C ⟶ Sp R) : R →+* C := (Spec.preimage b).hom
 
+/- English proof (translation)
+Simplify using `[spMap, bmap]`.
+-/
 theorem spMap_bmap {R C : Type} [CommRing R] [CommRing C] (b : Sp C ⟶ Sp R) : spMap (bmap b) = b := by
   simp [spMap, bmap]
 
+/- English proof (translation)
+Simplify using `[spMap, bmap]`.
+-/
 theorem bmap_spMap {R C : Type} [CommRing R] [CommRing C] (β : R →+* C) : bmap (spMap β) = β := by
   simp [spMap, bmap]
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_sq {R C : Type} [CommRing R] [CommRing C] (β : R →+* C) :
     spMap (dualMap β) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap C (DualNumber C)) ≫ spMap β := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -56,6 +79,9 @@ theorem dualMap_sq {R C : Type} [CommRing R] [CommRing C] (β : R →+* C) :
   refine RingHom.ext fun r => ?_
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `[dualMap]`.
+-/
 theorem dualMap_fst_sq {R C : Type} [CommRing R] [CommRing C] (β : R →+* C) :
     spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap (dualMap β) =
       spMap β ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom := by
@@ -64,6 +90,9 @@ theorem dualMap_fst_sq {R C : Type} [CommRing R] [CommRing C] (β : R →+* C) :
   refine RingHom.ext fun r => ?_
   simp [dualMap]
 
+/- English proof (translation)
+Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {R C C' : Type} [CommRing R] [CommRing C] [CommRing C'] (β : R →+* C) (ψ : C →+* C') :
     dualMap (ψ.comp β) = (dualMap ψ).comp (dualMap β) := by
   refine RingHom.ext fun r => ?_
@@ -82,6 +111,17 @@ def rhoE {C : Type} [CommRing C] (b : Sp C ⟶ Sp R) : epsAt b ⟶ epsAt (𝟙 (
 def tr (v : epsAt (𝟙 (Sp R)) ⟶ G) {C : Type} [CommRing C] (y : Sp C ⟶ G.left) : Sp (DualNumber C) ⟶ G.left :=
   ((piE (y ≫ G.hom) ≫ (Over.homMk y rfl : Over.mk (y ≫ G.hom) ⟶ G)) * (rhoE (y ≫ G.hom) ≫ v)).left
 
+/- English proof (translation)
+Establish `hb : bmap ((spMap ψ ≫ y) ≫ G.hom) = ψ.comp (bmap (y ≫ G.hom))`. Establish `: (spMap ψ ≫ y) ≫ G.hom = spMap (ψ.comp (bmap (y ≫ G.hom)))`. Rewrite using `[Category.assoc]`. Use `conv_lhs => rw [← spMap_bmap (y ≫ G.hom)]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Rewrite using `[this, bmap_spMap]`. Set `Ψ : epsAt ((spMap ψ ≫ y) ≫ G.hom) ⟶ epsAt (y ≫ G.hom)` to `Over.homMk (spMap (dualMap ψ)) (by show spMap (dualMap ψ) ≫ spMap (algebraMap C _) ≫ y ≫ G.hom = spMap (algebraMap C' _) ≫ (spMap ψ ≫ y) ≫ G.hom`. Rewrite using `[← Category.assoc, dualMap_sq]`. Simplify using `only [Category.assoc])`. Establish `h1 : piE ((spMap ψ ≫ y) ≫ G.hom) ≫ (Over.homMk (spMap ψ ≫ y) rfl : Over.mk ((spMap ψ ≫ y) ≫ G.hom) ⟶ G) = Ψ ≫ piE (y ≫ G.hom) ≫ (Over.homMk y rfl : Over.mk (y ≫ G.hom) ⟶ G)`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (algebraMap C' _) ≫ spMap ψ ≫ y = spMap (dualMap ψ) ≫ spMap (algebraMap C _) ≫ y`. Rewrite using `[← Category.assoc, ← Category.assoc, dualMap_sq]`. Establish `h2 : rhoE ((spMap ψ ≫ y) ≫ G.hom) = Ψ ≫ rhoE (y ≫ G.hom)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `show spMap (dualMap (bmap ((spMap ψ ≫ y) ≫ G.hom))) = spMap (dualMap ψ) ≫ spMap (dualMap (bmap (y ≫ G.hom)))`. Rewrite using `[hb, dualMap_comp]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h2' : rhoE ((spMap ψ ≫ y) ≫ G.hom) ≫ v = Ψ ≫ rhoE (y ≫ G.hom) ≫ v`. Rewrite using `[h2]`.
+
+Conclude with `Category.assoc _ _ _`. Unfold `tr`. Rewrite using `[h1, h2', ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem tr_comp (v : epsAt (𝟙 (Sp R)) ⟶ G) {C C' : Type} [CommRing C] [CommRing C'] (ψ : C →+* C') (y : Sp C ⟶ G.left) :
     tr v (spMap ψ ≫ y) = spMap (dualMap ψ) ≫ tr v y := by
   have hb : bmap ((spMap ψ ≫ y) ≫ G.hom) = ψ.comp (bmap (y ≫ G.hom)) := by
@@ -111,6 +151,19 @@ theorem tr_comp (v : epsAt (𝟙 (Sp R)) ⟶ G) {C C' : Type} [CommRing C] [Comm
   rw [h1, h2', ← MonObj.comp_mul]
   rfl
 
+/- English proof (translation)
+Set `δ : Over.mk (y ≫ G.hom) ⟶ epsAt (y ≫ G.hom)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom C C C).toRingHom) (by show spMap _ ≫ spMap (algebraMap C _) ≫ y ≫ G.hom = y ≫ G.hom`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom C C C).toRingHom.comp (algebraMap C (DualNumber C)) = RingHom.id C`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[show ((algebraMap C (DualNumber C) : C →+* DualNumber C)) = algebraMap C (DualNumber C) from rfl]`. Use `erw [this]`. Use the proof step `simp)`. Establish `h1 : δ ≫ piE (y ≫ G.hom) = 𝟙 _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `show spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap (algebraMap C _) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom C C C).toRingHom.comp (algebraMap C (DualNumber C)) = RingHom.id C`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Use `erw [this]`. Simplify using the standard rewrite rules. Establish `h2 : δ ≫ rhoE (y ≫ G.hom) ≫ v = 1`. Set `τ : Over.mk (y ≫ G.hom) ⟶ Over.mk (𝟙 (Sp R))` to `Over.homMk (y ≫ G.hom) (by simp)`. Establish `: δ ≫ rhoE (y ≫ G.hom) ≫ v = τ ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G)`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap (dualMap (bmap (y ≫ G.hom))) ≫ v.left = (y ≫ G.hom) ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G).left`. Rewrite using `[← Category.assoc, dualMap_fst_sq, Category.assoc, hv, spMap_bmap]`. Rewrite using `[this, MonObj.comp_one]`. Establish `h3 : δ ≫ ((piE (y ≫ G.hom) ≫ (Over.homMk y rfl : Over.mk (y ≫ G.hom) ⟶ G)) * (rhoE (y ≫ G.hom) ≫ v)) = Over.homMk y rfl`.
+
+Rewrite using `[MonObj.comp_mul, h2, ← Category.assoc, h1, Category.id_comp, _root_.mul_one]`. Conclude with `congrArg (fun m => m.left) h3`.
+-/
 theorem tr_fst (v : epsAt (𝟙 (Sp R)) ⟶ G) (hv : IsTanAt G (𝟙 (Sp R)) v) {C : Type} [CommRing C] (y : Sp C ⟶ G.left) :
     spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ tr v y = y := by
   let δ : Over.mk (y ≫ G.hom) ⟶ epsAt (y ≫ G.hom) :=
@@ -145,6 +198,17 @@ theorem tr_fst (v : epsAt (𝟙 (Sp R)) ⟶ G) (hv : IsTanAt G (𝟙 (Sp R)) v) 
     rw [MonObj.comp_mul, h2, ← Category.assoc, h1, Category.id_comp, _root_.mul_one]
   exact congrArg (fun m => m.left) h3
 
+/- English proof (translation)
+Use `⟨PrimeSpectrum.comap (algebraMap C (DualNumber C)) q, ?_⟩` and prove the remaining obligations. Use `show PrimeSpectrum.comap (TrivSqZeroExt.fstHom C C C).toRingHom (PrimeSpectrum.comap (algebraMap C (DualNumber C)) q) = q`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `hn : TrivSqZeroExt.inr x.snd ∈ q.asIdeal`.
+
+Establish `h2 : (TrivSqZeroExt.inr x.snd : DualNumber C) * TrivSqZeroExt.inr x.snd = 0` using `by simp`. Establish `: (TrivSqZeroExt.inr x.snd : DualNumber C) * TrivSqZeroExt.inr x.snd ∈ q.asIdeal`. Rewrite using `[h2]`. Conclude with `zero_mem _`. Conclude with `(q.isPrime.mem_or_mem this).elim id id`.
+
+Establish `hx : x = algebraMap C (DualNumber C) x.fst + TrivSqZeroExt.inr x.snd`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Use `show algebraMap C (DualNumber C) x.fst ∈ q.asIdeal ↔ x ∈ q.asIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[hx]`. Conclude with `add_mem h hn`. Introduce `h`. Establish `: algebraMap C (DualNumber C) x.fst = x - TrivSqZeroExt.inr x.snd` using `eq_sub_of_add_eq hx.symm`. Rewrite using `[this]`.
+
+Conclude with `sub_mem h hn`.
+-/
 theorem surj_fst {C : Type} [CommRing C] (q : Sp (DualNumber C)) :
     ∃ p : Sp C, spMap (TrivSqZeroExt.fstHom C C C).toRingHom p = q := by
   refine ⟨PrimeSpectrum.comap (algebraMap C (DualNumber C)) q, ?_⟩
@@ -165,6 +229,11 @@ theorem surj_fst {C : Type} [CommRing C] (q : Sp (DualNumber C)) :
     have : algebraMap C (DualNumber C) x.fst = x - TrivSqZeroExt.inr x.snd := eq_sub_of_add_eq hx.symm
     rw [this]; exact sub_mem h hn
 
+/- English proof (translation)
+Introduce `q _`. Take `⟨p, rfl⟩` from `surj_fst q`. Establish `: (spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ tr v y) p ∈ V`. Rewrite using `[tr_fst v hv]`. Conclude with `h (show p ∈ (⊤ : (Sp C).Opens) from trivial)`.
+
+Conclude with `this`.
+-/
 theorem tr_top (v : epsAt (𝟙 (Sp R)) ⟶ G) (hv : IsTanAt G (𝟙 (Sp R)) v) {C : Type} [CommRing C] (y : Sp C ⟶ G.left)
     (V : G.left.Opens) (h : ⊤ ≤ y ⁻¹ᵁ V) : ⊤ ≤ (tr v y) ⁻¹ᵁ V := by
   intro q _
@@ -178,8 +247,16 @@ section Aff
 variable {X : Scheme.{0}} {V : X.Opens} (hV : IsAffineOpen V)
 
 include hV in
+/- English proof (translation)
+Rewrite using `[hV.fromSpec_preimage_self]`.
+-/
 theorem from_top : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V := by rw [hV.fromSpec_preimage_self]
 
+/- English proof (translation)
+Establish `e : hV.fromSpec.appLE V ⊤ (from_top hV) = (Scheme.ΓSpecIso Γ(X, V)).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, V)).presheaf.map_id _`. Use `show (Scheme.ΓSpecIso _).hom.hom ((hV.fromSpec.appLE V ⊤ (from_top hV)).hom g) = g`.
+
+Rewrite using `[e]`. Conclude with `congrArg (fun m => m.hom g) (Scheme.ΓSpecIso Γ(X, V)).inv_hom_id`.
+-/
 theorem ev_fromSpec (g : Γ(X, V)) : ev (C := Γ(X, V)) hV.fromSpec V (from_top hV) g = g := by
   have e : hV.fromSpec.appLE V ⊤ (from_top hV) = (Scheme.ΓSpecIso Γ(X, V)).inv := by
     rw [Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]
@@ -189,6 +266,11 @@ theorem ev_fromSpec (g : Γ(X, V)) : ev (C := Γ(X, V)) hV.fromSpec V (from_top 
   rw [e]
   exact congrArg (fun m => m.hom g) (Scheme.ΓSpecIso Γ(X, V)).inv_hom_id
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec y hV (isAffineOpen_top _) h`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `e2 : CommRingCat.ofHom (ev y V h) = y.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom` using `rfl`. Use `show Spec.map (CommRingCat.ofHom (ev y V h)) ≫ _ = y`. Rewrite using `[e2, Spec.map_comp, Category.assoc, e, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem point_fac {C : Type} [CommRing C] (y : Sp C ⟶ X) (h : ⊤ ≤ y ⁻¹ᵁ V) : spMap (ev y V h) ≫ hV.fromSpec = y := by
   have e := IsAffineOpen.SpecMap_appLE_fromSpec y hV (isAffineOpen_top _) h
   rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv] at e
@@ -197,6 +279,9 @@ theorem point_fac {C : Type} [CommRing C] (y : Sp C ⟶ X) (h : ⊤ ≤ y ⁻¹�
   rw [e2, Spec.map_comp, Category.assoc, e, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id]
   simp
 
+/- English proof (translation)
+Establish `e : (X.presheaf.map (homOfLE le).op) ≫ y.appLE V' ⊤ h' = y.appLE V ⊤ h` using `Scheme.Hom.map_appLE _ _ _`. Use `show (Scheme.ΓSpecIso _).hom.hom ((y.appLE V' ⊤ h').hom ((X.presheaf.map (homOfLE le).op).hom g)) = (Scheme.ΓSpecIso _).hom.hom ((y.appLE V ⊤ h).hom g)`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem ev_res {C : Type} [CommRing C] (y : Sp C ⟶ X) {V V' : X.Opens} (le : V' ≤ V) (h : ⊤ ≤ y ⁻¹ᵁ V)
     (h' : ⊤ ≤ y ⁻¹ᵁ V') (g : Γ(X, V)) : ev y V' h' ((X.presheaf.map (homOfLE le).op).hom g) = ev y V h g := by
   have e : (X.presheaf.map (homOfLE le).op) ≫ y.appLE V' ⊤ h' = y.appLE V ⊤ h := Scheme.Hom.map_appLE _ _ _
@@ -207,6 +292,13 @@ theorem ev_res {C : Type} [CommRing C] (y : Sp C ⟶ X) {V V' : X.Opens} (le : V
 
 end Aff
 
+/- English proof (translation)
+Establish `m1 : (y ≫ p).appTop = p.appLE ⊤ V le_top ≫ y.appLE V ⊤ h` using `((Scheme.Hom.appLE_comp_appLE y p ⊤ V ⊤ le_top h).trans (Scheme.Hom.appLE_eq_app (f := y ≫ p) (U := ⊤))).symm`. Establish `hq : y ≫ p = spMap (bmap (y ≫ p))` using `(spMap_bmap _).symm`. Establish `m2 : (y ≫ p).appTop = (spMap (bmap (y ≫ p))).appTop`. Generalize the expression as in `bmap (y ≫ p) = β at hq`. Rewrite using `[hq]`.
+
+Establish `m3` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (bmap (y ≫ p)))`. Establish `e1 : (y.appLE V ⊤ h).hom (constFn p V c) = (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (bmap (y ≫ p) c)`. Establish `e2 : (y.appLE V ⊤ h).hom (constFn p V c) = (p.appLE ⊤ V le_top ≫ y.appLE V ⊤ h).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)` using `rfl`. Rewrite using `[e2, ← m1, m2]`. Conclude with `congrArg (fun m => m.hom c) m3.symm`.
+
+Use `show (Scheme.ΓSpecIso (CommRingCat.of C)).hom.hom ((y.appLE V ⊤ h).hom (constFn p V c)) = _`. Rewrite using `[e1]`. Conclude with `congrArg (fun m => m.hom (bmap (y ≫ p) c)) (Scheme.ΓSpecIso (CommRingCat.of C)).inv_hom_id`.
+-/
 theorem ev_const {C : Type} [CommRing C] {X : Scheme.{0}} (p : X ⟶ Sp R) (y : Sp C ⟶ X) (V : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ V)
     (c : R) : ev y V h (constFn p V c) = bmap (y ≫ p) c := by
   have m1 : (y ≫ p).appTop = p.appLE ⊤ V le_top ≫ y.appLE V ⊤ h :=
@@ -233,6 +325,9 @@ variable (v : epsAt (𝟙 (Sp R)) ⟶ G) (hv : IsTanAt G (𝟙 (Sp R)) v) {V : G
 def trV : Γ(G.left, V) →+* DualNumber Γ(G.left, V) :=
   ev (tr v (C := Γ(G.left, V)) hV.fromSpec) V (tr_top v hv _ V (from_top hV))
 
+/- English proof (translation)
+Establish `h1` using `ev_comp (TrivSqZeroExt.fstHom Γ(G.left, V) Γ(G.left, V) Γ(G.left, V)).toRingHom (tr v (C := Γ(G.left, V)) hV.fromSpec) V (tr_top v hv _ V (from_top hV)) (by rw [tr_fst v hv]; exact from_top hV) g`. Rewrite `h1` using `[ev_congr (tr_fst v hv _) V _ (from_top hV), ev_fromSpec]`. Conclude with `h1.symm`.
+-/
 theorem fst_trV (g : Γ(G.left, V)) : (trV v hv hV g).fst = g := by
   have h1 := ev_comp (TrivSqZeroExt.fstHom Γ(G.left, V) Γ(G.left, V) Γ(G.left, V)).toRingHom
     (tr v (C := Γ(G.left, V)) hV.fromSpec) V (tr_top v hv _ V (from_top hV))
@@ -245,13 +340,22 @@ def der : Γ(G.left, V) →+ Γ(G.left, V) where
   map_zero' := by simp
   map_add' a b := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem der_apply (g : Γ(G.left, V)) : der v hv hV g = (trV v hv hV g).snd := rfl
 
+/- English proof (translation)
+Simplify using `only [der_apply, map_mul, TrivSqZeroExt.snd_mul, fst_trV, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem der_mul (a b : Γ(G.left, V)) : der v hv hV (a * b) = a * der v hv hV b + b * der v hv hV a := by
   simp only [der_apply, map_mul, TrivSqZeroExt.snd_mul, fst_trV, smul_eq_mul, MulOpposite.smul_eq_mul_unop,
     MulOpposite.unop_op]
   ring
 
+/- English proof (translation)
+Establish `e : tr v y = spMap (dualMap (ev y V h)) ≫ tr v (C` using `Γ(G.left, V)) hV.fromSpec := by`. Rewrite using `[← tr_comp, point_fac hV y h]`. Rewrite using `[ev_congr e V h' (by rw [← e]; exact h')]`. Conclude with `ev_comp _ _ V (tr_top v hv _ V (from_top hV)) _ g`.
+-/
 theorem ev_tr {C : Type} [CommRing C] (y : Sp C ⟶ G.left) (h : ⊤ ≤ y ⁻¹ᵁ V) (h' : ⊤ ≤ (tr v y) ⁻¹ᵁ V) (g : Γ(G.left, V)) :
     ev (tr v y) V h' g = dualMap (ev y V h) (trV v hv hV g) := by
   have e : tr v y = spMap (dualMap (ev y V h)) ≫ tr v (C := Γ(G.left, V)) hV.fromSpec := by
@@ -259,11 +363,17 @@ theorem ev_tr {C : Type} [CommRing C] (y : Sp C ⟶ G.left) (h : ⊤ ≤ y ⁻¹
   rw [ev_congr e V h' (by rw [← e]; exact h')]
   exact ev_comp _ _ V (tr_top v hv _ V (from_top hV)) _ g
 
+/- English proof (translation)
+Rewrite using `[ev_tr v hv hV y h h' g]`. Simplify using `[dualMap, der_apply]`.
+-/
 theorem snd_ev_tr {C : Type} [CommRing C] (y : Sp C ⟶ G.left) (h : ⊤ ≤ y ⁻¹ᵁ V) (h' : ⊤ ≤ (tr v y) ⁻¹ᵁ V)
     (g : Γ(G.left, V)) : (ev (tr v y) V h' g).snd = ev y V h (der v hv hV g) := by
   rw [ev_tr v hv hV y h h' g]
   simp [dualMap, der_apply]
 
+/- English proof (translation)
+Establish `hy : ⊤ ≤ hV'.fromSpec ⁻¹ᵁ V` using `fun p hp => le (from_top hV' hp)`. Establish `h1` using `snd_ev_tr v hv hV (C := Γ(G.left, V')) hV'.fromSpec hy (tr_top v hv _ V hy) g`. Rewrite `h1` using `[← ev_res _ le (tr_top v hv _ V hy) (tr_top v hv _ V' (from_top hV'))]`. Rewrite using `[der_apply, trV, h1, ← ev_res _ le hy (from_top hV'), ev_fromSpec]`.
+-/
 theorem der_res {V' : G.left.Opens} (hV' : IsAffineOpen V') (le : V' ≤ V) (g : Γ(G.left, V)) :
     der v hv hV' ((G.left.presheaf.map (homOfLE le).op).hom g) =
       (G.left.presheaf.map (homOfLE le).op).hom (der v hv hV g) := by
@@ -272,10 +382,18 @@ theorem der_res {V' : G.left.Opens} (hV' : IsAffineOpen V') (le : V' ≤ V) (g :
   rw [← ev_res _ le (tr_top v hv _ V hy) (tr_top v hv _ V' (from_top hV'))] at h1
   rw [der_apply, trV, h1, ← ev_res _ le hy (from_top hV'), ev_fromSpec]
 
+/- English proof (translation)
+The claim follows from `Over.w ((piE (y ≫ G.hom) ≫ (Over.homMk y rfl : Over.mk (y ≫ G.hom) ⟶ G)) * (rhoE (y ≫ G.hom) ≫ v))`.
+-/
 theorem tr_hom {C : Type} [CommRing C] (y : Sp C ⟶ G.left) :
     tr v y ≫ G.hom = spMap (algebraMap C (DualNumber C)) ≫ y ≫ G.hom :=
   Over.w ((piE (y ≫ G.hom) ≫ (Over.homMk y rfl : Over.mk (y ≫ G.hom) ⟶ G)) * (rhoE (y ≫ G.hom) ≫ v))
 
+/- English proof (translation)
+Establish `e : bmap (tr v (C` using `Γ(G.left, V)) hV.fromSpec ≫ G.hom) = (algebraMap Γ(G.left, V) (DualNumber Γ(G.left, V))).comp (bmap (hV.fromSpec ≫ G.hom)) := by`. Rewrite using `[tr_hom]`. Use `conv_lhs => rw [← spMap_bmap (hV.fromSpec ≫ G.hom)]`. Rewrite using `[show spMap (algebraMap Γ(G.left, V) (DualNumber Γ(G.left, V))) ≫ spMap (bmap (hV.fromSpec ≫ G.hom)) = spMap ((algebraMap Γ(G.left, V) (DualNumber Γ(G.left, V))).comp (bmap (hV.fromSpec ≫ G.hom))) by`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp], bmap_spMap]`.
+
+Rewrite using `[der_apply, trV, ev_const, e]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem der_const (c : R) : der v hv hV (constFn G.hom V c) = 0 := by
   have e : bmap (tr v (C := Γ(G.left, V)) hV.fromSpec ≫ G.hom) =
       (algebraMap Γ(G.left, V) (DualNumber Γ(G.left, V))).comp (bmap (hV.fromSpec ≫ G.hom)) := by
@@ -287,12 +405,22 @@ theorem der_const (c : R) : der v hv hV (constFn G.hom V c) = 0 := by
   rw [der_apply, trV, ev_const, e]
   simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[der_mul, der_const, mul_zero, add_zero]`.
+-/
 theorem der_const_mul (c : R) (g : Γ(G.left, V)) :
     der v hv hV (constFn G.hom V c * g) = constFn G.hom V c * der v hv hV g := by
   rw [der_mul, der_const, mul_zero, add_zero]
 
 end Der
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => intro u a _`. Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `u a h`.
+
+Establish `h1` using `ih u (D a) (fun k hk => by`. Use `h (k + 1) (Nat.succ_lt_succ hk)` as an intermediate fact. Rewrite using `[Function.iterate_succ_apply] at this)` and apply the resulting hypothesis. Establish `h2` using `ih (D u) a (fun k hk => h k (Nat.lt_succ_of_lt hk))`. Establish `h3 : D^[i] (a * D u) = D^[i] (D u * a)` using `by rw [mul_comm]`.
+
+Rewrite using `[Function.iterate_succ_apply, hD, iterate_map_add, map_add, h1, h3, h2, h i (Nat.lt_succ_self i), mul_zero, add_zero, Function.iterate_succ_apply]`.
+-/
 theorem jet_mul_of_vanish {B K : Type} [CommRing B] [CommRing K] (D : B →+ B)
     (hD : ∀ a b, D (a * b) = a * D b + b * D a) (e : B →+* K) (i : ℕ) :
     ∀ u a : B, (∀ k < i, e (D^[k] a) = 0) →
@@ -309,6 +437,11 @@ theorem jet_mul_of_vanish {B K : Type} [CommRing B] [CommRing K] (D : B →+ B)
     rw [Function.iterate_succ_apply, hD, iterate_map_add, map_add, h1, h3, h2, h i (Nat.lt_succ_self i), mul_zero, add_zero,
       Function.iterate_succ_apply]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk`. Establish `h1` using `jet_mul_of_vanish D hD e k u a (fun l hl => ih l hl (hl.trans hk))`.
+
+Rewrite `h1` using `[h k hk]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left hu`.
+-/
 theorem jet_vanish_of_mul {B K : Type} [CommRing B] [CommRing K] [IsDomain K] (D : B →+ B)
     (hD : ∀ a b, D (a * b) = a * D b + b * D a) (e : B →+* K) (u a : B) (hu : e u ≠ 0) (i : ℕ)
     (h : ∀ k < i, e (D^[k] (u * a)) = 0) : ∀ k < i, e (D^[k] a) = 0 := by

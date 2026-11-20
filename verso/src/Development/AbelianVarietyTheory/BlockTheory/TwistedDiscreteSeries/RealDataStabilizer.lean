@@ -323,10 +323,16 @@ def OneFunctional (D : D7) : Prop :=
       ∀ (π : ∀ j, CoefA (X j)) (δ : CoefA X'), (∀ j ≤ D.R.m, HasPar θ (π j) (P.Xpar j)) → HasPar θ δ (parB P D.R.m) →
         Construct P θ o B π δ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨![3 / 2, -1 / 2], ![0], by ext x; simp [Fin.exists_fin_two, eq_comm], by ext x; simp [eq_comm], fun i => by fin_cases i; norm_num⟩`.
+-/
 example : StrictInterlace 1 {3 / 2, -1 / 2} {0} :=
   ⟨![3 / 2, -1 / 2], ![0], by ext x; simp [Fin.exists_fin_two, eq_comm], by ext x; simp [eq_comm],
     fun i => by fin_cases i; norm_num⟩
 
+/- English proof (translation)
+Simplify using `[polAct]`.
+-/
 example (θ : InfFam D) {S T : HSp D} (BS : Bas S) (BT : Bas T) (e : D.what₂.Tau → ℚ) (g : GA D S) (h : GA D T) :
     polAct θ BS BT e g h 1 = vacChar θ e g h • (1 : Pol S T) := by simp [polAct]
 

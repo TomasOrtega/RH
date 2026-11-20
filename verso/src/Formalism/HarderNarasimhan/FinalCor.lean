@@ -6,6 +6,15 @@ open Module Submodule
 
 namespace Formalism.HN
 
+/- English proof (translation)
+Introduce `R ι W F _ _ _ _ _ _ V E _ _ _ _ _ ρ ρ' L M s φ C θ hL hM hC`. Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : φ i = 0`. Simplify using `[h0]`. Establish `hLi : L i ≠ ⊥`.
+
+Introduce `hb`. Apply `h0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `: x = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hb x x.2)`. Simplify using `[this]`.
+
+Establish `hN0 : (LinearMap.range (φ i)).map M.subtype ≠ ⊥`. Introduce `hb`. Apply `h0` to reduce the goal to its premises. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `hx : ((φ i x : M) : W) ∈ (LinearMap.range (φ i)).map M.subtype` using `⟨φ i x, ⟨x, rfl⟩, rfl⟩`.
+
+Rewrite `hx` using `[hb, Submodule.mem_bot]`. Simplify using `[hx]`. Establish `hθ : θ ≤ muMin ρ' ((LinearMap.range (φ i)).map M.subtype)` using `((hC i hi).2.2 hLi).trans ((slopeIneq R (V i) W (E i) F (ρ i) ρ' (L i) M (hL i hi) hM (φ i) (C i) (hC i hi).1 (hC i hi).2.1).1 h0).1`. Conclude with `(hnStep_spec R W F ρ' M hM θ).2.2.1 _ (Submodule.map_subtype_le _ _) hN0 hθ`.
+-/
 theorem imageStep : ImageStep := by
   intro R ι W F _ _ _ _ _ _ V E _ _ _ _ _ ρ ρ' L M s φ C θ hL hM hC
   refine iSup₂_le fun i hi => ?_
@@ -30,6 +39,23 @@ theorem imageStep : ImageStep := by
         (C i) (hC i hi).1 (hC i hi).2.1).1 h0).1
     exact (hnStep_spec R W F ρ' M hM θ).2.2.1 _ (Submodule.map_subtype_le _ _) hN0 hθ
 
+/- English proof (translation)
+Introduce `R V E _ _ _ _ _ _ ρ L hL`. Establish `mono : ∀ N : Submodule R V, N ≤ L → N ≠ ⊥ → muMax ρ N ≤ muMax ρ L`. Introduce `N hN hN0`. Establish `hL0 : L ≠ ⊥` using `fun h => hN0 (le_bot_iff.1 (h ▸ hN))`. Establish `hNL` using `hnSum_isLat_mono ρ hL hN`.
+
+Use `((muChar R V E ρ N hNL hN0).1 (muMax ρ L)).2 fun N' hN' => ?_` and prove the remaining obligations. Conclude with `((muChar R V E ρ L hL hL0).1 (muMax ρ L)).1 le_rfl N' (hN'.trans hN)`. Use `⟨?_, ?_, ?_, ?_, mono, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Unfold `hnStep`.
+
+Conclude with `sSup_le_sSup fun N ⟨h1, h2, h3⟩ => ⟨h1, h2, hab.trans h3⟩`. Introduce `hL0 θ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `(hnStep_spec R V E ρ L hL θ).2.1`.
+
+Rewrite `h2` using `[h]`. Conclude with `h2 hL0`. Introduce `hθ`. Conclude with `le_antisymm (hnStep_spec R V E ρ L hL θ).1.1 ((hnStep_spec R V E ρ L hL θ).2.2.1 L le_rfl hL0 hθ)`. Introduce `θ hθ`.
+
+Assume the negation of the conclusion as `hne`. Establish `sp` using `hnStep_spec R V E ρ L hL θ`. Establish `h2` using `sp.2.1 hne`. Establish `hNL` using `hnSum_isLat_mono ρ hL sp.1.1`. Establish `mc` using `muChar R V E ρ _ hNL hne`.
+
+Use `mono _ sp.1.1 hne` as an intermediate fact. Combine the linear relations using `[mc.2.2.2.1, mc.2.2.2.2]`. Introduce `t`. Establish `h` using `(hnSlopes R V E ρ L hL).2.1 t`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin (rk ρ L)))) (p := fun j => slopeList ρ L j < t)`.
+
+Simplify using `only [not_lt, Finset.card_univ, Fintype.card_fin] at h2`. Use linear arithmetic over natural numbers and integers. Introduce `N θ hN hN0 hθ`. Establish `sp` using `hnStep_spec R V E ρ L hL θ`. Rewrite using `[(hnSlopes R V E ρ L hL).2.1 θ]`.
+
+Use `hL.2` as an intermediate fact. Establish `hS` using `hnSum_isLat_mono ρ hL sp.1.1`. Use `hS.2` as an intermediate fact. Conclude with `Formalism.F.att_rk_le (hnSum_zl_mono ρ (sp.2.2.1 N hN hN0 hθ))`.
+-/
 theorem hnCor : HNCor := by
   intro R V E _ _ _ _ _ _ ρ L hL
   have mono : ∀ N : Submodule R V, N ≤ L → N ≠ ⊥ → muMax ρ N ≤ muMax ρ L := by

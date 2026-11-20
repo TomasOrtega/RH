@@ -16,6 +16,9 @@ namespace GlobalTheory.TrueGeo.SmallSec
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h : 0 < e.w x` using `e.w.pos hx`. Rewrite using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, or_iff_right hx, e.mem_O, map_inv₀, not_le, one_lt_inv₀ h]`.
+-/
 theorem valuation_lt_one_iff {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (x : AlgebraicClosure F) :
     e.O.valuation x < 1 ↔ e.w x < 1 := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -24,6 +27,17 @@ theorem valuation_lt_one_iff {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (x : A
   rw [← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, or_iff_right hx,
     e.mem_O, map_inv₀, not_le, one_lt_inv₀ h]
 
+/- English proof (translation)
+Set `ι : K →ₐ[F] AlgebraicClosure F` to `IsAlgClosed.lift`. Take `⟨A, hA, hl⟩` from `IsLocalRing.exists_factor_valuationRing ((ι : K →+* AlgebraicClosure F).comp O.subtype)`. Establish `hOF : ∀ x : 𝓞 F, algebraMap F K (x : F) ∈ O` using `fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int O (x.isIntegral_coe.map (algebraMap F K).toIntAlgHom)`. Establish `key : ∀ x : O, A.valuation (ι x) < 1 ↔ O.valuation x < 1` using `fun x => by`. Rewrite using `[← O.valuation_lt_one_iff]`.
+
+Use `(A.valuation_lt_one_iff ⟨_, hA x⟩).symm.trans ?_` and prove the remaining obligations. Conclude with `not_congr (isUnit_map_iff (((ι : K →+* AlgebraicClosure F).comp O.subtype).codRestrict A.toSubring hA) x)`. Take `⟨g, hg⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_over (F := F) (A := A) (A' := e.O) (v := v) (fun x => by rw [← h, ← key ⟨_, hOF x⟩, ι.commutes]) (fun x => by`. Rewrite using `[valuation_lt_one_iff, e.w_alg]`. Conclude with `v.adicAbv_coe_lt_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) x)`.
+
+Establish `hm : ∀ x, g x ∈ e.O ↔ x ∈ A` using `fun x => by`. Rewrite using `[← hg]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`. Use `⟨(g : AlgebraicClosure F →ₐ[F] AlgebraicClosure F).comp ι, fun x hx => (e.mem_O _).1 ((hm _).2 (hA ⟨x, hx⟩)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxO : x ∈ O` using `(O.valuation_le_one_iff x).1 hx.le`.
+
+Use `(key ⟨x, hxO⟩).2 hx` as an intermediate fact. Rewrite using `[← valuation_lt_one_iff]`. Rewrite `this`, the goal using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`. Use `this.imp (fun h0 => ?_) fun h1 h2 => h1 ((hm _).1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (ι x) = 0`.
+
+Rewrite using `[h0, map_zero]`. Rewrite using `[map_inv₀]`. Conclude with `h2`.
+-/
 theorem exists_emb (K : Type) [Field K] [Algebra F K] [Module.Finite F K] (O : ValuationSubring K)
     (v : HeightOneSpectrum (𝓞 F)) (e : Ext v)
     (h : ∀ x : 𝓞 F, O.valuation (algebraMap F K (x : F)) < 1 ↔ x ∈ v.asIdeal) :
@@ -54,6 +68,21 @@ theorem exists_emb (K : Type) [Field K] [Algebra F K] [Module.Finite F K] (O : V
     rw [h0, map_zero]
   · rw [map_inv₀]; exact h2
 
+/- English proof (translation)
+Establish `: IsNoetherianRing S` using `Algebra.FiniteType.isNoetherianRing (𝓞 F) S`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨m.comap (algebraMap (𝓞 F) S), inferInstance, hmO⟩`. Take `⟨e⟩` from `(GlobalTheory.TrueGeo.ExtConj.main F).1 v`. Take `⟨π, hπm, hπ⟩` from `(Submodule.ne_bot_iff _).1 hmO`. Establish `hπ' : algebraMap (𝓞 F) S π ≠ 0` using `fun h => hπ (hinj (h.trans (map_zero _).symm))`.
+
+Take `⟨q, hqU, hqm, hht⟩` from `exists_mem_height_map_le_one m (PrimeSpectrum.basicOpen (algebraMap (𝓞 F) S π * t)).isOpen ⟨⊥, mul_ne_zero hπ' ht, bot_le⟩`. Establish `hqπ : algebraMap (𝓞 F) S π ∉ q.asIdeal` using `fun h => hqU (Ideal.mul_mem_right _ _ h)`. Establish `hqt : t ∉ q.asIdeal` using `fun h => hqU (Ideal.mul_mem_left _ _ h)`. Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := q.asIdeal)`. Establish `hcomap : (m.map (Ideal.Quotient.mk q.asIdeal)).comap (Ideal.Quotient.mk q.asIdeal) = m`.
+
+Rewrite using `[Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr hqm`. Establish `: (m.map (Ideal.Quotient.mk q.asIdeal)).IsMaximal` using `(Ideal.map_eq_top_or_isMaximal_of_surjective _ hsurj hm).resolve_left fun e => by`. Rewrite `hcomap` using `[e, Ideal.comap_top]`. Conclude with `hm.ne_top hcomap.symm`.
+
+Establish `hinj' : Function.Injective (algebraMap (𝓞 F) (S ⧸ q.asIdeal))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Establish `h1 : a ∈ q.asIdeal.comap (algebraMap (𝓞 F) S)` using `(Ideal.Quotient.eq_zero_iff_mem (I := q.asIdeal) (a := algebraMap (𝓞 F) S a)).mp ha`.
+
+Establish `h2 : (q.asIdeal.comap (algebraMap (𝓞 F) S)).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance fun h => ha0 (by simpa [h] using h1)`. Establish `h3` using `h2.eq_of_le v.isPrime.ne_top (Ideal.comap_mono hqm)`. Conclude with `hqπ (h3.ge hπm)`. Take `⟨K, _, _, _, O, φ, hφ, hφi, hφm⟩` from `exists_valuationSubring_of_height_le_one (K := F) hinj' (m.map (Ideal.Quotient.mk q.asIdeal)) hht π hπ (Ideal.mem_map_of_mem _ hπm)`. Establish `key : ∀ s : S, O.valuation (φ (Ideal.Quotient.mk _ s)) < 1 ↔ s ∈ m` using `fun s => by`.
+
+Rewrite using `[← O.valuation_lt_one_iff, ← Ideal.mem_comap, hφm, ← Ideal.mem_comap, hcomap]`. Take `⟨ψ, h₁, h₂⟩` from `exists_emb K O v e fun x => by`. Use `Iff.trans ?_ (key (algebraMap _ _ x))` and prove the remaining obligations. Rewrite using `[show algebraMap F K (x : F) = _ from (hφ x).symm]`. Both sides reduce to the same expression.
+
+Use `⟨v, e, (ψ : K →+* AlgebraicClosure F).comp (O.subtype.comp (φ.comp (Ideal.Quotient.mk _))), fun a => ?_, fun s => h₁ _ (φ _).2, fun s hs => h₂ _ ((key s).2 hs), fun h => hqt ?_⟩` and prove the remaining obligations. Conclude with `(congrArg ψ (hφ a)).trans (ψ.commutes _)`. Establish `: φ (Ideal.Quotient.mk _ t) = 0` using `Subtype.ext ((map_eq_zero ψ).1 h)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 ((map_eq_zero_iff φ hφi).1 this)`.
+-/
 theorem exists_point (S : Type) [CommRing S] [IsDomain S] [Algebra (𝓞 F) S]
     [Algebra.FiniteType (𝓞 F) S] (hinj : Function.Injective (algebraMap (𝓞 F) S)) (m : Ideal S)
     [hm : m.IsMaximal] (hmO : m.comap (algebraMap (𝓞 F) S) ≠ ⊥) {t : S} (ht : t ≠ 0) :
@@ -101,6 +130,11 @@ theorem exists_point (S : Type) [CommRing S] [IsDomain S] [Algebra (𝓞 F) S]
   · have : φ (Ideal.Quotient.mk _ t) = 0 := Subtype.ext ((map_eq_zero ψ).1 h)
     exact Ideal.Quotient.eq_zero_iff_mem.1 ((map_eq_zero_iff φ hφi).1 this)
 
+/- English proof (translation)
+Establish `h0 : h ≠ 0` using `fun e => hint (e ▸ isIntegral_zero)`. Establish `: Nontrivial R` using `(algebraMap R K).domain_nontrivial`. Set `` to `invertibleOfNonzero h0`. Use `⟨Algebra.adjoin R {h⁻¹}, inferInstance, inferInstance, inferInstance, Algebra.FiniteType.adjoin_of_finite (Set.finite_singleton _), ⟨h⁻¹, Algebra.subset_adjoin rfl⟩, fun a b e => IsFractionRing.injective R K (congrArg Subtype.val e), fun e => inv_ne_zero h0 (congrArg Subtype.val …` and prove the remaining obligations. Establish `⟨p, hp, hpx⟩` using `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top h⁻¹ (⊥ : Ideal R) bot_ne_top (top_unique <| eq.ge.trans le_sup_right)`.
+
+Conclude with `⟨p, by simpa [Polynomial.Monic, sub_eq_zero] using hp, hpx⟩`. Express the relevant statement in the definitionally equal form `algebraMap R K a = algebraMap R K b * h⁻¹`. Rewrite using `[← e, mul_inv_cancel_right₀ h0]`.
+-/
 theorem exists_overring (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K]
     (h : K) (hint : ¬ IsIntegral R h) :
     ∃ (S : Type) (_ : CommRing S) (_ : IsDomain S) (_ : Algebra R S) (_ : Algebra.FiniteType R S)
@@ -120,6 +154,17 @@ theorem exists_overring (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFra
   · change algebraMap R K a = algebraMap R K b * h⁻¹
     rw [← e, mul_inv_cancel_right₀ h0]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hint`. Take `⟨S, _, _, _, _, t, hRS, ht, hne, hab⟩` from `exists_overring R K h hint`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `htm : t ∈ m` using `hle (Ideal.subset_span rfl)`. Set `: Algebra (𝓞 F) S` to `((algebraMap R S).comp (algebraMap (𝓞 F) R)).toAlgebra`.
+
+Establish `: IsScalarTower (𝓞 F) R S` using `.of_algebraMap_eq fun _ => rfl`. Establish `: Algebra.FiniteType (𝓞 F) S` using `.trans (S := R) inferInstance inferInstance`. Take `⟨v, e, φ, h₁, h₂, h₃, h₄⟩` from `exists_point (F := F) S (hRS.comp hinj) m (fun hb => by`. Take `⟨a, ha, b, e⟩` from `hgen (m.comap (algebraMap R S)) inferInstance ((Ideal.comap_comap _ _).trans hb)`. Conclude with `ha (by rw [Ideal.mem_comap, hab a b e]; exact m.mul_mem_left _ htm)) ht`.
+
+Take `⟨a, ha, b, hb⟩` from `hgen (RingHom.ker (φ.comp (algebraMap R S))) (RingHom.ker_isPrime _) (eq_bot_iff.2 fun x hx => by`. Establish `: algebraMap F (AlgebraicClosure F) (x : F) = 0` using `(h₁ x).symm.trans hx`. Simplify using `using this)`. Establish `h₅` using `hpt v e (φ.comp (algebraMap R S)) h₁ (fun s => h₂ _) a b hb ha`. Establish `h₆ : e.w (φ (algebraMap R S a)) = e.w (φ (algebraMap R S b)) * e.w (φ t)`.
+
+Rewrite using `[hab a b hb, map_mul, map_mul]`. Establish `h₇ : 0 < e.w (φ (algebraMap R S a))` using `e.w.pos ha`. Establish `h₈` using `h₃ t htm`. Establish `h₉` using `e.w.nonneg (φ t)`. Express the relevant statement in the definitionally equal form `e.w (φ (algebraMap R S b)) ≤ e.w (φ (algebraMap R S a)) at h₅`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem isIntegral_of_points (R K : Type) [CommRing R] [IsDomain R] [Algebra (𝓞 F) R]
     [Algebra.FiniteType (𝓞 F) R] [Field K] [Algebra R K] [IsFractionRing R K]
     (hinj : Function.Injective (algebraMap (𝓞 F) R)) (h : K)
@@ -153,6 +198,29 @@ theorem isIntegral_of_points (R K : Type) [CommRing R] [IsDomain R] [Algebra (�
   change e.w (φ (algebraMap R S b)) ≤ e.w (φ (algebraMap R S a)) at h₅
   nlinarith
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨W, hW, hxW, hWU⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx`. Use `replace hW : IsAffineOpen W := hW`. Establish `: Nonempty W` using `⟨⟨x, hxW⟩⟩`. Set `ρ` to `Spec.preimage (hW.fromSpec ≫ p)`.
+
+Establish `hρ : Spec.map ρ = hW.fromSpec ≫ p` using `Spec.map_preimage _`. Set `: Algebra (𝓞 F) Γ(X, W)` to `ρ.hom.toAlgebra`. Establish `hft : Algebra.FiniteType (𝓞 F) Γ(X, W)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := ρ)).mp (hρ ▸ inferInstance)`. Use `functionField_isFractionRing_of_isAffineOpen X W hW` as an intermediate fact. Establish `hP (P : PrimeSpectrum Γ(X, W)) : (p (hW.fromSpec P)).asIdeal = P.asIdeal.comap (algebraMap (𝓞 F) Γ(X, W))`.
+
+Conclude with `congrArg (fun q : Spec Γ(X, W) ⟶ Sp (𝓞 F) => (q P).asIdeal) hρ.symm`. Establish `hPW (P : PrimeSpectrum Γ(X, W)) : hW.fromSpec P ∈ W` using `hW.range_fromSpec.le ⟨P, rfl⟩`. Establish `hfn (a : Γ(X, W)) : algebraMap _ X.functionField a = fnOf W (gen_mem hxW) a` using `rfl`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) Γ(X, W))`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, RingHom.ker_eq_comap_bot, eq_bot_iff, ← hp]`.
+
+Take `⟨P, hP'⟩` from `hW.range_fromSpec.ge (gen_mem hxW)`. Rewrite using `[← hP']`. Conclude with `(Ideal.comap_mono bot_le).trans (hP P).ge`. Establish `hint : IsIntegral Γ(X, W) h`. Use `isIntegral_of_points (F := F) _ _ hinj h (fun P hPp hP0 => ?_) fun v e φ h₁ h₂ a b hab ha => ?_` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `hgen _ (hWU (hPW ⟨P, hPp⟩)) ((hP ⟨P, hPp⟩).trans hP0)`. Set `` to `X.presheaf.algebra_section_stalk (⟨_, hPW ⟨P, hPp⟩⟩ : W)`. Use `hW.isLocalization_stalk' ⟨P, hPp⟩ (hPW ⟨P, hPp⟩)` as an intermediate fact. Take `⟨⟨b, a⟩, e⟩` from `@IsLocalization.surj _ _ P.primeCompl _ _ _ this c`. Use `⟨a, a.2, b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfn, hfn, ← algebraMap_germ (hPW ⟨P, hPp⟩), ← algebraMap_germ (hPW ⟨P, hPp⟩), ← map_mul, mul_comm]`. Conclude with `congrArg _ e`. Set `φ' : Γ(X, W) →+* e.O` to `φ.codRestrict e.O fun s => (e.mem_O _).2 (h₂ s)`. Establish `e₁ : spMap e.O.subtype ≫ Spec.map (CommRingCat.ofHom φ') ≫ hW.fromSpec = Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `e₂ : (Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec) ≫ p = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[Category.assoc, ← hρ, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+
+Conclude with `h₁ a`. Establish `h₃` using `hpt v e (Spec.map (CommRingCat.ofHom φ') ≫ hW.fromSpec) (e₁ ▸ e₂) ((Points.le_preimage_specMap_fromSpec hW _).trans (Scheme.Hom.preimage_mono _ hWU))`. Rewrite `h₃` using `[e₁]`. Establish `h₄` using `Points.le_preimage_specMap_fromSpec hW (CommRingCat.ofHom φ)`. Establish `h₅` using `(Points.le_preimage_iff _ _).1 h₄`.
+
+Establish `h₆ (c : Γ(X, W)) : valAt (Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec) (algebraMap _ X.functionField c) = φ c`. Rewrite using `[hfn, valAt_fnOf h₅, Points.valR_eq _ _ h₄, Points.valMap_specMap_fromSpec]`. Both sides reduce to the same expression. Establish `h₇ : RegAt (below (Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec)) h`. Use `hgen _ (hWU h₅) ?_` and prove the remaining obligations.
+
+Use `(congrArg (fun q : Sp (AlgebraicClosure F) ⟶ Sp (𝓞 F) => (q (IsLocalRing.closedPoint (AlgebraicClosure F))).asIdeal) e₂).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 F) F) (Ideal.comap (algebraMap F (AlgebraicClosure F)) (IsLocalRing.maximalIdeal _)) = ⊥`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.comap_bot_of_injective _ (algebraMap F (AlgebraicClosure F)).injective, Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)]`. Rewrite using `[← h₆ b, ← hab, valAt_mul (f := algebraMap _ X.functionField a) (regAt_fnOf h₅ _ _) h₇, h₆, map_mul]`. Conclude with `mul_le_of_le_one_right (e.w.nonneg _) h₃`.
+
+Set `` to `X.presheaf.algebra_section_stalk (⟨x, hxW⟩ : W)`. Establish `: IsScalarTower Γ(X, W) (X.presheaf.stalk x) X.functionField` using `.of_algebraMap_eq fun a => (algebraMap_germ hxW a).symm`. Use `(hN x).2` as an intermediate fact. Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral (hint.tower_top (A := X.presheaf.stalk x))`.
+-/
 theorem regAt_of_points {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) [LocallyOfFiniteType p]
     (hN : Geo.Tor.IsNormalScheme X) (hp : (p (genericPoint X)).asIdeal = ⊥) (U : X.Opens)
     (h : X.functionField) (hgen : ∀ x ∈ U, (p x).asIdeal = ⊥ → RegAt x h)
@@ -230,6 +298,11 @@ theorem regAt_of_points {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) 
   have := (hN x).2
   exact IsIntegrallyClosed.algebraMap_eq_of_integral (hint.tower_top (A := X.presheaf.stalk x))
 
+/- English proof (translation)
+Establish `h₁ : (β ^ n) ^ 2 * P ^ (τ * k * n) = (Real.sqrt T * Real.exp (((τ * k * n : ℕ) : ℝ) * c)) ^ (2 * n)`. Establish `h₂ : Real.exp (-(2 * k * n * c)) ^ (τ * n) * Real.exp (((τ * k * n : ℕ) : ℝ) * c) ^ (2 * n) = 1`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, Real.exp_eq_one_iff]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[mul_pow, pow_mul (Real.sqrt T), Real.sq_sqrt hT, e]`. Combine the equalities or inequalities in the displayed calculation. Establish `h₃ : 1 / (2 * (n : ℝ)) = ((2 * n : ℕ) : ℝ)⁻¹` using `by push_cast; rw [one_div]`. Rewrite using `[h₁, h₃, Real.pow_rpow_inv_natCast (by positivity) (by omega), mul_left_comm, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`.
+-/
 theorem real_norm {β P c T : ℝ} {τ k n : ℕ} (hn : 0 < n) (hT : 0 ≤ T)
     (e : T = β ^ 2 * (Real.exp (-(2 * k * n * c)) * P ^ k) ^ τ) :
     Real.exp (-(((τ * k * n : ℕ) : ℝ) * c)) * ((β ^ n) ^ 2 * P ^ (τ * k * n)) ^ (1 / (2 * (n : ℝ))) =
@@ -252,17 +325,26 @@ section Local
 variable {Z : Scheme.{0}} [IsIntegral Z] {D : CartierDiv Z} {x : Z} {u g : Z.functionFieldˣ}
   {f : Z.functionField} {k τ : ℕ}
 
+/- English proof (translation)
+Use `(hu.nsmul k).iff_unitAt.1 hg` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul, Units.val_pow_eq_pow_val, ← inv_pow]`. Then use the resulting hypothesis.
+-/
 theorem unitAt_quot (hu : D.IsEqn x u) (hg : (k • D).IsEqn x g) :
     UnitAt x ((u : Z.functionField)⁻¹ ^ k * g) := by
   have := (hu.nsmul k).iff_unitAt.1 hg
   rwa [div_eq_inv_mul, Units.val_pow_eq_pow_val, ← inv_pow] at this
 
+/- English proof (translation)
+Use `u.ne_zero` as an intermediate fact. Rewrite using `[mul_comm τ, pow_mul, mul_assoc, ← mul_pow, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ this, one_pow, one_mul]`.
+-/
 theorem mul_pow_eq (f : Z.functionField) (u g : Z.functionFieldˣ) (k τ : ℕ) :
     f * g ^ τ = f * u ^ (τ * k) * ((u : Z.functionField)⁻¹ ^ k * g) ^ τ := by
   have := u.ne_zero
   rw [mul_comm τ, pow_mul, mul_assoc, ← mul_pow, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ this, one_pow,
     one_mul]
 
+/- English proof (translation)
+Establish `h₁` using `hg.nsmul τ`. Rewrite `h₁` using `[← mul_nsmul']`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← h₁.regularAt_iff, ← (hu.nsmul _).regularAt_iff]`.
+-/
 theorem regAt_iff (hu : D.IsEqn x u) (hg : (k • D).IsEqn x g) :
     RegAt x (f * u ^ (τ * k)) ↔ RegAt x (f * g ^ τ) := by
   have h₁ := hg.nsmul τ
@@ -274,6 +356,9 @@ end Local
 
 variable {C : CxSt F} {Y : Var F} (A : Adl C Y) {k τ : ℕ} {f : Y.Fn}
 
+/- English proof (translation)
+Use `Var.mem_riemannRochSpace_iff_regularAt_everywhere.trans (forall_congr' fun x => ?_)` and prove the remaining obligations. Establish `hu : A.D.IsEqn x (eqn A.D x)` using `(A.D.exists_isEqn x).choose_spec`. Rewrite using `[(hu.nsmul _).regularAt_iff, Units.val_pow_eq_pow_val, pow_mul, ← mul_pow]`. Conclude with `⟨regAt_of_pow (have := Y.isNormalScheme; inferInstance) A.n.pos, fun h => regAt_pow h _⟩`.
+-/
 theorem mem_secs_iff : f ∈ A.secs (τ * k * A.n) ↔
     ∀ x, RegAt x (f * (eqn A.D x : Y.Fn) ^ (τ * k)) := by
   refine Var.mem_riemannRochSpace_iff_regularAt_everywhere.trans (forall_congr' fun x => ?_)
@@ -281,6 +366,15 @@ theorem mem_secs_iff : f ∈ A.secs (τ * k * A.n) ↔
   rw [(hu.nsmul _).regularAt_iff, Units.val_pow_eq_pow_val, pow_mul, ← mul_pow]
   exact ⟨regAt_of_pow (have := Y.isNormalScheme; inferInstance) A.n.pos, fun h => regAt_pow h _⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `A.D.exists_isEqn (under y)`. Establish `hw` using `unitAt_quot hu hg`. Establish `hb` using `(regAt_iff hu hg).2 hf`. Establish `hgen` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hu`. Establish `hreg (N : ℕ) : (N • A.D).RegularAt (under y) ((u : Y.Fn)⁻¹ ^ N)`.
+
+Use `(CartierDiv.isEqn_iff_generatesAt_inv.1 (hu.nsmul N)).regularAt` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, ← inv_pow]`. Then use the resulting hypothesis. Establish `h₁` using `hφ _ (hreg k)`. Rewrite `h₁` using `[C.pn_mPow Y σ A.D k _ _ y hgen, ratVal_eq_valAt y hw.regAt]`. Establish `h₂` using `C.pn_mul Y σ _ (C.mPow Y σ A.D (τ * k * A.n) (A.m σ)) _ _ y (regAt_pow hb A.n) (hreg (τ * k * A.n))`.
+
+Establish `e : (f * (u : Y.Fn) ^ (τ * k)) ^ (A.n : ℕ) * (u : Y.Fn)⁻¹ ^ (τ * k * A.n) = f ^ (A.n : ℕ)`. Rewrite using `[mul_pow, ← pow_mul, mul_assoc, ← mul_pow, mul_inv_cancel₀ u.ne_zero, one_pow, mul_one]`. Rewrite `h₂` using `[e, C.pn_mPow Y σ A.D _ _ _ y hgen, ratVal_eq_valAt y (regAt_pow hb _), valAt_pow hb, norm_pow]`. Rewrite using `[Adl.nrmInf, h₂]`. Use `real_norm A.n.pos (by positivity) ?_` and prove the remaining obligations.
+
+Rewrite using `[h₁, mul_pow_eq f u g k τ, valAt_mul hb (regAt_pow hw.regAt _), valAt_pow hw.regAt, norm_mul, norm_pow, mul_pow, mul_pow, ← Real.exp_nat_mul, mul_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nrmInf_eq (σ : F →+* ℂ) (y : Pts Y σ) {g : Y.Fnˣ} (hg : (k • A.D).IsEqn (under y) g) {φ : ℝ}
     (hφ : ∀ f : Y.Fn, (k • A.D).RegularAt (under y) f →
       Real.exp (-(2 * k * (A.n : ℕ) * A.ci (InfinitePlace.mk σ))) *
@@ -310,6 +404,11 @@ theorem nrmInf_eq (σ : F →+* ℂ) (y : Pts Y σ) {g : Y.Fnˣ} (hg : (k • A.
     norm_pow, mul_pow, mul_pow, ← Real.exp_nat_mul, mul_neg]
   ring
 
+/- English proof (translation)
+Establish `hu : A.D.IsEqn _ (eqn A.D (below y.1))` using `(A.D.exists_isEqn (below y.1)).choose_spec`. Establish `hw` using `unitAt_quot hu hg`. Establish `hb` using `(regAt_iff hu hg).2 hf`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Rewrite `hl` using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val]`.
+
+Establish `h₁ : ((τ * k * A.n : ℕ) : ℝ) * A.lg v e y / ((A.n : ℕ) : ℝ) = τ * (k * A.lg v e y)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Adl.nrmFin, pow_mul, ← mul_pow, valAt_pow hb, map_pow, one_div, Real.pow_rpow_inv_natCast (e.w.nonneg _) A.n.ne_zero, h₁, hl, Real.exp_nat_mul, Real.exp_log (e.w.pos (valAt_ne_zero hw)), mul_pow_eq f (eqn A.D (below y.1)) g k τ, valAt_mul hb (regAt_pow hw.regAt _), valAt_pow hw. …`.
+-/
 theorem nrmFin_eq {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : AlgPt Y) {g : Y.Fnˣ}
     (hg : (k • A.D).IsEqn (below y.1) g)
     (hl : k * A.lg v e y =
@@ -329,6 +428,13 @@ theorem nrmFin_eq {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : AlgPt Y) {g 
     Real.exp_log (e.w.pos (valAt_ne_zero hw)), mul_pow_eq f (eqn A.D (below y.1)) g k τ,
     valAt_mul hb (regAt_pow hw.regAt _), valAt_pow hw.regAt, map_mul, map_pow]
 
+/- English proof (translation)
+Establish `: IsProper M.p`. Take `⟨N, c, hc, h⟩` from `M.ar.isProjOver`. Use `isProper_str (𝓞 F) N` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`.
+
+Set `ρ : 𝓞 F →+* e.O` to `((algebraMap F (AlgebraicClosure F)).comp (algebraMap (𝓞 F) F)).codRestrict e.O fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int e.O (x.isIntegral_coe.map (algebraMap F (AlgebraicClosure F)).toIntAlgHom)`. Establish `hex : ValuativeCriterion.Existence M.p`. Establish `h : UniversallyClosed M.p` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`.
+
+Establish `w : (y.1 ≫ M.j) ≫ M.p = spMap (algebraMap e.O (AlgebraicClosure F)) ≫ spMap ρ`. Rewrite using `[Category.assoc, M.pb.w, ← Category.assoc, y.2, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨⟨l⟩⟩` from `hex { R := e.O, K := AlgebraicClosure F, i₁ := y.1 ≫ M.j, i₂ := spMap ρ, commSq := ⟨w⟩ }`. Conclude with `⟨l.l, l.fac_left⟩`.
+-/
 theorem exists_lift (M : Model Y) {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : AlgPt Y) :
     ∃ yt : Sp e.O ⟶ M.X, spMap e.O.subtype ≫ yt = y.1 ≫ M.j := by
   have : IsProper M.p := by
@@ -350,6 +456,9 @@ theorem exists_lift (M : Model Y) {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (
     { R := e.O, K := AlgebraicClosure F, i₁ := y.1 ≫ M.j, i₂ := spMap ρ, commSq := ⟨w⟩ }
   exact ⟨l.l, l.fac_left⟩
 
+/- English proof (translation)
+Introduce `c c' h` and use `by have l : (lbPow L τ).U c ⊓ (lbPow L τ).U c' ≤ L.U (c PUnit.unit) ⊓ L.U (c' PUnit.unit) := fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩ have e : (lbPow L τ).g c c' = res l (L.g (c PUnit.unit) (c' PUnit.unit)) ^ τ := by change ∏ _k : PUnit, _ …`.
+-/
 theorem isRatSec_pow {Z : Scheme.{0}} [IsIntegral Z] {L : LB Z} {r : L.ι → Z.functionFieldˣ}
     (hr : IsRatSec L r) (τ : ℕ) : IsRatSec (lbPow L τ) fun c => r (c PUnit.unit) ^ τ :=
   fun c c' h => by
@@ -363,6 +472,13 @@ theorem isRatSec_pow {Z : Scheme.{0}} [IsIntegral Z] {L : LB Z} {r : L.ι → Z.
     ← mul_pow, hr _ _ (l h)]
   exact congrArg (fun a => (a * _) ^ τ) (fnOf_resG l h _).symm
 
+/- English proof (translation)
+Use `choose t ht using fun i : L.ι => fnMap_surjective j hη (r fun _ => i)`. Establish `h0 (i : L.ι) : t i ≠ 0` using `fun e => (r fun _ => i).ne_zero (by rw [← ht, e, map_zero])`. Use `⟨fun i => Units.mk0 _ (h0 i), fun i i' h => (fnMap j hη).injective ?_, fun c => ht _⟩` and prove the remaining obligations. Establish `h₁ : genericPoint Z ∈ j ⁻¹ᵁ (L.U i ⊓ L.U i')` using `hη.mem_open (L.U i ⊓ L.U i').isOpen h`. Establish `h₂ : genericPoint Z ∈ (L.pull j).U (fun _ => i) ⊓ (L.pull j).U (fun _ => i')` using `⟨Set.mem_iInter.2 fun _ => h₁.1, Set.mem_iInter.2 fun _ => h₁.2⟩`.
+
+Establish `l : (L.pull j).U (fun _ => i) ⊓ (L.pull j).U (fun _ => i') ≤ j ⁻¹ᵁ (L.U i ⊓ L.U i')` using `fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩`. Establish `e : (L.pull j).g (fun _ => i) (fun _ => i') = res l (pullU j _ (L.g i i'))`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `(Fintype.prod_unique _).trans (zpow_one _)`. Rewrite using `[map_mul, Units.val_mk0, Units.val_mk0, ht, ht, fnMap_fnOf j hη h h₁, hr _ _ h₂, e]`.
+
+Conclude with `congrArg (· * _) (fnOf_resG l h₂ _)`.
+-/
 theorem exists_isRatSec_of_pull {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (j : Z ⟶ X)
     [IsPreimmersion j] (hη : j (genericPoint Z) ⤳ genericPoint X) {L : LB X}
     {r : (L.pull j).ι → Z.functionFieldˣ} (hr : IsRatSec (L.pull j) r) :
@@ -384,6 +500,39 @@ theorem exists_isRatSec_of_pull {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z]
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L k ⟨_, r, hr, hinf, hfin⟩ hN τ`. Use `M.ar.isIntegral` as an intermediate fact. Use `isPreimmersion_j M` as an intermediate fact. Establish `: LocallyOfFiniteType M.p`. Take `⟨N, c, hc, h⟩` from `M.ar.isProjOver`.
+
+Use `isProper_str (𝓞 F) N` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Establish `hη` using `j_gen_specializes M`. Take `⟨r', hr', e'⟩` from `exists_isRatSec_of_pull M.j hη hr.isRatSec`.
+
+Establish `hP` using `presents_divOfRatSec (L.pow τ).isLB (isRatSec_pow hr' τ)`. Establish `hmem {x : Y.X} {c : PUnit → L.B.ι} (h : M.j x ∈ L.B.U (c PUnit.unit)) : x ∈ (L.B.pull M.j).U c` using `Set.mem_iInter.2 fun _ => h`. Establish `hpow {x : M.X} {c : PUnit → L.B.ι} : x ∈ (lbPow L.B τ).U c ↔ x ∈ L.B.U (c PUnit.unit)` using `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`. Establish `hmap (t : M.X.functionField) (c : PUnit → L.B.ι) : fnMap M.j hη t * (r c : Y.Fn) ^ τ = fnMap M.j hη (t * (r' (c PUnit.unit) ^ τ : M.X.functionFieldˣ))`. Rewrite using `[map_mul, Units.val_pow_eq_pow_val, map_pow, e' c]`.
+
+Establish `hreg (t : M.X.functionField) (x : Y.X) (c : PUnit → L.B.ι) (h : M.j x ∈ L.B.U (c PUnit.unit)) : RegAt x (fnMap M.j hη t * (eqn A.D x : Y.Fn) ^ (τ * k)) ↔ RegAt (M.j x) (t * (r' (c PUnit.unit) ^ τ : M.X.functionFieldˣ))`. Rewrite using `[regAt_iff (u := eqn A.D x) (A.D.exists_isEqn x).choose_spec (hr.isEqn c x (hmem h)), hmap, regAt_fnMap_iff]`. Establish `hF (t : M.X.functionField) (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (y : AlgPt Y) (yt : Sp e.O ⟶ M.X) (c : PUnit → L.B.ι) (h : spMap e.O.subtype ≫ yt = y.1 ≫ M.j) (hc : ⊤ ≤ yt ⁻¹ᵁ L.B.U (c PUnit.unit)) (ht : RegAt (M.j (below y.1)) (t * (r' (c PUnit.unit) ^ τ : M.X.functionField …`. Establish `h₁ : M.j (below y.1) ∈ L.B.U (c PUnit.unit)`. Express the relevant statement in the definitionally equal form `below (y.1 ≫ M.j) ∈ _`.
+
+Rewrite using `[← h]`. Conclude with `hc (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Rewrite using `[nrmFin_eq A e y (hr.isEqn c _ (hmem h₁)) (by simpa using hfin v e y yt c h hc) (by rwa [hmap, regAt_fnMap_iff]), hmap, valAt_fnMap _ _ _ ht, h]`. Establish `hI (s : (L.pow τ).B.Sec) (σ : F →+* ℂ) (y : Pts Y σ) (y' : CxPts M.p (σ.comp (algebraMap (𝓞 F) F))) (h : y'.1 = y.1 ≫ M.j) : A.nrmInf σ (τ * k * A.n) (fnMap M.j hη (hP.rat s)) y ≤ 1 ↔ ((L.pow τ).φ _).nsq (CxPts.secVal M.p _ s) y' ≤ 1`. Take `⟨i, hi⟩` from `exists_chart L.isLB (M.j (under y))`.
+
+Set `c : PUnit → L.B.ι` to `fun _ => i`. Establish `h₁ : below (y.1 ≫ M.j) ∈ (lbPow L.B τ).U c` using `hpow.2 hi`. Establish `h₂` using `hP.rat_mul s c (gen_mem h₁)`. Establish `h₃ : RegAt (M.j (below y.1)) (hP.rat s * (r' (c PUnit.unit) ^ τ : M.X.functionFieldˣ))` using `h₂ ▸ regAt_fnOf h₁ _ _`. Establish `h₄ : y' ∈ CxPts.ptsIn M.p _ ((lbPow L.B τ).U c)` using `CxPts.mem_ptsIn.2 (h ▸ h₁)`.
+
+Rewrite using `[nrmInf_eq A σ y (hr.isEqn c _ (hmem hi)) (fun f => hinf σ y y' c f h (hmem hi)) (by rwa [hmap, regAt_fnMap_iff]), hmap, valAt_fnMap _ _ _ h₃, Real.sqrt_le_left zero_le_one, one_pow, Weight.nsq_eq _ (CxPts.secVal_mem s) h₄]`. Use `iff_of_eq (congrArg (· ≤ (1 : ℝ)) (congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp (-b)) ?_ ?_))` and prove the remaining obligations. Use `(congrArg _ h₂).trans ((valAt_fnOf h₁ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Conclude with `((L.φ _).zpow_φ τ c y').symm`. Establish `hto (s : (L.pow τ).smallSec) : fnMap M.j hη (hP.rat s.1) ∈ A.small (τ * k * A.n)`. Establish `h₀ (x : M.X) (c : PUnit → L.B.ι) (h : x ∈ L.B.U (c PUnit.unit)) : RegAt x (hP.rat s.1 * (r' (c PUnit.unit) ^ τ : M.X.functionFieldˣ))` using `hP.rat_mul s.1 c (gen_mem (hpow.2 h)) ▸ regAt_fnOf (hpow.2 h) _ _`. Use `⟨(mem_secs_iff A).2 fun x => ?_, fun σ y => ?_, fun v e y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart L.isLB (M.j x)`.
+
+Conclude with `(hreg _ x (fun _ => i) hi).2 (h₀ _ (fun _ => i) hi)`. Conclude with `(hI s.1 σ y ⟨y.1 ≫ M.j, by`. Rewrite using `[Category.assoc, M.pb.w, ← Category.assoc, y.2, ← Spec.map_comp]`. Use the proof step `rfl⟩ rfl).2 (s.2 _ _)`. Take `⟨yt, h⟩` from `exists_lift M e y`.
+
+Take `⟨i, hi⟩` from `exists_chart L.isLB (yt (IsLocalRing.closedPoint e.O))`. Establish `h₁ : ⊤ ≤ yt ⁻¹ᵁ (lbPow L.B τ).U fun _ => i` using `(Points.le_preimage_iff _ _).2 (hpow.2 hi)`. Establish `h₂ : below (spMap e.O.subtype ≫ yt) ∈ (lbPow L.B τ).U fun _ => i` using `h₁ (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Establish `h₃ : below (y.1 ≫ M.j) ∈ (lbPow L.B τ).U fun _ => i` using `h ▸ h₂`. Rewrite using `[hF _ v e y yt (fun _ => i) h ((Points.le_preimage_iff _ _).2 hi) (h₀ _ _ (hpow.1 h₃))]`.
+
+Use `(e.mem_O _).1 ?_` and prove the remaining obligations. Establish `h₄` using `(congrArg (valAt (spMap e.O.subtype ≫ yt)) (hP.rat_mul s.1 (fun _ => i) (gen_mem h₂))).trans ((valAt_fnOf h₂ _ _).trans (Points.valR_spMap_comp _ _ _ h₁ _))`. Conclude with `h₄ ▸ Subtype.coe_prop _`. Use `⟨(Equiv.ofBijective (fun s => (⟨_, hto s⟩ : A.small (τ * k * A.n))) ⟨fun s s' h => Subtype.ext (hP.rat_injective ((fnMap M.j hη).injective (congrArg Subtype.val h))), ?_⟩).symm⟩` and prove the remaining obligations. Introduce and unpack `⟨f, hf, h₁, h₂⟩`.
+
+Take `⟨t, rfl⟩` from `fnMap_surjective M.j hη f`. Establish `h₀ (x : Y.X) (c : PUnit → L.B.ι) (h : M.j x ∈ L.B.U (c PUnit.unit))` using `(hreg t x c h).1 ((mem_secs_iff A).1 hf x)`. Take `⟨s, rfl⟩` from `hP.exists_rat_eq (f := t) (CartierDiv.mem_sections.2 fun x => by`. Take `⟨c, hc⟩` from `exists_chart (L.pow τ).isLB x`. Use `⟨_, hP.isEqn c x hc, regAt_of_points M.p hN (asIdeal_p_gen M) (L.B.U (c PUnit.unit)) _ (fun z hz h => ?_) (fun v e yt h hyt => ?_) x (hpow.1 hc)⟩` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `mem_range_j M h`. Conclude with `h₀ z c hz`. Set `y : AlgPt Y` to `⟨M.pb.lift _ _ h, M.pb.lift_snd _ _ _⟩`. Establish `e₁ : spMap e.O.subtype ≫ yt = y.1 ≫ M.j` using `(M.pb.lift_fst _ _ h).symm`. Establish `e₂ : below (y.1 ≫ M.j) ∈ L.B.U (c PUnit.unit)` using `e₁ ▸ hyt (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`.
+
+Conclude with `(hF t v e y yt c e₁ hyt (h₀ _ c e₂)).ge.trans (h₂ v e y))`. Use `⟨⟨s, fun σ' y' => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hσ : Function.Injective σ'`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`. Take `⟨σ, rfl⟩ : ∃ σ : F →+* ℂ, σ' = σ.comp (algebraMap (𝓞 F) F)` from `⟨IsFractionRing.lift hσ, RingHom.ext fun a => (IsFractionRing.lift_algebraMap hσ a).symm⟩`. Establish `w : y'.1 ≫ M.p = spMap σ ≫ spMap (algebraMap (𝓞 F) F)`. Rewrite using `[y'.2, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Conclude with `(hI s σ ⟨M.pb.lift _ _ w, M.pb.lift_snd _ _ _⟩ y' (M.pb.lift_fst _ _ w).symm).1 (h₁ _ _)`.
+-/
 theorem small_equiv_smallSec : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F)
     (A : Adl C Y) (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+), A.Induced M L k 0 →
     Geo.Tor.IsNormalScheme M.X → ∀ τ : ℕ, Nonempty (A.small (τ * k * A.n) ≃ (L.pow τ).smallSec) := by

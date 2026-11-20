@@ -7,11 +7,19 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.ArchWhit
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+Unfold `chi`. Rewrite using `[← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+-/
 private theorem chi_mul_neg (ν : Fin (2 + 2) → ℤ) (θ : Fin (2 + 2) → ℝ) : chi ν θ * chi ν (-θ) = 1 := by
   unfold chi
   rw [← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]
   simp
 
+/- English proof (translation)
+Establish `h : conj (chi ν θ) = chi ν (-θ)`. Unfold `chi`. Rewrite using `[← Complex.exp_conj, map_mul, map_sum, Complex.conj_I]`. Use `congr 1`. Simplify using `only [map_mul, map_intCast, Complex.conj_ofReal, Pi.neg_apply, Complex.ofReal_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]`.
+
+Rewrite using `[h, chi_mul_neg]`.
+-/
 private theorem chi_mul_conj (ν : Fin (2 + 2) → ℤ) (θ : Fin (2 + 2) → ℝ) : chi ν θ * conj (chi ν θ) = 1 := by
   have h : conj (chi ν θ) = chi ν (-θ) := by
     unfold chi
@@ -21,6 +29,11 @@ private theorem chi_mul_conj (ν : Fin (2 + 2) → ℤ) (θ : Fin (2 + 2) → �
       Finset.sum_neg_distrib]
   rw [h, chi_mul_neg]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ, chi ν θ ≠ chi ν' θ := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (u4.2.2.2.2.2.2.2.2.2.2.1 ν ν' hc)`. Establish `hT : ∫ h, F (dg θ * h) ∂μ = ∫ h, F h ∂μ` using `(hH.left (dg θ)).integral_comp (Homeomorph.mulLeft (dg θ)).measurableEmbedding F`.
+
+Establish `h1 : chi ν' θ * ∫ h, F h ∂μ = chi ν θ * ∫ h, F h ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (chi ν θ - chi ν' θ) * ∫ h, F h ∂μ = 0` using `by rw [sub_mul, h1, sub_self]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hθ)`.
+-/
 private theorem int_zero {μ : Measure U4} (hH : Haar4 μ) {ν ν' : Fin (2 + 2) → ℤ} (hne : ν ≠ ν') (F : U4 → ℂ)
     (hF : ∀ θ h, chi ν' θ * F (dg θ * h) = chi ν θ * F h) : ∫ h, F h ∂μ = 0 := by
   obtain ⟨θ, hθ⟩ : ∃ θ, chi ν θ ≠ chi ν' θ := by
@@ -37,6 +50,41 @@ private theorem int_zero {μ : Measure U4} (hH : Haar4 μ) {ν ν' : Fin (2 + 2)
   have h2 : (chi ν θ - chi ν' θ) * ∫ h, F h ∂μ = 0 := by rw [sub_mul, h1, sub_self]
   exact (mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hθ)
 
+/- English proof (translation)
+Introduce `μ ψ n q n' q' hH hO hC`. Use `haveI : CompactSpace U4 := u4.2.2.2.2.2.2.2.2.2.2.2.1`. Use `haveI : IsProbabilityMeasure μ := hH.prob`. Take `⟨J, _, j₀, a, b, ν, hcont, hexp, ha0, hb0, hν0, hw, -, hne⟩` from `hC.exp`. Establish `hψc : Continuous ψ` using `ha0 ▸ (hcont j₀).1`.
+
+Establish `hψ1 : ψ 1 = 1`. Establish `h` using `hC.res 1 1`. Rewrite `h` using `[u4.2.2.1, KT.psi_one, KT.psi_one, mul_one]`. Conclude with `h`. Establish `hint : ∀ f : U4 → ℂ, Continuous f → Integrable f μ` using `fun f hf => hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+
+Establish `hinv : Continuous fun h : U4 => h⁻¹` using `continuous_inv`. Establish `hψdg : ∀ θ h, ψ (dg θ * h) = chi (wt n q n' q') θ * ψ h` using `fun θ h => by`. Use `(hw j₀ θ h).2.1` as an intermediate fact. Rewrite `this` using `[ha0]`. Then use the resulting hypothesis. Use `set c : ℝ := ∫ h, ‖ψ h‖ ^ 2 ∂μ with hc`.
+
+Establish `hcpos : 0 < c`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := (1 : U4)) (by fun_prop) (HasCompactSupport.of_compactSpace _) (fun _ => by positivity) ?_` and prove the remaining obligations. Simplify using `[hψ1]`. Establish `hc0 : (c : ℂ) ≠ 0` using `by exact_mod_cast hcpos.ne'`. Establish `hmc : ∀ h, ψ h * conj (ψ h) = ((‖ψ h‖ ^ 2 : ℝ) : ℂ)` using `fun h => by`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hcC : ∫ h, ψ h * conj (ψ h) ∂μ = (c : ℂ)`. Repeatedly rewrite using `[hmc]`. Conclude with `integral_complex_ofReal`. Establish `key1 : ∀ k, ∫ h, ψ h * ψ (h⁻¹ * k) ∂μ = c * ψ k` using `fun k => by`.
+
+Establish `e1 : ∀ h, ψ h * ψ (h⁻¹ * k) = ∑ j, (ψ h * a j h⁻¹) * b j k` using `fun h => by`. Rewrite using `[hexp, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (mul_assoc _ _ _).symm`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_finset_sum (μ := μ) Finset.univ (f := fun j h => ψ h * a j h⁻¹ * b j k) fun j _ => hint _ ((hψc.mul ((hcont j).1.comp hinv)).mul continuous_const)]`.
+
+Repeatedly rewrite using `[integral_mul_const]`. Rewrite using `[Finset.sum_eq_single j₀]`. Rewrite using `[ha0, hb0]`. Use `congr 1`. Rewrite using `[← hcC]`.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun h => by show ψ h * ψ h⁻¹ = ψ h * conj (ψ h)`. Rewrite using `[hC.star])`. Introduce `j _ hj`. Rewrite using `[int_zero hH (ν := wt n q n' q') (ν' := ν j) (Ne.symm (hν0 ▸ hne j hj)) _ ?_, zero_mul]`. Introduce `θ h`.
+
+Rewrite using `[_root_.mul_inv_rev, u4.2.2.2.2.2.2.2.2.2.1, hψdg, (hw j (-θ) h⁻¹).1]`. Use `chi_mul_neg (ν j) θ` as an intermediate fact. Take the linear combination `(chi (wt n q n' q') θ * ψ h * a j h⁻¹) * this`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `key2 : ∀ g, ∫ k, conj (ψ k) * ψ (g * k) ∂μ = c * ψ g` using `fun g => by`. Establish `e1 : ∀ k, conj (ψ k) * ψ (g * k) = ∑ j, a j g * (conj (ψ k) * b j k)` using `fun k => by`. Rewrite using `[hexp, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Repeatedly rewrite using `[e1]`.
+
+Rewrite using `[integral_finset_sum (μ := μ) Finset.univ (f := fun j k => a j g * (conj (ψ k) * b j k)) fun j _ => hint _ (continuous_const.mul ((Complex.continuous_conj.comp hψc).mul (hcont j).2))]`. Repeatedly rewrite using `[integral_const_mul]`. Rewrite using `[Finset.sum_eq_single j₀]`. Rewrite using `[ha0, hb0, mul_comm]`. Use `congr 1`.
+
+Rewrite using `[← hcC]`. Conclude with `integral_congr_ae (Eventually.of_forall fun h => mul_comm _ _)`. Introduce `j _ hj`. Rewrite using `[int_zero hH (ν := ν j) (ν' := wt n q n' q') (hν0 ▸ hne j hj) _ ?_, mul_zero]`. Introduce `θ k`.
+
+Rewrite using `[hψdg, (hw j θ k).2.2, map_mul]`. Use `chi_mul_conj (wt n q n' q') θ` as an intermediate fact. Take the linear combination `(conj (ψ k) * chi (ν j) θ * b j k) * this`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `heOf : ∀ k, eOf μ ψ k = (c : ℂ)⁻¹ * conj (ψ k)` using `fun k => rfl`. Use `⟨hψc, hψ1, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.mul (Complex.continuous_conj.comp hψc)`. Introduce `k`. Rewrite using `[heOf, heOf, hC.star, map_mul, map_inv₀, Complex.conj_ofReal]`.
+
+Introduce `k`. Establish `e1 : ∀ h, eOf μ ψ h * eOf μ ψ (h⁻¹ * k) = ((c : ℂ)⁻¹ * (c : ℂ)⁻¹) * conj (ψ h * ψ (h⁻¹ * k))` using `fun h => by`. Rewrite using `[heOf, heOf, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`.
+
+Rewrite using `[integral_const_mul, integral_conj, key1, heOf, map_mul, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Introduce `g`. Establish `e1 : ∀ k, eOf μ ψ k * ψ (g * k) = (c : ℂ)⁻¹ * (conj (ψ k) * ψ (g * k))` using `fun k => by`. Rewrite using `[heOf, mul_assoc]`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[integral_const_mul, key2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.coefIdem :
     ∀ (μ : Measure U4) ψ n q n' q', Haar4 μ → μ.IsOpenPosMeasure → Coef ψ n q n' q' → Continuous ψ ∧ ψ 1 = 1 ∧ Idem μ (eOf μ ψ) ∧ RFix μ (eOf μ ψ) ψ := by
   intro μ ψ n q n' q' hH hO hC

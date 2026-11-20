@@ -9,6 +9,11 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Take `⟨b, -, -⟩` from `hE.basis`. Establish `: FiniteDimensional F E` using `Module.Finite.of_basis b`. Set `T : E ≃ₗ[F] E` to `{ LinearMap.mulLeft F (z : E) with invFun := fun x => ((z⁻¹ : Eˣ) : E) * x left_inv := fun x => by simp right_inv := fun x => by simp }`. Establish `hT : LinearEquiv.det T = Units.map (Algebra.norm F : E →* F) z`. Use `ext`.
+
+Rewrite using `[LinearEquiv.coe_det, Units.coe_map, Algebra.norm_apply]`. Both sides reduce to the same expression. Rewrite using `[← hT]`. Conclude with `GlobalTheory.T.map_linearEquiv_addHaar_localField F E μ T`.
+-/
 theorem map_mul_left_eq_norm_smul (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (z : Eˣ) :
     μ.map (fun x => (z : E) * x) =
       (distribHaarChar F ((Units.map (Algebra.norm F : E →* F)) z))⁻¹ • μ := by

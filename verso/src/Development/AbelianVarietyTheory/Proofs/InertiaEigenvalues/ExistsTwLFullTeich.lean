@@ -11,6 +11,9 @@ open GlobalTheory.HeckeGal GlobalTheory.GalChar GlobalTheory.HeightCounting
 
 attribute [local instance 10000] GlobalTheory.GalChar.isTorsionFree_field
 
+/- English proof (translation)
+The claim follows from `exists_twL_full hA hR D N hE T Z hZ art ha κ ι hκ hι hμ hχ hδ hS fun a w hw => ⟨w, rfl, hT a w hw⟩`.
+-/
 theorem exists_twL_full_teich (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hR : RatioConj) (D : D7) (N : NData D.R D.host D.what₂)
     (hE : IsEmpty N.Loc) (T : TwR D.LL0 N) (Z : LamDat D) (hZ : Z.Ok)
     (art : Ideles D.host.E →* Gab D.host.E N.Om) (ha : IsGlobalArtin art)

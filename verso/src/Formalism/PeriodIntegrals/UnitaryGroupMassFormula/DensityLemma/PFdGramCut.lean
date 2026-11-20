@@ -68,6 +68,9 @@ def repE (A : W →L[ℂ] W) : W ≃L[ℂ] W := by
       exact sub_eq_zero.mp (norm_eq_zero.mp h1.symm))).toContinuousLinearEquiv
   else ContinuousLinearEquiv.refl ℂ W
 
+/- English proof (translation)
+Unfold `repE`. Rewrite using `[dif_pos hA]`. Use extensionality with `v`. Both sides reduce to the same expression.
+-/
 theorem repE_coe (A : W →L[ℂ] W) (hA : ∀ v, ‖A v‖ = ‖v‖) : ((repE A : W ≃L[ℂ] W) : W →L[ℂ] W) = A := by
   unfold repE
   rw [dif_pos hA]
@@ -80,6 +83,11 @@ section
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Take `⟨n, hn, m, hm, n', hn', m', hm', c, hc, c', hc', hb, ha⟩` from `hR`. Establish `hE'` using `hE`. Unfold `FibEquivU at hE'`. Establish `hN'` using `hN`. Unfold `FiberIntegralUnipotentInvariant at hN'`.
+
+Establish `e1` using `hE' k r Wp Wq D μ0 μ0' h0 h0' F (n⁻¹ * a * n') c hc c' hc'`. Establish `e2` using `hE' k r Wp Wq D μ0 μ0' h0 h0' F (m⁻¹ * a * m') c hc c' hc'`. Rewrite `e1` using `[hN' k r Wp Wq D μ0 μ0' h0 h0' F a n hn n' hn']`. Rewrite `e2` using `[hN' k r Wp Wq D μ0 μ0' h0 h0' F a m hm m' hm', ha]`. Rewrite using `[hb, e1, ← e2]`.
+-/
 theorem fib_rel (hE : FibEquivU) (hN : FiberIntegralUnipotentInvariant) (D : B.RealPlaceData k r Wp Wq) {μ0 μ0' : Measure (Mt k r)}
     (h0 : B.IsHaarOn (C2.N0set k r D.z) μ0) (h0' : B.IsHaarOn (C2.N0set k r D.z') μ0')
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) {a b : B.Mat k r} (hR : Rel D.z D.z' a b) :
@@ -95,9 +103,17 @@ theorem fib_rel (hE : FibEquivU) (hN : FiberIntegralUnipotentInvariant) (D : B.R
   rw [hN' k r Wp Wq D μ0 μ0' h0 h0' F a m hm m' hm', ha] at e2
   rw [hb, e1, ← e2]
 
+/- English proof (translation)
+Simplify using `[UWset, UH]`.
+-/
 theorem one_mem_UW (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWset k r z := by
   simp [UWset, UH]
 
+/- English proof (translation)
+Establish `hs : n⁻¹ ∈ Sset k r D.z`. Simplify using `only [Sset, Set.mem_setOf_eq]`. Conclude with `⟨1, one_mem_UW D.z, n⁻¹, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hn, by rw [one_mul]⟩`. Establish `hs' : n' ∈ Sset k r D.z'`. Simplify using `only [Sset, Set.mem_setOf_eq]`.
+
+Conclude with `⟨1, one_mem_UW D.z', n', hn', by rw [one_mul]⟩`. Establish `hD` using `Formalism.QuantumDeterminants.dInv`. Unfold `DInv at hD`. Simplify using `only [Gf, hD k r D.z D.z' D.z_mem D.z'_mem _ hs _ hs' g]`.
+-/
 theorem gf_N (D : B.RealPlaceData k r Wp Wq) {g n n' : B.Mat k r} (hn : n ∈ Nset k r) (hn' : n' ∈ Nset k r) :
     Gf k r D.z D.z' (n⁻¹ * g * n') = Gf k r D.z D.z' g := by
   have hs : n⁻¹ ∈ Sset k r D.z := by
@@ -110,12 +126,34 @@ theorem gf_N (D : B.RealPlaceData k r Wp Wq) {g n n' : B.Mat k r} (hn : n ∈ Ns
   unfold DInv at hD
   simp only [Gf, hD k r D.z D.z' D.z_mem D.z'_mem _ hs _ hs' g]
 
+/- English proof (translation)
+Simplify using `only [Gf, Dmin, hZ]`.
+-/
 theorem gf_zhat (z z' : Fin (2 * r + k + 1) → ℂ) {g₁ g₂ : B.Mat k r} (hZ : Zhat k r z z' g₁ = Zhat k r z z' g₂) :
     Gf k r z z' g₁ = Gf k r z z' g₂ := by
   simp only [Gf, Dmin, hZ]
 
 end
 
+/- English proof (translation)
+Unfold `FdGram`. Introduce `k r Wp Wq _ _ _ _ _ _ D μ0 μ0' hr h0 h0'`. Establish `hS'` using `hS`. Unfold `GramSlice at hS'`. Take `⟨T, hT1, hT2, hT3, hT4⟩` from `hS' k r D.z D.z' D.k_pos hr ⟨D.z_mem, D.T_pos⟩ ⟨D.z'_mem, D.T'_pos⟩`.
+
+Establish `hR'` using `hR`. Unfold `SmoothRep at hR'`. Establish `hE'` using `hE`. Unfold `FibEquivU at hE'`. Establish `key : ∀ (F : B.Mat k r → (Wq →L[ℂ] Wp)) (c c' g : B.Mat k r), c ∈ UWset k r D.z → c' ∈ UWset k r D.z' → ((repE (D.π c) : Wp →L[ℂ] Wp)).comp ((fibInt D μ0 μ0' F g).comp (repE (D.π' c') : Wq →L[ℂ] Wq)) = fibInt D μ0 μ0' F (c * g * c')`.
+
+Introduce `F c c' g hc hc'`. Rewrite using `[repE_coe _ (D.π_unitary c hc), repE_coe _ (D.π'_unitary c' hc'), hE' k r Wp Wq D μ0 μ0' h0 h0' F g c hc c' hc']`. Simplify using `only [IsFrameAlg, FdLocal, frVal]`. Use `⟨fun g => (repE (D.π (T g).1), repE (D.π' (T g).2)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg hG n hn n' hn'`.
+
+Use `⟨by rw [gf_N D hn hn']; exact hG, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hT2 g hg hG n hn n' hn']`. Introduce `F g₁ hg₁ g₂ hg₂ hG hZ`. Establish `hG₂ : 0 < Gf k r D.z D.z' g₂` using `by rw [← gf_zhat D.z D.z' hZ]; exact hG`.
+
+Take `⟨hc₁, hc₁'⟩` from `hT1 g₁ hg₁ hG`. Take `⟨hc₂, hc₂'⟩` from `hT1 g₂ hg₂ hG₂`. Simplify using `only`. Rewrite using `[key F _ _ g₁ hc₁ hc₁', key F _ _ g₂ hc₂ hc₂']`. Conclude with `(fib_rel hE hN D h0 h0' F (hT3 g₁ hg₁ g₂ hg₂ hG hZ)).symm`.
+
+Introduce `g₀ hg₀ hG₀`. Take `⟨O₁, Tl, hO₁, hg₀O, hTl, hTlP⟩` from `hT4 g₀ hg₀ hG₀`. Take `⟨hu₀, hu₀', -⟩` from `hTlP g₀ hg₀O hg₀ hG₀`. Take `⟨O₂, P, hO₂, hmem₂, hP, hPeq⟩` from `(hR' k r Wp Wq D).1 _ hu₀`. Take `⟨O₃, P', hO₃, hmem₃, hP', hPeq'⟩` from `(hR' k r Wp Wq D).2 _ hu₀'`.
+
+Establish `hc1 : ContinuousOn (Prod.fst ∘ Tl) O₁` using `continuous_fst.comp_continuousOn hTl.continuousOn`. Establish `hc2 : ContinuousOn (Prod.snd ∘ Tl) O₁` using `continuous_snd.comp_continuousOn hTl.continuousOn`. Establish `hd1` using `contDiff_fst.comp_contDiffOn hTl`. Establish `hd2` using `contDiff_snd.comp_contDiffOn hTl`. Establish `hO : IsOpen ((O₁ ∩ (Prod.fst ∘ Tl) ⁻¹' O₂) ∩ (Prod.snd ∘ Tl) ⁻¹' O₃)` using `(hc2.mono Set.inter_subset_left).isOpen_inter_preimage (hc1.isOpen_inter_preimage hO₁ hO₂) hO₃`.
+
+Use `⟨(O₁ ∩ (Prod.fst ∘ Tl) ⁻¹' O₂) ∩ (Prod.snd ∘ Tl) ⁻¹' O₃, fun g => P (Tl g).1, fun g => P' (Tl g).2, hO, ⟨⟨hg₀O, hmem₂⟩, hmem₃⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hP.comp (hd1.mono fun x hx => hx.1.1) (fun x hx => hx.1.2)`. Conclude with `hP'.comp (hd2.mono fun x hx => hx.1.1) (fun x hx => hx.2)`. Introduce `g hgO hgV hG F`. Take `⟨hu, hu', hrel⟩` from `hTlP g hgO.1.1 hgV hG`.
+
+Take `⟨hc, hc'⟩` from `hT1 g hgV hG`. Simplify using `only`. Rewrite using `[key F _ _ g hc hc', hPeq (Tl g).1 hgO.1.2 hu, hPeq' (Tl g).2 hgO.2 hu', ← hE' k r Wp Wq D μ0 μ0' h0 h0' F g _ hu _ hu']`. Conclude with `fib_rel hE hN D h0 h0' F hrel`.
+-/
 theorem fdGram_of (hS : GramSlice) (hR : SmoothRep) (hE : FibEquivU) (hN : FiberIntegralUnipotentInvariant) : FdGram := by
   unfold FdGram
   intro k r Wp Wq _ _ _ _ _ _ D μ0 μ0' hr h0 h0'

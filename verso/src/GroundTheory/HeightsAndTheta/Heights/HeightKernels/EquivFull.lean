@@ -17,9 +17,15 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kernels
 
+/- English proof (translation)
+The claim follows from `S6.LatticeAsBundle.proof S6.MatrixSubDegree.proof S6.QuotExtension.proof S6.QuotDegree.proof`.
+-/
 theorem S6.LatticeAsBundle.full : S6.LatticeAsBundle.Statement :=
   S6.LatticeAsBundle.proof S6.MatrixSubDegree.proof S6.QuotExtension.proof S6.QuotDegree.proof
 
+/- English proof (translation)
+The claim follows from `S6.BundleCoordinates.proof S6.LineCoordinates.proof S6.CoordinateDegree.proof S6.QuotientDegreeSplit.proof S6.ExtensionDegree.proof S6.SaturatedSpan.proof`.
+-/
 theorem S6.BundleCoordinates.full : S6.BundleCoordinates.Statement :=
   S6.BundleCoordinates.proof S6.LineCoordinates.proof S6.CoordinateDegree.proof
     S6.QuotientDegreeSplit.proof S6.ExtensionDegree.proof S6.SaturatedSpan.proof

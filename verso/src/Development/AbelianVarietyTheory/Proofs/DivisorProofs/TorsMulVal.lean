@@ -27,14 +27,23 @@ variable {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
 instance torsGroup (B : Type) [CommRing B] [Algebra R B] : CommGroup (Tors G N B) :=
   inferInstanceAs (CommGroup (powMonoidHom N : (SpAlg R B ⟶ G) →* (SpAlg R B ⟶ G)).ker)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tors_mul_val {B : Type} [CommRing B] [Algebra R B] (x y : Tors G N B) : (x * y).1 = x.1 * y.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tors_one_val {B : Type} [CommRing B] [Algebra R B] : (1 : Tors G N B).1 = 1 := rfl
 
 def torsMap {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (z : Tors G N B) :
     Tors G N C :=
   ⟨spOver φ ≫ z.1, by rw [← MonObj.comp_pow, z.2, MonObj.comp_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem torsMap_val {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (z : Tors G N B) : (torsMap φ z).1 = spOver φ ≫ z.1 := rfl
 
@@ -43,6 +52,9 @@ def torsIncl {N' : ℕ} (h : N ∣ N') {B : Type} [CommRing B] [Algebra R B] (z 
 
 end Tors
 
+/- English proof (translation)
+Discharge the goal by the elementary cases of `trivial`.
+-/
 example : True := trivial
 
 section Ord
@@ -157,6 +169,9 @@ def PreChart.IsGrp {q : PrimeSpectrum R} (c : PreChart G N q) : Prop :=
 
 end Chart
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨⊤, fun B _ _ => by refine ⟨fun _ _ => ?_, (TorsionMap.ofTower_bijective (muTower p R) n B).1.injOn, fun φ _ => ?_⟩ · intro x _; exact trivial · obtain ⟨z, hz⟩ := (TorsionMap.ofTower_bijective (muTower p R) n B).2 φ exact ⟨z, trivial, hz⟩⟩, TorsionMap.ofTower_bijective (muTower …`.
+-/
 example (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [Algebra R K] (n : ℕ) :
     IsLevel K ((TorsionMap.ofTower (muTower p R)).level n) :=
   ⟨⟨⊤, fun B _ _ => by

@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `isIntegral_of_isPullback_of_smooth (IsPullback.of_hasPullback T.hom B.hom).flip`.
+-/
 theorem isIntegral_tensor_left_of_smooth_grpObj (S : Scheme.{0}) (B T : Over S) [GrpObj B]
     [Smooth B.hom] [GeometricallyConnected B.hom] [IsIntegral T.left] :
     IsIntegral (T ⊗ B).left :=

@@ -14,6 +14,9 @@ def mapPl {F L : Type} [Field F] [Field L] (j : F ≃+* L) (v : HeightOneSpectru
   HeightOneSpectrum.comap ((RingOfIntegers.mapRingEquiv j).symm : 𝓞 L →+* 𝓞 F)
     (RingOfIntegers.mapRingEquiv j).symm.surjective v
 
+/- English proof (translation)
+Use `show (RingOfIntegers.mapRingEquiv j).symm (RingOfIntegers.mapRingEquiv j x) ∈ v.asIdeal ↔ _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+-/
 theorem mem_mapPl {F L : Type} [Field F] [Field L] (j : F ≃+* L) (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F) :
     RingOfIntegers.mapRingEquiv j x ∈ (mapPl j v).asIdeal ↔ x ∈ v.asIdeal := by
   show (RingOfIntegers.mapRingEquiv j).symm (RingOfIntegers.mapRingEquiv j x) ∈ v.asIdeal ↔ _

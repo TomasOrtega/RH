@@ -36,6 +36,9 @@ section Free
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ}
 
+/- English proof (translation)
+Establish `key (ρ : X ⟶ X) (q : X ⟶ Sp k) (w : ρ ≫ p = q) (hq : IsRegSurf q) : (h.pull ρ w).IsCInf`. Substitute `w` using the available equality. Conclude with `H.pull_isCInf_of_local ρ (RegGenSmooth.genSmooth_of_isRegSurf k X _ hq).2`. Rewrite using `[(VMetric.isIsometry_iff _).1 (VMetric.isIsometry_pull_id_comp k X p E r h).1]`. Conclude with `(key _ _ (Category.id_comp p) hX).map _`.
+-/
 theorem isCInf_of_isRegSurf (hX : IsRegSurf p) {h : VMetric p E r} (H : h.IsCInfNorm) : h.IsCInf := by
   have key (ρ : X ⟶ X) (q : X ⟶ Sp k) (w : ρ ≫ p = q) (hq : IsRegSurf q) : (h.pull ρ w).IsCInf := by
     subst w
@@ -43,11 +46,23 @@ theorem isCInf_of_isRegSurf (hX : IsRegSurf p) {h : VMetric p E r} (H : h.IsCInf
   rw [(VMetric.isIsometry_iff _).1 (VMetric.isIsometry_pull_id_comp k X p E r h).1]
   exact (key _ _ (Category.id_comp p) hX).map _
 
+/- English proof (translation)
+The claim follows from `(IsometryPullback.isCh2Deg_iff_of_isIsometry (Iso.refl X) (Category.id_comp p) (IsometryPullback.isIsometry_trans (VMetric.isIsometry_pull_id_comp k X p E r h).1 I) a).1 ha`.
+-/
 theorem isCh2Deg_of_isIsometry [IsIntegral X] {E' : X.Modules} {h : VMetric p E r} {h' : VMetric p E' r} {α : E ≅ E'}
     (I : h.IsIsometry h' α) {a : ℝ} (ha : h'.IsCh2Deg a) : h.IsCh2Deg a :=
   (IsometryPullback.isCh2Deg_iff_of_isIsometry (Iso.refl X) (Category.id_comp p)
     (IsometryPullback.isIsometry_trans (VMetric.isIsometry_pull_id_comp k X p E r h).1 I) a).1 ha
 
+/- English proof (translation)
+Establish `hA` using `hX.toIsArithVar`. Use `hA.isLocallyNoetherian` as an intermediate fact. Take `⟨⟨F⟩, hF⟩` from `GlobalTheory.T.flag_variety_arith_dimension k X p 1 hA E r h₀.isVB`. Establish `hY` using `(hF F).1`. Use `hY.isIntegral` as an intermediate fact.
+
+Take `⟨e, hs⟩` from `FlagCmp.dim_genSmooth hX hY rfl (fun _ => h₀.isVB) F.univ`. Rewrite `hs` using `[← e]`. Establish `ex (g : VMetric p E r) (G : g.IsCInf)` using `((HP.p4.arExists k _ _ _ hY).2 _ (fun z : Σ _ : Unit, Fin r => VMetric.grLB F.fl z.2 (G.pull F.π rfl))).1`. Use `choose Φ hΦ using ex`. Establish `val (g : VMetric p E r) (G : g.IsCInf) (a : ℝ) (ha : g.IsCh2Deg a)` using `GlobalTheory.T.vertical_flag_bundle_exists HP HP.p4 HR k X F.Y p _ _ hA hY F.π rfl Unit (fun _ => E) (fun _ => r) (fun _ => g) (fun _ => G) (fun _ => F.fl) F.univ (fun _ => a) (fun _ => ha) _ (hΦ g G)`.
+
+Establish `lim` using `GlobalTheory.T.arithmetic_function_limit HP.p4 k F.Y _ _ hY hs t ht _ _ _ (fun z : Σ _ : Unit, Fin r => GlobalTheory.T.graded_line_family_convergence k F.Y _ _ r t _ _ (fun R => (H R).pull F.π rfl) (H₀.pull F.π rfl) (hf.pull F.π rfl) F.fl z.2) _ _ (fun R => hΦ _ (H R)) (hΦ _ H₀) …`. Rewrite `lim` using `[val _ H₀ _ hc₀, funext fun R => val _ (H R) _ (hc R)]`. Establish `h0 : (r.factorial : ℝ) ≠ 0` using `by positivity`. Use `lim.const_mul ((r.factorial : ℝ) * 2)⁻¹` as an intermediate fact. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Finset.sum_singleton, ← mul_assoc] at this`.
+
+Simplify `this` using `only [mul_assoc ((r.factorial : ℝ) * 2)⁻¹, inv_mul_cancel₀ (mul_ne_zero h0 two_ne_zero), one_mul]`.
+-/
 theorem tendsto_ch2Deg (HP : Hypotheses2) (HR : RegularAlteration) [IsIntegral X] (hX : IsRegSurf p) {t : ℝ → ℝ}
     (ht : Tendsto t atTop (𝓝 0)) {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : ∀ R, (h R).IsCInf) (H₀ : h₀.IsCInf)
     (hf : VFam t h h₀) {c : ℝ → ℝ} {c₀ : ℝ} (hc : ∀ R, (h R).IsCh2Deg (c R)) (hc₀ : h₀.IsCh2Deg c₀) :
@@ -76,6 +91,9 @@ theorem tendsto_ch2Deg (HP : Hypotheses2) (HR : RegularAlteration) [IsIntegral X
   simp only [Finset.univ_unique, Finset.prod_singleton, Finset.sum_singleton, ← mul_assoc] at this
   simpa only [mul_assoc ((r.factorial : ℝ) * 2)⁻¹, inv_mul_cancel₀ (mul_ne_zero h0 two_ne_zero), one_mul] using this
 
+/- English proof (translation)
+Establish `e` using `VdmWd.redι_clo z`. Establish `: CharZero (X.residueField (redι (clo z) (genericPoint _)))` using `by rwa [e]`. Establish `: CharZero ((Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme.residueField (genericPoint _))` using `(RingHom.charZero_iff ((redι (clo z)).residueFieldMap _).hom.injective).1 this`. Conclude with `(Scheme.Γevaluation _ (genericPoint _)).hom.charZero`.
+-/
 theorem charZero_clo (z : X) [CharZero (X.residueField z)] :
     CharZero Γ((Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme, ⊤) := by
   have e := VdmWd.redι_clo z
@@ -86,6 +104,13 @@ theorem charZero_clo (z : X) [CharZero (X.residueField z)] :
 
 end Free
 
+/- English proof (translation)
+Establish `hA` using `hT.toIsArithVar`. Use `hA.isLocallyNoetherian` as an intermediate fact. Take `⟨Q, θ, hθ, hL⟩` from `GlobalTheory.T.normal_base_char_zero_sections _ _ _ _ _ _ s.T.Z T (fun y => have := hT.regular y isDomain_and_isIntegrallyClosed_of_isRegularLocalRing _) hA.charZero b hab`. Take `⟨g, G, hg⟩ : ∃ g : VMetric q (LieVB.omega Q.A) Q.g, (PPAS.ofPolAV Q).IsHodge g ∧ g.IsCh2Deg (r / 2 * cxDeg q (LieVB.omega Q.A) Q.g)` from `hr _ T q hA (PPAS.ofPolAV Q)`. Establish `: QuasiSeparated s.T.Z.t.G.hom` using `have := s.T.Z.t.semi.separated`.
+
+Use `inferInstance`. Take `⟨α, hα⟩ : ∃ α : (Scheme.Modules.pullback b).obj (LieVB.omega s.T.Z.t.G) ≅ LieVB.omega Q.A, α.hom = LieVB.omegaBase hθ` from `⟨asIso (LieVB.omegaBase hθ), rfl⟩`. Apply the tactic sequence `have I : (VMetric.map g α.symm).IsIsometry g α := IsometryPullback.isIsometry_symm (φ := α.symm) ((VMetric.isIsometry_iff _).2 rfl)`. Establish `s₀ : g.IsCInf` using `isCInf_of_isRegSurf hT (PPAS.isCInfNorm_of_isHodge (PPAS.ofPolAV Q) G)`. Use `⟨Q.g, g.map α.symm, GlobalTheory.T.hodge_metric_pullback_polarized HP HH D A N j S κ s x T b q w Q θ hθ hL g G α hα _ I, ?_, s₀.map _⟩` and prove the remaining obligations.
+
+Rewrite using `[cxDeg_congr α]`. Apply the tactic sequence `exact isCh2Deg_of_isIsometry I hg`.
+-/
 theorem exists_hodge (HP : Hypotheses2) (HH : HypothesesH) {r : ℝ} (hr : Ch2Const r) {D : D7} {A : Amb D}
     {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s) {T : Scheme.{0}} [IsIntegral T] (b : T ⟶ s.T.Z.X)
     {q : T ⟶ Sp (𝓞 κ.c.F)} (w : b ≫ s.T.Z.s = q) (hT : IsRegSurf q) (hab : ∀ y : T, b y ∈ abLocus s.T.Z.t.G) :
@@ -108,6 +133,9 @@ theorem exists_hodge (HP : Hypotheses2) (HH : HypothesesH) {r : ℝ} (hr : Ch2Co
   rw [cxDeg_congr α]
   exact isCh2Deg_of_isIsometry I hg
 
+/- English proof (translation)
+Take `⟨n, h₀, d₀, c₀, s₀⟩` from `exists_hodge HP HH hr x b w hT hab`. Take `rfl : n = D.R.f * N` from `h₀.isVB.rank_unique ((h 0).pull b w).isVB`. Establish `hk : 0 < x.kap` using `by have := x.isMuExp_muExp'.1; have := x.lt_kap; linarith`. Conclude with `tendsto_ch2Deg HP HR hT (tendsto_rpow_neg_atTop hk) (fun R => (H R).pull b w) s₀ (GlobalTheory.T.hodge_metric_family_limit D A N j S κ s x T b q w hab _ h₀ (h 0).isVB (fun R => (H R).pull b w) s₀ (fun R => isDualEigOn_pull (hd R) b w) d₀) hc c₀`.
+-/
 theorem tendsto_regSurf (HP : Hypotheses2) (HH : HypothesesH) (HR : RegularAlteration) {r : ℝ} (hr : Ch2Const r) {D : D7} {A : Amb D}
     {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s) {T : Scheme.{0}} [IsIntegral T] (b : T ⟶ s.T.Z.X)
     {q : T ⟶ Sp (𝓞 κ.c.F)} (w : b ≫ s.T.Z.s = q) (hT : IsRegSurf q) (hab : ∀ y : T, b y ∈ abLocus s.T.Z.t.G)
@@ -122,6 +150,21 @@ theorem tendsto_regSurf (HP : Hypotheses2) (HH : HypothesesH) (HR : RegularAlter
     (GlobalTheory.T.hodge_metric_family_limit D A N j S κ s x T b q w hab _ h₀ (h 0).isVB (fun R => (H R).pull b w) s₀
       (fun R => isDualEigOn_pull (hd R) b w) d₀) hc c₀
 
+/- English proof (translation)
+Introduce `_ HP HH HR r hr D O _ _ _ _ _ _ c M I z hz hch`. Establish `hS : IsArithVar (redι (clo z) ≫ M.q) 1` using `M.ar.of_isClosedImmersion _ (charZero_clo z) ((VdmWd.dim_clo z).trans hz.1)`. Establish `hcov` using `RegCoverExists.nonempty_regCover HR`. Take `⟨C⟩` from `hcov _ _ _ hS`. Establish `hbd (y : M.B) (hy : y ∈ closure {z}) : M.b y ∈ abLocus O.s.T.Z.t.G`.
+
+Assume the negation of the conclusion as `hn`. Establish `: Nonempty (I.f '' (closure {z} ∩ M.bd))` using `⟨⟨_, y, ⟨hy, hn⟩, rfl⟩⟩`. Take `⟨u⟩` from `this`. Establish `: Nonempty (TopologicalSpace.IrreducibleCloseds (I.f '' (closure {z} ∩ M.bd)))` using `⟨⟨closure {u}, isIrreducible_singleton.closure, isClosed_closure⟩⟩`. Establish `h₁ : (0 : WithBot ℕ∞) ≤ topologicalKrullDim (I.f '' (closure {z} ∩ M.bd))` using `Order.krullDim_nonneg`.
+
+Establish `h₂` using `(add_le_add_left h₁ 3).trans hz.2.1`. Conclude with `absurd h₂ (by decide)`. Use `choose a ha using fun R => VMetric.exists_isCh2Deg HP.p4 _ _ _ (hcov _) hS _ _ (((M.h R).pull M.b rfl).pull (redι (clo z)) rfl) (((M.H R).pull _ _).pull _ _).isCInfNorm`. Establish `hv (R : ℝ) : M.val R z 0 = 2 * a R`. Use `GlobalTheory.T.flag_value_second_chern_degree HP HP.p4 HR _ _ M.q _ M.ar _ _ _ ((M.H R).pull M.b rfl) M.F (M.lam R) _ (redι (clo z)) hS _ (ha R)` as an intermediate fact.
+
+Rewrite `this` using `[VdmWd.redι_clo]`. Then use the resulting hypothesis. Establish `w₁ : (redι (clo z) ≫ M.b) ≫ O.s.T.Z.s = redι (clo z) ≫ M.q` using `Category.assoc _ _ _`. Establish `w₂ : (C.ρ ≫ redι (clo z) ≫ M.b) ≫ O.s.T.Z.s = C.ρ ≫ redι (clo z) ≫ M.q` using `by rw [Category.assoc, w₁]`. Use `choose a' ha' using fun R => VMetric.exists_isCh2Deg HP.p4 _ _ _ (hcov _) C.reg.toIsArithVar _ _ ((M.h R).pull _ w₂) ((M.H R).pull _ _).isCInfNorm`. Establish `I₁ (R : ℝ)` using `(VMetric.isIsometry_pull_id_comp _ _ _ _ _ (M.h R)).2 _ _ _ _ M.b (redι (clo z)) rfl rfl w₁`.
+
+Establish `I₂ (R : ℝ)` using `IsometryPullback.isIsometry_trans (IsometryPullback.isIsometry_pull (I₁ R) C.ρ rfl) ((VMetric.isIsometry_pull_id_comp _ _ _ _ _ (M.h R)).2 _ _ _ _ _ C.ρ w₁ rfl w₂)`. Establish `e (R : ℝ) : a' R = C.deg * a R` using `CoverHodge.eq_deg_mul C (I₂ R) (ha R) (ha' R)`. Establish `lim` using `tendsto_regSurf HP HH HR hr M.x _ w₂ C.reg (fun y => hbd _ ((range_redι (clo z)).le ⟨C.ρ y, rfl⟩)) M.H M.dual ha'`. Establish `hE` using `((M.h 0).pull M.b rfl).isVB`. Rewrite `lim` using `[← cxDeg_congr (((Scheme.Modules.pullback C.ρ).mapIso ((Scheme.Modules.pullbackComp (redι (clo z)) M.b).app _)) ≪≫ (Scheme.Modules.pullbackComp C.ρ (redι (clo z) ≫ M.b)).app _)]`.
+
+Use `erw [CoverHodge.cxDeg_pull hS C (hE.pullback _), GlobalTheory.T.complex_degree_eq_determinant _ _ _ M.q _ hS _ _ hE] at lim`. Establish `h0 : (C.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 C.deg_pos.ne'`. Use `lim.const_mul (2 / (C.deg : ℝ))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hv, e]`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Express the relevant statement in the definitionally equal form `r * (M.deg z 1 : ℝ) = 2 / C.deg * (r / 2 * (C.deg * (M.deg z 1 : ℝ)))`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tendsto_val : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → ∀ r : ℝ, Ch2Const r → OnObj fun _ O _ _ _ _ => ∀ c (M : DRBase O c) (I : M.Emb) (z : M.B), I.Good z 0 → CharZero (M.B.residueField z) → Tendsto (fun R => M.val R z 0) atTop (𝓝 (r * (M.deg z 1 : ℝ))) := by
   intro _ HP HH HR r hr D O _ _ _ _ _ _ c M I z hz hch
   have hS : IsArithVar (redι (clo z) ≫ M.q) 1 :=

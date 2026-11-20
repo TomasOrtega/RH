@@ -8,6 +8,13 @@ noncomputable def shift {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSeries �
 noncomputable def free {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSeries σ O) : MvPowerSeries σ O :=
   fun m : σ →₀ ℕ => if m i = 0 then MvPowerSeries.coeff m f else (0 : O)
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[map_add, MvPowerSeries.X_def, MvPowerSeries.coeff_monomial_mul]`. Distinguish the cases in `h : m i = 0`. Establish `h1 : ¬ Finsupp.single i 1 ≤ m`. Rewrite using `[Finsupp.single_le_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, zero_add]`. Express the relevant statement in the definitionally equal form `_ = if m i = 0 then MvPowerSeries.coeff m f else (0 : O)`. Rewrite using `[if_pos h]`. Establish `h1 : Finsupp.single i 1 ≤ m`.
+
+Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h1, one_mul]`. Express the relevant statement in the definitionally equal form `_ = MvPowerSeries.coeff (Finsupp.single i 1 + (m - Finsupp.single i 1)) f + if m i = 0 then MvPowerSeries.coeff m f else (0 : O)`. Rewrite using `[if_neg h, add_zero, add_tsub_cancel_of_le h1]`.
+-/
 theorem eq_X_mul_shift_add {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSeries σ O) :
     f = MvPowerSeries.X i * shift i f + free i f := by
   classical
@@ -26,6 +33,9 @@ theorem eq_X_mul_shift_add {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSerie
       if m i = 0 then MvPowerSeries.coeff m f else (0 : O)
     rw [if_neg h, add_zero, add_tsub_cancel_of_le h1]
 
+/- English proof (translation)
+Introduce `d1 d2 σ O _ i f`. Conclude with `eq_X_mul_shift_add i f`.
+-/
 theorem main : (let d1 : {σ O : Type} → [CommRing O] → σ → MvPowerSeries σ O → MvPowerSeries σ O := @(fun {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSeries σ O) (m : σ →₀ ℕ) ↦ (MvPowerSeries.coeff ((fun₀ | i => (1 : ℕ)) + m) : MvPowerSeries σ O → O) f); let d2 : {σ O : Type} → [CommRing O] → σ → MvPowerSeries σ O → MvPowerSeries σ O := @(fun {σ O : Type} [CommRing O] (i : σ) (f : MvPowerSeries σ O) (m : σ →₀ ℕ) ↦ if (m : σ → ℕ) i = (0 : ℕ) then (MvPowerSeries.coeff m : MvPowerSeries σ O → O) f else (0 : O)); ∀ {σ O : Type} [inst : CommRing O] (i : σ) (f : MvPowerSeries σ O), f = MvPowerSeries.X i * d1 i f + d2 i f) := by
   intro d1 d2 σ O _ i f
   exact eq_X_mul_shift_add i f

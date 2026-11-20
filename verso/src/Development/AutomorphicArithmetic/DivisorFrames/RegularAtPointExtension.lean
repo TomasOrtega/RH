@@ -10,6 +10,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `h1 : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `e1 : hU.fromSpec.appLE U ⊤ h1 = (Scheme.ΓSpecIso Γ(X, U)).inv`. Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ ((congrArg _ (Subsingleton.elim _ _)).trans (CategoryTheory.Functor.map_id _ _))).trans (Category.comp_id _)`. Establish `e2` using `Scheme.ΓSpecIso_naturality (R := Γ(X, U)) (CommRingCat.ofHom ψ)`.
+
+Establish `e3 : (Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec : Sp R ⟶ X).appLE U ⊤ h = hU.fromSpec.appLE U ⊤ h1 ≫ (Spec.map (CommRingCat.ofHom ψ) : Sp R ⟶ Spec Γ(X, U)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Rewrite using `[e3, e1, Category.assoc]`. Use `erw [e2]`.
+
+Conclude with `Iso.inv_hom_id_assoc _ _`.
+-/
 private theorem eval_chart {R : Type} [CommRing R] {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     (ψ : Γ(X, U) →+* R) (h : ⊤ ≤ (Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec : Sp R ⟶ X) ⁻¹ᵁ U) :
     (Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec : Sp R ⟶ X).appLE U ⊤ h ≫
@@ -28,6 +35,9 @@ private theorem eval_chart {R : Type} [CommRing R] {X : Scheme.{0}} {U : X.Opens
   erw [e2]
   exact Iso.inv_hom_id_assoc _ _
 
+/- English proof (translation)
+Establish `h₁ : (q.appLE ⊤ U le_top).hom.Flat` using `HasRingHomProperty.appLE @Flat q inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Establish `h₂ : (HorizPt.strHom q U).hom.Flat` using `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv)) h₁`. Set `_ : Algebra O Γ(X, U)` to `(HorizPt.strHom q U).hom.toAlgebra`. Establish `: Module.Flat O Γ(X, U)` using `h₂`. Conclude with `charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective O Γ(X, U))`.
+-/
 private theorem charZero_chart {O : Type} [CommRing O] [IsDomain O] [CharZero O] {X : Scheme.{0}} (q : X ⟶ Sp O)
     [Flat q] {U : X.Opens} (hU : IsAffineOpen U) [Nontrivial Γ(X, U)] : CharZero Γ(X, U) := by
   have h₁ : (q.appLE ⊤ U le_top).hom.Flat :=
@@ -39,6 +49,37 @@ private theorem charZero_chart {O : Type} [CommRing O] [IsDomain O] [CharZero O]
   have : Module.Flat O Γ(X, U) := h₂
   exact charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective O Γ(X, U))
 
+/- English proof (translation)
+Introduce `F _ _ v F' _ _ ε O _ b hup T hN x hx V D hxV hD f hf`. Use `T.isProper` as an intermediate fact. Use `T.flat` as an intermediate fact. Take `⟨U, hU, hxU, hUV⟩` from `exists_isAffineOpen_mem_and_subset hxV`. Establish `hle : U ≤ V` using `hUV`.
+
+Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Establish `: CharZero Γ(T.X, U)` using `charZero_chart T.str hU`. Set `_ : Algebra O Γ(T.X, U)` to `(HorizPt.strHom T.str U).hom.toAlgebra`. Establish `: Algebra.FiniteType O Γ(T.X, U)` using `RingHom.FiniteType.comp (T.str.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv).2)`. Use `haveI := isIntegrallyClosed_sections_of_stalks hN.isIntegrallyClosed_stalk hU`.
+
+Use `haveI := functionField_isFractionRing_of_isAffineOpen T.X U hU`. Establish `key : ∀ y : U, RegAt (y : T.X) f ↔ ∃ s c : Γ(T.X, U), algebraMap _ T.X.functionField s * f = algebraMap _ T.X.functionField c ∧ s ∉ (hU.primeIdealOf y).asIdeal` using `fun y => haveI := hU.isLocalization_stalk y NormalPole.mem_range_iff (B := T.X.presheaf.stalk (y : T.X)) (hU.primeIdealOf y).asIdeal f`. Establish `hm : ∀ a ∈ maximalIdeal O, algebraMap O Γ(T.X, U) a ∈ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal`. Introduce `a ha`. Establish `e₁ : T.str x = Spec.map (HorizPt.strHom T.str U) (hU.primeIdealOf ⟨x, hxU⟩)`.
+
+Rewrite using `[← HorizPt.fromSpec_str T.str hU]`. Conclude with `congrArg T.str (hU.fromSpec_primeIdealOf ⟨x, hxU⟩).symm`. Establish `ha' : a ∈ (T.str x).asIdeal`. Rewrite using `[hx]`. Conclude with `ha`.
+
+Rewrite `ha'` using `[e₁]`. Conclude with `ha'`. Take `⟨d, hdD, hd⟩` from `hU.exists_basicOpen_le (V := D) ⟨genericPoint T.X, hD⟩ (gen_mem hxU)`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hd` using `[Scheme.basicOpen_zero]`. Conclude with `hd`. Take `⟨c, s, hs, hcs⟩` from `IsFractionRing.div_surjective (A := Γ(T.X, U)) f⁻¹`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hsc : algebraMap _ T.X.functionField s * f⁻¹ = algebraMap _ T.X.functionField c`.
+
+Rewrite using `[← hcs, mul_div_cancel₀ _ (IsFractionRing.to_map_eq_zero_iff.not.mpr hs0)]`. Take `⟨e, φ, t, h₁, h₂, h₃, h₄⟩` from `UpperTheory.exists_ext_point_inv_val_lt_one_of_pole_at_prime F v F' ε O b hup Γ(T.X, U) T.X.functionField (hU.primeIdealOf ⟨x, hxU⟩).asIdeal (hU.primeIdealOf ⟨x, hxU⟩).isPrime hm f (fun s c e => by_contra fun hs => hf ((key ⟨x, hxU⟩).2 ⟨s, c, e, hs⟩)) (d * s) (mul_ne_zero hd0 hs0 …`. Rewrite `h₂` using `[map_mul]`. Set `zt : Sp e.O ⟶ T.X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`. Establish `hz : spMap e.O.subtype ≫ zt = Spec.map (CommRingCat.ofHom (e.O.subtype.comp φ)) ≫ hU.fromSpec`.
+
+Simplify using `only [zt]`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hzU : ⊤ ≤ (spMap e.O.subtype ≫ zt) ⁻¹ᵁ U`. Introduce `p _`.
+
+Rewrite using `[hz]`. Conclude with `(Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩`. Establish `hbU : below (spMap e.O.subtype ≫ zt) ∈ U` using `hzU trivial`. Establish `hval : ∀ a : Γ(T.X, U), valAt (spMap e.O.subtype ≫ zt) (algebraMap _ T.X.functionField a) = (φ a : AlgebraicClosure F)`. Introduce `a`.
+
+Use `(OfModel.valAt_fnOf _ hbU hzU a).trans ?_` and prove the remaining obligations. Use `revert hzU`. Rewrite using `[hz]`. Introduce `hzU`. Rewrite using `[eval_chart hU _ hzU]`.
+
+Both sides reduce to the same expression. Use `⟨e, zt, ?_, ?_, ?_, fun hr => ?_⟩` and prove the remaining obligations. Introduce `p _`. Conclude with `hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)`. Simplify using `only [zt, Category.assoc]`.
+
+Rewrite using `[← Category.assoc hU.fromSpec, HorizPt.fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `h₁ a`. Use `hdD ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(PrimeSpectrum.comap φ (PrimeSpectrum.comap e.O.subtype (IsLocalRing.closedPoint (AlgebraicClosure F))) : Spec Γ(T.X, U)) ∈ hU.fromSpec ⁻¹ᵁ T.X.basicOpen d`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Introduce `h`. Establish `h' : ((φ d : e.O) : AlgebraicClosure F) ∈ IsLocalRing.maximalIdeal (AlgebraicClosure F)` using `h`. Rewrite `h'` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`.
+
+Conclude with `left_ne_zero_of_mul h₂ (Subtype.ext h')`. Establish `hmul` using `OfModel.valAt_mul (spMap e.O.subtype ≫ zt) (f := algebraMap _ T.X.functionField s) (regAt_fnOf hbU (gen_mem hbU) s) hr`. Rewrite `hmul` using `[hsc, hval, hval, ← h₄ s c hsc, MulMemClass.coe_mul]`. Establish `hφ : ((φ s : e.O) : AlgebraicClosure F) ≠ 0` using `fun h => right_ne_zero_of_mul h₂ (Subtype.ext h)`. Rewrite using `[← mul_left_cancel₀ hφ hmul]`.
+
+Conclude with `h₃`.
+-/
 theorem UpperTheory.regular_at_point_extension :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] (b : 𝓞 F →+* O), IsUp v ε O b → ∀ (T : Vert.Model O), GlobalTheory.IsNormalScheme T.X → ∀ (x : T.X), T.str x = closedPoint O → ∀ (V D : T.X.Opens), x ∈ V → genericPoint T.X ∈ D → ∀ f : T.X.functionField, ¬ RegAt x f → ∃ (e : TrueGeo.Ext v) (zt : Sp e.O ⟶ T.X), ⊤ ≤ zt ⁻¹ᵁ V ∧ (spMap e.O.subtype ≫ zt) ≫ T.str ≫ spMap b = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F) ∧ below (spMap e.O.subtype ≫ zt) ∈ D ∧ (RegAt (below (spMap e.O.subtype ≫ zt)) f⁻¹ → e.w (valAt (spMap e.O.subtype ≫ zt) f⁻¹) < 1) := by
   intro F _ _ v F' _ _ ε O _ b hup T hN x hx V D hxV hD f hf

@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.HtKernel
 section Kernel
 variable (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hS : IsCompact ((fun p : G1 K n × G1 K n × G1 K n => p.1 * p.2.1 * (θ.e p.2.2)⁻¹) '' (D ×ˢ C ×ˢ D))`. Use `(hD.prod (hC.prod hD)).image ?_` and prove the remaining obligations. Conclude with `(continuous_fst.mul (continuous_fst.comp continuous_snd)).mul ((θ.e.continuous.comp (continuous_snd.comp continuous_snd)).inv)`. Establish `hcl : IsClosed (Gam K n : Set (G1 K n))` using `Subgroup.isClosed_of_discrete`. Establish `hT : IsCompact ((↑) ⁻¹' ((fun p : G1 K n × G1 K n × G1 K n => p.1 * p.2.1 * (θ.e p.2.2)⁻¹) '' (D ×ˢ C ×ˢ D)) : Set (Gam K n))` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hS`.
+
+Use `hT.finite_of_discrete.subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨x, hx, hc⟩`. Use `⟨(x, _, x), ⟨hx, hc, hx⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem finite_gam (θ : Twist μ) {D C : Set (G1 K n)} (hD : IsCompact D) (hC : IsCompact C) :
     {γ : Gam K n | ∃ x ∈ D, x⁻¹ * (γ : G1 K n) * θ.e x ∈ C}.Finite := by
   have hS : IsCompact ((fun p : G1 K n × G1 K n × G1 K n => p.1 * p.2.1 * (θ.e p.2.2)⁻¹) '' (D ×ˢ C ×ˢ D)) := by
@@ -25,6 +30,13 @@ theorem finite_gam (θ : Twist μ) {D C : Set (G1 K n)} (hD : IsCompact D) (hC :
   refine ⟨(x, _, x), ⟨hx, hc, hx⟩, ?_⟩
   simp [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Take `⟨D, hDc, hDn⟩` from `exists_compact_mem_nhds x₀`. Establish `hfin` using `finite_gam K n μ θ hDc f.hasCompactSupport.isCompact`. Establish `heq : ∀ x ∈ D, twK θ f x = ∑ γ ∈ hfin.toFinset, f (x⁻¹ * (γ : G1 K n) * θ.e x)`.
+
+Introduce `x hx`. Use `finsum_eq_sum_of_support_subset _ ?_` and prove the remaining obligations. Introduce `γ hγ`. Simplify using `only [Set.Finite.coe_toFinset]`. Conclude with `⟨x, hx, subset_tsupport _ hγ⟩`.
+
+Establish `hc : Continuous fun x => ∑ γ ∈ hfin.toFinset, f (x⁻¹ * (γ : G1 K n) * θ.e x)` using `continuous_finset_sum _ fun γ _ => f.continuous.comp ((continuous_inv.mul continuous_const).mul θ.e.continuous)`. Conclude with `hc.continuousAt.congr (Filter.eventually_of_mem hDn fun x hx => (heq x hx).symm)`.
+-/
 theorem continuous_twK (θ : Twist μ) (f : CC K n) : Continuous (twK θ f) := by
   rw [continuous_iff_continuousAt]
   intro x₀
@@ -41,6 +53,11 @@ theorem continuous_twK (θ : Twist μ) (f : CC K n) : Continuous (twK θ f) := b
       ((continuous_inv.mul continuous_const).mul θ.e.continuous)
   exact hc.continuousAt.congr (Filter.eventually_of_mem hDn fun x hx => (heq x hx).symm)
 
+/- English proof (translation)
+Establish `hθ : θ.e δ ∈ Gam K n` using `(θ.mem_gam δ).2 hδ`. Set `e : Gam K n ≃ Gam K n` to `{ toFun := fun γ => ⟨δ⁻¹ * γ * θ.e δ, mul_mem (mul_mem (inv_mem hδ) γ.2) hθ⟩ invFun := fun γ => ⟨δ * γ * (θ.e δ)⁻¹, mul_mem (mul_mem hδ γ.2) (inv_mem hθ)⟩ left_inv := fun γ => Subtype.ext (by simp [mul_assoc]) right_inv := fun γ => Subtype.ext (by simp [mul_assoc]) }`. Unfold `twK`. Rewrite using `[← finsum_comp_equiv e (f := fun γ : Gam K n => f (x⁻¹ * (γ : G1 K n) * θ.e x))]`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `[e, mul_assoc]`.
+-/
 theorem twK_gam_mul (θ : Twist μ) (f : CC K n) (δ x : G1 K n) (hδ : δ ∈ Gam K n) :
     twK θ f (δ * x) = twK θ f x := by
   have hθ : θ.e δ ∈ Gam K n := (θ.mem_gam δ).2 hδ
@@ -61,6 +78,13 @@ def normCC {K : Type} [Field K] [NumberField K] {n : ℕ} (f : CC K n) : CC K n 
   hasCompactSupport' := f.hasCompactSupport.mono fun x hx => by
     simpa using hx
 
+/- English proof (translation)
+Establish `hfin` using `finite_gam K n μ θ (isCompact_singleton (x := x)) f.hasCompactSupport.isCompact`. Establish `h1 : twK θ f x = ∑ γ ∈ hfin.toFinset, f (x⁻¹ * (γ : G1 K n) * θ.e x)`. Use `finsum_eq_sum_of_support_subset _ ?_` and prove the remaining obligations. Introduce `γ hγ`. Simplify using `only [Set.Finite.coe_toFinset]`.
+
+Conclude with `⟨x, rfl, subset_tsupport _ hγ⟩`. Establish `h2 : twK θ (normCC f) x = ∑ γ ∈ hfin.toFinset, ((‖f (x⁻¹ * (γ : G1 K n) * θ.e x)‖ : ℝ) : ℂ)`. Use `finsum_eq_sum_of_support_subset _ ?_` and prove the remaining obligations. Introduce `γ hγ`. Simplify using `only [Set.Finite.coe_toFinset]`.
+
+Use `⟨x, rfl, subset_tsupport _ fun h0 => hγ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((‖f (x⁻¹ * (γ : G1 K n) * θ.e x)‖ : ℝ) : ℂ) = 0`. Simplify using `[h0]`. Rewrite using `[h1, h2, ← Complex.ofReal_sum, Complex.norm_real, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _)]`. Conclude with `norm_sum_le _ _`.
+-/
 theorem norm_twK_le (θ : Twist μ) (f : CC K n) (x : G1 K n) :
     ‖twK θ f x‖ ≤ ‖twK θ (normCC f) x‖ := by
   have hfin := finite_gam K n μ θ (isCompact_singleton (x := x)) f.hasCompactSupport.isCompact
@@ -89,6 +113,11 @@ open AutomorphicForm
 section Local
 variable {E : Type*} [NormedField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : GL (Fin n) E => (Finset.univ.sup fun p : Fin n × Fin n => max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ : NNReal)`. Use `Continuous.finset_sup_apply (s := Finset.univ) (f := fun (p : Fin n × Fin n) (g : GL (Fin n) E) => max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) fun p _ => ?_` and prove the remaining obligations. Use `Continuous.max ?_ ?_` and prove the remaining obligations. Conclude with `continuous_nnnorm.comp (Continuous.matrix_elem Units.continuous_val _ _)`. Conclude with `continuous_nnnorm.comp (Continuous.matrix_elem Units.continuous_coe_inv _ _)`.
+
+Conclude with `continuous_const.max (NNReal.continuous_coe.comp hc)`.
+-/
 theorem continuous_locHeight : Continuous (locHeight : GL (Fin n) E → ℝ) := by
   have hc : Continuous fun g : GL (Fin n) E => (Finset.univ.sup fun p : Fin n × Fin n =>
       max ‖(g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊
@@ -101,6 +130,11 @@ theorem continuous_locHeight : Continuous (locHeight : GL (Fin n) E → ℝ) := 
     · exact continuous_nnnorm.comp (Continuous.matrix_elem Units.continuous_coe_inv _ _)
   exact continuous_const.max (NNReal.continuous_coe.comp hc)
 
+/- English proof (translation)
+Establish `hA : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : E) Y : Set (Matrix (Fin n) (Fin n) E))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hB` using `hA.prod (MulOpposite.opHomeomorph.symm.isCompact_preimage.2 hA)`. Establish `hC` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) E)).isCompact_preimage hB`. Use `hC.of_isClosed_subset (isClosed_Iic.preimage (continuous_locHeight (E := E) (n := n)) : IsClosed (locHeight ⁻¹' Set.Iic Y)) ?_` and prove the remaining obligations. Introduce `h hh`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i _ j _`. Simplify using `using (norm_apply_le_locHeight h i j).trans hh`. Introduce `i _ j _`. Conclude with `mem_closedBall_zero_iff.2 ((norm_inv_apply_le_locHeight h i j).trans hh)`.
+-/
 theorem isCompact_locHeight_le [ProperSpace E] (Y : ℝ) :
     IsCompact {h : GL (Fin n) E | locHeight h ≤ Y} := by
   have hA : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n =>
@@ -118,6 +152,15 @@ theorem isCompact_locHeight_le [ProperSpace E] (Y : ℝ) :
 
 end Local
 
+/- English proof (translation)
+Use `set S : Set ι := {i | C i ⊆ A i}`. Establish `hS : (Filter.cofinite : Filter ι) ≤ Filter.principal S` using `Filter.le_principal_iff.2 hT`. Establish `hM : IsCompact {x : RestrictedProduct R A (Filter.principal S) | ∀ i, x i ∈ C i}`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.isCompact_iff]`. Use `isCompact_univ_pi hC using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i _`. Conclude with `hx i`. Introduce `hy`.
+
+Conclude with `⟨⟨y, Filter.eventually_principal.2 fun i hi => hi (hy i (Set.mem_univ i))⟩, fun i => hy i (Set.mem_univ i), rfl⟩`. Use `hM.image (RestrictedProduct.continuous_inclusion hS) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨⟨x, Filter.eventually_principal.2 fun i hi => hi (hx i)⟩, hx, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩ i`. Conclude with `hy i`.
+-/
 theorem isCompact_restricted {ι : Type*} {R : ι → Type*} [∀ i, TopologicalSpace (R i)] {A : ∀ i, Set (R i)}
     (C : ∀ i, Set (R i)) (hC : ∀ i, IsCompact (C i)) (hT : ∀ᶠ i in Filter.cofinite, C i ⊆ A i) :
     IsCompact {x : RestrictedProduct R A Filter.cofinite | ∀ i, x i ∈ C i} := by
@@ -148,6 +191,9 @@ open AutomorphicForm
 section Global
 variable (K : Type) [Field K] [NumberField K] (n : ℕ)
 
+/- English proof (translation)
+Establish `h1` using `locHeight_eq_one_of_mem_integralGL hu`. Establish `h2` using `locHeight_eq_one_of_mem_integralGL (inv_mem hu)`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Simplify `locHeight_mul_le_of_ultrametric a u` using `[h1]`. Simplify `locHeight_mul_le_of_ultrametric (a * u) u⁻¹` using `[h2]`.
+-/
 theorem locHeight_mul_integral {v : HeightOneSpectrum (𝓞 K)} (a u : GL (Fin n) (v.adicCompletion K))
     (hu : u ∈ GLnLocal.integralGL (v.adicCompletion K) n) : locHeight (a * u) = locHeight a := by
   have h1 := locHeight_eq_one_of_mem_integralGL hu
@@ -156,6 +202,9 @@ theorem locHeight_mul_integral {v : HeightOneSpectrum (𝓞 K)} (a u : GL (Fin n
   · simpa [h1] using locHeight_mul_le_of_ultrametric a u
   · simpa [h2] using locHeight_mul_le_of_ultrametric (a * u) u⁻¹
 
+/- English proof (translation)
+Establish `ho` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 K) => GL (Fin n) (v.adicCompletion K)) (A := fun v => (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))) fun v => GLnLocal.isOpen_integralGL _ n`. Conclude with `ho.preimage (continuous_snd.comp (AdelicGLn.restrictedProductEquiv K n).continuous)`.
+-/
 theorem isOpen_integral_everywhere :
     IsOpen {u : AdelicGLn.AdelicGL K n | ∀ v : HeightOneSpectrum (𝓞 K), finAt v u ∈ GLnLocal.integralGL (v.adicCompletion K) n} := by
   have ho := RestrictedProduct.isOpen_forall_mem
@@ -164,6 +213,15 @@ theorem isOpen_integral_everywhere :
     fun v => GLnLocal.isOpen_integralGL _ n
   exact ho.preimage (continuous_snd.comp (AdelicGLn.restrictedProductEquiv K n).continuous)
 
+/- English proof (translation)
+Establish `hinf : Continuous fun g : AdelicGLn.AdelicGL K n => ∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult` using `continuous_finset_prod _ fun w _ => (continuous_locHeight.comp (continuous_infAt w)).pow _`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Establish `hev : ∀ᶠ g in 𝓝 g₀, g₀⁻¹ * g ∈ {u : AdelicGLn.AdelicGL K n | ∀ v : HeightOneSpectrum (𝓞 K), finAt v u ∈ GLnLocal.integralGL (v.adicCompletion K) n}`. Establish `hc : Continuous fun g : AdelicGLn.AdelicGL K n => g₀⁻¹ * g` using `continuous_const.mul continuous_id`.
+
+Use `hc.continuousAt.eventually ((isOpen_integral_everywhere K n).mem_nhds ?_)` and prove the remaining obligations. Introduce `v`. Express the relevant statement in the definitionally equal form `finAt v (g₀⁻¹ * g₀) ∈ _`. Rewrite using `[inv_mul_cancel, finAt_one]`. Conclude with `one_mem _`.
+
+Establish `hk : ContinuousAt (fun g => (∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult) * ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g₀)) g₀` using `(hinf.mul continuous_const).continuousAt`. Use `hk.congr (hev.mono fun g hg => ?_)` and prove the remaining obligations. Establish `: ∀ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g) = locHeight (finAt v g₀)`. Introduce `v`. Establish `h` using `locHeight_mul_integral K n (finAt v g₀) (finAt v (g₀⁻¹ * g)) (hg v)`.
+
+Rewrite `h` using `[← finAt_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis. Simplify using `only [AutomorphicForm.height, this]`.
+-/
 theorem continuous_height : Continuous fun g : AdelicGLn.AdelicGL K n => AutomorphicForm.height g := by
   have hinf : Continuous fun g : AdelicGLn.AdelicGL K n => ∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult :=
     continuous_finset_prod _ fun w _ => (continuous_locHeight.comp (continuous_infAt w)).pow _
@@ -186,6 +244,15 @@ theorem continuous_height : Continuous fun g : AdelicGLn.AdelicGL K n => Automor
     rwa [← finAt_mul, mul_inv_cancel_left] at h
   simp only [AutomorphicForm.height, this]
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `GroundTheory.Global.normalizedAbv_eq_zpow v hx0`.
+
+Rewrite `h` using `[GroundTheory.Global.normalizedAbv_apply]`. Establish `hN : (1 : ℝ) ≤ Ideal.absNorm v.asIdeal`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => NumberField.HeightOneSpectrum.absNorm_ne_zero v (by simp [h])`. Conclude with `Nat.one_le_iff_ne_zero.2 h0` after adjusting the coercions. Rewrite `hx`, the goal using `[h]`.
+
+Use `set k := WithZero.log (Valued.v x)`. Establish `hk : 1 ≤ k`. Assume the negation of the conclusion as `hk`. Establish `: k ≤ 0` using `by omega`. Conclude with `absurd hx (not_lt.2 (zpow_le_one_of_nonpos₀ hN this))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem absNorm_le_norm {v : HeightOneSpectrum (𝓞 K)} {x : v.adicCompletion K} (hx : 1 < ‖x‖) :
     (Ideal.absNorm v.asIdeal : ℝ) ≤ ‖x‖ := by
   have hx0 : x ≠ 0 := by
@@ -205,6 +272,11 @@ theorem absNorm_le_norm {v : HeightOneSpectrum (𝓞 K)} {x : v.adicCompletion K
   calc (Ideal.absNorm v.asIdeal : ℝ) = (Ideal.absNorm v.asIdeal : ℝ) ^ (1 : ℤ) := by simp
     _ ≤ _ := zpow_le_zpow_right₀ hN hk
 
+/- English proof (translation)
+Establish `key : ∀ x : v.adicCompletion K, ‖x‖ ≤ locHeight g → x ∈ v.adicCompletionIntegers K`. Introduce `x hx`. Establish `h1 : ‖x‖ ≤ 1`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (absNorm_le_norm K (not_le.1 hc)) (not_le.2 (lt_of_le_of_lt hx h))`.
+
+Conclude with `(Valued.toNormedField.norm_le_one_iff).1 h1`. Rewrite using `[GLnLocal.mem_integralGL_iff]`. Simplify using `only [GroundTheory.Global.mem_valuationInteger_iff]`. Conclude with `⟨fun i j => key _ (norm_apply_le_locHeight g i j), fun i j => key _ (norm_inv_apply_le_locHeight g i j)⟩`.
+-/
 theorem mem_integralGL_of_locHeight_lt {v : HeightOneSpectrum (𝓞 K)} {g : GL (Fin n) (v.adicCompletion K)}
     (h : locHeight g < Ideal.absNorm v.asIdeal) : g ∈ GLnLocal.integralGL (v.adicCompletion K) n := by
   have key : ∀ x : v.adicCompletion K, ‖x‖ ≤ locHeight g → x ∈ v.adicCompletionIntegers K := by
@@ -217,6 +289,15 @@ theorem mem_integralGL_of_locHeight_lt {v : HeightOneSpectrum (𝓞 K)} {g : GL 
   simp only [GroundTheory.Global.mem_valuationInteger_iff]
   exact ⟨fun i j => key _ (norm_apply_le_locHeight g i j), fun i j => key _ (norm_inv_apply_le_locHeight g i j)⟩
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer K`. Establish `hv : Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ]`. Establish `hne : (π : v.adicCompletion K) ≠ 0`. Introduce `h`.
+
+Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hlt : ‖(π : v.adicCompletion K)‖ < 1`. Use `(Valued.toNormedField.norm_lt_one_iff).2 ?_` and prove the remaining obligations. Rewrite using `[hv]`.
+
+Rewrite using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.2 (by norm_num)`. Use `letI : NontriviallyNormedField (v.adicCompletion K) := { (inferInstance : NormedField (v.adicCompletion K)) with non_trivial := ⟨(π : v.adicCompletion K)⁻¹, by`. Rewrite using `[norm_inv]`. Conclude with `(one_lt_inv₀ (norm_pos_iff.2 hne)).2 hlt⟩ }`.
+
+Conclude with `ProperSpace.of_locallyCompactSpace (v.adicCompletion K)`.
+-/
 theorem properSpace_adic (v : HeightOneSpectrum (𝓞 K)) : ProperSpace (v.adicCompletion K) := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer K
   have hv : Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ) := by
@@ -238,6 +319,11 @@ theorem properSpace_adic (v : HeightOneSpectrum (𝓞 K)) : ProperSpace (v.adicC
 
 attribute [local instance] properSpace_adic
 
+/- English proof (translation)
+Establish `h1 : locHeight (infAt w g) ≤ locHeight (infAt w g) ^ w.mult` using `le_self_pow₀ (one_le_locHeight _) (InfinitePlace.mult_pos).ne'`. Establish `h2 : locHeight (infAt w g) ^ w.mult ≤ ∏ w : InfinitePlace K, locHeight (infAt w g) ^ w.mult`. Use `by`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun w : InfinitePlace K => locHeight (infAt w g) ^ w.mult) (Finset.mem_univ w)]`. Use `le_mul_of_one_le_right (pow_nonneg (locHeight_pos _).le _) ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl fun _ _ => one_le_pow₀ (one_le_locHeight _)`. Conclude with `(h1.trans h2).trans (le_mul_of_one_le_right (zero_le_one.trans (one_le_prod_locHeight g)) (one_le_finprod_locHeight g))`.
+-/
 theorem locHeight_infAt_le_height (g : AdelicGLn.AdelicGL K n) (w : InfinitePlace K) :
     locHeight (infAt w g) ≤ AutomorphicForm.height g := by
   classical
@@ -251,6 +337,11 @@ by
       le_rfl fun _ _ => one_le_pow₀ (one_le_locHeight _)
   exact (h1.trans h2).trans (le_mul_of_one_le_right (zero_le_one.trans (one_le_prod_locHeight g)) (one_le_finprod_locHeight g))
 
+/- English proof (translation)
+Establish `h2 : locHeight (finAt v g) ≤ ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g)`. Establish `hs : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 K) => locHeight (finAt v g)) ⊆ ↑(insert v (finite_mulSupport_locHeight_finAt g).toFinset)`. Introduce `u hu`. Simplify using `only [Finset.coe_insert, Set.Finite.coe_toFinset]`. Conclude with `Or.inr hu`.
+
+Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hs, ← Finset.mul_prod_erase _ (fun v : HeightOneSpectrum (𝓞 K) => locHeight (finAt v g)) (Finset.mem_insert_self v _)]`. Use `le_mul_of_one_le_right (locHeight_pos _).le ?_` and prove the remaining obligations. Conclude with `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl fun _ _ => one_le_locHeight _`. Conclude with `h2.trans (le_mul_of_one_le_left (zero_le_one.trans (one_le_finprod_locHeight g)) (one_le_prod_locHeight g))`.
+-/
 theorem locHeight_finAt_le_height (g : AdelicGLn.AdelicGL K n) (v : HeightOneSpectrum (𝓞 K)) :
     locHeight (finAt v g) ≤ AutomorphicForm.height g := by
   classical
@@ -267,6 +358,11 @@ theorem locHeight_finAt_le_height (g : AdelicGLn.AdelicGL K n) (v : HeightOneSpe
       le_rfl fun _ _ => one_le_locHeight _
   exact h2.trans (le_mul_of_one_le_left (zero_le_one.trans (one_le_finprod_locHeight g)) (one_le_prod_locHeight g))
 
+/- English proof (translation)
+Establish `hfin : {I : Ideal (𝓞 K) | Ideal.absNorm I ≤ ⌊Y⌋₊}.Finite` using `Ideal.finite_setOf_absNorm_le _`. Establish `hinj : Function.Injective fun v : HeightOneSpectrum (𝓞 K) => v.asIdeal` using `fun a b h => HeightOneSpectrum.ext h`. Use `Filter.eventually_cofinite.2 ((hfin.preimage hinj.injOn).subset fun v hv => ?_)` and prove the remaining obligations. Establish `h1 : (Ideal.absNorm v.asIdeal : ℝ) ≤ Y` using `not_lt.1 hv`. Establish `h2 : 0 ≤ Y` using `(Nat.cast_nonneg _).trans h1`.
+
+Conclude with `Nat.le_floor h1`.
+-/
 theorem eventually_lt_absNorm (Y : ℝ) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, Y < Ideal.absNorm v.asIdeal := by
   have hfin : {I : Ideal (𝓞 K) | Ideal.absNorm I ≤ ⌊Y⌋₊}.Finite := Ideal.finite_setOf_absNorm_le _
@@ -276,6 +372,11 @@ theorem eventually_lt_absNorm (Y : ℝ) :
   have h2 : 0 ≤ Y := (Nat.cast_nonneg _).trans h1
   exact Nat.le_floor h1
 
+/- English proof (translation)
+Establish `hM` using `isCompact_restricted (A := fun v : HeightOneSpectrum (𝓞 K) => (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))) (fun v => {h : GL (Fin n) (v.adicCompletion K) | locHeight h ≤ Y}) (fun v => isCompact_locHeight_le Y) ((eventually_lt_absNorm K Y). …`. Establish `hI : IsCompact (Set.pi Set.univ fun w : InfinitePlace K => {h : GL (Fin n) w.Completion | locHeight h ≤ Y})` using `isCompact_univ_pi fun w => isCompact_locHeight_le Y`. Establish `hW` using `(AdelicGLn.restrictedProductEquiv K n).toHomeomorph.isCompact_preimage.2 (hI.prod hM)`. Use `hW.of_isClosed_subset (isClosed_Iic.preimage (continuous_height K n) : IsClosed ((fun g : AdelicGLn.AdelicGL K n => AutomorphicForm.height g) ⁻¹' Set.Iic Y)) ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Conclude with `⟨fun w _ => (locHeight_infAt_le_height K n g w).trans hg, fun v => (locHeight_finAt_le_height K n g v).trans hg⟩`.
+-/
 theorem isCompact_height_le (Y : ℝ) : IsCompact {g : AdelicGLn.AdelicGL K n | AutomorphicForm.height g ≤ Y} := by
   have hM := isCompact_restricted
     (A := fun v : HeightOneSpectrum (𝓞 K) => (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))))
@@ -294,10 +395,16 @@ end GlobalTheory.CompanionTheory.HtKernel
 
 namespace GlobalTheory.CompanionTheory.HtKernel
 
+/- English proof (translation)
+The claim follows from `(isClosed_normOneGL (K := K) (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_height_le K n Y)`.
+-/
 theorem isCompact_normOne_height_le (K : Type) [Field K] [NumberField K] (n : ℕ) (Y : ℝ) :
     IsCompact {g : G1 K n | AutomorphicForm.height (g : AdelicGLn.AdelicGL K n) ≤ Y} :=
   (isClosed_normOneGL (K := K) (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_height_le K n Y)
 
+/- English proof (translation)
+Introduce `δ x y hy hne`. Use `hf δ x y hy fun h0 => hne ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((‖f y‖ : ℝ) : ℂ)) = 0`. Simplify using `[h0]`.
+-/
 theorem ell_normCC {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (σ : E ≃ₐ[F] E) {f : CC E n} (hf : Ell σ f) : Ell σ (normCC f) := by
   intro δ x y hy hne
@@ -305,6 +412,9 @@ theorem ell_normCC {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   change (((‖f y‖ : ℝ) : ℂ)) = 0
   simp [h0]
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : G1 K n => AutomorphicForm.height (g : AdelicGLn.AdelicGL K n)` using `(continuous_height K n).comp continuous_subtype_val`. Take `⟨m, hm1, hm⟩` from `exists_one_le_bound f.hasCompactSupport.isCompact hc`. Conclude with `⟨m, hm1, fun g hg => hm g (subset_tsupport _ hg)⟩`.
+-/
 theorem exists_height_bound (K : Type) [Field K] [NumberField K] (n : ℕ) (f : CC K n) :
     ∃ Y : ℝ, 1 ≤ Y ∧ ∀ g : G1 K n, f g ≠ 0 → AutomorphicForm.height (g : AdelicGLn.AdelicGL K n) ≤ Y := by
   have hc : Continuous fun g : G1 K n => AutomorphicForm.height (g : AdelicGLn.AdelicGL K n) :=
@@ -312,6 +422,9 @@ theorem exists_height_bound (K : Type) [Field K] [NumberField K] (n : ℕ) (f : 
   obtain ⟨m, hm1, hm⟩ := exists_one_le_bound f.hasCompactSupport.isCompact hc
   exact ⟨m, hm1, fun g hg => hm g (subset_tsupport _ hg)⟩
 
+/- English proof (translation)
+Establish `h : mk (Gam K n) (Quotient.out (mk (Gam K n) x)) = mk (Gam K n) x` using `Quotient.out_eq _`. Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 h`. Express the relevant statement in the definitionally equal form `twK θ f (Quotient.out (mk (Gam K n) x)) = _`. Rewrite using `[← hγ]`. Conclude with `twK_gam_mul K n μ θ f γ x γ.2`.
+-/
 theorem twKQ_mk (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     (θ : Twist μ) (f : CC K n) (x : G1 K n) : twKQ θ f (mk (Gam K n) x) = twK θ f x := by
   have h : mk (Gam K n) (Quotient.out (mk (Gam K n) x)) = mk (Gam K n) x := Quotient.out_eq _
@@ -320,6 +433,15 @@ theorem twKQ_mk (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1
   rw [← hγ]
   exact twK_gam_mul K n μ θ f γ x γ.2
 
+/- English proof (translation)
+Take `⟨C, c, hG⟩` from `G2h F E σ hσ n hn`. Take `⟨Y, hY1, hY⟩` from `exists_height_bound E n (normCC f)`. Establish `hker` using `hG μ θ hθ (normCC f) Y hY1 hY (ell_normCC σ hf)`. Use `set Z := C * Y ^ c + 1 with hZ`. Take `⟨B, hB⟩` from `(isCompact_normOne_height_le E n Z).exists_bound_of_continuousOn (continuous_twK E n μ θ (normCC f)).continuousOn`.
+
+Use `⟨max B 0, fun x => ?_⟩` and prove the remaining obligations. Use `(norm_twK_le E n μ θ f x).trans ?_` and prove the remaining obligations. Distinguish the cases in `h0 : twK θ (normCC f) x = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `le_max_right _ _`.
+
+Establish `hq` using `hker x h0`. Establish `: ∃ γ : Gam E n, AutomorphicForm.height (((γ : G1 E n) * x : G1 E n) : AdelicGLn.AdelicGL E n) < C * Y ^ c + 1`. Use `exists_lt_of_ciInf_lt (lt_of_le_of_lt hq (lt_add_one _))` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `this`. Rewrite using `[← twK_gam_mul E n μ θ (normCC f) γ x γ.2]`.
+
+Conclude with `(hB _ hγ.le).trans (le_max_left _ _)`.
+-/
 theorem exists_forall_norm_twK_le (G2h : G2) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E]
     (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (n : ℕ) (hn : 0 < n)
     (μ : Measure (G1 E n)) [μ.IsHaarMeasure] (θ : Twist μ) (hθ : IsGalTwist σ θ) (f : CC E n) (hf : Ell σ f) :
@@ -341,6 +463,13 @@ theorem exists_forall_norm_twK_le (G2h : G2) (F E : Type) [Field F] [NumberField
   rw [← twK_gam_mul E n μ θ (normCC f) γ x γ.2]
   exact (hB _ hγ.le).trans (le_max_left _ _)
 
+/- English proof (translation)
+Introduce `G2h`. Use `⟨fun E _ _ n Y => isCompact_normOne_height_le E n Y, ?_⟩` and prove the remaining obligations. Introduce `F E _ _ _ _ _ _ σ hσ n hn μ _ θ hθ f hf`. Use `Reduction.isFiniteMeasure_quotientMeasure (K := E) (n := n) μ` as an intermediate fact. Take `⟨B, hB⟩` from `exists_forall_norm_twK_le G2h F E σ hσ n hn μ θ hθ f hf`.
+
+Establish `hm : Measurable (twKQ θ f)`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Establish `: (twKQ θ f) ∘ Quotient.mk'' = twK θ f` using `funext fun x => twKQ_mk E n μ θ f x`. Rewrite using `[this]`. Conclude with `(continuous_twK E n μ θ f).measurable`.
+
+Use `Integrable.of_bound hm.aestronglyMeasurable B (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `hB _`.
+-/
 theorem main : G2 → HtC := by
   intro G2h
   refine ⟨fun E _ _ n Y => isCompact_normOne_height_le E n Y, ?_⟩

@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.HCChar GlobalTheory.Published
 open scoped ComplexConjugate TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealPlaceCentraliser.centMeas_real_place | exact GlobalTheory.RealPlaceCentraliser.centMeas_real_place | (intros; apply GlobalTheory.RealPlaceCentraliser.centMeas_real_place <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.centralizer_torusEllipticElement_realPlace : ∀ {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau)
     (dt : Measure (Tor P (placeOf D ρ).Completion)) [dt.IsHaarMeasure] {x φ}
     (h : IsIsom P (placeOf D ρ).Completion V.gram x φ),

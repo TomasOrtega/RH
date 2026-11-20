@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.TraceDef
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.testProd_support_finite | exact GlobalTheory.testProd_support_finite | (intros; apply GlobalTheory.testProd_support_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeTestProduct_support_finite_leftCosets : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
       (∀ k ∈ L.K.toSubgroup, ∀ k' ∈ L.K.toSubgroup, ∀ g, f (k * g * k') = f g) →

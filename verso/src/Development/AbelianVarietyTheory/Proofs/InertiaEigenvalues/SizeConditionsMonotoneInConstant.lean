@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NLinkMono
 
+/- English proof (translation)
+Establish `hxp : 0 < x` using `lt_of_lt_of_le one_pos hx`. Break down `le_or_gt 0 C with hC | hC` into its components or cases. Conclude with `mul_le_mul h (Real.rpow_le_rpow_of_exponent_le hx h) (Real.rpow_nonneg hxp.le _) h0`. Establish `: C * x ^ C ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hC.le (Real.rpow_nonneg hxp.le _)`. Conclude with `this.trans (mul_nonneg h0 (Real.rpow_nonneg hxp.le _))`.
+-/
 theorem mul_rpow_self_mono {x C C' : ℝ} (hx : 1 ≤ x) (h : C ≤ C') (h0 : 0 ≤ C') :
     C * x ^ C ≤ C' * x ^ C' := by
   have hxp : 0 < x := lt_of_lt_of_le one_pos hx
@@ -19,9 +22,27 @@ theorem mul_rpow_self_mono {x C C' : ℝ} (hx : 1 ≤ x) (h : C ≤ C') (h0 : 0 
   · have : C * x ^ C ≤ 0 := mul_nonpos_of_nonpos_of_nonneg hC.le (Real.rpow_nonneg hxp.le _)
     exact this.trans (mul_nonneg h0 (Real.rpow_nonneg hxp.le _))
 
+/- English proof (translation)
+The claim follows from `Real.rpow_le_rpow_of_exponent_le hx h`.
+-/
 theorem rpow_mono {x C C' : ℝ} (hx : 1 ≤ x) (h : C ≤ C') : x ^ C ≤ x ^ C' :=
   Real.rpow_le_rpow_of_exponent_le hx h
 
+/- English proof (translation)
+Introduce `D L P X C C' h h0`. Establish `hx : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hxp : 0 < L.sc.x` using `lt_of_lt_of_le one_pos hx`. Establish `hCx` using `mul_rpow_self_mono hx h h0`. Establish `hlog : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx`.
+
+Establish `hb : 0 ≤ L.sc.b` using `(Real.exp_pos _).le`. Establish `hLg : 0 ≤ TwistedPlaces.large₂ L` using `Real.rpow_nonneg hxp.le _`. Establish `he : 0 ≤ L.etaSz` using `L.etaSz_pos.le`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨tf, hF, hB⟩`.
+
+Use `⟨tf, ?_, hB⟩` and prove the remaining obligations. Introduce `i hi hl`. Use `(hF i hi hl).trans ?_` and prove the remaining obligations. Establish `h1 : C * (D.R.f : ℝ) * D.R.m * L.sc.b * Real.log L.sc.x ≤ C' * (D.R.f : ℝ) * D.R.m * L.sc.b * Real.log L.sc.x`. Establish `hk : 0 ≤ (D.R.f : ℝ) * D.R.m * L.sc.b * Real.log L.sc.x` using `by positivity`.
+
+Use `mul_le_mul_of_nonneg_right h hk` as an intermediate fact. Simplify `this` using `only [mul_assoc]`. Establish `h2 : C * L.sc.x ^ C * TwistedPlaces.large₂ L ^ 2 ≤ C' * L.sc.x ^ C' * TwistedPlaces.large₂ L ^ 2` using `mul_le_mul_of_nonneg_right hCx (sq_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hH j hj l hl`.
+
+Use `(hH j hj l hl).trans ?_` and prove the remaining obligations. Establish `hk : 0 ≤ Real.log l * (L.dZ0 j : ℝ)` using `mul_nonneg (Real.log_natCast_nonneg l) (Nat.cast_nonneg _)`. Apply `mul_le_mul_of_nonneg_left _ hk` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_right hCx he` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `hB i hi hg hr π hπ`. Use `(hB i hi hg hr π hπ).trans ?_` and prove the remaining obligations. Establish `hk : 0 ≤ (D.R.f : ℝ) * D.R.n * (D.R.t : ℝ) ^ 2 * D.R.nV * (TwistedPlaces.large₂ L) ^ 2` using `by positivity`. Use `mul_le_mul_of_nonneg_right h hk` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+
+Introduce and unpack `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩`. Establish `hr` using `rpow_mono hx h`. Use `⟨h1.trans h, h2.trans h, h3.trans hr, h4.trans hr, h5.trans hr, h6, h7.trans hCx, h8.trans ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right hCx hLg`.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (C C' : ℝ), C ≤ C' → 0 ≤ C' → (StarF L X.ρ C → StarF L X.ρ C') ∧ (StarH L C → StarH L C') ∧ (KillingConditions.BBLe L X C → KillingConditions.BBLe L X C') ∧ (TwistedPlaces.ParametersPolynomiallyBounded L C P → TwistedPlaces.ParametersPolynomiallyBounded L C' P) := by
   intro D L P X C C' h h0
   have hx : 1 ≤ L.sc.x := L.sc.one_lt_alt.le

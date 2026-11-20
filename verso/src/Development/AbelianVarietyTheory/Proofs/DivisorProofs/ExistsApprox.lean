@@ -53,6 +53,11 @@ def cosV (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ} (z : Matrix (Fin 
     Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z)
       (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) G)
 
+/- English proof (translation)
+Establish `hU : ∀ (x : VC D a d) (F : VC D a d → ℂ), Formalism.MainNotions.TaylorLogMetric.U D (tor0 D ⊤ δ) x (c • F) = c • Formalism.MainNotions.TaylorLogMetric.U D (tor0 D ⊤ δ) x F` using `fun x F => by`. Use function extensionality and compare the values at `y`. Simplify using `only [Formalism.MainNotions.TaylorLogMetric.U, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `hI : ∀ A B : AddSubgroup (VC D a d), Iop D (tor0 D ⊤ δ) A B (c • G) = c • Iop D (tor0 D ⊤ δ) A B G` using `fun A B => by`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Iop, hU, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Rewrite using `[← mul_finsum, mul_left_comm]`. Use function extensionality and compare the values at `y`. Simplify using `only [cosV, Wd, hI, hU, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cosV_smul (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ} (z : Matrix (Fin d) (Fin a) D.host.E) (c : ℂ)
     (G : VC D a d → ℂ) : cosV δ 𝔪 z (c • G) = c • cosV δ 𝔪 z G := by
   have hU : ∀ (x : VC D a d) (F : VC D a d → ℂ),
@@ -67,10 +72,20 @@ theorem cosV_smul (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) {a d : ℕ} (z : Mat
   simp only [cosV, Wd, hI, hU, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨SS, c, -, -, rfl, -⟩` from `h`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`.
+-/
 theorem GoodMod.ne_bot {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (h : GoodMod e 𝔪) : 𝔪 ≠ ⊥ := by
   obtain ⟨SS, c, -, -, rfl, -⟩ := h
   exact Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot
 
+/- English proof (translation)
+Establish `hn : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)`. Establish `hI : ∀ i j, ((unitBlock D o a d).map (inc D) * (((k : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))⁻¹ : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin a) (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D))) i j ∈ OhE D`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun l _ => mul_mem ?_ (((GlobalTheory.NormSum.mem_intG k).1 hk) l j).2` and prove the remaining obligations.
+
+Distinguish the cases in `h : i.1 = o + l.1`. Simplify using `[unitBlock, h]`. Simplify using `[unitBlock, h]`. Use `choose b w hw hb using fun i j => GlobalTheory.CongApprox.exists_int_approx D _ hn _ (hI i j)`. Use `⟨Matrix.of fun i j => (b i j : D.host.E), fun i j => ⟨b i j, rfl⟩, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.sub_apply, hb i j]`. Establish `e : (Matrix.of fun i j => (b i j : D.host.E)).map (inc D) i j - (inc D (b i j : D.host.E) + (Ideal.absNorm 𝔪 : Formalism.MainNotions.StandardLatticesGL3.AE D) * w i j) = inc D (((Ideal.absNorm 𝔪 : 𝓞 D.host.E)) : D.host.E) * (-w i j)`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem 𝔪, _, neg_mem (hw i j), rfl⟩`.
+-/
 theorem exists_approx {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) (o : ℕ) {a : ℕ} (d : ℕ) {k : Formalism.MainNotions.StandardLatticesGL3.GA D a}
     (hk : k ∈ intG D a) : ∃ z : Matrix (Fin d) (Fin a) D.host.E, IsIntE z ∧ Approx 𝔪 o k z := by
   have hn : 0 < Ideal.absNorm 𝔪 := Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)

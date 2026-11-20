@@ -9,6 +9,27 @@ open Formalism.UG (cT bc)
 
 namespace GlobalTheory.SphEis
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hF u hu`. Take `⟨hC, b, hZ⟩` from `(mem_unipRad_iff_frame F E σ n J j m C D Z J₀ hF u).1 hu`. Use `set s := sigR (AF F) σ with hsdef`. Use `set M := (matHom _ σ J u).1 with hMdef`. Establish `hU : cT s M * adMat F J * M = adMat F J` using `u.2`.
+
+Establish `hs : ∀ a : AF F ⊗[F] E, s (s a) = a` using `fun a => by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sigma_sigma hF.cm x)`.
+
+Establish `cc : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) (AF F ⊗[F] E)), cT s (cT s X) = X` using `fun X => Matrix.ext fun i k => hs _`. Establish `cadd : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) (AF F ⊗[F] E)), cT s (X + Y) = cT s X + cT s Y` using `fun X Y => Matrix.ext fun i k => map_add s _ _`. Establish `csub : ∀ {a b : ℕ} (X Y : Matrix (Fin a) (Fin b) (AF F ⊗[F] E)), cT s (X - Y) = cT s X - cT s Y` using `fun X Y => Matrix.ext fun i k => map_sub s _ _`. Establish `cad : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) E), cT s (adMat F X) = adMat F (cT (σ : E →+* E) X)` using `fun X => GlobalTheory.AutFunCounterexample.cT_map_gen σ X`. Establish `gram : ∀ {a b : ℕ} (X : Matrix (Fin n) (Fin a) E) (Y : Matrix (Fin n) (Fin b) E), cT s (adMat F X) * adMat F J * adMat F Y = adMat F (cT (σ : E →+* E) X * J * Y)` using `fun X Y => by`.
+
+Rewrite using `[cad]`. Simplify using `only [adMat, Matrix.map_mul]`. Establish `unit : ∀ {a b : ℕ} (X : Matrix (Fin n) (Fin a) (AF F ⊗[F] E)) (Y : Matrix (Fin n) (Fin b) (AF F ⊗[F] E)), cT s (M * X) * adMat F J * (M * Y) = cT s X * adMat F J * Y` using `fun X Y => by`. Establish `e : cT s X * cT s M * adMat F J * (M * Y) = cT s X * (cT s M * adMat F J * M) * Y`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[Formalism.UG.cT_mul, e, hU]`. Establish `ad0 : ∀ {a b : ℕ}, adMat F (0 : Matrix (Fin a) (Fin b) E) = 0` using `fun {a b} => Matrix.map_zero _ (map_zero _)`. Establish `ad1 : ∀ {a : ℕ}, adMat F (1 : Matrix (Fin a) (Fin a) E) = 1` using `fun {a} => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1 : cT s (adMat F C) * adMat F J * (M * adMat F D) = 1` using `by conv_lhs => rw [← hC]`. Rewrite using `[unit, gram, hF.cd, ad1]`.
+
+Establish `h2 : cT s (adMat F Z) * adMat F J * (M * adMat F D) = - cT s b`. Establish `e` using `unit (adMat F Z) (adMat F D)`. Rewrite `e` using `[hZ, gram, hF.zd, ad0, cadd, Formalism.UG.cT_mul, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc (cT s b), Matrix.mul_assoc (cT s b), h1, Matrix.mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left e`. Use `set c := cT s (adMat F D) * adMat F J * (M * adMat F D) with hc`.
+
+Establish `hsum : adMat F C * (cT s (adMat F D) * adMat F J) + adMat F Z * (adMat F J₀⁻¹ * (cT s (adMat F Z) * adMat F J)) + adMat F D * (cT s (adMat F C) * adMat F J) = 1`. Establish `e` using `congrArg (fun X => adMat F X) hF.sum`. Simplify using `only [adMat, Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at e`. Simplify using `only [cad, adMat]`. Conclude with `e`.
+
+Establish `hD : M * adMat F D = adMat F D - adMat F Z * plus σ J₀ b + adMat F C * c` using `by conv_lhs => rw [← Matrix.one_mul (M * adMat F D), ← hsum]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s (adMat F D)), ← Matrix.mul_assoc (cT s (adMat F Z)), ← Matrix.mul_assoc (cT s (adMat F C)), h1, h2, Matrix.mul_one, plus, Matrix.mul_neg, Matrix.mul_neg, ← hc]`. Normalize the expressions using the abelian group laws. Use `⟨b, c, ⟨hC, hZ, hD⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h0` using `unit (adMat F D) (adMat F D)`. Rewrite `h0` using `[gram, hF.dd, ad0]`. Establish `hP : cT s (plus σ J₀ b) = b * adMat F J₀⁻¹`. Rewrite using `[plus, Formalism.UG.cT_mul, cc, cad, GlobalTheory.UAut.cT_form_inv hF.herm₀]`. Use `conv_lhs at h0 => rw [hD]`.
+
+Rewrite `h0` using `[cadd, csub, Formalism.UG.cT_mul, Formalism.UG.cT_mul, hP, Matrix.add_mul, Matrix.sub_mul, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_assoc (b * adMat F J₀⁻¹), Matrix.mul_assoc (b * adMat F J₀⁻¹), Matrix.mul_assoc (cT s c), Matrix.mul_assoc (cT s c), ← hD, h1, h2, ← hc, Matrix.mu …`. Rewrite using `[← h0, plus, Matrix.mul_neg, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_crd_of_mem_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ u ∈ unipRad σ J C, ∃ (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), Crd σ J C D Z J₀ u b c ∧ c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0 := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF u hu
   obtain ⟨hC, b, hZ⟩ := (mem_unipRad_iff_frame F E σ n J j m C D Z J₀ hF u).1 hu

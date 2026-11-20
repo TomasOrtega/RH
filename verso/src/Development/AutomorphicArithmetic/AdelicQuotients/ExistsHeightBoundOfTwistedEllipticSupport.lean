@@ -6,6 +6,11 @@ open GroundTheory.Global.AdeleBaseChange
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
+/- English proof (translation)
+Establish `hc : IsCompact ((fun y => a⁻¹ * y * b⁻¹) '' tsupport f)` using `hf.isCompact.image (by fun_prop)`. Establish `hfin : ((fun γ : Γ => (γ : X)) ⁻¹' ((fun y => a⁻¹ * y * b⁻¹) '' tsupport f)).Finite`. Use `Γ.tendsto_coe_cofinite_of_discrete ⟨inferInstance⟩ hc.compl_mem_cocompact` as an intermediate fact. Simplify `this` using `[Filter.mem_map, Filter.mem_cofinite]`. Establish `hs : (Function.support fun γ : Γ => ‖f (a * γ * b)‖).Finite`.
+
+Use `hfin.subset fun γ hγ => ⟨a * γ * b, subset_tsupport _ ?_, by group⟩` and prove the remaining obligations. Simplify using `using hγ`. Establish `h1 : ∑ᶠ γ : Γ, ((‖f (a * γ * b)‖ : ℝ) : ℂ) = ((∑ᶠ γ : Γ, ‖f (a * γ * b)‖ : ℝ) : ℂ)` using `(Complex.ofRealHom.toAddMonoidHom.map_finsum hs).symm`. Rewrite using `[h1, Complex.ofReal_ne_zero]`. Conclude with `(finsum_pos (f := fun γ : Γ => ‖f (a * γ * b)‖) (fun _ => norm_nonneg _) ⟨⟨δ, hδ⟩, norm_pos_iff.2 h⟩ hs).ne'`.
+-/
 private theorem finsum_norm_ne_zero {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [T2Space X]
     (Γ : Subgroup X) [DiscreteTopology Γ] (f : X → ℂ) (hf : HasCompactSupport f) (a b δ : X) (hδ : δ ∈ Γ)
     (h : f (a * δ * b) ≠ 0) : ∑ᶠ γ : Γ, ((‖f (a * γ * b)‖ : ℝ) : ℂ) ≠ 0 := by
@@ -21,6 +26,13 @@ private theorem finsum_norm_ne_zero {X : Type*} [Group X] [TopologicalSpace X] [
   rw [h1, Complex.ofReal_ne_zero]
   exact (finsum_pos (f := fun γ : Γ => ‖f (a * γ * b)‖) (fun _ => norm_nonneg _) ⟨⟨δ, hδ⟩, norm_pos_iff.2 h⟩ hs).ne'
 
+/- English proof (translation)
+Introduce `h2 F E _ _ _ _ _ _ σ hσ n hn μ _ θ hθ f hf`. Take `⟨C, c, hC⟩` from `h2 F E σ hσ n hn`. Establish `hcs : HasCompactSupport (f : G1 E n → ℂ)` using `f.hasCompactSupport`. Take `⟨M, hM⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_height_le_of_isCompact (hcs.isCompact.image (continuous_subtype_val (p := fun g => g ∈ normOneGL E n)))`. Set `f' : PositivityTheory.Rg.Tf.Core.CC E n` to `{ toFun := fun g => ((‖f g‖ : ℝ) : ℂ) continuous_toFun := Complex.continuous_ofReal.comp (map_continuous f).norm hasCompactSupport' := hcs.comp_left (g := fun z : ℂ => ((‖z‖ : ℝ) : ℂ)) (by simp) }`.
+
+Establish `hne : ∀ g, f' g ≠ 0 → f g ≠ 0` using `fun g hg h0 => hg (by show ((‖f g‖ : ℝ) : ℂ) = 0`. Simplify using `[h0])`. Use `⟨C * (max 1 M) ^ c, fun x δ hδ hx => ?_⟩` and prove the remaining obligations. Use `hC μ θ hθ f' (max 1 M) (le_max_left _ _) (fun g hg => ?_) (fun δ x y hy hg => hf δ x y hy (hne y hg)) x ?_` and prove the remaining obligations. Conclude with `(hM _ ⟨g, subset_tsupport _ (hne g hg), rfl⟩).trans (le_max_right _ _)`.
+
+Conclude with `finsum_norm_ne_zero (Gam E n) f hcs x⁻¹ (θ.e x) δ hδ hx`.
+-/
 theorem UpperTheory.exists_height_bound_of_twistedElliptic_support :
     G2 → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E),
         (∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) → ∀ n : ℕ, 0 < n → ∀ (μ : Measure (G1 E n)) [μ.IsHaarMeasure] (θ : Twist μ), IsGalTwist σ θ →

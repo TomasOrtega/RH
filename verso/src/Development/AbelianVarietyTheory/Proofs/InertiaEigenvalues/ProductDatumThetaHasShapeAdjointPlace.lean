@@ -21,6 +21,17 @@ namespace GlobalTheory.DownLift.ProdShape
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨f1, k, hk, f2, f3⟩` from `hf`. Take `⟨g1, l, hl, g2, g3⟩` from `hg`. Establish `hne : ∀ t, (f - c • g) t ≠ 0 → f t ≠ 0 ∨ g t ≠ 0` using `fun t ht => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `ht (by rw [Pi.sub_apply, Pi.smul_apply, h.1, h.2, smul_zero, sub_zero])`. Establish `hh : ∀ (j : ℕ) (u : Mx D m n), IsHalf e u → IsHalf e (j • u)` using `fun j u hu => by`. Rewrite `hu`, the goal using `[GlobalTheory.SplitScalar.isHalf_iff]`. Rewrite using `[smul_comm, hu]`. Use `⟨fun t ht => (hne t ht).elim (f1 t) (g1 t), k * l, mul_pos hk hl, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : f (t + (k * l) • u) = f t`. Rewrite using `[mul_smul]`. Conclude with `f2 _ (nsmul_mem hu l) (hh l u hu') t`. Establish `e2 : g (t + (k * l) • u) = g t`. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `g2 _ (nsmul_mem hu k) (hh k u hu') t`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, Pi.sub_apply, Pi.smul_apply, e1, e2]`. Break down `hne t ht with h | h` into its components or cases. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (f3 t h) l`.
+
+Rewrite using `[mul_smul]`. Conclude with `nsmul_mem (g3 t h) k`.
+-/
 theorem isSBHalf_sub_smul {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f g : Mx D m n → ℂ}
     (hf : IsSBHalf e Λ f) (hg : IsSBHalf e Λ g) (c : ℂ) : IsSBHalf e Λ (f - c • g) := by
   obtain ⟨f1, k, hk, f2, f3⟩ := hf
@@ -42,11 +53,21 @@ theorem isSBHalf_sub_smul {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {
     · rw [mul_comm, mul_smul]; exact nsmul_mem (f3 t h) l
     · rw [mul_smul]; exact nsmul_mem (g3 t h) k
 
+/- English proof (translation)
+Rewrite `hx` using `[GlobalTheory.SplitScalar.isHalf_iff]`. Rewrite using `[GlobalTheory.SplitScalar.isHalf_iff, GlobalTheory.SplitScalar.isHalf_iff, smul_add, hx, add_left_inj]`.
+-/
 theorem isHalf_add_iff {m n : ℕ} {e : AE D} {x : Mx D m n} (hx : IsHalf e x) (t : Mx D m n) :
     IsHalf e (t + x) ↔ IsHalf e t := by
   rw [GlobalTheory.SplitScalar.isHalf_iff] at hx
   rw [GlobalTheory.SplitScalar.isHalf_iff, GlobalTheory.SplitScalar.isHalf_iff, smul_add, hx, add_left_inj]
 
+/- English proof (translation)
+Take `⟨f1, k, hk, f2, f3⟩` from `hf`. Take `⟨l, hl, hlx⟩` from `hx'`. Establish `hh : ∀ (j : ℕ) (u : Mx D m n), IsHalf e u → IsHalf e (j • u)` using `fun j u hu => by`. Rewrite `hu`, the goal using `[GlobalTheory.SplitScalar.isHalf_iff]`. Rewrite using `[smul_comm, hu]`.
+
+Use `⟨fun t ht => (isHalf_add_iff hx t).1 (f1 _ ht), k * l, mul_pos hk hl, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[add_right_comm, mul_smul]`. Conclude with `f2 _ (nsmul_mem hu l) (hh l u hu') _`. Establish `h1 : (k * l) • (t + x) ∈ Λ` using `by rw [mul_comm, mul_smul]; exact nsmul_mem (f3 _ ht) l`.
+
+Establish `h2 : (k * l) • x ∈ Λ` using `by rw [mul_smul]; exact nsmul_mem hlx k`. Use `sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[smul_add, add_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem isSBHalf_transl {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f : Mx D m n → ℂ}
     (hf : IsSBHalf e Λ f) {x : Mx D m n} (hx : IsHalf e x) (hx' : ∃ l : ℕ, 0 < l ∧ l • x ∈ Λ) :
     IsSBHalf e Λ fun t => f (t + x) := by
@@ -64,6 +85,9 @@ theorem isSBHalf_transl {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f 
     have := sub_mem h1 h2
     rwa [smul_add, add_sub_cancel_right] at this
 
+/- English proof (translation)
+Establish `h : (((cA D e • x).map (toEAf D)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ = toEAf D e • ((x.map (toEAf D)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ` using `Matrix.ext fun i j => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicLatMove.cF D (toEAf D (cA D e * x j i)) = toEAf D e * GlobalTheory.AdelicLatMove.cF D (toEAf D (x j i))`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, GlobalTheory.AdelicLatMove.toEAf_cA, GlobalTheory.PlaceVec.cF_cF_toEAf]`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.PlaceVec.frMapAdj_eq, h, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem frMapAdj_conj_smul (S T : HSp D) (βS : GL (Fin S.rank) (Formalism.IndefR.Datum.EAf D))
     (βT : GL (Fin T.rank) (Formalism.IndefR.Datum.EAf D)) (e : AE D) (x : WO S T) :
     frMapAdj S T βS βT (cA D e • x) = toEAf D e • frMapAdj S T βS βT x := by
@@ -77,6 +101,11 @@ section Red
 
 variable {a b : ℕ} {p : Formalism.IndefR.Datum.EAf D} {M N : Matrix (Fin a) (Fin b) (Formalism.IndefR.Datum.EAf D)}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h i j => add_mem (h.1 i j) (h.2 i j)⟩` and prove the remaining obligations. Establish `h1 : p • (M + N) = N` using `by rw [smul_add, hM, hN, zero_add]`. Establish `h2 : IsIntM N` using `fun i j => by`. Rewrite using `[← h1]`. Conclude with `mul_mem hp (h i j)`.
+
+Conclude with `⟨fun i j => (add_mem_cancel_right (h2 i j)).1 (h i j), h2⟩`.
+-/
 theorem isIntM_add_iff (hp : p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hM : p • M = 0) (hN : p • N = N) :
     IsIntM (M + N) ↔ IsIntM M ∧ IsIntM N := by
   refine ⟨fun h => ?_, fun h i j => add_mem (h.1 i j) (h.2 i j)⟩
@@ -86,6 +115,11 @@ theorem isIntM_add_iff (hp : p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (h
     exact mul_mem hp (h i j)
   exact ⟨fun i j => (add_mem_cancel_right (h2 i j)).1 (h i j), h2⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h2 : (M + N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `add_mem (hM i j) (hN i j)`. Rewrite using `[Matrix.add_apply]`. Unfold `redM`. Rewrite using `[dif_pos h2, dif_pos (hM i j), dif_pos (hN i j), ← RingHom.map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem redM_add (PP : Pl D.host.E) (hM : IsIntM M) (hN : IsIntM N) : redM PP (M + N) = redM PP M + redM PP N := by
   funext i j
   have h2 : (M + N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := add_mem (hM i j) (hN i j)
@@ -94,6 +128,11 @@ theorem redM_add (PP : Pl D.host.E) (hM : IsIntM M) (hN : IsIntM N) : redM PP (M
   rw [dif_pos h2, dif_pos (hM i j), dif_pos (hN i j), ← RingHom.map_add]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h2 : (p • M) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `mul_mem hp (hM i j)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Unfold `redM`. Rewrite using `[dif_pos h2, dif_pos (hM i j), ← RingHom.map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem redM_smul (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hM : IsIntM M) :
     redM PP (p • M) = resS D.host.F PP ⟨p, hp⟩ • redM PP M := by
   funext i j
@@ -103,6 +142,9 @@ theorem redM_smul (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf D.host.
   rw [dif_pos h2, dif_pos (hM i j), ← RingHom.map_mul]
   rfl
 
+/- English proof (translation)
+Establish `h` using `redM_smul PP hp ((isIntM_add_iff hp hM hN).2 ⟨iM, iN⟩)`. Rewrite `h` using `[h1, one_smul, smul_add, hM, hN, zero_add]`. Conclude with `h.symm`.
+-/
 theorem redM_add_of_one (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (h1 : resS D.host.F PP ⟨p, hp⟩ = 1) (hM : p • M = 0) (hN : p • N = N) (iM : IsIntM M) (iN : IsIntM N) :
     redM PP (M + N) = redM PP N := by
@@ -110,6 +152,9 @@ theorem redM_add_of_one (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf D
   rw [h1, one_smul, smul_add, hM, hN, zero_add] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h` using `redM_smul PP hp iN`. Rewrite `h` using `[h0, zero_smul, hN]`. Rewrite using `[redM_add PP iM iN, h, add_zero]`.
+-/
 theorem redM_add_of_zero (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (h0 : resS D.host.F PP ⟨p, hp⟩ = 0) (hN : p • N = N) (iM : IsIntM M) (iN : IsIntM N) :
     redM PP (M + N) = redM PP M := by
@@ -119,6 +164,21 @@ theorem redM_add_of_zero (PP : Pl D.host.E) (hp : p ∈ Formalism.L2.Herm.intAf 
 
 end Red
 
+/- English proof (translation)
+Introduce `D ψ S T hψ ΛS ΛT hS hT βS βT P e e₀ PP he hPP he₀ ω₁ ω₂ h₁ h₂ f₀ f hf₀ hf ℓ hℓ`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hf`. Establish `hfT : f = Tm (adjDat S T βS βT e fun y => ω₁ y * ω₂ y)` using `hall Tm hTm`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hee : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]`.
+
+Establish `hec : cA D e * cA D (cA D e) = 0` using `by rw [← RingHom.map_mul, he.2, RingHom.map_zero]`. Establish `hee₀ : cA D e * cA D e₀ = cA D e₀` using `by rw [← RingHom.map_mul, GlobalTheory.DiagLiftFix.idemSum_mul he hPP he₀]`. Establish `hSB : ∀ ω : (∀ PP : Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (kP PP)) → ℂ, (∀ y y', (∀ PP ∈ P, y PP = y' PP) → ω y = ω y') → IsSBHalf (cA D e) (latH S T ΛS ΛT) (adjDat S T βS βT e ω)` using `fun ω hω => GlobalTheory.PlaceVec.isSBHalf_of_red hS.1 hT.1 hinf (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_up S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_down S T βS βT) P ω hω`. Establish `s12` using `hSB (fun y => ω₁ y * ω₂ y) fun y y' h => by`. Rewrite using `[h₁ y y' (h PP hPP), h₂ y y' fun Q hQ _ => h Q hQ]`.
+
+Establish `s2` using `hSB ω₂ fun y y' h => h₂ y y' fun Q hQ _ => h Q hQ`. Use `⟨ℓ (Tm (adjDat S T βS βT e ω₂)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxs : cA D e₀ • x = x` using `(GlobalTheory.SplitScalar.isHalf_iff _ _).1 hx`. Establish `hx' : IsHalf (cA D e) x`. Rewrite using `[GlobalTheory.SplitScalar.isHalf_iff, ← hxs, smul_smul, hee₀]`.
+
+Establish `st` using `isSBHalf_transl s12 hx' (GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS.1 hT.1 x (GlobalTheory.PlaceVec.half_infPart hinf ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hx')))`. Take `⟨hp, hp1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D e₀ PP he₀`. Establish `hN : toEAf D e₀ • frMapAdj S T βS βT x = frMapAdj S T βS βT x`. Rewrite using `[← frMapAdj_conj_smul, hxs]`. Establish `key` using `GlobalTheory.T.placeInvariantForm_kills_vanishing_schwartzBruhat D ψ S T hψ ΛS ΛT hS hT (cA D e₀) (cA D e) (GlobalTheory.SplitScalar.isSplitIdem_conj he₀.1) hee hec hinf hee₀ f₀ Tm hf₀ hTm ℓ hℓ _ (isSBHalf_sub_smul st s2 (adjDat S T βS βT e₀ ω₁ x)) fun t ht => by`.
+
+Establish `hz : frMapAdj S T βS βT 0 = 0` using `(AddMonoidHom.mk' (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT)).map_zero`. Establish `hM : toEAf D e₀ • frMapAdj S T βS βT t = 0`. Rewrite using `[← frMapAdj_conj_smul, ht, hz]`. Establish `hI` using `isIntM_add_iff hp hM hN`. Rewrite using `[Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_eq_zero]`.
+
+Unfold `adjDat`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_add]`. Distinguish the cases in `c1 : IsIntM (frMapAdj S T βS βT x)`. Distinguish the cases in `c2 : IsHalf (cA D e) t ∧ IsIntM (frMapAdj S T βS βT t)`. Rewrite using `[if_pos ⟨(isHalf_add_iff hx' t).2 c2.1, hI.2 ⟨c2.2, c1⟩⟩, if_pos ⟨hx, c1⟩, if_pos c2] beta_reduce`.
+
+Rewrite using `[h₁ _ (fun Q => redM Q (frMapAdj S T βS βT x)) (redM_add_of_one PP hp hp1 hM hN c2.2 c1), h₂ _ (fun Q => redM Q (frMapAdj S T βS βT t)) fun Q _ hQ => redM_add_of_zero Q hp (GlobalTheory.TameProd.resS_idem_eq_zero he₀ hQ.symm hp) hN c2.2 c1]`. Rewrite using `[if_neg c2, if_neg fun h => c2 ⟨(isHalf_add_iff hx' t).1 h.1, (hI.1 h.2).1⟩, mul_zero]`. Rewrite using `[if_neg fun h => c1 (hI.1 h.2).2, if_neg fun h => c1 h.2, zero_mul]`. Rewrite `key` using `[map_sub, map_smul, hTm.trans _ s12 x hx', ← hfT, map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Rewrite using `[key, mul_comm]`.
+-/
 theorem hasShape_adjDat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (βS : GL (Fin S.rank) (Formalism.IndefR.Lev.EAf D)) (βT : GL (Fin T.rank) (Formalism.IndefR.Lev.EAf D)) (P : Finset (Pl D.host.E)) (e e₀ : AE D) (PP : Pl D.host.E), IsIdemSum e P → PP ∈ P → Formalism.L2.NTheta.IsIdemAt e₀ PP → ∀ ω₁ ω₂ : (∀ PP : Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (kP PP)) → ℂ, (∀ y y', y PP = y' PP → ω₁ y = ω₁ y') → (∀ y y', (∀ PP' ∈ P, PP' ≠ PP → y PP' = y' PP') → ω₂ y = ω₂ y') → ∀ f₀ f : WO S T → ℂ, IsThetaFunO ψ S T f₀ → IsThetaAt ψ (symplO S T) (heisO ψ S T) (cA D e) (latH S T ΛS ΛT) 1 f₀ (adjDat S T βS βT e fun y => ω₁ y * ω₂ y) f → HasShape ψ S T (cA D e₀) (adjDat S T βS βT e₀ ω₁) f := by
   intro D ψ S T hψ ΛS ΛT hS hT βS βT P e e₀ PP he hPP he₀ ω₁ ω₂ h₁ h₂ f₀ f hf₀ hf ℓ hℓ
   classical

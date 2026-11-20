@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hP v D hv u hu`. Use `haveI : Fact (Rat.HeightOneSpectrum.primesEquiv v : ℕ).Prime := ⟨(Rat.HeightOneSpectrum.primesEquiv v).2⟩`. Establish `hint : ∀ z : v.adicCompletion ℚ, Valued.v z ≤ 1 → ‖Rat.HeightOneSpectrum.adicCompletion.padicEquiv v z‖ ≤ 1`. Introduce `z hz`. Conclude with `(Rat.HeightOneSpectrum.adicCompletion.padicEquiv_bijOn v).mapsTo ((HeightOneSpectrum.mem_adicCompletionIntegers ℤ ℚ v).2 hz)`.
+
+Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hu` using `[h, map_zero]`. Conclude with `zero_ne_one hu`. Establish `hn : ‖Rat.HeightOneSpectrum.adicCompletion.padicEquiv v u‖ = 1`.
+
+Apply `le_antisymm (hint u hu.le)` to reduce the goal to its premises. Establish `h1` using `hint u⁻¹ (by rw [map_inv₀, hu, inv_one])`. Rewrite `h1` using `[map_inv₀, norm_inv]`. Establish `hne : Rat.HeightOneSpectrum.adicCompletion.padicEquiv v u ≠ 0` using `fun h => hu0 ((Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).injective (h.trans (map_zero _).symm))`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 hne)).1 h1`.
+
+Establish `hdiv : ¬ ((Rat.HeightOneSpectrum.primesEquiv v : ℕ) : ℤ) ∣ 2 * D`. Introduce `hd`. Apply `hv` to reduce the goal to its premises. Establish `hm : 2 * D ∈ Ideal.span {((Rat.HeightOneSpectrum.natGenerator v : ℕ) : ℤ)}` using `Ideal.mem_span_singleton.2 hd`. Rewrite `hm` using `[Rat.HeightOneSpectrum.span_natGenerator, Ideal.mem_map_of_equiv]`.
+
+Take `⟨x, hx, hxe⟩` from `hm`. Establish `hid : Rat.IsIntegralClosure.intEquiv ℤ x = x`. Simplify using `using eq_intCast (Rat.IsIntegralClosure.intEquiv ℤ : ℤ →+* ℤ) x`. Rewrite `hxe` using `[hid]`. Rewrite using `[← hxe]`.
+
+Conclude with `hx`. Take `⟨x, y, hxy⟩` from `hP _ D hdiv _ hn`. Use `⟨(Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm x, (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).symm hxy`. Simplify using `using h2`.
+-/
 theorem UpperTheory.Gal.G1.pZUnitNorm :
     PadicUnitNorm → ZUnitNorm := by
   intro hP v D hv u hu

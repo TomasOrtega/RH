@@ -22,6 +22,19 @@ noncomputable section
 
 namespace GlobalTheory.RowsPosRed
 
+/- English proof (translation)
+Set `B : Module.Basis ι ℂ H` to `Module.Basis.mk hli hsp.ge`. Establish `hB : ∀ k, B k = j (b k)` using `fun k => Module.Basis.mk_apply hli hsp.ge k`. Set `f : G → Module.End ℂ H` to `fun g => B.constr ℂ fun k => j (r g (b k))`. Establish `hf : ∀ g z, f g (j z) = j (r g z)`. Introduce `g z`.
+
+Establish `: (f g).comp j = j.comp (r g)` using `b.ext fun k => by show f g (j (b k)) = j (r g (b k))`. Rewrite using `[← hB]`. Conclude with `B.constr_basis ℂ _ k`. Conclude with `LinearMap.congr_fun this z`. Set `ρ : Representation ℂ G H` to `{ toFun := f map_one' := B.ext fun k => by show f 1 (B k) = B k`.
+
+Rewrite using `[hB, hf, map_one, Module.End.one_apply]`. Use the proof step `map_mul' := fun g g' => B.ext fun k => by show f (g * g') (B k) = f g (f g' (B k))`. Rewrite using `[hB, hf, hf, hf, map_mul, Module.End.mul_apply] }`. Establish `hρ : ∀ g z, ρ g (j z) = j (r g z)` using `hf`. Establish `hin : ∀ g y y', ⟪ρ g y, ρ g y'⟫_ℂ = ⟪y, y'⟫_ℂ`.
+
+Introduce `g`. Establish `h1 : ∀ k y', ⟪ρ g (B k), ρ g y'⟫_ℂ = ⟪B k, y'⟫_ℂ`. Introduce `k`. Establish `: (innerₛₗ ℂ (ρ g (B k))).comp (ρ g) = innerₛₗ ℂ (B k)` using `B.ext fun l => by show ⟪ρ g (B k), ρ g (B l)⟫_ℂ = ⟪B k, B l⟫_ℂ`. Rewrite using `[hB, hB, hρ, hρ, hiso, hiso, hr]`.
+
+Conclude with `fun y' => LinearMap.congr_fun this y'`. Introduce `y y'`. Establish `: (innerₛₗ ℂ (ρ g y)).comp (ρ g) = innerₛₗ ℂ y` using `B.ext fun l => by show ⟪ρ g y, ρ g (B l)⟫_ℂ = ⟪y, B l⟫_ℂ`. Rewrite using `[← inner_conj_symm, h1, inner_conj_symm]`. Conclude with `LinearMap.congr_fun this y'`.
+
+Use `⟨ρ, fun g z => (hρ g z).symm, fun g y => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, hin]`. Establish `: Θ.comp (ρ g) = (π g).comp Θ` using `B.ext fun k => by show Θ (ρ g (B k)) = π g (Θ (B k))`. Rewrite using `[hB, hρ, hΘ]`. Conclude with `fun y => LinearMap.congr_fun this y`.
+-/
 theorem exists_unitary_rep {K G V H E : Type} [Field K] [StarRing K] [Group G] [AddCommGroup V] [Module K V]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [AddCommGroup E] [Module ℂ E] {σ : K →+* ℂ} (j : V →ₛₗ[σ] H)
     {ι : Type} (b : Module.Basis ι K V) (hli : LinearIndependent ℂ fun k => j (b k))
@@ -78,6 +91,11 @@ open Formalism.IndefR.Cx.CxData
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.AdjGood.proj_rows_core hC (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x)`. Establish `e : ∀ g, Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) (A3.A.fam.v0.embedding ((idemOf A3.A.X).coeff g) • R.gEx F g x) = D.what₂.embLL ((idemOf A3.A.X).coeff g) • R.gE g (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x) := by`. Introduce `g`. Establish `hc : cj (twAt D.what₂.embLL A3.A.v0) (A3.A.v0.embedding ((idemOf A3.A.X).coeff g)) = D.what₂.embLL ((idemOf A3.A.X).coeff g)`. Rewrite using `[R.emb0, cj_cj]`.
+
+Conclude with `congrArg (fun z : ℂ => z • R.gE g (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x)) hc`. Conclude with `(Finset.sum_congr rfl fun g _ => e g).trans h`.
+-/
 theorem sum_idem_gEx (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : GlobalTheory.Hk3.Core R.toRealDat F.lv2) (x : (R.toCx3 F).EE) :
     ∑ g, A3.A.fam.v0.embedding ((idemOf A3.A.X).coeff g) • R.gEx F g x = x := by
   have h := GlobalTheory.AdjGood.proj_rows_core hC (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x)
@@ -91,6 +109,9 @@ theorem sum_idem_gEx (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hC : GlobalTheory.
     exact congrArg (fun z : ℂ => z • R.gE g (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x)) hc
   exact (Finset.sum_congr rfl fun g _ => e g).trans h
 
+/- English proof (translation)
+Take `⟨N, ψ, hψ, hr⟩` from `hT`. Conclude with `(Formalism.IndefR.Rat.range_adjoint_rat _ (X.jR t) (cv.hR t) (bR t) (hK t).1 (hK t).2 (hJ t) (X.Θ t) ψ hψ (fun i x => hr t i x)).ge`.
+-/
 theorem range_le_span_rat {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs}
     (X : CxData A) (cv : CrdV A) (hK : X.KFormR) (hJ : X.JIsoR cv) (hT : Formalism.IndefR.Rat.RowTest X) (t : Bs.Tup) :
     LinearMap.range (LinearMap.adjoint (X.Θ t)) ≤
@@ -99,6 +120,9 @@ theorem range_le_span_rat {K : Type} [Field K] [NumberField K] [StarRing K] {Bs 
   exact (Formalism.IndefR.Rat.range_adjoint_rat _ (X.jR t) (cv.hR t) (bR t) (hK t).1 (hK t).2 (hJ t) (X.Θ t) ψ hψ
     (fun i x => hr t i x)).ge
 
+/- English proof (translation)
+Establish `hKR : (R.toCx3 F).KFormR` using `RealDat3.kFormR_of hM`. Establish `hJR : (R.toCx3 F).JIsoR F.cv` using `RealDat3.jIsoR_of hM`. Conclude with `exists_unitary_rep (V := (A3.A.fam.R A3.A.fam.μ0).S.Forms) (H := (R.toCx3 F).FC A3.A.fam.μ0) ((R.toCx3 F).jR A3.A.fam.μ0) (Formalism.IndefR.Cx.CxData.bR (A := A3.fam3.amb3) A3.A.fam.μ0) (hKR A3.A.fam.μ0).1 (hKR A3.A.fam.μ0).2 (F.cv.hR A3.A.fam.μ0) (hJR A3.A.fam.μ0) (A3.A.fam.R A3 …`.
+-/
 theorem exists_rho (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hOk : A3.fam3.Ok3 s) (hM : R.toRealDat.IsModels)
     (hGE : R.PGEquiv F) :
     ∃ ρ : Representation ℂ G ((R.toCx3 F).FC A3.A.fam.μ0),
@@ -113,6 +137,11 @@ theorem exists_rho (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hOk : A3.f
     (fun g x y => (hOk.ok2.what₂ A3.A.fam.μ0).act.unitary g x y) ((R.toCx3 F).Θ A3.A.fam.μ0) (R.gEx F)
     (fun g z => hGE.1 A3.A.fam.μ0 g z)
 
+/- English proof (translation)
+Take `⟨U, hU, hU0⟩` from `(Submodule.ne_bot_iff _).1 (hN b)`. Establish `hT : U ∈ R.EEat R.triv` using `GlobalTheory.GoodRowsLevel.eeat_le_triv R.toRealDat _ hU`. Take `⟨y, rfl⟩ : U ∈ LinearMap.range R.HE.e` from `hM.HE.2.1 ▸ hT`. Use `⟨Tw.mk (twAt D.what₂.embLL A3.A.v0) y, fun h0 => hU0 ?_, hU⟩` and prove the remaining obligations. Establish `: y = 0` using `h0`.
+
+Rewrite using `[this, map_zero]`.
+-/
 theorem exists_row (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hM : R.toRealDat.IsModels) (hN : RowsNe R.toRealDat F.lv2)
     (b : Bool) : ∃ u : (R.toCx3 F).EE, u ≠ 0 ∧ u ∈ (R.toCx3 F).EEl b := by
   obtain ⟨U, hU, hU0⟩ := (Submodule.ne_bot_iff _).1 (hN b)
@@ -124,6 +153,11 @@ theorem exists_row (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hM : R.toRealDat.IsM
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Establish `h5 : LinearMap.adjoint f (Tw.out v) = 0`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_right, inner_zero_right]`. Establish `h3 : cj s ⟪f y, Tw.out v⟫_ℂ = 0` using `h1 (Tw.mk s y)`. Establish `h4` using `congrArg (cj s) h3`.
+
+Rewrite `h4` using `[cj_cj, map_zero]`. Then use the resulting hypothesis. Conclude with `hf (h5.trans (map_zero _).symm)`.
+-/
 theorem tw_eq_zero {s : Bool} {E E' : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [InnerProductSpace ℂ E'] [FiniteDimensional ℂ E'] (f : E →ₗ[ℂ] E')
     (hf : Function.Injective (LinearMap.adjoint f)) (v : Tw s E') (h1 : ∀ y : Tw s E, ⟪Tw.map s f y, v⟫_ℂ = 0) : v = 0 := by
@@ -135,6 +169,13 @@ theorem tw_eq_zero {s : Bool} {E E' : Type} [NormedAddCommGroup E] [InnerProduct
     rwa [cj_cj, map_zero] at h4
   exact hf (h5.trans (map_zero _).symm)
 
+/- English proof (translation)
+Establish `hinj : ∀ v, LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) v = 0 → v = 0`. Introduce `v hv`. Establish `h1 : ∀ y : (R.toCx3 F).FC A3.A.fam.μ0, ⟪(R.toCx3 F).Θ A3.A.fam.μ0 y, v⟫_ℂ = 0` using `fun y => by`. Rewrite using `[← LinearMap.adjoint_inner_right, hv, inner_zero_right]`. Conclude with `tw_eq_zero (s := twAt D.what₂.embLL A3.A.v0) (R.Th A3.A.fam.μ0) (hUp A3.A.fam.μ0) v h1`.
+
+Establish `h2 : Function.Injective ((R.toCx3 F).Θ A3.A.fam.μ0 ∘ₗ LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0))`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `h3 : ⟪LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) v, LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) v⟫_ℂ = 0`. Rewrite using `[LinearMap.adjoint_inner_left]`.
+
+Rewrite `hv` using `[LinearMap.comp_apply]`. Rewrite using `[hv, inner_zero_right]`. Conclude with `hinj v (inner_self_eq_zero.1 h3)`. Conclude with `LinearMap.injective_iff_surjective.1 h2 x`.
+-/
 theorem surj_of_upInj (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hUp : UpInj R.toRealDat) (x : (R.toCx3 F).EE) :
     ∃ u, (R.toCx3 F).Θ A3.A.fam.μ0 (LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) u) = x := by
   have hinj : ∀ v, LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) v = 0 → v = 0 := by
@@ -152,6 +193,13 @@ theorem surj_of_upInj (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hUp : UpInj R.toR
     exact hinj v (inner_self_eq_zero.1 h3)
   exact LinearMap.injective_iff_surjective.1 h2 x
 
+/- English proof (translation)
+Establish `hM : R.toRealDat.IsModels` using `hC.base.models`. Establish `hrat` using `range_le_span_rat (R.toCx3 F) F.cv (RealDat3.kFormR_of hM) (RealDat3.jIsoR_of hM) hRT A3.A.fam.μ0`. Take `⟨ρ, hj, hρ, hΘ⟩` from `exists_rho R F hOk hM hGE`. Establish `hCore` using `(GlobalTheory.CoreOfWeak.core_of_weak R F hC hEx).1`. Establish `htype : ∀ h : P, R.gEx F (h : G) u = A3.A.fam.v0.embedding ((ψ h : D.what₂.LLˣ) : D.what₂.LL) • u`.
+
+Introduce `h`. Use `(Submodule.mem_iInf _).1 hu h` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`. Take `⟨w, hw⟩` from `surj_of_upInj R F hUp u`.
+
+Take `⟨z, hz0, hz⟩` from `GlobalTheory.RowsNonzero.exists_rational ((R.toCx3 F).jR A3.A.fam.μ0) (A3.A.fam.R A3.A.fam.μ0).r ρ (R.gEx F) ((R.toCx3 F).Θ A3.A.fam.μ0) hj hρ hΘ hrat (fun g => (idemOf A3.A.X).coeff g) (fun g => (lvlIdem P ψ).coeff g) hu0 hw (sum_idem_gEx R F hCore u) (GlobalTheory.RowsNonzero.s …`. Conclude with `GlobalTheory.RowsNonzero.dZ_pos (A3.A.fam.R A3.A.fam.μ0) (A3.A.fam.lvl P ψ) ((R.toCx3 F).Z A3.A.fam.μ0) hz0 hz`.
+-/
 theorem dZ_pos_of_row (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hOk : A3.fam3.Ok3 s) (hC : R.WeakCharacterisation F)
     (hEx : R.toRealDat.ExAt) (hUp : UpInj R.toRealDat) (hGE : R.PGEquiv F) (hRT : Formalism.IndefR.Rat.RowTest (R.toCx3 F))
     (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (u : (R.toCx3 F).EE) (hu0 : u ≠ 0)
@@ -175,6 +223,11 @@ theorem dZ_pos_of_row (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hOk : A
 
 end GlobalTheory.RowsPosRed
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hUp hNe hGE _ hRT b`. Establish `hel` using `GlobalTheory.LevelRows3.eel_eq_typeSp3 R F hC`. Take `⟨u, hu0, hu⟩` from `GlobalTheory.RowsPosRed.exists_row R F hC.base.models hNe b`. Consider the cases of `b`. Rewrite `hu` using `[hel.1]`.
+
+Conclude with `GlobalTheory.RowsPosRed.dZ_pos_of_row R F hOk hC hEx hUp hGE hRT F.P0 F.ψ0 u hu0 hu`. Rewrite `hu` using `[hel.2]`. Conclude with `GlobalTheory.RowsPosRed.dZ_pos_of_row R F hOk hC hEx hUp hGE hRT F.P1 F.ψ1 u hu0 hu`.
+-/
 theorem GlobalTheory.RowsPosRed.pos_of_rows : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → UpInj R.toRealDat → RowsNe R.toRealDat F.lv2 → R.PGEquiv F → (R.toCx3 F).zs.InBlock → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hUp hNe hGE _ hRT b
   have hel := GlobalTheory.LevelRows3.eel_eq_typeSp3 R F hC

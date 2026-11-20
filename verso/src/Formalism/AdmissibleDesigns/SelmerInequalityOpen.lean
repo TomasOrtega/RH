@@ -22,6 +22,11 @@ section Places
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Introduce `h`. Simplify using `only [rowsN, colIdx, Finset.mem_image] at h`. Take `⟨v, hv, hvi⟩` from `h`. Establish `hl : (l : HeightOneSpectrum (𝓞 D.host.E)) ∈ dc.col` using `l.2`. Establish `hvl : v = l` using `idx_inj i dc (Finset.mem_union_left _ (Finset.mem_union_left _ hv)) (Finset.mem_union_left _ (Finset.mem_union_right _ hl)) hvi`.
+
+Substitute `hvl` using the available equality. Conclude with `Finset.disjoint_left.1 dc.disj hv hl`.
+-/
 theorem col_not_row (l : Col i dc) : colIdx i dc l ∉ rowsN i dc := by
   intro h
   simp only [rowsN, colIdx, Finset.mem_image] at h
@@ -32,6 +37,11 @@ theorem col_not_row (l : Col i dc) : colIdx i dc l ∉ rowsN i dc := by
   subst hvl
   exact Finset.disjoint_left.1 dc.disj hv hl
 
+/- English proof (translation)
+Introduce `hq`. Simplify using `only [rowsN, qsN, Finset.mem_image] at hw hq`. Take `⟨v, hv, rfl⟩` from `hw`. Take `⟨u, hu, huv⟩` from `hq`. Establish `huv' : u = v` using `idx_inj i dc (Finset.mem_union_right _ hu) (Finset.mem_union_left _ (Finset.mem_union_left _ hv)) huv`.
+
+Substitute `huv'` using the available equality. Conclude with `D.nd.SQ_l i u (Or.inr hu) ((dc.cover u).1 (Or.inl hv))`.
+-/
 theorem row_not_q (w : ℕ) (hw : w ∈ rowsN i dc) : w ∉ qsN i dc := by
   intro hq
   simp only [rowsN, qsN, Finset.mem_image] at hw hq

@@ -7,6 +7,33 @@ open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates Reci
 open scoped ENNReal ContDiff
 namespace GlobalTheory.L2Cutoff
 
+/- English proof (translation)
+Introduce `n M _ _ _ _ _ X ψ G Ω δ b θ hψ hθ hθ0 hΩ hG hsub`. Establish `hψe : ∀ e : OpenPartialHomeomorph M (V n), IsChart n X.z e → ContDiffOn ℝ ∞ (fun v => ψ (e.symm v)) e.target`. Introduce `e he`. Establish `h1` using `(Complex.reCLM.contDiff (n := ∞)).comp_contDiffOn (hψ e he)`. Use `h1.congr fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `hθd : ∀ t, DifferentiableAt ℝ θ t` using `fun t => (hθ.differentiable (by simp)) t`. Establish `hθzero : ∀ t, b < t → θ =ᶠ[𝓝 t] fun _ => 0`. Introduce `t ht`. Use `filter_upwards [lt_mem_nhds ht] with s hs`.
+
+Conclude with `hθ0 s hs.le`. Establish `hloc : ∀ e : OpenPartialHomeomorph M (V n), IsChart n X.z e → ∀ v ∈ e.target, (e.symm v ∈ Ω → DifferentiableAt ℂ (G ∘ e.symm) v) ∧ (e.symm v ∉ Ω → ((fun x => (θ (δ * ψ x) : ℂ) * G x) ∘ e.symm) =ᶠ[𝓝 v] fun _ => 0)`. Introduce `e he v hv`. Prove the components needed by the constructor for the conclusion. Introduce `hvΩ`.
+
+Conclude with `(hG e he).differentiableAt ((e.isOpen_inter_preimage_symm hΩ).mem_nhds ⟨hv, hvΩ⟩)`. Introduce `hvΩ`. Establish `hb : b < δ * ψ (e.symm v)`. Assume the negation of the conclusion as `h`. Conclude with `hvΩ (hsub _ (not_lt.1 h))`.
+
+Establish `hc : ContinuousAt (fun w => δ * ψ (e.symm w)) v` using `continuousAt_const.mul ((hψe e he).continuousOn.continuousAt (e.open_target.mem_nhds hv))`. Use `filter_upwards [hc.eventually (lt_mem_nhds hb)] with w hw`. Simplify using `[hθ0 _ hw.le]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `e he v hv`.
+
+Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Distinguish the cases in `hvΩ : e.symm v ∈ Ω`. Establish `hU` using `(e.isOpen_inter_preimage_symm hΩ).mem_nhds ⟨hv, hvΩ⟩`. Establish `hGc : ContDiffAt ℝ ∞ (G ∘ e.symm) v` using `((contDiffOn_of_differentiableOn n _ _ (e.isOpen_inter_preimage_symm hΩ) (hG e he)).contDiffAt hU).restrict_scalars ℝ`. Establish `hk : ContDiffAt ℝ ∞ (fun w => ((θ (δ * ψ (e.symm w)) : ℝ) : ℂ)) v` using `Complex.ofRealCLM.contDiff.contDiffAt.comp v (hθ.contDiffAt.comp v (contDiffAt_const.mul ((hψe e he).contDiffAt (e.open_target.mem_nhds hv))))`.
+
+Conclude with `hk.mul hGc`. Conclude with `contDiffAt_const.congr_of_eventuallyEq ((hloc e he v hv).2 hvΩ)`. Introduce `x ξ`. Take `⟨e, he, hx⟩` from `exists_chart n X.z X.isLocalHomeomorph x`. Establish `hzx : X.z x = e x` using `he hx`.
+
+Establish `hv : X.z x ∈ e.target` using `by rw [hzx]; exact e.map_source hx`. Establish `hsx : e.symm (X.z x) = x` using `by rw [hzx]; exact e.left_inv hx`. Unfold `dbarDot`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[db_eq_wdb n X.z e he j _ x hx, db_eq_wdb n X.z e he j _ x hx]`. Distinguish the cases in `hxΩ : x ∈ Ω`. Establish `hGd` using `(hloc e he _ hv).1 (by rw [hsx]; exact hxΩ)`. Establish `hψd : DifferentiableAt ℝ (fun w => ψ (e.symm w)) (X.z x)` using `((hψe e he).contDiffAt (e.open_target.mem_nhds hv)).differentiableAt (by simp)`. Establish `hkd : DifferentiableAt ℝ (fun t => θ (δ * t)) (ψ (e.symm (X.z x)))` using `(hθd _).comp _ ((differentiableAt_id).const_mul δ)`.
+
+Establish `hderiv : deriv (fun t => θ (δ * t)) (ψ (e.symm (X.z x))) = deriv θ (δ * ψ (e.symm (X.z x))) * δ`. Establish `h1 : HasDerivAt (fun t : ℝ => δ * t) δ (ψ (e.symm (X.z x)))`. Simplify using `using (hasDerivAt_id (ψ (e.symm (X.z x)))).const_mul δ`. Conclude with `((hθd _).hasDerivAt.comp _ h1).deriv`. Establish `h1 : ((fun y => (θ (δ * ψ y) : ℂ) * G y) ∘ e.symm) = fun w => (((fun t => θ (δ * t)) (ψ (e.symm w)) : ℝ) : ℂ) * (G ∘ e.symm) w` using `rfl`.
+
+Establish `hkd' : DifferentiableAt ℝ (fun w => (((fun t => θ (δ * t)) (ψ (e.symm w)) : ℝ) : ℂ)) (X.z x)` using `differentiableAt_ofReal (DifferentiableAt.comp (f := fun w => ψ (e.symm w)) (X.z x) hkd hψd)`. Rewrite using `[h1, wdb_mul hkd' (hGd.restrictScalars ℝ), wdb_of_differentiableAt hGd, wdb_ofReal_comp (k := fun t => θ (δ * t)) (v := fun w => ψ (e.symm w)) hkd hψd, hderiv]`. Establish `h2 : ((fun y => (ψ y : ℂ)) ∘ e.symm) = fun w => ((ψ (e.symm w) : ℝ) : ℂ)` using `rfl`. Rewrite using `[h2]`. Simplify using `only [Function.comp_apply, hsx]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : b < δ * ψ x`. Assume the negation of the conclusion as `h`. Conclude with `hxΩ (hsub _ (not_lt.1 h))`.
+
+Rewrite using `[wdb_congr ((hloc e he _ hv).2 (by rw [hsx]; exact hxΩ)), ((hθzero _ hb).deriv_eq)]`. Simplify using `[wdb]`.
+-/
 theorem cutoff_smooth_dbar : ∀ (n : ℕ) (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M], ∀ (X : EtaleStein n M) (ψ : M → ℝ) (G : M → ℂ) (Ω : Set M) (δ b : ℝ) (θ : ℝ → ℝ), SmoothR n X.z ψ → ContDiff ℝ ∞ θ → (∀ t, b ≤ t → θ t = 0) → IsOpen Ω → (∀ e : OpenPartialHomeomorph M (V n), IsChart n X.z e → DifferentiableOn ℂ (G ∘ e.symm) (e.target ∩ e.symm ⁻¹' Ω)) → (∀ x, δ * ψ x ≤ b → x ∈ Ω) → Smooth n X.z (fun x => (θ (δ * ψ x) : ℂ) * G x) ∧ ∀ (x : M) (ξ : Fin n → ℂ), dbarDot n X.z (fun y => (θ (δ * ψ y) : ℂ) * G y) x ξ = ((deriv θ (δ * ψ x) * δ : ℝ) : ℂ) * G x * dbarDot n X.z (fun y => (ψ y : ℂ)) x ξ := by
   intro n M _ _ _ _ _ X ψ G Ω δ b θ hψ hθ hθ0 hΩ hG hsub
   have hψe : ∀ e : OpenPartialHomeomorph M (V n), IsChart n X.z e →

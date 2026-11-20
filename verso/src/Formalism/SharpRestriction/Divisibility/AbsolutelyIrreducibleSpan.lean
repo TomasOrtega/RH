@@ -63,16 +63,28 @@ def Lev.p0 {D : D7} (P : BaseLevelRowSide D) : Lev D := Lev.of P.s D.what₂.onb
 
 def Lev.kap {D : D7} (V : Lev D) : ℝ := V.S.kapOf V.ft
 
+/- English proof (translation)
+Unfold `Lev.kap RowSide.kapOf`. Use `split_ifs with h`. Conclude with `Real.rpow_pos_of_pos h _`. Conclude with `one_pos`.
+-/
 theorem Lev.kap_pos {D : D7} (V : Lev D) : 0 < V.kap := by
   unfold Lev.kap RowSide.kapOf
   split_ifs with h
   · exact Real.rpow_pos_of_pos h _
   · exact one_pos
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sharp_kap (D : D7) : (Lev.sharp D).kap = kapSharp D := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chain_constant_at_small_level {D : D7} (P : BaseLevelRowSide D) : (Lev.p0 P).kap = P.kap0 := rfl
 
+/- English proof (translation)
+The claim follows from `| 0 => rfl | j + 1 => by show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j) rw [sharp_downTo D μ j]; rfl`.
+-/
 theorem sharp_downTo (D : D7) (μ : D.what₂.Tup) :
     ∀ j, (RowSide.sharp D).downTo μ j = D.what₂.downTo μ j
   | 0 => rfl
@@ -80,41 +92,62 @@ theorem sharp_downTo (D : D7) (μ : D.what₂.Tup) :
     show ((RowSide.sharp D).downTo μ j).comp (D.what₂.io μ j) = (D.what₂.downTo μ j).comp (D.what₂.io μ j)
     rw [sharp_downTo D μ j]; rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.iota Rows.Data.iota; rw [sharp_downTo D μ D.R.m]; try rfl; done)`. Consider the case `(simp only [RowSide.iota, Rows.Data.iota, sharp_downTo]; try rfl; done)`. Consider the case `rfl`.
+-/
 theorem sharp_iota (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).iota μ = D.what₂.iota μ := by
   first
   | (unfold RowSide.iota Rows.Data.iota; rw [sharp_downTo D μ D.R.m]; try rfl; done)
   | (simp only [RowSide.iota, Rows.Data.iota, sharp_downTo]; try rfl; done)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.Usp Rows.Data.Usp; rw [sharp_iota]; try rfl; done)`. Consider the case `(simp only [RowSide.Usp, Rows.Data.Usp, sharp_iota]; try rfl; done)`. Consider the case `rfl`.
+-/
 theorem sharp_Usp (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).Usp μ = D.what₂.Usp μ := by
   first
   | (unfold RowSide.Usp Rows.Data.Usp; rw [sharp_iota]; try rfl; done)
   | (simp only [RowSide.Usp, Rows.Data.Usp, sharp_iota]; try rfl; done)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.Qsp Rows.Data.Qsp; rw [sharp_Usp]; try rfl; done)`. Consider the case `(simp only [RowSide.Qsp, Rows.Data.Qsp, sharp_Usp]; try rfl; done)`. Consider the case `rfl`.
+-/
 theorem sharp_Qsp (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).Qsp μ = D.what₂.Qsp μ := by
   first
   | (unfold RowSide.Qsp Rows.Data.Qsp; rw [sharp_Usp]; try rfl; done)
   | (simp only [RowSide.Qsp, Rows.Data.Qsp, sharp_Usp]; try rfl; done)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.LamSet Rows.Data.LamSet; rw [sharp_Qsp]; try rfl; done)`. Consider the case `(simp only [RowSide.LamSet, Rows.Data.LamSet, sharp_Qsp]; try rfl; done)`. Consider the case `rfl`.
+-/
 theorem sharp_LamSet (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).LamSet μ = D.what₂.LamSet μ := by
   first
   | (unfold RowSide.LamSet Rows.Data.LamSet; rw [sharp_Qsp]; try rfl; done)
   | (simp only [RowSide.LamSet, Rows.Data.LamSet, sharp_Qsp]; try rfl; done)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.RRset Rows.Data.RRset; rw [sharp_iota, sharp_LamSet]; try rfl; done)`. Consider the case `(simp only [RowSide.RRset, Rows.Data.RRset, sharp_iota, sharp_LamSet]; try rfl; done)`. Consider the case `rfl`.
+-/
 theorem sharp_RRset (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).RRset μ = D.what₂.RRset μ := by
   first
   | (unfold RowSide.RRset Rows.Data.RRset; rw [sharp_iota, sharp_LamSet]; try rfl; done)
   | (simp only [RowSide.RRset, Rows.Data.RRset, sharp_iota, sharp_LamSet]; try rfl; done)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(unfold RowSide.RRDef DV.RRDef; simp only [sharp_RRset]; try exact Iff.rfl; done)`. Consider the case `exact Iff.rfl`.
+-/
 theorem sharp_RRDef (D : D7) : (RowSide.sharp D).RRDef ↔ DV.RRDef D := by
   first
   | (unfold RowSide.RRDef DV.RRDef; simp only [sharp_RRset]; try exact Iff.rfl; done)
   | exact Iff.rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(unfold RowSide.AIntegral Rows.AIntegral; exact Iff.rfl)`.
+-/
 theorem sharp_AIntegral (D : D7) : (RowSide.sharp D).AIntegral ↔ Rows.AIntegral D.what₂ := by
   first
   | exact Iff.rfl
@@ -128,6 +161,9 @@ abbrev Used (μ : D.what₂.Tup) : Prop := μ = D.what₂.mu0 ∨ ∃ w, μ = D.
 
 variable {D} in
 
+/- English proof (translation)
+Unfold `DV.Used`. Break down `h with h | ⟨w, h⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inr (Or.inr ⟨w, h⟩))`.
+-/
 theorem Used.dv {μ : D.what₂.Tup} (h : Used D μ) : DV.Used D μ := by
   unfold DV.Used
   rcases h with h | ⟨w, h⟩
@@ -158,16 +194,27 @@ def rPr : ℕ :=
 
 def q0 : ℕ := sInf {p : ℕ | p.Prime ∧ p % (rPr D * LevelStarExponents.condE D) = 1 ∧ ¬ p ∣ Ideal.absNorm D.host.ccK}
 
+/- English proof (translation)
+Unfold `LevelStarExponents.condE`. Conclude with `Nat.mul_pos (Nat.mul_pos D.host.QS_pos (lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.1)) (lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.2)`.
+-/
 theorem condE_pos : 0 < LevelStarExponents.condE D := by
   unfold LevelStarExponents.condE
   exact Nat.mul_pos (Nat.mul_pos D.host.QS_pos (lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.1))
     (lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.2)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Nat.pos_of_ne_zero (fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.mp h))`. Consider the case `(rw [Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot)`.
+-/
 theorem absNorm_ccK_pos : 0 < Ideal.absNorm D.host.ccK := by
   first
   | exact Nat.pos_of_ne_zero (fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.mp h))
   | (rw [Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot)
 
+/- English proof (translation)
+Establish `hN : 0 < LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK`. Establish `h1` using `D.host.pde_prime.two_le`. Establish `h2` using `D.host.pde'_prime.two_le`. Conclude with `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (condE_pos D) (by omega)) (by omega)) (absNorm_ccK_pos D)`. Take `⟨p, hp1, hp2⟩` from `Nat.exists_infinite_primes (LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK + 1)`.
+
+Establish `hne : {p : ℕ | p.Prime ∧ ¬ p ∣ LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK}.Nonempty` using `⟨p, hp2, fun hd => absurd (Nat.le_of_dvd hN hd) (Nat.not_le.mpr (Nat.lt_of_succ_le hp1))⟩`. Conclude with `Nat.sInf_mem hne`.
+-/
 theorem rPr_mem : (rPr D).Prime ∧
     ¬ rPr D ∣ LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK := by
   have hN : 0 < LevelStarExponents.condE D * (D.host.pde - 1) * (D.host.pde' - 1) * Ideal.absNorm D.host.ccK := by
@@ -181,6 +228,11 @@ theorem rPr_mem : (rPr D).Prime ∧
     ⟨p, hp2, fun hd => absurd (Nat.le_of_dvd hN hd) (Nat.not_le.mpr (Nat.lt_of_succ_le hp1))⟩
   exact Nat.sInf_mem hne
 
+/- English proof (translation)
+Establish `hr` using `(rPr_mem D).1`. Establish `hc` using `condE_pos D`. Establish `hk : 1 < rPr D * LevelStarExponents.condE D` using `lt_of_lt_of_le hr.one_lt (le_mul_of_one_le_right (Nat.zero_le _) hc)`. Take `⟨p, hp, hlt, hmod⟩` from `Nat.exists_prime_gt_modEq_one (Ideal.absNorm D.host.ccK) (Nat.pos_iff_ne_zero.mp (lt_trans Nat.zero_lt_one hk))`. Establish `hne : {p : ℕ | p.Prime ∧ p % (rPr D * LevelStarExponents.condE D) = 1 ∧ ¬ p ∣ Ideal.absNorm D.host.ccK}.Nonempty` using `⟨p, hp, (show p % _ = 1 % _ from hmod).trans (Nat.mod_eq_of_lt hk), fun hd => absurd (Nat.le_of_dvd (absNorm_ccK_pos D) hd) (Nat.not_le.mpr hlt)⟩`.
+
+Conclude with `Nat.sInf_mem hne`.
+-/
 theorem auxiliary_prime_mem : (q0 D).Prime ∧ q0 D % (rPr D * LevelStarExponents.condE D) = 1 ∧ ¬ q0 D ∣ Ideal.absNorm D.host.ccK := by
   have hr := (rPr_mem D).1
   have hc := condE_pos D
@@ -193,6 +245,15 @@ theorem auxiliary_prime_mem : (q0 D).Prime ∧ q0 D % (rPr D * LevelStarExponent
       fun hd => absurd (Nat.le_of_dvd (absNorm_ccK_pos D) hd) (Nat.not_le.mpr hlt)⟩
   exact Nat.sInf_mem hne
 
+/- English proof (translation)
+Unfold `q0`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hp, h1, -⟩`. Conclude with `⟨hp, h1⟩`. Introduce and unpack `⟨hp, h1⟩`. Use `⟨hp, h1, fun hd => ?_⟩` and prove the remaining obligations. Establish `hkp : rPr D * LevelStarExponents.condE D < p`.
+
+Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `Nat.eq_or_lt_of_le hle with heq | hlt` into its components or cases. Rewrite `h1` using `[heq, Nat.mod_self]`. Conclude with `absurd h1 (by norm_num)`.
+
+Rewrite `h1` using `[Nat.mod_eq_of_lt hlt]`. Conclude with `absurd h1 hp.one_lt.ne'`. Establish `hck : LevelStarExponents.condE D ≤ rPr D * LevelStarExponents.condE D` using `le_mul_of_one_le_left (Nat.zero_le _) (rPr_mem D).1.one_lt.le`. Conclude with `absurd (Nat.le_of_dvd (absNorm_ccK_pos D) hd) (Nat.not_le.mpr (lt_trans h (lt_of_le_of_lt hck hkp)))`.
+-/
 theorem auxiliary_prime_eq_least (h : Ideal.absNorm D.host.ccK < LevelStarExponents.condE D) :
     q0 D = sInf {p : ℕ | p.Prime ∧ p % (rPr D * LevelStarExponents.condE D) = 1} := by
   unfold q0
@@ -432,6 +493,9 @@ def KapLevels {D : D7} {V : Lev D} {A : AmbForm D V.S} (XD : DivX D) (X : LocV D
 def KapNear {D : D7} {V : Lev D} {A : AmbForm D V.S} (XD : DivX D) (X : LocV D V A) (c : ℝ) : Prop :=
   ∀ v : InfinitePlace D.what₂.LL, |Real.log (X.kapV v) - Real.log (XD.kapR v.embedding)| ≤ c
 
+/- English proof (translation)
+Unfold `KapNear`. Unfold `KapLevels at h`. Introduce `v`. Rewrite using `[h v]`. Simplify using the standard rewrite rules.
+-/
 theorem kapNear_of_levels {D : D7} {V : Lev D} {A : AmbForm D V.S} {XD : DivX D} {X : LocV D V A} (h : KapLevels XD X) :
     KapNear XD X 0 := by
   unfold KapNear
@@ -440,6 +504,9 @@ theorem kapNear_of_levels {D : D7} {V : Lev D} {A : AmbForm D V.S} {XD : DivX D}
   rw [h v]
   simp
 
+/- English proof (translation)
+Unfold `KapLevels at h`. Use function extensionality and compare the values at `v`. Use `first`. Consider the case `(simp only [unitMetricFrames, h v]; done)`. Consider the case `(unfold unitMetricFrames; rw [h v])`.
+-/
 theorem unit_metric_frames_of_levels {D : D7} {V : Lev D} {A : AmbForm D V.S} {XD : DivX D} {X : LocV D V A} (h : KapLevels XD X) :
     unitMetricFrames X = fun v => ((Real.sqrt (XD.kapR v.embedding) : ℝ) : ℂ) • V.S.RR.X v := by
   unfold KapLevels at h
@@ -508,6 +575,11 @@ end admitted
 
 def adm9 (D : D7) (L : SizeData₂ D) : Prop := Real.log (q0 D : ℝ) ≤ L.sc.L
 
+/- English proof (translation)
+Establish `h2 : 2 ∣ D.host.QS`. Establish `ht` using `D.host.tower_dvd`. Conclude with `dvd_trans (dvd_pow_self 2 (by omega)) ht`. Establish `h2c : 2 ∣ LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`.
+
+Conclude with `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left h2 _) _`. Establish `h2k : 2 ∣ rPr D * LevelStarExponents.condE D` using `dvd_mul_of_dvd_right h2c _`. Rewrite using `[← Nat.mod_mod_of_dvd (q0 D) h2k, (auxiliary_prime_mem D).2.1]`. Apply the tactic sequence `all_goals norm_num`.
+-/
 theorem auxiliary_prime_odd (D : D7) : q0 D % 2 = 1 := by
   have h2 : 2 ∣ D.host.QS := by
     have ht := D.host.tower_dvd
@@ -519,6 +591,9 @@ theorem auxiliary_prime_odd (D : D7) : q0 D % 2 = 1 := by
   rw [← Nat.mod_mod_of_dvd (q0 D) h2k, (auxiliary_prime_mem D).2.1]
   all_goals norm_num
 
+/- English proof (translation)
+Unfold `adm9`. Establish `hle : q0 D ≤ p` using `Nat.sInf_le ⟨hp, h1, h2⟩`. Establish `hq : 0 < q0 D` using `(auxiliary_prime_mem D).1.pos`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem auxiliary_prime_admissible_of_prime (D : D7) (L : SizeData₂ D) (p : ℕ) (hp : p.Prime) (h1 : p % (rPr D * LevelStarExponents.condE D) = 1)
     (h2 : ¬ p ∣ Ideal.absNorm D.host.ccK) (h3 : Real.log (p : ℝ) ≤ L.sc.L) : adm9 D L := by
   unfold adm9
@@ -692,6 +767,11 @@ def HypSz (L : SizeData₂ D) (X : LocV D V A) (K : Consts) : Prop :=
   X.ev0 = eV0 D L K.CPP ∧
   0 < V.n ∧ 0 ≤ K.Cgr ∧ FunDataAt D L X K.Cp
 
+/- English proof (translation)
+Unfold `HypSz at h`. Take `⟨-, -, -, -, -, -, -, -, -, ⟨-, hN⟩, -⟩` from `h`. Apply `auxiliary_prime_eq_least D` to reduce the goal to its premises. Establish `hd : (0 : ℝ) < (D.host.d : ℝ)`. Conclude with `lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.2` after adjusting the coercions.
+
+Establish `hlt : (Ideal.absNorm D.host.ccK : ℝ) < (LevelStarExponents.condE D : ℝ)`. Unfold `LevelStarExponents.condE`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hlt` after adjusting the coercions.
+-/
 theorem auxiliary_prime_eq_least_of_size {L : SizeData₂ D} {X : LocV D V A} {K : Consts} (h : HypSz D L X K)
     (hC : K.Cp < (D.host.QS : ℝ) * (D.host.q : ℝ)) :
     q0 D = sInf {p : ℕ | p.Prime ∧ p % (rPr D * LevelStarExponents.condE D) = 1} := by
@@ -721,6 +801,9 @@ def Conclusion1 (X : LocV D V A) : Prop :=
 
 def JEEDef (X : LocV D V A) : Prop := Set.range V.S.jEE = X.EELL
 
+/- English proof (translation)
+Unfold `Conclusion1 at h`. Introduce `x hx`. Rewrite using `[h.2.2.2 D.what₂.mu0 (Or.inl rfl)]`. Simplify using `only [llSpan, Set.mem_setOf_eq]`. Conclude with `⟨{x}, fun _ => 1, by simpa using hx, by simp⟩`.
+-/
 theorem rrset_sub_EELL {X : LocV D V A} (h : Conclusion1 D X) : V.S.RRset D.what₂.mu0 ⊆ X.EELL := by
   unfold Conclusion1 at h
   intro x hx
@@ -728,6 +811,9 @@ theorem rrset_sub_EELL {X : LocV D V A} (h : Conclusion1 D X) : V.S.RRset D.what
   simp only [llSpan, Set.mem_setOf_eq]
   exact ⟨{x}, fun _ => 1, by simpa using hx, by simp⟩
 
+/- English proof (translation)
+Unfold `Conclusion1 at h`. Unfold `RRDef`. Unfold `JEEDef at hJ`. Conclude with `⟨hJ.trans (h.2.2.2 D.what₂.mu0 (Or.inl rfl)), hR⟩`.
+-/
 theorem rrDef_of_jEEDef {X : LocV D V A} (h : Conclusion1 D X) (hJ : JEEDef D X) (hR : V.S.RRDef) : RRDef D X := by
   unfold Conclusion1 at h
   unfold RRDef
@@ -817,6 +903,9 @@ def FamilyErrorExponentBound (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.Fam
 
 def cpOf (l : List ℝ) : ℝ := max (l.getD 0 0 + 1) (max (l.getD 6 0 + 1) (max (l.getD 7 0) (max (l.getD 8 0) 5)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpOf_cOut {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     cpOf Fm.cOut = max (Fm.Ct + 1) (max (Fm.CYL + 1) (max Fm.Cpde (max Fm.CccK 5))) := rfl
 
@@ -831,6 +920,13 @@ def ClosedAbsoluteShare (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass
   ∀ K : List ℝ → Consts, ∃ C Ch Ch' : List ℝ → ℝ,
     Formalism.MainNotions.Closed 𝒞 (fun Fm CH => KudlaFamilyStatement 𝒪 (K Fm.cOut) (C Fm.cOut) (Ch Fm.cOut) (Ch' Fm.cOut) Fm CH)
 
+/- English proof (translation)
+Establish `h1` using `X.s_odd`. Establish `h2` using `X.s_lo`. Establish `h3` using `X.s_hi`. Establish `hk` using `D.R.k_even`. Establish `hm` using `D.R.m_even`.
+
+Establish `hm2` using `D.R.two_le_m`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Take `⟨a, ha⟩` from `h1`. Take `⟨b, hb⟩` from `hk`. Take `⟨c, hc⟩` from `hm`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem LocV.s_eq {D : D7} {V : Lev D} {A : AmbForm D V.S} (X : LocV D V A) : X.s = D.R.r + 6 := by
   have h1 := X.s_odd
   have h2 := X.s_lo
@@ -844,6 +940,15 @@ theorem LocV.s_eq {D : D7} {V : Lev D} {A : AmbForm D V.S} (X : LocV D V A) : X.
   obtain ⟨c, hc⟩ := hm
   omega
 
+/- English proof (translation)
+Introduce `τ j h`. Establish `h1` using `((Fm.params x hx i).nodes_gap τ j.1 h).1`. Establish `h2` using `(Fm.params x hx i).heightBound_ge_rank_cubic`. Establish `h3` using `h2.trans h1`. Establish `hN : ((X.Nst : ℕ) : ℝ) = ((Fm.D x i).R.k : ℝ) + (Fm.D x i).R.m * ((Fm.D x i).R.t + ((Fm.D x i).R.r + 6) + 1)`.
+
+Unfold `LocV.Nst`. Rewrite using `[X.s_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[← hN]`.
+
+Establish `h4 : (((Fm.D x i).R.t : ℝ) + 2 * ((X.Nst : ℕ) : ℝ) ^ 3) < ((((Fm.D x i).hc τ).b ⟨j.1 + 1, h⟩ - ((Fm.D x i).hc τ).b ⟨j.1, by omega⟩ : ℚ) : ℝ)` using `by linarith`. Establish `h5 : ((((Fm.D x i).R.t : ℚ) + 2 * ((X.Nst : ℕ) : ℚ) ^ 3 : ℚ) : ℝ) < ((((Fm.D x i).hc τ).b ⟨j.1 + 1, h⟩ - ((Fm.D x i).hc τ).b ⟨j.1, by omega⟩ : ℚ) : ℝ)`. Use `push_cast`. Move the coercions through the operations in `at h4`. Conclude with `h4`.
+
+Conclude with `(Rat.cast_lt (K := ℝ)).1 h5`.
+-/
 theorem hypGap_fam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) {V : Lev (Fm.D x i)}
     {A : AmbForm (Fm.D x i) V.S} (X : LocV (Fm.D x i) V A) : HypGap (Fm.D x i) X := by
   intro τ j h
@@ -865,6 +970,11 @@ theorem hypGap_fam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (
     exact h4
   exact (Rat.cast_lt (K := ℝ)).1 h5
 
+/- English proof (translation)
+Introduce `K`. Take `⟨C, Ch, Ch', hK⟩` from `h K`. Use `⟨C, Ch, Ch', ?_⟩` and prove the remaining obligations. Introduce `eps Fm CH _ VF AF XF hIn hAdm`. Take `⟨x0, hx0⟩` from `hAdm`.
+
+Establish `key : ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, aux₃ (Fm.D x i) (Fm.L x i) (XF x hx i) C Ch Ch'`. Introduce `x hx hle i`. Take `⟨hS, hA⟩` from `hx0 x hx hle i`. Conclude with `hK (Fm.D x i) (Fm.L x i) (Fm.X x i) (VF x hx i) (AF x hx i) (XF x hx i) (hIn x hx i) ⟨hypGap_fam Fm x hx i (XF x hx i), hS⟩ hA`. Conclude with `⟨⟨x0, fun x hx hle i => (key x hx hle i).1⟩, ⟨x0, fun x hx hle i => (key x hx hle i).2.1⟩, ⟨x0, fun x hx hle i => (key x hx hle i).2.2⟩⟩`.
+-/
 theorem stmtFam_of_all (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) (h : RealisationStatementAll 𝒪) : FamilyErrorExponentBound 𝒪 𝒞 := by
   intro K
   obtain ⟨C, Ch, Ch', hK⟩ := h K
@@ -880,6 +990,9 @@ theorem stmtFam_of_all (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass)
   exact ⟨⟨x0, fun x hx hle i => (key x hx hle i).1⟩, ⟨x0, fun x hx hle i => (key x hx hle i).2.1⟩,
     ⟨x0, fun x hx hle i => (key x hx hle i).2.2⟩⟩
 
+/- English proof (translation)
+Introduce `K`. Use `⟨fun l => Classical.choose (h (K l)), fun l => Classical.choose (Classical.choose_spec (h (K l))), fun l => Classical.choose (Classical.choose_spec (Classical.choose_spec (h (K l)))), ?_⟩` and prove the remaining obligations. Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hC _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `Classical.choose_spec (Classical.choose_spec (Classical.choose_spec (h (K Fm.cOut)))) Fm CH hC`.
+-/
 theorem stmtClosed_of_fam (𝒪 : ObjClass) (𝒞 : Formalism.MainNotions.FamClass) (h : FamilyErrorExponentBound 𝒪 𝒞) : ClosedAbsoluteShare 𝒪 𝒞 := by
   intro K
   refine ⟨fun l => Classical.choose (h (K l)),

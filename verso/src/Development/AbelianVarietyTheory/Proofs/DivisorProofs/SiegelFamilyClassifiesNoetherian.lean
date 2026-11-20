@@ -13,14 +13,29 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.SiegelNoeth
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap (b.comp a) = spMap b ≫ spMap a := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_id_eq (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := by
   simp only [spMap]
   exact Spec.map_id _
 
+/- English proof (translation)
+Introduce `g n hg hn hodd F R _ _ β c hc`. Use `GlobalTheory.T.siegelFamily_classified_of_local g n hg hn hodd F (Sp R) (spMap β) c hc ?_` and prove the remaining obligations. Introduce `x`. Set `𝔭 : Ideal R` to `x.asIdeal`. Use `haveI : 𝔭.IsPrime := x.isPrime`.
+
+Establish `loc : ∀ c' : SiegPre g n (zetaAway n) (spMap ((algebraMap R (Localization.AtPrime 𝔭)).comp β)), SiegPB c' c (spMap (algebraMap R (Localization.AtPrime 𝔭))) → ∃ f : Sp (Localization.AtPrime 𝔭) ⟶ F.X, f ≫ F.s = spMap ((algebraMap R (Localization.AtPrime 𝔭)).comp β) ∧ SiegPB c' F.un …`. Introduce `c' hc'`. Establish `hP` using `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n (cycAway n) (cycAway n) (zetaAway n) (zetaAway n) (RingHom.id _) (Sp R) (Sp (Localization.AtPrime 𝔭)) (spMap β) (spMap ((algebraMap R (Localization.AtPrime 𝔭)).comp β)) (spMap (algebraMap R (Localization.AtPrime 𝔭))) rfl …`. Conclude with `GlobalTheory.T.siegelFamily_classifies_noetherian_local g n hg hn hodd F (Localization.AtPrime 𝔭) ((algebraMap R (Localization.AtPrime 𝔭)).comp β) c' hP`. Take `⟨r, hr, H⟩` from `GlobalTheory.T.siegelClassified_at_prime_spreads_basicOpen g n hg hn hodd F R β c 𝔭 hc loc`.
+
+Set `j : Sp (Localization.Away r) ⟶ Sp R` to `spMap (algebraMap R (Localization.Away r))`. Establish `e : spMap ((algebraMap R (Localization.Away r)).comp β) = j ≫ spMap β` using `spMap_comp_eq _ _`. Rewrite `H` using `[e]`. Take `⟨cV, hcV⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n (cycAway n) (cycAway n) (zetaAway n) (zetaAway n) (RingHom.id _) (Sp R) (Sp (Localization.Away r)) (spMap β) (j ≫ spMap β) j rfl (by rw [spMap_id_eq, Category.comp_id])).1 c`. Take `⟨f, hf, hfu⟩` from `H cV hcV`.
+
+Use `⟨Sp (Localization.Away r), j, cV, IsOpenImmersion.of_isLocalization r, ?_, hcV, f, hf, hfu⟩` and prove the remaining obligations. Establish `hu : Set.range j = (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))` using `PrimeSpectrum.localization_away_comap_range (Localization.Away r) r`. Rewrite using `[hu]`. Conclude with `hr`.
+-/
 theorem classify_noetherian : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (β : cycAway n →+* R) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal → ∃ f : Sp R ⟶ F.X, f ≫ F.s = spMap β ∧ SiegPB c F.univ f := by
   intro g n hg hn hodd F R _ _ β c hc
   refine GlobalTheory.T.siegelFamily_classified_of_local g n hg hn hodd F (Sp R) (spMap β) c hc ?_

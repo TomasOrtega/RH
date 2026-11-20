@@ -18,6 +18,11 @@ open scoped Pointwise
 variable {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [LocallyCompactSpace A]
   [MeasurableSpace A] [BorelSpace A]
 
+/- English proof (translation)
+Establish `hm : Measurable fun x : A => (u : A) * x` using `(continuous_const.mul continuous_id).measurable`. Use extensionality with `B hB`. Rewrite using `[Measure.map_apply hm hB, Measure.smul_apply]`. Establish `e : (fun x : A => (u : A) * x) ⁻¹' B = u⁻¹ • B`. Use extensionality with `y`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `[Units.smul_def]`. Rewrite using `[e, ← distribHaarChar_mul, map_inv]`. Both sides reduce to the same expression.
+-/
 theorem map_mul_unit (μ : Measure A) [μ.IsAddHaarMeasure] [μ.Regular] (u : Aˣ) :
     μ.map (fun x => (u : A) * x) = (distribHaarChar A u)⁻¹ • μ := by
   have hm : Measurable fun x : A => (u : A) * x := (continuous_const.mul continuous_id).measurable
@@ -30,18 +35,33 @@ theorem map_mul_unit (μ : Measure A) [μ.IsAddHaarMeasure] [μ.Regular] (u : A�
   rw [e, ← distribHaarChar_mul, map_inv]
   rfl
 
+/- English proof (translation)
+Take `⟨K, hK, hn⟩` from `exists_compact_mem_nhds (0 : A)`. Use `⟨K, ?_, hK.measure_lt_top.ne⟩` and prove the remaining obligations. Conclude with `(Measure.measure_pos_of_mem_nhds μ hn).ne'`.
+-/
 theorem exists_pos_finite (μ : Measure A) [μ.IsAddHaarMeasure] :
     ∃ K : Set A, μ K ≠ 0 ∧ μ K ≠ ∞ := by
   obtain ⟨K, hK, hn⟩ := exists_compact_mem_nhds (0 : A)
   refine ⟨K, ?_, hK.measure_lt_top.ne⟩
   exact (Measure.measure_pos_of_mem_nhds μ hn).ne'
 
+/- English proof (translation)
+Take `⟨K, h0, h1⟩` from `exists_pos_finite μ`. Establish `e` using `congrArg (fun m : Measure A => m K) h`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 h1).1 e)`.
+-/
 theorem smul_inj (μ : Measure A) [μ.IsAddHaarMeasure] {a b : ℝ≥0} (h : a • μ = b • μ) : a = b := by
   obtain ⟨K, h0, h1⟩ := exists_pos_finite μ
   have e := congrArg (fun m : Measure A => m K) h
   simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e
   exact ENNReal.coe_injective ((ENNReal.mul_left_inj h0 h1).1 e)
 
+/- English proof (translation)
+Set `H : A ≃ₜ A` to `⟨s.toEquiv, hs, hs'⟩`. Set `μ : Measure A` to `Measure.addHaar`. Establish `: (μ.map H).IsAddHaarMeasure` using `s.toAddEquiv.isAddHaarMeasure_map μ hs hs'`. Establish `: (μ.map H).Regular` using `Measure.Regular.map H`. Take `⟨K, h0, h1⟩` from `exists_pos_finite μ`.
+
+Establish `hap : ∀ S : Set A, (μ.map H) S = μ (H ⁻¹' S)` using `fun S => H.toMeasurableEquiv.map_apply S`. Establish `hpre : H ⁻¹' (H '' K) = K` using `H.injective.preimage_image K`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := μ.map H) (s := H '' K) (by rwa [hap, hpre]) (by rwa [hap, hpre]) ?_` and prove the remaining obligations. Rewrite using `[hap, hap, hpre, distribHaarChar_mul]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_smul_set, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨k, hk, rfl⟩, hy⟩`. Use `⟨k, hk, H.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hy]`. Simplify using `[H, Units.smul_def]`. Introduce and unpack `⟨k, hk, rfl⟩`. Use `⟨H k, ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[H, Units.smul_def]`.
+-/
 theorem char_map (s : A ≃+* A) (hs : Continuous s) (hs' : Continuous s.symm) (u : Aˣ) :
     distribHaarChar A (Units.map (s : A →* A) u) = distribHaarChar A u := by
   let H : A ≃ₜ A := ⟨s.toEquiv, hs, hs'⟩
@@ -69,6 +89,9 @@ theorem char_map (s : A ≃+* A) (hs : Continuous s) (hs' : Continuous s.symm) (
 
 end Ring
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2, hσ.2.2.2, star_star]`.
+-/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -79,6 +102,25 @@ end GlobalTheory.CompanionTheory.WeilSiegel.HypMass.ContentScale
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypMass.ContentScale
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lam hlam c t w hc ht hnorm`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : lam.IsAddHaarMeasure := hlam.1`. Take `⟨j1, j2, j3, j4, hsc, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)`.
+
+Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨hK, -, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Fv F v) d b lam ‹_›`. Use `haveI := hK`. Establish `hd : d = 2`. Rewrite using `[← hσ.2.2.1, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+
+Substitute `hd` using the available equality. Use `set μ := coordK (Fv F v) b lam with hμ`. Use `haveI : μ.Regular := inferInstance`. Establish `hss : ∀ x, sigR (Fv F v) σ (sigR (Fv F v) σ x) = x`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, sigma_sigma σ hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Set `s : (Fv F v ⊗[F] E) ≃+* (Fv F v ⊗[F] E)` to `{ toFun := sigR (Fv F v) σ, invFun := sigR (Fv F v) σ, left_inv := hss, right_inv := hss, map_mul' := map_mul _, map_add' := map_add _ }`.
+
+Set `u : (Fv F v ⊗[F] E)ˣ` to `hc.unit`. Establish `hu : (u : Fv F v ⊗[F] E) = c` using `hc.unit_spec`. Establish `hchar` using `char_map s hsc hsc u`. Establish `hq : (Ideal.absNorm v.asIdeal : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hqv : (qv v : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)` using `by simp [qv]`.
+
+Establish `ht0 : t ≠ 0`. Introduce `h`. Rewrite `hnorm` using `[h, norm_zero, hqv]`. Conclude with `inv_ne_zero (pow_ne_zero w hq) hnorm.symm`. Establish `hk : ‖t‖ = ((Ideal.absNorm v.asIdeal : ℝ))⁻¹ ^ w`.
+
+Rewrite using `[hnorm, hqv, inv_pow]`. Establish `h1` using `GlobalTheory.CompanionTheory.SW.Dil.scale_fv v lam t ht0 w hk`. Establish `h2` using `GlobalTheory.CompanionTheory.SW.Dil.coordK_map (Fv F v) σ hσ b lam t ht0 _ h1`. Establish `h3` using `map_mul_unit μ (Units.map (s : _ →* _) u * u)`. Establish `hval : ((Units.map (s : _ →* _) u * u : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) = algebraMap (Fv F v) (Fv F v ⊗[F] E) t`.
+
+Rewrite using `[ht, ← hu]`. Both sides reduce to the same expression. Rewrite `h3` using `[hval, h2, map_mul, hchar]`. Establish `h4` using `smul_inj μ h3`. Establish `h5 : (distribHaarChar (Fv F v ⊗[F] E) u)⁻¹ = qv v ^ w`.
+
+Use `(pow_left_inj₀ zero_le' zero_le' two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[inv_pow, pow_two]`. Conclude with `h4.symm`. Rewrite using `[← h5, ← map_mul_unit μ u, hu]`.
+-/
 theorem coordK_map_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (c : Fv F v ⊗[F] E) (t : Fv F v) (w : ℕ), IsUnit c → algebraMap (Fv F v) (Fv F v ⊗[F] E) t = sigR (Fv F v) σ c * c → ‖t‖ = ((qv v : ℝ) ^ w)⁻¹ → (coordK (Fv F v) b lam).map (fun x => c * x) = (qv v ^ w) • coordK (Fv F v) b lam := by
   intro F E _ _ _ _ _ σ hσ d b v lam hlam c t w hc ht hnorm
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩

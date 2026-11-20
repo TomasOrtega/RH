@@ -6,6 +6,9 @@ open scoped Classical
 
 namespace GlobalTheory.IdemSumAdd
 
+/- English proof (translation)
+Introduce `D a b P Q es hPQ hQ ha hb`. Rewrite using `[← GlobalTheory.ExportSeries.idem_eq ha, ← GlobalTheory.ExportSeries.idem_eq hb, GlobalTheory.ExportSeries.idem, GlobalTheory.ExportSeries.idem, Finset.sum_union hPQ]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun PP hPP => GlobalTheory.ExportSeries.idemAt_eq (hQ PP hPP)`.
+-/
 theorem idemSum_union : ∀ (D : D7) (a b : AE D) (P Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.L2.DIV.Pl D.host.E → AE D), Disjoint P Q → (∀ PP ∈ Q, Formalism.L2.NTheta.IsIdemAt (es PP) PP) → IsIdemSum a P → IsIdemSum b (P ∪ Q) → b = a + ∑ PP ∈ Q, es PP := by
   intro D a b P Q es hPQ hQ ha hb
   rw [← GlobalTheory.ExportSeries.idem_eq ha, ← GlobalTheory.ExportSeries.idem_eq hb, GlobalTheory.ExportSeries.idem,

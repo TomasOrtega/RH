@@ -11,6 +11,15 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Chart
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ R m d hdet`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `x hx`. Establish `hmul : (R.gram d) *ᵥ x = 0`. Use function extensionality and compare the values at `a`.
+
+Establish `hsum : (∑ b, x b • d b) ⬝ᵥ (R.Hm *ᵥ star (d a)) = 0`. Rewrite using `[hx, zero_dotProduct]`. Rewrite `hsum` using `[sum_dotProduct]`. Simplify using `only [smul_dotProduct, smul_eq_mul] at hsum`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at hsum ⊢`.
+
+Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [RiemLat.gram, RiemLat.ip, Matrix.of_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[mul_comm]`. Establish `hx0 : x = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hdet.ne_zero hmul`.
+
+Introduce `i`. Rewrite using `[hx0, Pi.zero_apply]`.
+-/
 theorem linearIndependent_of_isUnit_gram_det :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
       [Module (𝓞 E) Λ] (R : RiemLat E g Λ) (m : ℕ) (d : Fin m → Fin g → ℂ),

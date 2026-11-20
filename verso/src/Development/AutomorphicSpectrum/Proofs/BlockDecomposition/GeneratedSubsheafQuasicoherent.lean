@@ -10,6 +10,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE.TwGen
 
+/- English proof (translation)
+Use `haveI := hA`. Use `haveI := hB`. Establish `hK : (kernel (cokernel.π f)).IsQuasicoherent` using `inferInstance`. Conclude with `GlobalTheory.QCoh.isQuasicoherent_of_iso (Abelian.imageIsoImage f ≪≫ (imageSubobjectIso f).symm)`.
+-/
 theorem isQuasicoherent_imageSubobject {X : Scheme.{0}} {A B : X.Modules}
     (hA : A.IsQuasicoherent) (hB : B.IsQuasicoherent) (f : A ⟶ B) :
     (imageSubobject f : X.Modules).IsQuasicoherent := by
@@ -19,6 +22,9 @@ theorem isQuasicoherent_imageSubobject {X : Scheme.{0}} {A B : X.Modules}
   exact GlobalTheory.QCoh.isQuasicoherent_of_iso
     (Abelian.imageIsoImage f ≪≫ (imageSubobjectIso f).symm)
 
+/- English proof (translation)
+Introduce `X H hH P hP n b`. Establish `hO : (SheafOfModules.unit X.ringCatSheaf : X.Modules).IsQuasicoherent` using `inferInstance`. Establish `hS : (GlobalTheory.twistZ (SheafOfModules.unit X.ringCatSheaf) H (-n)).IsQuasicoherent` using `GlobalTheory.Twist.isQuasicoherent_twist (F := SheafOfModules.unit X.ringCatSheaf) (GlobalTheory.Twist.isLB_lbZPow hH (-n))`. Conclude with `isQuasicoherent_imageSubobject hS hP _`.
+-/
 theorem isQuasicoherent_genSub : ∀ {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB)
     {P : X.Modules}, P.IsQuasicoherent → ∀ (n : ℤ) (b : Γ(GlobalTheory.twistZ P H n, ⊤)),
     (genSub hH n b : X.Modules).IsQuasicoherent := by

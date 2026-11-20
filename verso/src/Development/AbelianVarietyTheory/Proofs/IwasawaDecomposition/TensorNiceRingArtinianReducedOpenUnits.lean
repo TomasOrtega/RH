@@ -10,6 +10,25 @@ namespace GlobalTheory.GaugeEx
 open NumberField IsDedekindDomain MeasureTheory Topology in
 open scoped TensorProduct NNReal ENNReal in
 
+/- English proof (translation)
+Establish `hR : IsOpenEmbedding (Units.val : Rˣ → R)` using `IsOpenUnits.isOpenEmbedding_unitsVal`. Establish `hLc : Continuous (fun x : S => Algebra.leftMulMatrix b x)` using `IsModuleTopology.continuous_of_linearMap (Algebra.leftMulMatrix b).toLinearMap`. Establish `hopenR : IsOpen {r : R | IsUnit r}` using `hR.isOpen_range`. Establish `hinvR : ContinuousOn (Ring.inverse : R → R) {r | IsUnit r}`. Introduce and unpack `_ ⟨u, rfl⟩`.
+
+Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Rewrite using `[← hR.continuousAt_iff]`. Establish `h : (Ring.inverse ∘ Units.val : Rˣ → R) = fun v => ↑v⁻¹`. Use function extensionality and compare the values at `v`. Simplify using `[Ring.inverse_unit]`.
+
+Rewrite using `[h]`. Conclude with `Units.continuous_coe_inv.continuousAt`. Take `⟨g, hg⟩ : ∃ g : S → S, ∀ x, g x = b.equivFun.symm (Matrix.mulVec (Algebra.leftMulMatrix b x)⁻¹ (b.equivFun 1))` from `⟨_, fun _ => rfl⟩`. Establish `key : ∀ x, IsUnit (Algebra.leftMulMatrix b x).det → x * g x = 1`. Introduce `x hx`.
+
+Apply `b.equivFun.injective` to reduce the goal to its premises. Rewrite using `[Module.Basis.equivFun_apply, ← Algebra.leftMulMatrix_mulVec_repr, ← Module.Basis.equivFun_apply, hg, LinearEquiv.apply_symm_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hx, Matrix.one_mulVec, Module.Basis.equivFun_apply]`. Establish `hunit : ∀ x : S, IsUnit x ↔ IsUnit (Algebra.leftMulMatrix b x).det`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (h.map (Algebra.leftMulMatrix b))`. Introduce `h`. Conclude with `⟨⟨x, g x, key x h, by rw [mul_comm]; exact key x h⟩, rfl⟩`. Establish `hopenS : IsOpen {x : S | IsUnit x}`.
+
+Establish `h : {x : S | IsUnit x} = (fun x : S => (Algebra.leftMulMatrix b x).det) ⁻¹' {r : R | IsUnit r}` using `Set.ext hunit`. Rewrite using `[h]`. Conclude with `hopenR.preimage hLc.matrix_det`. Establish `hc1 : ContinuousOn (fun x : S => Ring.inverse (Algebra.leftMulMatrix b x).det) {x : S | IsUnit x}` using `hinvR.comp hLc.matrix_det.continuousOn (fun x hx => (hunit x).mp hx)`. Establish `hc2 : ContinuousOn (fun x : S => (Algebra.leftMulMatrix b x)⁻¹) {x : S | IsUnit x}`.
+
+Repeatedly rewrite using `[Matrix.inv_def]`. Conclude with `hc1.smul hLc.matrix_adjugate.continuousOn`. Establish `hsymm : Continuous (b.equivFun.symm : (ι → R) → S)` using `LinearMap.continuous_on_pi b.equivFun.symm.toLinearMap`. Establish `hc3 : ContinuousOn g {x : S | IsUnit x}`. Establish `h : g = (fun M : Matrix ι ι R => b.equivFun.symm (Matrix.mulVec M (b.equivFun 1))) ∘ (fun x : S => (Algebra.leftMulMatrix b x)⁻¹)`.
+
+Use function extensionality and compare the values at `x`. Conclude with `hg x`. Rewrite using `[h]`. Conclude with `(hsymm.comp (continuous_id.matrix_mulVec continuous_const)).comp_continuousOn hc2`. Establish `hgu : ∀ u : Sˣ, g u = ↑u⁻¹`.
+
+Introduce `u`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨Units.isEmbedding_val_mk' hc3 hgu, hopenS⟩⟩`.
+-/
 theorem _root_.GlobalTheory.GaugeEx.isOpenUnits_of_basis {R S ι : Type} [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [IsOpenUnits R] [CommRing S] [Algebra R S] [TopologicalSpace S]
     [IsModuleTopology R S] [IsTopologicalRing S] [Fintype ι] (b : Module.Basis ι R S) :
@@ -74,6 +93,11 @@ theorem _root_.GlobalTheory.GaugeEx.isOpenUnits_of_basis {R S ι : Type} [CommRi
 open NumberField IsDedekindDomain MeasureTheory Topology in
 open scoped TensorProduct NNReal ENNReal in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ R _ _ _ _ _ _ _ _ _ hR`. Take `⟨hArt, hRed, hOpen, -⟩` from `hR`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsArtinianRing.of_finite R (R ⊗[F] E)`.
+
+Conclude with `_root_.GlobalTheory.ReducedAlg.isReduced_tensor (k := F) R E`. Use `haveI := _root_.GlobalTheory.GaugeEx.modTopTens (F := F) (E := E) R haveI := _root_.GlobalTheory.GaugeEx.topRingTens (F := F) (E := E) R`. Conclude with `_root_.GlobalTheory.GaugeEx.isOpenUnits_of_basis (Algebra.TensorProduct.basis R (Module.finBasis F E))`.
+-/
 theorem _root_.GlobalTheory.GaugeEx.nice_tensor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], _root_.GlobalTheory.GaugeEx.Nice R → IsArtinianRing (R ⊗[F] E) ∧ IsReduced (R ⊗[F] E) ∧ IsOpenUnits (R ⊗[F] E) := by
   intro F E _ _ _ _ _ R _ _ _ _ _ _ _ _ _ hR
   obtain ⟨hArt, hRed, hOpen, -⟩ := hR

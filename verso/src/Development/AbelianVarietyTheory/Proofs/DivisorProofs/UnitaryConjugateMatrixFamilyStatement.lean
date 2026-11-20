@@ -24,6 +24,9 @@ open scoped Classical
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_frames_extend | exact GlobalTheory.exists_frames_extend | (intros; apply GlobalTheory.exists_frames_extend <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_conjugate_matrix_family : ∀ (K : Type) [Field K] (N n : ℕ) (g : Matrix (Fin N) (Fin n) K) (M : Matrix (Fin n) (Fin n) K) (A : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ), N ≤ n → M.det ≠ 0 →
     g * M = (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) → (∀ σ, (A σ).det ≠ 0) →
     (∀ σ, ∃ U ∈ Matrix.unitaryGroup (Fin N) ℂ, A ((starRingEnd ℂ).comp σ) = (A σ).map (starRingEnd ℂ) * U) →

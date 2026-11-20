@@ -8,6 +8,13 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ a ψ hψ t ht i j hij Ω hΩ`. Establish `hL : {k | finRep E a k ψ = ψ} ∈ nhds (1 : GL (Fin a) (Af E))` using `hψ.1.level.mem_nhds (by simp)`. Take `⟨R, hR0, hcov⟩` from `GlobalTheory.T.unipotentRadical_adelic_eq_rat_mul_boundedReal_mul_level E a (j : ℕ) _ hL`. Take `⟨Ω', B, C, hΩ', hC, hvar⟩` from `GlobalTheory.T.siegelCone_smooth_variation_along_bounded_unipotent E a t ht i j hij Ω hΩ R hR0`. Use `⟨Ω', B, C, hΩ', hC, fun r d hr hrt hd M hM hY c hc => ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.cuspForm_norm_le_of_unipotent_variation E a ψ hψ (j : ℕ) (by omega) j.2 (infGL E a (d * c)) (C * (r j / r i) * M) fun x => ?_` and prove the remaining obligations. Take `⟨ξ, z, k, hk, hz, hx⟩` from `hcov x`. Establish `hk' : finRep E a k ψ = ψ` using `hk`. Establish `e : ψ.1 (unip x * infGL E a (d * c)) = ψ.1 (infGL E a (unip z * (d * c)))`. Rewrite using `[hx, mul_assoc, mul_assoc, ← infGL_comm, ← mul_assoc (infGL E a (unip z)), ← map_mul, hψ.1.left]`.
+
+Use `congrArg (fun φ : Sm E a => φ.1 (infGL E a (unip z * (d * c)))) hk'` as an intermediate fact. Conclude with `this`. Rewrite using `[e]`. Conclude with `hvar ψ r d hr hrt hd M hM hY c hc z hz`.
+-/
 theorem cuspForm_decay_step : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ψ : Sm E a), IsCuspForm ψ → ∀ t : ℝ, 0 < t → ∀ i j : Fin a, (j : ℕ) = i + 1 → ∀ (Ω : Set (GL (Fin a) (Cinf E))), IsCompact Ω → ∃ (Ω' : Set (GL (Fin a) (Cinf E))) (B : Finset (Lie E a)) (C : ℝ), IsCompact Ω' ∧ 0 ≤ C ∧ ∀ (r : Fin a → ℝ) (d : GL (Fin a) (Cinf E)), (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → d.val = Matrix.diagonal (fun i => fun _ => (r i : ℂ)) → ∀ M : ℝ, 0 ≤ M → (∀ Y ∈ B, ∀ c' ∈ Ω', ‖lieD Y ψ.1 (infGL E a (d * c'))‖ ≤ M) → ∀ c ∈ Ω, ‖ψ.1 (infGL E a (d * c))‖ ≤ C * (r j / r i) * M := by
   intro E _ _ _ a ψ hψ t ht i j hij Ω hΩ
   have hL : {k | finRep E a k ψ = ψ} ∈ nhds (1 : GL (Fin a) (Af E)) :=

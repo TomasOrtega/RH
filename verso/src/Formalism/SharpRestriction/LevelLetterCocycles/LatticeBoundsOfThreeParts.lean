@@ -18,6 +18,9 @@ def PStep (lenO : ℕ∞) (m : ℕ) (c : ℝ) (A B : Submodule O FF) (isGen : Pr
     (isGen → ∃ s : Finset Q, s.card ≤ m ∧ Submodule.span O (↑s : Set Q) = ⊤) ∧
     (¬ isGen → ∃ L kO : ℕ, Module.length O Q ≤ (L : ℕ∞) ∧ lenO = kO ∧ (L : ℝ) ≤ c * kO)
 
+/- English proof (translation)
+Take `⟨hle, Q, i1, i2, ob, hk, hg, hl⟩` from `h`. Conclude with `⟨hle, Q, i1, i2, ob, hk, fun hq => hg (hpq.2 hq), fun hq => hl (fun hp => hq (hpq.1 hp))⟩`.
+-/
 theorem PStep.congr {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF} {p q : Prop} (hpq : p ↔ q)
     (h : PStep lenO m c A B p) : PStep lenO m c A B q := by
   obtain ⟨hle, Q, i1, i2, ob, hk, hg, hl⟩ := h
@@ -28,15 +31,26 @@ def PChain (lenO : ℕ∞) (m : ℕ) (c : ℝ) (A B : Submodule O FF) (ng nl : �
     Fl 0 = A ∧ Fl k = B ∧ gen ⊆ Finset.range k ∧ gen.card ≤ ng ∧ k - gen.card ≤ nl ∧
     ∀ i < k, PStep lenO m c (Fl i) (Fl (i + 1)) (i ∈ gen)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => A, ∅, rfl, rfl, Finset.empty_subset _, by simp, by simp, fun i hi => absurd hi (Nat.not_lt_zero i)⟩`.
+-/
 theorem PChain.refl (lenO : ℕ∞) (m : ℕ) (c : ℝ) (A : Submodule O FF) : PChain lenO m c A A 0 0 :=
   ⟨0, fun _ => A, ∅, rfl, rfl, Finset.empty_subset _, by simp, by simp,
     fun i hi => absurd hi (Nat.not_lt_zero i)⟩
 
+/- English proof (translation)
+Take `⟨k, Fl, gen, h0, hk, hsub, hg, hl, hs⟩` from `h`. Conclude with `⟨k, Fl, gen, h0, hk, hsub, hg.trans h1, hl.trans h2, hs⟩`.
+-/
 theorem PChain.mono {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF} {ng nl ng' nl' : ℕ}
     (h : PChain lenO m c A B ng nl) (h1 : ng ≤ ng') (h2 : nl ≤ nl') : PChain lenO m c A B ng' nl' := by
   obtain ⟨k, Fl, gen, h0, hk, hsub, hg, hl, hs⟩ := h
   exact ⟨k, Fl, gen, h0, hk, hsub, hg.trans h1, hl.trans h2, hs⟩
 
+/- English proof (translation)
+Take `⟨k, Fl, gen, h0, hk, -, -, -, hs⟩` from `h`. Establish `key : ∀ i, i ≤ k → Fl i ≤ Fl 0`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+
+Conclude with `le_rfl`. Consider the case `succ j ih => intro hj; exact ((hs j (by omega)).1).trans (ih (by omega))`. Rewrite using `[← hk, ← h0]`. Conclude with `key k le_rfl`.
+-/
 theorem PChain.le {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF} {ng nl : ℕ}
     (h : PChain lenO m c A B ng nl) : B ≤ A := by
   obtain ⟨k, Fl, gen, h0, hk, -, -, -, hs⟩ := h
@@ -48,6 +62,33 @@ theorem PChain.le {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B : Submodule O FF} {ng
   rw [← hk, ← h0]
   exact key k le_rfl
 
+/- English proof (translation)
+Take `⟨k₁, F₁, g₁, h0₁, hk₁, hs₁, hg₁, hl₁, hst₁⟩` from `h₁`. Take `⟨k₂, F₂, g₂, h0₂, hk₂, hs₂, hg₂, hl₂, hst₂⟩` from `h₂`. Set `Fl : ℕ → Submodule O FF` to `fun i => if i ≤ k₁ then F₁ i else F₂ (i - k₁)`. Set `gen : Finset ℕ` to `g₁ ∪ g₂.map (addRightEmbedding k₁)`. Establish `hFl₁ : ∀ i, i ≤ k₁ → Fl i = F₁ i` using `fun i hi => if_pos hi`.
+
+Establish `hFl₂ : ∀ i, k₁ ≤ i → Fl i = F₂ (i - k₁)`. Introduce `i hi`. Distinguish the cases in `h : i ≤ k₁`. Establish `hik : i = k₁` using `le_antisymm h hi`. Rewrite using `[hik]`.
+
+Use `show (if k₁ ≤ k₁ then F₁ k₁ else F₂ (k₁ - k₁)) = F₂ (k₁ - k₁)`. Rewrite using `[if_pos le_rfl, Nat.sub_self, hk₁, h0₂]`. Conclude with `if_neg h`. Establish `hdisj : Disjoint g₁ (g₂.map (addRightEmbedding k₁))`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `a ha hb`. Take `⟨x, -, rfl⟩` from `Finset.mem_map.1 hb`. Establish `hx` using `Finset.mem_range.1 (hs₁ ha)`. Rewrite `hx` using `[addRightEmbedding_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hmem₁ : ∀ i, i < k₁ → (i ∈ gen ↔ i ∈ g₁)`. Introduce `i hi`. Simplify using `only [gen, Finset.mem_union, Finset.mem_map, addRightEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨x, -, rfl⟩)`.
+
+Conclude with `h`. Conclude with `absurd hi (by omega)`. Conclude with `fun h => Or.inl h`. Establish `hmem₂ : ∀ i, k₁ ≤ i → (i ∈ gen ↔ i - k₁ ∈ g₂)`. Introduce `i hi`.
+
+Simplify using `only [gen, Finset.mem_union, Finset.mem_map, addRightEmbedding_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | ⟨x, hx, rfl⟩)`. Conclude with `absurd (Finset.mem_range.1 (hs₁ h)) (by omega)`. Rewrite using `[Nat.add_sub_cancel]` and apply the resulting hypothesis.
+
+Introduce `h`. Conclude with `Or.inr ⟨i - k₁, h, by omega⟩`. Establish `c1 : g₁.card ≤ k₁` using `by simpa using Finset.card_le_card hs₁`. Establish `c2 : g₂.card ≤ k₂` using `by simpa using Finset.card_le_card hs₂`. Establish `hc : gen.card = g₁.card + g₂.card`.
+
+Rewrite using `[Finset.card_union_of_disjoint hdisj, Finset.card_map]`. Use `⟨k₁ + k₂, Fl, gen, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFl₁ 0 (Nat.zero_le _), h0₁]`. Rewrite using `[hFl₂ _ (Nat.le_add_right _ _), Nat.add_sub_cancel_left, hk₂]`. Introduce `i hi`.
+
+Simplify using `only [gen, Finset.mem_union, Finset.mem_map, addRightEmbedding_apply] at hi`. Rewrite using `[Finset.mem_range]`. Break down `hi with h | ⟨x, hx, rfl⟩` into its components or cases. Use `Finset.mem_range.1 (hs₁ h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `Finset.mem_range.1 (hs₂ hx)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Distinguish the cases in `h : i < k₁`. Rewrite using `[hFl₁ i h.le, hFl₁ (i + 1) h]`. Conclude with `(hst₁ i h).congr (hmem₁ i h).symm`.
+
+Use `push Not at h`. Rewrite using `[hFl₂ i h, hFl₂ (i + 1) (by omega), show i + 1 - k₁ = (i - k₁) + 1 by omega]`. Conclude with `(hst₂ (i - k₁) (by omega)).congr (hmem₂ i h).symm`.
+-/
 theorem PChain.trans {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B C : Submodule O FF} {ng nl ng' nl' : ℕ}
     (h₁ : PChain lenO m c A B ng nl) (h₂ : PChain lenO m c B C ng' nl') :
     PChain lenO m c A C (ng + ng') (nl + nl') := by
@@ -111,6 +152,13 @@ theorem PChain.trans {lenO : ℕ∞} {m : ℕ} {c : ℝ} {A B C : Submodule O FF
       rw [hFl₂ i h, hFl₂ (i + 1) (by omega), show i + 1 - k₁ = (i - k₁) + 1 by omega]
       exact (hst₂ (i - k₁) (by omega)).congr (hmem₂ i h).symm
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_ A _`. Conclude with `⟨A, by simpa using PChain.refl lenO m c A, by simp⟩`.
+
+Consider the case `cons i L ih`. Introduce `hQ A hA`. Take `⟨B₁, h1, hP1⟩` from `hstep i (hQ i (by simp)) A hA`. Take `⟨B₂, h2, hP2⟩` from `ih (fun j hj => hQ j (by simp [hj])) B₁ (h1.le.trans hA)`. Use `⟨B₂, (h1.trans h2).mono (le_of_eq (by simp only [List.length_cons]; ring)) (le_of_eq (by simp only [List.length_cons]; ring)), ?_⟩` and prove the remaining obligations.
+
+Introduce `j hj`. Break down `List.mem_cons.1 hj with rfl | hj` into its components or cases. Conclude with `hmono _ _ _ h2.le hP1`. Conclude with `hP2 j hj`.
+-/
 theorem iter_chain {lenO : ℕ∞} {m : ℕ} {c : ℝ} {ι : Type} (P : ι → Submodule O FF → Prop)
     (Q : ι → Prop) (hmono : ∀ i A B, B ≤ A → P i A → P i B) (A₀ : Submodule O FF) (a b : ℕ)
     (hstep : ∀ i, Q i → ∀ A, A ≤ A₀ → ∃ B, PChain lenO m c A B a b ∧ P i B) :
@@ -137,6 +185,13 @@ end Chain
 def evens (n d : ℕ) [NeZero n] : Finset (ZMod n) :=
   Finset.univ.filter fun c : ZMod n => (c.val + d) % 2 = 0
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hn`. Establish `hn0 : n ≠ 0` using `NeZero.ne n`. Establish `: Fact (1 < n)` using `⟨by omega⟩`. Rewrite using `[ZMod.val_add, ZMod.val_one]`. Establish `hc` using `ZMod.val_lt c`.
+
+Distinguish the cases in `h : c.val + 1 < n`. Rewrite using `[Nat.mod_eq_of_lt h]`. Use linear arithmetic over natural numbers and integers. Establish `h' : c.val + 1 = n` using `by omega`. Rewrite using `[h', Nat.mod_self]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem parity_succ {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) (c : ZMod n) :
     ((c + 1).val + d) % 2 ≠ (c.val + d) % 2 := by
   obtain ⟨j, hj⟩ := hn
@@ -149,6 +204,13 @@ theorem parity_succ {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) (c : ZMod n) :
   · have h' : c.val + 1 = n := by omega
     rw [h', Nat.mod_self]; omega
 
+/- English proof (translation)
+Establish `hodd : (evens n d).card ≤ (Finset.univ.filter fun c : ZMod n => ¬ (c.val + d) % 2 = 0).card`. Use `Finset.card_le_card_of_injOn (fun c => c + 1) ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Establish `hc' : (c.val + d) % 2 = 0` using `by simpa [evens] using hc`. Use `parity_succ hn d c` as an intermediate fact.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers. Introduce `a _ b _ hab`. Conclude with `add_right_cancel hab`. Establish `htot` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (ZMod n))) (fun c : ZMod n => (c.val + d) % 2 = 0)`.
+
+Rewrite `htot` using `[Finset.card_univ, ZMod.card]`. Unfold `evens at hodd ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_card_evens_le {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) :
     2 * (evens n d).card ≤ n := by
   have hodd : (evens n d).card ≤
@@ -184,6 +246,11 @@ def sigC (l h η : ℕ) : ℕ := ⌈(((Formalism.MainNotions.CrystallineLiftingI
 
 def lenC (r m l H S : ℕ) : ℝ := (r : ℝ) * (S : ℝ) + 2 * (m : ℝ) * cD l H
 
+/- English proof (translation)
+Establish `hlam` using `one_le_lam l (h + η) (by omega)`. Establish `haR` using `aR_nonneg l (h + η) (by omega)`. Use `⟨aN l (h + η), h, (s : ℝ) - 2 * Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η - 2 + lam l (h + η), EB l h η S, (e : ℝ) - S - EB l h η S - Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) + 2 - lam l (h + η), le_rfl, ?_, ?_, le_rfl …` and prove the remaining obligations. Conclude with `(Nat.ceil_lt_add_one haR).le`. Unfold `cocyclesToWachVectorsExponent at hs`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `wachVectorSubmoduleChainExponent at he`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem expC_of (l : ℕ) (hl : 11 ≤ l) (h η S s e : ℕ) (hs : (s : ℝ) ≤ cocyclesToWachVectorsExponent l h η S)
     (he : (e : ℝ) ≤ wachVectorSubmoduleChainExponent l h η S) : ExpC l h η S (e + s) := by
   have hlam := one_le_lam l (h + η) (by omega)
@@ -205,6 +272,11 @@ def wachVectorLiftingExponent (l h η S : ℕ) : ℝ :=
 
 def B6 (l h η S : ℕ) : ℝ := (S : ℝ) + EG l h η S + Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) + lam l (h + η)
 
+/- English proof (translation)
+Establish `hlam` using `one_le_lam l (h + η) (by omega)`. Establish `hl1 : (1 : ℝ) ≤ (l : ℝ) - 1`. Establish `: (11 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS : ((S : ℝ) + 1) / ((l : ℝ) - 1) ≤ (S : ℝ) + 1` using `div_le_self (by positivity) hl1`.
+
+Unfold `wachVectorLiftingExponent B6 wachVectorSubmoduleChainExponent EB EG`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bound_three_five_add_six_le (l : ℕ) (hl : 11 ≤ l) (h η S : ℕ) :
     wachVectorLiftingExponent l h η S + B6 l h η S ≤ wachVectorSubmoduleChainExponent l h η S := by
   have hlam := one_le_lam l (h + η) (by omega)
@@ -225,6 +297,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨k, Fl, gen, h0, hk, hsub, hg, hl, hs⟩` from `h`. Use `⟨k, Fl, gen, hg.trans hng, hl.trans hnl, h0, hsub, fun i hi => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hle, Q, i1, i2, ob, hker, hgen, hlen⟩` from `hs i hi`. Conclude with `⟨hle, Q, i1, i2, ob, hker, hgen, hlen⟩`. Conclude with `hB x (by rw [← hk]; exact hx)`.
+-/
 theorem kerChain_of_pchain {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {FF : Type}
     [AddCommGroup FF] [Module O FF] (g : FF →ₗ[O] ↥(latticeFiniteCocycles PD T₂.L)) (n m : ℕ) (c : ℝ) (e : ℕ)
     (Bs : Submodule O FF) (ng nl : ℕ) (hng : ng ≤ 4 * n) (hnl : nl ≤ 3 * n / 2)
@@ -286,11 +361,19 @@ def RhoLift [NeZero n] (W : LocWach PD LL O v n) : Prop :=
       Formalism.MainNotions.CrystallineLiftingInputs.InPN W T₂ 1 (((PD.p : O) ^ k) • w - W.map F u) →
       ((PD.p : O) ^ k) • κ ∈ F.ImF PD
 
+/- English proof (translation)
+Unfold `LatHom.ImF`. Conclude with `le_sup_right`.
+-/
 theorem coboundary_le_image {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) :
     latticeCoboundaries T₂.L ≤ F.ImF (PD := PD) := by
   unfold LatHom.ImF
   exact le_sup_right
 
+/- English proof (translation)
+Establish `hsumI : ((PD.p : O) ^ a) • (∑ c ∈ s, κ c) ∈ F.ImF PD`. Rewrite using `[Finset.smul_sum]`. Conclude with `Submodule.sum_mem _ hκ`. Rewrite using `[pow_add, mul_smul]`. Break down `hx with h1 | h1` into its components or cases.
+
+Use `Submodule.add_mem _ (Submodule.smul_mem _ ((PD.p : O) ^ a) (coboundary_le_image F h1)) hsumI` as an intermediate fact. Rewrite `this` using `[← smul_add, sub_add_cancel]`. Then use the resulting hypothesis. Use `Submodule.sub_mem _ (Submodule.smul_mem _ ((PD.p : O) ^ a) (coboundary_le_image F h1)) hsumI` as an intermediate fact. Rewrite `this` using `[← smul_sub, add_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_of_sum {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {ι : Type}
     (s : Finset ι) (κ : ι → G → T₂.V) (x : G → T₂.V) (a b : ℕ)
     (hκ : ∀ c ∈ s, ((PD.p : O) ^ a) • κ c ∈ F.ImF PD)
@@ -311,6 +394,9 @@ section Closure
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Take `⟨y, hy, hΔ, rfl⟩` from `h`. Use `⟨a • y, ?_, fun δ hδ => by rw [map_smul, hΔ δ hδ], smul_comm a (W.π₀ ^ k) y⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) a y]`. Conclude with `(W.N T).smul_mem _ hy`.
+-/
 theorem inPN_smul {k : ℕ} {x : W.DD T} (a : O) (h : Formalism.MainNotions.CrystallineLiftingInputs.InPN W T k x) :
     Formalism.MainNotions.CrystallineLiftingInputs.InPN W T k (a • x) := by
   obtain ⟨y, hy, hΔ, rfl⟩ := h
@@ -318,6 +404,9 @@ theorem inPN_smul {k : ℕ} {x : W.DD T} (a : O) (h : Formalism.MainNotions.Crys
   rw [← algebraMap_smul (LetA O n) a y]
   exact (W.N T).smul_mem _ hy
 
+/- English proof (translation)
+Take `⟨y, hy, hΔ, rfl⟩` from `h`. Take `⟨y', hy', hΔ', rfl⟩` from `h'`. Conclude with `⟨y + y', (W.N T).add_mem hy hy', fun δ hδ => by rw [map_add, hΔ δ hδ, hΔ' δ hδ], (smul_add _ _ _).symm⟩`.
+-/
 theorem inPN_add {k : ℕ} {x x' : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.InPN W T k x)
     (h' : Formalism.MainNotions.CrystallineLiftingInputs.InPN W T k x') : Formalism.MainNotions.CrystallineLiftingInputs.InPN W T k (x + x') := by
   obtain ⟨y, hy, hΔ, rfl⟩ := h
@@ -325,14 +414,23 @@ theorem inPN_add {k : ℕ} {x x' : W.DD T} (h : Formalism.MainNotions.Crystallin
   exact ⟨y + y', (W.N T).add_mem hy hy', fun δ hδ => by rw [map_add, hΔ δ hδ, hΔ' δ hδ],
     (smul_add _ _ _).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [smul_comm (letE i : LetA O n) a x, h.1], fun δ hδ => by rw [map_smul, h.2 δ hδ]⟩`.
+-/
 theorem dl_smul {i : ZMod n} {x : W.DD T} (a : O) (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T i (a • x) :=
   ⟨by rw [smul_comm (letE i : LetA O n) a x, h.1], fun δ hδ => by rw [map_smul, h.2 δ hδ]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [smul_add, h.1, h'.1], fun δ hδ => by rw [map_add, h.2 δ hδ, h'.2 δ hδ]⟩`.
+-/
 theorem dl_add {i : ZMod n} {x x' : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x)
     (h' : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x') : Formalism.MainNotions.CrystallineLiftingInputs.DL W T i (x + x') :=
   ⟨by rw [smul_add, h.1, h'.1], fun δ hδ => by rw [map_add, h.2 δ hδ, h'.2 δ hδ]⟩
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hK`. Establish `e : (a * r) ^ (k + t) = (a ^ t * r ^ (k + t)) * a ^ k` using `by ring`. Rewrite using `[e, mul_smul]`. Conclude with `N.smul_mem _ h`.
+-/
 theorem pow_smul_mem_mul {M : Type} [AddCommGroup M] [Module (LetA O n) M]
     (N : Submodule (LetA O n) M) {a r : LetA O n} {x : M} {k K : ℕ} (hK : k ≤ K)
     (h : a ^ k • x ∈ N) : (a * r) ^ K • x ∈ N := by
@@ -341,6 +439,9 @@ theorem pow_smul_mem_mul {M : Type} [AddCommGroup M] [Module (LetA O n) M]
   rw [e, mul_smul]
   exact N.smul_mem _ h
 
+/- English proof (translation)
+Take `⟨k, k', hk⟩` from `h`. Use `⟨k, k', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm _ a x, ← algebraMap_smul (LetA O n) a]`. Conclude with `(W.N T).smul_mem _ hk`.
+-/
 theorem polesFin_smul {x : W.DD T} (a : O) (h : Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T x) :
     Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T (a • x) := by
   obtain ⟨k, k', hk⟩ := h
@@ -348,6 +449,13 @@ theorem polesFin_smul {x : W.DD T} (a : O) (h : Formalism.MainNotions.Crystallin
   rw [smul_comm _ a x, ← algebraMap_smul (LetA O n) a]
   exact (W.N T).smul_mem _ hk
 
+/- English proof (translation)
+Take `⟨k₁, k₁', h₁⟩` from `h`. Take `⟨k₂, k₂', h₂⟩` from `h'`. Use `⟨max k₁ k₂, max k₁' k₂', ?_⟩` and prove the remaining obligations. Establish `e₁` using `Finset.prod_range_mul_prod_Ico (Formalism.MainNotions.LiftingTheory.pk W) (le_max_left k₁ k₂)`. Establish `e₂` using `Finset.prod_range_mul_prod_Ico (Formalism.MainNotions.LiftingTheory.pk W) (le_max_right k₁ k₂)`.
+
+Rewrite using `[smul_add]`. Use `(W.N T).add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[← e₁]`. Conclude with `pow_smul_mem_mul (W.N T) (le_max_left _ _) h₁`. Rewrite using `[← e₂]`.
+
+Conclude with `pow_smul_mem_mul (W.N T) (le_max_right _ _) h₂`.
+-/
 theorem polesFin_add {x x' : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T x)
     (h' : Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T x') : Formalism.MainNotions.CrystallineLiftingInputs.PolesFin W T (x + x') := by
   obtain ⟨k₁, k₁', h₁⟩ := h
@@ -360,6 +468,9 @@ theorem polesFin_add {x x' : W.DD T} (h : Formalism.MainNotions.CrystallineLifti
   · rw [← e₁]; exact pow_smul_mem_mul (W.N T) (le_max_left _ _) h₁
   · rw [← e₂]; exact pow_smul_mem_mul (W.N T) (le_max_right _ _) h₂
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨dl_smul W T a h1, polesFin_smul W T a h2, ?_⟩` and prove the remaining obligations. Establish `e : W.γ T (a • x) - a • x = a • (W.γ T x - x)` using `by rw [map_smul, smul_sub]`. Rewrite using `[e]`. Conclude with `inPN_smul W T a h3`.
+-/
 theorem inI_smul {i : ZMod n} {x : W.DD T} (a : O) (h : Formalism.MainNotions.CrystallineLiftingInputs.InI W T i x) :
     Formalism.MainNotions.CrystallineLiftingInputs.InI W T i (a • x) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -368,6 +479,11 @@ theorem inI_smul {i : ZMod n} {x : W.DD T} (a : O) (h : Formalism.MainNotions.Cr
   rw [e]
   exact inPN_smul W T a h3
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Use `⟨dl_add W T h1 h1', polesFin_add W T h2 h2', ?_⟩` and prove the remaining obligations. Establish `e : W.γ T (x + x') - (x + x') = (W.γ T x - x) + (W.γ T x' - x')`. Rewrite using `[map_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `inPN_add W T h3 h3'`.
+-/
 theorem inI_add {i : ZMod n} {x x' : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.InI W T i x)
     (h' : Formalism.MainNotions.CrystallineLiftingInputs.InI W T i x') : Formalism.MainNotions.CrystallineLiftingInputs.InI W T i (x + x') := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -411,6 +527,21 @@ def LatticeBoundSix [NeZero n] (W : LocWach PD LL O v n) : Prop :=
       (m = 0 → ∀ f : ↥Fs, ∃ x : W.DD T₁, Formalism.MainNotions.CrystallineLiftingInputs.InI W T₁ c x ∧
           Formalism.MainNotions.CrystallineLiftingInputs.InPN W T₂ 1 (((PD.p : O) ^ (e₆ + 2 * S)) • w f - W.map F x))
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset`. Take `⟨e₂, he₂, H345⟩` from `h345 d T₁ T₂ F b S η m hset`. Take `⟨e₆, he₆, H6⟩` from `h6 d T₁ T₂ F b S η m hset`. Establish `hl : 11 ≤ PD.p` using `hset.2.1`. Use `⟨e₆ + e₂, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `bound_three_five_add_six_le PD.p hl (hpar n b S) η S` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c hc FF _ _ _ _ Fs w hw`. Take `⟨⟨F₁, h₁, y, hch₁, hy⟩, hy0⟩` from `H345 c hc FF Fs w hw`.
+
+Use `⟨?_, fun hm f j => ?_⟩` and prove the remaining obligations. Set `w' : ↥F₁ →ₗ[O] W.DD T₂` to `((PD.p : O) ^ e₂) • (w ∘ₗ Submodule.inclusion h₁) - ((W.map F).restrictScalars O) ∘ₗ y`. Establish `hw' : ∀ f : ↥F₁, w' f = ((PD.p : O) ^ e₂) • w (Submodule.inclusion h₁ f) - W.map F (y f)` using `fun f => rfl`. Take `⟨⟨F₂, h₂, hch₂, hx⟩, -⟩` from `H6 c hc FF F₁ w' (fun f => by rw [hw']; exact (hy f).2)`. Use `⟨F₂, h₂.trans h₁, hch₁.trans hch₂, fun f j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hxI, hxP⟩` from `hx f`. Establish `hyI` using `(hy (Submodule.inclusion h₂ f)).1`. Use `⟨((PD.p : O) ^ j) • (((PD.p : O) ^ e₆) • y (Submodule.inclusion h₂ f) + x), inI_smul W T₁ _ (inI_add W T₁ (inI_smul W T₁ _ hyI) hxI), ?_⟩` and prove the remaining obligations. Establish `hinc : Submodule.inclusion h₁ (Submodule.inclusion h₂ f) = Submodule.inclusion (h₂.trans h₁) f` using `rfl`. Establish `key : ((PD.p : O) ^ (j + (e₆ + e₂))) • w (Submodule.inclusion (h₂.trans h₁) f) - W.map F (((PD.p : O) ^ j) • (((PD.p : O) ^ e₆) • y (Submodule.inclusion h₂ f) + x)) = ((PD.p : O) ^ j) • (((PD.p : O) ^ e₆) • w' (Submodule.inclusion h₂ f) - W.map F x)`.
+
+Rewrite using `[hw', hinc, LinearMap.map_smul_of_tower, map_add, LinearMap.map_smul_of_tower]`. Use `module`. Rewrite using `[key]`. Conclude with `inPN_smul W T₂ _ hxP`. Take `⟨y0, hy0'⟩` from `hy0 hm`.
+
+Set `w'' : ↥Fs →ₗ[O] W.DD T₂` to `((PD.p : O) ^ (e₂ + S)) • w - ((W.map F).restrictScalars O) ∘ₗ y0`. Establish `hw'' : ∀ f : ↥Fs, w'' f = ((PD.p : O) ^ (e₂ + S)) • w f - W.map F (y0 f)` using `fun f => rfl`. Take `⟨x, hxI, hxP⟩` from `(H6 c hc FF Fs w'' (fun f => by rw [hw'']; exact (hy0' f).2)).2 hm f`. Use `⟨((PD.p : O) ^ j) • (((PD.p : O) ^ (e₆ + 2 * S)) • y0 f + x), inI_smul W T₁ _ (inI_add W T₁ (inI_smul W T₁ _ (hy0' f).1) hxI), ?_⟩` and prove the remaining obligations. Establish `key : ((PD.p : O) ^ (j + (e₆ + e₂) + 3 * S)) • w f - W.map F (((PD.p : O) ^ j) • (((PD.p : O) ^ (e₆ + 2 * S)) • y0 f + x)) = ((PD.p : O) ^ j) • (((PD.p : O) ^ (e₆ + 2 * S)) • w'' f - W.map F x)`.
+
+Rewrite using `[hw'', LinearMap.map_smul_of_tower, map_add, LinearMap.map_smul_of_tower]`. Use `module`. Rewrite using `[key]`. Conclude with `inPN_smul W T₂ _ hxP`.
+-/
 theorem lattice_bound_three_six_of [NeZero n] (W : LocWach PD LL O v n) (h345 : WachVectorLiftingBound W) (h6 : LatticeBoundSix W) :
     WachVectorSubmoduleChainBound W := by
   intro d T₁ T₂ F b S η m hset
@@ -471,6 +602,9 @@ def LemmaGs [NeZero n] (W : LocWach PD LL O v n) : Prop :=
         ((PD.p : LL) ^ (⌈(E : ℝ) + Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (hpar n b S + η) +
           ((b (i - 1) + S : ℕ) : ℝ) - (b i : ℝ)⌉ : ℤ)) • x ∈ Formalism.MainNotions.CrystallineLiftingInputs.DlatImg W F i
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hS i hi`. Take `⟨E, hE, hx⟩` from `h d T₁ T₂ F b S η m hS i hi`. Establish `hl : 11 ≤ PD.p` using `hS.2.1`. Establish `hlam` using `one_le_lam PD.p (hpar n b S + η) (by omega)`. Conclude with `⟨E, by linarith, hx⟩`.
+-/
 theorem lemmaG_of_sharp [NeZero n] (W : LocWach PD LL O v n) (h : LemmaGs W) :
     Formalism.MainNotions.CrystallineLiftingInputs.LemmaG W := by
   intro d T₁ T₂ F b S η m hS i hi
@@ -501,6 +635,23 @@ def LemmaDN [NeZero n] (W : LocWach PD LL O v n) : Prop :=
         lenOl PD (O := O) = kO ∧
         (L : ℝ) ≤ lenC (finrank LL T₂.V) m PD.p (hpar n b S + η) S * kO
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset`. Take `⟨s, hs, H12⟩` from `h12 d T₁ T₂ F b S η m hset`. Take `⟨e, he, H36⟩` from `h36 d T₁ T₂ F b S η m hset`. Establish `hR'` using `hR d T₁ T₂ F b S η m hset`. Establish `hl : 11 ≤ PD.p` using `hset.2.1`.
+
+Establish `hn : Even n` using `hset.2.2.1`. Use `⟨e + s, expC_of PD.p hl _ η S s e hs he, ?_, ?_⟩` and prove the remaining obligations. Introduce `FF _ _ _ _ g _`. Take `⟨F₂, w, hch12, -, hhyp, hcls⟩` from `H12 FF g`. Take `⟨Fs, hch36, hP⟩` from `iter_chain (lenO := lenOl PD (O := O)) (m := m) (c := lenC (finrank LL T₂.V) m PD.p (hpar n b S + η) S) (fun c Bs => ∀ (f : FF) (hf : f ∈ F₂), f ∈ Bs → ∀ j : ℕ, ∃ u : W.DD T₁, Formalism.MainNotions.CrystallineLiftingInputs.InI W T₁ c u ∧ Formalism.MainNotions.CrystallineLiftingIn …`.
+
+Take `⟨⟨F', hF', hch, hPc⟩, -⟩` from `H36 c hc FF A ((w c).comp (Submodule.inclusion hA)) (fun f => hhyp c hc _)`. Conclude with `⟨F', hch, fun f _ hfF j => hPc ⟨f, hfF⟩ j⟩)`. Use the proof step `(evens n d).toList (fun c hc => Finset.mem_toList.1 hc) F₂ le_rfl`. Establish `hcard` using `two_mul_card_evens_le hn d`. Rewrite `hch36` using `[Finset.length_toList]`.
+
+Use `kerChain_of_pchain F g n m _ (e + s) Fs _ _ ?_ ?_ (hch12.trans hch36) ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Introduce `f hf`. Establish `hf2 : f ∈ F₂` using `hch36.le hf`.
+
+Take `⟨κ, hκ, hsum⟩` from `hcls ⟨f, hf2⟩`. Use `smul_mem_of_sum F (evens n d) κ _ e s (fun c hc => ?_) hsum` and prove the remaining obligations. Take `⟨u, hu, hpn⟩` from `hP c (Finset.mem_toList.2 hc) f hf2 hf 0`. Rewrite `hpn` using `[zero_add]`. Conclude with `hR' c hc (w c ⟨f, hf2⟩) u (κ c) e hu (hκ c hc) hpn`.
+
+Introduce `hm z hz`. Take `⟨F₂, w, -, h0, hhyp, hcls⟩` from `H12 O (LinearMap.toSpanSingleton O ↥(latticeFiniteCocycles PD T₂.L) ⟨z, hz⟩)`. Establish `h1 : (1 : O) ∈ F₂` using `by rw [h0 hm]; trivial`. Take `⟨κ, hκ, hsum⟩` from `hcls ⟨1, h1⟩`. Establish `hg1 : ((LinearMap.toSpanSingleton O ↥(latticeFiniteCocycles PD T₂.L) ⟨z, hz⟩ 1 : ↥(latticeFiniteCocycles PD T₂.L)) : G → T₂.V) = z`.
+
+Simplify using `[LinearMap.toSpanSingleton_apply]`. Rewrite `hsum` using `[hg1]`. Rewrite using `[show e + s + 3 * S = (e + 3 * S) + s by omega]`. Use `smul_mem_of_sum F (evens n d) κ z (e + 3 * S) s (fun c hc => ?_) hsum` and prove the remaining obligations. Take `⟨u, hu, hpn⟩` from `(H36 c hc O F₂ (w c) (fun f => hhyp c hc f)).2 hm ⟨1, h1⟩ 0`.
+
+Rewrite `hpn` using `[zero_add]`. Conclude with `hR' c hc (w c ⟨1, h1⟩) u (κ c) (e + 3 * S) hu (hκ c hc) hpn`.
+-/
 theorem lattice_bounds_of_local [NeZero n] (W : LocWach PD LL O v n) (h12 : CocyclesToWachVectorsBound W) (h36 : WachVectorSubmoduleChainBound W)
     (hR : RhoLift W) : LocalLiftingConditions W := by
   intro d T₁ T₂ F b S η m hset
@@ -564,6 +715,9 @@ def rhoLift (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
     [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], RhoLift ((HW l).W K 1 LL hg)
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Conclude with `lattice_bounds_of_local _ (h12 l K LL hg) (h36 l K LL hg) (hR l K LL hg)`.
+-/
 theorem lattice_bounds_of_three_parts (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h12 : cocyclesToWachVectorsBoundAtGoodExtensions D HW F) (h36 : wachVectorSubmoduleChainBoundAtGoodExtensions D HW F) (hR : rhoLift D HW F) : localLiftingConditionsGlobal D HW F := by
   intro l _ K LL hg _
@@ -577,18 +731,27 @@ def steps6 (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
     [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], LatticeBoundSix ((HW l).W K 1 LL hg)
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Conclude with `lattice_bounds_of_local _ (h12 l K LL hg) (lattice_bound_three_six_of _ (h345 l K LL hg) (h6 l K LL hg)) (hR l K LL hg)`.
+-/
 theorem lattice_bounds_of_four_parts (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h12 : cocyclesToWachVectorsBoundAtGoodExtensions D HW F) (h345 : wachVectorLiftingBoundAtGoodExtensions D HW F) (h6 : steps6 D HW F) (hR : rhoLift D HW F) :
     localLiftingConditionsGlobal D HW F := by
   intro l _ K LL hg _
   exact lattice_bounds_of_local _ (h12 l K LL hg) (lattice_bound_three_six_of _ (h345 l K LL hg) (h6 l K LL hg)) (hR l K LL hg)
 
+/- English proof (translation)
+Introduce `hA` and use `lattice_bounds_of_three_parts D HW F (h hA).1 (h hA).2.1 (h hA).2.2`.
+-/
 theorem lattice_bounds_of_admissible (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ)
     (h : admitted D HW F Cm CR CA CB CK → cocyclesToWachVectorsBoundAtGoodExtensions D HW F ∧ wachVectorSubmoduleChainBoundAtGoodExtensions D HW F ∧ rhoLift D HW F) :
     admitted D HW F Cm CR CA CB CK → localLiftingConditionsGlobal D HW F := fun hA =>
   lattice_bounds_of_three_parts D HW F (h hA).1 (h hA).2.1 (h hA).2.2
 
+/- English proof (translation)
+The claim follows from `stmt_of_stepsAdm D HW F Cm CR CA CB CK (lattice_bounds_of_admissible D HW F Cm CR CA CB CK h)`.
+-/
 theorem stmt_of_lemmas (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ)
     (h : admitted D HW F Cm CR CA CB CK → cocyclesToWachVectorsBoundAtGoodExtensions D HW F ∧ wachVectorSubmoduleChainBoundAtGoodExtensions D HW F ∧ rhoLift D HW F) :

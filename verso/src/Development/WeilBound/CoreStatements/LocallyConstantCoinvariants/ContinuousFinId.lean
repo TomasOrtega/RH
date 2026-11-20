@@ -14,6 +14,17 @@ open scoped Pointwise TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hc : Continuous fun a => ‖(f a : ℂ) - 1‖` using `(hf.sub continuous_const).norm`. Establish `h0 : {a : (w.adicCompletion E)ˣ | ‖(f a : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 1` using `(isOpen_lt hc continuous_const).mem_nhds (by simp)`. Rewrite `h0` using `[Units.isEmbedding_val₀.nhds_eq_comap, mem_comap]`. Take `⟨t, ht, hsub⟩` from `h0`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds.mp ht`.
+
+Establish `hγ0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Use `⟨(1 - WithZero.log (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)).toNat, fun x hx hx1 => ?_⟩` and prove the remaining obligations. Use `Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow]`. Apply `hsub` to reduce the goal to its premises.
+
+Apply `hγ` to reduce the goal to its premises. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff_lt_embedding, Units.val_pow_eq_pow_val, Units.val_one]`. Establish `hx' : Valued.v (x : w.adicCompletion E) = 1` using `hx`. Establish `h1 : Valued.v ((x : w.adicCompletion E) ^ m - 1) ≤ Valued.v ((x : w.adicCompletion E) - 1)`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e : (x : w.adicCompletion E) ^ (m + 1) - 1 = x ^ m * (x - 1) + (x ^ m - 1)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_le _ ?_ ih` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow, hx', one_pow, one_mul]`. Use `(h1.trans hx1).trans_lt ?_` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hγ0]`. Conclude with `WithZero.exp_lt_exp.mpr (by omega)`.
+-/
 theorem exists_level {w : HeightOneSpectrum (𝓞 E)} (f : (w.adicCompletion E)ˣ →* ℂˣ) (hf : Continuous fun x => (f x : ℂ)) :
     ∃ n : ℕ, ∀ x, IsUnitAt w x → Valued.v ((x : w.adicCompletion E) - 1) ≤ WithZero.exp (-(n : ℤ)) → f x = 1 := by
   have hc : Continuous fun a => ‖(f a : ℂ) - 1‖ := (hf.sub continuous_const).norm
@@ -42,9 +53,23 @@ theorem exists_level {w : HeightOneSpectrum (𝓞 E)} (f : (w.adicCompletion E)�
   conv_rhs => rw [← WithZero.exp_log hγ0]
   exact WithZero.exp_lt_exp.mpr (by omega)
 
+/- English proof (translation)
+The claim follows from `valued_alg w _`.
+-/
 theorem valued_atFin (w : HeightOneSpectrum (𝓞 E)) (x : Eˣ) :
     Valued.v ((atFin w x : (w.adicCompletion E)ˣ) : w.adicCompletion E) = w.valuation E x := valued_alg w _
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_level f hf`. Establish `hu : w.valuation E (π : E) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 h`. Use `haveI : Finite (𝓞 E ⧸ w.asIdeal ^ n) := Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ w.ne_bot)`.
+
+Establish `key : ∀ i j : ℕ, i < j → Ideal.Quotient.mk (w.asIdeal ^ n) (π ^ i) = Ideal.Quotient.mk _ (π ^ j) → ∃ N : ℕ, 0 < N ∧ f (atFin w x) ^ N = 1` using `fun i j hij e => by`. Use `⟨j - i, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow]`. Use `hn _ (by rw [IsUnitAt, valued_atFin, Units.val_pow_eq_pow_val, map_pow, hx, hu, one_pow]) ?_` and prove the remaining obligations. Establish `h1 : π ^ i * (π ^ (j - i) - 1) ∈ w.asIdeal ^ n`.
+
+Rewrite using `[mul_sub, ← pow_add, Nat.add_sub_cancel' hij.le, mul_one]`. Conclude with `Ideal.Quotient.eq.1 e.symm`. Establish `h2 : w.valuation E ((π ^ i * (π ^ (j - i) - 1) : 𝓞 E) : E) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_le_pow_iff_mem _ _ _).2 h1`.
+
+Establish `h3 : ((atFin w (x ^ (j - i)) : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1 = algebraMap E _ ((π : E) ^ (j - i) - 1)`. Rewrite using `[map_sub, map_one, ← hx, ← Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Rewrite using `[h3, valued_alg]`. Simplify `h2` using `[hu]`.
+
+Take `⟨i, j, hij, e⟩` from `Finite.exists_ne_map_eq_of_infinite fun k : ℕ => Ideal.Quotient.mk (w.asIdeal ^ n) (π ^ k)`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `key i j h e`. Conclude with `key j i h e.symm`.
+-/
 theorem exists_pow_eq_one {w : HeightOneSpectrum (𝓞 E)} (f : (w.adicCompletion E)ˣ →* ℂˣ) (hf : Continuous fun x => (f x : ℂ))
     (π : 𝓞 E) (x : Eˣ) (hx : (x : E) = π) (h : π ∉ w.asIdeal) : ∃ N : ℕ, 0 < N ∧ f (atFin w x) ^ N = 1 := by
   obtain ⟨n, hn⟩ := exists_level f hf
@@ -78,6 +103,9 @@ def finId : Ideles E →* (AF F ⊗[F] E)ˣ :=
   (ofFinIdele F E).comp ((Units.map (finAdEquiv F E).symm.toRingHom.toMonoidHom).comp
     (Units.map (RingHom.snd (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)).toMonoidHom))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Establish `h : Continuous fun y : AdeleRing (𝓞 E) E => 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm y.2)` using `continuous_const.add (continuous_extZero.comp (continuous_finAdEquiv_symm.comp continuous_snd))`. Conclude with `Units.continuous_iff.2 ⟨h.comp Units.continuous_val, h.comp Units.continuous_coe_inv⟩`.
+-/
 theorem continuous_finId : Continuous (finId F E) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _
@@ -90,11 +118,31 @@ def finPr (x : Eˣ) : Ideles E :=
                        map_one' := Prod.ext rfl (map_one _)
                        map_mul' := fun a b => Prod.ext (mul_one 1).symm (map_mul _ a b) } x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FrobDense.eq_one_of_local (χ.comp (finId F E)) (hχ.comp continuous_finId) _ rfl fun w => Circle.ext (congrArg Units.val (h w))`.
+-/
 theorem fin_eq_one {χ : Chr F E} (hχ : Continuous χ) (x : Eˣ) (h : ∀ w, locChar χ w (atFin w x) = 1) :
     χ (finId F E (finPr x)) = 1 :=
   GlobalTheory.FrobDense.eq_one_of_local (χ.comp (finId F E)) (hχ.comp continuous_finId) _ rfl fun w =>
     Circle.ext (congrArg Units.val (h w))
 
+/- English proof (translation)
+Use `set a := Units.map (inclR (F := F) (AF F)).toMonoidHom x with ha`. Use `set f := finId F E (finPr x) with hf`. Establish `hfv : (f : AF F ⊗[F] E) = 1 - extZero F E 1 + extZero F E ((finAdEquiv F E).symm (algebraMap E _ (x : E)))` using `rfl`. Establish `i1 : infTens F E f = 1`. Rewrite using `[hfv, map_add, map_sub, map_one, infTens_extZero, infTens_extZero, sub_zero, add_zero]`.
+
+Establish `f1 : finTens F E f = finTens F E a`. Rewrite using `[hfv, map_add, map_sub, map_one, finTens_extZero, finTens_extZero, sub_self, zero_add, RingEquiv.symm_apply_eq]`. Conclude with `((toFinAd_tmul 1 (x : E)).trans (by rw [map_one, one_mul])).symm`. Establish `e : ((a / f : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) * f = a` using `by rw [← Units.val_mul, div_mul_cancel]`. Establish `i2 : infTens F E (a / f : (AF F ⊗[F] E)ˣ) = infTens F E a`.
+
+Use `congrArg (infTens F E) e` as an intermediate fact. Rewrite `this` using `[map_mul, i1, mul_one]`. Then use the resulting hypothesis. Establish `f2 : finTens F E (a / f : (AF F ⊗[F] E)ˣ) = 1`. Use `congrArg (finTens F E) e` as an intermediate fact. Rewrite `this` using `[map_mul, f1]`.
+
+Conclude with `((a.isUnit.map (finTens F E)).mul_left_inj).1 (this.trans (one_mul _).symm)`. Establish `hA : At (evI F) (((a / f : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1)` using `fun u hu => by`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Rewrite using `[Algebra.smul_def]`. Use `tens_ext ?_ ?_` and prove the remaining obligations.
+
+Establish `: infTens F E (algebraMap (AF F) (AF F ⊗[F] E) u) = 0`. Express the relevant statement in the definitionally equal form `u.1 ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[hu1, TensorProduct.zero_tmul]`. Rewrite using `[map_mul, this, zero_mul, map_zero]`. Rewrite using `[map_mul, map_sub, f2, map_one, sub_self, mul_zero, map_zero]`.
+
+Establish `hc : ∀ w (y : AF F ⊗[F] E), compInf F E w y = Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) (infTens F E y)` using `fun w y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+
+Establish `hp : ∀ w, piInf (τ w) ((a / f : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (τ w).1 x` using `fun w => by`. Express the relevant statement in the definitionally equal form `infEmb (τ w) (compInf F E w _) = _`. Rewrite using `[hc, i2, ← hc]`. Express the relevant statement in the definitionally equal form `infEmb (τ w) (evInf F w 1 ⊗ₜ[F] (x : E)) = _`. Rewrite using `[map_one, infEmb_tmul, map_one, one_mul]`.
+
+Use `hm _ hA` as an intermediate fact. Rewrite `this` using `[map_div, hχ.2 x, fin_eq_one hχ.1 x h, div_one]`. Simplify using `only [hp] at this`. Conclude with `this.symm`.
+-/
 theorem arch_eq_one {χ : Chr F E} (hχ : IsHecke F E χ) {τ : ∀ w : InfinitePlace F, EmbOver E w} {m : InfinitePlace F → ℤ}
     (hm : HasExp τ χ m) (x : Eˣ) (h : ∀ w, locChar χ w (atFin w x) = 1) :
     ∏ w, ((τ w).1 x / ‖(τ w).1 x‖) ^ m w = 1 := by
@@ -139,6 +187,9 @@ theorem arch_eq_one {χ : Chr F E} (hχ : IsHecke F E χ) {τ : ∀ w : Infinite
   simp only [hp] at this
   exact this.symm
 
+/- English proof (translation)
+Introduce `z hz` and use `by rw [MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib] refine Finset.prod_congr rfl fun w _ => ?_ have h0 : piInf (τ w) (z : AE F E) ≠ 0 := (z.isUnit.map _).ne_zero rw [Pi.sub_apply, zpow_sub₀ (div_ne_zero h0 (by simpa using h0))]`.
+-/
 theorem hasExp_div {χ χ' : Chr F E} {τ : ∀ w : InfinitePlace F, EmbOver E w} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') (m - m') := fun z hz => by
   rw [MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]
@@ -146,6 +197,27 @@ theorem hasExp_div {χ χ' : Chr F E} {τ : ∀ w : InfinitePlace F, EmbOver E w
   have h0 : piInf (τ w) (z : AE F E) ≠ 0 := (z.isUnit.map _).ne_zero
   rw [Pi.sub_apply, zpow_sub₀ (div_ne_zero h0 (by simpa using h0))]
 
+/- English proof (translation)
+Introduce `e`. Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hg : ∀ w, ∃ g : Gal(E/ℚ), ∀ x, (τ w₀).1 (g x) = (τ w).1 x` using `fun w => by`. Take `⟨g, hg⟩` from `ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) (τ w₀).1 (τ w).1 (Subsingleton.elim _ _)`. Conclude with `⟨g.symm, fun x => RingHom.congr_fun hg x⟩`.
+
+Use `choose g hg using hg`. Use `lift m to InfinitePlace F → ℕ using fun w => (hm w).le`. Establish `hz : ∀ w, (τ w).1 (π : E) ≠ 0` using `fun w => (map_ne_zero _).2 (RingOfIntegers.coe_ne_zero_iff.2 h0)`. Establish `e2 : ∏ w, ((τ w).1 (π : E)) ^ m w = ∏ w, ((τ w).1 (σ π)) ^ m w`. Establish `e3 : ∏ w, ((τ w).1 (π : E) / (τ w).1 (σ π)) ^ m w = 1`.
+
+Use `congrArg (· ^ 2) e` as an intermediate fact. Simplify using `only [one_pow, ← Finset.prod_pow, zpow_natCast] at this`. Rewrite using `[← this]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, h.2.2.2]`.
+
+Use `congr 1`. Rewrite using `[div_pow, ← Complex.ofReal_pow, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, sq, mul_div_mul_left _ _ (hz w)]`. Both sides reduce to the same expression. Simplify using `only [div_pow, Finset.prod_div_distrib] at e3`. Conclude with `(div_eq_one_iff_eq (Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by`.
+
+Rewrite using `[h.2.2.2]`. Conclude with `star_ne_zero.2 (hz w)))).1 e3`. Establish `e4 : ∏ w, (g w • π) ^ m w = ∏ w, ((g w * conjQ h) • π) ^ m w`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `(τ w₀).1.injective` to reduce the goal to its premises.
+
+Simplify using `only [map_prod, map_pow]`. Apply the tactic sequence `refine Eq.trans ?_ (e2.trans ?_) <;> refine Finset.prod_congr rfl fun w _ => ?_`. Conclude with `congrArg (· ^ m w) (hg w π)`. Conclude with `congrArg (· ^ m w) (hg w (σ π)).symm`. Establish `g0 : g w₀ = 1` using `AlgEquiv.ext fun x => (τ w₀).1.injective (hg w₀ x)`.
+
+Establish `h1 : ∏ w, (g w • π) ^ m w ∈ P` using `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ w₀)) (by`. Rewrite using `[g0, one_smul]`. Conclude with `Ideal.pow_mem_of_mem _ hπ _ (Int.natCast_pos.1 (hm w₀)))`. Rewrite `h1` using `[e4]`. Take `⟨w, -, hw⟩` from `Ideal.IsPrime.prod_mem_iff.1 h1`.
+
+Establish `h2 : π ∈ (g w * conjQ h)⁻¹ • P`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`. Conclude with `Ideal.IsPrime.mem_of_pow_mem inferInstance _ hw`. Establish `h3` using `inv_eq_one.1 (eq_one_of_smul hv P _ (honly _ ((inferInstance : P.IsPrime).smul _) h2))`. Establish `h4 : ∀ x, (τ w₀).1 x = (τ w).1 (σ x)` using `fun x => by`.
+
+Rewrite using `[← hg w, ← conjQ_apply h, ← AlgEquiv.mul_apply, h3]`. Both sides reduce to the same expression. Establish `h5 : w₀ = w` using `InfinitePlace.embedding_injective _ (RingHom.ext fun a => by`. Rewrite using `[← (τ w₀).2, ← (τ w).2, RingHom.comp_apply, RingHom.comp_apply, h4, σ.commutes])`. Substitute `h5` using the available equality.
+
+Take `⟨x, hx⟩` from `exists_cm_conj_ne h`. Conclude with `hx ((τ w₀).1.injective (h4 x)).symm`.
+-/
 theorem not_prod [IsGalois ℚ E] (h : IsCMExt F E σ) {v : Pl F} (hv : SplitsFully E v) (P : Ideal (𝓞 E)) [P.IsMaximal]
     [P.LiesOver v.asIdeal] (π : 𝓞 E) (hπ : π ∈ P) (h0 : π ≠ 0) (honly : ∀ Q : Ideal (𝓞 E), Q.IsPrime → π ∈ Q → Q = P)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (m : InfinitePlace F → ℤ) (hm : ∀ w, 0 < m w) :
@@ -195,6 +267,35 @@ theorem not_prod [IsGalois ℚ E] (h : IsCMExt F E σ) {v : Pl F} (hv : SplitsFu
   obtain ⟨x, hx⟩ := exists_cm_conj_ne h
   exact hx ((τ w₀).1.injective (h4 x)).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv t e`. Use `haveI := hT.base.galois`. Use `set w := splitPrime t with hw`. Establish `hC` using `hT.chars`. Establish `hH : IsHecke F E X.ν` using `⟨hC.heckeα.1.div' hC.heckeβ.1, fun x => by`.
+
+Rewrite using `[Chars.ν, MonoidHom.div_apply, hC.heckeα.2, hC.heckeβ.2, div_one]⟩`. Establish `hU : ∀ u ∉ above E (X.T : Set (Pl F)), UnrAt X.ν u` using `fun u hu => by`. Rewrite using `[Chars.ν, div_eq_mul_inv]`. Conclude with `(hC.unrα u hu).mul (hC.unrβ u hu).inv`. Establish `hwU : UnrAt X.ν w` using `hU w (by`.
+
+Express the relevant statement in the definitionally equal form `w.under (𝓞 F) ∉ (X.T : Set (Pl F))`. Rewrite using `[splitPrime_under]`. Conclude with `hv.1)`. Take `⟨ϖ, hϖ⟩` from `v.valuation_exists_uniformizer F`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => by rw [h, map_zero] at hϖ; exact WithZero.exp_ne_zero hϖ.symm`.
+
+Set `p : Eˣ` to `Units.mk0 (algebraMap F E ϖ) ((map_ne_zero _).2 hϖ0)`. Establish `hp : w.valuation E p = WithZero.exp (-1 : ℤ)`. Rewrite using `[← valued_apply_eq_valuation]`. Conclude with `(valued_apply_algebraMap t ϖ).trans hϖ`. Establish `hp1 : locChar X.ν w (atFin w p) = 1`.
+
+Use `DFunLike.congr_fun e (Units.mk0 (algebraMap F (Fv F v) ϖ) ((map_ne_zero _).2 hϖ0))` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply]`. Rewrite using `[← this]`. Conclude with `congrArg _ (Units.ext (complMap_algebraMap (splitPrime_under t) ϖ).symm)`. Establish `hall : ∀ x : Eˣ, locChar X.ν w (atFin w x) = 1` using `fun x => by`.
+
+Establish `h0 : w.valuation E x ≠ 0` using `(map_ne_zero _).2 x.ne_zero`. Use `hwU (atFin w (x * p ^ WithZero.log (w.valuation E x))) (by` as an intermediate fact. Rewrite using `[IsUnitAt, valued_atFin, Units.val_mul, map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, hp, ← WithZero.exp_zsmul]`. Use `conv_lhs => enter [1]`. Rewrite using `[← WithZero.exp_log h0]`.
+
+Rewrite using `[← WithZero.exp_add]`. Use the proof step `simp)`. Rewrite `this` using `[map_mul, map_mul, map_zpow, map_zpow, hp1, one_zpow, mul_one]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, π₀, hπ₀⟩ : ∃ k : ℕ, 0 < k ∧ ∃ π₀ : 𝓞 E, w.asIdeal ^ k = Ideal.span {π₀} := by`. Set `I : nonZeroDivisors (Ideal (𝓞 E))` to `⟨w.asIdeal, mem_nonZeroDivisors_of_ne_zero w.ne_bot⟩`.
+
+Establish `h1 : ClassGroup.mk0 (I ^ Nat.card (ClassGroup (𝓞 E))) = 1` using `by rw [map_pow, pow_card_eq_one']`. Establish `h2` using `(ClassGroup.mk0_eq_one_iff (I ^ Nat.card (ClassGroup (𝓞 E))).2).1 h1`. Conclude with `⟨_, Nat.card_pos, h2.generator, h2.span_singleton_generator.symm⟩`. Establish `hne : π₀ ≠ 0` using `fun h => pow_ne_zero k w.ne_bot (by rw [hπ₀, h]; simp)`. Establish `only : ∀ Q : Ideal (𝓞 E), Q.IsPrime → π₀ ∈ Q → Q = w.asIdeal` using `fun Q hQ h => (w.isMaximal.eq_of_le hQ.ne_top (Ideal.IsPrime.le_of_pow_le (n := k) (hπ₀ ▸ (Ideal.span_singleton_le_iff_mem _).2 h))).symm`.
+
+Establish `hin : π₀ ∈ w.asIdeal` using `Ideal.pow_le_self hk.ne' (hπ₀ ▸ Ideal.mem_span_singleton_self _)`. Set `x : Eˣ` to `Units.mk0 (π₀ : E) (RingOfIntegers.coe_ne_zero_iff.2 hne)`. Establish `loc : ∀ u : HeightOneSpectrum (𝓞 E), ∃ N : ℕ, 0 < N ∧ locChar X.ν u (atFin u x) ^ N = 1` using `fun u => by`. Distinguish the cases in `hu : u = w`. Conclude with `⟨1, one_pos, by rw [hu, hall, one_pow]⟩`.
+
+Conclude with `exists_pow_eq_one _ (continuous_locChar hH.1 u) π₀ x rfl fun h => hu (HeightOneSpectrum.ext (only _ u.isPrime h))`. Use `choose N hN hN1 using loc`. Establish `hfin : (above E (X.T : Set (Pl F))).Finite` using `(X.T.finite_toSet.biUnion fun u _ => (Formalism.L2.Host.aboveF (L := E) F u).finite_toSet).subset fun u hu => Set.mem_biUnion hu (mem_aboveF.2 rfl)`. Use `set M := ∏ u ∈ hfin.toFinset, N u with hM`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun u _ => hN u`.
+
+Establish `h1` using `arch_eq_one hH (hasExp_div hC.expα hC.expβ) (x ^ M) fun u => by`. Rewrite using `[map_pow, map_pow]`. Distinguish the cases in `hu : u ∈ hfin.toFinset`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem N hu`. Rewrite using `[hM, hc, pow_mul, hN1, one_pow]`.
+
+Distinguish the cases in `huw : u = w`. Rewrite using `[huw, hall, one_pow]`. Rewrite using `[hU u (by simpa using hu) _ (by`. Rewrite using `[IsUnitAt, valued_atFin]`. Express the relevant statement in the definitionally equal form `u.valuation E (algebraMap (𝓞 E) E π₀) = 1`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 fun h => huw (HeightOneSpectrum.ext (only _ u.isPrime h))), one_pow]`. Use `haveI := w.isMaximal`. Use `not_prod hT.base.cm hv.2 w.asIdeal (π₀ ^ M) (Ideal.pow_mem_of_mem _ hin _ hM0) (pow_ne_zero _ hne) (fun Q hQ h => only Q hQ (hQ.mem_of_pow_mem _ h)) B.emb (B.mα - B.mβ) (fun u => ?_) ?_` and prove the remaining obligations. Use `hT.geo.kappa u` as an intermediate fact.
+
+Rewrite using `[Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Simplify `h1` using `[x]`.
+-/
 theorem nu_statement : NuSt := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v hv t e
   classical

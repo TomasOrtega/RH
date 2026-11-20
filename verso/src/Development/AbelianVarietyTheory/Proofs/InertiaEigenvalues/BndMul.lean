@@ -10,6 +10,13 @@ def Bnd (p : ℕ) {n : ℕ} (A : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E
   ∃ m : ℕ, m.Coprime p ∧ ∀ (i j : Fin n) (Q : HeightOneSpectrum (𝓞 E)),
     Valued.v ((((m : FiniteAdeleRing (𝓞 E) E) * A i j)) Q) ≤ 1
 
+/- English proof (translation)
+Take `⟨a, ha, hA⟩` from `hA`. Take `⟨b, hb, hB⟩` from `hB`. Use `⟨a * b, Nat.Coprime.mul_left ha hb, fun i j Q => ?_⟩` and prove the remaining obligations. Set `φ : FiniteAdeleRing (𝓞 E) E →+* _` to `RestrictedProduct.evalRingHom _ Q`. Establish `hφ : ∀ x : FiniteAdeleRing (𝓞 E) E, x Q = φ x` using `fun _ => rfl`.
+
+Rewrite using `[hφ, Matrix.mul_apply, Finset.mul_sum, map_sum]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `k _`. Establish `hsplit : ((a * b : ℕ) : FiniteAdeleRing (𝓞 E) E) * (A i k * B k j) = ((a : FiniteAdeleRing (𝓞 E) E) * A i k) * ((b : FiniteAdeleRing (𝓞 E) E) * B k j)` using `by push_cast; ring`. Rewrite using `[hsplit, map_mul, Valuation.map_mul, ← hφ, ← hφ]`.
+
+Conclude with `mul_le_one' (hA i k Q) (hB k j Q)`.
+-/
 theorem bnd_mul (p n : ℕ) (A B : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) (hA : Bnd p A) (hB : Bnd p B) :
     Bnd p (A * B) := by
   obtain ⟨a, ha, hA⟩ := hA

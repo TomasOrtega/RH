@@ -12,6 +12,11 @@ open MeasureTheory Topology Filter Formalism.BasicNotions Formalism.L2.SG.HidaSe
   Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hA' : ContDiffAt ℝ 1 (fun z : P × Q => A z.2) (p0, q0)` using `hA.comp (p0, q0) contDiffAt_snd`. Establish `hK' : ContDiffAt ℝ 1 (fun z : P × Q => K z.1) (p0, q0)` using `hK.comp (p0, q0) contDiffAt_fst`. Use `⟨(B.contDiff.contDiffAt.comp (p0, q0) hA').clm_apply hK', fun x t => ?_⟩` and prove the remaining obligations. Establish `dA : HasFDerivAt (fun z : P × Q => A z.2) ((fderiv ℝ A q0).comp (ContinuousLinearMap.snd ℝ P Q)) (p0, q0)` using `(hA.differentiableAt one_ne_zero).hasFDerivAt.comp (p0, q0) (hasFDerivAt_snd)`. Establish `dK : HasFDerivAt (fun z : P × Q => K z.1) ((fderiv ℝ K p0).comp (ContinuousLinearMap.fst ℝ P Q)) (p0, q0)` using `(hK.differentiableAt one_ne_zero).hasFDerivAt.comp (p0, q0) (hasFDerivAt_fst)`.
+
+Establish `dBA` using `(B.hasFDerivAt.comp (p0, q0) dA)`. Establish `h : HasFDerivAt (fun z : P × Q => B (A z.2) (K z.1)) _ (p0, q0)` using `dBA.clm_apply dK`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd', ContinuousLinearMap.flip_apply]`. Rewrite using `[add_comm]`.
+-/
 theorem contDiffAt_bilinear_comp_prod {P Q M T : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup Q] [NormedSpace ℝ Q]
     [NormedAddCommGroup M] [NormedSpace ℝ M] [NormedAddCommGroup T] [NormedSpace ℝ T]
     (B : M →L[ℝ] T →L[ℝ] T) (A : Q → M) (K : P → T) (p0 : P) (q0 : Q)
@@ -37,14 +42,23 @@ section Rm
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b i`. Simplify using `[rmulT, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem rmulT_add_left (a a' : MfI X) (Y : TupI X) : rmulT X (a + a') Y = rmulT X a Y + rmulT X a' Y := by
   funext b i
   simp [rmulT, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b i`. Simplify using `[rmulT, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem rmulT_add_right (a : MfI X) (Y Y' : TupI X) : rmulT X a (Y + Y') = rmulT X a Y + rmulT X a Y' := by
   funext b i
   simp [rmulT, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, e.apply_symm_apply, e.apply_symm_apply, e.apply_symm_apply]`.
+-/
 theorem symm_add_of {A B : Type} [AddCommGroup A] [TopologicalSpace A] [AddCommGroup B] [TopologicalSpace B]
     (e : A ≃ₜ B) (he : ∀ x y, e (x + y) = e x + e y) (x y : B) : e.symm (x + y) = e.symm x + e.symm y := by
   apply e.injective
@@ -54,6 +68,13 @@ def Rm {μ' : Type} (eM : MfI X ≃ₜ EuclideanSpace ℝ μ') (m : EuclideanSpa
     (y : EuclideanSpace ℝ (KapI X)) : EuclideanSpace ℝ (KapI X) :=
   tupCoord X (rmulT X (eM.symm m) ((tupCoord X).symm y))
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hTs` using `symm_add_of (tupCoord X) (tupCoord_add X)`. Establish `hMs` using `symm_add_of eM heM`. Establish `H1 : ∀ m m' y, Rm X eM (m + m') y = Rm X eM m y + Rm X eM m' y`. Introduce `m m' y`.
+
+Simplify using `only [Rm, hMs, rmulT_add_left, tupCoord_add]`. Establish `H3 : ∀ m y y', Rm X eM m (y + y') = Rm X eM m y + Rm X eM m y'`. Introduce `m y y'`. Simplify using `only [Rm, hTs, rmulT_add_right, tupCoord_add]`. Establish `hc1 : ∀ y, Continuous fun m => Rm X eM m y` using `fun y => (tupCoord X).continuous.comp ((continuous_right_mul_tuple X).comp ((eM.symm.continuous).prodMk continuous_const))`.
+
+Establish `hc2 : ∀ m, Continuous fun y => Rm X eM m y` using `fun m => (tupCoord X).continuous.comp ((continuous_right_mul_tuple X).comp (continuous_const.prodMk (tupCoord X).symm.continuous))`. Establish `H2 : ∀ (r : ℝ) m y, Rm X eM (r • m) y = r • Rm X eM m y` using `fun r m y => map_real_smul (AddMonoidHom.mk' (fun m => Rm X eM m y) fun a b => H1 a b y) (hc1 y) r m`. Establish `H4 : ∀ (r : ℝ) m y, Rm X eM m (r • y) = r • Rm X eM m y` using `fun r m y => map_real_smul (AddMonoidHom.mk' (fun y => Rm X eM m y) fun a b => H3 m a b) (hc2 m) r y`. Set `B0 : EuclideanSpace ℝ μ' →ₗ[ℝ] EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X)` to `LinearMap.mk₂ ℝ (Rm X eM) H1 H2 H3 H4`. Use `⟨LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ B0), fun m y => rfl⟩` and prove the remaining obligations.
+-/
 theorem rm_bil {μ' : Type} [Fintype μ'] (eM : MfI X ≃ₜ EuclideanSpace ℝ μ') (heM : ∀ x y, eM (x + y) = eM x + eM y) :
     ∃ B : EuclideanSpace ℝ μ' →L[ℝ] EuclideanSpace ℝ (KapI X) →L[ℝ] EuclideanSpace ℝ (KapI X),
       ∀ m y, B m y = Rm X eM m y := by
@@ -87,6 +108,11 @@ def KapOrb {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) {ι : Type}
     EuclideanSpace ℝ (KapI X) :=
   tupCoord X (κ x • Y0 X u')
 
+/- English proof (translation)
+Use `haveI : NumberField.IsTotallyReal X.B.I.F := X.B.I.cm.totReal`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Take `⟨k, eK, hK⟩` from `sq_coord_tens X.B.I.F X.B.I.E`. Take `⟨k1, e1, h1⟩` from `sq_coord_pi eK hK (Fin (D.R.rS + 1 + D.R.rS))`. Take `⟨N, eM, hM⟩` from `sq_coord_pi e1 h1 (Fin (D.R.rS + 1 + D.R.rS))`.
+
+Use `⟨Fin N, inferInstance, eM.trans (EuclideanSpace.equiv (Fin N) ℝ).symm.toHomeomorph, fun x y => ?_⟩` and prove the remaining obligations. Use `show (EuclideanSpace.equiv (Fin N) ℝ).symm (eM (x + y)) = (EuclideanSpace.equiv (Fin N) ℝ).symm (eM x) + (EuclideanSpace.equiv (Fin N) ℝ).symm (eM y)`. Establish `h2 : eM ((x + y : MfI X)) = eM x + eM y` using `hM x y`. Rewrite using `[h2, map_add]`.
+-/
 theorem eM_ex {D : D7} (X : HidaSetting D) : ∃ (μ' : Type) (_ : Fintype μ') (eM : MfI X ≃ₜ EuclideanSpace ℝ μ'),
     ∀ x y, eM (x + y) = eM x + eM y := by
   haveI : NumberField.IsTotallyReal X.B.I.F := X.B.I.cm.totReal
@@ -100,6 +126,9 @@ theorem eM_ex {D : D7} (X : HidaSetting D) : ∃ (μ' : Type) (_ : Fintype μ') 
   have h2 : eM ((x + y : MfI X)) = eM x + eM y := hM x y
   rw [h2, map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [PsiC, Rm, KapOrb, Homeomorph.symm_apply_apply, smul_rmulT]`.
+-/
 theorem psiC_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (a : HmI X → MfI X) {ι η μ' : Type} [Fintype ι]
     [Fintype η] (κ : EuclideanSpace ℝ ι → HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J)
     (eH : HmI X ≃ₜ EuclideanSpace ℝ η) (eM : MfI X ≃ₜ EuclideanSpace ℝ μ') :
@@ -143,10 +172,20 @@ def KapSm : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ :
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)),
     StdConj X hb u' c S → LieCompl X S L → ContDiffAt ℝ 1 (KapOrb X u' (kap0 X hb c L)) 0
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL`. Conclude with `⟨h X u' ψ hT μinf νinf fibInf hP hb c S L hc hL, by rw [kap0_zero, one_smul]⟩`.
+-/
 theorem kappa_c1_of_smooth (h : KapSm) : LieComplementChartContDiffAt := by
   intro D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL
   exact ⟨h X u' ψ hT μinf νinf fibInf hP hb c S L hc hL, by rw [kap0_zero, one_smul]⟩
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC hD η _ eH hadd hb c S ι _ L hc hL`. Take `⟨μ', _, eM, heM⟩` from `eM_ex X`. Take `⟨B, hB⟩` from `rm_bil X eM heM`. Take `⟨hA, -⟩` from `hD eH eM hadd heM`. Take `⟨hk, -⟩` from `hK X u' ψ hT μinf νinf fibInf hP hb c S L hc hL`.
+
+Establish `e : PsiC X u' a (kap0 X hb c L) eH = fun z => B (eM (a (eH.symm z.2))) (KapOrb X u' (kap0 X hb c L) z.1)`. Rewrite using `[psiC_eq X u' a (kap0 X hb c L) eH eM]`. Use function extensionality and compare the values at `z`. Rewrite using `[hB]`. Unfold `PolarChartContDiffAt`.
+
+Rewrite using `[e]`. Conclude with `(contDiffAt_bilinear_comp_prod B (fun t => eM (a (eH.symm t))) _ 0 (eH (TI X u' hT)) hA hk).1`.
+-/
 theorem tuple_c1_of_kappa (hK : LieComplementChartContDiffAt) : PolarMapContDiffAtBase := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC hD η _ eH hadd hb c S ι _ L hc hL
   obtain ⟨μ', _, eM, heM⟩ := eM_ex X
@@ -162,6 +201,15 @@ theorem tuple_c1_of_kappa (hK : LieComplementChartContDiffAt) : PolarMapContDiff
   rw [e]
   exact (contDiffAt_bilinear_comp_prod B (fun t => eM (a (eH.symm t))) _ 0 (eH (TI X u' hT)) hA hk).1
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP Ω a hC hD η _ eH cν hadd hν hb c S ι _ L hc hL`. Take `⟨μ', _, eM, heM⟩` from `eM_ex X`. Take `⟨B, hB⟩` from `rm_bil X eM heM`. Take `⟨hA, hdA⟩` from `hD eH eM hadd heM`. Take `⟨hk, h0⟩` from `hK X u' ψ hT μinf νinf fibInf hP hb c S L hc hL`.
+
+Take `⟨Φ, hΦ, Dv, hDv, hvol, har⟩` from `hLam X u' ψ hT μinf νinf fibInf hP eH cν hadd hν hb c S L hc hL`. Use `⟨Φ, Dv, ?_, hDv, hvol, har⟩` and prove the remaining obligations. Establish `e : PsiC X u' a (kap0 X hb c L) eH = fun z => B (eM (a (eH.symm z.2))) (KapOrb X u' (kap0 X hb c L) z.1)`. Rewrite using `[psiC_eq X u' a (kap0 X hb c L) eH eM]`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[hB]`. Rewrite using `[e]`. Use `ContinuousLinearMap.ext fun z => ?_` and prove the remaining obligations. Rewrite using `[(contDiffAt_bilinear_comp_prod B (fun t => eM (a (eH.symm t))) _ 0 (eH (TI X u' hT)) hA hk).2 z.1 z.2, hdA, map_smul, ContinuousLinearMap.smul_apply, hB, hB]`. Use `show _ = Φ (z.1, z.2)`.
+
+Rewrite using `[hΦ, LamMap, add_comm]`. Use `congr 1`. Simplify using `only [Rm, Homeomorph.symm_apply_apply, eH.symm_apply_apply, hC.2.1, rmulT_one, Homeomorph.apply_symm_apply]`. Simplify using `only [Rm, KapOrb, Homeomorph.symm_apply_apply, h0]`.
+-/
 theorem tupDet_of (hK : LieComplementChartContDiffAt) (hLam : LamDet) : TupDet := by
   intro D X u' ψ hT μinf νinf fibInf hP Ω a hC hD η _ eH cν hadd hν hb c S ι _ L hc hL
   obtain ⟨μ', _, eM, heM⟩ := eM_ex X
@@ -185,9 +233,15 @@ theorem tupDet_of (hK : LieComplementChartContDiffAt) (hLam : LamDet) : TupDet :
   · simp only [Rm, Homeomorph.symm_apply_apply, eH.symm_apply_apply, hC.2.1, rmulT_one, Homeomorph.apply_symm_apply]
   · simp only [Rm, KapOrb, Homeomorph.symm_apply_apply, h0]
 
+/- English proof (translation)
+The claim follows from `tupStd_of_two (tuple_c1_of_kappa hK) (tupDet_of hK hLam)`.
+-/
 theorem tupStd_of_kap (hK : LieComplementChartContDiffAt) (hLam : LamDet) : TupStd :=
   tupStd_of_two (tuple_c1_of_kappa hK) (tupDet_of hK hLam)
 
+/- English proof (translation)
+The claim follows from `tupStd_of_kap (kappa_c1_of_smooth hK) hLam`.
+-/
 theorem tupStd_of_sm (hK : KapSm) (hLam : LamDet) : TupStd := tupStd_of_kap (kappa_c1_of_smooth hK) hLam
 
 end PI.AprimeInfW

@@ -13,6 +13,11 @@ section Act
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev ![u, v] (F i)) = dLin u i j + dLin v i j`. Rewrite using `[coeff_lin_ev _ (by`. Introduce `a i'`. Use `fin_cases a`.
+
+Conclude with `hu i'`. Conclude with `hv i')]`. Rewrite using `[Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, hF0, hF1, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+-/
 theorem dLin_addOf (F : Fin d → PS k 2 d)
     (hF0 : ∀ i l, coeff (Finsupp.single ((0 : Fin 2), l) 1) (F i) = if l = i then 1 else 0)
     (hF1 : ∀ i l, coeff (Finsupp.single ((1 : Fin 2), l) 1) (F i) = if l = i then 1 else 0)
@@ -31,9 +36,19 @@ theorem dLin_addOf (F : Fin d → PS k 2 d)
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rfl
 
+/- English proof (translation)
+Simplify using `[FB.actK, B.A.const]`.
+-/
 theorem const_actK' (B : FB R d O) (a : O) (l : Fin d) : constantCoeff (B.actK k a l) = 0 := by
   simp [FB.actK, B.A.const]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map (algebraMap R k) (B.A.act (a + b) i) = ev ![B.actK k a, B.actK k b] (B.FK k i)`. Rewrite using `[B.A.add_act]`. Use `show MvPowerSeries.map (algebraMap R k) (ev ![B.A.act a, B.A.act b] (B.G.F i)) = _`. Rewrite using `[Nab.map_ev (algebraMap R k) (by`.
+
+Introduce `j l`. Use `fin_cases j`. Conclude with `B.A.const a l`. Conclude with `B.A.const b l)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j l`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem actK_add (B : FB R d O) (a b : O) :
     B.actK k (a + b) = addOf (B.FK k) (B.actK k a) (B.actK k b) := by
   funext i
@@ -49,6 +64,13 @@ theorem actK_add (B : FB R d O) (a b : O) :
   funext j l
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map (algebraMap R k) (B.A.act (a * b) i) = ev ![B.actK k b] (B.actK k a i)`. Rewrite using `[B.A.mul_act]`. Use `show MvPowerSeries.map (algebraMap R k) (ev ![B.A.act b] (B.A.act a i)) = _`. Rewrite using `[Nab.map_ev (algebraMap R k) (by`.
+
+Introduce `j l`. Use `fin_cases j`. Conclude with `B.A.const b l)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem actK_mul (B : FB R d O) (a b : O) : B.actK k (a * b) = comp1 (B.actK k a) (B.actK k b) := by
   funext i
   show MvPowerSeries.map (algebraMap R k) (B.A.act (a * b) i) = ev ![B.actK k b] (B.actK k a i)
@@ -63,32 +85,50 @@ theorem actK_mul (B : FB R d O) (a b : O) : B.actK k (a * b) = comp1 (B.actK k a
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map (algebraMap R k) (B.A.act 1 i) = X ((0 : Fin 1), i)`. Rewrite using `[B.A.one_act]`. Simplify using `[pt]`.
+-/
 theorem actK_one (B : FB R d O) : B.actK k 1 = pt k d 0 := by
   funext i
   show MvPowerSeries.map (algebraMap R k) (B.A.act 1 i) = X ((0 : Fin 1), i)
   rw [B.A.one_act]
   simp [pt]
 
+/- English proof (translation)
+Use `show coeff _ (MvPowerSeries.map (algebraMap R k) (B.G.F i)) = _`. Rewrite using `[coeff_map, formal_group_coeff_first_linear]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem biext_coeff_first_linear (B : FB R d O) (i l : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), l) 1) (B.FK k i) = if l = i then 1 else 0 := by
   show coeff _ (MvPowerSeries.map (algebraMap R k) (B.G.F i)) = _
   rw [coeff_map, formal_group_coeff_first_linear]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `show coeff _ (MvPowerSeries.map (algebraMap R k) (B.G.F i)) = _`. Rewrite using `[coeff_map, formal_group_coeff_second_linear]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem biext_coeff_second_linear (B : FB R d O) (i l : Fin d) :
     coeff (Finsupp.single ((1 : Fin 2), l) 1) (B.FK k i) = if l = i then 1 else 0 := by
   show coeff _ (MvPowerSeries.map (algebraMap R k) (B.G.F i)) = _
   rw [coeff_map, formal_group_coeff_second_linear]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `show dLin (B.actK k (a + b)) = dLin (B.actK k a) + dLin (B.actK k b)`. Rewrite using `[actK_add, dLin_addOf k _ (biext_coeff_first_linear k B) (biext_coeff_second_linear k B) _ _ (const_actK' k B a) (const_actK' k B b)]`.
+-/
 theorem dAct_add (B : FB R d O) (a b : O) : dAct k B (a + b) = dAct k B a + dAct k B b := by
   show dLin (B.actK k (a + b)) = dLin (B.actK k a) + dLin (B.actK k b)
   rw [actK_add, dLin_addOf k _ (biext_coeff_first_linear k B) (biext_coeff_second_linear k B) _ _ (const_actK' k B a) (const_actK' k B b)]
 
+/- English proof (translation)
+Use `show dLin (B.actK k (a * b)) = dLin (B.actK k a) * dLin (B.actK k b)`. Rewrite using `[actK_mul, dLin_comp1 _ _ (const_actK' k B b)]`.
+-/
 theorem dAct_mul (B : FB R d O) (a b : O) : dAct k B (a * b) = dAct k B a * dAct k B b := by
   show dLin (B.actK k (a * b)) = dLin (B.actK k a) * dLin (B.actK k b)
   rw [actK_mul, dLin_comp1 _ _ (const_actK' k B b)]
 
+/- English proof (translation)
+Use `show dLin (B.actK k 1) = 1`. Rewrite using `[actK_one, dLin_pt]`.
+-/
 theorem dAct_one (B : FB R d O) : dAct k B 1 = 1 := by
   show dLin (B.actK k 1) = 1
   rw [actK_one, dLin_pt]
@@ -110,6 +150,9 @@ def dActS (B : FB R d O) : O →+* Matrix (Fin d) (Fin d) k where
   map_zero' := by rw [star_zero, map_zero, Matrix.transpose_zero]
   map_add' a b := by rw [star_add, map_add, Matrix.transpose_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem OactH_eq (B : FB R d O) (a : O) (ξ : (Fin d → k) × (Fin d → k)) :
     OactH k B a ξ = ((dActH k B a).mulVec ξ.1, (dActS k B a).mulVec ξ.2) := rfl
 
@@ -119,9 +162,17 @@ section H
 
 variable {R : Type} [CommRing R] {d : ℕ} (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (h : PS k 2 d)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨0, 0, Prod.ext ?_ ?_⟩ <;> funext i <;> simp [Matrix.mulVec, dotProduct]`.
+-/
 theorem hset_zero : (0 : (Fin d → k) × (Fin d → k)) ∈ Hset (R := R) k h := by
   refine ⟨0, 0, Prod.ext ?_ ?_⟩ <;> funext i <;> simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Take `⟨u, φ, rfl⟩` from `hξ`. Take `⟨u', φ', rfl⟩` from `hη`. Apply the tactic sequence `refine ⟨u + u', φ + φ', Prod.ext ?_ ?_⟩ <;> funext i`. Simplify using the standard rewrite rules. Simplify using `only [Prod.snd_add, Pi.add_apply, map_add]`.
+
+Rewrite using `[show (fun j => algebraMap R k (u j) + algebraMap R k (u' j)) = (fun j => algebraMap R k (u j)) + (fun j => algebraMap R k (u' j)) from rfl, Matrix.mulVec_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hset_add {ξ η : (Fin d → k) × (Fin d → k)} (hξ : ξ ∈ Hset (R := R) k h) (hη : η ∈ Hset (R := R) k h) :
     ξ + η ∈ Hset (R := R) k h := by
   obtain ⟨u, φ, rfl⟩ := hξ
@@ -133,6 +184,11 @@ theorem hset_add {ξ η : (Fin d → k) × (Fin d → k)} (hξ : ξ ∈ Hset (R 
         (fun j => algebraMap R k (u j)) + (fun j => algebraMap R k (u' j)) from rfl, Matrix.mulVec_add, Pi.add_apply]
     ring
 
+/- English proof (translation)
+Take `⟨u, φ, rfl⟩` from `hξ`. Apply the tactic sequence `refine ⟨c • u, c • φ, Prod.ext ?_ ?_⟩ <;> funext i`. Simplify using `[Algebra.smul_def]`. Establish `hv : (fun j => algebraMap R k ((c • u) j)) = algebraMap R k c • fun j => algebraMap R k (u j)`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hv, Matrix.mulVec_smul]`. Simplify using `only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Pi.smul_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hset_smul (c : R) {ξ : (Fin d → k) × (Fin d → k)} (hξ : ξ ∈ Hset (R := R) k h) :
     algebraMap R k c • ξ ∈ Hset (R := R) k h := by
   obtain ⟨u, φ, rfl⟩ := hξ
@@ -145,12 +201,20 @@ theorem hset_smul (c : R) {ξ : (Fin d → k) × (Fin d → k)} (hξ : ξ ∈ Hs
     simp only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Pi.smul_apply, map_mul]
     ring
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (· ∈ Hset (R := R) k h) (fun _ _ => hset_add k h) (hset_zero k h) hf`.
+-/
 theorem hset_sum {ι : Type} (s : Finset ι) (f : ι → (Fin d → k) × (Fin d → k))
     (hf : ∀ i ∈ s, f i ∈ Hset (R := R) k h) : ∑ i ∈ s, f i ∈ Hset (R := R) k h :=
   Finset.sum_induction _ (· ∈ Hset (R := R) k h) (fun _ _ => hset_add k h) (hset_zero k h) hf
 
 end H
 
+/- English proof (translation)
+Establish `h1 : ∀ i, M a * (c i • M (b i)) = ∑ j, (c i * (m i j : k)) • M (b j)`. Introduce `i`. Rewrite using `[Matrix.mul_smul, ← map_mul, hb i, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul k, smul_smul]`.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, smul_smul, ← hc j]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem idem_eig {d : ℕ} {O k : Type} [CommRing O] [CommRing k] (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k)
     {n : ℕ} (b : Fin n → O) (c : Fin n → k) (a : O) (m : Fin n → Fin n → ℤ)
     (hb : ∀ i, a * b i = ∑ j, m i j • b j) (hc : ∀ j, ∑ i, (m i j : k) * c i = χ a * c j) :
@@ -166,6 +230,27 @@ theorem idem_eig {d : ℕ} {O k : Type} [CommRing O] [CommRing k] (M : O →+* M
   congr 1
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Establish `key : ∀ ℓ' : L, ∃ φ' : Fin d → R, ∀ ℓ : L, (∃ a, χ (ty ℓ) a ≠ χ (ty ℓ') (star a)) → ∑ i, (algebraMap R k (φ' i) - (sg1 k h).mulVec (fun j => algebraMap R k (u ℓ' j)) i) * algebraMap R k (u ℓ i) = 0`. Introduce `ℓ'`. Take `⟨n, b, c, hnorm, hm⟩` from `hidem (ty ℓ')`. Use `set U : Fin d → k := fun i => algebraMap R k (u ℓ' i) with hUdef`. Use `set ξ0 : (Fin d → k) × (Fin d → k) := (U, -(sg1 k h).mulVec U) with hξ0def`.
+
+Use `set ξ1 : (Fin d → k) × (Fin d → k) := ((∑ i, algebraMap R k (c i) • dActH k B (b i)).mulVec U, (∑ i, algebraMap R k (c i) • dActS k B (b i)).mulVec (-(sg1 k h).mulVec U)) with hξ1def`. Establish `hξ0 : ξ0 ∈ Hset (R` using `R) k h := ⟨u ℓ', 0, Prod.ext rfl (by funext i; simp [hξ0def, hUdef])⟩`. Establish `hsum : ξ1 = ∑ i, algebraMap R k (c i) • OactH k B (b i) ξ0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [hξ1def, hξ0def, Prod.fst_sum, Prod.smul_fst, OactH_eq, Matrix.sum_mulVec, Matrix.smul_mulVec]`.
+
+Simplify using `only [hξ1def, hξ0def, Prod.snd_sum, Prod.smul_snd, OactH_eq, Matrix.sum_mulVec, Matrix.smul_mulVec]`. Establish `hξ1 : ξ1 ∈ Hset (R` using `R) k h := by`. Rewrite using `[hsum]`. Conclude with `hset_sum k h _ _ fun i _ => hset_smul k h (c i) (gauge_stable R d O k hRQ B h hc (b i) ξ0 hξ0)`. Establish `hfirst : (∑ i, algebraMap R k (c i) • dActH k B (b i)).mulVec U = U`.
+
+Establish `he : ∀ i, (dActH k B (b i)).mulVec U = χ (ty ℓ') (b i) • U` using `fun i => heig ℓ' (b i)`. Simplify using `only [Matrix.sum_mulVec, Matrix.smul_mulVec, he, smul_smul]`. Rewrite using `[← Finset.sum_smul, hnorm, one_smul]`. Take `⟨u1, φ1, hu1⟩` from `hξ1`. Establish `hU1 : (fun j => algebraMap R k (u1 j)) = U`.
+
+Establish `h1` using `congrArg Prod.fst hu1`. Conclude with `h1.symm.trans hfirst`. Use `⟨φ1, fun ℓ hℓ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hℓ`. Take `⟨m, hb, hcm⟩` from `hm (star a)`.
+
+Establish `heigξ : OactH k B (star a) ξ1 = χ (ty ℓ') (star a) • ξ1`. Rewrite using `[OactH_eq]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (dActH k B (star a)).mulVec ((∑ i, algebraMap R k (c i) • dActH k B (b i)).mulVec U) = χ (ty ℓ') (star a) • (∑ i, algebraMap R k (c i) • dActH k B (b i)).mulVec U`. Rewrite using `[Matrix.mulVec_mulVec, idem_eig (dActH k B) (χ (ty ℓ')) b (fun i => algebraMap R k (c i)) (star a) m hb hcm, Matrix.smul_mulVec]`.
+
+Use `show (dActS k B (star a)).mulVec ((∑ i, algebraMap R k (c i) • dActS k B (b i)).mulVec (-(sg1 k h).mulVec U)) = χ (ty ℓ') (star a) • (∑ i, algebraMap R k (c i) • dActS k B (b i)).mulVec (-(sg1 k h).mulVec U)`. Rewrite using `[Matrix.mulVec_mulVec, idem_eig (dActS k B) (χ (ty ℓ')) b (fun i => algebraMap R k (c i)) (star a) m hb hcm, Matrix.smul_mulVec]`. Establish `hv : OactH k B a ((fun i => algebraMap R k (u ℓ i)), (0 : Fin d → k)) = χ (ty ℓ) a • ((fun i => algebraMap R k (u ℓ i)), (0 : Fin d → k))`. Rewrite using `[OactH_eq]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Conclude with `heig ℓ a`. Simplify using the standard rewrite rules. Establish `hs` using `beta_sesquilinear R d O k B a ((fun i => algebraMap R k (u ℓ i)), (0 : Fin d → k)) ξ1`. Rewrite `hs` using `[hv, heigξ, betaH_smul_left, betaH_smul_right]`. Establish `hβ : betaH k ((fun i => algebraMap R k (u ℓ i)), (0 : Fin d → k)) ξ1 = 0`.
+
+Establish `h2 : (χ (ty ℓ) a - χ (ty ℓ') (star a)) * betaH k ((fun i => algebraMap R k (u ℓ i)), (0 : Fin d → k)) ξ1 = 0`. Rewrite using `[sub_mul, hs, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 ha)`. Rewrite `hβ` using `[hu1]`. Simplify using `only [betaH, Pi.zero_apply, zero_mul, sub_zero] at hβ`.
+
+Rewrite `hβ` using `[hU1]`. Conclude with `hβ`. Use `choose φ hφ using key`. Conclude with `⟨φ, fun ℓ ℓ' hℓ => hφ ℓ' ℓ hℓ⟩`.
+-/
 theorem eigLift_core {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {k : Type} [Field k]
     [Algebra ℚ k] [Algebra R k] (hRQ : IsRQ (R := R) k) (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h)
     {L Ty : Type} (ty : L → Ty) (χ : Ty → O →+* k) (u : L → Fin d → R)

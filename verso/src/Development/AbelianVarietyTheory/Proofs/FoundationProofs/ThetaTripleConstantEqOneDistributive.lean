@@ -7,6 +7,11 @@ open scoped BigOperators
 
 namespace GlobalTheory.DistTriple
 
+/- English proof (translation)
+Establish `hm` using `hd x hx y hy (by rwa [add_comm])`. Take `⟨x₁, hx₁, x₃, hx₃, rfl⟩` from `AddSubgroup.mem_sup.1 hm`. Establish `hy₃ : y + x₃ ∈ A₁`. Use `A₁.sub_mem hxy hx₁.1` as an intermediate fact. Establish `e : y + (x₁ + x₃) - x₁ = y + x₃` using `by abel`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `e1` using `h₁.2.1 _ hy₃ _ hx₁.1`. Rewrite `e1` using `[bc_add_left, h₂.2.1 _ hx₃.1 _ hx₁.2, mul_one]`. Rewrite using `[bc_add_right, e1, h₃.2.1 _ hy _ hx₃.2, mul_one]`.
+-/
 theorem bc_eq_one {D : D7} {T : Tor D} {N N' : ℕ} {A₁ A₂ A₃ : AddSubgroup (VC D N N')}
     (h₁ : Nice D T A₁) (h₂ : Nice D T A₂) (h₃ : Nice D T A₃) (hd : Dist A₁ A₂ A₃)
     {x y : VC D N N'} (hx : x ∈ A₂) (hy : y ∈ A₃) (hxy : y + x ∈ A₁) : bc D T y x = 1 := by
@@ -20,6 +25,17 @@ theorem bc_eq_one {D : D7} {T : Tor D} {N N' : ℕ} {A₁ A₂ A₃ : AddSubgrou
   rw [bc_add_left, h₂.2.1 _ hx₃.1 _ hx₁.2, mul_one] at e1
   rw [bc_add_right, e1, h₃.2.1 _ hy _ hx₃.2, mul_one]
 
+/- English proof (translation)
+Introduce `D T N N' A₁ A₂ A₃ e μ ht hd`. Take `⟨r, hr, hs⟩` from `GlobalTheory.T.thetaTripleConstant_eq_cocycle_sum D T N N' A₁ A₂ A₃ e μ ht`. Take `⟨h₁, h₂, h₃, -, -, -, -, -, h8, -⟩` from `ht`. Establish `key : ∃ s : ℝ, 0 ≤ s ∧ μ * (r : ℂ) = (s : ℂ)`. Rewrite using `[hs]`.
+
+Use `finsum_induction (fun z : ℂ => ∃ s : ℝ, 0 ≤ s ∧ z = (s : ℂ)) ⟨0, le_rfl, by simp⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, add_nonneg ha hb, by push_cast; rfl⟩`. Introduce `p split_ifs with h`. Conclude with `⟨1, zero_le_one, by`.
+
+Rewrite using `[bc_eq_one h₁ h₂ h₃ hd (Quotient.out p.2 : A₂).2 (Quotient.out p.1 : A₃).2 h]`. Use the proof step `simp⟩`. Conclude with `⟨0, le_rfl, by simp⟩`. Take `⟨s, hs0, hμ⟩` from `key`. Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+
+Establish `hμ' : μ = ((s / r : ℝ) : ℂ)` using `by push_cast; rw [eq_div_iff hr', hμ]`. Rewrite `h8`, the goal using `[hμ']`. Establish `h8' : (s / r) ^ 8 = 1` using `by exact_mod_cast h8`. Use `(pow_eq_one_iff_of_nonneg (div_nonneg hs0 hr.le) (by norm_num)).1 h8'` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem const_eq_one : ∀ (D : D7) (T : Tor D) (N N' : ℕ) (A₁ A₂ A₃ : AddSubgroup (VC D N N'))
     (e : VC D N N' → ℂ) (μ : ℂ), Trip D T A₁ A₂ A₃ e μ → Dist A₁ A₂ A₃ → μ = 1 := by
   intro D T N N' A₁ A₂ A₃ e μ ht hd

@@ -11,6 +11,9 @@ section
 
 variable {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Use `⟨⟨fun i => res (a.le i) (pullU h _ (t.s (a.idx i)))⟩, fun i j => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : h y ∈ A.U (a.idx i) ⊓ A.U (a.idx j)` using `⟨a.le i hy.1, a.le j hy.2⟩`. Establish `e` using `(gm_res h y _ hm _).symm.trans ((congrArg (gm h y _) (ht (a.idx i) (a.idx j))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res h y _ hm _))))`. Conclude with `((gm_res _ y _ hy _).trans (gm_rp₁ h y _ _ (a.le i) hy.1 _)).trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (a.g y i j hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_rp₁ h y _ _ (a.le j) hy.2 _)))).symm)`.
+-/
 theorem gen_chartPull {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (t : LB.Gen A) (ht : t.IsGen) :
     ∃ t' : LB.Gen A', t'.IsGen := by
   refine ⟨⟨fun i => res (a.le i) (pullU h _ (t.s (a.idx i)))⟩, fun i j => unit_ext fun y hy => ?_⟩
@@ -40,6 +43,9 @@ def chartPullOut (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Y' ⟶ 
       g := fun y J J' hj hj' => ((gm_pull_g (LB.LinComb L φ ε) h (𝟙 Y') y J J' hj hj').trans (by rw [Category.id_comp]; rfl)).trans
         ((chartPullSame L _ φ ε h fun _ => rfl).g y _ _ (le J hj) (le J' hj')).symm }
 
+/- English proof (translation)
+Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Use `⟨⟨fun p => u p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `((gm_res _ y _ hy _).trans ((hu _ _ _ (𝟙 Y') y hy.1).trans (pw_trans hw φ' ε (𝟙 Y') y hy.1.1 hy.2.1 hy.1.2 hy.2.2))).trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_div _ _ (𝟙 Y') y p q hy).trans ?_) ((gm_res _ y _ hy _).trans (hu _ _ _ (𝟙 Y') y hy.2)))))` and prove the remaining obligations. Conclude with `congrArg₂ (fun a b => a * b⁻¹) (gm_linComb L _ ε (𝟙 Y') y p.1 q.1 hy.1.1 hy.2.1) (gm_linComb L' φ' ε (𝟙 Y') y p.2 q.2 hy.1.2 hy.2.2)`.
+-/
 theorem iso_linComb {w : LB.Iso L' (L.pull F)} (hw : PGen w) (φ' : K → (Y' ⟶ X')) (ε : K → ℤ) :
     LBIso (LB.LinComb L' φ' ε) (LB.LinComb L (fun k => φ' k ≫ F) ε) := by
   choose u hu using fun p q => exists_pw w φ' ε p q
@@ -50,6 +56,13 @@ theorem iso_linComb {w : LB.Iso L' (L.pull F)} (hw : PGen w) (φ' : K → (Y' �
   exact congrArg₂ (fun a b => a * b⁻¹) (gm_linComb L _ ε (𝟙 Y') y p.1 q.1 hy.1.1 hy.2.1)
     (gm_linComb L' φ' ε (𝟙 Y') y p.2 q.2 hy.1.2 hy.2.2)
 
+/- English proof (translation)
+Simplify using `only [nonzeroLocus, TopologicalSpace.Opens.mem_iSup]`. Use `exists_congr fun k => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hk : y ∈ M.U k` using `Scheme.basicOpen_le _ _ hy`.
+
+Use `⟨hk, ?_⟩` and prove the remaining obligations. Establish `hu` using `(Scheme.mem_basicOpen Y (s.f k) y hk).1 hy`. Unfold `gs`. Rewrite using `[dif_pos (show (𝟙 Y : Y ⟶ Y) y ∈ M.U k by simpa using hk)]`. Conclude with `hu`.
+
+Introduce and unpack `⟨hk, hu⟩`. Unfold `gs at hu`. Rewrite `hu` using `[dif_pos (show (𝟙 Y : Y ⟶ Y) y ∈ M.U k by simpa using hk)]`. Conclude with `(Scheme.mem_basicOpen Y (s.f k) y hk).2 hu`.
+-/
 theorem mem_nonzeroLocus {M : LB Y} (s : LB.Sec M) (y : Y) :
     y ∈ nonzeroLocus s ↔ ∃ k, y ∈ M.U k ∧ IsUnit (gs (𝟙 Y) y _ (s.f k)) := by
   simp only [nonzeroLocus, TopologicalSpace.Opens.mem_iSup]
@@ -72,6 +85,21 @@ end
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
   {L : LB A.left} {L' : LB A'.left}
 
+/- English proof (translation)
+Introduce `R _ t x hx`. Establish `inj : ∀ {T : Over S'} {x y : T ⟶ A'}, pushPt h.1.w x = pushPt h.1.w y → x = y` using `fun {T x y} e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))`. Use `inj ((hK R (t ≫ f) (pushPt h.1.w x) fun p => ?_).trans (map_one (pushHom h (Over.mk t))).symm)` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hx p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+
+Set `T : Over S` to `Over.mk (t ≫ f)`. Set `T₂ : Over S'` to `Over.mk ((fst T A).left ≫ t)`. Establish `sq : (snd T A).left ≫ A.hom = ((fst T A).left ≫ t) ≫ f` using `pullback.condition.symm.trans (Category.assoc _ _ _).symm`. Set `a : T₂ ⟶ Over.mk t` to `Over.homMk (fst T A).left rfl`. Set `b : T₂ ⟶ A'` to `Over.homMk (h.1.lift _ _ sq) (h.1.lift_snd _ _ _)`.
+
+Establish `hb : b.left ≫ φ = (snd T A).left` using `h.1.lift_fst _ _ _`. Establish `k₁ : (lift a b).left ≫ (fst (Over.mk t) A').left = (fst T A).left` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (lift a b).left ≫ (snd (Over.mk t) A').left ≫ φ = (snd T A).left` using `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ φ) (lift_snd a b)).trans hb)`. Establish `k₃ : (lift a b).left ≫ ((fst (Over.mk t) A' ≫ x) * snd (Over.mk t) A').left ≫ φ = ((fst T A ≫ pushPt h.1.w x) * snd T A).left`. Establish `e : lift a b ≫ ((fst (Over.mk t) A' ≫ x) * snd (Over.mk t) A') = (a ≫ x) * b`.
+
+Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Set `j : Over.mk (T₂.hom ≫ f) ⟶ T ⊗ A` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans ((Over.w (snd T A)).symm.trans sq))`. Establish `e₁` using `h.2 T₂ (a ≫ x) b (j ≫ fst T A ≫ pushPt h.1.w x) (j ≫ snd T A) ((Category.id_comp _).trans (Category.assoc _ _ _).symm) ((Category.id_comp _).trans hb.symm)`. Rewrite `e₁` using `[← MonObj.comp_mul, ← e]`. Conclude with `(Category.assoc _ _ _).symm.trans (e₁.symm.trans (Category.id_comp _))`.
+
+Take `⟨n, hn⟩ : ∃ n : ((fst T A).left ⁻¹ᵁ V).toScheme ⟶ ((fst (Over.mk t) A').left ⁻¹ᵁ V).toScheme, n ≫ ((fst (Over.mk t) A').left ⁻¹ᵁ V).ι = ((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left` from `⟨IsOpenImmersion.lift _ (((fst T A).left ⁻¹ᵁ V).ι ≫ (lift a b).left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L' _ _ _) c hc`.
+
+Take `⟨c₂, h₂, -⟩` from `exists_up hw hL hL' c₁ h₁`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (pullGen_isGen _ _ _ c₂ h₂ n)` and prove the remaining obligations. Use `show n ≫ (_ ≫ _) ≫ φ = _`. Rewrite using `[Category.assoc, ← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`.
+
+Use `exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]`.
+-/
 theorem kTriv_pull (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)} (hw : PGen w)
     (hK : KTriv A L) : KTriv A' L' := by
   intro R _ t x hx
@@ -114,6 +142,29 @@ theorem kTriv_pull (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) {
   exacts [congrArg (_ ≫ ·) k₃, congrArg (_ ≫ ·) k₂]
 
 omit [GrpObj A] [GrpObj A'] in
+/- English proof (translation)
+Introduce `U' hU'`. Take `⟨N, hN, M, s, hcov, hs⟩` from `hA U hU`. Establish `le : U' ≤ f ⁻¹ᵁ U` using `fun y _ => hf y`. Establish `le' : A'.hom ⁻¹ᵁ U' ≤ φ ⁻¹ᵁ (A.hom ⁻¹ᵁ U)` using `fun y _ => (congrArg (fun q => q y ∈ U) h.w).mpr (hf _)`. Set `ψ` to `φ.resLE (A.hom ⁻¹ᵁ U) (A'.hom ⁻¹ᵁ U') le'`.
+
+Establish `hψ : ψ ≫ (A.hom ⁻¹ᵁ U).ι = (A'.hom ⁻¹ᵁ U').ι ≫ φ` using `Scheme.Hom.resLE_comp_ι φ le'`. Establish `H : IsPullback ψ (A'.hom ∣_ U') (A.hom ∣_ U) (f.resLE U U' le)`. Use `IsPullback.of_right ?_ ?_ (isPullback_morphismRestrict A.hom U).flip` and prove the remaining obligations. Rewrite using `[hψ, Scheme.Hom.resLE_comp_ι]`. Conclude with `(isPullback_morphismRestrict A'.hom U').flip.paste_horiz h`.
+
+Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hψ, Category.assoc, h.w, Category.assoc, Scheme.Hom.resLE_comp_ι, ← Category.assoc, ← morphismRestrict_ι, Category.assoc]`. Establish `: IsAffine U` using `hU`. Establish `: IsAffine U'` using `hU'`. Establish `: IsAffineHom ψ` using `MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`. Establish `hP` using `linComb_isLB L hL (K := Fin N) (fun _ => (A.hom ⁻¹ᵁ U).ι) (fun _ => 1)`.
+
+Establish `hP'` using `linComb_isLB L' hL' (K := Fin N) (fun _ => (A'.hom ⁻¹ᵁ U').ι) (fun _ => 1)`. Take `⟨W, hW⟩` from `LBIso.chartPull (chartPullId _) (chartPullOut L (fun _ : Fin N => (A.hom ⁻¹ᵁ U).ι) (fun _ => 1) ψ _ fun _ => hψ.symm) (iso_linComb hw (fun _ : Fin N => (A'.hom ⁻¹ᵁ U').ι) (fun _ => 1))`. Use `choose s' hs' using fun i => sec_pull_down ((isGen_iff W).1 hW) hP hP' (s i)`. Establish `loc : ∀ i, nonzeroLocus (M` using `powOver A' L' U' N) (s' i) = ψ ⁻¹ᵁ nonzeroLocus (s i) := fun i => by`. Use extensionality with `y`.
+
+Use `(mem_nonzeroLocus _ y).trans (Iff.trans ⟨fun ⟨k, hk, u⟩ => ?_, fun ⟨j, hj, u⟩ => ?_⟩ (mem_nonzeroLocus _ (ψ y)).symm)` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hP (ψ y)`. Establish `e` using `hs' i _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp, gs_stalkMap ψ y _ hj]`. Conclude with `⟨j, hj, (isUnit_map_iff (ψ.stalkMap y).hom _).1 ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))⟩`.
+
+Take `⟨k, hk⟩` from `exists_chart hP' y`. Establish `e` using `hs' i _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp]`. Conclude with `⟨k, hk, isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_stalkMap ψ y _ hj _).symm.trans e)).mp (u.map _))⟩`. Use `⟨N, hN, M, s', ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show ψ y ∈ ⨆ i, nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `Opens.mem_iSup.2 ⟨i, by rw [loc]; exact hi⟩`. Take `⟨haff, r, hr, hsurj⟩` from `hs i`. Use `⟨by rw [loc]; exact haff.preimage ψ, fun j => (ψ.appLE _ _ (loc i).le).hom (r j), fun j k => fn_ext fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨l, hl⟩` from `exists_chart hP (ψ y)`. Establish `hm : ψ y ∈ nonzeroLocus (s i) ⊓ (powOver A L U N).U l` using `⟨(loc i).le hy.1, hl⟩`. Establish `e` using `congrArg (gs ψ y _) (hr j l)`. Rewrite `e` using `[gs_res _ y _ hm, gs_mul _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm]`. Establish `e₁` using `hs' j _ (𝟙 _) y l k hl hy.2`.
+
+Establish `e₂` using `hs' i _ (𝟙 _) y l k hl hy.2`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Establish `e₃` using `(gw W (𝟙 _) y l k).mul_right_inj.1 (e₁.symm.trans (e.trans ((congrArg _ e₂).trans (mul_left_comm _ _ _))))`. Use `(gs_res _ y _ hy _).trans (e₃.trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ hy _).trans ((gs_appLE ψ _ _ _ (𝟙 _) y hy.1 _).trans (by rw [Category.id_comp]))) (gs_res _ y _ hy _)))))` and prove the remaining obligations. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := nonzeroLocus (s i)) le_top le_top (UY := nonzeroLocus (M := powOver A' L' U' N) (s' i)) (by rw [loc]; simp)).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) haff)`.
+
+Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨d, rfl⟩ | ⟨c, rfl⟩)`. Take `⟨p, rfl⟩` from `hsurj d`. Use `⟨MvPolynomial.map ((f.resLE U U' le).appLE ⊤ ⊤ le_top).hom p, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂Hom_map_hom]`.
+
+Conclude with `((congrArg (fun q => MvPolynomial.eval₂Hom q _ p) (congrArg CommRingCat.Hom.hom po.w.symm)).trans (MvPolynomial.map_eval₂Hom _ _ _ p).symm)`. Conclude with `⟨MvPolynomial.C c, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+-/
 theorem relAmple_pull (h : IsPullback φ A'.hom A.hom f) (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull φ)}
     (hw : PGen w) (U : S.Opens) (hU : IsAffineOpen U) (hf : ∀ y, f y ∈ U) (hA : RelAmple A L) : RelAmple A' L' := by
   intro U' hU'
@@ -176,6 +227,9 @@ theorem relAmple_pull (h : IsPullback φ A'.hom A.hom f) (hL : L.IsLB) (hL' : L'
         (MvPolynomial.map_eval₂Hom _ _ _ p).symm)
     · exact ⟨MvPolynomial.C c, MvPolynomial.eval₂Hom_C _ _ _⟩
 
+/- English proof (translation)
+Introduce `S K _ f A A' _ _ φ h L L' hL hL' ⟨w, hw⟩ hA hK`. Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := f (default : PrimeSpectrum K)) trivial`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Conclude with `⟨relAmple_pull h.1 hL hL' ((isGen_iff w).1 hw) U hU (fun y => by rwa [Subsingleton.elim y (default : PrimeSpectrum K)]) hA, kTriv_pull h hL hL' ((isGen_iff w).1 hw) hK⟩`.
+-/
 theorem amplePt : AmplePtSt := by
   intro S K _ f A A' _ _ φ h L L' hL hL' ⟨w, hw⟩ hA hK
   obtain ⟨U, hU, hp, -⟩ := exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := f (default : PrimeSpectrum K)) trivial
@@ -183,6 +237,9 @@ theorem amplePt : AmplePtSt := by
   exact ⟨relAmple_pull h.1 hL hL' ((isGen_iff w).1 hw) U hU (fun y => by rwa [Subsingleton.elim y (default : PrimeSpectrum K)]) hA,
     kTriv_pull h hL hL' ((isGen_iff w).1 hw) hK⟩
 
+/- English proof (translation)
+The claim follows from `thetaCore hT amplePt`.
+-/
 theorem thetaCore_of (hT : SecTwistSt) : ThetaCoreSt := thetaCore hT amplePt
 
 end ReciprocityTheory.ChartRestriction.G.Geo.Tor

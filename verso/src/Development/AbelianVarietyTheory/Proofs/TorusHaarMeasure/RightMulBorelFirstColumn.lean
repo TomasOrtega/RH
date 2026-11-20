@@ -18,9 +18,17 @@ noncomputable def colSq {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) :
 noncomputable def idx (X : Data E 2) (τ : X.Ψ) : Fin (nd X) :=
   Fintype.equivFin (Ent X) ⟨τ, ⟨(1, 0), by decide⟩⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `congrArg Prod.fst ((Fintype.equivFin (Ent X)).injective h)`.
+-/
 theorem idx_injective (X : Data E 2) : Function.Injective (idx X) := fun _ _ h =>
   congrArg Prod.fst ((Fintype.equivFin (Ent X)).injective h)
 
+/- English proof (translation)
+Introduce `k`. Take `⟨⟨τ, ⟨⟨a, b⟩, h⟩⟩, rfl⟩` from `(Fintype.equivFin (Ent X)).surjective k`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `: a = 1 ∧ b = 0` using `by revert a b; decide`. Take `⟨rfl, rfl⟩` from `this`.
+
+Both sides reduce to the same expression.
+-/
 theorem idx_surjective (X : Data E 2) : Function.Surjective (idx X) := by
   intro k
   obtain ⟨⟨τ, ⟨⟨a, b⟩, h⟩⟩, rfl⟩ := (Fintype.equivFin (Ent X)).surjective k
@@ -29,26 +37,41 @@ theorem idx_surjective (X : Data E 2) : Function.Surjective (idx X) := by
   obtain ⟨rfl, rfl⟩ := this
   rfl
 
+/- English proof (translation)
+Use `show (mat x0 τ * mat (nmat X z) τ) a 0 = _`. Simplify using `[Matrix.mul_apply, mat, nmat, idx]`.
+-/
 theorem compact_frame_first_column (X : Data E 2) (x0 : Frame X.Ψ 2) (z : V (nd X)) (τ : X.Ψ) (a : Fin 2) :
     cpt X x0 z τ a 0 = x0 τ a 0 + x0 τ a 1 * z (idx X τ) := by
   show (mat x0 τ * mat (nmat X z) τ) a 0 = _
   simp [Matrix.mul_apply, mat, nmat, idx]
 
+/- English proof (translation)
+Use `show (mat x0 τ * mat (nmat X z) τ) a 1 = _`. Simplify using `[Matrix.mul_apply, mat, nmat]`.
+-/
 theorem compact_frame_second_column (X : Data E 2) (x0 : Frame X.Ψ 2) (z : V (nd X)) (τ : X.Ψ) (a : Fin 2) :
     cpt X x0 z τ a 1 = x0 τ a 1 := by
   show (mat x0 τ * mat (nmat X z) τ) a 1 = _
   simp [Matrix.mul_apply, mat, nmat]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[Matrix.det_fin_two, mat]`.
+-/
 theorem det_mat {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) :
     (mat x τ).det = x τ 0 0 * x τ 1 1 - x τ 0 1 * x τ 1 0 := by
   simp [Matrix.det_fin_two, mat]
 
+/- English proof (translation)
+Simplify using `only [det_mat, compact_frame_first_column, compact_frame_second_column]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_cpt (X : Data E 2) (x0 : Frame X.Ψ 2) (z : V (nd X)) (τ : X.Ψ) :
     (mat (cpt X x0 z) τ).det = (mat x0 τ).det := by
   simp only [det_mat, compact_frame_first_column, compact_frame_second_column]; ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use `show (mat x τ * mat b τ) a 0 = _`. Use `(hb τ).2 1 0 (by decide)` as an intermediate fact. Simplify using `[Matrix.mul_apply, mat, this, mul_comm]`.
+-/
 theorem right_mul_borel_first_column {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) {b : Frame Ψ 2} (hb : b ∈ Bor Ψ 2) (τ : Ψ)
     (a : Fin 2) : rmul x b τ a 0 = b τ 0 0 * x τ a 0 := by
   show (mat x τ * mat b τ) a 0 = _
@@ -56,27 +79,42 @@ theorem right_mul_borel_first_column {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2
   simp [Matrix.mul_apply, mat, this, mul_comm]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `h`. Apply `(hb τ).1` to reduce the goal to its premises. Rewrite using `[det_mat, h, (hb τ).2 1 0 (by decide)]; ring`.
+-/
 theorem bor_ne {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ 2} (hb : b ∈ Bor Ψ 2) (τ : Ψ) : b τ 0 0 ≠ 0 := by
   intro h
   apply (hb τ).1
   rw [det_mat, h, (hb τ).2 1 0 (by decide)]; ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `[lact]`. Both sides reduce to the same expression.
+-/
 theorem lact_one' {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) : lact (1 : GL (Fin 2) E) x = x := by
   funext τ
   simp [lact]
   rfl
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[gram, hermC, col, mat, Matrix.one_apply]`.
+-/
 theorem gram_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) (a b : Fin 2) :
     gram τ.1 1 (mat x τ) a b = x τ 0 a * conj (x τ 0 b) + x τ 1 a * conj (x τ 1 b) := by
   simp [gram, hermC, col, mat, Matrix.one_apply]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[dmin, lminor, Matrix.det_isEmpty]`.
+-/
 theorem dmin_0 {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) : dmin 1 x τ 0 = 1 := by
   simp [dmin, lminor, Matrix.det_isEmpty]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `: dmin 1 x τ 1 = gram τ.1 1 (mat x τ) 0 0` using `Matrix.det_fin_one _`. Rewrite using `[this, gram_one, Complex.mul_conj, Complex.mul_conj, colSq, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dmin_1 {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) : dmin 1 x τ 1 = (colSq x τ : ℝ) := by
   have : dmin 1 x τ 1 = gram τ.1 1 (mat x τ) 0 0 := Matrix.det_fin_one _
   rw [this, gram_one, Complex.mul_conj, Complex.mul_conj, colSq,
@@ -84,6 +122,9 @@ theorem dmin_1 {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) : dmin 1 x
   push_cast; ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `: dmin 1 x τ 2 = gram τ.1 1 (mat x τ) 0 0 * gram τ.1 1 (mat x τ) 1 1 - gram τ.1 1 (mat x τ) 0 1 * gram τ.1 1 (mat x τ) 1 0` using `Matrix.det_fin_two _`. Rewrite using `[this, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, det_mat]`. Simplify using `only [gram_one, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dmin_2 {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) :
     dmin 1 x τ 2 = (‖(mat x τ).det‖ ^ 2 : ℝ) := by
   have : dmin 1 x τ 2 = gram τ.1 1 (mat x τ) 0 0 * gram τ.1 1 (mat x τ) 1 1 -
@@ -93,6 +134,13 @@ theorem dmin_2 {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 2) (τ : Ψ) :
   ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite `h` using `[det_mat]`. Assume the negation of the conclusion as `hn`. Establish `h0 : x τ 0 0 = 0`. Rewrite using `[← norm_eq_zero]`. Unfold `colSq at hn`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖x τ 0 0‖, sq_nonneg ‖x τ 1 0‖]`. Establish `h1 : x τ 1 0 = 0`. Rewrite using `[← norm_eq_zero]`. Unfold `colSq at hn`. Use polynomial arithmetic with `[sq_nonneg ‖x τ 0 0‖, sq_nonneg ‖x τ 1 0‖]`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[h0, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colSq_pos {Ψ : Finset (E →+* ℂ)} {x : Frame Ψ 2} {τ : Ψ} (h : (mat x τ).det ≠ 0) :
     0 < colSq x τ := by
   rw [det_mat] at h
@@ -104,6 +152,11 @@ theorem colSq_pos {Ψ : Finset (E →+* ℂ)} {x : Frame Ψ 2} {τ : Ψ} (h : (m
   apply h
   rw [h0, h1]; ring
 
+/- English proof (translation)
+Use `⟨fun h τ => (h τ).1, fun h τ => ⟨h τ, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hG, hp]`. Use `fin_cases i`. Simplify using `[psgn, dmin_0]`. Simplify `colSq_pos (h τ)` using `[psgn, sgn, dmin_1]`.
+
+Use `h τ` as an intermediate fact. Simplify using `only [Fin.reduceFinMk, dmin_2, Complex.ofReal_re]`. Simplify using `[psgn, sgn, Finset.prod_range_succ, this]`.
+-/
 theorem mem_dom {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) (x : Frame X.Ψ 2) :
     x ∈ X.dom ↔ ∀ τ, (mat x τ).det ≠ 0 := by
   refine ⟨fun h τ => (h τ).1, fun h τ => ⟨h τ, fun i => ?_⟩⟩
@@ -115,11 +168,21 @@ theorem mem_dom {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) (x : Frame X.Ψ 2
     simp only [Fin.reduceFinMk, dmin_2, Complex.ofReal_re]
     simp [psgn, sgn, Finset.prod_range_succ, this]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_dom hG hp]`. Introduce `τ`. Rewrite using `[det_cpt]`. Conclude with `h τ`.
+-/
 theorem cpt_mem {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) {x0 : Frame X.Ψ 2} (h : x0 ∈ X.dom)
     (z : V (nd X)) : cpt X x0 z ∈ X.dom := by
   rw [mem_dom hG hp] at h ⊢
   intro τ; rw [det_cpt]; exact h τ
 
+/- English proof (translation)
+Unfold `Data.pnorm`. Rewrite using `[mul_pow, div_eq_mul_inv, ← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hp` using `colSq_pos (hx τ).1`.
+
+Rewrite using `[Fin.prod_univ_two, h0, h1, hG]`. Establish `e1 : (0 : Fin 2).succ = 1` using `rfl`. Establish `e2 : (0 : Fin 2).castSucc = 0` using `rfl`. Rewrite using `[e1, e2, dmin_0, dmin_1]`. Simplify using `only [Int.cast_zero, neg_zero, zero_div, Real.rpow_zero, mul_one, div_one, Complex.norm_real, Real.norm_of_nonneg hp.le, Int.cast_natCast]`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp.le, ← Real.rpow_natCast, ← Real.rpow_neg hp.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pnorm_sq {X : Data E 2} (hG : X.Gm = 1) {x : Frame X.Ψ 2} (hx : x ∈ X.dom) {la : Wt X.Ψ 2}
     {m : ℕ} (h0 : ∀ τ, la τ 0 = m) (h1 : ∀ τ, la τ 1 = 0) (P : Frame X.Ψ 2 → ℂ) :
     X.pnorm la P x ^ 2 = ‖P x‖ ^ 2 / (∏ τ, colSq x τ) ^ m := by
@@ -138,6 +201,11 @@ theorem pnorm_sq {X : Data E 2} (hG : X.Gm = 1) {x : Frame X.Ψ 2} (hx : x ∈ X
   congr 1
   push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[IW.phla_eq X (cpt_mem hG hp hx z)]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hc` using `colSq_pos (cpt_mem hG hp hx z τ).1`. Establish `e1 : (0 : Fin 2).succ = 1` using `rfl`. Establish `e2 : (0 : Fin 2).castSucc = 0` using `rfl`.
+
+Establish `e3 : (1 : Fin 2).succ = 2` using `rfl`. Establish `e4 : (1 : Fin 2).castSucc = 1` using `rfl`. Rewrite using `[Fin.sum_univ_two, e1, e2, e3, e4]`. Simplify using `only [IW.Lm, hG, dmin_0, dmin_1, dmin_2, det_cpt, Complex.norm_real, Real.norm_of_nonneg hc.le, norm_one, Real.log_one, Real.norm_of_nonneg (sq_nonneg ‖(mat x0 τ).det‖)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phla_cpt {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) {x0 : Frame X.Ψ 2} (hx : x0 ∈ X.dom)
     (la : Wt X.Ψ 2) (z : V (nd X)) :
     phla X la (cpt X x0 z) = ∑ τ, ((la τ 0 - la τ 1 : ℝ) * Real.log (colSq (cpt X x0 z) τ) +
@@ -154,9 +222,17 @@ theorem phla_cpt {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) {x0 : Frame X.Ψ
     norm_one, Real.log_one, Real.norm_of_nonneg (sq_nonneg ‖(mat x0 τ).det‖)]
   ring
 
+/- English proof (translation)
+Introduce `h` and use `h.2.2 (eq_zero_of_herm_one ξ (hG ▸ h.2.1))`.
+-/
 theorem not_isIso {X : Data E 2} (hG : X.Gm = 1) (ξ : Fin 2 → E) : ¬ X.IsIso ξ := fun h =>
   h.2.2 (eq_zero_of_herm_one ξ (hG ▸ h.2.1))
 
+/- English proof (translation)
+Establish `h1` using `X.χ_mul la 1 X.Γ.one_mem 1 X.Γ.one_mem`. Take `⟨n, hn, h2⟩` from `X.χ_fin la`. Establish `h3` using `h2 1 X.Γ.one_mem`. Establish `h4 : X.χ la 1 ≠ 0`. Introduce `h`.
+
+Rewrite `h3` using `[h, zero_pow hn.ne']`. Conclude with `zero_ne_one h3`. Rewrite `h1` using `[mul_one]`. Conclude with `(mul_eq_left₀ h4).1 h1.symm`.
+-/
 theorem chi_one (X : Data E 2) (la : Wt X.Ψ 2) : X.χ la 1 = 1 := by
   have h1 := X.χ_mul la 1 X.Γ.one_mem 1 X.Γ.one_mem
   obtain ⟨n, hn, h2⟩ := X.χ_fin la
@@ -166,6 +242,11 @@ theorem chi_one (X : Data E 2) (la : Wt X.Ψ 2) : X.χ la 1 = 1 := by
   rw [mul_one] at h1
   exact (mul_eq_left₀ h4).1 h1.symm
 
+/- English proof (translation)
+Use `⟨⟨⟨⟨hd.differentiableOn, fun x _ b hb => ?_, fun γ hγ x _ => ?_⟩, ⟨√C, fun x hx => ?_⟩⟩, fun ξ h => (not_isIso hG ξ h).elim⟩, fun ξ h => (not_isIso hG ξ h).elim⟩` and prove the remaining obligations. Rewrite using `[he x b hb, bchar, ← Finset.prod_pow]`. Simplify using `[Fin.prod_univ_two, h0, h1]`. Rewrite `hγ` using `[hΓ, Subgroup.mem_bot]`. Rewrite using `[hγ, chi_one, lact_one', one_mul]`.
+
+Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[pnorm_sq hG hx h0 h1, div_le_iff₀ (pow_pos (Finset.prod_pos fun τ _ => colSq_pos (hx τ).1) _)]`. Conclude with `hb x`.
+-/
 theorem mem_SSgt {X : Data E 2} (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) {la : Wt X.Ψ 2}
     {m : ℕ} (h0 : ∀ τ, la τ 0 = m) (h1 : ∀ τ, la τ 1 = 0) {P : Frame X.Ψ 2 → ℂ}
     (hd : Differentiable ℂ P)
@@ -181,6 +262,15 @@ theorem mem_SSgt {X : Data E 2} (hG : X.Gm = 1) (hΓ : X.Γ = ⊥) {la : Wt X.Ψ
     rw [pnorm_sq hG hx h0 h1, div_le_iff₀ (pow_pos (Finset.prod_pos fun τ _ => colSq_pos (hx τ).1) _)]
     exact hb x
 
+/- English proof (translation)
+Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Establish `: {x : Frame X.Ψ 2 | IsOrth X x} = ⋂ τ, ⋂ a, ⋂ b, {x | x τ 0 a * conj (x τ 0 b) + x τ 1 a * conj (x τ 1 b) = Matrix.diagonal (fun a : Fin 2 => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) a b}`. Use extensionality with `x`. Simplify using `only [IsOrth, hG, ← Matrix.ext_iff, gram_one, Set.mem_iInter]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Use `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Use `fun_prop`. Use `(Metric.isBounded_closedBall (x := (0 : Frame X.Ψ 2)) (r := 1)).subset fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+
+Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun τ => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun a => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun b => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (hx τ) b) b`. Rewrite `h` using `[hG, gram_one, hp, Matrix.diagonal_apply_eq, Complex.mul_conj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, sgn, if_pos b.2]`. Establish `h' : ‖x τ 0 b‖ ^ 2 + ‖x τ 1 b‖ ^ 2 = 1` using `by exact_mod_cast h`. Establish `h4 : ‖x τ a b‖ ^ 2 ≤ 1` using `by fin_cases a`.
+
+Simplify using `only [Fin.zero_eta]`. Use polynomial arithmetic with `[sq_nonneg ‖x τ 1 b‖]`. Simplify using `only [Fin.mk_one]`. Use polynomial arithmetic with `[sq_nonneg ‖x τ 0 b‖]`. Use polynomial arithmetic with `[norm_nonneg (x τ a b)]`.
+-/
 theorem isCompact_orth {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) :
     IsCompact {x : Frame X.Ψ 2 | IsOrth X x} := by
   refine Metric.isCompact_of_isClosed_isBounded ?_ ?_

@@ -16,6 +16,9 @@ open CrystallineSemistableComparison CrystallineSemistableComparison.Pb Crystall
 
 variable {K : Type} [CommRing K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
+/- English proof (translation)
+Rewrite using `[Λ.hv T' g]`. Use `Eq.trans ?_ (GlobalTheory.CompanionTheory.GrForm.ev_nat (q := q) φ (inTop q T) (inTop q T') g).symm` and prove the remaining obligations. Rewrite using `[← Λ.hv T g]`. Both sides reduce to the same expression.
+-/
 theorem mk_carry (Λ : LiftsT q) {T T' : Thick (smFun X q)} (φ : T ⟶ T') (g : Γ(X, ⊤)) :
     Ideal.Quotient.mk T'.J (φ.φ (Λ.v T g)) = Ideal.Quotient.mk T'.J (Λ.v T' g) := by
   rw [Λ.hv T' g]
@@ -27,10 +30,16 @@ def up (Λ : LiftsT q) {n : ℕ} (s : ComposableArrows (Thick (smFun X q)) n) (i
     (s.obj (Fin.last n)).B :=
   (s.map (homOfLE (Fin.le_last i))).φ (Λ.v _ g)
 
+/- English proof (translation)
+The claim follows from `mk_carry Λ _ g`.
+-/
 theorem mk_up (Λ : LiftsT q) {n : ℕ} (s : ComposableArrows (Thick (smFun X q)) n) (i : Fin (n + 1)) (g : Γ(X, ⊤)) :
     Ideal.Quotient.mk (s.obj (Fin.last n)).J (up Λ s i g) = Ideal.Quotient.mk _ (Λ.v (s.obj (Fin.last n)) g) :=
   mk_carry Λ _ g
 
+/- English proof (translation)
+Establish `e : (hp.functor ⋙ s).map (homOfLE (Fin.le_last k)) ≫ s.map (homOfLE (Fin.le_last (p (Fin.last m)))) = s.map (homOfLE (Fin.le_last (p k)))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Conclude with `congrArg s.map (Subsingleton.elim _ _)`. Conclude with `congrArg (fun ψ : (s.obj (p k)) ⟶ (s.obj (Fin.last n)) => ψ.φ (Λ.v _ g)) e`.
+-/
 theorem carry (Λ : LiftsT q) {m n : ℕ} (s : ComposableArrows (Thick (smFun X q)) n) (p : Fin (m + 1) → Fin (n + 1))
     (hp : Monotone p) (k : Fin (m + 1)) (g : Γ(X, ⊤)) :
     (s.map (homOfLE (Fin.le_last (p (Fin.last m))))).φ (up Λ (hp.functor ⋙ s) k g) = up Λ s (p k) g := by
@@ -41,9 +50,19 @@ theorem carry (Λ : LiftsT q) {m n : ℕ} (s : ComposableArrows (Thick (smFun X 
     exact congrArg s.map (Subsingleton.elim _ _)
   exact congrArg (fun ψ : (s.obj (p k)) ⟶ (s.obj (Fin.last n)) => ψ.φ (Λ.v _ g)) e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_eq (Λ : LiftsT q) {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) (s : ComposableArrows (Thick (smFun X q)) a) :
     Λ.form g₀ g s = Λ.v _ g₀ * ∏ k : Fin a, (up Λ s k.succ (g k) - up Λ s k.castSucc (g k)) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ (S : Finset (Fin a)), ∏ k ∈ S, (up Λ s k.succ (g k) - up Λ s k.castSucc (g k)) ∈ pdP (s.obj (Fin.last a)).δ S.card` using `by classical`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty]`.
+
+Conclude with `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`. Consider the case `insert c S hc ih`. Rewrite using `[Finset.prod_insert hc, Finset.card_insert_of_notMem hc, Nat.add_comm S.card 1]`. Use `dividedPowerFiltration_mul _ 1 S.card ?_ ih` and prove the remaining obligations. Use `(s.obj (Fin.last a)).J_le_pdPow_one ?_` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.eq, mk_up, mk_up]`. Simplify using `using key Finset.univ`.
+-/
 theorem prod_mem (Λ : LiftsT q) {a : ℕ} (g : Fin a → Γ(X, ⊤)) (s : ComposableArrows (Thick (smFun X q)) a) :
     ∏ k : Fin a, (up Λ s k.succ (g k) - up Λ s k.castSucc (g k)) ∈ pdP (s.obj (Fin.last a)).δ a := by
   have key : ∀ (S : Finset (Fin a)), ∏ k ∈ S, (up Λ s k.succ (g k) - up Λ s k.castSucc (g k)) ∈
@@ -61,10 +80,16 @@ theorem prod_mem (Λ : LiftsT q) {a : ℕ} (g : Fin a → Γ(X, ⊤)) (s : Compo
       rw [← Ideal.Quotient.eq, mk_up, mk_up]
   simpa using key Finset.univ
 
+/- English proof (translation)
+The claim follows from `Ideal.mul_mem_left _ _ (prod_mem Λ g s)`.
+-/
 theorem form_mem (Λ : LiftsT q) {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) (s : ComposableArrows (Thick (smFun X q)) a) :
     Λ.form g₀ g s ∈ pdP (s.obj (Fin.last a)).δ a :=
   Ideal.mul_mem_left _ _ (prod_mem Λ g s)
 
+/- English proof (translation)
+Rewrite using `[form_eq, map_mul, map_prod]`. Use `congrArg₂ (· * ·) rfl (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, carry, carry]`.
+-/
 theorem carry_form (Λ : LiftsT q) {m n : ℕ} (s : ComposableArrows (Thick (smFun X q)) n) (p : Fin (m + 1) → Fin (n + 1))
     (hp : Monotone p) (g₀ : Γ(X, ⊤)) (g : Fin m → Γ(X, ⊤)) :
     (s.map (homOfLE (Fin.le_last (p (Fin.last m))))).φ (Λ.form g₀ g (hp.functor ⋙ s)) =
@@ -78,6 +103,9 @@ def someLifts (q : X ⟶ Spec (CommRingCat.of K)) : LiftsT q where
     (ev (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) T (inTop q T) g)
   hv T g := Function.surjInv_eq _ _
 
+/- English proof (translation)
+Take `⟨f, hf, e, hz⟩` from `h (someLifts q)`. Take `⟨f', hf', e', hz'⟩` from `h' (someLifts q)`. Establish `: f = f'` using `funext fun s => Subtype.ext ((hz s).trans (hz' s).symm)`. Substitute `this` using the available equality. Conclude with `e.trans e'.symm`.
+-/
 theorem isFormT_unique {a : ℕ} {g₀ : Γ(X, ⊤)} {g : Fin a → Γ(X, ⊤)} {c c' : Hdg q a a}
     (h : IsFormT q g₀ g c) (h' : IsFormT q g₀ g c') : c = c' := by
   obtain ⟨f, hf, e, hz⟩ := h (someLifts q)
@@ -86,9 +114,29 @@ theorem isFormT_unique {a : ℕ} {g₀ : Γ(X, ⊤)} {g : Fin a → Γ(X, ⊤)} 
   subst this
   exact e.trans e'.symm
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg {B : Type} [CommRing B] (x₁ x₂ v p₁ p₂ : B) :
     (x₁ * x₂ - v) * (p₁ * p₂) = x₁ * p₁ * (x₂ * p₂) - v * (p₁ * p₂) := by ring
 
+/- English proof (translation)
+Establish `hm` using `CH.front_mono (rfl : a + b = a + b)`. Establish `hb` using `CH.back_mono (rfl : a + b = a + b)`. Establish `e1 : f (hm.functor ⋙ s) = sqMk (thFil (smFun X q) (a : ℤ)) (thFil (smFun X q) ((a : ℤ) + 1)) (Λ.form g₀ g (hm.functor ⋙ s)) (form_mem Λ g₀ g _)` using `Subtype.ext (hf _)`. Establish `e2 : f' (hb.functor ⋙ s) = sqMk (thFil (smFun X q) (b : ℤ)) (thFil (smFun X q) ((b : ℤ) + 1)) (Λ.form h₀ h (hb.functor ⋙ s)) (form_mem Λ h₀ h _)` using `Subtype.ext (hf' _)`. Establish `hM` using `grOk (smFun X q) (rfl : a + b = a + b)`.
+
+Establish `t1 : CH.term (grT (smFun X q) a) s f (CH.front (rfl : a + b = a + b)) hm = sqMk (thFil (smFun X q) (a : ℤ)) (thFil (smFun X q) ((a : ℤ) + 1)) ((s.map (homOfLE (Fin.le_last (CH.front (rfl : a + b = a + b) (Fin.last a))))).φ (Λ.form g₀ g (hm.functor ⋙ s))) ((thFil (smFun X q) (a : …`. Unfold `CH.term`. Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `t2 : CH.term (grT (smFun X q) b) s f' (CH.back (rfl : a + b = a + b)) hb = sqMk (thFil (smFun X q) (b : ℤ)) (thFil (smFun X q) ((b : ℤ) + 1)) ((s.map (homOfLE (Fin.le_last (CH.back (rfl : a + b = a + b) (Fin.last b))))).φ (Λ.form h₀ h (hb.functor ⋙ s))) ((thFil (smFun X q) (b : ℤ …`.
+
+Unfold `CH.term`. Rewrite using `[e2]`. Both sides reduce to the same expression. Establish `c : (grOk (smFun X q) (rfl : a + b = a + b)).pair.cupC (rfl : a + b = a + b) f f' s = (grOk (smFun X q) (rfl : a + b = a + b)).mul (CH.term (grT (smFun X q) a) s f (CH.front (rfl : a + b = a + b)) hm) (CH.term (grT (smFun X q) b) s f' (CH.back (rfl : a + b = a + b)) hb)` using `rfl`. Rewrite using `[c, t1, t2, MulOk.mul_mk]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ _`. Rewrite using `[carry_form Λ s _ hm g₀ g, carry_form Λ s _ hb h₀ h, form_eq]`. Establish `hprod : ∏ k : Fin (a + b), (up Λ s k.succ (Fin.append g h k) - up Λ s k.castSucc (Fin.append g h k)) = (∏ k : Fin a, (up Λ s (CH.front (rfl : a + b = a + b) k.succ) (g k) - up Λ s (CH.front (rfl : a + b = a + b) k.castSucc) (g k))) * ∏ k : Fin b, (up Λ s (CH.back (rfl : a + b = a …`. Rewrite using `[Fin.prod_univ_add]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => ?_) (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Both sides reduce to the same expression. Rewrite using `[Fin.append_right]`. Establish `e3 : (Fin.natAdd a i).succ = CH.back (rfl : a + b = a + b) i.succ` using `Fin.ext (by simp [CH.back]; omega)`. Establish `e4 : (Fin.natAdd a i).castSucc = CH.back (rfl : a + b = a + b) i.castSucc` using `Fin.ext (by simp [CH.back])`.
+
+Rewrite using `[e3, e4]`. Establish `hP` using `prod_mem Λ (Fin.append g h) s`. Rewrite `hP`, the goal using `[hprod]`. Rewrite using `[Ideal.Quotient.eq]`. Generalize the expression as in `(∏ k : Fin a, (up Λ s (CH.front (rfl : a + b = a + b) k.succ) (g k) - up Λ s (CH.front (rfl : a + b = a + b) k.castSucc) (g k))) = P₁ at hP ⊢`.
+
+Generalize the expression as in `(∏ k : Fin b, (up Λ s (CH.back (rfl : a + b = a + b) k.succ) (h k) - up Λ s (CH.back (rfl : a + b = a + b) k.castSucc) (h k))) = P₂ at hP ⊢`. Establish `hJ : up Λ s (CH.front (rfl : a + b = a + b) (Fin.last a)) g₀ * up Λ s (CH.back (rfl : a + b = a + b) (Fin.last b)) h₀ - Λ.v _ (g₀ * h₀) ∈ (s.obj (Fin.last (a + b))).J`. Rewrite using `[← Ideal.Quotient.eq, map_mul, mk_up, mk_up, Λ.hv, Λ.hv, Λ.hv, map_mul]`. Establish `hm2` using `dividedPowerFiltration_mul _ 1 (a + b) ((s.obj (Fin.last (a + b))).J_le_pdPow_one hJ) hP`. Establish `e5 : (((a + b : ℕ) : ℤ) + 1).toNat = 1 + (a + b)` using `by omega`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ pdP _ (((a + b : ℕ) : ℤ) + 1).toNat`. Rewrite using `[e5]`. Rewrite `hm2` using `[alg]`. Conclude with `hm2`.
+-/
 theorem cup_rep (Λ : LiftsT q) {a b : ℕ} (g₀ h₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) (h : Fin b → Γ(X, ⊤))
     (f : CH.Cn (grT (smFun X q) a) a) (f' : CH.Cn (grT (smFun X q) b) b)
     (hf : ∀ s, (show sqM _ _ _ from f s).1 = Ideal.Quotient.mk _ (Λ.form g₀ g s))
@@ -149,6 +197,11 @@ theorem cup_rep (Λ : LiftsT q) {a b : ℕ} (g₀ h₀ : Γ(X, ⊤)) (g : Fin a 
   rw [alg] at hm2
   exact hm2
 
+/- English proof (translation)
+Introduce `Λ`. Take `⟨f, hf, ex, hz⟩` from `hx Λ`. Take `⟨f', hf', ey, hz'⟩` from `hy Λ`. Take `⟨hc, e⟩` from `CrystallineSemistableComparison.P.cup_cls (grOk (smFun X q) (rfl : a + b = a + b)).pair (rfl : a + b = a + b) f f' hf hf'`. Use `⟨_, hc, ?_, cup_rep Λ g₀ h₀ g h f f' hz hz'⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg₂ (fun u v => (grOk (smFun X q) (rfl : a + b = a + b)).pair.cup (rfl : a + b = a + b) u v) ex ey).trans e`.
+-/
 theorem isFormT_cup {a b : ℕ} {g₀ h₀ : Γ(X, ⊤)} {g : Fin a → Γ(X, ⊤)} {h : Fin b → Γ(X, ⊤)} {x : Hdg q a a} {y : Hdg q b b}
     (hx : IsFormT q g₀ g x) (hy : IsFormT q h₀ h y) :
     IsFormT q (g₀ * h₀) (Fin.append g h) (cupH q rfl rfl x y) := by
@@ -159,6 +212,11 @@ theorem isFormT_cup {a b : ℕ} {g₀ h₀ : Γ(X, ⊤)} {g : Fin a → Γ(X, �
   refine ⟨_, hc, ?_, cup_rep Λ g₀ h₀ g h f f' hz hz'⟩
   exact (congrArg₂ (fun u v => (grOk (smFun X q) (rfl : a + b = a + b)).pair.cup (rfl : a + b = a + b) u v) ex ey).trans e
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_wedgeOm]`. Simplify using `only [CrystallineSemistableComparison.Onto.form, Submodule.coe_smul, exteriorPower.ιMulti_apply_coe]`. Rewrite using `[smul_mul_smul_comm, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, ← List.prod_append, ← List.ofFn_fin_append]`. Use `congrArg (fun v => (g₀ * h₀) • (List.ofFn v).prod) (funext fun i => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp`.
+-/
 theorem wedge_form {A : Type} [CommRing A] [Algebra K A] {a b : ℕ} (g₀ h₀ : A) (g : Fin a → A) (h : Fin b → A) :
     wedgeOm K A (rfl : a + b = a + b) (CrystallineSemistableComparison.Onto.form K g₀ g) (CrystallineSemistableComparison.Onto.form K h₀ h) =
       CrystallineSemistableComparison.Onto.form K (g₀ * h₀) (Fin.append g h) := by
@@ -170,6 +228,13 @@ theorem wedge_form {A : Type} [CommRing A] [Algebra K A] {a b : ℕ} (g₀ h₀ 
   refine congrArg (fun v => (g₀ * h₀) • (List.ofFn v).prod) (funext fun i => ?_)
   refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp
 
+/- English proof (translation)
+Establish `all : ∀ (ω : M₁) (η : M₂), e₃ (B (e₁.symm ω) (e₂.symm η)) = Wd ω η`. Introduce `ω η`. Establish `hω : ω ∈ Submodule.span K S₁` using `h₁ ▸ Submodule.mem_top`. Establish `hη : η ∈ Submodule.span K S₂` using `h₂ ▸ Submodule.mem_top`. Proceed by induction on `hω using Submodule.span_induction with`.
+
+Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp only [map_add, LinearMap.add_apply, hu, hv]`. Consider the case `smul r u _ hu => simp only [map_smul, LinearMap.smul_apply, hu]`. Consider the case `mem u hu`. Proceed by induction on `hη using Submodule.span_induction with`.
+
+Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp only [map_add, hu, hv]`. Consider the case `smul r u _ hu => simp only [map_smul, hu]`. Consider the case `mem v hv => exact gen u hu v hv`. Simplify using `using all (e₁ x) (e₂ y)`.
+-/
 theorem bilin_ext {H₁ H₂ H₃ M₁ M₂ M₃ : Type*} [AddCommGroup H₁] [AddCommGroup H₂] [AddCommGroup H₃] [AddCommGroup M₁]
     [AddCommGroup M₂] [AddCommGroup M₃] [Module K H₁] [Module K H₂] [Module K H₃] [Module K M₁] [Module K M₂] [Module K M₃]
     (e₁ : H₁ ≃ₗ[K] M₁) (e₂ : H₂ ≃ₗ[K] M₂) (e₃ : H₃ ≃ₗ[K] M₃) (B : H₁ →ₗ[K] H₂ →ₗ[K] H₃) (Wd : M₁ →ₗ[K] M₂ →ₗ[K] M₃)
@@ -192,11 +257,17 @@ theorem bilin_ext {H₁ H₂ H₃ M₁ M₂ M₃ : Type*} [AddCommGroup H₁] [A
       | mem v hv => exact gen u hu v hv
   simpa using all (e₁ x) (e₂ y)
 
+/- English proof (translation)
+Take `⟨bil, hbil⟩` from `CrystallineSemistableComparison.P.cup_bilin (grOk (smFun X q) (rfl : a + b = a + b)).pair (rfl : a + b = a + b)`. Conclude with `⟨bil, hbil⟩`.
+-/
 theorem exists_bil (q : X ⟶ Spec (CommRingCat.of K)) (a b : ℕ) :
     ∃ B : Hdg q a a →ₗ[K] Hdg q b b →ₗ[K] Hdg q (a + b) (a + b), ∀ u v, B u v = cupH q rfl rfl u v := by
   obtain ⟨bil, hbil⟩ := CrystallineSemistableComparison.P.cup_bilin (grOk (smFun X q) (rfl : a + b = a + b)).pair (rfl : a + b = a + b)
   exact ⟨bil, hbil⟩
 
+/- English proof (translation)
+Establish `e` using `isFormT_unique (isFormT_cup (hA g₀ g) (hB h₀ h)) (hC (g₀ * h₀) (Fin.append g h))`. Rewrite using `[e, LinearEquiv.apply_symm_apply]`. Conclude with `(wedge_form (K := K) (A := Sec q ⊤) g₀ h₀ g h).symm`.
+-/
 theorem gen_eq {a b : ℕ} (eA : Hdg q a a ≃ₗ[K] OmU q ⊤ a) (eB : Hdg q b b ≃ₗ[K] OmU q ⊤ b)
     (eC : Hdg q (a + b) (a + b) ≃ₗ[K] OmU q ⊤ (a + b)) (hA : IsOmT q a eA) (hB : IsOmT q b eB) (hC : IsOmT q (a + b) eC)
     (g₀ h₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) (h : Fin b → Γ(X, ⊤)) :
@@ -206,6 +277,11 @@ theorem gen_eq {a b : ℕ} (eA : Hdg q a a ≃ₗ[K] OmU q ⊤ a) (eB : Hdg q b 
   rw [e, LinearEquiv.apply_symm_apply]
   exact (wedge_form (K := K) (A := Sec q ⊤) g₀ h₀ g h).symm
 
+/- English proof (translation)
+Introduce `K _ X q a b c h eA eB eC hA hB hC x y`. Substitute `h` using the available equality. Take `⟨B, hB'⟩` from `exists_bil q a b`. Rewrite using `[← hB']`. Use `bilin_ext eA eB eC B (wedgeOm K (Sec q ⊤) rfl) _ _ (GlobalTheory.CompanionTheory.OntoForms.formLaws K (Sec q ⊤) (Sec q ⊤) a).1 (GlobalTheory.CompanionTheory.OntoForms.formLaws K (Sec q ⊤) (Sec q ⊤) b).1 ?_ x y` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g₀, g, rfl⟩ _ ⟨h₀, h, rfl⟩`. Rewrite using `[hB']`. Conclude with `gen_eq eA eB eC hA hB hC g₀ h₀ g h`.
+-/
 theorem main : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (a b c : ℕ) (h : a + b = c)
     (eA : CrystallineSemistableComparison.HT.Hdg q a a ≃ₗ[K] OmU q ⊤ a) (eB : CrystallineSemistableComparison.HT.Hdg q b b ≃ₗ[K] OmU q ⊤ b) (eC : CrystallineSemistableComparison.HT.Hdg q c c ≃ₗ[K] OmU q ⊤ c),
     CrystallineSemistableComparison.Om.L2.IsOmT q a eA → CrystallineSemistableComparison.Om.L2.IsOmT q b eB → CrystallineSemistableComparison.Om.L2.IsOmT q c eC → ∀ x y,

@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 
 namespace LateralTheory.E.LeafInclPiecePf
 
+/- English proof (translation)
+Simplify using `only [incl]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem incl_comp {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R1 R'' : Subalgebra k Ω} (h1 : R ≤ R1)
     (h : R ≤ R'') (h1' : R1 ≤ R'') : incl h1' ≫ incl h1 = incl h := by
   simp only [incl]
@@ -24,6 +27,11 @@ def descMap {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R1 R'' : Subalg
   pullback.lift (lvl h1 h h1' qW ≫ ψ ≫ pullback.fst qU (incl h1)) (pullback.snd qW (incl h)) (by
     rw [Category.assoc, Category.assoc, pullback.condition, reassoc_of% hψ, lvl, pullback.lift_snd_assoc, Category.assoc, incl_comp h1 h h1'])
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Unfold `lvl bcLift`. Rewrite using `[Category.assoc]`. Use `erw [pullback.lift_fst, pullback.lift_fst, pullback.lift_fst]`. Unfold `lvl bcLift`.
+
+Rewrite using `[Category.assoc]`. Use `erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd, Category.assoc, toR_eq]`.
+-/
 theorem bcLift_lvl {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R1 R'' : Subalgebra k Ω} (h1 : R ≤ R1)
     (h : R ≤ R'') (h1' : R1 ≤ R'') {Y D : Scheme.{0}} {g : Y ⟶ Sp Ω} {q : D ⟶ Sp R} {v : Y ⟶ D}
     (w : v ≫ q = g ≫ toR R) : bcLift h w ≫ lvl h1 h h1' q = bcLift h1 w := by
@@ -55,6 +63,13 @@ def LeafInclOpen : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Alge
     ∃ R' : Subalgebra k Ω, R1 ≤ R' ∧ R'.FG ∧ ∀ (R'' : Subalgebra k Ω) (h : R ≤ R'') (h1' : R1 ≤ R''), R' ≤ R'' →
       IsOpenImmersion (descMap h1 h h1' qU qW ψ hψ)
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ X f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW`. Take `⟨R1, h1, hR1, ψ, hψ, hc⟩` from `hA k Ω f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW`. Take `⟨R', h1R', hR', H⟩` from `hB k Ω f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW R1 h1 hR1 ψ hψ hc`. Use `⟨R', h1.trans h1R', hR', fun R'' h hR'' => ?_⟩` and prove the remaining obligations. Establish `h1' : R1 ≤ R''` using `h1R'.trans hR''`.
+
+Use `⟨descMap h1 h h1' qU qW ψ hψ, H R'' h h1' hR'', pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [descMap, Category.assoc, pullback.lift_fst]`. Rewrite using `[reassoc_of% (bcLift_lvl h1 h h1' hW.w), reassoc_of% hc]`. Unfold `bcLift`.
+
+Use `erw [pullback.lift_fst, pullback.lift_fst]`. Simplify using `only [descMap, Category.assoc, pullback.lift_snd]`. Unfold `bcLift`. Use `erw [pullback.lift_snd, pullback.lift_snd]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι_assoc]`.
+-/
 theorem LeafInclPiece_of (hA : LeafInclMap) (hB : LeafInclOpen) : LeafInclPiece := by
   intro k _ Ω _ _ X f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW
   obtain ⟨R1, h1, hR1, ψ, hψ, hc⟩ := hA k Ω f hf U W hWU R hR DU DW qU qW vU vW hqU hqW hU hW

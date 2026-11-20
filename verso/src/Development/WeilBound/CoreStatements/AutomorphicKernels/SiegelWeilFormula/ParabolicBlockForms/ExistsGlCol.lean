@@ -19,6 +19,11 @@ namespace Bq
 
 open Matrix
 
+/- English proof (translation)
+Use `set e : Fin m → K := Pi.single i₀ 1 with he`. Use `set A : Matrix (Fin m) (Fin m) K := 1 + replicateCol Unit (w - e) * replicateRow Unit e with hA`. Establish `hdet : A.det = w i₀`. Rewrite using `[hA, det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[he, dotProduct, Pi.single_apply]`.
+
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A (by rw [hdet]; exact hw), fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.GeneralLinearGroup.val_mkOfDetNeZero, hA, Matrix.add_apply, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, he, Pi.sub_apply, Pi.single_eq_same, mul_one, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem gl_col_of_ne {K : Type} [Field K] {m : ℕ} (i₀ : Fin m) (w : Fin m → K) (hw : w i₀ ≠ 0) :
     ∃ a : GL (Fin m) K, ∀ k, a.1 k i₀ = w k := by
   set e : Fin m → K := Pi.single i₀ 1 with he
@@ -32,6 +37,21 @@ theorem gl_col_of_ne {K : Type} [Field K] {m : ℕ} (i₀ : Fin m) (w : Fin m �
     Matrix.one_apply, Pi.single_apply]
   split_ifs <;> ring
 
+/- English proof (translation)
+Distinguish the cases in `h0 : v i₀ ≠ 0`. Conclude with `gl_col_of_ne i₀ v h0`. Use `push_neg at h0`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hv`. Establish `hki : k ≠ i₀` using `fun h => hk (by rw [h, h0]; rfl)`.
+
+Use `set w : Fin m → K := v + Pi.single i₀ (v k) with hw`. Establish `hwi : w i₀ = v k` using `by simp [hw, h0]`. Establish `hwk : w k = v k` using `by simp [hw, Pi.single_apply, hki]`. Take `⟨a, ha⟩` from `gl_col_of_ne i₀ w (by rw [hwi]; exact hk)`. Use `set T : Matrix (Fin m) (Fin m) K := 1 + replicateCol Unit (-(Pi.single i₀ (1 : K))) * replicateRow Unit (Pi.single k (1 : K)) with hT`.
+
+Establish `hTd : T.det = 1`. Rewrite using `[hT, det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[dotProduct, Pi.single_apply, hki, Ne.symm hki]`. Establish `hdet : (T * a.1).det ≠ 0`. Rewrite using `[Matrix.det_mul, hTd, one_mul]`.
+
+Conclude with `(Matrix.GeneralLinearGroup.det a).ne_zero`. Establish `hTe : ∀ k' m', T k' m' = (1 : Matrix (Fin m) (Fin m) K) k' m' - (Pi.single i₀ (1 : K) : Fin m → K) k' * (Pi.single k (1 : K) : Fin m → K) m'`. Introduce `k' m'`. Simplify using `[hT, Matrix.add_apply, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, sub_eq_add_neg]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (T * a.1) hdet, fun k' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_mkOfDetNeZero, Matrix.mul_apply]`. Repeatedly rewrite using `[hTe, sub_mul, Finset.sum_sub_distrib, ha, mul_assoc, ← Finset.mul_sum]`. Establish `h1 : ∑ x, (1 : Matrix (Fin m) (Fin m) K) k' x * w x = w k'`. Simplify using `[Matrix.one_apply]`. Establish `h2 : ∑ x, (Pi.single k (1 : K) : Fin m → K) x * w x = w k`.
+
+Simplify using `[Pi.single_apply]`. Rewrite using `[h1, h2, hwk, hw, Pi.add_apply]`. Distinguish the cases in `hk' : k' = i₀`. Substitute `hk'` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hk']`.
+-/
 theorem exists_gl_col {K : Type} [Field K] {m : ℕ} (i₀ : Fin m) (v : Fin m → K) (hv : v ≠ 0) :
     ∃ a : GL (Fin m) K, ∀ k, a.1 k i₀ = v k := by
   by_cases h0 : v i₀ ≠ 0
@@ -66,22 +86,46 @@ theorem exists_gl_col {K : Type} [Field K] {m : ℕ} (i₀ : Fin m) (v : Fin m �
   · subst hk'; simp
   · simp [Pi.single_apply, hk']
 
+/- English proof (translation)
+Establish `h : (∃ x, emS L x = emS L a) ∧ ∃ x, emS L x = emS L a'` using `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩`. Simplify using `only [padE]`. Rewrite using `[dif_pos h, emS_inj L h.1.choose_spec, emS_inj L h.2.choose_spec]`.
+-/
 theorem padE_emS (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) (a a' : Fin L.n ⊕ Fin L.n) :
     padE L N (emS L a) (emS L a') = N a a' := by
   have h : (∃ x, emS L x = emS L a) ∧ ∃ x, emS L x = emS L a' := ⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩
   simp only [padE]
   rw [dif_pos h, emS_inj L h.1.choose_spec, emS_inj L h.2.choose_spec]
 
+/- English proof (translation)
+Simplify using `only [padE]`. Rewrite using `[dif_neg (fun h => hr h.1)]`.
+-/
 theorem padE_out_row (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) {r : Fin d.n ⊕ Fin d.n}
     (hr : ¬ ∃ a, emS L a = r) (c : Fin d.n ⊕ Fin d.n) : padE L N r c = (1 : Matrix _ _ E) r c := by
   simp only [padE]
   rw [dif_neg (fun h => hr h.1)]
 
+/- English proof (translation)
+Simplify using `only [padE]`. Rewrite using `[dif_neg (fun h => hc h.2)]`.
+-/
 theorem padE_out_col (N : Matrix (Fin L.n ⊕ Fin L.n) (Fin L.n ⊕ Fin L.n) E) (r : Fin d.n ⊕ Fin d.n)
     {c : Fin d.n ⊕ Fin d.n} (hc : ¬ ∃ a, emS L a = c) : padE L N r c = (1 : Matrix _ _ E) r c := by
   simp only [padE]
   rw [dif_neg (fun h => hc h.2)]
 
+/- English proof (translation)
+Establish `hxo : ¬ ∃ a, emS L a = Sum.inl L.i₀` using `not_inl L L.i₀ rfl`. Establish `hyo : ¬ ∃ a, emS L a = Sum.inr L.i₀` using `not_inr L L.i₀ rfl`. Use `⟨fun k => ?_, fun k l hlx hly hkx => ?_⟩` and prove the remaining obligations. Establish `: (M * padE L H') k (Sum.inl L.i₀) = (M * (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E)) k (Sum.inl L.i₀)`. Simplify using `only [Matrix.mul_apply, padE_out_col L H' _ hxo]`.
+
+Rewrite using `[Matrix.sub_apply, this, Matrix.mul_one, hx k, sub_self]`. Establish `hl : ∃ c', emS L c' = l`. Assume the negation of the conclusion as `hc`. Break down `mem_out L hc with h | h` into its components or cases. Conclude with `hlx h`.
+
+Conclude with `hly h`. Take `⟨c', rfl⟩` from `hl`. Establish `hsum : (M * padE L H') k (emS L c') = ∑ a', M k (emS L a') * H' a' c'`. Rewrite using `[Matrix.mul_apply, sum_emb (emS L) (emS_inj L)]`. Simplify using `only [padE_emS]`.
+
+Introduce `m hm`. Rewrite using `[padE_out_row L H' (fun h => hm (by obtain ⟨a, ha⟩ := h; exact ⟨a, ha⟩)), Matrix.one_apply_ne, mul_zero]`. Introduce and unpack `rfl`. Conclude with `hm ⟨c', rfl⟩`. Rewrite using `[Matrix.sub_apply, hsum]`.
+
+Distinguish the cases in `hk : ∃ a, emS L a = k`. Take `⟨a, rfl⟩` from `hk`. Use `congrFun (congrFun hH a) c'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.submatrix_apply] at this`.
+
+Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Simplify using `[(emS_inj L).eq_iff]`. Break down `mem_out L hk with h | h` into its components or cases. Conclude with `(hkx h).elim`. Establish `h' : k = Sum.inr L.i₀` using `h`.
+
+Substitute `h'` using the available equality. Rewrite using `[Finset.sum_eq_zero fun a' _ => by rw [hy _ (fun he => hyo ⟨a', he⟩), zero_mul], Matrix.one_apply_ne, sub_self]`. Introduce `he`. Conclude with `hyo ⟨c', he.symm⟩`.
+-/
 theorem nq_E {M : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E}
     (hx : ∀ r, M r (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) r (Sum.inl L.i₀))
     (hy : ∀ c, c ≠ Sum.inr L.i₀ → M (Sum.inr L.i₀) c = 0)

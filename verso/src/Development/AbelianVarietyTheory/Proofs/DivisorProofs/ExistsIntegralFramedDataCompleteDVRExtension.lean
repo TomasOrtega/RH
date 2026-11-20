@@ -14,13 +14,22 @@ noncomputable section
 
 namespace GlobalTheory.FramedExt
 
+/- English proof (translation)
+Simplify using `[eSec]`.
+-/
 theorem eSec_hom {S : Scheme.{0}} (X : Over S) [GrpObj X] : eSec X ≫ X.hom = 𝟙 _ := by
   simp [eSec]
 
+/- English proof (translation)
+Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMapR_comp_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     (Chart.dualMapR f).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp f := by
   ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hx : x = algebraMap R (DualNumber R) x.fst + algebraMap R (DualNumber R) x.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hx, map_add, map_add, map_mul, map_mul, h, h, hε]`.
+-/
 theorem dual_ext {R R' : Type} [CommRing R] [CommRing R'] (F₁ F₂ : DualNumber R →+* DualNumber R')
     (h : ∀ a : R, F₁ (algebraMap R (DualNumber R) a) = F₂ (algebraMap R (DualNumber R) a))
     (hε : F₁ DualNumber.eps = F₂ DualNumber.eps) : F₁ = F₂ := by
@@ -29,6 +38,11 @@ theorem dual_ext {R R' : Type} [CommRing R] [CommRing R'] (F₁ F₂ : DualNumbe
     ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
   rw [hx, map_add, map_add, map_mul, map_mul, h, h, hε]
 
+/- English proof (translation)
+Introduce `hgen`. Use `letI := φ.toAlgebra`. Establish `: FaithfulSMul R R₂` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Establish `: Module.Flat R R₂` using `inferInstance`. Use `haveI : IsSeparated G.G.hom := G.semi.separated`.
+
+Use `haveI : QuasiCompact G.G.hom := G.semi.quasiCompact`. Use `haveI : CompactSpace G.G.left := QuasiCompact.compactSpace_of_compactSpace G.G.hom`. Establish `hinter : ∀ U W : G.G.left.Opens, IsAffineOpen U → IsAffineOpen W → IsAffineOpen (U ⊓ W)` using `fun U W hU hW => isAffineHom_diagonal_iff.mp (inferInstance : IsAffineHom (pullback.diagonal G.G.hom)) ⊤ (isAffineOpen_top _) U le_top W le_top hU hW`. Establish `Hpb : IsPullback m.φ G₂.G.hom G.G.hom (Spec.map (CommRingCat.ofHom (algebraMap R R₂)))` using `m.cart.1`. Conclude with `fun s' => ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.flatBC_iso G.G.hom G₂.G.hom m.φ Hpb hinter G.PP.L G.PP.isLB θ hgen G₂.PP.L G₂.PP.isLB wI hwI θ₂ _ hθ (fun _ _ => rfl) s'`.
+-/
 theorem generates_of_flat {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {R R₂ : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing R₂] [IsDomain R₂] (φ : R →+* R₂) (hφ : Function.Injective φ) (G : SAB H (Sp R)) (G₂ : SAB H (Sp R₂)) (m : SABMap G₂ G (spMap φ)) (wI : G₂.PP.L.Iso (G.PP.L.pull m.φ)) (hwI : LB.Gen.IsGen wI) (θ : G.PP.L.Sec) (θ₂ : G₂.PP.L.Sec) (hθ : IsoMaps wI θ₂ (thfPull G.PP.L m.φ θ)) : Generates (X := G.G) θ → Generates (X := G₂.G) θ₂ := by
   intro hgen
   letI := φ.toAlgebra
@@ -44,6 +58,17 @@ theorem generates_of_flat {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   exact fun s' => ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.flatBC_iso G.G.hom G₂.G.hom m.φ Hpb hinter G.PP.L G.PP.isLB θ hgen
     G₂.PP.L G₂.PP.isLB wI hwI θ₂ _ hθ (fun _ _ => rfl) s'
 
+/- English proof (translation)
+Introduce `H H'`. Take `⟨φ, he, w₀, hg, F, hp, hw, hr, hs, hF, hε, hv⟩` from `H`. Take `⟨φ', he', w', hg', F', hp', hw', hr', hs', hF', hε', hv'⟩` from `H'`. Establish `g₀` using `(isGen_iff w₀).1 hw`. Establish `g'` using `(isGen_iff w').1 hw'`.
+
+Take `⟨w'', T⟩` from `exists_comp k.P.isLB w₀ w' g₀ g' hL k'.P.isLB`. Establish `he'' : eSec k'.P.A ≫ φ' ≫ φ = spMap (g.comp f) ≫ eSec G`. Rewrite using `[← Category.assoc, he', Category.assoc, he, spMap_comp, Category.assoc]`. Use `⟨φ' ≫ φ, he'', w'', hg'.trans hg, F'.comp F, (hp'.comp hp).congr (spMap_comp f g).symm rfl, (isGen_iff w'').2 (T.pgen_comp k.P.isLB g₀ g'), ?_, ?_, fun a => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `r₀` using `(maps_iff w₀ _ (fun _ => eSec G) _ k.rig rig (spMap f) _ (rigPull_le φ (spMap f) he L) (fun _ => rfl)).1 hr`.
+
+Establish `r₁` using `(maps_iff w' _ (fun _ => eSec k.P.A) _ k'.rig k.rig (spMap g) _ (rigPull_le φ' (spMap g) he' k.P.L) (fun _ => rfl)).1 hr'`. Establish `r₂` using `T.pmaps_comp k.P.isLB (fun _ => he') r₀ r₁`. Rewrite `r₂` using `[← spMap_comp]`. Conclude with `(maps_iff w'' _ (fun _ => eSec G) _ k'.rig rig (spMap (g.comp f)) _ (rigPull_le (φ' ≫ φ) (spMap (g.comp f)) he'' L) (fun _ => rfl)).2 r₂`. Use `GlobalTheory.KeyPow.appLE_eq_of_stalk w'' θ k'.th fun z j k₀ hj hk => ?_` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `exists_chart k.P.isLB (φ' z)`. Establish `a` using `GlobalTheory.KeyComp.stalk_of_appLE_eq w₀ θ k.th hs (𝟙 _ ≫ φ') z j i hj hi`. Establish `b` using `GlobalTheory.KeyComp.stalk_of_appLE_eq w' k.th k'.th hs' (𝟙 _) z i k₀ hi hk`. Rewrite using `[T _ (𝟙 _) z j i k₀ hj hi hk, ← Category.assoc, a, b, Units.val_mul, _root_.mul_assoc]`. Rewrite using `[RingHom.comp_apply, hF, hF', RingHom.comp_apply]`.
+
+Rewrite using `[RingHom.comp_apply, hε, hε']`. Rewrite using `[← Category.assoc, hv', Category.assoc, hv, spMap_comp, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem isFibreOf_trans {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (hL : L.IsLB) (rig : (L.pull (eSec G)).Gen) (θ : L.Sec) {n : ℕ} (w : Fin n → (epsR R ⟶ G)) (k : KeyIn R') (k' : KeyIn R'') (f : R →+* R') (g : R' →+* R'') : IsFibreOf k G L rig θ w f → KeyPB k' k g → IsFibreOf k' G L rig θ w (g.comp f) := by
   intro H H'
   obtain ⟨φ, he, w₀, hg, F, hp, hw, hr, hs, hF, hε, hv⟩ := H
@@ -73,6 +98,25 @@ theorem isFibreOf_trans {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R
   · rw [← Category.assoc, hv', Category.assoc, hv, spMap_comp, Category.assoc]
     rfl
 
+/- English proof (translation)
+Introduce `H`. Take `⟨φk, hek, e, hg, F, hp, hgen, hr, hs, hF, hε, hv⟩` from `H`. Take `⟨ψ₂, hfac, hbase⟩ : ∃ ψ₂ : k.P.A.left ⟶ G₂.left, ψ₂ ≫ ψ = φk ∧ ψ₂ ≫ G₂.hom = k.P.A.hom ≫ spMap f` from `⟨hψ.1.lift φk (k.P.A.hom ≫ spMap f) (by rw [hp.1.w, spMap_comp, Category.assoc]), hψ.1.lift_fst _ _ _, hψ.1.lift_snd _ _ _⟩`. Substitute `hfac` using the available equality. Establish `hp₂ : IsGrpPullback k.P.A G₂ (spMap f) ψ₂` using `hψ.cancel (hp.congr (spMap_comp φ f) rfl) hbase`.
+
+Establish `he₂ : eSec k.P.A ≫ ψ₂ = spMap f ≫ eSec G₂`. Apply `hψ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hek, Category.assoc, he, spMap_comp, Category.assoc]`. Rewrite using `[Category.assoc, hbase, ← Category.assoc, eSec_hom, Category.assoc, eSec_hom]`. Simplify using the standard rewrite rules.
+
+Establish `gI` using `(isGen_iff wI).1 hwI`. Establish `g₀` using `(isGen_iff e).1 hgen`. Take `⟨e₂, T⟩` from `exists_cancel hL wI e gI g₀ hL₂ k.P.isLB`. Establish `hFe : F = (Chart.dualMapR f).comp (Chart.dualMapR φ)` using `dual_ext _ _ (fun a => by`. Simplify using `only [hF, RingHom.comp_apply]`.
+
+Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Apply the tactic sequence `(by rw [hε]; ext <;> simp [Chart.dualMapR])`. Use `⟨ψ₂, he₂, e₂, hg, Chart.dualMapR f, hp₂, (isGen_iff e₂).2 (T.pgen_cancel hL gI g₀), ?_, ?_, fun a => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `r₀` using `(maps_iff wI _ (fun _ => eSec G) _ rig₂ rig (spMap φ) _ (rigPull_le ψ (spMap φ) he L) (fun _ => rfl)).1 hrig`. Establish `r''` using `(maps_iff e _ (fun _ => eSec G) _ k.rig rig (spMap (f.comp φ)) _ (rigPull_le (ψ₂ ≫ ψ) (spMap (f.comp φ)) hek L) (fun _ => rfl)).1 hr`.
+
+Rewrite `r''` using `[spMap_comp]`. Establish `r₂` using `T.pmaps_cancel hL (fun _ => he₂) r₀ r''`. Conclude with `(maps_iff e₂ _ (fun _ => eSec G₂) _ k.rig rig₂ (spMap f) _ (rigPull_le ψ₂ (spMap f) he₂ L₂) (fun _ => rfl)).2 r₂`. Establish `hθ' : ∀ (j : (L.pull ψ).ι) (i : L₂.ι) (hle : (L.pull ψ).U j ⊓ L₂.U i ≤ ψ ⁻¹ᵁ L.U (j PUnit.unit)), (Scheme.Hom.appLE ψ (L.U (j PUnit.unit)) ((L.pull ψ).U j ⊓ L₂.U i) hle).hom (θ.f (j PUnit.unit)) = (show Γ(G₂.left, (L.pull ψ).U j ⊓ L₂.U i) from (wI.s (j, i)).val) * resG _ inf_le_r …`. Introduce `j i hle`.
+
+Use `Eq.trans ?_ (hθ j i)` and prove the remaining obligations. Simplify using `only [thfPull]`. Use `first`. Consider the case `(erw [Scheme.Hom.appLE_map])`. Consider the case `(simp only [Scheme.Hom.appLE_map])`.
+
+Consider the case `(rw [← Scheme.Hom.appLE_map ψ _ (homOfLE inf_le_left).op]; rfl)`. Use `GlobalTheory.KeyPow.appLE_eq_of_stalk e₂ θ₂ k.th fun z j k₀ hj hk => ?_` and prove the remaining obligations. Take `⟨jL, hjL⟩` from `exists_chart hL (ψ (ψ₂ z))`. Establish `a` using `GlobalTheory.KeyComp.stalk_of_appLE_eq e θ k.th hs (𝟙 _) z jL k₀ hjL hk`. Establish `b` using `GlobalTheory.KeyComp.stalk_of_appLE_eq wI θ θ₂ hθ' (𝟙 _ ≫ ψ₂) z jL j hjL hj`.
+
+Rewrite `b` using `[Category.assoc]`. Rewrite `a` using `[T _ (𝟙 _) z jL j k₀ hjL hj hk, b, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 a`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+
+Apply `hψ.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hv i, Category.assoc, hw, ← Category.assoc, hFe, spMap_comp]`. Rewrite using `[Category.assoc, hbase, ← Category.assoc, Over.w (k.v i), Category.assoc, Over.w (w₂ (Fin.cast hg i))]`. Simplify using `only [epsR, Over.mk_hom]`. Rewrite using `[← spMap_comp, ← spMap_comp, dualMapR_comp_algebraMap]`.
+-/
 theorem isFibreOf_descend {R R₂ K : Type} [CommRing R] [CommRing R₂] [CommRing K] (φ : R →+* R₂) (f : R₂ →+* K) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (G₂ : Over (Sp R₂)) [GrpObj G₂] [IsCommMonObj G₂] (L : LB G.left) (hL : L.IsLB) (rig : (L.pull (eSec G)).Gen) (L₂ : LB G₂.left) (hL₂ : L₂.IsLB) (rig₂ : (L₂.pull (eSec G₂)).Gen) (ψ : G₂.left ⟶ G.left) (hψ : IsGrpPullback G₂ G (spMap φ) ψ) (he : eSec G₂ ≫ ψ = spMap φ ≫ eSec G) (wI : L₂.Iso (L.pull ψ)) (hwI : LB.Gen.IsGen wI) (hrig : LB.Gen.Maps (LB.linCombIso wI (fun _ => eSec G₂) fun _ => 1) rig₂ (rigPullOf ψ (spMap φ) he L rig)) (θ : L.Sec) (θ₂ : L₂.Sec) (hθ : IsoMaps wI θ₂ (thfPull L ψ θ)) {n : ℕ} (w : Fin n → (epsR R ⟶ G)) (w₂ : Fin n → (epsR R₂ ⟶ G₂)) (hw : ∀ i, (w₂ i).left ≫ ψ = spMap (Chart.dualMapR φ) ≫ (w i).left) (k : KeyIn K) : IsFibreOf k G L rig θ w (f.comp φ) → IsFibreOf k G₂ L₂ rig₂ θ₂ w₂ f := by
   intro H
   obtain ⟨φk, hek, e, hg, F, hp, hgen, hr, hs, hF, hε, hv⟩ := H
@@ -128,6 +172,21 @@ theorem isFibreOf_descend {R R₂ K : Type} [CommRing R] [CommRing R₂] [CommRi
       simp only [epsR, Over.mk_hom]
       rw [← spMap_comp, ← spMap_comp, dualMapR_comp_algebraMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H T T' iT φ hφ G t' m2 n w hw θ hθ k hk`. Establish `hφ' : (algebraMap T'.V T'.Fr).comp φ = iT.comp (algebraMap T.V T.Fr)` using `RingHom.ext hφ`. Establish `hsq : spMap iT ≫ spMap (algebraMap T.V T.Fr) = spMap (algebraMap T'.V T'.Fr) ≫ spMap φ`. Rewrite using `[← spMap_comp, ← spMap_comp, hφ']`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → SABMap s' s f → Nonempty (SABMap s' s g)`.
+
+Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m⟩`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G₂ : SAB H (Sp T'.V), Nonempty (SABMap G₂ G (spMap φ)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap φ) G`.
+
+Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t₂, ⟨p⟩⟩ : ∃ t₂ : SAB H (Sp T'.Fr), Nonempty (SABMap t₂ t' (spMap iT)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap iT) t'`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨a₂, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m2 p`.
+
+Take `⟨b₂⟩` from `tr hsq a₂`. Take `⟨m2', -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m b₂`. Take `⟨w', hw', hww⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ φ G.G G₂.G m.φ m.cart G.semi.smooth n w hw`. Take `⟨k', hk'⟩` from `GlobalTheory.KeyPow.exists_keyPB_ring k iT`. Take `⟨wI, hwI, hrI, -⟩` from `m.lin`.
+
+Take `⟨θ₂, hθ₂⟩` from `GlobalTheory.ArcQ.NormalForm.exists_isoMaps wI hwI G.PP.isLB G₂.PP.isLB (thfPull G.PP.L m.φ θ)`. Establish `he : eSec G₂.G ≫ m.φ = spMap φ ≫ eSec G.G` using `m.cm.e_comm.trans (congrArg (· ≫ eSec G.G) m.base)`. Establish `hr : ∀ (e : Sp T'.V ⟶ Sp T.V) (_ : m.cm.e = e) (he : eSec G₂.G ≫ m.φ = e ≫ eSec G.G), rigPullOf m.φ e he G.PP.L G.PP.rig = m.cm.rigPull G.PP.L G.PP.rig`. Introduce and unpack `_ rfl _`. Both sides reduce to the same expression.
+
+Establish `hrig : LB.Gen.Maps (LB.linCombIso wI (fun _ => eSec G₂.G) fun _ => 1) G₂.PP.rig (rigPullOf m.φ (spMap φ) he G.PP.L G.PP.rig)`. Rewrite using `[hr _ m.base he]`. Conclude with `hrI`. Establish `h1` using `isFibreOf_trans G.G G.PP.L G.PP.isLB G.PP.rig θ w k k' (algebraMap T.V T.Fr) iT hk hk'`. Rewrite `h1` using `[← hφ']`.
+
+Establish `hinj : Function.Injective φ` using `fun a b hab => IsFractionRing.injective T.V T.Fr (iT.injective (by rw [← hφ a, ← hφ b, hab]))`. Conclude with `⟨G₂, t₂, p, m2', n, w', θ₂, k', hw', generates_of_flat φ hinj G G₂ m wI hwI θ θ₂ hθ₂ hθ, isFibreOf_descend φ (algebraMap T'.V T'.Fr) G.G G₂.G G.PP.L G.PP.isLB G.PP.rig G₂.PP.L G₂.PP.isLB G₂.PP.rig m.φ m.cart he wI hwI hrig θ θ₂ hθ₂ w w' hww k' h1, hk'⟩`.
+-/
 theorem exists_framed_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (φ : T.V →+* T'.V), (∀ a : T.V, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a)) → ∀ (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)), SABMap t' G (spMap (algebraMap T.V T.Fr)) → ∀ (n : ℕ) (w : Fin n → (epsR T.V ⟶ G.G)), IsLieBasis w → ∀ (θ : G.PP.L.Sec), Generates (X := G.G) θ → ∀ (k : KeyIn T.Fr), IsFibreOf k G.G G.PP.L G.PP.rig θ w (algebraMap T.V T.Fr) → ∃ (G' : SAB H (Sp T'.V)) (t'' : SAB H (Sp T'.Fr)) (_ : SABMap t'' t' (spMap iT)) (_ : SABMap t'' G' (spMap (algebraMap T'.V T'.Fr))) (n' : ℕ) (w' : Fin n' → (epsR T'.V ⟶ G'.G)) (θ' : G'.PP.L.Sec) (k' : KeyIn T'.Fr), IsLieBasis w' ∧ Generates (X := G'.G) θ' ∧ IsFibreOf k' G'.G G'.PP.L G'.PP.rig θ' w' (algebraMap T'.V T'.Fr) ∧ KeyPB k' k iT := by
   intro E _ _ _ H T T' iT φ hφ G t' m2 n w hw θ hθ k hk
   have hφ' : (algebraMap T'.V T'.Fr).comp φ = iT.comp (algebraMap T.V T.Fr) := RingHom.ext hφ

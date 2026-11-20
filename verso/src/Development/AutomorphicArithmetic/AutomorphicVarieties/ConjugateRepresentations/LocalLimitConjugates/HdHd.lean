@@ -6,6 +6,9 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `Γ M _ _ _ ρ k b hb`. Use `⟨?_, fun x _ => UpperTheory.V.Cj.A.hdFacts.1 Γ M b x⟩` and prove the remaining obligations. Conclude with `UpperTheory.V.Cj.A.hdFacts.2.2.2.2.2 Γ Γ M ρ k b hb`.
+-/
 theorem UpperTheory.V.Cj.H.hdHd :
     UpperTheory.V.Cj.H.HdHd := by
   intro Γ M _ _ _ ρ k b hb

@@ -10,6 +10,11 @@ noncomputable abbrev diffMap (K : Type) {A : Type} [Field K] [CommRing A] [Algeb
     (x : Fin n → A) : (Fin n →₀ A) →ₗ[A] Ω[A⁄K] :=
   Finsupp.linearCombination A fun i => D K A (x i)
 
+/- English proof (translation)
+Use `Finsupp.lhom_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Finsupp.lsingle_apply]`. Establish `h1 : (Finsupp.single i (1 : B) : Fin n →₀ B) = Finsupp.mapRange.linearMap (Algebra.linearMap A B) (Finsupp.single i (1 : A))`. Simplify using the standard rewrite rules. Rewrite using `[h1, IsLocalizedModule.mapExtendScalars_apply_apply, IsLocalizedModule.map_apply]`.
+
+Simplify using `[diffMap]`.
+-/
 theorem map_diffMap_eq (K : Type) {A : Type} [Field K] [CommRing A] [Algebra K A] {n : ℕ}
     (x : Fin n → A) (S : Submonoid A) (B : Type) [CommRing B] [Algebra A B] [Algebra K B]
     [IsScalarTower K A B] [IsLocalization S B] :
@@ -25,6 +30,9 @@ theorem map_diffMap_eq (K : Type) {A : Type} [Field K] [CommRing A] [Algebra K A
   rw [h1, IsLocalizedModule.mapExtendScalars_apply_apply, IsLocalizedModule.map_apply]
   simp [diffMap]
 
+/- English proof (translation)
+Rewrite using `[Function.Bijective, ← LinearMap.range_eq_top, Finsupp.range_linearCombination]`. Both sides reduce to the same expression.
+-/
 theorem bijective_linearCombination_iff {B M ι : Type} [CommRing B] [AddCommGroup M] [Module B M]
     (v : ι → M) :
     Function.Bijective (Finsupp.linearCombination B v) ↔
@@ -32,6 +40,13 @@ theorem bijective_linearCombination_iff {B M ι : Type} [CommRing B] [AddCommGro
   rw [Function.Bijective, ← LinearMap.range_eq_top, Finsupp.range_linearCombination]
   rfl
 
+/- English proof (translation)
+Introduce `K A _ _ _ _ P _ n x hP`. Set `l₁ : (Fin n →₀ A) →ₗ[A] (Fin n →₀ Localization.AtPrime P)` to `Finsupp.mapRange.linearMap (Algebra.linearMap A (Localization.AtPrime P))`. Set `l₂ : Ω[A⁄K] →ₗ[A] Ω[Localization.AtPrime P⁄K]` to `KaehlerDifferential.map K K A (Localization.AtPrime P)`. Establish `hP' : Function.Bijective (IsLocalizedModule.map P.primeCompl l₁ l₂ (diffMap K x))`. Establish `h` using `(bijective_linearCombination_iff _).mpr hP`.
+
+Rewrite `h` using `[← map_diffMap_eq K x P.primeCompl (Localization.AtPrime P)]`. Conclude with `h`. Take `⟨s, hs, hbij⟩` from `Module.FinitePresentation.exists_notMem_bijective (diffMap K x) P l₁ l₂ hP'`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Introduce `B _ _ _ _ _`.
+
+Rewrite using `[← bijective_linearCombination_iff, ← map_diffMap_eq K x (Submonoid.powers s) B]`. Conclude with `(IsLocalizedModule.map_bijective_iff_localizedModuleMap_bijective (Finsupp.mapRange.linearMap (Algebra.linearMap A B)) (KaehlerDifferential.map K K A B)).mpr hbij`.
+-/
 theorem spread : ∀ (K A : Type) [Field K] [CommRing A] [Algebra K A] [Algebra.FinitePresentation K A] (P : Ideal A) [P.IsPrime] {n : ℕ} (x : Fin n → A), (LinearIndependent (Localization.AtPrime P) (fun i => KaehlerDifferential.D K (Localization.AtPrime P) (algebraMap A _ (x i))) ∧ Submodule.span (Localization.AtPrime P) (Set.range fun i => KaehlerDifferential.D K (Localization.AtPrime P) (algebraMap A _ (x i))) = ⊤) → ∃ s ∉ P, ∀ (B : Type) [CommRing B] [Algebra A B] [Algebra K B] [IsScalarTower K A B] [IsLocalization.Away s B], LinearIndependent B (fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) ∧ Submodule.span B (Set.range fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) = ⊤ := by
   intro K A _ _ _ _ P _ n x hP
   classical

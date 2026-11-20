@@ -5,6 +5,27 @@ namespace ReciprocityTheory.CA
 
 open IsLocalRing RingTheory.Sequence
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero`. Set `e : P ≃ₐ[P] MvPolynomial (Fin 0) P` to `(MvPolynomial.isEmptyAlgEquiv P (Fin 0)).symm`. Establish `he : ∀ r, e r = MvPolynomial.C r` using `fun r => by simpa using e.commutes r`. Use `⟨rs.map MvPolynomial.C, by simp, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs`. Take `⟨r, hr, rfl⟩` from `List.mem_map.1 hs`. Establish `hr' : r ∈ 𝔑.comap MvPolynomial.C` using `h.symm ▸ hmem r hr`. Conclude with `Ideal.mem_comap.1 hr'`. Establish `hmap : rs.map (e.toRingEquiv : P → MvPolynomial (Fin 0) P) = rs.map MvPolynomial.C` using `List.map_congr_left fun r _ => he r`.
+
+Use `isWeaklyRegular_map_ringEquiv e.toRingEquiv hrs` as an intermediate fact. Rewrite `this` using `[hmap]`. Conclude with `this`. Consider the case `succ N ih`. Set `e : MvPolynomial (Fin (N + 1)) P ≃ₐ[P] Polynomial (MvPolynomial (Fin N) P)` to `MvPolynomial.finSuccEquiv P N`.
+
+Use `haveI : Algebra.FiniteType P (Polynomial (MvPolynomial (Fin N) P)) := Algebra.FiniteType.trans (S := MvPolynomial (Fin N) P) inferInstance inferInstance`. Set `𝔑' : Ideal (Polynomial (MvPolynomial (Fin N) P))` to `𝔑.map e.toRingEquiv`. Use `haveI : 𝔑'.IsMaximal := Ideal.map_isMaximal_of_equiv e.toRingEquiv`. Establish `hc' : 𝔑'.comap (algebraMap P (Polynomial (MvPolynomial (Fin N) P))) = maximalIdeal P`. Establish `hA : algebraMap P (Polynomial (MvPolynomial (Fin N) P)) = (e.toRingEquiv : MvPolynomial (Fin (N + 1)) P →+* Polynomial (MvPolynomial (Fin N) P)).comp (algebraMap P (MvPolynomial (Fin (N + 1)) P))` using `RingHom.ext fun r => (e.commutes r).symm`.
+
+Rewrite using `[hA, ← Ideal.comap_comap]`. Use `show Ideal.comap _ (Ideal.comap (e.toRingEquiv : MvPolynomial (Fin (N + 1)) P →+* Polynomial (MvPolynomial (Fin N) P)) (Ideal.map e.toRingEquiv 𝔑)) = _`. Rewrite using `[Ideal.comap_coe, Ideal.comap_map_of_bijective _ e.toRingEquiv.bijective]`. Conclude with `h`. Set `𝔐 : Ideal (MvPolynomial (Fin N) P)` to `𝔑'.comap (algebraMap (MvPolynomial (Fin N) P) (Polynomial (MvPolynomial (Fin N) P)))`.
+
+Use `haveI : 𝔐.IsMaximal := isMaximal_comap_of_isMaximal_of_comap_eq (S' := MvPolynomial (Fin N) P) 𝔑' hc'`. Establish `hc'' : 𝔐.comap MvPolynomial.C = maximalIdeal P` using `by show (𝔑'.comap (algebraMap (MvPolynomial (Fin N) P) (Polynomial (MvPolynomial (Fin N) P)))).comap (algebraMap P (MvPolynomial (Fin N) P)) = maximalIdeal P`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`. Conclude with `hc'`. Take `⟨ss', hlen, hmem', hreg'⟩` from `ih 𝔐 hc''`.
+
+Take `⟨g, hg, hgN⟩` from `exists_monic_aeval_mem_of_isMaximal 𝔑' hc' (Polynomial.X)`. Rewrite `hgN` using `[Polynomial.aeval_X_left_eq_map]`. Establish `hgm : (g.map (algebraMap P (MvPolynomial (Fin N) P))).Monic` using `hg.map _`. Establish `hreg` using `isWeaklyRegular_map_C_append_monic hreg' hgm`. Use `⟨(ss'.map Polynomial.C ++ [g.map (algebraMap P (MvPolynomial (Fin N) P))]).map e.symm.toRingEquiv, ?_, ?_, isWeaklyRegular_map_ringEquiv e.symm.toRingEquiv hreg⟩` and prove the remaining obligations.
+
+Simplify using `[hlen]`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hs`. Establish `hy' : y ∈ 𝔑'`.
+
+Break down `List.mem_append.1 hy with h1 | h1` into its components or cases. Take `⟨s', hs', rfl⟩` from `List.mem_map.1 h1`. Conclude with `Ideal.mem_comap.1 (hmem' s' hs')`. Rewrite `h1` using `[List.mem_singleton]`. Rewrite using `[h1]`.
+
+Conclude with `hgN`. Take `⟨x, hx, rfl⟩` from `(Ideal.mem_map_of_equiv e.toRingEquiv y).1 hy'`. Simplify using `using hx`.
+-/
 theorem exists_isWeaklyRegular_mvPolynomial {P : Type*} [CommRing P] [IsLocalRing P] {rs : List P}
     (hmem : ∀ r ∈ rs, r ∈ maximalIdeal P) (hrs : IsWeaklyRegular P rs) (N : ℕ)
     (𝔑 : Ideal (MvPolynomial (Fin N) P)) [𝔑.IsMaximal]

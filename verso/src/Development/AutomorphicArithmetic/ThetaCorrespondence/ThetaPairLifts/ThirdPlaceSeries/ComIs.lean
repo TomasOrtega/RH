@@ -21,6 +21,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BaseChain
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hP`. Take `⟨-, -, -, hC, -⟩` from `hP.bot.hyp`. Establish `h2` using `D.R.two_le_m`. Conclude with `GlobalTheory.SeeSaw.ComCols.com_is_of_levCh (levAt_is hC.lev) (_root_.GlobalTheory.BaseChain.com_z W) hC.models.inf (hC.chain.ωY W.P.A3.A.μ0 0 (by omega)).std rfl (chrEq_mu_base hC.lev) hC.lev.eta hC.lev.chi`.
+-/
 theorem com_is_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → (_root_.GlobalTheory.BaseChain.com_z W).Is := by
   intro D L hT Gi Gl Kc Yd cX ex W hP
   obtain ⟨-, -, -, hC, -⟩ := hP.bot.hyp

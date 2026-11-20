@@ -6,6 +6,13 @@ namespace Formalism.MainNotions.S.Pv.AIsL
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Take `⟨x, hx, hlx⟩` from `hnz`. Take `⟨α, β, hαβ, hrel⟩` from `hJ k r ε lam H σ z c u Wp π hlam hσ hz hT hc hπ B l hB hl`. Establish `hα : α ≠ 0`. Introduce `h0`. Break down `hαβ with h1 | h1` into its components or cases.
+
+Conclude with `h1 h0`. Establish `e` using `hrel x hx`. Rewrite `e` using `[h0, zero_smul, zero_add]`. Conclude with `hlx ((smul_eq_zero.1 e).resolve_left h1)`. Use `⟨-(β / α), fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hrel v hv`. Establish `e2 : α • B v = -(β • l v)` using `eq_neg_of_add_eq_zero_left e`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem aIsL (hJ : PI.BesselMapUniq.BesselMapUniq) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}

@@ -6,6 +6,11 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨f, hf, rfl⟩ k'`. Use `⟨_, hst f hf (j k'), funext fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply, hj]`. Introduce `f ψ g₀ hψ hf g`.
+
+Use `⟨_, hψ (g₀ * E g), funext fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply]`. Rewrite using `[hf, map_mul, hi, mul_assoc]`.
+-/
 private theorem aux {G H G' H' : Type} [Monoid G] [Monoid H] [Monoid G'] [Monoid H'] (E : G →* H) (i : G' → G) (i' : H' → H)
     (j : G' → H') (hj : ∀ k k', j (k * k') = j k * j k') (hi : ∀ k, E (i k) = i' (j k)) (V : Submodule ℂ (H' → ℂ))
     (hst : ∀ f ∈ V, ∀ k', (fun k => f (k * k')) ∈ V) :
@@ -21,12 +26,22 @@ private theorem aux {G H G' H' : Type} [Monoid G] [Monoid H] [Monoid G'] [Monoid
     simp only [LinearMap.funLeft_apply]
     rw [hf, map_mul, hi, mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `UpperTheory.blockEmbedding_adelic_norm_compat K a n e _ (Subgroup.mem_comap.1 k.2)`. Rewrite `h` using `[(UpperTheory.blockEmbedding_comm_infEmb_and_exp K a n e).1]`. Conclude with `Subgroup.mem_comap.2 h`.
+-/
 private theorem aux2 (K : Type) [Field K] [NumberField K] (a n : ℕ) (e : Fin a ↪ Fin n) (k : archCompact K a) :
     embArch e k.1 ∈ archCompact K n := by
   have h := UpperTheory.blockEmbedding_adelic_norm_compat K a n e _ (Subgroup.mem_comap.1 k.2)
   rw [(UpperTheory.blockEmbedding_comm_infEmb_and_exp K a n e).1] at h
   exact Subgroup.mem_comap.2 h
 
+/- English proof (translation)
+Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Use `W.zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `W.add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Use `W.smul_mem c hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+-/
 private theorem aux3 {G X : Type} (A : Submodule ℂ (G → ℂ)) (s : Set A) (p : X → G) (W : Submodule ℂ (X → ℂ))
     (h : ∀ f ∈ s, (fun k => f.1 (p k)) ∈ W) : ∀ f ∈ Submodule.span ℂ s, (fun k => f.1 (p k)) ∈ W := by
   intro f hf
@@ -45,6 +60,13 @@ private theorem aux3 {G X : Type} (A : Submodule ℂ (G → ℂ)) (s : Set A) (p
     funext k
     simp
 
+/- English proof (translation)
+Introduce `K _ _ a n e Γ S hS`. Take `⟨V, hVf, hVst, hV⟩` from `hS`. Set `j : archCompact K a → archCompact K n` to `fun k => ⟨embArch e k.1, aux2 K a n e k⟩`. Establish `hj : ∀ k k', j (k * k') = j k * j k'` using `fun k k' => Subtype.ext (map_mul (embArch e) k.1 k'.1)`. Establish `hi : ∀ k : archCompact K a, emb e (infEmb K a k.1) = infEmb K n (j k).1` using `fun k => (UpperTheory.blockEmbedding_comm_infEmb_and_exp K a n e).1 k.1`.
+
+Establish `key` using `aux (G := AdelicGLn.AdelicGL K a) (H := AdelicGLn.AdelicGL K n) (emb e) (fun k : archCompact K a => infEmb K a k.1) (fun k : archCompact K n => infEmb K n k.1) j hj hi V hVst`. Use `⟨V.map (LinearMap.funLeft ℂ ℂ j), ?_, key.1, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.map V _`. Introduce `f hf g`. Unfold `slSp at hf`.
+
+Use `aux3 (archSmooth K a) _ (fun k : archCompact K a => g * infEmb K a k.1) (V.map (LinearMap.funLeft ℂ ℂ j)) ?_ f hf` and prove the remaining obligations. Introduce and unpack `f' ⟨ψ, hψ, g₀, -, hf'⟩`. Conclude with `key.2 f'.1 ψ.1 g₀ (hV ψ hψ) hf' g`.
+-/
 theorem UpperTheory.finiteDimensional_slSp_reduction :
     ∀ (K : Type) [Field K] [NumberField K] (a n : ℕ) (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn.AdelicGL K n)) (S : Submodule ℂ (archSmooth K n)), Types S → Types (slSp e Γ S) := by
   intro K _ _ a n e Γ S hS

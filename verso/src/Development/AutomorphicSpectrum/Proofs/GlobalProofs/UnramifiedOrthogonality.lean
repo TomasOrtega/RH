@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousCompOfIsOpe
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
+/- English proof (translation)
+The claim follows from `UnrOrth.unramifiedOrthogonality_of localFiniteness localTateDuality LocalEuler.localEulerChar_holds`.
+-/
 theorem unramifiedOrthogonality : ReciprocityTheory.Gal.UnramifiedOrthogonality :=
   UnrOrth.unramifiedOrthogonality_of localFiniteness localTateDuality
     LocalEuler.localEulerChar_holds

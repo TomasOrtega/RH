@@ -20,12 +20,20 @@ namespace StrictPreorder
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `hR.get (i := i.1) (by simp) (by simp)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem forall₂_ofFn {α β : Type} {R : α → β → Prop} {c c' : ℕ} (h : c = c') (f : Fin c → α) (g : Fin c' → β)
     (hR : List.Forall₂ R (List.ofFn f) (List.ofFn g)) (i : Fin c) : R (f i) (g (Fin.cast h i)) := by
   subst h
   have := hR.get (i := i.1) (by simp) (by simp)
   simpa using this
 
+/- English proof (translation)
+Take `⟨x1, x2⟩` from `x`. Take `⟨y1, y2⟩` from `y`. Take `⟨h, hI⟩` from `hxy`. Simplify using `only at h`. Substitute `h` using the available equality.
+
+Conclude with `F5.Bo.LocUniq_holds E x1 y2 hy w σ σ' (F5.Bo.LocIso_holds E x1 x2 y2 hI w σ hσ) hσ'`.
+-/
 theorem cls_eq (x y : Σ M : ℕ, Submodule ℂ (Sm E M)) (hxy : SIso x y) (hy : IsDiscrete y.2)
     (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin x.1) (w.adicCompletion E)))
     (σ' : SmIrr (GL (Fin y.1) (w.adicCompletion E))) (hσ : IsLocCompGL x.2 w σ) (hσ' : IsLocCompGL y.2 w σ') :
@@ -39,6 +47,9 @@ theorem cls_eq (x y : Σ M : ℕ, Submodule ℂ (Sm E M)) (hxy : SIso x y) (hy :
 
 end StrictPreorder
 
+/- English proof (translation)
+Introduce `E _ _ _ n P P' hS`. Take `⟨hF, hc, hm⟩` from `hS`. Use `⟨finCongr hc, fun i w => ?_, fun i τ => congrFun (hm i) τ⟩` and prove the remaining obligations. Establish `hI : SIso ⟨P.N i, P.V i⟩ ⟨P'.N (Fin.cast hc i), P'.V (Fin.cast hc i)⟩` using `StrictPreorder.forall₂_ofFn hc (fun j => (⟨P.N j, P.V j⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) (fun j => (⟨P'.N j, P'.V j⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) hF i`. Conclude with `StrictPreorder.cls_eq _ _ hI (P'.discrete _) w (P.σ i w) (P'.σ _ w) (P.loc i w) (P'.loc _ w)`.
+-/
 theorem StrictPre_holds : StrictPre := by
   intro E _ _ _ n P P' hS
   obtain ⟨hF, hc, hm⟩ := hS

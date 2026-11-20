@@ -18,6 +18,11 @@ section lamC
 
 variable {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat k`. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `pow_mem hs k`. Consider the case `negSucc k`.
+
+Rewrite using `[zpow_negSucc]`. Conclude with `inv_mem (pow_mem hs _)`.
+-/
 theorem qbar_zpow_mem {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) (n : ℤ) : s ^ n ∈ TaylorLogMetric.Qbar := by
   cases n with
   | ofNat k =>
@@ -27,19 +32,31 @@ theorem qbar_zpow_mem {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) (n : ℤ) : s 
     rw [zpow_negSucc]
     exact inv_mem (pow_mem hs _)
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos hs]`.
+-/
 theorem lamC_of_mem {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) : TaylorLogMetric.lamC lam s = lam ⟨s, hs⟩ := by
   unfold TaylorLogMetric.lamC
   rw [dif_pos hs]
 
+/- English proof (translation)
+Rewrite using `[lamC_of_mem lam (TaylorLogMetric.Qbar.mul_mem hs ht), lamC_of_mem lam hs, lamC_of_mem lam ht, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem lamC_mul_mem {s t : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) (ht : t ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (s * t) = TaylorLogMetric.lamC lam s * TaylorLogMetric.lamC lam t := by
   rw [lamC_of_mem lam (TaylorLogMetric.Qbar.mul_mem hs ht), lamC_of_mem lam hs, lamC_of_mem lam ht, ← map_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[lamC_of_mem lam (TaylorLogMetric.Qbar.inv_mem hs), lamC_of_mem lam hs, ← map_inv₀]`. Both sides reduce to the same expression.
+-/
 theorem lamC_inv_mem {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) : TaylorLogMetric.lamC lam s⁻¹ = (TaylorLogMetric.lamC lam s)⁻¹ := by
   rw [lamC_of_mem lam (TaylorLogMetric.Qbar.inv_mem hs), lamC_of_mem lam hs, ← map_inv₀]
   rfl
 
+/- English proof (translation)
+Rewrite using `[lamC_of_mem lam (qbar_zpow_mem hs n), lamC_of_mem lam hs, ← map_zpow₀]`. Both sides reduce to the same expression.
+-/
 theorem lamC_zpow_mem {s : ℂ} (hs : s ∈ TaylorLogMetric.Qbar) (n : ℤ) : TaylorLogMetric.lamC lam (s ^ n) = (TaylorLogMetric.lamC lam s) ^ n := by
   rw [lamC_of_mem lam (qbar_zpow_mem hs n), lamC_of_mem lam hs, ← map_zpow₀]
   rfl
@@ -50,6 +67,11 @@ section minv
 
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {D : D7}
 
+/- English proof (translation)
+Introduce `j La v`. Use `show IsUnit (Matrix.det (((((LinearMap.toMatrix' ((stdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (cp.J j La) : (Fin (cp.N j La) → D.host.E) ≃ₗ[D.host.E] (Fin (cp.N j La) → D.host.E)) : (Fin (cp.N j La) → D.host.E) →ₗ[D.host.E] (Fin (cp.N j La) → D.host.E))) * (cp.B j La : Matrix (F …`. Rewrite using `[Matrix.det_submatrix_equiv_self, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Apply `IsUnit.map` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, LinearMap.det_toMatrix']`.
+
+Conclude with `(LinearEquiv.isUnit_det' _).mul (Matrix.isUnits_det_units _)`.
+-/
 theorem mInv_fdOfCharts (cp : ChartPts X D) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     Formalism.L2.KerInert.RepFrame.MInv X (fdOfCharts cp a bad).frM := by
   intro j La v
@@ -90,10 +112,19 @@ def BRG : Prop :=
 
 variable {X hfin fd χ muT lam}
 
+/- English proof (translation)
+Introduce `j x` and use `((h j).2.2 x).2`.
+-/
 theorem muAlg_of_tie (h : MuTie D muT) : MuAlg muT := fun j x => ((h j).2.2 x).2
 
+/- English proof (translation)
+Introduce `𝔞` and use `(h.2 𝔞).2`.
+-/
 theorem chiAlg_of_tie (h : ChiTie D χ) : ChiAlg χ := fun 𝔞 => (h.2 𝔞).2
 
+/- English proof (translation)
+Establish `hcf : Base.chiFac χ _ _ (fd.kerN j La) (fd.kerN (j + 1) La') ∈ TaylorLogMetric.Qbar`. Unfold `Base.chiFac`. Conclude with `TaylorLogMetric.Qbar.mul_mem (qbar_zpow_mem (hχ _) _) (qbar_zpow_mem (hχ _) _)`. Unfold `KG.scalG`. Conclude with `TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (hmu _ _) (TaylorLogMetric.Qbar.inv_mem (hmu _ _))) (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem (hχ _) _)) (qbar_zpow_mem (hχ _) _)`.
+-/
 theorem scalG_mem (hmu : MuAlg muT) (hχ : ChiAlg χ) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) :
     KG.scalG fd χ muT j La La' ∈ TaylorLogMetric.Qbar := by
   have hcf : Base.chiFac χ _ _ (fd.kerN j La) (fd.kerN (j + 1) La') ∈ TaylorLogMetric.Qbar := by
@@ -103,6 +134,17 @@ theorem scalG_mem (hmu : MuAlg muT) (hχ : ChiAlg χ) (j : ℕ) (La : X.Lt j) (L
   exact TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem (hmu _ _) (TaylorLogMetric.Qbar.inv_mem (hmu _ _)))
     (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem (hχ _) _)) (qbar_zpow_mem (hχ _) _)
 
+/- English proof (translation)
+Introduce `j L0 hL0 La' hLa'`. Use `⟨scalG_mem hmu hχ j L0 La', ?_⟩` and prove the remaining obligations. Take `⟨hu, hu'⟩` from `hU j L0 hL0 La' hLa'`. Establish `hm1` using `hmu (j + 1) (fd.dt (j + 1) La')`. Establish `hm0` using `hmu (j + 1) (fd.dt j L0)`.
+
+Establish `ha` using `hχ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D _) (fd.kerN j L0))`. Establish `ha'` using `hχ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D _) (fd.kerN (j + 1) La'))`. Establish `hcf : Base.chiFac χ _ _ (fd.kerN j L0) (fd.kerN (j + 1) La') ∈ TaylorLogMetric.Qbar`. Unfold `Base.chiFac`. Conclude with `TaylorLogMetric.Qbar.mul_mem (qbar_zpow_mem ha _) (qbar_zpow_mem ha' _)`.
+
+Establish `hcfn : ‖TaylorLogMetric.lamC lam (Base.chiFac χ _ _ (fd.kerN j L0) (fd.kerN (j + 1) La'))‖ = 1`. Unfold `Base.chiFac`. Rewrite using `[lamC_mul_mem lam (qbar_zpow_mem ha _) (qbar_zpow_mem ha' _), lamC_zpow_mem lam ha, lamC_zpow_mem lam ha', norm_mul, norm_zpow, norm_zpow, hu, hu', one_zpow, one_zpow, mul_one]`. Establish `hmr : muT (j + 1) (fd.dt (j + 1) La') * (muT (j + 1) (fd.dt j L0))⁻¹ ∈ TaylorLogMetric.Qbar` using `TaylorLogMetric.Qbar.mul_mem hm1 (TaylorLogMetric.Qbar.inv_mem hm0)`. Establish `hexp : TaylorLogMetric.lamC lam (KG.scalG fd χ muT j L0 La') = TaylorLogMetric.lamC lam (muT (j + 1) (fd.dt (j + 1) La') * (muT (j + 1) (fd.dt j L0))⁻¹) * (TaylorLogMetric.lamC lam (Base.chiFac χ _ _ (fd.kerN j L0) (fd.kerN (j + 1) La')))⁻¹ * TaylorLogMetric.lamC lam (χ (TaylorLo …`.
+
+Unfold `KG.scalG`. Rewrite using `[lamC_mul_mem lam (TaylorLogMetric.Qbar.mul_mem (TaylorLogMetric.Qbar.mul_mem hmr (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem ha _)) (qbar_zpow_mem ha' _), lamC_mul_mem lam (TaylorLogMetric.Qbar.mul_mem hmr (TaylorLogMetric.Qbar.inv_mem hcf)) (qbar_zpow_mem ha _), lamC_mul …`. Rewrite using `[hexp]`. Establish `hB'` using `hB j L0 hL0 La' hLa'`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← mul_assoc, norm_mul, norm_mul, norm_mul, norm_inv, norm_zpow, norm_zpow, hcfn, hu, hu', one_zpow, one_zpow, inv_one, mul_one, mul_one, mul_one]`. Use `_ ≤ 1 := hB'`.
+-/
 theorem scalG_of (hmu : MuAlg muT) (hχ : ChiAlg χ) (hU : ChiUnitG X hfin fd χ lam) (hB : MuBdG X hfin fd muT lam) :
     KG.ScalG X hfin fd χ muT lam := by
   intro j L0 hL0 La' hLa'
@@ -144,6 +186,9 @@ theorem scalG_of (hmu : MuAlg muT) (hχ : ChiAlg χ) (hU : ChiUnitG X hfin fd χ
           one_zpow, one_zpow, inv_one, mul_one, mul_one, mul_one]
     _ ≤ 1 := hB'
 
+/- English proof (translation)
+Introduce `j L0 hL0 La' hLa'`. Use `⟨scalG_mem hmu hχ j L0 La', ?_⟩` and prove the remaining obligations. Conclude with `le_of_eq (unit_of_br _ _ (hBR j L0 hL0 La' hLa'))`.
+-/
 theorem scalG_of_br (hmu : MuAlg muT) (hχ : ChiAlg χ) (hBR : BRG X hfin fd χ muT lam) :
     KG.ScalG X hfin fd χ muT lam := by
   intro j L0 hL0 La' hLa'
@@ -173,11 +218,17 @@ variable {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {h : GIdx D.hos
   (om : ∀ v, OmBasis (D.what₂.places.resChar w) ((D.gat u w h).P.n' v))
   {μ : D.what₂.Tup} {Tw : TwForms D} (I : CmpJIn Tw u μ w h Lv)
 
+/- English proof (translation)
+The claim follows from `mInv_fdOfCharts (cpAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc) a bad`.
+-/
 theorem mInv_fdAtL (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     Formalism.L2.KerInert.RepFrame.MInv (sysAt Ch std vp unif eO eO_spec dG dG_spec om)
       (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).frM :=
   mInv_fdOfCharts (cpAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc) a bad
 
+/- English proof (translation)
+The claim follows from `scalG_of (muAlg_of_tie hmu) (chiAlg_of_tie hχ) hU hB`.
+-/
 theorem scalG_fdAtL (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hfin : ∀ j c, ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lv.lev j c).FinClasses) (χ : TaylorLogMetric.IdE D → ℂ)
     (muT : ℕ → (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)ˣ → ℂ)
@@ -187,6 +238,9 @@ theorem scalG_fdAtL (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (bad : Finset (H
     KG.ScalG (sysAt Ch std vp unif eO eO_spec dG dG_spec om) hfin (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad) χ muT lam :=
   scalG_of (muAlg_of_tie hmu) (chiAlg_of_tie hχ) hU hB
 
+/- English proof (translation)
+The claim follows from `scalG_of_br (muAlg_of_tie hmu) (chiAlg_of_tie hχ) hBR`.
+-/
 theorem scalG_fdAtL_br (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hfin : ∀ j c, ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lv.lev j c).FinClasses) (χ : TaylorLogMetric.IdE D → ℂ)
     (muT : ℕ → (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)ˣ → ℂ)

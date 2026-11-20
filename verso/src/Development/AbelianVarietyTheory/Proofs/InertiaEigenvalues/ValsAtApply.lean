@@ -16,6 +16,9 @@ def valsAt {G : Type} [Group G] {ι : Type} (w : ι → G →* Multiplicative �
     funext j
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valsAt_apply {G : Type} [Group G] {ι : Type} (w : ι → G →* Multiplicative ℤ) {r : ℕ}
     (e : Fin r → ι) (x : G) (j : Fin r) :
     Multiplicative.toAdd (valsAt w e x) j = Multiplicative.toAdd (w (e j) x) := rfl

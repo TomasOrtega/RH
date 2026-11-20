@@ -30,6 +30,9 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.FibOnto
 
 open Topology GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ _ μ f x g`. Establish `h : fibV (prodPG τ σ (levi k (i + t) x) f) g = fibV f (g * x)` using `funext fun v => congrArg f.1.1.1 (show uM k (i + t) (midV k i t v) * levi k (i + t) g * levi k (i + t) x = uM k (i + t) (midV k i t v) * levi k (i + t) (g * x) by rw [map_mul, mul_assoc])`. Conclude with `congrArg (fun φ => clT τ W (smInt μ φ)) h`.
+-/
 theorem fibInt_translate : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W) [MeasurableSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) (f : cIndSpace (HPG k i t) (hRep τ σ)) (x g : GL (Fin (i + t)) k), fibInt μ (prodPG τ σ (levi k (i + t) x) f) g = fibInt μ f (g * x) := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ _ μ f x g
   have h : fibV (prodPG τ σ (levi k (i + t) x) f) g = fibV f (g * x) := funext fun v =>
@@ -37,6 +40,13 @@ theorem fibInt_translate : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
       uM k (i + t) (midV k i t v) * levi k (i + t) (g * x) by rw [map_mul, mul_assoc])
   exact congrArg (fun φ => clT τ W (smInt μ φ)) h
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ g`. Establish `hr` using `fun f => GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f g`. Establish `hp` using `SmIntEl.smInt_properties (W := V ⊗[ℂ] W) (W' := V ⊗[ℂ] W) μ`. Use `⟨fun f₁ f₂ => ?_, fun a f => ?_⟩` and prove the remaining obligations. Establish `h : smInt μ (fibV (f₁ + f₂) g) = smInt μ (fibV f₁ g) + smInt μ (fibV f₂ g)` using `hp.1 (fibV f₁ g) (fibV f₂ g) (hr f₁).1 (hr f₁).2 (hr f₂).1 (hr f₂).2`.
+
+Conclude with `(congrArg (clT τ W) h).trans (map_add _ _ _)`. Establish `e : fibV (a • f) g = (a • (LinearMap.id : (V ⊗[ℂ] W) →ₗ[ℂ] (V ⊗[ℂ] W))) ∘ fibV f g`. Use function extensionality and compare the values at `fun v => map_smul (evL (τ := τ) (σ := σ) (uM k (i + t) (midV k i t v) * levi k (i + t) g)) a f`. Establish `h1` using `hp.2.1 (a • (LinearMap.id : (V ⊗[ℂ] W) →ₗ[ℂ] (V ⊗[ℂ] W))) (fibV f g) (hr f).1 (hr f).2`. Establish `h : smInt μ (fibV (a • f) g) = a • smInt μ (fibV f g)` using `(congrArg (smInt μ) e).trans h1`.
+
+Conclude with `(congrArg (clT τ W) h).trans (map_smul _ _ _)`.
+-/
 theorem fibInt_linear : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] (g : GL (Fin (i + t)) k), (∀ f₁ f₂ : cIndSpace (HPG k i t) (hRep τ σ), fibInt μ (f₁ + f₂) g = fibInt μ f₁ g + fibInt μ f₂ g) ∧ ∀ (a : ℂ) (f : cIndSpace (HPG k i t) (hRep τ σ)), fibInt μ (a • f) g = a • fibInt μ f g := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ g
   have hr := fun f => GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f g
@@ -51,6 +61,9 @@ theorem fibInt_linear : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     have h : smInt μ (fibV (a • f) g) = a • smInt μ (fibV f g) := (congrArg (smInt μ) e).trans h1
     exact (congrArg (clT τ W) h).trans (map_smul _ _ _)
 
+/- English proof (translation)
+Establish `h : (fun p : X × Y => F p.1 p.2) ⁻¹' U ∈ 𝓝 (x, y)` using `hF.continuousAt.preimage_mem_nhds hU`. Rewrite `h` using `[nhds_prod_eq, Filter.mem_prod_iff]`. Take `⟨A, hA, B, hB, hsub⟩` from `h`. Conclude with `⟨A, hA, B, hB, fun a ha b hb => hsub (Set.mk_mem_prod ha hb)⟩`.
+-/
 theorem exists_nhds_prod {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
     (F : X → Y → Z) (hF : Continuous fun p : X × Y => F p.1 p.2) (x : X) (y : Y) {U : Set Z} (hU : U ∈ 𝓝 (F x y)) :
     ∃ A ∈ 𝓝 x, ∃ B ∈ 𝓝 y, ∀ a ∈ A, ∀ b ∈ B, F a b ∈ U := by
@@ -62,6 +75,11 @@ theorem exists_nhds_prod {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.T.continuous_levi_unipotent_proj k n`. Establish `hcont : Continuous fun p : (Fin n → k) × GL (Fin n) k => uM k n p.1 * levi k n p.2` using `(hc.2.1.comp continuous_fst).mul (hc.1.comp continuous_snd)`. Establish `h00 : uM k n 0 * levi k n 1 = 1` using `by rw [uM_zero, map_one, one_mul]`. Take `⟨A, hA, B, hB, h⟩` from `exists_nhds_prod (fun y b => uM k n y * levi k n b) hcont 0 1 (by rw [h00]; exact hU)`. Take `⟨c, hcA⟩` from `exists_latt_subset hA`.
+
+Conclude with `⟨c, B, hB, fun y hy b hb => h y (hcA hy) b hb⟩`.
+-/
 theorem exists_latt_nhds {n : ℕ} {U : Set (Mir k n)} (hU : U ∈ 𝓝 (1 : Mir k n)) :
     ∃ c : kˣ, ∃ A ∈ 𝓝 (1 : GL (Fin n) k), ∀ y ∈ latt n c, ∀ b ∈ A, uM k n y * levi k n b ∈ U := by
   have hc := GlobalTheory.T.continuous_levi_unipotent_proj k n
@@ -73,6 +91,11 @@ theorem exists_latt_nhds {n : ℕ} {U : Set (Mir k n)} (hU : U ∈ 𝓝 (1 : Mir
   obtain ⟨c, hcA⟩ := exists_latt_subset hA
   exact ⟨c, B, hB, fun y hy b hb => h y (hcA hy) b hb⟩
 
+/- English proof (translation)
+Establish `hI : (⋂ z ∈ Zs, U z) ∈ 𝓝 (1 : Mir k n)` using `(Filter.biInter_mem hZ).2 fun z _ => hU z`. Take `⟨c, A, hA, hcA⟩` from `exists_latt_nhds hI`. Take `⟨K₁, hK, hopen, hsub, hidx, hnorm⟩` from `GlobalTheory.T.exists_normal_open_subgroup_compact k n _ (Filter.inter_mem hA hA')`. Use `⟨c, K₁, hK, hopen, fun x hx => (hsub hx).2, hidx, hnorm, ?_⟩` and prove the remaining obligations. Introduce and unpack `z hz _ ⟨y, hy, b, hb, rfl⟩`.
+
+Conclude with `Set.mem_iInter₂.1 (hcA y hy b (hsub hb).1) z hz`.
+-/
 theorem exists_level {n : ℕ} {Z : Type} (Zs : Set Z) (hZ : Zs.Finite) (U : Z → Set (Mir k n))
     (hU : ∀ z, U z ∈ 𝓝 (1 : Mir k n)) {A' : Set (GL (Fin n) k)} (hA' : A' ∈ 𝓝 (1 : GL (Fin n) k)) :
     ∃ (c : kˣ) (K₁ : Subgroup (GL (Fin n) k)) (hK : K₁ ≤ KO k (Fin n)), IsOpen (K₁ : Set (GL (Fin n) k)) ∧
@@ -96,10 +119,20 @@ def fibLin (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (F
   map_add' f₁ f₂ := funext fun g => (fibInt_linear k i t τ σ hτ hσ μ g).1 f₁ f₂
   map_smul' a f := funext fun g => (fibInt_linear k i t τ σ hτ hσ μ g).2 a f
 
+/- English proof (translation)
+The claim follows from `LinearMap.rTensor_surjective W (Submodule.mkQ_surjective _)`.
+-/
 theorem clT_surjective (τ : Representation ℂ (Mir k i) V) (W : Type) [AddCommGroup W] [Module ℂ W] :
     Function.Surjective (clT τ W) :=
   LinearMap.rTensor_surjective W (Submodule.mkQ_surjective _)
 
+/- English proof (translation)
+Establish `hBo` using `GlobalTheory.T.fibre_subgroup_open_compact k (i + t) c K₁ hK hopen`. Take `⟨b, hb1, hb2⟩` from `GlobalTheory.T.exists_induced_section_supported_open (HPG k i t) (hRep τ σ) (Bgrp (i + t) c K₁ hK) hBo.1 hBo.2 z hz`. Establish `hone : fibInt μ b 1 = (((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ) • clT τ W z`. Establish `h1` using `GlobalTheory.T.fibre_integral_vanishing_subgroup k i t τ σ c K₁ hK z b hb1 hb2`. Establish `h2` using `(SmIntEl.smInt_properties (W := V ⊗[ℂ] W) (W' := V ⊗[ℂ] W) μ).2.2.2 _ z (isCompact_latt t c) (isOpen_latt t c) (isClosed_latt t c)`.
+
+Conclude with `(congrArg (fun φ => clT τ W (smInt μ φ)) h1).trans ((congrArg (clT τ W) h2).trans (map_smul _ _ _))`. Use `⟨b, fun q b' hb' => ?_, GlobalTheory.T.fibre_integral_support_subgroup k i t τ σ μ c K₁ hK b hb2⟩` and prove the remaining obligations. Establish `e1 : fibInt μ b b' = fibInt μ b 1`. Establish `h` using `GlobalTheory.T.fibre_integral_vanishing_open_subgroup k i t τ σ c K₁ hK z b hb1 hb2 b' hb' 1`. Establish `h' : fibV b b' = fibV b 1` using `(congrArg (fibV b) (one_mul b').symm).trans h`.
+
+Conclude with `congrArg (fun φ => clT τ W (smInt μ φ)) h'`. Conclude with `(GlobalTheory.T.fibre_integral_intertwines_unipotent k i t τ σ hτ hσ μ b q b').trans ((congrArg (qRep τ σ q) (e1.trans hone)).trans (map_smul _ _ _))`.
+-/
 theorem exists_bump_fib (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (hτ : IsSmooth τ) (hσ : IsSmooth σ)
     [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k))
@@ -137,12 +170,20 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {i t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `h1 : {s : Γ | ind H π s G.1 = G.1} ∈ 𝓝 (1 : Γ)` using `IsOpen.mem_nhds G.2 (by simp)`. Conclude with `Filter.mem_of_superset h1 fun s hs x => congrFun (congrArg Subtype.val hs) x`.
+-/
 theorem smooth_right_inv {Γ J : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [AddCommGroup J] [Module ℂ J]
     (H : Subgroup Γ) (π : Representation ℂ H J) (G : smoothPart (ind H π)) :
     {s : Γ | ∀ x, G.1.1 (x * s) = G.1.1 x} ∈ 𝓝 (1 : Γ) := by
   have h1 : {s : Γ | ind H π s G.1 = G.1} ∈ 𝓝 (1 : Γ) := IsOpen.mem_nhds G.2 (by simp)
   exact Filter.mem_of_superset h1 fun s hs x => congrFun (congrArg Subtype.val hs) x
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Establish `hcc0 : (((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ) ≠ 0`. Establish `h1 : 0 < μ (latt t c : Set (Fin t → k))` using `(isOpen_latt t c).measure_pos μ ⟨0, zero_mem _⟩`. Establish `h2 : μ (latt t c : Set (Fin t → k)) ≠ ⊤` using `(isCompact_latt t c).measure_lt_top.ne`. Conclude with `(ENNReal.toReal_pos h1.ne' h2).ne'` after adjusting the coercions.
+
+Use `Exists.elim (exists_bump_fib τ σ hτ hσ μ c K₁ hK hopen z hz) fun b hb => ?_` and prove the remaining obligations. Use `⟨(((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ)⁻¹ • (fibLin τ σ hτ hσ μ b), Submodule.smul_mem _ _ ⟨b, rfl⟩, fun q b' hb' => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun a => (((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ)⁻¹ • a) (hb.1 q b' hb')).trans (inv_smul_smul₀ hcc0 _)`. Conclude with `(congrArg (fun a => (((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ)⁻¹ • a) (hb.2 g hg)).trans (smul_zero _)`.
+-/
 theorem exists_fib_mem (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (hτ : IsSmooth τ) (hσ : IsSmooth σ)
     [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k))
@@ -165,6 +206,13 @@ theorem exists_fib_mem (τ : Representation ℂ (Mir k i) V) (σ : Representatio
       (inv_smul_smul₀ hcc0 _)
   · exact (congrArg (fun a => (((μ (latt t c : Set (Fin t → k))).toReal : ℝ) : ℂ)⁻¹ • a) (hb.2 g hg)).trans (smul_zero _)
 
+/- English proof (translation)
+Establish `hfin : (Gf '' (KO k (Fin (i + t)) : Set (GL (Fin (i + t)) k))).Finite` using `GlobalTheory.T.finite_image_compact_right_invariant _ GlobalTheory.SplitFlip.isCompact_KO Gf hinv`. Take `⟨pre, hpre⟩ : ∃ pre : Jacquet τ (MirUin k i) ⊗[ℂ] W → V ⊗[ℂ] W, ∀ a, clT τ W (pre a) = a` from `⟨Function.surjInv (clT_surjective τ W), Function.surjInv_eq _⟩`. Use `choose Ust hUst hUfix using GlobalTheory.T.smooth_tensor_fixed_parabolic_near_one k i t τ σ hτ hσ`. Take `⟨c, K₁, hK, hopen, hsub, hidx, hnorm, hlev⟩` from `exists_level _ (hfin.image pre) Ust hUst hinv`. Establish `hfix : ∀ κ ∈ KO k (Fin (i + t)), ∀ h : HPG k i t, (h : Mir k (i + t)) ∈ Bgrp (i + t) c K₁ hK → hRep τ σ h (pre (Gf κ)) = pre (Gf κ)` using `fun κ hκ h hh => hUfix _ h (hlev _ ⟨_, ⟨κ, hκ, rfl⟩, rfl⟩ _ hh)`.
+
+Use `GlobalTheory.T.induced_generated_by_K_finite (Qp k i t) (KO k (Fin (i + t))) K₁ (qRep τ σ) (LinearMap.range (fibLin τ σ hτ hσ μ)) Gf hK hidx hnorm (fun g => ?_) ?_ ?_ hlaw (fun g b hb => hsub hb g) ?_` and prove the remaining obligations. Take `⟨q, κ, hκ, e⟩` from `GlobalTheory.T.iwasawa_decomp_parabolic_maximal_compact k i t g`. Conclude with `⟨q, κ, hκ, e⟩`. Introduce and unpack `_ ⟨f, rfl⟩ x`. Conclude with `⟨prodPG τ σ (levi k (i + t) x) f, funext fun g => fibInt_translate k i t τ σ μ f x g⟩`.
+
+Introduce and unpack `_ ⟨f, rfl⟩ q g`. Conclude with `GlobalTheory.T.fibre_integral_intertwines_unipotent k i t τ σ hτ hσ μ f q g`. Introduce `κ hκ`. Conclude with `exists_fib_mem τ σ hτ hσ μ c K₁ hK hopen (pre (Gf κ)) (Gf κ) (hpre _) (hfix κ hκ)`.
+-/
 theorem mem_range_fibLin (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (hτ : IsSmooth τ) (hσ : IsSmooth σ)
     [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k))
@@ -200,6 +248,9 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG
 
 open Topology GlobalTheory.SplitWeil FibOnto
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ G`. Establish `hM` using `mem_range_fibLin τ σ hτ hσ μ G.1.1 G.1.2 (smooth_right_inv _ _ G)`. Conclude with `⟨Classical.choose hM, fun g => congrFun (Classical.choose_spec hM) g⟩`.
+-/
 theorem exists_fibInt_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure], ∀ G : smoothPart (ind (Qp k i t) (qRep τ σ)), ∃ f : cIndSpace (HPG k i t) (hRep τ σ), ∀ g, fibInt μ f g = G.1.1 g := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ G
   have hM := mem_range_fibLin τ σ hτ hσ μ G.1.1 G.1.2 (smooth_right_inv _ _ G)

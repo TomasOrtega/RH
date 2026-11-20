@@ -14,6 +14,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Avac
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `d.ok.frame.1`. Take `⟨ε', hε'⟩` from `L.ok.frame.1`. Establish `s` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.rel_sign_k d ε hε`. Establish `s'` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.rel_sign_k L.sd ε' hε'`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations.
+
+It suffices to establish `e : ε' = ε by rw [← e]; exact hε'`. Apply the tactic sequence `rcases d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩ <;> rcases L.ok.sign with ⟨hA', hY'⟩ | ⟨hA', hY'⟩`. Rewrite using `[s.1 hY, s'.1 hY']`. Conclude with `(not_herm_skew d.ok.hm hA hA').elim`. Conclude with `(not_herm_skew d.ok.hm hA' hA).elim`.
+
+Rewrite using `[s.2 hY, s'.2 hY']`.
+-/
 theorem eps_eq_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) : ∃ ε : ℤˣ, d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 ∧
     L.b.1ᵀ * dbl L.Y.J * L.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1

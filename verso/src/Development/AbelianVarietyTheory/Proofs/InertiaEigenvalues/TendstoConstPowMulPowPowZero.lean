@@ -4,6 +4,13 @@ open PowerSeries GlobalTheory.BK Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C r l hC hr hr1 hl`. Establish `h1 : Tendsto (fun m : ℕ => C * r ^ m) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hr hr1).const_mul C`. Take `⟨m, hm⟩` from `(h1.eventually (gt_mem_nhds (by norm_num : (0:ℝ) < 1/2))).exists`. Establish `h2 : ∀ᶠ n : ℕ in atTop, m * n ≤ l ^ n`.
+
+Establish `ht` using `(tendsto_pow_const_div_const_pow_of_one_lt 1 (by norm_num : (1:ℝ) < 2)).const_mul (m:ℝ)`. Rewrite `ht` using `[mul_zero]`. Use `filter_upwards [ht.eventually (gt_mem_nhds (by norm_num : (0:ℝ) < 1))] with n hn`. Establish `h2pos : (0:ℝ) < 2 ^ n` using `by positivity`. Rewrite `hn` using `[pow_one, ← mul_div_assoc, div_lt_one h2pos]`.
+
+Establish `h3 : m * n ≤ 2 ^ n` using `by exact_mod_cast hn.le`. Conclude with `h3.trans (Nat.pow_le_pow_left hl n)`. Establish `hbound : ∀ᶠ n : ℕ in atTop, C ^ n * r ^ (l ^ n) ≤ (1/2 : ℝ) ^ n` using `by filter_upwards [h2] with n hn`. Combine the equalities or inequalities in the displayed calculation. Conclude with `squeeze_zero' (Eventually.of_forall fun n => by positivity) hbound (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num))`.
+-/
 theorem tendsto_const_pow_mul_pow_pow_zero : ∀ (C r : ℝ) (l : ℕ), 0 ≤ C → 0 ≤ r → r < 1 → 2 ≤ l →
     Tendsto (fun n : ℕ => C ^ n * r ^ (l ^ n)) atTop (𝓝 0) := by
   intro C r l hC hr hr1 hl

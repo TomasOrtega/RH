@@ -22,6 +22,27 @@ namespace GlobalTheory.AVCount
 section
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `K _ A B f hiso hpfu`. Establish `hfl : Flat f.hom.left` using `(GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hiso).2.1`. Establish `hfin : IsFinite f.hom.left` using `hiso.1`. Set `e : Sp K ⟶ B.X.left` to `η[B.X].left`. Set `p` to `pullback.snd f.hom.left e`.
+
+Set `i` to `pullback.fst f.hom.left e`. Establish `he1 : e ≫ B.X.hom = 𝟙 _` using `Over.w η[B.X]`. Establish `hpi : i ≫ A.X.hom = p`. Combine the equalities or inequalities in the displayed calculation. Establish `hpet : Etale p` using `Etale.of_formallyUnramified_of_flat p`.
+
+Set `t : Sp (AlgebraicClosure K) ⟶ Sp K` to `(ptOver K (AlgebraicClosure K)).hom`. Take `⟨-, hcard⟩` from `GlobalTheory.FinEt.card_points_eq_finrank p t (IsLocalRing.closedPoint _)`. Rewrite `hcard` using `[Scheme.Hom.finrank_pullback_snd]`. Establish `horig : e (t (IsLocalRing.closedPoint _)) = B.origin`. Rewrite using `[origin, GlobalTheory.AV.DegSep.one_left']`.
+
+Express the relevant statement in the definitionally equal form `e _ = (𝟙 (Sp K) ≫ e) _`. Rewrite using `[Category.id_comp]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Rewrite `hcard` using `[horig]`.
+
+Rewrite using `[deg, if_pos hiso, ← hcard]`. Use `symm`. Use `Nat.card_congr ?_` and prove the remaining obligations. Conclude with `{ toFun := fun y => ⟨pullback.lift y.1.left t (by`. Establish `h` using `y.2`.
+
+Rewrite `h` using `[MonoidHom.mem_ker, ptMap_apply]`. Establish `h2 : (y.1 ≫ f.hom).left = (1 : ptOver K (AlgebraicClosure K) ⟶ B.X).left` using `by rw [h]`. Rewrite `h2` using `[Over.comp_left, GlobalTheory.AV.DegSep.one_left']`. Conclude with `h2), pullback.lift_snd _ _ _⟩`. Use `invFun := fun y => ⟨Over.homMk (y.1 ≫ i) (by`.
+
+Express the relevant statement in the definitionally equal form `(y.1 ≫ i) ≫ A.X.hom = t`. Rewrite using `[Category.assoc, hpi, y.2]), by`. Rewrite using `[MonoidHom.mem_ker, ptMap_apply]`. Use `ext1`. Rewrite using `[Over.comp_left, GlobalTheory.AV.DegSep.one_left']`.
+
+Express the relevant statement in the definitionally equal form `(y.1 ≫ i) ≫ f.hom.left = t ≫ e`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, y.2]⟩`. Use `left_inv := fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`.
+
+Conclude with `pullback.lift_fst _ _ _`. Use `right_inv := fun y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `pullback.lift_fst _ _ _`.
+
+Rewrite using `[pullback.lift_snd]`. Conclude with `y.2.symm }`.
+-/
 theorem deg_eq_card_ker_of_unram : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsIsogeny f → FormallyUnramified (pullback.snd (Hom.hom f).left η[B.X].left) → deg f = Nat.card (ptMap f).ker := by
   intro K _ A B f hiso hpfu
   have hfl : Flat f.hom.left := (GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hiso).2.1
@@ -75,19 +96,47 @@ theorem deg_eq_card_ker_of_unram : ∀ (K : Type) [Field K] (A B : AbVar K) (f :
 
 end
 
+/- English proof (translation)
+Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_left_cancel (this.symm.trans (mul_one (f 0)).symm)`.
+-/
 theorem map_zero_eq_one_of_additive_to_group {M G : Type} [AddCommGroup M] [Group G] (f : M → G) (hadd : ∀ a a', f (a + a') = f a * f a') : f 0 = 1 := by
   have := hadd 0 0
   rw [add_zero] at this
   exact mul_left_cancel (this.symm.trans (mul_one (f 0)).symm)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, map_zero_eq_one_of_additive_to_group f hadd, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+-/
 theorem map_nsmul_eq_pow_of_additive_to_mulGroup {M G : Type} [AddCommGroup M] [Group G] (f : M → G) (hadd : ∀ a a', f (a + a') = f a * f a') (n : ℕ) (a : M) : f (n • a) = f a ^ n := by
   induction n with
   | zero => rw [zero_smul, map_zero_eq_one_of_additive_to_group f hadd, pow_zero]
   | succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `K _ _ B f hf hv` and use `deg_eq_card_ker_of_unram K B B f hf (GlobalTheory.T.formallyUnramified_kernel_isogeny_tangent_injective K B f hf hv)`.
+-/
 theorem deg_eq_card_ker_of_tangent : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : AbVar K) (f : B ⟶ B), IsIsogeny f → (∀ v : epsPtR (𝟙 (Sp K)) ⟶ B.X, spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ v.left = (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left → v ≫ Hom.hom f = 1 → v = 1) → deg f = Nat.card (ptMap f).ker :=
   fun K _ _ B f hf hv => deg_eq_card_ker_of_unram K B B f hf (GlobalTheory.T.formallyUnramified_kernel_isogeny_tangent_injective K B f hf hv)
 
+/- English proof (translation)
+Introduce `S A _ _ hA F _ _ act k _ _ x h ℓ hℓ hℓk hyp c hc hv`. Take `⟨B, e, ψ, he, htan⟩` from `GlobalTheory.T.geometric_point_abelian_variety_action S A hA F act k x`. Establish `hiso` using `(GlobalTheory.AV.AbVar.DegNorm.isIsogeny_and_deg_ne_zero B ψ c hc).1`. Establish `hE` using `deg_eq_card_ker_of_tangent k B (ψ c) hiso (htan c hv)`. Establish `hD` using `GlobalTheory.T.degree_pow_finrank_eq_natAbs_norm_pow k B F ψ c hc`.
+
+Establish `hker : Nat.card {g : Over.mk x ⟶ A // g ≫ act.act c = 1} = Nat.card (ptMap (ψ c)).ker`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquiv e.toEquiv (fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ e g ≫ Hom.hom (ψ c) = 1`. Rewrite using `[← he, MulEquiv.map_eq_one_iff]`.
+
+Establish `htors : Nat.card {g : Over.mk x ⟶ A // g ^ ℓ = 1} = ℓ ^ (2 * B.dim)`. Rewrite using `[← card_torsion_pt k B ℓ hℓk]`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquiv e.toEquiv (fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ e g ^ ℓ = 1`.
+
+Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`. Establish `hL2 : Nat.card {g : Over.mk x ⟶ A // g ^ ℓ = 1} = ℓ ^ (h * Module.finrank ℚ F)`. Take `⟨f, hadd, -, hinj, hsurj⟩` from `hyp 1`. Establish `h0` using `map_zero_eq_one_of_additive_to_group f hadd`. Establish `hns` using `map_nsmul_eq_pow_of_additive_to_mulGroup f hadd`.
+
+Establish `hq : ((ℓ : ℕ) : 𝓞 F ⧸ Ideal.span {((ℓ ^ 1 : ℕ) : 𝓞 F)}) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {((ℓ ^ 1 : ℕ) : 𝓞 F)})), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (by simp)`. Establish `hkill : ∀ a : Fin h → 𝓞 F ⧸ Ideal.span {((ℓ ^ 1 : ℕ) : 𝓞 F)}, ℓ • a = 0`. Introduce `a`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, hq, zero_mul]`. Establish `hcardQ : Nat.card (𝓞 F ⧸ Ideal.span {((ℓ ^ 1 : ℕ) : 𝓞 F)}) = ℓ ^ Module.finrank ℚ F`. Establish `h1` using `Ideal.absNorm_span_singleton ((ℓ ^ 1 : ℕ) : 𝓞 F)`. Rewrite `h1` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Rewrite using `[h1]`. Establish `: ((ℓ ^ 1 : ℕ) : 𝓞 F) = algebraMap ℤ (𝓞 F) (ℓ : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Set `eq : (Fin h → 𝓞 F ⧸ Ideal.span {((ℓ ^ 1 : ℕ) : 𝓞 F)}) ≃ {g : Over.mk x ⟶ A // g ^ ℓ = 1}` to `Equiv.ofBijective (fun a => ⟨f a, by rw [← hns, hkill, h0]⟩) ⟨fun a b hab => hinj (congrArg Subtype.val hab), fun g => by obtain ⟨a, ha⟩ := hsurj g.1 (by rw [pow_one]; exact g.2); exact ⟨a, Subtype.ext ha⟩⟩`.
+
+Rewrite using `[← Nat.card_congr eq, Nat.card_fun, hcardQ, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul, mul_comm]`. Establish `hℓ1 : 1 < ℓ` using `hℓ.one_lt`. Establish `hdim : 2 * B.dim = h * Module.finrank ℚ F`. Use `htors.symm.trans hL2` as an intermediate fact. Conclude with `Nat.pow_right_injective hℓ.two_le this`.
+
+Establish `hd0 : Module.finrank ℚ F ≠ 0` using `Module.finrank_pos.ne'`. Rewrite using `[hker, ← hE]`. Apply `Nat.pow_left_injective hd0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `deg (A := B) (B := B) (ψ c) ^ Module.finrank ℚ F = ((Algebra.norm ℤ c).natAbs ^ h) ^ Module.finrank ℚ F`. Rewrite using `[hD, hdim, pow_mul]`.
+-/
 theorem card_ker_eq_norm_pow : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (F : Type) [Field F] [NumberField F] (act : OAct (𝓞 F) A) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (h ℓ : ℕ), ℓ.Prime → (ℓ : k) ≠ 0 → (∀ j : ℕ, ∃ f : (Fin h → 𝓞 F ⧸ Ideal.span {((ℓ ^ j : ℕ) : 𝓞 F)}) → (Over.mk x ⟶ A), (∀ a a', f (a + a') = f a * f a') ∧ (∀ (c : 𝓞 F) a, f (Ideal.Quotient.mk (Ideal.span {((ℓ ^ j : ℕ) : 𝓞 F)}) c • a) = f a ≫ act.act c) ∧ Function.Injective f ∧ ∀ g : Over.mk x ⟶ A, g ^ (ℓ ^ j) = 1 → ∃ a, f a = g) → ∀ c : 𝓞 F, c ≠ 0 → (∀ v : epsPtR x ⟶ A, spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v.left = (1 : Over.mk x ⟶ A).left → v ≫ act.act c = 1 → v = 1) → Nat.card {g : Over.mk x ⟶ A // g ≫ act.act c = 1} = (Algebra.norm ℤ c).natAbs ^ h := by
   intro S A _ _ hA F _ _ act k _ _ x h ℓ hℓ hℓk hyp c hc hv
   obtain ⟨B, e, ψ, he, htan⟩ := GlobalTheory.T.geometric_point_abelian_variety_action S A hA F act k x

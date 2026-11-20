@@ -14,6 +14,15 @@ open Formalism.MainNotions.DIV.Cons (intO)
 
 namespace GlobalTheory.HTLine
 
+/- English proof (translation)
+Introduce `hB E _ _ _ hG H Dw Xo p W Y i₀ hp hW hY i n hd hF hpn hn st x hx`. Take `⟨Z₀, rfl, hty, hL⟩` from `GlobalTheory.T.local_system_model_exists E H Dw Xo p W Y i₀ hp hW hY i hd hF st x hx`. Take `⟨Z₁, h₁, hDR, ⟨f₁, hf₁⟩, -⟩` from `GlobalTheory.T.exists_de_rham_flag E H Dw Xo p W hp hW Y i₀ Z₀ (fun σ => by rw [hty])`. Establish `hn1 : 1 ≤ n`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`.
+
+Establish `h3 : (0 : ℝ) ≤ 1 / ((p : ℝ) - 1)` using `div_nonneg zero_le_one (by linarith)`. Establish `h4 : (1 : ℝ) < n` using `by linarith`. Conclude with `h4.le` after adjusting the coercions. Establish `full₀ : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z₀.ty τ` using `fun τ k hk => by`. Rewrite using `[hty]`.
+
+Conclude with `Finset.mem_range.2 (Nat.lt_succ_of_le hk)`. Establish `full₁ : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z₁.ty τ` using `fun τ k hk => by`. Rewrite using `[hDR.1]`. Conclude with `Finset.mem_range.2 (Nat.lt_succ_of_le hk)`. Establish `hR` using `GlobalTheory.T.hasRatio_of_hasDR_galois hB E H Dw Xo p W Y i₀ hp hW hG Z₁ hDR (h₁ ▸ (dvd_pow_self p (by omega)).trans hpn) st x hx`.
+
+Take `⟨Z₂, f₂, h₂, hty₂, hf₂, hP⟩` from `GlobalTheory.T.exists_model_with_ratio hB E H Dw Xo p W Y i₀ hp hW hY.1 Z₁ st x hx full₁ hR`. Establish `hL₁` using `GlobalTheory.T.local_system_model_map hB E H Dw Xo p W Y i₀ hp hW hY Z₀ Z₁ f₁ hf₁ full₀ false st x hx hL`. Establish `hL₂` using `GlobalTheory.T.local_system_model_map hB E H Dw Xo p W Y i₀ hp hW hY Z₁ Z₂ f₂ hf₂ full₁ false st x hx hL₁`. Conclude with `⟨Z₂, h₂.trans h₁, hty₂.trans (funext hDR.1), GlobalTheory.T.lineModel_true_of_false E H Dw Xo p W Y i₀ hp hW Z₂ st x hP hL₂⟩`.
+-/
 theorem exists_lineModel_hodgeTate : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → (N2 Y ∧ ∀ i, (Y i).SplitFibres ∧ (Y i).N3 ∧ (Y i).N4) → ∀ (i : Idx H p) (n : ℕ), i₀.l.Dvd i.l → i₀.c.F ≤ i.c.F → p ^ n ∣ i.l.A → 1 + 1 / ((p : ℝ) - 1) < n → ∀ st x, letterOf Dw st = some x → ∃ Z : Mdl Y i₀, Z.i = i ∧ (Z.ty = fun τ => Finset.range (Dw.mult τ + 1)) ∧ Nonempty (LineModel Z true st x) := by
   intro hB E _ _ _ hG H Dw Xo p W Y i₀ hp hW hY i n hd hF hpn hn st x hx
   obtain ⟨Z₀, rfl, hty, hL⟩ := GlobalTheory.T.local_system_model_exists E H Dw Xo p W Y i₀ hp hW hY i hd hF st x hx

@@ -11,6 +11,23 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameRepConju
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2
 namespace GlobalTheory.TameTau
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A P hP O _ _ _ _ _ hO χ hχ m hm hmP hχm ϖ hϖP hϖ2 π hπ σ hσ σ' hσ' heq`. Establish `hm0 : m ≠ 0` using `hm.ne'`. Establish `hvm : ¬ A.valuation (m : Ω) < 1`. Introduce `h`. Apply `hmP` to reduce the goal to its premises.
+
+Rewrite using `[← hP]`. Simplify using `using h`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hϖ2 (Ideal.zero_mem _)`.
+
+Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[zero_pow hm0, eq_comm, map_eq_zero_iff _ (algebraMap E Ω).injective]`. Conclude with `hϖ0 (by exact_mod_cast hπ)`. Take `⟨γ, hγ⟩` from `GlobalTheory.TameInertiaGen.exists_tameGenAt_of_valuationSubring (E := E) A`.
+
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Choose the witnesses or unpack the hypotheses as in `⟨ζ, hζ⟩ : ∃ ζ : Ω, IsPrimitiveRoot ζ m := by`. Establish `: NeZero (m : Ω)` using `⟨Nat.cast_ne_zero.2 hm0⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`.
+
+Take `⟨σ₀, hσ₀, hσ₀π⟩` from `GlobalTheory.T.inertia_acts_on_tame_root A P hP m hm hmP ϖ hϖP hϖ2 π hπ ζ hζ.pow_eq_one`. Establish `J` using `fun τ hτ => GlobalTheory.T.character_tameQuotient_jointPowers_tameGenerator A γ hγ hO χ hχ m hm hvm hχm (ϖ : E) π hπ0 hπ τ hτ`. Take `⟨k, -, hk⟩` from `J σ₀ hσ₀`. Take `⟨n, hn1, hn2⟩` from `J σ hσ`. Take `⟨n', hn1', hn2'⟩` from `J σ' hσ'`.
+
+Use `set θ := γ π / π with hθ`. Rewrite `hk` using `[hσ₀π, mul_div_cancel_right₀ _ hπ0]`. Establish `hθn : θ ^ n = θ ^ n'` using `by rw [← hn2, ← hn2', heq]`. Establish `hζn : ζ ^ n = ζ ^ n'` using `by rw [hk, ← pow_mul, ← pow_mul, mul_comm k n, mul_comm k n', pow_mul, pow_mul, hθn]`. Establish `hmod : n ≡ n' [MOD m]`.
+
+Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hm0`. Establish `hu : (Units.mk0 ζ hζ0) ^ n = (Units.mk0 ζ hζ0) ^ n'` using `Units.ext (by simpa using hζn)`. Rewrite `hu` using `[pow_eq_pow_iff_modEq, ← orderOf_units, Units.val_mk0, ← hζ.eq_orderOf]`. Conclude with `hu`. Establish `hγI : γ ∈ Ine (F` using `E) A := hγ.1`.
+
+Establish `hord : orderOf (χ γ) ∣ m` using `orderOf_dvd_of_pow_eq_one (hχm γ hγI)`. Rewrite using `[hn1, hn1', pow_eq_pow_iff_modEq]`. Conclude with `Nat.ModEq.of_dvd hord hmod`.
+-/
 theorem char_eq_of_apply_root_eq : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E)), IsPlaceOver A P → ∀ {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [TopologicalSpace O] [IsTopologicalRing O], IsAdic (IsLocalRing.maximalIdeal O) → ∀ (χ : G E Ω →* Oˣ), Continuous (fun g => ((χ g : Oˣ) : O)) → ∀ (m : ℕ), 0 < m → ((m : ℕ) : 𝓞 E) ∉ P.asIdeal → (∀ σ ∈ Ine (F := E) A, χ σ ^ m = 1) → ∀ (ϖ : 𝓞 E), ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ∀ π : Ω, π ^ m = algebraMap E Ω (ϖ : E) → ∀ σ ∈ Ine (F := E) A, ∀ σ' ∈ Ine (F := E) A, σ π = σ' π → χ σ = χ σ' := by
   intro E Ω _ _ _ _ _ A P hP O _ _ _ _ _ hO χ hχ m hm hmP hχm ϖ hϖP hϖ2 π hπ σ hσ σ' hσ' heq
   have hm0 : m ≠ 0 := hm.ne'

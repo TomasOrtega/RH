@@ -25,12 +25,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local instance isModTopAFE : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+-/
 theorem finiteDimensional_FE : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
 
 local instance : FiniteDimensional F E := finiteDimensional_FE
 
 local instance topRingAFE : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
 
+/- English proof (translation)
+Establish `e : (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = LinearMap.baseChange (AF F) σ.toLinearMap`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`.
+
+Consider the case `add a b ha hb => rw [map_add, LinearMap.map_add, ha, hb]`. Rewrite using `[e]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem continuous_sigR_ad (σ : E →ₐ[F] E) : Continuous (sigR (AF F) σ) := by
   have e : (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = LinearMap.baseChange (AF F) σ.toLinearMap := by
     funext z
@@ -41,6 +49,9 @@ theorem continuous_sigR_ad (σ : E →ₐ[F] E) : Continuous (sigR (AF F) σ) :=
   rw [e]
   exact IsModuleTopology.continuous_of_linearMap _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem infTens_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
     GlobalTheory.LFun.infTens F E (sigR (AF F) σ z) = sigR (Ainf F) σ (GlobalTheory.LFun.infTens F E z) := by
   induction z using TensorProduct.induction_on with
@@ -48,6 +59,9 @@ theorem infTens_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
   | tmul a x => rfl
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (GlobalTheory.CuspRep.sFin E : GlobalTheory.CuspRep.Af E → GlobalTheory.CuspRep.Ad E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : GlobalTheory.CuspRep.Af E => ((0, x) : InfiniteAdeleRing E × GlobalTheory.CuspRep.Af E))`. Conclude with `(continuous_const.add (continuous_id.matrix_map hs) : Continuous fun x : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Af E) => 1 - GlobalTheory.CuspRep.matN d (GlobalTheory.CuspRep.sFin E) 1 + x.map (GlobalTheory.CuspRep.sFin E))`.
+-/
 theorem continuous_finGL (d : ℕ) : Continuous (GlobalTheory.CuspRep.finGL E d) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (GlobalTheory.CuspRep.sFin E : GlobalTheory.CuspRep.Af E → GlobalTheory.CuspRep.Ad E) :=
@@ -59,6 +73,15 @@ theorem continuous_finGL (d : ℕ) : Continuous (GlobalTheory.CuspRep.finGL E d)
 variable [IsTotallyComplex E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ}
   {Xf Yf : Matrix (Fin n) (Fin r) E} {l d : ℕ} {h : l + d ≤ r} {ι : GlobalTheory.CuspRep.GA E d →* GAd σ J}
 
+/- English proof (translation)
+Take `⟨Φ, j, -, hΦs, -, -, hf⟩` from `hι`. Establish `hval : Continuous fun g : GlobalTheory.CuspRep.GA E d => ((matHom (AF F) σ J (ι g)).1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))`. Simplify using `only [hf, cT]`. Establish `h1 : Continuous fun g : GlobalTheory.CuspRep.GA E d => (g.1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Ad E))` using `Units.continuous_val`. Establish `h2 : Continuous fun g : GlobalTheory.CuspRep.GA E d => ((g⁻¹).1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Ad E))` using `Units.continuous_val.comp continuous_inv`.
+
+Establish `h3` using `h1.matrix_map hΦs`. Establish `h4` using `((h2.matrix_map hΦs).matrix_map (continuous_sigR_ad σ)).matrix_transpose`. Conclude with `(continuous_const.add ((continuous_const.matrix_mul (h3.sub continuous_const)).matrix_mul continuous_const)).add ((continuous_const.matrix_mul (h4.sub continuous_const)).matrix_mul continuous_const)`. Establish `hU : Continuous fun g : GlobalTheory.CuspRep.GA E d => matHom (AF F) σ J (ι g)`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun g : GlobalTheory.CuspRep.GA E d => ((matHom (AF F) σ J (ι g))⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1) = (fun g => ((matHom (AF F) σ J (ι g)).1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) ∘ fun g => g⁻¹`. Use function extensionality and compare the values at `g`. Simplify using `[map_inv]`. Rewrite using `[this]`. Conclude with `hval.comp continuous_inv`.
+
+Conclude with `(isEmbedding_matHom (AF F) σ J).continuous_iff.2 hU`.
+-/
 theorem continuous_of_isBlockEmb (hι : GlobalTheory.BlockForms.IsBlockEmb σ J Xf Yf h ι) : Continuous ι := by
   obtain ⟨Φ, j, -, hΦs, -, -, hf⟩ := hι
   have hval : Continuous fun g : GlobalTheory.CuspRep.GA E d => ((matHom (AF F) σ J (ι g)).1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) := by
@@ -79,6 +102,13 @@ theorem continuous_of_isBlockEmb (hι : GlobalTheory.BlockForms.IsBlockEmb σ J 
     exact hval.comp continuous_inv
   exact (isEmbedding_matHom (AF F) σ J).continuous_iff.2 hU
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.LFun.infTens F E (Φ.symm ((GlobalTheory.CuspRep.finGL E d k).1 a b)) = j.symm (((GlobalTheory.CuspRep.finGL E d k).1 a b).1)`. Establish `key : ∀ x, GlobalTheory.LFun.infTens F E (Φ.symm x) = j.symm x.1` using `fun x => by`. Establish `e` using `congrArg Prod.fst (hΦ (Φ.symm x))`. Rewrite `e` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[e, RingEquiv.symm_apply_apply]`.
+
+Conclude with `key _`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `j.symm (((1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Ad E)) a b - GlobalTheory.CuspRep.sFin E ((1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Af E)) a b) + GlobalTheory.CuspRep.sFin E (k.1 a b)).1) = _`. Express the relevant statement in the definitionally equal form `j.symm (((1 : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Ad E)) a b).1 - 0 + 0) = _`. Rewrite using `[sub_zero, add_zero, Matrix.one_apply, Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+-/
 theorem infTens_symm_finGL (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) (j : Ainf F ⊗[F] E ≃+* InfiniteAdeleRing E)
     (hΦ : ∀ z, Φ z = (j (GlobalTheory.LFun.infTens F E z), GlobalTheory.LFun.finAdEquiv F E (GlobalTheory.LFun.finTens F E z)))
     (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) (a b : Fin d) :
@@ -97,6 +127,19 @@ theorem infTens_symm_finGL (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) (j : 
   · exact map_one _
   · exact map_zero _
 
+/- English proof (translation)
+Take `⟨Φ, j, -, -, -, hΦ, hf⟩` from `hι`. Establish `hA : ∀ k : GL (Fin d) (GlobalTheory.CuspRep.Af E), (RingHom.mapMatrix (GlobalTheory.LFun.infTens F E)) ((GlobalTheory.CuspRep.finGL E d k).1.map Φ.symm) = 1`. Introduce `k`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`.
+
+Conclude with `infTens_symm_finGL Φ j hΦ k a b`. Establish `hB : (RingHom.mapMatrix (GlobalTheory.LFun.infTens F E)) (cT (sigR (AF F) σ) ((GlobalTheory.CuspRep.finGL E d k)⁻¹.1.map Φ.symm)) = 1`. Rewrite using `[← map_inv]`. Use extensionality with `a b`. Establish `e` using `congrArg (fun M => M b a) (hA k⁻¹)`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at e`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, cT, Matrix.transpose_apply, infTens_sigR, e]`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hab), if_neg hab, map_zero]`. Simplify using `only [finPts, MonoidHom.mem_ker, MonoidHom.comp_apply]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(RingHom.mapMatrix (GlobalTheory.LFun.infTens F E)) (matHom (AF F) σ J (ι (GlobalTheory.CuspRep.finGL E d k))).1 = 1`.
+
+Establish `hA' : ((GlobalTheory.CuspRep.finGL E d k).1.map Φ.symm - 1).map (GlobalTheory.LFun.infTens F E) = 0`. Rewrite using `[← RingHom.mapMatrix_apply, map_sub, hA, map_one, sub_self]`. Establish `hB' : (cT (sigR (AF F) σ) ((GlobalTheory.CuspRep.finGL E d k)⁻¹.1.map Φ.symm) - 1).map (GlobalTheory.LFun.infTens F E) = 0`. Rewrite using `[← RingHom.mapMatrix_apply, map_sub, hB, map_one, sub_self]`. Rewrite using `[hf]`.
+
+Simplify using `only [map_add, map_one, RingHom.mapMatrix_apply, Matrix.map_mul, hA', hB', Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+-/
 theorem finGL_mem_finPts (hι : GlobalTheory.BlockForms.IsBlockEmb σ J Xf Yf h ι) (k : GL (Fin d) (GlobalTheory.CuspRep.Af E)) :
     ι (GlobalTheory.CuspRep.finGL E d k) ∈ finPts σ J := by
   obtain ⟨Φ, j, -, -, -, hΦ, hf⟩ := hι
@@ -127,6 +170,17 @@ theorem finGL_mem_finPts (hι : GlobalTheory.BlockForms.IsBlockEmb σ J Xf Yf h 
   rw [hf]
   simp only [map_add, map_one, RingHom.mapMatrix_apply, Matrix.map_mul, hA', hB', Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ _ n J _ r Xf Yf _ K _ S l d h ι hι _ _ _ _ ψ hψ g₀ _`. Take `⟨U, hUo, hU⟩` from `hψ.1.level`. Set `H : Subgroup (GL (Fin d) (GlobalTheory.CuspRep.Af E))` to `{ carrier := {k | ∀ g, ψ (ι (g * GlobalTheory.CuspRep.finGL E d k) * g₀) = ψ (ι g * g₀)} one_mem' := fun g => by simp mul_mem' := fun {a b} ha hb g => by show ψ (ι (g * GlobalTheory.CuspRep.finGL E d (a * b)) * g₀) = _`. Rewrite using `[(GlobalTheory.CuspRep.finGL E d).map_mul a b, ← mul_assoc, hb (g * GlobalTheory.CuspRep.finGL E d a), ha g]`. Use the proof step `inv_mem' := fun {a} ha g => by show ψ (ι (g * GlobalTheory.CuspRep.finGL E d a⁻¹) * g₀) = _`.
+
+Establish `e : g * GlobalTheory.CuspRep.finGL E d a⁻¹ * GlobalTheory.CuspRep.finGL E d a = g`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Rewrite using `[← ha (g * GlobalTheory.CuspRep.finGL E d a⁻¹), e] }`. Set `m : GL (Fin d) (GlobalTheory.CuspRep.Af E) → GAd σ J` to `fun k => g₀⁻¹ * ι (GlobalTheory.CuspRep.finGL E d k) * g₀`. Establish `hm : Continuous m` using `(continuous_const.mul ((continuous_of_isBlockEmb hι).comp (continuous_finGL d))).mul continuous_const`.
+
+Establish `hN : (finPts σ J).Normal` using `MonoidHom.normal_ker _`. Establish `hsub : m ⁻¹' (U : Set (GAd σ J)) ⊆ (H : Set (GL (Fin d) (GlobalTheory.CuspRep.Af E)))`. Introduce `k hk g`. Establish `hfin : m k ∈ finPts σ J`. Use `hN.conj_mem _ (finGL_mem_finPts hι k) g₀⁻¹` as an intermediate fact.
+
+Simplify `this` using `[m]`. Establish `e` using `hU (m k) hk hfin (ι g * g₀)`. Rewrite using `[← e]`. Simplify using `only [m, map_mul, mul_assoc, mul_inv_cancel_left]`. Establish `h1 : m ⁻¹' (U : Set (GAd σ J)) ∈ nhds (1 : GL (Fin d) (GlobalTheory.CuspRep.Af E))`.
+
+Use `hm.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Establish `: m 1 = 1` using `by simp [m]`. Rewrite using `[this]`. Conclude with `hUo.mem_nhds U.one_mem`. Conclude with `H.isOpen_of_mem_nhds (Filter.mem_of_superset h1 hsub)`.
+-/
 theorem isOpen_rightInv_finGL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → ∀ (K : Subgroup (GAd σ J)), IsMaxCpt σ J K →

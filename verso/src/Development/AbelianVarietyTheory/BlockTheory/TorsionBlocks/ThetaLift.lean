@@ -72,6 +72,9 @@ def hookProd (n : ℕ) (ν : ℕ → ℕ) : ℕ :=
   ∏ r ∈ Finset.range n, ∏ c ∈ Finset.range (ν r),
     ((ν r - c - 1) + ((Finset.Ioo r n).filter (fun r' => c < ν r')).card + 1)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : hookProd 2 (fun r => if r = 0 then 3 else 1) = 8 := by decide
 
 def IsOrthoFrame {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (τ : E →+* ℂ) {n : ℕ}
@@ -88,6 +91,9 @@ def pairLattice {E : Type} [Field E] [NumberField E] [StarRing E] {T : Type} (S 
 
 variable (D : D7)
 
+/- English proof (translation)
+Unfold `Ranks.N`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem N_le_succ (i : ℕ) : D.R.N i ≤ D.R.N (i + 1) := by
   unfold Ranks.N; nlinarith
 

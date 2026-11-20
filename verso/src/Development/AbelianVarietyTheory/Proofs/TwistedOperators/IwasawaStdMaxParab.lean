@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.MaxParabIwasawa
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r a b h g`. Establish `key : ∀ x : GL (Fin r) k, ∃ κ ∈ KO k (Fin r), ∃ p ∈ stdMaxParab k h, x = κ * p`. Introduce `x`. Take `⟨k₀, p, hp, hx⟩` from `GlobalTheory.ValIwasawa.iwasawa 𝒪[k] k r x`. Establish `hpP : p ∈ stdMaxParab k h` using `(mem_stdMaxParab h).2 fun i j hj hi => hp (show j < i from by rw [Fin.lt_def]; omega)`.
+
+Conclude with `⟨_, ⟨k₀, rfl⟩, p, hpP, hx⟩`. Use `⟨key g, ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ, p, hp, e⟩` from `key g⁻¹`. Use `⟨p⁻¹, inv_mem hp, κ⁻¹, inv_mem hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_inv_rev, ← e, inv_inv]`.
+-/
 theorem iwasawa_stdMaxParab : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (r a b : ℕ) (h : a + b = r) (g : GL (Fin r) k),
     (∃ κ ∈ KO k (Fin r), ∃ p ∈ stdMaxParab k h, g = κ * p) ∧
@@ -27,6 +32,9 @@ theorem iwasawa_stdMaxParab : ∀ (k : Type) [Field k] [ValuativeRel k] [Topolog
 
 end GlobalTheory.MaxParabIwasawa
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.MaxParabIwasawa.iwasawa_stdMaxParab`.
+-/
 example : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r a b : ℕ)
     (h : a + b = r) (g : GL (Fin r) k), (∃ κ ∈ KO k (Fin r), ∃ p ∈ stdMaxParab k h, g = κ * p) ∧
     ∃ p ∈ stdMaxParab k h, ∃ κ ∈ KO k (Fin r), g = p * κ := GlobalTheory.MaxParabIwasawa.iwasawa_stdMaxParab

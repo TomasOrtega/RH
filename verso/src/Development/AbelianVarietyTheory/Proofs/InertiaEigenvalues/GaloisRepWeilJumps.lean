@@ -6,11 +6,17 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory
 open Formalism.MainNotions.SumRepresentations.At
 
+/- English proof (translation)
+Establish `h1 : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h1, PadicAlgCl.norm_extends, Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+-/
 theorem norm_natCast_padicAlgCl_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   have h1 : ((l : ℕ) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l]) := by simp
   rw [h1, PadicAlgCl.norm_extends, Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
 
+/- English proof (translation)
+Use `(h ((D.nd.l i : ℕ) : 𝓞 D.host.E)).1` as an intermediate fact. Use `show ((D.nd.l i : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Apply `this` to reduce the goal to its premises. Simplify using `using norm_natCast_padicAlgCl_lt_one (D.nd.l i)`.
+-/
 theorem mem_placesOver_of_inducesW (D : D7) (i : D.nd.Loc) (τ : D.host.E →+* Qbar (D.nd.l i)) (w : PlE D.host)
     (h : InducesW D.nd i τ w) : w ∈ placesOver D.host.E (D.nd.l i) := by
   have := (h ((D.nd.l i : ℕ) : 𝓞 D.host.E)).1
@@ -21,12 +27,20 @@ theorem mem_placesOver_of_inducesW (D : D7) (i : D.nd.Loc) (τ : D.host.E →+* 
 section Tw
 variable {Γ : Type} [Group Γ] {k : Type} [Field k] {a : ℕ}
 
+/- English proof (translation)
+Simplify using `only [twGL, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mul, Units.coe_map]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem twGL_val (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k) (g : Γ) :
     ((twGL ρ (Matrix.GeneralLinearGroup.det.comp χ) g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) =
       ((χ g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k).det • ((ρ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) := by
   simp only [twGL, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mul, Units.coe_map]
   simp [Algebra.algebraMap_eq_smul_one, Matrix.GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Establish `hu : ((χ g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k).det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det _).1 (χ g).isUnit |>.ne_zero`. Use `W.smul_mem (((χ g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k).det)⁻¹ (h g v hv)` as an intermediate fact. Rewrite `this` using `[twGL_val, Matrix.smul_mulVec, smul_smul, inv_mul_cancel₀ hu, one_smul]`.
+
+Conclude with `this`. Introduce `h g v hv`. Rewrite using `[twGL_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`.
+-/
 theorem isInv_twGL_iff (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k) (W : Submodule k (Fin a → k)) :
     IsInv (twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) W ↔ IsInv ρ W := by
   constructor
@@ -40,6 +54,9 @@ theorem isInv_twGL_iff (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k) (
     rw [twGL_val, Matrix.smul_mulVec]
     exact W.smul_mem _ (h g v hv)
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', hW', hc⟩` from `h W ((isInv_twGL_iff ρ χ W).1 hW)`. Conclude with `⟨W', (isInv_twGL_iff ρ χ W').2 hW', hc⟩`.
+-/
 theorem isSSRep_twGL (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k) (h : IsSSRep ρ) :
     IsSSRep (twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) := by
   intro W hW
@@ -48,6 +65,9 @@ theorem isSSRep_twGL (ρ : Γ →* GL (Fin a) k) (χ : Γ →* GL (Fin 1) k) (h 
 
 end Tw
 
+/- English proof (translation)
+Unfold `ContQ at *`. Simplify using `only [twGL_val]`. Conclude with `(hχ.matrix_det).smul hρ`.
+-/
 theorem contQ_twGL (D : D7) (i : D.nd.Loc) {a : ℕ} (ρ : GE D.nd →* GL (Fin a) (Qbar (D.nd.l i)))
     (χ : GE D.nd →* GL (Fin 1) (Qbar (D.nd.l i))) (hρ : ContQ D.nd i ρ) (hχ : ContQ D.nd i χ) :
     ContQ D.nd i (twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) := by
@@ -55,6 +75,17 @@ theorem contQ_twGL (D : D7) (i : D.nd.Loc) {a : ℕ} (ρ : GE D.nd →* GL (Fin 
   simp only [twGL_val]
   exact (hχ.matrix_det).smul hρ
 
+/- English proof (translation)
+Introduce `D hT i a ρ χ p q m c hρ hχ`. Take `⟨hρc, hρs, hρw, hρl⟩` from `hρ`. Take `⟨hχc, hχs, hχw, hχl⟩` from `hχ`. Take `⟨-, -, hG⟩` from `hT`. Take `⟨-, -, -, hGi⟩` from `hG`.
+
+Take `⟨-, -, -, h4⟩` from `hGi i`. Take `⟨hdR, hwd, hj⟩` from `h4 a ρ χ hρc hχc`. Establish `hok : ∀ {b} (r : GE D.nd →* GL (Fin b) (Qbar (D.nd.l i))), (∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i r w) → ∀ w, WDok D.nd D.naut i r w`. Introduce `b r hr w`. Distinguish the cases in `hw : w ∈ placesOver D.host.E (D.nd.l i)`.
+
+Conclude with `Or.inr (hr w hw)`. Conclude with `Or.inl hw`. Use `⟨twGL ρ (Matrix.GeneralLinearGroup.det.comp χ), contQ_twGL D i ρ χ hρc hχc, isSSRep_twGL ρ χ hρs, fun w => ?_, fun w hw => ⟨?_, fun τ hτ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hwd w (hok ρ (fun w hw => (hρl w hw).1) w) (hok χ (fun w hw => (hχl w hw).1) w), hρw w, hχw w]`. Conclude with `(hdR w hw (hχl w hw).1).2 (hρl w hw).1`.
+
+Take `⟨n, hn, hnc⟩` from `Multiset.map_eq_singleton.1 ((hχl w hw).2 τ hτ)`. Establish `hall : ∀ w', InducesW D.nd i τ w' → D.naut.IsdRW i ρ w' ∧ D.naut.IsdRW i χ w'` using `fun w' hw' => ⟨(hρl w' (mem_placesOver_of_inducesW D i τ w' hw')).1, (hχl w' (mem_placesOver_of_inducesW D i τ w' hw')).1⟩`. Rewrite using `[hj τ n hall hn, Multiset.map_map, ← (hρl w hw).2 τ hτ, Multiset.map_map, ← hnc]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem twist_compatible : ∀ D : D7, SumRepresentations.tie0 D → ∀ (i : D.nd.Loc) (a : ℕ) (ρ : GE D.nd →* GL (Fin a) (Qbar (D.nd.l i))) (χ : GE D.nd →* GL (Fin 1) (Qbar (D.nd.l i))) (p q : ∀ w, D.naut.LP w) (m : (D.host.E →+* ℂ) → Multiset ℂ) (c : (D.host.E →+* ℂ) → ℂ), (SumRepresentations.At.ContQ D.nd i ρ ∧ IsSSRep ρ ∧ (∀ w, D.naut.wdOf i ρ w = p w) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i ρ τ).map (fun n : ℤ => (n : ℂ)) = m ((D.naut.iotaQC i).toRingHom.comp τ)) → (SumRepresentations.At.ContQ D.nd i χ ∧ IsSSRep χ ∧ (∀ w, D.naut.wdOf i χ w = q w) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i χ w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i χ τ).map (fun n : ℤ => (n : ℂ)) = {c ((D.naut.iotaQC i).toRingHom.comp τ)}) → ∃ ρ' : GE D.nd →* GL (Fin a) (Qbar (D.nd.l i)), (SumRepresentations.At.ContQ D.nd i ρ' ∧ IsSSRep ρ' ∧ (∀ w, D.naut.wdOf i ρ' w = D.naut.lpChar (p w) (q w)) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i ρ' w ∧ ∀ τ, InducesW D.nd i τ w → (D.naut.jumpsW i ρ' τ).map (fun n : ℤ => (n : ℂ)) = (m ((D.naut.iotaQC i).toRingHom.comp τ)).map (· + c ((D.naut.iotaQC i).toRingHom.comp τ))) := by
   intro D hT i a ρ χ p q m c hρ hχ
   obtain ⟨hρc, hρs, hρw, hρl⟩ := hρ

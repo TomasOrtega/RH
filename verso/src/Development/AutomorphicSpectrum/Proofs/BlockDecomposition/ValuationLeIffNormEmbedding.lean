@@ -18,6 +18,11 @@ open scoped GroundTheory.PAdicHodge.CyclNorms
 
 namespace GlobalTheory.CompanionTheory.LocalNorm
 
+/- English proof (translation)
+Introduce `s hs`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff s).1 hs`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hx γ`. Use `Filter.mem_atTop_sets.2 ⟨n, fun m hm => hγ ?_⟩` and prove the remaining obligations. Use `show valuation F (x ^ m) < γ`.
+
+Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hx.le hm) hn`.
+-/
 theorem tendsto_pow_zero_of_val_lt_one {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {x : F} (hx : valuation F x < 1) :
     Filter.Tendsto (fun n : ℕ => x ^ n) Filter.atTop (nhds 0) := by
@@ -29,6 +34,9 @@ theorem tendsto_pow_zero_of_val_lt_one {F : Type} [Field F] [ValuativeRel F] [To
   rw [map_pow]
   exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' hx.le hm) hn
 
+/- English proof (translation)
+Establish `h1 : Filter.Tendsto (fun n : ℕ => φ c ^ n) Filter.atTop (nhds 0)`. Establish `h2` using `((hφ.tendsto 0).comp (tendsto_pow_zero_of_val_lt_one hc))`. Simplify `h2` using `[Function.comp_def, map_pow, map_zero]`. Conclude with `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 h1`.
+-/
 private theorem norm_lt_one_of_valuation_lt_one' {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] (φ : F →+* Om l) (hφ : Continuous φ)
     {c : F} (hc : valuation F c < 1) : ‖φ c‖ < 1 := by
@@ -37,6 +45,13 @@ private theorem norm_lt_one_of_valuation_lt_one' {l : ℕ} [Fact l.Prime] {F : T
     simpa [Function.comp_def, map_pow, map_zero] using h2
   exact tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.1 h1
 
+/- English proof (translation)
+Take `⟨p, hp, hp1⟩` from `(Valuation.IsNontrivial.exists_lt_one (v := valuation F))`. Establish `hpos : 0 < ‖φ p‖` using `norm_pos_iff.2 ((map_ne_zero φ).2 hp)`. Establish `key : ∀ n : ℕ, ‖φ p‖ * ‖φ c‖ ^ n < 1`. Introduce `n`. Establish `hv : valuation F (p * c ^ n) < 1`.
+
+Rewrite using `[map_mul, map_pow]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one' hc n)) hp1`. Establish `h3` using `norm_lt_one_of_valuation_lt_one' φ hφ hv`. Rewrite `h3` using `[map_mul, map_pow, norm_mul, norm_pow]`. Then use the resulting hypothesis. Use `not_lt.1 fun h => ?_` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (‖φ p‖⁻¹) h`. Establish `h4` using `mul_lt_mul_of_pos_left hn hpos`. Rewrite `h4` using `[mul_inv_cancel₀ hpos.ne']`. Conclude with `lt_asymm h4 (key n)`.
+-/
 theorem norm_le_one_of_val_le_one {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] (φ : F →+* Om l) (hφ : Continuous φ)
     {c : F} (hc : valuation F c ≤ 1) : ‖φ c‖ ≤ 1 := by
@@ -55,6 +70,13 @@ theorem norm_le_one_of_val_le_one {l : ℕ} [Fact l.Prime] {F : Type} [Field F] 
   rw [mul_inv_cancel₀ hpos.ne'] at h4
   exact lt_asymm h4 (key n)
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `not_lt_zero hc`. Establish `h1 : valuation F c⁻¹ < 1`.
+
+Rewrite using `[Valuation.map_inv]`. Conclude with `inv_lt_one_of_one_lt₀ hc`. Establish `h2` using `norm_lt_one_of_valuation_lt_one' φ hφ h1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖φ c‖` using `norm_pos_iff.2 ((map_ne_zero φ).2 hc0)`.
+
+Conclude with `(inv_lt_one₀ hpos).1 h2`.
+-/
 theorem one_lt_norm_of_one_lt_val {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] (φ : F →+* Om l) (hφ : Continuous φ)
     {c : F} (hc : 1 < valuation F c) : 1 < ‖φ c‖ := by
@@ -72,6 +94,17 @@ theorem one_lt_norm_of_one_lt_val {l : ℕ} [Fact l.Prime] {F : Type} [Field F] 
 
 end GlobalTheory.CompanionTheory.LocalNorm
 
+/- English proof (translation)
+Introduce `l _ F _ _ _ _ φ hφ a b`. Rewrite using `[Valuation.Compatible.vle_iff_le (v := valuation F) a b]`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hbn : 0 < ‖φ b‖` using `norm_pos_iff.2 ((map_ne_zero φ).2 hb)`. Establish `hvb : 0 < valuation F b`. Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).2 hb`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hv : valuation F (a / b) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `(div_le_one₀ hvb).2 h`. Establish `h3` using `GlobalTheory.CompanionTheory.LocalNorm.norm_le_one_of_val_le_one φ hφ hv`.
+
+Rewrite `h3` using `[map_div₀, norm_div, div_le_one hbn]`. Then use the resulting hypothesis. Introduce `h`. Use `not_lt.1 fun h' => ?_` and prove the remaining obligations. Establish `hv : 1 < valuation F (a / b)`. Rewrite using `[map_div₀]`.
+
+Conclude with `(one_lt_div₀ hvb).2 h'`. Establish `h3` using `GlobalTheory.CompanionTheory.LocalNorm.one_lt_norm_of_one_lt_val φ hφ hv`. Rewrite `h3` using `[map_div₀, norm_div, one_lt_div hbn]`. Conclude with `absurd h (not_le.2 h3)`.
+-/
 theorem GlobalTheory.CompanionTheory.LocalNorm.vle_iff_norm_le : ∀ {l : ℕ} [Fact l.Prime] {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (φ : F →+* Om l), Continuous φ → ∀ a b : F, a ≤ᵥ b ↔ ‖φ a‖ ≤ ‖φ b‖ := by
   intro l _ F _ _ _ _ φ hφ a b
   rw [Valuation.Compatible.vle_iff_le (v := valuation F) a b]

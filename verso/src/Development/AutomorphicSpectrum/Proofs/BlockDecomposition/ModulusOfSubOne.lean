@@ -19,6 +19,9 @@ namespace GlobalTheory.CompanionTheory.SintSec
 section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Rewrite using `[← map_pow, ← normalizedValuation_le_iff, map_pow, normalizedValuation_uniformizer (GLnLocal.irreducible_uniformizer F), ← WithZero.exp_nsmul, mem_valBall]`. Simplify using the standard rewrite rules.
+-/
 theorem ball_iff {y : F} {m : ℕ} :
     y ∈ valBall F (m : ℤ) ↔
       ValuativeRel.valuation F y ≤ ValuativeRel.valuation F (GLnLocal.uniformizer F : F) ^ m := by
@@ -27,30 +30,53 @@ theorem ball_iff {y : F} {m : ℕ} :
     mem_valBall]
   simp
 
+/- English proof (translation)
+Use `modulus_add_eq (x := (1 : F)) (d := x - 1) one_ne_zero (by rw [ord_one]; simpa using h)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem modulus_of_sub_one {x : F} (h : x - 1 ∈ valBall F 1) : modulus x = 1 := by
   have := modulus_add_eq (x := (1 : F)) (d := x - 1) one_ne_zero (by rw [ord_one]; simpa using h)
   simpa using this
 
+/- English proof (translation)
+Take `⟨h0, ho⟩` from `modulus_eq_one_iff.1 (modulus_of_sub_one h)`. Rewrite using `[mem_valBall_iff_le_ord (inv_ne_zero h0), ord_inv h0, ho]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_mem_zero {x : F} (h : x - 1 ∈ valBall F 1) : x⁻¹ ∈ valBall F 0 := by
   obtain ⟨h0, ho⟩ := modulus_eq_one_iff.1 (modulus_of_sub_one h)
   rw [mem_valBall_iff_le_ord (inv_ne_zero h0), ord_inv h0, ho]
   simp
 
+/- English proof (translation)
+The claim follows from `mem_valBall_zero_iff.2 (one_mem _)`.
+-/
 theorem one_mem_zero : (1 : F) ∈ valBall F 0 :=
   mem_valBall_zero_iff.2 (one_mem _)
 
+/- English proof (translation)
+The claim follows from `valBall_antitone hm h`.
+-/
 theorem mem_zero_of_mem {x : F} {m : ℤ} (hm : 0 ≤ m) (h : x ∈ valBall F m) : x ∈ valBall F 0 :=
   valBall_antitone hm h
 
+/- English proof (translation)
+Use `add_mem (mem_zero_of_mem hm h) one_mem_zero` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mem_zero_of_sub {x : F} {m : ℤ} (hm : 0 ≤ m) (h : x - 1 ∈ valBall F m) :
     x ∈ valBall F 0 := by
   have := add_mem (mem_zero_of_mem hm h) one_mem_zero
   simpa using this
 
+/- English proof (translation)
+Simplify using `using mul_mem_valBall hx hy`.
+-/
 theorem mul_zero_mem {m : ℤ} {x y : F} (hx : x ∈ valBall F m) (hy : y ∈ valBall F 0) :
     x * y ∈ valBall F m := by
   simpa using mul_mem_valBall hx hy
 
+/- English proof (translation)
+Establish `hm0 : (0 : ℤ) ≤ (m : ℤ)` using `by omega`. Establish `e : A.det - 1 = (A 0 0 - 1) * A 1 1 + (A 1 1 - 1) - A 0 1 * A 1 0`. Rewrite using `[Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `sub_mem (add_mem (mul_zero_mem h00 (mem_zero_of_sub hm0 h11)) h11) (mul_zero_mem h01 (mem_zero_of_mem hm0 h10))`.
+-/
 theorem det_sub_one {m : ℕ} {A : Matrix (Fin 2) (Fin 2) F}
     (h00 : A 0 0 - 1 ∈ valBall F (m : ℤ)) (h01 : A 0 1 ∈ valBall F (m : ℤ))
     (h10 : A 1 0 ∈ valBall F (m : ℤ)) (h11 : A 1 1 - 1 ∈ valBall F (m : ℤ)) :
@@ -62,6 +88,23 @@ theorem det_sub_one {m : ℕ} {A : Matrix (Fin 2) (Fin 2) F}
   exact sub_mem (add_mem (mul_zero_mem h00 (mem_zero_of_sub hm0 h11)) h11)
     (mul_zero_mem h01 (mem_zero_of_mem hm0 h10))
 
+/- English proof (translation)
+Establish `hm0 : (0 : ℤ) ≤ (m : ℤ)` using `by omega`. Establish `hm1 : (1 : ℤ) ≤ (m : ℤ)` using `by exact_mod_cast hm`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `h` using `((GLnLocal.mem_congruenceSubgroup_iff F 2).1 hg).2`.
+
+Use `⟨ball_iff.2 ?_, ball_iff.2 ?_, ball_iff.2 ?_, ball_iff.2 ?_⟩` and prove the remaining obligations. Simplify using `using h 0 0`. Simplify using `using h 0 1`. Simplify using `using h 1 0`. Simplify using `using h 1 1`.
+
+Introduce and unpack `⟨h00, h01, h10, h11⟩`. Establish `hd` using `det_sub_one h00 h01 h10 h11`. Establish `hdi : (g.val).det⁻¹ ∈ valBall F 0` using `inv_mem_zero (valBall_antitone hm1 hd)`. Establish `z00` using `mem_zero_of_sub hm0 h00`. Establish `z01` using `mem_zero_of_mem hm0 h01`.
+
+Establish `z10` using `mem_zero_of_mem hm0 h10`. Establish `z11` using `mem_zero_of_sub hm0 h11`. Establish `hinv : (g⁻¹ : GL (Fin 2) F).val = (g.val).det⁻¹ • !![g.val 1 1, -g.val 0 1; -g.val 1 0, g.val 0 0]`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Matrix.adjugate_fin_two, Ring.inverse_eq_inv']`. Establish `hmul : ∀ {x : F}, x ∈ valBall F 0 → (g.val).det⁻¹ * x ∈ 𝒪[F]` using `fun hx => mem_valBall_zero_iff.1 (by simpa using mul_mem_valBall hdi hx)`.
+
+Use `(GLnLocal.mem_congruenceSubgroup_iff F 2).2 ⟨(GLnLocal.mem_integralGL_iff F 2).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j fin_cases i <;> fin_cases j`. Conclude with `mem_valBall_zero_iff.1 z00`. Conclude with `mem_valBall_zero_iff.1 z01`. Conclude with `mem_valBall_zero_iff.1 z10`.
+
+Conclude with `mem_valBall_zero_iff.1 z11`. Introduce `i j`. Express the relevant statement in the definitionally equal form `(g⁻¹ : GL (Fin 2) F).val i j ∈ 𝒪[F]`. Rewrite using `[hinv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Simplify using `using hmul z11`. Simplify using `using hmul (neg_mem z01)`. Simplify using `using hmul (neg_mem z10)`. Simplify using `using hmul z00`. Apply the tactic sequence `intro i j fin_cases i <;> fin_cases j`.
+
+Simplify using `using ball_iff.1 h00`. Simplify using `using ball_iff.1 h01`. Simplify using `using ball_iff.1 h10`. Simplify using `using ball_iff.1 h11`.
+-/
 theorem mem_K_iff {m : ℕ} (hm : 1 ≤ m) (g : GL (Fin 2) F) :
     g ∈ GLnLocal.congruenceSubgroup F 2 m ↔
       g.val 0 0 - 1 ∈ valBall F (m : ℤ) ∧ g.val 0 1 ∈ valBall F (m : ℤ) ∧
@@ -114,6 +157,13 @@ theorem mem_K_iff {m : ℕ} (hm : 1 ≤ m) (g : GL (Fin 2) F) :
 def RowOK (m : ℕ) (h : GL (Fin 2) F) : Prop :=
   h.val 1 0 ∈ valBall F (m : ℤ) ∧ h.val 1 1 - 1 ∈ valBall F (m : ℤ)
 
+/- English proof (translation)
+Establish `hm0 : (0 : ℤ) ≤ (m : ℤ)` using `by omega`. Take `⟨h00, h01, h10, h11⟩` from `(mem_K_iff hm k).1 hk`. Take `⟨a, b⟩` from `hh`. Establish `e0 : (h * k).val 1 0 = h.val 1 0 * k.val 0 0 + ((h.val 1 1 - 1) * k.val 1 0 + k.val 1 0)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (h * k).val 1 1 - 1 = h.val 1 0 * k.val 0 1 + ((h.val 1 1 - 1) * k.val 1 1 + (k.val 1 1 - 1))`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e0]`. Conclude with `add_mem (mul_zero_mem a (mem_zero_of_sub hm0 h00)) (add_mem (mul_zero_mem b (mem_zero_of_mem hm0 h10)) h10)`. Rewrite using `[e1]`. Conclude with `add_mem (mul_zero_mem a (mem_zero_of_mem hm0 h01)) (add_mem (mul_zero_mem b (mem_zero_of_sub hm0 h11)) h11)`.
+-/
 theorem rowOK_mul {m : ℕ} (hm : 1 ≤ m) {h k : GL (Fin 2) F} (hh : RowOK m h)
     (hk : k ∈ GLnLocal.congruenceSubgroup F 2 m) : RowOK m (h * k) := by
   have hm0 : (0 : ℤ) ≤ (m : ℤ) := by omega
@@ -133,6 +183,9 @@ theorem rowOK_mul {m : ℕ} (hm : 1 ≤ m) {h k : GL (Fin 2) F} (hh : RowOK m h)
     exact add_mem (mul_zero_mem a (mem_zero_of_mem hm0 h01))
       (add_mem (mul_zero_mem b (mem_zero_of_sub hm0 h11)) h11)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hh`. Simplify using `using rowOK_mul hm hh hg`. Introduce `hh`. Conclude with `rowOK_mul hm hh (inv_mem hg)`.
+-/
 theorem rowOK_mul_inv_iff {m : ℕ} (hm : 1 ≤ m) {h g : GL (Fin 2) F}
     (hg : g ∈ GLnLocal.congruenceSubgroup F 2 m) : RowOK m (h * g⁻¹) ↔ RowOK m h := by
   constructor
@@ -141,6 +194,9 @@ theorem rowOK_mul_inv_iff {m : ℕ} (hm : 1 ≤ m) {h g : GL (Fin 2) F}
   · intro hh
     exact rowOK_mul hm hh (inv_mem hg)
 
+/- English proof (translation)
+Establish `hm1 : (1 : ℤ) ≤ (m : ℤ)` using `by exact_mod_cast hm`. Take `⟨h00, h01, h10, h11⟩` from `(mem_K_iff hm g).1 hg`. Establish `hmod : modulus (g.val).det = 1` using `modulus_of_sub_one (valBall_antitone hm1 (det_sub_one h00 h01 h10 h11))`. Simplify using `[mp, hmod]`.
+-/
 theorem mp_det_of_mem {m : ℕ} (hm : 1 ≤ m) {g : GL (Fin 2) F}
     (hg : g ∈ GLnLocal.congruenceSubgroup F 2 m) :
     mp (Matrix.GeneralLinearGroup.det g) (1 / 2) = 1 := by
@@ -152,6 +208,17 @@ theorem mp_det_of_mem {m : ℕ} (hm : 1 ≤ m) {g : GL (Fin 2) F}
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ W' m hm hW Φ hΦ V hV h0`. Establish `hmeas : MeasurableSet (GLnLocal.congruenceSubgroup F 2 m : Set (GL (Fin 2) F))` using `(GLnLocal.isOpen_congruenceSubgroup F 2 m).measurableSet`. Establish `key` using `fun h => GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.main F ψ hψ W' Φ hΦ h`. Use `⟨fun h h1 h2 => ?_, fun h hn => ?_⟩` and prove the remaining obligations. Establish `hrow : RowOK m h` using `⟨h1, h2⟩`.
+
+Establish `hf : (fun g : GL (Fin 2) F => GL2LocalData.pFT ψ Φ g.val (GL2LocalData.e2r (h * g⁻¹)) * mp (Matrix.GeneralLinearGroup.det g) (1 / 2) * W' (h * g⁻¹)) = (GLnLocal.congruenceSubgroup F 2 m : Set (GL (Fin 2) F)).indicator (fun _ => V * W' h)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ GLnLocal.congruenceSubgroup F 2 m`. Rewrite using `[Set.indicator_of_mem (show g ∈ (GLnLocal.congruenceSubgroup F 2 m : Set _) from hg)]`. Take `⟨a00, a01, a10, a11⟩` from `(mem_K_iff hm g).1 hg`.
+
+Take `⟨r0, r1⟩` from `(rowOK_mul_inv_iff hm hg).2 hrow`. Rewrite using `[hV g.val (GL2LocalData.e2r (h * g⁻¹)) ⟨a00, a01, a10, a11, r0, r1⟩, mp_det_of_mem hm hg, hW h g⁻¹ (inv_mem hg), mul_one]`. Rewrite using `[Set.indicator_of_notMem (show g ∉ (GLnLocal.congruenceSubgroup F 2 m : Set _) from hg), h0 g.val (GL2LocalData.e2r (h * g⁻¹)) (fun c => hg ((mem_K_iff hm g).2 ⟨c.1, c.2.1, c.2.2.1, c.2.2.2.1⟩))]`. Simplify using the standard rewrite rules. Rewrite using `[key h, hf, integral_indicator_const _ hmeas, Complex.real_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hf : (fun g : GL (Fin 2) F => GL2LocalData.pFT ψ Φ g.val (GL2LocalData.e2r (h * g⁻¹)) * mp (Matrix.GeneralLinearGroup.det g) (1 / 2) * W' (h * g⁻¹)) = fun _ => 0`. Use function extensionality and compare the values at `g`. Rewrite using `[h0 g.val (GL2LocalData.e2r (h * g⁻¹)) ?_]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨a00, a01, a10, a11, r0, r1⟩`. Establish `hg` using `(mem_K_iff hm g).2 ⟨a00, a01, a10, a11⟩`. Conclude with `hn ((rowOK_mul_inv_iff hm hg).1 ⟨r0, r1⟩)`. Rewrite using `[key h, hf]`. Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (W' : GL (Fin 2) F → ℂ) (m : ℕ), 1 ≤ m →
   (∀ g, ∀ u ∈ GLnLocal.congruenceSubgroup F 2 m, W' (g * u) = W' g) →
   ∀ Φ ∈ LFS.SB F, ∀ V : ℂ,

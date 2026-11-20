@@ -10,5 +10,8 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegBallMass
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StRegLelongMono
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StSmallSetBallCover
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint | exact GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint | (intros; apply GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.branch_proper_at_point_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.BranchProperAtPoint.Statement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint | exact GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint | (intros; apply GlobalTheory.CompanionTheory.Ar.Branch.branchProperAtPoint <;> assumption)

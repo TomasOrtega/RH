@@ -15,9 +15,17 @@ noncomputable section
 
 namespace GlobalTheory.TauLipschitz
 
+/- English proof (translation)
+The claim follows from `lt_min (by norm_num) ((GlobalTheory.CountSteps.steps I x 1 one_pos).2.2.2.2.2.2.2.2 hn).1`.
+-/
 theorem trunc_pos (I : AutInst) (hn : 1 ≤ I.n) (x : I.GA) : 0 < tau1 I x :=
   lt_min (by norm_num) ((GlobalTheory.CountSteps.steps I x 1 one_pos).2.2.2.2.2.2.2.2 hn).1
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.LeastVar.truncatedLeastLatticeSize_rightTranslate_lower_bound I hn x g hg`. Establish `hx` using `trunc_pos I hn x`. Establish `h2` using `Real.log_le_log (mul_pos hx (Real.exp_pos _)) h`. Rewrite `h2` using `[Real.log_mul hx.ne' (Real.exp_pos _).ne', Real.log_exp]`. Unfold `dSum`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_trunc_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈ I.Kset) :
     Real.log (tau1 I x) - dSum I g.1 / I.f ≤ Real.log (tau1 I (x * g)) := by
   have h := GlobalTheory.LeastVar.truncatedLeastLatticeSize_rightTranslate_lower_bound I hn x g hg
@@ -27,11 +35,21 @@ theorem log_trunc_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈ I
   unfold dSum
   linarith
 
+/- English proof (translation)
+Unfold `dSum`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.Count.Cartan.cartan_distances I.n (I.ε v)).2.1 (g.1 v) (g.1 v) hn).2.1`.
+-/
 theorem dSum_inv (I : AutInst) (hn : 1 ≤ I.n) (g : I.GA) : dSum I (g⁻¹).1 = dSum I g.1 := by
   unfold dSum
   refine Finset.sum_congr rfl fun v _ => ?_
   exact ((GlobalTheory.Count.Cartan.cartan_distances I.n (I.ε v)).2.1 (g.1 v) (g.1 v) hn).2.1
 
+/- English proof (translation)
+Introduce `I hn`. Use `⟨trunc_pos I hn, (GlobalTheory.LeastVar.least_variation_continuity I hn).2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨γ, h1, h2, h3⟩ x`. Unfold `tau1`. Rewrite using `[(GlobalTheory.PointEquivariance.equivariance I x γ a h1 h2 h3).2.2.1]`.
+
+Introduce `x g hg`. Take `⟨-, -, -, -, -, ⟨K, hK⟩, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Establish `hg' : (g⁻¹).2 ∈ I.Kset`. Rewrite `hg`, the goal using `[← hK]`. Conclude with `K.inv_mem hg`.
+
+Establish `h1` using `log_trunc_le I hn x g hg`. Establish `h2` using `log_trunc_le I hn (x * g) g⁻¹ hg'`. Rewrite `h2` using `[mul_inv_cancel_right, dSum_inv I hn]`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem tauLip : TauLip := by
   intro I hn
   refine ⟨trunc_pos I hn, (GlobalTheory.LeastVar.least_variation_continuity I hn).2.2, ?_, ?_⟩

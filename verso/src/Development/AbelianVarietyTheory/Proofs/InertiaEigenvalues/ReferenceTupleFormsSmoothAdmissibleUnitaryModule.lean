@@ -18,6 +18,35 @@ open MeasureTheory Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryT
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hH hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP _ hEx j`. Establish `hcore` using `(GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hEx).1`. Establish `hmod` using `hcore.models`. Establish `hθ` using `hmod.inf`. Establish `hν` using `hmod.νW j`.
+
+Establish `hHaar : (R.νW j).IsHaarMeasure` using `hν.1.1`. Establish `hFD` using `hν.2`. Establish `hSig : (Wc D j).SigOK` using `D.sp.W_sig _`. Establish `hSA : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`. Establish `hHA : HCAll D` using `fun V _ S θ M J χ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ 0 ∅).1`.
+
+Establish `hStd : GlobalTheory.Mem.R3.StdFrame Y.hF (Y.PW j)` using `Y.stdPsi.2 j`. Establish `hcc` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Take `⟨hlin, hherm, hpos⟩` from `GlobalTheory.FinTypesRows.minf_sesq (M := R.MW j (sg0 D A3.A)) (θ := R.θ) (R.νW j) (R.fdW j) (Y.PW j) hSA hSig hθ hHaar hFD`. Establish `hT` using `Y.tied.lift`. Establish `hLev` using `GlobalTheory.FinTypesRows.levOK_levS (Y.PW j) hStd (R.βW j) (R.datWp j (R.levL F.lv2 false (sg0 D A3.A)))`.
+
+Use `set c : ℝ := (∏ ρ, ((Mult.dimK _ _ (kapAt (Wc D j) (sg0 D A3.A) ρ) : ℚ) : ℝ)) * (RealDat.nP F.lv2 false)⁻¹ with hcdef`. Establish `hc : 0 < c` using `mul_pos (Finset.prod_pos fun ρ _ => by exact_mod_cast GlobalTheory.Mem.EasyInputs.dimOK D j (sg0 D A3.A) ρ) (inv_pos.2 (RealDat.nP_pos false))`. Establish `hSm` using `GlobalTheory.Mem.EasyInputs.smAll D (Wc D j) _ (R.MW j (sg0 D A3.A))`. Establish `hex : ∀ x ∈ principalLevelFrame.Minf R.θ (Y.PW j) (R.MW j (sg0 D A3.A)), ∀ y ∈ principalLevelFrame.Minf R.θ (Y.PW j) (R.MW j (sg0 D A3.A)), ∃ b, Mult.IsMultIP (R.MW j (sg0 D A3.A)) (R.νW j) (R.fdW j) x y b`. Introduce `x hx y hy`.
+
+Take `⟨N, -, hx', hy'⟩` from `GlobalTheory.FinTypesRows.exists_common (Y.PW j) hx hy`. Conclude with `hSA _ hSig _ R.θ _ _ _ _ _ hθ hHaar hFD x hx' y hy'`. Set `φ : D.what₂.Mj (j.1 + 1) →ₗ[ℂ] Mult.MMap (R.MW j (sg0 D A3.A))` to `(PiTensorProduct.lift : Mult.MMap (R.MW j (sg0 D A3.A)) ≃ₗ[ℂ] _).symm.toLinearMap ∘ₗ (Submodule.subtype ((toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj).Wc j)) ∘ₗ (Y.IL.jMj j).toLinearMap`. Establish `hφ : ∀ y, PiTensorProduct.lift (φ y) = (Y.IL.jMj j y).1`. Introduce `y`.
+
+Conclude with `LinearEquiv.apply_symm_apply _ _`. Establish `hgood : ∀ y, φ y ∈ Mult.goodPart R.θ (R.MW j (sg0 D A3.A)) (levS _ (R.βW j) (R.datWp j (R.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW j) (R.datWp j (R.levL F.lv2 false (sg0 D A3.A)))) (R.eWf j (sg0 D A3.A))`. Introduce `y`. Take `⟨a, ha, hay⟩` from `(Y.IL.jMj j y).2`. Establish `: φ y = a` using `by show PiTensorProduct.lift.symm (Y.IL.jMj j y).1 = a`.
+
+Rewrite using `[← hay]`. Conclude with `LinearEquiv.symm_apply_apply _ _`. Rewrite using `[this]`. Conclude with `ha`. Establish `hmem : ∀ y, φ y ∈ principalLevelFrame.Minf R.θ (Y.PW j) (R.MW j (sg0 D A3.A))` using `fun y => principalLevelFrame.mult_le_Minf hLev (Mult.goodPart_le _ _ _ _ _ (hgood y))`.
+
+Use `⟨{ A := Mult.MMap (R.MW j (sg0 D A3.A)) ρ := principalLevelFrame.actM (Y.PW j) (R.MW j (sg0 D A3.A)) C := principalLevelFrame.Minf R.θ (Y.PW j) (R.MW j (sg0 D A3.A)) B := fun x y => (c : ℂ) * Mult.ipM (R.MW j (sg0 D A3.A)) (R.νW j) (R.fdW j) x y lin := fun x hx y hy z hz c' => by` and prove the remaining obligations. Rewrite using `[hlin x hx y hy z hz c']`. Expand and normalize the polynomial expressions, which then agree. Use `herm := fun x hx y hy => by`. Rewrite using `[map_mul, Complex.conj_ofReal, ← hherm x hx y hy]`.
+
+Use `pos := fun x hx hx0 => by`. Rewrite using `[Complex.re_ofReal_mul]`. Conclude with `mul_pos hc (hpos x hx hx0)`. Use `stab := fun h x hx => GlobalTheory.FinTypesRows.minf_stable (Y.PW j) hcc h hx`. Use `inv := fun h x hx y hy => by`.
+
+Rewrite using `[GlobalTheory.T.schur_pairing_invariant_under_standard_group D (Wc D j) _ R.θ (R.MW j (sg0 D A3.A)) D.R.r (Y.PW j) (R.νW j) (R.fdW j) hSA hSig hθ hHaar hFD h x hx y hy]`. Use `smooth := fun x hx => GlobalTheory.FinTypesRows.minf_smooth (Y.PW j) hx`. Use `adm := fun N hN => GlobalTheory.FinTypesRows.minf_adm (Y.PW j) hHA hSig hθ (GlobalTheory.FinTypesRows.levN_open (Y.PW j) hStd) N hN`. Use `φ := φ`. Use `φ_mem := hmem`.
+
+Use `φ_inner := fun x y => by beta_reduce`. Rewrite using `[hT.mj j x y]`. Express the relevant statement in the definitionally equal form `(∏ τ, ((Mult.dimK _ _ (kapAt (Wc D j) (sg0 D A3.A) τ) : ℚ) : ℂ)) * Mult.ipM (R.MW j (sg0 D A3.A)) (ENNReal.ofReal (RealDat.nP F.lv2 false)⁻¹ • R.νW j) (R.fdW j) (φ x) (φ y) = _`. Rewrite using `[GlobalTheory.RowModCanon.ipM_smul_measure _ hSm _ _ (inv_nonneg.2 (RealDat.nP_pos false).le) _ _ (hex _ (hmem x) _ (hmem y)), hcdef]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `isot := fun σ y => by`. Rewrite using `[hT.isot j σ y, Y.prtWE j σ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hay⟩`.
+
+Establish `e : φ y = a` using `by show PiTensorProduct.lift.symm (Y.IL.jMj j y).1 = a`. Rewrite using `[← hay]`. Conclude with `LinearEquiv.symm_apply_apply _ _`. Rewrite using `[e]`. Conclude with `(Submodule.mem_inf.1 ha).2`.
+
+Introduce `h`. Conclude with `⟨φ y, Submodule.mem_inf.2 ⟨hgood y, h⟩, hφ y⟩ }, LinearMap.id, c, Function.injective_id, hc,`. Use the proof step `Submodule.map_id _, fun h x => rfl, fun x _ y _ => rfl, fun y => hφ y⟩`.
+-/
 theorem main : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G]
     (Pl0 I0 T : Type) (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks]
     [Algebra Ks D.what₂.LL] (R : Formalism.IndefR.Links.RealDat3 D A3 Ks) (F : Formalism.IndefR.Links.Face3 D A3)

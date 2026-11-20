@@ -12,6 +12,15 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Introduce `A B _ _ _ N r e Z y z`. Take `⟨W₀, hW₀, hzW₀, -⟩` from `exists_isAffineOpen_mem_and_subset (show z ∈ (⊤ : Z.Opens) from trivial)`. Set `W : Z.affineOpens` to `⟨W₀, hW₀⟩`. Take `⟨hfin, hflat⟩` from `GlobalTheory.T.affineHilbertSections_finite_flat A B r Z y W`. Take `⟨σ, f, hf, hbij⟩` from `GlobalTheory.T.exists_localizedModule_map_bijective_of_rankAtStalk_eq Γ(Z, W₀) (GlobalTheory.HilbAff.Sec A B y W) N r (fun j => GlobalTheory.HilbAff.gen A B y W (e j)) (GlobalTheory.T.affineHilbertSections_basis_span_eq_top A B N r e Z y W) (GlobalTheory.T.affineHilbertSections_r …`.
+
+Establish `hD` using `(GlobalTheory.T.affineHilbertCoordinateMap_basicOpen_bijective A B N r e σ Z y W f).2 hbij`. Establish `hzf : z ∈ Z.basicOpen f`. Establish `h1 : hW₀.primeIdealOf ⟨z, hzW₀⟩ ∈ hW₀.fromSpec ⁻¹ᵁ Z.basicOpen f`. Rewrite using `[hW₀.fromSpec_preimage_basicOpen]`. Conclude with `hf`.
+
+Establish `h2` using `hW₀.fromSpec_primeIdealOf ⟨z, hzW₀⟩`. Establish `h3 : hW₀.fromSpec (hW₀.primeIdealOf ⟨z, hzW₀⟩) ∈ Z.basicOpen f` using `h1`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Use `⟨σ, Z.basicOpen f, hzf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.HilbAff.basic_iff]`. Introduce `W'`. Apply `GlobalTheory.T.affineHilbertCoordinateMap_restrict_bijective` to reduce the goal to its premises. Conclude with `GlobalTheory.T.hilbertCoordinateMap_bijective_of_le_affine A B N r e σ Z y ⟨Z.basicOpen f, hW₀.basicOpen f⟩ ⟨_, W'.2.image_of_isOpenImmersion (Z.basicOpen f).ι⟩ (Scheme.Opens.ι_image_le _ _) hD`.
+-/
 theorem exists_basic_nhd : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (N r : ℕ) (e : Module.Basis (Fin N) A B) (Z : Scheme.{0}) (y : (GlobalTheory.HilbAff.functor A B r).obj (op Z)) (z : Z), ∃ (σ : Fin r ↪ Fin N) (U : Z.Opens), z ∈ U ∧ GlobalTheory.HilbAff.Basic A B e σ ((GlobalTheory.HilbAff.functor A B r).map U.ι.op y) := by
   intro A B _ _ _ N r e Z y z
   obtain ⟨W₀, hW₀, hzW₀, -⟩ := exists_isAffineOpen_mem_and_subset (show z ∈ (⊤ : Z.Opens) from trivial)

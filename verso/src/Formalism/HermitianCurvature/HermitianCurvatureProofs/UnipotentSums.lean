@@ -12,6 +12,11 @@ open C2x5 C2x6 FlagSpanVanishing HermitianXiVector
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective (eI k r) ?_ (fun c => g (eI k r c)) g ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `a b h`. Establish `h1 : (eI k r a).val = (eI k r b).val` using `congrArg Fin.val h`. Conclude with `Fin.ext h1`.
+
+Introduce `p hp`. Apply `hg` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Conclude with `hp ⟨⟨p.val, by omega⟩, Fin.ext rfl⟩`.
+-/
 lemma sum_X (g : Fin (2 * r + k + 1) → ℂ) (hg : ∀ p : Fin (2 * r + k + 1), r ≤ p.val → g p = 0) :
     ∑ p, g p = ∑ c : Fin r, g (eI k r c) := by
   symm
@@ -24,12 +29,18 @@ lemma sum_X (g : Fin (2 * r + k + 1) → ℂ) (hg : ∀ p : Fin (2 * r + k + 1),
     by_contra h
     exact hp ⟨⟨p.val, by omega⟩, Fin.ext rfl⟩
 
+/- English proof (translation)
+Unfold `GBasic.sig`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `absurd (Or.inl c.isLt) h`.
+-/
 lemma sig_eI (c : Fin r) : GBasic.sig k r (eI k r c) = esI k r c := by
   unfold GBasic.sig
   split_ifs with h
   · rfl
   · exact absurd (Or.inl c.isLt) h
 
+/- English proof (translation)
+Establish `hc` using `c.isLt`. Unfold `GBasic.sig`. Use `split_ifs with h`. Conclude with `Fin.ext (by show 2 * r + k - (2 * r + k - c.val) = c.val; omega)`. Conclude with `absurd (Or.inr (by show r + k < 2 * r + k - c.val; omega)) h`.
+-/
 lemma sig_esI (c : Fin r) : GBasic.sig k r (esI k r c) = eI k r c := by
   have hc := c.isLt
   unfold GBasic.sig
@@ -37,6 +48,13 @@ lemma sig_esI (c : Fin r) : GBasic.sig k r (esI k r c) = eI k r c := by
   · exact Fin.ext (by show 2 * r + k - (2 * r + k - c.val) = c.val; omega)
   · exact absurd (Or.inr (by show r + k < 2 * r + k - c.val; omega)) h
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective (esI k r) ?_ (fun c => g (esI k r c)) g ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `a b h`. Establish `h1 : 2 * r + k - a.val = 2 * r + k - b.val` using `congrArg Fin.val h`. Use `a.isLt` as an intermediate fact.
+
+Use `b.isLt` as an intermediate fact. Conclude with `Fin.ext (by omega)`. Introduce `p hp`. Apply `hg` to reduce the goal to its premises. Assume the negation of the conclusion as `h`.
+
+Establish `hp2` using `p.isLt`. Conclude with `hp ⟨⟨2 * r + k - p.val, by omega⟩, Fin.ext (by show 2 * r + k - (2 * r + k - p.val) = p.val; omega)⟩`.
+-/
 lemma sum_Xs (g : Fin (2 * r + k + 1) → ℂ) (hg : ∀ p : Fin (2 * r + k + 1), p.val ≤ r + k → g p = 0) :
     ∑ p, g p = ∑ c : Fin r, g (esI k r c) := by
   symm
@@ -52,16 +70,27 @@ lemma sum_Xs (g : Fin (2 * r + k + 1) → ℂ) (hg : ∀ p : Fin (2 * r + k + 1)
     have hp2 := p.isLt
     exact hp ⟨⟨2 * r + k - p.val, by omega⟩, Fin.ext (by show 2 * r + k - (2 * r + k - p.val) = p.val; omega)⟩
 
+/- English proof (translation)
+Unfold `GBasic.sgn`. Rewrite using `[if_neg (show ¬ p.val = r + k by omega)]`.
+-/
 lemma sgn_X (p : Fin (2 * r + k + 1)) (hp : p.val < r ∨ r + k < p.val) : GBasic.sgn k r p = 1 := by
   unfold GBasic.sgn
   rw [if_neg (show ¬ p.val = r + k by omega)]
 
+/- English proof (translation)
+Simplify using `only [C2.mX]`. Rewrite using `[dif_pos (show (eI k r c).val < r from c.isLt)]`. Both sides reduce to the same expression.
+-/
 lemma mX_apply_X (vX : Matrix (Fin r) (Fin r) ℂ) (c : Fin r) (j : Fin (2 * r + k + 1)) :
     C2.mX k r vX (eI k r c) j = if hj : j.val < r then vX c ⟨j.val, hj⟩ else 0 := by
   simp only [C2.mX]
   rw [dif_pos (show (eI k r c).val < r from c.isLt)]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `c.isLt`. Establish `h1 : ¬ (esI k r c).val < r` using `by show ¬ 2 * r + k - c.val < r; omega`. Establish `h2 : r + k < (esI k r c).val` using `by show r + k < 2 * r + k - c.val; omega`. Simplify using `only [C2.mX]`. Rewrite using `[dif_neg h1, dif_pos h2]`.
+
+Distinguish the cases in `hj : r + k < j.val`. Rewrite using `[dif_pos hj, dif_pos hj]`. Establish `e : (⟨2 * r + k - (esI k r c).val, by omega⟩ : Fin r) = c` using `Fin.ext (by show 2 * r + k - (2 * r + k - c.val) = c.val; omega)`. Rewrite using `[e]`. Rewrite using `[dif_neg hj, dif_neg hj]`.
+-/
 lemma mX_apply_Xs (vX : Matrix (Fin r) (Fin r) ℂ) (c : Fin r) (j : Fin (2 * r + k + 1)) :
     C2.mX k r vX (esI k r c) j = if hj : r + k < j.val then (vXᴴ)⁻¹ c ⟨2 * r + k - j.val, by omega⟩ else 0 := by
   have hc := c.isLt
@@ -76,11 +105,21 @@ lemma mX_apply_Xs (vX : Matrix (Fin r) (Fin r) ℂ) (c : Fin r) (j : Fin (2 * r 
     rw [e]
   · rw [dif_neg hj, dif_neg hj]
 
+/- English proof (translation)
+Simplify using `only [C2.mX]`. Rewrite using `[dif_neg (show ¬ i.val < r by omega), dif_neg (show ¬ r + k < i.val by omega)]`.
+-/
 lemma unipotent_apply_middle_row (vX : Matrix (Fin r) (Fin r) ℂ) (i j : Fin (2 * r + k + 1)) (hi1 : r ≤ i.val) (hi2 : i.val ≤ r + k) :
     C2.mX k r vX i j = if i = j then 1 else 0 := by
   simp only [C2.mX]
   rw [dif_neg (show ¬ i.val < r by omega), dif_neg (show ¬ r + k < i.val by omega)]
 
+/- English proof (translation)
+Establish `hc` using `c.isLt`. Simplify using `only [C2.mX]`. Distinguish the cases in `h1 : p.val < r`. Rewrite using `[dif_pos h1, dif_pos h1, dif_pos (show (eI k r c).val < r from hc)]`. Both sides reduce to the same expression.
+
+Rewrite using `[dif_neg h1, dif_neg h1]`. Distinguish the cases in `h2 : r + k < p.val`. Rewrite using `[dif_pos h2, dif_neg (show ¬ r + k < (eI k r c).val from by show ¬ r + k < c.val; omega)]`. Rewrite using `[dif_neg h2, if_neg]`. Introduce `h`.
+
+Apply `h1` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `hc`.
+-/
 lemma mX_col_X (vX : Matrix (Fin r) (Fin r) ℂ) (p : Fin (2 * r + k + 1)) (c : Fin r) :
     C2.mX k r vX p (eI k r c) = if hp : p.val < r then vX ⟨p.val, hp⟩ c else 0 := by
   have hc := c.isLt
@@ -97,6 +136,11 @@ lemma mX_col_X (vX : Matrix (Fin r) (Fin r) ℂ) (p : Fin (2 * r + k + 1)) (c : 
       rw [h]
       exact hc
 
+/- English proof (translation)
+Establish `hne : ∀ h : p.val < r ∨ r + k < p.val, p ≠ j` using `fun h he => by rw [he] at h; omega`. Simplify using `only [C2.mX]`. Distinguish the cases in `h1 : p.val < r`. Rewrite using `[dif_pos h1, dif_neg (show ¬ j.val < r by omega), if_neg (hne (Or.inl h1))]`. Distinguish the cases in `h2 : r + k < p.val`.
+
+Rewrite using `[dif_neg h1, dif_pos h2, dif_neg (show ¬ r + k < j.val by omega), if_neg (hne (Or.inr h2))]`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+-/
 lemma unipotent_apply_middle_column (vX : Matrix (Fin r) (Fin r) ℂ) (p j : Fin (2 * r + k + 1)) (hj1 : r ≤ j.val) (hj2 : j.val ≤ r + k) :
     C2.mX k r vX p j = if p = j then 1 else 0 := by
   have hne : ∀ h : p.val < r ∨ r + k < p.val, p ≠ j := fun h he => by rw [he] at h; omega
@@ -115,6 +159,13 @@ open C2x5 C2x6 FlagSpanVanishing HermitianXiVector
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `h1 : ¬ (esI k r a).val < r` using `by show ¬ 2 * r + k - a.val < r; omega`. Establish `h2 : r + k < (esI k r a).val` using `by show r + k < 2 * r + k - a.val; omega`. Simplify using `only [C2.mX]`. Distinguish the cases in `hp1 : p.val < r`.
+
+Rewrite using `[dif_pos hp1, dif_neg h1, dif_neg (show ¬ r + k < p.val by omega)]`. Distinguish the cases in `hp2 : r + k < p.val`. Rewrite using `[dif_neg hp1, dif_pos hp2, dif_pos h2, dif_pos hp2]`. Conclude with `congrArg _ (Fin.ext (by show 2 * r + k - (2 * r + k - a.val) = a.val; omega))`. Rewrite using `[dif_neg hp1, dif_neg hp2, dif_neg hp2, if_neg]`.
+
+Introduce `h`. Apply `hp2` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `h2`.
+-/
 lemma mX_col_Xs (vX : Matrix (Fin r) (Fin r) ℂ) (p : Fin (2 * r + k + 1)) (a : Fin r) :
     C2.mX k r vX p (esI k r a) = if hp : r + k < p.val then (vXᴴ)⁻¹ ⟨2 * r + k - p.val, by omega⟩ a else 0 := by
   have ha := a.isLt
@@ -132,6 +183,33 @@ lemma mX_col_Xs (vX : Matrix (Fin r) (Fin r) ℂ) (p : Fin (2 * r + k + 1)) (a :
       rw [h]
       exact h2
 
+/- English proof (translation)
+Establish `hu' : IsUnit vXᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hu.star`. Establish `hs1 : ∀ c : Fin r, GBasic.sgn k r (eI k r c) = 1` using `fun c => sgn_X _ (Or.inl c.isLt)`. Establish `hs2 : ∀ c : Fin r, GBasic.sgn k r (esI k r c) = 1` using `fun c => sgn_X _ (Or.inr (by have := c.isLt; show r + k < 2 * r + k - c.val; omega))`. Use `show (C2.mX k r vX)ᴴ * Hpk k r * C2.mX k r vX = Hpk k r`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Hpk_mul_apply, Matrix.conjTranspose_apply]`. Establish `hilt` using `i.isLt`. Establish `hjlt` using `j.isLt`. Distinguish the cases in `hi1 : i.val < r`.
+
+Take `⟨a, rfl⟩ : ∃ a : Fin r, eI k r a = i` from `⟨⟨i.val, hi1⟩, Fin.ext rfl⟩`. Establish `ha` using `a.isLt`. Establish `hea : (eI k r a).val = a.val` using `rfl`. Rewrite using `[sum_X _ (fun p hp => by`. Rewrite using `[mX_col_X, dif_neg (show ¬ p.val < r by omega), star_zero, zero_mul])]`.
+
+Establish `hcol : ∀ c : Fin r, C2.mX k r vX (eI k r c) (eI k r a) = vX c a` using `fun c => by`. Rewrite using `[mX_col_X, dif_pos (show (eI k r c).val < r from c.isLt)]`. Both sides reduce to the same expression. Simplify using `only [sig_eI, hs1, one_mul, hcol, mX_apply_Xs]`. Distinguish the cases in `hj : r + k < j.val`.
+
+Simplify using `only [dif_pos hj]`. Establish `key : ∑ c : Fin r, star (vX c a) * (vXᴴ)⁻¹ c ⟨2 * r + k - j.val, by omega⟩ = (vXᴴ * (vXᴴ)⁻¹) a ⟨2 * r + k - j.val, by omega⟩`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`. Rewrite using `[key, Matrix.mul_nonsing_inv _ hu', Matrix.one_apply]`.
+
+Simplify using `only [Hpk, Fin.ext_iff]`. Use `show _ = if a.val < r ∧ a.val + j.val = 2 * r + k then (1 : ℂ) else _`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega`. Simplify using `only [dif_neg hj, mul_zero, Finset.sum_const_zero]`. Simplify using `only [Hpk]`.
+
+Use `show (0 : ℂ) = if a.val < r ∧ a.val + j.val = 2 * r + k then (1 : ℂ) else _`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega`. Distinguish the cases in `hi2 : r + k < i.val`. Take `⟨a, rfl⟩ : ∃ a : Fin r, esI k r a = i` from `⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by show 2 * r + k - (2 * r + k - i.val) = i.val; omega)⟩`. Establish `ha` using `a.isLt`.
+
+Establish `hea : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Rewrite using `[sum_Xs _ (fun p hp => by`. Rewrite using `[mX_col_Xs, dif_neg (show ¬ r + k < p.val by omega), star_zero, zero_mul])]`. Establish `hcol : ∀ c : Fin r, C2.mX k r vX (esI k r c) (esI k r a) = (vXᴴ)⁻¹ c a` using `fun c => by`. Establish `hc` using `c.isLt`.
+
+Rewrite using `[mX_col_Xs, dif_pos (show r + k < (esI k r c).val from by show r + k < 2 * r + k - c.val; omega)]`. Establish `e : (⟨2 * r + k - (esI k r c).val, by show 2 * r + k - (2 * r + k - c.val) < r; omega⟩ : Fin r) = c` using `Fin.ext (by show 2 * r + k - (2 * r + k - c.val) = c.val; omega)`. Rewrite using `[e]`. Simplify using `only [sig_esI, hs2, one_mul, hcol, mX_apply_X]`. Distinguish the cases in `hj : j.val < r`.
+
+Simplify using `only [dif_pos hj]`. Establish `key : ∑ c : Fin r, star ((vXᴴ)⁻¹ c a) * vX c ⟨j.val, hj⟩ = (((vXᴴ)⁻¹)ᴴ * vX) a ⟨j.val, hj⟩`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply]`. Rewrite using `[key, ← Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.nonsing_inv_mul _ hu, Matrix.one_apply]`.
+
+Simplify using `only [Hpk, Fin.ext_iff]`. Use `show _ = if 2 * r + k - a.val < r ∧ 2 * r + k - a.val + j.val = 2 * r + k then (1 : ℂ) else _`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega`. Simplify using `only [dif_neg hj, mul_zero, Finset.sum_const_zero]`. Simplify using `only [Hpk]`.
+
+Use `show (0 : ℂ) = if 2 * r + k - a.val < r ∧ 2 * r + k - a.val + j.val = 2 * r + k then (1 : ℂ) else _`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega`. Rewrite using `[Finset.sum_eq_single i (fun p _ hp => by`. Rewrite using `[unipotent_apply_middle_column vX p i (by omega) (by omega), if_neg hp, star_zero, zero_mul])`. Use the proof step `(fun h => absurd (Finset.mem_univ i) h)]`.
+
+Rewrite using `[unipotent_apply_middle_column vX i i (by omega) (by omega), if_pos rfl, star_one, one_mul, FlagSpanVanishing.sig_fixes_middle_block i ⟨by omega, by omega⟩, unipotent_apply_middle_row vX i j (by omega) (by omega)]`. Simplify using `only [GBasic.sgn, Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega | simp`.
+-/
 lemma mX_uh (vX : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit vX.det) : C2.mX k r vX ∈ UH (Hpk k r) := by
   have hu' : IsUnit vXᴴ.det := by rw [Matrix.det_conjTranspose]; exact hu.star
   have hs1 : ∀ c : Fin r, GBasic.sgn k r (eI k r c) = 1 := fun c => sgn_X _ (Or.inl c.isLt)
@@ -204,6 +282,17 @@ lemma mX_uh (vX : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit vX.det) : C2.mX k r v
       simp only [GBasic.sgn, Hpk, Fin.ext_iff]
       split_ifs <;> first | rfl | (exfalso; omega) | omega | simp
 
+/- English proof (translation)
+Take `⟨hv1, hv2⟩` from `hv`. Establish `hdet : vX.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (by intro i j hij; exact hv1 i j hij)]`. Simplify using `[hv2]`. Use `⟨mX_uh vX (by rw [hdet]; exact isUnit_one), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a i hai`. Rewrite using `[mX_col_X]`. Distinguish the cases in `hi : i.val < r`. Rewrite using `[dif_pos hi]`. Distinguish the cases in `he : i = eI k r a`.
+
+Rewrite using `[if_pos he]`. Substitute `he` using the available equality. Conclude with `hv2 a`. Rewrite using `[if_neg he]`. Apply `hv1` to reduce the goal to its premises.
+
+Use `show a.val < i.val`. Establish `: i.val ≠ a.val` using `fun h => he (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hi, if_neg]`. Introduce `h`.
+
+Apply `hi` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `a.isLt`. Introduce `i j hj1 hj2 _`. Conclude with `unipotent_apply_middle_column vX i j hj1 hj2`.
+-/
 lemma mX_mem (vX : Matrix (Fin r) (Fin r) ℂ) (hv : vX ∈ C2.UTset r) : C2.mX k r vX ∈ Nset k r := by
   obtain ⟨hv1, hv2⟩ := hv
   have hdet : vX.det = 1 := by

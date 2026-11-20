@@ -26,6 +26,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Tw.Main
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo MeasureTheory
 
+/- English proof (translation)
+Establish `hbad : ∀ W ∈ S, {p : ℕ | p.Prime ∧ ∃ a b : MRing ι ⧸ W, b ≠ 0 ∧ a ^ 2 + (p : MRing ι ⧸ W) * b ^ 2 = 0}.Finite`. Introduce `W hW`. Take `⟨hp, hh⟩` from `h W hW`. Use `haveI := hp`. Use `haveI : IsDomain (MRing ι ⧸ W) := Ideal.Quotient.isDomain W`.
+
+Use `haveI : CharZero (MRing ι ⧸ W) := by`. Use `⟨fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h0 : (C (((a : ℤ) - (b : ℤ))) : MRing ι) ∈ W`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `hab` using `[sub_eq_zero]`.
+
+Establish `h1 : ((a : ℤ) - (b : ℤ)) ∈ W.comap (C : ℤ →+* MRing ι)` using `h0`. Rewrite `h1` using `[show W.comap (C : ℤ →+* MRing ι) = ⊥ from hh, Ideal.mem_bot]`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.T.finite_primes_sum_squares_zero _ _ (Ideal.Quotient.mk W) Ideal.Quotient.mk_surjective`. Establish `hfin : (⋃ W ∈ S, {p : ℕ | p.Prime ∧ ∃ a b : MRing ι ⧸ W, b ≠ 0 ∧ a ^ 2 + (p : MRing ι ⧸ W) * b ^ 2 = 0}).Finite` using `hS.biUnion hbad`.
+
+Take `⟨p, hp, hpn⟩` from `(Nat.infinite_setOf_prime.diff hfin).nonempty`. Use `⟨p, hp, fun W hW a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hb`. Apply `hpn` to reduce the goal to its premises. Use `Set.mem_biUnion hW ⟨hp, Ideal.Quotient.mk W a, Ideal.Quotient.mk W b, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Use `Ideal.Quotient.eq_zero_iff_mem.mpr hab` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_prime_noRoot {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (S : Set (Ideal (MRing ι))) (hS : S.Finite) (h : ∀ W ∈ S, W.IsPrime ∧ IsHorizontal W) :
     ∃ p : ℕ, p.Prime ∧ ∀ W ∈ S, NoRoot p W := by
@@ -55,6 +66,11 @@ theorem exists_prime_noRoot {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   · have := Ideal.Quotient.eq_zero_iff_mem.mpr hab
     simpa using this
 
+/- English proof (translation)
+Take `⟨hK, hM, hH, hd⟩` from `hQ`. Use `⟨⟨none⟩, ⟨GlobalTheory.T.twist_isPrime_of_isPrime_of_noRoot K ι p Q hM.1 hR, GlobalTheory.T.twist_isMultiHomogIdeal K ι p Q hM.2.1, isRelevant_twist p hM.1.ne_top hM.2.2⟩, isHorizontal_twist p hH, ?_⟩` and prove the remaining obligations. Use `haveI := hM.1`. Rewrite using `[GlobalTheory.T.ringKrullDim_twist_succ K ι p Q hM.1, hd, Fintype.card_option, ← add_assoc]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem isArithVar_twist {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {p : ℕ}
     {Q : Ideal (MRing ι)} {d : ℕ} (hQ : IsArithVar Q d) (hR : NoRoot p Q) :
     IsArithVar (twist p Q) d := by
@@ -66,16 +82,29 @@ theorem isArithVar_twist {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `h` and use `hs (by rw [← comap_inc_twist p Q]; exact h)`.
+-/
 theorem inc_notMem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {p : ℕ}
     {Q : Ideal (MRing ι)} {s : MRing ι} (hs : s ∉ Q) : inc s ∉ twist p Q := fun h =>
   hs (by rw [← comap_inc_twist p Q]; exact h)
 
+/- English proof (translation)
+Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Take `rfl : k = k'` from `Option.some_injective _ (congrArg Sigma.fst h)`. Establish `: i = i'` using `eq_of_heq (Sigma.mk.inj h).2`. Rewrite using `[this]`.
+-/
 theorem oldIdx_injective {K : Type} {ι : K → Type} : Function.Injective (oldIdx (ι := ι)) := by
   rintro ⟨k, i⟩ ⟨k', i'⟩ h
   obtain rfl : k = k' := Option.some_injective _ (congrArg Sigma.fst h)
   have : i = i' := eq_of_heq (Sigma.mk.inj h).2
   rw [this]
 
+/- English proof (translation)
+Introduce `m hm o`. Simplify using `only [inc, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hm`. Rewrite `hm` using `[MvPolynomial.support_rename_of_injective oldIdx_injective]`. Take `⟨m0, hm0, rfl⟩` from `Finset.mem_image.mp hm`. Consider the cases of `o with`.
+
+Consider the case `none => show ∑ i, (Finsupp.mapDomain oldIdx m0) ⟨none, i⟩ = 0`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_notin_range]`. Introduce and unpack `⟨q, hq⟩`. Consider the cases of `hq`.
+
+Consider the case `some k => show ∑ i, (Finsupp.mapDomain oldIdx m0) ⟨some k, i⟩ = a k`. Rewrite using `[← hs m0 hm0 k]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_apply (f := oldIdx (ι := ι)) oldIdx_injective m0 ⟨k, i⟩`.
+-/
 theorem isMultiHomog_inc {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a) :
     IsMultiHomog (inc s) (fun o => match o with | none => 0 | some k => a k) := by
@@ -97,6 +126,9 @@ theorem isMultiHomog_inc {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
     refine Finset.sum_congr rfl fun i _ => ?_
     exact Finsupp.mapDomain_apply (f := oldIdx (ι := ι)) oldIdx_injective m0 ⟨k, i⟩
 
+/- English proof (translation)
+Take `⟨a, ha, hh, hn⟩` from `hs`. Use `⟨fun o => match o with | none => 0 | some k => a k, fun o => ?_, isMultiHomog_inc hh, inc_notMem hn⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => rfl`. Consider the case `some k => exact ha k`.
+-/
 theorem isSectionOn_twist {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {p : ℕ}
     {Q : Ideal (MRing ι)} {A : HermLine ι} {s : MRing ι} (hs : IsSectionOn Q A s) :
     IsSectionOn (twist p Q) (twLine p A) (inc s) := by
@@ -106,6 +138,9 @@ theorem isSectionOn_twist {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   | none => rfl
   | some k => exact ha k
 
+/- English proof (translation)
+Introduce `w w' h`. Use function extensionality and compare the values at `j`. Use `congrFun h (fun o => match o with | none => (1 : Fin 2) | some k => j k)` as an intermediate fact. Simplify `this` using `[embL, h1]`.
+-/
 theorem embL_inj {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {v : Fin 2 → ℂ}
     (h1 : v 1 = 1) : Function.Injective (embL v : (((k : K) → ι k) → ℂ) → _) := by
   intro w w' h
@@ -113,6 +148,31 @@ theorem embL_inj {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)
   have := congrFun h (fun o => match o with | none => (1 : Fin 2) | some k => j k)
   simpa [embL, h1] using this
 
+/- English proof (translation)
+Establish `hQ' : IsArithVar (twist p Q) (e + 1)` using `isArithVar_twist hQ hR`. Establish `hKne : Nonempty K` using `hQ.1`. Establish `hF` using `fun B : HermLine ι => GlobalTheory.T.twLine_smooth_conjInvariant_glue K ι p B hp`. Establish `hL' : ∀ j, IsSmoothHerm (twLine p (L j))` using `fun j => (hF _).1 (hL j)`. Establish `hA' : IsSmoothHerm (twLine p A)` using `(hF _).1 hA`.
+
+Establish `hLc : ∀ j, IsSmoothHerm (conjLine (L j))` using `fun j => (hF _).2.1 (hL j)`. Establish `hAc : IsSmoothHerm (conjLine A)` using `(hF _).2.1 hA`. Establish `hs' : IsSectionOn (twist p Q) (twLine p A) (inc s)` using `isSectionOn_twist hs`. Establish `hsc : IsSectionOn Q (conjLine A) s` using `hs`. Take `⟨Ψ, hΨ⟩` from `goodProjExists (Option K) (Tb ι) (twist p Q) e hQ'`.
+
+Establish `good : ∀ v : Fin 2 → ℂ, v 0 ^ 2 + (p : ℂ) * v 1 ^ 2 = 0 → v 1 ≠ 0 → IsGoodProj Q (pj v Ψ)`. Introduce `v hv hv1 z hz`. Use `hΨ _ (glue_mem_mcPts hz hv hv1)` as an intermediate fact. Rewrite `this` using `[segre_glue]`. Conclude with `this`.
+
+Establish `v1p : vPlus p 1 = 1` using `by simp [vPlus]`. Establish `v1m : vMinus p 1 = 1` using `by simp [vMinus]`. Establish `gp` using `good _ (vPlus_root p) (by rw [v1p]; exact one_ne_zero)`. Establish `gm` using `good _ (vMinus_root p) (by rw [v1m]; exact one_ne_zero)`. Establish `atOf : ∀ {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {P : Ideal (MRing ι')} {Φ : (((k : K') → ι' k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {M : Fin e → HermLine ι'} {B : HermLine ι'} {t : MRing ι'}, IsArithVar P (e + 1) → IsGoodProj P Φ → (∀ j, IsSmoothHerm (M j)) → Is …`.
+
+Introduce `K' _ ι' _ P Φ M B t h1 h2 h3 h4 h5`. Establish `hex : ∃ Φ : (((k : K') → ι' k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsGoodProj P Φ` using `⟨Φ, h2⟩`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex]`. Conclude with `hD K' ι' P e _ Φ M B t h1 hex.choose_spec h2 h3 h4 h5`.
+
+Rewrite using `[atOf hQ' hΨ hL' hA' hs', atOf hQ gp hL hA hs, atOf hQ gm hLc hAc hsc]`. Establish `sp` using `GlobalTheory.T.twist_height_integral_decomposition K ι p Q e Ψ (fun j => twLine p (L j)) (twLine p A) L A s (vPlus p) hp hQ hQ' hΨ hL' hA' hs' (Or.inl rfl) (fun j z hz => (hF _).2.2.2.1 z hz.1) (fun z hz => (hF _).2.2.2.1 z hz.1)`. Establish `sm` using `GlobalTheory.T.twist_height_integral_decomposition K ι p Q e Ψ (fun j => twLine p (L j)) (twLine p A) (fun j => conjLine (L j)) (conjLine A) s (vMinus p) hp hQ hQ' hΨ hL' hA' hs' (Or.inr rfl) (fun j z hz => (hF _).2.2.2.2 z hz.1) (fun z hz => (hF _).2.2.2.2 z hz.1)`. Establish `hae : ∀ᵐ y, (∑ᶠ w ∈ fibre (twist p Q) Ψ y, sheetDensity (twist p Q) Ψ (pot fun j => twLine p (L j)) (logNorm (twLine p A) (inc s)) y w) = (∑ᶠ w ∈ fibre Q (pj (vPlus p) Ψ) y, sheetDensity Q (pj (vPlus p) Ψ) (pot L) (logNorm A s) y w) + ∑ᶠ w ∈ fibre Q (pj (vMinus p) Ψ) y, sheetDens …` using `by filter_upwards [sp, sm] with y hpl hmi`. Establish `fpl` using `fibreFinite K ι Q e _ hQ gp y`.
+
+Establish `fmi` using `fibreFinite K ι Q e _ hQ gm y`. Establish `hdis : Disjoint (embL (vPlus p) '' fibre Q (pj (vPlus p) Ψ) y) (embL (vMinus p) '' fibre Q (pj (vMinus p) Ψ) y)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨w, hw, rfl⟩ ⟨w', hw', he⟩`. Establish `hc : cRoot p ≠ 0`.
+
+Simplify using `[cRoot, Real.sqrt_eq_zero', hp, Nat.pos_of_ne_zero hp]`. Establish `hww : w' = w`. Use function extensionality and compare the values at `j`. Use `congrFun he (fun o => match o with | none => (1 : Fin 2) | some k => j k)` as an intermediate fact. Simplify `this` using `[embL, v1p, v1m]`.
+
+Substitute `hww` using the available equality. Establish `hz : w' = 0`. Use function extensionality and compare the values at `j`. Use `congrFun he (fun o => match o with | none => (0 : Fin 2) | some k => j k)` as an intermediate fact. Simplify using `only [embL, vPlus, vMinus, LinearMap.coe_mk, AddHom.coe_mk] at this`.
+
+Establish `h2 : w' j * (2 * cRoot p) = 0`. Establish `h3 : w' j * (-cRoot p) = w' j * cRoot p` using `by simpa using this`. Take the linear combination `-h3`. Simplify `h2` using `[hc]`. Take `⟨z, -, -, h⟩` from `hw`.
+
+Rewrite `h` using `[hz, map_zero]`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Rewrite using `[GlobalTheory.T.fibre_twist_eq_union_embeddings K ι p Q e Ψ y hp hKne hQ.2.1.2.1, finsum_mem_union hdis (fpl.image _) (fmi.image _), finsum_mem_image (embL_inj v1p).injOn, finsum_mem_image (embL_inj v1m).injOn]`. Simplify using `only [hpl, hmi]`.
+
+Unfold `ptsIntegralAt`. Rewrite using `[MeasureTheory.integral_congr_ae hae, MeasureTheory.integral_add (hI K ι Q e _ L A s hQ gp hL hA hs) (hI K ι Q e _ _ _ s hQ gm hLc hAc hsc)]`.
+-/
 theorem twist_integral (hI : PtsIntegrableStatement) (hD : PtsIndepStatement)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {p : ℕ} (hp : p ≠ 0)
     {Q : Ideal (MRing ι)} {e : ℕ} {L : Fin e → HermLine ι} {A : HermLine ι} {s : MRing ι}
@@ -193,6 +253,9 @@ theorem twist_integral (hI : PtsIntegrableStatement) (hD : PtsIndepStatement)
   rw [MeasureTheory.integral_congr_ae hae, MeasureTheory.integral_add
     (hI K ι Q e _ L A s hQ gp hL hA hs) (hI K ι Q e _ _ _ s hQ gm hLc hAc hsc)]
 
+/- English proof (translation)
+Rewrite using `[twist_integral hI hD hp hQ hR hL hA hs, GlobalTheory.T.ptsIntegral_conjLine_eq hD K ι Q e L A s hQ hL hA hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twist_double (hI : PtsIntegrableStatement) (hD : PtsIndepStatement)
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {p : ℕ} (hp : p ≠ 0)
     {Q : Ideal (MRing ι)} {e : ℕ} {L : Fin e → HermLine ι} {A : HermLine ι} {s : MRing ι}
@@ -203,6 +266,9 @@ theorem twist_double (hI : PtsIntegrableStatement) (hD : PtsIndepStatement)
   rw [twist_integral hI hD hp hQ hR hL hA hs, GlobalTheory.T.ptsIntegral_conjLine_eq hD K ι Q e L A s hQ hL hA hs]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> rfl`.
+-/
 theorem pot_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     (B : HermLine ι) (L : Fin e → HermLine ι) :
     pot (Fin.cons B L : Fin (e + 1) → HermLine ι) =
@@ -210,6 +276,9 @@ theorem pot_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)
   funext j
   refine Fin.cases ?_ (fun i => ?_) j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> rfl`.
+-/
 theorem tw_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ} (p : ℕ)
     (B : HermLine ι) (L : Fin e → HermLine ι) :
     (fun j => twLine p ((Fin.cons B L : Fin (e + 1) → HermLine ι) j)) =
@@ -217,11 +286,19 @@ theorem tw_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   funext j
   refine Fin.cases ?_ (fun i => ?_) j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[logNorm, invLine]`.
+-/
 theorem logNorm_inv_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (B : HermLine ι) : logNorm (invLine B) 1 = fun z => Real.log (B.h z) := by
   funext z
   simp [logNorm, invLine]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hh : (twLine p (invLine B)).h z = ((twLine p B).h z)⁻¹` using `by show twH p (invLine B) z = (twH p B z)⁻¹`. Unfold `twH`. Use `split_ifs with h`. Rewrite using `[← Real.exp_neg]`.
+
+Use `congr 1`. Simplify using `only [invLine, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `[logNorm, hh]`.
+-/
 theorem logNorm_tw_inv_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (p : ℕ)
     (B : HermLine ι) : logNorm (twLine p (invLine B)) (inc 1) = fun z => Real.log ((twLine p B).h z) := by
   classical
@@ -237,6 +314,11 @@ theorem logNorm_tw_inv_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
     · simp
   simp [logNorm, hh]
 
+/- English proof (translation)
+Use `⟨0, fun k => by simp [invLine, hB], fun m hm k => ?_, fun h => hQ ((Ideal.eq_top_iff_one _).mpr h)⟩` and prove the remaining obligations. Establish `: m = 0`. Assume the negation of the conclusion as `h0`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one, if_neg (Ne.symm h0)]`. Conclude with `hm rfl`.
+
+Simplify using `[this]`.
+-/
 theorem isSectionOn_inv_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Q : Ideal (MRing ι)} (hQ : Q ≠ ⊤) {B : HermLine ι} (hB : B.a = 0) :
     IsSectionOn Q (invLine B) 1 := by
@@ -248,10 +330,16 @@ theorem isSectionOn_inv_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
     exact hm rfl
   simp [this]
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.inv hB fun z hz => (B.pos z hz).ne'`.
+-/
 theorem isSmooth_inv {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {B : HermLine ι} (hB : IsSmoothHerm B) : IsSmoothHerm (invLine B) :=
   ContDiffOn.inv hB fun z hz => (B.pos z hz).ne'
 
+/- English proof (translation)
+Introduce `j` and use `by refine Fin.cases ?_ (fun i => ?_) j · exact hB · exact hL i`.
+-/
 theorem tw_cons_smooth {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     {B : HermLine ι} {L : Fin e → HermLine ι} (hB : IsSmoothHerm B) (hL : ∀ j, IsSmoothHerm (L j)) :
     ∀ j, IsSmoothHerm ((Fin.cons B L : Fin (e + 1) → HermLine ι) j) := fun j => by
@@ -259,6 +347,25 @@ theorem tw_cons_smooth {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   · exact hB
   · exact hL i
 
+/- English proof (translation)
+Introduce `hRK hInv K _ ι _ P n L A B s hP hL hA hB hBa hs`. Establish `hI : PtsIntegrableStatement` using `GlobalTheory.CompanionTheory.Ar.Giv.ptsIntegrable_of_resK hRK`. Establish `hD : PtsIndepStatement` using `ptsIndep_of (GlobalTheory.T.resolution_exists_of_resolution_statement hRK) resBridge`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `set H : Set (Ideal (MRing ι)) := {W | W ∈ divSupp P s ∧ IsHorizontal W} with hH`.
+
+Establish `hHfin : H.Finite` using `(divSupp_finite P s).subset fun W h => h.1`. Establish `hHar : ∀ W ∈ H, IsArithVar W (n + 1)` using `fun W h => (divSuppArith K ι P (n + 1) A s W hP hs h.1).1 h.2`. Take `⟨p, hp, hpS⟩` from `exists_prime_noRoot (insert P H) (hHfin.insert P) (by`. Introduce and unpack `W (rfl | hW)`. Conclude with `⟨hPp, hP.2.2.1⟩`.
+
+Conclude with `⟨(hHar W hW).2.1.1, hW.2⟩)`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hRP : NoRoot p P` using `hpS P (Set.mem_insert _ _)`. Establish `hRW : ∀ W ∈ H, NoRoot p W` using `fun W h => hpS W (Set.mem_insert_of_mem _ h)`. Establish `hF` using `fun C : HermLine ι => GlobalTheory.T.twLine_smooth_conjInvariant_glue K ι p C hp0`.
+
+Establish `hP' : IsArithVar (twist p P) (n + 2)` using `isArithVar_twist hP hRP`. Establish `hInv'` using `hInv (Option K) (Tb ι) (twist p P) n (fun j => twLine p (L j)) (twLine p A) (twLine p B) (inc s) hP' (fun j => (hF _).1 (hL j)) ((hF _).1 hA) ((hF _).1 hB) (fun j => (hF _).2.2.1) (hF _).2.2.1 (hF _).2.2.1 (by funext o; cases o with`. Consider the case `none => rfl`. Consider the case `some k => exact congrFun hBa k)`. Use the proof step `(isSectionOn_twist hs)`.
+
+Establish `e1` using `twist_double hI hD hp0 (e := n + 1) (L := Fin.cons B L) (A := A) (s := s) hP hRP (tw_cons_smooth hB hL) hA hs`. Rewrite `e1` using `[tw_cons, pot_cons, pot_cons]`. Establish `e3` using `twist_double hI hD hp0 (e := n + 1) (L := Fin.cons A L) (A := invLine B) (s := 1) hP hRP (tw_cons_smooth hA hL) (isSmooth_inv hB) (isSectionOn_inv_one hPp.ne_top hBa)`. Rewrite `e3` using `[tw_cons, pot_cons, pot_cons, logNorm_inv_one, logNorm_tw_inv_one]`. Establish `e2 : ∀ W ∈ H, ptsIntegral (twist p W) (pot fun j => twLine p (L j)) (fun z => Real.log ((twLine p B).h z)) = 2 * ptsIntegral W (pot L) (fun z => Real.log (B.h z))`.
+
+Introduce `W hW`. Establish `hWa` using `hHar W hW`. Use `twist_double hI hD hp0 (e := n) (L := L) (A := invLine B) (s := 1) hWa (hRW W hW) hL (isSmooth_inv hB) (isSectionOn_inv_one hWa.2.1.1.ne_top hBa)` as an intermediate fact. Rewrite `this` using `[logNorm_inv_one, logNorm_tw_inv_one]`. Then use the resulting hypothesis. Establish `hsup : twist p P ⊔ Ideal.span {inc s} = (P ⊔ Ideal.span {s}).map inc ⊔ Ideal.span {quad p}`.
+
+Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, twist, sup_right_comm]`. Establish `hdiv` using `GlobalTheory.T.horizontal_divSupp_twist_eq_image K ι p P s (fun W hW hh => GlobalTheory.T.twist_isPrime_of_isPrime_of_noRoot K ι p W (hHar W ⟨hW, hh⟩).2.1.1 (hRW W ⟨hW, hh⟩))`. Establish `hsum : (∑ᶠ (W') (_ : W' ∈ divSupp (twist p P) (inc s) ∧ IsHorizontal W'), (multAt (twist p P ⊔ Ideal.span {inc s}) W' : ℝ) * ptsIntegral W' (pot fun j => twLine p (L j)) (fun z => Real.log ((twLine p B).h z))) = 2 * ∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Idea …`. Establish `h1 : (∑ᶠ (W') (_ : W' ∈ divSupp (twist p P) (inc s) ∧ IsHorizontal W'), (multAt (twist p P ⊔ Ideal.span {inc s}) W' : ℝ) * ptsIntegral W' (pot fun j => twLine p (L j)) (fun z => Real.log ((twLine p B).h z))) = ∑ᶠ W' ∈ {W' | W' ∈ divSupp (twist p P) (inc s) ∧ IsHorizontal W'}, (mu …` using `rfl`. Establish `h2 : (∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) (fun z => Real.log (B.h z))) = ∑ᶠ W ∈ H, (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) (fun z => Real.log (B.h z))` using `rfl`.
+
+Rewrite using `[h1, h2, hdiv, finsum_mem_image (twist_injective p).injOn, mul_finsum_mem]`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[e2 W hW, hsup, GlobalTheory.T.multAt_twist_quad_eq K ι p _ W hW.1.1 (GlobalTheory.T.twist_isPrime_of_isPrime_of_noRoot K ι p W (hHar W hW).2.1.1 (hRW W hW))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hInv2 : ptsIntegral (twist p P) (Fin.cons (fun z => Real.log ((twLine p B).h z)) (pot fun j => twLine p (L j))) (logNorm (twLine p A) (inc s)) = _` using `hInv'`.
+
+Rewrite `hInv2` using `[e1, hsum, e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem poincareLelong_of_inv :
     ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → GlobalTheory.CompanionTheory.Hypotheses₂.PoincareLelongInv →
       GlobalTheory.CompanionTheory.Ar.Pub.PoincareLelong := by

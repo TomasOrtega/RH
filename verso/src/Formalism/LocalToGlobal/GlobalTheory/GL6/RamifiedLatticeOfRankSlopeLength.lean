@@ -16,6 +16,9 @@ def levelZeroValues (Tf : FormsTied D u) : Submodule ℂ ((D.mem u).C.Y 0 → �
   (ValC (gramC (gramN D 0 (Nat.zero_le _)) (embT D)) ((D.fm u).lam 0)).comap
     (LinearMap.funLeft ℂ ℂ (Tf.val 0 (Nat.zero_le _)).eY.symm)
 
+/- English proof (translation)
+Establish `hr` using `((Tf.cls 0 (Nat.zero_le _)).stabI_range c ⟨γ, hγ⟩).2 hm`. Take `⟨s, hs⟩` from `hr`. Use `haveI := hS c`. Rewrite `hs` using `[Subsingleton.elim s 1, map_one]`. Conclude with `(congrArg Subtype.val hs).symm`.
+-/
 theorem rational_stabiliser_trivial (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (c : (D.mem u).C.cls 0)
     (γ : GL (Fin (D.R.N 0)) D.host.E) (hγ : γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
     (hm : bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ ∈
@@ -27,6 +30,13 @@ theorem rational_stabiliser_trivial (Tf : FormsTied D u) (hS : Formalism.MainNot
   rw [Subsingleton.elim s 1, map_one] at hs
   exact (congrArg Subtype.val hs).symm
 
+/- English proof (translation)
+Rewrite using `[Mu0_iff (Tf.val 0 (Nat.zero_le _)) φ]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Take `⟨g, hg, hgφ⟩` from `Submodule.mem_map.1 h`. Establish `hv` using `Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2 ((Tf.cls 0 (Nat.zero_le _)).y c) (Set.mem_univ _)`.
+
+Establish `e : g ((Tf.cls 0 (Nat.zero_le _)).y c) = fun z => φ c ((Tf.val 0 (Nat.zero_le _)).eY.symm z)` using `congrFun hgφ c`. Use `show (fun z => φ c ((Tf.val 0 (Nat.zero_le _)).eY.symm z)) ∈ ValC (gramC (gramN D 0 (Nat.zero_le _)) (embT D)) ((D.fm u).lam 0)`. Rewrite using `[← e]`. Conclude with `hv`. Introduce `h`.
+
+Conclude with `adelic_function_ext (Tf.cls 0 (Nat.zero_le _)).lev (embT D) (embedding_conj_compat D) ((D.fm u).lam 0) (Tf.cls 0 (Nat.zero_le _)).y (Tf.cls 0 (Nat.zero_le _)).y_bij (rational_stabiliser_trivial Tf hS) _ (fun c => h c)`.
+-/
 theorem mem_forms_level_zero_iff (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u)
     (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) :
     φ ∈ (D.mem u).A.Mu0 ↔ ∀ c, φ c ∈ levelZeroValues Tf := by
@@ -45,6 +55,17 @@ theorem mem_forms_level_zero_iff (Tf : FormsTied D u) (hS : Formalism.MainNotion
     exact adelic_function_ext (Tf.cls 0 (Nat.zero_le _)).lev (embT D) (embedding_conj_compat D) ((D.fm u).lam 0)
       (Tf.cls 0 (Nat.zero_le _)).y (Tf.cls 0 (Nat.zero_le _)).y_bij (rational_stabiliser_trivial Tf hS) _ (fun c => h c)
 
+/- English proof (translation)
+Set `Φ0 : (D.mem u).A.Mu0 ≃ₗ[ℂ] ((D.mem u).C.cls 0 → levelZeroValues Tf)` to `{ toFun := fun φ c => ⟨φ.1 c, (mem_forms_level_zero_iff Tf hS φ.1).1 φ.2 c⟩ invFun := fun ψ => ⟨fun c => (ψ c).1, (mem_forms_level_zero_iff Tf hS _).2 fun c => (ψ c).2⟩ map_add' := fun φ ψ => rfl map_smul' := fun a φ => rfl left_inv := fun φ => rfl right_inv := fun ψ => rfl }`. Establish `hΦ0 : ∀ (φ : (D.mem u).A.Mu0) c, Φ0 φ c = 0 ↔ (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) c = 0`. Introduce `φ c`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `congrArg Subtype.val h`. Introduce `h`. Conclude with `Subtype.ext h`. Distinguish the cases in `hne : Nonempty ((D.mem u).C.cls 0)`. Take `⟨c0⟩` from `hne haveI := (D.mem u).A.Mu0_fd`.
+
+Establish `hinj : Function.Injective ((Φ0.symm : ((D.mem u).C.cls 0 → levelZeroValues Tf) →ₗ[ℂ] (D.mem u).A.Mu0) ∘ₗ LinearMap.single ℂ (fun _ => levelZeroValues Tf) c0)`. Rewrite using `[LinearMap.coe_comp]`. Use `Φ0.symm.injective.comp ?_` and prove the remaining obligations. Introduce `a b h`. Use `congrFun h c0` as an intermediate fact.
+
+Simplify using `using this`. Use `haveI : FiniteDimensional ℂ (levelZeroValues Tf) := FiniteDimensional.of_injective _ hinj`. Use `⟨Module.finrank ℂ (levelZeroValues Tf), Φ0.trans (LinearEquiv.piCongrRight fun _ => (Module.finBasis ℂ (levelZeroValues Tf)).equivFun), fun φ c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ0]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.piCongrRight_apply]`.
+
+Conclude with `(Module.finBasis ℂ (levelZeroValues Tf)).equivFun.map_eq_zero_iff`. Use `haveI : IsEmpty ((D.mem u).C.cls 0) := not_nonempty_iff.1 hne haveI : Subsingleton (D.mem u).A.Mu0 := ⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩`. Conclude with `⟨0, LinearEquiv.ofSubsingleton _ _, fun φ c => isEmptyElim c⟩`.
+-/
 theorem forms_level_zero_linear_equiv (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) :
     ∃ (d : ℕ) (Φ : (D.mem u).A.Mu0 ≃ₗ[ℂ] ((D.mem u).C.cls 0 → Fin d → ℂ)),
       ∀ (φ : (D.mem u).A.Mu0) c, Φ φ c = 0 ↔ (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) c = 0 := by
@@ -94,6 +115,9 @@ def t2xR (v : (D.mem u).A.vT) : ((D.mem u).A.Fv v)ˣ →* Module.End ℂ (D.mem 
 def t2xU (v : (D.mem u).A.vT) [Fact (D.mem u).A.T.Prime] : ((D.mem u).A.Fv v)ˣ ≃* (ZMod (D.mem u).A.T)ˣ :=
   Units.mapEquiv (FiniteField.ringEquivOfCardEq (by rw [(D.mem u).A.card_Fv v, ZMod.card])).toMulEquiv
 
+/- English proof (translation)
+The claim follows from `funext fun c => ((D.fm u).rhoT_dil v a ψ c).symm`.
+-/
 theorem diamond_eq_rho (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (ψ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) :
     Formalism.MainNotions.product_first_zeroth_parts.dia D u 0 v a ψ = (D.mem u).A.rhoT v a ψ :=
   funext fun c => ((D.fm u).rhoT_dil v a ψ c).symm
@@ -102,6 +126,11 @@ def t2xRv [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) :
     (ZMod (D.mem u).A.T)ˣ →* Module.End ℂ (D.mem u).A.Mu0 :=
   (t2xR v).comp (t2xU v).symm.toMonoidHom
 
+/- English proof (translation)
+Introduce `v v' hvv x y`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (D.mem u).A.rhoT v ((t2xU v).symm x) ((D.mem u).A.rhoT v' ((t2xU v').symm y) φ.1) = (D.mem u).A.rhoT v' ((t2xU v').symm y) ((D.mem u).A.rhoT v ((t2xU v).symm x) φ.1)`.
+
+Establish `hφ : φ.1 ∈ (D.fm u).Fi 0` using `by rw [(D.fm u).Fi_zero]; exact φ.2`. Use `diamond_comm_distinct_places Tf hE 0 (Nat.zero_le _) v' v (Ne.symm hvv) ((t2xU v).symm x) ((t2xU v').symm y) φ.1 hφ` as an intermediate fact. Rewrite `this` using `[diamond_eq_rho, diamond_eq_rho, diamond_eq_rho, diamond_eq_rho]`. Conclude with `this`.
+-/
 theorem rho_ops_commute_distinct [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2xRv (D := D) (u := u) v x) (t2xRv v' y) := by
   intro v v' hvv x y
@@ -117,6 +146,9 @@ def t2xRho [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElements
     ((D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) →* Module.End ℂ (D.mem u).A.Mu0 :=
   MonoidHom.noncommPiCoprod t2xRv (rho_ops_commute_distinct Tf hE)
 
+/- English proof (translation)
+Rewrite using `[t2xRho, MonoidHom.noncommPiCoprod_mulSingle]`. Both sides reduce to the same expression.
+-/
 theorem group_rep_mulSingle_eq_rho [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT)
     (h : (ZMod (D.mem u).A.T)ˣ) (φ : (D.mem u).A.Mu0) :
     ((t2xRho Tf hE (Pi.mulSingle v h) φ : (D.mem u).A.Mu0) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) =
@@ -137,6 +169,9 @@ def t2xDv [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) :
       (D.fm u).dil 0 v ((t2xU v).symm a) ((D.fm u).dil 0 v ((t2xU v).symm b) c)
     rw [map_mul, (D.fm u).dil_mul]
 
+/- English proof (translation)
+Introduce `v v' hvv x y`. Use function extensionality and compare the values at `c`. Take `⟨ka, hka, δa, ha⟩` from `hE 0 (Nat.zero_le _) v ((t2xU v).symm x)`. Take `⟨kb, hkb, δb, hb⟩` from `hE 0 (Nat.zero_le _) v' ((t2xU v').symm y)`. Conclude with `dilation_commute_distinct Tf v v' hvv _ _ ka kb hka hkb δa δb ha hb c`.
+-/
 theorem diamond_ops_commute_distinct [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2xDv (D := D) (u := u) v x) (t2xDv v' y) := by
   intro v v' hvv x y
@@ -149,12 +184,24 @@ def t2xAc [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsE
     ((D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) →* Function.End ((D.mem u).C.cls 0) :=
   MonoidHom.noncommPiCoprod t2xDv (diamond_ops_commute_distinct Tf hE)
 
+/- English proof (translation)
+Rewrite using `[t2xAc, MonoidHom.noncommPiCoprod_mulSingle]`. Both sides reduce to the same expression.
+-/
 theorem group_action_mulSingle_eq_dilation [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT)
     (h : (ZMod (D.mem u).A.T)ˣ) (c : (D.mem u).C.cls 0) :
     t2xAc Tf hE (Pi.mulSingle v h) c = (D.fm u).dil 0 v ((t2xU v).symm h) c := by
   rw [t2xAc, MonoidHom.noncommPiCoprod_mulSingle]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : (D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ => ∀ (c : (D.mem u).C.cls 0) (φ : (D.mem u).A.Mu0), ((t2xRho Tf hE g φ : (D.mem u).A.Mu0) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) c = 0 → (φ : (D.mem u).C.cls 0 → (D.mem u).C. …` and prove the remaining obligations. Introduce `a b ha hb c φ h`. Rewrite `h` using `[map_mul]`. Establish `h1` using `ha c (t2xRho Tf hE b φ) h`.
+
+Establish `h2` using `hb (t2xAc Tf hE a c) φ h1`. Rewrite using `[mul_comm, map_mul]`. Conclude with `h2`. Introduce `c φ h`. Rewrite `h` using `[map_one]`.
+
+Rewrite using `[map_one]`. Conclude with `h`. Introduce `v _ c φ h`. Rewrite `h` using `[group_rep_mulSingle_eq_rho, (D.fm u).rhoT_dil]`. Rewrite using `[group_action_mulSingle_eq_dilation]`.
+
+Conclude with `((D.fm u).dilT 0 v _ c).map_eq_zero_iff.1 h`.
+-/
 theorem zero_of_group_action_zero [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf)
     (g : (D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) : ∀ (c : (D.mem u).C.cls 0) (φ : (D.mem u).A.Mu0),
     ((t2xRho Tf hE g φ : (D.mem u).A.Mu0) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) c = 0 →
@@ -181,6 +228,17 @@ theorem zero_of_group_action_zero [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hplinj : Function.Injective (fun v : (D.mem u).A.vT => (Tf.atT.eV v).1)` using `fun a b h => Tf.atT.eV.injective (Subtype.ext h)`. Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : (D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ => ∃ (k : (D.mem u).A.vT → ℤ) (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)), MultiPlaceDiamond (Tf.cls 0 (Nat.zero_le _)).lev (fun v => …` and prove the remaining obligations. Introduce and unpack `a b ⟨ka, δa, hda, hka, hca⟩ ⟨kb, δb, hdb, hkb, hcb⟩`. Use `⟨kb * ka, δb * δa, multi_diamond_mul _ _ _ hdb hda, fun v => ?_, fun c => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.mul_apply, Int.cast_mul, hka v, hkb v, Pi.mul_apply, map_mul, Units.val_mul, mul_comm]`. Establish `h1` using `hca (t2xAc Tf hE b c)`. Establish `h2` using `class_mul_right_of_normalises (Tf.cls 0 (Nat.zero_le _)).lev ((Tf.cls 0 (Nat.zero_le _)).y c) ((Tf.cls 0 (Nat.zero_le _)).y (t2xAc Tf hE b c)) δb δa (fun κ hκ => multi_diamond_conj_mem _ _ _ hda κ hκ) (hcb c)`. Establish `h3 : t2xAc Tf hE (a * b) c = t2xAc Tf hE a (t2xAc Tf hE b c)` using `by rw [map_mul]; rfl`. Conclude with `(congrArg (fun z => (Quotient.mk'' ((Tf.cls 0 (Nat.zero_le _)).y z) : Cls (Tf.cls 0 (Nat.zero_le _)).lev)) h3).trans (h1.trans (h2.trans (congrArg (fun z => (Quotient.mk'' z : Cls (Tf.cls 0 (Nat.zero_le _)).lev)) (mul_assoc _ _ _))))`.
+
+Use `⟨1, 1, multi_diamond_one _ _ _, fun v => ?_, fun c => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression. Introduce `v _`.
+
+Take `⟨k0, hk0, δ0, hδ0⟩` from `hE 0 (Nat.zero_le _) v ((t2xU v).symm (g v))`. Use `⟨Function.update 1 v k0, δ0, multi_diamond_of_is_diamond _ _ _ hplinj v hδ0, fun v' => ?_, fun c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Rewrite using `[Function.update_self, hk0, Pi.mulSingle_eq_same]`.
+
+Rewrite using `[Function.update_of_ne hv, Pi.mulSingle_eq_of_ne hv, map_one, Pi.one_apply, Int.cast_one, Units.val_one]`. Rewrite using `[group_action_mulSingle_eq_dilation]`. Conclude with `(Tf.val 0 (Nat.zero_le _)).dil v _ k0 hk0 c δ0 hδ0`.
+-/
 theorem multi_diamond_of_group_elem [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf)
     (g : (D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) : ∃ (k : (D.mem u).A.vT → ℤ)
       (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)),
@@ -221,6 +279,11 @@ theorem multi_diamond_of_group_elem [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D
     · rw [group_action_mulSingle_eq_dilation]
       exact (Tf.val 0 (Nat.zero_le _)).dil v _ k0 hk0 c δ0 hδ0
 
+/- English proof (translation)
+Take `⟨k, δ, hδ, hk, hcl⟩` from `multi_diamond_of_group_elem Tf hE g`. Establish `hfix : (Quotient.mk'' ((Tf.cls 0 (Nat.zero_le _)).y c * δ) : Cls (Tf.cls 0 (Nat.zero_le _)).lev) = Quotient.mk'' ((Tf.cls 0 (Nat.zero_le _)).y c)`. Rewrite using `[← hcl c, hgc]`. Establish `h1` using `diamond_free_on_classes Tf hS k (fun v => by rw [hk v]; exact Units.ne_zero _) δ hδ c hfix`. Use function extensionality and compare the values at `v`.
+
+Establish `h2` using `h1 v`. Rewrite `h2` using `[hk v]`. Establish `h3 : (t2xU v).symm (g v) = 1` using `Units.ext h2`. Rewrite using `[Pi.one_apply]`. Conclude with `(MulEquiv.map_eq_one_iff _).1 h3`.
+-/
 theorem group_acts_freely_classes [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf)
     (g : (D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) (c : (D.mem u).C.cls 0) (hgc : t2xAc Tf hE g c = c) : g = 1 := by
   obtain ⟨k, δ, hδ, hk, hcl⟩ := multi_diamond_of_group_elem Tf hE g
@@ -239,6 +302,11 @@ section ModelOf
 
 variable {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C : ColumnChain R ι hc}
 
+/- English proof (translation)
+Use `letI := productMulActionFirstFactor (A.vT → H) (MulAction.orbitRel.Quotient (A.vT → H) (C.cls 0) × Fin d)`. Use `⟨⟨H, (A.vT → H) × (MulAction.orbitRel.Quotient (A.vT → H) (C.cls 0) × Fin d), e, orbitDecompositionLinearEquiv Φ ρ hmono hfree, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `g x h`. Establish `h1 : g * x.1 = x.1` using `congrArg Prod.fst h`. Conclude with `mul_eq_right.1 h1`.
+
+Introduce `v a φ h x`. Establish `h1 : (⟨A.rhoT v a (φ : C.cls 0 → C.Y 0 → ℂ), h⟩ : A.Mu0) = ρ (Pi.mulSingle v (e v a)) φ` using `Subtype.ext (hρ v a φ).symm`. Rewrite using `[t2xEquiv_apply, t2xEquiv_apply, h1, coordMap_intertwines]`. Both sides reduce to the same expression.
+-/
 theorem free_rank_model_of_free_action (A : ColumnsAtT R C) {H : Type} [CommGroup H] [Fintype H] (e : ∀ v, (A.Fv v)ˣ ≃* H) {d : ℕ}
     (Φ : A.Mu0 ≃ₗ[ℂ] (C.cls 0 → Fin d → ℂ)) (ρ : (A.vT → H) →* Module.End ℂ A.Mu0)
     [MulAction (A.vT → H) (C.cls 0)]
@@ -260,6 +328,11 @@ theorem free_rank_model_of_free_action (A : ColumnsAtT R C) {H : Type} [CommGrou
 
 end ModelOf
 
+/- English proof (translation)
+Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Take `⟨d, Φ, hΦ⟩` from `forms_level_zero_linear_equiv Tf hS`. Use `letI : MulAction ((D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) ((D.mem u).C.cls 0) := MulAction.ofEndHom (t2xAc Tf hE)`. Use `free_rank_model_of_free_action (D.mem u).A (fun v => t2xU v) Φ (t2xRho Tf hE) ?_ ?_ ?_` and prove the remaining obligations. Introduce `g c φ h`.
+
+Rewrite `h`, the goal using `[hΦ]`. Conclude with `zero_of_group_action_zero Tf hE g c φ h`. Conclude with `fun g c h => group_acts_freely_classes Tf hS hE g c h`. Introduce `v a φ`. Rewrite using `[group_rep_mulSingle_eq_rho, MulEquiv.symm_apply_apply]`.
+-/
 theorem free_rank_model_of_diamonds (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf) :
     Nonempty (FreeRankModel (D.mem u).A) := by
   haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
@@ -273,10 +346,22 @@ theorem free_rank_model_of_diamonds (Tf : FormsTied D u) (hS : Formalism.MainNot
   · intro v a φ
     rw [group_rep_mulSingle_eq_rho, MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `free_rank_model_of_diamonds Tf hS (diamond_elements_of_split Tf hs)`.
+-/
 theorem free_rank_model_of_split (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hs : SplitAtT Tf.atT) :
     Nonempty (FreeRankModel (D.mem u).A) :=
   free_rank_model_of_diamonds Tf hS (diamond_elements_of_split Tf hs)
 
+/- English proof (translation)
+Establish `hemb : Formalism.L2.Col.embAt (RingHom.id ℂ) (embT D) = embT D` using `funext fun τ => RingHom.id_comp _`. Set `o : Frames (gramC (gramN D 0 (Nat.zero_le _)) (Formalism.L2.Col.embAt (RingHom.id ℂ) (embT D)))` to `⟨fun _ => 1, fun τ => by simp⟩`. Establish `h1` using `Formalism.L2.Col.evV_mem_ValC (embT D) (gramN D 0 (Nat.zero_le _)) ((D.fm u).lam 0) (RingHom.id ℂ) (Formalism.L2.Col.extV ℂ ((D.fm u).lam 0))`. Establish `h2` using `Formalism.L2.Col.evV_extV_ne_zero (embT D) (gramN D 0 (Nat.zero_le _)) ((D.fm u).lam 0) (RingHom.id ℂ) o`. Rewrite `h1`, `h2` using `[hemb]`.
+
+Use `set F := Formalism.L2.Col.evV (embT D) (gramN D 0 (Nat.zero_le _)) ((D.fm u).lam 0) (RingHom.id ℂ) (Formalism.L2.Col.extV ℂ ((D.fm u).lam 0)) with hF`. Use `⟨fun z => F ((Tf.val 0 (Nat.zero_le _)).eY z), ?_, ?_⟩` and prove the remaining obligations. Use `show (fun y => F ((Tf.val 0 (Nat.zero_le _)).eY ((Tf.val 0 (Nat.zero_le _)).eY.symm y))) ∈ ValC (gramC (gramN D 0 (Nat.zero_le _)) (embT D)) ((D.fm u).lam 0)`. Simplify using `only [Equiv.apply_symm_apply]`. Conclude with `h1`.
+
+Introduce `h`. Apply `h2` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `congrFun h ((Tf.val 0 (Nat.zero_le _)).eY.symm y)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`.
+
+Conclude with `this`.
+-/
 theorem level_zero_values_ne_bot (Tf : FormsTied D u) : ∃ w ∈ levelZeroValues Tf, w ≠ 0 := by
   have hemb : Formalism.L2.Col.embAt (RingHom.id ℂ) (embT D) = embT D := funext fun τ => RingHom.id_comp _
   let o : Frames (gramC (gramN D 0 (Nat.zero_le _)) (Formalism.L2.Col.embAt (RingHom.id ℂ) (embT D))) :=
@@ -299,6 +384,15 @@ theorem level_zero_values_ne_bot (Tf : FormsTied D u) : ∃ w ∈ levelZeroValue
     simp only [Equiv.apply_symm_apply] at this
     exact this
 
+/- English proof (translation)
+Take `⟨c0, -⟩` from `(Tf.cls 0 (Nat.zero_le _)).y_bij.2 (Quotient.mk'' 1)`. Take `⟨w, hw, hw0⟩` from `level_zero_values_ne_bot Tf`. Establish `hmem : (Pi.single c0 w : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) ∈ (D.mem u).A.Mu0`. Rewrite using `[mem_forms_level_zero_iff Tf hS]`. Introduce `c`.
+
+Distinguish the cases in `hc : c = c0`. Substitute `hc` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hw`. Rewrite using `[Pi.single_eq_of_ne hc]`.
+
+Conclude with `(levelZeroValues Tf).zero_mem`. Use `haveI := (D.mem u).A.Mu0_fd`. Unfold `Formalism.BasicNotions.D7.duS`. Use `Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨_, hmem⟩, fun h => hw0 ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val h) c0` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem rank_level_zero_pos (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) : 0 < D.duS u := by
   obtain ⟨c0, -⟩ := (Tf.cls 0 (Nat.zero_le _)).y_bij.2 (Quotient.mk'' 1)
   obtain ⟨w, hw, hw0⟩ := level_zero_values_ne_bot Tf
@@ -314,6 +408,9 @@ theorem rank_level_zero_pos (Tf : FormsTied D u) (hS : Formalism.MainNotions.pro
   have := congrFun (congrArg Subtype.val h) c0
   simpa using this
 
+/- English proof (translation)
+The claim follows from `ramified_lattice_of_free_model fun D u hF hS hA => by obtain ⟨Tf, hC⟩ := hF exact ⟨free_rank_model_of_split Tf hA (hs D u Tf hC), rank_level_zero_pos Tf hA, h D u ⟨Tf, hC⟩ hS hA⟩`.
+-/
 theorem ramified_lattice_of_slope_and_length (hs : ∀ (D : D7) (u : D.what₂.Word) (Tf : FormsTied D u), ChiFin Tf → SplitAtT Tf.atT)
     (h : ∀ (D : D7) (u : D.what₂.Word), FormsCompatible D u → Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u → Formalism.MainNotions.product_first_zeroth_parts.admS D u →
       RamifiedSlopeFormula D u ∧ LatticeInclusionLength D u) : RamifiedLatticeFamily :=

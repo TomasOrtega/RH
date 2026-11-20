@@ -24,12 +24,22 @@ open GlobalTheory.Member GlobalTheory.CharacterFunction
 
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
 
+/- English proof (translation)
+Establish `hb : ∀ z, barF D z = GlobalTheory.AdLat.sg (Af D.host.F) (cF D) z` using `fun _ => rfl`. Unfold `NormOne`. Rewrite using `[hb, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(GlobalTheory.T.finitePart_preserves_form_det_norm_one D V h).2.1`.
+-/
 theorem normOne_det (V : HSp D) (h : GA D V) : NormOne (D := D) (Matrix.GeneralLinearGroup.det (finHom V h)) := by
   have hb : ∀ z, barF D z = GlobalTheory.AdLat.sg (Af D.host.F) (cF D) z := fun _ => rfl
   unfold NormOne
   rw [hb, Matrix.GeneralLinearGroup.val_det_apply]
   exact (GlobalTheory.T.finitePart_preserves_form_det_norm_one D V h).2.1
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Establish `h1` using `congrFun (h (Pi.single j 1)) i`. Establish `h2 : (fun i => inc ((Pi.single j 1 : Fin n → E) i)) = Pi.single j 1`.
+
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`.
+
+Rewrite `h1` using `[h2, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Conclude with `h1`.
+-/
 theorem det_eq_of_mulVec {E R : Type} [CommRing E] [CommRing R] (inc : E →+* R) {n : ℕ} (G : Matrix (Fin n) (Fin n) R)
     (δ : Matrix (Fin n) (Fin n) E) (h : ∀ v : Fin n → E, (G *ᵥ fun i => inc (v i)) = fun i => inc ((δ *ᵥ v) i)) :
     G.det = inc δ.det := by
@@ -46,6 +56,9 @@ theorem det_eq_of_mulVec {E R : Type} [CommRing E] [CommRing R] (inc : E →+* R
   rw [h2, Matrix.mulVec_single_one, Matrix.mulVec_single_one] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨δ, -, hδ, -⟩` from `GlobalTheory.MarkCoset.rational_matrix V γ hγ`. Set `inc : D.host.E →+* AfE D` to `(Algebra.TensorProduct.includeRight (R := D.host.F)).toRingHom`. Use `⟨δ.1.det, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `det_eq_of_mulVec inc (finHom V γ).1 δ.1 hδ`.
+-/
 theorem det_rational (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) : ∃ a : D.host.E,
     ((Matrix.GeneralLinearGroup.det (finHom V γ) : (AfE D)ˣ) : AfE D) = 1 ⊗ₜ a := by
   obtain ⟨δ, -, hδ, -⟩ := GlobalTheory.MarkCoset.rational_matrix V γ hγ
@@ -54,11 +67,17 @@ theorem det_rational (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) : ∃ a : D.h
   rw [Matrix.GeneralLinearGroup.val_det_apply]
   exact det_eq_of_mulVec inc (finHom V γ).1 δ.1 hδ
 
+/- English proof (translation)
+Unfold `gLat`. Rewrite using `[map_one, Units.val_one]`. Conclude with `(Set.image_congr fun z _ => Matrix.one_mulVec z).trans (Set.image_id _)`.
+-/
 theorem gLat_one (V : HSp D) : gLat V 1 = latHat V := by
   unfold gLat
   rw [map_one, Units.val_one]
   exact (Set.image_congr fun z _ => Matrix.one_mulVec z).trans (Set.image_id _)
 
+/- English proof (translation)
+Rewrite `hw` using `[hadd, hsm, mul_smul, sub_eq_iff_eq_add]`. Rewrite using `[ha, hadd, hsm, map_add, map_nsmul, hw]`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_eq_nsmul_of_split {L A : Type} [AddCommGroup L] [AddCommGroup A] (j : L → A) (u : A →+ A)
     (hadd : ∀ x y, j (x + y) = j x + j y) (hsm : ∀ (n : ℕ) x, j (n • x) = n • j x) {M p : ℕ} {a b e z : L} {w : A}
     (ha : a = b + M • e) (hw : u (j b) - j (b + M • z) = (M * p) • w) :
@@ -70,6 +89,19 @@ theorem sub_eq_nsmul_of_split {L A : Type} [AddCommGroup L] [AddCommGroup A] (j 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hκ : latGHat V u = latGHat V 1` using `by unfold latGHat; rw [hu, gLat_one]`. Establish `hlat : latG V 1 = latG V u` using `by unfold latG; rw [hu, gLat_one]`. Establish `hmem : ∀ a, finVec V (io a) ∈ latGHat V 1` using `fun a => ((GlobalTheory.MarkCoset.latG_spec D V 1).1 _).1 (hio.2 ▸ LinearMap.mem_range_self io a)`. Establish `hadd : ∀ x y, finVec V (x + y) = finVec V x + finVec V y` using `GlobalTheory.AdLat.cap_fv_add D.host.F`. Establish `hsm : ∀ (n : ℕ) x, finVec V (n • x) = n • finVec V x` using `GlobalTheory.AdLat.cap_fv_nsmul D.host.F`.
+
+Establish `hpI : (p : 𝓞 D.host.E) ∈ I.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)`. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) (natCast_mem_half hM hMb)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨α, β, hαβ⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `hc : FinCong V l.M (1⁻¹ * u)`.
+
+Use `GlobalTheory.CharRead.finCong_of_marks l V io hio 1 u hlat (fun a => finVec V (io a)) (fun a _ => ⟨0, zero_mem _, by` and prove the remaining obligations. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec, smul_zero, sub_self]⟩) fun a ha => ?_`. Establish `hb : α • a ∈ Mfr l • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `zsmul_mem ha α`. Establish `hsplit : a = p • (α • a) + l.M • (β • a)`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul, smul_smul, smul_smul, ← add_smul, mul_comm _ α, mul_comm _ β, hαβ, one_smul]`.
+
+Generalize the expression as in `α • a = b at hb hsplit`. Generalize the expression as in `β • a = e at hsplit`. Establish `hb₂ : p • b ∈ Mfr l₂ • (⊤ : Submodule (𝓞 D.host.E) Dw.La)`. Rewrite using `[Mfr, hMb, Ideal.map_mul, mul_comm, Submodule.mul_smul, ← Nat.cast_smul_eq_nsmul (𝓞 D.host.E)]`. Conclude with `Submodule.smul_mem_smul hpI hb`.
+
+Take `⟨w, hw, ew⟩` from `h _ hb₂`. Take `⟨z, hz⟩` from `GlobalTheory.ShortMove.exists_eq_nsmul l (hs (p • b)) (sub_mem (GlobalTheory.LevStab.map_mem_smul_top _ s (nsmul_mem hb p)) (nsmul_mem hb p))`. Establish `hue : (finHom V u).1 *ᵥ finVec V (io e) ∈ latGHat V 1` using `hκ ▸ ((GlobalTheory.MarkCoset.latG_spec D V u).2 _).2 ⟨_, hmem e, rfl⟩`. Use `⟨finVec V (io e) - (finHom V u).1 *ᵥ finVec V (io e) - finVec V (io z) - p • w, hκ ▸ sub_mem (sub_mem (sub_mem (hmem e) hue) (hmem z)) (nsmul_mem hw p), ?_⟩` and prove the remaining obligations. Rewrite `ew` using `[sub_eq_iff_eq_add'.1 hz, hM]`.
+
+Conclude with `sub_eq_nsmul_of_split (fun x => finVec V (io x)) (finHom V u).1.mulVecLin.toAddMonoidHom (fun x y => by rw [map_add, hadd]) (fun n x => by rw [map_nsmul, hsm]) hsplit ew`. Rewrite `hc` using `[inv_one, one_mul]`. Take `⟨k1, -, k3, k4, -⟩` from `GlobalTheory.T.completedLattice_eq_adelicCompletion_and_gram D V`. Take `⟨w, hw, e⟩` from `GlobalTheory.CharRead.det_cong_one D.host.F (latC V) k3 k4 l.M (by have := l.three_le; omega) (finHom V u).1 (by rw [← k1]; exact hc)`. Conclude with `⟨w, GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers D ▸ hw, e⟩`.
+-/
 theorem congOne_det (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hio : LatEmb V io)
     {l l₂ : Level H} {p : ℕ} {I : Ideal (𝓞 D.host.E)} (hM : l₂.M = l.M * p) (hcop : p.Coprime l.M)
     (hMb : l₂.Mb = l.Mb * I) (s : Dw.La →ₗ[𝓞 D.host.E] Dw.La)
@@ -114,6 +146,17 @@ theorem congOne_det (V : HSp D) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank �
     (finHom V u).1 (by rw [← k1]; exact hc)
   exact ⟨w, GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers D ▸ hw, e⟩
 
+/- English proof (translation)
+Take `⟨a, ha, c, hc, hac⟩` from `Ideal.isCoprime_iff_exists.1 hIJ`. Use `choose x hx using fun j => Submodule.Quotient.mk_surjective (I • ⊤ : Submodule R L) (e.symm (Pi.single j 1))`. Establish `hv : ∀ j, (Submodule.Quotient.mk (c • x j) : L ⧸ (I • ⊤ : Submodule R L)) = e.symm (Pi.single j 1)` using `fun j => by`. Rewrite using `[← hx, eq_comm, Submodule.Quotient.eq, eq_sub_of_add_eq' hac, sub_smul, one_smul, sub_sub_cancel]`. Conclude with `Submodule.smul_mem_smul ha trivial`.
+
+Use `⟨fun j => c • x j, fun j => Submodule.smul_mem_smul hc trivial, hv, fun y _ => ?_⟩` and prove the remaining obligations. Use `choose co hco using fun i => Ideal.Quotient.mk_surjective (e (Submodule.Quotient.mk y) i)`. Establish `h0 : y - ∑ i, co i • c • x i ∈ (I • ⊤ : Submodule R L)`. Rewrite using `[← Submodule.Quotient.eq]`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[← Submodule.mkQ_apply _ (∑ i, _), map_sum, map_sum]`. Simplify using `only [map_smul, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul _ c, hv, e.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one, ← hco]`.
+
+Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hb.symm, smul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[← add_sub_cancel (∑ i, co i • c • x i) y]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) h0`.
+-/
 theorem exists_basis_lift {R L : Type} [CommRing R] [AddCommGroup L] [Module R L] (I J : Ideal R) (hIJ : IsCoprime I J)
     {r : ℕ} (e : (L ⧸ (I • ⊤ : Submodule R L)) ≃ₗ[R] (Fin r → R ⧸ I)) :
     ∃ v : Fin r → L, (∀ j, v j ∈ (J • ⊤ : Submodule R L)) ∧
@@ -144,6 +187,35 @@ theorem exists_basis_lift {R L : Type} [CommRing R] [AddCommGroup L] [Module R L
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨c0, ⟨m, hm, hc0⟩, hv⟩` from `hv`. Take `⟨hU, hW, g₀, e₀, F, ik, φ, th, hth, hD, hval⟩` from `hv ()`. Take `⟨-, hM, hcop, hMb, hI, -, -, hsec, -⟩` from `hd`. Take `⟨m', hm', hfin⟩` from `hxi.fin`.
+
+Establish `hbar : (barE D : 𝓞 D.host.E →+* 𝓞 D.host.E) = (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)` using `RingHom.ext fun a => by`. Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Use `show ((barE D a : 𝓞 D.host.E) : D.host.E) = ((H.bar a : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[H.bar_eq a]`. Both sides reduce to the same expression.
+
+Establish `hprod` using `GlobalTheory.DatumInverseCharacter.half_prod hM hMb`. Take `⟨χ, hχ1, hχ⟩` from `GlobalTheory.T.exists_twistCharacter_units_mod_specialIdeal D d.pd d.I xi hp (hlM ▸ hcop) (hbar ▸ hprod) (hbar ▸ hI) hxi`. Establish `hpI : (d.pd : 𝓞 D.host.E) ∈ d.I` using `natCast_mem_half hM hMb`. Establish `hI0 : d.I ≠ ⊥` using `fun e => hp.ne_zero (by rw [e, Ideal.mem_bot] at hpI; exact_mod_cast hpI)`. Use `haveI : Finite (𝓞 D.host.E ⧸ d.I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI0`.
+
+Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Take `⟨e⟩` from `HalfPairing.nonempty_equiv_quot (N := Dw.La) d.I V.rank (Dw.rank.trans hU.1.symm)`. Take `⟨δ, hδs, hδ⟩` from `exists_det_hom d.I (hU.1 ▸ hpq) e`. Establish `hItop : d.I ≠ ⊤` using `fun hT => by haveI := Ideal.Quotient.subsingleton_iff.2 hT`.
+
+Conclude with `hχ1 (MonoidHom.ext fun u => by rw [Subsingleton.elim u 1, map_one, map_one])`. Establish `hM0 : 0 < l.M` using `by have := l.three_le; omega`. Establish `hM₂ : 0 < d.l₂.M` using `by have := d.l₂.three_le; omega`. Establish `hMl : ∀ l : Level H, (l.M : 𝓞 D.host.E) ∈ l.Mb` using `fun l => by`. Establish `: Ideal.span {(l.M : 𝓞 D.host.E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`.
+
+Conclude with `this (Ideal.subset_span rfl)`. Establish `hIJ : IsCoprime d.I (Mfr d.l₂)`. Rewrite using `[Mfr, hMb, Ideal.map_mul]`. Use `IsCoprime.mul_right ?_ (Ideal.isCoprime_iff_sup_eq.2 hI)` and prove the remaining obligations. Take `⟨α, β, hαβ⟩` from `Nat.Coprime.cast (R := 𝓞 D.host.E) hcop`.
+
+Establish `h1` using `Ideal.mem_map_of_mem (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) (hMl l)`. Rewrite `h1` using `[map_natCast]`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨_, Ideal.mul_mem_left _ α hpI, _, Ideal.mul_mem_left _ β h1, hαβ⟩`. Take `⟨v, hv₁, hv₂, hv₃⟩` from `exists_basis_lift d.I (Mfr d.l₂) hIJ e`. Set `inc : (FO D)ˣ →* c.Fˣ` to `Units.map (IntermediateField.inclusion hFO).toRingHom.toMonoidHom`.
+
+Use `⟨inc.comp (χ.comp δ), fun h => hχ1 (MonoidHom.ext fun u => ?_), fun k g ρ hg _ hρ hk K _ _ _ y y' hy => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hδs u`. Use `congrArg (fun z : c.Fˣ => ((z : c.F) : ℂ)) (DFunLike.congr_fun h k)` as an intermediate fact. Conclude with `Units.ext (Subtype.ext this)`. Take `⟨g', hg'⟩` from `g.inv d.l₂.M hM₂`.
+
+Take `⟨u, -, hu, hlift⟩` from `GlobalTheory.HalfLift.exists_unitary_inducing D H Dw d.l₂ V io hι (g.f d.l₂.M) g' fun a => by`. Take `⟨⟨b, hb⟩, b', hb'⟩` from `hg' a`. Conclude with `⟨hb ▸ nsmul_mem_smul_top (hMl _) b, hb' ▸ nsmul_mem_smul_top (hMl _) b'⟩`. Establish `hlow : ∀ a, g.f d.l₂.M a - a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `fun a => by`. Take `⟨w, hw⟩` from `g.tower l.M d.pd hM0 hp.pos a`.
+
+Rewrite `hw` using `[← hM]`. Use `add_mem (hw ▸ nsmul_mem_smul_top (hMl l) w) (hg.2.1 a)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hcong` using `congOne_det V io hι.emb hM hcop hMb _ hlow u hu hlift`. Establish `hrange : (latG V 1 : Set (Fin V.rank → D.host.E)) = Set.range io`.
+
+Rewrite using `[← hι.emb.2, LinearMap.coe_range]`. Take `⟨a, ha₁, ha₂⟩` from `det_sub_mem_hat D.host.F io (hrange ▸ (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.1) d.I hItop v hv₃ (g.f d.l₂.M) d.l₂.M (by rw [hM, Nat.cast_mul]; exact d.I.mul_mem_left _ hpI) (finHom V u).1 (by`. Take `⟨w, hw, ew⟩` from `hcong`. Rewrite using `[← GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers]`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, sub_eq_iff_eq_add.1 ew]`.
+
+Conclude with `add_mem (nsmul_mem hw _) (GlobalTheory.IdeleParts.integralFiniteAdeles_eq_adelicCompletion_integers D ▸ (intRing D.host.F).one_mem))`. Use the proof step `(fun j => by`. Rewrite using `[← hrange, ← (GlobalTheory.T.adelicElementLattice_full_and_completion D V 1).2.2.2.2.1]`. Conclude with `hlift _ (hv₁ j))`. Establish `hdet` using `hδ k a fun j => by`.
+
+Rewrite using `[← hv₂, ← hk, (Submodule.Quotient.eq _).2 (ha₁ j), ← Submodule.mkQ_apply, map_sum]`. Simplify using `only [map_smul, Submodule.mkQ_apply, hv₂]`. Establish `hval'` using `hχ _ a.det (δ k) (normOne_det V u) (hlM ▸ hcong) hdet ha₂`. Use `value_ratio V (U₂ ()) (dict₂ ()) io e₀ F ik φ th x₀ (RingHom.ext fun _ => rfl) hA₂ hpq hU hW hD hι hth (fun k τ hτ => ?_) d.cδ hsec c0 xi (m * m') (Nat.mul_pos hm hm') (by rw [pow_mul, hc0, one_pow]) (fun h => by rw [mul_comm, pow_mul, hfin _ (normOne_det V h), one_pow]) hval (fu …` and prove the remaining obligations. Rewrite using `[(hW k).1, ← hX₀.1, (hU.2.1 k).1, ← hX₀'.1]`.
+
+Conclude with `hx₀ τ ((hX₀'.2 τ).2 (((hU.2.1 k).2 τ).1 hτ))`. Take `⟨b, hb⟩` from `det_rational V hγ`. Conclude with `hxi.rat _ b hb (normOne_det V γ)`. Take `⟨w, hw, ew⟩` from `hlift b hb`. Conclude with `⟨w, hw, sub_eq_iff_eq_add'.1 ew⟩`.
+-/
 theorem exists_psiTie_of_values (V : HSp D) {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {n r : ℕ}
     (d : DeltaDat Xo c n) (hr : V.rank = r) (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (hι : IotaOK Dw V io) (hpq : 1 ≤ Dw.p + Dw.q) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ)
@@ -229,6 +301,11 @@ theorem exists_psiTie_of_values (V : HSp D) {l : Level H} {Xo : Moduli Dw l} {c 
   · obtain ⟨w, hw, ew⟩ := hlift b hb
     exact ⟨w, hw, sub_eq_iff_eq_add'.1 ew⟩
 
+/- English proof (translation)
+Introduce and unpack `D J hJ j hj p I d xi hp ⟨rfl, -, hd, hA₂, -⟩ - hxi ⟨hr, U₂, dict₂, hv⟩`. Establish `hσ` using `J.toCore.good_σ₀`. Take `⟨_, _, _, _, _, _, _, hL, hI, -⟩` from `hJ.adPin j hj J.σ₀ hσ`. Take `⟨_, hW⟩` from `hJ.modelW j hj J.σ₀ hσ`. Establish `k` using `(J.dict j J.σ₀ 1).1`.
+
+Conclude with `exists_psiTie_of_values (J.V j J.σ₀) d hr _ ⟨hJ.pins.1.2.1, hJ.pins.1.2.2.1, hL, GlobalTheory.ShortMove.formPlus_of hJ.pins hj (hJ.spaceW j hj _ hσ) hL hI⟩ (GlobalTheory.ShortMove.rank_eq hJ.pins hj) _ _ (hW k) ((hJ.unf j hj _ hσ).2.1 k) (hJ.familyUniformisationBasePointOrthogona …`.
+-/
 theorem exists_psiTie_of_xiAt : ∀ (D : D7) (J : CoreJ D), LawsJ J → ∀ j, InR D j → ∀ (p : ℕ) (I : Ideal (𝓞 D.host.E)) (d : DeltaDat (J.Q.Xo j) J.Q.c 0) (xi : (AfE D)ˣ →* ℂˣ), p.Prime → CoverOK d p I → FnAlgClosed d.Xo₂ d.c₂ → XiOK D p xi → XiAt J j d xi → ∃ ψ, ψ ≠ 1 ∧ d.PsiTie ψ := by
   rintro D J hJ j hj p I d xi hp ⟨rfl, -, hd, hA₂, -⟩ - hxi ⟨hr, U₂, dict₂, hv⟩
   have hσ := J.toCore.good_σ₀

@@ -16,6 +16,9 @@ open Classical
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n o _ ζ F T a ha`. Take `⟨i, hi⟩` from `T.mono.exists_pos (maximalIdeal.isMaximal T.V).ne_top ha`. Use `fin_cases i`. Simplify using `using hi`.
+-/
 theorem Trait.beta_pos : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F)
     (a : T.D.toPre.X), a ≠ 0 → 0 < T.β a a := by
   intro g n o _ ζ F T a ha

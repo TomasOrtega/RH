@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.St
 open NumberField IsDedekindDomain
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspDetBlocks.le_one_of_intertwining | exact GlobalTheory.CuspDetBlocks.le_one_of_intertwining | (intros; apply GlobalTheory.CuspDetBlocks.le_one_of_intertwining <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_subquotient_principal_series : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x x' : ℕ) (τ : GlobalTheory.CuspRep.CuspSub E (x + x'))
     (w : HeightOneSpectrum (𝓞 E)) (χ₁ χ₂ : (w.adicCompletion E)ˣ →* ℂˣ), GlobalTheory.Published.GenericityGL →
     GlobalTheory.SmGL.IsSmoothChar χ₁ → GlobalTheory.SmGL.IsSmoothChar χ₂ →

@@ -6,6 +6,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz
 
 open Leaf2Aux in
+/- English proof (translation)
+The claim follows from `leaf_of (core_of (pairLin_of intBnd) pairRt (pairLie_of intBnd) growQHolds) growPHolds`.
+-/
 theorem leaf_holds2 : Leaf :=
   leaf_of (core_of (pairLin_of intBnd) pairRt (pairLie_of intBnd) growQHolds) growPHolds
 

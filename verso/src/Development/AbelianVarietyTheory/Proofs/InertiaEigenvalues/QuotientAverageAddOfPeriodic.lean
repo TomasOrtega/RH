@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 
 namespace GlobalTheory.CuspGeneric
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ Γ hΓ Φ Φ' h h'`. Use `letI : MeasurableSpace G := borel G`. Use `haveI : BorelSpace G := ⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, hF, h1⟩` from `GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G Γ hΓ`. Establish `hs : Per Γ (fun x => Φ x + Φ' x)` using `⟨h.1.add h'.1, fun γ hγ x => by simp only [h.2 γ hγ x, h'.2 γ hγ x]⟩`.
+
+Take `⟨-, -, i1, e1⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ hF Φ h`. Take `⟨-, -, i2, e2⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ hF Φ' h'`. Take `⟨-, -, -, e3⟩` from `GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ hF _ hs`. Rewrite `e1`, `e2`, `e3` using `[h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at e1 e2 e3`.
+
+Rewrite using `[← e1, ← e2, ← e3]`. Conclude with `integral_add i1 i2`.
+-/
 theorem avg_add_of_per : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (Γ : AddSubgroup G), IsCoLat Γ →
     ∀ Φ Φ' : G → ℂ, Per Γ Φ → Per Γ Φ' → avg Γ (fun x => Φ x + Φ' x) = avg Γ Φ + avg Γ Φ' := by

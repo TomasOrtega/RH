@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdTh
 
+/- English proof (translation)
+Introduce `D ψ V W _ f f' hf hf' h`. Establish `h0` using `GlobalTheory.TwistFactorCompare.theta_eq_zero_of_real (GlobalTheory.WeilVacMove.isTheta_add hf (GlobalTheory.WeilVacMove.isTheta_smul (-1) hf')) fun w hw => by`. Rewrite using `[Pi.add_apply, Pi.smul_apply, h w hw, neg_one_smul, add_neg_cancel]`. Rewrite `h0` using `[neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem theta_eq_of_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D), IsStdChar D ψ (-1) →
     ∀ f f' : WO V W → ℂ, IsThetaFunO ψ V W f → IsThetaFunO ψ V W f' →
       (∀ w : WO V W, w.map (finPart D) = 0 → f w = f' w) → f = f' := by

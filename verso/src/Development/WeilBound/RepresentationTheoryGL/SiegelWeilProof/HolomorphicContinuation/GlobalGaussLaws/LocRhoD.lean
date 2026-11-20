@@ -16,13 +16,22 @@ variable {D : D7} {n : ℕ}
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 
+/- English proof (translation)
+Conclude with `if_neg h`.
+-/
 theorem dirAt_ne {m : ℕ} {τ τ' : D.what₂.Tau} (h : τ' ≠ τ) (Z : Matrix (Fin m) (Fin n) ℂ) :
     GlobalTheory.FockAnnKill.dirAt τ Z τ' = 0 := by
   exact if_neg h
 
+/- English proof (translation)
+Conclude with `if_pos rfl`.
+-/
 theorem dirAt_self {m : ℕ} (τ : D.what₂.Tau) (Z : Matrix (Fin m) (Fin n) ℂ) : GlobalTheory.FockAnnKill.dirAt τ Z τ = Z := by
   exact if_pos rfl
 
+/- English proof (translation)
+Use `show Complex.exp (-(2 * (Real.pi : ℂ)) * ∑ τ' with τ' ≠ τ, ((|l τ'| : ℝ) : ℂ) * ((GlobalTheory.FockAnnKill.dirAt τ Z τ').conjTranspose * (Formalism.BasicNotions.TH.gramAt D V τ' * s τ') * GlobalTheory.FockAnnKill.dirAt τ Z τ').trace) = 1`. Rewrite using `[Finset.sum_eq_zero fun τ' hτ' => by rw [dirAt_ne (Finset.mem_filter.mp hτ').2 Z]; simp, mul_zero, Complex.exp_zero]`.
+-/
 theorem gAway_dirAt (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin n) ℂ) : gAway V l s τ (GlobalTheory.FockAnnKill.dirAt τ Z) = 1 := by
   classical
@@ -32,6 +41,9 @@ theorem gAway_dirAt (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau �
   rw [Finset.sum_eq_zero fun τ' hτ' => by rw [dirAt_ne (Finset.mem_filter.mp hτ').2 Z]; simp,
     mul_zero, Complex.exp_zero]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Conclude with `Finset.sum_comm`.
+-/
 theorem trace_conjTranspose_mul_self {m : ℕ} (u : Matrix (Fin m) (Fin n) ℂ) :
     Matrix.trace (uᴴ * u) = ((∑ a, ∑ i, ‖u a i‖ ^ 2 : ℝ) : ℂ) := by
   simp only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.star_def,
@@ -39,6 +51,11 @@ theorem trace_conjTranspose_mul_self {m : ℕ} (u : Matrix (Fin m) (Fin n) ℂ) 
   push_cast
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `show Complex.exp (-(2 * (Real.pi : ℂ)) * ∑ τ', ((|l τ'| : ℝ) : ℂ) * ((GlobalTheory.FockAnnKill.dirAt τ (fr * u) τ').conjTranspose * (Formalism.BasicNotions.TH.gramAt D V τ' * s τ') * GlobalTheory.FockAnnKill.dirAt τ (fr * u) τ').trace) = Complex.exp (-(((2 * Real.pi * |l τ|) * ∑ …`. Establish `key : (fr * u)ᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * (fr * u) = uᴴ * u`. Rewrite using `[Matrix.conjTranspose_mul, show uᴴ * frᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * (fr * u) = uᴴ * (frᴴ * (Formalism.BasicNotions.TH.gramAt D V τ * s τ) * fr) * u by simp only [Matrix.mul_assoc], hfr.2.2, Matrix.mul_one]`. Rewrite using `[Finset.sum_eq_single τ (fun τ' _ h => by rw [dirAt_ne h]; simp) (fun h => absurd (Finset.mem_univ τ) h), dirAt_self, key, trace_conjTranspose_mul_self]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_dirAt {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)
     (l : D.what₂.Tau → ℝ) (u : Matrix (Fin V.rank) (Fin n) ℂ) :

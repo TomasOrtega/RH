@@ -17,6 +17,9 @@ section Gen
 
 variable {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {g : ℕ}
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `h`. Establish `: (g : I.E ⊗[I.F] Af I.F) ∈ Wq I w`. Use `iE_mem (I := I) hg` as an intermediate fact. Simplify `this` using `[iE]`. Conclude with `Wq_mul' this ht`.
+-/
 theorem zmod_Wq (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {c : I.E ⊗[I.F] Af I.F} (h : ZMod' I g c) : c ∈ Wq I w := by
   obtain ⟨t, ht, rfl⟩ := h
   have : (g : I.E ⊗[I.F] Af I.F) ∈ Wq I w := by
@@ -24,10 +27,16 @@ theorem zmod_Wq (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {c : I.E ⊗[I.F] Af I.F} (h
     simpa [iE] using this
   exact Wq_mul' this ht
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `h`. Conclude with `⟨sg I t, DictLat.sigR_int I ht, by rw [map_mul, sg_natCast]⟩`.
+-/
 theorem zmod_sg {c : I.E ⊗[I.F] Af I.F} (h : ZMod' I g c) : ZMod' I g (sg I c) := by
   obtain ⟨t, ht, rfl⟩ := h
   exact ⟨sg I t, DictLat.sigR_int I ht, by rw [map_mul, sg_natCast]⟩
 
+/- English proof (translation)
+Unfold `mL`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `smul_mem I w hg hx` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mL_le (hg : (g : 𝓞 I.E) ∈ w.asIdeal) : mL I g ≤ Lq I w := by
   unfold mL
   rw [Submodule.span_le]
@@ -35,14 +44,27 @@ theorem mL_le (hg : (g : 𝓞 I.E) ∈ w.asIdeal) : mL I g ≤ Lq I w := by
   have := smul_mem I w hg hx
   simpa using this
 
+/- English proof (translation)
+Use `hhat_sub_left I 0 u v` as an intermediate fact. Rewrite `this` using `[zero_sub, DictLat.hhat_zero_left, zero_sub]`. Then use the resulting hypothesis.
+-/
 theorem hhat_neg_left (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I (-u) v = -hhat I u v := by
   have := hhat_sub_left I 0 u v
   rwa [zero_sub, DictLat.hhat_zero_left, zero_sub] at this
 
+/- English proof (translation)
+Use `hhat_sub_right I u 0 v` as an intermediate fact. Rewrite `this` using `[zero_sub, DictLat.hhat_zero_right, zero_sub]`. Then use the resulting hypothesis.
+-/
 theorem hhat_neg_right (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I u (-v) = -hhat I u v := by
   have := hhat_sub_right I u 0 v
   rwa [zero_sub, DictLat.hhat_zero_right, zero_sub] at this
 
+/- English proof (translation)
+Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Use `clear hv`. Rewrite using `[DictLat.hhat_add_right]`. Use `add_mem ?_ (hhat_Lq_right hu (mL_le hg hz))` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem s hs => exact hS s hs`. Consider the case `zero => rw [DictLat.hhat_zero_right]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [DictLat.hhat_add_right]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha => show hhat I u ((r : I.E ⊗[I.F] Af I.F) • a) ∈ Wq I w`. Rewrite using `[DictLat.hhat_smul_right]`. Conclude with `Wq_mul ha r.2`.
+-/
 theorem pair_right (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {u : Fin I.n → I.E ⊗[I.F] Af I.F} (hu : u ∈ I.Lf)
     {S : Set (VA I)} (hS : ∀ s ∈ S, hhat I u s ∈ Wq I w) {v : VA I} (hv : InMod I g S v) : hhat I u v ∈ Wq I w := by
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hv
@@ -57,6 +79,19 @@ theorem pair_right (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {u : Fin I.n → I.E ⊗[
     show hhat I u ((r : I.E ⊗[I.F] Af I.F) • a) ∈ Wq I w
     rw [DictLat.hhat_smul_right]; exact Wq_mul ha r.2
 
+/- English proof (translation)
+Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hu`. Use `clear hu`. Rewrite using `[DictLat.hhat_add_left]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem s hs => exact hS s hs`. Consider the case `zero => rw [DictLat.hhat_zero_left]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [DictLat.hhat_add_left]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha => show hhat I ((r : I.E ⊗[I.F] Af I.F) • a) v ∈ Wq I w`. Rewrite using `[DictLat.hhat_smul_left]`. Conclude with `Wq_mul ha (DictLat.sigR_int I r.2)`. Establish `hgW : (g : I.E ⊗[I.F] Af I.F) ∈ Wq I w`. Use `iE_mem (I := I) hg` as an intermediate fact.
+
+Simplify `this` using `[iE]`. Unfold `mL at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨x, hx, rfl⟩` from `hs`.
+
+Rewrite using `[DictLat.hhat_smul_left, sg_natCast]`. Conclude with `Wq_mul' hgW (dual_hat_integral I x hx v hv)`. Consider the case `zero => rw [DictLat.hhat_zero_left]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [DictLat.hhat_add_left]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => show hhat I ((r : I.E ⊗[I.F] Af I.F) • a) v ∈ Wq I w`. Rewrite using `[DictLat.hhat_smul_left]`. Conclude with `Wq_mul ha (DictLat.sigR_int I r.2)`.
+-/
 theorem pair_left (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {v : Fin I.n → I.E ⊗[I.F] Af I.F} (hv : v ∈ I.Lf)
     {S : Set (VA I)} (hS : ∀ s ∈ S, hhat I s v ∈ Wq I w) {u : VA I} (hu : InMod I g S u) : hhat I u v ∈ Wq I w := by
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hu
@@ -85,12 +120,20 @@ theorem pair_left (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {v : Fin I.n → I.E ⊗[I
       show hhat I ((r : I.E ⊗[I.F] Af I.F) • a) v ∈ Wq I w
       rw [DictLat.hhat_smul_left]; exact Wq_mul ha (DictLat.sigR_int I r.2)
 
+/- English proof (translation)
+Use `pair_right hg hu hS hx` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, hhat_sub_right]`. Then use the resulting hypothesis.
+-/
 theorem dir_col (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {x : I.Gf} {u v : VA I} (hu : u ∈ I.Lf) {S : Set (VA I)}
     (hS : ∀ s ∈ S, hhat I u s ∈ Wq I w) (hx : InMod I g S ((I.fmat x - 1) *ᵥ v)) :
     hhat I u (I.fmat x *ᵥ v) - hhat I u v ∈ Wq I w := by
   have := pair_right hg hu hS hx
   rwa [Matrix.sub_mulVec, Matrix.one_mulVec, hhat_sub_right] at this
 
+/- English proof (translation)
+Establish `h1 : hhat I u (I.fmat x *ᵥ v) = hhat I (I.fmat x⁻¹ *ᵥ u) v`. Use `hhat_fmat I x (I.fmat x⁻¹ *ᵥ u) v` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← fmat_mul, mul_inv_cancel, fmat_one, Matrix.one_mulVec]`. Conclude with `this`. Use `pair_left hg hv hS hx` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, hhat_sub_left, ← h1]`. Then use the resulting hypothesis.
+-/
 theorem dual_col (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {x : I.Gf} {u v : VA I} (hv : v ∈ I.Lf) {S : Set (VA I)}
     (hS : ∀ s ∈ S, hhat I s v ∈ Wq I w) (hx : InMod I g S ((I.fmat x⁻¹ - 1) *ᵥ u)) :
     hhat I u (I.fmat x *ᵥ v) - hhat I u v ∈ Wq I w := by
@@ -103,6 +146,13 @@ theorem dual_col (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {x : I.Gf} {u v : VA I} (hv
 
 variable {p : ℕ} {r : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `dir_col hg (hfrd i) (fun s hs => by`. Take `⟨j', rfl, hj'⟩` from `hS s hs`. Use `hgr i j'` as an intermediate fact. Rewrite using `[if_neg (Ne.symm hj'), sub_zero] at this) hx` and apply the resulting hypothesis. Use `congW_of_sub ?_ h1` and prove the remaining obligations.
+
+Use `congW_of_sub (t := ((if i = j then 1 else 0 : ℤ) : I.E ⊗[I.F] Af I.F)) ?_ ?_` and prove the remaining obligations. Use `congW_intCast (I := I) (w := w) (p := p) (if i = j then 1 else 0)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`. Use `hgr i j` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cong_dir (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {fr frd : Fin r → VA I} (hfrd : ∀ i, frd i ∈ I.Lf)
     (hgr : GramW w fr frd) {x : I.Gf} (i j : Fin r) {S : Set (VA I)}
     (hS : ∀ s ∈ S, ∃ j', s = fr j' ∧ j' ≠ i) (hx : InMod I g S ((I.fmat x - 1) *ᵥ fr j)) :
@@ -120,6 +170,13 @@ theorem cong_dir (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {fr frd : Fin r → VA I} (
     convert this using 2
     split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h1` using `dual_col hg (hfr j) (fun s hs => by`. Take `⟨i', rfl, hi'⟩` from `hS s hs`. Use `hgr i' j` as an intermediate fact. Rewrite using `[if_neg hi', sub_zero] at this) hx` and apply the resulting hypothesis. Use `congW_of_sub ?_ h1` and prove the remaining obligations.
+
+Use `congW_of_sub (t := ((if i = j then 1 else 0 : ℤ) : I.E ⊗[I.F] Af I.F)) ?_ ?_` and prove the remaining obligations. Use `congW_intCast (I := I) (w := w) (p := p) (if i = j then 1 else 0)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`. Use `hgr i j` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cong_dual (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {fr frd : Fin r → VA I} (hfr : ∀ j, fr j ∈ I.Lf)
     (hgr : GramW w fr frd) {x : I.Gf} (i j : Fin r) {S : Set (VA I)}
     (hS : ∀ s ∈ S, ∃ i', s = frd i' ∧ i' ≠ j) (hx : InMod I g S ((I.fmat x⁻¹ - 1) *ᵥ frd i)) :
@@ -137,12 +194,18 @@ theorem cong_dual (hg : (g : 𝓞 I.E) ∈ w.asIdeal) {fr frd : Fin r → VA I} 
     convert this using 2
     split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `neg_mem h`.
+-/
 theorem inMod_neg {S : Set (VA I)} {v : VA I} (h : InMod I g S v) : InMod I g S (-v) := neg_mem h
 
 end Gen
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Unfold `Ranks.r Ranks.rS`. Take `⟨t, ht⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hrD (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   unfold Ranks.r Ranks.rS
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -167,23 +230,41 @@ def frd (ob : Bool) (j : Fin D.R.r) : VA X.B.I :=
 
 def rv {n : ℕ} (a : Fin n) : Fin n := ⟨n - 1 - a.1, by omega⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rv_val {n : ℕ} (a : Fin n) : (rv a).1 = n - 1 - a.1 := rfl
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp <;> omega)`.
+-/
 theorem rv_rv {n : ℕ} (a : Fin n) : rv (rv a) = a := Fin.ext (by simp <;> omega)
 
+/- English proof (translation)
+Unfold `fr`. Rewrite using `[dif_pos (show (xI (hrD D) a).1 < D.R.rS from a.2)]`. Both sides reduce to the same expression.
+-/
 theorem frame_isotropic (ob : Bool) (a : Fin D.R.rS) : fr X ob (xI (hrD D) a) = X.e0 a := by
   unfold fr; rw [dif_pos (show (xI (hrD D) a).1 < D.R.rS from a.2)]; rfl
 
+/- English proof (translation)
+Unfold `fr`. Rewrite using `[dif_neg (show ¬ (wI (hrD D) i).1 < D.R.rS by simp), dif_pos (show (wI (hrD D) i).1 < D.R.rS + D.R.k by simp)]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ext <;> simp`.
+-/
 theorem fr_w (ob : Bool) (i : Fin D.R.k) : fr X ob (wI (hrD D) i) = if ob then X.bw i else X.bwd (rv i) := by
   unfold fr
   rw [dif_neg (show ¬ (wI (hrD D) i).1 < D.R.rS by simp), dif_pos (show (wI (hrD D) i).1 < D.R.rS + D.R.k by simp)]
   congr 1 <;> congr 1 <;> ext <;> simp
 
+/- English proof (translation)
+Unfold `fr`. Apply the tactic sequence `rw [dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS by simp <;> omega), dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS + D.R.k by simp), if_pos (by simp)]`.
+-/
 theorem frame_anisotropic (ob : Bool) : fr X ob (zI (hrD D)) = X.z0 := by
   unfold fr
   rw [dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS by simp <;> omega),
     dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS + D.R.k by simp), if_pos (by simp)]
 
+/- English proof (translation)
+Unfold `fr`. Apply the tactic sequence `rw [dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS by simp <;> omega), dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS + D.R.k by simp <;> omega), if_neg (by simp <;> omega), dif_pos (show (yI (hrD D) a).1 - (D.R.rS + D.R.k + 1) < D.R.rS by simp)]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem fr_y (ob : Bool) (a : Fin D.R.rS) : fr X ob (yI (hrD D) a) = X.f0 (rv a) := by
   unfold fr
   rw [dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS by simp <;> omega),
@@ -191,19 +272,31 @@ theorem fr_y (ob : Bool) (a : Fin D.R.rS) : fr X ob (yI (hrD D) a) = X.f0 (rv a)
     dif_pos (show (yI (hrD D) a).1 - (D.R.rS + D.R.k + 1) < D.R.rS by simp)]
   congr 1; ext; simp
 
+/- English proof (translation)
+Unfold `frd`. Rewrite using `[dif_pos (show (xI (hrD D) a).1 < D.R.rS from a.2)]`. Both sides reduce to the same expression.
+-/
 theorem dual_frame_isotropic (ob : Bool) (a : Fin D.R.rS) : frd X ob (xI (hrD D) a) = X.f0 a := by
   unfold frd; rw [dif_pos (show (xI (hrD D) a).1 < D.R.rS from a.2)]; rfl
 
+/- English proof (translation)
+Unfold `frd`. Rewrite using `[dif_neg (show ¬ (wI (hrD D) i).1 < D.R.rS by simp), dif_pos (show (wI (hrD D) i).1 < D.R.rS + D.R.k by simp)]`. Apply the tactic sequence `congr 1 <;> congr 1 <;> ext <;> simp`.
+-/
 theorem frd_w (ob : Bool) (i : Fin D.R.k) : frd X ob (wI (hrD D) i) = if ob then X.bwd i else X.bw (rv i) := by
   unfold frd
   rw [dif_neg (show ¬ (wI (hrD D) i).1 < D.R.rS by simp), dif_pos (show (wI (hrD D) i).1 < D.R.rS + D.R.k by simp)]
   congr 1 <;> congr 1 <;> ext <;> simp
 
+/- English proof (translation)
+Unfold `frd`. Apply the tactic sequence `rw [dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS by simp <;> omega), dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS + D.R.k by simp), if_pos (by simp)]`.
+-/
 theorem dual_frame_anisotropic (ob : Bool) : frd X ob (zI (hrD D)) = -X.z0 := by
   unfold frd
   rw [dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS by simp <;> omega),
     dif_neg (show ¬ (zI (hrD D)).1 < D.R.rS + D.R.k by simp), if_pos (by simp)]
 
+/- English proof (translation)
+Unfold `frd`. Apply the tactic sequence `rw [dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS by simp <;> omega), dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS + D.R.k by simp <;> omega), if_neg (by simp <;> omega), dif_pos (show (yI (hrD D) a).1 - (D.R.rS + D.R.k + 1) < D.R.rS by simp)]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem frd_y (ob : Bool) (a : Fin D.R.rS) : frd X ob (yI (hrD D) a) = X.e0 (rv a) := by
   unfold frd
   rw [dif_neg (show ¬ (yI (hrD D) a).1 < D.R.rS by simp <;> omega),

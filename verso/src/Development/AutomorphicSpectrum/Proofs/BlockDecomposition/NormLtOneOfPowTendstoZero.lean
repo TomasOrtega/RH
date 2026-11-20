@@ -11,6 +11,11 @@ open MeasureTheory ValuativeRel
 noncomputable section
 namespace GlobalTheory.CompanionTheory.NabsContract
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Rewrite `H` using `[not_lt]`. Establish `hs : {x : k | valuation k x < 1} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).mpr ⟨1, fun x hx => by simpa using hx⟩`. Take `⟨n, hn⟩` from `(ht.eventually hs).exists`. Establish `hn' : valuation k ((t : k) ^ n) < 1` using `hn`.
+
+Rewrite `hn'` using `[map_pow]`. Conclude with `(not_lt.mpr (one_le_pow₀ H)) hn'`.
+-/
 theorem valuation_lt_one_of_tendsto_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : kˣ)
     (ht : Tendsto (fun n : ℕ => (t : k) ^ n) atTop (𝓝 0)) : valuation k (t : k) < 1 := by
@@ -23,6 +28,19 @@ theorem valuation_lt_one_of_tendsto_pow {k : Type} [Field k] [ValuativeRel k] [T
   rw [map_pow] at hn'
   exact (not_lt.mpr (one_le_pow₀ H)) hn'
 
+/- English proof (translation)
+Introduce `k _ _ _ _ t ht`. Establish `hv` using `GlobalTheory.CompanionTheory.NabsContract.valuation_lt_one_of_tendsto_pow t ht`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`.
+
+Use `set ν : Measure k := Measure.addHaar with hν`. Use `set O : Set k := ((valuation k).integer : Set k) with hO_def`. Use `set B : Set k := GlobalTheory.SplitWeil.cball t with hB_def`. Establish `hO : IsOpen O` using `GlobalTheory.SplitWeil.isOpen_int k`. Establish `hBO : B ⊆ O` using `fun x hx => (Valuation.mem_integer_iff _ _).mpr (le_trans (show valuation k x ≤ valuation k (t : k) from hx) hv.le)`.
+
+Establish `hO1 : O ⊆ GlobalTheory.SplitWeil.cball (1 : kˣ)` using `fun x hx => by`. Establish `hx'` using `(Valuation.mem_integer_iff _ _).mp hx`. Use `show valuation k x ≤ valuation k ((1 : kˣ) : k)`. Rewrite using `[Units.val_one, map_one]`. Conclude with `hx'`.
+
+Establish `hOfin : ν O ≠ ⊤` using `measure_ne_top_of_subset hO1 (GlobalTheory.SplitWeil.isCompact_cball (1 : kˣ)).measure_lt_top.ne`. Establish `hBfin : ν B ≠ ⊤` using `measure_ne_top_of_subset hBO hOfin`. Establish `h1 : (1 : k) ∈ O \ B`. Use `⟨(Valuation.mem_integer_iff _ _).mpr (map_one _).le, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : valuation k (1 : k) ≤ valuation k (t : k)` using `h`.
+
+Rewrite `h'` using `[map_one]`. Conclude with `not_lt.mpr h' hv`. Establish `hdiff : 0 < ν (O \ B)` using `(hO.sdiff (GlobalTheory.SplitWeil.isCompact_cball t).isClosed).measure_pos ν ⟨1, h1⟩`. Rewrite `hdiff` using `[measure_sdiff hBO (GlobalTheory.SplitWeil.isOpen_cball t).measurableSet.nullMeasurableSet hBfin, tsub_pos_iff_lt]`. Establish `hlt : ν.real B < ν.real O` using `(ENNReal.toReal_lt_toReal hBfin hOfin).mpr hdiff`.
+
+Establish `hOpos : 0 < ν.real O` using `ENNReal.toReal_pos (hO.measure_pos ν ⟨0, (Valuation.mem_integer_iff _ _).mpr (by simp)⟩).ne' hOfin`. Establish `hmeas : ν.real B = GlobalTheory.SplitWeil.nabs k t * ν.real O` using `GlobalTheory.SplitWeil.measureReal_cball ν t`. Rewrite `hlt` using `[hmeas]`. Conclude with `lt_of_mul_lt_mul_right (by rwa [one_mul]) hOpos.le`.
+-/
 theorem nabs_lt_one_of_tendsto_pow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : kˣ),
     Tendsto (fun n : ℕ => (t : k) ^ n) atTop (𝓝 0) → nabs k t < 1 := by

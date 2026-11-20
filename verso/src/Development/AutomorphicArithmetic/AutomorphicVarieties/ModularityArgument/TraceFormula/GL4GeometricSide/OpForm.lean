@@ -18,6 +18,9 @@ variable {X Γ U ι : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTop
   [Monoid Γ] [TopologicalSpace Γ] [ContinuousMul Γ] [AddCommGroup U] [Module ℂ U]
 
 omit [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] in
+/- English proof (translation)
+Use `⟨continuous_finsetProd _ fun v _ => (he v).1.comp (continuous_apply v), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (isCompact_univ_pi fun v => (he v).2.isCompact) fun y hy => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `not_forall.1 (mt Set.mem_univ_pi.2 hy)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (image_eq_zero_of_notMem_tsupport hv)`.
+-/
 private theorem prod_cs {κ : Type} [Fintype κ] (e : κ → X → ℂ) (he : ∀ v, Continuous (e v) ∧ HasCompactSupport (e v)) :
     Continuous (fun y : κ → X => ∏ v, e v (y v)) ∧ HasCompactSupport (fun y : κ → X => ∏ v, e v (y v)) := by
   refine ⟨continuous_finsetProd _ fun v _ => (he v).1.comp (continuous_apply v), ?_⟩
@@ -25,6 +28,17 @@ private theorem prod_cs {κ : Type} [Fintype κ] (e : κ → X → ℂ) (he : �
   obtain ⟨v, hv⟩ := not_forall.1 (mt Set.mem_univ_pi.2 hy)
   exact Finset.prod_eq_zero (Finset.mem_univ v) (image_eq_zero_of_notMem_tsupport hv)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `s u g`. Simplify using `[Measure.pi_of_empty (fun _ : Fin 0 => μ)]`. Consider the case `succ m ih`.
+
+Introduce `s u g`. Establish `hmp` using `measurePreserving_piFinSuccAbove (fun _ : Fin (m + 1) => μ) 0`. Establish `hl : Continuous fun y : Fin (m + 1) → X => (List.ofFn fun i => j (s i) (y i)).prod`. Simplify using `only [List.ofFn_eq_map]`. Conclude with `continuous_list_prod _ fun i _ => (hj _).comp (continuous_apply i)`.
+
+Establish `hF : Integrable (fun y : Fin (m + 1) → X => (∏ i, e (s i) (y i)) * Φ u (g * (List.ofFn fun i => j (s i) (y i)).prod)) (Measure.pi fun _ => μ)` using `((prod_cs (fun i => e (s i)) fun i => he _).1.mul ((hΦ u).comp (continuous_const.mul hl))).integrable_of_hasCompactSupport (prod_cs (fun i => e (s i)) fun i => he _).2.mul_right`. Rewrite using `[← (hmp.symm _).integral_comp']`. Use `(integral_prod _ (((hmp.symm _).integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hF)).trans ?_` and prove the remaining obligations. Establish `hin : ∀ t : X, ∫ z : Fin m → X, (fun y : Fin (m + 1) → X => (∏ i, e (s i) (y i)) * Φ u (g * (List.ofFn fun i => j (s i) (y i)).prod)) ((MeasurableEquiv.piFinSuccAbove (fun _ => X) 0).symm (t, z)) ∂(Measure.pi fun _ => μ) = (∏ i : Fin m, val (s i.succ)) * (e (s 0) t * Φ ((List.ofF …`. Introduce `t`.
+
+Establish `e1 : ∀ z : Fin m → X, (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => X) 0).symm (t, z) = Fin.cons t z` using `fun z => Fin.insertNth_zero' t z`. Simplify using `only [e1, Fin.prod_univ_succ, List.ofFn_succ, List.prod_cons, Fin.cons_zero, Fin.cons_succ]`. Simplify using `only [← mul_assoc g, mul_assoc (e (s 0) t)]`. Rewrite using `[integral_const_mul, ih (fun i => s i.succ) u (g * j (s 0) t)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `(integral_congr_ae (Filter.Eventually.of_forall hin)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hloc, Fin.prod_univ_succ, List.ofFn_succ, List.prod_cons, Module.End.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem iter_fin (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ]
     (e : ι → X → ℂ) (he : ∀ v, Continuous (e v) ∧ HasCompactSupport (e v)) (j : ι → X → Γ) (hj : ∀ v, Continuous (j v))
     (Φ : U → Γ → ℂ) (hΦ : ∀ u, Continuous (Φ u)) (val : ι → ℂ) (P : ι → Module.End ℂ U)
@@ -63,6 +77,13 @@ private theorem iter_fin (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCom
     rw [integral_const_mul, hloc, Fin.prod_univ_succ, List.ofFn_succ, List.prod_cons, Module.End.mul_apply]
     ring
 
+/- English proof (translation)
+Set `σ : Fin l.length ≃ ι` to `List.Nodup.getEquivOfForallMemList l hl hm`. Establish `hσ : ∀ {β : Type} (f : ι → β), (List.ofFn fun i => f (σ i)) = l.map f` using `fun f => by conv_rhs => rw [← List.ofFn_get l, List.map_ofFn]`. Both sides reduce to the same expression. Establish `hmp` using `measurePreserving_piCongrLeft (fun _ : ι => μ) σ`. Establish `key` using `iter_fin μ e he j hj Φ hΦ val P hloc _ σ u g`.
+
+Rewrite `key` using `[hσ P, Equiv.prod_comp σ val]`. Rewrite using `[← key, ← hmp.integral_comp']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e1 : ∀ i, MeasurableEquiv.piCongrLeft (fun _ : ι => X) σ y (σ i) = y i` using `fun i => MeasurableEquiv.piCongrLeft_apply_apply (β := fun _ : ι => X) σ y i`. Use `beta_reduce`.
+
+Rewrite using `[← hσ, ← Equiv.prod_comp σ]`. Simplify using `only [e1]`.
+-/
 private theorem iter_list [Fintype ι] (μ : Measure X) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ]
     (e : ι → X → ℂ) (he : ∀ v, Continuous (e v) ∧ HasCompactSupport (e v)) (j : ι → X → Γ) (hj : ∀ v, Continuous (j v))
     (Φ : U → Γ → ℂ) (hΦ : ∀ u, Continuous (Φ u)) (val : ι → ℂ) (P : ι → Module.End ℂ U)
@@ -88,6 +109,13 @@ private theorem iter_list [Fintype ι] (μ : Measure X) [SigmaFinite μ] [IsFini
 
 end Iter
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Introduce `hl w`.
+
+Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, Pi.mul_apply, ih hl.2]`. Distinguish the cases in `h : w = a`. Substitute `h` using the available equality. Simplify using `[hl.1]`.
+
+Simplify using `[h]`.
+-/
 private theorem prod_single {ι M : Type} [DecidableEq ι] [Monoid M] (y : ι → M) :
     ∀ l : List ι, l.Nodup → ∀ w, (l.map fun v => (Pi.mulSingle v (y v) : ι → M)).prod w = if w ∈ l then y w else 1 := by
   intro l
@@ -102,6 +130,13 @@ private theorem prod_single {ι M : Type} [DecidableEq ι] [Monoid M] (y : ι �
       simp [hl.1]
     · simp [h]
 
+/- English proof (translation)
+Set `em : X × Y ≃ᵐ K` to `e.toHomeomorph.toMeasurableEquiv`. Use `haveI : IsHaarMeasure ((mX.prod mY).map e) := ContinuousMulEquiv.isHaarMeasure_map _ e`. Use `haveI : LocallyCompactSpace K := e.symm.toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology K := e.symm.toHomeomorph.isEmbedding.secondCountableTopology`. Establish `h` using `isMulLeftInvariant_eq_smul μ ((mX.prod mY).map e)`.
+
+Establish `hpos` using `haarScalarFactor_pos_of_isHaarMeasure μ ((mX.prod mY).map e)`. Generalize the expression as in `haarScalarFactor μ ((mX.prod mY).map e) = c at h hpos`. Use `⟨((c : ℝ) : ℂ), by exact_mod_cast hpos.ne', fun f hf hs => ?_⟩` and prove the remaining obligations. Rewrite using `[h, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Use `congr 1`.
+
+Use `(integral_map_equiv em f).trans ?_` and prove the remaining obligations. Conclude with `integral_prod (fun z => f (e z)) ((hf.comp e.continuous).integrable_of_hasCompactSupport (hs.comp_homeomorph e.toHomeomorph))`.
+-/
 private theorem split_two {X Y K : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [LocallyCompactSpace X]
     [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y]
     [LocallyCompactSpace Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [Group K] [TopologicalSpace K]
@@ -123,6 +158,9 @@ private theorem split_two {X Y K : Type} [Group X] [TopologicalSpace X] [IsTopol
   exact integral_prod (fun z => f (e z))
     ((hf.comp e.continuous).integrable_of_hasCompactSupport (hs.comp_homeomorph e.toHomeomorph))
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hn : (fun x => g⁻¹ * x) ⁻¹' (K : Set Γ) ∈ nhds g` using `(hK.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp)`. Use `continuousAt_const.congr (f := fun _ => h g) (Filter.mem_of_superset hn fun x hx => ?_)` and prove the remaining obligations. Use `hh _ hx g` as an intermediate fact. Simplify using `using this.symm`.
+-/
 private theorem hecke_cont {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (K : Subgroup Γ)
     (hK : IsOpen (K : Set Γ)) (h : Γ → ℂ) (hh : ∀ k ∈ K, ∀ g, h (g * k) = h g) : Continuous h := by
   refine continuous_iff_continuousAt.2 fun g => ?_
@@ -151,6 +189,29 @@ open UpperTheory.V.Z.GSp4Splitting PositivityTheory.RgBcC PositivityTheory.RgBcC
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH PositivityTheory.Rg.BcB.CG.lc_G PositivityTheory.Rg.BcB.CG.sc_G PositivityTheory.Rg.BcB.CG.lc_GLf
   PositivityTheory.Rg.BcB.CG.sc_GLf PositivityTheory.Rg.BcB.CG.t2_GL_finite_adeles PositivityTheory.Rg.BcB.CG.borelSpaceH in
 open PositivityTheory.Rg.BcB.CG in
+/- English proof (translation)
+Introduce `_ _ hL E _ _ _ n hn π hθ K hKo hKc hKθ _ _ μf _ D lam hch _ _ ν _ hν _ _ μC _ μ _ P hP`. Use `haveI : IsHaarMeasure (Measure.pi fun _ : InfinitePlace E => μC) := pi.isHaarMeasure _`. Take `⟨c, hc0, hc⟩` from `split_two (split0 E n) μ (Measure.pi fun _ : InfinitePlace E => μC) μf`. Use `⟨c, hc0, fun k val T hk h hh ψ u hu x => ?_⟩` and prove the remaining obligations. Use `set e : InfinitePlace E → G n → ℂ := fun w => phiOf (lefE n (lam w)) (lefT n (lam w)) (k w) with he`.
+
+Establish `hecs : ∀ w, Continuous (e w) ∧ HasCompactSupport (e w)` using `fun w => PositivityTheory.Rg.BcB.F.F0.phiOf_cs μC _ _ _ _ _ (hk w)`. Establish `hhc : Continuous h` using `hecke_cont K hKo h fun k hk g => by simpa using hh.2 1 K.one_mem k hk g`. Establish `hcont : ∀ φ : π.V, Continuous φ.1.1` using `fun φ => DiscreteGroups.T1.G.continuous_of_mem π φ.2`. Establish `hphi : ∀ p : (InfinitePlace E → G n) × GL (Fin n) (Af E), phiProd lam k h (split0 E n p) = (∏ w, e w (p.1 w)) * h p.2`. Introduce `p`.
+
+Establish `e1 : ∀ w, infAt E n w (split0 E n p).1 = p.1 w` using `fun w => gInf_splitGA n p w`. Establish `e2 : finOf E n (split0 E n p).1 = p.2` using `gFin_splitGA n p`. Simplify using `only [phiProd, e1, e2, he]`. Establish `hphi' : phiProd lam k h = (fun p : (InfinitePlace E → G n) × GL (Fin n) (Af E) => (∏ w, e w (p.1 w)) * h p.2) ∘ (split0 E n).symm.toHomeomorph`. Use function extensionality and compare the values at `y`.
+
+Take `⟨p, rfl⟩` from `(split0 E n).surjective y`. Rewrite using `[hphi]`. Conclude with `(congrArg (fun p : (InfinitePlace E → G n) × GL (Fin n) (Af E) => (∏ w, e w (p.1 w)) * h p.2) ((split0 E n).symm_apply_apply p)).symm`. Establish `hpc : Continuous (phiProd lam k h)`. Rewrite using `[hphi']`.
+
+Conclude with `(((prod_cs e hecs).1.comp continuous_fst).mul (hhc.comp continuous_snd)).comp (Homeomorph.continuous _)`. Establish `hps : HasCompactSupport (phiProd lam k h)`. Rewrite using `[hphi']`. Use `HasCompactSupport.comp_homeomorph ?_ _` and prove the remaining obligations. Use `HasCompactSupport.intro ((prod_cs e hecs).2.isCompact.prod hh.1.isCompact) fun p hp => ?_` and prove the remaining obligations.
+
+Break down `not_and_or.1 hp with h1 | h1` into its components or cases. Rewrite using `[show (∏ w, e w (p.1 w)) = 0 from image_eq_zero_of_notMem_tsupport (f := fun y : InfinitePlace E → G n => ∏ v, e v (y v)) h1, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, mul_zero]`. Rewrite using `[hc (fun y => phiProd lam k h y * ψ.1.1 (x * y.1)) (hpc.mul ((hcont ψ).comp (continuous_const.mul continuous_fst))) hps.mul_right, mul_assoc]`. Use `congr 1`.
+
+Set `j : InfinitePlace E → G n → GA E n` to `fun w t => infP n (Pi.mulSingle w t)`. Set `l` to `(Finset.univ : Finset (InfinitePlace E)).toList`. Set `ih : (InfinitePlace E → G n) →* GA E n` to `MonoidHom.mk' (infP n) (infinitePart_mul n)`. Establish `hjl : ∀ y : InfinitePlace E → G n, (l.map fun v => j v (y v)).prod = infP n y`. Introduce `y`.
+
+Establish `e1 : (l.map fun v => (Pi.mulSingle v (y v) : InfinitePlace E → G n)).prod = y`. Use function extensionality and compare the values at `w`. Rewrite using `[prod_single y l (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ w))]`. Use `conv_rhs => rw [← e1]`. Use `Eq.trans ?_ (map_list_prod ih _).symm` and prove the remaining obligations.
+
+Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Establish `hj : ∀ w, Continuous (j w)` using `fun w => (continuous_infP n).comp (continuous_mulSingle (A := fun _ => G n) w)`. Establish `key` using `iter_list μC e hecs j hj (fun u => (D.i u).1.1) (fun u => hcont _) (fun w => val w (infOf (lam w))) P (fun w u g => by`. Use `hL E n hn π hθ K hKo hKc hKθ μf D w (lam w) (hch w) ν hν μC _ _ (P w) (hP w) (k w) (val w) (T w) (hk w) u g` as an intermediate fact.
+
+Simplify using `only [along_val] at this`. Conclude with `this) l (Finset.nodup_toList _) (fun v => Finset.mem_toList.2 (Finset.mem_univ v)) u x`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[hjl, hu, heckeOp, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hphi, mul_assoc, mul_assoc x]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.GSp4Splitting.opForm :
     HeckeMem → RlComm → LocAct → OpForm := by
   intro _ _ hL E _ _ _ n hn π hθ K hKo hKc hKθ _ _ μf _ D lam hch _ _ ν _ hν _ _ μC _ μ _ P hP

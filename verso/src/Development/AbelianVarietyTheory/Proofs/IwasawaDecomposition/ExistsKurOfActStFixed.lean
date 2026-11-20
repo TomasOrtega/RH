@@ -10,11 +10,31 @@ namespace GlobalTheory.Pst
 
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(P.PD K).invB b fun g => by rw [P.PD_actB]; exact hb g g.2`. Conclude with `⟨_, hc⟩`.
+-/
 theorem exists_kur_of_actQ_fixed (K : FinExt l) (b : P.R.B) (hb : ∀ g ∈ GK K, P.actQ g b = b) :
     ∃ c : ↥(MaximalUnramifiedExtension l), algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c = b := by
   obtain ⟨c, hc⟩ := (P.PD K).invB b fun g => by rw [P.PD_actB]; exact hb g g.2
   exact ⟨_, hc⟩
 
+/- English proof (translation)
+Establish `hC : ∀ b : P.R.B, (∀ g ∈ GK K, actSt P g (C b) = C b) → ∃ c : ↥(MaximalUnramifiedExtension l), algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c = C b`. Introduce `b hb`. Take `⟨c, hc⟩` from `exists_kur_of_actQ_fixed P K b fun g hg => C_injective (by rw [← actSt_C]; exact hb g hg)`. Conclude with `⟨c, by rw [Polynomial.algebraMap_apply, hc]⟩`. Proceed by induction on `hn : p.natDegree using Nat.strong_induction_on generalizing p with`.
+
+Consider the case `_ n ih`. Distinguish the cases in `h0 : p.natDegree = 0`. Rewrite `hp`, the goal using `[eq_C_of_natDegree_eq_zero h0]`. Conclude with `hC _ hp`. Establish `hN : ∀ g ∈ GK K, actSt P g (monSt P p) = monSt P p` using `fun g hg => by`.
+
+Rewrite using `[← monSt_actSt, hp g hg]`. Take `⟨c, hc⟩` from `ih (monSt P p).natDegree (by`. Rewrite using `[monSt_apply, natDegree_neg, ← hn]`. Conclude with `natDegree_derivative_lt h0) _ hN rfl`. Rewrite `hc` using `[Polynomial.algebraMap_apply]`.
+
+Use `set a := algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c with ha`. Establish `hfa : ∀ g ∈ GK K, P.actQ g a = a` using `fun g hg => C_injective (by rw [← actSt_C, hc]; exact hN g hg)`. Take `⟨b, hb⟩` from `(monSt_eq_zero_iff P (p + C a * X)).mp (by`. Rewrite using `[map_add, ← hc]`. Use the proof step `simp)`.
+
+Establish `hpb : p = C b - C a * X` using `by rw [← hb]; ring`. Distinguish the cases in `hc0 : c = 0`. Establish `: p = C b` using `by rw [hpb, ha, hc0]; simp`. Rewrite `hp`, the goal using `[this]`. Conclude with `hC _ hp`.
+
+Use `exfalso set a' := algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c⁻¹ with ha'`. Establish `haa : a' * a = 1` using `by rw [ha, ha', ← map_mul, inv_mul_cancel₀ hc0, map_one]`. Use `hK (a' * b) fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hp g hg`. Rewrite `h1` using `[hpb, map_sub, map_mul, actSt_C, actSt_C, actSt_X, hfa g hg]`.
+
+Establish `h2 : P.actQ g b - a * ((kummer P g : ℚ_[l]) • P.tB) = b` using `C_injective (by rw [map_sub, map_mul]; linear_combination h1)`. Establish `h3 : P.actQ g a' * a = 1`. Use `congrArg (P.actQ g) haa` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, hfa g hg]`. Then use the resulting hypothesis. Establish `h4 : P.actQ g a' = a'`.
+
+Take the linear combination `a' * h3 - P.actQ g a' * haa`. Rewrite using `[map_mul, h4]`. Take the linear combination `a' * h2 + ((kummer P g : ℚ_[l]) • P.tB) * haa`.
+-/
 theorem exists_kur_of_actSt_fixed (K : FinExt l)
     (hK : ∀ b : P.R.B, ¬ ∀ g ∈ GK K, P.actQ g b - b = (kummer P g : ℚ_[l]) • P.tB)
     (p : Bst P) (hp : ∀ g ∈ GK K, actSt P g p = p) :
@@ -61,6 +81,15 @@ theorem exists_kur_of_actSt_fixed (K : FinExt l)
         rw [map_mul, h4]
         linear_combination a' * h2 + ((kummer P g : ℚ_[l]) • P.tB) * haa
 
+/- English proof (translation)
+Use `nontrivial_B P` as an intermediate fact. Rewrite using `[IsPst, rank_self, rank_eq_one_iff]`. Establish `hmem : ((1 : ℚ_[l]) ⊗ₜ[ℚ_[l]] (1 : Bst P)) ∈ Dpst P (1 : Representation ℚ_[l] ↥(GK K) ℚ_[l])` using `(mem_Dpst P _).mpr ⟨K, fun g _ => by simp⟩`. Use `⟨toUr P _ ⟨_, hmem⟩, fun h0 => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ((1 : ℚ_[l]) ⊗ₜ[ℚ_[l]] (1 : Bst P)) = 0` using `congrArg Subtype.val h0`.
+
+Establish `h2` using `congrArg (TensorProduct.lid ℚ_[l] (Bst P)) h1`. Simplify using `at h2`. Take `⟨⟨x, hx⟩, rfl⟩` from `(toUr P _).surjective x`. Take `⟨p, rfl⟩` from `(TensorProduct.lid ℚ_[l] (Bst P)).symm.surjective x`. Take `⟨K', hK'⟩` from `(mem_Dpst P _).mp hx`.
+
+Take `⟨c, hc⟩` from `exists_kur_of_actSt_fixed P (supExt K K') (h _) p fun g hg => by`. Establish `h1` using `hK' ⟨g, GK_le (K' := supExt K K') le_sup_left hg⟩ (GK_le (K' := supExt K K') le_sup_right hg)`. Rewrite `h1` using `[lid_symm_apply, stRep_tmul]`. Simplify using `using congrArg (TensorProduct.lid ℚ_[l] (Bst P)) h1`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_toUr]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_mulD]`. Simplify using `[hc]`.
+-/
 theorem isPst_one_of_kummer (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (h : ∀ (K : FinExt l) (b : P.R.B), ¬ ∀ g ∈ GK K, P.actQ g b - b = (kummer P g : ℚ_[l]) • P.tB)
     (K : FinExt l) : IsPst P (1 : Representation ℚ_[l] ↥(GK K) ℚ_[l]) := by

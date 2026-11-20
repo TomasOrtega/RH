@@ -13,6 +13,17 @@ namespace Formalism.L2.Col
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 
+/- English proof (translation)
+Unfold `WeylDim`. Rewrite using `[Formalism.L2.G.Model.card_ssIdx]`. Establish `hnn : ∀ t, ((lam.natW t : ℕ) : ℤ) = lam.w t - lam.detShift`. Introduce `t`. Unfold `DomWeight.natW`.
+
+Apply `Int.toNat_of_nonneg` to reduce the goal to its premises. Unfold `DomWeight.detShift`. Establish `hn : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) t.isLt`. Rewrite using `[dif_pos hn]`. Establish `h1 : t ≤ (⟨n - 1, by omega⟩ : Fin n)`.
+
+Rewrite using `[Fin.le_def]`. Use `t.isLt` as an intermediate fact. Use `show t.val ≤ n - 1`. Use linear arithmetic over natural numbers and integers. Use `lam.anti h1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hanti : Antitone (fun t => ((lam.natW t : ℕ) : ℤ))`. Introduce `a b hab`. Use `lam.anti hab` as an intermediate fact. Simplify using `only [hnn]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1` using `Formalism.L2.G.Model.weylQ n _ hanti`. Establish `h2 : _ = Formalism.LogVandermondeBounds.StandardLattice.dimVN (wSeq lam) n` using `h n (fun t => ((lam.natW t : ℕ) : ℤ)) lam.w lam.detShift hnn`. Rewrite using `[← h2, ← h1, Rat.cast_natCast]`.
+-/
 theorem weylDim_of_weylProd (h : PI.WeylProd) {n : ℕ} (lam : DomWeight n) : WeylDim lam := by
   unfold WeylDim
   rw [Formalism.L2.G.Model.card_ssIdx]
@@ -39,6 +50,9 @@ theorem weylDim_of_weylProd (h : PI.WeylProd) {n : ℕ} (lam : DomWeight n) : We
   have h2 : _ = Formalism.LogVandermondeBounds.StandardLattice.dimVN (wSeq lam) n := h n (fun t => ((lam.natW t : ℕ) : ℤ)) lam.w lam.detShift hnn
   rw [← h2, ← h1, Rat.cast_natCast]
 
+/- English proof (translation)
+The claim follows from `weylDim_of_weylProd weyl_product_formula lam`.
+-/
 theorem weylDim_holds {n : ℕ} (lam : DomWeight n) : WeylDim lam := weylDim_of_weylProd weyl_product_formula lam
 
 section Inst

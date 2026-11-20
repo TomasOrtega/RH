@@ -32,6 +32,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     {O : Type} [CommRing O] [Algebra O LL]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨⟨?_, fun g h => ?_⟩, v ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `: cob A.ρ v = fun g => A.ρ g v + -v` using `funext fun g => sub_eq_add_neg _ _`. Rewrite using `[this]`. Conclude with `(A.cont v).add continuous_const`.
+
+Express the relevant statement in the definitionally equal form `A.ρ (g * h) v - v = A.ρ g v - v + A.ρ g (A.ρ h v - v)`. Rewrite using `[map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `(A.ρ g v - v) ⊗ₜ[Qp] (1 : B) = A.ρ g v ⊗ₜ[Qp] PD.actB g 1 - _`. Rewrite using `[map_one, sub_tmul]`.
+-/
 theorem B1_le_Z1f (A : GRep G Qp LL O) : B1 A.ρ ≤ finiteCocycles PD A.ρ := by
   rintro _ ⟨v, rfl⟩
   refine ⟨⟨?_, fun g h => ?_⟩, v ⊗ₜ[Qp] (1 : B), fun g => ?_⟩
@@ -44,6 +49,11 @@ theorem B1_le_Z1f (A : GRep G Qp LL O) : B1 A.ρ ≤ finiteCocycles PD A.ρ := b
   · change (A.ρ g v - v) ⊗ₜ[Qp] (1 : B) = A.ρ g v ⊗ₜ[Qp] PD.actB g 1 - _
     rw [map_one, sub_tmul]
 
+/- English proof (translation)
+Use `IsLocallyConstant.iff_isOpen_fiber.mpr fun y => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `: (fun g => (Submodule.Quotient.mk (c g) : V ⧸ M)) ⁻¹' {Submodule.Quotient.mk y} = (fun g => c g + -y) ⁻¹' (M : Set V)`. Use extensionality with `g`. Simplify using `[Submodule.Quotient.eq, sub_eq_add_neg]`.
+
+Rewrite using `[this]`. Conclude with `hM.preimage (hc.add continuous_const)`.
+-/
 theorem lc_mk {V X : Type} [AddCommGroup V] [Module O V] [TopologicalSpace V] [ContinuousAdd V]
     [TopologicalSpace X] {M : Submodule O V} (hM : IsOpen (M : Set V)) {c : X → V}
     (hc : Continuous c) : IsLocallyConstant fun g => (Submodule.Quotient.mk (c g) : V ⧸ M) := by
@@ -58,6 +68,9 @@ theorem lc_mk {V X : Type} [AddCommGroup V] [Module O V] [TopologicalSpace V] [C
 
 variable {PD}
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `h`. Conclude with `⟨fun g => Submodule.Quotient.mk (f g), ⟨lc_mk hL1 hf, fun _ => trivial⟩, rfl⟩`.
+-/
 theorem cobO_of_cobL [ContinuousAdd LL] {L1 : Lattice (O := O) (charRep (cycLL PD LL))}
     (hL1 : IsOpen (L1.T : Set LL)) {z : G × G → LL} (h : CobL PD z) : CobO PD L1 z := by
   obtain ⟨f, hf, rfl⟩ := h
@@ -67,6 +80,9 @@ variable {A A' : GRep G Qp LL O} {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O 
   {m : A.V →ₗ[LL] A'.V →ₗ[LL] LL} {L1 : Lattice (O := O) (charRep (cycLL PD LL))}
 
 omit [TopologicalSpace G] [TopologicalSpace LL] in
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective L.T c).choose_spec`.
+-/
 theorem mk_liftD {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (c : V ⧸ L.T) :
     Submodule.Quotient.mk (liftD L c) = c := (Submodule.Quotient.mk_surjective L.T c).choose_spec
@@ -82,6 +98,9 @@ def pairD (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL)) (hm : IsDualLa
       ext y
       simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← mk_liftD LA' (c p.2)]`. Both sides reduce to the same expression.
+-/
 theorem mk_cupLD (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
     (hm : IsDualLat1 PD LA LA' m) (d : G → A.V) (hd : ∀ g, d g ∈ LA.T) (c : G → A'.V ⧸ LA'.T)
     (p : G × G) : (Submodule.Quotient.mk (cupLD LA' m d c p) : LL ⧸ L1.T) =
@@ -89,6 +108,9 @@ theorem mk_cupLD (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
   conv_rhs => rw [← mk_liftD LA' (c p.2)]
   rfl
 
+/- English proof (translation)
+Unfold `CobO`. Simplify using `only [mk_cupLD hL1 hm d hd]`. Both sides reduce to the same expression.
+-/
 theorem cobO_cup_iff (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
     (hm : IsDualLat1 PD LA LA' m) (d : G → A.V) (hd : ∀ g, d g ∈ LA.T) (b : G → A'.V) :
     CobO PD L1 (cupLD LA' m d fun g => Submodule.Quotient.mk (b g)) ↔
@@ -97,16 +119,25 @@ theorem cobO_cup_iff (hL1 : L1.T = LinearMap.range (Algebra.linearMap O LL))
   simp only [mk_cupLD hL1 hm d hd]
   rfl
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_bilinear_of_finite_left m`.
+-/
 theorem cont_pair [IsTopologicalRing LL] (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL) :
     Continuous fun p : A.V × A'.V => m p.1 p.2 :=
   IsModuleTopology.continuous_bilinear_of_finite_left m
 
+/- English proof (translation)
+Take `⟨_, ⟨b, hb, rfl⟩, _, ⟨x, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨b + cob A'.ρ x, (finiteCocycles PD A'.ρ).add_mem hb (B1_le_Z1f PD A' ⟨x, rfl⟩), rfl⟩`.
+-/
 theorem exists_of_mem_HfD {c : G → A'.V ⧸ LA'.T} (hc : c ∈ HfD PD LA') :
     ∃ b ∈ finiteCocycles PD A'.ρ, c = fun g => Submodule.Quotient.mk (b g) := by
   obtain ⟨_, ⟨b, hb, rfl⟩, _, ⟨x, rfl⟩, rfl⟩ := Submodule.mem_sup.1 hc
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact ⟨b + cob A'.ρ x, (finiteCocycles PD A'.ρ).add_mem hb (B1_le_Z1f PD A' ⟨x, rfl⟩), rfl⟩
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨b, hb, rfl⟩` from `exists_of_mem_HfD hc`. Use `⟨lc_mk hT hb.1.1, fun g h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Submodule.Quotient.mk (b g + A'.ρ g (b h))`. Conclude with `congrArg Submodule.Quotient.mk (hb.1.2 g h)`.
+-/
 theorem hfD_le (hT : IsOpen (LA'.T : Set A'.V)) : HfD PD LA' ≤ divisibleCocycles LA' := by
   intro c hc
   obtain ⟨b, hb, rfl⟩ := exists_of_mem_HfD hc
@@ -116,6 +147,13 @@ theorem hfD_le (hT : IsOpen (LA'.T : Set A'.V)) : HfD PD LA' ≤ divisibleCocycl
 
 end Cochains
 
+/- English proof (translation)
+Introduce `LL _ _ _ O _ _ hO A A' m hdR hm`. Establish `ho` using `PositivityTheory.LocalTateOrthogonality.Orth.tdOrth D l K LL O hO A A' m hm hdR`. Establish `hdR'` using `(h8 l K).1 LL O hO A A' m hdR hm`. Establish `e1` using `hdim LL O hO A hdR`. Establish `e2` using `hdim LL O hO A' hdR'`.
+
+Establish `e3` using `(h8 l K).2 LL O hO A A' m hdR hm`. Establish `e4` using `hEu LL O hO A A' m hm`. Establish `e6` using `hm.2.2.2`. Unfold `IsDR at hdR hdR'`. Rewrite `hdR'` using `[← e6]`.
+
+Establish `hc : finrank LL (H1V A.ρ) ≤ finrank LL (FiniteCohomology ((D.loc l).PD K) A.ρ) + finrank LL (FiniteCohomology ((D.loc l).PD K) A'.ρ)`. Use linear arithmetic over natural numbers and integers. Take `⟨h1, h2⟩` from `hL LL O hO A A' m hm (finiteCocycles ((D.loc l).PD K) A.ρ) (finiteCocycles ((D.loc l).PD K) A'.ρ) (B1_le_Z1f _ A) (fun _ h => h.1) (B1_le_Z1f _ A') (fun _ h => h.1) ho hc`. Conclude with `⟨fun a ha => ⟨ho a, h1 a ha⟩, fun b hb => ⟨fun h a ha => ho a ha b h, h2 b hb⟩⟩`.
+-/
 theorem bkA_core (D : D7) (h8 : LocalSituation.adm8 D) (l : ℕ) [Fact l.Prime] (K : FinExt l)
     (hL : DualL ((D.loc l).PD K))
     (hEu : ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
@@ -142,6 +180,17 @@ theorem bkA_core (D : D7) (h8 : LocalSituation.adm8 D) (l : ℕ) [Fact l.Prime] 
     (B1_le_Z1f _ A) (fun _ h => h.1) (B1_le_Z1f _ A') (fun _ h => h.1) ho hc
   exact ⟨fun a ha => ⟨ho a, h1 a ha⟩, fun b hb => ⟨fun h a ha => ho a ha b h, h2 b hb⟩⟩
 
+/- English proof (translation)
+Introduce `LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hdR hm`. Take `⟨hA1, -⟩` from `hA LL O hO A A' m hdR hm.1`. Use `hO.2.2.2.1` as an intermediate fact. Establish `hO' : IsOpen (L1.T : Set LL)` using `by rw [hL1]; exact hO.2.2.2.2`. Take `⟨⟨hdom, hdvr, -⟩, -⟩` from `id hO`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hTo : IsOpen (LA'.T : Set A'.V)` using `(GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hO A' LA' ϖ hϖ).1`. Take `⟨-, hF⟩` from `GlobalTheory.T.cup_flip_continuous_cocycle D l K LL O hO A A' m hm.1`. Establish `h1 : ∀ d ∈ latticeFiniteCocycles ((D.loc l).PD K) LA, ∀ s ∈ HfD ((D.loc l).PD K) LA', CobO ((D.loc l).PD K) L1 (cupLD LA' m d s)` using `fun d hd s hs => by`. Take `⟨b, hb, rfl⟩` from `exists_of_mem_HfD hs`.
+
+Rewrite using `[cobO_cup_iff hL1 hm d fun g => hd.1.2 g trivial]`. Conclude with `cobO_of_cobL hO' ((hA1 d hd.1.1).1 hd.2 b hb)`. Establish `h2 : ∀ d ∈ latticeCocycles LA, (∀ s ∈ HfD ((D.loc l).PD K) LA', CobO ((D.loc l).PD K) L1 (cupLD LA' m d s)) → d ∈ latticeFiniteCocycles ((D.loc l).PD K) LA` using `fun d hd H => by`. Use `⟨hd, (hA1 d hd.1).2 fun b hb => ?_⟩` and prove the remaining obligations. Use `(hC LL O hO L1 hL1 _ (hF d hd.1 b hb.1).1).2 fun u => ?_` and prove the remaining obligations.
+
+Establish `h3` using `(cobO_cup_iff hL1 hm d (fun g => hd.2 g trivial) (u • b)).1 (H _ (Submodule.mem_sup_left ⟨u • b, (finiteCocycles ((D.loc l).PD K) A'.ρ).smul_mem u hb, rfl⟩))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[cupL]`. Use `⟨fun s hs => ⟨fun h d hd => h1 d hd s h, fun H => ?_⟩, fun d hd => ⟨fun h s _ hs => h1 d h s hs, fun H => h2 d hd fun s hs => H s (hfD_le hTo hs) hs⟩⟩` and prove the remaining obligations.
+
+Conclude with `hD LL O hO L1 hL1 A A' LA LA' m hm _ le_sup_right (hfD_le hTo) s hs fun d hd H' => H d (h2 d hd H')`.
+-/
 theorem bkB_core (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (hD : DualD ((D.loc l).PD K))
     (hC : CobLO ((D.loc l).PD K)) (hA : bkACore ((D.loc l).PD K)) : bkBCore ((D.loc l).PD K) := by
   intro LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hdR hm
@@ -171,6 +220,9 @@ theorem bkB_core (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (hD : DualD ((
   exact hD LL O hO L1 hL1 A A' LA LA' m hm _ le_sup_right (hfD_le hTo) s hs
     fun d hd H' => H d (h2 d hd H')
 
+/- English proof (translation)
+Introduce `D _ _ _ h8 l _ K hdim`. Take `⟨-, -, -, -, -, -, -, hEu, hL⟩` from `hAll D l K`. Conclude with `bkA_core D h8 l K hL (fun LL _ _ _ O _ _ hO A A' P hP => (hEu LL O hO A A' P hP).2.le) hdim`.
+-/
 theorem bkA_of_all (hAll : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), All ((D.loc l).PD K)) :
     ∀ D : D7, LocalSituation.adm5 D → LocalSituation.adm6 D → LocalSituation.adm7 D → LocalSituation.adm8 D → ∀ (l : ℕ) [Fact l.Prime]
       (K : FinExt l), LocalSituation.bkADim ((D.loc l).PD K) → bkACore ((D.loc l).PD K) := by
@@ -178,6 +230,9 @@ theorem bkA_of_all (hAll : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l),
   obtain ⟨-, -, -, -, -, -, -, hEu, hL⟩ := hAll D l K
   exact bkA_core D h8 l K hL (fun LL _ _ _ O _ _ hO A A' P hP => (hEu LL O hO A A' P hP).2.le) hdim
 
+/- English proof (translation)
+Introduce `D l _ K hA`. Take `⟨-, -, -, hD, hC, -⟩` from `hAll D l K`. Conclude with `bkB_core D l K hD hC hA`.
+-/
 theorem bkB_of_all (hAll : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), All ((D.loc l).PD K)) :
     ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), bkACore ((D.loc l).PD K) →
       bkBCore ((D.loc l).PD K) := by
@@ -185,6 +240,11 @@ theorem bkB_of_all (hAll : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l),
   obtain ⟨-, -, -, hD, hC, -⟩ := hAll D l K
   exact bkB_core D l K hD hC hA
 
+/- English proof (translation)
+Introduce `l _ K`. Establish `h5` using `GlobalTheory.T.localSituation_adm5_of_D7 D`. Establish `h6` using `GlobalTheory.T.localSituation_adm6_of_D7 D`. Establish `h7` using `GlobalTheory.T.localSituation_adm7_of_D7 D`. Establish `h8` using `GlobalTheory.T.localSituation_adm8_forall D`.
+
+Establish `hd` using `GlobalTheory.T.blochKato_dimension_rightExact D h5 h6 h7 l K`. Establish `ha` using `hA D h5 h6 h7 h8 l K hd.1`. Establish `hb` using `hB D l K ha`. Establish `hc` using `GlobalTheory.T.blochKato_cokernel_of_duality_euler hT hE D l K ha hb`. Conclude with `⟨ha, hd.1, hd.2, hb, hc⟩`.
+-/
 theorem local_bounds_give (hT : Formalism.GaloisCohomology.LocalTateDualityK) (hE : Formalism.GaloisCohomology.LocalEulerCharK)
     (hA : ∀ D : D7, LocalSituation.adm5 D → LocalSituation.adm6 D → LocalSituation.adm7 D → LocalSituation.adm8 D → ∀ (l : ℕ) [Fact l.Prime]
       (K : FinExt l), LocalSituation.bkADim ((D.loc l).PD K) → bkACore ((D.loc l).PD K))
@@ -201,6 +261,9 @@ theorem local_bounds_give (hT : Formalism.GaloisCohomology.LocalTateDualityK) (h
   have hc := GlobalTheory.T.blochKato_cokernel_of_duality_euler hT hE D l K ha hb
   exact ⟨ha, hd.1, hd.2, hb, hc⟩
 
+/- English proof (translation)
+Introduce `hT hE hAll` and use `local_bounds_give hT hE (bkA_of_all hAll) (bkB_of_all hAll)`.
+-/
 theorem local_bound_of_all_inputs : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     (∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), All ((D.loc l).PD K)) → ∀ D : D7, LocalSituation.Conclusion5 D :=
   fun hT hE hAll => local_bounds_give hT hE (bkA_of_all hAll) (bkB_of_all hAll)

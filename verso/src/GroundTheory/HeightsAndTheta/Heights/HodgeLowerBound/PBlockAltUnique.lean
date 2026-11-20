@@ -10,6 +10,13 @@ open MvPolynomial Equiv
 
 namespace BlockAltUnique
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `has : a ∉ s` using `fun h => lt_irrefl a (ha a h)`. Establish `hcard : s.card ≤ a`.
+
+Establish `: s ⊆ Finset.range a` using `fun x hx => Finset.mem_range.2 (ha x hx)`. Simplify using `using Finset.card_le_card this`. Rewrite using `[Finset.card_insert_of_notMem has, Finset.sum_insert has, Finset.sum_range_succ]`. Establish `h1` using `ih.1`. Use `⟨by omega, fun ⟨x, hx, hxc⟩ => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `ih.2 ⟨x, hx, by omega⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_range_card_le (S : Finset ℕ) :
     ∑ x ∈ Finset.range S.card, x ≤ ∑ x ∈ S, x ∧
       ((∃ x ∈ S, S.card ≤ x) → ∑ x ∈ Finset.range S.card, x < ∑ x ∈ S, x) := by
@@ -28,6 +35,13 @@ theorem sum_range_card_le (S : Finset ℕ) :
     · have := ih.2 ⟨x, hx, by omega⟩
       omega
 
+/- English proof (translation)
+Establish `hgi : B.image g = Finset.range B.card`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `Finset.mem_range.2 (hgB i hi)`.
+
+Rewrite using `[Finset.card_range, Finset.card_image_of_injOn hg]`. Establish `hfc : (B.image f).card = B.card` using `Finset.card_image_of_injOn hf`. Establish `e1 : ∑ i ∈ B, g i = ∑ x ∈ B.image g, x` using `(Finset.sum_image (f := fun x => x) hg).symm`. Establish `e2 : ∑ i ∈ B, f i = ∑ x ∈ B.image f, x` using `(Finset.sum_image (f := fun x => x) hf).symm`. Rewrite using `[e1, e2, hgi]`.
+
+Use `sum_range_card_le (B.image f)` as an intermediate fact. Rewrite `this` using `[hfc]`. Conclude with `⟨this.1, fun ⟨i, hi, hci⟩ => this.2 ⟨f i, Finset.mem_image_of_mem f hi, hci⟩⟩`.
+-/
 theorem sum_le_of_injOn {ι : Type*} (B : Finset ι) (f g : ι → ℕ) (hf : Set.InjOn f B)
     (hg : Set.InjOn g B) (hgB : ∀ i ∈ B, g i < B.card) :
     ∑ i ∈ B, g i ≤ ∑ i ∈ B, f i ∧ ((∃ i ∈ B, B.card ≤ f i) → ∑ i ∈ B, g i < ∑ i ∈ B, f i) := by
@@ -49,6 +63,9 @@ theorem sum_le_of_injOn {ι : Type*} (B : Finset ι) (f g : ι → ℕ) (hf : Se
 variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Introduce and unpack `⟨a, i⟩ ⟨b, k⟩ h`. Simplify using `only [weylAct, Prod.mk.injEq] at h`. Take `⟨rfl, h⟩` from `h`. Conclude with `Prod.ext rfl ((w a).injective h)`.
+-/
 theorem weylAct_injective (w : Ψ → Perm (Fin N)) : Function.Injective (weylAct Ψ N w) := by
   rintro ⟨a, i⟩ ⟨b, k⟩ h
   simp only [weylAct, Prod.mk.injEq] at h
@@ -56,17 +73,28 @@ theorem weylAct_injective (w : Ψ → Perm (Fin N)) : Function.Injective (weylAc
   exact Prod.ext rfl ((w a).injective h)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_apply (weylAct_injective Ψ N w) b (τ, i)`.
+-/
 theorem mapDomain_weylAct_apply (w : Ψ → Perm (Fin N)) (b : Ψ × Fin N →₀ ℕ) (τ : Ψ) (i : Fin N) :
     Finsupp.mapDomain (weylAct Ψ N w) b (τ, w τ i) = b (τ, i) :=
   Finsupp.mapDomain_apply (weylAct_injective Ψ N w) b (τ, i)
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Simplify using `[rhoBlock]`.
+-/
 theorem rhoBlock_apply (τ : Ψ) (i : Fin N) :
     rhoBlock Ψ N j (τ, i) = if (i : ℕ) < j then j - 1 - (i : ℕ) else N - 1 - (i : ℕ) := by
   simp [rhoBlock]
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Use `k.isLt` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Distinguish the cases in `h1 : (i : ℕ) < j`. Establish `h2 : (k : ℕ) < j` using `hik.1 h1`.
+
+Simplify using `only [rhoBlock_apply, h1, h2, if_true] at h`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ (k : ℕ) < j` using `fun h2 => h1 (hik.2 h2)`. Simplify using `only [rhoBlock_apply, h1, h2, if_false] at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rhoBlock_inj (τ : Ψ) (i k : Fin N) (hik : ((i : ℕ) < j ↔ (k : ℕ) < j))
     (h : rhoBlock Ψ N j (τ, i) = rhoBlock Ψ N j (τ, k)) : i = k := by
   have := i.isLt
@@ -82,6 +110,11 @@ theorem rhoBlock_inj (τ : Ψ) (i k : Fin N) (hik : ((i : ℕ) < j ↔ (k : ℕ)
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `Equiv.ext fun i => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (fun c => c (τ, w τ i)) h`. Establish `e2` using `congrArg (fun c => c (τ, w' τ i)) h'`. Simplify using `only [mapDomain_weylAct_apply] at e1 e2`.
+
+Conclude with `rhoBlock_inj Ψ N j τ _ _ ((hw τ i).trans (hw' τ i).symm) (e1.symm.trans e2)`.
+-/
 theorem blockPerm_unique (b : Ψ × Fin N →₀ ℕ) (w w' : Ψ → Perm (Fin N)) (hw : IsBlockPerm Ψ N j w)
     (hw' : IsBlockPerm Ψ N j w') (h : Finsupp.mapDomain (weylAct Ψ N w) b = rhoBlock Ψ N j)
     (h' : Finsupp.mapDomain (weylAct Ψ N w') b = rhoBlock Ψ N j) : w = w' := by
@@ -93,11 +126,17 @@ theorem blockPerm_unique (b : Ψ × Fin N →₀ ℕ) (w w' : Ψ → Perm (Fin N
   exact rhoBlock_inj Ψ N j τ _ _ ((hw τ i).trans (hw' τ i).symm) (e1.symm.trans e2)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_low (hj : j ≤ N) : (Finset.univ.filter fun i : Fin N => (i : ℕ) < j).card = j := by
   rw [Fin.card_filter_val_lt]
   omega
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Use `Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun i : Fin N => (i : ℕ) < j)` as an intermediate fact. Rewrite `this` using `[card_low N j hj, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_high (hj : j ≤ N) : (Finset.univ.filter fun i : Fin N => ¬ (i : ℕ) < j).card = N - j := by
   have := Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun i : Fin N => (i : ℕ) < j)
   rw [card_low N j hj, Finset.card_univ, Fintype.card_fin] at this
@@ -105,6 +144,29 @@ theorem card_high (hj : j ≤ N) : (Finset.univ.filter fun i : Fin N => ¬ (i : 
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use `set lo := Finset.univ.filter fun i : Fin N => (i : ℕ) < j with hlo_def`. Use `set hi := Finset.univ.filter fun i : Fin N => ¬ (i : ℕ) < j with hhi_def`. Establish `hlo : lo.card = j` using `card_low N j hj`.
+
+Establish `hhi : hi.card = N - j` using `card_high N j hj`. Establish `split : ∀ f : Fin N → ℕ, ∑ k, f k = ∑ k ∈ lo, f k + ∑ k ∈ hi, f k` using `fun f => (Finset.sum_filter_add_sum_filter_not _ _ _).symm`. Establish `klo : ∀ σ, ∑ k ∈ lo, rhoBlock Ψ N j (σ, k) ≤ ∑ k ∈ lo, b (σ, k) ∧ ((∃ k ∈ lo, lo.card ≤ b (σ, k)) → ∑ k ∈ lo, rhoBlock Ψ N j (σ, k) < ∑ k ∈ lo, b (σ, k))`. Introduce `σ`. Use `sum_le_of_injOn lo _ _ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx y hy hxy`. Simplify using `only [hlo_def, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hx hy`. Conclude with `hinj σ x y (iff_of_true hx hy) hxy`. Introduce `x hx y hy hxy`. Simplify using `only [hlo_def, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hx hy`.
+
+Conclude with `rhoBlock_inj Ψ N j σ x y (iff_of_true hx hy) hxy`. Introduce `k hk`. Simplify using `only [hlo_def, Finset.mem_filter, Finset.mem_univ, true_and] at hk`. Rewrite using `[hlo, rhoBlock_apply, if_pos hk]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `khi : ∀ σ, ∑ k ∈ hi, rhoBlock Ψ N j (σ, k) ≤ ∑ k ∈ hi, b (σ, k) ∧ ((∃ k ∈ hi, hi.card ≤ b (σ, k)) → ∑ k ∈ hi, rhoBlock Ψ N j (σ, k) < ∑ k ∈ hi, b (σ, k))`. Introduce `σ`. Use `sum_le_of_injOn hi _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy hxy`. Simplify using `only [hhi_def, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hx hy`.
+
+Conclude with `hinj σ x y (iff_of_false hx hy) hxy`. Introduce `x hx y hy hxy`. Simplify using `only [hhi_def, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hx hy`. Conclude with `rhoBlock_inj Ψ N j σ x y (iff_of_false hx hy) hxy`. Introduce `k hk`.
+
+Simplify using `only [hhi_def, Finset.mem_filter, Finset.mem_univ, true_and] at hk`. Use `k.isLt` as an intermediate fact. Rewrite using `[hhi, rhoBlock_apply, if_neg hk]`. Use linear arithmetic over natural numbers and integers. Establish `hlt' : ∑ p, rhoBlock Ψ N j p < ∑ p, b p`.
+
+Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_lt_sum (fun σ _ => ?_) ⟨τ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[split, split]`. Use `(klo σ).1` as an intermediate fact. Use `(khi σ).1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[split, split]`. Distinguish the cases in `h : (i : ℕ) < j`. Rewrite `hlt` using `[if_pos h]`. Use `(klo τ).2 ⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩, by rw [hlo]; exact hlt⟩` as an intermediate fact.
+
+Use `(khi τ).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hlt` using `[if_neg h]`. Use `(khi τ).2 ⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, h⟩, by rw [hhi]; exact hlt⟩` as an intermediate fact. Use `(klo τ).1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hdeg` using `[Finsupp.degree_eq_sum, Finsupp.degree_eq_sum]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem bounds (hj : j ≤ N) (b : Ψ × Fin N →₀ ℕ)
     (hinj : ∀ τ (i k : Fin N), ((i : ℕ) < j ↔ (k : ℕ) < j) → b (τ, i) = b (τ, k) → i = k)
     (hdeg : b.degree = (rhoBlock Ψ N j).degree) (τ : Ψ) (i : Fin N) :
@@ -173,6 +235,17 @@ def matchIndex (hj : j ≤ N) (b : Ψ × Fin N →₀ ℕ) (τ : Ψ) (i : Fin N)
     have := i.isLt
     split_ifs <;> omega⟩
 
+/- English proof (translation)
+Establish `hb` using `bounds Ψ N j hj b hinj hdeg`. Establish `hf_blk : ∀ τ i, ((matchIndex Ψ N j hj b τ i : ℕ) < j ↔ (i : ℕ) < j)`. Introduce `τ i`. Use `hb τ i` as an intermediate fact. Use `i.isLt` as an intermediate fact.
+
+Simplify using `only [matchIndex]`. Apply the tactic sequence `split_ifs at * <;> omega`. Establish `hf_rho : ∀ τ i, rhoBlock Ψ N j (τ, matchIndex Ψ N j hj b τ i) = b (τ, i)`. Introduce `τ i`. Use `hb τ i` as an intermediate fact.
+
+Use `i.isLt` as an intermediate fact. Rewrite using `[rhoBlock_apply]`. Simplify using `only [matchIndex]`. Apply the tactic sequence `split_ifs at * <;> omega`. Establish `hf_inj : ∀ τ, Function.Injective (matchIndex Ψ N j hj b τ)`.
+
+Introduce `τ i k hik`. Apply `hinj τ i k (by rw [← hf_blk τ i, ← hf_blk τ k, hik])` to reduce the goal to its premises. Rewrite using `[← hf_rho τ i, ← hf_rho τ k, hik]`. Use `⟨fun τ => Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hf_inj τ)), fun τ i => hf_blk τ i, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨τ, m⟩`.
+
+Take `⟨i, rfl⟩` from `(Finite.injective_iff_bijective.1 (hf_inj τ)).2 m`. Use `mapDomain_weylAct_apply Ψ N (fun τ => Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hf_inj τ))) b τ i` as an intermediate fact. Simplify using `only [Equiv.ofBijective_apply] at this`. Rewrite using `[this, hf_rho]`.
+-/
 theorem exists_blockPerm (hj : j ≤ N) (b : Ψ × Fin N →₀ ℕ)
     (hinj : ∀ τ (i k : Fin N), ((i : ℕ) < j ↔ (k : ℕ) < j) → b (τ, i) = b (τ, k) → i = k)
     (hdeg : b.degree = (rhoBlock Ψ N j).degree) :
@@ -203,6 +276,23 @@ theorem exists_blockPerm (hj : j ≤ N) (b : Ψ × Fin N →₀ ℕ)
   simp only [Equiv.ofBijective_apply] at this
   rw [this, hf_rho]
 
+/- English proof (translation)
+Set `w : Ψ → Perm (Fin N)` to `fun σ => if σ = τ then swap i k else 1`. Establish `hwτ : w τ = swap i k` using `if_pos rfl`. Establish `hwσ : ∀ σ, σ ≠ τ → w σ = 1` using `fun σ hσ => if_neg hσ`. Establish `hw : IsBlockPerm Ψ N j w`. Introduce `σ m`.
+
+Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Rewrite using `[hwτ, swap_apply_def]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality.
+
+Conclude with `hik.symm`. Substitute `h2` using the available equality. Conclude with `hik`. Conclude with `Iff.rfl`. Rewrite using `[hwσ σ hσ, Perm.one_apply]`.
+
+Establish `hsign : weylSign Ψ N w = -1`. Unfold `weylSign`. Rewrite using `[Finset.prod_eq_single τ]`. Simplify using `[hwτ, Perm.sign_swap hne]`. Introduce `σ _ hσ`.
+
+Simplify using `[hwσ σ hσ]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`. Establish `hfix : Finsupp.mapDomain (weylAct Ψ N w) b = b`. Use extensionality with `⟨σ, m⟩`.
+
+Take `⟨m', rfl⟩` from `(w σ).surjective m`. Rewrite using `[mapDomain_weylAct_apply]`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Rewrite using `[hwτ, swap_apply_def]`.
+
+Use `split_ifs with h1 h2`. Rewrite using `[h1, hb]`. Rewrite using `[h2, hb]`. Both sides reduce to the same expression. Rewrite using `[hwσ σ hσ, Perm.one_apply]`.
+
+Use `hL w hw (monomial b 1)` as an intermediate fact. Rewrite `this` using `[rename_monomial, hfix, hsign]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem alt_eq_zero_of_repeat (L : RootPoly Ψ N →ₗ[ℚ] ℚ)
     (hL : ∀ w, IsBlockPerm Ψ N j w → ∀ P, L (rename (weylAct Ψ N w) P) = weylSign Ψ N w * L P)
     (b : Ψ × Fin N →₀ ℕ) (τ : Ψ) (i k : Fin N) (hik : ((i : ℕ) < j ↔ (k : ℕ) < j)) (hne : i ≠ k)
@@ -244,6 +334,9 @@ theorem alt_eq_zero_of_repeat (L : RootPoly Ψ N →ₗ[ℚ] ℚ)
   rw [rename_monomial, hfix, hsign] at this
   linarith
 
+/- English proof (translation)
+Unfold `blockInt`. Rewrite using `[coeff_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, rename_monomial, coeff_monomial, smul_eq_mul]`.
+-/
 theorem blockInt_monomial (b : Ψ × Fin N →₀ ℕ) (a : ℚ) :
     blockInt Ψ N j (monomial b a) = ∑ w ∈ Finset.univ.filter (IsBlockPerm Ψ N j),
       weylSign Ψ N w * (if Finsupp.mapDomain (weylAct Ψ N w) b = rhoBlock Ψ N j then a else 0) := by
@@ -252,10 +345,26 @@ theorem blockInt_monomial (b : Ψ × Fin N →₀ ℕ) (a : ℚ) :
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [coeff_smul, rename_monomial, coeff_monomial, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [blockInt, map_add, smul_add, Finset.sum_add_distrib, coeff_add]`.
+-/
 theorem blockInt_add (P Q : RootPoly Ψ N) :
     blockInt Ψ N j (P + Q) = blockInt Ψ N j P + blockInt Ψ N j Q := by
   simp only [blockInt, map_add, smul_add, Finset.sum_add_distrib, coeff_add]
 
+/- English proof (translation)
+Rewrite using `[blockInt_monomial]`. Distinguish the cases in `hex : ∃ w, IsBlockPerm Ψ N j w ∧ Finsupp.mapDomain (weylAct Ψ N w) b = rhoBlock Ψ N j`. Take `⟨w0, hw0, h0⟩` from `hex`. Rewrite using `[Finset.sum_eq_single w0]`. Use `hL w0 hw0 (monomial b 1)` as an intermediate fact.
+
+Rewrite `this` using `[rename_monomial, h0]`. Rewrite using `[if_pos h0, this]`. Take the linear combination `(-L (monomial b 1)) * FlagIntProjection.weylSign_mul_self Ψ N w0`. Introduce `w hw hne`. Rewrite using `[if_neg, mul_zero]`.
+
+Introduce `h`. Conclude with `hne (blockPerm_unique Ψ N j b w w0 (Finset.mem_filter.1 hw).2 hw0 h h0)`. Introduce `h`. Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ _, hw0⟩) h`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`.
+
+Distinguish the cases in `hd : b.degree = (rhoBlock Ψ N j).degree`. Distinguish the cases in `hinj : ∀ τ (i k : Fin N), ((i : ℕ) < j ↔ (k : ℕ) < j) → b (τ, i) = b (τ, k) → i = k`. Conclude with `absurd (exists_blockPerm Ψ N j hj b hinj hd) hex`. Use `push Not at hinj`. Take `⟨τ, i, k, hik, hb, hne⟩` from `hinj`.
+
+Conclude with `alt_eq_zero_of_repeat Ψ N j L hL b τ i k hik hne hb`. Conclude with `hdeg0 b hd`. Introduce `w hw`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`.
+
+Conclude with `hex ⟨w, (Finset.mem_filter.1 hw).2, h⟩`.
+-/
 theorem monomial_case (hj : j ≤ N) (L : RootPoly Ψ N →ₗ[ℚ] ℚ)
     (hL : ∀ w, IsBlockPerm Ψ N j w → ∀ P, L (rename (weylAct Ψ N w) P) = weylSign Ψ N w * L P)
     (hdeg0 : ∀ b : Ψ × Fin N →₀ ℕ, b.degree ≠ (rhoBlock Ψ N j).degree → L (monomial b 1) = 0)
@@ -292,6 +401,13 @@ end BlockAltUnique
 
 open BlockAltUnique in
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j hj L hL hdeg P`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `e : monomial u a = a • (monomial u 1 : RootPoly Ψ N)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+
+Establish `hb : blockInt Ψ N j (monomial u a) = a * blockInt Ψ N j (monomial u 1)`. Simplify using `only [blockInt_monomial, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[hb, e, map_smul, smul_eq_mul, monomial_case Ψ N j hj L hL hdeg u]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq`. Rewrite using `[map_add, blockInt_add, hp, hq, mul_add]`.
+-/
 theorem BlockAltUnique.proof : BlockAltUnique.Statement := by
   intro Ψ _ _ N j hj L hL hdeg P
   induction P using MvPolynomial.induction_on' with

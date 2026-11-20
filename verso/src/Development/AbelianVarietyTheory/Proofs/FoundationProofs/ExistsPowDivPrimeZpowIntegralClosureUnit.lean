@@ -10,6 +10,25 @@ namespace GlobalTheory.K5
 
 open Polynomial
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hnt.exists_abv_gt_one`. Use `letI : NontriviallyNormedField (WithAbs f) := NontriviallyNormedField.ofNormNeOne ⟨WithAbs.toAbs f a, by`. Introduce `h; rw [WithAbs.toAbs_eq_zero] at h; rw [h, map_zero] at ha; linarith, by`. Rewrite using `[WithAbs.norm_toAbs_eq]`. Conclude with `ha.ne'⟩`.
+
+Use `haveI : IsUltrametricDist (WithAbs f) := IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm fun x y => hna x.ofAbs y.ofAbs`. Use `haveI : IsScalarTower K (WithAbs f) Ω := inferInstance`. Use `haveI : Algebra.IsAlgebraic (WithAbs f) Ω := Algebra.IsAlgebraic.tower_top (K := K) (WithAbs f)`. Establish `hmin : ∀ x : Ω, minpoly (WithAbs f) x = (minpoly K x).map (algebraMap K (WithAbs f))`. Introduce `x`.
+
+Establish `hx : IsIntegral K x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hmap : (minpoly K x).map (algebraMap K (WithAbs f)) = Polynomial.mapEquiv (WithAbs.equiv f).symm (minpoly K x)`. Rewrite using `[Polynomial.mapEquiv_apply]`. Both sides reduce to the same expression. Use `symm`.
+
+Apply `minpoly.eq_of_irreducible_of_monic` to reduce the goal to its premises. Rewrite using `[hmap]`. Conclude with `(MulEquiv.irreducible_iff _).mpr (minpoly.irreducible hx)`. Rewrite using `[Polynomial.aeval_map_algebraMap]`. Conclude with `minpoly.aeval K x`.
+
+Conclude with `(minpoly.monic hx).map _`. Set `v : Valuation Ω ℝ≥0` to `{ toFun := fun x => ⟨spectralNorm (WithAbs f) Ω x, spectralNorm_nonneg x⟩ map_zero' := by ext; exact spectralNorm_zero map_one' := by ext; exact spectralNorm_one map_mul' := fun x y => by ext; exact spectralAlgNorm_mul (K := WithAbs f) (L := Ω) x y map_add_le_max' := fun x y => b …`. Conclude with `isNonarchimedean_spectralNorm x y }`. Establish `hv : ∀ x : Ω, (v x : ℝ) = spectralNorm (WithAbs f) Ω x` using `fun _ => rfl`. Establish `hco : ∀ (x : Ω) (i : ℕ), ‖(minpoly (WithAbs f) x).coeff i‖ = f ((minpoly K x).coeff i)`.
+
+Introduce `x i`. Rewrite using `[hmin x, Polynomial.coeff_map, WithAbs.algebraMap_right_apply, WithAbs.norm_toAbs_eq]`. Both sides reduce to the same expression. Use `⟨v, fun x => ?_, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`.
+
+Establish `: algebraMap K Ω x = algebraMap (WithAbs f) Ω (WithAbs.toAbs f x)` using `rfl`. Rewrite using `[this, spectralNorm_extends, WithAbs.norm_toAbs_eq]`. Establish `hx : IsIntegral (WithAbs f) x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_one, hv]`. Use `show spectralValue (minpoly (WithAbs f) x) ≤ 1 ↔ _`.
+
+Rewrite using `[spectralValue_le_one_iff (minpoly.monic hx)]`. Conclude with `forall_congr' fun i => by rw [hco]`. Establish `hx : IsIntegral K x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Establish `hd : (minpoly (WithAbs f) x).natDegree = (minpoly K x).natDegree`. Rewrite using `[hmin x, (minpoly.monic hx).natDegree_map]`.
+
+Rewrite using `[hv, spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow (WithAbs f) Ω x, hco, hd, one_div]`. Conclude with `Real.rpow_inv_natCast_pow (f.nonneg _) (minpoly.natDegree_pos hx).ne'`.
+-/
 theorem exists_valuation_pow_eq (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (f : AbsoluteValue K ℝ) (hna : IsNonarchimedean f)
     (hnt : f.IsNontrivial) (hc : CompleteSpace (WithAbs f)) :
@@ -66,6 +85,25 @@ theorem exists_valuation_pow_eq (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω
     rw [hv, spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow (WithAbs f) Ω x, hco, hd, one_div]
     exact Real.rpow_inv_natCast_pow (f.nonneg _) (minpoly.natDegree_pos hx).ne'
 
+/- English proof (translation)
+Take `⟨f, hna, hnt, hball, hc⟩` from `GlobalTheory.KLC.exists_absoluteValue_completeSpace_of_isDiscreteValuationRing R K`. Take `⟨v, hext, hle, hpow⟩` from `exists_valuation_pow_eq K Ω f hna hnt hc`. Establish `hint : ∀ z : Ω, v z ≤ 1 → IsIntegral R z`. Introduce `z hz`. Establish `hzK : IsIntegral K z` using `(Algebra.IsAlgebraic.isAlgebraic z).isIntegral`.
+
+Establish `hl : minpoly K z ∈ Polynomial.lifts (algebraMap R K)` using `(Polynomial.lifts_iff_coeff_lifts _).2 fun i => (hball _).1 ((hle z).1 hz i)`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (minpoly.monic hzK)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap K, hq, minpoly.aeval]`. Establish `hR : ∀ r : R, v (algebraMap R Ω r) ≤ 1`.
+
+Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply R K Ω, ← NNReal.coe_le_coe, hext]`. Conclude with `(hball _).2 ⟨r, rfl⟩`. Establish `hU : ∀ u : Rˣ, v (algebraMap R Ω u) = 1`. Introduce `u`.
+
+Establish `h1 : v (algebraMap R Ω u) * v (algebraMap R Ω (u⁻¹ : Rˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `le_antisymm (hR _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hxK : IsIntegral K x` using `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+
+Establish `hinj : Function.Injective (algebraMap R Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq R K Ω]`. Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective R K)`. Establish `hπ0 : v (algebraMap R Ω π) ≠ 0` using `(map_ne_zero v).2 ((map_ne_zero_iff _ hinj).2 hπ.ne_zero)`. Establish `hc0 : (minpoly K x).coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero hxK hx`.
+
+Take `⟨r, s, hs, hrs⟩` from `IsFractionRing.div_surjective (A := R) ((minpoly K x).coeff 0)`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hc0 (by rw [← hrs]; simp)`. Take `⟨i, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr0 hπ`.
+
+Take `⟨j, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hs) hπ`. Establish `key : v (x ^ (minpoly K x).natDegree) = v (algebraMap R Ω π ^ ((i : ℤ) - j))`. Establish `h1 : v x ^ (minpoly K x).natDegree = v (algebraMap K Ω ((minpoly K x).coeff 0))`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[NNReal.coe_pow, hpow, hext]`.
+
+Rewrite using `[map_pow, h1, ← hrs, map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, map_zpow₀, zpow_sub₀ hπ0]`. Simplify using `[hU]`. Establish `hx0 : v (x ^ (minpoly K x).natDegree) ≠ 0` using `(map_ne_zero v).2 (pow_ne_zero _ hx)`. Use `⟨(i : ℤ) - j, (minpoly K x).natDegree, minpoly.natDegree_pos hxK, hint _ ?_, hint _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ← key, div_self hx0]`.
+
+Rewrite using `[map_div₀, ← key, div_self hx0]`.
+-/
 theorem exists_pow_div_zpow_isIntegral (R K Ω : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [Field K]
     [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [Algebra R Ω] [IsScalarTower R K Ω]
@@ -121,6 +159,13 @@ theorem exists_pow_div_zpow_isIntegral (R K Ω : Type) [CommRing R] [IsDomain R]
   · rw [map_div₀, ← key, div_self hx0]
   · rw [map_div₀, ← key, div_self hx0]
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ hΩ x hx`. Take `⟨hdom, hdvr, hirr⟩` from `completed_laurent_isDVR p`. Establish `hmax : IsLocalRing.maximalIdeal (O0 p) = Ideal.span {(p : O0 p)}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hirr`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal (O0 p)) (O0 p) := by`. Rewrite using `[hmax]`.
+
+Conclude with `o0_isAdicComplete_span_p p`. Use `haveI : FaithfulSMul (O0 p) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hΩ.inj`. Use `letI : Algebra (FractionRing (O0 p)) Ω := FractionRing.liftAlgebra (O0 p) Ω`. Use `haveI : IsScalarTower (O0 p) (FractionRing (O0 p)) Ω := FractionRing.isScalarTower_liftAlgebra (O0 p) Ω`. Use `haveI : Algebra.IsAlgebraic (O0 p) Ω := hΩ.alg`.
+
+Use `haveI : Algebra.IsAlgebraic (FractionRing (O0 p)) Ω := Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective (O0 p) (FractionRing (O0 p)))`. Use `exists_pow_div_zpow_isIntegral (O0 p) (FractionRing (O0 p)) Ω (p : O0 p) hirr x hx` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_div_p_zpow_isInt : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ x : Ω, x ≠ 0 → ∃ (a : ℤ) (b : ℕ), 0 < b ∧ IsInt p (x ^ b / (p : Ω) ^ a) ∧
     IsInt p ((p : Ω) ^ a / x ^ b) := by

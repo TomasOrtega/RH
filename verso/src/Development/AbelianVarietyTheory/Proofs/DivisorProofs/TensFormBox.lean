@@ -21,6 +21,11 @@ def tensForm {k κ κ' : Type} (l₁ : ((κ → k) → ℂ) →ₗ[ℂ] ℂ) (l�
   map_smul' c f := by
     rw [RingHom.id_apply, ← map_smul]; congr 1; funext x₁; rw [Pi.smul_apply, ← map_smul]; rfl
 
+/- English proof (translation)
+Establish `e : (fun x₁ => l₂ fun x₂ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = l₂ φ₂ • φ₁`. Use function extensionality and compare the values at `x₁`. Establish `: (fun x₂ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = φ₁ x₁ • φ₂` using `by funext x₂; rfl`. Rewrite using `[this, map_smul, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `l₁ _ = _`.
+
+Rewrite using `[e, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem tensForm_box {k κ κ' : Type} (l₁ : ((κ → k) → ℂ) →ₗ[ℂ] ℂ) (l₂ : ((κ' → k) → ℂ) →ₗ[ℂ] ℂ)
     (φ₁ : (κ → k) → ℂ) (φ₂ : (κ' → k) → ℂ) : tensForm l₁ l₂ (boxFun φ₁ φ₂) = l₁ φ₁ * l₂ φ₂ := by
   have e : (fun x₁ => l₂ fun x₂ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = l₂ φ₂ • φ₁ := by
@@ -44,12 +49,25 @@ def proj (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l : ((κ → Fv F v) → 
     funext y
     rw [RingHom.id_apply, Pi.smul_apply, smul_eq_mul, mul_left_comm, ← smul_eq_mul c, ← map_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ) (Φ : (κ → AF F) → ℂ)
     (y : κ → AF F) : proj v φ₀ l Φ y = φ₀ (fun i => evFin F v (y i)) * l fun x => Φ (repl v y x) := rfl
 
+/- English proof (translation)
+Simplify using `[repl, evFin_liftV]`.
+-/
 theorem evFin_repl (v : Pl F) (y : κ → AF F) (x : κ → Fv F v) (i : κ) : evFin F v (repl v y x i) = x i := by
   simp [repl, evFin_liftV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `e : (fun x => tens (evFin F v) φ r (repl v y x)) = r y • φ`. Use function extensionality and compare the values at `x`. Establish `h1 : repl v y x = y + fun i => liftV v (x i - evFin F v (y i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [repl, Pi.add_apply, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : r (repl v y x) = r y`. Rewrite using `[h1]`. Conclude with `hr _ _ fun u hu => funext fun i => at_liftV v _ u hu`.
+
+Simplify using `only [tens, evFin_repl, h2, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[proj_apply, e, map_smul]`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proj_tens (v : Pl F) (φ₀ : (κ → Fv F v) → ℂ) (l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ) (φ : (κ → Fv F v) → ℂ)
     (r : (κ → AF F) → ℂ) (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) :
     proj v φ₀ l (tens (evFin F v) φ r) = l φ • tens (evFin F v) φ₀ r := by

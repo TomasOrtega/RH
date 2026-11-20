@@ -25,6 +25,9 @@ namespace GlobalTheory.KSCechData
 
 open GlobalTheory.KS GlobalTheory.LogKSBal
 
+/- English proof (translation)
+Use `ext_valR _ _ fun B _ y hy => ?_` and prove the remaining obligations. Establish `e : y ≫ q = spMap (Spec.preimage (y ≫ q)).hom` using `(Spec.map_preimage _).symm`. Generalize the expression as in `(Spec.preimage (y ≫ q)).hom = β at e`. Rewrite using `[valR_constFn q y hy e, valR_constFn (q ≫ spMap x₀) y hy (β := β.comp x₀) (by rw [← Category.assoc, e, GlobalTheory.LogKSLoc.spMap_comp'])]`. Both sides reduce to the same expression.
+-/
 theorem constFn_spMap {R K : Type} [CommRing R] [CommRing K] (x₀ : R →+* K) {Y : Scheme.{0}} (q : Y ⟶ Sp K)
     (O : Y.Opens) (r : R) : constFn (q ≫ spMap x₀) O r = constFn q O (x₀ r) := by
   refine ext_valR _ _ fun B _ y hy => ?_
@@ -34,10 +37,34 @@ theorem constFn_spMap {R K : Type} [CommRing R] [CommRing K] (x₀ : R →+* K) 
     (by rw [← Category.assoc, e, GlobalTheory.LogKSLoc.spMap_comp'])]
   rfl
 
+/- English proof (translation)
+Simplify using `[constFn]`.
+-/
 theorem constFn_neg {K : Type} [CommRing K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) (O : Y.Opens) (r : K) :
     constFn q O (-r) = -constFn q O r := by
   simp [constFn]
 
+/- English proof (translation)
+Introduce `R _ K _ x₀ P A _ m hm g e dd he hdd D M hKS`. Take `⟨J, W, j, d, hcov, hWj, hlift, hdiff⟩` from `hKS`. Use `P.isAb.proper` as an intermediate fact. Establish `: CompactSpace P.A.left` using `QuasiCompact.compactSpace_of_compactSpace P.A.hom`. Establish `hloc : ∀ x : P.A.left, ∃ (Ω : P.A.left.Opens) (k : J), IsAffineOpen Ω ∧ x ∈ Ω ∧ Ω ≤ W k`.
+
+Introduce `x`. Establish `h2 : x ∈ ⨆ k, W k`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h2`.
+
+Take `⟨_, ⟨Ω, hΩ, rfl⟩, hx, hle⟩` from `P.A.left.isBasis_affineOpens.exists_subset_of_mem_open hk (W k).isOpen`. Conclude with `⟨Ω, k, hΩ, hx, hle⟩`. Take `⟨s, hfin, Ω, κ, hΩ, hΩW, hs⟩ : ∃ (s : Type) (_ : Finite s) (Ω : s → P.A.left.Opens) (κ : s → J), (∀ a, IsAffineOpen (Ω a)) ∧ (∀ a, Ω a ≤ W (κ a)) ∧ ⨆ a, Ω a = ⊤` from `by choose Ω κ hΩ hxΩ hΩW using hloc`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun x => (Ω x : Set P.A.left)) (fun x => (Ω x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxΩ x⟩)`. Use `⟨s, inferInstance, fun a => Ω a, fun a => κ a, fun a => hΩ a, fun a => hΩW a, top_le_iff.1 fun x _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, ha⟩, hxa⟩`. Establish `hle : ∀ a : s, Ω a ≤ P.L.U (j (κ a))` using `fun a => (hΩW a).trans (hWj (κ a))`. Set `L` to `GlobalTheory.FinAffineCharts.refineLB P.L Ω (fun a => j (κ a)) hle`. Establish `happ : ∀ (O : P.A.left.Opens) (f : Γ(P.A.left, O)), (m.app O).hom f = pbT m f (m ⁻¹ᵁ O)` using `fun O f => GlobalTheory.KS.AdjDlog.app_eq_pbT m O f`.
+
+Establish `hconst : ∀ (O : P.A.left.Opens) (r : R), pbT m (constFn P.A.hom O r) (m ⁻¹ᵁ O) = constFn A.hom (m ⁻¹ᵁ O) (x₀ r)` using `fun O r => by`. Rewrite using `[pbT_constFn _ _ le_rfl, hm, constFn_spMap]`. Use `⟨L, hfin, GlobalTheory.FinAffineCharts.refineLB_isLB P.isLB _ _ hle hs, fun a => hΩ a, GlobalTheory.FinAffineCharts.iso_refineLB P.isLB _ _ hle, fun a O f => pbT m (d (κ a) O f) _, fun φ hφ => ⟨fun a => ⟨fun O hO f f' => ?_, fun O hO f f' => ?_, fun O O' h hO f => ?_, fun O hO r …` and prove the remaining obligations. Rewrite using `[(hlift _).1.1 _ (hO.trans (hΩW a)), pbT_add]`. Rewrite using `[(hlift _).1.2.1 _ (hO.trans (hΩW a)), pbT_add, pbT_mul, pbT_mul, happ, happ]`.
+
+Rewrite using `[(hlift _).1.2.2 _ _ h (hO.trans (hΩW a)), ← rsT_of_le h, pbT_rsT _ h le_rfl, rsT_pbT _ le_rfl (m.preimage_mono h)]`. Rewrite using `[(hlift _).2 _ (hO.trans (hΩW a)), hconst]`. Establish `hO' : O ≤ Ω a ⊓ Ω b` using `hO`. Establish `hU : Ω a ⊓ Ω b ≤ P.L.U (j (κ a)) ⊓ P.L.U (j (κ b))` using `inf_le_inf (hle a) (hle b)`. Establish `hab : m ⁻¹ᵁ O ≤ m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b` using `m.preimage_mono hO`.
+
+Establish `hab' : m ⁻¹ᵁ O ≤ m ⁻¹ᵁ (Ω a ⊓ Ω b)` using `m.preimage_mono hO`. Establish `hg : (L.g a b).val = rsT (P.L.g (j (κ a)) (j (κ b))).val (Ω a ⊓ Ω b)` using `GlobalTheory.KS.AdjDlog.val_res hU _`. Establish `hφ' : ∀ c, rsT (φ c a b) (m ⁻¹ᵁ O) = pbT m (dlg P.A (𝟙 P.A.left) P.L (e c) (j (κ a)) (j (κ b)) O) (m ⁻¹ᵁ O)` using `fun c => by`. Establish `h₁ : pbT m (L.g a b).val (m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b) * φ c a b = pbT m (e c (Ω a ⊓ Ω b) (L.g a b).val) (m ⁻¹ᵁ (Ω a ⊓ Ω b))` using `(hφ c a b).trans ((congrArg (dd c (m ⁻¹ᵁ (Ω a ⊓ Ω b))) (happ (Ω a ⊓ Ω b) (L.g a b).val).symm).trans (hdd c (Ω a ⊓ Ω b) (L.g a b).val))`. Establish `h₂ : rsT (pbT m (L.g a b).val (m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b) * φ c a b) (m ⁻¹ᵁ O) = rsT (pbT m (e c (Ω a ⊓ Ω b) (L.g a b).val) (m ⁻¹ᵁ (Ω a ⊓ Ω b))) (m ⁻¹ᵁ O)` using `congrArg (rsT · (m ⁻¹ᵁ O)) h₁`.
+
+Establish `h₃ : rsT (pbT m (L.g a b).val (m ⁻¹ᵁ L.U a ⊓ m ⁻¹ᵁ L.U b)) (m ⁻¹ᵁ O) = pbT m (P.L.g (j (κ a)) (j (κ b))).val (m ⁻¹ᵁ O)` using `(rsT_pbT m (O₀ := Ω a ⊓ Ω b) (fun p hp => hp) hab _).trans ((congrArg (pbT m · (m ⁻¹ᵁ O)) hg).trans (pbT_rsT m hU hab' _))`. Establish `h₄ : rsT (e c (Ω a ⊓ Ω b) (L.g a b).val) O = e c O (rsT (P.L.g (j (κ a)) (j (κ b))).val O)`. Use `(rsT_of_le hO' _).trans (((he c).2.2 _ _ hO' le_top _).symm.trans (congrArg (e c O) ?_))` and prove the remaining obligations. Use `(rsT_of_le (O₀ := Ω a ⊓ Ω b) hO' _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← rsT_rsT hU hO']`.
+
+Conclude with `congrArg (fun z => rsT z O) hg`. Rewrite `h₂` using `[rsT_mul, h₃, rsT_pbT m le_rfl hab', ← pbT_rsT m hO' le_rfl, h₄]`. Rewrite using `[dlg, GlobalTheory.KS.AdjDlog.pbT_id _ _ (hO'.trans hU), GlobalTheory.KS.AdjDlog.pbT_id _ _ (hO'.trans hU), pbT_mul, ← h₂, pbT_rsT m (hO'.trans hU) le_rfl, mul_right_comm, ← pbT_mul, Units.mul_inv, pbT_one m (m.preimage_mono (hO'.trans hU)), _root_.one_mul]`. Establish `key` using `hdiff (κ a) (κ b) O (hO'.trans (inf_le_inf (hΩW a) (hΩW b))) f`. Rewrite using `[← pbT_sub, ← neg_sub, key, pbT_neg, pbT_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hdd, lc, rsT_sum, Finset.sum_mul, pbT_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_mul, rsT_constFn _ hab, hφ', pbT_mul, pbT_mul, hconst, constFn_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ksCoc_of_ksRel : ∀ {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K) (P : Out.PolAV (Sp R)) {A : Over (Sp K)} [GrpObj A] (m : A.left ⟶ P.A.left), m ≫ P.A.hom = A.hom ≫ spMap x₀ → ∀ {g : ℕ} (e : Fin g → Fld P.A.left) (dd : Fin g → ∀ O : A.left.Opens, Γ(A.left, O) → Γ(A.left, O)), (∀ a, IsField ⊤ (e a)) → (∀ a (O : P.A.left.Opens) (f : Γ(P.A.left, O)), dd a (m ⁻¹ᵁ O) ((m.app O).hom f) = pbT m (e a O f) (m ⁻¹ᵁ O)) → ∀ (D : Derivation ℤ R R) (M : Matrix (Fin g) (Fin g) R), KSRel P.A (𝟙 P.A.left) P.L e ⇑D M → ∃ L : LB P.A.left, Finite L.ι ∧ L.IsLB ∧ (∀ i, IsAffineOpen (L.U i)) ∧ LBIso P.L L ∧ ∃ d : L.ι → ∀ O : P.A.left.Opens, Γ(P.A.left, O) → Γ(A.left, m ⁻¹ᵁ O), ∀ φ, GlobalTheory.KS.IsDlog m L dd φ → GlobalTheory.KS.KSCoc A.hom P.A.hom m (fun r => x₀ (D r)) L.U dd d (fun a => GlobalTheory.KS.lc A.hom (fun b => -x₀ (M a b)) φ) := by
   intro R _ K _ x₀ P A _ m hm g e dd he hdd D M hKS
   obtain ⟨J, W, j, d, hcov, hWj, hlift, hdiff⟩ := hKS

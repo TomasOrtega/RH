@@ -14,6 +14,9 @@ namespace GlobalTheory.CellDec
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Use `(GlobalTheory.SmGL.mem_unipB _).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[compV, h1 i j hij]`. Simplify using `[compV, h2 i]`.
+-/
 theorem compV_mem_unipB (v : HeightOneSpectrum (𝓞 E)) {u : GA E n} (hu : u ∈ NA E n) :
     compV E n v u ∈ GlobalTheory.SmGL.unipB (v.adicCompletion E) (Fin n) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu
@@ -21,6 +24,13 @@ theorem compV_mem_unipB (v : HeightOneSpectrum (𝓞 E)) {u : GA E n} (hu : u �
   · simp [compV, h1 i j hij]
   · simp [compV, h2 i]
 
+/- English proof (translation)
+Rewrite using `[tl_eq_diagT]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.IwaCell.val_tD]`. Use extensionality with `i j`. Simplify using `[compV, GlobalTheory.SmGL.val_diagT, Matrix.diagonal_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Establish `hc : ∀ x : Af E, pFin E (GlobalTheory.CuspRep.corner (sFin E) x) = x` using `fun x => by show ((1 : InfiniteAdeleRing E × Af E) - ((0 : InfiniteAdeleRing E), (1 : Af E)) + ((0 : InfiniteAdeleRing E), x)).2 = x`. Simplify using the standard rewrite rules. Establish `hf : ∀ y : (Af E)ˣ, ((finId E y : Ad E)) = GlobalTheory.CuspRep.corner (sFin E) (y : Af E)` using `fun y => rfl`.
+
+Rewrite using `[hf, hc]`. Use `congr 1`. Use `show ((ϖ v ^ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l) v : (v.adicCompletion E)ˣ) : v.adicCompletion E) = _`. Rewrite using `[Finsupp.mapRange_apply, Units.val_zpow_eq_zpow_val]`. Simplify using the standard rewrite rules.
+-/
 theorem compV_tl (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ)
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (v : HeightOneSpectrum (𝓞 E)) :
     compV E n v (tl n ϖ l) = GlobalTheory.IwaCell.tD (ϖ v) (l v) := by
@@ -47,11 +57,21 @@ namespace GlobalTheory.CellDec
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.SphCompletion.ord_completion, hx]`. Both sides reduce to the same expression.
+-/
 theorem ord_of_isUnifV {v : HeightOneSpectrum (𝓞 E)} {x : (v.adicCompletion E)ˣ}
     (hx : IsUnifV E v (x : v.adicCompletion E)) : GlobalTheory.SmGL.ord (v.adicCompletion E) x = 1 := by
   rw [GlobalTheory.SmGL.SphCompletion.ord_completion, hx]
   rfl
 
+/- English proof (translation)
+Take `⟨u, hu, k, hk, e⟩` from `h`. Establish `hg : g = tl n ϖ l * u * (tl n ϖ l)⁻¹ * tl n ϖ l * k`. Rewrite `e` using `[inv_mul_eq_iff_eq_mul]`. Rewrite using `[e]`. Use `group`.
+
+Establish `hkv : compV E n v k ∈ GlobalTheory.SplitWeil.KO (v.adicCompletion E) (Fin n)`. Rewrite using `[GlobalTheory.HeckeEigConj.KO_eq_KGL]`. Use `(Subgroup.mem_iInf.1 hk) v` as an intermediate fact. Conclude with `Subgroup.mem_comap.1 ((Subgroup.mem_iInf.1 this) hv)`. Use `⟨compV E n v (tl n ϖ l * u * (tl n ϖ l)⁻¹), compV_mem_unipB v (tl_conj_mem ϖ l hu), compV E n v k, hkv, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg, map_mul, map_mul, compV_tl]`.
+-/
 theorem compV_mem_cell (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) {S : Finset (HeightOneSpectrum (𝓞 E))}
     (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) {g : GA E n} (h : (tl n ϖ l)⁻¹ * g ∈ C0 E n S)
     {v : HeightOneSpectrum (𝓞 E)} (hv : v ∉ S) : compV E n v g ∈ GlobalTheory.IwaCell.cell (ϖ v) (l v) := by
@@ -68,6 +88,9 @@ theorem compV_mem_cell (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompleti
 
 end GlobalTheory.CellDec
 
+/- English proof (translation)
+Introduce `E _ _ n S ϖ hϖ l l' g hl hl' h h'`. Use extensionality with `v : 1`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hl v hv, hl' v hv]`. Conclude with `GlobalTheory.IwaCell.eq_of_mem_cell (GlobalTheory.CellDec.ord_of_isUnifV (hϖ v)) (GlobalTheory.CellDec.compV_mem_cell ϖ l h hv) (GlobalTheory.CellDec.compV_mem_cell ϖ l' h' hv)`.
+-/
 theorem GlobalTheory.CellDec.eq_of_tl_inv_mul_mem_C0_of_tl_inv_mul_mem_C0 : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ), (∀ v, IsUnifV E v (ϖ v : v.adicCompletion E)) →
     ∀ (l l' : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (g : GA E n), (∀ v ∈ S, l v = 0) → (∀ v ∈ S, l' v = 0) →

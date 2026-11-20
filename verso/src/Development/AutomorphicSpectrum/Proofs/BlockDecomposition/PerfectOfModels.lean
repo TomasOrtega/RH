@@ -12,6 +12,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 
 namespace GlobalTheory.CompanionTheory.SpreadingModels
 
+/- English proof (translation)
+The claim follows from `perfAll_of_models GlobalTheory.T.perfect_base_change GlobalTheory.T.perfect_of_generic_iso hModel`.
+-/
 theorem perfAll_of_hasModel
     (hModel : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)), Smooth f → IsProper f →
       ∀ M : LB Y, M.IsLB → HasModel f M) : PerfAll :=

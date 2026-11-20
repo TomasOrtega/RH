@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevZeroRead
 
+/- English proof (translation)
+Set `ρ : n ≃ Y` to `e.symm.trans σ`. Establish `h1 : ((b⁻¹).val * γ) * (β * b.val) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc γ, h, Matrix.one_mul, Units.inv_mul]`. Establish `h2 : β * (b.val * X.submatrix σ.symm σ.symm * (b⁻¹).val) * γ * (β * b.val) = β * b.val * X.submatrix σ.symm σ.symm`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc (b.val * _), ← Matrix.mul_assoc (b⁻¹).val, h1, Matrix.mul_one, Matrix.mul_assoc]`.
+
+Establish `h3 : ∀ (P : Matrix n n k) (Q : Matrix n Y k), P * Q.submatrix id ρ = (P * Q).submatrix id ρ` using `fun _ _ => rfl`. Establish `h4 : ∀ (P : Matrix Y n k) (Q : Matrix n Y k), P.submatrix ρ id * Q.submatrix id ρ = (P * Q).submatrix ρ ρ` using `fun _ _ => rfl`. Express the relevant statement in the definitionally equal form `(β * b.val).submatrix id ρ * m = _ * (β * b.val).submatrix id ρ at hm`. Rewrite `hm` using `[h3, h2]`. Establish `h5` using `congrArg (fun Z => ((b⁻¹).val * γ).submatrix ρ id * Z) hm`.
+
+Apply the tactic sequence `try simp only at h5`. Rewrite `h5` using `[← Matrix.mul_assoc, h4, h4, h1, ← Matrix.mul_assoc, h1, Matrix.submatrix_one_equiv, Matrix.one_mul, Matrix.one_mul]`. Rewrite using `[h5]`. Use extensionality with `i j`. Simplify using `[ρ]`.
+-/
 theorem matrix_in_frame {k n Y A : Type} [CommRing k] [Fintype n] [DecidableEq n] [Fintype Y] [DecidableEq Y] [Fintype A]
     [DecidableEq A] (β : Matrix n Y k) (γ : Matrix Y n k) (h : γ * β = 1) (b : GL Y k) (σ : A ≃ Y) (e : A ≃ n)
     (X : Matrix A A k) (m : Matrix n n k)
@@ -35,12 +42,23 @@ theorem matrix_in_frame {k n Y A : Type} [CommRing k] [Fintype n] [DecidableEq n
   ext i j
   simp [ρ]
 
+/- English proof (translation)
+Use `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id`.
+-/
 theorem toEAf_onto (D : D7) : Function.Surjective (toEAf D) := by
   refine (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).surjective.comp ?_
   exact Algebra.TensorProduct.map_surjective _ _ (fun α => ⟨pairA _ 0 α, rfl⟩) Function.surjective_id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_val {D : D7} (V : HSp D) (g : GA D V) : (Lev.finE V g).val = (Formalism.L2.Theta.mt V g).map (toEAf D) := rfl
 
+/- English proof (translation)
+Establish `hg : g ∈ blockTri (κ` using `κ) (blk2 r) := fun i j h => by`. Establish `hi : i.val < r` using `lt_of_lt_of_le i.2 hn`. Establish `hj : j.val < r` using `lt_of_lt_of_le j.2 hn`. Simplify using `[blk2, hi, hj] at h`. Rewrite using `[upper_block_val_submatrix hr hg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem upperLeftBlock_apply_of_eq {κ : Type} [CommRing κ] {r n : ℕ} (hr : r ≤ n) (hn : n ≤ r) (g : GL (Fin n) κ) (i j : Fin r) :
     (upperLeftBlock hr g).val i j = g.val (Fin.castLE hr i) (Fin.castLE hr j) := by
   have hg : g ∈ blockTri (κ := κ) (blk2 r) := fun i j h => by
@@ -52,6 +70,25 @@ theorem upperLeftBlock_apply_of_eq {κ : Type} [CommRing κ] {r n : ℕ} (hr : r
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D u d τ PP G hB hr g x hg hS`. Take `⟨π', h1, h2, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP G.idem`. Take `⟨e, he, hM⟩` from `G.frame 0 (G.s + 1) (Nat.zero_add _)`. Take `⟨m, hm⟩` from `hS`. Use `choose f hf using toEAf_onto D`.
+
+Establish `hπ : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) (Formalism.L2.Theta.AE D)), (Z.map (toEAf D)).map π' = Z.map (GlobalTheory.LocMod.ofSplit G.q).π` using `fun Z => by`. Use extensionality with `i j`. Conclude with `h1 _`. Establish `hb : (((d.st 0).β.val.map f).map (toEAf D)) = (d.st 0).β.val` using `by ext i j; exact hf _`. Establish `hM'` using `hM _ hb`.
+
+Rewrite `hM'` using `[← hπ, Matrix.map_mul (f := toEAf D), hb, ← finE_val]`. Establish `hg2` using `hg.2`. Rewrite `hg2` using `[← hπ, ← finE_val]`. Establish `hmul : Lev.finE (d.st 0).V (d.t 0) * (d.st 0).β * intGL _ _ _ m = Lev.finE (d.st 0).V g * (Lev.finE (d.st 0).V (d.t 0) * (d.st 0).β)`. Establish `: (d.st 0).β * intGL _ _ _ m * (d.st 0).β⁻¹ = _` using `hm`.
+
+Rewrite `this` using `[map_mul, map_mul, map_inv]`. Rewrite using `[mul_assoc, eq_mul_of_mul_inv_eq this]`. Use `group`. Establish `hmul'` using `congrArg (fun Z : GL (Fin (d.st 0).V.rank) (Lev.EAf D) => Z.val.map π') hmul`. Simplify using `only [Units.val_mul] at hmul'`.
+
+Rewrite `hmul'` using `[Matrix.map_mul (L := _ * _), Matrix.map_mul (M := _ * _), hM', hg2]`. Establish `key` using `matrix_in_frame _ _ (G.FY 0 (G.s + 1) (Nat.zero_add _)).γβ _ _ e (x.1.val.submatrix (GlobalTheory.StepData.ixZero _ (Fin D.R.t)).symm (GlobalTheory.StepData.ixZero _ (Fin D.R.t)).symm) _ hmul'`. Establish `hn : (d.st 0).V.rank ≤ D.R.r`. Use `(hB.st 0 (by have := G.hs; omega)).rank` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using `[Formalism.BasicNotions.Ranks.rankY]`. Introduce `a b a' b' ha hb' z hz`. Rewrite `hz` using `[upperLeftBlock_apply_of_eq hr hn, ← hm, redFn_frGL]`. Establish `ea : e.symm (Fin.castLE hr a') = Sum.inl a`. Apply the tactic sequence `rw [Equiv.symm_apply_eq]; apply Fin.ext; rw [he]; rcases a with a | a <;> exact ha`.
+
+Establish `eb : e.symm (Fin.castLE hr b') = Sum.inl b`. Apply the tactic sequence `rw [Equiv.symm_apply_eq]; apply Fin.ext; rw [he]; rcases b with b | b <;> exact hb'`. Establish `k2` using `congrFun (congrFun key (Fin.castLE hr a')) (Fin.castLE hr b')`. Rewrite `k2` using `[Matrix.submatrix_apply, ea, eb]`. Establish `k3 : resS D.host.F PP (m.val (Fin.castLE hr a') (Fin.castLE hr b') - oToS D.host.F D.host.E z) = 0`.
+
+Rewrite using `[map_sub, resS_oToS, hz]`. Conclude with `sub_self _`. Establish `k4` using `(h2.ker _).1 k3`. Rewrite `k4` using `[map_sub]`. Establish `k5 : π' (oToS D.host.F D.host.E z).1 = (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)`.
+
+Use `Eq.trans (congrArg π' ?_) (h1 (incA D (z : D.host.E)))` and prove the remaining obligations. Both sides reduce to the same expression. Use `k4 using 3` and compare the differences between its conclusion and the goal. Conclude with `k2.symm`. Conclude with `k5.symm`.
+-/
 theorem red_of_isLoc : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP), d.Base → ∀ (hr : D.R.r ≤ (d.st 0).V.rank) (g : GA D (d.st 0).V) (x : G.S.P.J), (GlobalTheory.LocMod.ofSplit G.q).IsLoc (G.FY 0 (G.s + 1) (Nat.zero_add _)) g (GlobalTheory.LevZeroGen.upZero G.S (Fin D.R.t) x.1) → finE (d.st 0).V ((d.t 0)⁻¹ * g * d.t 0) ∈ St (d.st 0).β → G.Red x (upperLeftBlock hr (redFn (d.st 0).β PP (finE (d.st 0).V ((d.t 0)⁻¹ * g * d.t 0)))) := by
   intro D u d τ PP G hB hr g x hg hS
   obtain ⟨π', h1, h2, -⟩ := GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP G.idem

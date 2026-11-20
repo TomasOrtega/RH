@@ -16,6 +16,9 @@ universe u v w
 section
 variable {O : Type} [CommRing O] {F : B.Fn O} {b : Base} {ht : b.t = 1} {κ : O →+* b.R ⧸ b.I}
 
+/- English proof (translation)
+Establish `h` using `(Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs`. Rewrite `h` using `[ht, map_one, mul_one]`. Conclude with `Units.ext h.symm`.
+-/
 theorem cr_s_eq_one (T : Thick (F.cr b ht κ)) : T.s = 1 := by
   have h := (Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs
   rw [ht, map_one, mul_one] at h
@@ -39,6 +42,9 @@ def crHom {T T' : Thick (F.cr b ht κ)} (φ : T.B →+* T'.B) (comm : ∀ r, φ 
     exact ((congrArg₂ (· * ·) (Finset.prod_of_isEmpty (ι := Empty) _) (map_one _)).trans (mul_one 1)).symm
   hv j := j.elim
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.prism m m' ⟨η, fun _ _ f => Thick.Hom.ext (RingHom.ext (nat f)) (funext fun j => j.elim)⟩ hτ n x`.
+-/
 theorem cr_pull_eq {Λ Λ' : Type} [CommRing Λ] [CommRing Λ'] {c : Λ →+* b.R} {σ : Λ →+* Λ'} {C' : Type u} [Category.{v} C']
     {F' : C' ⥤ ModuleCat.{w} Λ'} (m m' : CH.Mor (B.OM (F.cr b ht κ) c) F' σ) (η : ∀ T, m.G.obj T ⟶ m'.G.obj T)
     (nat : ∀ {T T' : C'} (f : T ⟶ T') (x : (m.G.obj T).B), (η T').φ ((m.G.map f).φ x) = (m'.G.map f).φ ((η T).φ x))
@@ -46,6 +52,9 @@ theorem cr_pull_eq {Λ Λ' : Type} [CommRing Λ] [CommRing Λ'] {c : Λ →+* b.
     m.pull n x = m'.pull n x :=
   CrystallineSemistableComparison.P.prism m m' ⟨η, fun _ _ f => Thick.Hom.ext (RingHom.ext (nat f)) (funext fun j => j.elim)⟩ hτ n x
 
+/- English proof (translation)
+Establish `e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _` using `by ext; rfl`. Rewrite using `[e, CommRingCat.ofHom_id, F.Pt.map_id]`. Both sides reduce to the same expression.
+-/
 theorem pt_id {B₀ : Type} [CommRing B₀] (J : Ideal B₀) (h) (y : F.Pt.obj (CommRingCat.of (B₀ ⧸ J))) :
     F.Pt.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B₀) h)) y = y := by
   have e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _ := by ext; rfl
@@ -53,6 +62,9 @@ theorem pt_id {B₀ : Type} [CommRing B₀] (J : Ideal B₀) (h) (y : F.Pt.obj (
 
 end
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem pull_pull {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {σ : R →+* R'} {σ' : R' →+* R''} (σ'' : R →+* R'')
     [RingHomCompTriple σ σ' σ''] {C C' C'' : Type 1} [Category.{0} C] [Category.{0} C'] [Category.{0} C''] {F : C ⥤ ModuleCat.{0} R}
     {F' : C' ⥤ ModuleCat.{0} R'} {F'' : C'' ⥤ ModuleCat.{0} R''} (m : CH.Mor F F' σ) (m' : CH.Mor F' F'' σ') (n : ℕ) (x : CH.H F n) :
@@ -60,6 +72,9 @@ theorem pull_pull {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {�
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Rewrite using `[pull_pull τ, pull_pull τ]`. Conclude with `cr_pull_eq _ _ (fun T => crHom (T := ma.obj (mb.obj T)) (T' := mc.obj (md.obj T)) (RingHom.id T.B) (fun r => congrArg T.i (hσ r)) (DPMorphism.id T.δ).isDPMorphism fun h => (pt_id _ h _).trans (hpt _ _)) (fun _ _ => rfl) (fun _ _ => rfl) j x`.
+-/
 theorem cr_square {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b₁ b₂ b₃ b₄ : Base} {h₁ : b₁.t = 1} {h₂ : b₂.t = 1} {h₃ : b₃.t = 1}
     {h₄ : b₄.t = 1} {κ₁ : O →+* b₁.R ⧸ b₁.I} {κ₂ : O →+* b₂.R ⧸ b₂.I} {κ₃ : O →+* b₃.R ⧸ b₃.I} {κ₄ : O →+* b₄.R ⧸ b₄.I}
     {Λ : Type} [CommRing Λ] {c₁ : Λ →+* b₁.R} {c₂ : Λ →+* b₂.R} {c₃ : Λ →+* b₃.R} {c₄ : Λ →+* b₄.R}

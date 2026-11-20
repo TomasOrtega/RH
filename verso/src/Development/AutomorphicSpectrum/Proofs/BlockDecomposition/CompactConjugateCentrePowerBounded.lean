@@ -16,6 +16,17 @@ namespace GlobalTheory.CompanionTheory.CuspGrowth
 
 open GlobalTheory.IdeleCovolume GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele in
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha Q hQ`. Establish `hf : Continuous fun g : GA E a => Real.log (ideleNorm (E` using `E) (GeneralLinearGroup.det g)) := (continuous_ideleNorm.comp GeneralLinearGroup.continuous_det).log fun _ => ideleNorm_ne_zero _`. Take `⟨B, hB⟩` from `(hQ.image hf).isBounded.exists_norm_le`. Establish `hL : 0 < Real.log (ideleNorm (E` using `E) (eIdele E)) := Real.log_pos (one_lt_ideleNorm_eIdele E)`. Use `set L := Real.log (ideleNorm (E := E) (eIdele E)) with hLdef`.
+
+Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Use `⟨⌈B / (a * L)⌉₊, fun γ n x hx => ?_⟩` and prove the remaining obligations. Establish `hd : GeneralLinearGroup.det (ratGL E a γ) = diag E (GeneralLinearGroup.det γ)` using `Units.ext (by rw [ratGL, GlobalTheory.CuspRep.det_map]; rfl)`. Establish `hv : Real.log (ideleNorm (E` using `E) (GeneralLinearGroup.det (x⁻¹ * (ratGL E a γ * splitCentre E a 1 ^ n) * x))) = (n : ℝ) * (a * L) := by`. Establish `h1 : GeneralLinearGroup.det (x⁻¹ * (ratGL E a γ * splitCentre E a 1 ^ n) * x) = diag E (GeneralLinearGroup.det γ) * (eIdele E ^ a) ^ n`.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_zpow, hd, det_splitCentre_one, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite using `[h1, map_mul, show ideleNorm (E := E) (diag E _) = 1 from ideleNorm_principalIdele _, one_mul, map_zpow, map_pow, Real.log_zpow, Real.log_pow]`. Establish `hb` using `hB _ ⟨_, hx, rfl⟩`. Use `beta_reduce at hb`. Rewrite `hb` using `[hv, Real.norm_eq_abs, abs_mul, abs_of_pos (mul_pos ha' hL)]`.
+
+Establish `h2 : ((|n| : ℤ) : ℝ) ≤ B / (a * L)`. Rewrite using `[le_div_iff₀ (mul_pos ha' hL)]`. Simplify using `using hb`. Establish `h3 : ((|n| : ℤ) : ℝ) ≤ ((⌈B / (a * L)⌉₊ : ℤ) : ℝ)`. Rewrite using `[Int.cast_natCast]`.
+
+Conclude with `h2.trans (Nat.le_ceil _)`. Conclude with `Int.cast_le.1 h3`.
+-/
 theorem abs_le_of_conj_mem_compact : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 0 < a →
     ∀ Q : Set (GA E a), IsCompact Q → ∃ n₀ : ℕ, ∀ (γ : GL (Fin a) E) (n : ℤ) (x : GA E a),
       x⁻¹ * (ratGL E a γ * splitCentre E a 1 ^ n) * x ∈ Q → |n| ≤ n₀ := by

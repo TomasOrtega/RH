@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu 0`. Introduce `h`. Conclude with `⟨![w], fun i ↦ by rw [Subsingleton.elim i 0]; exact h, by simp⟩`.
+-/
 private theorem isLieComb_one_iff {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] (r : R)
     (v w : epsR R ⟶ G) : IsLieComb ![r] ![v] w ↔ w.left = spMap (epsScaleR r) ≫ v.left := by
   constructor
@@ -19,6 +22,13 @@ private theorem isLieComb_one_iff {R : Type} [CommRing R] {G : Over (Sp R)} [Grp
   · intro h
     exact ⟨![w], fun i ↦ by rw [Subsingleton.elim i 0]; exact h, by simp⟩
 
+/- English proof (translation)
+Introduce `R O _ _ _ G A _ _ _ _ a b M _ _ t v _ _ hv hc`. Establish `hτ` using `fun c ↦ (isLieComb_one_iff _ _ _).mp (hc c)`. Set `e` to `t.lieEquivLine b hv hτ`. Use `⟨fun z ↦ (e z).hom, fun z z' h ↦ e.injective (Serre.Lie.ext h), fun u ↦ ⟨fun hu ↦ ?_, ?_⟩, fun z z' ↦ by simp only [map_add, Serre.Lie.hom_add], fun r z ↦ ?_, fun m ↦ ?_⟩` and prove the remaining obligations. Conclude with `⟨e.symm (Serre.Lie.mk b u hu), by simp⟩`.
+
+Introduce and unpack `⟨z, rfl⟩`. Conclude with `(e z).isTangent`. Use `beta_reduce`. Rewrite using `[isLieComb_one_iff, map_smul]`. Conclude with `Serre.Lie.hom_smul_left r (e z)`.
+
+Express the relevant statement in the definitionally equal form `(t.lieEquivLine b hv hτ _).hom = _`. Rewrite using `[Serre.IsTensor.hom_lieEquivLine_tmul, GrpTangent.epsScale_one, Category.id_comp]`.
+-/
 theorem lie_tensor_line :
     ∀ (R O : Type) [CommRing R] [CommRing O] [Algebra O R] (G A : Over (Sp R)) [GrpObj G]
       [IsCommMonObj G] [GrpObj A] [IsCommMonObj A] (a : OAct O G) (b : OAct O A) (M : Type)

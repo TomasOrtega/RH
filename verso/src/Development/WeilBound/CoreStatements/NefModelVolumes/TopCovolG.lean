@@ -42,6 +42,15 @@ namespace SelfIntersectionVolumeEstimates
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hSB hX hP hH hSW hGD hQ hD`. Establish `hS` using `hH.sieg`. Establish `hK` using `hX.ks`. Establish `hN` using `hX.lie`. Establish `gram` using `GlobalTheory.T.gram_bound_statement hP`.
+
+Establish `size` using `GlobalTheory.T.size_bound_statement`. Establish `meas` using `GlobalTheory.T.measure_bound_statement hP`. Establish `anc` using `GlobalTheory.T.anchor_bound_statement`. Establish `dex` using `GlobalTheory.T.deep_existence_statement hP`. Establish `dg` using `GlobalTheory.T.deep_good_reduction_statement hSW hP hGD hQ hS hK hN`.
+
+Establish `fd` using `GlobalTheory.T.flat_degree_statement hSW hP`. Establish `deg` using `GlobalTheory.T.degree_bound_of_deep_good hX hP hS hK hGD hQ hN dg size fd`. Establish `sh` using `GlobalTheory.T.share_of_toroidal hX hP hS hK hGD hQ hN dg size fd deg`. Establish `ht` using `heightG hSB hX hGD hQ hP hH hD dg size deg fd`. Establish `hs` using `GlobalTheory.T.height_theorem_of_hypotheses hX hP hGD hQ hS hK hN dg size fd deg sh`.
+
+Establish `ul` using `GlobalTheory.T.uniform_lower_bound_of_sums dg size deg sh ht hs (GlobalTheory.T.sum_constant_of_deep_good dg)`. Establish `low` using `GlobalTheory.T.lower_bound_of_all_estimates size (GlobalTheory.T.low_definition_from_anchor hP gram anc) dex dg (GlobalTheory.T.ring_bound_of_deep_good hP gram dg) (GlobalTheory.T.maps_bound_of_deep_good hP hGD hQ hS hK hN gram dg size fd) (GlobalTheory.T.rank_bound_of_deep_good …`. Conclude with `GlobalTheory.T.covolume_from_gram_and_bounds gram (GlobalTheory.T.recursion_of_gram_bound gram) (GlobalTheory.T.cutoff_bound_statement hP) (GlobalTheory.T.bad_set_bound_of_degeneration hX hP hGD hQ hS hK hN hX.green gram dex dg size fd deg sh) (GlobalTheory.T.lambda_bound_from_me …`.
+-/
 theorem topCovolG : SelfIntersectionVolumeEstimates.VolInputs → GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.CompanionTheory.Ar.Plug.DeepStR → CovolX :=
   by
   intro hSB hX hP hH hSW hGD hQ hD

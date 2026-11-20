@@ -13,6 +13,17 @@ section General
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Take `⟨dg, dh, g, h₁, hg, hh, hd, hy, hz0, hzw⟩` from `h`. Take `⟨dg', dh', g', h₁', hg', hh', hd', hy', hz0', hzw'⟩` from `h'`. Establish `e : dg + dh' = dg' + dh`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply]`.
+
+Establish `h1` using `hd k`. Establish `h2` using `hd' k`. Use linear arithmetic over natural numbers and integers. Establish `hh2 : IsMultiHomog (g' * h₁) (dg + dh')`. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.homog_mul hg' hh`. Establish `hF : g * h₁' - g' * h₁ ∈ mCoordIdeal y`. Use `GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.mem_of_aeval_eq_zero (GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.homog_sub (GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.homog_mul hg hh') hh2) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, hy, hy']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0` using `hz.2 _ hF`. Rewrite `h0` using `[map_sub, map_mul, map_mul, hzw, hzw']`. Establish `h2 : (w - w') * ((MvPolynomial.aeval z) h₁ * (MvPolynomial.aeval z) h₁') = 0`. Take the linear combination `h0`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+
+Conclude with `sub_eq_zero.mp h3`. Conclude with `absurd h3 (mul_ne_zero hz0 hz0')`.
+-/
 theorem hasVal_unique {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} {L : Type} [Field L] {z : (Σ k, ι k) → L}
     (hz : z ∈ ptsOver L (mCoordIdeal y)) {w w' : L} (h : HasVal y a s z w) (h' : HasVal y a s z w') : w = w' := by
   obtain ⟨dg, dh, g, h₁, hg, hh, hd, hy, hz0, hzw⟩ := h

@@ -8,6 +8,15 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `hc' : c ∈ v.adicCompletionIntegers K` using `hc`. Establish `hn : -c ∈ v.adicCompletionIntegers K` using `neg_mem hc'`. Rewrite using `[GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff]`. Establish `h1 : (1 : H.Kv v) ∈ Formalism.UG.Ov K v` using `one_mem _`. Establish `h0 : (0 : H.Kv v) ∈ Formalism.UG.Ov K v` using `zero_mem _`.
+
+Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `h1`. Conclude with `hc'`. Conclude with `h0`.
+
+Conclude with `h1`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `h1`. Conclude with `hn`. Conclude with `h0`.
+
+Conclude with `h1`.
+-/
 private lemma nL_memK {K : Type} [Field K] [NumberField K] {v : H.P K} {c : H.Kv v} (hc : Valued.v c ≤ 1) :
     H.nL c ∈ GlobalTheory.LFun.KGL v 2 := by
   have hc' : c ∈ v.adicCompletionIntegers K := hc
@@ -27,6 +36,11 @@ private lemma nL_memK {K : Type} [Field K] [NumberField K] {v : H.P K} {c : H.Kv
     · exact h0
     · exact h1
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `map_one (H.cp v)`. Both sides reduce to the same expression. Conclude with `map_zero (H.cp v)`.
+
+Conclude with `map_one (H.cp v)`.
+-/
 private lemma map_gl_nU {K : Type} [Field K] [NumberField K] (v : H.P K) (z : A K) :
     Matrix.GeneralLinearGroup.map (H.cp v) (gl (nU z)) = H.nL (H.cp v z) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -36,16 +50,27 @@ private lemma map_gl_nU {K : Type} [Field K] [NumberField K] (v : H.P K) (z : A 
   · exact map_zero (H.cp v)
   · exact map_one (H.cp v)
 
+/- English proof (translation)
+Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := E) w (L : 𝓞 E)`. Rewrite `h1` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hL]`. Simplify using `using h1`.
+-/
 private lemma val_nat_one {E : Type} [Field E] [NumberField E] (w : H.P E) (L : ℕ)
     (hL : (L : 𝓞 E) ∉ w.asIdeal) : Valued.v (L : H.Kv w) = 1 := by
   have h1 := HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := E) w (L : 𝓞 E)
   rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hL] at h1
   simpa using h1
 
+/- English proof (translation)
+The claim follows from `show (a : H.Kv w) ∈ w.adicCompletionIntegers E from natCast_mem _ a`.
+-/
 private lemma val_nat_le {E : Type} [Field E] [NumberField E] (w : H.P E) (a : ℕ) :
     Valued.v (a : H.Kv w) ≤ 1 :=
   show (a : H.Kv w) ∈ w.adicCompletionIntegers E from natCast_mem _ a
 
+/- English proof (translation)
+Introduce `hm`. Apply `h` to reduce the goal to its premises. Use `show (L : 𝓞 ℚ) ∈ (w.under (𝓞 ℚ)).asIdeal`. Express the relevant statement in the definitionally equal form `(L : 𝓞 ℚ) ∈ w.asIdeal.comap (algebraMap (𝓞 ℚ) (𝓞 E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `hm`.
+-/
 private lemma not_mem_of_bad {E : Type} [Field E] [NumberField E] (w : H.P E) (L : ℕ)
     (h : ¬ Bad L (w.under (𝓞 ℚ))) : (L : 𝓞 E) ∉ w.asIdeal := by
   intro hm
@@ -55,6 +80,9 @@ private lemma not_mem_of_bad {E : Type} [Field E] [NumberField E] (w : H.P E) (L
   rw [Ideal.mem_comap, map_natCast]
   exact hm
 
+/- English proof (translation)
+Establish `h` using `eq_ratCast ((pLoc ℚ v).comp (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ))) (L : ℚ)⁻¹`. Establish `e : H.cp v (iota L) = ((pLoc ℚ v).comp (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ))) (L : ℚ)⁻¹` using `rfl`. Rewrite using `[e, h]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private lemma cp_iota (v : H.P ℚ) (L : ℕ) : H.cp v (iota L) = (L : H.Kv v)⁻¹ := by
   have h := eq_ratCast ((pLoc ℚ v).comp (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ))) (L : ℚ)⁻¹
   have e : H.cp v (iota L) = ((pLoc ℚ v).comp (algebraMap ℚ (FiniteAdeleRing (𝓞 ℚ) ℚ))) (L : ℚ)⁻¹ := rfl
@@ -62,6 +90,11 @@ private lemma cp_iota (v : H.P ℚ) (L : ℕ) : H.cp v (iota L) = (L : H.Kv v)�
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h : ((a : A ℚ) * iota L).2 (AdeleBaseChange.below ℚ w) = (a : H.Kv (AdeleBaseChange.below ℚ w)) * (L : H.Kv (AdeleBaseChange.below ℚ w))⁻¹`. Use `map_mul (H.cp (AdeleBaseChange.below ℚ w)) (a : A ℚ) (iota L)` as an intermediate fact. Rewrite `this` using `[cp_iota, map_natCast]`. Conclude with `this`. Use `show SemiLocal.completionMap (AdeleBaseChange.below ℚ w) w (((a : A ℚ) * iota L).2 (AdeleBaseChange.below ℚ w)) = _`.
+
+Rewrite using `[h, map_mul, map_inv₀, map_natCast, map_natCast]`.
+-/
 private lemma completion_adele_natural {E : Type} [Field E] [NumberField E] (w : H.P E) (L a : ℕ) :
     H.cp w (AdeleBaseChange.adeleMap ℚ E ((a : A ℚ) * iota L)) = (a : H.Kv w) * (L : H.Kv w)⁻¹ := by
   have h : ((a : A ℚ) * iota L).2 (AdeleBaseChange.below ℚ w) =
@@ -72,6 +105,11 @@ private lemma completion_adele_natural {E : Type} [Field E] [NumberField E] (w :
   show SemiLocal.completionMap (AdeleBaseChange.below ℚ w) w (((a : A ℚ) * iota L).2 (AdeleBaseChange.below ℚ w)) = _
   rw [h, map_mul, map_inv₀, map_natCast, map_natCast]
 
+/- English proof (translation)
+Introduce `E _ _ D L a w hL hθ`. Establish `hL1` using `val_nat_one w L (not_mem_of_bad w L hL)`. Establish `hz : Valued.v (H.cp w (D.mkE 0 ((a : A ℚ) * iota L))) ≤ 1`. Rewrite using `[Dat.mkE, map_zero, zero_add, map_mul, map_mul, completion_adele_natural, map_mul, map_inv₀, hL1, inv_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show Matrix.GeneralLinearGroup.map (H.cp w) (gl (nU (D.mkE 0 ((a : A ℚ) * iota L)))) ∈ GlobalTheory.LFun.KGL w 2`. Rewrite using `[map_gl_nU]`. Conclude with `nL_memK hz`.
+-/
 theorem UpperTheory.unipotent_natDiv_mem_maximalCompact_of_not_badPrime :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (L a : ℕ) (w : H.P E), ¬ Bad L (w.under (𝓞 ℚ)) → Valued.v (H.cp w (rt D.θ)) ≤ 1 → H.KAt w (nu D ((a : A ℚ) * iota L)) := by
   intro E _ _ D L a w hL hθ

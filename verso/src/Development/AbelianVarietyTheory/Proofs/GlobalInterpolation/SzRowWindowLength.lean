@@ -6,6 +6,19 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `he0` using `L.sc.eps_pos`. Establish `he1` using `L.sc.eps_lt`. Establish `hk : (D.R.k : ℝ) ≤ 2 * L.sc.x ^ (5 : ℝ)`.
+
+Establish `h1` using `hV.ranks.2.2.1.2`. Establish `h2 : L.sc.x ^ (9 / 2 + 10 * L.sc.eps) ≤ L.sc.x ^ (5 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hn : (0 : ℝ) < D.R.n`.
+
+Establish `: 0 < D.R.n` using `by unfold Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Establish `hd : L.sc.x ^ (-L.sc.eps) ≤ L.de2`. Rewrite using `[L.typeDensity_eq_card_div, le_div_iff₀ hn]`. Conclude with `hV.host.2.2.1`.
+
+Establish `hd' : L.sc.x ^ (-1 : ℝ) ≤ L.de2` using `le_trans (Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)) hd`. Establish `hxe : L.sc.x ^ L.sc.eps ≤ L.sc.x ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `hdp` using `L.thickDensity_pos`. Unfold `lA`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Establish `e7 : L.sc.x ^ (7 : ℝ) * L.sc.x ^ (-1 : ℝ) = L.sc.x ^ (5 : ℝ) * L.sc.x ^ (1 : ℝ)`. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← e7]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ L.sc.x ^ (7 : ℝ) * ((D.R.m : ℝ) * L.de2) := by gcongr`.
+-/
 theorem lA_le_pow_seven {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (hV : Val C cD ch L) :
     lA L ≤ L.sc.x ^ (7 : ℝ) := by
   have hx1 := L.sc.one_lt_alt
@@ -38,6 +51,17 @@ theorem lA_le_pow_seven {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (hV 
         rw [mul_assoc, ← e7]; ring
     _ ≤ L.sc.x ^ (7 : ℝ) * ((D.R.m : ℝ) * L.de2) := by gcongr
 
+/- English proof (translation)
+Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `he0` using `L.sc.eps_pos`. Establish `he1` using `L.sc.eps_lt`. Establish `hn : (D.R.n : ℝ) ≤ 2 * L.sc.x ^ (3 : ℝ)`.
+
+Establish `h1` using `hV.ranks.n_le'`. Establish `h2 : L.sc.x ^ ((9 : ℝ) / 4) ≤ L.sc.x ^ (3 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : (D.R.t : ℝ) ≤ L.sc.x ^ (401 : ℝ)`. Establish `h` using `L.t_win.2`.
+
+Rewrite `h` using `[hV.Ct_eq, hCt]`. Then use the resulting hypothesis. Establish `hm2` using `D.R.two_le_m`. Establish `hm : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`. Establish `hN : D.R.N D.R.m ≤ 2 * D.R.t * D.R.m`. Establish `h` using `D.R.rank_add_five_le`.
+
+Establish `h1 : D.R.k + 1 ≤ D.R.t` using `by omega`. Unfold `Ranks.N`. Use the polynomial consequences of the given equalities and inequalities. Establish `hN' : (D.R.N D.R.m : ℝ) ≤ 2 * D.R.t * D.R.m` using `by exact_mod_cast hN`. Rewrite using `[div_le_iff₀ hm]`.
+
+Establish `e : L.sc.x ^ (404 : ℝ) = L.sc.x ^ (3 : ℝ) * L.sc.x ^ (401 : ℝ)`. Rewrite using `[← Real.rpow_add hx0]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nN_div_m_le {C : FC} (hCt : C.Ct = 401) {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (hV : Val C cD ch L) :
     (D.R.n : ℝ) * D.R.N D.R.m / D.R.m ≤ 4 * L.sc.x ^ (404 : ℝ) := by
   have hx1 := L.sc.one_lt_alt
@@ -67,6 +91,31 @@ theorem nN_div_m_le {C : FC} (hCt : C.Ct = 401) {cD ch : ℝ} {D : D7} {L : Size
     _ ≤ (2 * L.sc.x ^ (3 : ℝ)) * (2 * L.sc.x ^ (401 : ℝ) * D.R.m) := by gcongr
     _ = 4 * L.sc.x ^ (404 : ℝ) * D.R.m := by rw [e]; ring
 
+/- English proof (translation)
+Introduce `eps h0 h1 C hC`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨Real.exp (60 / eps + 34), fun D L he hx hV => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hlog : 60 / eps + 34 ≤ Real.log L.sc.x` using `(Real.le_log_iff_exp_le hx0).2 hx`.
+
+Establish `hq : 0 < 60 / eps` using `by positivity`. Establish `hLw : D.host.Lw = Lwv L.sc` using `hV.host.2.2.2.2.2.1`. Establish `hCt : C.Ct = 401`. Establish `h` using `hC.1`. Unfold `FC.Fixed at h`.
+
+The claim follows by propositional logic. Use `⟨fun l hl => ⟨⌈7 * Real.log L.sc.x⌉₊, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hl' : (11 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `he1 : Real.exp 1 ≤ (l : ℝ) - 1`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `Real.exp_le_exp.2 (Nat.le_ceil _)`. Use `_ = Real.exp 1 ^ ⌈7 * Real.log L.sc.x⌉₊ := Real.exp_nat_mul _ _`.
+
+Use `_ ≤ ((l : ℝ) - 1) ^ ⌈7 * Real.log L.sc.x⌉₊ := by gcongr`. Establish `: ⌈7 * Real.log L.sc.x⌉₊ ≤ ⌈(405 : ℝ) * Real.log L.sc.x⌉₊` using `Nat.ceil_mono (by linarith)`. Rewrite using `[hLw, Lwv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hLw, hC.2.2.1, Lwv, he]`.
+
+Establish `a1 : (⌈(405 : ℝ) * Real.log L.sc.x⌉₊ : ℝ) < 405 * Real.log L.sc.x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `a2 : (⌈30 / eps⌉₊ : ℝ) < 30 / eps + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `a3 : 60 / eps = 2 * (30 / eps)` using `by ring`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hV.logFiveDepth_eq, hC.2.2.2.1]`. Establish `hb` using `nN_div_m_le hCt hV`. Establish `hm2` using `D.R.two_le_m`. Establish `hm : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`. Establish `hn : (0 : ℝ) < D.R.n`.
+
+Establish `: 0 < D.R.n` using `by unfold Ranks.n; positivity`. Conclude with `this` after adjusting the coercions. Establish `hN : (0 : ℝ) < D.R.N D.R.m`. Establish `h` using `D.R.m_add_three_le_k`. Establish `: 0 < D.R.N D.R.m` using `by unfold Ranks.N; omega`.
+
+Conclude with `this` after adjusting the coercions. Establish `hy : 0 < (D.R.n : ℝ) * D.R.N D.R.m / D.R.m` using `by positivity`. Establish `l4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Establish `l2` using `Real.log_two_gt_d9`.
+
+Establish `l2'` using `Real.log_two_lt_d9`. Establish `l5 : Real.log 4 ≤ Real.log 5` using `Real.log_le_log (by norm_num) (by norm_num)`. Establish `hl : Real.log ((D.R.n : ℝ) * D.R.N D.R.m / D.R.m) ≤ Real.log 4 + 404 * Real.log L.sc.x`. Use `(Real.log_le_log hy hb).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_rpow hx0]`.
+
+Establish `hlb : Real.logb 5 ((D.R.n : ℝ) * D.R.N D.R.m / D.R.m) ≤ 400 * Real.log L.sc.x`. Rewrite using `[Real.logb, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `a1 : (⌈(400 : ℝ) * Real.log L.sc.x⌉₊ : ℝ) < 400 * Real.log L.sc.x + 1` using `Nat.ceil_lt_add_one (by linarith)`. Establish `a2 : ((⌈Real.logb 5 ((D.R.n : ℝ) * D.R.N D.R.m / D.R.m)⌉₊ : ℕ) : ℝ) ≤ (⌈(400 : ℝ) * Real.log L.sc.x⌉₊ : ℝ)`.
+
+Conclude with `Nat.ceil_mono hlb` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_windowLength : SzRow (fun C D L => (∀ l : ℕ, 11 ≤ l → ∃ j : ℕ, lA L ≤ ((l : ℝ) - 1) ^ j ∧ 2 * j + 2 ≤ D.host.Lw) ∧ ((D.host.Lw : ℝ) ≤ C.P.CLw * Real.log L.sc.x) ∧ ((L.j0 : ℝ) ≤ C.P.Cj0 * Real.log L.sc.x)) := by
   intro eps h0 h1 C hC
   refine ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨Real.exp (60 / eps + 34), fun D L he hx hV => ?_⟩⟩⟩

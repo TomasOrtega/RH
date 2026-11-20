@@ -9,13 +9,24 @@ namespace GlobalTheory.CovRep
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (Om l) (c : ℚ_[l]) x]`. Both sides reduce to the same expression.
+-/
 theorem zOm_smul_eq {m a : ℕ} (c : ℤ_[l]) (x : Fin m → Matrix (Fin a) (Fin a) (Om l)) :
     zOm l c • x = ((c : ℚ_[l])) • x := by
   rw [← algebraMap_smul (Om l) (c : ℚ_[l]) x]
   rfl
 
+/- English proof (translation)
+The claim follows from `{ eq_induced := rfl }`.
+-/
 theorem isInducing_coe : Topology.IsInducing (fun x : ℤ_[l] => (x : ℚ_[l])) := { eq_induced := rfl }
 
+/- English proof (translation)
+Simplify using `only [zOm_smul_eq] at h`. Establish `h0 : ∑ s, (((z s : ℚ_[l])) - (z' s : ℚ_[l])) • bb s = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Use `(Fintype.linearIndependent_iff.mp hli) _ h0` as an intermediate fact. Use function extensionality and compare the values at `s`.
+
+Establish `hs` using `this s`. Rewrite `hs` using `[sub_eq_zero]`. Conclude with `Subtype.ext hs`.
+-/
 theorem coord_unique {m a d' : ℕ} {bb : Fin d' → Fin m → Matrix (Fin a) (Fin a) (Om l)}
     (hli : LinearIndependent ℚ_[l] bb) {z z' : Fin d' → ℤ_[l]}
     (h : ∑ s, zOm l (z s) • bb s = ∑ s, zOm l (z' s) • bb s) : z = z' := by
@@ -28,16 +39,25 @@ theorem coord_unique {m a d' : ℕ} {bb : Fin d' → Fin m → Matrix (Fin a) (F
   rw [sub_eq_zero] at hs
   exact Subtype.ext hs
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.TraceConjugationCover.tup]`.
+-/
 theorem tup_mul {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (g h : Γ) :
     GlobalTheory.TraceConjugationCover.tup ρs (g * h) = GlobalTheory.TraceConjugationCover.tup ρs g * GlobalTheory.TraceConjugationCover.tup ρs h := by
   funext k
   simp [GlobalTheory.TraceConjugationCover.tup]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.TraceConjugationCover.tup]`.
+-/
 theorem tup_one {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) :
     GlobalTheory.TraceConjugationCover.tup ρs 1 = 1 := by
   funext k
   simp [GlobalTheory.TraceConjugationCover.tup]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.TraceConjugationCover.tup]`.
+-/
 theorem tup_inv {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (g : Γ) :
     GlobalTheory.TraceConjugationCover.tup ρs g⁻¹ = fun k => (((ρs k g)⁻¹ : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) := by
   funext k
@@ -46,6 +66,43 @@ theorem tup_inv {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL 
 end GlobalTheory.CovRep
 
 open GlobalTheory.CovRep in
+/- English proof (translation)
+Introduce `l _ Γ _ _ a m ρs T d' bb hc hli hbbT hcoord hstab`. Set `crd : (Fin m → Matrix (Fin a) (Fin a) (Om l)) → Fin d' → ℤ_[l]` to `fun x => if h : ∃ z : Fin d' → ℤ_[l], x = ∑ s, zOm l (z s) • bb s then h.choose else 0`. Establish `hcrd : ∀ x ∈ T, x = ∑ s, zOm l (crd x s) • bb s`. Introduce `x hx`. Establish `h` using `hcoord x hx`.
+
+Simplify using `only [crd, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hcrd_eq : ∀ z : Fin d' → ℤ_[l], crd (∑ s, zOm l (z s) • bb s) = z`. Introduce `z`. Establish `h : ∃ z' : Fin d' → ℤ_[l], ∑ s, zOm l (z s) • bb s = ∑ s, zOm l (z' s) • bb s` using `⟨z, rfl⟩`.
+
+Simplify using `only [crd, dif_pos h]`. Conclude with `(coord_unique hli h.choose_spec).symm`. Set `Mf : Γ → Matrix (Fin d') (Fin d') ℤ_[l]` to `fun g => Matrix.of fun s j => crd (GlobalTheory.TraceConjugationCover.tup ρs g * bb j) s`. Establish `hMf : ∀ g j, GlobalTheory.TraceConjugationCover.tup ρs g * bb j = ∑ s, zOm l (Mf g s j) • bb s` using `fun g j => hcrd _ (hstab g _ (hbbT j))`. Establish `key : ∀ g (z : Fin d' → ℤ_[l]), GlobalTheory.TraceConjugationCover.tup ρs g * ∑ s, zOm l (z s) • bb s = ∑ t, zOm l ((Mf g *ᵥ z) t) • bb t`.
+
+Introduce `g z`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[mul_smul_comm, hMf, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun s _ => mul_comm _ _`. Establish `hmul : ∀ g h, Mf (g * h) = Mf g * Mf h`.
+
+Introduce `g h`. Use extensionality with `s j`. Establish `e : GlobalTheory.TraceConjugationCover.tup ρs (g * h) * bb j = ∑ t, zOm l ((Mf g *ᵥ fun s => Mf h s j) t) • bb t`. Rewrite using `[tup_mul, mul_assoc, hMf h j, key]`. Use `show crd (GlobalTheory.TraceConjugationCover.tup ρs (g * h) * bb j) s = _`.
+
+Rewrite using `[e, hcrd_eq]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hone : Mf 1 = 1`. Use extensionality with `s j`. Establish `e : GlobalTheory.TraceConjugationCover.tup ρs 1 * bb j = ∑ t, zOm l ((1 : Matrix (Fin d') (Fin d') ℤ_[l]) t j) • bb t`.
+
+Rewrite using `[tup_one, one_mul]`. Simplify using `[Matrix.one_apply]`. Use `show crd (GlobalTheory.TraceConjugationCover.tup ρs 1 * bb j) s = _`. Rewrite using `[e, hcrd_eq]`. Set `ρM : Γ →* Matrix (Fin d') (Fin d') ℤ_[l]` to `{ toFun := Mf, map_one' := hone, map_mul' := hmul }`.
+
+Set `ρ' : Γ →* GL (Fin d') ℤ_[l]` to `ρM.toHomUnits`. Establish `hval : ∀ g, ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l]) = Mf g` using `fun g => rfl`. Set `W` to `Submodule.span ℚ_[l] (Set.range bb)`. Set `B : Module.Basis (Fin d') ℚ_[l] W` to `Module.Basis.span hli`. Use `haveI : FiniteDimensional ℚ_[l] W := Module.Finite.of_basis B`.
+
+Establish `hW : ∀ x ∈ T, x ∈ W`. Introduce `x hx`. Rewrite using `[hcrd x hx]`. Simplify using `only [zOm_smul_eq]`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+
+Establish `hrepr : ∀ x (hx : x ∈ T) s, ((crd x s : ℚ_[l])) = B.repr ⟨x, hW x hx⟩ s`. Introduce `x hx s`. Establish `e : (⟨x, hW x hx⟩ : W) = ∑ t, ((crd x t : ℚ_[l])) • B t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`.
+
+Establish `hB : ∀ t, ((B t : W) : Fin m → Matrix (Fin a) (Fin a) (Om l)) = bb t` using `fun t => by show ((Module.Basis.span hli t : W) : Fin m → Matrix (Fin a) (Fin a) (Om l)) = bb t`. Rewrite using `[Module.Basis.span_apply]`. Simplify using `only [Submodule.coe_smul, hB]`. Use `show x = _`. Use `conv_lhs => rw [hcrd x hx]`.
+
+Conclude with `Finset.sum_congr rfl fun t _ => zOm_smul_eq _ _`. Rewrite using `[e, B.repr_sum_self]`. Establish `hcont : ∀ F : Γ → (Fin m → Matrix (Fin a) (Fin a) (Om l)), Continuous F → (∀ g, F g ∈ T) → ∀ s, Continuous fun g => crd (F g) s`. Introduce `F hF hT s`. Rewrite using `[isInducing_coe.continuous_iff]`.
+
+Establish `e : (fun x : ℤ_[l] => (x : ℚ_[l])) ∘ (fun g => crd (F g) s) = fun g => B.coord s ⟨F g, hW _ (hT g)⟩`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, Module.Basis.coord_apply]`. Conclude with `hrepr _ (hT g) s`. Rewrite using `[e]`.
+
+Conclude with `(LinearMap.continuous_of_finiteDimensional (B.coord s)).comp (hF.subtype_mk _)`. Establish `htup : Continuous fun g => GlobalTheory.TraceConjugationCover.tup ρs g` using `continuous_pi fun k => Units.continuous_val.comp (hc k)`. Establish `htupi : Continuous fun g => GlobalTheory.TraceConjugationCover.tup ρs g⁻¹`. Repeatedly rewrite using `[tup_inv]`. Conclude with `continuous_pi fun k => Units.continuous_coe_inv.comp (hc k)`.
+
+Establish `hMc : Continuous Mf`. Use `continuous_matrix fun s j => ?_` and prove the remaining obligations. Conclude with `hcont (fun g => GlobalTheory.TraceConjugationCover.tup ρs g * bb j) (continuous_pi fun k => (((continuous_apply k).comp htup).matrix_mul continuous_const)) (fun g => hstab g _ (hbbT j)) s`. Establish `hMci : Continuous fun g => Mf g⁻¹`. Use `continuous_matrix fun s j => ?_` and prove the remaining obligations.
+
+Conclude with `hcont (fun g => GlobalTheory.TraceConjugationCover.tup ρs g⁻¹ * bb j) (continuous_pi fun k => (((continuous_apply k).comp htupi).matrix_mul continuous_const)) (fun g => hstab g⁻¹ _ (hbbT j)) s`. Use `⟨ρ', ?_, fun g j => by rw [hval]; exact hMf g j⟩` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Use `⟨hMc, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => (((ρ' g)⁻¹ : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l])) = fun g => Mf g⁻¹`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`. Conclude with `hval _`. Rewrite using `[e]`. Conclude with `hMci`.
+-/
 theorem GlobalTheory.CovRep.rep_of_basis : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (a m : ℕ) (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (T : Submodule ℤ_[l] (Fin m → Matrix (Fin a) (Fin a) (Om l))) (d' : ℕ) (bb : Fin d' → Fin m → Matrix (Fin a) (Fin a) (Om l)), (∀ k, Continuous (ρs k)) → LinearIndependent ℚ_[l] bb → (∀ s, bb s ∈ T) → (∀ x ∈ T, ∃ z : Fin d' → ℤ_[l], x = ∑ s, zOm l (z s) • bb s) → (∀ g, ∀ x ∈ T, GlobalTheory.TraceConjugationCover.tup ρs g * x ∈ T) → ∃ ρ' : Γ →* GL (Fin d') ℤ_[l], Continuous ρ' ∧ ∀ g j, GlobalTheory.TraceConjugationCover.tup ρs g * bb j = ∑ s, zOm l (((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l]) s j) • bb s := by
   intro l _ Γ _ _ a m ρs T d' bb hc hli hbbT hcoord hstab
   classical

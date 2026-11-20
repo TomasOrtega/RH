@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.ConjCMPoint
 
+/- English proof (translation)
+Introduce `hPC hDR hDC K _ _ d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hTT E _ _ _ _ I _ φ hCM hφ c y hc 𝔠 T X' p hp`. Take `⟨u', hu'⟩` from `GlobalTheory.T.galois_conjugate_holomorphic_uniformization hPC hDR hDC (FR E) 𝔠 T.X X' p g T.U.c _ T.U.u Ω₀ Ω₁ hTT.1 hTT.2.1 hp`. Establish `htor` using `GlobalTheory.T.torsion_transport_cm_uniformization hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hTT E I φ hCM hφ c y hc 𝔠 T X' p hp u' hu'`. Conclude with `⟨u', GlobalTheory.T.torsion_transport_galois_compatible hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hTT E I φ hCM hφ c y hc 𝔠 T X' p hp u' htor, hu', htor⟩`.
+-/
 theorem conjUnif_of_torsTransport : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),

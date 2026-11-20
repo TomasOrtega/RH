@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.EmbTopBlock
 
+/- English proof (translation)
+Establish `hP' : D.sp.X'.rank = D.R.N D.R.m - 1` using `rankP D`. Establish `hN' : (D.sp.X D.R.m).rank = D.R.N D.R.m` using `rankN D D.R.m le_rfl`. Establish `hb : (b : ℕ) < D.sp.X'.rank` using `by have := b.2; omega`. Establish `hb2 : (b : ℕ) < (D.sp.X D.R.m).rank` using `by have := b.2; omega`. Establish `key : D.sp.iX' (D.sp.X'.frame ⟨b, hb⟩) = (D.sp.X D.R.m).frame ⟨b, hb2⟩` using `hi _ _ rfl`.
+
+Rewrite using `[iXm, LinearMap.toMatrix'_apply, iXc]`. Establish `hs : (D.sp.X'.frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)).symm (Pi.single b 1) = D.sp.X'.frame ⟨b, hb⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use extensionality with `j`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, Module.Basis.equivFun_apply, Module.Basis.repr_self, Pi.single_apply, Finsupp.single_apply, Fin.ext_iff, Fin.val_cast, finCongr_symm, finCongr_apply, Fin.coe_cast, LinearMap.funLeft_apply, Function.comp_apply]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hs, key]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, Module.Basis.equivFun_apply, Module.Basis.repr_self, Pi.single_apply, Finsupp.single_apply, Fin.ext_iff, Fin.val_cast, finCongr_symm, finCongr_apply, Fin.coe_cast, LinearMap.funLeft_apply, Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem iXm_entry {D : D7}
     (hi : ∀ (a : Fin D.sp.X'.rank) (b : Fin (D.sp.X D.R.m).rank), (a : ℕ) = b →
       D.sp.iX' (D.sp.X'.frame a) = (D.sp.X D.R.m).frame b)
@@ -36,6 +43,11 @@ end GlobalTheory.EmbTopBlock
 
 namespace GlobalTheory.EmbTopBlock
 
+/- English proof (translation)
+Introduce `h0`. Establish `hn` using `X.piT_norm u`. Rewrite `hn` using `[h0, zero_mul]`. Establish `hT : B.T u = 0` using `by exact_mod_cast hn.symm`. Establish `h1` using `X.T_gt u`.
+
+Establish `h2` using `X.a_gt`. Rewrite `h1` using `[hT]`. Establish `h3` using `h2.trans h1`. Conclude with `(Nat.not_lt_zero _) (by exact_mod_cast h3)`.
+-/
 theorem piT_coe_ne_zero {B : GlobalTheory.Mem.Base} (X : PreX B.toPre) (u : B.Word) : ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0 := by
   intro h0
   have hn := X.piT_norm u
@@ -47,6 +59,21 @@ theorem piT_coe_ne_zero {B : GlobalTheory.Mem.Base} (X : PreX B.toPre) (u : B.Wo
   have h3 := h2.trans h1
   exact (Nat.not_lt_zero _) (by exact_mod_cast h3)
 
+/- English proof (translation)
+Introduce `B X I _hOk hP l Z u θ _hθ emb hN hemb k τ`. Take `⟨h1, h2⟩` from `hemb k`. Set `q : AE (I.rec7 l Z) →+* ℂ` to `(θ τ).comp (infPart (I.rec7 l Z))`. Set `p : (I.rec7 l Z).host.E →+* ℂ` to `q.comp (incA (I.rec7 l Z))`. Set `G : Matrix (Fin (B.R.N B.R.m)) (Fin (B.R.N B.R.m)) ℂ` to `infM θ _ (rankN (I.rec7 l Z) B.R.m le_rfl) (emb k) τ`.
+
+Set `G' : Matrix (Fin (B.R.N B.R.m - 1)) (Fin (B.R.N B.R.m - 1)) ℂ` to `infM θ _ (rankP (I.rec7 l Z)) k τ`. Set `J : Matrix (Fin (B.R.N B.R.m)) (Fin (B.R.N B.R.m - 1)) ℂ` to `(iXm (I.rec7 l Z)).map p`. Establish `hF : J = Matrix.of (fun (i : Fin (B.R.N B.R.m)) (a : Fin (B.R.N B.R.m - 1)) => if (i : ℕ) = a then (1 : ℂ) else 0)`. Use extensionality with `i a`. Use `show p (iXm (I.rec7 l Z) i a) = if (i : ℕ) = a then (1 : ℂ) else 0`.
+
+Apply the tactic sequence `rw [iXm_entry (D := I.rec7 l Z) hP.iX i a]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `e1 : G * J = J * G'`. Use `congrArg (fun M => Matrix.map M q) h1` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_map] at this`.
+
+Conclude with `this`. Rewrite `e1` using `[hF]`. Establish `e2 : G *ᵥ (fun a : Fin (B.R.N B.R.m) => p (TC.z0 X u a)) = fun a => p (TC.z0 X u a)`. Use function extensionality and compare the values at `i`. Use `congrArg q (congrFun h2 i)` as an intermediate fact.
+
+Conclude with `(RingHom.map_mulVec q _ _ i).symm.trans this`. Establish `hc0 : p ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0` using `(map_ne_zero p).2 (piT_coe_ne_zero X u)`. Establish `hz : (fun a : Fin (B.R.N B.R.m) => p (TC.z0 X u a)) = p ((X.piT u : 𝓞 B.host.E) : B.host.E) • (fun i : Fin (B.R.N B.R.m) => if (i : ℕ) = B.R.N B.R.m - 1 then (1 : ℂ) else 0)`. Use function extensionality and compare the values at `i`. Simplify using `only [TC.z0, Pi.smul_apply, smul_eq_mul]`.
+
+Use `i.2` as an intermediate fact. Distinguish the cases in `h : (i : ℕ) + 1 = B.R.N B.R.m`. Rewrite using `[if_pos h, if_pos (by omega), mul_one]`. Rewrite using `[if_neg h, if_neg (by omega), mul_zero]`. Conclude with `map_zero p`.
+
+Rewrite `e2` using `[hz, Matrix.mulVec_smul]`. Establish `e2'` using `smul_right_injective _ hc0 e2`. Conclude with `TC.BlockMatrixCriteria.isBlock_of_entries rfl rfl hN G G' _ _ (fun _ _ => rfl) (fun _ _ => rfl) e1 e2'`.
+-/
 theorem isBlock_infM_emb : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (θ : InfFam (I.rec7 l Z)), IsInfFam θ → ∀ (emb : GA (I.rec7 l Z) (I.rec7 l Z).sp.X' →* GA (I.rec7 l Z) ((I.rec7 l Z).sp.X B.R.m)) (hN : B.R.N B.R.m = (B.R.N B.R.m - 1) + 1), IsEmbTop (D := I.rec7 l Z) (TC.z0 X u) emb → ∀ (k : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') (τ : (I.rec7 l Z).what₂.Tau), GlobalTheory.BranchFormula.IsBlock hN (infM θ _ (rankN (I.rec7 l Z) B.R.m le_rfl) (emb k) τ) (infM θ _ (rankP (I.rec7 l Z)) k τ) 1 := by
   intro B X I _hOk hP l Z u θ _hθ emb hN hemb k τ
   obtain ⟨h1, h2⟩ := hemb k

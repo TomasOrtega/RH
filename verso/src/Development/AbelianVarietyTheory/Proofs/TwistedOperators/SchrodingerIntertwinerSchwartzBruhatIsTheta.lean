@@ -18,6 +18,23 @@ open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S T hk a, ← inv_smul_nsmul S T hk b]`. Conclude with `congrArg _ hab`. Establish `hb` using `isBichar_symplO S T ψ`. Establish `hm : Φ ∈ waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T e) (half S T (cA D e)) (Λ ⊓ half S T e)`.
+
+Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `mem_waveSpan hb inf_le_right inf_le_right hLL' hX (half_div S T e) (half_div S T _) tf hfin Φ (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2)) fun t ht => ⟨h3 t ht, (half S T e).nsmul_mem ((isHalf_iff S T).1 (h1 t ht)) _⟩`. Use `clear hΦ`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem _ hh`.
+
+Take `⟨x, hx, y, hy, rfl⟩` from `hh`. Establish `s0` using `GlobalTheory.isSBHalf_halfInd e Λ`. Establish `s1 : IsSBHalf e Λ fun t => ψ (symplO S T t y) * halfInd e Λ t`. Take `⟨k, hk, hk'⟩` from `hden y hy`. Take `⟨a1, k', hk1, a2, a3⟩` from `s0`.
+
+Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : halfInd e Λ (t + (k * k') • u) = halfInd e Λ t`. Rewrite using `[mul_nsmul]`. Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hh) k)) t`. Establish `e2 : ψ (symplO S T ((k * k') • u) y) = 1`.
+
+Rewrite using `[mul_nsmul']`. Conclude with `(hb.nsmul k _ y).trans (hLL' _ (nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k') _ ⟨hk', nsmul_mem hy k⟩)`. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`. Rewrite using `[mul_nsmul']`. Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`.
+
+Establish `e1 : wave (fun x y : WO S T => ψ (symplO S T x y)) (Λ ⊓ half S T e) x y = fun t => (fun t => ψ (symplO S T t y) * halfInd e Λ t) (t + x)`. Rewrite using `[halfInd_eq_ind]`. Both sides reduce to the same expression. Establish `v1` using `h₁.vac`. Rewrite `v1` using `[one_smul]`.
+
+Rewrite using `[e1, h₁.trans _ s1 x ((isHalf_iff S T).2 hx), h₁.modul _ s0 y ((isHalf_iff S T).2 hy), v1]`. Conclude with `px x hx _ (py y hy _ pf)`. Consider the case `zero => rw [LinearMap.map_zero]`. Conclude with `p0`. Consider the case `add f g _ _ hf hg => rw [LinearMap.map_add]`.
+
+Conclude with `padd _ _ hf hg`. Consider the case `smul c f _ hf => rw [LinearMap.map_smul]`. Conclude with `psmul _ _ hf`.
+-/
 theorem placeModel_induction (ψ : AddChar (AF D.host.F) ℂ) {e : AE D} (Λ : AddSubgroup (WO S T))
     (hLL' : ∀ u ∈ Λ ⊓ half S T e, ∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T u y) = 1)
     (hX : ∀ x ∈ half S T e, (∀ y ∈ Λ ⊓ half S T (cA D e), ψ (symplO S T x y) = 1) → x ∈ Λ ⊓ half S T e)
@@ -69,12 +86,24 @@ theorem placeModel_induction (ψ : AddChar (AF D.host.F) ℂ) {e : AE D} (Λ : A
   | add f g _ _ hf hg => rw [LinearMap.map_add]; exact padd _ _ hf hg
   | smul c f _ hf => rw [LinearMap.map_smul]; exact psmul _ _ hf
 
+/- English proof (translation)
+Use `GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hψ.1 f hf Unit {()} (fun _ => a) (fun _ => 1) fun _ _ => ha` as an intermediate fact. Rewrite `this` using `[Finset.sum_singleton, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isTheta_heis_fin {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) {a : WO S T} (ha : a.map (infPart D) = 0) : IsThetaFunO ψ S T (heisO ψ S T a f) := by
   have := GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hψ.1 f hf Unit {()} (fun _ => a) (fun _ => 1)
     fun _ _ => ha
   rwa [Finset.sum_singleton, one_smul] at this
 
+/- English proof (translation)
+Introduce `D ψ hψ S T ΛS ΛT hS hT e he hinf f₀ hf₀ Tm hTm Φ hΦ`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ latO S T ΛS ΛT fun _ => True, a • u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha])) u hu, by rw [mem_half, smul_smul, ha]⟩`.
+
+Use `placeModel_induction ψ _ (fun u hu y hy => ?_) (fun x hx h => ?_) (fun k hk => ?_) (fun y hy => ?_) hTm (IsThetaFunO ψ S T) GlobalTheory.WeilVacMove.isTheta_zero (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) (fun c _ => GlobalTheory.WeilVacMove.isTheta_smul c) (fun x hx f hf …` and prove the remaining obligations. Conclude with `(hdual u (infPart_of_half hinf ((isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`. Use `⟨(hdual x (infPart_of_half hinf ((isHalf_iff S T).2 hx))).2 fun u hu => ?_, hx⟩` and prove the remaining obligations. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite `this` using `[← symplO_smul, (mem_half S T).1 hx]`. Then use the resulting hypothesis.
+
+Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e he u hu, ?_⟩` and prove the remaining obligations. Use `(mem_half S T).1 ht.2` as an intermediate fact.
+
+Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Conclude with `exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_of_half (infPart_cA hinf) ((isHalf_iff S T).2 hy))`.
+-/
 theorem isTheta_placeModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ e : AE D, e * e = e → infPart D e = 0 → ∀ f₀ : WO S T → ℂ, IsThetaFunO ψ S T f₀ → ∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) 1 f₀ Tm → ∀ Φ, IsSBHalf e (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) Φ → IsThetaFunO ψ S T (Tm Φ) := by
   intro D ψ hψ S T ΛS ΛT hS hT e he hinf f₀ hf₀ Tm hTm Φ hΦ
   have hdual := (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1

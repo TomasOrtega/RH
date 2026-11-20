@@ -6,6 +6,13 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
 namespace GlobalTheory.CompanionTheory.Cass
 
+/- English proof (translation)
+Introduce `G _ _ _ D V _ _ π hπ t ht U hU v`. Take `⟨r, hr, x, hxJN, hx⟩` from `GlobalTheory.T.dominant_coset_reps_unipotent G D t ht`. Establish `hUv` using `GlobalTheory.T.hecke_operator_coset_formula G D.J D.isOpen_J D.isCompact_J V π hπ (t : G) U hU r x hr (fun i => (hxJN i).1) hx v`. Establish `hstep : ∀ i, (Submodule.Quotient.mk (π (x i * (t : G)) (v : V)) : GlobalTheory.PRep.Jacquet π D.N) = Submodule.Quotient.mk (π (t : G) (v : V))`. Introduce `i`.
+
+Use `(Submodule.Quotient.eq _).mpr (Submodule.subset_span ⟨⟨x i, (hxJN i).2⟩, π (t : G) (v : V), ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsum` using `map_sum (Submodule.mkQ (GlobalTheory.PRep.twKer π D.N 1)) (fun i => π (x i * (t : G)) (v : V)) Finset.univ`. Simplify using `only [Submodule.mkQ_apply] at hsum`. Use `show (Submodule.Quotient.mk (↑(U v)) : GlobalTheory.PRep.Jacquet π D.N) = (D.piN π t) (Submodule.Quotient.mk (v : V))`.
+
+Rewrite using `[hUv, Submodule.Quotient.mk_smul, hsum]`. Simplify using `only [hstep]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hr.ne'), one_smul]`. Both sides reduce to the same expression.
+-/
 theorem jacquet_projection_hecke_intertwines : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G],
     PositivityTheory.SphericalProduct.A2 G := by
   intro G _ _ _ D V _ _ π hπ t ht U hU v

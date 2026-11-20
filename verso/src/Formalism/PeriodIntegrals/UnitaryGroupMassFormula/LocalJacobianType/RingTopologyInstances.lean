@@ -19,6 +19,11 @@ attribute [local instance] Sd.finDim
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Unfold `OEv`. Rewrite using `[SetLike.mem_coe]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact map_one _`. Consider the case `simp`.
+-/
 theorem oev_one : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   unfold OEv
   rw [SetLike.mem_coe]
@@ -28,12 +33,28 @@ theorem oev_one : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
     | exact map_one _
     | simp
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sc, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => rw [mul_add, smul_add, hx, hy]`.
+-/
 theorem sc_mul (t : Fv F v) (x : Fv F v ⊗[F] E) : sc (E := E) v t * x = t • x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => simp [sc, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul']
   | add x y hx hy => rw [mul_add, smul_add, hx, hy]
 
+/- English proof (translation)
+Unfold `OEv at hx hy ⊢`. Rewrite `hx`, `hy`, the goal using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem b hb`. Take `⟨a', -, rfl⟩` from `ha`. Take `⟨b', -, rfl⟩` from `hb`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨a' * b', Set.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact map_mul _ _ _`. Consider the case `simp`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+
+Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => first`. Consider the case `rw [mul_smul_comm]`. Consider the case `rw [← algebraMap_smul (Fv F v) c y, mul_smul_comm, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ c hy`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ hx hz`.
+
+Consider the case `smul c x _ hx => first`. Consider the case `rw [smul_mul_assoc]`. Consider the case `rw [← algebraMap_smul (Fv F v) c x, smul_mul_assoc, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem oev_mul {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x * y ∈ OEv (E := E) v := by
   unfold OEv at hx hy ⊢
@@ -68,6 +89,9 @@ theorem oev_mul {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ 
       | rw [← algebraMap_smul (Fv F v) c x, smul_mul_assoc, algebraMap_smul]
     exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (x : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • x) = c • sigR (Fv F v) σ x := by
   induction x using TensorProduct.induction_on with
@@ -75,6 +99,11 @@ theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (x : Fv F v ⊗[F] E) :
   | tmul a b => simp [sigR, TensorProduct.smul_tmul']
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [← algebraMap_smul (Fv F v) c x, sigR_smul, algebraMap_smul]`. Consider the case `(induction x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, TensorProduct.smul_tmul']`.
+
+Consider the case `add y z hy hz => simp only [smul_add, map_add, hy, hz])`.
+-/
 private theorem sigR_smulO_lemma (σ : E →ₐ[F] E) (c : v.adicCompletionIntegers F)
     (x : Fv F v ⊗[F] E) : sigR (Fv F v) σ (c • x) = c • sigR (Fv F v) σ x := by
   first
@@ -84,6 +113,15 @@ private theorem sigR_smulO_lemma (σ : E →ₐ[F] E) (c : v.adicCompletionInteg
         | tmul a b => simp [sigR, TensorProduct.smul_tmul']
         | add y z hy hz => simp only [smul_add, map_add, hy, hz])
 
+/- English proof (translation)
+Unfold `OEv at hx ⊢`. Rewrite `hx`, the goal using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨a', -, rfl⟩` from `ha`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `first`. Consider the case `exact ⟨NumberField.RingOfIntegers.mapRingHom (σ : E →+* E) a', Set.mem_univ _, by simp [sigR, inclR]⟩`. Consider the case `exact ⟨⟨σ a', (a'.isIntegral_coe.map (σ : E →+* E).toIntAlgHom)⟩, Set.mem_univ _, by simp [sigR, inclR]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[sigR_smulO_lemma]`.
+
+Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem oev_sigR (σ : E →ₐ[F] E) {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     sigR (Fv F v) σ x ∈ OEv (E := E) v := by
   unfold OEv at hx ⊢
@@ -105,12 +143,18 @@ theorem oev_sigR (σ : E →ₐ[F] E) {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E :
     rw [sigR_smulO_lemma]
     exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Sd.isCompact_oev v, Sd.isOpen_oev v, oev_one v, fun _ hx _ hy => oev_mul v hx hy, fun _ hx _ hy => Sd.oev_add v hx hy, fun _ hx => Sd.oev_neg v hx, fun t ht x hx => by rw [sc_mul]; exact Sd.oev_smul v ht hx, fun σ _ hx => oev_sigR v σ hx⟩`.
+-/
 theorem integer_ring_topology : OTop (E := E) v :=
   ⟨Sd.isCompact_oev v, Sd.isOpen_oev v, oev_one v, fun _ hx _ hy => oev_mul v hx hy,
     fun _ hx _ hy => Sd.oev_add v hx hy, fun _ hx => Sd.oev_neg v hx,
     fun t ht x hx => by rw [sc_mul]; exact Sd.oev_smul v ht hx,
     fun σ _ hx => oev_sigR v σ hx⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem ring_topology_instances : RTop (E := E) v :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 

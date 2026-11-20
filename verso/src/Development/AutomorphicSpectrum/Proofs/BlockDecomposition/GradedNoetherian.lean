@@ -14,10 +14,18 @@ variable {R : Type} [CommRing R] {M : ℕ → Type} [∀ e, AddCommGroup (M e)] 
 def shiftOp (T : ∀ e, M e →ₗ[R] M (e + 1)) : Module.End R (⨁ e, M e) :=
   DirectSum.toModule R ℕ _ (fun e => DirectSum.lof R ℕ M (e + 1) ∘ₗ T e)
 
+/- English proof (translation)
+Simplify using `only [shiftOp, DirectSum.toModule_lof, LinearMap.comp_apply]`.
+-/
 theorem shiftOp_lof (T : ∀ e, M e →ₗ[R] M (e + 1)) (e : ℕ) (x : M e) :
     shiftOp T (DirectSum.lof R ℕ M e x) = DirectSum.lof R ℕ M (e + 1) (T e x) := by
   simp only [shiftOp, DirectSum.toModule_lof, LinearMap.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x`. Rewrite using `[← DirectSum.lof_eq_of R, shiftOp_lof, DirectSum.lof_eq_of, DirectSum.lof_eq_of]`. Distinguish the cases in `h : i = e`.
+
+Substitute `h` using the available equality. Simplify using `[DirectSum.of_eq_same]`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (by omega), DirectSum.of_eq_of_ne _ _ _ (by omega), map_zero]`. Consider the case `add a b ha hb => simp only [map_add, DirectSum.add_apply, ha, hb]`.
+-/
 theorem shiftOp_succ (T : ∀ e, M e →ₗ[R] M (e + 1)) (y : ⨁ e, M e) (e : ℕ) :
     shiftOp T y (e + 1) = T e (y e) := by
   induction y using DirectSum.induction_on with
@@ -29,6 +37,11 @@ theorem shiftOp_succ (T : ∀ e, M e →ₗ[R] M (e + 1)) (y : ⨁ e, M e) (e : 
     · rw [DirectSum.of_eq_of_ne _ _ _ (by omega), DirectSum.of_eq_of_ne _ _ _ (by omega), map_zero]
   | add a b ha hb => simp only [map_add, DirectSum.add_apply, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x`. Rewrite using `[← DirectSum.lof_eq_of R, shiftOp_lof, DirectSum.lof_eq_of]`. Conclude with `DirectSum.of_eq_of_ne _ _ _ (by omega)`.
+
+Consider the case `add a b ha hb => simp only [map_add, DirectSum.add_apply, ha, hb, add_zero]`.
+-/
 theorem shiftOp_zero (T : ∀ e, M e →ₗ[R] M (e + 1)) (y : ⨁ e, M e) :
     shiftOp T y 0 = 0 := by
   induction y using DirectSum.induction_on with
@@ -38,6 +51,11 @@ theorem shiftOp_zero (T : ∀ e, M e →ₗ[R] M (e + 1)) (y : ⨁ e, M e) :
     exact DirectSum.of_eq_of_ne _ _ _ (by omega)
   | add a b ha hb => simp only [map_add, DirectSum.add_apply, ha, hb, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `f using DirectSum.induction_on with`. Consider the case `zero => exact ⟨0, fun _ _ => rfl⟩`. Consider the case `of i x`. Use `⟨i + 1, fun e he => DirectSum.of_eq_of_ne _ _ _ (by omega)⟩` and prove the remaining obligations. Consider the case `add a b ha hb`.
+
+Take `⟨n, hn⟩` from `ha`. Take `⟨m, hm⟩` from `hb`. Conclude with `⟨max n m, fun e he => by`. Rewrite using `[DirectSum.add_apply, hn e (le_of_max_le_left he), hm e (le_of_max_le_right he), add_zero]⟩`.
+-/
 theorem eventually_zero (f : ⨁ e, M e) : ∃ n : ℕ, ∀ e, n ≤ e → f e = 0 := by
   induction f using DirectSum.induction_on with
   | zero => exact ⟨0, fun _ _ => rfl⟩
@@ -49,6 +67,9 @@ theorem eventually_zero (f : ⨁ e, M e) : ∃ n : ℕ, ∀ e, n ≤ e → f e =
     exact ⟨max n m, fun e he => by
       rw [DirectSum.add_apply, hn e (le_of_max_le_left he), hm e (le_of_max_le_right he), add_zero]⟩
 
+/- English proof (translation)
+Rewrite using `[DirectSum.lof_eq_of]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify `hx` using `[DirectSum.of_eq_same]`. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (by omega)]; exact zero_mem _`.
+-/
 theorem lof_mem {L : ∀ e, Submodule R (M e)} (i : ℕ) {x : M i} (hx : x ∈ L i) (j : ℕ) :
     DirectSum.lof R ℕ M i x j ∈ L j := by
   rw [DirectSum.lof_eq_of]
@@ -56,6 +77,67 @@ theorem lof_mem {L : ∀ e, Submodule R (M e)} (i : ℕ) {x : M i} (hx : x ∈ L
   · subst h; simpa [DirectSum.of_eq_same] using hx
   · rw [DirectSum.of_eq_of_ne _ _ _ (by omega)]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `R _ _ k M _ _ _ T hT d hgen L hL`. Establish `hEc : ∀ i j, shiftOp (T i) * shiftOp (T j) = shiftOp (T j) * shiftOp (T i)`. Introduce `i j`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `e`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.comp_apply, Module.End.mul_apply, shiftOp_lof]`. Rewrite using `[hT i j e x]`. Set `Sset : Finset (Module.End R (⨁ e, M e))` to `Finset.univ.image (fun i => shiftOp (T i))`.
+
+Establish `hSset : ∀ a, a ∈ (Sset : Set (Module.End R (⨁ e, M e))) → ∃ i, shiftOp (T i) = a`. Introduce `a ha`. Simplify `ha` using `[Sset]`. Establish `hcomm : ∀ a ∈ (Sset : Set (Module.End R (⨁ e, M e))), ∀ b ∈ (Sset : Set (Module.End R (⨁ e, M e))), a * b = b * a`. Introduce `a ha b hb`.
+
+Take `⟨i, rfl⟩` from `hSset a ha`. Take `⟨j, rfl⟩` from `hSset b hb`. Conclude with `hEc i j`. Set `S` to `Algebra.adjoin R (Sset : Set (Module.End R (⨁ e, M e)))`. Use `letI : CommRing S := Algebra.adjoinCommRingOfComm R hcomm`.
+
+Use `haveI : Algebra.FiniteType R S := (Subalgebra.fg_iff_finiteType S).1 (Subalgebra.fg_adjoin_finset _)`. Use `haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing R S`. Establish `hEmem : ∀ i, shiftOp (T i) ∈ S` using `fun i => Algebra.subset_adjoin (by simp [Sset])`. Establish `hfin : ∀ e, ∃ g : Finset (M e), Submodule.span R (g : Set (M e)) = ⊤` using `fun e => Module.Finite.fg_top (R := R) (M := M e)`. Use `choose gens hgens using hfin`.
+
+Set `G0 : Set (⨁ e, M e)` to `⋃ e ∈ Finset.range (d + 1), DirectSum.lof R ℕ M e '' (gens e : Set (M e))`. Establish `hG0 : G0.Finite` using `(Finset.finite_toSet _).biUnion fun e _ => (Finset.finite_toSet _).image _`. Set `P : Submodule S (⨁ e, M e)` to `Submodule.span S G0`. Establish `hbase : ∀ e, e ≤ d → ∀ m : M e, DirectSum.lof R ℕ M e m ∈ P`. Introduce `e he m`.
+
+Establish `hm : m ∈ Submodule.span R (gens e : Set (M e))` using `by rw [hgens e]; trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `Submodule.subset_span (Set.mem_biUnion (Finset.mem_range.2 (by omega)) ⟨x, hx, rfl⟩)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `P.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_of_tower_mem P c hx`. Establish `hall : ∀ e (m : M e), DirectSum.lof R ℕ M e m ∈ P`.
+
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact hbase 0 (Nat.zero_le _)`. Consider the case `succ e ih`. Distinguish the cases in `he : e + 1 ≤ d`.
+
+Conclude with `hbase _ he`. Introduce `m`. Establish `hm : m ∈ ⨆ i, LinearMap.range (T i e)` using `by rw [hgen e (by omega)]; trivial`. Use `Submodule.iSup_induction _ (motive := fun m => DirectSum.lof R ℕ M (e + 1) m ∈ P) hm ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`.
+
+Take `⟨y, rfl⟩` from `hx`. Establish `h1 : DirectSum.lof R ℕ M (e + 1) (T i e y) = (⟨shiftOp (T i), hEmem i⟩ : S) • DirectSum.lof R ℕ M e y` using `(shiftOp_lof (T i) e y).symm`. Rewrite using `[h1]`. Conclude with `P.smul_mem _ (ih y)`. Simplify using the standard rewrite rules.
+
+Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `P.add_mem hx hy`. Establish `hP : ∀ y : ⨁ e, M e, y ∈ P`. Introduce `y`.
+
+Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => exact P.zero_mem`. Consider the case `of i x => rw [← DirectSum.lof_eq_of R]`. Conclude with `hall i x`. Consider the case `add a b ha hb => exact P.add_mem ha hb`.
+
+Establish `htop : P = ⊤` using `eq_top_iff.2 fun y _ => hP y`. Use `haveI : Module.Finite S (⨁ e, M e) := ⟨Submodule.fg_def.2 ⟨G0, hG0, htop⟩⟩`. Establish `hstab : ∀ x ∈ S, ∀ y : ⨁ e, M e, (∀ e, y e ∈ L e) → ∀ e, x y e ∈ L e`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hSset x hx`. Introduce `y hy e`. Consider the cases of `e with`. Consider the case `zero => rw [shiftOp_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `succ e => rw [shiftOp_succ]`. Conclude with `hL i e (Submodule.mem_map_of_mem (hy e))`. Consider the case `algebraMap r`. Introduce `y hy e`.
+
+Rewrite using `[Module.algebraMap_end_apply, DirectSum.smul_apply]`. Conclude with `(L e).smul_mem r (hy e)`. Consider the case `add x x' _ _ hx hx'`. Introduce `y hy e`. Rewrite using `[LinearMap.add_apply, DirectSum.add_apply]`.
+
+Conclude with `(L e).add_mem (hx y hy e) (hx' y hy e)`. Consider the case `mul x x' _ _ hx hx'`. Introduce `y hy e`. Rewrite using `[Module.End.mul_apply]`. Conclude with `hx _ (hx' y hy) e`.
+
+Set `N : Submodule S (⨁ e, M e)` to `{ carrier := {y | ∀ e, y e ∈ L e} add_mem' := fun {a b} ha hb e => by`. Rewrite using `[DirectSum.add_apply]`. Conclude with `(L e).add_mem (ha e) (hb e)`. Use the proof step `zero_mem' := fun e => by rw [DirectSum.zero_apply]; exact zero_mem _`. Use the proof step `smul_mem' := fun s y hy => hstab s.1 s.2 y hy }`.
+
+Establish `hQ : ∀ e, ∀ x ∈ S, ∃ c : R, ∀ y : ⨁ e, M e, (∀ e', y e' ∈ L e') → x y (e + 1) - c • y (e + 1) ∈ ⨆ i, (L e).map (T i e)`. Introduce `e x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hSset x hx`.
+
+Use `⟨0, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, sub_zero, shiftOp_succ]`. Conclude with `Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem (hy e))`. Consider the case `algebraMap r`. Use `⟨r, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.algebraMap_end_apply, DirectSum.smul_apply, sub_self]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx'`. Take `⟨c, hc⟩` from `hx`. Take `⟨c', hc'⟩` from `hx'`.
+
+Use `⟨c + c', fun y hy => ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.add_mem _ (hc y hy) (hc' y hy)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[LinearMap.add_apply, DirectSum.add_apply, add_smul]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `mul x x' _ hx'S hx hx'`. Take `⟨c, hc⟩` from `hx`. Take `⟨c', hc'⟩` from `hx'`. Use `⟨c * c', fun y hy => ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.add_mem _ (hc _ (hstab x' hx'S y hy)) (Submodule.smul_mem _ c (hc' y hy))`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Module.End.mul_apply, smul_sub, mul_smul]`. Normalize the expressions using the abelian group laws. Take `⟨F, hF⟩` from `IsNoetherian.noetherian N`. Use `choose nf hnf using (eventually_zero : ∀ f : ⨁ e, M e, ∃ n : ℕ, ∀ e, n ≤ e → f e = 0)`.
+
+Use `⟨F.sup nf, fun e he => le_antisymm (iSup_le fun i => hL i e) ?_⟩` and prove the remaining obligations. Introduce `x hx`. Set `Ne : Submodule S (⨁ e, M e)` to `{ carrier := {y | y ∈ N ∧ y (e + 1) ∈ ⨆ i, (L e).map (T i e)} add_mem' := fun {a b} ha hb => ⟨N.add_mem ha.1 hb.1, by`. Rewrite using `[DirectSum.add_apply]`. Conclude with `Submodule.add_mem _ ha.2 hb.2⟩`.
+
+Use the proof step `zero_mem' := ⟨N.zero_mem, by rw [DirectSum.zero_apply]; exact zero_mem _⟩`. Use the proof step `smul_mem' := fun s y hy => by`. Take `⟨c, hc⟩` from `hQ e s.1 s.2`. Use `⟨N.smul_mem s hy.1, ?_⟩` and prove the remaining obligations. Establish `h3` using `Submodule.add_mem _ (hc y hy.1) (Submodule.smul_mem _ c hy.2)`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3 }`. Establish `hNle : N ≤ Ne`. Rewrite using `[← hF, Submodule.span_le]`. Introduce `f hf`.
+
+Use `⟨by rw [← hF]; exact Submodule.subset_span hf, ?_⟩` and prove the remaining obligations. Establish `h4 : nf f ≤ F.sup nf` using `Finset.le_sup hf`. Rewrite using `[hnf f (e + 1) (by omega)]`. Conclude with `zero_mem _`. Establish `hxN : DirectSum.lof R ℕ M (e + 1) x ∈ N` using `fun j => lof_mem (e + 1) hx j`.
+
+Establish `h5` using `(hNle hxN).2`. Rewrite `h5` using `[DirectSum.lof_eq_of, DirectSum.of_eq_same]`. Then use the resulting hypothesis.
+-/
 theorem gradedNoeth : GradedNoeth := by
   classical
   intro R _ _ k M _ _ _ T hT d hgen L hL

@@ -13,6 +13,15 @@ open GlobalTheory.Ex GlobalTheory.ThetaPtMove GlobalTheory.ConstFam
 noncomputable section
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Introduce `S G _ _ L ρ hL hρ g m K _ x θ θ' p a c c' hm hmK hpol hθ H`. Take `⟨P, φ, -, hp, w, hw⟩` from `hpol`. Establish `hL₁` using `P.isLB`. Use `P.isAb.comm` as an intermediate fact. Take `⟨ρ', -, hr⟩` from `exists_rigidificationPullbackCompatibleIso hp hw hL hL₁ hρ`.
+
+Establish `hfn : ∀ u v : K, GlobalTheory.ZH.fn (u * v) = GlobalTheory.ZH.fn u * GlobalTheory.ZH.fn v` using `fun u v => map_mul _ u v`. Establish `Ha : ThG G L ρ m θ' p (GlobalTheory.ZH.fn (a * c))`. Rewrite using `[hfn]`. Conclude with `ThG.smul hL hθ H`. Use `⟨fun H' => ?_, fun h => h ▸ Ha⟩` and prove the remaining obligations.
+
+Set `τ : (baseOver (Sp K)).left ⟶ (Over.mk x).left` to `𝟙 (Sp K)`. Establish `hτ : τ ≫ (Over.mk x).hom = (baseOver (Sp K)).hom ≫ x` using `rfl`. Take `⟨z, hz, hz'⟩` from `exists_torsion_down hp τ hτ p H.1`. Take `⟨t', ht'⟩` from `exists_secRel hp τ hτ hw hL hL₁ θ'`. Establish `hun : IsUnit ((m ^ 2 : ℕ) : Γ(Sp K, ⊤))`.
+
+Rewrite using `[← map_natCast (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom]`. Conclude with `(IsUnit.mk0 _ (by push_cast; exact pow_ne_zero _ hmK)).map _`. Establish `q` using `ThG.unique abelianSchemeLaws_all.1 P hm hun (ThG.move hp τ hτ hw hL hL₁ hr hz hz' ht' H') (ThG.move hp τ hτ hw hL hL₁ hr hz hz' ht' Ha)`. Establish `q' : GlobalTheory.ZH.fn c' = GlobalTheory.ZH.fn (a * c)` using `by simpa [τ] using q`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.injective q'`.
+-/
 theorem thG_smul_iff : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m : ℕ) (K : Type) [Field K] (x : Sp K ⟶ S) (θ θ' : SecAt G L x) (p : Over.mk x ⟶ G) (a c c' : K), Odd m → (m : K) ≠ 0 → PolFib G L g x → SecM.ofSec G θ' = @id Γ((Over.mk x).left, ⊤) (GlobalTheory.ZH.fn a) • SecM.ofSec G θ → ThG G L ρ m θ p (GlobalTheory.ZH.fn c) → (ThG G L ρ m θ' p (GlobalTheory.ZH.fn c') ↔ c' = a * c) := by
   intro S G _ _ L ρ hL hρ g m K _ x θ θ' p a c c' hm hmK hpol hθ H
   obtain ⟨P, φ, -, hp, w, hw⟩ := hpol

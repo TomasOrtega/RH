@@ -18,6 +18,11 @@ namespace GeneratorPullback
 
 variable {X X' Y Y' : Scheme.{0}} (L : LB X)
 
+/- English proof (translation)
+Introduce `y hy`. Use `show h.base y ∈ (⋂ k, (φ k).base ⁻¹' (L.U (jj k ⟨⟩) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1 : (ψ k).base y ∈ LB.wchart L (fun _ : PUnit => F) (jj k)` using `Set.mem_iInter.1 hy k`. Establish `h2 : F.base ((ψ k).base y) ∈ L.U (jj k ⟨⟩)` using `Set.mem_iInter.1 h1 ⟨⟩`.
+
+Express the relevant statement in the definitionally equal form `(h ≫ φ k).base y ∈ (L.U (jj k ⟨⟩) : Set X)`. Rewrite using `[← hψ k]`. Conclude with `h2`.
+-/
 lemma pullAlong_le {K : Type} [Fintype K] (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X))
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (jj : K → (L.pull F).ι) :
     LB.wchart (L.pull F) ψ jj ≤ h ⁻¹ᵁ LB.wchart L φ (fun k => jj k ⟨⟩) := by
@@ -35,6 +40,11 @@ def pullAlong {K : Type} [Fintype K] (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (
     LB.Gen (LB.LinComb (L.pull F) ψ ε) where
   s := fun jj => res (pullAlong_le L F h φ ψ hψ jj) (pullU h _ (t.s (fun k => jj k ⟨⟩)))
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1 : (φ k).base y ∈ LB.wchart L F (jj k)` using `Set.mem_iInter.1 hy k`. Establish `h2 : (F i).base ((φ k).base y) ∈ L.U (jj k i)` using `Set.mem_iInter.1 h1 i`. Use `show (φ k).base y ∈ (⋂ _u : PUnit, (F i).base ⁻¹' (L.U (jj k i) : Set X))`.
+
+Conclude with `Set.mem_iInter.2 fun _ => h2`.
+-/
 lemma box_le {J K : Type} [Fintype J] [Fintype K] (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X'))
     (jj : K → (LB.LinComb L F (fun _ => 1)).ι) (i : J) :
     LB.wchart (LB.LinComb L F (fun _ => 1)) φ jj ≤
@@ -83,8 +93,14 @@ instance powPr.isMonHom (G : Over S) [GrpObj G] : ∀ {n : ℕ} (i : Fin n), IsM
     haveI := powPr.isMonHom G (n := n) ⟨i, Nat.lt_of_succ_lt_succ h⟩
     exact inferInstanceAs (IsMonHom (snd _ _ ≫ powPr G (n := n) ⟨i, Nat.lt_of_succ_lt_succ h⟩))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powPr_zero (G : Over S) (n : ℕ) : powPr G (n := n + 1) 0 = fst _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powPr_succ (G : Over S) (n : ℕ) (i : Fin n) :
     powPr G (n := n + 1) i.succ = snd _ _ ≫ powPr G i := rfl
 
@@ -132,6 +148,9 @@ def boxCub (p : IsPowGrp G' G j) (L : LB G.left) (t : LB.Gen (Theta G L)) :
   GeneratorPullback.boxGen L (fun i => (p.pr i).left) (thφ G' (x3 G')) thε
     (fun i => letI := p.hom i; (CubeMap.ofHom (p.pr i)).thetaPull L t)
 
+/- English proof (translation)
+Use `p.hom i` as an intermediate fact. Use `fin_cases k`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_pr (p : IsPowGrp G' G j) (i : Fin j) (k : Fin 2) :
     (![(ι[G']).left, 𝟙 G'.left] : Fin 2 → (G'.left ⟶ G'.left)) k ≫ (p.pr i).left =
       (p.pr i).left ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → (G.left ⟶ G.left)) k := by

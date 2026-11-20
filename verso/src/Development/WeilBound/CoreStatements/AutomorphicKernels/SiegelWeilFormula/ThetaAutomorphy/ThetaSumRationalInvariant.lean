@@ -18,6 +18,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open PositivityTheory.ThKF0.Resc in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Establish `hL : IsLagr σ (dbl JB) (diagCols (Fin n))` using `isLagr_diagCols (R := F) σ JB`. Establish `hC : (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E).map (fun z => ((1 : AF F) ⊗ₜ[F] z : AE F E)) = diagCols (Fin n)`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) E).map (fun z => ((1 : AF F) ⊗ₜ[F] z : AE F E)) = 1` using `Matrix.map_one _ (map_zero (inclR (F := F) (AF F))) (map_one (inclR (F := F) (AF F)))`. Simplify using `only [diagCols, Matrix.fromRows_map, e1]`.
+
+Establish `hχ' : ∀ (z : E) (u : (AE F E)ˣ), (u : AE F E) = (1 : AF F) ⊗ₜ[F] z → χ u = 1` using `fun z u hu => by`. Establish `: Nontrivial (AF F)` using `(AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Establish `: Nontrivial (AF F ⊗[F] E)` using `(Algebra.TensorProduct.includeRight_injective (A := AF F) (B := E) (algebraMap F (AF F)).injective).nontrivial`. Establish `hz : z ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `u.ne_zero (by rw [hu, TensorProduct.tmul_zero])`. Rewrite using `[show u = Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 z hz) from Units.ext hu]`. Conclude with `hχ.2 _`. Conclude with `GlobalTheory.CompanionTheory.ThetaMember.split_of_eq F E σ δ (Fin m) (Fin n ⊕ Fin n) κ JA (dbl JB) ψ hψ.1 (PositivityTheory.ThKF0.isStd_ne_one hψ) hψ.2.1 hq hA (GlobalTheory.CompanionTheory.ThetaMember.isHerm_dbl hB) (incM F (dbl JB)) rfl d' d₀ hd χ (Fin n) (diagCols (Fin n)) (di …`.
+-/
 theorem split_core {m n : ℕ} {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {δ : E}
     (hq : IsQuad σ δ) (JA : Matrix (Fin m) (Fin m) E) (JB : Matrix (Fin n) (Fin n) E) (hA : IsHerm σ JA)
     (hB : IsHerm σ JB)
@@ -55,6 +62,9 @@ theorem split_core {m n : ℕ} {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Substitute `hA hB` using the available equality. Establish `hU : UG c (v • JB) = UG c JB` using `PositivityTheory.ThKF0.Resc.ug_smul hv JB`. Use `⟨⟨d.e, fun w w' => (PositivityTheory.ThKF0.Resc.symp_smul h JA JB w w').trans (d.form w w')⟩, om.comp (Subgroup.inclusion hU.le), rfl, ⟨fun g => hS.pres _, fun g => hS.impl (Subgroup.inclusion hU.le g), fun g => hS.adm _⟩, fun l hl hinv p t hp => hR l hl hinv (Subgroup.inclusion …` and prove the remaining obligations.
+-/
 theorem split_resc {R K : Type} [CommRing R] [CommRing K] [Algebra R K] [Invertible (2 : R)] {c : K →ₐ[R] K}
     {α β ν κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype ν] [DecidableEq ν] [Fintype κ]
     {ξ ξ' u v : K} (h : ξ = ξ' * u * v) (hv : IsUnit v) {JA JA' : Matrix α α K} {JB JB' : Matrix β β K}
@@ -75,6 +85,33 @@ theorem split_resc {R K : Type} [CommRing R] [CommRing K] [Algebra R K] [Inverti
 open PositivityTheory.ThKF0.Resc in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hσ : IsCMExt F E σ` using `d.cm`. Establish `hψ : IsStd d.B.ψ` using `d.std`. Establish `h2 : Module.finrank F E = 2` using `hσ.2.2.1`. Use `haveI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`. Take `⟨δ, hq⟩` from `exists_isQuad hσ`.
+
+Establish `h0 : δ ≠ 0` using `hq.unit.ne_zero`. Take `⟨-, hS, hR⟩` from `d.ok.dbl.weil`. Establish `hYd : d.Y.J.det ≠ 0`. Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Introduce `hz`.
+
+Establish `hee : ((ε : ℤ) : E) * ((ε : ℤ) : E) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hM : (Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E) * Matrix.fromBlocks 0 (((ε : ℤ) : E) • 1) 1 0 = 1`. Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `[smul_smul, hee]`.
+
+Establish `h1` using `congrArg Matrix.det hM`. Rewrite `h1` using `[Matrix.det_mul, ← hε, Matrix.det_mul, Matrix.det_mul, dbl, Matrix.det_fromBlocks_zero₂₁, hz]`. Simplify using `at h1`. Establish `hκ : Fintype.card d.κ = Fintype.card (Fin d.m) * Fintype.card (Fin d.n ⊕ Fin d.n)`. Establish `: Nontrivial (AF F)` using `(AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`.
+
+Set `bE : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E h2`. Set `bA` to `Algebra.TensorProduct.basis (AF F) bE`. Use `haveI : Module.Free (AF F) (AE F E) := Module.Free.of_basis bA`. Use `haveI : Module.Finite (AF F) (AE F E) := Module.Finite.of_basis bA`. Establish `e` using `d.dd.e.finrank_eq`.
+
+Rewrite `e` using `[Module.finrank_matrix, Module.finrank_eq_card_basis bA, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Simplify using `only [Fintype.card_fin, Fintype.card_sum] at e ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨d₀, hd₀⟩` from `exists_ratCoord h2 hκ d.dd.e d.ok.dbl.rat`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hA, hB⟩ : ∃ a b : E, -1 = δ * a * b ∧ IsHerm σ (a • d.A.J) ∧ IsHerm σ (b • d.Y.J) := by`.
+
+Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Use `⟨1, -δ⁻¹, by field_simp, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `⟨hA.herm, (herm_det hA).isUnit⟩`. Use `⟨fun i j => by simp [hY i j, hq.anti], Ne.isUnit ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero h0))) hYd`. Use `⟨-δ⁻¹, 1, by field_simp, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun i j => by simp [hA.skew i j, hq.anti], Ne.isUnit ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_smul]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero h0))) (skew_det hA)`. Rewrite using `[one_smul]`. Conclude with `⟨hY, hYd.isUnit⟩`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hab`. Establish `hξ : (-1 : AE F E) = inclR (F` using `F) (AF F) δ * inclR (F := F) (AF F) a * inclR (F := F) (AF F) b := by`. Rewrite using `[← map_mul, ← map_mul, ← hab, map_neg, map_one]`. Establish `hJA : incM F (a • d.A.J) = inclR (F` using `F) (AF F) a • incM F d.A.J := by`. Use extensionality with `i j`.
+
+Simplify using `[incM]`. Establish `hJB : incM F (dbl (b • d.Y.J)) = inclR (F` using `F) (AF F) b • dbl (incM F d.Y.J) := by`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [incM, dbl]`. Take `⟨d', om', he, hS', hR', hgg⟩` from `split_resc (c := cA σ) (C := adeleClass F) (ψ := d.B.ψ) (κ := d.κ) hξ (hb.isUnit.map (inclR (F := F) (AF F))) hJA hJB hS.toIsSplitting hR`. Establish `hd' : ∀ x, d'.e (incM F x) = (fun i => algebraMap F (AF F) ((d₀ x).1 i), fun i => algebraMap F (AF F) ((d₀ x).2 i))` using `fun x => by rw [he]; exact hd₀ x`.
+
+Take `⟨g', hg'1, hg'2⟩` from `hgg γ`. Establish `hg : ∃ γ₀ : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E, ((g' : GL (Fin d.n ⊕ Fin d.n) (AE F E)) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) = incM F γ₀`. Take `⟨g₀, hg₀⟩` from `Subgroup.mem_subgroupOf.mp hγ`. Use `⟨g₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hg'1, ← hg₀]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hg'2]`. Conclude with `split_core hψ hq (a • d.A.J) (b • d.Y.J) hA hB d' d₀ hd' d.χ d.ok.hecke om' hS' hR' g' hg Ψ hΨ`.
+-/
 theorem theta_sum_rational_invariant (d : SD σ) (γ : d.G) (hγ : γ ∈ rat2 σ d.Y) (Ψ : d.Fn) (hΨ : Ψ ∈ d.sch) :
     thetaSum F (d.om γ Ψ) = thetaSum F Ψ := by
   have hσ : IsCMExt F E σ := d.cm

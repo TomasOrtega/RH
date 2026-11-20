@@ -12,6 +12,9 @@ section S1
 open NumberField IsDedekindDomain
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ k σ J h1 h2 h3 h4 U hU w g hg hgw hk hx`. Use `h F E k σ J h1 h2 h3 h4 U hU w g hg hgw hk ?_` and prove the remaining obligations. Introduce `x hxU`. Use `⟨0, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using hx x hxU i j`.
+-/
 theorem stabG_of_proG (h : StabLevelProG) : StabLevelG := by
   intro F E _ _ _ _ _ k σ J h1 h2 h3 h4 U hU w g hg hgw hk hx
   refine h F E k σ J h1 h2 h3 h4 U hU w g hg hgw hk ?_
@@ -19,6 +22,27 @@ theorem stabG_of_proG (h : StabLevelProG) : StabLevelG := by
   refine ⟨0, fun i j => ?_⟩
   simpa using hx x hxU i j
 
+/- English proof (translation)
+Introduce `R _ I g k hg hgI A hA s hs i j`. Set `π` to `Ideal.Quotient.mk I`. Set `φ` to `π.mapMatrix (m := Fin k)`. Set `N : Matrix (Fin k) (Fin k) (R ⧸ I)` to `φ (A - 1)`. Establish `hN0 : ∀ i j : Fin k, j ≤ i → N i j = 0` using `fun i j h => Ideal.Quotient.eq_zero_iff_mem.2 (hA i j h)`.
+
+Establish `hpow : ∀ m : ℕ, ∀ i j : Fin k, (j : ℕ) < i + m → (N ^ m) i j = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i j h`.
+
+Rewrite using `[pow_zero, Matrix.one_apply, if_neg]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `i j h`.
+
+Rewrite using `[pow_succ, Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Distinguish the cases in `hl : (l : ℕ) < i + m`. Rewrite using `[ih i l hl, zero_mul]`.
+
+Rewrite using `[hN0 l j (by rw [Fin.le_def]; omega), mul_zero]`. Establish `hAm : φ A = N + 1` using `by simp [N]`. Establish `hg0 : ((g : ℕ) : R ⧸ I) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hgI` as an intermediate fact. Simplify using `using this`.
+
+Establish `key : (φ A) ^ (g ^ s) = 1`. Rewrite using `[hAm, (Commute.one_right N).add_pow, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `m hm hm0`. Rewrite `hm` using `[Finset.mem_range]`.
+
+Distinguish the cases in `hmm : m = g ^ s`. Establish `: N ^ m = 0`. Use extensionality with `a b`. Conclude with `hpow m a b (by have := b.2; omega)`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `hd : g ∣ (g ^ s).choose m` using `hg.dvd_choose_pow hm0 hmm`. Take `⟨c, hc⟩` from `hd`. Establish `: (((g ^ s).choose m : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`. Rewrite using `[hc, Nat.cast_mul]`.
+
+Establish `: ((g : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`. Use extensionality with `a b`. Simplify using `[Matrix.natCast_apply, hg0]`. Rewrite using `[this, zero_mul]`. Rewrite using `[this, mul_zero]`.
+
+Introduce `h`. Simplify using `at h`. Establish `: φ (A ^ (g ^ s) - 1) = 0` using `by rw [map_sub, map_pow, key, map_one, sub_self]`. Establish `h2` using `congrFun (congrFun this i) j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`.
+-/
 theorem unipotentPowers : UnipotentPowers := by
   intro R _ I g k hg hgI A hA s hs i j
   let π := Ideal.Quotient.mk I
@@ -70,6 +94,19 @@ theorem unipotentPowers : UnipotentPowers := by
   have h2 := congrFun (congrFun this i) j
   exact Ideal.Quotient.eq_zero_iff_mem.1 h2
 
+/- English proof (translation)
+Introduce `R _ I g k hg hgI hinf A hA N hN hAN`. Take `⟨s, N', hN', hNe⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' g hg.ne_one`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `set Bm := A ^ (g ^ s) with hB`. Establish `hBN : Bm ^ N' = 1` using `by rw [hB, ← pow_mul, ← hNe, hAN]`.
+
+Establish `hB1 : ∀ i j, (Bm - 1) i j ∈ I` using `fun i j => Ideal.pow_le_self (Nat.succ_ne_zero s) (Formalism.HermitianLattices.FiltrationBoundaryCriterion.congruence_powers R I g k hgI A hA s i j)`. Establish `hcop : Nat.Coprime g N'` using `(Nat.Prime.coprime_iff_not_dvd hg).2 hN'`. Establish `hN'0 : 0 < N'` using `Nat.pos_of_ne_zero (by rintro rfl; exact hN' (dvd_zero _))`. Establish `hfix : ∀ m : ℕ, Bm ^ (g ^ (N'.totient * m)) = Bm`. Introduce `m`.
+
+Establish `h1 : g ^ (N'.totient * m) ≡ 1 [MOD N']`. Rewrite using `[pow_mul]`. Simplify using `using (Nat.ModEq.pow_totient hcop).pow m`. Rewrite using `[pow_eq_pow_mod _ hBN, h1, ← pow_eq_pow_mod _ hBN, pow_one]`. Establish `hz : ∀ i j, (Bm - 1) i j = 0`.
+
+Introduce `i j`. Establish `: (Bm - 1) i j ∈ (⨅ m : ℕ, I ^ m)`. Rewrite using `[Ideal.mem_iInf]`. Introduce `m`. Establish `h` using `Formalism.HermitianLattices.FiltrationBoundaryCriterion.congruence_powers R I g k hgI Bm hB1 (N'.totient * m) i j`.
+
+Rewrite `h` using `[hfix m]`. Use `Ideal.pow_le_pow_right ?_ h` and prove the remaining obligations. Use `Nat.totient_pos.2 hN'0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite `this` using `[hinf]`.
+
+Simplify using `using this`. Establish `: Bm - 1 = 0` using `by ext i j; exact hz i j`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem congruenceTorsion : CongruenceTorsion := by
   intro R _ I g k hg hgI hinf A hA N hN hAN
   obtain ⟨s, N', hN', hNe⟩ := Nat.exists_eq_pow_mul_and_not_dvd hN.ne' g hg.ne_one
@@ -112,6 +149,37 @@ noncomputable def owHom :
 
 local notation "O" => (HeightOneSpectrum.adicCompletionIntegers F w)
 
+/- English proof (translation)
+Set `_ : Algebra (w.adicCompletionIntegers F) (E ⊗[F] w.adicCompletion F)` to `(owHom (E := E) w).toAlgebra`. Set `ι : 𝓞 E →+* E ⊗[F] w.adicCompletion F` to `(Formalism.UG.inclE (F := F) (E := E) (w.adicCompletion F)).comp (algebraMap (𝓞 E) E)`. Set `bs` to `NumberField.RingOfIntegers.basis E`. Set `s : Set (E ⊗[F] w.adicCompletion F)` to `Set.range (fun i => ι (bs i))`. Establish `hsfin : s.Finite` using `Set.finite_range _`.
+
+Establish `hint : ∀ x ∈ s, IsIntegral O x`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `h1 : IsIntegral ℤ (bs i)` using `Algebra.IsIntegral.isIntegral _`. Conclude with `h1.map_of_comp_eq (Int.castRingHom O) ι (RingHom.ext_int _ _)`. Establish `hfg` using `fg_adjoin_of_finite hsfin hint`.
+
+Set `A` to `Algebra.adjoin O s`. Establish `: Module.Finite O A` using `Module.Finite.iff_fg.2 hfg`. Establish `hιA : ∀ x : 𝓞 E, ι x ∈ A`. Introduce `x`. Rewrite using `[← bs.sum_repr x, map_sum]`.
+
+Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`. Conclude with `A.mul_mem (intCast_mem A _) (Algebra.subset_adjoin ⟨i, rfl⟩)`. Use `⟨A.toSubring, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.tensInt`.
+
+Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨_, ⟨x, rfl⟩⟩, rfl⟩ | ⟨y, rfl⟩)`. Conclude with `hιA x`. Conclude with `A.algebraMap_mem (⟨y.1, y.2⟩ : O)`. Establish `hg : (g : O) ∈ IsLocalRing.maximalIdeal O`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Establish `h1 : Valued.v ((g : w.adicCompletion F)) * Valued.v (u : w.adicCompletion F) = 1`. Rewrite using `[← map_mul]`.
+
+Use `congrArg (fun z : O => (z : w.adicCompletion F)) hu` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Establish `e : (((g : O)) : w.adicCompletion F) = (g : w.adicCompletion F)` using `by simp`. Rewrite `this` using `[e]`. Rewrite using `[this, map_one]`.
+
+Establish `h2 : Valued.v ((g : w.adicCompletion F)) < 1`. Establish `e : (g : w.adicCompletion F) = ((algebraMap (𝓞 F) F (g : 𝓞 F) : F) : w.adicCompletion F)`. Rewrite using `[map_natCast]`. Conclude with `(map_natCast (algebraMap F (w.adicCompletion F)) g).symm`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+
+Conclude with `hgw`. Establish `h3 : Valued.v (u : w.adicCompletion F) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 u.2`. Establish `h4 : Valued.v ((g : w.adicCompletion F)) * Valued.v (u : w.adicCompletion F) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h3) h2`. Rewrite `h4` using `[h1]`. Conclude with `lt_irrefl _ h4`.
+
+Establish `hne : Ideal.span {(g : O)} ≠ ⊤`. Introduce `h`. Establish `: Ideal.span {(g : O)} ≤ IsLocalRing.maximalIdeal O`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hg`.
+
+Rewrite `this` using `[h]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top (top_le_iff.1 this)`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := A) (Ideal.span {(g : O)}) hne`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+
+Rewrite `hx` using `[Ideal.mem_iInf]`. Establish `: (⟨x.1, x.2⟩ : A) ∈ (⨅ i : ℕ, (Ideal.span {(g : O)}) ^ i • (⊤ : Submodule O A))`. Rewrite using `[Submodule.mem_iInf]`. Introduce `m`. Establish `h1` using `hx m`.
+
+Rewrite `h1` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h1`. Establish `: (⟨x.1, x.2⟩ : A) = ((g : O) ^ m) • (⟨a.1, a.2⟩ : A)`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrArg Subtype.val ha`.
+
+Use `show x.1 = ((g : O) ^ m) • a.1`. Rewrite using `[Algebra.smul_def]`. Use `show x.1 = owHom (E := E) w ((g : O) ^ m) * a.1`. Rewrite using `[map_pow, map_natCast, ← e]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) m) trivial`. Rewrite `this` using `[hK]`. Simplify using `using this`.
+-/
 theorem sepLemma (g : ℕ) (hgw : (g : 𝓞 F) ∈ w.asIdeal) :
     ∃ (A : Subring (E ⊗[F] w.adicCompletion F)),
       Formalism.UG.tensInt (F := F) (w.adicCompletion F) (Formalism.UG.intOE E)
@@ -200,6 +268,41 @@ end sep
 section main
 open Formalism.HermitianLattices.FiltrationBoundaryCriterion
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ k σ J hσ hH hdet hdef U hU w g hg hgw hk hUw y`. Establish `hfinS` using `Formalism.UG.Final.AdelicStabFinite F E (Fin k) σ J hσ hH hdet hdef y`. Apply `Set.eq_singleton_iff_unique_mem.2` to reduce the goal to its premises. Use `⟨by simp [Formalism.UG.stabAt], ?_⟩` and prove the remaining obligations. Introduce `γ hγ`.
+
+Establish `hγ' : y⁻¹ * (γ : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) * y ∈ U.subgroupOf (Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F))` using `hγ`. Establish `hfo : IsOfFinOrder γ`. Rewrite using `[← finite_powers]`. Use `Set.Finite.subset (Set.finite_coe_iff.1 hfinS) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`.
+
+Use `show y⁻¹ * ((γ ^ n : _) : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) * y ∈ (Formalism.UG.levelAf σ J).subgroupOf (Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F))`. Establish `e1 : y⁻¹ * ((γ ^ n : _) : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) * y = (y⁻¹ * (γ : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) * y) ^ n`. Use `conj_pow (a := y⁻¹) (b := (γ : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F))) (i := n)` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[e1]`.
+
+Use `Subgroup.pow_mem _ hγ' n` as an intermediate fact. Conclude with `Subgroup.mem_subgroupOf.2 (hU (Subgroup.mem_subgroupOf.1 this))`. Take `⟨γ₀, hγ₀, hγ₀eq⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Establish `hinj` using `Formalism.UG.Final.InclInj F E (Fin k) (w.adicCompletion F) inferInstance`. Take `⟨n, hn, hγn⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfo`.
+
+Establish `h0n : γ₀ ^ n = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_one, map_pow, ← PfM.bc_pr_incl, hγ₀eq]`. Use `congrArg (fun z => Formalism.UG.bc (Formalism.UG.prV (E := E) w) ((z : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) : Matrix.GeneralLinearGroup (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) (congrArg Subtype.val hγn)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hfo0 : IsOfFinOrder γ₀` using `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, h0n⟩`. Take `⟨s, hx⟩` from `hUw _ (Subgroup.mem_subgroupOf.1 hγ')`. Use `set yw := Formalism.UG.bc (Formalism.UG.prV (E := E) w) (y : Matrix.GeneralLinearGroup (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) with hyw`. Establish `hxw : Formalism.UG.bc (Formalism.UG.prV (E` using `E) w) ((y⁻¹ * (γ : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) * y : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) : Matrix.GeneralLinearGroup (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = yw⁻¹ * Formalism.UG.bc (Formalism.UG.inclE (F := F) (w.adicCompletion F)) γ₀ * yw := …`. Rewrite using `[← PfM.bc_pr_incl, hγ₀eq]`.
+
+Simplify using `[hyw]`. Rewrite `hx` using `[hxw]`. Use `set X := yw⁻¹ * Formalism.UG.bc (Formalism.UG.inclE (F := F) (w.adicCompletion F)) γ₀ * yw with hX`. Establish `hord : orderOf X = orderOf γ₀`. Establish `h1` using `orderOf_injective ((MulAut.conj yw⁻¹).toMonoidHom.comp (Formalism.UG.bc (Formalism.UG.inclE (F := F) (w.adicCompletion F)))) ((MulAut.conj yw⁻¹).injective.comp hinj) γ₀`.
+
+Simplify `h1` using `[MulAut.conj_apply]`. Establish `hXn : X ^ n = 1`. Rewrite using `[← orderOf_dvd_iff_pow_eq_one, hord, orderOf_dvd_iff_pow_eq_one]`. Conclude with `h0n`. Take `⟨A, hRA, hsep⟩` from `sepLemma (E := E) w g hgw`.
+
+Use `choose r hr hr' using hx`. Set `B : Matrix (Fin k) (Fin k) A` to `fun i j => (1 : Matrix (Fin k) (Fin k) A) i j + (g : A) * ⟨r i j, hRA (hr i j)⟩`. Establish `hB : B.map A.subtype = (X : Matrix (Fin k) (Fin k) (E ⊗[F] w.adicCompletion F)) ^ (g ^ s)`. Use extensionality with `i j`. Use `hr' i j` as an intermediate fact.
+
+Rewrite `this` using `[sub_eq_iff_eq_add]`. Rewrite using `[this]`. Use `show (((1 : Matrix (Fin k) (Fin k) A) i j + (g : A) * ⟨r i j, hRA (hr i j)⟩ : A) : E ⊗[F] w.adicCompletion F) = _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[add_comm]`. Simplify using `[hij]`. Establish `hinjA : Function.Injective (A.subtype.mapMatrix (m` using `Fin k)) := by`. Introduce `M N hMN`. Use extensionality with `i j`.
+
+Conclude with `congrFun (congrFun hMN i) j`. Establish `hBn : B ^ n = 1`. Apply `hinjA` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Use `show (B.map A.subtype) ^ n = 1`.
+
+Rewrite using `[hB, ← pow_mul, mul_comm, pow_mul]`. Use `congrArg (fun z : Matrix.GeneralLinearGroup (Fin k) (E ⊗[F] w.adicCompletion F) => (z : Matrix (Fin k) (Fin k) (E ⊗[F] w.adicCompletion F))) hXn` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_one] at this`. Rewrite using `[this, one_pow]`. Take `⟨m, hm⟩` from `congruenceTorsion A (Ideal.span {(g : A)}) g k hg (Ideal.mem_span_singleton_self _) hsep B (fun i j => by`.
+
+Establish `e : (B - 1) i j = (g : A) * ⟨r i j, hRA (hr i j)⟩` using `by show ((1 : Matrix (Fin k) (Fin k) A) i j + (g : A) * ⟨r i j, hRA (hr i j)⟩) - (1 : Matrix (Fin k) (Fin k) A) i j = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ (Ideal.span {(g : A)}) (Ideal.mem_span_singleton_self (g : A))) n hn hBn`. Establish `hXg : X ^ (g ^ (s + m)) = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, pow_add, pow_mul, ← hB]`. Use `congrArg (A.subtype.mapMatrix (m := Fin k)) hm` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Conclude with `this`.
+
+Take `⟨t, -, ht⟩` from `(Nat.dvd_prime_pow hg).1 (orderOf_dvd_of_pow_eq_one hXg)`. Rewrite `ht` using `[hord]`. Establish `hbot` using `Formalism.BehrendSets.FinalE.trivStab E k g hg hk (Subgroup.zpowers γ₀) (Set.finite_coe_iff.2 (finite_zpowers.2 hfo0)) (IsPGroup.of_card (n := t) (by rw [Nat.card_zpowers, ht]))`. Establish `h1 : γ₀ = 1` using `Subgroup.zpowers_eq_bot.1 hbot`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hγ₀eq, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem stabLevelProG : StabLevelProG := by
   intro F E _ _ _ _ _ k σ J hσ hH hdet hdef U hU w g hg hgw hk hUw y
   classical
@@ -306,6 +409,23 @@ theorem stabLevelProG : StabLevelProG := by
 
 end main
 
+/- English proof (translation)
+Introduce `R _ I g k hg hgI A M hA s hs i j`. Set `π` to `Ideal.Quotient.mk I`. Set `φ` to `π.mapMatrix (m := Fin k)`. Set `N : Matrix (Fin k) (Fin k) (R ⧸ I)` to `φ (A - 1)`. Establish `hNM : N ^ M = 0`.
+
+Use extensionality with `a b`. Establish `: N ^ M = φ ((A - 1) ^ M)` using `by simp [N]`. Rewrite using `[this]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hA a b)`. Establish `hAm : φ A = N + 1` using `by simp [N]`.
+
+Establish `hg0 : ((g : ℕ) : R ⧸ I) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hgI` as an intermediate fact. Simplify using `using this`. Establish `key : (φ A) ^ (g ^ s) = 1`. Rewrite using `[hAm, (Commute.one_right N).add_pow, Finset.sum_eq_single 0]`.
+
+Simplify using the standard rewrite rules. Introduce `m hm hm0`. Rewrite `hm` using `[Finset.mem_range]`. Distinguish the cases in `hmm : m = g ^ s`. Establish `: N ^ m = 0`.
+
+Rewrite using `[hmm]`. Conclude with `pow_eq_zero_of_le hs hNM`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hd : g ∣ (g ^ s).choose m` using `hg.dvd_choose_pow hm0 hmm`.
+
+Take `⟨c, hc⟩` from `hd`. Establish `: (((g ^ s).choose m : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`. Rewrite using `[hc, Nat.cast_mul]`. Establish `: ((g : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I)) = 0`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.natCast_apply, hg0]`. Rewrite using `[this, zero_mul]`. Rewrite using `[this, mul_zero]`. Introduce `h`. Simplify using `at h`.
+
+Establish `: φ (A ^ (g ^ s) - 1) = 0` using `by rw [map_sub, map_pow, key, map_one, sub_self]`. Establish `h2` using `congrFun (congrFun this i) j`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h2`.
+-/
 theorem nilpotentPowers : NilpotentPowers := by
   intro R _ I g k hg hgI A M hA s hs i j
   let π := Ideal.Quotient.mk I
@@ -343,6 +463,29 @@ theorem nilpotentPowers : NilpotentPowers := by
   have h2 := congrFun (congrFun this i) j
   exact Ideal.Quotient.eq_zero_iff_mem.1 h2
 
+/- English proof (translation)
+Set `S : G → Set G` to `fun g => {g' | ∃ γ ∈ Γ, ∃ u : U, g' = γ * g * (u : G)}`. Establish `hSself : ∀ g, g ∈ S g` using `fun g => ⟨1, Γ.one_mem, 1, by simp⟩`. Establish `hSeq : ∀ g, ∀ γ ∈ Γ, ∀ u : U, S (γ * g * (u : G)) = S g`. Introduce `g γ hγ u`. Use extensionality with `g'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ', hγ', u', rfl⟩`. Conclude with `⟨γ' * γ, Γ.mul_mem hγ' hγ, u * u', by simp [mul_assoc]⟩`. Introduce and unpack `⟨γ', hγ', u', rfl⟩`. Conclude with `⟨γ' * γ⁻¹, Γ.mul_mem hγ' (Γ.inv_mem hγ), u⁻¹ * u', by simp [mul_assoc]⟩`.
+
+Use `haveI : Nonempty G := ⟨1⟩`. Set `rep : G → G` to `fun g => Classical.epsilon (fun g' => g' ∈ S g)`. Establish `hrep : ∀ g, rep g ∈ S g` using `fun g => Classical.epsilon_spec (p := fun g' => g' ∈ S g) ⟨g, hSself g⟩`. Establish `hrepeq : ∀ g, ∀ γ ∈ Γ, ∀ u : U, rep (γ * g * (u : G)) = rep g`. Introduce `g γ hγ u`.
+
+Use `show Classical.epsilon (fun g' => g' ∈ S (γ * g * (u : G))) = Classical.epsilon (fun g' => g' ∈ S g)`. Rewrite using `[hSeq g γ hγ u]`. Establish `hdec : ∀ g, ∃ γ : G, ∃ u : U, γ ∈ Γ ∧ g = γ * rep g * (u : G)`. Introduce `g`. Take `⟨γ, hγ, u, h⟩` from `hrep g`.
+
+Conclude with `⟨γ⁻¹, u⁻¹, Γ.inv_mem hγ, by rw [h]; simp [mul_assoc]⟩`. Use `choose γf uf hγf hg using hdec`. Use `choose x hx using hs`. Use `⟨fun g => (uf g)⁻¹ • x (rep g), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ u g`.
+
+Establish `hr` using `hrepeq g γ hγ u`. Establish `e1` using `hg (γ * g * (u : G))`. Rewrite `e1` using `[hr]`. Establish `e0` using `hg g`. Use `set r := rep g`.
+
+Use `set γ1 := γf (γ * g * (u : G))`. Use `set u1 := uf (γ * g * (u : G))`. Use `set γ0 := γf g`. Use `set u0 := uf g`. Establish `e2 : γ * (γ0 * r * (u0 : G)) * (u : G) = γ1 * r * (u1 : G)` using `by rw [← e0]; exact e1`.
+
+Establish `e3 : r⁻¹ * (γ1⁻¹ * (γ * γ0)) * r = (u1 : G) * ((u0 : G) * (u : G))⁻¹`. Establish `: γ * γ0 * r = γ1 * r * (u1 : G) * ((u0 : G) * (u : G))⁻¹`. Rewrite using `[← e2]`. Simplify using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e4 : γ1⁻¹ * (γ * γ0) = 1`. Apply `hst r _ (Γ.mul_mem (Γ.inv_mem (hγf _)) (Γ.mul_mem hγ (hγf _)))` to reduce the goal to its premises. Rewrite using `[e3]`. Conclude with `U.mul_mem u1.2 (U.inv_mem (U.mul_mem u0.2 u.2))`. Establish `e5 : (u1 : G) = (u0 : G) * (u : G)`.
+
+Rewrite `e3` using `[e4]`. Simplify using `only [mul_one, inv_mul_cancel] at e3`. Conclude with `(mul_inv_eq_one.1 e3.symm)`. Establish `e6 : u1 = u0 * u` using `Subtype.ext e5`. Use `show u1⁻¹ • x (rep (γ * g * (u : G))) = u⁻¹ • u0⁻¹ • x r`.
+
+Rewrite using `[hr, e6, mul_inv_rev, mul_smul]`. Introduce `g show p ((uf g)⁻¹ • x (rep g)) = f g`. Rewrite using `[hp, hx]`. Use `conv_rhs => rw [hg g]`. Conclude with `(hf _ (hγf g) _ _).symm`.
+-/
 theorem liftForm {G : Type} [Group G] (Γ U : Subgroup G)
     (hst : ∀ y : G, ∀ γ ∈ Γ, y⁻¹ * γ * y ∈ U → γ = 1)
     {W V : Type} [MulAction U W] [MulAction U V] (p : W → V)
@@ -406,6 +549,9 @@ theorem liftForm {G : Type} [Group G] (Γ U : Subgroup G)
     conv_rhs => rw [hg g]
     exact (hf _ (hγf g) _ _).symm
 
+/- English proof (translation)
+Introduce `G _ Γ U hst W₁ W₂ W₃ _ _ _ _ _ _ a b ha hb hex`. Use `⟨fun f hf h0 => ?_, fun hsur f'' hf'' => ?_⟩` and prove the remaining obligations. Conclude with `liftForm Γ U hst a ha f hf (fun g => (hex _).1 (h0 g))`. Conclude with `liftForm Γ U hst b hb f'' hf'' (fun g => hsur _)`.
+-/
 theorem formsExact : FormsExact := by
   intro G _ Γ U hst W₁ W₂ W₃ _ _ _ _ _ _ a b ha hb hex
   refine ⟨fun f hf h0 => ?_, fun hsur f'' hf'' => ?_⟩
@@ -419,6 +565,19 @@ open NumberField IntermediateField
 
 open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 
+/- English proof (translation)
+Establish `e : c * c.den = c.num` using `Rat.mul_den_eq_num c`. Establish `h1 : (m : ℚ) * (c.den : ℚ) ^ 2 = (c.num : ℚ) ^ 2 * m'`. Take the linear combination `(c.den : ℚ) ^ 2 * h + (m' : ℚ) * (c * c.den + c.num) * e`. Establish `h2 : m * (c.den : ℤ) ^ 2 = c.num ^ 2 * m'` using `by exact_mod_cast h1`. Establish `hcop : IsCoprime c.num (c.den : ℤ)`.
+
+Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Simplify `c.reduced` using `[Int.gcd]`. Establish `hD : IsUnit (c.den : ℤ)`. Apply `hm'` to reduce the goal to its premises. Establish `: (c.den : ℤ) * c.den ∣ c.num ^ 2 * m'` using `⟨m, by rw [← h2]; ring⟩`.
+
+Establish `hc2 : IsCoprime ((c.den : ℤ) * c.den) (c.num ^ 2)`. Rewrite using `[← pow_two]`. Conclude with `(hcop.symm.pow)`. Conclude with `hc2.dvd_of_dvd_mul_left this`. Establish `hN : IsUnit c.num`.
+
+Apply `hm` to reduce the goal to its premises. Establish `: c.num * c.num ∣ m * (c.den : ℤ) ^ 2` using `⟨m', by rw [h2]; ring⟩`. Establish `hc2 : IsCoprime (c.num * c.num) ((c.den : ℤ) ^ 2)`. Rewrite using `[← pow_two]`. Conclude with `hcop.pow`.
+
+Conclude with `hc2.dvd_of_dvd_mul_right this`. Establish `hD2 : (c.den : ℤ) ^ 2 = 1`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hD with h | h <;> rw [h] <;> norm_num`. Establish `hN2 : c.num ^ 2 = 1`. Apply the tactic sequence `rcases Int.isUnit_iff.1 hN with h | h <;> rw [h] <;> norm_num`.
+
+Rewrite `h2` using `[hD2, hN2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sqf_eq (m m' : ℤ) (hm : Squarefree m) (hm' : Squarefree m') (c : ℚ)
     (h : (m : ℚ) = c ^ 2 * m') : m = m' := by
   have e : c * c.den = c.num := Rat.mul_den_eq_num c
@@ -447,6 +606,13 @@ theorem sqf_eq (m m' : ℤ) (hm : Squarefree m) (hm' : Squarefree m') (c : ℚ)
   rw [hD2, hN2] at h2
   linarith
 
+/- English proof (translation)
+Take `⟨hq, hd, hqd, hq2, hd2⟩` from `h`. Rewrite using `[← Int.squarefree_natAbs]`. Establish `e : ((2 : ℤ) ^ i3 * (-(q : ℤ)) ^ i1 * (-(d : ℤ)) ^ i2).natAbs = 2 ^ i3 * q ^ i1 * d ^ i2`. Simplify using `[Int.natAbs_mul, Int.natAbs_pow]`. Rewrite using `[e]`.
+
+Establish `hp : ∀ p : ℕ, p.Prime → ∀ i : ℕ, i ≤ 1 → Squarefree (p ^ i)`. Introduce `p hp i hi`. Use `interval_cases i`. Simplify using the standard rewrite rules. Simplify using `using hp.prime.squarefree`.
+
+Establish `c1 : Nat.Coprime (2 ^ i3) (q ^ i1)` using `Nat.Coprime.pow _ _ ((Nat.coprime_primes Nat.prime_two hq).2 (Ne.symm hq2))`. Establish `c2 : Nat.Coprime (2 ^ i3 * q ^ i1) (d ^ i2)` using `Nat.Coprime.mul_left (Nat.Coprime.pow _ _ ((Nat.coprime_primes Nat.prime_two hd).2 (Ne.symm hd2))) (Nat.Coprime.pow _ _ ((Nat.coprime_primes hq hd).2 hqd))`. Rewrite using `[Nat.squarefree_mul c2, Nat.squarefree_mul c1]`. Conclude with `⟨⟨hp 2 Nat.prime_two i3 h3, hp q hq i1 h1⟩, hp d hd i2 h2⟩`.
+-/
 theorem sqf3 (q d : ℕ) (h : HypOdd q d) (i1 i2 i3 : ℕ) (h1 : i1 ≤ 1) (h2 : i2 ≤ 1) (h3 : i3 ≤ 1) :
     Squarefree ((2 : ℤ) ^ i3 * (-(q : ℤ)) ^ i1 * (-(d : ℤ)) ^ i2) := by
   obtain ⟨hq, hd, hqd, hq2, hd2⟩ := h
@@ -467,6 +633,9 @@ theorem sqf3 (q d : ℕ) (h : HypOdd q d) (i1 i2 i3 : ℕ) (h1 : i1 ≤ 1) (h2 :
   rw [Nat.squarefree_mul c2, Nat.squarefree_mul c1]
   exact ⟨⟨hp 2 Nat.prime_two i3 h3, hp q hq i1 h1⟩, hp d hd i2 h2⟩
 
+/- English proof (translation)
+Unfold `sgn at h`. Assume the negation of the conclusion as `hne`. Rewrite `h` using `[if_neg hne]`. Conclude with `absurd h (by decide)`.
+-/
 theorem sgn_one' {L : Type*} [Field L] [Algebra ℚ L] {τ : Gal(L/ℚ)} {x : L} (h : sgn τ x = 1) :
     τ x = x := by
   unfold sgn at h
@@ -474,6 +643,9 @@ theorem sgn_one' {L : Type*} [Field L] [Algebra ℚ L] {τ : Gal(L/ℚ)} {x : L}
   rw [if_neg hne] at h
   exact absurd h (by decide)
 
+/- English proof (translation)
+Unfold `sgn at h`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hx with h1 | h1` into its components or cases. Rewrite `h` using `[if_pos h1]`. Conclude with `absurd h (by decide)`. Conclude with `h1`.
+-/
 theorem sgn_neg' {L : Type*} [Field L] [Algebra ℚ L] {τ : Gal(L/ℚ)} {x : L} (h : sgn τ x = -1)
     (hx : (τ x) ^ 2 = x ^ 2) : τ x = -x := by
   unfold sgn at h
@@ -485,6 +657,9 @@ theorem sgn_neg' {L : Type*} [Field L] [Algebra ℚ L] {τ : Gal(L/ℚ)} {x : L}
 section
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
+/- English proof (translation)
+Use `h.1.autToPow_spec ℚ τ` as an intermediate fact. Rewrite using `[← this]`. Establish `e1 : ((h.1.autToPow ℚ τ : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))) = (k : ZMod (2 ^ (e + 2)))` using `hk.symm`. Rewrite using `[e1, ZMod.val_natCast]`. Conclude with `(pow_eq_pow_mod k h.1.pow_eq_one).symm`.
+-/
 theorem act_zeta (h : IsLayer (e + 2) q d ζ a b) (τ : Gal(L/ℚ)) (k : ℕ)
     (hk : (k : ZMod (2 ^ (e + 2))) = ((galMap h.1 a b τ).1 : ZMod (2 ^ (e + 2)))) : τ ζ = ζ ^ k := by
   have := h.1.autToPow_spec ℚ τ
@@ -494,6 +669,13 @@ theorem act_zeta (h : IsLayer (e + 2) q d ζ a b) (τ : Gal(L/ℚ)) (k : ℕ)
   rw [e1, ZMod.val_natCast]
   exact (pow_eq_pow_mod k h.1.pow_eq_one).symm
 
+/- English proof (translation)
+Establish `hθ : ζ + ζ⁻¹ ∈ F1 ζ` using `mem_adjoin_simple_self ℚ _`. Proceed by induction on `j with`. Consider the case `zero`. Use `⟨?_, by simpa using hθ⟩` and prove the remaining obligations. Establish `: ζ ^ 0 + ζ⁻¹ ^ 0 = ((2 : ℕ) : L)` using `by norm_num`.
+
+Rewrite using `[this]`. Conclude with `_root_.natCast_mem _ _`. Consider the case `succ j ih`. Use `⟨ih.2, ?_⟩` and prove the remaining obligations. Establish `: ζ ^ (j + 1 + 1) + ζ⁻¹ ^ (j + 1 + 1) = (ζ + ζ⁻¹) * (ζ ^ (j + 1) + ζ⁻¹ ^ (j + 1)) - (ζ ^ j + ζ⁻¹ ^ j)`.
+
+Establish `h1 : ζ * ζ⁻¹ = 1` using `mul_inv_cancel₀ hζ0`. Take the linear combination `(-(ζ ^ j) - ζ⁻¹ ^ j) * h1`. Rewrite using `[this]`. Conclude with `sub_mem (mul_mem hθ ih.2) ih.1`.
+-/
 theorem cheb_mem (hζ0 : ζ ≠ 0) (j : ℕ) : ζ ^ j + ζ⁻¹ ^ j ∈ F1 ζ ∧ ζ ^ (j + 1) + ζ⁻¹ ^ (j + 1) ∈ F1 ζ := by
   have hθ : ζ + ζ⁻¹ ∈ F1 ζ := mem_adjoin_simple_self ℚ _
   induction j with
@@ -510,6 +692,23 @@ theorem cheb_mem (hζ0 : ζ ≠ 0) (j : ℕ) : ζ ^ j + ζ⁻¹ ^ j ∈ F1 ζ �
     rw [this]
     exact sub_mem (mul_mem hθ ih.2) ih.1
 
+/- English proof (translation)
+Take `⟨hGal, -, hmul, hbij⟩` from `layerGalois (e + 2) q d (by omega) hqd L ζ a b h`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Establish `: (m' : L) = 0` using `by rw [← hym]; ring`. Establish `: m' = 0` using `by exact_mod_cast this`.
+
+Rewrite `hm'` using `[this]`. Conclude with `not_squarefree_zero hm'`. Take `⟨τ₀, h0⟩` from `hbij.2 ((-1, 1, 1) : GalL (e + 2))`. Establish `hfix0 : ∀ x ∈ hostE ζ a b, τ₀ x = x` using `fun x hx => ((hostFixed e q d hqd L ζ a b h).2 x).1 hx τ₀ h0`. Establish `hrel : ∀ τ : Gal(L/ℚ), τ X * y = X * τ y → τ (X / y) = X / y`.
+
+Introduce `τ hτ`. Establish `: τ y ≠ 0` using `by simpa using hy0`. Rewrite using `[map_div₀, div_eq_div_iff this hy0, hτ]`. Set `φ : Gal(L/ℚ) →* GalL (e + 2)` to `MonoidHom.mk' (galMap h.1 a b) hmul`. Set `S : Subgroup Gal(L/ℚ)` to `MulAction.stabilizer Gal(L/ℚ) (X / y)`.
+
+Establish `hS : ∀ τ : Gal(L/ℚ), τ (X / y) = X / y → τ ∈ S` using `fun τ hτ => hτ`. Establish `htop : S.map φ = ⊤`. Rewrite using `[eq_top_iff, ← (gensModel (e + 2) (by omega)).2.2.2.2, Subgroup.closure_le]`. Introduce and unpack `g (rfl | rfl | rfl | rfl)`. Conclude with `⟨τ₀, hS _ (hrel _ (by rw [hfix0 X hX, hfix0 y hy])), h0⟩`.
+
+Conclude with `⟨τ₃, hS _ (hrel _ r3), h3⟩`. Conclude with `⟨τ₁, hS _ (hrel _ r1), h1⟩`. Conclude with `⟨τ₂, hS _ (hrel _ r2), h2⟩`. Establish `hall : ∀ τ : Gal(L/ℚ), τ (X / y) = X / y`. Introduce `τ`.
+
+Establish `: φ τ ∈ S.map φ` using `by rw [htop]; trivial`. Take `⟨τ', hτ', he⟩` from `this`. Establish `: τ' = τ` using `hbij.1 he`. Rewrite using `[← this]`. Conclude with `hτ'`.
+
+Establish `hbot` using `(IsGalois.mem_bot_iff_fixed (F := ℚ) (E := L) (X / y)).2 hall`. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.1 hbot`. Apply `sqf_eq m m' hm hm' c` to reduce the goal to its premises. Establish `hXc : X = algebraMap ℚ L c * y` using `by rw [hc]; field_simp`. Establish `: ((m : ℚ) : L) = ((c ^ 2 * m' : ℚ) : L)`.
+
+Use `push_cast`. Rewrite using `[← hXm, ← hym, hXc]`. Simplify using `only [eq_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+-/
 theorem coreQ (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (τ₁ τ₂ τ₃ : Gal(L/ℚ)) (h1 : galMap h.1 a b τ₁ = ((1, -1, 1) : GalL (e + 2)))
     (h2 : galMap h.1 a b τ₂ = ((1, 1, -1) : GalL (e + 2)))
@@ -560,6 +759,43 @@ theorem coreQ (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
 
 end
 
+/- English proof (translation)
+Introduce `e q d he hqd L _ _ ζ a b h m hm`. Take `⟨hGal, -, hmul, hbij⟩` from `layerGalois (e + 2) q d (by omega) hqd L ζ a b h`. Establish `hζ0 : ζ ≠ 0` using `h.1.ne_zero (by positivity)`. Take `⟨r, hr⟩ : ∃ r, r = ζ ^ (2 ^ (e - 1))` from `⟨_, rfl⟩`. Establish `hr4 : r ^ 4 = -1`.
+
+Establish `hp : IsPrimitiveRoot (ζ ^ (2 ^ (e + 1))) 2` using `h.1.pow (by positivity) (by rw [← pow_succ])`. Establish `: r ^ 4 = ζ ^ (2 ^ (e + 1))`. Rewrite using `[hr, ← pow_mul]`. Use `congr 1`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`.
+
+Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hp.eq_neg_one_of_two_right`. Take `⟨s, hs⟩ : ∃ s, s = r - r ^ 3` from `⟨_, rfl⟩`.
+
+Establish `hs2 : s ^ 2 = 2`. Rewrite using `[hs]`. Take the linear combination `(r ^ 2 - 2) * hr4`. Establish `hsE : s ∈ hostE ζ a b`. Establish `h1` using `(cheb_mem hζ0 (2 ^ (e - 1))).1`.
+
+Establish `: ζ⁻¹ ^ (2 ^ (e - 1)) = - r ^ 3`. Rewrite using `[inv_pow, ← hr]`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Take the linear combination `(-1 : L) * hr4`. Rewrite `h1` using `[this, ← hr, ← sub_eq_add_neg, ← hs]`.
+
+Conclude with `(le_sup_right : F1 ζ ≤ hostE ζ a b) h1`. Establish `ha2 : a ^ 2 = -(q : L)` using `h.2.1`. Establish `hb2 : b ^ 2 = -(d : L)` using `h.2.2.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`.
+
+Establish `hXm : (x : L) ^ 2 = (m : L)`. Use `congrArg (fun z : hostE ζ a b => (z : L)) hx` as an intermediate fact. Simplify using `using this`. Take `⟨τ₁, h1⟩` from `hbij.2 ((1, -1, 1) : GalL (e + 2))`. Take `⟨τ₂, h2⟩` from `hbij.2 ((1, 1, -1) : GalL (e + 2))`.
+
+Take `⟨τ₃, h3⟩` from `hbij.2 ((u5 (e + 2), 1, 1) : GalL (e + 2))`. Establish `sq : ∀ (τ : Gal(L/ℚ)) (z : L) (n : ℤ), z ^ 2 = (n : L) → (τ z) ^ 2 = z ^ 2`. Introduce `τ z n hz`. Rewrite using `[← map_pow, hz, map_intCast]`. Establish `sgnX : ∀ τ : Gal(L/ℚ), ∃ i : ℕ, i ≤ 1 ∧ τ (x : L) = (-1) ^ i * x`.
+
+Introduce `τ`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (sq τ x m hXm) with h | h` into its components or cases. Conclude with `⟨0, by omega, by simp [h]⟩`. Conclude with `⟨1, le_refl _, by simp [h]⟩`. Establish `ha2' : a ^ 2 = ((-(q : ℤ) : ℤ) : L)` using `by push_cast; exact ha2`.
+
+Establish `hb2' : b ^ 2 = ((-(d : ℤ) : ℤ) : L)` using `by push_cast; exact hb2`. Establish `t1ζ : τ₁ ζ = ζ` using `by simpa using act_zeta h τ₁ 1 (by rw [h1]; simp)`. Establish `t2ζ : τ₂ ζ = ζ` using `by simpa using act_zeta h τ₂ 1 (by rw [h2]; simp)`. Establish `t3ζ : τ₃ ζ = ζ ^ 5` using `act_zeta h τ₃ 5 (by rw [h3]; simp [u5])`. Establish `t1a : τ₁ a = -a` using `sgn_neg' (congrArg (fun g : GalL (e + 2) => g.2.1) h1) (sq _ _ _ ha2')`.
+
+Establish `t1b : τ₁ b = b` using `sgn_one' (congrArg (fun g : GalL (e + 2) => g.2.2) h1)`. Establish `t2a : τ₂ a = a` using `sgn_one' (congrArg (fun g : GalL (e + 2) => g.2.1) h2)`. Establish `t2b : τ₂ b = -b` using `sgn_neg' (congrArg (fun g : GalL (e + 2) => g.2.2) h2) (sq _ _ _ hb2')`. Establish `t3a : τ₃ a = a` using `sgn_one' (congrArg (fun g : GalL (e + 2) => g.2.1) h3)`. Establish `t3b : τ₃ b = b` using `sgn_one' (congrArg (fun g : GalL (e + 2) => g.2.2) h3)`.
+
+Establish `t1s : τ₁ s = s` using `by rw [hs, hr]; simp [t1ζ]`. Establish `t2s : τ₂ s = s` using `by rw [hs, hr]; simp [t2ζ]`. Establish `t3s : τ₃ s = -s`. Establish `: τ₃ r = r ^ 5` using `by rw [hr, map_pow, t3ζ, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[hs, map_sub, map_pow, this]`.
+
+Take the linear combination `(r - r ^ 11 + r ^ 7 - r ^ 3) * hr4`. Take `⟨i1, hi1, e1⟩` from `sgnX τ₁`. Take `⟨i2, hi2, e2⟩` from `sgnX τ₂`. Take `⟨i3, hi3, e3⟩` from `sgnX τ₃`. Establish `key` using `coreQ hqd h τ₁ τ₂ τ₃ h1 h2 h3 (x : L) (s ^ i3 * a ^ i1 * b ^ i2) x.2 (mul_mem (mul_mem (pow_mem hsE _) (pow_mem (a_mem ζ a b) _)) (pow_mem (b_mem ζ a b) _)) m ((2 : ℤ) ^ i3 * (-(q : ℤ)) ^ i1 * (-(d : ℤ)) ^ i2) hm (sqf3 q d hqd i1 i2 i3 hi1 hi2 hi3) hXm (by`.
+
+Use `push_cast`. Rewrite using `[← ha2, ← hb2, ← hs2]`. Use the proof step `ring)`. Use the proof step `(by rw [e1]; simp only [map_mul, map_pow, t1s, t1a, t1b]; rw [neg_pow a]; ring)`. Use the proof step `(by rw [e2]; simp only [map_mul, map_pow, t2s, t2a, t2b]; rw [neg_pow b]; ring)`.
+
+Use the proof step `(by rw [e3]; simp only [map_mul, map_pow, t3s, t3a, t3b]; rw [neg_pow s]; ring)`. Rewrite using `[key]`. Apply the tactic sequence `interval_cases i1 <;> interval_cases i2 <;> interval_cases i3 <;> simp <;> ring_nf <;> simp`. Establish `hA : (aE ζ a b) ^ 2 = -(q : hostE ζ a b)` using `Subtype.ext (by simpa [aE] using ha2)`. Establish `hB : (bE ζ a b) ^ 2 = -(d : hostE ζ a b)` using `Subtype.ext (by simpa [bE] using hb2)`.
+
+Set `sE : hostE ζ a b` to `⟨s, hsE⟩`. Establish `hS : sE ^ 2 = 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show s ^ 2 = ((2 : hostE ζ a b) : L)`. Rewrite using `[hs2]`.
+
+Conclude with `(map_ofNat (hostE ζ a b).val 2).symm`. Introduce and unpack `(rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl)`. Conclude with `⟨1, by simp⟩`. Conclude with `⟨sE, by rw [hS]; simp⟩`. Conclude with `⟨aE ζ a b, by rw [hA]; simp⟩`.
+
+Conclude with `⟨bE ζ a b, by rw [hB]; simp⟩`. Conclude with `⟨aE ζ a b * bE ζ a b, by rw [mul_pow, hA, hB]; push_cast; ring⟩`. Conclude with `⟨sE * aE ζ a b, by rw [mul_pow, hA, hS]; push_cast; ring⟩`. Conclude with `⟨sE * bE ζ a b, by rw [mul_pow, hB, hS]; push_cast; ring⟩`. Conclude with `⟨sE * aE ζ a b * bE ζ a b, by rw [mul_pow, mul_pow, hA, hB, hS]; push_cast; ring⟩`.
+-/
 theorem hostQuadSub : HostQuadSub := by
   intro e q d he hqd L _ _ ζ a b h m hm
   obtain ⟨hGal, -, hmul, hbij⟩ := layerGalois (e + 2) q d (by omega) hqd L ζ a b h
@@ -655,6 +891,27 @@ theorem hostQuadSub : HostQuadSub := by
     · exact ⟨sE * aE ζ a b * bE ζ a b, by rw [mul_pow, mul_pow, hA, hB, hS]; push_cast; ring⟩
 
 open Formalism.HermitianLattices.FiltrationBoundaryCriterion in
+/- English proof (translation)
+Introduce `e q d h L _ _ ζ a b hl x`. Take `⟨_, _, hmul, hbij⟩` from `hostGalois e q d h L ζ a b hl`. Take `⟨c, hc⟩` from `hbij.2 (cc e)`. Establish `hreal` using `(Final.real e q d h L ζ a b hl).2`. Establish `hone : galE e ζ a b 1 = 1`.
+
+Use `hmul 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.1 this.symm)`. Establish `hcc : c * c = 1` using `hbij.1 (by`. Rewrite using `[hmul, hc, hone]`.
+
+Simplify using `[cc, c0, Prod.ext_iff])`. Establish `hcc' : ∀ y, c (c y) = y` using `fun y => by`. Use `congrArg (fun s : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b => s y) hcc` as an intermediate fact. Simplify using `using this`. Establish `hmem : ∀ y : hostE ζ a b, c y = y → y ∈ hostF ζ a b` using `fun y hy => ((hreal y).1).2 (fun σ hσ => by rw [hbij.1 (hσ.trans hc.symm)]; exact hy)`.
+
+Establish `hspec` using `hostGalSpec e q d h L ζ a b hl c`. Establish `hca : c (aE ζ a b) = - aE ζ a b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hspec.1, hc]`. Simplify using `[cc, c0, aE]`.
+
+Establish `hcb : c (bE ζ a b) = - bE ζ a b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hspec.2.1, hc]`. Simplify using `[cc, c0, bE]`. Establish `ha0 : aE ζ a b ≠ 0`.
+
+Introduce `h0`. Establish `: a = 0` using `congrArg Subtype.val h0`. Establish `h2` using `hl.2.1`. Rewrite `h2` using `[this]`. Establish `: (q : L) = 0` using `by simpa using h2.symm`.
+
+Conclude with `h.1.ne_zero (by exact_mod_cast this)`. Establish `hb0 : bE ζ a b ≠ 0`. Introduce `h0`. Establish `: b = 0` using `congrArg Subtype.val h0`. Establish `h2` using `hl.2.2.1`.
+
+Rewrite `h2` using `[this]`. Establish `: (d : L) = 0` using `by simpa using h2.symm`. Conclude with `h.2.1.ne_zero (by exact_mod_cast this)`. Establish `gen : ∀ t : hostE ζ a b, c t = -t → t ≠ 0 → ∃ u ∈ hostF ζ a b, ∃ v ∈ hostF ζ a b, x = u + v * t`. Introduce `t ht ht0`.
+
+Use `⟨(x + c x) / 2, hmem _ ?_, (x - c x) / (2 * t), hmem _ ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_div₀, map_add, hcc', map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_div₀, map_sub, map_mul, hcc', map_ofNat, ht]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨gen _ hcb hb0, gen _ hca ha0⟩`.
+-/
 theorem hostEOverF : HostEOverF := by
   intro e q d h L _ _ ζ a b hl x
   obtain ⟨_, _, hmul, hbij⟩ := hostGalois e q d h L ζ a b hl
@@ -716,10 +973,20 @@ open scoped Pointwise
 section gen
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← FractionalIdeal.mem_coe]`. Conclude with `neg_mem h`.
+-/
 theorem fi_neg_mem {I : FractionalIdeal (𝓞 E)⁰ E} {x : E} (h : x ∈ I) : -x ∈ I := by
   rw [← FractionalIdeal.mem_coe] at h ⊢
   exact neg_mem h
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_coeIdeal, FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨σ • w, Ideal.smul_mem_pointwise_smul σ w I hw, rfl⟩`. Introduce and unpack `⟨w, hw, he⟩`.
+
+Rewrite `hw` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Use `⟨σ⁻¹ • w, hw, ?_⟩` and prove the remaining obligations. Use `show σ⁻¹ (w : E) = z`. Establish `he' : (w : E) = σ z` using `he`. Rewrite using `[he']`.
+
+Conclude with `σ.symm_apply_apply z`.
+-/
 theorem mem_coe_smul (σ : E ≃ₐ[ℚ] E) (I : Ideal (𝓞 E)) (z : E) :
     z ∈ (I : FractionalIdeal (𝓞 E)⁰ E) ↔
       σ z ∈ ((σ • I : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) := by
@@ -735,6 +1002,13 @@ theorem mem_coe_smul (σ : E ≃ₐ[ℚ] E) (I : Ideal (𝓞 E)) (z : E) :
     rw [he']
     exact σ.symm_apply_apply z
 
+/- English proof (translation)
+Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hJ), FractionalIdeal.mem_div_iff_of_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hJ')]`. Prove the components needed by the constructor for the conclusion. Introduce `h β' hβ'`. Establish `e : σ (σ.symm β') = β'` using `σ.apply_symm_apply β'`. Rewrite `hβ'`, the goal using `[← e]`.
+
+Rewrite `hβ'` using `[← mem_coe_smul]`. Rewrite using `[← map_mul, ← mem_coe_smul]`. Conclude with `h _ hβ'`. Introduce `h β hβ`. Rewrite using `[mem_coe_smul σ, map_mul]`.
+
+Conclude with `h _ ((mem_coe_smul σ J β).1 hβ)`.
+-/
 theorem mem_div_smul (σ : E ≃ₐ[ℚ] E) (I J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) (hJ' : σ • J ≠ ⊥) (y : E) :
     y ∈ (I : FractionalIdeal (𝓞 E)⁰ E) * (J : FractionalIdeal (𝓞 E)⁰ E)⁻¹ ↔
       σ y ∈ ((σ • I : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) *
@@ -753,6 +1027,13 @@ theorem mem_div_smul (σ : E ≃ₐ[ℚ] E) (I J : Ideal (𝓞 E)) (hJ : J ≠ �
     rw [mem_coe_smul σ, map_mul]
     exact h _ ((mem_coe_smul σ J β).1 hβ)
 
+/- English proof (translation)
+Set `φ0 : E →+* ℂ` to `Classical.arbitrary _`. Set `φ : E →ₐ[ℚ] ℂ` to `φ0.toRatAlgHom`. Set `τ1 : K →ₐ[ℚ] ℂ` to `φ.comp K.val`. Set `τ2 : K →ₐ[ℚ] ℂ` to `φ.comp ((σ : E →ₐ[ℚ] E).comp K.val)`. Establish `hne : τ1 ≠ τ2`.
+
+Introduce `h`. Use `DFunLike.congr_fun h β` as an intermediate fact. Conclude with `hβ (φ.injective this).symm`. Establish `huniv : (Finset.univ : Finset (K →ₐ[ℚ] ℂ)) = {τ1, τ2}` using `(Finset.eq_univ_of_card _ (by rw [Finset.card_pair hne, AlgHom.card, hK])).symm`. Establish `h1` using `Algebra.norm_eq_prod_embeddings ℚ ℂ k`.
+
+Rewrite `h1` using `[huniv, Finset.prod_pair hne]`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_ratCast]`. Rewrite `h1` using `[eq_ratCast]`. Conclude with `h1`.
+-/
 theorem quadNorm (K : IntermediateField ℚ E) (hK : Module.finrank ℚ K = 2) (σ : E ≃ₐ[ℚ] E) (β : K)
     (hβ : σ (β : E) ≠ β) (k : K) : ((Algebra.norm ℚ k : ℚ) : E) = (k : E) * σ (k : E) := by
   classical
@@ -773,6 +1054,39 @@ theorem quadNorm (K : IntermediateField ℚ E) (hK : Module.finrank ℚ K = 2) (
   rw [eq_ratCast] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hnormE : ∀ z : 𝓞 K, (((Algebra.norm ℤ z : ℤ)) : E) = ((z : K) : E) * σ ((z : K) : E)`. Introduce `z`. Rewrite using `[← quadNorm K hK σ β hβ (z : K), ← Algebra.coe_norm_int z]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hnorm : ∀ z : 𝓞 K, (((Algebra.norm ℤ z : ℤ)) : 𝓞 E) = algebraMap (𝓞 K) (𝓞 E) z * σ • algebraMap (𝓞 K) (𝓞 E) z`. Introduce `z`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `hnormE z` as an intermediate fact. Use `show algebraMap (𝓞 E) E _ = algebraMap (𝓞 E) E _`.
+
+Rewrite using `[map_intCast, map_mul]`. Conclude with `this`. Establish `hN0 : ((Ideal.absNorm 𝔠 : ℕ) : E) ≠ 0`. Establish `: Ideal.absNorm 𝔠 ≠ 0` using `by rwa [ne_eq, Ideal.absNorm_eq_zero_iff]`. Conclude with `this` after adjusting the coercions.
+
+Apply `le_antisymm` to reduce the goal to its premises. Establish `key : ∀ x ∈ 𝔠, ∀ y ∈ 𝔠, algebraMap (𝓞 K) (𝓞 E) x * σ • algebraMap (𝓞 K) (𝓞 E) y ∈ Ideal.span {((Ideal.absNorm 𝔠 : ℕ) : 𝓞 E)}`. Introduce `x hx y hy`. Take `⟨kx, hkx⟩` from `Ideal.absNorm_dvd_norm_of_mem hx`. Take `⟨ky, hky⟩` from `Ideal.absNorm_dvd_norm_of_mem hy`.
+
+Take `⟨kxy, hkxy⟩` from `Ideal.absNorm_dvd_norm_of_mem (𝔠.add_mem hx hy)`. Establish `ex` using `hnormE x`. Establish `ey` using `hnormE y`. Establish `exy` using `hnormE (x + y)`. Rewrite `ex` using `[hkx]`.
+
+Rewrite `ey` using `[hky]`. Rewrite `exy` using `[hkxy]`. Move the coercions through the operations in `at ex ey exy`. Rewrite `exy` using `[map_add]`. Take `⟨X, hX⟩ : ∃ X : E, X = ((x : K) : E)` from `⟨_, rfl⟩`.
+
+Take `⟨Y, hY⟩ : ∃ Y : E, Y = ((y : K) : E)` from `⟨_, rfl⟩`. Take `⟨X', hX'⟩ : ∃ X' : E, X' = σ ((x : K) : E)` from `⟨_, rfl⟩`. Take `⟨Y', hY'⟩ : ∃ Y' : E, Y' = σ ((y : K) : E)` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : E, N = ((Ideal.absNorm 𝔠 : ℕ) : E)` from `⟨_, rfl⟩`. Rewrite `ex` using `[← hX', ← hX, ← hN]`.
+
+Rewrite `ey` using `[← hY', ← hY, ← hN]`. Rewrite `exy` using `[← hX', ← hY', ← hX, ← hY, ← hN]`. Rewrite `hN0` using `[← hN]`. Establish `hkx' : (kx : E) = X * X' / N` using `by field_simp; linear_combination ex`. Establish `hky' : (ky : E) = Y * Y' / N` using `by field_simp; linear_combination ey`.
+
+Establish `hkxy' : (kxy : E) = (X + Y) * (X' + Y') / N` using `by field_simp; linear_combination exy`. Establish `hint : IsIntegral ℤ (X * Y' / N)`. Take `⟨T, hT⟩ : ∃ T : ℤ, T = kxy - kx - ky` from `⟨_, rfl⟩`. Take `⟨M, hM⟩ : ∃ M : ℤ, M = kx * ky` from `⟨_, rfl⟩`. Use `⟨Polynomial.X ^ 2 - Polynomial.C T * Polynomial.X + Polynomial.C M, by monicity!, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast]`. Rewrite using `[hT, hM]`. Use `push_cast`. Rewrite using `[hkx', hky', hkxy']`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.mem_span_singleton']`. Take `⟨w, hw⟩ : ∃ w : 𝓞 E, algebraMap (𝓞 E) E w = X * Y' / N` from `⟨⟨_, hint⟩, rfl⟩`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show algebraMap (𝓞 E) E _ = algebraMap (𝓞 E) E _`. Rewrite using `[map_mul, map_mul, map_natCast, hw]`. Use `show X * Y' / N * ((Ideal.absNorm 𝔠 : ℕ) : E) = ((x : K) : E) * σ ((y : K) : E)`. Rewrite using `[← hN, ← hX, ← hY']`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_map, Ideal.map, Ideal.map, Ideal.span_mul_span', Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, _, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `key x hx y hy`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+
+Set `J : Ideal ℤ` to `Ideal.comap (algebraMap ℤ (𝓞 E)) (𝔠.map (algebraMap (𝓞 K) (𝓞 E)) * σ • (𝔠.map (algebraMap (𝓞 K) (𝓞 E))))`. Establish `hJ : Ideal.relNorm ℤ 𝔠 ≤ J`. Rewrite using `[Ideal.relNorm_apply, Ideal.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `Ideal.mem_comap.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.intNorm_eq_norm, eq_intCast, hnorm]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ hz) (Ideal.smul_mem_pointwise_smul _ _ _ (Ideal.mem_map_of_mem _ hz))`. Rewrite `hJ` using `[Ideal.relNorm_int]`. Use `hJ (Ideal.mem_span_singleton_self _)` as an intermediate fact. Establish `h2 : algebraMap ℤ (𝓞 E) ((Ideal.absNorm 𝔠 : ℕ) : ℤ) ∈ (𝔠.map (algebraMap (𝓞 K) (𝓞 E)) * σ • (𝔠.map (algebraMap (𝓞 K) (𝓞 E))))` using `this`.
+
+Simplify using `using h2`.
+-/
 theorem conjNorm (K : IntermediateField ℚ E) (hK : Module.finrank ℚ K = 2) (σ : E ≃ₐ[ℚ] E) (β : K)
     (hβ : σ (β : E) ≠ β) (𝔠 : Ideal (𝓞 K)) (h𝔠 : 𝔠 ≠ ⊥) :
     𝔠.map (algebraMap (𝓞 K) (𝓞 E)) * σ • (𝔠.map (algebraMap (𝓞 K) (𝓞 E))) =
@@ -864,6 +1178,9 @@ end gen
 section main
 open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition Formalism.HermitianLattices.FiltrationBoundaryCriterion
 
+/- English proof (translation)
+Simplify using `only [mul_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem algG {G : Type*} [CommGroupWithZero G] (cB cB' s cC cC' : G) (h1 : cB' ≠ 0) (h2 : cC ≠ 0) :
     (cB * cB' * s)⁻¹ * (cC' * cB'⁻¹)⁻¹ = (cC * cC' * s)⁻¹ * (cC * cB⁻¹) := by
   simp only [mul_inv, inv_inv]
@@ -871,6 +1188,19 @@ theorem algG {G : Type*} [CommGroupWithZero G] (cB cB' s cC cC' : G) (h1 : cB' �
     _ = (cC⁻¹ * cC) * (cB⁻¹ * s⁻¹ * cC'⁻¹) := by rw [inv_mul_cancel₀ h1, inv_mul_cancel₀ h2]
     _ = _ := by ac_rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `hb : σ (bE ζ a b) = - bE ζ a b`. Use `(hostGalSpec e q d hH.toHypOdd L ζ a b h σ).2.1` as an intermediate fact. Rewrite `this` using `[hσ]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[this]`. Simplify using `[cc, c0, bE]`. Establish `h1` using `congrArg σ hξ`. Simplify using `only [map_mul, map_natCast, hb, map_neg, map_one] at h1`. Establish `hne : ((N : hostE ζ a b) * bE ζ a b) ≠ 0`.
+
+Introduce `h0`. Rewrite `hξ` using `[h0]`. Simplify using `at hξ`. Establish `: (σ ξ + ξ) * ((N : hostE ζ a b) * bE ζ a b) = 0` using `by linear_combination hξ - h1`. Break down `mul_eq_zero.1 this with h2 | h2` into its components or cases.
+
+Take the linear combination `h2`. Conclude with `absurd h2 hne`. Introduce `φ hφ`. Establish `hb : φ (bE ζ a b) = Complex.I * (Real.sqrt d : ℂ)` using `hφ`. Establish `h1` using `congrArg φ hξ`.
+
+Simplify using `only [map_mul, map_natCast, hb, map_neg, map_one] at h1`. Establish `h2` using `congrArg Complex.re h1`. Simplify using `at h2`. Establish `hr : 0 ≤ (N : ℝ) * Real.sqrt d` using `by positivity`. Assume the negation of the conclusion as `hneg`.
+
+Establish `hneg' : (φ ξ).im ≤ 0` using `not_lt.1 hneg`. Use `mul_nonpos_of_nonpos_of_nonneg hneg' hr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem signs (e q d : ℕ) (hH : HostHyp q d)
     (L : Type) [Field L] [NumberField L] (ζ a b : L) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (hσ : galE e ζ a b σ = cc e) (N : ℕ)
@@ -903,6 +1233,49 @@ theorem signs (e q d : ℕ) (hH : HostHyp q d)
     have := mul_nonpos_of_nonpos_of_nonneg hneg' hr
     linarith
 
+/- English proof (translation)
+Introduce `e q d hH L _ _ ζ a b h σ hσ 𝔟 h𝔟 𝔠 h𝔠 ξ hξ`. Take `⟨s1, s2⟩` from `signs e q d hH L ζ a b h σ hσ (Ideal.absNorm 𝔠) ξ hξ`. Use `⟨s1, s2, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hsq : bE ζ a b ^ 2 = -(d : hostE ζ a b)` using `DiscrB.bE_sq h`.
+
+Establish `hNb0 : ((Ideal.absNorm 𝔠 : ℕ) : hostE ζ a b) * bE ζ a b ≠ 0`. Introduce `h0`. Rewrite `hξ` using `[h0]`. Simplify using `at hξ`. Establish `hb0 : bE ζ a b ≠ 0` using `right_ne_zero_of_mul hNb0`.
+
+Establish `hN0 : ((Ideal.absNorm 𝔠 : ℕ) : hostE ζ a b) ≠ 0` using `left_ne_zero_of_mul hNb0`. Establish `hσb : σ (bE ζ a b) = - bE ζ a b`. Use `(hostGalSpec e q d hH.toHypOdd L ζ a b h σ).2.1` as an intermediate fact. Rewrite `this` using `[hσ]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[this]`. Simplify using `[cc, c0, bE]`. Establish `hK : Module.finrank ℚ (KinE ζ a b) = 2` using `Formalism.FrobeniusOrbits.SplitK.finrank_K (L := hostE ζ a b) (b := bE ζ a b) hH.2.1.pos hsq`. Establish `hCC` using `conjNorm (KinE ζ a b) hK σ ⟨bE ζ a b, Principal.bE_mem_KinE ζ a b⟩ (by show σ (bE ζ a b) ≠ bE ζ a b`. Rewrite using `[hσb]`.
+
+Introduce `h1`. Apply `hb0` to reduce the goal to its premises. Take the linear combination `(-1 / 2 : hostE ζ a b) * h1) 𝔠 h𝔠`. Take `⟨β, hβ, hdiff⟩` from `difference_absolute_bound e q d hH L ζ a b h`. Take `⟨C, hC⟩ : ∃ C : Ideal (𝓞 (hostE ζ a b)), C = 𝔠.map (algebraMap (𝓞 (KinE ζ a b)) (𝓞 (hostE ζ a b)))` from `⟨_, rfl⟩`.
+
+Rewrite `hCC`, the goal using `[← hC]`. Establish `hdne : differentIdeal ℤ (𝓞 (hostE ζ a b)) ≠ ⊥`. Introduce `h0`. Establish `h1 : (differentIdeal ℤ (𝓞 (hostE ζ a b))).absNorm = (discr (hostE ζ a b)).natAbs` using `absNorm_differentIdeal (hostE ζ a b) (𝓞 (hostE ζ a b))`. Rewrite `h1` using `[h0, Ideal.absNorm_bot]`.
+
+Conclude with `NumberField.discr_ne_zero (hostE ζ a b) (Int.natAbs_eq_zero.1 h1.symm)`. Establish `hBB : 𝔟 * (σ • 𝔟) ≠ ⊥`. Introduce `h0`. Rewrite `hdne` using `[hdiff, h𝔟, h0]`. Simplify using `at hdne`.
+
+Establish `hB : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `at hBB`. Establish `hB' : σ • 𝔟 ≠ ⊥`. Introduce `h0`.
+
+Rewrite `hBB` using `[h0]`. Simplify using `at hBB`. Establish `hCCne : C * (σ • C) ≠ ⊥`. Rewrite using `[hCC, ne_eq, Ideal.span_singleton_eq_bot]`. Conclude with `hN0` after adjusting the coercions.
+
+Establish `hC0 : C ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `at hCCne`. Establish `hC' : σ • C ≠ ⊥`. Introduce `h0`.
+
+Rewrite `hCCne` using `[h0]`. Simplify using `at hCCne`. Take `⟨cC, hcC⟩ : ∃ I : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b), I = (C : FractionalIdeal _ _)` from `⟨_, rfl⟩`. Take `⟨cB, hcB⟩ : ∃ I : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b), I = (𝔟 : FractionalIdeal _ _)` from `⟨_, rfl⟩`. Take `⟨cC', hcC'⟩ : ∃ I : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b), I = ((σ • C : Ideal (𝓞 (hostE ζ a b))) : FractionalIdeal _ _)` from `⟨_, rfl⟩`.
+
+Take `⟨cB', hcB'⟩ : ∃ I : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b), I = ((σ • 𝔟 : Ideal (𝓞 (hostE ζ a b))) : FractionalIdeal _ _)` from `⟨_, rfl⟩`. Establish `ncC : cC ≠ 0` using `by rw [hcC]; exact FractionalIdeal.coeIdeal_ne_zero.2 hC0`. Establish `ncB : cB ≠ 0` using `by rw [hcB]; exact FractionalIdeal.coeIdeal_ne_zero.2 hB`. Establish `ncC' : cC' ≠ 0` using `by rw [hcC']; exact FractionalIdeal.coeIdeal_ne_zero.2 hC'`. Establish `ncB' : cB' ≠ 0` using `by rw [hcB']; exact FractionalIdeal.coeIdeal_ne_zero.2 hB'`.
+
+Establish `hd : ((differentIdeal ℤ (𝓞 (hostE ζ a b)) : Ideal (𝓞 (hostE ζ a b))) : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) = cB * cB' * FractionalIdeal.spanSingleton _ (bE ζ a b)`. Rewrite using `[hdiff, h𝔟, FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_span_singleton, ← hcB, ← hcB']`. Use `congr 2`. Establish `hN : cC * cC' = FractionalIdeal.spanSingleton _ ((Ideal.absNorm 𝔠 : ℕ) : hostE ζ a b)`. Rewrite using `[hcC, hcC', ← FractionalIdeal.coeIdeal_mul, hCC, FractionalIdeal.coeIdeal_span_singleton]`.
+
+Use `congr 1`. Establish `hdual1 : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 (hostE ζ a b))⁰ (hostE ζ a b)) = (cB * cB' * FractionalIdeal.spanSingleton _ (bE ζ a b))⁻¹`. Rewrite using `[← hd, coeIdeal_differentIdeal ℤ ℚ (hostE ζ a b) (𝓞 (hostE ζ a b)), inv_inv]`. Establish `hne' : cC' * cB'⁻¹ ≠ 0` using `mul_ne_zero ncC' (inv_ne_zero ncB')`. Establish `hdual : FractionalIdeal.dual ℤ ℚ (cC' * cB'⁻¹) = FractionalIdeal.spanSingleton _ ((((Ideal.absNorm 𝔠 : ℕ) : hostE ζ a b) * bE ζ a b)⁻¹) * (cC * cB⁻¹)`.
+
+Rewrite using `[FractionalIdeal.dual_eq_mul_inv, hdual1, ← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.spanSingleton_mul_spanSingleton, ← hN]`. Conclude with `algG _ _ _ _ _ ncB' ncC`. Rewrite using `[← hcC, ← hcB]`. Establish `step1 : (∀ y ∈ cC * cB⁻¹, Algebra.trace ℚ (hostE ζ a b) (ξ * x * σ y) ∈ (algebraMap ℤ ℚ).range) ↔ ξ * x ∈ FractionalIdeal.dual ℤ ℚ (cC' * cB'⁻¹)`. Rewrite using `[FractionalIdeal.mem_dual hne']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy y' hy'`. Establish `e : σ (σ.symm y') = y'` using `σ.apply_symm_apply y'`. Rewrite using `[Algebra.traceForm_apply, ← e]`. Apply `hy` to reduce the goal to its premises.
+
+Rewrite using `[hcC, hcB, mem_div_smul σ C 𝔟 hB hB', e, ← hcC', ← hcB']`. Conclude with `hy'`. Introduce `hy y hy'`. Use `hy (σ y) (by` as an intermediate fact. Rewrite using `[hcC', hcB', ← mem_div_smul σ C 𝔟 hB hB', ← hcC, ← hcB]`.
+
+Conclude with `hy')`. Rewrite `this` using `[Algebra.traceForm_apply]`. Then use the resulting hypothesis. Rewrite using `[step1, hdual, FractionalIdeal.mem_singleton_mul]`. Establish `hξ' : ξ = -(((Ideal.absNorm 𝔠 : ℕ) : hostE ζ a b) * bE ζ a b)⁻¹`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `hξ`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨-x, fi_neg_mem hx, by rw [hξ']; ring⟩`. Introduce and unpack `⟨y', hy', he⟩`.
+
+Establish `: x = -y'`. Rewrite `he` using `[hξ']`. Establish `h2` using `inv_ne_zero hNb0`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Take the linear combination `-he`.
+
+Rewrite using `[this]`. Conclude with `fi_neg_mem hy'`.
+-/
 theorem principalRiemann : PrincipalRiemann := by
   intro e q d hH L _ _ ζ a b h σ hσ 𝔟 h𝔟 𝔠 h𝔠 ξ hξ
   obtain ⟨s1, s2⟩ := signs e q d hH L ζ a b h σ hσ (Ideal.absNorm 𝔠) ξ hξ
@@ -1019,14 +1392,41 @@ end S3
 
 end PfB
 
+/- English proof (translation)
+The claim follows from `PfB.hostEOverF`.
+-/
 theorem extension_over_base_field : HostEOverF := PfB.hostEOverF
+/- English proof (translation)
+The claim follows from `PfB.hostQuadSub`.
+-/
 theorem quadratic_subfield_exists : HostQuadSub := PfB.hostQuadSub
+/- English proof (translation)
+The claim follows from `PfB.congruenceTorsion`.
+-/
 theorem congruence_subgroup_torsion_free : CongruenceTorsion := PfB.congruenceTorsion
+/- English proof (translation)
+The claim follows from `PfB.unipotentPowers`.
+-/
 theorem unipotent_powers_bound : UnipotentPowers := PfB.unipotentPowers
+/- English proof (translation)
+The claim follows from `PfB.nilpotentPowers`.
+-/
 theorem nilpotent_powers_bound : NilpotentPowers := PfB.nilpotentPowers
+/- English proof (translation)
+The claim follows from `PfB.stabLevelProG`.
+-/
 theorem stabilizer_level_profinite : StabLevelProG := PfB.stabLevelProG
+/- English proof (translation)
+The claim follows from `PfB.stabG_of_proG PfB.stabLevelProG`.
+-/
 theorem stabilizer_level_of_group : StabLevelG := PfB.stabG_of_proG PfB.stabLevelProG
+/- English proof (translation)
+The claim follows from `PfB.formsExact`.
+-/
 theorem exact_sequence_of_forms : FormsExact := PfB.formsExact
+/- English proof (translation)
+The claim follows from `PfB.principalRiemann`.
+-/
 theorem principal_riemann_relation : PrincipalRiemann := PfB.principalRiemann
 
 end Formalism.HermitianLattices.StabilizerLevels

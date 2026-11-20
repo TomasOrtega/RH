@@ -6,6 +6,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ZH GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.FlagPush
 open Classical
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hR W hW z A₁ hA₁ A₂ hA₂`. Establish `hbase` using `GlobalTheory.T.maps_comp_eq_of_functionField_maps_agree F X Y φ f hR.hom W hW`. Establish `hf : f (W.p₁ z) = f (W.p₂ z)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hbase]`. Take `⟨A, hA⟩` from `E.nonempty (f (W.p₁ z))`.
+
+Establish `hA' : A ∈ E.S (f (W.p₂ z))` using `hf ▸ hA`. Establish `h₁` using `hR.sub _ A₁ hA₁ A hA`. Establish `h₂` using `hR.sub _ A₂ hA₂ A hA'`. Establish `reg : ∀ (p : W.Z ⟶ Y.X) [IsDominant p], ∀ x ∈ ((ratOf Y).O (p z)).toSubring, functionFieldMap p x ∈ (algebraMap (W.Z.presheaf.stalk z) W.Z.functionField).range`. Introduce `p _ x hx`.
+
+Take `⟨a, rfl⟩` from `mem_O_ratOf.1 hx`. Conclude with `⟨_, (functionFieldMap_algebraMap p z a).symm⟩`. Establish `k₁` using `h₁.map W.α₁ (reg W.p₁)`. Establish `k₂` using `h₂.map W.α₂ (reg W.p₂)`. Use `set B : Mat m Y.Fn := A.map φ with hBdef`.
+
+Establish `hB : ∀ τ, (B τ).det ≠ 0` using `fun τ => by`. Introduce `h`. Conclude with `Fr.det_ne hA τ ((map_eq_zero (φ : X.Fn →+* Y.Fn)).1 (((φ : X.Fn →+* Y.Fn).map_det (A τ)).trans h))`. Establish `hB₂ : ∀ τ, (B.map W.α₂ τ).det ≠ 0` using `fun τ => by`. Rewrite using `[Mat.det_map]`.
+
+Conclude with `(map_ne_zero _).2 (hB τ)`. Establish `e12 : B.map W.α₁ = B.map W.α₂`. Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Conclude with `hW (A τ i j)`.
+
+Establish `d₁ : A₁ = A₁ * B⁻¹ * B` using `by rw [mul_assoc, Mat.inv_mul hB, mul_one]`. Establish `d₂ : A₂ = A₂ * B⁻¹ * B` using `by rw [mul_assoc, Mat.inv_mul hB, mul_one]`. Establish `key : A₁.map W.α₁ * (A₂.map W.α₂)⁻¹ = (A₁ * B⁻¹).map W.α₁ * ((A₂ * B⁻¹).map W.α₂)⁻¹` using `by conv_lhs => rw [d₁, d₂]`. Rewrite using `[Mat.map_mul _ _ W.α₁, Mat.map_mul _ _ W.α₂, e12, Mat.mul_inv_rev, mul_assoc, ← mul_assoc (B.map W.α₂), Mat.mul_inv hB₂, one_mul]`. Rewrite using `[key]`.
+
+Conclude with `k₁.mul k₂.inv`.
+-/
 theorem GlobalTheory.FlagPush.Dbl.transition_par_stalk : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → ∀ z : W.Z, ∀ A₁ ∈ E'.S (W.p₁ z), ∀ A₂ ∈ E'.S (W.p₂ z), Par 0 (algebraMap (W.Z.presheaf.stalk z) W.Z.functionField).range (A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) := by
   intro F _ X Y ι _ m E E' φ f hR W hW z A₁ hA₁ A₂ hA₂
   have hbase := GlobalTheory.T.maps_comp_eq_of_functionField_maps_agree F X Y φ f hR.hom W hW

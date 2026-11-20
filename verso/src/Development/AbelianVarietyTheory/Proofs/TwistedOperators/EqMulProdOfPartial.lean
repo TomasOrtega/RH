@@ -37,6 +37,25 @@ structure LocW (τ : D.what₂.Tau) (aS aT : ℚ) (A : LPol W.rank V.rank →ₗ
     HasDerivAt (fun t : ℝ => M'.rep τ (NormedSpace.exp (t • Y)) y) (y' : M'.H τ) 0 →
       A (locT (M.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) P + ((aS : ℂ) * Y.trace) • P) y + A P y' = 0
 
+/- English proof (translation)
+Establish `key : ∀ (a : ∀ i, A i) (i : ι) (x : A i), F (Function.update a i x) * l i (a i) = F a * l i x`. Introduce `a i x`. Take `⟨c, hc⟩` from `h i a`. Establish `h1` using `hc (a i)`. Rewrite `h1` using `[Function.update_eq_self]`.
+
+Rewrite using `[hc x, h1]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hF : ∀ a, F a = 0`. Conclude with `⟨0, fun a => by simp [hF a]⟩`. Use `push_neg at hF`.
+
+Take `⟨a₀, ha₀⟩` from `hF`. Establish `hl : ∀ i, l i (a₀ i) ≠ 0`. Introduce `i hi`. Take `⟨c, hc⟩` from `h i a₀`. Establish `h1` using `hc (a₀ i)`.
+
+Rewrite `h1` using `[Function.update_eq_self, hi, mul_zero]`. Conclude with `ha₀ h1`. Establish `main : ∀ s : Finset ι, ∀ a : ∀ i, A i, (∀ j, j ∉ s → a j = a₀ j) → F a * ∏ j ∈ s, l j (a₀ j) = F a₀ * ∏ j ∈ s, l j (a j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `a ha`. Rewrite using `[show a = a₀ from funext fun j => ha j (by simp)]`. Consider the case `@insert i s hi ih`. Introduce `a ha`.
+
+Establish `hoff : ∀ j, j ∉ s → Function.update a i (a₀ i) j = a₀ j`. Introduce `j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Function.update_of_ne hji]`. Conclude with `ha j (by simp [hji, hj])`. Establish `e1` using `ih _ hoff`. Establish `e2` using `key (Function.update a i (a₀ i)) i (a i)`. Simplify using `only [Function.update_idem, Function.update_eq_self, Function.update_self] at e2`.
+
+Establish `hprod : ∏ j ∈ s, l j (Function.update a i (a₀ i) j) = ∏ j ∈ s, l j (a j)` using `Finset.prod_congr rfl fun j hj => by`. Establish `hji : j ≠ i` using `fun e => hi (e ▸ hj)`. Rewrite using `[Function.update_of_ne hji]`. Rewrite `e1` using `[hprod]`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hP : ∏ j, l j (a₀ j) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => hl j`. Use `⟨F a₀ / ∏ j, l j (a₀ j), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hP]`. Conclude with `main Finset.univ a fun j hj => absurd (Finset.mem_univ j) hj`.
+-/
 theorem eq_mul_prod_of_partial {ι : Type} [Fintype ι] [DecidableEq ι] {A : ι → Type} (l : ∀ i, A i → ℂ)
     (F : (∀ i, A i) → ℂ) (h : ∀ i a, ∃ c : ℂ, ∀ x, F (Function.update a i x) = c * l i x) :
     ∃ c : ℂ, ∀ a, F a = c * ∏ i, l i (a i) := by

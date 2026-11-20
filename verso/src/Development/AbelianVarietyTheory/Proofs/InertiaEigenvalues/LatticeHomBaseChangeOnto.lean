@@ -13,6 +13,19 @@ namespace GlobalTheory.BaseCoef
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ G _ _ LL LL' hL T₁ T₂ k₁ k₂ b₁ b₂ hb₁ hb₂ F hF`. Use `choose x hx hfx using fun i => hF (b₂ i) (hb₂.1 i)`. Establish `key : ∀ i j, ∑ m, LinearMap.toMatrix b₁ b₂ F.f i m * b₁.repr (x j) m = (1 : Matrix (Fin k₂) (Fin k₂) ↥LL.1) i j`. Introduce `i j`. Establish `h1` using `congrFun (LinearMap.toMatrix_mulVec_repr b₁ b₂ F.f (x j)) i`.
+
+Rewrite `h1` using `[hfx j, Module.Basis.repr_self]`. Rewrite using `[Matrix.one_apply, ← show _ = ∑ m, LinearMap.toMatrix b₁ b₂ F.f i m * b₁.repr (x j) m from rfl.symm]`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Simplify using `only [eq_comm]`.
+
+Set `X : Matrix (Fin k₁) (Fin k₂) ↥LL'.1` to `fun m j => incl hL (b₁.repr (x j) m)`. Establish `hX : extMat hL b₁ b₂ F * X = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg (incl hL) (key i j)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Simplify using `only [map_mul] at this`. Rewrite using `[Matrix.mul_apply]`. Use `Eq.trans this ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `map_one _`. Conclude with `map_zero _`. Introduce `y hy`. Use `⟨X.mulVec y, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (incl_integral hL (hb₁.2 _ (hx j) i)) (hy j)`. Express the relevant statement in the definitionally equal form `(extMat hL b₁ b₂ F).mulVec (X.mulVec y) = y`. Rewrite using `[Matrix.mulVec_mulVec, hX, Matrix.one_mulVec]`.
+-/
 theorem extHom_onto : ∀ (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] (LL LL' : FinExt l) (hL : LL.1 ≤ LL'.1) (T₁ T₂ : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) (k₁ k₂ : ℕ) (b₁ : Module.Basis (Fin k₁) ↥LL.1 T₁.V) (b₂ : Module.Basis (Fin k₂) ↥LL.1 T₂.V) (hb₁ : IsLatBasis T₁ b₁) (hb₂ : IsLatBasis T₂ b₂) (F : LatHom T₁.L T₂.L), F.Onto → (extHom hL hb₁ hb₂ F).Onto := by
   intro l _ G _ _ LL LL' hL T₁ T₂ k₁ k₂ b₁ b₂ hb₁ hb₂ F hF
   choose x hx hfx using fun i => hF (b₂ i) (hb₂.1 i)

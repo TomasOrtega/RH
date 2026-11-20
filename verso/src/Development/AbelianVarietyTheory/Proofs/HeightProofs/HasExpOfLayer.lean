@@ -7,6 +7,13 @@ namespace GlobalTheory.ExpTiesOfLayer
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hL`. Establish `hNE : HasExp (GlobalTheory.HeightCounting.NE hL)`. Introduce `K B f T w Z Wt p0 t nch n xd c y`. Establish `hg` using `c.row.grp`. Use `⟨⟨⟨⟨⟨y.ser.ex⟩, ⟨fun g => (hg.lvl0 g).symm, ?_⟩, ?_⟩⟩, PUnit.unit⟩⟩` and prove the remaining obligations.
+
+Introduce `i b u hu`. Take `⟨x, hx, hx'⟩` from `hg.psi0 u hu i b`. Conclude with `⟨x, hx, hx'⟩`. Introduce `i j b a _`. Rewrite using `[y.xd i ((j : ℕ) + 1) b (by omega) (by omega)]`.
+
+Conclude with `Set.mem_univ _`. Conclude with `⟨hNE, fun E hE K B f T w Z Wt p0 t nch n xd c e => by`. Take `⟨y⟩` from `hE K B f T w Z Wt p0 t nch n xd c e`. Conclude with `hNE K B f T w Z Wt p0 t nch n xd c y⟩`.
+-/
 theorem hasExp_of_layer : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL), HasExp (GlobalTheory.HeightCounting.NE hL) ∧ ∀ (E : NExt hL), (∀ K B f T w Z Wt p0 t nch n xd c, E K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.NE hL K B f T w Z Wt p0 t nch n xd c)) → HasExp E := by
   intro hL
   have hNE : HasExp (GlobalTheory.HeightCounting.NE hL) := by

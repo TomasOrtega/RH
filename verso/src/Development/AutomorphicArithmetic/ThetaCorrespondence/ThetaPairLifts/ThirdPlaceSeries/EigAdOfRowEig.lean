@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.RatSide
+/- English proof (translation)
+Introduce `hL`. Use `StepW.of_all fun K B f T w _ _ _ P x _ eig heig => ?_` and prove the remaining obligations. Introduce `i σ k Pl α Rr hd hσ y hy`. Distinguish the cases in `h0 : (Dof x).what₂.isot (i.1 + 1) σ = ⊥`. Rewrite `hy` using `[h0, Submodule.mem_bot]`.
+
+Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `e1` using `heig i σ k Pl α Rr hd hσ h0`. Establish `hP` using `(GlobalTheory.TwInputs.Eig.low_SbD (Dof x)).offPg x.m.z.lev.is hd.offS`. Establish `e2` using `GlobalTheory.EigRows.heckeOn_partR x.r.Y x.m.z.lev.is i hP hd.le hd.elt hd.reps σ ((GlobalTheory.EigRows.mem_isot_iff x.r.Y i σ y).1 hy)`.
+
+Express the relevant statement in the definitionally equal form `hkNorm x.m.z.R i k Pl • Mult.heckeOn _ Rr (GlobalTheory.EigRows.readW x.r.Y i y) = _ • GlobalTheory.EigRows.readW x.r.Y i y`. Rewrite using `[e2, e1, smul_smul]`.
+-/
 theorem eigAd_of_rowEig_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → ∀ eig : ℕ → (Dof x).what₂.FT → ℕ → PlE (Dof x).host → ↥(Dof x).LL0, (∀ (i : Fin (Dof x).R.m) (σ : (Dof x).what₂.FT) (k : ℕ) (Pl : PlE (Dof x).host) α Rr, HkDat x.m.z.R (SbD (Dof x)) i k Pl α Rr → (Dof x).nd.goodRow σ → (Dof x).what₂.isot (i.1 + 1) σ ≠ ⊥ → (Dof x).what₂.embLL (eig (i.1 + 1) σ k Pl : (Dof x).what₂.LL) = hkNorm x.m.z.R i k Pl * GlobalTheory.EigRows.rowEig x.r.Y i σ Pl (GlobalTheory.EigRows.diagLab (Dof x).R.r k)) → EigAd x.r.Y (SbD (Dof x)) eig := by
   intro hL
   refine StepW.of_all fun K B f T w _ _ _ P x _ eig heig => ?_

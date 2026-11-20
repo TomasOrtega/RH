@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq | exact GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sesq_unimodular_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), (∀ y, (∀ x, sesq D x y = 0) → y = 0) ∧ ∀ f : D.La →ₗ[𝓞 E] E, (∀ δ ∈ differentIdeal ℤ (𝓞 E), ∀ x, ∃ b : 𝓞 E, (δ : E) * f x = b) → ∃ y, ∀ x, f x = sesq D x y := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq | exact GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq | (intros; apply GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq <;> assumption)

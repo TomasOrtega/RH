@@ -8,17 +8,34 @@ open scoped ComplexOrder Matrix
 variable {K : Type*} [Field K] [NumberField K] {V : Type*} [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact hv.1 i)`. Conclude with `Submodule.span_le.mpr hv.2.2`.
+-/
 theorem IsFrame.ds_spanK_eq {E : Submodule (𝓞 K) V} {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) :
     Submodule.span K (Set.range v) = Submodule.span K (E : Set V) := by
   apply le_antisymm
   · exact Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact hv.1 i)
   · exact Submodule.span_le.mpr hv.2.2
 
+/- English proof (translation)
+Unfold `latRank`. Rewrite using `[← hv.ds_spanK_eq, finrank_span_eq_card hv.2.1, Fintype.card_fin]`.
+-/
 theorem IsFrame.length_eq_latticeRank {E : Submodule (𝓞 K) V} {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) :
     r = latRank K E := by
   unfold latRank
   rw [← hv.ds_spanK_eq, finrank_span_eq_card hv.2.1, Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hE`. Take `⟨b, hbE, hspan, hli⟩` from `exists_linearIndependent K (E : Set V)`. Establish `hEle : ∀ x ∈ E, x ∈ Submodule.span K (S : Set V)`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+
+Conclude with `Submodule.span_le_restrictScalars (𝓞 K) K (S : Set V) hx`. Establish `hfin : Finite b`. Use `hli.finite_of_le_span_finite _ (S : Set V) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hEle _ (hbE x.2)`.
+
+Set `_` to `Fintype.ofFinite b`. Use `⟨Fintype.card b, fun i => ((Fintype.equivFin b).symm i : V), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Conclude with `hbE ((Fintype.equivFin b).symm i).2`. Conclude with `hli.comp _ (Fintype.equivFin b).symm.injective`.
+
+Introduce `x hx`. Establish `: x ∈ Submodule.span K (b : Set V)` using `hspan ▸ Submodule.subset_span hx`. Establish `hr : Set.range (fun i => ((Fintype.equivFin b).symm i : V)) = b`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `((Fintype.equivFin b).symm i).2`. Introduce `hy; exact ⟨Fintype.equivFin b ⟨y, hy⟩, by simp⟩`. Rewrite using `[SetLike.mem_coe, hr]`. Conclude with `this`.
+-/
 theorem exists_isFullRankFamily_of_fg (E : Submodule (𝓞 K) V) (hE : E.FG) :
     ∃ r, ∃ v : Fin r → V, IsFrame K E v := by
   obtain ⟨S, hS⟩ := hE
@@ -45,6 +62,19 @@ theorem exists_isFullRankFamily_of_fg (E : Submodule (𝓞 K) V) (hE : E.FG) :
     rw [SetLike.mem_coe, hr]
     exact this
 
+/- English proof (translation)
+Use `set S := Submodule.span (𝓞 K) (Set.range v) with hSdef`. Use `set H := S.toAddSubgroup.addSubgroupOf E.toAddSubgroup with hH`. Establish `: Module.Finite (𝓞 K) E` using `Module.Finite.iff_fg.mpr hE`. Establish `: Module.Finite ℤ E` using `Module.Finite.trans (𝓞 K) E`. Establish `hfg : AddGroup.FG E` using `Module.Finite.iff_addGroup_fg.mp inferInstance`.
+
+Establish `hfg' : AddGroup.FG E.toAddSubgroup` using `hfg`. Establish `: Module.Finite ℤ E.toAddSubgroup` using `Module.Finite.iff_addGroup_fg.mpr hfg'`. Establish `: Module.Finite ℤ (E.toAddSubgroup ⧸ H)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' H).toIntLinearMap (QuotientAddGroup.mk'_surjective H)`. Establish `: Finite (E.toAddSubgroup ⧸ H)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises.
+
+Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp (hv.2.2 x.2)`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := K) (Finset.univ.image c)`.
+
+Establish `hd : ∀ i, IsIntegral ℤ (y • c i)` using `fun i => hy _ (Finset.mem_image_of_mem c (Finset.mem_univ i))`. Set `d : Fin r → 𝓞 K` to `fun i => ⟨y • c i, hd i⟩`. Use `⟨⟨y, mem_nonZeroDivisors_of_ne_zero hy0⟩, ?_⟩` and prove the remaining obligations. Establish `hmem : (y • (x : V)) ∈ S`. Establish `: y • (x : V) = ∑ i, d i • v i`.
+
+Rewrite using `[← hc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (d i) (v i), ← smul_assoc]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `show (y : ℤ) • (QuotientAddGroup.mk x : E.toAddSubgroup ⧸ H) = 0`. Rewrite using `[← QuotientAddGroup.mk_zsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `hmem`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem IsFrame.relIndex_span_frame_ne_zero {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ} {v : Fin r → V}
     (hv : IsFrame K E v) :
     (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup ≠ 0 := by
@@ -85,11 +115,17 @@ theorem IsFrame.relIndex_span_frame_ne_zero {E : Submodule (𝓞 K) V} (hE : E.F
 section
 variable {K : Type*} [Field K] {V : Type*} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Use `h.add_right σ x 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Take the linear combination `-this`.
+-/
 theorem HermFam.ds_form_zero_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) : h.form σ x 0 = 0 := by
   have := h.add_right σ x 0 0
   rw [add_zero] at this
   linear_combination -this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h.ds_form_zero_right]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, ih]`.
+-/
 theorem HermFam.ds_form_sum_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {ι : Type*}
     (s : Finset ι) (f : ι → V) : h.form σ x (∑ i ∈ s, f i) = ∑ i ∈ s, h.form σ x (f i) := by
   classical
@@ -97,15 +133,24 @@ theorem HermFam.ds_form_sum_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {
   | empty => simp [h.ds_form_zero_right]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.add_right, ih]
 
+/- English proof (translation)
+Rewrite using `[← h.conj_symm, h.ds_form_sum_right, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h.conj_symm σ y (f i)`.
+-/
 theorem HermFam.ds_form_sum_left (h : HermFam K V) (σ : K →+* ℂ) (y : V) {ι : Type*}
     (s : Finset ι) (f : ι → V) : h.form σ (∑ i ∈ s, f i) y = ∑ i ∈ s, h.form σ (f i) y := by
   rw [← h.conj_symm, h.ds_form_sum_right, map_sum]
   exact Finset.sum_congr rfl fun i _ => h.conj_symm σ y (f i)
 
+/- English proof (translation)
+Rewrite using `[← h.conj_symm, h.smul_right, map_mul, h.conj_symm]`.
+-/
 theorem HermFam.ds_form_smul_left (h : HermFam K V) (σ : K →+* ℂ) (a : K) (x y : V) :
     h.form σ (a • x) y = starRingEnd ℂ (σ a) * h.form σ x y := by
   rw [← h.conj_symm, h.smul_right, map_mul, h.conj_symm]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [HermFam.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, h.ds_form_sum_left, h.ds_form_sum_right, h.ds_form_smul_left, h.smul_right, Finset.sum_mul, Complex.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem HermFam.ds_gram_comb (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} (v : Fin r → V)
     (G : Matrix (Fin r) (Fin r) K) :
     h.gram σ (fun j => ∑ i, G i j • v i) = (G.map σ)ᴴ * h.gram σ v * G.map σ := by
@@ -116,11 +161,19 @@ theorem HermFam.ds_gram_comb (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} (v :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use `(h.posDef σ r v hv).det_pos` as an intermediate fact. Conclude with `(Complex.pos_iff.mp this).1`.
+-/
 theorem HermFam.ds_gram_det_re_pos (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} {v : Fin r → V}
     (hv : LinearIndependent K v) : 0 < (h.gram σ v).det.re := by
   have := (h.posDef σ r v hv).det_pos
   exact (Complex.pos_iff.mp this).1
 
+/- English proof (translation)
+Rewrite using `[h.ds_gram_comb, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, RingHom.map_det]`. Establish `: star (σ.mapMatrix G).det * (h.gram σ v).det * (σ.mapMatrix G).det = (Complex.normSq (σ.mapMatrix G).det : ℂ) * (h.gram σ v).det`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this`, the goal using `[RingHom.mapMatrix_apply]`.
+
+Rewrite using `[this, Complex.re_ofReal_mul]`.
+-/
 theorem HermFam.ds_gram_comb_det_re (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} (v : Fin r → V)
     (G : Matrix (Fin r) (Fin r) K) :
     (h.gram σ (fun j => ∑ i, G i j • v i)).det.re =
@@ -132,6 +185,9 @@ theorem HermFam.ds_gram_comb_det_re (h : HermFam K V) (σ : K →+* ℂ) {r : �
   rw [RingHom.mapMatrix_apply] at this ⊢
   rw [this, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Rewrite using `[h.ds_gram_comb_det_re, Real.log_mul]`. Conclude with `(Complex.normSq_pos.mpr ((map_ne_zero σ).mpr hG)).ne'`. Conclude with `(h.ds_gram_det_re_pos σ hv).ne'`.
+-/
 theorem HermFam.ds_log_gram_comb (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} {v : Fin r → V}
     (hv : LinearIndependent K v) (G : Matrix (Fin r) (Fin r) K) (hG : G.det ≠ 0) :
     Real.log (h.gram σ (fun j => ∑ i, G i j • v i)).det.re =
@@ -145,11 +201,17 @@ end
 section
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_prod_embeddings ℚ ℂ x]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => by simp [RingHom.equivRatAlgHom_apply])`.
+-/
 theorem ds_prod_embeddings_eq_norm (x : K) :
     ∏ σ : K →+* ℂ, σ x = algebraMap ℚ ℂ (Algebra.norm ℚ x) := by
   rw [Algebra.norm_eq_prod_embeddings ℚ ℂ x]
   exact Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) _ _ (fun σ => by simp [RingHom.equivRatAlgHom_apply])
 
+/- English proof (translation)
+Rewrite using `[← Real.log_prod (fun σ _ => (Complex.normSq_pos.mpr ((map_ne_zero σ).mpr hx)).ne'), ← map_prod, ds_prod_embeddings_eq_norm]`. Establish `hn : (Algebra.norm ℚ x : ℝ) ≠ 0`. Conclude with `(Algebra.norm_ne_zero_iff.mpr hx)` after adjusting the coercions. Rewrite using `[eq_ratCast, ← Complex.ofReal_ratCast, Complex.normSq_ofReal, Real.log_mul hn hn, Real.log_abs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ds_sum_log_normSq_embeddings (x : K) (hx : x ≠ 0) :
     ∑ σ : K →+* ℂ, Real.log (Complex.normSq (σ x)) = 2 * Real.log |(Algebra.norm ℚ x : ℝ)| := by
   rw [← Real.log_prod (fun σ _ => (Complex.normSq_pos.mpr ((map_ne_zero σ).mpr hx)).ne'),

@@ -21,6 +21,23 @@ open Matrix GlobalTheory.LeviSplit
 
 set_option maxHeartbeats 600000 in
 open GlobalTheory.StdPar GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.GLTwo in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hskew hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hM r Xf Yf hW₁ X' Y' hW hX0 hY0 hXY S' γ hγ`. Take `⟨hMm, -⟩` from `GlobalTheory.LeviPlaneHom.levi_section_hom F E σ hcm hσ n n₁ W W₁ H hskew hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hM`. Substitute `hn` using the available equality. Establish `hdet : W₁.J.det ≠ 0`. Introduce `h0`.
+
+Apply `hND₁.2` to reduce the goal to its premises. Rewrite using `[det_smul, show (W₁.J.map σ).det = σ W₁.J.det from (RingHom.map_det (σ : E →+* E) _).symm, h0, map_zero, mul_zero]`. Take `⟨L, hL, hLx, hLy, hx, hy, hD⟩` from `exists_proj hσ W W₁ H hskew hxx hyy hxy horth hgram hdet`. Use `set e := toGAd hσ W.J hc₀`. Use `set e₁ := toGAd hσ W₁.J hc₀`.
+
+Establish `eX : (fun i => X' i 0) = H.x` using `funext hX0`. Establish `eY : (fun i => Y' i 0) = c₀⁻¹ • H.y` using `funext hY0`. Establish `eY' : incV F (c₀⁻¹ • H.y) = inclR (F` using `F) (AF F) c₀⁻¹ • incV F H.y := funext fun i => map_mul _ _ _`. Establish `lineY : ∀ (g : Matrix _ _ (AE F E)) (s : AE F E), g *ᵥ incV F (fun i => Y' i 0) = s • incV F (fun i => Y' i 0) ↔ g *ᵥ incV F H.y = s • incV F H.y` using `fun g s => by`. Rewrite using `[eY, eY', mulVec_smul, smul_comm s]`.
+
+Conclude with `((IsUnit.mk0 _ (inv_ne_zero hc₀)).map (inclR (F := F) (AF F))).smul_left_cancel`. Establish `hγ' : ∀ k ∈ insert 0 (S'.map (Fin.succEmb r)), γ ∈ frameStab σ _ (initCols X' k) ((⊤ : Subgroup (AE F E)ˣ).comap Matrix.GeneralLinearGroup.det) ∧ γ ∈ frameStab σ _ (initCols Y' k) ((⊤ : Subgroup (AE F E)ˣ).comap Matrix.GeneralLinearGroup.det)`. Simplify `hγ` using `only [levi, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.comap_top]`. Take `⟨h3, h2⟩` from `hγ' 0 (Finset.mem_insert_self _ _)`. Take `⟨s, -, hw⟩` from `frameStab_zero.1 h2`.
+
+Take `⟨t, -, hv⟩` from `frameStab_zero.1 h3`. Take `⟨h, hh⟩` from `isLevi_of_lines hxy hgram hdet hσ hx hy hD (e.symm γ) (t := t) (s := s) (eX ▸ hv) ((lineY _ _).1 hw)`. Establish `hι : (matHom _ σ _ γ).1 * incM F H.ι = incM F H.ι * (matHom _ σ _ (e₁ h)).1` using `hh.2.2`. Establish `a1` using `frameStab_succ (yx hcm hND hW) hL (by rw [eX, hLx]) (fun i j => (hXY i j).1) (Subgroup.mem_top _) hv hι`. Establish `a2` using `frameStab_succ hW.xy hL (by rw [eY, mulVec_smul, hLy, smul_zero]) (fun i j => (hXY i j).2) (Subgroup.mem_top _) hw hι`.
+
+Establish `hM1 : M 1 = 1`. Use `hMm 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left.1 this.symm)`. Use `⟨t, e.symm γ * M h⁻¹, h, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.LeviHom.isLevi_mul H hh (hM h⁻¹)` as an intermediate fact. Rewrite `this` using `[mul_one, mul_inv_cancel]`. Then use the resulting hypothesis. Simplify using `only [levi, Subgroup.mem_inf, Subgroup.mem_iInf]`. Introduce `k hk`. Use `hγ' k.succ (Finset.mem_insert_of_mem (Finset.mem_map.2 ⟨k, hk, rfl⟩))` as an intermediate fact.
+
+Rewrite `this` using `[a1, a2, Subgroup.comap_top]`. Conclude with `this`. Rewrite using `[← map_mul, mul_assoc, ← hMm, inv_mul_cancel, hM1, mul_one, MulEquiv.apply_symm_apply]`.
+-/
 theorem levi_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

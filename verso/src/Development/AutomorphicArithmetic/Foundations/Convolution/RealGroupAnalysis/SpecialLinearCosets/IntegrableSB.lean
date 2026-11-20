@@ -37,6 +37,9 @@ private def cjE (x : GL (Fin 2) K) :
     refine Continuous.subtype_mk ?_ _
     exact (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cjE_val (x : GL (Fin 2) K) (m : Matrix.SpecialLinearGroup (Fin 2) K) :
     (cjE x m).1 = (x⁻¹).val * m.1 * x.val := rfl
 
@@ -46,8 +49,16 @@ variable [LocallyCompactSpace (Matrix.SpecialLinearGroup (Fin 2) K)]
 
 private noncomputable def cc (x : GL (Fin 2) K) : ℝ≥0 := mulEquivHaarChar (cjE x)
 
+/- English proof (translation)
+The claim follows from `(mulEquivHaarChar_pos (cjE x)).ne'`.
+-/
 private theorem cc_ne (x : GL (Fin 2) K) : cc x ≠ 0 := (mulEquivHaarChar_pos (cjE x)).ne'
 
+/- English proof (translation)
+Establish `h : cjE (x * y) = (cjE x).trans (cjE y)` using `by ext1 m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((x * y)⁻¹).val * m.1 * (x * y).val = (y⁻¹).val * ((x⁻¹).val * m.1 * x.val) * y.val`. Simplify using `only [_root_.mul_inv_rev, Units.val_mul, mul_assoc]`. Unfold `cc`.
+
+Rewrite using `[h, mulEquivHaarChar_trans]`.
+-/
 private theorem cc_mul (x y : GL (Fin 2) K) : cc (x * y) = cc x * cc y := by
   have h : cjE (x * y) = (cjE x).trans (cjE y) := by
     ext1 m
@@ -57,6 +68,11 @@ private theorem cc_mul (x y : GL (Fin 2) K) : cc (x * y) = cc x * cc y := by
   unfold cc
   rw [h, mulEquivHaarChar_trans]
 
+/- English proof (translation)
+Establish `h : cjE z = ContinuousMulEquiv.refl _` using `by ext1 m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (z⁻¹).val * m.1 * z.val = m.1`. Rewrite using `[mul_assoc, ← hz, Units.inv_mul_cancel_left]`. Unfold `cc`.
+
+Rewrite using `[h, mulEquivHaarChar_refl]`.
+-/
 private theorem cc_central (z : GL (Fin 2) K) (hz : ∀ m : Matrix (Fin 2) (Fin 2) K, z.val * m = m * z.val) :
     cc z = 1 := by
   have h : cjE z = ContinuousMulEquiv.refl _ := by
@@ -67,6 +83,9 @@ private theorem cc_central (z : GL (Fin 2) K) (hz : ∀ m : Matrix (Fin 2) (Fin 
   unfold cc
   rw [h, mulEquivHaarChar_refl]
 
+/- English proof (translation)
+Establish `e` using `congrArg cc h`. Rewrite `e` using `[cc_mul, cc_mul, cc_mul]`. Apply `mul_left_cancel₀ (mul_ne_zero (cc_ne t) (cc_ne d))` to reduce the goal to its premises. Rewrite using `[mul_one, show cc t * cc d * cc t = cc t * cc t * cc d by ring, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cc_of_sq (d t : GL (Fin 2) K) (h : d * t = t * t * d) : cc t = 1 := by
   have e := congrArg cc h
   rw [cc_mul, cc_mul, cc_mul] at e
@@ -83,6 +102,15 @@ private noncomputable def ccS : Matrix.SpecialLinearGroup (Fin 2) K →* ℝ≥0
     exact cc_central 1 (by simp)
   map_mul' g h := by rw [map_mul, cc_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `let d₁ : GL (Fin 2) K := ⟨!![2, 0; 0, 1], !![2⁻¹, 0; 0, 1], by ext i j; fin_cases i <;> fin_cases j <;> simp [h2], by ext i j; fin_cases i <;> fin_cases j <;> simp [h2]⟩`. Apply the tactic sequence `let d₂ : GL (Fin 2) K := ⟨!![1, 0; 0, 2], !![1, 0; 0, 2⁻¹], by ext i j; fin_cases i <;> fin_cases j <;> simp [h2], by ext i j; fin_cases i <;> fin_cases j <;> simp [h2]⟩`. Establish `hT` using `UpperTheory.ConvolutionTheory.R2.I.genSL K (ccS K).ker (fun g b hg => by`. Rewrite using `[MonoidHom.mem_ker]`. Use `cc_of_sq d₁ _ (Units.ext ?_)` and prove the remaining obligations.
+
+Use `show d₁.val * g.1 = g.1 * g.1 * d₁.val`. Rewrite using `[hg]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [d₁, Matrix.mul_apply, Fin.sum_univ_two] <;> ring)`. Use the proof step `(fun g c hg => by`. Rewrite using `[MonoidHom.mem_ker]`.
+
+Use `cc_of_sq d₂ _ (Units.ext ?_)` and prove the remaining obligations. Use `show d₂.val * g.1 = g.1 * g.1 * d₂.val`. Rewrite using `[hg]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [d₂, Matrix.mul_apply, Fin.sum_univ_two] <;> ring)`. Establish `: g ∈ (ccS K).ker` using `by rw [hT]; trivial`.
+
+Conclude with `this`.
+-/
 private theorem cc_SL (h2 : (2 : K) ≠ 0) (g : Matrix.SpecialLinearGroup (Fin 2) K) :
     cc (Matrix.SpecialLinearGroup.toGL g) = 1 := by
   let d₁ : GL (Fin 2) K := ⟨!![2, 0; 0, 1], !![2⁻¹, 0; 0, 1],
@@ -107,6 +135,17 @@ private theorem cc_SL (h2 : (2 : K) ≠ 0) (g : Matrix.SpecialLinearGroup (Fin 2
   have : g ∈ (ccS K).ker := by rw [hT]; trivial
   exact this
 
+/- English proof (translation)
+Establish `hd : x.val.det ≠ 0`. Introduce `h0`. Establish `h1 : x.val.det * (x⁻¹).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Rewrite `h1` using `[h0, zero_mul]`.
+
+Conclude with `zero_ne_one h1`. Use `set t := x.val.det with ht`. Set `s : Matrix.SpecialLinearGroup (Fin 2) K` to `⟨t⁻¹ • (x.val * x.val), by`. Rewrite using `[Matrix.det_smul, Matrix.det_mul, ← ht]`. Simplify using `only [Fintype.card_fin]`.
+
+Use the proof step `field_simp⟩`. Set `z : GL (Fin 2) K` to `⟨t • 1, t⁻¹ • 1, by simp [smul_smul, hd], by simp [smul_smul, hd]⟩`. Establish `hx : x * x = z * Matrix.SpecialLinearGroup.toGL s`. Apply `Units.ext` to reduce the goal to its premises. Use `show x.val * x.val = (t • (1 : Matrix (Fin 2) (Fin 2) K)) * (t⁻¹ • (x.val * x.val))`.
+
+Simplify using `[smul_smul, hd]`. Establish `hz : cc z = 1` using `cc_central z (fun m => by show (t • (1 : Matrix (Fin 2) (Fin 2) K)) * m = m * (t • (1 : Matrix (Fin 2) (Fin 2) K)) simp)`. Establish `e` using `congrArg cc hx`. Rewrite `e` using `[cc_mul, cc_mul, hz, cc_SL h2, one_mul]`. Establish `e' : ((cc x : ℝ≥0) : ℝ) * (cc x : ℝ≥0) = 1` using `by exact_mod_cast e`.
+
+Break down `mul_self_eq_one_iff.1 e' with h | h` into its components or cases. Conclude with `h` after adjusting the coercions. Use `(cc x).coe_nonneg` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem cc_eq_one (h2 : (2 : K) ≠ 0) (x : GL (Fin 2) K) : cc x = 1 := by
   have hd : x.val.det ≠ 0 := by
     intro h0
@@ -135,6 +174,9 @@ private theorem cc_eq_one (h2 : (2 : K) ≠ 0) (x : GL (Fin 2) K) : cc x = 1 := 
   · have := (cc x).coe_nonneg
     linarith
 
+/- English proof (translation)
+Use `⟨(map_continuous (cjE x)).measurable, ?_⟩` and prove the remaining obligations. Establish `h` using `mulEquivHaarChar_smul_map (Measure.haar : Measure (Matrix.SpecialLinearGroup (Fin 2) K)) (cjE x)`. Establish `h1 : mulEquivHaarChar (cjE x) = 1` using `cc_eq_one h2 x`. Rewrite `h` using `[h1, one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem mp_cjE (h2 : (2 : K) ≠ 0) (x : GL (Fin 2) K) :
     MeasurePreserving (cjE x) (Measure.haar : Measure (Matrix.SpecialLinearGroup (Fin 2) K)) Measure.haar := by
   refine ⟨(map_continuous (cjE x)).measurable, ?_⟩
@@ -142,15 +184,36 @@ private theorem mp_cjE (h2 : (2 : K) ≠ 0) (x : GL (Fin 2) K) :
   have h1 : mulEquivHaarChar (cjE x) = 1 := cc_eq_one h2 x
   rwa [h1, one_smul] at h
 
+/- English proof (translation)
+The claim follows from `(mp_cjE h2 x).integral_comp (cjE x).toHomeomorph.measurableEmbedding f`.
+-/
 private theorem integral_cjE (h2 : (2 : K) ≠ 0) (x : GL (Fin 2) K)
     (f : Matrix.SpecialLinearGroup (Fin 2) K → ℂ) :
     ∫ m, f (cjE x m) ∂(Measure.haar) = ∫ m, f m ∂(Measure.haar) :=
   (mp_cjE h2 x).integral_comp (cjE x).toHomeomorph.measurableEmbedding f
 
+/- English proof (translation)
+The claim follows from `a.2.1.continuous.integrable_of_hasCompactSupport a.2.2`.
+-/
 private theorem integrable_SB (a : SB (Matrix.SpecialLinearGroup (Fin 2) K)) :
     Integrable a.1 (Measure.haar : Measure (Matrix.SpecialLinearGroup (Fin 2) K)) :=
   a.2.1.continuous.integrable_of_hasCompactSupport a.2.2
 
+/- English proof (translation)
+Set `I : SB (Matrix.SpecialLinearGroup (Fin 2) K) →ₗ[ℂ] ℂ` to `{ toFun := fun a => ∫ m, a.1 m ∂(Measure.haar) map_add' := fun a b => integral_add (integrable_SB a) (integrable_SB b) map_smul' := fun c a => integral_smul c a.1 }`. Establish `hI : ∀ a, I a = ∫ m, a.1 m ∂(Measure.haar)` using `fun _ => rfl`. Use `⟨I, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g a a' h`. Establish `hm : ∀ m, m * g = g * cjE (Matrix.SpecialLinearGroup.toGL g) m`.
+
+Introduce `m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show m.1 * g.1 = g.1 * (((Matrix.SpecialLinearGroup.toGL g)⁻¹).val * m.1 * (Matrix.SpecialLinearGroup.toGL g).val)`. Establish `e : g.1 * ((Matrix.SpecialLinearGroup.toGL g)⁻¹).val = 1` using `Units.mul_inv (Matrix.SpecialLinearGroup.toGL g)`. Rewrite using `[← mul_assoc, ← mul_assoc, e, one_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hI, hI]`. Repeatedly rewrite using `[h, hm]`. Rewrite using `[integral_cjE h2 _ (fun y => a.1 (g * y))]`. Conclude with `integral_mul_left_eq_self a.1 g`.
+
+Introduce `x a a' h`. Rewrite using `[hI, hI]`. Repeatedly rewrite using `[fun m => h m (cjE x m) rfl]`. Conclude with `integral_cjE h2 x a.1`. Introduce `U a hU ha`.
+
+Establish `hs : Function.support a.1 = (U : Set _)`. Rewrite using `[ha]`. Use extensionality with `m`. Apply the tactic sequence `by_cases hm : m ∈ (U : Set _) <;> simp [ind, hm]`. Establish `hfin : (Measure.haar : Measure (Matrix.SpecialLinearGroup (Fin 2) K)) (U : Set _) ≠ ⊤`.
+
+Establish `hc : IsCompact (tsupport a.1)` using `a.2.2`. Conclude with `((measure_mono (hs ▸ subset_tsupport a.1)).trans_lt hc.measure_lt_top).ne`. Establish `hpos : (Measure.haar : Measure (Matrix.SpecialLinearGroup (Fin 2) K)) (U : Set _) ≠ 0` using `(hU.measure_pos _ ⟨1, U.one_mem⟩).ne'`. Rewrite using `[hI, ha]`. Unfold `ind`.
+
+Rewrite using `[integral_indicator_const _ hU.measurableSet]`. Simplify using `only [Measure.real, smul_eq_mul, Complex.real_smul, mul_one]`. Conclude with `(ENNReal.toReal_ne_zero.2 ⟨hpos, hfin⟩)` after adjusting the coercions.
+-/
 private theorem exists_I (h2 : (2 : K) ≠ 0) :
     ∃ I : SB (Matrix.SpecialLinearGroup (Fin 2) K) →ₗ[ℂ] ℂ,
       (∀ (g : Matrix.SpecialLinearGroup (Fin 2) K) (a a' : SB (Matrix.SpecialLinearGroup (Fin 2) K)),
@@ -203,6 +266,11 @@ end
 
 end UpperTheory.ConvolutionTheory.R2.I.CentralConjugation
 
+/- English proof (translation)
+Introduce `F _ _ v`. Use `letI : MeasurableSpace (SL v) := borel _`. Use `haveI : BorelSpace (SL v) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (M2 v) := inferInstanceAs (LocallyCompactSpace (Fin 2 → Fin 2 → Kv v))`. Use `haveI : LocallyCompactSpace (SL v) := (Matrix.SpecialLinearGroup.isClosedEmbedding_val (n := Fin 2) (R := Kv v)).locallyCompactSpace`.
+
+Establish `h2 : (2 : Kv v) ≠ 0` using `by haveI : CharZero (Kv v) := charZero_of_injective_algebraMap (algebraMap F (Kv v)).injective`. Conclude with `two_ne_zero`. Take `⟨I, h₁, h₂, h₃⟩` from `UpperTheory.ConvolutionTheory.R2.I.CentralConjugation.exists_I (K := Kv v) h2`. Conclude with `⟨I, ⟨h₁, h₂, h₃⟩⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.invI :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F), ∃ I : SB (SL v) →ₗ[ℂ] ℂ, InvI I := by
   intro F _ _ v

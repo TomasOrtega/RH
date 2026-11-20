@@ -18,6 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdForm
 
+/- English proof (translation)
+Take `⟨γ0, hγ0, c, k0, hk0, κ0, hκ0, rfl⟩` from `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hOk hP l Z u a Ch A hA j hj b).1.dec x`. Establish `hrd` using `(GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ).2 b y`. Set `y' : (I.chain l u a).Y j` to `⟨fun τ => (show Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ from infM θ _ (rankN (I.rec7 l Z) j hj) k0 τ) * y.1 τ, fun τ => by`. Rewrite using `[Matrix.det_mul]`. Conclude with `(GlobalTheory.AdForm.RdVal.infM_unit θ _ (rankN (I.rec7 l Z) j hj) k0 τ).mul (y.2 τ)⟩`.
+
+Establish `hy' : IsTr (G` using `fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) k0) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ := fun _ => rfl`. Rewrite using `[hrd γ0 hγ0 c k0 hk0 ⟨κ0, hκ0⟩ y' hy']`. Establish `e : γ * (γ0 * (A.h j b c * k0) * κ0) * κ.1 = (γ * γ0) * (A.h j b c * k0) * ((⟨κ0, hκ0⟩ : A.U j b) * κ).1`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Rewrite using `[e, hrd (γ * γ0) (Subgroup.mul_mem _ hγ hγ0) c k0 hk0 (⟨κ0, hκ0⟩ * κ) y' hy', map_mul, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rd_mul_level {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch) (hA : A.Is)
     (θ : InfFam (I.rec7 l Z)) (hθ : IsInfFam θ) (j : ℕ) (hj : j ≤ B.R.m) (φ : ColT I l u a j) (hφ : φ ∈ (I.fm l u a).Fi j)
@@ -35,6 +42,19 @@ theorem rd_mul_level {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP
   rw [e, hrd (γ * γ0) (Subgroup.mul_mem _ hγ hγ0) c k0 hk0 (⟨κ0, hκ0⟩ * κ) y' hy', map_mul, Units.val_mul]
   ring
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd j hj φ hφ`. Establish `hlaw` using `rd_mul_level I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ`. Establish `hcont : ∀ b y, IsContAut _ (A.rd θ j hj b φ y)` using `fun b y => ⟨fun γ hγ g => by simpa using hlaw b y g γ hγ 1, GlobalTheory.T.tupleColumn_scalarAdelicForm_continuous I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ b y⟩`. Use `⟨hcont, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hStd.1`.
+
+Establish `: Finite ι` using `Finite.of_equiv _ e.symm`. Use `haveI := Fintype.ofFinite ι`. Establish `hlev` using `GlobalTheory.T.twistLevelStabiliserAtLevelPrime_proof I hOk hP l Z u a Ch A hA k ι p β Q L hStd (Finset.univ.toList) (Finset.nodup_toList _) (fun i => Finset.mem_toList.2 (Finset.mem_univ i)) j hj`. Establish `hfix : ∀ b y i (x : GL (Fin ((I.rec7 l Z).sp.X j).rank) k), x • Q j i = Q j i → rTrans ((β j i).gl x) (A.rd θ j hj b φ y) = A.rd θ j hj b φ y`. Introduce `b y i x hx`.
+
+Take `⟨hm, h1⟩` from `(hlev b).1 i x hx`. Use function extensionality and compare the values at `g`. Use `hlaw b y g 1 (Subgroup.one_mem _) ⟨_, hm⟩` as an intermediate fact. Simplify `this` using `[rTrans, h1]`. Use `choose gS hgS using fun (i : ι) (s : 𝓀[k]ˣ) => MulAction.exists_smul_eq (GL (Fin ((I.rec7 l Z).sp.X j).rank) k) (Q j i) (s • Q j i)`.
+
+Establish `hram : ∀ b y i, GlobalTheory.FinPl.RamAt (β j i) (Q j i) (A.rd θ j hj b φ y) ↔ ∑ᶠ s, rTrans ((β j i).gl (gS i s)) (A.rd θ j hj b φ y) = 0`. Introduce `b y i`. Rewrite using `[GlobalTheory.T.ramifiedLevel_stabilizer_iff_all_data (I.rec7 l Z) k (p i) (Fin _) _ (β j i) (Q j i) (gS i) (hgS i)]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨hcont b y, fun x hx => hfix b y i x hx, h⟩⟩`. Establish `hdia` using `fun i => GlobalTheory.T.diamondTranslates_scalarForms_sum_iff I hOk hP l Z u a Ch A hA θ hθ k ι p β Q L hStd j hj φ hφ i (e i) (he i) (gS i) (hgS i)`.
+
+Simplify using `only [hram]`. Unfold `RamT`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hR⟩ b y i`. Conclude with `(hdia i).2 (fun c => hR (e i) c) b y`.
+
+Introduce `h`. Use `⟨hφ, fun v c => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `e.surjective v`. Conclude with `(hdia i).1 (fun b y => h b y i) c`.
+-/
 theorem ram_iff_scalar_ram : TwRam' := by
   intro B X I hOk hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hStd j hj φ hφ
   have hlaw := rd_mul_level I hOk hP l Z u a Ch A hA θ hθ j hj φ hφ

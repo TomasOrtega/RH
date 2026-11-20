@@ -15,6 +15,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.Ex.Arch
 
+/- English proof (translation)
+Introduce `laws hθ E _ _ _ H D La _ _ EF g ty P Hm hty hbij hadj hlin hinj hdisc hspan hH hpos him`. Use `letI := H.starRing`. Take `⟨D', e, -, -, hEF⟩` from `PeriodDatum.exists_datum E H La EF D.p D.q g ty P Hm hty hbij hadj hlin hinj hdisc hspan hH hpos him`. Set `P' : D'.La →+ (Fin g → ℂ)` to `P.comp e.toAddEquiv.toAddMonoidHom`. Establish `hP' : ∀ a, P' a = P (e a)` using `fun _ => rfl`.
+
+Establish `hr : P'.range = P.range`. Use extensionality with `z`. Conclude with `⟨fun ⟨a, h⟩ => ⟨e a, h⟩, fun ⟨a, h⟩ => ⟨e.symm a, by rw [hP', e.apply_symm_apply, h]⟩⟩`. Establish `hper : IsPeriod D' ty P'`. Use `⟨fun a x i => ?_, hinj.comp e.injective, by rw [hr]; exact hdisc, ?_, Hm, hH, hpos, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP', hP', map_smul, hlin]`. Rewrite using `[← hspan]`. Conclude with `congrArg _ (congrArg SetLike.coe hr)`. Rewrite using `[hP', hP', him, hEF]`. Take `⟨T, L, u, hA, hdim, hamp, hK, ht₁, ht₂, hker, hact, hW⟩` from `PeriodPoint.exists_triple laws Moduli.cube_of_isLB principalTorus_algebraic (exists_isMonHom_of_map_lattice hθ laws) (lbIso_cubeLB_of_pairing_adjoint laws) (PrimNorm.exists_primitive_normalisation laws.globalFns) (kTriv_of_descent laws) relAmple_finite_pow_iso D' ty P' hper`.
+
+Set `Q : PolAV (Sp ℂ)` to `{ A := T.G, isAb := hA, g := g, smoothDim := hdim, L := T.PP.L, isLB := T.PP.isLB, rigid := ⟨T.PP.rig, T.PP.rigGen⟩, sym := CechPic.sym_of_isSymmetric T.PP T.sym, ample := hamp, ktriv := hK }`. Set `oa : Q.OAct (𝓞 E)` to `{ T.act.toRingAct with rosati := fun a _ => ⟨⊤, trivial, by`. Take `⟨r, hr⟩` from `NormRos.exists_gen_rosati T.PP.isLB _ _ (T.adj a)`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ _ hr _⟩⟩ }`. Take `⟨v, hv, heig⟩` from `exists_lieBasis_of_holUnif T.G L g u hA.smooth ht₁ ht₂`.
+
+Establish `hdet : DetCond D T.act (spMap (RingHom.id ℂ)) H.rt0` using `PeriodPoint.detCond_of_eigenbasis lieMult_of_eigenbasis D T ty hty v hv (fun i a => heig _ _ (T.act.hom a) (hact a) i) (RingHom.id ℂ)`. Rewrite `hdet` using `[show spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ) from Spec.map_id _]`. Use `⟨Q, oa, L, u, rfl, T.prim, hdet, ht₁, ht₂, fun z => hr ▸ hker z, hact, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Use `hW k (e.symm a) (e.symm b) c hk (by rw [hEF, e.apply_symm_apply, e.apply_symm_apply, hc])` as an intermediate fact. Rewrite `this` using `[hP', hP', e.apply_symm_apply, e.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem tripleSt_of_laws : Laws → ThetaUnifAV → TripleSt := by
   intro laws hθ E _ _ _ H D La _ _ EF g ty P Hm hty hbij hadj hlin hinj hdisc hspan hH hpos him
   letI := H.starRing

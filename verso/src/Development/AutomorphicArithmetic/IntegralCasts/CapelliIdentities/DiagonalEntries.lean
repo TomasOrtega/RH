@@ -1,5 +1,16 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `κ _ M α hα h`. Establish `hv : ∀ i : Fin 2, ∃ v : Fin 2 → κ, v ≠ 0 ∧ M.mulVec v = α i • v`. Introduce `i`. Establish `h0 : (Matrix.scalar (Fin 2) (α i) - M).det = 0`. Rewrite using `[← Matrix.eval_charpoly, h, Polynomial.eval_prod]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `⟨v, hv0, ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`.
+
+Use extensionality with `j`. Simplify using `[Matrix.mulVec_diagonal]`. Use `choose v hv0 hv using hv`. Establish `hli : LinearIndependent κ v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' M) α hα v fun i => ⟨Module.End.mem_eigenspace_iff.2 (by simpa using hv i), hv0 i⟩`. Establish `hu : IsUnit (Matrix.of v).transpose` using `Matrix.linearIndependent_cols_iff_isUnit.1 hli`.
+
+Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Use extensionality with `j i`. Use `congrFun (hv i) j` as an intermediate fact. Rewrite using `[Matrix.mul_diagonal]`.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.DiagonalizeTwoByTwo.diagE :
     ∀ {κ : Type} [inst : Field κ]
     (M : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) κ) (α : Fin (2 : ℕ) → κ),

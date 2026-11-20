@@ -17,11 +17,23 @@ noncomputable section
 
 namespace GlobalTheory.UMin.FibMove
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (RigidBundleGlue.chartPullComp L f g _ rfl) (chartPullId _) ⟨idIso _, idIso_isGen (pull_isLB (pull_isLB hL f) g)⟩`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (g : Z ⟶ Y) :
     LBIso (L.pull (g ≫ f)) ((L.pull f).pull g) :=
   LBIso.chartPull (RigidBundleGlue.chartPullComp L f g _ rfl) (chartPullId _)
     ⟨idIso _, idIso_isGen (pull_isLB (pull_isLB hL f) g)⟩
 
+/- English proof (translation)
+Introduce `S S' G _ L A _ L' f φ hL hL' hφ hLL' g R _ x`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨P, α, hg, hα, hPL⟩`. Use `⟨P, α ≫ φ, hg, hα.comp hφ, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans P.isLB (pull_isLB hL' α) (pull_isLB hL _) hPL (LBIso.trans (pull_isLB hL' α) (pull_isLB (pull_isLB hL φ) α) (pull_isLB hL _) (RigidBundleGlue.LBIso.pull hLL' α) (lbIso_pull_comp hL φ α).symm)`.
+
+Introduce and unpack `⟨P, β, hg, hβ, hPL⟩`. Establish `w : β ≫ G.hom = P.A.hom ≫ (x ≫ f)` using `hβ.1.w`. Set `α : P.A.left ⟶ A.left` to `hφ.1.lift β (P.A.hom ≫ x) (by rw [w, Category.assoc])`. Establish `e₁ : α ≫ φ = β` using `hφ.1.lift_fst _ _ _`. Establish `e₂ : α ≫ A.hom = P.A.hom ≫ x` using `hφ.1.lift_snd _ _ _`.
+
+Use `⟨P, α, hg, IsGrpPullback.cancel hφ (hβ.congr rfl e₁.symm) e₂, ?_⟩` and prove the remaining obligations. Establish `h1 : LBIso P.L (L.pull (α ≫ φ))` using `by rw [e₁]; exact hPL`. Conclude with `LBIso.trans P.isLB (pull_isLB hL _) (pull_isLB hL' α) h1 (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hL φ) α) (pull_isLB hL' α) (lbIso_pull_comp hL φ α) (RigidBundleGlue.LBIso.pull hLL'.symm α))`. Introduce and unpack `R' _ i ⟨P, α, hg, hα, hPL⟩`. Take `⟨P', ψ, hg', hψ, hPL'⟩` from `exists_isPolFibre polBaseChange_holds i P`.
+
+Use `⟨P', ψ ≫ α, hg'.trans hg, hψ.comp hα, ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans P'.isLB (pull_isLB P.isLB ψ) (pull_isLB hL' _) hPL'.symm (LBIso.trans (pull_isLB P.isLB ψ) (pull_isLB (pull_isLB hL' α) ψ) (pull_isLB hL' _) (RigidBundleGlue.LBIso.pull hPL ψ) (lbIso_pull_comp hL' α ψ).symm)`.
+-/
 theorem polFib_move : ∀ (S S' : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (A : Over S') [GrpObj A] (L' : LB A.left) (f : S' ⟶ S) (φ : A.left ⟶ G.left), L.IsLB → L'.IsLB → IsGrpPullback A G f φ → LBIso L' (L.pull φ) → ∀ (g : ℕ) (R : Type) [CommRing R] (x : Sp R ⟶ S'), (PolFib A L' g x ↔ PolFib G L g (x ≫ f)) ∧ ∀ (R' : Type) [CommRing R'] (i : R →+* R'), PolFib A L' g x → PolFib A L' g (spMap i ≫ x) := by
   intro S S' G _ L A _ L' f φ hL hL' hφ hLL' g R _ x
   refine ⟨⟨?_, ?_⟩, ?_⟩

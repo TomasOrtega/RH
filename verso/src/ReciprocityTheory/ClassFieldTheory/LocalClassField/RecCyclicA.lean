@@ -9,6 +9,11 @@ namespace ReciprocityTheory.DiscreteGroups.LocalClassField.RecCyc
 
 open _root_.Neutral.B1 ReciprocityTheory.Coh Function
 
+/- English proof (translation)
+Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨q, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Establish `h1 : (QuotientAddGroup.mk (n • q) : QZ) = 0` using `hx`. Take `⟨k, hk⟩` from `(QuotientAddGroup.eq_zero_iff _).1 h1`. Establish `hk' : (k : ℚ) = n • q` using `hk`.
+
+Use `AddSubgroup.mem_zmultiples_iff.2 ⟨k, ?_⟩` and prove the remaining obligations. Use `show (QuotientAddGroup.mk (k • ((1 : ℚ) / n)) : QZ) = _`. Use `congr 1`. Rewrite using `[zsmul_eq_mul, hk', nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qz_mem_zmultiples {n : ℕ} (hn : 0 < n) (x : QZ) (hx : n • x = 0) :
     x ∈ AddSubgroup.zmultiples (QuotientAddGroup.mk ((1 : ℚ) / n) : QZ) := by
   have hn' : (n : ℚ) ≠ 0 := by exact_mod_cast hn.ne'
@@ -26,6 +31,11 @@ section general
 
 variable {R : Type} [CommRing R] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (M : TRep R G)
 
+/- English proof (translation)
+Establish `: ∀ g : Fin 2 → G, ∃ k : ℤ, (k : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)` using `fun g => by`. Establish `h0 : (QuotientAddGroup.mk (t (g 0) + t (g 1) - t (g 0 * g 1)) : QZ) = 0`. Rewrite using `[QuotientAddGroup.mk_sub, QuotientAddGroup.mk_add, h, h, h, ofMul_mul, map_add, sub_self]`. Take `⟨k, hk⟩` from `(QuotientAddGroup.eq_zero_iff _).1 h0`. Conclude with `⟨k, hk⟩`.
+
+Use `choose m hm using this`. Conclude with `⟨m, hm⟩`.
+-/
 theorem exists_defect {t : G → ℚ} (χ : Additive G →+ QZ)
     (h : ∀ g, (QuotientAddGroup.mk (t g) : QZ) = χ (Additive.ofMul g)) :
     ∃ m : (Fin 2 → G) → ℤ, ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1) := by
@@ -37,6 +47,9 @@ theorem exists_defect {t : G → ℚ} (χ : Additive G →+ QZ)
   choose m hm using this
   exact ⟨m, hm⟩
 
+/- English proof (translation)
+Use `IsLocallyConstant.desc m (Int.cast : ℤ → ℚ) ?_ Int.cast_injective` and prove the remaining obligations. Establish `: ((Int.cast : ℤ → ℚ) ∘ m) = fun g => t (g 0) + t (g 1) - t (g 0 * g 1)` using `funext hm`. Rewrite using `[this]`. Conclude with `((ht.comp_continuous (continuous_apply 0)).add (ht.comp_continuous (continuous_apply 1))).sub (ht.comp_continuous ((continuous_apply 0).mul (continuous_apply 1)))`.
+-/
 theorem isLocallyConstant_defect {t : G → ℚ} (ht : IsLocallyConstant t) {m : (Fin 2 → G) → ℤ}
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) : IsLocallyConstant m := by
   refine IsLocallyConstant.desc m (Int.cast : ℤ → ℚ) ?_ Int.cast_injective
@@ -45,6 +58,9 @@ theorem isLocallyConstant_defect {t : G → ℚ} (ht : IsLocallyConstant t) {m :
   exact ((ht.comp_continuous (continuous_apply 0)).add (ht.comp_continuous (continuous_apply 1))).sub
     (ht.comp_continuous ((continuous_apply 0).mul (continuous_apply 1)))
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hm, hm, hm, hm]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defect_cocycle {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) (x y w : G) :
     m ![y, w] - m ![x * y, w] + m ![x, y * w] = m ![x, y] := by
@@ -54,6 +70,9 @@ theorem defect_cocycle {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_assoc]
   ring
 
+/- English proof (translation)
+Establish `hc : Continuous fun g => m g • a` using `((isLocallyConstant_defect ht hm).comp (fun k : ℤ => k • a)).continuous`. Use `⟨⟨fun g => m g • a, hc⟩, Subtype.ext (funext fun v => ?_), fun _ => rfl⟩` and prove the remaining obligations. Use `show ReciprocityTheory.Gal.dn M.rho 2 (fun g => m g • a) v = 0`. Rewrite using `[LowDeg.dn_two_apply, map_zsmul, ha, ← sub_smul, ← add_smul, ← sub_smul, defect_cocycle hm, sub_self, zero_smul]`.
+-/
 theorem exists_defect_cocycle {t : G → ℚ} (ht : IsLocallyConstant t) {m : (Fin 2 → G) → ℤ}
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) (a : M.V) (ha : ∀ g, M.rho g a = a) :
     ∃ z : M.coch.X 2, M.coch.d 2 z = 0 ∧ ∀ g, z.1 g = m g • a := by
@@ -66,6 +85,11 @@ theorem exists_defect_cocycle {t : G → ℚ} (ht : IsLocallyConstant t) {m : (F
 
 variable [Fintype G]
 
+/- English proof (translation)
+Establish `h1 : ∀ σ : G, m ![σ, τ] • a = M.rho σ (b.1 ![τ]) - b.1 ![σ * τ] + b.1 ![σ]` using `fun σ => by`. Rewrite using `[← hb]`. Conclude with `LowDeg.dn_one_apply M.rho b.1 ![σ, τ]`. Establish `h2 : ∑ σ, b.1 ![σ * τ] = ∑ σ, b.1 ![σ]` using `Equiv.sum_comp (Equiv.mulRight τ) (fun σ => b.1 ![σ])`. Rewrite using `[Finset.sum_smul, Finset.sum_congr rfl fun σ _ => h1 σ, Finset.sum_add_distrib, Finset.sum_sub_distrib, h2]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem sum_defect_smul {m : (Fin 2 → G) → ℤ} (a : M.V) (b : M.coch.X 1)
     (hb : ∀ g, (M.coch.d 1 b).1 g = m g • a) (τ : G) :
     (∑ σ, m ![σ, τ]) • a = ∑ σ, M.rho σ (b.1 ![τ]) := by
@@ -76,6 +100,11 @@ theorem sum_defect_smul {m : (Fin 2 → G) → ℤ} (a : M.V) (b : M.coch.X 1)
   rw [Finset.sum_smul, Finset.sum_congr rfl fun σ _ => h1 σ, Finset.sum_add_distrib, Finset.sum_sub_distrib, h2]
   abel
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[Finset.sum_congr rfl fun σ _ => hm ![σ, τ]]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Establish `h2 : ∑ σ, t (σ * τ) = ∑ σ, t σ` using `Equiv.sum_comp (Equiv.mulRight τ) t`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_defect {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) (τ : G) :
     ((∑ σ, m ![σ, τ] : ℤ) : ℚ) = Fintype.card G * t τ := by
@@ -86,6 +115,11 @@ theorem sum_defect {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
   rw [Finset.sum_sub_distrib, Finset.sum_add_distrib, h2]
   simp
 
+/- English proof (translation)
+Use `⟨⟨fun w => ∑ ρ, m ![w 0, ρ] • M.rho (w 0 * ρ) y, continuous_of_discreteTopology⟩, fun v => ?_⟩` and prove the remaining obligations. Use `show ReciprocityTheory.Gal.dn M.rho 1 (fun w => ∑ ρ, m ![w 0, ρ] • M.rho (w 0 * ρ) y) v = _`. Rewrite using `[LowDeg.dn_one_apply]`. Simplify using `only [Matrix.cons_val_zero]`. Apply the tactic sequence `have hv : v = ![v 0, v 1] := by funext i; fin_cases i <;> rfl`.
+
+Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (v 1)) (fun ρ => m ![v 0, ρ] • M.rho (v 0 * ρ) y), ← Equiv.sum_comp (Equiv.mulLeft (v 0 * v 1)) (fun ρ => M.rho ρ y), map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Rewrite using `[map_zsmul, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← sub_smul, ← add_smul, defect_cocycle hm, ← hv]`.
+-/
 theorem exists_cobound_of_norm [DiscreteTopology G] {t : G → ℚ} {m : (Fin 2 → G) → ℤ}
     (hm : ∀ g, (m g : ℚ) = t (g 0) + t (g 1) - t (g 0 * g 1)) (y : M.V) :
     ∃ b : M.coch.X 1, ∀ g, (M.coch.d 1 b).1 g = m g • ∑ ρ, M.rho ρ y := by

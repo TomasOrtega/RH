@@ -17,6 +17,23 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Sp
   [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
   [IsFiniteMeasureOnCompacts μ] {V : Type*} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
+/- English proof (translation)
+Establish `hUeq : U = ⋃ s ∈ S, s • (K : Set G)`. Use extensionality with `g`. Simplify using `only [hU, Set.mem_iUnion, Set.mem_smul_set_iff_inv_smul_mem, smul_eq_mul, SetLike.mem_coe, exists_prop]`. Establish `hUc : IsCompact U`. Rewrite using `[hUeq]`.
+
+Conclude with `S.isCompact_biUnion fun s _ => hKc.smul s`. Establish `hUo : IsOpen U`. Rewrite using `[hUeq]`. Conclude with `isOpen_biUnion fun s _ => hKo.smul s`. Establish `hf` using `indicator_mem_locallyConstantCompactSupport (R := ℂ) hUc hUo (1 : ℂ)`.
+
+Establish `hvs` using `smooth_of_mem_fixedVectors hKo hv`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[dual_heckeAct μ hf hvs φ, map_smul, map_sum]`. Establish `hmeas : ∀ s : G, MeasurableSet (s • (K : Set G))` using `fun s => (hKo.smul s).measurableSet`. Establish `hpt : ∀ g, U.indicator (fun _ => (1 : ℂ)) g * φ (ρ g v) = ∑ s ∈ S, (s • (K : Set G)).indicator (fun _ => φ (ρ s v)) g`.
+
+Introduce `g`. Distinguish the cases in `hg : g ∈ U`. Take `⟨s₀, hs₀, hk⟩` from `(hU g).1 hg`. Rewrite using `[Set.indicator_of_mem hg, one_mul, Finset.sum_eq_single s₀]`. Rewrite using `[Set.indicator_of_mem (Set.mem_smul_set_iff_inv_smul_mem.2 hk)]`.
+
+Use `congr 1`. Use `conv_lhs => rw [← mul_inv_cancel_left s₀ g]`. Rewrite using `[map_mul, Module.End.mul_apply, hv _ hk]`. Introduce `s hs hne`. Use `Set.indicator_of_notMem (fun h => hne ?_) _` and prove the remaining obligations.
+
+Establish `h' : s⁻¹ * g ∈ K` using `Set.mem_smul_set_iff_inv_smul_mem.1 h`. Conclude with `hS s hs s₀ hs₀ (by`. Use `mul_mem h' (inv_mem hk)` as an intermediate fact. Simplify `this)` using `[mul_assoc]`. Introduce `h`.
+
+Conclude with `absurd hs₀ h`. Rewrite using `[Set.indicator_of_notMem hg, zero_mul]`. Use `(Finset.sum_eq_zero fun s hs => Set.indicator_of_notMem (fun h => hg ?_) _).symm` and prove the remaining obligations. Conclude with `(hU g).2 ⟨s, hs, Set.mem_smul_set_iff_inv_smul_mem.1 h⟩`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_finset_sum]`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas s), Measure.real, Measure.real, measure_smul, Complex.real_smul, smul_eq_mul]`. Introduce `s _`. Conclude with `(integrable_indicator_iff (hmeas s)).2 (integrableOn_const ((hKc.smul s).measure_lt_top.ne))`.
+-/
 theorem heckeAct_indicator_eq_sum {K : Subgroup G} (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {U : Set G} (S : Finset G) (hU : ∀ g, g ∈ U ↔ ∃ s ∈ S, s⁻¹ * g ∈ K)
     (hS : ∀ s ∈ S, ∀ t ∈ S, s⁻¹ * t ∈ K → s = t) {v : V} (hv : v ∈ fixedVectors ρ K) :
@@ -74,6 +91,19 @@ set_option linter.unusedSectionVars false
 
 variable {k : ℤ}
 
+/- English proof (translation)
+Establish `hdetM : M.det.val = c ^ 2 * β.det.val`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, Matrix.det_fin_two, hM, hM, hM, hM]`. Expand and normalize the polynomial expressions, which then agree. Establish `hMpos : 0 < M.det.val` using `by rw [hdetM]; positivity`. Establish `hsm : ∀ z : ℍ, M • z = β • z`.
+
+Introduce `z`. Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_smul_of_det_pos hMpos, coe_smul_of_det_pos hβ]`. Simplify using `only [num, denom, hM]`. Establish `hd : ((β 1 0 : ℂ) * z + β 1 1) ≠ 0`.
+
+Use `denom_ne_zero β z` as an intermediate fact. Simplify `this` using `[denom]`. Use `push_cast`. Rewrite using `[show ((c : ℂ) * β 0 0 * z + c * β 0 1) = c * (β 0 0 * z + β 0 1) by ring, show ((c : ℂ) * β 1 0 * z + c * β 1 1) = c * (β 1 0 * z + β 1 1) by ring, mul_div_mul_left _ _ (by exact_mod_cast hc.ne')]`. Establish `hden : ∀ z : ℂ, denom M z = c * denom β z`.
+
+Introduce `z`. Simplify using `only [denom, hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : ∀ g : GL (Fin 2) ℝ, (g * h).det.val = g.det.val * h.det.val` using `fun g => by`.
+
+Rewrite using `[map_mul, Units.val_mul]`. Rewrite using `[archLift, archLift, hdet, hdet, hdetM, mul_smul, mul_smul, hsm, denom_mul_of_det_pos _ hh, denom_mul_of_det_pos _ hh, hden, mul_assoc (c ^ 2), Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq hc.le]`. Establish `hc0 : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `e : (c : ℂ) ^ k * (c : ℂ) ^ (-k) = 1` using `by rw [← zpow_add₀ hc0]; simp`. Use `push_cast`.
+
+Simplify using `only [mul_zpow]`. Take the linear combination `((Real.sqrt (β.det.val * h.det.val) : ℂ) ^ k * f (β • h • UpperHalfPlane.I) * denom β ((h • UpperHalfPlane.I : ℍ) : ℂ) ^ (-k) * denom h Complex.I ^ (-k)) * e`.
+-/
 theorem archLift_smul_left (f : ℍ → ℂ) {M β h : GL (Fin 2) ℝ} {c : ℝ} (hc : 0 < c)
     (hM : ∀ i j, M i j = c * β i j) (hβ : 0 < β.det.val) (hh : 0 < h.det.val) :
     archLift k f (M * h) = archLift k f (β * h) := by
@@ -107,6 +137,9 @@ theorem archLift_smul_left (f : ℍ → ℂ) {M β h : GL (Fin 2) ℝ} {c : ℝ}
   linear_combination ((Real.sqrt (β.det.val * h.det.val) : ℂ) ^ k * f (β • h • UpperHalfPlane.I) *
     denom β ((h • UpperHalfPlane.I : ℍ) : ℂ) ^ (-k) * denom h Complex.I ^ (-k)) * e
 
+/- English proof (translation)
+Simplify using `only [archLift, Finset.sum_apply, Finset.mul_sum, Finset.sum_mul]`.
+-/
 theorem archLift_sum {ι : Type*} (s : Finset ι) (F : ι → ℍ → ℂ) (h : GL (Fin 2) ℝ) :
     archLift k (∑ i ∈ s, F i) h = ∑ i ∈ s, archLift k (F i) h := by
   simp only [archLift, Finset.sum_apply, Finset.mul_sum, Finset.sum_mul]
@@ -125,6 +158,9 @@ def classicalUpper (j : ℤ) : GL (Fin 2) ℚ where
     ext a b
     fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_classicalUpper (j : ℤ) :
     ((classicalUpper p j : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = !![1, (j : ℚ); 0, p] := rfl
 
@@ -134,27 +170,47 @@ def heckeOp (N p : ℕ) [NeZero p] (k : ℤ) (f : ℍ → ℂ) : ℍ → ℂ :=
 
 def heckeConst (p : ℕ) (k : ℤ) : ℂ := (p : ℂ) ^ (1 - k) * (Real.sqrt p : ℂ) ^ k
 
+/- English proof (translation)
+Establish `hp : (0 : ℝ) < p` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne p)`. Unfold `heckeConst`. Use `mul_ne_zero (zpow_ne_zero _ (by exact_mod_cast hp.ne')) (zpow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `(Real.sqrt_pos.2 hp).ne'` after adjusting the coercions.
+-/
 theorem heckeConst_ne_zero : heckeConst p k ≠ 0 := by
   have hp : (0 : ℝ) < p := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne p)
   unfold heckeConst
   refine mul_ne_zero (zpow_ne_zero _ (by exact_mod_cast hp.ne')) (zpow_ne_zero _ ?_)
   exact_mod_cast (Real.sqrt_pos.2 hp).ne'
 
+/- English proof (translation)
+Rewrite using `[det_toReal, Matrix.GeneralLinearGroup.val_det_apply, coe_classicalUpper, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+-/
 theorem det_toReal_classicalUpper (j : ℤ) : (toReal (classicalUpper p j)).det.val = p := by
   rw [det_toReal, Matrix.GeneralLinearGroup.val_det_apply, coe_classicalUpper, Matrix.det_fin_two_of]
   simp
 
+/- English proof (translation)
+Rewrite using `[det_toReal, Matrix.GeneralLinearGroup.val_det_apply, coe_upperHecke, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+-/
 theorem det_toReal_heckeAlpha : (toReal (heckeAlpha p)).det.val = p := by
   rw [det_toReal, Matrix.GeneralLinearGroup.val_det_apply, coe_upperHecke, Matrix.det_fin_two_of]
   simp
 
+/- English proof (translation)
+Conclude with `Nat.pos_of_ne_zero (NeZero.ne p)` after adjusting the coercions.
+-/
 theorem natCast_pos_real : (0 : ℝ) < p := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne p)
 
+/- English proof (translation)
+Unfold `heckeOp`. Simplify using `only [SlashAction.add_slash, Finset.sum_add_distrib]`. Apply the tactic sequence `split_ifs <;> abel`.
+-/
 theorem heckeOp_add (f g : ℍ → ℂ) : heckeOp N p k (f + g) = heckeOp N p k f + heckeOp N p k g := by
   unfold heckeOp
   simp only [SlashAction.add_slash, Finset.sum_add_distrib]
   split_ifs <;> abel
 
+/- English proof (translation)
+Unfold `heckeOp`. Establish `h1 : ∀ j : ℤ, 0 < (toReal (classicalUpper p j)).det.val` using `fun j => by`. Rewrite using `[det_toReal_classicalUpper]`. Conclude with `natCast_pos_real p`. Establish `h2 : 0 < (toReal (heckeAlpha p)).det.val`.
+
+Rewrite using `[det_toReal_heckeAlpha]`. Conclude with `natCast_pos_real p`. Simplify using `only [ModularForm.smul_slash, σ_of_det_pos (h1 _), σ_of_det_pos h2]`. Apply the tactic sequence `split_ifs <;> simp [smul_add, Finset.smul_sum]`.
+-/
 theorem heckeOp_smul (c : ℂ) (f : ℍ → ℂ) : heckeOp N p k (c • f) = c • heckeOp N p k f := by
   unfold heckeOp
   have h1 : ∀ j : ℤ, 0 < (toReal (classicalUpper p j)).det.val := fun j => by
@@ -166,11 +222,19 @@ theorem heckeOp_smul (c : ℂ) (f : ℍ → ℂ) : heckeOp N p k (c • f) = c �
 
 variable [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `a b h`. Use `congrArg (fun γ : GL (Fin 2) ℚ => (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) h` as an intermediate fact. Simplify `this` using `[coe_upperHecke]`.
+-/
 theorem upperHecke_injective : Function.Injective (upperHecke p) := by
   intro a b h
   have := congrArg (fun γ : GL (Fin 2) ℚ => (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 1) h
   simpa [coe_upperHecke] using this
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg (fun γ : GL (Fin 2) ℚ => (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) h` as an intermediate fact. Simplify using `only [coe_lowerHecke, coe_upperHecke] at this`. Establish `h2` using `(Fact.out : p.Prime).two_le`. Establish `: (1 : ℚ) = p` using `by simpa using this`.
+
+Establish `: (p : ℕ) = 1` using `by exact_mod_cast this.symm`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lowerHecke_ne_upperHecke (j : ℤ) : lowerHecke p ≠ upperHecke p j := by
   intro h
   have := congrArg (fun γ : GL (Fin 2) ℚ => (γ : Matrix (Fin 2) (Fin 2) ℚ) 0 0) h
@@ -180,6 +244,13 @@ theorem lowerHecke_ne_upperHecke (j : ℤ) : lowerHecke p ≠ upperHecke p j := 
   have : (p : ℕ) = 1 := by exact_mod_cast this.symm
   omega
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun j : Fin p => upperHecke p (-((j : ℕ) : ℤ))`. Introduce `a b h`. Use `upperHecke_injective p h` as an intermediate fact. Conclude with `Fin.ext (by omega)`. Unfold `heckeReps`.
+
+Use `split_ifs with h`. Rewrite using `[Finset.union_empty, Finset.sum_image (fun a _ b _ hab => hinj hab), add_zero]`. Rewrite using `[Finset.sum_union, Finset.sum_image (fun a _ b _ hab => hinj hab), Finset.sum_singleton]`. Rewrite using `[Finset.disjoint_singleton_right, Finset.mem_image]`. Introduce and unpack `⟨j, _, hj⟩`.
+
+Conclude with `lowerHecke_ne_upperHecke p _ hj.symm`.
+-/
 theorem sum_heckeReps {M : Type*} [AddCommMonoid M] (F : GL (Fin 2) ℚ → M) :
     ∑ ξ ∈ heckeReps N p, F ξ =
       (∑ j : Fin p, F (upperHecke p (-((j : ℕ) : ℤ)))) + if p ∣ N then 0 else F (lowerHecke p) := by
@@ -196,18 +267,29 @@ theorem sum_heckeReps {M : Type*} [AddCommMonoid M] (F : GL (Fin 2) ℚ → M) :
     rintro ⟨j, _, hj⟩
     exact lowerHecke_ne_upperHecke p _ hj.symm
 
+/- English proof (translation)
+Establish `hp` using `natCast_ne_zero_rat p`. Rewrite using `[← map_inv, toReal_apply, toReal_apply, coe_upperHecke_inv, coe_classicalUpper]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp <;> field_simp`.
+-/
 theorem toReal_upperHecke_inv_apply (j : ℤ) (a b : Fin 2) :
     (toReal (upperHecke p (-j)))⁻¹ a b = (p : ℝ)⁻¹ * toReal (classicalUpper p j) a b := by
   have hp := natCast_ne_zero_rat p
   rw [← map_inv, toReal_apply, toReal_apply, coe_upperHecke_inv, coe_classicalUpper]
   fin_cases a <;> fin_cases b <;> simp <;> field_simp
 
+/- English proof (translation)
+Establish `hp` using `natCast_ne_zero_rat p`. Rewrite using `[← map_inv, toReal_apply, toReal_apply, coe_lowerHecke_inv, coe_upperHecke]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp`.
+-/
 theorem toReal_lowerHecke_inv_apply (a b : Fin 2) :
     (toReal (lowerHecke p))⁻¹ a b = (p : ℝ)⁻¹ * toReal (heckeAlpha p) a b := by
   have hp := natCast_ne_zero_rat p
   rw [← map_inv, toReal_apply, toReal_apply, coe_lowerHecke_inv, coe_upperHecke]
   fin_cases a <;> fin_cases b <;> simp
 
+/- English proof (translation)
+Establish `hp` using `natCast_pos_real p`. Establish `hβpos : 0 < β.det.val` using `by rw [hβ]; exact hp`. Rewrite using `[archLift_smul_left f (inv_pos.2 hp) hM hβpos hh]`. Establish `key` using `archLift_mul_left (k := k) f hβpos hh`. Rewrite `key` using `[hβ]`.
+
+Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Establish `e : (p : ℂ) ^ (1 - k) * (p : ℂ) ^ (k - 1) = 1` using `by rw [← zpow_add₀ hp0]; simp`. Unfold `heckeConst`. Move the coercions through the operations in `at key ⊢`. Take the linear combination `(p : ℂ) ^ (1 - k) * key - archLift k f (β * h) * e`.
+-/
 theorem archLift_inv_smul_mul (f : ℍ → ℂ) {M β h : GL (Fin 2) ℝ} (hM : ∀ a b, M a b = (p : ℝ)⁻¹ * β a b)
     (hβ : β.det.val = p) (hh : 0 < h.det.val) :
     archLift k f (M * h) = heckeConst p k * archLift k (f ∣[k] β) h := by
@@ -222,27 +304,48 @@ theorem archLift_inv_smul_mul (f : ℍ → ℂ) {M β h : GL (Fin 2) ℝ} (hM : 
   push_cast at key ⊢
   linear_combination (p : ℂ) ^ (1 - k) * key - archLift k f (β * h) * e
 
+/- English proof (translation)
+Use `diagonal_mul_realEmb_mul_finEmb 1 ξ h (finiteDiagonal ℚ 2 ξ)` as an intermediate fact. Rewrite `this` using `[map_one, one_mul, one_mul, inv_mul_cancel]`. Then use the resulting hypothesis.
+-/
 theorem realEmb_mul_finEmb_finiteDiagonal (ξ : GL (Fin 2) ℚ) (h : GL (Fin 2) ℝ) :
     realEmb h * finEmb ℚ 2 (finiteDiagonal ℚ 2 ξ) =
       diagonal ℚ 2 ξ * realEmb ((toReal ξ)⁻¹ * h) * finEmb ℚ 2 1 := by
   have := diagonal_mul_realEmb_mul_finEmb 1 ξ h (finiteDiagonal ℚ 2 ξ)
   rwa [map_one, one_mul, one_mul, inv_mul_cancel] at this
 
+/- English proof (translation)
+Rewrite using `[map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal]`. Establish `: (0 : ℝ) < ((ξ.det.val : ℚ) : ℝ)` using `by exact_mod_cast hξ`. Check the signs of the components of the expression.
+-/
 theorem det_toReal_inv_mul_pos (ξ : GL (Fin 2) ℚ) (hξ : 0 < (ξ.det.val : ℚ)) {h : GL (Fin 2) ℝ}
     (hh : 0 < h.det.val) : 0 < ((toReal ξ)⁻¹ * h).det.val := by
   rw [map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal]
   have : (0 : ℝ) < ((ξ.det.val : ℚ) : ℝ) := by exact_mod_cast hξ
   positivity
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_upperHecke, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+-/
 theorem det_upperHecke (j : ℤ) : ((upperHecke p j).det.val : ℚ) = p := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, coe_upperHecke, Matrix.det_fin_two_of]; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_lowerHecke, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+-/
 theorem det_lowerHecke : ((lowerHecke p).det.val : ℚ) = p := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, coe_lowerHecke, Matrix.det_fin_two_of]; simp
 
 def heckeSum (φ : AdelicGL ℚ 2 → ℂ) (g : AdelicGL ℚ 2) : ℂ :=
   ∑ ξ ∈ heckeReps N p, φ (g * finEmb ℚ 2 (finiteDiagonal ℚ 2 ξ))
 
+/- English proof (translation)
+Establish `hterm : ∀ ξ : GL (Fin 2) ℚ, 0 < (ξ.det.val : ℚ) → adelicLift N k f (realEmb h * finEmb ℚ 2 (finiteDiagonal ℚ 2 ξ)) = archLift k f ((toReal ξ)⁻¹ * h)` using `fun ξ hξ => by`. Rewrite using `[realEmb_mul_finEmb_finiteDiagonal]`. Conclude with `adelicLift_apply hf ξ (det_toReal_inv_mul_pos ξ hξ hh) (one_mem _)`. Establish `hp : (0 : ℚ) < p` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne p)`. Unfold `heckeSum`.
+
+Rewrite using `[sum_heckeReps]`. Unfold `heckeOp`. Rewrite using `[archLift_add, archLift_sum, mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hterm (upperHecke p (-((j : ℕ) : ℤ))) (by rw [det_upperHecke]; exact hp)]`. Conclude with `archLift_inv_smul_mul p f (toReal_upperHecke_inv_apply p ((j : ℕ) : ℤ)) (det_toReal_classicalUpper p ((j : ℕ) : ℤ)) hh`. Use `split_ifs`. Simplify using `[archLift]`. Rewrite using `[hterm (lowerHecke p) (by rw [det_lowerHecke]; exact hp)]`.
+
+Conclude with `archLift_inv_smul_mul p f (toReal_lowerHecke_inv_apply p) (det_toReal_heckeAlpha p) hh`.
+-/
 theorem heckeSum_adelicLift_realEmb {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) {h : GL (Fin 2) ℝ}
     (hh : 0 < h.det.val) :
@@ -279,12 +382,25 @@ def finRightRep : Representation ℂ (FiniteAdelicGL ℚ 2) (AdelicGL ℚ 2 → 
     ext φ g
     simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem finRightRep_apply (h : FiniteAdelicGL ℚ 2) (φ : AdelicGL ℚ 2 → ℂ) (g : AdelicGL ℚ 2) :
     finRightRep h φ g = φ (g * finEmb ℚ 2 h) := rfl
 
+/- English proof (translation)
+Introduce `u hu` and use `funext fun g => hφ.right_level g u hu`.
+-/
 theorem IsWeightLevel.mem_fixedVectors {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ) :
     φ ∈ fixedVectors finRightRep (Gamma0Level N) := fun u hu => funext fun g => hφ.right_level g u hu
 
+/- English proof (translation)
+Rewrite using `[heckeAct_indicator_eq_sum μ (isCompact_Gamma0Level N) (isOpen_Gamma0Level N) ((heckeReps N p).image (finiteDiagonal ℚ 2))]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[Finset.sum_image (fun a ha b hb hab => eq_of_inv_mul_mem_Gamma0Level N p ha hb (by rw [hab, inv_mul_cancel]; exact one_mem _))]`. Simplify using `[heckeSum, Finset.sum_apply]`.
+
+Introduce `g`. Rewrite using `[mem_heckeSet_iff]`. Simplify using the standard rewrite rules. Introduce `s hs t ht hst`. Simplify using `only [Finset.mem_image] at hs ht`.
+
+Take `⟨ξ, hξ, rfl⟩` from `hs`. Take `⟨ξ', hξ', rfl⟩` from `ht`. Rewrite using `[eq_of_inv_mul_mem_Gamma0Level N p hξ hξ' hst]`. Conclude with `hφ`.
+-/
 theorem heckeAct_heckeSet [MeasurableSpace (FiniteAdelicGL ℚ 2)] [BorelSpace (FiniteAdelicGL ℚ 2)]
     (μ : Measure (FiniteAdelicGL ℚ 2)) [μ.IsHaarMeasure] {φ : AdelicGL ℚ 2 → ℂ}
     (hφ : φ ∈ fixedVectors finRightRep (Gamma0Level N)) :
@@ -308,6 +424,19 @@ theorem heckeAct_heckeSet [MeasurableSpace (FiniteAdelicGL ℚ 2)] [BorelSpace (
     rw [eq_of_inv_mul_mem_Gamma0Level N p hξ hξ' hst]
   · exact hφ
 
+/- English proof (translation)
+Unfold `GL2Classical.heckeSum`. Simplify using `only [mul_assoc]`. Conclude with `Finset.sum_congr rfl fun ξ _ => hφ.isLeftInvariant γ _`. Use `right_level g u hu := by`. Use `letI : MeasurableSpace (FiniteAdelicGL ℚ 2) := borel _`.
+
+Use `haveI : BorelSpace (FiniteAdelicGL ℚ 2) := ⟨rfl⟩`. Use `set μ : Measure (FiniteAdelicGL ℚ 2) := Measure.haar`. Establish `hf` using `indicator_mem_locallyConstantCompactSupport (R := ℂ) (isCompact_heckeSet N p) (isOpen_heckeSet N p) (1 : ℂ)`. Establish `hfix` using `heckeAct_mem_fixedVectors (μ := μ) (ρ := finRightRep) hf (fun k hk x => by`. Distinguish the cases in `hx : x ∈ heckeSet N p`.
+
+Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((mul_mem_heckeSet_left N p hk).2 hx)]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx ((mul_mem_heckeSet_left N p hk).1 h))])`. Use the proof step `(smooth_of_mem_fixedVectors (isOpen_Gamma0Level N) hφ.mem_fixedVectors)`. Rewrite `hfix` using `[heckeAct_heckeSet N p μ hφ.mem_fixedVectors]`. Establish `hpos` using `HeckeAlgebra.measureReal_compactOpen_pos μ (isCompact_Gamma0Level N) (isOpen_Gamma0Level N)`.
+
+Establish `hne : ((μ.real (Gamma0Level N : Set (FiniteAdelicGL ℚ 2)) : ℝ) : ℂ) ≠ 0`. Conclude with `hpos.ne'` after adjusting the coercions. Use `congrFun (hfix u hu) g` as an intermediate fact. Rewrite `this` using `[map_smul, Pi.smul_apply, Pi.smul_apply, finRightRep_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_left_cancel₀ hne this`.
+
+Use `right_kGL g w hw := by`. Unfold `GL2Classical.heckeSum`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, realEmb_mul_finEmb_comm, ← mul_assoc]`.
+
+Conclude with `hφ.right_kGL _ w hw`.
+-/
 theorem IsWeightLevel.heckeSum {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ) :
     IsWeightLevel N k (heckeSum N p φ) where
   isLeftInvariant γ g := by
@@ -342,6 +471,11 @@ theorem IsWeightLevel.heckeSum {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLeve
     rw [mul_assoc, realEmb_mul_finEmb_comm, ← mul_assoc]
     exact hφ.right_kGL _ w hw
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[descend, heckeSum_adelicLift_realEmb N p hf (det_borelGL_pos z), archLift_borelGL, Pi.smul_apply, smul_eq_mul]`. Establish `hy : (Real.sqrt z.im : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 z.im_pos).ne'`. Establish `e : (Real.sqrt z.im : ℂ) ^ (-k) * (Real.sqrt z.im : ℂ) ^ k = 1`. Rewrite using `[← zpow_add₀ hy]`.
+
+Simplify using the standard rewrite rules. Take the linear combination `(heckeConst p k * heckeOp N p k f z) * e`.
+-/
 theorem descend_heckeSum_adelicLift {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) :
     descend k (heckeSum N p (adelicLift N k f)) = heckeConst p k • heckeOp N p k f := by
@@ -353,6 +487,13 @@ theorem descend_heckeSum_adelicLift {f : ℍ → ℂ}
     rw [← zpow_add₀ hy]; simp
   linear_combination (heckeConst p k * heckeOp N p k f z) * e
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `hW` using `(isWeightLevel_adelicLift hf).heckeSum N p`. Establish `hd` using `descend_slash_eq hW γ hγ`. Rewrite `hd` using `[descend_heckeSum_adelicLift N p hf]`. Establish `hc` using `heckeConst_ne_zero (k := k) p`.
+
+Take `⟨s, -, rfl⟩` from `Subgroup.mem_map.1 hγ`. Establish `hpos : 0 < (Matrix.SpecialLinearGroup.mapGL ℝ s).det.val`. Rewrite using `[Matrix.SpecialLinearGroup.det_mapGL]`. Conclude with `one_pos`. Rewrite `hd` using `[ModularForm.smul_slash, σ_of_det_pos hpos]`.
+
+Conclude with `smul_right_injective _ hc hd`.
+-/
 theorem heckeOp_slash {f : ℍ → ℂ} (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) :
     ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), heckeOp N p k f ∣[k] γ = heckeOp N p k f := by
   intro γ hγ
@@ -377,9 +518,17 @@ def heckeSlash (N p : ℕ) [NeZero N] [NeZero p] [Fact p.Prime] (k : ℤ) :
   map_smul' c f := SlashInvariantForm.ext fun z => by
     simp [FunLike.coe_smul, heckeOp_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_heckeSlash (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeSlash N p k f : ℍ → ℂ) = heckeOp N p k f := rfl
 
+/- English proof (translation)
+Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Establish `hW` using `(isWeightLevel_adelicLift hf).heckeSum N p`. Rewrite using `[liftEquiv_apply, liftEquiv_apply, ← adelicLift_descend hW, descend_heckeSum_adelicLift N p hf]`. Use function extensionality and compare the values at `g`. Simplify using `only [adelicLift, Pi.smul_apply, smul_eq_mul, coe_heckeSlash]`.
+
+Conclude with `archLift_smul k _ _ _`.
+-/
 theorem heckeSum_liftEquiv (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     heckeSum N p (liftEquiv N k f : AdelicGL ℚ 2 → ℂ) =
       heckeConst p k • (liftEquiv N k (heckeSlash N p k f) : AdelicGL ℚ 2 → ℂ) := by
@@ -391,6 +540,9 @@ theorem heckeSum_liftEquiv (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin
   simp only [adelicLift, Pi.smul_apply, smul_eq_mul, coe_heckeSlash]
   exact archLift_smul k _ _ _
 
+/- English proof (translation)
+Rewrite using `[heckeAct_heckeSet N p μ (liftEquiv N k f).2.mem_fixedVectors, heckeSum_liftEquiv, smul_smul]`.
+-/
 theorem heckeAct_liftEquiv [MeasurableSpace (FiniteAdelicGL ℚ 2)] [BorelSpace (FiniteAdelicGL ℚ 2)]
     (μ : Measure (FiniteAdelicGL ℚ 2)) [μ.IsHaarMeasure]
     (f : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
@@ -403,6 +555,9 @@ section Forms
 
 open scoped Manifold
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact (mdifferentiable_const : MDiff (fun _ : ℍ => (0 : ℂ)))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem mdifferentiable_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → ℂ} (h : ∀ i ∈ s, MDiff (F i)) :
     MDiff (∑ i ∈ s, F i) := by
   classical
@@ -412,6 +567,9 @@ theorem mdifferentiable_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → ℂ
     rw [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (zero_form_isBoundedAtImInfty : IsBoundedAtImInfty (0 : ℍ → ℂ))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isBoundedAtImInfty_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → ℂ}
     (h : ∀ i ∈ s, IsBoundedAtImInfty (F i)) : IsBoundedAtImInfty (∑ i ∈ s, F i) := by
   classical
@@ -421,6 +579,11 @@ theorem isBoundedAtImInfty_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → 
     rw [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `Filter.zero_zeroAtFilter _`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isZeroAtImInfty_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → ℂ}
     (h : ∀ i ∈ s, IsZeroAtImInfty (F i)) : IsZeroAtImInfty (∑ i ∈ s, F i) := by
   classical
@@ -430,6 +593,9 @@ theorem isZeroAtImInfty_sum {ι : Type*} (s : Finset ι) {F : ι → ℍ → ℂ
     rw [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `heckeOp`. Rewrite using `[SlashAction.add_slash, SlashAction.sum_slash]`. Simplify using `only [SlashAction.slash_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem heckeOp_slash_eq (f : ℍ → ℂ) (g : GL (Fin 2) ℝ) :
     heckeOp N p k f ∣[k] g = (∑ j : Fin p, f ∣[k] (toReal (classicalUpper p ((j : ℕ) : ℤ)) * g)) +
       if p ∣ N then 0 else f ∣[k] (toReal (heckeAlpha p) * g) := by
@@ -438,6 +604,9 @@ theorem heckeOp_slash_eq (f : ℍ → ℂ) (g : GL (Fin 2) ℝ) :
   simp only [SlashAction.slash_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `heckeOp`. Use `(mdifferentiable_sum _ fun j _ => hf.slash k _).add ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `mdifferentiable_const`. Conclude with `hf.slash k _`.
+-/
 theorem mdifferentiable_heckeOp {f : ℍ → ℂ} (hf : MDiff f) : MDiff (heckeOp N p k f) := by
   unfold heckeOp
   refine (mdifferentiable_sum _ fun j _ => hf.slash k _).add ?_
@@ -445,6 +614,9 @@ theorem mdifferentiable_heckeOp {f : ℍ → ℂ} (hf : MDiff f) : MDiff (heckeO
   · exact mdifferentiable_const
   · exact hf.slash k _
 
+/- English proof (translation)
+Rewrite using `[heckeOp_slash_eq]`. Simplify using `only [map_mul, toReal_mapGL]`.
+-/
 theorem heckeOp_slash_mapGL (f : ℍ → ℂ) (σ : SL(2, ℤ)) :
     heckeOp N p k f ∣[k] Matrix.SpecialLinearGroup.mapGL ℝ σ =
       (∑ j : Fin p, f ∣[k] toReal (classicalUpper p ((j : ℕ) : ℤ) * Matrix.SpecialLinearGroup.mapGL ℚ σ)) +
@@ -502,18 +674,33 @@ def heckeCusp (N p : ℕ) [NeZero N] [NeZero p] [Fact p.Prime] (k : ℤ) :
 
 variable {k}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_heckeModular (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeModular N p k f : ℍ → ℂ) = heckeOp N p k f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_heckeCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeCusp N p k f : ℍ → ℂ) = heckeOp N p k f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeModular_toSlashInvariantForm (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeModular N p k f).toSlashInvariantForm = heckeSlash N p k f.toSlashInvariantForm := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeCusp_toSlashInvariantForm (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     (heckeCusp N p k f).toSlashInvariantForm = heckeSlash N p k f.toSlashInvariantForm := rfl
 
+/- English proof (translation)
+The claim follows from `heckeAct_liftEquiv N p μ f.toSlashInvariantForm`.
+-/
 theorem heckeAct_liftEquiv_modularForm [MeasurableSpace (FiniteAdelicGL ℚ 2)]
     [BorelSpace (FiniteAdelicGL ℚ 2)] (μ : Measure (FiniteAdelicGL ℚ 2)) [μ.IsHaarMeasure]
     (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :

@@ -13,6 +13,13 @@ namespace PositivityTheory.Pf1.CLGD.K
 
 namespace ConjugatePlaceNorm
 
+/- English proof (translation)
+Introduce `L _ _ _ a π π' T hT w B hB`. Set `Tθ : π.V ≃ₗ[ℂ] (GlobalTheory.ThetaPull.thetaSub π).V` to `(GlobalTheory.ThetaPull.pull L a).submoduleMap π.V`. Establish `hTθ : ∀ o φ, Tθ (π.op (thetaOp o) φ) = (GlobalTheory.ThetaPull.thetaSub π).op o (Tθ φ)` using `fun o φ => Subtype.ext (GlobalTheory.ThetaPull.act_pull o φ.1).symm`. Establish `hI : CuspSub.Iso (GlobalTheory.ThetaPull.thetaSub π) π'`. Use `⟨Tθ.symm.trans T, fun o ψ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨φ, rfl⟩` from `Tθ.surjective ψ`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, ← hTθ, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, hT]`. Establish `hiso : CG.mk (GlobalTheory.ThetaPull.thetaSub π) = CG.mk π'` using `Quotient.sound hI`. Establish `e : conjSrc (IsCMField.complexConj L).toRingEquiv (conjSrc (IsCMField.complexConj L).toRingEquiv w) = w` using `GlobalTheory.ThetaPull.conjSrc_conjSrc w`. Establish `hB' : (CG.mk π).HasSat (conjSrc (IsCMField.complexConj L).toRingEquiv (conjSrc (IsCMField.complexConj L).toRingEquiv w)) B` using `by rw [e]; exact hB`.
+
+Establish `h1` using `GlobalTheory.ThetaSatake.hasSat_thetaSub π (conjSrc (IsCMField.complexConj L).toRingEquiv w) B hB'`. Rewrite `h1` using `[hiso]`. Conclude with `h1`.
+-/
 theorem satFlip : PositivityTheory.NCmp.SatFlip := by
   intro L _ _ _ a π π' T hT w B hB
   let Tθ : π.V ≃ₗ[ℂ] (GlobalTheory.ThetaPull.thetaSub π).V := (GlobalTheory.ThetaPull.pull L a).submoduleMap π.V
@@ -32,6 +39,9 @@ theorem satFlip : PositivityTheory.NCmp.SatFlip := by
   rw [hiso] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (M →+* ℂ)` from `⟨(Classical.arbitrary (InfinitePlace M)).embedding⟩`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Conclude with `(IsCMField.complexEmbedding_complexConj E (φ.comp (algebraMap E M)) x).symm`.
+-/
 theorem complexConj_algebraMap {E M : Type} [Field E] [NumberField E] [IsCMField E] [Field M] [NumberField M]
     [IsCMField M] [Algebra E M] (x : E) :
     IsCMField.complexConj M (algebraMap E M x) = algebraMap E M (IsCMField.complexConj E x) := by
@@ -40,6 +50,9 @@ theorem complexConj_algebraMap {E M : Type} [Field E] [NumberField E] [IsCMField
   rw [IsCMField.complexEmbedding_complexConj]
   exact (IsCMField.complexEmbedding_complexConj E (φ.comp (algebraMap E M)) x).symm
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Use `show IsCMField.complexConj M (algebraMap E M (x : E)) = algebraMap E M ((IsCMField.ringOfIntegersComplexConj E x : 𝓞 E) : E)`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, complexConj_algebraMap]`.
+-/
 theorem ringOfIntegersComplexConj_algebraMap {E M : Type} [Field E] [NumberField E] [IsCMField E] [Field M]
     [NumberField M] [IsCMField M] [Algebra E M] (x : 𝓞 E) :
     IsCMField.ringOfIntegersComplexConj M (algebraMap (𝓞 E) (𝓞 M) x) =
@@ -49,6 +62,9 @@ theorem ringOfIntegersComplexConj_algebraMap {E M : Type} [Field E] [NumberField
   show IsCMField.complexConj M (algebraMap E M (x : E)) = algebraMap E M ((IsCMField.ringOfIntegersComplexConj E x : 𝓞 E) : E)
   rw [IsCMField.coe_ringOfIntegersComplexConj, complexConj_algebraMap]
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[PositivityTheory.NCmp.mem_conjSrc_iff, HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal, Ideal.mem_under, Ideal.mem_under, PositivityTheory.NCmp.mem_conjSrc_iff, ringOfIntegersComplexConj_algebraMap]`.
+-/
 theorem under_conjSrc {E M : Type} [Field E] [NumberField E] [IsCMField E] [Field M] [NumberField M] [IsCMField M]
     [Algebra E M] (w : HeightOneSpectrum (𝓞 M)) :
     (conjSrc (PositivityTheory.NCmp.cc M) w).under (𝓞 E) = conjSrc (PositivityTheory.NCmp.cc E) (w.under (𝓞 E)) := by
@@ -56,15 +72,28 @@ theorem under_conjSrc {E M : Type} [Field E] [NumberField E] [IsCMField E] [Fiel
   rw [PositivityTheory.NCmp.mem_conjSrc_iff, HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal, Ideal.mem_under,
     Ideal.mem_under, PositivityTheory.NCmp.mem_conjSrc_iff, ringOfIntegersComplexConj_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem normV_eq_absNorm' {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) :
     normV w = Ideal.absNorm w.asIdeal := by
   rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Rewrite using `[normV_eq_absNorm', normV_eq_absNorm']`. Conclude with `GlobalTheory.ThetaSatake.absNorm_cw w`.
+-/
 theorem normV_conjSrc {L : Type} [Field L] [NumberField L] [IsCMField L] (w : HeightOneSpectrum (𝓞 L)) :
     normV (conjSrc (PositivityTheory.NCmp.cc L) w) = normV w := by
   rw [normV_eq_absNorm', normV_eq_absNorm']
   exact GlobalTheory.ThetaSatake.absNorm_cw w
 
+/- English proof (translation)
+Establish `hcomap : (w.under (𝓞 E)).asIdeal = w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 M))` using `rfl`. Use `(w.under (𝓞 E)).isMaximal` as an intermediate fact. Use `w.isMaximal` as an intermediate fact. Set `_` to `Ideal.Quotient.field (w.under (𝓞 E)).asIdeal`. Set `_` to `Ideal.Quotient.field w.asIdeal`.
+
+Establish `: Finite (𝓞 E ⧸ (w.under (𝓞 E)).asIdeal)` using `(w.under (𝓞 E)).asIdeal.finiteQuotientOfFreeOfNeBot (w.under (𝓞 E)).ne_bot`. Establish `: Finite (𝓞 M ⧸ w.asIdeal)` using `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Set `_` to `Fintype.ofFinite (𝓞 E ⧸ (w.under (𝓞 E)).asIdeal)`. Set `_` to `Fintype.ofFinite (𝓞 M ⧸ w.asIdeal)`. Set `_ : Algebra (𝓞 E ⧸ (w.under (𝓞 E)).asIdeal) (𝓞 M ⧸ w.asIdeal)` to `(Ideal.quotientMap w.asIdeal (algebraMap (𝓞 E) (𝓞 M)) hcomap.le).toAlgebra`.
+
+Use `⟨Module.finrank (𝓞 E ⧸ (w.under (𝓞 E)).asIdeal) (𝓞 M ⧸ w.asIdeal), ?_⟩` and prove the remaining obligations. Rewrite using `[normV, normV, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+-/
 theorem exists_normV_under {E M : Type} [Field E] [NumberField E] [Field M] [NumberField M] [Algebra E M]
     (w : HeightOneSpectrum (𝓞 M)) : ∃ f : ℕ, normV w = normV (w.under (𝓞 E)) ^ f := by
   classical
@@ -84,11 +113,17 @@ theorem exists_normV_under {E M : Type} [Field E] [NumberField E] [Field M] [Num
   rw [normV, normV, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
   exact Module.card_eq_pow_finrank
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.NCmp.sat_conj_of_isCsd satFlip (CG.mk π) hc w B hB`.
+-/
 theorem hasSat_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {a : ℕ} (π : CuspSub L a) (hc : π.IsCsd)
     (w : HeightOneSpectrum (𝓞 L)) (B : Multiset ℂˣ) (hB : (CG.mk π).HasSat w B) :
     (CG.mk π).HasSat (conjSrc (PositivityTheory.NCmp.cc L) w) (B.map (·⁻¹)) :=
   PositivityTheory.NCmp.sat_conj_of_isCsd satFlip (CG.mk π) hc w B hB
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_map, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun u _ => (inv_pow u f).symm`.
+-/
 theorem map_inv_pow (B : Multiset ℂˣ) (f : ℕ) :
     (B.map (·⁻¹)).map (· ^ f) = (B.map (· ^ f)).map (·⁻¹) := by
   rw [Multiset.map_map, Multiset.map_map]
@@ -97,6 +132,15 @@ theorem map_inv_pow (B : Multiset ℂˣ) (f : ℕ) :
 end ConjugatePlaceNorm
 
 open ConjugatePlaceNorm in
+/- English proof (translation)
+Introduce `hJ E Ω _ _ _ _ _ _ a ha π X P`. Use `⟨fun hc hP => ?_, fun hr hi => ?_⟩` and prove the remaining obligations. Establish `hP'` using `((conjSrc_injective (PositivityTheory.NCmp.cc X.M)).tendsto_cofinite).eventually hP`. Use `PositivityTheory.NCmp.isCsd_of_sat satFlip PositivityTheory.NCmp.thetaTw hJ ha (CG.mk P) ((hP.and hP').mono ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨h1, h2⟩`.
+
+Take `⟨f, hf⟩` from `exists_normV_under (E := E) w`. Take `⟨B, hB, hPB⟩` from `h1 f hf`. Establish `hf' : normV (conjSrc (PositivityTheory.NCmp.cc X.M) w) = normV ((conjSrc (PositivityTheory.NCmp.cc X.M) w).under (𝓞 E)) ^ f`. Rewrite using `[under_conjSrc, normV_conjSrc, normV_conjSrc, hf]`. Take `⟨B', hB', hPB'⟩` from `h2 f hf'`.
+
+Rewrite `hB'` using `[under_conjSrc]`. Establish `e : B' = B.map (·⁻¹)` using `CG.HasSat.unique hB' (hasSat_conj π hc _ B hB)`. Use `⟨B.map (· ^ f), hPB, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv_pow, ← e]`. Conclude with `hPB'`.
+
+Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_` and prove the remaining obligations. Establish `h1` using `hi τ _ (GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) (τ.comp (algebraMap E X.M)))`. Establish `e : (CG.mk P).infChar τ = (CG.mk π).infChar (τ.comp (algebraMap E X.M))` using `CG.HasInfChar.infChar_eq (π := CG.mk P) h1`. Rewrite using `[e]`. Conclude with `hr _`.
+-/
 theorem conjugate_place_norm_under : InfinitePlaceStep := by
   intro hJ E Ω _ _ _ _ _ _ a ha π X P
   refine ⟨fun hc hP => ?_, fun hr hi => ?_⟩

@@ -17,10 +17,16 @@ section Chart
 
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+* R₀}
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem chart_spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap (b.comp a) = spMap b ≫ spMap a := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Use `Spec.map_injective e` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem chart_spMap_inj {A B : Type} [CommRing A] [CommRing B] {a b : A →+* B} (e : spMap a = spMap b) : a = b := by
   have := Spec.map_injective e
   exact congrArg CommRingCat.Hom.hom this
@@ -31,6 +37,9 @@ variable (hI : I ^ 2 = 0) {X₀ Z₀ X Z : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀}
 
 include hkf in
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, P'.red, P.red, Category.assoc, hkf, ← Category.assoc, ← Category.assoc, ← GlobalTheory.CechDR.secPull_affPt s₀ t₀ p, Category.assoc]`.
+-/
 theorem chart_red (p : Pair f₀) :
     spMap (S'.p (Opposite.op p.1.1)) ≫ P'.y (Opposite.op p.1.1) ≫ f =
       spMap (GlobalTheory.CechDR.secPull s₀ t₀ p) ≫ spMap (S.p (Opposite.op p.1.2)) ≫ P.y (Opposite.op p.1.2) := by
@@ -39,6 +48,11 @@ theorem chart_red (p : Pair f₀) :
 
 include hI hkf in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨q₀, rfl⟩` from `(S'.surjective_spMap_p hI (Opposite.op p.1.1)).surj q`. Establish `e` using `congrArg (fun g ↦ g q₀) (chart_red P P' hkf p)`. Simplify using `only [Scheme.Hom.comp_apply] at e`. Rewrite using `[Scheme.Hom.comp_apply, e]`.
+
+Conclude with `⟨_, rfl⟩`.
+-/
 theorem chart_range (p : Pair f₀) :
     Set.range ⇑(P'.y (Opposite.op p.1.1) ≫ f) ⊆ Set.range ⇑(P.y (Opposite.op p.1.2)) := by
   rintro _ ⟨q, rfl⟩
@@ -52,6 +66,9 @@ def chartMor (p : Pair f₀) : Sp (S'.F.obj (Opposite.op p.1.1)) ⟶ Sp (S.F.obj
   haveI := P.isOpen (Opposite.op p.1.2)
   IsOpenImmersion.lift _ _ (chart_range hI P P' hkf p)
 
+/- English proof (translation)
+The claim follows from `haveI := P.isOpen (Opposite.op p.1.2) IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem chartMor_fac (p : Pair f₀) :
     chartMor hI P P' hkf p ≫ P.y (Opposite.op p.1.2) = P'.y (Opposite.op p.1.1) ≫ f :=
   haveI := P.isOpen (Opposite.op p.1.2)
@@ -60,22 +77,34 @@ theorem chartMor_fac (p : Pair f₀) :
 def chartRing (p : Pair f₀) : S.F.obj (Opposite.op p.1.2) →+* S'.F.obj (Opposite.op p.1.1) :=
   (Spec.preimage (chartMor hI P P' hkf p)).hom
 
+/- English proof (translation)
+Simplify using `only [spMap, chartRing, CommRingCat.ofHom_hom]`. Conclude with `Spec.map_preimage _`.
+-/
 theorem spMap_chartRing (p : Pair f₀) : spMap (chartRing hI P P' hkf p) = chartMor hI P P' hkf p := by
   simp only [spMap, chartRing, CommRingCat.ofHom_hom]
   exact Spec.map_preimage _
 
+/- English proof (translation)
+The claim follows from `haveI := P.isOpen U chart_spMap_inj ((cancel_mono (P.y U)).1 e)`.
+-/
 theorem chart_ext {A : Type} [CommRing A] (U : AffOp X₀) {a b : S.F.obj U →+* A}
     (e : spMap a ≫ P.y U = spMap b ≫ P.y U) : a = b :=
   haveI := P.isOpen U
   chart_spMap_inj ((cancel_mono (P.y U)).1 e)
 
 include hkf in
+/- English proof (translation)
+Rewrite using `[spMap_chartRing, chartMor_fac]`.
+-/
 theorem chartRing_fac (p : Pair f₀) :
     spMap (chartRing hI P P' hkf p) ≫ P.y (Opposite.op p.1.2) = P'.y (Opposite.op p.1.1) ≫ f := by
   rw [spMap_chartRing, chartMor_fac]
 
 include hkf in
 
+/- English proof (translation)
+Use `chart_spMap_inj ?_` and prove the remaining obligations. Rewrite using `[chart_spMap_comp, ← P.base, ← Category.assoc, chartRing_fac, Category.assoc, hf, P'.base]`.
+-/
 theorem chartRing_comp_algebraMap (hf : f ≫ s = t) (p : Pair f₀) :
     (chartRing hI P P' hkf p).comp (algebraMap R (S.F.obj (Opposite.op p.1.2))) =
       algebraMap R (S'.F.obj (Opposite.op p.1.1)) := by
@@ -88,6 +117,9 @@ def chartAlg (hf : f ≫ s = t) (p : Pair f₀) : S.F.obj (Opposite.op p.1.2) �
 
 include hkf in
 
+/- English proof (translation)
+Use `chart_ext P _ ?_` and prove the remaining obligations. Rewrite using `[chart_spMap_comp, chart_spMap_comp, Category.assoc, Category.assoc, chartRing_fac, chart_red P P' hkf p]`.
+-/
 theorem chartRing_red (p : Pair f₀) :
     (S'.p (Opposite.op p.1.1)).comp (chartRing hI P P' hkf p) =
       (GlobalTheory.CechDR.secPull s₀ t₀ p).comp (S.p (Opposite.op p.1.2)) := by
@@ -96,6 +128,9 @@ theorem chartRing_red (p : Pair f₀) :
 
 include hkf in
 
+/- English proof (translation)
+Establish `e : ((mp S'.F (homOfLE (Pair.le_fst a)).op : _ →+* _)).comp (chartRing hI P P' hkf p) = (chartRing hI P P' hkf q).comp (mp S.F (homOfLE (Pair.le_snd a)).op : _ →+* _)`. Use `chart_ext P _ ?_` and prove the remaining obligations. Rewrite using `[chart_spMap_comp, chart_spMap_comp, Category.assoc, Category.assoc, chartRing_fac, P.nat, chartRing_fac, ← Category.assoc, P'.nat]`. Conclude with `congrArg (fun g ↦ g b) e`.
+-/
 theorem chartRing_nat {p q : Pair f₀} (a : q ≤ p) (b : S.F.obj (Opposite.op p.1.2)) :
     mp S'.F (homOfLE (Pair.le_fst a)).op (chartRing hI P P' hkf p b) =
       chartRing hI P P' hkf q (mp S.F (homOfLE (Pair.le_snd a)).op b) := by
@@ -112,6 +147,9 @@ end GlobalTheory.Obs
 
 namespace GlobalTheory.Obs
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π _ _ X₀ Z₀ X Z s₀ t₀ s t i k _ _ S S' P P' f₀ h f hf hkf`. Use `⟨fun T ↦ chartAlg hI P P' hkf hf T.unop, fun T b ↦ ?_, fun T T' a b ↦ ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun g ↦ g b) (chartRing_red hI P P' hkf T.unop)`. Conclude with `chartRing_nat hI P P' hkf (leOfHom a.unop) b`.
+-/
 theorem exists_chart_lifts : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ Z₀ X Z : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀) (t₀ : Z₀ ⟶ Sp R₀) (s : X ⟶ Sp R) (t : Z ⟶ Sp R) (i : X₀ ⟶ X) (k : Z₀ ⟶ Z) (hi : IsPullback i s₀ s (spMap π)) (hkk : IsPullback k t₀ t (spMap π)) (S : Sys I π s₀) (S' : Sys I π t₀) (P : S.Presents s i) (P' : S'.Presents t k) (f₀ : Z₀ ⟶ X₀) (h : f₀ ≫ s₀ = t₀ ≫ spMap (RingHom.id R₀)) (f : Z ⟶ X), f ≫ s = t → k ≫ f = f₀ ≫ i → ∃ (l : ∀ T : (Pair f₀)ᵒᵖ, (ofSys S).B ((pairPull h).G.obj T) →ₐ[R] (pairPre S' f₀).B T), (ofSys S).IsLift (pairPre S' f₀) (pairPull h) l ∧ (ofSys S).IsNat (pairPre S' f₀) (pairPull h) l := by
   intro R R₀ _ _ I hI π _ _ X₀ Z₀ X Z s₀ t₀ s t i k _ _ S S' P P' f₀ h f hf hkf
   refine ⟨fun T ↦ chartAlg hI P P' hkf hf T.unop, fun T b ↦ ?_, fun T T' a b ↦ ?_⟩

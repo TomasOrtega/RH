@@ -22,12 +22,24 @@ def locBlocksFrom (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) : ℕ → List 
 def locBlocks (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) (bs : List (D.host.E × ℕ)) : List (ℂ × ℕ) :=
   locBlocksFrom D ρ v 0 bs
 
+/- English proof (translation)
+Proceed by induction on `bs with`. Consider the case `nil => intro a`. Both sides reduce to the same expression. Consider the case `cons b bs ih => intro a`. Take `⟨t, s⟩` from `b`.
+
+Simplify using `[locBlocksFrom, ih]`.
+-/
 theorem locBlocksFrom_snd (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) (bs : List (D.host.E × ℕ)) :
     ∀ a, (locBlocksFrom D ρ v a bs).map Prod.snd = bs.map Prod.snd := by
   induction bs with
   | nil => intro a; rfl
   | cons b bs ih => intro a; obtain ⟨t, s⟩ := b; simp [locBlocksFrom, ih]
 
+/- English proof (translation)
+Proceed by induction on `bs with`. Consider the case `nil => intro a _ p hp`. Simplify using `[locBlocksFrom] at hp`. Consider the case `cons b bs ih`. Introduce `a h p hp`.
+
+Take `⟨t, s⟩` from `b`. Simplify using `only [locBlocksFrom, List.mem_cons] at hp`. Break down `hp with rfl | hp` into its components or cases. Establish `hb` using `h (t, s) (by simp)`. Conclude with `⟨mul_ne_zero (by exact_mod_cast hρ (a + 1) s) ((map_ne_zero (plEmb D v)).2 hb.1), hb.2⟩`.
+
+Conclude with `ih (a + s) (fun b hb => h b (by simp [hb])) p hp`.
+-/
 theorem locBlocksFrom_ok (ρ : ℕ → ℕ → ℝ) (hρ : ∀ i s, ρ i s ≠ 0) (v : D.what₂.Tau) (bs : List (D.host.E × ℕ)) :
     ∀ a, (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → ∀ p ∈ locBlocksFrom D ρ v a bs, p.1 ≠ 0 ∧ 1 ≤ p.2 := by
   induction bs with
@@ -45,13 +57,22 @@ def ptLocS (ρ : ℕ → ℕ → ℝ) (hρ : ∀ i s, ρ i s ≠ 0) (v : D.what�
   ⟨locBlocks D ρ v γ.1, locBlocksFrom_ok D ρ hρ v γ.1 0 γ.2.1, by
     rw [locBlocks, locBlocksFrom_snd]; exact γ.2.2⟩
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`.
+-/
 theorem rdE_pos : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   apply Real.rpow_pos_of_pos
   exact abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)
 
+/- English proof (translation)
+The claim follows from `zpow_ne_zero _ (rdE_pos D).ne'`.
+-/
 theorem rhoReal_ne (i s : ℕ) : rhoReal D i s ≠ 0 := zpow_ne_zero _ (rdE_pos D).ne'
 
+/- English proof (translation)
+The claim follows from `zpow_pos (rdE_pos D) _`.
+-/
 theorem rhoReal_pos (i s : ℕ) : 0 < rhoReal D i s := zpow_pos (rdE_pos D) _
 
 def ptWeightG (ρ : ℕ → ℕ → ℝ) (T T' : ℝ) (bs : List (D.host.E × ℕ)) : ℝ :=

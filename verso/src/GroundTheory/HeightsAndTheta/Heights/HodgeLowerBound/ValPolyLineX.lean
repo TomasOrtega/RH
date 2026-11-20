@@ -47,11 +47,17 @@ def genPt {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) (b : ∀ τ,
   genPtR Pl D.y (wedgeVals Pl b)
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem genPtR_inl {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) {R : Type} [CommRing R]
     (x : (Σ k, ι k) → R) (V : WedgeVals Pl R) (k : K) (t : ι k) :
     genPtR Pl x V ⟨Sum.inl k, t⟩ = X (Sum.inl (Sum.inl k)) * C (x ⟨k, t⟩) := rfl
 
 omit [DecidableEq Ψ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem genPtR_inr {D : ComponentData II Ψ K ι Ω E} (Pl : PlueckerData D) {R : Type} [CommRing R]
     (x : (Σ k, ι k) → R) (V : WedgeVals Pl R) (q : Ψ × Fin (D.N - 1)) (m : Fin (Pl.M q.1 q.2)) :
     genPtR Pl x V ⟨Sum.inr q, m⟩ = X (Sum.inl (Sum.inr q)) *
@@ -64,6 +70,9 @@ section Inhabitant
 
 open Line
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genPt_line_inl :
     genPt linePlData linePlData.e ⟨Sum.inl (), (0 : Fin 2)⟩ =
       X (Sum.inl (Sum.inl ())) * C (lineDataHodgeZero.y ⟨(), 0⟩) := rfl

@@ -20,6 +20,9 @@ def Rep.isoOfBijective {A B : Rep.{u} k G} (f : A ⟶ B) (hf : Function.Bijectiv
   Rep.mkIso (Representation.IntertwiningMap.ofBijective f.hom hf)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Rep.isoOfBijective_hom {A B : Rep.{u} k G} (f : A ⟶ B) (hf : Function.Bijective f.hom) :
     (Rep.isoOfBijective f hf).hom = f :=
   rfl
@@ -44,12 +47,18 @@ abbrev cartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) : Rep.{u} (ULift.{u} �
 
 variable {K L}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartierDual_ρ_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (σ : Gal(L/K))
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (m : M) :
     ((cartierDual K L M).ρ σ f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) m =
       (galUnits.{u} K L).ρ σ (f (M.ρ σ⁻¹ m)) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cartierDual_ρ_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (σ : Gal(L/K))
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (m : M) :
     ((Additive.toMul (((cartierDual K L M).ρ σ f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) m) :
@@ -68,15 +77,24 @@ def cartierDualMap {A B : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} (φ : A ⟶ B) :
     rw [Rep.hom_comm_apply]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartierDualMap_hom_apply {A B : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} (φ : A ⟶ B)
     (f : B →ₗ[ULift.{u} ℤ] galUnits.{u} K L) (a : A) :
     ((cartierDualMap φ).hom f : A →ₗ[ULift.{u} ℤ] galUnits.{u} K L) a = f (φ.hom a) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartierDualMap_id (A : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
     cartierDualMap (𝟙 A) = 𝟙 (cartierDual K L A) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartierDualMap_comp {A B C : Rep.{u} (ULift.{u} ℤ) Gal(L/K)} (φ : A ⟶ B) (ψ : B ⟶ C) :
     cartierDualMap (φ ≫ ψ) = cartierDualMap ψ ≫ cartierDualMap (K := K) (L := L) φ :=
   rfl
@@ -91,11 +109,17 @@ def cartierDualFunctor :
   map_comp φ ψ := cartierDualMap_comp ψ.unop φ.unop
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem cartierDualFunctor_obj (M : (Rep.{u} (ULift.{u} ℤ) Gal(L/K))ᵒᵖ) :
     (cartierDualFunctor K L).obj M = cartierDual K L M.unop :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cartierDualFunctor_map {M N : (Rep.{u} (ULift.{u} ℤ) Gal(L/K))ᵒᵖ} (φ : M ⟶ N) :
     (cartierDualFunctor K L).map φ = cartierDualMap φ.unop :=
   rfl
@@ -118,6 +142,9 @@ def cartierPairing (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
 variable {K L}
 
 @[simp]
+/- English proof (translation)
+The claim follows from `pairingHom_tmul (A := M) (B := cartierDual K L M) (evalBilin K L M) _ m f`.
+-/
 theorem cartierPairing_tmul (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (m : M)
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) :
     (cartierPairing K L M).hom (m ⊗ₜ[ULift.{u} ℤ] (f : cartierDual K L M) :
@@ -137,6 +164,9 @@ def toCartierDualCartierDual (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) :
 variable {K L}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCartierDualCartierDual_hom_apply (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (m : M)
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) :
     ((toCartierDualCartierDual K L M).hom m :

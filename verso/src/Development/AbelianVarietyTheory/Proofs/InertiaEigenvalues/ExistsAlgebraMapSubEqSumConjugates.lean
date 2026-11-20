@@ -5,6 +5,19 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ y`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : Normal E Ω := IsAlgClosure.normal E Ω`. Establish `hy : IsIntegral E y` using `Algebra.IsIntegral.isIntegral y`. Use `set p := minpoly E y with hp`.
+
+Use `set q := p.map (algebraMap E Ω) with hq`. Establish `hirr : Irreducible p` using `minpoly.irreducible hy`. Establish `hmon : p.Monic` using `minpoly.monic hy`. Establish `hsep : q.Separable` using `Polynomial.Separable.map (Algebra.IsSeparable.isSeparable E y : p.Separable)`. Establish `hnd : q.roots.Nodup` using `nodup_roots hsep`.
+
+Establish `hspl : q.Splits` using `IsAlgClosed.splits q`. Establish `hsum : q.nextCoeff = -q.roots.sum` using `hspl.nextCoeff_eq_neg_sum_roots_of_monic (hmon.map _)`. Establish `hq0 : q ≠ 0` using `(hmon.map _).ne_zero`. Establish `hyr : y ∈ q.roots.toFinset`. Rewrite using `[Multiset.mem_toFinset, mem_roots hq0, IsRoot, eval_map_algebraMap]`.
+
+Conclude with `minpoly.aeval E y`. Use `⟨-p.nextCoeff, q.roots.toFinset.erase y, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨hxy, hxr⟩` from `Finset.mem_erase.mp hx`. Use `⟨hxy, ?_⟩` and prove the remaining obligations.
+
+Establish `hax : aeval x p = 0`. Rewrite `hxr` using `[Multiset.mem_toFinset, mem_roots hq0, IsRoot, eval_map_algebraMap]`. Conclude with `hxr`. Establish `hmx : p = minpoly E x` using `minpoly.eq_of_irreducible_of_monic hirr hax hmon`. Establish `horb : x ∈ MulAction.orbit (G E Ω) y` using `(Normal.minpoly_eq_iff_mem_orbit (F := E) Ω).mp (by rw [← hmx])`.
+
+Take `⟨σ, hσ⟩` from `horb`. Conclude with `⟨σ, hσ⟩`. Rewrite using `[Finset.sum_erase_eq_sub hyr, Finset.sum_eq_multiset_sum, Multiset.toFinset_val, Multiset.dedup_eq_self.mpr hnd, Multiset.map_id', map_neg, ← nextCoeff_map_eq, ← hq, hsum, neg_neg]`.
+-/
 theorem exists_algebraMap_sub_eq_sum_conjugates : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (y : Ω), ∃ (e : E) (s : Finset Ω), (∀ x ∈ s, x ≠ y ∧ ∃ σ : G E Ω, σ y = x) ∧ algebraMap E Ω e - y = ∑ x ∈ s, x := by
   intro E Ω _ _ _ _ _ y
   classical

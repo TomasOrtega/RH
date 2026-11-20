@@ -19,10 +19,16 @@ def compFin (v : HeightOneSpectrum (𝓞 F)) : AF F →+* v.adicCompletion F :=
   (RestrictedProduct.evalRingHom (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v).comp
     (RingHom.snd _ _)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (funext h1) (Subtype.ext (funext h2))`.
+-/
 theorem ext_comp {a b : AF F} (h1 : ∀ w, compInf w a = compInf w b) (h2 : ∀ v, compFin v a = compFin v b) :
     a = b :=
   Prod.ext (funext h1) (Subtype.ext (funext h2))
 
+/- English proof (translation)
+The claim follows from `Prod.isUnit_iff.2 ⟨Pi.isUnit_iff.2 fun w => isUnit_iff_ne_zero.2 (h1 w), FiniteAdeleRing.isUnit_iff.2 ⟨h2, h3⟩⟩`.
+-/
 theorem isUnit_of_comp {a : AF F} (h1 : ∀ w, compInf w a ≠ 0) (h2 : ∀ v, compFin v a ≠ 0)
     (h3 : ∀ᶠ v in Filter.cofinite, Valued.v (compFin v a) = 1) : IsUnit a :=
   Prod.isUnit_iff.2 ⟨Pi.isUnit_iff.2 fun w => isUnit_iff_ne_zero.2 (h1 w), FiniteAdeleRing.isUnit_iff.2 ⟨h2, h3⟩⟩
@@ -36,9 +42,15 @@ def ind (a : InfinitePlace F → ι) (b : HeightOneSpectrum (𝓞 F) → ι) (i 
       · simp only [h, if_true]; exact one_mem _
       · simp only [h, if_false]; exact zero_mem _⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compInf_ind (a : InfinitePlace F → ι) (b : HeightOneSpectrum (𝓞 F) → ι) (i : ι) (w : InfinitePlace F) :
     compInf w (ind a b i) = if a w = i then 1 else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compFin_ind (a : InfinitePlace F → ι) (b : HeightOneSpectrum (𝓞 F) → ι) (i : ι)
     (v : HeightOneSpectrum (𝓞 F)) : compFin v (ind a b i) = if b v = i then 1 else 0 := rfl
 
@@ -46,6 +58,43 @@ end GlobalTheory.QSA.PickUnit
 
 open GlobalTheory.QSA.PickUnit in
 
+/- English proof (translation)
+Introduce `F _ _ ι _ n u hs`. Break down `isEmpty_or_nonempty ι with hι | ⟨⟨i₀⟩⟩` into its components or cases. Rewrite `hs` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Use `⟨fun _ => 0, fun i => isEmptyElim i, fun i => isEmptyElim i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty]`.
+
+Conclude with `isUnit_zero_iff.1 hs`. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `hs`. Establish `hinf : ∀ w, ∃ i, compInf w (n i) ≠ 0`. Introduce `w`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `(hs.map (compInf w)).ne_zero` to reduce the goal to its premises. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_mul, h i, mul_zero]`.
+
+Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 F), ∃ i, ∀ j, Valued.v (compFin v (n j)) ≤ Valued.v (compFin v (n i))`. Introduce `v`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => Valued.v (compFin v (n j))) ⟨i₀, Finset.mem_univ _⟩`. Conclude with `⟨i, fun j => hi j (Finset.mem_univ _)⟩`. Use `choose a ha using hinf`.
+
+Use `choose b hb using hfin`. Use `⟨ind a b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Apply `ext_comp` to reduce the goal to its premises. Apply the tactic sequence `intro w; rw [map_mul, compInf_ind]; split_ifs <;> simp`.
+
+Apply the tactic sequence `intro v; rw [map_mul, compFin_ind]; split_ifs <;> simp`. Introduce `i j hij`. Apply `ext_comp` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_zero, compInf_ind, compInf_ind]`.
+
+Distinguish the cases in `h1 : a w = i`. Rewrite using `[if_pos h1, if_neg (fun h2 => hij (h1.symm.trans h2)), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Introduce `v`. Rewrite using `[map_mul, map_zero, compFin_ind, compFin_ind]`.
+
+Distinguish the cases in `h1 : b v = i`. Rewrite using `[if_pos h1, if_neg (fun h2 => hij (h1.symm.trans h2)), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`. Apply `ext_comp` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[map_sum, map_one]`. Simplify using `only [compInf_ind]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Introduce `v`.
+
+Rewrite using `[map_sum, map_one]`. Simplify using `only [compFin_ind]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Establish `hcInf : ∀ w, compInf w (∑ i, ind a b i * n i) = compInf w (n (a w))`.
+
+Introduce `w`. Rewrite using `[map_sum, Finset.sum_eq_single (a w)]`. Rewrite using `[map_mul, compInf_ind, if_pos rfl, one_mul]`. Introduce `j _ hj`. Rewrite using `[map_mul, compInf_ind, if_neg (Ne.symm hj), zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hcFin : ∀ v, compFin v (∑ i, ind a b i * n i) = compFin v (n (b v))`. Introduce `v`. Rewrite using `[map_sum, Finset.sum_eq_single (b v)]`.
+
+Rewrite using `[map_mul, compFin_ind, if_pos rfl, one_mul]`. Introduce `j _ hj`. Rewrite using `[map_mul, compFin_ind, if_neg (Ne.symm hj), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Apply `isUnit_of_comp` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hcInf]`. Conclude with `ha w`. Introduce `v h0`.
+
+Rewrite `h0` using `[hcFin]`. Apply `(hs.map (compFin v)).ne_zero` to reduce the goal to its premises. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h` using `hb v j`.
+
+Rewrite `h` using `[h0, map_zero]`. Rewrite using `[map_mul, (Valuation.zero_iff _).1 (le_antisymm h zero_le'), mul_zero]`. Establish `hsu` using `(FiniteAdeleRing.isUnit_iff.1 (hs.map (RingHom.snd (InfiniteAdeleRing F) (Af F)))).2`. Establish `hint : ∀ᶠ v in Filter.cofinite, ∀ j, Valued.v (compFin v (u j)) ≤ 1 ∧ Valued.v (compFin v (n j)) ≤ 1`. Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(u j).2.2, (n j).2.2] with v h1 h2`. Conclude with `⟨(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v).1 h1, (HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) F v).1 h2⟩`. Use `filter_upwards [hsu, hint] with v hv1 hv2`. Rewrite using `[hcFin]`. Use `le_antisymm (hv2 _).2 ?_` and prove the remaining obligations.
+
+Establish `hv1' : Valued.v (compFin v (∑ i, u i * n i)) = 1` using `hv1`. Rewrite using `[← hv1', map_sum]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left zero_le' (hv2 j).1).trans (hb v j)`.
+-/
 theorem GlobalTheory.QSA.exists_idem_pick_unit : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (n u : ι → AF F), IsUnit (∑ i, u i * n i) → ∃ η : ι → AF F, (∀ i, η i * η i = η i) ∧
       (∀ i j, i ≠ j → η i * η j = 0) ∧ ∑ i, η i = 1 ∧ IsUnit (∑ i, η i * n i) := by

@@ -29,6 +29,11 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.BaseCount
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {K' : Type} [Fintype K']
   {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp, rename_X]`.
+
+Use `congr 1`. Simplify using `[mConeMap, hv.2.2.1 n]`.
+-/
 theorem mConeMap_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v)
     (y : (Σ k, ι' k) → Ω) (g : MRing ι) :
     mConeMap y (rename v g) = rename κ (mConeMap (y ∘ v) g) := by
@@ -40,6 +45,9 @@ theorem mConeMap_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv :
     congr 1
     simp [mConeMap, hv.2.2.1 n]
 
+/- English proof (translation)
+Use extensionality with `f`. Use `show mConeMap y (rename v f) = 0 ↔ mConeMap (y ∘ v) f = 0`. Rewrite using `[mConeMap_rename hv]`. Conclude with `(rename_injective κ hv.1).eq_iff' (map_zero _)`.
+-/
 theorem imageZ_mCoordIdeal {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v)
     (y : (Σ k, ι' k) → Ω) : imageZ v (mCoordIdeal y) = mCoordIdeal (y ∘ v) := by
   ext f
@@ -47,6 +55,13 @@ theorem imageZ_mCoordIdeal {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (h
   rw [mConeMap_rename hv]
   exact (rename_injective κ hv.1).eq_iff' (map_zero _)
 
+/- English proof (translation)
+Establish `key : ∀ g : MRing ι, mConeMap (fun q => φ (x q)) g = MvPolynomial.map φ (mConeMap x g)`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Use `congr 1`. Simplify using `[mConeMap]`. Use extensionality with `f`.
+
+Use `show mConeMap _ f = 0 ↔ mConeMap x f = 0`. Rewrite using `[key]`. Conclude with `(MvPolynomial.map_injective φ φ.injective).eq_iff' (map_zero _)`.
+-/
 theorem mCoordIdeal_map {Ω₁ : Type} [Field Ω₁] (φ : Ω →+* Ω₁) (x : (Σ k, ι k) → Ω) :
     mCoordIdeal (fun q => φ (x q)) = mCoordIdeal x := by
   have key : ∀ g : MRing ι, mConeMap (fun q => φ (x q)) g = MvPolynomial.map φ (mConeMap x g) := by
@@ -63,6 +78,15 @@ theorem mCoordIdeal_map {Ω₁ : Type} [Field Ω₁] (φ : Ω →+* Ω₁) (x : 
   rw [key]
   exact (MvPolynomial.map_injective φ φ.injective).eq_iff' (map_zero _)
 
+/- English proof (translation)
+Use `choose c hc using hy`. Establish `hd` using `HilbertSamuel.CoordArithOfFnField.dim_eq y c hc`. Establish `hle : ringKrullDim (MRing ι ⧸ mCoordIdeal y) ≤ ringKrullDim (MRing ι)` using `ringKrullDim_quotient_le _`. Rewrite `hle` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, hd]`. Generalize the expression as in `(Algebra.trdeg ℤ (blockFnField y)).toENat = e at hd hle`.
+
+Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h1 : (1 : WithBot ℕ∞) + (Nat.card (Σ k, ι k) : WithBot ℕ∞) = (((1 + Nat.card (Σ k, ι k) : ℕ) : ℕ∞) : WithBot ℕ∞)` using `by push_cast; rfl`. Rewrite `hle` using `[h1, WithBot.coe_le_coe]`.
+
+Simplify using `only [top_add] at hle`. Conclude with `ENat.natCast_ne_top _ (top_le_iff.1 hle)`. Consider the case `coe n`. Use `⟨n, inferInstance, ⟨RingHom.ker_isPrime _, CoordinateConeArithVar.isMultiHomogIdeal y, CoordinateConeArithVar.relevant y c hc⟩, CoordinateConeArithVar.horizontal y, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_isArithVar [CharZero Ω] [Nonempty K] (y : (Σ k, ι k) → Ω) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) :
     ∃ n : ℕ, IsArithVar (mCoordIdeal y) (n + 1) := by
   choose c hc using hy
@@ -86,12 +110,18 @@ theorem exists_isArithVar [CharZero Ω] [Nonempty K] (y : (Σ k, ι k) → Ω) (
     norm_cast
     omega
 
+/- English proof (translation)
+Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, q, hpq, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨v p, v q, by rw [hv.2.2.1, hv.2.2.1, hpq], rfl⟩`.
+-/
 theorem blockFnField_comp_le {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v) [CharZero Ω]
     (y : (Σ k, ι' k) → Ω) : blockFnField (y ∘ v) ≤ blockFnField y := by
   rw [blockFnField, IntermediateField.adjoin_le_iff]
   rintro _ ⟨p, q, hpq, rfl⟩
   exact IntermediateField.subset_adjoin _ _ ⟨v p, v q, by rw [hv.2.2.1, hv.2.2.1, hpq], rfl⟩
 
+/- English proof (translation)
+Rewrite `hpos` using `[IntermediateField.relfinrank_eq_finrank_of_le h]`. Use `haveI := Module.finite_of_finrank_pos hpos`. Introduce `t ht`. Establish `h1 : IsAlgebraic A (⟨t, ht⟩ : IntermediateField.extendScalars h)` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `(isAlgebraic_algebraMap_iff (A := E) (algebraMap (IntermediateField.extendScalars h) E).injective).2 h1`.
+-/
 theorem isAlgebraic_of_relfinrank_pos {F E : Type} [Field F] [Field E] [Algebra F E]
     {A B : IntermediateField F E} (h : A ≤ B) (hpos : 0 < IntermediateField.relfinrank A B) :
     ∀ t ∈ B, IsAlgebraic A t := by
@@ -102,6 +132,25 @@ theorem isAlgebraic_of_relfinrank_pos {F E : Type} [Field F] [Field E] [Algebra 
     Algebra.IsAlgebraic.isAlgebraic _
   exact (isAlgebraic_algebraMap_iff (A := E) (algebraMap (IntermediateField.extendScalars h) E).injective).2 h1
 
+/- English proof (translation)
+Establish `hne : ∀ k, ∃ i, (y ∘ v) ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hy (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `hk : p.1 = k` using `hv.1 ((hv.2.2.1 p).symm.trans (congrArg Sigma.fst hp))`.
+
+Substitute `hk` using the available equality. Use `⟨p.2, ?_⟩` and prove the remaining obligations. Use `show y (v ⟨p.1, p.2⟩) ≠ 0`. Rewrite using `[Sigma.eta, hp]`. Conclude with `hi`.
+
+Take `⟨n, hA⟩` from `exists_isArithVar (y ∘ v) hne`. Establish `halg` using `isAlgebraic_of_relfinrank_pos (blockFnField_comp_le hv y) hpos`. Establish `hP' : IsArithVar (mCoordIdeal y) (n + 1)` using `Cmp.isArithVar_of_isAlgebraic_image K ι K' ι' κ v Ω y (n + 1) hv hy hA halg`. Establish `hI` using `imageZ_mCoordIdeal hv y`. Take `⟨G⟩` from `Targets.genFibreExists K ι K' ι' κ v (mCoordIdeal y) (n + 1) hv hP'`.
+
+Establish `hx' : ∀ q, y q ≠ 0 → G.x' q ≠ 0`. Introduce `q hq h0`. Establish `h1 : (X q : MRing ι') ∈ RingHom.ker (aeval G.x' : MRing ι' →ₐ[ℤ] G.Φ')`. Rewrite using `[RingHom.mem_ker, aeval_X, h0]`. Rewrite `h1` using `[G.genericFibre_ker_target, mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X]`.
+
+Conclude with `mul_ne_zero (by rw [Ne, C_eq_zero]; exact hq) (X_ne_zero _) h1`. Use `haveI : CharZero G.Φ' := by`. Use `charZero_of_inj_zero fun m hm => ?_` and prove the remaining obligations. Establish `h1 : (C (m : ℤ) : MRing ι') ∈ RingHom.ker (aeval G.x' : MRing ι' →ₐ[ℤ] G.Φ')`. Rewrite using `[RingHom.mem_ker, ← algebraMap_eq, AlgHom.commutes]`.
+
+Simplify using `using hm`. Rewrite `h1` using `[G.genericFibre_ker_target]`. Establish `h2 : (m : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι')` using `h1`. Rewrite `h2` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι') = ⊥ from CoordinateConeArithVar.horizontal y]`. Conclude with `(Ideal.mem_bot).1 h2` after adjusting the coercions.
+
+Use `choose ci hci using hy`. Use `choose c hc using hne`. Establish `hi : ∀ k : FibreBlock κ, G.x' ⟨k.1, ci k.1⟩ ≠ 0` using `fun k => hx' _ (hci k.1)`. Establish `hcx : ∀ k, G.x ⟨k, c k⟩ ≠ 0` using `fun k h0 => by`. Use `hx' (v ⟨k, c k⟩) (hc k) ?_` and prove the remaining obligations.
+
+Rewrite using `[G.compat, h0, map_zero]`. Establish `hA' : IsArithVar (imageZ v (mCoordIdeal y)) (n + 1)` using `by rw [hI]; exact hA`. Take `⟨D, a, hD, hDn, hcount⟩` from `hGood K ι K' ι' κ v (mCoordIdeal y) n G (fun k => ci k.1) hv hP' hA' hi`. Use `⟨D, a, hD, by rwa [hI] at hDn, fun z hz hnz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← hI]`.
+
+Rewrite using `[hcount z hz hnz]`. Conclude with `(hChart K ι K' ι' κ v (mCoordIdeal y) G c (fun k => ci k.1) hv (CoordinateConeArithVar.isMultiHomogIdeal y) hcx hi).trans (Targets.CoordRatioDeg.proof K ι K' ι' κ v Ω y G.Φ' G.x' hv G.genericFibre_ker_target)`.
+-/
 theorem count_of_nonempty (hGood : Inter.GenericPointsAvoidBadLocus.Statement) (hChart : Targets.GenFibreChartDeg.Statement)
     [CharZero Ω] [Nonempty K] {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : IsBlockMap κ v)
     (y : (Σ k, ι' k) → Ω) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)
@@ -164,12 +213,25 @@ def addOne {R : Type} [One R] (y : (Σ k, ι' k) → R) : (Σ k, Sum.elim ι' Si
   | ⟨Sum.inl k, i⟩ => y ⟨k, i⟩
   | ⟨Sum.inr _, _⟩ => 1
 
+/- English proof (translation)
+The claim follows from `funext fun _ => rfl`.
+-/
 theorem addOne_inlV {R : Type} [One R] (y : (Σ k, ι' k) → R) :
     addOne y ∘ (inlV (ι := ι') (ι₂ := SingletonBlock)) = y := funext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `funext fun _ => rfl`.
+-/
 theorem addOne_inrV {R : Type} [One R] (y : (Σ k, ι' k) → R) :
     addOne y ∘ (inrV (ι := ι') (ι₂ := SingletonBlock)) = fun _ => 1 := funext fun _ => rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k | u, i⟩, ⟨k' | u', i'⟩, hpq, rfl⟩`. Take `rfl : k = k'` from `Sum.inl_injective hpq`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨k, i⟩, ⟨k, i'⟩, rfl, rfl⟩`.
+
+Conclude with `absurd hpq (by simp)`. Conclude with `absurd hpq (by simp)`. Use `show (1 : Ω) / 1 ∈ blockFnField y`. Rewrite using `[div_one]`. Conclude with `one_mem _`.
+
+Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k, i⟩, ⟨k', i'⟩, hpq, rfl⟩`. Take `rfl : k = k'` from `hpq`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨Sum.inl k, i⟩, ⟨Sum.inl k, i'⟩, rfl, rfl⟩`.
+-/
 theorem blockFnField_addOne [CharZero Ω] (y : (Σ k, ι' k) → Ω) : blockFnField (addOne y) = blockFnField y := by
   apply le_antisymm
   · rw [blockFnField, IntermediateField.adjoin_le_iff]
@@ -186,6 +248,9 @@ theorem blockFnField_addOne [CharZero Ω] (y : (Σ k, ι' k) → Ω) : blockFnFi
     obtain rfl : k = k' := hpq
     exact IntermediateField.subset_adjoin _ _ ⟨⟨Sum.inl k, i⟩, ⟨Sum.inl k, i'⟩, rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff, blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, q, -, rfl⟩`. Use `show (1 : Ω) / 1 ∈ (⊥ : IntermediateField ℚ Ω)`. Rewrite using `[div_one]`. Conclude with `one_mem _`.
+-/
 theorem blockFnField_one [CharZero Ω] :
     blockFnField (ι := SingletonBlock) (fun _ => (1 : Ω)) = ⊥ := by
   rw [eq_bot_iff, blockFnField, IntermediateField.adjoin_le_iff]
@@ -194,11 +259,19 @@ theorem blockFnField_one [CharZero Ω] :
   rw [div_one]
   exact one_mem _
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff, blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, -, -, -⟩`. Conclude with `isEmptyElim p.1`.
+-/
 theorem blockFnField_of_isEmpty [CharZero Ω] [IsEmpty K] (w : (Σ k, ι k) → Ω) : blockFnField w = ⊥ := by
   rw [eq_bot_iff, blockFnField, IntermediateField.adjoin_le_iff]
   rintro _ ⟨p, -, -, -⟩
   exact isEmptyElim p.1
 
+/- English proof (translation)
+Use `⟨fun k => h.1 (Sum.inl k), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hI` using `imageZ_mCoordIdeal (isBlockMap_inl (ι := ι') (ι₂ := SingletonBlock)) (addOne y)`. Rewrite `hI` using `[addOne_inlV]`. Rewrite `hf` using `[← hI]`. Establish `h1` using `h.2 _ (show rename inlV f ∈ mCoordIdeal (addOne y) from hf)`.
+
+Rewrite `h1` using `[map_rename, eval_rename]`. Then use the resulting hypothesis.
+-/
 theorem comp_inlV_mem {y : (Σ k, ι' k) → Ω} {z : (Σ k, Sum.elim ι' SingletonBlock k) → ℂ}
     (h : z ∈ mcPts (mCoordIdeal (addOne y))) :
     z ∘ inlV (ι := ι') (ι₂ := SingletonBlock) ∈ mcPts (mCoordIdeal y) := by
@@ -209,6 +282,21 @@ theorem comp_inlV_mem {y : (Σ k, ι' k) → Ω} {z : (Σ k, Sum.elim ι' Single
   have h1 := h.2 _ (show rename inlV f ∈ mCoordIdeal (addOne y) from hf)
   rwa [map_rename, eval_rename] at h1
 
+/- English proof (translation)
+Use `⟨?_, fun f hf => ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | u)`. Conclude with `h.1 k`. Conclude with `⟨(), one_ne_zero⟩`. Set `ρ : MRing (Sum.elim ι' SingletonBlock) →ₐ[ℤ] MRing ι'` to `aeval (addOne fun q => (X q : MRing ι'))`.
+
+Set `τ : MvPolynomial (K' ⊕ Unit) Ω →+* MvPolynomial K' Ω` to `(aeval (Sum.elim X fun _ => 1) : MvPolynomial (K' ⊕ Unit) Ω →ₐ[Ω] MvPolynomial K' Ω).toRingHom`. Establish `key : ∀ g, mConeMap y (ρ g) = τ (mConeMap (addOne y) g)`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap, ρ, τ]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Use `congr 1`. Take `⟨k | u, i⟩` from `n`.
+
+Simplify using `[mConeMap, ρ, τ, addOne]`. Simplify using `[mConeMap, ρ, τ, addOne]`. Establish `key2 : ∀ g : MRing (Sum.elim ι' SingletonBlock), eval (addOne z) (map (Int.castRingHom ℂ) g) = eval z (map (Int.castRingHom ℂ) (ρ g))`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp [ρ]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Use `congr 1`.
+
+Take `⟨k | u, i⟩` from `n`. Simplify using `[ρ, addOne]`. Simplify using `[ρ, addOne]`. Rewrite using `[key2]`. Use `h.2 _ ?_` and prove the remaining obligations.
+
+Use `show mConeMap y (ρ f) = 0`. Rewrite using `[key, show mConeMap (addOne y) f = 0 from hf, map_zero]`.
+-/
 theorem addOne_mem {y : (Σ k, ι' k) → Ω} {z : (Σ k, ι' k) → ℂ} (h : z ∈ mcPts (mCoordIdeal y)) :
     addOne z ∈ mcPts (mCoordIdeal (addOne y)) := by
   refine ⟨?_, fun f hf => ?_⟩
@@ -246,11 +334,19 @@ theorem addOne_mem {y : (Σ k, ι' k) → Ω} {z : (Σ k, ι' k) → ℂ} (h : z
     show mConeMap y (ρ f) = 0
     rw [key, show mConeMap (addOne y) f = 0 from hf, map_zero]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (Sum.inl k), fun k => hc _, rfl⟩`.
+-/
 theorem sameOrbit_comp_inlV {z w : (Σ k, Sum.elim ι' SingletonBlock k) → ℂ} (h : SameOrbit z w) :
     SameOrbit (z ∘ inlV (ι := ι') (ι₂ := SingletonBlock)) (w ∘ inlV) := by
   obtain ⟨c, hc, rfl⟩ := h
   exact ⟨fun k => c (Sum.inl k), fun k => hc _, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw', rfl⟩`. Conclude with `sameOrbit_comp_inlV hw'`. Introduce and unpack `⟨c, hc, rfl⟩`.
+
+Use `⟨fun p => Sum.elim c (fun _ => 1) p.1 * z p, ⟨Sum.elim c (fun _ => 1), ?_, rfl⟩, rfl⟩` and prove the remaining obligations. Introduce and unpack `(k | u)`. Conclude with `hc k`. Conclude with `one_ne_zero`.
+-/
 theorem image_orbit (z : (Σ k, Sum.elim ι' SingletonBlock k) → ℂ) :
     (fun w => w ∘ inlV (ι := ι') (ι₂ := SingletonBlock)) '' {w | SameOrbit w z} =
       {w | SameOrbit w (z ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} := by
@@ -264,6 +360,15 @@ theorem image_orbit (z : (Σ k, Sum.elim ι' SingletonBlock k) → ℂ) :
     · exact hc k
     · exact one_ne_zero
 
+/- English proof (translation)
+Take `⟨c, hc, he⟩` from `h`. Establish `hz' : z ⟨Sum.inr (), ()⟩ ≠ 0`. Take `⟨⟨⟩, h⟩` from `hz ()`. Conclude with `h`. Establish `hw' : w ⟨Sum.inr (), ()⟩ ≠ 0`.
+
+Take `⟨⟨⟩, h⟩` from `hw ()`. Conclude with `h`. Use `⟨Sum.elim c fun _ => z ⟨Sum.inr (), ()⟩ / w ⟨Sum.inr (), ()⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(k | u)`. Conclude with `hc k`.
+
+Conclude with `div_ne_zero hz' hw'`. Use function extensionality and compare the values at `p`. Take `⟨k | u, i⟩` from `p`. Conclude with `congrFun he ⟨k, i⟩`. Take `⟨⟩` from `u`.
+
+Take `⟨⟩` from `i`. Use `show z ⟨Sum.inr (), ()⟩ = z ⟨Sum.inr (), ()⟩ / w ⟨Sum.inr (), ()⟩ * w ⟨Sum.inr (), ()⟩`. Rewrite using `[div_mul_cancel₀ _ hw']`.
+-/
 theorem sameOrbit_of_comp_inlV {z w : (Σ k, Sum.elim ι' SingletonBlock k) → ℂ}
     (hz : ∀ u, ∃ i, z ⟨Sum.inr u, i⟩ ≠ 0) (hw : ∀ u, ∃ i, w ⟨Sum.inr u, i⟩ ≠ 0)
     (h : SameOrbit (z ∘ inlV (ι := ι') (ι₂ := SingletonBlock)) (w ∘ inlV)) : SameOrbit z w := by
@@ -286,9 +391,21 @@ theorem sameOrbit_of_comp_inlV {z w : (Σ k, Sum.elim ι' SingletonBlock k) → 
       show z ⟨Sum.inr (), ()⟩ = z ⟨Sum.inr (), ()⟩ / w ⟨Sum.inr (), ()⟩ * w ⟨Sum.inr (), ()⟩
       rw [div_mul_cancel₀ _ hw']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, funext fun p => isEmptyElim p.1⟩`.
+-/
 theorem sameOrbit_of_isEmpty [IsEmpty K] (z w : (Σ k, ι k) → ℂ) : SameOrbit z w :=
   ⟨fun _ => 1, fun _ => one_ne_zero, funext fun p => isEmptyElim p.1⟩
 
+/- English proof (translation)
+Use `Set.ncard_congr (fun O _ => (fun w => w ∘ inlV (ι := ι') (ι₂ := SingletonBlock)) '' O) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `O ⟨z₁, hz₁, rfl, -⟩`. Conclude with `⟨z₁ ∘ inlV, comp_inlV_mem hz₁, image_orbit z₁, sameOrbit_of_isEmpty _ _⟩`. Introduce and unpack `_ _ ⟨z₁, hz₁, rfl, -⟩ ⟨z₂, hz₂, rfl, -⟩ h`. Establish `h' : {w | SameOrbit w (z₁ ∘ inlV (ι` using `ι') (ι₂ := SingletonBlock))} = {w | SameOrbit w (z₂ ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} := by`.
+
+Rewrite using `[← image_orbit, ← image_orbit]`. Conclude with `h`. Establish `h1 : SameOrbit (z₁ ∘ inlV (ι` using `ι') (ι₂ := SingletonBlock)) (z₂ ∘ inlV) := by`. Establish `: z₁ ∘ inlV (ι` using `ι') (ι₂ := SingletonBlock) ∈ {w | SameOrbit w (z₁ ∘ inlV (ι := ι') (ι₂ := SingletonBlock))} := Cj.sameOrbit_refl _`. Rewrite `this` using `[h']`.
+
+Conclude with `this`. Establish `h2` using `sameOrbit_of_comp_inlV (fun u => hz₁.1 (Sum.inr u)) (fun u => hz₂.1 (Sum.inr u)) h1`. Use extensionality with `w`. Conclude with `⟨fun hw => Cj.sameOrbit_trans hw h2, fun hw => Cj.sameOrbit_trans hw (Cj.sameOrbit_symm h2)⟩`. Introduce and unpack `O ⟨z', hz', rfl, -⟩`.
+
+Use `⟨_, ⟨addOne z', addOne_mem hz', rfl, ⟨fun _ => 1, fun _ => one_ne_zero, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[inrV, addOne]`. Use `show _ '' _ = _`. Rewrite using `[image_orbit, addOne_inlV]`.
+-/
 theorem ncard_ptsOverPt_addOne [IsEmpty K] (v : (Σ k, ι k) → Σ k, ι' k) (y : (Σ k, ι' k) → Ω)
     (z : (Σ k, ι k) → ℂ) :
     (Inter.ptsOverPt (mCoordIdeal (addOne y)) (inrV (ι := ι') (ι₂ := SingletonBlock)) fun _ => 1).ncard =
@@ -316,6 +433,9 @@ theorem ncard_ptsOverPt_addOne [IsEmpty K] (v : (Σ k, ι k) → Σ k, ι' k) (y
     · show _ '' _ = _
       rw [image_orbit, addOne_inlV]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp => simp [hp]`.
+-/
 theorem aeval_one_eq {σ R : Type} [CommRing R] (f : MvPolynomial σ ℤ) :
     aeval (fun _ => (1 : R)) f = ((eval (fun _ => (1 : ℤ)) f : ℤ) : R) := by
   induction f using MvPolynomial.induction_on with
@@ -323,6 +443,15 @@ theorem aeval_one_eq {σ R : Type} [CommRing R] (f : MvPolynomial σ ℤ) :
   | add p q hp hq => simp [hp, hq]
   | mul_X p n hp => simp [hp]
 
+/- English proof (translation)
+Use `⟨fun _ => ⟨(), one_ne_zero⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hcone : ∀ g : MRing SingletonBlock, aeval (fun _ => (1 : Ω)) (mConeMap (ι` using `SingletonBlock) (fun _ => (1 : Ω)) g) = aeval (fun _ => (1 : Ω)) g := by`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Simplify using `[mConeMap]`. Establish `h1 : aeval (fun _ => (1 : Ω)) f = 0`.
+
+Rewrite using `[← hcone, show mConeMap _ f = 0 from hf, map_zero]`. Rewrite `h1` using `[aeval_one_eq]`. Establish `h2 : eval (fun _ => (1 : ℤ)) f = 0` using `by exact_mod_cast h1`. Establish `h3 : eval (fun _ => (1 : ℂ)) (map (Int.castRingHom ℂ) f) = aeval (fun _ => (1 : ℂ)) f`. Rewrite using `[aeval_def, eval_map]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3, aeval_one_eq, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_mcPts [CharZero Ω] :
     (fun _ => (1 : ℂ)) ∈ mcPts (mCoordIdeal (ι := SingletonBlock) (fun _ => (1 : Ω))) := by
   refine ⟨fun _ => ⟨(), one_ne_zero⟩, fun f hf => ?_⟩
@@ -345,6 +474,15 @@ theorem one_mem_mcPts [CharZero Ω] :
   rw [h3, aeval_one_eq, h2]
   simp
 
+/- English proof (translation)
+Take `⟨m₀, hm₀⟩` from `MvPolynomial.support_nonempty.2 h0`. Establish `huniq : ∀ m ∈ D.support, m = m₀`. Introduce `m hm`. Establish `h1` using `hD m hm ()`. Establish `h2` using `hD m₀ hm₀ ()`.
+
+Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at h1 h2`. Use extensionality with `⟨⟨⟩, ⟨⟩⟩`. Conclude with `h1.trans h2.symm`. Establish `hD' : D = monomial m₀ (coeff m₀ D)`. Use extensionality with `m`.
+
+Rewrite using `[coeff_monomial]`. Use `split_ifs with e`. Rewrite using `[e]`. Assume the negation of the conclusion as `hc`. Conclude with `e (huniq m (mem_support_iff.2 hc)).symm`.
+
+Establish `hc : coeff m₀ D ≠ 0` using `mem_support_iff.1 hm₀`. Rewrite using `[hD', map_monomial, eval_monomial]`. Simplify using `using hc`.
+-/
 theorem eval_one_ne_zero {D : MRing SingletonBlock} {a : Unit → ℕ} (hD : IsMultiHomog D a) (h0 : D ≠ 0) :
     eval (fun _ => (1 : ℂ)) (map (Int.castRingHom ℂ) D) ≠ 0 := by
   obtain ⟨m₀, hm₀⟩ := MvPolynomial.support_nonempty.2 h0
@@ -366,6 +504,15 @@ theorem eval_one_ne_zero {D : MRing SingletonBlock} {a : Unit → ℕ} (hD : IsM
   rw [hD', map_monomial, eval_monomial]
   simpa using hc
 
+/- English proof (translation)
+Establish `e1 : blockFnField (addOne y ∘ inrV (ι` using `ι') (ι₂ := SingletonBlock)) = blockFnField (y ∘ v) := by`. Rewrite using `[addOne_inrV, blockFnField_one, blockFnField_of_isEmpty]`. Establish `hy₁ : ∀ k, ∃ i, addOne y ⟨k, i⟩ ≠ 0`. Introduce and unpack `(k | u)`. Conclude with `hy k`.
+
+Conclude with `⟨(), one_ne_zero⟩`. Take `⟨D, a, hD, hDn, hc⟩` from `count_of_nonempty hGood hChart (K := Unit) (ι := SingletonBlock) (isBlockMap_inr (ι := ι') (ι₂ := SingletonBlock)) (addOne y) hy₁ (by rwa [e1, blockFnField_addOne])`. Establish `hD0 : D ≠ 0` using `fun h => hDn (h ▸ Ideal.zero_mem _)`. Establish `h1 : (fun _ => (1 : ℂ)) ∈ mcPts (mCoordIdeal (addOne y ∘ inrV (ι` using `ι') (ι₂ := SingletonBlock))) := by`. Rewrite using `[addOne_inrV]`.
+
+Conclude with `one_mem_mcPts`. Establish `h2` using `hc _ h1 (eval_one_ne_zero hD hD0)`. Use `⟨1, fun _ => 0, fun m _ k => isEmptyElim k, fun h => ?_, fun z _ _ => ?_⟩` and prove the remaining obligations. Establish `h3 : mConeMap (y ∘ v) (1 : MRing ι) = 0` using `h`. Rewrite `h3` using `[map_one]`.
+
+Conclude with `one_ne_zero h3`. Rewrite using `[← ncard_ptsOverPt_addOne v y z, h2, e1, blockFnField_addOne]`.
+-/
 theorem count_of_isEmpty (hGood : Inter.GenericPointsAvoidBadLocus.Statement) (hChart : Targets.GenFibreChartDeg.Statement)
     [CharZero Ω] [IsEmpty K] {v : (Σ k, ι k) → Σ k, ι' k}
     (y : (Σ k, ι' k) → Ω) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)
@@ -395,14 +542,25 @@ theorem count_of_isEmpty (hGood : Inter.GenericPointsAvoidBadLocus.Statement) (h
 
 end Dummy
 
+/- English proof (translation)
+The claim follows from `Inter.GenericPointsAvoidBadLocus.proof (Inter.GenericPointsInAffineChart.proof Inter.ArithmeticIntersectionChartFinite.proof (Inter.ChartNormCount.proof (Inter.ChartSpecCount.proof Inter.ChartPrimElt.proof Inter.LocAwaySpec.proof) Inter.ChartNormPts.proof) Inter.OrbitCompNonvanis …`.
+-/
 theorem generic_points_good_for_intersection : Inter.GenericPointsAvoidBadLocus.Statement :=
   Inter.GenericPointsAvoidBadLocus.proof (Inter.GenericPointsInAffineChart.proof Inter.ArithmeticIntersectionChartFinite.proof
     (Inter.ChartNormCount.proof (Inter.ChartSpecCount.proof Inter.ChartPrimElt.proof Inter.LocAwaySpec.proof)
       Inter.ChartNormPts.proof) Inter.OrbitCompNonvanish.proof)
 
+/- English proof (translation)
+The claim follows from `Targets.GenFibreChartDeg.proof Inter.ChartScalingIndep.proof Inter.AdjoinIndepRelfinrank.proof`.
+-/
 theorem genFibreChartDeg : Targets.GenFibreChartDeg.Statement :=
   Targets.GenFibreChartDeg.proof Inter.ChartScalingIndep.proof Inter.AdjoinIndepRelfinrank.proof
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _`. Establish `hb : mCoordIdeal (M'.x ∘ Cv.v) = mCoordIdeal M.x`. Establish `: M'.x ∘ Cv.v = fun q => Cv.φ (M.x q)` using `funext Cv.x_eq`. Rewrite using `[this, mCoordIdeal_map]`. Rewrite using `[← hb]`.
+
+Break down `isEmpty_or_nonempty (NonPluckerBlocks M.blk) with h | h` into its components or cases. Conclude with `count_of_isEmpty generic_points_good_for_intersection genFibreChartDeg M'.x M'.x_ne Cv.deg_pos`. Conclude with `count_of_nonempty generic_points_good_for_intersection genFibreChartDeg Cv.block M'.x M'.x_ne Cv.deg_pos`.
+-/
 theorem base_count : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 2) → IsArithVar (mCoordIdeal y') (d + 2) → ∃ (D : MRing (baseIdx ι M.blk)) (a : NonPluckerBlocks M.blk → ℕ), IsMultiHomog D a ∧ D ∉ mCoordIdeal M.x ∧ ∀ zb ∈ mcPts (mCoordIdeal M.x), eval zb (map (Int.castRingHom ℂ) D) ≠ 0 → (GroundTheory.Heights₂.Heights.Inter.ptsOverPt (mCoordIdeal M'.x) Cv.v zb).ncard = Cv.deg := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv d _ _
   have hb : mCoordIdeal (M'.x ∘ Cv.v) = mCoordIdeal M.x := by

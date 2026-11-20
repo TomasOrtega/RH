@@ -7,6 +7,19 @@ open scoped Real ContDiff
 noncomputable section
 namespace GlobalTheory.ThetaMetDc
 
+/- English proof (translation)
+Establish `hd' : ∀ j, ∑ i, Y i j * a i = r j - ∑ i, p i * x' i j` using `fun j => by`. Rewrite using `[← hd j, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∑ i, y i * a i = ∑ j, p j * r j - ∑ j, ∑ i, p j * (p i * x' i j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [hY]; ring`. Use `_ = ∑ j, p j * (r j - ∑ i, p i * x' i j) := Finset.sum_congr rfl fun j _ => by rw [← Finset.mul_sum, hd' j]`. Use `_ = _ := by simp only [mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Establish `e2 : ∑ j, p j * r j = ∑ j, ∑ i, p j * (p i * x' i j) + ∑ j, ∑ i, p j * (X i j * b i) + ∑ j, p j * dq j`.
+
+Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hc j, mul_add, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Establish `eA : ∑ j, ∑ i, p j * (p i * x' i j) = ∑ i, ∑ k, p i * (p k * x' i k)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`. Establish `eC : ∑ j, ∑ i, p j * (X i j * b i) = ∑ i, ∑ k, p i * (X i k * b k)` using `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [hX]`. Establish `e3 : ∑ i, (∑ k, X i k * p k) * b i = ∑ i, ∑ k, p i * (X i k * b k)`.
+
+Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => by rw [hX]; ring`. Establish `e4 : ∑ i, p i * ∑ k, (X i k * b k + p k * x' i k) = ∑ i, ∑ k, p i * (X i k * b k) + ∑ i, ∑ k, p i * (p k * x' i k)`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, e1, e3, e4, e2, eA, eC]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg_identity {g : ℕ} (p y a b r dq : Fin g → ℝ) (Y X x' : Fin g → Fin g → ℝ)
     (hY : ∀ i j, Y i j = Y j i) (hX : ∀ i j, X i j = X j i)
     (hy : ∀ k, y k = ∑ j, p j * Y j k)
@@ -51,6 +64,43 @@ theorem alg_identity {g : ℕ} (p y a b r dq : Fin g → ℝ) (Y X x' : Fin g �
   rw [Finset.sum_add_distrib, Finset.sum_add_distrib, e1, e3, e4, e2, eA, eC]
   ring
 
+/- English proof (translation)
+Introduce `g E _ _ B τ hτ P hP v`. Take `⟨b, z⟩` from `P`. Establish `hb : b ∈ B` using `hP.1`. Use `set F' := fderiv ℝ (flat τ) (b, z) with hF'`. Establish `hF : HasFDerivAt (flat τ) F' (b, z)` using `(GlobalTheory.FlatVert.differentiableAt_flat hτ hb z).hasFDerivAt`.
+
+Establish `hpd : ∀ i, HasFDerivAt (fun Q : Pt E g => flat τ Q (Sum.inl i)) ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inl i)).comp F') (b, z) := by`. Introduce `i`. Use `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inl i)).hasFDerivAt.comp (b, z) hF` as an intermediate fact. Conclude with `this`. Establish `hqd : ∀ i, HasFDerivAt (fun Q : Pt E g => flat τ Q (Sum.inr i)) ((ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inr i)).comp F') (b, z) := by`.
+
+Introduce `i`. Use `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g ⊕ Fin g => ℝ) (Sum.inr i)).hasFDerivAt.comp (b, z) hF` as an intermediate fact. Conclude with `this`. Use `set L : Fin g → Fin g → (E →L[ℂ] ℂ) := fun j k => fderiv ℂ (fun b => τ b j k) b with hL`. Establish `hLd : ∀ j k, HasFDerivAt (fun b => τ b j k) (L j k) b` using `fun j k => ((hτ.2.1 j k).differentiableAt (hτ.1.mem_nhds hb)).hasFDerivAt`.
+
+Establish `hTd : ∀ j k, HasFDerivAt (fun Q : Pt E g => τ Q.1 j k) (((L j k).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E (Fin g → ℂ))) (b, z)`. Introduce `j k`. Establish `h1 : HasFDerivAt (fun b => τ b j k) ((L j k).restrictScalars ℝ) b` using `(hLd j k).restrictScalars ℝ`. Establish `h2 : HasFDerivAt (fun Q : Pt E g => Q.1) (ContinuousLinearMap.fst ℝ E (Fin g → ℂ)) (b, z)` using `hasFDerivAt_fst`. Use `h1.comp (b, z) h2` as an intermediate fact.
+
+Conclude with `this`. Establish `hYd : ∀ j k, HasFDerivAt (fun Q : Pt E g => (τ Q.1 j k).im) (Complex.imCLM.comp (((L j k).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E (Fin g → ℂ)))) (b, z)`. Introduce `j k`. Use `Complex.imCLM.hasFDerivAt.comp (b, z) (hTd j k)` as an intermediate fact. Conclude with `this`.
+
+Establish `hXd : ∀ j k, HasFDerivAt (fun Q : Pt E g => (τ Q.1 j k).re) (Complex.reCLM.comp (((L j k).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E (Fin g → ℂ)))) (b, z)`. Introduce `j k`. Use `Complex.reCLM.hasFDerivAt.comp (b, z) (hTd j k)` as an intermediate fact. Conclude with `this`. Use `set Sz : Fin g → (Pt E g →L[ℝ] ℂ) := fun i => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin g => ℂ) i).comp (ContinuousLinearMap.snd ℝ E (Fin g → ℂ)) with hSz`.
+
+Establish `hzd : ∀ i, HasFDerivAt (fun Q : Pt E g => Q.2 i) (Sz i) (b, z)` using `fun i => (Sz i).hasFDerivAt`. Establish `hyd : ∀ i, HasFDerivAt (fun Q : Pt E g => (Q.2 i).im) (Complex.imCLM.comp (Sz i)) (b, z)`. Introduce `i`. Use `Complex.imCLM.hasFDerivAt.comp (b, z) (hzd i)` as an intermediate fact. Conclude with `this`.
+
+Establish `hrd : ∀ i, HasFDerivAt (fun Q : Pt E g => (Q.2 i).re) (Complex.reCLM.comp (Sz i)) (b, z)`. Introduce `i`. Use `Complex.reCLM.hasFDerivAt.comp (b, z) (hzd i)` as an intermediate fact. Conclude with `this`. Establish `hquad : quad τ = fun Q => ∑ i, flat τ Q (Sum.inl i) * (Q.2 i).im`.
+
+Use function extensionality and compare the values at `Q`. Simplify using `only [quad, flat, flatOf, Sum.elim_inl]`. Rewrite using `[Matrix.dotProduct_mulVec, dotProduct]`. Establish `hre : reQuad τ = fun Q => ∑ i, flat τ Q (Sum.inl i) * ∑ k, (τ Q.1 i k).re * flat τ Q (Sum.inl k)`. Use function extensionality and compare the values at `Q`.
+
+Simplify using `[reQuad, dotProduct, Matrix.mulVec]`. Establish `hQd` using `HasFDerivAt.fun_sum (u := Finset.univ) fun i _ => (hpd i).fun_mul (hyd i)`. Establish `hRd` using `HasFDerivAt.fun_sum (u := Finset.univ) fun i _ => (hpd i).fun_mul (HasFDerivAt.fun_sum (u := Finset.univ) fun k _ => (hXd i k).fun_mul (hpd k))`. Rewrite using `[hquad, hre, hQd.fderiv, hRd.fderiv]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, hSz, Complex.imCLM_apply, Complex.reCLM_apply, ContinuousLinearMap.coe_snd', ContinuousLinearMap.coe_fs …`.
+
+Establish `hsym : ∀ i j, τ b i j = τ b j i` using `fun i j => ((hτ.2.2 b hb).1.apply i j).symm`. Establish `heq : ∀ k, (fun Q : Pt E g => ∑ j, flat τ Q (Sum.inl j) * (τ Q.1 j k).im) =ᶠ[nhds (b, z)] fun Q => (Q.2 k).im`. Introduce `k`. Use `filter_upwards [(hτ.1.preimage continuous_fst).mem_nhds hb] with Q hQ`. Establish `hu : IsUnit ((τ Q.1).map Complex.im).det` using `((hτ.2.2 _ hQ).2.det_pos.ne').isUnit`.
+
+Establish `h1 : ((fun i => (Q.2 i).im) ᵥ* ((τ Q.1).map Complex.im)⁻¹) ᵥ* (τ Q.1).map Complex.im = fun i => (Q.2 i).im`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Establish `h2` using `congrFun h1 k`. Simplify `h2` using `[flat, flatOf, Matrix.vecMul, dotProduct]`. Establish `hd : ∀ k, ∑ j, (flat τ (b, z) (Sum.inl j) * ((L j k) v.1).re + (τ b j k).im * F' (Complex.I • v) (Sum.inl j)) = (v.2 k).re`.
+
+Introduce `k`. Establish `hl` using `HasFDerivAt.fun_sum (u := Finset.univ) fun j _ => (hpd j).fun_mul (hYd j k)`. Establish `hu` using `hl.unique ((hyd k).congr_of_eventuallyEq (heq k))`. Use `congrArg (fun T : Pt E g →L[ℝ] ℝ => T (Complex.I • v)) hu` as an intermediate fact. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply,`.
+
+Use the proof step `ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply,`. Use the proof step `smul_eq_mul, hSz, Complex.imCLM_apply, Complex.reCLM_apply, ContinuousLinearMap.coe_snd',`. Use the proof step `ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_restrictScalars', Prod.smul_fst,`. Use the proof step `Prod.smul_snd, Pi.smul_apply, map_smul, Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im,`. Use the proof step `zero_mul, one_mul, zero_add, zero_sub, sub_zero, mul_zero, mul_one] using this`.
+
+Establish `hc : ∀ k, (v.2 k).re = ∑ j, (flat τ (b, z) (Sum.inl j) * ((L j k) v.1).re + (τ b j k).re * F' v (Sum.inl j)) + F' v (Sum.inr k)`. Introduce `k`. Establish `hfun : (fun Q : Pt E g => ∑ j, flat τ Q (Sum.inl j) * (τ Q.1 j k).re + flat τ Q (Sum.inr k)) = fun Q => (Q.2 k).re`. Use function extensionality and compare the values at `Q`. Simplify using `only [flat, flatOf, Sum.elim_inl, Sum.elim_inr, Pi.sub_apply, Matrix.vecMul, dotProduct, Matrix.map_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hl` using `(HasFDerivAt.fun_sum (u := Finset.univ) fun j _ => (hpd j).fun_mul (hXd j k)).fun_add (hqd k)`. Rewrite `hl` using `[hfun]`. Establish `hu` using `(hrd k).unique hl`. Use `congrArg (fun T : Pt E g →L[ℝ] ℝ => T v) hu` as an intermediate fact.
+
+Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply,`. Use the proof step `ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply,`. Use the proof step `smul_eq_mul, hSz, Complex.imCLM_apply, Complex.reCLM_apply, ContinuousLinearMap.coe_snd',`. Use the proof step `ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_restrictScalars', Prod.smul_fst,`. Use the proof step `Prod.smul_snd, Pi.smul_apply, map_smul, Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im,`.
+
+Use the proof step `zero_mul, one_mul, zero_add, zero_sub, sub_zero, mul_zero, mul_one] using this`. Establish `hy : ∀ k, (z k).im = ∑ j, flat τ (b, z) (Sum.inl j) * (τ b j k).im` using `fun k => ((heq k).self_of_nhds).symm`. Simplify using `only [Complex.mul_im, Complex.I_re, Complex.I_im, zero_mul, one_mul, zero_add, dflat, ← hF']`. Conclude with `alg_identity (fun i => flat τ (b, z) (Sum.inl i)) (fun i => (z i).im) (fun i => F' (Complex.I • v) (Sum.inl i)) (fun i => F' v (Sum.inl i)) (fun i => (v.2 i).re) (fun i => F' v (Sum.inr i)) (fun i j => (τ b i j).im) (fun i j => (τ b i j).re) (fun i j => ((L i j) v.1).re) (fun i j …`.
+-/
 theorem dc_identity : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ P ∈ cov B g, ∀ v : Pt E g, fderiv ℝ (quad τ) P (Complex.I • v) = fderiv ℝ (reQuad τ) P v + 2 * ∑ i, flat τ P (Sum.inl i) * dflat τ P v (Sum.inr i) := by
   intro g E _ _ B τ hτ P hP v
   obtain ⟨b, z⟩ := P

@@ -7,6 +7,11 @@ open Finset
 
 namespace Formalism.GrowthSums
 
+/- English proof (translation)
+Establish `hp0 : 0 < p` using `zero_lt_one.trans hp`. Establish `hq0 : 0 ≤ (p ^ 2)⁻¹` using `inv_nonneg.mpr (by positivity)`. Establish `hq1 : (p ^ 2)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hp two_ne_zero)`. Establish `hgeom : Summable (fun e : ℕ => a / p * ((p ^ 2)⁻¹) ^ e)` using `(summable_geometric_of_lt_one hq0 hq1).mul_left (a / p)`. Use `Summable.of_nonneg_of_le (fun e => le_min (div_nonneg ha (pow_nonneg hp0.le _)) (hcap _)) (fun e => (min_le_left _ _).trans (le_of_eq ?_)) hgeom` and prove the remaining obligations.
+
+Rewrite using `[inv_pow, ← pow_mul, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem summable_min_div_pow_two_mul_add_one {n : ℕ} (p : ℝ) (hp : 1 < p) (a : ℝ) (ha : 0 ≤ a)
     (cap : ZMod n → ℝ) (hcap : ∀ s, 0 ≤ cap s) (s : ZMod n) :
     Summable (fun e : ℕ => min (a / p ^ (2 * e + 1)) (cap (s + ((2 * e + 1 : ℕ) : ZMod n)))) := by
@@ -20,6 +25,11 @@ theorem summable_min_div_pow_two_mul_add_one {n : ℕ} (p : ℝ) (hp : 1 < p) (a
   rw [inv_pow, ← pow_mul, pow_succ]
   field_simp
 
+/- English proof (translation)
+Introduce `n p TT TTodd al cap de v i₀ i E hp hsub hal hcap hi hiE h1 h2 h3`. Unfold `gainG`. Establish `hp0 : 0 < p` using `zero_lt_one.trans hp`. Establish `hsplit : ∑ s ∈ TT, ∑ e ∈ E, i s e = ∑ s ∈ TT \ TTodd, ∑ e ∈ E, i s e + ∑ s ∈ TTodd, ∑ e ∈ E, i s e` using `(Finset.sum_sdiff hsub).symm`. Establish `hodd : ∑ s ∈ TTodd, ∑ e ∈ E, i s e ≤ ∑ s ∈ TTodd, ∑' e : ℕ, min (al s / p ^ (2 * e + 1)) (cap (s + ((2 * e + 1 : ℕ) : ZMod n)))`.
+
+Use `Finset.sum_le_sum fun s hs => ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun e _ => h3 s hs e).trans ?_` and prove the remaining obligations. Conclude with `Summable.sum_le_tsum E (fun e _ => le_min (div_nonneg (hal s) (pow_nonneg hp0.le _)) (hcap _)) (summable_min_div_pow_two_mul_add_one p hp (al s) (hal s) cap hcap s)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cappedGainSubLE : CappedGainSubLE := by
   intro n p TT TTodd al cap de v i₀ i E hp hsub hal hcap hi hiE h1 h2 h3
   unfold gainG

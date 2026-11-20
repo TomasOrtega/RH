@@ -16,6 +16,9 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _ f s₀ h hψ χ T ρ κ y z J hJ`. Establish `a` using `pullB_values R D F _ _ 1 f s₀ h χ T ρ y z J hJ`. Establish `b` using `pullB_values R D F _ _ 1 f s₀ h 0 T ρ (y * cT D T χ) z J hJ`. Establish `c` using `hψ χ T (ρ ≫ toUnit _) κ y z J hJ`. Conclude with `a.trans (c.trans (congrArg _ b.symm))`.
+-/
 theorem psiRel_of_pullB : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (f : ∀ α, SecBT D (𝟙_ _) 1 α) (s₀ : Raw D F 1), PullB D F (toUnit _) 1 f s₀ → PsiRel D (𝟙_ _) f → PsiRel D (TF (R := R) F) s₀ := by
   intro R _ _ D F _ _ f s₀ h hψ χ T ρ κ y z J hJ
   have a := pullB_values R D F _ _ 1 f s₀ h χ T ρ y z J hJ

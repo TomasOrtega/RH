@@ -18,6 +18,13 @@ namespace GlobalTheory.VacLinW
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
+/- English proof (translation)
+Use `set z := hTens (cA σ) JA JB x y with hz`. Establish `hat : At (evFin F v) z`. Introduce `c hc`. Establish `hij : ∀ i j, c • x i j = 0` using `fun i j => by`. Use `congrFun (congrFun (hx c hc) i) j` as an intermediate fact.
+
+Simplify using `using this`. Simplify using `only [hz, hTens, Finset.smul_sum, ← smul_mul_assoc, hij, zero_mul, Finset.sum_const_zero]`. Establish `hx' : ∀ i j, piW (s.comp σ) (x i j) = 0` using `fun i j => by simpa using congrFun (congrFun hx0 i) j`. Establish `hy' : ∀ i j, piW (s.comp σ) (y i j) = 0` using `fun i j => by simpa using congrFun (congrFun hy0 i) j`. Establish `h1 : piW s z = 0`.
+
+Simplify using `only [hz, hTens, map_sum, map_mul, GlobalTheory.VacIso.piW_cA, hy', mul_zero, Finset.sum_const_zero]`. Establish `h2 : piW (s.comp σ) z = 0`. Simplify using `only [hz, hTens, map_sum, map_mul, hx', zero_mul, Finset.sum_const_zero]`. Establish `: z = 0` using `GlobalTheory.VacIso.eq_zero_of_at_split hcm s hat h1 h2`. Simplify using `only [symp, ← hz, this, mul_zero, map_zero]`.
+-/
 theorem symp_eq_zero_of_comp (hcm : IsCMExt F E σ) {v : Pl F} (s : E →ₐ[F] Fv F v)
     {x y : Matrix (Fin n) (Fin d) (AE F E)} (hx : At (evFin F v) x) (hx0 : x.map (piW (s.comp σ)) = 0)
     (hy0 : y.map (piW (s.comp σ)) = 0) (ξ : AE F E) (JA : Matrix (Fin n) (Fin n) (AE F E))
@@ -38,11 +45,21 @@ theorem symp_eq_zero_of_comp (hcm : IsCMExt F E σ) {v : Pl F} (s : E →ₐ[F] 
   have : z = 0 := GlobalTheory.VacIso.eq_zero_of_at_split hcm s hat h1 h2
   simp only [symp, ← hz, this, mul_zero, map_zero]
 
+/- English proof (translation)
+Simplify using `only [symp, hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem symp_add_right (ξ : AE F E) (JA : Matrix (Fin n) (Fin n) (AE F E)) (JB : Matrix (Fin d) (Fin d) (AE F E))
     (x y y' : Matrix (Fin n) (Fin d) (AE F E)) :
     symp (cA σ) ξ JA JB x (y + y') = symp (cA σ) ξ JA JB x y + symp (cA σ) ξ JA JB x y' := by
   simp only [symp, hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `⟨fun φ hφ => ?_, fun φ hφ φ' hφ' e => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ z (h.bij.mapsTo hφ)`. Simplify using `only [LinearMap.smul_apply] at e`. Conclude with `h.bij.injOn hφ hφ' (smul_right_injective _ hz e)`.
+
+Take `⟨φ, hφ, e⟩` from `h.bij.surjOn (Submodule.smul_mem _ z⁻¹ hg)`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, e, smul_smul, mul_inv_cancel₀ hz, one_smul]`. Use `trans := fun u hu h0 φ hφ φ₁ hφ₁ hA Y => by`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, h.trans u hu h0 φ hφ φ₁ hφ₁ hA Y]`.
+
+Use `mult := fun u hu h1 φ hφ φ₁ hφ₁ hA x hx hx0 => by`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, h.mult u hu h1 φ hφ φ₁ hφ₁ hA x hx hx0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLin_smul {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) {v : Pl F}
     {π₁ π₀ : AE F E →+* Fv F v} {co : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (Fv F v)}
     {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} (h : M.IsLin ψ π₁ π₀ co ι)
@@ -61,6 +78,31 @@ theorem isLin_smul {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddC
     simp only [LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, h.mult u hu h1 φ hφ φ₁ hφ₁ hA x hx hx0]
     ring
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair v t b c hb hc`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linear_witt_model_local hP F E σ B n d X W M χX χW om r s r' s' hPair v t b c`. Establish `hcm : IsCMExt F E σ` using `hPair.base.cm`. Take `⟨hSB, hne, θ, -, hfix⟩` from `hPair.good.vac v`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`.
+
+Establish `htt : (t.comp σ).comp σ = t` using `GlobalTheory.AdelicU.comp_conj_conj hcm t`. Establish `hfix' : ∀ γ ∈ latAtV X W v, (γ.map (piW (t.comp σ)) = 0 ∨ γ.map (piW t) = 0) → Acts (evFin F v) (M.co.rho B.ψ γ) (M.vac v) (M.vac v)`. Introduce `γ hγ h`. Establish `h0 : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ = 0 := by`. Break down `h with h | h` into its components or cases.
+
+Conclude with `symp_eq_zero_of_comp hcm t (hat γ hγ) h h _ _ _`. Rewrite `h` using `[← htt]`. Conclude with `symp_eq_zero_of_comp hcm (t.comp σ) (hat γ hγ) h h _ _ _`. Use `hfix γ hγ` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Then use the resulting hypothesis.
+
+Use `set f := ι (M.vac v) with hf`. Use `set S : Set (Matrix (Fin n) (Fin d) (Fv F v)) := {Y | ∀ i j, Y i j ∈ v.adicCompletionIntegers F} with hS`. Establish `htr : ∀ A ∈ S, ∀ Y, f (Y + A) = f Y`. Introduce `A hA Y`. Take `⟨γ, hγ, h0, hco⟩` from `GlobalTheory.T.exists_tensorLattice_point_of_integral_splitPlace_coordinate hcm X W v t b c hb hc A hA`.
+
+Use `hι.trans γ (hat γ hγ) h0 _ hSB _ hSB (hfix' γ hγ (Or.inl h0)) Y` as an intermediate fact. Rewrite `this` using `[hco]`. Conclude with `this.symm`. Establish `hsupp : ∀ Y, f Y ≠ 0 → Y ∈ S`. Introduce `Y hY`.
+
+Take `⟨x, hx, hx0, rfl⟩` from `GlobalTheory.T.exists_supportedAdele_splitPlace_matrix_coordinate_eq hcm v t b c Y`. Establish `hψ : ∀ u ∈ latAtV X W v, u.map (piW t) = 0 → B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x u) = 1`. Introduce `u hu hu0`. Establish `hm` using `hι.mult u (hat u hu) hu0 _ hSB _ hSB (hfix' u hu (Or.inr hu0)) x hx hx0`. Conclude with `(mul_eq_right₀ hY).mp hm.symm`.
+
+Establish `hmem : x ∈ latAtV X W v`. Use `(GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X W r s r' s' hPair.base hPair.herm hPair.skew v x hx).2 fun γ hγ => ?_` and prove the remaining obligations. Take `⟨γ₁, hγ₁, γ₂, hγ₂, rfl, h₁, h₂⟩` from `GlobalTheory.T.tensorLatticeAtFinitePlace_eq_sum_splitPlace_parts hcm X W v t γ hγ`. Rewrite using `[symp_add_right, symp_eq_zero_of_comp hcm t hx hx0 h₁, zero_add]`. Conclude with `hψ γ₂ hγ₂ h₂`.
+
+Conclude with `GlobalTheory.T.splitPlace_tensorLattice_component_integral X W v t b c hb hc x hmem`. Establish `hf0 : f ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `hι.bij.injOn hSB (zero_mem _) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Conclude with `h`. Establish `hfe : f = f 0 • S.indicator 1`. Use function extensionality and compare the values at `Y`. Distinguish the cases in `hY : Y ∈ S`.
+
+Rewrite using `[Pi.smul_apply, Set.indicator_of_mem hY, Pi.one_apply, smul_eq_mul, mul_one, ← htr Y hY 0, zero_add]`. Rewrite using `[Pi.smul_apply, Set.indicator_of_notMem hY, smul_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hY (hsupp Y h)`. Establish `hz : f 0 ≠ 0`.
+
+Introduce `h`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hfe, h, zero_smul]`. Use `⟨(f 0)⁻¹ • ι, isLin_smul M B.ψ hι (inv_ne_zero hz), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← hf]`.
+
+Conclude with `(congrArg ((f 0)⁻¹ • ·) hfe).trans (by rw [smul_smul, inv_mul_cancel₀ hz, one_smul])`.
+-/
 theorem vac_linW : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), IsSplitBasis t X.L b → IsSplitBasis t W.L c →

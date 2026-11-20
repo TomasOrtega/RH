@@ -17,6 +17,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `[thickMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+-/
 theorem thickMap_pullback_map {G : Over (Sp R)} (b : G ⟶ G) (e : ℕ) :
     thickMap R I e G ≫ ((Over.pullback (thick R I (e + 1))).map b).left =
       ((Over.pullback (thick R I e)).map b).left ≫ thickMap R I e G := by
@@ -24,6 +27,9 @@ theorem thickMap_pullback_map {G : Over (Sp R)} (b : G ⟶ G) (e : ℕ) :
     simp [thickMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
       pullback.lift_snd_assoc]
 
+/- English proof (translation)
+Use `haveI := oG.hom a`. Use `⟨oG.hom a, fun e => inferInstance, fun e => thickMap_pullback_map _ e, fun e => h.q_lin e a, fun e => ?_⟩` and prove the remaining obligations. Conclude with `h.i_lin e a`.
+-/
 theorem linEnd_act {D : DegData R I} {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X] {o : D.toPre.OAct O}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G}
     {oA : A.OAct O} {oG : RingAct G O} (h : U.OLinear O o oA oG) (a : O) :
@@ -32,11 +38,19 @@ theorem linEnd_act {D : DegData R I} {O : Type} [Ring O] [StarRing O] [Module O 
   refine ⟨oG.hom a, fun e => inferInstance, fun e => thickMap_pullback_map _ e, fun e => h.q_lin e a, fun e => ?_⟩
   exact h.i_lin e a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨o.onB.hom a, o.onB.hom (star a), o.onB.rosati a, o.c_lin a, o.c_lin (star a), o.tau_bal a⟩`.
+-/
 theorem endData_act {D : DegPre R} {O : Type} [Ring O] [StarRing O] [Module O D.X] (o : D.OAct O) (a : O) :
     EndData D (o.onB.act a) (o.onB.act (star a)) (DistribSMul.toAddMonoidHom D.X a)
       (DistribSMul.toAddMonoidHom D.X (star a)) :=
   ⟨o.onB.hom a, o.onB.hom (star a), o.onB.rosati a, o.c_lin a, o.c_lin (star a), o.tau_bal a⟩
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D O _ _ _ o A G _ _ U oA oG hG hlin a`. Establish `hB : Base R` using `⟨⟨hR.1, inferInstance, hR.2.1, hR.2.2.1⟩, hR.2.2.2⟩`. Establish `h₁` using `linEnd_act hlin a`. Establish `h₂` using `linEnd_act hlin (star a)`. Rewrite `h₂` using `[star_star]`.
+
+Conclude with `linEnd_adjoint_lbIso R hB D A G hG U _ _ _ _ (endData_act o a) _ _ h₁ h₂`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (D : DegData R (maximalIdeal R)) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal R) D A G) (oA : A.OAct O) (oG : RingAct G O), IsSemiAbelian G → U.toUnifPre.OLinear O o oA oG → ∀ a : O, LBIso (cubeLB G ![fst G G ≫ oG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ oG.act (star a)] U.LG.L) := by
   intro R _ _ _ hR D O _ _ _ o A G _ _ U oA oG hG hlin a
   have hB : Base R := ⟨⟨hR.1, inferInstance, hR.2.1, hR.2.2.1⟩, hR.2.2.2⟩

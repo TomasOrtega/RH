@@ -10,10 +10,16 @@ open Representation
 abbrev TorsN (A : Type*) [AddCommGroup A] (n : ℕ) : Type _ :=
   ↥(LinearMap.ker (LinearMap.lsmul ℤ A (n : ℤ)))
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem mem_ker_lsmul_iff {A : Type*} [AddCommGroup A] (n : ℕ) (x : A) :
     x ∈ LinearMap.ker (LinearMap.lsmul ℤ A (n : ℤ)) ↔ n • x = 0 := by
   simp
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simpa using (mem_ker_lsmul_iff n (x : A)).1 x.2)`.
+-/
 theorem TorsN.nsmul_eq_zero {A : Type*} [AddCommGroup A] {n : ℕ} (x : TorsN A n) :
     n • x = 0 :=
   Subtype.ext (by simpa using (mem_ker_lsmul_iff n (x : A)).1 x.2)
@@ -30,11 +36,17 @@ instance additiveDistribMulAction {Γ M : Type*} [Monoid Γ] [Monoid M] [MulDist
   smul_add γ a b := congrArg Additive.ofMul (smul_mul' γ a.toMul b.toMul)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toMul_smul_additive {Γ M : Type*} [Monoid Γ] [Monoid M] [MulDistribMulAction Γ M] (γ : Γ)
     (a : Additive M) : (γ • a).toMul = γ • a.toMul :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_ofMul_additive {Γ M : Type*} [Monoid Γ] [Monoid M] [MulDistribMulAction Γ M] (γ : Γ)
     (a : M) : γ • Additive.ofMul a = Additive.ofMul (γ • a) :=
   rfl
@@ -48,6 +60,9 @@ def piRep {k Γ X : Type*} [CommSemiring k] [Monoid Γ] [AddCommMonoid X] [Modul
   map_mul' γ δ := by ext; simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piRep_apply {k Γ X : Type*} [CommSemiring k] [Monoid Γ] [AddCommMonoid X] [Module k X]
     (ι : Type*) (ρ : Representation k Γ X) (γ : Γ) (x : ι → X) (i : ι) :
     piRep ι ρ γ x i = ρ γ (x i) :=
@@ -62,18 +77,27 @@ def intRepToZMod (n : ℕ) {V : Type*} [AddCommGroup V] [Module (ZMod n) V]
   map_mul' γ δ := by ext x; simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intRepToZMod_apply (n : ℕ) {V : Type*} [AddCommGroup V] [Module (ZMod n) V]
     (ρ : Representation ℤ Γ V) (γ : Γ) (x : V) : intRepToZMod n ρ γ x = ρ γ x :=
   rfl
 
 variable (Γ) (A : Type*) [AddCommGroup A] [DistribMulAction Γ A] (n : ℕ)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨γ • x, by simp⟩`.
+-/
 theorem range_lsmul_le_comap (γ : Γ) :
     LinearMap.range (LinearMap.lsmul ℤ A (n : ℤ)) ≤
       (LinearMap.range (LinearMap.lsmul ℤ A (n : ℤ))).comap (ofDistribMulAction ℤ Γ A γ) := by
   rintro _ ⟨x, rfl⟩
   exact ⟨γ • x, by simp⟩
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [LinearMap.mem_ker, LinearMap.lsmul_apply, Submodule.mem_comap, ofDistribMulAction_apply_apply] at hx ⊢`. Rewrite using `[← smul_comm γ (n : ℤ) x, hx, smul_zero]`.
+-/
 theorem ker_lsmul_le_comap (γ : Γ) :
     LinearMap.ker (LinearMap.lsmul ℤ A (n : ℤ)) ≤
       (LinearMap.ker (LinearMap.lsmul ℤ A (n : ℤ))).comap (ofDistribMulAction ℤ Γ A γ) := by
@@ -89,11 +113,17 @@ def torsNRep : Representation (ZMod n) Γ (TorsN A n) :=
   intRepToZMod n ((ofDistribMulAction ℤ Γ A).subrepresentation _ (ker_lsmul_le_comap Γ A n))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem modNRep_mk (γ : Γ) (x : A) :
     modNRep Γ A n γ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (γ • x) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_torsNRep_apply (γ : Γ) (x : TorsN A n) :
     ((torsNRep Γ A n γ x : TorsN A n) : A) = γ • (x : A) :=
   rfl
@@ -126,11 +156,17 @@ noncomputable def g (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] : ℤ 
     d.toFun (ModN A l) (modNRep Γ A l) - d.toFun (TorsN A l) (torsNRep Γ A l)
   else 0
 
+/- English proof (translation)
+Rewrite using `[g, dif_pos ⟨‹_›, ‹_›⟩]`.
+-/
 theorem g_eq (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite (ModN A l)]
     [Finite (TorsN A l)] :
     d.g A = d.toFun (ModN A l) (modNRep Γ A l) - d.toFun (TorsN A l) (torsNRep Γ A l) := by
   rw [g, dif_pos ⟨‹_›, ‹_›⟩]
 
+/- English proof (translation)
+Rewrite using `[g, dif_neg h]`.
+-/
 theorem g_of_not_finite (A : Type u) [AddCommGroup A] [DistribMulAction Γ A]
     (h : ¬ (Finite (ModN A l) ∧ Finite (TorsN A l))) : d.g A = 0 := by
   rw [g, dif_neg h]

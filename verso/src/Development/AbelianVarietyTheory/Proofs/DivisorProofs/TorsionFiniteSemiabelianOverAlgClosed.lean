@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff.TorsFin
 
+/- English proof (translation)
+Establish `hu : IsUnit (algebraMap R K r)` using `((map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hr).isUnit`. Use `letI : Algebra (Localization.Away r) K := (IsLocalization.Away.lift r hu).toAlgebra`. Use `haveI : Nontrivial (Localization.Away r) := (algebraMap (Localization.Away r) K).domain_nontrivial`. Establish `key : ∀ ψ : C →ₐ[R] K, (ψ : C →+* K).comp (algebraMap (Localization.Away r) C) = algebraMap (Localization.Away r) K`. Introduce `ψ`.
+
+Use `IsLocalization.ringHom_ext (Submonoid.powers r) ?_` and prove the remaining obligations. Use extensionality with `x`. Establish `h1 : algebraMap (Localization.Away r) K (algebraMap R (Localization.Away r) x) = algebraMap R K x` using `IsLocalization.Away.lift_eq r hu x`. Simplify using `only [RingHom.comp_apply, h1, ← IsScalarTower.algebraMap_apply]`. Conclude with `ψ.commutes x`.
+
+Set `f : (C →ₐ[R] K) → (C →ₐ[Localization.Away r] K)` to `fun ψ => { (ψ : C →+* K) with commutes' := fun x => congrArg (fun g : _ →+* K => g x) (key ψ) }`. Use `Finite.of_injective f ?_` and prove the remaining obligations. Introduce `ψ ψ' h`. Use extensionality with `x`. Conclude with `congrArg (fun g : C →ₐ[Localization.Away r] K => g x) h`.
+-/
 theorem finite_algHom_of_away (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     (r : R) (hr : r ≠ 0) (C : Type) [CommRing C] [Algebra R C] [Algebra (Localization.Away r) C]
     [IsScalarTower R (Localization.Away r) C] [Module.Finite (Localization.Away r) C]
@@ -37,6 +44,11 @@ theorem finite_algHom_of_away (R K : Type) [CommRing R] [IsDomain R] [Field K] [
   ext x
   exact congrArg (fun g : C →ₐ[Localization.Away r] K => g x) h
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN`. Take `⟨Idx, _, q, c, hc⟩` from `GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N hN`. Use `haveI : ∀ i, Finite ((c i).C →ₐ[R] K) := fun i => finite_algHom_of_away R K (c i).r (fun h => (c i).hr (h ▸ (q i).asIdeal.zero_mem)) (c i).C`. Use `Finite.of_surjective (fun x : Σ i, ((c i).C →ₐ[R] K) => torsMap x.2 (c x.1).j) ?_` and prove the remaining obligations. Introduce `z`.
+
+Take `⟨i, hi⟩` from `hc K z`. Take `⟨ψ, -, hψ⟩` from `((c i).bij K).surjOn hi`. Conclude with `⟨⟨i, ψ⟩, hψ⟩`.
+-/
 theorem finite_tors : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → Finite (Tors G N K) := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN
   obtain ⟨Idx, _, q, c, hc⟩ := GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N hN

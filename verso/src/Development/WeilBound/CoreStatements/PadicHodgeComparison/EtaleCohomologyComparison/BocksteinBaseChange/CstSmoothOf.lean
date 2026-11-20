@@ -18,9 +18,15 @@ open GroundTheory.PAdicHodge Formalism.Per6 DeRhamPotentiallySemistable.DRPst
 
 namespace CrystallineSemistableComparison
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.a6nat, h.a6ring, h.a9, h.et.a11, h4, h8, bock h, root h, sum h⟩`.
+-/
 theorem zIn (h : FormalIn) (h4 : GlobalTheory.EtC.E4) (h8 : GlobalTheory.EtC.E8) : ZIn :=
   ⟨h.a6nat, h.a6ring, h.a9, h.et.a11, h4, h8, bock h, root h, sum h⟩
 
+/- English proof (translation)
+Introduce `h l _ K _` and use `⟨adic h l K _ (fun _ hM => hM.1) (comp l K).1 fun M hM => geo l K M hM.1, adic h l K _ (fun _ hM => hM) (comp l K).2 fun M hM => geo l K M hM⟩`.
+-/
 theorem etSide : EtaleSideSmoothAndSemistable := fun h l _ K _ =>
   ⟨adic h l K _ (fun _ hM => hM.1) (comp l K).1 fun M hM => geo l K M hM.1,
     adic h l K _ (fun _ hM => hM) (comp l K).2 fun M hM => geo l K M hM⟩
@@ -37,6 +43,15 @@ structure Chapters : Prop where
 
 def CstSmooth : Prop := SmoothModelCrystalline ∧ DeRhamComparisonSmooth ∧ CrysPhi
 
+/- English proof (translation)
+Establish `hS : SeamS`. Introduce `l _ K _`. Take `⟨Amp, h1, h2, h3, h4⟩` from `h.p l K`. Take `⟨β, β₁, e⟩` from `gB l K Amp (h.main l) (h.compat l) (h.c1 l)`. Take `⟨r⟩` from `hX l K`.
+
+Take `⟨F⟩` from `h4 r`. Use `⟨dat Amp, ⟨gL l K Amp (h.compatH l) (h.rin l) h.uniq h1 h2, gE l K Amp (h.et l K), ⟨β⟩, h3⟩, ?_⟩` and prove the remaining obligations. Rewrite `F` using `[← e]`. Use `fac l K _ _ _ _ _ β β₁ F` as an intermediate fact. Rewrite `this` using `[(hC l K r).2]`. Then use the resulting hypothesis.
+
+Take `⟨h1, h2⟩` from `smooth_of hF hR pre inj adm etSide hI hS`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `l _ K _ r`. Take `⟨Amp, h1, h2, ⟨κ⟩, h4⟩` from `h.p l K`. Take `⟨β, β₁, e⟩` from `gB l K Amp (h.main l) (h.compat l) (h.c1 l)`.
+
+Take `⟨F⟩` from `h4 r`. Take `⟨ε⟩` from `gE l K Amp (h.et l K)`. Rewrite `F` using `[← e]`. Conclude with `phi l K _ _ _ _ _ (hF l K) (hC l K r).1 (etSide hI l K).1 (gL l K Amp (h.compatH l) (h.rin l) h.uniq h1 h2) ε β β₁ κ F`.
+-/
 theorem cstSmooth_of (gL : GlueL) (gE : GlueE) (gB : GlueB) (hF : PeriodRingFacts) (hR : BcrisRegularPeriodRing) (hC : BcrisPeriodFacts) (hX : ResEx)
     (hI : ZIn) (h : Chapters) : CstSmooth := by
   have hS : SeamS := by

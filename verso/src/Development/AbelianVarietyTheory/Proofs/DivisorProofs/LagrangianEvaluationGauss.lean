@@ -41,6 +41,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def rho [IsTotallyReal F] (w : InfinitePlace F) : mixedEmbedding.mixedSpace F →ₐ[ℝ] ℝ :=
   (Pi.evalAlgHom ℝ (fun _ : {w : InfinitePlace F // w.IsReal} => ℝ) ⟨w, IsTotallyReal.isReal w⟩).comp (AlgHom.fst ℝ _ _)
 
+/- English proof (translation)
+Use `haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 w.2 (IsTotallyReal.isReal w.1)⟩`. Rewrite using `[Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi, Finset.univ_eq_empty (α := {w : InfinitePlace F // w.IsComplex}), Finset.sum_empty, add_zero]`. Use `Fintype.sum_equiv (Equiv.subtypeUnivEquiv fun w => IsTotallyReal.isReal w) _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_self_apply]`. Both sides reduce to the same expression.
+-/
 theorem trace_rho [IsTotallyReal F] (v : mixedEmbedding.mixedSpace F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) v = ∑ w, rho w v := by
   haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} :=
@@ -51,22 +54,34 @@ theorem trace_rho [IsTotallyReal F] (v : mixedEmbedding.mixedSpace F) :
   rw [Algebra.trace_self_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Both sides reduce to the same expression.
+-/
 theorem rho_evI [IsTotallyReal F] (w : InfinitePlace F) (a : AF F) :
     ((rho w (evI F a) : ℝ) : ℂ) = InfinitePlace.Completion.extensionEmbedding w (evInf F w a) := by
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[rho_evI]`. Express the relevant statement in the definitionally equal form `piInf τ (a ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[piInf_tmul, map_one, mul_one]`.
+-/
 theorem piInf_algebraMap [IsTotallyReal F] {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
     piInf τ (algebraMap (AF F) (AE F E) a) = ((rho w (evI F a) : ℝ) : ℂ) := by
   rw [rho_evI]
   change piInf τ (a ⊗ₜ[F] (1 : E)) = _
   rw [piInf_tmul, map_one, mul_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `piInf τ ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[piInf_tmul, map_one, map_one, one_mul]`.
+-/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (e : E) :
     piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
   change piInf τ ((1 : AF F) ⊗ₜ[F] e) = _
   rw [piInf_tmul, map_one, map_one, one_mul]
 
+/- English proof (translation)
+Establish `h1 : z + cA σ z = algebraMap (AF F) (AE F E) (Algebra.trace (AF F) (AE F E) z)` using `GlobalTheory.GaussMean.OneVec.add_sigR (AF F) hCM z`. Establish `h2` using `congrArg (fun y => (piInf τ y).re) h1`. Simplify using `only [map_add, piInf_cA hCM, piInf_algebraMap, Complex.ofReal_re, Complex.add_re] at h2`. Rewrite using `[← h2]`. Simplify using `[two_mul]`.
+-/
 theorem rho_trace [IsTotallyReal F] {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w)
     (z : AE F E) : rho w (evI F (Algebra.trace (AF F) (AE F E) z)) = 2 * (piInf τ z).re := by
   have h1 : z + cA σ z = algebraMap (AF F) (AE F E) (Algebra.trace (AF F) (AE F E) z) :=

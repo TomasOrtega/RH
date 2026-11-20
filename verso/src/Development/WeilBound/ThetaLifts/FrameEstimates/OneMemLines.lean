@@ -17,6 +17,13 @@ section
 variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `dom_facts hB hp hD hφ hsb`. Use `⟨⟨⟨⟨fun f => M.I om (pureA F f φ) h, fun f f' => ?_⟩, fun c f => ?_⟩, h2 h⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `e : pureA F (f + f' : SInf F _) φ = pureA F f φ + pureA F f' φ`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, add_mul]`.
+
+Unfold `Model.I`. Rewrite using `[e, ← integral_add ((h1 f).1 h) ((h1 f').1 h)]`. Conclude with `integral_congr_ae (Eventually.of_forall fun g => theta_add hp (pureA_mem f hsb) (pureA_mem f' hsb) g h)`. Establish `e : pureA F (c • f : SInf F _) φ = c • pureA F f φ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[pureA, mul_assoc]`. Express the relevant statement in the definitionally equal form `M.I om (pureA F (c • f : SInf F _) φ) h = c * M.I om (pureA F f φ) h`. Unfold `Model.I`. Rewrite using `[e, ← integral_const_mul]`. Conclude with `integral_congr_ae (Eventually.of_forall fun g => theta_smul hp c (pureA_mem f hsb) g h)`.
+-/
 theorem exists_clm (hB : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {𝓕} (hD : Dom M om 𝓕) {φ} (hφ : φ ∈ 𝓕)
     (hsb : φ ∈ SB _) (h : UA σ W.J) :
     ∃ L : SInf F (Fin n × Fin d) →L[ℂ] ℂ, ∀ f : SInf F (Fin n × Fin d), L f = M.I om (pureA F f φ) h := by
@@ -34,14 +41,31 @@ theorem exists_clm (hB : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {�
     rw [e, ← integral_const_mul]
     exact integral_congr_ae (Eventually.of_forall fun g => theta_smul hp c (pureA_mem f hsb) g h)
 
+/- English proof (translation)
+Introduce `u _` and use `by have : mat (1 : UA σ X.J) = 1 := rfl rw [this, sub_self, smul_zero]`.
+-/
 theorem one_mem_UAt : (1 : UA σ X.J) ∈ UAt σ X (evI F) := fun u _ => by
   have : mat (1 : UA σ X.J) = 1 := rfl
   rw [this, sub_self, smul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, fun _ => one_mem_UAt⟩`.
+-/
 theorem one_mem_Lines : (1 : Multiplicative ℝ →* UA σ X.J) ∈ Lines σ X := ⟨continuous_const, fun _ => one_mem_UAt⟩
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp 𝓕 hD φ hφ hsb f hf`. Take `⟨-, i2, i3⟩` from `hI F E σ B n d X W M χX χW om r s r' s' hp _ (pureA_mem f hsb)`. Use `⟨fun γ hγ => ?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Use `choose T hT using fun t : ℝ => hO F E σ B n d X W M χX χW om r s r' s' hp 1 one_mem_UAt _ (hγ.2 (Multiplicative.ofAdd t))`. Take `⟨f₁, hf₁, ha, hd⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp 1 one_mem_Lines γ hγ T (fun t => (hT t).1) f hf`.
+
+Use `⟨f₁, hf₁, ha, fun h => ?_⟩` and prove the remaining obligations. Take `⟨L, hLf⟩` from `exists_clm hB hp hD hφ hsb h`. Use `hd L` as an intermediate fact. Rewrite `this` using `[hLf]`. Use `this using 2 with t` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hLf, ← (hT t).1.1 f φ hsb, i3]`. Use `choose T hT using fun t : ℝ => hO F E σ B n d X W M χX χW om r s r' s' hp _ (hγ.2 (Multiplicative.ofAdd t)) 1 one_mem_UAt`. Take `⟨f₁, hf₁, ha, hd⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp γ hγ 1 one_mem_Lines T (fun t => (hT t).1) f hf`. Use `⟨f₁, hf₁, ha, funext fun h => ?_⟩` and prove the remaining obligations. Take `⟨L, hLf⟩` from `exists_clm hB hp hD hφ hsb h`.
+
+Establish `h1` using `hd L`. Establish `h2 : (fun t => L (T t f)) = fun _ => M.I om (pureA F f φ) h` using `funext fun t => by`. Rewrite using `[hLf, ← (hT t).1.1 f φ hsb, i2]`. Rewrite `h1` using `[h2]`. Rewrite using `[← hLf]`.
+
+Conclude with `h1.unique (hasDerivAt_const _ _)`.
+-/
 theorem iDer_of (hB : ThetaBasic) (hO : PositivityTheory.ThKF.ArchOp) (hL : PositivityTheory.ThKF.ArchLie) (hI : IInv) : IDer := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp 𝓕 hD φ hφ hsb f hf
   obtain ⟨-, i2, i3⟩ := hI F E σ B n d X W M χX χW om r s r' s' hp _ (pureA_mem f hsb)

@@ -23,6 +23,29 @@ open ReciprocityTheory.ChartRestriction.G.Chart
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial n R S`. Use `letI : Algebra (MvPolynomial (Fin n) R) S := g.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin n) R) S := IsScalarTower.of_algebraMap_eq fun r => (g.commutes r).symm`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) R) S := hg`. Establish `hπ : ∀ m : ℕ, ∃ π : S →ₐ[R] JetR R (Fin n) m, (jetAug R (Fin n) m).comp π = ε ∧ ∀ i, π (sX R i) = algebraMap R _ (ε (sX R i)) + zR m i` using `fun m => etale_exists (n := n) ε (jetAug R (Fin n) m) (ker_jetAug_nil (Fin n) m) _ (fun i => by`.
+
+Rewrite using `[map_add, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, jetAug_zR, add_zero])`. Use `choose π hπaug hπX using hπ`. Use `⟨fun m => spMap (π m) ≫ j, fun m => ?_, fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, spMap_comp]`. Use `congr 2`.
+
+Use `etale_ext (n := n) ε (jetAug R (Fin n) m) (ker_jetAug_nil (Fin n) m) _ _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, jetAug_comp_trunc]`. Conclude with `hπaug (m + 1)`. Conclude with `hπaug m`. Introduce `i`.
+
+Rewrite using `[AlgHom.comp_apply, hπX, hπX, map_add, AlgHom.commutes]`. Both sides reduce to the same expression. Establish `e : (jetZeroR R (Fin n) m).comp (π m) = (Algebra.ofId R _).comp ε`. Use `etale_ext (n := n) ε (jetAug R (Fin n) 0) (ker_jetAug_nil (Fin n) 0) _ _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, jetAug_comp_zero]`.
+
+Conclude with `hπaug m`. Use extensionality with `s`. Simplify using the standard rewrite rules. Introduce `i`. Rewrite using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes, AlgHom.comp_apply, jetZero_zR, add_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Category.assoc, spMap_comp, e, ← spMap_comp, Category.assoc, hε, comp_one']`. Introduce `A _ _ aug m hJ y hy`. Establish `hJn` using `nil_of_pow _ hJ`. Take `⟨φ, rfl⟩` from `hj A aug hJn y hy`.
+
+Establish `hφ : aug.comp φ = ε` using `hinj _ _ _ (by rw [← spMap_comp, Category.assoc, hy, hε])`. Establish `hmem : ∀ i : Fin n, φ (sX (S` using `S) R i) - algebraMap R A (ε (sX (S := S) R i)) ∈ RingHom.ker aug := by`. Introduce `i`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, ← AlgHom.comp_apply, hφ, sub_self]`. Set `ψ` to `jetLift R (RingHom.ker aug) hJ (fun i : Fin n => φ (sX (S := S) R i) - algebraMap R A (ε (sX (S := S) R i))) hmem`.
+
+Establish `hψaug : aug.comp ψ = jetAug R (Fin n) m` using `jet_ext fun i => by`. Rewrite using `[AlgHom.comp_apply, jetLift_zR, jetAug_zR]`. Conclude with `hmem i`. Establish `hψπ : ψ.comp (π m) = φ`. Use `etale_ext (n := n) ε aug hJn _ _ ?_ hφ ?_` and prove the remaining obligations.
+
+Rewrite using `[← AlgHom.comp_assoc, hψaug]`. Conclude with `hπaug m`. Introduce `i`. Rewrite using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes, jetLift_zR, add_sub_cancel]`. Use `⟨ψ, ⟨hψaug, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spMap_comp, hψπ]`. Introduce and unpack `ψ₂ ⟨_, h2⟩`. Rewrite `h2` using `[← Category.assoc, spMap_comp]`. Establish `h4` using `(hinj _ _ _ h2).symm`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[jetLift_zR]`. Use `AlgHom.congr_fun h4 (sX R i)` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes]`. Rewrite using `[← this, add_sub_cancel_left]`.
+-/
 theorem univChart_of_standardSmooth (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (n : ℕ)
     (S : Type) [CommRing S] [Algebra R S] [Algebra.IsStandardSmoothOfRelativeDimension n R S]
     (j : sp (R₀ := R) S ⟶ G) (ε : S →ₐ[R] R) (hε : spMap ε ≫ j = 1)
@@ -92,6 +115,19 @@ theorem univChart_of_standardSmooth (G : Over (Spec (CommRingCat.of R))) [GrpObj
       rw [AlgHom.comp_apply, hπX, map_add, AlgHom.commutes] at this
       rw [← this, add_sub_cancel_left]
 
+/- English proof (translation)
+Set `inc : S →ₐ[R] R' ⊗[R] S` to `Algebra.TensorProduct.includeRight`. Set `j' : sp (R₀` to `R') (R' ⊗[R] S) ⟶ (Over.pullback (fB R R')).obj G := pullR G (spMap inc ≫ j)`. Establish `hpush : ∀ (A : Type) [CommRing A] [Algebra R' A] [Algebra R A] [IsScalarTower R R' A] (φ : R' ⊗[R] S →ₐ[R'] A), pushR G (spMap φ ≫ j') = spMap ((φ.restrictScalars R).comp inc) ≫ j`. Introduce `A _ _ _ _ φ`. Rewrite using `[pushR_spMap, pushR_pullR, ← Category.assoc, spMap_comp]`.
+
+Establish `hlift : ∀ (A : Type) [CommRing A] [Algebra R' A] [Algebra R A] [IsScalarTower R R' A] (φ : S →ₐ[R] A), ∃ φ' : R' ⊗[R] S →ₐ[R'] A, (φ'.restrictScalars R).comp inc = φ`. Introduce `A _ _ _ _ φ`. Use `⟨Algebra.TensorProduct.lift (Algebra.ofId R' A) φ fun _ _ => Commute.all _ _, ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Simplify using `[inc]`.
+
+Take `⟨ε', hε'⟩` from `hlift R' ε`. Use `univChart_of_standardSmooth _ n (R' ⊗[R] S) j' ε' ?_ ?_ ?_` and prove the remaining obligations. Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[hpush, hε', hε, pushR_one]`. Introduce `A _ _ aug hJ y hy`.
+
+Set `_ : Algebra R A` to `((algebraMap R' A).comp (algebraMap R R')).toAlgebra`. Establish `_ : IsScalarTower R R' A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hz : spMap (aug.restrictScalars R) ≫ pushR G y = spMap ε ≫ j`. Rewrite using `[← pushR_spMap, hy, pushR_one, hε]`. Take `⟨φ, h1, -⟩` from `SqZero.exists_chart_pt_of_nil j (aug.restrictScalars R) (aug_surj aug) (fun a ha => elt_nil _ hJ a ha) _ _ hz`.
+
+Take `⟨φ', h2⟩` from `hlift A φ`. Use `⟨φ', pushR_inj G ?_⟩` and prove the remaining obligations. Rewrite using `[hpush, h2, h1]`. Introduce `A _ _ φ φ' h`. Set `_ : Algebra R A` to `((algebraMap R' A).comp (algebraMap R R')).toAlgebra`.
+
+Establish `_ : IsScalarTower R R' A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h1` using `congrArg (pushR G) h`. Rewrite `h1` using `[hpush, hpush]`. Establish `h2` using `SqZero.chart_inj j h1`. Conclude with `Algebra.TensorProduct.ext (Subsingleton.elim _ _) h2`.
+-/
 theorem univChart_baseChange (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (n : ℕ)
     (S : Type) [CommRing S] [Algebra R S] [Algebra.IsStandardSmoothOfRelativeDimension n R S]
     (j : sp (R₀ := R) S ⟶ G) [IsOpenImmersion j.left] (R' : Type) [CommRing R'] [Algebra R R']
@@ -132,6 +168,15 @@ theorem univChart_baseChange (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (n 
     have h2 := SqZero.chart_inj j h1
     exact Algebra.TensorProduct.ext (Subsingleton.elim _ _) h2
 
+/- English proof (translation)
+Take `⟨B, j₀, hj₀, ⟨q, hq⟩, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := X.left) (x := x) (U := ⊤) trivial`. Use `letI : Algebra R B := (Spec.preimage (j₀ ≫ X.hom)).hom.toAlgebra`. Set `j : sp (R₀` to `R) B ⟶ X := Over.homMk j₀ (Spec.map_preimage (j₀ ≫ X.hom)).symm`. Establish `h1 : SmoothOfRelativeDimension n (Spec.map (CommRingCat.ofHom (algebraMap R B)))`. Establish `e : j₀ ≫ X.hom = Spec.map (CommRingCat.ofHom (algebraMap R B))` using `Over.w j`.
+
+Rewrite using `[← e, ← zero_add n]`. Use `infer_instance`. Take `⟨s, hs, H⟩` from `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n) (φ := CommRingCat.ofHom (algebraMap R B))).1 h1`. Take `⟨t, hts, htq⟩ : ∃ t ∈ s, t ∉ (q : PrimeSpectrum B).asIdeal` from `by by_contra! hc`. Conclude with `(q : PrimeSpectrum B).2.ne_top (top_le_iff.1 (hs ▸ Ideal.span_le.2 hc))`.
+
+Establish `hq' : (q : PrimeSpectrum B) ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away t)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away t) t]`. Conclude with `htq`. Take `⟨q', hq'⟩` from `hq'`. Establish `Ht` using `H t hts`.
+
+Rewrite `Ht` using `[CommRingCat.hom_ofHom, ← IsScalarTower.algebraMap_eq, RingHom.isStandardSmoothOfRelativeDimension_algebraMap]`. Use `⟨Localization.Away t, inferInstance, inferInstance, spMap (SqZero.awayHom R t) ≫ j, Ht, ?_, q', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away t))) ≫ j₀) infer_instance`. Rewrite using `[← hq, ← hq']`. Both sides reduce to the same expression.
+-/
 theorem exists_standardSmooth_chart (X : Over (Spec (CommRingCat.of R))) (n : ℕ)
     (h : SmoothOfRelativeDimension n X.hom) (x : X.left) :
     ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (j : sp (R₀ := R) S ⟶ X),
@@ -166,6 +211,13 @@ theorem exists_standardSmooth_chart (X : Over (Spec (CommRingCat.of R))) (n : �
   · rw [← hq, ← hq']
     rfl
 
+/- English proof (translation)
+Set `e : Spec (CommRingCat.of R) ⟶ G.left` to `η[G].left`. Take `⟨S, _, _, j, hS, hj, hmem⟩` from `exists_standardSmooth_chart G n h (e p)`. Take `⟨_, ⟨r, rfl⟩, hr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (e ⁻¹ᵁ j.left.opensRange).1) hmem (e ⁻¹ᵁ j.left.opensRange).2`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `SqZero.exists_chart_pt j (1 : sp (R₀ := R) (Localization.Away r) ⟶ G) (by`.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: PrimeSpectrum.comap (algebraMap R (Localization.Away r)) t ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `⟨t, rfl⟩`. Conclude with `hsub this)`.
+
+Conclude with `univChart_baseChange G n S j _ ε hε.symm`.
+-/
 theorem exists_univChart_away (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (n : ℕ)
     (h : SmoothOfRelativeDimension n G.hom) (p : PrimeSpectrum R) :
     ∃ r ∉ p.asIdeal, ∃ x : ∀ m : ℕ, sp (R₀ := Localization.Away r)
@@ -192,6 +244,9 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Introduce `R _ G _ _ n h p`. Take `⟨r, hr, x, hx⟩` from `exists_univChart_away G n h p`. Conclude with `⟨r, hr, _, Chart.basis_of_chart hx⟩`.
+-/
 theorem lie_locally_free :
     ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (n : ℕ),
       SmoothOfRelativeDimension n G.hom → ∀ p : PrimeSpectrum R, ∃ r ∉ p.asIdeal,

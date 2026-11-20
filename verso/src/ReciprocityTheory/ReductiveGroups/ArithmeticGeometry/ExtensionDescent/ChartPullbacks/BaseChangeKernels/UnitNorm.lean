@@ -15,6 +15,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.GtBCPf
 
 open Semi Geo.Tor PullGtPf
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [Scheme.Hom.naturality_assoc]`. Consider the case `rw [← Scheme.Hom.naturality_assoc]`. Rewrite using `[← Functor.map_comp, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 private lemma app_res_app_res_lemma {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens)
     (V : Y.Opens) (O : X.Opens) (hV : V ≤ g ⁻¹ᵁ U) (hO : O ≤ f ⁻¹ᵁ V) (hO' : O ≤ (f ≫ g) ⁻¹ᵁ U) :
     g.app U ≫ Y.presheaf.map (homOfLE hV).op ≫ f.app V ≫ X.presheaf.map (homOfLE hO).op =
@@ -25,6 +28,9 @@ private lemma app_res_app_res_lemma {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y �
   rw [← Functor.map_comp, ← Category.assoc]
   rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [Scheme.Hom.naturality_assoc]`. Consider the case `rw [← Scheme.Hom.naturality_assoc]`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma res_app_res_lemma_2 {X Y : Scheme.{0}} (f : X ⟶ Y) (V₁ V : Y.Opens) (O : X.Opens)
     (hV : V₁ ≤ V) (hO : O ≤ f ⁻¹ᵁ V₁) (hO' : O ≤ f ⁻¹ᵁ V) :
     Y.presheaf.map (homOfLE hV).op ≫ f.app V₁ ≫ X.presheaf.map (homOfLE hO).op =
@@ -35,6 +41,19 @@ private lemma res_app_res_lemma_2 {X Y : Scheme.{0}} (f : X ⟶ Y) (V₁ V : Y.O
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `p1 : e₂ ⁻¹ᵁ W' ⊓ V' ≤ (e₂ ≫ a) ⁻¹ᵁ W` using `inf_le_left.trans ((TopologicalSpace.Opens.map e₂.base).map (homOfLE hW')).le`. Establish `p2 : e₂ ⁻¹ᵁ W' ⊓ V' ≤ (ff ≫ e₁) ⁻¹ᵁ W` using `by rw [← he]; exact p1`. Establish `hq : e₂ ⁻¹ᵁ W' ⊓ V' ≤ ff ⁻¹ᵁ V` using `inf_le_right.trans hV'`. Establish `hO : e₂ ⁻¹ᵁ W' ⊓ V' ≤ ff ⁻¹ᵁ (e₁ ⁻¹ᵁ W ⊓ V)` using `by show _ ≤ ff ⁻¹ᵁ (e₁ ⁻¹ᵁ W) ⊓ ff ⁻¹ᵁ V`. Conclude with `le_inf p2 hq`.
+
+Establish `hC : ∀ (g₁ g₂ : S₂ ⟶ Y) (_ : g₁ = g₂) (p : e₂ ⁻¹ᵁ W' ⊓ V' ≤ g₁ ⁻¹ᵁ W) (q : e₂ ⁻¹ᵁ W' ⊓ V' ≤ g₂ ⁻¹ᵁ W), g₁.app W ≫ S₂.presheaf.map (homOfLE p).op = g₂.app W ≫ S₂.presheaf.map (homOfLE q).op`. Introduce `g₁ g₂ hg p q`. Substitute `hg` using the available equality. Both sides reduce to the same expression. Establish `hA` using `app_res_app_res_lemma e₂ a W W' (e₂ ⁻¹ᵁ W' ⊓ V') hW' inf_le_left p1`.
+
+Establish `hB` using `app_res_app_res_lemma ff e₁ W (e₁ ⁻¹ᵁ W ⊓ V) (e₂ ⁻¹ᵁ W' ⊓ V') inf_le_left hO p2`. Establish `hAB` using `hA.trans ((hC _ _ he p1 p2).trans hB.symm)`. Establish `hD` using `res_app_res_lemma_2 ff (e₁ ⁻¹ᵁ W ⊓ V) V (e₂ ⁻¹ᵁ W' ⊓ V') inf_le_right hO hq`. Establish `hE : ff.app V ≫ S₂.presheaf.map (homOfLE hV').op ≫ S₂.presheaf.map (homOfLE (inf_le_right : e₂ ⁻¹ᵁ W' ⊓ V' ≤ V')).op = ff.app V ≫ S₂.presheaf.map (homOfLE hq).op`. Rewrite using `[← Functor.map_comp]`.
+
+Both sides reduce to the same expression. Establish `key` using `congrArg (fun t => res hO (pullU ff _ t)) h`. Simplify using `only [map_mul, map_one] at key`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`.
+
+Use `ext`. Establish `hu` using `congrArg (fun φ => φ.hom (u : Γ(Y, W))) hAB`. Simplify `hu` using `[res, pullU]`. Use `ext`. Establish `hr` using `congrArg (fun φ => φ.hom (r : Γ(S₁, V))) (hE.trans hD.symm)`.
+
+Simplify `hr` using `[res, pullU]`.
+-/
 theorem unit_norm_pull {S₁ S₂ Y Z : Scheme.{0}} (e₁ : S₁ ⟶ Y) (e₂ : S₂ ⟶ Z) (a : Z ⟶ Y) (ff : S₂ ⟶ S₁)
     (he : e₂ ≫ a = ff ≫ e₁) {W : Y.Opens} (u : Γ(Y, W)ˣ) {W' : Z.Opens} (hW' : W' ≤ a ⁻¹ᵁ W)
     {V : S₁.Opens} (r : Γ(S₁, V)ˣ) {V' : S₂.Opens} (hV' : V' ≤ ff ⁻¹ᵁ V)
@@ -82,6 +101,11 @@ attribute [local instance] SplitExt.free SplitExt.finite
 
 variable {G : Over S} [GrpObj G] (d : E.GtDatum G)
 
+/- English proof (translation)
+Establish `hmB : (mB f E).e = f` using `rfl`. Establish `he : eSec ((Over.pullback f).obj G) ≫ pullback.fst G.hom f = (mB f E).e ≫ eSec G`. Rewrite using `[hmB]`. Simplify using `[eSec]`. Use `(pullback.lift_fst _ _ _).trans ?_` and prove the remaining obligations.
+
+Simplify using `using (pullback.condition_assoc (f := 𝟙 S) (g := f) η[G].left)`. Conclude with `unit_norm_pull (eSec G) (eSec ((Over.pullback f).obj G)) (pullback.fst G.hom f) (mB f E).e he (d.u (jj f E j) k) (pre_le f E d j) ((E.O (E.basis k)).rig.s (fun _ => jj f E j k)) (rigPull_le (mB f E).F (mB f E).e (mB f E).e_comm (E.O (E.basis k)).L (fun _ => j k)) (d.unit_norm (jj …`.
+-/
 theorem unit_normB (j : (pullExt f E).ChartIdx) (k : Module.Free.ChooseBasisIndex ℤ (pullExt f E).X) :
     res (inf_le_left : eSec ((Over.pullback f).obj G) ⁻¹ᵁ ((qB f d.q).left ⁻¹ᵁ (pullExt f E).chart j) ⊓
           (((pullExt f E).O ((pullExt f E).basis k)).L.pull (eSec (pullExt f E).B)).U (fun _ => j k) ≤

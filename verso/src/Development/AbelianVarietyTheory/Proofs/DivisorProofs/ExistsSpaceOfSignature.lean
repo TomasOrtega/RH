@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChiGrid
 
+/- English proof (translation)
+Establish `hne : ∀ (i : Fin p) (j : Fin q), Fin.castAdd q i ≠ Fin.natAdd p j` using `fun i j h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Use `⟨(finSumFinEquiv (m := p) (n := q)).symm, 1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_one, Formalism.UG.cT_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, Matrix.fromBlocks_apply₁₁, Matrix.diagonal_apply, Matrix.one_apply, (Fin.castAdd_injective p q).eq_iff]`. Simplify using `[Examples₂.sgn, Nat.not_le.2 i.isLt]`.
+
+Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₁₂, Matrix.diagonal_apply, Matrix.zero_apply]`. Rewrite using `[if_neg (hne i j)]`. Simplify using `only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₂₁, Matrix.diagonal_apply, Matrix.zero_apply]`. Rewrite using `[if_neg (hne j i).symm]`. Apply the tactic sequence `simp only [Formalism.UG.Jpq, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, finSumFinEquiv_apply_right, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Matrix.neg_apply, Matrix.one_apply, (Fin.natAdd_injective q p).eq_iff] split_ifs <;> simp [Examples₂.sgn]`.
+-/
 theorem hasSignature_diag_signs (p q : ℕ) : Formalism.UG.HasSignature
     (Matrix.diagonal fun i : Fin (p + q) => (Examples₂.sgn (decide (p ≤ (i : ℕ))) : ℂ)) p q := by
   have hne : ∀ (i : Fin p) (j : Fin q), Fin.castAdd q i ≠ Fin.natAdd p j := fun i j h => by
@@ -37,6 +44,13 @@ theorem hasSignature_diag_signs (p q : ℕ) : Formalism.UG.HasSignature
       Matrix.neg_apply, Matrix.one_apply, (Fin.natAdd_injective q p).eq_iff]
     split_ifs <;> simp [Examples₂.sgn]
 
+/- English proof (translation)
+Introduce `D ν q h`. Take `⟨p, rfl⟩ : ∃ p, ν = p + q` from `⟨ν - q, by omega⟩`. Use `⟨⟨diagSp D (p + q) (fun i => decide (p ≤ (i : ℕ))) p q, GlobalTheory.PlaceModel.latFrame _⟩, rfl, fun τ => ?_, fun τ => ?_, GlobalTheory.PlaceModel.isSelfDualC_latFrame _⟩` and prove the remaining obligations. Establish `hg : (diagSp D (p + q) (fun i => decide (p ≤ (i : ℕ))) p q).gram.map τ = Matrix.diagonal fun i : Fin (p + q) => (Examples₂.sgn (decide (p ≤ (i : ℕ))) : ℂ)`. Rewrite using `[diagSp_gram]`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `τ (if i = j then _ else 0) = if i = j then _ else 0`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Examples₂.map_sgn]`. Express the relevant statement in the definitionally equal form `Formalism.UG.HasSignature ((diagSp D (p + q) (fun i => decide (p ≤ (i : ℕ))) p q).gram.map τ) p q`. Rewrite using `[hg]`.
+
+Conclude with `hasSignature_diag_signs p q`. Rewrite using `[Nat.add_sub_cancel]`. Both sides reduce to the same expression.
+-/
 theorem exists_isV : ∀ (D : D7) (ν q : ℕ), q ≤ ν → ∃ X : LSp D, X.IsV ν q := by
   intro D ν q h
   obtain ⟨p, rfl⟩ : ∃ p, ν = p + q := ⟨ν - q, by omega⟩

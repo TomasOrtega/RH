@@ -45,6 +45,11 @@ end Series
 
 section Assemble
 
+/- English proof (translation)
+Establish `hc : Nat.card (𝓞 X.E ⧸ w.asIdeal) = g`. Rewrite using `[← hw, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 X.E ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact (Fact.out : g.Prime).ne_zero)`. Use `letI : Fintype (𝓞 X.E ⧸ w.asIdeal) := Fintype.ofFinite _`. Establish `hc' : Fintype.card (𝓞 X.E ⧸ w.asIdeal) = g` using `by rw [← Nat.card_eq_fintype_card, hc]`.
+
+Establish `: CharP (𝓞 X.E ⧸ w.asIdeal) g` using `charP_of_card_eq_prime hc'`. Conclude with `⟨(ZMod.ringEquiv _ hc').symm⟩`.
+-/
 theorem residueField_equiv_zmod {X : Fields} (w : IsDedekindDomain.HeightOneSpectrum (𝓞 X.E)) (g : ℕ) [Fact g.Prime]
     (hw : Ideal.absNorm w.asIdeal = g) : Nonempty ((𝓞 X.E ⧸ w.asIdeal) ≃+* ZMod g) := by
   have hc : Nat.card (𝓞 X.E ⧸ w.asIdeal) = g := by

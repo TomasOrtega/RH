@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.TanBasisLocal
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.Frames.existsUnique_glue_dual S Y n h hs (fun i => spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ w') (by`. Introduce `i j α β hα hβ`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, ← dualMap_comp, ← dualMap_comp, hα, hβ])`. Conclude with `key.unique e (fun _ => rfl)`.
+-/
 theorem dual_ext {S : Type} [CommRing S] {Y : Scheme.{0}} {n : ℕ} {h : Fin n → S}
     (hs : Ideal.span (Set.range h) = ⊤) {w w' : Sp (DualNumber S) ⟶ Y}
     (e : ∀ i, spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ w =
@@ -23,17 +26,26 @@ theorem dual_ext {S : Type} [CommRing S] {Y : Scheme.{0}} {n : ℕ} {h : Fin n �
         hα, hβ])
   exact key.unique e (fun _ => rfl)
 
+/- English proof (translation)
+The claim follows from `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of S) h hs).openCover.hom_ext _ _ e`.
+-/
 theorem base_ext {S : Type} [CommRing S] {Y : Scheme.{0}} {n : ℕ} {h : Fin n → S}
     (hs : Ideal.span (Set.range h) = ⊤) {w w' : Sp S ⟶ Y}
     (e : ∀ i, spMap (algebraMap S (Localization.Away (h i))) ≫ w =
       spMap (algebraMap S (Localization.Away (h i))) ≫ w') : w = w' :=
   (Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of S) h hs).openCover.hom_ext _ _ e
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by simp [dualMap]`.
+-/
 theorem fst_dual {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (TrivSqZeroExt.fstHom T T T).toRingHom.comp (dualMap ψ) =
       ψ.comp (TrivSqZeroExt.fstHom S S S).toRingHom :=
   RingHom.ext fun x => by simp [dualMap]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem eps_alg {S : Type} [CommRing S] (a : S) :
     (epsMul a).comp (algebraMap S (DualNumber S)) = algebraMap S (DualNumber S) :=
   RingHom.ext fun x => by
@@ -42,6 +54,9 @@ theorem eps_alg {S : Type} [CommRing S] (a : S) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Establish `e : (Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ x) ⟶ Over.mk x) ≫ (1 : Over.mk x ⟶ Xo.univ.t.G) = 1`. Simplify using `[Hom.one_def]`. Rewrite using `[← e, Over.comp_left]`. Both sides reduce to the same expression.
+-/
 theorem one_pull {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) :
     spMap ψ ≫ (1 : Over.mk x ⟶ Xo.univ.t.G).left = (1 : Over.mk (spMap ψ ≫ x) ⟶ Xo.univ.t.G).left := by
   have e : (Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ x) ⟶ Over.mk x) ≫
@@ -50,6 +65,9 @@ theorem one_pull {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp
   rw [← e, Over.comp_left]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, ← Category.assoc, spMap_comp_ring, dualMap_alg, ← spMap_comp_ring, Category.assoc]`. Rewrite using `[← Category.assoc, spMap_comp_ring, fst_dual, ← spMap_comp_ring, Category.assoc, h2, one_pull]`.
+-/
 theorem tan_pull {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) :
     IsTanAt (spMap ψ ≫ x) (spMap (dualMap ψ) ≫ v) := by
@@ -59,6 +77,9 @@ theorem tan_pull {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp
       Category.assoc]
   · rw [← Category.assoc, spMap_comp_ring, fst_dual, ← spMap_comp_ring, Category.assoc, h2, one_pull]
 
+/- English proof (translation)
+Use `⟨dual_ext hs fun i => ?_, base_ext hs fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, (hv i).1, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, dualMap_alg]`. Rewrite using `[one_pull, ← (hv i).2, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, fst_dual]`.
+-/
 theorem tan_local {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {n : ℕ} {h : Fin n → S}
     (hs : Ideal.span (Set.range h) = ⊤) {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
     (hv : ∀ i, IsTanAt (spMap (algebraMap S (Localization.Away (h i))) ≫ x)
@@ -68,6 +89,9 @@ theorem tan_local {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {n : ℕ} {h : Fin
       dualMap_alg]
   · rw [one_pull, ← (hv i).2, ← Category.assoc, ← Category.assoc, spMap_comp_ring, spMap_comp_ring, fst_dual]
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Take `⟨u', hu', rfl⟩` from `h'`. Establish `: u = u'` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Rewrite using `[this]`.
+-/
 theorem comb_unique {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {a : Fin m → S}
     {w w' : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsCombAt x v a w) (h' : IsCombAt x v a w') : w = w' := by
@@ -76,6 +100,9 @@ theorem comb_unique {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
   have : u = u' := funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)
   rw [this]
 
+/- English proof (translation)
+Use `⟨_, fun i => Over.homMk (spMap (epsMul (a i)) ≫ v i) ?_, fun i => rfl, rfl⟩` and prove the remaining obligations. Use `show (spMap (epsMul (a i)) ≫ v i) ≫ Xo.univ.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x`. Rewrite using `[Category.assoc, (hv i).1, ← Category.assoc, spMap_comp_ring, eps_alg]`.
+-/
 theorem comb_exists {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (hv : ∀ i, IsTanAt x (v i)) (a : Fin m → S) :
     ∃ w, IsCombAt x v a w := by
@@ -83,6 +110,9 @@ theorem comb_exists {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {m : ℕ}
   show (spMap (epsMul (a i)) ≫ v i) ≫ Xo.univ.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x
   rw [Category.assoc, (hv i).1, ← Category.assoc, spMap_comp_ring, eps_alg]
 
+/- English proof (translation)
+The claim follows from `isCombAt_pull α (by rw [← Category.assoc, spMap_comp_ring, hα]) (fun j => by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα]) (by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα]) ha`.
+-/
 theorem comb_pull_comp {S A C : Type} [CommRing S] [CommRing A] [CommRing C] {φ : S →+* A} {χ : S →+* C}
     (α : A →+* C) (hα : α.comp φ = χ) {x : Sp S ⟶ Xo.X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
@@ -93,6 +123,11 @@ theorem comb_pull_comp {S A C : Type} [CommRing S] [CommRing A] [CommRing C] {φ
     (fun j => by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα])
     (by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα]) ha
 
+/- English proof (translation)
+Establish `hB : TanBasis (spMap χ ≫ x) (fun k => spMap (dualMap χ) ≫ v k)`. Use `GlobalTheory.Frames.tanBasis_baseChange E H Dw l Xo _ _ α _ m _ hb` as an intermediate fact. Establish `e1 : spMap α ≫ spMap φ ≫ x = spMap χ ≫ x` using `by rw [← Category.assoc, spMap_comp_ring, hα]`. Establish `e2 : (fun k => spMap (dualMap α) ≫ spMap (dualMap φ) ≫ v k) = fun k => spMap (dualMap χ) ≫ v k`. Use function extensionality and compare the values at `fun k => by rw [← Category.assoc, spMap_comp_ring, ← dualMap_comp, hα]`.
+
+Rewrite `this` using `[e1, e2]`. Conclude with `this`. Conclude with `(hB.2 _ (tan_pull χ hw)).unique (comb_pull_comp α hα ha) (comb_pull_comp β hβ hb')`.
+-/
 theorem coeff_compat {S A B C : Type} [CommRing S] [CommRing A] [CommRing B] [CommRing C] {φ : S →+* A}
     {ψ : S →+* B} {χ : S →+* C} (α : A →+* C) (β : B →+* C) (hα : α.comp φ = χ) (hβ : β.comp ψ = χ)
     {x : Sp S ⟶ Xo.X} {m : ℕ}
@@ -111,6 +146,17 @@ theorem coeff_compat {S A B C : Type} [CommRing S] [CommRing A] [CommRing B] [Co
     exact this
   exact (hB.2 _ (tan_pull χ hw)).unique (comb_pull_comp α hα ha) (comb_pull_comp β hβ hb')
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x n h hs m v hb`. Establish `hv : ∀ k, IsTanAt x (v k)` using `fun k => tan_local hs fun i => (hb i).1 k`. Establish `hb' : ∀ f : Set.range h, TanBasis (spMap (algebraMap S (Localization.Away f.1)) ≫ x) (fun k => spMap (dualMap (algebraMap S (Localization.Away f.1))) ≫ v k)`. Introduce and unpack `⟨_, i, rfl⟩`. Conclude with `hb i`.
+
+Use `⟨hv, fun w hw => ?_⟩` and prove the remaining obligations. Use `choose d hd hdu using fun f : Set.range h => (hb' f).2 _ (tan_pull (algebraMap S (Localization.Away f.1)) hw)`. Establish `compat : ∀ (k : Fin m) (f g : Set.range h), IsLocalization.Away.awayToAwayRight (P` using `Localization.Away (f * g : S)) f.1 g (d f k) = IsLocalization.Away.awayToAwayLeft g.1 f (d g k) := by`. Introduce `k f g`. Set `α : Localization.Away f.1 →+* Localization.Away (f * g : S)` to `IsLocalization.Away.awayToAwayRight f.1 g`.
+
+Set `β : Localization.Away g.1 →+* Localization.Away (f * g : S)` to `IsLocalization.Away.awayToAwayLeft g.1 f`. Establish `hα : α.comp (algebraMap S _) = algebraMap S _` using `RingHom.ext fun s => IsLocalization.Away.awayToAwayRight_eq f.1 g.1 s`. Establish `hβ : β.comp (algebraMap S _) = algebraMap S _` using `RingHom.ext fun s => IsLocalization.Away.awayToAwayLeft_eq g.1 f.1 s`. Conclude with `congrFun (coeff_compat α β hα hβ hw (hb' f) (hd f) (hd g)) k`. Use `choose c hc hcu using fun k => Localization.existsUnique_algebraMap_eq_of_span_eq_top (Set.range h) hs (fun f => d f k) (compat k)`.
+
+Use `⟨c, ?_, fun a ha => funext fun k => hcu k _ fun f => ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `comb_exists hv c`. Establish `: w' = w` using `dual_ext hs fun i => by`. Set `f : Set.range h` to `⟨h i, i, rfl⟩`. Establish `h1` using `isCombAt_pull (algebraMap S (Localization.Away f.1)) rfl (fun _ => rfl) rfl hw'`.
+
+Establish `e : (fun j => algebraMap S (Localization.Away f.1) (c j)) = d f` using `funext fun j => hc j f`. Rewrite `h1` using `[e]`. Conclude with `comb_unique h1 (hd f)`. Conclude with `this ▸ hw'`. Conclude with `congrFun (hdu f _ (isCombAt_pull (algebraMap S (Localization.Away f.1)) rfl (fun _ => rfl) rfl ha)) k`.
+-/
 theorem tanBasis_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (n : ℕ) (h : Fin n → S), Ideal.span (Set.range h) = ⊤ → ∀ (m : ℕ) (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)), (∀ i, TanBasis (spMap (algebraMap S (Localization.Away (h i))) ≫ x) (fun k => spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ v k)) → TanBasis x v := by
   intro E _ _ _ H Dw l Xo S _ x n h hs m v hb
   have hv : ∀ k, IsTanAt x (v k) := fun k => tan_local hs fun i => (hb i).1 k

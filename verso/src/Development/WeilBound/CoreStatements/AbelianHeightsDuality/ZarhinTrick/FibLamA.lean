@@ -24,6 +24,11 @@ section Base
 
 variable {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S)
 
+/- English proof (translation)
+Establish `hl` using `congrArg CommaMorphism.left h`. Establish `hx` using `Over.w x`. Establish `hy` using `Over.w y`. Use `ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Conclude with `hl`. Simplify using `at hx hy`. Rewrite using `[hx, hy]`.
+-/
 theorem toBase_injective (G : Over S) {T : Over (Sp Ω)} {x y : T ⟶ (Over.pullback s).obj G}
     (h : toBase G s x = toBase G s y) : x = y := by
   have hl := congrArg CommaMorphism.left h
@@ -35,26 +40,41 @@ theorem toBase_injective (G : Over S) {T : Over (Sp Ω)} {x y : T ⟶ (Over.pull
   · dsimp at hx hy
     rw [hx, hy]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.UU.toBase_mul_pullback G s T x y`.
+-/
 theorem toBase_mul (G : Over S) [GrpObj G] {T : Over (Sp Ω)} (x y : T ⟶ (Over.pullback s).obj G) :
     toBase G s (x * y) = toBase G s x * toBase G s y := GlobalTheory.UU.toBase_mul_pullback G s T x y
 
+/- English proof (translation)
+Establish `h` using `toBase_mul s G (1 : T ⟶ (Over.pullback s).obj G) 1`. Rewrite `h` using `[_root_.mul_one]`. Simplify using `using h`.
+-/
 theorem toBase_one (G : Over S) [GrpObj G] {T : Over (Sp Ω)} :
     toBase G s (1 : T ⟶ (Over.pullback s).obj G) = 1 := by
   have h := toBase_mul s G (1 : T ⟶ (Over.pullback s).obj G) 1
   rw [_root_.mul_one] at h
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `toBase_mul s G x⁻¹ x`. Rewrite `h` using `[inv_mul_cancel, toBase_one]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem toBase_inv (G : Over S) [GrpObj G] {T : Over (Sp Ω)} (x : T ⟶ (Over.pullback s).obj G) :
     toBase G s x⁻¹ = (toBase G s x)⁻¹ := by
   have h := toBase_mul s G x⁻¹ x
   rw [inv_mul_cancel, toBase_one] at h
   exact eq_inv_of_mul_eq_one_left h.symm
 
+/- English proof (translation)
+Use `ext`. Simplify using `[toBase, Over.pullback, pullback.lift_fst]`.
+-/
 theorem toBase_map {G G' : Over S} (f : G ⟶ G') {T : Over (Sp Ω)} (x : T ⟶ (Over.pullback s).obj G) :
     toBase G' s (x ≫ (Over.pullback s).map f) = toBase G s x ≫ f := by
   ext
   simp [toBase, Over.pullback, pullback.lift_fst]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[toBase]`.
+-/
 theorem toBase_comp (G : Over S) {T T' : Over (Sp Ω)} (v : T' ⟶ T) (x : T ⟶ (Over.pullback s).obj G) :
     toBase G s (v ≫ x) = (Over.homMk v.left (by dsimp; rw [← Category.assoc, Over.w v]) : Over.mk (T'.hom ≫ s) ⟶ Over.mk (T.hom ≫ s)) ≫
       toBase G s x := by

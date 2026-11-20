@@ -24,6 +24,23 @@ namespace GlobalTheory.ChartUnram
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf
 
+/- English proof (translation)
+Distinguish the cases in `hN : ∃ N : ℕ, N ≠ 0 ∧ ¬ IsUnit (N : T.V)`. Use `left`. Take `⟨N, hN0, hNu⟩` from `hN`. Use `⟨IsFractionRing.injective T.V T.Fr, fun y => ?_⟩` and prove the remaining obligations. Establish `hNV0 : (N : T.V) ≠ 0` using `by exact_mod_cast hN0`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hNV0 hϖ`. Establish `hϖN : ϖ ∣ (N : T.V)`. Break down `m with _ | m` into its components or cases. Conclude with `absurd (hm.isUnit_iff.2 (by simp)) hNu`.
+
+Conclude with `(dvd_pow_self ϖ (Nat.succ_ne_zero m)).trans hm.symm.dvd`. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := T.V) y`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hs0 hϖ`. Take `⟨c, hc⟩ : s ∣ (N : T.V) ^ n` from `hn.dvd.trans (pow_dvd_pow_of_dvd hϖN n)`.
+
+Use `⟨c * a, N ^ n, pow_pos (Nat.pos_of_ne_zero hN0) n, ?_⟩` and prove the remaining obligations. Establish `hsK : algebraMap T.V T.Fr s ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective T.V T.Fr)]`. Conclude with `hs0`. Establish `hcast : ((N ^ n : ℕ) : T.Fr) = algebraMap T.V T.Fr ((N : T.V) ^ n)`.
+
+Rewrite using `[map_pow, map_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hcast, hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Use `right push Not at hN`. Establish `hu : ∀ z : nonZeroDivisors ℤ, IsUnit (Int.castRingHom T.V z)`. Introduce and unpack `⟨z, hz⟩`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`. Establish `h1` using `hN z.natAbs (Int.natAbs_ne_zero.2 hz0)`.
+
+Break down `Int.natAbs_eq z with h | h` into its components or cases. Use `show IsUnit ((z : ℤ) : T.V)`. Rewrite using `[h, Int.cast_natCast]`. Conclude with `h1`. Use `show IsUnit ((z : ℤ) : T.V)`.
+
+Rewrite using `[h, Int.cast_neg, Int.cast_natCast]`. Conclude with `h1.neg`. Conclude with `⟨(IsLocalization.lift (M := nonZeroDivisors ℤ) (S := ℚ) hu).toAlgebra⟩`.
+-/
 theorem isRQ_or_rat (T : CDVR) : TB.IsRQ (R := T.V) T.Fr ∨ Nonempty (Algebra ℚ T.V) := by
   by_cases hN : ∃ N : ℕ, N ≠ 0 ∧ ¬ IsUnit (N : T.V)
   · left
@@ -65,6 +82,13 @@ section Abstract
 variable {R k : Type} [CommRing R] [Field k] [Algebra ℚ k] [Algebra R k]
   {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Take `⟨h0, hh0⟩` from `GlobalTheory.canonGauge_exists R d O R B`. Take `⟨hc, hv⟩` from `GlobalTheory.canonGauge_nabVal_baseChange R d O B R k (Algebra.ofId R k) h0 hh0`. Establish `e` using `GlobalTheory.canonGauge_independence_harmonic R d O k B h _ hg hc T rr cc isX σ hcc hX hσ hsep (fun ℓ j => algebraMap R k (u ℓ j)) hu n (MvPolynomial.rename (CVA.lEq (T := T) (r := rr) (n := n)) P) (CVA.harm_rename (r := rr) (n := n) cc isX P hP.1.1) w0 m f`. Rewrite `e` using `[CVA.sum_rename, CVA.sum_rename]`. Simplify using `only [colM_lEq_colL] at e`.
+
+Rewrite using `[e]`. Use `Subring.sum_mem _ fun mo _ => Subring.mul_mem _ (hP.2 mo) (Subring.prod_mem _ fun b _ => ?_)` and prove the remaining obligations. Use `choose g hg' using hf b`. Establish `hfb : f b = MvPowerSeries.map (Algebra.ofId R k : R →+* k) (g : PS R 1 d)`. Use extensionality with `mm`.
+
+Conclude with `(hg' mm).symm`. Establish `h1` using `hv w0 m g _ u (MvPolynomial.monomial (colL rr n mo b) 1)`. Rewrite `h1` using `[MvPolynomial.map_monomial, map_one, ← hfb]`. Conclude with `⟨_, h1.symm⟩`.
+-/
 theorem value_mem_rat [Algebra ℚ R] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O]
     (B : FB R d O) (h : PS k 2 d) (hg : B.IsCanonGauge k h) (w0 : O) (m : ℕ)
     {T : Type} [Fintype T] (rr : T → ℕ) (cc : T → T) (hcc : ∀ τ, cc (cc τ) = τ) (isX : T → Prop)
@@ -95,6 +119,23 @@ theorem value_mem_rat [Algebra ℚ R] [Module.Free ℤ O] [Module.Finite ℤ O] 
   rw [MvPolynomial.map_monomial, map_one, ← hfb] at h1
   exact ⟨_, h1.symm⟩
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `EigA.eigLift_core hRQ B h hg (fun ℓ : (Σ τ : T, Fin (rr τ)) => ℓ.1) σ u hu hidem`. Establish `heig0 : ∀ ℓ ℓ' : (Σ τ : T, Fin (rr τ)), ℓ'.1 ≠ cc ℓ.1 → ∑ i, (algebraMap R k (φ ℓ' i) - (TB.sg1 k h).mulVec (fun j => algebraMap R k (u ℓ' j)) i) * algebraMap R k (u ℓ i) = 0`. Introduce `ℓ ℓ' hne`. Take `⟨x, hx⟩` from `hsep ℓ.1 (cc ℓ'.1) fun e => hne (by rw [e, hcc])`. Rewrite `hx` using `[hσ]`.
+
+Conclude with `hφ ℓ ℓ' ⟨x, sub_ne_zero.1 hx.ne_zero⟩`. Set `c : T → T` to `fun τ => if isX τ then τ else cc τ`. Set `s : T → Bool` to `fun τ => decide (isX τ)`. Establish `hcs : ∀ τ, c (cc τ) = c τ ∧ s (cc τ) ≠ s τ`. Introduce `τ`.
+
+Establish `hc : cc (cc τ) = τ` using `hcc τ`. Distinguish the cases in `h1 : isX τ`. Establish `h2 : ¬ isX (cc τ)` using `fun h2 => hX' τ ⟨h1, h2⟩`. Prove the components needed by the constructor for the conclusion. Simplify using `only [c, h1, h2, if_true, if_false, hc]`.
+
+Simplify using `[s, h1, h2]`. Establish `h2 : isX (cc τ)` using `(hX τ).resolve_left h1`. Prove the components needed by the constructor for the conclusion. Simplify using `only [c, h1, h2, if_true, if_false]`. Simplify using `[s, h1, h2]`.
+
+Establish `hnot : ∀ ℓ ℓ' : (Σ τ : T, Fin (rr τ)), ¬ (c ℓ.1 = c ℓ'.1 ∧ s ℓ.1 ≠ s ℓ'.1) → ℓ'.1 ≠ cc ℓ.1`. Introduce `ℓ ℓ' hn he'`. Apply `hn` to reduce the goal to its premises. Rewrite using `[he']`. Conclude with `⟨(hcs ℓ.1).1.symm, (hcs ℓ.1).2.symm⟩`.
+
+Establish `key` using `chartValJ (R := R) (k := k) hRQ 1 (Submodule.mem_one.2 ⟨1, map_one _⟩) B h hg w0 hw0 m rr cc hcc isX hX c s hcs u φ (fun _ _ => 0) (fun _ _ => Submodule.zero_mem _) (fun ℓ ℓ' hne => by simpa only [add_zero] using heig0 ℓ ℓ' hne) (fun ℓ ℓ' hn => by`. Establish `h1` using `hnot ℓ ℓ' hn`. Establish `h2 : ℓ.1 ≠ cc ℓ'.1` using `fun h2 => h1 (by rw [h2]; exact (hcc _).symm)`. Simplify using `only [TB.betaH]`. Rewrite using `[Finset.sum_sub_distrib, heig0 ℓ ℓ' h1]`.
+
+Establish `h3` using `heig0 ℓ' ℓ h2`. Simplify using `only [mul_comm] at h3 ⊢`. Rewrite using `[h3, sub_self])`. Use the proof step `(fun ℓ ℓ' _ => by simp [TB.betaH]) (fun ℓ ℓ' _ => by simp [TB.betaH])`. Use `n a P hP`.
+
+Use the proof step `(∑ mo ∈ P.support, ∑ b, TB.pairMin (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (colL _ n mo b))`. Use the proof step `(fun mo hmo => Finset.single_le_sum (f := fun mo => ∑ b, TB.pairMin (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (colL _ n mo b)) (fun _ _ => Nat.zero_le _) hmo) f hf`. Rewrite `key` using `[one_pow]`. Conclude with `Submodule.mem_one.1 key`.
+-/
 theorem value_mem_idem (hRQ : TB.IsRQ (R := R) k)
     (B : FB R d O) (h : PS k 2 d) (hg : B.IsCanonGauge k h) (w0 : O) (hw0 : w0 + star w0 = 1) (m : ℕ)
     {T : Type} [Fintype T] (rr : T → ℕ) (cc : T → T) (hcc : ∀ τ, cc (cc τ) = τ) (isX : T → Prop)
@@ -165,6 +206,31 @@ end GlobalTheory.ChartUnram
 
 open GlobalTheory.ChartUnram ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hdisc e w n`. Use `GlobalTheory.PlaceInt.chBound_of_columns E H Dw l Xo c hstar T io y C e 0 w n fun k P hP f hf => ?_` and prove the remaining obligations. Use `letI := io.toAlgebra`. Take `⟨B, hBT, hB⟩` from `GlobalTheory.PlaceInt.integralBiext_gauge_eig_bound E H Dw l Xo c hstar T io y C`. Take `⟨hg, -, heig, -⟩` from `hB B hBT`.
+
+Take `⟨gF, gA, -, -, -, -, gu⟩` from `C.gen.1`. Establish `hu : C.ch.uvec = fun ℓ i => algebraMap T.V T.Fr (C.uvecT ℓ i)` using `funext fun ℓ => funext fun i => gu ℓ i`. Rewrite `heig` using `[hu]`. Establish `eF : B.FK T.Fr = C.ch.B.FK T.Fr`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B.G.F i) = MvPowerSeries.map _ (C.ch.B.G.F i)`. Rewrite using `[ChartBiext.toK_self, gF, hBT.1]`. Establish `eA : ∀ a, B.actK T.Fr a = C.ch.B.actK T.Fr a`. Introduce `a`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B.A.act a i) = MvPowerSeries.map _ (C.ch.B.A.act a i)`. Rewrite using `[ChartBiext.toK_self, gA, hBT.2.1]`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => star_star τ`. Establish `hσ : ∀ (τ : E →+* ℂ) (a : 𝓞 E), (io.comp (embK c (ComplexEmbedding.conjugate τ))) a = (io.comp (embK c τ)) (star a)`. Introduce `τ a`.
+
+Use `congrArg io (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((embK c _ a : c.F) : ℂ) = ((embK c _ _ : c.F) : ℂ)`. Simplify using `only [embK_coe]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, hstar, H.bar_eq, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `hsep : ∀ τ τ' : E →+* ℂ, τ ≠ τ' → ∃ a, IsUnit ((io.comp (embK c τ)) a - (io.comp (embK c τ')) a)`.
+
+Introduce `τ τ' hne`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `hne` to reduce the goal to its premises. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun x => ?_` and prove the remaining obligations.
+
+Establish `h0` using `hall x`. Rewrite `h0` using `[isUnit_iff_ne_zero, not_not, sub_eq_zero]`. Establish `h2` using `congrArg (fun z : c.F => (z : ℂ)) (io.injective h0)`. Simplify `h2` using `only [embK_coe]`. Establish `key : ∑ mo ∈ P.support, P.coeff mo * ∏ b, B.nabVal T.Fr C.ch.h H.w0 k (f b) (fun ℓ j => algebraMap T.V T.Fr (C.uvecT ℓ j)) (MvPolynomial.monomial (colL Dw.mult n mo b) 1) ∈ (algebraMap T.V T.Fr).range`.
+
+Break down `isRQ_or_rat T with hRQ | ⟨⟨_⟩⟩` into its components or cases. Establish `hunit : IsUnit (((discr E).natAbs : ℕ) : T.V)`. Break down `Int.natAbs_eq (discr E) with h | h` into its components or cases. Rewrite `hdisc` using `[h, Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite `hdisc` using `[h, Int.cast_neg, Int.cast_natCast]`.
+
+Simplify using `using hdisc.neg`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : T.V, algebraMap T.V T.Fr v * (((discr E).natAbs : ℕ) : T.Fr) = 1 := by`. Use `⟨↑hunit.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap T.V T.Fr), ← map_mul, hunit.val_inv_mul, map_one]`. Establish `hint : ∀ τ : E →+* ℂ, ∀ x : 𝓞 E, ∃ v : T.V, algebraMap T.V T.Fr v = (io.comp (embF c τ)) (algebraMap (𝓞 E) E x)`.
+
+Introduce `τ x`. Take `⟨Q, hPm, hPe⟩` from `RingOfIntegers.isIntegral_coe x`. Use `IsIntegrallyClosed.isIntegral_iff.1 ⟨Q.map (Int.castRingHom T.V), hPm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, RingHom.ext_int ((algebraMap T.V T.Fr).comp (Int.castRingHom T.V)) ((io.comp (embF c τ)).comp (algebraMap ℤ E)), ← Polynomial.hom_eval₂]`. Conclude with `(congrArg _ hPe).trans (map_zero _)`.
+
+Conclude with `value_mem_idem hRQ B C.ch.h hg H.w0 (by rw [hstar]; exact CVA.cmHostUnit_add_conj_eq_one H) k Dw.mult _ hcc (InPsi H) (CVA.inPsi_or H) (CVA.not_inPsi_both H) (fun τ => io.comp (embK c τ)) hσ hsep (fun τ => EigA.idem_data (io.comp (embF c τ)) (hint τ) v hv) C.uvecT heig n _ P hP f …`. Conclude with `value_mem_rat B C.ch.h hg H.w0 k Dw.mult _ hcc (InPsi H) (CVA.inPsi_or H) (fun τ => io.comp (embK c τ)) hσ hsep C.uvecT heig n _ P hP f hf`. Rewrite using `[neg_zero, EReal.coe_zero]`. Use `nval_nonneg_of_int e ?_` and prove the remaining obligations. Unfold `FB.nabVal FB.hL at key ⊢`.
+
+Rewrite `key` using `[eF, eA]`. Rewrite using `[hu]`. Conclude with `key`.
+-/
 theorem GlobalTheory.PlaceInt.chBound_zero_of_isUnit_discr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), IsUnit ((NumberField.discr E : ℤ) : T.V) → ∀ (e : ℕ) (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ChBound C e 0 w n := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hdisc e w n
   refine GlobalTheory.PlaceInt.chBound_of_columns E H Dw l Xo c hstar T io y C e 0 w n fun k P hP f hf => ?_

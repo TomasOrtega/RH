@@ -10,6 +10,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealWeil.DRhoTransfer.dRho_intertwine | exact GlobalTheory.RealWeil.DRhoTransfer.dRho_intertwine | (intros; apply GlobalTheory.RealWeil.DRhoTransfer.dRho_intertwine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.derived_action_intertwines_of_group : ∀ (l : Type) [Fintype l] (L' : (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ))
     (A' : GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l) (C : ℝ≥0∞), C ≠ ⊤ →
     (∀ f, ∫⁻ x, ‖A' f x‖ₑ ^ 2 ≤ C * ∫⁻ x, ‖f x‖ₑ ^ 2) →

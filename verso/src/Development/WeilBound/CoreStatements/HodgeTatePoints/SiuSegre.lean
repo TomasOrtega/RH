@@ -10,6 +10,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH Groun
 
 namespace PositivityTheory.HtPt.Siub
 
+/- English proof (translation)
+The claim follows from `siu_segre_of PositivityTheory.HtPt.Siua.siu_num`.
+-/
 theorem siu_segre :
     VeryAmpleNefPlusAmple.Statement → SectionCount.Statement → ∀ (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (d : ℕ) (μ : K → ℤ), (∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) → GroundTheory.Heights₂.Heights.FieldNumbers.relDim (mIdealOver F y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ)) → IsNef F y μ → 0 < GroundTheory.Heights₂.Heights.NumbersDVR.intNum F (mIdealOver F y) (fun _ : Fin (d + 1) => μ) → ∃ a : ℕ, 1 ≤ a ∧ ∃ σ ∈ secOver F y (a • μ - 1), σ ≠ 0 :=
   siu_segre_of PositivityTheory.HtPt.Siua.siu_num

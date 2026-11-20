@@ -6,6 +6,9 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Conclude with `Module.length_eq_add_of_exact _ _ (LocalizedModule.map_injective _ g hg) (LocalizedModule.map_surjective _ h hh) (LocalizedModule.map_exact _ g h ex)`.
+-/
 theorem length_loc_add {M₀ M₁ M₂ : Type*} [AddCommGroup M₀] [AddCommGroup M₁] [AddCommGroup M₂]
     [Module R M₀] [Module R M₁] [Module R M₂] (g : M₀ →ₗ[R] M₁) (h : M₁ →ₗ[R] M₂)
     (hg : Function.Injective g) (hh : Function.Surjective h) (ex : Function.Exact g h)
@@ -16,6 +19,23 @@ theorem length_loc_add {M₀ M₁ M₂ : Type*} [AddCommGroup M₀] [AddCommGrou
   exact Module.length_eq_add_of_exact _ _ (LocalizedModule.map_injective _ g hg)
     (LocalizedModule.map_surjective _ h hh) (LocalizedModule.map_exact _ g h ex)
 
+/- English proof (translation)
+Set `g : (R ⧸ q) →ₗ[R] (R ⧸ I)` to `Submodule.mapQ q I (LinearMap.mulRight R f) (by intro x hx; exact (hq x).mp hx)`. Set `π : (R ⧸ I) →ₗ[R] (R ⧸ (I ⊔ Ideal.span {f}))` to `Submodule.mapQ I (I ⊔ Ideal.span {f}) LinearMap.id (by intro x hx; exact Ideal.mem_sup_left hx)`. Establish `hg : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := I) (x * f) = 0 at hz`. Rewrite `hz` using `[Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := q) x = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `(hq x).mpr hz`. Establish `hπ : Function.Surjective π`. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+
+Establish `hex : Function.Exact g π`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := I ⊔ Ideal.span {f}) y = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Use `⟨Submodule.Quotient.mk r, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := I) (r * f) = Submodule.Quotient.mk (a + r * f)`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `using I.neg_mem ha`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := I) (x * f) = Submodule.Quotient.mk y at hx`. Rewrite `hx` using `[Submodule.Quotient.eq]`. Establish `e : y = x * f - (x * f - y)` using `by ring`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨x, rfl⟩)) (Ideal.mem_sup_left hx)`.
+
+Conclude with `length_loc_add g π hg hπ hex P`.
+-/
 theorem length_loc_step (I q : Ideal R) (f : R) (hq : ∀ g, g ∈ q ↔ g * f ∈ I) (P : Ideal R)
     [P.IsPrime] :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (R ⧸ I)) =
@@ -62,6 +82,13 @@ theorem length_loc_step (I q : Ideal R) (f : R) (hq : ∀ g, g ∈ q ↔ g * f �
         (Ideal.mem_sup_left hx)
   exact length_loc_add g π hg hπ hex P
 
+/- English proof (translation)
+Take `⟨s, hsq, hsP⟩` from `SetLike.not_le_iff_exists.mp h`. Rewrite using `[Module.length_eq_zero_iff]`. Use `subsingleton_of_forall_eq 0 (fun z => ?_)` and prove the remaining obligations. Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `h m t`.
+
+Rewrite using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Use `⟨⟨s, hsP⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def]`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `q.mul_mem_right _ hsq`.
+-/
 theorem length_loc_quot_eq_zero (q P : Ideal R) [P.IsPrime] (h : ¬ q ≤ P) :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (R ⧸ q)) = 0 := by
   obtain ⟨s, hsq, hsP⟩ := SetLike.not_le_iff_exists.mp h
@@ -77,6 +104,19 @@ theorem length_loc_quot_eq_zero (q P : Ideal R) [P.IsPrime] (h : ¬ q ≤ P) :
       Ideal.Quotient.eq_zero_iff_mem]
     exact q.mul_mem_right _ hsq
 
+/- English proof (translation)
+Rewrite using `[Module.length_eq_one_iff, isSimpleModule_iff_toSpanSingleton_surjective]`. Establish `hne : ∀ (r : R) (t : P.primeCompl), LocalizedModule.mk (Ideal.Quotient.mk P r) t = 0 → r ∈ P`. Introduce `r t h0`. Rewrite `h0` using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h0`.
+
+Rewrite `hu` using `[smul_zero, Submonoid.smul_def, Submonoid.smul_def, Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, smul_zero, Ideal.Quotient.eq_zero_iff_mem]`. Break down `Ideal.IsPrime.mem_or_mem ‹P.IsPrime› hu with h1 | h1` into its components or cases. Conclude with `absurd h1 u.2`. Break down `Ideal.IsPrime.mem_or_mem ‹P.IsPrime› h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 t.2`.
+
+Conclude with `h2`. Prove the components needed by the constructor for the conclusion. Use `⟨⟨LocalizedModule.mk (Ideal.Quotient.mk P 1) 1, 0, fun h0 => ?_⟩⟩` and prove the remaining obligations. Conclude with `‹P.IsPrime›.ne_top ((Ideal.eq_top_iff_one P).mpr (hne 1 1 h0))`. Introduce `x hx y`.
+
+Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Establish `hr : r ∈ P.primeCompl` using `fun hrP => hx (by`. Rewrite using `[(Ideal.Quotient.eq_zero_iff_mem.mpr hrP), LocalizedModule.zero_mk])`.
+
+Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m' t'`. Take `⟨r', rfl⟩` from `Ideal.Quotient.mk_surjective m'`. Use `⟨Localization.mk (r' * t) (t' * ⟨r, hr⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`.
+
+Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, Submonoid.smul_def, Submonoid.coe_mul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem length_loc_quot_self (P : Ideal R) [P.IsPrime] :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (R ⧸ P)) = 1 := by
   rw [Module.length_eq_one_iff, isSimpleModule_iff_toSpanSingleton_surjective]
@@ -112,12 +152,18 @@ theorem length_loc_quot_self (P : Ideal R) [P.IsPrime] :
         congr 1
         ring
 
+/- English proof (translation)
+Apply `length_loc_quot_eq_zero` to reduce the goal to its premises. Introduce `h`. Conclude with `‹P.IsPrime›.ne_top (top_le_iff.mp h)`.
+-/
 theorem length_loc_top (P : Ideal R) [P.IsPrime] :
     Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl (R ⧸ (⊤ : Ideal R))) = 0 := by
   apply length_loc_quot_eq_zero
   intro h
   exact ‹P.IsPrime›.ne_top (top_le_iff.mp h)
 
+/- English proof (translation)
+The claim follows from `| 0, F, f, q, hlast, _, _ => by rw [show F 0 = F (Fin.last 0) from rfl, hlast, length_loc_top] simp | N + 1, F, f, q, hlast, hj, hmin => by have ih := length_loc_chain P N (fun j => F j.succ) (fun j => f j.succ) (fun j => q j.succ) (by simpa [Fin.succ_last] using hlast) (fun j => …`.
+-/
 theorem length_loc_chain (P : Ideal R) [P.IsPrime] : ∀ (N : ℕ) (F : Fin (N + 1) → Ideal R)
     (f : Fin N → R) (q : Fin N → Ideal R), F (Fin.last N) = ⊤ →
     (∀ j : Fin N, F j.succ = F j.castSucc ⊔ Ideal.span {f j} ∧ (q j).IsPrime ∧

@@ -19,6 +19,57 @@ noncomputable section
 
 namespace GlobalTheory.LiftDat
 
+/- English proof (translation)
+Introduce `D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4`. Establish `Irow` using `GlobalTheory.T.frameAdjoint_partAt_movedRationalPoint_row D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4`. Establish `Iint` using `GlobalTheory.T.latticeVector_adjointRow_integral D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4`. Establish `Iker` using `GlobalTheory.T.adjointFrameRowReduction_eq_zero_iff_mem D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4`. Establish `Isurj` using `GlobalTheory.T.rowReduction_surjective_latticeVectors_places D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4`.
+
+Establish `Ilin` using `GlobalTheory.T.adjointFrameRowReduction_conjLinear_integers D T βT a e`. Use `set R := GlobalTheory.LiftDat.rowRed T βT a e with hR`. Establish `hz : ∀ PP, R PP 0 = 0`. Introduce `PP`. Establish `hi` using `Iint 0 (zero_mem _)`.
+
+Establish `h` using `(Ilin PP 0 0 hi hi 1).2`. Simplify using `only [smul_zero, add_zero, map_one, one_mul] at h`. Use function extensionality and compare the values at `j`. Establish `h'` using `congrFun h j`. Simplify using `only [Pi.zero_apply]`.
+
+Take the linear combination `-h'`. Establish `hsum : ∀ PP (s : Finset (Fin T.rank)) (c : Fin T.rank → 𝓞 D.host.E) (u : Fin T.rank → Fin T.rank → D.host.E) (v : Fin T.rank → D.host.E), (∀ j, u j ∈ C.X.Λ) → v ∈ C.X.Λ → R PP (∑ j ∈ s, c j • u j + v) = fun l => ∑ j ∈ s, Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar (c j) …`. Introduce `PP s c u v hu hv`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert j s hj ih`. Establish `hm : ∑ j ∈ s, c j • u j + v ∈ C.X.Λ` using `add_mem (sum_mem fun j _ => Submodule.smul_mem _ _ (hu j)) hv`. Rewrite using `[Finset.sum_insert hj, add_assoc]`. Rewrite using `[show c j • u j = ((c j : D.host.E)) • u j from rfl]`. Rewrite using `[(Ilin PP (u j) _ (Iint _ (hu j)) (Iint _ hm) (c j)).2, ih]`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_insert hj]`. Expand and normalize the polynomial expressions, which then agree. Use `choose β hβΛ hβred using fun j : Fin T.rank => Isurj (fun PP => Pi.single j 1)`. Establish `hexp : ∀ PP ∈ Pg ∪ Q, ∀ (c : Fin T.rank → 𝓞 D.host.E) (w : Fin T.rank → D.host.E), w ∈ C.X.Λ → ∀ l, R PP (∑ j, c j • β j + w) l = Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar (c l)) + R PP w l`.
+
+Introduce `PP hPP c w hw l`. Rewrite using `[hsum PP Finset.univ c β w hβΛ hw]`. Simplify using `only [hβred _ PP hPP, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hsp : C.X.Λ ≤ Submodule.span (𝓞 D.host.E) (Set.range β) ⊔ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ`. Introduce `v hv`.
+
+Use `choose c hc using fun j => GlobalTheory.T.exists_integer_conj_prescribed_residues_places D (Pg ∪ Q) (fun PP => R PP v j)`. Establish `hw : v - ∑ j, c j • β j ∈ C.X.Λ` using `sub_mem hv (sum_mem fun j _ => Submodule.smul_mem _ _ (hβΛ j))`. Establish `hw0 : v - ∑ j, c j • β j ∈ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ`. Use `(Iker _ hw).1 fun PP hPP => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `l`.
+
+Establish `h` using `hexp PP hPP c _ hw l`. Rewrite `h` using `[add_sub_cancel, hc l PP hPP]`. Simplify using `only [Pi.zero_apply]`. Take the linear combination `-h`. Establish `e1 : v = ∑ j, c j • β j + (v - ∑ j, c j • β j)` using `by abel`.
+
+Rewrite using `[e1]`. Conclude with `Submodule.add_mem_sup (sum_mem fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)) hw0`. Take `⟨Lv0, hw⟩` from `GlobalTheory.Ker.Base.exists_level C.X`. Establish `hle : ∀ PP ∈ Pg ∪ Q, GlobalTheory.LiftLevel.liftI Pg Q ≤ conjI PP.asIdeal` using `fun PP h => GlobalTheory.LiftDat.liftI_le h`. Establish `hnot : ∀ PP ∈ Pg ∪ Q, ∀ s : 𝓞 D.host.E, IsCoprime (Ideal.span {s}) (GlobalTheory.LiftLevel.liftI Pg Q) → GlobalTheory.SW.Lev.bar s ∉ PP.asIdeal`.
+
+Introduce `PP hPP s hs hmem`. Take `⟨x, m, hm, hxm⟩` from `GlobalTheory.SW.Lev.cop_iff.1 hs`. Establish `h1m : (1 : 𝓞 D.host.E) ∈ conjI PP.asIdeal`. Rewrite using `[← hxm]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (GlobalTheory.SW.Lev.mem_conjI.2 hmem)) (hle PP hPP hm)`.
+
+Use `GlobalTheory.SW.Lev.mem_conjI.1 h1m` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Establish `hind : ∀ d : Fin T.rank → 𝓞 D.host.E, GlobalTheory.SW.Cong C.X (GlobalTheory.LiftLevel.liftI Pg Q) (∑ j, d j • β j) 0 → ∀ j, d j ∈ GlobalTheory.LiftLevel.liftI Pg Q`. Introduce `d ⟨s, hs, hsm⟩ j`.
+
+Rewrite `hsm` using `[sub_zero, Finset.smul_sum]`. Establish `e2 : ∑ j, s • d j • β j = ∑ j, (s * d j) • β j + 0`. Rewrite using `[add_zero]`. Conclude with `Finset.sum_congr rfl fun j _ => (mul_smul _ _ _).symm`. Rewrite `hsm` using `[e2]`.
+
+Use `GlobalTheory.T.mem_conjugatePlacesProductIdeal_of_forall_conj_place D Pg Q _ fun PP hPP => ?_` and prove the remaining obligations. Establish `h0` using `hexp PP hPP (fun j => s * d j) 0 (zero_mem _) j`. Establish `hmemΛ : ∑ j, (s * d j) • β j + 0 ∈ C.X.Λ` using `add_mem (sum_mem fun j _ => Submodule.smul_mem _ _ (hβΛ j)) (zero_mem _)`. Rewrite `h0` using `[(Iker _ hmemΛ).2 hsm PP hPP, hz]`. Simplify using `only [Pi.zero_apply, add_zero, map_mul] at h0`.
+
+Establish `h0' : GlobalTheory.SW.Lev.bar s * GlobalTheory.SW.Lev.bar (d j) ∈ PP.asIdeal` using `Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_mul]; exact h0.symm)`. Break down `PP.isPrime.mem_or_mem h0' with h | h` into its components or cases. Conclude with `absurd h (hnot PP hPP s hs)`. Conclude with `GlobalTheory.SW.Lev.mem_conjI.2 h`. Use `⟨GlobalTheory.LiftDat.mkLevel C Pg Q ξ h1 h2 h3 h4 β hβΛ hsp Lv0, rfl, hw, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `κ hκ κ' hκ' PP hPP i j`. Establish `hm` using `GlobalTheory.LiftDat.mem_Jgrp.1 hκ PP hPP`. Establish `hij` using `congrArg (fun g : GL (Fin T.rank) (𝓞 D.host.E ⧸ conjI PP.asIdeal) => g.val i j) hm`. Establish `hk` using `congrFun (congrFun hκ' i) j`. Express the relevant statement in the definitionally equal form `(GlobalTheory.LiftDat.toConj Pg Q PP (Finset.mem_union_left _ hPP)) (κ.val i j) = (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E ⧸ conjI PP.asIdeal)) i j at hij`.
+
+Simplify using `only [Matrix.map_apply] at hk`. Rewrite `hij` using `[← hk]`. Establish `hij2 : Ideal.Quotient.mk (conjI PP.asIdeal) (κ' i j) = (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E ⧸ conjI PP.asIdeal)) i j` using `hij`. Rewrite using `[← Ideal.Quotient.eq, hij2]`. Distinguish the cases in `hij' : i = j`.
+
+Substitute `hij'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij']`. Introduce `y hy`. Establish `hrow : ∀ i, y i ∈ C.X.Λ`.
+
+Introduce `i`. Establish `key : ∀ z ∈ tens (stdL D.host.E S.rank) ((Ideal.span {2} * conjI (GlobalTheory.LiftLevel.liftI Pg Q)) • C.X.Λ), z i ∈ C.X.Λ`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+
+Take `⟨v, hv, u, hu, rfl⟩` from `hz`. Establish `hvi : IsIntegral ℤ (v i)` using `(GlobalTheory.SW.Base.mem_stdL _).1 hv i`. Establish `: vecMulVec v u i = (⟨v i, hvi⟩ : 𝓞 D.host.E) • u`. Use function extensionality and compare the values at `k`. Rewrite using `[vecMulVec_apply, Pi.smul_apply, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_le_right hu)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+
+Consider the case `neg x _ hx => exact neg_mem hx`. Conclude with `key y hy`. Establish `hdec : ∀ i, ∃ c : Fin T.rank → 𝓞 D.host.E, y i - ∑ j, c j • β j ∈ GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ`. Introduce `i`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (hsp (hrow i))`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hp`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, ← hpq, add_sub_cancel_left]`. Conclude with `hq`. Use `choose c hc using hdec`.
+
+Use `GlobalTheory.T.levelDatum_conjugatePlacesLevel_eq_characters D S T C hn Pg Q ξ h1 h2 h3 h4 β hβΛ hsp Lv0 hind y c hc _ ?_` and prove the remaining obligations. Introduce `PP hPP i j`. Rewrite using `[Irow]`. Establish `hw : y i - ∑ j, c i j • β j ∈ C.X.Λ` using `sub_mem (hrow i) (sum_mem fun j _ => Submodule.smul_mem _ _ (hβΛ j))`. Establish `h` using `hexp PP hPP (c i) _ hw j`.
+
+Rewrite `h` using `[add_sub_cancel, (Iker _ hw).2 (hc i) PP hPP, Pi.zero_apply, add_zero]`. Conclude with `h`.
+-/
 theorem level_datum_eq : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊤ → GlobalTheory.LiftLevel.liftI Pg Q ≠ ⊥ → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) → IsCoprime (GlobalTheory.LiftLevel.liftI Pg Q) (Ideal.span {2}) → ∃ Lv : GlobalTheory.SW.Level C.X, Lv.𝔪 = GlobalTheory.LiftLevel.liftI Pg Q ∧ IdemTwo Lv.w ∧ (∀ κ ∈ Lv.J, ∀ κ' : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E), κ'.map (Ideal.Quotient.mk Lv.𝔪) = (κ : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E ⧸ Lv.𝔪)) → ∀ PP ∈ Pg, ∀ i j, κ' i j - (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E)) i j ∈ conjI PP.asIdeal) ∧ ∀ y ∈ tens (stdL D.host.E S.rank) ((Ideal.span {2} * conjI Lv.𝔪) • C.X.Λ), Lv.dat hn y = omegaK Pg (fun PP => redM PP (frMapAdj S T βS βT (GlobalTheory.LiftLevel.partAt (cA D e) (actO S T k₀ 1 (finW S T y))))) * omegaQ Q T.rank ξ (-1) (fun PP => redM PP (frMapAdj S T βS βT (GlobalTheory.LiftLevel.partAt (cA D e) (actO S T k₀ 1 (finW S T y))))) := by
   intro D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4
   have Irow := GlobalTheory.T.frameAdjoint_partAt_movedRationalPoint_row D S T C hn ΛT hsd hAA βS βT hfS hfT Pg Q ξ hPg h2P e he a k₀ hab hmov hgen h1 h2 h3 h4

@@ -15,6 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g : HA (Af F) σ J => lin (Af F) σ J g (ratV (F` using `F) (Af F) (P.e b)) := PI.LevelKSplit.W.ExC.continuous_lin _`. Establish `h0 : Continuous fun g : HA (Af F) σ J => ((ratV (F` using `F) (Af F) (P.f a), lin (Af F) σ J g (ratV (F := F) (Af F) (P.e b))) : (Fin M → Af F ⊗[F] E) × (Fin M → Af F ⊗[F] E)) := continuous_const.prodMk h1`. Establish `h3` using `PI.VolStabSW.continuous_hR (R := Af F) σ J`. Establish `h2` using `h3.comp h0`. Unfold `uT`.
+
+Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `h2`. Conclude with `continuous_const`. Conclude with `continuous_const`.
+-/
 theorem continuous_uT (P : Frame E M r) (a b : Fin r) :
     Continuous fun g : HA (Af F) σ J => uT (Af F) σ J P g a b := by
   have h1 : Continuous fun g : HA (Af F) σ J => lin (Af F) σ J g (ratV (F := F) (Af F) (P.e b)) :=
@@ -32,6 +37,9 @@ theorem continuous_uT (P : Frame E M r) (a b : Fin r) :
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+Simplify using `only [levL, map_add, map_sum, map_smul]`. Use `(continuous_const.add (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => (hU a b).smul continuous_const)).add (continuous_finset_sum _ fun d _ => continuous_finset_sum _ fun b _ => (hW d b).smul continuous_const)` and prove the remaining obligations.
+-/
 theorem continuous_levL_mat (T : F) (P : Frame E M r) {X : Type} [TopologicalSpace X]
     {U W : X → Matrix (Fin r) (Fin r) (Af F ⊗[F] E)}
     (hU : ∀ a b, Continuous fun x => U x a b) (hW : ∀ a b, Continuous fun x => W x a b) :
@@ -41,6 +49,19 @@ theorem continuous_levL_mat (T : F) (P : Frame E M r) {X : Type} [TopologicalSpa
     (hU a b).smul continuous_const)).add
     (continuous_finset_sum _ fun d _ => continuous_finset_sum _ fun b _ => (hW d b).smul continuous_const)
 
+/- English proof (translation)
+Establish `hU : ∀ a b, Continuous fun g : HA (Af F) σ J => uT (Af F) σ J P g a b` using `continuous_uT P`. Establish `hUm : Continuous fun g : HA (Af F) σ J => uT (Af F) σ J P g` using `continuous_pi fun a => continuous_pi fun b => hU a b`. Establish `hIm : Continuous fun g : HA (Af F) σ J => uI (Af F) σ J P g`. Unfold `uI`. Conclude with `hUm.matrix_adjugate`.
+
+Establish `hI : ∀ a b, Continuous fun g : HA (Af F) σ J => uI (Af F) σ J P g a b` using `fun a b => (continuous_apply b).comp ((continuous_apply a).comp hIm)`. Establish `hcI : ∀ a b, Continuous fun g : HA (Af F) σ J => cj (Af F) σ (uI (Af F) σ J P g) a b`. Introduce `a b`. Unfold `cj`. Simplify using `only [Matrix.of_apply]`.
+
+Conclude with `(PI.AdicCompletionValuation.continuous_sigR (R := Af F) σ).comp (hI b a)`. Establish `hcT : ∀ a b, Continuous fun g : HA (Af F) σ J => cj (Af F) σ (uT (Af F) σ J P g) a b`. Introduce `a b`. Unfold `cj`. Simplify using `only [Matrix.of_apply]`.
+
+Conclude with `(PI.AdicCompletionValuation.continuous_sigR (R := Af F) σ).comp (hU b a)`. Establish `hM : Continuous fun g : HA (Af F) σ J => LinearMap.toMatrix' (lin (Af F) σ J (levG hσσ hJ hP g))`. Simplify using `only [lin_levG]`. Conclude with `continuous_levL_mat T P hU hcI`. Establish `hMi : Continuous fun g : HA (Af F) σ J => LinearMap.toMatrix' (lin (Af F) σ J (levG hσσ hJ hP g)⁻¹)`.
+
+Establish `e : ∀ g : HA (Af F) σ J, lin (Af F) σ J (levG hσσ hJ hP g)⁻¹ = levL (datR (Af F) σ J P T) (uI (Af F) σ J P g) (cj (Af F) σ (uT (Af F) σ J P g))` using `fun g => LinearMap.ext fun x => by rw [lin_levG_inv]`. Simplify using `only [e]`. Conclude with `continuous_levL_mat T P hI hcT`. Unfold `levG`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hM.congr fun g => LinearMap.toMatrix'_toLin' _`. Conclude with `hMi.congr fun g => LinearMap.toMatrix'_toLin' _`.
+-/
 theorem continuous_levG (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (P : Frame E M r) (T : F)
     (hP : P.IsStd σ J T) : Continuous (levG (R := Af F) hσσ hJ hP) := by
   have hU : ∀ a b, Continuous fun g : HA (Af F) σ J => uT (Af F) σ J P g a b := continuous_uT P

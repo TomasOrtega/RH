@@ -10,6 +10,13 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext h)`. Rewrite using `[map_finsuppProd]`. Simplify using `only [map_pow, ha, Finsupp.prod]`.
+
+Rewrite using `[Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]`.
+-/
 private theorem cc_subst_lemma_2 {σ τ A : Type} [Finite σ] [CommRing A] (a : σ → MvPowerSeries τ A)
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ A) :
     constantCoeff (MvPowerSeries.subst a f) = constantCoeff f := by
@@ -25,11 +32,17 @@ private theorem cc_subst_lemma_2 {σ τ A : Type} [Finite σ] [CommRing A] (a : 
     simp only [map_pow, ha, Finsupp.prod]
     rw [Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `cc_subst_lemma_2 (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f`.
+-/
 theorem cc_ev_eq {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) : constantCoeff (ev a f) = constantCoeff f := by
   unfold ev
   exact cc_subst_lemma_2 (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f
 
+/- English proof (translation)
+The claim follows from `cc_ev_eq ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) f`.
+-/
 theorem constantCoeff_eval_pair {n : ℕ} (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (f : PS R 2 d) :
     constantCoeff (ev ![a, b] f) = constantCoeff f := cc_ev_eq ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) f

@@ -19,12 +19,22 @@ noncomputable def endRealMatrixRingHom {g n : ℕ} (e : Module.Basis (Fin n) ℝ
     have : ((f + h).restrictScalars ℝ) = f.restrictScalars ℝ + h.restrictScalars ℝ := rfl
     rw [this]; exact map_add _ _ _
 
+/- English proof (translation)
+Introduce `f h hfh`. Establish `h1 : f.restrictScalars ℝ = h.restrictScalars ℝ` using `(LinearMap.toMatrix e e).injective hfh`. Conclude with `LinearMap.restrictScalars_injective ℝ h1`.
+-/
 theorem endRealMatrixRingHom_injective {g n : ℕ} (e : Module.Basis (Fin n) ℝ (Fin g → ℂ)) :
     Function.Injective (endRealMatrixRingHom e) := by
   intro f h hfh
   have h1 : f.restrictScalars ℝ = h.restrictScalars ℝ := (LinearMap.toMatrix e e).injective hfh
   exact LinearMap.restrictScalars_injective ℝ h1
 
+/- English proof (translation)
+Set `F` to `(endRealMatrixRingHom e).toRatAlgHom`. Set `ψ : Matrix (Fin n) (Fin n) ℚ →ₐ[ℚ] Matrix (Fin n) (Fin n) ℝ` to `(Algebra.ofId ℚ ℝ).mapMatrix`. Establish `hψ : ∀ M, ψ M = M.map (Rat.cast : ℚ → ℝ)`. Introduce `M`. Use extensionality with `i j`.
+
+Simplify using `[ψ]`. Establish `hFγ : F γ = ψ Tq` using `by rw [hψ, hT]; rfl`. Apply `endRealMatrixRingHom_injective e` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `F 1 = F _`. Establish `key` using `congrArg ψ hid`.
+
+Rewrite `key` using `[map_one]`. Rewrite using `[map_one, key]`. Simplify using `only [map_add, map_sum, map_smul, map_mul, map_pow, ← Polynomial.aeval_algHom_apply, hFγ]`.
+-/
 theorem matrix_identity_transfer (g n : ℕ) (e : Module.Basis (Fin n) ℝ (Fin g → ℂ))
     (γ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Tq : Matrix (Fin n) (Fin n) ℚ)
     (hT : Tq.map (Rat.cast : ℚ → ℝ) = LinearMap.toMatrix e e (γ.restrictScalars ℝ))

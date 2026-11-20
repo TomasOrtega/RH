@@ -11,6 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.TraitQuotForm
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P hR hP V _ _ _ hV ϖ hϖ ψ hψ hnl be hbe hF T f hf hfl u hu P' ϖ' hϖ' be' hbe' hM`. Take `⟨r, hrs, hr⟩` from `GlobalTheory.T.boundary_form_complete_extension E H R t P hR hP V hV ψ hψ hnl T f hf hfl u hu P'`. Establish `hfϖ0 : f ϖ ≠ 0` using `(map_ne_zero_iff f hf).2 hϖ.ne_zero`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hfϖ0 hϖ'`. Establish `diag : ∀ y, be' (r y) (r y) = (e : ℤ) * be y y`.
+
+Introduce `y`. Take `⟨a, n, ha, hn, hass⟩` from `hF y`. Take `⟨a0, b, ha0, hb, hab⟩` from `hr y`. Take `⟨w, hw⟩` from `PsiCoordLocal.exists_unit_of_coord ha0 ha`. Take `⟨u1, n1, hn1, hb1⟩` from `hM.coord hb`.
+
+Establish `h0 : Associated (ψ a0) (ϖ ^ n)`. Use `Associated.trans ?_ hass` and prove the remaining obligations. Rewrite using `[hw, map_mul]`. Conclude with `(associated_unit_mul_left _ _ (w.isUnit.map ψ)).symm`. Establish `h1 : Associated b (ϖ' ^ (e * n))`.
+
+Use `hab.symm.trans ((h0.map f).trans ?_)` and prove the remaining obligations. Rewrite using `[map_pow, pow_mul]`. Conclude with `he.pow_pow`. Establish `h2 : Associated b (ϖ' ^ n1 0)`. Rewrite using `[hb1]`.
+
+Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero]`. Conclude with `associated_unit_mul_left _ _ u1.isUnit`. Take `⟨v, hv⟩` from `h2.symm.trans h1`. Establish `key : n1 0 = e * n` using `IsDiscreteValuationRing.unit_mul_pow_congr_pow hϖ' hϖ' v 1 _ _ (by rw [Units.val_one, one_mul, mul_comm]; exact hv)`. Use `hn1 0` as an intermediate fact.
+
+Simplify using `only [Matrix.cons_val_zero] at this`. Rewrite using `[this, key, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨r, e, hrs, he, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `hab` using `diag (a + b)`. Establish `ha` using `diag a`. Establish `hb` using `diag b`. Establish `s'` using `hbe'.1 (r a) (r b)`. Establish `s` using `hbe.1 a b`.
+
+Simplify using `only [map_add, LinearMap.add_apply] at hab`. Establish `h2 : (2 : ℤ) * be' (r a) (r b) = 2 * ((e : ℤ) * be a b)`. Take the linear combination `hab - ha - hb + s' - (e : ℤ) * s`. Conclude with `mul_left_cancel₀ (by norm_num) h2`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t),
     IsCN R → P.TorsionIso →

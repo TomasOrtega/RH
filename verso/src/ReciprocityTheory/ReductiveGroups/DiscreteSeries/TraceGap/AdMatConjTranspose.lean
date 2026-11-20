@@ -8,6 +8,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `h1` using `congrFun (congrFun hk.2 i) j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h1`. Establish `h2 : k i j * ((if ε j then (1 : ℂ) else -1) - (if ε i then 1 else -1)) = 0`. Take the linear combination `h1`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+
+Conclude with `h3`. Use `exfalso clear h1 h2 hk revert h h3`. Apply the tactic sequence `cases ε i <;> cases ε j <;> norm_num`.
+-/
 theorem kset_entry_zero {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {i j : Fin n}
     (h : ε i ≠ ε j) : k i j = 0 := by
   have h1 := congrFun (congrFun hk.2 i) j
@@ -21,6 +26,17 @@ theorem kset_entry_zero {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) {i
     revert h h3
     cases ε i <;> cases ε j <;> norm_num
 
+/- English proof (translation)
+Use extensionality with `x y`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hx : IsPhys ε x`. Distinguish the cases in `hy : IsPhys ε y`. Simplify using `only [adMat, hx, hy, if_true]`.
+
+Rewrite using `[Fintype.sum_prod_type, Matrix.mul_apply, Matrix.mul_apply, star_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : IsPhys ε (u, v)`. Simplify using `only [hz, if_true, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hz, if_false, zero_mul]`. Establish `hz' : ¬ (ε u = true ∧ ε v = false)` using `hz`. Distinguish the cases in `hu : ε u = true`. Establish `hv : ε v ≠ false` using `fun hv => hz' ⟨hu, hv⟩`. Establish `: k x.2 v = 0` using `kset_entry_zero hk (by rw [hx.2]; exact Ne.symm hv)`.
+
+Simplify using `[this]`. Establish `: k x.1 u = 0` using `kset_entry_zero hk (by rw [hx.1]; exact Ne.symm hu)`. Simplify using `[this]`. Simplify using `only [adMat, hx, hy, if_true, if_false]`. Use `(Finset.sum_eq_zero fun z _ => ?_).symm` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [adMat, hx, if_false, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem adMat_mul {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (_hk' : k' ∈ Kset ε) :
     adMat ε (k * k') = adMat ε k * adMat ε k' := by
   ext x y
@@ -46,14 +62,25 @@ theorem adMat_mul {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (_hk'
       split_ifs <;> simp
   · simp only [adMat, hx, if_false, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[adPhys, adPhys, adPhys, adMat_mul hk hk', Matrix.mulVecLin_mul]`.
+-/
 theorem adPhys_mul {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hk' : k' ∈ Kset ε) :
     adPhys ε (k * k') = adPhys ε k ∘ₗ adPhys ε k' := by
   rw [adPhys, adPhys, adPhys, adMat_mul hk hk', Matrix.mulVecLin_mul]
 
+/- English proof (translation)
+Rewrite using `[ff, ff, ff, adPhys_mul hk hk', ExteriorAlgebra.map_comp_map]`.
+-/
 theorem ff_mul {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hk' : k' ∈ Kset ε) :
     ff ε (k * k') = (ff ε k).comp (ff ε k') := by
   rw [ff, ff, ff, adPhys_mul hk hk', ExteriorAlgebra.map_comp_map]
 
+/- English proof (translation)
+Use extensionality with `x y`. Take `⟨x1, x2⟩` from `x`. Take `⟨y1, y2⟩` from `y`. Apply the tactic sequence `by_cases hx : IsPhys ε (x1, x2) <;> by_cases hy : IsPhys ε (y1, y2)`. Simplify using `only [adMat, hx, hy, if_true, Matrix.one_apply, Prod.mk.injEq]`.
+
+Apply the tactic sequence `by_cases h1 : x1 = y1 <;> by_cases h2 : x2 = y2 <;> simp [h1, h2]`. Establish `: (x1, x2) ≠ (y1, y2)` using `fun h => hy (h ▸ hx)`. Simplify using `only [adMat, hx, hy, if_true, if_false, Matrix.one_apply, this]`. Simplify using `only [adMat, hx, if_false, Matrix.one_apply]`. Simplify using `only [adMat, hx, if_false, Matrix.one_apply]`.
+-/
 theorem adMat_one : adMat ε (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   ext x y
   obtain ⟨x1, x2⟩ := x
@@ -66,19 +93,31 @@ theorem adMat_one : adMat ε (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   · simp only [adMat, hx, if_false, Matrix.one_apply]
   · simp only [adMat, hx, if_false, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[ff, adPhys, adMat_one, Matrix.mulVecLin_one, ExteriorAlgebra.map_id]`.
+-/
 theorem ff_one : ff ε 1 = AlgHom.id ℂ (Fock n) := by
   rw [ff, adPhys, adMat_one, Matrix.mulVecLin_one, ExteriorAlgebra.map_id]
 
+/- English proof (translation)
+Apply `ExteriorAlgebra.hom_ext` to reduce the goal to its premises. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Simplify using `[ff, ExteriorAlgebra.map_apply_ι]`.
+-/
 theorem ff_comp_involute (k : Matrix (Fin n) (Fin n) ℂ) :
     (ff ε k).comp CliffordAlgebra.involute = CliffordAlgebra.involute.comp (ff ε k) := by
   apply ExteriorAlgebra.hom_ext
   refine LinearMap.ext fun m => ?_
   simp [ff, ExteriorAlgebra.map_apply_ι]
 
+/- English proof (translation)
+The claim follows from `AlgHom.congr_fun (ff_comp_involute k) x`.
+-/
 theorem ff_involute (k : Matrix (Fin n) (Fin n) ℂ) (x : Fock n) :
     ff ε k (CliffordAlgebra.involute x) = CliffordAlgebra.involute (ff ε k x) :=
   AlgHom.congr_fun (ff_comp_involute k) x
 
+/- English proof (translation)
+Proceed by induction on `x using CliffordAlgebra.left_induction with`. Consider the case `algebraMap r => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `ι_mul x m hx`. Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, map_sub, map_smul, map_mul, hx, map_mul, ExteriorAlgebra.map_apply_ι, CliffordAlgebra.contractLeft_ι_mul, LinearMap.comp_apply]`.
+-/
 theorem map_contractLeft {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (f : M →ₗ[ℂ] N) (d : Module.Dual ℂ N) (x : ExteriorAlgebra ℂ M) :
     ExteriorAlgebra.map f (CliffordAlgebra.contractLeft (d ∘ₗ f) x) =
@@ -90,23 +129,42 @@ theorem map_contractLeft {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommG
     rw [CliffordAlgebra.contractLeft_ι_mul, map_sub, map_smul, map_mul, hx, map_mul,
       ExteriorAlgebra.map_apply_ι, CliffordAlgebra.contractLeft_ι_mul, LinearMap.comp_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpFock_eq_cpV (i a : Fin n) : cpFock i a = cpV (Pi.single (i, a) (1 : ℂ)) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `[dualV, Pi.single_apply]`.
+-/
 theorem dualV_single (x : Fin n × Fin n) :
     dualV (Pi.single x (1 : ℂ)) = LinearMap.proj (R := ℂ) (φ := fun _ : Fin n × Fin n => ℂ) x := by
   refine LinearMap.ext fun w => ?_
   simp [dualV, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[cmV, dualV_single]`. Both sides reduce to the same expression.
+-/
 theorem cmFock_eq_cmV (i a : Fin n) : cmFock i a = cmV (Pi.single (i, a) (1 : ℂ)) := by
   rw [cmV, dualV_single]
   rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, cpV, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, map_mul, ff, ExteriorAlgebra.map_apply_ι]`.
+-/
 theorem ff_cpV (k : Matrix (Fin n) (Fin n) ℂ) (v : Fin n × Fin n → ℂ) :
     (ff ε k).toLinearMap * cpV v = cpV (adPhys ε k v) * (ff ε k).toLinearMap := by
   refine LinearMap.ext fun x => ?_
   simp only [Module.End.mul_apply, cpV, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply, map_mul, ff,
     ExteriorAlgebra.map_apply_ι]
 
+/- English proof (translation)
+Use extensionality with `x y`. Simplify using `only [Matrix.conjTranspose_apply, adMat]`. Apply the tactic sequence `by_cases hx : IsPhys ε x <;> by_cases hy : IsPhys ε y`. Simplify using `[hx, hy, star_mul', mul_comm]`. Establish `: y ≠ x` using `fun h => hy (h ▸ hx)`.
+
+Simplify using `[hx, hy, this]`. Establish `: x ≠ y` using `fun h => hx (h ▸ hy)`. Simplify using `[hx, hy, this, Ne.symm this]`. Simplify using `only [hx, hy, if_false]`. Distinguish the cases in `h : y = x`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem adMat_conjTranspose (k : Matrix (Fin n) (Fin n) ℂ) : (adMat ε k)ᴴ = adMat ε kᴴ := by
   ext x y
   simp only [Matrix.conjTranspose_apply, adMat]
@@ -121,6 +179,13 @@ theorem adMat_conjTranspose (k : Matrix (Fin n) (Fin n) ℂ) : (adMat ε k)ᴴ =
     · subst h; simp
     · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hk.1` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[star_eq_conjTranspose, conjTranspose_conjTranspose]`. Rewrite `this` using `[star_eq_conjTranspose]`.
+
+Conclude with `mul_eq_one_comm.mp this`. Establish `hJ : (Jm ε)ᴴ = Jm ε`. Simplify using `only [Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`. Use `congrArg Matrix.conjTranspose hk.2` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, hJ]`. Conclude with `this.symm`.
+-/
 theorem kset_conjTranspose {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : kᴴ ∈ Kset ε := by
   refine ⟨?_, ?_⟩
   · have := hk.1
@@ -137,6 +202,11 @@ theorem kset_conjTranspose {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     rw [conjTranspose_mul, conjTranspose_mul, hJ] at this
     exact this.symm
 
+/- English proof (translation)
+Rewrite using `[adMat_conjTranspose, ← adMat_mul (kset_conjTranspose hk) hk]`. Establish `: kᴴ * k = 1`. Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff']`. Rewrite `this` using `[star_eq_conjTranspose]`. Then use the resulting hypothesis.
+
+Rewrite using `[this, adMat_one]`.
+-/
 theorem adMat_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : (adMat ε k)ᴴ * adMat ε k = 1 := by
   rw [adMat_conjTranspose, ← adMat_mul (kset_conjTranspose hk) hk]
   have : kᴴ * k = 1 := by
@@ -145,9 +215,15 @@ theorem adMat_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : (a
     rwa [star_eq_conjTranspose] at this
   rw [this, adMat_one]
 
+/- English proof (translation)
+Simplify using `[dualV, dotProduct]`.
+-/
 theorem dualV_eq_dot (w u : Fin n × Fin n → ℂ) : dualV w u = star w ⬝ᵥ u := by
   simp [dualV, dotProduct]
 
+/- English proof (translation)
+Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, dualV_eq_dot, dualV_eq_dot]`. Simplify using `only [adPhys, Matrix.mulVecLin_apply]`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, adMat_unitary hk, Matrix.vecMul_one]`.
+-/
 theorem dualV_adPhys {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (v : Fin n × Fin n → ℂ) :
     dualV v = dualV (adPhys ε k v) ∘ₗ adPhys ε k := by
   refine LinearMap.ext fun u => ?_
@@ -155,12 +231,20 @@ theorem dualV_adPhys {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (v : 
   simp only [adPhys, Matrix.mulVecLin_apply]
   rw [Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, adMat_unitary hk, Matrix.vecMul_one]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, cmV, AlgHom.toLinearMap_apply, ff]`. Rewrite using `[dualV_adPhys hk v, map_contractLeft]`.
+-/
 theorem ff_cmV {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (v : Fin n × Fin n → ℂ) :
     (ff ε k).toLinearMap * cmV v = cmV (adPhys ε k v) * (ff ε k).toLinearMap := by
   refine LinearMap.ext fun x => ?_
   simp only [Module.End.mul_apply, cmV, AlgHom.toLinearMap_apply, ff]
   rw [dualV_adPhys hk v, map_contractLeft]
 
+/- English proof (translation)
+Simplify using `only [physFock, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `i a hia`. Establish `hproj : (LinearMap.proj (R` using `ℂ) (φ := fun _ : Fin n × Fin n => ℂ) (i, a)) ∘ₗ adPhys ε k = LinearMap.proj (i, a) := by`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Establish `hp : ¬ IsPhys ε (i, a)` using `hia`.
+
+Simplify using `[adPhys, Matrix.mulVec, dotProduct, adMat, hp]`. Establish `h` using `map_contractLeft (adPhys ε k) (LinearMap.proj (i, a)) x`. Rewrite `h` using `[hproj]`. Simplify using `only [cmFock, ff] at hx ⊢`. Rewrite using `[← h, hx i a hia, map_zero]`.
+-/
 theorem ff_physFock (k : Matrix (Fin n) (Fin n) ℂ) {x : Fock n} (hx : x ∈ physFock ε) :
     ff ε k x ∈ physFock ε := by
   simp only [physFock, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢

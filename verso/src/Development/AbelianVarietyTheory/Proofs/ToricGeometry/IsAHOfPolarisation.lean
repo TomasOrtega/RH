@@ -14,12 +14,26 @@ def thetaZeroSec {X : Scheme.{0}} (L : LB X) : L.Sec where
   f _ := 0
   compat := by intros; simp
 
+/- English proof (translation)
+Unfold `valAt'`. Use `split_ifs with h`. Simplify using `[valAt]`. Both sides reduce to the same expression.
+-/
 theorem valAt'_zero_fn {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) : valAt' x U 0 = 0 := by
   unfold valAt'
   split_ifs with h
   · simp [valAt]
   · rfl
 
+/- English proof (translation)
+Introduce `_ hpos hsec hthe P u Hm χ Ef hAH hbij`. Take `⟨hH, hχ, hE, hfr⟩` from `hAH`. Use `⟨hH, ?_, hχ, hfr⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hsec P 1 le_rfl`. Establish `hone : ∀ i j : Fin (1 ^ P.g), i = j` using `fun i j => Fin.ext (by`.
+
+Establish `hi : (i : ℕ) < 1` using `lt_of_lt_of_eq i.isLt (one_pow _)`. Establish `hj : (j : ℕ) < 1` using `lt_of_lt_of_eq j.isLt (one_pow _)`. Use the proof step `omega)`. Set `i0 : Fin (1 ^ P.g)` to `⟨0, by rw [one_pow]; exact Nat.one_pos⟩`. Establish `hcorr` using `hthe P u Hm χ Ef ⟨hH, hχ, hE, hfr⟩ 1`.
+
+Take `⟨θ, ⟨hθ, hfn⟩, -⟩` from `hcorr.1 (s i0)`. Establish `hθne : θ ≠ 0`. Introduce and unpack `rfl`. Establish `hz : u.IsFnPow 1 (thetaZeroSec (lbPow P.L 1)) 0`. Introduce `j z _`.
+
+Rewrite using `[Pi.zero_apply, zero_mul]`. Conclude with `valAt'_zero_fn _ _`. Establish `hs0 : s i0 = thetaZeroSec (lbPow P.L 1)` using `hcorr.2 0 _ _ hfn hz`. Establish `hall : ∀ i, s i = thetaZeroSec (lbPow P.L 1)` using `fun i => by rw [hone i i0, hs0]`. Establish `h1` using `hs (fun _ => 1) (fun j => Finset.sum_eq_zero (fun i _ => by rw [hall i]; exact mul_zero _))`.
+
+Conclude with `absurd (congrFun h1 i0) (by simp)`. Conclude with `hpos P.g u.Λ u.discrete u.full Hm χ Ef θ hH hχ hE hbij.1 hθ.1 hθne (fun l z => by have h := hθ.2 l z; rw [pow_one] at h; exact h)`.
+-/
 theorem isAH_of_polarisation :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ) (Ef : LinearMap.BilinForm ℤ Λ) (θ : (Fin g → ℂ) → ℂ), Hm.IsHermitian → (∀ l, ‖χ l‖ = 1) → (∀ l m : Λ, (Ef l m : ℝ) = ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ))).im) → Function.Injective Ef → Differentiable ℂ θ → θ ≠ 0 → (∀ (l : Λ) z, θ (z + l) = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))) * θ z) → ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) → (∀ (P : Out.PolAV (Sp ℂ)) (n : ℕ), 1 ≤ n → ∃ s : Fin (n ^ P.g) → (lbPow P.L n).Sec, ∀ a : Fin (n ^ P.g) → ℂ, (∀ j, ∑ i, constFn P.A.hom _ (a i) * (s i).f j = 0) → a = 0) → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → ∀ n : ℕ, (∀ s, ∃! θ, u.IsThetaFn Hm χ n θ ∧ u.IsFnPow n s θ) ∧ ∀ θ s s', u.IsFnPow n s θ → u.IsFnPow n s' θ → s = s') → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → Function.Bijective Ef → u.IsAH Hm χ) := by
   intro _ hpos hsec hthe P u Hm χ Ef hAH hbij

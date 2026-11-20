@@ -9,6 +9,9 @@ open GlobalTheory.KS (rsT C1 IsCoc IsCob)
 namespace GlobalTheory.CechMixed
 open GlobalTheory.KS
 
+/- English proof (translation)
+Establish `e : W ≤ V i ⊓ V j ⊓ V l` using `le_inf (le_inf hi hj) hl`. Establish `h` using `congrArg (fun s => rsT s W) (hz i j l)`. Simplify using `only [rsT_add] at h`. Rewrite `h` using `[rsT_rsT inf_le_left e, rsT_rsT (le_inf (inf_le_left.trans inf_le_right) inf_le_right) e, rsT_rsT (le_inf (inf_le_left.trans inf_le_left) inf_le_right) e]`. Then use the resulting hypothesis.
+-/
 theorem coc_on {X : Scheme.{0}} {J : Type} {V : J → X.Opens} {z : C1 V} (hz : IsCoc V z) (i j l : J)
     {W : X.Opens} (hi : W ≤ V i) (hj : W ≤ V j) (hl : W ≤ V l) :
     rsT (z i j) W + rsT (z j l) W = rsT (z i l) W := by
@@ -18,10 +21,20 @@ theorem coc_on {X : Scheme.{0}} {J : Type} {V : J → X.Opens} {z : C1 V} (hz : 
   rwa [rsT_rsT inf_le_left e, rsT_rsT (le_inf (inf_le_left.trans inf_le_right) inf_le_right) e,
     rsT_rsT (le_inf (inf_le_left.trans inf_le_left) inf_le_right) e] at h
 
+/- English proof (translation)
+Rewrite using `[← iSup_inf_eq, hV, top_inf_eq]`.
+-/
 theorem le_iSup_inf {X : Scheme.{0}} {J : Type} {V : J → X.Opens} (hV : ⨆ i, V i = ⊤) (O : X.Opens) :
     O ≤ ⨆ i, V i ⊓ O := by
   rw [← iSup_inf_eq, hV, top_inf_eq]
 
+/- English proof (translation)
+Establish `hs : ⨆ i, V i ⊓ O = O` using `by rw [← iSup_inf_eq, hV, top_inf_eq]`. Establish `hle : ∀ i j, V i ⊓ O ⊓ (V j ⊓ O) ≤ V i ⊓ V j` using `fun i j => inf_le_inf inf_le_left inf_le_left`. Take `⟨y, hy⟩` from `isCob_of_isAffineOpen X J (fun i => V i ⊓ O) (fun i j => rsT (z i j) (V i ⊓ O ⊓ (V j ⊓ O))) (hs.symm ▸ hO) (by`. Introduce `i j l`. Simplify using `only`.
+
+Rewrite using `[rsT_rsT (hle i j) inf_le_left, rsT_rsT (hle j l) (le_inf (inf_le_left.trans inf_le_right) inf_le_right), rsT_rsT (hle i l) (le_inf (inf_le_left.trans inf_le_left) inf_le_right)]`. Conclude with `coc_on hz i j l ((inf_le_left.trans inf_le_left).trans inf_le_left) ((inf_le_left.trans inf_le_right).trans inf_le_left) (inf_le_right.trans inf_le_left))`. Use `⟨fun i => - y i, fun i i' W h h' hW => ?_⟩` and prove the remaining obligations. Establish `e : W ≤ V i ⊓ O ⊓ (V i' ⊓ O)` using `le_inf (le_inf h hW) (le_inf h' hW)`. Establish `k` using `congrArg (fun s => rsT s W) (hy i i')`.
+
+Simplify using `only [rsT_sub] at k`. Rewrite `k` using `[rsT_rsT (hle i i') e, rsT_rsT inf_le_right e, rsT_rsT inf_le_left e]`. Simplify using `only [rsT_neg]`. Rewrite using `[k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_split {X : Scheme.{0}} {J : Type} {V : J → X.Opens} (hV : ⨆ i, V i = ⊤) {O : X.Opens}
     (hO : IsAffineOpen O) {z : C1 V} (hz : IsCoc V z) :
     ∃ b : ∀ i, Γ(X, V i ⊓ O), ∀ i i' (W : X.Opens), W ≤ V i → W ≤ V i' → W ≤ O →
@@ -45,6 +58,19 @@ theorem exists_split {X : Scheme.{0}} {J : Type} {V : J → X.Opens} (hV : ⨆ i
   simp only [rsT_neg]
   rw [k]; ring
 
+/- English proof (translation)
+Introduce `X J K V U hV hU z hz`. Use `choose b hb using fun k => exists_split hV (hU k) hz`. Establish `glue : ∀ k k', ∃ t : Γ(X, U k ⊓ U k'), ∀ i, rsT t (V i ⊓ (U k ⊓ U k')) = rsT (b k' i) (V i ⊓ (U k ⊓ U k')) - rsT (b k i) (V i ⊓ (U k ⊓ U k'))`. Introduce `k k'`. Use `exists_rsT_eq (fun i => V i ⊓ (U k ⊓ U k')) (fun i => inf_le_right) (le_iSup_inf hV _) _ fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [rsT_sub]`. Rewrite using `[rsT_rsT (inf_le_inf_left _ inf_le_right) inf_le_left, rsT_rsT (inf_le_inf_left _ inf_le_left) inf_le_left, rsT_rsT (inf_le_inf_left _ inf_le_right) inf_le_right, rsT_rsT (inf_le_inf_left _ inf_le_left) inf_le_right]`. Establish `hi : V i ⊓ (U k ⊓ U k') ⊓ (V j ⊓ (U k ⊓ U k')) ≤ V i` using `inf_le_left.trans inf_le_left`. Establish `hj : V i ⊓ (U k ⊓ U k') ⊓ (V j ⊓ (U k ⊓ U k')) ≤ V j` using `inf_le_right.trans inf_le_left`. Establish `hk : V i ⊓ (U k ⊓ U k') ⊓ (V j ⊓ (U k ⊓ U k')) ≤ U k ⊓ U k'` using `inf_le_right.trans inf_le_right`.
+
+Establish `h1` using `hb k i j _ hi hj (hk.trans inf_le_left)`. Establish `h2` using `hb k' i j _ hi hj (hk.trans inf_le_right)`. Take the linear combination `h1 - h2`. Use `choose t ht using glue`. Establish `ht' : ∀ k k' i (W : X.Opens), W ≤ V i → W ≤ U k → W ≤ U k' → rsT (t k k') W = rsT (b k' i) W - rsT (b k i) W`.
+
+Introduce `k k' i W hi hk hk'`. Establish `e : W ≤ V i ⊓ (U k ⊓ U k')` using `le_inf hi (le_inf hk hk')`. Establish `h` using `congrArg (fun s => rsT s W) (ht k k' i)`. Simplify using `only [rsT_sub] at h`. Rewrite `h` using `[rsT_rsT inf_le_right e, rsT_rsT (inf_le_inf_left _ inf_le_right) e, rsT_rsT (inf_le_inf_left _ inf_le_left) e]`. Then use the resulting hypothesis.
+
+Use `⟨t, fun i k => b k i, fun k k' k'' => ?_, fun i i' k => hb k i i' _ (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right, fun i k k' => ht' k k' i _ (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right⟩` and prove the remaining obligations. Use `eq_of_rsT_eq (fun i => V i ⊓ (U k ⊓ U k' ⊓ U k'')) (fun i => inf_le_right) (le_iSup_inf hV _) _ _ fun i => ?_` and prove the remaining obligations. Establish `e : V i ⊓ (U k ⊓ U k' ⊓ U k'') ≤ U k ⊓ U k' ⊓ U k''` using `inf_le_right`. Establish `e1` using `(e.trans inf_le_left).trans inf_le_left`. Establish `e2` using `(e.trans inf_le_left).trans inf_le_right`.
+
+Establish `e3` using `e.trans inf_le_right`. Simplify using `only [rsT_add]`. Rewrite using `[rsT_rsT inf_le_left e, rsT_rsT (le_inf (inf_le_left.trans inf_le_right) inf_le_right) e, rsT_rsT (le_inf (inf_le_left.trans inf_le_left) inf_le_right) e, ht' k k' i _ inf_le_left e1 e2, ht' k' k'' i _ inf_le_left e2 e3, ht' k k'' i _ inf_le_left e1 e3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cocycle_on_affine : ∀ (X : Scheme.{0}) (J K : Type) (V : J → X.Opens) (U : K → X.Opens), ⨆ i, V i = ⊤ → (∀ k, IsAffineOpen (U k)) → ∀ z : C1 V, IsCoc V z → ∃ (z' : C1 U) (b : ∀ i k, Γ(X, V i ⊓ U k)), IsCoc U z' ∧ (∀ i i' k, rsT (z i i') (V i ⊓ V i' ⊓ U k) = rsT (b i k) (V i ⊓ V i' ⊓ U k) - rsT (b i' k) (V i ⊓ V i' ⊓ U k)) ∧ ∀ i k k', rsT (z' k k') (V i ⊓ U k ⊓ U k') = rsT (b i k') (V i ⊓ U k ⊓ U k') - rsT (b i k) (V i ⊓ U k ⊓ U k') := by
   intro X J K V U hV hU z hz
   choose b hb using fun k => exists_split hV (hU k) hz

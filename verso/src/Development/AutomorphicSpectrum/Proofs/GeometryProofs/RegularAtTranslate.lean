@@ -8,6 +8,9 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
+/- English proof (translation)
+Simplify using `only [valAt, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+-/
 theorem valAt_app_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}}
     (x : Spec (CommRingCat.of B) ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)) (h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U) (s : Γ(Y, U)) :
@@ -15,6 +18,9 @@ theorem valAt_app_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}}
   simp only [valAt, Scheme.Hom.comp_appLE]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem valAt_congr_point {B : Type} [CommRing B] {X : Scheme.{0}}
     {x y : Spec (CommRingCat.of B) ⟶ X} (e : x = y) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -22,6 +28,13 @@ theorem valAt_congr_point {B : Type} [CommRing B] {X : Scheme.{0}}
   subst e
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ σ t ht f g ⟨U, hgU, s, hs⟩`. Establish `key : ∀ h : T, Γ.pt h ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G) = Γ.pt (t * h)`. Introduce `h`. Rewrite using `[MonObj.comp_mul, map_mul, ← ht, Category.comp_id, ← Category.assoc, comp_toUnit]`. Use `⟨((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left ⁻¹ᵁ U, hgU, ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left.app U s, ?_⟩` and prove the remaining obligations.
+
+Introduce `h hh`. Establish `e : (Γ.pt h).left ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left = (Γ.pt (t * h)).left`. Rewrite using `[← key h]`. Both sides reduce to the same expression. Establish `h' : ⊤ ≤ ((Γ.pt h).left ≫ ((toUnit Γ.G ≫ σ) * 𝟙 Γ.G).left) ⁻¹ᵁ U` using `hh`.
+
+Establish `h'' : ⊤ ≤ (Γ.pt (t * h)).left ⁻¹ᵁ U` using `e ▸ h'`. Rewrite using `[valAt_app_pullback _ _ U hh h', valAt_congr_point e U h' h'' s]`. Conclude with `hs (t * h) h''`.
+-/
 theorem QFGroup.regularAt_translate :
     ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T)
       (σ : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ Γ.G) (t : T), toUnit (genPt R) ≫ σ = Γ.pt t →

@@ -11,6 +11,11 @@ noncomputable section
 
 namespace DivisorGeneralPointBranches
 
+/- English proof (translation)
+Rewrite `h₁`, `h₂`, the goal using `[ringKrullDim_quotient]`. Rewrite `h₁`, `h₂`, the goal using `[Order.krullDim_lt_coe_iff]`. Introduce `l`. Establish `hhead : l.head.1 ∈ PrimeSpectrum.zeroLocus (I₁ : Set R) ∪ PrimeSpectrum.zeroLocus (I₂ : Set R)`. Rewrite using `[← PrimeSpectrum.zeroLocus_inf]`.
+
+Conclude with `l.head.2`. Establish `hup : ∀ (I : Ideal R), l.head.1 ∈ PrimeSpectrum.zeroLocus (I : Set R) → ∀ i, (l i).1 ∈ PrimeSpectrum.zeroLocus (I : Set R)` using `fun I hI i => (PrimeSpectrum.mem_zeroLocus _ _).2 (((PrimeSpectrum.mem_zeroLocus _ _).1 hI).trans (show l.head.1.asIdeal ≤ (l i).1.asIdeal from l.head_le i))`. Break down `hhead with h | h` into its components or cases. Conclude with `h₁ { length := l.length, toFun := fun i => ⟨(l i).1, hup I₁ h i⟩, step := fun i => l.step i }`. Conclude with `h₂ { length := l.length, toFun := fun i => ⟨(l i).1, hup I₂ h i⟩, step := fun i => l.step i }`.
+-/
 theorem quotient_inf_dim_lt {R : Type*} [CommRing R] {I₁ I₂ : Ideal R} {d : ℕ}
     (h₁ : ringKrullDim (R ⧸ I₁) < (d : ℕ)) (h₂ : ringKrullDim (R ⧸ I₂) < (d : ℕ)) :
     ringKrullDim (R ⧸ (I₁ ⊓ I₂)) < (d : ℕ) := by
@@ -28,6 +33,13 @@ theorem quotient_inf_dim_lt {R : Type*} [CommRing R] {I₁ I₂ : Ideal R} {d : 
   · exact h₁ { length := l.length, toFun := fun i => ⟨(l i).1, hup I₁ h i⟩, step := fun i => l.step i }
   · exact h₂ { length := l.length, toFun := fun i => ⟨(l i).1, hup I₂ h i⟩, step := fun i => l.step i }
 
+/- English proof (translation)
+Introduce `n d J u hJ hdim hu`. Take `⟨I₁, hle₁, hdim₁, hI₁⟩` from `hOne n d J u hJ hdim hu`. Take `⟨I₂, hle₂, hdim₂, hI₂⟩` from `hBr n d J u hJ hdim hu`. Use `⟨I₁ ⊓ I₂, le_inf hle₁ hle₂, quotient_inf_dim_lt hdim₁ hdim₂, ?_⟩` and prove the remaining obligations. Introduce `q hqJ hqu hqI`.
+
+Establish `hq₁ : q ∉ zeroSet I₁` using `fun h => hqI fun f hf => h f (Ideal.mem_inf.1 hf).1`. Establish `hq₂ : q ∉ zeroSet I₂` using `fun h => hqI fun f hf => h f (Ideal.mem_inf.1 hf).2`. Take `⟨W, hW, hqW, huniq, hnear⟩` from `hI₁ q hqJ hqu hq₁`. Take `⟨m, γ, ord, π, hcov, ⟨N, hN, hsl⟩, hpair, hord, hbij⟩` from `hI₂ q hqJ hqu hq₂`. Use `⟨W, hW, hqW, huniq, hnear, m, γ, ord, π, hcov, ⟨N, hN, fun b x hx => ?_⟩, hpair, hord, hbij⟩` and prove the remaining obligations.
+
+Establish `hKW : J ⊔ Ideal.span {linForm u} ≤ W` using `hW.1.2`. Use `hsl x ⟨fun f hf => hx.1 f (hKW (Ideal.mem_sup_left hf)), hx.2⟩ ?_ b` and prove the remaining obligations. Establish `hx0` using `hx.1 _ (hKW (Ideal.mem_sup_right (Ideal.subset_span rfl)))`. Simplify `hx0` using `[linForm, linEval]`.
+-/
 theorem proof (hOne : DivisorOneComponent.Statement) (hBr : DivisorBranches.Statement) :
     DivisorGeneralPointBranches.Statement := by
   intro n d J u hJ hdim hu

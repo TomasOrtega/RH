@@ -8,6 +8,15 @@ namespace Deduction
 
 open Deduction.CH Formalism Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LErr Formalism.LFunctionChainParameters.LChain
 
+/- English proof (translation)
+Take `⟨ha, hw, hg, hL, -⟩` from `hId`. Establish `hf : (f : ℝ) = (#(PhiSet (H` using `H)) : ℝ) := by`. Use `Fintype.card_congr eP` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_coe] at this`. Conclude with `this` after adjusting the coercions.
+
+Establish `hsum : ∀ g : E0 × H → ℝ, ∑ ρ : Fin f, g (eP ρ) = ∑ x ∈ PhiSet, g x`. Introduce `g`. Rewrite using `[← Finset.sum_coe_sort PhiSet]`. Conclude with `Equiv.sum_comp eP (fun x => g x)`. Unfold `Data.Main`.
+
+Simplify using `only [ha, hw, hg, hL, hsum, hf]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← Finset.sum_coe_sort TT]`. Rewrite using `[← Equiv.sum_comp eT]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[MAIN, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]`. Use `left`. Use `left`. Conclude with `hsum (fun x => Real.log (w (tr u0) j x))`.
+-/
 lemma ch_top_main_eq {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0 : Type} [Fintype U0] {W : U0 → Type}
     [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)]
     {Top : Type} [Fintype Top] {m f : ℕ} (Dd : Data U0 W Top m f) (tr : U0 → H) (D : ArithData H) (N : ℕ)
@@ -34,6 +43,19 @@ lemma ch_top_main_eq {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0
   left
   exact hsum (fun x => Real.log (w (tr u0) j x))
 
+/- English proof (translation)
+Establish `hmain` using `ch_top_main_eq Dd tr D N ell TT a w eT eP h1 u`. Establish `hask` using `h1.2.2.2.2 u`. Establish `hgap : gapA D N ell TT a w (tr u) = Dd.ASK u - Dd.Main u`. Rewrite using `[hask, hmain]`. Unfold `gapA`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Take `⟨s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11⟩` from `h2`. Establish `hle` using `each_unit_bound_statement Dd C Xpp s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 u`.
+
+Establish `herr` using `errX5at_le Dd C Xpp eK K h3 h5 u`. Establish `hnT : Dd.nT = (TT.card : ℝ)`. Unfold `Data.nT`. Use `Fintype.card_congr eT` as an intermediate fact. Rewrite `this` using `[Fintype.card_coe]`.
+
+Conclude with `this` after adjusting the coercions. Establish `htext : ErrText Dd ≤ errorBracketSizeWindows Dd.x Dd.ε (Fintype.card H) TT.card T2.card m Dd.b Dd.k Dd.a`. Unfold `ErrText errorBracketSizeWindows`. Rewrite using `[hnT]`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+
+Use `gcongr`. Conclude with `h4.1`. Conclude with `h4.2`. Establish `hpow : 0 ≤ Dd.x ^ (CErr C * Dd.ε)` using `Real.rpow_nonneg s1.1.le _`. Rewrite using `[hgap]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ch_top {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)] [∀ u0, Nonempty (W u0)]
     {Top : Type} [Fintype Top] {m f : ℕ} (Dd : Data U0 W Top m f) (tr : U0 → H) (C : Consts) (Xpp eK K : ℝ)
     (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (N : ℕ) (TT T2 : Finset H) (a : H → ℝ)

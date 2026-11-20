@@ -20,6 +20,9 @@ structure IsQuad {R : Type} [CommRing R] (c : R →+* R) (w : R) (k : ℤ) (d : 
 
 variable {R : Type} [CommRing R] {c : R →+* R} {w : R} {k : ℤ} {d : ℕ}
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `h.span x`. Simplify using `[h.conj]`.
+-/
 theorem IsQuad.cc (h : IsQuad c w k d) (x : R) : c (c x) = x := by
   obtain ⟨a, b, rfl⟩ := h.span x
   simp [h.conj]

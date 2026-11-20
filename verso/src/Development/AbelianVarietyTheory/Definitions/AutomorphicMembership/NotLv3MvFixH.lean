@@ -13,6 +13,9 @@ section Pts
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker Formalism.UG Formalism.L2.Forms GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.TC GlobalTheory.Mem.Col2.TopCh GlobalTheory.Mem.ColAd Matrix
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `e : ∀ a : GL (Fin n) (AfE F E), a * k * (k⁻¹ * k') = a * k'` using `fun a => by group`. Take `⟨hz, hr⟩` from `((isPtOf_mul_J0 F E hc n ST SG Q (y * k) (k⁻¹ * k') p p 1).1 h (by rw [e]; exact h')).2 (one_smul _ _).symm`. Use `(isPtOf_mul_J0 F E hc n ST SG Q' (g * k) (k⁻¹ * k') q q 1).2.1 hQ hq hz hr` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `(one_smul _ q : ((1, 1, 1) : UF E n × GLG E n SG × GLQ E n Q') • q = q) ▸ this`.
+-/
 theorem pt_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) {n : ℕ}
     [NeZero n] {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 E))} (hQ : Q' = ∅) {y k k' g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q}
     {q : DecoF E n ST SG Q'} (h : IsPtOf hc (y * k) p) (h' : IsPtOf hc (y * k') p) (hq : IsPtOf hc (g * k) q) :
@@ -25,6 +28,17 @@ theorem pt_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Use the proof step `rename' y' => y`. Take `⟨c, -⟩` from `h.onto ()`. Establish `hQ : QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅`. Rewrite using `[I.trueColumn_tuple_trivial_eq_one]`.
+
+Conclude with `twistPrimes_trivialTuple_empty I.sel I.S`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`. Take `⟨p0, hp0, -⟩` from `h.k_std ()`. Establish `hk : k () ∈ UAd B.sp.cm (B.R.N i)` using `hp0.uni`. Establish `hyk : y c * k () ∈ UAd B.sp.cm (B.R.N i)` using `(h.pt c).uni`.
+
+Establish `hg : y c * x.1 * k () ∈ UAd B.sp.cm (B.R.N i)`. Establish `h1 : y c * x.1 * k () = (y c * k ()) * ((k ())⁻¹ * x.1 * k ())` using `by group`. Rewrite using `[h1]`. Conclude with `mul_mem hyk (mul_mem (mul_mem (inv_mem hk) (hU x.2)) hk)`. Take `⟨q₁, hq₁, -⟩` from `exists_near (ST := (B.primes X).vT u) (SG := (B.primes X).vGs) (Q := QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)) B.sp.cm 0 hg`.
+
+Establish `hq : IsPtOf B.sp.cm (y c * x.1 * k ()) q₁` using `(GlobalTheory.Mem.Col2.PtDeco.isPtOf_iff_decoRaw _ _ B.sp.cm _ _ _ _ _ q₁ hQ).2 ⟨hg, hq₁.symm⟩`. Establish `hq' : IsPtOf B.sp.cm (y c * x.1 * k' ()) q₁` using `pt_swap B.sp.cm hQ (h.pt c) (h'.pt c) hq`. Establish `hm` using `(h.lev c x.1 q₁ hq).1 x.2`. Establish `hx : x.1 ∈ U'` using `(h'.lev c x.1 q₁ hq').2 hm`. Take `⟨κ, hgam, hκq, -⟩` from `hm`.
+
+Use `⟨hx, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `(h'.chr c ⟨x.1, hx⟩ κ hgam (by rw [hκq]; exact hq')).trans (h.chr c x κ hgam (by rw [hκq]; exact hq)).symm`.
+-/
 theorem reads_le {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (i : ℕ) {Lb Lb'} {U U' : Subgroup (GA B (B.R.N i))}
     {chi : U →* ℂˣ} {chi' : U' →* ℂˣ} {y y' st st' k k'} (hy : y' = y)
     (h : I.Reads u I.mu0 i (fun _ => ()) (fun _ => Lb) (fun _ => U) (fun _ => chi) y st k)
@@ -55,6 +69,9 @@ theorem reads_le {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (i : �
   refine ⟨hx, Units.ext ?_⟩
   exact (h'.chr c ⟨x.1, hx⟩ κ hgam (by rw [hκq]; exact hq')).trans (h.chr c x κ hgam (by rw [hκq]; exact hq)).symm
 
+/- English proof (translation)
+Establish `e : U' = U` using `le_antisymm (fun x hx => (h' ⟨x, hx⟩).1) (fun x hx => (h ⟨x, hx⟩).1)`. Substitute `e` using the available equality. Conclude with `⟨rfl, heq_of_eq (MonoidHom.ext fun x => (h x).2)⟩`.
+-/
 theorem heq_chi {G : Type} [Group G] {U U' : Subgroup G} {chi : U →* ℂˣ} {chi' : U' →* ℂˣ}
     (h : ∀ x : U, ∃ hx : x.1 ∈ U', chi' ⟨x.1, hx⟩ = chi x) (h' : ∀ x : U', ∃ hx : x.1 ∈ U, chi ⟨x.1, hx⟩ = chi' x) :
     U' = U ∧ HEq chi' chi := by
@@ -72,6 +89,9 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hg1 : gramN (w.D Z) 0 (Nat.zero_le _) = 1` using `((spaces_in_coordinates w.I w.ok w.pins w.l Z).2.2.2 0 (Nat.zero_le _)).1`. Establish `eU : UPts (sigD (w.D Z)) (gramN (w.D Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (w.D Z).host.F) (w.D Z).host.F) = UAd B.sp.cm (B.R.N 0)` using `by rw [hg1]; rfl`. Conclude with `fun x hx => eU ▸ ((F.cls0.lev.U_eq x).1 hx).1`.
+-/
 theorem U_le (Z : w.Lt) (u : B.Word) (F : Forms0 (w.D Z) u) :
     (show Subgroup (GA B (B.R.N 0)) from F.cls0.lev.U) ≤ UAd B.sp.cm (B.R.N 0) := by
   have hg1 : gramN (w.D Z) 0 (Nat.zero_le _) = 1 := ((spaces_in_coordinates w.I w.ok w.pins w.l Z).2.2.2 0 (Nat.zero_le _)).1
@@ -90,6 +110,9 @@ def car (Z : w.Lt) (u : B.Word)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨k, h⟩` from `(t.std u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Take `⟨k', h'⟩` from `(t'.std u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hy` using `(funext ((t.std u).yE 0 (Nat.zero_le _) (Or.inl rfl))).trans (funext ((t'.std u).yE 0 (Nat.zero_le _) (Or.inl rfl))).symm`. Establish `e` using `heq_chi (reads_le w.I u 0 hy.symm h h' (U_le Z u (t.C.forms u).to0)) (reads_le w.I u 0 hy h' h (U_le Z' u (t'.C.forms u).to0))`. Conclude with `Prod.ext (Submodule.ext fun x => (h'.lb () x).trans (h.lb () x).symm) (Sigma.ext e.1 e.2)`.
+-/
 theorem car_eq {Z Z' : w.Lt} (t : ColT w Z) (t' : ColT w Z') (u : B.Word) :
     car Z' u (t'.C.forms u).to0.cls0.lev = car Z u (t.C.forms u).to0.cls0.lev := by
   obtain ⟨k, h⟩ := (t.std u).ends 0 (Nat.zero_le _) (Or.inl rfl)
@@ -99,17 +122,26 @@ theorem car_eq {Z Z' : w.Lt} (t : ColT w Z) (t' : ColT w Z') (u : B.Word) :
   exact Prod.ext (Submodule.ext fun x => (h'.lb () x).trans (h.lb () x).symm) (Sigma.ext e.1 e.2)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+The claim follows from `funext fun c => Subtype.ext (((t'.std u).yE 0 (Nat.zero_le _) (Or.inl rfl) c).trans ((t.std u).yE 0 (Nat.zero_le _) (Or.inl rfl) c).symm)`.
+-/
 theorem y_eq {Z Z' : w.Lt} (t : ColT w Z) (t' : ColT w Z') (u : B.Word) :
     (t'.C.forms u).to0.cls0.y = ((t.C.forms u).to0.cls0.y) :=
   funext fun c => Subtype.ext (((t'.std u).yE 0 (Nat.zero_le _) (Or.inl rfl) c).trans ((t.std u).yE 0 (Nat.zero_le _) (Or.inl rfl) c).symm)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+The claim follows from `Equiv.ext fun c => Subtype.ext (((t'.std u).eY 0 (Nat.zero_le _) (Or.inl rfl) c).trans ((t.std u).eY 0 (Nat.zero_le _) (Or.inl rfl) c).symm)`.
+-/
 theorem eY_eq {Z Z' : w.Lt} (t : ColT w Z) (t' : ColT w Z') (u : B.Word) :
     (t'.C.forms u).to0.val0.eY = ((t.C.forms u).to0.val0.eY) :=
   Equiv.ext fun c => Subtype.ext (((t'.std u).eY 0 (Nat.zero_le _) (Or.inl rfl) c).trans ((t.std u).eY 0 (Nat.zero_le _) (Or.inl rfl) c).symm)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B f T w Z Zn col col' F₁ h u`. Establish `e : car (reL Z Zn) u (col'.C.forms u).to0.cls0.lev = car (reL Z Zn) u (F₁ u).cls0.lev` using `(car_eq col col' u).trans ((congrArg (car Z u) (Eq.symm (h u).left)))`. Establish `e2` using `Sigma.ext_iff.1 (congrArg Prod.snd e)`. Conclude with `⟨congrArg Prod.fst e, e2.1, e2.2, (y_eq col col' u).trans ((by with_unfolding_all exact ((h u).2.1.symm :))), (eY_eq col col' u).trans ((by with_unfolding_all exact ((h u).2.2.symm :)))⟩`.
+-/
 theorem sameStd : SameStd := by
   intro B f T w Z Zn col col' F₁ h u
   have e : car (reL Z Zn) u (col'.C.forms u).to0.cls0.lev = car (reL Z Zn) u (F₁ u).cls0.lev :=
@@ -126,6 +158,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {F F' : ∀ u, Forms0 D u}
 
+/- English proof (translation)
+Introduce `u` and use `⟨(h u).1.symm, (h u).2.1.symm, (h u).2.2.1.symm, (h u).2.2.2.1.symm, (h u).2.2.2.2.symm⟩`.
+-/
 theorem SameCar_symm (h : SameCar F F') : SameCar F' F := fun u =>
   ⟨(h u).1.symm, (h u).2.1.symm, (h u).2.2.1.symm, (h u).2.2.2.1.symm, (h u).2.2.2.2.symm⟩
 
@@ -137,17 +172,28 @@ def trCar (h : SameCar F F') {X : HidaSetting D} {u} (t : Transport X u (F u)) :
     J_isom := fun c ξ η => by rw [(h u).2.2.2.2]; exact t.J_isom c ξ η }
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `LinearMap.ext fun T => funext fun c => funext fun z => ?_` and prove the remaining obligations. Conclude with `congrArg (fun e => t.J (shP X u T.1 (t.hc c)) (e z)) (congrArg DFunLike.coe (h u).2.2.2.2)`.
+-/
 theorem colDictL_car (h : SameCar F F') {X : HidaSetting D} {u} (t : Transport X u (F u)) (hK : X.LevelSubgroupCharacter) :
     colDictL X (trCar h t) hK = colDictL X t hK := by
   refine LinearMap.ext fun T => funext fun c => funext fun z => ?_
   exact congrArg (fun e => t.J (shP X u T.1 (t.hc c)) (e z)) (congrArg DFunLike.coe (h u).2.2.2.2)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[eq_of_heq h]`.
+-/
 theorem chi_of_heq {G : Type} [Group G] {U U' : Subgroup G} {chi : U →* ℂˣ} {chi' : U' →* ℂˣ} (e : U' = U) (h : HEq chi' chi)
     (x : G) (hx : x ∈ U') : chi' ⟨x, hx⟩ = chi ⟨x, e ▸ hx⟩ := by
   subst e
   rw [eq_of_heq h]
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `⟨fun x => ?_, fun g y hr => ⟨?_, fun hk hy => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(h u).1]`. Conclude with `l.1 x`. Rewrite using `[(h u).2.1]`. Conclude with `(l.2 g y hr).1`.
+
+Rewrite using `[chi_of_heq (h u).2.1 (h u).2.2.1]`. Conclude with `(l.2 g y hr).2 hk _`.
+-/
 theorem lev_car (h : SameCar F F') {X : HidaSetting D} {u} {t : Transport X u (F u)} {hK : X.LevelSubgroupCharacter} (l : LevelMatch X t hK) :
     LevelMatch X (trCar h t) hK := by
   refine ⟨fun x => ?_, fun g y hr => ⟨?_, fun hk hy => ?_⟩⟩
@@ -195,6 +241,11 @@ def SatMv : Prop := ∀ (B : Base) (C : Cols B) (a : Late B C) (p : RowPk a.D) (
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩`. Take `⟨F₁, hF⟩` from `exists_sameF_ofDiv (D := Late.D Z) ((N)) ((h)) fun u => (col.C.forms u).to0`. Take `⟨s'⟩` from `H B w.C Z (pkOf r) (fun u => (col.C.forms u).to0) ((N)) ((h)) ((F₁)) ((hF)) (cast (sx_eq r col) s)`. Establish `c` using `sameStd B f T w Z (New.ofDiv (Late.D Z) ((N)) ((h))) col ((col')) ((F₁)) ((hF))`. Establish `e' : pkOf t = (pkOf r).up Z Z.S N h` using `eq_of_heq e`.
+
+Rewrite using `[sx_eq t col', e']`. Conclude with `⟨satCar (D := Late.D (upL Z Z.S N h)) (F := (F₁)) ((c)) ((pkOf r).up Z Z.S N h) ((s'))⟩`.
+-/
 theorem sxMv_of (H : SatMv) : SxMv := by
   intro K B f T w Z Wt p0 r col N h p0' t col' e ⟨s⟩
   obtain ⟨F₁, hF⟩ := exists_sameF_ofDiv (D := Late.D Z) ((N)) ((h)) fun u => (col.C.forms u).to0
@@ -204,14 +255,23 @@ theorem sxMv_of (H : SatMv) : SxMv := by
   rw [sx_eq t col', e']
   exact ⟨satCar (D := Late.D (upL Z Z.S N h)) (F := (F₁)) ((c)) ((pkOf r).up Z Z.S N h) ((s'))⟩
 
+/- English proof (translation)
+Introduce `B C a p F0 N hh F₁ hS s` and use `let ⟨s', _⟩ := sAtL_exists_ofDiv B C a p.G' p.Pl0 p.T p.A p.Ks p.R p.F F0 p.eE s N hh F₁ hS ⟨s'⟩`.
+-/
 theorem satMv : SatMv := fun B C a p F0 N hh F₁ hS s =>
   let ⟨s', _⟩ := sAtL_exists_ofDiv B C a p.G' p.Pl0 p.T p.A p.Ks p.R p.F F0 p.eE s N hh F₁ hS
   ⟨s'⟩
 
+/- English proof (translation)
+The claim follows from `sxMv_of satMv`.
+-/
 theorem sxMv : SxMv := sxMv_of satMv
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, (HEq.refl p.eE)⟩`.
+-/
 theorem up_eE {B : Base} {C : Cols B} (a : Late B C) (S' : SStage B C a.W) (N : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V)
     (h : B.Word → ℝ) (p : RowPk a.D) : (p.up a S' N h).G' = p.G' ∧ (p.up a S' N h).Ks = p.Ks ∧ HEq (p.up a S' N h).eE p.eE :=
   ⟨rfl, rfl, (HEq.refl p.eE)⟩
@@ -220,12 +280,18 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(Eq.refl (R3.famR (w.st (upL Z S' N h)) w.I hX U Xg tr).A)`.
+-/
 theorem fam_up (Z : w.Lt) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (hX : B.fields.Ok)
     (U Xg tr) : famM (a := Z) (upL Z S' N h) (R3.famR (w.st Z) w.I hX U Xg tr).A = (R3.famR (w.st (upL Z S' N h)) w.I hX U Xg tr).A :=
   (Eq.refl (R3.famR (w.st (upL Z S' N h)) w.I hX U Xg tr).A)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(Eq.refl (R3.face0 (w.st (upL Z S' N h)) w.I hX U Xg tr).lv2)`.
+-/
 theorem face_up (Z : w.Lt) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (hX : B.fields.Ok)
     (U Xg tr) : face (a := Z) (upL Z S' N h) (R3.face0 (w.st Z) w.I hX U Xg tr).lv2 =
       ((R3.face0 (w.st (upL Z S' N h)) w.I hX U Xg tr).lv2) := (Eq.refl (R3.face0 (w.st (upL Z S' N h)) w.I hX U Xg tr).lv2)
@@ -235,6 +301,9 @@ def fixH (𝒮 : Slots) (c : ℝ) : Slots :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `H` and use `by obtain ⟨l', -⟩ := H K B f T w Z { l with rx := (l.rx, ⟨rfl⟩) } Z.S (fun u => (Z.V.div.Nu u).L) fun _ => Z.V.div.h B.u₀ + 1 have : Z.V.div.h B.u₀ + 1 = Z.V.div.h B.u₀ := l'.rx.2.down linarith`.
+-/
 theorem not_lv3Mv_fixH {𝒮 : Slots} {Z : w.Lt} (l : Lv3 𝒮 K w Z) : ¬ LevelThreeCondition (fixH 𝒮 (Z.V.div.h B.u₀)) := fun H => by
   obtain ⟨l', -⟩ := H K B f T w Z { l with rx := (l.rx, ⟨rfl⟩) } Z.S (fun u => (Z.V.div.Nu u).L) fun _ => Z.V.div.h B.u₀ + 1
   have : Z.V.div.h B.u₀ + 1 = Z.V.div.h B.u₀ := l'.rx.2.down

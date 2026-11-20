@@ -16,9 +16,17 @@ def rowEquiv (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (k : ℕ)
       measurable_toFun := (GlobalTheory.CuspRep.GASplit.continuous_infEq_symm E).measurable
       measurable_invFun := (continuous_infEq E).measurable }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nuInf_eq (k : ℕ) :
     nuInf E k = (Measure.pi fun _ : Fin k => GroundTheory.Global.infiniteAdeleMeasure E).map (rowEquiv E k) := rfl
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_arrowProdEquivProdArrow (InfiniteAdeleRing E) (Af E) (Fin k) (fun _ => GroundTheory.Global.infiniteAdeleMeasure E) (fun _ => GroundTheory.Global.finiteAdeleMeasure E)`. Use `haveI : SFinite (nuFin E k) := by unfold nuFin; infer_instance`. Establish `e : (fun y : Fin k → Ad E => A (fun i => pInf E (y i)) * B (fun i => pFin E (y i))) = fun x => (A ∘ rowEquiv E k) ((MeasurableEquiv.arrowProdEquivProdArrow (InfiniteAdeleRing E) (Af E) (Fin k)) x).1 * B ((MeasurableEquiv.arrowProdEquivProdArrow (InfiniteAdeleRing E) (Af E) (Fin k …`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+
+Establish `h1 : ∫ y, A (fun i => pInf E (y i)) * B (fun i => pFin E (y i)) ∂vecMeasure E (Fin k) = ∫ z, (A ∘ rowEquiv E k) z.1 * B z.2 ∂((Measure.pi fun _ : Fin k => GroundTheory.Global.infiniteAdeleMeasure E).prod (nuFin E k))`. Rewrite using `[e]`. Conclude with `(hmp.integral_comp (MeasurableEquiv.measurableEmbedding _) (fun z => (A ∘ rowEquiv E k) z.1 * B z.2))`. Rewrite using `[h1, integral_prod_mul, nuInf_eq, integral_map_equiv]`. Both sides reduce to the same expression.
+-/
 theorem integral_split {k : ℕ} (A : (Fin k → Cinf E) → ℂ) (B : (Fin k → Af E) → ℂ) :
     ∫ y, A (fun i => pInf E (y i)) * B (fun i => pFin E (y i)) ∂vecMeasure E (Fin k) =
       (∫ x, A x ∂nuInf E k) * ∫ f, B f ∂nuFin E k := by

@@ -13,6 +13,9 @@ namespace GlobalTheory.HCA.SupEst
 
 variable {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | j :: w => by funext x show fderiv ℝ (dw w (fun _ : E d => (0 : ℂ))) x (ev j) = 0 rw [dw_zero_fun w] simp`.
+-/
 theorem dw_zero_fun : ∀ w : List (Fin d), dw w (fun _ : E d => (0 : ℂ)) = fun _ => 0
   | [] => rfl
   | j :: w => by
@@ -21,6 +24,11 @@ theorem dw_zero_fun : ∀ w : List (Fin d), dw w (fun _ : E d => (0 : ℂ)) = fu
       rw [dw_zero_fun w]
       simp
 
+/- English proof (translation)
+Unfold `Sys.tr trOp`. Use `Finset.sum_eq_zero fun n _ => Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations. Establish `hO : IsOpen (tsupport φ)ᶜ` using `(isClosed_tsupport φ).isOpen_compl`. Establish `hEq : Set.EqOn (fun y => P.a i n w y * φ y) (fun _ => (0 : ℂ)) (tsupport φ)ᶜ`. Introduce `y hy`.
+
+Establish `: φ y = 0` using `image_eq_zero_of_notMem_tsupport hy`. Simplify using `[this]`. Use `eqOn_dw_of_isOpen hO (List.ofFn w) _ _ hEq hx` as an intermediate fact. Rewrite using `[this, dw_zero_fun]`. Simplify using the standard rewrite rules.
+-/
 theorem tr_eq_zero_of_notMem {ι : Type} (P : Sys d ι) (i : ι) {φ : E d → ℂ} {x : E d}
     (hx : x ∉ tsupport φ) : P.tr i φ x = 0 := by
   unfold Sys.tr trOp
@@ -38,6 +46,19 @@ end GlobalTheory.HCA.SupEst
 
 open GlobalTheory.HCA.SupEst in
 
+/- English proof (translation)
+Introduce `d ι _ P U hU ha hell w x₀ hx₀`. Take `⟨S, hS⟩` from `(solSet_closed_submodule d ι P U hU ha).2`. Take `⟨l, hl⟩` from `GlobalTheory.T.ellipticSystem_derivative_continuous_functional d ι P U hU ha hell S hS w x₀ hx₀`. Use `⟨‖l‖, norm_nonneg _, ?_⟩` and prove the remaining obligations. Introduce `u hu hweak M hM`.
+
+Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM x₀ hx₀)`. Establish `hcont : Continuous (U.restrict u)` using `continuousOn_iff_continuous_restrict.mp hu`. Set `u' : U →ᵇ ℂ` to `BoundedContinuousFunction.ofNormedAddCommGroup (U.restrict u) hcont M (fun x => hM x.1 x.2)`. Establish `hu'n : ‖u'‖ ≤ M` using `BoundedContinuousFunction.norm_ofNormedAddCommGroup_le _ hM0 _`. Establish `hext : Set.EqOn (ext0 U u') u U`.
+
+Introduce `x hx`. Simplify using `only [ext0, hx, dif_pos, u']`. Both sides reduce to the same expression. Establish `hmem : u' ∈ solSet P U`. Introduce `i φ h1 h2 h3`.
+
+Rewrite using `[← hweak i φ h1 h2 h3]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ U`. Rewrite using `[hext hx]`.
+
+Establish `: x ∉ tsupport φ` using `fun h => hx (h3 h)`. Rewrite using `[tr_eq_zero_of_notMem P i this]`. Simplify using the standard rewrite rules. Establish `hmemS : u' ∈ S` using `by rw [← SetLike.mem_coe, hS]; exact hmem`. Establish `hval : l ⟨u', hmemS⟩ = dw w u x₀`.
+
+Rewrite using `[hl]`. Conclude with `eqOn_dw_of_isOpen hU w _ _ hext hx₀`. Rewrite using `[← hval]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.HCA.dw_le_sup : ∀ (d : ℕ) (ι : Type) [Fintype ι] (P : Sys d ι) (U : Set (E d)), IsOpen U → (∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U) → (∀ x ∈ U, ∀ ξ : E d, ξ ≠ 0 → ∃ i, P.symb i x ξ ≠ 0) → ∀ (w : List (Fin d)), ∀ x₀ ∈ U, ∃ C : ℝ, 0 ≤ C ∧ ∀ u : E d → ℂ, ContinuousOn u U → WeakSol P U u → ∀ M : ℝ, (∀ x ∈ U, ‖u x‖ ≤ M) → ‖dw w u x₀‖ ≤ C * M := by
   intro d ι _ P U hU ha hell w x₀ hx₀
   obtain ⟨S, hS⟩ := (solSet_closed_submodule d ι P U hU ha).2

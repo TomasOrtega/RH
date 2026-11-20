@@ -42,15 +42,26 @@ open Classical in
 def secA (τ : EmbOver E w) (u : Matrix (Fin n) (Fin n) ℂ) : GAd σ J :=
   if hu : ∃ y : GArch σ J w, archMat σ J τ y = u then embArch σ J w hu.choose else 1
 
+/- English proof (translation)
+Introduce `a b e` and use `by rw [GlobalTheory.Orb.archMat_eq_archEquiv J h, GlobalTheory.Orb.archMat_eq_archEquiv J h] at e exact (archEquiv J h τ).injective (Subtype.ext (Units.ext e))`.
+-/
 theorem archMat_injective (h : IsCMExt F E σ) (τ : EmbOver E w) : Function.Injective (archMat σ J τ) := fun a b e => by
   rw [GlobalTheory.Orb.archMat_eq_archEquiv J h, GlobalTheory.Orb.archMat_eq_archEquiv J h] at e
   exact (archEquiv J h τ).injective (Subtype.ext (Units.ext e))
 
+/- English proof (translation)
+Establish `hu : ∃ y' : GArch σ J w, archMat σ J τ y' = archMat σ J τ y` using `⟨y, rfl⟩`. Rewrite using `[secA, dif_pos hu, archMat_injective h τ hu.choose_spec]`.
+-/
 theorem secA_archMat (h : IsCMExt F E σ) (τ : EmbOver E w) (y : GArch σ J w) :
     secA σ J τ (archMat σ J τ y) = embArch σ J w y := by
   have hu : ∃ y' : GArch σ J w, archMat σ J τ y' = archMat σ J τ y := ⟨y, rfl⟩
   rw [secA, dif_pos hu, archMat_injective h τ hu.choose_spec]
 
+/- English proof (translation)
+Establish `hA` using `isUnit_det_map hJ τ.1`. Establish `hu1 : (J.map τ.1)⁻¹ * uᴴ * J.map τ.1 * u = 1` using `hu`. Establish `hu2 : uᴴ * J.map τ.1 * u = J.map τ.1`. Use `congrArg (J.map τ.1 * ·) hu1` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hA, Matrix.one_mul, Matrix.mul_one]`.
+
+Set `v : GL (Fin n) ℂ` to `⟨u, (J.map τ.1)⁻¹ * uᴴ * J.map τ.1, mul_eq_one_comm.1 hu1, hu1⟩`. Use `⟨(archEquiv J h τ).symm ⟨v, show _ * _ * _ = _ from hu2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, MulEquiv.apply_symm_apply]`.
+-/
 theorem exists_archMat (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) {u : Matrix (Fin n) (Fin n) ℂ}
     (hu : sigA (J.map τ.1) u * u = 1) : ∃ y : GArch σ J w, archMat σ J τ y = u := by
   have hA := isUnit_det_map hJ τ.1
@@ -62,6 +73,19 @@ theorem exists_archMat (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E
   refine ⟨(archEquiv J h τ).symm ⟨v, show _ * _ * _ = _ from hu2⟩, ?_⟩
   rw [GlobalTheory.Orb.archMat_eq_archEquiv J h, MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hA` using `isUnit_det_map hJ τ.1`. Establish `hAh` using `conjTranspose_map h hJ τ.1`. Establish `anti : ∀ a b, sigA (J.map τ.1) (a * b) = sigA (J.map τ.1) b * sigA (J.map τ.1) a` using `fun a b => by`. Express the relevant statement in the definitionally equal form `_ * (a * b)ᴴ * _ = (_ * bᴴ * _) * (_ * aᴴ * _)`. Rewrite using `[conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hA]`. Use `⟨anti, ?_, fun a => ?_, Subtype.val_injective, fun X => ⟨fun hX => ?_, ?_⟩, fun a b ha hb => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(J.map τ.1)⁻¹ * (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * J.map τ.1 = 1`. Rewrite using `[conjTranspose_one, Matrix.mul_one, nonsing_inv_mul _ hA]`.
+
+Express the relevant statement in the definitionally equal form `_ * (_ * aᴴ * _)ᴴ * _ = a`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hAh]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hA, nonsing_inv_mul _ hA, Matrix.mul_one]`. Use `⟨⟨X, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Establish `h1 : (J.map τ.1)⁻¹ * Xᴴ * J.map τ.1 = -X` using `hX`. Express the relevant statement in the definitionally equal form `Xᴴ * J.map τ.1 + J.map τ.1 * X = 0`. Rewrite using `[← mul_nonsing_inv_cancel_left _ (Xᴴ * J.map τ.1) hA, ← Matrix.mul_assoc (J.map τ.1)⁻¹, h1, Matrix.mul_neg, neg_add_cancel]`. Introduce and unpack `⟨Y, rfl⟩`. Establish `h1 : Y.1ᴴ * J.map τ.1 + J.map τ.1 * Y.1 = 0` using `Y.2`.
+
+Express the relevant statement in the definitionally equal form `_ * Y.1ᴴ * _ = -Y.1`. Rewrite using `[Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h1, Matrix.mul_neg, nonsing_inv_mul_cancel_left _ _ hA]`. Establish `hab : sigA (J.map τ.1) (a * b) * (a * b) = 1`. Rewrite using `[anti, Matrix.mul_assoc, ← Matrix.mul_assoc (sigA (J.map τ.1) a), ha, Matrix.one_mul, hb]`. Take `⟨ya, rfl⟩` from `exists_archMat h hJ τ ha`.
+
+Take `⟨yb, rfl⟩` from `exists_archMat h hJ τ hb`. Rewrite using `[← map_mul, secA_archMat h, secA_archMat h, secA_archMat h, map_mul]`.
+-/
 theorem isLieData (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) :
     IsLieData (sigA (J.map τ.1)) (jA (J.map τ.1)) (secA σ J τ) := by
   have hA := isUnit_det_map hJ τ.1
@@ -93,10 +117,16 @@ theorem isLieData (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) :
     obtain ⟨yb, rfl⟩ := exists_archMat h hJ τ hb
     rw [← map_mul, secA_archMat h, secA_archMat h, secA_archMat h, map_mul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hasSmoothLogNearOne_of_isUnitaryLieExpData _ _ _ _ _ _ (isLieData h hJ τ)`.
+-/
 theorem hasLog (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) :
     HasLog (sigA (J.map τ.1)) (jA (J.map τ.1)) :=
   GlobalTheory.T.hasSmoothLogNearOne_of_isUnitaryLieExpData _ _ _ _ _ _ (isLieData h hJ τ)
 
+/- English proof (translation)
+Introduce `t` and use `by have hA := isUnit_det_map hJ τ.1 have hY : (t • Y.1)ᴴ * J.map τ.1 + J.map τ.1 * (t • Y.1) = 0 := by have h1 : Y.1ᴴ * J.map τ.1 + J.map τ.1 * Y.1 = 0 := Y.2 rw [conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero] have h1 : (NormedSpace …`.
+-/
 theorem isLineOf_expMap (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) (Y : LieL (J.map τ.1)) :
     IsLineOf σ J τ Y.1 fun t => expMap (jA (J.map τ.1)) (secA σ J τ) (t • Y) := fun t => by
   have hA := isUnit_det_map hJ τ.1
@@ -113,6 +143,9 @@ theorem isLineOf_expMap (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver 
   change secA σ J τ (NormedSpace.exp (t • Y.1)) = _
   rw [← hy, secA_archMat h]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.smoothInExponentialCoords_iff_first_second_kind _ _ _ _ _ _ (isLieData h hJ τ) (hasLog h hJ τ) Set.univ Submodule.span_univ]`. Introduce `k Y _ g`. Conclude with `hf k (fun i t => expMap (jA (J.map τ.1)) (secA σ J τ) (t • Y i)) (fun i => (isLineOf_expMap h hJ τ (Y i)).isRealLine h) g`.
+-/
 theorem sm_of_isSm (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) {f : GAd σ J → ℂ} (hf : IsSm σ J f) :
     Sm (expMap (jA (J.map τ.1)) (secA σ J τ)) f := by
   rw [GlobalTheory.T.smoothInExponentialCoords_iff_first_second_kind _ _ _ _ _ _ (isLieData h hJ τ) (hasLog h hJ τ) Set.univ Submodule.span_univ]
@@ -120,6 +153,15 @@ theorem sm_of_isSm (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : EmbOver E w) 
   exact hf k (fun i t => expMap (jA (J.map τ.1)) (secA σ J τ) (t • Y i))
     (fun i => (isLineOf_expMap h hJ τ (Y i)).isRealLine h) g
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ w τ f hf X X' γ δ ε hγ hδ`. Establish `H` using `isLieData h hJ τ`. Establish `hl` using `hasLog h hJ τ`. Establish `hs` using `sm_of_isSm h hJ τ hf`. Establish `hX` using `hγ.skew h`.
+
+Establish `hX'` using `hδ.skew h`. Set `Y : LieL (J.map τ.1)` to `⟨X, hX⟩`. Set `Y' : LieL (J.map τ.1)` to `⟨X', hX'⟩`. Take `rfl : γ = _` from `hγ.unique h (isLineOf_expMap h hJ τ Y)`. Take `rfl : δ = _` from `hδ.unique h (isLineOf_expMap h hJ τ Y')`.
+
+Use `⟨fun hε => ?_, fun hε => ?_⟩` and prove the remaining obligations. Take `rfl : ε = _` from `hε.unique h (isLineOf_expMap h hJ τ (Y + Y'))`. Conclude with `(GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear _ _ _ _ _ _ H hl f hs).2.1 Y Y'`. Establish `hZ` using `hε.skew h`. Set `Z : LieL (J.map τ.1)` to `⟨X * X' - X' * X, hZ⟩`.
+
+Take `rfl : ε = _` from `hε.unique h (isLineOf_expMap h hJ τ Z)`. Conclude with `(GlobalTheory.T.rightDerivativeAlongLie_commutator_eq_bracket _ _ _ _ _ _ H hl f hs Y Y' Z rfl).symm`.
+-/
 theorem lineDer_add_bracket : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

@@ -12,6 +12,11 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.CentCls
 
+/- English proof (translation)
+Use `haveI : (U.subgroupOf U₀).FiniteIndex := ⟨h⟩`. Use `haveI : Finite (U₀ ⧸ U.subgroupOf U₀) := Subgroup.finite_quotient_of_finiteIndex`. Use `haveI := Fintype.ofFinite (U₀ ⧸ U.subgroupOf U₀)`. Use `⟨Finset.univ.image (fun q : U₀ ⧸ U.subgroupOf U₀ => ((q.out : U₀) : A)), ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Use `set q : U₀ ⧸ U.subgroupOf U₀ := QuotientGroup.mk ⟨u, hu⟩`. Use `⟨((q.out : U₀) : A), Finset.mem_image_of_mem _ (Finset.mem_univ _), (q.out).2, ((q.out : U₀) : A)⁻¹ * u, ?_, by group⟩` and prove the remaining obligations. Establish `h1 : (q.out)⁻¹ * ⟨u, hu⟩ ∈ U.subgroupOf U₀` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' q)`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`. Simplify using `using h1`.
+-/
 theorem exists_finset_cosets {A : Type} [Group A] (U₀ U : Subgroup A) (h : U.relIndex U₀ ≠ 0) :
     ∃ F : Finset A, ∀ u ∈ U₀, ∃ f ∈ F, f ∈ U₀ ∧ ∃ v ∈ U, u = f * v := by
   haveI : (U.subgroupOf U₀).FiniteIndex := ⟨h⟩
@@ -30,6 +35,41 @@ end GlobalTheory.CentCls
 
 namespace GlobalTheory.CentCls
 
+/- English proof (translation)
+Introduce `p hp G L K' hK' β x t hx hsh y₀ _ _ r`. Take `⟨r₁, r₂⟩` from `r`. Take `⟨F₂, hF₂⟩` from `exists_finset_cosets (KHT p G.m G.n 1 G.Fw) K' hK'.1`. Set `ι : G.GAf →* (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ` to `{ toFun := fun g => g, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Set `U₁ : Subgroup ((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ)` to `((L.K.toSubgroup.map (MulAut.conj r₁).toMonoidHom).map ι).comap (psiAway G x)`.
+
+Set `U₂ : Subgroup ((ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ)` to `((KHT p G.m G.n 1 G.Fw).map (MulAut.conj r₂).toMonoidHom).comap (psiP G)`. Take `⟨O₁, hO₁, h1O₁, hO₁K⟩` from `exists_open_psiAway_mem_conj_level p G L β x t hx (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) r₁`. Take `⟨O₂, hO₂, h1O₂, hO₂K⟩` from `GlobalTheory.T.psi_p_neighborhood_in_level_subgroup p G r₂`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `letI : TopologicalSpace (ℚ_[p] ⊗[ℚ] G.C) := moduleTopology ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C)`.
+
+Take `⟨S, hS⟩` from `GlobalTheory.T.similitudeCentraliser_classNumber_finite_borel G.C G.star (β : G.C) (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) p (U₁.prod U₂) ⟨O₁ ×ˢ O₂, hO₁.prod hO₂, ⟨h1O₁, h1O₂⟩, fun z hz hT1 _ => Subgroup.mem_prod.mpr ⟨by`. Take `⟨k, hk, hk'⟩` from `hO₁K z.1 hz.1 hT1`. Conclude with `Subgroup.mem_comap.mpr (Subgroup.mem_map.mpr ⟨r₁ * k * r₁⁻¹, Subgroup.mem_map.mpr ⟨k, hk, rfl⟩, hk'⟩), by`. Establish `h2` using `hO₂K z.2 hz.2`. Use `Subgroup.mem_comap.mpr (Subgroup.mem_map.mpr ⟨r₂⁻¹ * psiP G z.2 * r₂, h2, ?_⟩)` and prove the remaining obligations.
+
+Use `show r₂ * (r₂⁻¹ * psiP G z.2 * r₂) * r₂⁻¹ = psiP G z.2`. Use the proof step `group⟩⟩`. Set `Pf : G.Cˣ × ℚˣ → Prop` to `fun e => (e.1 : G.C) * β * MulOpposite.unop (G.star e.1) = algebraMap ℚ G.C e.2 * β ∧ Commute (e.1 : G.C) (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)`. Set `e₀ : G.Cˣ × ℚˣ` to `if h : ∃ e, Pf e ∧ (e.2 : ℚ) < 0 then h.choose else 1`. Set `S'` to `S ∪ S.image (fun s => dg G.C p e₀ * s)`.
+
+Set `gOf : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ → G.GAf` to `fun w => if h : ∃ g : G.GAf, (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = w then h.choose else 1`. Establish `hgOf : ∀ w (g : G.GAf), (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = w → ((gOf w : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = w`. Introduce `w g hg`. Establish `h : ∃ g : G.GAf, (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = w` using `⟨g, hg⟩`. Simplify using `only [gOf, dif_pos h]`.
+
+Conclude with `h.choose_spec`. Use `⟨(S' ×ˢ F₂).image (fun q => (gOf (psiAway G x q.1.1) * r₁, psiP G q.1.2 * r₂ * q.2)), ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨c₁, c₂⟩` from `c`. Establish `hc1 : c₁ * toAfF G β x t hx y₀ = toAfF G β x t hx y₀ * c₁` using `congrArg Prod.fst hc`.
+
+Establish `hc2 : c₂ * toP1 G β y₀ = toP1 G β y₀ * c₂` using `congrArg Prod.snd hc`. Establish `hz₁` using `inT_psiAway_inv_of_commute p G β x t hx y₀ c₁ hc1`. Take `⟨z₂, hz₂, hz₂c⟩` from `GlobalTheory.T.exists_unitaryCentralizer_of_commute_padicPoints_split p G β hsh y₀ c₂ hc2`. Take `⟨γ, hγf, hγc, s, hs, u, hu, hz⟩` from `hS (psiAway G x⁻¹ (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ), z₂) hz₁ hz₂`. Choose the witnesses or unpack the hypotheses as in `⟨γ', ⟨hγ'f, hγ'c⟩, hγ'pos, s', hs', hds⟩ : ∃ γ' : G.Cˣ × ℚˣ, Pf γ' ∧ (0 : ℚ) < (γ'.2 : ℚ) ∧ ∃ s' ∈ S', dg G.C p γ * s = dg G.C p γ' * s' := by`.
+
+Break down `lt_or_gt_of_ne (Units.ne_zero γ.2) with hneg | hpos` into its components or cases. Establish `hex : ∃ e, Pf e ∧ (e.2 : ℚ) < 0` using `⟨γ, ⟨hγf, hγc⟩, hneg⟩`. Establish `he₀ : e₀ = hex.choose` using `by simp only [e₀, dif_pos hex]`. Take `⟨⟨he1, he2⟩, he3⟩` from `hex.choose_spec`. Use `⟨γ * e₀⁻¹, ⟨?_, ?_⟩, ?_, dg G.C p e₀ * s, Finset.mem_union_right _ (Finset.mem_image_of_mem _ hs), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he₀]`. Conclude with `form_mul_inv G.star (β : G.C) γ.1 hex.choose.1 γ.2 hex.choose.2 hγf he1`. Rewrite using `[he₀] show Commute ((γ.1 * hex.choose.1⁻¹ : G.Cˣ) : G.C) _`. Rewrite using `[Units.val_mul]`. Conclude with `hγc.mul_left he2.units_inv_left`.
+
+Rewrite using `[he₀] show (0 : ℚ) < ((γ.2 * hex.choose.2⁻¹ : ℚˣ) : ℚ)`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `mul_pos_of_neg_of_neg hneg (inv_lt_zero.mpr he3)`. Rewrite using `[map_mul, map_inv] group`. Conclude with `⟨γ, ⟨hγf, hγc⟩, hpos, s, Finset.mem_union_left _ hs, rfl⟩`.
+
+Set `y : grp G β` to `⟨γ', hγ'f, hγ'pos⟩`. Take `⟨hu1, hu2⟩` from `Subgroup.mem_prod.mp hu`. Take `⟨g, hg1, hg⟩` from `Subgroup.mem_map.mp (Subgroup.mem_comap.mp hu1)`. Take `⟨k, hk, hkg⟩` from `Subgroup.mem_map.mp hg1`. Take `⟨k₂, hk₂, hk₂e⟩` from `Subgroup.mem_map.mp (Subgroup.mem_comap.mp hu2)`.
+
+Take `⟨f, hf, -, v, hv, hkv⟩` from `hF₂ k₂ hk₂`. Establish `hz' : (psiAway G x⁻¹ (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ), z₂) = dg G.C p γ' * s' * u`. Rewrite using `[hz, hds]`. Establish `hz1` using `congrArg Prod.fst hz'`. Establish `hz2` using `congrArg Prod.snd hz'`.
+
+Simplify using `only [Prod.fst_mul, Prod.snd_mul] at hz1 hz2`. Establish `hc₁ : (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = psiAway G x (psiAway G x⁻¹ (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ))`. Simplify using `[psiAway_apply, mul_assoc]`. Establish `e1 : psiAway G x (dg G.C p γ').1 = ((toAfF G β x t hx y : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ)` using `(toAfF_eq_psiAway G β x t hx y).symm`. Rewrite `hc₁` using `[hz1, map_mul, map_mul, e1, ← hg]`.
+
+Establish `hs1 : ((gOf (psiAway G x s'.1) : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = psiAway G x s'.1`. Use `hgOf _ ((toAfF G β x t hx y)⁻¹ * c₁ * g⁻¹) ?_` and prove the remaining obligations. Use `show ((toAfF G β x t hx y : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ)⁻¹ * (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) * (ι g)⁻¹ = _`. Rewrite using `[hc₁]`. Use `group`.
+
+Establish `hc₁' : c₁ = toAfF G β x t hx y * gOf (psiAway G x s'.1) * g`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (c₁ : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) = ((toAfF G β x t hx y : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) * ((gOf (psiAway G x s'.1) : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) * ι g`. Rewrite using `[hs1]`. Conclude with `hc₁`.
+
+Establish `e2 : psiP G (dg G.C p γ').2 = toP1 G β y` using `(formGroupToPadicPointsDegreeOne_eq_unitaryPoints G β y).symm`. Establish `hc₂' : c₂ = toP1 G β y * psiP G s'.2 * (r₂ * k₂ * r₂⁻¹)`. Rewrite using `[← hz₂c, hz2, map_mul, map_mul, e2, ← hk₂e]`. Both sides reduce to the same expression. Establish `hg' : g = r₁ * k * r₁⁻¹` using `hkg.symm`.
+
+Establish `hmem : (s', f) ∈ S' ×ˢ F₂` using `Finset.mem_product.mpr ⟨hs', hf⟩`. Use `⟨y, Subtype.ext (Prod.ext (Units.ext hγ'c.eq) (mul_comm _ _)), _, Finset.mem_image_of_mem _ hmem, (k, v), hk, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hc₁', hg', hc₂', hkv]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> dsimp only <;> simp only [Prod.fst_mul, Prod.snd_mul] <;> group`.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (K' : Subgroup (Gr G 1)), Subgroup.Commensurable K' (KHT p G.m G.n 1 G.Fw) → ∀ (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t), sh G β = β → ∀ (y₀ : grp G β), (minpoly G.F (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).Separable → (minpoly G.F (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)).natDegree = G.n → ∀ r : G.GAf × Gr G 1, ∃ R : Finset (G.GAf × Gr G 1), ∀ c : G.GAf × Gr G 1, c * (toAfF G β x t hx y₀, toP1 G β y₀) = (toAfF G β x t hx y₀, toP1 G β y₀) * c → ∃ y : grp G β, y * y₀ = y₀ * y ∧ ∃ s ∈ R, ∃ k : G.GAf × Gr G 1, k.1 ∈ L.K.toSubgroup ∧ k.2 ∈ K' ∧ c * r = (toAfF G β x t hx y, toP1 G β y) * s * k := by
   intro p hp G L K' hK' β x t hx hsh y₀ _ _ r
   obtain ⟨r₁, r₂⟩ := r

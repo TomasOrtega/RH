@@ -29,9 +29,15 @@ section Local
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v`.
+-/
 theorem isCompact_intV : IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) :=
   ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isCompact_intV v).isClosed, ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v⟩`.
+-/
 theorem isClopen_intV : IsClopen (v.adicCompletionIntegers F : Set (Fv F v)) :=
   ⟨(isCompact_intV v).isClosed, ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v⟩
 
@@ -39,20 +45,32 @@ instance lc_Fv : LocallyCompactSpace (Fv F v) :=
   (isCompact_intV v).locallyCompactSpace_of_mem_nhds_of_addGroup
     ((isClopen_intV v).isOpen.mem_nhds (zero_mem (v.adicCompletionIntegers F)))
 
+/- English proof (translation)
+The claim follows from `(isClopen_intV v).preimage (Homeomorph.subRight t).continuous`.
+-/
 theorem isClopen_translate (t : Fv F v) :
     IsClopen ((Homeomorph.subRight t) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))) :=
   (isClopen_intV v).preimage (Homeomorph.subRight t).continuous
 
+/- English proof (translation)
+The claim follows from `(Homeomorph.subRight t).isCompact_preimage.2 (isCompact_intV v)`.
+-/
 theorem isCompact_translate (t : Fv F v) :
     IsCompact ((Homeomorph.subRight t) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))) :=
   (Homeomorph.subRight t).isCompact_preimage.2 (isCompact_intV v)
 
+/- English proof (translation)
+Use `show t - t ∈ (v.adicCompletionIntegers F : Set (Fv F v))`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem mem_translate (t : Fv F v) :
     t ∈ (Homeomorph.subRight t) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v)) := by
   show t - t ∈ (v.adicCompletionIntegers F : Set (Fv F v))
   rw [sub_self]
   exact zero_mem _
 
+/- English proof (translation)
+Take `⟨V, hV, htV, hVs⟩` from `(loc_compact_Haus_tot_disc_of_zero_dim (H := Fv F v)).exists_subset_of_mem_open (⟨ht, mem_translate v t⟩ : t ∈ W ∩ (Homeomorph.subRight t) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))) (hW.inter (isClopen_translate v t).isOpen)`. Conclude with `⟨V, hV, (isCompact_translate v t).of_isClosed_subset hV.isClosed (hVs.trans inter_subset_right), htV, hVs.trans inter_subset_left⟩`.
+-/
 theorem exists_cc {W : Set (Fv F v)} (hW : IsOpen W) {t : Fv F v} (ht : t ∈ W) :
     ∃ C, IsClopen C ∧ IsCompact C ∧ t ∈ C ∧ C ⊆ W := by
   obtain ⟨V, hV, htV, hVs⟩ :=
@@ -62,6 +80,13 @@ theorem exists_cc {W : Set (Fv F v)} (hW : IsOpen W) {t : Fv F v} (ht : t ∈ W)
   exact ⟨V, hV, (isCompact_translate v t).of_isClosed_subset hV.isClosed
     (hVs.trans inter_subset_right), htV, hVs.trans inter_subset_left⟩
 
+/- English proof (translation)
+Take `⟨T, hT, he⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun i : {C : Set (Fv F v) // IsClopen C ∧ IsCompact C ∧ C ⊆ W} => (i.1 : Set (Fv F v))) fun i => i.2.1.isOpen`. Use `⟨Subtype.val '' T, hT.image _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `⟨i.2.1, i.2.2.1⟩`. Rewrite using `[sUnion_image, he]`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Take `⟨C, h1, h2, h3, h4⟩` from `exists_cc v hW ht`. Conclude with `mem_iUnion.2 ⟨⟨C, h1, h2, h4⟩, h3⟩`.
+
+Introduce `ht`. Take `⟨i, hi⟩` from `mem_iUnion.1 ht`. Conclude with `i.2.2.2 hi`.
+-/
 theorem open_eq_sUnion {W : Set (Fv F v)} (hW : IsOpen W) :
     ∃ T : Set (Set (Fv F v)), T.Countable ∧ (∀ C ∈ T, IsClopen C ∧ IsCompact C) ∧ W = ⋃₀ T := by
   obtain ⟨T, hT, he⟩ := TopologicalSpace.isOpen_iUnion_countable
@@ -86,6 +111,21 @@ section Box1
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Set `S : Set (HeightOneSpectrum (𝓞 F))` to `{v | D v = (v.adicCompletionIntegers F : Set (Fv F v))}`. Establish `hS : cofinite ≤ 𝓟 S` using `le_principal_iff.2 hf`. Set `R` to `fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F`. Set `A` to `fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Set `K : Set (Πʳ v, [R v, A v]_[𝓟 S])` to `{x | ∀ v, x v ∈ D v}`.
+
+Establish `hK : IsCompact K`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.isCompact_iff]`. Establish `e : ((↑) : Πʳ v, [R v, A v]_[𝓟 S] → ∀ v, R v) '' K = Set.pi univ D`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩ v _`. Conclude with `hx v`. Introduce `hg`. Use `⟨⟨g, ?_⟩, fun v => hg v (mem_univ v), rfl⟩` and prove the remaining obligations. Rewrite using `[eventually_principal]`.
+
+Introduce `v hv`. Establish `h` using `hg v (mem_univ v)`. Rewrite `h` using `[show D v = _ from hv]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `isCompact_univ_pi hc`.
+
+Establish `e : {x : Af F | ∀ v, x v ∈ D v} = RestrictedProduct.inclusion R A hS '' K`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, ?_⟩, hx, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[eventually_principal]`. Introduce `v hv`. Establish `h` using `hx v`. Rewrite `h` using `[show D v = _ from hv]`. Then use the resulting hypothesis. Introduce and unpack `⟨y, hy, rfl⟩ v`.
+
+Conclude with `hy v`. Rewrite using `[e]`. Conclude with `hK.image (RestrictedProduct.continuous_inclusion hS)`.
+-/
 theorem isCompact_finite_adele_box {D : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)}
     (hc : ∀ v, IsCompact (D v))
     (hf : ∀ᶠ v in cofinite, D v = (v.adicCompletionIntegers F : Set (Fv F v))) :
@@ -125,6 +165,17 @@ theorem isCompact_finite_adele_box {D : ∀ v : HeightOneSpectrum (𝓞 F), Set 
   rw [e]
   exact hK.image (RestrictedProduct.continuous_inclusion hS)
 
+/- English proof (translation)
+Establish `hfin : {v | ¬ D v = (v.adicCompletionIntegers F : Set (Fv F v))}.Finite` using `hf`. Use `set S := hfin.toFinset`. Establish `e : {x : Af F | ∀ v, x v ∈ D v} = {x : Af F | ∀ v, v ∉ S → x v ∈ v.adicCompletionIntegers F} ∩ ⋂ v ∈ S, {x : Af F | x v ∈ D v}`. Use extensionality with `x`. Simplify using `only [mem_ofPred_eq, mem_inter_iff, mem_iInter]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun v hv => ?_, fun v _ => h v⟩` and prove the remaining obligations. Establish `hv' : D v = (v.adicCompletionIntegers F : Set (Fv F v))`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hv (hfin.mem_toFinset.2 hc)`. Use `h v` as an intermediate fact. Rewrite `this` using `[hv']`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩ v`. Distinguish the cases in `hv : v ∈ S`.
+
+Conclude with `h2 v hv`. Establish `hv' : D v = (v.adicCompletionIntegers F : Set (Fv F v))`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hfin.mem_toFinset.2 hc)`. Rewrite using `[hv']`.
+
+Conclude with `h1 v hv`. Rewrite using `[e]`. Use `IsOpen.inter ?_ (isOpen_biInter_finset fun v _ => (ho v).preimage (RestrictedProduct.continuous_eval v))` and prove the remaining obligations. Conclude with `RestrictedProduct.isOpen_forall_imp_mem (TopoAF.isOpen_integers F) (p := fun v => v ∉ S)`.
+-/
 theorem isOpen_finite_adele_box {D : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)} (ho : ∀ v, IsOpen (D v))
     (hf : ∀ᶠ v in cofinite, D v = (v.adicCompletionIntegers F : Set (Fv F v))) :
     IsOpen {x : Af F | ∀ v, x v ∈ D v} := by

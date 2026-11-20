@@ -235,6 +235,11 @@ end Point
 
 def TieCore : PtProp := fun D _ _ _ _ _ _ _ ex => ∃ (C : CharFrame D) (Tp : TupTied D C ex.nch), TieCoreAt ex C Tp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩ : IsCoprime (p : ℤ) (q : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h : ((a : 𝓞 H.E) * (p : 𝓞 H.E) + (b : 𝓞 H.E) * (q : 𝓞 H.E)) = 1`.
+
+Use `congrArg (fun z : ℤ => (z : 𝓞 H.E)) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← h]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+-/
 theorem prime_eq_of_overP {R : Ranks} {H : Formalism.BasicNotions.Host R} {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     {v : HeightOneSpectrum (𝓞 H.E)} (h1 : OverP H p v) (h2 : OverP H q v) : p = q := by
   by_contra hne
@@ -248,6 +253,13 @@ theorem prime_eq_of_overP {R : Ranks} {H : Formalism.BasicNotions.Host R} {p q :
   rw [← h]
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
+/- English proof (translation)
+Establish `hnu : Ideal.span {((p : ℕ) : 𝓞 H.E)} ≠ ⊤`. Introduce `h`. Establish `h1` using `congrArg Ideal.absNorm h`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, Ideal.absNorm_top]`. Establish `h2 : 0 < Module.finrank ℤ (𝓞 H.E)` using `Module.finrank_pos`.
+
+Conclude with `absurd h1 (Nat.one_lt_pow h2.ne' hp.one_lt).ne'`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hnu`. Establish `hpM : ((p : ℕ) : 𝓞 H.E) ∈ M` using `hle (Ideal.subset_span rfl)`. Use `⟨⟨M, hM.isPrime, fun h0 => ?_⟩, hpM⟩` and prove the remaining obligations. Rewrite `hpM` using `[h0, Ideal.mem_bot]`.
+
+Conclude with `hp.ne_zero (by exact_mod_cast hpM)`.
+-/
 theorem exists_overP {R : Ranks} (H : Formalism.BasicNotions.Host R) {p : ℕ} (hp : p.Prime) : ∃ v, OverP H p v := by
   have hnu : Ideal.span {((p : ℕ) : 𝓞 H.E)} ≠ ⊤ := by
     intro h
@@ -261,6 +273,9 @@ theorem exists_overP {R : Ranks} (H : Formalism.BasicNotions.Host R) {p : ℕ} (
   rw [h0, Ideal.mem_bot] at hpM
   exact hp.ne_zero (by exact_mod_cast hpM)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Take `⟨-, h1, -, h2⟩` from `(h μ).1.2.2.2 v hr`. Conclude with `h2 (prime_eq_of_overP h1 hp (Ideal.absNorm_mem _) hv ▸ hS)`.
+-/
 theorem TupNarrow.unr {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} (h : TupNarrow Tp) (μ : D.what₂.Tup) {p : ℕ}
     (hp : p.Prime) (hS : p ∈ untwistedPrimes D) {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : OverP D.host p v) :
     (Tp.xi μ).UnrAt v := by
@@ -268,11 +283,19 @@ theorem TupNarrow.unr {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch}
   obtain ⟨-, h1, -, h2⟩ := (h μ).1.2.2.2 v hr
   exact h2 (prime_eq_of_overP h1 hp (Ideal.absNorm_mem _) hv ▸ hS)
 
+/- English proof (translation)
+Introduce `hu` and use `by have := (h.ine v hv 1).1 fun x hx => by rw [hu x hx, one_pow] omega`.
+-/
 theorem not_unr_of_isDelta {R : Ranks} {H : Formalism.BasicNotions.Host R} {p : ℕ} {χ : HChar H.E} (h : IsDelta (H := H) p χ)
     {v : HeightOneSpectrum (𝓞 H.E)} (hv : OverP H p v) : ¬ χ.UnrAt v := fun hu => by
   have := (h.ine v hv 1).1 fun x hx => by rw [hu x hx, one_pow]
   omega
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_overP D.host D.host.pde_prime`. Take `⟨v', hv'⟩` from `exists_overP D.host D.host.pde'_prime`. Use `⟨fun h => not_unr_of_isDelta C.isDel hv ?_, fun h => not_unr_of_isDelta C.isDel' hv' ?_, fun h => not_unr_of_isDelta C.isDel hv ?_⟩` and prove the remaining obligations. Rewrite using `[← Tp.xi_star, ← h, Tp.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `fun _ _ => rfl`.
+
+Rewrite using `[← Tp.xi_star', ← h, Tp.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `fun _ _ => rfl`. Rewrite using `[← Tp.xi_star, h, Tp.xi_star']`. Conclude with `C.isDel'.unr v fun h' => D.host.pde_ne (prime_eq_of_overP D.host.pde_prime D.host.pde'_prime hv h')`.
+-/
 theorem tuples_ne {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) :
     D.what₂.mu0 ≠ D.what₂.muStar ∧ D.what₂.mu0 ≠ D.what₂.muStar' ∧ D.what₂.muStar ≠ D.what₂.muStar' := by
   obtain ⟨v, hv⟩ := exists_overP D.host D.host.pde_prime
@@ -284,6 +307,11 @@ theorem tuples_ne {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) :
   · rw [← Tp.xi_star, h, Tp.xi_star']
     exact C.isDel'.unr v fun h' => D.host.pde_ne (prime_eq_of_overP D.host.pde_prime D.host.pde'_prime hv h')
 
+/- English proof (translation)
+Break down `h μ with e | e | e | ⟨w, e⟩` into its components or cases. Conclude with `Or.inl (e ▸ Tp.trueColumnChoices_heckeChar_reference_eq_one)`. Conclude with `Or.inr (Or.inl (e ▸ Tp.xi_star))`. Conclude with `Or.inr (Or.inr (Or.inl (e ▸ Tp.xi_star')))`. Distinguish the cases in `hw : D.what₂.muAt w = D.what₂.mu0`.
+
+Conclude with `Or.inl (by rw [e, hw]; exact Tp.trueColumnChoices_heckeChar_reference_eq_one)`. Use `Or.inr (Or.inr (Or.inr ⟨w, hw, ?_⟩))` and prove the remaining obligations. Rewrite using `[e, (D.what₂.muAt_or w).resolve_left hw]`. Conclude with `Tp.xi_tw w`.
+-/
 theorem TupFamilies.xi {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (h : TupFamilies D) (μ : D.what₂.Tup) :
     Tp.xi μ = 1 ∨ Tp.xi μ = C.del ∨ Tp.xi μ = C.del' ∨
       ∃ w, D.what₂.muAt w ≠ D.what₂.mu0 ∧ Tp.xi μ = C.delAt (D.what₂.places.resChar w) * Tp.psi w := by
@@ -297,6 +325,13 @@ theorem TupFamilies.xi {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch
       rw [e, (D.what₂.muAt_or w).resolve_left hw]
       exact Tp.xi_tw w
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `Tp.xi_fin μ`. Establish `key : ∀ k : ℕ, ((Tp.xi μ) ^ k).val P = (Tp.xi μ).val P ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero]`.
+
+Both sides reduce to the same expression. Consider the case `succ k ih => rw [pow_succ, pow_succ, HChar.val_mul, ih]`. Establish `h1 : (Tp.xi μ).val P ^ n = 1`. Rewrite using `[← key, show Tp.xi μ ^ n = 1 from h]`. Both sides reduce to the same expression.
+
+Establish `h2` using `congrArg (fun z : ℂˣ => ‖(z : ℂ)‖) h1`. Simplify using `only [Units.val_pow_eq_pow_val, norm_pow, Units.val_one, norm_one] at h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2`.
+-/
 theorem norm_xi_val {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (μ : D.what₂.Tup)
     (P : HeightOneSpectrum (𝓞 D.host.E)) : ‖(((Tp.xi μ).val P : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, h⟩ := Tp.xi_fin μ
@@ -311,6 +346,13 @@ theorem norm_xi_val {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (
   simp only [Units.val_pow_eq_pow_val, norm_pow, Units.val_one, norm_one] at h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
 
+/- English proof (translation)
+Establish `hx` using `norm_xi_val Tp μ P`. Establish `hx0 : (((Tp.xi μ).val P : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `e : ∀ j, ((((Tp.tup μ j).val P)⁻¹ : ℂˣ) : ℂ) = ((((C.mu0 j).val P)⁻¹ : ℂˣ) : ℂ) * (((Tp.xi μ).val P : ℂˣ) : ℂ)⁻¹` using `fun j => by show ((((C.mu0 j * Tp.xi μ).val P)⁻¹ : ℂˣ) : ℂ) = _`. Rewrite using `[HChar.val_mul, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val ((Tp.xi μ).val P)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, hc, h⟩`. Establish `hc0 : c ≠ 0` using `fun h0 => by simp [h0] at hc`. Use `⟨(c * (((Tp.xi μ).val P : ℂˣ) : ℂ))⁻¹, by rw [norm_inv, norm_mul, hc, hx]; simp, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_div_of_mul_eq hc0 (h j), e]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce and unpack `⟨c, hc, h⟩`. Establish `hc0 : c ≠ 0` using `fun h0 => by simp [h0] at hc`. Use `⟨(c * (((Tp.xi μ).val P : ℂˣ) : ℂ))⁻¹, by rw [norm_inv, norm_mul, hc, hx]; simp, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[h j, e]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem nuAt_iff {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (μ : D.what₂.Tup)
     (P : HeightOneSpectrum (𝓞 D.host.E)) (ν : ℕ → ℂ) :
     NuAt Tp μ P ν ↔ ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ j : Fin D.R.m, ν (j.1 + 1) = c * ((((C.mu0 j).val P)⁻¹ : ℂˣ) : ℂ) := by
@@ -332,6 +374,11 @@ theorem nuAt_iff {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (μ 
     rw [h j, e]
     field_simp
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `(nuAt_iff Tp μ P ν).1 h`. Establish `hc0 : c ≠ 0` using `fun h0 => by simp [h0] at hc`. Establish `hi : (((C.mu0 i).val P : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hj : (((C.mu0 j).val P : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Rewrite using `[h i, h j, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem NuAt.ratio {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {μ : D.what₂.Tup}
     {P : HeightOneSpectrum (𝓞 D.host.E)} {ν : ℕ → ℂ} (h : NuAt Tp μ P ν) (i j : Fin D.R.m) :
     ν (i.1 + 1) / ν (j.1 + 1) = (((C.mu0 j).val P : ℂˣ) : ℂ) / (((C.mu0 i).val P : ℂˣ) : ℂ) := by
@@ -342,6 +389,11 @@ theorem NuAt.ratio {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {�
   rw [h i, h j, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Use `haveI : NeZero (Nat.card Γ) := ⟨Nat.card_pos.ne'⟩`. Establish `key : ∀ χ : Γ →* ℂˣ, Function.Injective χ → χ.range = rootsOfUnity (Nat.card Γ) ℂ`. Introduce `χ hχ`. Apply `Subgroup.eq_of_le_of_card_ge` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[mem_rootsOfUnity, ← map_pow, pow_card_eq_one', map_one]`. Rewrite using `[← Nat.card_congr (MonoidHom.ofInjective hχ).toEquiv]`. Conclude with `card_rootsOfUnity ℂ (Nat.card Γ)`. Rewrite using `[key φ hφ, key ψ hψ]`.
+-/
 theorem range_eq_of_faithful {Γ : Type*} [CommGroup Γ] [Finite Γ] (φ ψ : Γ →* ℂˣ) (hφ : Function.Injective φ)
     (hψ : Function.Injective ψ) : φ.range = ψ.range := by
   haveI : NeZero (Nat.card Γ) := ⟨Nat.card_pos.ne'⟩
@@ -354,6 +406,15 @@ theorem range_eq_of_faithful {Γ : Type*} [CommGroup Γ] [Finite Γ] (φ ψ : Γ
       exact card_rootsOfUnity ℂ (Nat.card Γ)
   rw [key φ hφ, key ψ hψ]
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨γ, hγ, -, h⟩` from `h k v`. Set `T : (ZMod (D.host.g k))ˣ →* ℂˣ` to `Units.map ((D.ntypes.teichC k).comp (algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) : ZMod (D.host.g k) →* Formalism.CyclotomicNorms.Fbar (D.host.g k)))`. Establish `hT : Function.Injective T`. Introduce `y z e`.
+
+Establish `hi` using `(algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k))).injective`. Conclude with `Units.ext (hi (D.ntypes.teichC_inj k _ _ ((map_ne_zero_iff _ hi).2 y.ne_zero) ((map_ne_zero_iff _ hi).2 z.ne_zero) (congrArg (fun u : ℂˣ => (u : ℂ)) e)))`. Establish `hr` using `range_eq_of_faithful (C.W.om k) T (C.W.gen k) hT`. Take `⟨γ', hγ'⟩ : C.W.om k γ ∈ T.range` from `hr ▸ ⟨γ, rfl⟩`. Use `⟨γ', ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨z, hz⟩ : T y ∈ (C.W.om k).range` from `hr.symm ▸ ⟨y, rfl⟩`. Take `⟨n, rfl⟩ : z ∈ Subgroup.zpowers γ` from `hγ ▸ Subgroup.mem_top z`. Use `⟨n, hT ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hz, map_zpow, map_zpow, hγ']`. Apply `hT` to reduce the goal to its premises. Rewrite using `[map_pow, hγ']`. Conclude with `Units.ext (h j)`.
+-/
 theorem TameTied.pow {C : CharFrame D} (h : TameTied C) (k : Fin 2) (v : D.nd.PlG k) :
     ∃ γ : (ZMod (D.host.g k))ˣ, Subgroup.zpowers γ = ⊤ ∧ ∀ j : Fin D.R.m, D.nd.chiT k v j = γ ^ (2 * (j.1 + 1)) := by
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -378,10 +439,16 @@ theorem TameTied.pow {C : CharFrame D} (h : TameTied C) (k : Fin 2) (v : D.nd.Pl
     rw [map_pow, hγ']
     exact Units.ext (h j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h.2.2.2.2.2.2.2 _).2 (Or.inr (Or.inr (Or.inr (Or.inl rfl)))), Ideal.absNorm_mem _⟩`.
+-/
 theorem IsFurtherRealPlace.mem {L : SizeData₂ D} {v0 : HeightOneSpectrum (𝓞 D.host.F)} (h : IsFurtherRealPlace L v0) :
     Ideal.absNorm v0.asIdeal ∈ D.host.levelPrimes ∧ ((Ideal.absNorm v0.asIdeal : ℕ) : 𝓞 D.host.F) ∈ v0.asIdeal :=
   ⟨(h.2.2.2.2.2.2.2 _).2 (Or.inr (Or.inr (Or.inr (Or.inl rfl)))), Ideal.absNorm_mem _⟩
 
+/- English proof (translation)
+Take `⟨⟨N0, hN⟩, hall⟩` from `h.2.1`. Establish `hg` using `hall N0 hN`. Take `⟨S, hS⟩` from `hg.goodTw hw`. Conclude with `⟨hg.1.1.inW1 hw, (Finset.disjoint_union_right.1 hS.1.2.1).1⟩`.
+-/
 theorem TwistAt.disjoint_conductorPlaces_excludedSet {L : SizeData₂ D} {nch : NChoice D} {xd : ThData D} {v0 : HeightOneSpectrum (𝓞 D.host.F)}
     {rep : ClassGroup (𝓞 D.host.K) → Ideal (𝓞 D.host.K)} (h : TwistAt L nch xd v0 rep) {w : D.what₂.places.Pl}
     (hw : D.what₂.muAt w ≠ D.what₂.mu0) : D.ntw.NonzeroIndexPlace (nch.twI w) ∧ Disjoint (nch.Q w) (D.ntw.S0 (nch.twI w)) := by
@@ -391,12 +458,18 @@ theorem TwistAt.disjoint_conductorPlaces_excludedSet {L : SizeData₂ D} {nch : 
   obtain ⟨S, hS⟩ := hg.goodTw hw
   exact ⟨hg.1.1.inW1 hw, (Finset.disjoint_union_right.1 hS.1.2.1).1⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, ⟨Hm, dt, A, H, -⟩, -⟩` from `h`. Conclude with `⟨H.real, H.real.vol.hermVolTied⟩`.
+-/
 theorem SpaceAt.real {X : DivX D} {EX : ErrX D} {lev : LevelData D} {nch : NChoice D} {th : ThetaX D} {C : CharFrame D}
     {Tp : TupTied D C nch} (h : SpaceAt X EX lev nch th C Tp) :
     Formalism.L2.Theta.RealTied D ∧ Formalism.L2.Herm.VolumeCompatible D := by
   obtain ⟨-, -, -, -, -, ⟨Hm, dt, A, H, -⟩, -⟩ := h
   exact ⟨H.real, H.real.vol.hermVolTied⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, ⟨Hm, dt, A, H, Dt, Θ, κ, rfl, -, hπ, -, hd, -⟩, -⟩` from `h`. Conclude with `⟨fun u pb e => (Hm.baseL u pb (by rw [hπ u]; exact e)).1, dt, hd.2.2.2.2.2.1⟩`.
+-/
 theorem SpaceAt.base {X : DivX D} {EX : ErrX D} {lev : LevelData D} {nch : NChoice D} {th : ThetaX D} {C : CharFrame D}
     {Tp : TupTied D C nch} (h : SpaceAt X EX lev nch th C Tp) :
     (∀ (u : D.what₂.Word) (pb : 𝓞 D.host.E), (pb : D.host.E) = D.host.conj (EX.piT u : D.host.E) →
@@ -429,32 +502,59 @@ section Point
 variable {L : SizeData₂ D} {gatT : GatTies D} {Gx : G.Inst D L} {Gy : G.LatInst D} {K : G.Consts} {X : DivX D} {cX : ExtraC}
   {ex : Extra D L gatT Gx Gy K X cX}
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.1`.
+-/
 theorem TieCoreAt.char {C : CharFrame D} {Tp : TupTied D C ex.nch} (h : TieCoreAt ex C Tp) :
     CharAt X ex.errX ex.nch ex.th C Tp := let ⟨_, _, h⟩ := h; h.1
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.2.2.2`.
+-/
 theorem TieCoreAt.space {C : CharFrame D} {Tp : TupTied D C ex.nch} (h : TieCoreAt ex C Tp) :
     SpaceAt X ex.errX ex.lev ex.nch ex.th C Tp := let ⟨_, _, h⟩ := h; h.2.2.2
 
+/- English proof (translation)
+The claim follows from `let ⟨_, Tp, _⟩ := h; GlobalTheory.EX.tuples_ne Tp`.
+-/
 theorem TieCore.tuples_ne (h : TieCore D L gatT Gx Gy K X cX ex) :
     D.what₂.mu0 ≠ D.what₂.muStar ∧ D.what₂.mu0 ≠ D.what₂.muStar' ∧ D.what₂.muStar ≠ D.what₂.muStar' :=
   let ⟨_, Tp, _⟩ := h; GlobalTheory.EX.tuples_ne Tp
 
+/- English proof (translation)
+Take `⟨C, Tp, h⟩` from `h`. Take `⟨v, hv⟩` from `exists_overP D.host D.host.pde_prime`. Conclude with `((h.char.2.2.2.2.2.2.2.2.1 _).1 _).2 ⟨D.host.pde_prime, v, hv, Tp.xi_star ▸ not_unr_of_isDelta C.isDel hv⟩`.
+-/
 theorem TieCore.pde_mem_Qp (h : TieCore D L gatT Gx Gy K X cX ex) : D.host.pde ∈ X.Qp D.what₂.muStar := by
   obtain ⟨C, Tp, h⟩ := h
   obtain ⟨v, hv⟩ := exists_overP D.host D.host.pde_prime
   exact ((h.char.2.2.2.2.2.2.2.2.1 _).1 _).2 ⟨D.host.pde_prime, v, hv, Tp.xi_star ▸ not_unr_of_isDelta C.isDel hv⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.char.2.2.2.2.2.2.2.2.2.2.2.2 μ`.
+-/
 theorem TieCore.used (h : TieCore D L gatT Gx Gy K X cX ex) (μ : D.what₂.Tup) : DV.Used D μ :=
   let ⟨_, _, h⟩ := h; h.char.2.2.2.2.2.2.2.2.2.2.2.2 μ
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.space.2.2.2.2.2.2.1 u`.
+-/
 theorem TieCore.base (h : TieCore D L gatT Gx Gy K X cX ex) (u : D.what₂.Word) : product_first_zeroth_parts.admB D u :=
   let ⟨_, _, h⟩ := h; h.space.2.2.2.2.2.2.1 u
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.space.2.2.2.2.2.2.2`.
+-/
 theorem TieCore.jet (h : TieCore D L gatT Gx Gy K X cX ex) : JetAt D :=
   let ⟨_, _, h⟩ := h; h.space.2.2.2.2.2.2.2
 
+/- English proof (translation)
+Introduce `h` and use `h.tuples_ne.1 e.symm`.
+-/
 example (e : D.what₂.muStar = D.what₂.mu0) : ¬ TieCore D L gatT Gx Gy K X cX ex := fun h => h.tuples_ne.1 e.symm
 
+/- English proof (translation)
+Introduce `h` and use `by have := h.pde_mem_Qp rw [e] at this exact absurd this (Finset.notMem_empty _)`.
+-/
 example (e : ∀ μ, X.Qp μ = ∅) : ¬ TieCore D L gatT Gx Gy K X cX ex := fun h => by
   have := h.pde_mem_Qp
   rw [e] at this
@@ -462,6 +562,9 @@ example (e : ∀ μ, X.Qp μ = ∅) : ¬ TieCore D L gatT Gx Gy K X cX ex := fun
 
 end Point
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨y, hy⟩ := h.2.2 2⁻¹ (by rwa [smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]) have h2 : (2 : 𝓞 E) * y = 1 := by apply IsFractionRing.injective (𝓞 E) E rw [map_mul, hy, map_ofNat, map_one, mul_inv_cancel₀ two_ne_zero] have h3 := congrArg Ideal.absNorm ((Ideal.span_sin …`.
+-/
 example {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (z : S.V) (hz : z ∈ S.L0) :
     ¬ IsPrimVec S ((2 : E) • z) := fun h => by
   obtain ⟨y, hy⟩ := h.2.2 2⁻¹ (by rwa [smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul])

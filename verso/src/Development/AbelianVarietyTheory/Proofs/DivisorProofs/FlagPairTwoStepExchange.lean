@@ -21,6 +21,9 @@ def step₂ : fl.F ⟨m, by omega⟩ ⟶ fl.F ⟨m + 2, by omega⟩ :=
   fl.step ⟨m, by omega⟩ ≫ fl.step ⟨m + 1, by omega⟩
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans ((congrArg (fl.step ⟨m, by omega⟩ ≫ ·) (fl.step_ι ⟨m + 1, by omega⟩)).trans (fl.step_ι ⟨m, by omega⟩))`.
+-/
 theorem step₂_ι : fl.step₂ m hm ≫ fl.ι ⟨m + 2, by omega⟩ = fl.ι ⟨m, by omega⟩ :=
   (Category.assoc _ _ _).trans ((congrArg (fl.step ⟨m, by omega⟩ ≫ ·) (fl.step_ι ⟨m + 1, by omega⟩)).trans
     (fl.step_ι ⟨m, by omega⟩))
@@ -30,9 +33,15 @@ def quot₂ : X.Modules := cokernel (fl.step₂ m hm)
 abbrev quot₂Seq : ShortComplex X.Modules :=
   (kernelCokernelCompSequence.snakeInput (fl.step ⟨m, by omega⟩) (fl.step ⟨m + 1, by omega⟩)).L₃
 
+/- English proof (translation)
+The claim follows from `shortExact_cokernel_comp _ _`.
+-/
 theorem quot₂Seq_shortExact : (fl.quot₂Seq m hm).ShortExact :=
   shortExact_cokernel_comp _ _
 
+/- English proof (translation)
+The claim follows from `(VBExt.isVB_and_cls_det_of_shortExact X _ 1 1 (fl.quot₂Seq_shortExact m hm) (fl.isVB_gr _) (fl.isVB_gr _)).1`.
+-/
 theorem isVB_quot₂ : IsVB (fl.quot₂ m hm) 2 :=
   (VBExt.isVB_and_cls_det_of_shortExact X _ 1 1 (fl.quot₂Seq_shortExact m hm) (fl.isVB_gr _)
     (fl.isVB_gr _)).1
@@ -41,6 +50,9 @@ def quot₂GrIso : cokernel (fl.quot₂Seq m hm).f ≅ fl.gr ⟨m + 1, by omega�
   (cokernelIsCokernel _).coconePointUniqueUpToIso (fl.quot₂Seq_shortExact m hm).gIsCokernel
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(cokernelIsCokernel _).comp_coconePointUniqueUpToIso_hom _ WalkingParallelPair.one`.
+-/
 theorem π_quot₂GrIso : cokernel.π _ ≫ (fl.quot₂GrIso m hm).hom = (fl.quot₂Seq m hm).g :=
   (cokernelIsCokernel _).comp_coconePointUniqueUpToIso_hom _ WalkingParallelPair.one
 
@@ -63,19 +75,31 @@ def quotTwoGr₀ : (fl.quotTwo m hm).gr 0 ≅ fl.gr ⟨m, by omega⟩ := cokerne
 
 def quotTwoGr₁ : (fl.quotTwo m hm).gr 1 ≅ fl.gr ⟨m + 1, by omega⟩ := fl.quot₂GrIso m hm
 
+/- English proof (translation)
+The claim follows from `cokernelZeroIsoTarget_inv.symm`.
+-/
 theorem π_quotTwoGr₀ : (fl.quotTwo m hm).π 0 = (fl.quotTwoGr₀ m hm).inv :=
   cokernelZeroIsoTarget_inv.symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cokernel.π _ ≫ cokernel.π _ ≫ (fl.quot₂GrIso m hm).hom = _`. Rewrite using `[π_quot₂GrIso]`. Simplify using `[quot₂Seq, Flag.π, step₂]`.
+-/
 theorem π_π_quotTwoGr₁ : cokernel.π (fl.step₂ m hm) ≫ (fl.quotTwo m hm).π 1 ≫
     (fl.quotTwoGr₁ m hm).hom = fl.π ⟨m + 1, by omega⟩ := by
   change cokernel.π _ ≫ cokernel.π _ ≫ (fl.quot₂GrIso m hm).hom = _
   rw [π_quot₂GrIso]
   simp [quot₂Seq, Flag.π, step₂]
 
+/- English proof (translation)
+Simplify using `[quot₂Seq, Flag.π, step₂]`.
+-/
 theorem π_quot₂Seq_f : fl.π ⟨m, by omega⟩ ≫ (fl.quot₂Seq m hm).f =
     fl.step ⟨m + 1, by omega⟩ ≫ cokernel.π (fl.step₂ m hm) := by
   simp [quot₂Seq, Flag.π, step₂]
 
+/- English proof (translation)
+The claim follows from `(smallCls_eq_iff _ _).2 ((fl₁.isVB_gr i).lbIso_det_of_iso e)`.
+-/
 theorem smallCls_root_eq_of_iso {E₁ E₂ : X.Modules} {N₁ N₂ : ℕ} (fl₁ : Flag E₁ N₁)
     (fl₂ : Flag E₂ N₂) (i : Fin N₁) (j : Fin N₂) (e : fl₁.gr i ≅ fl₂.gr j) :
     smallCls _ (fl₁.isLB_root i) = smallCls _ (fl₂.isLB_root j) :=
@@ -92,6 +116,9 @@ section QuotTwo
 
 variable (P : FlagPair φ r) (m : ℕ) (hm : m + 2 ≤ r)
 
+/- English proof (translation)
+Establish `h₀` using `P.gen_step ⟨m, by omega⟩`. Establish `h₁` using `P.gen_step ⟨m + 1, by omega⟩`. Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h₀ h₁`. Simplify using `only [Flag.step₂, Functor.map_comp, Category.assoc]`. Rewrite using `[h₁, reassoc_of% h₀]`.
+-/
 theorem gen_step₂ : Z.genRes.map (P.fl.step₂ m hm) ≫ (P.gen ⟨m + 2, by omega⟩).hom =
     (P.gen ⟨m, by omega⟩).hom ≫ Z.genRes.map (P.fl'.step₂ m hm) := by
   have h₀ := P.gen_step ⟨m, by omega⟩
@@ -106,10 +133,16 @@ def quotTwoIso : Z.GenIso (P.fl.quot₂ m hm) (P.fl'.quot₂ m hm) :=
       (PreservesCokernel.iso Z.genRes (P.fl'.step₂ m hm)).symm
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `[quotTwoIso, Flag.quot₂]`.
+-/
 theorem π_quotTwoIso_hom : Z.genRes.map (cokernel.π (P.fl.step₂ m hm)) ≫ (P.quotTwoIso m hm).hom =
     (P.gen ⟨m + 2, by omega⟩).hom ≫ Z.genRes.map (cokernel.π (P.fl'.step₂ m hm)) := by
   simp [quotTwoIso, Flag.quot₂]
 
+/- English proof (translation)
+Rewrite using `[← cancel_epi (Z.genRes.map (P.fl.π ⟨m, by omega⟩)), reassoc_of% (P.π_grIso_hom _), ← Functor.map_comp, ← Functor.map_comp_assoc, Flag.π_quot₂Seq_f, Flag.π_quot₂Seq_f, Functor.map_comp, Functor.map_comp_assoc, π_quotTwoIso_hom]`. Establish `h₁` using `P.gen_step ⟨m + 1, by omega⟩`. Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h₁`. Rewrite using `[reassoc_of% h₁]`. Both sides reduce to the same expression.
+-/
 theorem quotTwo_gen_ι₁ : (P.grIso ⟨m, by omega⟩).hom ≫ Z.genRes.map (P.fl'.quot₂Seq m hm).f =
     Z.genRes.map (P.fl.quot₂Seq m hm).f ≫ (P.quotTwoIso m hm).hom := by
   rw [← cancel_epi (Z.genRes.map (P.fl.π ⟨m, by omega⟩)), reassoc_of% (P.π_grIso_hom _),
@@ -132,6 +165,9 @@ def quotTwo : FlagPair (P.quotTwoIso m hm) 2 where
       change (P.quotTwoIso m hm).hom ≫ Z.genRes.map (𝟙 _) = Z.genRes.map (𝟙 _) ≫ _
       simp) finZeroElim))
 
+/- English proof (translation)
+Establish `hψ : ψ₁ = Z.genRes.mapIso e ≪≫ (ψ₂ ≪≫ Z.genRes.mapIso e'.symm)`. Use `Iso.ext ?_` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom]`. Rewrite using `[← reassoc_of% h, ← Functor.map_comp, Iso.hom_inv_id, CategoryTheory.Functor.map_id, Category.comp_id]`. Rewrite using `[hψ, GenIso.cls_div_trans (hE' := hC), GenIso.cls_div_trans (hE' := hC'), FlagPairPull.cls_div_mapIso, FlagPairPull.cls_div_mapIso, zero_add, add_zero]`.
+-/
 theorem cls_div_eq_of_comm {A A' C C' : Z.X.Modules} (ψ₁ : Z.GenIso A A') (ψ₂ : Z.GenIso C C')
     (e : A ≅ C) (e' : A' ≅ C') (h : ψ₁.hom ≫ Z.genRes.map e'.hom = Z.genRes.map e.hom ≫ ψ₂.hom)
     (hA : IsVB A 1) (hA' : IsVB A' 1) (hC : IsVB C 1) (hC' : IsVB C' 1) :
@@ -144,6 +180,9 @@ theorem cls_div_eq_of_comm {A A' C C' : Z.X.Modules} (ψ₁ : Z.GenIso A A') (ψ
   rw [hψ, GenIso.cls_div_trans (hE' := hC), GenIso.cls_div_trans (hE' := hC'),
     FlagPairPull.cls_div_mapIso, FlagPairPull.cls_div_mapIso, zero_add, add_zero]
 
+/- English proof (translation)
+Use `cls_div_eq_of_comm _ _ (P.fl.quotTwoGr₀ m hm) (P.fl'.quotTwoGr₀ m hm) ?_ _ _ _ _` and prove the remaining obligations. Establish `h` using `(P.quotTwo m hm).π_grIso_hom 0`. Express the relevant statement in the definitionally equal form `Z.genRes.map ((P.fl.quotTwo m hm).π 0) ≫ _ = (P.grIso ⟨m, by omega⟩).hom ≫ Z.genRes.map ((P.fl'.quotTwo m hm).π 0) at h`. Rewrite `h` using `[Flag.π_quotTwoGr₀, Flag.π_quotTwoGr₀]`. Rewrite using `[← cancel_epi (Z.genRes.map (P.fl.quotTwoGr₀ m hm).inv), reassoc_of% h, ← Functor.map_comp, ← Functor.map_comp_assoc, Iso.inv_hom_id, Iso.inv_hom_id, CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.comp_id, Category.id_comp]`.
+-/
 theorem cls_div_quotTwo_zero : ((P.quotTwo m hm).div 0).cls = (P.div ⟨m, by omega⟩).cls := by
   refine cls_div_eq_of_comm _ _ (P.fl.quotTwoGr₀ m hm) (P.fl'.quotTwoGr₀ m hm) ?_ _ _ _ _
   have h := (P.quotTwo m hm).π_grIso_hom 0
@@ -155,6 +194,11 @@ theorem cls_div_quotTwo_zero : ((P.quotTwo m hm).div 0).cls = (P.div ⟨m, by om
     CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.comp_id,
     Category.id_comp]
 
+/- English proof (translation)
+Use `cls_div_eq_of_comm _ _ (P.fl.quotTwoGr₁ m hm) (P.fl'.quotTwoGr₁ m hm) ?_ _ _ _ _` and prove the remaining obligations. Establish `h` using `(P.quotTwo m hm).π_grIso_hom 1`. Express the relevant statement in the definitionally equal form `Z.genRes.map ((P.fl.quotTwo m hm).π 1) ≫ _ = (P.quotTwoIso m hm).hom ≫ Z.genRes.map ((P.fl'.quotTwo m hm).π 1) at h`. Establish `h₂` using `P.π_grIso_hom ⟨m + 1, by omega⟩`. Rewrite `h₂` using `[← P.fl.π_π_quotTwoGr₁ m hm, ← P.fl'.π_π_quotTwoGr₁ m hm]`.
+
+Simplify using `only [Functor.map_comp, Category.assoc] at h₂`. Rewrite using `[← cancel_epi (Z.genRes.map ((P.fl.quotTwo m hm).π 1)), ← cancel_epi (Z.genRes.map (cokernel.π (P.fl.step₂ m hm))), reassoc_of% h]`. Conclude with `(P.π_quotTwoIso_hom_assoc m hm _).trans h₂.symm`.
+-/
 theorem cls_div_quotTwo_one : ((P.quotTwo m hm).div 1).cls = (P.div ⟨m + 1, by omega⟩).cls := by
   refine cls_div_eq_of_comm _ _ (P.fl.quotTwoGr₁ m hm) (P.fl'.quotTwoGr₁ m hm) ?_ _ _ _ _
   have h := (P.quotTwo m hm).π_grIso_hom 1
@@ -180,6 +224,9 @@ def transportAlongIso {W₁ W₁' W₂ W₂' : Z.X.Modules} {ψ₁ : Z.GenIso W�
       Z.genRes.map (R.fl.ι i ≫ α.hom) ≫ ψ₁.hom
     rw [Functor.map_comp, Functor.map_comp, reassoc_of% (R.gen_ι i), h, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (Z.genRes.map (P'.fl'.ι i)), Category.assoc, Category.assoc, ← Functor.map_comp, he', gen_ι, gen_ι, ← Functor.map_comp_assoc, he]`.
+-/
 theorem gen_comm_of_ι (P P' : FlagPair φ r) (i : Fin (r + 1)) (e : P.fl.F i ⟶ P'.fl.F i)
     (he : e ≫ P'.fl.ι i = P.fl.ι i) (e' : P.fl'.F i ⟶ P'.fl'.F i)
     (he' : e' ≫ P'.fl'.ι i = P.fl'.ι i) :
@@ -191,6 +238,9 @@ end GlobalTheory.Vert.Model.FlagPair
 
 namespace GlobalTheory.Vert.Flag
 
+/- English proof (translation)
+Take `⟨e₀, he₀⟩` from `h₀`. Establish `w : fl.step₂ m hm ≫ e₂.hom = e₀.hom ≫ fl'.step₂ m hm`. Rewrite using `[← cancel_mono (fl'.ι ⟨m + 2, by omega⟩), Category.assoc, Category.assoc, he₂, step₂_ι, step₂_ι, he₀]`. Conclude with `⟨cokernel.mapIso (fl.step₂ m hm) (fl'.step₂ m hm) e₀ e₂ w, cokernel.π_desc _ _ _⟩`.
+-/
 theorem exists_quot₂_iso {X : Scheme.{0}} {E : X.Modules} {r : ℕ} (fl fl' : Flag E r) (m : ℕ)
     (hm : m + 2 ≤ r) (h₀ : fl.SameStep fl' ⟨m, by omega⟩)
     (e₂ : fl.F ⟨m + 2, by omega⟩ ≅ fl'.F ⟨m + 2, by omega⟩)
@@ -213,6 +263,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 set_option linter.overlappingInstances false in
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B E E' φ r m hm P P' h₀ h₂ h₀' h₂'`. Establish `key (Q : GlobalTheory.Vert.Model.FlagPair φ r) : ((Q.quotTwo m hm).toFPair p).x 0 = (Q.toFPair p).x ⟨m, by omega⟩ ∧ ((Q.quotTwo m hm).toFPair p).x' 0 = (Q.toFPair p).x' ⟨m, by omega⟩ ∧ ((Q.quotTwo m hm).toFPair p).Dv 0 = (Q.toFPair p).Dv ⟨m, by omega⟩ ∧ ((Q.quotTwo m hm).toFPair …` using `⟨Flag.smallCls_root_eq_of_iso _ _ _ _ (Q.fl.quotTwoGr₀ m hm), Flag.smallCls_root_eq_of_iso _ _ _ _ (Q.fl'.quotTwoGr₀ m hm), congrArg GlobalTheory.Vert.Model.toQ (Q.cls_div_quotTwo_zero m hm), Flag.smallCls_root_eq_of_iso _ _ _ _ (Q.fl.quotTwoGr₁ m hm), Flag.smallCls_root_eq_of_is …`. Take `⟨e₂, he₂⟩` from `h₂.symm`. Take `⟨e₂', he₂'⟩` from `h₂'.symm`. Take `⟨α, hα⟩` from `Flag.exists_quot₂_iso P'.fl P.fl m hm h₀.symm e₂ he₂`.
+
+Take `⟨α', hα'⟩` from `Flag.exists_quot₂_iso P'.fl' P.fl' m hm h₀'.symm e₂' he₂'`. Establish `hc : (P'.quotTwoIso m hm).hom ≫ B.genRes.map α'.hom = B.genRes.map α.hom ≫ (P.quotTwoIso m hm).hom`. Rewrite using `[← cancel_epi (B.genRes.map (cokernel.π (P'.fl.step₂ m hm))), Model.FlagPair.π_quotTwoIso_hom_assoc, ← Functor.map_comp, hα', ← Functor.map_comp_assoc, hα, Functor.map_comp, Functor.map_comp_assoc, Model.FlagPair.π_quotTwoIso_hom, reassoc_of% (Model.FlagPair.gen_comm_of_ι P' P _ …`. Conclude with `⟨_, _, P.quotTwoIso m hm, P.quotTwo m hm, (P'.quotTwo m hm).transportAlongIso α α' hc, key P, key P'⟩`.
+-/
 theorem GlobalTheory.Vert.Model.FlagPair.exists_rankTwo_subquotient : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (E E' : B.X.Modules) (φ : B.GenIso E E') (r m : ℕ) (hm : m + 2 ≤ r) (P P' : GlobalTheory.Vert.Model.FlagPair φ r), P.fl.SameStep P'.fl ⟨m, by omega⟩ → P.fl.SameStep P'.fl ⟨m + 2, by omega⟩ → P.fl'.SameStep P'.fl' ⟨m, by omega⟩ → P.fl'.SameStep P'.fl' ⟨m + 2, by omega⟩ → ∃ (W W' : B.X.Modules) (ψ : B.GenIso W W') (R R' : GlobalTheory.Vert.Model.FlagPair ψ 2), ((R.toFPair p).x 0 = (P.toFPair p).x ⟨m, by omega⟩ ∧ (R.toFPair p).x' 0 = (P.toFPair p).x' ⟨m, by omega⟩ ∧ (R.toFPair p).Dv 0 = (P.toFPair p).Dv ⟨m, by omega⟩ ∧ (R.toFPair p).x 1 = (P.toFPair p).x ⟨m + 1, by omega⟩ ∧ (R.toFPair p).x' 1 = (P.toFPair p).x' ⟨m + 1, by omega⟩ ∧ (R.toFPair p).Dv 1 = (P.toFPair p).Dv ⟨m + 1, by omega⟩) ∧ ((R'.toFPair p).x 0 = (P'.toFPair p).x ⟨m, by omega⟩ ∧ (R'.toFPair p).x' 0 = (P'.toFPair p).x' ⟨m, by omega⟩ ∧ (R'.toFPair p).Dv 0 = (P'.toFPair p).Dv ⟨m, by omega⟩ ∧ (R'.toFPair p).x 1 = (P'.toFPair p).x ⟨m + 1, by omega⟩ ∧ (R'.toFPair p).x' 1 = (P'.toFPair p).x' ⟨m + 1, by omega⟩ ∧ (R'.toFPair p).Dv 1 = (P'.toFPair p).Dv ⟨m + 1, by omega⟩) := by
   intro O _ _ _ p _ _ _ B E E' φ r m hm P P' h₀ h₂ h₀' h₂'
   have key (Q : GlobalTheory.Vert.Model.FlagPair φ r) :

@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Stic
 open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `M _ K _ _ _ p _ π hcop`. Establish `hker : ∀ t, conjI M K (RingHom.ker π) t = RingHom.ker (π.comp (sgO M K t : 𝓞 K →+* 𝓞 K))`. Introduce `t`. Use extensionality with `x`. Simplify using `[conjI, RingHom.mem_ker]`.
+
+Establish `hfact : ∀ t, Ideal.absNorm (conjI M K (RingHom.ker π) t) = p ∧ (conjI M K (RingHom.ker π) t).IsMaximal ∧ Prime (conjI M K (RingHom.ker π) t) ∧ (p : 𝓞 K) ∈ conjI M K (RingHom.ker π) t` using `fun t => (red K p (conjI M K (RingHom.ker π) t)).2 _ (hker t).symm`. Use `⟨fun t => (hfact t).2.2.1, ?_⟩` and prove the remaining obligations. Establish `hinj` using `splitInj M K p π hcop`. Establish `hdvd : ∏ t, conjI M K (RingHom.ker π) t ∣ Ideal.span {(p : 𝓞 K)}`. Apply `Fintype.prod_dvd_of_coprime` to reduce the goal to its premises.
+
+Introduce `s t hst haveI := (hfact s).2.1 haveI := (hfact t).2.1`. Conclude with `Ideal.isCoprime_of_isMaximal (fun h => hst (hinj h))`. Introduce `t`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(hfact t).2.2.2`.
+
+Take `⟨Q, hQ⟩` from `hdvd`. Establish `hfr : Module.finrank ℚ K = M.totient` using `IsCyclotomicExtension.finrank K (Polynomial.cyclotomic.irreducible_rat (Nat.pos_of_ne_zero (NeZero.ne M)))`. Establish `hnp : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ M.totient`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `e : ((p : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`.
+
+Rewrite using `[e, Algebra.norm_algebraMap, RingOfIntegers.rank, hfr]`. Simplify using `[Int.natAbs_pow]`. Establish `hnprod : Ideal.absNorm (∏ t, conjI M K (RingHom.ker π) t) = p ^ M.totient`. Rewrite using `[map_prod, Finset.prod_congr rfl (fun t _ => (hfact t).1), Finset.prod_const, Finset.card_univ, ZMod.card_units_eq_totient]`. Establish `hQ1 : Ideal.absNorm Q = 1`.
+
+Establish `h` using `congrArg Ideal.absNorm hQ`. Rewrite `h` using `[map_mul, hnp, hnprod]`. Establish `hp0 : p ^ M.totient ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hp0) (h.symm.trans (mul_one _).symm)`. Rewrite `hQ1` using `[Ideal.absNorm_eq_one_iff]`.
+
+Rewrite using `[hQ, hQ1, Ideal.mul_top]`.
+-/
 theorem UpperTheory.V.Stick.splitProd :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (p : ℕ) [Fact p.Prime] (π : 𝓞 K →+* ZMod p), p.Coprime M →
     (∀ t, Prime (conjI M K (RingHom.ker π) t)) ∧ ∏ t, conjI M K (RingHom.ker π) t = Ideal.span {(p : 𝓞 K)} := by

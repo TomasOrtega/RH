@@ -5,10 +5,20 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.CechNerveRestrictOpe
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut
 
+/- English proof (translation)
+Introduce `n` and use `⟨fun hn => (hf n).1 (by omega), fun hn => (hf n).2 (by omega)⟩`.
+-/
 private theorem conn_mono {R : Type} [CommRing R] {F : Shv R} {c c' : ℤ} (h : c' ≤ c) {E E' : Spc} {f : E ⟶ E'}
     (hf : Conn R F c f) : Conn R F c' f :=
   fun n => ⟨fun hn => (hf n).1 (by omega), fun hn => (hf n).2 (by omega)⟩
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℤ) (x : H R E₄ F n), pull R a F n (pull R v F n x) = pull R u F n (pull R b F n x)`. Introduce `n x`. Rewrite using `[← pull_comp, ← pull_comp, w]`. Establish `inj : ∀ n : ℤ, Function.Injective (pull R u F n) → Function.Injective (pull R v F n)`. Introduce `n hi x y h`.
+
+Conclude with `(hb n).1 (hi ((key n x).symm.trans ((congrArg _ h).trans (key n y))))`. Establish `sur : ∀ n : ℤ, Function.Surjective (pull R u F n) → Function.Surjective (pull R v F n)`. Introduce `n hs y`. Take `⟨z, hz⟩` from `hs (pull R a F n y)`. Take `⟨x, rfl⟩` from `(hb n).2 z`.
+
+Conclude with `⟨x, (ha n).1 ((key n x).trans hz)⟩`. Introduce `n`. Conclude with `⟨fun hn => ⟨inj n ((hu n).1 hn).1, sur n ((hu n).1 hn).2⟩, fun hn => inj n ((hu n).2 hn)⟩`.
+-/
 private theorem conn_square {R : Type} [CommRing R] {F : Shv R} {c : ℤ} {E₁ E₂ E₃ E₄ : Spc} {u : E₁ ⟶ E₂}
     {v : E₃ ⟶ E₄} {a : E₁ ⟶ E₃} {b : E₂ ⟶ E₄} (w : u ≫ b = a ≫ v) (ha : Eqv R a F) (hb : Eqv R b F)
     (hu : Conn R F c u) : Conn R F c v := by
@@ -26,12 +36,18 @@ private theorem conn_square {R : Type} [CommRing R] {F : Shv R} {c : ℤ} {E₁ 
   intro n
   exact ⟨fun hn => ⟨inj n ((hu n).1 hn).1, sur n ((hu n).1 hn).2⟩, fun hn => inj n ((hu n).2 hn)⟩
 
+/- English proof (translation)
+Introduce `n`. Use `Function.bijective_iff_has_inverse.2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`. Rewrite using `[← pull_comp, e.hom_inv_id, pull_id]`.
+-/
 private theorem eqv_of_iso {R : Type} [CommRing R] {F : Shv R} {E E' : Spc} (e : E ≅ E') : Eqv R e.hom F := by
   intro n
   refine Function.bijective_iff_has_inverse.2 ⟨pull R e.inv F n, fun x => ?_, fun x => ?_⟩
   · rw [← pull_comp, e.inv_hom_id, pull_id]
   · rw [← pull_comp, e.hom_inv_id, pull_id]
 
+/- English proof (translation)
+Use `conn_square (u := sch.map k) (a := (disc.mapIso e').hom) (b := (disc.mapIso e).hom) ?_ (eqv_of_iso _) (eqv_of_iso _) hk` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `disc.map (yoneda.map k) ≫ disc.map e.hom = disc.map e'.hom ≫ disc.map ψ`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, h]`.
+-/
 private theorem conn_level {R : Type} [CommRing R] {F : Shv R} {c : ℤ} {P Q : PSh} (ψ : P ⟶ Q) {Z Z' : Scheme.{0}}
     (k : Z' ⟶ Z) (e : yoneda.obj Z ≅ Q) (e' : yoneda.obj Z' ≅ P) (h : e'.hom ≫ ψ = yoneda.map k ≫ e.hom)
     (hk : Conn R F c (sch.map k)) : Conn R F c (disc.map ψ) := by
@@ -40,6 +56,13 @@ private theorem conn_level {R : Type} [CommRing R] {F : Shv R} {c : ℤ} {P Q : 
   change disc.map (yoneda.map k) ≫ disc.map e.hom = disc.map e'.hom ≫ disc.map ψ
   rw [← Functor.map_comp, ← Functor.map_comp, h]
 
+/- English proof (translation)
+Set `π₀ : Fin 1 → (yoneda.obj V ⟶ yoneda.obj Y)` to `fun _ => yoneda.map f`. Set `h : yoneda.obj V ⟶ widePullback (yoneda.obj Y) (fun _ : Fin 1 => yoneda.obj V) π₀` to `WidePullback.lift (yoneda.map f) (fun _ => 𝟙 _) (fun _ => Category.id_comp _)`. Set `k : widePullback (yoneda.obj Y) (fun _ : Fin 1 => yoneda.obj V) π₀ ⟶ yoneda.obj V` to `WidePullback.π π₀ 0`. Establish `hk : h ≫ k = 𝟙 _` using `WidePullback.lift_π _ _ _ _ _`. Establish `hb : h ≫ WidePullback.base π₀ = yoneda.map f` using `WidePullback.lift_base _ _ _ _`.
+
+Establish `kh : k ≫ h = 𝟙 _`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Rewrite using `[Category.assoc, Category.id_comp]`.
+
+Express the relevant statement in the definitionally equal form `k ≫ h ≫ k = k`. Rewrite using `[hk, Category.comp_id]`. Rewrite using `[Category.assoc, hb, Category.id_comp]`. Conclude with `WidePullback.π_arrow π₀ 0`. Conclude with `⟨⟨h, k, hk, kh⟩, hb⟩`.
+-/
 private theorem cech_zero {V Y : Scheme.{0}} (f : V ⟶ Y) :
     ∃ e : yoneda.obj V ≅ (cech f).obj (op (SimplexCategory.mk 0)),
       e.hom ≫ (cechAug f).app (op (SimplexCategory.mk 0)) = yoneda.map f := by
@@ -62,6 +85,11 @@ private theorem cech_zero {V Y : Scheme.{0}} (f : V ⟶ Y) :
   exact ⟨⟨h, k, hk, kh⟩, hb⟩
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Take `⟨ι, O, j, hj, -, hc, hf⟩` from `hcov`. Set `𝒰 : V.OpenCover` to `Scheme.Cover.mkOfCovers ι O j (fun y => by`. Take `⟨a, x, hx⟩` from `hc y`. Conclude with `⟨a, x, hx⟩)`. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) 𝒰 fun a => ?_` and prove the remaining obligations.
+
+Use `hf a` as an intermediate fact. Express the relevant statement in the definitionally equal form `Smooth (j a ≫ f)`. Use `infer_instance`.
+-/
 private theorem smooth_of_cover {V Y : Scheme.{0}} (f : V ⟶ Y)
     (hcov : ∃ (ι : Type) (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ V), (∀ a, IsOpenImmersion (j a)) ∧ (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) ∧ (∀ y : V, ∃ a, y ∈ Set.range (j a)) ∧ ∀ a, IsOpenImmersion (j a ≫ f)) :
     Smooth f := by
@@ -74,6 +102,15 @@ private theorem smooth_of_cover {V Y : Scheme.{0}} (f : V ⟶ Y)
   change Smooth (j a ≫ f)
   infer_instance
 
+/- English proof (translation)
+Introduce `hL a1 a2 R _ F c V Y f _ hcov W h0 hp`. Take `⟨ψ, hψ, hlev⟩` from `UpperTheory.cech_nerve_restrict_open f W`. Establish `hsm : Smooth f` using `smooth_of_cover f hcov`. Establish `hsmW : Smooth (f ∣_ W)` using `MorphismProperty.of_isPullback (P := @Smooth) (isPullback_morphismRestrict f W).flip hsm`. Establish `hsuW : Surjective (f ∣_ W)` using `MorphismProperty.of_isPullback (P := @Surjective) (isPullback_morphismRestrict f W).flip inferInstance`.
+
+Establish `eV` using `a2 R f F`. Establish `eW` using `a2 R (f ∣_ W) F`. Establish `hψc : Conn R F c ψ`. Use `hL a1 R F c ψ fun p => ?_` and prove the remaining obligations. Break down `p with _ | p` into its components or cases.
+
+Take `⟨e, he⟩` from `cech_zero f`. Take `⟨e', he'⟩` from `hlev 0 V f e he`. Establish `h0' : Conn R F (c - ((0 : ℕ) : ℤ)) (sch.map (f ⁻¹ᵁ W).ι)` using `by simpa using h0`. Conclude with `conn_level _ _ e e' he' h0'`. Take `⟨Z, g, e, hg, hc⟩` from `UpperTheory.cech_nerve_representable_disjoint f hcov (p + 1)`.
+
+Take `⟨e', he'⟩` from `hlev (p + 1) Z g e hg`. Conclude with `conn_level _ _ e e' he' (conn_mono (by push_cast; omega) (hp Z g hc))`. Conclude with `conn_square hψ eW eV hψc`.
+-/
 theorem UpperTheory.connectivity_of_cech_disjoint_cover :
     LeafLevel → A1 → A2 → ∀ (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {V Y : Scheme.{0}} (f : V ⟶ Y) [Surjective f], (∃ (ι : Type) (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ V), (∀ a, IsOpenImmersion (j a)) ∧ (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) ∧ (∀ y : V, ∃ a, y ∈ Set.range (j a)) ∧ ∀ a, IsOpenImmersion (j a ≫ f)) → ∀ W : Y.Opens,
       Conn R F c (sch.map (f ⁻¹ᵁ W).ι) → (∀ (Z : Scheme.{0}) (g : Z ⟶ Y), (∃ (ι : Type) (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ Z), (∀ a, IsOpenImmersion (j a)) ∧ (∀ a b, a ≠ b → Disjoint (Set.range (j a)) (Set.range (j b))) ∧ (∀ y : Z, ∃ a, y ∈ Set.range (j a)) ∧ ∀ a, IsOpenImmersion (j a ≫ g)) → Conn R F (c - 1) (sch.map (g ⁻¹ᵁ W).ι)) → Conn R F c (sch.map W.ι) := by

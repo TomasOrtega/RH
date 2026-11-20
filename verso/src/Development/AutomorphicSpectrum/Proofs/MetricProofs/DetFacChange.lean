@@ -19,6 +19,15 @@ section Values
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Set `u : κ → (regRing x z)ˣ` to `fun k => ⟨⟨t k, ht k⟩, ⟨(t k)⁻¹, ht' k⟩, Subtype.ext (mul_inv_cancel₀ (h0 k)), Subtype.ext (inv_mul_cancel₀ (h0 k))⟩`. Set `f : (regRing x z)ˣ →* Ωˣ` to `Units.map (regRing x z).subtype.toMonoidHom`. Set `g : (regRing x z)ˣ →* ℂˣ` to `Units.map (regVal x hz).toMonoidHom`. Set `U : (regRing x z)ˣ` to `∏ k, u k ^ e k`. Establish `h1 : ((U : regRing x z) : Ω) = ∏ k, t k ^ e k`.
+
+Establish `e1 : ((U : regRing x z) : Ω) = ((f U : Ωˣ) : Ω)` using `rfl`. Rewrite using `[e1, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+
+Establish `h2 : valAt x ((U : regRing x z) : Ω) z = ∏ k, valAt x (t k) z ^ e k`. Establish `e1 : valAt x ((U : regRing x z) : Ω) z = ((g U : ℂˣ) : ℂ)` using `rfl`. Rewrite using `[e1, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h1]`. Conclude with `⟨(U : regRing x z).2, h2⟩`.
+-/
 theorem reg_prod_zpow (hz : z ∈ mcPts (mCoordIdeal x)) {κ : Type} [Fintype κ] (t : κ → Ω) (e : κ → ℤ)
     (h0 : ∀ k, t k ≠ 0) (ht : ∀ k, RegAt x (mCoordIdeal z) (t k)) (ht' : ∀ k, RegAt x (mCoordIdeal z) (t k)⁻¹) :
     RegAt x (mCoordIdeal z) (∏ k, t k ^ e k) ∧
@@ -43,6 +52,13 @@ theorem reg_prod_zpow (hz : z ∈ mcPts (mCoordIdeal x)) {κ : Type} [Fintype κ
   rw [← h1]
   exact ⟨(U : regRing x z).2, h2⟩
 
+/- English proof (translation)
+Establish `h₁` using `reg_minor hz hA (wIdx N j) (wIdx N j)`. Establish `h₂` using `reg_minor hz hA (omIdx N j) (omIdx N j)`. Unfold `detFac`. Use `split_ifs`. Conclude with `⟨ValRing.regAt_mul h₁.1 h₂.1, (reg_mul hz h₁.1 h₂.1).2.trans (by rw [h₁.2, h₂.2])⟩`.
+
+Rewrite using `[mul_one, mul_one]`. Conclude with `h₁`. Rewrite using `[one_mul, one_mul]`. Conclude with `h₂`. Rewrite using `[mul_one, mul_one]`.
+
+Conclude with `⟨ValRing.regAt_one x z, CovMap.LocImg.FV.valAt_one' hz⟩`.
+-/
 theorem reg_detFac (hz : z ∈ mcPts (mCoordIdeal x)) {N : ℕ} (j : ℕ) (i : Fin N) {A : Matrix (Fin N) (Fin N) Ω}
     (hA : ∀ a b, RegAt x (mCoordIdeal z) (A a b)) :
     RegAt x (mCoordIdeal z) (detFac j i A) ∧ valAt x (detFac j i A) z = detFac j i (valMat x z A) := by
@@ -55,6 +71,11 @@ theorem reg_detFac (hz : z ∈ mcPts (mCoordIdeal x)) {N : ℕ} (j : ℕ) (i : F
   · rw [one_mul, one_mul]; exact h₂
   · rw [mul_one, mul_one]; exact ⟨ValRing.regAt_one x z, CovMap.LocImg.FV.valAt_one' hz⟩
 
+/- English proof (translation)
+Establish `hne : ∀ {c : ι k}, (X ⟨k, c⟩ : MRing ι) ∉ mCoordIdeal z → z ⟨k, c⟩ ≠ 0` using `fun {c} hc h0 => hc (by show mConeMap z (X ⟨k, c⟩) = 0`. Rewrite using `[mConeMap, aeval_X, h0, map_zero, zero_mul])`. Take `⟨hx₁, hv⟩` from `CovGraph.isValueAt_coord_ratio K ι Ω x z k c₁ hz (hne h₁)`. Take `⟨hx₂, -⟩` from `CovGraph.isValueAt_coord_ratio K ι Ω x z k c₂ hz (hne h₂)`. Use `⟨div_ne_zero hx₂ hx₁, ⟨fun l => if l = k then 1 else 0, X ⟨k, c₂⟩, X ⟨k, c₁⟩, isMultiHomog_X_single ⟨k, c₂⟩, isMultiHomog_X_single ⟨k, c₁⟩, h₁, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [aeval_X]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[valAt_eq hz (hv c₂), inv_mul_eq_div]`.
+-/
 theorem ratio_reg (hz : z ∈ mcPts (mCoordIdeal x)) {k : K} {c₁ c₂ : ι k}
     (h₁ : (X ⟨k, c₁⟩ : MRing ι) ∉ mCoordIdeal z) (h₂ : (X ⟨k, c₂⟩ : MRing ι) ∉ mCoordIdeal z) :
     x ⟨k, c₂⟩ / x ⟨k, c₁⟩ ≠ 0 ∧ RegAt x (mCoordIdeal z) (x ⟨k, c₂⟩ / x ⟨k, c₁⟩) ∧
@@ -77,6 +98,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
 
 include M in
 
+/- English proof (translation)
+Establish `hT₁` using `h₁.1 p.1`. Establish `hu₁ : IsUnit (F₁.T p.1).det` using `hT₁.2.isUnit`. Establish `h` using `((GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 M.j_le).2.2.2 _ _ hT₁.1 ((hT₁.1.inv hu₁).mul (h₂.1 p.1).1)).2`. Rewrite `h` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Then use the resulting hypothesis.
+-/
 theorem detFac_change (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (p : Ψ × Fin N) :
     detFac j p.2 (F₂.T p.1) = detFac j p.2 (F₁.T p.1) * detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) := by
   have hT₁ := h₁.1 p.1
@@ -84,6 +108,9 @@ theorem detFac_change (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (p : Ψ ×
   have h := ((GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 M.j_le).2.2.2 _ _ hT₁.1 ((hT₁.1.inv hu₁).mul (h₂.1 p.1).1)).2
   rwa [Matrix.mul_nonsing_inv_cancel_left _ _ hu₁] at h
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ (c₁ k')]`.
+-/
 theorem prod_ratio (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N) :
     (∏ k', (M.x ⟨k', F₂.c k'⟩ / M.x ⟨k', F₁.c k'⟩) ^ M.b p k') * ∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k' =
       ∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k' := by
@@ -93,6 +120,17 @@ theorem prod_ratio (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N)
 
 open CovMap.LocImg.FrameChange in
 
+/- English proof (translation)
+Establish `hj` using `M.j_le`. Establish `hT₁` using `h₁.1 p.1`. Establish `hT₂` using `h₂.1 p.1`. Establish `hu₁ : IsUnit (F₁.T p.1).det` using `hT₁.2.isUnit`. Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (c₁ k')`.
+
+Establish `hS : IsBlockDiag j ((F₁.T p.1)⁻¹ * F₂.T p.1)` using `(hT₁.1.inv hu₁).mul hT₂.1`. Establish `hE : IsBlockDiag j (unitCols I' (stepCols N j p.2) hI'.1 : Matrix (Fin N) (Fin N) M.Ω)` using `unitCols_blockDiag _ _ _ (stepRows_same_side hI')`. Establish `e1` using `h₁.2.1 p k hp m _ (hS.mul hE)`. Establish `e2` using `h₂.2.1 p k hp m _ hE`. Rewrite `e1` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`.
+
+Establish `hm : ∀ I, minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1 * unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I'` using `fun I => by`. Rewrite using `[(GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 hj).1]`. Simplify using `only [minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hr : ∑ I, F₂.u ⟨k, m⟩ I * minorIJ (unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = F₂.u ⟨k, m⟩ I'`. Simplify using `only [minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Simplify using `only [hm] at e1`. Rewrite `e2` using `[hr]`. Establish `hd` using `detFac_change M h₁ h₂ p`. Establish `hA` using `prod_ratio M (F₂ := F₂) c₁ p`. Apply `mul_left_cancel₀ hA₁` to reduce the goal to its premises.
+
+Take the linear combination `(-detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 + e2 - (∑ I, M.coef ⟨k, m⟩ I * minorIJ (F₂.T p.1 * unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2)) * hd - F₂.u ⟨k, m⟩ I' * hA`.
+-/
 theorem frame_rel (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N) (k : K)
     (hp : M.blk p = some k) (m : ι k) (I' : Finset (Fin N)) (hI' : IsStepRows N j p.2 I') :
     detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) * ∑ I, F₁.u ⟨k, m⟩ I * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' =
@@ -125,6 +163,11 @@ theorem frame_rel (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k,
     (∑ I, M.coef ⟨k, m⟩ I * minorIJ (F₂.T p.1 * unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2)) * hd -
     F₂.u ⟨k, m⟩ I' * hA
 
+/- English proof (translation)
+Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (c₁ k')`. Establish `e1` using `h₁.2.2.2 p hp`. Establish `e2` using `h₂.2.2.2 p hp`. Establish `hd` using `detFac_change M h₁ h₂ p`. Establish `hA` using `prod_ratio M (F₂ := F₂) c₁ p`.
+
+Apply `mul_left_cancel₀ hA₁` to reduce the goal to its premises. Take the linear combination `(detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 - e2 + M.lam p * hd + F₂.υ p * hA`.
+-/
 theorem frame_none (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N)
     (hp : M.blk p = none) :
     F₂.υ p * ∏ k', (M.x ⟨k', F₂.c k'⟩ / M.x ⟨k', F₁.c k'⟩) ^ M.b p k' =
@@ -138,6 +181,27 @@ theorem frame_none (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k
   apply mul_left_cancel₀ hA₁
   linear_combination (detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 - e2 + M.lam p * hd + F₂.υ p * hA
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M zb F₁ F₂ hz hF₁ hF₂ hG₁ hG₂`. Establish `hj` using `M.j_le`. Establish `r₁₂` using `GlobalTheory.T.frame_change_regular_entries K ι Φ y Ψ N j M zb F₁ F₂ hz hF₁ hF₂ hG₁ hG₂`. Establish `r₂₁` using `GlobalTheory.T.frame_change_regular_entries K ι Φ y Ψ N j M zb F₂ F₁ hz hF₂ hF₁ hG₂ hG₁`. Establish `hprod : ∀ τ, ((F₁.T τ)⁻¹ * F₂.T τ) * ((F₂.T τ)⁻¹ * F₁.T τ) = 1` using `fun τ => by`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hF₂.1 τ).2.isUnit, Matrix.nonsing_inv_mul _ (hF₁.1 τ).2.isUnit]`. Establish `hSS : ∀ τ, valMat M.x zb ((F₁.T τ)⁻¹ * F₂.T τ) * valMat M.x zb ((F₂.T τ)⁻¹ * F₁.T τ) = 1` using `fun τ => by`. Rewrite using `[← (regMat_mul hz (r₁₂ τ) (r₂₁ τ)).2, hprod]`. Conclude with `CovMap.LocImg.FV.valMat_one hz`. Establish `hbd : ∀ τ, IsBlockDiag j ((F₁.T τ)⁻¹ * F₂.T τ)` using `fun τ => ((hF₁.1 τ).1.inv (hF₁.1 τ).2.isUnit).mul (hF₂.1 τ).1`.
+
+Establish `hbd' : ∀ τ, IsBlockDiag j ((F₂.T τ)⁻¹ * F₁.T τ)` using `fun τ => ((hF₂.1 τ).1.inv (hF₂.1 τ).2.isUnit).mul (hF₁.1 τ).1`. Use `⟨fun τ => ⟨CovMap.LocImg.FV.valMat_blockDiag hz (hbd τ), fun h0 => ?_⟩, fun p => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det (hSS τ)`. Rewrite `h` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h`.
+
+Establish `ht` using `fun k : NonPluckerBlocks M.blk => ratio_reg hz (hG₁.1 k) (hG₂.1 k)`. Establish `ht'` using `fun k : NonPluckerBlocks M.blk => ratio_reg hz (hG₂.1 k) (hG₁.1 k)`. Establish `c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0` using `fun k h => (ht' k).1 (by rw [h, zero_div])`. Take `⟨hrR, hrV⟩` from `reg_prod_zpow hz (fun k : NonPluckerBlocks M.blk => M.x ⟨k, F₂.c k⟩ / M.x ⟨k, F₁.c k⟩) (M.b p) (fun k => (ht k).1) (fun k => (ht k).2.1) (fun k => by rw [inv_div]; exact (ht' k).2.1)`. Simplify using `only [fun k : NonPluckerBlocks M.blk => (ht k).2.2] at hrV`.
+
+Take `⟨hdR, hdV⟩` from `reg_detFac hz j p.2 (r₁₂ p.1)`. Use `⟨fun k hk h hh m => ?_, fun hp => ?_⟩` and prove the remaining obligations. Establish `hdet : ((F₁.T p.1)⁻¹ * F₂.T p.1).det ≠ 0` using `fun h0 => by`. Establish `h` using `congrArg Matrix.det (hprod p.1)`. Rewrite `h` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+
+Conclude with `zero_ne_one h`. Establish `hdne` using `CovMap.LocImg.FrameChange.detFac_ne_zero hj p.2 (hbd p.1) hdet`. Take `⟨ρ, hρ⟩ : ∃ ρ, ρ = (∏ k', (M.x ⟨k', F₂.c k'⟩ / M.x ⟨k', F₁.c k'⟩) ^ M.b p k') / detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)` from `⟨_, rfl⟩`. Establish `hρ' : detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) * ρ = ∏ k', (M.x ⟨k', F₂.c k'⟩ / M.x ⟨k', F₁.c k'⟩) ^ M.b p k'`. Rewrite using `[hρ, mul_comm]`.
+
+Conclude with `div_mul_cancel₀ _ hdne`. Establish `hrel : ∀ (m : ι k) (I' : Finset (Fin N)), IsStepRows N j p.2 I' → ∑ I, F₁.u ⟨k, m⟩ I * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' = ρ * F₂.u ⟨k, m⟩ I'` using `fun m I' hI' => by`. Apply `mul_left_cancel₀ hdne` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hρ']`. Conclude with `frame_rel M hF₁ hF₂ c₁ p k hk m I' hI'`.
+
+Establish `hstep : IsStepRows N j p.2 (stepCols N j p.2)` using `CovMap.LocImg.FV.isStepRows_stepCols p.2`. Establish `hinv : ∑ m : ι k, F₂.u' (stepCols N j p.2) ⟨k, m⟩ * F₂.u ⟨k, m⟩ (stepCols N j p.2) = 1`. Rewrite using `[hF₂.2.2.1 p k hk _ _ hstep hstep, if_pos rfl]`. Take `⟨hρR, hval⟩` from `CovMap.LocImg.FV.reg_values hz p.2 (fun (m : ι k) I => F₁.u ⟨k, m⟩ I) (fun (m : ι k) I => F₂.u ⟨k, m⟩ I) (fun m : ι k => F₂.u' (stepCols N j p.2) ⟨k, m⟩) _ ρ _ hstep (fun m I => (hG₁.2.1 _ _).1) (fun m I => (hG₂.2.1 _ _).1) (fun m => (hG₂.2.1 _ _).2) (r₁₂ p.1) hrel hinv`. Establish `hmove : ∑ I, valAt M.x (F₁.u ⟨k, m⟩ I) zb * minorIJ (valMat M.x zb ((F₁.T p.1)⁻¹ * F₂.T p.1) * h) I (stepCols N j p.2) = valAt M.x ρ zb * ∑ I, valAt M.x (F₂.u ⟨k, m⟩ I) zb * minorIJ h I (stepCols N j p.2)` using `CovMap.LocImg.FV.sum_minor_mul hj p.2 (fun (m : ι k) I => valAt M.x (F₁.u ⟨k, m⟩ I) zb) (fun (m : ι k) I => valAt M.x (F₂.u ⟨k, m⟩ I) zb) _ _ hval h hh m`.
+
+Establish `hv : detFac j p.2 (valMat M.x zb ((F₁.T p.1)⁻¹ * F₂.T p.1)) * valAt M.x ρ zb = ∏ k', (zb ⟨k', F₂.c k'⟩ / zb ⟨k', F₁.c k'⟩) ^ M.b p k'`. Rewrite using `[← hdV, ← (reg_mul hz hdR hρR).2, hρ', hrV]`. Rewrite using `[plk, plk, hmove, ← mul_assoc, hv]`. Establish `e` using `congrArg (fun s => valAt M.x s zb) (frame_none M hF₁ hF₂ c₁ p hp)`. Rewrite `e` using `[(reg_mul hz (hG₂.2.2 p hp).2.1 hrR).2, (reg_mul hz hdR (hG₁.2.2 p hp).2.1).2, hrV, hdV]`.
+
+Conclude with `e`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (F₁ F₂ : FrameData ι Ψ N M.Ω M.blk), zb ∈ mcPts (mCoordIdeal M.x) → M.IsFrame F₁ → M.IsFrame F₂ → M.GoodAt F₁ (mCoordIdeal zb) → M.GoodAt F₂ (mCoordIdeal zb) → (∀ τ, IsBlockDiag j (valMat M.x zb ((F₁.T τ)⁻¹ * F₂.T τ)) ∧ (valMat M.x zb ((F₁.T τ)⁻¹ * F₂.T τ)).det ≠ 0) ∧ ∀ p : Ψ × Fin N, (∀ k, M.blk p = some k → ∀ h : Matrix (Fin N) (Fin N) ℂ, IsBlockDiag j h → ∀ m : ι k, detFac j p.2 (valMat M.x zb ((F₁.T p.1)⁻¹ * F₂.T p.1)) * plk M F₁ zb p.2 ⟨k, m⟩ (valMat M.x zb ((F₁.T p.1)⁻¹ * F₂.T p.1) * h) = (∏ k', (zb ⟨k', F₂.c k'⟩ / zb ⟨k', F₁.c k'⟩) ^ M.b p k') * plk M F₂ zb p.2 ⟨k, m⟩ h) ∧ (M.blk p = none → valAt M.x (F₂.υ p) zb * (∏ k', (zb ⟨k', F₂.c k'⟩ / zb ⟨k', F₁.c k'⟩) ^ M.b p k') = detFac j p.2 (valMat M.x zb ((F₁.T p.1)⁻¹ * F₂.T p.1)) * valAt M.x (F₁.υ p) zb) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M zb F₁ F₂ hz hF₁ hF₂ hG₁ hG₂
   have hj := M.j_le

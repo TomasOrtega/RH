@@ -16,6 +16,9 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D`. Use `⟨D.tcLL, GlobalTheory.isConjAt_exists_main D.what₂.LL ⟨D.what₂.embLL, D.starLL_cx⟩, ?_⟩` and prove the remaining obligations. Introduce `u c`. Conclude with `(Subgroup.card_dvd_of_injective _ ((D.fm u).stabMap_inj c)).trans ((D.mem u).C.dvd_DGam _ le_rfl _)`.
+-/
 theorem ptField_main : ∀ D : D7, IsTotallyComplex D.what₂.LL ∧ (∃ v0 : InfinitePlace D.what₂.LL, Formalism.DivisionValues.IsConjAt v0) ∧ ∀ (u : D.what₂.Word) (c : (D.fm u).clsP), Nat.card ((D.fm u).stabilizer₂ c) ∣ (D.mem u).C.DGam := by
   intro D
   refine ⟨D.tcLL, GlobalTheory.isConjAt_exists_main D.what₂.LL ⟨D.what₂.embLL, D.starLL_cx⟩, ?_⟩

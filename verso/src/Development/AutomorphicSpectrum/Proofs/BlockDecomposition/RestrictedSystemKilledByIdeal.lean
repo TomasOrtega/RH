@@ -5,6 +5,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Introduce `U a ha x`. Establish `hle : (Subobject.pullback D.arrow).obj (S (e + c)) ≤ GlobalTheory.CompanionTheory.GE.restrictSys I D S c e`. Unfold `GlobalTheory.CompanionTheory.GE.restrictSys`. Conclude with `le_sup_left`. Establish `hmem : a • x ∈ GlobalTheory.CompanionTheory.GE.secs ((Subobject.pullback D.arrow).obj (S (e + c))) U`.
+
+Rewrite using `[GlobalTheory.T.subobject_pullback_sections, Set.mem_preimage, Scheme.Modules.Hom.app_smul]`. Conclude with `h (e + c) U a ha _ (by unfold GlobalTheory.CompanionTheory.GE.secs; exact Set.mem_range_self x)`. Unfold `GlobalTheory.CompanionTheory.GE.secs at hmem ⊢`. Take `⟨y, hy⟩` from `hmem`. Use `⟨ConcreteCategory.hom (Scheme.Modules.Hom.app (Subobject.ofLE _ _ hle) U) y, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `rw [← hy, ← Subobject.ofLE_arrow hle, Scheme.Modules.Hom.comp_app] <;> rfl`.
+-/
 theorem killed_restrictSys {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] {E : X.Modules} (J : X.IdealSheafData)
     (D : Subobject E) (S : ℕ → Subobject E) (c : ℕ)

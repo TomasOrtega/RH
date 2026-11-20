@@ -16,15 +16,28 @@ def uL (x1' b1 x : Frame X.Ψ r) : Frame X.Ψ r := fun τ =>
 def vL (x1' b1 x : Frame X.Ψ r) : Frame X.Ψ r := fun τ =>
   (mat x1' τ * mat b1 τ * (mat x1' τ)⁻¹ * mat x τ : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Unfold `uL`. Conclude with `continuous_pi fun τ => Continuous.matrix_mul continuous_const (continuous_apply τ)`.
+-/
 theorem cont_uL : Continuous (uL X x1' b1) := by
   unfold uL
   exact continuous_pi fun τ => Continuous.matrix_mul continuous_const (continuous_apply τ)
 
 variable {X b1}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_uL (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (uL X x1' b1 x) τ = mat x1' τ * (mat b1 τ)⁻¹ * (mat x1' τ)⁻¹ * mat x τ := rfl
 
+/- English proof (translation)
+Introduce `h0`. Establish `hg` using `ho τ`. Establish `e : gram τ.1 X.Gm (mat x τ) = (mat x τ).transpose * X.Gm.map τ.1 * (mat x τ).map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `hd` using `congrArg Matrix.det hg`. Rewrite `hd` using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Use `(Finset.prod_ne_zero_iff.mpr fun a _ => ?_) hd.symm` and prove the remaining obligations. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private lemma det_mat_ne_zero_of_isOrth {x : Frame X.Ψ r} (ho : IsOrth X x) (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   intro h0
   have hg := ho τ
@@ -41,6 +54,11 @@ private lemma det_mat_ne_zero_of_isOrth {x : Frame X.Ψ r} (ho : IsOrth X x) (τ
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hA` using `isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth ho' τ)`. Establish `hB` using `isUnit_iff_ne_zero.mpr (hb1 τ).1`. Establish `e : ∀ x b : Frame X.Ψ r, mat (rmul x b) τ = mat x τ * mat b τ` using `fun _ _ => rfl`. Use `show mat (uL X x1' b1 (rmul (cpt X (rmul x1' b1) z) b)) τ = mat (rmul (cpt X x1' z) b) τ`.
+
+Rewrite using `[mat_uL]`. Simplify using `only [cpt, e, Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hA, Matrix.nonsing_inv_mul_cancel_left _ _ hB]`.
+-/
 theorem uL_cpt (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) (z : V (nd X)) (b : Frame X.Ψ r) :
     uL X x1' b1 (rmul (cpt X (rmul x1' b1) z) b) = rmul (cpt X x1' z) b := by
   funext τ
@@ -52,6 +70,11 @@ theorem uL_cpt (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) (z : V (nd X)) (b 
   simp only [cpt, e, Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hA, Matrix.nonsing_inv_mul_cancel_left _ _ hB]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hA` using `isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth ho' τ)`. Establish `hB` using `isUnit_iff_ne_zero.mpr (hb1 τ).1`. Establish `e : ∀ y : Frame X.Ψ r, mat (vL X x1' b1 y) τ = mat x1' τ * mat b1 τ * (mat x1' τ)⁻¹ * mat y τ` using `fun _ => rfl`. Use `show mat (vL X x1' b1 (uL X x1' b1 x)) τ = mat x τ`.
+
+Rewrite using `[e, mat_uL]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hA, Matrix.mul_nonsing_inv_cancel_left _ _ hB, Matrix.mul_nonsing_inv_cancel_left _ _ hA]`.
+-/
 theorem vL_uL (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) (x : Frame X.Ψ r) :
     vL X x1' b1 (uL X x1' b1 x) = x := by
   funext τ
@@ -65,6 +88,11 @@ theorem vL_uL (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) (x : Frame X.Ψ r) 
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hA, Matrix.mul_nonsing_inv_cancel_left _ _ hB,
     Matrix.mul_nonsing_inv_cancel_left _ _ hA]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hA` using `isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth ho' τ)`. Establish `e : ∀ x b : Frame X.Ψ r, mat (rmul x b) τ = mat x τ * mat b τ` using `fun _ _ => rfl`. Establish `e2 : ∀ y : Frame X.Ψ r, mat (vL X x1' b1 y) τ = mat x1' τ * mat b1 τ * (mat x1' τ)⁻¹ * mat y τ` using `fun _ => rfl`. Use `show mat (vL X x1' b1 (rmul (cpt X x1' z) b)) τ = mat (rmul (cpt X (rmul x1' b1) z) b) τ`.
+
+Rewrite using `[e2]`. Simplify using `only [cpt, e, Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hA]`.
+-/
 theorem vL_cpt (ho' : IsOrth X x1') (z : V (nd X)) (b : Frame X.Ψ r) :
     vL X x1' b1 (rmul (cpt X x1' z) b) = rmul (cpt X (rmul x1' b1) z) b := by
   funext τ
@@ -77,6 +105,13 @@ theorem vL_cpt (ho' : IsOrth X x1') (z : V (nd X)) (b : Frame X.Ψ r) :
   simp only [cpt, e, Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hA]
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, b⟩, ⟨hz, hb⟩, rfl⟩`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff]`. Rewrite using `[uL_cpt ho' hb1]`.
+
+Take `⟨hΔ, hzz, -⟩` from `D.uniq z (hO hz) b hb`. Conclude with `⟨⟨OntoS.dom_rmul X (hO hz) hb, hΔ⟩, by rw [hzz]; exact hz⟩`. Introduce and unpack `⟨hcell, hzb⟩`. Take `⟨-, hbm, e⟩` from `D.split _ hcell.1 hcell.2`. Use `⟨⟨D.zOf (uL X x1' b1 x), D.bOf (uL X x1' b1 x)⟩, ⟨hzb, hbm⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← vL_cpt (b1 := b1) ho', ← e, vL_uL ho' hb1]`.
+-/
 theorem Tset_eq_pre (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) {ρ : ℝ}
     (hO : Metric.ball (0 : V (nd X)) ρ ⊆ OmF X x1') :
     Tset X (rmul x1' b1) ρ = uL X x1' b1 ⁻¹' (ExtFPf.cell D ∩ D.zOf ⁻¹' Metric.ball 0 ρ) := by
@@ -94,12 +129,18 @@ theorem Tset_eq_pre (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) {ρ : ℝ}
     rw [← vL_cpt (b1 := b1) ho', ← e, vL_uL ho' hb1]
 
 include D in
+/- English proof (translation)
+Rewrite using `[Tset_eq_pre D ho' hb1 hO]`. Conclude with `(D.hz.continuousOn.isOpen_inter_preimage (ExtFPf.isOpen_cell D) Metric.isOpen_ball).preimage (cont_uL X b1)`.
+-/
 theorem isOpen_Tset (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) {ρ : ℝ}
     (hO : Metric.ball (0 : V (nd X)) ρ ⊆ OmF X x1') : IsOpen (Tset X (rmul x1' b1) ρ) := by
   rw [Tset_eq_pre D ho' hb1 hO]
   exact (D.hz.continuousOn.isOpen_inter_preimage (ExtFPf.isOpen_cell D) Metric.isOpen_ball).preimage
     (cont_uL X b1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) = ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 private lemma lact_lact_eq_lact_mul (γ δ : GL (Fin r) E) (x : Frame X.Ψ r) :
     lact γ (lact δ x) = lact (γ * δ) x := by
   funext τ
@@ -107,11 +148,21 @@ private lemma lact_lact_eq_lact_mul (γ δ : GL (Fin r) E) (x : Frame X.Ψ r) :
     ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 private lemma lact_one_upper_bounds (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
   show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage, Tset, Set.mem_image, Set.mem_prod, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, b, hb, z', hz', rfl⟩`. Use `⟨⟨γ, hγ⟩, z', b, ⟨hz', hb⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show _ = lact γ⁻¹ (lact γ _)`. Rewrite using `[lact_lact_eq_lact_mul, inv_mul_cancel, lact_one_upper_bounds]`. Introduce and unpack `⟨⟨γ, hγ⟩, z', b, ⟨hz', hb⟩, h⟩`. Use `⟨γ, hγ, b, hb, z', hz', ?_⟩` and prove the remaining obligations. Establish `h' : lact γ (lact γ⁻¹ x) = lact γ (rmul (cpt X x1 z') b)`.
+
+Rewrite using `[← h]`. Rewrite `h'` using `[lact_lact_eq_lact_mul, mul_inv_cancel, lact_one_upper_bounds]`. Conclude with `h'`.
+-/
 theorem sat_eq (x1 : Frame X.Ψ r) (ρ : ℝ) :
     {x | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ Metric.ball (0 : V (nd X)) ρ, x = lact γ (rmul (cpt X x1 z') b)} =
       ⋃ γ : X.Γ, lact γ.1⁻¹ ⁻¹' Tset X x1 ρ := by
@@ -131,6 +182,9 @@ theorem sat_eq (x1 : Frame X.Ψ r) (ρ : ℝ) :
     exact h'
 
 include D in
+/- English proof (translation)
+Rewrite using `[sat_eq]`. Use `isOpen_iUnion fun γ => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun x : Frame X.Ψ r => lact γ.1⁻¹ x)` using `continuous_pi fun τ => Continuous.matrix_mul continuous_const (continuous_apply τ)`. Conclude with `(isOpen_Tset D ho' hb1 hO).preimage hc`.
+-/
 theorem isOpen_sat (ho' : IsOrth X x1') (hb1 : b1 ∈ Bor X.Ψ r) {ρ : ℝ}
     (hO : Metric.ball (0 : V (nd X)) ρ ⊆ OmF X x1') :
     IsOpen {x | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ Metric.ball (0 : V (nd X)) ρ,

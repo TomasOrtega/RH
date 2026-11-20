@@ -21,10 +21,16 @@ def LanglandsSumMultiplicityOne : Prop :=
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
   {𝔪 𝔫 : Multiset (Segment k)} {r t : ℕ} {π₁ : IrrRep (GL (Fin r) k)} {π₂ : IrrRep (GL (Fin t) k)}
 
+/- English proof (translation)
+The claim follows from `JHMult.jhMult_ne_zero_iff.1 (by rw [(H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).2 π h]; exact one_ne_zero)`.
+-/
 theorem LanglandsSumMultiplicityOne.isSubquotient (H : LanglandsSumMultiplicityOne) (h₁ : IsL 𝔪 π₁.ρ) (h₂ : IsL 𝔫 π₂.ρ)
     {π : IrrRep (GL (Fin (r + t)) k)} (h : IsL (𝔪 + 𝔫) π.ρ) : IsSubquotient π.ρ (prod₂ π₁.ρ π₂.ρ) :=
   JHMult.jhMult_ne_zero_iff.1 (by rw [(H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).2 π h]; exact one_ne_zero)
 
+/- English proof (translation)
+Take `⟨π, h⟩` from `(H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).1`. Take `⟨φ⟩` from `(H.isSubquotient h₁ h₂ h).nonempty_equiv π.irr hi`. Conclude with `h.of_equiv φ.symm`.
+-/
 theorem LanglandsSumMultiplicityOne.isL_prod₂ (H : LanglandsSumMultiplicityOne) (h₁ : IsL 𝔪 π₁.ρ) (h₂ : IsL 𝔫 π₂.ρ)
     (hi : (prod₂ π₁.ρ π₂.ρ).IsIrreducible) : IsL (𝔪 + 𝔫) (prod₂ π₁.ρ π₂.ρ) := by
   obtain ⟨π, h⟩ := (H k 𝔪 𝔫 r t π₁ π₂ h₁ h₂).1
@@ -33,6 +39,9 @@ theorem LanglandsSumMultiplicityOne.isL_prod₂ (H : LanglandsSumMultiplicityOne
 
 omit [CharZero k] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, _, _, _, (single_spec (IrrGL.isCusp_ofChar χ hχ)).2.2.2, (single_spec ((IrrGL.isCusp_ofChar χ hχ).nu 1)).2.2.2, isL_detRep_two hχ, rfl⟩`.
+-/
 example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     ∃ (𝔪 𝔫 : Multiset (Segment k)) (π₁ π₂ : IrrRep (GL (Fin 1) k)) (π : IrrRep (GL (Fin (1 + 1)) k)),
       IsL 𝔪 π₁.ρ ∧ IsL 𝔫 π₂.ρ ∧ IsL (𝔪 + 𝔫) π.ρ ∧ π = IrrRep.det (Fin 2) _ (hχ.mul (isSmoothChar_absPow (1 / 2))) :=
@@ -49,11 +58,19 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+Take `⟨a, ha, ε, -, H⟩` from `H`. Conclude with `(H.langlands [Δ] x hx.isL).trans (WD.lpSum_zero _)`.
+-/
 theorem IsRec.segment (H : IsRec h rc) {Δ : Segment (w.adicCompletion E)} {x : IrrGL (w.adicCompletion E)}
     (hx : IsLSeg Δ x.rep) : rc x = ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len) := by
   obtain ⟨a, ha, ε, -, H⟩ := H
   exact (H.langlands [Δ] x hx.isL).trans (WD.lpSum_zero _)
 
+/- English proof (translation)
+Establish `h1 : IsL 𝔪 (cls π).rep` using `IsL.of_equiv ⟨s, δ, hd, hδ, hπ⟩ (equivRep π)`. Take `⟨Δ, ⟨hm, -⟩, hΔ⟩` from `hδ`. Simplify using `only [fun i => H.segment (hΔ i)]`. Take `⟨a, ha, ε, -, H⟩` from `H`. Rewrite using `[H.langlands (List.ofFn Δ) (cls π) (by rwa [← Fin.univ_val_map, hm]), List.map_ofFn]`.
+
+Both sides reduce to the same expression.
+-/
 theorem IsRec.langlandsQuotient (H : IsRec h rc) {𝔪 : Multiset (Segment (w.adicCompletion E))} {s N : ℕ}
     {δ : Fin s → IrrGL (w.adicCompletion E)} (hδ : LFactors 𝔪 δ) (hd : ∑ i, (δ i).1 = N)
     {π : IrrRep (GL (Fin N) (w.adicCompletion E))} (hπ : IsCosocle π.ρ (prodIrr δ hd)) :
@@ -65,11 +82,17 @@ theorem IsRec.langlandsQuotient (H : IsRec h rc) {𝔪 : Multiset (Segment (w.ad
   rw [H.langlands (List.ofFn Δ) (cls π) (by rwa [← Fin.univ_val_map, hm]), List.map_ofFn]
   rfl
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, _, _, H⟩ := H; H.prod r t σ τ π ⟨φ⟩`.
+-/
 theorem IsRec.prod (H : IsRec h rc) {r t : ℕ} (σ : IrrRep (GL (Fin r) (w.adicCompletion E)))
     (τ : IrrRep (GL (Fin t) (w.adicCompletion E))) (π : IrrRep (GL (Fin (r + t)) (w.adicCompletion E)))
     (φ : π.ρ.Equiv (prod₂ σ.ρ τ.ρ)) : rc (cls π) = (rc (cls σ)).lpSum (rc (cls τ)) :=
   let ⟨_, _, _, _, H⟩ := H; H.prod r t σ τ π ⟨φ⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, _, _, H⟩ := H; H.sph x`.
+-/
 theorem IsRec.isSpherical_iff (H : IsRec h rc) (x : IrrGL (w.adicCompletion E)) : IsSpherical x.rep ↔ (rc x).unr :=
   let ⟨_, _, _, _, H⟩ := H; H.sph x
 

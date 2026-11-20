@@ -27,13 +27,24 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {R : Type} [CommRing R] {β : R →+* c.F} {Z : Model Xo c β}
   {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`.
+-/
 theorem ringHom_eq_of_integers {τ τ' : E →+* ℂ} (h : ∀ a : 𝓞 E, τ (a : E) = τ' (a : E)) : τ = τ' :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)
 
+/- English proof (translation)
+The claim follows from `tan_ext (y.eig τ i a)`.
+-/
 theorem actR_frame (y : FlagPt Z Ω) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) (a : 𝓞 E) :
     actR Z.t.act a (tanOf (y.tan τ i)) = y.fK (Formalism.L2.Pj.embF c τ (a : E)) • tanOf (y.tan τ i) :=
   tan_ext (y.eig τ i a)
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.2 fun g hg => ?_` and prove the remaining obligations. Establish `h0 : ∀ a : 𝓞 E, (tv (0 : TanM (y.y ≫ genι Z) Z.t.G)).left ≫ (Z.t.act.act a).left = spMap (epsMul (y.fK (Formalism.L2.Pj.embF c τ (a : E)))) ≫ (tv (0 : TanM (y.y ≫ genι Z) Z.t.G)).left` using `fun a => congrArg (fun v => (tv v).left) (show actR Z.t.act a (0 : TanM (y.y ≫ genι Z) Z.t.G) = y.fK (Formalism.L2.Pj.embF c τ (a : E)) • 0 by simp)`. Take `⟨a0, -, hu⟩` from `y.basis τ _ (isTan_tv 0) h0`. Establish `e1` using `hu g ((isComb_iff (fun i => tanOf (y.tan τ i)) g 0).2 hg.symm)`. Establish `e2` using `hu 0 ((isComb_iff (fun i => tanOf (y.tan τ i)) 0 0).2 (by simp))`.
+
+Introduce `i`. Rewrite using `[e1, ← e2]`. Both sides reduce to the same expression.
+-/
 theorem linearIndependent_frame_tau (y : FlagPt Z Ω) (τ : E →+* ℂ) :
     LinearIndependent Ω (fun i => tanOf (y.tan τ i)) := by
   refine Fintype.linearIndependent_iff.2 fun g hg => ?_
@@ -48,6 +59,17 @@ theorem linearIndependent_frame_tau (y : FlagPt Z Ω) (τ : E →+* ℂ) :
   rw [e1, ← e2]
   rfl
 
+/- English proof (translation)
+Set `T : 𝓞 E → Module.End Ω (TanM (y.y ≫ genι Z) Z.t.G)` to `fun a => actR Z.t.act a`. Establish `hc : ∀ a b, Commute (T a) (T b)` using `fun a b => by show actR Z.t.act a * actR Z.t.act b = actR Z.t.act b * actR Z.t.act a`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hind` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo T (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc j i) φ)`. Set `χ : (E →+* ℂ) → 𝓞 E → Ω` to `fun τ a => y.fK (Formalism.L2.Pj.embF c τ (a : E))`.
+
+Establish `hχ : Function.Injective χ`. Introduce `τ τ' h`. Use `ringHom_eq_of_integers fun a => ?_` and prove the remaining obligations. Establish `h1` using `y.fK.injective (congrFun h a)`. Conclude with `congrArg Subtype.val h1`.
+
+Establish `hind'` using `hind.comp hχ`. Establish `mem : ∀ τ i, tanOf (y.tan τ i) ∈ ⨅ a, (T a).maxGenEigenspace (χ τ a)` using `fun τ i => by`. Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Apply `Module.End.eigenspace_le_maxGenEigenspace` to reduce the goal to its premises.
+
+Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `actR_frame y τ i a`. Use `Fintype.linearIndependent_iff.2 fun g hg => ?_` and prove the remaining obligations. Rewrite `hg` using `[Fintype.sum_sigma]`. Establish `hw` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero _).1 hind' Finset.univ (fun τ => ∑ i, g ⟨τ, i⟩ • tanOf (y.tan τ i)) (fun τ _ => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (mem τ i)) hg`.
+
+Introduce and unpack `⟨τ, i⟩`. Conclude with `Fintype.linearIndependent_iff.1 (linearIndependent_frame_tau y τ) (fun i => g ⟨τ, i⟩) (hw τ (Finset.mem_univ _)) i`.
+-/
 theorem linearIndependent_frame (y : FlagPt Z Ω) :
     LinearIndependent Ω (fun l : GlobalTheory.ShFam.Pad.Letter Dw => tanOf (y.tan l.1 l.2)) := by
   classical
@@ -81,6 +103,9 @@ theorem linearIndependent_frame (y : FlagPt Z Ω) :
 
 end General
 
+/- English proof (translation)
+Introduce `_ _ y` and use `linearIndependent_frame y`.
+-/
 theorem pt_frame_linearIndependent : ∀ (D : D7) (O : Setup D) (y : Pt O.s),
     LinearIndependent Qb (fun l : Pad.Letter O.S.Dw => tanOf (y.tan l.1 l.2)) :=
   fun _ _ y => linearIndependent_frame y

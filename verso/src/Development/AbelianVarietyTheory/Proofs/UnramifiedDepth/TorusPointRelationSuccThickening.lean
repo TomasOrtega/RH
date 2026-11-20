@@ -18,6 +18,19 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Introduce and unpack `R _ _ I D A G _ _ U k S _ _ χ z ⟨w, hw, hz⟩`. Establish `t : Out.thickMap R I k G ≫ (Out.fstG I (k + 1) G).left = (Out.fstG I k G).left` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Set `Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (k + 1))))` to `Over.mk (w ≫ (splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))) D.toPre.X).hom)`. Set `τ : Z ⟶ splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))) D.toPre.X` to `Over.homMk w rfl`. Set `r : Spec (CommRingCat.of S) ⟶ (Out.thickObj R I k G).left` to `(τ ≫ (U.gt k).i).left`.
+
+Establish `hr : r ≫ (Out.fstG I k G).left = z.left` using `(Category.assoc _ _ _).trans hz`. Establish `c : r ≫ (U.gt k).pG.left = r ≫ (Out.fstG I k G).left ≫ G.hom ≫ eSec D.toPre.P.A` using `(CharAgree.comp_q_eq_one_iff (U.gt k) (τ ≫ (U.gt k).i)).1 (by`. Rewrite using `[Category.assoc, (U.gt k).isKernel.w, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (toUnit_unique _ _))`. Set `Z' : Over (Spec (CommRingCat.of (R ⧸ I ^ (k + 1 + 1))))` to `Over.mk ((r ≫ Out.thickMap R I k G) ≫ (Out.thickObj R I (k + 1) G).hom)`.
+
+Set `a : Z' ⟶ Out.thickObj R I (k + 1) G` to `Over.homMk (r ≫ Out.thickMap R I k G) rfl`. Establish `c' : a.left ≫ (U.gt (k + 1)).pG.left = a.left ≫ (Out.fstG I (k + 1) G).left ≫ G.hom ≫ eSec D.toPre.P.A`. Use `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (U.gt_q k)).trans (c.trans ?_))` and prove the remaining obligations. Use `Eq.trans (congrArg (r ≫ ·) ?_) (Category.assoc _ _ _).symm` and prove the remaining obligations. Conclude with `(congrArg (· ≫ G.hom ≫ eSec D.toPre.P.A) t.symm).trans (Category.assoc _ _ _)`.
+
+Set `τ'` to `(U.gt (k + 1)).isKernel.lift a (toUnit _) ((CharAgree.comp_q_eq_one_iff (U.gt (k + 1)) a).2 c')`. Establish `hτ : τ' ≫ (U.gt (k + 1)).i = a` using `(U.gt (k + 1)).isKernel.lift_fst _ _ _`. Use `⟨τ'.left, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `Eq.trans (congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom ?_) (hw x)` and prove the remaining obligations. Apply `TopCat.Presheaf.section_ext (Spec (CommRingCat.of S)).sheaf ⊤` to reduce the goal to its premises.
+
+Introduce `y hy`. Use `choose J hJ using fun ψ : Spec (CommRingCat.of S) ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart D.toPre.P.isLB (ψ y)`. Establish `k₀` using `(TorusCoord.val_torus_point_and_translate R I D.toPre k G (U.gt k) Z τ 1 y J hJ x).1`. Establish `k₁` using `(TorusCoord.val_torus_point_and_translate R I D.toPre (k + 1) G (U.gt (k + 1)) Z' τ' 1 y J hJ x).1`. Rewrite `k₁` using `[hτ]`.
+
+Establish `e` using `congrArg Units.val (k₁.symm.trans ((Geo.Tor.val_pull hJ _ (Out.thickMap R I k G) r).symm.trans ((Geo.Tor.val_corr hJ (U.gt_t k x) r).trans k₀)))`. Conclude with `(Geo.Tor.gm_val _ _ ⊤ trivial _).symm.trans (e.trans (Geo.Tor.gm_val _ _ ⊤ trivial _))`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun φ => φ.left ≫ (Out.fstG I (k + 1) G).left) hτ).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) t).trans hr)`.
+-/
 theorem iRel_succ : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G) (k : ℕ) (S : Type) [CommRing S] [Algebra R S] χ z, IRel (U.gt k) S χ z → IRel (U.gt (k + 1)) S χ z := by
   rintro R _ _ I D A G _ _ U k S _ _ χ z ⟨w, hw, hz⟩
   have t : Out.thickMap R I k G ≫ (Out.fstG I (k + 1) G).left = (Out.fstG I k G).left :=

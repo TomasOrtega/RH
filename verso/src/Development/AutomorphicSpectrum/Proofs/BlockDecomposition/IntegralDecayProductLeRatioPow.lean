@@ -9,6 +9,13 @@ open Ad3.K Ad3.K.LC Ad3.K.LC.C GlobalTheory.CompanionTheory.GodementFE
 
 namespace GlobalTheory.CompanionTheory.GodementFE.TInt
 
+/- English proof (translation)
+Establish `hr : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Break down `le_total ‖x‖ 1 with h | h` into its components or cases. Establish `h1 : 1 ≤ ‖x‖ ^ (-e)` using `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hr h (by linarith)`. Establish `h3 : dd x ≤ 1`. Unfold `dd`.
+
+Conclude with `inv_le_one_of_one_le₀ (by nlinarith [sq_nonneg ‖x‖])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖x‖ ^ (-2 : ℝ) ≤ ‖x‖ ^ (-e)` using `Real.rpow_le_rpow_of_exponent_le h (by linarith)`. Establish `h3 : dd x ≤ ‖x‖ ^ (-2 : ℝ)`. Unfold `dd`.
+
+Rewrite using `[Real.rpow_neg hr.le, Real.rpow_two]`. Conclude with `inv_anti₀ (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dd_le_rpow (e : ℝ) (h0 : 0 ≤ e) (h2 : e ≤ 2) (x : ℂ) (hx : x ≠ 0) :
     dd x ≤ ‖x‖ ^ (-e) := by
   have hr : 0 < ‖x‖ := norm_pos_iff.2 hx
@@ -27,6 +34,11 @@ theorem dd_le_rpow (e : ℝ) (h0 : 0 ≤ e) (h2 : e ≤ 2) (x : ℂ) (hx : x ≠
       exact inv_anti₀ (by positivity) (by linarith)
     linarith
 
+/- English proof (translation)
+Establish `hr : ‖y‖ ≠ 0` using `norm_ne_zero_iff.2 hy`. Establish `h1 : (1 + ‖y‖ ^ 2) ≠ 0` using `by positivity`. Establish `h2 : (1 + (‖y‖⁻¹) ^ 2) ≠ 0` using `by positivity`. Simplify using `only [dd, norm_inv]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dd_inv (y : ℂ) (hy : y ≠ 0) : dd y⁻¹ = ‖y‖ ^ 2 * dd y := by
   have hr : ‖y‖ ≠ 0 := norm_ne_zero_iff.2 hy
   have h1 : (1 + ‖y‖ ^ 2) ≠ 0 := by positivity
@@ -35,6 +47,15 @@ theorem dd_inv (y : ℂ) (hy : y ≠ 0) : dd y⁻¹ = ‖y‖ ^ 2 * dd y := by
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hd : LinearMap.det ((mulL D : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) ≠ 0`. Use `det_mulL D` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.det]`. Rewrite using `[this]`. Conclude with `(Complex.normSq_pos.2 hD).ne'`.
+
+Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) hd`. Set `e : ℂ ≃ₜ ℂ` to `Homeomorph.mulLeft₀ D hD`. Establish `he : ⇑e = (((mulL D : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) : ℂ → ℂ)`. Use extensionality with `z`. Simplify using `[e, mulL]`.
+
+Establish `h1 : Integrable H (Measure.map e volume)`. Rewrite using `[he, hmap]`. Conclude with `hH.smul_measure ENNReal.ofReal_ne_top`. Establish `h2` using `(e.measurableEmbedding.integrable_map_iff).1 h1`. Use `h2.congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `[e, mul_comm]`.
+-/
 theorem integrable_comp_mulRight (H : ℂ → ℝ) (hH : Integrable H) (D : ℂ) (hD : D ≠ 0) :
     Integrable fun t : ℂ => H (t * D) := by
   have hd : LinearMap.det ((mulL D : ℂ →L[ℝ] ℂ) : ℂ →ₗ[ℝ] ℂ) ≠ 0 := by
@@ -54,6 +75,11 @@ theorem integrable_comp_mulRight (H : ℂ → ℝ) (hH : Integrable H) (D : ℂ)
   refine h2.congr (Filter.Eventually.of_forall fun t => ?_)
   simp [e, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `integral_comp_mul D hD (fun u => (H u : ℂ))`. Establish `h1 : ∫ y : ℂ, ((H (D * y) : ℝ) : ℂ) = ((∫ y : ℂ, H (D * y) : ℝ) : ℂ)` using `integral_ofReal`. Establish `h2 : ∫ u : ℂ, ((H u : ℝ) : ℂ) = ((∫ u : ℂ, H u : ℝ) : ℂ)` using `integral_ofReal`. Rewrite `h` using `[h1, h2]`. Establish `h3 : ∫ y : ℂ, H (D * y) = (‖D‖ ^ 2)⁻¹ * ∫ u : ℂ, H u` using `by exact_mod_cast h`.
+
+Simplify `h3` using `[mul_comm]`.
+-/
 theorem integral_comp_mulRight (H : ℂ → ℝ) (D : ℂ) (hD : D ≠ 0) :
     ∫ t : ℂ, H (t * D) = (‖D‖ ^ 2)⁻¹ * ∫ u : ℂ, H u := by
   have h := integral_comp_mul D hD (fun u => (H u : ℂ))
@@ -63,6 +89,29 @@ theorem integral_comp_mulRight (H : ℂ → ℝ) (D : ℂ) (hD : D ≠ 0) :
   have h3 : ∫ y : ℂ, H (D * y) = (‖D‖ ^ 2)⁻¹ * ∫ u : ℂ, H u := by exact_mod_cast h
   simpa [mul_comm] using h3
 
+/- English proof (translation)
+Introduce `e he0 he2`. Establish `hH : Integrable fun z : ℂ => ‖z‖ ^ (-e) * dd z`. Establish `h` using `wt_vol (1 - e / 2) (by linarith) (by linarith)`. Establish `e1 : 2 * (1 - e / 2) - 2 = -e` using `by ring`. Rewrite `h` using `[e1]`. Then use the resulting hypothesis.
+
+Use `⟨∫ z : ℂ, ‖z‖ ^ (-e) * dd z, integral_nonneg fun z => mul_nonneg (by positivity) (dd_pos z).le, fun A D hA hD => ?_⟩` and prove the remaining obligations. Establish `hAp : 0 < ‖A‖` using `norm_pos_iff.2 hA`. Establish `hDp : 0 < ‖D‖` using `norm_pos_iff.2 hD`. Use `set K : ℝ := (‖A‖ / ‖D‖) ^ (-e) * ‖D‖ ^ 2 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+
+Establish `hHD` using `integrable_comp_mulRight _ hH D hD`. Establish `hdm` using `continuous_dd.measurable`. Establish `hmeas : AEStronglyMeasurable (fun t : ℂ => (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹)) volume`. Establish `h1 : Measurable fun t : ℂ => dd (t * A)` using `hdm.comp (by fun_prop)`. Establish `h2 : Measurable fun t : ℂ => dd (t * D)⁻¹` using `hdm.comp (by fun_prop)`.
+
+Establish `h3 : Measurable fun t : ℂ => (‖t‖ ^ 2)⁻¹` using `by fun_prop`. Conclude with `(h3.mul (h1.mul h2)).aestronglyMeasurable`. Establish `hb : ∀ t : ℂ, t ≠ 0 → (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) ≤ K * (‖t * D‖ ^ (-e) * dd (t * D))`. Introduce `t ht`. Establish `htp : 0 < ‖t‖` using `norm_pos_iff.2 ht`.
+
+Establish `hy : t * D ≠ 0` using `mul_ne_zero ht hD`. Establish `hx : t * A ≠ 0` using `mul_ne_zero ht hA`. Establish `h1` using `dd_le_rpow e he0.le he2.le (t * A) hx`. Establish `e1 : ‖t * A‖ = (‖A‖ / ‖D‖) * ‖t * D‖`. Rewrite using `[norm_mul, norm_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[e1, Real.mul_rpow (by positivity) (norm_nonneg _)]`. Establish `e2 : (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) = ‖D‖ ^ 2 * dd (t * D) * dd (t * A)`. Rewrite using `[dd_inv _ hy, norm_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e2, hK]`. Establish `hp : 0 ≤ ‖D‖ ^ 2 * dd (t * D)` using `mul_nonneg (by positivity) (dd_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Establish `hae : ∀ᵐ t : ℂ, t ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))`. Establish `hint : Integrable (fun t : ℂ => (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹))`.
+
+Use `(hHD.const_mul K).mono' hmeas ?_` and prove the remaining obligations. Use `filter_upwards [hae] with t ht`. Establish `hnn : 0 ≤ (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹)` using `mul_nonneg (by positivity) (mul_nonneg (dd_pos _).le (dd_pos _).le)`. Rewrite using `[Real.norm_of_nonneg hnn]`. Conclude with `hb t ht`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `h1 : ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) ≤ ∫ t : ℂ, K * (‖t * D‖ ^ (-e) * dd (t * D))`. Use `integral_mono_ae hint (hHD.const_mul K) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with t ht`. Conclude with `hb t ht`.
+
+Establish `h2 : ∫ t : ℂ, K * (‖t * D‖ ^ (-e) * dd (t * D)) = K * ((‖D‖ ^ 2)⁻¹ * ∫ z : ℂ, ‖z‖ ^ (-e) * dd z)`. Rewrite using `[integral_const_mul, integral_comp_mulRight (fun z : ℂ => ‖z‖ ^ (-e) * dd z) D hD]`. Rewrite `h1` using `[h2]`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hK]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tint : ∀ e : ℝ, 0 < e → e < 2 → ∃ c : ℝ, 0 ≤ c ∧ ∀ A D : ℂ, A ≠ 0 → D ≠ 0 →
     Integrable (fun t : ℂ => (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹)) ∧
     ∫ t : ℂ, (‖t‖ ^ 2)⁻¹ * (dd (t * A) * dd (t * D)⁻¹) ≤ c * (‖A‖ / ‖D‖) ^ (-e) := by

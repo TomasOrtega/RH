@@ -8,5 +8,8 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 open scoped TensorProduct Matrix Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK | exact GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK | (intros; apply GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_specialPrime_levelCover_of_fieldConditions : ∀ (D : D7) (Q : Par D), Q.Pins → Q.Canon → ∀ p : ℕ, FieldOK0 D p → ∀ (P : HeightOneSpectrum (𝓞 D.host.K)), ((p : ℕ) : 𝓞 D.host.K) ∈ P.asIdeal → p.Prime ∧ 5 ≤ p ∧ ∀ j, InR D j → ∃ d : DeltaDat (Q.Xo j) Q.c 0, CoverOK d p (P.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))) ∧ FnAlgClosed d.Xo₂ d.c₂ := by
   first | exact @GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK | exact GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK | (intros; apply GlobalTheory.FinalJoin2.Cover.exists_cover_of_fieldOK <;> assumption)

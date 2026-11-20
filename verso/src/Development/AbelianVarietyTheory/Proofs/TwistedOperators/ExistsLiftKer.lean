@@ -11,6 +11,11 @@ open NumberField AlgebraicGeometry CategoryTheory Limits MonoidalCategory Cartes
 
 namespace GlobalTheory.HeckeKerLat
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_smul, pow_zero]`. Use `(F.ex_ker i P hP 0).2 (zero_mem _)` as an intermediate fact. Conclude with `this`.
+
+Consider the case `succ n ih => rw [succ_nsmul, F.ex_add i P hP, ih, pow_succ]`.
+-/
 theorem ex_nsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P) (n : ℕ) (w : Fin g → ℂ) :
     F.ex i P (n • w) = F.ex i P w ^ n := by
   induction n with
@@ -20,6 +25,17 @@ theorem ex_nsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     exact this
   | succ n ih => rw [succ_nsmul, F.ex_add i P hP, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hI`. Take `⟨gam, h, h1, h2, h3, h4⟩` from `GlobalTheory.T.heckeIsogeny_lifts_to_lattice_map_scaling_forms E H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hI`. Establish `hker : ψp.ker = C` using `hI.2.2.2.2.2.1`. Establish `hp0 : ((p : ℂ) ^ 2) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero)`. Use `⟨gam, h, h1, h2, h3, h4, fun a => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hker, MonoidHom.mem_ker, ← h4, map_smul, ← h2, F.ex_ker j P' hP']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Use `⟨b, hP'.2.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, hb, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+
+Use `push_cast`. Rewrite using `[mul_inv_cancel₀ hp0, one_smul]`. Introduce and unpack `⟨b, hb⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+
+Use `push_cast`. Rewrite using `[inv_mul_cancel₀ hp0, one_smul]`. Take `⟨w, rfl⟩` from `F.ex_onto i P hP c`. Establish `e1 : F.ex i P ((p ^ 2) • w) = 1` using `by rw [ex_nsmul F i P hP, hC _ hc]`. Take `⟨a, ha⟩` from `(F.ex_ker i P hP _).1 e1`.
+
+Use `⟨a, congrArg _ ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ hp0, one_smul]`.
+-/
 theorem exists_lift_ker : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty) (i j : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (P' : (F.Di j).La →+ (Fin g → ℂ)) (p : ℕ) (C : Subgroup (Over.mk (F.u i P) ⟶ Xo.univ.t.G)) (ψ : pullback Xo.univ.t.G.hom (F.u i P) ⟶ pullback Xo.univ.t.G.hom (F.u j P')) (ψp : (Over.mk (F.u i P) ⟶ Xo.univ.t.G) →* (Over.mk (F.u j P') ⟶ Xo.univ.t.G)), IsPeriod (F.Di i) ty P → IsPeriod (F.Di j) ty P' → p.Prime → (∀ a ∈ C, a ^ p ^ 2 = 1) → Formalism.L2.Pj.IsHkIsog p (F.u i P) (F.u j P') C ψ ψp →
   ∃ (gam : (F.Di i).La →ₗ[𝓞 E] (F.Di j).La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)),
     (∀ a b, (F.Di j).EF (gam a) (gam b) = (p : ℤ) ^ 2 * (F.Di i).EF a b) ∧ (∀ a, P' (gam a) = h (P a)) ∧

@@ -25,9 +25,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwInputs
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j b g => (Y.Z.tie i j b).U_eq g, fun i j b u hu => (Y.Z.tie i j b).psiU_eq u hu⟩`.
+-/
 theorem levelOf_of_serSide {D : D7} {X : RealSide D} {E : IntegralHeckeForms.XD D} (Y : SerSide X E) : Y.Z.ρ.LevelOf D.nexp :=
   ⟨fun i j b g => (Y.Z.tie i j b).U_eq g, fun i j b u hu => (Y.Z.tie i j b).psiU_eq u hu⟩
 
+/- English proof (translation)
+Introduce `hCh hArt hTor D X E Y G hRat hBdd hSup hHodge hRoots`. Take `⟨a1, a2, a8, good, sig, ⟨N0, a9⟩, a10, hyp⟩` from `GlobalTheory.TwGalInputs.galois_inputs hCh hArt hTor D G hHodge`. Establish `hL : Laws Y.Z.good Y.Z.rd` using `laws_of_serSide D X E Y hRat`. Establish `hXi : XiType Y.Z.rd` using `GlobalTheory.XiTypeProof.xiType D Y.Z.ρ Y.Z.good Y.Z.rd hL.faithful hL.act (levelOf_of_serSide Y)`. Take `⟨supG, supFull, supHk, commG, comm⟩` from `supLaws_of_sides D X E Y hSup`.
+
+Conclude with `⟨N0, { a1 := a1 a2 := a2 a8 := a8 good := good sig := sig a9 := a9 a10 := a10 univChar := Y.Z.univ off := Y.off rel := GlobalTheory.T.universalTwistedSeriesDistribution_of_compatibility D Y.Z.ρ Y.Z.good Y.Z.rd Y.Z.full hL l3 := GlobalTheory.SeriesTie.thetaLatticeCondition_of_full …`.
+-/
 theorem inputs_of_sides : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator →
     ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), ∀ G : GalSide D,
       (∀ i, D.ntw.NonzeroIndexPlace i → ∀ j b, RatRow Y.YS X.geo.v₀ Y.Z.good i j b) → XiBdd Y.Z.rd →
@@ -62,6 +70,9 @@ theorem inputs_of_sides : GlobalTheory.Published.ChebotarevDegreeOne → GlobalT
       ss := GlobalTheory.TwHkSS.hkSS_of_sides D X E Y commG comm supFull
       hyp := hyp }⟩
 
+/- English proof (translation)
+The claim follows from `hX.roots`.
+-/
 example {D : D7} {X : RealSide D} (hX : FieldOk X) :
     ∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange := hX.roots
 

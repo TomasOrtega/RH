@@ -17,6 +17,11 @@ variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 def embSum : R.Psi ⊕ R.Psi → (H.E →+* ℂ) :=
   Sum.elim (embPsi H) fun g => (starRingEnd ℂ).comp (embPsi H g)
 
+/- English proof (translation)
+Introduce and unpack `(i | i) (j | j) hij`. Conclude with `congrArg _ (GlobalTheory.HalfIntChars.embPsi_inj H hij)`. Conclude with `absurd hij (GlobalTheory.HalfIntChars.embPsi_ne_conj H i j)`. Conclude with `absurd hij.symm (GlobalTheory.HalfIntChars.embPsi_ne_conj H j i)`. Use `congrArg _ (GlobalTheory.HalfIntChars.embPsi_inj H (RingHom.ext fun x => ?_))` and prove the remaining obligations.
+
+Use `congrArg (fun f : H.E →+* ℂ => starRingEnd ℂ (f x)) hij` as an intermediate fact. Simplify `this` using `[embSum]`.
+-/
 theorem embSum_injective : Function.Injective (embSum H) := by
   rintro (i | i) (j | j) hij
   · exact congrArg _ (GlobalTheory.HalfIntChars.embPsi_inj H hij)
@@ -26,6 +31,9 @@ theorem embSum_injective : Function.Injective (embSum H) := by
     have := congrArg (fun f : H.E →+* ℂ => starRingEnd ℂ (f x)) hij
     simpa [embSum] using this
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sum, NumberField.Embeddings.card, H.finrank_cmField, ← Nat.card_eq_fintype_card, Formalism.HC.Frame.natCard_Psi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_sum : Fintype.card (R.Psi ⊕ R.Psi) = Fintype.card (H.E →+* ℂ) := by
   rw [Fintype.card_sum, NumberField.Embeddings.card, H.finrank_cmField,
     ← Nat.card_eq_fintype_card, Formalism.HC.Frame.natCard_Psi]
@@ -34,6 +42,13 @@ theorem card_sum : Fintype.card (R.Psi ⊕ R.Psi) = Fintype.card (H.E →+* ℂ)
 def embEquiv : R.Psi ⊕ R.Psi ≃ (H.E →+* ℂ) :=
   Equiv.ofBijective _ ((Fintype.bijective_iff_injective_and_card _).mpr ⟨embSum_injective H, card_sum H⟩)
 
+/- English proof (translation)
+Use `set bij := embEquiv H`. Set `g : R.Psi ⊕ R.Psi → ℤ` to `fun x => Sum.elim (fun _ => 1) (fun _ => 0) x`. Use `⟨fun ψ => g (bij.symm ψ), fun k => ?_⟩` and prove the remaining obligations. Establish `hR : ∏ ψ : H.E →+* ℂ, ψ (k : H.E) ^ g (bij.symm ψ) = ∏ x : R.Psi ⊕ R.Psi, (bij x) (k : H.E) ^ g x` using `(Fintype.prod_equiv bij _ _ fun x => by rw [Equiv.symm_apply_apply]).symm`. Establish `hL : ∏ ψ : H.E →+* ℂ, ((‖ψ (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ) = ∏ x : R.Psi ⊕ R.Psi, ((‖bij x (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ)` using `(Fintype.prod_equiv bij _ _ fun x => rfl).symm`.
+
+Rewrite using `[hR, hL, Fintype.prod_sum_type, Fintype.prod_sum_type, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `set z := embPsi H τ (k : H.E) with hzdef`. Establish `hz : z ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Establish `hn : (((‖z‖ : ℝ) : ℂ)) ≠ 0` using `by exact_mod_cast (norm_ne_zero_iff.mpr hz)`.
+
+Use `show (z / ((‖z‖ : ℝ) : ℂ)) ^ (1 : ℤ) * ((((‖z‖ : ℝ) : ℂ)) ^ (((1 / 2 : ℝ)) : ℂ) * (((‖starRingEnd ℂ z‖ : ℝ) : ℂ)) ^ (((1 / 2 : ℝ)) : ℂ)) = z ^ (1 : ℤ) * (starRingEnd ℂ z) ^ (0 : ℤ)`. Rewrite using `[Complex.norm_conj, ← Complex.cpow_add _ _ hn]`. Evaluate the numerical expressions. Rewrite using `[div_mul_cancel₀ _ hn]`.
+-/
 theorem algType_eta : ∃ m : (H.E →+* ℂ) → ℤ, ∀ k : H.Eˣ,
     (∏ g, (embPsi H g (k : H.E) / ((‖embPsi H g (k : H.E)‖ : ℝ) : ℂ)) ^ (1 : ℤ)) *
       ∏ φ : H.E →+* ℂ, ((‖φ (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ) = ∏ φ : H.E →+* ℂ, φ (k : H.E) ^ m φ := by
@@ -57,6 +72,11 @@ theorem algType_eta : ∃ m : (H.E →+* ℂ) → ℤ, ∀ k : H.Eˣ,
   norm_num
   rw [div_mul_cancel₀ _ hn]
 
+/- English proof (translation)
+Introduce `R H χ hχ`. Take `⟨m, hm⟩` from `algType_eta H`. Take `⟨C, hC, hv⟩` from `PI.AlgValsFin.W.algValsFin_main H.E χ (1 / 2) m (fun k => by rw [hχ.inf k]; exact hm k)`. Set `M : IntermediateField ℚ ℂ` to `C.toIntermediateField fun x => by simp`. Set `e : C ≃+ M` to `{ toFun := fun x => ⟨x, x.2⟩ invFun := fun x => ⟨x, x.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`.
+
+Establish `hM : FiniteDimensional ℚ M` using `LinearEquiv.finiteDimensional { e.toAddMonoidHom.toRatLinearMap with invFun := e.symm left_inv := e.left_inv right_inv := e.right_inv }`. Use `⟨M, hM, fun v hv' => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hv v hv'`. Conclude with `⟨e y, hy⟩`.
+-/
 theorem etaVals : ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E), IsEtaT H χ →
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ χ.ValuesIn (1 / 2) (algebraMap M ℂ) := by
   intro R H χ hχ

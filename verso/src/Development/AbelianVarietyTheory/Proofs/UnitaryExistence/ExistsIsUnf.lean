@@ -17,6 +17,21 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.IsUnfEx
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `key : ∀ z : ℂ, z ^ 2 = -(H.d : ℂ) → z.re = 0 ∧ z.im ≠ 0`. Introduce `z hz`. Establish `h1` using `congrArg Complex.re hz`. Establish `h2` using `congrArg Complex.im hz`.
+
+Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2`. Establish `him : z.im ≠ 0`. Introduce `h`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`.
+
+Use `⟨?_, him⟩` and prove the remaining obligations. Establish `: z.re * z.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_right him`. Establish `hsq : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hτ₀` using `key (τ₀ (H.rt : E)) (by rw [← map_pow, hsq]; simp)`. Establish `hcc : cc (H.rt : E) = -(H.rt : E)`. Apply `τ₀.injective` to reduce the goal to its premises.
+
+Unfold `cc`. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hτ₀.1]`. Establish `hne : (H.rt : E) ≠ 0`. Introduce `h`.
+
+Apply `hτ₀.2` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using the standard rewrite rules. Break down `lt_or_gt_of_ne (key _ H.sqrt_neg_disc_sq).2 with h | h` into its components or cases. Conclude with `⟨H.rt, hcc, hne, fun τ hτ => by rw [hτ]; exact h⟩`.
+
+Use `⟨-(H.rt : E), ?_, neg_ne_zero.2 hne, fun τ hτ => ?_⟩` and prove the remaining obligations. Unfold `cc at hcc ⊢`. Rewrite using `[map_neg, hcc]`. Rewrite using `[map_neg, hτ, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_xi {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     ∃ ξ₀ : E, cc ξ₀ = -ξ₀ ∧ ξ₀ ≠ 0 ∧ ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → (τ ξ₀).im < 0 := by
@@ -55,6 +70,11 @@ theorem exists_xi {E : Type} [Field E] [NumberField E] [IsCMField E]
       rw [map_neg, hcc]
     · rw [map_neg, hτ, Complex.neg_im]; linarith
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 E _ _ _ H Dw l Xo c σ hpq hσ`. Take `⟨ξ₀, hcc, hne, him⟩` from `exists_xi H`. Establish `hcc' : cc (-ξ₀) = -(-ξ₀)`. Unfold `cc at hcc ⊢`. Rewrite using `[map_neg, hcc]`.
+
+Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ₀) hcc' (neg_ne_zero.2 hne) (Dw.p + Dw.q) rfl`. Take `⟨U, hU, -⟩` from `GlobalTheory.T.exists_frameUniformisation_prescribedSpace h1 h2 h3 h4 E H Dw l Xo c σ (Dw.p + Dw.q) ξ₀ Gm φ hpq hσ hcc him hφ`. Conclude with `⟨U, hU⟩`.
+-/
 theorem exists_isUnf : N1c → GlobalTheory.Published.HasseNormSt → Out.SecBaseChangeSt → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ), 1 ≤ Dw.p + Dw.q → GoodEmb c σ → ∃ U : Unf Xo c σ (Dw.p + Dw.q), IsUnf U := by
   intro h1 h2 h3 h4 E _ _ _ H Dw l Xo c σ hpq hσ
   obtain ⟨ξ₀, hcc, hne, him⟩ := exists_xi H

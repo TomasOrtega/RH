@@ -29,21 +29,33 @@ def SpacesExist : Prop :=
       (∀ j, 0 < j → j < R.m → HasHyperbolicAuxiliaryFrame S j) ∧ (∀ j, 1 ≤ j → j ≤ R.m → S.Vneg j = false) ∧
       (S.X R.m).hT S.z S.z = (S.T : E)
 
+/- English proof (translation)
+Introduce `R F E _ _ _ _ _ _ cm T hT pz hpz`. Conclude with `⟨spacesNorm R cm T hT pz hpz, rfl, fun j _ τ => spacesNorm_Y_sig R cm T hT pz hpz j τ, fun j _ hj => auxiliary_frame_normalized_spaces R cm T hT pz hpz j hj, fun _ _ _ => rfl, spacesNorm_z_norm R cm T hT pz hpz⟩`.
+-/
 theorem spacesExist : SpacesExist := by
   intro R F E _ _ _ _ _ _ cm T hT pz hpz
   exact ⟨spacesNorm R cm T hT pz hpz, rfl, fun j _ τ => spacesNorm_Y_sig R cm T hT pz hpz j τ,
     fun j _ hj => auxiliary_frame_normalized_spaces R cm T hT pz hpz j hj, fun _ _ _ => rfl, spacesNorm_z_norm R cm T hT pz hpz⟩
 
+/- English proof (translation)
+Establish `h1 : p ≡ 1 [MOD c]` using `h.of_dvd hcM`. Unfold `Nat.ModEq at h1`. Rewrite using `[h1, Nat.mod_eq_of_lt hc]`.
+-/
 theorem mod_of_modEq {p c M : ℕ} (hc : 1 < c) (hcM : c ∣ M) (h : p ≡ 1 [MOD M]) : p % c = 1 := by
   have h1 : p ≡ 1 [MOD c] := h.of_dvd hcM
   unfold Nat.ModEq at h1
   rw [h1, Nat.mod_eq_of_lt hc]
 
+/- English proof (translation)
+Establish `h1 : Nat.Coprime x (a * b * c)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h]`. Conclude with `Nat.gcd_one_left _`. Conclude with `h1.coprime_dvd_right ((dvd_mul_right a b).mul_right c)`.
+-/
 private theorem coprime_of_mod_one {x a b c : ℕ} (h : x % (a * b * c) = 1) : Nat.Coprime x a := by
   have h1 : Nat.Coprime x (a * b * c) := by
     rw [Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h]; exact Nat.gcd_one_left _
   exact h1.coprime_dvd_right ((dvd_mul_right a b).mul_right c)
 
+/- English proof (translation)
+Establish `h4 : (4 : ℝ) = 2 ^ (2 : ℝ)` using `by norm_num`. Rewrite using `[Nat.cast_one, div_one, Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_mul hT.le, h4, ← Real.rpow_mul (by norm_num), mul_assoc, ← Real.rpow_add (by norm_num)]`. Establish `h1 : n * (1 / n) = 1` using `by field_simp`. Establish `h2 : 2 * (1 / n) + -2 / n = 0` using `by ring`. Rewrite using `[h1, h2, Real.rpow_one, Real.rpow_zero, mul_one]`.
+-/
 theorem win_eq (T : ℝ) (hT : 0 < T) (n : ℝ) (hn : 0 < n) :
     (T ^ n * 4 / ((1 : ℕ) : ℝ)) ^ ((1 : ℝ) / n) * (2 : ℝ) ^ (-(2 : ℝ) / n) = T := by
   have h4 : (4 : ℝ) = 2 ^ (2 : ℝ) := by norm_num
@@ -53,6 +65,25 @@ theorem win_eq (T : ℝ) (hT : 0 < T) (n : ℝ) (hn : 0 < n) :
   have h2 : 2 * (1 / n) + -2 / n = 0 := by ring
   rw [h1, h2, Real.rpow_one, Real.rpow_zero, mul_one]
 
+/- English proof (translation)
+Use `set c := H.QS * H.q * H.d with hc`. Establish `hc1 : 1 < c`. Establish `h1` using `H.QS_pos`. Establish `h2` using `H.hyp.1.pos`. Establish `h3` using `H.hyp.2.1.one_lt`.
+
+Establish `: 0 < H.QS * H.q` using `by positivity`. Rewrite using `[hc]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc0 : c ≠ 0` using `by omega`. Take `⟨π0, g0, hg0, hg0N, hK0, hn0, hcg0, hm0⟩` from `hP R H c 1 (2 * R.f * R.k + 1) hc0 (Nat.coprime_one_left _)`.
+
+Take `⟨M, N, hM0, hcM, hBB⟩` from `exists_modulus_bb_disjoint R.r g0 c hg0 hc0`. Establish `hcop : Nat.Coprime (1 + M) (M ^ 2)` using `Nat.Coprime.pow_right _ (by simp)`. Take `⟨π1, g1, hg1, hg1N, hK1, hn1, hcg1, hm1⟩` from `hP R H (M ^ 2) (1 + M) (N + g0) (pow_ne_zero _ hM0) hcop`. Take `⟨p, hp, hpN, hpm⟩` from `Nat.exists_prime_gt_modEq_one g1 (k := 15 * c) (by omega)`. Take `⟨p', hp', hpN', hpm'⟩` from `Nat.exists_prime_gt_modEq_one p (k := 15 * c) (by omega)`.
+
+Use `⟨![g0, g1], ![π0, π1], p, p', ?_, ?_, hpN, hpN', hp, hp', mod_of_modEq (by norm_num) (dvd_mul_right _ _) hpm, mod_of_modEq (by norm_num) (dvd_mul_right _ _) hpm', mod_of_modEq hc1 (dvd_mul_left _ _) hpm, mod_of_modEq hc1 (dvd_mul_left _ _) hpm', ?_, ?_, ?_, ?_, hg0N, hBB g1 hg1 ( …` and prove the remaining obligations. Introduce `i`. Use `fin_cases i`. Use `exacts [hg0, hg1]`. Use `show g0 < g1`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i`. Use `fin_cases i`. Conclude with `mod_of_modEq hc1 dvd_rfl (by simpa using hm0)`. Use `mod_of_modEq hc1 hcM ?_` and prove the remaining obligations.
+
+Establish `h1 : g1 ≡ (1 + M) ^ 2 [MOD M]` using `hm1.of_dvd (dvd_pow_self _ two_ne_zero)`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : 1 + M ≡ 1 [MOD M]` using `by simp [Nat.ModEq]`. Simplify using `using h2.pow 2`. Introduce `i`.
+
+Use `fin_cases i`. Use `exacts [hK0, hK1]`. Introduce `i`. Use `fin_cases i`. Use `exacts [hn0, hn1]`.
+
+Introduce `i`. Use `fin_cases i`. Simplify using `using Ideal.mem_span_singleton.1 hcg0`. Establish `h1` using `Ideal.mem_span_singleton.1 hcg1`. Establish `h2 : (c : 𝓞 H.E) ∣ (M : 𝓞 H.E)` using `Nat.cast_dvd_cast hcM`.
+
+Establish `h3 : (M : 𝓞 H.E) ∣ ((M ^ 2 : ℕ) : 𝓞 H.E)` using `Nat.cast_dvd_cast (dvd_pow_self _ two_ne_zero)`. Establish `h4 : π1 - 1 = (π1 - ((1 + M : ℕ) : 𝓞 H.E)) + (M : 𝓞 H.E)` using `by push_cast; ring`. Use `show (c : 𝓞 H.E) ∣ π1 - 1`. Rewrite using `[h4]`. Conclude with `dvd_add (h2.trans (h3.trans h1)) h2`.
+-/
 theorem exists_primes (hP : NormPrimes) (R : Ranks) (H : Host R) :
     ∃ (g : Fin 2 → ℕ) (π : Fin 2 → 𝓞 H.E) (p p' : ℕ), (∀ i, (g i).Prime) ∧ g 0 < g 1 ∧ g 1 < p ∧ p < p' ∧ p.Prime ∧ p'.Prime ∧
       p % 15 = 1 ∧ p' % 15 = 1 ∧ p % (H.QS * H.q * H.d) = 1 ∧ p' % (H.QS * H.q * H.d) = 1 ∧
@@ -98,6 +129,49 @@ theorem exists_primes (hP : NormPrimes) (R : Ranks) (H : Host R) :
       rw [h4]
       exact dvd_add (h2.trans (h3.trans h1)) h2
 
+/- English proof (translation)
+Take `⟨H, hcc, hH⟩ : ∃ H : Host R, H.ccK = ⊤ ∧ H.toHostAx = H₀.toHostAx` from `⟨UpperTheory.Host.withTop H₀, rfl, rfl⟩`. Take `⟨g, π, p, p', hg, hg01, hg1p, hpp', hp, hp', hp15, hp15', hpc, hpc', hgc, hπK, hπn, hπc, hgbig, hBB, hc1⟩` from `exists_primes hP R H`. Take `⟨P, hPv, hPb, hPe, hPu⟩` from `GlobalTheory.exists_hcParam_codeWord R 2 0 (R.t + 3) le_rfl le_rfl`. Choose the witnesses or unpack the hypotheses as in `⟨A, hA⟩ : ∃ A : ℕ, ∀ u : Bool, ∀ j, j ≤ R.m → ((Formalism.BasicNotions.Examples₂.lamOf (P fun _ => u) j).spread : ℝ) ≤ A := by`. Establish `hfin : (Set.range fun x : Bool × Fin (R.m + 1) => ((Formalism.BasicNotions.Examples₂.lamOf (P fun _ => x.1) x.2).spread : ℝ)).Finite` using `Set.finite_range _`.
+
+Take `⟨b, hb⟩` from `hfin.bddAbove`. Take `⟨A, hA⟩` from `exists_nat_ge b`. Conclude with `⟨A, fun u j hj => (hb ⟨(u, ⟨j, by omega⟩), rfl⟩).trans hA⟩`. Use `set a : ℕ := A + (2 * R.f * R.N R.m + 1) with ha`. Establish `hM0 : H.QS * H.q * H.d * (g 0 * g 1) ^ 2 ≠ 0` using `mul_ne_zero (by omega) (pow_ne_zero _ (mul_ne_zero (hg 0).ne_zero (hg 1).ne_zero))`.
+
+Take `⟨πT, T, hT, hTN, hTK, hTn, hTc, hTm⟩` from `hP R H _ 1 (4 * a + p') hM0 (Nat.coprime_one_left _)`. Establish `hTcond : T % (H.QS * H.q * H.d) = 1` using `mod_of_modEq hc1 (dvd_mul_right _ _) (by simpa using hTm)`. Establish `hpg : ∀ i, p ≠ g i ∧ p' ≠ g i`. Introduce `i`. Use `fin_cases i`.
+
+Conclude with `⟨(by omega : p ≠ g 0), (by omega : p' ≠ g 0)⟩`. Conclude with `⟨(by omega : p ≠ g 1), (by omega : p' ≠ g 1)⟩`. Establish `hQS : ∀ x ∈ insert (g 0) (insert (g 1) (insert p (insert p' ({T} : Finset ℕ)))), Nat.Coprime x H.QS`. Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`.
+
+Apply the tactic sequence `rcases hx with h | h | h | h | h <;> rw [h]`. Use `exacts [coprime_of_mod_one (hgc 0), coprime_of_mod_one (hgc 1), coprime_of_mod_one hpc, coprime_of_mod_one hpc', coprime_of_mod_one hTcond]`. Take `⟨hg', hne, lv, hl, hp1, hp2, hpp, hpl, hm, hpg', hco, hcs, hlv, -⟩` from `GlobalTheory.host_relevel R H hcc g p p' {T} hg hg01.ne hp hp' hpp'.ne hp15 hp15' hpg hQS`. Set `H' : Host R` to `{ H with levelPrimes := lv, g := g, g_prime := hg', g_ne := hne, g_level := hl, pde := p, pde' := p', pde_prime := hp1, pde'_prime := hp2, pde_ne := hpp, pde_level := hpl, pde_mod := hm, pde_ne_g := hpg', ccK_coprime := hco, level_coprimeS := hcs }`. Establish `hsplit` using `GlobalTheory.HostSplit.split_of_one_mod R H'`.
+
+Use `letI := H'.cmStar`. Establish `hstar : star (πT : H'.E) * (πT : H'.E) = (T : H'.E)`. Establish `h1 : star (πT : H'.E) = H'.conj (πT : H'.E)` using `bridge_star_holds R H' _`. Rewrite using `[h1, mul_comm]`. Conclude with `hTn`.
+
+Take `⟨S, hST, hSY, hSA, hSV, hSz⟩` from `hS R H'.F H'.E (host_cmData R H') T hT (πT : H'.E) hstar`. Establish `hk` using `R.m_add_three_le_k`. Establish `hm2` using `R.two_le_m`. Establish `hf : 0 < R.f` using `by unfold Ranks.f Ranks.n; positivity`. Establish `hfk : (0 : ℝ) < (R.f : ℝ) * R.k`.
+
+Establish `: 0 < R.k` using `by omega`. Check the signs of the components of the expression. Establish `hT0 : (0 : ℝ) < T` using `by exact_mod_cast hT.pos`. Establish `hTc' : πT - 1 ∈ Ideal.span {((H.QS * H.q * H.d * (g 0 * g 1) ^ 2 : ℕ) : 𝓞 H.E)}` using `by simpa using hTc`. Set `B : Pre` to `{ R := R host := H' sp := S Y_sigval := hSY auxiliaryFrame := hSA V_pos := hSV z_norm := hSz ccK_top := hcc BB_disj := hBB level_cond := by`.
+
+Introduce `x hx`. Establish `hx' : x ∈ insert (g 0) (insert (g 1) (insert p (insert p' ({T} : Finset ℕ))))` using `hlv ▸ hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx'`. Apply the tactic sequence `rcases hx' with h | h | h | h | h <;> rw [h]`. Use `exacts [⟨hg 0, hgc 0⟩, ⟨hg 1, hgc 1⟩, ⟨hp, hpc⟩, ⟨hp', hpc'⟩, ⟨hT, hTcond⟩]`.
+
+Use `Word := Bool`. Use `u₀ := false`. Use `hc := fun _ => P fun _ => false`. Use `hcW := fun u _ => P fun _ => u`. Use `hcW_base := rfl`.
+
+Use `hcW_v := fun u _ => funext fun i => by rw [hPv, hPv]`. Use `hcW_b := fun u _ => funext fun i => by rw [hPb, hPb]`. Use `hcW_e := fun u _ => funext fun i => by rw [hPe, hPe]`. Use `hcW_first := fun u _ h => by rw [hPu, hPu]; simp`. Use `hcW_last := fun u _ h => by`.
+
+Rewrite using `[hPu, hPu]`. Establish `: ¬ (R.k - 1 = 0)` using `by omega`. Simplify using `[this]`. Use `T := fun _ => T`. Use `T_level := fun _ => by show T ∈ lv`.
+
+Rewrite using `[hlv]`. Simplify using the standard rewrite rules. Use `T_norm := fun _ => ⟨πT, hTK, hTn, hTc'⟩`. Use `sp_T := hST`. Use `cOf := fun _ => 1`.
+
+Use `cOf_ne := fun _ => one_ne_zero`. Use `cOf_eq := fun _ => by simp`. Use `T_ne_pde := fun _ => ⟨(by omega : T ≠ p), (by omega : T ≠ p')⟩`. Use `duStar := fun _ => 1`. Use `duStar_pos := fun _ => one_pos`.
+
+Use `Dstar := (T : ℝ) ^ ((R.f : ℝ) * R.k) * 4`. Use `Dstar_pos := by positivity`. Use `GamP := 2`. Use `one_lt_gammaP := by norm_num`. Use `T_win := fun _ => by`.
+
+Rewrite using `[win_eq _ hT0 _ hfk]`. Use `⟨le_rfl, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ 1 / ((R.f : ℝ) * R.k) * T` using `by positivity`. Combine the linear relations using `}`. Use `⟨B, rfl, heq_of_eq hH, inferInstanceAs (Nontrivial Bool), ⟨?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `{ piG := π piG_K := hπK piG_norm := hπn piG_cong := hπc piT := fun _ => πT piT_K := fun _ => hTK piT_norm := fun _ => hTn piT_cong := fun _ => Ideal.mem_span_singleton.1 hTc' pde_split := ⟨(GlobalTheory.HostSplit.ncard_placesOver H'.E hp).symm.trans (hsplit _ hp hpc).1, (GlobalTh …`. Establish `hne : Nonempty (Tau R)` using `Fintype.card_pos_iff.1 (by rw [card_Tau H']; exact hf)`. Take `⟨τ⟩` from `hne`. Introduce `u u' h`. Establish `h1 : (P fun _ => u).u ⟨1, by omega⟩ = (P fun _ => u').u ⟨1, by omega⟩`.
+
+Establish `h0 : (P fun _ => u) = (P fun _ => u')` using `congrFun h τ`. Rewrite using `[h0]`. Rewrite `h1` using `[hPu, hPu]`. Establish `h2 : ¬ (1 = R.k - 1)` using `by omega`. Express the relevant statement in the definitionally equal form `u = u'`.
+
+Apply the tactic sequence `cases u <;> cases u' <;> simp [h2] at h1 ⊢ <;> linarith`. Use `a := a`. Use `g_big := fun i => by show 2 * R.f * R.k < g i - 1 fin_cases i`. Use `show _ < g 0 - 1`. Use linear arithmetic over natural numbers and integers.
+
+Use `show _ < g 1 - 1`. Use linear arithmetic over natural numbers and integers. Use `T_gt := fun _ => by show 4 * (a : ℝ) < T`. Conclude with `(by omega : 4 * a < T)` after adjusting the coercions. Use `a_gt := by show ((2 * R.f * R.N R.m + 1 : ℕ) : ℝ) < 4 * (a : ℝ)`.
+
+Conclude with `(by omega : 2 * R.f * R.N R.m + 1 < 4 * a)` after adjusting the coercions. Use `spread_le := fun u j hj _ => by`. Use `(hA u j hj).trans ?_` and prove the remaining obligations. Use `show (A : ℝ) ≤ 2 * (a : ℝ)`. Conclude with `(by omega : A ≤ 2 * a) }` after adjusting the coercions.
+-/
 theorem exists_preX_host (hP : NormPrimes) (hS : SpacesExist) (R : Ranks) (H₀ : Host R) :
     ∃ B : Pre, B.R = R ∧ HEq B.host.toHostAx H₀.toHostAx ∧ Nontrivial B.Word ∧ Nonempty (PreX B) := by
   obtain ⟨H, hcc, hH⟩ : ∃ H : Host R, H.ccK = ⊤ ∧ H.toHostAx = H₀.toHostAx := ⟨UpperTheory.Host.withTop H₀, rfl, rfl⟩
@@ -235,30 +309,59 @@ theorem exists_preX_host (hP : NormPrimes) (hS : SpacesExist) (R : Ranks) (H₀ 
         show (A : ℝ) ≤ 2 * (a : ℝ)
         exact_mod_cast (by omega : A ≤ 2 * a) }
 
+/- English proof (translation)
+Take `⟨H⟩` from `hR`. Take `⟨B, h1, -, h2⟩` from `exists_preX_host hP hS R H`. Conclude with `⟨B, h1, h2⟩`.
+-/
 theorem exists_preX (hP : NormPrimes) (hS : SpacesExist) (R : Ranks) (hR : Nonempty (Host R)) :
     ∃ B : Pre, B.R = R ∧ Nontrivial B.Word ∧ Nonempty (PreX B) := by
   obtain ⟨H⟩ := hR
   obtain ⟨B, h1, -, h2⟩ := exists_preX_host hP hS R H
   exact ⟨B, h1, h2⟩
 
+/- English proof (translation)
+Take `⟨B, -, h⟩` from `exists_preX hP hS Formalism.BasicNotions.Examples₂.R0 (UpperTheory.Host.nonempty_host_over_cyclic_two_power _ rfl le_rfl)`. Conclude with `⟨B, h⟩`.
+-/
 theorem exists_preX_some (hP : NormPrimes) (hS : SpacesExist) : ∃ B : Pre, Nontrivial B.Word ∧ Nonempty (PreX B) := by
   obtain ⟨B, -, h⟩ := exists_preX hP hS Formalism.BasicNotions.Examples₂.R0 (UpperTheory.Host.nonempty_host_over_cyclic_two_power _ rfl le_rfl)
   exact ⟨B, h⟩
 
+/- English proof (translation)
+The claim follows from `exists_preX hP spacesExist R hR`.
+-/
 theorem exists_preX_ranks (hP : NormPrimes) (R : Ranks) (hR : Nonempty (Host R)) :
     ∃ B : Pre, B.R = R ∧ Nontrivial B.Word ∧ Nonempty (PreX B) :=
   exists_preX hP spacesExist R hR
 
+/- English proof (translation)
+The claim follows from `exists_preX_some hP spacesExist`.
+-/
 theorem exists_preX_two_words (hP : NormPrimes) : ∃ B : Pre, Nontrivial B.Word ∧ Nonempty (PreX B) :=
   exists_preX_some hP spacesExist
 
+/- English proof (translation)
+Unfold `Base.tauLL Host.emb`. Rewrite using `[← RingHom.comp_assoc, B.embE_φ₀]`.
+-/
 theorem embLL_tauLL (B : Base) (τ : Tau B.R) : B.embLL.comp (B.tauLL τ) = B.host.emb τ := by
   unfold Base.tauLL Host.emb
   rw [← RingHom.comp_assoc, B.embE_φ₀]
 
+/- English proof (translation)
+Conclude with `X.a_gt.trans (X.T_gt u)` after adjusting the coercions.
+-/
 theorem T_big (B : Pre) (X : PreX B) (u : B.Word) : 2 * B.R.f * B.R.N B.R.m + 1 < B.T u := by
   exact_mod_cast X.a_gt.trans (X.T_gt u)
 
+/- English proof (translation)
+Introduce `h`. Establish `h0 : B.host.g i ∣ B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.trans ?_ (dvd_pow_self _ two_ne_zero)) _` and prove the remaining obligations. Use `fin_cases i`. Use `exacts [dvd_mul_right _ _, dvd_mul_left _ _]`.
+
+Take `⟨y, hy⟩` from `(Nat.cast_dvd_cast (α := 𝓞 B.host.E) h0).trans (X.piT_cong u)`. Set `yb : 𝓞 B.host.E` to `RingOfIntegers.mapRingHom (B.host.conj : B.host.E →+* B.host.E) y`. Establish `hyE : (X.piT u : B.host.E) = 1 + (B.host.g i : B.host.E) * (y : B.host.E)`. Establish `h1` using `congrArg (fun z : 𝓞 B.host.E => (z : B.host.E)) (sub_eq_iff_eq_add'.1 hy)`. Simplify using `using h1`.
+
+Establish `hn` using `X.piT_norm u`. Rewrite `hn` using `[hyE, h, map_add, map_one, map_mul, map_natCast]`. Establish `hyb : (yb : B.host.E) = B.host.conj (y : B.host.E)` using `rfl`. Establish `h2 : ((B.host.g i : ℕ) : 𝓞 B.host.E) ∣ ((1 : ℤ) : 𝓞 B.host.E)`. Use `⟨1 - y - yb - (B.host.g i : 𝓞 B.host.E) * y * yb, RingOfIntegers.ext ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite `hn` using `[← hyb]`. Use `show (1 : B.host.E) = (B.host.g i : B.host.E) * (1 - (y : B.host.E) - (yb : B.host.E) - (B.host.g i : B.host.E) * (y : B.host.E) * (yb : B.host.E))`. Take the linear combination `hn`. Establish `h3` using `Formalism.L2.Col.Primes.natCast_dvd_intCast h2`.
+
+Establish `h4 : B.host.g i ∣ 1` using `by exact_mod_cast h3`. Conclude with `(B.host.g_prime i).one_lt.ne' (Nat.dvd_one.1 h4)`.
+-/
 theorem T_ne_g (B : Pre) (X : PreX B) (u : B.Word) (i : Fin 2) : B.T u ≠ B.host.g i := by
   intro h
   have h0 : B.host.g i ∣ B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2 := by
@@ -283,16 +386,30 @@ theorem T_ne_g (B : Pre) (X : PreX B) (u : B.Word) (i : Fin 2) : B.T u ≠ B.hos
   have h4 : B.host.g i ∣ 1 := by exact_mod_cast h3
   exact (B.host.g_prime i).one_lt.ne' (Nat.dvd_one.1 h4)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.ImaginaryQuadraticNorm.exists_norm_prime`.
+-/
 theorem normPrimes : NormPrimes := GlobalTheory.Mem.ImaginaryQuadraticNorm.exists_norm_prime
 
+/- English proof (translation)
+The claim follows from `exists_preX_ranks normPrimes R hR`.
+-/
 theorem exists_preX_all_ranks (R : Ranks) (hR : Nonempty (Host R)) :
     ∃ B : Pre, B.R = R ∧ Nontrivial B.Word ∧ Nonempty (PreX B) :=
   exists_preX_ranks normPrimes R hR
 
+/- English proof (translation)
+The claim follows from `exists_preX_all_ranks R (UpperTheory.Host.nonempty_host_over_cyclic_two_power R hφ he)`.
+-/
 theorem exists_preData_dyadicFrame (R : Ranks) (hφ : R.toFrame = Formalism.HC.cyclicFrame R.e) (he : 2 ≤ R.e) :
     ∃ B : Pre, B.R = R ∧ Nontrivial B.Word ∧ Nonempty (PreX B) :=
   exists_preX_all_ranks R (UpperTheory.Host.nonempty_host_over_cyclic_two_power R hφ he)
 
+/- English proof (translation)
+Introduce `τ τ' h`. Establish `h1 : B.host.sigmaOf (τ : B.R.GG) = B.host.sigmaOf (τ' : B.R.GG)`. Use extensionality with `x`. Establish `h2` using `RingHom.congr_fun h x`. Establish `h3` using `B.embE.injective h2`.
+
+Conclude with `h3`. Conclude with `Subtype.ext ((B.host.gal).symm.injective h1)`.
+-/
 theorem tauLL_injective (B : Base) : Function.Injective B.tauLL := by
   intro τ τ' h
   have h1 : B.host.sigmaOf (τ : B.R.GG) = B.host.sigmaOf (τ' : B.R.GG) := by
@@ -302,6 +419,9 @@ theorem tauLL_injective (B : Base) : Function.Injective B.tauLL := by
     exact h3
   exact Subtype.ext ((B.host.gal).symm.injective h1)
 
+/- English proof (translation)
+Introduce `h`. Establish `hn` using `X.piG_norm i`. Rewrite `hn` using `[h, map_one, one_mul]`. Establish `: B.host.g i = 1` using `by exact_mod_cast hn.symm`. Conclude with `(B.host.g_prime i).one_lt.ne' this`.
+-/
 theorem piG_ne_one (B : Pre) (X : PreX B) (i : Fin 2) : (X.piG i : B.host.E) ≠ 1 := by
   intro h
   have hn := X.piG_norm i
@@ -309,6 +429,9 @@ theorem piG_ne_one (B : Pre) (X : PreX B) (i : Fin 2) : (X.piG i : B.host.E) ≠
   have : B.host.g i = 1 := by exact_mod_cast hn.symm
   exact (B.host.g_prime i).one_lt.ne' this
 
+/- English proof (translation)
+Use `⟨?_, fun i => by have := X.g_big i; omega⟩` and prove the remaining obligations. Establish `h1` using `X.a_gt`. Establish `h2 : (0 : ℝ) ≤ ((2 * B.R.f * B.R.N B.R.m + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sizes_nondeg (B : Pre) (X : PreX B) : 0 < X.a ∧ ∀ i, 2 * B.R.f * B.R.k + 1 < B.host.g i := by
   refine ⟨?_, fun i => by have := X.g_big i; omega⟩
   have h1 := X.a_gt

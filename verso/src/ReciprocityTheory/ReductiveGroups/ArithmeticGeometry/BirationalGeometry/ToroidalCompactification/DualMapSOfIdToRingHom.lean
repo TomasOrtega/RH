@@ -17,16 +17,32 @@ variable {S : Type} [CommRing S] (s : S)
 
 abbrev dAway : DualNumber S →+* DualNumber (Localization.Away s) := dualMapR (algebraMap S (Localization.Away s))
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem eq_inl_add_inr {R : Type} [CommRing R] (x : DualNumber R) :
     x = TrivSqZeroExt.inl x.fst + TrivSqZeroExt.inl x.snd * TrivSqZeroExt.inr 1 := by
   ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [dAway, dualMapR]`.
+-/
 theorem dAway_eps : dAway s (TrivSqZeroExt.inr 1) = TrivSqZeroExt.inr 1 := by
   ext <;> simp [dAway, dualMapR]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [dAway, dualMapR]`.
+-/
 theorem dAway_inl (a : S) : dAway s (TrivSqZeroExt.inl a) = TrivSqZeroExt.inl (algebraMap S _ a) := by
   ext <;> simp [dAway, dualMapR]
 
+/- English proof (translation)
+Establish `hinl : χ₁.comp (TrivSqZeroExt.inlHom _ _) = χ₂.comp (TrivSqZeroExt.inlHom _ _)`. Apply `IsLocalization.ringHom_ext (Submonoid.powers s)` to reduce the goal to its premises. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1` using `RingHom.congr_fun h (TrivSqZeroExt.inl a)`. Simplify using `only [RingHom.comp_apply, dAway_inl] at h1`.
+
+Simplify using `using h1`. Establish `heps : χ₁ (TrivSqZeroExt.inr 1) = χ₂ (TrivSqZeroExt.inr 1)`. Establish `h1` using `RingHom.congr_fun h (TrivSqZeroExt.inr 1)`. Simplify using `only [RingHom.comp_apply, dAway_eps] at h1`. Conclude with `h1`.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `h1` using `RingHom.congr_fun hinl x.fst`. Establish `h2` using `RingHom.congr_fun hinl x.snd`. Simplify using `only [RingHom.comp_apply, TrivSqZeroExt.inlHom_apply] at h1 h2`. Rewrite using `[eq_inl_add_inr x, map_add, map_add, map_mul, map_mul, heps, h1, h2]`.
+-/
 theorem dAway_ext {T : Type} [CommRing T] {χ₁ χ₂ : DualNumber (Localization.Away s) →+* T}
     (h : χ₁.comp (dAway s) = χ₂.comp (dAway s)) : χ₁ = χ₂ := by
   have hinl : χ₁.comp (TrivSqZeroExt.inlHom _ _) = χ₂.comp (TrivSqZeroExt.inlHom _ _) := by
@@ -45,6 +61,15 @@ theorem dAway_ext {T : Type} [CommRing T] {χ₁ χ₂ : DualNumber (Localizatio
   simp only [RingHom.comp_apply, TrivSqZeroExt.inlHom_apply] at h1 h2
   rw [eq_inl_add_inr x, map_add, map_add, map_mul, map_mul, heps, h1, h2]
 
+/- English proof (translation)
+Set `g0 : S →+* T` to `gg.comp (TrivSqZeroExt.inlHom S S)`. Establish `hu0 : IsUnit (g0 s)` using `hu`. Set `φ : Localization.Away s →+* T` to `IsLocalization.Away.lift s hu0`. Establish `hφ : ∀ a : S, φ (algebraMap S _ a) = gg (TrivSqZeroExt.inl a)` using `fun a => IsLocalization.lift_eq _ a`. Set `e` to `gg (TrivSqZeroExt.inr 1)`.
+
+Establish `he : e * e = 0`. Simplify using `only [e, ← map_mul, TrivSqZeroExt.inr_mul_inr, map_zero]`. Use `⟨{ toFun := fun x => φ x.fst + φ x.snd * e map_one' := by simp map_mul' := fun x y => by` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, map_add, map_mul]`. Take the linear combination `(-(φ x.snd * φ y.snd)) * he`.
+
+Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := fun x y => by simp only [TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, map_add]; ring }, ?_⟩`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `conv_rhs => rw [eq_inl_add_inr x]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, dAway, dualMapR, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, map_zero, add_zero, zero_add, map_add, map_mul, hφ …`.
+
+Simplify using `only [zero_mul, add_zero, e]`.
+-/
 theorem dAway_lift {T : Type} [CommRing T] (gg : DualNumber S →+* T) (hu : IsUnit (gg (TrivSqZeroExt.inl s))) :
     ∃ χ : DualNumber (Localization.Away s) →+* T, χ.comp (dAway s) = gg := by
   let g0 : S →+* T := gg.comp (TrivSqZeroExt.inlHom S S)
@@ -78,6 +103,9 @@ variable {S : Type} [CommRing S] (s : S)
 
 abbrev Ld : Type := Localization.Away (TrivSqZeroExt.inl s : DualNumber S)
 
+/- English proof (translation)
+Rewrite using `[dAway_inl]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit s).map (TrivSqZeroExt.inlHom _ _)`.
+-/
 theorem isUnit_dAway : IsUnit (dAway s (TrivSqZeroExt.inl s)) := by
   rw [dAway_inl]
   exact (IsLocalization.Away.algebraMap_isUnit s).map (TrivSqZeroExt.inlHom _ _)
@@ -85,19 +113,31 @@ theorem isUnit_dAway : IsUnit (dAway s (TrivSqZeroExt.inl s)) := by
 def toL : DualNumber (Localization.Away s) →+* Ld s :=
   (dAway_lift s (algebraMap (DualNumber S) (Ld s)) (IsLocalization.Away.algebraMap_isUnit _)).choose
 
+/- English proof (translation)
+The claim follows from `(dAway_lift s (algebraMap (DualNumber S) (Ld s)) (IsLocalization.Away.algebraMap_isUnit _)).choose_spec`.
+-/
 theorem toL_comp : (toL s).comp (dAway s) = algebraMap (DualNumber S) (Ld s) :=
   (dAway_lift s (algebraMap (DualNumber S) (Ld s)) (IsLocalization.Away.algebraMap_isUnit _)).choose_spec
 
 def fromL : Ld s →+* DualNumber (Localization.Away s) :=
   IsLocalization.Away.lift (TrivSqZeroExt.inl s) (isUnit_dAway s)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_comp _`.
+-/
 theorem fromL_comp : (fromL s).comp (algebraMap (DualNumber S) (Ld s)) = dAway s :=
   IsLocalization.lift_comp _
 
+/- English proof (translation)
+Apply `dAway_ext s` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, toL_comp, fromL_comp, RingHom.id_comp]`.
+-/
 theorem fromL_toL : (fromL s).comp (toL s) = RingHom.id _ := by
   apply dAway_ext s
   rw [RingHom.comp_assoc, toL_comp, fromL_comp, RingHom.id_comp]
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers (TrivSqZeroExt.inl s : DualNumber S))` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, fromL_comp, toL_comp, RingHom.id_comp]`.
+-/
 theorem toL_fromL : (toL s).comp (fromL s) = RingHom.id _ := by
   apply IsLocalization.ringHom_ext (Submonoid.powers (TrivSqZeroExt.inl s : DualNumber S))
   rw [RingHom.comp_assoc, fromL_comp, toL_comp, RingHom.id_comp]
@@ -108,11 +148,41 @@ section Glue
 
 variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMapS_ofId_toRingHom (s : S) :
     (dualMapS (Algebra.ofId S (Localization.Away s)) : DualNumber S →+* DualNumber (Localization.Away s)) = dAway s := rfl
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hs' : Ideal.span (Set.range (fun k => (TrivSqZeroExt.inl (s k) : DualNumber S))) = ⊤`. Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom S S)) hs` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`. Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of (DualNumber S)) _ hs').openCover`.
+
+Set `f : ∀ k, 𝒰.X k ⟶ G.left` to `fun k => Spec.map (CommRingCat.ofHom (toL (s k))) ≫ (w k).left`. Establish `hf : ∀ k l, pullback.fst (𝒰.f k) (𝒰.f l) ≫ f k = pullback.snd (𝒰.f k) (𝒰.f l) ≫ f l`. Use `fun (k : Fin n) (l : Fin n) => Scheme.Cover.hom_ext (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.openCover _ _ fun (i : (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.I₀) => ?_` and prove the remaining obligations. Set `a : Spec ((pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i) ⟶ pullback (𝒰.f k) (𝒰.f l)` to `(pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.f i`. Set `A : CommRingCat.of (Ld (s k)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.fst (𝒰.f k) (𝒰.f l))`.
+
+Set `B : CommRingCat.of (Ld (s l)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.snd (𝒰.f k) (𝒰.f l))`. Establish `ea : Spec.map A = a ≫ pullback.fst (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `eb : Spec.map B = a ≫ pullback.snd (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `e1 : Spec.map (CommRingCat.ofHom (algebraMap (DualNumber S) (Ld (s k))) ≫ A) = Spec.map (CommRingCat.ofHom (algebraMap (DualNumber S) (Ld (s l))) ≫ B)`. Rewrite using `[Spec.map_comp, Spec.map_comp, ea, eb, Category.assoc, Category.assoc]`.
+
+Conclude with `congrArg (a ≫ ·) pullback.condition`. Establish `key : A.hom.comp (algebraMap (DualNumber S) (Ld (s k))) = B.hom.comp (algebraMap (DualNumber S) (Ld (s l)))` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Establish `hkey : (A.hom.comp (toL (s k))).comp (dAway (s k)) = (B.hom.comp (toL (s l))).comp (dAway (s l))`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, toL_comp, toL_comp]`. Conclude with `key`.
+
+Establish `h` using `hc k l _ (A.hom.comp (toL (s k))) (B.hom.comp (toL (s l))) hkey`. Use `show a ≫ pullback.fst (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (s k))) ≫ (w k).left = a ≫ pullback.snd (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (toL (s l))) ≫ (w l).left`. Rewrite using `[← Category.assoc a, ← Category.assoc a, ← ea, ← eb, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `h`. Set `g` to `𝒰.glueMorphisms f hf`.
+
+Establish `hι : ∀ k : Fin n, 𝒰.f k ≫ g = f k` using `fun k => Scheme.Cover.ι_glueMorphisms 𝒰 f hf k`. Establish `hg : ∀ k : Fin n, Spec.map (CommRingCat.ofHom (dAway (s k))) ≫ g = (w k).left`. Introduce `k`. Establish `e : Spec.map (CommRingCat.ofHom (dAway (s k))) = Spec.map (CommRingCat.ofHom (fromL (s k))) ≫ 𝒰.f k` using `by show _ = _ ≫ Spec.map (CommRingCat.ofHom (algebraMap (DualNumber S) (Ld (s k))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, fromL_comp]`.
+
+Rewrite using `[e, Category.assoc, hι k]`. Use `show Spec.map (CommRingCat.ofHom (fromL (s k))) ≫ Spec.map (CommRingCat.ofHom (toL (s k))) ≫ (w k).left = _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, fromL_toL, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Establish `hover : g ≫ G.hom = (sp (R₀` using `S) (DualNumber S)).hom := by`. Use `Scheme.Cover.hom_ext 𝒰 _ _ fun (k : Fin n) => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hι k]`. Use `show (Spec.map (CommRingCat.ofHom (toL (s k))) ≫ (w k).left) ≫ G.hom = Spec.map (CommRingCat.ofHom (algebraMap (DualNumber S) (Ld (s k)))) ≫ Spec.map (CommRingCat.ofHom (algebraMap S (DualNumber S)))`. Rewrite using `[Category.assoc, Over.w (w k)]`. Use `show Spec.map (CommRingCat.ofHom (toL (s k))) ≫ Spec.map (CommRingCat.ofHom (algebraMap S (DualNumber (Localization.Away (s k))))) = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Rewrite using `[← toL_comp, RingHom.comp_assoc]`. Use `congr 1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl', dAway_inl]`.
+
+Set `v : sp (R₀` to `S) (DualNumber S) ⟶ G := Over.homMk g hover`. Establish `hres : ∀ k, spMap (dualMapS (Algebra.ofId S (Localization.Away (s k)))) ≫ v = w k` using `fun k => Over.OverMorphism.ext (hg k)`. Use `⟨v, ?_, hres⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Set `𝒱` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of S) _ hs).openCover`.
+
+Use `Scheme.Cover.hom_ext 𝒱 _ _ fun (k : Fin n) => ?_` and prove the remaining obligations. Establish `e1 : Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away (s k)))) ≫ (spMap (TrivSqZeroExt.fstHom S S S)).left = (spMap (TrivSqZeroExt.fstHom S (Localization.Away (s k)) (Localization.Away (s k)))).left ≫ (spMap (dualMapS (Algebra.ofId S (Localization.Away (s k))))).left`. Rewrite using `[spMap_left, spMap_left, spMap_left, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun x => (dualMapS_fst (Algebra.ofId S (Localization.Away (s k))) x).symm`.
+
+Establish `h1` using `congrArg (fun q => Over.Hom.left q) (hw k)`. Simplify using `only [Over.comp_left] at h1`. Use `show Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away (s k)))) ≫ ((spMap (TrivSqZeroExt.fstHom S S S)).left ≫ v.left) = Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away (s k)))) ≫ (1 : sp (R₀ := S) S ⟶ G).left`. Rewrite using `[← Category.assoc, e1, Category.assoc]`. Establish `h2 : (spMap (dualMapS (Algebra.ofId S (Localization.Away (s k))))).left ≫ v.left = (w k).left` using `congrArg (fun q => Over.Hom.left q) (hres k)`.
+
+Rewrite using `[h2, h1, one_left', one_left']`. Use `show (Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away (s k))))) ≫ _ = Spec.map (CommRingCat.ofHom (algebraMap S (Localization.Away (s k)))) ≫ (Spec.map (CommRingCat.ofHom (algebraMap S S)) ≫ _)`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Algebra.algebraMap_self, RingHom.comp_id]`.
+-/
 theorem glue_tan {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤)
     (w : ∀ k, sp (R₀ := S) (DualNumber (Localization.Away (s k))) ⟶ G) (hw : ∀ k, TanS (w k))
     (hc : ∀ k l (T : CommRingCat.{0}) (α : DualNumber (Localization.Away (s k)) →+* T)

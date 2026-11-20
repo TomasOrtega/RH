@@ -17,6 +17,21 @@ namespace GlobalTheory.ChainOnto
 
 open Classical in
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s h l e hl he m`. Establish `hH` using `h.isHeis`. Establish `key : ∀ (f : M →ₗ[ℂ] ℂ), (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, f (ρ u m) = f m) → ∀ x : Matrix (Fin n') (Fin n) L, f (ρ x s) = if x ∈ intMat L (Fin n') (Fin n) then f s else 0`. Introduce `f hf x`. Use `split_ifs with hx`.
+
+Rewrite using `[h.fixes x hx]`. Establish `: ∃ i j, x i j ∉ Formalism.UG.intL L`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hx hc`.
+
+Take `⟨i, j, hij⟩` from `this`. Take `⟨u, hu, hne⟩` from `GlobalTheory.SphTheta.exists_pairing_single_ne h.1.unr h.v_two h.1.delta.1 h.1.psi_ne x hij`. Establish `hu' : Matrix.single i.rev j.rev u ∈ intMat L (Fin n') (Fin n)`. Introduce `i' j'`. Rewrite using `[Matrix.single_apply]`.
+
+Use `split_ifs`. Use `exacts [hu, zero_mem _]`. Establish `hc` using `hH.comm (Matrix.single i.rev j.rev u) x s`. Rewrite `hc` using `[h.fixes _ hu']`. Establish `h1` using `hf _ hu' (ρ x s)`.
+
+Rewrite `h1` using `[hc, map_smul, smul_eq_mul, hH.swap]`. Establish `hz : (GlobalTheory.SphTheta.pairing σ δ ψ x (Matrix.single i.rev j.rev u))⁻¹ ≠ 1`. Introduce `h'`. Conclude with `hne (inv_eq_one.1 h')`. Establish `: ((GlobalTheory.SphTheta.pairing σ δ ψ x (Matrix.single i.rev j.rev u))⁻¹ - 1) * f (ρ x s) = 0`.
+
+Rewrite using `[sub_mul, one_mul, h1, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hz)`. Establish `hall : (l s) • e = (e s) • l`. Use `LinearMap.ext_on_range h.2.2.2 fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, key e he x, key l hl x]`.
+
+Apply the tactic sequence `split_ifs <;> ring`. Use `LinearMap.congr_fun hall m` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at this`. Rewrite using `[mul_comm, this, mul_comm]`.
+-/
 theorem heisInv_forms_proportional : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → ∀ l e : M →ₗ[ℂ] ℂ, (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, l (ρ u m) = l m) → (∀ u ∈ intMat L (Fin n') (Fin n), ∀ m, e (ρ u m) = e m) → ∀ m, e m * l s = l m * e s := by
   intro L _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s h l e hl he m
   have hH := h.isHeis

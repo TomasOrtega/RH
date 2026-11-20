@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion | exact GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion | (intros; apply GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_points_abelianVariety_of_no_torsion : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A → ∀ n : ℕ, 2 ≤ n → (n : k) ≠ 0 → (∀ x : 𝟙_ (Over (Sp k)) ⟶ A, x ^ n = 1 → x = 1) → Finite (𝟙_ (Over (Sp k)) ⟶ A) := by
   first | exact @GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion | exact GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion | (intros; apply GlobalTheory.AbelianNoTorsion.finite_points_of_no_torsion <;> assumption)

@@ -10,11 +10,17 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Unfold `casimirConjugation`. Simplify using `[mul_assoc]`.
+-/
 theorem casimirConjugation_apply (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) (X : Module.End K V) :
     casimirConjugation E c s X = ∑ i ∈ s, E c i * X * E i c := by
   unfold casimirConjugation
   simp [mul_assoc]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [casimirPower]`. Consider the case `unfold casimirPower done`.
+-/
 theorem casimirPowerW_zero (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) : casimirPower E c s 0 = 1 := by
   first
   | rfl
@@ -22,6 +28,9 @@ theorem casimirPowerW_zero (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) : 
   | unfold casimirPower
     done
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [casimirPower, casimirPower, pow_succ', Module.End.mul_apply, casimirConjugation_apply]`. Consider the case `unfold casimirPower done`.
+-/
 theorem casimirPowerW_succ (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) (q : ℕ) :
     casimirPower E c s (q + 1) = ∑ i ∈ s, E c i * casimirPower E c s q * E i c := by
   first
@@ -29,16 +38,31 @@ theorem casimirPowerW_succ (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) (q
   | unfold casimirPower
     done
 
+/- English proof (translation)
+Rewrite using `[casimirPowerW_succ]`. Simplify using `[LinearMap.sum_apply, Module.End.mul_apply]`.
+-/
 theorem casimirPowerW_succ_apply (E : GLOps n K V) (c : Fin n) (s : Finset (Fin n)) (q : ℕ) (y : V) :
     casimirPower E c s (q + 1) y = ∑ i ∈ s, E c i (casimirPower E c s q (E i c y)) := by
   rw [casimirPowerW_succ]
   simp [LinearMap.sum_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Use `noncomm_ring`.
+-/
 theorem commutator_triple_product_leibniz {R : Type*} [Ring R] (A F W G : R) :
     A * (F * W * G) - (F * W * G) * A =
       (A * F - F * A) * W * G + F * (A * W - W * A) * G + F * W * (A * G - G * A) := by
   noncomm_ring
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => rw [casimirPowerW_zero, one_mul, mul_one]`. Consider the case `succ q ih`. Rewrite using `[casimirPowerW_succ, ← sub_eq_zero, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Establish `hbc : b ≠ c` using `ne_of_lt hb`.
+
+Establish `hca : c ≠ a` using `ne_of_gt ha`. Establish `hA : ∀ i, E a b * E c i - E c i * E a b = -(if i = a then E c b else 0)`. Introduce `i`. Rewrite using `[hE.1 a b c i, if_neg hbc, zero_sub]`. Establish `hG : ∀ i, E a b * E i c - E i c * E a b = (if b = i then E a c else 0)`.
+
+Introduce `i`. Rewrite using `[hE.1 a b i c, if_neg hca, sub_zero]`. Establish `hW : E a b * casimirPower E c (Iio c) q - casimirPower E c (Iio c) q * E a b = 0`. Rewrite using `[ih, sub_self]`. Repeatedly rewrite using `[commutator_triple_product_leibniz, hA, hG, hW, mul_zero, zero_mul, add_zero]`.
+
+Rewrite using `[Finset.sum_add_distrib]`. Simplify using `[Finset.mem_Iio, ha, hb, neg_mul, ite_mul, mul_ite]`.
+-/
 theorem casimirPowerW_comm_lower_block {E : GLOps n K V} (hE : IsGLRep E) (c a b : Fin n) (ha : a < c) (hb : b < c) (q : ℕ) :
     E a b * casimirPower E c (Iio c) q = casimirPower E c (Iio c) q * E a b := by
   induction q with
@@ -59,6 +83,13 @@ theorem casimirPowerW_comm_lower_block {E : GLOps n K V} (hE : IsGLRep E) (c a b
     rw [Finset.sum_add_distrib]
     simp [Finset.mem_Iio, ha, hb, neg_mul, ite_mul, mul_ite]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => rw [casimirPowerW_zero, one_mul, mul_one]`. Consider the case `succ q ih`. Rewrite using `[casimirPowerW_succ, ← sub_eq_zero, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `i hi`. Establish `hic : i ≠ c` using `ne_of_lt (Finset.mem_Iio.mp hi)`. Establish `hW : E c c * casimirPower E c (Iio c) q - casimirPower E c (Iio c) q * E c c = 0`. Rewrite using `[ih, sub_self]`. Rewrite using `[commutator_triple_product_leibniz, hW, hE.1 c c c i, hE.1 c c i c]`.
+
+Simplify using `[hic, Ne.symm hic]`.
+-/
 theorem casimirPowerW_comm_diagonal {E : GLOps n K V} (hE : IsGLRep E) (c : Fin n) (q : ℕ) :
     E c c * casimirPower E c (Iio c) q = casimirPower E c (Iio c) q * E c c := by
   induction q with
@@ -73,6 +104,13 @@ theorem casimirPowerW_comm_diagonal {E : GLOps n K V} (hE : IsGLRep E) (c : Fin 
     rw [commutator_triple_product_leibniz, hW, hE.1 c c c i, hE.1 c c i c]
     simp [hic, Ne.symm hic]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Introduce `ν y hy`. Simplify `hy` using `[casimirPowerW_zero]`. Consider the case `succ q ih`.
+
+Introduce `ν y hy`. Rewrite using `[casimirPowerW_succ_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h3` using `hs c i _ _ (ih _ _ (hs i c ν y hy))`. Establish `e : ν + rootW i c + rootW c i = ν`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [rootW, Pi.add_apply, Pi.sub_apply]`. Normalize the expressions using the abelian group laws. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem casimirPowerW_preserves_weight {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (c : Fin n) (s : Finset (Fin n)) (q : ℕ) :
     ∀ (ν : Fin n → ℤ) (y : V), y ∈ weightSp E ν → casimirPower E c s q y ∈ weightSp E ν := by
   induction q with
@@ -94,6 +132,11 @@ def ProjectorRecursionProperty (E : GLOps n K V) (c : Fin n) (s : ℕ) (y : V) :
   E c c y = -(s : K) • y ∧
     ∀ j, j < c → ∑ i ∈ Iio c, E j i (E i c y) = ((s : K) + (c.val : K)) • E j c y
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (hE.1 a b c d) y`. Apply the tactic sequence `have e1 : ((if b = c then E a d else 0) : Module.End K V) y = if b = c then E a d y else 0 := by split_ifs <;> rfl`. Apply the tactic sequence `have e2 : ((if d = a then E c b else 0) : Module.End K V) y = if d = a then E c b y else 0 := by split_ifs <;> rfl`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, e1, e2] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gl_commutation_relation_apply {E : GLOps n K V} (hE : IsGLRep E) (a b c d : Fin n) (y : V) :
     E a b (E c d y) = E c d (E a b y) + (if b = c then E a d y else 0) - (if d = a then E c b y else 0) := by
   have h := LinearMap.congr_fun (hE.1 a b c d) y
@@ -106,6 +149,13 @@ theorem gl_commutation_relation_apply {E : GLOps n K V} (hE : IsGLRep E) (a b c 
   rw [h]
   abel
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hu0`. Unfold `weightSp at h`. Establish `h2` using `(Submodule.mem_iInf _).mp h c`. Rewrite `h2` using `[LinearMap.mem_ker]`.
+
+Simplify `h2` using `[sub_eq_zero]`. Introduce `j hj`. Establish `h : ∀ i ∈ Iio c, E j i (E i c u) = E j c u`. Introduce `i hi`. Rewrite using `[gl_commutation_relation_apply hE j i i c u, hu j i hj (Finset.mem_Iio.mp hi), map_zero, if_pos rfl, if_neg (ne_of_gt hj), zero_add, sub_zero]`.
+
+Rewrite using `[Finset.sum_congr rfl h, Finset.sum_const, Fin.card_Iio, Nat.cast_zero, zero_add, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem projector_recursion_base {E : GLOps n K V} (hE : IsGLRep E) (c : Fin n) (u : V) (hu0 : u ∈ weightSp E 0)
     (hu : ∀ a b : Fin n, a < c → b < c → E a b u = 0) : ProjectorRecursionProperty E c 0 u := by
   refine ⟨?_, ?_⟩
@@ -122,10 +172,22 @@ theorem projector_recursion_base {E : GLOps n K V} (hE : IsGLRep E) (c : Fin n) 
     rw [Finset.sum_congr rfl h, Finset.sum_const, Fin.card_Iio, Nat.cast_zero, zero_add,
       Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Rewrite using `[gl_commutation_relation_apply hE i c j c y, if_neg (ne_of_gt hj), if_neg (ne_of_gt hi), add_zero, sub_zero]`.
+-/
 theorem raising_to_column_commute {E : GLOps n K V} (hE : IsGLRep E) (c i j : Fin n) (hi : i < c) (hj : j < c) (y : V) :
     E i c (E j c y) = E j c (E i c y) := by
   rw [gl_commutation_relation_apply hE i c j c y, if_neg (ne_of_gt hj), if_neg (ne_of_gt hi), add_zero, sub_zero]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hy`. Establish `hlc : l ≠ c` using `ne_of_lt hl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gl_commutation_relation_apply hE c c l c y, if_neg (Ne.symm hlc), if_pos rfl, h1, map_smul, add_zero]`. Use `push_cast`.
+
+Rewrite using `[neg_add, add_smul, neg_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Introduce `j hj`. Establish `hcj : c ≠ j` using `ne_of_gt hj`. Establish `key : ∀ i ∈ Iio c, E j i (E i c (E l c y)) = E l c (E j i (E i c y)) + (if i = l then E j c (E i c y) else 0)`.
+
+Introduce `i hi`. Rewrite using `[raising_to_column_commute hE c i l (Finset.mem_Iio.mp hi) hl y, gl_commutation_relation_apply hE j i l c (E i c y), if_neg hcj, sub_zero]`. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_add_distrib, ← map_sum, h2 j hj, map_smul, Finset.sum_ite_eq', if_pos (Finset.mem_Iio.mpr hl), raising_to_column_commute hE c l j hl hj y]`. Use `push_cast`. Simplify using `only [add_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem projector_recursion_lower {E : GLOps n K V} (hE : IsGLRep E) (c l : Fin n) (hl : l < c) (s : ℕ) (y : V)
     (hy : ProjectorRecursionProperty E c s y) : ProjectorRecursionProperty E c (s + 1) (E l c y) := by
   obtain ⟨h1, h2⟩ := hy
@@ -148,14 +210,31 @@ theorem projector_recursion_lower {E : GLOps n K V} (hE : IsGLRep E) (c l : Fin 
     simp only [add_smul, one_smul]
     abel
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, casimirPowerW_comm_lower_block hE c a b ha hb q, Module.End.mul_apply]`.
+-/
 theorem casimirPowerW_comm_lower_apply {E : GLOps n K V} (hE : IsGLRep E) (c a b : Fin n) (ha : a < c) (hb : b < c) (q : ℕ)
     (y : V) : E a b (casimirPower E c (Iio c) q y) = casimirPower E c (Iio c) q (E a b y) := by
   rw [← Module.End.mul_apply, casimirPowerW_comm_lower_block hE c a b ha hb q, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, casimirPowerW_comm_diagonal hE c q, Module.End.mul_apply]`.
+-/
 theorem casimirPowerW_comm_diagonal_apply {E : GLOps n K V} (hE : IsGLRep E) (c : Fin n) (q : ℕ) (y : V) :
     E c c (casimirPower E c (Iio c) q y) = casimirPower E c (Iio c) q (E c c y) := by
   rw [← Module.End.mul_apply, casimirPowerW_comm_diagonal hE c q, Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Introduce `s y _`. Simplify using `[casimirPowerW_zero]`. Consider the case `succ q ih`.
+
+Introduce `s y hy`. Establish `hPj : ProjectorRecursionProperty E c (s + 1) (E j c y)` using `projector_recursion_lower hE c j hj s y hy`. Establish `hterm : ∀ i ∈ Iio c, E j c (E c i (casimirPower E c (Iio c) q (E i c y))) = E c i (casimirPower E c (Iio c) q (E i c (E j c y))) + ((q : K) * (2 * ((s + 1 : ℕ) : K) + (c.val : K) + (q : K))) • E c i (casimirPower E c (Iio c) (q - 1) (E i c (E j c y))) + casimirPower E c (Iio c) q …`. Introduce `i hi`. Establish `hi' : i < c` using `Finset.mem_Iio.mp hi`.
+
+Rewrite using `[gl_commutation_relation_apply hE j c c i, if_pos rfl, ih (s + 1) (E i c y) (projector_recursion_lower hE c i hi' s y hy), ← raising_to_column_commute hE c i j hi' hj y, map_add, map_smul, casimirPowerW_comm_lower_apply hE c j i hj hi' q]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[casimirPowerW_comm_diagonal_apply hE c q]`. Both sides reduce to the same expression.
+
+Establish `hW : ((q : K) * (2 * ((s + 1 : ℕ) : K) + (c.val : K) + (q : K))) • ∑ i ∈ Iio c, E c i (casimirPower E c (Iio c) (q - 1) (E i c (E j c y))) = ((q : K) * (2 * ((s + 1 : ℕ) : K) + (c.val : K) + (q : K))) • casimirPower E c (Iio c) q (E j c y)`. Break down `q with _ | q'` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Nat.add_sub_cancel, ← casimirPowerW_succ_apply]`. Establish `key : (q : K) * (2 * ((s + 1 : ℕ) : K) + (c.val : K) + (q : K)) + ((s : K) + (c.val : K)) - -((s + 1 : ℕ) : K) = ((q + 1 : ℕ) : K) * (2 * (s : K) + (c.val : K) + ((q + 1 : ℕ) : K))`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[casimirPowerW_succ_apply E c (Iio c) q y, map_sum (E j c), Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.smul_sum, hW, ← map_sum (casimirPower E c (Iio c) q), hy.2 j hj, map_smul (casimirPower E c (Iio c) q), Finset. …`. Simplify using `only [add_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem raising_casimirPower_commutator {E : GLOps n K V} (hE : IsGLRep E) (c j : Fin n) (hj : j < c) (q : ℕ) :
     ∀ (s : ℕ) (y : V), ProjectorRecursionProperty E c s y →
       E j c (casimirPower E c (Iio c) q y) = casimirPower E c (Iio c) q (E j c y) +
@@ -199,9 +278,23 @@ theorem raising_casimirPower_commutator {E : GLOps n K V} (hE : IsGLRep E) (c j 
     simp only [add_smul, sub_smul]
     abel
 
+/- English proof (translation)
+Simplify using `[rootW, Finset.sum_sub_distrib]`.
+-/
 theorem rootWeight_entries_sum_zero (a b : Fin n) : ∑ x, rootW a b x = 0 := by
   simp [rootW, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Introduce `s ν z hz hsum hc hLq`. Establish `hbot : weightSp E ν = ⊥`. Assume the negation of the conclusion as `hne`.
+
+Establish `h` using `hL ν hsum hne c`. Rewrite `h` using `[hc, abs_neg, Nat.abs_cast]`. Use linear arithmetic over natural numbers and integers. Rewrite `hz` using `[hbot, Submodule.mem_bot]`. Rewrite using `[hz, map_zero]`.
+
+Consider the case `succ q ih`. Introduce `s ν z hz hsum hc hLq`. Rewrite using `[casimirPowerW_succ_apply]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hic : i ≠ c` using `ne_of_lt (Finset.mem_Iio.mp hi)`.
+
+Establish `h1` using `hs i c ν z hz`. Establish `hsum' : ∑ a, (ν + rootW i c) a = 0`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib, hsum, rootWeight_entries_sum_zero, add_zero]`. Establish `hc' : (ν + rootW i c) c = -((s + 1 : ℕ) : ℤ)`. Rewrite using `[Pi.add_apply, rootW, Pi.sub_apply, Pi.single_eq_of_ne (Ne.symm hic), Pi.single_eq_same, hc]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ih (s + 1) _ _ h1 hsum' hc' (by omega), map_zero]`.
+-/
 theorem casimirPowerW_vanishes_large {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (c : Fin n) (L : ℕ) (hL : DegreeZeroWeightsBounded E L) (q : ℕ) :
     ∀ (s : ℕ) (ν : Fin n → ℤ) (z : V), z ∈ weightSp E ν → (∑ a, ν a = 0) → ν c = -(s : ℤ) → L < q + s →
       casimirPower E c (Iio c) q z = 0 := by
@@ -232,6 +325,9 @@ theorem casimirPowerW_vanishes_large {E : GLOps n K V} (hs : OperatorsShiftWeigh
 def extremalProjectorCoeff (K : Type*) [Field K] (m q : ℕ) : K :=
   (-1 : K) ^ q * ((m.factorial : K) / (((q + m).factorial : K) * (q.factorial : K)))
 
+/- English proof (translation)
+Unfold `extremalProjector casimirPowerScaled`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem extremalProjector_apply (E : GLOps n K V) (c : Fin n) (L : ℕ) (u : V) :
     extremalProjector E c L u = ∑ q ∈ range (L + 1), extremalProjectorCoeff K c.val q • casimirPower E c (Iio c) q u := by
   unfold extremalProjector casimirPowerScaled
@@ -240,10 +336,18 @@ theorem extremalProjector_apply (E : GLOps n K V) (c : Fin n) (L : ℕ) (u : V) 
   rw [LinearMap.smul_apply, LinearMap.smul_apply, smul_smul]
   rfl
 
+/- English proof (translation)
+Establish `h : (m.factorial : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Simplify using `[extremalProjectorCoeff, h]`.
+-/
 theorem extremalProjectorCoeff_zero [CharZero K] (m : ℕ) : extremalProjectorCoeff K m 0 = 1 := by
   have h : (m.factorial : K) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero _
   simp [extremalProjectorCoeff, h]
 
+/- English proof (translation)
+Unfold `extremalProjectorCoeff`. Rewrite using `[show q + 1 + m = (q + m) + 1 by omega, Nat.factorial_succ (q + m), Nat.factorial_succ q]`. Establish `h3 : ((q + m).factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h4 : (q.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `h5 : ((q + m + 1 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`.
+
+Establish `h6 : ((q + 1 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Move the coercions through the operations in `at h5 h6 ⊢`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extremalProjectorCoeff_succ [CharZero K] (m q : ℕ) :
     extremalProjectorCoeff K m (q + 1) * (((q + 1 : ℕ) : K) * (2 * ((0 : ℕ) : K) + (m : K) + ((q + 1 : ℕ) : K))) = - extremalProjectorCoeff K m q := by
   unfold extremalProjectorCoeff
@@ -256,6 +360,21 @@ theorem extremalProjectorCoeff_succ [CharZero K] (m q : ℕ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hs` using `gl_rep_shifts_weights hE`. Establish `hPP` using `projector_recursion_base hE c u hu0 hu`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Establish `hjc : j ≠ c` using `ne_of_lt hj`.
+
+Establish `htop : casimirPower E c (Iio c) L (E j c u) = 0`. Use `casimirPowerW_vanishes_large hs c L hL L 1 (0 + rootW j c) (E j c u) (hs j c 0 u hu0) ?_ ?_ (by omega)` and prove the remaining obligations. Simplify using `only [zero_add, rootWeight_entries_sum_zero]`. Simplify using `[rootW, hjc]`. Rewrite using `[extremalProjector_apply, map_sum]`.
+
+Establish `h1 : ∀ q ∈ range (L + 1), E j c (extremalProjectorCoeff K c.val q • casimirPower E c (Iio c) q u) = extremalProjectorCoeff K c.val q • casimirPower E c (Iio c) q (E j c u) + (extremalProjectorCoeff K c.val q * ((q : K) * (2 * ((0 : ℕ) : K) + (c.val : K) + (q : K)))) • casimirPowe …`. Introduce `q _`. Rewrite using `[map_smul, raising_casimirPower_commutator hE c j hj q 0 u hPP, smul_add, smul_smul]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_add_distrib, Finset.sum_range_succ, htop, smul_zero, add_zero, Finset.sum_range_succ']`. Establish `h2 : ∀ q ∈ range L, (extremalProjectorCoeff K c.val (q + 1) * (((q + 1 : ℕ) : K) * (2 * ((0 : ℕ) : K) + (c.val : K) + ((q + 1 : ℕ) : K)))) • casimirPower E c (Iio c) (q + 1 - 1) (E j c u) = - (extremalProjectorCoeff K c.val q • casimirPower E c (Iio c) q (E j c u))`.
+
+Introduce `q _`. Rewrite using `[extremalProjectorCoeff_succ, Nat.add_sub_cancel, neg_smul]`. Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_neg_distrib]`. Simplify using the standard rewrite rules. Introduce `a b ha hb`.
+
+Rewrite using `[extremalProjector_apply, map_sum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, casimirPowerW_comm_lower_apply hE c a b ha hb, hu a b ha hb, map_zero, smul_zero]`. Rewrite using `[extremalProjector_apply]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (casimirPowerW_preserves_weight hs c _ q 0 u hu0)`.
+
+Use `⟨fun i => ∑ q ∈ range L, extremalProjectorCoeff K c.val (q + 1) • casimirPower E c (Iio c) q (E i c u), ?_⟩` and prove the remaining obligations. Rewrite using `[extremalProjector_apply, Finset.sum_range_succ', extremalProjectorCoeff_zero, casimirPowerW_zero, one_smul, Module.End.one_apply, add_comm]`. Use `congr 1`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[casimirPowerW_succ_apply, Finset.smul_sum]`.
+-/
 theorem extremal_projector_properties [CharZero K] {E : GLOps n K V} (hE : IsGLRep E) (c : Fin n) (L : ℕ) (hL : DegreeZeroWeightsBounded E L) (u : V)
     (hu0 : u ∈ weightSp E 0) (hu : ∀ a b : Fin n, a < c → b < c → E a b u = 0) :
     (∀ j, j < c → E j c (extremalProjector E c L u) = 0) ∧

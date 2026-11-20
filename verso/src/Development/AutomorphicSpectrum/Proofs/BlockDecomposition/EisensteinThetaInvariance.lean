@@ -11,6 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.EisCellsTheta
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hS`. Set `S : Subgroup (G D n)` to `{ carrier := {γ | ∀ Φ : schwartzA θ V.rank n, ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, (ω γ Φ).1 (ξ.map (incA D)) = ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, Φ.1 (ξ.map (incA D))} one_mem' := fun Φ => by simp mul_mem' := fun {g h} hg hh Φ => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(hg _).trans (hh Φ)`. Use the proof step `inv_mem' := fun {g} hg Φ => by`.
+
+Use `hg (ω g⁻¹ Φ)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `this.symm }`. Establish `hle : GF D n ≤ S` using `GlobalTheory.T.rational_group_le_of_generators_mem D n S (fun g a hg Φ => GlobalTheory.T.theta_sum_invariant_levi_element D n V ψ χ θ μ ω hS g a hg Φ) (fun g b hg Φ => GlobalTheory.T.theta_sum_invariant_unipotent_translate D n V ψ χ θ μ ω hS g b hg Φ) (fun g hg Φ => GlobalTheory. …`. Introduce `Φ γ hγ`.
+
+Conclude with `hle hγ Φ`.
+-/
 theorem thetaInv : PositivityTheory.GramSchwartzFunctions.EC.ThetaInv := by
   intro D n V ψ χ θ μ ω hS
   let S : Subgroup (G D n) :=

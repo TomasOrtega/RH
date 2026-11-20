@@ -16,9 +16,15 @@ namespace UpperTheory.MayerVietorisKummerChernClass
 
 abbrev um {V U : Scheme.{0}} (g : V ⟶ U) : (Γ(U, ⊤))ˣ →* (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom
 
+/- English proof (translation)
+Use `ext`. Simplify using `[um]`.
+-/
 theorem um_id {U : Scheme.{0}} (u : (Γ(U, ⊤))ˣ) : um (𝟙 U) u = u := by
   ext; simp [um]
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(f ≫ g).appTop.hom (u : Γ(U, ⊤)) = f.appTop.hom (g.appTop.hom (u : Γ(U, ⊤)))`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem um_comp {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     um (f ≫ g) u = um f (um g u) := by
   ext
@@ -59,12 +65,18 @@ def cob {A : Type} [CommRing A] {ι : Type} [Preorder ι] (h : ι → Aˣ) : ι 
       Matrix.GeneralLinearGroup.scalar (Fin 1) (h j / h k) * Matrix.GeneralLinearGroup.scalar (Fin 1) (h i / h j)
     rw [← map_mul, mul_comm, div_mul_div_cancel]
 
+/- English proof (translation)
+Use `CategoryTheory.Functor.ext (fun _ => rfl) fun i j f => ?_` and prove the remaining obligations. Rewrite using `[eqToHom_refl _ rfl, Category.id_comp]`. Conclude with `(h i j f).trans (Category.comp_id _).symm`.
+-/
 theorem fext {ι : Type} [Category ι] {M : Type} [Monoid M] (F G : ι ⥤ SingleObj M)
     (h : ∀ (i j : ι) (f : i ⟶ j), F.map f = G.map f) : F = G := by
   refine CategoryTheory.Functor.ext (fun _ => rfl) fun i j f => ?_
   rw [eqToHom_refl _ rfl, Category.id_comp]
   exact (h i j f).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `rfl` from `Subsingleton.elim a b`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.GeneralLinearGroup.map_apply]`.
+-/
 theorem map_scalar {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (u : Aˣ) :
     Matrix.GeneralLinearGroup.map φ (Matrix.GeneralLinearGroup.scalar (Fin 1) u) =
       Matrix.GeneralLinearGroup.scalar (Fin 1) (Units.map φ.toMonoidHom u) := by
@@ -72,6 +84,9 @@ theorem map_scalar {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (u : 
   obtain rfl := Subsingleton.elim a b
   simp [Matrix.GeneralLinearGroup.scalar, Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+Use `fext _ _ fun i j f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.scalar (Fin 1) (um g.unop (h i) / um g.unop (h j)) = Matrix.GeneralLinearGroup.map (Scheme.Γ.map g).hom (Matrix.GeneralLinearGroup.scalar (Fin 1) (h i / h j))`. Rewrite using `[← map_div]`. Conclude with `(map_scalar (Scheme.Γ.map g).hom (h i / h j)).symm`.
+-/
 theorem cob_nat {U V : Schemeᵒᵖ} (g : U ⟶ V) {ι : Type} [Preorder ι] (h : ι → (Γ(U.unop, ⊤))ˣ) :
     cob (fun i => um g.unop (h i)) = cob h ⋙ ((glCat 1).map (Scheme.Γ.map g)).toFunctor := by
   refine fext _ _ fun i j f => ?_
@@ -91,16 +106,27 @@ def pr (q : ℕ) : EG q ⟶ ofCat (glCat 1) where
     ext U h
     exact fext _ _ fun i j f => rfl
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op) (ULift.up (Additive.ofMul u) : (Scheme.Γ ⋙ unitsF).obj (op U))).symm`.
+-/
 theorem unitSec_res {V U : Scheme.{0}} (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) : Sec.res g (unitSec u) = unitSec (um g u) :=
   (ConcreteCategory.congr_hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).naturality g.op)
     (ULift.up (Additive.ofMul u) : (Scheme.Γ ⋙ unitsF).obj (op U))).symm
 
+/- English proof (translation)
+Establish `h1 : (n • 𝟙 F).hom = n • 𝟙 F.obj` using `(sheafToPresheaf Scheme.etaleTopology _).map_zsmul`. Simplify using `only [Sec.map, h1, NatTrans.app_zsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem sec_zsmul {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (n : ℤ) (a : Sec F U) :
     Sec.map (n • 𝟙 F) a = n • a := by
   have h1 : (n • 𝟙 F).hom = n • 𝟙 F.obj := (sheafToPresheaf Scheme.etaleTopology _).map_zsmul
   simp only [Sec.map, h1, NatTrans.app_zsmul]
   simp
 
+/- English proof (translation)
+Use `map_zsmul ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom (n : ℤ) (ULift.up (Additive.ofMul v) : (Scheme.Γ ⋙ unitsF).obj (op U))` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Use `congrArg ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom ?_` and prove the remaining obligations. Use `ULift.ext _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(n : ℤ) • Additive.ofMul v = Additive.ofMul (v ^ n)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem unitSec_pow {U : Scheme.{0}} (v : (Γ(U, ⊤))ˣ) (n : ℕ) : ((n : ℤ) • unitSec v) = unitSec (v ^ n) := by
   have := map_zsmul ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op U)).hom (n : ℤ)
     (ULift.up (Additive.ofMul v) : (Scheme.Γ ⋙ unitsF).obj (op U))
@@ -110,6 +136,17 @@ theorem unitSec_pow {U : Scheme.{0}} (v : (Γ(U, ⊤))ˣ) (n : ℕ) : ((n : ℤ)
   change (n : ℤ) • Additive.ofMul v = Additive.ofMul (v ^ n)
   simp
 
+/- English proof (translation)
+Take `⟨κ, -, -, -, -, h⟩` from `GlobalTheory.T.kummer_sequence_etale_tateTwist q`. Use `loc_trans U _ (loc_mono U _ _ (h U hq (unitSec u)) ?_)` and prove the remaining obligations. Introduce and unpack `V g ⟨c, hc⟩`. Rewrite `hc` using `[sec_zsmul]`. Use `loc_trans V _ (loc_mono V _ _ ((GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift ℤ (Scheme.Γ ⋙ unitsF)).1 V c) ?_)` and prove the remaining obligations.
+
+Introduce and unpack `W k ⟨x, hx⟩`. Take `⟨x⟩` from `x`. Take `⟨v, hv⟩ : ∃ v : (Γ(W, ⊤))ˣ, x = Additive.ofMul v` from `⟨Additive.toMul x, rfl⟩`. Establish `e1 : unitSec (v ^ q) = unitSec (um k (um g u))`. Rewrite using `[← unitSec_pow, ← unitSec_res, ← unitSec_res, ← hc]`.
+
+Establish `hx' : unitSec v = Sec.res k c` using `(congrArg (fun z => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ unitsF)).app (op W)).hom (ULift.up z)) hv).symm.trans hx`. Rewrite using `[hx']`. Conclude with `(map_zsmul (Gm.obj.map k.op).hom (q : ℤ) c).symm`. Set `P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} ℤ)` to `Scheme.Γ ⋙ unitsF`. Set `a : P.obj (op W)` to `ULift.up (Additive.ofMul (v ^ q))`.
+
+Set `b : P.obj (op W)` to `ULift.up (Additive.ofMul (um k (um g u)))`. Establish `hab : ((toSheafify Scheme.etaleTopology P).app (op W)).hom (a - b) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `e1`. Use `loc_mono W _ _ ((GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift ℤ P).2.1 W (a - b) hab) ?_` and prove the remaining obligations.
+
+Introduce `Y m hm`. Use `⟨um m v, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[map_sub, sub_eq_zero]`. Establish `h2 : um m (v ^ q) = um m (um k (um g u))` using `congrArg (fun z : P.obj (op Y) => Additive.toMul z.down) hm`. Conclude with `(map_pow (um m) v q).symm.trans (h2.trans (by rw [← um_comp, ← um_comp]))`.
+-/
 theorem locRoot (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤))) (u : (Γ(U, ⊤))ˣ) :
     Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = um g u := by
   obtain ⟨κ, -, -, -, -, h⟩ := GlobalTheory.T.kummer_sequence_etale_tateTwist q
@@ -139,16 +176,30 @@ theorem locRoot (q : ℕ) [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, �
   have h2 : um m (v ^ q) = um m (um k (um g u)) := congrArg (fun z : P.obj (op Y) => Additive.toMul z.down) hm
   exact (map_pow (um m) v q).symm.trans (h2.trans (by rw [← um_comp, ← um_comp]))
 
+/- English proof (translation)
+Introduce `_ ⟨x⟩` and use `x.2`.
+-/
 theorem inv_EG (q : ℕ) : Inv q (EG q) := fun _ ⟨x⟩ => x.2
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`.
+-/
 theorem det_scalar1 {A : Type} [CommRing A] (u : Aˣ) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) u) = u := by
   ext
   simp [Matrix.GeneralLinearGroup.scalar]
 
+/- English proof (translation)
+The claim follows from `det_scalar1 _`.
+-/
 theorem lineUnit_pr {q : ℕ} {U : Scheme.{0}} (x : Sx (EG q) 1 U) : lineUnit (pr q) x = x.1 0 / x.1 1 :=
   det_scalar1 _
 
+/- English proof (translation)
+Establish `h : (L.app (op (SimplexCategory.mk 1))).app (op V) (x.res g) = ((ofCat (glCat 1)).obj (op (SimplexCategory.mk 1))).map g.op ((L.app (op (SimplexCategory.mk 1))).app (op U) x)` using `ConcreteCategory.congr_hom ((L.app (op (SimplexCategory.mk 1))).naturality g.op) x`. Unfold `lineUnit`. Rewrite using `[h]`. Establish `h2 : ∀ y : Sx (ofCat (glCat 1)) 1 U, glMat (y.res g) = Matrix.GeneralLinearGroup.map g.appTop.hom (glMat y)` using `fun y => rfl`. Use `(congrArg _ (h2 _)).trans ?_` and prove the remaining obligations.
+
+Conclude with `Matrix.GeneralLinearGroup.map_det _ _`.
+-/
 theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U) :
     lineUnit L (x.res g) = um g (lineUnit L x) := by
   have h : (L.app (op (SimplexCategory.mk 1))).app (op V) (x.res g) =
@@ -161,18 +212,30 @@ theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g
   refine (congrArg _ (h2 _)).trans ?_
   exact Matrix.GeneralLinearGroup.map_det _ _
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x)`.
+-/
 theorem sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g :=
   (ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x)
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.subinterval j l h).op) (op U)) x).symm`.
+-/
 theorem sub_map {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.map f).sub j l h = (x.sub j l h).map f :=
   (ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.subinterval j l h).op) (op U)) x).symm
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.δ i).op) (op U)) x).symm`.
+-/
 theorem face_map {E E' : Spc} (f : E ⟶ E') {p : ℕ} {U : Scheme.{0}} (x : Sx E (p + 1) U) (i : Fin (p + 2)) :
     (x.map f).face i = (x.face i).map f :=
   (ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.δ i).op) (op U)) x).symm
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom ((f.app (op (SimplexCategory.mk p))).naturality g.op) x).symm`.
+-/
 theorem res_map {E E' : Spc} (f : E ⟶ E') {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     (x.map f).res g = (x.res g).map f :=
   (ConcreteCategory.congr_hom ((f.app (op (SimplexCategory.mk p))).naturality g.op) x).symm
@@ -207,30 +270,52 @@ def IsC (q : ℕ) [NeZero q] {E : Spc} (ℓ : ∀ U : Scheme.{0}, Sx E 1 U → (
   ∀ (U : Scheme.{0}) (x : Sx E 2 U) (v w : (Γ(U, ⊤))ˣ), v ^ q = ℓ U (x.sub 0 1 (by omega)) →
     w ^ q = ℓ U (x.sub 1 1 (by omega)) → ev γ 2 0 (by simp) U x = kumT q U v + kumT q U w - kumT q U (v * w)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ F U).1 a b (loc_mono U _ _ (locRoot q hq u) fun V g ⟨v, hv⟩ => h V g v hv)`.
+-/
 theorem sep_root (q : ℕ) [NeZero q] {F : Shv (ZMod q)} {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤))) (u : (Γ(U, ⊤))ˣ)
     (a b : Sec F U) (h : ∀ (V : Scheme.{0}) (g : V ⟶ U) (v : (Γ(V, ⊤))ˣ), v ^ q = um g u → Sec.res g a = Sec.res g b) : a = b :=
   (GlobalTheory.T.etaleSheafSections_ext_and_glue _ F U).1 a b (loc_mono U _ _ (locRoot q hq u) fun V g ⟨v, hv⟩ => h V g v hv)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.etaleSheafSections_ext_and_glue _ F U).1 a b (loc_mono U _ _ (loc_and U _ _ (locRoot q hq u) (locRoot q hq u')) fun V g ⟨⟨v, hv⟩, ⟨v', hv'⟩⟩ => h V g v v' hv hv')`.
+-/
 theorem sep_root2 (q : ℕ) [NeZero q] {F : Shv (ZMod q)} {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤))) (u u' : (Γ(U, ⊤))ˣ)
     (a b : Sec F U) (h : ∀ (V : Scheme.{0}) (g : V ⟶ U) (v v' : (Γ(V, ⊤))ˣ), v ^ q = um g u → v' ^ q = um g u' →
       Sec.res g a = Sec.res g b) : a = b :=
   (GlobalTheory.T.etaleSheafSections_ext_and_glue _ F U).1 a b (loc_mono U _ _ (loc_and U _ _ (locRoot q hq u) (locRoot q hq u'))
     fun V g ⟨⟨v, hv⟩, ⟨v', hv'⟩⟩ => h V g v v' hv hv')
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.1 α p s h V U g x`.
+-/
 theorem ev_res {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     Sec.res g (ev α p s h U x) = ev α p s h V (x.res g) :=
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.1 α p s h V U g x
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 α β h`.
+-/
 theorem ev_ext {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n)
     (h : ∀ p s h U x, ev α p s h U x = ev β p s h U x) : α = β :=
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 α β h
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.2.1 f α p s h U x`.
+-/
 theorem ev_pull {R : Type} [CommRing R] {E E' : Spc} {I : Cx R} {n : ℤ} (f : E' ⟶ E) (α : Cochain ((chains R).obj E) I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E' p U) :
     ev ((Cochain.ofHom ((chains R).map f)).comp α (zero_add n)) p s h U x = ev α p s h U (x.map f) :=
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.2.1 f α p s h U x
 
+/- English proof (translation)
+Use `⟨fun U x => ?_, fun U x v hv => ?_, fun U x v w hv hw => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_pull]`. Conclude with `h.1 U _`. Rewrite using `[ev_pull]`. Conclude with `h.2.1 U _ v hv`.
+
+Rewrite using `[ev_pull]`. Use `h.2.2 U _ v w ?_ ?_` and prove the remaining obligations. Rewrite using `[sub_map]`. Conclude with `hv`. Rewrite using `[sub_map]`.
+
+Conclude with `hw`.
+-/
 theorem isC_pull {q : ℕ} [NeZero q] {E E' : Spc} (f : E' ⟶ E) {ℓ : ∀ U : Scheme.{0}, Sx E 1 U → (Γ(U, ⊤))ˣ}
     {γ : Cochain ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2} (h : IsC q ℓ γ) :
     IsC q (fun U x => ℓ U (x.map f)) ((Cochain.ofHom ((chains (ZMod q)).map f)).comp γ (zero_add 2)) := by
@@ -244,6 +329,15 @@ theorem isC_pull {q : ℕ} [NeZero q] {E E' : Spc} (f : E' ⟶ E) {ℓ : ∀ U :
     · rw [sub_map]; exact hv
     · rw [sub_map]; exact hw
 
+/- English proof (translation)
+Use `ev_ext _ _ fun p s hs U x => ?_` and prove the remaining obligations. Break down `p with _ | _ | _ | p` into its components or cases. Take `rfl : s = 2` from `by omega`. Conclude with `(h.1 U x).trans (h'.1 U x).symm`. Take `rfl : s = 1` from `by omega`.
+
+Establish `hq` using `hE U ⟨x.face 0⟩`. Use `sep_root q hq (ℓ U x) _ _ fun V g v hv => ?_` and prove the remaining obligations. Rewrite using `[ev_res, ev_res]`. Establish `hv' : v ^ q = ℓ V (x.res g)` using `hv.trans (hℓ g x).symm`. Conclude with `(h.2.1 V _ v hv').trans (h'.2.1 V _ v hv').symm`.
+
+Take `rfl : s = 0` from `by omega`. Establish `hq` using `hE U ⟨(x.face 0).face 0⟩`. Use `sep_root2 q hq (ℓ U (x.sub 0 1 (by omega))) (ℓ U (x.sub 1 1 (by omega))) _ _ fun V g v v' hv hv' => ?_` and prove the remaining obligations. Rewrite using `[ev_res, ev_res]`. Establish `e1 : v ^ q = ℓ V ((x.res g).sub 0 1 (by omega))` using `by rw [sub_res, hℓ]; exact hv`.
+
+Establish `e2 : v' ^ q = ℓ V ((x.res g).sub 1 1 (by omega))` using `by rw [sub_res, hℓ]; exact hv'`. Conclude with `(h.2.2 V _ v v' e1 e2).trans (h'.2.2 V _ v v' e1 e2).symm`. Establish `: Subsingleton (Sec ((res _ (tw q 1)).X s) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 s (by omega)`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem isC_unique {q : ℕ} [NeZero q] {E : Spc} (hE : Inv q E) {ℓ : ∀ U : Scheme.{0}, Sx E 1 U → (Γ(U, ⊤))ˣ}
     (hℓ : ∀ {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U), ℓ V (x.res g) = um g (ℓ U x))
     {γ γ' : Cochain ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2} (h : IsC q ℓ γ) (h' : IsC q ℓ γ') : γ = γ' := by
@@ -276,19 +370,55 @@ def s4 (a b c d : (Γ(U, ⊤))ˣ) : Sx (EG q) 3 U := ⟨![a, b, c, d], hq⟩
 
 variable (a b c d : (Γ(U, ⊤))ˣ)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexTwo_face_zero : (s3 hq a b c).face 0 = s2 hq b c := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexTwo_face_one : (s3 hq a b c).face 1 = s2 hq a c := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexTwo_face_two : (s3 hq a b c).face 2 = s2 hq a b := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexThree_face_zero : (s4 hq a b c d).face 0 = s3 hq b c d := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexThree_face_one : (s4 hq a b c d).face 1 = s3 hq a c d := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexThree_face_two : (s4 hq a b c d).face 2 = s3 hq a b d := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexThree_face_three : (s4 hq a b c d).face 3 = s3 hq a b c := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexTwo_sub_initial : (s3 hq a b c).sub 0 1 (by omega) = s2 hq a b := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplex_three_face_eq_unitsSimplex_two : (s3 hq a b c).sub 1 1 (by omega) = s2 hq b c := Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `lineUnit_pr _`.
+-/
 theorem lineUnit_unitsSimplexOne : lineUnit (pr q) (s2 hq a b) = a / b := lineUnit_pr _
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexOne_restrict {V : Scheme.{0}} (g : V ⟶ U) : (s2 hq a b).res g = s2 (by simpa using hq.map g.appTop.hom) (um g a) (um g b) :=
   Subtype.ext (funext fun i => by fin_cases i <;> rfl)
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem unitsSimplexTwo_restrict {V : Scheme.{0}} (g : V ⟶ U) : (s3 hq a b c).res g = s3 (by simpa using hq.map g.appTop.hom) (um g a) (um g b) (um g c) :=
   Subtype.ext (funext fun i => by fin_cases i <;> rfl)
 
@@ -302,21 +432,38 @@ variable {q : ℕ} [NeZero q] {U : Scheme.{0}} (hq : IsUnit (q : Γ(U, ⊤)))
 abbrev G1 : Sec ((res _ (tw q 1)).X 1) U := ev Z.1 1 1 (by simp) U (s2 hq a b)
 abbrev G2 : Sec ((res _ (tw q 1)).X 0) U := ev Z.1 2 0 (by simp) U (s3 hq a b c)
 
+/- English proof (translation)
+The claim follows from `(Cocycle.mem_iff 2 3 (by norm_num) _).1 Z.2`.
+-/
 theorem delta_zero : δ 2 3 Z.1 = 0 := (Cocycle.mem_iff 2 3 (by norm_num) _).1 Z.2
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h V x).2).2.1`.
+-/
 theorem ev_zero {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (V : Scheme.{0}) (x : Sx E p V) :
     ev (0 : Cochain ((chains R).obj E) I n) p s h V x = 0 :=
   (((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h V x).2).2.1
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem neg3 : Int.negOnePow 3 = -1 := by decide
 
 include hZ
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 0 1 2 (by simp) (by simp) (s2 hq a b)`. Rewrite `h` using `[delta_zero, ev_zero, Fin.sum_univ_two, hZ.1, hZ.1]`. Simplify using `using h.symm`.
+-/
 theorem F1 : Sec.map ((res _ (tw q 1)).d 1 2) (G1 hq Z a b) = 0 := by
   have h := (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 0 1 2 (by simp) (by simp) (s2 hq a b)
   rw [delta_zero, ev_zero, Fin.sum_univ_two, hZ.1, hZ.1] at h
   simpa using h.symm
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 1 0 1 (by simp) (by simp) (s3 hq a b c)`. Rewrite `h` using `[delta_zero, ev_zero, neg3, Fin.sum_univ_three, unitsSimplexTwo_face_zero, unitsSimplexTwo_face_one, unitsSimplexTwo_face_two]`. Use `eq_of_sub_eq_zero ?_` and prove the remaining obligations. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Simplify using `[G1, G2]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem F2 : Sec.map ((res _ (tw q 1)).d 0 1) (G2 hq Z a b c) = G1 hq Z b c - G1 hq Z a c + G1 hq Z a b := by
   have h := (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 1 0 1 (by simp) (by simp) (s3 hq a b c)
   rw [delta_zero, ev_zero, neg3, Fin.sum_univ_three, unitsSimplexTwo_face_zero, unitsSimplexTwo_face_one, unitsSimplexTwo_face_two] at h
@@ -325,6 +472,11 @@ theorem F2 : Sec.map ((res _ (tw q 1)).d 0 1) (G2 hq Z a b c) = G1 hq Z b c - G1
   simp [G1, G2]
   abel
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 2 (-1) 0 (by simp) (by simp) (s4 hq a b c d)`. Establish `hs : Subsingleton (Sec ((res _ (tw q 1)).X (-1)) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 (-1) (by omega)`. Rewrite `h` using `[delta_zero, ev_zero, neg3, Fin.sum_univ_four, unitsSimplexThree_face_zero, unitsSimplexThree_face_one, unitsSimplexThree_face_two, unitsSimplexThree_face_three, Subsingleton.elim (ev Z.1 (2 + 1) (-1) _ U _) 0]`. Simplify using `at h`. Rewrite using `[← neg_eq_zero]`.
+
+Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Simplify using `only [G2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem F3 : G2 hq Z b c d - G2 hq Z a c d + G2 hq Z a b d - G2 hq Z a b c = 0 := by
   have h := (GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 2) (m := 3) (by norm_num) Z.1 U).2 2 (-1) 0 (by simp) (by simp) (s4 hq a b c d)
   have hs : Subsingleton (Sec ((res _ (tw q 1)).X (-1)) U) := (GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 (-1) (by omega)
@@ -335,6 +487,11 @@ theorem F3 : G2 hq Z b c d - G2 hq Z a c d + G2 hq Z a b d - G2 hq Z a b c = 0 :
   simp only [G2]
   abel
 
+/- English proof (translation)
+Use `sep_root2 q hq (a / b) (b / c) _ _ fun V g v w hv hw => ?_` and prove the remaining obligations. Rewrite using `[ev_res, ev_res, unitsSimplexTwo_restrict, unitsSimplexTwo_restrict]`. Establish `hV : IsUnit (q : Γ(V, ⊤))` using `by simpa using hq.map g.appTop.hom`. Establish `e1` using `hZ.2.2 V (s3 hV (um g a) (um g b) (um g c)) v w (by rw [unitsSimplexTwo_sub_initial]; change _ = lineUnit (pr q) _; rw [lineUnit_unitsSimplexOne, ← map_div]; exact hv) (by rw [unitsSimplex_three_face_eq_unitsSimplex_two]; change _ = lineUnit (pr q) _; rw [lineUnit_unitsSimplexOne …`. Establish `e2` using `hZ.2.2 V (s3 hV (um g a') (um g b') (um g c')) w v (by rw [unitsSimplexTwo_sub_initial]; change _ = lineUnit (pr q) _; rw [lineUnit_unitsSimplexOne, ← map_div, ← h2]; exact hw) (by rw [unitsSimplex_three_face_eq_unitsSimplex_two]; change _ = lineUnit (pr q) _; rw [lineUnit_unitsS …`.
+
+Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Rewrite using `[mul_comm, add_comm]`.
+-/
 theorem F5 {a' b' c' : (Γ(U, ⊤))ˣ} (h1 : a / b = b' / c') (h2 : b / c = a' / b') : G2 hq Z a b c = G2 hq Z a' b' c' := by
   refine sep_root2 q hq (a / b) (b / c) _ _ fun V g v w hv hw => ?_
   rw [ev_res, ev_res, unitsSimplexTwo_restrict, unitsSimplexTwo_restrict]
@@ -350,21 +507,39 @@ theorem F5 {a' b' c' : (Γ(U, ⊤))ˣ} (h1 : a / b = b' / c') (h2 : b / c = a' /
 
 end Facts
 
+/- English proof (translation)
+Rewrite using `[← zero_sub, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 α p s h V x).2.1, ev_zero, zero_sub]`.
+-/
 theorem ev_neg {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (V : Scheme.{0}) (x : Sx E p V) : ev (-α) p s h V x = -ev α p s h V x := by
   rw [← zero_sub, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 α p s h V x).2.1, ev_zero, zero_sub]
 
+/- English proof (translation)
+The claim follows from `map_neg (φ.hom.app (op U)).hom a`.
+-/
 theorem sec_map_neg {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a : Sec F U) :
     Sec.map φ (-a) = -Sec.map φ a := map_neg (φ.hom.app (op U)).hom a
 
+/- English proof (translation)
+The claim follows from `map_zero (φ.hom.app (op U)).hom`.
+-/
 theorem sec_map_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
     Sec.map φ (0 : Sec F U) = 0 := map_zero (φ.hom.app (op U)).hom
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem neg2 : Int.negOnePow 2 = 1 := by decide
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem oneSimplex_eq_mkOfVertices {q : ℕ} {U : Scheme.{0}} (x : Sx (EG q) 1 U) : x = s2 x.2 (x.1 0) (x.1 1) :=
   Subtype.ext (funext fun i => by fin_cases i <;> rfl)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun i => by fin_cases i <;> rfl)`.
+-/
 theorem twoSimplex_eq_mkOfVertices {q : ℕ} {U : Scheme.{0}} (x : Sx (EG q) 2 U) : x = s3 x.2 (x.1 0) (x.1 1) (x.1 2) :=
   Subtype.ext (funext fun i => by fin_cases i <;> rfl)
 
@@ -377,6 +552,27 @@ def thetaFam (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2) :
   | 1, s, h, U, x => -ev Z.1 2 s (by omega) U (s3 x.2 (x.1 0) (x.1 1) 1)
   | _ + 2, _, _, _, _ => 0
 
+/- English proof (translation)
+Take `⟨Θ, hΘ⟩` from `GlobalTheory.T.exists_cochain_ev_eq_of_natural' (ZMod q) (E := EG q) (I := res _ (tw q 1)) (n := 1) (thetaFam Z) (by`. Introduce `p s h V U g x`. Break down `p with _ | _ | p` into its components or cases. Take `rfl : s = 1` from `by omega`. Express the relevant statement in the definitionally equal form `Sec.res g (ev Z.1 1 1 _ U _) = ev Z.1 1 1 _ V _`.
+
+Rewrite using `[ev_res, unitsSimplexOne_restrict, map_one]`. Both sides reduce to the same expression. Take `rfl : s = 0` from `by omega`. Express the relevant statement in the definitionally equal form `Sec.res g (-ev Z.1 2 0 _ U _) = -ev Z.1 2 0 _ V _`. Use `(map_neg _ _).trans (congrArg Neg.neg ?_)` and prove the remaining obligations.
+
+Use `(ev_res _ _ _ _ g _).trans ?_` and prove the remaining obligations. Rewrite using `[unitsSimplexTwo_restrict, map_one]`. Both sides reduce to the same expression. Conclude with `map_zero _)`. Establish `h0 : ∀ (U : Scheme.{0}) (x : Sx (EG q) 0 U), ev Θ 0 1 (by simp) U x = G1 x.2 Z (x.1 0) 1` using `fun U x => hΘ 0 1 _ U x`.
+
+Establish `h1 : ∀ (U : Scheme.{0}) (x : Sx (EG q) 1 U), ev Θ 1 0 (by simp) U x = -G2 x.2 Z (x.1 0) (x.1 1) 1` using `fun U x => hΘ 1 0 _ U x`. Use `⟨Θ, h0, h1, ev_ext _ _ fun p s hs U x => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_neg]`. Break down `p with _ | _ | _ | p` into its components or cases. Take `rfl : s = 2` from `by omega`.
+
+Establish `h` using `((GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 1) (m := 2) (by norm_num) Θ U).1 x)`. Rewrite using `[h, h0, F1 _ Z hZ, hZ.1, neg_zero]`. Take `rfl : s = 1` from `by omega`. Establish `h` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 1) (m := 2) (by norm_num) Θ U).2 0 0 1 (by simp) (by simp) x`. Rewrite using `[h, h1, Fin.sum_univ_two]`.
+
+Establish `e0 : ev Θ 0 1 _ U (x.face 0) = G1 x.2 Z (x.1 1) 1` using `h0 U _`. Establish `e1 : ev Θ 0 1 _ U (x.face 1) = G1 x.2 Z (x.1 0) 1` using `h0 U _`. Rewrite using `[e0, e1]`. Establish `h2` using `F2 x.2 Z hZ (x.1 0) (x.1 1) 1`. Establish `e3 : ev Z.1 (0 + 1) 1 hs U x = G1 x.2 Z (x.1 0) (x.1 1)` using `congrArg _ (oneSimplex_eq_mkOfVertices x)`.
+
+Rewrite using `[e3, sec_map_neg, h2, neg2]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Take `rfl : s = 0` from `by omega`. Establish `h` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 1) (m := 2) (by norm_num) Θ U).2 1 (-1) 0 (by simp) (by simp) x`.
+
+Establish `hs' : Subsingleton (Sec ((res _ (tw q 1)).X (-1)) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 (-1) (by omega)`. Establish `f0 : ev Θ 1 0 _ U (x.face 0) = -G2 x.2 Z (x.1 1) (x.1 2) 1` using `h1 U _`. Establish `f1 : ev Θ 1 0 _ U (x.face 1) = -G2 x.2 Z (x.1 0) (x.1 2) 1` using `h1 U _`. Establish `f2 : ev Θ 1 0 _ U (x.face 2) = -G2 x.2 Z (x.1 0) (x.1 1) 1` using `h1 U _`. Rewrite using `[h, Fin.sum_univ_three, Subsingleton.elim (ev Θ (1 + 1) (-1) _ U x) 0, f0, f1, f2, sec_map_zero, neg2]`.
+
+Establish `h3` using `F3 x.2 Z hZ (x.1 0) (x.1 1) (x.1 2) 1`. Establish `e3 : ev Z.1 (1 + 1) 0 hs U x = G2 x.2 Z (x.1 0) (x.1 1) (x.1 2)` using `congrArg _ (twoSimplex_eq_mkOfVertices x)`. Rewrite using `[e3, ← sub_eq_zero.1 h3]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+
+Establish `: Subsingleton (Sec ((res _ (tw q 1)).X s) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 s (by omega)`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem exists_theta (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2)
     (hZ : IsC q (fun _ x => lineUnit (pr q) x) Z.1) :
     ∃ Θ : Cochain ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 1,
@@ -438,6 +634,11 @@ end Theta
 section Core
 variable {q : ℕ} [NeZero q]
 
+/- English proof (translation)
+Use `sep_root q hq (a / b) _ _ fun V g v hv => ?_` and prove the remaining obligations. Establish `e1 : v ^ q = um (g ≫ x) (tq q)` using `by rw [um_comp, h]; exact hv`. Establish `e2 : v ^ q = lineUnit (pr q) (s2 (by simpa using hq.map g.appTop.hom) (um g a) (um g b))`. Rewrite using `[lineUnit_unitsSimplexOne, ← map_div]`. Conclude with `hv`.
+
+Establish `l` using `(ev_res κ 0 1 (by simp) g (show Sx (sch.obj (Gq q)) 0 U from x)).trans (hκ V (g ≫ x) v e1)`. Use `l.trans (Eq.symm ?_)` and prove the remaining obligations. Use `(ev_res _ _ _ _ g _).trans ?_` and prove the remaining obligations. Rewrite using `[unitsSimplexOne_restrict]`. Conclude with `hZ.2.1 V _ v e2`.
+-/
 theorem cmp_kappa (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2)
     (hZ : IsC q (fun _ x => lineUnit (pr q) x) Z.1)
     (κ : Cochain ((chains (ZMod q)).obj (sch.obj (Gq q))) (res _ (tw q 1)) 1)
@@ -460,6 +661,13 @@ def tauFam {D : Spc} (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)
   | 0, s, h, U, y => -ev Z.1 2 s (by omega) U (s3 (y.map V₁).2 ((y.map V₁).1 0) ((y.map V₂).1 0) 1)
   | _ + 1, _, _, _, _ => 0
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_cochain_ev_eq_of_natural' (ZMod q) (E := D) (I := res _ (tw q 1)) (n := 0) (tauFam Z V₁ V₂) (by`. Introduce `p s h V U g x`. Break down `p with _ | p` into its components or cases. Take `rfl : s = 0` from `by omega`. Express the relevant statement in the definitionally equal form `Sec.res g (-ev Z.1 2 0 _ U _) = -ev Z.1 2 0 _ V _`.
+
+Use `(map_neg _ _).trans (congrArg Neg.neg ?_)` and prove the remaining obligations. Use `(ev_res _ _ _ _ g _).trans ?_` and prove the remaining obligations. Rewrite using `[unitsSimplexTwo_restrict, map_one, ← res_map, ← res_map]`. Both sides reduce to the same expression. Conclude with `map_zero _)`.
+
+Conclude with `⟨τ, fun U y => hτ 0 0 _ U y⟩`.
+-/
 theorem exists_tau {D : Spc} (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2) (V₁ V₂ : D ⟶ EG q) :
     ∃ τ : Cochain ((chains (ZMod q)).obj D) (res _ (tw q 1)) 0,
       (∀ (U : Scheme.{0}) (y : Sx D 0 U), ev τ 0 0 (by simp) U y =
@@ -481,14 +689,41 @@ end Core
 section Core2
 variable {q : ℕ} [NeZero q]
 
+/- English proof (translation)
+Establish `h : (P - Q + R - S) - (T - Q + Y - S) = 0` using `by rw [g1, g2, sub_zero]`. Rewrite using `[← sub_eq_zero]`. Conclude with `Eq.trans (by abel) (neg_eq_zero.2 h)`.
+-/
 theorem comb {M : Type*} [AddCommGroup M] (P Q R S T Y : M) (g1 : P - Q + R - S = 0) (g2 : T - Q + Y - S = 0) :
     -R - -T = P - Y := by
   have h : (P - Q + R - S) - (T - Q + Y - S) = 0 := by rw [g1, g2, sub_zero]
   rw [← sub_eq_zero]
   exact Eq.trans (by abel) (neg_eq_zero.2 h)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem neg1 : Int.negOnePow 1 = -1 := by decide
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_tau Z V₁ V₂`. Use `⟨τ, ev_ext _ _ fun p s hs U y => ?_⟩` and prove the remaining obligations. Establish `hsub` using `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).1 ((Cochain.ofHom ((chains (ZMod q)).map V₁)).comp Θ (zero_add 1)) ((Cochain.ofHom ((chains (ZMod q)).map V₂)).comp Θ (zero_add 1)) p s hs U y).2.1`. Establish `hadd` using `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).1 ((Cochain.ofHom ((chains (ZMod q)).map u)).comp κ (zero_add 1)) (δ 0 1 τ) p s hs U y).1`. Rewrite using `[hsub, hadd, ev_pull, ev_pull, ev_pull]`.
+
+Break down `p with _ | _ | p` into its components or cases. Take `rfl : s = 1` from `by omega`. Establish `hq` using `(y.map V₁).2`. Establish `e1 : ev Θ 0 1 _ U (y.map V₁) = G1 hq Z ((y.map V₁).1 0) 1` using `hΘ0 U _`. Establish `e2 : ev Θ 0 1 _ U (y.map V₂) = G1 hq Z ((y.map V₂).1 0) 1` using `hΘ0 U _`.
+
+Establish `e3 : ev κ 0 1 _ U (y.map u) = G1 hq Z ((y.map V₁).1 0) ((y.map V₂).1 0)` using `cmp_kappa Z hZ κ hκ hq _ _ _ (hr U y)`. Establish `e4` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 0) (m := 1) (by norm_num) τ U).1 y`. Rewrite using `[e1, e2, e3, e4, hτ, sec_map_neg, F2 hq Z hZ]`. Normalize the expressions using the abelian group laws. Take `rfl : s = 0` from `by omega`.
+
+Establish `hq` using `(y.map V₁).2`. Establish `hs' : Subsingleton (Sec ((res _ (tw q 1)).X (-1)) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 (-1) (by omega)`. Establish `e1 : ev Θ (0 + 1) 0 hs U (y.map V₁) = -G2 hq Z ((y.map V₁).1 0) ((y.map V₁).1 1) 1` using `hΘ1 U _`. Establish `e2 : ev Θ (0 + 1) 0 hs U (y.map V₂) = -G2 hq Z ((y.map V₂).1 0) ((y.map V₂).1 1) 1` using `hΘ1 U _`. Establish `e3 : ev κ (0 + 1) 0 hs U (y.map u) = 0` using `hκ1 U _`.
+
+Establish `e4` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (n := 0) (m := 1) (by norm_num) τ U).2 0 (-1) 0 (by simp) (by simp) y`. Establish `x0 : ((y.face 1).map V₁).1 0 = (y.map V₁).1 0` using `congrArg (fun z : Sx (EG q) 0 U => z.1 0) (face_map V₁ y 1).symm`. Establish `x1 : ((y.face 0).map V₁).1 0 = (y.map V₁).1 1` using `congrArg (fun z : Sx (EG q) 0 U => z.1 0) (face_map V₁ y 0).symm`. Establish `z0 : ((y.face 1).map V₂).1 0 = (y.map V₂).1 0` using `congrArg (fun z : Sx (EG q) 0 U => z.1 0) (face_map V₂ y 1).symm`. Establish `z1 : ((y.face 0).map V₂).1 0 = (y.map V₂).1 1` using `congrArg (fun z : Sx (EG q) 0 U => z.1 0) (face_map V₂ y 0).symm`.
+
+Establish `t0 : ev τ 0 0 (by simp) U (y.face 0) = -G2 hq Z ((y.map V₁).1 1) ((y.map V₂).1 1) 1`. Rewrite using `[hτ, x1, z1]`. Establish `t1 : ev τ 0 0 (by simp) U (y.face 1) = -G2 hq Z ((y.map V₁).1 0) ((y.map V₂).1 0) 1`. Rewrite using `[hτ, x0, z0]`. Establish `hu01 : (show U ⟶ Gq q from (y.face 0).map u) = (show U ⟶ Gq q from (y.face 1).map u)` using `(face_map u y 0).symm.trans (face_map u y 1)`.
+
+Establish `rr : (y.map V₁).1 1 / (y.map V₂).1 1 = (y.map V₁).1 0 / (y.map V₂).1 0`. Establish `r0` using `hr U (y.face 0)`. Establish `r1` using `hr U (y.face 1)`. Rewrite `r0` using `[x1, z1]`. Rewrite `r1` using `[x0, z0]`.
+
+Rewrite using `[← r0, ← r1, hu01]`. Establish `rs : (y.map V₁).1 0 / (y.map V₁).1 1 = (y.map V₂).1 0 / (y.map V₂).1 1`. Rewrite `rr`, the goal using `[div_eq_div_iff_mul_eq_mul]`. Rewrite using `[← rr, mul_comm]`. Establish `g1` using `F3 hq Z hZ ((y.map V₁).1 0) ((y.map V₁).1 1) ((y.map V₂).1 1) 1`.
+
+Establish `g2` using `F3 hq Z hZ ((y.map V₁).1 0) ((y.map V₂).1 0) ((y.map V₂).1 1) 1`. Rewrite `g2` using `[← F5 hq Z hZ _ _ _ rs rr]`. Rewrite using `[e1, e2, e3, e4, Subsingleton.elim (ev τ (0 + 1) (-1) _ U y) 0, sec_map_zero, neg1, Fin.sum_univ_two, t0, t1, comb _ _ _ _ _ _ g1 g2]`. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+
+Establish `: Subsingleton (Sec ((res _ (tw q 1)).X s) U)` using `(GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness _ (tw q 1) U).2.2.2 s (by omega)`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem mv_core {D : Spc} (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2)
     (hZ : IsC q (fun _ x => lineUnit (pr q) x) Z.1)
     (Θ : Cochain ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 1)
@@ -562,14 +797,25 @@ end Core2
 section Final
 variable {q : ℕ} [NeZero q]
 
+/- English proof (translation)
+Introduce `U ⟨x⟩` and use `h U ⟨x.map f⟩`.
+-/
 theorem inv_map {A X : Spc} (f : A ⟶ X) (h : Inv q X) : Inv q A := fun U ⟨x⟩ => h U ⟨x.map f⟩
 
+/- English proof (translation)
+Establish `h1 : IsUnit (algebraMap ℤ (Localization.Away (q : ℤ)) (q : ℤ))` using `IsLocalization.Away.algebraMap_isUnit (q : ℤ)`. Establish `h2 : IsUnit ((q : Localization.Away (q : ℤ)))` using `by simpa using h1`. Establish `h3 : IsUnit ((q : LqR q))` using `by simpa using h2.map (LaurentPolynomial.C (R := Localization.Away (q : ℤ)))`. Simplify using `using h3.map (Scheme.ΓSpecIso (CommRingCat.of (LqR q))).inv.hom`.
+-/
 theorem isUnit_Gq (q : ℕ) [NeZero q] : IsUnit (q : Γ(Gq q, ⊤)) := by
   have h1 : IsUnit (algebraMap ℤ (Localization.Away (q : ℤ)) (q : ℤ)) := IsLocalization.Away.algebraMap_isUnit (q : ℤ)
   have h2 : IsUnit ((q : Localization.Away (q : ℤ))) := by simpa using h1
   have h3 : IsUnit ((q : LqR q)) := by simpa using h2.map (LaurentPolynomial.C (R := Localization.Away (q : ℤ)))
   simpa using h3.map (Scheme.ΓSpecIso (CommRingCat.of (LqR q))).inv.hom
 
+/- English proof (translation)
+Establish `h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 0 = SimplexCategory.δ 1`. Use extensionality with `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem vert_one {A : Spc} {T : Scheme.{0}} (x : Sx A 1 T) :
     (A.map (SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 0).op).app (op T) x = x.face 1 := by
   have h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 0 = SimplexCategory.δ 1 := by
@@ -579,6 +825,11 @@ theorem vert_one {A : Spc} {T : Scheme.{0}} (x : Sx A 1 T) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 1 = SimplexCategory.δ 0`. Use extensionality with `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem vert_zero {A : Spc} {T : Scheme.{0}} (x : Sx A 1 T) :
     (A.map (SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 1).op).app (op T) x = x.face 0 := by
   have h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 1) 1 = SimplexCategory.δ 0 := by
@@ -588,6 +839,11 @@ theorem vert_zero {A : Spc} {T : Scheme.{0}} (x : Sx A 1 T) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 0) 0 = 𝟙 _`. Use extensionality with `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem vert_self {A : Spc} {T : Scheme.{0}} (x : Sx A 0 T) :
     (A.map (SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 0) 0).op).app (op T) x = x := by
   have h : SimplexCategory.const (SimplexCategory.mk 0) (SimplexCategory.mk 0) 0 = 𝟙 _ := by
@@ -597,12 +853,22 @@ theorem vert_self {A : Spc} {T : Scheme.{0}} (x : Sx A 0 T) :
   rw [h]
   simp
 
+/- English proof (translation)
+Rewrite using `[Functor.map_comp, Cochain.ofHom_comp]`. Conclude with `Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ (zero_add n)`.
+-/
 theorem pull_pull {D E E' : Spc} {I : Cx (ZMod q)} (a : D ⟶ E) (b : E ⟶ E') {n : ℤ} (θ : Cochain ((chains (ZMod q)).obj E') I n) :
     (Cochain.ofHom ((chains (ZMod q)).map (a ≫ b))).comp θ (zero_add n) =
       (Cochain.ofHom ((chains (ZMod q)).map a)).comp ((Cochain.ofHom ((chains (ZMod q)).map b)).comp θ (zero_add n)) (zero_add n) := by
   rw [Functor.map_comp, Cochain.ofHom_comp]
   exact Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ (zero_add n)
 
+/- English proof (translation)
+Establish `hA` using `inv_map (q := q) f hX`. Establish `e : (fun (U : Scheme.{0}) (x : Sx A 1 U) => lineUnit (pr q) (x.map (Wmap w hA h.1))) = fun (U : Scheme.{0}) (x : Sx A 1 U) => lineUnit L (x.map f)`. Use function extensionality and compare the values at `U x`. Establish `a0 : (x.map (Wmap w hA h.1)).1 0 = w U (x.face 1)` using `congrArg (w U) (vert_one x)`. Establish `a1 : (x.map (Wmap w hA h.1)).1 1 = w U (x.face 0)` using `congrArg (w U) (vert_zero x)`.
+
+Establish `t : lineUnit L (x.map f) * w U (x.face 0) = w U (x.face 1)` using `h.2 U x`. Rewrite using `[lineUnit_pr, a0, a1, ← t, mul_div_cancel_right]`. Establish `c2 : IsC q (fun (U : Scheme.{0}) (x : Sx A 1 U) => lineUnit (pr q) (x.map (Wmap w hA h.1))) _` using `isC_pull (Wmap w hA h.1) hZ`. Rewrite `c2` using `[e]`. Use `isC_unique hA (ℓ := fun U x => lineUnit L (x.map f)) (fun g x => ?_) (isC_pull f hζ) c2` and prove the remaining obligations.
+
+Rewrite using `[← lineUnit_res, res_map]`.
+-/
 theorem pull_eq {A X : Spc} (f : A ⟶ X) (L : X ⟶ ofCat (glCat 1)) (w : ∀ T : Scheme.{0}, Sx A 0 T → (Γ(T, ⊤))ˣ)
     (hX : Inv q X) (h : IsTrivBy (f ≫ L) w)
     (Z : Cocycle ((chains (ZMod q)).obj (EG q)) (res _ (tw q 1)) 2) (hZ : IsC q (fun _ x => lineUnit (pr q) x) Z.1)
@@ -623,6 +889,25 @@ theorem pull_eq {A X : Spc} (f : A ⟶ X) (L : X ⟶ ofCat (glCat 1)) (w : ∀ T
   refine isC_unique hA (ℓ := fun U x => lineUnit L (x.map f)) (fun g x => ?_) (isC_pull f hζ) c2
   rw [← lineUnit_res, res_map]
 
+/- English proof (translation)
+Take `⟨Z, -, a, b, c⟩` from `(GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).1 (pr q) (inv_EG q)`. Establish `hZ : IsC q (fun _ x => lineUnit (pr q) x) Z.1` using `⟨a, b, c⟩`. Take `⟨Θ, hΘ0, hΘ1, hΘ⟩` from `exists_theta Z hZ`. Take `⟨ζ, hζ, z0, z1, z2⟩` from `(GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).1 L hX`. Establish `hζC : IsC q (fun _ x => lineUnit L x) ζ.1` using `⟨z0, z1, z2⟩`.
+
+Take `⟨κ, hκc, k1, k2⟩` from `(GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).1 (Gq q) (tq q) (isUnit_Gq q)`. Establish `hA` using `inv_map (q := q) f hX`. Establish `hB` using `inv_map (q := q) g hX`. Set `V₁` to `Wmap w₁ hA h₁.1`. Set `V₂` to `Wmap w₂ hB h₂.1`.
+
+Take `⟨τ, hτ⟩` from `mv_core Z hZ Θ hΘ0 hΘ1 κ.1 k2 k1 (pullback.fst f g ≫ V₁) (pullback.snd f g ≫ V₂) u (by`. Introduce `T y`. Establish `a1 : (y.map (pullback.fst f g ≫ V₁)).1 0 = w₁ T (y.map (pullback.fst f g))` using `congrArg (w₁ T) (vert_self (y.map (pullback.fst f g)))`. Establish `a2 : (y.map (pullback.snd f g ≫ V₂)).1 0 = w₂ T (y.map (pullback.snd f g))` using `congrArg (w₂ T) (vert_self (y.map (pullback.snd f g)))`. Rewrite using `[a1, a2, div_eq_mul_inv]`.
+
+Conclude with `hu T y)`. Set `zc` to `zcomp (Cocycle.ofHom ((chains (ZMod q)).map u)) κ (zero_add 1)`. Establish `hzc : δ 1 2 zc.1 = 0` using `(Cocycle.mem_iff 1 2 (by norm_num) _).1 zc.2`. Set `γ : Cocycle ((chains (ZMod q)).obj (pullback f g)) (res _ (tw q 1)) 1` to `Cocycle.mk (zc.1 + δ 0 1 τ) 2 (by norm_num) (by rw [δ_add, hzc, δ_δ, add_zero])`. Establish `hγ : CohomologyClass.mk γ = CohomologyClass.mk zc`.
+
+Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Use `⟨0, by norm_num, τ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `δ 0 1 τ = (zc.1 + δ 0 1 τ) - zc.1`. Normalize the expressions using the abelian group laws. Establish `hd : ∀ {E : Spc} (V : E ⟶ EG q), δ 1 2 ((Cochain.ofHom ((chains (ZMod q)).map V)).comp Θ (zero_add 1)) = -(Cochain.ofHom ((chains (ZMod q)).map V)).comp Z.1 (zero_add 2)`.
+
+Introduce `E V`. Rewrite using `[δ_ofHom_comp, hΘ, Cochain.comp_neg]`. Use `⟨γ, -ζ, (Cochain.ofHom ((chains (ZMod q)).map V₁)).comp Θ (zero_add 1), (Cochain.ofHom ((chains (ZMod q)).map V₂)).comp Θ (zero_add 1), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ]`. Express the relevant statement in the definitionally equal form `_ = pull _ u _ _ (kum q (tq q))`.
+
+Rewrite using `[← hκc]`. Both sides reduce to the same expression. Conclude with `(CohomologyClass.mk_neg ζ).trans (congrArg Neg.neg hζ)`. Rewrite using `[← pull_pull, ← pull_pull]`. Conclude with `hτ`.
+
+Use `(hd V₁).trans ?_` and prove the remaining obligations. Rewrite using `[← pull_eq f L w₁ hX h₁ Z hZ ζ hζC]`. Conclude with `(Cochain.comp_neg _ _ _).symm`. Use `(hd V₂).trans ?_` and prove the remaining obligations. Rewrite using `[← pull_eq g L w₂ hX h₂ Z hZ ζ hζC]`.
+
+Conclude with `(Cochain.comp_neg _ _ _).symm`.
+-/
 theorem mv_main (q : ℕ) [NeZero q] {A B X : Spc} (f : A ⟶ X) (g : B ⟶ X) (L : X ⟶ ofCat (glCat 1))
     (w₁ : ∀ T : Scheme.{0}, Sx A 0 T → (Γ(T, ⊤))ˣ) (w₂ : ∀ T : Scheme.{0}, Sx B 0 T → (Γ(T, ⊤))ˣ)
     (u : pullback f g ⟶ sch.obj (Gq q)) (hX : Inv q X) (h₁ : IsTrivBy (f ≫ L) w₁) (h₂ : IsTrivBy (g ≫ L) w₂)
@@ -680,6 +965,9 @@ end Final
 
 end UpperTheory.MayerVietorisKummerChernClass
 
+/- English proof (translation)
+Introduce `q _ A B X f g L w₁ w₂ u hX _ h₁ h₂ hu`. Conclude with `Or.inr (UpperTheory.MayerVietorisKummerChernClass.mv_main q f g L w₁ w₂ u hX h₁ h₂ hu)`.
+-/
 theorem UpperTheory.kummer_cocycle_mayerVietoris_of_cover :
     ∀ (q : ℕ) [NeZero q] {A B X : Spc} (f : A ⟶ X) (g : B ⟶ X) (L : X ⟶ ofCat (glCat 1)) (w₁ : ∀ T : Scheme.{0}, Sx A 0 T → (Γ(T, ⊤))ˣ)
         (w₂ : ∀ T : Scheme.{0}, Sx B 0 T → (Γ(T, ⊤))ˣ) (u : pullback f g ⟶ sch.obj (Gq q)), Inv q X → Cover2 (ZMod q) f g →

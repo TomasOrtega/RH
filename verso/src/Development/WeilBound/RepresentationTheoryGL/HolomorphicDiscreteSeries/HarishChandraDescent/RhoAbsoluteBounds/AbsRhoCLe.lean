@@ -9,6 +9,11 @@ namespace PositivityTheory.RgHe3.DropRoots
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Unfold `rhoC`. Establish `h1 : ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) ≤ n`. Conclude with `(card_filter_le _ _).trans (by simp)` after adjusting the coercions. Establish `h2 : ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ) ≤ n`. Conclude with `(card_filter_le _ _).trans (by simp)` after adjusting the coercions.
+
+Establish `h3 : (0 : ℝ) ≤ ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ)` using `Nat.cast_nonneg _`. Establish `h4 : (0 : ℝ) ≤ ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_rhoC_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| ≤ (n : ℝ) / 2 := by
   unfold rhoC
   have h1 : ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) ≤ n := by
@@ -20,6 +25,9 @@ theorem abs_rhoC_le {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| �
   rw [abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Simplify using `[dot, root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem dot_root {n : ℕ} (x : Fin n → ℝ) {a b : Fin n} (hab : a ≠ b) : dot x (root a b) = x a - x b := by
   simp [dot, root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]
 
@@ -29,6 +37,13 @@ namespace PositivityTheory.RgHe3
 
 open ReciprocityTheory.ChartRestriction.DS PositivityTheory.RgHe3.DropRoots
 
+/- English proof (translation)
+Introduce `n ε L a b hab`. Unfold `casValK`. Establish `e : L - root a b + rhoC ε = (L + rhoC ε) - root a b`. Use function extensionality and compare the values at `c`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, nsq_sub', nsq_root hab, dot_root _ hab]`. Establish `h1` using `abs_rhoC_le ε a`. Establish `h2` using `abs_rhoC_le ε b`. Simplify using `only [Pi.add_apply]`.
+
+Rewrite `h1`, `h2` using `[abs_le]`. Combine the linear relations using `[h1.1, h1.2, h2.1, h2.2]`.
+-/
 theorem drop_holds : Drop := by
   intro n ε L a b hab
   unfold casValK

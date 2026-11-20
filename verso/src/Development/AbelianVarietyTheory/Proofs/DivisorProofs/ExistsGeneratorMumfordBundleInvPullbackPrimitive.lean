@@ -15,16 +15,25 @@ open GlobalTheory.CechPic
 
 variable {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `h` using `lam_mul_left hL hΘ x⁻¹ x z`. Rewrite `h` using `[inv_mul_cancel, lam_one_left]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`.
+-/
 theorem lam_inv_left {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x z : T ⟶ G) :
     lam (cls L hL) x⁻¹ z = - lam (cls L hL) x z := by
   have h := lam_mul_left hL hΘ x⁻¹ x z
   rw [inv_mul_cancel, lam_one_left] at h
   exact eq_neg_of_add_eq_zero_left h.symm
 
+/- English proof (translation)
+Rewrite using `[lam_inv_left hL hΘ, lam_comm, lam_inv_left hL hΘ, lam_comm, neg_neg]`.
+-/
 theorem lam_inv_inv {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x y : T ⟶ G) :
     lam (cls L hL) x⁻¹ y⁻¹ = lam (cls L hL) x y := by
   rw [lam_inv_left hL hΘ, lam_comm, lam_inv_left hL hΘ, lam_comm, neg_neg]
 
+/- English proof (translation)
+Simplify using `only [lam, ← pull_comp, ← Over.comp_left, ← Hom.inv_def, mul_inv, inv_one]`.
+-/
 theorem lam_pull_inv (c : Pic G.left) (x y : T ⟶ G) :
     lam (pull (ι[G]).left c) x y = lam c x⁻¹ y⁻¹ := by
   simp only [lam, ← pull_comp, ← Over.comp_left, ← Hom.inv_def, mul_inv, inv_one]
@@ -34,6 +43,13 @@ end GlobalTheory.PolDeg.NegPrim
 namespace GlobalTheory.PolDeg.NegPrim
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `A _ _ _ B _ _ M cub _`. Establish `hΘ : ∃ t : LB.Gen (Theta B M.L), t.IsGen` using `⟨cub.t, cub.isGen⟩`. Establish `hN : (LB.LinComb M.L (K` using `Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1]).IsLB := LB.isLB_linComb M.isLB _ _`. Establish `hΛ : (abelian₂ B (LB.LinComb M.L (K` using `Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1])).IsLB := LB.isLB_linComb hN _ _`. Use `(cls_eq_zero_iff hΛ).1 ?_` and prove the remaining obligations.
+
+Establish `hc : cls _ hN = pull (ι[B]).left (cls M.L M.isLB) - cls M.L M.isLB`. Rewrite using `[cls_linComb M.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id, sub_eq_add_neg]`. Use `(cls_cube_two hN (fst B B) (snd B B) hΛ).trans ?_` and prove the remaining obligations. Establish `e : ∀ (c c' : Pic B.left) (x y : B ⊗ B ⟶ B), lam (c - c') x y = lam c x y - lam c' x y` using `fun c c' x y => by`.
+
+Simplify using `only [lam, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[hc, e, lam_pull_inv, lam_inv_inv M.isLB hΘ, sub_self]`.
+-/
 theorem lam_negPull_sub_isTrivial : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (M : RigLB B) (_ : CubicalStr B M), IsAbelianScheme B → ∃ u : LB.Gen (abelian₂ B (LB.LinComb M.L (K := Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1])), u.IsGen := by
   intro A _ _ _ B _ _ M cub _
   have hΘ : ∃ t : LB.Gen (Theta B M.L), t.IsGen := ⟨cub.t, cub.isGen⟩

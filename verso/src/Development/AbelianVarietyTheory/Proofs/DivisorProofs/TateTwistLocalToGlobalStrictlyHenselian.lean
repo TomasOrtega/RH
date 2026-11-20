@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `q Y X S f p _ _ _ _ _ i h`. Conclude with `GlobalTheory.T.etaleEquivalence_scheme_of_strictlyHenselian_stalks (ZMod q) (tw q i) (GlobalTheory.T.tateTwist_finitary q i) Y X S f p (fun O _ s hs => h O s hs.1)`.
+-/
 theorem tateTwist_local_to_global_strictlyHenselian : B3 := by
   intro q Y X S f p _ _ _ _ _ i h
   exact GlobalTheory.T.etaleEquivalence_scheme_of_strictlyHenselian_stalks (ZMod q) (tw q i) (GlobalTheory.T.tateTwist_finitary q i) Y X S f p

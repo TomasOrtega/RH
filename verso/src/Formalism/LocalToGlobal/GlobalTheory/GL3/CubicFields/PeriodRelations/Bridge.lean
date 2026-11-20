@@ -17,12 +17,21 @@ open Formalism.BasicNotions (D7)
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity (IsLat jL Uniformization CMTransitive LinkPer KroneckerLimit DedekindFactor)
 open Formalism.MainNotions.TaylorLogMetric (lamConj lamOf embT meanLogOm DataIn tor0 IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice per22 logOmVal)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem br_area_eq (Λ : AddSubgroup ℂ) : Formalism.MainNotions.TaylorLogMetric.area Λ = area Λ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem br_jL_eq (Λ : AddSubgroup ℂ) : jL Λ = 1728 * g2 Λ ^ 3 / discr Λ := rfl
 
 def brPhi (D : D7) : D.host.K →+* ℂ := D.host.φ₀.comp (algebraMap D.host.K D.host.E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem br_lamOf_eq (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     lamOf D cc δ = latI (brPhi D) cc δ := rfl
 

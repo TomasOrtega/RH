@@ -13,38 +13,70 @@ private def Bd (c : ValueGroupWithZero E) (M : Matrix (Fin n) (Fin n) E) : Prop 
 
 variable {a b c : ValueGroupWithZero E} {M N : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).trans hab`.
+-/
 private theorem Bd.mono (h : Bd a M) (hab : a ≤ b) : Bd b M := fun i j => (h i j).trans hab
 
+/- English proof (translation)
+Introduce `i j` and use `by simp`.
+-/
 private theorem Bd.zero : Bd a (0 : Matrix (Fin n) (Fin n) E) := fun i j => by simp
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_add_le _ (h i j) (h' i j)`.
+-/
 private theorem Bd.add (h : Bd a M) (h' : Bd a N) : Bd a (M + N) := fun i j =>
   Valuation.map_add_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `Valuation.map_sub_le _ (h i j) (h' i j)`.
+-/
 private theorem Bd.sub (h : Bd a M) (h' : Bd a N) : Bd a (M - N) := fun i j =>
   Valuation.map_sub_le _ (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] refine Valuation.map_sum_le _ fun k _ => ?_ rw [map_mul] exact mul_le_mul' (h i k) (h' k j)`.
+-/
 private theorem Bd.mul (h : Bd a M) (h' : Bd b N) : Bd (a * b) (M * N) := fun i j => by
   rw [Matrix.mul_apply]
   refine Valuation.map_sum_le _ fun k _ => ?_
   rw [map_mul]
   exact mul_le_mul' (h i k) (h' k j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, map_mul] exact mul_le_mul' le_rfl (h i j)`.
+-/
 private theorem Bd.smul (h : Bd a M) (x : E) : Bd (valuation E x * a) (x • M) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul, map_mul]
   exact mul_le_mul' le_rfl (h i j)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using Bd.zero`. Consider the case `succ m ih => rw [succ_nsmul]`. Conclude with `ih.add h`.
+-/
 private theorem Bd.nsmul (h : Bd a M) (m : ℕ) : Bd a (m • M) := by
   induction m with
   | zero => simpa using Bd.zero
   | succ m ih => rw [succ_nsmul]; exact ih.add h
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs <;> simp`.
+-/
 private theorem Bd.one : Bd 1 (1 : Matrix (Fin n) (Fin n) E) := fun i j => by
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `using (h.mono ha).add Bd.one`.
+-/
 private theorem Bd.of_sub_one (h : Bd a (M - 1)) (ha : a ≤ 1) : Bd 1 M := by
   simpa using (h.mono ha).add Bd.one
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using Bd.zero`. Consider the case `succ m ih`. Establish `e : M ^ (m + 1) - 1 = (M ^ m - 1) * M + (M - 1)`. Rewrite using `[pow_succ]`.
+
+Use `noncomm_ring`. Rewrite using `[e]`. Conclude with `Bd.add (by simpa using ih.mul (h.of_sub_one ha)) h`.
+-/
 private theorem Bd.pow_sub_one (h : Bd a (M - 1)) (ha : a ≤ 1) (m : ℕ) : Bd a (M ^ m - 1) := by
   induction m with
   | zero => simpa using Bd.zero
@@ -54,6 +86,13 @@ private theorem Bd.pow_sub_one (h : Bd a (M - 1)) (ha : a ≤ 1) (m : ℕ) : Bd 
     rw [e]
     exact Bd.add (by simpa using ih.mul (h.of_sub_one ha)) h
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using Bd.zero`. Consider the case `succ m ih`. Establish `e : M ^ (m + 1) - N ^ (m + 1) - (m + 1) • (M - N) = M * (M ^ m - N ^ m - m • (M - N)) + (M - 1) * (m • (M - N)) + (M - N) * (N ^ m - 1)`. Rewrite using `[pow_succ', pow_succ', succ_nsmul]`.
+
+Generalize the expression as in `m • (M - N) = D`. Use `noncomm_ring`. Rewrite using `[e]`. Use `Bd.add (Bd.add ?_ (hM.mul (hd.nsmul m))) ?_` and prove the remaining obligations. Simplify using `using (hM.of_sub_one ha).mul ih`.
+
+Rewrite using `[mul_comm a b]`. Conclude with `hd.mul (hN.pow_sub_one ha m)`.
+-/
 private theorem Bd.pow_sub_pow (hM : Bd a (M - 1)) (hN : Bd a (N - 1)) (ha : a ≤ 1) (hd : Bd b (M - N)) (m : ℕ) :
     Bd (a * b) (M ^ m - N ^ m - m • (M - N)) := by
   induction m with
@@ -70,6 +109,9 @@ private theorem Bd.pow_sub_pow (hM : Bd a (M - 1)) (hN : Bd a (N - 1)) (ha : a �
     · rw [mul_comm a b]
       exact hd.mul (hN.pow_sub_one ha m)
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Nat.cast_succ]`. Conclude with `Valuation.map_add_le _ ih (by simp)`.
+-/
 private theorem val_nat_le_one (q : ℕ) : valuation E (q : E) ≤ 1 := by
   induction q with
   | zero => simp
@@ -81,6 +123,11 @@ end Bound
 
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Assume the negation of the conclusion as `hne`. Establish `hv : valuation E (M i j) ≠ 0` using `by simpa using hne`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hv (by simpa using h 0 i j)`. Use `haveI : MulArchimedean (ValueGroupWithZero E) := ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨k, hk⟩` from `exists_pow_lt₀ hρ (Units.mk0 (valuation E (M i j) / c) (div_ne_zero hv hc))`. Rewrite `hk` using `[Units.val_mk0, lt_div_iff₀ (zero_lt_iff.mpr hc)]`. Conclude with `absurd (h k i j) (not_le.mpr hk)`.
+-/
 private theorem eq_zero_of_bd {ρ c : ValueGroupWithZero E} (hρ : ρ < 1) {M : Matrix (Fin n) (Fin n) E}
     (h : ∀ k : ℕ, Bd (ρ ^ k * c) M) : M = 0 := by
   ext i j
@@ -94,11 +141,33 @@ private theorem eq_zero_of_bd {ρ c : ValueGroupWithZero E} (hρ : ρ < 1) {M : 
   rw [Units.val_mk0, lt_div_iff₀ (zero_lt_iff.mpr hc)] at hk
   exact absurd (h k i j) (not_le.mpr hk)
 
+/- English proof (translation)
+Establish `h` using `isCompact_pi_infinite (s := fun _ : Fin n => {x : Fin n → E | ∀ j, x j ∈ {y | valuation E y ≤ c}}) fun _ => isCompact_pi_infinite fun _ => IsNonarchimedeanLocalField.isCompact_closedBall E c`. Conclude with `h`.
+-/
 private theorem isCompact_bd (c : ValueGroupWithZero E) : IsCompact {M : Matrix (Fin n) (Fin n) E | Bd c M} := by
   have h := isCompact_pi_infinite (s := fun _ : Fin n => {x : Fin n → E | ∀ j, x j ∈ {y | valuation E y ≤ c}})
     fun _ => isCompact_pi_infinite fun _ => IsNonarchimedeanLocalField.isCompact_closedBall E c
   exact h
 
+/- English proof (translation)
+Establish `hq0 : 0 < valuation E (q : E)` using `lt_of_le_of_lt zero_le hr`. Establish `hq : (q : E) ≠ 0`. Introduce `h`. Simplify using `[h] at hq0`. Establish `hr1 : r ≤ 1` using `hr.le.trans (val_nat_le_one q)`.
+
+Use `haveI : T2Space E := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace E`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := E)`. Use `infer_instance`. Use `set ρ := r / valuation E (q : E) with hρ`.
+
+Establish `hρ1 : ρ < 1` using `(div_lt_one₀ hq0).mpr hr`. Set `S : ℕ → Set (Matrix (Fin n) (Fin n) E)` to `fun k => {X | Bd r X} ∩ {X | Bd (ρ ^ k * (r * valuation E (q : E))) ((X + 1) ^ q - g)}`. Establish `hcl : ∀ k, IsClosed (S k)` using `fun k => (isCompact_bd r).isClosed.inter ((isCompact_bd (ρ ^ k * (r * valuation E (q : E)))).isClosed.preimage (f := fun X : Matrix (Fin n) (Fin n) E => (X + 1) ^ q - g) (by fun_prop))`. Establish `hanti : ∀ k, S (k + 1) ⊆ S k` using `fun k X hX => ⟨hX.1, Bd.mono hX.2 (mul_le_mul' (pow_le_pow_right_of_le_one' hρ1.le k.le_succ) le_rfl)⟩`. Establish `hne : ∀ k, (S k).Nonempty`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨0, Bd.zero, ?_⟩` and prove the remaining obligations. Use `(Bd.zero (n := n)).sub hg` as an intermediate fact.
+
+Simplify using `using this`. Consider the case `succ k ih`. Take `⟨X, hX, hX'⟩` from `ih`. Establish `hD : Bd (ρ ^ k * r) ((q : E)⁻¹ • ((X + 1) ^ q - g))`. Establish `h` using `Bd.smul hX' (q : E)⁻¹`.
+
+Rewrite `h` using `[map_inv₀, ← mul_assoc (ρ ^ k), mul_comm (ρ ^ k * r), inv_mul_cancel_left₀ hq0.ne']`. Then use the resulting hypothesis. Use `set D := (q : E)⁻¹ • ((X + 1) ^ q - g) with hDdef`. Establish `hqD : q • D = (X + 1) ^ q - g`. Rewrite using `[hDdef, ← Nat.cast_smul_eq_nsmul E, smul_inv_smul₀ hq]`. Establish `hXD : Bd r (X - D)` using `Bd.sub hX (hD.mono (by simpa using mul_le_mul' (pow_le_one' hρ1.le k) (le_refl r)))`.
+
+Use `⟨X - D, hXD, ?_⟩` and prove the remaining obligations. Establish `h` using `Bd.pow_sub_pow (M := X + 1) (N := X - D + 1) (a := r) (b := ρ ^ k * r) (by simpa using hX) (by simpa using hXD) hr1 (by simpa using hD) q`. Establish `e1 : X + 1 - (X - D + 1) = D` using `by abel`. Rewrite `h` using `[e1, hqD]`. Establish `h'` using `(Bd.zero (n := n)).sub h`.
+
+Establish `e2 : 0 - ((X + 1) ^ q - (X - D + 1) ^ q - ((X + 1) ^ q - g)) = (X - D + 1) ^ q - g` using `by abel`. Establish `e3 : r * (ρ ^ k * r) = ρ ^ (k + 1) * (r * valuation E (q : E))`. Establish `: ρ * valuation E (q : E) = r` using `div_mul_cancel₀ _ hq0.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h'` using `[e2, e3]`.
+
+Conclude with `h'`. Take `⟨X, hX⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S hanti hne ((isCompact_bd r).of_isClosed_subset (hcl 0) Set.inter_subset_left) hcl`. Rewrite `hX` using `[Set.mem_iInter]`. Conclude with `⟨X + 1, by simpa using (hX 0).1, sub_eq_zero.mp (eq_zero_of_bd hρ1 fun k => (hX k).2)⟩`.
+-/
 private theorem exists_root (q : ℕ) (r : ValueGroupWithZero E) (hr : r < valuation E (q : E))
     (g : Matrix (Fin n) (Fin n) E) (hg : Bd (r * valuation E (q : E)) (g - 1)) :
     ∃ u : Matrix (Fin n) (Fin n) E, Bd r (u - 1) ∧ u ^ q = g := by
@@ -156,6 +225,15 @@ private theorem exists_root (q : ℕ) (r : ValueGroupWithZero E) (hr : r < valua
   rw [Set.mem_iInter] at hX
   exact ⟨X + 1, by simpa using (hX 0).1, sub_eq_zero.mp (eq_zero_of_bd hρ1 fun k => (hX k).2)⟩
 
+/- English proof (translation)
+Establish `hq0 : 0 < valuation E (q : E)` using `lt_of_le_of_lt zero_le hr`. Establish `hq : (q : E) ≠ 0`. Introduce `h`. Simplify using `[h] at hq0`. Establish `hr1 : r ≤ 1` using `hr.le.trans (val_nat_le_one q)`.
+
+Establish `hρ1 : r / valuation E (q : E) < 1` using `(div_lt_one₀ hq0).mpr hr`. Use `sub_eq_zero.mp (eq_zero_of_bd (c := r) hρ1 fun k => ?_)` and prove the remaining obligations. Proceed by induction on `k with`. Consider the case `zero => simpa using hA.sub hC`. Consider the case `succ k ih`.
+
+Establish `h1` using `Bd.pow_sub_pow hA hC hr1 ih q`. Rewrite `h1` using `[h, sub_self]`. Establish `h2` using `((Bd.zero (n := n)).sub h1).smul (q : E)⁻¹`. Rewrite `h2` using `[zero_sub, zero_sub, neg_neg, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hq, map_inv₀]`. Use `h2.mono (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, div_eq_mul_inv]`. The two sides agree by associativity and commutativity.
+-/
 private theorem root_unique (q : ℕ) (r : ValueGroupWithZero E) (hr : r < valuation E (q : E))
     {A C : Matrix (Fin n) (Fin n) E} (hA : Bd r (A - 1)) (hC : Bd r (C - 1)) (h : A ^ q = C ^ q) : A = C := by
   have hq0 : 0 < valuation E (q : E) := lt_of_le_of_lt zero_le hr
@@ -179,6 +257,11 @@ private theorem root_unique (q : ℕ) (r : ValueGroupWithZero E) (hr : r < valua
 end UpperTheory.ConvolutionTheory.Loc.RootExistence
 
 open UpperTheory.ConvolutionTheory.Loc.RootExistence in
+/- English proof (translation)
+Introduce `E _ _ _ _ n q r hr g hg`. Establish `hq : q ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hr`. Take `⟨u, hu, huq⟩` from `exists_root q r hr (g : Matrix (Fin n) (Fin n) E) hg`.
+
+Establish `hunit : IsUnit u` using `(isUnit_pow_iff hq).mp (huq ▸ g.isUnit)`. Take `⟨w, rfl⟩` from `hunit`. Use `⟨w, ⟨hu, Units.ext (by simpa using huq)⟩, fun w' hw' => Units.ext ?_⟩` and prove the remaining obligations. Use `root_unique q r hr hw'.1 hu ?_` and prove the remaining obligations. Rewrite using `[huq, ← hw'.2, Units.val_pow_eq_pow_val]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Loc.rootEx :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (q : ℕ) (r : ValueGroupWithZero E), r < valuation E (q : E) →
       ∀ g ∈ ball n (r * valuation E (q : E)), ∃! u, u ∈ ball n r ∧ u ^ q = g := by

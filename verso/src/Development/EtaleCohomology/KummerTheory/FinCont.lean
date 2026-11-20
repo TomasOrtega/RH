@@ -16,37 +16,88 @@ import Development.EtaleCohomology.KummerTheory.LimOfIso
 import Development.EtaleCohomology.KummerTheory.ContCut
 
 namespace LateralTheory.Fin.Cont
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.FivePf.Five_of` to reduce the goal to its premises.
+-/
 theorem etale_continuity_by_five_lemma_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Five := by
   apply LateralTheory.KummerTheory.FivePf.Five_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.IndPf.Ind_of` to reduce the goal to its premises.
+-/
 theorem etale_continuity_by_induction_on_cover_size_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Ind := by
   apply LateralTheory.KummerTheory.IndPf.Ind_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.BCPf.BC_of` to reduce the goal to its premises.
+-/
 theorem etale_continuity_commutes_with_base_change_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.BC := by
   apply LateralTheory.KummerTheory.BCPf.BC_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.GluePf.Glue_of` to reduce the goal to its premises.
+-/
 theorem etale_continuity_glues_along_open_covers_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Glue := by
   apply LateralTheory.KummerTheory.GluePf.Glue_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.FlasquePf.Flasque_of` to reduce the goal to its premises.
+-/
 theorem etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Flasque := by
   apply LateralTheory.KummerTheory.FlasquePf.Flasque_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.DictExist_of` to reduce the goal to its premises.
+-/
 theorem etale_kunneth_normalized_dictionary_exists_in_continuity_assembly : LateralTheory.KummerTheory.DictExist := by
   apply LateralTheory.KummerTheory.DictExist_of
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.NrmMk_of` to reduce the goal to its premises.
+-/
 theorem etale_kunneth_normalization_construction_valid_in_continuity_assembly : LateralTheory.KummerTheory.NrmMk := by
   apply LateralTheory.KummerTheory.NrmMk_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.DictNormal_of' <;> first | exact etale_kunneth_normalization_construction_valid_in_continuity_assembly`.
+-/
 theorem etale_kunneth_dictionary_normalized_in_continuity_assembly : LateralTheory.KummerTheory.DictNormal := by
   apply LateralTheory.KummerTheory.DictNormal_of' <;> first | exact etale_kunneth_normalization_construction_valid_in_continuity_assembly
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.DictZero_of` to reduce the goal to its premises.
+-/
 theorem etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly : LateralTheory.KummerTheory.DictZero := by
   apply LateralTheory.KummerTheory.DictZero_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.Dict_of' <;> first | exact etale_kunneth_normalized_dictionary_exists_in_continuity_assembly | exact etale_kunneth_dictionary_normalized_in_continuity_assembly | exact etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly`.
+-/
 theorem etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly : LateralTheory.KummerTheory.Dict := by
   apply LateralTheory.KummerTheory.Dict_of' <;> first | exact etale_kunneth_normalized_dictionary_exists_in_continuity_assembly | exact etale_kunneth_dictionary_normalized_in_continuity_assembly | exact etale_kunneth_dictionary_vanishes_on_zero_in_continuity_assembly
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.ContCut.Delta_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_continuity_glues_along_open_covers_in_continuity_assembly | exact etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly`.
+-/
 theorem etale_mayer_vietoris_connecting_map_compatible_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Delta := by
   apply LateralTheory.KummerTheory.ContCut.Delta_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_continuity_glues_along_open_covers_in_continuity_assembly | exact etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.ExactPf.Exact_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_continuity_glues_along_open_covers_in_continuity_assembly | exact etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly`.
+-/
 theorem etale_kunneth_colimit_sequence_exact_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Exact := by
   apply LateralTheory.KummerTheory.ExactPf.Exact_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_continuity_glues_along_open_covers_in_continuity_assembly | exact etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.MVnatPf.MVnat_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_mayer_vietoris_connecting_map_compatible_in_continuity_assembly | exact etale_kunneth_colimit_sequence_exact_in_continuity_assembly`.
+-/
 theorem etale_mayer_vietoris_sequence_natural_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.MVnat := by
   apply LateralTheory.KummerTheory.MVnatPf.MVnat_of <;> first | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly | exact etale_mayer_vietoris_connecting_map_compatible_in_continuity_assembly | exact etale_kunneth_colimit_sequence_exact_in_continuity_assembly
+/- English proof (translation)
+Apply `LateralTheory.KummerTheory.AffRingPf.AffRing_of` to reduce the goal to its premises.
+-/
 theorem etale_kunneth_continuity_for_affine_ring_colimits_in_continuity_assemb : LateralTheory.KummerTheory.ContCut.AffRing := by
   apply LateralTheory.KummerTheory.AffRingPf.AffRing_of
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.AffPf.Aff_of <;> first | exact etale_kunneth_continuity_for_affine_ring_colimits_in_continuity_assemb`.
+-/
 theorem etale_kunneth_continuity_on_affine_schemes_in_continuity_assembly : LateralTheory.KummerTheory.ContCut.Aff := by
   apply LateralTheory.KummerTheory.AffPf.Aff_of <;> first | exact etale_kunneth_continuity_for_affine_ring_colimits_in_continuity_assemb
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.KummerTheory.ContCut.goal_of <;> first | exact etale_continuity_by_five_lemma_in_continuity_assembly | exact etale_continuity_by_induction_on_cover_size_in_continuity_assembly | exact etale_continuity_commutes_with_base_change_in_continuity_assembly | exact et …`.
+-/
 theorem etale_kunneth_cohomology_continuous_under_limits_in_continuity_assembl : LateralTheory.KummerTheory.Cont := by
   apply LateralTheory.KummerTheory.ContCut.goal_of <;> first | exact etale_continuity_by_five_lemma_in_continuity_assembly | exact etale_continuity_by_induction_on_cover_size_in_continuity_assembly | exact etale_continuity_commutes_with_base_change_in_continuity_assembly | exact etale_continuity_glues_along_open_covers_in_continuity_assembly | exact etale_flasque_sheaf_colimit_acyclic_in_continuity_assembly | exact etale_mayer_vietoris_connecting_map_compatible_in_continuity_assembly | exact etale_kunneth_colimit_sequence_exact_in_continuity_assembly | exact etale_mayer_vietoris_sequence_natural_in_continuity_assembly | exact etale_kunneth_continuity_for_affine_ring_colimits_in_continuity_assemb | exact etale_kunneth_continuity_on_affine_schemes_in_continuity_assembly | exact etale_kunneth_dictionary_exists_for_sheaves_in_continuity_assembly
+/- English proof (translation)
+The claim follows from `etale_kunneth_cohomology_continuous_under_limits_in_continuity_assembl`.
+-/
 theorem intersectionNumber_baseChange : LateralTheory.KummerTheory.Cont := etale_kunneth_cohomology_continuous_under_limits_in_continuity_assembl
 end LateralTheory.Fin.Cont

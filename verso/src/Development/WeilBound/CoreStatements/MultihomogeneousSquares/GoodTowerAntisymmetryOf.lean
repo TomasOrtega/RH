@@ -17,6 +17,9 @@ def GoodTowerAntisymmetry : Prop :=
     (T : RootTower (CMType H) (D.p + D.q)) (o : GoodOrigin Y T) (II : IntersectionSystem),
     o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → T.I8 II (hhFl (CMType H) (D.p + D.q) II)
 
+/- English proof (translation)
+Introduce `hC hG hW E _ _ _ H D Xo l c Y _ T o II hE hII hp hq`. Take `⟨-, hne, -⟩` from `GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H`. Conclude with `hI8 GlobalTheory.T.antisymmetry' GlobalTheory.T.agreement_positive hG.2.2.2.2.2.2.2.2.2.1 II hII _ _ T _ (sq_of (tie_of hX hAlg hHt hSing hBase) hCmp hC hG hW E H D Xo l c Y T o II hE hII hp hq)`.
+-/
 theorem good_tower_antisymmetry_of (hX : StX) (hAlg : StAlg) (hHt : StHt) (hSing : StSing) (hBase : StBase) (hCmp : StCmp)
     (hI8 : AntisymmetryFibreSquares) : GoodTowerAntisymmetry := by
   intro hC hG hW E _ _ _ H D Xo l c Y _ T o II hE hII hp hq

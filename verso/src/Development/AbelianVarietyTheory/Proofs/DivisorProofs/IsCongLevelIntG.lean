@@ -86,12 +86,21 @@ structure IsExact (P : Pair D cc δ t0 Q) (X : Data P) (r : D.host.E) : Prop whe
   read : Reads X.ψ X.θ X.rkA X.rkB cc δ r P.F X.vac
   const : X.c₁ = ∏ τ, period D δ r τ ^ (P.a * P.n τ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.weil.std, h.inf, h.std.frame.gramA, h.std.frame.gramB, P.crv, h.scale⟩`.
+-/
 theorem IsExact.setup {P : Pair D cc δ t0 Q} {X : Data P} {r : D.host.E} (h : IsExact P X r) :
     Setup X.ψ X.θ X.A X.B cc δ r :=
   ⟨h.weil.std, h.inf, h.std.frame.gramA, h.std.frame.gramB, P.crv, h.scale⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ hk _ => hk⟩`.
+-/
 theorem isCongLevel_intG (N : ℕ) : IsCongLevel (intG D N) := ⟨1, one_pos, fun _ hk _ => hk⟩
 
+/- English proof (translation)
+Simplify using `[IsScale]`.
+-/
 theorem isScale_one (D : D7) : IsScale D D.host.ccK 1 := by simp [IsScale]
 
 end GlobalTheory.NormExact

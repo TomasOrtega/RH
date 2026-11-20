@@ -19,10 +19,18 @@ namespace PositivityTheory.Rg.Sw.Glob.OG
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `mat at e`. Conclude with `Subtype.ext (Units.ext e)`.
+-/
 theorem g_ext {n : ℕ} {g h : G D n} (e : mat g = mat h) : g = h := by
   unfold mat at e
   exact Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.AdForm.RatMove.realPt_spec hθ (fun τ' => if τ' = τ then z - compAt θ τ x0 else 0)`. Use `⟨x0 + GlobalTheory.AdForm.realPt θ (fun τ' => if τ' = τ then z - compAt θ τ x0 else 0), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealParamSize.compAt_add, h2]`. Simplify using the standard rewrite rules. Introduce `τ' h`.
+
+Rewrite using `[GlobalTheory.RealParamSize.compAt_add, h2]`. Simplify using `[h]`. Rewrite using `[Matrix.map_add _ (map_add (finPart D)), h1, add_zero]`.
+-/
 theorem exists_slice {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (x0 : Mx D m n)
     (z : Matrix (Fin m) (Fin n) ℂ) : ∃ x : Mx D m n, compAt θ τ x = z ∧
       (∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x0) ∧ x.map (finPart D) = x0.map (finPart D) := by
@@ -36,11 +44,19 @@ theorem exists_slice {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.wha
     simp [h]
   · rw [Matrix.map_add _ (map_add (finPart D)), h1, add_zero]
 
+/- English proof (translation)
+Simplify using `only [tens, hx, Matrix.nonsing_inv_mul_cancel_left _ _ hfr]`.
+-/
 theorem tens_at {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) {fr : Matrix (Fin m) (Fin m) ℂ} (hfr : IsUnit fr.det)
     (f : (Fin m → Fin n → ℂ) → ℂ) (Ψ : Mx D m n → ℂ) (x : Mx D m n) (u : Matrix (Fin m) (Fin n) ℂ)
     (hx : compAt θ τ x = fr * u) : tens θ τ fr f Ψ x = f u * Ψ x := by
   simp only [tens, hx, Matrix.nonsing_inv_mul_cancel_left _ _ hfr]
 
+/- English proof (translation)
+Use `⟨fun _ _ _ _ => rfl, fun f _ => ?_⟩` and prove the remaining obligations. Establish `: tens θ τ fr f (0 : Mx D m n → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem awayCls_zero {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) :
     AwayCls θ τ fr (0 : Mx D m n → ℂ) := by
   refine ⟨fun _ _ _ _ => rfl, fun f _ => ?_⟩
@@ -50,6 +66,9 @@ theorem awayCls_zero {θ : InfFam D} {m n : ℕ} (τ : D.what₂.Tau) (fr : Matr
   rw [this]
   exact zero_mem _
 
+/- English proof (translation)
+Set `u : GL (Fin n ⊕ Fin n) ℂ` to `⟨nU b, nU (-b), by simp [nU, Matrix.fromBlocks_multiply], by simp [nU, Matrix.fromBlocks_multiply]⟩`. Establish `hu : u ∈ GR n` using `by show InG (nU b)`. Simplify using `only [InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+-/
 theorem exists_nU (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) : ∃ y : GR n, mR y = nU b := by
   let u : GL (Fin n ⊕ Fin n) ℂ :=
     ⟨nU b, nU (-b), by simp [nU, Matrix.fromBlocks_multiply], by simp [nU, Matrix.fromBlocks_multiply]⟩
@@ -59,25 +78,40 @@ theorem exists_nU (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) : �
     simp
   exact ⟨⟨u, hu⟩, rfl⟩
 
+/- English proof (translation)
+Conclude with `GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d`.
+-/
 theorem component_block_matrix (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (a b c d : Mx D n n) :
     compAt θ τ (blk4 a b c d) = blk4 (compAt θ τ a) (compAt θ τ b) (compAt θ τ c) (compAt θ τ d) := by
   exact GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d
 
+/- English proof (translation)
+Conclude with `GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d`.
+-/
 theorem finite_part_block_matrix {n : ℕ} (a b c d : Mx D n n) :
     (blk4 a b c d).map (finPart D) = blk4 (a.map (finPart D)) (b.map (finPart D)) (c.map (finPart D)) (d.map (finPart D)) := by
   exact GlobalTheory.StdUnn.Frame.block_matrix_map _ a b c d
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[← Matrix.fromBlocks_neg]`. Both sides reduce to the same expression.
+-/
 theorem neg_block_matrix {R : Type} [CommRing R] {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) :
     -blk4 a b c d = blk4 (-a) (-b) (-c) (-d) := by
   unfold blk4
   rw [← Matrix.fromBlocks_neg]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, ← GlobalTheory.StdUnn.Frame.block_matrix_one, neg_block_matrix]`. Simplify using the standard rewrite rules.
+-/
 theorem jsq {R : Type} [CommRing R] {n : ℕ} :
     (blk4 (0 : Matrix (Fin n) (Fin n) R) 1 (-1) 0) * blk4 0 1 (-1) 0 = -1 := by
   rw [GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, ← GlobalTheory.StdUnn.Frame.block_matrix_one, neg_block_matrix]
   simp
 
+/- English proof (translation)
+Establish `h1 : mat w⁻¹ * mat w = 1` using `by show mat (w⁻¹ * w) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2 : mat w * (-mat w) = 1` using `by rw [mul_neg, hw, jsq, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mat_inv_w {n : ℕ} (w : G D n) (hw : mat w = blk4 0 1 (-1) 0) : mat w⁻¹ = -blk4 0 1 (-1) 0 := by
   have h1 : mat w⁻¹ * mat w = 1 := by
     show mat (w⁻¹ * w) = 1

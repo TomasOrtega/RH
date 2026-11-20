@@ -16,11 +16,19 @@ open GlobalTheory.RowsOrb
 section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.Xa FlagG.Xa`. Establish `h : (fun b : Fin r => (GlobalTheory.TypeAsm.frF F hT).e b.castSucc) = F.e` using `funext fun b => GlobalTheory.TypeAsm.fv_cast F b`. Rewrite using `[h]`.
+-/
 theorem frF_Xa' (F : FlagG S r T) (hT : T ≠ 0) (k : ℕ) : (GlobalTheory.TypeAsm.frF F hT).Xa k = F.Xa k := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.Xa FlagG.Xa
   have h : (fun b : Fin r => (GlobalTheory.TypeAsm.frF F hT).e b.castSucc) = F.e := funext fun b => GlobalTheory.TypeAsm.fv_cast F b
   rw [h]
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X`. Rewrite using `[frF_Xa']`. Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem frF_X' (F : FlagG S r T) (hT : T ≠ 0) : (GlobalTheory.TypeAsm.frF F hT).X = F.X := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.X
   rw [frF_Xa']
@@ -32,11 +40,22 @@ end Gen
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+The claim follows from `frF_X' _ _`.
+-/
 theorem fixedFrameOfWord_X : (GlobalTheory.TypeAsm.F0 X u).X = (X.Fu u).X := frF_X' _ _
 
+/- English proof (translation)
+Rewrite using `[FlagG.X, X.Fu_e]`.
+-/
 theorem FuX_eq : (X.Fu u).X = Submodule.span D.host.E (Set.range X.eX) := by
   rw [FlagG.X, X.Fu_e]
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite `hy` using `[FuX_eq]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`.
+
+Conclude with `(w.2 a).1`. Consider the case `zero => simp`. Consider the case `add y v _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h => simp [h]`.
+-/
 theorem Wb_le (w : Wb X) : (w : (VS D).V) ∈ perpS (VS D) (X.Fu u).X := by
   intro y hy
   rw [FuX_eq] at hy
@@ -52,9 +71,21 @@ def iotaL : Wb X →ₗ[D.host.E] WbQ D (X.Fu u) :=
   (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.nX D (X.Fu u)).mkQ ∘ₗ
     Submodule.inclusion (fun v hv => Wb_le X u ⟨v, hv⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaL_apply (w : Wb X) :
     iotaL X u w = Submodule.Quotient.mk ⟨(w : (VS D).V), Wb_le X u w⟩ := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `w hw`. Rewrite `hw` using `[LinearMap.mem_ker, iotaL_apply, Submodule.Quotient.mk_eq_zero]`. Establish `hwX : (w : (VS D).V) ∈ Submodule.span D.host.E (Set.range X.eX)`.
+
+Rewrite using `[← FuX_eq]`. Conclude with `hw`. Establish `h1` using `Formalism.L2.SG.Pf.pj_X (f := X.fY) X.ee X.ef _ hwX`. Rewrite `h1` using `[Formalism.L2.SG.Pf.pj_perp _ (fun a => w.2 a)]`. Conclude with `Subtype.ext h1`.
+
+Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with | H a => ?_`. Use `⟨⟨Formalism.L2.SG.Pf.pj X.eX X.fY (a : (VS D).V), fun b => ⟨Formalism.L2.SG.Pf.hT_e_pj X.ee X.ef _ b, Formalism.L2.SG.Pf.hT_f_pj X.ff X.ef _ b⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[iotaL_apply, PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.mk_eq_mk]`. Use `show Formalism.L2.SG.Pf.pj X.eX X.fY (a : (VS D).V) - (a : (VS D).V) ∈ (X.Fu u).X`.
+
+Establish `h` using `Formalism.L2.SG.Pf.pj_sub_mem (e := X.eX) (f := X.fY) (a : (VS D).V) (fun b => a.2 _ (by rw [FuX_eq]; exact Submodule.subset_span ⟨b, rfl⟩))`. Rewrite `h` using `[← FuX_eq]`. Conclude with `h`.
+-/
 theorem iotaL_bij : Function.Bijective (iotaL X u) := by
   constructor
   · rw [← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]
@@ -78,16 +109,36 @@ theorem iotaL_bij : Function.Bijective (iotaL X u) := by
 
 def iota : Wb X ≃ₗ[D.host.E] WbQ D (X.Fu u) := LinearEquiv.ofBijective (iotaL X u) (iotaL_bij X u)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_apply (w : Wb X) : iota X u w = Submodule.Quotient.mk ⟨(w : (VS D).V), Wb_le X u w⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_h (x y : Wb X) : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hWb D (X.Fu u) (iota X u x) (iota X u y) = hb X x y := rfl
 
+/- English proof (translation)
+Rewrite using `[iota_apply, PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.zbar]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(X.flagZVector u).symm`.
+-/
 theorem definiteInclusion_orthogonal_negativeVector : iota X u (zb X u) = PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.zbar D (X.Fu u) := by
   rw [iota_apply, PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.zbar]
   congr 1
   apply Subtype.ext
   exact (X.flagZVector u).symm
 
+/- English proof (translation)
+Rewrite using `[PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.mem_Mof, mem_Lmap, fixedFrameOfWord_X]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, haΛ, hmk⟩`. Rewrite `hmk` using `[iota_apply, PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.mk_eq_mk]`. Use `Submodule.mem_sup.2 ⟨a, haΛ, (w : (VS D).V) - a, ?_, by abel⟩` and prove the remaining obligations.
+
+Use `Submodule.neg_mem _ hmk` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Conclude with `this`. Introduce `hw`. Take `⟨l, hl, x, hx, hlx⟩` from `Submodule.mem_sup.1 hw`.
+
+Establish `hxX : x ∈ (X.Fu u).X` using `hx`. Establish `hlp : l ∈ perpS (VS D) (X.Fu u).X`. Establish `: l = (w : (VS D).V) - x` using `by rw [← hlx]; abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Wb_le X u w) (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.X_le_perp D (X.Fu u) hxX)`.
+
+Use `⟨⟨l, hlp⟩, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[iota_apply, PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.mk_eq_mk]`. Establish `: l - (w : (VS D).V) = -x` using `by rw [← hlx]; abel`. Use `show l - (w : (VS D).V) ∈ _`. Rewrite using `[this]`.
+
+Conclude with `Submodule.neg_mem _ hxX`.
+-/
 theorem iota_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) (w : Wb X) :
     iota X u w ∈ PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ ↔ w ∈ Lmap X u Λ := by
   rw [PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.mem_Mof, mem_Lmap, fixedFrameOfWord_X]
@@ -126,15 +177,27 @@ def conj (g : Wb X ≃ₗ[D.host.E] Wb X) : WbQ D (X.Fu u) ≃ₗ[D.host.E] WbQ 
 def unconj (σ : WbQ D (X.Fu u) ≃ₗ[D.host.E] WbQ D (X.Fu u)) : Wb X ≃ₗ[D.host.E] Wb X :=
   (iota X u).trans (σ.trans (iota X u).symm)
 
+/- English proof (translation)
+Simplify using `[conj]`.
+-/
 theorem conj_iota (g : Wb X ≃ₗ[D.host.E] Wb X) (w : Wb X) : conj X u g (iota X u w) = iota X u (g w) := by
   simp [conj]
 
+/- English proof (translation)
+Use extensionality with `q`. Simplify using `[conj, unconj]`.
+-/
 theorem conj_unconj (σ : WbQ D (X.Fu u) ≃ₗ[D.host.E] WbQ D (X.Fu u)) : conj X u (unconj X u σ) = σ := by
   ext q; simp [conj, unconj]
 
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `[conj, unconj]`.
+-/
 theorem unconj_conj (g : Wb X ≃ₗ[D.host.E] Wb X) : unconj X u (conj X u g) = g := by
   ext w; simp [conj, unconj]
 
+/- English proof (translation)
+Establish `e : ∀ q, conj X u g q = iota X u (g ((iota X u).symm q))` using `fun q => rfl`. Establish `e2 : ∀ q, iota X u ((iota X u).symm q) = q` using `fun q => (iota X u).apply_symm_apply q`. Rewrite using `[e, e, iota_h, hg, ← iota_h, e2, e2]`.
+-/
 theorem conj_isom (g : Wb X ≃ₗ[D.host.E] Wb X) (hg : ∀ x y, hb X (g x) (g y) = hb X x y)
     (x y : WbQ D (X.Fu u)) :
     PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hWb D (X.Fu u) (conj X u g x) (conj X u g y) =
@@ -143,6 +206,15 @@ theorem conj_isom (g : Wb X ≃ₗ[D.host.E] Wb X) (hg : ∀ x y, hb X (g x) (g 
   have e2 : ∀ q, iota X u ((iota X u).symm q) = q := fun q => (iota X u).apply_symm_apply q
   rw [e, e, iota_h, hg, ← iota_h, e2, e2]
 
+/- English proof (translation)
+Establish `key : ∀ w, iota X u w ∈ Formalism.HermitianLatticesTheory.gmap (conj X u g) (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ) ↔ w ∈ Formalism.HermitianLatticesTheory.gmap g (Lmap X u Λ)`. Introduce `w`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`.
+
+Use `⟨(iota X u).symm y, (iota_mem X u Λ _).1 (by simpa using hy), ?_⟩` and prove the remaining obligations. Apply `(iota X u).injective` to reduce the goal to its premises. Rewrite using `[← h, ← conj_iota]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨y, hy, h⟩`.
+
+Use `⟨iota X u y, (iota_mem X u Λ y).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_iota, h]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `w`.
+
+Rewrite using `[← key, h, iota_mem]`. Introduce `h`. Use extensionality with `q`. Rewrite using `[← (iota X u).apply_symm_apply q, key, h, iota_mem]`.
+-/
 theorem gmap_conj (Λ : Submodule (𝓞 D.host.E) (VS D).V) (g : Wb X ≃ₗ[D.host.E] Wb X) :
     Formalism.HermitianLatticesTheory.gmap (conj X u g) (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ) =
               PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ ↔
@@ -168,6 +240,11 @@ theorem gmap_conj (Λ : Submodule (𝓞 D.host.E) (VS D).V) (g : Wb X ≃ₗ[D.h
     ext q
     rw [← (iota X u).apply_symm_apply q, key, h, iota_mem]
 
+/- English proof (translation)
+Establish `hz : (((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) (zb X u) = zb X u` using `MulAction.mem_stabilizer_iff.1 (g : Gz X u).2`. Establish `hL : Formalism.HermitianLatticesTheory.gmap (((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) (Lmap X u Λ) = Lmap X u Λ` using `MulAction.mem_stabilizer_iff.1 g.2`. Establish `hg : ∀ x y, hb X ((((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) x) ((((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) y) = hb X x y` using `((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)).2`. Use `⟨⟨conj_isom X u _ hg, ?_⟩, (gmap_conj X u Λ _).2 hL⟩` and prove the remaining obligations. Establish `e` using `conj_iota X u (((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) (zb X u)`.
+
+Rewrite `e` using `[hz, definiteInclusion_orthogonal_negativeVector]`. Conclude with `e`.
+-/
 theorem conj_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) (g : MulAction.stabilizer (Gz X u) (Lmap X u Λ)) :
     conj X u (((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X) ∈
       PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.stabZ (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hWb D (X.Fu u))
@@ -184,6 +261,13 @@ theorem conj_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) (g : MulAction.stabil
   rw [hz, definiteInclusion_orthogonal_negativeVector] at e
   exact e
 
+/- English proof (translation)
+Take `⟨⟨hi, hz⟩, hM⟩` from `σ.2`. Establish `h1 : unconj X u σ.1 ∈ Formalism.HermitianLatticesTheory.isom (hb X)`. Introduce `x y`. Rewrite using `[← iota_h, ← iota_h]`. Establish `e : ∀ w, iota X u (unconj X u σ.1 w) = σ.1 (iota X u w)` using `fun w => by simp [unconj]`.
+
+Rewrite using `[e, e]`. Conclude with `hi _ _`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff] show unconj X u σ.1 (zb X u) = zb X u`. Apply `(iota X u).injective` to reduce the goal to its premises.
+
+Simplify using `only [unconj, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, definiteInclusion_orthogonal_negativeVector]`. Conclude with `hz`. Rewrite using `[MulAction.mem_stabilizer_iff] show Formalism.HermitianLatticesTheory.gmap (unconj X u σ.1) (Lmap X u Λ) = Lmap X u Λ`. Rewrite using `[← gmap_conj, conj_unconj]`. Conclude with `hM`.
+-/
 theorem unconj_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (σ : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.stabZ (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hWb D (X.Fu u))
         (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.zbar D (X.Fu u)) (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ)) :
@@ -207,6 +291,11 @@ theorem unconj_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     rw [← gmap_conj, conj_unconj]
     exact hM
 
+/- English proof (translation)
+Use `(Nat.card_congr { toFun := fun g => ⟨conj X u (((g : Gz X u) : Formalism.HermitianLatticesTheory.isom (hb X)) : Wb X ≃ₗ[D.host.E] Wb X), conj_mem X u Λ g⟩ invFun := fun σ => ⟨⟨⟨unconj X u σ.1, (unconj_mem X u Λ σ).1⟩, (unconj_mem X u Λ σ).2.1⟩, (unconj_mem X u Λ σ).2.2⟩ left_inv …` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `unconj_conj X u _`.
+
+Use `right_inv := fun σ => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `conj_unconj X u _ }).symm`.
+-/
 theorem card_stab (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     Nat.card (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.stabZ (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.hWb D (X.Fu u))
         (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.zbar D (X.Fu u)) (PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.Mof D (X.Fu u) Λ)) =
@@ -226,6 +315,9 @@ end GlobalTheory.RowsOrbCard
 
 namespace GlobalTheory.RowsOrb
 
+/- English proof (translation)
+Introduce `D large₂ X Y u _ Λ hΛ`. Rewrite using `[PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_weight_formula D u (X.Fu u) Λ ((Y.rowsOK u).1 Λ hΛ)]`. Conclude with `GlobalTheory.RowsOrbCard.card_stab X u Λ`.
+-/
 theorem card_autLz : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), GlobalTheory.TypeAsm.Std D large₂ →
     ∀ Λ ∈ Y.what₂ u, Nat.card (autLz D (X.Fu u) Λ) =
       Nat.card (MulAction.stabilizer (GlobalTheory.RowsOrb.Gz X u) (GlobalTheory.RowsOrb.Lmap X u Λ)) := by

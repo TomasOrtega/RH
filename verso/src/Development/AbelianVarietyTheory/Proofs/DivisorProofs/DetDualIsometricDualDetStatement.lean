@@ -14,5 +14,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HermVB.isometric_det_dual | exact GlobalTheory.HermVB.isometric_det_dual | (intros; apply GlobalTheory.HermVB.isometric_det_dual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.det_dual_isometric_dual_det : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (r : ℕ) (E : HermVB p r), E.dual.det.Isometric E.det.dual := by
   first | exact @GlobalTheory.HermVB.isometric_det_dual | exact GlobalTheory.HermVB.isometric_det_dual | (intros; apply GlobalTheory.HermVB.isometric_det_dual <;> assumption)

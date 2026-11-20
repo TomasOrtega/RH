@@ -6,6 +6,21 @@ open Matrix GlobalTheory.KZ
 
 namespace GlobalTheory.KZ
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Establish `: NeZero M` using `⟨hM.ne'⟩`. Establish `: NeZero (M : Ω)` using `⟨Nat.cast_ne_zero.mpr hM.ne'⟩`. Establish `: NeZero (l : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`.
+
+Take `⟨e, he⟩` from `rootsOfUnity.integer_power_of_ringEquiv M s.toRingEquiv`. Establish `hs : ∀ ζ : Ω, IsPrimitiveRoot ζ M → s ζ = ζ ^ e`. Introduce `ζ hζ`. Establish `h` using `he hζ.toRootsOfUnity`. Simplify `h` using `[Units.val_zpow_eq_zpow_val]`.
+
+Use `⟨e, hs, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hd`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `hη : IsPrimitiveRoot (ζ ^ k) (l ^ n)` using `hζ.pow hM (by rw [hk, mul_comm])`. Establish `hsη : s (ζ ^ k) = (ζ ^ k) ^ e`.
+
+Rewrite using `[map_pow, hs ζ hζ, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Use `set c := (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) with hc`. Establish `hpow : (ζ ^ k) ^ (l ^ n) = 1` using `hη.pow_eq_one`. Establish `hspec` using `cyclotomicCharacter.spec (L := Ω) l s.toRingEquiv (ζ ^ k) hpow`. Establish `heq : (ζ ^ k) ^ e = (ζ ^ k) ^ (((cyclotomicCharacter Ω l s.toRingEquiv).val.toZModPow n).val : ℤ)`.
+
+Rewrite using `[← hsη, zpow_natCast]`. Conclude with `hspec`. Establish `hdvd : ((l ^ n : ℕ) : ℤ) ∣ e - (((cyclotomicCharacter Ω l s.toRingEquiv).val.toZModPow n).val : ℤ)`. Rewrite using `[← hη.zpow_eq_one_iff_dvd, zpow_sub₀ (hη.ne_zero (NeZero.ne _)), heq, div_self]`. Conclude with `zpow_ne_zero _ (pow_ne_zero _ (hζ.ne_zero (NeZero.ne _)))`.
+
+Establish `hz : (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n)) ((e : ℤ_[l]) - c) = 0`. Rewrite using `[map_sub, map_intCast, hc]`. Rewrite using `[sub_eq_zero]`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ (l ^ n)).mpr hdvd` as an intermediate fact. Rewrite `this` using `[Int.cast_sub, sub_eq_zero]`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hmem : (e : ℤ_[l]) - c ∈ RingHom.ker (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n))` using `hz`. Rewrite `hmem` using `[PadicInt.ker_toZModPow, ← Ideal.span_singleton_pow]`. Conclude with `hmem`.
+-/
 theorem exists_int_exponent_cyclotomic {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (l : ℕ) [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) (n M : ℕ) (hM : 0 < M) (hd : l ^ n ∣ M) :
     ∃ e : ℤ, (∀ ζ : Ω, IsPrimitiveRoot ζ M → s ζ = ζ ^ e) ∧

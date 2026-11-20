@@ -13,6 +13,11 @@ namespace GlobalTheory.TopSteps.FinSummand
 open Module TensorProduct
 open GlobalTheory.AdmLoc Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated`. Consider the case `exact _root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated`. Consider the case `(apply _root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated ..)`.
+-/
 theorem exists_isCompl_of_saturated {O M : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [AddCommGroup M] [Module O M] [Module.Finite O M] (N : Submodule O M)
     (h : ∀ (a : O) (x : M), a ≠ 0 → a • x ∈ N → x ∈ N) : ∃ C : Submodule O M, IsCompl N C := by
@@ -24,6 +29,21 @@ theorem exists_isCompl_of_saturated {O M : Type} [CommRing O] [IsDomain O] [IsPr
   | (intros; apply @_root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SaturatedComplement.exists_isCompl_of_saturated ..)
 
+/- English proof (translation)
+Take `⟨s, hs⟩ : U.FG` from `Module.Finite.iff_fg.1 inferInstance`. Establish `hm : ∀ x : s, ∃ a, (x : M) ∈ F a` using `fun x => exh x (hs ▸ Submodule.subset_span x.2)`. Use `choose f hf using hm`. Take `⟨b₁, hb₁⟩` from `(Set.finite_range f).bddBelow`. Take `⟨b₂, hb₂⟩` from `J.toFinset.bddBelow`.
+
+Establish `hb : F (min (min b₁ b₂) c) = U`. Use `le_antisymm (hle _) ?_` and prove the remaining obligations. Rewrite using `[← hs, Submodule.span_le]`. Introduce `x hx`. Conclude with `anti ((min_le_left _ _).trans ((min_le_left _ _).trans (hb₁ ⟨⟨x, hx⟩, rfl⟩))) (hf ⟨x, hx⟩)`.
+
+Establish `key : ∀ a, min (min b₁ b₂) c ≤ a → (finrank L U : ℤ) - finrank L (F a) = (Multiset.card (J.filter (· < a)) : ℤ)`. Introduce `a ha`. Proceed by induction on `a, ha using Int.le_induction with`. Consider the case `base`. Rewrite using `[hb, sub_self, Multiset.filter_eq_nil.2]`.
+
+Simplify using the standard rewrite rules. Introduce `u hu`. Establish `: b₂ ≤ u` using `hb₂ (by simpa using hu)`. Establish `h1` using `min_le_left (min b₁ b₂) c`. Establish `h2` using `min_le_right b₁ b₂`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ a _ ih`. Establish `h1 : J.filter (· < a + 1) = J.filter (· < a) + J.filter (a = ·)`. Use extensionality with `u`. Simplify using `only [Multiset.count_add, Multiset.count_filter]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Establish `h2` using `h a`. Rewrite using `[h1, Multiset.card_add, ← Multiset.count_eq_card_filter_eq]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `key c (min_le_right _ _)`.
+-/
 theorem codim_eq_card {L M : Type} [Field L] [AddCommGroup M] [Module L M] (F : ℤ → Submodule L M)
     (U : Submodule L M) [FiniteDimensional L U] (anti : Antitone F) (hle : ∀ a, F a ≤ U)
     (exh : ∀ x ∈ U, ∃ a, x ∈ F a) (J : Multiset ℤ)
@@ -80,6 +100,13 @@ variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower 
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Set `E : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hK`. Set `e : ZMod n ≃ (K →ₐ[Qp] LL)` to `(Equiv.ofBijective emb hemb).trans (E.arrowCongr AlgEquiv.refl)`. Establish `he : ∀ i x, e i (algebraMap K₀ K x) = emb i x` using `fun i x => by`. Express the relevant statement in the definitionally equal form `emb i (E.symm (E x)) = emb i x`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Use `letI : Fintype (K →ₐ[Qp] LL) := Fintype.ofEquiv _ e`. Establish `hcard : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K`. Rewrite using `[← Fintype.card_congr e, ZMod.card, hn]`. Take `⟨h1, h2⟩` from `GlobalTheory.DeRhamSplit.finrank_split PD hcard ρ`. Rewrite using `[h1, h2 0, Nat.cast_sum, Nat.cast_sum, ← Finset.sum_sub_distrib, ← e.sum_comp]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `haveI : FiniteDimensional LL ↥(DdRE PD ρ (e i)) := Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) inf_le_left`. Conclude with `codim_eq_card (FildR PD ρ (e i)) (DdRE PD ρ (e i)) (fun a b hab => inf_le_inf_left _ (GlobalTheory.Cmp.SmallJumps.filV_anti PD hab)) (fun a => inf_le_left) (fun x hx => (GlobalTheory.Cmp.SmallJumps.filV_exh PD (LL := LL) x).imp fun _ ha => ⟨hx, ha⟩) (U i) (hU i (e i) (he i)) 0`.
+-/
 theorem codim_fil_zero {n : ℕ} [NeZero n] (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (hemb : Function.Bijective emb)
     (hK : Function.Bijective (algebraMap K₀ K)) (hn : n = finrank Qp K)
     [Module.Finite LL ↥(DdR PD ρ)] (U : ZMod n → Multiset ℤ) (hU : ∀ i, HasJumps PD ρ (emb i) (U i)) :
@@ -107,6 +134,19 @@ variable [Module O V] [IsScalarTower O LL V] [IsDomain O] [IsFractionRing O LL]
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg`. Establish `hsm : ∀ (a : O) (x : V), a ≠ 0 → a • x = 0 → x = 0` using `fun a x ha hx => by`. Rewrite `hx` using `[← algebraMap_smul LL]`. Conclude with `(smul_eq_zero.1 hx).resolve_left (by simpa using ha)`. Establish `hM : (latRep L).invariants = ⊥`.
+
+Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {lam}) _ (IsNoetherian.noetherian _) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : x ⊗ₜ[O] (1 : O ⧸ Ideal.span {lam}) ∈ (coefRep (latRep L) (O ⧸ Ideal.span {lam})).invariants` using `fun g => by`. Rewrite using `[coefRep_tmul, hx g]`. Rewrite `h1` using `[h, Submodule.mem_bot]`.
+
+Establish `h2` using `congrArg (TensorProduct.tensorQuotEquivQuotSMul ↥L.T (Ideal.span {lam})) h1`. Rewrite `h2` using `[map_zero, ← map_one (Ideal.Quotient.mk _), TensorProduct.tensorQuotEquivQuotSMul_tmul_mk, one_smul, Submodule.Quotient.mk_eq_zero, Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists x lam ⊤).1 h2`. Use `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) fun g => Subtype.ext ?_` and prove the remaining obligations. Establish `h3` using `congrArg Subtype.val (hx g)`.
+
+Rewrite `h3` using `[map_smul]`. Use `sub_eq_zero.1 (hsm lam _ hlam.ne_zero ?_)` and prove the remaining obligations. Rewrite using `[smul_sub]`. Conclude with `sub_eq_zero.2 h3`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, hlam.maximalIdeal_eq]`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨a, ha, hax⟩` from `GlobalTheory.H1fGeneratorBoundAlt.exists_smul_mem L x`. Establish `h1 : (⟨a • x, hax⟩ : ↥L.T) ∈ (latRep L).invariants` using `fun g => Subtype.ext (by`. Use `(Submodule.mem_iInf _).1 hx g` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `ρ g (a • x) = a • x`. Rewrite using `[← algebraMap_smul LL, map_smul, this])`. Rewrite `h1` using `[hM, Submodule.mem_bot]`. Conclude with `hsm a x ha (congrArg Subtype.val h1)`.
+-/
 theorem invariants_stableLattice_mod_irreducible_eq_bot [IsDiscreteValuationRing O] (L : Lattice (O := O) ρ) {lam : O} (hlam : Irreducible lam)
     (h : (coefRep (latRep L) (O ⧸ Ideal.span {lam})).invariants = ⊥) : H0V ρ = ⊥ := by
   haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.2 L.fg
@@ -144,6 +184,15 @@ theorem invariants_stableLattice_mod_irreducible_eq_bot [IsDiscreteValuationRing
 
 variable [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨c', hc', h⟩` from `hx`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨b, -, hb⟩` from `h`. Establish `h1 : ((c' - a • c : ↥(latticeCocycles L)) : G → V) ∈ finiteCocycles PD ρ`.
+
+Use `⟨(c' - a • c).2.1, b ⊗ₜ 1, fun g => ?_⟩` and prove the remaining obligations. Establish `: ρ g b - b = ((c' - a • c : ↥(latticeCocycles L)) : G → V) g` using `congrFun hb g`. Rewrite using `[← this]`. Simplify using `[actVB, sub_tmul]`. Establish `h2 : algebraMap O LL a • (c : G → V) ∈ finiteCocycles PD ρ`.
+
+Use `(finiteCocycles PD ρ).sub_mem hc'.2 h1` as an intermediate fact. Rewrite using `[algebraMap_smul]`. Simplify using `using this`. Establish `ha' : algebraMap O LL a ≠ 0` using `by simpa using ha`. Establish `h3 : (c : G → V) ∈ finiteCocycles PD ρ` using `(Submodule.smul_mem_iff (finiteCocycles PD ρ) ha').1 h2`.
+
+Conclude with `⟨c, ⟨c.2, h3⟩, rfl⟩`.
+-/
 theorem h1fT_saturated (L : Lattice (O := O) ρ) (a : O) (x : LatticeCohomology L) (ha : a ≠ 0) (hx : a • x ∈ latticeFiniteCohomology PD L) :
     x ∈ latticeFiniteCohomology PD L := by
   obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -163,6 +212,13 @@ theorem h1fT_saturated (L : Lattice (O := O) ρ) (a : O) (x : LatticeCohomology 
   have h3 : (c : G → V) ∈ finiteCocycles PD ρ := (Submodule.smul_mem_iff (finiteCocycles PD ρ) ha').1 h2
   exact ⟨c, ⟨c.2, h3⟩, rfl⟩
 
+/- English proof (translation)
+Use `congrArg Cardinal.toNat (GlobalTheory.BlochKatoRank.rank_subquotient_eq (K := LL) LinearMap.id (latticeCocycles L) (latticeCoboundaries L) (latticeFiniteCocycles PD L) (finiteCocycles PD ρ) (B1 ρ) (fun a ha => ha.2) ?_ ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `⟨x, rfl⟩`. Introduce and unpack `a ⟨x, hx⟩`. Take `⟨m, hm, h⟩` from `GlobalTheory.H1fGeneratorBoundAlt.exists_smul_mem L x`.
+
+Use `⟨m, hm, m • x, h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `congrArg (m • ·) hx`. Introduce `c hc`. Take `⟨a, ha, h⟩` from `GlobalTheory.H1fGeneratorBoundAlt.exists_smul_fun_mem L hT c hc.1.1`.
+
+Establish `h1 : a • c ∈ (finiteCocycles PD ρ).restrictScalars O` using `Submodule.smul_mem ((finiteCocycles PD ρ).restrictScalars O) a hc`. Conclude with `⟨a, ha, a • c, ⟨h1.1, fun g _ => h g⟩, ⟨⟨h1.1, fun g _ => h g⟩, h1⟩, rfl⟩`.
+-/
 theorem finrank_h1fT [CompactSpace G] (L : Lattice (O := O) ρ) (hT : IsOpen (L.T : Set V)) :
     finrank O ↥(latticeFiniteCohomology PD L) = finrank LL (FiniteCohomology PD ρ) := by
   refine congrArg Cardinal.toNat (GlobalTheory.BlochKatoRank.rank_subquotient_eq (K := LL) LinearMap.id (latticeCocycles L) (latticeCoboundaries L)
@@ -182,6 +238,11 @@ theorem finrank_h1fT [CompactSpace G] (L : Lattice (O := O) ρ) (hT : IsOpen (L.
 
 end Rep
 
+/- English proof (translation)
+Take `⟨_, _, _⟩` from `hO.1`. Use `⟨exists_isCompl_of_saturated _ (h1fT_saturated PD T.L), ?_⟩` and prove the remaining obligations. Set `A : GRep G Qp LL O` to `{ V := T.V, ρ := T.ρ, cont := T.cont }`. Take `⟨-, ⟨hD, -⟩, hdR⟩` from `hF LL O hO A`. Use `haveI : Module.Finite LL ↥(DdR PD T.ρ) := hD`.
+
+Establish `h1 : (finrank LL (FiniteCohomology PD T.ρ) : ℤ) = finrank LL ↥(H0V T.ρ) + ((finrank LL ↥(DdR PD T.ρ) : ℤ) - finrank LL ↥(DdR PD T.ρ ⊓ FilV PD (LL` using `LL) (V := T.V) 0)) := hBK LL O hO A (hdR hU.1)`. Rewrite `h1` using `[invariants_stableLattice_mod_irreducible_eq_bot T.L hlam h0, finrank_bot, codim_fil_zero PD emb hemb hK hn U hU.2, Nat.cast_zero, zero_add]`. Rewrite using `[finrank_h1fT PD T.L hT]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem summand_of_crys [TopologicalSpace Qp] [TopologicalSpace LL] [CompactSpace G]
     (hO : GoodO (Qp := Qp) LL O) (hBK : Formalism.MainNotions.LocalSituation.bkADim PD) (hF : Formalism.MainNotions.LocalSituation.fontCore PD)
     {n : ℕ} [NeZero n] (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (hemb : Function.Bijective emb)
@@ -204,6 +265,11 @@ theorem summand_of_crys [TopologicalSpace Qp] [TopologicalSpace LL] [CompactSpac
   rw [finrank_h1fT PD T.L hT]
   exact_mod_cast h1
 
+/- English proof (translation)
+Establish `h` using `summand_of_crys PD hO hBK hF emb hemb hK hn (twLat Γ.T₀ Γ.χ₁⁻¹ hχ) hT _ hU hlam (by`. Express the relevant statement in the definitionally equal form `(coefRep (latRep (twLattice Γ.T₀.L Γ.χ₁⁻¹)) (O ⧸ Ideal.span {Γ.lam})).invariants = ⊥`. Rewrite using `[latRep_twLattice]`. Conclude with `h0) hfin`. Use `⟨h.1, h.2.trans (Finset.sum_congr rfl fun i _ => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[Multiset.filter_map, Multiset.card_map, TopData.d]`. Conclude with `congrArg _ (Multiset.filter_congr fun u _ => by simp)`.
+-/
 theorem summand_of_gal [TopologicalSpace Qp] [TopologicalSpace LL] [CompactSpace G]
     (hO : GoodO (Qp := Qp) LL O) (hBK : Formalism.MainNotions.LocalSituation.bkADim PD) (hF : Formalism.MainNotions.LocalSituation.fontCore PD)
     {n r : ℕ} [NeZero n] (emb : ZMod n → (K₀ →ₐ[Qp] LL)) (hemb : Function.Bijective emb)
@@ -228,6 +294,11 @@ end General
 
 open GlobalTheory.PhiGam GlobalTheory.Models GlobalTheory.TopSteps in
 
+/- English proof (translation)
+Introduce `l _ P AI _ S hBK hF hC hV hH`. Take `⟨⟨-, hA, hn, hemb, -, hlam⟩, ⟨-, hρ, hχ, -⟩, -⟩` from `S.hyp`. Establish `hO` using `(GlobalTheory.LocalIntegers.good_integers l S.LL).1`. Use `haveI := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK S.K`. Establish `h1` using `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁ S.D.w hρ hχ).2`.
+
+Establish `h2` using `(hC.2.1 S.Γ.T₀ S.D.U S.Γ.χ₁⁻¹ _ hρ h1).1`. Establish `hK : Function.Bijective (algebraMap ↥(K0 S.K) ↥S.K.1)` using `⟨RingHom.injective _, fun x => ⟨⟨x.1, x.2, hA.1 x.2⟩, rfl⟩⟩`. Conclude with `summand_of_gal (P.PD S.K) hO hBK hF S.emb hemb hK hn S.D S.Γ (GlobalTheory.Cyc.locLat_isOpen hO S.Γ.T₀) h1.1 h2 hlam hV.1 hH.1.2.1`.
+-/
 theorem fSummand : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (S : TopSit P), Formalism.MainNotions.LocalSituation.bkADim (P.PD S.K) → Formalism.MainNotions.LocalSituation.fontCore (P.PD S.K) → S.CrysCalc → S.Vanish → S.FreeH → S.FSummand := by
   intro l _ P AI _ S hBK hF hC hV hH
   obtain ⟨⟨-, hA, hn, hemb, -, hlam⟩, ⟨-, hρ, hχ, -⟩, -⟩ := S.hyp

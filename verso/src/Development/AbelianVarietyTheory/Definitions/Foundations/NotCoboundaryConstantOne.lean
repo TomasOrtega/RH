@@ -108,6 +108,13 @@ section Ring
 
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+Establish `hc : (p : Lau p) ^ k = HahnSeries.C ((p : ℤ_[p]) ^ k)` using `by rw [map_pow, map_natCast]`. Establish `hne : (p : ℤ_[p]) ^ k ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hp.out.ne_zero)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ n`. Rewrite using `[hc, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul]`.
+
+Conclude with `Dvd.intro _ rfl`. Introduce `h choose c hcn using h`. Use `⟨⟨c, f.isPWO_support'.mono ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Function.mem_support] at hn ⊢`.
+
+Rewrite using `[hcn n]`. Conclude with `mul_ne_zero hne hn`. Use extensionality with `n`. Rewrite using `[hc, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, hcn n]`. Both sides reduce to the same expression.
+-/
 theorem natCast_pow_dvd_iff (k : ℕ) (f : Lau p) :
     (p : Lau p) ^ k ∣ f ↔ ∀ n, (p : ℤ_[p]) ^ k ∣ f.coeff n := by
   have hc : (p : Lau p) ^ k = HahnSeries.C ((p : ℤ_[p]) ^ k) := by rw [map_pow, map_natCast]
@@ -127,6 +134,13 @@ theorem natCast_pow_dvd_iff (k : ℕ) (f : Lau p) :
       rw [hc, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, hcn n]
       rfl
 
+/- English proof (translation)
+Use `natCast_pow_dvd_iff p 1 f` as an intermediate fact. Simplify using `only [pow_one] at this`. Rewrite using `[this]`. Establish `key : ∀ c : ℤ_[p], (p : ℤ_[p]) ∣ c ↔ PadicInt.toZMod c = 0`. Introduce `c`.
+
+Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `n`. Conclude with `(key _).1 (h n)`.
+
+Introduce `h n`. Use `congrArg (fun s => HahnSeries.coeff s n) h` as an intermediate fact. Conclude with `(key _).2 this`.
+-/
 theorem dvd_iff_map (f : Lau p) :
     (p : Lau p) ∣ f ↔ f.map (PadicInt.toZMod (p := p)).toNonUnitalRingHom = 0 := by
   have := natCast_pow_dvd_iff p 1 f
@@ -142,6 +156,13 @@ theorem dvd_iff_map (f : Lau p) :
     have := congrArg (fun s => HahnSeries.coeff s n) h
     exact (key _).2 this
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : (p : Lau p) = HahnSeries.C (p : ℤ_[p])` using `by simp`. Rewrite using `[hc]`. Conclude with `HahnSeries.C_ne_zero (by exact_mod_cast hp.out.ne_zero)`. Introduce `hu`.
+
+Establish `h1` using `(dvd_iff_map p 1).1 hu.dvd`. Use `congrArg (fun s => HahnSeries.coeff s 0) h1` as an intermediate fact. Establish `h2 : PadicInt.toZMod (p` using `p) (HahnSeries.coeff (1 : Lau p) 0) = 0 := this`. Simplify using `at h2`. Introduce `a b h`.
+
+Rewrite `h` using `[dvd_iff_map, HahnSeries.map_mul]`. Rewrite using `[dvd_iff_map, dvd_iff_map]`. Conclude with `mul_eq_zero.1 h`.
+-/
 theorem prime_lau : Prime (p : Lau p) := by
   refine ⟨?_, ?_, ?_⟩
   · have hc : (p : Lau p) = HahnSeries.C (p : ℤ_[p]) := by simp
@@ -157,9 +178,15 @@ theorem prime_lau : Prime (p : Lau p) := by
     rw [dvd_iff_map, dvd_iff_map]
     exact mul_eq_zero.1 h
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem mem_pI_pow (k : ℕ) (f : Lau p) : f ∈ pI p ^ k ↔ (p : Lau p) ^ k ∣ f := by
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Establish `h1` using `AdicCompletion.AdicCauchySequence.mk_eq_mk h x`. Rewrite `h1` using `[Submodule.Quotient.eq]`. Rewrite using `[← mem_pI_pow]`. Simplify using `using h1`.
+-/
 theorem seq_sub_dvd (x : AdicCompletion.AdicCauchySequence (pI p) (Lau p)) {m n : ℕ} (h : m ≤ n) :
     (p : Lau p) ^ m ∣ x.1 n - x.1 m := by
   have h1 := AdicCompletion.AdicCauchySequence.mk_eq_mk h x
@@ -167,6 +194,11 @@ theorem seq_sub_dvd (x : AdicCompletion.AdicCauchySequence (pI p) (Lau p)) {m n 
   rw [← mem_pI_pow]
   simpa using h1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx` to reduce the goal to its premises. Apply `AdicCompletion.ext_evalₐ` to reduce the goal to its premises. Introduce `a`.
+
+Take `⟨n, hn, hd⟩` from `hcon a`. Rewrite using `[AdicCompletion.evalₐ_mk, map_zero, Ideal.Quotient.eq_zero_iff_mem, mem_pI_pow]`. Use `dvd_sub hd (seq_sub_dvd p x hn)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_not_dvd (x : AdicCompletion.AdicCauchySequence (pI p) (Lau p))
     (hx : AdicCompletion.mk (pI p) (Lau p) x ≠ 0) :
     ∃ a, ∀ n, a ≤ n → ¬ (p : Lau p) ^ a ∣ x.1 n := by
@@ -216,6 +248,11 @@ instance isDomain_completed_ring : IsDomain (O0 p) := by
     exact absurd h1 (not_le.2 h4)⟩
   exact NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `h.map (AdicCompletion.evalₐ (pI p) 1)`. Use `haveI : (pI p ^ 1).IsPrime := by`. Rewrite using `[pow_one]`. Conclude with `(Ideal.span_singleton_prime (prime_lau p).ne_zero).2 (prime_lau p)`.
+
+Use `h2.ne_zero ?_` and prove the remaining obligations. Rewrite using `[map_natCast, ← map_natCast (Ideal.Quotient.mk (pI p ^ 1)), Ideal.Quotient.eq_zero_iff_mem, pow_one]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem not_isUnit_p : ¬ IsUnit (p : O0 p) := by
   intro h
   have h2 := h.map (AdicCompletion.evalₐ (pI p) 1)
@@ -226,10 +263,16 @@ theorem not_isUnit_p : ¬ IsUnit (p : O0 p) := by
     pow_one]
   exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+Use `IsUnit.map _ (IsUnit.of_mul_eq_one (HahnSeries.single (-1 : ℤ) (1 : ℤ_[p])) ?_)` and prove the remaining obligations. Rewrite using `[HahnSeries.single_mul_single]`. Simplify using `[HahnSeries.single_zero_one]`.
+-/
 theorem isUnit_qO : IsUnit (qO p) := by
   refine IsUnit.map _ (IsUnit.of_mul_eq_one (HahnSeries.single (-1 : ℤ) (1 : ℤ_[p])) ?_)
   rw [HahnSeries.single_mul_single]; simp [HahnSeries.single_zero_one]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq (O0 p) (FractionRing (O0 p))]`. Conclude with `(algebraMap (FractionRing (O0 p)) _).injective.comp (IsFractionRing.injective _ _)`. Use `alg := (IsFractionRing.comap_isAlgebraic_iff (A := O0 p) (K := FractionRing (O0 p))).2 inferInstance`. Use `clo := inferInstance`.
+-/
 theorem isClo_algebraicClosure : IsClo p (AlgebraicClosure (FractionRing (O0 p))) where
   inj := by
     rw [IsScalarTower.algebraMap_eq (O0 p) (FractionRing (O0 p))]
@@ -238,14 +281,26 @@ theorem isClo_algebraicClosure : IsClo p (AlgebraicClosure (FractionRing (O0 p))
     inferInstance
   clo := inferInstance
 
+/- English proof (translation)
+Simplify using `[IsDlog, mul_comm]`.
+-/
 theorem isDlog_yn (n : ℕ) : IsDlog p n (yn p n) 1 0 := by
   simp [IsDlog, mul_comm]
 
+/- English proof (translation)
+Simplify using `[IsDlog]`.
+-/
 theorem isDlog_xn (n : ℕ) : IsDlog p n (xn p n) 0 1 := by
   simp [IsDlog]
 
+/- English proof (translation)
+Simplify using `[fPi]`.
+-/
 theorem fPi_yn_xn (n : ℕ) : fPi p n 0 0 1 0 0 1 = xn p n - 1 := by simp [fPi]
 
+/- English proof (translation)
+Simplify using `only [fPi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fPi_swap (n : ℕ) (k l : ℤ) (α β α' β' : On p n) :
     fPi p n l k α' β' α β = - fPi p n k l α β α' β' := by simp only [fPi]; ring
 
@@ -255,9 +310,21 @@ section Field
 
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+The claim follows from `charZero_of_injective_algebraMap h.inj`.
+-/
 theorem charZero_of_isClo (h : IsClo p Ω) : CharZero Ω :=
   charZero_of_injective_algebraMap h.inj
 
+/- English proof (translation)
+Establish `h1 : z ^ (p ^ (n + 2)) = 1`. Rewrite using `[pow_succ' p (n + 1), pow_mul, hz, hζ.pow_eq_one]`. Take `⟨k, hk, hko⟩` from `(Nat.dvd_prime_pow hp.out).1 (orderOf_dvd_of_pow_eq_one h1)`. Break down `Nat.lt_or_ge k (n + 2) with hlt | hge` into its components or cases. It suffices to derive a contradiction.
+
+Establish `h2 : z ^ (p ^ (n + 1)) = 1`. Apply `orderOf_dvd_iff_pow_eq_one.1` to reduce the goal to its premises. Rewrite using `[hko]`. Conclude with `pow_dvd_pow p (by omega)`. Establish `h3 : ζ ^ (p ^ n) = 1`.
+
+Rewrite using `[← hz, ← pow_mul, ← pow_succ']`. Conclude with `h2`. Establish `h4` using `hζ.dvd_of_pow_eq_one _ h3`. Rewrite `h4` using `[Nat.pow_dvd_pow_iff_le_right hp.out.one_lt]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hk2 : k = n + 2` using `le_antisymm hk hge`. Rewrite using `[← hk2, ← hko]`. Conclude with `IsPrimitiveRoot.orderOf z`.
+-/
 theorem tw_prim_step {Ω : Type*} [Field Ω] {ζ z : Ω} {n : ℕ}
     (hζ : IsPrimitiveRoot ζ (p ^ (n + 1))) (hz : z ^ p = ζ) :
     IsPrimitiveRoot z (p ^ (n + 2)) := by
@@ -280,12 +347,18 @@ theorem tw_prim_step {Ω : Type*} [Field Ω] {ζ z : Ω} {n : ℕ}
     rw [← hk2, ← hko]
     exact IsPrimitiveRoot.orderOf z
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (cyclotomic p Ω) (ne_of_gt (degree_cyclotomic_pos p Ω hp.out.pos))`. Conclude with `⟨z, (isRoot_cyclotomic_iff).1 hz⟩`.
+-/
 theorem tw_exists_prim_p (Ω : Type*) [Field Ω] [IsAlgClosed Ω] [CharZero Ω] :
     ∃ z : Ω, IsPrimitiveRoot z p := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_root (cyclotomic p Ω)
     (ne_of_gt (degree_cyclotomic_pos p Ω hp.out.pos))
   exact ⟨z, (isRoot_cyclotomic_iff).1 hz⟩
 
+/- English proof (translation)
+Use `choose r hr using fun x : Ω => IsAlgClosed.exists_pow_nat_eq x hp.out.pos`. Use `⟨fun n => r^[n] a, rfl, fun n => ?_⟩` and prove the remaining obligations. Use `show r^[n + 1] a ^ p = r^[n] a`. Rewrite using `[Function.iterate_succ_apply', hr]`.
+-/
 theorem tw_exists_root_chain {Ω : Type*} [Field Ω] [IsAlgClosed Ω] (a : Ω) :
     ∃ f : ℕ → Ω, f 0 = a ∧ ∀ n, f (n + 1) ^ p = f n := by
   choose r hr using fun x : Ω => IsAlgClosed.exists_pow_nat_eq x hp.out.pos
@@ -293,6 +366,15 @@ theorem tw_exists_root_chain {Ω : Type*} [Field Ω] [IsAlgClosed Ω] (a : Ω) :
   show r^[n + 1] a ^ p = r^[n] a
   rw [Function.iterate_succ_apply', hr]
 
+/- English proof (translation)
+Use `haveI := h.clo`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap h.inj`. Take `⟨z, hz⟩` from `tw_exists_prim_p (p := p) Ω`. Take `⟨f, hf0, hf⟩` from `tw_exists_root_chain (p := p) z`. Take `⟨g, hg0, hg⟩` from `tw_exists_root_chain (p := p) (algebraMap (O0 p) Ω (qO p))`.
+
+Establish `hprim : ∀ n, IsPrimitiveRoot (f n) (p ^ (n + 1))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa [hf0] using hz`. Consider the case `succ m ih => exact tw_prim_step ih (hf m)`.
+
+Use `⟨{ ζ := fun n => Nat.casesOn n 1 f qq := g prim := ?_ ζpow := ?_ q0 := hg0 qpow := hg }⟩` and prove the remaining obligations. Introduce `n`. Consider the cases of `n with`. Consider the case `zero => simpa using IsPrimitiveRoot.one`. Consider the case `succ m => exact hprim m`.
+
+Introduce `n`. Consider the cases of `n with`. Consider the case `zero => show f 0 ^ p = 1`. Rewrite using `[hf0, hz.pow_eq_one]`. Consider the case `succ m => exact hf m`.
+-/
 theorem nonempty_tower (h : IsClo p Ω) : Nonempty (Tower p Ω) := by
   haveI := h.clo
   haveI : CharZero Ω := charZero_of_injective_algebraMap h.inj
@@ -321,17 +403,32 @@ theorem nonempty_tower (h : IsClo p Ω) : Nonempty (Tower p Ω) := by
       rw [hf0, hz.pow_eq_one]
     | succ m => exact hf m
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [T.q0]`. Consider the case `succ n ih => rw [pow_succ', pow_mul, T.qpow, ih]`.
+-/
 theorem qq_pow (T : Tower p Ω) (n : ℕ) : T.qq n ^ p ^ n = algebraMap (O0 p) Ω (qO p) := by
   induction n with
   | zero => simp [T.q0]
   | succ n ih => rw [pow_succ', pow_mul, T.qpow, ih]
 
+/- English proof (translation)
+Introduce `h`. Establish `h0` using `qq_pow T n`. Rewrite `h0` using `[h, zero_pow (pow_ne_zero _ hp.out.ne_zero)]`. Conclude with `((isUnit_qO p).map (algebraMap (O0 p) Ω)).ne_zero h0.symm`.
+-/
 theorem qq_ne_zero (T : Tower p Ω) (n : ℕ) : T.qq n ≠ 0 := by
   intro h
   have h0 := qq_pow T n
   rw [h, zero_pow (pow_ne_zero _ hp.out.ne_zero)] at h0
   exact ((isUnit_qO p).map (algebraMap (O0 p) Ω)).ne_zero h0.symm
 
+/- English proof (translation)
+Establish `hpos : 0 < p ^ n` using `pow_pos (Fact.out : p.Prime).pos n`. Use `⟨Ideal.Quotient.liftₐ (towerIdeal p n) (aevalTower (aeval (T.ζ n)) (T.qq n)) ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `: towerIdeal p n ≤ RingHom.ker (aevalTower (aeval (T.ζ n) : (O0 p)[X] →ₐ[O0 p] Ω) (T.qq n))`. Rewrite using `[towerIdeal, Ideal.span_le]`.
+
+Introduce and unpack `b (rfl | rfl)`. Use `(T.prim n).isRoot_cyclotomic hpos` as an intermediate fact. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, aevalTower_C]`. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `this`.
+
+Simplify using `[RingHom.mem_ker, qq_pow T]`. Conclude with `this ha`. Use `show aevalTower (aeval (T.ζ n) : (O0 p)[X] →ₐ[O0 p] Ω) (T.qq n) (C X) = _`. Simplify using the standard rewrite rules. Use `show aevalTower (aeval (T.ζ n) : (O0 p)[X] →ₐ[O0 p] Ω) (T.qq n) X = _`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_isEmb (T : Tower p Ω) (n : ℕ) : ∃ ι : On p n →ₐ[O0 p] Ω, IsEmb T n ι := by
   have hpos : 0 < p ^ n := pow_pos (Fact.out : p.Prime).pos n
   refine ⟨Ideal.Quotient.liftₐ (towerIdeal p n) (aevalTower (aeval (T.ζ n)) (T.qq n)) ?_, ?_, ?_⟩
@@ -351,55 +448,94 @@ theorem exists_isEmb (T : Tower p Ω) (n : ℕ) : ∃ ι : On p n →ₐ[O0 p] �
   · show aevalTower (aeval (T.ζ n) : (O0 p)[X] →ₐ[O0 p] Ω) (T.qq n) X = _
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gms_self (T : Tower p Ω) (n : ℕ) : Gms T n n = Gn T n := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_gms (T : Tower p Ω) (m s : ℕ) (g : Gal p Ω) :
     g ∈ Gms T m s ↔ g (T.ζ m) = T.ζ m ∧ g (T.qq s) = T.qq s := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_gn (T : Tower p Ω) (n : ℕ) (g : Gal p Ω) :
     g ∈ Gn T n ↔ g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `IsIntegral.map g.toAlgHom hx`.
+-/
 theorem isInt_gal (g : Gal p Ω) {x : Ω} (hx : IsInt p x) : IsInt p (g x) :=
   IsIntegral.map g.toAlgHom hx
 
+/- English proof (translation)
+Rewrite using `[IsInt, ← map_intCast (algebraMap (O0 p) Ω)]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem isInt_intCast (m : ℤ) : IsInt p (m : Ω) := by
   rw [IsInt, ← map_intCast (algebraMap (O0 p) Ω)]
   exact isIntegral_algebraMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, isIntegral_zero, by simp⟩`.
+-/
 theorem cong_refl (k : ℕ) (x : Ω) : Cong p k x x :=
   ⟨0, isIntegral_zero, by simp⟩
 
+/- English proof (translation)
+Take `⟨z, hz, e⟩` from `h`. Conclude with `⟨-z, IsIntegral.neg hz, by linear_combination -e⟩`.
+-/
 theorem cong_symm {k : ℕ} {x y : Ω} (h : Cong p k x y) : Cong p k y x := by
   obtain ⟨z, hz, e⟩ := h
   exact ⟨-z, IsIntegral.neg hz, by linear_combination -e⟩
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `h`. Take `⟨b, hb, e'⟩` from `h'`. Conclude with `⟨a + b, IsIntegral.add ha hb, by linear_combination e + e'⟩`.
+-/
 theorem cong_trans {k : ℕ} {x y z : Ω} (h : Cong p k x y) (h' : Cong p k y z) : Cong p k x z := by
   obtain ⟨a, ha, e⟩ := h
   obtain ⟨b, hb, e'⟩ := h'
   exact ⟨a + b, IsIntegral.add ha hb, by linear_combination e + e'⟩
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `h`. Take `⟨b, hb, e'⟩` from `h'`. Conclude with `⟨a + b, IsIntegral.add ha hb, by linear_combination e + e'⟩`.
+-/
 theorem cong_add {k : ℕ} {x y x' y' : Ω} (h : Cong p k x y) (h' : Cong p k x' y') :
     Cong p k (x + x') (y + y') := by
   obtain ⟨a, ha, e⟩ := h
   obtain ⟨b, hb, e'⟩ := h'
   exact ⟨a + b, IsIntegral.add ha hb, by linear_combination e + e'⟩
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `h`. Take `⟨b, hb, e'⟩` from `h'`. Conclude with `⟨a - b, IsIntegral.sub ha hb, by linear_combination e - e'⟩`.
+-/
 theorem cong_sub {k : ℕ} {x y x' y' : Ω} (h : Cong p k x y) (h' : Cong p k x' y') :
     Cong p k (x - x') (y - y') := by
   obtain ⟨a, ha, e⟩ := h
   obtain ⟨b, hb, e'⟩ := h'
   exact ⟨a - b, IsIntegral.sub ha hb, by linear_combination e - e'⟩
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `h`. Conclude with `⟨a * c, IsIntegral.mul ha hc, by linear_combination c * e⟩`.
+-/
 theorem cong_mul_right {k : ℕ} {x y c : Ω} (h : Cong p k x y) (hc : IsInt p c) :
     Cong p k (x * c) (y * c) := by
   obtain ⟨a, ha, e⟩ := h
   exact ⟨a * c, IsIntegral.mul ha hc, by linear_combination c * e⟩
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `h`. Use `⟨g a, isInt_gal g ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, e, map_mul, map_pow, map_natCast]`.
+-/
 theorem cong_gal {k : ℕ} {x y : Ω} (g : Gal p Ω) (h : Cong p k x y) : Cong p k (g x) (g y) := by
   obtain ⟨a, ha, e⟩ := h
   refine ⟨g a, isInt_gal g ha, ?_⟩
   rw [← map_sub, e, map_mul, map_pow, map_natCast]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.symm.dvd`. Use `⟨(c : Ω), isInt_intCast c, ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → Ω) hc` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+-/
 theorem cong_natCast {k a b : ℕ} (h : a ≡ b [MOD p ^ k]) : Cong p k (a : Ω) (b : Ω) := by
   obtain ⟨c, hc⟩ := h.symm.dvd
   refine ⟨(c : Ω), isInt_intCast c, ?_⟩
@@ -407,6 +543,9 @@ theorem cong_natCast {k a b : ℕ} (h : a ≡ b [MOD p ^ k]) : Cong p k (a : Ω)
   push_cast at this
   exact this
 
+/- English proof (translation)
+Introduce and unpack `⟨z, hz, h1⟩`. Use `haveI : FaithfulSMul (O0 p) (integralClosure (O0 p) Ω) := (faithfulSMul_iff_algebraMap_injective _ _).2 fun a b hab => h.inj (congrArg Subtype.val hab)`. Establish `hu : IsUnit (algebraMap (O0 p) (integralClosure (O0 p) Ω) (p ^ k))` using `IsUnit.of_mul_eq_one ⟨z, hz⟩ (Subtype.ext (by simpa using h1.symm))`. Use `haveI : IsLocalHom (algebraMap (O0 p) (integralClosure (O0 p) Ω)) := Algebra.IsIntegral.isLocalHom _ _`. Conclude with `not_isUnit_p p ((isUnit_pow_iff hk).1 (isUnit_of_map_unit _ _ hu))`.
+-/
 theorem not_cong_one_zero (h : IsClo p Ω) (k : ℕ) (hk : k ≠ 0) : ¬ Cong p k (1 : Ω) 0 := by
   rintro ⟨z, hz, h1⟩
   haveI : FaithfulSMul (O0 p) (integralClosure (O0 p) Ω) :=
@@ -417,11 +556,21 @@ theorem not_cong_one_zero (h : IsClo p Ω) (k : ℕ) (hk : k ≠ 0) : ¬ Cong p 
     Algebra.IsIntegral.isLocalHom _ _
   exact not_isUnit_p p ((isUnit_pow_iff hk).1 (isUnit_of_map_unit _ _ hu))
 
+/- English proof (translation)
+Rewrite using `[(T.prim k).eq_orderOf]`. Conclude with `(T.prim k).isOfFinOrder (pow_ne_zero _ hp.out.ne_zero) |>.pow_eq_pow_iff_modEq`.
+-/
 theorem zeta_pow_eq_iff (T : Tower p Ω) (k a b : ℕ) :
     T.ζ k ^ a = T.ζ k ^ b ↔ a ≡ b [MOD p ^ k] := by
   rw [(T.prim k).eq_orderOf]
   exact (T.prim k).isOfFinOrder (pow_ne_zero _ hp.out.ne_zero) |>.pow_eq_pow_iff_modEq
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Establish `: ∀ g : Gal p Ω, ∃ a : ZMod (p ^ n), g ∈ H → g r = T.ζ n ^ a.val * r`. Introduce `g`. Distinguish the cases in `hg : g ∈ H`. Establish `: (g r / r) ^ (p ^ n) = 1`.
+
+Rewrite using `[div_pow, ← map_pow, div_eq_one_iff_eq (pow_ne_zero _ hr), hH g hg]`. Take `⟨i, hi, he⟩` from `(T.prim n).eq_pow_of_pow_eq_one this`. Conclude with `⟨i, fun _ => by rw [ZMod.val_cast_of_lt hi, he, div_mul_cancel₀ _ hr]⟩`. Conclude with `⟨0, fun h => absurd h hg⟩`. Use `choose a ha using this`.
+
+Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_isKum (T : Tower p Ω) (n : ℕ) (H : Subgroup (Gal p Ω)) {r : Ω} (hr : r ≠ 0)
     (hH : ∀ g ∈ H, g (r ^ p ^ n) = r ^ p ^ n) : ∃ a, IsKum T n H r a := by
   classical
@@ -437,9 +586,15 @@ theorem exists_isKum (T : Tower p Ω) (n : ℕ) (H : Subgroup (Gal p Ω)) {r : �
   choose a ha using this
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+The claim follows from `exists_isKum T n ⊤ (qq_ne_zero T n) fun g _ => by rw [qq_pow, AlgEquiv.commutes]`.
+-/
 theorem exists_isKum_qq (T : Tower p Ω) (n : ℕ) : ∃ a, IsKum T n ⊤ (T.qq n) a :=
   exists_isKum T n ⊤ (qq_ne_zero T n) fun g _ => by rw [qq_pow, AlgEquiv.commutes]
 
+/- English proof (translation)
+Establish `h` using `mul_right_cancel₀ hr ((ha g hg).symm.trans (hb g hg))`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Rewrite `h` using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`. Simplify using `using h`.
+-/
 theorem isKum_unique {T : Tower p Ω} {n : ℕ} {H : Subgroup (Gal p Ω)} {r : Ω} (hr : r ≠ 0)
     {a b : Gal p Ω → ZMod (p ^ n)} (ha : IsKum T n H r a) (hb : IsKum T n H r b) {g : Gal p Ω}
     (hg : g ∈ H) : a g = b g := by
@@ -448,6 +603,11 @@ theorem isKum_unique {T : Tower p Ω} {n : ℕ} {H : Subgroup (Gal p Ω)} {r : �
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff] at h
   simpa using h
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Establish `: ∀ g : Gal p Ω, ∃ a : ZMod (p ^ k), g (T.ζ k) = T.ζ k ^ a.val`. Introduce `g`. Establish `: (g (T.ζ k)) ^ (p ^ k) = 1` using `by rw [← map_pow, (T.prim k).pow_eq_one, map_one]`. Take `⟨i, hi, he⟩` from `(T.prim k).eq_pow_of_pow_eq_one this`.
+
+Conclude with `⟨i, by rw [ZMod.val_cast_of_lt hi, he]⟩`. Use `choose a ha using this`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_isCyc (T : Tower p Ω) (k : ℕ) :
     ∃ χ : Gal p Ω → ZMod (p ^ k), ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val := by
   haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩
@@ -459,6 +619,9 @@ theorem exists_isCyc (T : Tower p Ω) (k : ℕ) :
   choose a ha using this
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `e` using `(h g).symm.trans (h' g)`. Use `haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Rewrite `e` using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`. Simplify using `using e`.
+-/
 theorem isCyc_unique {T : Tower p Ω} {k : ℕ} {χ χ' : Gal p Ω → ZMod (p ^ k)}
     (h : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val)
     (h' : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ' g).val) : χ = χ' := by
@@ -468,6 +631,9 @@ theorem isCyc_unique {T : Tower p Ω} {k : ℕ} {χ χ' : Gal p Ω → ZMod (p ^
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff] at e
   simpa using e
 
+/- English proof (translation)
+Establish `e` using `h (g * g')`. Rewrite `e` using `[AlgEquiv.mul_apply, h g', map_pow, h g, ← pow_mul]`. Use `haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Rewrite `e` using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`. Simplify using `using e.symm`.
+-/
 theorem isCyc_mul {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
     (h : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val)
     (g g' : Gal p Ω) : χ (g * g') = χ g * χ g' := by
@@ -477,6 +643,11 @@ theorem isCyc_mul {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff] at e
   simpa using e.symm
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Rewrite using `[h g]`. Use `conv_rhs => rhs`. Rewrite using `[← pow_one (T.ζ k)]`. Rewrite using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isCyc_eq_one_iff {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
     (h : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val)
     (g : Gal p Ω) : χ g = 1 ↔ g (T.ζ k) = T.ζ k := by
@@ -486,6 +657,11 @@ theorem isCyc_eq_one_iff {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]
   simp
 
+/- English proof (translation)
+Establish `hu : χ g * χ g⁻¹ = 1`. Rewrite using `[← isCyc_mul h, mul_inv_cancel, isCyc_eq_one_iff h]`. Both sides reduce to the same expression. Use `ZMod.pow_totient (Units.mkOfMulEqOne _ _ hu)` as an intermediate fact. Establish `e` using `congrArg Units.val this`.
+
+Rewrite `e` using `[Units.val_pow_eq_pow_val, Units.val_mkOfMulEqOne, Units.val_one]`. Then use the resulting hypothesis.
+-/
 theorem isCyc_pow_totient {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
     (h : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val)
     (g : Gal p Ω) : χ g ^ Nat.totient (p ^ k) = 1 := by
@@ -495,6 +671,11 @@ theorem isCyc_pow_totient {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p 
   have e := congrArg Units.val this
   rwa [Units.val_pow_eq_pow_val, Units.val_mkOfMulEqOne, Units.val_one] at e
 
+/- English proof (translation)
+Establish `e` using `ha (g * h) (H.mul_mem hg hh)`. Rewrite `e` using `[AlgEquiv.mul_apply, ha h hh, map_mul, map_pow, hχ g, ha g hg, ← pow_mul, ← mul_assoc, ← pow_add]`. Establish `e'` using `mul_right_cancel₀ hr e`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Rewrite `e'` using `[zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff]`.
+
+Simplify `e'.symm` using `[add_comm]`.
+-/
 theorem isKum_mul {T : Tower p Ω} {n : ℕ} {χ : Gal p Ω → ZMod (p ^ n)}
     (hχ : ∀ g : Gal p Ω, g (T.ζ n) = T.ζ n ^ (χ g).val)
     {H : Subgroup (Gal p Ω)} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
@@ -508,6 +689,11 @@ theorem isKum_mul {T : Tower p Ω} {n : ℕ} {χ : Gal p Ω → ZMod (p ^ n)}
   rw [zeta_pow_eq_iff, ← ZMod.natCast_eq_natCast_iff] at e'
   simpa [add_comm] using e'.symm
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Establish `e : (χ g).val * (a h).val + (a g).val ≡ (a (g * h)).val [MOD p ^ n]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, isKum_mul hχ hr ha hg hh]`. Simplify using `[add_comm]`. Take `⟨z, hz, ez⟩` from `cong_natCast (Ω := Ω) e`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, ← ez]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isKum_cocycle {T : Tower p Ω} {n : ℕ} {χ : Gal p Ω → ZMod (p ^ n)}
     (hχ : ∀ g : Gal p Ω, g (T.ζ n) = T.ζ n ^ (χ g).val)
     {H : Subgroup (Gal p Ω)} {r : Ω} (hr : r ≠ 0) {a : Gal p Ω → ZMod (p ^ n)}
@@ -523,6 +709,11 @@ theorem isKum_cocycle {T : Tower p Ω} {n : ℕ} {χ : Gal p Ω → ZMod (p ^ n)
   push_cast
   ring
 
+/- English proof (translation)
+Use `haveI : NeZero (p ^ k) := ⟨pow_ne_zero _ hp.out.ne_zero⟩`. Establish `e : (χ g).val ^ j ≡ 1 [MOD p ^ k]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_pow, ZMod.natCast_zmod_val, (isCyc_eq_one_iff hχ g).2 hg]`. Simplify using the standard rewrite rules. Use `cong_mul_right (cong_natCast (Ω := Ω) e) (isInt_gal g hx)` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_pow, Nat.cast_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem cong_twist {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
     (hχ : ∀ g : Gal p Ω, g (T.ζ k) = T.ζ k ^ (χ g).val) (j : ℕ)
     {g : Gal p Ω} (hg : g (T.ζ k) = T.ζ k) {x : Ω} (hx : IsInt p x) :
@@ -535,6 +726,9 @@ theorem cong_twist {T : Tower p Ω} {k : ℕ} {χ : Gal p Ω → ZMod (p ^ k)}
   have := cong_mul_right (cong_natCast (Ω := Ω) e) (isInt_gal g hx)
   rwa [Nat.cast_pow, Nat.cast_one, one_mul] at this
 
+/- English proof (translation)
+Introduce and unpack `⟨x, -, hx⟩`. Conclude with `not_cong_one_zero h k hk (by simpa using hx 1 H.one_mem)`.
+-/
 theorem not_coboundary_constant_one (h : IsClo p Ω) {k : ℕ} (hk : k ≠ 0) (H : Subgroup (Gal p Ω)) :
     ¬ Cob1 k H (fun _ => (1 : Ω)) := by
   rintro ⟨x, -, hx⟩
@@ -542,6 +736,9 @@ theorem not_coboundary_constant_one (h : IsClo p Ω) {k : ℕ} (hk : k ≠ 0) (H
 
 end Field
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, inferInstance, inferInstance, isClo_algebraicClosure p, (nonempty_tower (isClo_algebraicClosure p)).some, fun n => ⟨exists_isEmb _ n, exists_isCyc _ n, exists_isKum_qq _ n⟩⟩`.
+-/
 theorem inhabited_setting (p : ℕ) [Fact p.Prime] :
     ∃ (Ω : Type) (_ : Field Ω) (_ : Algebra (O0 p) Ω), IsClo p Ω ∧ ∃ T : Tower p Ω,
       ∀ n, (∃ ι, IsEmb T n ι) ∧

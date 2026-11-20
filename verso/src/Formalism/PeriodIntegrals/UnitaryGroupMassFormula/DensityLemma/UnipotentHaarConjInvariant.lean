@@ -13,6 +13,13 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.DLm.Gram
 
+/- English proof (translation)
+Establish `hN` using `(unitary_weyl_normal_holds k r z hz.1 a ha u hu.1).1`. Establish `hF` using `Formalism.FourierDecayAlt.P.unipotent_map_frame k r z hz`. Establish `h1N : (1 : B.Mat k r) ∈ Nset k r` using `((PI.UnitaryGroupMassFormula.DLm.unipotent_integral_closed k r z hz).one_mem).1`. Establish `hS_a : a ∈ Sset k r z` using `⟨a, ha, 1, h1N, (mul_one a).symm⟩`. Establish `hS_u : u ∈ Sset k r z` using `⟨1, one_mem_UW z, u, hu.1, (one_mul u).symm⟩`.
+
+Establish `hS_c : a * u * a⁻¹ ∈ Sset k r z` using `⟨1, one_mem_UW z, _, hN, (one_mul _).symm⟩`. Establish `hua : IsUnit a.det` using `WeylGroupFacts.isUnit_of_uh ha.1`. Establish `e : a * u * a⁻¹ * a = a * u`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hua, Matrix.mul_one]`. Establish `h2` using `(hF.1 _ hS_c).2.2 a hS_a`.
+
+Establish `h3` using `(hF.1 a hS_a).2.2 u hS_u`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[e, h3, hF.2 a ha, hu.2]`. Simplify using `using h2.symm`.
+-/
 theorem unipotent_normal_unitary {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {a u : B.Mat k r}
     (ha : a ∈ UWset k r z) (hu : u ∈ C2.N0set k r z) : a * u * a⁻¹ ∈ C2.N0set k r z := by
   have hN := (unitary_weyl_normal_holds k r z hz.1 a ha u hu.1).1

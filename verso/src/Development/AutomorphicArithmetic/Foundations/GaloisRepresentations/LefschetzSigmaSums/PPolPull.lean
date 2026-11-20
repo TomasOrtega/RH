@@ -7,12 +7,26 @@ open UpperTheory.Gal.LocalSmoothExtension
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Hecke.sq2, ← Over.comp_left, lift_fst, Over.comp_left]`. Rewrite using `[Hecke.sq2, ← Over.comp_left, lift_snd, Over.comp_left]`.
+-/
 private theorem isSquare_square_compatible_homs {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A']
     [IsCommMonObj A'] (ψ : A ⟶ A') : Geo.Tor.IsSquare ψ.left (Hecke.sq2 ψ) := by
   constructor
   · rw [Hecke.sq2, ← Over.comp_left, lift_fst, Over.comp_left]
   · rw [Hecke.sq2, ← Over.comp_left, lift_snd, Over.comp_left]
 
+/- English proof (translation)
+Introduce `G R _ _ b N N' S S₁ s s₁ f o' o'' o₁' o₁'' m' m'' ψ ψ₁ hc c ⟨h⟩`. Use `letI := o'.grp`. Use `letI := o'.comm`. Use `letI := o''.grp`. Use `letI := o''.comm`.
+
+Use `letI := o₁'.grp`. Use `letI := o₁'.comm`. Use `letI := o₁''.grp`. Use `letI := o₁''.comm`. Establish `hsq : Hecke.sq2 ψ₁ ≫ m''.φ₂ = m'.φ₂ ≫ Hecke.sq2 ψ`.
+
+Apply `MapComp.isSquare_unique (MapComp.isSquare_comp (isSquare_square_compatible_homs ψ₁) m''.sq)` to reduce the goal to its premises. Rewrite using `[hc]`. Conclude with `MapComp.isSquare_comp m'.sq (isSquare_square_compatible_homs ψ)`. Establish `hp : (Hecke.lbPow o'.P c).IsLB` using `LB.isLB_linComb o'.isLB _ _`. Establish `hp₁ : (Hecke.lbPow o₁'.P c).IsLB` using `LB.isLB_linComb o₁'.isLB _ _`.
+
+Establish `hq : (o''.P.pull (Hecke.sq2 ψ)).IsLB` using `pull_isLB o''.isLB _`. Establish `hA` using `(GlobalTheory.CechPic.cls_eq_iff o₁'.isLB (pull_isLB o'.isLB m'.φ₂)).2 m'.pol`. Establish `hB` using `(GlobalTheory.CechPic.cls_eq_iff o₁''.isLB (pull_isLB o''.isLB m''.φ₂)).2 m''.pol`. Establish `hC` using `(GlobalTheory.CechPic.cls_eq_iff hp hq).2 h`. Use `⟨(GlobalTheory.CechPic.cls_eq_iff hp₁ (pull_isLB o₁''.isLB _)).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.BirigidPow.cls_lbPow o₁'.isLB, hA, GlobalTheory.CechPic.cls_pull o'.isLB, GlobalTheory.CechPic.cls_pull o₁''.isLB, hB, GlobalTheory.CechPic.cls_pull o''.isLB, ← GlobalTheory.CechPic.pull_comp, hsq, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull o''. …`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.polPull_of :
     PolPull := by
   intro G R _ _ b N N' S S₁ s s₁ f o' o'' o₁' o₁'' m' m'' ψ ψ₁ hc c ⟨h⟩

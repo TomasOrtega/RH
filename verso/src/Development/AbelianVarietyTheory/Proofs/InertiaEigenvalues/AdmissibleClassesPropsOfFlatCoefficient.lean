@@ -26,6 +26,9 @@ structure ClosedClass (Ad : ∀ (M : Type) [AddCommGroup M] [Module O M], Repres
   prod : ∀ {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     {π : Representation O G M} {π' : Representation O G M'}, Ad M π → Ad M' π' → Ad (M × M') (π.prod π')
 
+/- English proof (translation)
+The claim follows from `Finite.of_injective f hf quot f _ hf _ := Finite.of_surjective f hf prod _ _ := inferInstance`.
+-/
 theorem closedClass_finite : ClosedClass (O := O) (G := G) (fun M _ _ _ => Finite M) where
   sub f _ hf _ := Finite.of_injective f hf
   quot f _ hf _ := Finite.of_surjective f hf
@@ -33,6 +36,9 @@ theorem closedClass_finite : ClosedClass (O := O) (G := G) (fun M _ _ _ => Finit
 
 variable {Ad : ∀ (M : Type) [AddCommGroup M] [Module O M], Representation O G M → Prop}
 
+/- English proof (translation)
+The claim follows from `h.sub f (fun σ x => by rw [twistRep_apply, twistRep_apply, map_smul, hf]) hi ha quot f hf hs ha := h.quot f (fun σ x => by rw [twistRep_apply, twistRep_apply, map_smul, hf]) hs ha prod ha hb := h.sub LinearMap.id (fun σ x => Prod.ext (by simp [twistRep_apply]) (by simp [twistRep_ …`.
+-/
 theorem ClosedClass.twist (h : ClosedClass Ad) (χ : G →* Oˣ) :
     ClosedClass (fun M _ _ π => Ad M (twistRep π χ)) where
   sub f hf hi ha := h.sub f (fun σ x => by rw [twistRep_apply, twistRep_apply, map_smul, hf]) hi ha
@@ -47,9 +53,17 @@ variable {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O
 def lower {c c' : O} (h : c ∣ c') : (O ⧸ Ideal.span {c'}) →ₗ[O] (O ⧸ Ideal.span {c}) :=
   Submodule.factor (Ideal.span_singleton_le_span_singleton.mpr h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lower_mk {c c' : O} (h : c ∣ c') (y : O) :
     lower h (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ y := rfl
 
+/- English proof (translation)
+Use `h.quot ((LinearMap.inl O M' _).coprod (f.prodMap (lower hcc))) ?_ ?_ (h.prod h2 h1)` and prove the remaining obligations. Introduce and unpack `σ ⟨m', m, q⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[extRep_apply, lower_mk, hf, hz]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[extRep_apply, lower_mk]`. Introduce and unpack `⟨m', q⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨(m', (0, Ideal.Quotient.mk _ y)), by simp [lower_mk]⟩`.
+-/
 theorem ClosedClass.push (h : ClosedClass Ad) {c c' : O} (hcc : c' ∣ c) (hc : ∀ m : M, c • m = 0)
     (hc' : ∀ m : M', c' • m = 0) (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x) = π' σ (f x))
     (z : ↥(Z1 π ⊤)) (z' : ↥(Z1 π' ⊤)) (hz : ∀ g, (z' : G → M') g = f ((z : G → M) g))
@@ -65,6 +79,11 @@ theorem ClosedClass.push (h : ClosedClass Ad) {c c' : O} (hcc : c' ∣ c) (hc : 
     obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective q
     exact ⟨(m', (0, Ideal.Quotient.mk _ y)), by simp [lower_mk]⟩
 
+/- English proof (translation)
+Use `h.sub ((f.prodMap (lower hcc)).prod (LinearMap.snd O M _)) ?_ ?_ (h.prod h1 h2)` and prove the remaining obligations. Introduce and unpack `σ ⟨m, q⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Simplify using `[extRep_apply, lower_mk, hf, hz]`. Introduce and unpack `⟨m, q⟩ ⟨m₂, q₂⟩ he`.
+
+Establish `e1` using `congrArg (fun p => p.1.1) he`. Establish `e2` using `congrArg (fun p => p.2) he`. Simplify using `only [LinearMap.prod_apply, LinearMap.prodMap_apply, LinearMap.snd_apply, Function.prod] at e1 e2`. Conclude with `Prod.ext (hi e1) e2`.
+-/
 theorem ClosedClass.pull (h : ClosedClass Ad) {c c' : O} (hcc : c' ∣ c) (hc : ∀ m : M, c • m = 0)
     (hc' : ∀ m : M', c' • m = 0) (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x) = π' σ (f x))
     (hi : Function.Injective f)
@@ -86,6 +105,17 @@ def pairZ (z : ↥(Z1 π ⊤)) (z' : ↥(Z1 π' ⊤)) : ↥(Z1 (π.prod π') ⊤
     funext x
     exact Prod.ext (congrFun z.2.2 x) (congrFun z'.2.2 x)⟩
 
+/- English proof (translation)
+Establish `hc₂ : ∀ m : M × M, c • m = 0` using `fun m => Prod.ext (hc m.1) (hc m.2)`. Establish `hpz : ∀ σ, ((pairZ z z' : ↥(Z1 (π.prod π) ⊤)) : G → M × M) σ = ((z : G → M) σ, (z' : G → M) σ)` using `fun _ => rfl`. Establish `hp : Ad _ (extRep (π.prod π) hc₂ (pairZ z z'))`. Use `h.sub (((LinearMap.fst O M M ∘ₗ LinearMap.fst _ _ _).prod (LinearMap.snd _ _ _)).prod ((LinearMap.snd O M M ∘ₗ LinearMap.fst _ _ _).prod (LinearMap.snd _ _ _))) ?_ ?_ (h.prod h1 h2)` and prove the remaining obligations. Introduce and unpack `σ ⟨⟨m, m'⟩, q⟩`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Simplify using `[extRep_apply, hpz]`. Introduce and unpack `⟨⟨m, m'⟩, q⟩ ⟨⟨m₂, m₂'⟩, q₂⟩ he`. Establish `e1` using `congrArg (fun p => p.1.1) he`. Establish `e2` using `congrArg (fun p => p.2.1) he`.
+
+Establish `e3` using `congrArg (fun p => p.1.2) he`. Simplify using `only [LinearMap.prod_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.fst_apply, LinearMap.snd_apply, Function.prod] at e1 e2 e3`. Rewrite using `[e1, e2, e3]`. Use `h.quot ((LinearMap.id.coprod LinearMap.id).prodMap LinearMap.id) ?_ ?_ hp` and prove the remaining obligations. Introduce and unpack `σ ⟨⟨m, m'⟩, q⟩`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[extRep_apply, hpz, smul_add]`. Normalize the expressions using the abelian group laws. Simplify using `[extRep_apply, hpz]`.
+
+Introduce and unpack `⟨m, q⟩`. Conclude with `⟨((m, 0), q), by simp⟩`.
+-/
 theorem ClosedClass.add (h : ClosedClass Ad) {c : O} (hc : ∀ m : M, c • m = 0) (z z' : ↥(Z1 π ⊤))
     (h1 : Ad _ (extRep π hc z)) (h2 : Ad _ (extRep π hc z')) (h3 : Ad _ π) : Ad _ (extRep π hc (z + z')) := by
   have hc₂ : ∀ m : M × M, c • m = 0 := fun m => Prod.ext (hc m.1) (hc m.2)
@@ -114,6 +144,9 @@ theorem ClosedClass.add (h : ClosedClass Ad) {c : O} (hc : ∀ m : M, c • m = 
   · rintro ⟨m, q⟩
     exact ⟨((m, 0), q), by simp⟩
 
+/- English proof (translation)
+Use `h.sub LinearMap.id ?_ Function.injective_id (h.prod h1 h2)` and prove the remaining obligations. Introduce and unpack `σ ⟨m, q⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite using `[extRep_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem ClosedClass.zero (h : ClosedClass Ad) {c : O} (hc : ∀ m : M, c • m = 0) (h1 : Ad _ π)
     (h2 : Ad _ (Representation.trivial O G (O ⧸ Ideal.span {c}))) : Ad _ (extRep π hc 0) := by
   refine h.sub LinearMap.id ?_ Function.injective_id (h.prod h1 h2)
@@ -122,6 +155,9 @@ theorem ClosedClass.zero (h : ClosedClass Ad) {c : O} (hc : ∀ m : M, c • m =
   rw [extRep_apply]
   simp
 
+/- English proof (translation)
+Break down `le_total a b with hab | hab` into its components or cases. Conclude with `h.pull (pow_dvd_pow lam hab) hb ha LinearMap.id (fun _ _ => rfl) Function.injective_id z z (fun _ => rfl) h3 h2`. Conclude with `h.push (pow_dvd_pow lam hab) ha hb LinearMap.id (fun _ _ => rfl) z z (fun _ => rfl) h3 h1`.
+-/
 theorem ClosedClass.level (h : ClosedClass Ad) {lam : O} {a b : ℕ} (ha : ∀ m : M, lam ^ a • m = 0)
     (hb : ∀ m : M, lam ^ b • m = 0) (z : ↥(Z1 π ⊤)) (h1 : Ad _ π)
     (h2 : Ad _ (Representation.trivial O G (O ⧸ Ideal.span {lam ^ b})))
@@ -137,6 +173,11 @@ section Ring
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Establish `hN : ((Nat.card X : ℕ) : O) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hN hl`. Establish `hk : ∀ x : X, lam ^ k • x = 0` using `fun x => by`. Establish `e : lam ^ k = ((u⁻¹ : Oˣ) : O) * ((Nat.card X : ℕ) : O)`. Rewrite using `[hu, ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Rewrite using `[e, mul_smul, Nat.cast_smul_eq_nsmul, card_nsmul_eq_zero', smul_zero]`. Conclude with `⟨k + 1, Nat.le_add_left 1 k, fun x => by rw [pow_succ', mul_smul, hk, smul_zero]⟩`.
+-/
 theorem exists_pow_smul_eq_zero [CharZero O] {lam : O} (hl : Irreducible lam) (X : Type) [AddCommGroup X]
     [Module O X] [Finite X] : ∃ a : ℕ, 1 ≤ a ∧ ∀ x : X, lam ^ a • x = 0 := by
   have hN : ((Nat.card X : ℕ) : O) ≠ 0 := Nat.cast_ne_zero.mpr Nat.card_pos.ne'
@@ -147,6 +188,11 @@ theorem exists_pow_smul_eq_zero [CharZero O] {lam : O} (hl : Irreducible lam) (X
     rw [e, mul_smul, Nat.cast_smul_eq_nsmul, card_nsmul_eq_zero', smul_zero]
   exact ⟨k + 1, Nat.le_add_left 1 k, fun x => by rw [pow_succ', mul_smul, hk, smul_zero]⟩
 
+/- English proof (translation)
+Establish `hdvd : lam ∣ p`. Establish `hm : p ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal p).mpr hp`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer lam).mp hl, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hs : Function.Surjective (lower (pow_dvd_pow_of_dvd hdvd a))`. Introduce `q`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨Ideal.Quotient.mk _ y, lower_mk _ y⟩`. Conclude with `Finite.of_surjective _ hs`.
+-/
 theorem finite_quot_pow {lam p : O} (hl : Irreducible lam) (hp : ¬ IsUnit p) (a : ℕ)
     [Finite (O ⧸ Ideal.span {p ^ a})] : Finite (O ⧸ Ideal.span {lam ^ a}) := by
   have hdvd : lam ∣ p := by
@@ -176,6 +222,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m x => simp only [twCoef, coefRep_tmul, LinearMap.lTensor_tmul]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+-/
 theorem lTensor_twCoef (χ : G →* Oˣ) {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGroup X'] [Module O X']
     (f : X →ₗ[O] X') (g : G) (m : M ⊗[O] X) :
     f.lTensor M (twCoef W χ X g m) = twCoef W χ X' g (f.lTensor M m) := by
@@ -184,11 +233,19 @@ theorem lTensor_twCoef (χ : G →* Oˣ) {X X' : Type} [AddCommGroup X] [Module 
   | tmul m x => simp only [twCoef, coefRep_tmul, LinearMap.lTensor_tmul]
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+-/
 theorem exists_coefH1_mk (χ : G →* Oˣ) {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGroup X']
     [Module O X'] (f : X →ₗ[O] X') (z : ↥(Z1 (twCoef W χ X) ⊤)) :
     ∃ z' : ↥(Z1 (twCoef W χ X') ⊤), coefH1 W χ f (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' ∧
       ∀ g, (z' : G → M ⊗[O] X') g = f.lTensor M ((z : G → M ⊗[O] X) g) := ⟨_, rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Rewrite `hc`, the goal using `[mk_mem_admissibleAt_iff_cocycle]`. Establish `hπ : Admissible PD emb Γ t Ut (twistRep (twCoef W Γ.χ₁ X) Γ.χ₁)`. Rewrite using `[twist_twCoef]`. Conclude with `hW X`.
+
+Conclude with `(hcl.twist Γ.χ₁).level (smul_tensor_eq_zero ha) (smul_tensor_eq_zero hb) z hπ (hχ b) hc`.
+-/
 private theorem mem_admAt_of_mem_admAt (hcl : ClosedClass (fun (N : Type) [AddCommGroup N] [Module O N] (π : Representation O G N) =>
       Admissible PD emb Γ t Ut π))
     (hW : ∀ (X : Type) [AddCommGroup X] [Module O X] [Finite X], Admissible PD emb Γ t Ut (coefRep W X))
@@ -204,6 +261,23 @@ private theorem mem_admAt_of_mem_admAt (hcl : ClosedClass (fun (N : Type) [AddCo
     exact hW X
   exact (hcl.twist Γ.χ₁).level (smul_tensor_eq_zero ha) (smul_tensor_eq_zero hb) z hπ (hχ b) hc
 
+/- English proof (translation)
+Establish `hT` using `hcl.twist Γ.χ₁`. Establish `hπ : ∀ (Y : Type) [AddCommGroup Y] [Module O Y] [Finite Y], Admissible PD emb Γ t Ut (twistRep (twCoef W Γ.χ₁ Y) Γ.χ₁)` using `fun Y _ _ _ => by`. Rewrite using `[twist_twCoef]`. Conclude with `hW Y`. Establish `hlev : ∀ (a : ℕ) (ha : ∀ x : X, Γ.lam ^ a • x = 0), 1 ≤ a → adm PD emb Γ t Ut W X = admAt PD emb Γ t Ut W X a ha` using `fun a ha h1a => Set.ext fun c => ⟨fun ⟨_, ha', _, hc⟩ => mem_admAt_of_mem_admAt hcl hW hχ X ha' ha hc, fun hc => ⟨a, ha, h1a, hc⟩⟩`.
+
+Take `⟨a, h1a, ha⟩` from `hnil X`. Establish `hzero : (0 : H1 (twCoef W Γ.χ₁ X) ⊤) ∈ adm PD emb Γ t Ut W X`. Rewrite using `[hlev a ha h1a, ← Submodule.Quotient.mk_zero, mk_mem_admissibleAt_iff_cocycle]`. Conclude with `hT.zero (smul_tensor_eq_zero ha) (hπ X) (hχ a)`. Establish `hadd : ∀ {x y : H1 (twCoef W Γ.χ₁ X) ⊤}, x ∈ adm PD emb Γ t Ut W X → y ∈ adm PD emb Γ t Ut W X → x + y ∈ adm PD emb Γ t Ut W X`.
+
+Introduce `x y hx hy`. Rewrite `hx`, `hy`, the goal using `[hlev a ha h1a]`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z', rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hx`, `hy` using `[mk_mem_admissibleAt_iff_cocycle]`.
+
+Rewrite using `[← Submodule.Quotient.mk_add, mk_mem_admissibleAt_iff_cocycle]`. Conclude with `hT.add (smul_tensor_eq_zero ha) z z' hx hy (hπ X)`. Establish `hsmul : ∀ (r : O) {x : H1 (twCoef W Γ.χ₁ X) ⊤}, x ∈ adm PD emb Γ t Ut W X → r • x ∈ adm PD emb Γ t Ut W X`. Introduce `r x hx`. Rewrite `hx`, the goal using `[hlev a ha h1a]`.
+
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[mk_mem_admissibleAt_iff_cocycle]`. Rewrite using `[← Submodule.Quotient.mk_smul, mk_mem_admissibleAt_iff_cocycle]`. Conclude with `hT.push (dvd_refl _) (smul_tensor_eq_zero ha) (smul_tensor_eq_zero ha) (r • LinearMap.id) (fun σ x => by simp) z (r • z) (fun _ => rfl) hx (hπ X)`. Use `⟨⟨{ carrier := _, add_mem' := hadd, zero_mem' := hzero, smul_mem' := hsmul }, rfl⟩, hlev, ?_⟩` and prove the remaining obligations.
+
+Introduce `X' _ _ _ f c`. Take `⟨b, h1b, hb⟩` from `hnil (X × X')`. Establish `hbX : ∀ x : X, Γ.lam ^ b • x = 0` using `fun x => by`. Simplify using `using congrArg Prod.fst (hb (x, 0))`. Establish `hbX' : ∀ x : X', Γ.lam ^ b • x = 0` using `fun x => by`.
+
+Simplify using `using congrArg Prod.snd (hb (0, x))`. Establish `hlev' : adm PD emb Γ t Ut W X' = admAt PD emb Γ t Ut W X' b hbX'` using `Set.ext fun c => ⟨fun ⟨_, ha', _, hc⟩ => mem_admAt_of_mem_admAt hcl hW hχ X' ha' hbX' hc, fun hc => ⟨b, hbX', h1b, hc⟩⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Take `⟨z', hz'c, hz'⟩` from `exists_coefH1_mk Γ.χ₁ f z`. Rewrite using `[hlev b hbX h1b, hlev', hz'c, mk_mem_admissibleAt_iff_cocycle, mk_mem_admissibleAt_iff_cocycle]`.
+
+Use `⟨fun hz => hT.push (dvd_refl _) (smul_tensor_eq_zero hbX) (smul_tensor_eq_zero hbX') (f.lTensor M) (fun σ x => lTensor_twCoef Γ.χ₁ f σ x) z z' hz' hz (hπ X'), fun hi hz => ?_⟩` and prove the remaining obligations. Conclude with `hT.pull (dvd_refl _) (smul_tensor_eq_zero hbX) (smul_tensor_eq_zero hbX') (f.lTensor M) (fun σ x => lTensor_twCoef Γ.χ₁ f σ x) (Module.Flat.lTensor_preserves_injective_linearMap f hi) z z' hz' hz (hχ b)`.
+-/
 theorem admissible_classes_props_of_flat_coefficient [Module.Flat O M]
     (hcl : ClosedClass (fun (N : Type) [AddCommGroup N] [Module O N] (π : Representation O G N) =>
       Admissible PD emb Γ t Ut π))
@@ -269,6 +343,11 @@ theorem admissible_classes_props_of_flat_coefficient [Module.Flat O M]
       (fun σ x => lTensor_twCoef Γ.χ₁ f σ x) (Module.Flat.lTensor_preserves_injective_linearMap f hi)
       z z' hz' hz (hχ b)
 
+/- English proof (translation)
+Use `Admissible.of_equiv h (TensorProduct.lid O X) (fun g m => ?_)` and prove the remaining obligations. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [GalData.Wchi, coefRep_tmul, TensorProduct.lid_tmul, Formalism.GaloisCohomology.scalRep_apply, GalData.chi_one, twistRep_apply, Representation.trivial_apply, smul_eq_mul, mul_smul]`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+-/
 theorem admissible_of_twist_trivial_tensor {X : Type} [AddCommGroup X] [Module O X]
     (h : Admissible PD emb Γ t Ut (coefRep (Γ.Wchi 1) X)) :
     Admissible PD emb Γ t Ut (twistRep (Representation.trivial O G X) Γ.χ₁) := by
@@ -282,6 +361,11 @@ theorem admissible_of_twist_trivial_tensor {X : Type} [AddCommGroup X] [Module O
 
 end Classes
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := O) (IsLocalRing.maximalIdeal ℤ_[l]) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp hi]; exact bot_le)`. Establish `hmem : ((l : ℕ) : ℤ_[l]) ∈ Q.comap (algebraMap ℤ_[l] O)`. Rewrite using `[hQc]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mpr PadicInt.p_nonunit`.
+
+Rewrite `hmem` using `[Ideal.mem_comap, map_natCast]`. Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)`.
+-/
 theorem not_isUnit_prime (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O]
     [Algebra.IsIntegral ℤ_[l] O] (hi : Function.Injective (algebraMap ℤ_[l] O)) : ¬ IsUnit ((l : ℕ) : O) := by
   intro hu
@@ -295,6 +379,21 @@ theorem not_isUnit_prime (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDom
 
 open GlobalTheory.PhiGam GlobalTheory.Models GlobalTheory.TopSteps Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨⟨hD, hV, -⟩, hfd, -, -, -, -⟩` from `(GlobalTheory.LocalIntegers.good_integers l LL).1`. Use `hD` as an intermediate fact. Use `hV` as an intermediate fact. Use `hfd` as an intermediate fact.
+
+Establish `hunit : ∀ b : ℤ_[l], b ≠ 0 → IsUnit (algebraMap ℤ_[l] ↥(OL LL) b)`. Introduce `b hb`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb PadicInt.irreducible_p`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `(u.isUnit.map _).mul (hu.pow k)`.
+
+Establish `hmem : ∀ x : ℚ_[l], algebraMap ℚ_[l] ↥LL.1 x ∈ OL LL`. Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := ℤ_[l]) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbQ : algebraMap ℤ_[l] ℚ_[l] b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).mpr hb0`.
+
+Take `⟨v, hv⟩` from `hunit b hb0`. Establish `key : algebraMap ℚ_[l] ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] a / algebraMap ℤ_[l] ℚ_[l] b) = ((algebraMap ℤ_[l] ↥(OL LL) a * ↑v⁻¹ : ↥(OL LL)) : ↥LL.1)`. Use `mul_right_cancel₀ ((map_ne_zero (algebraMap ℚ_[l] ↥LL.1)).mpr hbQ) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, div_mul_cancel₀ _ hbQ, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `e2 : algebraMap ℤ_[l] ↥LL.1 b = ((algebraMap ℤ_[l] ↥(OL LL) b : ↥(OL LL)) : ↥LL.1)` using `rfl`.
+
+Establish `e3 : algebraMap ℤ_[l] ↥LL.1 a = ((algebraMap ℤ_[l] ↥(OL LL) a : ↥(OL LL)) : ↥LL.1)` using `rfl`. Rewrite using `[e2, e3, ← hv]`. Use `norm_cast`. Rewrite using `[mul_assoc, Units.inv_mul, mul_one]`. Rewrite using `[key]`.
+
+Conclude with `Subtype.property _`. Set `A : Subalgebra ℚ_[l] ↥LL.1` to `{ (OL LL).toSubsemiring with algebraMap_mem' := hmem }`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Establish `hinv : (ϖ : ↥LL.1)⁻¹ ∈ OL LL` using `A.inv_mem_of_algebraic (x := ⟨ϖ, ϖ.2⟩) (Algebra.IsAlgebraic.isAlgebraic _)`. Establish `hne : (ϖ : ↥LL.1) ≠ 0` using `fun h0 => hϖ.ne_zero (Subtype.ext h0)`.
+
+Conclude with `hϖ.not_isUnit (isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ hne)⟩)`.
+-/
 theorem not_isUnit_integers (l : ℕ) [Fact l.Prime] (LL : FinExt l) : ¬ IsUnit ((l : ℕ) : ↥(OL LL)) := by
   intro hu
   obtain ⟨⟨hD, hV, -⟩, hfd, -, -, -, -⟩ := (GlobalTheory.LocalIntegers.good_integers l LL).1
@@ -335,6 +434,13 @@ theorem not_isUnit_integers (l : ℕ) [Fact l.Prime] (LL : FinExt l) : ¬ IsUnit
   have hne : (ϖ : ↥LL.1) ≠ 0 := fun h0 => hϖ.ne_zero (Subtype.ext h0)
   exact hϖ.not_isUnit (isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ hne)⟩)
 
+/- English proof (translation)
+Establish `hcl : ClosedClass (O` using `S.O) (G := S.G) (fun (N : Type) [AddCommGroup N] [Module S.O N] (π : Representation S.O S.G N) => S.admitted π) := { sub := fun f hf hi ha => ((hC _ _ _ _).1 f hf).1 hi ha quot := fun f hf hs ha => ((hC _ _ _ _).1 f hf).2 hs ha prod := fun ha hb => (hC _ _ _ _).2 ha hb }`. Take `⟨⟨hD, hV, -⟩, -, -, -, -, -⟩` from `(GlobalTheory.LocalIntegers.good_integers l S.LL).1`. Use `hD` as an intermediate fact. Use `hV` as an intermediate fact. Establish `hl : Irreducible S.Γ.lam` using `S.hyp.1.2.2.2.2.2`.
+
+Establish `hfin : ∀ a : ℕ, Finite (S.O ⧸ Ideal.span {S.Γ.lam ^ a})` using `fun a => by`. Use `(GlobalTheory.LocalIntegers.good_integers l S.LL).2 a` as an intermediate fact. Conclude with `finite_quot_pow hl (not_isUnit_integers l S.LL) a`. Establish `hχ : ∀ a : ℕ, S.admitted (twistRep (Representation.trivial S.O S.G (S.O ⧸ Ideal.span {S.Γ.lam ^ a})) S.Γ.χ₁)` using `fun a => by`. Use `hfin a` as an intermediate fact.
+
+Conclude with `admissible_of_twist_trivial_tensor (hA.2 1 le_rfl S.D.one_le_letterBlockLength _)`. Introduce `X _ _ _`. Conclude with `admissible_classes_props_of_flat_coefficient hcl hW hχ (fun Y _ _ _ => exists_pow_smul_eq_zero hl Y) X`.
+-/
 theorem adm_classes_of_flat {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (hC : S.Closed) (hA : S.StdAdm)
     {M : Type} [AddCommGroup M] [Module S.O M] [Module.Flat S.O M] (W : Representation S.O S.G M)
     (hW : S.CoefAdm W) : S.Lem0 W := by
@@ -357,6 +463,9 @@ theorem adm_classes_of_flat {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSi
   intro X _ _ _
   exact admissible_classes_props_of_flat_coefficient hcl hW hχ (fun Y _ _ _ => exists_pow_smul_eq_zero hl Y) X
 
+/- English proof (translation)
+Introduce `l _ P S hC hA`. Use `⟨?_, fun c h1 h2 => adm_classes_of_flat S hC hA (S.Γ.Wchi c) (hA.2 c h1 h2)⟩` and prove the remaining obligations. Establish `: Module.Free S.O ↥S.Γ.T₀.L.T` using `S.Γ.T₀.L.free`. Conclude with `adm_classes_of_flat S hC hA S.Γ.W₀ hA.1`.
+-/
 theorem admissibleLocalSituation_admissible_classes : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Closed → S.StdAdm →
     S.Lem0 S.Γ.W₀ ∧ ∀ c : ℕ, 1 ≤ c → c ≤ S.D.t → S.Lem0 (S.Γ.Wchi c) := by
   intro l _ P S hC hA

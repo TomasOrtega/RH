@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.BKReal
 
+/- English proof (translation)
+Introduce `l _ a e _ _ ϖ he k hk`. Establish `hfix` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hk`. Establish `hr : ∀ n, ϖ.ratio k n ^ e = 1` using `fun n => by`. Establish `hmem : ϖ.seq n ^ e ∈ ϖ.Kinf` using `IntermediateField.subset_adjoin _ _ ⟨n, rfl⟩`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[SubmonoidClass.coe_pow, PiSys.coe_ratio, ← map_pow, div_pow, ← map_pow, hfix _ hmem, div_self (pow_ne_zero _ (ϖ.seq_ne_zero n)), map_one]`. Both sides reduce to the same expression. Establish `hK : ϖ.kummer k ^ e = 1` using `Perfection.ext fun n => by erw [map_pow, map_one]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (ϖ.ratio k n) ^ e = 1`. Rewrite using `[← map_pow, hr, map_one]`.
+
+Establish `hmem : ϖ.kummer k ∈ resSub l a`. Rewrite using `[mem_resSub, ← he, pow_succ, hK, one_mul]`. Take `⟨z, hz⟩ : ∃ z : Fq l a, Fq.val l a z = ϖ.kummer k` from `⟨(⟨ϖ.kummer k, hmem⟩ : ↥(resSub l a)), rfl⟩`. Use `⟨z, Fq.val_injective l a ?_, hz.symm⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_one, hz, hK]`.
+-/
 theorem kummer_mem_Fq_of_mem_GKinf : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e]
     (ϖ : PiSys l e), e + 1 = l ^ a → ∀ k ∈ ϖ.GKinf, ∃ z : Fq l a, z ^ e = 1 ∧ ϖ.kummer k = Fq.val l a z := by
   intro l _ a e _ _ ϖ he k hk

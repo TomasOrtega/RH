@@ -20,6 +20,9 @@ open GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
+/- English proof (translation)
+Break down `m with ⟨z⟩` into its components or cases. Simplify using `only at hm`. Substitute `hm` using the available equality. Conclude with `hser.elim fun s => _root_.GlobalTheory.HeightCounting.Up.state_b2_of_rational_data_alt ((by with_unfolding_all exact (((thTw (Dof x) th).row l.a.A.row) :))) ((by with_unfolding_all exact (((thTw (Dof x) th).rat l.rat.S) :))) ((by with_unfolding_all exact (l.rat.In.hL :))) ((by wi …`.
+-/
 theorem lb2_of_theta_twist_alt (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp)
     (hT : GlobalTheory.GeoTie.ThetaTie l.b.YS x.m.z.geo.fw th)
     (m : Moved (oTw x (thTw (Dof x) th))) (hm : m.z = datTw x (thTw (Dof x) th)) (hc : m.Copy) (hh : m.Coh)
@@ -47,6 +50,13 @@ theorem lb2_of_theta_twist_alt (x : St P) (l : _root_.GlobalTheory.HeightCountin
     ⟨⟨fun i j b => ⟨(by with_unfolding_all exact ((hT.side ((i)) ((j)) b).pt : _)), (by with_unfolding_all exact ((hT.side ((i)) ((j)) b).cover : _)),
       (by with_unfolding_all exact ((hT.side ((i)) ((j)) b).ev_eq : _)), (by with_unfolding_all exact ((hT.side ((i)) ((j)) b).fmUr : _)), (by with_unfolding_all exact ((hT.side ((i)) ((j)) b).hk : _)),
       (by with_unfolding_all exact ((hT.side ((i)) ((j)) b).hk_none : _))⟩, (by with_unfolding_all exact (hT.isUnramified₂ :))⟩⟩
+/- English proof (translation)
+Introduce `hL K B f T w P x l th hT`. Establish `hser` using `_root_.GlobalTheory.T.series_at_theta_twist_ys_exp hL x l th`. Take `⟨m, hm, hc, hh⟩` from `GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x (thTw (Dof x) th)`. Take `⟨r, hp, hrep, hj, he⟩` from `GlobalTheory.T.exists_normalisedReading_transported_newTwist x _ m hm hc hh`. Take `⟨l', h1, h2, h3, h4, h5, h6, h7⟩` from `_root_.GlobalTheory.T.read_package_twist_heq_alt hL x l.toLI _ m hm hc hh r hp hrep hj he`.
+
+Take `⟨mt, hPV⟩` from `_root_.GlobalTheory.HeightCounting.Up.exists_in_mt_theta_twist_pv_eq x l.toLI th m hm hc hh r hp hj`. Use `⟨stTw x _ m hc hh r hp, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(_root_.GlobalTheory.HeightCounting.Up.lb2_of_theta_twist_alt x l th hT m hm hc hh r hp l' h1 h2 h3 h4 h5 h6 h7 mt hPV hser).elim fun b => ⟨{ toLI := { l' with mt := mt }, b := b }⟩`. Use `show HEq m.z.R.toRealDat.toLevCh _`. Rewrite using `[hm]`.
+
+Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x (thTw (Dof x) th)).R.toRealDat.toLevCh) :))`.
+-/
 theorem exists_levelB2_twisted_state_of_thetaTie : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevel hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp), GlobalTheory.GeoTie.ThetaTie l.b.YS x.m.z.geo.fw th → ∃ x' : St P, Nonempty (_root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x') ∧ x'.o = oTw x (thTw (Dof x) th) ∧ HEq x'.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x.o.Z) (oTw x (thTw (Dof x) th)).Z x.m.z.R.toRealDat.toLevCh) := by
   intro hL K B f T w P x l th hT
   have hser := _root_.GlobalTheory.T.series_at_theta_twist_ys_exp hL x l th

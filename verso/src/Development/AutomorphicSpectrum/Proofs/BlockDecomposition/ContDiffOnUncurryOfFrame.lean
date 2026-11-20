@@ -20,6 +20,13 @@ variable {n : ℕ}
 def eps (p : Bool × Fin n × Fin n) (A : Mat n) : ℝ :=
   if p.1 then (A p.2.1 p.2.2).re else (A p.2.1 p.2.2).im
 
+/- English proof (translation)
+Take `⟨b, i, j⟩` from `p`. Consider the cases of `b`. Establish `e : (eps (false, i, j) : Mat n → ℝ) = Complex.imCLM ∘ fun y : Mat n => y i j`. Use function extensionality and compare the values at `A`. Simplify using `[eps]`.
+
+Rewrite using `[e]`. Conclude with `Complex.imCLM.contDiff.comp (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent i j)`. Establish `e : (eps (true, i, j) : Mat n → ℝ) = Complex.reCLM ∘ fun y : Mat n => y i j`. Use function extensionality and compare the values at `A`. Simplify using `[eps]`.
+
+Rewrite using `[e]`. Conclude with `Complex.reCLM.contDiff.comp (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent i j)`.
+-/
 theorem contDiff_eps (p : Bool × Fin n × Fin n) : ContDiff ℝ ∞ (eps p : Mat n → ℝ) := by
   obtain ⟨b, i, j⟩ := p
   cases b
@@ -32,6 +39,9 @@ theorem contDiff_eps (p : Bool × Fin n × Fin n) : ContDiff ℝ ∞ (eps p : Ma
     rw [e]
     exact Complex.reCLM.contDiff.comp (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent i j)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, eps, bs, Matrix.sum_apply, Matrix.smul_apply]`. Simplify using `[Matrix.single_apply, Finset.sum_add_distrib, ite_and]`.
+-/
 theorem sum_eps (A : Mat n) : ∑ p, eps p A • (bs p : Mat n) = A := by
   ext a b
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, eps, bs, Matrix.sum_apply, Matrix.smul_apply]
@@ -39,6 +49,11 @@ theorem sum_eps (A : Mat n) : ∑ p, eps p A • (bs p : Mat n) = A := by
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.2 hx`. Establish `e : ξ = ∑ p, eps p (ξ * x⁻¹) • (bs p * x)`. Establish `: ξ * x⁻¹ * x = ξ` using `by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Use `conv_lhs => rw [← this, ← sum_eps (ξ * x⁻¹), Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => smul_mul_assoc _ _ _`.
+
+Use `conv_lhs => rw [e, map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => map_smul _ _ _`.
+-/
 theorem fderiv_frame (f : Mat n → V) {x : Mat n} (hx : x ∈ GLs n) (ξ : Mat n) :
     fderiv ℝ f x ξ = ∑ p, eps p (ξ * x⁻¹) • fderiv ℝ f x (bs p * x) := by
   have hu : IsUnit x.det := isUnit_iff_ne_zero.2 hx
@@ -49,18 +64,36 @@ theorem fderiv_frame (f : Mat n → V) {x : Mat n} (hx : x ∈ GLs n) (ξ : Mat 
   conv_lhs => rw [e, map_sum]
   exact Finset.sum_congr rfl fun p _ => map_smul _ _ _
 
+/- English proof (translation)
+The claim follows from `(contDiff_eps p).comp_contDiffOn ((GlobalTheory.CompanionTheory.RCalc.mulL ξ).contDiff.comp_contDiffOn GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv)`.
+-/
 theorem contDiffOn_coeff (p : Bool × Fin n × Fin n) (ξ : Mat n) :
     ContDiffOn ℝ ∞ (fun x : Mat n => eps p (ξ * x⁻¹)) (GLs n) :=
   (contDiff_eps p).comp_contDiffOn
     ((GlobalTheory.CompanionTheory.RCalc.mulL ξ).contDiff.comp_contDiffOn GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv)
 
+/- English proof (translation)
+The claim follows from `(contDiffOn_coeff p ξ).comp contDiff_snd.contDiffOn fun _ hz => hz.2`.
+-/
 theorem contDiffOn_coeff' (p : Bool × Fin n × Fin n) (ξ : Mat n) :
     ContDiffOn ℝ ∞ (fun z : ℝ × Mat n => eps p (ξ * z.2⁻¹)) (Set.univ ×ˢ GLs n) :=
   (contDiffOn_coeff p ξ).comp contDiff_snd.contDiffOn fun _ hz => hz.2
 
+/- English proof (translation)
+The claim follows from `isOpen_univ.prod GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs`.
+-/
 theorem isOpen_dom : IsOpen (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)) :=
   isOpen_univ.prod GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs
 
+/- English proof (translation)
+Establish `hn : (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)) ∈ nhds ((t, x) : ℝ × Mat n)` using `isOpen_dom.mem_nhds ⟨trivial, hx⟩`. Establish `c1 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)) (Set.univ ×ˢ GLs n)`. Rewrite using `[continuousOn_clm_apply]`. Introduce `y`. Use `ContinuousOn.congr (f := fun z : ℝ × Mat n => y • Function.uncurry h₀ z) ((continuousOn_const (c := y)).smul c₀) ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨s, w⟩ -`. Simplify using `[Function.uncurry_def]`. Establish `c2 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => fderiv ℝ (h t) x) (Set.univ ×ˢ GLs n)`. Use `continuousOn_clm_apply.2 fun ξ => ?_` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun z : ℝ × Mat n => ∑ p, eps p (ξ * z.2⁻¹) • hp p z.1 z.2) (Set.univ ×ˢ GLs n)` using `continuousOn_finset_sum _ fun p _ => (contDiffOn_coeff' p ξ).continuousOn.smul (cp p)`.
+
+Use `h1.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`. Establish `hy' : y ∈ GLs n` using `hy`. Conclude with `(fderiv_frame (h s) hy' ξ).trans (Finset.sum_congr rfl fun p _ => by rw [hf p s y hy'])`. Establish `key` using `hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := ((t, x) : ℝ × Mat n)) (f := h) (f₁ := fun t x => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)) (f₂ := fun t x => fderiv ℝ (h t) x) ?_ ?_ (c1.continuousAt hn) (c2.continuousAt hn)`.
+
+Conclude with `key.hasFDerivAt`. Use `filter_upwards [hn] with v hv`. Conclude with `(ht v.1 v.2 hv.2).hasFDerivAt`. Use `filter_upwards [hn] with v hv`. Conclude with `((hd v.1 v.2 hv.2).differentiableAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hv.2)).hasFDerivAt`.
+-/
 theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n × Fin n) → ℝ → Mat n → V}
     (c₀ : ContinuousOn (Function.uncurry h₀) (Set.univ ×ˢ GLs n))
     (cp : ∀ p, ContinuousOn (Function.uncurry (hp p)) (Set.univ ×ˢ GLs n))
@@ -99,6 +132,17 @@ theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n 
   · filter_upwards [hn] with v hv
     exact ((hd v.1 v.2 hv.2).differentiableAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hv.2)).hasFDerivAt
 
+/- English proof (translation)
+Introduce `h hh`. Take `⟨h₀, h₀F, ht⟩` from `hdt h hh`. Use `choose hp hpF hf using hfr h hh`. Establish `hD : ∀ z ∈ (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)), HasFDerivAt (Function.uncurry h) (((1 : ℝ →L[ℝ] ℝ).smulRight (h₀ z.1 z.2)).coprod (fderiv ℝ (h z.1) z.2)) z` using `fun z hz => hasFDerivAt_uncurry (hc _ h₀F) (fun p => hc _ (hpF p)) ht (hd h hh) hf hz.2`. Establish `e : ((k + 1 : ℕ) : WithTop ℕ∞) = (k : WithTop ℕ∞) + 1` using `by norm_cast`.
+
+Rewrite using `[e, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_dom]`. Use `⟨fun z hz => (hD z hz).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiffOn_clm_apply]`. Introduce and unpack `⟨τ, ξ⟩`. Establish `h1 : ContDiffOn ℝ k (fun z : ℝ × Mat n => τ • h₀ z.1 z.2 + ∑ p, eps p (ξ * z.2⁻¹) • hp p z.1 z.2) (Set.univ ×ˢ GLs n)`.
+
+Use `ContDiffOn.add (contDiffOn_const.smul (ih _ h₀F)) (ContDiffOn.sum fun p _ => ?_)` and prove the remaining obligations. Conclude with `((contDiffOn_coeff' p ξ).of_le (by exact_mod_cast le_top)).smul (ih _ (hpF p))`. Use `h1.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ hz`. Establish `e1 : fderiv ℝ (Function.uncurry h) (s, y) = _` using `(hD _ hz).fderiv`.
+
+Use `(congrArg (fun L => L (τ, ξ)) e1).trans ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coprod_apply, ContinuousLinearMap.smulRight_apply]`. Rewrite using `[fderiv_frame _ hz.2]`. Simplify using `only [ContinuousLinearMap.one_apply]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun p _ => by rw [hf p s y hz.2]`.
+-/
 theorem contDiffOn_step (F : Set (ℝ → Mat n → V))
     (hc : ∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n))
     (hdt : ∀ h ∈ F, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, HasDerivAt (fun s => h s x) (h' t x) t)
@@ -131,6 +175,11 @@ theorem contDiffOn_step (F : Set (ℝ → Mat n → V))
   congr 1
   exact Finset.sum_congr rfl fun p _ => by rw [hf p s y hz.2]
 
+/- English proof (translation)
+Introduce `n V _ _ F hc hdt hd hfr h hh`. Rewrite using `[contDiffOn_infty]`. Introduce `k`. Proceed by induction on `k generalizing h with`. Consider the case `zero`.
+
+Establish `h0 : ContDiffOn ℝ 0 (Function.uncurry h) (Set.univ ×ˢ GLs n)` using `contDiffOn_zero.2 (hc h hh)`. Simplify using `using h0`. Consider the case `succ k ih => exact contDiffOn_step F hc hdt hd hfr k (fun h hh => ih h hh) h hh`.
+-/
 theorem contDiffOn_uncurry_of_frame : ∀ {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (F : Set (ℝ → Mat n → V)), (∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n)) →
     (∀ h ∈ F, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, HasDerivAt (fun s => h s x) (h' t x) t) →

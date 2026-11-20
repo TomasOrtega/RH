@@ -27,6 +27,15 @@ noncomputable section
 
 namespace GlobalTheory.FlagSwapDefect
 
+/- English proof (translation)
+Take `⟨E, h, Hc, fl, hfl, hiso⟩` from `hM ι N`. Establish `hX` using `(GlobalTheory.FlagZ.isArithVar_hasHh_unique ι N).1`. Set `e : (Σ _ : ι, Fin N) ≃ ι × Fin N` to `Equiv.sigmaEquivProd _ _`. Establish `hΨ : IsGeoFun (GlobalTheory.FlagZ.grLine (ι` using `ι) (N := N)) (dimFl ι N) (degFlLin _ _) := ⟨fun m => (degFlLin_apply _ _ _).trans (hD _ _ m).symm, fun P d hd hP => (degFlLin_apply _ _ _).trans (degFl_of_ne hP hd)⟩`. Establish `key` using `hG ℤ (Sp ℤ) _ (𝟙 _) (GlobalTheory.FlagZ.flStr ι N) 0 _ ArithBase.isArithVar_int hX _ (Category.comp_id _) ι E (fun _ => N) h Hc fl hfl _ _ (isArFun_equiv hX e (fun z => hiso z.1 z.2) H) (isGeoFun_equiv e (fun z => hiso z.1 z.2) hΨ) τ a b hab fun z => n (e z)`.
+
+Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow] at key`. Rewrite `key` using `[rename_swapPol e G _ _ _ n, rename_lin e fun z => (n z : ℝ), degFlLin_apply]`. Establish `hz : ∀ {inst : DecidableEq (Σ _ : ι, Fin N)} (z : Σ _ : ι, Fin N), e (@Equiv.swap _ inst ⟨τ, a⟩ ⟨τ, b⟩ z) = swapAt τ a b (e z)`. Introduce `inst z`. Take `⟨s, i⟩` from `z`.
+
+Rewrite using `[swapAt_eq]`. Simplify using `only [Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs with h₁ h₂ h₃ h₄ h₃ h₄ <;> simp_all [e, Sigma.ext_iff, Prod.ext_iff]`. Simplify using `only [hz] at key`. Rewrite `key` using `[rename_lin e fun w => ((n (swapAt τ a b w) : ℤ) : ℝ)]`.
+
+Apply the tactic sequence `convert key using 3 <;> rfl`.
+-/
 theorem swap_flagZ
     (hM : ∀ (ι : Type) [Fintype ι] (N : ℕ), ∃ (E : ι → (Sp ℤ).Modules) (h : ∀ a, VMetric (𝟙 (Sp ℤ)) (E a) N) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (E a)) N), IsFlagBundle (GlobalTheory.FlagZ.flStr ι N) E (fun _ => N) fl ∧ ∀ (a : ι) (i : Fin N), (VMetric.grLB (fl a) i ((H a).pull (GlobalTheory.FlagZ.flStr ι N) (Category.comp_id _))).Isometric (GlobalTheory.FlagZ.grLine (a, i)))
     (hD : ∀ (ι : Type) [Fintype ι] (N : ℕ) (n : ι × Fin N → ℤ), gdeg (comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n) (dimFl ι N) = degFl ι N (lin (fun x => (n x : ℝ)) ^ dimFl ι N))
@@ -59,6 +68,13 @@ theorem swap_flagZ
   rw [rename_lin e fun w => ((n (swapAt τ a b w) : ℤ) : ℝ)] at key
   convert key using 3 <;> rfl
 
+/- English proof (translation)
+Establish `hne : ((σ, a) : ι × Fin N) ≠ (σ, b)` using `fun h => by`. Use `congrArg (fun p : ι × Fin N => (p.2 : ℕ)) h` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `key` using `GlobalTheory.T.swap_polynomial_identity (ι × Fin N) (σ, a) (σ, b) hne (dimFl ι N) hh (degFlLin ι N) (fun P d hd hP => H.eq_zero hd hP) (fun P d hd hP => (degFlLin_apply _ _ _).trans (degFl_of_ne hP hd)) (fun n => by`.
+
+Rewrite using `[degFlLin_apply]`. Use `swap_flagZ hM hD swapG hG ι N hh H σ a b hab n` as an intermediate fact. Simplify using `only [swapAt_eq] at this`. Use `this using 3) k M` and compare the differences between its conclusion and the goal. Rewrite `key` using `[degFlLin_apply]`.
+
+Use `key using 2` and compare the differences between its conclusion and the goal. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem polar_flagZ
     (hM : ∀ (ι : Type) [Fintype ι] (N : ℕ), ∃ (E : ι → (Sp ℤ).Modules) (h : ∀ a, VMetric (𝟙 (Sp ℤ)) (E a) N) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (E a)) N), IsFlagBundle (GlobalTheory.FlagZ.flStr ι N) E (fun _ => N) fl ∧ ∀ (a : ι) (i : Fin N), (VMetric.grLB (fl a) i ((H a).pull (GlobalTheory.FlagZ.flStr ι N) (Category.comp_id _))).Isometric (GlobalTheory.FlagZ.grLine (a, i)))
     (hD : ∀ (ι : Type) [Fintype ι] (N : ℕ) (n : ι × Fin N → ℤ), gdeg (comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n) (dimFl ι N) = degFl ι N (lin (fun x => (n x : ℝ)) ^ dimFl ι N))
@@ -82,6 +98,9 @@ theorem polar_flagZ
   convert key using 2
   congr
 
+/- English proof (translation)
+Introduce `hAr hRA hP hAD ι _ _ N hh H τ σ a b hab Q hQ`. Establish `hS2 : Swap2 swapG` using `GlobalTheory.T.swap_identity_from_regular_base hAr hRA GlobalTheory.T.generic_degree_pullback_formula swapG (GlobalTheory.T.arith_calc_swap_regular hAr)`. Establish `hSF : SwapFl swapG` using `GlobalTheory.T.swap_symmetric_implies_swap_flag hAr swapG homog_swapG hS2`. Conclude with `GlobalTheory.T.block_point_harmonic_degree_flag ι N hh (fun P d hd hP => H.eq_zero hd hP) τ σ a b hab (fun k M => polar_flagZ GlobalTheory.T.flag_variety_graded_lines_isometric (GlobalTheory.T.generic_degree_eq_flag_degree hP hAD) hSF ι N hh H σ a b hab k M) Q hQ`.
+-/
 theorem swap_defect : ArCalc → RegularAlteration → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (hh : Pol ι N →ₗ[ℝ] ℝ), GlobalTheory.FlagZ.IsHh ι N hh → ∀ (τ σ : ι) (a b : Fin N), (b : ℕ) = a + 1 → ∀ Q : Pol ι N, Q.IsHomogeneous (dimFl ι N - 1) → hh (pSum τ 2 * rename (swapAt σ a b) Q) - formDeg (bcForm τ * toForm (rename (swapAt σ a b) Q)) = -(hh (pSum τ 2 * Q) - formDeg (bcForm τ * toForm Q)) := by
   intro hAr hRA hP hAD ι _ _ N hh H τ σ a b hab Q hQ
   have hS2 : Swap2 swapG := GlobalTheory.T.swap_identity_from_regular_base hAr hRA GlobalTheory.T.generic_degree_pullback_formula swapG (GlobalTheory.T.arith_calc_swap_regular hAr)

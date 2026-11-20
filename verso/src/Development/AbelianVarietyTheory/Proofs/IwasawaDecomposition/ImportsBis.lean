@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.IsolatedTheoremTwo
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a s ih`.
+
+Introduce `h`. Rewrite using `[Multiset.prod_cons, norm_mul, h a (Multiset.mem_cons_self a s), ih (fun x hx => h x (Multiset.mem_cons_of_mem hx)), one_mul]`.
+-/
 theorem main : ∀ {s : Multiset ℂ}, (∀ x ∈ s, ‖x‖ = (1 : ℝ)) → ‖Multiset.prod s‖ = (1 : ℝ) := by
   intro s
   induction s using Multiset.induction_on with

@@ -15,11 +15,17 @@ noncomputable section
 
 namespace GlobalTheory.PsiSqGeneric
 
+/- English proof (translation)
+Use `show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = 𝟙 _`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
+-/
 theorem jFK_self (V : Type) [CommRing V] [IsDomain V] :
     jFK (R := V) (FractionRing V) = 𝟙 (Spec (CommRingCat.of (FractionRing V))) := by
   show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = 𝟙 _
   rw [Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]
 
+/- English proof (translation)
+Rewrite using `[← gs_unit _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem cst_eq_gm {V : Type} [CommRing V] [IsDomain V] (z : Spec (CommRingCat.of (FractionRing V)))
     (k : (FractionRing V)ˣ) :
     cst (R := V) (FractionRing V) z (k : FractionRing V) =
@@ -31,6 +37,19 @@ end GlobalTheory.PsiSqGeneric
 
 namespace GlobalTheory.PsiSqGeneric
 
+/- English proof (translation)
+Take `⟨-, k', hk', hv⟩` from `hT mu (-mu)`. Use `⟨k'⁻¹, ?_, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, hk']`. Simplify using `only [map_neg, zpow_neg, Finset.prod_inv_distrib, inv_inv]`. Establish `hv' : val (D.tau mu (-mu)) (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z J = gm (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z ⊤ (unitOn k') * val (τ₀ mu (-mu)) (jK V) z J` using `hv z J hJ`.
+
+Establish `ev` using `val_corr hJ (hE mu) (𝟙 (Spec (CommRingCat.of (FractionRing V))))`. Rewrite `ev` using `[val_mul hJ, val_pull hJ, Category.id_comp]`. Establish `p0` using `h0 _ (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z J hJ`. Establish `hrig : val D.rigK (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z J = rigV D (jK V) z J`. Rewrite using `[DegPre.rigK, val_pull hJ, Category.id_comp]`.
+
+Both sides reduce to the same expression. Establish `hx : D.xK mu = jK V ≫ (D.c mu).left` using `rfl`. Unfold `DegPre.tau at hv'`. Rewrite `hv'` using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv, congrArg (fun w => val (D.psi w) (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z J) (add_neg_cancel mu)]`. Rewrite `ev` using `[hx]`.
+
+Rewrite `p0`, `hv'` using `[hrig]`. Rewrite using `[jFK_self, GlobalTheory.Poinc.Sep.Frames.toUnit_left_eq, cst_eq_gm]`. Establish `hg : gm (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z ⊤ (unitOn k'⁻¹) = (gm (𝟙 (Spec (CommRingCat.of (FractionRing V)))) z ⊤ (unitOn k'))⁻¹`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[hg, ← Units.val_pow_eq_pow_val, ← Units.val_mul]`. Use `congr 1`. Establish `hp` using `eq_inv_of_mul_eq_one_left p0`. Establish `hb` using `eq_mul_inv_of_mul_eq ev`. Establish `hG` using `eq_mul_inv_of_mul_eq hv'.symm`.
+
+Rewrite using `[hG, hp, hb]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem core (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (hE : D.PsiEven)
     (h0 : ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK V).left) (z : Z) J, Good D.P.L z J →
       val (D.psi 0) r z J * val D.rigK r z J = 1)
@@ -78,6 +97,9 @@ theorem core (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (hE : D.PsiEven
 
 end GlobalTheory.PsiSqGeneric
 
+/- English proof (translation)
+Introduce `V _ _ D hE h0 τ₀ N s ε hT mu`. Conclude with `GlobalTheory.PsiSqGeneric.core V D hE h0 τ₀ N s ε hT mu`.
+-/
 theorem GlobalTheory.PsiSqGeneric.main : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.PsiEven →
     (∀ (Z : Scheme.{0}) (r : Z ⟶ (TK V).left) (z : Z) J, Good D.P.L z J →
       val (D.psi 0) r z J * val D.rigK r z J = 1) →

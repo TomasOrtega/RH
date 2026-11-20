@@ -27,37 +27,63 @@ instance nASC : SecondCountableTopology (nA σ Y b) := TopologicalSpace.Subtype.
 instance nABorel : BorelSpace (nA σ Y b) := Subtype.borelSpace _
 instance borelSpaceDoubledGroup : BorelSpace (G2 σ Y) := GlobalTheory.EisBL.DoubledGroupTopology.borelSpace_doubled_group_eq σ Y
 
+/- English proof (translation)
+Use `show mat2 x = incM F b.1 * (incM F (b⁻¹).1 * mat2 x * incM F b.1) * incM F (b⁻¹).1`. Simplify using `only [Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.one_mul]`.
+-/
 theorem matrix_eq_inFrame_conj (b : GL (Fin n ⊕ Fin n) E) (x : G2 σ Y) :
     mat2 x = incM F b.1 * inFrame b x * incM F (b⁻¹).1 := by
   show mat2 x = incM F b.1 * (incM F (b⁻¹).1 * mat2 x * incM F b.1) * incM F (b⁻¹).1
   simp only [Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.mul_one]
   rw [← Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `x y h`. Establish `e : mat2 x = mat2 y` using `by rw [matrix_eq_inFrame_conj b x, matrix_eq_inFrame_conj b y, h]`. Conclude with `Subtype.ext (Units.ext e)`.
+-/
 theorem inFrame_injective (b : GL (Fin n ⊕ Fin n) E) : Function.Injective (inFrame (σ := σ) (Y := Y) b) := by
   intro x y h
   have e : mat2 x = mat2 y := by rw [matrix_eq_inFrame_conj b x, matrix_eq_inFrame_conj b y, h]
   exact Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Apply `inFrame_injective b` to reduce the goal to its premises. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, h, h, h, Matrix.fromBlocks_multiply]`. Simplify using `[add_comm]`.
+-/
 theorem nb_add (h : IsNMap b nb) (β β' : nA σ Y b) : nb (β + β') = nb β * nb β' := by
   apply inFrame_injective b
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, h, h, h, Matrix.fromBlocks_multiply]
   simp [add_comm]
 
+/- English proof (translation)
+Apply `inFrame_injective b` to reduce the goal to its premises. Rewrite using `[h, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Simplify using the standard rewrite rules.
+-/
 theorem nb_zero (h : IsNMap b nb) : nb 0 = 1 := by
   apply inFrame_injective b
   rw [h, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]
   simp
 
+/- English proof (translation)
+Rewrite using `[← nb_add h, ← nb_add h, add_comm]`.
+-/
 theorem nb_comm (h : IsNMap b nb) (β β' : nA σ Y b) : nb β * nb β' = nb β' * nb β := by
   rw [← nb_add h, ← nb_add h, add_comm]
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← nb_add h, neg_add_cancel, nb_zero h]`.
+-/
 theorem nb_neg (h : IsNMap b nb) (β : nA σ Y b) : nb (-β) = (nb β)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← nb_add h, neg_add_cancel, nb_zero h]
 
+/- English proof (translation)
+Rewrite using `[matrix_eq_inFrame_conj b, h]`.
+-/
 theorem matrix_of_unipotent_frame (h : IsNMap b nb) (β : nA σ Y b) :
     mat2 (nb β) = incM F b.1 * Matrix.fromBlocks 1 β.1 0 1 * incM F (b⁻¹).1 := by
   rw [matrix_eq_inFrame_conj b, h]
 
+/- English proof (translation)
+Establish `hc : Continuous fun β : nA σ Y b => incM F b.1 * Matrix.fromBlocks 1 β.1 0 1 * incM F (b⁻¹).1` using `(continuous_const.matrix_mul (Continuous.matrix_fromBlocks continuous_const continuous_subtype_val continuous_const continuous_const)).matrix_mul continuous_const`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hc.congr fun β => (matrix_of_unipotent_frame h β).symm`. Use `(hc.comp continuous_neg).congr fun β => ?_ show _ = mat2 (nb β)⁻¹` and prove the remaining obligations. Rewrite using `[← nb_neg h, matrix_of_unipotent_frame h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem continuous_nb (h : IsNMap b nb) : Continuous nb := by
   have hc : Continuous fun β : nA σ Y b => incM F b.1 * Matrix.fromBlocks 1 β.1 0 1 * incM F (b⁻¹).1 :=
     (continuous_const.matrix_mul (Continuous.matrix_fromBlocks continuous_const continuous_subtype_val
@@ -69,6 +95,9 @@ theorem continuous_nb (h : IsNMap b nb) : Continuous nb := by
     rw [← nb_neg h, matrix_of_unipotent_frame h]
     rfl
 
+/- English proof (translation)
+Simplify using `only [jw, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_one, Matrix.transpose_zero]`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = 0` using `Matrix.map_zero _ (map_zero _)`. Rewrite using `[h1, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem nmat_form (e : AE F E) (β : Matrix (Fin n) (Fin n) (AE F E)) :
     (Matrix.fromBlocks 1 β 0 1)ᵀ * jw n e * (Matrix.fromBlocks 1 β 0 1).map (cA σ) =
       Matrix.fromBlocks 0 1 (e • 1) (e • β.map (cA σ) + βᵀ) := by
@@ -79,6 +108,15 @@ theorem nmat_form (e : AE F E) (β : Matrix (Fin n) (Fin n) (AE F E)) :
   rw [h1, h0]
   simp
 
+/- English proof (translation)
+Use `⟨fun hβ => ?_, fun hβ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hβ using AddSubgroup.closure_induction with`. Consider the case `mem β h`. Take `⟨x, hx⟩` from `h`. Establish `h2` using `frame_eq hε x`.
+
+Rewrite `h2` using `[hx, nmat_form]`. Establish `h3` using `(Matrix.fromBlocks_inj.1 h2).2.2.2`. Rewrite using `[← sub_eq_zero, sub_neg_eq_add, add_comm]`. Conclude with `h3`. Consider the case `zero => simp`.
+
+Consider the case `add β β' _ _ h h'`. Rewrite using `[Matrix.transpose_add, h, h', Matrix.map_add _ (map_add _), smul_add, neg_add]`. Consider the case `neg β _ h`. Rewrite using `[Matrix.transpose_neg, h, Matrix.map_neg _ (map_neg _), smul_neg]`. Take `⟨x, hx⟩` from `exists_of_frame hε (Matrix.fromBlocks 1 β 0 1) (Matrix.fromBlocks 1 (-β) 0 1) (by simp [Matrix.fromBlocks_multiply]) (by`.
+
+Rewrite using `[nmat_form, hβ, add_neg_cancel]`. Use the proof step `rfl)`. Conclude with `AddSubgroup.subset_closure ⟨x, hx⟩`.
+-/
 theorem mem_nA_iff {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (β : Matrix (Fin n) (Fin n) (AE F E)) : β ∈ nA σ Y b ↔ βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ)) := by
   refine ⟨fun hβ => ?_, fun hβ => ?_⟩
@@ -101,6 +139,13 @@ theorem mem_nA_iff {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fr
         rfl)
     exact AddSubgroup.subset_closure ⟨x, hx⟩
 
+/- English proof (translation)
+Use `⟨fun hν => ?_, fun hν => AddSubgroup.subset_closure hν⟩` and prove the remaining obligations. Proceed by induction on `hν using AddSubgroup.closure_induction with`. Consider the case `mem _ h => exact h`. Consider the case `zero => exact ⟨0, by simp [incM]⟩`. Consider the case `add _ _ _ _ h h'`.
+
+Take `⟨T, hT⟩` from `h`. Take `⟨T', hT'⟩` from `h'`. Conclude with `⟨T + T', by rw [AddSubgroup.coe_add, hT, hT']; simp [incM, Matrix.map_add]⟩`. Consider the case `neg _ _ h`. Take `⟨T, hT⟩` from `h`.
+
+Conclude with `⟨-T, by rw [AddSubgroup.coe_neg, hT]; simp [incM, Matrix.map_neg]⟩`.
+-/
 theorem mem_nF_iff {ν : nA σ Y b} : ν ∈ nF σ Y b ↔ ∃ T : Matrix (Fin n) (Fin n) E, ν.1 = incM F T := by
   refine ⟨fun hν => ?_, fun hν => AddSubgroup.subset_closure hν⟩
   induction hν using AddSubgroup.closure_induction with
@@ -114,6 +159,13 @@ theorem mem_nF_iff {ν : nA σ Y b} : ν ∈ nF σ Y b ↔ ∃ T : Matrix (Fin n
     obtain ⟨T, hT⟩ := h
     exact ⟨-T, by rw [AddSubgroup.coe_neg, hT]; simp [incM, Matrix.map_neg]⟩
 
+/- English proof (translation)
+Establish `hinv : incM F M * inFrame b x⁻¹ = 1`. Rewrite using `[← h, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, mul_inv_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hdet : M.det ≠ 0` using `fun h0 => by`. Use `congrArg Matrix.det hinv` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one, incM, show (M.map (inclR (F := F) (AF F))).det = inclR (F := F) (AF F) M.det from (RingHom.map_det _ M).symm, h0, map_zero, zero_mul]`.
+
+Conclude with `zero_ne_one this`. Set `g : GL (Fin n ⊕ Fin n) E` to `b * Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet * b⁻¹`. Use `Subgroup.mem_subgroupOf.2 ⟨g, Units.ext ?_⟩` and prove the remaining obligations. Use `show (g.1).map (inclR (F := F) (AF F)) = mat2 x`. Rewrite using `[matrix_eq_inFrame_conj b x, h]`.
+
+Simplify using `only [g, Units.val_mul, Matrix.GeneralLinearGroup.val_mkOfDetNeZero, Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem rat_of_inFrame {x : G2 σ Y} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} (h : inFrame b x = incM F M) :
     x ∈ rat2 σ Y := by
   have hinv : incM F M * inFrame b x⁻¹ = 1 := by
@@ -130,6 +182,9 @@ theorem rat_of_inFrame {x : G2 σ Y} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fi
   simp only [g, Units.val_mul, Matrix.GeneralLinearGroup.val_mkOfDetNeZero, Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `mem_nF_iff.1 hν`. Use `rat_of_inFrame (b := b) (M := Matrix.fromBlocks 1 T 0 1) ?_` and prove the remaining obligations. Rewrite using `[h, hT]`. Simplify using `[incM, Matrix.fromBlocks_map]`.
+-/
 theorem nb_rat (h : IsNMap b nb) {ν : nA σ Y b} (hν : ν ∈ nF σ Y b) : nb ν ∈ rat2 σ Y := by
   obtain ⟨T, hT⟩ := mem_nF_iff.1 hν
   refine rat_of_inFrame (b := b) (M := Matrix.fromBlocks 1 T 0 1) ?_
@@ -147,17 +202,26 @@ instance countable_nF : Countable (nF σ Y b) := by
   rw [hx, hy]
   exact congrArg _ hxy
 
+/- English proof (translation)
+Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_inclR (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
   show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
+/- English proof (translation)
+Rewrite using `[← trace_inclR]`. Use `congr 1`. Simplify using `[incM, Matrix.trace, map_sum]`.
+-/
 theorem tt_rat (M : Matrix (Fin n) (Fin n) E) :
     Algebra.trace (AF F) (AE F E) (incM F M).trace = algebraMap F (AF F) (Algebra.trace F E M.trace) := by
   rw [← trace_inclR]
   congr 1
   simp [incM, Matrix.trace, map_sum]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `mem_nF_iff.1 T.2`. Take `⟨B, hB⟩` from `mem_nF_iff.1 ν.2`. Rewrite using `[hA, hB, incM, incM, ← Matrix.map_mul, ← incM, tt_rat]`. Conclude with `hψ.2.1 _`.
+-/
 theorem psi_rat {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (T ν : nF σ Y b) :
     ψ (Algebra.trace (AF F) (AE F E) (T.1.1 * ν.1.1).trace) = 1 := by
   obtain ⟨A, hA⟩ := mem_nF_iff.1 T.2

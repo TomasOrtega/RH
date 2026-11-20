@@ -21,6 +21,11 @@ namespace GlobalTheory.CompanionTheory.SpinPRV
 
 open ReciprocityTheory.ChartRestriction.DS.HW in
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.HW.tensAct, ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual]`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[Pi.single_apply, Finset.sum_apply, Matrix.neg_apply, Matrix.transpose_apply, sub_eq_add_neg]`.
+
+Simplify using `[Pi.single_apply, hk, Finset.sum_apply, Matrix.neg_apply, Matrix.transpose_apply]`.
+-/
 lemma tens_single {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Fin n → Fin n → Module.End ℂ Z) (G : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) (z : Z) (i : ι) :
     tensAct A (matrixFamilyDual G) a b (WithLp.toLp 2 (Pi.single i z) : PiLp 2 (fun _ : ι => Z)) =
@@ -34,16 +39,25 @@ lemma tens_single {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace
   · simp [Pi.single_apply, hk, Finset.sum_apply, Matrix.neg_apply, Matrix.transpose_apply]
 
 open ReciprocityTheory.ChartRestriction.DS.HW in
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.ChartRestriction.DS.HW.tensAct]`.
+-/
 lemma tens_apply {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] {ι : Type} [Fintype ι]
     (A : Fin n → Fin n → Module.End ℂ Z) (D : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) (x : PiLp 2 (fun _ : ι => Z)) (i : ι) :
     tensAct A D a b x i = A a b (x i) + ∑ j, D a b i j • x j := by
   simp [ReciprocityTheory.ChartRestriction.DS.HW.tensAct]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Pi.single_apply]`.
+-/
 lemma toLp_eq_sum_single {Z : Type} [NormedAddCommGroup Z] {ι : Type} [Fintype ι] [DecidableEq ι] (f : ι → Z) :
     (WithLp.toLp 2 f : PiLp 2 (fun _ : ι => Z)) = ∑ i, (WithLp.toLp 2 (Pi.single i (f i)) : PiLp 2 (fun _ : ι => Z)) := by
   ext k
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[tens_apply, tens_apply]`. Simplify using `only [tens_apply, map_add, map_sum, map_smul, smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm (f := fun k j => (D a b i j * D c d j k) • x k)]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem tensAct_tensAct_apply {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] {ι : Type} [Fintype ι]
     (A : Fin n → Fin n → Module.End ℂ Z) (D : Fin n → Fin n → Matrix ι ι ℂ) (a b c d : Fin n)
     (x : PiLp 2 (fun _ : ι => Z)) (i : ι) :
@@ -56,6 +70,15 @@ private theorem tensAct_tensAct_apply {n : ℕ} {Z : Type} [NormedAddCommGroup Z
   rw [Finset.sum_comm (f := fun k j => (D a b i j * D c d j k) • x k)]
   abel
 
+/- English proof (translation)
+Introduce `a b c d _ _`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use extensionality with `i`. Establish `e1 : A a b (A c d (x i)) - A c d (A a b (x i)) = ((if b = c then A a d else 0) - (if d = a then A c b else 0)) (x i)`.
+
+Use `LinearMap.congr_fun (hA a b c d) (x i)` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Establish `e2 : ∑ k, (D a b * D c d) i k • x k - ∑ k, (D c d * D a b) i k • x k = ∑ k, ((if b = c then D a d else 0) - (if d = a then D c b else 0)) i k • x k`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← sub_smul, ← Matrix.sub_apply, hD a b c d]`. Establish `hl : (ReciprocityTheory.ChartRestriction.DS.HW.tensAct A D a b * ReciprocityTheory.ChartRestriction.DS.HW.tensAct A D c d - ReciprocityTheory.ChartRestriction.DS.HW.tensAct A D c d * ReciprocityTheory.ChartRestriction.DS.HW.tensAct A D a b) x i = (A a b (A c d (x i)) - A c d (A a …`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, PiLp.sub_apply, tensAct_tensAct_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[hl, e1, e2]`.
+
+Apply the tactic sequence `split_ifs <;> simp [tens_apply, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib] <;> abel`.
+-/
 private theorem kRel_tensAct_of_glRel {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] {ι : Type} [Fintype ι]
     [DecidableEq ι] (A : Fin n → Fin n → Module.End ℂ Z) (D : Fin n → Fin n → Matrix ι ι ℂ)
     (hA : Formalism.REAL.GlRel A) (hD : Formalism.REAL.GlRel D) :
@@ -82,6 +105,9 @@ private theorem kRel_tensAct_of_glRel {n : ℕ} {Z : Type} [NormedAddCommGroup Z
   rw [hl, e1, e2]
   split_ifs <;> simp [tens_apply, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib] <;> abel
 
+/- English proof (translation)
+Introduce `a b _ x y`. Simplify using `only [PiLp.inner_apply, tens_apply, inner_add_left, inner_add_right, sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.sum_add_distrib, hA, starRingEnd_apply, hD]`. Use `congr 1`. Conclude with `Finset.sum_comm`.
+-/
 private theorem kUnit_tensAct_of_adjoint {n : ℕ} {Z : Type} [NormedAddCommGroup Z] [InnerProductSpace ℂ Z] {ι : Type} [Fintype ι]
     (A : Fin n → Fin n → Module.End ℂ Z) (D : Fin n → Fin n → Matrix ι ι ℂ)
     (hA : ∀ a b (x y : Z), inner ℂ (A a b x) y = inner ℂ x (A b a y))
@@ -93,6 +119,9 @@ private theorem kUnit_tensAct_of_adjoint {n : ℕ} {Z : Type} [NormedAddCommGrou
   congr 1
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `a b c d`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual, neg_mul_neg, ← Matrix.transpose_mul]`. Rewrite using `[← Matrix.transpose_sub, show G c d * G a b - G a b * G c d = -(G a b * G c d - G c d * G a b) by abel, hG a b c d]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.transpose_sub] <;> abel`.
+-/
 private theorem glRel_ext1Dual {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (G : Fin n → Fin n → Matrix ι ι ℂ) (hG : Formalism.REAL.GlRel G) :
     Formalism.REAL.GlRel (ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual G) := by
@@ -103,6 +132,57 @@ private theorem glRel_ext1Dual {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq �
   split_ifs <;> simp [Matrix.transpose_sub] <;> abel
 
 open ReciprocityTheory.ChartRestriction.DS.HW in
+/- English proof (translation)
+Establish `hdom : Antitone (wtR ν)` using `GlobalTheory.CompanionTheory.RealCount.highestWeight_antitone_of_finiteDimensional_stable V Kf S (wtR ν) v hK hfd hst hvS hv0 hv`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : Equiv.Perm (Fin n), Antitone (fun a => wtR ν (σ a) - rhoV n (σ a)) := by`. Use `⟨Tuple.sort (fun a => -(wtR ν a - rhoV n a)), ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Use `Tuple.monotone_sort (fun a => -(wtR ν a - rhoV n a)) hxy` as an intermediate fact.
+
+Simplify using `only [Function.comp] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Take `⟨Z, iZ1, iZ2, iZ3, E, u, a0, hEgl, hEu, hu0, hu, hirr, ha0, haw, hah⟩` from `GlobalTheory.T.exists_highest_weight_module (fun a => wtR ν (σ a) - rhoV n (σ a)) hσ (-(((n : ℝ) - 1) / 2)) (fun a => ⟨ν (σ a) + ((σ a : ℕ) : ℤ), by simp only [wtR, rhoV]; push_cast; ring⟩) σ`. Establish `hay : ∀ y, E y y a0 = ((wtR ν y - rhoV n y : ℝ) : ℂ) • a0`.
+
+Introduce `y`. Use `haw (σ.symm y)` as an intermediate fact. Simplify using `using this`. Establish `hadj : ∀ i j : Fin n, (j : ℕ) = (i : ℕ) + 1 → (E i j ^ 2) a0 = 0`. Introduce `i j hij`.
+
+Establish `hlt : i < j` using `by rw [Fin.lt_def]; omega`. Establish `hne : i ≠ j` using `ne_of_lt hlt`. Use `GlobalTheory.T.sl2_square_kills_vector E hEgl hEu hne ha0 (hay i) (hay j) ⟨ν i - ν j - 1, ?_⟩ ?_ ?_` and prove the remaining obligations. Simplify using `only [wtR, rhoV]`. Rewrite using `[hij]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hdom hlt.le` as an intermediate fact. Simplify using `only [wtR, rhoV] at this ⊢`. Rewrite using `[hij]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `lt_or_gt_of_ne (σ.symm.injective.ne hne) with h | h` into its components or cases. Use `left`. Simplify using `using hah _ _ h`.
+
+Use `right`. Simplify using `using hah _ _ h`. Take `⟨φ, hφq, hφup, hφdiag⟩` from `GlobalTheory.T.spin_tensor_highest_weight c hc q hq0 hq1 hq2 E hEgl (wtR ν) a0 hay hadj`. Establish `hφsum : ∀ f : ι → ℂ, φ f = ∑ j, f j • φ (Pi.single j 1)`. Introduce `f`.
+
+Use `conv_lhs => rw [show f = ∑ j, f j • (Pi.single j 1 : ι → ℂ) by`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Simplify using `[map_sum, map_smul]`. Establish `hcol : ∀ (M : Matrix ι ι ℂ) (i : ι), ∑ j, M j i • φ (Pi.single j 1) = φ (M *ᵥ Pi.single i 1)`.
+
+Introduce `M i`. Rewrite using `[hφsum (M *ᵥ Pi.single i 1)]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Set `t : PiLp 2 (fun _ : ι => Z)` to `WithLp.toLp 2 (fun i => φ (Pi.single i 1))`. Establish `hETt : ∀ a b i, ReciprocityTheory.ChartRestriction.DS.HW.tensAct E (ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual (spinM c)) a b t i = E a b (φ (Pi.single i 1)) - φ (spinM c a b *ᵥ Pi.single i 1)`.
+
+Introduce `a b i`. Rewrite using `[tens_apply, ← hcol]`. Simplify using `[ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual, t, sub_eq_add_neg, Finset.sum_neg_distrib, neg_smul]`. Establish `hthigh : Formalism.REAL.KHighest (fun _ => true) (ReciprocityTheory.ChartRestriction.DS.HW.tensAct E (ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual (spinM c))) (wtR ν) t`. Use `⟨fun a => ?_, fun a b hab _ => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Rewrite using `[hETt, hφdiag]`. Simplify using `[t]`. Use extensionality with `i`. Rewrite using `[hETt, hφup a b hab]`.
+
+Simplify using the standard rewrite rules. Establish `ht0 : t ≠ 0`. Introduce `h`. Apply `ha0` to reduce the goal to its premises. Rewrite using `[← hφq, hφsum]`.
+
+Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Establish `: t j = 0` using `by rw [h]; simp`. Simplify using `only [t, PiLp.toLp_apply] at this`. Simplify using `[this]`. Establish `hDstar : ∀ a b i j, star (ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual (spinM c) a b i j) = ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual (spinM c) b a j i`.
+
+Introduce `a b i j`. Use `congrFun (congrFun ((GlobalTheory.T.spin_gl_relations_adjoint c hc).2 a b) i) j` as an intermediate fact. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual, Matrix.neg_apply, Matrix.transpose_apply, star_neg, Matrix.conjTranspose_apply] at this ⊢`. Rewrite using `[this]`. Take `⟨ψ, hψt, hψeq⟩` from `CompanionTheory.D.DSIC.hHWMap n (fun _ => true) (PiLp 2 (fun _ : ι => Z)) V (ReciprocityTheory.ChartRestriction.DS.HW.tensAct E (ReciprocityTheory.ChartRestriction.DS.HW.matrixFamilyDual (spinM c))) Kf (wtR ν) t v S (kRel_tensAct_of_glRel E _ hEgl (glRel_ext1Dual _ (GlobalTheory. …`.
+
+Establish `hkey : ∀ a b (z : Z) (i : ι), ψ (WithLp.toLp 2 (Pi.single i (E a b z))) = Kf a b (ψ (WithLp.toLp 2 (Pi.single i z))) + ∑ j, spinM c a b i j • ψ (WithLp.toLp 2 (Pi.single j z))`. Introduce `a b z i`. Establish `h1` using `hψeq a b rfl (WithLp.toLp 2 (Pi.single i z))`. Rewrite `h1` using `[tens_single, map_sub, map_sum]`. Simplify using `only [map_smul] at h1`.
+
+Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Establish `hsm : ∀ (r : ℂ) (z : Z) (i : ι), ψ (WithLp.toLp 2 (Pi.single i (r • z))) = r • ψ (WithLp.toLp 2 (Pi.single i z))`. Introduce `r z i`. Rewrite using `[show (Pi.single i (r • z) : ι → Z) = r • Pi.single i z by ext k; simp [Pi.single_apply]]`.
+
+Rewrite using `[WithLp.toLp_smul, map_smul]`. Use `⟨fun i => ψ (WithLp.toLp 2 (Pi.single i u)), ?_, ?_⟩` and prove the remaining obligations. Introduce `hx`. Establish `hall : ∀ i, ψ (WithLp.toLp 2 (Pi.single i u)) = 0` using `fun i => congrFun hx i`. Set `W : Submodule ℂ Z` to `{ carrier := {z | ∀ i, ψ (WithLp.toLp 2 (Pi.single i z)) = 0} add_mem' := by`.
+
+Introduce `z1 z2 h1 h2 i`. Simplify using `only [Set.mem_setOf_eq] at h1 h2 ⊢`. Rewrite using `[Pi.single_add, WithLp.toLp_add, map_add, h1 i, h2 i, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `i`.
+
+Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `r z h i`. Simplify using `only [Set.mem_setOf_eq] at h ⊢`. Rewrite using `[hsm, h i, smul_zero] }`.
+
+Establish `hstabW : ∀ (a b : Fin n), ∀ z ∈ W, E a b z ∈ W`. Introduce `a b z hz`. Establish `hz' : ∀ j, ψ (WithLp.toLp 2 (Pi.single j z)) = 0` using `hz`. Use `show ∀ i, ψ (WithLp.toLp 2 (Pi.single i (E a b z))) = 0`. Introduce `i`.
+
+Rewrite using `[hkey]`. Simplify using `only [hz', map_zero, smul_zero, Finset.sum_const_zero, add_zero]`. Establish `huW : u ∈ W` using `hall`. Establish `hWtop : W = ⊤` using `hirr W hstabW huW`. Apply `hv0` to reduce the goal to its premises.
+
+Rewrite using `[← hψt]`. Use `show ψ (WithLp.toLp 2 (fun i => φ (Pi.single i 1))) = 0`. Rewrite using `[toLp_eq_sum_single, map_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Establish `hmem : φ (Pi.single i 1) ∈ W` using `by rw [hWtop]; trivial`.
+
+Conclude with `hmem i`. Establish `hy : ∀ a b, yF Kf c a b (fun i => ψ (WithLp.toLp 2 (Pi.single i u))) = fun i => ψ (WithLp.toLp 2 (Pi.single i (E a b u)))`. Introduce `a b`. Use function extensionality and compare the values at `i`. Rewrite using `[hkey]`.
+
+Both sides reduce to the same expression. Use `⟨fun a => ?_, fun a b hab _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hu.1 a]`. Use function extensionality and compare the values at `i`. Rewrite using `[hsm]`.
+
+Both sides reduce to the same expression. Rewrite using `[hy, hu.2 a b hab rfl]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n → Fin n → Matrix ι ι ℂ) (hc : IsCliff c)
     (q : ι → ℂ) (hq0 : q ≠ 0) (hq1 : ∀ a, spinM c a a *ᵥ q = ((-(rhoV n a) : ℝ) : ℂ) • q)
     (hq2 : ∀ a b, a < b → spinM c b a *ᵥ q = 0)
@@ -247,6 +327,11 @@ theorem assemble {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n 
       funext i
       simp
 
+/- English proof (translation)
+Introduce `n`. Take `⟨ι, hF, hD, c, hc, q, hq0, hq⟩` from `GlobalTheory.T.exists_clifford_lowest_vector n`. Use `letI := hF`. Use `letI := hD`. Take `⟨h1, h2⟩` from `GlobalTheory.T.clifford_vector_spin_weight c hc q hq`.
+
+Use `⟨ι, hF, hD, c, hc, ?_⟩` and prove the remaining obligations. Introduce `V _ _ Kf S ν v hK hKu hfd hst hvS hv0 hv`. Conclude with `assemble c hc q hq0 h1 h2 V Kf S ν v hK hKu hfd hst hvS hv0 hv`.
+-/
 theorem spin_parthasarathy_rao_varadarajan : ∀ n : ℕ, ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι) (c : Fin n → Fin n → Matrix ι ι ℂ), IsCliff c ∧
     ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (Kf : Fin n → Fin n → Module.End ℂ V)
       (S : Submodule ℂ V) (ν : Fin n → ℤ) (v : V), Formalism.REAL.GlRel Kf →

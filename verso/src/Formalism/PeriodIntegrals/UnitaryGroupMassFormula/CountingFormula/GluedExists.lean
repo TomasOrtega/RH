@@ -18,6 +18,23 @@ variable {V1 : Type} [AddCommGroup V1] [Module K V1] [FiniteDimensional K V1] [M
   [IsScalarTower (𝓞 K) K V1]
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Establish `hH'` using `hH`. Take `⟨hK, hF, hsym, hzz, ht, hd⟩` from `hH'`. Establish `hz0 : h1 z z ≠ 0`. Rewrite using `[hzz, neg_ne_zero]`. Conclude with `ht.ne'` after adjusting the coercions.
+
+Establish `hz : z ≠ 0` using `z_ne_zero hz0`. Establish `hC : IsCompl (Submodule.span K {z}) (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))`. Rewrite using `[orthK_span]`. Conclude with `isCompl_span hz0`. Establish `hP : Formalism.L2.SG.Pf.Cnt.PosDefOn h1 (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))`.
+
+Rewrite using `[orthK_span]`. Introduce `x hx hx0 φ`. Conclude with `hd ⟨x, hx⟩ (fun h => hx0 (congrArg Subtype.val h)) φ`. Establish `hLat : Formalism.L2.SG.Pf.Cnt.IsLatIn (Submodule.span K {z}) (Submodule.span (𝓞 K) {z})` using `⟨Submodule.fg_span_singleton z, Submodule.span_span_of_tower (𝓞 K) K {z}⟩`. Establish `hInt : Formalism.HermitianLatticesTheory.IsIntegralLat h1 (Submodule.span (𝓞 K) {z})`.
+
+Introduce `x hx y hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[Formalism.HermitianLatticesTheory.locDual_h_smul_left, Formalism.HermitianLatticesTheory.locDual_h_smul_right, hzz]`. Take `⟨c, hc⟩` from `Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range (K := K) a`.
+
+Rewrite using `[← hc]`. Use `Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem c) (Formalism.HermitianLatticesTheory.locDual_one_mul (Formalism.HermitianLatticesTheory.locDual_alg_mem b) ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨-((t : ℕ) : 𝓞 K), by simp⟩`. Establish `hcJ : ∀ 𝔭 : Ideal (𝓞 F), 𝔭.IsMaximal → Formalism.L2.SG.Pf.Cnt.cJ h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) 𝔭 < finrank K (Formalism.L2.SG.Pf.Cnt.orthK h1 (Submodule.span K {z}))`.
+
+Introduce `𝔭 h𝔭`. Rewrite using `[orthK_span]`. Establish `h1r : finrank K (Submodule.span K {z}) = 1` using `finrank_span_singleton hz`. Take `⟨-, e2⟩` from `Formalism.L2.SG.Pf.G9.vJ_cJ_eq Formalism.L2.SG.Pf.Cnt.jordan_invariants_holds hK hF hsym hLat h𝔭 (jordan_rank_one_line hzz ht hz 𝔭)`. Rewrite using `[e2]`.
+
+Establish `hle : Formalism.L2.SG.Pf.Cnt.cJof 𝔭 (fun _ : Fin (finrank K (Submodule.span K {z})) => -((t : ℕ) : 𝓞 F)) ≤ 1`. Unfold `Formalism.L2.SG.Pf.Cnt.cJof`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM⟩` from `Formalism.L2.SG.Pf.Cnt.glueExists_holds K F V1 hK hF h1 hsym (nondeg hH) _ hC hP hU0 _ hLat hInt hcJ`.
+
+Conclude with `⟨M, (glueSet_iff hz0 M).1 hM⟩`.
+-/
 theorem glued_exists {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {t : ℕ} (hH : GlueHyp K F h1 z t)
     (hk2 : 2 ≤ finrank K (wPerp h1 z))
     (hU0 : ∃ Λ₀ : Submodule (𝓞 K) V1, Submodule.IsLattice K Λ₀ ∧ Formalism.HermitianLatticesTheory.IsUnimodular h1 Λ₀) :

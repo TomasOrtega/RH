@@ -18,11 +18,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "AF" => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem adMap_eq_complMap {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (a : AF) :
     (GlobalTheory.AdeleBaseChange.adMap F E a) w = complMap h (a v) := by
   subst h
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ a : 𝓞 F, a ∈ ((conjSrc c w).under (𝓞 F)).asIdeal ↔ a ∈ (w.under (𝓞 F)).asIdeal` using `fun a => by`. Establish `h1 : ∀ P : HeightOneSpectrum (𝓞 E), a ∈ (P.under (𝓞 F)).asIdeal ↔ P.valuation E (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)) < 1` using `fun P => by`. Rewrite using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`. Both sides reduce to the same expression. Establish `h2 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap F E (a : F)` using `rfl`.
+
+Rewrite using `[h1, h1, h2, ← conjPl_conjSrc c w, hc]`. Conclude with `HeightOneSpectrum.ext (Ideal.ext key)`.
+-/
 theorem under_conjSrc (c : E ≃+* E) (hc : ∀ x : F, c (algebraMap F E x) = algebraMap F E x)
     (w : HeightOneSpectrum (𝓞 E)) : (conjSrc c w).under (𝓞 F) = w.under (𝓞 F) := by
   have key : ∀ a : 𝓞 F, a ∈ ((conjSrc c w).under (𝓞 F)).asIdeal ↔ a ∈ (w.under (𝓞 F)).asIdeal := fun a => by
@@ -34,6 +42,11 @@ theorem under_conjSrc (c : E ≃+* E) (hc : ∀ x : F, c (algebraMap F E x) = al
     rw [h1, h1, h2, ← conjPl_conjSrc c w, hc]
   exact HeightOneSpectrum.ext (Ideal.ext key)
 
+/- English proof (translation)
+Use `FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations. Establish `hu` using `under_conjSrc c hc w`. Establish `e1 : pLoc E w (conjFin c (GlobalTheory.AdeleBaseChange.adMap F E a)) = conjLoc c w (complMap hu (a (w.under (𝓞 F))))`. Rewrite using `[pLoc_conjFin]`. Conclude with `congrArg _ (adMap_eq_complMap hu a)`.
+
+Establish `e2` using `adMap_eq_complMap (E := E) (rfl : w.under (𝓞 F) = _) a`. Establish `e3` using `congrFun ((HeightOneSpectrum.denseRange_algebraMap F (w.under (𝓞 F))).equalizer ((conjLoc_spec c w).1.comp (InertChart.continuous_complMap hu)) (InertChart.continuous_complMap (rfl : w.under (𝓞 F) = _)) (funext fun k => by`. Express the relevant statement in the definitionally equal form `conjLoc c w (complMap hu (algebraMap F _ k)) = complMap rfl (algebraMap F _ k)`. Rewrite using `[complMap_algebraMap, complMap_algebraMap, (conjLoc_spec c w).2.1, hc])) (a (w.under (𝓞 F)))`. Conclude with `e1.trans (e3.trans e2.symm)`.
+-/
 theorem conjFin_adMap (c : E ≃+* E) (hc : ∀ x : F, c (algebraMap F E x) = algebraMap F E x) (a : AF) :
     conjFin c (GlobalTheory.AdeleBaseChange.adMap F E a) = GlobalTheory.AdeleBaseChange.adMap F E a := by
   refine FiniteAdeleRing.ext _ fun w => ?_
@@ -49,6 +62,11 @@ theorem conjFin_adMap (c : E ≃+* E) (hc : ∀ x : F, c (algebraMap F E x) = al
       rw [complMap_algebraMap, complMap_algebraMap, (conjLoc_spec c w).2.1, hc])) (a (w.under (𝓞 F)))
   exact e1.trans (e3.trans e2.symm)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a x`. Establish `hc : ∀ x : F, c (algebraMap F E x) = algebraMap F E x` using `fun x => by rw [← h]; exact σ.commutes x`.
+
+Express the relevant statement in the definitionally equal form `toFinAd F E (a ⊗ₜ[F] σ x) = conjFin c (toFinAd F E (a ⊗ₜ[F] x))`. Rewrite using `[toFinAd_tmul, toFinAd_tmul, map_mul, conjFin_adMap c hc, conjFin_algebraMap, h]`.
+-/
 theorem finAdEquiv_sigR (σ : E →ₐ[F] E) (c : E ≃+* E) (h : ∀ x, σ x = c x) (y : AF ⊗[F] E) :
     finAdEquiv F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR AF σ y) = conjFin c (finAdEquiv F E y) := by
   induction y using TensorProduct.induction_on with
@@ -59,6 +77,9 @@ theorem finAdEquiv_sigR (σ : E →ₐ[F] E) (c : E ≃+* E) (h : ∀ x, σ x = 
     change toFinAd F E (a ⊗ₜ[F] σ x) = conjFin c (toFinAd F E (a ⊗ₜ[F] x))
     rw [toFinAd_tmul, toFinAd_tmul, map_mul, conjFin_adMap c hc, conjFin_algebraMap, h]
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.mapAlong_continuous (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E) (fun w => w.under (𝓞 F)) (Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => GlobalTheory.QNorm.finite_places_over F E …`.
+-/
 theorem continuous_adMap : Continuous (GlobalTheory.AdeleBaseChange.adMap F E) :=
   RestrictedProduct.mapAlong_continuous (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E) (fun w => w.under (𝓞 F))
@@ -67,6 +88,13 @@ theorem continuous_adMap : Continuous (GlobalTheory.AdeleBaseChange.adMap F E) :
     (Filter.Eventually.of_forall fun w _ hx => GlobalTheory.AdeleBaseChange.locMap_int w _ hx)
     fun w => InertChart.continuous_complMap (rfl : w.under (𝓞 F) = _)
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology AF (AF ⊗[F] E) := ⟨rfl⟩`. Use `letI : Algebra AF (FiniteAdeleRing (𝓞 E) E) := (GlobalTheory.AdeleBaseChange.adMap F E).toAlgebra`. Use `haveI : ContinuousSMul AF (FiniteAdeleRing (𝓞 E) E) := continuousSMul_of_algebraMap _ _ continuous_adMap`. Set `f : AF ⊗[F] E →ₗ[AF] FiniteAdeleRing (𝓞 E) E` to `{ toFun := finAdEquiv F E map_add' := map_add _ map_smul' := fun r y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `toFinAd F E ((r * a) ⊗ₜ[F] x) = GlobalTheory.AdeleBaseChange.adMap F E r * toFinAd F E (a ⊗ₜ[F] x)`.
+
+Rewrite using `[toFinAd_tmul, toFinAd_tmul, map_mul, mul_assoc] }`. Conclude with `IsModuleTopology.continuous_of_linearMap f`.
+-/
 theorem continuous_finAdEquiv : Continuous (finAdEquiv F E) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsModuleTopology AF (AF ⊗[F] E) := ⟨rfl⟩
@@ -104,6 +132,9 @@ variable {E n}
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(h _).symm`.
+-/
 theorem cT_map {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (s : R →+* R) (t : S →+* S)
     (h : ∀ y, p (s y) = t (p y)) (M : Matrix (Fin n) (Fin n) R) : cT t (M.map p) = (cT s M).map p := by
   ext i j
@@ -111,17 +142,33 @@ theorem cT_map {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (s : R →
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[cT_map p s t h, ← Matrix.map_mul, hM]`. Conclude with `Matrix.map_one p (map_zero p) (map_one p)`.
+-/
 theorem unitary_map {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (s : R →+* R) (t : S →+* S)
     (h : ∀ y, p (s y) = t (p y)) (M : Matrix (Fin n) (Fin n) R) (hM : cT s M * M = 1) :
     cT t (M.map p) * M.map p = 1 := by
   rw [cT_map p s t h, ← Matrix.map_mul, hM]
   exact Matrix.map_one p (map_zero p) (map_one p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pFin_conjAd (y : Ad E) : pFin E (conjAd E y) = conjFin (cc E) (pFin E y) := rfl
 
+/- English proof (translation)
+The claim follows from `(infEq E).symm_apply_apply _`.
+-/
 theorem pInf_conjAd (y : Ad E) : pInf E (conjAd E y) = starRingEnd (Cinf E) (pInf E y) :=
   (infEq E).symm_apply_apply _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cT (conjAd E) (finGL E n k).val * 1 * (finGL E n k).val = 1`. Establish `h1 : (finGL E n k).val.map (pFin E) = k.val` using `congrArg Units.val (pFin_finGL k)`. Establish `h2 : (finGL E n k).val.map (pInf E) = 1` using `congrArg Units.val (pInf_finGL k)`. Establish `h3 : (cT (conjAd E) (finGL E n k).val * (finGL E n k).val).map (pFin E) = 1`. Rewrite using `[Matrix.map_mul, ← cT_map (pFin E) (conjAd E) (conjFin (cc E)) pFin_conjAd, h1, hk]`.
+
+Establish `h4 : (cT (conjAd E) (finGL E n k).val * (finGL E n k).val).map (pInf E) = 1`. Rewrite using `[Matrix.map_mul, ← cT_map (pInf E) (conjAd E) (starRingEnd (Cinf E)) pInf_conjAd, h2, cT_one, mul_one]`. Rewrite using `[mul_one]`. Use `ext1 i j`. Apply the tactic sequence `refine ad_ext ((congrFun₂ h4 i j).trans ?_) ((congrFun₂ h3 i j).trans ?_) <;>`.
+
+Apply the tactic sequence `simp only [Matrix.one_apply] split_ifs <;> simp`.
+-/
 theorem finGL_mem_UA (k : GL (Fin n) (Af E)) (hk : cT (conjFin (cc E)) k.val * k.val = 1) : finGL E n k ∈ UA E n := by
   change cT (conjAd E) (finGL E n k).val * 1 * (finGL E n k).val = 1
   have h1 : (finGL E n k).val.map (pFin E) = k.val := congrArg Units.val (pFin_finGL k)
@@ -136,21 +183,33 @@ theorem finGL_mem_UA (k : GL (Fin n) (Af E)) (hk : cT (conjFin (cc E)) k.val * k
   · simp only [Matrix.one_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hg : cT (conjAd E) g.1.val * 1 * g.1.val = 1` using `g.2`. Rewrite `hg` using `[mul_one]`. Conclude with `unitary_map (pFin E) (conjAd E) (conjFin (cc E)) pFin_conjAd g.1.val hg`.
+-/
 theorem cT_pFin (g : UA E n) :
     cT (conjFin (cc E)) (GeneralLinearGroup.map (pFin E) g.1).val * (GeneralLinearGroup.map (pFin E) g.1).val = 1 := by
   have hg : cT (conjAd E) g.1.val * 1 * g.1.val = 1 := g.2
   rw [mul_one] at hg
   exact unitary_map (pFin E) (conjAd E) (conjFin (cc E)) pFin_conjAd g.1.val hg
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem JR_one : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (F := Fr E) (AFr E) (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 abbrev AEq : AFr E ⊗[Fr E] E →+* Af E := (finAdEquiv (Fr E) E : AFr E ⊗[Fr E] E →+* Af E)
 
+/- English proof (translation)
+The claim follows from `finAdEquiv_sigR _ _ (fun _ => rfl) y`.
+-/
 theorem AEq_sig (y : AFr E ⊗[Fr E] E) :
     AEq (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E) y) = conjFin (cc E) (AEq y) :=
   finAdEquiv_sigR _ _ (fun _ => rfl) y
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq]`. Use `Eq.trans ?_ (AEq_sig _).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `((finAdEquiv (Fr E) E).apply_symm_apply y).symm`.
+-/
 theorem AEq_symm_sig (y : Af E) : (finAdEquiv (Fr E) E).symm (conjFin (cc E) y) =
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E) ((finAdEquiv (Fr E) E).symm y) := by
   rw [RingEquiv.symm_apply_eq]
@@ -164,8 +223,16 @@ def toGL : HF E n →* GL (Fin n) (Af E) :=
   (GeneralLinearGroup.map (AEq (E := E))).comp
     (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toGL_val (g : HF E n) : (toGL E n g).val = g.1.val.map AEq := rfl
 
+/- English proof (translation)
+Establish `hg : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E)) g.1.val * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) (1 : Matrix (Fin n) (Fin n) E) * g.1.val = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) ( …` using `g.2`. Rewrite `hg` using `[JR_one, mul_one]`. Rewrite using `[toGL_val]`. Establish `h2` using `unitary_map (n := n) (AEq (E := E)) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E)) (conjFin (cc E)) AEq_sig`. Establish `h3` using `h2 g.1.val`.
+
+Conclude with `h3 hg`.
+-/
 theorem cT_toGL (g : HF E n) : cT (conjFin (cc E)) (toGL E n g).val * (toGL E n g).val = 1 := by
   have hg : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AFr E) (sg E)) g.1.val * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) (1 : Matrix (Fin n) (Fin n) E) *
       g.1.val = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AFr E) (1 : Matrix (Fin n) (Fin n) E) := g.2
@@ -182,9 +249,15 @@ def toFin : HF E n →* finU E n where
   map_one' := Subtype.ext (Subtype.ext (by simp))
   map_mul' a b := Subtype.ext (Subtype.ext (by simp))
 
+/- English proof (translation)
+The claim follows from `ga_ext ((pInf_finGL _).trans (Eq.symm k.2)) (pFin_finGL _)`.
+-/
 theorem finGL_pFin (k : finU E n) : finGL E n (GeneralLinearGroup.map (pFin E) k.1.1) = k.1.1 :=
   ga_ext ((pInf_finGL _).trans (Eq.symm k.2)) (pFin_finGL _)
 
+/- English proof (translation)
+Introduce `k` and use `by let y := GeneralLinearGroup.map (pFin E) k.1.1 have hy : cT (conjFin (cc E)) y.val * y.val = 1 := cT_pFin k.1 let A' : Af E →+* AFr E ⊗[Fr E] E := ((finAdEquiv (Fr E) E).symm : Af E →+* AFr E ⊗[Fr E] E) have hm : GeneralLinearGroup.map A' y ∈ Formalism.MainNotions.GlobalTheory …`.
+-/
 theorem toFin_surjective : Function.Surjective (toFin E n) := fun k => by
   let y := GeneralLinearGroup.map (pFin E) k.1.1
   have hy : cT (conjFin (cc E)) y.val * y.val = 1 := cT_pFin k.1
@@ -202,16 +275,29 @@ theorem toFin_surjective : Function.Surjective (toFin E n) := fun k => by
   rw [this]
   exact finGL_pFin k
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))`.
+-/
 theorem continuous_finGL : Continuous (finGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id :
     Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))
 
+/- English proof (translation)
+Establish `h1 : Continuous (GeneralLinearGroup.map (AEq (E` using `E)) : GL (Fin n) _ → GL (Fin n) (Af E)) := Continuous.units_map _ (continuous_id.matrix_map continuous_finAdEquiv)`. Establish `h2 : Continuous (toGL E n)` using `h1.comp continuous_subtype_val`. Conclude with `Continuous.subtype_mk (Continuous.subtype_mk (continuous_finGL.comp h2) _) _`.
+-/
 theorem continuous_toFin : Continuous (toFin E n) := by
   have h1 : Continuous (GeneralLinearGroup.map (AEq (E := E)) : GL (Fin n) _ → GL (Fin n) (Af E)) :=
     Continuous.units_map _ (continuous_id.matrix_map continuous_finAdEquiv)
   have h2 : Continuous (toGL E n) := h1.comp continuous_subtype_val
   exact Continuous.subtype_mk (Continuous.subtype_mk (continuous_finGL.comp h2) _) _
 
+/- English proof (translation)
+Take `⟨γ₀, hγ₀, e⟩` from `ht`. Establish `hu : cT ((sg E : E →+* E)) γ₀.val * 1 * γ₀.val = 1` using `hγ₀`. Rewrite `hu` using `[mul_one]`. Establish `hm : ratGL E n γ₀ ∈ UA E n`. Express the relevant statement in the definitionally equal form `cT (conjAd E) (γ₀.val.map (algebraMap E (Ad E))) * 1 * γ₀.val.map (algebraMap E (Ad E)) = 1`.
+
+Rewrite using `[mul_one]`. Conclude with `unitary_map (algebraMap E (Ad E)) (sg E : E →+* E) (conjAd E) (fun y => (conjAd_algebraMap y).symm) _ hu`. Use `⟨⟨_, hm⟩, ⟨γ₀, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e' : t.1 = Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AFr E)) γ₀` using `e.symm`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap E (Af E) (γ₀.val i j) = AEq (t.1.val i j)`. Rewrite using `[e']`. Express the relevant statement in the definitionally equal form `_ = toFinAd (Fr E) E ((1 : AFr E) ⊗ₜ[Fr E] (γ₀.val i j))`. Rewrite using `[toFinAd_tmul, map_one, one_mul]`.
+-/
 theorem toGL_rat (t : HF E n) (ht : t ∈ GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) :
     ∃ γ ∈ ratU E n, GeneralLinearGroup.map (pFin E) γ.1 = toGL E n t := by
   obtain ⟨γ₀, hγ₀, e⟩ := ht
@@ -229,11 +315,19 @@ theorem toGL_rat (t : HF E n) (ht : t ∈ GlobalTheory.Mass.ratIn (AFr E) (sg E)
   change _ = toFinAd (Fr E) E ((1 : AFr E) ⊗ₜ[Fr E] (γ₀.val i j))
   rw [toFinAd_tmul, map_one, one_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pFin E) (u * v⁻¹).1 = 1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h, mul_inv_cancel]`.
+-/
 theorem mul_inv_mem_infU {u v : UA E n}
     (h : GeneralLinearGroup.map (pFin E) u.1 = GeneralLinearGroup.map (pFin E) v.1) : u * v⁻¹ ∈ infU E n := by
   change GeneralLinearGroup.map (pFin E) (u * v⁻¹).1 = 1
   rw [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h, mul_inv_cancel]
 
+/- English proof (translation)
+Establish `hy : γ⁻¹ * (x₀ * x₁⁻¹) * γ ∈ infU E n`. Use `Subgroup.Normal.conj_mem' (inferInstance : (infU E n).Normal) (x₀ * x₁⁻¹) (mul_mem hx₀ (inv_mem hx₁)) γ` as an intermediate fact. Conclude with `this`. Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc γ s, fin_mul_inf hs hy]`.
+
+Substitute `h2 h1` using the available equality. Use `group`.
+-/
 theorem assemble {g γ f₁ s k x₀ x₁ : UA E n} (hx₀ : x₀ ∈ infU E n) (hx₁ : x₁ ∈ infU E n) (hs : s ∈ finU E n)
     (h1 : g = x₀ * (f₁ * s * k)) (h2 : γ = x₁ * f₁) :
     ∃ x ∈ infU E n, g = γ * s * x * k := by
@@ -247,6 +341,17 @@ theorem assemble {g γ f₁ s k x₀ x₁ : UA E n} (hx₀ : x₀ ∈ infU E n) 
 
 variable (E n) in
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Mass.topGroup_fin (sg E) (1 : Matrix (Fin n) (Fin n) E)`. Set `K' : Subgroup (HF E n)` to `K.comap (toFin E n) ⊓ GlobalTheory.Mass.stdLevel (sg E) 1`. Establish `ho : IsOpen (K' : Set (HF E n))` using `(hK.preimage continuous_toFin).inter (GlobalTheory.Mass.isOpen_stdLevel _ _)`. Establish `hc : IsCompact (K' : Set (HF E n))` using `(GlobalTheory.Mass.isCompact_stdLevel _ _ (by simp)).of_isClosed_subset (K'.isClosed_of_isOpen ho) Set.inter_subset_right`. Establish `hcm : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt (Fr E) E (sg E)` using `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ E, fun τ x => IsCMField.complexEmbedding_complexConj E τ x⟩`.
+
+Establish `hstd` using `Formalism.UG.Final.StdFormDef (Fr E) E (Fin n) (sg E) (fun τ => RingHom.ext fun x => IsCMField.complexEmbedding_complexConj E τ x) (fun e he => ⟨⟨e, (IsCMField.complexConj_eq_self_iff E e).1 he⟩, rfl⟩) inferInstance`. Establish `hnd : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND (sg E) (1 : Matrix (Fin n) (Fin n) E)` using `⟨fun i j => congrFun₂ hstd.1 i j, by simp⟩`. Establish `hf` using `(GlobalTheory.Mass.finiteClasses_unitary hcm hnd hstd.2.1 hc ho).1`. Use `haveI := Fintype.ofFinite (ClassSet (GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) K')`. Use `⟨Finset.univ.image fun c : ClassSet (GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) K' => ((toFin E n (Quotient.out c) : finU E n) : UA E n), fun g => ?_⟩` and prove the remaining obligations.
+
+Set `f : finU E n` to `⟨⟨finGL E n (GeneralLinearGroup.map (pFin E) g.1), finGL_mem_UA _ (cT_pFin g)⟩, pInf_finGL _⟩`. Take `⟨h, hh⟩` from `toFin_surjective f`. Take `⟨a, b, ha, hb, e⟩` from `DoubleCoset.mk_out_eq_mul (GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) K' h`. Take `⟨γ, hγ, hγe⟩` from `toGL_rat a⁻¹ (inv_mem ha)`. Establish `hout : h = a⁻¹ * Quotient.out (DoubleCoset.mk (GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) K' h) * b⁻¹`.
+
+Rewrite using `[e]`. Use `group`. Establish `hbK : b⁻¹ ∈ K'` using `inv_mem hb`. Establish `hmap : ∀ t : HF E n, GeneralLinearGroup.map (pFin E) ((toFin E n t : finU E n) : UA E n).1 = toGL E n t` using `fun t => pFin_finGL _`. Take `⟨x, hx, hg⟩` from `assemble (g := g) (γ := γ) (f₁ := ((toFin E n a⁻¹ : finU E n) : UA E n)) (s := ((toFin E n (Quotient.out (DoubleCoset.mk (GlobalTheory.Mass.ratIn (AFr E) (sg E) (1 : Matrix (Fin n) (Fin n) E)) K' h)) : finU E n) : UA E n)) (k := ((toFin E n b⁻¹ : finU E n) : UA E n)) (x₀ := g * ( …`.
+
+Establish `: (f : UA E n) = _ * _ * _` using `congrArg Subtype.val (hh.symm.trans (congrArg (toFin E n) hout |>.trans ((map_mul _ _ _).trans (congrArg (· * _) (map_mul _ _ _)))))`. Rewrite using `[← this, inv_mul_cancel_right])`. Use the proof step `(by group)`. Conclude with `⟨γ, hγ, _, Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, x, hx, _, hbK.1, hg⟩`.
+-/
 theorem classSet_finite (K : Subgroup (finU E n)) (hK : IsOpen (K : Set (finU E n))) :
     ∃ S : Finset (UA E n), ∀ g : UA E n, ∃ γ ∈ ratU E n, ∃ s ∈ S, ∃ x ∈ infU E n, ∃ k ∈ K,
       g = γ * s * x * (k : UA E n) := by

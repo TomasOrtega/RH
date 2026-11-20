@@ -20,6 +20,23 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hωA hωB`. Take `⟨p, q, hs, hz1, hz2⟩` from `hT.sig`. Establish `hev` using `hT.even`. Establish `hrk` using `hT.rank`. Set `e : Fin X.rank ≃ Fin (W.rank + W₁.rank)` to `finCongr hT.rank`.
+
+Take `⟨Bs, Xc, hψ, hα, hβ, hB, hXc, hemb, hκ⟩` from `GlobalTheory.T.exists_thetaTriple_baseData_characters D ψ W W₁ X α β hT ωA hωA`. Take `⟨V, V', Ws, hJV, hJV', hJW, hV, hV', hWs, hcart⟩` from `GlobalTheory.T.exists_placewise_triple_spaces_of_seesaw D W W₁ X A A₁ B α β hT p q hs e Bs hB hemb`. Take `⟨cA, hcA⟩` from `GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W X e (-1) (by norm_num)`. Take `⟨cB, hcB⟩` from `GlobalTheory.T.exists_addEquiv_symplecticCoords_orientedModel D W₁ X e 1 one_ne_zero`. Take `⟨hμ1, hd1⟩` from `GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D W 1 hJV one_ne_zero ν 𝓕 hν`.
+
+Take `⟨hμ2, hd2⟩` from `GlobalTheory.T.conjugateUnitaryAdelicIso_map_haar_fundamentalDomain D W₁ (-1) hJV' (by norm_num) ν₁ 𝓕₁ hν₁`. Take `⟨M, hMμ, hMd, hM⟩` from `GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hB V Ws _ _ _ _ hV hWs _ _ hμ1 hd1`. Take `⟨M', hMμ', hMd', hM'⟩` from `GlobalTheory.T.exists_good_rational_schroedingerModel D Bs hB V' Ws _ _ _ _ hV' hWs _ _ hμ2 hd2`. Establish `hJt : V.J = (if true then 1 else -1 : D.host.E) • W.gram` using `by simpa using hJV`. Establish `hJf : V'.J = (if false then 1 else -1 : D.host.E) • W₁.gram` using `by simpa using hJV'`.
+
+Establish `hct : ∀ w, ∃ τ, (∀ x, (Bs.emb w).1 x = starRingEnd ℂ (tauE D τ x)) ∧ V.θ w = (if true then 1 else -1 : ℂ) • A.cart τ ∧ Ws.θ w = (reindex e e (B.cart τ)).map (starRingEnd ℂ)` using `fun w => by`. Take `⟨τ, h1, h2, -, h4⟩` from `hcart w`. Conclude with `⟨τ, h1, by simpa using h2, h4⟩`. Establish `hcf : ∀ w, ∃ τ, (∀ x, (Bs.emb w).1 x = starRingEnd ℂ (tauE D τ x)) ∧ V'.θ w = (if false then 1 else -1 : ℂ) • A₁.cart τ ∧ Ws.θ w = (reindex e e (B.cart τ)).map (starRingEnd ℂ)` using `fun w => by`. Take `⟨τ, h1, -, h3, h4⟩` from `hcart w`.
+
+Conclude with `⟨τ, h1, by simpa using h3, h4⟩`. Establish `hcA' : ∀ u, cA u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if true then -1 else 1 : D.host.E) • W.gram)) : Matrix (Fin X.rank) (Fin W.rank) (AE D))` using `fun u => by simpa using hcA u`. Establish `hcB' : ∀ u, cB u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if false then -1 else 1 : D.host.E) • W₁.gram)) : Matrix (Fin X.rank) (Fin W₁.rank) (AE D))` using `fun u => by simpa using hcB u`. Take `⟨hA1, hA2⟩` from `GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA'`. Take `⟨hB1, hB2⟩` from `GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB'`.
+
+Take `⟨om, hom, hwA⟩` from `GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ true W X A B e Bs hB hψ V Ws _ _ _ _ hJt hJW hV hWs hct M hM cA hcA' β (β / α) ωA hωA`. Take `⟨om', hom', hwB⟩` from `GlobalTheory.T.exists_weilRep_orientedPair_rationalSchrodinger D ψ θ hθ false W₁ X A₁ B e Bs hB hψ V' Ws _ _ _ _ hJf hJW hV' hWs hcf M' hM' cB hcB' α (α / β) ωB hωB`. Set `Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig W.rank W₁.rank` to `⟨p, q, V, V', Ws, M, M'⟩`. Use `⟨e, Bs, Γ, Xc, om, om', cA, cB, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ psi := hψ alpha := hα beta := hβ JW := hJV JW₁ := hJV' JX := hJW measW := hMμ domW := hMd measW₁ := hMμ' domW₁ := hMd' weilA := hwA weilB := hwB algA := hA1 algA' := hA2 algB := hB1 algB' := hB2 }`.
+
+Use `⟨hB, ?_, hXc, ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hev`. Conclude with `{ lt := by omega even := ⟨k, by omega⟩ kappa := hκ eBig := by show 2 * (p + q) + 1 < (W.rank - W₁.rank) / 2; omega aBig := hz2 hV := hV hV' := hV' hW := hWs hM := hM hM' := hM' }`. Use `show M.IsWeil Bs.ψ Xc.β (Xc.β / Xc.α) om`. Rewrite using `[hα, hβ]`.
+
+Conclude with `hom`. Use `show M'.IsWeil Bs.ψ Xc.α (Xc.α / Xc.β) om'`. Rewrite using `[hα, hβ]`. Conclude with `hom'`.
+-/
 theorem GlobalTheory.SquareAgree.exists_isOver : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
     ∀ (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁)) (𝓕₁ : Set (GA D W₁)),

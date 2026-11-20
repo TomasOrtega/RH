@@ -22,9 +22,15 @@ def FinCoef (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSMode
     (∀ i, SmoothVec (lieAt V τ) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) (v i)) ∧
     ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), φ (x * atTau θ V τ g) = ∑ i, L i (M.σ τ (M.fr τ * g * (M.fr τ)⁻¹) (v i))
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun g _ => by simp⟩`.
+-/
 theorem FinCoef.zero (θ : InfFam D) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     FinCoef θ M τ 0 := fun _ => ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun g _ => by simp⟩
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨n₁, L₁, v₁, hv₁, e₁⟩ := h₁ x obtain ⟨n₂, L₂, v₂, hv₂, e₂⟩ := h₂ x refine ⟨n₁ + n₂, Fin.append L₁ L₂, Fin.append v₁ v₂, fun i => ?_, fun g hg => ?_⟩ · refine Fin.addCases (fun i => ?_) (fun i => ?_) i · simpa using hv₁ i · simpa using hv₂ i · rw [Fin.sum_univ_add, Pi.ad …`.
+-/
 theorem FinCoef.add {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {τ : D.what₂.Tau}
     {φ ψ : GA D V → ℂ} (h₁ : FinCoef θ M τ φ) (h₂ : FinCoef θ M τ ψ) : FinCoef θ M τ (φ + ψ) := fun x => by
   obtain ⟨n₁, L₁, v₁, hv₁, e₁⟩ := h₁ x
@@ -36,6 +42,9 @@ theorem FinCoef.add {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M 
   · rw [Fin.sum_univ_add, Pi.add_apply, e₁ g hg, e₂ g hg]
     simp
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨n, L, v, hv, e⟩ := h x refine ⟨n, fun i => c • L i, v, hv, fun g hg => ?_⟩ rw [Pi.smul_apply, e g hg, Finset.smul_sum] simp`.
+-/
 theorem FinCoef.smul {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {τ : D.what₂.Tau}
     {φ : GA D V → ℂ} (c : ℂ) (h : FinCoef θ M τ φ) : FinCoef θ M τ (c • φ) := fun x => by
   obtain ⟨n, L, v, hv, e⟩ := h x
@@ -43,6 +52,11 @@ theorem FinCoef.smul {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M
   rw [Pi.smul_apply, e g hg, Finset.smul_sum]
   simp
 
+/- English proof (translation)
+Establish `: ∀ s : Finset (Fin n), FinCoef θ M τ (∑ i ∈ s, φ i)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using FinCoef.zero θ M τ`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha]`. Conclude with `(h a).add ih`.
+
+Conclude with `this Finset.univ`.
+-/
 theorem FinCoef.sum {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {τ : D.what₂.Tau}
     {n : ℕ} {φ : Fin n → GA D V → ℂ} (h : ∀ i, FinCoef θ M τ (φ i)) : FinCoef θ M τ (∑ i, φ i) := by
   classical
@@ -52,6 +66,15 @@ theorem FinCoef.sum {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M 
     | insert a s ha ih => rw [Finset.sum_insert ha]; exact (h a).add ih
   exact this Finset.univ
 
+/- English proof (translation)
+Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Introduce `x`. Take `⟨ℓ, -, hℓ⟩` from `GlobalTheory.DefiniteEnd.exists_sobCont M τ T f x`. Establish `hsv : SmoothVec (lieAt V τ) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) (f τ : M.H τ)`.
+
+Establish `hw : ∀ w ∈ M.sm τ, SmoothVec (lieAt V τ) (fun g => M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)) w`. Introduce `w hw`. Rewrite `hw` using `[GlobalTheory.SmVec.sm_eq M τ]`. Conclude with `hw`. Conclude with `hw _ (f τ).2`.
+
+Use `⟨1, fun _ => r • LinearMap.toContinuousLinearMap ℓ, fun _ => (f τ : M.H τ), fun _ => hsv, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrFun (hT.equiv τ g hg f ⟨M.rep τ g (f τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (f τ).2⟩ rfl) x`. Establish `e3 : T f (x * atTau θ V τ g) = ℓ (M.rep τ g (f τ))`. Rewrite using `[hℓ ⟨M.rep τ g (f τ), GlobalTheory.ConjMult.rep_mem_sm M τ hg (f τ).2⟩]`. Conclude with `e1.symm`.
+
+Rewrite using `[Fin.sum_univ_one, map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, smul_eq_mul, e3, LinearMap.coe_toContinuousLinearMap']`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Conclude with `ha.add hb`.
+-/
 theorem finCoef_lift {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     [FiniteDimensional ℂ (M.H τ)] {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T)
     (z : SmT M) : FinCoef θ M τ (PiTensorProduct.lift T z) := by
@@ -85,6 +108,13 @@ open Formalism.IndefR.Mult Matrix GlobalTheory.Grid
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hm : PiTensorProduct.lift.symm F.1 ∈ Mult θ M ∅ 1` using `(mem_multT θ M ∅ 1 F.1).1 F.2`. Establish `key : ∀ T ∈ Mult θ M ∅ 1, FinCoef θ M τ (PiTensorProduct.lift T z)`. Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem x hx => exact finCoef_lift M τ hx z`.
+
+Consider the case `zero => simpa using FinCoef.zero θ M τ`. Consider the case `add x y _ _ hx hy => rw [map_add, LinearMap.add_apply]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx => rw [map_smul, LinearMap.smul_apply]`. Conclude with `hx.smul c`.
+
+Use `key _ hm` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem finCoef_multT {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     [FiniteDimensional ℂ (M.H τ)] (F : MultT θ M ∅ 1) (z : SmT M) : FinCoef θ M τ (F.1 z) := by
   have hm : PiTensorProduct.lift.symm F.1 ∈ Mult θ M ∅ 1 := (mem_multT θ M ∅ 1 F.1).1 F.2
@@ -98,12 +128,22 @@ theorem finCoef_multT {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} (
   have := key _ hm
   rwa [LinearEquiv.apply_symm_apply] at this
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.DefiniteEnd.finiteDimensional_model hs hd N.M τ`. Conclude with `GlobalTheory.EndCusp.isTypeAt_of_finSum θ N.V τ (N.M.enum τ) (N.M.ds τ) (N.M.fr_unit τ) (N.M.fr_gram τ) _ (FinCoef.sum fun i => finCoef_multT N.M τ (F i) (z i))`.
+-/
 theorem isTypeAt_sum (θ : InfFam D) (N : Node D) (hs : N.V.SigOK) (hd : N.V.IsDefinite) (τ : D.what₂.Tau) {n : ℕ}
     (F : Fin n → N.Cusp θ) (z : Fin n → SmT N.M) : IsTypeAt θ N.V τ (N.S τ) (∑ i, (F i).1 (z i)) := by
   haveI := GlobalTheory.DefiniteEnd.finiteDimensional_model hs hd N.M τ
   exact GlobalTheory.EndCusp.isTypeAt_of_finSum θ N.V τ (N.M.enum τ) (N.M.ds τ) (N.M.fr_unit τ) (N.M.fr_gram τ) _
     (FinCoef.sum fun i => finCoef_multT N.M τ (F i) (z i))
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `zero`. Establish `h` using `hG.spaces.P D.R.m le_rfl`. Use `⟨h.sigOK, fun τ => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[h.sig, h.rank]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k`. Establish `h` using `hG.spaces.X k hk`. Use `⟨h.sigOK, fun τ => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[h.sig, h.rank]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem xp_definite {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.what₂.LL G₀ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {G : GridPre R} (hG : G.Is)
     (k : ℕ) (hk : k ≤ D.R.m) : (G.Xp k).V.SigOK ∧ (G.Xp k).V.IsDefinite := by

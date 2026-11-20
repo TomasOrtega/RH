@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
+/- English proof (translation)
+Introduce `O R X _ _ _ _ _ n E _ _ x δ ρ ρ' τ c Q d hρ hL`. Establish `hbm : ∀ A B : Matrix (Fin n) (Fin n) O, bar X (A * B) = bar X A * bar X B`. Introduce `A B`. Simplify using `[bar, Matrix.map_mul]`. Establish `hbar1 : bar X (1 : Matrix (Fin n) (Fin n) O) = 1`.
+
+Simplify using `[bar]`. Establish `hl : bar X ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * bar X (Q : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← hbm, Units.inv_mul, hbar1]`. Establish `hbρ : ∀ a, bar X (ρ a) = bar X (Q : Matrix (Fin n) (Fin n) O) * bar X (ρ' a) * bar X ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O)`. Introduce `a`.
+
+Rewrite using `[hρ, hbm, hbm]`. Use `set P := bar X (Q : Matrix (Fin n) (Fin n) O) with hPdef`. Use `set Pi := bar X ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) with hPidef`. Use `⟨AddMonoidHom.mk' (fun a => P * d a * Pi) (fun a b => by rw [map_add, mul_add, add_mul]), ?_, fun a => rfl⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `a b`. Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[hL.mul, hbρ, hbρ]`. Establish `e1 : P * d a * Pi * (P * bar X (ρ' b) * Pi) = P * (d a * bar X (ρ' b)) * Pi`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Pi P, hl, Matrix.one_mul]`. Establish `e2 : P * bar X (ρ' a) * Pi * (P * d b * Pi) = P * (bar X (ρ' a) * d b) * Pi`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Pi P, hl, Matrix.one_mul]`. Rewrite using `[e1, e2, mul_add, add_mul]`.
+
+Introduce `r a`. Simplify using `only [AddMonoidHom.mk'_apply]`. Rewrite using `[hL.smul, hbρ, mul_add, add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul]`. Introduce `a`. Simplify using `only [AddMonoidHom.mk'_apply]`.
+
+Rewrite using `[Matrix.trace_mul_cycle, hl, Matrix.one_mul, hL.tr]`.
+-/
 theorem UpperTheory.V.Th.Coc.liftConj :
     ∀ {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} {E : Type} [Ring E] [Algebra R E] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ ρ' : E →+* Matrix (Fin n) (Fin n) O) (τ : E → R) (c : O) (Q : GL (Fin n) O) (d : E →+ Matrix (Fin n) (Fin n) X), (∀ a, ρ a = (Q : Matrix (Fin n) (Fin n) O) * ρ' a * ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O)) → IsLift x δ ρ' τ c d → ∃ d' : E →+ Matrix (Fin n) (Fin n) X, IsLift x δ ρ τ c d' ∧ ∀ a, d' a = bar X (Q : Matrix (Fin n) (Fin n) O) * d a * bar X ((Q⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) := by
   intro O R X _ _ _ _ _ n E _ _ x δ ρ ρ' τ c Q d hρ hL

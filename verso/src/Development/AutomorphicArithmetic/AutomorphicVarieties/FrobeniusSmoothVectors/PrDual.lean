@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i using WellFoundedGT.induction with`. Consider the case `_ i ih`. Introduce `j`. Proceed by induction on `j using WellFoundedLT.induction with`.
+
+Consider the case `_ j ih'`. Use `key i j fun g => ?_` and prove the remaining obligations. Use `h g i j` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Conclude with `this`.
+
+Introduce `q _ hq`. Break down `lt_or_gt_of_ne hq with h1 | h1` into its components or cases. Rewrite using `[ih' q h1, zero_mul]`. Rewrite using `[hM g q j h1, mul_zero]`. Simplify using the standard rewrite rules.
+
+Introduce `p _ hp`. Break down `lt_or_gt_of_ne hp with h1 | h1` into its components or cases. Rewrite using `[hM g i p h1, zero_mul]`. Rewrite using `[ih p h1 j, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem tri_zero {K G ι : Type} [Field K] [Fintype ι] [LinearOrder ι] (M : G → Matrix ι ι K) (ω : G → K)
     (Φ : Matrix ι ι K) (hM : ∀ g i j, j < i → M g i j = 0)
     (h : ∀ g i j, ∑ p, M g i p * Φ p j = ω g * ∑ q, Φ i q * M g q j)
@@ -27,11 +36,17 @@ private theorem tri_zero {K G ι : Type} [Field K] [Fintype ι] [LinearOrder ι]
     · rw [ih p h1 j, mul_zero]
   · simp
 
+/- English proof (translation)
+Establish `: φ.comp (ZMod.castHom (dvd_refl l) k) = ZMod.castHom (dvd_refl l) K` using `Subsingleton.elim _ _`. Conclude with `RingHom.congr_fun this _`.
+-/
 private theorem om_map {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (F : Frame l k) {K : Type} [Field K]
     [CharP K l] (φ : k →+* K) (g : F.Γ) : φ (F.om k g : k) = (F.om K g : K) := by
   have : φ.comp (ZMod.castHom (dvd_refl l) k) = ZMod.castHom (dvd_refl l) K := Subsingleton.elim _ _
   exact RingHom.congr_fun this _
 
+/- English proof (translation)
+Break down `hn with rfl | rfl` into its components or cases. Use `revert i j`. Evaluate the decidable proposition. Use `revert i j`. Evaluate the decidable proposition.
+-/
 private theorem w_cases {n : ℕ} (hn : n = 2 ∨ n = 3) (i j : Fin n) :
     w n j - w n i = 0 ∨ (w n j - w n i = 1 ∨ w n j - w n i = -1) ∨
       ((w n j - w n i = 2 ∨ w n j - w n i = -2) ∧ j = i.rev) := by
@@ -39,6 +54,15 @@ private theorem w_cases {n : ℕ} (hn : n = 2 ∨ n = 3) (i j : Fin n) :
   · revert i j; decide
   · revert i j; decide
 
+/- English proof (translation)
+Unfold `thetaLie`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b.rev, Matrix.mul_apply, Finset.sum_eq_single a.rev]`. Simplify using `only [Jmat, Matrix.transpose_apply, Matrix.single_apply, Fin.rev_rev, if_true, one_mul, mul_one, Fin.rev_inj]`.
+
+Use `congr 1`. Use `propext ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Simplify using the standard rewrite rules. Introduce `p _ hp`. Simplify using `[Jmat, hp]`. Simplify using the standard rewrite rules. Introduce `p _ hp`.
+
+Establish `: b ≠ p.rev` using `fun h => hp (by simp [h])`. Simplify using `[Jmat, this]`. Simplify using the standard rewrite rules.
+-/
 private theorem thetaLie_single {K : Type} [Field K] {n : ℕ} (i : Fin n) :
     thetaLie (Matrix.single i i.rev (1 : K)) = -Matrix.single i i.rev (1 : K) := by
   unfold thetaLie
@@ -59,6 +83,39 @@ private theorem thetaLie_single {K : Type} [Field K] {n : ℕ} (i : Fin n) :
     simp [Jmat, this]
   · simp
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ n ok hn K _ _ φ ρ B hB hbar htri f hf`. Use `set Φ : Matrix (Fin n) (Fin n) K := fun i j => f (Matrix.single i j 1) with hΦ`. Establish `hsum : ∀ X : Matrix (Fin n) (Fin n) K, f X = ∑ i, ∑ j, X i j * Φ i j` using `fun X => by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hΦ, ← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `h0 : ∀ (g : F.G0) X, f (ρ.r g * X) = F.om K g * f (X * ρ.r g)` using `fun g X => by`. Rewrite using `[← hf]`. Use `congr 1`. Establish `hr : (B.r g).right = 1` using `(B.nu g).trans g.2`.
+
+Use `show _ = (B.r g).adFun _`. Rewrite using `[GG.adFun, if_pos hr, ← hB.res g, GG.mat]`. Simplify using `[Matrix.mul_assoc]`. Establish `h1 : ∀ (g : F.G0) i j, ∑ p, ρ.r g p i * Φ p j = F.om K g * ∑ q, Φ i q * ρ.r g j q` using `fun g i j => by`. Use `h0 g (Matrix.single i j 1)` as an intermediate fact.
+
+Rewrite `this` using `[hsum, hsum]`. Rewrite `this` using `[Finset.sum_eq_single i (s := Finset.univ) (f := fun a => ∑ b, (Matrix.single i j (1 : K) * ρ.r g) a b * Φ a b)]`. Use `this using 2 with p` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hb, zero_mul]`. Simplify using the standard rewrite rules. Simplify using `[mul_comm]`. Introduce `a _ ha`.
+
+Conclude with `Finset.sum_eq_zero fun b _ => by rw [Matrix.single_mul_apply_of_ne _ _ _ _ _ ha, zero_mul]`. Simplify using the standard rewrite rules. Establish `hc : ∀ i, -Φ i i.rev = F.om K F.c * Φ i i.rev` using `fun i => by`. Rewrite using `[hΦ]`. Simplify using `only`.
+
+Rewrite using `[← hf, ← map_neg, ← thetaLie_single]`. Use `congr 1`. Establish `hr : (B.r F.c).right ≠ 1` using `by rw [B.nu, ok.del_c]; decide`. Establish `hl : (B.r F.c).left = 1` using `Units.ext hB.atc`. Use `show _ = (B.r F.c).adFun _`.
+
+Rewrite using `[GG.adFun, if_neg hr, GG.mat, hl]`. Simplify using the standard rewrite rules. Establish `key : ∀ i j, (∀ g : F.G0, ρ.r g i i * Φ i j = F.om K g * (Φ i j * ρ.r g j j)) → Φ i j = 0`. Introduce `i j h`. Assume the negation of the conclusion as `hne`.
+
+Establish `h2 : ∀ g : F.G0, F.om k g * F.Ψ g ^ (w n j - w n i) = 1` using `fun g => by`. Establish `e` using `h g`. Rewrite `e` using `[hbar.1, hbar.1, ← om_map F φ, mul_comm (Φ i j), ← mul_assoc, ← map_mul]`. Establish `e2` using `φ.injective (mul_right_cancel₀ hne e)`. Rewrite `e2` using `[← Units.val_mul, Units.val_inj]`.
+
+Rewrite using `[_root_.zpow_sub, ← mul_assoc, ← e2, mul_inv_cancel]`. Break down `w_cases hn i j with h3 | h3 | ⟨h3, rfl⟩` into its components or cases. Take `⟨g, hg⟩` from `ok.f2a`. Conclude with `hg (by simpa [h3] using h2 g)`. Take `⟨g, hg⟩` from `ok.f2b _ h3`.
+
+Conclude with `hg (h2 g)`. Take `⟨g, hg⟩` from `ok.f2c _ h3`. Apply `hg` to reduce the goal to its premises. Break down `Int.units_eq_one_or (F.del g) with hd | hd` into its components or cases. Rewrite using `[h2 ⟨g, hd⟩, one_mul]`.
+
+Simplify using `[Frame.delK, hd]`. Establish `hm : g * F.c ∈ F.del.ker` using `by rw [MonoidHom.mem_ker, map_mul, hd, ok.del_c]; rfl`. Establish `e` using `h2 ⟨_, hm⟩`. Establish `ec : F.om k F.c = -1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[om_map]`. Use `hc i` as an intermediate fact. Rewrite `this` using `[← neg_one_mul]`. Rewrite using `[← mul_right_cancel₀ hne this]`.
+
+Simplify using the standard rewrite rules. Establish `ed : F.delK k g = -1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Frame.delK, hd]`. Simplify using `only [map_mul, ec, ok.Ψ_c, mul_one] at e`.
+
+Rewrite using `[ed, mul_right_comm, e]`. Establish `hz : ∀ i j, Φ i j = 0`. Break down `htri with ht | ht` into its components or cases. Conclude with `tri_zero (ι := (Fin n)ᵒᵈ) (fun g : F.G0 => (ρ.r g)ᵀ) (fun g => F.om K g) Φ (fun g i j hij => ht g j i hij) h1 key`. Conclude with `tri_zero (fun g : F.G0 => (ρ.r g)ᵀ) (fun g => F.om K g) Φ ht h1 key`.
+
+Use `ext1 X`. Simplify using `[hsum, hz]`.
+-/
 theorem UpperTheory.V.Fr.pr_dual :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (K : Type) [Field K] [CharP K l] (φ : k →+* K) (ρ : NRep F n K) (B : Box F n K), B.Of ρ → ρ.IsBar φ → ((∀ g, UpT (ρ.r g)) ∨ ∀ g, UpT (ρ.r g)ᵀ) → ∀ f : Matrix (Fin n) (Fin n) K →ₗ[K] K, (∀ g X, f (B.ad g X) = F.om K g * f X) → f = 0 := by
   intro l _ k _ _ F C₀ n ok hn K _ _ φ ρ B hB hbar htri f hf

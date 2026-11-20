@@ -101,6 +101,9 @@ def FreenessLemma : Prop :=
             d (eigenProj C τ _ (exteriorPower.ιMulti _ N h)) =
               exteriorPower.ιMulti _ N (fun i => eigenProj C τ H (h i))
 
+/- English proof (translation)
+Use `⟨inferInstance, fun x => ⟨WittVector.teichmuller l x, by simp⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (WittVector.p_nonzero l k)`.
+-/
 example (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k l] :
     IsLocalRing (WittVector l k) ∧
     Function.Surjective

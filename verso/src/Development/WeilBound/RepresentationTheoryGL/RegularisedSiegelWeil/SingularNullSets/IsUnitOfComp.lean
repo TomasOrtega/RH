@@ -23,24 +23,41 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 def crd (R : Type) [CommRing R] [Algebra F R] (x : R ⊗[F] E) (k : Fin (Module.finrank F E)) : R :=
   (Algebra.TensorProduct.basis R (Module.finBasis F E)).repr x k
 
+/- English proof (translation)
+Unfold `crd`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Finsupp.mapRange_apply, smul_eq_mul]`.
+-/
 theorem crd_tmul (R : Type) [CommRing R] [Algebra F R] (r : R) (e : E) (k : Fin (Module.finrank F E)) :
     crd R (r ⊗ₜ[F] e) k = r * algebraMap F R ((Module.finBasis F E).repr e k) := by
   unfold crd
   rw [Algebra.TensorProduct.basis_repr_tmul]
   simp [Finsupp.mapRange_apply, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_add (R : Type) [CommRing R] [Algebra F R] (x y : R ⊗[F] E) (k : Fin (Module.finrank F E)) :
     crd R (x + y) k = crd R x k + crd R y k := by
   simp [crd]
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_neg (R : Type) [CommRing R] [Algebra F R] (x : R ⊗[F] E) (k : Fin (Module.finrank F E)) :
     crd R (-x) k = -crd R x k := by
   simp [crd]
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_zero (R : Type) [CommRing R] [Algebra F R] (k : Fin (Module.finrank F E)) :
     crd R (0 : R ⊗[F] E) k = 0 := by
   simp [crd]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, crd_zero, crd_zero, map_zero]`. Consider the case `tmul r e`. Rewrite using `[Algebra.TensorProduct.map_tmul, crd_tmul, crd_tmul, map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => rw [map_add, crd_add, crd_add, hx, hy, map_add]`.
+-/
 theorem crd_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (x : R ⊗[F] E) (k : Fin (Module.finrank F E)) :
     crd R' (Algebra.TensorProduct.map f (AlgHom.id F E) x) k = f (crd R x k) := by
@@ -51,10 +68,16 @@ theorem crd_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra 
     rfl
   | add x y hx hy => rw [map_add, crd_add, crd_add, hx, hy, map_add]
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.basis R (Module.finBasis F E)).repr.injective (Finsupp.ext h)`.
+-/
 theorem crd_ext (R : Type) [CommRing R] [Algebra F R] {x y : R ⊗[F] E}
     (h : ∀ k, crd R x k = crd R y k) : x = y :=
   (Algebra.TensorProduct.basis R (Module.finBasis F E)).repr.injective (Finsupp.ext h)
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (Algebra.TensorProduct.basis R (Module.finBasis F E)).sum_repr y]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem sum_crd (R : Type) [CommRing R] [Algebra F R] (y : R ⊗[F] E) :
     ∑ k, crd R y k ⊗ₜ[F] (Module.finBasis F E) k = y := by
   conv_rhs => rw [← (Algebra.TensorProduct.basis R (Module.finBasis F E)).sum_repr y]
@@ -66,12 +89,23 @@ end Coord
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cv_eq (v : Pl D) (x : AE D) :
     cv D v x = Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infPart_eq (x : AE D) :
     infPart D x = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) x := rfl
 
+/- English proof (translation)
+Use `crd_ext (AF D.host.F) fun k => ?_` and prove the remaining obligations. Establish `hf' : ∀ v : Pl D, evFin D.host.F v (crd (AF D.host.F) x k) = evFin D.host.F v (crd (AF D.host.F) y k)`. Introduce `v`. Use `congrArg (fun z => crd (Fv D.host.F v) z k) (hf v)` as an intermediate fact. Simplify `this` using `only [cv_eq, crd_map]`.
+
+Establish `hi' : fstA D.host.F (crd (AF D.host.F) x k) = fstA D.host.F (crd (AF D.host.F) y k)`. Use `congrArg (fun z => crd (Ainf D.host.F) z k) hi` as an intermediate fact. Simplify `this` using `only [infPart_eq, crd_map]`. Conclude with `Prod.ext hi' (Subtype.ext (funext hf'))`.
+-/
 theorem ext_comp {D : D7} {x y : AE D} (hf : ∀ v, cv D v x = cv D v y) (hi : infPart D x = infPart D y) : x = y := by
   refine crd_ext (AF D.host.F) fun k => ?_
   have hf' : ∀ v : Pl D, evFin D.host.F v (crd (AF D.host.F) x k) = evFin D.host.F v (crd (AF D.host.F) y k) := by
@@ -83,18 +117,37 @@ theorem ext_comp {D : D7} {x y : AE D} (hf : ∀ v, cv D v x = cv D v y) (hi : i
     simpa only [infPart_eq, crd_map] using this
   exact Prod.ext hi' (Subtype.ext (funext hf'))
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem cv_cA {D : D7} (v : Pl D) (x : AE D) : cv D v (cA D x) = sigR (Fv D.host.F v) D.sp.cm.sig (cv D v x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem infPart_cA {D : D7} (x : AE D) : infPart D (cA D x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `set b := Module.finBasis D.host.F D.host.E`. Use `set B := NumberField.RingOfIntegers.basis D.host.E`. Establish `hev : ∀ᶠ v in Filter.cofinite, ∀ j, algebraMap D.host.F (Fv D.host.F v) (b.repr ((B j : 𝓞 D.host.E) : D.host.E) k) ∈ (v : Pl D).adicCompletionIntegers D.host.F`. Rewrite using `[Filter.eventually_all]`. Introduce `j`.
+
+Conclude with `(algebraMap D.host.F (Af D.host.F) (b.repr ((B j : 𝓞 D.host.E) : D.host.E) k)).2`. Use `filter_upwards [hev] with v hv`. Introduce `y hy`. Use `intLoc_induction (p := fun y => crd (Fv D.host.F v) y k ∈ (v : Pl D).adicCompletionIntegers D.host.F) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha o`.
+
+Rewrite using `[crd_tmul]`. Use `mul_mem ha ?_` and prove the remaining obligations. Establish `ho : (o : D.host.E) = ∑ j, (B.repr o j) • ((B j : 𝓞 D.host.E) : D.host.E)` using `by conv_lhs => rw [← B.sum_repr o]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[ho, map_sum, Finsupp.coe_finsetSum, Finset.sum_apply, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, map_zsmul]`. Conclude with `zsmul_mem (hv j) _`. Rewrite using `[crd_zero]`.
+
+Conclude with `zero_mem _`. Introduce `y z hy hz`. Rewrite using `[crd_add]`. Conclude with `add_mem hy hz`. Introduce `y hy`.
+
+Rewrite using `[crd_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem crd_int_ev (k : Fin (Module.finrank D.host.F D.host.E)) :
     ∀ᶠ v in Filter.cofinite, ∀ y ∈ intLoc D.host.F D.host.E (v : Pl D),
       crd (Fv D.host.F v) y k ∈ (v : Pl D).adicCompletionIntegers D.host.F := by
@@ -125,6 +178,13 @@ theorem crd_int_ev (k : Fin (Module.finrank D.host.F D.host.E)) :
   · intro y z hy hz; rw [crd_add]; exact add_mem hy hz
   · intro y hy; rw [crd_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Set `c : Fin (Module.finrank D.host.F D.host.E) → (v : Pl D) → Fv D.host.F v` to `fun k v => crd (Fv D.host.F v) (f v) k`. Establish `hc : ∀ k, ∀ᶠ v in Filter.cofinite, c k v ∈ (v : Pl D).adicCompletionIntegers D.host.F`. Introduce `k`. Use `filter_upwards [crd_int_ev (D := D) k] with v hv`. Conclude with `hv _ (hf v)`.
+
+Set `C : Fin (Module.finrank D.host.F D.host.E) → Af D.host.F` to `fun k => RestrictedProduct.mk (c k) (hc k)`. Use `⟨∑ k, pairA D.host.F 0 (C k) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E) k, fun v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum] conv_rhs => rw [← sum_crd (Fv D.host.F v) (f v)]`. Both sides reduce to the same expression. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] _ = 0`. Rewrite using `[TensorProduct.zero_tmul]`.
+-/
 theorem glue_one (D : D7) (f : ∀ v : Pl D, Fv D.host.F v ⊗[D.host.F] D.host.E)
     (hf : ∀ v, f v ∈ intLoc D.host.F D.host.E v) :
     ∃ x : AE D, (∀ v, cv D v x = f v) ∧ infPart D x = 0 := by
@@ -144,12 +204,22 @@ theorem glue_one (D : D7) (f : ∀ v : Pl D, Fv D.host.F v ⊗[D.host.F] D.host.
     show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] _ = 0
     rw [TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Use `choose g hg using fun i j => glue_one D (fun v => b v i j) (fun v => hb v i j)`. Conclude with `⟨Matrix.of fun i j => g i j, fun v i j => (hg i j).1 v, fun i j => (hg i j).2⟩`.
+-/
 theorem glue_mat (D : D7) {m p : ℕ} (b : ∀ v : Pl D, Matrix (Fin m) (Fin p) (Fv D.host.F v ⊗[D.host.F] D.host.E))
     (hb : ∀ v i j, b v i j ∈ intLoc D.host.F D.host.E v) :
     ∃ x : Mx D m p, (∀ v i j, cv D v (x i j) = b v i j) ∧ ∀ i j, infPart D (x i j) = 0 := by
   choose g hg using fun i j => glue_one D (fun v => b v i j) (fun v => hb v i j)
   exact ⟨Matrix.of fun i j => g i j, fun v i j => (hg i j).1 v, fun i j => (hg i j).2⟩
 
+/- English proof (translation)
+Use `choose z hz hzy using hf`. Take `⟨s, hs, hs0⟩` from `glue_one D z hz`. Use `set e : AE D := pairA D.host.F 1 0 ⊗ₜ[D.host.F] (1 : D.host.E) with he`. Establish `hev : ∀ v, cv D v e = 0`. Introduce `v`.
+
+Use `show (evFin D.host.F v (pairA D.host.F 1 0)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Establish `: evFin D.host.F v (pairA D.host.F 1 0) = 0` using `rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`. Establish `hei : infPart D e = 1` using `rfl`. Establish `h1 : y * (s + e) = 1`.
+
+Use `ext_comp (fun v => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_add, hs, hev, add_zero, hzy, map_one]`. Rewrite using `[map_mul, map_add, hs0, hei, zero_add, hi, mul_one, map_one]`. Conclude with `⟨⟨y, s + e, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`.
+-/
 theorem isUnit_of_comp (D : D7) (y : AE D) (hf : ∀ v, ∃ z ∈ intLoc D.host.F D.host.E v, cv D v y * z = 1)
     (hi : infPart D y = 1) : IsUnit y := by
   choose z hz hzy using hf

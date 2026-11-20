@@ -14,6 +14,11 @@ open scoped Classical
 
 namespace GlobalTheory.ThetaDerivFirst
 
+/- English proof (translation)
+Use `⟨fun x z hz => congrArg φ (funext fun i => ?_), Submodule.subset_span ⟨f, φ, hφ, rfl⟩⟩` and prove the remaining obligations. Establish `hu : evI F ((0, 1) : AF F) = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h2 : (1 : Af F) * (z i).2 = 0` using `congrArg Prod.snd (congrFun (hz _ hu) i)`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite `h2` using `[one_mul]`.
+
+Rewrite using `[h2, add_zero]`.
+-/
 theorem rest_fin {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ) {φ : (κ → Af F) → ℂ}
     (hφ : φ ∈ SB (κ → Af F)) : Rest (evI F) ⇑f (fun x : κ → AF F => φ fun i => (x i).2) := by
   refine ⟨fun x z hz => congrArg φ (funext fun i => ?_), Submodule.subset_span ⟨f, φ, hφ, rfl⟩⟩
@@ -23,6 +28,25 @@ theorem rest_fin {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (
   rw [one_mul] at h2
   rw [h2, add_zero]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ _ hd g h`. Establish `hT` using `hM.triple`. Establish `hsch` using `GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ).2`. Take `⟨n, c, s, hs⟩` from `Submodule.mem_span_set'.1 hsch`. Use `choose f0 φ hφ hfe using fun i => (s i).2`.
+
+Use `choose u u₁ hu hu₁ using fun i : Fin n => GlobalTheory.T.weil_line_good_model_polynomial hP.base G.M' B.ψ _ _ om' hT.base.std hT.geo.hM' hT.weil' γ hγ (c i • f0 i) _ (rest_fin (c i • f0 i) (hφ i))`. Establish `hΦe : Φ = ∑ i, pureA F (c i • f0 i) (φ i)`. Rewrite using `[← hs]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hfe i]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`. Establish `horb : ∀ t : ℝ, om' (γ (Multiplicative.ofAdd t), 1) Φ = ∑ i, pureA F (u i t) (φ i)`. Introduce `t`. Rewrite using `[hΦe, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hu i t`. Establish `hΦ₁ : Φ₁ = ∑ i, pureA F (u₁ i) (φ i)`. Use function extensionality and compare the values at `x`. Use `set y : Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F := fun j => InfiniteAdeleRing.ringEquiv_mixedSpace F (x j).1`. Use `set z : Fin a' × Fin (a + a') → Af F := fun j => (x j).2`.
+
+Establish `hder : ∀ i, HasDerivAt (fun t : ℝ => u i t y) (u₁ i y) 0`. Introduce `i`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Set `ev : SInf F (Fin a' × Fin (a + a')) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) ℂ)`. Establish `h1` using `(ev.continuous.tendsto (u₁ i)).comp (hu₁ i)`.
+
+Establish `e2 : ev (u₁ i) = u₁ i y` using `rfl`. Rewrite `h1` using `[e2]`. Use `h1.congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[ev, slope_def_module]`. Establish `hsum : HasDerivAt (fun t : ℝ => ∑ i, u i t y * φ i z) (∑ i, u₁ i y * φ i z) 0` using `HasDerivAt.fun_sum fun i _ => (hder i).mul_const _`.
+
+Establish `e1 : (fun t : ℝ => om' (γ (Multiplicative.ofAdd t), 1) Φ x) = fun t => ∑ i, u i t y * φ i z`. Use function extensionality and compare the values at `t`. Rewrite using `[horb, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `h3` using `hd x`.
+
+Rewrite `h3` using `[e1]`. Rewrite using `[h3.unique hsum, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `key : ∀ k, theta om' Φ (g * k) h = theta om' (om' (k, 1) Φ) g h`. Introduce `k`.
+
+Unfold `theta`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `h4` using `GlobalTheory.T.pair_theta_uniform_bound_family hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.KDecayProof.isPair_small hT) n φ (fun t i => u i t) u₁ hφ hu₁ g h`. Rewrite `h4` using `[← hΦ₁]`. Simplify `h4` using `only [key, horb]`.
+-/
 theorem hasDerivAt_theta_line : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines σ G.V', ∀ Φ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Φ₁ ∈ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), (∀ x, HasDerivAt (fun t : ℝ => om' (γ (Multiplicative.ofAdd t), 1) Φ x) (Φ₁ x) 0) → ∀ (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.V'.J) (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J), HasDerivAt (fun t : ℝ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ (g * γ (Multiplicative.ofAdd t)) h) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ₁ g h) 0 := by
   intro hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ _ hd g h
   have hT := hM.triple

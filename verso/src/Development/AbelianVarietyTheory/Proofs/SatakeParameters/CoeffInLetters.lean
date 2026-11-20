@@ -19,10 +19,16 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Simplify using `only [stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Conclude with `forall_congr' fun k => ⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun h => ⟨⟨x k, h⟩, rfl⟩⟩`.
+-/
 theorem mem_stdL {x : Fin N → D.host.E} : x ∈ stdL D N ↔ ∀ k, IsIntegral ℤ (x k) := by
   simp only [stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
   exact forall_congr' fun k => ⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun h => ⟨⟨x k, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨L₀, h0, h⟩` from `h`. Rewrite using `[show stdL D N = L₀ from Submodule.ext fun x => mem_stdL.trans (h0 x).symm]` and apply the resulting hypothesis.
+-/
 theorem eqAt_std {p : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} (h : StdAt D p L) : EqAt D p L (stdL D N) := by
   obtain ⟨L₀, h0, h⟩ := h
   rwa [show stdL D N = L₀ from Submodule.ext fun x => mem_stdL.trans (h0 x).symm]

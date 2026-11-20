@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.SWChangeVar
 
+/- English proof (translation)
+Introduce `D V W ν 𝓖' μ 𝓕 hν hμ Φ hΦ`. Use `haveI : BorelSpace (Mx D V.rank W.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D W.rank V.rank) := ⟨rfl⟩`. Set `A : Mx D V.rank W.rank ≃+ Mx D W.rank V.rank` to `{ toFun := GlobalTheory.PairLift.adjO V W invFun := GlobalTheory.PairLift.adjO W V left_inv := GlobalTheory.AdjLawPf.adj_invol W V right_inv := GlobalTheory.AdjLawPf.adj_invol V W map_add' := GlobalTheory.AdjLawPf.adj_add V W }`. Set `L : Mx D V.rank W.rank ≃ₜ+ Mx D W.rank V.rank` to `{ A with continuous_toFun := GlobalTheory.AdjLawPf.adj_cont V W continuous_invFun := GlobalTheory.AdjLawPf.adj_cont W V }`.
+
+Set `e : Mx D V.rank W.rank ≃ᵐ Mx D W.rank V.rank` to `L.toHomeomorph.toMeasurableEquiv`. Establish `he : ∀ y, e y = GlobalTheory.PairLift.adjO V W y` using `fun _ => rfl`. Use `haveI := hν.1`. Establish `hH : (ν.map e).IsAddHaarMeasure` using `L.isAddHaarMeasure_map ν`. Establish `hmp : MeasurePreserving e ν (ν.map e)` using `e.measurable.measurePreserving ν`.
+
+Set `r : ratL W V ≃ ratL V W` to `{ toFun := fun g => ⟨GlobalTheory.PairLift.adjO W V g, GlobalTheory.AdjLawPf.adj_rat_of W V g g.2⟩ invFun := fun g => ⟨GlobalTheory.PairLift.adjO V W g, GlobalTheory.AdjLawPf.adj_rat_of V W g g.2⟩ left_inv := fun g => Subtype.ext (GlobalTheory.AdjLawPf.adj_invol V W g) right_inv …`. Establish `hcov : IsCovolOne (ratL W V) (ν.map e) (e '' 𝓖')`. Use `⟨hH, ?_, ?_⟩` and prove the remaining obligations. Use `hν.2.1.image_of_equiv e.toEquiv (hmp.symm e).quasiMeasurePreserving r fun g a => ?_ show GlobalTheory.PairLift.adjO V W (GlobalTheory.PairLift.adjO W V (g : Mx D W.rank V.rank) + a) = (g : Mx D W.rank V.rank) + GlobalTheory.PairLift.adjO V W a` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdjLawPf.adj_add, GlobalTheory.AdjLawPf.adj_invol]`.
+
+Rewrite using `[e.map_apply, e.preimage_image]`. Conclude with `hν.2.2`. Establish `hφ : ∀ γ ∈ GlobalTheory.MixModel.ratMx D W.rank V.rank, ∀ a, Φ (γ + a) = Φ a`. Introduce and unpack `_ ⟨γ, rfl⟩ a`. Conclude with `hΦ γ a`.
+
+Establish `h` using `GlobalTheory.MixModel.covolOne_integral_eq (μ := μ) (μ' := ν.map e) (𝓕 := 𝓕) (𝓕' := e '' 𝓖') hμ hcov Φ hφ`. Rewrite `h` using `[setIntegral_map_equiv, e.preimage_image]`. Conclude with `h`.
+-/
 theorem integral_adjO_eq : ∀ (D : D7) (V W : HSp D) (ν : Measure (Mx D V.rank W.rank)) (𝓖' : Set (Mx D V.rank W.rank)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL V W) ν 𝓖' → IsCovolOne (ratL W V) μ 𝓕 → ∀ (Φ : WO V W → ℂ), (∀ (γ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (u : WO V W), Φ (ratW W V γ + u) = Φ u) → ∫ y in 𝓖', Φ (GlobalTheory.PairLift.adjO V W y) ∂ν = ∫ u in 𝓕, Φ u ∂μ := by
   intro D V W ν 𝓖' μ 𝓕 hν hμ Φ hΦ
   haveI : BorelSpace (Mx D V.rank W.rank) := ⟨rfl⟩

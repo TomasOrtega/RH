@@ -24,6 +24,13 @@ def t_aw_assoc0 : Prop :=
       (x y : Cochain ((chains R).obj E) L w),
       μ.IsAW h1 α β ab → ν.IsAW h2 ab γ x → μ'.IsAW h3 β γ bc → ν'.IsAW h4 α bc y → x = y
 
+/- English proof (translation)
+Introduce `R _ I J K M M' L μ ν μ' ν' hass E n m k nm mk w h1 h2 h3 h4 a b c`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective a`. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective b`. Take `⟨γ, rfl⟩` from `CohomologyClass.mk_surjective c`. Take `⟨ab, hab⟩` from `(hs R μ (E := E) h1).1 α β`.
+
+Rewrite using `[(hs R μ (E := E) h1).2 α β ab hab]`. Take `⟨x, hx⟩` from `(hs R ν (E := E) h2).1 ab γ`. Rewrite using `[(hs R ν (E := E) h2).2 ab γ x hx]`. Take `⟨bc, hbc⟩` from `(hs R μ' (E := E) h3).1 β γ`. Rewrite using `[(hs R μ' (E := E) h3).2 β γ bc hbc]`.
+
+Take `⟨y, hy⟩` from `(hs R ν' (E := E) h4).1 α bc`. Rewrite using `[(hs R ν' (E := E) h4).2 α bc y hy]`. Use `congr 1`. Conclude with `Subtype.ext (ha R μ ν μ' ν' hass E h1 h2 h3 h4 α.1 β.1 γ.1 ab.1 bc.1 x.1 y.1 hab hx hbc hy)`.
+-/
 theorem etale_cochain_cup_assoc_of_cup_spec_and_alexander_whitney_assoc (hs : t_cup_spec0) (ha : t_aw_assoc0) : EtaleCochainCupAssociativeOfPairing := by
   intro R _ I J K M M' L μ ν μ' ν' hass E n m k nm mk w h1 h2 h3 h4 a b c
   obtain ⟨α, rfl⟩ := CohomologyClass.mk_surjective a

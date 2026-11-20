@@ -15,6 +15,11 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SequenceOfBlowups
 
+/- English proof (translation)
+Use `t.nextNontrivialIndex_le (s.le_nextNontrivialIndex a) ?_` and prove the remaining obligations. Break down `s.center_nextNontrivialIndex_ne_top_or_length_le a with hd | hd` into its components or cases. Distinguish the cases in `hlt : s.nextNontrivialIndex a < s.length`. Conclude with `Or.inl fun hc => hd ((hcen _ hlt).mp hc)`. Conclude with `Or.inr (by omega)`.
+
+Conclude with `Or.inr (by omega)`.
+-/
 private theorem nextNontrivialIndex_le_of_center_eq_top_iff {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (hlen : t.length = s.length)
     (hcen : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)) (a : ℕ) :
@@ -26,6 +31,9 @@ private theorem nextNontrivialIndex_le_of_center_eq_top_iff {X' X : Scheme.{u}} 
     · exact Or.inr (by omega)
   · exact Or.inr (by omega)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (nextNontrivialIndex_le_of_center_eq_top_iff t s hlen hcen a) (nextNontrivialIndex_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm) a)`.
+-/
 theorem nextNontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
     (hcen : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)) (a : ℕ) :
@@ -33,6 +41,11 @@ theorem nextNontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
   le_antisymm (nextNontrivialIndex_le_of_center_eq_top_iff t s hlen hcen a)
     (nextNontrivialIndex_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm) a)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[nontrivialIndex_zero, nontrivialIndex_zero]`. Conclude with `nextNontrivialIndex_congr t s hlen hcen 0`. Consider the case `succ j ih`.
+
+Rewrite using `[nontrivialIndex_succ, nontrivialIndex_succ, ih]`. Conclude with `nextNontrivialIndex_congr t s hlen hcen _`.
+-/
 theorem nontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
     (hcen : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)) (j : ℕ) :
@@ -45,6 +58,11 @@ theorem nontrivialIndex_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s 
       rw [nontrivialIndex_succ, nontrivialIndex_succ, ih]
       exact nextNontrivialIndex_congr t s hlen hcen _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `hc' : s.lengthWithoutIsoBlowups < t.lengthWithoutIsoBlowups` using `not_le.mp hc`. Establish `h1 : t.nontrivialIndex s.lengthWithoutIsoBlowups < t.length` using `t.nontrivialIndex_lt_length hc'`. Establish `h2 : s.nontrivialIndex s.lengthWithoutIsoBlowups = s.length` using `s.nontrivialIndex_lengthWithoutIsoBlowups`. Establish `h3` using `nontrivialIndex_congr t s hlen hcen s.lengthWithoutIsoBlowups`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem lengthWithoutIsoBlowups_le_of_center_eq_top_iff {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (hlen : t.length = s.length)
     (hcen : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)) :
@@ -56,6 +74,9 @@ private theorem lengthWithoutIsoBlowups_le_of_center_eq_top_iff {X' X : Scheme.{
   have h3 := nontrivialIndex_congr t s hlen hcen s.lengthWithoutIsoBlowups
   omega
 
+/- English proof (translation)
+The claim follows from `le_antisymm (lengthWithoutIsoBlowups_le_of_center_eq_top_iff t s hlen hcen) (lengthWithoutIsoBlowups_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm))`.
+-/
 theorem lengthWithoutIsoBlowups_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups X') (s : SequenceOfBlowups X)
     (hlen : t.length = s.length)
     (hcen : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)) :
@@ -63,11 +84,17 @@ theorem lengthWithoutIsoBlowups_congr {X' X : Scheme.{u}} (t : SequenceOfBlowups
   le_antisymm (lengthWithoutIsoBlowups_le_of_center_eq_top_iff t s hlen hcen)
     (lengthWithoutIsoBlowups_le_of_center_eq_top_iff s t hlen.symm (fun i hi => (hcen i (by omega)).symm))
 
+/- English proof (translation)
+Substitute `h'` using the available equality. Rewrite using `[s.transitionMap_self h, eqToHom_refl]`.
+-/
 private theorem transitionMap_eq_eqToHom {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a ≤ b)
     (h' : a = b) : s.transitionMap h = eqToHom (congrArg s.schemeAt h'.symm) := by
   subst h'
   rw [s.transitionMap_self h, eqToHom_refl]
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `hb` using the available equality. Rewrite using `[eqToHom_refl, eqToHom_refl, Category.id_comp, Category.comp_id]`.
+-/
 private theorem eqToHom_comp_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b a' b' : ℕ}
     (ha : a = a') (hb : b = b') (h : a ≤ b) (h' : a' ≤ b') :
     eqToHom (congrArg s.schemeAt hb) ≫ s.transitionMap h' = s.transitionMap h ≫ eqToHom (congrArg s.schemeAt ha) := by
@@ -75,16 +102,35 @@ private theorem eqToHom_comp_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowu
   subst hb
   rw [eqToHom_refl, eqToHom_refl, Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eqToHom_refl, Category.id_comp]`.
+-/
 private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a = b) :
     eqToHom (congrArg s.schemeAt h) ≫ s.projectionToBase b = s.projectionToBase a := by
   subst h
   rw [eqToHom_refl, Category.id_comp]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem center_comap_eqToHom {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ} (h : a = b) :
     (s.center b).comap (eqToHom (congrArg s.schemeAt h)) = s.center a := by
   subst h
   simp
 
+/- English proof (translation)
+Establish `hnext : ∀ a : ℕ, t.nextNontrivialIndex a = a`. Introduce `a`. Use `le_antisymm (t.nextNontrivialIndex_le le_rfl ?_) (t.le_nextNontrivialIndex a)` and prove the remaining obligations. Distinguish the cases in `ha : a < t.length`. Conclude with `Or.inl (h a ha)`.
+
+Conclude with `Or.inr (by omega)`. Establish `hret : ∀ j : ℕ, t.nontrivialIndex j = j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rw [t.nontrivialIndex_zero, hnext]`.
+
+Consider the case `succ j ih => rw [t.nontrivialIndex_succ, hnext, ih]`. Establish `hplen : t.withoutIsoBlowups.length = t.length`. Establish `h2` using `t.nontrivialIndex_lengthWithoutIsoBlowups`. Rewrite `h2` using `[hret]`. Conclude with `h2`.
+
+Establish `h1 : (eqToIso (congrArg t.schemeAt (hret 0))).hom ≫ t.isoZero.hom = t.withoutIsoBlowups.isoZero.hom`. Rewrite using `[t.withoutIsoBlowups_isoObjZero, t.objNontrivialIndexZeroIso_hom, t.projectionToBase_def, t.transitionMap_eq_eqToHom _ (hret 0).symm]`. Both sides reduce to the same expression. Establish `h2 : ∀ i : ℕ, i < t.withoutIsoBlowups.length → (eqToIso (congrArg t.schemeAt (hret (i + 1)))).hom ≫ t.transitionMapSucc i = t.withoutIsoBlowups.transitionMapSucc i ≫ (eqToIso (congrArg t.schemeAt (hret i))).hom`. Introduce `i _`.
+
+Rewrite using `[t.withoutIsoBlowups_blowupMorphism, t.blowupMorphism_eq_transitionMap]`. Conclude with `t.eqToHom_comp_transitionMap (hret i) (hret (i + 1)) _ _`. Establish `h3 : ∀ i : ℕ, i < t.withoutIsoBlowups.length → (t.center i).comap (eqToIso (congrArg t.schemeAt (hret i))).hom = t.withoutIsoBlowups.center i`. Introduce `i _`. Conclude with `t.center_comap_eqToHom (hret i)`.
+
+Unfold `SequenceOfBlowups.Isomorphic`. Conclude with `⟨hplen, fun i _ => eqToIso (congrArg t.schemeAt (hret i)), h1, h2, h3⟩`.
+-/
 theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowups X)
     (h : ∀ i : ℕ, i < t.length → t.center i ≠ ⊤) : t.withoutIsoBlowups.Isomorphic t := by
   have hnext : ∀ a : ℕ, t.nextNontrivialIndex a = a := by
@@ -121,6 +167,9 @@ theorem withoutIsoBlowups_isomorphic_self {X : Scheme.{u}} (t : SequenceOfBlowup
 
 end SequenceOfBlowups
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Substitute `hZ` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id, Category.id_comp] at hf ⊢`. Rewrite using `[hf]`. Conclude with `h`.
+-/
 private theorem isPullback_eqToHom_right {P Y X Z X' Z' : Scheme.{u}}
     {fst : P ⟶ X} {snd : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     (h : IsPullback fst snd f g) (hX : X = X') (hZ : Z = Z') {f' : X' ⟶ Z'}
@@ -132,6 +181,9 @@ private theorem isPullback_eqToHom_right {P Y X Z X' Z' : Scheme.{u}}
   rw [hf]
   exact h
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id]`. Conclude with `hf`.
+-/
 private theorem center_eq_comap_comp_eqToHom {X' X : Scheme.{u}} (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) {a b : ℕ} (hab : a = b) (f : t.schemeAt a ⟶ s.schemeAt a)
     (hf : t.center a = (s.center a).comap f) :
@@ -140,6 +192,15 @@ private theorem center_eq_comap_comp_eqToHom {X' X : Scheme.{u}} (t : SequenceOf
   simp only [eqToHom_refl, Category.comp_id]
   exact hf
 
+/- English proof (translation)
+Establish `hiff : ∀ i : ℕ, i < s.length → (t.center i = ⊤ ↔ s.center i = ⊤)` using `fun i hi => h.center_eq_top_iff i hi`. Establish `hlen : t.length = s.length` using `h.length_eq`. Establish `hret : ∀ j : ℕ, t.nontrivialIndex j = s.nontrivialIndex j` using `SequenceOfBlowups.nontrivialIndex_congr t s hlen hiff`. Establish `hplen : t.lengthWithoutIsoBlowups = s.lengthWithoutIsoBlowups` using `SequenceOfBlowups.lengthWithoutIsoBlowups_congr t s hlen hiff`. Unfold `IsStrictPullbackBlowupSeq at h ⊢`.
+
+Take `⟨-, σ, hzero, hstep, hcen⟩` from `h`. Establish `hstruct` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t s t.length σ hzero hstep`. Establish `hdown` using `isPullback_transitionMap_of_isPullback_blowupMorphism t s t.length σ hstep`. Establish `h1 : (σ (t.nontrivialIndex 0) (t.nontrivialIndex_le_length (Nat.zero_le _)) ≫ eqToHom (congrArg s.schemeAt (hret 0))) ≫ s.withoutIsoBlowups.isoZero.hom = t.withoutIsoBlowups.isoZero.hom ≫ g`. Rewrite using `[s.withoutIsoBlowups_isoObjZero, t.withoutIsoBlowups_isoObjZero, s.objNontrivialIndexZeroIso_hom, t.objNontrivialIndexZeroIso_hom, Category.assoc, SequenceOfBlowups.eqToHom_comp_projectionToBase s (hret 0)]`.
+
+Conclude with `(hstruct (t.nontrivialIndex 0) (t.nontrivialIndex_le_length (Nat.zero_le _))).w`. Establish `h2 : ∀ j : ℕ, ∀ hj : j < t.withoutIsoBlowups.length, IsPullback (σ (t.nontrivialIndex (j + 1)) (t.nontrivialIndex_le_length hj) ≫ eqToHom (congrArg s.schemeAt (hret (j + 1)))) (t.withoutIsoBlowups.transitionMapSucc j) (s.withoutIsoBlowups.transitionMapSucc j) (σ (t.nontrivialInde …`. Introduce `j hj`. Rewrite using `[t.withoutIsoBlowups_blowupMorphism, s.withoutIsoBlowups_blowupMorphism]`. Conclude with `isPullback_eqToHom_right (hdown (t.nontrivialIndex j) (t.nontrivialIndex (j + 1)) (t.nontrivialIndex_monotone (Nat.le_succ j)) (t.nontrivialIndex_le_length hj)) (congrArg s.schemeAt (hret (j + 1))) (congrArg s.schemeAt (hret j)) (SequenceOfBlowups.eqToHom_comp_transitionMap s (hr …`.
+
+Establish `h3 : ∀ j : ℕ, ∀ hj : j < t.withoutIsoBlowups.length, t.withoutIsoBlowups.center j = (s.withoutIsoBlowups.center j).comap (σ (t.nontrivialIndex j) (t.nontrivialIndex_le_length (le_of_lt hj)) ≫ eqToHom (congrArg s.schemeAt (hret j)))`. Introduce `j hj`. Conclude with `center_eq_comap_comp_eqToHom t s (hret j) (σ (t.nontrivialIndex j) (t.nontrivialIndex_le_length (le_of_lt hj))) (hcen (t.nontrivialIndex j) (t.nontrivialIndex_lt_length hj))`. Conclude with `⟨hplen, fun j hj => σ (t.nontrivialIndex j) (t.nontrivialIndex_le_length hj) ≫ eqToHom (congrArg s.schemeAt (hret j)), h1, h2, h3⟩`.
+-/
 theorem IsStrictPullbackBlowupSeq.withoutIsoBlowups {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
     (h : IsStrictPullbackBlowupSeq g t s) :
@@ -185,6 +246,11 @@ theorem IsStrictPullbackBlowupSeq.withoutIsoBlowups {X' X : Scheme.{u}} {g : X' 
   exact ⟨hplen, fun j hj => σ (t.nontrivialIndex j) (t.nontrivialIndex_le_length hj) ≫
     eqToHom (congrArg s.schemeAt (hret j)), h1, h2, h3⟩
 
+/- English proof (translation)
+Unfold `SequenceOfBlowups.Isomorphic at h`. Unfold `IsStrictPullbackBlowupSeq`. Take `⟨hlen, e, hzero, hstep, hcen⟩` from `h`. Use `⟨hlen, fun i hi => (e i hi).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id]`.
+
+Conclude with `hzero`. Introduce `i hi`. Conclude with `IsPullback.of_horiz_isIso ⟨hstep i hi⟩`. Introduce `i hi`. Conclude with `(hcen i hi).symm`.
+-/
 private theorem isStrictPullbackSequenceOfBlowups_id_of_isomorphic {X : Scheme.{u}} {B B' : SequenceOfBlowups X}
     (h : B.Isomorphic B') : IsStrictPullbackBlowupSeq (𝟙 X) B B' := by
   unfold SequenceOfBlowups.Isomorphic at h
@@ -198,6 +264,9 @@ private theorem isStrictPullbackSequenceOfBlowups_id_of_isomorphic {X : Scheme.{
   · intro i hi
     exact (hcen i hi).symm
 
+/- English proof (translation)
+The claim follows from `((isStrictPullbackSequenceOfBlowups_id_of_isomorphic h).withoutIsoBlowups).isomorphic (isStrictPullbackSequenceOfBlowups_id_of_isomorphic (SequenceOfBlowups.isomorphic_refl t₂.withoutIsoBlowups))`.
+-/
 theorem SequenceOfBlowups.Isomorphic.withoutIsoBlowups {X : Scheme.{u}} {t₁ t₂ : SequenceOfBlowups X}
     (h : t₁.Isomorphic t₂) : t₁.withoutIsoBlowups.Isomorphic t₂.withoutIsoBlowups :=
   ((isStrictPullbackSequenceOfBlowups_id_of_isomorphic h).withoutIsoBlowups).isomorphic

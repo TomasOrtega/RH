@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.VacTransfer
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceSum.deriv_heisO_eq_sum_dRho | exact GlobalTheory.PlaceSum.deriv_heisO_eq_sum_dRho | (intros; apply GlobalTheory.PlaceSum.deriv_heisO_eq_sum_dRho <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heisenbergDeriv_realLine_eq_sum_realPlaces : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (S T : HSp D) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ L : ℝ →+ WO S T, Continuous L →
       (∀ t, (L t).map (finPart D) = 0) →

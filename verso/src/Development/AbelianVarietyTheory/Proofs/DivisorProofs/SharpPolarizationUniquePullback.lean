@@ -15,6 +15,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n F W T T' P P' u u' h hu hS hS'`. Substitute `hu` using the available equality. Take `⟨c, hc, pr, hpr, huniv, hbun⟩` from `hS`. Take `⟨c', hc', pr', hpr', huniv', hbun'⟩` from `hS'`. Take `⟨κ, κ₂, hκ, hsq, hw, -⟩` from `GlobalTheory.SiegelPullComp.pb_cancel hc' hc`.
+
+Establish `hκw : κ ≫ c'.A.hom = c.A.hom ≫ h` using `hκ.1.w`. Take `⟨x₀, hx₀, -⟩` from `huniv' (Over.mk (P.A.hom ≫ h)) (fun a => pushPt hκw (pr a))`. Set `α : P.A.left ⟶ P'.A.left` to `x₀.left`. Establish `hα : ∀ a, α ≫ (pr' a).left = (pr a).left ≫ κ` using `fun a => congrArg (fun q => q.left) (hx₀ a)`. Establish `hαw : α ≫ P'.A.hom = P.A.hom ≫ h` using `Over.w x₀`.
+
+Establish `ext' : ∀ {T₁ : Over T'} (v w : T₁ ⟶ P'.A), (∀ a, (v ≫ pr' a).left = (w ≫ pr' a).left) → v = w`. Introduce `T₁ v w e`. Take `⟨_, -, hu⟩` from `huniv' T₁ (fun a => w ≫ pr' a)`. Conclude with `(hu v fun a => Over.OverMorphism.ext (e a)).trans (hu w fun _ => rfl).symm`. Establish `key : ∀ {Z : Scheme.{0}} (z₁ : Z ⟶ P'.A.left) (z₂ : Z ⟶ T), z₁ ≫ P'.A.hom = z₂ ≫ h → ∃! m : Z ⟶ P.A.left, m ≫ α = z₁ ∧ m ≫ P.A.hom = z₂`.
+
+Introduce `Z z₁ z₂ e`. Establish `ea : ∀ a, (z₁ ≫ (pr' a).left) ≫ c'.A.hom = z₂ ≫ h` using `fun a => by`. Rewrite using `[Category.assoc, Over.w (pr' a), e]`. Set `ya : Fin 8 → (Over.mk z₂ ⟶ c.A)` to `fun a => Over.homMk (hκ.1.lift (z₁ ≫ (pr' a).left) z₂ (ea a)) (hκ.1.lift_snd _ _ _)`. Establish `hya : ∀ a, (ya a).left ≫ κ = z₁ ≫ (pr' a).left` using `fun a => hκ.1.lift_fst _ _ _`.
+
+Take `⟨x, hx, hxu⟩` from `huniv (Over.mk z₂) ya`. Establish `hxw : x.left ≫ P.A.hom = z₂` using `Over.w x`. Use `⟨x.left, ⟨?_, hxw⟩, fun m ⟨hm₁, hm₂⟩ => ?_⟩` and prove the remaining obligations. Establish `w₁ : (x.left ≫ α) ≫ P'.A.hom = z₂ ≫ h` using `by rw [Category.assoc, hαw, ← Category.assoc, hxw]`. Use `ext' (T₁ := Over.mk (z₂ ≫ h)) (Over.homMk (x.left ≫ α) w₁) (Over.homMk z₁ e) fun a => by show (x.left ≫ α) ≫ (pr' a).left = z₁ ≫ (pr' a).left` as an intermediate fact.
+
+Rewrite using `[Category.assoc, hα, ← Category.assoc, ← hya a, ← hx a]`. Both sides reduce to the same expression. Conclude with `congrArg (fun q => q.left) this`. Use `hxu (Over.homMk m hm₂) fun a => Over.OverMorphism.ext (hκ.1.hom_ext (by show (m ≫ (pr a).left) ≫ κ = (ya a).left ≫ κ` as an intermediate fact. Rewrite using `[Category.assoc, ← hα, ← Category.assoc, hm₁, hya]) (by`.
+
+Use `show (m ≫ (pr a).left) ≫ c.A.hom = (ya a).left ≫ c.A.hom`. Rewrite using `[Category.assoc, Over.w (pr a), hm₂]`. Conclude with `(Over.w (ya a)).symm))`. Conclude with `congrArg (fun q => q.left) this`. Establish `hpb : IsPullback α P.A.hom P'.A.hom h`.
+
+Use `⟨⟨hαw⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => (key s.fst s.snd s.condition).exists.choose) (fun s => (key s.fst s.snd s.condition).exists.choose_spec.1) (fun s => (key s.fst s.snd s.condition).exists.choose_spec.2) (fun s m h₁ h₂ => (key s.fst s.snd s.condition).unique ⟨h₁, h₂⟩ (k …` and prove the remaining obligations. Establish `hmul : ∀ (T₀ : Over T) (x y : T₀ ⟶ P.A) (x₁ y₁ : Over.mk (T₀.hom ≫ h) ⟶ P'.A), x₁.left = x.left ≫ α → y₁.left = y.left ≫ α → (x₁ * y₁).left = (x * y).left ≫ α`. Introduce `T₀ x y x₁ y₁ hx hy`. Establish `wz : ((x * y).left ≫ α) ≫ P'.A.hom = (Over.mk (T₀.hom ≫ h)).hom`. Rewrite using `[Category.assoc, hαw, ← Category.assoc, Over.w (x * y)]`.
+
+Both sides reduce to the same expression. Use `ext' (x₁ * y₁) (Over.homMk ((x * y).left ≫ α) wz) fun a => by haveI := hpr a haveI := hpr' a` as an intermediate fact. Rewrite using `[MonObj.mul_comp]`. Establish `e` using `hκ.2 T₀ (x ≫ pr a) (y ≫ pr a) (x₁ ≫ pr' a) (y₁ ≫ pr' a) (by show x₁.left ≫ (pr' a).left = x.left ≫ (pr a).left ≫ κ; rw [hx, Category.assoc, hα]) (by show y₁.left ≫ (pr' a).left = y.left ≫ (pr a).left ≫ κ; rw [hy, Category.assoc, hα])`. Rewrite using `[e, ← MonObj.mul_comp]`.
+
+Use `show ((x * y).left ≫ (pr a).left) ≫ κ = ((x * y).left ≫ α) ≫ (pr' a).left`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (hα a).symm).trans (Category.assoc _ _ _).symm)`. Conclude with `congrArg (fun q => q.left) this`. Use `⟨α, ⟨hpb, hmul⟩, ?_⟩` and prove the remaining obligations. Establish `hq : ∀ ab : Fin 8 × Fin 8, (lift (pr ab.1) (pr ab.2)).left ≫ κ₂ = α ≫ (lift (pr' ab.1) (pr' ab.2)).left` using `fun ab => (Category.id_comp _).symm.trans (GlobalTheory.SiegelPull.lift_sq hsq (T := Over.mk (α ≫ P'.A.hom)) (T' := P.A) (𝟙 P.A.left) (pr ab.1) (pr ab.2) (Z := P'.A) α (pr' ab.1) (pr' ab.2) ((Category.id_comp _).trans (hα ab.1).symm) ((Category.id_comp _).trans (hα ab.2).symm))`.
+
+Set `ε : Fin 8 × Fin 8 → ℤ` to `fun ab => W ab.1 ab.2`. Set `q` to `fun ab : Fin 8 × Fin 8 => (lift (pr ab.1) (pr ab.2)).left`. Set `q'` to `fun ab : Fin 8 × Fin 8 => (lift (pr' ab.1) (pr' ab.2)).left`. Establish `l0 : (LB.LinComb c'.P q' ε).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c'.P c'.isLB q' ε`. Establish `l1 : (LB.LinComb c'.P (fun ab => α ≫ q' ab) ε).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c'.P c'.isLB _ ε`.
+
+Establish `l2 : (LB.LinComb (c'.P.pull κ₂) q ε).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB (c'.P.pull κ₂) (pull_isLB c'.isLB κ₂) q ε`. Establish `l3 : (LB.LinComb c.P q ε).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB c.P c.isLB q ε`. Establish `refl1 : LBIso (LB.LinComb c'.P (fun ab => α ≫ q' ab) ε) (LB.LinComb c'.P (fun ab => α ≫ q' ab) ε)` using `ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gen_refl _ l1`. Establish `i2 : LBIso (P'.L.pull α) ((LB.LinComb c'.P q' ε).pull α)` using `GlobalTheory.SiegelPullComp.iso_pull α hbun'`. Establish `i3 : LBIso ((LB.LinComb c'.P q' ε).pull α) (LB.LinComb c'.P (fun ab => α ≫ q' ab) ε)` using `LBIso.chartPull (chartPullOut c'.P q' ε α _ fun _ => rfl) (chartPullId _) refl1`.
+
+Establish `i4 : LBIso (LB.LinComb c'.P (fun ab => α ≫ q' ab) ε) (LB.LinComb (c'.P.pull κ₂) q ε)` using `LBIso.chartPull (chartPullId _) (chartPullLinComb c'.P κ₂ q (fun ab => α ≫ q' ab) ε (𝟙 _) fun ab => (hq ab).trans (Category.id_comp _).symm) refl1`. Establish `i5 : LBIso (LB.LinComb (c'.P.pull κ₂) q ε) (LB.LinComb c.P q ε)` using `GlobalTheory.PowPrimitive.lbIso_linComb hw.symm q ε`. Establish `h1` using `pull_isLB P'.isLB α`. Establish `h2` using `pull_isLB l0 α`. Establish `chain : LBIso (P'.L.pull α) (LB.LinComb c.P q ε)` using `LBIso.trans h1 h2 l3 i2 (LBIso.trans h2 l1 l3 i3 (LBIso.trans l1 l2 l3 i4 i5))`.
+
+Conclude with `LBIso.trans P.isLB l3 h1 hbun chain.symm`.
+-/
 theorem sharpOver_unique : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) {T T' : Scheme.{0}}
     (P : PolAV T) (P' : PolAV T') (u : T ⟶ F.X) (u' : T' ⟶ F.X) (h : T ⟶ T'), h ≫ u' = u →
     GlobalTheory.Poinc.SharpOver F W P u → GlobalTheory.Poinc.SharpOver F W P' u' →

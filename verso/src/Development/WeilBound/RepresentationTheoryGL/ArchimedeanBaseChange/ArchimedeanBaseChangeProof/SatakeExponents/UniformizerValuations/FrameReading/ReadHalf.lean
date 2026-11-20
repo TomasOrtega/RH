@@ -22,6 +22,9 @@ section Pin
 variable {ι : Type} {H : ι → Type} [∀ s, NormedAddCommGroup (H s)] [∀ s, InnerProductSpace ℂ (H s)]
   [∀ s, CompleteSpace (H s)] {d : ℕ} {Γ : Type}
 
+/- English proof (translation)
+The claim follows from `ChiPin.chi_pin gen a₀ v hv ha₀ s X χ heig a c hc`.
+-/
 theorem chi_pin (gen : Γ → Prod' H d) (a₀ : Γ) (v : EuclideanSpace ℂ (Fin d)) (hv : v ≠ 0) (ha₀ : (gen a₀).2 v = v)
     (s : ι) (X : H s →L[ℂ] H s)
     (χ : StarAlgebra.adjoin ℂ (Set.range (fun a : StarAlgebra.adjoin ℂ (Set.range gen) => (a : Prod' H d).1 s) ∪ {X})
@@ -48,12 +51,18 @@ def BlockCand : Prop := ∀ (hR : Rd.ReadLimit) (hD : DiagAlg) (E : Type) [Field
         (∀ τ lam, HasWeightAt π τ lam → ∑ k, D.m k τ = infOfWeight lam) ∧
         (∀ᶠ w : Pl E in cofinite, IsSplitAt w → D.SplitAt π w))
 
+/- English proof (translation)
+Introduce `s χ h1 h2 h3` and use `hPQ (h s χ h1 h2 h3)`.
+-/
 theorem gRead_mono {ι : Type} [Fintype ι] [Nonempty ι] {H : ι → Type} [∀ s, NormedAddCommGroup (H s)] [∀ s, InnerProductSpace ℂ (H s)]
     [∀ s, CompleteSpace (H s)] {d : ℕ} {Γ : Type} (gen : Γ → Prod' H d) (β : ∀ s, H s →L[ℂ] H s) (m : ℕ)
     (v : EuclideanSpace ℂ (Fin d)) {P Q : Prop} (hPQ : P → Q) (h : GRead gen β m v P) : GRead gen β m v Q :=
   fun s χ h1 h2 h3 => hPQ (h s χ h1 h2 h3)
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hR hD E _ _ _ hE n hn π hπ S T F₀ F h`. Use `gRead_mono _ _ _ _ ?_ (h1 hR hD E hE n hn π hπ S T F₀ F h)` and prove the remaining obligations. Introduce and unpack `⟨i, s₁, s₂, Pa, Pb, D, A, G, hc, hG, hl, hne, hwt, hgood⟩`. Conclude with `⟨D, h2 hR E hE n hn π hπ S T F₀ F h i s₁ s₂ Pa Pb D A G hc hG hl hne hwt hgood⟩`.
+-/
 theorem frameRead_of (h1 : BlockCand) (h2 : CandTOut) : FrameRead := by
   intro hR hD E _ _ _ hE n hn π hπ S T F₀ F h
   refine gRead_mono _ _ _ _ ?_ (h1 hR hD E hE n hn π hπ S T F₀ F h)

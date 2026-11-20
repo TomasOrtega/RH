@@ -12,6 +12,13 @@ open scoped ComplexOrder Classical
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.SncPull
 
+/- English proof (translation)
+Introduce `j t ht`. Take `⟨k, hk⟩` from `Ab.cover (pr ((A.chart j).symm t))`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (pr ⁻¹' (Ab.chart k).source))` using `(A.chart j).isOpen_inter_preimage_symm ((Ab.chart k).open_source.preimage hp.1)`. Establish `htO : t ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (pr ⁻¹' (Ab.chart k).source)` using `⟨ht.1, hk⟩`. Establish `h1 : AnalyticAt ℂ (Ab.chart k ∘ pr ∘ (A.chart j).symm) t` using `hp.2 j k t htO`.
+
+Establish `hmem : (Ab.chart k ∘ pr ∘ (A.chart j).symm) t ∈ (Ab.chart k).target ∩ (Ab.chart k).symm ⁻¹' U`. Use `⟨(Ab.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp, Set.mem_preimage, (Ab.chart k).left_inv hk]`. Conclude with `ht.2`. Establish `h2 : AnalyticAt ℂ (g ∘ (Ab.chart k).symm) ((Ab.chart k ∘ pr ∘ (A.chart j).symm) t)` using `hg k _ hmem`.
+
+Establish `h3` using `AnalyticAt.comp (g := g ∘ (Ab.chart k).symm) (f := Ab.chart k ∘ pr ∘ (A.chart j).symm) h2 h1`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds htO] with t' ht'`. Simplify using `[Function.comp, (Ab.chart k).left_inv ht'.2]`.
+-/
 theorem holoOn_comp_pr {e n : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     {A : FinHolAtlas e X} {Ab : FinHolAtlas n Z} {pr : X → Z} (hp : HoloMap A Ab pr)
     {U : Set Z} {g : Z → ℂ} (hg : Ab.HoloOn U g) : A.HoloOn (pr ⁻¹' U) (fun x => g (pr x)) := by
@@ -35,12 +42,32 @@ theorem holoOn_comp_pr {e n : ℕ} {X Z : Type} [TopologicalSpace X] [Topologica
   filter_upwards [hO.mem_nhds htO] with t' ht'
   simp [Function.comp, (Ab.chart k).left_inv ht'.2]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => holoOn_comp_pr hp (hs.1 (pr x)), fun x x' y hy => hs.2 (pr x) (pr x') (pr y) hy⟩`.
+-/
 theorem isSection_pull {e n : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     {A : FinHolAtlas e X} {Ab : FinHolAtlas n Z} {pr : X → Z} (hp : HoloMap A Ab pr)
     {L : LocPot Z} {s : Z → Z → ℂ} (hs : IsSection Ab L s) :
     IsSection A (L.pullback pr hp.1) (fun x y => s (pr x) (pr y)) :=
   ⟨fun x => holoOn_comp_pr hp (hs.1 (pr x)), fun x x' y hy => hs.2 (pr x) (pr x') (pr y) hy⟩
 
+/- English proof (translation)
+Introduce `x`. Take `⟨ψb, hcb, hxb, hsub, σb, hinj, hW, u, hu, hu0, hfac⟩` from `hsnc (pr x)`. Take `⟨ψ, kb, σ, hc, hx, hpr⟩` from `hprod x`. Take `⟨ψ', hc', hsrc, hco⟩` from `GlobalTheory.T.compatible_chart_product_projection e n X Z A Ab pr ψ kb σ ψb hc hcb hpr`. Establish `hsrc' : ∀ y ∈ ψ'.source, pr y ∈ ψb.source` using `fun y hy => by`.
+
+Rewrite `hy` using `[hsrc]`. Conclude with `hy.2`. Use `⟨ψ', hc', by rw [hsrc]; exact ⟨hx, hxb⟩, fun y hy => hsub (hsrc' y hy), fun k => (σb k).map σ, ?_, ?_, fun y => u (pr y), ?_, fun y hy => hu0 _ (hsrc' y hy), ?_⟩` and prove the remaining obligations. Introduce `k k' i hk hk'`. Take `⟨a, ha, rfl⟩` from `Option.map_eq_some_iff.1 hk`.
+
+Take `⟨b, hb, hab⟩` from `Option.map_eq_some_iff.1 hk'`. Take `rfl` from `σ.injective hab`. Conclude with `hinj k k' _ ha hb`. Introduce `k`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hyW, hy⟩`. Establish `h1 : pr y ∈ W k ∩ ψb.source` using `⟨hyW, hsrc' y hy⟩`. Rewrite `h1` using `[hW k]`. Take `⟨-, i, hi, h0⟩` from `h1`.
+
+Conclude with `⟨hy, σ i, by simp [hi], by rw [hco y hy]; exact h0⟩`. Introduce and unpack `⟨hy, i, hi, h0⟩`. Take `⟨a, ha, rfl⟩` from `Option.map_eq_some_iff.1 hi`. Rewrite `h0` using `[hco y hy]`. Establish `h1 : pr y ∈ W k ∩ ψb.source`.
+
+Rewrite using `[hW k]`. Conclude with `⟨hsrc' y hy, a, ha, h0⟩`. Conclude with `⟨h1.1, hy⟩`. Conclude with `fun j => (holoOn_comp_pr hp hu j).mono fun t ht => ⟨ht.1, hsrc' _ ht.2⟩`. Introduce `y hy show s (pr x) (pr y) = _`.
+
+Rewrite using `[hfac _ (hsrc' y hy)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Consider the cases of `h : σb k with`. Consider the case `none => simp [h]`.
+
+Consider the case `some i => simp [h, hco y hy]`.
+-/
 theorem isSNC_pull {e n : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     {A : FinHolAtlas e X} {Ab : FinHolAtlas n Z} {pr : X → Z} (hp : HoloMap A Ab pr)
     {L : LocPot Z} {s : Z → Z → ℂ} {nb : ℕ} {m : Fin nb → ℕ} {W : Fin nb → Set Z}
@@ -86,6 +113,19 @@ theorem isSNC_pull {e n : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpa
     | none => simp [h]
     | some i => simp [h, hco y hy]
 
+/- English proof (translation)
+Use `choose φ S μ v hc hx hball h0 hU hμ hv hv0 hfac using GlobalTheory.T.exists_snc_adapted_chart_at_point e X A L s nb m W hsnc`. Establish `hb` using `fun x => GlobalTheory.T.snc_adapted_chart_section_form e X A L s hL hs x (φ x) (S x) (μ x) (v x) (hc x) (hball x) (hU x) (hμ x) (hv x) (hv0 x) (hfac x)`. Use `choose hzero M hM using fun x => And.intro (hb x).1 (hb x).2`. Establish `hopen : ∀ x, IsOpen ((φ x).source ∩ φ x ⁻¹' Metric.ball (0 : Fin e → ℂ) 1)` using `fun x => (φ x).continuousOn.isOpen_inter_preimage (φ x).open_source Metric.isOpen_ball`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover _ hopen (fun x _ => Set.mem_iUnion.2 ⟨x, hx x, by simp [h0 x]⟩)`.
+
+Set `E` to `t.equivFin`. Establish `hcov : ∀ x, ∃ i : Fin t.card, x ∈ (φ (E.symm i).1).source ∧ φ (E.symm i).1 x ∈ Metric.ball (0 : Fin e → ℂ) 1`. Introduce `x`. Take `⟨p, hp, hxp⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Use `⟨E ⟨p, hp⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hxp`. Take `⟨B, hAB, hB1, hB2⟩` from `atlasOfCompat A (fun i : Fin t.card => φ (E.symm i).1) (fun i => hc _) (fun x => (hcov x).imp fun _ h => h.1)`. Use `⟨B, hAB, ?_, ?_, ∑ i : Fin t.card, |M (E.symm i).1|, ?_⟩` and prove the remaining obligations. Introduce `j`. Take `⟨i, hi⟩` from `hB2 j`.
+
+Rewrite using `[hi]`. Conclude with `hball _`. Introduce `x`. Take `⟨i, hi, hi'⟩` from `hcov x`. Take `⟨j, hj⟩` from `hB1 i`.
+
+Conclude with `⟨j, by rw [hj]; exact hi, by rw [hj]; exact hi'⟩`. Introduce `j`. Take `⟨i, hi⟩` from `hB2 j`. Use `⟨S (E.symm i).1, μ (E.symm i).1, hμ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`.
+
+Conclude with `hzero _`. Rewrite using `[hi]`. Introduce `y hy hy'`. Conclude with `((hM _ y hy hy').trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun i : Fin t.card => |M (E.symm i).1|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem exists_adapted {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X]
     (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {nb : ℕ} {m : Fin nb → ℕ}
     {W : Fin nb → Set X} (hL : IsPotential A L) (hs : IsSection A L s) (hsnc : IsSNC A L s m W) :
@@ -125,6 +165,9 @@ theorem exists_adapted {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X
         (Finset.single_le_sum (f := fun i : Fin t.card => |M (E.symm i).1|)
           (fun _ _ => abs_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Introduce `e n X Z _ _ _ _ _ _ A Ab Bb pr hp L s nb m W hL hs hsnc _ hprod`. Establish `hL'` using `ReciprocityTheory.AnForm.M.isPotentialPullback Ab A pr hp L hL`. Establish `hs'` using `isSection_pull hp hs`. Establish `hn'` using `isSNC_pull hp hsnc hprod`. Conclude with `⟨hL', hs', hn', exists_adapted A _ _ hL' hs' hn'⟩`.
+-/
 theorem pullback_projection : ∀ (e n : ℕ) (X Z : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] [TopologicalSpace Z] [CompactSpace Z] [T2Space Z] (A : FinHolAtlas e X) (Ab Bb : FinHolAtlas n Z) (pr : X → Z) (hp : HoloMap A Ab pr) (L : LocPot Z) (s : Z → Z → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set Z), IsPotential Ab L → IsSection Ab L s → IsSNC Ab L s m W → (∀ x, logNormSec L s x ≤ 0) → (∀ x, ∃ (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (kb : Fin Ab.n) (σ : Fin n ↪ Fin e), IsCompatChart A ψ ∧ x ∈ ψ.source ∧ (∀ x' ∈ ψ.source, pr x' ∈ (Ab.chart kb).source ∧ ∀ i, Ab.chart kb (pr x') i = ψ x' (σ i))) → IsPotential A (L.pullback pr hp.1) ∧ IsSection A (L.pullback pr hp.1) (fun x y => s (pr x) (pr y)) ∧ IsSNC A (L.pullback pr hp.1) (fun x y => s (pr x) (pr y)) m (fun k => pr ⁻¹' W k) ∧ ∃ B : FinHolAtlas e X, IsAdaptedAtlas A B (L.pullback pr hp.1) (fun x y => s (pr x) (pr y)) := by
   intro e n X Z _ _ _ _ _ _ A Ab Bb pr hp L s nb m W hL hs hsnc _ hprod
   have hL' := ReciprocityTheory.AnForm.M.isPotentialPullback Ab A pr hp L hL

@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.LieCoordMult
 
+/- English proof (translation)
+Introduce `O _ F' S G _ _ act R' _ x n a T A emb ω l χ hinj htan hadd hsc hact hdec v hv`. Establish `T0 : T 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+
+Establish `Tsum : ∀ (m : ℕ) (y : Fin m → (Fin n → R')), (List.ofFn (fun i => T (y i))).prod = T (∑ i, y i)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y`. Simplify using `[T0]`.
+
+Consider the case `succ m ih => intro y`. Rewrite using `[List.ofFn_succ, List.prod_cons, ih, Fin.sum_univ_succ, hadd]`. Establish `eig : ∀ (b : O) (c : R') (w : epsPtR x ⟶ G), IsTanScal act x b c w ↔ ∃ y, A b *ᵥ y = c • y ∧ w = T y`. Introduce `b c w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Take `⟨y, rfl⟩` from `(htan w).1 h1`. Use `⟨y, hinj (Over.OverMorphism.ext ?_), rfl⟩` and prove the remaining obligations. Rewrite using `[← hact, h2, hsc]`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Use `⟨(htan _).2 ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hact, hy, hsc]`. Take `⟨y, hy, rfl⟩` from `(eig _ _ _).1 hv`. Take `⟨z, hz, rfl⟩` from `hdec y hy`. Conclude with `⟨fun i => T (z i), fun i c => (eig _ _ _).2 ⟨z i, hz i c, rfl⟩, (Tsum a z).symm⟩`.
+-/
 theorem tanScal_decomp : ∀ (O : Type) [Ring O] (F' : Type) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (act : OActN O G) (R' : Type) [CommRing R'] (x : Sp R' ⟶ S) (n a : ℕ) (T : (Fin n → R') → (epsPtR x ⟶ G)) (A : O → Matrix (Fin n) (Fin n) R') (emb : F' → O) (ω : F') (l : R') (χ : Fin a → F' → R'), Function.Injective T → (∀ v : epsPtR x ⟶ G, spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = (1 : Over.mk x ⟶ G).left ↔ v ∈ Set.range T) → (∀ c c', T (c + c') = T c * T c') → (∀ (s : R') c, (T (s • c)).left = spMap (epsScaleR s) ≫ (T c).left) → (∀ b c, T c ≫ act.act b = T (A b *ᵥ c)) → (∀ y : Fin n → R', A (emb ω) *ᵥ y = l • y → ∃ z : Fin a → Fin n → R', (∀ i c, A (emb c) *ᵥ z i = χ i c • z i) ∧ y = ∑ i, z i) → ∀ v : epsPtR x ⟶ G, IsTanScal act x (emb ω) l v → ∃ w : Fin a → (epsPtR x ⟶ G), (∀ i c, IsTanScal act x (emb c) (χ i c) (w i)) ∧ v = (List.ofFn w).prod := by
   intro O _ F' S G _ _ act R' _ x n a T A emb ω l χ hinj htan hadd hsc hact hdec v hv
   have T0 : T 0 = 1 := by

@@ -17,6 +17,17 @@ namespace GlobalTheory.ThK.IsoStep
 
 open GlobalTheory.ThK.UnipDom GlobalTheory.ThK.UnipDom.Inverse GlobalTheory.ThK.IsoZero
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ hH u hu z β hv Ψ hΨ`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hsch : ∀ γ, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ γ Φ ∈ schA F (Fin n × Fin d)` using `fun γ Φ hΦ => GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd γ Φ hΦ`. Establish `ha' : mat u⁻¹ *ᵥ incV F H'.y = β • incV F H'.x + incM F H'.ι *ᵥ z + incV F H'.y`. Rewrite using `[hv]`.
+
+Normalize the expressions using the abelian group laws. Establish `hrho : ∀ (p q : Fin d → AE F E) (φ : Fn F n d), M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) p) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) q) φ) = M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (p + q)) φ` using `fun p q φ => by`. Rewrite using `[rho_rho M.co B.ψ _ _ (symp_iso σ X.J W.J H.x hH.xx p q), vmv_add]`. Establish `himpl` using `(IsUWeilPair.isUSplitting hP.weil).impl ((1 : UA σ X.J), u) (Matrix.vecMulVec (incV F H.x) (mat u⁻¹ *ᵥ incV F H'.y)) Ψ hΨ`. Establish `hact : actAB (cA σ) ((1 : UA σ X.J), u) (Matrix.vecMulVec (incV F H.x) (mat u⁻¹ *ᵥ incV F H'.y)) = Matrix.vecMulVec (incV F H.x) (incV F H'.y)` using `by show (1 : Matrix (Fin n) (Fin n) (AE F E)) * _ * (mat u)ᵀ = _`.
+
+Rewrite using `[Matrix.one_mul, vmv_mul_transpose, Matrix.mulVec_mulVec, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mulVec]`. Rewrite `himpl` using `[hact]`. Establish `hI : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hΨA` using `hsch (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ hΨ`. Establish `hΨB` using `hsch (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z)) _ hΨA`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[himpl]`. Use `_ = e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (mat u⁻¹ *ᵥ incV F H'.y)) Ψ) := by`. Rewrite using `[GlobalTheory.T.eigen_intertwiner_restriction_pair hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP u hu _ (hsch _ Ψ hΨ)]`. Use `_ = e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (β • incV F H'.x)) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z)) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ))) := by`.
+
+Rewrite using `[hrho, hrho, ha']`. Use `_ = e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z)) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ)) := by`. Rewrite using `[he₀.inv _ ⟨β • incV F H.x, vmv_smul_right _ _ _⟩ _ hΨB]`. Use `_ = M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z) (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (incV F H'.y)) Ψ)) := by`. Rewrite using `[← he₀.Heisenberg₂ _ _ hΨA, hI, Matrix.one_mul, ← vmv_mulVec]`.
+-/
 theorem ev_step : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ →

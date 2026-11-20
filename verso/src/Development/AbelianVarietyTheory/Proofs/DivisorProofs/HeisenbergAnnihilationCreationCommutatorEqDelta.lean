@@ -9,6 +9,13 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 namespace GlobalTheory.CCRFock.CommDM
 open GlobalTheory.CCRFock
 
+/- English proof (translation)
+Take `⟨j1, j2, j3⟩` from `j`. Distinguish the cases in `h1 : w = j1`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : a = j2`. Substitute `h2` using the available equality.
+
+Distinguish the cases in `h3 : b = j3`. Substitute `h3` using the available equality. Simplify using `[unitAt]`. Simplify using `[unitAt, h3, Ne.symm h3]`. Simplify using `[unitAt, h2, Ne.symm h2]`.
+
+Simplify using `[unitAt, h1]`.
+-/
 private lemma unitAt_apply_eq_ite {W : Type} [DecidableEq W] {P Q R S : ℕ} (j : W × (Ix P Q × Ix R S)) (z : ℂ)
     (w : W) (a : Ix P Q) (b : Ix R S) : unitAt j z w a b = if (w, (a, b)) = j then z else 0 := by
   obtain ⟨j1, j2, j3⟩ := j
@@ -23,6 +30,13 @@ private lemma unitAt_apply_eq_ite {W : Type} [DecidableEq W] {P Q R S : ℕ} (j 
     · simp [unitAt, h2, Ne.symm h2]
   · simp [unitAt, h1]
 
+/- English proof (translation)
+Establish `key : ∀ (w : W) (a : Ix P Q) (b : Ix R S), lineSign a b * unitAt j z w a b * star (unitAt k z' w a b) = if (w, (a, b)) = j then (if j = k then lineSign j.2.1 j.2.2 * z * star z' else 0) else 0`. Introduce `w a b`. Rewrite using `[unitAt_apply_eq_ite, unitAt_apply_eq_ite]`. Distinguish the cases in `hj : (w, (a, b)) = j`. Substitute `hj` using the available equality.
+
+Distinguish the cases in `hk : (w, (a, b)) = k`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Simplify using `[hj]`.
+
+Simplify using `only [key]`. Rewrite using `[Fintype.sum_eq_single j.1, Fintype.sum_eq_single j.2.1, Fintype.sum_eq_single j.2.2]`. Apply the tactic sequence `all_goals first`. Consider the case `(intro x hx; simp [Prod.ext_iff, hx])`. Consider the case `simp`.
+-/
 theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j k : W × (Ix P Q × Ix R S)) (z z' : ℂ) :
     (∑ w, ∑ a, ∑ b, lineSign a b * unitAt j z w a b * star (unitAt k z' w a b)) =
       if j = k then lineSign j.2.1 j.2.2 * z * star z' else 0 := by
@@ -43,9 +57,15 @@ theorem sum_unitAt {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ} (j k :
     | (intro x hx; simp [Prod.ext_iff, hx])
     | simp
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]`.
+-/
 theorem lineSign_cases {P Q R S : ℕ} (a : Ix P Q) (b : Ix R S) : (lineSign a b : ℂ) = 1 ∨ (lineSign a b : ℂ) = -1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign]
 
+/- English proof (translation)
+Simplify using `only [neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_smul, mul_add, add_mul, mul_sub, sub_mul, smul_add, smul_sub, smul_neg]`. Use `module`.
+-/
 theorem comm_expand {V : Type} [AddCommGroup V] [Module ℂ V] (A A' B B' : Module.End ℂ V) (c u v : ℂ) :
     -(c • (A + u • A')) * (c • (B - v • B')) - (c • (B - v • B')) * -(c • (A + u • A')) =
       -((c * c) • ((A * B - B * A) - v • (A * B' - B' * A) + u • (A' * B - B * A') - (u * v) • (A' * B' - B' * A'))) := by
@@ -53,6 +73,11 @@ theorem comm_expand {V : Type} [AddCommGroup V] [Module ℂ V] (A A' B B' : Modu
     smul_add, smul_sub, smul_neg]
   module
 
+/- English proof (translation)
+Rewrite using `[← mul_inv]`. Use `congr 1`. Establish `h : ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) = 2 * (Real.pi : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `4 * h`.
+-/
 theorem inv_sq : (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ * (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ =
     (8 * (Real.pi : ℂ))⁻¹ := by
   rw [← mul_inv]
@@ -63,6 +88,15 @@ theorem inv_sq : (2 * ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ))⁻¹ * (2 * ((Rea
     ring
   linear_combination 4 * h
 
+/- English proof (translation)
+Introduce `V _ _ W _ _ P Q R S H _ _ hcomm j k`. Simplify using `only [GlobalTheory.CCRFock.fockD, GlobalTheory.CCRFock.fockM]`. Rewrite using `[comm_expand, hcomm, hcomm, hcomm, hcomm, sum_unitAt, sum_unitAt, sum_unitAt, sum_unitAt, inv_sq]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+
+Break down `lineSign_cases j.2.1 j.2.2 with h | h` into its components or cases. Simplify using `only [if_true, h] match_scalars`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Simplify using `[Complex.I_sq]`. Simplify using `only [if_true, h] match_scalars`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Simplify using `[Complex.I_sq]`. Simplify using `[hjk]`.
+-/
 theorem fockD_fockM_comm : ∀ {V : Type} [AddCommGroup V] [Module ℂ V] {W : Type} [Fintype W] [DecidableEq W] {P Q R S : ℕ}
     (H : (W → Matrix (Ix P Q) (Ix R S) ℂ) → Module.End ℂ V),
     (∀ c c', H (c + c') = H c + H c') → (∀ (r : ℝ) c, H ((r : ℂ) • c) = (r : ℂ) • H c) →

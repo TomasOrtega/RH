@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `hu : IsUnit (Mᵀ * M.map star)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 h)`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Simplify using `only [Fintype.card_fin] at h1`. Establish `h2` using `Matrix.rank_mul_le_left Mᵀ (M.map star)`. Rewrite `h2` using `[Matrix.rank_transpose]`.
+
+Establish `h3` using `M.rank_le_width`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem frame_rank_of_gram_det_ne_zero {g k : ℕ} (M : Matrix (Fin g) (Fin k) ℂ)
     (h : (Mᵀ * M.map star).det ≠ 0) : M.rank = k := by
   have hu : IsUnit (Mᵀ * M.map star) :=
@@ -24,6 +29,13 @@ theorem frame_rank_of_gram_det_ne_zero {g k : ℕ} (M : Matrix (Fin g) (Fin k) �
   have h3 := M.rank_le_width
   omega
 
+/- English proof (translation)
+Establish `hP : (M₀.map star)ᴴ = M₀ᵀ`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hpos : 0 < ((M₀ᵀ * M₀.map star).det).re`. Use `GlobalTheory.re_det_pos_of_posDef (subframe_gram_posDef M₀ h)` as an intermediate fact.
+
+Rewrite `this` using `[hP]`. Conclude with `this`. Establish `hU : IsOpen {M : Matrix (Fin g) (Fin k) ℂ | 0 < ((Mᵀ * M.map star).det).re}` using `isOpen_lt continuous_const subframe_continuous_det`. Use `haveI : LocallyCompactSpace (Matrix (Fin g) (Fin k) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin g → Fin k → ℂ))`. Take `⟨S, hS, hSU, hSc⟩` from `local_compact_nhds (hU.mem_nhds hpos)`.
+
+Use `⟨S, hSc, hS, fun M hM => frame_rank_of_gram_det_ne_zero M ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `hSU hM` as an intermediate fact. Rewrite `this` using `[Set.mem_setOf_eq, h0]`. Simplify using `at this`.
+-/
 theorem frame_compact_nhd {g k : ℕ} (M₀ : Matrix (Fin g) (Fin k) ℂ) (h : M₀.rank = k) :
     ∃ S : Set (Matrix (Fin g) (Fin k) ℂ), IsCompact S ∧ S ∈ nhds M₀ ∧ ∀ M ∈ S, M.rank = k := by
   have hP : (M₀.map star)ᴴ = M₀ᵀ := by
@@ -44,6 +56,9 @@ theorem frame_compact_nhd {g k : ℕ} (M₀ : Matrix (Fin g) (Fin k) ℂ) (h : M
   rw [Set.mem_setOf_eq, h0] at this
   simp at this
 
+/- English proof (translation)
+Establish `hd : ContinuousAt (fun y => (A y).det) x` using `(continuous_id.matrix_det).continuousAt.comp hA`. Establish `ha : ContinuousAt (fun y => (A y).adjugate) x` using `(continuous_id.matrix_adjugate).continuousAt.comp hA`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`. Conclude with `(hd.inv₀ h).smul ha`.
+-/
 theorem continuousAt_matrix_inv {X : Type*} [TopologicalSpace X] {g : ℕ}
     (A : X → Matrix (Fin g) (Fin g) ℂ) (x : X) (hA : ContinuousAt A x) (h : (A x).det ≠ 0) :
     ContinuousAt (fun y => (A y)⁻¹) x := by
@@ -54,6 +69,19 @@ theorem continuousAt_matrix_inv {X : Type*} [TopologicalSpace X] {g : ℕ}
   simp only [Matrix.inv_def, Ring.inverse_eq_inv']
   exact (hd.inv₀ h).smul ha
 
+/- English proof (translation)
+Establish `hsum : ∑ j : Fin a, |Real.log ‖z (Fin.castLE h j)‖| = ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|`. Use `Finset.sum_bij (fun j _ => Fin.castLE h j) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _`. Simplify using the standard rewrite rules. Introduce `j _ j' _ e`.
+
+Conclude with `Fin.castLE_injective h e`. Introduce `i hi`. Establish `hi' : i.val < a` using `by simpa using hi`. Conclude with `⟨⟨i.val, hi'⟩, Finset.mem_univ _, by ext; simp⟩`. Introduce `j _`.
+
+Both sides reduce to the same expression. Establish `hterm : ∀ j : Fin a, Real.log (‖cuspCoord h z j‖ ^ 2)⁻¹ = 2 * |Real.log ‖z (Fin.castLE h j)‖|`. Introduce `j`. Establish `hc : cuspCoord h z j = z (Fin.castLE h j)` using `rfl`. Establish `hn : 0 ≤ ‖z (Fin.castLE h j)‖` using `norm_nonneg _`.
+
+Rewrite using `[hc, Real.log_inv, Real.log_pow, abs_of_nonpos (Real.log_nonpos hn (h1 _).le)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : chartRadius h z = Real.exp 1 + 2 * ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|`. Rewrite using `[chartRadius, ← hsum, Finset.mul_sum]`.
+
+Simplify using `only [hterm]`. Establish `hS : 0 ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `he : (2 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Rewrite using `[hr]`. Prove the components needed by the constructor for the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem chartRadius_le_log_sum {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) (h1 : ∀ k, ‖z k‖ < 1)
     (h0 : ∀ i : Fin n, i.val < a → z i ≠ 0) :
     1 ≤ chartRadius h z ∧ chartRadius h z ≤ (Real.exp 1 + 2) *
@@ -90,6 +118,39 @@ theorem chartRadius_le_log_sum {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) (h1
   · linarith
   · nlinarith
 
+/- English proof (translation)
+Introduce `n a g Λ _ L k F hF hrk`. Take `⟨Q, A, hAd, hA0, hAH⟩` from `GlobalTheory.T.period_matrix_local_trivialization n a g Λ L`. Take `⟨ρ₁, c, C, hρ₁, hρ₁1, hc, hb⟩` from `(ImTauBounds.cond RiemannExtensionSlices.proof PuncturedExpOrder.proof LogCoverDescent.proof) n a g Q`. Establish `hAc : ContinuousAt A 0`. Establish `: ContinuousOn A (ball 0 1)` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hAd i j).continuousOn`.
+
+Conclude with `this.continuousAt (isOpen_ball.mem_nhds (mem_ball_self one_pos))`. Establish `hAi` using `continuousAt_matrix_inv A 0 hAc hA0`. Establish `hc2 : Continuous (fun p : Matrix (Fin k) (Fin g) ℂ × Matrix (Fin g) (Fin g) ℂ => p.1 * p.2)` using `continuous_fst.matrix_mul continuous_snd`. Establish `hmul : ContinuousAt (fun z => F z * (A z)⁻¹) 0` using `ContinuousAt.comp (g := fun p : Matrix (Fin k) (Fin g) ℂ × Matrix (Fin g) (Fin g) ℂ => p.1 * p.2) (f := fun z => (F z, (A z)⁻¹)) hc2.continuousAt (hF.prodMk hAi)`. Establish `hG : ContinuousAt (fun z => (F z * (A z)⁻¹)ᵀ) 0` using `(continuous_id.matrix_transpose.continuousAt).comp hmul`.
+
+Establish `hM0 : ((F 0 * (A 0)⁻¹)ᵀ).rank = k`. Establish `hu : IsUnit ((A 0)⁻¹).det` using `Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.2 hA0)`. Rewrite using `[Matrix.rank_transpose, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hu, hrk]`. Take `⟨S, hS, hSn, hSr⟩` from `frame_compact_nhd _ hM0`. Take `⟨C', hC', hd⟩` from `subframe_det_log_growth g k (Matrix (Fin g) (Fin k) ℂ) S hS id continuousOn_id hSr c C hc`.
+
+Establish `hdet : ContinuousAt (fun z => (A z).det) 0` using `(continuous_id.matrix_det).continuousAt.comp hAc`. Establish `hev : ∀ᶠ z in nhds (0 : Fin n → ℂ), (F z * (A z)⁻¹)ᵀ ∈ S ∧ (A z).det ≠ 0` using `(hG.eventually_mem hSn).and (hdet.eventually_ne hA0)`. Take `⟨ρ₂, hρ₂, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `he : 0 < Real.exp 1 + 2` using `by positivity`. Use `⟨min (min ρ₁ ρ₂) 1, C' * (Real.exp 1 + 2) ^ k, k, lt_min (lt_min hρ₁ hρ₂) one_pos, min_le_right _ _, fun z hz hz0 => ?_⟩` and prove the remaining obligations.
+
+Establish `hzρ : ‖z‖ < min (min ρ₁ ρ₂) 1` using `by simpa [dist_zero_right] using hz`. Establish `hz1n : ‖z‖ < 1` using `lt_of_lt_of_le hzρ (min_le_right _ _)`. Establish `hz1 : ∀ k, ‖z k‖ < 1` using `fun k => lt_of_le_of_lt (norm_le_pi_norm z k) hz1n`. Establish `hzρ₁ : z ∈ closedBall (0 : Fin n → ℂ) ρ₁`. Establish `: ‖z‖ ≤ ρ₁` using `hzρ.le.trans ((min_le_left _ _).trans (min_le_left _ _))`.
+
+Simplify `this` using `[dist_zero_right]`. Establish `hzρ₂ : z ∈ ball (0 : Fin n → ℂ) ρ₂`. Establish `: ‖z‖ < ρ₂` using `lt_of_lt_of_le hzρ ((min_le_left _ _).trans (min_le_right _ _))`. Simplify `this` using `[dist_zero_right]`. Take `⟨hGS, hAz⟩` from `hball z hzρ₂`.
+
+Establish `hcusp : ∀ j : Fin a, cuspCoord L.a_le z j ≠ 0` using `fun j => hz0 _ (by simp)`. Establish `hzp : z ∈ puncturedChart L.a_le (ball (0 : Fin n → ℂ) 1)` using `⟨by simpa [dist_zero_right] using hz1n, hcusp⟩`. Establish `hw` using `HodgeDerivative.logLift_mem L.a_le hzp`. Establish `hexp` using `HodgeDerivative.expCover_logLift L.a_le hcusp`. Establish `hAHz` using `hAH _ hw`.
+
+Rewrite `hAHz` using `[hexp]`. Take `⟨hb1, hb2⟩` from `hb _ hw (by rw [hexp]; exact hzρ₁)`. Rewrite `hb2` using `[hexp]`. Take `⟨hr1, hr2⟩` from `chartRadius_le_log_sum L.a_le z hz1 hz0`. Establish `hx` using `hd _ hGS ((Q.τ (logLift a z)).map Complex.im) (chartRadius L.a_le z) hr1 hb1 hb2`.
+
+Use `set Y := (Q.τ (logLift a z)).map Complex.im with hY`. Use `set S' := ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖| with hS'`. Establish `hAu : IsUnit (A z).det` using `isUnit_iff_ne_zero.2 hAz`. Establish `hinv1 : (A z)⁻¹ * A z = 1` using `Matrix.nonsing_inv_mul _ hAu`. Establish `hinv2 : (A z)ᴴ * ((A z)⁻¹)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, hinv1, Matrix.conjTranspose_one]`. Establish `hkey : F z * L.H z * (F z)ᴴ = (F z * (A z)⁻¹) * (Y⁻¹).map Complex.ofReal * (F z * (A z)⁻¹)ᴴ`. Rewrite using `[← hAHz, Matrix.conjTranspose_mul]`. Establish `e : F z * (A z)⁻¹ * (A z * L.H z * (A z)ᴴ) * (((A z)⁻¹)ᴴ * (F z)ᴴ) = F z * ((A z)⁻¹ * A z) * L.H z * ((A z)ᴴ * ((A z)⁻¹)ᴴ) * (F z)ᴴ`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, hinv1, hinv2]`. Simplify using the standard rewrite rules. Establish `hd1 : ((F z * L.H z * (F z)ᴴ).det).re ≤ C'`. Rewrite using `[hkey]`. Conclude with `hx.1`.
+
+Establish `hd2 : 1 ≤ C' * chartRadius L.a_le z ^ k * ((F z * L.H z * (F z)ᴴ).det).re`. Rewrite using `[hkey]`. Conclude with `hx.2`. Establish `hpsd : (F z * L.H z * (F z)ᴴ).PosSemidef`. Rewrite using `[hkey]`.
+
+Establish `hYp : Y.PosDef` using `Q.im_posDef _ hw`. Conclude with `(subframe_map_posSemidef hYp.inv.posSemidef).mul_mul_conjTranspose_same _`. Establish `hD` using `hpsd.det_nonneg`. Take `⟨D, hDdef⟩ : ∃ D, D = (F z * L.H z * (F z)ᴴ).det` from `⟨_, rfl⟩`. Rewrite `hd1`, `hd2`, `hD`, the goal using `[← hDdef]`.
+
+Establish `hnorm : ‖D‖ = D.re`. Take `⟨h1, h2⟩` from `Complex.nonneg_iff.1 hD`. Establish `e : D = (D.re : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [h2.symm]`. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re, abs_of_nonneg h1]`.
+
+Rewrite using `[hnorm]`. Establish `hre : 0 ≤ D.re` using `(Complex.nonneg_iff.1 hD).1`. Establish `hS0 : 0 ≤ S'` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hE1 : 1 ≤ (Real.exp 1 + 2) ^ k` using `one_le_pow₀ (by linarith [Real.exp_pos 1])`. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hpow : chartRadius L.a_le z ^ k ≤ ((Real.exp 1 + 2) * (1 + S')) ^ k` using `pow_le_pow_left₀ (by linarith) hr2 k`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logPeriods_subframe_det_bounds : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : LogPeriods n a g Λ) (k : ℕ) (F : (Fin n → ℂ) → Matrix (Fin k) (Fin g) ℂ), ContinuousAt F 0 → (F 0).rank = k → ∃ (ρ K : ℝ) (N : ℕ), 0 < ρ ∧ ρ ≤ 1 ∧ ∀ z ∈ ball (0 : Fin n → ℂ) ρ, (∀ i : Fin n, i.val < a → z i ≠ 0) → ‖(F z * L.H z * (F z)ᴴ).det‖ ≤ K ∧ 1 ≤ K * (1 + ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|) ^ N * ‖(F z * L.H z * (F z)ᴴ).det‖ := by
   intro n a g Λ _ L k F hF hrk
   obtain ⟨Q, A, hAd, hA0, hAH⟩ := GlobalTheory.T.period_matrix_local_trivialization n a g Λ L

@@ -14,6 +14,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.FibreAmple
 
+/- English proof (translation)
+Set `s : (lbPow M d).Sec` to `powSecMk d u.f fun i j => (u.compat i j).trans (congrArg (· * _) (by`. Express the relevant statement in the definitionally equal form `(M.g i j ^ (d : ℤ)).val = _`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]))`. Establish `hs : Out.nonzeroLocus s = Out.nonzeroLocus u` using `nonzeroLocus_powSecMk _ _ _`. Establish `h` using `isAmpleLB_of_relAmple_of_isAffine (Over.mk g) (LB.isLB_pull hM π) hA`.
+
+Use `IsAmpleLB.isAffineOpen_nonzeroLocus g h hd (secPowPull s π)` as an intermediate fact. Rewrite `this` using `[nonzeroLocus_secPowPull, hs]`. Then use the resulting hypothesis.
+-/
 theorem isAffineOpen_preimage_nonzeroLocus {k : Type} [CommRing k] {X Y : Scheme.{0}} (g : Y ⟶ Sp k) [IsProper g]
     (π : Y ⟶ X) {M : LB X} (hM : M.IsLB) (hA : Out.RelAmple (Over.mk g) (M.pull π)) {d : ℕ} (hd : 1 ≤ d)
     (u : LB.Sec (pw M d)) : IsAffineOpen (π ⁻¹ᵁ Out.nonzeroLocus u) := by
@@ -26,6 +31,17 @@ theorem isAffineOpen_preimage_nonzeroLocus {k : Type} [CommRing k] {X Y : Scheme
   have := IsAmpleLB.isAffineOpen_nonzeroLocus g h hd (secPowPull s π)
   rwa [nonzeroLocus_secPowPull, hs] at this
 
+/- English proof (translation)
+Use `isProper_str R m` as an intermediate fact. Establish `: IsProper (φ ≫ PSpace.str R m)` using `by rw [hf]; infer_instance`. Establish `: IsProper φ` using `.of_comp φ (PSpace.str R m)`. It suffices to establish `LocallyQuasiFinite φ from .of_isProper_of_locallyQuasiFinite _`. Use `LocallyQuasiFinite.of_finite_preimage_singleton _ fun p => ?_` and prove the remaining obligations.
+
+Take `⟨k, _, β, hβ, hk⟩` from `H (PSpace.str R m p).asIdeal (PSpace.str R m p).isPrime`. Establish `B` using `ProjSpace.isPullback_baseChange m β`. Set `φ' : pullback f (spMap β) ⟶ PSpace k m` to `B.lift (pullback.fst f (spMap β) ≫ φ) (pullback.snd f (spMap β)) (by rw [Category.assoc, hf, pullback.condition])`. Establish `e₁ : φ' ≫ ProjSpace.baseChange m β = pullback.fst f (spMap β) ≫ φ` using `B.lift_fst _ _ _`. Establish `e₂ : φ' ≫ PSpace.str k m = pullback.snd f (spMap β)` using `B.lift_snd _ _ _`.
+
+Establish `P : IsPullback (pullback.fst f (spMap β)) φ' φ (ProjSpace.baseChange m β)` using `IsPullback.of_bot (by rw [e₂, hf]; exact IsPullback.of_hasPullback f (spMap β)) e₁.symm B`. Establish `: IsProper φ'` using `MorphismProperty.of_isPullback (P := @IsProper) P inferInstance`. Establish `: IsAffineHom φ'` using `isAffineHom_of_forall_exists_isAffineOpen _ fun y => by`. Take `⟨i, hi⟩` from `ProjSpace.exists_mem_chart k m y`. Use `⟨_, hi, ProjSpace.isAffineOpen_chart k m i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ProjSpace.baseChange_preimage_chart m β i, ← Scheme.Hom.comp_preimage, e₁, Scheme.Hom.comp_preimage]`. Conclude with `hk i`. Establish `: IsFinite φ'` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Take `⟨p', hp', -⟩` from `Scheme.exists_preimage_of_isPullback B p (⊥ : PrimeSpectrum k) (PrimeSpectrum.ext hβ.symm)`. Use `((φ'.finite_preimage_singleton p').image (pullback.fst f (spMap β))).subset fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨z, h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback P x p' (hx.trans hp'.symm)`. Conclude with `⟨z, h₂, h₁⟩`.
+-/
 theorem isFinite_of_fibres {R : Type} [CommRing R] {X : Scheme.{0}} {m : ℕ} (φ : X ⟶ PSpace R m)
     (f : X ⟶ Sp R) [IsProper f] (hf : φ ≫ PSpace.str R m = f)
     (H : ∀ q : Ideal R, q.IsPrime → ∃ (k : Type) (_ : Field k) (β : R →+* k), RingHom.ker β = q ∧
@@ -57,6 +73,11 @@ theorem isFinite_of_fibres {R : Type} [CommRing R] {X : Scheme.{0}} {m : ℕ} (�
   obtain ⟨z, h₁, h₂⟩ := Scheme.exists_preimage_of_isPullback P x p' (hx.trans hp'.symm)
   exact ⟨z, h₂, h₁⟩
 
+/- English proof (translation)
+Introduce `R _ X f M d m u hd _ hM hu H i`. Establish `: IsFinite (ProjSpace.toProj f u hu)` using `isFinite_of_fibres _ f (ProjSpace.toProj_str f u hu) fun q hq => by`. Take `⟨k, _, β, hβ, hA⟩` from `H q hq`. Use `⟨k, _, β, hβ, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ProjSpace.toProj_preimage_chart]`.
+
+Conclude with `isAffineOpen_preimage_nonzeroLocus _ _ hM hA hd (u j)`. Rewrite using `[← ProjSpace.toProj_preimage_chart f u hu]`. Conclude with `(ProjSpace.isAffineOpen_chart R m i).preimage _`.
+-/
 theorem isAffineOpen_nonzeroLocus_of_fibres : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (M : LB X) (d : ℕ) (m : ℕ) (u : Fin (m + 1) → LB.Sec (pw M d)), 1 ≤ d → IsProper f → M.IsLB → (⨆ i, Out.nonzeroLocus (u i) = ⊤) → (∀ q : Ideal R, q.IsPrime → ∃ (k : Type) (_ : Field k) (β : R →+* k), RingHom.ker β = q ∧ Out.RelAmple (Over.mk (pullback.snd f (spMap β))) (M.pull (pullback.fst f (spMap β)))) → ∀ i, IsAffineOpen (Out.nonzeroLocus (u i)) := by
   intro R _ X f M d m u hd _ hM hu H i
   have : IsFinite (ProjSpace.toProj f u hu) :=

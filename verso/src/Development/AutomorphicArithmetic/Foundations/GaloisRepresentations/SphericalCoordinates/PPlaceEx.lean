@@ -15,6 +15,23 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `c`. Establish `hs : IsSig (algebraMap (𝓞 D.F) D.O) D.inv ρ D.n t₀ (epsD D)` using `h`. Establish `i0 : Fin D.a` using `⟨0, by omega⟩`. Establish `hω : t₀ (D.ω : D.F) = D.ρc`. Rewrite using `[← ht i0]`.
+
+Conclude with `D.tau_ω i0`. Establish `hre : D.ρc.im ≠ 0`. Introduce `him`. Establish `hr` using `congrArg Complex.re D.ρc_root`. Establish `hd : ((D.tr : ℝ)) ^ 2 - 4 * (D.nm : ℝ) < 0` using `by exact_mod_cast D.disc_neg`.
+
+Simplify using `[pow_two, him] at hr`. Use polynomial arithmetic with `[sq_nonneg (2 * D.ρc.re - D.tr)]`. Establish `hsω' : (starRingEnd ℂ) (t₀ (D.ω : D.F)) ≠ D.ρc`. Rewrite using `[hω]`. Introduce `e`.
+
+Apply `hre` to reduce the goal to its premises. Establish `e2` using `congrArg Complex.im e`. Simplify using `at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsω : (ComplexEmbedding.conjugate t₀) (D.ω : D.F) ≠ D.ρc`.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq]` and apply the resulting hypothesis. Establish `hne : t₀ ≠ ComplexEmbedding.conjugate t₀` using `fun e => hs.cx t₀ e.symm`. Rewrite using `[hs.tr c, hm]`. Simplify using `only [ht, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ha, one_smul, Nat.cast_one, _root_.one_mul]`. Rewrite using `[Finset.sum_filter, ← ComplexEmbedding.conjugate_coe_eq]`.
+
+Establish `key : ∀ τ : D.F →+* ℂ, (typeMult D.n t₀ (epsD D) τ : ℂ) * τ (c : D.F) = ((if τ = t₀ then τ (c : D.F) else 0) - (if τ = ComplexEmbedding.conjugate t₀ then τ (c : D.F) else 0)) + (if τ (D.ω : D.F) ≠ D.ρc then (D.n : ℂ) * τ (c : D.F) else 0)`. Introduce `τ`. Distinguish the cases in `h1 : τ = t₀`. Substitute `h1` using the available equality. Simplify using `[typeMult, hne, hω]`.
+
+Distinguish the cases in `h2 : τ = ComplexEmbedding.conjugate t₀`. Substitute `h2` using the available equality. Simplify using `[typeMult, h1, hsω', Nat.cast_sub hs.pos]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h3 : τ (D.ω : D.F) = D.ρc`.
+
+Simplify using `[typeMult, h1, h2, h3, epsD]`. Simplify using `[typeMult, h1, h2, h3, epsD]`. Rewrite using `[Finset.sum_congr rfl (fun τ _ => key τ), Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem typeAt_of {p : ℕ} [Fact p.Prime] (D : Datum p) (ha : D.a = 1) (hm : D.m = 1) (t₀ : D.F →+* ℂ)
     (ht : ∀ i, D.tau i = t₀) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (h : IsSigD D ρ t₀) :
     UpperTheory.ComplexUniformization.TypeAt D ρ := by
@@ -62,6 +79,13 @@ private theorem typeAt_of {p : ℕ} [Fact p.Prime] (D : Datum p) (ha : D.a = 1) 
   simp
   ring
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`. Consider the case `tmul q u`. Use `⟨q.den, q.num • u, q.den_nz, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+
+Use `congr 1`. Rewrite using `[nsmul_eq_mul, zsmul_eq_mul, _root_.mul_one, _root_.mul_comm]`. Conclude with `Rat.mul_den_eq_num q`. Consider the case `add a b ha hb`. Take `⟨m, u, hm, hu⟩` from `ha`.
+
+Take `⟨n, w, hn, hw⟩` from `hb`. Use `⟨m * n, n • u + m • w, Nat.mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← hu, ← hw, mul_smul, smul_comm m n a, mul_smul]`.
+-/
 private theorem tens_int (M : Type) [AddCommGroup M] (t : ℚ ⊗[ℤ] M) :
     ∃ (m : ℕ) (u : M), m ≠ 0 ∧ m • t = (1 : ℚ) ⊗ₜ[ℤ] u := by
   induction t using TensorProduct.induction_on with
@@ -79,6 +103,11 @@ private theorem tens_int (M : Type) [AddCommGroup M] (t : ℚ ⊗[ℤ] M) :
     rw [smul_add, TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← hu, ← hw,
       mul_smul, smul_comm m n a, mul_smul]
 
+/- English proof (translation)
+Establish `hf : Function.Injective (Algebra.linearMap ℤ ℚ)` using `fun a b h => by`. Simplify using `using h`. Establish `h1` using `Module.Flat.rTensor_preserves_injective_linearMap (M := M) (Algebra.linearMap ℤ ℚ) hf`. Introduce `a b hab`. Apply `(TensorProduct.lid ℤ M).symm.injective` to reduce the goal to its premises.
+
+Apply `h1` to reduce the goal to its premises. Simplify `hab` using `[TensorProduct.lid_symm_apply]`.
+-/
 private theorem tmul_inj (M : Type) [AddCommGroup M] [Module.Free ℤ M] :
     Function.Injective (fun u : M => (1 : ℚ) ⊗ₜ[ℤ] u) := by
   have hf : Function.Injective (Algebra.linearMap ℤ ℚ) := fun a b h => by
@@ -89,6 +118,13 @@ private theorem tmul_inj (M : Type) [AddCommGroup M] [Module.Free ℤ M] :
   apply h1
   simpa [TensorProduct.lid_symm_apply] using hab
 
+/- English proof (translation)
+Take `⟨-, hinj, hdisc, hspan, -⟩` from `hP`. Set `f : Y.La →ₗ[ℤ] (Fin g → ℂ)` to `P.toIntLinearMap`. Establish `hf : Function.Injective f` using `hinj`. Establish `hset : ((LinearMap.range f : Submodule ℤ (Fin g → ℂ)) : Set (Fin g → ℂ)) = Set.range P`. Use extensionality with `x`.
+
+Simplify using `[f]`. Use `haveI : DiscreteTopology (LinearMap.range f) := hdisc`. Use `haveI : IsZLattice ℝ (LinearMap.range f) := ⟨by rw [hset]; exact hspan⟩`. Rewrite using `[(LinearEquiv.ofInjective f hf).finrank_eq, ZLattice.rank ℝ (LinearMap.range f), Module.finrank_pi_fintype]`. Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem rank_of_period {O : Type} [Ring O] {bar : O → O} {g : ℕ} (ρ : O →+* Matrix (Fin g) (Fin g) ℂ)
     (Y : PLat O bar) (P : Y.La →+ (Fin g → ℂ)) (hP : IsPeriod Y ρ P) : Module.finrank ℤ Y.La = 2 * g := by
   obtain ⟨-, hinj, hdisc, hspan, -⟩ := hP
@@ -104,18 +140,30 @@ private theorem rank_of_period {O : Type} [Ring O] {bar : O → O} {g : ℕ} (ρ
   simp only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hd` using `NumberField.IsTotallyComplex.finrank D.F`. Rewrite using `[D.rankLa, Datum.g, hm, hd]`. Rewrite using `[show 1 * D.n * (2 * NumberField.InfinitePlace.nrComplexPlaces D.F) = 2 * (D.n * NumberField.InfinitePlace.nrComplexPlaces D.F) by ring, Nat.mul_div_cancel_left _ two_pos]`.
+-/
 private theorem rank_datum {p : ℕ} [Fact p.Prime] (D : Datum p) (hm : D.m = 1) : Module.finrank ℤ D.La = 2 * D.g := by
   have hd := NumberField.IsTotallyComplex.finrank D.F
   rw [D.rankLa, Datum.g, hm, hd]
   rw [show 1 * D.n * (2 * NumberField.InfinitePlace.nrComplexPlaces D.F) =
       2 * (D.n * NumberField.InfinitePlace.nrComplexPlaces D.F) by ring, Nat.mul_div_cancel_left _ two_pos]
 
+/- English proof (translation)
+Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+-/
 private theorem sh_mul' {p : ℕ} [Fact p.Prime] (G : HTGroup p) (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
+/- English proof (translation)
+Simplify using `only [sh, map_one, MulOpposite.unop_one]`.
+-/
 private theorem sh_one' {p : ℕ} [Fact p.Prime] (G : HTGroup p) : sh G (1 : G.C) = 1 := by
   simp only [sh, map_one, MulOpposite.unop_one]
 
+/- English proof (translation)
+Establish `h1 : sh G ((β⁻¹ : G.Cˣ) : G.C) * (β : G.C) = 1`. Rewrite using `[← h, ← sh_mul', Units.mul_inv, sh_one']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, _root_.mul_one]`. Use `_ = ((β⁻¹ : G.Cˣ) : G.C) := by rw [← _root_.mul_assoc, h1, _root_.one_mul]`.
+-/
 private theorem sh_inv_eq {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (h : sh G (β : G.C) = β) :
     sh G ((β⁻¹ : G.Cˣ) : G.C) = ((β⁻¹ : G.Cˣ) : G.C) := by
   have h1 : sh G ((β⁻¹ : G.Cˣ) : G.C) * (β : G.C) = 1 := by
@@ -124,6 +172,11 @@ private theorem sh_inv_eq {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) 
         rw [Units.mul_inv, _root_.mul_one]
     _ = ((β⁻¹ : G.Cˣ) : G.C) := by rw [← _root_.mul_assoc, h1, _root_.one_mul]
 
+/- English proof (translation)
+Establish `e : G.psi v x = (G.gram v)⁻¹ * (G.psi v x)ᴴ * G.gram v`. Establish `e0` using `G.psi_star v x`. Rewrite `e0` using `[show MulOpposite.unop (G.star x) = x from h]`. Conclude with `e0`. Establish `hu : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.2 (G.gram_det v)`.
+
+Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, (G.gram_herm v).eq]`. Use `conv_rhs => rw [e]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+-/
 private theorem herm_sym {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (x : G.C) (h : sh G x = x) :
     (G.gram v * G.psi v x).IsHermitian := by
   have e : G.psi v x = (G.gram v)⁻¹ * (G.psi v x)ᴴ * G.gram v := by
@@ -136,6 +189,11 @@ private theorem herm_sym {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfiniteP
   conv_rhs => rw [e]
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
+/- English proof (translation)
+Break down `G.sig v' with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨i, hi⟩` from `(L.sig v').1 h.1`. Take `⟨k, hk⟩` from `(L.sig v).1 hv`. Establish `hik : i = k` using `Fin.ext (by omega)`.
+
+Substitute `hik` using the available equality. Conclude with `hne (hi.trans hk.symm)`. Conclude with `h.1`.
+-/
 private theorem sig_zero {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) (ha : D.a = 1)
     (v v' : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1) (hne : v' ≠ v) : sigPosH (G.gram_herm v') = 0 := by
   rcases G.sig v' with h | h
@@ -147,6 +205,13 @@ private theorem sig_zero {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} 
     exact hne (hi.trans hk.symm)
   · exact h.1
 
+/- English proof (translation)
+Establish `hy : sh G (y : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1`. Rewrite using `[← sh_mul', Units.inv_mul, sh_one']`. Establish `hc : algebraMap ℚ G.C s * algebraMap ℚ G.C s⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hs.ne', map_one]`. Establish `hz : (β' : G.C) * (algebraMap ℚ G.C s⁻¹ * (sh G ((y⁻¹ : G.Cˣ) : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * ((y⁻¹ : G.Cˣ) : G.C))) = 1`.
+
+Rewrite using `[hβ, _root_.mul_assoc, Algebra.left_comm, ← _root_.mul_assoc (algebraMap ℚ G.C s), hc, _root_.one_mul]`. Simplify using `only [_root_.mul_assoc]`. Rewrite using `[← _root_.mul_assoc (sh G (y : G.C)), hy, _root_.one_mul, Units.mul_inv_cancel_left, Units.mul_inv]`. Rewrite using `[Units.inv_eq_of_mul_eq_one_right hz, Algebra.left_comm, _root_.mul_assoc (algebraMap ℚ G.C s⁻¹)]`. Use `congr 1`.
+
+Simplify using `only [_root_.mul_assoc]`. Rewrite using `[Units.inv_mul, _root_.mul_one, ← _root_.mul_assoc, hy, _root_.one_mul]`.
+-/
 private theorem inv_rel {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β β' y : G.Cˣ) (s : ℚ) (hs : 0 < s)
     (hβ : (β' : G.C) = algebraMap ℚ G.C s * (y * β * sh G y)) :
     sh G y * ((β'⁻¹ : G.Cˣ) : G.C) * y = algebraMap ℚ G.C s⁻¹ * ((β⁻¹ : G.Cˣ) : G.C) := by
@@ -164,6 +229,19 @@ private theorem inv_rel {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β β' y : G.C
   simp only [_root_.mul_assoc]
   rw [Units.inv_mul, _root_.mul_one, ← _root_.mul_assoc, hy, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨hinj, hact, hspan, s0, hs0, hEF⟩` from `h`. Establish `hRRi : ∀ w, L.rep (y : G.C) (L.rep ((y⁻¹ : G.Cˣ) : G.C) w) = w` using `fun w => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Units.mul_inv, map_one, Module.End.one_apply]`. Establish `hRiR : ∀ w, L.rep ((y⁻¹ : G.Cˣ) : G.C) (L.rep (y : G.C) w) = w` using `fun w => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Units.inv_mul, map_one, Module.End.one_apply]`.
+
+Establish `key : ∀ a b, formB L β' (L.rep (y : G.C) a) (L.rep (y : G.C) b) = s⁻¹ * formB L β a b`. Introduce `a b`. Unfold `formB`. Establish `hyy : (y : G.C) = sh G (sh G (y : G.C))` using `(G.star_star _).symm`. Use `conv_lhs => rw [hyy]`.
+
+Rewrite using `[← L.adj, ← hyy, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_rel G β β' y s hs hβ, map_mul, Module.End.mul_apply, AlgHom.commutes, Module.algebraMap_end_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `⟨?_, ?_, ?_, ⟨s0 * s, mul_pos hs0 hs, fun u u' => ?_⟩⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises. Establish `e` using `congrArg (L.rep ((y⁻¹ : G.Cˣ) : G.C)) hab`.
+
+Simplify `e` using `[hRiR]`. Introduce `c u`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, hact]`. Conclude with `LinearMap.congr_fun ((L.rep_range _).1 ⟨_, rfl⟩ c) (j u)`. Introduce `w`.
+
+Take `⟨m, u, hm, hu⟩` from `hspan (L.rep ((y⁻¹ : G.Cˣ) : G.C) w)`. Use `⟨m, u, hm, ?_⟩` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, ← hu]`. Simplify using `[hRRi]`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]`.
+
+Rewrite using `[hEF, key, ← _root_.mul_assoc, _root_.mul_assoc s0, mul_inv_cancel₀ hs.ne', _root_.mul_one]`.
+-/
 private theorem place_move {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {β β' y : G.Cˣ} {s : ℚ}
     {D' : PLat D.O D.inv} {j : D'.La →+ VQ D} (h : IsPlace L β D' j) (hs : 0 < s)
     (hβ : (β' : G.C) = algebraMap ℚ G.C s * (y * β * sh G y)) :
@@ -197,6 +275,39 @@ private theorem place_move {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p
   · simp only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]
     rw [hEF, key, ← _root_.mul_assoc, _root_.mul_assoc s0, mul_inv_cancel₀ hs.ne', _root_.mul_one]
 
+/- English proof (translation)
+Introduce `hAd _ p _ D G L ha hm v hv t₀ ht ρ hρ N D' t hcls hPe`. Take `⟨P, hP⟩` from `hPe`. Use `haveI := D'.free`. Use `haveI := D'.fin`. Establish `hrk : Module.finrank ℤ D'.La = Module.finrank ℤ D.La`.
+
+Rewrite using `[rank_of_period ρ D' P hP, rank_datum D hm]`. Establish `hs : IsSig (algebraMap (𝓞 D.F) D.O) D.inv ρ D.n t₀ (epsD D)` using `hρ`. Take `⟨e, he⟩` from `UpperTheory.exists_rational_equiv_of_rank p D D' hs.onto hrk`. Take `⟨β, hβs, hβf⟩` from `UpperTheory.exists_unitary_unit_hermitian_form_of_cm_lattice p D G L D' e he`. Set `j : D'.La →+ VQ D` to `e.toAddEquiv.toAddMonoidHom.comp (TensorProduct.mk ℤ ℚ D'.La 1).toAddMonoidHom`.
+
+Establish `hj : ∀ u, j u = e (1 ⊗ₜ u)` using `fun u => rfl`. Establish `hinj : Function.Injective j` using `e.injective.comp (tmul_inj D'.La)`. Establish `hact : ∀ (c : D.O) (u : D'.La), j (c • u) = actQ D c (j u)`. Introduce `c u`. Rewrite using `[hj, hj, ← he c (1 ⊗ₜ u)]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `hsp : ∀ w : VQ D, ∃ (m : ℕ) (u : D'.La), m ≠ 0 ∧ m • w = j u`. Introduce `w`. Take `⟨m, u, hm0, hmu⟩` from `tens_int D'.La (e.symm w)`.
+
+Use `⟨m, u, hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[hj, ← hmu, map_nsmul, LinearEquiv.apply_symm_apply]`. Establish `hform : ∀ z z' : D'.La, ((D'.EF z z' : ℤ) : ℚ) = 2 * (LinearMap.BilinForm.baseChange ℚ D.EF) ((L.rep ((β⁻¹ : G.Cˣ) : G.C)) (j z)) (j z')`. Introduce `z z'`. Establish `h0` using `hβf (1 ⊗ₜ z) (1 ⊗ₜ z')`.
+
+Rewrite using `[hj, hj]`. Simplify using `using h0`. Establish `hplace : IsPlace L β D' j`. Use `⟨hinj, hact, ?_, ⟨2, two_pos, fun u u' => ?_⟩⟩` and prove the remaining obligations. Introduce `w`.
+
+Take `⟨m, u, hm0, hmu⟩` from `hsp w`. Conclude with `⟨m, u, hm0, hmu⟩`. Rewrite using `[hform]`. Both sides reduce to the same expression. Establish `hspan : Submodule.span ℚ (Set.range j) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨m, u, hm0, hmu⟩` from `hsp w`. Establish `hw : w = (m : ℚ)⁻¹ • j u`. Rewrite using `[← hmu, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hm0), one_smul]`.
+
+Rewrite using `[hw]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨u, rfl⟩)`. Take `⟨Φ, Jc, hJ, hΦJ, hΦ, hstar, hpos⟩` from `UpperTheory.exists_real_period_iso_of_polarized_lattice p D G L ρ D' P hP j hinj hspan hact β hform`. Establish `hT` using `typeAt_of D ha hm t₀ ht ρ hρ`. Establish `htr` using `UpperTheory.trace_complex_structure_places p D G L ρ v ha hT hv Φ Jc hJ hΦ hΦJ`.
+
+Establish `hpd` using `(UpperTheory.positivity_iff_gram_posDef p D G L _ hstar).1 hpos`. Establish `hpsiC : ∀ (v' : InfinitePlace G.F) (x : G.C), G.psiR v' (inC G ℝ x) = G.psi v' x`. Introduce `v' x`. Use `show G.psiR v' (1 ⊗ₜ x) = _`. Rewrite using `[G.psiR_tmul, one_smul]`.
+
+Establish `hR : ∃ z, Triv G ℝ (β : G.C) z 1`. Apply `trivR_of_gram_psi_inv_congr p G β` to reduce the goal to its premises. Introduce `v'`. Establish `hH` using `herm_sym G v' _ (sh_inv_eq G β hβs)`. Establish `hJJ : G.psiR v' Jc * G.psiR v' Jc = -1`.
+
+Rewrite using `[← map_mul, hJ, map_neg, map_one]`. Establish `hdelta : sigPosH (G.gram_herm v') = (if v' = v then 1 else 0)`. Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality. Simplify using `using hv`.
+
+Rewrite using `[if_neg hvv]`. Conclude with `sig_zero L ha v v' hv hvv`. Apply the tactic sequence `refine (UpperTheory.hermitian_congruent_and_positive_eigenvector_of_signature G.n (if v' = v then 1 else 0) (G.gram v' * G.psi v' ((β⁻¹ : G.Cˣ) : G.C)) (G.gram v') (G.psiR v' Jc) (if v'.embedding (L.e D.ω) = D.ρc then Complex.I else -Complex.I) hH (G.gram_herm v') (by split_ifs < …`. Establish `h1` using `hpd v'`. Rewrite `h1` using `[map_mul, hpsiC, ← Matrix.mul_assoc]`.
+
+Apply the tactic sequence `split_ifs at h1 ⊢ <;> simpa using h1`. Apply the tactic sequence `rw [htr v'] split_ifs <;> simp`. Take `⟨f, ν, -, hw1, hw2⟩` from `hcls.1`. Establish `hwit : IsWit D' f ν`. Use `⟨hw1, fun n hn hc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a1, a2, a3, a4, a5⟩` from `hw2 n hn hc`. Use `⟨a1, a2, a3, a4, fun a a' => ?_⟩` and prove the remaining obligations. Establish `h5` using `a5 a a'`. Simplify using `only [Datum.plat, LinearMap.smul_apply, nsmul_eq_mul, Nat.cast_ofNat] at h5`. Conclude with `h5`.
+
+Take `⟨x, c, htriv, -⟩` from `hAd p D G L β D' j hplace f ν hwit`. Set `F : LKCx.Form G` to `⟨β, hβs, ⟨x, c, htriv⟩, hR⟩`. Take `⟨y, s, hs0, hys⟩` from `(LKCx.Form.mk_eq_iff_rel p G F (Quot.out (Quot.mk LKCx.Form.Rel F : LKCx.FCls G))).1 (Quot.out_eq _).symm`. Conclude with `⟨Quot.mk LKCx.Form.Rel F, _, place_move L hplace hs0 hys⟩`.
+-/
 theorem UpperTheory.Gal.W2.placeEx_of :
     UpperTheory.Gal.W2.AdCore → UpperTheory.Gal.W2.LatForm → UpperTheory.Gal.W2.PlaceEx := by
   intro hAd _ p _ D G L ha hm v hv t₀ ht ρ hρ N D' t hcls hPe

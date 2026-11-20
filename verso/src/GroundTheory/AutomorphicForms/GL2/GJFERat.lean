@@ -11,6 +11,9 @@ open Polynomial
 
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use `⟨1 + ∑ r ∈ Q.roots.toFinset, ‖r‖, by positivity, fun x hx hQx => ?_⟩` and prove the remaining obligations. Establish `hr : x ∈ Q.roots.toFinset` using `Multiset.mem_toFinset.2 ((mem_roots hQ).2 hQx)`. Use `Finset.single_le_sum (f := fun r : ℂ => ‖r‖) (fun r _ => norm_nonneg r) hr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_norm_gt_eval_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
     ∃ B : ℝ, 0 < B ∧ ∀ x : ℂ, B < ‖x‖ → Q.eval x ≠ 0 := by
   classical
@@ -19,12 +22,18 @@ theorem exists_norm_gt_eval_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
   have := Finset.single_le_sum (f := fun r : ℂ => ‖r‖) (fun r _ => norm_nonneg r) hr
   linarith
 
+/- English proof (translation)
+Take `⟨ε, hε, h⟩` from `exists_eval_ne_zero R.denom_ne_zero`. Take `⟨s₁, hs₁⟩` from `exists_re_of_norm_qs_lt (F := F) hε`. Conclude with `⟨s₁, fun s hs => h _ (qs_ne_zero s) (hs₁ s hs)⟩`.
+-/
 theorem exists_denom_ne_zero_right (R : RatFunc ℂ) :
     ∃ s₁ : ℝ, ∀ s : ℂ, s₁ < s.re → R.denom.eval (qs F s) ≠ 0 := by
   obtain ⟨ε, hε, h⟩ := exists_eval_ne_zero R.denom_ne_zero
   obtain ⟨s₁, hs₁⟩ := exists_re_of_norm_qs_lt (F := F) hε
   exact ⟨s₁, fun s hs => h _ (qs_ne_zero s) (hs₁ s hs)⟩
 
+/- English proof (translation)
+Take `⟨B, hB, h⟩` from `exists_norm_gt_eval_ne_zero R.denom_ne_zero`. Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Use `⟨Real.logb (LocalField.residueCard F) B, fun s hs => h _ ?_⟩` and prove the remaining obligations. Rewrite using `[norm_qs]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_denom_ne_zero_left (R : RatFunc ℂ) :
     ∃ s₁ : ℝ, ∀ s : ℂ, s.re < -s₁ → R.denom.eval (qs F s) ≠ 0 := by
   obtain ⟨B, hB, h⟩ := exists_norm_gt_eval_ne_zero R.denom_ne_zero
@@ -35,6 +44,15 @@ theorem exists_denom_ne_zero_left (R : RatFunc ℂ) :
         (Real.rpow_logb (by linarith) hq.ne' hB).symm
     _ < _ := Real.rpow_lt_rpow_of_exponent_lt hq (by linarith)
 
+/- English proof (translation)
+Use `set Q : ℂ[X] := R₁.num * R₂.denom - R₂.num * R₁.denom with hQdef`. Establish `hne : R₁.denom * R₂.denom ≠ 0` using `mul_ne_zero R₁.denom_ne_zero R₂.denom_ne_zero`. Establish `hfin : {x : ℂ | (R₁.denom * R₂.denom).IsRoot x}.Finite` using `Polynomial.finite_setOfPred_isRoot hne`. Establish `hQ0 : Q = 0`. Use `Polynomial.eq_zero_of_infinite_isRoot Q ((hS.sdiff hfin).mono fun x hx => ?_)` and prove the remaining obligations.
+
+Take `⟨hxS, hx0⟩` from `hx`. Simplify using `only [Set.mem_ofPred_eq, IsRoot.def, eval_mul] at hx0`. Establish `h1 : R₁.denom.eval x ≠ 0` using `left_ne_zero_of_mul hx0`. Establish `h2 : R₂.denom.eval x ≠ 0` using `right_ne_zero_of_mul hx0`. Establish `hx` using `h x hxS`.
+
+Simplify using `only [RatFunc.eval, eval₂_id] at hx`. Rewrite `hx` using `[div_eq_div_iff h1 h2]`. Use `show eval x (R₁.num * R₂.denom - R₂.num * R₁.denom) = 0`. Rewrite using `[eval_sub, eval_mul, eval_mul, hx, sub_self]`. Rewrite using `[← RatFunc.num_div_denom R₁, ← RatFunc.num_div_denom R₂, div_eq_div_iff (RatFunc.algebraMap_ne_zero R₁.denom_ne_zero) (RatFunc.algebraMap_ne_zero R₂.denom_ne_zero), ← map_mul, ← map_mul]`.
+
+Rewrite `hQ0` using `[hQdef, sub_eq_zero]`. Rewrite using `[hQ0]`.
+-/
 theorem eq_of_eval_eq_of_infinite {R₁ R₂ : RatFunc ℂ} {S : Set ℂ} (hS : S.Infinite)
     (h : ∀ x ∈ S, R₁.eval (RingHom.id ℂ) x = R₂.eval (RingHom.id ℂ) x) : R₁ = R₂ := by
   classical
@@ -58,6 +76,9 @@ theorem eq_of_eval_eq_of_infinite {R₁ R₂ : RatFunc ℂ} {S : Set ℂ} (hS : 
   rw [hQdef, sub_eq_zero] at hQ0
   rw [hQ0]
 
+/- English proof (translation)
+Take `⟨ε, hε, hs⟩` from `exists_qs_of_small (F := F) s₁`. Conclude with `eq_of_eval_eq hε fun x hx hxε => by`. Take `⟨s, hs1, rfl⟩` from `hs x hx hxε`. Conclude with `h s hs1`.
+-/
 theorem eq_of_eval_qs_eq_right {R₁ R₂ : RatFunc ℂ} {s₁ : ℝ}
     (h : ∀ s : ℂ, s₁ < s.re →
       R₁.eval (RingHom.id ℂ) (qs F s) = R₂.eval (RingHom.id ℂ) (qs F s)) : R₁ = R₂ := by
@@ -66,6 +87,13 @@ theorem eq_of_eval_qs_eq_right {R₁ R₂ : RatFunc ℂ} {s₁ : ℝ}
     obtain ⟨s, hs1, rfl⟩ := hs x hx hxε
     exact h s hs1
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Use `set f : ℕ → ℂ := fun t => qs F (((s₁ - 1 - t : ℝ)) : ℂ) with hfdef`. Establish `hinj : Function.Injective f`. Introduce `t t' htt`. Establish `hn` using `congrArg (‖·‖) htt`.
+
+Simplify using `only [hfdef, norm_qs, Complex.ofReal_re] at hn`. Establish `hl` using `congrArg (Real.logb (LocalField.residueCard F)) hn`. Rewrite `hl` using `[Real.logb_rpow (by linarith) hq.ne', Real.logb_rpow (by linarith) hq.ne']`. Conclude with `(by linarith : (t : ℝ) = t')` after adjusting the coercions. Use `eq_of_eval_eq_of_infinite (Set.infinite_range_of_injective hinj) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Use `h _ ?_` and prove the remaining obligations. Simplify using `only [Complex.ofReal_re]`. Establish `: (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_of_eval_qs_eq_left {R₁ R₂ : RatFunc ℂ} {s₁ : ℝ}
     (h : ∀ s : ℂ, s.re < s₁ →
       R₁.eval (RingHom.id ℂ) (qs F s) = R₂.eval (RingHom.id ℂ) (qs F s)) : R₁ = R₂ := by
@@ -95,6 +123,13 @@ namespace RatFE
 
 variable {γ γ' γ₁ γ₂ : RatFunc ℂ} {a b a₁ a₂ b₁ b₂ : ℂ → ℂ}
 
+/- English proof (translation)
+Take `⟨R, s₁, h₁, h₂⟩` from `h`. Take `⟨t, ht⟩` from `ha`. Take `⟨u, hu⟩` from `hb`. Use `⟨R, max s₁ (max t (-u)), fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hs`.
+
+Rewrite using `[ht s hs.2.1, h₁ s hs.1]`. Establish `h1 : s.re < -s₁` using `lt_of_lt_of_le hs (neg_le_neg (le_max_left _ _))`. Establish `h2 : s.re < u`. Establish `: -max s₁ (max t (-u)) ≤ u`. Use `le_max_right s₁ (max t (-u))` as an intermediate fact.
+
+Use `le_max_right t (-u)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hu s h2, h₂ s h1]`.
+-/
 theorem congr {a' b' : ℂ → ℂ} (h : RatFE F γ a b) (ha : ∃ t : ℝ, ∀ s : ℂ, t < s.re → a' s = a s)
     (hb : ∃ t : ℝ, ∀ s : ℂ, s.re < t → b' s = b s) : RatFE F γ a' b' := by
   obtain ⟨R, s₁, h₁, h₂⟩ := h
@@ -112,9 +147,21 @@ theorem congr {a' b' : ℂ → ℂ} (h : RatFE F γ a b) (ha : ∃ t : ℝ, ∀ 
       linarith
     rw [hu s h2, h₂ s h1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, fun _ _ => by simp, fun _ _ => by simp⟩`.
+-/
 theorem zero : RatFE F γ (fun _ => 0) (fun _ => 0) :=
   ⟨0, 0, fun _ _ => by simp, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨R₁, s₁, ha₁, hb₁⟩` from `h₁`. Take `⟨R₂, s₂, ha₂, hb₂⟩` from `h₂`. Take `⟨t₁, ht₁⟩` from `exists_denom_ne_zero_right (F := F) R₁`. Take `⟨t₂, ht₂⟩` from `exists_denom_ne_zero_right (F := F) R₂`. Take `⟨u₁, hu₁⟩` from `exists_denom_ne_zero_left (F := F) (γ * R₁)`.
+
+Take `⟨u₂, hu₂⟩` from `exists_denom_ne_zero_left (F := F) (γ * R₂)`. Use `set M := max (max s₁ s₂) (max (max t₁ t₂) (max u₁ u₂)) with hM`. Establish `hs₁ : s₁ ≤ M` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hs₂ : s₂ ≤ M` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `ht₁' : t₁ ≤ M` using `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) (le_max_right _ _))`.
+
+Establish `ht₂' : t₂ ≤ M` using `le_trans (le_max_right _ _) (le_trans (le_max_left _ _) (le_max_right _ _))`. Establish `hu₁' : u₁ ≤ M` using `le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))`. Establish `hu₂' : u₂ ≤ M` using `le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _))`. Use `⟨R₁ + R₂, M, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `show a₁ s + a₂ s = _`.
+
+Rewrite using `[ha₁ s (by linarith), ha₂ s (by linarith), RatFunc.eval_add (hx := ht₁ s (by linarith)) (hy := ht₂ s (by linarith))]`. Use `show b₁ s + b₂ s = _`. Rewrite using `[hb₁ s (by linarith), hb₂ s (by linarith), mul_add, RatFunc.eval_add (hx := hu₁ s (by linarith)) (hy := hu₂ s (by linarith))]`.
+-/
 theorem add (h₁ : RatFE F γ a₁ b₁) (h₂ : RatFE F γ a₂ b₂) :
     RatFE F γ (fun s => a₁ s + a₂ s) (fun s => b₁ s + b₂ s) := by
   obtain ⟨R₁, s₁, ha₁, hb₁⟩ := h₁
@@ -138,6 +185,13 @@ theorem add (h₁ : RatFE F γ a₁ b₁) (h₂ : RatFE F γ a₂ b₂) :
     rw [hb₁ s (by linarith), hb₂ s (by linarith), mul_add,
       RatFunc.eval_add (hx := hu₁ s (by linarith)) (hy := hu₂ s (by linarith))]
 
+/- English proof (translation)
+Take `⟨R, s₁, ha, hb⟩` from `h`. Establish `hC : ∀ x : ℂ, (RatFunc.C c).denom.eval₂ (RingHom.id ℂ) x ≠ 0` using `fun x => by`. Rewrite using `[RatFunc.denom_C]`. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `exists_denom_ne_zero_right (F := F) R`.
+
+Take `⟨u, hu⟩` from `exists_denom_ne_zero_left (F := F) (γ * R)`. Use `⟨RatFunc.C c * R, max s₁ (max t u), fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hs show c * a s = _`. Rewrite using `[ha s hs.1, RatFunc.eval_mul (hx := hC _) (hy := ht s hs.2.1), RatFunc.eval_C]`. Both sides reduce to the same expression.
+
+Establish `h1 : s.re < -s₁` using `lt_of_lt_of_le hs (neg_le_neg (le_max_left _ _))`. Establish `h2 : s.re < -u` using `lt_of_lt_of_le hs (neg_le_neg (le_trans (le_max_right _ _) (le_max_right _ _)))`. Use `show c * b s = _`. Rewrite using `[hb s h1, show γ * (RatFunc.C c * R) = RatFunc.C c * (γ * R) by ring, RatFunc.eval_mul (hx := hC _) (hy := hu s h2), RatFunc.eval_C]`. Both sides reduce to the same expression.
+-/
 theorem const_mul (c : ℂ) (h : RatFE F γ a b) :
     RatFE F γ (fun s => c * a s) (fun s => c * b s) := by
   obtain ⟨R, s₁, ha, hb⟩ := h
@@ -158,6 +212,9 @@ theorem const_mul (c : ℂ) (h : RatFE F γ a b) :
       RatFunc.eval_mul (hx := hC _) (hy := hu s h2), RatFunc.eval_C]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (zero (F := F) (γ := γ))`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem sum {ι : Type*} (s : Finset ι) {a b : ι → ℂ → ℂ} (h : ∀ i ∈ s, RatFE F γ (a i) (b i)) :
     RatFE F γ (fun z => ∑ i ∈ s, a i z) (fun z => ∑ i ∈ s, b i z) := by
   classical
@@ -168,6 +225,15 @@ theorem sum {ι : Type*} (s : Finset ι) {a b : ι → ℂ → ℂ} (h : ∀ i �
     exact add (h i (Finset.mem_insert_self i s))
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Take `⟨R₁, s₁, ha₁, hb₁⟩` from `h₁`. Take `⟨R₂, s₂, ha₂, hb₂⟩` from `h₂`. Take `⟨t₁, ht₁⟩` from `exists_denom_ne_zero_right (F := F) R₁`. Take `⟨t₂, ht₂⟩` from `exists_denom_ne_zero_right (F := F) R₂`. Take `⟨u₁, hu₁⟩` from `exists_denom_ne_zero_left (F := F) (γ₁ * R₁)`.
+
+Take `⟨u₂, hu₂⟩` from `exists_denom_ne_zero_left (F := F) (γ₂ * R₂)`. Use `set M := max (max s₁ s₂) (max (max t₁ t₂) (max u₁ u₂)) with hM`. Establish `hs₁ : s₁ ≤ M` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hs₂ : s₂ ≤ M` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `ht₁' : t₁ ≤ M` using `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) (le_max_right _ _))`.
+
+Establish `ht₂' : t₂ ≤ M` using `le_trans (le_max_right _ _) (le_trans (le_max_left _ _) (le_max_right _ _))`. Establish `hu₁' : u₁ ≤ M` using `le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))`. Establish `hu₂' : u₂ ≤ M` using `le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _))`. Use `⟨R₁ * R₂, M, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `show a₁ s * a₂ s = _`.
+
+Rewrite using `[ha₁ s (by linarith), ha₂ s (by linarith), RatFunc.eval_mul (hx := ht₁ s (by linarith)) (hy := ht₂ s (by linarith))]`. Use `show b₁ s * b₂ s = _`. Rewrite using `[hb₁ s (by linarith), hb₂ s (by linarith), show γ₁ * γ₂ * (R₁ * R₂) = (γ₁ * R₁) * (γ₂ * R₂) by ring, RatFunc.eval_mul (hx := hu₁ s (by linarith)) (hy := hu₂ s (by linarith))]`.
+-/
 theorem mul (h₁ : RatFE F γ₁ a₁ b₁) (h₂ : RatFE F γ₂ a₂ b₂) :
     RatFE F (γ₁ * γ₂) (fun s => a₁ s * a₂ s) (fun s => b₁ s * b₂ s) := by
   obtain ⟨R₁, s₁, ha₁, hb₁⟩ := h₁
@@ -192,6 +258,13 @@ theorem mul (h₁ : RatFE F γ₁ a₁ b₁) (h₂ : RatFE F γ₂ a₂ b₂) :
       show γ₁ * γ₂ * (R₁ * R₂) = (γ₁ * R₁) * (γ₂ * R₂) by ring,
       RatFunc.eval_mul (hx := hu₁ s (by linarith)) (hy := hu₂ s (by linarith))]
 
+/- English proof (translation)
+Take `⟨R, s₁, ha₁, hb₁⟩` from `h`. Take `⟨R', s₁', ha₁', hb₁'⟩` from `h'`. Establish `hRR : R = R'` using `eq_of_eval_qs_eq_right (F := F) (s₁ := max s₁ s₁') fun s hs => by`. Rewrite `hs` using `[max_lt_iff]`. Rewrite using `[← ha₁ s hs.1, ha₁' s hs.2]`.
+
+Substitute `hRR` using the available equality. Establish `hR : R ≠ 0`. Introduce and unpack `rfl`. Take `⟨s, hs, hne⟩` from `ha s₁`. Conclude with `hne (by rw [ha₁ s hs]; simp)`.
+
+Establish `hγ : γ * R = γ' * R` using `eq_of_eval_qs_eq_left (F := F) (s₁ := min (-s₁) (-s₁')) fun s hs => by`. Rewrite `hs` using `[lt_min_iff]`. Rewrite using `[← hb₁ s hs.1, hb₁' s hs.2]`. Conclude with `mul_right_cancel₀ hR hγ`.
+-/
 theorem unique (h : RatFE F γ a b) (h' : RatFE F γ' a b)
     (ha : ∀ t : ℝ, ∃ s : ℂ, t < s.re ∧ a s ≠ 0) : γ = γ' := by
   obtain ⟨R, s₁, ha₁, hb₁⟩ := h

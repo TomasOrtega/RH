@@ -85,12 +85,18 @@ def GoodCharHypH : Prop :=
         NoFixed τ ((fun u => (Pi.mulSingle (toBoth hT 0 v) u : G0 (primesOf (pb 0 * pb 1)) r)) ''
           radical (kP (toBoth hT 0 v).1) r a)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv⟩` from `h 1 one_pos hr`. Conclude with `one_ne_zero (hv 1 fun _ _ => rfl)`.
+-/
 example (P : Type) (k : Type) [Field k] (r : ℕ) (hr : 2 ≤ r) :
     ¬ HypH (k := fun _ : P => k) (fun _ => Representation.trivial ℂ (GL (Fin r) k) ℂ) := by
   intro h
   obtain ⟨v, hv⟩ := h 1 one_pos hr
   exact one_ne_zero (hv 1 fun _ _ => rfl)
 
+/- English proof (translation)
+Simplify using `[radical, Fin.forall_fin_two]`.
+-/
 example (k : Type) [Field k] (u : GL (Fin 2) k) : u ∈ radical k 2 1 ↔
     (u : Matrix (Fin 2) (Fin 2) k) 0 0 = 1 ∧ (u : Matrix (Fin 2) (Fin 2) k) 1 0 = 0 ∧
       (u : Matrix (Fin 2) (Fin 2) k) 1 1 = 1 := by

@@ -8,9 +8,15 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.
 
 namespace PositivityTheory.DiscreteSeriesGap.GapInv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.discreteSeriesUpqUnique_iff.1 GlobalTheory.CompanionTheory.Front.discreteSeriesUpqUnique`.
+-/
 theorem dsUnique_dec : GlobalTheory.Dec.DSUnique :=
   GlobalTheory.Published.discreteSeriesUpqUnique_iff.1 GlobalTheory.CompanionTheory.Front.discreteSeriesUpqUnique
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.D.LK.low_K_type_multiplicity_one`.
+-/
 theorem lowKMultOne_dec : GlobalTheory.Dec.LowKMultOne := CompanionTheory.D.LK.low_K_type_multiplicity_one
 
 end PositivityTheory.DiscreteSeriesGap.GapInv

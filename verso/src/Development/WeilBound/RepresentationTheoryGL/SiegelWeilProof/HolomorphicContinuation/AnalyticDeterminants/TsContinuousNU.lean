@@ -11,31 +11,67 @@ open PositivityTheory.Rg.Sw
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `InG at *`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ts_inG_mul {g h : M2 n} (hg : InG g) (hh : InG h) : InG (g * h) := by
   unfold InG at *
   rw [conjTranspose_mul]
   calc hᴴ * gᴴ * JJ n * (g * h) = hᴴ * (gᴴ * JJ n * g) * h := by simp only [Matrix.mul_assoc]
     _ = JJ n := by rw [hg, hh]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[conjTranspose_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp [herm] <;> ring`.
+-/
 theorem ts_herm_conjTranspose (x : Fin n → Fin n → ℝ) : (herm x)ᴴ = herm x := by
   ext i j
   rw [conjTranspose_apply]
   apply Complex.ext <;> simp [herm] <;> ring
 
+/- English proof (translation)
+Unfold `InG nU JJ`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hb]`.
+-/
 theorem ts_inG_nU {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : InG (nU b) := by
   unfold InG nU JJ
   rw [fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]
   simp [hb]
 
+/- English proof (translation)
+Unfold `herm`. Use `fun_prop`.
+-/
 theorem ts_continuous_herm : Continuous (herm : (Fin n → Fin n → ℝ) → Matrix (Fin n) (Fin n) ℂ) := by
   unfold herm
   fun_prop
 
+/- English proof (translation)
+Unfold `nU`. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_id continuous_const continuous_const`.
+-/
 theorem ts_continuous_nU : Continuous (nU : Matrix (Fin n) (Fin n) ℂ → M2 n) := by
   unfold nU
   exact Continuous.matrix_fromBlocks continuous_const continuous_id continuous_const continuous_const
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `n H F Γ hF hΓ hcl hperm ψ hψc hψs hvan h a b ha hb`. Establish `: FirstCountableTopology (M2 n)` using `inferInstanceAs (FirstCountableTopology (Fin n ⊕ Fin n → Fin n ⊕ Fin n → ℂ))`. Take `⟨γ, hγΓ, hγa⟩` from `mem_closure_iff_seq_limit.1 (hcl ha)`. Establish `hmap : Continuous (fun p : M2 n × (Fin n → Fin n → ℝ) => p.1 * nU (herm p.2) * b)` using `(continuous_fst.mul (ts_continuous_nU.comp (ts_continuous_herm.comp continuous_snd))).mul continuous_const`. Establish `hmem : ∀ c x, InG c → InG (c * nU (herm x) * b)` using `fun c x hc => ts_inG_mul (ts_inG_mul hc (ts_inG_nU (ts_herm_conjTranspose x))) hb`.
+
+Establish `hΦc : ∀ c, InG c → Continuous (fun x => F h (c * nU (herm x) * b))`. Introduce `c hc`. Establish `hcx : Continuous (fun x : Fin n → Fin n → ℝ => c * nU (herm x) * b)` using `(continuous_const.mul (ts_continuous_nU.comp ts_continuous_herm)).mul continuous_const`. Conclude with `(hF h).comp_continuous hcx fun x => hmem c x hc`. Establish `hzero : ∀ k, ∫ x, F h (γ k * nU (herm x) * b) * ψ x = 0`.
+
+Introduce `k`. Take `⟨h', hh'⟩` from `hperm (γ k) (hγΓ k) h`. Establish `e : ∀ x, F h (γ k * nU (herm x) * b) * ψ x = F h' (nU (herm x) * b) * ψ x`. Introduce `x`. Rewrite using `[Matrix.mul_assoc, hh' _ (ts_inG_mul (ts_inG_nU (ts_herm_conjTranspose x)) hb)]`.
+
+Repeatedly rewrite using `[e]`. Conclude with `hvan h' b hb`. Establish `hS : IsCompact (insert a (Set.range γ))` using `hγa.isCompact_insert_range`. Establish `hSG : insert a (Set.range γ) ⊆ {g | InG g}`. Introduce and unpack `c (rfl | ⟨k, rfl⟩)`.
+
+Conclude with `ha`. Conclude with `hΓ _ (hγΓ k)`. Establish `hC : IsCompact ((fun p : M2 n × (Fin n → Fin n → ℝ) => p.1 * nU (herm p.2) * b) '' (insert a (Set.range γ) ×ˢ tsupport ψ))` using `(hS.prod hψs).image hmap`. Establish `hCG : (fun p : M2 n × (Fin n → Fin n → ℝ) => p.1 * nU (herm p.2) * b) '' (insert a (Set.range γ) ×ˢ tsupport ψ) ⊆ {g | InG g}`. Introduce and unpack `_ ⟨⟨c, x⟩, ⟨hc, -⟩, rfl⟩`.
+
+Conclude with `hmem c x (hSG hc)`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn ((hF h).mono hCG)`. Establish `hbound : ∀ c ∈ insert a (Set.range γ), ∀ x, ‖F h (c * nU (herm x) * b) * ψ x‖ ≤ M * ‖ψ x‖`. Introduce `c hc x`. Rewrite using `[norm_mul]`.
+
+Distinguish the cases in `hx : x ∈ tsupport ψ`. Conclude with `mul_le_mul_of_nonneg_right (hM _ ⟨⟨c, x⟩, ⟨hc, hx⟩, rfl⟩) (norm_nonneg _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules. Establish `hlim : Tendsto (fun k => ∫ x, F h (γ k * nU (herm x) * b) * ψ x) atTop (𝓝 (∫ x, F h (a * nU (herm x) * b) * ψ x))`.
+
+Use `tendsto_integral_of_dominated_convergence (fun x => M * ‖ψ x‖) (fun k => ?_) ?_ (fun k => ?_) ?_` and prove the remaining obligations. Conclude with `((hΦc _ (hΓ _ (hγΓ k))).mul hψc).aestronglyMeasurable`. Conclude with `(hψc.norm.integrable_of_hasCompactSupport hψs.norm).const_mul M`. Conclude with `Eventually.of_forall fun x => hbound _ (Set.mem_insert_of_mem _ ⟨k, rfl⟩) x`. Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations.
+
+Use `Tendsto.mul_const _ ?_` and prove the remaining obligations. Establish `hw : ContinuousWithinAt (F h) {g | InG g} (a * nU (herm x) * b)` using `hF h _ (hmem a x ha)`. Use `hw.tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨?_, Eventually.of_forall fun k => hmem _ x (hΓ _ (hγΓ k))⟩)` and prove the remaining obligations. Conclude with `((hγa.mul tendsto_const_nhds).mul tendsto_const_nhds)`. Establish `h0 : Tendsto (fun k => ∫ x, F h (γ k * nU (herm x) * b) * ψ x) atTop (𝓝 0)`.
+
+Repeatedly rewrite using `[hzero]`. Conclude with `tendsto_const_nhds`. Conclude with `tendsto_nhds_unique hlim h0`.
+-/
 theorem twoSided : TwoSided := by
   intro n H F Γ hF hΓ hcl hperm ψ hψc hψs hvan h a b ha hb
   have : FirstCountableTopology (M2 n) :=

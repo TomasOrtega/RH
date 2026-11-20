@@ -43,6 +43,11 @@ def GlueInj (M : Model F E) (r n : ℕ) : Prop :=
       (∀ m₁ m₂, GlueRel H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂ φ φ' m₁ m₂ ↔
         GlueRel H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂' φ φ' m₁ m₂) → Λ₂ = Λ₂'
 
+/- English proof (translation)
+Establish `hsub : MMo H (⟨⊥, f₂, f₂', T, T'⟩ : Term V M r) ≤ Λ₂`. Use `(Submodule.span_le (R := M.L.O)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hg.2.1 a`. Introduce `m hm m' hm'`.
+
+Conclude with `(hg.1.1.2.2 m).1 (hsub hm) m' (hsub hm')`.
+-/
 theorem mmInt_of_generic {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
     (Λ₂ : Submodule M.L.O V) (f₂ f₂' : Fin (r + 1) → V) (T T' : F)
     (hg : H.IsGeneric ⟨Λ₂, f₂, f₂', T, T'⟩) : MMInt H (⟨⊥, f₂, f₂', T, T'⟩ : Term V M r) := by
@@ -53,6 +58,11 @@ theorem mmInt_of_generic {M : Model F E} {V : Type} [AddCommGroup V] [Module E V
   intro m hm m' hm'
   exact (hg.1.1.2.2 m).1 (hsub hm) m' (hsub hm')
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨m₁, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨m₂, hm₂⟩` from `Submodule.Quotient.mk_surjective _ (θ (Submodule.Quotient.mk m₁))`. Establish `h₁ : θ (ddMk H t₁ m₁) = ddMk H t₂ m₂` using `hm₂.symm`.
+
+Conclude with `h₁.trans ((h m₁ m₂).1 h₁).symm`.
+-/
 theorem dd_ext {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
     {t₁ t₂ : Term V M r} (θ θ' : DDt H t₁ ≃ₗ[M.L.O] DDt H t₂)
     (h : ∀ m₁ m₂, θ (ddMk H t₁ m₁) = ddMk H t₂ m₂ ↔ θ' (ddMk H t₁ m₁) = ddMk H t₂ m₂) : θ = θ' := by
@@ -63,6 +73,15 @@ theorem dd_ext {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Her
   have h₁ : θ (ddMk H t₁ m₁) = ddMk H t₂ m₂ := hm₂.symm
   exact h₁.trans ((h m₁ m₂).1 h₁).symm
 
+/- English proof (translation)
+Introduce `V _ _ H hn t₁ f₂ f₂' φ φ' hyp`. Establish `fw` using `hF V H hn t₁ f₂ f₂' φ φ' hyp`. Establish `bk` using `hB V H hn t₁ f₂ f₂' φ φ' hyp`. Establish `inj` using `hI V H hn t₁ f₂ f₂' φ φ' hyp`. Set `toθ : {Λ₂ : Submodule M.L.O V // H.IsGeneric ⟨Λ₂, f₂, f₂', t₁.T, t₁.T'⟩ ∧ ThCond H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ Λ₂ φ φ'} → {θ : DDt H t₁ ≃ₗ[M.L.O] DDt H ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ // IsUnit (H.Dl f₂ f₂' (r + 1)) ∧ MMInt H ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ ∧ IsomD H t₁ ⟨⊥, f₂, f₂', t₁.T, t …` to `fun x => ⟨(fw x.1 x.2.1 x.2.2).choose, x.2.1.1.2.2.2.1, mmInt_of_generic H x.1 f₂ f₂' t₁.T t₁.T' x.2.1, (fw x.1 x.2.1 x.2.2).choose_spec.1⟩`.
+
+Establish `toθ_spec : ∀ x m₁ m₂, (toθ x).1 (ddMk H t₁ m₁) = ddMk H _ m₂ ↔ GlueRel H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ x.1 φ φ' m₁ m₂` using `fun x => (fw x.1 x.2.1 x.2.2).choose_spec.2`. Establish `hinj : Function.Injective toθ`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use `inj x.1 y.1 x.2.1 x.2.2 y.2.1 y.2.2 fun m₁ m₂ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← toθ_spec x, ← toθ_spec y, hxy]`. Establish `hsurj : Function.Surjective toθ`. Introduce `θ`. Take `⟨Λ₂, hg, hth, hrel⟩` from `bk θ.2.1 θ.2.2.1 θ.1 θ.2.2.2`. Use `⟨⟨Λ₂, hg, hth⟩, Subtype.ext (dd_ext H _ _ fun m₁ m₂ => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[toθ_spec, hrel]`. Conclude with `⟨Equiv.ofBijective toθ ⟨hinj, hsurj⟩, toθ_spec⟩`.
+-/
 theorem glue_of (M : Model F E) (r n : ℕ) (hF : GlueFwd M r n) (hB : GlueBack M r n) (hI : GlueInj M r n) :
     Glue M r n := by
   intro V _ _ H hn t₁ f₂ f₂' φ φ' hyp

@@ -15,6 +15,19 @@ namespace GlobalTheory.TauTwist
 
 open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Introduce `T D ϖ hϖ y n hQ q hq j V hV hU hc h`. Take `⟨e, -, c, ⟨u, hu⟩, hC⟩` from `genHasVal_units _ _ _ _ _ _ hQ`. Take `⟨C, hCv, hCt⟩` from `hC j`. Establish `hW : V ≤ LB.wchart D.P.L (K` using `PUnit) (fun _ => (D.c y).left) j := fun x hx => Set.mem_iInter.2 fun k => by cases k; exact hc hx`. Establish `hπ : algebraMap T.V (FractionRing T.V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).mpr hϖ.ne_zero`.
+
+Establish `hqc : (q y : FractionRing T.V) * c = algebraMap T.V (FractionRing T.V) (u : T.V)`. Rewrite using `[hq, hu, ← _root_.mul_assoc, ← zpow_add₀ hπ, neg_add_cancel, zpow_zero, _root_.one_mul]`. Establish `hconst : (res (X` using `Spec (CommRingCat.of (FractionRing T.V))) (le_top : LB.wchart D.P.L (K := PUnit) (fun _ => ptK (D.c y)) j ≤ ⊤) (unitOn (q y))).val * C.val = (res (X := Spec (CommRingCat.of (FractionRing T.V))) le_top (unitOn (Units.map (algebraMap T.V (FractionRing T.V)).toMonoidHom u))).val := …`. Rewrite using `[hCv]`. Use `show ((Spec (CommRingCat.of (FractionRing T.V))).presheaf.map (homOfLE le_top).op).hom _ * ((Spec (CommRingCat.of (FractionRing T.V))).presheaf.map (homOfLE le_top).op).hom _ = ((Spec (CommRingCat.of (FractionRing T.V))).presheaf.map (homOfLE le_top).op).hom _`.
+
+Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `only [scal, unitOn, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.id_appTop]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom (q y : FractionRing T.V) * (Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom c = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom (algebraMap T.V (FractionRing T.V) (u : T.V))`. Rewrite using `[← map_mul, hqc]`.
+
+Use `⟨(res (le_top : V ≤ ⊤) (unitOn u)).val * (res hW (e.s j)).val, (Units.isUnit _).mul (Units.isUnit _), ?_⟩` and prove the remaining obligations. Establish `hval : (((rescale D q).psi y).s j).val = (res (X` using `Spec (CommRingCat.of (FractionRing T.V))) (le_top : LB.wchart D.P.L (K := PUnit) (fun _ => ptK (D.c y)) j ≤ ⊤) (unitOn (Units.map (algebraMap T.V (FractionRing T.V)).toMonoidHom u))).val * (res (wchart_le_preimage D.P.L (jK T.V) (fun _ => (D.c y).left) (fun _ => ptK (D.c y)) (fun …`. Rewrite using `[hCt, ← _root_.mul_assoc, Units.val_mul, Units.val_mul, hconst]`. Rewrite using `[hval]`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations.
+
+Use `(gs_pull (𝟙 _) (jK T.V) x V hx _).trans (Eq.trans ?_ (gs_res (𝟙 _) x h hx _).symm)` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 _ ≫ jK T.V) x V hx]`. Use `Eq.trans (congrArg₂ (· * ·) ?_ ?_) (gs_mul (𝟙 _) x _ (h hx) _ _).symm` and prove the remaining obligations. Use `(gs_res _ x le_top hx _).trans (Eq.trans ?_ (gs_res _ x le_top (h hx) _).symm)` and prove the remaining obligations. Conclude with `(unitAt_val (𝟙 _ ≫ jK T.V) x u).symm.trans ((congrArg Units.val (unitAt_spMap (𝟙 _) (algebraMap T.V (FractionRing T.V)) x u)).trans (unitAt_val _ x _))`.
+
+Use `(gs_res _ x hW hx _).trans (Eq.trans ?_ (gs_res _ x _ (h hx) _).symm)` and prove the remaining obligations. Conclude with `(gs_pull (𝟙 _) (jK T.V) x _ (hW hx) _).symm`.
+-/
 theorem psiUnitOn_rescale_of_qVal : ∀ (T : Formalism.L2.Pj.CDVR) (D : DegPre T.V) (ϖ : T.V), Irreducible ϖ → ∀ (y : D.X) (n : ℤ), QVal D ϖ y n → ∀ q : D.X → (FractionRing T.V)ˣ, (q y : FractionRing T.V) = algebraMap T.V (FractionRing T.V) ϖ ^ (-n) → PsiUnitOn (GlobalTheory.TauTwist.rescale D q) y Set.univ := by
   intro T D ϖ hϖ y n hQ q hq j V hV hU hc h
   obtain ⟨e, -, c, ⟨u, hu⟩, hC⟩ := genHasVal_units _ _ _ _ _ _ hQ

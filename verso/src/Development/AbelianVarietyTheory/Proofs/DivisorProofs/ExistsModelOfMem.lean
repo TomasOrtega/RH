@@ -20,14 +20,23 @@ def entExt (L : FinExt l) {d a : ℕ} (M : Matrix (Fin d) (Fin a) (Om l)) : FinE
       IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
     IntermediateField.finiteDimensional_sup _ _⟩
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem le_entExt (L : FinExt l) {d a : ℕ} (M : Matrix (Fin d) (Fin a) (Om l)) :
     L.1 ≤ (entExt L M).1 := le_sup_left
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : IntermediateField.adjoin ℚ_[l] _ ≤ (entExt L M).1) (IntermediateField.subset_adjoin _ _ ⟨(i, j), rfl⟩)`.
+-/
 theorem mem_entExt (L : FinExt l) {d a : ℕ} (M : Matrix (Fin d) (Fin a) (Om l)) (i : Fin d) (j : Fin a) :
     M i j ∈ (entExt L M).1 :=
   (le_sup_right : IntermediateField.adjoin ℚ_[l] _ ≤ (entExt L M).1)
     (IntermediateField.subset_adjoin _ _ ⟨(i, j), rfl⟩)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' M) (LinearMap.ker_eq_bot.2 (by rw [Matrix.toLin'_apply', Matrix.coe_mulVecLin]; exact h))`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_toLin' M, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`.
+-/
 theorem exists_leftInv {K : Type} [Field K] {d a : ℕ} (M : Matrix (Fin d) (Fin a) K)
     (h : Function.Injective M.mulVec) : ∃ N : Matrix (Fin a) (Fin d) K, N * M = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.toLin' M)
@@ -35,6 +44,11 @@ theorem exists_leftInv {K : Type} [Field K] {d a : ℕ} (M : Matrix (Fin d) (Fin
   refine ⟨LinearMap.toMatrix' g, ?_⟩
   rw [← LinearMap.toMatrix'_toLin' M, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Set `f : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`. Set `M : Γ → Matrix (Fin a) (Fin a) ↥L.1` to `fun g => Matrix.of fun i j => ⟨(r g : Matrix (Fin a) (Fin a) (Om l)) i j, hL g i j⟩`. Establish `hinj : Function.Injective (f.mapMatrix : Matrix (Fin a) (Fin a) ↥L.1 →+* Matrix (Fin a) (Fin a) (Om l))` using `fun A B h => Matrix.ext fun i j => f.injective (by simpa using congrFun (congrFun h i) j)`. Establish `hM : ∀ g, f.mapMatrix (M g) = (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => Matrix.ext fun i j => rfl`. Set `ρ : Γ →* GL (Fin a) ↥L.1` to `{ toFun := fun g => ⟨M g, M g⁻¹, hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]), hinj (by rw [map_mul, hM, hM, map_one, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])⟩ map_one' := Units.ext (hinj ( …`.
+
+Rewrite using `[map_mul, hM, hM, hM, map_mul, Units.val_mul])) }`. Conclude with `⟨ρ, MonoidHom.ext fun g => Units.ext (hM g)⟩`.
+-/
 theorem exists_model_of_mem {Γ : Type} [Group Γ] {a : ℕ} (r : Γ →* GL (Fin a) (Om l)) (L : FinExt l)
     (hL : ∀ g i j, (r g : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1) :
     ∃ ρ : Γ →* GL (Fin a) ↥L.1, Formalism.MainNotions.N.mapRep (algebraMap ↥L.1 (Om l)) ρ = r := by
@@ -58,6 +72,25 @@ end GlobalTheory.CrysSubRep
 
 namespace GlobalTheory.CrysSubRep
 
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw d a ρ r hρ M hM hint`. Take `⟨T⟩` from `hT`. Set `L : FinExt l` to `entExt Bw.LL M`. Set `f : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`. Set `M' : Matrix (Fin d) (Fin a) ↥L.1` to `Matrix.of fun i j => ⟨M i j, mem_entExt Bw.LL M i j⟩`.
+
+Establish `hM' : M'.map f = M` using `Matrix.ext fun i j => rfl`. Establish `hinjM' : Function.Injective M'.mulVec`. Introduce `x y hxy`. Establish `h1 : ∀ v : Fin a → ↥L.1, M.mulVec (fun i => f (v i)) = fun i => f (M'.mulVec v i)` using `fun v => funext fun i => by rw [← hM']; exact (RingHom.map_mulVec f M' v i).symm`. Establish `h2` using `hM (show M.mulVec (fun i => f (x i)) = M.mulVec (fun i => f (y i)) by rw [h1, h1, hxy])`.
+
+Conclude with `funext fun i => f.injective (congrFun h2 i)`. Take `⟨N, hN⟩` from `exists_leftInv M' hinjM'`. Set `ρL : ↥(GK Bw.Kw) →* Matrix (Fin d) (Fin d) ↥L.1` to `(RingHom.mapMatrix (algebraMap ℚ_[l] ↥L.1)).toMonoidHom.comp ((Units.coeHom _).comp ρ)`. Establish `hmapρ : ∀ g, ((ρ g : GL (Fin d) ℚ_[l]) : Matrix (Fin d) (Fin d) ℚ_[l]).map (algebraMap ℚ_[l] (Om l)) = (ρL g).map f` using `fun g => by`. Simplify using `only [ρL, MonoidHom.comp_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Units.coeHom_apply, Matrix.map_map]`.
+
+Use `congr 1`. Establish `hint' : ∀ g, (ρL (Bw.e g)).map f * M'.map f = M'.map f * (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => by`. Rewrite using `[← hmapρ, hM']`. Conclude with `hint g`. Establish `hr : ∀ g, (r g : Matrix (Fin a) (Fin a) (Om l)) = (N * ρL (Bw.e g) * M').map f` using `fun g => by`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.mul_assoc, hint', ← Matrix.mul_assoc, ← Matrix.map_mul, hN, Matrix.map_one f (map_zero f) (map_one f), Matrix.one_mul]`. Establish `hmem : ∀ g i j, (r g : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1` using `fun g i j => by`. Rewrite using `[hr g]`. Conclude with `((N * ρL (Bw.e g) * M') i j).2`. Take `⟨r', hr'⟩` from `exists_model_of_mem r L hmem`.
+
+Establish `hmod : GlobalTheory.Pst.IsModel Bw r L r'` using `⟨le_entExt Bw.LL M, hr'⟩`. Establish `hr'g : ∀ g, ((r' g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1).map f = (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => by`. Rewrite using `[← hr']`. Both sides reduce to the same expression. Establish `hinjMap : ∀ {m n : ℕ}, Function.Injective (fun X : Matrix (Fin m) (Fin n) ↥L.1 => X.map f)` using `fun {m n} X Y h => Matrix.ext fun i j => f.injective (congrFun (congrFun h i) j)`.
+
+Establish `hintL : ∀ g, ρL (Bw.e g) * M' = M' * (r' g : Matrix (Fin a) (Fin a) ↥L.1)` using `fun g => hinjMap (by simp only [Matrix.map_mul]; rw [hr'g]; exact hint' g)`. Use `haveI := L.2`. Establish `hcL : IsCrys (P.PD Bw.Kw) (Formalism.MainNotions.N.matRep ρL)` using `(GlobalTheory.Pst.isCrys_ext_iff (P.PD Bw.Kw) (fun g => ⟨(ρ g : Matrix (Fin d) (Fin d) ℚ_[l]), fun x => rfl, fun x => rfl⟩)).2 hρ`. Use `⟨L, r', hmod, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.TateDualCrys.isCrys_of_isSubOfSums T Bw.Kw L (ι := Unit) (fun _ => ρL) (fun _ => hcL) (Fin a → ↥L.1) (Bw.repE L r') ⟨1, fun _ => (), LinearMap.pi (fun _ => Matrix.toLin' M'), fun x y h => hinjM' (congrFun h 0), ?_⟩` and prove the remaining obligations.
+
+Introduce `g v`. Use function extensionality and compare the values at `i`. Establish `e1` using `hintL (Bw.e.symm g)`. Rewrite `e1` using `[MulEquiv.apply_symm_apply]`. Use `show M'.mulVec ((r' (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1).mulVec v) = (ρL g).mulVec (M'.mulVec v)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e1]`.
+-/
 theorem isCrysAt_of_sub : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (d a : ℕ) (ρ : ↥(GK Bw.Kw) →* GL (Fin d) ℚ_[l])

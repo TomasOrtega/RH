@@ -18,6 +18,11 @@ namespace CrystallineSemistableComparison.D
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨_, _, hdiv, -⟩` from `h`. Take `⟨hr, hr0⟩` from `isRt_rt l`. Establish `hrA : IsRt l (fun k => algebraMap (Ob l) A.obj (rt l k))` using `fun k => by`. Simplify using `only [← map_pow, hr k]`. Take `⟨B, _, _, hB, hC, hAIC, hVAL, hS⟩` from `Leaf.cov_tower l A.obj _ A.property hrA`.
+
+Set `_ : Algebra (Ob l) B` to `((algebraMap A.obj B).comp (algebraMap (Ob l) A.obj)).toAlgebra`. Establish `_ : IsScalarTower (Ob l) A.obj B` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `powers_abs l (testι l ⋙ toPf l) (rt l) hr (fun a ha => by obtain ⟨M, hM⟩ := hdiv a ha; exact ⟨M, hr0 ▸ hM⟩) N A B hB hC (split_clause l A B hB hS) (test_clause l N M hN B hB hAIC hVAL)`.
+-/
 theorem powers_good (h : ObFacts l) (N : Type) [AddCommGroup N] [Module (Ob l) N] (M : ℕ) (hN : ∀ x : N, pFlat l ^ M • x = 0)
     (A : PfC l (Ob l)) : ∃ P : Powers (testι l ⋙ toPf l) A,
       P.Good (testι l ⋙ toPf l) (tensF l (Ob l) N) (Ideal.span (Set.range (rt l))) := by

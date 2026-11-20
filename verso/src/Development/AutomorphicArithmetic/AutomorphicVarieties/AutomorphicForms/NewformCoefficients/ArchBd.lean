@@ -3,6 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 open UpperHalfPlane hiding I
 open CongruenceSubgroup
 
+/- English proof (translation)
+Introduce `k M hM f`. Use `haveI : NeZero M := ⟨by omega⟩`. Take `⟨C, hC⟩` from `CuspFormClass.exists_bound f`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Af.Nf.nsl`.
+
+Use `set J : ℂ := (x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ) with hJdef`. Use `set w : ℂ := (((SignType.sign x.det : ℝ)) : ℂ) * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / J) with hwdef`. Establish `hJ0 : J ≠ 0`. Introduce `h`. Establish `h1` using `congrArg Complex.re h`.
+
+Establish `h2` using `congrArg Complex.im h`. Simplify using `[J] at h1 h2`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hn : Complex.normSq J = ‖J‖ ^ 2` using `Complex.normSq_eq_norm_sq J`. Establish `hJpos : 0 < ‖J‖` using `norm_pos_iff.mpr hJ0`. Establish `hDpos : 0 < |x.det|` using `abs_pos.mpr hx`. Establish `hq : (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / J).im = x.det / Complex.normSq J`. Rewrite using `[Complex.div_im, Matrix.det_fin_two]`.
+
+Simplify using `[J]`. Expand and normalize the polynomial expressions, which then agree. Establish `himw : w.im = |x.det| / ‖J‖ ^ 2`. Rewrite using `[hwdef, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, hq, hn]`. Break down `lt_or_gt_of_ne hx with h | h` into its components or cases.
+
+Rewrite using `[sign_neg h, abs_of_neg h]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sign_pos h, abs_of_pos h]`. Simplify using the standard rewrite rules.
+
+Establish `hw : 0 < w.im`. Rewrite using `[himw]`. Check the signs of the components of the expression. Establish `hτ : (ofComplex w).im = |x.det| / ‖J‖ ^ 2`. Rewrite using `[← himw, UpperHalfPlane.ofComplex_apply_of_im_pos hw]`.
+
+Apply the tactic sequence `all_goals rfl`. Establish `hb` using `hC (ofComplex w)`. Rewrite `hb` using `[hτ]`. Establish `hpow : (|x.det| / ‖J‖ ^ 2) ^ (((k : ℤ) : ℝ) / 2) = |x.det| ^ ((k : ℝ) / 2) / ‖J‖ ^ k`. Rewrite using `[Real.div_rpow hDpos.le (by positivity), ← Real.rpow_natCast ‖J‖ 2, ← Real.rpow_mul hJpos.le]`.
+
+Use `push_cast`. Use `congr 1`. Rewrite using `[show (2 : ℝ) * ((k : ℝ) / 2) = ((k : ℕ) : ℝ) by ring, Real.rpow_natCast]`. Rewrite `hb` using `[hpow]`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity), norm_zpow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 0 < |x.det| ^ ((k : ℝ) / 2)` using `by positivity`. Establish `h2 : 0 < ‖J‖ ^ k` using `by positivity`. Rewrite using `[zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.V.Af.Nf.archBd :
     UpperTheory.V.Af.Nf.ArchBd := by
   intro k M hM f

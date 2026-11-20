@@ -33,6 +33,11 @@ section ThetaShiftProofs
 
 open PowerSeries
 
+/- English proof (translation)
+Set `: WithIdeal O` to `⟨I⟩`. Establish `hI : IsAdic I` using `rfl`. Take `⟨h1, h2⟩` from `hI.isAdicComplete_iff.mp h`. Establish `ha : PowerSeries.HasEval π` using `WithIdeal.isTopologicallyNilpotent_of_mem hπ`. Use `⟨PowerSeries.aeval ha, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Polynomial.coe_X, PowerSeries.aeval_coe, Polynomial.aeval_X]`.
+-/
 theorem exists_algHom_powerSeries_apply_X_of_isAdicComplete {O : Type*} [CommRing O] (I : Ideal O)
     [h : IsAdicComplete I O] {π : O} (hπ : π ∈ I) : ∃ ev : O⟦X⟧ →ₐ[O] O, ev X = π := by
   let : WithIdeal O := ⟨I⟩
@@ -47,6 +52,9 @@ noncomputable def powerSeriesPrimeX (O : Type u) [CommRing O] [IsDomain O] :
   (⟨Ideal.span {X}, span_X_isPrime⟩ : PrimeSpectrum O⟦X⟧)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powerSeriesPrimeX_asIdeal (O : Type u) [CommRing O] [IsDomain O] :
     (powerSeriesPrimeX O).asIdeal = Ideal.span {(X : O⟦X⟧)} := rfl
 

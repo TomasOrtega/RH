@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.ContractingCosets
 
 open ValuativeRel Matrix GroundTheory.Automorphic.GLnLocal
 
+/- English proof (translation)
+Establish `h : {g | ∃ x ∈ K, ∃ y ∈ K, g = x * A * y} = ⋃ x ∈ K, (fun y => x * A * y) '' (K : Set G)`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_image, SetLike.mem_coe, exists_prop]`. Conclude with `⟨fun ⟨x, hx, y, hy, e⟩ => ⟨x, hx, y, hy, e.symm⟩, fun ⟨x, hx, y, hy, e⟩ => ⟨x, hx, y, hy, e.symm⟩⟩`. Rewrite using `[h]`.
+
+Conclude with `isOpen_biUnion fun x _ => (Homeomorph.mulLeft (x * A)).isOpenMap _ hK`.
+-/
 theorem isOpen_doubleCoset {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K : Subgroup G) (hK : IsOpen (K : Set G)) (A : G) :
     IsOpen {g | ∃ x ∈ K, ∃ y ∈ K, g = x * A * y} := by
@@ -23,6 +28,9 @@ theorem isOpen_doubleCoset {G : Type*} [Group G] [TopologicalSpace G] [IsTopolog
   rw [h]
   exact isOpen_biUnion fun x _ => (Homeomorph.mulLeft (x * A)).isOpenMap _ hK
 
+/- English proof (translation)
+Establish `h` using `Subgroup.mem_center_iff.1 hz (x'⁻¹ * x * A * y)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_central_mul {G : Type*} [Group G] {x y x' y' A B : G}
     (hz : (x * A * y)⁻¹ * (x' * B * y') ∈ Subgroup.center G) :
     B = ((x * A * y)⁻¹ * (x' * B * y')) * ((x'⁻¹ * x) * A * (y * y'⁻¹)) := by
@@ -33,18 +41,27 @@ theorem eq_central_mul {G : Type*} [Group G] {x y x' y' A B : G}
 
 variable {k : Type} [Field k] [ValuativeRel k]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ylb4.main hP hQ hB i j`.
+-/
 theorem entry_bound {N : ℕ} {P Q B : Matrix (Fin N) (Fin N) k} {C : ValueGroupWithZero k}
     (hP : ∀ i j, valuation k (P i j) ≤ 1) (hQ : ∀ i j, valuation k (Q i j) ≤ 1)
     (hB : ∀ i j, valuation k (B i j) ≤ C) (i j : Fin N) :
     valuation k ((P * B * Q) i j) ≤ C :=
   _root_.UpperTheory.Reformulated.B.Ylb4.main hP hQ hB i j
 
+/- English proof (translation)
+Rewrite using `[Units.val_pow_eq_pow_val, ha, diagonal_pow]`. Both sides reduce to the same expression.
+-/
 theorem coe_pow_of_diag {N : ℕ} {δ : Fin N → k} {a : GL (Fin N) k}
     (ha : (a : Matrix (Fin N) (Fin N) k) = diagonal δ) (r : ℕ) :
     ((a ^ r : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = diagonal fun i => δ i ^ r := by
   rw [Units.val_pow_eq_pow_val, ha, diagonal_pow]
   rfl
 
+/- English proof (translation)
+Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[coe_pow_of_diag ha, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_pow, mul_inv_cancel₀ (hδ i), one_pow]`.
+-/
 theorem coe_inv_pow_of_diag {N : ℕ} {δ : Fin N → k} (hδ : ∀ i, δ i ≠ 0) {a : GL (Fin N) k}
     (ha : (a : Matrix (Fin N) (Fin N) k) = diagonal δ) (r : ℕ) :
     (((a ^ r)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = diagonal fun i => (δ i)⁻¹ ^ r := by
@@ -54,11 +71,39 @@ theorem coe_inv_pow_of_diag {N : ℕ} {δ : Fin N → k} (hδ : ∀ i, δ i ≠ 
   funext i
   rw [← mul_pow, mul_inv_cancel₀ (hδ i), one_pow]
 
+/- English proof (translation)
+The claim follows from `(Valuation.mem_integer_iff _ _).mp (((mem_integralGL_iff k N).1 hg).1 i j)`.
+-/
 theorem val_le_one_of_mem {N : ℕ} [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {g : GL (Fin N) k} (hg : g ∈ integralGL k N) (i j : Fin N) :
     valuation k ((g : Matrix (Fin N) (Fin N) k) i j) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).mp (((mem_integralGL_iff k N).1 hg).1 i j)
 
+/- English proof (translation)
+Establish `hδ0 : ∀ i, δ i ≠ 0` using `fun i => by`. Apply the tactic sequence `rcases hδ i with h | h <;> rw [h]`. Conclude with `t.ne_zero`. Conclude with `one_ne_zero`. Establish `hvt0 : valuation k (t : k) ≠ 0` using `(Valuation.ne_zero_iff _).2 t.ne_zero`.
+
+Establish `hvt1 : 1 ≤ (valuation k (t : k))⁻¹` using `(one_lt_inv₀ (zero_lt_iff.2 hvt0)).2 ht |>.le`. Take `⟨c, hc⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Take `⟨c', hc'⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 (inv_mem hz)`. Establish `hcc : c * c' = 1`. Establish `e` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i₂ i₂) (mul_inv_cancel z)`.
+
+Simplify using `only [Units.val_mul, ← hc, ← hc', Units.val_one] at e`. Simplify `e` using `[Matrix.scalar_apply, Matrix.diagonal_mul_diagonal]`. Establish `hB : ∀ i j, valuation k (((a ^ r' : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j) ≤ 1`. Introduce `i j`. Rewrite using `[coe_pow_of_diag ha]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[diagonal_apply_eq, map_pow]`. Use `pow_le_one₀ zero_le' ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hδ i with h | h <;> rw [h]`.
+
+Conclude with `ht.le`. Simplify using the standard rewrite rules. Rewrite using `[diagonal_apply_ne _ hij]`. Simplify using the standard rewrite rules. Establish `hB' : ∀ i j, valuation k ((((a ^ r')⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j) ≤ (valuation k (t : k))⁻¹ ^ r'`.
+
+Introduce `i j`. Rewrite using `[coe_inv_pow_of_diag hδ0 ha]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[diagonal_apply_eq, map_pow, map_inv₀]`.
+
+Apply the tactic sequence `rcases hδ i with h | h <;> rw [h]`. Simplify using `using one_le_pow₀ hvt1`. Rewrite using `[diagonal_apply_ne _ hij]`. Simplify using the standard rewrite rules. Establish `hc1 : 1 ≤ valuation k c`.
+
+Establish `e` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i₂ i₂) h`. Simplify using `only [Units.val_mul (a := z), ← hc] at e`. Rewrite `e` using `[coe_pow_of_diag ha, diagonal_apply_eq, h₂, one_pow, Matrix.scalar_apply, Matrix.diagonal_mul]`. Establish `b` using `entry_bound (val_le_one_of_mem hp) (val_le_one_of_mem hq) hB i₂ i₂`. Establish `e'` using `congrArg (valuation k) e`.
+
+Rewrite `e'` using `[map_one, map_mul]`. Rewrite `e'` using `[Units.val_mul, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc'1 : valuation k c' ≤ 1`. Establish `e : valuation k c * valuation k c' = 1` using `by rw [← map_mul, hcc, map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hinv : (a ^ r)⁻¹ = (q⁻¹ * (a ^ r')⁻¹ * p⁻¹) * z⁻¹`. Rewrite using `[h]`. Use `group`. Establish `hle : (valuation k (t : k))⁻¹ ^ r ≤ (valuation k (t : k))⁻¹ ^ r'`.
+
+Establish `e` using `congrArg (fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i₁ i₁) hinv`. Simplify using `only [Units.val_mul (b := z⁻¹), ← hc'] at e`. Rewrite `e` using `[coe_inv_pow_of_diag hδ0 ha, diagonal_apply_eq, h₁, Matrix.scalar_apply, Matrix.mul_diagonal]`. Establish `b` using `entry_bound (val_le_one_of_mem (inv_mem hq)) (val_le_one_of_mem (inv_mem hp)) hB' i₁ i₁`. Establish `e'` using `congrArg (valuation k) e`.
+
+Rewrite `e'` using `[map_pow, map_inv₀, map_mul, Units.val_mul, Units.val_mul]`. Rewrite using `[e']`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_right₀ ((one_lt_inv₀ (zero_lt_iff.2 hvt0)).2 ht)).1 hle`.
+-/
 theorem le_of_eq_central_mul {N : ℕ} [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {δ : Fin N → k} (t : kˣ) (ht : valuation k (t : k) < 1)
     (hδ : ∀ i, δ i = t ∨ δ i = 1) {i₁ i₂ : Fin N} (h₁ : δ i₁ = t) (h₂ : δ i₂ = 1)
@@ -137,6 +182,15 @@ theorem le_of_eq_central_mul {N : ℕ} [TopologicalSpace k] [IsNonarchimedeanLoc
       _ = _ := mul_one _
   exact (pow_le_pow_iff_right₀ ((one_lt_inv₀ (zero_lt_iff.2 hvt0)).2 ht)).1 hle
 
+/- English proof (translation)
+Use extensionality with `x y`. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective x`. Take `⟨⟨b, l⟩, rfl⟩` from `(stdBlocks d hd).surjective y`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Rewrite using `[diagonal_apply_eq]`. Simplify using `only [Zl.JC.zj, Zl.JC.blockIdx, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hne : stdBlocks d hd ⟨a, i⟩ ≠ stdBlocks d hd ⟨a, l⟩` using `fun e => hil (by simpa using (stdBlocks d hd).injective e)`. Rewrite using `[diagonal_apply_ne _ hne]`. Simplify using `only [Zl.JC.zj]`. Use `split_ifs`.
+
+Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, diagonal_apply_ne _ hil]`. Simplify using `[Matrix.one_apply_ne hil]`. Establish `hne : stdBlocks d hd ⟨a, i⟩ ≠ stdBlocks d hd ⟨b, l⟩` using `fun e => hab (congrArg Sigma.fst ((stdBlocks d hd).injective e))`. Rewrite using `[diagonal_apply_ne _ hne, leviEmb_apply_ne k _ _ hab]`.
+-/
 theorem coe_leviEmb_zj {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t : kˣ) (j : Fin h) :
     (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j) : Matrix (Fin N) (Fin N) k) =
       diagonal fun i => if Zl.JC.blockIdx d hd i ≤ j then (t : k) else 1 := by
@@ -164,6 +218,13 @@ theorem coe_leviEmb_zj {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (t 
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hz` using `QuotientGroup.eq.1 e`. Establish `hK` using `congruenceSubgroup_le k N m`. Establish `heq` using `eq_central_mul hz`. Use `le_of_eq_central_mul (δ := fun i => if Zl.JC.blockIdx d hd i ≤ j then (t : k) else 1) t ht (fun i => ?_) (i₁ := stdBlocks d hd ⟨j, ⟨0, hpos j⟩⟩) (i₂ := stdBlocks d hd ⟨⟨j.val + 1, hj⟩, ⟨0, hpos _⟩⟩) ?_ ?_ (coe_leviEmb_zj d hd t j) (mul_mem (inv_mem (hK hx')) (hK hx)) (mul_mem (hK …` and prove the remaining obligations. Distinguish the cases in `hi : Zl.JC.blockIdx d hd i ≤ j`.
+
+Conclude with `Or.inl (if_pos hi)`. Conclude with `Or.inr (if_neg hi)`. Simplify using `[Zl.JC.blockIdx]`. Establish `: ¬ (⟨j.val + 1, hj⟩ : Fin h) ≤ j`. Rewrite using `[Fin.le_def]`.
+
+Simplify using the standard rewrite rules. Simplify using `[Zl.JC.blockIdx, this]`.
+-/
 theorem le_of_mk_eq {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hpos : ∀ a, 0 < d a) (t : kˣ)
     (ht : valuation k (t : k) < 1) (j : Fin h) (hj : j.val + 1 < h) (m : ℕ)
     {x y x' y' : GL (Fin N) k} (hx : x ∈ congruenceSubgroup k N m)
@@ -188,6 +249,11 @@ theorem le_of_mk_eq {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hpos 
       rw [Fin.le_def]; simp
     simp [Zl.JC.blockIdx, this]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h N d hd hpos t ht j hj m _ _ _`. Use `⟨fun r => ?_, fun r r' hne => ?_⟩` and prove the remaining obligations. Conclude with `(QuotientGroup.isOpenMap_coe _ (isOpen_doubleCoset _ (isOpen_congruenceSubgroup k N m) _)).measurableSet`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, y, hy, rfl⟩, e₁⟩ ⟨_, ⟨x', hx', y', hy', rfl⟩, e₂⟩`.
+
+Establish `e : (QuotientGroup.mk (x * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r * y) : AdGL k N) = QuotientGroup.mk (x' * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r' * y')` using `e₁.trans e₂.symm`. Conclude with `hne (le_antisymm (le_of_mk_eq d hd hpos t ht j hj m hx' hy' hx hy e.symm) (le_of_mk_eq d hd hpos t ht j hj m hx hy hx' hy' e))`.
+-/
 theorem images_measurable_and_disjoint : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ a, 0 < d a) → ∀ (t : kˣ), ValuativeRel.valuation k (t : k) < 1 → ∀ (j : Fin h), j.val + 1 < h → ∀ (m : ℕ), 1 ≤ m → ∀ [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)], (∀ r : ℕ, MeasurableSet ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, ∃ y ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, g = x * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r * y})) ∧ Pairwise (Function.onFun Disjoint fun r : ℕ => (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {g | ∃ x ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, ∃ y ∈ GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m, g = x * (leviEmb k (stdBlocks d hd) (Zl.JC.zj d t j)) ^ r * y}) := by
   intro k _ _ _ _ h N d hd hpos t ht j hj m _ _ _
   refine ⟨fun r => ?_, fun r r' hne => ?_⟩

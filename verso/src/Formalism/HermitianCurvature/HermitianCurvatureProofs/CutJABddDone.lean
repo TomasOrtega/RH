@@ -11,9 +11,15 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModelPlaceBuilt2OfB
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+The claim follows from `jABddKapQQ_of_shared second_shift_geometry_holds rho_projection_existence gauge_lines_holds SSn.Rep.datum_unit_norm_holds`.
+-/
 theorem kappa_quadratic_bound_holds : JABddKapQQ :=
   jABddKapQQ_of_shared second_shift_geometry_holds rho_projection_existence gauge_lines_holds SSn.Rep.datum_unit_norm_holds
 
+/- English proof (translation)
+The claim follows from `jABddOpQQ_of_bddLeaves bounded_scalar_transfer_holds kappa_quadratic_bound_holds (SSn.jABddSSnQQ_of_leaves SSn.ChainPf.chain_bound_holds second_shift_geometry_holds h) (SSn.jABddSSnStarQQ_of_leaves SSn.ChainPf.chain_bound_holds second_shift_geometry_holds h)`.
+-/
 theorem jABddOpQQ_of_ssnRep (h : SSn.SSnRep) : JABddOpQQ :=
   jABddOpQQ_of_bddLeaves bounded_scalar_transfer_holds kappa_quadratic_bound_holds
     (SSn.jABddSSnQQ_of_leaves SSn.ChainPf.chain_bound_holds second_shift_geometry_holds h)
@@ -23,6 +29,9 @@ end Formalism.FourierDecayAlt.P.CutMP.JA
 
 namespace Formalism.FourierDecayAlt.P.CutMP
 
+/- English proof (translation)
+The claim follows from `modelPlaceBuilt2_of_bdd hJ hG (JA.jABddOpQQ_of_ssnRep h)`.
+-/
 theorem modelPlaceBuilt2_of_ssnRep (hJ : JfSmoothDS) (hG : Gauge.GC.GenTransfer) (h : JA.SSn.SSnRep) :
     Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=
   modelPlaceBuilt2_of_bdd hJ hG (JA.jABddOpQQ_of_ssnRep h)

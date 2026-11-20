@@ -19,6 +19,13 @@ def ColInj {m : ℕ} (col : Fin m → ℕ) (I : Fin m → Fin n) : Prop :=
 def rk {m : ℕ} (col : Fin m → ℕ) (I : Fin m → Fin n) (p : Fin m) : ℕ :=
   (Finset.univ.filter fun q => col q = col p ∧ I p < I q).card
 
+/- English proof (translation)
+Unfold `rk`. Establish `h1 : (Finset.univ.filter fun q => col q = col p ∧ I p < I q).card ≤ (Finset.Ioi (I p)).card`. Apply `Finset.card_le_card_of_injOn I` to reduce the goal to its premises. Introduce `q hq`. Simplify using `at hq ⊢`.
+
+Conclude with `hq.2`. Introduce `q hq q' hq' hqq`. Simplify using `at hq hq'`. Conclude with `hI q q' (hq.1.trans hq'.1.symm) hqq`. Rewrite `h1` using `[Fin.card_Ioi]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rk_le {m : ℕ} (col : Fin m → ℕ) (top : Fin n) (htop : (top : ℕ) + 1 = n) (I : Fin m → Fin n)
     (hI : ColInj col I) (p : Fin m) : rk col I p ≤ (top : ℕ) - I p := by
   unfold rk
@@ -33,6 +40,21 @@ theorem rk_le {m : ℕ} (col : Fin m → ℕ) (top : Fin n) (htop : (top : ℕ) 
   rw [Fin.card_Ioi] at h1
   omega
 
+/- English proof (translation)
+Establish `e1 : ∑ p, rk col I p = (Finset.univ.filter fun x : Fin m × Fin m => col x.2 = col x.1 ∧ I x.1 < I x.2).card`. Unfold `rk`. Simplify using `only [Finset.card_filter, Fintype.sum_prod_type]`. Rewrite using `[e1]`. Unfold `npairs`.
+
+Apply `Finset.card_bij' (fun x _ => if x.1 < x.2 then x else x.swap) (fun y _ => if I y.1 < I y.2 then y else y.swap)` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx`. Distinguish the cases in `h : x.1 < x.2`. Simplify using `[h, hx.2]`.
+
+Establish `h' : ¬ I x.2 < I x.1` using `not_lt.mpr hx.2.le`. Simplify using `[h, h']`. Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Distinguish the cases in `h : I y.1 < I y.2`.
+
+Simplify using `[h, hy.1]`. Establish `h' : ¬ y.2 < y.1` using `not_lt.mpr hy.1.le`. Simplify using `[h, h']`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`.
+
+Establish `hne : x.1 ≠ x.2` using `fun h => by rw [h] at hx; exact lt_irrefl _ hx.2`. Use `split_ifs with h`. Conclude with `⟨h, hx.1.symm⟩`. Apply the tactic sequence `try simp only [Prod.fst_swap, Prod.snd_swap]`. Use `⟨?_, hx.1⟩` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Conclude with `absurd h' h`. Conclude with `h'`. Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢`.
+
+Establish `hne : I y.1 ≠ I y.2` using `fun h => (ne_of_lt hy.1) (hI _ _ hy.2 h)`. Use `split_ifs with h`. Conclude with `⟨hy.2.symm, h⟩`. Apply the tactic sequence `try simp only [Prod.fst_swap, Prod.snd_swap]`. Conclude with `⟨hy.2, lt_of_le_of_ne (not_lt.mp h) (Ne.symm hne)⟩`.
+-/
 theorem sum_rk {m : ℕ} (col : Fin m → ℕ) (I : Fin m → Fin n) (hI : ColInj col I) :
     ∑ p, rk col I p = npairs col := by
   have e1 : ∑ p, rk col I p = (Finset.univ.filter fun x : Fin m × Fin m => col x.2 = col x.1 ∧ I x.1 < I x.2).card := by
@@ -71,11 +93,35 @@ theorem sum_rk {m : ℕ} (col : Fin m → ℕ) (I : Fin m → Fin n) (hI : ColIn
     · try simp only [Prod.fst_swap, Prod.snd_swap]
       exact ⟨hy.2, lt_of_le_of_ne (not_lt.mp h) (Ne.symm hne)⟩
 
+/- English proof (translation)
+Rewrite using `[← sum_rk col I hI]`. Conclude with `Finset.sum_le_sum fun p _ => rk_le col top htop I hI p`.
+-/
 theorem npairs_le {m : ℕ} (col : Fin m → ℕ) (top : Fin n) (htop : (top : ℕ) + 1 = n) (I : Fin m → Fin n)
     (hI : ColInj col I) : npairs col ≤ ∑ p, ((top : ℕ) - I p) := by
   rw [← sum_rk col I hI]
   exact Finset.sum_le_sum fun p _ => rk_le col top htop I hI p
 
+/- English proof (translation)
+Establish `heq : ∀ p, rk col I p = (top : ℕ) - I p`. Establish `hs : ∑ p, rk col I p = ∑ p, ((top : ℕ) - I p)` using `le_antisymm (by rw [sum_rk col I hI]; exact npairs_le col top htop I hI) (by rw [sum_rk col I hI]; exact h)`. Introduce `p`. Conclude with `(Finset.sum_eq_sum_iff_of_le (fun p _ => rk_le col top htop I hI p)).mp hs p (Finset.mem_univ p)`. Establish `hex : ∀ p, ∃ q, col q = col p ∧ b q = I p`.
+
+Introduce `p`. Establish `hA : (top : ℕ) - I p + 1 ≤ (Finset.univ.filter fun q => col q = col p).card`. Rewrite using `[← heq p]`. Unfold `rk`. Rewrite using `[← Finset.card_insert_of_notMem (s := Finset.univ.filter fun q => col q = col p ∧ I p < I q) (a := p) (by simp)]`.
+
+Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `q hq`. Simplify using `only [Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and] at hq ⊢`. Break down `hq with rfl | hq` into its components or cases. Both sides reduce to the same expression.
+
+Conclude with `hq.1`. Distinguish the cases in `hb0 : ∃ q, col q = col p ∧ b q ≤ I p`. Take `⟨q0, hq0c, hq0b⟩` from `hb0`. Break down `lt_or_eq_of_le hq0b with hlt | heq'` into its components or cases. Take `⟨q, hqc, hqb⟩` from `hb.2 q0 (I p) hlt`.
+
+Conclude with `⟨q, hqc.trans hq0c, hqb⟩`. Conclude with `⟨q0, hq0c, heq'⟩`. Use `push_neg at hb0`. It suffices to derive a contradiction. Establish `hB : (Finset.univ.filter fun q => col q = col p).card ≤ (Finset.Ioi (I p)).card`.
+
+Apply `Finset.card_le_card_of_injOn b` to reduce the goal to its premises. Introduce `q hq`. Simplify using `at hq ⊢`. Conclude with `hb0 q hq`. Introduce `q hq q' hq' hqq`.
+
+Simplify using `at hq hq'`. Conclude with `hb.1 q q' (hq.trans hq'.symm) hqq`. Rewrite `hB` using `[Fin.card_Ioi]`. Use `(I p).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `choose σf hσc hσb using hex`. Establish `hinj : Function.Injective σf`. Introduce `p p' hpp`. Establish `hc : col p = col p'` using `by rw [← hσc p, ← hσc p', hpp]`. Establish `hi : I p = I p'` using `by rw [← hσb p, ← hσb p', hpp]`.
+
+Conclude with `hI p p' hc hi`. Set `σ : Equiv.Perm (Fin m)` to `Equiv.ofBijective σf (Finite.injective_iff_bijective.mp hinj)`. Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[colG, σ, hσc]`. Use function extensionality and compare the values at `p`.
+
+Simplify using `[σ, hσb]`.
+-/
 theorem eq_of_le {m : ℕ} (col : Fin m → ℕ) (top : Fin n) (htop : (top : ℕ) + 1 = n) (b I : Fin m → Fin n)
     (hb : IsTab col b) (hI : ColInj col I) (h : ∑ p, ((top : ℕ) - I p) ≤ npairs col) :
     ∃ σ ∈ colG col, I = b ∘ σ := by

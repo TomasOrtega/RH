@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.IdTorus
 
+/- English proof (translation)
+Use `set P := adMat F (Formalism.UG.cT (σ : E →+* E) X * J)`. Use `set Q := adMat F (Formalism.UG.cT (σ : E →+* E) Y * J)`. Establish `mm : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) E) (B : Matrix (Fin b) (Fin c) E), adMat F A * adMat F B = adMat F (A * B)` using `fun A B => (Matrix.map_mul).symm`. Establish `hPX : P * adMat F X = 0` using `by rw [mm, hW.xx]; simp`. Establish `hPY : P * adMat F Y = 1` using `by rw [mm, hW.xy]; simp`.
+
+Establish `hQX : Q * adMat F X = 1` using `by rw [mm, yx h hJ hW]; simp`. Establish `hQY : Q * adMat F Y = 0` using `by rw [mm, hW.yy]; simp`. Use `set w := z - adMat F X *ᵥ (Q *ᵥ z) - adMat F Y *ᵥ (P *ᵥ z) with hw`. Establish `hPw : P *ᵥ w = 0`. Rewrite using `[hw, mulVec_sub, mulVec_sub, mulVec_mulVec (M := P) (N := adMat F X), mulVec_mulVec (M := P) (N := adMat F Y), hPX, hPY, zero_mulVec, one_mulVec]`.
+
+Simplify using the standard rewrite rules. Establish `hQw : Q *ᵥ w = 0`. Rewrite using `[hw, mulVec_sub, mulVec_sub, mulVec_mulVec (M := Q) (N := adMat F X), mulVec_mulVec (M := Q) (N := adMat F Y), hQX, hQY, zero_mulVec, one_mulVec]`. Simplify using the standard rewrite rules. Establish `hmem : w ∈ colPerp σ J X Set.univ ⊓ colPerp σ J Y Set.univ`.
+
+Use `⟨(Submodule.mem_iInf _).2 fun i => (Submodule.mem_iInf _).2 fun _ => LinearMap.mem_ker.2 ?_, (Submodule.mem_iInf _).2 fun i => (Submodule.mem_iInf _).2 fun _ => LinearMap.mem_ker.2 ?_⟩` and prove the remaining obligations. Conclude with `congrFun hPw i`. Conclude with `congrFun hQw i`. Establish `hz : z = adMat F X *ᵥ (Q *ᵥ z) + adMat F Y *ᵥ (P *ᵥ z) + w` using `by rw [hw]; abel`. Use `conv_lhs => rw [hz]`.
+
+Rewrite using `[mulVec_add, mulVec_add, mulVec_mulVec (N := adMat F X), mulVec_mulVec (N := adMat F Y), ha.1, ha.2.1, ha.2.2 w hmem, ← mulVec_mulVec, ← mulVec_mulVec]`.
+-/
 theorem idelicFrameTorusElement_apply_column_decomposition {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
     (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
@@ -44,6 +55,11 @@ theorem idelicFrameTorusElement_apply_column_decomposition {F E : Type} [Field F
   rw [mulVec_add, mulVec_add, mulVec_mulVec (N := adMat F X), mulVec_mulVec (N := adMat F Y), ha.1, ha.2.1,
     ha.2.2 w hmem, ← mulVec_mulVec, ← mulVec_mulVec]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW l a b ha hb`. Apply `matHom_injective (AF F) σ J` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hv : ∀ z, (matHom _ σ J a).1 *ᵥ z = (matHom _ σ J b).1 *ᵥ z` using `fun z => by`. Rewrite using `[idelicFrameTorusElement_apply_column_decomposition h hJ hW ha, idelicFrameTorusElement_apply_column_decomposition h hJ hW hb]`.
+
+Use extensionality with `i j`. Simplify `congrFun (hv (Pi.single j 1)) i` using `[mulVec_single_one]`.
+-/
 theorem isIdTorusElt_uniq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {l : Fin r → (AF F ⊗[F] E)ˣ} {a b : GAd σ J}, IsIdTorusElt σ J X Y l a → IsIdTorusElt σ J X Y l b → a = b := by
   intro F E _ _ _ _ _ σ n J r X Y h hJ hW l a b ha hb

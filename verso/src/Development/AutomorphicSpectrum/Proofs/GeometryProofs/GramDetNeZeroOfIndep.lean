@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Introduce `L _ _ B σ n f hf`. Establish `hG : (Matrix.gram ℂ fun i ↦ fibreVec B.metric σ (f i)) = Matrix.of fun i j ↦ (B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] f i) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] f j)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hp` using `(Matrix.posDef_gram_of_linearIndependent (linearIndependent_fibreVec B.metric σ hf)).det_pos`.
+
+Rewrite `hp` using `[hG]`. Conclude with `hp.ne'`.
+-/
 theorem gramDet_ne_zero_of_linearIndependent :
     ∀ (L : Type) [Field L] [NumberField L] (B : HermitianBundle.{0} L) (σ : L →+* ℂ) (n : ℕ)
     (f : Fin n → B.carrier), LinearIndependent (𝓞 L) f → B.gramDet σ f ≠ 0 := by

@@ -16,6 +16,11 @@ section Coeff
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N) (i : N.Loc)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.CoeffEmbedding.exists_norm_le N A i`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C h`. Use `hC (b ^ n)` as an intermediate fact.
+
+Rewrite `this` using `[map_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_iota_le_one (b : N.O i) : ‖iotaOQ N A i b‖ ≤ 1 := by
   obtain ⟨C, hC⟩ := GlobalTheory.CoeffEmbedding.exists_norm_le N A i
   by_contra h
@@ -25,6 +30,13 @@ theorem norm_iota_le_one (b : N.O i) : ‖iotaOQ N A i b‖ ≤ 1 := by
   rw [map_pow, norm_pow] at this
   linarith
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.CoeffEmbedding.exists_pow_le_span N A i`. Establish `h1 : c ^ e ∈ Ideal.span {((N.l i : ℕ) : N.O i)}` using `he (Ideal.pow_mem_pow hc e)`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.1 h1`. Establish `hl : ‖iotaOQ N A i ((N.l i : ℕ) : N.O i)‖ < 1`. Rewrite using `[map_natCast, ← map_natCast (algebraMap ℚ_[N.l i] (Qbar (N.l i))), norm_algebraMap']`.
+
+Conclude with `Padic.norm_p_lt_one`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_lt]`. Establish `h2` using `one_le_pow₀ h (n := e)`. Rewrite `h2` using `[← norm_pow, ← map_pow, hb, map_mul, norm_mul]`.
+
+Conclude with `absurd ((mul_le_of_le_one_right (norm_nonneg _) (norm_iota_le_one N A i b)).trans_lt hl) (not_lt.2 h2)`.
+-/
 theorem norm_iota_lt_one {c : N.O i} (hc : c ∈ IsLocalRing.maximalIdeal (N.O i)) :
     ‖iotaOQ N A i c‖ < 1 := by
   obtain ⟨e, he⟩ := GlobalTheory.CoeffEmbedding.exists_pow_le_span N A i
@@ -39,11 +51,19 @@ theorem norm_iota_lt_one {c : N.O i} (hc : c ∈ IsLocalRing.maximalIdeal (N.O i
   rw [← norm_pow, ← map_pow, hb, map_mul, norm_mul] at h2
   exact absurd ((mul_le_of_le_one_right (norm_nonneg _) (norm_iota_le_one N A i b)).trans_lt hl) (not_lt.2 h2)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Use `norm_iota_lt_one N A i (c := c) ((IsLocalRing.mem_maximalIdeal c).2 hu)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isUnit_of_norm {c : N.O i} (hc : ‖iotaOQ N A i c‖ = 1) : IsUnit c := by
   by_contra hu
   have := norm_iota_lt_one N A i (c := c) ((IsLocalRing.mem_maximalIdeal c).2 hu)
   linarith
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hc`. Establish `h1` using `norm_iota_le_one N A i (u : N.O i)`. Establish `h2` using `norm_iota_le_one N A i ((u⁻¹ : (N.O i)ˣ) : N.O i)`. Establish `h3 : ‖iotaOQ N A i (u : N.O i)‖ * ‖iotaOQ N A i ((u⁻¹ : (N.O i)ˣ) : N.O i)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`.
+
+Use polynomial arithmetic with `[norm_nonneg (iotaOQ N A i (u : N.O i)), norm_nonneg (iotaOQ N A i ((u⁻¹ : (N.O i)ˣ) : N.O i))]`.
+-/
 theorem norm_iota_unit {c : N.O i} (hc : IsUnit c) : ‖iotaOQ N A i c‖ = 1 := by
   obtain ⟨u, rfl⟩ := hc
   have h1 := norm_iota_le_one N A i (u : N.O i)
@@ -52,15 +72,32 @@ theorem norm_iota_unit {c : N.O i} (hc : IsUnit c) : ‖iotaOQ N A i c‖ = 1 :=
     rw [← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]
   nlinarith [norm_nonneg (iotaOQ N A i (u : N.O i)), norm_nonneg (iotaOQ N A i ((u⁻¹ : (N.O i)ˣ) : N.O i))]
 
+/- English proof (translation)
+The claim follows from `(A.iotaQ i).injective.comp (IsFractionRing.injective (N.O i) (FractionRing (N.O i)))`.
+-/
 theorem iota_inj : Function.Injective (iotaOQ N A i) :=
   (A.iotaQ i).injective.comp (IsFractionRing.injective (N.O i) (FractionRing (N.O i)))
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`. Conclude with `A.iotaQ_alg i z`.
+-/
 theorem iota_smul (z : ℤ_[N.l i]) (y : N.O i) :
     iotaOQ N A i (z • y) = algebraMap ℚ_[N.l i] (Qbar (N.l i)) (z : ℚ_[N.l i]) * iotaOQ N A i y := by
   rw [Algebra.smul_def, map_mul]
   congr 1
   exact A.iotaQ_alg i z
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[N.l i]) (M := N.O i)`. Set `f : (s → ℤ_[N.l i]) → Qbar (N.l i)` to `fun c => ∑ y : s, algebraMap ℚ_[N.l i] (Qbar (N.l i)) (c y : ℚ_[N.l i]) * iotaOQ N A i y`. Establish `hf : Continuous f`. Use `continuous_finset_sum _ fun y _ => ?_` and prove the remaining obligations. Conclude with `((continuous_algebraMap ℚ_[N.l i] (Qbar (N.l i))).comp ((continuous_subtype_val : Continuous fun x : ℤ_[N.l i] => (x : ℚ_[N.l i])).comp (continuous_apply y))).mul continuous_const`.
+
+Establish `hr : Set.range (iotaOQ N A i) = Set.range f`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Establish `hb : b ∈ Submodule.span ℤ_[N.l i] (s : Set (N.O i))` using `hs ▸ Submodule.mem_top`.
+
+Take `⟨c, -, rfl⟩` from `Submodule.mem_span_finset.1 hb`. Use `⟨fun y => c y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [f, iota_smul]`. Conclude with `Finset.sum_coe_sort s (fun y => algebraMap ℚ_[N.l i] (Qbar (N.l i)) (c y : ℚ_[N.l i]) * iotaOQ N A i y)`.
+
+Introduce and unpack `⟨c, rfl⟩`. Use `⟨∑ y : s, c y • (y : N.O i), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [f, iota_smul]`. Rewrite using `[hr]`.
+
+Conclude with `(isCompact_range hf).isClosed`.
+-/
 theorem isClosed_range_iota : IsClosed (Set.range (iotaOQ N A i)) := by
   obtain ⟨s, hs⟩ := Module.Finite.fg_top (R := ℤ_[N.l i]) (M := N.O i)
   let f : (s → ℤ_[N.l i]) → Qbar (N.l i) := fun c =>
@@ -87,6 +124,15 @@ theorem isClosed_range_iota : IsClosed (Set.range (iotaOQ N A i)) := by
   rw [hr]
   exact (isCompact_range hf).isClosed
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Break down `ValuationRing.isInteger_or_isInteger (N.O i) x with ⟨c, hc⟩ | ⟨c, hc⟩` into its components or cases. Conclude with `⟨c, by rw [← hc]; rfl⟩`.
+
+Establish `h1 : ‖iotaOQ N A i c‖ = 1` using `by show ‖A.iotaQ i (algebraMap _ _ c)‖ = 1`. Rewrite using `[hc, map_inv₀, norm_inv, hx, inv_one]`. Take `⟨u, rfl⟩` from `isUnit_of_norm N A i h1`. Use `⟨((u⁻¹ : (N.O i)ˣ) : N.O i), ?_⟩` and prove the remaining obligations. Use `show A.iotaQ i (algebraMap _ _ _) = _`.
+
+Use `congr 1`. Establish `h2 : algebraMap (N.O i) (FractionRing (N.O i)) (u : N.O i) * algebraMap (N.O i) (FractionRing (N.O i)) ((u⁻¹ : (N.O i)ˣ) : N.O i) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite `h2` using `[hc]`. Clear denominators, using `at h2` for the nonvanishing conditions.
+
+Conclude with `h2`.
+-/
 theorem mem_range_of_norm {x : FractionRing (N.O i)} (hx : ‖A.iotaQ i x‖ = 1) :
     A.iotaQ i x ∈ Set.range (iotaOQ N A i) := by
   have hx0 : x ≠ 0 := by
@@ -107,6 +153,13 @@ theorem mem_range_of_norm {x : FractionRing (N.O i)} (hx : ‖A.iotaQ i x‖ = 1
     field_simp at h2
     exact h2
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isCompact_range (continuous_norm.comp hd)).bddAbove`. Establish `hle : ∀ g, ‖d g‖ ≤ 1`. Introduce `g`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+
+Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `: ‖d (g ^ n)‖ ≤ C` using `hC ⟨g ^ n, rfl⟩`. Rewrite `this` using `[map_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖d g‖ * ‖d g⁻¹‖ = 1` using `by rw [← norm_mul, ← map_mul, mul_inv_cancel, map_one, norm_one]`.
+
+Use `hle g` as an intermediate fact. Use `hle g⁻¹` as an intermediate fact. Use `norm_nonneg (d g)` as an intermediate fact. Use `norm_nonneg (d g⁻¹)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_eq_one_of_compact {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField k]
     (d : Γ →* k) (hd : Continuous d) (g : Γ) : ‖d g‖ = 1 := by
   obtain ⟨C, hC⟩ := (isCompact_range (continuous_norm.comp hd)).bddAbove
@@ -122,6 +175,15 @@ theorem norm_eq_one_of_compact {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [C
   have := hle g; have := hle g⁻¹; have := norm_nonneg (d g); have := norm_nonneg (d g⁻¹)
   nlinarith
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible (N.O i)`. Establish `hp0 : iotaOQ N A i p ≠ 0`. Introduce `h`. Establish `: p = 0` using `iota_inj N A i (by simpa using h)`. Conclude with `hp.ne_zero this`.
+
+Use `⟨‖iotaOQ N A i p‖ ^ k, pow_pos (norm_pos_iff.2 hp0) k, fun y hy => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Conclude with `zero_mem _`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hp`. Rewrite `hy` using `[map_mul, norm_mul, norm_iota_unit N A i u.isUnit, one_mul, map_pow, norm_pow]`.
+
+Establish `hlt : ‖iotaOQ N A i p‖ < 1` using `norm_iota_lt_one N A i (by`. Rewrite using `[hp.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self p)`. Establish `hkn : k ≤ n`. Assume the negation of the conclusion as `h`.
+
+Rewrite `h` using `[not_le]`. Conclude with `absurd hy (not_lt.2 (pow_le_pow_of_le_one (norm_nonneg _) hlt.le h.le))`. Rewrite using `[hp.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `(pow_dvd_pow p hkn).mul_left _`.
+-/
 theorem mem_pow_of_norm_lt (k : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ y : N.O i, ‖iotaOQ N A i y‖ < δ →
     y ∈ IsLocalRing.maximalIdeal (N.O i) ^ k := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible (N.O i)
@@ -143,6 +205,19 @@ theorem mem_pow_of_norm_lt (k : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ y : N.O i, �
   rw [hp.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
   exact (pow_dvd_pow p hkn).mul_left _
 
+/- English proof (translation)
+Establish `: IsGalois H.E N.Om` using `{}`. Establish `hn` using `norm_eq_one_of_compact d hd`. Establish `hinj` using `iota_inj N A i`. Establish `hall : ∀ g, d g ∈ Set.range (iotaOQ N A i)`. Establish `hsub : closure S ⊆ d ⁻¹' Set.range (iotaOQ N A i)` using `closure_minimal (fun σ hσ => by`.
+
+Take `⟨x, hx⟩` from `hv σ hσ`. Use `mem_range_of_norm N A i (x := x) (by rw [hx]; exact hn σ)` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `this) ((isClosed_range_iota N A i).preimage hd)`. Introduce `g`.
+
+Conclude with `hsub (hS ▸ Set.mem_univ g)`. Use `choose u hu using hall`. Set `ξ0 : G H.E N.Om →* N.O i` to `{ toFun := u map_one' := hinj (by rw [hu, map_one, map_one]) map_mul' := fun a b => hinj (by rw [hu, map_mul, map_mul, hu, hu]) }`. Use `⟨ξ0.toHomUnits, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `hval : (fun g => ((ξ0.toHomUnits g : (N.O i)ˣ) : N.O i)) = u` using `funext fun g => rfl`.
+
+Rewrite using `[hval, continuous_iff_continuousAt]`. Introduce `g`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff, (N.O_adic i).hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `k _`. Take `⟨δ, hδ, hk⟩` from `mem_pow_of_norm_lt N A i k`.
+
+Establish `hcd : ∀ᶠ x in nhds g, ‖d x - d g‖ < δ`. Use `(hd.tendsto g)` as an intermediate fact. Conclude with `(Metric.tendsto_nhds.1 this δ hδ).mono fun x hx => by simpa [dist_eq_norm] using hx`. Use `filter_upwards [hcd] with x hx`. Apply `hk` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, hu, hu]`. Conclude with `hx`. Conclude with `hu g`.
+-/
 theorem exists_integral_char (d : G H.E N.Om →* Qbar (N.l i)) (hd : Continuous d) (S : Set (G H.E N.Om))
     (hS : closure S = Set.univ) (hv : ∀ σ ∈ S, d σ ∈ Set.range (A.iotaQ i)) :
     ∃ ξ : G H.E N.Om →* (N.O i)ˣ, Continuous (fun g => ((ξ g : (N.O i)ˣ) : N.O i)) ∧
@@ -187,6 +262,15 @@ section Main
 
 open Formalism.L2.Host
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `D.R.t_odd`. Establish `hs : ((-(D.R.t : ℝ) / 2 : ℝ) : ℂ) = -(v : ℂ) - 1 / 2`. Rewrite using `[hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨h1, h3⟩` from `hA.2.1 τ`. Rewrite `hz` using `[h3]`. Break down `h1 with h1 | h1` into its components or cases. Rewrite `hz` using `[h1]`. Simplify using `only [Multiset.map_singleton, Multiset.mem_singleton] at hz`.
+
+Substitute `hz` using the available equality. Conclude with `⟨-(v : ℤ) - 1, by rw [hs]; push_cast; ring⟩`. Rewrite `hz` using `[h1]`. Simplify using `only [Multiset.map_singleton, Multiset.mem_singleton] at hz`. Substitute `hz` using the available equality.
+
+Conclude with `⟨-(v : ℤ), by rw [hs]; push_cast; ring⟩`.
+-/
 theorem inf_int (D : D7) (hA : Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut) (τ : D.host.E →+* ℂ) (z : ℂ)
     (hz : z ∈ D.naut.infG D.naut.etaTinv τ) : ∃ k : ℤ, z + ((-(D.R.t : ℝ) / 2 : ℝ) : ℂ) = (k : ℂ) := by
   obtain ⟨v, hv⟩ := D.R.t_odd
@@ -206,6 +290,17 @@ theorem inf_int (D : D7) (hA : Formalism.MainNotions.SumRepresentations.At.TieAu
     subst hz
     exact ⟨-(v : ℤ), by rw [hs]; push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `D.R.t_odd`. Establish `hu` using `(D.naut.etaTinv_def w).1`. Establish `hU` using `(T.unr_iff _ w).1 hu`. Establish `hf` using `T.frob _ w hU`. Rewrite `hf`, `hU` using `[T.etaTinv]`.
+
+Establish `hE : C.eta.UnrAt w` using `by simpa using hU.inv`. Take `⟨y, hy⟩` from `V.eta w hE`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0`. Use `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot` as an intermediate fact. Conclude with `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+
+Establish `hn : (Ideal.absNorm w.asIdeal : ℕ) = normV w` using `rfl`. Establish `hy' : D.what₂.embLL (y : D.what₂.LL) = ((C.eta.val w : ℂˣ) : ℂ) * ((normV w : ℕ) : ℂ) ^ (-(((1 / 2 : ℝ)) : ℂ))`. Establish `e : D.what₂.embLL (y : D.what₂.LL) = C.eta.valTw (1 / 2) w` using `hy`. Rewrite using `[e, HChar.valTw, hn]`. Use `⟨(y : D.what₂.LL) * (((normV w : ℕ) : D.what₂.LL)⁻¹) ^ v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[D.naut.frobEig_tw _ _ hu, hf, Multiset.map_singleton, HChar.val_inv, inv_inv]`. Use `congr 1`. Rewrite using `[map_mul, map_pow, map_inv₀, map_natCast, hy', mul_assoc]`. Use `congr 1`. Establish `e1 : (((-(D.R.t : ℝ) / 2 : ℝ)) : ℂ) = -(((1 / 2 : ℝ)) : ℂ) + -(v : ℂ)`.
+
+Rewrite using `[hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Complex.cpow_add _ _ hq, Complex.cpow_neg _ (v : ℂ), Complex.cpow_natCast, inv_pow]`.
+-/
 theorem frob_value (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied D C nch)
     (T : NCharTied D C nch Tp) (V : ValLL0 D C) (w : PlE D.host) :
     ∃ x : D.what₂.LL, D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2)) =
@@ -238,6 +333,23 @@ theorem frob_value (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTied D 
 
 end Main
 
+/- English proof (translation)
+Introduce `D C nch Tp T V ht h2 h5 i`. Establish `hA : Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut` using `ht.2.1`. Take `⟨ρ, hρ, hwd, -⟩` from `(h2 i).2.2 D.naut.etaTinv (-(D.R.t : ℝ) / 2) (inf_int D hA)`. Establish `hun : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.unr (D.naut.wdOf i ρ w)` using `fun w hw => by`. Rewrite using `[hwd w hw]`.
+
+Conclude with `(D.naut.unr_tw _ _).2 (D.naut.etaTinv_def w).1`. Establish `hfrob : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → ∀ (B : ValuationSubring D.nd.Om) (σ : G D.host.E D.nd.Om), IsPlaceOver (F` using `D.host.E) B w → IsFrob (F := D.host.E) B (normV w) σ → D.naut.frobEig (D.naut.lpTw (D.naut.locG D.naut.etaTinv w) (-(D.R.t : ℝ) / 2)) = {D.naut.iotaQC i (((ρ σ : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0)} := by`. Introduce `w hw B σ hB hσ`. Establish `e` using `D.naut.wdOf_frob i ρ w hw hρ (hun w hw) B σ hB hσ`. Take `⟨a, ha⟩` from `Multiset.card_eq_one.1 ((D.naut.frobEig_card _ (hun w hw)).trans (D.naut.wdOf_dim i ρ w))`.
+
+Rewrite `e` using `[ha, charpoly_fin_one]`. Simplify using `only [Multiset.map_singleton, Multiset.prod_singleton, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C] at e`. Establish `e2` using `C_injective (sub_right_injective e)`. Rewrite using `[← hwd w hw, ha]`. Conclude with `congrArg _ e2.symm`.
+
+Set `d : G D.host.E D.nd.Om →* Qbar (D.nd.l i)` to `(Units.coeHom _).comp (Matrix.GeneralLinearGroup.det.comp ρ)`. Establish `hde : ∀ g, d g = ((ρ g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0` using `fun g => Matrix.det_fin_one _`. Establish `hd : Continuous d`. Establish `: (d : G D.host.E D.nd.Om → Qbar (D.nd.l i)) = fun g => ((ρ g : GL (Fin 1) (Qbar (D.nd.l i))) : Matrix (Fin 1) (Fin 1) (Qbar (D.nd.l i))) 0 0` using `funext hde`. Rewrite using `[this]`.
+
+Conclude with `(continuous_apply_apply 0 0).comp hρ`. Establish `hfin : (placesOver D.host.E (D.nd.l i)).Finite` using `GlobalTheory.SplitRead.finite_placesOver _ (Fact.out : (D.nd.l i).Prime).ne_zero`. Establish `hS` using `h5.2.2.1 _ hfin`. Take `⟨ξ, hξc, hξ⟩` from `exists_integral_char D.nd D.naut i d hd _ hS (by`. Introduce and unpack `σ ⟨w, hw, -, B, hB, hσ⟩`.
+
+Take `⟨x, hx⟩` from `frob_value D C nch Tp T V w`. Establish `e` using `hfrob w hw B σ hB hσ`. Rewrite `e` using `[hx, Multiset.singleton_inj, ← D.naut.iota_LL i x, ← hde]`. Conclude with `⟨_, (D.naut.iotaQC i).injective e⟩)`. Use `⟨ξ, hξc, fun w hw => ⟨fun σ hσ => ?_, fun B σ hB hσ => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1` using `(D.naut.wdOf_unr i ρ w hw hρ).1 (hun w hw) σ hσ`. Apply `Units.ext` to reduce the goal to its premises. Apply `iota_inj D.nd D.naut i` to reduce the goal to its premises. Rewrite using `[hξ, hde, h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hfrob w hw B σ hB hσ, ← hde, ← hξ]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (D : D7) (C : Formalism.L2.Host.CharFrame D) (nch : NChoice D) (Tp : Formalism.L2.Host.TupTied D C nch), Formalism.L2.Host.NCharTied D C nch Tp → Formalism.L2.Host.ValLL0 D C → Formalism.MainNotions.SumRepresentations.tie0 D → Formalism.MainNotions.SumRepresentations.adm2 D → Formalism.MainNotions.SumRepresentations.adm5 D → XiOverO D.nd D.naut := by
   intro D C nch Tp T V ht h2 h5 i
   have hA : Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut := ht.2.1

@@ -15,6 +15,15 @@ open GlobalTheory.LocGL.SupportUnique
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `f'` to `GlobalTheory.OneBlockCell.valEquiv (n := b) a rfl ha`. Establish `hf' : ∀ i, f' ⟨a, i⟩ = i` using `fun i => rfl`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ f f' W).1 ρ`. Use `(IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective).trans ?_` and prove the remaining obligations. Establish `h1 : ∀ g : GL (Fin (b a)) k, leviEmb k f' (Pi.mulSingle a g) = g` using `fun g => by`.
+
+Use extensionality with `i j`. Use `conv_lhs => rw [← hf' i, ← hf' j]`. Rewrite using `[leviEmb_apply_same]`. Simplify using the standard rewrite rules. Establish `law : ∀ (F : IndSp f' ρ) (g : GL (Fin (b a)) k), F.1.1 g = ρ (Pi.mulSingle a g) (F.1.1 1)`.
+
+Introduce `F g`. Establish `h4` using `parInd_law f' _ F ⟨_, leviEmb_mem_parab k f' (Pi.mulSingle a g)⟩ 1`. Rewrite `h4` using `[leviProj_leviEmb, GlobalTheory.OneBlockCell.deltaHalf_eq_one_of_single a ha, Units.val_one, one_smul]`. Simplify `h4` using `only [h1, mul_one]`. Set `ι : (parInd f' ρ).IntertwiningMap (ρ.comp (MonoidHom.mulSingle (fun j => GL (Fin (b j)) k) a) : Representation ℂ (GL (Fin (b a)) k) W)` to `{ toFun := fun F => F.1.1 1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl isIntertwining' := fun g => LinearMap.ext fun F => by show F.1.1 (1 * g) = ρ (Pi.mulSingle a g) (F.1.1 1)`.
+
+Rewrite using `[one_mul, law] }`. Use `.of_injective ι fun F G h => Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Establish `h' : F.1.1 1 = G.1.1 1` using `h`. Rewrite using `[law F, law G, h']`.
+-/
 private theorem parInd_single {W : Type} [AddCommGroup W] [Module ℂ W] {r : ℕ} {b : Fin r → ℕ} (a : Fin r)
     (ha : ∀ j, j ≠ a → b j = 0) (f : (Σ j, Fin (b j)) ≃ Fin (b a))
     (ρ : Representation ℂ (Levi k fun j => Fin (b j)) W) :
@@ -46,6 +55,11 @@ private theorem parInd_single {W : Type} [AddCommGroup W] [Module ℂ W] {r : �
   have h' : F.1.1 1 = G.1.1 1 := h
   rw [law F, law G, h']
 
+/- English proof (translation)
+Take `⟨d, y⟩` from `x`. Choose the witnesses or unpack the hypotheses as in `rfl : (q a).1 = d := by`. Rewrite `hq` using `[Finset.sum_eq_single a (fun j _ hj => ha j hj) (by simp)]`. Then use the resulting hypothesis. Establish `h1` using `jhMult_ne_zero_iff.1 h`. Take `⟨ψ⟩` from `nonempty_equiv_of_isSubquotient (q a).2.rep.irr y.rep.irr ((GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun j => (q j).rep) (fun j => (q j).2.rep.irr) a).trans ((isSubquotient_comp h1 _).trans (isSubquotient_jac_single (b := fun j => (q j).1) a ha _ …`.
+
+Conclude with `(IrrGL.of_rep (q a)).symm.trans ((IrrGL.of_eq_of.2 ⟨ψ.symm⟩).trans (IrrGL.of_rep ⟨_, y⟩))`.
+-/
 private theorem eq_of_jm {r : ℕ} (q : Fin r → IrrGL k) (a : Fin r) (ha : ∀ j, j ≠ a → (q j).1 = 0) (x : IrrGL k)
     (hq : ∑ j, (q j).1 = x.1) (h : jm q hq x.rep ≠ 0) : q a = x := by
   obtain ⟨d, y⟩ := x
@@ -57,6 +71,11 @@ private theorem eq_of_jm {r : ℕ} (q : Fin r → IrrGL k) (a : Fin r) (ha : ∀
       ((isSubquotient_comp h1 _).trans (isSubquotient_jac_single (b := fun j => (q j).1) a ha _ _)))
   exact (IrrGL.of_rep (q a)).symm.trans ((IrrGL.of_eq_of.2 ⟨ψ.symm⟩).trans (IrrGL.of_rep ⟨_, y⟩))
 
+/- English proof (translation)
+Take `⟨d, y⟩` from `x`. Choose the witnesses or unpack the hypotheses as in `rfl : (q a).1 = d := by`. Rewrite `hq` using `[Finset.sum_eq_single a (fun j _ hj => ha j hj) (by simp)]`. Then use the resulting hypothesis. Establish `h1` using `jhMult_ne_zero_iff.1 h`. Take `⟨ψ⟩` from `nonempty_equiv_of_isSubquotient y.rep.irr (q a).2.rep.irr (isSubquotient_factor (fun j => (q j).rep) a y.rep.irr (h1.trans (parInd_single (b := fun j => (q j).1) a ha _ _)))`.
+
+Conclude with `(IrrGL.of_rep (q a)).symm.trans ((IrrGL.of_eq_of.2 ⟨ψ⟩).trans (IrrGL.of_rep ⟨_, y⟩))`.
+-/
 private theorem eq_of_jh {r : ℕ} (q : Fin r → IrrGL k) (a : Fin r) (ha : ∀ j, j ≠ a → (q j).1 = 0) (x : IrrGL k)
     (hq : ∑ j, (q j).1 = x.1) (h : jhMult x.rep (prodIrr q hq) ≠ 0) : q a = x := by
   obtain ⟨d, y⟩ := x
@@ -68,6 +87,15 @@ private theorem eq_of_jh {r : ℕ} (q : Fin r → IrrGL k) (a : Fin r) (ha : ∀
       (h1.trans (parInd_single (b := fun j => (q j).1) a ha _ _)))
   exact (IrrGL.of_rep (q a)).symm.trans ((IrrGL.of_eq_of.2 ⟨ψ⟩).trans (IrrGL.of_rep ⟨_, y⟩))
 
+/- English proof (translation)
+Take `⟨hd, f, hf⟩` from `h`. Take `⟨hd', f', hf'⟩` from `h'`. Establish `hτ : (piTensor fun j => (![y', z'] j).rep).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (![y', z'] j).2.rep`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible x.2.rep.irr`. Take `⟨v, hv⟩` from `exists_ne (0 : x.2.rep.V)`.
+
+Establish `h1` using `GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac (stdBlocks (fun a => (![y', z'] a).1) hd') hτ f' ⟨v, fun e => hv (hf' (e.trans (map_zero f').symm))⟩`. Establish `h2 : jm ![y', z'] hd' (prodIrr ![y, z] hd) ≠ 0` using `jhMult_ne_zero_iff.2 ((jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1)).trans (GlobalTheory.JacquetExact.isSubquotient_jac _ (isSmooth_prodIrr _ _) (.of_injective f hf)))`. Take `⟨s, hr, hc, hrow, hcol⟩` from `UpperTheory.Lit.Cas.cells hG hBZ k 2 x.1 ![y, z] hd ![y', z'] hd' h2`. Use `⟨s, hr, hc, hrow, hcol, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Take `⟨A, hA, w, hwA, hwP⟩` from `(UpperTheory.Lit.Full.piece hG hBZ k z Pᶜ (s 1) (hr 1) (hrow 1)).1 hz (Nat.pos_of_ne_zero hne)`. Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_hasSupport hBZ hG (s 0 0)`. Take `⟨C, hC, hCP⟩` from `hy'`. Establish `h3 : HasSupport y'.rep (∑ i, ![B, A] i)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (y := fun i => s i 0) (hd := hc 0) (fun i => by fin_cases i; exacts [hB, hA]) y'.2.rep.irr (jhMult_ne_zero_iff.1 (hcol 0))`. Establish `h4` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ hC h3`.
+
+Use `hwP (hCP w ?_)` and prove the remaining obligations. Rewrite using `[h4, Fin.sum_univ_two]`. Conclude with `Multiset.mem_add.2 (Or.inr hwA)`.
+-/
 private theorem cell (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {P : Set (IrrGL k)} {x y z y' z' : IrrGL k} (h : Emb x y z) (h' : Emb x y' z') (hy' : SuppIn y' P)
     (hz : FirstIn z Pᶜ) :
@@ -102,6 +130,13 @@ private theorem cell (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalT
 
 end
 
+/- English proof (translation)
+Introduce `hG hBZ k _ _ _ _ P x y z y' z' h h' hy hy' hz hz'`. Take `⟨s, hr, hc, hrow, hcol, h10⟩` from `cell hG hBZ h h' hy' hz`. Take `⟨t, hr', hc', -, -, h10'⟩` from `cell hG hBZ h' h hy hz'`. Establish `r0 : (s 0 0).1 + (s 0 1).1 = y.1` using `(Fin.sum_univ_two fun j => (s 0 j).1).symm.trans (hr 0)`. Establish `c0 : (s 0 0).1 + (s 1 0).1 = y'.1` using `(Fin.sum_univ_two fun i => (s i 0).1).symm.trans (hc 0)`.
+
+Establish `r0' : (t 0 0).1 + (t 0 1).1 = y'.1` using `(Fin.sum_univ_two fun j => (t 0 j).1).symm.trans (hr' 0)`. Establish `c0' : (t 0 0).1 + (t 1 0).1 = y.1` using `(Fin.sum_univ_two fun i => (t i 0).1).symm.trans (hc' 0)`. Establish `h01 : (s 0 1).1 = 0` using `by omega`. Establish `hoff : ∀ i j, j ≠ i → (s i j).1 = 0`. Introduce `i j hij`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [absurd rfl hij, h01, h10, absurd rfl hij]`. Establish `key : ∀ i, ![y, z] i = ![y', z'] i` using `fun i => (eq_of_jm (s i) i (hoff i) _ (hr i) (hrow i)).symm.trans (eq_of_jh (fun j => s j i) i (fun j hj => hoff j i hj.symm) _ (hc i) (hcol i))`. Conclude with `⟨key 0, key 1⟩`.
+-/
 theorem UpperTheory.Lit.Full.data :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (P : Set (IrrGL k)) (x y z y' z' : IrrGL k), Emb x y z → Emb x y' z' → SuppIn y P → SuppIn y' P → FirstIn z Pᶜ → FirstIn z' Pᶜ → y = y' ∧ z = z' := by
   intro hG hBZ k _ _ _ _ P x y z y' z' h h' hy hy' hz hz'

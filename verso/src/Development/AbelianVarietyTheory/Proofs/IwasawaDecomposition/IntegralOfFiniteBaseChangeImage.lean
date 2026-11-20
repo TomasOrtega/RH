@@ -3,6 +3,13 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T U C F K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ ω p hp h`. Use `letI : Algebra (U ⊗[T] C) (L ⊗[F] K) := φ.toAlgebra`. Establish `hmap : algebraMap (U ⊗[T] C) (L ⊗[F] K) = φ` using `rfl`. Use `haveI : IsScalarTower U (U ⊗[T] C) (L ⊗[F] K) := by`. Use `IsScalarTower.of_algebraMap_eq fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmap]`. Express the relevant statement in the definitionally equal form `algebraMap U (L ⊗[F] K) u = φ (u ⊗ₜ 1)`. Rewrite using `[hφ, map_one]`. Both sides reduce to the same expression. Establish `hint : IsIntegral (U ⊗[T] C) ω` using `⟨p, hp, h⟩`.
+
+Use `haveI : Algebra.IsIntegral U (U ⊗[T] C) := inferInstance`. Conclude with `isIntegral_trans ω hint`.
+-/
 theorem integral_of_finite_base_change_image : ∀ (T U C F K L : Type) [CommRing T] [IsDomain T] [CommRing U] [IsDomain U] [CommRing C] [IsDomain C] [Field F] [Field K] [Field L] [Algebra T U] [Algebra T C] [Algebra T F] [IsFractionRing T F] [Algebra C K] [IsFractionRing C K] [Algebra U L] [IsFractionRing U L] [Algebra T K] [Algebra F K] [IsScalarTower T C K] [IsScalarTower T F K] [Algebra T L] [Algebra F L] [IsScalarTower T U L] [IsScalarTower T F L] [Module.Finite T C] (φ : U ⊗[T] C →+* L ⊗[F] K), (∀ u c, φ (u ⊗ₜ c) = algebraMap U L u ⊗ₜ algebraMap C K c) → ∀ (ω : L ⊗[F] K) (p : Polynomial (U ⊗[T] C)), p.Monic → p.eval₂ φ ω = 0 → IsIntegral U ω := by
   intro T U C F K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ ω p hp h
   letI : Algebra (U ⊗[T] C) (L ⊗[F] K) := φ.toAlgebra

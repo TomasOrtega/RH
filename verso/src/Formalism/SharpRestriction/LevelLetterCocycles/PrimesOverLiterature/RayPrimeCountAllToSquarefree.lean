@@ -12,6 +12,9 @@ def Stmt : Prop :=
         ∀ Y : ℝ, 1 ≤ Y → C * Real.log (m : ℝ) ^ 2 ≤ Real.log Y →
           Y ^ (1 - ε') ≤ (count K m Y : ℝ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.prime_three, rfl, dvd_refl _⟩`.
+-/
 example : (3 : ℕ).Prime ∧ 3 % 4 = 3 ∧ 4 * 3 ∣ (12 : ℕ) := ⟨Nat.prime_three, rfl, dvd_refl _⟩
 
 end Formalism.MainNotions.N.Lit.RayClassPrimeCountSquarefree

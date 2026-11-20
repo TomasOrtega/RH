@@ -13,6 +13,15 @@ section LinAlg
 
 variable {G V V' : Type*} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hρ`. Use `⟨?_, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨x, y, hxy⟩` from `hρ.toNontrivial.exists_pair_ne`. Assume the negation of the conclusion as `hV`.
+
+Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hxy (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Break down `hρ.eq_bot_or_eq_top ⟨S, fun g v hv => hS g v hv⟩ with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h)`.
+
+Introduce and unpack `⟨hV, H⟩`. Establish `hne : (⊥ : Subrepresentation ρ) ≠ ⊤` using `fun h => bot_ne_top (α := Submodule ℂ V) (congrArg Subrepresentation.toSubmodule h)`. Use `{ exists_pair_ne := ⟨⊥, ⊤, hne⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Break down `H S.toSubmodule (fun g v hv => S.apply_mem_toSubmodule g hv) with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`.
+
+Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+-/
 private theorem irr_iff (ρ : Representation ℂ G V) :
     ρ.IsIrreducible ↔ Nontrivial V ∧
       ∀ S : Submodule ℂ V, (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤ := by
@@ -34,6 +43,15 @@ private theorem irr_iff (ρ : Representation ℂ G V) :
     · exact Or.inl (Subrepresentation.toSubmodule_injective h)
     · exact Or.inr (Subrepresentation.toSubmodule_injective h)
 
+/- English proof (translation)
+Take `⟨hV, H⟩` from `(irr_iff ρ).1 hρ`. Use `(irr_iff ρ').2 ⟨e.injective.nontrivial, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ g, ∀ v ∈ S.comap (e : V →ₗ[ℂ] V'), ρ g v ∈ S.comap (e : V →ₗ[ℂ] V')`. Introduce `g v hv`. Establish `hv' : e v ∈ S` using `hv`.
+
+Use `show e (ρ g v) ∈ S`. Rewrite using `[he]`. Conclude with `hS g _ hv'`. Break down `H _ hinv with h | h` into its components or cases. Use `left`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `: e.symm v ∈ S.comap (e : V →ₗ[ℂ] V')` using `by simpa using hv`. Rewrite `this` using `[h, Submodule.mem_bot]`. Simplify using `using this`.
+
+Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: e.symm v ∈ S.comap (e : V →ₗ[ℂ] V')` using `by rw [h]; trivial`. Simplify using `using this`.
+-/
 private theorem irr_of_equiv {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} (e : V ≃ₗ[ℂ] V')
     (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (hρ : ρ.IsIrreducible) : ρ'.IsIrreducible := by
   obtain ⟨hV, H⟩ := (irr_iff ρ).1 hρ
@@ -57,6 +75,15 @@ private theorem irr_of_equiv {ρ : Representation ℂ G V} {ρ' : Representation
     have : e.symm v ∈ S.comap (e : V →ₗ[ℂ] V') := by rw [h]; trivial
     simpa using this
 
+/- English proof (translation)
+Take `⟨hV, H⟩` from `(irr_iff ρ).1 hρ`. Use `(irr_iff ρ.dual).2 ⟨inferInstance, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hT` using `H S.dualCoannihilator (fun g v hv => ?_)`. Break down `hT with h | h` into its components or cases. Use `right`.
+
+Use `Subspace.dualCoannihilator_dualAnnihilator_eq (W := S)` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Use `left`.
+
+Use `Subspace.dualCoannihilator_dualAnnihilator_eq (W := S)` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Rewrite `hv`, the goal using `[Submodule.mem_dualCoannihilator]`.
+
+Introduce `f hf`. Use `hv _ (hS g⁻¹ f hf)` as an intermediate fact. Simplify `this` using `[Representation.dual_apply, Module.Dual.transpose_apply]`.
+-/
 private theorem irr_dual [FiniteDimensional ℂ V] {ρ : Representation ℂ G V} (hρ : ρ.IsIrreducible) :
     ρ.dual.IsIrreducible := by
   obtain ⟨hV, H⟩ := (irr_iff ρ).1 hρ
@@ -78,11 +105,19 @@ private theorem irr_dual [FiniteDimensional ℂ V] {ρ : Representation ℂ G V}
     have := hv _ (hS g⁻¹ f hf)
     simpa [Representation.dual_apply, Module.Dual.transpose_apply] using this
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), ← Matrix.det_eq_prod_roots_charpoly, LinearMap.det_toMatrix]`.
+-/
 private theorem prod_roots [FiniteDimensional ℂ V] (f : Module.End ℂ V) :
     f.charpoly.roots.prod = LinearMap.det f := by
   rw [← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), ← Matrix.det_eq_prod_roots_charpoly,
     LinearMap.det_toMatrix]
 
+/- English proof (translation)
+Establish `e : ∀ k : Module.End ℂ (Fin n → ℂ), (LinearMap.toMatrix' k).charpoly = k.charpoly` using `fun k => by`. Rewrite using `[← LinearMap.toMatrix_eq_toMatrix', LinearMap.charpoly_toMatrix]`. Establish `hM : LinearMap.toMatrix' f * LinearMap.toMatrix' g = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `: f ∘ₗ g = LinearMap.id` using `hfg`.
+
+Rewrite using `[this, LinearMap.toMatrix'_id]`. Establish `h1` using `Formalism.L2.NR.charpoly_inv_of_eq (LinearMap.toMatrix' f) (IsUnit.of_mul_eq_one _ hM) s (by rw [← hs]; exact e f)`. Rewrite `h1` using `[Matrix.inv_eq_right_inv hM]`. Rewrite using `[← h1]`. Conclude with `(e g).symm`.
+-/
 private theorem charpoly_inv_prod {n : ℕ} (f g : Module.End ℂ (Fin n → ℂ)) (hfg : f * g = 1)
     (s : Multiset ℂ) (hs : f.charpoly = (s.map fun μ => X - C μ).prod) :
     g.charpoly = (s.map fun μ => X - C μ⁻¹).prod := by
@@ -106,15 +141,30 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `WD.iso_std a`. Conclude with `⟨(WD.std a).1, (WD.std a).2, WD.sound (WD.iso_std a).symm, irr_of_equiv e he ha⟩`.
+-/
 private theorem isIrrWD_mk (a : WDRep h V) (ha : a.ρ.IsIrreducible) : IsIrrWD (WD.mk a) := by
   obtain ⟨e, he, -⟩ := WD.iso_std a
   exact ⟨(WD.std a).1, (WD.std a).2, WD.sound (WD.iso_std a).symm, irr_of_equiv e he ha⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(WD.std a).1, (WD.std a).2, WD.sound (WD.iso_std a).symm, fun σ hσ => (WD.iso_std a).ρ_eq_one (ha σ hσ)⟩`.
+-/
 private theorem isTameWD_mk (a : WDRep h V)
     (ha : ∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → a.ρ σ = 1) : IsTameWD (WD.mk a) :=
   ⟨(WD.std a).1, (WD.std a).2, WD.sound (WD.iso_std a).symm,
     fun σ hσ => (WD.iso_std a).ρ_eq_one (ha σ hσ)⟩
 
+/- English proof (translation)
+Take `⟨hV, H⟩` from `(irr_iff a.ρ).1 ha`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`. Establish `hinv : ∀ σ, ∀ v ∈ LinearMap.ker a.N, a.ρ σ v ∈ LinearMap.ker a.N`. Introduce `σ v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+
+Use `a.comm_apply σ v` as an intermediate fact. Rewrite `this` using `[hv, map_zero]`. Conclude with `(smul_eq_zero.mp this.symm).resolve_left (zpow_ne_zero _ hq)`. Break down `H _ hinv with h0 | h0` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hu : IsUnit a.N` using `(LinearMap.isUnit_iff_ker_eq_bot _).2 h0`. Take `⟨k, hk⟩` from `a.nilpotent`. Use `hu.pow k` as an intermediate fact. Rewrite `this` using `[hk]`. Conclude with `not_isUnit_zero this`.
+
+Conclude with `LinearMap.ker_eq_top.mp h0`.
+-/
 private theorem monodromy_zero_of_irreducible (a : WDRep h V) (ha : a.ρ.IsIrreducible) : a.N = 0 := by
   obtain ⟨hV, H⟩ := (irr_iff a.ρ).1 ha
   have hq : ((normV w : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot
@@ -133,6 +183,9 @@ private theorem monodromy_zero_of_irreducible (a : WDRep h V) (ha : a.ρ.IsIrred
     exact not_isUnit_zero this
   · exact LinearMap.ker_eq_top.mp h0
 
+/- English proof (translation)
+Take `⟨hV, H⟩` from `(irr_iff b.ρ).1 hb`. Use `(irr_iff _).2 ⟨hV, fun S hS => H S fun σ v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `S.smul_mem ((ξ σ : ℂ)⁻¹) (hS σ v hv)`. Simplify `h1` using `[smul_smul]`.
+-/
 private theorem irr_twist (b : WDRep h V) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ)
     (hb : b.ρ.IsIrreducible) : (b.twist ξ hξ).ρ.IsIrreducible := by
   obtain ⟨hV, H⟩ := (irr_iff b.ρ).1 hb
@@ -145,6 +198,39 @@ end WDFacts
 end UpperTheory.Zero.LLC.WDB
 
 open UpperTheory.Zero.LLC.WDB in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h V`. Take `⟨n, a, rfl⟩` from `V.exists_rep`. Establish `hcoe : ∀ (t : Ine (F` using `E) A) (x : WD h), x.inePol (t : G E Ω) = x.charPol (ineIncl h t) := fun t x => WD.inePol_of_mem_Ine x t.2`. Use `⟨?_, ?_, ⟨frob h, deg_frob⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨(Units.map (LinearMap.det : Module.End ℂ (Fin n → ℂ) →* ℂ)).comp a.ρ.toHomUnits, fun σ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WD.eig_mk, prod_roots]`. Both sides reduce to the same expression. Introduce `φ δ δ' hφ h1 h2`. Use `MonoidHom.ext fun σ => ?_` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul hφ σ`.
+
+Rewrite using `[hτ, map_mul, map_mul, map_zpow, map_zpow, h1, h2]`. Introduce and unpack `⟨m, b, hb, hirr⟩`. Rewrite using `[← hb]`. Take `⟨hV, -⟩` from `(irr_iff b.ρ).1 hirr`. Use `⟨(WD.monodromyZero_ofWeilDeligneRepClass_iff b).2 (monodromy_zero_of_irreducible b hirr), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WD.lpDim_mk]`. Conclude with `Module.finrank_pos`. Rewrite using `[WD.lpDual_mk]`. Conclude with `isIrrWD_mk _ (irr_dual hirr)`. Introduce and unpack `⟨m, b, hb, hw⟩`.
+
+Rewrite using `[← hb, WD.lpDual_mk]`. Use `isTameWD_mk _ fun σ hσ => ?_` and prove the remaining obligations. Establish `h1 : b.ρ σ⁻¹ = 1`. Rewrite using `[← one_mul (b.ρ σ⁻¹), ← hw σ hσ, ← map_mul, mul_inv_cancel, map_one, hw σ hσ]`. Rewrite using `[WDRep.dual_ρ, h1]`.
+
+Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[WD.lpDual_mk, WD.lpDim_mk, WD.lpDim_mk, Subspace.dual_finrank_eq]`. Introduce `σ`. Rewrite using `[WD.lpDual_mk, WD.eig_mk, WD.eig_mk, WDRep.dual_ρ, GlobalTheory.WeilDeligne.LabDual.charpoly_dualMap, prod_roots, prod_roots]`.
+
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Introduce `t m hm`. Rewrite `hm` using `[hcoe, WD.charPol_mk]`. Establish `hm' : (a.ρ (ineIncl h t)).charpoly = ((m.map fun z : ℂˣ => (z : ℂ)).map fun z => X - C z).prod`.
+
+Establish `hb : (do let x ← m; pure (x : ℂ) : Multiset ℂ) = m.map fun z : ℂˣ => (z : ℂ)` using `Multiset.bind_singleton _ _`. Rewrite using `[hm, hb]`. Use `⟨?_, ?_, fun ξ hξ => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.eig_mk, hm', roots_multiset_prod_X_sub_C]`. Conclude with `(map_multiset_prod (Units.coeHom ℂ) m).symm`.
+
+Rewrite using `[hcoe, WD.lpDual_mk, WD.charPol_mk, WDRep.dual_ρ, GlobalTheory.WeilDeligne.LabDual.charpoly_dualMap, charpoly_inv_prod (a.ρ (ineIncl h t)) (a.ρ (ineIncl h t)⁻¹) (by rw [← map_mul, mul_inv_cancel, map_one]) _ hm', Multiset.map_map]`. Simplify using the standard rewrite rules. Rewrite using `[hcoe, WD.lpTwist_mk, WD.charPol_mk, WDRep.twist_ρ]`. Rewrite using `[(IsAlgClosed.splits _).eq_prod_roots_of_monic (LinearMap.charpoly_monic _), GlobalTheory.RowTie.EigTwist.roots_charpoly_smul, hm', roots_multiset_prod_X_sub_C, Multiset.map_map, Multiset.map_map]`. Simplify using the standard rewrite rules.
+
+Introduce `ξ hξ`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `⟨m, b, hb, hirr⟩`. Rewrite using `[← hb, WD.lpTwist_mk]`.
+
+Conclude with `isIrrWD_mk _ (irr_twist b ξ hξ hirr)`. Introduce `σ`. Rewrite using `[WD.lpTwist_mk, WD.eig_mk, WD.eig_mk, WDRep.twist_ρ, prod_roots, prod_roots, LinearMap.det_smul, WD.lpDim_mk, mul_comm]`. Introduce `ξ' hξ' h''`. Rewrite using `[WD.lpTwist_mk, WD.lpTwist_mk, WD.lpTwist_mk]`.
+
+Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[smul_smul, mul_comm]`. Introduce and unpack `rfl`. Rewrite using `[WD.lpTwist_mk]`. Conclude with `WD.sound ⟨.refl _ _, fun σ v => by simp, fun v => rfl⟩`.
+
+Introduce `hξ'`. Rewrite using `[WD.lpTwist_mk, WD.lpDual_mk, WD.lpDual_mk, WD.lpTwist_mk]`. Use `WD.sound ⟨.refl _ _, fun σ f => ?_, fun f => rfl⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `hw ⟨m, b, hb, hb1⟩`. Rewrite using `[← hb, WD.lpTwist_mk]`. Use `isTameWD_mk _ fun σ hσ => ?_` and prove the remaining obligations. Simplify using `[hw σ hσ, hb1 σ hσ]`. Introduce and unpack `hpos ⟨m, b, hb, hb1⟩ ⟨m', c, hc, hc1⟩ σ hσ`.
+
+Rewrite `hc` using `[← hb, WD.lpTwist_mk]`. Rewrite `hpos` using `[← hb, WD.lpDim_mk]`. Establish `h1` using `(WD.mk_eq_mk.mp hc).ρ_eq_one (hc1 σ hσ)`. Rewrite `h1` using `[WDRep.twist_ρ, hb1 σ hσ]`. Establish `hV : Nontrivial (Fin m → ℂ)` using `Module.nontrivial_of_finrank_pos hpos`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : Fin m → ℂ)`. Establish `h2 : ((ξ σ : ℂ) - 1) • v = 0`. Rewrite using `[sub_smul, one_smul, sub_eq_zero]`. Simplify using `using LinearMap.congr_fun h1 v`. Conclude with `Units.ext (sub_eq_zero.mp ((smul_eq_zero.mp h2).resolve_right hv))`.
+-/
 theorem UpperTheory.Zero.LLC.wDBasic :
     UpperTheory.Zero.LLC.WDBasic := by
   intro E Ω _ _ _ _ _ A w h V

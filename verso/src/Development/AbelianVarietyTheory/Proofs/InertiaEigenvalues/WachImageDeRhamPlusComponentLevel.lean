@@ -22,9 +22,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulVR_tmul (T : LocLat G Qp LL O) (b : BdR) (x : T.V) (c : BdR) :
     mulVR T b (x ⊗ₜ[Qp] c) = x ⊗ₜ (b * c) := rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x c => rw [mulVR_tmul, mulVR_tmul, mulVR_tmul, mul_assoc]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem mulVR_mulVR (T : LocLat G Qp LL O) (b b' : BdR) (z : T.V ⊗[Qp] BdR) :
     mulVR T b (mulVR T b' z) = mulVR T (b * b') z := by
   induction z using TensorProduct.induction_on with
@@ -32,12 +38,18 @@ theorem mulVR_mulVR (T : LocLat G Qp LL O) (b b' : BdR) (z : T.V ⊗[Qp] BdR) :
   | tmul x c => rw [mulVR_tmul, mulVR_tmul, mulVR_tmul, mul_assoc]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x c => rw [mulVR_tmul, one_mul]`. Consider the case `add x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem mulVR_one (T : LocLat G Qp LL O) (z : T.V ⊗[Qp] BdR) : mulVR T 1 z = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
   | tmul x c => rw [mulVR_tmul, one_mul]
   | add x y hx hy => rw [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Consider the case `tmul x c => rw [mulVR_tmul, mulVR_tmul, mulVR_tmul, add_mul, TensorProduct.tmul_add]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mulVR_add (T : LocLat G Qp LL O) (b b' : BdR) (z : T.V ⊗[Qp] BdR) :
     mulVR T (b + b') z = mulVR T b z + mulVR T b' z := by
   induction z using TensorProduct.induction_on with
@@ -45,16 +57,29 @@ theorem mulVR_add (T : LocLat G Qp LL O) (b b' : BdR) (z : T.V ⊗[Qp] BdR) :
   | tmul x c => rw [mulVR_tmul, mulVR_tmul, mulVR_tmul, add_mul, TensorProduct.tmul_add]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]; abel
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x c => rw [mulVR_tmul, zero_mul, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [map_add, hx, hy, add_zero]`.
+-/
 theorem mulVR_zero (T : LocLat G Qp LL O) (z : T.V ⊗[Qp] BdR) : mulVR T 0 z = 0 := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
   | tmul x c => rw [mulVR_tmul, zero_mul, TensorProduct.tmul_zero]
   | add x y hx hy => rw [map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Rewrite using `[mulVR_mulVR, mulVR_mulVR, mul_comm]`.
+-/
 theorem mulVR_comm (T : LocLat G Qp LL O) (b b' : BdR) (z : T.V ⊗[Qp] BdR) :
     mulVR T b (mulVR T b' z) = mulVR T b' (mulVR T b z) := by
   rw [mulVR_mulVR, mulVR_mulVR, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, y, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨c, mulVR T b y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, mulVR_comm]`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mulVR_compKer (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) (b : BdR) {z : T.V ⊗[Qp] BdR}
     (hz : z ∈ compKer T ι) : mulVR T b z ∈ compKer T ι := by
   induction hz using Submodule.span_induction with
@@ -66,6 +91,11 @@ theorem mulVR_compKer (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) (b : BdR) 
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hz`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul x c`.
+
+Use `⟨x ⊗ₜ (⟨b * c, PD.Fil_mul _ _ _ _ hb c.2⟩ : ↥((PD.Fil (e + a)).restrictScalars Qp)), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem mulVR_FilV (T : LocLat G Qp LL O) {e a : ℤ} {b : BdR} (hb : b ∈ PD.Fil e) {z : T.V ⊗[Qp] BdR}
     (hz : z ∈ FilV PD (LL := LL) (V := T.V) a) : mulVR T b z ∈ FilV PD (LL := LL) (V := T.V) (e + a) := by
   obtain ⟨w, rfl⟩ := hz
@@ -76,10 +106,16 @@ theorem mulVR_FilV (T : LocLat G Qp LL O) {e a : ℤ} {b : BdR} (hb : b ∈ PD.F
     rfl
   | add x y hx hy => rw [map_add, map_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x ⊗ₜ (⟨c, hc⟩ : ↥((PD.Fil a).restrictScalars Qp)), rfl⟩`.
+-/
 theorem tmul_mem_FilV (T : LocLat G Qp LL O) {a : ℤ} (x : T.V) {c : BdR} (hc : c ∈ PD.Fil a) :
     x ⊗ₜ[Qp] c ∈ FilV PD (LL := LL) (V := T.V) a :=
   ⟨x ⊗ₜ (⟨c, hc⟩ : ↥((PD.Fil a).restrictScalars Qp)), rfl⟩
 
+/- English proof (translation)
+Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (mulVR_compKer T ι b hy) ?_` and prove the remaining obligations. Simplify using `using mulVR_FilV T hb hw`.
+-/
 theorem mulVR_sup (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) {a : ℤ} {b : BdR} (hb : b ∈ PD.Fil 0)
     {z : T.V ⊗[Qp] BdR} (hz : z ∈ compKer T ι ⊔ FilV PD (LL := LL) (V := T.V) a) :
     mulVR T b z ∈ compKer T ι ⊔ FilV PD (LL := LL) (V := T.V) a := by
@@ -106,10 +142,20 @@ def Gen (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) {N : Type} (Ψ : N → T
     Submodule LL (T.V ⊗[Qp] BdR) :=
   compKer T ι ⊔ Submodule.span LL {z | ∃ b ∈ PD.Fil 0, ∃ x, z = mulVR T b (Ψ x)}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, x, rfl⟩)`.
+-/
 theorem mem_gen (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) {N : Type} (Ψ : N → T.V ⊗[Qp] BdR)
     {b : BdR} (hb : b ∈ PD.Fil 0) (x : N) : mulVR T b (Ψ x) ∈ Gen PD T ι Ψ :=
   Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, x, rfl⟩)
 
+/- English proof (translation)
+Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz`. Use `clear hz`. Rewrite using `[map_add]`. Use `add_mem (Submodule.mem_sup_left (mulVR_compKer T ι b hy)) ?_` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨b', hb', x, rfl⟩` from `hx`. Rewrite using `[mulVR_mulVR]`. Conclude with `mem_gen T ι Ψ (by simpa using PD.Fil_mul _ _ _ _ hb hb') x`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mulVR_gen (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) {N : Type} (Ψ : N → T.V ⊗[Qp] BdR)
     {b : BdR} (hb : b ∈ PD.Fil 0) {z : T.V ⊗[Qp] BdR} (hz : z ∈ Gen PD T ι Ψ) :
     mulVR T b z ∈ Gen PD T ι Ψ := by
@@ -126,6 +172,23 @@ theorem mulVR_gen (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) {N : Type} (Ψ
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hz`. Use `clear hz`. It suffices to establish `h : ∃ (m : ℕ) (b : Fin m → BdR) (x : Fin m → N), (∀ j, b j ∈ PD.Fil 0) ∧ w - ∑ j, mulVR T (b j) (Ψ (x j)) ∈ compKer T ι by`. Take `⟨m, b, x, hb, h⟩` from `h`. Use `⟨m, b, x, hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[add_sub_assoc]`. Conclude with `add_mem hy h`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x, rfl⟩` from `hz`.
+
+Conclude with `⟨1, fun _ => b, fun _ => x, fun _ => hb, by simp⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, by simp⟩`. Consider the case `add z z' _ _ h h'`. Take `⟨m, b, x, hb, h⟩` from `h`. Take `⟨m', b', x', hb', h'⟩` from `h'`.
+
+Use `⟨m + m', Fin.append b b', Fin.append x x', fun j => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hb j`. Rewrite using `[Fin.append_right]`.
+
+Conclude with `hb' j`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Use `add_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `smul c z _ h`. Take `⟨m, b, x, hb, h⟩` from `h`. Use `⟨m, fun j => ι c * b j, x, fun j => by simpa using PD.Fil_mul _ _ _ _ (hι c) (hb j), ?_⟩` and prove the remaining obligations. Establish `h2 : c • ∑ j, mulVR T (b j) (Ψ (x j)) - ∑ j, mulVR T (ι c * b j) (Ψ (x j)) ∈ compKer T ι`.
+
+Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `sum_mem fun j _ => Submodule.subset_span ⟨c, mulVR T (b j) (Ψ (x j)), ?_⟩` and prove the remaining obligations. Rewrite using `[mulVR_mulVR]`. Use `add_mem (Submodule.smul_mem _ c h) h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gen_form (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) (hι : ∀ c, ι c ∈ PD.Fil 0) {N : Type}
     (Ψ : N → T.V ⊗[Qp] BdR) {z : T.V ⊗[Qp] BdR} (hz : z ∈ Gen PD T ι Ψ) :
     ∃ (m : ℕ) (b : Fin m → BdR) (x : Fin m → N), (∀ j, b j ∈ PD.Fil 0) ∧
@@ -169,6 +232,21 @@ theorem gen_form (T : LocLat G Qp LL O) (ι : LL →ₐ[Qp] BdR) (hι : ∀ c, �
 
 variable {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O] [Algebra Zl Ai]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _, fun Y => by rw [zero_smul, map_zero, mulVR_zero, sub_zero]; exact zero_mem _⟩`. Consider the case `add a a' ha ha'`. Take `⟨β, hβ, h⟩` from `ha`. Take `⟨β', hβ', h'⟩` from `ha'`.
+
+Use `⟨β + β', add_mem hβ hβ', fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, map_add, mulVR_add]`. Use `add_mem (h Y) (h' Y) using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `tmul o w`.
+
+Use `⟨ι (algebraMap O LL o) * ιdR w, by simpa using PD.Fil_mul _ _ _ _ (hι _) (hA w), fun Y => ?_⟩` and prove the remaining obligations. Proceed by induction on `Y using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero, map_zero, sub_zero]`. Conclude with `zero_mem _`. Consider the case `add Y Y' h h'`.
+
+Rewrite using `[smul_add, map_add, map_add, map_add]`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `tmul r t`. Proceed by induction on `r using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [TensorProduct.zero_tmul, smul_zero, map_zero, map_zero, sub_zero]`. Conclude with `zero_mem _`. Consider the case `add r r' h h'`. Rewrite using `[TensorProduct.add_tmul, smul_add, map_add, map_add, map_add]`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `tmul o' w'`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, Ct.βdR_tmul, Ct.βdR_tmul, mulVR_tmul]`. Use `Submodule.subset_span ⟨algebraMap O LL o, ((o' • t : ↥T.L.T) : T.V) ⊗ₜ[Qp] ιdR (w * w'), ?_⟩` and prove the remaining obligations. Rewrite using `[mulVR_tmul, TensorProduct.smul_tmul', map_mul, mul_assoc]`.
+
+Use `congr 2`. Rewrite using `[Submodule.coe_smul, Submodule.coe_smul, mul_smul, algebraMap_smul]`.
+-/
 theorem act_βdR {W : LocWach PD LL O v n} {RW : Type} [CommRing RW] [Algebra O RW]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
     {E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
@@ -210,6 +288,9 @@ theorem act_βdR {W : LocWach PD LL O v n} {RW : Type} [CommRing RW] [Algebra O 
 
 end Generic2
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `PD.one_mem`. Consider the case `succ k ih => rw [pow_succ]`. Simplify using `using PD.Fil_mul _ _ _ _ ih hb`.
+-/
 theorem deRham_fil_zero_pow_mem {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -234,6 +315,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
     {E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' hy hy' => rw [map_add]`. Conclude with `add_mem hy hy'`.
+
+Consider the case `tmul r t`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.zero_tmul, map_zero]`. Conclude with `zero_mem _`. Consider the case `add r r' hr hr' => rw [TensorProduct.add_tmul, map_add]`.
+
+Conclude with `add_mem hr hr'`. Consider the case `tmul o w`. Rewrite using `[Ct.βdR_tmul]`. Conclude with `tmul_mem_FilV T _ (hA w)`.
+-/
 theorem βdR_mem_FilV (Ct : CmpTie W E ιdR p1 tS zS) (T : LocLat G Qp LL O) (hA : ∀ w, ιdR w ∈ PD.Fil 0)
     (y : TW (O ⊗[Zl] Ai) T) : Ct.βdR T y ∈ FilV PD (LL := LL) (V := T.V) 0 := by
   induction y using TensorProduct.induction_on with
@@ -249,6 +337,51 @@ theorem βdR_mem_FilV (Ct : CmpTie W E ιdR p1 tS zS) (T : LocLat G Qp LL O) (hA
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `replace hS1 : ∀ x ∈ W.N T, ∃ y : TW (O ⊗[Zl] Ai) T, TWincl inclR T y = (inclR ((1 : O) ⊗ₜ[Zl] p1)) ^ m • E.jD T x := fun x hx => (hS1 x hx).imp fun y hy => hy.trans (GlobalTheory.NL.SandArb.map_mulLeft _ _)`. Use `replace hS2 : ∀ t : ↥T.L.T, (((inclR ((1 : O) ⊗ₜ[Zl] p1)) ^ m) ⊗ₜ[O] t : TW RW T) ∈ Submodule.span O {z : TW RW T | ∃ a : O ⊗[Zl] Ai, ∃ y ∈ W.N T, z = inclR a • E.jD T y} := fun t => by`. Simplify `hS2 t` using `only [GlobalTheory.NL.SandArb.map_mulLeft]`. Use `choose Y hY using fun x : ↥(W.N T) => hS1 x x.2`.
+
+Establish `hp0` using `hA p1`. Set `Ψ : ↥(W.N T) → T.V ⊗[Qp] BdR` to `fun x => mulVR T (u ^ m) (Ct.βdR T (Y x))`. Establish `hΨβ : ∀ x, Ct.βdR T (Y x) = mulVR T (ιdR p1 ^ m) (Ψ x)` using `fun x => by`. Simplify using `only [Ψ]`. Rewrite using `[mulVR_mulVR, ← mul_pow, hu, one_pow, mulVR_one]`.
+
+Use `⟨Ψ, fun x => ?_, fun z hz => ?_, fun x a hex => ?_⟩` and prove the remaining obligations. Use `mulVR_FilV T (deRham_fil_zero_pow_mem PD hu0 m) (βdR_mem_FilV Ct T hA (Y x))` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Apply `gen_form T ι hι Ψ` to reduce the goal to its premises. Establish `hA' : ∀ Z ∈ Submodule.span O {z : TW RW T | ∃ a : O ⊗[Zl] Ai, ∃ y ∈ W.N T, z = inclR a • E.jD T y}, ∃ Yv ∈ Submodule.span O {Yv : TW (O ⊗[Zl] Ai) T | ∃ (a : O ⊗[Zl] Ai) (x : ↥(W.N T)), Yv = a • Y x}, TWincl inclR T Yv = (inclR ((1 : O) ⊗ₜ[Zl] p1)) ^ m • Z`.
+
+Introduce `Z hZ`. Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem Z hZ`. Take `⟨a, y, hy, rfl⟩` from `hZ`. Use `⟨a • Y ⟨y, hy⟩, Submodule.subset_span ⟨a, ⟨y, hy⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Cyc.Decomp.TWincl_smul, hY, smul_smul, smul_smul, mul_comm]`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [map_zero, smul_zero]⟩`. Consider the case `add Z Z' _ _ h h'`. Take `⟨Yv, hYv, e⟩` from `h`. Take `⟨Yv', hYv', e'⟩` from `h'`.
+
+Conclude with `⟨Yv + Yv', add_mem hYv hYv', by rw [map_add, e, e', smul_add]⟩`. Consider the case `smul o Z _ h`. Take `⟨Yv, hYv, e⟩` from `h`. Use `⟨o • Yv, Submodule.smul_mem _ o hYv, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e, smul_comm]`.
+
+Establish `hB : ∀ Yv ∈ Submodule.span O {Yv : TW (O ⊗[Zl] Ai) T | ∃ (a : O ⊗[Zl] Ai) (x : ↥(W.N T)), Yv = a • Y x}, ∀ b ∈ PD.Fil 0, mulVR T b (Ct.βdR T Yv) ∈ Gen PD T ι Ψ`. Introduce `Yv hYv`. Proceed by induction on `hYv using Submodule.span_induction with`. Consider the case `mem Yv hYv`. Take `⟨a, x, rfl⟩` from `hYv`.
+
+Introduce `b hb`. Take `⟨β, hβ, hβY⟩` from `act_βdR Ct T ι hι hA a`. Establish `e : mulVR T b (Ct.βdR T (a • Y x)) = mulVR T b (Ct.βdR T (a • Y x) - mulVR T β (Ct.βdR T (Y x))) + mulVR T (b * (β * ιdR p1 ^ m)) (Ψ x)`. Rewrite using `[map_sub, hΨβ x]`. Simplify using `only [mulVR_mulVR, mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `add_mem (Submodule.mem_sup_left (mulVR_compKer T ι b (hβY _))) (mem_gen T ι Ψ ?_ x)` and prove the remaining obligations. Establish `h1` using `PD.Fil_mul _ _ _ _ hβ (deRham_fil_zero_pow_mem PD hp0 m)`. Establish `h2` using `PD.Fil_mul _ _ _ _ hb h1`.
+
+Simplify using `using h2`. Consider the case `zero => intro b hb`. Rewrite using `[map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add Yv Yv' _ _ h h' => intro b hb`.
+
+Rewrite using `[map_add, map_add]`. Conclude with `add_mem (h b hb) (h' b hb)`. Consider the case `smul o Yv _ h`. Introduce `b hb`. Take `⟨β, hβ, hβY⟩` from `act_βdR Ct T ι hι hA (algebraMap O (O ⊗[Zl] Ai) o)`.
+
+Rewrite using `[← algebraMap_smul (O ⊗[Zl] Ai) o Yv]`. Establish `e : mulVR T b (Ct.βdR T (algebraMap O (O ⊗[Zl] Ai) o • Yv)) = mulVR T b (Ct.βdR T (algebraMap O (O ⊗[Zl] Ai) o • Yv) - mulVR T β (Ct.βdR T Yv)) + mulVR T (b * β) (Ct.βdR T Yv)`. Rewrite using `[map_sub, mulVR_mulVR, sub_add_cancel]`. Rewrite using `[e]`. Use `add_mem (Submodule.mem_sup_left (mulVR_compKer T ι b (hβY _))) (h _ ?_)` and prove the remaining obligations.
+
+Simplify using `using PD.Fil_mul _ _ _ _ hb hβ`. Establish `ht1 : ∀ t : ↥T.L.T, ((t : T.V) ⊗ₜ[Qp] (1 : BdR)) ∈ Gen PD T ι Ψ`. Introduce `t`. Take `⟨Yv, hYv, e⟩` from `hA' _ (hS2 t)`. Establish `hYv' : Yv = (((1 : O) ⊗ₜ[Zl] p1) ^ m * ((1 : O) ⊗ₜ[Zl] p1) ^ m) ⊗ₜ[O] t`.
+
+Apply `GlobalTheory.Cyc.Decomp.TWincl_injective inclR hinj T` to reduce the goal to its premises. Rewrite using `[e, TensorProduct.smul_tmul', smul_eq_mul]`. Simplify using `only [TWincl, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, map_mul, map_pow]`. Establish `hum : u ^ m * u ^ m ∈ PD.Fil 0`. Simplify using `using PD.Fil_mul _ _ _ _ (deRham_fil_zero_pow_mem PD hu0 m) (deRham_fil_zero_pow_mem PD hu0 m)`.
+
+Establish `key` using `hB Yv hYv (u ^ m * u ^ m) hum`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hYv', Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_mul_tmul, one_pow, one_mul, Ct.βdR_tmul, one_smul, mulVR_tmul, map_mul, map_pow]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hv : ∀ v : T.V, v ⊗ₜ[Qp] (1 : BdR) ∈ Gen PD T ι Ψ`. Introduce `v`. Establish `hv' : v ∈ Submodule.span LL (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`. Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem v hv => exact ht1 ⟨v, hv⟩`.
+
+Consider the case `zero => rw [TensorProduct.zero_tmul]`. Conclude with `zero_mem _`. Consider the case `add v v' _ _ h h' => rw [TensorProduct.add_tmul]`. Conclude with `add_mem h h'`. Consider the case `smul c v _ h => rw [← TensorProduct.smul_tmul']`.
+
+Conclude with `Submodule.smul_mem _ c h`. Take `⟨w, rfl⟩` from `hz`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `tmul v c`. Establish `: AlgebraTensorModule.map (LinearMap.id : T.V →ₗ[LL] T.V) ((PD.Fil 0).restrictScalars Qp).subtype (v ⊗ₜ c) = mulVR T (c : BdR) (v ⊗ₜ 1)`. Rewrite using `[mulVR_tmul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `mulVR_gen T ι Ψ c.2 (hv v)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Establish `hlev : ∀ r : ℤ, r < -(a : ℤ) → W.levN T i ζ x r = 0` using `fun r hr => by`. Rewrite using `[Ct.levN_eq, hex r hr, map_zero]`.
+
+Take `⟨c, hc⟩` from `Ct.levN_dR T hT i ζ ι hιK hζ x m (Y x) (hY x) a hlev`. Use `⟨c, fun M => ?_⟩` and prove the remaining obligations. Establish `h1` using `mulVR_sup T ι (deRham_fil_zero_pow_mem PD hu0 m) (hc M)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, mulVR_comm T (u ^ m) (tS ^ a), mulVR_mulVR T (u ^ m) (ιdR p1 ^ m), ← mul_pow, mul_comm u, hu, one_pow, mulVR_one]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Ct.levN_eq]`.
+-/
 theorem core_gen (Ct : CmpTie W E ιdR p1 tS zS) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n)
     (ζ : LL) (ι : LL →ₐ[Qp] BdR) (hιK : ∀ c : K₀, ι (W.emb i c) = algebraMap K₀ BdR c) (hζ : ι ζ = zS)
     (hι : ∀ c, ι c ∈ PD.Fil 0) (hA : ∀ w, ιdR w ∈ PD.Fil 0) (u : BdR) (hu0 : u ∈ PD.Fil 0)
@@ -386,6 +519,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨u, hu0, hu⟩` from `(C.C K s LL h).π₁_inv`. Conclude with `core_gen (C.C K s LL h).tie T hT i ζ ι hcomp.1 hcomp.2.1 hι (fun w => AI.ainf_image_mem_filtration_zero K w) u hu0 hu m hinj c hc hS1 hS2`.
+-/
 theorem core (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ)
     (i : Let K) (ζ : ↥LL.1) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR)
     (hcomp : Comp H h i ζ τ ι) (hι : ∀ c, ι c ∈ (P.PD K).Fil 0) (m : ℕ)
@@ -406,6 +542,11 @@ end Concrete
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm l _ K s LL h W E C T hT i ζ τ ι hcomp`. Take `⟨m, hS1, hS2⟩` from `GlobalTheory.NL.SandArb.sandwich D HW F l K s LL h T hT`. Take `⟨hX, -, hinj, -⟩` from `GlobalTheory.NL.IoXQ.main D HW F l K s LL h`. Establish `hι0 : ∀ c, ι c ∈ ((D.loc l).PD (Formalism.MainNotions.LocalSituation.botExt l)).Fil 0` using `fun c => GlobalTheory.ExpImage.EmbFil.emb_mem_fil_zero l (D.loc l) (D.locA l) (D.locT l) LL ι c`. Establish `hι : ∀ c, ι c ∈ ((D.loc l).PD K).Fil 0` using `fun c => (Set.ext_iff.1 ((D.loc l).PD_Fil (Formalism.MainNotions.LocalSituation.botExt l) K 0) (ι c)).1 (hι0 c)`.
+
+Conclude with `core (Cm l) h T hT i ζ τ ι hcomp hι m hinj _ (congrArg (fun z => inclR LL z ^ m) hX) hS1 hS2`.
+-/
 theorem image : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; let C := Cm l; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (i : Let K) (ζ : ↥LL.1) τ ι, Comp (HW l) h i ζ τ ι → ∃ Ψ : ↥(W.N T) → T.V ⊗[ℚ_[l]] (D.loc l).R.BdR, (∀ x, Ψ x ∈ FilV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) 0) ∧ (∀ z ∈ FilV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) 0, ∃ (m : ℕ) (b : Fin m → (D.loc l).R.BdR) (x : Fin m → ↥(W.N T)), (∀ j, b j ∈ ((D.loc l).PD K).Fil 0) ∧ z - ∑ j, mulVR T (b j) (Ψ (x j)) ∈ compKer T ι) ∧ ∀ (x : ↥(W.N T)) (a : ℕ), (∀ r : ℤ, r < -(a : ℤ) → ex C h T i ζ x r = 0) → ∃ c : ℤ, ∀ M : ℕ, mulVR T (tS (D.loc l) s ^ a) (Ψ x) - ∑ r ∈ Finset.range M, mulVR T (tS (D.loc l) s ^ r) (ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) (ex C h T i ζ x ((r : ℤ) - (a : ℤ)))) ∈ compKer T ι ⊔ FilV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) ((M : ℤ) - c) := by
   intro D HW F Cm l _ K s LL h W E C T hT i ζ τ ι hcomp
   obtain ⟨m, hS1, hS2⟩ := GlobalTheory.NL.SandArb.sandwich D HW F l K s LL h T hT

@@ -38,6 +38,13 @@ def StepConvG : Prop :=
       ∫⁻ z, ∫⁻ z', ∫⁻ s, ‖⟪X.B.σs z (X.B.tens X.B.w), X.B.σs s (X.B.σs z' (X.B.tens X.B.w))⟫_ℂ‖ₑ *
         ‖X.Wu w z‖ₑ * ‖X.Wu w z'‖ₑ ∂(muS X w) ∂(X.nuQ w) ∂(X.nuQ w) < ⊤
 
+/- English proof (translation)
+Take `⟨hH, -, -, -, hsf⟩` from `Formalism.L2.S.Pv.HaarSubS.stepSubG_holds D X u`. Take `⟨hH', -, -, -, hsf'⟩` from `Formalism.L2.S.Pv.HaarSubS.stepSubG_holds D X u'`. Take `⟨-, -, -, hiS, hsig, -, h0, -, -, -, hinv⟩` from `hH`. Take `⟨-, -, -, hiS', hsig', -, h0', -, -, -, hinv'⟩` from `hH'`. Use `hsig` as an intermediate fact.
+
+Use `hsig'` as an intermediate fact. Use `hsf` as an intermediate fact. Use `hsf'` as an intermediate fact. Establish `hrep` using `(Formalism.L2.S.Pv.SchurTens.stepSchurG_holds D X).1`. Rewrite using `[quad_eq_GG (μ := Formalism.L2.SG.ProjRows.muInf X.B.I) (μS := muS X u) (μS' := muS X u') hrep (X.B.tens X.B.w) (X.Wu_spec u).2.2.1 (X.Wu_spec u').2.2.1 (X.nuQ_weil u) (X.nuQ_weil u') hinv hinv' h0 h0' hiS hiS' (norm_Wu_S X u) (norm_Wu_S X u') γ, lint_GG_prod]`.
+
+Use `ENNReal.prod_lt_top fun v _ => ?_` and prove the remaining obligations. Unfold `phiV`. Conclude with `hL v (c v) (hc v) (γ v) (hγ v)`.
+-/
 theorem double_integral_finite_diagonal {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (sc : ℝ) (hsc : 0 < sc)
     (hL : ∀ (v : InfinitePlace X.B.I.F) (cv : Fin (D.R.rS + 1) → ℂ),
       cv ∈ Formalism.L2.SG.RealObj.EnergyCut.GoodV (D := D) u u' → ∀ g : Formalism.REAL.UJ (X.B.I.ε v),
@@ -64,6 +71,11 @@ theorem double_integral_finite_diagonal {D : D7} (X : Formalism.L2.SG.HidaSettin
   unfold phiV
   exact hL v (c v) (hc v) (γ v) (hγ v)
 
+/- English proof (translation)
+Take `⟨μSl, νl, C, hQ⟩` from `Formalism.L2.SG.Pf.WuDec.quotAll_of Formalism.L2.SG.Closed.QuotProdK_holds Formalism.L2.SG.Pf.WFL.locHNProps_holds Formalism.L2.SG.Closed.NUnimodLoc_holds D X w`. Establish `hQ'` using `hQ`. Take `⟨hC0, hCt, -, hprod⟩` from `hQ'`. Simplify using `only [inner_weil X w, K_eq X w]`. Rewrite using `[hprod (fun v => Kv X w v) (fun v => measurable_Kv X w v) (fun v m hm h hh x => Kv_inv X w v m hm h hh x)]`.
+
+Conclude with `ENNReal.mul_lt_top (lt_of_le_of_ne le_top hCt) (ENNReal.prod_lt_top fun v _ => hC μSl νl C hQ v)`.
+-/
 theorem convolution_integral_finite {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : D.what₂.Word)
     (hC : ∀ (μS νl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v))) (C : ℝ≥0∞),
       Formalism.L2.SG.Pf.WuDec.QuotWit X w μS νl C → ∀ v, ∫⁻ a, Kv X w v a ∂(νl v) < ⊤) :
@@ -78,6 +90,9 @@ theorem convolution_integral_finite {D : D7} (X : Formalism.L2.SG.HidaSetting.Hi
     (fun v m hm h hh x => Kv_inv X w v m hm h hh x)]
   exact ENNReal.mul_lt_top (lt_of_le_of_ne le_top hCt) (ENNReal.prod_lt_top fun v _ => hC μSl νl C hQ v)
 
+/- English proof (translation)
+Introduce `D hG X u u' sc hsc`. Conclude with `⟨fun c hc γ hγ => double_integral_finite_diagonal X u u' sc hsc (hB D hG X u u' sc hsc) c hc γ hγ, fun w => convolution_integral_finite X w (hC D hG X w)⟩`.
+-/
 theorem stepConvG_of (hB : LocQuadGG_G) (hC : LocQuad1_G) : StepConvG := by
   intro D hG X u u' sc hsc
   exact ⟨fun c hc γ hγ => double_integral_finite_diagonal X u u' sc hsc (hB D hG X u u' sc hsc) c hc γ hγ,

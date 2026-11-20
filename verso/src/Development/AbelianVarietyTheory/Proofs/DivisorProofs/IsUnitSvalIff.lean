@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TermLocus
 
+/- English proof (translation)
+Establish `key : ∀ (U : Y.Opens) (_ : r z ∈ U) (f : Γ(Y, U)), IsUnit (gs r z U f) ↔ IsUnit (gs (𝟙 Y) (r z) U f)` using `fun U h f => by rw [gs_stalkMap r z U h, isUnit_map_iff]`. Use `⟨fun h => (mem_nonzeroLocus s _).2 ⟨_, hJ.mem φ r, (key _ (hJ.mem φ r) _).1 h⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, hu⟩` from `(mem_nonzeroLocus s _).1 h`. Rewrite using `[sval, sec_trans s r z (hJ.mem φ r) hj]`. Conclude with `(Units.isUnit _).mul ((key _ hj _).2 hu)`.
+-/
 theorem isUnit_sval_iff {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     IsUnit (sval s r z J) ↔ r z ∈ nonzeroLocus s := by
@@ -26,6 +29,11 @@ theorem isUnit_sval_iff {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {
   rw [sval, sec_trans s r z (hJ.mem φ r) hj]
   exact (Units.isUnit _).mul ((key _ hj _).2 hu)
 
+/- English proof (translation)
+Introduce `R _ _ D Y k α b τ h`. Use extensionality with `y`. Use `choose J hJ using fun χ : Y.H.left ⟶ D.P.A.left => exists_chart D.P.isLB (χ y)`. Establish `hJ' : Good D.P.L y J` using `hJ`. Establish `e` using `h Y.H (𝟙 Y.H) y J hJ'`.
+
+Rewrite `e` using `[Over.id_left, Category.id_comp]`. Express the relevant statement in the definitionally equal form `y ∈ nonzeroLocus τ ↔ Y.q.left y ∈ nonzeroLocus b`. Use `(isUnit_sval_iff τ (𝟙 _) y hJ').symm.trans ?_` and prove the remaining obligations. Rewrite using `[e, IsUnit.mul_iff, isUnit_sval_iff b _ y hJ']`. Conclude with `and_iff_left (Units.isUnit _)`.
+-/
 theorem nonzeroLocus_eq : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Y : Ext D) (k : ℕ) (α : D.X) (b : D.SecB k α)
     (τ : SecK D.P.L Y.q.left k), IsTermOf Y b τ → nonzeroLocus τ = Y.q.left ⁻¹ᵁ nonzeroLocus b := by
   intro R _ _ D Y k α b τ h

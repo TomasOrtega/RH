@@ -89,6 +89,9 @@ def selfOfLab {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 
   j' := lab.j'
   big := lab.big o
 
+/- English proof (translation)
+Introduce `x x' hne`. Conclude with `ha.sep x x' hne`.
+-/
 theorem selfSep_ofLab {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb d}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) : SelfSep Y (selfOfLab ha hg) := by
   intro x x' hne
@@ -101,6 +104,11 @@ def LabS.RankOK (lab : LabS E C Orb d) (Dw : Datum H) : Prop :=
     (∀ a, lab.big o 1 a → Dw.mult (lab.tau o (a - lab.hd)) = lab.n + lab.j) ∧
     (∀ a, ¬ lab.big o 1 a → Dw.mult (lab.tau o (a - lab.hd)) = lab.j')
 
+/- English proof (translation)
+Establish `e1 : (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 + h = a) = (Finset.univ.filter fun b : ZMod d => b + h = a).sigma fun b => Finset.univ`. Use extensionality with `⟨b, i⟩`. Simplify using the standard rewrite rules. Establish `e2 : (Finset.univ.filter fun b : ZMod d => b + h = a) = {a - h}`. Use extensionality with `b`.
+
+Simplify using `[eq_sub_iff_add_eq]`. Rewrite using `[e1, Finset.card_sigma, e2, Finset.sum_singleton, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem card_sigma_shift (m : ZMod d → ℕ) (h a : ZMod d) :
     (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 + h = a).card = m (a - h) := by
   have e1 : (Finset.univ.filter fun x : (Σ a : ZMod d, Fin (m a)) => x.1 + h = a) =
@@ -112,6 +120,9 @@ theorem card_sigma_shift (m : ZMod d → ℕ) (h a : ZMod d) :
     simp [eq_sub_iff_add_eq]
   rw [e1, Finset.card_sigma, e2, Finset.sum_singleton, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `(hr o).1 rk_big := fun g a hb => by fin_cases g · exact (card_sigma_fst (fun a => Dw.mult (lab.tau o a)) a).trans ((hr o).2.1 a hb) · exact (card_sigma_shift (fun a => Dw.mult (lab.tau o a)) lab.hd a).trans ((hr o).2.2.2.1 a hb) rk_small := fun g a hb => by fin_cases g · exact (c …`.
+-/
 theorem rankHyp_ofLabS {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb d}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) (hr : lab.RankOK Dw) (o : Orb) :
     (Y.rawSelf (selfOfLab ha hg o)).RankHyp where
@@ -168,6 +179,9 @@ section Top
 
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+The claim follows from `inferInstance algClosed := Y.algClosed l_odd := Y.l_odd k_unit := Y.k_unit cartH := hCart C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) rank := rankHyp_ofLabS ha hg hr o axes := hAx C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) G0 := hG0 C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) _ CEq := hC C V (𝓞 E …`.
+-/
 theorem hypotheses_of_self_labelling (hCart : CartSelfSt) (hAx : AxesSelfSt) (hG0 : GermZeroSelfConjugate) (hC : CEqSelfSt) (hR1 : IndependenceBoundSelfConjugate)
     (hR2 : RankMaximalSelfCharts Xo c) (hCH : CharacterHypothesisSelfCharts Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι) {k : ℕ}
@@ -196,6 +210,9 @@ def selfConjugateRowData (hCart : CartSelfSt) (hAx : AxesSelfSt) (hG0 : GermZero
     RowData C V d (fun _ => lab.II Dw o) (JJ fun _ => lab.II Dw o) :=
   (Y.rawSelf (selfOfLab ha hg o)).rowData (hypotheses_of_self_labelling hCart hAx hG0 hC hR1 hR2 hCH hstar hι hY ha hg hr o)
 
+/- English proof (translation)
+The claim follows from `le_trans (hD T io y C3 C V ι hι k Y hY a n) (val_self (hs := selfSep_ofLab ha hg) (hv := hv) (N := N) (pl := pl) (P := P) (hP := hP) (Po := Po) (hQ := hQ) (kind := kind) (hk := hk) (S := S) (t := t) (ht := ht) (gr := gr) (hg := hgr))`.
+-/
 theorem nuLocC_le_self [Fintype Orb] (hD : DescentSt Xo c) {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     {k : ℕ} {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ι k Y) {lab : LabS E C Orb d}
     (ha : LabSArith V io ι lab) (hg : LabSGeo C3 ι Y lab) (Hy : ∀ o, (Y.rawSelf (selfOfLab ha hg o)).Hyps V)

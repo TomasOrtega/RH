@@ -7,11 +7,17 @@ section Co
 
 variable {A k ι : Type} [CommRing A] [CommRing k] [Fintype ι] [DecidableEq ι] {K : Ideal A} {σ co : A → k}
 
+/- English proof (translation)
+Use `h1 0 K.zero_mem 0 K.zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 private theorem co_zero (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) : co 0 = 0 := by
   have := h1 0 K.zero_mem 0 K.zero_mem
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using co_zero h1`. Consider the case `insert c S hc ih`. Rewrite using `[Finset.sum_insert hc, Finset.sum_insert hc, h1 _ (hf c) _ (K.sum_mem fun c _ => hf c), ih]`.
+-/
 private theorem co_sum (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (S : Finset ι) (f : ι → A)
     (hf : ∀ c, f c ∈ K) : co (∑ c ∈ S, f c) = ∑ c ∈ S, co (f c) := by
   induction S using Finset.induction_on with
@@ -20,16 +26,25 @@ private theorem co_sum (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y)
     rw [Finset.sum_insert hc, Finset.sum_insert hc, h1 _ (hf c) _ (K.sum_mem fun c _ => hf c), ih]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `K.sum_mem fun c _ => K.mul_mem_left _ (hZ _ _)`.
+-/
 private theorem mem_left (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (a b : ι) : (M * Z) a b ∈ K := by
   rw [Matrix.mul_apply]
   exact K.sum_mem fun c _ => K.mul_mem_left _ (hZ _ _)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `K.sum_mem fun c _ => K.mul_mem_right _ (hZ _ _)`.
+-/
 private theorem mem_right (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (a b : ι) :
     (Z * M) a b ∈ K := by
   rw [Matrix.mul_apply]
   exact K.sum_mem fun c _ => K.mul_mem_right _ (hZ _ _)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Rewrite using `[co_sum h1 _ _ fun c => K.mul_mem_left _ (hZ _ _)]`. Conclude with `Finset.sum_congr rfl fun c _ => h2 _ _ (hZ _ _)`.
+-/
 private theorem co_left (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = σ a * co x)
     (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) : (M * Z).map co = M.map σ * Z.map co := by
   ext a b
@@ -37,6 +52,9 @@ private theorem co_left (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y
   rw [co_sum h1 _ _ fun c => K.mul_mem_left _ (hZ _ _)]
   exact Finset.sum_congr rfl fun c _ => h2 _ _ (hZ _ _)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Rewrite using `[co_sum h1 _ _ fun c => K.mul_mem_right _ (hZ _ _)]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [mul_comm, h2 _ _ (hZ _ _), mul_comm]`.
+-/
 private theorem co_right (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = σ a * co x)
     (M : Matrix ι ι A) {Z : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) : (Z * M).map co = Z.map co * M.map σ := by
   ext a b
@@ -45,6 +63,9 @@ private theorem co_right (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co 
   exact Finset.sum_congr rfl fun c _ => by rw [mul_comm, h2 _ _ (hZ _ _), mul_comm]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `h1 _ (hZ _ _) _ (hZ' _ _)`.
+-/
 private theorem co_add (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y)
     {Z Z' : Matrix ι ι A} (hZ : ∀ a b, Z a b ∈ K) (hZ' : ∀ a b, Z' a b ∈ K) :
     (Z + Z').map co = Z.map co + Z'.map co := by
@@ -58,6 +79,9 @@ section LC
 variable {T A ι : Type} [TopologicalSpace T] [CommRing A] [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `: ∀ᶠ y in nhds x, ∀ a b, f y a b = f x a b` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => (h a b).eventually_eq x`. Conclude with `this.mono fun y hy => Matrix.ext hy`.
+-/
 private theorem lc_matrix {B : Type} {f : T → Matrix ι ι B} (h : ∀ a b, IsLocallyConstant fun s => f s a b) :
     IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -67,11 +91,21 @@ private theorem lc_matrix {B : Type} {f : T → Matrix ι ι B} (h : ∀ a b, Is
   exact this.mono fun y hy => Matrix.ext hy
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `lc_matrix fun a b => h a b N`.
+-/
 private theorem lc_ac {I : Ideal A} {f : T → Matrix ι ι A} (h : ∀ a b, AdicCont I fun s => f s a b) (N : ℕ) :
     IsLocallyConstant fun s => (f s).map (Ideal.Quotient.mk (I ^ N)) :=
   lc_matrix fun a b => h a b N
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Take `⟨n, hn⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (K : Submodule A A)`. Establish `e` using `hn (n + 1) (Nat.le_succ n)`. Establish `e2 : ∀ x ∈ K, x ∈ I ^ (n + 1) → x = 0` using `fun x hx hx' => by`. Establish `m : x ∈ (I ^ (n + 1) • (⊤ : Submodule A A)) ⊓ K` using `⟨by simpa using hx', hx⟩`. Rewrite `m` using `[e, Nat.add_sub_cancel_left, pow_one]`.
+
+Establish `: x ∈ I * K` using `Submodule.smul_mono le_rfl inf_le_right m`. Rewrite `this` using `[hs, Ideal.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `((h (n + 1)).eventually_eq x).mono fun y hy => ?_` and prove the remaining obligations.
+
+Use extensionality with `a b`. Use `congrFun (congrFun hy a) b` as an intermediate fact. Conclude with `sub_eq_zero.1 (e2 _ (K.sub_mem (hf _ _ _) (hf _ _ _)) (Ideal.Quotient.eq.1 this))`.
+-/
 private theorem lc_ker [IsNoetherianRing A] {I K : Ideal A} (hs : I * K = ⊥) {f : T → Matrix ι ι A}
     (hf : ∀ s a b, f s a b ∈ K) (h : ∀ N, IsLocallyConstant fun s => (f s).map (Ideal.Quotient.mk (I ^ N))) :
     IsLocallyConstant f := by
@@ -97,6 +131,9 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {ι X : Type} [Fintype ι] [Dec
   {A : Type} [CommRing A] [Algebra O A]
 
 omit [IsLocalRing O] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Use `SetLike.GradedMul.mul_mem (h a c) (h' c b)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 private theorem part_mul (W : WPres O X A) {M M' : Matrix ι ι A} (h : ∀ a b, M a b ∈ W.part (w a - w b))
     (h' : ∀ a b, M' a b ∈ W.part (w a - w b)) (a b : ι) : (M * M') a b ∈ W.part (w a - w b) := by
   rw [Matrix.mul_apply]
@@ -105,6 +142,11 @@ private theorem part_mul (W : WPres O X A) {M M' : Matrix ι ι A} (h : ∀ a b,
   rwa [sub_add_sub_cancel] at this
 
 omit [IsLocalRing O] [DecidableEq ι] [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[Matrix.map_apply]`. Distinguish the cases in `e : w a = w b`. Rewrite using `[e, sub_self, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ SetLike.GradedOne.one_mem`. Rewrite using `[h a b e, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 private theorem part_alg (W : WPres O X A) {M : Matrix ι ι O} (h : ∀ a b, w a ≠ w b → M a b = 0) (a b : ι) :
     (M.map (algebraMap O A)) a b ∈ W.part (w a - w b) := by
   rw [Matrix.map_apply]
@@ -114,6 +156,13 @@ private theorem part_alg (W : WPres O X A) {M : Matrix ι ι O} (h : ∀ a b, w 
   · rw [h a b e, map_zero]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Take `⟨y1, y2⟩` from `hY`. Establish `hJ : (Φ.JR A).map (res O A) = Φ.JR (ResidueField O)`. Use extensionality with `a b`. Simplify using `[FormData.JR]`. Establish `hK' : ∀ a b, Y.transpose a b ∈ K` using `fun a b => hK b a`.
+
+Use `⟨⟨?_, fun a b e => ?_⟩, fun a b e => h3 _ e _ (hK a b) (hW a b)⟩` and prove the remaining obligations. Use `congrArg (fun M : Matrix ι ι A => M.map co) y1` as an intermediate fact. Rewrite `this` using `[co_add h1 (mem_right _ hK') (mem_left _ hK), co_left h1 h2 _ hK, co_right h1 h2 _ hK', hJ, Matrix.transpose_map]`. Rewrite using `[this]`. Use extensionality with `a b`.
+
+Conclude with `co_zero h1`. Rewrite using `[Matrix.map_apply, y2 a b e, co_zero h1]`.
+-/
 private theorem co_gw [IsCO O A] (Φ : FormData O w) (W : WPres O X A) {K : Ideal A} {j : X} {co : A → ResidueField O}
     (h1 : ∀ x ∈ K, ∀ y ∈ K, co (x + y) = co x + co y) (h2 : ∀ a, ∀ x ∈ K, co (a * x) = res O A a * co x)
     (h3 : ∀ j', j' ≠ j → ∀ x ∈ K, x ∈ W.part j' → co x = 0) {Y : Matrix ι ι A} (hK : ∀ a b, Y a b ∈ K)
@@ -132,12 +181,58 @@ private theorem co_gw [IsCO O A] (Φ : FormData O w) (W : WPres O X A) {K : Idea
     exact co_zero h1
   · rw [Matrix.map_apply, y2 a b e, co_zero h1]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (f : R →+* S))`.
+-/
 private theorem map_mul_alg {O R S ι : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     [Fintype ι] [DecidableEq ι] (f : R →ₐ[O] S) (A B : Matrix ι ι R) : (A * B).map f = A.map f * B.map f :=
   Matrix.map_mul (f := (f : R →+* S))
 
 end G
 
+/- English proof (translation)
+Introduce `O _ _ _ _ ι X _ _ _ w Φ h2 Γ _ _ _ rbar r0 hbar h0 F A _ _ _ R _ _ _ p hp hs W j co c1 c2 c3 rt t1 t2 t3 t4 α ρ a1 a2 a3 a4 a5 rq q1 q2 q3`. Take `⟨g1, g2, -, -, g5, -⟩` from `hh_group O ι X w Φ A`. Establish `g6` using `g5 Γ r0.hom h0`. Take `⟨-, s2, -⟩` from `hh_small O ι X w Φ h2 A R p hp hs`. Establish `r0res : ∀ s, ((r0.hom s).map (algebraMap O A)).map (res O A) = rbar s` using `fun s => by`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, AlgHom.commutes, ← r0.red, ← (res O O).commutes]`. Both sides reduce to the same expression. Establish `r0inv : ∀ s, (r0.hom s⁻¹).map (algebraMap O A) * (r0.hom s).map (algebraMap O A) = 1` using `fun s => by`. Rewrite using `[← Matrix.map_mul, ← map_mul, inv_mul_cancel, map_one]`.
+
+Simplify using the standard rewrite rules. Establish `rinv : ∀ s, rbar s⁻¹ * rbar s = 1` using `fun s => by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `rtres : ∀ s, (rt s).map (res O A) = rbar s` using `fun s => by`. Use `(t1 s).2.2` as an intermediate fact. Rewrite `this` using `[map_mul_alg, r0res]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hker : ∀ {Z Z' : Matrix ι ι A}, Z.map p = Z'.map p → ∀ a b, (Z - Z') a b ∈ RingHom.ker p`. Introduce `Z Z' e a b`. Use `congrFun (congrFun e a) b` as an intermediate fact. Rewrite using `[RingHom.mem_ker, Matrix.sub_apply, map_sub]`.
+
+Conclude with `sub_eq_zero.2 this`. Establish `key : ∀ (s : Γ) (Z Z' : Matrix ι ι A), Φ.HH (Z * (r0.hom s⁻¹).map (algebraMap O A)) → Φ.HH (Z' * (r0.hom s⁻¹).map (algebraMap O A)) → Z.map p = Z'.map p → (∀ a b, Z a b ∈ W.part (w a - w b)) → (∀ a b, Z' a b ∈ W.part (w a - w b)) → (Z - Z').map co * rbar s⁻¹ ∈ Φ.gw (ResidueField …`. Introduce `s Z Z' k1 k2 e w1 w2`. Rewrite using `[← r0res, ← co_right c1 c2 _ (hker e)]`. Use `co_gw Φ W c1 c2 c3 (mem_right _ (hker e)) (part_mul W (fun a b => Submodule.sub_mem _ (w1 a b) (w2 a b)) (part_alg W (h0.2.2 _))) ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_mul]`. Conclude with `s2 _ _ k2 k1 (by rw [map_mul_alg, map_mul_alg, e])`. Establish `lcbar : IsLocallyConstant rbar`. Use `lc_matrix fun a b => ?_` and prove the remaining obligations. Use `(r0.cont a b 1).comp (Ideal.Quotient.lift (maximalIdeal O ^ 1) (res O O : O →+* ResidueField O) fun x hx => (res_eq_zero_iff O O x).2 (by rwa [pow_one] at hx))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Conclude with `(r0.red s a b).symm`. Establish `lcinv : IsLocallyConstant fun s : Γ => rbar s⁻¹` using `lcbar.comp_continuous continuous_inv`. Establish `lct` using `lc_ac t2`.
+
+Establish `mD : ∀ x : Γ × Γ, (rt x.1 * rt x.2 - rt (x.1 * x.2)).map co * rbar (x.1 * x.2)⁻¹ ∈ Φ.gw (ResidueField O) j`. Introduce and unpack `⟨s, t⟩`. Use `key _ _ _ ?_ (t1 _) (t4 s t) (part_mul W (t3 s) (t3 t)) (t3 _)` and prove the remaining obligations. Use `g2 _ _ (t1 s) (g6 s _ (t1 t)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [mul_inv_rev, map_mul, Matrix.map_mul, mul_assoc]`.
+
+Rewrite using `[← mul_assoc _ ((r0.hom s).map _), r0inv, one_mul]`. Establish `lD : IsLocallyConstant fun x : Γ × Γ => (⟨_, mD x⟩ : Φ.gw (ResidueField O) j)`. Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations. Establish `l1 : IsLocallyConstant fun x : Γ × Γ => rt x.1 * rt x.2 - rt (x.1 * x.2)`. Use `lc_ker hs (fun x => hker (t4 x.1 x.2)) fun N => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_sub _ (map_sub (Ideal.Quotient.mk _)), Matrix.map_mul]`. Conclude with `(((lct N).comp_continuous continuous_fst).mul ((lct N).comp_continuous continuous_snd)).sub ((lct N).comp_continuous continuous_mul)`. Conclude with `(l1.comp (fun M => M.map co)).mul (lcinv.comp_continuous continuous_mul)`. Establish `loc : ∀ (G : Type) [Group G] [TopologicalSpace G] (φ : G →* Γ), Continuous φ → ∀ (β : Matrix ι ι A) (τ : Lift O (rbar.comp φ) A), Φ.HH β → (∀ a b, β a b ∈ W.part (w a - w b)) → Φ.InH (r0.hom.comp φ) A τ → (∀ s a b, τ.hom s a b ∈ W.part (w a - w b)) → (∀ s, (rt (φ s) * β).map p = …`. Introduce `G _ _ φ hφ β τ b1 b2 b3 b4 b5`.
+
+Establish `mE : ∀ s, (rt (φ s) * β - β * τ.hom s).map co * rbar (φ s)⁻¹ ∈ Φ.gw (ResidueField O) j`. Introduce `s`. Use `key _ _ _ ?_ ?_ (b5 s) (part_mul W (t3 _) b2) (part_mul W b2 (b4 s))` and prove the remaining obligations. Use `g2 _ _ (t1 (φ s)) (g6 (φ s) _ b1) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc _ ((r0.hom (φ s)).map _), r0inv, one_mul]`. Use `g2 _ _ b1 (b3 s)` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, map_inv, ← mul_assoc]`. Then use the resulting hypothesis. Use `⟨fun s => ⟨_, mE s⟩, ?_, fun s t => Subtype.ext ?_, fun s => ?_⟩` and prove the remaining obligations. Use `IsLocallyConstant.desc _ Subtype.val ?_ Subtype.val_injective` and prove the remaining obligations.
+
+Establish `l1 : IsLocallyConstant fun s => rt (φ s) * β - β * τ.hom s`. Use `lc_ker hs (fun s => hker (b5 s)) fun N => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_sub _ (map_sub (Ideal.Quotient.mk _)), Matrix.map_mul]`. Conclude with `(((lct N).comp_continuous hφ).mul (IsLocallyConstant.const _)).sub ((IsLocallyConstant.const _).mul (lc_ac τ.cont N))`. Conclude with `(l1.comp (fun M => M.map co)).mul (lcinv.comp_continuous hφ)`.
+
+Establish `e : (rt (φ s) * β - β * τ.hom s) * τ.hom t + rt (φ s) * (rt (φ t) * β - β * τ.hom t) = (rt (φ s) * rt (φ t) - rt (φ s * φ t)) * β + (rt (φ (s * t)) * β - β * τ.hom (s * t))`. Simplify using `only [map_mul]`. Use `noncomm_ring`. Establish `e'` using `congrArg (fun M : Matrix ι ι A => M.map co) e`. Establish `τres : (τ.hom t).map (res O A) = rbar (φ t)` using `Matrix.ext fun a b => τ.red t a b`.
+
+Rewrite `e'` using `[co_add c1 (mem_right _ (hker (b5 s))) (mem_left _ (hker (b5 t))), co_add c1 (mem_right _ (hker (t4 _ _))) (hker (b5 _)), co_right c1 c2 _ (hker (b5 s)), co_left c1 c2 _ (hker (b5 t)), co_right c1 c2 _ (hker (t4 _ _)), b1.2.2, τres, rtres, mul_one]`. Use `show (rt (φ s) * rt (φ t) - rt (φ s * φ t)).map co * rbar (φ s * φ t)⁻¹ = (rt (φ s) * β - β * τ.hom s).map co * rbar (φ s)⁻¹ + rbar (φ s) * ((rt (φ t) * β - β * τ.hom t).map co * rbar (φ t)⁻¹) * rbar (φ s)⁻¹ - (rt (φ (s * t)) * β - β * τ.hom (s * t)).map co * rbar (φ (s * t))⁻¹`. Rewrite using `[eq_sub_iff_add_eq, map_mul φ s t]`. Rewrite `e'` using `[map_mul φ s t]`. Rewrite using `[← add_mul, ← e', mul_inv_rev, map_mul, add_mul]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (rbar (φ t)), ← map_mul rbar (φ t), mul_inv_cancel, map_one, one_mul]`. Use `show _ * rbar (φ s)⁻¹ * _ = _`. Rewrite using `[mul_assoc, rinv, mul_one]`. Establish `one_part : ∀ a b, (1 : Matrix ι ι A) a b ∈ W.part (w a - w b)` using `fun a b => by`.
+
+Use `part_alg W (w := w) (M := 1) (fun a b e => Matrix.one_apply_ne fun h => e (by rw [h])) a b` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Then use the resulting hypothesis. Use `choose y y1 y2 y3 using fun v => loc _ (F.φ v) (F.hφ v) (α v) (ρ v) (a1 v) (a2 v) (a3 v) (a4 v) (a5 v)`. Use `choose x x1 x2 x3 using fun q => loc _ (F.ψ q) (F.hψ q) 1 (rq q) g1 one_part (q1 q) (q2 q) (fun s => by rw [mul_one, one_mul, q3])`. Use `⟨(fun x => ⟨_, mD x⟩, y, x), ⟨lD, y1, x1, fun s t u => Subtype.ext ?_, y2, x2⟩, fun s t => ?_, y3, fun q s => ?_⟩` and prove the remaining obligations.
+
+Establish `e : rt s * (rt t * rt u - rt (t * u)) + (rt s * rt (t * u) - rt (s * (t * u))) = (rt (s * t) * rt u - rt (s * t * u)) + (rt s * rt t - rt (s * t)) * rt u`. Rewrite using `[mul_assoc s t u]`. Use `noncomm_ring`. Establish `e'` using `congrArg (fun M : Matrix ι ι A => M.map co) e`. Rewrite `e'` using `[co_add c1 (mem_left _ (hker (t4 _ _))) (hker (t4 _ _)), co_add c1 (hker (t4 _ _)) (mem_right _ (hker (t4 _ _))), co_left c1 c2 _ (hker (t4 _ _)), co_right c1 c2 _ (hker (t4 _ _)), rtres, rtres]`.
+
+Use `show rbar s * ((rt t * rt u - rt (t * u)).map co * rbar (t * u)⁻¹) * rbar s⁻¹ + (rt s * rt (t * u) - rt (s * (t * u))).map co * rbar (s * (t * u))⁻¹ = (rt (s * t) * rt u - rt (s * t * u)).map co * rbar (s * t * u)⁻¹ + (rt s * rt t - rt (s * t)).map co * rbar (s * t)⁻¹`. Establish `e2` using `congrArg (fun M => M * rbar (s * t * u)⁻¹) e'`. Simplify using `only [add_mul, mul_assoc, ← map_mul] at e2 ⊢`. Establish `n1 : (t * u)⁻¹ * s⁻¹ = (s * (t * u))⁻¹` using `by group`. Establish `n2 : u * (s * (t * u))⁻¹ = (s * t)⁻¹` using `by group`.
+
+Rewrite `e2` using `[n2]`. Rewrite using `[n1]`. Conclude with `e2`. Use `show _ * rbar (s * t)⁻¹ * _ = _`. Rewrite using `[mul_assoc, rinv, mul_one]`.
+
+Use `x3 q s` as an intermediate fact. Rewrite `this` using `[mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Alg.obs_cocycle :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (F : Frame Γ) (A : Type) [CommRing A] [Algebra O A] [IsCO O A] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (p : A →ₐ[O] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ → ∀ (W : WPres O X A) (j : X) (co : A → ResidueField O),
           (∀ x ∈ RingHom.ker p, ∀ y ∈ RingHom.ker p, co (x + y) = co x + co y) → (∀ (a : A), ∀ x ∈ RingHom.ker p, co (a * x) = res O A a * co x) → (∀ j', j' ≠ j → ∀ x ∈ RingHom.ker p, x ∈ W.part j' → co x = 0) →

@@ -362,6 +362,13 @@ def MExists : Prop :=
     ∃ Mb : MBlk A L, ∃ hb : Formalism.L2.SG.AdBridge.AdBridgeIso A.I,
       (mk A L P Rf Xu Bu Pi Mu Wb Mb).MeasTie hb
 
+/- English proof (translation)
+Introduce `hG`. Take `⟨A⟩` from `h1`. Take `⟨L⟩` from `h2`. Take `⟨P⟩` from `h3 A`. Take `⟨Rf⟩` from `h4 A L`.
+
+Take `⟨Xu⟩` from `h5 A L Rf`. Take `⟨Bu⟩` from `h6 hC hG A L P Rf`. Take `⟨Pi⟩` from `h7 A L`. Take `⟨Mu⟩` from `h8 A L`. Take `⟨Wb, hW⟩` from `h9 hG A L P Rf Xu Bu Pi Mu`.
+
+Take `⟨Mb, hb, hM⟩` from `h10 A L P Rf Xu Bu Pi Mu Wb`. Conclude with `⟨mk A L P Rf Xu Bu Pi Mu Wb Mb, hb, hM, hW Mb, Bu.ph_int⟩`.
+-/
 theorem settingExists_of_steps (hC : CoefWeightedLoc) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)
     (h4 : RefExists D) (h5 : XuExists D) (h6 : BunExists D) (h7 : PiExists D) (h8 : MuExists D)
     (h9 : WExists D) (h10 : MExists D) : ConcreteSettingExists D := by
@@ -456,10 +463,16 @@ def GapBigOfGapHyp (D : D7) : Prop :=
 
 def WFromLoc (D : D7) : Prop := BesselNVGap → CoefWeightedLoc → WlocExists → GapBigOfGapHyp D → WExists D
 
+/- English proof (translation)
+The claim follows from `hF hB hC hW hG`.
+-/
 theorem wExists_of_loc (D : D7) (hF : WFromLoc D) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hG : GapBigOfGapHyp D) : WExists D :=
   hF hB hC hW hG
 
+/- English proof (translation)
+The claim follows from `settingExists_of_steps D hC h1 h2 h3 h4 h5 h6 h7 h8 (wExists_of_loc D hF hB hC hW hG) h10`.
+-/
 theorem settingExists_of_inputs (D : D7) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hG : GapBigOfGapHyp D) (hF : WFromLoc D) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)
     (h4 : RefExists D) (h5 : XuExists D) (h6 : BunExists D) (h7 : PiExists D) (h8 : MuExists D)

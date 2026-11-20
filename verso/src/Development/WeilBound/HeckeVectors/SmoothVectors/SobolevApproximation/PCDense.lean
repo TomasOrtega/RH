@@ -18,11 +18,23 @@ section UJ
 
 variable {n : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', Formalism.REAL.Jm_mul_self]`.
+-/
 theorem ujInvC {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.MainNotions.S.UJset ε) :
     (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1 := by
   have hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', Formalism.REAL.Jm_mul_self]
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun a ha b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * 1 = Formalism.REAL.Jm ε`. Simplify using the standard rewrite rules. Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`.
+
+Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [ha', hb']`.
+
+Establish `h1` using `ujInvC ε ha`. Establish `h2 : a * a⁻¹ = 1` using `by rw [Matrix.inv_eq_left_inv h1]; exact mul_eq_one_comm.1 h1`. Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Use `show (a⁻¹)ᴴ * Formalism.REAL.Jm ε * a⁻¹ = Formalism.REAL.Jm ε`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isMatGroupC : PI.IsMatGroup (Formalism.MainNotions.S.UJset ε) := by
   refine ⟨?_, ?_, fun a ha b hb => ?_, fun a ha => ?_⟩
   · exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
@@ -50,15 +62,26 @@ def thetaC : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ :=
       map_smul' := fun c a => by
         rw [conjTranspose_smul, star_trivial, Matrix.mul_smul, Matrix.smul_mul]; rfl }
 
+/- English proof (translation)
+The claim follows from `(Matrix.inv_eq_left_inv (ujInvC ε hx)).symm`.
+-/
 theorem thetaC_eq {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ Formalism.MainNotions.S.UJset ε) : thetaC ε x = x⁻¹ :=
   (Matrix.inv_eq_left_inv (ujInvC ε hx)).symm
 
 variable {ε} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isMatGroupC ε).2.1, (isMatGroupC ε).2.2.1, hσ.1.1, hσ.1.2⟩`.
+-/
 theorem repOnC (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) : CompanionTheory.D.Upq.Sm.RepOn (Formalism.MainNotions.S.UJset ε) σ :=
   ⟨(isMatGroupC ε).2.1, (isMatGroupC ε).2.2.1, hσ.1.1, hσ.1.2⟩
 
+/- English proof (translation)
+Introduce `m Xs hX`. Establish `hc` using `Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_contDiff m Xs`. Establish `hmem : ∀ t : Fin m → ℝ, (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.MainNotions.S.UJset ε` using `fun t => Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_mem _ m Xs (fun i => hX i) t`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t0`.
+
+Take `⟨U, F, hU, h0, hF, hEq⟩` from `hw _ (hmem t0)`. Establish `hev : (fun t : Fin m → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) w) =ᶠ[𝓝 t0] fun t => F ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)` using `by filter_upwards [hc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with t ht`. Conclude with `hEq _ ht (hmem t)`. Conclude with `((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev`.
+-/
 theorem smoothVec_of_isSmC {w : H} (hw : CompanionTheory.D.Upq.Sm.IsSm (Formalism.MainNotions.S.UJset ε) σ w) :
     Formalism.L2.Theta.SmoothVec (Formalism.IndefR.Tow.SobPf.lieG (Formalism.REAL.Jm ε)) σ w := by
   intro m Xs hX
@@ -74,6 +97,17 @@ theorem smoothVec_of_isSmC {w : H} (hw : CompanionTheory.D.Upq.Sm.IsSm (Formalis
     exact hEq _ ht (hmem t)
   exact ((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev
 
+/- English proof (translation)
+Establish `hsm` using `CompanionTheory.D.gk.FinalFormK.dense_sm' (isMatGroupC ε) (thetaC ε) (fun x hx => thetaC_eq ε hx) (repOnC hσ) hσ.2.2`. Establish `hG : Formalism.IndefR.Tow.SobPf.IsGRep (Formalism.REAL.Jm ε) σ` using `⟨hσ.1.1, hσ.1.2, hσ.2.1, hσ.2.2⟩`. Establish `hC : Formalism.IndefR.Datum.IsCartanInv (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε)`. Establish `hJ : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε`. Apply the tactic sequence `ext i j; simp only [Formalism.REAL.Jm, diagonal_conjTranspose, diagonal_apply]; split_ifs <;> simp_all`.
+
+Use `⟨Formalism.REAL.Jm_mul_self ε, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`. Rewrite using `[Formalism.REAL.Jm_mul_self]`. Conclude with `Matrix.PosDef.one`. Rewrite using `[Metric.dense_iff]`.
+
+Introduce `h δ hδ`. Take `⟨w, hw, hwh⟩` from `Metric.dense_iff.1 hsm h (δ / 2) (half_pos hδ)`. Take `⟨v, -, hvK, hvw⟩` from `CompanionTheory.D.gk.HC.sobApprox_holds (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε) σ hC hG w (smoothVec_of_isSmC hwh) [[]] (by simp) (δ / 2) (half_pos hδ)`. Use `⟨v, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hvw [] (by simp)`.
+
+Simplify using `only [Formalism.IndefR.Tow.SobPf.dL, List.foldr_nil] at h1`. Rewrite `hw`, the goal using `[Metric.mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨W, hW, hvW, hst⟩` from `hvK`. Use `⟨W, hW, hvW, fun g hg x hx => hst g ⟨?_, hg.2⟩ x hx⟩` and prove the remaining obligations.
+
+Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').1 hg.1, Matrix.one_mul]`.
+-/
 theorem kfinDense_UJC (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) : Dense {v : H | Formalism.MainNotions.S.IsKFin ε σ v} := by
   have hsm := CompanionTheory.D.gk.FinalFormK.dense_sm' (isMatGroupC ε) (thetaC ε) (fun x hx => thetaC_eq ε hx) (repOnC hσ) hσ.2.2
   have hG : Formalism.IndefR.Tow.SobPf.IsGRep (Formalism.REAL.Jm ε) σ := ⟨hσ.1.1, hσ.1.2, hσ.2.1, hσ.2.2⟩

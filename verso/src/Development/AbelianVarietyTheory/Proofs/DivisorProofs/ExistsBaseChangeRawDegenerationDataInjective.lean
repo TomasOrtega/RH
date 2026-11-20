@@ -14,6 +14,21 @@ open GlobalTheory.PsiRing GlobalTheory.StrictPull GlobalTheory.ModelData GlobalT
 
 namespace GlobalTheory.BaseChangeDeg
 
+/- English proof (translation)
+Introduce `R₁ _ _ R₂ _ _ _ σ D₁ gam hgam`. Set `P'` to `polPull D₁.P (spMap σ)`. Set `F` to `pullback.fst D₁.P.A.hom (spMap σ)`. Establish `gp : IsGrpPullback P'.A D₁.P.A (spMap σ) F` using `isGrpPullback_pullback D₁.P.A (spMap σ)`. Take `⟨w, hw, -⟩` from `exists_strict D₁.P.isLB F`.
+
+Establish `hF` using `gp.1`. Establish `hw'` using `(isGen_iff w).1 hw`. Establish `hE : eSec P'.A ≫ F = spMap σ ≫ eSec D₁.P.A` using `(cubeMapOf gp).e_comm`. Take `⟨rig, hrig, Hrig⟩` from `exists_pmaps hw' D₁.P.isLB P'.isLB (K := PUnit) (φ' := fun _ => eSec P'.A) (φ := fun _ => eSec D₁.P.A) (ε := fun _ => 1) (spMap σ) (fun _ => hE) D₁.rig D₁.rig_gen`. Take `⟨cub⟩` from `nonempty_cubical_pull gp D₁.cub ⟨P'.L, rig, P'.isLB, hrig⟩ hw'`.
+
+Take `⟨sym, hsym, hsr⟩` from `exists_sym_pull gp D₁.P.isLB P'.isLB hw' D₁.sym D₁.sym_gen D₁.sym_rig`. Take `⟨c, hc⟩ : ∃ c : D₁.X → (𝟙_ (Over (Spec (CommRingCat.of R₂))) ⟶ P'.A), ∀ x, (c x).left ≫ F = spMap σ ≫ (D₁.c x).left` from `⟨fun x => Over.homMk (hF.lift (spMap σ ≫ (D₁.c x).left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Over.w, Category.id_comp]`. Conclude with `Category.comp_id _)) (hF.lift_snd _ _ _),`. Use `fun x => hF.lift_fst _ _ _⟩`.
+
+Establish `cadd : ∀ a b, c (a + b) = padd P'.A (c a) (c b)` using `fun a b => by`. Use `Over.OverMorphism.ext (hF.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Establish `u : (toUnit (Over.mk ((𝟙_ (Over (Spec (CommRingCat.of R₂)))).hom ≫ spMap σ))).left = spMap σ` using `Category.id_comp _`. Establish `m` using `gp.2 _ (c a) (c b) (toUnit _ ≫ D₁.c a) (toUnit _ ≫ D₁.c b) (by rw [hc, Over.comp_left, u]) (by rw [hc, Over.comp_left, u])`. Rewrite `m` using `[← MonObj.comp_mul, Over.comp_left, u]`.
+
+Rewrite using `[hc, D₁.c_add]`. Conclude with `m`. Establish `hK : jK R₂ ≫ spMap σ = spMap gam ≫ jK R₁` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `r`. Conclude with `(hgam r).symm`. Establish `hx : ∀ x, ptK (c x) ≫ F = spMap gam ≫ D₁.xK x` using `fun x => by show (jK R₂ ≫ (c x).left) ≫ F = spMap gam ≫ jK R₁ ≫ (D₁.c x).left`. Use `(Category.assoc _ _ _).trans ((congrArg (jK R₂ ≫ ·) (hc x)).trans ?_)` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ (D₁.c x).left) hK)).trans (Category.assoc _ _ _)`.
+
+Use `choose psi hpsi vpsi using fun x => exists_pmaps hw' D₁.P.isLB P'.isLB (K := PUnit) (φ' := fun _ => ptK (c x)) (φ := fun _ => D₁.xK x) (ε := fun _ => -1) (spMap gam) (fun _ => hx x) (D₁.psi x) (D₁.psi_gen x)`. Set `D' : DegPre R₂` to `{ P := P', rig := rig, rig_gen := hrig, cub := cub, sym := sym, sym_gen := hsym, sym_rig := hsr, X := D₁.X, c := c, c_add := cadd, psi := psi, psi_gen := hpsi }`. Conclude with `⟨D', F, w, AddEquiv.refl _, gp, hw, hc, Hrig, vpsi⟩`.
+-/
 theorem exists_baseChange : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (R₂ : Type) [CommRing R₂] [IsDomain R₂] [IsNoetherianRing R₂] (σ : R₁ →+* R₂) (D₁ : DegPre R₁) (gam : FractionRing R₁ →+* FractionRing R₂), (∀ r, gam (algebraMap R₁ _ r) = algebraMap R₂ _ (σ r)) → ∃ (D₂ : DegPre R₂) (β : D₂.P.A.left ⟶ D₁.P.A.left) (v : LB.Iso D₂.P.L (D₁.P.L.pull β)) (xe : D₂.X ≃+ D₁.X), IsGrpPullback D₂.P.A D₁.P.A (spMap σ) β ∧ v.IsGen ∧ (∀ x, (D₂.c x).left ≫ β = spMap σ ≫ (D₁.c (xe x)).left) ∧ GlobalTheory.PsiRing.RigCmp σ D₁ D₂ β v ∧ GlobalTheory.PsiRing.PsiCmp D₁ D₂ β v xe (spMap gam) := by
   intro R₁ _ _ R₂ _ _ _ σ D₁ gam hgam
   let P' := polPull D₁.P (spMap σ)

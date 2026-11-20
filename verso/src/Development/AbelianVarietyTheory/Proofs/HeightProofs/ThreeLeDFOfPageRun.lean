@@ -12,6 +12,23 @@ namespace GlobalTheory.FinalJoin
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.RunJoin GlobalTheory.RunIn GlobalTheory.FinalJoin
 
+/- English proof (translation)
+Establish `hh` using `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hL, -, -, hT, -, h40, hnW, -⟩` from `hh`. Establish `hp : 0 < (D.R.sigW j).1`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `show 0 < D.R.k + j - 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hτ : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression.
+
+Take `⟨τ⟩` from `hτ`. Use `set i : Fin (D.R.sigW j).1 := ⟨(D.R.sigW j).1 - 1, by omega⟩ with hi`. Establish `hi1 : i.1 + 1 = (D.R.sigW j).1` using `by simp only [hi]; omega`. Establish `h2` using `two_T_sq_le_last h τ i hi1`. Establish `h3` using `hL.2.1 τ i`.
+
+Establish `hn : ¬ i.1 + 1 < (D.R.sigW j).1` using `by omega`. Rewrite `h3` using `[if_neg hn]`. Unfold `gapZ at h3`. Rewrite `h3` using `[dif_neg hn]`. Establish `hTp : (0 : ℤ) < (Tp D j T : ℤ)` using `by unfold Tp; positivity`.
+
+Rewrite `h3` using `[Int.fdiv_eq_ediv_of_nonneg _ hTp.le]`. Establish `h4 : (3 : ℤ) ≤ ((ka.aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * nW - 2 * D.R.r) / (Tp D j T : ℤ)`. Rewrite using `[Int.le_ediv_iff_mul_le hTp]`. Unfold `Tp`. Establish `e1 : (2 * (T : ℤ) ^ 2) ≤ (ka.aP τ i : ℤ)` using `by exact_mod_cast h2`.
+
+Establish `e2 : ((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r ≤ T` using `by exact_mod_cast hnW`. Establish `e3 : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ T` using `by exact_mod_cast h40`. Establish `e4 : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ)` using `Int.natCast_nonneg _`. Establish `e5 : (80 : ℤ) ≤ T` using `by linarith`. Establish `e6 : 80 * (T : ℤ) ≤ (T : ℤ) ^ 2` using `by nlinarith`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 3 ≤ wL.aP τ i`. Rewrite `h4` using `[← h3]`. Conclude with `h4` after adjusting the coercions.
+
+Unfold `WeightAlgebra.DF degP`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem three_le_DF_of_SetC {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {large₂ : SizeData₂ D} {X : PJ D B P j}
     {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
     (h : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) : 3 ≤ DF wL := by
@@ -56,6 +73,9 @@ theorem three_le_DF_of_SetC {D : D7} {B : WeightFamilies.Prov D} {P : ModuliInte
     _ ≤ _ := Finset.single_le_sum (f := fun τ => (∑ i, wL.aP τ i) + ∑ i, wL.aM τ i) (fun _ _ => Nat.zero_le _)
         (Finset.mem_univ τ)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h` and use `three_le_DF_of_SetC h.hyp.2.1`.
+-/
 theorem three_le_DF_of_pageRun : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), InR D j → PageRun large₂ X H C2 A2 CT ka wL wF Tn nP nW h0 → 3 ≤ DF wL :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h => three_le_DF_of_SetC h.hyp.2.1
 

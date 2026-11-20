@@ -7,6 +7,19 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR
 
+/- English proof (translation)
+Take `⟨hlc, hcs⟩` from `hf`. Establish `hK : IsCompact (tsupport f)` using `hcs`. Use `haveI : CompactSpace (tsupport f) := isCompact_iff_compactSpace.1 hK`. Establish `hfin0 : (Set.range fun x : tsupport f => f x).Finite` using `(hlc.comp_continuous continuous_subtype_val).range_finite`. Establish `hT : (Set.range f).Finite`.
+
+Use `(hfin0.insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `Set.mem_insert_of_mem _ ⟨⟨x, hx⟩, rfl⟩`. Conclude with `Set.mem_insert_iff.2 (Or.inl (image_eq_zero_of_notMem_tsupport hx))`.
+
+Use `set D : Set ℂ := (Set.image2 (fun a b => a - b) (Set.range f) (Set.range f)) \ {0} with hD`. Establish `hDfin : D.Finite` using `(hT.image2 _ hT).diff`. Establish `hDo : Dᶜ ∈ 𝓝 (0 : ℂ)` using `hDfin.isClosed.isOpen_compl.mem_nhds (fun h => h.2 rfl)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hDo`. Establish `huc` using `hcs.uniformContinuous_of_continuous hlc.continuous (Metric.dist_mem_uniformity hε)`.
+
+Rewrite `huc` using `[uniformity_eq_comap_nhds_zero X, Filter.mem_map, Filter.mem_comap]`. Take `⟨V, hV, hVs⟩` from `huc`. Use `⟨V, hV, fun Y u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : ((Y, Y + u) : X × X) ∈ (fun p : X × X => p.2 - p.1) ⁻¹' V`. Simplify `hu` using `[add_sub_cancel_left]`.
+
+Establish `h1'` using `hVs h1`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at h1'`. Establish `h2 : f (Y + u) - f Y ∈ Metric.ball (0 : ℂ) ε`. Rewrite using `[Metric.mem_ball, dist_zero_right, ← dist_eq_norm, dist_comm]`. Conclude with `h1'`.
+
+Establish `h3` using `hball h2`. Assume the negation of the conclusion as `hne`. Conclude with `h3 ⟨⟨_, ⟨_, rfl⟩, _, ⟨_, rfl⟩, rfl⟩, fun h => hne (sub_eq_zero.1 h)⟩`.
+-/
 theorem exists_nhds_zero_add_invariant_of_isTest {X : Type} [UniformSpace X] [AddCommGroup X] [IsUniformAddGroup X] {f : X → ℂ}
     (hf : IsTest f) : ∃ U ∈ 𝓝 (0 : X), ∀ Y : X, ∀ u ∈ U, f (Y + u) = f Y := by
   obtain ⟨hlc, hcs⟩ := hf
@@ -40,6 +53,9 @@ theorem exists_nhds_zero_add_invariant_of_isTest {X : Type} [UniformSpace X] [Ad
   by_contra hne
   exact h3 ⟨⟨_, ⟨_, rfl⟩, _, ⟨_, rfl⟩, rfl⟩, fun h => hne (sub_eq_zero.1 h)⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ r M ψ hψ f' hf`. Establish `hU : ∃ U ∈ 𝓝 (0 : Gl r F), ∀ Y : Gl r F, ∀ u ∈ U, f' (Y + u) = f' Y`. Conclude with `exists_nhds_zero_add_invariant_of_isTest (X := Gl r F) (f := f') (by exact hf)`. Conclude with `⟨fourG_isLocallyConstant_of_invariant F E r M ψ hψ f' hf hU, fourG_hasCompactSupport F E r M ψ hψ f' hf hU⟩`.
+-/
 theorem fourG_isTest : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ →
     ∀ f' : Gl r F → ℂ, IsTest f' → IsTest (fourG M ψ f') := by

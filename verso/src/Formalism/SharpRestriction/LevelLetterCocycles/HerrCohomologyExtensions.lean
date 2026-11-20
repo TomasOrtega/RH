@@ -60,6 +60,9 @@ def CrystallineExtensionImage (e : W.DD W.one) (e₀ : W.one.V) : Prop :=
 def HerrExt : Prop :=
   ∃ (e : W.DD W.one) (e₀ : W.one.V), UnitGen W e e₀ ∧ ExtKs W e e₀ ∧ ExtK W e e₀
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hg : W.gamK = W.gam` using `W.gamK_eq_one h1 h2`. Unfold `LocWach.wachCocyclesDelta herrZ1Δ at hw`. Rewrite `hw` using `[hg]`. Conclude with `hw.1`.
+-/
 theorem invariant_cocycle_le_gamma_cocycle (h1 : W.s = 1) (h2 : PD.p ≠ 2) (T : LocLat G Qp LL O) : W.wachCocyclesDelta T ≤ W.divisibleCocycles T := by
   intro w hw
   have hg : W.gamK = W.gam := W.gamK_eq_one h1 h2

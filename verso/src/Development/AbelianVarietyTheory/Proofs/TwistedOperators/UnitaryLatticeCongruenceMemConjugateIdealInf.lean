@@ -17,9 +17,29 @@ section Ideals
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem oToS_coe (a : 𝓞 E) : ((Formalism.L2.DIV.oToS F E a : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) =
     Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (algebraMap (𝓞 E) E a) := rfl
 
+/- English proof (translation)
+Introduce `x hx`. Distinguish the cases in `hd : 𝔪 ⊔ 𝔫 = ⊥`. Establish `h1 : 𝔪 = ⊥` using `eq_bot_iff.2 (hd ▸ le_sup_left)`. Establish `h2 : 𝔫 = ⊥` using `eq_bot_iff.2 (hd ▸ le_sup_right)`. Substitute `h1 h2` using the available equality.
+
+Simplify using `using hx.1`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hd`. Take `⟨𝔠, h𝔠⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 ha)`. Establish `key : Ideal.span {a} * (𝔪 ⊓ 𝔫) = 𝔪 * 𝔫 * 𝔠`. Rewrite using `[h𝔠, mul_comm (𝔪 ⊔ 𝔫) 𝔠, mul_assoc, Ideal.sup_mul_inf, mul_comm]`.
+
+Establish `h1 : Formalism.L2.DIV.oToS F E a * x ∈ Formalism.L2.DIV.idS F 𝔪 * Formalism.L2.DIV.idS F 𝔫 * Formalism.L2.DIV.idS F 𝔠`. Establish `hfa : Formalism.L2.DIV.oToS F E a ∈ (Formalism.L2.DIV.idS F 𝔪 ⊔ Formalism.L2.DIV.idS F 𝔫) * Formalism.L2.DIV.idS F 𝔠`. Establish `h0 : a ∈ (𝔪 ⊔ 𝔫) * 𝔠` using `h𝔠 ▸ Ideal.mem_span_singleton_self a`. Establish `h3` using `Ideal.mem_map_of_mem (Formalism.L2.DIV.oToS F E) h0`. Unfold `Formalism.L2.DIV.idS`.
+
+Rewrite `h3` using `[Ideal.map_mul, Ideal.map_sup]`. Then use the resulting hypothesis. Establish `hle : (Formalism.L2.DIV.idS F 𝔪 ⊔ Formalism.L2.DIV.idS F 𝔫) * Formalism.L2.DIV.idS F 𝔠 * Ideal.span {x} ≤ Formalism.L2.DIV.idS F 𝔪 * Formalism.L2.DIV.idS F 𝔫 * Formalism.L2.DIV.idS F 𝔠`. Rewrite using `[mul_right_comm, Ideal.sup_mul]`. Use `Ideal.mul_mono (sup_le (Ideal.mul_mono le_rfl ((Ideal.span_singleton_le_iff_mem _).2 hx.2)) ?_) le_rfl` and prove the remaining obligations. Rewrite using `[mul_comm (Formalism.L2.DIV.idS F 𝔪)]`.
+
+Conclude with `Ideal.mul_mono le_rfl ((Ideal.span_singleton_le_iff_mem _).2 hx.1)`. Conclude with `hle (Ideal.mul_mem_mul hfa (Ideal.mem_span_singleton_self x))`. Establish `h2 : Formalism.L2.DIV.idS F 𝔪 * Formalism.L2.DIV.idS F 𝔫 * Formalism.L2.DIV.idS F 𝔠 = Ideal.span {Formalism.L2.DIV.oToS F E a} * Formalism.L2.DIV.idS F (𝔪 ⊓ 𝔫)`. Unfold `Formalism.L2.DIV.idS`. Rewrite using `[← Ideal.map_mul, ← Ideal.map_mul, ← key, Ideal.map_mul, Ideal.map_span, Set.image_singleton]`.
+
+Rewrite `h1` using `[h2, Ideal.mem_span_singleton_mul]`. Take `⟨z, hz, hzx⟩` from `h1`. Establish `hu : IsUnit ((Formalism.L2.DIV.oToS F E a : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F)`. Rewrite using `[oToS_coe]`. Establish `ha1 : algebraMap (𝓞 E) E a ≠ 0`.
+
+Introduce `h0`. Apply `ha0` to reduce the goal to its premises. Conclude with `(map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).1 h0`. Conclude with `(Ne.isUnit ha1).map _`. Establish `hzx' : z = x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3` using `congrArg (fun t : Formalism.L2.Herm.intAf F E => (t : E ⊗[F] Formalism.L2.Herm.Af F)) hzx`. Simplify using `only [Subring.coe_mul] at h3`. Conclude with `hu.mul_left_cancel h3`. Conclude with `hzx' ▸ hz`.
+-/
 theorem idS_inf_le (𝔪 𝔫 : Ideal (𝓞 E)) :
     Formalism.L2.DIV.idS F 𝔪 ⊓ Formalism.L2.DIV.idS F 𝔫 ≤ Formalism.L2.DIV.idS F (𝔪 ⊓ 𝔫) := by
   intro x hx
@@ -64,6 +84,9 @@ theorem idS_inf_le (𝔪 𝔫 : Ideal (𝓞 E)) :
     exact hu.mul_left_cancel h3
   exact hzx' ▸ hz
 
+/- English proof (translation)
+Take `⟨s, hs, rfl⟩` from `h1`. Take `⟨t, ht, hts⟩` from `h2`. Take `rfl : t = s` from `Subtype.ext hts`. Conclude with `⟨t, idS_inf_le 𝔪 𝔫 ⟨hs, ht⟩, rfl⟩`.
+-/
 theorem inId_inf {𝔪 𝔫 : Ideal (𝓞 E)} {x : E ⊗[F] Formalism.L2.Herm.Af F} (h1 : GlobalTheory.FrameIdeal.InId 𝔪 x)
     (h2 : GlobalTheory.FrameIdeal.InId 𝔫 x) : GlobalTheory.FrameIdeal.InId (𝔪 ⊓ 𝔫) x := by
   obtain ⟨s, hs, rfl⟩ := h1
@@ -71,6 +94,9 @@ theorem inId_inf {𝔪 𝔫 : Ideal (𝓞 E)} {x : E ⊗[F] Formalism.L2.Herm.Af
   obtain rfl : t = s := Subtype.ext hts
   exact ⟨t, idS_inf_le 𝔪 𝔫 ⟨hs, ht⟩, rfl⟩
 
+/- English proof (translation)
+Use `GlobalTheory.FrameIdeal.inId_mul (t := -1) (neg_mem (one_mem _)) h` as an intermediate fact. Rewrite `this` using `[neg_one_mul]`. Then use the resulting hypothesis.
+-/
 theorem inId_neg {I : Ideal (𝓞 E)} {x : E ⊗[F] Formalism.L2.Herm.Af F} (h : GlobalTheory.FrameIdeal.InId I x) :
     GlobalTheory.FrameIdeal.InId I (-x) := by
   have := GlobalTheory.FrameIdeal.inId_mul (t := -1) (neg_mem (one_mem _)) h
@@ -82,23 +108,38 @@ section Forms
 
 variable {A : Type} [CommRing A] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_dot (τ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y : Fin n → A) :
     Formalism.UG.hform τ J x y = (fun i => τ (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hform_sub_left (τ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y z : Fin n → A) :
     Formalism.UG.hform τ J (x - y) z = Formalism.UG.hform τ J x z - Formalism.UG.hform τ J y z := by
   simp only [Formalism.UG.hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hform_sub_right (τ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y z : Fin n → A) :
     Formalism.UG.hform τ J x (y - z) = Formalism.UG.hform τ J x y - Formalism.UG.hform τ J x z := by
   simp only [Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.DualCompletion.hform_mulVec_left, Matrix.mulVec_mulVec, h, hform_dot]`. Both sides reduce to the same expression.
+-/
 theorem hform_unitary (τ : A →+* A) (J B : Matrix (Fin n) (Fin n) A) (h : Formalism.UG.cT τ B * J * B = J)
     (x y : Fin n → A) : Formalism.UG.hform τ J (B *ᵥ x) (B *ᵥ y) = Formalism.UG.hform τ J x y := by
   rw [GlobalTheory.DualCompletion.hform_mulVec_left, Matrix.mulVec_mulVec, h, hform_dot]
   rfl
 
+/- English proof (translation)
+Simplify using `only [hform_dot, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hform_mulVec_right (τ : A →+* A) (J B : Matrix (Fin n) (Fin n) A) (a c : Fin n → A) :
     Formalism.UG.hform τ J a (B *ᵥ c) = ∑ k, Formalism.UG.hform τ J a (fun i => B i k) * c k := by
   simp only [hform_dot, Matrix.dotProduct_mulVec]
@@ -111,6 +152,15 @@ variable {D : D7}
 local notation "σA" => Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)
 local notation "ιA" => Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)
 
+/- English proof (translation)
+Use `show _ = 𝔪.map (MulSemiringAction.toRingHom _ _ D.host.conj)`. Unfold `GlobalTheory.SW.conjI`. Rewrite using `[Ideal.map]`. Use `congr 1`. Use extensionality with `a`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, hab⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hab]`.
+
+Use `show (D.host.conj (b : D.host.E)) = star (b : D.host.E)`. Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host _).symm`. Introduce and unpack `⟨b, hb, rfl⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `show (D.host.conj (b : D.host.E)) = star (b : D.host.E)`.
+
+Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host _).symm`.
+-/
 theorem conjI_eq (𝔪 : Ideal (𝓞 D.host.E)) : GlobalTheory.SW.conjI 𝔪 = D.host.conj • 𝔪 := by
   show _ = 𝔪.map (MulSemiringAction.toRingHom _ _ D.host.conj)
   unfold GlobalTheory.SW.conjI
@@ -129,6 +179,11 @@ theorem conjI_eq (𝔪 : Ideal (𝓞 D.host.E)) : GlobalTheory.SW.conjI 𝔪 = D
     show (D.host.conj (b : D.host.E)) = star (b : D.host.E)
     exact (Formalism.BasicNotions.Examples₂.star_eq_conj D.host _).symm
 
+/- English proof (translation)
+Establish `hc` using `(GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr 𝔪 b).1 hb`. Establish `e : b = β.1 *ᵥ ((β⁻¹).1 *ᵥ b)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e, hform_mulVec_right]`. Use `GlobalTheory.FrameIdeal.inId_sum _ fun k => GlobalTheory.FrameIdeal.inId_mul ?_ (hc k)` and prove the remaining obligations.
+
+Establish `hk` using `GlobalTheory.FrameIdeal.col_mem_hatL hfr k`. Rewrite `hk` using `[Matrix.mulVec_single_one]`. Conclude with `GlobalTheory.GramFrame.pair_hatL V.gram Λ (GlobalTheory.FrameIdeal.selfDual_pair hsd) _ _ ha hk`.
+-/
 theorem inId_hform {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hsd : IsSelfDualC V Λ)
     {β : GL (Fin V.rank) (Lev.EAf D)} (hfr : Formalism.L2.DIV.IsFrame β Λ) {𝔪 : Ideal (𝓞 D.host.E)}
     {a b : Fin V.rank → Lev.EAf D} (ha : a ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ)
@@ -145,6 +200,17 @@ theorem inId_hform {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V Λ hsd 𝔪 g hg`. Rewrite `hg`, the goal using `[GlobalTheory.ChiGrid.mem_congLev]`. Take `⟨g1, g2, g3⟩` from `hg`. Take `⟨β, hfr⟩ : ∃ β : GL (Fin V.rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame β Λ` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F Λ hsd.1.fg hsd.1.span_eq_top`. Use `⟨g1, g2, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hm` using `g3 y hy`. Establish `hU : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) g.1 * V.gram.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F)) * g.1 = V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) := g1`. Establish `hc : g.1 *ᵥ y - y ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.SW.conjI 𝔪 • Λ) := by`. Rewrite using `[GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr]`. Use `(GlobalTheory.FrameIdeal.key_iff hsd hfr 𝔪 _).2 fun j => ?_` and prove the remaining obligations.
+
+Establish `hx : (β.1)ᵀ j ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := by`. Establish `h0` using `GlobalTheory.FrameIdeal.col_mem_hatL (D := D) (β := β) (Λ := Λ) hfr j`. Rewrite `h0` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Establish `e : Formalism.UG.hform (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (V.gram.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F))) (g.1 *ᵥ y - y) (fun c => β.1 c j) = -Formalism.UG.hform (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))) (g.1 *ᵥ y) (g.1 *ᵥ (β.1)ᵀ j - (β.1 …`. Rewrite using `[hform_sub_left, hform_sub_right, hform_unitary _ _ _ hU]`.
+
+Establish `: (fun c => β.1 c j) = (β.1)ᵀ j` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `inId_neg (inId_hform hsd hfr ((g2 y).1 hy) (g3 _ hx))`.
+
+Rewrite `hc` using `[conjI_eq]`. Rewrite `hm`, `hc`, the goal using `[GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr]`. Conclude with `fun i => inId_inf (hm i) (hc i)`.
+-/
 theorem congLev_conj : ∀ {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSelfDualC V Λ → ∀ (𝔪 : Ideal (𝓞 D.host.E)) (g : GL (Fin V.rank) (Lev.EAf D)), g ∈ congLev D.sp.cm V.gram Λ 𝔪 → g ∈ congLev D.sp.cm V.gram Λ (𝔪 ⊓ D.host.conj • 𝔪) := by
   intro D V Λ hsd 𝔪 g hg
   rw [GlobalTheory.ChiGrid.mem_congLev] at hg ⊢

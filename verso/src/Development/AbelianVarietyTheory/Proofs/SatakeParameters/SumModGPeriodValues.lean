@@ -13,12 +13,20 @@ def extZero {k : Type} [CommRing k] {n' n : ℕ} (c' c : ℕ) (y : (Fin n' → k
     if hs : s.1 < n' then
       (if hl : l.1 < n then y (Pi.single ⟨s.1, hs⟩ 1) ⟨l.1, hl⟩ else 0) else 0)
 
+/- English proof (translation)
+Simplify using `[extZero, Matrix.toLin'_apply]`.
+-/
 theorem extZero_single {k : Type} [CommRing k] {n' n : ℕ} (c' c : ℕ)
     (y : (Fin n' → k) →ₗ[k] (Fin n → k)) (s : Fin (n' + c')) (l : Fin (n + c)) :
     extZero c' c y (Pi.single s 1) l = if hs : s.1 < n' then
       (if hl : l.1 < n then y (Pi.single ⟨s.1, hs⟩ 1) ⟨l.1, hl⟩ else 0) else 0 := by
   simp [extZero, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Use `hom_ext fun s l => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, Pi.add_apply, LinearMap.smul_apply, Pi.smul_apply, linearMap_unfolding_apply_single, linearMap_unfolding_apply_single, extZero_single]`. Distinguish the cases in `hf : Loc.IsFree n' n c l.1 s.1`. Establish `hs : ¬ s.1 < n'` using `not_lt.2 hf.1`. Simplify using `[hf, hs]`.
+
+Distinguish the cases in `hs : s.1 < n'`. Apply the tactic sequence `by_cases hl : l.1 < n <;> simp [hf, hs, hl]`. Simplify using `[hf, hs]`.
+-/
 theorem periodXX1_add_smul {k : Type} [CommRing k] {n' c' n c : ℕ} (a : k)
     (x y : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : Loc.FC n' c' n c → k) :
     Loc.xx1 (x + a • y) t = Loc.xx1 x t + a • extZero c' c y := by
@@ -32,6 +40,9 @@ theorem periodXX1_add_smul {k : Type} [CommRing k] {n' c' n c : ℕ} (a : k)
     · by_cases hl : l.1 < n <;> simp [hf, hs, hl]
     · simp [hf, hs]
 
+/- English proof (translation)
+Rewrite using `[chArg_eq]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, extZero_single, dif_neg (by simp; omega), smul_zero]`.
+-/
 theorem chArg_smul_extZero {k : Type} [CommRing k] {n' n c : ℕ} (a : k)
     (y : (Fin n' → k) →ₗ[k] (Fin n → k)) : Loc.chArg (a • extZero (c + 1) c y) = 0 := by
   rw [chArg_eq]

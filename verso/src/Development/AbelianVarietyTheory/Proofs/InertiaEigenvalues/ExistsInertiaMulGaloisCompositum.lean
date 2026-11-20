@@ -10,6 +10,17 @@ namespace GlobalTheory.InertiaLift
 
 open ReciprocityTheory.DiscreteGroups.LocalClassField in
 
+/- English proof (translation)
+Use `set N := (F ⊔ MaximalUnramifiedExtension l) ⊓ K'' with hNdef`. Establish `hN : FiniteDimensional ℚ_[l] N` using `Module.Finite.of_injective (IntermediateField.inclusion (inf_le_right : N ≤ K'')).toLinearMap (IntermediateField.inclusion (inf_le_right : N ≤ K'')).injective`. Establish `hNur : N ≤ ReciprocityTheory.DiscreteGroups.LocalClassField.MaximalUnramifiedExtension l F`. Rewrite using `[Kur_eq hF]`. Use `inf_le_left.trans (sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) F)` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨m, -, hm, hx⟩`. Conclude with `⟨m, hm, hx⟩`. Take `⟨n, hn, hNn⟩` from `exists_le_Kn_of_le_Kur hF hN hNur`. Establish `hFN : F ≤ N` using `le_inf le_sup_left hFK`. Establish `hdvd : Module.finrank ℚ_[l] F ∣ Module.finrank ℚ_[l] N` using `IntermediateField.finrank_dvd_of_le_right hFN`.
+
+Establish `hpos : 0 < Module.finrank ℚ_[l] N` using `Module.finrank_pos`. Establish `hFpos : 0 < Module.finrank ℚ_[l] F` using `Module.finrank_pos`. Use `set d := Module.finrank ℚ_[l] N / Module.finrank ℚ_[l] F`. Establish `hd : 0 < d` using `Nat.div_pos (Nat.le_of_dvd hpos hdvd) hFpos`. Establish `hNeq : N = Kn l F d` using `eq_Kn_of_norm l F hF hFN hd (Nat.div_mul_cancel hdvd).symm (fun x hx => norm_Kn l F hF hn (hNn hx))`.
+
+Rewrite using `[hNeq]`. Use `UnramifiedExtensions.Kn_le F le_sup_left fun ζ hζ => (le_sup_right : K'' ⊓ MaximalUnramifiedExtension l ≤ _) ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ζ ∈ N` using `by rw [hNeq]; exact mem_Kn_of_pow l F hζ`. Conclude with `h1.2`. Use `IntermediateField.subset_adjoin _ _ ⟨_, ?_, UnramifiedExtensions.not_dvd_qK_pow_sub_one F hF hd, hζ⟩` and prove the remaining obligations.
+
+Use `one_lt_qK l F hF` as an intermediate fact. Establish `: 1 < qK l F ^ d` using `Nat.one_lt_pow hd.ne' this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem unr_inf_le {l : ℕ} [Fact l.Prime] (F K'' : IntermediateField ℚ_[l] (Om l))
     (hF : FiniteDimensional ℚ_[l] F) (hK : FiniteDimensional ℚ_[l] K'') (hFK : F ≤ K'') :
     (F ⊔ MaximalUnramifiedExtension l) ⊓ K'' ≤ F ⊔ (K'' ⊓ MaximalUnramifiedExtension l) := by
@@ -45,6 +56,19 @@ end GlobalTheory.InertiaLift
 
 namespace GlobalTheory.InertiaLift
 
+/- English proof (translation)
+Set `T : Subgroup (GQ l)` to `{ carrier := {g | ∃ s ∈ M.fixingSubgroup, s⁻¹ * g ∈ K''.fixingSubgroup} one_mem' := ⟨1, M.fixingSubgroup.one_mem, by simpa using K''.fixingSubgroup.one_mem⟩ mul_mem' := by`. Introduce and unpack `g₁ g₂ ⟨s₁, hs₁, hk₁⟩ ⟨s₂, hs₂, hk₂⟩`. Use `⟨s₁ * s₂, M.fixingSubgroup.mul_mem hs₁ hs₂, ?_⟩` and prove the remaining obligations. Establish `e : (s₁ * s₂)⁻¹ * (g₁ * g₂) = (s₂⁻¹ * (s₁⁻¹ * g₁) * s₂) * (s₂⁻¹ * g₂)` using `by group`. Rewrite using `[e]`.
+
+Conclude with `K''.fixingSubgroup.mul_mem (hconj s₂ hs₂ _ hk₁) hk₂`. Use the proof step `inv_mem' := by`. Introduce and unpack `g ⟨s, hs, hk⟩`. Use `⟨s⁻¹, M.fixingSubgroup.inv_mem hs, ?_⟩` and prove the remaining obligations. Establish `e : s⁻¹⁻¹ * g⁻¹ = (s⁻¹)⁻¹ * (s⁻¹ * g)⁻¹ * s⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `hconj _ (M.fixingSubgroup.inv_mem hs) _ (K''.fixingSubgroup.inv_mem hk) }`. Establish `hNT : K''.fixingSubgroup ≤ T` using `fun k hk => ⟨1, M.fixingSubgroup.one_mem, by simpa using hk⟩`. Establish `hMT : M.fixingSubgroup ≤ T` using `fun s hs => ⟨s, hs, by simpa using K''.fixingSubgroup.one_mem⟩`. Establish `hopen : IsOpen (T : Set (GQ l))` using `Subgroup.isOpen_mono hNT (IntermediateField.fixingSubgroup_isOpen K'')`.
+
+Set `Tc : ClosedSubgroup (GQ l)` to `⟨T, Subgroup.isClosed_of_isOpen T hopen⟩`. Establish `hfix : IntermediateField.fixedField T ≤ M ⊓ K''`. Use `le_inf ?_ ?_` and prove the remaining obligations. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup M]`. Introduce `x hx s`.
+
+Conclude with `hx ⟨s.1, hMT s.2⟩`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup K'']`. Introduce `x hx s`. Conclude with `hx ⟨s.1, hNT s.2⟩`. Establish `hT : h ∈ (IntermediateField.fixedField (Tc : Subgroup (GQ l))).fixingSubgroup`.
+
+Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `hh x (hfix hx)`. Rewrite `hT` using `[InfiniteGalois.fixingSubgroup_fixedField Tc]`. Conclude with `hT`.
+-/
 theorem exists_mul_of_fixes {l : ℕ} [Fact l.Prime] (M K'' : IntermediateField ℚ_[l] (Om l))
     (hK : FiniteDimensional ℚ_[l] K'')
     (hconj : ∀ s ∈ M.fixingSubgroup, ∀ k ∈ K''.fixingSubgroup, s⁻¹ * k * s ∈ K''.fixingSubgroup)
@@ -84,6 +108,11 @@ theorem exists_mul_of_fixes {l : ℕ} [Fact l.Prime] (M K'' : IntermediateField 
   rw [InfiniteGalois.fixingSubgroup_fixedField Tc] at hT
   exact hT
 
+/- English proof (translation)
+Establish `hn : ∀ y : Om l, ‖i y‖ = ‖y‖` using `fun y => (spectralNorm_eq_of_equiv i y).symm`. Introduce `x hx`. Break down `lt_or_eq_of_le hx with hlt | heq` into its components or cases. Conclude with `lt_of_le_of_lt (ReciprocityTheory.DiscreteGroups.LocalClassField.UnramifiedExtensions.norm_sub_le_max' _ _) (max_lt (by rw [hn]; exact hlt) hlt)`. Take `⟨ζ, m, hm, hζ, hxζ⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_teichmuller_bar x heq`.
+
+Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero l))`. Establish `h1 : i ζ = ζ` using `hi ζ (IntermediateField.subset_adjoin _ _ ⟨m, hm0, hm, hζ⟩)`. Establish `h2 : i x - x = i (x - ζ) - (x - ζ)` using `by rw [map_sub, h1]; ring`. Rewrite using `[h2]`. Conclude with `lt_of_le_of_lt (ReciprocityTheory.DiscreteGroups.LocalClassField.UnramifiedExtensions.norm_sub_le_max' _ _) (max_lt (by rw [hn]; exact hxζ) hxζ)`.
+-/
 theorem inertia_of_fixes_Kur {l : ℕ} [Fact l.Prime] (i : GQ l) (hi : ∀ x ∈ MaximalUnramifiedExtension l, i x = x) :
     ∀ x : Om l, ‖x‖ ≤ 1 → ‖i x - x‖ < 1 := by
   have hn : ∀ y : Om l, ‖i y‖ = ‖y‖ := fun y => (spectralNorm_eq_of_equiv i y).symm
@@ -97,6 +126,17 @@ theorem inertia_of_fixes_Kur {l : ℕ} [Fact l.Prime] (i : GQ l) (hi : ∀ x ∈
     rw [h2]
     exact lt_of_le_of_lt (ReciprocityTheory.DiscreteGroups.LocalClassField.UnramifiedExtensions.norm_sub_le_max' _ _) (max_lt (by rw [hn]; exact hxζ) hxζ)
 
+/- English proof (translation)
+Introduce `l _ K' F K'' hnorm hK'' h hF h0`. Establish `hFK : F.1 ≤ K''.1` using `hK'' ▸ le_sup_right`. Establish `hfK : FiniteDimensional ℚ_[l] K''.1` using `K''.2`. Establish `hfF : FiniteDimensional ℚ_[l] F.1` using `F.2`. Establish `h1 : h ∈ (F.1 ⊔ (K''.1 ⊓ MaximalUnramifiedExtension l)).fixingSubgroup`.
+
+Rewrite using `[IntermediateField.fixingSubgroup_sup]`. Conclude with `⟨hF, (IntermediateField.mem_fixingSubgroup_iff _ _).2 h0⟩`. Establish `h2 : ∀ x ∈ (F.1 ⊔ MaximalUnramifiedExtension l) ⊓ K''.1, h x = x` using `fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 h1 x (unr_inf_le F.1 K''.1 hfF hfK hFK hx)`. Establish `hconj : ∀ s ∈ (F.1 ⊔ MaximalUnramifiedExtension l).fixingSubgroup, ∀ k ∈ K''.1.fixingSubgroup, s⁻¹ * k * s ∈ K''.1.fixingSubgroup`. Introduce `s hs k hk`.
+
+Rewrite `hs` using `[IntermediateField.fixingSubgroup_sup]`. Rewrite `hk`, the goal using `[hK'', IntermediateField.fixingSubgroup_sup]`. Use `⟨?_, F.1.fixingSubgroup.mul_mem (F.1.fixingSubgroup.mul_mem (F.1.fixingSubgroup.inv_mem hs.1) hk.2) hs.1⟩` and prove the remaining obligations. Use `hnorm.conj_mem k hk.1 s⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`.
+
+Conclude with `this`. Take `⟨i, hi, hik⟩` from `exists_mul_of_fixes (F.1 ⊔ MaximalUnramifiedExtension l) K''.1 hfK hconj h h2`. Rewrite `hi` using `[IntermediateField.fixingSubgroup_sup]`. Establish `hiQ : i ∈ GK (Formalism.MainNotions.ElementDenominator.qlExt l)`. Rewrite using `[GK, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Take `⟨y, rfl⟩` from `IntermediateField.mem_bot.1 hx`. Conclude with `i.commutes y`. Use `⟨⟨i, hiQ⟩, Subgroup.subset_closure ?_, hi.1, hik⟩` and prove the remaining obligations. Conclude with `inertia_of_fixes_Kur i ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hi.2)`.
+-/
 theorem lift : ∀ (l : ℕ) [Fact l.Prime] (K' F K'' : FinExt l), (GK K').Normal → K''.1 = K'.1 ⊔ F.1 →
     ∀ h : GQ l, h ∈ GK F → (∀ x ∈ K0 K'', h x = x) →
       ∃ i : ↥(GK (Formalism.MainNotions.ElementDenominator.qlExt l)), i ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) ∧ (i : GQ l) ∈ GK F ∧

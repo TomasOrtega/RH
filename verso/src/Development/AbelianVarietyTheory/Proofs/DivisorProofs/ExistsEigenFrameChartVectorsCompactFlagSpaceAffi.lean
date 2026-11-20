@@ -26,6 +26,21 @@ open GlobalTheory.FlagMod GlobalTheory.Reg
 open MonoidalCategory CartesianMonoidalCategory MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z W hW φ hφ k hz x' hx`. Substitute `hx` using the available equality. Use `haveI := TF.X.proper`. Use `haveI := TF.smooth`. Use `haveI : Smooth TF.Y.s := SmoothOfRelativeDimension.smooth Dw.dim TF.Y.s`.
+
+Use `haveI : LocallyOfFiniteType TF.Y.s := inferInstance`. Use `haveI : LocallyOfFiniteType (str₀ TF.X Z) := by unfold str₀ flagStr; infer_instance`. Use `haveI : IsLocallyNoetherian (Y₀ TF.X Z) := LocallyOfFiniteType.isLocallyNoetherian (str₀ TF.X Z)`. Take `⟨K, _, ρ, hρ, hK⟩` from `GlobalTheory.T.affineOpen_ring_injects_to_ring_mapping_to_dense (Y₀ TF.X Z) (U₀ TF.X Z) (dense_U₀ TF.X Z) W hW`. Use `letI : Algebra c.F K := (ρ.comp φ).toAlgebra`.
+
+Establish `hz' : ⊤ ≤ (spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ⁻¹ᵁ TF.X.F.U k` using `FlagMod.le_preimage_comp _ hz`. Establish `hr : Set.range ((spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ TF.X.π) ⊆ Set.range TF.Y.j`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hK (Set.mem_univ s)`. Set `yK` to `IsOpenImmersion.lift TF.Y.j ((spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ TF.X.π) hr`.
+
+Establish `hyK : yK ≫ TF.Y.j = (spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ TF.X.π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hjs : TF.Y.j ≫ TF.Y.s = pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)`. Establish `h1 : spMap (RingHom.id c.F) = 𝟙 _`. Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+
+Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, TF.Y.jQ_over, h1, Category.comp_id]`. Establish `hy : yK ≫ pullback.snd _ _ = spMap (algebraMap c.F K)`. Rewrite using `[← hjs, ← Category.assoc, hyK]`. Establish `h2 : spMap ρ ≫ spMap φ = spMap (algebraMap c.F K)`. Unfold `spMap`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← h2, ← hφ]`. Simplify using `only [Category.assoc]`. Establish `key : ∀ (x'' : Sp K ⟶ TF.Y.X) (hx : (spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ TF.X.π = x''), (∀ σ, initSpan K (TF.X.F.vecAt k _ hz' hx σ) (Dw.mult σ) = eigLie c x'' σ) → ∀ σ, initSpan K (TF.X.F.vecAt k _ hz' rfl σ) (Dw.mult σ) = eigLie c ((spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ …`.
+
+Introduce and unpack `x'' rfl h`. Conclude with `h`. Conclude with `GlobalTheory.ChartEigFrame.exists_eigFrame_of_top ρ hρ φ rfl (hW.fromSpec ≫ inc₀ TF.X Z) k hz hz' (key _ hyK.symm fun σ => TF.X.top K yK hy _ hyK.symm k hz' σ)`.
+-/
 theorem GlobalTheory.CompHS.exists_eigFrame_vecAt₀ : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) (W : (Y₀ TF.X Z).Opens) (hW : IsAffineOpen W) (φ : c.F →+* Γ(Y₀ TF.X Z, W)), (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ str₀ TF.X Z = spMap φ → ∀ (k : TF.X.F.J) (hz : ⊤ ≤ ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k) (x' : Sp Γ(Y₀ TF.X Z, W) ⟶ TF.Y.X) (hx : ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π = x'), ∃ fr : GlobalTheory.ShFam.EigFrame TF.Y φ x', ∀ (τ : E →+* ℂ) (j : Fin (Dw.mult τ)), fr.v τ j = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (TF.X.F.vecAt k _ hz hx τ j)).left := by
   intro E _ _ _ H Dw l Xo c TF Z W hW φ hφ k hz x' hx
   subst hx

@@ -13,6 +13,11 @@ section PairAlg
 variable {F : Type} [Field F] {E : Type} [Field E] [Algebra F E] (c : E →ₐ[F] E)
   {α ν : Type} [Fintype α] [DecidableEq α] [Fintype ν] [DecidableEq ν]
 
+/- English proof (translation)
+Establish `h : fromCols x (0 : Matrix α ν E) * stdJ ν E * ((fromCols (0 : Matrix α ν E) y).map c)ᵀ = x * (y.map c)ᵀ`. Use extensionality with `i k`. Simplify using `[stdJ, mul_apply, Fintype.sum_sum_type, one_apply]`. Rewrite using `[pr, form, hTens_eq, h]`. Use `congr 2`.
+
+Simplify using `only [Matrix.trace, diag, mul_apply, transpose_apply]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem pr_eq_trace (Q : Matrix α α E) (x y : Matrix α ν E) :
     pr c Q x y = 2⁻¹ * Algebra.trace F E (Matrix.trace (Qᵀ * (x * (y.map c)ᵀ))) := by
   have h : fromCols x (0 : Matrix α ν E) * stdJ ν E * ((fromCols (0 : Matrix α ν E) y).map c)ᵀ = x * (y.map c)ᵀ := by
@@ -23,6 +28,9 @@ theorem pr_eq_trace (Q : Matrix α α E) (x y : Matrix α ν E) :
   simp only [Matrix.trace, diag, mul_apply, transpose_apply]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, mul_apply, Matrix.single_apply, Finset.mul_sum, ite_and]`. Use `Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+-/
 theorem trace_single_pair (Q : Matrix α α E) (y : Matrix α ν E) (i : α) (j : ν) (z : E) :
     Matrix.trace (Qᵀ * (Matrix.single i j z * (y.map c)ᵀ)) = z * (Q * y.map c) i j := by
   simp [Matrix.trace, mul_apply, Matrix.single_apply, Finset.mul_sum, ite_and]
@@ -45,6 +53,21 @@ end GlobalTheory.KSp
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `F _ _ E _ _ c δ hE α _ _ ν _ _ Q hQ`. Establish `hc : ∀ z, c (c z) = z` using `hE.invol`. Establish `ht : ∀ z, Algebra.trace F E (c z) = Algebra.trace F E z` using `fun z => Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom c c (AlgHom.ext hc) (AlgHom.ext hc)) z`. Establish `hap : ∀ x y : Matrix α ν E, prLin c Q x y = 2⁻¹ * Algebra.trace F E (Matrix.trace (Qᵀ * (x * (y.map c)ᵀ)))` using `fun _ _ => rfl`. Use `⟨prLin c Q, fun x y => by rw [hap, pr_eq_trace], fun x y => ?_, fun y hy => ?_, fun x y a => ?_, hap⟩` and prove the remaining obligations.
+
+Establish `h : Matrix.trace (Qᵀ * (y * (x.map c)ᵀ)) = c (Matrix.trace (Qᵀ * (x * (y.map c)ᵀ)))`. Simplify using `only [Matrix.trace, diag, mul_apply, transpose_apply, map_apply, map_sum, map_mul, hc, hQ.1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg _ (Finset.sum_congr rfl fun j _ => mul_comm _ _)`.
+
+Rewrite using `[hap, hap, h, ht]`. Take `⟨bE, -, -⟩` from `hE.basis`. Use `haveI : Module.Finite F E := Module.Finite.of_basis bE`. Establish `htr : Algebra.trace F E 1 ≠ 0`. Rewrite using `[← map_one (algebraMap F E), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one]`.
+
+Conclude with `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Establish `hw : Q * y.map c = 0`. Use extensionality with `i j`. Assume the negation of the conclusion as `hij`. Apply `htr` to reduce the goal to its premises.
+
+Use `hy (Matrix.single i j ((Q * y.map c) i j)⁻¹)` as an intermediate fact. Rewrite `this` using `[hap, trace_single_pair, inv_mul_cancel₀ hij]`. Simplify using `using this`. Establish `hy0 : y.map c = 0`. Use `congrArg (fun m => Q⁻¹ * m) hw` as an intermediate fact.
+
+Simplify `this` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hQ.2]`. Use extensionality with `i j`. Conclude with `c.toRingHom.injective (by simpa using congrFun (congrFun hy0 i) j)`. Establish `h : ((y * (a.map c)ᵀ).map c)ᵀ = a * (y.map c)ᵀ`. Use extensionality with `i j`.
+
+Simplify using `[mul_apply, map_sum, hc, mul_comm]`. Rewrite using `[hap, hap, h, Matrix.mul_assoc]`.
+-/
 theorem pr_alg : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E) (δ : E)
     (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν]
     (Q : Matrix α α E) (_ : IsHerm c Q), ∃ β : Matrix α ν E →ₗ[F] Matrix α ν E →ₗ[F] F,

@@ -11,6 +11,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 def idF (X : Data E r) : Frame X.Ψ r := fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Simplify using `only [Bor, Set.mem_setOf_eq]`. Introduce `τ`. Use `⟨?_, fun a c h => ?_⟩` and prove the remaining obligations. Establish `h1 : mat (idF X) τ = 1`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Matrix.det_one]`. Conclude with `one_ne_zero`. Simplify using `[idF, Matrix.one_apply, ne_of_gt h]`.
+-/
 theorem idF_mem (X : Data E r) : idF X ∈ Bor X.Ψ r := by
   simp only [Bor, Set.mem_setOf_eq]
   intro τ
@@ -22,6 +27,11 @@ theorem idF_mem (X : Data E r) : idF X ∈ Bor X.Ψ r := by
     exact one_ne_zero
   · simp [idF, Matrix.one_apply, ne_of_gt h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (mat y τ * mat (idF X) τ : Matrix (Fin r) (Fin r) ℂ) = y τ`. Establish `h1 : mat (idF X) τ = 1`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem rmul_idF (X : Data E r) (y : Frame X.Ψ r) : rmul y (idF X) = y := by
   funext τ
   show (mat y τ * mat (idF X) τ : Matrix (Fin r) (Fin r) ℂ) = y τ
@@ -31,15 +41,28 @@ theorem rmul_idF (X : Data E r) (y : Frame X.Ψ r) : rmul y (idF X) = y := by
   rw [h1, mul_one]
   rfl
 
+/- English proof (translation)
+Simplify using `[bchar, idF]`.
+-/
 theorem bchar_idF (X : Data E r) (la : Wt X.Ψ r) : bchar la (idF X) = 1 := by
   simp [bchar, idF]
 
+/- English proof (translation)
+Unfold `bchar`. Use `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun b : Frame X.Ψ r => b τ i i` using `by fun_prop`. Conclude with `hc.continuousAt.zpow₀ _ (Or.inl (by simp [idF]))`.
+-/
 theorem bchar_contAt (X : Data E r) (la : Wt X.Ψ r) : ContinuousAt (bchar la) (idF X) := by
   unfold bchar
   refine tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => ?_
   have hc : Continuous fun b : Frame X.Ψ r => b τ i i := by fun_prop
   exact hc.continuousAt.zpow₀ _ (Or.inl (by simp [idF]))
 
+/- English proof (translation)
+Establish `hgoodR` using `fun w (hw : w ∈ Metric.ball (0 : V (nd X)) (min R0 ρ)) => hgood w (Metric.ball_subset_ball (min_le_left _ _) hw)`. Establish `hmem : Metric.ball (0 : V (nd X)) (min R0 ρ) ⊆ Bset X x ρ` using `fun w hw => by`. Take `⟨h1, h2, -⟩` from `hgoodR w hw`. Conclude with `⟨lt_of_lt_of_le (mem_ball_zero_iff.1 hw) (min_le_right _ _), cpt_mem_dom X hx hxo h1 h2⟩`. Use `⟨hmem, ?_⟩` and prove the remaining obligations.
+
+Establish `hpt : ∀ w ∈ Metric.ball (0 : V (nd X)) (min R0 ρ), ‖P (cpt X x w)‖ₑ ^ 2 ≤ ENNReal.ofReal 4 * (‖P (cpt X x w)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w))))`. Introduce `w hw`. Take `⟨-, -, h3⟩` from `hgoodR w hw`. Establish `hn : X.nfac la (cpt X x w) = nfw X la w` using `nfac_cpt_orth X la hxo w`. Establish `he : 1 ≤ ENNReal.ofReal 4 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w)))`.
+
+Rewrite using `[exp_neg_phla X la (by rw [hn]; linarith), hn, ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ball_int_bound (X : Data E r) (la : Wt X.Ψ r) {R0 ρ : ℝ}
     (hgood : ∀ w ∈ Metric.ball (0 : V (nd X)) R0, (∀ τ, (mat (nmat X w) τ).det ≠ 0) ∧
       (∀ τ, ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (lminor (Gw X w τ) i).re) ∧ 1 / 2 < nfw X la w)
@@ -75,6 +98,27 @@ theorem ball_int_bound (X : Data E r) (la : Wt X.Ψ r) {R0 ρ : ℝ}
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
     _ ≤ _ := mul_le_mul_of_nonneg_left (lintegral_mono_set hmem) zero_le
 
+/- English proof (translation)
+Introduce `r X la ρ hρ hρ1 x hx hxo`. Take `⟨R0, hR0, hgood⟩` from `good_ball X la`. Establish `hR : 0 < min R0 ρ` using `lt_min hR0 hρ`. Take `⟨Δ, zOf, bOf, hΔ, -, hz, hb, hdec, hinv⟩` from `hLU r X x hxo`. Establish `hx0 : (0 : V (nd X)) ∈ OmF X x` using `by show cpt X x 0 ∈ X.dom`.
+
+Rewrite using `[cpt_zero]`. Conclude with `hx`. Take `⟨hΔx, hzx, hbx⟩` from `hinv 0 hx0 (idF X) (idF_mem X)`. Rewrite `hΔx`, `hzx`, `hbx` using `[rmul_idF, cpt_zero]`. Establish `hOo : IsOpen {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `(isOpenDom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)`.
+
+Establish `hxO : x ∈ {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `⟨hx, hΔx⟩`. Establish `hzc : ContinuousAt zOf x` using `hz.continuousOn.continuousAt (hOo.mem_nhds hxO)`. Establish `hbc : ContinuousAt (fun y => bchar la (bOf y)) x`. Establish `h` using `bchar_contAt X la`. Rewrite `h` using `[← hbx]`.
+
+Conclude with `h.comp (hb.continuousOn.continuousAt (hOo.mem_nhds hxO))`. Establish `e1 : ∀ᶠ y in 𝓝 x, y ∈ {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `hOo.mem_nhds hxO`. Establish `e2 : ∀ᶠ y in 𝓝 x, ‖zOf y‖ < min R0 ρ / 2` using `hzc.norm.eventually_lt continuousAt_const (by rw [hzx, norm_zero]; positivity)`. Establish `e3 : ∀ᶠ y in 𝓝 x, ‖bchar la (bOf y)‖ < 2` using `hbc.norm.eventually_lt continuousAt_const (by rw [hbx, bchar_idF, norm_one]; norm_num)`. Take `⟨ε, hε, hall⟩` from `Metric.eventually_nhds_iff_ball.1 (e1.and (e2.and e3))`.
+
+Use `set v := volume (Metric.ball (0 : V (nd X)) (min R0 ρ / 2)) with hv`. Establish `hvpos : v ≠ 0` using `(Metric.measure_ball_pos volume _ (by positivity)).ne'`. Establish `hvtop : v ≠ ⊤` using `measure_ball_lt_top.ne`. Use `⟨ε, hε, ENNReal.ofReal 4 * v⁻¹ * ENNReal.ofReal 4, ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.inv_lt_top.2 (pos_iff_ne_zero.2 hvpos))) ENNReal.ofReal_lt_top, fun P hP y hy => ?_⟩` and prove the remaining obligations. Take `⟨⟨hyd, hΔy⟩, hzy, hby⟩` from `hall y hy`.
+
+Take `⟨hzO, hbB, hyeq⟩` from `hdec y hyd hΔy`. Establish `hPy : P y = bchar la (bOf y) * P (cpt X x (zOf y))` using `by conv_lhs => rw [hyeq]`. Conclude with `hP.2 _ hzO _ hbB`. Establish `hsub : Metric.ball (zOf y) (min R0 ρ / 2) ⊆ Metric.ball (0 : V (nd X)) (min R0 ρ)`. Introduce `w hw`.
+
+Rewrite using `[mem_ball_zero_iff]`. Rewrite `hw` using `[Metric.mem_ball, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hmemB, hint⟩` from `ball_int_bound X la hgood hx hxo P`. Establish `hu : DifferentiableOn ℂ (fun w => P (cpt X x w)) (Metric.ball (zOf y) (min R0 ρ / 2))` using `hP.1.comp (diff_cpt X x).differentiableOn fun w hw => (hmemB (hsub hw)).2`.
+
+Establish `hmv` using `ReciprocityTheory.L2DbarEstimates.C.mv (nd X) (zOf y) (min R0 ρ / 2) (fun w => P (cpt X x w)) (fun _ => 1) hu measurable_const`. Simplify using `only [mul_one, one_mul, lintegral_const, Measure.restrict_apply_univ] at hmv`. Rewrite `hmv` using `[Measure.addHaar_ball_center]`. Establish `hle : ‖P (cpt X x (zOf y))‖ₑ ^ 2 ≤ v⁻¹ * ∫⁻ w in Metric.ball (zOf y) (min R0 ρ / 2), ‖P (cpt X x w)‖ₑ ^ 2`. Rewrite using `[← ENNReal.div_eq_inv_mul, ENNReal.le_div_iff_mul_le (Or.inl hvpos) (Or.inl hvtop)]`.
+
+Conclude with `hmv`. Establish `hbb : ‖bchar la (bOf y)‖ₑ ^ 2 ≤ ENNReal.ofReal 4`. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (by nlinarith [norm_nonneg (bchar la (bOf y))])`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hPy, enorm_mul, mul_pow]`. Use `_ ≤ ENNReal.ofReal 4 * (v⁻¹ * (ENNReal.ofReal 4 * ∫⁻ w in Bset X x ρ, ‖P (cpt X x w)‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (-phla X la (cpt X x w))))) := by`. Use `mul_le_mul' hbb (hle.trans (mul_le_mul_of_nonneg_left ?_ zero_le))` and prove the remaining obligations. Conclude with `(lintegral_mono_set hsub).trans hint`. Use `_ = _ := by ring`.
+-/
 theorem subMeanLoc_of (hLU : LUStatement (E := E)) : SubMeanLocStatement (E := E) := by
   intro r X la ρ hρ hρ1 x hx hxo
   obtain ⟨R0, hR0, hgood⟩ := good_ball X la

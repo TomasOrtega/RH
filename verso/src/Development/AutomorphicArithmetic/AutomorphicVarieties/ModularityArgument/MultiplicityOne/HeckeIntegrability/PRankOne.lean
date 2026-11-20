@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.Mult.Pi
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, f y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (LinearMap.ext h)`. Establish `hidem : ∀ v, f (f v) = f v` using `fun v => by`.
+
+Use `congrArg (fun g : Module.End ℂ Y => g v) hf` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Y, φ (f y) = 1 := by`. Establish `h1 : ¬ ∀ φ : Module.Dual ℂ Y, φ (f y) = 0` using `fun h => hy ((Module.forall_dual_apply_eq_zero_iff ℂ (f y)).1 h)`. Use `push_neg at h1`.
+
+Take `⟨ψ, hψ⟩` from `h1`. Use `⟨(ψ (f y))⁻¹ • ψ, ?_⟩` and prove the remaining obligations. Simplify using `[hψ]`. Establish `hr : LinearMap.range f = Submodule.span ℂ {f y}`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨c, hc⟩` from `hx (φ.smulRight v)`. Establish `h2` using `congrArg (fun g : Module.End ℂ Y => g (f y)) hc`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, hidem, hφ, map_smul, one_smul] at h2`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, h2.symm⟩`.
+
+Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `⟨y, rfl⟩`. Establish `hp : LinearMap.IsProj (LinearMap.range f) f` using `⟨fun x => ⟨x, rfl⟩, by rintro _ ⟨v, rfl⟩; exact hidem v⟩`. Rewrite using `[hp.trace, hr, finrank_span_singleton hy]`. Simplify using the standard rewrite rules.
+-/
 private lemma trace_idem {Y : Type} [AddCommGroup Y] [Module ℂ Y] [FiniteDimensional ℂ Y]
     (f : Module.End ℂ Y) (hf : f * f = f) (hx : ∀ x, ∃ c : ℂ, f * x * f = c • f) (h0 : f ≠ 0) :
     LinearMap.trace ℂ Y f = 1 := by
@@ -34,6 +45,15 @@ private lemma trace_idem {Y : Type} [AddCommGroup Y] [Module ℂ Y] [FiniteDimen
   rw [hp.trace, hr, finrank_span_singleton hy]
   simp
 
+/- English proof (translation)
+Introduce `Y _ _ _ f A hf hA hc hx`. Distinguish the cases in `h0 : f = 0`. Use `left`. Simplify using `[h0]`. Use `right`.
+
+Take `⟨c, hcA⟩` from `hx A`. Establish `hfA : f * A = c • f`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : (c * c) • f = f`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcc : c * c = 1`. Establish `h3 : (c * c - 1) • f = 0` using `by rw [sub_smul, one_smul, hsq, sub_self]`. Break down `smul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h h0`.
+
+Establish `hn : ‖c‖ = 1`. Establish `h4 : ‖c‖ * ‖c‖ = 1` using `by rw [← norm_mul, hcc, norm_one]`. Use polynomial arithmetic with `[norm_nonneg c, sq_nonneg (‖c‖ - 1)]`. Rewrite using `[hfA, map_smul, trace_idem f hf hx h0, smul_eq_mul, mul_one, hn]`.
+-/
 theorem rankOne_pf : RankOne := by
   intro Y _ _ _ f A hf hA hc hx
   by_cases h0 : f = 0

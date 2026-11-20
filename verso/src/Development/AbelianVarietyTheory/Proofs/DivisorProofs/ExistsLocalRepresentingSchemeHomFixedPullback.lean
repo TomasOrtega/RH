@@ -17,6 +17,15 @@ open ReciprocityTheory.ChartRestriction.G.Out
 
 namespace GlobalTheory.HomFixLocal
 
+/- English proof (translation)
+Introduce `Rg _ _ A B _ _ _ _ L M hA hB hL hM rL rM aL aM p`. Take `⟨k, hk, hva⟩` from `GlobalTheory.RelAmpleFixed.veryAmpleAt_baseChange Rg B M hB hM aM`. Take `⟨f₁, hp₁, hb₁⟩` from `GlobalTheory.T.exists_basicOpen_baseChangeStable_sectionBasis Rg A L hA hL rL aL k hk p`. Take `⟨f₂, hp₂, hb₂⟩` from `GlobalTheory.T.exists_basicOpen_baseChangeStable_sectionBasis Rg B M hB hM rM aM k hk p`. Establish `le₁ : PrimeSpectrum.basicOpen (f₁ * f₂) ≤ PrimeSpectrum.basicOpen f₁`.
+
+Rewrite using `[PrimeSpectrum.basicOpen_mul]`. Conclude with `inf_le_left`. Establish `le₂ : PrimeSpectrum.basicOpen (f₁ * f₂) ≤ PrimeSpectrum.basicOpen f₂`. Rewrite using `[PrimeSpectrum.basicOpen_mul]`. Conclude with `inf_le_right`.
+
+Establish `hp : p ∈ PrimeSpectrum.basicOpen (f₁ * f₂)`. Rewrite using `[PrimeSpectrum.basicOpen_mul]`. Conclude with `⟨hp₁, hp₂⟩`. Use `⟨PrimeSpectrum.basicOpen (f₁ * f₂), hp, GlobalTheory.HomFixTransport.homFixRep_basicOpen Rg A B L M (f₁ * f₂) hL hM ?_ _ rfl⟩` and prove the remaining obligations. Introduce `Af Bf _ _ φA φB hpA hpB`.
+
+Use `haveI := GlobalTheory.isCommMonObj_of_grpPullback _ _ A Af _ φA hpA`. Use `haveI := GlobalTheory.isCommMonObj_of_grpPullback _ _ B Bf _ φB hpB`. Take `⟨hA', hL', rL', aL'⟩` from `GlobalTheory.GrpPullbackPol.isAbelianScheme_and_pull_of_isGrpPullback _ _ _ A Af φA L hpA hA hL rL aL`. Take `⟨hB', hM', rM', -⟩` from `GlobalTheory.GrpPullbackPol.isAbelianScheme_and_pull_of_isGrpPullback _ _ _ B Bf φB M hpB hB hM rM aM`. Conclude with `GlobalTheory.T.exists_fixedPullbackHomScheme_of_sectionBases (Localization.Away (f₁ * f₂)) Af Bf (L.pull φA) (M.pull φB) k hA' hB' hL' hM' rL' rM' aL' hk (hva _ _ Bf φB hpB) (hb₁ _ le₁ Af φA hpA) (hb₂ _ le₂ Bf φB hpB)`.
+-/
 theorem exists_local_homFixRep : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → Out.RelAmple A L → Out.RelAmple B M → ∀ p : Sp Rg, ∃ U : (Sp Rg).Opens, p ∈ U ∧ ∃ (AU : Over (U).toScheme) (_ : GrpObj AU) (BU : Over (U).toScheme) (_ : GrpObj BU) (φA : AU.left ⟶ A.left) (φB : BU.left ⟶ B.left), IsGrpPullback AU A (U).ι φA ∧ IsGrpPullback BU B (U).ι φB ∧ ∃ R : HomFixRep AU BU (L.pull φA) (M.pull φB), QuasiCompact R.π ∧ IsSeparated R.π ∧ LocallyOfFiniteType R.π := by
   intro Rg _ _ A B _ _ _ _ L M hA hB hL hM rL rM aL aM p
   obtain ⟨k, hk, hva⟩ := GlobalTheory.RelAmpleFixed.veryAmpleAt_baseChange Rg B M hB hM aM

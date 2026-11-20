@@ -12,6 +12,19 @@ namespace GlobalTheory.LatCoCompan
 
 open Formalism.L2.GlobalTheoryTheory.Comp in
 
+/- English proof (translation)
+Introduce `D i hi co hco a x Lb hfin hspan`. Establish `horth : IsOrthCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (toLE co)`. Introduce `u v`. Establish `h` using `hform_mulVec_rect (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) (co.1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) u v`. Rewrite `h` using `[Matrix.mul_one]`.
+
+Establish `hc : cT (D.sp.cm.sig : D.host.E →+* D.host.E) co.1 * co.1 = (gramN D i hi)` using `hco`. Rewrite `h` using `[hc]`. Establish `e1 : hform (D.sp.cm.sig : D.host.E →+* D.host.E) 1 (co.1 *ᵥ u) (co.1 *ᵥ v) = ∑ b, (D.sp.cm.sig : D.host.E →+* D.host.E) ((co.1 *ᵥ u) b) * (co.1 *ᵥ v) b`. Simplify using `only [hform, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite `h` using `[e1]`.
+
+Conclude with `h`. Establish `hJ : ∀ M : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E), IsLat M → IsLat (dl D.sp.cm.sig (gramN D i hi) M)` using `fun M hM => GlobalTheory.OrthDual.isLat_dl D.sp.cm.sig (gramN D i hi) (toLE co) horth M hM`. Establish `hLb : IsLat Lb` using `⟨hfin, hspan⟩`. Establish `hx : x.1 ∈ UPts D.sp.cm.sig (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `x.2`. Establish `hC : IsLat (compan (sp` using `D.sp) (gramN D i hi) a Lb) := by`.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[GlobalTheory.SDCompan.compan_zero]`. Conclude with `hLb`. Rewrite using `[GlobalTheory.SDCompan.compan_eq]`.
+
+Conclude with `isLat_sup hLb (isLat_smul (hJ _ hLb) ha)`. Use `⟨?_, hC.1, hC.2⟩` and prove the remaining obligations. Establish `hG : compan (sp` using `D.sp) (gramN D i hi) a (latAd x.1 Lb) = latAd x.1 (compan (sp := D.sp) (gramN D i hi) a Lb) := by`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+
+Rewrite using `[GlobalTheory.SDCompan.compan_zero, GlobalTheory.SDCompan.compan_zero]`. Rewrite using `[GlobalTheory.SDCompan.compan_eq, GlobalTheory.SDCompan.compan_eq, GlobalTheory.SDCompan.latAd_eq, GlobalTheory.SDCompan.latAd_eq]`. Conclude with `(glob_companion D.sp.cm.sig (gramN D i hi) hJ hLb ha x.1 hx).symm`. Unfold `latCo`. Rewrite using `[hG, latAd_rat]`.
+-/
 theorem latCo_eq_latAd_compan : ∀ (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (co : GL (Fin (D.R.N i)) D.host.E), cT (sigD D : D.host.E →+* D.host.E) co.1 * co.1 = gramN D i hi → ∀ (a : 𝓞 D.host.E) (x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Lb : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)), Module.Finite (𝓞 D.host.E) Lb → Submodule.span D.host.E (Lb : Set (Fin (D.R.N i) → D.host.E)) = ⊤ → latCo D.sp (gramN D i hi) co a x.1 Lb = latAd (ratA D.host.F co * x.1) (compan (sp := D.sp) (gramN D i hi) a Lb) ∧ Module.Finite (𝓞 D.host.E) (compan (sp := D.sp) (gramN D i hi) a Lb) ∧ Submodule.span D.host.E ((compan (sp := D.sp) (gramN D i hi) a Lb : Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E)) : Set (Fin (D.R.N i) → D.host.E)) = ⊤ := by
   intro D i hi co hco a x Lb hfin hspan
   have horth : IsOrthCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (toLE co) := by

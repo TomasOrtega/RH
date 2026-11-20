@@ -14,6 +14,17 @@ def Hens : Prop := ∀ (q : ℕ) (B : Type) [CommRing B] [IsDomain B] (I : Ideal
       (∀ k, IsDomain (R k) ∧ AIC (R k) ∧ IsUnit (q : R k)) ∧ Nonempty (D.obj j ≃+* ∀ k, R k)) ∧
     IsUnit (q : c.pt) ∧ ∃ K : Ideal c.pt, HenselianRing c.pt K ∧ Nonempty (B ⧸ I ≃+* c.pt ⧸ K)
 
+/- English proof (translation)
+Introduce `H q B _ _ I hB hq`. Take `⟨J, _, _, D, c, hc, hD, hqc, K, hK, ⟨e⟩⟩` from `hH q B I hB hq`. Establish `hst : ∀ j, Acyc q (sp (D.obj j))`. Introduce `j`. Take `⟨m, R, _, hR, hiso⟩` from `hD j`.
+
+Use `hP H q (D.obj j) m R hiso fun k => ?_` and prove the remaining obligations. Use `(hR k).1` as an intermediate fact. Conclude with `H.b5 q (R k) (hR k).2.1 (hR k).2.2`. Establish `hC : Acyc q (sp c.pt)`. Introduce `n i hn`.
+
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ x : Ht q (sp c.pt) n i, x = 0`. Introduce `x`. Take `⟨j, y, rfl⟩` from `(H.b1 q D c hc n i).1 x hqc`. Use `hst j n i hn` as an intermediate fact.
+
+Rewrite using `[Subsingleton.elim y 0, map_zero]`. Rewrite using `[h0 x, h0 y]`. Establish `hCK : Acyc q (sp (c.pt ⧸ K))`. Introduce `n i hn`. Use `hC n i hn` as an intermediate fact.
+
+Establish `hE` using `H.e1 q c.pt K hqc i n`. Conclude with `hE.2.subsingleton`. Conclude with `hP H q (B ⧸ I) 1 (fun _ => c.pt ⧸ K) ⟨e.trans (RingEquiv.piUnique (fun _ : Fin 1 => c.pt ⧸ K)).symm⟩ fun _ => hCK`.
+-/
 theorem goal_of (hP : ProdAcyc) (hH : Hens) : LateralTheory.E.t_E2Cut.QuotAcyc := by
   intro H q B _ _ I hB hq
   obtain ⟨J, _, _, D, c, hc, hD, hqc, K, hK, ⟨e⟩⟩ := hH q B I hB hq

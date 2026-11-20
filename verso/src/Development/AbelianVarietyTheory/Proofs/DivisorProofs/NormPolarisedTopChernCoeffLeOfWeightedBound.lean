@@ -7,6 +7,15 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `n r _ _ K w c hw hK`. Use `set D : ℝ := (n.factorial : ℝ) * |c| ^ n * ∏ a, (w a)⁻¹ ^ 2 with hD`. Establish `hs : ∀ σ : Equiv.Perm (Fin n), ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`. Introduce `σ`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+
+Establish `hterm : ∀ (p : Fin n → r) (π u : Equiv.Perm (Fin n)), ‖((Equiv.Perm.sign π : ℤ) : ℂ) * ((Equiv.Perm.sign u : ℤ) : ℂ) * (Matrix.of fun i b => K i (u i) b (p i) (p (π i))).det‖ ≤ D`. Introduce `p π u`. Rewrite using `[norm_mul, norm_mul, hs, hs, one_mul, one_mul]`. Conclude with `GlobalTheory.T.norm_det_le_of_weighted_entry_bound _ u w c hw (fun i b => by simpa using hK i (u i) b (p i) (p (π i)))`. Establish `hsum : ‖∑ p : Fin n → r, ∑ π : Equiv.Perm (Fin n), ∑ u : Equiv.Perm (Fin n), ((Equiv.Perm.sign π : ℤ) : ℂ) * ((Equiv.Perm.sign u : ℤ) : ℂ) * (Matrix.of fun i b => K i (u i) b (p i) (p (π i))).det‖ ≤ (Fintype.card r : ℝ) ^ n * ((n.factorial : ℝ) * ((n.factorial : ℝ) * D))`.
+
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun p _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun π _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ => hterm p π u))).trans ?_` and prove the remaining obligations. Simplify using `[Finset.sum_const, Fintype.card_perm, Fintype.card_fun]`. Establish `hf : (0 : ℝ) < n.factorial` using `by exact_mod_cast Nat.factorial_pos n`. Unfold `mixTop`.
+
+Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_mixTop_le_of_weighted : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K : Fin n → EndValuedForm11Coeffs n r) (w : Fin n → ℝ) (c : ℝ), (∀ a, 0 < w a) → (∀ i a b p q, ‖K i a b p q‖ * (w a * w b) ≤ c) → ‖mixTop K‖ ≤ (Fintype.card r : ℝ) ^ n * (n.factorial : ℝ) ^ 2 * |c| ^ n * ∏ a, (w a)⁻¹ ^ 2 := by
   intro n r _ _ K w c hw hK
   set D : ℝ := (n.factorial : ℝ) * |c| ^ n * ∏ a, (w a)⁻¹ ^ 2 with hD

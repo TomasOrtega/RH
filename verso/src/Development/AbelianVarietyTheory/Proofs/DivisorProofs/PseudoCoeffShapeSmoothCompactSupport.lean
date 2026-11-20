@@ -9,9 +9,17 @@ open Formalism.REAL (UJ KG toM)
 
 namespace GlobalTheory.ShapeSmoothFinite
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_val (M := Matrix (Fin n) (Fin n) ℂ)).comp continuous_subtype_val`.
+-/
 theorem continuous_matCoord_ujMat {n : ℕ} (ε : Fin n → Bool) : Continuous (matCoord (ujMat ε)) :=
   (Units.continuous_val (M := Matrix (Fin n) (Fin n) ℂ)).comp continuous_subtype_val
 
+/- English proof (translation)
+Take `⟨h0, hadd, hsmul⟩` from `GlobalTheory.isBiFinite_subspace (UJ ε) (KG ε)`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨H, P, ⟨hH, R, hR⟩, -, rfl⟩` from `h`. Conclude with `⟨GlobalTheory.CutoffPoly.cutoff_mul_poly_mem_ccMat n ε H R hH hR P, GlobalTheory.PolyShapeFinite.main n ε H P⟩`.
+
+Consider the case `zero => exact ⟨Submodule.zero_mem _, h0⟩`. Consider the case `add φ ψ _ _ h h' => exact ⟨Submodule.add_mem _ h.1 h'.1, hadd _ _ h.2 h'.2⟩`. Consider the case `smul c φ _ h => exact ⟨Submodule.smul_mem _ c h.1, hsmul c _ h.2⟩`.
+-/
 theorem mem_ccMat_and_isBiFinite {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (φ : Mat n → ℂ) (hφ : φ ∈ ShapeM ε d) :
     (fun g : UJ ε => φ (toM g)) ∈ CcMat (ujMat ε) ∧ IsBiFinite (KG ε) (fun g : UJ ε => φ (toM g)) := by
   obtain ⟨h0, hadd, hsmul⟩ := GlobalTheory.isBiFinite_subspace (UJ ε) (KG ε)
@@ -23,6 +31,9 @@ theorem mem_ccMat_and_isBiFinite {n : ℕ} (ε : Fin n → Bool) (d : ℕ) (φ :
   | add φ ψ _ _ h h' => exact ⟨Submodule.add_mem _ h.1 h'.1, hadd _ _ h.2 h'.2⟩
   | smul c φ _ h => exact ⟨Submodule.smul_mem _ c h.1, hsmul c _ h.2⟩
 
+/- English proof (translation)
+Introduce `n ε d φ hφ`. Take `⟨h1, h2⟩` from `mem_ccMat_and_isBiFinite ε d φ hφ`. Conclude with `⟨h1, h2, continuous_of_mem_ccSmooth (continuous_matCoord_ujMat ε) h1, (mem_ccSmooth.1 h1).1⟩`.
+-/
 theorem stShape : GlobalTheory.PsCo.Pc1.StShape := by
   intro n ε d φ hφ
   obtain ⟨h1, h2⟩ := mem_ccMat_and_isBiFinite ε d φ hφ

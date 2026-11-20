@@ -21,6 +21,11 @@ open GlobalTheory.UnitLemma
 
 variable {K : UQ} {B : InvAlg K}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 h`. Simplify `hx` using `[← mul_assoc]`. Introduce `h`.
+
+Conclude with `Submodule.mem_map.2 ⟨_, h, by simp [← mul_assoc]⟩`.
+-/
 theorem mulLat_mem_iff (t : B.Aˣ) (L : Submodule K.O B.A) (y : B.A) :
     y ∈ mulLat K.O (t : B.A) L ↔ ((t⁻¹ : B.Aˣ) : B.A) * y ∈ L := by
   constructor
@@ -30,6 +35,11 @@ theorem mulLat_mem_iff (t : B.Aˣ) (L : Submodule K.O B.A) (y : B.A) :
   · intro h
     exact Submodule.mem_map.2 ⟨_, h, by simp [← mul_assoc]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `y`. Rewrite using `[mulLat_mem_iff, h (((t⁻¹ : B.Aˣ) : B.A) * y), ← mul_assoc, Units.mul_inv, one_mul]`. Introduce `h y conv_rhs => rw [← h]`.
+
+Rewrite using `[mulLat_mem_iff, ← mul_assoc, Units.inv_mul, one_mul]`.
+-/
 theorem mem_stabLat_iff (t : B.Aˣ) (L : Submodule K.O B.A) :
     t ∈ stabLat K.O L ↔ mulLat K.O (t : B.A) L = L := by
   constructor
@@ -40,6 +50,13 @@ theorem mem_stabLat_iff (t : B.Aˣ) (L : Submodule K.O B.A) :
     conv_rhs => rw [← h]
     rw [mulLat_mem_iff, ← mul_assoc, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Use extensionality with `s`. Express the relevant statement in the definitionally equal form `(∀ y, y ∈ mulLat K.O (t : B.A) L ↔ (s : B.A) * y ∈ mulLat K.O (t : B.A) L) ↔ ∀ y, y ∈ L ↔ (s : B.A) * y ∈ L`. Simplify using `only [mulLat_mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`.
+
+Use `h ((t : B.A) * y)` as an intermediate fact. Establish `e1 : ((t⁻¹ : B.Aˣ) : B.A) * ((t : B.A) * y) = y` using `by rw [← mul_assoc, Units.inv_mul, one_mul]`. Establish `e2 : ((t⁻¹ : B.Aˣ) : B.A) * ((s : B.A) * ((t : B.A) * y)) = s * y` using `by rw [mul_left_comm, e1]`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis. Introduce `h y`.
+
+Rewrite using `[h (((t⁻¹ : B.Aˣ) : B.A) * y), mul_left_comm]`.
+-/
 theorem stabLat_mulLat (t : B.Aˣ) (L : Submodule K.O B.A) :
     stabLat K.O (mulLat K.O (t : B.A) L) = stabLat K.O L := by
   ext s
@@ -54,6 +71,11 @@ theorem stabLat_mulLat (t : B.Aˣ) (L : Submodule K.O B.A) :
   · intro h y
     rw [h (((t⁻¹ : B.Aˣ) : B.A) * y), mul_left_comm]
 
+/- English proof (translation)
+Establish `hR : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[GlobalTheory.TwOrbConj.mem_rStab]`. Unfold `avg`. Establish `h1 : ∀ x : H ⧸ (⊤ : Subgroup H), x = 1` using `fun x => QuotientGroup.induction_on x fun g => (QuotientGroup.eq_one_iff g).2 (Subgroup.mem_top g)`.
+
+Rewrite using `[hR, Subgroup.index_top, finsum_eq_single _ (1 : H ⧸ (⊤ : Subgroup H)) (fun x hx => absurd (h1 x) hx)]`. Simplify using the standard rewrite rules.
+-/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have hR : rStab (fun _ : H => c) = ⊤ := by
     ext k; simp [GlobalTheory.TwOrbConj.mem_rStab]
@@ -63,6 +85,11 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := b
   rw [hR, Subgroup.index_top, finsum_eq_single _ (1 : H ⧸ (⊤ : Subgroup H)) (fun x hx => absurd (h1 x) hx)]
   simp
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support f).Finite`. Conclude with `(Rat.castHom ℂ).toAddMonoidHom.map_finsum h`. Establish `h' : ¬ (Function.support fun i => (f i : ℂ)).Finite`. Establish `: (Function.support fun i => (f i : ℂ)) = Function.support f` using `by ext i; simp`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Rewrite using `[finsum_of_infinite_support h, finsum_of_infinite_support h', Rat.cast_zero]`.
+-/
 theorem cast_finsum {α : Type} (f : α → ℚ) : ((∑ᶠ i, f i : ℚ) : ℂ) = ∑ᶠ i, (f i : ℂ) := by
   by_cases h : (Function.support f).Finite
   · exact (Rat.castHom ℂ).toAddMonoidHom.map_finsum h
@@ -74,6 +101,57 @@ theorem cast_finsum {α : Type} (f : α → ℚ) : ((∑ᶠ i, f i : ℚ) : ℂ)
 end GlobalTheory.TwOrbLat
 
 open GlobalTheory.UnitLemma GlobalTheory.TwOrbLat in
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw K e he hO a B hP β ε hε hβ b δ hδ`. Use `set θ := thL a w with hθ`. Use `set Kg := GlobalTheory.LFun.KGL w a with hKg`. Use `set ι := mulGL e b with hι`. Use `set T' := twCent θ δ with hT'`.
+
+Establish `hCent : T' = B.T.map ι` using `GlobalTheory.T.twistedCentralizer_eq_map_normOneTorus E w hw K e he a B hP β ε hε hβ b δ hδ`. Establish `hinj : Function.Injective ι` using `mulGL_injective e b`. Establish `hθK : ∀ k ∈ Kg, θ k ∈ Kg` using `GlobalTheory.BCT.ThBasic.thL_mem_KGL hU a w`. Establish `hstab : ∀ (t : B.Aˣ) (q : GLw a w), ι t ∈ Kg.map (MulAut.conj q).toMonoidHom ↔ t ∈ stabLat K.O (GlobalTheory.TwLat.lat e b q)`. Introduce `t q`.
+
+Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply, mem_stabLat_iff, ← latOf_mul e b t q, eq_comm, GlobalTheory.T.latticeSpannedByGLColumns_eq_iff E w K e hO a B b, mul_assoc]`. Establish `hcpt : cptPart T' = (intUnits K.O B.A ⊓ B.T).map ι`. Rewrite using `[hCent]`. Unfold `cptPart`. Establish `hS : {x | x ∈ B.T.map ι ∧ IsCompact (closure (Subgroup.zpowers x : Set (GLw a w)))} = ι '' ((intUnits K.O B.A ⊓ B.T : Subgroup B.Aˣ) : Set B.Aˣ)`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hc⟩`. Conclude with `⟨t, ⟨(GlobalTheory.T.isCompact_closure_zpowers_leftMulGL_iff_integral E w K e hO a B b t).1 hc, ht⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨hi, ht⟩, rfl⟩`.
+
+Conclude with `⟨⟨t, ht, rfl⟩, (GlobalTheory.T.isCompact_closure_zpowers_leftMulGL_iff_integral E w K e hO a B b t).2 hi⟩`. Rewrite using `[hS, ← MonoidHom.map_closure, Subgroup.closure_eq]`. Establish `hRel : ∀ y : GLw a w, (T' ⊓ Kg.map (MulAut.conj y).toMonoidHom).relIndex (cptPart T') = (stabLat K.O (GlobalTheory.TwLat.lat e b y) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T)`. Introduce `y`. Establish `h1 : T' ⊓ Kg.map (MulAut.conj y).toMonoidHom = (stabLat K.O (GlobalTheory.TwLat.lat e b y) ⊓ B.T).map ι`.
+
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, hCent]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hx⟩`. Conclude with `⟨t, ⟨(hstab t y).1 hx, ht⟩, rfl⟩`.
+
+Introduce and unpack `⟨t, ⟨hs, ht⟩, rfl⟩`. Conclude with `⟨⟨t, ht, rfl⟩, (hstab t y).2 hs⟩`. Rewrite using `[h1, hcpt, Subgroup.relIndex_map_map_of_injective _ _ hinj]`. Use `set P : GLw a w → Prop := fun y => y⁻¹ * δ * θ y ∈ Kg with hP_def`. Establish `hPinv : ∀ (y t k : GLw a w), t ∈ T' → k ∈ Kg → (P (t * y * k) ↔ P y)`.
+
+Introduce `y t k ht hk`. Establish `hd : t⁻¹ * δ * θ t = δ`. Rewrite using `[mul_assoc, ← (GlobalTheory.TwOrbConj.mem_twCent θ δ t).1 ht, inv_mul_cancel_left]`. Establish `e1 : (t * y * k)⁻¹ * δ * θ (t * y * k) = k⁻¹ * (y⁻¹ * δ * θ y) * θ k`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_mul, _root_.mul_inv_rev]`. Use `group`. Use `_ = k⁻¹ * (y⁻¹ * δ * θ y) * θ k := by rw [hd]`. Simplify using `only [hP_def]`. Rewrite using `[e1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Kg.mul_mem (Kg.mul_mem hk h) (Kg.inv_mem (hθK k hk))` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `h`.
+
+Conclude with `Kg.mul_mem (Kg.mul_mem (Kg.inv_mem hk) h) (hθK k hk)`. Establish `hsum : ∀ y : GLw a w, GlobalTheory.TwOrbConj.summand θ Kg δ ((Kg : Set (GLw a w)).indicator 1) y = if P y then ((((stabLat K.O (GlobalTheory.TwLat.lat e b y) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℂ)) else 0`. Introduce `y`. Establish `hconst : (fun k : Kg => (Kg : Set (GLw a w)).indicator 1 ((y * k)⁻¹ * δ * θ (y * k))) = fun _ => (if P y then (1 : ℂ) else 0)`. Use function extensionality and compare the values at `k`.
+
+Use `hPinv y 1 k (T'.one_mem) k.2` as an intermediate fact. Rewrite `this` using `[one_mul]`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, Pi.one_apply]`. Distinguish the cases in `h : P y`. Rewrite using `[if_pos h, if_pos ((this.2 h))]`.
+
+Rewrite using `[if_neg h, if_neg (fun h' => h (this.1 h'))]`. Unfold `GlobalTheory.TwOrbConj.summand`. Rewrite using `[hconst, avg_const, hRel]`. Apply the tactic sequence `split_ifs <;> simp`. Use `set X : Set (Submodule K.O B.A) := {L : Submodule K.O B.A | IsLat K.O K.E L ∧ ∀ z, z ∈ L ↔ ∀ y ∈ L, B.herm β y z ∈ (algebraMap K.O K.E).range} with hX`.
+
+Establish `hUni : ∀ y : GLw a w, P y ↔ GlobalTheory.TwLat.lat e b y ∈ X`. Introduce `y`. Simplify using `only [hP_def, hX, Set.mem_setOf_eq]`. Rewrite using `[GlobalTheory.T.twistedConj_integral_iff_lattice_unimodular E w hw K e he hO a B β b δ hδ y]`. Conclude with `⟨fun h => ⟨latOf_isLat e b y, h⟩, fun h => h.2⟩`.
+
+Set `r : X → X → Prop` to `fun L M => ∃ t ∈ B.T, (M : Submodule K.O B.A) = mulLat K.O (t : B.A) (L : Submodule K.O B.A)`. Establish `hr : Equivalence r`. Use `⟨fun L => ⟨1, B.T.one_mem, ?_⟩, fun {L M} ⟨t, ht, h⟩ => ⟨t⁻¹, B.T.inv_mem ht, ?_⟩, fun {L M N} ⟨t, ht, h⟩ ⟨s, hs, h'⟩ => ⟨s * t, B.T.mul_mem hs ht, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[mulLat_mem_iff]`.
+
+Simplify using the standard rewrite rules. Use extensionality with `y`. Rewrite using `[mulLat_mem_iff, h, mulLat_mem_iff]`. Simplify using the standard rewrite rules. Use extensionality with `y`.
+
+Rewrite using `[h', mulLat_mem_iff, h, mulLat_mem_iff, mulLat_mem_iff, ← mul_assoc]`. Simplify using `[mul_comm]`. Set `φ : {q : DoubleCoset.Quotient (T' : Set (GLw a w)) (Kg : Set (GLw a w)) // P (Quotient.out q)} → Orb K.O B.T X` to `fun q => Quot.mk _ ⟨GlobalTheory.TwLat.lat e b (Quotient.out q.1), (hUni _).1 q.2⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨q, hq⟩ ⟨q', hq'⟩ h`. Take `⟨t, ht, h1⟩` from `hr.eqvGen_iff.1 (Quot.eqvGen_exact h)`. Simplify using `only at h1`. Rewrite `h1` using `[← latOf_mul e b t, GlobalTheory.T.latticeSpannedByGLColumns_eq_iff E w K e hO a B b]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[← DoubleCoset.out_eq' T' Kg q, ← DoubleCoset.out_eq' T' Kg q', DoubleCoset.eq]`. Use `⟨ι t, by rw [hCent]; exact ⟨t, ht, rfl⟩, _, Kg.inv_mem h1, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_inv_cancel_left]`. Introduce `o`.
+
+Proceed by induction on `o using Quot.ind with`. Consider the case `mk L`. Take `⟨q0, hq0⟩` from `GlobalTheory.T.exists_GL_latticeSpannedByGLColumns_eq_fullLattice E w K e a B b L.1 L.2.1`. Take `⟨t', ht', k, hk, he'⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' T' Kg (DoubleCoset.mk T' Kg q0)).symm`. Establish `hP0 : P q0` using `(hUni q0).2 (hq0 ▸ L.2)`.
+
+Use `⟨⟨DoubleCoset.mk _ _ q0, by rw [he']; exact (hPinv q0 t' k ht' hk).2 hP0⟩, ?_⟩` and prove the remaining obligations. Apply `Quot.sound` to reduce the goal to its premises. Rewrite `ht'` using `[hCent]`. Take `⟨t, ht, rfl⟩` from `ht'`. Use `⟨t⁻¹, B.T.inv_mem ht, ?_⟩` and prove the remaining obligations.
+
+Use `show L.1 = _`. Simplify using `only`. Rewrite using `[he', mul_assoc, latOf_mul e b t, ← (GlobalTheory.T.latticeSpannedByGLColumns_eq_iff E w K e hO a B b q0 (q0 * k)).2 (by simpa using hk), hq0]`. Use extensionality with `y`. Rewrite using `[mulLat_mem_iff, mulLat_mem_iff]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.TwOrbConj.twOrb_eq, orbSum, cast_finsum]`. Repeatedly rewrite using `[hsum]`. Rewrite using `[show (∑ᶠ q : DoubleCoset.Quotient (T' : Set (GLw a w)) (Kg : Set (GLw a w)), if P (Quotient.out q) then ((((stabLat K.O (GlobalTheory.TwLat.lat e b (Quotient.out q)) ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℂ)) else 0) = ∑ᶠ q : {q : DoubleCoset.Quotient (T' : Set (GLw a w …`. Conclude with `(finsum_congr fun q => finsum_eq_if.symm).trans (finsum_subtype_eq_finsum_cond (fun q : DoubleCoset.Quotient (T' : Set (GLw a w)) (Kg : Set (GLw a w)) => P (Quotient.out q)) (f := fun q => ((((stabLat K.O (GlobalTheory.TwLat.lat e b (Quotient.out q)) ⊓ B.T).relIndex (intUnits K.O …`.
+
+Use `finsum_eq_of_bijective φ hφ fun q => ?_` and prove the remaining obligations. Take `⟨s, hs, hs'⟩` from `hr.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (φ q)))`. Establish `hs2 : GlobalTheory.TwLat.lat e b (Quotient.out q.1) = mulLat K.O (s : B.A) (Quot.out (φ q)).1` using `hs'`. Rewrite using `[hs2, stabLat_mulLat]`. Use `push_cast`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.TwOrbLat.twOrb_unit_eq_orbSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (a : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K), B.P.Separable → ∀ (β : B.Aˣ) (ε : B.A), (ε = 1 ∨ ε = -1) → B.σ (β : B.A) = β * (ε * B.g) → ∀ (b : Module.Basis (Fin a) K.E B.A) (δ : GLw a w), (∀ i j, ((δ.val * GlobalTheory.Tw.Phi a (w.adicCompletion E))⁻¹)ᵀ i j = e (B.herm β (b i) (b j))) → twOrb (thL a w) (GlobalTheory.LFun.KGL w a) δ ((GlobalTheory.LFun.KGL w a : Set (GLw a w)).indicator 1) = ((GlobalTheory.UnitLemma.orbSum K.O B.T {L : Submodule K.O B.A | GlobalTheory.UnitLemma.IsLat K.O K.E L ∧ ∀ z, z ∈ L ↔ ∀ y ∈ L, B.herm β y z ∈ (algebraMap K.O K.E).range} (fun _ => 1) : ℚ) : ℂ) := by
   intro E _ _ _ hU w hw K e he hO a B hP β ε hε hβ b δ hδ
   set θ := thL a w with hθ

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOfPartialDe
 import Mathlib
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.contDiff_of_partials_in_smooth_span | exact GlobalTheory.contDiff_of_partials_in_smooth_span | (intros; apply GlobalTheory.contDiff_of_partials_in_smooth_span <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cont_diff_of_partial_derivative_closure : ∀ (k : ℕ) (S : Set ((Fin k → ℝ) → ℂ)), (∀ f ∈ S, Continuous f) →
     (∀ f ∈ S, ∀ j : Fin k, ∃ (ι : Type) (_ : Fintype ι) (c : ι → (Fin k → ℝ) → ℂ) (g : ι → (Fin k → ℝ) → ℂ),
       (∀ i, ContDiff ℝ ∞ (c i)) ∧ (∀ i, g i ∈ S) ∧

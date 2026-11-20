@@ -19,6 +19,11 @@ open ReciprocityTheory.L2DbarEstimates (cHess)
 open GlobalTheory.HermFrame (ddc kappa)
 open GlobalTheory.GoodMetric (coordVec)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HermFrame.ddc, GlobalTheory.leviForm, GlobalTheory.ddbar_eq_del_dbar (contDiffAt_ofReal_comp hu)]`. Use `congr 1`. Establish `hg : (fun x => GlobalTheory.dbar (fun w => (u w : ℂ)) x (coordVec b)) = ReciprocityTheory.L2DbarEstimates.wdb n b (fun w => (u w : ℂ))`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.dbar, GlobalTheory.antilinPart, ReciprocityTheory.L2DbarEstimates.wdb, ReciprocityTheory.L2DbarEstimates.bas, ContinuousLinearMap.coe_mk', LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg]`. Simplify using `only [GlobalTheory.del, GlobalTheory.linPart, cHess, Matrix.of_apply, ReciprocityTheory.L2DbarEstimates.wd, ReciprocityTheory.L2DbarEstimates.bas, ContinuousLinearMap.coe_mk', LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddc_coordVec (n : ℕ) (u : V n → ℝ) (v : V n) (hu : ContDiffAt ℝ 2 u v) (a b : Fin n) :
     ddc u v (coordVec a) (coordVec b) = kappa * cHess n (fun w => (u w : ℂ)) v a b := by
   rw [GlobalTheory.HermFrame.ddc, GlobalTheory.leviForm, GlobalTheory.ddbar_eq_del_dbar (contDiffAt_ofReal_comp hu)]
@@ -34,6 +39,13 @@ theorem ddc_coordVec (n : ℕ) (u : V n → ℝ) (v : V n) (hu : ContDiffAt ℝ 
     ContinuousLinearMap.coe_mk', LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `e : ofValues (ddc u v) = ∑ a, ∑ b, (kappa • cHess n (fun w => (u w : ℂ)) v) a b • sym (a, b)`. Simplify using `only [ofValues, ddc_coordVec n u v hu, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[e, GlobalTheory.CxForm.DensPow.dens_pow, Matrix.det_smul, Fintype.card_fin]`. Establish `hk : kappa = Complex.I / 2 * ((Real.pi : ℂ)⁻¹)`. Rewrite using `[GlobalTheory.HermFrame.kappa]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h2 : (Complex.I / 2) ^ n ≠ 0` using `pow_ne_zero _ (by simp)`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[hk, show ∀ d : ℂ, (n.factorial : ℂ) * ((Complex.I / 2 * ((Real.pi : ℂ))⁻¹) ^ n * d) / (Complex.I / 2) ^ n = (((n.factorial / Real.pi ^ n : ℝ)) : ℂ) * d from fun d => by`. Rewrite using `[mul_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Use the proof step `ring, Complex.re_ofReal_mul]`.
+-/
 theorem dens_ofValues_ddc_pow (n : ℕ) (u : V n → ℝ) (v : V n) (hu : ContDiffAt ℝ 2 u v) :
     (dens ((ofValues (ddc u v) ^ n : Ev n) : Alt n)).re =
       n.factorial / Real.pi ^ n * (cHess n (fun w => (u w : ℂ)) v).det.re := by
@@ -50,6 +62,9 @@ theorem dens_ofValues_ddc_pow (n : ℕ) (u : V n → ℝ) (v : V n) (hu : ContDi
 
 variable {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {L : LB X.X}
 
+/- English proof (translation)
+Establish `e` using `(atlas X σ).loc_crd (fld (atlas X σ) (c1W ψ ^ X.dim)) (⟨(c, y), hy⟩ : (atlas X σ).Pt)`. Use `erw [e]`. Establish `hs` using `hψ.contDiffAt c hy (mem_pick ψ.isLB y)`. Use `erw [fld, Pi.pow_apply, c1W, dens_ofValues_ddc_pow X.dim _ _ hs]`. Both sides reduce to the same expression.
+-/
 theorem dens_loc_c1W_pow (ψ : Weight X.str σ L) (hψ : ψ.IsCInf) (c : AlgChart X.str σ X.dim)
     (y : CxPts X.str σ) (hy : y ∈ c.e.source) :
     (dens ((atlas X σ).loc (fld (atlas X σ) (c1W ψ ^ X.dim)) c (c.e y))).re = c.chernDens ψ y := by
@@ -59,6 +74,11 @@ theorem dens_loc_c1W_pow (ψ : Weight X.str σ L) (hψ : ψ.IsCInf) (c : AlgChar
   erw [fld, Pi.pow_apply, c1W, dens_ofValues_ddc_pow X.dim _ _ hs]
   rfl
 
+/- English proof (translation)
+Introduce `F _ σ X L ψ hψ ε`. Unfold `HolAtlas.part Weight.chernPart ChartGlue.glueMeas`. Use `iSup_congr fun c => ?_` and prove the remaining obligations. Unfold `ChartGlue.chartMeas`. Use `congr 1`.
+
+Use `withDensity_congr_ae (ae_restrict_of_forall_mem c.e.open_target.measurableSet fun v hv => ?_)` and prove the remaining obligations. Establish `hy` using `c.e.map_target hv`. Simplify using `only [Function.comp_apply]`. Use `erw [dens_loc_c1W_pow ψ hψ c _ hy]`.
+-/
 theorem part_c1W_pow : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (L : LB X.X) (ψ : Weight X.str σ L),
     ψ.IsCInf → ∀ ε : ℤˣ, (atlas X σ).part (fld (atlas X σ) (c1W ψ ^ X.dim)) ε = ψ.chernPart X.dim ε := by
   intro F _ σ X L ψ hψ ε

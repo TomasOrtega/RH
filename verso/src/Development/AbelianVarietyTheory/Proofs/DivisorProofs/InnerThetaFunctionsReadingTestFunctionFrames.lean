@@ -21,6 +21,11 @@ section Kernel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Unfold `kZero`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h : ∀ k, dblz X idx x₁ x₂ (0 : Fin n → Fin g → ℂ) 0 τ k = 0` using `fun k => by`. Establish `e : (fun a : Fin r => if (a : ℕ) < X.p0 then (0 : Fin n → Fin g → ℂ) k (idx.symm (τ, a)) else (0 : Fin n → Fin g → ℂ) k (idx.symm (τ, a))) = 0`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `c`. Simplify using `only [dblz, Matrix.of_apply, e, mulVec_zero, smul_zero]`. Simplify using `only [h, mulVec_zero, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]`.
+-/
 theorem kZero_zero (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ) (x₁ x₂ : Frame X.Ψ r) :
     kZero X idx x₁ x₂ (0 : Fin n → Fin g → ℂ) 0 =
       ∏ τ : X.Ψ, (((aLin X x₁ x₂ τ).det * (aAnti X x₁ x₂ τ).det) ^ (n / 2))⁻¹ := by
@@ -35,6 +40,11 @@ theorem kZero_zero (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ) (x₁ x₂ : Frame 
     simp only [dblz, Matrix.of_apply, e, mulVec_zero, smul_zero]
   simp only [h, mulVec_zero, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]
 
+/- English proof (translation)
+Use `Matrix.ext_of_mulVec_single fun c => ?_` and prove the remaining obligations. Generalize the expression as in `(Pi.single c 1 : Fin r → ℂ) = w`. Use function extensionality and compare the values at `a`. Rewrite using `[← mulVec_mulVec]`. Distinguish the cases in `ha : (a : ℕ) < X.p0`.
+
+Rewrite using `[DblPoint.aLin_mulVec_of_lt X _ _ _ _ ha, DblPoint.aLin_mulVec_of_lt X _ _ _ _ ha, h₂, ← hh w]`. Both sides reduce to the same expression. Rewrite using `[DblPoint.aLin_mulVec_of_not_lt X _ _ _ _ ha, DblPoint.aLin_mulVec_of_not_lt X _ _ _ _ ha, h₁, Matrix.mul_inv_rev, mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem aLin_move {x₁ x₂ y₁ y₂ : Frame X.Ψ r} (τ : X.Ψ) {u : Matrix (Fin r) (Fin r) ℂ} (hu : IsUnit u.det)
     (hh : ∀ v w, hermC τ.1 X.Gm (u *ᵥ v) (u *ᵥ w) = hermC τ.1 X.Gm v w)
     (h₁ : mat y₁ τ = u * mat x₁ τ) (h₂ : mat y₂ τ = u * mat x₂ τ) :
@@ -49,6 +59,9 @@ theorem aLin_move {x₁ x₂ y₁ y₂ : Frame X.Ψ r} (τ : X.Ψ) {u : Matrix (
   · rw [DblPoint.aLin_mulVec_of_not_lt X _ _ _ _ ha, DblPoint.aLin_mulVec_of_not_lt X _ _ _ _ ha, h₁,
       Matrix.mul_inv_rev, mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hu' : IsUnit u.det` using `IsUnit.of_mul_eq_one _ hu`. Establish `e : ∀ z₁ z₂ : Frame X.Ψ r, (aAnti X z₁ z₂ τ).det = conj (aLin X z₂ z₁ τ).det` using `fun z₁ z₂ => by`. Rewrite using `[DblPoint.aLin_swap, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Complex.conj_conj]`. Rewrite using `[e, e, ← aLin_move X τ hu' hh h₁ h₂, ← aLin_move X τ hu' hh h₂ h₁, det_mul, det_mul, map_mul]`. Take the linear combination `(-((aLin X y₁ y₂ τ).det * conj (aLin X y₂ y₁ τ).det)) * hu`.
+-/
 theorem det_move {x₁ x₂ y₁ y₂ : Frame X.Ψ r} (τ : X.Ψ) {u : Matrix (Fin r) (Fin r) ℂ}
     (hu : u.det * conj u.det = 1)
     (hh : ∀ v w, hermC τ.1 X.Gm (u *ᵥ v) (u *ᵥ w) = hermC τ.1 X.Gm v w)
@@ -64,6 +77,21 @@ end Kernel
 
 variable {D : D7} {S T : HSp D} (C : GlobalTheory.Ker.Ctx S T)
 
+/- English proof (translation)
+Rewrite using `[kZero_zero, kZero_zero]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `C.m.e.surjective σ`. Establish `hU` using `GlobalTheory.Ker.ONBasis.compAt_unitary C τ u`. Establish `hm : ∀ A : C.Bas, mat (C.xB (C.mvB u A)) (C.m.e τ) = (compAt C.θ τ (Formalism.L2.Theta.mt T u)).map conj * mat (C.xB A) (C.m.e τ)` using `fun A => by`.
+
+Rewrite using `[GlobalTheory.Ker.ONBasis.mat_xB, GlobalTheory.Ker.ONBasis.mat_xB, ← Matrix.map_mul]`. Both sides reduce to the same expression. Generalize the expression as in `compAt C.θ τ (Formalism.L2.Theta.mt T u) = U at hU hm`. Establish `hG : (gramAt D T τ).det ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `congrArg det (hB τ)`. Establish `h2` using `congrArg det (GlobalTheory.Ker.ONBasis.sgnM_sq C.X)`. Rewrite `h1` using `[det_mul, det_mul, h0, mul_zero, zero_mul]`. Rewrite `h2` using `[det_mul, ← h1, zero_mul, det_one]`. Conclude with `zero_ne_one h2`.
+
+Rewrite using `[det_move C.X (C.m.e τ) (u := U.map conj) ?_ ?_ (hm B) (hm B')]`. Establish `h1` using `congrArg det hU`. Rewrite `h1` using `[det_mul, det_mul, det_conjTranspose]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, Complex.conj_conj]`. Apply `mul_right_cancel₀ hG` to reduce the goal to its premises.
+
+Rewrite using `[one_mul]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v w`.
+
+Establish `e : ∀ v : Fin T.rank → ℂ, U.map conj *ᵥ v = fun a => conj ((U *ᵥ star v) a)` using `fun v => by`. Use function extensionality and compare the values at `a`. Simplify using `[mulVec, dotProduct]`. Establish `e' : ∀ v : Fin T.rank → ℂ, v = fun a => conj (star v a)` using `fun v => by`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, e, GlobalTheory.Ker.ONBasis.hermC_conj]`. Use `conv_rhs => rw [e' v, e' w, GlobalTheory.Ker.ONBasis.hermC_conj, ← hU]`. Rewrite using `[star_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec (star (star v)) Uᴴ]`.
+-/
 theorem kZero_mvB {B B' : C.Bas} (hB : C.IsB B) (u : GA D T) :
     kZero C.X C.idx (C.xB (C.mvB u B)) (C.xB (C.mvB u B')) (0 : Fin S.rank → Fin C.g → ℂ) 0 =
       kZero C.X C.idx (C.xB B) (C.xB B') (0 : Fin S.rank → Fin C.g → ℂ) 0 := by
@@ -103,6 +131,13 @@ theorem kZero_mvB {B B' : C.Bas} (hB : C.IsB B) (u : GA D T) :
     conv_rhs => rw [e' v, e' w, GlobalTheory.Ker.ONBasis.hermC_conj, ← hU]
     rw [star_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec (star (star v)) Uᴴ]
 
+/- English proof (translation)
+Establish `h0 : GlobalTheory.Ker.IsRealPt (0 : WO S T)` using `Matrix.map_zero _ (map_zero _)`. Establish `h` using `GlobalTheory.Ker.GaussKer.ipO_rho_Th D S T C μ 𝓕 hμ x₁ h₁ x₂ h₂ φ₁ φ₂ s₁ s₂ 0 0 h0 h0`. Establish `hr : ∀ f, C.rho 0 f = f` using `fun f => by`. Use function extensionality and compare the values at `w`. Simplify using `[GlobalTheory.Ker.Ctx.rho, heisO, symplOH, symplO, hO]`.
+
+Establish `hz : ∀ x, C.zOf x (0 : WO S T) = 0` using `fun x => by`. Use function extensionality and compare the values at `k i`. Simplify using `[GlobalTheory.Ker.Ctx.zOf, GlobalTheory.Ker.zR, GlobalTheory.Ker.Ctx.realPt, compAt, hermC, mulVec, dotProduct]`. Establish `hg : ∀ x, GlobalTheory.Ker.gaussR C.X C.bas C.idx x (0 : Fin S.rank → Fin C.g → ℂ) = 1` using `fun x => by`. Simplify using `[GlobalTheory.Ker.gaussR, hx]`.
+
+Rewrite `h` using `[hr, hr, hz, hz, hg, hg]`. Establish `e : (fun (k : Fin S.rank) (i : Fin C.g) => conj ((0 : Fin S.rank → Fin C.g → ℂ) k i)) = 0`. Use function extensionality and compare the values at `k i`. Simplify using the standard rewrite rules. Rewrite using `[h, e, map_one, one_mul, one_mul]`.
+-/
 theorem ipO_Th {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : IsCovolOne (ratL T S) μ 𝓕)
     {x₁ x₂ : Frame C.X.Ψ T.rank} (h₁ : x₁ ∈ C.X.dom) (h₂ : x₂ ∈ C.X.dom) {φ₁ φ₂ : TF S.rank C.g}
     (s₁ : GlobalTheory.SW.IsSB φ₁) (s₂ : GlobalTheory.SW.IsSB φ₂) :
@@ -124,6 +159,11 @@ theorem ipO_Th {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : IsCovolOne (
     simp
   rw [h, e, map_one, one_mul, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Use extensionality with `a i`. Establish `hτ : tauE D ρ ∈ X.Ψ` using `(hm.psi _).2 ⟨ρ, rfl⟩`. Distinguish the cases in `hi : (i : ℕ) < q0`. Rewrite using `[h ρ ⟨_, hτ⟩ rfl (Sum.inl ⟨i, hi⟩) i a rfl, h' ρ ⟨_, hτ⟩ rfl (Sum.inl ⟨i, hi⟩) i a rfl]`.
+
+Establish `h1 : (i : ℕ) - q0 < X.p0` using `by have := i.2; omega`. Establish `h2 : (i : ℕ) = q0 + ((i : ℕ) - q0)` using `by omega`. Rewrite using `[h ρ ⟨_, hτ⟩ rfl (Sum.inr ⟨_, h1⟩) i a h2, h' ρ ⟨_, hτ⟩ rfl (Sum.inr ⟨_, h1⟩) i a h2]`.
+-/
 theorem isBasOf_unique {W : HSp D} {X : Data D.host.E W.rank} (hm : IsMod W rfl X) {q0 : ℕ}
     (hq : X.p0 + q0 = W.rank) {x : Frame X.Ψ W.rank} {B B' : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ}
     (h : IsBasOf W rfl X hq x B) (h' : IsBasOf W rfl X hq x B') : B = B' := by
@@ -140,6 +180,23 @@ end GlobalTheory.AdTh.Overlap
 
 open GlobalTheory.AdTh.Overlap in
 
+/- English proof (translation)
+Introduce `D ψ θ V W r g hr X bas idx hstd hinf hV he hm hs`. Substitute `hr` using the available equality. Take `⟨X', m, hq', hq, bas', idx', hs', -, -, -, -, -, -, H⟩` from `GlobalTheory.T.orthonormal_frame_reading_eq_conjugate_datum_theta D ψ θ V W g X bas idx hstd hinf he hV hm hs`. Set `C : GlobalTheory.Ker.Ctx V W` to `⟨ψ, hstd, θ, hinf, X', m, g, X.p0, hq', bas', idx', hs', he⟩`. Set `Bx : Frame X.Ψ W.rank → C.Bas` to `fun x => Classical.epsilon fun B => IsBasOf W rfl X hq x B`.
+
+Establish `hBx : ∀ x, IsONFr X x → IsBasOf W rfl X hq x (Bx x)` using `fun x hx => Classical.epsilon_spec (H x hx).1`. Establish `hB : ∀ x, IsONFr X x → C.IsB (Bx x)` using `fun x hx => ((H x hx).2 _ (hBx x hx)).1`. Establish `hd : ∀ x, IsONFr X x → C.xB (Bx x) ∈ C.X.dom` using `fun x hx => GlobalTheory.Ker.ONBasis.mem_dom C.X (GlobalTheory.Ker.ONBasis.isONFr_xB C (hB x hx))`. Establish `hmv : ∀ x, IsONFr X x → ∀ u, Bx (frMove θ W rfl X u x) = C.mvB u (Bx x)` using `fun x hx u => by`. Take `⟨h1, h2⟩` from `((H x hx).2 _ (hBx x hx)).2.2.2.2.2.2.2.1 u`.
+
+Conclude with `isBasOf_unique hm hq (hBx _ h1) h2`. Establish `hT : ∀ x, IsONFr X x → ∀ (f : WO V W → ℂ) (φ : TF V.rank g), GlobalTheory.SW.IsSB φ → ((IsThetaFunO ψ V W f ∧ Reads θ V W rfl X bas idx f φ x) ↔ f = C.Th (C.xB (Bx x)) φ)` using `fun x hx => ((H x hx).2 _ (hBx x hx)).2.2.2.2.2.2.2.2`. Establish `hne : ∀ x x', IsONFr X x → IsONFr X x' → kZero C.X C.idx (C.xB (Bx x)) (C.xB (Bx x')) (0 : Fin V.rank → Fin g → ℂ) 0 ≠ 0` using `fun x x' hx hx' => by`. Rewrite using `[kZero_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => inv_ne_zero (pow_ne_zero _ (mul_ne_zero (DblPoint.det_aLin_ne_zero (hd x hx) (hd x' hx') τ) (DblPoint.det_aAnti_ne_zero (hd x hx) (hd x' hx') τ)))`.
+
+Use `⟨fun x x' => kZero C.X C.idx (C.xB (Bx x)) (C.xB (Bx x')) (0 : Fin V.rank → Fin g → ℂ) 0, fun x x' hx hx' => ⟨hne x x' hx hx', fun u => ?_, fun v hv hv0 => ⟨dbl C.X C.bas C.idx v v 0, fun hc => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hmv x hx, hmv x' hx']`. Conclude with `kZero_mvB C (hB x hx) u`. Take `⟨⟨μ, 𝓕, hμ⟩, hip⟩` from `GlobalTheory.Ker.ScalarProduct.ip_basic D V W C`.
+
+Establish `h1` using `ipO_Th C hμ (hd x hx) (hd x hx) hv hv`. Rewrite `h1` using `[hc, zero_mul]`. Establish `h2` using `(hip μ 𝓕 hμ _ ((hT x hx _ v hv).2 rfl).1).2.1 h1`. Take `⟨l1, l2, -⟩` from `GlobalTheory.Ker.Ctx.th_laws D V W C _ (hd x hx) v hv`. Establish `h3 : GlobalTheory.SW.IsSB ((0 : ℂ) • v)`.
+
+Take `⟨R, hR, -, -⟩` from `hv`. Conclude with `⟨R, hR, fun x hx => absurd (by simp) hx, fun x y hy => by simp⟩`. Use `hv0 (((l1 _ h3).2 ?_).trans (zero_smul ℂ v))` and prove the remaining obligations. Rewrite using `[l2, h2, zero_smul]`. Introduce `y y' hy hy' f f' κ κ' hf hf' rf rf' μ 𝓕 hμ`.
+
+Establish `e` using `(hT y hy f _ rf.1).1 ⟨hf, rf⟩`. Establish `e'` using `(hT y' hy' f' _ rf'.1).1 ⟨hf', rf'⟩`. Rewrite `e` using `[(GlobalTheory.Ker.Ctx.th_laws D V W C _ (hd y hy) v hv).2.1]`. Rewrite `e'` using `[(GlobalTheory.Ker.Ctx.th_laws D V W C _ (hd y' hy') v hv).2.1]`. Establish `h1` using `ipO_Th C hμ (hd y hy) (hd y' hy') hv hv`.
+
+Use `Eq.trans ?_ (congrArg (κ * conj κ' * ·) h1)` and prove the remaining obligations. Rewrite using `[e, e', GlobalTheory.Ker.ipO, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.AdTh.inner_of_reads : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∃ G : Frame X.Ψ r → Frame X.Ψ r → ℂ, ∀ x x' : Frame X.Ψ r, IsONFr X x → IsONFr X x' → G x x' ≠ 0 ∧ (∀ u : GA D W, G (frMove θ W hr X u x) (frMove θ W hr X u x') = G x x') ∧ ∀ v : TF V.rank g, GlobalTheory.SW.IsSB v → v ≠ 0 → ∃ c : ℂ, c ≠ 0 ∧ ∀ y y' : Frame X.Ψ r, IsONFr X y → IsONFr X y' → ∀ (f f' : WO V W → ℂ) (κ κ' : ℂ), IsThetaFunO ψ V W f → IsThetaFunO ψ V W f' → Reads θ V W hr X bas idx f (κ • v) y → Reads θ V W hr X bas idx f' (κ' • v) y' → ∀ (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL W V) μ 𝓕 → ∫ w in 𝓕, f w * conj (f' w) ∂μ = κ * conj κ' * (c * G y y') := by
   intro D ψ θ V W r g hr X bas idx hstd hinf hV he hm hs
   subst hr

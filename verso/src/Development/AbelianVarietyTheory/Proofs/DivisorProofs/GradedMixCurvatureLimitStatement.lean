@@ -12,6 +12,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CurvJet.tendsto_curv_mix | exact GlobalTheory.CurvJet.tendsto_curv_mix | (intros; apply GlobalTheory.CurvJet.tendsto_curv_mix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.graded_mix_curvature_limit : ∀ {n m : ℕ} (H₀ H : V n → Matrix (Fin m) (Fin m) ℂ) (ρ : V n → ℝ) (u : V n),
     (∀ i k, ContDiffAt ℝ 2 (fun v => H₀ v i k) u) → (∀ i k, ContDiffAt ℝ 2 (fun v => H v i k) u) →
     ContDiffAt ℝ 2 ρ u → IsUnit (H₀ u).det → IsUnit (H u).det → ∀ ξ η : V n,

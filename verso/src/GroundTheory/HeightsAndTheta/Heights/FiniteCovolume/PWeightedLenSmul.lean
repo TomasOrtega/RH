@@ -13,6 +13,9 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [NumberField F] [IsTotallyReal F] [NumberField E] [IsTotallyComplex E] [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vecAt, map_mul]`.
+-/
 theorem WeightedLenSmul.vecAt_smul (v : Basis ι E W) (a : E) (x : W) (w : InfinitePlace E) :
     vecAt v (a • x) w = w.embedding a • vecAt v x w := by
   funext i
@@ -20,6 +23,9 @@ theorem WeightedLenSmul.vecAt_smul (v : Basis ι E W) (a : E) (x : W) (w : Infin
 
 omit [NumberField F] [IsTotallyReal F] [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Simplify using `only [invApply, WeightedLenSmul.vecAt_smul, Matrix.mulVec_smul]`.
+-/
 theorem WeightedLenSmul.invApply_vecAt_smul {h : HermitianForm F E W} {v : Basis ι E W}
     (g : archUnitary h v) (a : E) (x : W) (w : InfinitePlace E) :
     invApply g (vecAt v (a • x)) w = w.embedding a • invApply g (vecAt v x) w := by
@@ -27,6 +33,9 @@ theorem WeightedLenSmul.invApply_vecAt_smul {h : HermitianForm F E W} {v : Basis
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc, mul_comm c, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem WeightedLenSmul.star_smul_dotProduct_mulVec_smul (P : Matrix ι ι ℂ) (c : ℂ)
     (z : ι → ℂ) :
     star (c • z) ⬝ᵥ (P *ᵥ (c • z)) = ((‖c‖ ^ 2 : ℝ) : ℂ) * (star z ⬝ᵥ (P *ᵥ z)) := by
@@ -37,6 +46,9 @@ theorem WeightedLenSmul.star_smul_dotProduct_mulVec_smul (P : Matrix ι ι ℂ) 
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `M g x a`. Rewrite using `[(h₁ M _).2]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[WeightedLenSmul.invApply_vecAt_smul, WeightedLenSmul.star_smul_dotProduct_mulVec_smul, Complex.re_ofReal_mul]`.
+-/
 theorem WeightedLenSmul.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : LenSq.Statement h v) : WeightedLenSmul.Statement h v := by
   intro M g x a

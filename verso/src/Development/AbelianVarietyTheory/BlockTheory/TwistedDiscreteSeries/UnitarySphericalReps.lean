@@ -61,10 +61,16 @@ def DPositive : Prop :=
 
 def Statement : Prop := ∀ D : D7, LPositive D ∧ DPositive D
 
+/- English proof (translation)
+Establish `: (r : ℝ) + 5 ≤ t` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example (r t : ℕ) (h : r + 5 ≤ t) : ((r : ℝ) + 1) / 2 < (1 + t) / 2 := by
   have : (r : ℝ) + 5 ≤ t := by exact_mod_cast h
   linarith
 
+/- English proof (translation)
+Introduce `h` and use `lt_irrefl _ h.2`.
+-/
 example : ¬ IsPosReal 0 := fun h => lt_irrefl _ h.2
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitarySphericalReps

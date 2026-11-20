@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Establish `h : x ∈ KStar.TotallyRealRoots.princ l a ↔ PadicInt.toZModPow a (x : ℤ_[l]) = 1`. Simplify using `[KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff]`. Rewrite using `[h, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`.
+-/
 private theorem mem_princ_iff_norm_sub_one_le (l : ℕ) [Fact l.Prime] (a : ℕ) (x : ℤ_[l]ˣ) :
     x ∈ KStar.TotallyRealRoots.princ l a ↔ ‖(x : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(a : ℤ)) := by
   have h : x ∈ KStar.TotallyRealRoots.princ l a ↔ PadicInt.toZModPow a (x : ℤ_[l]) = 1 := by
@@ -10,6 +13,9 @@ private theorem mem_princ_iff_norm_sub_one_le (l : ℕ) [Fact l.Prime] (a : ℕ)
   rw [h, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker,
     map_sub, map_one, sub_eq_zero]
 
+/- English proof (translation)
+Establish `e : ((KStar.TotallyRealRoots.princ l a : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) = {x : ℤ_[l]ˣ | ‖(x : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(a : ℤ))}`. Use extensionality with `x`. Conclude with `mem_princ_iff_norm_sub_one_le l a x`. Rewrite using `[e]`. Conclude with `isClosed_le (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const`.
+-/
 private theorem princ_isClosed (l : ℕ) [Fact l.Prime] (a : ℕ) :
     IsClosed ((KStar.TotallyRealRoots.princ l a : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) := by
   have e : ((KStar.TotallyRealRoots.princ l a : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) =
@@ -19,12 +25,18 @@ private theorem princ_isClosed (l : ℕ) [Fact l.Prime] (a : ℕ) :
   rw [e]
   exact isClosed_le (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_princ_iff_norm_sub_one_le]`. Use `hx.trans (zpow_le_zpow_right₀ ?_ (by omega))` and prove the remaining obligations. Conclude with `(Fact.out : l.Prime).one_lt.le` after adjusting the coercions.
+-/
 private theorem princ_antitone (l : ℕ) [Fact l.Prime] {a b : ℕ} (hab : a ≤ b) (x : ℤ_[l]ˣ)
     (hx : x ∈ KStar.TotallyRealRoots.princ l b) : x ∈ KStar.TotallyRealRoots.princ l a := by
   rw [mem_princ_iff_norm_sub_one_le] at hx ⊢
   refine hx.trans (zpow_le_zpow_right₀ ?_ (by omega))
   exact_mod_cast (Fact.out : l.Prime).one_lt.le
 
+/- English proof (translation)
+Use `ext`. Use `PadicInt.ext_of_toZModPow.mp fun a => ?_` and prove the remaining obligations. Establish `h` using `hx a`. Simplify using `only [KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff] at h`. Simplify using `using h`.
+-/
 private theorem eq_one_of_mem_all_princ (l : ℕ) [Fact l.Prime] (x : ℤ_[l]ˣ)
     (hx : ∀ a, x ∈ KStar.TotallyRealRoots.princ l a) : x = 1 := by
   ext
@@ -33,6 +45,25 @@ private theorem eq_one_of_mem_all_princ (l : ℕ) [Fact l.Prime] (x : ℤ_[l]ˣ)
   simp only [KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff] at h
   simpa using h
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ U n T _ _ M _ ψ hU hψ h0`. Establish `memL : ∀ (m : ℕ) (x : G F Ω), x ∈ levU l U m ↔ x ∈ U ∧ cycZ F Ω l x ∈ KStar.TotallyRealRoots.princ l m`. Introduce `m x`. Simplify using `[UpperTheory.V.Base.levU, Subgroup.mem_inf, Subgroup.mem_comap]`. Establish `memC : ∀ x : G F Ω, x ∈ cycU l U ↔ x ∈ U ∧ cycZ F Ω l x = 1`.
+
+Introduce `x`. Simplify using `[UpperTheory.V.Base.cycU, Subgroup.mem_inf, MonoidHom.mem_ker]`. Establish `closedL : ∀ m : ℕ, IsClosed ((levU l U m : Subgroup (G F Ω)) : Set (G F Ω))`. Introduce `m`. Establish `e : ((levU l U m : Subgroup (G F Ω)) : Set (G F Ω)) = (U : Set (G F Ω)) ∩ (cycZ F Ω l) ⁻¹' ((KStar.TotallyRealRoots.princ l m : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)`.
+
+Use extensionality with `x`. Conclude with `memL m x`. Rewrite using `[e]`. Conclude with `hU.inter ((princ_isClosed l m).preimage (continuous_cycZ F Ω l))`. Use `haveI : CompactSpace (levU l U n) := isCompact_iff_compactSpace.mp (closedL n).isCompact`.
+
+Set `K : Set (T × levU l U n)` to `{p | ψ p ≠ 0}`. Establish `hKc : IsClosed K`. Establish `ho : IsOpen (ψ ⁻¹' {0})` using `hψ.isOpen_fiber 0`. Conclude with `ho.isClosed_compl`. Set `t : ℕ → Set (T × levU l U n)` to `fun m => {p | (p.2 : G F Ω) ∈ levU l U m}`.
+
+Establish `htc : ∀ m, IsClosed (t m)` using `fun m => (closedL m).preimage (continuous_subtype_val.comp continuous_snd)`. Establish `hst : K ∩ ⋂ m, t m = ∅`. Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hp hall`.
+
+Apply `hp` to reduce the goal to its premises. Take `⟨s, u⟩` from `p`. Apply `h0 s u` to reduce the goal to its premises. Rewrite using `[memC]`. Use `⟨((memL n u.1).1 u.2).1, eq_one_of_mem_all_princ l _ fun a => ((memL a u.1).1 (hall a)).2⟩` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `hKc.isCompact.elim_finite_subfamily_closed t htc hst`. Use `⟨max n (v.sup id), le_max_left _ _, ?_⟩` and prove the remaining obligations. Introduce `s u hu`. Assume the negation of the conclusion as `hne`. Establish `hmem : (s, u) ∈ K ∩ ⋂ i ∈ v, t i`.
+
+Use `⟨hne, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`. Introduce `i hi`. Use `show (u : G F Ω) ∈ levU l U i`. Rewrite `hu`, the goal using `[memL]`.
+
+Use `⟨hu.1, princ_antitone l ?_ _ hu.2⟩` and prove the remaining obligations. Conclude with `(Finset.le_sup (f := id) hi).trans (le_max_right _ _)`. Rewrite `hmem` using `[hv]`. Conclude with `hmem`.
+-/
 theorem UpperTheory.V.Kum.levCompact :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G F Ω)) (n : ℕ) (T : Type) [TopologicalSpace T] [CompactSpace T] (M : Type) [Zero M] (ψ : T × levU l U n → M), IsClosed (U : Set (G F Ω)) → IsLocallyConstant ψ →
     (∀ t (u : levU l U n), u.1 ∈ cycU l U → ψ (t, u) = 0) → ∃ m, n ≤ m ∧ ∀ t (u : levU l U n), u.1 ∈ levU l U m → ψ (t, u) = 0 := by

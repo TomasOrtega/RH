@@ -20,6 +20,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PullGenG
 
+/- English proof (translation)
+Establish `h0` using `(HasGen.of_gen (L := Lr.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) Lr.rig Lr.rigGen).pull G.hom`. Establish `e1 : (1 : G ⟶ G).left = G.hom ≫ eSec G` using `rfl`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[lf_single, e1]`. Simplify using `[fsum, Finsupp.mapDomain_single]`.
+-/
 theorem hasGen_one {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) :
     HasGen Lr.L (lf (Finsupp.single (1 : G ⟶ G) 1)) := by
   have h0 := (HasGen.of_gen (L := Lr.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) Lr.rig Lr.rigGen).pull G.hom
@@ -28,6 +31,15 @@ theorem hasGen_one {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (Lr
   rw [lf_single, e1]
   simp [fsum, Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Use `ra.hom w0` as an intermediate fact. Take `⟨uR, huR⟩` from `GlobalTheory.NormRos.exists_gen_rosati Lr.isLB (ra.act a) (ra.act (star a)) hadj`. Take `⟨⟨ρ, hρ, -⟩, -⟩` from `GlobalTheory.JetSer.exists_unique_normPrim S G Lr (ra.act w0) hprim`. Establish `hP : HasGen Lr.L (fsum (GlobalTheory.JetSer.primφ (ra.act w0)) GlobalTheory.JetSer.primε)` using `HasGen.of_gen ρ hρ`. Establish `h1` using `hasGen_one Lr`.
+
+Take `⟨uΨ, huΨ⟩` from `HasGen.gen Lr.isLB (h1.sub hP) (K' := Fin 4) ![(padd G (𝟙 _) (ra.act w0)).left, 𝟙 G.left, (ra.act w0).left, (toUnit G ≫ η[G]).left] ![1, -2, -1, 2] (by`. Unfold `GlobalTheory.JetSer.primφ GlobalTheory.JetSer.primε`. Establish `e1 : toUnit G ≫ η[G] = (1 : G ⟶ G)` using `rfl`. Rewrite using `[padd_eq_mul, e1, lf_single]`. Use extensionality with `x`.
+
+Simplify using `[fsum, Fin.sum_univ_succ, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> omega)`. Establish `hM` using `hasGen_pullMul ra w0 a N hN uΨ huΨ uR huR cub.t cub.isGen`. Establish `h2` using `(hM.zsmul (-(k : ℤ))).add (h1.zsmul ((k : ℤ) * ((N : ℤ) - 1)))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [lf_add, lf_sub, lf_smul, lf_single]`. Use extensionality with `x`. Simplify using `[fsum, Fin.sum_univ_succ, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem hasGen_pull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) (cub : CubicalStr G Lr)
     {O : Type} [CommRing O] [StarRing O] (ra : RingAct G O) (w0 a : O) (N : ℕ) (hN : a * star a = (N : O))
     (hadj : Geo.Tor.LBIso (cubeLB G ![fst G G ≫ ra.act a, snd G G] Lr.L)
@@ -57,6 +69,17 @@ theorem hasGen_pull {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L
   simp [fsum, Fin.sum_univ_succ, Finsupp.single_apply]
   split_ifs <;> ring
 
+/- English proof (translation)
+Establish `hc : endK f ≫ gK = gK ≫ f.left`. Unfold `endK gK`. Conclude with `pullback.lift_fst _ _ _`. Establish `hu : unitK ≫ gK = jK V ≫ eSec G`. Unfold `unitK gK`.
+
+Conclude with `pullback.lift_fst _ _ _`. Establish `hs : unitK ≫ pullback.snd G.hom (jK V) = 𝟙 _`. Unfold `unitK`. Conclude with `pullback.lift_snd _ _ _`. Establish `he : eSec G ≫ f.left = eSec G` using `by show (η[G] ≫ f).left = η[G].left`.
+
+Rewrite using `[IsMonHom.one_hom]`. Take `⟨t, ht⟩` from `HasGen.gen Lr.isLB (h.pull gK) ![gK, endK f ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)] (by`. Rewrite using `[hc]`. Simplify using `only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Finsupp.mapDomain_add, Finsupp.mapDomain_single, Category.comp_id])`. Use `exists_normalized_to Lr.isLB _ _ t ht (pullback.snd G.hom (jK V)) unitK hs _ _ _ (pullGen_isGen_of_isGen _ _ _ (powGen_isGen_of_isGen _ Lr.rigGen _) _) ?_` and prove the remaining obligations.
+
+Establish `hv : unitK ≫ endK f ≫ gK = jK V ≫ eSec G`. Rewrite using `[hc, ← Category.assoc, hu, Category.assoc, he]`. Simplify using `only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, hu, hv]`. Rewrite using `[Fintype.sum_unique, ← Finsupp.single_add]`. Use `congr 1`.
+
+Move the coercions through the operations in `[Nat.cast_sub hN1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) (f : G ⟶ G) [IsMonHom f]
     (k N : ℕ) (hN1 : 1 ≤ N)
@@ -90,6 +113,11 @@ theorem exists_norm {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRin
   push_cast [Nat.cast_sub hN1]
   ring
 
+/- English proof (translation)
+Introduce `hG V _ _ _ E _ _ _ H t P a N hN hN0`. Use `letI := H.starRing`. Introduce `k`. Use `t.act.hom a` as an intermediate fact. Rewrite using `[P.bundle]`.
+
+Conclude with `exists_norm t.PP (t.act.act a) k N hN0 (hasGen_pull t.PP t.cub t.act.toRingAct H.w0 a N hN (t.adj a) t.prim k)`.
+-/
 theorem main : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ k : ℕ, ∃ u : LB.Gen (LB.LinComb P.U.LG.L (K := Fin 2) ![gK, endK (t.act.act a) ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)]), u.IsGen ∧ LB.Gen.Corr P.U.LG.L _ _ _ _ (LB.pullGen P.U.LG.L _ _ u unitK) (LB.pullGen P.U.LG.L _ _ (GeneratorPullback.powGen P.U.LG.L _ _ P.U.LG.rig (k * (N - 1))) (jK V)) := by
   intro hG V _ _ _ E _ _ _ H t P a N hN hN0
   letI := H.starRing

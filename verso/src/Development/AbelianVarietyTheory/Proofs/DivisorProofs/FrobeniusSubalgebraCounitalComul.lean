@@ -3,6 +3,29 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ k A _ _ _ _ _ ε Δ ⟨hl, hr⟩`. Establish `injA : Function.Injective (algebraMap k A)` using `fun x y h => by`. Simplify using `using congrArg ε h`. Use `haveI : CharP A p := charP_of_injective_algebraMap injA p`. Set `εε : A ⊗[k] A →ₐ[k] k` to `Algebra.TensorProduct.lift ε ε (fun _ _ => Commute.all _ _)`.
+
+Establish `injAA : Function.Injective (algebraMap k (A ⊗[k] A))` using `fun x y h => by`. Simplify `congrArg εε h` using `only [AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`. Use `haveI : CharP (A ⊗[k] A) p := charP_of_injective_algebraMap injAA p`. Set `B : Subalgebra k A` to `{ carrier := {a | ∃ c : A, c ^ p = a} mul_mem' := by rintro _ _ ⟨c, rfl⟩ ⟨d, rfl⟩; exact ⟨c * d, mul_pow c d p⟩ add_mem' := by rintro _ _ ⟨c, rfl⟩ ⟨d, rfl⟩; exact ⟨c + d, add_pow_char c d p⟩ algebraMap_mem' := by`. Introduce `r`.
+
+Take `⟨s, hs⟩` from `surjective_frobenius k p r`. Conclude with `⟨algebraMap k A s, by rw [← map_pow, ← hs, frobenius_def]⟩ }`. Use `⟨B, fun a => Iff.rfl, ?_⟩` and prove the remaining obligations. Set `j : B ⊗[k] B →ₐ[k] A ⊗[k] A` to `Algebra.TensorProduct.map B.val B.val`. Establish `hj : Function.Injective j` using `TensorProduct.map_injective_of_flat_flat B.val.toLinearMap B.val.toLinearMap Subtype.val_injective Subtype.val_injective`.
+
+Establish `hpow : ∀ t : A ⊗[k] A, t ^ p ∈ j.range`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp [zero_pow (Fact.out : p.Prime).ne_zero]⟩`. Consider the case `tmul a b`.
+
+Conclude with `⟨(⟨a ^ p, a, rfl⟩ : B) ⊗ₜ (⟨b ^ p, b, rfl⟩ : B), by`. Simplify using `[j, Algebra.TensorProduct.tmul_pow]⟩`. Consider the case `add x y hx hy => rw [add_pow_char]`. Conclude with `add_mem hx hy`. Establish `hΔ : ∀ b : B, Δ (B.val b) ∈ j.range`.
+
+Introduce and unpack `⟨_, c, rfl⟩`. Simplify `hpow (Δ c)` using `[map_pow]`. Set `e` to `AlgEquiv.ofInjective j hj`. Set `Δ' : B →ₐ[k] B ⊗[k] B` to `e.symm.toAlgHom.comp ((Δ.comp B.val).codRestrict j.range hΔ)`. Establish `hjΔ : ∀ b : B, j (Δ' b) = Δ (B.val b)`.
+
+Introduce `b`. Establish `h1` using `e.apply_symm_apply ⟨Δ (B.val b), hΔ b⟩`. Conclude with `congrArg Subtype.val h1`. Establish `kl : ∀ x : B ⊗[k] B, ((TensorProduct.lid k B (LinearMap.rTensor B (ε.comp B.val).toLinearMap x) : B) : A) = TensorProduct.lid k A (LinearMap.rTensor A ε.toLinearMap (j x))`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [j]`. Consider the case `add x y hx hy => simp only [map_add, Subalgebra.coe_add, hx, hy]`. Establish `kr : ∀ x : B ⊗[k] B, ((TensorProduct.rid k B (LinearMap.lTensor B (ε.comp B.val).toLinearMap x) : B) : A) = TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap (j x))`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [j]`. Consider the case `add x y hx hy => simp only [map_add, Subalgebra.coe_add, hx, hy]`.
+
+Use `⟨Δ', fun b => ?_, fun b => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[kl, hjΔ]`. Conclude with `hl _`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[kr, hjΔ]`. Conclude with `hr _`.
+-/
 theorem frobSubalgebra_counit : ∀ (p : ℕ) [Fact p.Prime] (k A : Type) [Field k] [CommRing A] [Algebra k A] [CharP k p] [PerfectRing k p] (ε : A →ₐ[k] k) (Δ : A →ₐ[k] A ⊗[k] A), ((∀ a : A, TensorProduct.lid k A (LinearMap.rTensor A ε.toLinearMap (Δ a)) = a) ∧ (∀ a : A, TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap (Δ a)) = a)) → ∃ B : Subalgebra k A, (∀ a, a ∈ B ↔ ∃ c : A, c ^ p = a) ∧ ∃ Δ' : B →ₐ[k] B ⊗[k] B, ((∀ a : B, TensorProduct.lid k B (LinearMap.rTensor B (ε.comp B.val).toLinearMap (Δ' a)) = a) ∧ (∀ a : B, TensorProduct.rid k B (LinearMap.lTensor B (ε.comp B.val).toLinearMap (Δ' a)) = a)) := by
   intro p _ k A _ _ _ _ _ ε Δ ⟨hl, hr⟩
   have injA : Function.Injective (algebraMap k A) := fun x y h => by

@@ -12,6 +12,9 @@ noncomputable def UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev :
       (PiTensorProduct.lift : MultilinearMap ℂ W ℂ → (PiTensorProduct ℂ fun (i : I) ↦ W i) →ₗ[ℂ] ℂ)
         ((MultilinearMap.mkPiAlgebra ℂ I ℂ).compLinearMap f)
 
+/- English proof (translation)
+Introduce `I _ _ W _ _ f m`. Simplify using `[UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev]`.
+-/
 theorem UpperTheory.Reformulated.B.CuspidalIrreducibleSubrep.ev_tprod :
     ∀ {I : Type} [inst : Fintype I] [dI : DecidableEq I] {W : I → Type} [inst_1 : (i : I) → AddCommGroup (W i)]
       [inst_2 : (i : I) → _root_.Module ℂ (W i)] (f : (i : I) → Module.Dual ℂ (W i)) (m : (i : I) → W i),

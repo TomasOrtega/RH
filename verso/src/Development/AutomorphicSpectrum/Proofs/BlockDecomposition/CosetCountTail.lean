@@ -13,12 +13,18 @@ section Abstract
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ I) := QuotientGroup.discreteTopology ho`. Establish `h : IsCompact ((QuotientGroup.mk : G → G ⧸ I) '' D)` using `hD.image QuotientGroup.continuous_mk`. Conclude with `h.finite_of_discrete.subset fun q hq => ⟨q.out, hq, QuotientGroup.out_eq' q⟩`.
+-/
 theorem finite_cosets {I : Subgroup G} (ho : IsOpen (I : Set G)) {D : Set G} (hD : IsCompact D) :
     {q : G ⧸ I | q.out ∈ D}.Finite := by
   haveI : DiscreteTopology (G ⧸ I) := QuotientGroup.discreteTopology ho
   have h : IsCompact ((QuotientGroup.mk : G → G ⧸ I) '' D) := hD.image QuotientGroup.continuous_mk
   exact h.finite_of_discrete.subset fun q hq => ⟨q.out, hq, QuotientGroup.out_eq' q⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yla7.main μ ho hD S hS`.
+-/
 theorem measure_eq_card_mul [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
     {I : Subgroup G} (ho : IsOpen (I : Set G)) {D : Set G} (hD : ∀ g ∈ D, ∀ i ∈ I, g * i ∈ D)
     (S : Finset (G ⧸ I)) (hS : ∀ q, q ∈ S ↔ q.out ∈ D) : μ D = S.card * μ I :=
@@ -28,11 +34,17 @@ end Abstract
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `hg`. Conclude with `⟨a, ha, b * i, mul_mem hb hi, by simp only [mul_assoc]⟩`.
+-/
 theorem iwahoriCoset_mul {t : Fin n → kˣ} {g i : GL (Fin n) k} (hg : g ∈ iwahoriCoset t)
     (hi : i ∈ iwahori k (Fin n)) : g * i ∈ iwahoriCoset t := by
   obtain ⟨a, ha, b, hb, rfl⟩ := hg
   exact ⟨a, ha, b * i, mul_mem hb hi, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨u, hu, -, i, hi, rfl⟩` from `(mem_iwahoriCoset ht g).1 hg`. Rewrite using `[jacBU_mk, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, IwahoriInj.mem_fixed.1 hv i hi]`. Conclude with `(Submodule.Quotient.eq _).2 (IwahoriInj.sub_mem_twKer hu _)`.
+-/
 theorem mk_act {t : Fin n → kˣ} (ht : Contracts t) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) {v : V} (hv : v ∈ fixed π (iwahori k (Fin n)))
     {g : GL (Fin n) k} (hg : g ∈ iwahoriCoset t) :
@@ -41,6 +53,13 @@ theorem mk_act {t : Fin n → kˣ} (ht : Contracts t) {V : Type} [AddCommGroup V
   rw [jacBU_mk, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, IwahoriInj.mem_fixed.1 hv i hi]
   exact (Submodule.Quotient.eq _).2 (IwahoriInj.sub_mem_twKer hu _)
 
+/- English proof (translation)
+Establish `ho` using `IwahoriOnto.isOpen_iwahori k (Fin n)`. Establish `hc` using `IwahoriOnto.isCompact_iwahori k (Fin n)`. Use `letI : MeasurableSpace (GL (Fin n) k) := _root_.borel _`. Use `haveI : BorelSpace (GL (Fin n) k) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (GL (Fin n) k) := hc.locallyCompactSpace_of_mem_nhds_of_group (ho.mem_nhds (one_mem _))`.
+
+Set `μ : Measure (GL (Fin n) k)` to `Measure.haar`. Establish `h1` using `measure_iwahoriCoset μ ht`. Establish `h2` using `measure_eq_card_mul μ ho (fun g hg i hi => iwahoriCoset_mul hg hi) S hS`. Establish `h3 : μ.real (iwahoriCoset t) = S.card * μ.real (iwahori k (Fin n) : Set (GL (Fin n) k))`. Rewrite using `[measureReal_def, measureReal_def, h2, ENNReal.toReal_mul, ENNReal.toReal_natCast]`.
+
+Establish `h4 : μ.real (iwahori k (Fin n) : Set (GL (Fin n) k)) ≠ 0`. Rewrite using `[measureReal_def]`. Conclude with `(ENNReal.toReal_pos (ho.measure_pos μ ⟨1, one_mem _⟩).ne' hc.measure_lt_top.ne).ne'`. Rewrite `h1` using `[h3, mul_comm]`. Conclude with `mul_left_cancel₀ h4 h1`.
+-/
 theorem card_cosets {t : Fin n → kˣ} (ht : Contracts t) (S : Finset (GL (Fin n) k ⧸ iwahori k (Fin n)))
     (hS : ∀ q, q ∈ S ↔ q.out ∈ iwahoriCoset t) : (S.card : ℝ) = (deltaB t)⁻¹ := by
   have ho := IwahoriOnto.isOpen_iwahori k (Fin n)
@@ -60,6 +79,17 @@ theorem card_cosets {t : Fin n → kˣ} (ht : Contracts t) (S : Finset (GL (Fin 
   rw [h3, mul_comm] at h1
   exact mul_left_cancel₀ h4 h1
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n t ht`. Establish `hset : {q : GL (Fin n) k ⧸ iwahori k (Fin n) | cosetInd t q.out ≠ 0} = {q | q.out ∈ iwahoriCoset t}`. Use extensionality with `q`. Simplify using `[cosetInd]`. Establish `hfin : {q : GL (Fin n) k ⧸ iwahori k (Fin n) | q.out ∈ iwahoriCoset t}.Finite` using `finite_cosets (IwahoriOnto.isOpen_iwahori k (Fin n)) (isCompact_iwahoriCoset t)`.
+
+Use `⟨hset ▸ hfin, fun V _ _ π v hv => ?_⟩` and prove the remaining obligations. Establish `hcard` using `card_cosets ht hfin.toFinset fun q => hfin.mem_toFinset`. Establish `hsum : PositivityTheory.Rg.BcB.F.Tail.PExp.hkS π (iwahori k (Fin n)) (cosetInd t) v = ∑ q ∈ hfin.toFinset, cosetInd t q.out • π q.out v`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Assume the negation of the conclusion as `h`. Apply `hq` to reduce the goal to its premises. Establish `h0 : cosetInd t q.out = 0`. Assume the negation of the conclusion as `h'`. Conclude with `h (hset ▸ h')`.
+
+Simplify using `[h0]`. Rewrite using `[hsum]`. Establish `hterm : ∀ q ∈ hfin.toFinset, (Submodule.Quotient.mk (cosetInd t q.out • π q.out v) : Jacquet π (unipB k (Fin n))) = jacBU π t (Submodule.Quotient.mk v)`. Introduce `q hq`. Establish `hq' : q.out ∈ iwahoriCoset t` using `hfin.mem_toFinset.1 hq`.
+
+Establish `h1 : cosetInd t q.out = 1` using `by simp [cosetInd, hq']`. Rewrite using `[h1, one_smul]`. Conclude with `mk_act ht π hv hq'`. Establish `hmk : (Submodule.Quotient.mk (∑ q ∈ hfin.toFinset, cosetInd t q.out • π q.out v) : Jacquet π (unipB k (Fin n))) = ∑ q ∈ hfin.toFinset, (Submodule.Quotient.mk (cosetInd t q.out • π q.out v) : Jacquet π (unipB k (Fin n)))` using `map_sum (Submodule.mkQ _) _ _`. Rewrite using `[hmk, Finset.sum_congr rfl hterm, Finset.sum_const, ← hcard, Complex.ofReal_natCast, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem cosetCount : PositivityTheory.Rg.BcB.F.Tail.PExp.CosetCount := by
   intro k _ _ _ _ n t ht
   have hset : {q : GL (Fin n) k ⧸ iwahori k (Fin n) | cosetInd t q.out ≠ 0} =

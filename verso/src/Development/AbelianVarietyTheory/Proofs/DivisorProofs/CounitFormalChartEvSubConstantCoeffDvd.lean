@@ -8,6 +8,19 @@ open TensorProduct
 
 namespace GlobalTheory.FrNil
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `(c.isEval n).2 1`. Use `set P : MvPolynomial (Fin d) O := trunc' O (Finsupp.equivFunOnFinite.symm fun _ => N) F with hP`. Establish `halg : ((Bialgebra.counitAlgHom O (G.A n)).comp ((c.ev n).comp (MvPolynomial.coeToMvPowerSeries.algHom O))) = MvPolynomial.aeval (fun _ => (0 : O))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using `only [AlgHom.coe_comp, Function.comp_apply, MvPolynomial.coeToMvPowerSeries.algHom_apply, MvPolynomial.aeval_X, Algebra.algebraMap_self, RingHom.id_apply, MvPolynomial.coe_X, MvPowerSeries.map_id]`. Rewrite using `[(c.isEval n).1 i]`. Conclude with `c.aug n i`. Establish `hPc : Coalgebra.counit (R` using `O) (c.ev n (P : MvPowerSeries (Fin d) O)) = constantCoeff F := by`. Use `congrArg (fun φ => φ P) halg` as an intermediate fact.
+
+Simplify using `only [AlgHom.coe_comp, Function.comp_apply, MvPolynomial.coeToMvPowerSeries.algHom_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPowerSeries.map_id] at this`. Rewrite using `[show Coalgebra.counit (R := O) (c.ev n (P : MvPowerSeries (Fin d) O)) = Bialgebra.counitAlgHom O (G.A n) (c.ev n (P : MvPowerSeries (Fin d) O)) from rfl, this]`. Rewrite using `[MvPolynomial.aeval_zero', hP, ← coeff_zero_eq_constantCoeff_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPolynomial.constantCoeff_eq, coeff_trunc', if_pos]`. Introduce `i`. Conclude with `Nat.zero_le _`.
+
+Establish `hT : ∀ α : Fin d →₀ ℕ, α.degree < N → coeff α (F - (P : MvPowerSeries (Fin d) O)) = 0`. Introduce `α hα`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, hP, coeff_trunc', if_pos, sub_self]`. Introduce `i`. Use `show α i ≤ N`.
+
+Conclude with `le_trans (Finsupp.le_degree i α) hα.le`. Take `⟨a, ha⟩` from `hN _ hT`. Rewrite `ha` using `[pow_one]`. Establish `hsplit : c.ev n F = c.ev n (F - (P : MvPowerSeries (Fin d) O)) + c.ev n P`. Rewrite using `[← map_add, sub_add_cancel]`.
+
+Use `⟨Coalgebra.counit (R := O) a, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, map_add, ha, hPc, add_sub_cancel_right]`. Rewrite using `[show ((p : G.A n)) * a = (p : O) • a by rw [Algebra.smul_def, map_natCast], map_smul, smul_eq_mul]`.
+-/
 theorem counit_ev_sub_constantCoeff (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ)
     (c : QLog.Chart G d) (n : ℕ) (F : MvPowerSeries (Fin d) O) :
     (p : O) ∣ Coalgebra.counit (R := O) (c.ev n F) - constantCoeff F := by

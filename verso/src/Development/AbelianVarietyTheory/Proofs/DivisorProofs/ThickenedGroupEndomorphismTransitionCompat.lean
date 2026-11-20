@@ -12,6 +12,15 @@ open GlobalTheory.Mum.EndThick
 noncomputable section
 namespace GlobalTheory.Mum.EndThick
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U e a a' h' u F F' hF hF'`. Establish `hq` using `U.gt_q e`. Establish `hO : GlobalTheory.LevelCompat.thickMapOver I e G ≫ (U.gt (e + 1)).pG = (U.gt e).pG` using `Over.OverMorphism.ext hq`. Establish `hL : ∀ χ, thickMap R I e G ≫ (lift (toUnit _ ≫ D.toPre.c χ) (U.gt (e + 1)).pG).left = (lift (toUnit _ ≫ D.toPre.c χ) (U.gt e).pG).left`. Introduce `χ`.
+
+Establish `: GlobalTheory.LevelCompat.thickMapOver I e G ≫ lift (toUnit _ ≫ D.toPre.c χ) (U.gt (e + 1)).pG = lift (toUnit _ ≫ D.toPre.c χ) (U.gt e).pG`. Simplify using `only [comp_lift, comp_toUnit_assoc, hO]`. Conclude with `congrArg (·.left) this`. Use `GlobalTheory.TorusCoord.ext_of_val (U.gt (e + 1)) _ _ ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `χ w J hJ`. Establish `e1` using `hF'.2 χ _ (thickMap R I e G) w J hJ`. Establish `e2` using `hF.2 χ _ (𝟙 _) w J hJ`. Rewrite `e2` using `[Category.id_comp]`. Rewrite using `[e1, ← val_pull hJ, val_corr hJ (U.gt_t e χ), e2]`.
+
+Use `congr 1`. Establish `e3` using `val_pull hJ ((U.gt (e + 1)).t (h' χ)) (thickMap R I e G) (𝟙 _)`. Rewrite `e3` using `[Category.id_comp]`. Rewrite using `[← e3, val_corr hJ (U.gt_t e _)]`. Rewrite using `[val_pull hJ, val_pull hJ, hL, Category.id_comp]`.
+-/
 theorem isCoordEnd_thickMap_compat : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e : ℕ) (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h' : D.toPre.X →+ D.toPre.X) (u : LB.Gen (LB.LinComb D.toPre.P.L (rosatiφ D.toPre.P.A a' a) rosatiε)) (F : thickObj R I e G ⟶ thickObj R I e G) (F' : thickObj R I (e + 1) G ⟶ thickObj R I (e + 1) G), IsCoordEnd (U.gt e) a a' h' u F → IsCoordEnd (U.gt (e + 1)) a a' h' u F' → thickMap R I e G ≫ F'.left = F.left ≫ thickMap R I e G := by
   intro R _ _ I D A G _ _ U e a a' h' u F F' hF hF'
   have hq := U.gt_q e

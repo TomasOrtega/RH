@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Conc
 
+/- English proof (translation)
+Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq P Real.HolderConjugate.two_two hg (aemeasurable_const (b := (1 : ℝ≥0∞)))`. Simplify using `only [Pi.mul_apply, mul_one, ENNReal.one_rpow, lintegral_const, measure_univ] at h`. Establish `h2` using `pow_le_pow_left' h 2`. Establish `h3 : ((∫⁻ y, g y ^ (2 : ℝ) ∂P) ^ (1 / (2 : ℝ))) ^ 2 = ∫⁻ y, g y ^ (2 : ℝ) ∂P`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`.
+
+Evaluate the numerical expressions. Rewrite `h2` using `[h3]`. Simplify `h2` using `[ENNReal.rpow_ofNat]`.
+-/
 theorem lintegral_sq_le {Y : Type*} [MeasurableSpace Y] (P : Measure Y) [IsProbabilityMeasure P]
     (g : Y → ℝ≥0∞) (hg : AEMeasurable g P) : (∫⁻ y, g y ∂P) ^ 2 ≤ ∫⁻ y, g y ^ 2 ∂P := by
   have h := ENNReal.lintegral_mul_le_Lp_mul_Lq P Real.HolderConjugate.two_two hg
@@ -24,6 +29,17 @@ theorem lintegral_sq_le {Y : Type*} [MeasurableSpace Y] (P : Measure Y) [IsProba
   rw [h3] at h2
   simpa [ENNReal.rpow_ofNat] using h2
 
+/- English proof (translation)
+Establish `hwm : Measurable fun y => ENNReal.ofReal (β y)` using `hk.cont.measurable.ennreal_ofReal`. Establish `: IsProbabilityMeasure (ν.withDensity fun y => ENNReal.ofReal (β y))`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← ofReal_integral_eq_lintegral_ofReal (hk.cont.integrable_of_hasCompactSupport hk.cpt) (Eventually.of_forall hk.nonneg), hk.mass, ENNReal.ofReal_one]`. Establish `hc1 : Continuous fun y => f (x * infEmb E N y)` using `hf.comp (continuous_const.mul continuous_infEmb)`.
+
+Establish `hi1 : Integrable (fun y => (β y : ℂ) * f (x * infEmb E N y)) ν` using `((Complex.continuous_ofReal.comp hk.cont).mul hc1).integrable_of_hasCompactSupport (hk.cpt.comp_left Complex.ofReal_zero |>.mul_right)`. Establish `hi2 : Integrable (fun y => (β y : ℂ) * f x) ν` using `((Complex.continuous_ofReal.comp hk.cont).mul continuous_const).integrable_of_hasCompactSupport (hk.cpt.comp_left Complex.ofReal_zero |>.mul_right)`. Establish `hmass : ∫ y, (β y : ℂ) * f x ∂ν = f x`. Rewrite using `[integral_mul_const, integral_complex_ofReal, hk.mass]`. Simplify using the standard rewrite rules.
+
+Establish `heq : f x - sm ν β f x = ∫ y, (β y : ℂ) * (f x - f (x * infEmb E N y)) ∂ν`. Simplify using `only [mul_sub]`. Rewrite using `[integral_sub hi2 hi1, hmass]`. Both sides reduce to the same expression. Establish `hgm : Measurable fun y => ‖f (x * infEmb E N y) - f x‖ₑ` using `(continuous_enorm.comp (hc1.sub continuous_const)).measurable`.
+
+Establish `hle : ‖f x - sm ν β f x‖ₑ ≤ ∫⁻ y, ‖f (x * infEmb E N y) - f x‖ₑ ∂(ν.withDensity fun y => ENNReal.ofReal (β y))`. Rewrite using `[heq, lintegral_withDensity_eq_lintegral_mul ν hwm hgm]`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hb : ‖(β y : ℂ)‖ₑ = ENNReal.ofReal (β y)`.
+
+Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (hk.nonneg y)]`. Rewrite using `[enorm_mul, hb, enorm_sub_rev]`. Both sides reduce to the same expression. Conclude with `(pow_le_pow_left' hle 2).trans (lintegral_sq_le _ _ hgm.aemeasurable)`.
+-/
 theorem enorm_sub_sm_sq_le (E : Type) [Field E] [NumberField E] (N : ℕ)
     [MeasurableSpace (archGroup E N)] [BorelSpace (archGroup E N)]
     (ν : Measure (archGroup E N)) [ν.IsHaarMeasure] (β : archGroup E N → ℝ) (hk : Ker ν β)
@@ -66,6 +82,17 @@ theorem enorm_sub_sm_sq_le (E : Type) [Field E] [NumberField E] (N : ℕ)
 
 end GlobalTheory.CompanionTheory.Conc
 
+/- English proof (translation)
+Introduce `E _ _ _ N _ _ μ _ _ _ ν _ F β c _ hk f hf hc`. Use `GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.secondCountable_adele E` as an intermediate fact. Establish `: LocallyCompactSpace (Matrix (Fin N) (Fin N) (Ad E))` using `inferInstanceAs (LocallyCompactSpace (Fin N → Fin N → Ad E))`.
+
+Establish `: LocallyCompactSpace (Matrix (Fin N) (Fin N) (Ad E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Establish `: LocallyCompactSpace (GA E N)` using `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Establish `: SecondCountableTopology (Matrix (Fin N) (Fin N) (Ad E))` using `inferInstanceAs (SecondCountableTopology (Fin N → Fin N → Ad E))`. Establish `: SecondCountableTopology (Matrix (Fin N) (Fin N) (Ad E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (GA E N)` using `Units.isEmbedding_embedProduct.secondCountableTopology`.
+
+Establish `: SigmaCompactSpace (GA E N)` using `sigmaCompactSpace_of_locallyCompact_secondCountable`. Establish `: SFinite μ` using `inferInstance`. Establish `hwm : Measurable fun y => ENNReal.ofReal (β y)` using `hk.cont.measurable.ennreal_ofReal`. Use `set P : Measure (archGroup E N) := ν.withDensity fun y => ENNReal.ofReal (β y) with hP`. Establish `: IsProbabilityMeasure P`.
+
+Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[hP, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← ofReal_integral_eq_lintegral_ofReal (hk.cont.integrable_of_hasCompactSupport hk.cpt) (Eventually.of_forall hk.nonneg), hk.mass, ENNReal.ofReal_one]`. Establish `hG : Continuous fun p : GA E N × archGroup E N => ‖f (p.1 * infEmb E N p.2) - f p.1‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp (continuous_enorm.comp ((hf.comp (continuous_fst.mul (continuous_infEmb.comp continuous_snd))).sub (hf.comp continuous_fst)))`. Establish `hae : ∀ᵐ y ∂P, y ∈ tsupport β`. Rewrite using `[hP, ae_withDensity_iff hwm]`.
+
+Use `Eventually.of_forall fun y hy => subset_tsupport _ ?_` and prove the remaining obligations. Introduce `h0`. Conclude with `hy (by rw [h0, ENNReal.ofReal_zero])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.CompanionTheory.Conc.smNear : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure] [MeasurableSpace (archGroup E N)] [BorelSpace (archGroup E N)] (ν : Measure (archGroup E N)) [ν.IsHaarMeasure] (F : Set (GA E N)) (β : archGroup E N → ℝ) (c : ℝ≥0∞), IsFundamentalDomain (latticeGL E N) F μ → Ker ν β →
   ∀ f : GA E N → ℂ, Continuous f → (∀ y ∈ tsupport β, ∫⁻ x in F, ‖f (x * infEmb E N y) - f x‖ₑ ^ 2 ∂μ ≤ c) →
   ∫⁻ x in F, ‖f x - sm ν β f x‖ₑ ^ 2 ∂μ ≤ c := by

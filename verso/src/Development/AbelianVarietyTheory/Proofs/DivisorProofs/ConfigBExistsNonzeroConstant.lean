@@ -20,6 +20,9 @@ namespace GlobalTheory.ThKFirstV
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+-/
 theorem polData_le_schA {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.2 ?_
@@ -28,6 +31,15 @@ theorem polData_le_schA {σ : E →ₐ[F] E} {B : Base F E} {n d : ℕ} {X : Spc
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
+
+Use `haveI : LocallyCompactSpace (GL (Fin n) (AE F E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`.
+
+Establish `hc : IsClosed (UG (cA σ) (incM F J) : Set (GL (Fin n) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin n) (AE F E) => (g : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val`. Conclude with `isClosed_eq (((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hcA))) continuous_const`. Conclude with `⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology⟩`.
+-/
 theorem top_UA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) := by
   haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F
@@ -55,6 +67,11 @@ theorem top_UA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
   exact ⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace,
     hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `top_UA σ J`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`.
+
+Conclude with `⟨_, (Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₁).ne', Measure.isMulLeftInvariant_eq_smul μ μ₁⟩`.
+-/
 theorem haar_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (μ μ₁ : Measure (UA σ J)) [μ.IsHaarMeasure]
     [μ₁.IsHaarMeasure] : ∃ c : ℝ≥0, c ≠ 0 ∧ μ = (c : ENNReal) • μ₁ := by
   obtain ⟨h1, h2, h3⟩ := top_UA σ J
@@ -62,6 +79,11 @@ theorem haar_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) 
   haveI : BorelSpace (UA σ J) := ⟨rfl⟩
   exact ⟨_, (Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ₁).ne', Measure.isMulLeftInvariant_eq_smul μ μ₁⟩
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `top_UA σ J`. Use `haveI := h1`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ J`. Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : UA σ J => γ.1 * x).measurable⟩`.
+
+Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`. Establish `hf' : ∀ (γ : ratU σ J) x, f (γ • x) = f x` using `fun γ x => hf γ.1 γ.2 x`. Conclude with `⟨hD.integrableOn_iff hD' hf', hD.setIntegral_eq hD' hf'⟩`.
+-/
 theorem dom_change (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (μ : Measure (UA σ J)) [μ.IsHaarMeasure]
     {D D' : Set (UA σ J)} (hD : IsFundamentalDomain (ratU σ J) D μ) (hD' : IsFundamentalDomain (ratU σ J) D' μ)
     (f : UA σ J → ℂ) (hf : ∀ γ ∈ ratU σ J, ∀ g, f (γ * g) = f g) :
@@ -83,6 +105,25 @@ namespace GlobalTheory.ThKFirstV
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' hC e he`. Take `⟨p₁, q₁, V₁, V₁', W₁, M₁, M₁'⟩` from `G₁`. Take `⟨hV, hp, -, -, hH'⟩` from `hC`. Simplify using `only at hV hp hH' he ⊢`. Substitute `hV hp` using the available equality.
+
+Distinguish the cases in `hh : G.M.μ.IsHaarMeasure ∧ M₁.μ.IsHaarMeasure`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' om₁ om₁' hT hT₁ => (hh ⟨hT.geo.hM.haar, hT₁.geo.hM.haar⟩).elim⟩`. Take `⟨hh1, hh2⟩` from `hh`. Take `⟨c, hc0, hμ⟩` from `haar_smul σ G.V.J G.M.μ M₁.μ`.
+
+Use `⟨(c : ℂ), by exact_mod_cast hc0, fun X om om' om₁ om₁' hT hT₁ Φ hΦ h => ?_⟩` and prove the remaining obligations. Establish `hP` using `(Check.isPair_of_isTriple hT).1`. Establish `hP₁` using `(Check.isPair_of_isTriple hT₁).1`. Establish `hΦs : Φ ∈ schA F _` using `polData_le_schA hT.geo.hM hΦ`. Establish `hΨ : om (1, h) Φ ∈ schA F _` using `(IsUWeilPair.isUSplitting hP.weil).pres (1, h) Φ hΦs`.
+
+Establish `heΨ : e (om (1, h) Φ) ∈ schA F _` using `he.maps _ hΨ`. Establish `hmix : ∀ g, thetaSum F (e (om (g, h) Φ)) = theta om₁ (e (om (1, h) Φ)) g 1`. Introduce `g`. Establish `h1` using `GlobalTheory.T.adapted_plane_second_variable hK.base F E σ B a (a + (b + 2)) G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (a + b) W₁ H' a (a + b + 1) M₁ om₁ _ _ hH' hP₁ e he g 1 1 1 (Check.isLevi_one H') 1 (one_mem _) (om (1, h) Φ) hΨ`. Establish `h2 : om (g, h) Φ = om (g, 1 * 1) (om (1, h) Φ)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h2, h1]`. Simplify using `[theta]`. Repeatedly rewrite using `[hmix]`.
+
+Set `M₂ : Model σ G.V W₁` to `⟨M₁.co, M₁.vac, G.M.μ, G.M.dom⟩`. Establish `hP₂ : IsPair B M₂ X.β (X.β / X.α) om₁ (a - G.p) G.p (a + b - (G.p + q₁)) (G.p + q₁)` using `⟨hP₁.base, hP₁.herm, hP₁.skew, ⟨hP₁.good.rat, hP₁.good.vac, hP₁.good.std, hP.good.haar, hP.good.dom⟩, hP₁.hX, hP₁.hW, hP₁.resX, hP₁.resW, hP₁.weil⟩`. Take `⟨hW, -⟩` from `GlobalTheory.T.weil_convergence_of_kernel hK F E σ B a (a + b) G.V W₁ M₂ X.β (X.β / X.α) om₁ _ _ _ _ hP₂ (Or.inl (Check.conv_range hT₁.geo))`. Establish `hint : IntegrableOn (fun g => theta om₁ (e (om (1, h) Φ)) g 1) G.M.dom G.M.μ` using `(hW _ heΨ).1 1`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hth, -⟩` from `GlobalTheory.T.theta_basic_properties hK.base F E σ B a (a + b) G.V W₁ M₁ X.β (X.β / X.α) om₁ _ _ _ _ hP₁`. Take `⟨-, hinv, -⟩` from `hth _ heΨ`. Establish `hf : ∀ γ ∈ ratU σ G.V.J, ∀ g, theta om₁ (e (om (1, h) Φ)) (γ * g) 1 = theta om₁ (e (om (1, h) Φ)) g 1` using `fun γ hγ g => by simpa using hinv γ hγ 1 (one_mem _) g 1`. Establish `hD₁ : IsFundamentalDomain (ratU σ G.V.J) M₁.dom G.M.μ`. Use `hT₁.geo.hM.dom` as an intermediate fact.
+
+Use `this.mono ?_` and prove the remaining obligations. Rewrite using `[hμ]`. Conclude with `Measure.AbsolutelyContinuous.rfl.smul_left _`. Rewrite using `[(dom_change σ G.V.J G.M.μ hT.geo.hM.dom hD₁ _ hf).2, hμ, Measure.restrict_smul, integral_smul_measure]`. Use `show _ = (c : ℂ) * ∫ g in M₁.dom, theta om₁ (e (om (1, h) Φ)) g 1 ∂M₁.μ`.
+
+Rewrite using `[ENNReal.coe_toReal, Complex.real_smul]`.
+-/
 theorem firstV : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ e, IsEv B G.M G₁.M 1 H'.ι (iso0 a H') e →

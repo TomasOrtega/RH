@@ -6,6 +6,25 @@ open scoped Classical
 
 namespace GlobalTheory.BCT
 
+/- English proof (translation)
+Introduce `hp hcof hcpt hKH hT hcomm x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hle : cptPart T ≤ T ⊓ ⨅ i, (cptPart (TH i)).comap (p i)`. Rewrite using `[cptPart, Subgroup.closure_le]`.
+
+Introduce `t ht`. Take `⟨htT, htc⟩` from `ht`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `⟨htT, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap]`.
+
+Use `Subgroup.subset_closure (k := {s | s ∈ TH i ∧ IsCompact (closure (Subgroup.zpowers s : Set (H i)))}) ⟨(hT t).1 htT i, ?_⟩` and prove the remaining obligations. Establish `himc : IsCompact (p i '' closure (Subgroup.zpowers t : Set G))` using `htc.image (hp i)`. Use `himc.of_isClosed_subset isClosed_closure (closure_minimal ?_ himc.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩`.
+
+Use `hle hx` as an intermediate fact. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap] at this`. Conclude with `this`. Introduce and unpack `⟨hxT, hxi⟩`. Establish `hloc : ∀ i, IsCompact (closure (Subgroup.zpowers (p i x) : Set (H i)))` using `fun i => (GlobalTheory.LocFinU.cptPart_subset_of_comm (TH i) (hcomm i) (hxi i)).2`.
+
+Use `set C : ∀ i, Set (H i) := fun i => if p i x ∈ KH i then (KH i : Set (H i)) else closure (Subgroup.zpowers (p i x) : Set (H i)) with hC`. Establish `hCc : ∀ i, IsCompact (C i)`. Introduce `i`. Simplify using `only [hC]`. Use `split_ifs`.
+
+Conclude with `hKH i`. Conclude with `hloc i`. Establish `hCf : ∀ᶠ i in cofinite, C i = KH i` using `by filter_upwards [hcof x] with i hi`. Simplify using `[hC, hi]`. Establish `hS` using `hcpt C hCc hCf`.
+
+Establish `hScl : IsClosed {y : G | ∀ i, p i y ∈ C i}`. Establish `: {y : G | ∀ i, p i y ∈ C i} = ⋂ i, p i ⁻¹' C i` using `by ext; simp`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => (hCc i).isClosed.preimage (hp i)`. Establish `hsub : (Subgroup.zpowers x : Set G) ⊆ {y : G | ∀ i, p i y ∈ C i}`.
+
+Introduce and unpack `_ ⟨k, rfl⟩ i`. Simplify using `only [hC, map_zpow]`. Use `split_ifs with h`. Conclude with `(KH i).zpow_mem h k`. Conclude with `subset_closure ⟨k, rfl⟩`.
+
+Use `Subgroup.subset_closure (k := {s | s ∈ T ∧ IsCompact (closure (Subgroup.zpowers s : Set G))}) ⟨hxT, ?_⟩` and prove the remaining obligations. Conclude with `hS.of_isClosed_subset isClosed_closure (closure_minimal hsub hScl)`.
+-/
 theorem mem_cptPart_iff_local (ι G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : ι → Type)
     [∀ i, Group (H i)] [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, T2Space (H i)]
     (p : ∀ i, G →* H i) (KH : ∀ i, Subgroup (H i)) (T : Subgroup G) (TH : ∀ i, Subgroup (H i)) :

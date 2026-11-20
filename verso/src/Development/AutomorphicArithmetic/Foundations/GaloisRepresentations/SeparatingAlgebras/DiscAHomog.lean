@@ -13,6 +13,11 @@ private noncomputable def discB (a : ℕ) : MvPolynomial (Fin a) ℤ :=
       (fun q => ¬ (q.1 = q.2.1 ∧ q.2.2 = q.2.1)),
     (MvPolynomial.X q.1 * MvPolynomial.X q.2.2 - MvPolynomial.X q.2.1 ^ 2)
 
+/- English proof (translation)
+Introduce `σ`. Simplify using `only [discA, map_prod, map_sub, map_pow, MvPolynomial.rename_X]`. Use `Finset.prod_equiv (σ.prodCongr σ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Simplify using `[Finset.mem_offDiag]`.
+
+Introduce `p _`. Both sides reduce to the same expression.
+-/
 private theorem discA_symm (a n : ℕ) : (discA a n).IsSymmetric := by
   intro σ
   simp only [discA, map_prod, map_sub, map_pow, MvPolynomial.rename_X]
@@ -22,6 +27,11 @@ private theorem discA_symm (a n : ℕ) : (discA a n).IsSymmetric := by
   · intro p _
     rfl
 
+/- English proof (translation)
+Introduce `σ`. Simplify using `only [discB, map_prod, map_sub, map_mul, map_pow, MvPolynomial.rename_X]`. Use `Finset.prod_equiv (σ.prodCongr (σ.prodCongr σ)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j, k⟩`. Simplify using the standard rewrite rules.
+
+Introduce `p _`. Both sides reduce to the same expression.
+-/
 private theorem discB_symm (a : ℕ) : (discB a).IsSymmetric := by
   intro σ
   simp only [discB, map_prod, map_sub, map_mul, map_pow, MvPolynomial.rename_X]
@@ -31,16 +41,27 @@ private theorem discB_symm (a : ℕ) : (discB a).IsSymmetric := by
   · intro p _
     rfl
 
+/- English proof (translation)
+Use `⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => ∑ c ∈ Finset.Icc 1 n, c) fun p _ => MvPolynomial.IsHomogeneous.prod _ _ (fun c => c) fun c _ => ?_⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.isHomogeneous_X_pow _ _).sub (MvPolynomial.isHomogeneous_X_pow _ _)`.
+-/
 private theorem discA_homog (a n : ℕ) : ∃ d, (discA a n).IsHomogeneous d := by
   refine ⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => ∑ c ∈ Finset.Icc 1 n, c) fun p _ =>
     MvPolynomial.IsHomogeneous.prod _ _ (fun c => c) fun c _ => ?_⟩
   exact (MvPolynomial.isHomogeneous_X_pow _ _).sub (MvPolynomial.isHomogeneous_X_pow _ _)
 
+/- English proof (translation)
+Use `⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => 2) fun q _ => ?_⟩` and prove the remaining obligations. Conclude with `((MvPolynomial.isHomogeneous_X _ _).mul (MvPolynomial.isHomogeneous_X _ _)).sub (MvPolynomial.isHomogeneous_X_pow _ _)`.
+-/
 private theorem discB_homog (a : ℕ) : ∃ d, (discB a).IsHomogeneous d := by
   refine ⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => 2) fun q _ => ?_⟩
   exact ((MvPolynomial.isHomogeneous_X _ _).mul (MvPolynomial.isHomogeneous_X _ _)).sub
     (MvPolynomial.isHomogeneous_X_pow _ _)
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun p hp => Finset.prod_ne_zero_iff.2 fun c hc h => ?_` and prove the remaining obligations. Establish `hne : p.1 ≠ p.2` using `(Finset.mem_offDiag.1 hp).2.2`. Establish `hc0 : c ≠ 0`. Use `(Finset.mem_Icc.1 hc).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `congrArg (MvPolynomial.eval (Pi.single p.1 (1 : ℤ))) h` as an intermediate fact. Simplify using `[Pi.single_eq_of_ne hne.symm, hc0] at this`.
+-/
 private theorem discA_ne (a n : ℕ) : discA a n ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun p hp => Finset.prod_ne_zero_iff.2 fun c hc h => ?_
   have hne : p.1 ≠ p.2 := (Finset.mem_offDiag.1 hp).2.2
@@ -50,6 +71,11 @@ private theorem discA_ne (a n : ℕ) : discA a n ≠ 0 := by
   have := congrArg (MvPolynomial.eval (Pi.single p.1 (1 : ℤ))) h
   simp [Pi.single_eq_of_ne hne.symm, hc0] at this
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun q hq h => ?_` and prove the remaining obligations. Establish `hq' : ¬ (q.1 = q.2.1 ∧ q.2.2 = q.2.1)` using `(Finset.mem_filter.1 hq).2`. Establish `hz : (Pi.single q.2.1 (1 : ℤ) : Fin a → ℤ) q.1 * (Pi.single q.2.1 (1 : ℤ) : Fin a → ℤ) q.2.2 = 0`. Distinguish the cases in `h1 : q.1 = q.2.1`. Establish `h2 : q.2.2 ≠ q.2.1` using `fun h2 => hq' ⟨h1, h2⟩`.
+
+Rewrite using `[Pi.single_eq_of_ne h2, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne h1, zero_mul]`. Use `congrArg (MvPolynomial.eval (Pi.single q.2.1 (1 : ℤ))) h` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, MvPolynomial.eval_X, map_zero, hz, Pi.single_eq_same] at this`. Evaluate the numerical expressions using `at this`.
+-/
 private theorem discB_ne (a : ℕ) : discB a ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun q hq h => ?_
   have hq' : ¬ (q.1 = q.2.1 ∧ q.2.2 = q.2.1) := (Finset.mem_filter.1 hq).2
@@ -62,6 +88,15 @@ private theorem discB_ne (a : ℕ) : discB a ≠ 0 := by
   simp only [map_sub, map_mul, map_pow, MvPolynomial.eval_X, map_zero, hz, Pi.single_eq_same] at this
   norm_num at this
 
+/- English proof (translation)
+Introduce `a n`. Establish `hne : discA a n * discB a ≠ 0` using `mul_ne_zero (discA_ne a n) (discB_ne a)`. Take `⟨d₁, h₁⟩` from `discA_homog a n`. Take `⟨d₂, h₂⟩` from `discB_homog a`. Establish `hh` using `h₁.mul h₂`.
+
+Use `⟨discA a n * discB a, ?_, ?_, hne, ?_⟩` and prove the remaining obligations. Introduce `σ`. Rewrite using `[map_mul, discA_symm a n σ, discB_symm a σ]`. Rewrite using `[hh.totalDegree hne]`. Conclude with `hh`.
+
+Introduce `k _ z hz`. Rewrite `hz` using `[map_mul]`. Establish `hA` using `left_ne_zero_of_mul hz`. Establish `hB` using `right_ne_zero_of_mul hz`. Simplify using `only [discA, discB, map_prod, map_sub, map_mul, map_pow, MvPolynomial.aeval_X] at hA hB`.
+
+Use `⟨fun i j hij c hc1 hcn => ?_, fun i j k' hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.prod_ne_zero_iff.1 hA (i, j) (Finset.mem_offDiag.2 ⟨Finset.mem_univ _, Finset.mem_univ _, hij⟩)`. Conclude with `sub_ne_zero.1 (Finset.prod_ne_zero_iff.1 h1 c (Finset.mem_Icc.2 ⟨hc1, hcn⟩))`. Conclude with `sub_ne_zero.1 (Finset.prod_ne_zero_iff.1 hB (i, j, k') (Finset.mem_filter.2 ⟨Finset.mem_univ _, hq⟩))`.
+-/
 theorem UpperTheory.Gal.Gen.discEx2_pf :
     UpperTheory.Gal.Gen.DiscEx2 := by
   intro a n

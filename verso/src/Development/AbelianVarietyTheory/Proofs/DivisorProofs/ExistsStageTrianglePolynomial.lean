@@ -24,6 +24,13 @@ noncomputable section
 
 namespace GlobalTheory.StageSmall
 
+/- English proof (translation)
+Introduce `hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.T.stage_small_nonzero_base hP hK hL) (GlobalTheory.T.stage_kernel_integrable_polynomial_bound hP hK hL)`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hL G W S hW hN i j p q A A' WW X hX => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `h C hC D large₂ a b r T Lc μ hL G`. Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Establish `hi` using `GlobalTheory.T.integrableOn_thetaKernel_definiteSeesawStage G W i j p A A' WW X hX`. Take `⟨P', hP'⟩` from `h1 W S hW hN i j p A A' WW X hX hi`. Conclude with `⟨P', fun t h => hi t P' h, hP'⟩`.
+
+Conclude with `h2 W S hW hN i j p q A A' WW X hX hq`.
+-/
 theorem small_stage : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →

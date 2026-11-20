@@ -16,6 +16,15 @@ namespace GlobalTheory.DeRham
 
 open GlobalTheory.Cris GlobalTheory.Published GlobalTheory.Published.AbelianDeRham TensorProduct
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) h1` and prove the remaining obligations. Take `⟨N, hN⟩` from `hF`. Establish `ee : ∀ z : M, (DualNumber.eps : DualNumber R) • (DualNumber.eps : DualNumber R) • z = 0` using `fun z => by rw [smul_smul, DualNumber.eps_mul_eps, zero_smul]`. Establish `step : ∀ x ∈ F, ∃ y ∈ G, ∃ w ∈ F, x = y + (DualNumber.eps : DualNumber R) • w` using `fun x hx => by`. Take `⟨y, hy, z, rfl⟩` from `h2 x hx`.
+
+Establish `hz : z ∈ F ⊔ N` using `hN.sup_eq_top ▸ Submodule.mem_top`. Take `⟨zF, hzF, zN, hzN, rfl⟩` from `Submodule.mem_sup.1 hz`. Establish `hmem : (DualNumber.eps : DualNumber R) • zN ∈ F`. Establish `e : (DualNumber.eps : DualNumber R) • zN = (y + (DualNumber.eps : DualNumber R) • (zF + zN)) - y - (DualNumber.eps : DualNumber R) • zF`. Rewrite using `[smul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem hx (h1 hy)) (F.smul_mem _ hzF)`. Establish `h0 : (DualNumber.eps : DualNumber R) • zN = 0` using `(Submodule.disjoint_def.1 hN.disjoint) _ hmem (N.smul_mem _ hzN)`. Conclude with `⟨y, hy, zF, hzF, by rw [smul_add, h0, add_zero]⟩`.
+
+Take `⟨y, hy, w, hw, rfl⟩` from `step x hx`. Take `⟨y', hy', w', -, rfl⟩` from `step w hw`. Rewrite using `[smul_add, ee, add_zero]`. Conclude with `G.add_mem hy (G.smul_mem _ hy')`.
+-/
 theorem eq_of_le_of_le_add_eps {R : Type} [CommRing R] {M : Type*} [AddCommGroup M]
     [Module (DualNumber R) M] {F G : Submodule (DualNumber R) M} (hF : ∃ N, IsCompl F N) (h1 : G ≤ F)
     (h2 : ∀ x ∈ F, ∃ y ∈ G, ∃ z : M, x = y + (DualNumber.eps : DualNumber R) • z) : F = G := by
@@ -58,10 +67,18 @@ def crysHi (d : Crys (epsDP R) (epsRed R) A) : HdR A where
       TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_mul]
     simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [crysLo, crysHi]`.
+-/
 theorem crys_constMor (d : Crys (epsDP R) (epsRed R) A) (c : primDR A) :
     d ((constMor A).pull c) = TrivSqZeroExt.inl (crysLo d c) + TrivSqZeroExt.inr (crysHi d c) := by
   ext <;> simp [crysLo, crysHi]
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `constMor_surjective P hA hg w`. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul r c => rw [liftSemi_tmul, map_smul, map_smul, e]`.
+-/
 theorem crys_ext (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {d d' : Crys (epsDP R) (epsRed R) A}
     (e : ∀ c, d ((constMor A).pull c) = d' ((constMor A).pull c)) : d = d' := by
@@ -72,6 +89,11 @@ theorem crys_ext (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A) (hg : Sm
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul r c => rw [liftSemi_tmul, map_smul, map_smul, e]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `constMor_surjective P hA hg w`. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero, TrivSqZeroExt.fst_zero]`. Consider the case `add x y hx hy => simp only [map_add, TrivSqZeroExt.fst_add, hx, hy]`. Consider the case `tmul r c`.
+
+Rewrite using `[liftSemi_tmul, map_smul, LinearMap.map_smulₛₗ, redMor_constMor, map_smul]`. Simplify using `[crysLo]`.
+-/
 theorem fst_eq_crysLo (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (d : Crys (epsDP R) (epsRed R) A)
     (w : prim (epsDP R) (epsRed R) A) : (d w).fst = crysLo d ((redMor A).pull w) := by
@@ -91,6 +113,13 @@ open GlobalTheory.Cris GlobalTheory.Published GlobalTheory.Published.AbelianDeRh
 
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 
+/- English proof (translation)
+Take `⟨C, _, φ, hφ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A (spMap (algebraMap R (DualNumber R)))`. Establish `eid : epsRed R ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Establish `e0 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[epsRed, spMap_comp_spMap, e0]`. Conclude with `Spec.map_id _`. Establish `w : 𝟙 A.left ≫ A.hom = (A.hom ≫ epsRed R) ≫ spMap (algebraMap R (DualNumber R))`. Rewrite using `[Category.assoc, eid, Category.comp_id, Category.id_comp]`. Establish `e1 : hφ.1.lift _ _ w ≫ φ = 𝟙 _` using `hφ.1.lift_fst _ _ _`.
+
+Establish `e2 : hφ.1.lift _ _ w ≫ C.hom = A.hom ≫ epsRed R` using `hφ.1.lift_snd _ _ _`. Use `haveI : IsMonHom (Iso.refl A).hom := inferInstanceAs (IsMonHom (𝟙 A))`. Establish `hic : IsGrpPullback A C (epsRed R) (hφ.1.lift _ _ w)` using `hφ.cancel ((isGrpPullback_of_iso (Iso.refl A)).congr eid.symm e1.symm) e2`. Conclude with `⟨C, inferInstance, φ, _, hφ, hic, e1⟩`.
+-/
 theorem exists_const (A : Over (Sp R)) [GrpObj A] :
     ∃ (C : Over (Sp (DualNumber R))) (_ : GrpObj C) (φ : C.left ⟶ A.left) (j : A.left ⟶ C.left),
       IsGrpPullback C A (spMap (algebraMap R (DualNumber R))) φ ∧ IsGrpPullback A C (epsRed R) j ∧
@@ -112,6 +141,15 @@ theorem exists_const (A : Over (Sp R)) [GrpObj A] :
 
 variable {C : Over (Sp (DualNumber R))} [GrpObj C] {φ : C.left ⟶ A.left} {j : A.left ⟶ C.left}
 
+/- English proof (translation)
+Take `⟨-, -, PB, PR, -⟩` from `P`. Establish `hC` using `PolPull.isAbelianScheme_of_isGrpPullback hA hφ`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hg`. Take `⟨bc, -⟩` from `PB R A g hA hg (DualNumber R) C φ hφ`. Establish `su : Function.Surjective (TrivSqZeroExt.fstHom R R R).toRingHom` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`.
+
+Establish `rg` using `PR _ C g hC gC _ (epsDP R) (isDPNilpotent_squareZero _) R _ su rfl A _ hic`. Establish `e : ∀ z, liftSemi (constMor A).pull z = (liftMor (epsDP R) hic).pull (liftSemi (bcMor hφ).pull z)` using `fun z => by`. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul r c`. Rewrite using `[liftSemi_tmul, liftSemi_tmul, map_smul, ← GrpMor.pull_pull (bcMor hφ) (liftMor (epsDP R) hic) (constMor A) (fun _ => rfl) (by simpa using e1) c]`. Establish `: ⇑(liftSemi (constMor A).pull) = (liftMor (epsDP R) hic).pull ∘ liftSemi (bcMor hφ).pull` using `funext e`. Unfold `GrpMor.IsBC`. Rewrite using `[this]`.
+
+Conclude with `rg.comp bc`.
+-/
 theorem constMor_isBC (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (hφ : IsGrpPullback C A (spMap (algebraMap R (DualNumber R))) φ)
     (hic : IsGrpPullback A C (epsRed R) j) (e1 : j ≫ φ = 𝟙 _) : (constMor A).IsBC := by
@@ -134,6 +172,13 @@ theorem constMor_isBC (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A)
   rw [this]
   exact rg.comp bc
 
+/- English proof (translation)
+Take `⟨-, hF⟩` from `P.2.2.1 R A g hA hg (DualNumber R) C φ hφ`. Establish `key : ∀ c, crysToDR (epsDP R) hic d ((bcMor hφ).pull c) = d ((constMor A).pull c)` using `fun c => by`. Rewrite using `[crysToDR_apply, GrpMor.pull_pull (bcMor hφ) (liftMor (epsDP R) hic) (constMor A) (fun _ => rfl) (by simpa using e1) c]`. Rewrite using `[liftFil, Submodule.mem_comap, Fil, hF, Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H c hc`. Rewrite using `[← key]`. Conclude with `H _ (Submodule.subset_span ⟨c, hc, rfl⟩)`. Introduce `H c hc`. Use `(Submodule.span_le (p := LinearMap.ker (crysToDR (epsDP R) hic d))).2 (fun c hc => ?_) hc` and prove the remaining obligations.
+
+Take `⟨c, hc, rfl⟩` from `hc`. Express the relevant statement in the definitionally equal form `_ = 0`. Rewrite using `[key]`. Conclude with `H c hc`.
+-/
 theorem mem_liftFil_const_iff (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (hφ : IsGrpPullback C A (spMap (algebraMap R (DualNumber R))) φ)
     (hic : IsGrpPullback A C (epsRed R) j) (e1 : j ≫ φ = 𝟙 _) {d : Crys (epsDP R) (epsRed R) A} :
@@ -154,6 +199,13 @@ theorem mem_liftFil_const_iff (P : AbelianDeRham) {g : ℕ} (hA : IsAbelianSchem
     rw [key]
     exact H c hc
 
+/- English proof (translation)
+Establish `a₀` using `PolPull.isAbelianScheme_of_isGrpPullback hA h`. Establish `g₀` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1 hg`. Use `letI : Algebra (DualNumber R) R := (TrivSqZeroExt.fstHom R R R).toRingHom.toAlgebra`. Take `⟨-, hF⟩` from `P.2.2.1 (DualNumber R) A' g hA hg R A i h`. Rewrite using `[Fil, hF, Submodule.mem_dualAnnihilator]`.
+
+Introduce `c hc`. Use `(Submodule.span_le (p := LinearMap.ker (crysLo d))).2 (fun c hc => ?_) hc` and prove the remaining obligations. Take `⟨c', hc', rfl⟩` from `hc`. Establish `z0 : d ((liftMor (epsDP R) h).pull c') = 0` using `(Submodule.mem_dualAnnihilator _).1 hd c' hc'`. Establish `red : (redMor A).pull ((liftMor (epsDP R) h).pull c') = (bcMor h).pull c'` using `GrpMor.pull_pull (liftMor (epsDP R) h) (redMor A) (bcMor h) (fun _ => rfl) (by simp) c'`.
+
+Express the relevant statement in the definitionally equal form `crysLo d _ = 0`. Rewrite using `[← red, ← fst_eq_crysLo P a₀ g₀, z0, TrivSqZeroExt.fst_zero]`.
+-/
 theorem crysLo_mem_Fil (P : AbelianDeRham) {A' : Over (Sp (DualNumber R))} [GrpObj A'] {g : ℕ}
     (hA : IsAbelianScheme A') (hg : SmoothOfRelativeDimension g A'.hom) {i : A.left ⟶ A'.left}
     (h : IsGrpPullback A A' (epsRed R) i) {d : Crys (epsDP R) (epsRed R) A} (hd : d ∈ liftFil (epsDP R) h) :
@@ -182,6 +234,25 @@ variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback hA' h`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1 hg`. Take `⟨C, _, φ, j, hφ, hic, e1⟩` from `exists_const A`. Establish `hC` using `PolPull.isAbelianScheme_of_isGrpPullback hA hφ`. Establish `gC` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 gA`.
+
+Establish `hBC` using `constMor_isBC P hA gA hφ hic e1`. Establish `GM` using `GD.at_dualNumber R`. Establish `hEq : liftFil (epsDP R) hic = liftFil (epsDP R) h`. Use `symm`. Use `eq_of_le_of_le_add_eps ?_ (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations.
+
+Take `⟨N, hN⟩` from `(GM.1 g A A' i h hA' hg).2.1`. Establish `c` using `GM.1.crysToDR_bijective h hA' hg`. Conclude with `⟨_, (Submodule.orderIsoMapComap (LinearEquiv.ofBijective _ c)).symm.isCompl hN⟩`. Establish `H` using `(mem_liftFil_const_iff P hA gA hφ hic e1).1 hx`. Establish `hlo : crysLo x ∈ Fil A` using `(Submodule.mem_dualAnnihilator _).2 fun c hc => by`.
+
+Express the relevant statement in the definitionally equal form `(x _).fst = 0`. Rewrite using `[H c hc, TrivSqZeroExt.fst_zero]`. Establish `hhi : crysHi x ∈ Fil A` using `(Submodule.mem_dualAnnihilator _).2 fun c hc => by`. Express the relevant statement in the definitionally equal form `(x _).snd = 0`. Rewrite using `[H c hc, TrivSqZeroExt.snd_zero]`.
+
+Take `⟨k, ⟨d₁, hd₁, e₁⟩, hk⟩` from `hKS _ hlo`. Establish `hk' : k ∈ Fil A` using `isLieImage_one_iff.1 hk`. Take `⟨k₂, ⟨d₂, hd₂, e₂⟩, -⟩` from `hKS _ (sub_mem hhi hk')`. Establish `ex : x = d₁ + (DualNumber.eps : DualNumber R) • d₂` using `crys_ext P hA gA fun c => by`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, e₁, e₂, crys_constMor]`.
+
+Apply the tactic sequence `ext <;> simp only [smul_eq_mul, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, DualNumber.fst_eps, DualNumber.snd_eps, LinearMap.sub_apply] <;> …`. Rewrite using `[ex]`. Conclude with `add_mem hd₁ (Submodule.smul_mem _ _ hd₂)`. Establish `hlo` using `crysLo_mem_Fil P hA' hg h hx`. Take `⟨y₀, hy₀⟩` from `hBC.exists (crysLo x)`.
+
+Take `⟨y₁, hy₁⟩` from `hBC.exists (crysHi x)`. Use `⟨y₀, (mem_liftFil_const_iff P hA gA hφ hic e1).2 fun c hc => ?_, y₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hy₀ c, (Submodule.mem_dualAnnihilator _).1 hlo c hc, map_zero]`. Use `crys_ext P hA gA fun c => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, hy₀ c, hy₁ c, crys_constMor]`.
+
+Apply the tactic sequence `ext <;> simp only [smul_eq_mul, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, DualNumber.fst_eps, DualNumber. …`. Take `⟨e, _, he⟩` from `(GM.2.2.exists_iso_iff hic hC gC h hA' hg).2 hEq`. Establish `hi : i ≫ e.inv.left = j`. Rewrite using `[← he, Category.assoc, ← Over.comp_left, e.hom_inv_id, Over.id_left, Category.comp_id]`. Use `⟨e.inv.left ≫ φ, by rw [← Category.assoc, hi, e1], ?_⟩` and prove the remaining obligations.
+
+Use `haveI : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv)`. Conclude with `((isGrpPullback_of_iso e.symm).comp hφ).congr (Category.id_comp _) rfl`.
+-/
 theorem exists_retraction_of_isKSValue_one (P : AbelianDeRham) (GD : GrothendieckDeformation)
     {A' : Over (Sp (DualNumber R))} [GrpObj A'] {i : A.left ⟶ A'.left} (h : IsGrpPullback A A' (epsRed R) i)
     {g : ℕ} (hA' : IsAbelianScheme A') (hg : SmoothOfRelativeDimension g A'.hom)
@@ -241,6 +312,11 @@ end GlobalTheory.DeRham
 
 namespace GlobalTheory.FlagTan
 
+/- English proof (translation)
+Introduce `Pr GD E _ _ _ H Dw l Xo c K _ _ y x' _ _ A _ A' _ π π' i h _ hπ' _ hKS`. Establish `hU` using `ObjDim.isAbelianScheme Xo.univ`. Establish `hg` using `ObjDim.smoothOfRelativeDimension Xo.univ`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback hU hπ'`. Establish `gA'` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ'.1 hg`.
+
+Conclude with `GlobalTheory.DeRham.exists_retraction_of_isKSValue_one Pr.p5 GD h hA' gA' hKS`.
+-/
 theorem exists_retraction_of_ks_zero : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
       (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K)

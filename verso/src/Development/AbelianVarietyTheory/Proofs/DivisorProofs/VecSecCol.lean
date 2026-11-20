@@ -19,6 +19,9 @@ def vecSec {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) (v : Fin N → A) :
   ∑ i, (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (v i) •
     GlobalTheory.QCoh.pullbackSections y (Taut.stdE N) (by simp) (freeFrame (Sp ℤ) (Fin N) i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecSec_col {A : Type} [CommRing A] (y : Sp A ⟶ Sp ℤ) (g : Matrix (Fin N) (Fin N) A) (j : Fin N) :
     vecSec y (fun i => g i j) = Taut.colSec y g j := rfl
 

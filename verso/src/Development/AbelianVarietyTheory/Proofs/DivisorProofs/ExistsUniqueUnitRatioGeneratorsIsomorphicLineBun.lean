@@ -9,12 +9,18 @@ namespace GlobalTheory.GenRatio
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem comm_identity {M : Type} [CommGroup M] (B G G' Q Q' : M) :
     G' * G⁻¹ * B * (G * Q) * (G' * Q')⁻¹ = B * Q * Q'⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Establish `hmem : x ∈ W ⊓ L.U m ⊓ L.U n` using `⟨⟨hx, hm⟩, hn⟩`. Use `congrArg (gm (𝟙 X) x _) (hτ m n)` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res _ x _ hmem, gm_res _ x _ hmem, gm_res _ x _ hmem]`. Then use the resulting hypothesis.
+-/
 theorem gm_isGenOn {L : LB X} {W : X.Opens} {τ : ∀ m : L.ι, Γ(X, W ⊓ L.U m)ˣ} (hτ : IsGenOn L W τ)
     {x : X} {m n : L.ι} (hx : x ∈ W) (hm : x ∈ L.U m) (hn : x ∈ L.U n) :
     gm (𝟙 X) x _ (τ m) = gm (𝟙 X) x _ (L.g m n) * gm (𝟙 X) x _ (τ n) := by
@@ -24,6 +30,9 @@ theorem gm_isGenOn {L : LB X} {W : X.Opens} {τ : ∀ m : L.ι, Γ(X, W ⊓ L.U 
 
 def isoAt {L L' : LB X} (w : LB.Iso L L') (m' : L'.ι) (m : L.ι) : Γ(X, L'.U m' ⊓ L.U m)ˣ := w.s (m', m)
 
+/- English proof (translation)
+The claim follows from `hw (m', m) (n', n)`.
+-/
 theorem isoAt_compat {L L' : LB X} {w : LB.Iso L L'} (hw : w.IsGen) (m n : L.ι) (m' n' : L'.ι) :
     res (inf_le_left : L'.U m' ⊓ L.U m ⊓ (L'.U n' ⊓ L.U n) ≤ L'.U m' ⊓ L.U m) (isoAt w m' m) =
       res (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) :
@@ -33,6 +42,9 @@ theorem isoAt_compat {L L' : LB X} {w : LB.Iso L L'} (hw : w.IsGen) (m n : L.ι)
       res (inf_le_right : L'.U m' ⊓ L.U m ⊓ (L'.U n' ⊓ L.U n) ≤ L'.U n' ⊓ L.U n) (isoAt w n' n) :=
   hw (m', m) (n', n)
 
+/- English proof (translation)
+Establish `hmem : x ∈ L'.U m' ⊓ L.U m ⊓ (L'.U n' ⊓ L.U n)` using `⟨⟨hm', hm⟩, ⟨hn', hn⟩⟩`. Use `congrArg (gm (𝟙 X) x _) (isoAt_compat hw m n m' n')` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_inv, gm_res _ x _ hmem, gm_res _ x _ hmem, gm_res _ x _ hmem, gm_res _ x _ hmem]`. Then use the resulting hypothesis.
+-/
 theorem gm_iso {L L' : LB X} {w : LB.Iso L L'} (hw : w.IsGen) {x : X} {m n : L.ι} {m' n' : L'.ι}
     (hm : x ∈ L.U m) (hn : x ∈ L.U n) (hm' : x ∈ L'.U m') (hn' : x ∈ L'.U n') :
     gm (𝟙 X) x _ (isoAt w m' m) =
@@ -48,12 +60,28 @@ def ratioLoc (L L' : LB X) (W : X.Opens) (w : LB.Iso L L') (τ : ∀ m : L.ι, �
     res (inf_le_inf_left W inf_le_right : W ⊓ (L'.U m' ⊓ L.U m) ≤ W ⊓ L.U m) (τ m) *
     (res (inf_le_inf_left W inf_le_left : W ⊓ (L'.U m' ⊓ L.U m) ≤ W ⊓ L'.U m') (τ' m'))⁻¹
 
+/- English proof (translation)
+Rewrite using `[ratioLoc, map_mul, map_mul, map_inv, gm_res _ x _ hx, gm_res _ x _ hx, gm_res _ x _ hx]`.
+-/
 theorem gm_ratioLoc (L L' : LB X) (W : X.Opens) (w : LB.Iso L L') (τ : ∀ m : L.ι, Γ(X, W ⊓ L.U m)ˣ)
     (τ' : ∀ m : L'.ι, Γ(X, W ⊓ L'.U m)ˣ) (m : L.ι) (m' : L'.ι) {x : X} (hx : x ∈ W ⊓ (L'.U m' ⊓ L.U m)) :
     gm (𝟙 X) x _ (ratioLoc L L' W w τ τ' m' m) =
       gm (𝟙 X) x _ (isoAt w m' m) * gm (𝟙 X) x _ (τ m) * (gm (𝟙 X) x _ (τ' m'))⁻¹ := by
   rw [ratioLoc, map_mul, map_mul, map_inv, gm_res _ x _ hx, gm_res _ x _ hx, gm_res _ x _ hx]
 
+/- English proof (translation)
+Introduce `X L L' W w τ τ' hL hL' hw hτ hτ'`. Establish `hc : W ≤ ⨆ p : L'.ι × L.ι, W ⊓ (L'.U p.1 ⊓ L.U p.2)`. Introduce `x hx`. Take `⟨i, hi⟩` from `exists_chart hL x`. Take `⟨i', hi'⟩` from `exists_chart hL' x`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i', i), hx, hi', hi⟩`. Establish `hagree : ∀ (p q : L'.ι × L.ι), ∀ x ∈ (W ⊓ (L'.U p.1 ⊓ L.U p.2)) ⊓ (W ⊓ (L'.U q.1 ⊓ L.U q.2)), gm (𝟙 X) x _ (ratioLoc L L' W w τ τ' p.1 p.2) = gm (𝟙 X) x _ (ratioLoc L L' W w τ τ' q.1 q.2)`. Introduce and unpack `⟨m', m⟩ ⟨n', n⟩ x ⟨⟨hx, hm', hm⟩, ⟨-, hn', hn⟩⟩`. Rewrite using `[gm_ratioLoc L L' W w τ τ' m m' ⟨hx, hm', hm⟩, gm_ratioLoc L L' W w τ τ' n n' ⟨hx, hn', hn⟩, gm_iso hw hm hn hm' hn', gm_isGenOn hτ hx hm hn, gm_isGenOn hτ' hx hm' hn']`. Conclude with `comm_identity _ _ _ _ _`.
+
+Take `⟨t, ht⟩` from `glue_unit W (fun p : L'.ι × L.ι ↦ W ⊓ (L'.U p.1 ⊓ L.U p.2)) (fun p ↦ inf_le_left) hc (fun p ↦ ratioLoc L L' W w τ τ' p.1 p.2) hagree`. Use `⟨t, fun m m' ↦ ?_, fun t' ht' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[ht (m', m)]`. Conclude with `inv_mul_cancel_right _ _`. Apply `unit_ext` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨m, hm⟩` from `exists_chart hL x`. Take `⟨m', hm'⟩` from `exists_chart hL' x`. Establish `hmem : x ∈ W ⊓ (L'.U m' ⊓ L.U m)` using `⟨hx, hm', hm⟩`. Establish `e0 : res (inf_le_left : W ⊓ (L'.U m' ⊓ L.U m) ≤ W) t' * res (inf_le_inf_left W inf_le_left : W ⊓ (L'.U m' ⊓ L.U m) ≤ W ⊓ L'.U m') (τ' m') = res (inf_le_right : W ⊓ (L'.U m' ⊓ L.U m) ≤ L'.U m' ⊓ L.U m) (isoAt w m' m) * res (inf_le_inf_left W inf_le_right : W ⊓ (L'.U m' ⊓ L.U m) ≤ …` using `ht' m m'`.
+
+Establish `e1` using `congrArg (gm (𝟙 X) x _) e0`. Rewrite `e1` using `[map_mul, map_mul, gm_res _ x _ hmem, gm_res _ x _ hmem, gm_res _ x _ hmem, gm_res _ x _ hmem]`. Establish `e2` using `congrArg (gm (𝟙 X) x _) (ht (m', m))`. Simplify using `only at e2`. Rewrite `e2` using `[gm_res _ x _ hmem, gm_ratioLoc L L' W w τ τ' m m' hmem]`.
+
+Rewrite using `[e2]`. Conclude with `eq_mul_inv_of_mul_eq e1`.
+-/
 theorem exists_unique_ratio : ∀ (X : Scheme.{0}) (L L' : LB X) (W : X.Opens) (w : LB.Iso L L') (τ : ∀ m : L.ι, Γ(X, W ⊓ L.U m)ˣ) (τ' : ∀ m : L'.ι, Γ(X, W ⊓ L'.U m)ˣ), L.IsLB → L'.IsLB → w.IsGen → IsGenOn L W τ → IsGenOn L' W τ' → ∃! t : Γ(X, W)ˣ, ∀ (m : L.ι) (m' : L'.ι), res (inf_le_left : W ⊓ (L'.U m' ⊓ L.U m) ≤ W) t * res (inf_le_inf_left W inf_le_left : W ⊓ (L'.U m' ⊓ L.U m) ≤ W ⊓ L'.U m') (τ' m') = res (inf_le_right : W ⊓ (L'.U m' ⊓ L.U m) ≤ L'.U m' ⊓ L.U m) (w.s (m', m)) * res (inf_le_inf_left W inf_le_right : W ⊓ (L'.U m' ⊓ L.U m) ≤ W ⊓ L.U m) (τ m) := by
   intro X L L' W w τ τ' hL hL' hw hτ hτ'
   have hc : W ≤ ⨆ p : L'.ι × L.ι, W ⊓ (L'.U p.1 ⊓ L.U p.2) := by

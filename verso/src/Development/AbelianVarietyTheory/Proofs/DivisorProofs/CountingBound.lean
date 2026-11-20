@@ -11,6 +11,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.KeyOriginNoeth
 
+/- English proof (translation)
+Introduce `A R D _ _ _ _ _ _ _ _`. Use `letI := closureAlg A R D`. Introduce `Q _ hQ`. Use `letI : Algebra R D := (baseHom A R D).toAlgebra`. Use `haveI : IsScalarTower R (GlobalTheory.LocAcyc.GenFib A R) D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Set `SR : Submonoid R` to `Algebra.algebraMapSubmonoid R (nonZeroDivisors A)`. Set `SC : Submonoid (closure A R D)` to `Algebra.algebraMapSubmonoid (closure A R D) SR`. Establish `hCD : ∀ r : R, algebraMap (closure A R D) D (algebraMap R (closure A R D) r) = algebraMap R D r` using `fun _ => rfl`. Use `haveI : IsScalarTower R (closure A R D) D := IsScalarTower.of_algebraMap_eq (fun r => (hCD r).symm)`. Establish `hunit : ∀ a : A, a ∈ nonZeroDivisors A → IsUnit (algebraMap R D (algebraMap A R a))`.
+
+Introduce `a ha`. Establish `h1 : IsUnit (algebraMap R (GlobalTheory.LocAcyc.GenFib A R) (algebraMap A R a))` using `IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib A R) (⟨algebraMap A R a, a, ha, rfl⟩ : SR)`. Rewrite using `[IsScalarTower.algebraMap_apply R (GlobalTheory.LocAcyc.GenFib A R) D]`. Conclude with `h1.map _`. Use `haveI hloc : IsLocalization SC D := by`.
+
+Use `(isLocalization_iff SC D).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨_, ⟨a, ha, rfl⟩, rfl⟩⟩`. Conclude with `hCD _ ▸ hunit a ha`. Introduce `d`. Establish `hd : IsIntegral (GlobalTheory.LocAcyc.GenFib A R) d` using `Algebra.IsIntegral.isIntegral d`.
+
+Take `⟨⟨m, hm⟩, hmi⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization SR (Rₘ := GlobalTheory.LocAcyc.GenFib A R) d hd`. Take `⟨a, ha, rfl⟩` from `hm`. Use `⟨(⟨_, hmi⟩, ⟨algebraMap R (closure A R D) (algebraMap A R a), _, ⟨a, ha, rfl⟩, rfl⟩), ?_⟩` and prove the remaining obligations. Use `show d * algebraMap (closure A R D) D (algebraMap R (closure A R D) (algebraMap A R a)) = _`. Rewrite using `[hCD, mul_comm, ← Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Introduce `x y h`. Conclude with `⟨1, by rw [Subtype.ext h]⟩`. Establish `hle : SC ≤ Q.primeCompl`. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`.
+
+Conclude with `hQ a (nonZeroDivisors.ne_zero ha)`. Use `letI : Algebra D (Localization.AtPrime Q) := IsLocalization.localizationAlgebraOfSubmonoidLe D (Localization.AtPrime Q) SC Q.primeCompl hle`. Use `haveI : IsScalarTower (closure A R D) D (Localization.AtPrime Q) := IsLocalization.localization_isScalarTower_of_submonoid_le D (Localization.AtPrime Q) SC Q.primeCompl hle`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid D Q.primeCompl) (Localization.AtPrime Q) := IsLocalization.isLocalization_of_submonoid_le D (Localization.AtPrime Q) SC Q.primeCompl hle`. Use `haveI : Algebra.FormallyEtale D (Localization.AtPrime Q) := Algebra.FormallyEtale.of_isLocalization (Algebra.algebraMapSubmonoid D Q.primeCompl)`.
+
+Use `haveI : Algebra.FormallyEtale R (GlobalTheory.LocAcyc.GenFib A R) := Algebra.FormallyEtale.of_isLocalization SR`. Use `haveI : Algebra.FormallyEtale R D := Algebra.FormallyEtale.comp R (GlobalTheory.LocAcyc.GenFib A R) D`. Use `haveI : IsScalarTower R D (Localization.AtPrime Q) := IsScalarTower.of_algebraMap_eq (fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R (closure A R D) (Localization.AtPrime Q), IsScalarTower.algebraMap_apply (closure A R D) D (Localization.AtPrime Q), hCD])`. Conclude with `Algebra.FormallyEtale.comp R D (Localization.AtPrime Q)`.
+-/
 theorem isEtaleAt_closure_of_disjoint : ∀ (A R D : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R] [CommRing D]
     [Algebra (GlobalTheory.LocAcyc.GenFib A R) D]
     [Module.Finite (GlobalTheory.LocAcyc.GenFib A R) D] [Algebra.Etale (GlobalTheory.LocAcyc.GenFib A R) D],

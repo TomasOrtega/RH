@@ -14,11 +14,27 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.EtaleCoord
 
+/- English proof (translation)
+Use `algebraize [f, g, g.comp f]`. Conclude with `Algebra.Etale.of_restrictScalars R S T`.
+-/
 theorem etale_of_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S)
     (g : S →+* T) (hf : f.Etale) (h : (g.comp f).Etale) : g.Etale := by
   algebraize [f, g, g.comp f]
   exact Algebra.Etale.of_restrictScalars R S T
 
+/- English proof (translation)
+Introduce `k A _ _ N hN φ hu D x`. Set `ι : k →+* Localization.Away (N : k)` to `algebraMap k _`. Establish `hφN : IsUnit (φ (N : k))` using `by simpa using hu`. Set `ψ : Localization.Away (N : k) →+* A` to `IsLocalization.Away.lift (N : k) hφN`. Establish `hψ : ψ.comp ι = φ`.
+
+Use extensionality with `a`. Simplify using `[ψ, ι]`. Establish `hι : ι.Etale`. Rewrite using `[RingHom.etale_algebraMap]`. Conclude with `Algebra.Etale.of_isLocalizationAway (N : k)`.
+
+Establish `ha : (MvPolynomial.map (σ` using `Fin D) ι).Etale := etale_mvPolynomial_map_of_etale ι hι`. Establish `hb : (MvPolynomial.map (σ` using `Fin D) (Int.castRingHom (Localization.Away (N : k)))).Etale := etale_mvPolynomial_map_of_etale _ hN`. Set `Θ` to `MvPolynomial.eval₂Hom ψ x`. Establish `e1 : MvPolynomial.eval₂Hom φ x = Θ.comp (MvPolynomial.map ι)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r`. Simplify using `[Θ, ← hψ]`. Introduce `j`. Simplify using `[Θ]`. Establish `e2 : MvPolynomial.eval₂Hom (Int.castRingHom A) x = Θ.comp (MvPolynomial.map (Int.castRingHom (Localization.Away (N : k))))`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[Θ]`. Introduce `j`. Simplify using `[Θ]`.
+
+Rewrite using `[e1, e2]`. Conclude with `⟨fun h => RingHom.Etale.stableUnderComposition _ _ hb (etale_of_comp _ _ ha h), fun h => RingHom.Etale.stableUnderComposition _ _ ha (etale_of_comp _ _ hb h)⟩`.
+-/
 theorem etale_eval₂Hom_iff_int : ∀ (k A : Type) [CommRing k] [CommRing A] (N : ℕ), (Int.castRingHom (Localization.Away (N : k))).Etale → ∀ (φ : k →+* A), IsUnit (N : A) → ∀ (D : ℕ) (x : Fin D → A), (MvPolynomial.eval₂Hom φ x).Etale ↔ (MvPolynomial.eval₂Hom (Int.castRingHom A) x).Etale := by
   intro k A _ _ N hN φ hu D x
   let ι : k →+* Localization.Away (N : k) := algebraMap k _

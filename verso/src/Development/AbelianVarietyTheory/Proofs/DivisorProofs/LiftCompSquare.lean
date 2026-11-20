@@ -25,6 +25,9 @@ open Classical
 
 namespace GlobalTheory.Poinc.SharpIdent
 
+/- English proof (translation)
+Establish `e₁ : ((lift x x').left ≫ φ₂) ≫ (fst G G).left = ((lift y y').left ≫ ψ₂) ≫ (fst G G).left`. Rewrite using `[Category.assoc, Category.assoc, hφ.1, hψ.1, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst, h]`. Establish `e₂ : ((lift x x').left ≫ φ₂) ≫ (snd G G).left = ((lift y y').left ≫ ψ₂) ≫ (snd G G).left`. Rewrite using `[Category.assoc, Category.assoc, hφ.2, hψ.2, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd, h']`. Conclude with `pullback.hom_ext e₁ e₂`.
+-/
 theorem lift_comp_square {S S' : Scheme.{0}} {G : Over S} {G₁ G₂ T : Over S'} {φ : G₁.left ⟶ G.left}
     {ψ : G₂.left ⟶ G.left} {φ₂ : (G₁ ⊗ G₁).left ⟶ (G ⊗ G).left} {ψ₂ : (G₂ ⊗ G₂).left ⟶ (G ⊗ G).left}
     (hφ : IsSquare φ φ₂) (hψ : IsSquare ψ ψ₂) (x x' : T ⟶ G₁) (y y' : T ⟶ G₂) (h : x.left ≫ φ = y.left ≫ ψ)
@@ -37,6 +40,17 @@ theorem lift_comp_square {S S' : Scheme.{0}} {G : Over S} {G₁ G₂ T : Over S'
       ← Over.comp_left, lift_snd, lift_snd, h']
   exact pullback.hom_ext e₁ e₂
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W T P hP A8 pA`. Take `⟨c, ⟨φc, φ₂, hc, hsq, ⟨w, hw⟩, -⟩, pr, hpr, huniv, hL⟩` from `hP`. Take `⟨e, he, hee⟩` from `grpPullback_iso hc T.cart`. Set `p : IsPowGrp P.A T.A.A 8` to `{ pr := fun a => pr a ≫ e.hom hom := fun a => by have := hpr a; infer_instance lim := Fan.IsLimit.mk _ (fun s => (huniv s.pt fun a => s.proj a ≫ e.inv).choose) (fun s a => by`. Establish `h` using `(huniv s.pt fun a => s.proj a ≫ e.inv).choose_spec.1 a`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ pr a ≫ e.hom = _`. Rewrite using `[← Category.assoc, h, Category.assoc, e.inv_hom_id, Category.comp_id])`. Use the proof step `(fun s m hm => (huniv s.pt fun a => s.proj a ≫ e.inv).choose_spec.2 m fun a => by`. Establish `h : m ≫ pr a ≫ e.hom = s.proj a` using `hm a`. Rewrite using `[← h, Category.assoc, Category.assoc, e.hom_inv_id, Category.comp_id]) }`.
+
+Take `⟨φ, hφ, hφp⟩` from `GlobalTheory.PowerExamples.pow_unique p pA.toIsPowGrp`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ a, (pr a).left ≫ φc = (φ.hom ≫ pA.pr a).left ≫ T.α` using `fun a => by`. Establish `h : φ.hom ≫ pA.pr a = pr a ≫ e.hom` using `hφp a`. Rewrite using `[h, Over.comp_left, Category.assoc, hee]`.
+
+Establish `hΛ : (abelian₂ T.A.A T.A.L).IsLB` using `LB.isLB_linComb T.A.isLB _ _`. Take `⟨w', hw'⟩` from `T.lb`. Establish `i₁` using `iso_linComb ((isGen_iff w).1 hw) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)`. Establish `i₂` using `iso_linComb ((isGen_iff w').1 hw') (K := Fin 8 × Fin 8) (fun ab => (lift (φ.hom ≫ pA.pr ab.1) (φ.hom ≫ pA.pr ab.2)).left) (fun ab => W ab.1 ab.2)`. Establish `hm : (fun ab : Fin 8 × Fin 8 => (lift (pr ab.1) (pr ab.2)).left ≫ φ₂) = fun ab => (lift (φ.hom ≫ pA.pr ab.1) (φ.hom ≫ pA.pr ab.2)).left ≫ T.α₂`.
+
+Use function extensionality and compare the values at `fun ab => lift_comp_square hsq T.sq _ _ _ _ (hpt ab.1) (hpt ab.2)`. Rewrite `i₁` using `[hm]`. Conclude with `LBIso.trans P.isLB (LB.isLB_linComb c.isLB _ _) (LB.isLB_linComb hΛ _ _) hL (LBIso.trans (LB.isLB_linComb c.isLB _ _) (LB.isLB_linComb F.univ.isLB _ _) (LB.isLB_linComb hΛ _ _) i₁ i₂.symm)`.
+-/
 theorem exists_iso_pow : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) (T : Trait F)
     (P : PolAV (Sp (FractionRing T.V))), SharpOver F W P T.y → ∀ (A8 : PolAV (Sp (FractionRing T.V)))
     (pA : IsPowPolAV A8 T.A 8), ∃ φ : P.A ≅ A8.A, IsMonHom φ.hom ∧

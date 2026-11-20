@@ -19,6 +19,9 @@ open Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants Global
 section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `GlobalTheory.exists_conjInvariant_bump n ε U hU`. Use `⟨a, fun P _ _ f hf => ha.comp ?_, h⟩` and prove the remaining obligations. Conclude with `contDiff_pi.2 fun i => contDiff_pi.2 fun j => hf i j`.
+-/
 theorem exists_bump (n : ℕ) (ε : Fin n → Bool) (U : Set (UJ ε)) (hU : U ∈ nhds (1 : UJ ε)) :
     ∃ a : Matrix (Fin n) (Fin n) ℂ → ℝ,
       (∀ (P : Type) [NormedAddCommGroup P] [NormedSpace ℝ P] (f : P → Matrix (Fin n) (Fin n) ℂ),
@@ -33,6 +36,9 @@ end
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun x => x i j map_add' := fun x y => rfl map_smul' := fun c x => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+-/
 theorem contDiff_entry {n : ℕ} (i j : Fin n) : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ => x i j := by
   let L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ :=
     { toFun := fun x => x i j
@@ -40,6 +46,27 @@ theorem contDiff_entry {n : ℕ} (i j : Fin n) : ContDiff ℝ ∞ fun x : Matrix
       map_smul' := fun c x => rfl }
   exact (LinearMap.toContinuousLinearMap L).contDiff
 
+/- English proof (translation)
+Take `⟨⟨h1, hmul⟩, -, hcont⟩` from `hσ`. Take `⟨hemb, hrange⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Use `set μ := Formalism.REAL.muG ε`. Establish `hmem : ∀ g : Formalism.REAL.UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hu : Continuous fun g : Formalism.REAL.UJ ε => umat g` using `hemb.continuous`.
+
+Establish `hb : Continuous fun g : Formalism.REAL.UJ ε => σ (umat g) w` using `(hcont w).comp_continuous hu hmem`. Establish `hψ : Continuous fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφ.continuous.comp hu`. Establish `hint : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g) • σ (umat g) w) μ` using `(hψ.smul hb).integrable_of_hasCompactSupport hψc.smul_right`. Set `y : (Fin k → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun t => Formalism.REAL.Jm ε * (x t)ᴴ * Formalism.REAL.Jm ε`. Establish `hy : ContDiff ℝ ∞ y` using `(contDiff_const.mul (contDiff_conjTranspose.comp hx)).mul contDiff_const`.
+
+Establish `hyx : ∀ t, y t * x t = 1` using `fun t => by`. Establish `h : (x t)ᴴ * Formalism.REAL.Jm ε * x t = Formalism.REAL.Jm ε` using `hxG t`. Combine the equalities or inequalities in the displayed calculation. Establish `hxy : ∀ t, x t * y t = 1` using `fun t => mul_eq_one_comm.1 (hyx t)`. Establish `hz : ∀ t, ∃ z : UJ ε, umat z = x t` using `fun t => by`.
+
+Establish `: x t ∈ Set.range (fun g : Formalism.REAL.UJ ε => umat g)`. Rewrite using `[show Set.range (fun g : Formalism.REAL.UJ ε => umat g) = _ from hrange]`. Conclude with `hxG t`. Conclude with `this`. Establish `hform : ∀ t, σ (x t) (∫ g : Formalism.REAL.UJ ε, φ (umat g) • σ (umat g) w ∂μ) = ∫ g : Formalism.REAL.UJ ε, φ (y t * umat g) • σ (umat g) w ∂μ`.
+
+Introduce `t`. Take `⟨z, hz'⟩` from `hz t`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint, ← integral_mul_left_eq_self (fun g : Formalism.REAL.UJ ε => φ (y t * umat g) • σ (umat g) w) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : umat (z * g) = x t * umat g` using `by rw [← hz']; rfl`.
+
+Simplify using `only [e]`. Rewrite using `[← Matrix.mul_assoc, hyx, Matrix.one_mul, hmul _ (hxG t) _ (hmem g), ContinuousLinearMap.map_smul_of_tower]`. Both sides reduce to the same expression. Simplify using `only [hform]`. Use `contDiff_iff_contDiffAt.2 fun t₀ => ?_` and prove the remaining obligations.
+
+Establish `hC : IsCompact (Set.image2 (· * ·) (x '' Metric.closedBall t₀ 1) ((fun g : UJ ε => umat g) '' tsupport fun g : UJ ε => φ (umat g)))` using `((isCompact_closedBall t₀ 1).image hx.continuous).mul (IsCompact.image hψc hu)`. Establish `hK` using `hemb.isCompact_preimage hC`. Establish `hs : ContDiff ℝ ∞ fun t => ∫ g in (fun g : Formalism.REAL.UJ ε => umat g) ⁻¹' (Set.image2 (· * ·) (x '' Metric.closedBall t₀ 1) ((fun g : UJ ε => umat g) '' tsupport fun g : UJ ε => φ (umat g))), φ (y t * umat g) • σ (umat g) w ∂μ` using `contDiff_infty.2 fun m => contDiff_setIntegral_nat μ hK (hu.prodMk hb) m (fun z : (Fin k → ℝ) × (Matrix (Fin n) (Fin n) ℂ × H) => φ (y z.1 * z.2.1) • z.2.2) ((hφ.comp ((hy.comp contDiff_fst).mul (contDiff_fst.comp contDiff_snd))).smul (contDiff_snd.comp contDiff_snd))`. Use `hs.contDiffAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds t₀ one_pos] with t ht`.
+
+Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨z, hz'⟩` from `hz t`. Establish `e : x t * umat (z⁻¹ * g) = umat g`. Rewrite using `[← hz']`.
+
+Use `show umat (z * (z⁻¹ * g)) = _`. Rewrite using `[mul_inv_cancel_left]`. Establish `e' : umat (z⁻¹ * g) = y t * umat g`. Rewrite using `[← e, ← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Use `hg ⟨x t, ⟨t, ht, rfl⟩, umat (z⁻¹ * g), ⟨z⁻¹ * g, subset_tsupport _ fun h => hne ?_, rfl⟩, e⟩` and prove the remaining obligations.
+
+Establish `h' : φ (umat (z⁻¹ * g)) = 0` using `h`. Rewrite using `[← e', h', zero_smul]`.
+-/
 theorem garding_smooth {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : ContDiff ℝ ∞ φ)
@@ -107,6 +134,39 @@ theorem garding_smooth {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddComm
   have h' : φ (umat (z⁻¹ * g)) = 0 := h
   rw [← e', h', zero_smul]
 
+/- English proof (translation)
+Establish `: (muG ε).IsMulRightInvariant` using `⟨fun g => indefinite_unitary_unimodular n ε g⟩`. Use `haveI := hK.1`. Take `⟨v, hvS, hv0, -⟩` from `hK.2.2.2.1`. Establish `humat : Continuous (fun g : UJ ε => umat g)` using `(isClosedEmbeddingMatrix n ε).1.continuous`. Establish `hcont : ∀ s : H, Continuous (fun g : UJ ε => σ (umat g) s)` using `fun s => (hσ.2.2 s).comp_continuous humat (fun g => g.2)`.
+
+Establish `hre : Continuous (fun g : UJ ε => (⟪v, σ (umat g) v⟫_ℂ).re)` using `Complex.continuous_re.comp (continuous_const.inner (hcont v))`. Establish `hone : 0 < (⟪v, σ (umat (1 : UJ ε)) v⟫_ℂ).re`. Establish `: σ (umat (1 : UJ ε)) = 1` using `hσ.1.1`. Rewrite using `[this]`. Conclude with `re_inner_self_pos (𝕜 := ℂ).2 hv0`.
+
+Take `⟨a, ha', ha0, ha1, hac, haU, haK⟩` from `exists_bump n ε {g | 0 < (⟪v, σ (umat g) v⟫_ℂ).re} ((isOpen_lt continuous_const hre).mem_nhds hone)`. Establish `ha : ContDiff ℝ ∞ a` using `ha' _ (fun p => p) contDiff_entry`. Establish `hacont : Continuous (fun g : UJ ε => a (umat g))` using `ha.continuous.comp humat`. Establish `hacC : Continuous (fun g : UJ ε => (a (umat g) : ℂ))` using `Complex.continuous_ofReal.comp hacont`. Establish `hsuppC : HasCompactSupport (fun g : UJ ε => (a (umat g) : ℂ))` using `hac.comp_left (g := fun x : ℝ => (x : ℂ)) (by simp)`.
+
+Establish `hint : ∀ s : H, Integrable (fun g : UJ ε => (a (umat g) : ℂ) • σ (umat g) s) (muG ε)` using `fun s => (hacC.smul (hcont s)).integrable_of_hasCompactSupport hsuppC.smul_right`. Set `T : S →ₗ[ℂ] H` to `{ toFun := fun s => ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε) map_add' := by`. Introduce `s t`. Rewrite using `[← integral_add (hint s) (hint t)]`. Simplify using `only [Submodule.coe_add, map_add, smul_add]`.
+
+Use the proof step `map_smul' := by`. Introduce `c s`. Rewrite using `[RingHom.id_apply, ← integral_smul]`. Simplify using `only [Submodule.coe_smul, map_smul, smul_comm c] }`. Establish `hT : ∀ (s : S) (u : H), ⟪u, T s⟫_ℂ = ∫ g : UJ ε, (a (umat g) : ℂ) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε)`.
+
+Introduce `s u`. Use `show ⟪u, ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε)⟫_ℂ = _`. Rewrite using `[← integral_inner (hint s)]`. Simplify using `only [inner_smul_right]`. Use `⟨_, GlobalTheory.Dec.FormF.rangeType n ε Λ H σ S H σ (LinearMap.toContinuousLinearMap T) hK ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk s s' hs'`. Establish `hu : k ∈ Set.range (fun g : UJ ε => umat g)`. Rewrite using `[(isClosedEmbeddingMatrix n ε).2]`. Conclude with `(maximal_compact_facts n ε).1 k hk`. Take `⟨κ, rfl⟩` from `hu`.
+
+Use `show ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s' ∂(muG ε) = σ (umat κ) (∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε))`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (hint s), hs']`. Establish `e1 : ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) (σ (umat κ) s) ∂(muG ε) = ∫ g : UJ ε, (a (umat (g * κ⁻¹)) : ℂ) • σ (umat g) s ∂(muG ε)`. Rewrite using `[← integral_mul_right_eq_self (fun g : UJ ε => (a (umat (g * κ⁻¹)) : ℂ) • σ (umat g) (s : H)) κ]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Establish `: σ (umat (g * κ)) = _` using `hσ.1.2 (umat g) g.2 (umat κ) κ.2`. Rewrite using `[this, mul_inv_cancel_right]`. Both sides reduce to the same expression. Establish `e2 : ∫ g : UJ ε, σ (umat κ) ((a (umat g) : ℂ) • σ (umat g) s) ∂(muG ε) = ∫ g : UJ ε, (a (umat (κ⁻¹ * g)) : ℂ) • σ (umat g) s ∂(muG ε)`.
+
+Rewrite using `[← integral_mul_left_eq_self (fun g : UJ ε => (a (umat (κ⁻¹ * g)) : ℂ) • σ (umat g) (s : H)) κ]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `: σ (umat (κ * g)) = _` using `hσ.1.2 (umat κ) κ.2 (umat g) g.2`. Rewrite using `[this, inv_mul_cancel_left, map_smul]`.
+
+Both sides reduce to the same expression. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `hk' : umat κ⁻¹ ∈ Kset ε` using `(KG ε).inv_mem (x := κ) hk`.
+
+Establish `: a (umat (κ⁻¹ * g)) = a (umat (g * κ⁻¹))` using `haK _ hk' (umat g)`. Rewrite using `[this]`. Introduce `h0`. Establish `hc : T ⟨v, hvS⟩ = 0` using `congrArg (fun f : S →L[ℂ] H => f ⟨v, hvS⟩) h0`. Establish `h1` using `hT ⟨v, hvS⟩ v`.
+
+Rewrite `h1` using `[hc, inner_zero_right]`. Establish `hi : Integrable (fun g : UJ ε => (a (umat g) : ℂ) * ⟪v, σ (umat g) v⟫_ℂ) (muG ε)` using `(hacC.mul (continuous_const.inner (hcont v))).integrable_of_hasCompactSupport hsuppC.mul_right`. Establish `h2` using `congrArg Complex.re h1`. Establish `h3` using `integral_re (𝕜 := ℂ) hi`. Simplify using `only [RCLike.re_to_complex, Complex.re_ofReal_mul] at h3`.
+
+Rewrite `h2` using `[← h3]`. Establish `h4 : 0 < ∫ g : UJ ε, a (umat g) * (⟪v, σ (umat g) v⟫_ℂ).re ∂(muG ε)`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (hacont.mul hre) hac.mul_right ?_ (mul_ne_zero ha1 hone.ne')` and prove the remaining obligations. Introduce `g`. Distinguish the cases in `h : a (umat g) = 0`.
+
+Simplify using `[h]`. Conclude with `mul_nonneg (ha0 _) (le_of_lt (haU g h))`. Rewrite `h4` using `[← h2]`. Simplify using `at h4`. Introduce and unpack `_ ⟨s, rfl⟩ k x hx hxG`.
+
+Establish `e : (T s : H) = ∫ g : UJ ε, a (umat g) • σ (umat g) (s : H) ∂(muG ε)` using `by show ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε) = _`. Simplify using `only [Complex.coe_smul]`. Use `show ContDiff ℝ ∞ fun t => σ (x t) (T s)`. Rewrite using `[e]`. Conclude with `garding_smooth hσ ha hac s k x hx hxG`.
+-/
 theorem exists_smooth_ktype {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hK : IsKTypeOf ε σ Λ S) :
@@ -209,6 +269,11 @@ theorem exists_smooth_ktype {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAd
     rw [e]
     exact garding_smooth hσ ha hac s k x hx hxG
 
+/- English proof (translation)
+Take `⟨S', hS', hs⟩` from `exists_smooth_ktype hσ hK`. Establish `hG : IsUnit G`. Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`. Use `⟨S', hS', fun v hv k Xs hX => hs v hv k _ ((contDiff_const.mul (contDiff_expProd Xs)).mul contDiff_const) fun t => ?_⟩` and prove the remaining obligations.
+
+Use `conj_mem hP h (list_prod_mem _ fun g hg => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `exp_mem hG (hX i) _`.
+-/
 theorem exists_smoothVec_ktype {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hK : IsKTypeOf ε σ Λ S)
@@ -232,6 +297,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V Sp M τ`. Take `⟨h1, h2, h3, -, -, ⟨S, hS⟩, -⟩` from `M.ds τ`. Take `⟨S', hS', hs⟩` from `exists_smoothVec_ktype h3 hS (M.fr_unit τ) (M.fr_gram τ)`. Conclude with `⟨S', hS', fun v hv => Submodule.subset_span (hs v hv)⟩`.
+-/
 theorem exists_lowK_le_sm : ∀ (D : D7) (V : HSp D) (Sp : D.what₂.Tau → SPar) (M : DSModel V Sp) (τ : D.what₂.Tau),
     ∃ S : Submodule ℂ (M.H τ), IsKTypeOf (M.ε τ) (M.σ τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) S ∧ S ≤ M.sm τ := by
   intro D V Sp M τ

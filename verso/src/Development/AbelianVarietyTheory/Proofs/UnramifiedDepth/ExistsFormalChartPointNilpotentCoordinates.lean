@@ -25,14 +25,23 @@ def Compat {B A : Type} [CommRing B] [Algebra V B] [CommRing A] [Algebra Ω A] (
 
 variable {β}
 
+/- English proof (translation)
+Introduce `v` and use `by rw [RingHom.comp_apply, RingHom.coe_coe, f.commutes, h v]`.
+-/
 theorem Compat.left {B B' A : Type} [CommRing B] [Algebra V B] [CommRing B'] [Algebra V B'] [CommRing A] [Algebra Ω A]
     {ψ : B →+* A} (h : Compat β ψ) (f : B' →ₐ[V] B) : Compat β (ψ.comp (f : B' →+* B)) := fun v => by
   rw [RingHom.comp_apply, RingHom.coe_coe, f.commutes, h v]
 
+/- English proof (translation)
+Introduce `v` and use `by rw [RingHom.comp_apply, h v, RingHom.coe_coe, g.commutes]`.
+-/
 theorem Compat.right {B A A' : Type} [CommRing B] [Algebra V B] [CommRing A] [Algebra Ω A] [CommRing A'] [Algebra Ω A']
     {ψ : B →+* A} (h : Compat β ψ) (g : A →ₐ[Ω] A') : Compat β ((g : A →+* A').comp ψ) := fun v => by
   rw [RingHom.comp_apply, h v, RingHom.coe_coe, g.commutes]
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -45,11 +54,17 @@ def rho {B A : Type} [CommRing B] [Algebra V B] [CommRing A] [Algebra Ω A] (ψ 
     congr 1
     exact RingHom.ext h)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (sp_comp _ _)`.
+-/
 theorem rho_homAt {B B' A : Type} [CommRing B] [Algebra V B] [CommRing B'] [Algebra V B'] [CommRing A] [Algebra Ω A]
     {ψ : B →+* A} (h : Compat β ψ) (f : B' →ₐ[V] B) :
     rho ψ h ≫ homAt (𝟙 (Sp V)) f = rho (ψ.comp (f : B' →+* B)) (h.left f) :=
   Over.OverMorphism.ext (sp_comp _ _)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (sp_comp _ _)`.
+-/
 theorem homAt_rho {B A A' : Type} [CommRing B] [Algebra V B] [CommRing A] [Algebra Ω A] [CommRing A'] [Algebra Ω A']
     {ψ : B →+* A} (h : Compat β ψ) (g : A →ₐ[Ω] A') :
     homAt (spMap β) g ≫ rho ψ h = rho ((g : A →+* A').comp ψ) (h.right g) :=
@@ -58,6 +73,9 @@ theorem homAt_rho {B A A' : Type} [CommRing B] [Algebra V B] [CommRing A] [Algeb
 def co {d m : ℕ} {A : Type} [CommRing A] (ψ : Jet V (Fin 1 × Fin d) m →+* A) : Fin d → A :=
   fun j => ψ (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j)))
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun v => (h v).trans (h' v).symm) ?_)` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Conclude with `congrFun e j`.
+-/
 theorem eq_of_co {d m : ℕ} {A : Type} [CommRing A] [Algebra Ω A] {ψ ψ' : Jet V (Fin 1 × Fin d) m →+* A}
     (h : Compat β ψ) (h' : Compat β ψ') (e : co ψ = co ψ') : ψ = ψ' := by
   refine Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun v => (h v).trans (h' v).symm) ?_)
@@ -65,17 +83,28 @@ theorem eq_of_co {d m : ℕ} {A : Type} [CommRing A] [Algebra Ω A] {ψ ψ' : Je
   obtain rfl : i = 0 := Subsingleton.elim _ _
   exact congrFun e j
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (MvPolynomial.aeval φ (MvPolynomial.X i)) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem jetMap_X {κ κ' : Type} {m : ℕ} (φ : κ → MvPolynomial κ' V) (hφ : ∀ i, φ i ∈ orig V κ') (i : κ) :
     (jetMap φ hφ : Jet V κ m →ₐ[V] Jet V κ' m) (Ideal.Quotient.mk _ (MvPolynomial.X i)) =
       Ideal.Quotient.mk _ (φ i) := by
   change Ideal.Quotient.mk _ (MvPolynomial.aeval φ (MvPolynomial.X i)) = _
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (fun _ : κ => (0 : V)) (MvPolynomial.X i) = _`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem jetAug_X {κ : Type} {m : ℕ} (i : κ) :
     (jetAug : Jet V κ m →ₐ[V] V) (Ideal.Quotient.mk _ (MvPolynomial.X i)) = 0 := by
   change MvPolynomial.aeval (fun _ : κ => (0 : V)) (MvPolynomial.X i) = _
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `hn : IsNilpotent (Ideal.span (Set.range a))`. Use `(Ideal.FG.isNilpotent_iff_le_nilradical (Submodule.fg_span (Set.finite_range a))).2 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `ha i`. Take `⟨m, hm⟩` from `hn`.
+
+Take `⟨ψ, hψ, -⟩` from `(GlobalTheory.AlphaPair.JetEv.jet_hom_spec V Ω A β κ m).1 a (by rw [pow_succ, hm, zero_mul]; rfl)`. Conclude with `⟨m, ψ, hψ⟩`.
+-/
 theorem exists_jet {κ : Type} [Fintype κ] [DecidableEq κ] {A : Type} [CommRing A] [Algebra Ω A] (a : κ → A)
     (ha : ∀ i, IsNilpotent (a i)) :
     ∃ (m : ℕ) (ψ : Jet V κ m →+* A), Compat β ψ ∧ ∀ i, ψ (Ideal.Quotient.mk _ (MvPolynomial.X i)) = a i := by
@@ -87,6 +116,9 @@ theorem exists_jet {κ : Type} [Fintype κ] [DecidableEq κ] {A : Type} [CommRin
   obtain ⟨ψ, hψ, -⟩ := (GlobalTheory.AlphaPair.JetEv.jet_hom_spec V Ω A β κ m).1 a (by rw [pow_succ, hm, zero_mul]; rfl)
   exact ⟨m, ψ, hψ⟩
 
+/- English proof (translation)
+Take `⟨m, ψ, h, e⟩` from `exists_jet (β := β) (fun q : Fin 1 × Fin d => a q.2) fun q => ha q.2`. Conclude with `⟨m, ψ, h, funext fun j => e (0, j)⟩`.
+-/
 theorem exists_jet_one {d : ℕ} {A : Type} [CommRing A] [Algebra Ω A] (a : Fin d → A)
     (ha : ∀ i, IsNilpotent (a i)) :
     ∃ (m : ℕ) (ψ : Jet V (Fin 1 × Fin d) m →+* A), Compat β ψ ∧ co ψ = a := by
@@ -95,6 +127,11 @@ theorem exists_jet_one {d : ℕ} {A : Type} [CommRing A] [Algebra Ω A] (a : Fin
 
 variable {G : Over (Sp V)} {d : ℕ} {x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G}
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => exact ⟨ψ, h, rfl, rfl⟩`. Consider the case `succ n _ ih`. Take `⟨χ, hχ, e, e'⟩` from `ih`. Use `⟨_, hχ.left jetTrunc, e, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← rho_homAt hχ, Category.assoc, hx, e']`.
+-/
 theorem lift_add (hx : ∀ m, homAt (𝟙 (Sp V))
       (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] Jet V (Fin 1 × Fin d) m) ≫ x (m + 1) = x m)
     {A : Type} [CommRing A] [Algebra Ω A] {m : ℕ} (ψ : Jet V (Fin 1 × Fin d) m →+* A) (h : Compat β ψ)
@@ -107,6 +144,9 @@ theorem lift_add (hx : ∀ m, homAt (𝟙 (Sp V))
     refine ⟨_, hχ.left jetTrunc, e, ?_⟩
     rw [← rho_homAt hχ, Category.assoc, hx, e']
 
+/- English proof (translation)
+Take `⟨χ, hχ, e₁, e₂⟩` from `lift_add hx ψ h (le_max_left m n)`. Take `⟨χ', hχ', e₁', e₂'⟩` from `lift_add hx ψ' h' (le_max_right m n)`. Take `rfl : χ = χ'` from `eq_of_co hχ hχ' (by rw [e₁, e₁', e])`. Rewrite using `[← e₂, ← e₂']`.
+-/
 theorem indep (hx : ∀ m, homAt (𝟙 (Sp V))
       (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] Jet V (Fin 1 × Fin d) m) ≫ x (m + 1) = x m)
     {A : Type} [CommRing A] [Algebra Ω A] {m n : ℕ} {ψ : Jet V (Fin 1 × Fin d) m →+* A} (h : Compat β ψ)
@@ -133,6 +173,9 @@ def ptOf : PtFam (spMap β) G d := fun A _ _ a =>
 
 variable {β x}
 
+/- English proof (translation)
+Establish `hh : ∃ p : (m : ℕ) × (Jet V (Fin 1 × Fin d) m →+* A), Compat β p.2 ∧ co p.2 = a` using `⟨⟨m, ψ⟩, h, e⟩`. Rewrite using `[ptOf, dif_pos hh]`. Conclude with `indep hx _ h (hh.choose_spec.2.trans e.symm)`.
+-/
 theorem ptOf_co (hx : ∀ m, homAt (𝟙 (Sp V))
       (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] Jet V (Fin 1 × Fin d) m) ≫ x (m + 1) = x m)
     {A : Type} [CommRing A] [Algebra Ω A] {m : ℕ} {ψ : Jet V (Fin 1 × Fin d) m →+* A} (h : Compat β ψ)
@@ -147,6 +190,17 @@ end GlobalTheory.AlphaPair.JetPt
 
 open GlobalTheory.AlphaPair.JetPt in
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ t d F act tg uv x hc hF Ω _ β`. Use `⟨ptOf β x, fun A _ _ m ψ h => ?_, fun A B _ _ _ _ f a ha => ?_, fun A _ _ => ?_, fun A _ _ a b ha hb => ?_⟩` and prove the remaining obligations. Conclude with `congrArg CommaMorphism.left (ptOf_co hc.trunc (ψ := ψ) h rfl)`. Take `⟨m, ψ, h, rfl⟩` from `exists_jet_one (β := β) a ha`. Rewrite using `[ptOf_co hc.trunc h rfl, ptOf_co hc.trunc (h.right f) (a := fun j => f (co ψ j)) rfl, ← Category.assoc, homAt_rho]`.
+
+Establish `h : Compat β ((algebraMap Ω A).comp β)` using `fun v => rfl`. Rewrite using `[ptOf_co hc.trunc (h.left (jetAug : Jet V (Fin 1 × Fin d) 0 →ₐ[V] V)) (funext fun j => by simp only [co, RingHom.comp_apply, RingHom.coe_coe, jetAug_X, map_zero, Pi.zero_apply]), ← rho_homAt h, Category.assoc, hc.zero, MonObj.comp_one]`. Take `⟨m, ψ, h, e⟩` from `exists_jet (β := β) (fun q : Fin 2 × Fin d => ![a, b] q.1 q.2) (by`. Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`.
+
+Use `exacts [ha j, hb j])`. Establish `hi : ∀ i : Fin 2, ptOf β x A (![a, b] i) = rho ψ h ≫ jptG t (𝟙 (Sp V)) d x m i` using `fun i => by`. Rewrite using `[jptG, ← Category.assoc, rho_homAt]`. Use `ptOf_co hc.trunc _ (funext fun j => ?_)` and prove the remaining obligations. Simplify using `only [co, RingHom.comp_apply, RingHom.coe_coe, jetCopy, jetMap_X, e]`.
+
+Establish `h0 : ptOf β x A a = _` using `hi 0`. Establish `h1 : ptOf β x A b = _` using `hi 1`. Rewrite using `[h0, h1, ← MonObj.comp_mul, ← hc.law m, ← Category.assoc, rho_homAt]`. Use `ptOf_co hc.trunc _ (funext fun j => ?_)` and prove the remaining obligations. Establish `h3` using `((GlobalTheory.AlphaPair.JetEv.jet_hom_spec V Ω A β (Fin 2 × Fin d) m).2 ψ h).2.2 (F j)`.
+
+Simplify using `only [e] at h3`. Simplify using `only [co, RingHom.comp_apply, RingHom.coe_coe, jetSubstP, jetMap_X]`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdPh.cc_psTrunc, hF, map_zero, sub_zero]`. Conclude with `h3`.
+-/
 theorem GlobalTheory.AlphaPair.exists_jetPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] (t : SAB H (Sp V)) (d : ℕ) (F : Fin d → PS V 2 d) (act : 𝓞 E → Fin d → PS V 1 d) (tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)) (uv : Fin d → Fin d → V) (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G), IsChartG t (𝟙 (Sp V)) d F act tg uv x → (∀ j, MvPowerSeries.constantCoeff (F j) = 0) → ∀ (Ω : Type) [Field Ω] (β : V →+* Ω), ∃ P : PtFam (spMap β) t.G d, IsJetPt β x P ∧ IsPtLaw (spMap β) t.G (fun j => MvPowerSeries.map β (F j)) P := by
   intro E _ _ _ H V _ t d F act tg uv x hc hF Ω _ β
   refine ⟨ptOf β x, fun A _ _ m ψ h => ?_, fun A B _ _ _ _ f a ha => ?_, fun A _ _ => ?_, fun A _ _ a b ha hb => ?_⟩

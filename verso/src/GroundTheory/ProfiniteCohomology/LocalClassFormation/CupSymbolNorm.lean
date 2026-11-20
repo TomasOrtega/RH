@@ -21,6 +21,9 @@ def contCharComp (χ : Additive G →ₜ+ QZ) (φ : H →* G) (hφ : Continuous 
   χ.comp ⟨MonoidHom.toAdditive φ, hφ⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem contCharComp_apply (χ : Additive G →ₜ+ QZ) (φ : H →* G) (hφ : Continuous φ) (x : H) :
     contCharComp χ φ hφ (Additive.ofMul x) = χ (Additive.ofMul (φ x)) :=
   rfl
@@ -35,6 +38,11 @@ variable {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace
 def trivialIntResHom (φ : H →* G) : Rep.res φ (Rep.trivial ℤ G ℤ) ⟶ Rep.trivial ℤ H ℤ :=
   Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨w, hw, hwc⟩` from `exists_cocycle_charClassProf χ`. Take `⟨w', hw', hwc'⟩` from `exists_cocycle_charClassProf (contCharComp χ φ hφ)`. Rewrite using `[← hw, ← hw', cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycleι_injective` to reduce the goal to its premises.
+
+Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `v`. Rewrite using `[hwc', hwc]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMapAlong_charClassProf (φ : H →* G) (hφ : Continuous φ) (χ : Additive G →ₜ+ QZ) :
     (cohomologyMapAlong φ hφ (trivialIntResHom φ) 2).hom (charClassProf χ) =
       charClassProf (contCharComp χ φ hφ) := by
@@ -49,6 +57,11 @@ theorem cohomologyMapAlong_charClassProf (φ : H →* G) (hφ : Continuous φ) (
   rw [hwc', hwc]
   rfl
 
+/- English proof (translation)
+Take `⟨w, hw, hwc⟩` from `exists_cocycle_cupCharClassProf A χ a`. Take `⟨w', hw', hwc'⟩` from `exists_cocycle_cupCharClassProf B (contCharComp χ φ hφ) b`. Rewrite using `[← hw, ← hw', cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycleι_injective` to reduce the goal to its premises.
+
+Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `v`. Rewrite using `[hwc', hwc, hab]`. Conclude with `map_zsmul f.hom.toAddMonoidHom _ _`.
+-/
 theorem cohomologyMapAlong_cupCharClassProf (φ : H →* G) (hφ : Continuous φ) {A : Rep ℤ G}
     {B : Rep ℤ H} [IsDiscreteRep A] [IsDiscreteRep B] (f : Rep.res φ A ⟶ B) (χ : Additive G →ₜ+ QZ)
     (a : A.ρ.invariants) (b : B.ρ.invariants) (hab : (b : B) = f.hom (a : A)) :
@@ -81,6 +94,9 @@ noncomputable def invariantsNorm (a : (Rep.res (U : Subgroup G).subtype A).ρ.in
   ((Rep.invariantsFunctor k G).map (coindTrace (U : Subgroup G) A)).hom (coindConst U A a)
 
 attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(coindTrace (U : Subgroup G) A).hom (coindConst U A a).1 = _`. Rewrite using `[coindTrace_hom_apply]`. Both sides reduce to the same expression.
+-/
 theorem coe_invariantsNorm (a : (Rep.res (U : Subgroup G).subtype A).ρ.invariants) :
     (invariantsNorm U A a : A) = ∑ c : G ⧸ (U : Subgroup G), A.ρ c.out (a : A) := by
   change (coindTrace (U : Subgroup G) A).hom (coindConst U A a).1 = _
@@ -89,6 +105,13 @@ theorem coe_invariantsNorm (a : (Rep.res (U : Subgroup G).subtype A).ρ.invarian
 
 variable [IsDiscreteRep A]
 
+/- English proof (translation)
+Establish `hs : (shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0).hom ((H0Iso (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A))).inv.hom (coindConst U A a)) = (H0Iso (Rep.res (U : Subgroup G).subtype A)).inv.hom a`. Establish `e` using `H0Iso_hom_cohomologyMapAlong (U : Subgroup G).subtype (continuous_subgroup_subtype _) (coindEvalOne (U : Subgroup G) (Rep.res (U : Subgroup G).subtype A)) ((H0Iso (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A))).inv.hom (coindConst U A a))`. Rewrite `e` using `[H0Iso_hom_inv_apply]`. Rewrite using `[← H0Iso_inv_hom_apply (Rep.res (U : Subgroup G).subtype A) ((shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0).hom _)]`. Use `congr 1`.
+
+Conclude with `Subtype.ext e`. Rewrite using `[← hs]`. Establish `hinv : ∀ x, (inv (shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0)).hom ((shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0).hom x) = x` using `fun x => by`. Rewrite using `[← ModuleCat.comp_apply, IsIso.hom_inv_id, ModuleCat.id_apply]`. Express the relevant statement in the definitionally equal form `(cohomologyMap (coindTrace (U : Subgroup G) A) 0).hom ((inv (shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0)).hom ((shapiroMap U (Rep.res (U : Subgroup G).subtype A) 0).hom _)) = _`.
+
+Rewrite using `[hinv, cohomologyMap_zero_H0Iso_inv]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyCores_H0Iso_inv (a : (Rep.res (U : Subgroup G).subtype A).ρ.invariants) :
     (cohomologyCores U A 0).hom ((H0Iso (Rep.res (U : Subgroup G).subtype A)).inv.hom a) =
       (H0Iso A).inv.hom (invariantsNorm U A a) := by
@@ -123,6 +146,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
 
 omit [IsTopologicalGroup G] [CompactSpace G] in
 
+/- English proof (translation)
+Use extensionality with `f`. Express the relevant statement in the definitionally equal form `(coindTrace (U : Subgroup G) B).hom ((Rep.coindMap (U : Subgroup G).subtype ((Rep.resFunctor (U : Subgroup G).subtype).map φ)).hom f) = φ.hom ((coindTrace (U : Subgroup G) A).hom f)`. Rewrite using `[coindTrace_hom_apply, coindTrace_hom_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Proceed by induction on `c using QuotientGroup.induction_on with`.
+
+Consider the case `H x`. Rewrite using `[coindTraceTerm_apply, coindTraceTerm_apply]`. Express the relevant statement in the definitionally equal form `B.ρ x (φ.hom (f.1 x⁻¹)) = φ.hom (A.ρ x (f.1 x⁻¹))`. Rewrite using `[Rep.hom_comm_apply]`.
+-/
 theorem coindTrace_naturality {k : Type} [CommRing k] [(U : Subgroup G).FiniteIndex]
     {A B : Rep.{0} k G} (φ : A ⟶ B) :
     Rep.coindMap (U : Subgroup G).subtype ((Rep.resFunctor (U : Subgroup G).subtype).map φ) ≫
@@ -140,6 +168,9 @@ theorem coindTrace_naturality {k : Type} [CommRing k] [(U : Subgroup G).FiniteIn
     change B.ρ x (φ.hom (f.1 x⁻¹)) = φ.hom (A.ρ x (f.1 x⁻¹))
     rw [Rep.hom_comm_apply]
 
+/- English proof (translation)
+Establish `key : cohomologyCores U A n ≫ cohomologyMap φ n = cohomologyMap ((Rep.resFunctor (U : Subgroup G).subtype).map φ) n ≫ cohomologyCores U B n`. Rewrite using `[cohomologyCores, cohomologyCores, Category.assoc, ← cohomologyMap_comp, ← coindTrace_naturality, cohomologyMap_comp, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv, shapiroMap_naturality]`. Conclude with `ConcreteCategory.congr_hom key x`.
+-/
 theorem cohomologyMap_cohomologyCores {k : Type} [CommRing k] {A B : Rep.{0} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] (φ : A ⟶ B) (n : ℕ) (x : cohomology (Rep.res (U : Subgroup G).subtype A) n) :
     (cohomologyMap φ n).hom ((cohomologyCores U A n).hom x) =
@@ -153,6 +184,13 @@ theorem cohomologyMap_cohomologyCores {k : Type} [CommRing k] {A B : Rep.{0} k G
     rw [IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv, shapiroMap_naturality]
   exact ConcreteCategory.congr_hom key x
 
+/- English proof (translation)
+Establish `hres : charClassProf (contCharComp χ (U : Subgroup G).subtype (continuous_subgroup_subtype _)) = (cohomologyRes (Rep.trivial ℤ G ℤ) (U : Subgroup G) 2).hom (charClassProf χ)` using `(cohomologyMapAlong_charClassProf (U : Subgroup G).subtype (continuous_subgroup_subtype _) χ).symm`. Establish `: IsDiscreteRep (Rep.res (U : Subgroup G).subtype (Rep.trivial ℤ G ℤ))` using `isDiscreteRep_res_subtype _ _`. Establish `: IsDiscreteRep (Rep.res (U : Subgroup G).subtype A ⊗ Rep.res (U : Subgroup G).subtype (Rep.trivial ℤ G ℤ))` using `isDiscreteRep_tensor _ _`. Establish `hρ : ∀ x : cohomology (Rep.res (U : Subgroup G).subtype A ⊗ Rep.res (U : Subgroup G).subtype (Rep.trivial ℤ G ℤ)) 2, (cohomologyMap (ρ_ (Rep.res (U : Subgroup G).subtype A)).hom 2).hom x = (cohomologyMap ((Rep.resFunctor (U : Subgroup G).subtype).map (ρ_ A).hom) 2).hom ((cohomolo …` using `fun x => ConcreteCategory.congr_hom (cohomologyMap_comp (resTensorIso (U : Subgroup G).subtype A (Rep.trivial ℤ G ℤ)).inv ((Rep.resFunctor (U : Subgroup G).subtype).map (ρ_ A).hom) 2) x`. Express the relevant statement in the definitionally equal form `(cohomologyCores U A 2).hom ((cohomologyMap (ρ_ (Rep.res (U : Subgroup G).subtype A)).hom 2).hom (cup (zero_add 2) ((H0Iso (Rep.res (U : Subgroup G).subtype A)).inv.hom a) (charClassProf (contCharComp χ (U : Subgroup G).subtype (continuous_subgroup_subtype _))))) = (cohomologyMap …`.
+
+Rewrite using `[hres]`. Express the relevant statement in the definitionally equal form `(cohomologyCores U A 2).hom ((cohomologyMap (ρ_ (Rep.res (U : Subgroup G).subtype A)).hom 2).hom (cup (B := Rep.res (U : Subgroup G).subtype (Rep.trivial ℤ G ℤ)) (zero_add 2) ((H0Iso (Rep.res (U : Subgroup G).subtype A)).inv.hom a) ((cohomologyRes (Rep.trivial ℤ G ℤ) (U : Subgrou …`. Rewrite using `[hρ, ← cohomologyMap_cohomologyCores]`. Establish `hp` using `cohomologyCores_cup_cohomologyRes U (A := A) (B := Rep.trivial ℤ G ℤ) (zero_add 2) ((H0Iso (Rep.res (U : Subgroup G).subtype A)).inv.hom a) (charClassProf χ)`. Rewrite `hp` using `[cohomologyCores_H0Iso_inv]`.
+
+Conclude with `congrArg (cohomologyMap (ρ_ A).hom 2).hom hp`.
+-/
 theorem cohomologyCores_cupCharClassProf (A : Rep ℤ G) [IsDiscreteRep A] (χ : Additive G →ₜ+ QZ)
     (a : (Rep.res (U : Subgroup G).subtype A).ρ.invariants) :
     (cohomologyCores U A 2).hom ((cupCharClassProf (Rep.res (U : Subgroup G).subtype A)
@@ -210,6 +248,9 @@ noncomputable def invariantsNormLE {U V : OpenSubgroup G} (h : V ≤ U)
   invariantsNorm (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) (invariantsSubgroupOf C h a)
 
 attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex in
+/- English proof (translation)
+The claim follows from `coe_invariantsNorm _ _ _`.
+-/
 theorem coe_invariantsNormLE {U V : OpenSubgroup G} (h : V ≤ U)
     (a : (Rep.res (V : Subgroup G).subtype C).ρ.invariants) :
     (invariantsNormLE C h a : C) =
@@ -218,6 +259,11 @@ theorem coe_invariantsNormLE {U V : OpenSubgroup G} (h : V ≤ U)
 
 variable [IsDiscreteRep C]
 
+/- English proof (translation)
+Rewrite using `[← F.inv_cohomologyCoresLE h, cohomologyCoresLE_eq, ModuleCat.hom_comp, LinearMap.comp_apply, cohomologyMapAlong_cupCharClassProf _ _ _ _ a (invariantsSubgroupOf C h a) rfl]`. Establish `hχ : contCharComp (contCharComp χ (V : Subgroup G).subtype (continuous_subgroup_subtype _)) (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from h)).toMonoidHom (continuous_subgroupOfEquivOfLe _) = contCharComp (contCharComp χ (U : Subgroup G).subtype (continuous_subgrou …`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hχ, cohomologyCores_cupCharClassProf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ClassFormation.inv_cupCharClassProf_invariantsNormLE (F : ClassFormation C)
     (χ : Additive G →ₜ+ QZ) {U V : OpenSubgroup G} (h : V ≤ U)
     (a : (Rep.res (V : Subgroup G).subtype C).ρ.invariants) :

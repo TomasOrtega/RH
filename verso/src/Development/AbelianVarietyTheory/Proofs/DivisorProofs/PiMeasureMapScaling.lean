@@ -11,12 +11,20 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.CoordPowScale
 
+/- English proof (translation)
+Use `⟨⟨⟨fun n => spanningSets μ n, fun _ => trivial, fun n => ?_, iUnion_spanningSets _⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top hc.lt_top (measure_spanningSets_lt_top _ n)`.
+-/
 theorem sigmaFinite_smul_of_ne_top {α : Type} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ]
     {c : ENNReal} (hc : c ≠ ⊤) : SigmaFinite (c • μ) := by
   refine ⟨⟨⟨fun n => spanningSets μ n, fun _ => trivial, fun n => ?_, iUnion_spanningSets _⟩⟩⟩
   rw [Measure.smul_apply, smul_eq_mul]
   exact ENNReal.mul_lt_top hc.lt_top (measure_spanningSets_lt_top _ n)
 
+/- English proof (translation)
+Introduce `α _ ν _ f hf c hc hmap k`. Use `haveI : SigmaFinite (ν.map f) := by rw [hmap]; exact sigmaFinite_smul_of_ne_top ν hc`. Use `haveI : SigmaFinite (c • ν) := sigmaFinite_smul_of_ne_top ν hc`. Establish `h1 : (Measure.pi fun _ : Fin k => ν).map (fun v i => f (v i)) = Measure.pi fun _ : Fin k => ν.map f` using `Measure.pi_map_pi (fun _ => hf.aemeasurable)`. Rewrite using `[h1]`.
+
+Simplify using `only [hmap]`. Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul]`. Simplify using `only [Measure.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem map_pi_coord_eq_pow_smul :
     ∀ {α : Type} [MeasurableSpace α] (ν : Measure α) [SigmaFinite ν] (f : α → α), Measurable f →
       ∀ c : ENNReal, c ≠ ⊤ →

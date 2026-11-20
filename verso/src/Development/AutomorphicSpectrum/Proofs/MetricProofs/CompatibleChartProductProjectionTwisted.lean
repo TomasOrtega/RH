@@ -8,6 +8,27 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.ChartSwap
 
+/- English proof (translation)
+Introduce `e n X Z _ _ A Ab pr ψ kb σ ψb hψ hb hpr`. Establish `h₁ : AnalyticOnNhd ℂ ((Ab.chart kb).symm.trans ψb) ((Ab.chart kb).symm.trans ψb).source`. Introduce `y hy`. Conclude with `(hb kb).1 y hy`. Establish `h₂ : AnalyticOnNhd ℂ ((Ab.chart kb).symm.trans ψb).symm ((Ab.chart kb).symm.trans ψb).target`.
+
+Introduce `y hy`. Conclude with `(hb kb).2 y hy`. Establish `hcomp : ∀ y ∈ ψ.source, ψ y ∘ σ = Ab.chart kb (pr y)` using `fun y hy =>`. Use function extensionality and compare the values at `fun i => ((hpr y hy).2 i).symm`. Set `T` to `extendHomeo σ ((Ab.chart kb).symm.trans ψb) h₁ h₂`.
+
+Establish `hTan : ∀ w ∈ T.source, AnalyticAt ℂ T w` using `fun w hw => analyticAt_extend_emb σ (h₁ _ hw)`. Establish `hTsan : ∀ w ∈ T.target, AnalyticAt ℂ T.symm w` using `fun w hw => analyticAt_extend_emb σ (h₂ _ hw)`. Establish `hsrc : (ψ.trans T).source = ψ.source ∩ pr ⁻¹' ψb.source`. Use extensionality with `y`. Rewrite using `[OpenPartialHomeomorph.trans_source]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hy'⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Establish `h3 : ψ y ∘ σ ∈ ((Ab.chart kb).symm.trans ψb).source` using `hy'`. Rewrite `h3` using `[hcomp y hy, OpenPartialHomeomorph.trans_source]`.
+
+Establish `h4` using `h3.2`. Simplify using `only [Set.mem_preimage] at h4`. Rewrite `h4` using `[(Ab.chart kb).left_inv (hpr y hy).1]`. Then use the resulting hypothesis. Introduce and unpack `⟨hy, hy'⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations.
+
+Use `show ψ y ∘ σ ∈ ((Ab.chart kb).symm.trans ψb).source`. Rewrite using `[hcomp y hy, OpenPartialHomeomorph.trans_source]`. Use `⟨(Ab.chart kb).map_source (hpr y hy).1, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`. Rewrite using `[(Ab.chart kb).left_inv (hpr y hy).1]` and apply the resulting hypothesis.
+
+Use `⟨ψ.trans T, ?_, hsrc, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Rewrite `hy2` using `[Set.mem_preimage, OpenPartialHomeomorph.trans_source]`.
+
+Establish `h` using `(hψ j).1 y ⟨hy1, hy2.1⟩`. Conclude with `AnalyticAt.comp (g := T) (f := ψ ∘ (A.chart j).symm) (hTan _ hy2.2) h`. Introduce and unpack `z ⟨hz1, hz2⟩`. Rewrite `hz1` using `[OpenPartialHomeomorph.trans_target]`. Establish `h` using `(hψ j).2 (T.symm z) ⟨hz1.2, hz2⟩`.
+
+Conclude with `AnalyticAt.comp (g := A.chart j ∘ ψ.symm) (f := T.symm) h (hTsan z hz1.1)`. Introduce `y hy i`. Rewrite `hy` using `[hsrc]`. Use `show Function.extend σ (((Ab.chart kb).symm.trans ψb) (ψ y ∘ σ)) (ψ y) (σ i) = ψb (pr y) i`. Rewrite using `[σ.injective.extend_apply, hcomp y hy.1]`.
+
+Use `show ψb ((Ab.chart kb).symm (Ab.chart kb (pr y))) i = ψb (pr y) i`. Rewrite using `[(Ab.chart kb).left_inv (hpr y hy.1).1]`. Introduce `y _ i hi show Function.extend σ (((Ab.chart kb).symm.trans ψb) (ψ y ∘ σ)) (ψ y) i = ψ y i`. Conclude with `Function.extend_apply' _ _ _ (fun ⟨l, hl⟩ => hi l hl)`.
+-/
 theorem chart_swap_keep :
     ∀ (e n : ℕ) (X Z : Type) [TopologicalSpace X] [TopologicalSpace Z] (A : FinHolAtlas e X) (Ab : FinHolAtlas n Z) (pr : X → Z) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (kb : Fin Ab.n) (σ : Fin n ↪ Fin e) (ψb : OpenPartialHomeomorph Z (Fin n → ℂ)), IsCompatChart A ψ → IsCompatChart Ab ψb → (∀ x' ∈ ψ.source, pr x' ∈ (Ab.chart kb).source ∧ ∀ i, Ab.chart kb (pr x') i = ψ x' (σ i)) → ∃ ψ' : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ' ∧ ψ'.source = ψ.source ∩ pr ⁻¹' ψb.source ∧ (∀ y ∈ ψ'.source, ∀ i, ψ' y (σ i) = ψb (pr y) i) ∧ ∀ y ∈ ψ'.source, ∀ i, (∀ l, σ l ≠ i) → ψ' y i = ψ y i := by
   intro e n X Z _ _ A Ab pr ψ kb σ ψb hψ hb hpr

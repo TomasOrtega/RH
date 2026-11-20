@@ -14,11 +14,17 @@ section
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one h (map_zero h) (map_one h)]`.
+-/
 private theorem map_mul_inv_eq_one {R : Type} [CommRing R] (h : A K →+* R) (g : GL ι (A K)) :
     g.val.map h * (g⁻¹).val.map h = 1 := by
   rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one,
     Matrix.map_one h (map_zero h) (map_one h)]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one h (map_zero h) (map_one h)]`.
+-/
 private theorem map_inv_mul_eq_one {R : Type} [CommRing R] (h : A K →+* R) (g : GL ι (A K)) :
     (g⁻¹).val.map h * g.val.map h = 1 := by
   rw [← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one,
@@ -47,11 +53,17 @@ private noncomputable def finHomeo (g : GL ι (A K)) :
   continuous_toFun := continuous_const.matrix_mulVec continuous_id
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
+/- English proof (translation)
+Rewrite using `[infPartPi_eq_adeleInfHom, infPartPi_eq_adeleInfHom, map_mulVec_eq]`. Both sides reduce to the same expression.
+-/
 private theorem infPartPi_gl (g : GL ι (A K)) (x : ι → A K) :
     infPartPi (g.val *ᵥ x) = infEquiv g (infPartPi x) := by
   rw [infPartPi_eq_adeleInfHom, infPartPi_eq_adeleInfHom, map_mulVec_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[finPartPi_eq_adeleFinHom, finPartPi_eq_adeleFinHom, map_mulVec_eq]`. Both sides reduce to the same expression.
+-/
 private theorem finPartPi_gl (g : GL ι (A K)) (x : ι → A K) :
     finPartPi (g.val *ᵥ x) = finHomeo g (finPartPi x) := by
   rw [finPartPi_eq_adeleFinHom, finPartPi_eq_adeleFinHom, map_mulVec_eq]
@@ -61,6 +73,13 @@ end
 
 end UpperTheory.ConvolutionTheory.R2.D
 
+/- English proof (translation)
+Introduce `F _ _ ι _ _ g φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, h, hh, rfl⟩` from `hG`. Establish `e : (fun v => schwartzBruhatTensorPi f h (g.val *ᵥ v)) = schwartzBruhatTensorPi (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (infEquiv g) f) (h ∘ finHomeo g)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, infPartPi_gl, finPartPi_gl]`. Rewrite using `[e]`. Use `schwartzBruhatTensorPi_mem _ ((mem_finiteSchwartzBruhatPi F).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `((mem_finiteSchwartzBruhatPi F).1 hh).1.comp_continuous (finHomeo g).continuous`.
+
+Conclude with `((mem_finiteSchwartzBruhatPi F).1 hh).2.comp_homeomorph (finHomeo g)`. Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul c G _ hG => exact Submodule.smul_mem _ c hG`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.D.sClos :
     ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] (g : GL ι (A F)) (φ : (ι → A F) → ℂ),
     φ ∈ schwartzBruhatPi F ι → (fun v => φ (g.val *ᵥ v)) ∈ schwartzBruhatPi F ι := by

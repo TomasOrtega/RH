@@ -20,6 +20,9 @@ structure Rep.IsDG (R : Rep k r) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (
   ds : PI.UpqRep.IsDSHpk k r ε mu R.σ
   gap : ∃ h, Formalism.QuantumDeterminants.GapAtLeast ε mu h ∧ GapOK k r h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+-/
 theorem _root_.GlobalTheory.isDS_of_isDG {R : Rep k r} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
     (h : R.IsDG ε mu) : R.IsDS ε mu := ⟨h.1, h.2⟩
 

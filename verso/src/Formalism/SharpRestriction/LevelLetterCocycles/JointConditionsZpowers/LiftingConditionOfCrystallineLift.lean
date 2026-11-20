@@ -26,6 +26,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [TopologicalSpace V'] [ContinuousAdd V'] [ContinuousConstSMul LL V']
     {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'}
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le he`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `(F.ImF PD).smul_mem _ (h c hc)`.
+-/
 theorem LiftF_mono (F : LatHom L L') {e e' : ℕ} (he : e ≤ e') (h : F.LiftF PD e) : F.LiftF PD e' := by
   intro c hc
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le he
@@ -38,6 +41,11 @@ section Fields
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Loc.Ks`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+
+Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Take `⟨c, hc⟩` from `pow_dvd_pow l h`. Rewrite using `[hc, pow_mul, hx, one_pow]`.
+-/
 theorem Ks_mono (K : FinExt l) {s s' : ℕ} (h : s ≤ s') : Ks K s ≤ Ks K s' := by
   unfold Formalism.BasicNotions.Loc.Ks
   refine sup_le_sup_left ?_ _
@@ -48,6 +56,9 @@ theorem Ks_mono (K : FinExt l) {s s' : ℕ} (h : s ≤ s') : Ks K s ≤ Ks K s' 
   obtain ⟨c, hc⟩ := pow_dvd_pow l h
   rw [hc, pow_mul, hx, one_pow]
 
+/- English proof (translation)
+Use `⟨⟨RingHom.injective (algebraMap ↥(K0 K) ↥K.1), fun y => ⟨⟨(y : Om l), IntermediateField.mem_inf.mpr ⟨y.2, hK y.2⟩⟩, by ext; rfl⟩⟩, H.W_s K 1 LL h, ?_⟩` and prove the remaining obligations. Rewrite using `[P.PD_p K]`. Conclude with `hl`.
+-/
 theorem caseA_of_unram (P : LocPrime l) (H : LocHW l P) {K : FinExt l} {LL : FinExt l} (h : Good K 1 LL)
     (hK : K.1 ≤ MaximalUnramifiedExtension l) (hl : l ≠ 2) : Formalism.MainNotions.LiftingTheory.CaseA (H.W K 1 LL h) := by
   refine ⟨⟨RingHom.injective (algebraMap ↥(K0 K) ↥K.1), fun y =>
@@ -57,6 +68,9 @@ theorem caseA_of_unram (P : LocPrime l) (H : LocHW l P) {K : FinExt l} {LL : Fin
 
 end Fields
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.Hmax`. Conclude with `Finset.sup_le fun _ _ => le_rfl`.
+-/
 theorem Hmax_const_le (n M h : ℕ) : Formalism.MainNotions.LiftingTheory.Hmax n (fun _ => M) (fun _ => h) ≤ M + h := by
   unfold Formalism.MainNotions.LiftingTheory.Hmax
   exact Finset.sup_le fun _ _ => le_rfl
@@ -69,6 +83,27 @@ def LiftWin (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.
     IsCrys (Br.PD D.loc D.nbr i w hw) T.ρ ∧
       ∀ τ, JumpsInV (Br.PD D.loc D.nbr i w hw) T.ρ τ (Set.Icc (-(M : ℤ)) h)
 
+/- English proof (translation)
+Introduce `w hw hcol C hC`. Establish `hgood : Good (D.nbr i w hw).Kw 1 C.LL`. Use `⟨le_rfl, fun h2 => absurd h2 hl, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.BasicNotions.Loc.Ks Formalism.BasicNotions.Loc.K0`. Conclude with `le_sup_of_le_left (le_inf le_rfl (hur w hw hcol))`.
+
+Introduce `τ x`. Apply the tactic sequence `obtain ⟨φ, hφ⟩ := IntermediateField.exists_algHom_of_splits' τ (fun (y : Om (D.nd.l i)) => ⟨(Algebra.IsIntegral.isIntegral (R := ℚ_[D.nd.l i]) (A := Om (D.nd.l i)) y).tower_top, by first | exact IsAlgClosed.splits _ | exact IsAlgClosed.splits_codomain' _ | exact IsAlgClosed.split …`. Establish `e : φ x = τ x`. Rewrite using `[← hφ]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Establish `hle : Ks (D.nbr i w hw).Kw 1 ≤ C.LL.1.comap φ`. Unfold `Formalism.BasicNotions.Loc.Ks Formalism.BasicNotions.Loc.K0`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `y hy show φ y ∈ C.LL.1`.
+
+Conclude with `C.le ((D.nbr i w hw).LL_split (φ.comp (D.nbr i w hw).Kw.1.val) ⟨y, (IntermediateField.mem_inf.mp hy).1⟩)`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `y hy`. Use `show φ y ∈ C.LL.1`. Apply `hC` to reduce the goal to its premises.
+
+Establish `hy1 : y ^ D.nd.l i = 1` using `by simpa using hy`. Take `⟨c, hc⟩` from `Nat.dvd_lcm_left (D.nd.l i) D.host.condN`. Rewrite using `[← map_pow, hc, pow_mul, hy1, one_pow, map_one]`. Conclude with `hle x.2`. Establish `hA : Formalism.MainNotions.LiftingTheory.CaseA ((HW (D.nd.l i)).W (D.nbr i w hw).Kw 1 C.LL hgood)` using `caseA_of_unram (D.loc (D.nd.l i)) (HW (D.nd.l i)) hgood (hur w hw hcol) hl`.
+
+Unfold `LiftAt`. Introduce `V1 _ _ _ _ _ _ _ _ _ _ _ ρ1 L1 hc1 hs1 V2 _ _ _ _ _ _ _ _ _ _ _ ρ2 L2 hc2 hs2 Fm hFm`. Set `T1 : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `⟨V1, ρ1, hc1, L1⟩`. Set `T2 : LocLat (Br.G D.nbr i w hw) ℚ_[D.nd.l i] ↥C.LL.1 ↥(OL C.LL)` to `⟨V2, ρ2, hc2, L2⟩`. Establish `hw1` using `hwin w hw hcol C hC T1 hs1`.
+
+Establish `hw2` using `hwin w hw hcol C hC T2 hs2`. Establish `hJ : Formalism.MainNotions.LiftingTheory.JumpsLet ((HW (D.nd.l i)).W (D.nbr i w hw).Kw 1 C.LL hgood) T1 (fun _ => M) (fun _ => h)` using `fun _ τ _ => hw1.2 τ`. Establish `hSur : Formalism.MainNotions.LiftingTheory.Sur ((HW (D.nd.l i)).W (D.nbr i w hw).Kw 1 C.LL hgood) (T₁` using `T1) (T₂ := T2) Fm := ⟨hw1.1, hw2.1, hFm⟩`. Establish `hlift` using `h54.1 (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hgood hA T1 T2 Fm (fun _ => M) (fun _ => h) hSur hJ`. Establish `hbound` using `(h54.2.2.2.1 (D.nd.l i) (D.nbr i w hw).Kw 1 C.LL hgood T1 (fun _ => M) (fun _ => h) hw1.1 hJ).1 hA`.
+
+Rewrite `hbound` using `[(D.loc (D.nd.l i)).PD_p]`. Establish `hH` using `Hmax_const_le (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) M h`. Establish `hl1 : (1 : ℝ) < D.nd.l i` using `by exact_mod_cast (D.nd.lPrime i).out.one_lt`. Establish `hHr : (Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun _ => h) : ℝ) ≤ ((M + h : ℕ) : ℝ)` using `by exact_mod_cast hH`. Establish `hlog : Real.logb (D.nd.l i) ((Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun _ => h) : ℝ) + 1) ≤ Real.logb (D.nd.l i) (((M + h : ℕ) : ℝ) + 1)` using `Real.logb_le_logb_of_le hl1 (by positivity) (by linarith)`.
+
+Establish `hdiv : (Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun _ => h) : ℝ) / (D.nd.l i : ℝ) ≤ ((M + h : ℕ) : ℝ) / (D.nd.l i : ℝ)` using `by gcongr`. Establish `hmono` using `mul_le_mul_of_nonneg_left (add_le_add (add_le_add (le_refl (1 : ℝ)) hdiv) (add_le_add (le_refl (1 : ℝ)) hlog)) hCA`. Establish `hle : Formalism.MainNotions.LiftingTheory.ePA (D.nd.l i) (Formalism.MainNotions.LiftingTheory.Mmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M)) (Formalism.MainNotions.LiftingTheory.Hmax (Module.finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)) (fun _ => M) (fun …`. Conclude with `hbound.trans (hmono.trans (he w hcol))` after adjusting the coercions. Rewrite `hlift` using `[(D.loc (D.nd.l i)).PD_p]`.
+
+Conclude with `LiftF_mono _ _ hle hlift`.
+-/
 theorem lifting_condition_of_crystalline_lift (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (dc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Decl D i)
     (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (M h : ℕ) (CA CB CK : ℝ) (hCA : 0 ≤ CA)

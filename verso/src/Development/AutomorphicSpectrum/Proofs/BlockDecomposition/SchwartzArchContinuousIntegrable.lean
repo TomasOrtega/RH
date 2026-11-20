@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WhitFree.AvgInf.SchwartzTuple
 
+/- English proof (translation)
+Set `L : ι → (Fin N → ℝ) →L[ℝ] ℂ` to `fun i => ((c i).comp e.symm.toAddMonoidHom).toRealLinearMap ((hc i).comp hes)`. Establish `hL : ∀ i X, c i X = L i (e X)`. Introduce `i X`. Use `show c i X = c i (e.symm (e X))`. Rewrite using `[e.symm_apply_apply]`.
+
+Use `set T : ℝ := ∑ i, ‖L i‖ + 1 with hT`. Establish `hTpos : 0 < T`. Establish `: 0 ≤ ∑ i, ‖L i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C0, hC0⟩` from `f.decay k 0`.
+
+Use `⟨C0 * T ^ k, fun R hR X ⟨i, hi⟩ => ?_⟩` and prove the remaining obligations. Establish `hRpos : 0 < R` using `by linarith`. Use `set x := e X with hx`. Establish `hb : ‖c i X‖ ≤ T * ‖x‖`. Rewrite using `[hL]`.
+
+Use `((L i).le_opNorm x).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `: ‖L i‖ ≤ ∑ j, ‖L j‖` using `Finset.single_le_sum (f := fun j => ‖L j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRx : R ≤ T * ‖x‖` using `hi.le.trans hb`.
+
+Establish `hd : ‖x‖ ^ k * ‖f x‖ ≤ C0`. Simplify `hC0.2 x` using `[norm_iteratedFDeriv_zero]`. Rewrite using `[le_div_iff₀ (pow_pos hRpos k)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay_of_functionals {V ι : Type} [AddCommGroup V] [TopologicalSpace V] [Fintype ι] {N : ℕ}
     (e : V ≃+ (Fin N → ℝ)) (hes : Continuous e.symm) (c : ι → V →+ ℂ) (hc : ∀ i, Continuous (c i))
     (f : SchwartzMap (Fin N → ℝ) ℂ) (k : ℕ) :
@@ -48,6 +59,21 @@ theorem decay_of_functionals {V ι : Type} [AddCommGroup V] [TopologicalSpace V]
     _ = (‖x‖ ^ k * ‖f x‖) * T ^ k := by rw [mul_pow]; ring
     _ ≤ C0 * T ^ k := mul_le_mul_of_nonneg_right hd (pow_nonneg hTpos.le k)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM κ hκ n M d b lam hlam φ hφ`. Establish `hloc` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`.
+
+Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, hsc, -, hrepr, hB, -, hgc⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`. Use `haveI := hB n M`.
+
+Take `⟨-, hW, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b lam hlam`. Use `haveI := hW n M`. Take `⟨N, e, he, hes, f, hf⟩` from `hφ`. Establish `hφe : φ = fun x => f (e x)` using `funext hf`. Establish `hφc : Continuous φ` using `by rw [hφe]; exact f.continuous.comp he`.
+
+Use `set μ := GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M with hμ`. Use `haveI hμe : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ he hes`. Establish `hint : Integrable φ μ`. Establish `h1 : Integrable (fun x => f x) (μ.map e)` using `f.integrable`. Rewrite using `[hφe]`.
+
+Conclude with `(integrable_map_measure h1.aestronglyMeasurable he.measurable.aemeasurable).1 h1`. Use `⟨hφc, hint, ?_, fun k => ?_⟩` and prove the remaining obligations. Take `⟨C0, hC0⟩` from `f.decay 0 0`. Use `⟨C0, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Simplify `hC0.2 (e X)` using `[norm_iteratedFDeriv_zero]`. Set `c : (Fin n × Fin M × NumberField.InfinitePlace F) → (Fin n → Fin M → Ainf F ⊗[F] E) →+ ℂ` to `fun p => { toFun := fun X => κ (X p.1 p.2.1) p.2.2 map_zero' := by simp map_add' := fun X Y => by simp }`. Establish `hc : ∀ p, Continuous (c p)` using `fun p => (continuous_apply p.2.2).comp (hκ.continuous.comp ((continuous_apply p.2.1).comp (continuous_apply p.1)))`. Take `⟨C, hC⟩` from `decay_of_functionals e hes c hc f k`. Use `⟨C, fun R hR X hX => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Use `hC R hR X ?_` and prove the remaining obligations. Simplify using `only [boxK, Set.mem_setOf_eq, not_forall, not_le] at hX`. Take `⟨a, i, w, h⟩` from `hX`. Conclude with `⟨(a, i, w), h⟩`.
+-/
 theorem schwartzArch_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (κ : Ainf F ⊗[F] E ≃+* (NumberField.InfinitePlace F → ℂ)), IsHomeomorph κ → ∀ (n M d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ φ : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, GlobalTheory.Published.SiegelOneVector.IsSchwartzArch φ → Continuous φ ∧ Integrable φ (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam n M) ∧ (∃ B : ℝ, ∀ X, ‖φ X‖ ≤ B) ∧ ∀ k : ℕ, ∃ C : ℝ, ∀ R : ℝ, 1 ≤ R → ∀ X, X ∉ GlobalTheory.CompanionTheory.WhitFree.AvgInf.boxK κ (fun _ _ => R) → ‖φ X‖ ≤ C / R ^ k := by
   intro F E _ _ _ _ _ σ hCM κ hκ n M d b lam hlam φ hφ
   have hloc := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1

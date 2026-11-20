@@ -14,6 +14,35 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
+/- English proof (translation)
+Introduce `X Ω _ ξ K _ J _ y hall tie A T evT c hc hr hint hfrac`. Establish `hx : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Take `⟨U, hU, hmem⟩` from `tie.affine c hx`. Establish `hCeq : Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩) = Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩)` using `(TiePrimes.adjoin_eq hc).trans (Algebra.adjoin_range_eq_range_aeval ℤ _).symm`. Establish `hgU : genPt ξ ∈ U` using `(hmem _).2 ⟨specializes_rfl, CoordMap.inChart_genPt tie.gen _ c hx specializes_rfl⟩`.
+
+Set `e : Γ(X, U) →+* Ω` to `(genMap ξ ⟨genPt ξ, specializes_rfl⟩).comp (X.presheaf.germ U _ hgU).hom`. Establish `he : ∀ {p : X} (hp : p ∈ U) (t : Γ(X, U)), genMap ξ ⟨p, hall p⟩ (X.presheaf.germ U p hp t) = e t`. Introduce `p hp t`. Use `show _ = genMap ξ ⟨genPt ξ, specializes_rfl⟩ (X.presheaf.germ U _ hgU t)`. Rewrite using `[RootHt.ArchC.genMap_germ U (hall p) hp t, RootHt.ArchC.genMap_germ U specializes_rfl hgU t]`.
+
+Establish `hC : ∀ t, e t ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩)` using `fun t => by`. Rewrite using `[← hCeq]`. Conclude with `(tie.ring c hx (e t)).2 fun p hp => ⟨X.presheaf.germ U p.1 ((hmem p.1).2 ⟨p.2, hp⟩) t, he _ t⟩`. Set `S : Subring Ω` to `((algebraMap T.V T.Fr).range.comap evT).map A.subtype`. Establish `hCS : ∀ a ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩), a ∈ S`.
+
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Conclude with `⟨⟨_, hr j.1 j.2⟩, hint j.1 j.2, rfl⟩`.
+
+Consider the case `algebraMap n => simpa using intCast_mem S n`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => exact mul_mem h1 h2`. Establish `hAm : ∀ t, e t ∈ A` using `fun t => by`. Take `⟨b, -, hb⟩` from `hCS _ (hC t)`.
+
+Rewrite using `[← hb]`. Conclude with `b.2`. Set `e' : Γ(X, U) →+* A` to `e.codRestrict A hAm`. Set `ev : Γ(X, U) →+* T.Fr` to `evT.comp e'`. Establish `hev : ∀ t, ev t ∈ (algebraMap T.V T.Fr).range` using `fun t => by`.
+
+Take `⟨b, hb, hb'⟩` from `hCS _ (hC t)`. Establish `: b = e' t` using `Subtype.ext hb'`. Use `show evT (e' t) ∈ _`. Rewrite using `[← this]`. Conclude with `hb`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : Γ(X, U) →+* T.V, (algebraMap T.V T.Fr).comp g = ev := by`. Establish `hι : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective T.V T.Fr`. Set `eV : T.V ≃+* (algebraMap T.V T.Fr).range` to `RingEquiv.ofBijective (algebraMap T.V T.Fr).rangeRestrict ⟨fun a b h => hι (congrArg Subtype.val h), (algebraMap T.V T.Fr).rangeRestrict_surjective⟩`. Use `⟨eV.symm.toRingHom.comp (ev.codRestrict _ hev), RingHom.ext fun t => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (eV.apply_symm_apply (ev.codRestrict _ hev t))`.
+
+Establish `h0 : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `hcV : centre (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec : Spec (CommRingCat.of T.V) ⟶ X) ∈ U` using `h0 (Set.mem_univ (Spec.map (CommRingCat.ofHom g) (IsLocalRing.closedPoint T.V)))`. Take `⟨hV, hinV⟩` from `(hmem _).1 hcV`. Use `⟨_, hV, hinV, ?_⟩` and prove the remaining obligations. Establish `hz : gen T (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec) = Spec.map (CommRingCat.ofHom ev) ≫ hU.fromSpec`.
+
+Rewrite using `[gen, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hg]`. Take `⟨hcz, hgerm⟩` from `RootHt.ArchC.point_of_ringHom hU ev`. Take `⟨hgz, hchz⟩` from `(hmem _).1 hcz`. Establish `hval : ∀ a : A, (a : Ω) ∈ regAt ξ ⟨_, hgz⟩ → ValAt ξ (Spec.map (CommRingCat.ofHom ev) ≫ hU.fromSpec) (a : Ω) (evT a)`. Introduce `a ha`.
+
+Use `RootHt.ArchC.val_of_fractions hU hcz hgz ev hgerm ha fun t₁ t₂ h => ?_` and prove the remaining obligations. Rewrite `h` using `[he hcz, he hcz]`. Establish `h' : a * e' t₂ = e' t₁` using `Subtype.ext h`. Establish `h''` using `congrArg evT h'`. Rewrite `h''` using `[map_mul]`. Then use the resulting hypothesis.
+
+Establish `hreg : ∀ a ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩), a ∈ regAt ξ ⟨_, hgz⟩` using `fun a ha => (tie.ring c hx a).1 (hCeq ▸ ha) _ hchz`. Introduce `a`. Rewrite using `[hz]`. Use `hval a ?_` and prove the remaining obligations. Take `⟨b, hb0, hbC, habC⟩` from `hfrac a`.
+
+Take `⟨h', s, hs1, hs2⟩` from `hval b (hreg _ hbC)`. Take `⟨s₂, hs₂⟩` from `hreg _ habC`. Establish `hu : IsUnit s` using `(Scheme.isLocalHom_stalkClosedPointTo' _).map_nonunit s (by`. Rewrite using `[hs2]`. Conclude with `isUnit_iff_ne_zero.2 hb0)`.
+
+Take `⟨u, rfl⟩` from `hu`. Establish `hb1 : (b : Ω) * genMap ξ ⟨_, hgz⟩ (↑u⁻¹ : X.presheaf.stalk _) = 1`. Rewrite using `[← hs1, ← map_mul, Units.mul_inv, map_one]`. Use `⟨s₂ * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hs₂, _root_.mul_assoc, hb1, _root_.mul_one]`.
+-/
 theorem chart_point : ∀ (X : AlgebraicGeometry.Scheme.{0}) (Ω : Type) [Field Ω] (ξ : AlgebraicGeometry.Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω), (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ (A : Subring Ω) (T : CDVR) (evT : A →+* T.Fr) (c : (k : K) → J k), (∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ (hr : ∀ k i, y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ A), (∀ k i, evT ⟨_, hr k i⟩ ∈ (algebraMap T.V T.Fr).range) → (∀ a : A, ∃ b : A, evT b ≠ 0 ∧ (b : Ω) ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩) ∧ (a : Ω) * b ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, J k => y j / y ⟨j.1, c j.1⟩)) → ∃ (zV : AlgebraicGeometry.Spec (CommRingCat.of T.V) ⟶ X) (h : genPt ξ ⤳ centre zV), InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c ⟨centre zV, h⟩ ∧ FinRd.Roots.ReadsPt ξ A T evT zV := by
   intro X Ω _ ξ K _ J _ y hall tie A T evT c hc hr hint hfrac
   classical

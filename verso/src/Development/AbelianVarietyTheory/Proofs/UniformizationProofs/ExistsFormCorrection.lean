@@ -19,6 +19,11 @@ open MvPolynomial
 
 variable {X X' X'' Z : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hd : ∑ j ∈ a.support, a j = e`. Use `hF (mem_support_iff.1 ha)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval₂_scale {σ A : Type} [CommRing A] (φ : R →+* A) (c : A) (x : σ → A) {F : MvPolynomial σ R}
     {e : ℕ} (hF : F.IsHomogeneous e) : eval₂ φ (fun j => c * x j) F = c ^ e * eval₂ φ x F := by
   rw [eval₂_eq, eval₂_eq, Finset.mul_sum]
@@ -30,6 +35,11 @@ theorem eval₂_scale {σ A : Type} [CommRing A] (φ : R →+* A) (c : A) (x : �
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
   ring
 
+/- English proof (translation)
+Take `⟨G, rfl⟩` from `map_surjective g hg F`. Use `⟨homogeneousComponent t G, homogeneousComponent_isHomogeneous t G, ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Rewrite using `[coeff_map, coeff_homogeneousComponent]`. Use `split_ifs with h`.
+
+Rewrite using `[coeff_map]`. Rewrite using `[map_zero, hF.coeff_eq_zero h]`.
+-/
 theorem exists_lift {σ : Type} (g : R →+* R') (hg : Function.Surjective g) {F : MvPolynomial σ R'} {t : ℕ}
     (hF : F.IsHomogeneous t) : ∃ G : MvPolynomial σ R, G.IsHomogeneous t ∧ map g G = F := by
   obtain ⟨G, rfl⟩ := map_surjective g hg F
@@ -43,12 +53,20 @@ theorem exists_lift {σ : Type} (g : R →+* R') (hg : Function.Surjective g) {F
 def gsHom (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : Γ(X, U) →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ (r ⁻¹ᵁ U) z h).hom.comp (r.app U).hom
 
+/- English proof (translation)
+The claim follows from `(gs_eq r z U h a).symm`.
+-/
 theorem gsHom_apply (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     gsHom r z U h a = gs r z U a := (gs_eq r z U h a).symm
 
 def cstGerm (p : Z ⟶ Spec (CommRingCat.of R)) (z : Z) : R →+* Z.presheaf.stalk z :=
   (gsHom p z ⊤ trivial).comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
+/- English proof (translation)
+Rewrite using `[← gsHom_apply r z U h, coe_eval₂Hom, eval₂_comp_left]`. Use `congr 1`. Use extensionality with `a`. Conclude with `(gsHom_apply r z U h _).trans (((gs_res r z le_top h _).trans (gs_pull r p z ⊤ trivial _)).trans (gsHom_apply (r ≫ p) z ⊤ trivial _).symm)`. Use extensionality with `j`.
+
+Conclude with `gsHom_apply r z U h _`.
+-/
 theorem gs_eval {σ : Type} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U)
     (x : σ → Γ(X, U)) (F : MvPolynomial σ R) :
     gs r z U (eval₂Hom (AbLaw.cst p U) x F) = eval₂ (cstGerm (r ≫ p) z) (fun j => gs r z U (x j)) F := by
@@ -60,6 +78,9 @@ theorem gs_eval {σ : Type} (p : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z
   · ext j
     exact gsHom_apply r z U h _
 
+/- English proof (translation)
+Use extensionality with `a`. Use `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Simplify using `only [AbLaw.cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Rewrite using `[this]`.
+-/
 theorem cst_comp (p : X ⟶ Spec (CommRingCat.of R')) (g : R →+* R') (U : X.Opens) :
     AbLaw.cst (p ≫ Spec.map (CommRingCat.ofHom g)) U = (AbLaw.cst p U).comp g := by
   ext a
@@ -68,6 +89,9 @@ theorem cst_comp (p : X ⟶ Spec (CommRingCat.of R')) (g : R →+* R') (U : X.Op
   simp only [AbLaw.cst, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]
   rw [this]
 
+/- English proof (translation)
+Establish `hm : r z ∈ H.U i ⊓ H.U j` using `⟨hi, hj⟩`. Establish `e` using `congrArg (gs r z _) (s.compat i j)`. Rewrite `e` using `[gs_res _ z _ hm, gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`. Then use the resulting hypothesis.
+-/
 theorem gs_sec {H : LB X} (s : LB.Sec H) (r : Z ⟶ X) (z : Z) {i j : H.ι} (hi : r z ∈ H.U i) (hj : r z ∈ H.U j) :
     gs r z _ (s.f i) = (gm r z _ (H.g i j)).val * gs r z _ (s.f j) := by
   have hm : r z ∈ H.U i ⊓ H.U j := ⟨hi, hj⟩
@@ -90,10 +114,18 @@ def formSec {σ : Type} (p : X ⟶ Spec (CommRingCat.of R)) {H : LB X} (s : σ �
 def pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} (w : LB.Iso H' (H.pull β)) (t : ℤ) :
     LB.Iso (AbLaw.pw H' t) ((AbLaw.pw H t).pull β) := ⟨fun p => w.s p ^ t⟩
 
+/- English proof (translation)
+The claim follows from `map_zpow (gm r z ((H.pull β).U (fun _ => j) ⊓ H'.U k)) (w.s (fun _ => j, k)) t`.
+-/
 theorem gw_pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} (w : LB.Iso H' (H.pull β)) (t : ℤ) (r : Z ⟶ X') (z : Z)
     (j : H.ι) (k : H'.ι) : gw (pwIso w t) r z j k = gw w r z j k ^ t :=
   map_zpow (gm r z ((H.pull β).U (fun _ => j) ⊓ H'.U k)) (w.s (fun _ => j, k)) t
 
+/- English proof (translation)
+Introduce `Y f y j j' k k' hj hj' hk hk'`. Establish `e` using `congrArg (· ^ t) (hw Y f y j j' k k' hj hj' hk hk')`. Simplify using `only [mul_zpow, inv_zpow] at e`. Use `(gw_pwIso w t f y j k).trans (e.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) ?_ (congrArg (·⁻¹) ?_)) (gw_pwIso w t f y j' k').symm))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).symm`.
+
+Conclude with `(map_zpow _ _ _).symm`.
+-/
 theorem pgen_pwIso {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} (hw : PGen w) (t : ℤ) :
     PGen (pwIso w t) := by
   intro Y f y j j' k k' hj hj' hk hk'
@@ -108,11 +140,19 @@ def Rel {H : LB X} {H' : LB X'} (β : X' ⟶ X) (w : LB.Iso H' (H.pull β)) (s :
   ∀ z (k : H.ι) (k' : H'.ι), β z ∈ H.U k → z ∈ H'.U k' →
     gs β z _ (s.f k) = (gw w (𝟙 _) z k k').val * gs (𝟙 _) z _ (s'.f k')
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _`.
+-/
 theorem gs_stalkMap (r : Z ⟶ X') (β : X' ⟶ X) (z : Z) (U : X.Opens) (h : β (r z) ∈ U) (a : Γ(X, U)) :
     (r.stalkMap z).hom (gs β (r z) U a) = gs (r ≫ β) z U a := by
   rw [← gs_pull r β z U h, gs_eq β _ U h, gs_eq r z _ h]
   exact Scheme.Hom.germ_stalkMap_apply r (β ⁻¹ᵁ U) z h _
 
+/- English proof (translation)
+Establish `hm : r z ∈ (H.pull β).U (fun _ => k) ⊓ H'.U k'` using `⟨mem_pull.2 hk, hk'⟩`. Establish `e` using `congrArg (r.stalkMap z).hom (h (r z) k k' hk hk')`. Rewrite `e` using `[map_mul, gs_stalkMap r β z _ hk, gs_stalkMap r (𝟙 _) z _ hk', Category.comp_id]`. Use `e.trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(congrArg (r.stalkMap z).hom (gs_unit (𝟙 X') (r z) _ hm _).symm).trans ((gs_stalkMap r (𝟙 _) z _ hm _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id]`. Conclude with `gs_unit r z _ hm _`.
+-/
 theorem Rel.pull {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} {s : LB.Sec H} {s' : LB.Sec H'}
     (h : Rel β w s s') (r : Z ⟶ X') (z : Z) (k : H.ι) (k' : H'.ι) (hk : β (r z) ∈ H.U k) (hk' : r z ∈ H'.U k') :
     gs (r ≫ β) z _ (s.f k) = (gw w r z k k').val * gs r z _ (s'.f k') := by
@@ -125,6 +165,9 @@ theorem Rel.pull {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull 
   rw [Category.comp_id]
   exact gs_unit r z _ hm _
 
+/- English proof (translation)
+Introduce `z k k'' hk hk''`. Take `⟨i, hi⟩` from `exists_chart hH' (β' z)`. Rewrite using `[h.pull β' z k i hk hi, h' z i k'' hi hk'', T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp, Units.val_mul, _root_.mul_assoc]`.
+-/
 theorem Rel.comp {H : LB X} {H' : LB X'} {H'' : LB X''} {β : X' ⟶ X} {β' : X'' ⟶ X'} {w : LB.Iso H' (H.pull β)}
     {w' : LB.Iso H'' (H'.pull β')} {w'' : LB.Iso H'' (H.pull (β' ≫ β))} (T : Tri w w' w'') (hH' : H'.IsLB)
     {s : LB.Sec H} {s' : LB.Sec H'} {s'' : LB.Sec H''} (h : Rel β w s s') (h' : Rel β' w' s' s'') :
@@ -134,6 +177,9 @@ theorem Rel.comp {H : LB X} {H' : LB X'} {H'' : LB X''} {β : X' ⟶ X} {β' : X
   rw [h.pull β' z k i hk hi, h' z i k'' hi hk'', T _ (𝟙 _) z k i k'' hk hi hk'', Category.id_comp, Units.val_mul,
     _root_.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[gs_eval p β z _ hk, gs_eval (β ≫ p) (𝟙 _) z _ hk', Category.id_comp, zpow_natCast, Units.val_pow_eq_pow_val, ← eval₂_scale _ _ _ hF]`. Use `congr 1`. Conclude with `funext fun j => h j z k k' hk hk'`.
+-/
 theorem Rel.form {σ : Type} {H : LB X} {H' : LB X'} {β : X' ⟶ X} {w : LB.Iso H' (H.pull β)} {s : σ → LB.Sec H}
     {s' : σ → LB.Sec H'} (h : ∀ j, Rel β w (s j) (s' j)) (p : X ⟶ Spec (CommRingCat.of R))
     {F : MvPolynomial σ R} {t : ℕ} (hF : F.IsHomogeneous t) (z : X') (k : H.ι) (k' : H'.ι) (hk : β z ∈ H.U k)
@@ -149,14 +195,23 @@ section Ring
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
 
+/- English proof (translation)
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem mem_pow (hϖ : Irreducible ϖ) (n : ℕ) (x : V) : x ∈ IsLocalRing.maximalIdeal V ^ n ↔ ϖ ^ n ∣ x := by
   rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem, mem_pow hϖ]`.
+-/
 theorem mem_ker_factor (hϖ : Irreducible ϖ) {m n : ℕ}
     (h : IsLocalRing.maximalIdeal V ^ n ≤ IsLocalRing.maximalIdeal V ^ m) (x : V) :
     Ideal.Quotient.mk _ x ∈ RingHom.ker (Ideal.Quotient.factor h) ↔ ϖ ^ m ∣ x := by
   rw [RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem, mem_pow hϖ]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.mem_span_singleton.2 (map_dvd _ ((mem_ker_factor hϖ h x).1 hx))`. Rewrite using `[Ideal.span_singleton_le_iff_mem, mem_ker_factor hϖ]`.
+-/
 theorem ker_factor (hϖ : Irreducible ϖ) {m n : ℕ}
     (h : IsLocalRing.maximalIdeal V ^ n ≤ IsLocalRing.maximalIdeal V ^ m) :
     RingHom.ker (Ideal.Quotient.factor h) = Ideal.span {Ideal.Quotient.mk _ (ϖ ^ m)} := by
@@ -166,6 +221,9 @@ theorem ker_factor (hϖ : Irreducible ϖ) {m n : ℕ}
     exact Ideal.mem_span_singleton.2 (map_dvd _ ((mem_ker_factor hϖ h x).1 hx))
   · rw [Ideal.span_singleton_le_iff_mem, mem_ker_factor hϖ]
 
+/- English proof (translation)
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[ker_factor hϖ, Ideal.span_singleton_pow, ← map_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot, Ideal.Quotient.eq_zero_iff_mem, mem_pow hϖ]`. Simplify using the standard rewrite rules.
+-/
 theorem nilpotent_ker (hϖ : Irreducible ϖ) {n : ℕ}
     (h : IsLocalRing.maximalIdeal V ^ n ≤ IsLocalRing.maximalIdeal V ^ (0 + 1)) :
     IsNilpotent (RingHom.ker (Ideal.Quotient.factor h)) := by
@@ -174,6 +232,9 @@ theorem nilpotent_ker (hϖ : Irreducible ϖ) {n : ℕ}
     Ideal.Quotient.eq_zero_iff_mem, mem_pow hϖ]
   simp
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[mem_ker_factor hϖ, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, mem_pow hϖ, pow_succ, zero_add, pow_one, mul_dvd_mul_iff_left (pow_ne_zero n hϖ.ne_zero)]`.
+-/
 theorem mul_eq_zero_iff (hϖ : Irreducible ϖ) {n : ℕ}
     (h : IsLocalRing.maximalIdeal V ^ (n + 1) ≤ IsLocalRing.maximalIdeal V ^ (0 + 1))
     (x : V ⧸ IsLocalRing.maximalIdeal V ^ (n + 1)) :
@@ -184,6 +245,11 @@ theorem mul_eq_zero_iff (hϖ : Irreducible ϖ) {n : ℕ}
 
 end Ring
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => exact ⟨β 0, hβ 0, v 0, (isGen_iff _).1 (hH 0).2, hs 0⟩`. Consider the case `succ e ih`. Take `⟨j₀, hj, w, hw, hr⟩` from `ih`. Establish `hv` using `(isGen_iff _).1 (hH (e + 1)).2`.
+
+Take `⟨w'', T⟩` from `exists_comp (hH (e + 1)).1 (v (e + 1)) w hv hw (hH (e + 1 + 1)).1 (hH 0).1`. Use `⟨j₀ ≫ β (e + 1), ?_, w'', T.pgen_comp (hH (e + 1)).1 hv hw, fun j => Rel.comp T (hH (e + 1)).1 (hs (e + 1) j) (hr j)⟩` and prove the remaining obligations. Use `hj.paste_horiz (hβ (e + 1)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp]`.
+-/
 theorem tower {σ : Type} (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
     (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e))
@@ -207,6 +273,17 @@ end GlobalTheory.Unif.PolyStep
 
 open GlobalTheory.Unif.PolyStep in
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ Y β hβ hflat H v hH n s hs hva`. Take `⟨t₀, ht₀⟩` from `GlobalTheory.T.serre_vanishing_very_ample.2 _ _ (Y 0).hom (H 0) n (s 0) (hH 0).1 hva`. Use `⟨t₀, fun t ht e F hF hF0 => ?_⟩` and prove the remaining obligations. Take `⟨j₀, hj, w, hw, hr⟩` from `tower _ Y β hβ H v hH s hs e`. Establish `c₁ : β e ≫ (Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1) = (Y e).hom ≫ thick V (IsLocalRing.maximalIdeal V) e`.
+
+Rewrite using `[← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`. Establish `c₂ : j₀ ≫ (Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1) = (Y 0).hom ≫ thick V (IsLocalRing.maximalIdeal V) 0`. Rewrite using `[← Category.assoc, hj.w, Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`. Take `⟨τ₀, hτ⟩` from `GlobalTheory.T.exists_section_eq_mul_of_vanishing_mod_element _ _ _ _ _ (Ideal.Quotient.mk _ (ϖ ^ (e + 1))) (Ideal.Quotient.factor_surjective _) (Ideal.Quotient.factor_surjective _) (nilpotent_ker hϖ _) (ker_factor hϖ _) ((mem_ker_factor hϖ _ _).2 (pow_dvd_pow _ (by omega))) (mul …`. Take `⟨i, hi⟩` from `exists_chart (hH e).1 z`.
+
+Establish `h` using `Rel.form (hs e) ((Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1)) hF z k i hz hi`. Rewrite `h` using `[c₁, hF0 i, ← gsHom_apply (𝟙 _) z _ hi, map_zero, mul_zero]`. Use `(gs_pull (𝟙 _) (β e) z _ hz _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← gsHom_apply (𝟙 _) z _ hz, map_zero]`. Conclude with `h)`.
+
+Take `⟨G₀, hG₀, hτ₀⟩` from `ht₀ t ht τ₀`. Take `⟨G, hG, rfl⟩` from `exists_lift _ Ideal.Quotient.mk_surjective hG₀`. Use `⟨G, hG, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `hτ (formSec ((Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1)) (s (e + 1)) hG) (fun z k k' hk hk' => by`. Establish `h` using `Rel.form hr ((Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1)) hG z k k' hk hk'`.
+
+Rewrite `h` using `[c₂, GlobalTheory.Unif.PolyStep.cst_comp (Y 0).hom, ← MvPolynomial.eval₂Hom_map_hom]`. Conclude with `h.trans (congrArg₂ (· * ·) (congrArg Units.val (gw_pwIso w t (𝟙 _) z k k').symm) (congrArg (gs (𝟙 _) z _) (hτ₀ k').symm))) k`. Rewrite using `[map_sub, map_mul, MvPolynomial.eval₂Hom_C, sub_eq_zero]`. Conclude with `h.trans (congrArg (· * _) (RingHom.congr_fun (GlobalTheory.Unif.PolyStep.cst_comp (Y (e + 1)).hom _ _) _).symm)`.
+-/
 theorem GlobalTheory.Unif.exists_form_correction : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans V (IsLocalRing.maximalIdeal V) e)) → (∀ e, Flat (Y e).hom) → ∀ (H : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (H e) ((H (e + 1)).pull (β e))), (∀ e, (H e).IsLB ∧ (v e).IsGen) → ∀ (n : ℕ) (s : ∀ e, Fin (n + 1) → LB.Sec (H e)), (∀ e, (∀ j, (∀ z (k : (H (e + 1)).ι) (k' : (H e).ι), (β e) z ∈ (H (e + 1)).U k → z ∈ (H e).U k' → gs (β e) z _ ((s (e + 1) j).f k) = (Geo.Tor.gw (v e) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s e j).f k')))) → VeryAmpleBy (Y 0).hom (H 0) (s 0) → ∃ t₀ : ℕ, ∀ t, t₀ ≤ t → ∀ (e : ℕ) (F : MvPolynomial (Fin (n + 1)) V), F.IsHomogeneous t → (∀ k : (H e).ι, MvPolynomial.eval₂Hom (cst ((Y (e)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e)) ((H e).U k)) (fun j => (s e j).f k) (F) = 0) → ∃ G : MvPolynomial (Fin (n + 1)) V, G.IsHomogeneous t ∧ (∀ k : (H (e + 1)).ι, MvPolynomial.eval₂Hom (cst ((Y (e + 1)).hom ≫ thick V (IsLocalRing.maximalIdeal V) (e + 1)) ((H (e + 1)).U k)) (fun j => (s (e + 1) j).f k) (F - MvPolynomial.C (ϖ ^ (e + 1)) * G) = 0) := by
   intro V _ _ _ ϖ hϖ Y β hβ hflat H v hH n s hs hva
   obtain ⟨t₀, ht₀⟩ := GlobalTheory.T.serre_vanishing_very_ample.2 _ _ (Y 0).hom (H 0) n (s 0) (hH 0).1 hva

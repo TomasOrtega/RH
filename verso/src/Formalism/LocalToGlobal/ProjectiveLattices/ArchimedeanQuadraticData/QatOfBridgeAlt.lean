@@ -8,6 +8,9 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `qat_of_bridge quotLocal_holds lenDescent_holds large₂ B j ka CR Ck Ch Ah Cc Ac T c hlat hbr`.
+-/
 theorem qat_of_bridge' (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) (j : ℕ) (ka : WeightFamilies.Wt D j)
     (CR Ck Ch Ah Cc Ac T c : ℝ) (hlat : Submodule.IsLattice B.KO (B.Mlat j ka))
     (hbr : QBridgeAt large₂ B j ka CR Ch Ah Cc Ac T c) :

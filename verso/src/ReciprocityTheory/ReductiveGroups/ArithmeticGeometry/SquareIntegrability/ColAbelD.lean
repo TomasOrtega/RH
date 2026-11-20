@@ -18,13 +18,22 @@ abbrev cabNZ (X : PT E) (I : Submodule ℤ (Vsp X.dim)) : Set (Col.Qc X I) :=
 
 def cabOut {I : Submodule ℤ (Vsp X.dim)} (c : Col.Qc X I) : X.L := Quotient.out c
 
+/- English proof (translation)
+The claim follows from `Quotient.out_eq c`.
+-/
 theorem cabOut_mk {I : Submodule ℤ (Vsp X.dim)} (c : Col.Qc X I) :
     (Submodule.Quotient.mk (cabOut c) : Col.Qc X I) = c := Quotient.out_eq c
 
+/- English proof (translation)
+Simplify using `[Hf, PiLp.inner_apply, RCLike.inner_apply]`.
+-/
 private theorem Hf_eq_inner_swap' {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) :
     Hf v w = inner ℂ w v := by
   simp [Hf, PiLp.inner_apply, RCLike.inner_apply]
 
+/- English proof (translation)
+Rewrite using `[Hf_eq_inner_swap', sum_inner, Complex.im_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ), inner_smul_left, RCLike.conj_ofReal, ← Hf_eq_inner_swap']`. Apply the tactic sequence `first | simp | simp [Complex.mul_im] | rfl`.
+-/
 private theorem im_Hf_sum_real_smul {ι κ : Type} [Fintype ι] [Fintype κ] (x : EuclideanSpace ℂ ι) (r : κ → ℝ)
     (w : κ → EuclideanSpace ℂ ι) : (Hf x (∑ k, r k • w k)).im = ∑ k, r k * (Hf x (w k)).im := by
   rw [Hf_eq_inner_swap', sum_inner, Complex.im_sum]
@@ -32,18 +41,29 @@ private theorem im_Hf_sum_real_smul {ι κ : Type} [Fintype ι] [Fintype κ] (x 
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ), inner_smul_left, RCLike.conj_ofReal, ← Hf_eq_inner_swap']
   first | simp | simp [Complex.mul_im] | rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun w : K => (w : EuclideanSpace ℂ ι)) ((Col.ob K).sum_repr' ⟨a, ha⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h`.
+-/
 private theorem sum_inner_ob_smul_e {ι : Type} [Fintype ι] (K : Submodule ℝ (EuclideanSpace ℂ ι)) (a : EuclideanSpace ℂ ι)
     (ha : a ∈ K) : ∑ i, (inner ℝ ((Col.ob K) i) (⟨a, ha⟩ : K)) • (Col.e K i) = a := by
   have h := congrArg (fun w : K => (w : EuclideanSpace ℂ ι)) ((Col.ob K).sum_repr' ⟨a, ha⟩)
   simp only [Submodule.coe_sum, Submodule.coe_smul] at h
   exact h
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite using `[← sum_inner_ob_smul_e K a ha, im_Hf_sum_real_smul]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [show (Hf x (Col.e K k)).im = 0 from h k, mul_zero]`.
+-/
 private theorem im_Hf_eq_zero_of_z_im_eq_zero {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
     {x : EuclideanSpace ℂ ι} (h : ∀ k, (Col.z K k x).im = 0) : ∀ a ∈ K, (Hf x a).im = 0 := by
   intro a ha
   rw [← sum_inner_ob_smul_e K a ha, im_Hf_sum_real_smul]
   exact Finset.sum_eq_zero fun k _ => by rw [show (Hf x (Col.e K k)).im = 0 from h k, mul_zero]
 
+/- English proof (translation)
+Establish `hk : ∀ k, (Col.z (IR I) k (γ : Vsp X.dim)).im = 0`. Introduce `k`. Simplify using `only [Col.uc] at h`. Conclude with `Fintype.linearIndependent_iff.mp (Col.ob (IR I)).orthonormal.linearIndependent (fun k => (Col.z (IR I) k _).im) (Subtype.ext (by simpa [Col.e] using h)) k`. Establish `hall` using `im_Hf_eq_zero_of_z_im_eq_zero hk`.
+
+Establish `h2 : (γ : Vsp X.dim) ∈ X.L ∧ ∀ a ∈ I, (Hf (γ : Vsp X.dim) a).im = 0` using `⟨γ.2, fun a ha => hall a (Submodule.subset_span ha)⟩`. Conclude with `h2`.
+-/
 theorem cab_mem_NIp {I : Submodule ℤ (Vsp X.dim)} {γ : X.L} (h : Col.uc (IR I) (γ : Vsp X.dim) = 0) :
     γ ∈ Col.NIp X I := by
   have hk : ∀ k, (Col.z (IR I) k (γ : Vsp X.dim)).im = 0 := by
@@ -56,12 +76,20 @@ theorem cab_mem_NIp {I : Submodule ℤ (Vsp X.dim)} {γ : X.L} (h : Col.uc (IR I
     ⟨γ.2, fun a ha => hall a (Submodule.subset_span ha)⟩
   exact h2
 
+/- English proof (translation)
+Establish `h2 : Col.uc (IR I) (x - y + y) = Col.uc (IR I) (x - y) + Col.uc (IR I) y` using `Col.uc_add _ _`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `eq_sub_of_add_eq h2.symm`.
+-/
 private theorem uc_sub' {I : Submodule ℤ (Vsp X.dim)} (x y : Vsp X.dim) :
     Col.uc (IR I) (x - y) = Col.uc (IR I) x - Col.uc (IR I) y := by
   have h2 : Col.uc (IR I) (x - y + y) = Col.uc (IR I) (x - y) + Col.uc (IR I) y := Col.uc_add _ _
   rw [sub_add_cancel] at h2
   exact eq_sub_of_add_eq h2.symm
 
+/- English proof (translation)
+Introduce `heq`. Apply `hne` to reduce the goal to its premises. Establish `h1 : Col.uc (IR I) ((cabOut c - cabOut c' : X.L) : Vsp X.dim) = 0`. Rewrite using `[Submodule.coe_sub, uc_sub', heq, sub_self]`. Establish `h3` using `(Submodule.Quotient.mk_eq_zero _).mpr (cab_mem_NIp h1)`.
+
+Rewrite `h3` using `[Submodule.Quotient.mk_sub, sub_eq_zero, cabOut_mk, cabOut_mk]`. Conclude with `h3`.
+-/
 theorem cab_uc_ne {I : Submodule ℤ (Vsp X.dim)} {c c' : Col.Qc X I} (hne : c ≠ c') :
     Col.uc (IR I) (cabOut c : Vsp X.dim) ≠ Col.uc (IR I) (cabOut c' : Vsp X.dim) := by
   intro heq
@@ -72,6 +100,9 @@ theorem cab_uc_ne {I : Submodule ℤ (Vsp X.dim)} {c c' : Col.Qc X I} (hne : c �
   rw [Submodule.Quotient.mk_sub, sub_eq_zero, cabOut_mk, cabOut_mk] at h3
   exact h3
 
+/- English proof (translation)
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `h3` using `(Submodule.Quotient.mk_eq_zero _).mpr (cab_mem_NIp h0)`. Rewrite `h3` using `[cabOut_mk]`. Conclude with `h3`.
+-/
 theorem columnVector_ne_zero {I : Submodule ℤ (Vsp X.dim)} {c : Col.Qc X I} (hne : c ≠ 0) :
     Col.uc (IR I) (cabOut c : Vsp X.dim) ≠ 0 := by
   intro h0
@@ -80,6 +111,11 @@ theorem columnVector_ne_zero {I : Submodule ℤ (Vsp X.dim)} {c : Col.Qc X I} (h
   rw [cabOut_mk] at h3
   exact h3
 
+/- English proof (translation)
+Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [Col.uc]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Col.ob (IR I) k).2`. Use `conv_rhs => rw [← sum_inner_ob_smul_e (IR I) a ha]`. Rewrite using `[im_Hf_sum_real_smul]`.
+
+Simplify using `only [Col.uc, sum_inner, real_inner_smul_left]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_inner, Col.z, Col.e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isU_uc' {I : Submodule ℤ (Vsp X.dim)} (x : Vsp X.dim) : IsU I x (Col.uc (IR I) x) := by
   refine ⟨?_, fun a ha => ?_⟩
   · simp only [Col.uc]
@@ -91,9 +127,17 @@ private theorem isU_uc' {I : Submodule ℤ (Vsp X.dim)} (x : Vsp X.dim) : IsU I 
     simp only [Submodule.coe_inner, Col.z, Col.e]
     ring
 
+/- English proof (translation)
+The claim follows from `(isU_uc' x).1`.
+-/
 private theorem uc_mem_IR {I : Submodule ℤ (Vsp X.dim)} (x : Vsp X.dim) : Col.uc (IR I) x ∈ IR I :=
   (isU_uc' x).1
 
+/- English proof (translation)
+Establish `hne : Col.uc (IR I) ((cabOut c - cabOut c' : X.L) : Vsp X.dim) ≠ 0`. Rewrite using `[Submodule.coe_sub, uc_sub']`. Conclude with `sub_ne_zero.mpr (cab_uc_ne h)`. Establish `hs` using `hI.sep _ (cabOut c - cabOut c').2 _ (isU_uc' _) hne`. Rewrite using `[dist_eq_norm, ← uc_sub', ← Submodule.coe_sub]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sqrt_b0_dist_of_ne_of_isSplit {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I)
     {c c' : Col.Qc X I} (h : c ≠ c') :
     Real.sqrt (b0 (E := E) P.q P.R0) ≤
@@ -107,6 +151,9 @@ private theorem sqrt_b0_dist_of_ne_of_isSplit {DF : ℕ} {P : Par X DF} {I : Sub
         Real.sqrt (‖Col.uc (IR I) ((cabOut c - cabOut c' : X.L) : Vsp X.dim)‖ ^ 2) := Real.sqrt_le_sqrt hs
     _ = _ := Real.sqrt_sq (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hs` using `hI.sep _ (cabOut c).2 _ (isU_uc' _) (columnVector_ne_zero h)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sqrt_b0_lower_bound_of_ne_zero {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I)
     {c : Col.Qc X I} (h : c ≠ 0) :
     Real.sqrt (b0 (E := E) P.q P.R0) ≤ ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ := by
@@ -115,6 +162,45 @@ private theorem sqrt_b0_lower_bound_of_ne_zero {DF : ℕ} {P : Par X DF} {I : Su
         Real.sqrt_le_sqrt hs
     _ = _ := Real.sqrt_sq (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨ρ, hρm, hρ⟩` from `hI.rank`. Take `⟨g, hg, hgd⟩ : ∃ g : ℕ, Col.dK (IR I) = 2 * g ∧ 2 * g ≤ dstar (E` from `E) P.m := by`. Use `⟨PT.f E * ρ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show Col.dK (IR I) = Module.finrank ℝ (IR I) from rfl, hρ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show 2 * (PT.f E * ρ) ≤ 2 * PT.f E * P.m`. Rewrite using `[← mul_assoc]`. Use `gcongr`. Use `⟨g, hgd, ?_⟩` and prove the remaining obligations. Establish `hq1 : (1 : ℝ) ≤ P.q` using `by exact_mod_cast P.hq`.
+
+Establish `hq : (0 : ℝ) < P.q` using `by linarith`. Establish `hpi : (1 : ℝ) ≤ Real.pi / 2` using `by linarith [Real.pi_gt_three]`. Establish `haq : 0 < Real.pi / 2 * P.q` using `mul_pos (by positivity) hq`. Establish `hb : 0 < b0 (E` using `E) P.q P.R0 := by have := P.C2; linarith`. Establish `hb0 : 0 < Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0 := mul_pos haq hb`.
+
+Establish `ht0 : t0 (E` using `E) P.q P.R0 = P.q * b0 (E := E) P.q P.R0 := rfl`. Establish `hcond : 2 * (g : ℝ) + 1 ≤ Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0 := by`. Establish `hC5` using `P.C5`. Establish `hDF1 : (1 : ℝ) ≤ DF` using `by exact_mod_cast P.hDF`. Establish `hlog : 0 ≤ Real.log ((P.q : ℝ) * DF)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hq1 hDF1)`.
+
+Establish `hnn : 0 ≤ 4 * (DF : ℝ) * (7 + Real.log ((P.q : ℝ) * DF))` using `mul_nonneg (by positivity) (by linarith)`. Establish `hgd' : 2 * (g : ℝ) ≤ (dstar (E` using `E) P.m : ℝ) := by exact_mod_cast hgd`. Establish `ht0nn : 0 ≤ t0 (E` using `E) P.q P.R0 := by rw [ht0]; exact mul_nonneg hq.le hb.le`. Establish `hmul : t0 (E` using `E) P.q P.R0 ≤ Real.pi / 2 * t0 (E := E) P.q P.R0 := by nlinarith`. Establish `heq : Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0 = Real.pi / 2 * t0 (E := E) P.q P.R0 := by`.
+
+Rewrite using `[ht0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsa : 0 < Real.sqrt (Real.pi / 2 * P.q)` using `Real.sqrt_pos.mpr haq`.
+
+Establish `hsb : 0 < Real.sqrt (b0 (E` using `E) P.q P.R0) := Real.sqrt_pos.mpr hb`. Establish `hsa'` using `hsa.ne'`. Establish `hsb'` using `hsb.ne'`. Establish `h4 : (0 : ℝ) < 4 * Real.sqrt (Real.pi / 2 * P.q)` using `mul_pos (by norm_num) hsa`. Establish `hR0pos : 0 < 4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0) := mul_pos (by norm_num) (Real.sqrt_pos.mpr hb0)`.
+
+Establish `hR0cond : 16 * (2 * (g : ℝ) + 1) ≤ (4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0)) ^ 2 := by`. Rewrite using `[mul_pow, Real.sq_sqrt hb0.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ i : cabNZ X I, 4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0) ≤ 4 * Real.sqrt (Real.pi / 2 * P.q) * ‖Col.uc (IR I) (cabOut (i : Col.Qc X I) : Vsp X.dim)‖ := by`. Introduce `i`.
+
+Establish `hi : (i : Col.Qc X I) ≠ 0` using `fun h0 => i.2 (by simp [h0])`. Establish `hsq` using `sqrt_b0_lower_bound_of_ne_zero hI hi`. Rewrite using `[Real.sqrt_mul haq.le, mul_assoc]`. Use `gcongr`. Establish `hpack : ∀ R : ℝ, 4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0) ≤ R → ∀ S : Finset (cabNZ X I), (∀ i ∈ S, 4 * Real.sqrt (Real.pi / 2 * P.q) * ‖Col.uc (IR I) (cabOut (i : Col.Qc X I) : Vsp X.dim)‖ ≤ R) → (S.card : ℝ) ≤ (3 * R / (4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E := E) P.q P.R0))) ^ (2 * g) := by`.
+
+Introduce `R hR S hS`. Set `φ : cabNZ X I → EuclideanSpace ℝ (Fin (Col.dK (IR I)))` to `fun i => (Col.ob (IR I)).repr ⟨Col.uc (IR I) (cabOut i.1 : Vsp X.dim), uc_mem_IR _⟩`. Establish `hφ : Function.Injective φ`. Introduce `i j hij`. Establish `h1 : Col.uc (IR I) (cabOut i.1 : Vsp X.dim) = Col.uc (IR I) (cabOut j.1 : Vsp X.dim)` using `congrArg Subtype.val ((Col.ob (IR I)).repr.injective hij)`.
+
+Assume the negation of the conclusion as `hne`. Establish `hne' : (i : Col.Qc X I) ≠ j` using `fun h0 => hne (Subtype.ext h0)`. Establish `h2` using `sqrt_b0_dist_of_ne_of_isSplit hI hne'`. Rewrite `h2` using `[h1, dist_self]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hδR : Real.sqrt (b0 (E` using `E) P.q P.R0) ≤ R / (4 * Real.sqrt (Real.pi / 2 * P.q)) := by`. Rewrite using `[le_div_iff₀ h4]`. Rewrite `hR` using `[Real.sqrt_mul haq.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hnorm : ∀ x ∈ S.image φ, ‖x‖ ≤ R / (4 * Real.sqrt (Real.pi / 2 * P.q))`.
+
+Introduce `x hx`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.mp hx`. Use `show ‖(Col.ob (IR I)).repr ⟨Col.uc (IR I) (cabOut i.1 : Vsp X.dim), uc_mem_IR _⟩‖ ≤ _`. Rewrite using `[LinearIsometryEquiv.norm_map]`. Use `show ‖Col.uc (IR I) (cabOut i.1 : Vsp X.dim)‖ ≤ _`.
+
+Rewrite using `[le_div_iff₀ h4]`. Use polynomial arithmetic with `[hS i hi]`. Establish `hsep : ∀ x ∈ S.image φ, ∀ y ∈ S.image φ, x ≠ y → Real.sqrt (b0 (E` using `E) P.q P.R0) ≤ dist x y := by`. Introduce `x hx y hy hxy`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.mp hx`.
+
+Take `⟨j, hj, rfl⟩` from `Finset.mem_image.mp hy`. Establish `hne : (i : Col.Qc X I) ≠ j` using `fun h0 => hxy (congrArg φ (Subtype.ext h0))`. Use `show _ ≤ dist ((Col.ob (IR I)).repr ⟨Col.uc (IR I) (cabOut i.1 : Vsp X.dim), uc_mem_IR _⟩) ((Col.ob (IR I)).repr ⟨Col.uc (IR I) (cabOut j.1 : Vsp X.dim), uc_mem_IR _⟩)`. Rewrite using `[LinearIsometryEquiv.dist_map]`. Conclude with `sqrt_b0_dist_of_ne_of_isSplit hI hne`.
+
+Establish `key` using `hP (Col.dK (IR I)) (S.image φ) (Real.sqrt (b0 (E := E) P.q P.R0)) (R / (4 * Real.sqrt (Real.pi / 2 * P.q))) hsb hδR hnorm hsep`. Rewrite `key` using `[Finset.card_image_of_injective _ hφ, hg]`. Use `key using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Real.sqrt_mul haq.le]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hfun : (fun c : cabNZ X I => Real.exp (-(4 * Real.sqrt (Real.pi / 2 * P.q) * ‖Col.uc (IR I) (cabOut (c : Col.Qc X I) : Vsp X.dim)‖) ^ 2 / 16)) = fun c : cabNZ X I => Real.exp (-(Real.pi / 2 * P.q * ‖Col.uc (IR I) (cabOut (c : Col.Qc X I) : Vsp X.dim)‖ ^ 2))`. Use function extensionality and compare the values at `c`. Use `congr 1`. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt haq.le]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key : Summable (fun c : cabNZ X I => Real.exp (-(4 * Real.sqrt (Real.pi / 2 * P.q) * ‖Col.uc (IR I) (cabOut (c : Col.Qc X I) : Vsp X.dim)‖) ^ 2 / 16)) ∧ ∑' c : cabNZ X I, Real.exp (-(4 * Real.sqrt (Real.pi / 2 * P.q) * ‖Col.uc (IR I) (cabOut (c : Col.Qc X I) : Vsp X.dim)‖) ^ 2 / …` using `E) P.q P.R0)) ^ 2 / 16) := hA _ _ g _ hR0pos hR0cond hlow hpack`. Take `⟨hs, ht⟩` from `key`. Rewrite `hs`, `ht` using `[hfun]`. Use `⟨hs, ht.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Establish `e1 : -(4 * Real.sqrt (Real.pi / 2 * P.q * b0 (E` using `E) P.q P.R0)) ^ 2 / 16 = -(Real.pi / 2 * t0 (E := E) P.q P.R0) := by`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt hb0.le, ht0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+-/
 theorem cab_sum_nz (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) {DF : ℕ} {P : Par X DF}
     {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) :
     ∃ g' : ℕ, 2 * g' ≤ dstar (E := E) P.m ∧
@@ -251,6 +337,11 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] {X : PT E} {DF : ℕ} {P : Par X DF}
   {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Establish `hre : (Hf (Col.e K j) (Col.e K k)).re = inner ℝ ((Col.ob K) k) ((Col.ob K) j)`. Simplify using `only [Submodule.coe_inner]`. Simplify using `[Col.e, Hf, real_inner_eq_re_inner, PiLp.inner_apply, mul_comm]`. Establish `him : (Hf (Col.e K j) (Col.e K k)).im = 0` using `hK _ (Col.ob K j).2 _ (Col.ob K k).2`. Rewrite `hre` using `[orthonormal_iff_ite.mp (Col.ob K).orthonormal k j]`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Apply the tactic sequence `rw [hre]; split_ifs <;> simp`. Apply the tactic sequence `rw [him]; split_ifs <;> simp`.
+-/
 private theorem Hf_e_e_eq_ite {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
     (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (j k : Fin (Col.dK K)) :
     Hf (Col.e K j) (Col.e K k) = if k = j then 1 else 0 := by
@@ -263,6 +354,9 @@ private theorem Hf_e_e_eq_ite {ι : Type} [Fintype ι] {K : Submodule ℝ (Eucli
   · rw [hre]; split_ifs <;> simp
   · rw [him]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Hf_eq_inner_swap', Col.p2, inner_sub_right, Col.p1, inner_sum]`. Repeatedly rewrite using `[inner_smul_right, ← Hf_eq_inner_swap', Hf_e_e_eq_ite hK]`. Simplify using `[Col.z]`.
+-/
 private theorem Hf_p2_e_eq_zero {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
     (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (v : EuclideanSpace ℂ ι) (j : Fin (Col.dK K)) :
     Hf (Col.p2 K v) (Col.e K j) = 0 := by
@@ -270,6 +364,13 @@ private theorem Hf_p2_e_eq_zero {ι : Type} [Fintype ι] {K : Submodule ℝ (Euc
   simp_rw [inner_smul_right, ← Hf_eq_inner_swap', Hf_e_e_eq_ite hK]
   simp [Col.z]
 
+/- English proof (translation)
+Establish `hv : v = Col.p1 K v + Col.p2 K v` using `by rw [Col.p2]; abel`. Establish `hw : w = Col.p1 K w + Col.p2 K w` using `by rw [Col.p2]; abel`. Establish `hgen : ∀ u x : EuclideanSpace ℂ ι, Hf (Col.p1 K u) x = ∑ k, Col.z K k u * (starRingEnd ℂ) (Col.z K k x)`. Introduce `u x`. Rewrite using `[Hf_eq_inner_swap', Col.p1, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, ← Hf_eq_inner_swap', Hf_conj]`. Apply the tactic sequence `all_goals rfl`. Establish `h2 : Hf (Col.p2 K v) (Col.p1 K w) = 0`. Rewrite using `[Hf_conj, hgen]`.
+
+Simplify using `[Col.z, Hf_p2_e_eq_zero hK]`. Establish `h3 : Hf (Col.p2 K v) w = Hf (Col.p2 K v) (Col.p2 K w)` using `by conv_lhs => rw [hw]`. Rewrite using `[Hf_eq_inner_swap', inner_add_left, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap', h2, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem Hf_eq_sum_z_add_Hf_p2 {ι : Type} [Fintype ι] {K : Submodule ℝ (EuclideanSpace ℂ ι)}
     (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0) (v w : EuclideanSpace ℂ ι) :
     Hf v w = ∑ k, Col.z K k v * (starRingEnd ℂ) (Col.z K k w) + Hf (Col.p2 K v) (Col.p2 K w) := by
@@ -292,6 +393,15 @@ private theorem Hf_eq_sum_z_add_Hf_p2 {ι : Type} [Fintype ι] {K : Submodule �
     _ = Hf (Col.p1 K v) w + Hf (Col.p2 K v) w := by rw [Col.Hf_add_l]
     _ = _ := by rw [hgen, h3]
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy => exact hx y hy`. Consider the case `zero => simp [Hf]`. Consider the case `add y w _ _ hy hw`.
+
+Establish `h1 : Hf x (y + w) = Hf x y + Hf x w`. Simplify using `only [Hf, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_add]`. Rewrite using `[h1, Complex.add_im, hy, hw, add_zero]`.
+
+Consider the case `smul r y _ hy`. Establish `h1 : Hf x (r • y) = (r : ℂ) * Hf x y`. Simplify using `only [Hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [Complex.real_smul] <;> ring`.
+
+Simplify using `[h1, hy]`.
+-/
 private theorem im_Hf_eq_zero_on_IR {I : Submodule ℤ (Vsp X.dim)} {x : Vsp X.dim}
     (hx : ∀ a ∈ I, (Hf x a).im = 0) : ∀ a ∈ IR I, (Hf x a).im = 0 := by
   intro a ha
@@ -311,6 +421,25 @@ private theorem im_Hf_eq_zero_on_IR {I : Submodule ℤ (Vsp X.dim)} {x : Vsp X.d
       simp [Complex.real_smul] <;> ring
     simp [h1, hy]
 
+/- English proof (translation)
+Establish `hK` using `Col.hK_of hI`. Establish `hN` using `(Submodule.Quotient.mk_eq_zero _).mp (cabOut_mk (0 : Col.Qc X I))`. Establish `hIp : ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ Col.Ip X I` using `hN`. Establish `hIp' : ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ X.L ∧ ∀ b ∈ I, (Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) b).im = 0` using `hIp`. Establish `hz : ∀ k, (Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)).im = 0` using `fun k => im_Hf_eq_zero_on_IR hIp'.2 _ (Col.ob (IR I) k).2`.
+
+Establish `hγ : Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ∈ lat (Col.YB hI hP q).b`. Establish `h` using `Col.mem_GB.2 ⟨_, hIp, rfl⟩`. Rewrite `h` using `[← Col.lat_bB hI hP]`. Conclude with `h`. Establish `hβ' : Differentiable ℂ β ∧ ∀ γ ∈ lat (Col.YB hI hP q).b, ∀ w, β (w + γ) = (Col.YB hI hP q).ka γ * cexp (q * Real.pi * Hf w γ + q * Real.pi * Hf γ γ / 2) * β w` using `hβ`.
+
+Establish `hka : (Col.YB hI hP q).ka (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = (X.eps ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) : ℂ) ^ q` using `Col.kaB_wmap hI q hIp`. Establish `hzr : ∀ k, (starRingEnd ℂ) (Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)` using `fun k => by`. Rewrite using `[Complex.conj_eq_iff_im]`. Conclude with `hz k`. Use function extensionality and compare the values at `v`.
+
+Establish `hper` using `hβ'.2 _ hγ (Col.wmap (IR I) v - Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim))`. Rewrite `hper` using `[sub_add_cancel]`. Establish `h1 : Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) = ∑ k, Col.z (IR I) k v * Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) + Hf (Col.wmap (IR I) v) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim))`. Rewrite using `[Hf_eq_sum_z_add_Hf_p2 hK v]`. Simplify using `only [hzr]`.
+
+Apply the tactic sequence `first | rw [Col.Hf_wmap hK] | rw [Col.Hf_wmap]`. Establish `h2 : Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) = Col.S (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) + Hf (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotien …`. Rewrite using `[Hf_eq_sum_z_add_Hf_p2 hK]`. Simplify using `only [hzr, Col.S, sq]`. Apply the tactic sequence `first | rw [Col.Hf_wmap hK] | rw [Col.Hf_wmap]`.
+
+Establish `hzs : ∀ k, Col.z (IR I) k (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.z (IR I) k v - Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)` using `fun k => by`. Simplify using `only [Col.z]`. Rewrite using `[Hf_eq_inner_swap', inner_sub_right, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap']`. Establish `h3 : Col.S (IR I) (v - ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Col.S (IR I) v - 2 * ∑ k, Col.z (IR I) k v * Col.z (IR I) k ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) + Col.S (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)`. Rewrite using `[Col.S, Col.S, Col.S]`.
+
+Simplify using `only [hzs]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `h4 : Hf (Col.wmap (IR I) v - Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) = Hf (Col.wmap (IR I) v) (Col.wmap (IR I) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim)) - Hf (Col.wmap (I …`. Rewrite using `[Hf_eq_inner_swap', inner_sub_right, ← Hf_eq_inner_swap', ← Hf_eq_inner_swap']`.
+
+Establish `hE : (q * Real.pi * Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) - q * Real.pi * Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) / 2) + (q * Real.pi / 2 : ℂ) * Col.S (IR I) (v - ((Quotient.out (0 : Col.Qc X I) …`. Rewrite using `[h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree. Use `show (X.eps ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) : ℂ) ^ q * (cexp (q * Real.pi * Hf v ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) - q * Real.pi * Hf ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) ((Quotient.out (0 : Col.Qc X I) : X.L) : Vsp X.dim) / 2) …`. Rewrite using `[map_sub, hper, hka, ← mul_assoc (cexp _), ← Complex.exp_add, hE, Complex.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem translate_zero_zeroModeLift (hI : IsSplit P I) (hP : Ext.PackingCount) (q : ℕ)
     {β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ} (hβ : β ∈ (Col.YB hI hP q).Sec q) :
     Col.Tc X I q β 0 = Col.F0 I q β := by
@@ -361,6 +490,9 @@ theorem translate_zero_zeroModeLift (hI : IsSplit P I) (hP : Ext.PackingCount) (
   rw [map_sub, hper, hka, ← mul_assoc (cexp _), ← Complex.exp_add, hE, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Establish `h1 : 0 ≤ q * Real.pi * (2 * (t - u / 2) ^ 2)` using `mul_nonneg (mul_nonneg hq.le Real.pi_pos.le) (by positivity)`. Establish `h2 : (q * Real.pi * t ^ 2 / 2 + 2 * q * Real.pi * t ^ 2) - Real.pi / 2 * q * u ^ 2 - (q * Real.pi * t ^ 2 / 2 - q * Real.pi * u ^ 2 + 2 * q * Real.pi * t * u) = q * Real.pi * (2 * (t - u / 2) ^ 2)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cab_expo2 {q t u : ℝ} (hq : 0 < q) :
     q * Real.pi * t ^ 2 / 2 - q * Real.pi * u ^ 2 + 2 * q * Real.pi * t * u ≤
       (q * Real.pi * t ^ 2 / 2 + 2 * q * Real.pi * t ^ 2) - Real.pi / 2 * q * u ^ 2 := by
@@ -371,6 +503,27 @@ theorem cab_expo2 {q t u : ℝ} (hq : 0 < q) :
       q * Real.pi * (2 * (t - u / 2) ^ 2) := by ring
   linarith
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < P.q`. Use `P.hq` as an intermediate fact. Conclude with `(by omega : 0 < P.q)` after adjusting the coercions. Take `⟨g', -, hs, -⟩` from `cab_sum_nz hP hA hI`. Establish `huc : ‖Col.uc (IR I) v‖ ≤ ‖v‖`.
+
+Establish `hU` using `isU_uc' (I := I) v`. Establish `h1 : ‖Col.uc (IR I) v‖ ^ 2 = (Hf v (Col.uc (IR I) v)).im`. Rewrite using `[← real_inner_self_eq_norm_sq]`. Conclude with `hU.2 _ hU.1`. Establish `h2 : (Hf v (Col.uc (IR I) v)).im ≤ ‖v‖ * ‖Col.uc (IR I) v‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `exact Complex.im_le_norm _`. Consider the case `exact Complex.im_le_abs _`. Consider the case `exact (le_abs_self _).trans (Complex.abs_im_le_norm _)`. Use `_ ≤ ‖Col.uc (IR I) v‖ * ‖v‖ := by rw [Hf_eq_inner_swap']; exact norm_inner_le_norm _ _`.
+
+Use `_ = ‖v‖ * ‖Col.uc (IR I) v‖ := mul_comm _ _`. Use polynomial arithmetic with `[norm_nonneg (Col.uc (IR I) v), norm_nonneg v]`. Establish `hterm : ∀ c : Col.Qc X I, ‖Col.Tc X I P.q β c v‖ ≤ B * Real.exp (P.q * Real.pi * ‖v‖ ^ 2 / 2 - P.q * Real.pi * ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ^ 2 + 2 * P.q * Real.pi * ‖v‖ * ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖)`. Introduce `c`. Use `(hT2 c v).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) hB` and prove the remaining obligations. Establish `hd` using `norm_sub_norm_le (Col.uc (IR I) (cabOut c : Vsp X.dim)) (Col.uc (IR I) v)`. Establish `hd2` using `norm_sub_norm_le (Col.uc (IR I) v) (Col.uc (IR I) (cabOut c : Vsp X.dim))`. Rewrite `hd` using `[norm_sub_rev]`.
+
+Establish `hsq : ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ^ 2 - 2 * ‖Col.uc (IR I) v‖ * ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ≤ ‖Col.uc (IR I) v - Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ^ 2`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hd) (sub_nonneg.2 hd2), sq_nonneg ‖Col.uc (IR I) v‖, norm_nonneg (Col.uc (IR I) v - Col.uc (IR I) (cabOut c : Vsp X.dim))]`. Establish `hkey : ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ^ 2 - 2 * ‖v‖ * ‖Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ≤ ‖Col.uc (IR I) v - Col.uc (IR I) (cabOut c : Vsp X.dim)‖ ^ 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left huc (norm_nonneg (Col.uc (IR I) (cabOut c : Vsp X.dim)))]`. Establish `hqpi : 0 ≤ (P.q : ℝ) * Real.pi` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hkey hqpi]`. Establish `hC : ∀ a : cabNZ X I, Real.exp (P.q * Real.pi * ‖v‖ ^ 2 / 2 - P.q * Real.pi * ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖ ^ 2 + 2 * P.q * Real.pi * ‖v‖ * ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖) ≤ Real.exp (P.q * Real.pi * ‖v‖ ^ 2 / 2 + 2 * P.q * Real.pi * …`. Introduce `a`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Use `cab_expo2 (t := ‖v‖) (u := ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖) hq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : Summable (fun a : cabNZ X I => Real.exp (P.q * Real.pi * ‖v‖ ^ 2 / 2 - P.q * Real.pi * ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖ ^ 2 + 2 * P.q * Real.pi * ‖v‖ * ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖))` using `Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) hC (hs.mul_left _)`. Establish `hnsum : Summable (fun a : cabNZ X I => ‖Col.Tc X I P.q β a v‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun a => hterm a) (hsum.mul_left B)`. Establish `hsplit : Col.sP X I P.q β v - Col.F0 I P.q β v = ∑' a : cabNZ X I, Col.Tc X I P.q β a v`.
+
+Establish `h0 : Col.F0 I P.q β v = Col.Tc X I P.q β 0 v` using `by rw [translate_zero_zeroModeLift hI hP P.q hβ]`. Apply the tactic sequence `have h1 : ∑ x ∈ ({0} : Finset (Col.Qc X I)), Col.Tc X I P.q β x v + ∑' x : ↥((({0} : Finset (Col.Qc X I)) : Set (Col.Qc X I))ᶜ), Col.Tc X I P.q β x v = ∑' x, Col.Tc X I P.q β x v := by first | exact sum_add_tsum_compl (hT1 v) | exact (hT1 v).sum_add_tsum_compl`. Rewrite `h1` using `[Finset.sum_singleton]`. Rewrite using `[h0, Col.sP, ← h1]`. Apply the tactic sequence `first | exact add_sub_cancel_left _ _ | abel | simp`.
+
+Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact tsum_le_tsum (fun a => hterm a) hnsum (hsum.mul_left B)`. Consider the case `exact Summable.tsum_le_tsum (fun a => hterm a) hnsum (hsum.mul_left B)`. Use `_ = _ := tsum_mul_left`.
+-/
 theorem cab_R (hI : IsSplit P I) (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound)
     {β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ} (hβ : β ∈ (Col.YB hI hP P.q).Sec P.q)
     (B : ℝ) (hB : 0 ≤ B)
@@ -463,6 +616,37 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] {X : PT E} {DF : ℕ} {P : Par X DF}
   {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Introduce `γ hγ hne`. Establish `hl : γ ∈ Col.GB X I` using `by rw [← Col.lat_bB hI hP]; exact hγ`. Take `⟨x, hx, rfl⟩` from `Col.mem_GB.1 hl`. Establish `hx' : x ∈ X.L ∧ ∀ a ∈ I, (Hf x a).im = 0` using `hx`. Establish `hreal : ∀ a ∈ IR I, (Hf x a).im = 0`.
+
+Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem y hy => exact hx'.2 y hy`. Consider the case `zero => simp [Hf]`. Consider the case `add y w _ _ hy hw`.
+
+Establish `h1 : Hf x (y + w) = Hf x y + Hf x w`. Simplify using `only [Hf, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_add]`. Rewrite using `[h1, Complex.add_im, hy, hw, add_zero]`.
+
+Consider the case `smul r y _ hy`. Establish `h1 : Hf x (r • y) = (r : ℂ) * Hf x y`. Simplify using `only [Hf, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [Complex.real_smul] <;> ring`.
+
+Simplify using `[h1, hy]`. Establish `hz : ∀ k, (Col.z (IR I) k x).im = 0` using `fun k => hreal _ (Col.ob (IR I) k).2`. Establish `hp1 : Col.p1 (IR I) x ∈ IR I`. Establish `hsum : Col.p1 (IR I) x = ∑ k, (Col.z (IR I) k x).re • Col.e (IR I) k`. Simplify using `only [Col.p1]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hzk : Col.z (IR I) k x = ((Col.z (IR I) k x).re : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [hz k]`. Use `conv_lhs => rw [hzk]`. Conclude with `(RCLike.real_smul_eq_coe_smul (K := ℂ) _ _).symm`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Col.ob (IR I) k).2`. Apply the tactic sequence `have hnorm : ‖Col.wmap (IR I) x‖ = ‖x - Col.p1 (IR I) x‖ := by first | rw [Col.norm_wmap (Col.hK_of hI)] | rw [Col.norm_wmap]`. Rewrite using `[Col.p2]`. Establish `hxI : x ∉ I`.
+
+Introduce `hxI`. Apply `hne` to reduce the goal to its premises. Establish `hxK : x ∈ IR I` using `Submodule.subset_span hxI`. Establish `hp : Col.p1 (IR I) x = x` using `by conv_rhs => rw [← sum_inner_ob_smul_e (IR I) x hxK]`. Simplify using `only [Col.p1]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hzk : Col.z (IR I) k x = ((inner ℝ ((Col.ob (IR I)) k) (⟨x, hxK⟩ : IR I) : ℝ) : ℂ)`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.ofReal_re, Submodule.coe_inner]`. Simplify using `[Col.z, Col.e, Hf, real_inner_eq_re_inner, PiLp.inner_apply, mul_comm]`.
+
+Simplify using `using hz k`. Rewrite using `[hzk, RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Apply the tactic sequence `all_goals rfl`. Establish `h0 : ‖Col.wmap (IR I) x‖ = 0` using `by rw [hnorm, hp, sub_self, norm_zero]`. Conclude with `norm_eq_zero.mp h0`.
+
+Establish `ht` using `hI.thick x hx'.1 hx'.2 hxI`. Establish `hth : |P.R0| ≤ Real.sqrt (P.q * Real.pi) * P.th`. Establish `hq : (0 : ℝ) < P.q`. Use `P.hq` as an intermediate fact. Conclude with `(by omega : 0 < P.q)` after adjusting the coercions.
+
+Establish `hqne : (P.q : ℝ) ≠ 0` using `hq.ne'`. Establish `hf1 : (1 : ℝ) ≤ PT.f E`. Establish `h2 : 1 ≤ PT.f E` using `le_trans (Nat.one_le_pow _ _ (by have := P.hm1; omega)) P.hmf`. Conclude with `h2` after adjusting the coercions. Establish `hRR : (1 : ℝ) ≤ RR (E` using `E) := by`.
+
+Use `P.hrd` as an intermediate fact. Use `show (1 : ℝ) ≤ PT.rd E ^ 7`. Conclude with `one_le_pow₀ (by linarith)`. Establish `hRR3 : (1 : ℝ) ≤ RR (E` using `E) ^ 3 := one_le_pow₀ hRR`. Establish `hpi : (1 : ℝ) ≤ Real.pi` using `by linarith [Real.pi_gt_three]`.
+
+Establish `hc : 1 ≤ Real.pi * PT.f E * RR (E` using `E) ^ 3 := one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hpi hf1) hRR3`. Rewrite using `[Par.th, th, ← Real.sqrt_mul (show (0 : ℝ) ≤ P.q * Real.pi by positivity), ← Real.sqrt_sq_eq_abs]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Apply the tactic sequence `have heq : (P.q : ℝ) * Real.pi * (PT.f E * P.R0 ^ 2 * RR (E := E) ^ 3 / P.q) = (Real.pi * PT.f E * RR (E := E) ^ 3) * P.R0 ^ 2 := by first | (field_simp; ring) | field_simp`. Rewrite using `[heq]`.
+
+Conclude with `le_mul_of_one_le_left (sq_nonneg _) hc`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cab_YB_abs (hI : IsSplit P I) (hP : Ext.PackingCount) (q : ℕ) :
     ∀ γ ∈ lat (Col.YB hI hP q).b, γ ≠ 0 → |P.R0| ≤ Real.sqrt (P.q * Real.pi) * ‖γ‖ := by
   intro γ hγ hne
@@ -548,6 +732,19 @@ theorem cab_YB_abs (hI : IsSplit P I) (hP : Ext.PackingCount) (q : ℕ) :
         _ ≤ dist x (Col.p1 (IR I) x) := Metric.infDist_le_dist_of_mem hp1
         _ = ‖Col.wmap (IR I) x‖ := by rw [dist_eq_norm, hnorm]
 
+/- English proof (translation)
+Establish `h1 : Col.gB K ≤ Module.finrank ℂ (Vsp X.dim)` using `Submodule.finrank_le _`. Establish `h2 : Module.finrank ℂ (Vsp X.dim) = ∑ τ, X.dim τ`. Simplify using `[Vsp, Idx, finrank_euclideanSpace, Fintype.card_sigma]`. Establish `hinv : Function.Involutive (NumberField.ComplexEmbedding.conjugate : (E →+* ℂ) → (E →+* ℂ))` using `fun τ => RingHom.ext fun x => by simp [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hs : ∑ τ, X.dim (NumberField.ComplexEmbedding.conjugate τ) = ∑ τ, X.dim τ` using `Fintype.sum_bijective _ hinv.bijective _ _ fun τ => rfl`.
+
+Establish `h3 : 2 * ∑ τ, X.dim τ = Module.finrank ℚ E * X.r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, hs]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ _τ : E →+* ℂ, X.r := Finset.sum_congr rfl fun τ _ => X.dim_conj τ`.
+
+Use `_ = Fintype.card (E →+* ℂ) * X.r := by simp`. Use `_ = Module.finrank ℚ E * X.r := by rw [NumberField.Embeddings.card]`. Establish `hev : 2 ∣ Module.finrank ℚ E`. Establish `hn` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank (K := E)`. Establish `hz` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero (K := E)`.
+
+Use `first`. Consider the case `(rw [← hn, hz]; simp)`. Consider the case `(rw [← hn]; unfold NumberField.InfinitePlace.nrRealPlaces at hz; rw [hz]; simp)`. Consider the case `(rw [← hn]; simp only [NumberField.InfinitePlace.nrRealPlaces] at hz; simp [hz])`. Consider the case `omega`.
+
+Take `⟨k, hk⟩` from `hev`. Establish `h4 : ∑ τ, X.dim τ = k * X.r`. Apply `Nat.eq_of_mul_eq_mul_left (show 0 < 2 by norm_num)` to reduce the goal to its premises. Rewrite using `[h3, hk, mul_assoc]`. Use `show Col.gB K ≤ PT.f E * X.r`.
+
+Establish `hf : PT.f E = k` using `by show Module.finrank ℚ E / 2 = k`. Rewrite using `[hk]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hf, ← h4, ← h2]`. Conclude with `h1`.
+-/
 theorem cab_gB_le [IsCMField E] (K : Submodule ℝ (Vsp X.dim)) : Col.gB K ≤ X.gA := by
   have h1 : Col.gB K ≤ Module.finrank ℂ (Vsp X.dim) := Submodule.finrank_le _
   have h2 : Module.finrank ℂ (Vsp X.dim) = ∑ τ, X.dim τ := by
@@ -581,12 +778,22 @@ theorem cab_gB_le [IsCMField E] (K : Submodule ℝ (Vsp X.dim)) : Col.gB K ≤ X
   rw [hf, ← h4, ← h2]
   exact h1
 
+/- English proof (translation)
+Use `show 2 ≤ 2 * PT.f E * P.m`. Establish `h1` using `P.hm1`. Establish `h2 : 1 ≤ PT.f E` using `le_trans (Nat.one_le_pow _ _ (by omega)) P.hmf`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cab_dstar_ge (P : Par X DF) : 2 ≤ dstar (E := E) P.m := by
   show 2 ≤ 2 * PT.f E * P.m
   have h1 := P.hm1
   have h2 : 1 ≤ PT.f E := le_trans (Nat.one_le_pow _ _ (by omega)) P.hmf
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `P.C3`. Establish `hm : (1 : ℝ) ≤ P.m` using `by exact_mod_cast P.hm1`. Establish `hd : (2 : ℝ) ≤ dstar (E` using `E) P.m := by exact_mod_cast cab_dstar_ge P`. Establish `hrd` using `P.hrd`. Establish `ha : (1 : ℝ) ≤ (P.m : ℝ) ^ 2` using `one_le_pow₀ hm`.
+
+Establish `hb : (1 : ℝ) ≤ (dstar (E` using `E) P.m : ℝ) ^ 2 := one_le_pow₀ (by linarith)`. Establish `hc : (1 : ℝ) ≤ PT.rd E` using `by linarith`. Establish `habc : 1 ≤ (P.m : ℝ) ^ 2 * (dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E := one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ha hb) hc`. Establish `hM : M1 (E` using `E) P.m = 90 * ((P.m : ℝ) ^ 2 * (dstar (E := E) P.m : ℝ) ^ 2 * PT.rd E) := by`. Simplify using `only [M1]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cab_q_ge (P : Par X DF) : (2 : ℝ) ≤ P.q := by
   have h1 := P.C3
   have hm : (1 : ℝ) ≤ P.m := by exact_mod_cast P.hm1
@@ -601,6 +808,13 @@ theorem cab_q_ge (P : Par X DF) : (2 : ℝ) ≤ P.q := by
     simp only [M1]; push_cast; ring
   linarith
 
+/- English proof (translation)
+Establish `hC5` using `P.C5`. Establish `hq1 : (1 : ℝ) ≤ P.q` using `by exact_mod_cast P.hq`. Establish `hDF1 : (1 : ℝ) ≤ DF` using `by exact_mod_cast P.hDF`. Establish `hcDF : (c : ℝ) ≤ DF` using `by exact_mod_cast hc`. Establish `hlogDF : 0 ≤ Real.log ((P.q : ℝ) * DF)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hq1 hDF1)`.
+
+Establish `key : 4 * (c : ℝ) * (7 + Real.log (P.q * c)) ≤ 4 * (DF : ℝ) * (7 + Real.log (P.q * DF))`. Break down `Nat.eq_zero_or_pos c with h0 | h0` into its components or cases. Establish `hc0 : (c : ℝ) = 0` using `by exact_mod_cast h0`. Rewrite using `[hc0, mul_zero, zero_mul]`. Conclude with `mul_nonneg (by positivity) (by linarith)`.
+
+Establish `hc1 : (1 : ℝ) ≤ c` using `by exact_mod_cast h0`. Establish `hlog : Real.log (P.q * c) ≤ Real.log (P.q * DF)` using `Real.log_le_log (mul_pos (by linarith) (by linarith)) (mul_le_mul_of_nonneg_left hcDF (by linarith))`. Establish `hlogc : 0 ≤ Real.log ((P.q : ℝ) * c)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hq1 hc1)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcDF (by linarith : (0 : ℝ) ≤ 7 + Real.log (P.q * c)), mul_le_mul_of_nonneg_left hlog (by linarith : (0 : ℝ) ≤ DF)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem threshold_ge_log_bound (P : Par X DF) {c : ℕ} (hc : c ≤ DF) :
     4 * c * (7 + Real.log (P.q * c)) + dstar (E := E) P.m + 1 ≤ t0 (E := E) P.q P.R0 := by
   have hC5 := P.C5
@@ -623,6 +837,13 @@ theorem threshold_ge_log_bound (P : Par X DF) {c : ℕ} (hc : c ≤ DF) :
         mul_le_mul_of_nonneg_left hlog (by linarith : (0 : ℝ) ≤ DF)]
   linarith
 
+/- English proof (translation)
+Establish `h` using `P.C6`. Move the coercions through the operations in `at h`. Establish `hr : 0 ≤ (X.r : ℝ) * Real.log X.r`. Break down `Nat.eq_zero_or_pos X.r with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Conclude with `mul_nonneg (by positivity) (Real.log_nonneg (by exact_mod_cast h0))`. Establish `hr0 : (0 : ℝ) ≤ X.r` using `by positivity`. Establish `h2 : 0 ≤ ((DF : ℝ) + 1) * ((X.r : ℝ) * Real.log X.r + 3 * X.r + 3)` using `mul_nonneg (by positivity) (by linarith)`. Establish `h3 : (0 : ℝ) ≤ dstar (E` using `E) P.m := by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem threshold_ge_rank_log_two (P : Par X DF) : (X.gA : ℝ) * Real.log 2 ≤ t0 (E := E) P.q P.R0 := by
   have h := P.C6
   push_cast at h
@@ -636,6 +857,9 @@ theorem threshold_ge_rank_log_two (P : Par X DF) : (X.gA : ℝ) * Real.log 2 ≤
   have h3 : (0 : ℝ) ≤ dstar (E := E) P.m := by positivity
   linarith
 
+/- English proof (translation)
+Establish `hd : (2 : ℝ) ≤ dstar (E` using `E) P.m := by exact_mod_cast cab_dstar_ge P`. Establish `h1 : (2 * (dstar (E` using `E) P.m : ℝ)) ^ (1 : ℝ) ≤ (2 * (dstar (E := E) P.m : ℝ)) ^ ((dstar (E := E) P.m : ℝ) / 2) := Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Rewrite `h1` using `[Real.rpow_one]`. Unfold `Par.K6`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem twentyfour_le_constant (P : Par X DF) : (24 : ℝ) ≤ P.K6 := by
   have hd : (2 : ℝ) ≤ dstar (E := E) P.m := by exact_mod_cast cab_dstar_ge P
   have h1 : (2 * (dstar (E := E) P.m : ℝ)) ^ (1 : ℝ) ≤
@@ -645,6 +869,11 @@ theorem twentyfour_le_constant (P : Par X DF) : (24 : ℝ) ≤ P.K6 := by
   unfold Par.K6
   linarith
 
+/- English proof (translation)
+Establish `hq2` using `cab_q_ge P`. Establish `hcq : (c : ℝ) ≤ P.q` using `by have := P.C4; exact_mod_cast hc.trans this`. Establish `hqpos : (0 : ℝ) < P.q` using `by linarith`. Establish `hqne : (P.q : ℝ) ≠ 0` using `hqpos.ne'`. Establish `hG : (2 / (P.q : ℝ)) ^ G ≤ 1` using `pow_le_one₀ (by positivity) ((div_le_one hqpos).mpr hq2)`.
+
+Establish `hfac : (c.factorial : ℝ) ≤ (P.q : ℝ) ^ c`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : (c.factorial : ℝ) * (2 / (P.q * Real.pi)) ^ c ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cab_J_one (P : Par X DF) {c G : ℕ} (hc : c ≤ DF) :
     (c.factorial : ℝ) * (2 / (P.q * Real.pi)) ^ c * (2 / P.q) ^ G ≤ 1 := by
   have hq2 := cab_q_ge P

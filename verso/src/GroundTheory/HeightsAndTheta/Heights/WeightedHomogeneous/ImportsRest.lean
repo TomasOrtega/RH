@@ -6,6 +6,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P D`. Take `⟨Q, hQ⟩` from `hA ι n P (AddBlockEq.split_model_to_place_model D)`. Conclude with `⟨Q, hQ.trans (AddBlockEq.addBlockEquiv_symm_extIdeal D)⟩`. Introduce `hB ι _ _ n P D`.
+
+Take `⟨Q, hQ⟩` from `hB ι n P (AddBlockEq.toIndefiniteRowSideFullHecke D)`. Conclude with `⟨Q, hQ.trans (AddBlockEq.addBlockEquiv_extIdeal D)⟩`.
+-/
 theorem ChartPrimality.equiv :
     GroundTheory.Heights₂.Heights.ChartPrimality.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ChartPrimality.Statement := by
   constructor

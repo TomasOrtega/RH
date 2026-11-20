@@ -7,6 +7,17 @@ noncomputable section
 
 namespace GlobalTheory.ThK.SquareIntegrability
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `infPts`. Rewrite using `[MonoidHom.mem_ker]`. Set `u : AF F` to `(0, 1)`. Establish `hu : evI F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`.
+
+Conclude with `map_zero _`. Establish `h` using `hg u hu`. Use `set φ := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E))`. Establish `hsu : sndA F u = 1` using `rfl`. Establish `key : ∀ x : TensorProduct F (AF F) E, φ (u • x) = φ x`.
+
+Introduce `x`. Rewrite using `[Algebra.smul_def, map_mul, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.map_tmul, hsu, AlgHom.id_apply, Algebra.TensorProduct.one_def.symm, one_mul]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`.
+
+Rewrite `hij` using `[Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply]`. Establish `e1 : φ ((mat g) i j - (1 : Matrix (Fin d) (Fin d) (TensorProduct F (AF F) E)) i j) = 0`. Rewrite using `[← key, hij, map_zero]`. Rewrite `e1` using `[map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `φ ((mat g) i j) = (1 : Matrix (Fin d) (Fin d) (TensorProduct F (Af F) E)) i j`.
+
+Rewrite using `[e1]`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality. Simplify using `[Matrix.one_apply_eq]`. Simplify using `[Matrix.one_apply_ne hij']`.
+-/
 theorem toGAd_mem_infPts_of_uAt (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (W : Spc F E d) (c : E) (hc : c ≠ 0) :
     ∀ g ∈ UAt σ W (evI F), toGAd hσ W.J hc g ∈ infPts σ (c • W.J.map σ) := by

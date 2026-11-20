@@ -11,6 +11,9 @@ open IsLocalRing
 variable {R O : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra R O]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `hm : c ∈ maximalIdeal S` using `(mem_maximalIdeal c).2 (mem_nonunits_iff.2 hc)`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `h hm`.
+-/
 theorem isUnit_of_not_dvd_uniformiser {S : Type} [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     {ϖ c : S} (hϖ : Irreducible ϖ) (h : ¬ ϖ ∣ c) : IsUnit c := by
   by_contra hc
@@ -18,6 +21,13 @@ theorem isUnit_of_not_dvd_uniformiser {S : Type} [CommRing S] [IsDomain S] [IsDi
   rw [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton] at hm
   exact h hm
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hmem : ϖ ∈ maximalIdeal R`. Rewrite using `[hϖ.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self ϖ`.
+
+Establish `hle : (⊤ : Submodule R O) ≤ maximalIdeal R • ⊤`. Introduce `x _`. Establish `hx : x = ϖ • (v * x)` using `by rw [Algebra.smul_def, ← mul_assoc, hv, one_mul]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem_smul hmem trivial`.
+
+Conclude with `top_ne_bot (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) ⊤ (Module.finite_def.mp ‹_›) hle (maximalIdeal_le_jacobson _))`.
+-/
 theorem not_isUnit_algebraMap [Module.Finite R O] {ϖ : R} (hϖ : Irreducible ϖ) :
     ¬ IsUnit (algebraMap R O ϖ) := by
   intro hu
@@ -32,6 +42,15 @@ theorem not_isUnit_algebraMap [Module.Finite R O] {ϖ : R} (hϖ : Irreducible ϖ
   exact top_ne_bot (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) ⊤
     (Module.finite_def.mp ‹_›) hle (maximalIdeal_le_jacobson _))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `hu : IsUnit (algebraMap R O (c j))` using `(isUnit_of_not_dvd_uniformiser hϖ hc).map _`. Establish `hrest : π ^ (j + 1) ∣ ∑ i ∈ (Finset.range m).erase j, c i • π ^ i`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hi) with h | h` into its components or cases. Take `⟨d, hd⟩` from `hlow i h`. Use `Dvd.dvd.mul_right ((pow_dvd_pow π (by omega : j + 1 ≤ e)).trans (he.trans ?_)) _` and prove the remaining obligations. Rewrite using `[hd, map_mul]`. Conclude with `dvd_mul_right _ _`.
+
+Conclude with `Dvd.dvd.mul_left (pow_dvd_pow π (by omega : j + 1 ≤ i)) _`. Rewrite `hs` using `[← Finset.add_sum_erase _ _ (Finset.mem_range.2 hjm)]`. Establish `h1 : π ^ j * π ∣ π ^ j * algebraMap R O (c j)`. Rewrite using `[← pow_succ, mul_comm, ← Algebra.smul_def]`. Conclude with `(dvd_add_left hrest).1 hs`.
+
+Establish `h2` using `(mul_dvd_mul_iff_left (pow_ne_zero j hπ.ne_zero)).1 h1`. Conclude with `hπ.not_isUnit (isUnit_of_dvd_unit h2 hu)`.
+-/
 theorem dvd_coeff_of_dvd_sum {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irreducible ϖ) {e : ℕ}
     (he : π ^ e ∣ algebraMap R O ϖ) (c : ℕ → R) {m j : ℕ} (hj : j < e) (hjm : j < m)
     (hlow : ∀ i < j, ϖ ∣ c i) (hs : π ^ (j + 1) ∣ ∑ i ∈ Finset.range m, c i • π ^ i) : ϖ ∣ c j := by
@@ -51,6 +70,9 @@ theorem dvd_coeff_of_dvd_sum {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irr
   have h2 := (mul_dvd_mul_iff_left (pow_ne_zero j hπ.ne_zero)).1 h1
   exact hπ.not_isUnit (isUnit_of_dvd_unit h2 hu)
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j using Nat.strong_induction_on with`. Consider the case `_ j ih`. Introduce `hj hjm`. Conclude with `dvd_coeff_of_dvd_sum hπ hϖ he c hj hjm (fun i hi => ih i hi (by omega) (by omega)) ((pow_dvd_pow π (by omega)).trans hs)`.
+-/
 theorem dvd_coeff_all {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irreducible ϖ) {e : ℕ}
     (he : π ^ e ∣ algebraMap R O ϖ) (c : ℕ → R) {m : ℕ}
     (hs : π ^ e ∣ ∑ i ∈ Finset.range m, c i • π ^ i) : ∀ j < e, j < m → ϖ ∣ c j := by
@@ -61,6 +83,17 @@ theorem dvd_coeff_all {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irreducibl
     exact dvd_coeff_of_dvd_sum hπ hϖ he c hj hjm (fun i hi => ih i hi (by omega) (by omega))
       ((pow_dvd_pow π (by omega)).trans hs)
 
+/- English proof (translation)
+Establish `hϖ0 : algebraMap R O ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `key : ∀ n : ℕ, ∀ c : ℕ → R, ∑ i ∈ Finset.range e, c i • π ^ i = 0 → ∀ i < e, ϖ ^ n ∣ c i`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro c _ i _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `c hc i hi`. Establish `hd` using `dvd_coeff_all hπ hϖ he c (m := e) (by rw [hc]; exact dvd_zero _)`. Use `choose! d hd' using fun k (h : k < e) => hd k h h`.
+
+Establish `h0 : algebraMap R O ϖ * ∑ k ∈ Finset.range e, d k • π ^ k = 0`. Rewrite using `[Finset.mul_sum, ← hc]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[hd' k (Finset.mem_range.1 hk), Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1` using `(mul_eq_zero.1 h0).resolve_left hϖ0`. Rewrite using `[hd' i hi, pow_succ']`. Conclude with `mul_dvd_mul_left ϖ (ih d h1 i hi)`. Introduce `c hc i hi`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h0 hϖ`. Establish `h1 : ϖ ^ n * ϖ ∣ ϖ ^ n * 1`. Rewrite using `[← pow_succ, mul_one, ← hu]`. Conclude with `(key (n + 1) c hc i hi).mul_right _`. Conclude with `hϖ.not_isUnit (isUnit_of_dvd_one ((mul_dvd_mul_iff_left (pow_ne_zero n hϖ.ne_zero)).1 h1))`.
+-/
 theorem coeff_eq_zero_of_sum {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irreducible ϖ)
     (hinj : Function.Injective (algebraMap R O)) {e : ℕ} (he : π ^ e ∣ algebraMap R O ϖ) :
     ∀ c : ℕ → R, ∑ i ∈ Finset.range e, c i • π ^ i = 0 → ∀ i < e, c i = 0 := by
@@ -87,6 +120,21 @@ theorem coeff_eq_zero_of_sum {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irr
     rw [← pow_succ, mul_one, ← hu]; exact (key (n + 1) c hc i hi).mul_right _
   exact hϖ.not_isUnit (isUnit_of_dvd_one ((mul_dvd_mul_iff_left (pow_ne_zero n hϖ.ne_zero)).1 h1))
 
+/- English proof (translation)
+Establish `step : ∀ k (x : O), ∃ f ∈ Polynomial.degreeLT R k, π ^ k ∣ x - Polynomial.aeval π f`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x; exact ⟨0, Submodule.zero_mem _, by rw [pow_zero]; exact one_dvd _⟩`. Consider the case `succ k ih`.
+
+Introduce `x`. Take `⟨f, hf, z, hz⟩` from `ih x`. Take `⟨c, hc⟩` from `hres z`. Establish `hm : z - algebraMap R O c ∈ maximalIdeal O` using `(mem_maximalIdeal _).2 (mem_nonunits_iff.2 hc)`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+
+Take `⟨t, ht⟩` from `hm`. Use `⟨f + Polynomial.C c * Polynomial.X ^ k, ?_, t, ?_⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[Polynomial.mem_degreeLT]`. Establish `hk : ((k : ℕ) : WithBot ℕ) < ((k + 1 : ℕ) : WithBot ℕ)` using `by exact_mod_cast k.lt_succ_self`. Conclude with `(Polynomial.degree_add_le _ _).trans_lt (max_lt (hf.trans hk) ((Polynomial.degree_C_mul_X_pow_le _ _).trans_lt hk))`.
+
+Simplify using `only [map_add, map_mul, Polynomial.aeval_C, map_pow, Polynomial.aeval_X]`. Rewrite using `[pow_succ, mul_assoc, ← ht]`. Take the linear combination `hz`. Establish `hmem : ϖ ∈ maximalIdeal R`. Rewrite using `[hϖ.maximalIdeal_eq]`.
+
+Conclude with `Ideal.mem_span_singleton_self ϖ`. Take `⟨v, hv⟩` from `he.dvd`. Set `N : Submodule R O` to `(Polynomial.degreeLT R e).map (Polynomial.aeval π).toLinearMap`. Establish `hle : (⊤ : Submodule R O) ≤ N ⊔ maximalIdeal R • ⊤`. Introduce `x _`.
+
+Take `⟨f, hf, y, hy⟩` from `step e x`. Use `Submodule.mem_sup.2 ⟨Polynomial.aeval π f, Submodule.mem_map.2 ⟨f, hf, rfl⟩, ϖ • (v * y), Submodule.smul_mem_smul hmem trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Take the linear combination `-hy - y * hv`. Establish `hN` using `Submodule.le_of_le_smul_of_le_jacobson_bot (Module.finite_def.mp ‹_›) (maximalIdeal_le_jacobson _) hle`.
+
+Introduce `x`. Take `⟨f, hf, hfx⟩` from `Submodule.mem_map.1 (hN (Submodule.mem_top : x ∈ ⊤))`. Conclude with `⟨f, hf, hfx⟩`.
+-/
 theorem exists_degreeLT [Module.Finite R O] {ϖ : R} {π : O} (hπ : Irreducible π) (hϖ : Irreducible ϖ) {e : ℕ}
     (he : Associated (algebraMap R O ϖ) (π ^ e))
     (hres : ∀ x : O, ∃ c : R, ¬ IsUnit (x - algebraMap R O c)) :
@@ -127,6 +175,35 @@ theorem exists_degreeLT [Module.Finite R O] {ϖ : R} {π : O} (hπ : Irreducible
   obtain ⟨f, hf, hfx⟩ := Submodule.mem_map.1 (hN (Submodule.mem_top : x ∈ ⊤))
   exact ⟨f, hf, hfx⟩
 
+/- English proof (translation)
+Establish `hϖ0 : algebraMap R O ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hϖ0 hπ`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Conclude with `not_isUnit_algebraMap hϖ (he.isUnit_iff.2 (by simp))`.
+
+Establish `hed : π ^ e ∣ algebraMap R O ϖ` using `he.symm.dvd`. Establish `hspan` using `exists_degreeLT hπ hϖ he hres`. Take `⟨g, hg, hgπ⟩` from `hspan (π ^ e)`. Establish `hgdeg : g.degree < e` using `Polynomial.mem_degreeLT.1 hg`. Establish `hdeg : (Polynomial.X ^ e - g).degree = (e : WithBot ℕ)`.
+
+Apply the tactic sequence `rw [Polynomial.degree_sub_eq_left_of_degree_lt] <;> rw [Polynomial.degree_X_pow]; exact hgdeg`. Establish `hmon : (Polynomial.X ^ e - g).Monic` using `Polynomial.monic_X_pow_sub hgdeg`. Establish `hnat : (Polynomial.X ^ e - g).natDegree = e` using `Polynomial.natDegree_eq_of_degree_eq_some hdeg`. Establish `hroot : Polynomial.aeval π (Polynomial.X ^ e - g) = 0` using `by simp [hgπ]`. Establish `hsum : ∑ i ∈ Finset.range (e + 1), (Polynomial.X ^ e - g).coeff i • π ^ i = 0`.
+
+Establish `h` using `Polynomial.aeval_eq_sum_range (p := Polynomial.X ^ e - g) π`. Rewrite `h` using `[hnat]`. Rewrite using `[← h]`. Conclude with `hroot`. Establish `hdvd : ∀ i < e, ϖ ∣ (Polynomial.X ^ e - g).coeff i` using `fun i hi => dvd_coeff_all hπ hϖ hed _ (by rw [hsum]; exact dvd_zero _) i hi (by omega)`.
+
+Establish `hcoeffe : (Polynomial.X ^ e - g).coeff e = 1`. Use `hmon.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[hnat]`. Then use the resulting hypothesis. Establish `hc0 : ∃ w : Rˣ, (Polynomial.X ^ e - g).coeff 0 = ϖ * w`. Take `⟨w, hw⟩` from `hdvd 0 (Nat.pos_of_ne_zero he0)`.
+
+Distinguish the cases in `hwu : ϖ ∣ w`. It suffices to derive a contradiction. Take `⟨t, ht⟩` from `hwu`. Establish `hrest : π ^ (e + 1) ∣ ∑ i ∈ (Finset.range (e + 1)).erase e, (Polynomial.X ^ e - g).coeff i • π ^ i`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hie : i < e`. Use `Finset.mem_range.1 (Finset.mem_of_mem_erase hi)` as an intermediate fact. Use `Finset.ne_of_mem_erase hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Algebra.smul_def]`.
+
+Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases. Rewrite using `[pow_zero, mul_one, hw, ht, map_mul, map_mul]`. Use `(pow_dvd_pow π (by omega : e + 1 ≤ e + e)).trans ?_` and prove the remaining obligations. Rewrite using `[pow_add]`. Conclude with `mul_dvd_mul hed (hed.mul_right _)`.
+
+Take `⟨d, hd⟩` from `hdvd i hie`. Rewrite using `[hd, map_mul, pow_succ]`. Conclude with `mul_dvd_mul (hed.mul_right _) (dvd_pow_self π hi0.ne')`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finset.mem_range.2 (Nat.lt_succ_self e)), hcoeffe, one_smul]`. Establish `h1 : π ^ e * π ∣ π ^ e * 1`.
+
+Rewrite using `[← pow_succ, mul_one]; exact (dvd_add_left hrest).1 (by rw [hsum]; exact dvd_zero _)`. Conclude with `hπ.not_isUnit (isUnit_of_dvd_one ((mul_dvd_mul_iff_left (pow_ne_zero e hπ.ne_zero)).1 h1))`. Conclude with `⟨(isUnit_of_not_dvd_uniformiser hϖ hwu).unit, hw⟩`. Establish `hmod : ∀ f : Polynomial R, Polynomial.aeval π f = 0 → (Polynomial.X ^ e - g) ∣ f`. Introduce `f hf`.
+
+Rewrite using `[← Polynomial.modByMonic_eq_zero_iff_dvd hmon]`. Establish `hr : Polynomial.aeval π (f %ₘ (Polynomial.X ^ e - g)) = 0`. Establish `h` using `congrArg (Polynomial.aeval π) (Polynomial.modByMonic_add_div f (Polynomial.X ^ e - g))`. Rewrite `h` using `[map_add, map_mul, hroot, zero_mul, add_zero, hf]`. Then use the resulting hypothesis. Establish `hrdeg : (f %ₘ (Polynomial.X ^ e - g)).natDegree < e`.
+
+Distinguish the cases in `h0 : f %ₘ (Polynomial.X ^ e - g) = 0`. Rewrite using `[h0, Polynomial.natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.natDegree_lt_iff_degree_lt h0, ← hdeg]`. Conclude with `Polynomial.degree_modByMonic_lt f hmon`.
+
+Establish `hs` using `Polynomial.aeval_eq_sum_range' hrdeg π`. Rewrite `hs` using `[hr]`. Establish `hc` using `coeff_eq_zero_of_sum hπ hϖ hinj hed _ hs.symm`. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_zero]`.
+
+Distinguish the cases in `hi : i < e`. Conclude with `hc i hi`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Conclude with `⟨Polynomial.X ^ e - g, hmon, by rw [hnat]; omega, fun i hi => hdvd i (by rw [hnat] at hi; exact hi), hc0, hroot, fun x => (hspan x).imp fun f hf => hf.2, hmod⟩`.
+-/
 theorem eisenstein_of_totallyRamified {ϖ : R} (hϖ : Irreducible ϖ) [Module.Finite R O]
     (hinj : Function.Injective (algebraMap R O))
     (hres : ∀ x : O, ∃ c : R, ¬ IsUnit (x - algebraMap R O c)) {π : O} (hπ : Irreducible π) :
@@ -200,6 +277,9 @@ theorem eisenstein_of_totallyRamified {ϖ : R} (hϖ : Irreducible ϖ) [Module.Fi
   exact ⟨Polynomial.X ^ e - g, hmon, by rw [hnat]; omega, fun i hi => hdvd i (by rw [hnat] at hi; exact hi), hc0,
     hroot, fun x => (hspan x).imp fun f hf => hf.2, hmod⟩
 
+/- English proof (translation)
+Introduce `l _ a _ O _ _ _ _ _ hinj hres π hπ`. Conclude with `eisenstein_of_totallyRamified (WittVector.irreducible l) hinj hres hπ`.
+-/
 theorem eisenstein_minpoly_Wq : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra (Wq l a) O] [Module.Finite (Wq l a) O], Function.Injective (algebraMap (Wq l a) O) → (∀ x : O, ∃ c : Wq l a, ¬ IsUnit (x - algebraMap (Wq l a) O c)) → ∀ π : O, Irreducible π → ∃ Ep : Polynomial (Wq l a), Ep.Monic ∧ 0 < Ep.natDegree ∧ (∀ i < Ep.natDegree, (l : Wq l a) ∣ Ep.coeff i) ∧ (∃ w : (Wq l a)ˣ, Ep.coeff 0 = (l : Wq l a) * w) ∧ Polynomial.aeval π Ep = 0 ∧ (∀ x : O, ∃ f : Polynomial (Wq l a), Polynomial.aeval π f = x) ∧ ∀ f : Polynomial (Wq l a), Polynomial.aeval π f = 0 → Ep ∣ f := by
   intro l _ a _ O _ _ _ _ _ hinj hres π hπ
   exact eisenstein_of_totallyRamified (WittVector.irreducible l) hinj hres hπ

@@ -18,6 +18,9 @@ namespace InterNumRestrict
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
   {K' : Type w} [Field K'] [Algebra k K'] {y : Fin (N + 1) → K'} {hxy : ∀ i, y i ≠ 0 → x i ≠ 0}
 
+/- English proof (translation)
+The claim follows from `| [], Q, Q', r, h => ⟨Q, Q', r, rfl, rfl, h⟩ | i :: l, Q, Q', r, h => by obtain ⟨s, hs⟩ := RestrictTwist.proof.2 k Ω N x K' y hxy Q (L i) Q' (L' i) r (rr i) h (hL i) exact inr_foldl_restrict L L' rr hL l (Q.tensorProd (L i)) (Q'.tensorProd (L' i)) s hs`.
+-/
 theorem inr_foldl_restrict {n : ℕ} (L : Fin n → LineBundle k x) (L' : Fin n → LineBundle k y)
     (rr : Fin n → Ω → K') (hL : ∀ i, RestrictData (L i).toSubSystem hxy (L' i).toSubSystem (rr i)) :
     ∀ (l : List (Fin n)) (Q : LineBundle k x) (Q' : LineBundle k y) (r : Ω → K'),
@@ -31,6 +34,13 @@ theorem inr_foldl_restrict {n : ℕ} (L : Fin n → LineBundle k x) (L' : Fin n 
     obtain ⟨s, hs⟩ := RestrictTwist.proof.2 k Ω N x K' y hxy Q (L i) Q' (L' i) r (rr i) h (hL i)
     exact inr_foldl_restrict L L' rr hL l (Q.tensorProd (L i)) (Q'.tensorProd (L' i)) s hs
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x K' _ _ y hxy hle pp n hsub L L' rr hL`. Establish `hT : ∀ T : Finset (Fin n), ∀ᶠ c : ℕ in atTop, restrLen pp ((tensorSub (fun i => (L' i).toSubSystem) T).twist (twistSys k y (c : ℤ))) = restrLen pp ((tensorSub (fun i => (L i).toSubSystem) T).twist (twistSys k x (c : ℤ)))`. Introduce `T`. Take `⟨r0, h0⟩` from `RestrictTwist.proof.1 k Ω N x K' y hxy hle 0`. Take `⟨P, P', s, hP, hP', hs⟩` from `inr_foldl_restrict L L' rr hL ((List.finRange n).filter (· ∈ T)) (twistBundle k x 0) (twistBundle k y 0) r0 h0`.
+
+Establish `e1 : tensorSub (fun i => (L i).toSubSystem) T = P.toSubSystem` using `hP`. Establish `e2 : tensorSub (fun i => (L' i).toSubSystem) T = P'.toSubSystem` using `hP'`. Rewrite using `[e1, e2]`. Conclude with `hRL k Ω N x K' y hxy hle pp n hsub P P' s hs`. Establish `hall : ∀ᶠ c : ℕ in atTop, interSum pp (fun i => (L' i).toSubSystem) c = interSum pp (fun i => (L i).toSubSystem) c` using `by filter_upwards [Filter.eventually_all.2 hT] with c hc`.
+
+Unfold `interSum`. Conclude with `Finset.sum_congr rfl fun T _ => by rw [hc T]`. Unfold `interNum limUnder`. Rewrite using `[Filter.map_congr hall]`.
+-/
 theorem proof (hRL : RestrLenRestrict.Statement.{u, w}) : InterNumRestrict.Statement.{u, w} := by
   intro k _ Ω _ _ N x K' _ _ y hxy hle pp n hsub L L' rr hL
   have hT : ∀ T : Finset (Fin n), ∀ᶠ c : ℕ in atTop,

@@ -16,11 +16,27 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 def chartPiece (c : ∀ k, ι k) : Set ((Σ k, ι k) → ℂ) :=
   Metric.closedBall 0 1 ∩ {w | ∀ k, w ⟨k, c k⟩ = 1}
 
+/- English proof (translation)
+Use `(isCompact_closedBall _ _).inter_right ?_` and prove the remaining obligations. Rewrite using `[Set.ofPred_forall]`. Conclude with `isClosed_iInter fun k => isClosed_eq (continuous_apply _) continuous_const`.
+-/
 theorem isCompact_chartPiece (c : ∀ k, ι k) : IsCompact (chartPiece c) := by
   refine (isCompact_closedBall _ _).inter_right ?_
   rw [Set.ofPred_forall]
   exact isClosed_iInter fun k => isClosed_eq (continuous_apply _) continuous_const
 
+/- English proof (translation)
+Establish `hsub : chartPiece c ⊆ {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun w hw k => ⟨c k, by rw [hw.2 k]; exact one_ne_zero⟩`. Establish `hcont : ContinuousOn (fun w => (A.h w)⁻¹) (chartPiece c)` using `(hA.mono hsub).inv₀ fun w hw => (A.pos w (hsub hw)).ne'`. Take `⟨M, hM⟩` from `(isCompact_chartPiece c).exists_bound_of_continuousOn hcont`. Use `⟨|M|, abs_nonneg M, fun z hmax hz0 => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ k, 0 < ‖z ⟨k, c k⟩‖` using `fun k => norm_pos_iff.mpr (hz0 k)`.
+
+Use `set s : K → ℂ := fun k => (z ⟨k, c k⟩)⁻¹ with hs`. Establish `hs0 : ∀ k, s k ≠ 0` using `fun k => inv_ne_zero (hz0 k)`. Use `set w : (Σ k, ι k) → ℂ := fun p => s p.1 * z p with hw`. Establish `hwS : w ∈ chartPiece c`. Use `⟨?_, fun k => inv_mul_cancel₀ (hz0 k)⟩` and prove the remaining obligations.
+
+Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `p`. Take `⟨k, i⟩` from `p`. Use `show ‖(z ⟨k, c k⟩)⁻¹ * z ⟨k, i⟩‖ ≤ 1`. Rewrite using `[norm_mul, norm_inv, inv_mul_le_iff₀ (hr k), mul_one]`.
+
+Conclude with `hmax k i`. Establish `hwpos : 0 < A.h w` using `A.pos w (hsub hwS)`. Establish `h1 : 1 ≤ |M| * A.h w`. Use `(hM w hwS).trans (le_abs_self M)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs, abs_inv, abs_of_pos hwpos]`.
+
+Rewrite `this` using `[inv_le_iff_one_le_mul₀ hwpos]`. Conclude with `this`. Establish `hAw : A.h w = (∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k)⁻¹ * A.h z`. Rewrite using `[hw, A.smul s z hs0, ← Finset.prod_inv_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hs, norm_inv, inv_zpow]`. Establish `hR : 0 < ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (hr k) _`. Rewrite `h1` using `[hAw]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_lower (A : HermLine ι) (hA : ContinuousOn A.h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) (c : ∀ k, ι k) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ z : (Σ k, ι k) → ℂ, (∀ k i, ‖z ⟨k, i⟩‖ ≤ ‖z ⟨k, c k⟩‖) →
       (∀ k, z ⟨k, c k⟩ ≠ 0) → ∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k ≤ M * A.h z := by
@@ -64,6 +80,23 @@ end SectionSupBound
 
 open SectionBounded SectionSupBound in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y A τ e hA he`. Use `choose M hM0 hM using fun c => SectionSupBound.exists_lower A hA c`. Use `choose B hB0 hB using fun c hc => SectionBounded.exists_upper y A.a τ he c hc`. Use `set S : ℝ := ∑ c : (∀ k, ι k), if hc : (∀ k, y ⟨k, c k⟩ ≠ 0) then B c hc * M c ^ τ else 0 with hSdef`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun c' _ => by split_ifs with hc'`.
+
+Conclude with `mul_nonneg (hB0 c' hc') (pow_nonneg (hM0 c') τ)`. Conclude with `le_rfl`. Use `⟨Real.log (1 + S), Real.log_nonneg (by linarith), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.exp_log (by linarith)]`. Introduce `dg dh g h z hg hh hdeg hgy hz`.
+
+Establish `hmax : ∀ k, ∃ i, ∀ i', ‖z ⟨k, i'⟩‖ ≤ ‖z ⟨k, i⟩‖` using `fun k => by`. Take `⟨i0, _⟩` from `hz.1 k`. Take `⟨i, _, hi⟩` from `Finset.exists_max_image Finset.univ (fun i => ‖z ⟨k, i⟩‖) ⟨i0, Finset.mem_univ _⟩`. Conclude with `⟨i, fun i' => hi i' (Finset.mem_univ _)⟩`. Use `choose c hcmax using hmax`.
+
+Establish `hz0 : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k h0 => by`. Take `⟨i0, hi0⟩` from `hz.1 k`. Use `hcmax k i0` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `hi0 (norm_le_zero_iff.mp this)`.
+
+Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hz0 k (by`. Use `vanish hz (homog_X ⟨k, c k⟩) (by rw [aeval_X]; exact h0)` as an intermediate fact. Simplify using `using this)`. Establish `h1` using `hB c hyc dg dh g h z hg hh hdeg hgy hz hcmax hz0`. Establish `h2` using `hM c z hcmax hz0`.
+
+Establish `hpow : ∏ k, ‖z ⟨k, c k⟩‖ ^ ((τ : ℤ) * A.a k) = (∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k) ^ τ`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, zpow_mul, zpow_natCast]`. Establish `h3 : ∏ k, ‖z ⟨k, c k⟩‖ ^ ((τ : ℤ) * A.a k) ≤ M c ^ τ * A.h z ^ τ`.
+
+Rewrite using `[hpow, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (Finset.prod_nonneg fun k _ => zpow_nonneg (norm_nonneg _) _) h2 τ`. Establish `hCge : B c hyc * M c ^ τ ≤ 1 + S`. Use `Finset.single_le_sum (f := fun c : (∀ k, ι k) => if hc : (∀ k, y ⟨k, c k⟩ ≠ 0) then B c hc * M c ^ τ else 0) (fun c' _ => by split_ifs with hc'` as an intermediate fact. Conclude with `mul_nonneg (hB0 c' hc') (pow_nonneg (hM0 c') τ)`.
+
+Conclude with `le_rfl) (Finset.mem_univ c)`. Simplify using `only [dif_pos hyc] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAh : 0 ≤ A.h z ^ τ` using `pow_nonneg (A.pos z hz.1).le τ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem SectionSupBound.proof : SectionSupBound.Statement := by
   intro K _ ι _ Ω _ y A τ e hA he
   classical

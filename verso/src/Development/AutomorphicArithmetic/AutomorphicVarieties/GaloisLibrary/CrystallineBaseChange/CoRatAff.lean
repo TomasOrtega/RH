@@ -3,17 +3,34 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.ConstantTerm
 open NumberField MeasureTheory GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V.Sd UpperTheory.V.Sd.Eis
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 private theorem co_aff_mul {R : Type} [CommRing R] (y y' : Rˣ) (x x' : R) :
     aff y x * aff y' x' = aff (y * y') (y * x' + x) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, ratGL]`.
+-/
 private theorem co_rat_aff (F : Type) [Field F] [NumberField F] (a : Fˣ) (y : F) :
     ratGL F 2 (aff a y) =
       aff (Units.map (algebraMap F (Ad F)).toMonoidHom a) (algebraMap F (Ad F) y) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, ratGL]
 
+/- English proof (translation)
+Introduce `F _ _`. Take `⟨h1, h2, h3, h4, -, -, hx⟩` from `UpperTheory.eisenstein_constantTerm_upperBlock F`. Use `letI iM : MeasurableSpace (UPos 2 1 → AdeleRing (𝓞 F) F) := MeasurableSpace.pi`. Establish `hμ : (unipMeasure F 2 1).IsAddHaarMeasure` using `inferInstance`. Establish `hB : BorelSpace (UPos 2 1 → AdeleRing (𝓞 F) F)` using `Pi.borelSpace`.
+
+Establish `hL : ratN F 2 1 = unipLattice F 2 1` using `AddSubgroup.ext fun x => ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`. Establish `hF : IsAddFundamentalDomain (ratN F 2 1) (unipFundamentalDomain F 2 1) (unipMeasure F 2 1)`. Rewrite using `[hL]`. Conclude with `isAddFundamentalDomain_unipFundamentalDomain`. Establish `main : ∀ [MeasurableSpace (NA F)] [BorelSpace (NA F)] (ν : Measure (NA F)) [ν.IsAddHaarMeasure] (D₀ : Set (NA F)), IsAddFundamentalDomain (ratN F 2 1) D₀ ν → ∀ φ : GA F 2 → ℂ, (∀ γ g, φ (ratGL F 2 γ * g) = φ g) → (∀ g, cterm ν D₀ φ g = 0) → GlobalTheory.CuspRep.IsCuspidal φ`.
+
+Introduce `j1 j2 ν _ D₀ hD₀ φ hl h0 r hr0 hr1 i1 i2 μ D hμ' hD g`. Take `rfl : r = 1` from `by omega`. Take `rfl : i1 = j1` from `(@BorelSpace.measurable_eq _ _ i1 i2).trans (@BorelSpace.measurable_eq _ _ j1 j2).symm`. Establish `hper : ∀ γ ∈ ratN F 2 1, ∀ x : NA F, φ (unip (γ + x) * g) = φ (unip x * g)`. Introduce and unpack `_ ⟨y, rfl⟩ x`.
+
+Rewrite using `[hx, hx x]`. Use `Eq.trans ?_ (hl (aff 1 (y ⟨(0, 1), by decide⟩)) _)` and prove the remaining obligations. Rewrite using `[← mul_assoc, co_rat_aff, co_aff_mul, map_one, one_mul, Units.val_one, one_mul, add_comm (x _)]`. Both sides reduce to the same expression. Establish `hD' : IsAddFundamentalDomain (ratN F 2 1) D ν` using `hD.mono (Measure.absolutelyContinuous_isAddHaarMeasure _ _)`.
+
+Establish `h : ∫ x in D, φ (unip x * g) ∂ν = 0` using `(hD'.setIntegral_eq hD₀ (f := fun x => φ (unip x * g)) fun γ x => hper γ γ.2 x).trans (h0 g)`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul μ ν, Measure.restrict_smul, integral_smul_nnreal_measure, h, smul_zero]`. Conclude with `⟨iM, hB, unipMeasure F 2 1, hμ, unipFundamentalDomain F 2 1, hF, @main iM hB _ hμ _ hF⟩`.
+-/
 theorem UpperTheory.V.Br.ctOne :
     UpperTheory.V.Br.CtOne := by
   intro F _ _

@@ -40,6 +40,9 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 open GlobalTheory.Mem.R3
 namespace GlobalTheory.Mem.R3.SelAll
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Substitute `h3` using the available equality. Consider the cases of `h2`. Consider the cases of `h4`. Both sides reduce to the same expression.
+-/
 theorem rpk_eq {D : D7} {O : Obj D} {R : Formalism.L2.RecT O.ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR R} (P : Formalism.L2.Rows.RowSideFamily O.ex)
     {Dc Dc' : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)} {Sp : ∀ Zs, SPer (Dc Zs)} {Sp' : ∀ Zs, SPer (Dc' Zs)}
     {Z Z' : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3} {B : RealTB R P Dc Sp Z S} {B' : RealTB R P Dc' Sp' Z' S}
@@ -47,6 +50,9 @@ theorem rpk_eq {D : D7} {O : Obj D} {R : Formalism.L2.RecT O.ex} {S : Formalism.
     (⟨P, Dc, Sp, Z, B⟩ : RPk R S) = ⟨P, Dc', Sp', Z', B'⟩ := by
   subst h1; subst h3; cases h2; cases h4; rfl
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Substitute `h3` using the available equality. Consider the cases of `h2`. Both sides reduce to the same expression.
+-/
 theorem realTB_eq {D : D7} {O : Obj D} (R : Formalism.L2.RecT O.ex) (S : Formalism.L2.SG.SpectralTiesReal.STiesR R) (P : Formalism.L2.Rows.RowSideFamily O.ex)
     {Dc Dc' : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)} {Sp : ∀ Zs, SPer (Dc Zs)} {Sp' : ∀ Zs, SPer (Dc' Zs)}
     {Z Z' : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
@@ -56,6 +62,17 @@ theorem realTB_eq {D : D7} {O : Obj D} (R : Formalism.L2.RecT O.ex) (S : Formali
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hG hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN hM`. Use `((GlobalTheory.Fc.EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).and hM).mono ?_` and prove the remaining obligations. Introduce and unpack `κ K - ⟨hH, hMK⟩ q R hR c DH _ _`. Establish `hMq` using `hMK q`. Establish `hcols : R.T.cols = q.x.col.C` using `hR.s.cols`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨sP, sS, hP, hS⟩ : ∃ (sP : GlobalTheory.Mem.SRe.SPack (q.w.D q.Z) fun u => (R.T.cols.forms u).to0) (sS : GlobalTheory.Mem.SRe.SRest sP), HEq sP q.sat.P ∧ HEq sS q.sat.S := by`. Rewrite using `[hcols]`. Conclude with `⟨q.sat.P, q.sat.S, HEq.rfl, HEq.rfl⟩`. Establish `hin : ∀ u, Formalism.L2.SG.PoincareInHH.PoincareSetting.InHH (sS.toSTiesR R).X u (sS.toSTiesR R).Y.hK` using `sP.fin.inHH`. Take `⟨a, x, ax, C, hDc, hSp, hW', hXg, hCP, hZ, hsp, κS, sEEc, hsE, hκ, hsee⟩` from `GlobalTheory.T.exists_selected_realization hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN K q hH hMq R hR sP sS hP hS DH.1.1 DH.1.2 c hin`.
+
+Take `⟨y, hyt, hyc, hySx, hyeF, hyfi, hyu⟩` from `GlobalTheory.T.selected_realization_geometric hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN K q hH hMq R hR sP sS hP hS a x ax hin hsp κS sEEc hsE hκ hsee`. Take `⟨r, hr⟩` from `GlobalTheory.T.selected_realization_side hG hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN K q hH hMq R hR sP sS hP hS a x ax y`. Establish `pin` using `GlobalTheory.T.selected_lower_map_holds hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN K q hH hMq R hR sP sS hP hS a x ax`. Take `⟨HD, hHD⟩` from `GlobalTheory.HostDatumExists.exists_hostDatum hGAR _ _ _ _ _ _ _ _ q.O.ex R.T.toTiedDataS (GlobalTheory.Mem.Top.Bl.hostPins_wpt hRF _ _ q) q.x.pin.d3b`. Establish `side` using `GlobalTheory.T.selected_side_realization_holds hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN K q hH hMq R hR sP sS hP hS a x ax y r HD hHD`.
+
+Establish `h1 : C.c.face = x.F.Dc` using `eq_of_heq hDc`. Establish `h3 : GlobalTheory.Fc.zsc (divisionPairOfAdelicFormsFaceColumnsData x) DH.1.1 DH.1.2 c = x.F.Zsc` using `hZ.symm`. Establish `hB` using `realTB_eq R (sS.toSTiesR R) (divisionPairOfAdelicFormsFaceColumnsData x) h1 hSp h3`. Establish `hx : Holds x.R x.F`. Establish `e : a.x = x` using `eq_of_heq ax`.
+
+Rewrite using `[← e]`. Conclude with `a.intersectionNumber_baseChange`. Set `b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c` to `⟨R, sS.toSTiesR R, divisionPairOfAdelicFormsFaceColumnsData x, pin, DH, C, cast hB.symm (realTBOf y)⟩`. Establish `heq : rpkB b = rpkX y` using `rpk_eq (divisionPairOfAdelicFormsFaceColumnsData x) h1 hSp h3 (cast_heq _ _)`. Conclude with `⟨b, rfl, ⟨{ x := x, a := a, ax := ax, y := ⟨hx, y, r, heq, HD⟩, recPin := hR, s := ⟨sP, sS, hP, hS, rfl⟩, pt := ⟨hyt, hyc⟩, sx := hySx, eF := hyeF, fi := hyfi, uS := hyu, parts := hr, cW := ⟨hW', hXg⟩, d3b := heq_of_eq hHD, side := side, colPins := hCP }⟩⟩`.
+-/
 theorem bwit_exists : GlobalTheory.Published.GreenCuspidal → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (Γ : GeoP) (p : Prm hL), p = prmR N SExt.none Γ → (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c)) → (GlobalTheory.Fc.EvP fun _ K => ∀ q : WPt p.s K, GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat) → GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (c : ℝ) (_ : {n : ℕ × ℕ // (q.w.D q.Z).s.Del = (n.1 : ℚ) ∧ q.O.L.etaSz = ((q.w.D q.Z).R.m : ℝ) * (n.2 : ℝ)}), q.O.L.sc = K.s → Val K.C K.cD K.ch q.O.L → ∃ b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c, b.R = R ∧ Nonempty (BWit q b) := by
   intro hG hDC hHM hCW hW hDS hHC hCR hGAR hRF hL N Γ p hp hN hM
   refine ((GlobalTheory.Fc.EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).and hM).mono ?_

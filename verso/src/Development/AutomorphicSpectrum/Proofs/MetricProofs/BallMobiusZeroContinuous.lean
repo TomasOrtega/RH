@@ -14,6 +14,15 @@ open scoped ComplexOrder
 
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
+/- English proof (translation)
+Take `⟨A, B, C, D, rfl⟩ : ∃ A B C D, u = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks u).symm⟩`. Rewrite using `[toBlocks_fromBlocks₁₁]`. Unfold `IsSgU sgI at hu`. Rewrite `hu` using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Establish `h` using `(fromBlocks_inj.1 hu).1`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg] at h`. Introduce `hdet`. Take `⟨v, hv, hAv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Establish `h1 : -(Cᴴ *ᵥ (C *ᵥ v)) = v`. Establish `h2` using `congrArg (fun M => M *ᵥ v) h`.
+
+Simplify using `only [Matrix.add_mulVec, Matrix.neg_mulVec, ← Matrix.mulVec_mulVec, Matrix.one_mulVec, hAv, Matrix.mulVec_zero, zero_add] at h2`. Conclude with `h2`. Establish `h3 : star v ⬝ᵥ v = -(star (C *ᵥ v) ⬝ᵥ (C *ᵥ v))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dotProduct_neg, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`.
+
+Establish `h4 : 0 ≤ star v ⬝ᵥ v` using `dotProduct_star_self_nonneg v`. Establish `h5 : 0 ≤ star (C *ᵥ v) ⬝ᵥ (C *ᵥ v)` using `dotProduct_star_self_nonneg _`. Establish `h6 : star v ⬝ᵥ v = 0` using `le_antisymm (by rw [h3]; exact neg_nonpos.2 h5) h4`. Conclude with `hv (dotProduct_star_self_eq_zero.1 h6)`.
+-/
 theorem IsSgU.det_toBlocks₁₁_ne_zero {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) :
     u.toBlocks₁₁.det ≠ 0 := by
   obtain ⟨A, B, C, D, rfl⟩ : ∃ A B C D, u = fromBlocks A B C D :=
@@ -39,9 +48,15 @@ theorem IsSgU.det_toBlocks₁₁_ne_zero {u : Matrix (Sg j j') (Sg j j') ℂ} (h
   have h6 : star v ⬝ᵥ v = 0 := le_antisymm (by rw [h3]; exact neg_nonpos.2 h5) h4
   exact hv (dotProduct_star_self_eq_zero.1 h6)
 
+/- English proof (translation)
+Simplify using `[moebW]`.
+-/
 theorem moebW_zero (u : Matrix (Sg j j') (Sg j j') ℂ) : moebW u 0 = u.toBlocks₂₁ * u.toBlocks₁₁⁻¹ := by
   simp [moebW]
 
+/- English proof (translation)
+Establish `h : (fun x => (A x)⁻¹) = fun x => ((A x).det)⁻¹ • (A x).adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[h]`. Conclude with `(hA.matrix_det.inv₀ hd).smul hA.matrix_adjugate`.
+-/
 theorem continuous_matrix_inv {X m : Type} [TopologicalSpace X] [Fintype m] [DecidableEq m]
     {A : X → Matrix m m ℂ} (hA : Continuous A) (hd : ∀ x, (A x).det ≠ 0) :
     Continuous fun x => (A x)⁻¹ := by
@@ -51,6 +66,13 @@ theorem continuous_matrix_inv {X m : Type} [TopologicalSpace X] [Fintype m] [Dec
   rw [h]
   exact (hA.matrix_det.inv₀ hd).smul hA.matrix_adjugate
 
+/- English proof (translation)
+Establish `hb : ∀ τ, (ballMat q 0 τ)ᵀ = 0`. Introduce `τ`. Use extensionality with `a b`. Simplify using `[ballMat]`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+
+Simplify using `only [moebBall, ballPt, hb, moebW_zero]`. Use `set τ := (q.symm k).1`. Establish `h11 : Continuous fun x => (f x τ).toBlocks₁₁` using `continuous_matrix fun a b => (hc τ).matrix_elem _ _`. Establish `h21 : Continuous fun x => (f x τ).toBlocks₂₁` using `continuous_matrix fun a b => (hc τ).matrix_elem _ _`. Establish `hm` using `h21.matrix_mul (continuous_matrix_inv h11 fun x => (hu x τ).det_toBlocks₁₁_ne_zero)`.
+
+Conclude with `hm.matrix_elem _ _`.
+-/
 theorem continuous_moebBall_zero (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n)
     (X : Type) [TopologicalSpace X] (f : X → Ψ → Matrix (Sg j j') (Sg j j') ℂ)
     (hc : ∀ τ, Continuous fun x => f x τ) (hu : ∀ x τ, IsSgU (f x τ)) :

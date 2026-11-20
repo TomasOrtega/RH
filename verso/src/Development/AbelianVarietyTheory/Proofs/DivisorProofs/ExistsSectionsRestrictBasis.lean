@@ -10,6 +10,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Use `⟨isLB_lbPow (isLB_toLB A) l, fun i j h => ?_, fun i x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [show (lbPow (toLB A) l).g i j = _ from lbPow_g _ l i j, Units.val_pow_eq_pow_val, val_res, map_pow, fnOf_resG, fnOf_toLB_g]`. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (Units.ne_zero _))]`. Conclude with `((i PUnit.unit).2.2 x ((lbPow_U _ l i).le hx)).nsmul l`.
+-/
 theorem presents_lbPow_toLB {X : Scheme.{0}} [IsIntegral X] (A : CartierDiv X) (l : ℕ) :
     Presents (l • A) (lbPow (toLB A) l) fun j => (j PUnit.unit).1.2 ^ l := by
   refine ⟨isLB_lbPow (isLB_toLB A) l, fun i j h => ?_, fun i x hx => ?_⟩
@@ -18,11 +21,17 @@ theorem presents_lbPow_toLB {X : Scheme.{0}} [IsIntegral X] (A : CartierDiv X) (
     rw [div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (Units.ne_zero _))]
   · exact ((i PUnit.unit).2.2 x ((lbPow_U _ l i).le hx)).nsmul l
 
+/- English proof (translation)
+The claim follows from `LB.f_injective (funext fun i => by simp only [GlobalTheory.secPull, GlobalTheory.chartSec_f, LB.add_f, map_add])`.
+-/
 theorem secPull_add' {X Y : Scheme.{0}} {L : LB X} (s t : L.Sec) (f : Y ⟶ X) :
     GlobalTheory.secPull (s + t) f = GlobalTheory.secPull s f + GlobalTheory.secPull t f :=
   LB.f_injective (funext fun i => by
     simp only [GlobalTheory.secPull, GlobalTheory.chartSec_f, LB.add_f, map_add])
 
+/- English proof (translation)
+The claim follows from `LB.f_injective (funext fun i => by simp only [GlobalTheory.secPull, GlobalTheory.chartSec_f, LB.smul_f, map_mul] congr 1 change ((X.presheaf.map _ ≫ f.appLE _ _ _).hom c) = ((f.appTop ≫ Y.presheaf.map _).hom c) rw [Scheme.Hom.map_appLE] rfl)`.
+-/
 theorem secPull_smul' {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec) (f : Y ⟶ X) :
     GlobalTheory.secPull (c • s) f = f.appTop c • GlobalTheory.secPull s f :=
   LB.f_injective (funext fun i => by
@@ -32,11 +41,17 @@ theorem secPull_smul' {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec)
     rw [Scheme.Hom.map_appLE]
     rfl)
 
+/- English proof (translation)
+Simplify using `only [algX, RingHom.comp_apply, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem algX_top_eq {X : Scheme.{0}} (p : X ⟶ Sp ℂ) (a : ℂ) :
     algX p ⊤ a = p.appTop ((Scheme.ΓSpecIso (.of ℂ)).inv a) := by
   simp only [algX, RingHom.comp_apply, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Establish `hcl : closure ({redι (Closeds.closure ({z} : Set X)) (genericPoint _)} : Set X) = closure {z}`. Rewrite using `[← Set.image_singleton, (redι _).isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ, range_redι]`. Both sides reduce to the same expression. Conclude with `(inseparable_iff_closure_eq.2 hcl).eq`.
+-/
 theorem redι_closure_genericPoint {X : Scheme.{0}} (z : X)
     [IrreducibleSpace (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme] :
     redι (Closeds.closure ({z} : Set X)) (genericPoint _) = z := by
@@ -50,6 +65,27 @@ end GlobalTheory.PairStep
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ _ p hp A z hA`. Use `haveI hYi : IsIntegral (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme := isIntegral_red isIrreducible_singleton.closure`. Take `⟨l₁, hl₁⟩` from `eventually_atTop.1 (GlobalTheory.T.eventually_exists_lift_section_of_ample_pow_from_closed X p hp (toLB A) (Closeds.closure ({z} : Set X)) hA)`. Use `⟨l₁, fun l hl => ?_⟩` and prove the remaining obligations. Use `letI : Algebra ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme, ⊤) := algebraΓOfHom (redι (Closeds.closure ({z} : Set X)) ≫ p)`.
+
+Use `letI : Module ℂ ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec := Module.compHom _ (algebraMap ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme, ⊤))`. Use `haveI : IsScalarTower ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} : Set X))).subscheme, ⊤) ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec := ⟨fun a g s => by show (algebraMap ℂ Γ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure ({z} …`. Rewrite using `[mul_smul]⟩`. Establish `hP` using `presents_lbPow_toLB A l`. Establish `hr : Module.finrank ℂ ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec = lbH0 ℂ ((toLB (l • A)).pull (redι (Closeds.closure ({z} : Set X))))`.
+
+Rewrite using `[← lineBundleGlobalSectionsDim_eq_finrank]`. Conclude with `lineBundleGlobalSectionsDim_congr_picardClass (pull_isLB hP.isLB _) (pull_isLB (isLB_toLB _) _) (by rw [cls_pull hP.isLB, cls_pull (isLB_toLB _), ← hP.toPic_eq, toPic_apply])`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Fin (Module.finrank ℂ ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec) → ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec, LinearIndependent ℂ v := by`. Distinguish the cases in `hf : Module.Finite ℂ ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec`. Conclude with `⟨_, (Module.finBasis ℂ _).linearIndependent⟩`.
+
+Rewrite using `[Module.finrank_of_not_finite hf]`. Conclude with `⟨Fin.elim0, linearIndependent_empty_type⟩`. Use `choose s hs using fun i => hl₁ l hl (v i)`. Use `⟨_, fun i => hP.rat (s i), fun i => hP.rat_mem _, hr, fun a ha => ?_⟩` and prove the remaining obligations. Establish `e₁ : ∑ i, Cartier.constFn p (a i) * hP.rat (s i) = hP.rat (∑ i, algX p ⊤ (a i) • s i)`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, Algebra.smul_def, CartierDiv.algebraMap_top]`. Both sides reduce to the same expression. Establish `e₂ : GlobalTheory.secPull (∑ i, algX p ⊤ (a i) • s i) (redι (Closeds.closure ({z} : Set X))) = ∑ i, a i • v i`.
+
+Set `F : (lbPow (toLB A) l).Sec →+ ((lbPow (toLB A) l).pull (redι (Closeds.closure ({z} : Set X)))).Sec` to `{ toFun := fun t => GlobalTheory.secPull t _ map_zero' := by`. Use `secPull_smul' (0 : Γ(X, ⊤)) (0 : (lbPow (toLB A) l).Sec) (redι (Closeds.closure ({z} : Set X)))` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_smul]`. Then use the resulting hypothesis. Use the proof step `map_add' := fun t t' => secPull_add' t t' _ }`. Express the relevant statement in the definitionally equal form `F _ = _`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.secPull _ _ = _`. Rewrite using `[secPull_smul', hs i, algX_top_eq]`. Both sides reduce to the same expression.
+
+Establish `hne : ∑ i, a i • v i ≠ 0`. Introduce `h0`. Take `⟨i, hi⟩` from `Function.ne_iff.1 ha`. Conclude with `hi (Fintype.linearIndependent_iff.1 hv a h0 i)`. Rewrite `hne` using `[← e₂]`.
+
+Establish `hgen` using `(sec_ne_zero_iff _).1 hne`. Rewrite `hgen` using `[GlobalTheory.nonzeroLocus_secPull]`. Establish `hgen' : redι (Closeds.closure ({z} : Set X)) (genericPoint _) ∈ nonzeroLocus (∑ i, algX p ⊤ (a i) • s i)` using `hgen`. Establish `key : ∀ y : X, y = redι (Closeds.closure ({z} : Set X)) (genericPoint _) → y ∈ nonzeroLocus (∑ i, algX p ⊤ (a i) • s i)` using `fun y hy => hy ▸ hgen'`. Establish `hz` using `key z (redι_closure_genericPoint z).symm`.
+
+Rewrite using `[e₁]`. Conclude with `(hP.generatesAt_rat_iff _).2 hz`.
+-/
 theorem exists_sections_restrict_basis :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p →
       ∀ (A : CartierDiv X) (z : X), IsAmpleLB (toLB A) → ∃ l₁ : ℕ, ∀ l, l₁ ≤ l →

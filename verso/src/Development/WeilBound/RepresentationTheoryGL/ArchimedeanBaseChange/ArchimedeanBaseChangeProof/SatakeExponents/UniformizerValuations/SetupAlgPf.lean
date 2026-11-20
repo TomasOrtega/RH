@@ -56,10 +56,20 @@ def eigSub (v : EuclideanSpace ℂ (Fin d)) : StarSubalgebra ℂ (Prod' H d) whe
 
 def pFun (v : EuclideanSpace ℂ (Fin d)) (a : Prod' H d) : ℂ := inner ℂ v (a.2 v) / inner ℂ v v
 
+/- English proof (translation)
+Rewrite using `[pFun, h, inner_smul_right, mul_div_assoc, div_self (inner_self_ne_zero.2 hv), mul_one]`.
+-/
 theorem pFun_eq {v : EuclideanSpace ℂ (Fin d)} (hv : v ≠ 0) {a : Prod' H d} {c : ℂ} (h : a.2 v = c • v) :
     pFun v a = c := by
   rw [pFun, h, inner_smul_right, mul_div_assoc, div_self (inner_self_ne_zero.2 hv), mul_one]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : StarAlgebra.adjoin ℂ t ≤ (StarSubalgebra.centralizer ℂ ({b} : Set B)).comap f`. Apply `StarAlgebra.adjoin_le` to reduce the goal to its premises. Introduce `y hy`. Use `show f y ∈ StarSubalgebra.centralizer ℂ ({b} : Set B)`.
+
+Rewrite using `[StarSubalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Use `⟨(h y hy).1.eq, ?_⟩` and prove the remaining obligations. Use `congrArg star (h y hy).2.eq` as an intermediate fact. Simplify using `only [star_mul, star_star] at this`.
+
+Conclude with `this.symm`. Establish `hm : f x ∈ StarSubalgebra.centralizer ℂ ({b} : Set B)` using `hle hx`. Rewrite `hm` using `[StarSubalgebra.mem_centralizer_iff]`. Conclude with `(hm b rfl).1`.
+-/
 theorem commute_of_adjoin {A B : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Ring B]
     [StarRing B] [Algebra ℂ B] [StarModule ℂ B] (f : A →⋆ₐ[ℂ] B) (b : B) (t : Set A)
     (h : ∀ x ∈ t, Commute b (f x) ∧ Commute b (star (f x))) :
@@ -81,6 +91,9 @@ theorem commute_of_adjoin {A B : Type*} [Ring A] [StarRing A] [Algebra ℂ A] [S
 
 end Gen
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [pow_succ, pow_succ, ContinuousLinearMap.toLinearMap_mul, ih]`.
+-/
 theorem coe_pow_clm {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (f : V →L[ℂ] V) (k : ℕ) :
     ((f ^ k : V →L[ℂ] V) : V →ₗ[ℂ] V) = (f : V →ₗ[ℂ] V) ^ k := by
   induction k with
@@ -115,17 +128,26 @@ def ρU (gen : Γ → Prod' H d) : Alg gen →ₐ[ℂ] Module.End ℂ (Euclidean
     ext w
     simp [Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+The claim follows from `StarAlgebra.adjoin_le (by rintro _ ⟨x, rfl⟩; exact heig x) a.2`.
+-/
 theorem mem_eig (gen : Γ → Prod' H d) (v : EuclideanSpace ℂ (Fin d))
     (heig : ∀ x, ∃ c : ℂ, (gen x).2 v = c • v ∧ (star (gen x).2) v = (starRingEnd ℂ c) • v) (a : Alg gen) :
     (a : Prod' H d) ∈ eigSub v :=
   StarAlgebra.adjoin_le (by rintro _ ⟨x, rfl⟩; exact heig x) a.2
 
+/- English proof (translation)
+Take `⟨c, h1, _⟩` from `mem_eig gen v heig a`. Rewrite using `[pFun_eq hv h1, h1]`.
+-/
 theorem hpv (gen : Γ → Prod' H d) {v : EuclideanSpace ℂ (Fin d)} (hv : v ≠ 0)
     (heig : ∀ x, ∃ c : ℂ, (gen x).2 v = c • v ∧ (star (gen x).2) v = (starRingEnd ℂ c) • v) (a : Alg gen) :
     (a : Prod' H d).2 v = pFun v (a : Prod' H d) • v := by
   obtain ⟨c, h1, _⟩ := mem_eig gen v heig a
   rw [pFun_eq hv h1, h1]
 
+/- English proof (translation)
+Take `⟨c, h1, h2⟩` from `mem_eig gen v heig a`. Rewrite using `[pFun_eq hv h1, h2]`.
+-/
 theorem hps (gen : Γ → Prod' H d) {v : EuclideanSpace ℂ (Fin d)} (hv : v ≠ 0)
     (heig : ∀ x, ∃ c : ℂ, (gen x).2 v = c • v ∧ (star (gen x).2) v = (starRingEnd ℂ c) • v) (a : Alg gen) :
     (star (a : Prod' H d).2) v = starRingEnd ℂ (pFun v (a : Prod' H d)) • v := by
@@ -149,6 +171,9 @@ def pU (gen : Γ → Prod' H d) {v : EuclideanSpace ℂ (Fin d)} (hv : v ≠ 0)
     show (star (a : Prod' H d).2) v = _
     rw [hps gen hv heig a, starRingEnd_apply])
 
+/- English proof (translation)
+Establish `h` using `commute_of_adjoin (evU (H := H)) u _ (by rintro _ ⟨x, rfl⟩; exact hu x) _ g.2`. Establish `h'` using `congrArg (fun f : EuclideanSpace ℂ (Fin d) →L[ℂ] EuclideanSpace ℂ (Fin d) => (f : EuclideanSpace ℂ (Fin d) →ₗ[ℂ] EuclideanSpace ℂ (Fin d))) h.eq`. Simplify using `only [ContinuousLinearMap.toLinearMap_mul] at h'`. Conclude with `h'`.
+-/
 theorem commU_lem (gen : Γ → Prod' H d) (u : EuclideanSpace ℂ (Fin d) →L[ℂ] EuclideanSpace ℂ (Fin d))
     (hu : ∀ x, Commute u (gen x).2 ∧ Commute u (star (gen x).2)) (g : Alg gen) :
     Commute (u : EuclideanSpace ℂ (Fin d) →ₗ[ℂ] EuclideanSpace ℂ (Fin d)) (ρU gen g) := by
@@ -158,6 +183,9 @@ theorem commU_lem (gen : Γ → Prod' H d) (u : EuclideanSpace ℂ (Fin d) →L[
   simp only [ContinuousLinearMap.toLinearMap_mul] at h'
   exact h'
 
+/- English proof (translation)
+The claim follows from `commute_of_adjoin (evB s) (β s) _ (by rintro _ ⟨x, rfl⟩; exact hb s x) _ g.2`.
+-/
 theorem comm_lem (gen : Γ → Prod' H d) (β : ∀ s, H s →L[ℂ] H s)
     (hb : ∀ s x, Commute (β s) ((gen x).1 s) ∧ Commute (β s) (star ((gen x).1 s))) (s : ι) (g : Alg gen) :
     Commute (β s) (Rb gen s g) :=
@@ -168,6 +196,17 @@ end Build
 end SetupAlgPf
 
 open SetupAlgPf in
+/- English proof (translation)
+Introduce `E _ _ _ n π S T K W X`. Set `_` to `X.ft`. Set `_` to `X.ne`. Set `_` to `X.ng`. Set `_` to `X.ip`.
+
+Set `_` to `X.cs`. Establish `hg0 : X.gen X.a₀ ∈ StarAlgebra.adjoin ℂ (Set.range X.gen)` using `StarAlgebra.subset_adjoin ℂ _ ⟨X.a₀, rfl⟩`. Use `⟨{ A := Alg X.gen cr := algCR X.gen X.comm X.commStar sr := (inferInstance : StarRing (Alg X.gen)) al := (inferInstance : Algebra ℂ (Alg X.gen)) sm := (inferInstance : StarModule ℂ (Alg X.gen)) ι := X.ι H := X.H R := Rb X.gen β := X.β m := X.m V := EuclideanSpace ℂ (Fin X.d) ρ := …` and prove the remaining obligations. Take `⟨c, hc, h⟩` from `X.a₀v show pFun X.v (X.gen X.a₀) ≠ 0`. Rewrite using `[pFun_eq X.v_ne h]`.
+
+Conclude with `hc`. Introduce `g hg`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hg`. Take `⟨C, N, j, h⟩` from `X.bound g.1 g.2 ⟨b.1, b.2, by rw [← hb]; rfl⟩`. Use `⟨C, N, j, h.mono fun k hk => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((X.u : EuclideanSpace ℂ (Fin X.d) →ₗ[ℂ] EuclideanSpace ℂ (Fin X.d)) * ρU X.gen g) ^ k = (((X.u * (g : Prod' X.H X.d).2) ^ k : EuclideanSpace ℂ (Fin X.d) →L[ℂ] EuclideanSpace ℂ (Fin X.d)) : EuclideanSpace ℂ (Fin X.d) →ₗ[ℂ] EuclideanSpace ℂ (Fin X.d))`. Rewrite using `[coe_pow_clm, ContinuousLinearMap.toLinearMap_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hk`.
+
+Introduce `s χ hb hp h3`. Conclude with `X.read s χ hb (fun a _ => ⟨pU X.gen X.v_ne X.eigv a, hpv X.gen X.v_ne X.eigv a, hp a⟩) h3`.
+-/
 theorem setupAlg : SetupAlg := by
   intro E _ _ _ n π S T K W X
   let _ := X.ft; let _ := X.ne; let _ := X.ng; let _ := X.ip; let _ := X.cs

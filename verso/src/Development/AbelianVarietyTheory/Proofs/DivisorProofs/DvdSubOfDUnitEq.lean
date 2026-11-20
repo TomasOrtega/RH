@@ -5,6 +5,9 @@ open TensorProduct
 
 namespace GlobalTheory.CotDualLin
 
+/- English proof (translation)
+Establish `h1` using `CartierDual.mul_apply (R := O) (C := A) 1 1 a`. Rewrite `h1` using `[one_mul, h]`. Simplify using `only [map_add, map_smul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, Bialgebra.counit_one] at h1`. Conclude with `⟨-(CartierDual.pair O A A (1 ⊗ₜ 1) t), by rw [smul_eq_mul] at h1; linear_combination -h1⟩`.
+-/
 theorem dvd_counit (O A : Type) [CommRing O] [CommRing A] [HopfAlgebra O A] [Module.Finite O A]
     [Module.Projective O A] (a : A) (q : O) (t : A ⊗[O] A)
     (h : Coalgebra.comul (R := O) a = a ⊗ₜ[O] (1 : A) + (1 : A) ⊗ₜ[O] a + q • t) :
@@ -14,6 +17,11 @@ theorem dvd_counit (O A : Type) [CommRing O] [CommRing A] [HopfAlgebra O A] [Mod
   simp only [map_add, map_smul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, Bialgebra.counit_one] at h1
   exact ⟨-(CartierDual.pair O A A (1 ⊗ₜ 1) t), by rw [smul_eq_mul] at h1; linear_combination -h1⟩
 
+/- English proof (translation)
+Rewrite `hχ` using `[pow_two]`. Use `Submodule.mul_induction_on hχ (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `hx1 : x 1 = 0` using `hx`. Establish `hy1 : y 1 = 0` using `hy`. Rewrite using `[CartierDual.mul_apply, h]`.
+
+Simplify using `only [map_add, map_smul, CartierDual.pair_tmul_tmul, hx1, hy1, mul_zero, zero_mul, zero_add, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`. Establish `e : (x + y) a = x a + y a` using `rfl`. Rewrite using `[e]`. Conclude with `dvd_add hx hy`.
+-/
 theorem dvd_of_mem_sq (O A : Type) [CommRing O] [CommRing A] [HopfAlgebra O A] [Coalgebra.IsCocomm O A] [Module.Finite O A]
     [Module.Projective O A] (a : A) (q : O) (t : A ⊗[O] A)
     (h : Coalgebra.comul (R := O) a = a ⊗ₜ[O] (1 : A) + (1 : A) ⊗ₜ[O] a + q • t)
@@ -29,6 +37,13 @@ theorem dvd_of_mem_sq (O A : Type) [CommRing O] [CommRing A] [HopfAlgebra O A] [
   · have e : (x + y) a = x a + y a := rfl
     rw [e]; exact dvd_add hx hy
 
+/- English proof (translation)
+Introduce `O A _ _ _ _ _ _ a q t h φ ψ hd`. Establish `h0 : PDiv.dUnit O (φ - ψ) = 0` using `by rw [PDiv.dUnit, map_sub]; exact sub_eq_zero.2 hd`. Rewrite `h0` using `[PDiv.dUnit, AugCot.d_eq_zero_iff]`. Establish `h2` using `dvd_of_mem_sq O A a q t h _ h0`. Use `set c := Bialgebra.counitAlgHom O (CartierDual O A) (φ - ψ)`.
+
+Establish `h3 : (algebraMap O (CartierDual O A) c) a = c * Coalgebra.counit (R` using `O) a := by`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Establish `e : (φ - ψ - algebraMap O (CartierDual O A) c) a = φ a - ψ a - (algebraMap O (CartierDual O A) c) a` using `rfl`. Rewrite `h2` using `[e, h3]`.
+
+Establish `h4` using `dvd_mul_of_dvd_right (dvd_counit O A a q t h) c`. Use `dvd_add h2 h4` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem dvd_sub_of_dUnit_eq : ∀ (O A : Type) [CommRing O] [CommRing A] [HopfAlgebra O A] [Coalgebra.IsCocomm O A]
     [Module.Finite O A] [Module.Projective O A] (a : A) (q : O) (t : A ⊗[O] A),
     Coalgebra.comul (R := O) a = a ⊗ₜ[O] (1 : A) + (1 : A) ⊗ₜ[O] a + q • t →

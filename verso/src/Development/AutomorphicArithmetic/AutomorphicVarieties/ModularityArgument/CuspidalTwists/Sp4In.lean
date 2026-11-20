@@ -39,6 +39,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 
 namespace UpperTheory.V.Cu
 
+/- English proof (translation)
+Introduce `_ _ h ok f` and use `⟨ok, Or.inr ⟨h, f.five, f.sb, f.psi⟩⟩`.
+-/
 theorem hFit : HFit := fun _ _ h ok f => ⟨ok, Or.inr ⟨h, f.five, f.sb, f.psi⟩⟩
 
 end UpperTheory.V.Cu

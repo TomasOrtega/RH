@@ -41,6 +41,9 @@ def Lifts (p : (Dw.La →ₗ[𝓞 E] Dw.La) × (Dw.La →ₗ[𝓞 E] Dw.La)) (g 
   (∀ a, (Submodule.Quotient.mk (p.1 a) : LevelMod Dw l) = g (Submodule.Quotient.mk a)) ∧
     ∀ a, Dw.ModN l.A (p.2 a - a)
 
+/- English proof (translation)
+Take `⟨hu, hr, -⟩` from `GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y`. Conclude with `⟨fun h => hu _ _ hr h, fun h => h ▸ hr⟩`.
+-/
 theorem frMap_id_iff {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) :
     FrMap (AlgHom.id c.F S) y y' ↔ y = y' := by
   obtain ⟨hu, hr, -⟩ := GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y
@@ -52,6 +55,9 @@ variable {G : Type} [Group G] (R : RelFam Xo c G)
 
 abbrev reord {S : Type} [CommRing S] [Algebra c.F S] (g : G) (y y' : FrPt Xo c S) : Prop := R g S y y'
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mul_iff : ActMul (K := c.F) (fun S _ _ => FrPt Xo c S) (reord R) ↔ Multiplicative' R := Iff.rfl
 
 variable {R}

@@ -9,6 +9,15 @@ namespace GlobalTheory.LKInv
 
 open Module Polynomial TensorProduct
 
+/- English proof (translation)
+Use `set u := h.unit with hu`. Use `set y : A := ((u⁻¹ : (Module.End k A)ˣ) : Module.End k A) 1 with hy`. Establish `hxy : x * y = 1`. Express the relevant statement in the definitionally equal form `LinearMap.mulLeft k x (((u⁻¹ : (Module.End k A)ˣ) : Module.End k A) 1) = 1`. Rewrite using `[← Module.End.mul_apply]`.
+
+Establish `: LinearMap.mulLeft k x = (u : Module.End k A)` using `rfl`. Rewrite using `[this, Units.mul_inv, Module.End.one_apply]`. Establish `hly : LinearMap.mulLeft k y = ((u⁻¹ : (Module.End k A)ˣ) : Module.End k A)`. Establish `e : (u : Module.End k A) * LinearMap.mulLeft k y = 1`. Express the relevant statement in the definitionally equal form `LinearMap.mulLeft k x * LinearMap.mulLeft k y = 1`.
+
+Use extensionality with `z`. Simplify using `[← mul_assoc, hxy]`. Combine the equalities or inequalities in the displayed calculation. Establish `hyx : y * x = 1`. Use `congrArg (fun f : Module.End k A => f 1) (Units.inv_mul u)` as an intermediate fact.
+
+Simplify using `only [← hly] at this`. Express the relevant statement in the definitionally equal form `y * (x * 1) = 1 at this`. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Conclude with `⟨⟨x, y, hxy, hyx⟩, rfl⟩`.
+-/
 theorem isUnit_of_isUnit_mulLeft {k A : Type} [Field k] [Ring A] [Algebra k A] (x : A)
     (h : IsUnit (LinearMap.mulLeft k x)) : IsUnit x := by
   set u := h.unit with hu
@@ -33,11 +42,41 @@ theorem isUnit_of_isUnit_mulLeft {k A : Type} [Field k] [Ring A] [Algebra k A] (
     rwa [mul_one] at this
   exact ⟨⟨x, y, hxy, hyx⟩, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem baseChange_mulLeft {k A K : Type} [Field k] [Ring A] [Algebra k A] [Field K] [Algebra k K]
     (a : A) : (LinearMap.mulLeft k a).baseChange K = LinearMap.mulLeft K ((1 : K) ⊗ₜ[k] a) := by
   ext x
   simp [Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Use `set r := finrank k V`. Set `b : Basis (Fin r) k V` to `Module.finBasis k V`. Use `set m := finrank k A`. Set `bA : Basis (Fin m) k A` to `Module.finBasis k A`. Set `M : Fin r → Matrix (Fin m) (Fin m) k` to `fun i => LinearMap.toMatrix bA bA (LinearMap.mulLeft k (b i : A))`.
+
+Use `set D : MvPolynomial (Fin r) k := (∑ i, (MvPolynomial.X i : MvPolynomial (Fin r) k) • (M i).map (MvPolynomial.C : k →+* MvPolynomial (Fin r) k)).det with hD`. Establish `key : ∀ {T : Type} [CommRing T] (ψ : MvPolynomial (Fin r) k →+* T), ψ D = (∑ i, ψ (MvPolynomial.X i) • (M i).map (ψ.comp (MvPolynomial.C : k →+* MvPolynomial (Fin r) k))).det`. Introduce `T _ ψ`. Rewrite using `[hD, RingHom.map_det, RingHom.mapMatrix_apply]`. Use `congr 1`.
+
+Use extensionality with `p q`. Simplify using `[Matrix.sum_apply]`. Establish `hlin : ∀ t : Fin r → k, ∑ i, t i • M i = LinearMap.toMatrix bA bA (LinearMap.mulLeft k (∑ i, t i • (b i : A)))`. Introduce `t`. Establish `: LinearMap.mulLeft k (∑ i, t i • (b i : A)) = ∑ i, t i • LinearMap.mulLeft k (b i : A)`.
+
+Use extensionality with `z`. Simplify using `[Finset.sum_mul]`. Rewrite using `[this, map_sum]`. Simplify using `[M, map_smul]`. Establish `hD0 : D ≠ 0`.
+
+Establish `hspan : Submodule.span K ((fun a : A => (1 : K) ⊗ₜ[k] a) '' (V : Set A)) ≤ Submodule.span K (Set.range fun i => (1 : K) ⊗ₜ[k] (b i : A))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `hrep` using `b.sum_repr ⟨a, ha⟩`. Establish `: (1 : K) ⊗ₜ[k] a = ∑ i, (algebraMap k K (b.repr ⟨a, ha⟩ i)) • ((1 : K) ⊗ₜ[k] (b i : A))` using `by conv_lhs => rw [show a = ((⟨a, ha⟩ : V) : A) from rfl, ← hrep]`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, TensorProduct.tmul_sum, TensorProduct.tmul_smul, algebraMap_smul]`. Use `show (1 : K) ⊗ₜ[k] a ∈ Submodule.span K (Set.range fun i => (1 : K) ⊗ₜ[k] (b i : A))`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hspan hu)`.
+
+Introduce `h0`. Establish `h1` using `key (MvPolynomial.eval₂Hom (algebraMap k K) s)`. Rewrite `h1` using `[h0, map_zero]`. Establish `hmat : ∑ i, (MvPolynomial.eval₂Hom (algebraMap k K) s) (MvPolynomial.X i) • (M i).map ((MvPolynomial.eval₂Hom (algebraMap k K) s).comp MvPolynomial.C) = LinearMap.toMatrix (Algebra.TensorProduct.basis K bA) (Algebra.TensorProduct.basis K bA) (LinearMap.mulLeft K u)`. Rewrite using `[← hs]`.
+
+Establish `: LinearMap.mulLeft K (∑ i, s i • (1 : K) ⊗ₜ[k] (b i : A)) = ∑ i, s i • LinearMap.mulLeft K ((1 : K) ⊗ₜ[k] (b i : A))`. Use extensionality with `z`. Simplify using `[Finset.sum_mul]`. Rewrite using `[this, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← baseChange_mulLeft, LinearMap.toMatrix_baseChange]`. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Rewrite using `[MvPolynomial.eval₂Hom_comp_C]`. Rewrite `h1` using `[hmat, LinearMap.det_toMatrix]`. Establish `hu' : IsUnit (LinearMap.mulLeft K u)`.
+
+Take `⟨w, rfl⟩` from `hunit`. Apply the tactic sequence `refine ⟨⟨LinearMap.mulLeft K (w : K ⊗[k] A), LinearMap.mulLeft K ((w⁻¹ : (K ⊗[k] A)ˣ) : K ⊗[k] A), ?_, ?_⟩, rfl⟩ <;> ext z <;> simp [← mul_assoc]`. Use `(LinearMap.isUnit_iff_isUnit_det _).1 hu'` as an intermediate fact. Rewrite `this` using `[← h1]`. Conclude with `not_isUnit_zero this`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Fin r → k, MvPolynomial.eval t D ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hD0 (MvPolynomial.funext fun x => by rw [hne x, map_zero])`. Use `⟨∑ i, t i • (b i : A), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (b i).2, ?_⟩` and prove the remaining obligations.
+
+Apply `isUnit_of_isUnit_mulLeft (k := k)` to reduce the goal to its premises. Rewrite using `[LinearMap.isUnit_iff_isUnit_det, ← LinearMap.det_toMatrix bA, ← hlin, isUnit_iff_ne_zero]`. Rewrite `ht` using `[key]`. Use `ht using 2` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval_X]`. Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isUnit_mem_of_span_baseChange {k A K : Type} [Field k] [Infinite k] [Ring A]
     [Algebra k A] [FiniteDimensional k A] [Field K] [Algebra k K] (V : Submodule k A) (u : K ⊗[k] A)
     (hu : u ∈ Submodule.span K ((fun a : A => (1 : K) ⊗ₜ[k] a) '' (V : Set A))) (hunit : IsUnit u) :
@@ -126,6 +165,13 @@ namespace GlobalTheory.LKInv
 
 open Module Polynomial TensorProduct
 
+/- English proof (translation)
+Set `a : A →ₗ[k] A` to `LinearMap.mulRight k x₀ - LinearMap.mulLeft k x`. Set `a' : K ⊗[k] A →ₗ[K] K ⊗[k] A` to `LinearMap.mulRight K ((1 : K) ⊗ₜ[k] x₀) - LinearMap.mulLeft K ((1 : K) ⊗ₜ[k] x)`. Establish `hbc` using `(GlobalTheory.BadCount.finrank_iInf_ker_baseChange k K A (K ⊗[k] A) Unit (TensorProduct.mk k K A 1) (TensorProduct.isBaseChange k A K) (fun _ => a) (fun _ => a') (fun _ v => by simp [a, a', Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.tmul_sub])).2`. Rewrite `hbc` using `[_root_.iInf_const, _root_.iInf_const]`. Establish `hwmem : (w : K ⊗[k] A) ∈ LinearMap.ker a'`.
+
+Rewrite using `[LinearMap.mem_ker]`. Simplify using `[a', hw]`. Rewrite `hwmem` using `[hbc]`. Take `⟨y, hyV, hyu⟩` from `exists_isUnit_mem_of_span_baseChange (K := K) (LinearMap.ker a) (w : K ⊗[k] A) hwmem w.isUnit`. Use `⟨hyu.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hyV` using `[LinearMap.mem_ker]`. Simplify `hyV` using `[a, sub_eq_zero]`.
+-/
 theorem exists_unit_conj_of_baseChange {k A K : Type} [Field k] [Infinite k] [Ring A] [Algebra k A]
     [FiniteDimensional k A] [Field K] [Algebra k K] (x₀ x : A) (w : (K ⊗[k] A)ˣ)
     (hw : (w : K ⊗[k] A) * ((1 : K) ⊗ₜ[k] x₀) = ((1 : K) ⊗ₜ[k] x) * w) :
@@ -147,6 +193,17 @@ theorem exists_unit_conj_of_baseChange {k A K : Type} [Field k] [Infinite k] [Ri
   rw [LinearMap.mem_ker] at hyV
   simpa [a, sub_eq_zero] using hyV
 
+/- English proof (translation)
+Use `set K := AlgebraicClosure F`. Use `set z : K ⊗[F] B := (1 : K) ⊗ₜ[F] y with hz`. Establish `hzi : IsIntegral K z` using `IsIntegral.of_finite K z`. Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Establish `hzr : z = Algebra.TensorProduct.includeRight y` using `rfl`.
+
+Establish `hdvd : minpoly K z ∣ (minpoly F y).map (algebraMap F K)`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_map_algebraMap, hzr, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hge` using `GlobalTheory.CentSep.natDegree_minpoly_le_baseChange K y hzi`. Establish `hmap0 : (minpoly F y).map (algebraMap F K) ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap F K).injective).mpr (minpoly.ne_zero hyi)`.
+
+Establish `hzdeg : (minpoly K z).natDegree = n`. Use `le_antisymm ?_ (hdeg ▸ hge)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hzeq : minpoly K z = (minpoly F y).map (algebraMap F K)`. Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hzi) hdvd (by rw [natDegree_map, hdeg, hzdeg])` as an intermediate fact.
+
+Rewrite using `[this, ((minpoly.monic hyi).map _).leadingCoeff, C_1, one_mul]`. Use `set N := e z with hN`. Establish `hmN : minpoly K N = minpoly K z` using `minpoly.algEquiv_eq e z`. Establish `hd : minpoly K N ∣ N.charpoly` using `minpoly.dvd K N (Matrix.aeval_self_charpoly N)`. Rewrite `hd` using `[hmN]`.
+
+Use `eq_leadingCoeff_mul_of_monic_of_dvd_of_natDegree_le (minpoly.monic hzi) hd (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hzdeg])` as an intermediate fact. Rewrite using `[this, (Matrix.charpoly_monic N).leadingCoeff, C_1, one_mul, hzeq]`.
+-/
 theorem charpoly_eq_map_minpoly {F B : Type} [Field F] [Ring B] [Algebra F B] [FiniteDimensional F B]
     {n : ℕ} (e : AlgebraicClosure F ⊗[F] B ≃ₐ[AlgebraicClosure F] Matrix (Fin n) (Fin n) (AlgebraicClosure F))
     (y : B) (hsep : (minpoly F y).Separable) (hdeg : (minpoly F y).natDegree = n) :
@@ -179,6 +236,21 @@ theorem charpoly_eq_map_minpoly {F B : Type} [Field F] [Ring B] [Algebra F B] [F
     (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, hzdeg])
   rw [this, (Matrix.charpoly_monic N).leadingCoeff, C_1, one_mul, hzeq]
 
+/- English proof (translation)
+Take `⟨m, hm0, hmB, ⟨e⟩⟩` from `GroundTheory.Brauer.exists_algEquiv_matrix_algebraicClosure F B`. Establish `hmn : m = n` using `Nat.pow_left_injective (by norm_num : (2 : ℕ) ≠ 0) (hmB.symm.trans hn)`. Substitute `hmn` using the available equality. Use `set K := AlgebraicClosure F`. Use `set N₀ := e ((1 : K) ⊗ₜ[F] x₀) with hN₀`.
+
+Use `set N := e ((1 : K) ⊗ₜ[F] x) with hN`. Establish `hc₀` using `charpoly_eq_map_minpoly e x₀ hsep hdeg`. Establish `hc` using `charpoly_eq_map_minpoly e x (hmin ▸ hsep) (hmin ▸ hdeg)`. Rewrite `hc` using `[hmin]`. Establish `hsepK : (Matrix.toLin' N₀).charpoly.Separable`.
+
+Rewrite using `[Matrix.charpoly_toLin', hc₀]`. Conclude with `hsep.map`. Take `⟨e', he'⟩` from `GroundTheory.Automorphic.exists_conj_of_charpoly_eq hsepK (f' := Matrix.toLin' N) (by rw [Matrix.charpoly_toLin', Matrix.charpoly_toLin', hc₀, hc])`. Use `set P := LinearMap.toMatrix' (e' : (Fin m → K) →ₗ[K] (Fin m → K)) with hP`. Use `set Q := LinearMap.toMatrix' (e'.symm : (Fin m → K) →ₗ[K] (Fin m → K)) with hQ`.
+
+Establish `hPQ : P * Q = 1`. Rewrite using `[hP, hQ, ← LinearMap.toMatrix'_comp]`. Establish `: (e' : (Fin m → K) →ₗ[K] (Fin m → K)) ∘ₗ (e'.symm : (Fin m → K) →ₗ[K] (Fin m → K)) = LinearMap.id` using `by ext v; simp`. Rewrite using `[this, LinearMap.toMatrix'_id]`. Establish `hQP : Q * P = 1`.
+
+Rewrite using `[hP, hQ, ← LinearMap.toMatrix'_comp]`. Establish `: (e'.symm : (Fin m → K) →ₗ[K] (Fin m → K)) ∘ₗ (e' : (Fin m → K) →ₗ[K] (Fin m → K)) = LinearMap.id` using `by ext v; simp`. Rewrite using `[this, LinearMap.toMatrix'_id]`. Establish `hPN : P * N₀ = N * P`. Establish `: (e' : (Fin m → K) →ₗ[K] (Fin m → K)) ∘ₗ Matrix.toLin' N₀ = Matrix.toLin' N ∘ₗ (e' : (Fin m → K) →ₗ[K] (Fin m → K))` using `LinearMap.ext fun v => he' v`.
+
+Establish `h2` using `congrArg LinearMap.toMatrix' this`. Rewrite `h2` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Use `set w : (K ⊗[F] B)ˣ := ⟨e.symm P, e.symm Q, by rw [← map_mul, hPQ, map_one], by rw [← map_mul, hQP, map_one]⟩ with hw`. Use `exists_unit_conj_of_baseChange x₀ x w ?_` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul]`. Simplify using `only [hw, Units.val_mk, AlgEquiv.apply_symm_apply]`. Rewrite using `[← hN₀, ← hN, hPN]`.
+-/
 theorem exists_unit_conj_of_minpoly_eq (F B : Type) [Field F] [Infinite F] [Ring B] [Algebra F B]
     [Algebra.IsCentral F B] [IsSimpleRing B] [FiniteDimensional F B] (n : ℕ)
     (hn : Module.finrank F B = n ^ 2) (x₀ x : B) (hsep : (minpoly F x₀).Separable)

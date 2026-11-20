@@ -9,6 +9,9 @@ noncomputable section
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `herm_zero_of_trace hζ u v (hW _ (xuv_lieW z u v hu hv huz hvz)) (hW _ ?_)` and prove the remaining obligations. Use `xuv_lieW z u _ hu (inWb_smul _ hv) huz ?_` and prove the remaining obligations. Rewrite using `[herm_smul_left, hvz, mul_zero]`.
+-/
 theorem herm_zero_of_lieW {ζ : B.Mat k r} (hζ : B.inLie k r ζ) (z : Fin (2 * r + k + 1) → ℂ)
     (hW : ∀ X ∈ lieOf (UWset k r z), (Matrix.trace (ζ * X)).re = 0)
     (u v : Fin (2 * r + k + 1) → ℂ) (hu : inWb k r u) (hv : inWb k r v)

@@ -21,6 +21,15 @@ section Gen
 variable {R : Type} [CommRing R] {I : Ideal R} {S : Scheme.{0}} {κ : DividedPowers I} {t : S ⟶ Sp R}
   {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Take `⟨n, a, b, hc, hφ⟩` from `id H`. Set `s : A ⊗ A ⟶ A ⊗ A` to `lift (snd A A) (fst A A)`. Establish `ms : IsMor κ ((A ⊗ A).hom ≫ t) κ ((A ⊗ A).hom ≫ t) (RingHom.id R) s.left` using `IsMor.of_over κ (φ := s.left) (by rw [← Category.assoc, Over.w])`. Establish `hz` using `isChern_pull ms hc`. Rewrite `hz` using `[crystallinePull2_sum_cup s ms]`.
+
+Simplify using `only [pullOver_pullOver, s, lift_fst, lift_snd] at hz`. Establish `e' : LBIso (P.pull s.left) P` using `(cls_eq_iff (pull_isLB hP _) hP).1 ((cls_eq_iff hP (pull_isLB hP _)).2 hs).symm`. Establish `hz'` using `(isChern_existsUnique_and_iso R _ κ _ _).2 _ _ (pull_isLB hP _) hP e' _ hz`. Establish `H' : IsCorrForm κ t A A P (-φ.flip)`. Use `⟨n, fun k ↦ -b k, a, (congrArg (IsChern κ ((A ⊗ A).hom ≫ t) P) ?_).mp hz', fun u v ↦ ?_⟩` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_neg, map_neg, LinearMap.map_neg, LinearMap.neg_apply]`. Conclude with `(neg_eq_of_add_eq_zero_right (cup_add_cup _ _ _)).symm`. Simplify using `only [LinearMap.neg_apply, LinearMap.flip_apply]`. Rewrite using `[hφ, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_neg, neg_mul, mul_comm]`. Establish `e` using `congrArg (fun f ↦ f x y) (H.unique C hP H')`. Simplify using `using e`.
+-/
 theorem corrForm_antisymm (C : CupSquare κ t (A ⊗ A)) {P : LB (A ⊗ A).left} (hP : P.IsLB)
     (hs : LBIso P (P.pull (lift (snd A A) (fst A A)).left))
     {φ : Crys κ t A →ₗ[R] Crys κ t A →ₗ[R] R} (H : IsCorrForm κ t A A P φ) (x y : Crys κ t A) :
@@ -53,6 +62,13 @@ section Jet
 
 variable {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨A', _, ψ, hψ⟩` from `FlagTan.exists_isGrpPullback A (spMap (algebraMap R J.B))`. Establish `e : (𝟙 (Sp R)) = spMap J.π ≫ spMap (algebraMap R J.B)`. Rewrite using `[← GlobalTheory.Cris.spMap_comp]`. Establish `: J.π.comp (algebraMap R J.B) = RingHom.id R` using `RingHom.ext fun r ↦ JetRing.π_algebraMap J r`. Rewrite using `[this, GlobalTheory.Cris.spMap_id]`.
+
+Establish `hn` using `(GlobalTheory.CrysConn.isGrpPullback_refl A).congr e rfl`. Set `i' : A.left ⟶ A'.left` to `hψ.1.lift (Over.Hom.left (𝟙 A)) (A.hom ≫ spMap J.π) (hn.1.w.trans (Category.assoc _ _ _).symm)`. Establish `ei : i' ≫ ψ = Over.Hom.left (𝟙 A)` using `hψ.1.lift_fst _ _ _`. Establish `h' : IsGrpPullback A A' (spMap J.π) i'` using `hψ.cancel (hn.congr rfl ei.symm) (hψ.1.lift_snd _ _ _)`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback hA hψ`.
+
+Establish `hg'` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hψ.1 hg`. Conclude with `AbelianDualCrystal.cupSquare_crys_prod HR.1 HD.2 J.nil (fun r ↦ ⟨algebraMap R J.B r, JetRing.π_algebraMap J r⟩)`. Use `rfl hA' hg' hA' hg' h' h'`.
+-/
 theorem cupSquare_jet (HR : AbelianDeRham) (HD : AbelianDualCrystal) (J : JetRing R I n) {A : Over (Sp R)} [GrpObj A]
     {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     CupSquare J.κ (spMap J.π) (A ⊗ A) := by
@@ -77,6 +93,9 @@ section Diag
 
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 
+/- English proof (translation)
+Take `⟨ψ', hψ', eψ'⟩` from `H.isPolForm`. Take `⟨ψ, hψ, eψ⟩` from `hψ'.pull (homMor (dp0 R) (𝟙 _) (lift (𝟙 A) (𝟙 A)))`. Use `⟨ψ, hψ, fun x y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[eψ (push (dp0 R) (𝟙 _) (lift (𝟙 A) (𝟙 A)) x) x (push (dp0 R) (𝟙 _) (lift (𝟙 A) (𝟙 A)) y) y (fun _ ↦ rfl) (fun _ ↦ rfl), RingHom.id_apply, eψ', push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression.
+-/
 theorem polForm_diag {P : LB (A ⊗ A).left} {φ : HdR A →ₗ[R] HdR A →ₗ[R] R}
     (H : IsCorrForm (dp0 R) (𝟙 _) A A P φ) :
     ∃ ψ, IsPolForm (dp0 R) (𝟙 _) A (P.pull (lift (𝟙 A) (𝟙 A)).left) ψ ∧ ∀ x y, ψ x y = φ x y - φ y x := by
@@ -95,6 +114,13 @@ section Props
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R] [IsDomain R] [CharZero R]
   {I : Type} [Fintype I]
 
+/- English proof (translation)
+Establish `C` using `cupSquare_of_free HR.1 (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)`. Take `⟨φ₀, hφ₀⟩` from `exists_isCorrForm C (X.isLB c) (X.rig₁ c) (X.rig₂ c)`. Establish `anti` using `corrForm_antisymm C (X.isLB c) (X.symm c) hφ₀`. Take `⟨ψ, hψ, eψ⟩` from `polForm_diag hφ₀`. Establish `two : ∀ x y, ψ x y = 2 * φ₀ x y` using `fun x y ↦ by rw [eψ, anti y x]; ring`.
+
+Establish `canc : ∀ r : R, 2 * r = 0 → r = 0` using `fun r h ↦ (mul_eq_zero.1 h).resolve_left two_ne_zero`. Take `⟨s1, s2⟩` from `hN.2.2 c ψ hψ`. Establish `iso` using `(HR.2.2.2.2 R X.A _ X.ab X.dim (X.diag c) (pull_isLB (X.isLB c) _) ψ hψ).1`. Use `⟨φ₀, hφ₀, fun x hx y hy ↦ canc _ (by rw [← two]; exact iso x hx y hy), fun i x y ↦ canc _ ?_, fun i j x y ↦ canc _ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, ← two, ← two]`.
+
+Conclude with `s1 i x y`. Rewrite using `[← two]`. Conclude with `s2 i j x y`.
+-/
 theorem form_props (HR : AbelianDeRham) (X : Obj F 𝔠 (Sp R)) (N : I → Module.End R (HdR X.A)) (hN : admitted X N)
     (c : 𝔠.elt) :
     ∃ φ₀ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R, IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ₀ ∧
@@ -121,6 +147,11 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {I : Ideal R} {
   {κ : DividedPowers I} {t : S ⟶ Sp R} {A : Over S} [GrpObj A] {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'}
   {A' : Over S'} [GrpObj A'] {b : S' ⟶ S} {φ : A'.left ⟶ A.left}
 
+/- English proof (translation)
+Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hm.2 c`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul x c => rw [liftSemi_tmul, map_smul, map_smul, h c]`.
+-/
 theorem ext_of_isBC {m : GrpMor κ t A κ' t' A' (algebraMap R R') b φ} (hm : m.IsBC) {d₁ d₂ : Crys κ' t' A'}
     (h : ∀ c, d₁ (m.pull c) = d₂ (m.pull c)) : d₁ = d₂ := by
   refine LinearMap.ext fun c ↦ ?_
@@ -132,6 +163,21 @@ theorem ext_of_isBC {m : GrpMor κ t A κ' t' A' (algebraMap R R') b φ} (hm : m
 
 end BC
 
+/- English proof (translation)
+Introduce `HG HR HD F _ _ _ 𝔠 R _ _ _ _ I _ n J X N hN m c φ hφ`. Establish `hm` using `isBC_jetRing HG HR HD F 𝔠 R I n J X m`. Take `⟨φ₀, hφ₀, z0, z1, z2⟩` from `form_props HR X N hN c`. Establish `iso : LBIso ((X.P c).pull (Over.Hom.left (𝟙 (X.A ⊗ X.A)))) (X.P c)` using `(cls_eq_iff (pull_isLB (X.isLB c) _) (X.isLB c)).1 (by rw [cls_pull (X.isLB c), Over.id_left, CechPic.pull_id])`. Take `⟨φ', hφ', e'⟩` from `hφ₀.pull (X.isLB c) m m (h := Over.Hom.left (𝟙 (X.A ⊗ X.A))) (by simp) (by simp) (X.isLB c) iso`.
+
+Establish `eφ` using `hφ.unique (cupSquare_jet HR HD J X.ab X.dim) (X.isLB c) hφ'`. Establish `hv : ∀ u c, hm.bcMap u (m.pull c) = algebraMap R J.B (u c)` using `fun u ↦ hm.corr_iff.2 rfl`. Establish `hb : ∀ u v, φ (hm.bcMap u) (hm.bcMap v) = algebraMap R J.B (φ₀ u v)` using `fun u v ↦ by`. Rewrite using `[eφ]`. Conclude with `e' _ _ _ _ (hm.corr_iff.2 rfl) (hm.corr_iff.2 rfl)`.
+
+Establish `hd : ∀ x d, IsJetElt J X N m x d → d = hm.bcMap x + ∑ i, J.t i • hm.bcMap (N i x)` using `fun x d hx ↦ ext_of_isBC hm fun c ↦ by`. Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hv]`. Conclude with `hx c`. Establish `key : ∀ x ∈ Fil X.A, ∀ y ∈ Fil X.A, ∀ d d', IsJetElt J X N m x d → IsJetElt J X N m y d' → φ d d' = 0`. Introduce `x hx y hy d d' hdx hdy`.
+
+Rewrite using `[hd x d hdx, hd y d' hdy]`. Simplify using `only [map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hb, z0 x hx y hy, z2, map_zero, mul_zero, Finset.sum_const_zero, add_zero, zero_add]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun i _ ↦ by rw [← mul_add, ← map_add, z1, map_zero, mul_zero]`. Introduce `a ha b hb`.
+
+Proceed by induction on `ha using Submodule.span_induction generalizing b with`. Consider the case `mem a ha'`. Take `⟨x, hx, hxa⟩` from `ha'`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb'`.
+
+Take `⟨y, hy, hyb⟩` from `hb'`. Conclude with `key x hx y hy a b hxa hyb`. Consider the case `zero => exact map_zero _`. Consider the case `add u v _ _ hu hv => rw [map_add, hu, hv, add_zero]`. Consider the case `smul r u _ hu => rw [map_smul, hu, smul_zero]`.
+
+Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Consider the case `add u v _ _ hu hv => rw [map_add, LinearMap.add_apply, hu b hb, hv b hb, add_zero]`. Consider the case `smul r u _ hu => rw [map_smul, LinearMap.smul_apply, hu b hb, smul_zero]`.
+-/
 theorem jetFil_isotropic : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
     (N : I → Module.End R (HdR X.A)), admitted X N →

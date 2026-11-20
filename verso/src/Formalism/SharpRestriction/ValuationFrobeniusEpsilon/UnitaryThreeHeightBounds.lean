@@ -105,11 +105,26 @@ def adm8 : Prop := Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion2 D V
 def admitted : Prop :=
   adm1 D V ∧ adm2 D V ∧ adm3 D V ∧ ArchimedeanSignatureMatching D V ∧ adm5 D V ∧ adm6 D V ∧ adm8 D V
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ T` and use `h T.P`.
+-/
 theorem first_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion1 D V) : adm1 D V := fun _ _ _ _ _ _ _ _ _ T => h T.P
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun _ _ _ _ _ _ _ _ _ T => h.2 T.P⟩`.
+-/
 theorem second_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion2 D V) : adm2 D V := ⟨h.1, fun _ _ _ _ _ _ _ _ _ T => h.2 T.P⟩
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem integrality_of_commutation (h : Formalism.MainNotions.UnusedSlot38.PointsLemma D V) : adm3 D V := h
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ T hL` and use `(Formalism.MainNotions.UnusedSlot38.lifting_lemma_of_literature h T.P hL).1`.
+-/
 theorem fourth_hypothesis_of_lifting (h : Formalism.MainNotions.UnusedSlot38.Conclusion5 D V) : ArchimedeanSignatureMatching D V :=
   fun _ _ _ _ _ _ _ _ _ T hL => (Formalism.MainNotions.UnusedSlot38.lifting_lemma_of_literature h T.P hL).1
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem lemma_M_prime_hypothesis (h : Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion2 D V) : adm8 D V := h
 
 def Conclusion1 : Prop := Formalism.MainNotions.GradedPowerSeriesLemmas.Conclusion1 D V
@@ -222,6 +237,9 @@ def Thorne2 : Prop :=
       Subsingleton (V.finiteCohomology l (2 * 2) ⊤ (Formalism.MainNotions.V.onTop Ad))
 
 variable {V} in
+/- English proof (translation)
+Introduce `l _` and use `h l 2`.
+-/
 theorem Thorne.two (h : Thorne V) : Thorne2 V := fun l _ => h l 2
 
 namespace Adj
@@ -301,6 +319,9 @@ def IsRiAt {F : Type} [Field F] [NumberField F] [Algebra F QbarQ] {n l : ℕ} [F
     (π : (V.spec F n).Rep) (ρ : Formalism.ConjugateSelfDual.G F QbarQ →* GL (Fin n) (QbarL l)) : Prop :=
   TV.GeoMatch ρ ι.toRingHom ((V.spec F n).hecke π)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isRi_iff {F : Type} [Field F] [NumberField F] [Algebra F QbarQ] {n l : ℕ} [Fact l.Prime]
     (π : (V.spec F n).Rep) (ρ : Formalism.ConjugateSelfDual.G F QbarQ →* GL (Fin n) (QbarL l)) :
     V.IsRi π ρ ↔ IsRiAt V (V.iotaC l) π ρ := Iff.rfl
@@ -751,18 +772,30 @@ def LiftingLemmasStatement (X : SymSp) (β cP cD C₁ C₂ : ℝ) : Prop := Lit 
 def ExponentFormsStatement (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ) : Prop :=
   LitE D V X β cP cD aD → admitted D V → ConclusionE₂ D V C₁ C₂ (max 6 (aD + 1))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem stmtLE_four (X : SymSp) (β cP cD C₁ C₂ : ℝ) :
     ExponentFormsStatement D V X β cP cD 4 C₁ C₂ ↔ LiftingLemmasStatement D V X β cP cD C₁ C₂ := Iff.rfl
 
+/- English proof (translation)
+Introduce `K _ h2 hc M hM h3`. Conclude with `(h K h2 hc M hM h3).trans (mul_le_mul_of_nonneg_right (le_max_left β 0) (X.vol_nonneg K M))`.
+-/
 theorem Gelander.max_zero {X : SymSp} {β : ℝ} (h : Gelander X β) : Gelander X (max β 0) := by
   intro K _ h2 hc M hM h3
   exact (h K h2 hc M hM h3).trans (mul_le_mul_of_nonneg_right (le_max_left β 0) (X.vol_nonneg K M))
 
+/- English proof (translation)
+The claim follows from `let ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g, r⟩, h9⟩ := h ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g.max_zero, r⟩, h9⟩`.
+-/
 theorem LitE.max_zero {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} {aD : ℕ} (h : LitE D V X β cP cD aD) :
     LitE D V X (max β 0) cP cD aD :=
   let ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g, r⟩, h9⟩ := h
   ⟨h0, h1, h2, h3, h4, h5, h6, h7, ⟨g.max_zero, r⟩, h9⟩
 
+/- English proof (translation)
+The claim follows from `LitE.max_zero h`.
+-/
 theorem Lit.max_zero {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} (h : Lit D V X β cP cD) :
     Lit D V X (max β 0) cP cD := LitE.max_zero h
 
@@ -775,6 +808,9 @@ def UniformExponentFormsStatement : Prop :=
   ∀ (β cP cD : ℝ) (aD : ℕ), aD ≤ 18 → ∃ C₁ C₂ : ℝ, ∀ (D : D7) (V : VData D) (X : SymSp),
     ExponentFormsStatement D V X β cP cD aD C₁ C₂
 
+/- English proof (translation)
+Introduce `β cP cD` and use `h β cP cD 4 (by norm_num)`.
+-/
 theorem UniformExponentFormsStatement.abs (h : UniformExponentFormsStatement) : UniformConstantStatement := fun β cP cD => h β cP cD 4 (by norm_num)
 
 section Fam
@@ -795,6 +831,9 @@ def LitFE (X : SymSp) (β cP cD : ℝ) (aD : ℕ) : Prop :=
 def FamilyExponentFormsStatement (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ) : Prop :=
   LitFE Fm VF X β cP cD aD → AdmF Fm VF → FamilyExponentFormsBound Fm VF C₁ C₂ (max 6 (aD + 1))
 
+/- English proof (translation)
+Introduce and unpack `⟨a, hL⟩ ⟨b, hA⟩`. Conclude with `⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i) (hA x (le_trans (le_max_right a b) hx) i)⟩`.
+-/
 theorem family_exponent_forms_of (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C₂ : ℝ)
     (h : ∀ x (i : Fm.Ix x), ExponentFormsStatement (Fm.D x i) (VF x i) X β cP cD aD C₁ C₂) :
     FamilyExponentFormsStatement Fm VF X β cP cD aD C₁ C₂ := by
@@ -802,6 +841,9 @@ theorem family_exponent_forms_of (X : SymSp) (β cP cD : ℝ) (aD : ℕ) (C₁ C
   exact ⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i)
     (hA x (le_trans (le_max_right a b) hx) i)⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨a, hL⟩ ⟨b, hA⟩`. Conclude with `⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i) (hA x (le_trans (le_max_right a b) hx) i)⟩`.
+-/
 theorem family_statement_of_records (X : SymSp) (β cP cD C₁ C₂ : ℝ)
     (h : ∀ x (i : Fm.Ix x), LiftingLemmasStatement (Fm.D x i) (VF x i) X β cP cD C₁ C₂) :
     FamilyLiftingStatement Fm VF X β cP cD C₁ C₂ := by
@@ -848,6 +890,9 @@ def LocGlob3N : Prop :=
     IsRiAt V ι π (VData.toRecRep (Formalism.MainNotions.V.twistRep ρ (((epsL l).comp K.fixingSubgroup.subtype) ^ j))) →
     Ram3 V l K ρ M → (V.spec K 3).level π M
 
+/- English proof (translation)
+Introduce `l _ _ K _ h2 hc π hπ ι ρ hρ _ _ _ _ M hM _ j _ hri hr` and use `h l ι K h2 hc π hπ ρ hρ j hri M hM hr.1 hr.2`.
+-/
 theorem LocGlob3G.toN {D : D7} {V : VData D} (h : LocGlob3G V) : LocGlob3N V :=
   fun l _ _ K _ h2 hc π hπ ι ρ hρ _ _ _ _ M hM _ j _ hri hr => h l ι K h2 hc π hπ ρ hρ j hri M hM hr.1 hr.2
 
@@ -862,6 +907,13 @@ def Sig2CountE (C : ℝ) (B : ℕ) : Prop :=
     (({π | (V.spec ℚ 2).level π M ∧ (V.spec ℚ 2).wt π = w} : Set (V.spec ℚ 2).Rep).ncard : ℝ) ≤
       C * ((M : ℝ) * (k : ℝ)) ^ B
 
+/- English proof (translation)
+Introduce `M k hM w hw`. Use `⟨(h M k hM w hw).1, (h M k hM w hw).2.trans ?_⟩` and prove the remaining obligations. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `h1 : max aD 1 ≠ 0` using `by have := le_max_right aD 1; omega`.
+
+Simplify using `[h1]`. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `e1 : (k : ℝ) ≤ (k : ℝ) ^ (max aD 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (M : ℝ) ^ aD ≤ (M : ℝ) ^ (max aD 1)` using `pow_le_pow_right₀ hM1 (le_max_left _ _)`.
+
+Establish `e3 : (k : ℝ) * (M : ℝ) ^ aD ≤ ((M : ℝ) * (k : ℝ)) ^ (max aD 1)`. Rewrite using `[mul_pow, mul_comm]`. Conclude with `mul_le_mul e2 e1 (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem DimFormulaE.toSig2 {D : D7} {V : VData D} {cD : ℝ} {aD : ℕ} (h : DimFormulaE V cD aD) :
     Sig2CountE V (max cD 0) (max aD 1) := by
   intro M k hM w hw
@@ -906,14 +958,29 @@ def InertCaseFreeExponents (C₂ : ℝ) (bD bN be : ℕ) : Prop :=
 
 def HeightBoundsFreeExponents (C₁ C₂ : ℝ) (bD bN be : ℕ) : Prop := Conclusion1 D V ∧ GaussianCaseFreeExponents D V C₁ bN be ∧ InertCaseFreeExponents D V C₂ bD bN be
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem gaussian_bound_text_iff (C₁ : ℝ) : GaussianCaseFreeExponents D V C₁ 18 7 ↔ GaussianCaseHeightBound D V C₁ := Iff.rfl
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inert_bound_text_iff (C₂ : ℝ) (bD : ℕ) : InertCaseFreeExponents D V C₂ bD 18 7 ↔ InertBoundExponent D V C₂ bD := Iff.rfl
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem free_exponents_eighteen_seven_iff (C₁ C₂ : ℝ) (bD : ℕ) : HeightBoundsFreeExponents D V C₁ C₂ bD 18 7 ↔ ConclusionE₂ D V C₁ C₂ bD := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem free_exponents_six_eighteen_seven_iff (C₁ C₂ : ℝ) : HeightBoundsFreeExponents D V C₁ C₂ 6 18 7 ↔ Conclusion₂ D V C₁ C₂ := Iff.rfl
 
 def lit6N : Prop := Purity V ∧ LocGlob3N V ∧ LocGlobWt3 V ∧ LocGlob2G V
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1.toN, h.2.2⟩`.
+-/
 theorem lit6.toN {D : D7} {V : VData D} (h : lit6 D V) : lit6N D V := ⟨h.1, h.2.1.toN, h.2.2⟩
 
 def DeJong : Prop := ForallUnitaryThreeLiftingProblems D V fun l _ _ _ _ _ T => ∀ (W : V1.TR T.P.O) [IsDomain W.C], ((l : ℕ) : W.C) ≠ 0 →
@@ -928,6 +995,9 @@ def LitGeo : Prop :=
 def LitX (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) : Prop :=
   LitGeo D V ∧ ClozelAutR V ∧ Sig3CountE V C₃ B₃ ∧ Sig2CountE V C₂ B₂
 
+/- English proof (translation)
+The claim follows from `let ⟨h0, h1, h2, h3', h4, h5, h6, h7, h8, h9, hB⟩ := h ⟨⟨h0, h1, h2, h3', h4, h5, h6.toN, h9, hB, h16⟩, h7.1, h3, h8.2.2.2.toSig2⟩`.
+-/
 theorem LitE.toX {D : D7} {V : VData D} {X : SymSp} {β cP cD : ℝ} {aD : ℕ} (h : LitE D V X β cP cD aD)
     (h16 : DeJongGenericFibrePoints D V) {C₃ : ℝ} {B₃ : ℕ} (h3 : Sig3CountE V C₃ B₃) : LitX D V C₃ B₃ (max cD 0) (max aD 1) :=
   let ⟨h0, h1, h2, h3', h4, h5, h6, h7, h8, h9, hB⟩ := h
@@ -945,9 +1015,15 @@ def UniformFreeExponentOnClass (𝒞 : ∀ D : D7, VData D → Prop) : Prop :=
 def UniformFreeExponentAllRecords : Prop :=
   ∀ (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ), ∃ C₁ C₂' : ℝ, ∀ (D : D7) (V : VData D), FreeExponentStatement D V C₃ B₃ C₂ B₂ C₁ C₂'
 
+/- English proof (translation)
+Introduce `C₃ B₃ C₂ B₂` and use `let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V _ => h' D V⟩`.
+-/
 theorem UniformFreeExponentAllRecords.on (h : UniformFreeExponentAllRecords) (𝒞 : ∀ D : D7, VData D → Prop) : UniformFreeExponentOnClass 𝒞 :=
   fun C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V _ => h' D V⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V => h' D V trivial⟩, fun h => h.on _⟩`.
+-/
 theorem stmtLAbsXOn_true : UniformFreeExponentOnClass (fun _ _ => True) ↔ UniformFreeExponentAllRecords :=
   ⟨fun h C₃ B₃ C₂ B₂ => let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂; ⟨C₁, C₂', fun D V => h' D V trivial⟩, fun h => h.on _⟩
 
@@ -962,8 +1038,14 @@ def LitFX (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) : Prop :=
 def FamilyFreeExponentStatement (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) (C₁ C₂' : ℝ) : Prop :=
   LitFX Fm VF C₃ B₃ C₂ B₂ → AdmF Fm VF → FamilyFreeExponentBound Fm VF C₁ C₂' (max B₃ B₂ + 1) (max B₃ B₂) (max B₃ B₂ + 1)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem family_bound_text_iff (C₁ C₂ : ℝ) : FamilyFreeExponentBound Fm VF C₁ C₂ 6 18 7 ↔ OrbitValuationBound Fm VF C₁ C₂ := Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨a, hL⟩ ⟨b, hA⟩`. Conclude with `⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i) (hA x (le_trans (le_max_right a b) hx) i)⟩`.
+-/
 theorem family_free_exponent_of (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) (C₁ C₂' : ℝ)
     (h : ∀ x (i : Fm.Ix x), FreeExponentStatement (Fm.D x i) (VF x i) C₃ B₃ C₂ B₂ C₁ C₂') :
     FamilyFreeExponentStatement Fm VF C₃ B₃ C₂ B₂ C₁ C₂' := by
@@ -971,6 +1053,9 @@ theorem family_free_exponent_of (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : �
   exact ⟨max a b, fun x hx i => h x i (hL x (le_trans (le_max_left a b) hx) i)
     (hA x (le_trans (le_max_right a b) hx) i)⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨C₁, C₂', h'⟩ := h C₃ B₃ C₂ B₂ ⟨C₁, C₂', fun Fm VF hc => family_free_exponent_of Fm VF C₃ B₃ C₂ B₂ C₁ C₂' fun x i => h' _ _ (hc x i)⟩`.
+-/
 theorem UniformFreeExponentOnClass.fam {𝒞 : ∀ D : D7, VData D → Prop} (h : UniformFreeExponentOnClass 𝒞) (C₃ : ℝ) (B₃ : ℕ) (C₂ : ℝ) (B₂ : ℕ) :
     ∃ C₁ C₂' : ℝ, ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (VF : ∀ x (i : Fm.Ix x), VData (Fm.D x i)),
       (∀ x (i : Fm.Ix x), 𝒞 (Fm.D x i) (VF x i)) → FamilyFreeExponentStatement Fm VF C₃ B₃ C₂ B₂ C₁ C₂' :=

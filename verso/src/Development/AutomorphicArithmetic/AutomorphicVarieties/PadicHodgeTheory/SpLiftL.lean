@@ -7,6 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.L
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LiftUnramifiedUnipotentCharacter
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.HV UpperTheory.V.Base IsLocalRing
 
+/- English proof (translation)
+Take `⟨w, hw, hAw⟩` from `GlobalTheory.DecLocal.exists_place_below (p := l) (F := ℚ) A hA`. Take `⟨j, rfl⟩` from `(decEmb (F := ℚ) (Ω := Ω) (v := l)).1 A w hAw hw`. Take `⟨h1, h2, h3, -, h5, -, -⟩` from `iotaFacts (Ω := Ω) j`. Establish `hmem : ∀ g, iota j g ∈ Dec (F` using `ℚ) (placeJ j) := fun g => h2 ▸ ⟨g, rfl⟩`. Set `f` to `(iota j).codRestrict (Dec (F := ℚ) (placeJ j)) hmem`.
+
+Establish `hf : Topology.IsEmbedding f` using `h1.codRestrict _ hmem`. Establish `hs : Function.Surjective f` using `fun g => by`. Establish `: (g : G ℚ Ω) ∈ (iota j).range` using `by rw [h2]; exact g.2`. Take `⟨s, hs⟩` from `this`. Conclude with `⟨s, Subtype.ext hs⟩`.
+
+Set `e` to `MulEquiv.ofBijective f ⟨hf.injective, hs⟩`. Use `⟨e, hf.continuous, ?_, fun s => by rw [← h3]; exact Iff.rfl, fun s => DFunLike.congr_fun (h5 l) s⟩` and prove the remaining obligations. Rewrite using `[hf.isInducing.continuous_iff]`. Establish `: (f ∘ e.symm) = id` using `funext fun g => e.apply_symm_apply g`. Rewrite using `[this]`.
+
+Conclude with `continuous_id`.
+-/
 private theorem exists_iso {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) :
     ∃ e : Formalism.BasicNotions.Loc.GQ l ≃* ↥(Dec (F := ℚ) A), Continuous e ∧ Continuous e.symm ∧
@@ -29,6 +38,23 @@ private theorem exists_iso {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   rw [this]
   exact continuous_id
 
+/- English proof (translation)
+Establish `hl : l ∈ D.T` using `Finset.mem_insert_self _ _`. Establish `hs : D.sg l ∈ D.Gp l` using `(hD.sg_frob l hl).1`. Establish `h1 : chiO ℚ Ω l c.O (D.sg l) = 1`. Simplify using `only [chiO, MonoidHom.comp_apply, hD.sg_cyc, map_one]`. Set `R : c.Oˣ →* (ResidueField c.O)ˣ` to `Units.map (residue c.O : c.O →* ResidueField c.O)`.
+
+Establish `h2 : R (D.om (D.sg l)) = 1` using `Units.ext (by`. Use `hD.om_bar (D.sg l)` as an intermediate fact. Simplify using `only [Raw.bar, h1, Units.val_one, map_one] at this`. Conclude with `this)`. Establish `h3 : ∀ i : ℤ, R (D.ξ (D.sg l)) * R (D.Psi (D.sg l)) ^ i ≠ 1` using `fun i h => hD.condD l hl i (by`.
+
+Rewrite `h` using `[← map_zpow, ← map_mul]`. Conclude with `congrArg Units.val h)`. Establish `h4 : R (D.al (D.sg l)) = R (D.ξ (D.sg l))`. Simplify using `only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, h1, h2, map_one, inv_one, one_mul]`. Use `⟨⟨⟨_, hs⟩, fun h => h3 0 ?_⟩, ⟨⟨_, hs⟩, fun h => h3 (-1) ?_⟩, ⟨D.s0, fun h => hD.decompSigma_ord ?_⟩, ⟨_, hs⟩, fun h => h3 1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[zpow_zero, mul_one, ← h4, h, h1, map_one]`. Use `congrArg R h` as an intermediate fact. Simplify using `only [Raw.be, MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, h1, h4, map_one] at this`. Rewrite using `[zpow_neg_one, mul_inv_eq_one.1 this, mul_inv_cancel]`. Establish `hψ : D.ψ D.s0 = 1` using `hD.decompSigma_mem.1.2`.
+
+Establish `he` using `hD.two_le`. Simplify using `only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, hψ, mul_one, zpow_natCast, MonoidHom.pow_apply] at h`. Establish `h5 : chiO ℚ Ω l c.O D.s0 ^ (D.e - 1) = 1`. Apply `mul_right_cancel (b := chiO ℚ Ω l c.O D.s0)` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), h, one_mul]`.
+
+Use `isOfFinOrder_iff_pow_eq_one.2 ⟨D.e - 1, by omega, Units.ext ?_⟩` and prove the remaining obligations. Establish `hi : Function.Injective (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Establish `hi' : Function.Injective (algebraMap ℤ_[l] c.O)` using `fun a b h => hi (congrArg Subtype.val h)`.
+
+Apply `hi'` to reduce the goal to its premises. Use `congrArg Units.val h5` as an intermediate fact. Simplify `this` using `[chiO]`. Use `congrArg R h` as an intermediate fact. Simplify using `only [Raw.th, MonoidHom.mul_apply, map_mul, h1, h4, map_one] at this`.
+
+Rewrite using `[zpow_one]` and apply the resulting hypothesis.
+-/
 private theorem nonres {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) :
     (∃ g : D.Gp l, D.al g ≠ chiO ℚ Ω l c.O g) ∧ (∃ g : D.Gp l, D.be g ≠ chiO ℚ Ω l c.O g) ∧
@@ -76,10 +102,22 @@ section Alg
 
 variable {B : Type} [CommRing B]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring`.
+-/
 private theorem adj_mul (X Y : M4 B) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring
 
+/- English proof (translation)
+Establish `h1 : adj (h : M4 B) = (h⁻¹ : (M4 B)ˣ)`. Rewrite `hh` using `[IsGSp, one_smul]`. Conclude with `(Units.inv_eq_of_mul_eq_one_left hh).symm`. Establish `h0 : adj (1 : M4 B) = 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`. Establish `h2 : adj ((h⁻¹ : (M4 B)ˣ) : M4 B) = h`. Use `adj_mul (h : M4 B) (h⁻¹ : (M4 B)ˣ)` as an intermediate fact. Rewrite `this` using `[Units.mul_inv, h0, h1]`. Conclude with `(Units.inv_eq_of_mul_eq_one_left this.symm).symm`.
+
+Unfold `IsGSp at hX ⊢`. Prove the components needed by the constructor for the conclusion. Rewrite using `[adj_mul, adj_mul, h1, h2]`. Simplify using `only [mul_assoc, Units.mul_inv_cancel_left]`. Rewrite using `[← mul_assoc (adj X), hX]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[adj_mul, adj_mul, h1, h2]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← mul_assoc (adj X), hX]`. Simplify using the standard rewrite rules.
+-/
 private theorem gsp_conj {ν : B} {h : (M4 B)ˣ} (hh : IsGSp 1 (h : M4 B)) {X : M4 B} (hX : IsGSp ν X) :
     IsGSp ν ((h⁻¹ : (M4 B)ˣ) * X * h) ∧ IsGSp ν (h * X * (h⁻¹ : (M4 B)ˣ)) := by
   have h1 : adj (h : M4 B) = (h⁻¹ : (M4 B)ˣ) := by
@@ -103,6 +141,9 @@ private theorem gsp_conj {ν : B} {h : (M4 B)ˣ} (hh : IsGSp 1 (h : M4 B)) {X : 
     rw [← mul_assoc (adj X), hX]
     simp
 
+/- English proof (translation)
+Establish `e0` using `congrFun (congrFun hX 0) 0`. Establish `e1` using `congrFun (congrFun hX 1) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, hl 1 0 (by decide), hl 2 0 (by decide), hl 3 0 (by decide), hl 2 1 (by decide), hl 3 1 (by decide), hl 3 2 (by decide)] at e0 e1`. Conclude with `⟨e0, e1⟩`.
+-/
 private theorem gsp_diag {ν : B} {X : M4 B} (hX : IsGSp ν X) (hl : ∀ i j, j < i → X i j = 0) :
     X 3 3 * X 0 0 = ν ∧ X 2 2 * X 1 1 = ν := by
   have e0 := congrFun (congrFun hX 0) 0
@@ -116,12 +157,18 @@ private def cj {H : Type} [Group H] (h : (M4 B)ˣ) (r : H →* M4 B) : H →* M4
   map_one' := by simp
   map_mul' a b := by simp only [map_mul, mul_assoc, Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Establish `h1 : Continuous r` using `continuous_matrix hr`. Conclude with `((continuous_const.matrix_mul h1).matrix_mul continuous_const).matrix_elem i j`.
+-/
 private theorem cj_cont {H : Type} [Group H] [TopologicalSpace H] [TopologicalSpace B] [IsTopologicalRing B]
     (h : (M4 B)ˣ) (r : H →* M4 B) (hr : ∀ i j, Continuous fun g => r g i j) (i j : Fin 4) :
     Continuous fun g => cj h r g i j := by
   have h1 : Continuous r := continuous_matrix hr
   exact ((continuous_const.matrix_mul h1).matrix_mul continuous_const).matrix_elem i j
 
+/- English proof (translation)
+Establish `e' : ((h⁻¹ : (M4 B)ˣ) : M4 B).map p = (h'⁻¹ : (M4 B')ˣ)`. Use `(Units.inv_eq_of_mul_eq_one_right ?_).symm` and prove the remaining obligations. Rewrite using `[← e, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero p) (map_one p)]`. Simplify using `only [Matrix.map_mul, e, e', and_self]`.
+-/
 private theorem map_cj {B' : Type} [CommRing B'] (p : B →+* B') {h : (M4 B)ˣ} {h' : (M4 B')ˣ}
     (e : (h : M4 B).map p = h') (X : M4 B) :
     ((h : M4 B) * X * (h⁻¹ : (M4 B)ˣ)).map p = h' * X.map p * (h'⁻¹ : (M4 B')ˣ) ∧
@@ -131,6 +178,9 @@ private theorem map_cj {B' : Type} [CommRing B'] (p : B →+* B') {h : (M4 B)ˣ}
     rw [← e, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero p) (map_one p)]
   simp only [Matrix.map_mul, e, e', and_self]
 
+/- English proof (translation)
+Establish `h` using `(hπ (x - algebraMap E B (π x)) (by simp)).isUnit_add_right_of_commute ((IsUnit.mk0 _ hx).map (algebraMap E B)) (Commute.all _ _)`. Simplify using `using h`.
+-/
 private theorem unit_of {E : Type} [Field E] [Algebra E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a)
     {x : B} (hx : π x ≠ 0) : IsUnit x := by
   have h := (hπ (x - algebraMap E B (π x)) (by simp)).isUnit_add_right_of_commute
@@ -139,6 +189,71 @@ private theorem unit_of {E : Type} [Field E] [Algebra E B] (π : B →ₐ[E] E) 
 
 end Alg
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' hπ' p hp hpπ r' hr' hE'`. Use `letI : TopologicalSpace B := moduleTopology ℚ_[l] B`. Use `haveI : IsModuleTopology ℚ_[l] B := ⟨rfl⟩`. Use `haveI : IsTopologicalRing B := IsModuleTopology.isTopologicalRing ℚ_[l] B`. Use `letI : TopologicalSpace B' := moduleTopology ℚ_[l] B'`.
+
+Use `haveI : IsModuleTopology ℚ_[l] B' := ⟨rfl⟩`. Use `haveI : IsTopologicalRing B' := IsModuleTopology.isTopologicalRing ℚ_[l] B'`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap ℚ_[l] E).injective`. Establish `hpp : ∀ a, π' (p a) = π a` using `fun a => DFunLike.congr_fun hpπ a`. Establish `hOB : ∀ x : c.O, algebraMap c.O B x = algebraMap E B (algebraMap c.O E x)` using `IsScalarTower.algebraMap_apply _ _ _`.
+
+Establish `hOB' : ∀ x : c.O, algebraMap c.O B' x = algebraMap E B' (algebraMap c.O E x)` using `IsScalarTower.algebraMap_apply _ _ _`. Establish `hpO : ∀ x : c.O, p (algebraMap c.O B x) = algebraMap c.O B' x` using `fun x => by rw [hOB, hOB', p.commutes]`. Establish `hπO : ∀ x : c.O, π' (algebraMap c.O B' x) = algebraMap c.O E x` using `fun x => by rw [hOB', π'.commutes]; rfl`. Take `⟨e, hec, hec', heI, hecyc⟩` from `exists_iso l (D.pl l) (hD.pl_over l Fact.out)`. Take `⟨hm', h', κ', hh', hh1', hfl', hκ'⟩` from `(spFlag D hD E B' π' hπ' r' hr').1 hE'`.
+
+Take `⟨h, hh, hh1, hhp⟩` from `UpperTheory.lift_symplectic_similitude_nilpotent π hπ π' hπ' p hp hpπ h' hh' hh1'`. Set `T'` to `cj h'⁻¹ r'`. Establish `hT' : ∀ g, T' g = (h'⁻¹ : (M4 B')ˣ) * r' g * h'` using `fun g => rfl`. Establish `hTc : ∀ i j, Continuous fun g => T' g i j` using `cj_cont _ _ hr'.cont`. Establish `hTG : ∀ g : D.Gp l, IsGSp (algebraMap c.O B' (D.th g)) (T' g)` using `fun g => (gsp_conj hh' (hm' g)).1`.
+
+Establish `hTπ : ∀ g, (T' g).map π' = (D.r0At l g).map (algebraMap c.O E)` using `fun g => by`. Use `(map_cj (π' : B' →+* E) (h := h') (h' := 1) hh1' (r' g)).2` as an intermediate fact. Rewrite `this` using `[inv_one, Units.val_one, one_mul, mul_one]`. Conclude with `this.trans (DFunLike.congr_fun hr'.red g)`. Establish `hκT : ∀ i g, (κ' i g : B') = T' g i i` using `fun i g => ((hfl' g).2 i).symm`.
+
+Establish `hκπ : ∀ i (g : D.Gp l), π' (κ' i g) = algebraMap c.O E (D.ps i g)` using `fun i g => by`. Use `congrFun (congrFun (hTπ g) i) i` as an intermediate fact. Rewrite using `[hκT]`. Simplify `this` using `[Raw.r0, diagRep]`. Establish `hκc : ∀ i, Continuous fun g => (κ' i g : B')` using `fun i => by simpa only [hκT] using hTc i i`.
+
+Set `P : Fin 4 → D.Gp l →* Bˣ` to `fun i => (Units.map (algebraMap c.O B : c.O →* B)).comp ((D.ps i).comp (D.Gp l).subtype)`. Establish `hPv : ∀ i (g : D.Gp l), (P i g : B) = algebraMap c.O B (D.ps i g)` using `fun _ _ => rfl`. Establish `hPc : ∀ i, Continuous fun g => (P i g : B)` using `fun i => by`. Set `σ : B' →ₗ[ℚ_[l]] B` to `((IsScalarTower.toAlgHom ℚ_[l] E B).comp (π'.restrictScalars ℚ_[l])).toLinearMap`. Establish `: (fun g => (P i g : B)) = fun g => σ (κ' i g)` using `funext fun g => by`.
+
+Rewrite using `[hPv, hOB, ← hκπ]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(IsModuleTopology.continuous_of_linearMap σ).comp (hκc i)`. Establish `hpc : Continuous p` using `IsModuleTopology.continuous_of_linearMap (p.restrictScalars ℚ_[l]).toLinearMap`.
+
+Establish `hinv : ∀ {R : Type} [CommRing R] [TopologicalSpace R] (k : D.Gp l →* Rˣ), Continuous (fun g => (k g : R)) → Continuous fun g => ((k⁻¹ g : Rˣ) : R)` using `fun k hk => by`. Simplify using `only [MonoidHom.inv_apply, ← map_inv]`. Conclude with `hk.comp continuous_inv`. Establish `hlift : ∀ i, ∃ k : D.Gp l →* Bˣ, Continuous (fun g => (k g : B)) ∧ (∀ s : D.Gp l, (s : G ℚ Ω) ∈ D.Ip l → k s = P i s) ∧ ∀ g, Units.map (p : B →* B') (k g) = κ' i g` using `fun i => by`. Set `w' : D.Gp l →* B'ˣ` to `κ' i * (Units.map (p : B →* B')).comp (P i)⁻¹`.
+
+Establish `hw' : ∀ g, (w' g : B') = κ' i g * p ((P i)⁻¹ g : Bˣ)` using `fun _ => rfl`. Establish `hPP : ∀ g, p (P i g : Bˣ) * p ((P i)⁻¹ g : Bˣ) = 1` using `fun g => by`. Rewrite using `[← map_mul, MonoidHom.inv_apply, Units.mul_inv, map_one]`. Take `⟨u, hu, huI, hup⟩` from `UpperTheory.lift_unramified_unipotent_character (p.restrictScalars ℚ_[l]) hp (fun a ha => hπ a (by rw [← hpp, show p a = 0 from ha, map_zero])) (w'.comp e.toMonoidHom) (((hκc i).mul (hpc.comp (hinv _ (hPc i)))).comp hec) (fun g hg => Units.ext (by`. Express the relevant statement in the definitionally equal form `(w' (e g) : B') = 1`.
+
+Rewrite using `[hw', hκ' i _ ((heI g).2 hg), ← hpO, ← hPv, hPP]))`. Use the proof step `(fun g => hπ' _ (by`. Express the relevant statement in the definitionally equal form `π' ((w' (e g) : B') - 1) = 0`. Rewrite using `[hw', ← hPP (e g), map_sub, map_mul, map_mul, hκπ, hPv, hpO, hπO, sub_self]))`. Use `⟨P i * u.comp e.symm.toMonoidHom, (hPc i).mul (Continuous.comp (g := fun g => (u g : B)) hu hec'), fun s hs => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `P i s * u (e.symm s) = _`. Rewrite using `[huI _ ((heI _).1 (by rwa [e.apply_symm_apply])), mul_one]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `p (P i g * u (e.symm g) : B) = _`. Establish `: p (u (e.symm g) : B) = w' (e (e.symm g))` using `hup (e.symm g)`.
+
+Rewrite using `[map_mul, this, e.apply_symm_apply, hw', mul_left_comm, hPP, mul_one]`. Take `⟨k2, c2, i2, p2⟩` from `hlift 2`. Take `⟨k3, c3, i3, p3⟩` from `hlift 3`. Set `κ : Fin 4 → D.Gp l →* Bˣ` to `![P 0 * k3⁻¹, P 0 * k2⁻¹, k2, k3]`. Establish `hκp : ∀ i g, Units.map (p : B →* B') (κ i g) = κ' i g` using `fun i g => by`.
+
+Take `⟨e0, e1⟩` from `gsp_diag (hTG g) (hfl' g).1`. Rewrite `e0`, `e1` using `[← hκT, ← hκT, ← hpO]`. Establish `e0' : κ' 3 g * κ' 0 g = Units.map (p : B →* B') (P 0 g)` using `Units.ext e0`. Establish `e1' : κ' 2 g * κ' 1 g = Units.map (p : B →* B') (P 0 g)` using `Units.ext e1`. Use `fin_cases i`.
+
+Express the relevant statement in the definitionally equal form `Units.map (p : B →* B') (P 0 g * (k3 g)⁻¹) = κ' 0 g`. Rewrite using `[map_mul, map_inv, p3, ← e0', mul_inv_cancel_comm]`. Express the relevant statement in the definitionally equal form `Units.map (p : B →* B') (P 0 g * (k2 g)⁻¹) = κ' 1 g`. Rewrite using `[map_mul, map_inv, p2, ← e1', mul_inv_cancel_comm]`. Conclude with `p2 g`.
+
+Conclude with `p3 g`. Establish `hκI : ∀ i (s : D.Gp l), (s : G ℚ Ω) ∈ D.Ip l → κ i s = P i s` using `fun i s hs => by`. Establish `e3 : P 3 s = 1` using `map_one (Units.map (algebraMap c.O B : c.O →* B))`. Establish `e0 : P 0 s = P 2 s * P 1 s` using `map_mul (Units.map (algebraMap c.O B : c.O →* B)) _ _`. Use `fin_cases i`.
+
+Express the relevant statement in the definitionally equal form `P 0 s * (k3 s)⁻¹ = P 0 s`. Rewrite using `[i3 s hs, e3, inv_one, mul_one]`. Express the relevant statement in the definitionally equal form `P 0 s * (k2 s)⁻¹ = P 1 s`. Rewrite using `[i2 s hs, e0, mul_inv_cancel_comm]`. Conclude with `i2 s hs`.
+
+Conclude with `i3 s hs`. Set `Rd : Bˣ →* Eˣ` to `Units.map (π : B →* E)`. Set `Re : c.Oˣ →* Eˣ` to `Units.map (algebraMap c.O E : c.O →* E)`. Establish `hRd : ∀ i (g : D.Gp l), Rd (κ i g) = Re (D.ps i g)` using `fun i g => Units.ext (by`. Express the relevant statement in the definitionally equal form `π (κ i g) = algebraMap c.O E (D.ps i g)`.
+
+Rewrite using `[← hκπ, ← hκp, ← hpp]`. Use the proof step `rfl)`. Set `α : D.Gp l →* Bˣ` to `k2 * k3⁻¹`. Set `β : D.Gp l →* Bˣ` to `P 0 * k2⁻¹ * k2⁻¹`. Establish `hα : ∀ g : D.Gp l, Rd (α g) = Re (D.al g)` using `fun g => by`.
+
+Express the relevant statement in the definitionally equal form `Rd (κ 2 g * (κ 3 g)⁻¹) = _`. Rewrite using `[map_mul, map_inv, hRd, hRd]`. Simplify using `[Raw.ps]`. Establish `hβ : ∀ g : D.Gp l, Rd (β g) = Re (D.be g)` using `fun g => by`. Express the relevant statement in the definitionally equal form `Rd (κ 1 g * (κ 2 g)⁻¹) = _`.
+
+Rewrite using `[map_mul, map_inv, hRd, hRd]`. Simplify using `[Raw.ps, Raw.be]`. Establish `hun : ∀ (x : Bˣ) (γ : G ℚ Ω →* c.Oˣ) (g : D.Gp l), Rd x = Re (γ g) → γ g ≠ chiO ℚ Ω l c.O g → IsUnit ((x : B) - algebraMap ℚ_[l] B ((UpperTheory.V.Loc.cyc l l (e.symm g) : ℤ_[l]ˣ) : ℤ_[l]))`. Introduce `x γ g h1 h2`. Use `unit_of π hπ fun h3 => h2 (Units.ext (IsFractionRing.injective c.O E ?_))` and prove the remaining obligations.
+
+Establish `h4 : π x = algebraMap c.O E (γ g)` using `congrArg Units.val h1`. Rewrite `h3` using `[map_sub, sub_eq_zero, h4, ← hecyc, e.apply_symm_apply, IsScalarTower.algebraMap_apply ℚ_[l] E B, π.commutes]`. Rewrite using `[h3]`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] E (algebraMap ℤ_[l] ℚ_[l] _) = algebraMap c.O E (algebraMap ℤ_[l] c.O _)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `hdiag : ∀ g i, ![(α g : B) * α g * β g * k3 g, α g * β g * k3 g, α g * k3 g, k3 g] i = κ i g` using `fun g i => by fin_cases i`. Establish `: α g * α g * β g * k3 g = P 0 g * (k3 g)⁻¹`. Simplify using `only [α, β, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Conclude with `congrArg Units.val this`. Establish `: α g * β g * k3 g = P 0 g * (k2 g)⁻¹`. Simplify using `only [α, β, MonoidHom.mul_apply, MonoidHom.inv_apply]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `congrArg Units.val this`. Conclude with `congrArg Units.val (inv_mul_cancel_right (k2 g) (k3 g))`. Both sides reduce to the same expression.
+
+Take `⟨⟨g1, n1⟩, ⟨g2, n2⟩, ⟨g3, n3⟩, g4, n4⟩` from `nonres D hD`. Take `⟨T, cT, lT, dT, gT, pT⟩` from `borLift hP e.symm.toMonoidHom (Homeomorph.mk e.symm.toEquiv hec' hec).isOpenEmbedding (p.restrictScalars ℚ_[l]) hp ((Units.coeHom B).comp α) ((Units.coeHom B).comp β) ((Units.coeHom B).comp k3) (c2.mul (hinv _ c3)) (((hPc 0).mul (hinv _ c2)).mul (hinv _ c2)) c3 (by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq]`. Use `⟨⟨g1, hun _ _ _ (hα g1) n1⟩, ⟨g2, hun _ _ _ (hβ g2) n2⟩, ⟨g3, hun (α g3 * β g3) _ _ ?_ n3⟩, g4, hun (α g4 * α g4 * β g4) _ _ ?_ n4⟩` and prove the remaining obligations. Rewrite using `[map_mul, hα, hβ, ← map_mul]`.
+
+Simplify using `[Raw.be]`. Rewrite using `[map_mul, map_mul, hα, hβ, ← map_mul, ← map_mul]`. Simplify using `[Raw.be, Raw.th, mul_assoc])`. Use the proof step `T' hTc (fun g => (hfl' g).1)`. Use the proof step `(fun g i => by`.
+
+Rewrite using `[← hκT, ← hκp]`. Conclude with `congrArg p (hdiag g i).symm)`. Use the proof step `(fun g => ⟨_, hTG g⟩)`. Establish `hred : mapRep (p : B →+* B') (cj h T) = r'` using `MonoidHom.ext fun g => by`. Use `(map_cj (p : B →+* B') hhp (T g)).1.trans ?_` and prove the remaining obligations.
+
+Establish `: (T g).map (p : B →+* B') = T' g` using `pT g`. Rewrite using `[this, hT']`. Simplify using `only [mul_assoc, Units.mul_inv_cancel_left, Units.mul_inv, mul_one]`. Establish `hL : IsContinuousLiftOfRZero D (π : B →+* E) l (cj h T)` using `⟨by`. Rewrite using `[← hr'.red, ← hred]`.
+
+Use extensionality with `g a b`. Conclude with `(hpp _).symm, cj_cont _ _ cT⟩`. Use `⟨cj h T, hL, (spFlag D hD E B π hπ _ hL).2 ⟨fun g => (gsp_conj hh ?_).2, h, κ, hh, hh1, fun g => ?_, fun i s hs => congrArg Units.val (hκI i s hs)⟩, hred⟩` and prove the remaining obligations. Establish `e1 : (α g : B) * α g * β g * k3 g * k3 g = algebraMap c.O B (D.th g)`. Rewrite using `[show (α g : B) * α g * β g * k3 g = κ 0 g from hdiag g 0]`.
+
+Conclude with `congrArg Units.val (inv_mul_cancel_right (P 0 g) (k3 g))`. Rewrite using `[← e1]`. Conclude with `gT g`. Establish `: ((h⁻¹ : (M4 B)ˣ) * cj h T g * h : M4 B) = T g`. Express the relevant statement in the definitionally equal form `((h⁻¹ : (M4 B)ˣ) * (h * T g * (h⁻¹ : (M4 B)ˣ)) * h : M4 B) = T g`.
+
+Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, Units.inv_mul, mul_one]`. Rewrite using `[this]`. Conclude with `⟨lT g, fun i => (dT g i).trans (hdiag g i)⟩`.
+-/
 theorem UpperTheory.V.Loc.spLiftL :
     LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (hD : D.Good) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra ↥c.O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ↥c.O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing ↥c.O E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra ↥c.O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ↥c.O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ↥c.O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (B' : Type) [CommRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [Algebra ↥c.O B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] ↥c.O B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] [Algebra E B'] [IsScalarTower ↥c.O E B'] [IsScalarTower ℚ_[l] E B'] (π' : B' →ₐ[E] E) (hπ' : ∀ a, π' a = 0 → IsNilpotent a) (p : B →ₐ[E] B'), Function.Surjective p → π'.comp p = π → ∀ r' : D.Gp l →* M4 B', IsContinuousLiftOfRZero D (π' : B' →+* E) l r' → EqL D r' → ∃ r : D.Gp l →* M4 B, IsContinuousLiftOfRZero D (π : B →+* E) l r ∧ EqL D r ∧ mapRep (p : B →+* B') r = r' := by
   intro hP Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' hπ' p hp hpπ

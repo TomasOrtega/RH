@@ -12,6 +12,13 @@ variable {D : D7} {u : D.what₂.Word}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hx : (y * h2).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (1 : GL (Fin (D.R.N 0)) D.host.E) * (y * h1).1 * (⟨h1.1⁻¹ * h2.1, hm⟩ : T.cls0.lev.U).1 := by`. Simplify using `[mul_assoc]`. Establish `key` using `hG 1 (one_mem _) (y * h1) (y * h2) ⟨h1.1⁻¹ * h2.1, hm⟩ hx`. Establish `hχ : ((T.cls0.lev.chi ⟨h1.1⁻¹ * h2.1, hm⟩ : ℂˣ) : ℂ) = 1`. Rewrite using `[T.cls0.lev.chi_triv ⟨h1.1⁻¹ * h2.1, hm⟩ (fun w hw => ?_)]`.
+
+Both sides reduce to the same expression. Establish `hne : w ≠ (T.atT.eV v).1` using `fun h => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.level_places_not_bad T.atT v (h ▸ hw)`. Use `show bc (prV (E := D.host.E) w) (h1.1⁻¹ * h2.1) = 1`. Rewrite using `[map_mul, map_inv, hs1 w hne, hs2 w hne, inv_one, one_mul]`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[key s s (fun τ => by simp [atInf, Matrix.map_one]), hχ, one_mul]`.
+-/
 theorem val_of_mem (T : Forms0 D u) (v : (D.mem u).A.vT)
     (y h1 h2 : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hs1 : ∀ v', v' ≠ (T.atT.eV v).1 → bc (prV (E := D.host.E) v') h1.1 = 1)
@@ -36,6 +43,15 @@ theorem val_of_mem (T : Forms0 D u) (v : (D.mem u).A.vT)
 set_option maxHeartbeats 8000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hΓ : ((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E)) ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))` using `mul_mem (inv_mem Γ3.2) Γ1.2`. Establish `hX : (T.cls0.y c3).1⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Γ3.1⁻¹ * Γ1.1) * (T.cls0.y c1).1 = k3.1⁻¹ * (h3.1⁻¹ * h1.1) * k1.1 := by`. Rewrite using `[map_mul, map_inv]`. Rewrite using `[show (T.cls0.y c3).1⁻¹ * ((bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) Γ3.1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) Γ1.1) * (T.cls0.y c1).1 = (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) Γ3.1 * (T.cls0 …`. Use `group`.
+
+Establish `hmem` using `fun x => T.cls0.lev.21 x`. Establish `H` using `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.local_unitary_of_matching_zero T v c3 c1 (Γ3.1⁻¹ * Γ1.1) hΓ (by`. Rewrite using `[hX]`. Conclude with `mul_mem (mul_mem (inv_mem ((hmem _).1 k3.2).1) (mul_mem (inv_mem h3.2) h1.2)) ((hmem _).1 k1.2).1) hP hPd hF`. Establish `hh : h3.1⁻¹ * h1.1 = k3.1 * ((T.cls0.y c3).1⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (Γ3.1⁻¹ * Γ1.1) * (T.cls0.y c1).1) * k1.1⁻¹ := by`.
+
+Rewrite using `[hX]`. Use `group`. Use `(hmem _).2 ⟨mul_mem (inv_mem h3.2) h1.2, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = (T.atT.eV v).1`. Rewrite using `[hw, hh, map_mul, map_mul, map_inv]`.
+
+Conclude with `mul_mem (mul_mem (((hmem _).1 k3.2).2 _) H) (inv_mem (((hmem _).1 k1.2).2 _))`. Rewrite using `[map_mul, map_inv, hs1 w hw, hs3 w hw, inv_one, one_mul]`. Conclude with `one_mem _`.
+-/
 theorem trip_mem (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 c3 : (D.mem u).C.cls 0)
     (Γ1 Γ3 : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
     (h1 h3 : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))

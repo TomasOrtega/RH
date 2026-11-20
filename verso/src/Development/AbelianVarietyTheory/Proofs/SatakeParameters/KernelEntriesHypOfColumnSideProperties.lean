@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.KerJ.ColSideHyp
 
+/- English proof (translation)
+Unfold `Formalism.EigenvalueLevelCeiling.plc`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem plc_dvd_iff' {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     Formalism.EigenvalueLevelCeiling.plc v ∣ n ↔ (n : 𝓞 F) ∈ v.asIdeal := by
   unfold Formalism.EigenvalueLevelCeiling.plc
@@ -19,6 +22,17 @@ theorem plc_dvd_iff' {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Y : DivX D} {cX : ExtraC}
   {ex : Extra D L hT Gi Gl K Y cX}
 
+/- English proof (translation)
+Introduce `hk`. Take `⟨hp, P, hPQ, hgP⟩` from `(t.Q_rec μ (D.host.g k)).1 hk`. Unfold `QE at hPQ`. Use `split_ifs at hPQ with h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hPQ`.
+
+Rewrite `hv` using `[Set.Finite.mem_toFinset]`. Establish `hgood : GoodPl t.X.E t.S v`. Assume the negation of the conclusion as `hg`. Apply `hv` to reduce the goal to its premises. Establish `h2` using `(Subgroup.mem_inf.1 (t.tup μ).2).2`.
+
+Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 v) hg`. Establish `hvF : ((D.host.g k : ℕ) : 𝓞 t.X.F) ∈ v.asIdeal`. Rewrite using `[← hC.sel v]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 t.X.F) (𝓞 t.X.E) _ ∈ (t.sel v).asIdeal`. Rewrite using `[map_natCast]`.
+
+Conclude with `hgP`. Establish `hd` using `(plc_dvd_iff' v _).2 hvF`. Establish `hpl : Formalism.EigenvalueLevelCeiling.plc v = D.host.g k` using `((Nat.dvd_prime hp).1 hd).resolve_left fun e => by`. Establish `h1` using `(plc_dvd_iff' v 1).1 (by rw [e])`. Rewrite `h1` using `[Nat.cast_one]`.
+
+Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Apply `hgood.2.2` to reduce the goal to its premises. Rewrite using `[hpl, ← t.g_rec k]`. Conclude with `hC.bad.1 k`. Simplify using `at hPQ`.
+-/
 theorem g_not_mem_Qp (t : KerEntTied ex) (hC : GlobalTheory.KerJ.ColSide t) (μ : D.what₂.Tup) (k : Fin 2) : D.host.g k ∉ Y.Qp μ := by
   classical
   intro hk
@@ -52,6 +66,11 @@ end GlobalTheory.KerJ.ColSideHyp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hC hTop`. Take `⟨eta, hTied⟩` from `hC.chars`. Rewrite `hTied` using `[t.glob_σ]`. Use `GlobalTheory.T.kernelEntries_hyp_of_heckeCharacterConditions D L hT Gi Gl K Y cX ex t (fun j => ⟨_, hTied.mu0 j⟩) (fun j v hv => hTied.muVal j v hv) ?_ hTop` and prove the remaining obligations. Introduce `μ k`.
+
+Conclude with `GlobalTheory.KerJ.ColSideHyp.g_not_mem_Qp t hC μ k`.
+-/
 theorem colSide_hyp : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), GlobalTheory.KerJ.ColSide t → t.TopPinned → t.Hyp := by
   intro D L hT Gi Gl K Y cX ex t hC hTop
   obtain ⟨eta, hTied⟩ := hC.chars

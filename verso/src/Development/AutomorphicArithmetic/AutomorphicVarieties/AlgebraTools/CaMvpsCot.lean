@@ -6,11 +6,31 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PiSpanV
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s`.
+-/
 private theorem mem_span_variables_of_coeff {O σ : Type} [CommRing O] (s : Finset σ) :
     ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0) →
       f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
   _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ σ _`. Establish `hreg : IsRegularLocalRing (MvPowerSeries σ O)` using `GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O σ`. Establish `hdim : ringKrullDim (MvPowerSeries σ O) = ((Fintype.card σ + 1 : ℕ) : WithBot ℕ∞)`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_eq_fintype_card, add_comm]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hm : maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Use `⟨hreg, hdim, cotInd_of_span _ _ _ ?_ ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨o, rfl⟩`. Use `GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.2 ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => simpa using hϖ.not_isUnit`. Consider the case `some i => simp`.
+
+Introduce `f hf`. Establish `h0` using `GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff.1 hf`. Rewrite `h0` using `[hm, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h0`. Establish `h1 : f - MvPowerSeries.C (ϖ * c) ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O))`.
+
+Use `mem_span_variables_of_coeff Finset.univ _ fun n hn => ?_` and prove the remaining obligations. Establish `: n = 0` using `Finsupp.ext fun i => hn i (Finset.mem_univ i)`. Substitute `this` using the available equality. Simplify using `[hc]`. Establish `h2 : f = (f - MvPowerSeries.C (ϖ * c)) + MvPowerSeries.C ϖ * MvPowerSeries.C c`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `add_mem (Ideal.span_mono ?_ h1) (Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨none, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨some i, rfl⟩`. Establish `h` using `hreg.spanFinrank_maximalIdeal`. Rewrite `h` using `[hdim]`. Rewrite using `[Fintype.card_option]`. Establish `h' : (maximalIdeal (MvPowerSeries σ O)).spanFinrank = Fintype.card σ + 1`.
+
+Conclude with `h` after adjusting the coercions. Conclude with `h'.ge`.
+-/
 theorem UpperTheory.V.AlgebraTools.mvPowerSeries_cotInd :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
       ∀ (σ : Type) [Fintype σ], IsRegularLocalRing (MvPowerSeries σ O) ∧

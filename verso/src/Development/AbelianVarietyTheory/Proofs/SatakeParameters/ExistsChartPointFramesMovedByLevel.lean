@@ -8,6 +8,29 @@ namespace GlobalTheory.LevSrcPt
 
 open GlobalTheory.CplPt GlobalTheory.TopStep GlobalTheory.TopLaw
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin _hTie hi β κ p g z hgz`. Establish `hok` using `t.idx_ok μ`. Establish `hpr : ∀ P, g P ∈ prCat (Pr` using `t.Pr) (t.cst μ).sharp t.m2 P.1 ((t.idx μ).h t.m2 (A.ib t.m2 hi β) P) := fun P => (exists_midLev_iff t.Ch t.sel (t.tup μ) (t.cst μ) t.m2 P _ (g P)).1 ⟨z P, (hgz P).1⟩`. Set `g' : ∀ P : SB t μ, GLint t.X.E (D.R.N t.m2) P.1` to `fun P => ⟨g P, hok.int t.m2 _ P (hpr P)⟩`. Take `⟨q, κP, hN, hf, hfr, hκ⟩` from `exists_pt_frames p g'`.
+
+Establish `hc : ∀ P, ∃ c : t.X.Kˣ, LevAt ((t.idx μ).levG t.m2 (A.ib t.m2 hi β)) ((t.idx μ).levQ t.m2 (A.ib t.m2 hi β)) P (κP P) c ∧ (c : t.X.K) * z P = 1`. Introduce `P`. Take `⟨r, hr, hrg, hz⟩` from `(hgz P).1`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hmem : redGL _ P.1 (g' P) ∈ ((t.idx μ).levG t.m2 (A.ib t.m2 hi β) ⟨P.1, hP⟩).H` using `(hok.grpG t.m2 _ ⟨P.1, hP⟩ _).2 ⟨g P, hpr P, fun x hx => redV_redGL (g' P) hx⟩`.
+
+Establish `hlam` using `hok.chrG t.m2 _ ⟨P.1, hP⟩ ⟨_, hmem⟩ (g P) r hr hrg (fun x hx => redV_redGL (g' P) hx)`. Establish `hred : redGL _ P.1 (κP P) = (redGL _ P.1 (g' P))⁻¹`. Establish `h1` using `(hκ P).1`. Rewrite `h1` using `[map_mul, map_inv (redGL _ _) (g' P), inv_mul_eq_one, map_inv]`. Rewrite using `[h1, inv_inv]`.
+
+Establish `hmem' : redGL _ P.1 (κP P) ∈ ((t.idx μ).levG t.m2 (A.ib t.m2 hi β) ⟨P.1, hP⟩).H` using `hred ▸ inv_mem hmem`. Use `⟨((t.idx μ).levG t.m2 (A.ib t.m2 hi β) ⟨P.1, hP⟩).lam ⟨_, hmem'⟩, ⟨fun _ => ⟨hmem', rfl⟩, fun _ hP' => absurd hP hP'⟩, ?_⟩` and prove the remaining obligations. Establish `e : (⟨_, hmem'⟩ : ↥((t.idx μ).levG t.m2 (A.ib t.m2 hi β) ⟨P.1, hP⟩).H) = (⟨_, hmem⟩)⁻¹` using `Subtype.ext hred`. Establish `ez : z P = ((((t.idx μ).levG t.m2 (A.ib t.m2 hi β) ⟨P.1, hP⟩).lam ⟨_, hmem⟩ : t.X.Kˣ) : t.X.K)` using `hz.trans hlam.symm`. Rewrite using `[e, map_inv, ez]`.
+
+Conclude with `Units.inv_mul _`. Establish `hQ : P.1 ∈ QE t.sel ((t.tup μ) : Chr t.X.F t.X.E t.X.K)` using `(Finset.mem_union.mp P.2).resolve_left hP`. Establish `hmem : g' P ∈ ((t.idx μ).levQ t.m2 (A.ib t.m2 hi β) ⟨P.1, hQ⟩).H`. Rewrite using `[hok.grpQ]`. Conclude with `Subgroup.mem_subgroupOf.2 (hpr P)`.
+
+Establish `hlam` using `hok.chrQ t.m2 _ ⟨P.1, hQ⟩ ⟨g' P, hmem⟩ r hr hrg`. Establish `hκe : κP P = (g' P)⁻¹` using `by rw [← (hκ P).2 hP, inv_inv]`. Establish `hmem' : κP P ∈ ((t.idx μ).levQ t.m2 (A.ib t.m2 hi β) ⟨P.1, hQ⟩).H` using `hκe ▸ inv_mem hmem`. Use `⟨((t.idx μ).levQ t.m2 (A.ib t.m2 hi β) ⟨P.1, hQ⟩).lam ⟨_, hmem'⟩, ⟨fun hP' => absurd hP' hP, fun _ _ => ⟨hmem', rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `e : (⟨_, hmem'⟩ : ↥((t.idx μ).levQ t.m2 (A.ib t.m2 hi β) ⟨P.1, hQ⟩).H) = (⟨_, hmem⟩)⁻¹` using `Subtype.ext hκe`.
+
+Establish `ez : z P = ((((t.idx μ).levQ t.m2 (A.ib t.m2 hi β) ⟨P.1, hQ⟩).lam ⟨_, hmem⟩ : t.X.Kˣ) : t.X.K)` using `hz.trans hlam.symm`. Rewrite using `[e, map_inv, ez]`. Conclude with `Units.inv_mul _`. Use `choose c hc using hc`. Use `⟨q, κP, c, hfr, fun P => (hc P).1, hN, hf, fun P => (hc P).2, fun P => ?_, fun P => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `h1` using `(hκ P).1`. Rewrite `h1` using `[map_mul, map_inv (redGL _ _) (g' P), inv_mul_eq_one]`. Unfold `rhoS`. Use `unitV_congr _ ((det_glint ((κP P)⁻¹)).2.trans (Eq.trans ?_ (det_glint (g' P)).2.symm))` and prove the remaining obligations.
+
+Rewrite using `[← redGL_val, ← redGL_val, h1]`. Rewrite using `[(hκ P).2 hP]`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hD : (t.cst μ).D P = 1` using `hok.depthG P hP`. Establish `hq` using `(GlobalTheory.ColPeriod.levelPrimes t.X t.Pr t.sel t.S (t.tup μ) hPin.fields.ok t.pr_ok hPin.sel P).1.2`.
+
+Establish `e : ((κP P)⁻¹).1 = (g' P).1 * ((g' P)⁻¹ * (κP P)⁻¹).1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel_left]`. Unfold `InFrame`. Rewrite using `[e, map_mul]`. Use `nearAt_mul _ (hgz P).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hD]`. Conclude with `congAt_one_of_redGL t.seam hq ((g' P)⁻¹ * (κP P)⁻¹) (hκ P).1`. Rewrite using `[(hκ P).2 hP]`. Conclude with `(hgz P).2`.
+-/
 theorem exists_pt_lev : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (hi : t.m2 < D.R.m) (β : (St t.m2 hi.le).Ch) (κ : ((St t.m2 hi.le).K β).lev.U)
     (p : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) t.m2) (g : SB t μ → (Sp t.X.E (D.R.N t.m2) ≃ₗ[t.X.E] Sp t.X.E (D.R.N t.m2)))

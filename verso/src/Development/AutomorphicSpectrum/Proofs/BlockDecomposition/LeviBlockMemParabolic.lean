@@ -9,47 +9,78 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.QLevi
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[ePG]`.
+-/
 theorem ePG_true_eq (i t : ℕ) (b : Fin t) :
     ePG i t ⟨true, b⟩ = Fin.castSucc (Fin.natAdd i b) := by
   apply Fin.ext
   simp [ePG]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[ePG, finSumFinEquiv_symm_apply_castSucc]`.
+-/
 theorem ePG_false_eq (i t : ℕ) (a : Fin i) :
     ePG i t ⟨false, Fin.castSucc a⟩ = Fin.castSucc (Fin.castAdd t a) := by
   apply Fin.ext
   simp [ePG, finSumFinEquiv_symm_apply_castSucc]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem two_true_eq (i t : ℕ) (b : Fin t) :
     two (stdSum (rfl : i + t = i + t)) ⟨true, b⟩ = Fin.natAdd i b := by
   apply Fin.ext
   simp
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem two_false_eq (i t : ℕ) (a : Fin i) :
     two (stdSum (rfl : i + t = i + t)) ⟨false, a⟩ = Fin.castAdd t a := by
   apply Fin.ext
   simp
 
+/- English proof (translation)
+Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem levi_entry (n : ℕ) (g : GL (Fin n) k) (a b : Fin n) :
     ((levi k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc a) (Fin.castSucc b) =
       (g : Matrix (Fin n) (Fin n) k) a b := by
   show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem levi_entry_last_col (n : ℕ) (g : GL (Fin n) k) (a : Fin n) :
     ((levi k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc a) (Fin.last n) = 0 := by
   show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem levi_entry_last_row (n : ℕ) (g : GL (Fin n) k) (b : Fin n) :
     ((levi k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.castSucc b) = 0 := by
   show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Use `show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem levi_entry_last (n : ℕ) (g : GL (Fin n) k) :
     ((levi k n g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.last n) (Fin.last n) = 1 := by
   show glEmbMat k n (g : Matrix (Fin n) (Fin n) k) _ _ = _
   simp [glEmbMat]
 
+/- English proof (translation)
+Use `show ((levi k (i + t) (q : GL (Fin (i + t)) k) : Mir k (i + t)) : GL (Fin (i + t + 1)) k) ∈ parab k (ePG i t)`. Use `mem_parab_iff.2 ?_` and prove the remaining obligations. Introduce `a c x y hac`. Apply the tactic sequence `obtain ⟨rfl, rfl⟩ : a = true ∧ c = false := by revert hac; cases a <;> cases c <;> decide`. Establish `hx : ePG i t ⟨true, x⟩ = Fin.castSucc (Fin.natAdd i (x : Fin t))` using `ePG_true_eq i t x`.
+
+Rewrite using `[hx]`. Proceed by induction on `(y : Fin (i + 1)) using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ePG_false_last]`. Conclude with `levi_entry_last_col _ _ _`.
+
+Consider the case `cast y`. Rewrite using `[ePG_false_eq, levi_entry]`. Use `mem_parab_iff.1 q.2 true false (x : Fin t) (y : Fin i) (by decide)` as an intermediate fact. Rewrite `this` using `[two_true_eq, two_false_eq]`. Then use the resulting hypothesis.
+-/
 theorem levi_mem_HPG (i t : ℕ) (q : Qp k i t) : levi k (i + t) (q : GL (Fin (i + t)) k) ∈ HPG k i t := by
   show ((levi k (i + t) (q : GL (Fin (i + t)) k) : Mir k (i + t)) : GL (Fin (i + t + 1)) k) ∈ parab k (ePG i t)
   refine mem_parab_iff.2 ?_
@@ -67,6 +98,19 @@ theorem levi_mem_HPG (i t : ℕ) (q : Qp k i t) : levi k (i + t) (q : GL (Fin (i
     have := mem_parab_iff.1 q.2 true false (x : Fin t) (y : Fin i) (by decide)
     rwa [two_true_eq, two_false_eq] at this
 
+/- English proof (translation)
+Apply `Prod.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (leviProj k (ePG i t) (hpgIncl k i t ⟨_, h⟩) false : GL (Fin (i + 1)) k).val a b = ((levi k i (qBlocks k i t q).1 : GL (Fin (i + 1)) k) : Matrix (Fin (i + 1)) (Fin (i + 1)) k) a b`.
+
+Rewrite using `[leviProj_apply]`. Use `show ((levi k (i + t) (q : GL (Fin (i + t)) k) : GL (Fin (i + t + 1)) k) : Matrix _ _ k) (ePG i t ⟨false, a⟩) (ePG i t ⟨false, b⟩) = _`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[ePG_false_last]`.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [ePG_false_last, levi_entry_last, levi_entry_last]`. Consider the case `cast b => rw [ePG_false_eq, levi_entry_last_row, levi_entry_last_row]`. Consider the case `cast a`. Rewrite using `[ePG_false_eq]`.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [ePG_false_last, levi_entry_last_col, levi_entry_last_col]`. Consider the case `cast b`. Rewrite using `[ePG_false_eq, levi_entry, levi_entry]`. Use `show _ = (leviProj k (two (stdSum (rfl : i + t = i + t))) q false : GL (Fin i) k).val a b`.
+
+Rewrite using `[leviProj_apply, two_false_eq, two_false_eq]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (leviProj k (ePG i t) (hpgIncl k i t ⟨_, h⟩) true : GL (Fin t) k).val a b = (leviProj k (two (stdSum (rfl : i + t = i + t))) q true : GL (Fin t) k).val a b`. Rewrite using `[leviProj_apply, leviProj_apply]`.
+
+Use `show ((levi k (i + t) (q : GL (Fin (i + t)) k) : GL (Fin (i + t + 1)) k) : Matrix _ _ k) (ePG i t ⟨true, a⟩) (ePG i t ⟨true, b⟩) = _`. Rewrite using `[ePG_true_eq, ePG_true_eq, levi_entry, two_true_eq, two_true_eq]`.
+-/
 theorem pgProj_levi (i t : ℕ) (q : Qp k i t) (h : levi k (i + t) (q : GL (Fin (i + t)) k) ∈ HPG k i t) :
     pgProj k i t ⟨_, h⟩ = (levi k i (qBlocks k i t q).1, (qBlocks k i t q).2) := by
   apply Prod.ext
@@ -105,6 +149,9 @@ end GlobalTheory.CompanionTheory.BZPsiPG.QLevi
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨QLevi.levi_mem_HPG i t q, QLevi.pgProj_levi i t q _⟩`.
+-/
 theorem levi_Qp_mem_pgProj (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (i t : ℕ) (q : Qp k i t) :
     ∃ h : levi k (i + t) (q : GL (Fin (i + t)) k) ∈ HPG k i t,

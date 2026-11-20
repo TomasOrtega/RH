@@ -17,6 +17,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `⟨fun a b => ∑ i, ∑ j, C (((Fm k r z)ᴴ * Hpk k r) a i * Fm k r z' j b) * MvPolynomial.X (Sum.inl (i, j)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun i _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Conclude with `deg_CX _ _`.
+
+Introduce `g a b`. Rewrite using `[Zhat_eq]`. Simplify using `only [map_sum, map_mul, eval_C, eval_X, PI.UnitaryGroupMassFormula.UsCompose.vars, Sum.elim_inl, Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 private lemma exists_zhat_eq_eval_poly_deg_le_one (z z' : Fin (2 * r + k + 1) → ℂ) :
     ∃ P : Fin (r + 1) → Fin (r + 1) → MvPolynomial (Vr (2 * r + k + 1)) ℂ,
       (∀ a b, (P a b).totalDegree ≤ 1) ∧
@@ -34,6 +41,13 @@ private lemma exists_zhat_eq_eval_poly_deg_le_one (z z' : Fin (2 * r + k + 1) �
     refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
     exact Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Use `⟨fun a b => ∑ i, ∑ j, C (star (((Fm k r z)ᴴ * Hpk k r) a i * Fm k r z' j b)) * MvPolynomial.X (Sum.inr (i, j)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun i _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Conclude with `deg_CX _ _`.
+
+Introduce `g a b`. Rewrite using `[Zhat_eq]`. Simplify using `only [map_sum, map_mul, eval_C, eval_X, PI.UnitaryGroupMassFormula.UsCompose.vars, Sum.elim_inr, Matrix.mul_apply, Finset.sum_mul, star_sum, star_mul']`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 private lemma exists_star_zhat_eq_eval_poly_deg_le_one (z z' : Fin (2 * r + k + 1) → ℂ) :
     ∃ P : Fin (r + 1) → Fin (r + 1) → MvPolynomial (Vr (2 * r + k + 1)) ℂ,
       (∀ a b, (P a b).totalDegree ≤ 1) ∧
@@ -52,6 +66,9 @@ private lemma exists_star_zhat_eq_eval_poly_deg_le_one (z z' : Fin (2 * r + k + 
     refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
     exact Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Use `⟨(Matrix.of fun a b => P (e a) (e b)).det, deg_det _ (fun a b => hP _ _), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[RingHom.mapMatrix_apply, hf]`.
+-/
 private lemma exists_det_submatrix_poly_deg_le_of_entries_deg_le_one {m : ℕ} (f : Mat k r → Matrix (Fin m) (Fin m) ℂ)
     (P : Fin m → Fin m → MvPolynomial (Vr (2 * r + k + 1)) ℂ) (hP : ∀ a b, (P a b).totalDegree ≤ 1)
     (hf : ∀ g a b, eval (vars g) (P a b) = f g a b) (n : ℕ) (e : Fin n → Fin m) :
@@ -63,6 +80,9 @@ private lemma exists_det_submatrix_poly_deg_le_of_entries_deg_le_one {m : ℕ} (
   ext a b
   simp [RingHom.mapMatrix_apply, hf]
 
+/- English proof (translation)
+Take `⟨P, hP, hPe⟩` from `exists_zhat_eq_eval_poly_deg_le_one (k := k) (r := r) z z'`. Take `⟨q, hq, hqe⟩` from `exists_det_submatrix_poly_deg_le_of_entries_deg_le_one (fun g => Zhat k r z z' g) P hP hPe l.val (Fin.castLE (Nat.le_of_lt_succ l.isLt))`. Conclude with `⟨q, hq, fun g => by rw [Dmin]; exact hqe g⟩`.
+-/
 private lemma exists_dmin_eq_eval_poly_deg_le (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ∃ q : MvPolynomial (Vr (2 * r + k + 1)) ℂ, q.totalDegree ≤ l.val ∧
       ∀ g : Mat k r, Dmin k r z z' g l = eval (vars g) q := by
@@ -71,6 +91,9 @@ private lemma exists_dmin_eq_eval_poly_deg_le (z z' : Fin (2 * r + k + 1) → �
     (Fin.castLE (Nat.le_of_lt_succ l.isLt))
   exact ⟨q, hq, fun g => by rw [Dmin]; exact hqe g⟩
 
+/- English proof (translation)
+Take `⟨P, hP, hPe⟩` from `exists_star_zhat_eq_eval_poly_deg_le_one (k := k) (r := r) z z'`. Take `⟨q, hq, hqe⟩` from `exists_det_submatrix_poly_deg_le_of_entries_deg_le_one (fun g => (Zhat k r z z' g).map (starRingEnd ℂ)) P hP (fun g a b => by simp [hPe]) l.val (Fin.castLE (Nat.le_of_lt_succ l.isLt))`. Use `⟨q, hq, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hqe g, Dmin, ← starRingEnd_apply, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]`.
+-/
 private lemma exists_star_dmin_eq_eval_poly_deg_le (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ∃ q : MvPolynomial (Vr (2 * r + k + 1)) ℂ, q.totalDegree ≤ l.val ∧
       ∀ g : Mat k r, star (Dmin k r z z' g l) = eval (vars g) q := by
@@ -80,18 +103,31 @@ private lemma exists_star_dmin_eq_eval_poly_deg_le (z z' : Fin (2 * r + k + 1) �
   refine ⟨q, hq, fun g => ?_⟩
   rw [← hqe g, Dmin, ← starRingEnd_apply, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]
 
+/- English proof (translation)
+Take `⟨q, hq, hqe⟩` from `exists_dmin_eq_eval_poly_deg_le (k := k) z z' l`. Conclude with `⟨q, hq.trans (by have := l.isLt; omega), hqe⟩`.
+-/
 lemma dminPoly (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ∃ q : MvPolynomial (Vr (2 * r + k + 1)) ℂ, q.totalDegree ≤ 2 * r + 2 ∧
       ∀ g : Mat k r, Dmin k r z z' g l = eval (vars g) q := by
   obtain ⟨q, hq, hqe⟩ := exists_dmin_eq_eval_poly_deg_le (k := k) z z' l
   exact ⟨q, hq.trans (by have := l.isLt; omega), hqe⟩
 
+/- English proof (translation)
+Take `⟨q, hq, hqe⟩` from `exists_star_dmin_eq_eval_poly_deg_le (k := k) z z' l`. Conclude with `⟨q, hq.trans (by have := l.isLt; omega), hqe⟩`.
+-/
 lemma dminStarPoly (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     ∃ q : MvPolynomial (Vr (2 * r + k + 1)) ℂ, q.totalDegree ≤ 2 * r + 2 ∧
       ∀ g : Mat k r, star (Dmin k r z z' g l) = eval (vars g) q := by
   obtain ⟨q, hq, hqe⟩ := exists_star_dmin_eq_eval_poly_deg_le (k := k) z z' l
   exact ⟨q, hq.trans (by have := l.isLt; omega), hqe⟩
 
+/- English proof (translation)
+Take `⟨qa, ha, hae⟩` from `exists_dmin_eq_eval_poly_deg_le (k := k) z z' (Fin.last (r + 1))`. Take `⟨qab, hab, habe⟩` from `exists_star_dmin_eq_eval_poly_deg_le (k := k) z z' (Fin.last (r + 1))`. Take `⟨qb, hb, hbe⟩` from `exists_dmin_eq_eval_poly_deg_le (k := k) z z' ⟨r, by omega⟩`. Take `⟨qbb, hbb, hbbe⟩` from `exists_star_dmin_eq_eval_poly_deg_le (k := k) z z' ⟨r, by omega⟩`. Simplify using `only [Fin.val_last] at ha hab hb hbb`.
+
+Use `⟨qa * qab - C ((Tz k r z * Tz k r z' : ℝ) : ℂ) * qb * qbb, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_sub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_mul _ _).trans (by omega)`. Conclude with `(deg_cmul _ _ _).trans (by omega)`. Simplify using `only [map_sub, map_mul, eval_C]`.
+
+Rewrite using `[← hae g, ← habe g, ← hbe g, ← hbbe g, Gf]`. Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gfPoly (z z' : Fin (2 * r + k + 1) → ℂ) :
     ∃ q : MvPolynomial (Vr (2 * r + k + 1)) ℂ, q.totalDegree ≤ 2 * r + 2 ∧
       ∀ g : Mat k r, ((Gf k r z z' g : ℝ) : ℂ) = eval (vars g) q := by
@@ -120,18 +156,36 @@ def qDbl (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) : MvPolynomial (
 def qGf (z z' : Fin (2 * r + k + 1) → ℂ) : MvPolynomial (Vr (2 * r + k + 1)) ℂ :=
   Classical.choose (gfPoly (k := k) z z')
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (dminPoly (k := k) z z' l)).1`.
+-/
 lemma qDl_deg (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) : (qDl (k := k) z z' l).totalDegree ≤ 2 * r + 2 :=
   (Classical.choose_spec (dminPoly (k := k) z z' l)).1
+/- English proof (translation)
+The claim follows from `((Classical.choose_spec (dminPoly (k := k) z z' l)).2 g).symm`.
+-/
 lemma qDl_eval (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) (g : Mat k r) :
     eval (vars g) (qDl z z' l) = Dmin k r z z' g l :=
   ((Classical.choose_spec (dminPoly (k := k) z z' l)).2 g).symm
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (dminStarPoly (k := k) z z' l)).1`.
+-/
 lemma qDbl_deg (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) : (qDbl (k := k) z z' l).totalDegree ≤ 2 * r + 2 :=
   (Classical.choose_spec (dminStarPoly (k := k) z z' l)).1
+/- English proof (translation)
+The claim follows from `((Classical.choose_spec (dminStarPoly (k := k) z z' l)).2 g).symm`.
+-/
 lemma qDbl_eval (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) (g : Mat k r) :
     eval (vars g) (qDbl z z' l) = star (Dmin k r z z' g l) :=
   ((Classical.choose_spec (dminStarPoly (k := k) z z' l)).2 g).symm
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (gfPoly (k := k) z z')).1`.
+-/
 lemma qGf_deg (z z' : Fin (2 * r + k + 1) → ℂ) : (qGf (k := k) z z').totalDegree ≤ 2 * r + 2 :=
   (Classical.choose_spec (gfPoly (k := k) z z')).1
+/- English proof (translation)
+The claim follows from `((Classical.choose_spec (gfPoly (k := k) z z')).2 g).symm`.
+-/
 lemma qGf_eval (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) :
     eval (vars g) (qGf z z') = ((Gf k r z z' g : ℝ) : ℂ) :=
   ((Classical.choose_spec (gfPoly (k := k) z z')).2 g).symm
@@ -171,6 +225,11 @@ def dco (D : RealPlaceData k r Wp Wq) {nf : ℕ} (X : Mat k r) (t : CT k r nf) :
 
 end vals
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `zero => simpa using hasDerivAt_const (0 : ℝ) (1 : ℂ)`. Consider the case `succ n`. Establish `hc0 : c 0 ≠ 0` using `h0.resolve_left (Nat.succ_ne_zero n)`. Establish `h2` using `((hasDerivAt_inv hc0).pow (n + 1)).comp (0 : ℝ) hc`.
+
+Establish `h3 : HasDerivAt (fun t => (c t)⁻¹ ^ (n + 1)) (((n + 1 : ℕ) : ℂ) * (c 0)⁻¹ ^ (n + 1 - 1) * -(c 0 ^ 2)⁻¹ * c') 0` using `h2`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel, ← inv_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hasDerivAt_invpow' {c : ℝ → ℂ} {c' : ℂ} (hc : HasDerivAt c c' 0) {a : ℕ} (h0 : a = 0 ∨ c 0 ≠ 0) :
     HasDerivAt (fun t => (c t)⁻¹ ^ a) (-(a : ℂ) * c' * (c 0)⁻¹ ^ (a + 1)) 0 := by
   cases a with
@@ -185,18 +244,27 @@ lemma hasDerivAt_invpow' {c : ℝ → ℂ} {c' : ℂ} (hc : HasDerivAt c c' 0) {
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_poly X g (qDl (k := k) z z' l)`. Simplify using `only [qDl_eval] at h`. Conclude with `h`.
+-/
 lemma hasDerivAt_polyD (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     HasDerivAt (fun t => Dmin k r z z' (crv (false, X) g t) l) (eval (vars g) (dP X (qDl z z' l))) 0 := by
   have h := hasDerivAt_poly X g (qDl (k := k) z z' l)
   simp only [qDl_eval] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_poly X g (qDbl (k := k) z z' l)`. Simplify using `only [qDbl_eval] at h`. Conclude with `h`.
+-/
 lemma hasDerivAt_polyDb (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     HasDerivAt (fun t => star (Dmin k r z z' (crv (false, X) g t) l)) (eval (vars g) (dP X (qDbl z z' l))) 0 := by
   have h := hasDerivAt_poly X g (qDbl (k := k) z z' l)
   simp only [qDbl_eval] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_poly X g (qGf (k := k) z z')`. Simplify using `only [qGf_eval] at h`. Conclude with `h`.
+-/
 lemma hasDerivAt_polyG (X g : Mat k r) (z z' : Fin (2 * r + k + 1) → ℂ) :
     HasDerivAt (fun t => ((Gf k r z z' (crv (false, X) g t) : ℝ) : ℂ)) (eval (vars g) (dP X (qGf z z'))) 0 := by
   have h := hasDerivAt_poly X g (qGf (k := k) z z')

@@ -19,6 +19,49 @@ def TAk (N : ℕ) : Prop := ∀ (n : ℕ) (M : Type) [AddCommGroup M] [Module �
       (ℓ ∘ₗ cA col b ∘ₗ S) ∘ₗ qdet (tE (fib lab τ) (E τ)) u =
         (∏ k, (u + l τ k + ((Finset.univ.filter fun p => lab p = τ ∧ co p = k).card : ℂ))) • (ℓ ∘ₗ cA col b ∘ₗ S)
 
+/- English proof (translation)
+Use `Nat.strong_induction_on N ?_` and prove the remaining obligations. Introduce `N ih`. Introduce `n M _ _ ι _ _ E hG hC l hl ℓ hℓ hW P _ _ hN lab C _ col b co hcl htab hinj`. Break down `isEmpty_or_nonempty P with hP | ⟨⟨p0⟩⟩` into its components or cases. Conclude with `base lab E l hl ℓ hℓ col b co`.
+
+Take `⟨τ0, hp0⟩ : ∃ τ0, lab p0 = τ0` from `⟨_, rfl⟩`. Establish `hcard : Fintype.card {p : P // ¬ lab p = τ0} < N`. Rewrite using `[← hN]`. Conclude with `Fintype.card_subtype_lt (p := fun p => ¬ lab p = τ0) (x := p0) (fun h => h hp0)`. Take `⟨S1, hS1, hne1, hev1⟩` from `ih _ hcard n M {τ : ι // τ ≠ τ0} (fun τ => E τ) (fun τ => hG τ) (fun τ τ' h => hC τ τ' (fun e => h (Subtype.ext e))) (fun τ => l τ) (fun τ => hl τ) ℓ hℓ (fun τ => hW τ) {p : P // ¬ lab p = τ0} rfl (labR lab τ0) C (fun p => col p) (fun p => b p) (fun p => co p) (fun p q h => Subty …`.
+
+Take `⟨r, hr1, hr2⟩` from `htab.2 p i hi`. Conclude with `⟨⟨r, by rw [hcl r p hr1]; exact p.2⟩, hr1, hr2⟩⟩`. Use the proof step `(fun p q h1 h2 => Subtype.ext (hinj _ _ h1 h2))`. Unfold `envAlg at hS1`. Establish `hWh1 : IsWh (fun a c => lift (P` using `{p : P // ¬ lab p = τ0}) (E τ0 a c)) (ℓ ∘ₗ cA (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) ∘ₗ S1) := by`.
+
+Take `⟨ψ, h1, h2, h3⟩` from `hW τ0`. Use `⟨ψ, h1, h2, fun a c hac => ?_⟩` and prove the remaining obligations. Establish `hcomm : Commute S1 (lift (E τ0 a c))` using `comm_of_mem_adjoin hS1 (by`. Introduce and unpack `T ⟨τ, c', d', rfl⟩`. Conclude with `tE_comm_lift _ _ _ (fun x y => hC τ τ0 τ.2 x y a c) c' d')`.
+
+Establish `e2` using `cA_lift (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) (E τ0 a c)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Use `LinearMap.congr_fun hcomm.eq F` as an intermediate fact. Establish `h3'` using `LinearMap.congr_fun (h3 a c hac)`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, Module.End.mul_apply] at this h3' ⊢`. Rewrite using `[this, ← LinearMap.comp_apply (cA _ _) (lift _), e2, LinearMap.comp_apply, h3']`. Establish `hWh1'` using `hWh1`. Take `⟨S0, hS0, hne0, hev0⟩` from `hT n (TV n M {p : P // ¬ lab p = τ0}) (fun a c => lift (P := {p : P // ¬ lab p = τ0}) (E τ0 a c)) (by have := glRel_map (liftA n M {p : P // ¬ lab p = τ0}) (E τ0) (hG τ0); simpa only [liftA_apply] using this) (l τ0) (qdet_lift _ _ (hl τ0)) _ hne1 hWh1 {p : P // lab p = τ0} C (fun …`. Take `⟨r, hr1, hr2⟩` from `htab.2 p i hi`.
+
+Conclude with `⟨⟨r, by rw [hcl r p hr1]; exact p.2⟩, hr1, hr2⟩⟩`. Use the proof step `(fun p q h1 h2 => Subtype.ext (hinj _ _ h1 h2))`. Unfold `envAlg at hS0`. Establish `hcAl : ∀ (B : Module.End ℂ (TV n M {p : P // ¬ lab p = τ0})) (z : TV n (TV n M {p : P // ¬ lab p = τ0}) {p : P // lab p = τ0}), cA (M` using `TV n M {p : P // ¬ lab p = τ0}) (fun p : {p : P // lab p = τ0} => col p) (fun p => b p) (lift B z) = B (cA (M := TV n M {p : P // ¬ lab p = τ0}) (fun p : {p : P // lab p = τ0} => col p) (fun p => b p) z) := fun B z => LinearMap.congr_fun (cA_lift _ _ B) z`. Establish `hkey : ∀ Y : Module.End ℂ (TV n (TV n M {p : P // ¬ lab p = τ0}) {p : P // lab p = τ0}), (ℓ ∘ₗ cA col b ∘ₗ cj (spl (n` using `n) (M := M) (fun p : P => lab p = τ0)) (lift (P := {p : P // lab p = τ0}) S1 * S0)) ∘ₗ cj (spl (n := n) (M := M) (fun p : P => lab p = τ0)) Y = (((ℓ ∘ₗ cA (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) ∘ₗ S1) ∘ₗ cA (M := TV n M {p : P // ¬ lab p = τ0}) (fun p : {p : P …`.
+
+Introduce `Y`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Simplify using `only [LinearMap.comp_apply, cj_apply, LinearEquiv.apply_symm_apply, Module.End.mul_apply, LinearEquiv.coe_coe]`. Rewrite using `[cA_split (fun p => lab p = τ0) col (fun p p' h => by rw [hcl p p' h]) b]`.
+
+Simplify using `only [LinearEquiv.apply_symm_apply, Module.End.mul_apply]`. Rewrite using `[hcAl]`. Establish `hkey0 : ℓ ∘ₗ cA col b ∘ₗ cj (spl (n` using `n) (M := M) (fun p : P => lab p = τ0)) (lift (P := {p : P // lab p = τ0}) S1 * S0) = ((ℓ ∘ₗ cA (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) ∘ₗ S1) ∘ₗ cA (M := TV n M {p : P // ¬ lab p = τ0}) (fun p : {p : P // lab p = τ0} => col p) (fun p => b p) ∘ₗ S0) ∘ₗ (spl (n := …`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`.
+
+Simplify using `only [LinearMap.comp_apply, cj_apply, LinearEquiv.apply_symm_apply, Module.End.mul_apply, LinearEquiv.coe_coe]`. Rewrite using `[cA_split (fun p => lab p = τ0) col (fun p p' h => by rw [hcl p p' h]) b]`. Simplify using `only [LinearEquiv.apply_symm_apply, Module.End.mul_apply]`. Rewrite using `[hcAl]`. Use `⟨cj (spl (n := n) (M := M) (fun p : P => lab p = τ0)) (lift (P := {p : P // lab p = τ0}) S1 * S0), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `envAlg`. Rewrite using `[map_mul]`. Apply `Subalgebra.mul_mem` to reduce the goal to its premises. Establish `hsub : Algebra.adjoin ℂ {T : Module.End ℂ (TV n M {p : P // ¬ lab p = τ0}) | ∃ (τ : {τ : ι // τ ≠ τ0}) (a c : Fin n), T = tE (fib (labR lab τ0) τ) (E τ) a c} ≤ (Algebra.adjoin ℂ {T : Module.End ℂ (TV n M P) | ∃ (τ : ι) (a c : Fin n), T = tE (fib lab τ) (E τ) a c}).comap ((cj (spl …` using `n) (M := M) (fun p : P => lab p = τ0))).comp (liftA n (TV n M {p : P // ¬ lab p = τ0}) {p : P // lab p = τ0})) := by`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+
+Introduce and unpack `T ⟨τ, c, d, rfl⟩`. Simplify using `only [SetLike.mem_coe, Subalgebra.mem_comap, AlgHom.comp_apply, liftA_apply]`. Rewrite using `[conj_tensor_entry_fibre]`. Conclude with `Algebra.subset_adjoin ⟨τ, c, d, rfl⟩`. Use `hsub hS1` as an intermediate fact.
+
+Simplify `this` using `only [Subalgebra.mem_comap, AlgHom.comp_apply, liftA_apply]`. Establish `hsub : Algebra.adjoin ℂ {T : Module.End ℂ (TV n (TV n M {p : P // ¬ lab p = τ0}) {p : P // lab p = τ0}) | ∃ (_ : Unit) (a c : Fin n), T = tE Finset.univ (fun a c => lift (P` using `{p : P // ¬ lab p = τ0}) (E τ0 a c)) a c} ≤ (Algebra.adjoin ℂ {T : Module.End ℂ (TV n M P) | ∃ (τ : ι) (a c : Fin n), T = tE (fib lab τ) (E τ) a c}).comap (cj (spl (n := n) (M := M) (fun p : P => lab p = τ0))) := by`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `T ⟨_, c, d, rfl⟩`. Simplify using `only [SetLike.mem_coe, Subalgebra.mem_comap]`.
+
+Rewrite using `[conj_tensor_entry_base]`. Conclude with `Algebra.subset_adjoin ⟨τ0, c, d, rfl⟩`. Conclude with `hsub hS0`. Rewrite using `[hkey0]`. Introduce `h`.
+
+Apply `hne0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `G`. Use `LinearMap.congr_fun h ((spl (n := n) (M := M) (fun p : P => lab p = τ0)).symm G)` as an intermediate fact. Simplify using `using this`.
+
+Introduce `τ u`. Distinguish the cases in `hτ : τ = τ0`. Substitute `hτ` using the available equality. Establish `hq : qdet (tE (fib lab τ) (E τ)) u = cj (spl (n` using `n) (M := M) (fun p : P => lab p = τ)) (qdet (tE Finset.univ (fun a c => lift (P := {p : P // ¬ lab p = τ}) (E τ a c))) u) := by`. Rewrite using `[qdet_map']`.
+
+Simplify using `only [conj_tensor_entry_base]`. Rewrite using `[hq, hkey, hev0 u, LinearMap.smul_comp, ← hkey0]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+
+Use `congr 2`. Conclude with `card_sub (fun p : P => lab p = τ) (fun p => co p = k)`. Establish `hq : qdet (tE (fib lab τ) (E τ)) u = cj (spl (n` using `n) (M := M) (fun p : P => lab p = τ0)) (lift (P := {p : P // lab p = τ0}) (qdet (tE (fib (labR lab τ0) ⟨τ, hτ⟩) (E τ)) u)) := by`. Use `qdet_map' ((cj (spl (n := n) (M := M) (fun p : P => lab p = τ0))).comp (liftA n (TV n M {p : P // ¬ lab p = τ0}) {p : P // lab p = τ0})) (tE (fib (labR lab τ0) ⟨τ, hτ⟩) (E τ)) u` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, liftA_apply, conj_tensor_entry_fibre] at this`.
+
+Conclude with `this.symm`. Establish `hcQ : Commute S0 (lift (P` using `{p : P // lab p = τ0}) (qdet (tE (fib (labR lab τ0) ⟨τ, hτ⟩) (E τ)) u)) := comm_of_mem_adjoin hS0 (by`. Introduce and unpack `T ⟨_, c, d, rfl⟩`. Conclude with `tE_comm_lift _ _ _ (fun x y => (qdet_commute _ u _ (fun a' c' => tE_comm_lift _ _ _ (fun x' y' => hC τ τ0 hτ x' y' x y) a' c')).symm) c d)`. Establish `hmid : (((ℓ ∘ₗ cA (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) ∘ₗ S1) ∘ₗ cA (M` using `TV n M {p : P // ¬ lab p = τ0}) (fun p : {p : P // lab p = τ0} => col p) (fun p => b p) ∘ₗ S0) ∘ₗ lift (P := {p : P // lab p = τ0}) (qdet (tE (fib (labR lab τ0) ⟨τ, hτ⟩) (E τ)) u)) = ((ℓ ∘ₗ cA (fun p : {p : P // ¬ lab p = τ0} => col p) (fun p => b p) ∘ₗ S1) ∘ₗ qdet (tE (fib (labR …`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Use `LinearMap.congr_fun hcQ.eq F` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Module.End.mul_apply] at this ⊢`. Rewrite using `[this, hcAl]`.
+
+Rewrite using `[hq, hkey, hmid, hev1 ⟨τ, hτ⟩ u, LinearMap.smul_comp, LinearMap.smul_comp, ← hkey0]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[card_R]`.
+-/
 theorem main (hT : Trans) (N : ℕ) : TAk N := by
   refine Nat.strong_induction_on N ?_
   intro N ih
@@ -152,6 +195,9 @@ theorem main (hT : Trans) (N : ℕ) : TAk N := by
 
 end TA
 
+/- English proof (translation)
+Introduce `n M _ _ ι _ _ E hE hC l hl ℓ hℓ hW P _ _ lab C _ col b co h1' h2' h3'`. Conclude with `TA.main h2 (Fintype.card P) n M ι E hE hC l hl ℓ hℓ hW P rfl lab C col b co h1' h2' h3'`.
+-/
 theorem transAll_of (_h1 : TensorGl) (h2 : Trans) : TransAll := by
   intro n M _ _ ι _ _ E hE hC l hl ℓ hℓ hW P _ _ lab C _ col b co h1' h2' h3'
   exact TA.main h2 (Fintype.card P) n M ι E hE hC l hl ℓ hℓ hW P rfl lab C col b co h1' h2' h3'

@@ -34,6 +34,17 @@ noncomputable section
 
 namespace GlobalTheory.CovTop.TypeLattice
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite P`. Use `choose s hs using fun u : P => hs u u.2`. Set `T : W →ₗ[L] W` to `∑ u : P, σ ((lam u)⁻¹ : Kˣ) • τ (s u)`. Establish `h1 : T w = (Fintype.card P : L) • w`. Rewrite using `[LinearMap.sum_apply, Finset.sum_congr rfl (g := fun _ => w) fun u _ => ?_]`.
+
+Simplify using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[LinearMap.smul_apply, he (s u) (hs u ▸ u.2), smul_smul, ← map_mul, show (⟨θ (s u), hs u ▸ u.2⟩ : P) = u from Subtype.ext (hs u), Units.inv_mul, map_one, one_smul]`. Establish `h2 : Submodule.span L (Set.range π) ≤ (Submodule.span L (π '' {v | ∀ u : P, ρ u v = ((lam u : Kˣ) : K) • v})).comap T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Use `Submodule.subset_span ⟨∑ u : P, (((lam u)⁻¹ : Kˣ) : K) • ρ u v, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft x) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hρ, smul_smul, Equiv.coe_mulLeft, map_mul, Subgroup.coe_mul]`. Use `congr 1`.
+
+Rewrite using `[mul_inv, Units.val_mul, Units.mul_inv_cancel_left]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun u _ => by rw [map_smulₛₗ, LinearMap.smul_apply, hc, hs]`. Establish `h3` using `h2 hw`. Rewrite `h3` using `[Submodule.mem_comap, h1]`.
+
+Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h3`.
+-/
 theorem mem_span_image_eigen {K L V W Γ G : Type} [Field K] [Field L] [CharZero L] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module L W] [Group G] {σ : K →+* L} (π : V →ₛₗ[σ] W) (ρ : G → V →ₗ[K] V) (hρ : ∀ g h v, ρ (g * h) v = ρ g (ρ h v))
     (τ : Γ → W →ₗ[L] W) (θ : Γ → G) (hc : ∀ γ v, τ γ (π v) = π (ρ (θ γ) v)) (P : Subgroup G) [Finite P] (lam : P →* Kˣ)
@@ -74,6 +85,35 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.FieldBC
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T j Y e o hT hj hG a n hD G _ lev hact hkeep P _ lam θ hθ hker hs g hg`. Take `⟨hL₂, hgal, hP⟩` from `GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hT hj hG hG.unit hG.modelW`. Establish `hL` using `(GlobalTheory.LevGeo.laws_of_coreJ D T j hT hj).1`. Establish `hpq : (T.Q.Dw j).p ≠ (T.Q.Dw j).q ∧ 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Take `⟨hp, hq, -⟩` from `hL.dat`.
+
+Take `⟨h1, h2⟩` from `hj`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite using `[hp, hq]`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨π, p1, -, -, -, p5, -⟩` from `GlobalTheory.T.levelCover_cuspForm_pullback_injective_descent D j _ _ _ _ _ Y.c' Y.hle _ _ Y.d _ _ hL hL₂ hG.lev.1 hgal a n hD hD.2`. Establish `hC : ∀ {f}, f ∈ cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ a n) ↔ f ∈ T.cuspA j a n` using `fun {f} => by rw [cuspW_wtZ]`. Establish `s₁ : ∀ {f}, f ∈ cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ a n) → f ∈ sec (T.Q.Xo j) T.Q.c a n` using `fun h => cusp_le_sec _ _ _ a n (hC.1 h)`. Establish `s₂ : ∀ {f}, f ∈ Y.V (wtZ a n) → f ∈ sec Y.d.Xo₂ Y.d.c₂ a n` using `fun h => by`. Rewrite `h` using `[Deep.V, cuspW_wtZ]`.
+
+Conclude with `cusp_le_sec _ _ _ a n h`. Establish `hact₂ : ActLev (Xo` using `Y.d.Xo₂) Y.d.c₂ (GlobalTheory.FormTies.levFull (T.Q.Dw j) Y.d.l₂) := GlobalTheory.FullLevelAction.actLaws_levFull Y.d.Xo₂ Y.d.c₂ hpq.2 (hG.lev.2 ▸ Nat.coprime_one_left _)`. Take `⟨hact', hbc⟩` from `GlobalTheory.FieldBC.actLev_and_actBC D _ _ _ _ _ Y.c' Y.hle G _ hact`. Establish `hO : GlobalTheory.CoverSec.AllOver Y.d` using `GlobalTheory.CoverSec.allOver_of_overBase Y.d hG.lev.1.1.2.2 (GlobalTheory.ClsVal.Cmp.overBase_of_ne hpq.1 hL.levA Y.d)`. Establish `geo : ∀ {f f' : Rul (T.Q.Xo j) Y.c'} {u u' : Rul Y.d.Xo₂ Y.d.c₂}, GlobalTheory.LevPull.Pull Y.d f u → GlobalTheory.LevPull.Pull Y.d f' u' → f = f' → ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra Y.d.c₂.F k] (y : FrPt Y.d.Xo₂ Y.d.c₂ k), evR Y.d.Xo₂ Y.d.c₂ u y = evR Y.d.Xo₂ Y.d.c …`.
+
+Introduce and unpack `f _ u u' h h' rfl k _ _ _ y₂`. Use `letI := GlobalTheory.CoverSec.algBelow Y.d k`. Take `⟨y, hy⟩` from `GlobalTheory.CoverSec.exists_frOver_below Y.d (fun _ => rfl) y₂ (hO k (fun _ => rfl) y₂)`. Rewrite using `[h k (fun _ => rfl) y₂ y hy, h' k (fun _ => rfl) y₂ y hy]`. Set `act` to `actLev (Xo := T.Q.Xo j) T.Q.c (fun g => (lev g, (LinearMap.id : (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La)))`.
+
+Set `ρ : G → cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ a n) →ₗ[T.Q.c.F] cuspW (T.Q.Xo j) T.Q.c (T.U j) (wtZ a n)` to `fun x => (act x).restrict fun f hf => hC.2 (hkeep x f (hC.1 hf))`. Set `π'` to `(Y.V (wtZ a n)).subtype.comp π`. Establish `hc : ∀ γ v, (transl Y.d.Xo₂ Y.d.c₂ γ).toLinearMap (π' v) = π' (ρ (θ γ) v)`. Introduce `γ v`. Establish `hv` using `((GlobalTheory.T.ruleBaseChange_section_values_semilinear _ _ _ _ _ _ _ Y.hle).1 a n _ (s₁ v.2)).1`.
+
+Establish `h1` using `GlobalTheory.LevPullEquiv.pull_actLev D j _ _ _ _ _ Y.d hpq.2 hG.lev.1 hG.lev.2 (GlobalTheory.ClsVal.Cmp.overBase_of_ne hpq.1 hL.levA Y.d) G _ lev liftLa hact' hact₂ (θ γ) γ (hθ γ) a n _ hv _ (s₂ (π v).2) (p1 v)`. Use `GlobalTheory.CoverSec.eq_of_geometric (GlobalTheory.LevelEquivCompare.actLev_mem_sec hact₂ γ (s₂ (π v).2)).1 (s₂ (π _).2).1 (geo h1 (p1 (ρ (θ γ) v)) ?_)` and prove the remaining obligations. Use `GlobalTheory.CoverSec.eq_of_geometric (GlobalTheory.LevelEquivCompare.actLev_mem_sec hact' _ hv).1 ((GlobalTheory.T.ruleBaseChange_section_values_semilinear _ _ _ _ _ _ _ Y.hle).1 a n _ (s₁ (ρ (θ γ) v).2)).1.1 fun k _ _ _ y => ?_` and prove the remaining obligations. Use `letI := resAlg Y.hle k`. Conclude with `(hbc a n (θ γ) 1 _ _ _ hv (fun _ => s₁ v.2) (GlobalTheory.LevelEquivCompare.isBC_rulBC Y.hle (s₁ v.2)) k (fun _ => rfl) y).trans (GlobalTheory.LevelEquivCompare.isBC_rulBC Y.hle (s₁ (ρ (θ γ) v).2) k (fun _ => rfl) y).symm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key : ∃ u ∈ Submodule.span Y.d.c₂.F (π' '' {v | ∀ x : P, ρ x v = ((lam x : (T.Q.c.F)ˣ) : T.Q.c.F) • v}), ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra Y.d.c₂.F k] (y : FrPt Y.d.Xo₂ Y.d.c₂ k), evR Y.d.Xo₂ Y.d.c₂ g y = evR Y.d.Xo₂ Y.d.c₂ u y` using `by clear hg`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem u hu`.
+
+Take `⟨f, ⟨hf, hf'⟩, hu⟩` from `hu`. Conclude with `⟨_, Submodule.subset_span ⟨⟨f, hC.2 hf⟩, fun x => Subtype.ext (hf' x), rfl⟩, geo ((hP a n f (s₁ (hC.2 hf)) u).1 hu) (p1 ⟨f, hC.2 hf⟩) rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ _ _ _ _ => rfl⟩`. Consider the case `add u u' _ _ h h'`. Take `⟨w, hw, h⟩` from `h`.
+
+Take `⟨w', hw', h'⟩` from `h'`. Conclude with `⟨w + w', add_mem hw hw', fun k _ _ _ y => (evalAt_add _ _ u u' y).trans ((congrArg₂ (· + ·) (h k y) (h' k y)).trans (evalAt_add _ _ w w' y).symm)⟩`. Consider the case `smul t u _ h`. Take `⟨w, hw, h⟩` from `h`. Conclude with `⟨t • w, Submodule.smul_mem _ t hw, fun k _ _ _ y => (evalAt_smul _ _ t u y).trans ((congrArg _ (h k y)).trans (evalAt_smul _ _ t w y).symm)⟩`.
+
+Take `⟨u, hu, h'⟩` from `key`. Establish `hu' : u ∈ Y.V (wtZ a n)` using `Submodule.span_le.2 (by rintro _ ⟨v, -, rfl⟩; exact (π v).2) hu`. Take `rfl : g = u` from `GlobalTheory.CoverSec.eq_of_geometric (s₂ hg).1 (s₂ hu').1 h'`. Introduce `γ hγ`. Use `(Submodule.span_le (p := LinearMap.eqLocus (transl Y.d.Xo₂ Y.d.c₂ γ).toLinearMap ((((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (incF T.Q.c Y.c' Y.hle)) ((lam ⟨θ γ, hγ⟩ : (T.Q.c.F)ˣ) : T.Q.c.F)) • (LinearMap.id : Rul Y.d.Xo₂ Y.d.c₂ →ₗ[Y.d.c₂.F] Rul Y.d.Xo₂ Y.d.c₂)))).2 ?_ hu` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `(hc γ v).trans ((congrArg π' (hv ⟨θ γ, hγ⟩)).trans (map_smulₛₗ π' _ _))`. Introduce `h`. Establish `h1 : GlobalTheory.LevPull.FibConst Y.d g`. Use `(GlobalTheory.T.fibreConstant_iff_coveringGroup_invariant D j _ _ _ _ _ Y.d hpq.2 hG.lev.1 hG.lev.2 (Or.inl ⟨hpq.1, hL.levA⟩) liftLa (fun γ => LinearMap.ext (liftLa_spec γ)) a n g (s₂ hg)).2 fun γ hγ => ?_` and prove the remaining obligations.
+
+Establish `h0` using `h γ (hker γ hγ ▸ P.one_mem)`. Rewrite `h0` using `[show (⟨θ γ, hker γ hγ ▸ P.one_mem⟩ : P) = 1 from Subtype.ext (hker γ hγ), map_one, Units.val_one, map_one, one_smul]`. Conclude with `h0`. Establish `h2 : g ∈ Submodule.span Y.d.c₂.F (Set.range π')`. Use `Submodule.mem_map_of_mem (f := (Y.V (wtZ a n)).subtype) ((p5 ⟨g, hg⟩).2 h1)` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Use `Submodule.span_mono ?_ (mem_span_image_eigen π' ρ (fun x y v => Subtype.ext (actL_mul _ _ _ hact.total hact.func hact.mul x y (s₁ v.2).1)) (fun γ => (transl Y.d.Xo₂ Y.d.c₂ γ).toLinearMap) θ hc P lam hs h2 h)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨v, ⟨hC.1 v.2, fun x => congrArg Subtype.val (hv x)⟩, (hP a n _ (s₁ v.2) _).2 (p1 v)⟩`.
+-/
 theorem mem_span_pull_iff : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), LawsJ T → InR D j → Y.Good e o → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ (G : Type) [Group G] (lev : G → (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La), ActLev (Xo := T.Q.Xo j) T.Q.c (fun g => (lev g, (LinearMap.id : (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La))) → (∀ g, ∀ f ∈ T.cuspA j a n, actLev (Xo := T.Q.Xo j) T.Q.c (fun g => (lev g, (LinearMap.id : (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La))) g f ∈ T.cuspA j a n) → ∀ (P : Subgroup G) [Finite P] (lam : P →* (T.Q.c.F)ˣ) (θ : LevelAut (T.Q.Dw j) Y.d.l₂ →* G), (∀ γ, CongMod T.Q.l.Mb (liftLa γ) (lev (θ γ))) → (∀ γ, CongMod T.Q.l.Mb (liftLa γ) LinearMap.id → θ γ = 1) → (∀ u ∈ P, ∃ γ, θ γ = u) → ∀ g ∈ Y.V (wtZ a n), g ∈ Submodule.span Y.d.c₂.F {g | ∃ f ∈ {f : T.R j | f ∈ T.cuspA j a n ∧ ∀ u : P, actLev (Xo := T.Q.Xo j) T.Q.c (fun g => (lev g, (LinearMap.id : (T.Q.Dw j).La →ₗ[𝓞 D.host.E] (T.Q.Dw j).La))) (u : G) f = ((lam u : (T.Q.c.F)ˣ) : T.Q.c.F) • f}, Y.Pull f g} ↔ ∀ γ (h : θ γ ∈ P), transl Y.d.Xo₂ Y.d.c₂ γ g = ((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (incF T.Q.c Y.c' Y.hle)) ((lam ⟨θ γ, h⟩ : (T.Q.c.F)ˣ) : T.Q.c.F) • g := by
   intro D T j Y e o hT hj hG a n hD G _ lev hact hkeep P _ lam θ hθ hker hs g hg
   obtain ⟨hL₂, hgal, hP⟩ := GlobalTheory.DeepLaws.laws_galois_pull D T j Y e o hT hj hG hG.unit hG.modelW
@@ -184,12 +224,18 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters (Sq LevelGroup 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
+/- English proof (translation)
+Rewrite using `[← he, ← hb, algebraMap_smul, ← Submodule.coe_smul, ← map_smul, Subtype.coe_inj, e.injective.eq_iff, Subtype.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem eigen_iff {K M R V : Type} [Field K] [Field M] [Algebra K M] [AddCommGroup R] [Module K R] [AddCommGroup V] [Module K V]
     [Module M V] [IsScalarTower K M V] {C : Submodule K R} {W : Submodule K V} (e : C ≃ₗ[K] W) (f : C) {g : R} (hg : g ∈ C) {y : V}
     (he : (e ⟨g, hg⟩ : V) = y) {a : K} {b : M} (hb : algebraMap K M a = b) : y = b • (e f : V) ↔ g = a • (f : R) := by
   rw [← he, ← hb, algebraMap_smul, ← Submodule.coe_smul, ← map_smul, Subtype.coe_inj, e.injective.eq_iff, Subtype.ext_iff]
   rfl
 
+/- English proof (translation)
+Establish `hN0 : p.T.Q.l.M' ≠ 0` using `Nat.lcm_ne_zero (by have := p.T.Q.l.three_le; omega) p.T.Q.l.A_pos.ne'`. Establish `hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1` using `p.fw.laws.pins.2.1.1`. Establish `hz : IsPrimitiveRoot (⟨ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta p.T.Q.l.M', p.T.Q.c.zeta_mem⟩ : p.T.Q.c.F) p.T.Q.l.M'` using `IsPrimitiveRoot.of_map_of_injective (f := p.T.Q.c.F.val) (Complex.isPrimitiveRoot_exp _ hN0) Subtype.val_injective`. Take `⟨c, hc⟩ : D.host.g k ∣ p.T.Q.l.M'` from `dvd_trans (hM ▸ GlobalTheory.LevDesc.g_dvd k) (Nat.dvd_lcm_left p.T.Q.l.M p.T.Q.l.A)`. Conclude with `⟨_, hz.pow (Nat.pos_of_ne_zero hN0) (hc.trans (mul_comm _ _))⟩`.
+-/
 theorem exists_root (p : PtAt ex Csz) (k : Fin 2) : ∃ ζ : p.T.Q.c.F, IsPrimitiveRoot ζ (D.host.g k) := by
   have hN0 : p.T.Q.l.M' ≠ 0 := Nat.lcm_ne_zero (by have := p.T.Q.l.three_le; omega) p.T.Q.l.A_pos.ne'
   have hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1 := p.fw.laws.pins.2.1.1
@@ -201,6 +247,11 @@ theorem exists_root (p : PtAt ex Csz) (k : Fin 2) : ∃ ζ : p.T.Q.c.F, IsPrimit
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hk : ActKeeps (κ` using `p.κ) p.O i := fun g => GlobalTheory.LevelCusp.actLev_mem_cuspA_of_actLev p.T p.κ i _ p.fw.laws (p.pins i).2.act.1 g fun _ => rfl`. Establish `key : ∀ (f : p.T.cuspA ((i : ℕ) + 1) (wtA (p.κ i)) (p.κ i).n) (u : (p.F.lv2.lvl false).P), (p.R.toRealDat.FW i).ρ u ((p.fw.e i f : (p.R.toRealDat.FW i).WK) : Fin (p.R.toRealDat.nW i) → D.what₂.LL) = (((p.R.toRealDat.FW i).chi u * (p.F.lv2.lvl false).ψ⁻¹ u : D.what₂.LLˣ) : D.what₂ …` using `p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c (p.O i).lev2 u f = ((lam u : (p.T.Q.c.F)ˣ) : p.T.Q.c.F) • (f : p.T.R ((i : ℕ) + 1)) := by`. Introduce `f u`. Take `⟨hf, he⟩` from `(p.rhoGeo i).1 hk u f`. Conclude with `eigen_iff (p.fw.e i) f hf he (hlam u)`.
+
+Use extensionality with `f`. Conclude with `⟨fun ⟨h, hf⟩ => ⟨h, fun u => (key ⟨f, h⟩ u).1 (hf u)⟩, fun ⟨h, hf⟩ => ⟨h, fun u => (key ⟨f, h⟩ u).2 (hf u)⟩⟩`.
+-/
 theorem typeK_eq (p : PtAt ex Csz) (i : Fin D.R.m) (lam : (p.F.lv2.lvl false).P →* (p.T.Q.c.F)ˣ)
     (hlam : ∀ u : (p.F.lv2.lvl false).P, algebraMap p.T.Q.c.F D.what₂.LL (lam u : (p.T.Q.c.F)ˣ) =
       (((p.R.toRealDat.FW i).chi u * (p.F.lv2.lvl false).ψ⁻¹ u : D.what₂.LLˣ) : D.what₂.LL)) :
@@ -222,6 +273,23 @@ theorem typeK_eq (p : PtAt ex Csz) (i : Fin D.R.m) (lam : (p.F.lv2.lvl false).P 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hJ` using `p.fw.laws`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.succ_pos _, i.2⟩`. Establish `hM : p.T.Q.l.M = D.host.g 0 * D.host.g 1` using `hJ.pins.2.1.1`. Establish `hA : p.T.Q.l.A = 1` using `hJ.pins.2.1.2`. Establish `hl₂ : IsTypeLevel Y.d.l₂` using `(GlobalTheory.LevDesc.isTypeLevel_of_eq hY.lev.2 (hY.lev.1.2.1.trans (by rw [hM])) (hM ▸ hY.lev.1.2.2.1.symm)).1`.
+
+Establish `hMb` using `((p.pins i).2.tuple ()).half.1`. Establish `hr : (dat p i).p + (dat p i).q = D.R.r` using `(GlobalTheory.Member.exists_iotaOK D p.T.Q hJ.pins _ hj).2.1`. Establish `hle : Y.d.l₂.Mb ≤ p.T.Q.l.Mb` using `hY.lev.1.2.2.2.1.le.trans Ideal.mul_le_left`. Take `⟨fr, ε, iso, h1, h2⟩` from `GlobalTheory.T.exists_typeFrame_cover_levelMaps_reductions D _ _ _ _ _ p.R.toRealDat i (p.charW.base.lev.βW i) _ (dat p i) _ Y.d.l₂ _ (GlobalTheory.LevelAction.latEmb_iotaW p.T hJ i) hr hA hM hl₂ hle hMb _ (p.pins i).2.lift.lev`. Take `⟨t, ψ, t1, t2, t3, t4⟩` from `GlobalTheory.TypeBase.base_level_unip_char D _ _ _ _ _ p.R.toRealDat p.F.lv2 p.charW.base.grp.levels p.charW.base.grp.chiW (exists_root p) ε iso`.
+
+Set `j : p.T.Q.c.F →+* Y.d.c₂.F` to `(Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (incF p.T.Q.c Y.c' Y.hle)`. Set `s : (p.F.lv2.lvl false).P →* levelU D.host` to `(t.symm.toMonoidHom.comp (p.F.lv2.lvl false).P.subtype).codRestrict _ fun u => (t3 _).1 (by simp)`. Set `lam : (p.F.lv2.lvl false).P →* (p.T.Q.c.F)ˣ` to `((genChar ψ).comp s)⁻¹`. Establish `hv : ∀ u (h : t u ∈ (p.F.lv2.lvl false).P), ((lam ⟨t u, h⟩ : (p.T.Q.c.F)ˣ) : p.T.Q.c.F) = (psiU ψ u)⁻¹`. Introduce `u h`.
+
+Use `show (((genChar ψ (s ⟨t u, h⟩))⁻¹ : (p.T.Q.c.F)ˣ) : p.T.Q.c.F) = _`. Rewrite using `[Units.val_inv_eq_inv_val, GlobalTheory.LevDesc.genChar_apply]`. Conclude with `congrArg (fun x => (psiU ψ x)⁻¹) (t.symm_apply_apply u)`. Establish `hlam : ∀ u : (p.F.lv2.lvl false).P, algebraMap p.T.Q.c.F D.what₂.LL (lam u : (p.T.Q.c.F)ˣ) = (((p.R.toRealDat.FW i).chi u * (p.F.lv2.lvl false).ψ⁻¹ u : D.what₂.LLˣ) : D.what₂.LL)`. Introduce and unpack `⟨u, h⟩`.
+
+Take `⟨u, rfl⟩` from `t.surjective u`. Rewrite using `[hv, map_inv₀, (t4 u h).1, (t4 u h).2 i, one_mul, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Set `ψ' : ∀ v : Sq D.host, AddChar (ZMod (D.host.g v.1)) Y.d.c₂.F` to `fun v => j.toMonoidHom.compAddChar (ψ v)`. Establish `hψ : ∀ u, psiU ψ' u = j (psiU ψ u)` using `fun u => by`. Unfold `psiU`.
+
+Rewrite using `[map_prod]`. Both sides reduce to the same expression. Use `⟨fr, ψ', fun v h => t2 v (AddChar.ext _ _ fun x => j.injective ?_), hl₂, Submodule.ext fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[AddChar.one_apply, map_one]`. Conclude with `DFunLike.congr_fun h x`.
+
+Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `H` using `mem_span_pull_iff D p.T _ Y e o hJ hj hY _ _ (dom_wtA (p.κ i)) _ (p.O i).lev (p.pins i).2.act.1 (fun g => GlobalTheory.LevelCusp.actLev_mem_cuspA_of_actLev p.T p.κ i _ hJ (p.pins i).2.act.1 g fun _ => rfl) (p.F.lv2.lvl false).P lam (t.toMonoidHom.comp (typeRed fr)) (fun γ => h1 γ …`. Rewrite using `[MonoidHom.comp_apply, GlobalTheory.LevDesc.typeRed_typeEmb]`. Conclude with `t.apply_symm_apply u⟩) F F.2`. Rewrite `H` using `[← typeK_eq p i lam hlam]`.
+
+Use `H.trans (Iff.trans ?_ GlobalTheory.LevDesc.mem_levEigen_iff_transl.symm)` and prove the remaining obligations. Establish `hc : ∀ (γ : LevelAut (dat p i) Y.d.l₂) (h : t (typeRed fr γ) ∈ (p.F.lv2.lvl false).P) (h' : γ ∈ grpHR fr), j ((lam ⟨t (typeRed fr γ), h⟩ : (p.T.Q.c.F)ˣ) : p.T.Q.c.F) = (((chiHR fr ψ' ⟨γ, h'⟩)⁻¹ : (Y.d.c₂.F)ˣ) : Y.d.c₂.F)`. Introduce `γ h h'`. Rewrite using `[hv, map_inv₀, ← hψ, Units.val_inv_eq_inv_val, GlobalTheory.LevDesc.chiHR_apply]`. Conclude with `⟨fun h γ => (h γ ((t3 _).2 γ.2)).trans (congrArg (· • _) (hc _ _ γ.2)), fun h γ hγ => (h ⟨γ, (t3 _).1 hγ⟩).trans (congrArg (· • _) (hc _ hγ _).symm)⟩`.
+-/
 theorem latDeep_eq_latN (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i) {e : ℕ} {o : ℝ} (hY : Y.Good e o) :
     ∃ (fr : TypeFrame (dat p i) Y.d.l₂) (ψ : ∀ v : Sq D.host, AddChar (ZMod (D.host.g v.1)) Y.d.c₂.F),
       (∀ v, ψ v ≠ 1) ∧ IsTypeLevel Y.d.l₂ ∧ latDeep p i Y = latN fr Y.U (Gk p i) ψ := by
@@ -276,6 +344,23 @@ theorem latDeep_eq_latN (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i) {e : ℕ
   exact ⟨fun h γ => (h γ ((t3 _).2 γ.2)).trans (congrArg (· • _) (hc _ _ γ.2)),
     fun h γ hγ => (h ⟨γ, (t3 _).1 hγ⟩).trans (congrArg (· • _) (hc _ hγ _).symm)⟩
 
+/- English proof (translation)
+Establish `hL10 : 10 ≤ L.sc.L` using `hN.big.2.1`. Establish `hgpos : ∀ k, (0 : ℝ) < (D.host.g k : ℝ)` using `fun k => by exact_mod_cast (D.host.g_prime k).pos`. Establish `hlog3p : 0 < Real.log 3` using `Real.log_pos (by norm_num)`. Establish `hM : Y.d.l₂.M = D.host.g 0 * D.host.g 1 * 15 ^ expL L.sc.L`. Rewrite using `[hY.1.lev.1.2.1, hY.1.pd]`.
+
+Use `congr 1`. Conclude with `p.fw.laws.pins.2.1.1`. Establish `he : (expL L.sc.L : ℝ) * Real.log 3 ≤ 3 * L.sc.L`. Use `Nat.floor_le (show 0 ≤ 3 * L.sc.L / Real.log 3 by positivity)` as an intermediate fact. Unfold `expL`.
+
+Rewrite `this` using `[le_div_iff₀ hlog3p]`. Then use the resulting hypothesis. Establish `h15 : Real.log 15 ≤ 5 / 2 * Real.log 3`. Establish `: Real.log ((15 : ℝ) ^ 2) ≤ Real.log ((3 : ℝ) ^ 5)` using `Real.log_le_log (by norm_num) (by norm_num)`. Rewrite `this` using `[Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogM : Real.log Y.d.l₂.M ≤ 30 * L.sc.L`. Establish `he0 : (0 : ℝ) ≤ expL L.sc.L` using `Nat.cast_nonneg _`. Rewrite using `[hM]`. Use `push_cast`.
+
+Rewrite using `[Real.log_mul (mul_pos (hgpos 0) (hgpos 1)).ne' (by positivity : (0 : ℝ) < 15 ^ expL L.sc.L).ne', Real.log_mul (hgpos 0).ne' (hgpos 1).ne', Real.log_pow]`. Establish `g0` using `hN.logg 0`. Establish `g1` using `hN.logg 1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr : (dat p i).p + (dat p i).q = D.R.r` using `(GlobalTheory.Member.exists_iotaOK D p.T.Q p.fw.laws.pins _ ⟨Nat.succ_pos _, i.2⟩).2.1`.
+
+Establish `h1` using `(Subgroup.card_le_card_group S).trans (GlobalTheory.ShortDet.card_levelAut_le (dat p i) Y.d.l₂)`. Rewrite `h1` using `[hr, hN.deg, Nat.mul_div_cancel_left _ two_pos]`. Establish `h0 : (0 : ℝ) < Nat.card S` using `by exact_mod_cast Nat.card_pos`. Establish `h2` using `Real.log_le_log h0 (Nat.cast_le.2 h1)`. Rewrite `h2` using `[Nat.cast_pow, Real.log_pow]`.
+
+Move the coercions through the operations in `at h2`. Use `h2.trans ((mul_le_mul_of_nonneg_left hlogM (by positivity)).trans ?_)` and prove the remaining obligations. Unfold `zBase`. Establish `h3 : (0 : ℝ) ≤ ((D.R.f : ℝ) * D.R.r) ^ 2` using `by positivity`. Rewrite using `[mul_pow, mul_pow _ L.sc.L]`.
+
+Generalize the expression as in `((D.R.f : ℝ) * D.R.r) ^ 2 = X at *`. Use polynomial arithmetic with `[mul_nonneg h3 (by linarith : (0 : ℝ) ≤ L.sc.L), mul_nonneg (mul_nonneg h3 (by linarith : (0 : ℝ) ≤ L.sc.L)) (by linarith : (0 : ℝ) ≤ L.sc.L - 10)]`.
+-/
 theorem log_card_le (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i) (hY : GoodCov p i Y) {PP A N : ℝ} (hN : HostNum D L PP A N)
     (S : Subgroup (LevelAut (dat p i) Y.d.l₂)) : Real.log (Nat.card S) ≤ 45 * zBase L ^ 2 := by
   have hL10 : 10 ≤ L.sc.L := hN.big.2.1
@@ -327,6 +412,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory GlobalTheory.CompHS GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.HSApp GlobalTheory.DegVal GlobalTheory.DegCmp
 open GlobalTheory.LevDesc (TypeFrame grpHR latN)
 
+/- English proof (translation)
+Introduce `_ _ _`. Use `GlobalTheory.CovTop.CovSz.covers_of_lifts (GlobalTheory.CovTop.Sizes.hostN 0) ?_` and prove the remaining obligations. Introduce `eps Fm x hx ι p i C _ hN _ Y hY`. Take `⟨fr, ψ, h1, h2, h3⟩` from `latDeep_eq_latN p i Y hY.1`. Conclude with `⟨fr, ψ, h1, h2, h3, log_card_le p i Y hY hN _⟩`.
+-/
 theorem latDeep_eq_latN_covers : Hypotheses2 → Gram → DeepGood → Covers fun Fm x _ ι p i Y _ _ => ∃ (fr : TypeFrame (dat p i) Y.d.l₂) (ψ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.Sq (Fm.D x ι).host, AddChar (ZMod ((Fm.D x ι).host.g v.1)) Y.d.c₂.F), (∀ v, ψ v ≠ 1) ∧ GlobalTheory.LevDesc.IsTypeLevel Y.d.l₂ ∧ latDeep p i Y = latN fr Y.U (Gk p i) ψ ∧ Real.log (Nat.card (grpHR fr)) ≤ 45 * zBase (Fm.L x ι) ^ 2 := by
   intro _ _ _
   refine GlobalTheory.CovTop.CovSz.covers_of_lifts (GlobalTheory.CovTop.Sizes.hostN 0) ?_

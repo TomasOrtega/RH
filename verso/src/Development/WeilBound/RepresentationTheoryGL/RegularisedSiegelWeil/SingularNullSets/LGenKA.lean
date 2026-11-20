@@ -8,15 +8,48 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 
 def cj {R : Type} [CommRing R] (s : R →+* R) {m p : Type} (M : Matrix m p R) : Matrix p m R := (M.map s)ᵀ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_apply {R : Type} [CommRing R] (s : R →+* R) {m p : Type} (M : Matrix m p R) (i : p) (j : m) :
     cj s M i j = s (M j i) := rfl
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons t L ih => simp [List.map_cons, List.prod_cons, det_mul, ih, TransvectionStruct.det]`.
+-/
 theorem det_prod_transvec {K : Type} [CommRing K] (L : List (TransvectionStruct n K)) :
     (L.map TransvectionStruct.toMatrix).prod.det = 1 := by
   induction L with
   | nil => simp
   | cons t L ih => simp [List.map_cons, List.prod_cons, det_mul, ih, TransvectionStruct.det]
 
+/- English proof (translation)
+Take `⟨L, L', D, hD⟩` from `Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal d`. Use `set P := (L.map TransvectionStruct.toMatrix).prod with hPdef`. Use `set Q := (L'.map TransvectionStruct.toMatrix).prod with hQdef`. Establish `hP : P.det = 1` using `det_prod_transvec L`. Establish `hQ : Q.det = 1` using `det_prod_transvec L'`.
+
+Establish `hPu : IsUnit P.det` using `by rw [hP]; exact isUnit_one`. Establish `hQu : IsUnit Q.det` using `by rw [hQ]; exact isUnit_one`. Use `set E' : Matrix n n K := diagonal fun j => 1 - D j * (D j)⁻¹ with hE'`. Use `set N := P * c * X * P⁻¹ with hNdef`. Use `⟨X * P⁻¹ * E' * Q⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `hM : P * (d + c * (X * P⁻¹ * E' * Q⁻¹)) * Q = diagonal D + N * E'`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hD]`. Use `congr 1`. Simplify using `only [hNdef, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hQu, Matrix.mul_one]`. Establish `hPd : P * d = diagonal D * Q⁻¹`.
+
+Rewrite using `[← hD]`. Simplify using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQu]`. Establish `hN : ∀ i j, D i = 0 → N i j = (1 : Matrix n n K) i j`. Introduce `i j hi`. Establish `h1 : N + P * d * Y * P⁻¹ = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `[hNdef, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, Matrix.mul_one, Matrix.mul_nonsing_inv _ hPu]`. Establish `h2 : (P * d * Y * P⁻¹) i j = 0`. Rewrite using `[hPd, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.diagonal_mul, hi, zero_mul]`.
+
+Use `congrFun (congrFun h1 i) j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, h2, add_zero]`. Conclude with `this`. Introduce `hdet`. Establish `hM0 : (diagonal D + N * E').det = 0`.
+
+Rewrite using `[← hM, det_mul, det_mul, hdet]`. Simplify using the standard rewrite rules. Take `⟨p, hp0, hp⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hM0`. Apply `hp0` to reduce the goal to its premises. Establish `hME : ∀ i j, (diagonal D + N * E') i j = (if i = j then D i else 0) + N i j * (1 - D j * (D j)⁻¹)`.
+
+Introduce `i j`. Rewrite using `[Matrix.add_apply, hE', Matrix.mul_diagonal, Matrix.diagonal_apply]`. Establish `hpj : ∀ j, ∑ i, p i * ((if i = j then D i else 0) + N i j * (1 - D j * (D j)⁻¹)) = 0`. Introduce `j`. Use `congrFun hp j` as an intermediate fact.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Use `Eq.trans (Finset.sum_congr rfl fun i _ => ?_) this` and prove the remaining obligations. Rewrite using `[hME]`. Establish `h1 : ∀ j, D j ≠ 0 → p j = 0`. Introduce `j hj`.
+
+Use `hpj j` as an intermediate fact. Simplify using `only [mul_inv_cancel₀ hj, sub_self, mul_zero, add_zero, mul_ite, mul_zero] at this`. Rewrite `this` using `[Finset.sum_ite_eq' Finset.univ j]`. Simplify `this` using `[hj]`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : D j = 0`. Use `hpj j` as an intermediate fact. Establish `e : ∀ i, p i * ((if i = j then D i else 0) + N i j * (1 - D j * (D j)⁻¹)) = p i * (1 : Matrix n n K) i j`. Introduce `i`. Rewrite using `[hj, zero_mul, sub_zero, mul_one]`.
+
+Distinguish the cases in `hi : D i = 0`. Rewrite using `[hN i j hi] split_ifs with hij`. Substitute `hij` using the available equality. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1 i hi]`. Simplify using the standard rewrite rules. Rewrite `this` using `[Finset.sum_congr rfl fun i _ => e i]`. Simplify `this` using `[Matrix.one_apply]`. Conclude with `h1 j hj`.
+-/
 theorem fieldB {K : Type} [Field K] (c d X Y : Matrix n n K) (h : c * X + d * Y = 1) :
     ∃ B : Matrix n n K, (d + c * B).det ≠ 0 := by
   obtain ⟨L, L', D, hD⟩ := Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal d
@@ -86,31 +119,97 @@ section Cj
 
 variable {R : Type} [CommRing R] (s : R →+* R)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj, Matrix.mul_apply, mul_comm]`.
+-/
 theorem cj_mul {m p q : Type} [Fintype p] (M : Matrix m p R) (N : Matrix p q R) : cj s (M * N) = cj s N * cj s M := by
   ext i j; simp [cj, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj]`.
+-/
 theorem cj_add {m p : Type} (M N : Matrix m p R) : cj s (M + N) = cj s M + cj s N := by
   ext i j; simp [cj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj]`.
+-/
 theorem cj_sub {m p : Type} (M N : Matrix m p R) : cj s (M - N) = cj s M - cj s N := by
   ext i j; simp [cj]
 
 omit [Fintype n] in
+/- English proof (translation)
+Apply the tactic sequence `ext i j; simp [cj, Matrix.one_apply]; split_ifs <;> simp_all [eq_comm]`.
+-/
 theorem cj_one : cj s (1 : Matrix n n R) = 1 := by
   ext i j; simp [cj, Matrix.one_apply]; split_ifs <;> simp_all [eq_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj, hs]`.
+-/
 theorem cj_cj (hs : ∀ x, s (s x) = x) {m p : Type} (M : Matrix m p R) : cj s (cj s M) = M := by
   ext i j; simp [cj, hs]
 
 omit [Fintype n] in
+/- English proof (translation)
+Apply the tactic sequence `ext i j; simp [cj, Matrix.diagonal_apply]; split_ifs <;> simp_all [eq_comm]`.
+-/
 theorem cj_diagonal (f : n → R) : cj s (diagonal f) = diagonal fun i => s (f i) := by
   ext i j; simp [cj, Matrix.diagonal_apply]; split_ifs <;> simp_all [eq_comm]
 
+/- English proof (translation)
+Rewrite using `[cj, det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_cj (M : Matrix n n R) : (cj s M).det = s M.det := by
   rw [cj, det_transpose, RingHom.map_det]; rfl
 
 end Cj
 
+/- English proof (translation)
+Take `⟨L, L', D, hD⟩` from `Matrix.Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal c`. Use `set P := (L.map TransvectionStruct.toMatrix).prod with hPdef`. Use `set Q := (L'.map TransvectionStruct.toMatrix).prod with hQdef`. Establish `hP : P.det = 1` using `det_prod_transvec L`. Establish `hQ : Q.det = 1` using `det_prod_transvec L'`.
+
+Establish `hPu : IsUnit P.det` using `by rw [hP]; exact isUnit_one`. Establish `hQu : IsUnit Q.det` using `by rw [hQ]; exact isUnit_one`. Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hQu`. Establish `hQQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ hQu`. Use `set R' := cj s Q⁻¹ with hR'`.
+
+Establish `hR1 : cj s Q * R' = 1` using `by rw [hR', ← cj_mul, hQQ', cj_one]`. Establish `hR2 : R' * cj s Q = 1` using `by rw [hR', ← cj_mul, hQQ, cj_one]`. Use `set d' := P * d * R' with hd'`. Use `set H := diagonal D * cj s d' with hH`. Establish `hH' : H = P * (c * cj s d) * cj s P`.
+
+Rewrite using `[hH, hd', ← hD, cj_mul, cj_mul, hR', cj_cj s hs]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q, hQQ, Matrix.one_mul]`. Establish `hHh : cj s H = H`. Rewrite using `[hH', cj_mul, cj_mul, cj_mul, cj_cj s hs, cj_cj s hs, ← hl]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hHij : ∀ i j, H i j = D i * s (d' j i)`. Introduce `i j`. Rewrite using `[hH, Matrix.diagonal_mul]`. Both sides reduce to the same expression.
+
+Establish `hHsym : ∀ i j, H i j = s (D j) * d' i j`. Introduce `i j`. Use `congrFun (congrFun hHh i) j` as an intermediate fact. Rewrite `this` using `[cj_apply, hHij j i, map_mul, hs]`. Conclude with `this.symm`.
+
+Use `set e : n → K := fun i => D i * (D i)⁻¹ with he`. Establish `hse : ∀ i, s (e i) = e i`. Introduce `i`. Distinguish the cases in `h0 : D i = 0`. Simplify using `[he, h0]`.
+
+Simplify using `[he, h0, mul_inv_cancel₀]`. Use `set E : Matrix n n K := diagonal e with hE`. Use `set Dp : Matrix n n K := diagonal fun i => (D i)⁻¹ with hDp`. Take `⟨b', hb'⟩ : ∃ b', b' = Dp * (E - E * H * E) * cj s Dp` from `⟨_, rfl⟩`. Establish `hcE : cj s E = E` using `by rw [hE, cj_diagonal]; congr 1; funext i; exact hse i`.
+
+Establish `hb'h : cj s b' = b'`. Rewrite using `[hb', cj_mul, cj_mul, cj_sub, cj_mul, cj_mul, cj_cj s hs, hcE, hHh]`. Simplify using `only [Matrix.mul_assoc]`. Use `⟨Q * b' * cj s Q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mul, cj_mul, cj_cj s hs, hb'h, Matrix.mul_assoc]`.
+
+Establish `hM : P * (d + c * (Q * b' * cj s Q)) * R' = d' + diagonal D * b'`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hd', ← hD]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc, hR1, Matrix.mul_one]`. Establish `hcol : ∀ i j, D j ≠ 0 → (d' + diagonal D * b') i j = if i = j then (s (D j))⁻¹ else 0`.
+
+Introduce `i j hj`. Establish `hsj : s (D j) ≠ 0` using `fun h0 => hj (by rw [← hs (D j), h0, map_zero])`. Establish `hb'ij : b' i j = (D i)⁻¹ * ((if i = j then e i else 0) - e i * H i j * e j) * s ((D j)⁻¹)`. Rewrite using `[hb', cj_diagonal, Matrix.mul_diagonal, hDp, Matrix.diagonal_mul, Matrix.sub_apply, hE, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.diagonal_apply]`. Rewrite using `[Matrix.add_apply, Matrix.diagonal_mul, hb'ij, map_inv₀]`.
+
+Establish `hej : e j = 1` using `by simp [he, hj]`. Rewrite using `[hej, mul_one]`. Distinguish the cases in `hi : D i = 0`. Establish `hd0 : d' i j = 0`. Use `hHsym i j` as an intermediate fact.
+
+Rewrite `this` using `[hHij, hi, zero_mul]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hsj`. Establish `hij : i ≠ j` using `fun h => hj (h ▸ hi)`. Simplify using `[hi, hd0, hij]`. Establish `hei : e i = 1` using `by simp [he, hi]`.
+
+Rewrite using `[hei, hHsym]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `hdet`. Establish `hM0 : (d' + diagonal D * b').det = 0`. Rewrite using `[← hM, det_mul, det_mul, hdet]`.
+
+Simplify using the standard rewrite rules. Take `⟨p, hp0, hp⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hM0`. Apply `hp0` to reduce the goal to its premises. Establish `h1 : ∀ j, D j ≠ 0 → p j = 0`. Introduce `j hj`.
+
+Use `congrFun hp j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply] at this`. Rewrite `this` using `[Finset.sum_congr rfl fun i _ => by rw [hcol i j hj]]`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Establish `hsj : s (D j) ≠ 0` using `fun h0 => hj (by rw [← hs (D j), h0, map_zero])`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right (inv_ne_zero hsj)`. Establish `hpD : p ᵥ* diagonal D = 0`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.vecMul_diagonal]`. Distinguish the cases in `hj : D j = 0`.
+
+Simplify using `[hj]`. Simplify using `[h1 j hj]`. Establish `hpd' : p ᵥ* d' = 0`. Use `hp` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_add, ← Matrix.vecMul_vecMul p (diagonal D) b', hpD, Matrix.zero_vecMul, add_zero]`.
+
+Conclude with `this`. Use `set q := p ᵥ* P with hq`. Establish `hqc : q ᵥ* c = 0`. Establish `e1 : q ᵥ* c ᵥ* Q = 0`. Rewrite using `[hq, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hD]`.
+
+Conclude with `hpD`. Combine the equalities or inequalities in the displayed calculation. Establish `hqd : q ᵥ* d = 0`. Establish `e1 : q ᵥ* d ᵥ* R' = 0`. Rewrite using `[hq, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc]`.
+
+Conclude with `hpd'`. Combine the equalities or inequalities in the displayed calculation. Establish `hq0 : q = 0`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fieldA {K : Type} [Field K] (s : K →+* K) (hs : ∀ x, s (s x) = x) (c d X Y : Matrix n n K)
     (h : c * X + d * Y = 1) (hl : c * cj s d = d * cj s c) :
     ∃ B : Matrix n n K, cj s B = B ∧ (d + c * B).det ≠ 0 := by

@@ -13,6 +13,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Introduce `hT E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ u hu huniq`. Establish `hover : x ≫ Xo.s = sOf c R`. Rewrite using `[← Λ.xF_fst, Category.assoc, pullback.condition, ← Category.assoc, Λ.xF_snd]`. Unfold `sOf spMap`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Establish `hV` using `GlobalTheory.T.lieBasis_coordinates_bijective_tangent E H Dw l Xo c O β Y M R f x Λ`. Use `choose w hw _ using fun τ (i : Fin (Dw.mult τ)) => hV.1 (fun j => u τ j i)`. Take `⟨s, hs, hgen⟩` from `GlobalTheory.T.exists_chart_generator_pullback_generates_fibre hT E H Dw l Xo c O β Y M R f x Λ`. Use `⟨⟨x, hover, w, fun τ i => hV.2.1 _ _ (hw τ i), fun τ i => (GlobalTheory.T.isEigenvector_iff_lieBasis_coordinates E H Dw l Xo c O β Y M R f x Λ τ _ _ (hw τ i)).2 (hu τ i), ?_, s, hgen⟩, rfl, Λ, fun τ i => hw τ i, hs⟩` and prove the remaining obligations. Introduce `τ v hvt hve`.
+
+Take `⟨cv, hcv, hcvu⟩` from `hV.2.2 v hvt`. Establish `hcomb : ∀ a, IsCombAt x (w τ) a v ↔ Λ.Vec ((u τ).mulVec a) v`. Introduce `a`. Establish `hsum : (∑ i, a i • fun j => u τ j i) = (u τ).mulVec a`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[GlobalTheory.T.isCombAt_iff_coordinate_combination E H Dw l Xo c O β Y M R f x Λ _ (fun i j => u τ j i) (w τ) a v (hw τ), hsum]`. Establish `hcve : M.Eig f τ cv` using `(GlobalTheory.T.isEigenvector_iff_lieBasis_coordinates E H Dw l Xo c O β Y M R f x Λ τ cv v hcv).1 hve`. Take `⟨a, ha, hau⟩` from `huniq τ cv hcve`. Use `⟨a, (hcomb a).2 (ha ▸ hcv), fun a' ha' => hau a' ?_⟩` and prove the remaining obligations.
+
+Conclude with `hcvu _ ((hcomb a').1 ha')`.
+-/
 theorem exists_frPt_tie : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (x : Sp R ⟶ Xo.X) (Λ : M.Lift f x), ∀ u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) R, (∀ τ i, M.Eig f τ (fun j => u τ j i)) → (∀ τ cv, M.Eig f τ cv → ∃! a : Fin (Dw.mult τ) → R, (u τ).mulVec a = cv) → ∃ y : FrPt Xo c R, y.x = x ∧ M.Comparison₂ f u y := by
   intro hT E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ u hu huniq
   have hover : x ≫ Xo.s = sOf c R := by

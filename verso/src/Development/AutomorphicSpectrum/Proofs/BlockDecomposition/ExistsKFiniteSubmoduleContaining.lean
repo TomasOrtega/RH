@@ -21,16 +21,30 @@ def stp (L : ι → Module.End ℂ V) (S : Submodule ℂ V) : Submodule ℂ V :=
 
 def fil (L : ι → Module.End ℂ V) (S₀ : Submodule ℂ V) (k : ℕ) : Submodule ℂ V := (stp L)^[k] S₀
 
+/- English proof (translation)
+The claim follows from `Function.iterate_succ_apply' _ _ _`.
+-/
 theorem fil_succ (L : ι → Module.End ℂ V) (S₀ : Submodule ℂ V) (k : ℕ) :
     fil L S₀ (k + 1) = stp L (fil L S₀ k) :=
   Function.iterate_succ_apply' _ _ _
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem le_stp (L : ι → Module.End ℂ V) (S : Submodule ℂ V) : S ≤ stp L S := le_sup_left
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem hu))`.
+-/
 theorem letter_mem_stp (L : ι → Module.End ℂ V) {S : Submodule ℂ V} {u : V} (hu : u ∈ S) (i : ι) :
     L i u ∈ stp L S :=
   Submodule.mem_sup_right (Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem hu))
 
+/- English proof (translation)
+Proceed by induction on `hC using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `letter_mem_stp L hu i`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul c x _ hx => simpa using Submodule.smul_mem _ c hx`.
+-/
 theorem span_mem_stp (L : ι → Module.End ℂ V) {S : Submodule ℂ V} {u : V} (hu : u ∈ S)
     {C : Module.End ℂ V} (hC : C ∈ Submodule.span ℂ (Set.range L)) : C u ∈ stp L S := by
   induction hC using Submodule.span_induction with
@@ -41,11 +55,19 @@ theorem span_mem_stp (L : ι → Module.End ℂ V) {S : Submodule ℂ V} {u : V}
   | add x y _ _ hx hy => simpa using add_mem hx hy
   | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+The claim follows from `monotone_nat_of_le_succ fun k => by rw [fil_succ] exact le_stp L _`.
+-/
 theorem fil_mono (L : ι → Module.End ℂ V) (S₀ : Submodule ℂ V) : Monotone (fil L S₀) :=
   monotone_nat_of_le_succ fun k => by
     rw [fil_succ]
     exact le_stp L _
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact h₀`. Consider the case `succ k ih`. Rewrite using `[fil_succ]`. Establish `: ∀ i, FiniteDimensional ℂ ((fil L S₀ k).map (L i))` using `fun i => inferInstance`.
+
+Establish `: FiniteDimensional ℂ ↥(⨆ i, (fil L S₀ k).map (L i) : Submodule ℂ V)` using `Submodule.finiteDimensional_iSup _`. Conclude with `Submodule.finiteDimensional_sup _ _`.
+-/
 theorem fil_finite [Finite ι] (L : ι → Module.End ℂ V) (S₀ : Submodule ℂ V) [h₀ : FiniteDimensional ℂ S₀] (k : ℕ) :
     FiniteDimensional ℂ (fil L S₀ k) := by
   induction k with
@@ -56,6 +78,11 @@ theorem fil_finite [Finite ι] (L : ι → Module.End ℂ V) (S₀ : Submodule �
     have : FiniteDimensional ℂ ↥(⨆ i, (fil L S₀ k).map (L i) : Submodule ℂ V) := Submodule.finiteDimensional_iSup _
     exact Submodule.finiteDimensional_sup _ _
 
+/- English proof (translation)
+Establish `key : stp L S ≤ (stp L S).comap K`. Use `sup_le (fun w hw => le_stp L S (hS w hw)) (iSup_le fun i => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `h1 : L i (K u) ∈ stp L S` using `letter_mem_stp L (hS u hu) i`. Establish `h2 : (K * L i - L i * K) u ∈ stp L S` using `span_mem_stp L hu (hK i)`.
+
+Establish `h3 : K (L i u) = (K * L i - L i * K) u + L i (K u)` using `by simp`. Express the relevant statement in the definitionally equal form `K (L i u) ∈ stp L S`. Rewrite using `[h3]`. Conclude with `add_mem h2 h1`. Conclude with `fun w hw => key hw`.
+-/
 theorem stp_stable (L : ι → Module.End ℂ V) (K : Module.End ℂ V)
     (hK : ∀ i, K * L i - L i * K ∈ Submodule.span ℂ (Set.range L)) {S : Submodule ℂ V}
     (hS : ∀ w ∈ S, K w ∈ S) : ∀ w ∈ stp L S, K w ∈ stp L S := by
@@ -70,6 +97,9 @@ theorem stp_stable (L : ι → Module.End ℂ V) (K : Module.End ℂ V)
     exact add_mem h2 h1
   exact fun w hw => key hw
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact h₀`. Consider the case `succ k ih`. Rewrite using `[fil_succ]`. Conclude with `stp_stable L K hK ih`.
+-/
 theorem fil_stable (L : ι → Module.End ℂ V) (K : Module.End ℂ V)
     (hK : ∀ i, K * L i - L i * K ∈ Submodule.span ℂ (Set.range L)) {S₀ : Submodule ℂ V}
     (h₀ : ∀ w ∈ S₀, K w ∈ S₀) (k : ℕ) : ∀ w ∈ fil L S₀ k, K w ∈ fil L S₀ k := by
@@ -79,6 +109,15 @@ theorem fil_stable (L : ι → Module.End ℂ V) (K : Module.End ℂ V)
     rw [fil_succ]
     exact stp_stable L K hK ih
 
+/- English proof (translation)
+Establish `key : ∀ w, (∃ k, w ∈ fil L S₀ k) → ∃ k, T w ∈ fil L S₀ k`. Proceed by induction on `hT using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce and unpack `w ⟨k, hk⟩`.
+
+Conclude with `⟨k + 1, by rw [fil_succ]; exact letter_mem_stp L hk i⟩`. Consider the case `algebraMap r`. Introduce and unpack `w ⟨k, hk⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify `Submodule.smul_mem _ r hk` using `[Module.algebraMap_end_apply]`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `w hw`. Take `⟨k, hk⟩` from `hx w hw`. Take `⟨m, hm⟩` from `hy w hw`. Use `⟨max k m, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using add_mem (fil_mono L S₀ (le_max_left k m) hk) (fil_mono L S₀ (le_max_right k m) hm)`. Consider the case `mul x y _ _ hx hy`. Introduce `w hw`. Simplify using `using hx (y w) (hy w hw)`. Conclude with `key f ⟨0, hf⟩`.
+-/
 theorem mem_fil_of_adjoin (L : ι → Module.End ℂ V) (S₀ : Submodule ℂ V) {T : Module.End ℂ V}
     (hT : T ∈ Algebra.adjoin ℂ (Set.range L)) {f : V} (hf : f ∈ S₀) : ∃ k, T f ∈ fil L S₀ k := by
   have key : ∀ w, (∃ k, w ∈ fil L S₀ k) → ∃ k, T w ∈ fil L S₀ k := by
@@ -112,6 +151,11 @@ def letters (F1 F2 : Fin n → Fin n → Module.End ℂ V) : Bool × Fin n × Fi
   | (true, a, b) => F1 a b
   | (false, a, b) => F2 a b
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_ | _, a, b⟩, rfl⟩`. Conclude with `⟨a, b, Or.inr rfl⟩`. Conclude with `⟨a, b, Or.inl rfl⟩`.
+
+Introduce and unpack `⟨a, b, rfl | rfl⟩`. Conclude with `⟨(true, a, b), rfl⟩`. Conclude with `⟨(false, a, b), rfl⟩`.
+-/
 theorem range_letters (F1 F2 : Fin n → Fin n → Module.End ℂ V) :
     Set.range (letters F1 F2) = {x | ∃ a b, x = F1 a b ∨ x = F2 a b} := by
   ext x
@@ -123,6 +167,11 @@ theorem range_letters (F1 F2 : Fin n → Fin n → Module.End ℂ V) :
     · exact ⟨(true, a, b), rfl⟩
     · exact ⟨(false, a, b), rfl⟩
 
+/- English proof (translation)
+Establish `hm : ∀ a b, E a b ∈ Submodule.span ℂ (Set.range (letters F1 F2))` using `fun a b => Submodule.subset_span ⟨(e, a, b), (hE a b).symm⟩`. Use `sub_mem ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hm _ _`. Conclude with `zero_mem _`.
+
+Use `split_ifs`. Conclude with `hm _ _`. Conclude with `zero_mem _`.
+-/
 theorem gl_span (F1 F2 : Fin n → Fin n → Module.End ℂ V) (e : Bool) (E : Fin n → Fin n → Module.End ℂ V)
     (hE : ∀ a b, E a b = letters F1 F2 (e, a, b)) (a b c d : Fin n) :
     (if b = c then E a d else 0) - (if d = a then E c b else 0) ∈
@@ -137,6 +186,13 @@ theorem gl_span (F1 F2 : Fin n → Fin n → Module.End ℂ V) (e : Bool) (E : F
     · exact hm _ _
     · exact zero_mem _
 
+/- English proof (translation)
+Take `⟨_ | _, c, d⟩` from `i`. Establish `h : kF F1 F2 a b * F2 c d - F2 c d * kF F1 F2 a b = (if b = c then F2 a d else 0) - (if d = a then F2 c b else 0)`. Rewrite using `[← h2 a b c d]`. Simplify using `only [kF, add_mul, mul_add, hc a b c d]`. Normalize the expressions using the abelian group laws.
+
+Express the relevant statement in the definitionally equal form `kF F1 F2 a b * F2 c d - F2 c d * kF F1 F2 a b ∈ _`. Rewrite using `[h]`. Conclude with `gl_span F1 F2 false F2 (fun _ _ => rfl) a b c d`. Establish `h : kF F1 F2 a b * F1 c d - F1 c d * kF F1 F2 a b = (if b = c then F1 a d else 0) - (if d = a then F1 c b else 0)`. Rewrite using `[← h1 a b c d]`.
+
+Simplify using `only [kF, add_mul, mul_add, hc c d a b]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `kF F1 F2 a b * F1 c d - F1 c d * kF F1 F2 a b ∈ _`. Rewrite using `[h]`. Conclude with `gl_span F1 F2 true F1 (fun _ _ => rfl) a b c d`.
+-/
 theorem comm_letters {F1 F2 : Fin n → Fin n → Module.End ℂ V} (h1 : Formalism.REAL.GlRel F1) (h2 : Formalism.REAL.GlRel F2)
     (hc : ∀ a b c d, F1 a b * F2 c d = F2 c d * F1 a b) (a b : Fin n) (i : Bool × Fin n × Fin n) :
     kF F1 F2 a b * letters F1 F2 i - letters F1 F2 i * kF F1 F2 a b ∈
@@ -161,6 +217,11 @@ theorem comm_letters {F1 F2 : Fin n → Fin n → Module.End ℂ V} (h1 : Formal
 
 end Pair
 
+/- English proof (translation)
+Introduce `n V _ _ F1 F2 h1 h2 hc f hgen S₀ hfin hf hst x`. Take `⟨T, hT, rfl⟩` from `hgen x`. Establish `hT' : T ∈ Algebra.adjoin ℂ (Set.range (letters F1 F2))`. Rewrite using `[range_letters]`. Conclude with `hT`.
+
+Take `⟨k, hk⟩` from `mem_fil_of_adjoin (letters F1 F2) S₀ hT' hf`. Conclude with `⟨fil (letters F1 F2) S₀ k, fil_finite _ _ k, hk, fun a b => fil_stable _ _ (comm_letters h1 h2 hc a b) (hst a b) k⟩`.
+-/
 theorem cyclic_locFin : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (F1 F2 : Fin n → Fin n → Module.End ℂ V), Formalism.REAL.GlRel F1 → Formalism.REAL.GlRel F2 →
     (∀ a b c d, F1 a b * F2 c d = F2 c d * F1 a b) → ∀ f : V, (∀ x : V, ∃ T ∈ alg F1 F2, T f = x) →

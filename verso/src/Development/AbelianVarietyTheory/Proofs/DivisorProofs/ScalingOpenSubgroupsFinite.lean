@@ -10,14 +10,27 @@ namespace GlobalTheory.BoxCosetSum
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (A := fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) v`.
+-/
 theorem continuous_evalV' (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) :=
   RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F)
     (A := fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) v
 
+/- English proof (translation)
+The claim follows from `x.2`.
+-/
 theorem eventually_evalV_mem_integers (x : FiniteAdeleRing (𝓞 F) F) :
     ∀ᶠ v in Filter.cofinite, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v x ∈ v.adicCompletionIntegers F := x.2
 
+/- English proof (translation)
+Establish `hT : {v | ¬ (B v : Set (v.adicCompletion F)) = v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 hBf`. Establish `hO : IsOpen {x : FiniteAdeleRing (𝓞 F) F | ∀ v, x v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))}` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`. Establish `e : {x : FiniteAdeleRing (𝓞 F) F | ∀ v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v x ∈ B v} = {x : FiniteAdeleRing (𝓞 F) F | ∀ v, x v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))} ∩ ⋂ v ∈ hT.toFinset, (Formalism.MainNotions.GlobalTheoryTheory …`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.Finite.mem_toFinset, SetLike.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun v => hBO v (h v), fun v _ => h v⟩`. Introduce and unpack `⟨h1, h2⟩ v`. Distinguish the cases in `hv : (B v : Set (v.adicCompletion F)) = v.adicCompletionIntegers F`.
+
+Establish `: x v ∈ (B v : Set (v.adicCompletion F))` using `by rw [hv]; exact h1 v`. Conclude with `this`. Conclude with `h2 v hv`. Rewrite using `[e]`. Conclude with `hO.inter (isOpen_biInter_finset fun v _ => (hBo v).preimage (continuous_evalV' v))`.
+-/
 theorem isOpen_box (B : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F))
     (hBo : ∀ v, IsOpen (B v : Set (v.adicCompletion F)))
     (hBO : ∀ v, (B v : Set (v.adicCompletion F)) ⊆ v.adicCompletionIntegers F)
@@ -63,10 +76,16 @@ def boxSub (κ : Type) (B : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (v.a
     simp only [Pi.neg_apply, map_neg]
     exact (B v).neg_mem (ha i v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_boxSub {κ : Type} {B : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F)}
     {u : κ → FiniteAdeleRing (𝓞 F) F} :
     u ∈ boxSub κ B ↔ ∀ i v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (u i) ∈ B v := Iff.rfl
 
+/- English proof (translation)
+Establish `e : (boxSub κ B : Set (κ → FiniteAdeleRing (𝓞 F) F)) = ⋂ i, (fun u : κ → FiniteAdeleRing (𝓞 F) F => u i) ⁻¹' {x : FiniteAdeleRing (𝓞 F) F | ∀ v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v x ∈ B v}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, mem_boxSub, Set.mem_iInter, Set.mem_preimage, Set.mem_setOf_eq]`. Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => (isOpen_box B hBo hBO hBf).preimage (continuous_apply i)`.
+-/
 theorem isOpen_boxSub (κ : Type) [Finite κ] (B : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F))
     (hBo : ∀ v, IsOpen (B v : Set (v.adicCompletion F)))
     (hBO : ∀ v, (B v : Set (v.adicCompletion F)) ⊆ v.adicCompletionIntegers F)
@@ -80,6 +99,19 @@ theorem isOpen_boxSub (κ : Type) [Finite κ] (B : ∀ v : HeightOneSpectrum (�
   rw [e]
   exact isOpen_iInter_of_finite fun i => (isOpen_box B hBo hBO hBf).preimage (continuous_apply i)
 
+/- English proof (translation)
+Establish `key : ∀ v, ((fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ {x : κ → v.adicCompletion F | ∀ i, x i - Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (r i) ∈ B v}) ↔ ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassV …`. Introduce `v`. Simplify using `only [Set.mem_setOf_eq, Pi.sub_apply, map_sub]`. Distinguish the cases in `h : y - r ∈ boxSub κ B`. Rewrite using `[Set.indicator_of_mem (show y ∈ {z | z - r ∈ boxSub κ B} from h)]`.
+
+Apply `finprod_eq_one_of_forall_eq_one` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Set.indicator_of_mem ((key v).2 fun i => h i v), Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ {z | z - r ∈ boxSub κ B} from h)]`. Rewrite `h` using `[mem_boxSub]`.
+
+Use `push_neg at h`. Take `⟨i0, v0, hv0⟩` from `h`. Apply `finprod_eq_zero _ v0` to reduce the goal to its premises. Rewrite using `[Set.indicator_of_notMem]`. Rewrite using `[key v0]`.
+
+Conclude with `fun H => hv0 (H i0)`. Establish `hT : {v | ¬ (B v : Set (v.adicCompletion F)) = v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.1 hBf`. Establish `hI : (⋃ i, {v | ¬ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v ((y - r) i) ∈ v.adicCompletionIntegers F}).Finite` using `Set.finite_iUnion fun i => Filter.eventually_cofinite.1 (eventually_evalV_mem_integers ((y - r) i))`. Use `(hT.union hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_not, not_exists] at hc`. Apply `hv` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Set.indicator_of_mem, Pi.one_apply]`.
+
+Rewrite using `[key v]`. Introduce `i`. Establish `h2 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v ((y - r) i) ∈ ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `hc.2 i`. Rewrite `h2` using `[← hc.1]`. Conclude with `h2`.
+-/
 theorem finprod_indicator_eq (κ : Type) [Finite κ]
     (B : ∀ v : HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F))
     (hBO : ∀ v, (B v : Set (v.adicCompletion F)) ⊆ v.adicCompletionIntegers F)
@@ -124,6 +156,27 @@ theorem finprod_indicator_eq (κ : Type) [Finite κ]
       rw [← hc.1] at h2
       exact h2
 
+/- English proof (translation)
+Introduce `F _ _ κ _ B hBo hBO hBf g hg hinv`. Use `set U := boxSub κ B with hU`. Establish `hUo : IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F))` using `isOpen_boxSub κ B hBo hBO hBf`. Establish `hK : IsCompact (tsupport g)` using `hg`. Establish `hcov : tsupport g ⊆ ⋃ y : (κ → FiniteAdeleRing (𝓞 F) F), {x | x - y ∈ U}`.
+
+Introduce `x _`. Conclude with `Set.mem_iUnion.2 ⟨x, by simp [U.zero_mem]⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun y => {x | x - y ∈ U}) (fun y => hUo.preimage (continuous_id.sub continuous_const)) hcov`. Set `R : Finset (κ → FiniteAdeleRing (𝓞 F) F)` to `(t.image (QuotientAddGroup.mk : (κ → FiniteAdeleRing (𝓞 F) F) → _ ⧸ U)).image Quotient.out`. Establish `hdist : ∀ r ∈ R, ∀ r' ∈ R, ∀ x, x - r ∈ U → x - r' ∈ U → r = r'`.
+
+Introduce `r hr r' hr' x h h'`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hr'`. Establish `e1 : (QuotientAddGroup.mk q.out : _ ⧸ U) = QuotientAddGroup.mk x` using `QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])`. Establish `e2 : (QuotientAddGroup.mk q'.out : _ ⧸ U) = QuotientAddGroup.mk x` using `QuotientAddGroup.eq.2 (by rwa [neg_add_eq_sub])`.
+
+Rewrite `e1`, `e2` using `[QuotientAddGroup.out_eq']`. Rewrite using `[e1, e2]`. Establish `hcover : ∀ x ∈ tsupport g, ∃ r ∈ R, x - r ∈ U`. Introduce `x hx`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht hx)`.
+
+Use `⟨(QuotientAddGroup.mk y : _ ⧸ U).out, Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ hy), ?_⟩` and prove the remaining obligations. Establish `e : -(QuotientAddGroup.mk y : _ ⧸ U).out + y ∈ U` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _)`. Use `U.add_mem hxy e` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Use `⟨R, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, finprod_indicator_eq κ B hBO hBf]`. Distinguish the cases in `hx : ∃ r ∈ R, x - r ∈ U`.
+
+Take `⟨r0, hr0, hxr0⟩` from `hx`. Rewrite using `[Finset.sum_eq_single_of_mem r0 hr0]`. Rewrite using `[Set.indicator_of_mem (show x ∈ {z | z - r0 ∈ boxSub κ B} from hxr0), mul_one]`. Use `hinv r0 (x - r0) hxr0` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Introduce `r hr hne`. Establish `hm : x ∉ {z | z - r ∈ boxSub κ B}` using `fun h => hne (hdist r hr r0 hr0 _ h hxr0)`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`. Use `push_neg at hx`. Establish `hK' : x ∉ tsupport g` using `fun h => by`.
+
+Take `⟨r, hr, h'⟩` from `hcover _ h`. Conclude with `hx r hr h'`. Rewrite using `[image_eq_zero_of_notMem_tsupport hK']`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `r hr`. Establish `hm : x ∉ {z | z - r ∈ boxSub κ B}` using `hx r hr`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero]`.
+-/
 theorem eq_sum_finprod_box_indicator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (B : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F)),
     (∀ v, IsOpen (B v : Set (v.adicCompletion F))) →

@@ -33,12 +33,18 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k
   {Ω : Type} [Field Ω] [Algebra S Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {N : ℕ} {e : ι k₀ ≃ Fin (N + 1)}
   {J : Ideal (MRingOver S ι)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g, a, hg, ha, rfl⟩`.
+-/
 theorem mem_dehom {g : MRingOver S ι} {a : K → ℕ} (hg : g ∈ J) (ha : IsMultiHomog g a) (d : ∀ k, ι k) :
     aeval y g * ∏ k, y ⟨k, d k⟩ ^ (-(a k : ℤ)) ∈ dehom S y J d :=
   ⟨g, a, hg, ha, rfl⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.chartRing`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨p, rfl⟩`.
+-/
 theorem aeval_ratio_mem_chartRing (i : Fin (N + 1)) (p : Kleiman.Poly S N) :
     aeval (fun j => baseVec y k₀ e j / baseVec y k₀ e i) p ∈
       ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i := by
@@ -46,6 +52,13 @@ theorem aeval_ratio_mem_chartRing (i : Fin (N + 1)) (p : Kleiman.Poly S N) :
   rw [Algebra.adjoin_range_eq_range_aeval]
   exact ⟨p, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨n, -, hf⟩` from `hf`. Conclude with `hf i hi d hd`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[smul_eq_mul, map_mul]`.
+
+Establish `hr : aeval (fun j => baseVec y k₀ e j / baseVec y k₀ e i) r ∈ overRing (S` using `S) y k₀ e d i := chartRing_le_overRing d i (aeval_ratio_mem_chartRing i r)`. Use `Submodule.smul_mem _ (⟨_, hr⟩ : overRing (S := S) y k₀ e d i) ha` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def]`. Then use the resulting hypothesis.
+-/
 theorem aeval_mem_of_mem_satIdeal [DecidableEq K] {p : Kleiman.Poly S N} (hp : p ∈ satIdeal S y k₀ e J) {i : Fin (N + 1)}
     (hi : baseVec y k₀ e i ≠ 0) {d : ∀ k, ι k} (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) :
     aeval (fun j => baseVec y k₀ e j / baseVec y k₀ e i) p ∈
@@ -65,16 +78,27 @@ theorem aeval_mem_of_mem_satIdeal [DecidableEq K] {p : Kleiman.Poly S N} (hp : p
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+The claim follows from `Ideal.homogeneous_span _ _ fun _ ⟨n, hf, _⟩ => ⟨n, (mem_homogeneousSubmodule n _).2 hf⟩`.
+-/
 theorem satIdeal_isHomogeneous :
     (satIdeal S y k₀ e J).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) S) :=
   Ideal.homogeneous_span _ _ fun _ ⟨n, hf, _⟩ => ⟨n, (mem_homogeneousSubmodule n _).2 hf⟩
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+The claim follows from `homogeneousComponent_mem_of_mem satIdeal_isHomogeneous hp n`.
+-/
 theorem homogeneousComponent_mem_satIdeal {p : Kleiman.Poly S N} (hp : p ∈ satIdeal S y k₀ e J) (n : ℕ) :
     homogeneousComponent n p ∈ satIdeal S y k₀ e J :=
   homogeneousComponent_mem_of_mem satIdeal_isHomogeneous hp n
 
+/- English proof (translation)
+Use `⟨1, 0, Submodule.mem_top, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm k`. Establish `: m = 0`. Assume the negation of the conclusion as `h`. Conclude with `(mem_support_iff.mp hm) (by rw [coeff_one, if_neg (Ne.symm h)])`.
+
+Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_dehom_top (d : ∀ k, ι k) : (1 : Ω) ∈ dehom S y (⊤ : Ideal (MRingOver S ι)) d := by
   classical
   refine ⟨1, 0, Submodule.mem_top, ?_, ?_⟩
@@ -85,12 +109,18 @@ theorem one_mem_dehom_top (d : ∀ k, ι k) : (1 : Ω) ∈ dehom S y (⊤ : Idea
     simp [this]
   · simp
 
+/- English proof (translation)
+Use `Ideal.subset_span ⟨0, isHomogeneous_one _ _, fun i _ d _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `Submodule.subset_span (one_mem_dehom_top d)`.
+-/
 theorem one_mem_satIdeal_top : (1 : Kleiman.Poly S N) ∈ satIdeal S y k₀ e (⊤ : Ideal (MRingOver S ι)) := by
   classical
   refine Ideal.subset_span ⟨0, isHomogeneous_one _ _, fun i _ d _ => ?_⟩
   rw [map_one]
   exact Submodule.subset_span (one_mem_dehom_top d)
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨n, hf, fun i _ d _ => by rw [Kleiman.aeval_div_of_isHomogeneous (x := baseVec y k₀ e) hf i, h0, zero_div] exact zero_mem _⟩`.
+-/
 theorem mem_satIdeal_of_aeval_eq_zero {f : Kleiman.Poly S N} {n : ℕ} (hf : f.IsHomogeneous n)
     (h0 : aeval (baseVec y k₀ e) f = 0) : f ∈ satIdeal S y k₀ e J :=
   Ideal.subset_span ⟨n, hf, fun i _ d _ => by
@@ -99,6 +129,11 @@ theorem mem_satIdeal_of_aeval_eq_zero {f : Kleiman.Poly S N} {n : ℕ} (hf : f.I
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `h : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver S y g = 0` using `hg`. Establish `h1` using `congrArg (MvPolynomial.eval (fun _ : K => (1 : Ω))) h`. Rewrite `h1` using `[map_zero, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left]`. Rewrite using `[MvPolynomial.aeval_def]`. Use `h1 using 2` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `r`. Rewrite using `[RingHom.comp_apply, MvPolynomial.algebraMap_apply, MvPolynomial.eval_C]`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+-/
 theorem aeval_eq_zero_of_mem_mIdealOver {g : MRingOver S ι} (hg : g ∈ mIdealOver S y) : aeval y g = 0 := by
   have h : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.mConeMapOver S y g = 0 := hg
   have h1 := congrArg (MvPolynomial.eval (fun _ : K => (1 : Ω))) h
@@ -110,11 +145,19 @@ theorem aeval_eq_zero_of_mem_mIdealOver {g : MRingOver S ι} (hg : g ∈ mIdealO
   · funext p
     simp
 
+/- English proof (translation)
+Take `⟨g, a, hg, -, rfl⟩` from `hu`. Rewrite using `[aeval_eq_zero_of_mem_mIdealOver hg, zero_mul]`.
+-/
 theorem eq_zero_of_mem_dehom_mIdealOver {d : ∀ k, ι k} {u : Ω} (hu : u ∈ dehom S y (mIdealOver S y) d) :
     u = 0 := by
   obtain ⟨g, a, hg, -, rfl⟩ := hu
   rw [aeval_eq_zero_of_mem_mIdealOver hg, zero_mul]
 
+/- English proof (translation)
+Establish `hi : baseVec y k₀ e (e (d k₀)) ≠ 0` using `by simpa [IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hd k₀`. Establish `h1` using `aeval_mem_of_mem_satIdeal hmem hi hd`. Establish `h2 : Submodule.span (overRing (S` using `S) y k₀ e d (e (d k₀))) (dehom S y (mIdealOver S y) d) = ⊥ := by`. Rewrite using `[Submodule.span_eq_bot]`. Introduce `u hu`.
+
+Conclude with `eq_zero_of_mem_dehom_mIdealOver hu`. Rewrite `h1` using `[h2, Submodule.mem_bot, Kleiman.aeval_div_of_isHomogeneous (x := baseVec y k₀ e) hf]`. Conclude with `(div_eq_zero_iff.1 h1).resolve_right (pow_ne_zero _ hi)`.
+-/
 theorem aeval_eq_zero_of_mem_satIdeal_model [DecidableEq K] {f : Kleiman.Poly S N} {n : ℕ}
     (hf : f.IsHomogeneous n) (hmem : f ∈ satIdeal S y k₀ e (mIdealOver S y)) {d : ∀ k, ι k}
     (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) : aeval (baseVec y k₀ e) f = 0 := by

@@ -18,6 +18,13 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 
 namespace IotaBP
 
+/- English proof (translation)
+Establish `hle : NgX Λ (gS D) F F' ≤ Λ`. Use `sup_le (sup_le ?_ inf_le_left) inf_le_left` and prove the remaining obligations. Conclude with `Submodule.smul_le_right`. Use `⟨hΛ.fg.of_le hle, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hΛ.span_eq_top, Submodule.span_le]`.
+
+Introduce `v hv`. Establish `h0 : ((gS D : ℕ) : D.host.E) ≠ 0` using `Formalism.L2.SG.Pf.StabIntSh.gS_ne`. Establish `hm : ((gS D : ℕ) : 𝓞 D.host.E) • v ∈ NgX Λ (gS D) F F'` using `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hv))`. Establish `e : v = (((gS D : ℕ) : D.host.E))⁻¹ • (((gS D : ℕ) : 𝓞 D.host.E) • v)`. Rewrite using `[← algebraMap_smul D.host.E ((gS D : ℕ) : 𝓞 D.host.E) v, map_natCast, smul_smul, inv_mul_cancel₀ h0, one_smul]`.
+
+Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+-/
 theorem isLattice_NgX {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ) {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') : Submodule.IsLattice D.host.E (NgX Λ (gS D) F F') := by
   have hle : NgX Λ (gS D) F F' ≤ Λ := by
@@ -34,6 +41,11 @@ theorem isLattice_NgX {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule
   rw [SetLike.mem_coe, e]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
+/- English proof (translation)
+Take `⟨a, ha, ξ', hξ', rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨b, hb, ξ, hξ, rfl⟩` from `Submodule.mem_sup.1 ha`. Rewrite `hb` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨l, hl, rfl⟩` from `hb`. Use `⟨l, hl, ξ, hξ, ξ', hξ', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul D.host.E ((gS D : ℕ) : 𝓞 D.host.E) l, map_natCast]`.
+-/
 theorem NgX_dec {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} {F : LFlag (VS D) D.R.rS T}
     {F' : LFlag (VS D) D.R.rS T'} {x : (VS D).V} (hx : x ∈ NgX Λ (gS D) F F') :
     ∃ l ∈ Λ, ∃ ξ ∈ XLam Λ F, ∃ ξ' ∈ XLam Λ F', x = ((gS D : ℕ) : D.host.E) • l + ξ + ξ' := by
@@ -44,6 +56,11 @@ theorem NgX_dec {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T T' : D.host.E} {F :
   refine ⟨l, hl, ξ, hξ, ξ', hξ', ?_⟩
   rw [← algebraMap_smul D.host.E ((gS D : ℕ) : 𝓞 D.host.E) l, map_natCast]
 
+/- English proof (translation)
+Take `⟨w, hγ, -⟩` from `hZ`. Establish `hN` using `normRepExists_ctx hC`. Take `⟨⟨hgen, hG⟩, hat⟩` from `hγ`. Take `⟨y, hy⟩` from `hN γ w hat (eligRel_holds γ w ⟨⟨hgen, hG⟩, hat⟩) hgen`. Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨(w, y), hy⟩`.
+
+Establish `hn : nrep γ = some hex.choose` using `dif_pos hex`. Establish `hrep : repF γ = hex.choose.2.1` using `by unfold repF; rw [hn]`. Rewrite using `[hrep]`. Conclude with `hex.choose_spec.2.1`.
+-/
 theorem representative_admissible_one (hC : CtxP u u' F0 what₂) {γ : TermDef.Term D u u' F0 what₂} {Z : PairVal.MatR D} (hZ : Ctx γ Z) :
     AdmWit γ.lam (gS D) (lf D F0) (repF γ) 1 := by
   obtain ⟨w, hγ, -⟩ := hZ
@@ -63,6 +80,21 @@ abbrev t2 (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hξX : ξ ∈ Xsp (lf D F0)` using `(Submodule.mem_inf.1 hξ).2`. Establish `hξ'X : ξ' ∈ Xsp (repF γ)` using `(Submodule.mem_inf.1 hξ').2`. Establish `hm : x' + ξ' ∈ orth (VS D) (Xsp (repF γ))` using `add_mem hx'o (hXo' hξ'X)`. Establish `hp1` using `BwdNP.baseChange_mem_perp_sup Zd p γ (sub_mem hlo (hXo hξX))`. Establish `hp2` using `BetaI.bcP_perp_f' Zd p γ hm`.
+
+Establish `hG1` using `g1 Zd p (lf D F0) (repF γ) (tLoc Zd p γ) rfl g hsp hlΛ hx'Λ hμ hξ hξ' heq hp1 hp2`. Establish `hm₂` using `BetaI.baseChangeAt_perp' Zd p F'₂ (hβ₀o _ hm)`. Establish `hq₂` using `BetaI.baseChangeAt_perp' Zd p F'₂ (hβo _ hm)`. Establish `hp₂` using `BwdNP.baseChange_mem_perp_sup Zd p γ hl₂o`. Establish `e1 : φ' ((locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p (x' + ξ'), hp2⟩) = (locH Zd p).mkW (locF' Zd p F'₂) ⟨baseChange₂ D p (β (x' + ξ')), hq₂⟩`.
+
+Rewrite using `[hPin (x' + ξ') hp2 hm₂ hm]`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Use `show baseChange₂ D p (β₀ (x' + ξ')) - baseChange₂ D p (β (x' + ξ')) ∈ (locH Zd p).X (locF' Zd p F'₂)`. Rewrite using `[← map_sub]`. Conclude with `BetaI.bcP_X' Zd p F'₂ (hβd _ hm)`.
+
+Establish `e2 : (locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p (l - ξ), hp1⟩ = (locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p l₂, hp₂⟩`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Use `show baseChange₂ D p (l - ξ) - baseChange₂ D p l₂ ∈ (locH Zd p).X (tLoc Zd p γ).f`. Rewrite using `[← map_sub]`. Use `BwdNP.bcP_X Zd p γ hu ?_` and prove the remaining obligations.
+
+Establish `e : l - ξ - l₂ = (l - l₂) - ξ` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem hll₂ hξX`. Establish `hG2` using `Set.mem_image_of_mem (Prod.map φ' (LinearEquiv.refl (D.s.atP p).Ep ((locH Zd p).Wb (tLoc Zd p γ).f))) hG1`. Rewrite `hG2` using `[hR]`.
+
+Simplify using `only [Prod.map, LinearEquiv.refl_apply, e1, e2] at hG2`. Establish `hfin` using `g2 Zd p (lf D F0) (liftF F'₂) (t2 Zd p γ F'₂ Λ₂) rfl g hsp hl₂Λ (hβΛ _ (add_mem hx'Λ (xi_mem hξ'))) hp₂ hq₂ hG2 hA2 hB2`. Establish `hβξ : β ξ' ∈ NgX Λ₂ (gS D) (lf D F0) (liftF F'₂)` using `Submodule.mem_sup_right (Submodule.mem_inf.2 ⟨hβΛ _ (xi_mem hξ'), hβX _ hξ'X⟩)`. Establish `e : l₂ - β x' = (l₂ - β (x' + ξ')) + β ξ'` using `by rw [map_add]; abel`. Rewrite using `[e, map_add]`.
+
+Conclude with `add_mem hfin (Submodule.subset_span ⟨_, hβξ, rfl⟩)`.
+-/
 theorem fwd_typed (p : PlF D) (g : Loc.SplitG (Zd.M p).L) (hsp : (Zd.M p).split = some g)
     (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (Λ₂ : Submodule (𝓞 D.host.E) (VS D).V)
@@ -125,6 +157,21 @@ theorem fwd_typed (p : PlF D) (g : Loc.SplitG (Zd.M p).L) (hsp : (Zd.M p).split 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hξX : ξ ∈ Xsp (lf D F0)` using `(Submodule.mem_inf.1 hξ).2`. Establish `hξ'X : ξ' ∈ Xsp (liftF F'₂)` using `(Submodule.mem_inf.1 hξ').2`. Establish `hp1` using `BwdNP.baseChange_mem_perp_sup Zd p γ (sub_mem hl₂o (hXo hξX))`. Establish `hp2` using `BetaI.baseChangeAt_perp' Zd p F'₂ (add_mem (hβo _ hx'o) (hXo₂ hξ'X))`. Establish `hG1` using `g1 Zd p (lf D F0) (liftF F'₂) (t2 Zd p γ F'₂ Λ₂) rfl g hsp hl₂Λ (hβΛ _ hx'Λ) hμ hξ hξ' heq hp1 hp2`.
+
+Rewrite `hG1` using `[← hR]`. Take `⟨⟨a', a⟩, ha, hpair⟩` from `hG1`. Take `⟨ha', haa⟩` from `Prod.mk.inj hpair`. Establish `hp₁'` using `BetaI.bcP_perp_f' Zd p γ hx'o`. Establish `hm₂` using `BetaI.baseChangeAt_perp' Zd p F'₂ (hβ₀o _ hx'o)`.
+
+Establish `hpl` using `BwdNP.baseChange_mem_perp_sup Zd p γ hlo`. Establish `ea' : a' = (locH Zd p).mkW (tLoc Zd p γ).f' ⟨baseChange₂ D p x', hp₁'⟩`. Apply `φ'.injective` to reduce the goal to its premises. Rewrite using `[ha', hPin x' hp₁' hm₂ hx'o]`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations.
+
+Use `show baseChange₂ D p (β x' + ξ') - baseChange₂ D p (β₀ x') ∈ (locH Zd p).X (locF' Zd p F'₂)`. Rewrite using `[← map_sub]`. Use `BetaI.bcP_X' Zd p F'₂ ?_` and prove the remaining obligations. Establish `e : β x' + ξ' - β₀ x' = ξ' - (β₀ x' - β x')` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `sub_mem hξ'X (hβd _ hx'o)`. Establish `ea : a = (locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p l, hpl⟩`. Use `(show a = (locH Zd p).mkW (tLoc Zd p γ).f ⟨baseChange₂ D p (l₂ - ξ), hp1⟩ from haa).trans ?_` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Use `show baseChange₂ D p (l₂ - ξ) - baseChange₂ D p l ∈ (locH Zd p).X (tLoc Zd p γ).f`.
+
+Rewrite using `[← map_sub]`. Use `BwdNP.bcP_X Zd p γ hu ?_` and prove the remaining obligations. Establish `e : l₂ - ξ - l = -((l - l₂) + ξ)` using `by abel`. Rewrite using `[e]`. Conclude with `neg_mem (add_mem hll₂ hξX)`.
+
+Rewrite `ha` using `[ea', ea]`. Conclude with `g2 Zd p (lf D F0) (repF γ) (tLoc Zd p γ) rfl g hsp hlΛ hx'Λ hpl hp₁' ha hA1 hB1`.
+-/
 theorem bwd_typed (p : PlF D) (g : Loc.SplitG (Zd.M p).L) (hsp : (Zd.M p).split = some g)
     (γ : TermDef.Term D u u' F0 what₂) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (Λ₂ : Submodule (𝓞 D.host.E) (VS D).V)
@@ -185,6 +232,39 @@ end IotaBP
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO v hv hvf hvX hgm`. Establish `hB0` using `hB`. Take `⟨hC, hZ, hS, hΛ₂, -, hT, hPD, -⟩` from `hB`. Take `⟨hΛ₂lat, hloc₂⟩` from `hΛ₂`. Take `⟨-, hT2, hφ⟩` from `hS`.
+
+Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hfix` using `hrow.2.1`. Establish `hΛlat : Submodule.IsLattice D.host.E γ.lam` using `hfix.1`. Establish `hXS1 : XLam γ.lam (lf D F0) = XS D F0` using `hrow.2.2`. Establish `hXSx : XLam γ.lam (repF γ) = XS D (repF γ).fl` using `hPD.2.2.2`.
+
+Establish `hXS2' : XLam Λ₂ (liftF F'₂) = XS D (liftF F'₂).fl` using `hT.2.2.2.2`. Establish `hpr1 : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p γ.lam) (tLoc Zd p γ).f` using `fun p => (hT2 p).1.1.2.1.1`. Establish `hpr2 : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ₂) (tLoc Zd p γ).f` using `fun p => (hloc₂ p).1.1.2.1.1`. Establish `hpr2' : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ₂) (locF' Zd p F'₂)` using `fun p => (hloc₂ p).1.1.2.2.1.1`. Establish `hadm1` using `IotaBP.representative_admissible_one hC hZ`.
+
+Establish `hpr1' : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p γ.lam) (locF' Zd p (repF γ))` using `fun p => (genXi_holds Zd hC.2.1 γ (repF γ) p hadm1 hPD.1 (hT2 p).1).1.2.2.1.1`. Establish `hu : ∀ p a, IsUnit (TermLoc.sgnP D p a * frFac Zd.δ p a)` using `fun p a => unit_of_frame Zd p γ (hT2 p).1.1.2.1 a`. Establish `hXS2 : XLam Λ₂ (lf D F0) = XS D F0`. Rewrite using `[← hXS1]`. Use extensionality with `x`.
+
+Simplify using `only [XLam, Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨memX Zd γ hpr2 hpr1 hΛlat hu h2 h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨memX Zd γ hpr1 hpr2 hΛ₂lat hu h2 h1, h2⟩`. Establish `hXmap : (Xsp (repF γ)).map (β₀ : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp (liftF F'₂)` using `BwdBetaCut.Xsp_of_frame β₀ _ _ hfr`. Establish `hvXX : ∀ y ∈ Xsp (liftF F'₂), v y ∈ Xsp (liftF F'₂)` using `fun y hy => by`. Rewrite using `[← BwdBetaCut.Xsp_of_frame v (liftF F'₂) (liftF F'₂) hvf]`. Conclude with `Submodule.mem_map_of_mem hy`.
+
+Establish `hβ₀o : ∀ m ∈ orth (VS D) (Xsp (repF γ)), β₀ m ∈ orth (VS D) (Xsp (liftF F'₂))` using `fun m hm => by`. Rewrite using `[← hXmap, Formalism.L2.SG.Pf.orth_map_sat β₀ hiso]`. Conclude with `Submodule.mem_map_of_mem hm`. Establish `hβX : ∀ y ∈ Xsp (repF γ), (v * β₀) y ∈ Xsp (liftF F'₂)` using `fun y hy => hvXX _ (by rw [← hXmap]; exact Submodule.mem_map_of_mem hy)`. Establish `hβΛ : ∀ y ∈ γ.lam, (v * β₀) y ∈ Λ₂` using `fun y hy => by`.
+
+Rewrite using `[← hgm]`. Conclude with `(gmap_apply_mem (v * β₀) γ.lam y).2 hy`. Establish `hβo : ∀ m ∈ orth (VS D) (Xsp (repF γ)), (v * β₀) m ∈ orth (VS D) (Xsp (liftF F'₂))` using `fun m hm => by`. Establish `h1` using `hβ₀o m hm`. Establish `h2` using `hvX _ h1`.
+
+Establish `e : (v * β₀) m = (v (β₀ m) - β₀ m) + β₀ m` using `by show v (β₀ m) = _; abel`. Rewrite using `[e]`. Conclude with `add_mem (BwdNA.X_le_orth (VS D) (Xsp (liftF F'₂)) (fun x hx y hy => NMoveP.hT_X_X F'₂.fl hx hy) h2) h1`. Establish `hXo : Xsp (lf D F0) ≤ orth (VS D) (Xsp (lf D F0))` using `BwdNA.X_le_orth (VS D) (Xsp (lf D F0)) (fun x hx y hy => NMoveP.hT_X_X F0 hx hy)`. Establish `hXo' : Xsp (repF γ) ≤ orth (VS D) (Xsp (repF γ))` using `BwdNA.X_le_orth (VS D) (Xsp (repF γ)) (fun x hx y hy => NMoveP.hT_X_X (repF γ).fl hx hy)`.
+
+Establish `hA1 : ∀ p, ∀ w ∈ lattice₂ D Zd.M p γ.lam, w ∈ (locH Zd p).X (tLoc Zd p γ).f → w ∈ lattice₂ D Zd.M p (XLam γ.lam (lf D F0))` using `fun p w hw hwX => l1 Zd p (lf D F0) _ (TermLoc.sgnP D p) (sgnP_mem p) (fun i => by rw [tf, frame_cs]) (hpr1 p) hXS1 hw hwX`. Establish `hA2 : ∀ p, ∀ w ∈ lattice₂ D Zd.M p Λ₂, w ∈ (locH Zd p).X (tLoc Zd p γ).f → w ∈ lattice₂ D Zd.M p (XLam Λ₂ (lf D F0))` using `fun p w hw hwX => l1 Zd p (lf D F0) _ (TermLoc.sgnP D p) (sgnP_mem p) (fun i => by rw [tf, frame_cs]) (hpr2 p) hXS2 hw hwX`. Establish `hB1 : ∀ p, ∀ w ∈ lattice₂ D Zd.M p γ.lam, w ∈ (locH Zd p).X (tLoc Zd p γ).f' → w ∈ lattice₂ D Zd.M p (XLam γ.lam (repF γ))` using `fun p w hw hwX => l1 Zd p (repF γ) _ (sgnP' D p) (sgnP'_mem p) (fun i => by rw [BetaI.locF'_eq, frame_csG]; rfl) (hpr1' p) hXSx hw (Xle_tLoc Zd p γ hwX)`. Establish `hB2 : ∀ p, ∀ w ∈ lattice₂ D Zd.M p Λ₂, w ∈ (locH Zd p).X (locF' Zd p F'₂) → w ∈ lattice₂ D Zd.M p (XLam Λ₂ (liftF F'₂))` using `fun p w hw hwX => l1 Zd p (liftF F'₂) _ (sgnP' D p) (sgnP'_mem p) (fun i => by rw [BetaI.locF'_eq, frame_csG]; rfl) (hpr2' p) hXS2' hw hwX`. Introduce `x' hx' l hl l₂ hl₂ hll₂`.
+
+Establish `hx'Λ` using `(Submodule.mem_inf.1 hx').1`. Establish `hx'o : x' ∈ orth (VS D) (Xsp (repF γ))` using `(Submodule.mem_inf.1 hx').2`. Establish `hlΛ` using `(Submodule.mem_inf.1 hl).1`. Establish `hlo : l ∈ orth (VS D) (Xsp (lf D F0))` using `(Submodule.mem_inf.1 hl).2`. Establish `hl₂Λ` using `(Submodule.mem_inf.1 hl₂).1`.
+
+Establish `hl₂o : l₂ ∈ orth (VS D) (Xsp (lf D F0))` using `(Submodule.mem_inf.1 hl₂).2`. Establish `hβd : ∀ m ∈ orth (VS D) (Xsp (repF γ)), β₀ m - (v * β₀) m ∈ Xsp (liftF F'₂)` using `fun m hm => by`. Establish `h` using `hvX _ (hβ₀o _ hm)`. Establish `e : β₀ m - (v * β₀) m = -(v (β₀ m) - β₀ m)` using `by show _ - v _ = _; abel`. Rewrite using `[e]`.
+
+Conclude with `neg_mem h`. Establish `hXo₂ : Xsp (liftF F'₂) ≤ orth (VS D) (Xsp (liftF F'₂))` using `BwdNA.X_le_orth (VS D) (Xsp (liftF F'₂)) (fun x hx y hy => NMoveP.hT_X_X F'₂.fl hx hy)`. Establish `hRp : ∀ p (g : Loc.SplitG (Zd.M p).L), (Zd.M p).split = some g → Prod.map (φ' p) (LinearEquiv.refl (D.s.atP p).Ep ((locH Zd p).Wb (tLoc Zd p γ).f)) '' (locH Zd p).iotaGraph g (tLoc Zd p γ) = (locH Zd p).iotaGraph g (IotaBP.t2 Zd p γ F'₂ Λ₂)` using `fun p g hsp => by`. Use `(hloc₂ p).2.2.2.2.2 g hsp` as an intermediate fact. Rewrite `this` using `[hφ p]`.
+
+Conclude with `this`. Prove the components needed by the constructor for the conclusion. Introduce `hmem`. Take `⟨μ, hμ, ξ, hξ, ξ', hξ', heq⟩` from `NgX_dec hmem`. Use `mem_of_bcP Zd (IotaBP.isLattice_NgX hΛ₂lat _ _) fun p => ?_` and prove the remaining obligations.
+
+Break down `hsp : (Zd.M p).split with _ | g` into its components or cases. Conclude with `untyped_mem Zd p hsp _ _ (BwdNP.baseChange_mem_localLattice Zd (sub_mem hl₂Λ (hβΛ _ hx'Λ)) p)`. Conclude with `IotaBP.fwd_typed Zd p g hsp γ F'₂ Λ₂ (φ' p) (hRp p g hsp) β₀ (v * β₀) (hP γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p) hβ₀o hβo hβd hβX hβΛ (hu p) hXo hXo' (hA2 p) (hB2 p) hx'Λ hx'o hlΛ hlo hl₂Λ hl₂o hll₂ hμ hξ hξ' heq`. Introduce `hmem`. Take `⟨μ, hμ, ξ, hξ, ξ', hξ', heq⟩` from `NgX_dec hmem`.
+
+Use `mem_of_bcP Zd (IotaBP.isLattice_NgX hΛlat _ _) fun p => ?_` and prove the remaining obligations. Break down `hsp : (Zd.M p).split with _ | g` into its components or cases. Conclude with `untyped_mem Zd p hsp _ _ (BwdNP.baseChange_mem_localLattice Zd (sub_mem hlΛ hx'Λ) p)`. Conclude with `IotaBP.bwd_typed Zd p g hsp γ F'₂ Λ₂ (φ' p) (hRp p g hsp) β₀ (v * β₀) (hP γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p) hβ₀o hβo hβd hβΛ (hu p) hXo hXo₂ (hA1 p) (hB1 p) hx'Λ hx'o hlΛ hlo hl₂Λ hl₂o hll₂ hμ hξ hξ' heq`.
+-/
 theorem iotaB_of (hP : PinB Zd u u' F0 what₂) : IotaB Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO v hv hvf hvX hgm
   have hB0 := hB

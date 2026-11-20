@@ -30,6 +30,9 @@ def LocData {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W)
       (Acts (evFin F v) (om (ιS g, ιT h)) (m : (Fin n × Fin d → Fv F v) → ℂ) φ₁ ↔
         ((ωL (g, h) m : SB (Fin n × Fin d → Fv F v)) : (Fin n × Fin d → Fv F v) → ℂ) = φ₁)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kAt_eq (X : Spc F E n) (v : Pl F) : KAt σ X v = GlobalTheory.InertSph.KAt σ X v := rfl
 
 end PositivityTheory.Sph

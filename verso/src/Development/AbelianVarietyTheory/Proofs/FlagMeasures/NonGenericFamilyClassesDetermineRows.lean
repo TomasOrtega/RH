@@ -8,6 +8,9 @@ open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.NGClass
 
+/- English proof (translation)
+Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec ampN`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem vec_eq_zero_of_oo {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word} (t : TauC Y u u')
     (h : OOt t = 0) : (Y.tO u u').vec t = 0 := by
   show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0
@@ -16,6 +19,13 @@ theorem vec_eq_zero_of_oo {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.wh
   simp
   rfl
 
+/- English proof (translation)
+Introduce `D X Y u u' hT`. Use `⟨fun t ht => ?_, fun t ht t' ht' heq => ?_, fun t hv => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `ht.1` to reduce the goal to its premises. Use `show Formalism.L2.SG.TermOp.Gt t = 0`.
+
+Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_pos h0]`. Take `⟨hR, -, -⟩` from `Formalism.L2.SG.NGCut.CorankRelation.corankOne_equivalence_holds D X Y u u' hT`. Establish `hm : t' ∈ clsOf Y u u' t'` using `⟨ht', rfl, hR t' ht'⟩`. Rewrite `hm` using `[← heq]`.
+
+Conclude with `hm.2.1.symm`. Assume the negation of the conclusion as `hr`. Conclude with `hv (vec_eq_zero_of_oo Y t (Vanish.ooVanish_of Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG. …`.
+-/
 theorem ngClass_rows : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ConcTie X Y → (∀ t ∈ (Y.tO u u').ngSet, t.G ≠ 0) ∧ (∀ t ∈ (Y.tO u u').ngSet, ∀ t' ∈ (Y.tO u u').ngSet, clsOf Y u u' t = clsOf Y u u' t' → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t') ∧ ∀ t : TauC Y u u', (Y.tO u u').vec t ≠ 0 → t.relevant := by
   intro D X Y u u' hT
   refine ⟨fun t ht => ?_, fun t ht t' ht' heq => ?_, fun t hv => ?_⟩

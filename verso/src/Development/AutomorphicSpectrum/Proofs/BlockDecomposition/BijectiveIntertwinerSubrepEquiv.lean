@@ -5,6 +5,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZRes
 
+/- English proof (translation)
+Establish `hbot : (⊥ : Subrepresentation ρ).toSubmodule = ⊥` using `by first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `(ext v; simp)`. Establish `hp : Submodule.comap S.toSubmodule.subtype (⊥ : Subrepresentation ρ).toSubmodule = ⊥`.
+
+Rewrite using `[hbot, Submodule.comap_bot, Submodule.ker_subtype]`. Set `e` to `(Submodule.quotEquivOfEqBot _ hp).trans (LinearEquiv.ofBijective O hO)`. Use `⟨Representation.Equiv.mk' ⟨e.toLinearMap, fun g => ?_⟩ e.symm e.left_inv e.right_inv⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Conclude with `hi g v`.
+-/
 theorem subQuot_bot_equiv_of_bijective {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ G V) (τ : Representation ℂ G W) (S : Subrepresentation ρ) (O : S.toSubmodule →ₗ[ℂ] W)
     (hO : Function.Bijective O)

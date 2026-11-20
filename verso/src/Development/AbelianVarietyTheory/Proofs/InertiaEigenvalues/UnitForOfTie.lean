@@ -22,6 +22,27 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : LocWach PD LL O v n} {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
+/- English proof (translation)
+Introduce `e₀ h₀`. Take `⟨e₁, f₀, hf₀, hj, hN⟩` from `E.one_e`. Take `⟨u, hu, hT⟩` from `W.one_line`. Establish `huT : u ∈ W.one.L.T` using `by rw [hT]; exact Submodule.mem_span_singleton_self u`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hf₀ ▸ Submodule.mem_top : e₀ ∈ Submodule.span O {f₀})`.
+
+Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 (h₀ ▸ Submodule.mem_top : f₀ ∈ Submodule.span O {e₀})`. Establish `hje : E.jD W.one (c • e₁) = (1 : RW) ⊗ₜ[O] e₀`. Rewrite using `[map_smul, hj, ← hc, TensorProduct.tmul_smul]`. Establish `hde : d • (c • e₁) = e₁`. Apply `E.jD_inj` to reduce the goal to its premises.
+
+Rewrite using `[map_smul, hje, hj, ← hd, TensorProduct.tmul_smul]`. Use `⟨c • e₁, hje, ⟨fun x y hxy => ?_, ?_⟩, ?_, fun g => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (E.jD W.one) hxy`. Simplify using `only at h1`. Rewrite `h1` using `[E.jD_smul, E.jD_smul, hje, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`.
+
+Conclude with `GlobalTheory.EtaleExact.ioE_injective E (GlobalTheory.Cyc.Decomp.tmul_gen_cancel hO W.one u hu huT e₀ h₀ _ _ h1)`. Establish `htop : Submodule.span W.EE {c • e₁} = ⊤`. Use `GlobalTheory.EtaleExact.eq_top_DD E hm W.one _ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`.
+
+Establish `h1 : ((1 : RW) ⊗ₜ[O] e₀ : TW RW W.one) ∈ Submodule.span RW (E.jD W.one '' (Submodule.span W.EE {c • e₁} : Submodule W.EE (W.DD W.one)))` using `Submodule.subset_span ⟨c • e₁, Submodule.mem_span_singleton_self _, hje⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `tmul r t`.
+
+Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 (h₀ ▸ Submodule.mem_top : t ∈ Submodule.span O {e₀})`. Establish `h2 : (r ⊗ₜ[O] (a • e₀) : TW RW W.one) = (a • r) • ((1 : RW) ⊗ₜ[O] e₀)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ h1`.
+
+Introduce `z`. Conclude with `Submodule.mem_span_singleton.1 (htop ▸ Submodule.mem_top : z ∈ Submodule.span W.EE {c • e₁})`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_φ, hje]`. Simplify using `[TWmap]`.
+
+Take `⟨g, rfl⟩` from `W.resΓ_onto g`. Apply `E.jD_inj` to reduce the goal to its premises. Establish `hact : W.one.actT g e₀ = e₀` using `Subtype.ext (W.one_triv g e₀)`. Rewrite using `[E.jD_act, hje]`. Simplify using `[TWact, hact]`.
+
+Rewrite using `[hN]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨algebraMap O (LetA O n) d, by rw [algebraMap_smul, hde]⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`.
+
+Conclude with `⟨algebraMap O (LetA O n) c, by rw [algebraMap_smul]⟩`.
+-/
 theorem unitFor_of_tie (hO : Function.Injective (algebraMap O LL))
     (E : EtTie W RA RW inclR φR gR πA)
     (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤) :
@@ -80,6 +101,11 @@ theorem unitFor_of_tie (hO : Function.Injective (algebraMap O LL))
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ P AI H F K s LL h`. Use `haveI := GlobalTheory.EtaleExact.finite_OL LL`. Use `haveI : IsNoetherianRing ↥(OL LL) := IsNoetherianRing.of_finite ℤ_[l] ↥(OL LL)`. Establish `hp : (P.PD K).p = l` using `P.PD_p K`. Use `unitFor_of_tie Subtype.val_injective _ (GlobalTheory.EtaleExact.map_ne_top_of_tie (F.E K s LL h).tie ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[hp]`. Conclude with `GlobalTheory.EtaleExact.isUnit_or_dvd_pow P LL`. Rewrite using `[hp]`. Conclude with `GlobalTheory.EtaleExact.sep_RW LL`.
+-/
 theorem unitPart : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)
     (F : LocFon l P AI H), GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.UnitPart l P AI H F := by
   intro l _ P AI H F K s LL h

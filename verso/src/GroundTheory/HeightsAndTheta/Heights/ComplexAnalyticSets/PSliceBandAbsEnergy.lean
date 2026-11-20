@@ -17,6 +17,13 @@ variable {n e : ℕ}
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[SliceBandEnergy.chartDens_energy h f₁ hfin, SliceBandEnergy.chartDens_energy h f₂ hfin]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs with hs`. Take `⟨U, hU, hxU, hd, hsx, -⟩` from `hs.choose_spec`.
+
+Establish `han` using `FormIntegralPositivity.analyticAt_sheet hs.choose_spec`. Rewrite `han`, `hsx` using `[hx.2]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Use `SliceBandEnergy.linEval_eq_one hx.1` as an intermediate fact.
+
+Simplify using `[linEval] at this`. Establish `hG` using `hNN n e h hs.choose y ((fun x => Real.log (h.dualNorm x)) ∘ hs.choose) han (by rw [hsx]; exact hx0)`. Conclude with `mul_le_mul_of_nonneg_right (hf x hx.1) hG`. Conclude with `le_rfl`.
+-/
 theorem energyDens_mono (hNN : LogNormEnergyDensNonneg.Statement) (h : HermNorm n)
     {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
     {f₁ f₂ : (Fin n → ℂ) → ℝ} (hf : ∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), f₁ x ≤ f₂ x)
@@ -47,6 +54,11 @@ theorem energyDens_mono (hNN : LogNormEnergyDensNonneg.Statement) (h : HermNorm 
 
 open Classical in
 
+/- English proof (translation)
+Establish `e0` using `SliceBandEnergy.chartDens_energy h (fun x => ∑ k ∈ s, f k x) hfin`. Use `beta_reduce at e0`. Rewrite using `[e0, Finset.sum_congr rfl fun k _ => SliceBandEnergy.chartDens_energy h (f k) hfin, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[Finset.sum_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem energyDens_sum (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ}
     {A : Matrix (Fin (e + 1)) (Fin n) ℂ} {ι : Type*} (s : Finset ι) (f : ι → (Fin n → ℂ) → ℝ)
     {y : Fin (e + 1) → ℂ} (hfin : (fibre (J ⊔ Ideal.span {linForm ℓ - 1}) A y).Finite) :
@@ -66,6 +78,11 @@ theorem energyDens_sum (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)} {
   · rw [Finset.sum_mul]
   · simp
 
+/- English proof (translation)
+Establish `h1` using `h.norm_pairing_le ℓ x`. Establish `h2 : ∑ j, ℓ j * x j = 1` using `SliceBandEnergy.linEval_eq_one hx`. Rewrite `h1` using `[h2, norm_one]`. Establish `hn0 : 0 ≤ h.norm ℓ` using `Real.sqrt_nonneg _`. Establish `hd0 : 0 ≤ h.dualNorm x` using `Real.sqrt_nonneg _`.
+
+Establish `hnp : 0 < h.norm ℓ` using `lt_of_le_of_ne hn0 (by rintro h0; rw [← h0, zero_mul] at h1; linarith)`. Establish `hdp : 0 < h.dualNorm x` using `lt_of_le_of_ne hd0 (by rintro h0; rw [← h0, mul_zero] at h1; linarith)`. Use `Real.log_le_log one_pos h1` as an intermediate fact. Rewrite `this` using `[Real.log_one, Real.log_mul hnp.ne' hdp.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_log_norm_le {h : HermNorm n} {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ x : Fin n → ℂ}
     (hx : x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) :
     -Real.log (h.norm ℓ) ≤ Real.log (h.dualNorm x) := by
@@ -80,6 +97,35 @@ theorem neg_log_norm_le {h : HermNorm n} {J : Ideal (MvPolynomial (Fin n) ℂ)} 
   rw [Real.log_one, Real.log_mul hnp.ne' hdp.ne'] at this
   linarith
 
+/- English proof (translation)
+Establish `hsm` using `smoothNear_log_dualNorm_slice h J ℓ`. Establish `hΦ : ∀ k, SmoothNear (zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) (vecCons (fun x => Real.log (h.dualNorm x) ^ 2 / 2) (fun (_ : Fin e) x => Real.log (h.dualNorm x)) k)`. Introduce `k`. Use `Fin.cases ?_ (fun _ => hsm) k` and prove the remaining obligations. Take `⟨U, hU, hSU, hT⟩` from `hsm`.
+
+Conclude with `⟨U, hU, hSU, (hT.pow 2).div_const 2⟩`. Establish `hω : ∀ k : Fin (e + 1), SmoothNear (zeroSet (J ⊔ Ideal.span {linForm ℓ - 1})) ((fun _ x => Real.log (h.dualNorm x)) k)` using `fun _ => hsm`. Use `set c : ℂ := ((Real.exp 1 : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `by rw [hc]; exact_mod_cast (Real.exp_pos 1).ne'`. Establish `hℓ1 : linForm ℓ - 1 ∈ J ⊔ Ideal.span {linForm ℓ - 1}` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+
+Establish `hcS : linForm (fun j => c * ℓ j) ∉ J ⊔ Ideal.span {linForm ℓ - 1}`. Introduce `hmem`. Establish `h1 : linForm (fun j => c * ℓ j) = C c * linForm ℓ`. Simplify using `[linForm, Finset.mul_sum, mul_assoc]`. Establish `h2 : (C c : MvPolynomial (Fin n) ℂ) ∈ J ⊔ Ideal.span {linForm ℓ - 1}`.
+
+Use `Ideal.sub_mem _ hmem (Ideal.mul_mem_left _ (C c) hℓ1)` as an intermediate fact. Rewrite `this` using `[h1, ← mul_sub, sub_sub_cancel, mul_one]`. Then use the resulting hypothesis. Conclude with `hprime.ne_top (Ideal.eq_top_of_isUnit_mem _ h2 ((Ne.isUnit hc0).map C))`. Take `⟨R, hR⟩` from `(SliceCut.isCompact_sublevel h (Real.exp b)).isBounded.subset_closedBall 0`. Use `set B : Set (Fin n → ℂ) := {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b} with hBdef`.
+
+Establish `key : ∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), x ∈ B → (Metric.closedBall 0 R).indicator (fun x => Real.log ‖linEval (fun j => c * ℓ j) x‖) x = 1 ∧ (Metric.closedBall 0 R).indicator (fun x => Real.log ‖linEval u x‖) x = Real.log ‖linEval u x‖ ∧ |Real.log (h.dualNorm x)| ≤ …`. Introduce `x hx hxB`. Establish `hball : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`. Use `hR ?_` and prove the remaining obligations. Use `show h.dualNorm x ≤ Real.exp b`.
+
+Establish `hnn : 0 ≤ h.dualNorm x` using `Real.sqrt_nonneg _`. Break down `hnn.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `(Real.exp_pos b).le`. Conclude with `(Real.log_le_iff_le_exp h0).mp hxB.2`.
+
+Use `⟨?_, Set.indicator_of_mem hball _, abs_le.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hball]`. Establish `hl : linEval (fun j => c * ℓ j) x = c * linEval ℓ x`. Simplify using `[linEval, Finset.mul_sum, mul_assoc]`. Rewrite using `[hl, SliceBandEnergy.linEval_eq_one hx, mul_one, hc, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos 1), Real.log_exp]`.
+
+Combine the linear relations using `[neg_abs_le a, abs_nonneg b, hxB.1]`. Combine the linear relations using `[le_abs_self b, abs_nonneg a, hxB.2]`. Use `set f₁ := (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun x => Real.log ‖linEval (fun j => c * ℓ j) x‖) with hf₁`. Use `set f₂ := (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun x => Real.log ‖linEval u x‖) with hf₂`. Establish `hTm : Measurable fun x : Fin n → ℂ => Real.log (h.dualNorm x)` using `Real.measurable_log.comp (SliceCut.continuous_dualNorm h).measurable`.
+
+Establish `hLm : Measurable fun x : Fin n → ℂ => Real.log ‖linEval u x‖`. Use `Real.measurable_log.comp (Continuous.measurable ?_)` and prove the remaining obligations. Unfold `linEval`. Use `fun_prop`. Establish `hBm : MeasurableSet B` using `(measurableSet_le measurable_const hTm).inter (measurableSet_le hTm measurable_const)`.
+
+Establish `hgam : Measurable fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖|` using `continuous_abs.measurable.comp (hTm.sub hLm)`. Establish `hIm : Measurable (B.indicator fun _ => (1 : ℝ))` using `measurable_const.indicator hBm`. Establish `hK2 : 0 ≤ (1 + 1) * (|a| + |b| + 1) ^ 2` using `by positivity`. Establish `hb3 : ∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), |(|Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * B.indicator (fun _ => 1) x)| ≤ (1 + 1) * (|a| + |b| + 1) ^ 2 * |f₁ x| + (1 + 1) * (|a| + |b| + 1) ^ 2 * |f₂ x|`. Introduce `x hx`.
+
+Distinguish the cases in `hxB : x ∈ B`. Take `⟨e1, e2, hTx⟩` from `key x hx hxB`. Rewrite using `[e1, e2, abs_one, mul_one, Set.indicator_of_mem hxB, mul_one, abs_abs]`. Use `(SliceBandEnergy.weight_bound (v := 1) (M := 1) (L := Real.log ‖linEval u x‖) hTx (by norm_num)).1` as an intermediate fact. Rewrite `this` using `[abs_one, mul_one]`. Then use the resulting hypothesis.
+
+Rewrite using `[Set.indicator_of_notMem hxB, mul_zero, abs_zero]`. Conclude with `add_nonneg (mul_nonneg hK2 (abs_nonneg _)) (mul_nonneg hK2 (abs_nonneg _))`. Establish `hb4 : ∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), |(|Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * B.indicator (fun _ => 1) x * Real.log (h.dualNorm x))| ≤ (1 + 1) * (|a| + |b| + 1) ^ 2 * |f₁ x| + (1 + 1) * (|a| + |b| + 1) ^ 2 * |f₂ x|`. Introduce `x hx`. Distinguish the cases in `hxB : x ∈ B`.
+
+Take `⟨e1, e2, hTx⟩` from `key x hx hxB`. Rewrite using `[e1, e2, abs_one, mul_one, Set.indicator_of_mem hxB, mul_one, abs_mul, abs_abs]`. Use `(SliceBandEnergy.weight_bound (v := 1) (M := 1) (L := Real.log ‖linEval u x‖) hTx (by norm_num)).2` as an intermediate fact. Rewrite `this` using `[abs_one, mul_one]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_notMem hxB, mul_zero, zero_mul, abs_zero]`.
+
+Conclude with `add_nonneg (mul_nonneg hK2 (abs_nonneg _)) (mul_nonneg hK2 (abs_nonneg _))`. Conclude with `⟨SliceBandEnergy.integrable_chartDens hprime hdim hAp f₁ f₂ (hgam.mul hIm) hΦ hb3 (hLI n (e + 1) _ _ _ _ R hprime hdim hAp hcS hΦ) (hLI n (e + 1) _ _ _ _ R hprime hdim hAp huS hΦ), SliceBandEnergy.integrable_chartDens hprime hdim hAp f₁ f₂ ((hgam.mul hIm).mul hTm) hω hb4 (hLI n ( …`.
+-/
 theorem integrable_band (hLI : LogIntegrable.Statement) (h : HermNorm n)
     {J : Ideal (MvPolynomial (Fin n) ℂ)} {u ℓ : Fin n → ℂ} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
     (hprime : (J ⊔ Ideal.span {linForm ℓ - 1}).IsPrime)
@@ -183,6 +229,33 @@ theorem integrable_band (hLI : LogIntegrable.Statement) (h : HermNorm n)
 
 end SliceBandAbsEnergy
 
+/- English proof (translation)
+Introduce `n e h J F u ℓ hJ hF hu hℓ hℓW`. Take `⟨r₀, C₁, hC₁⟩` from `hTube n e h J F u ℓ hJ hF hu hℓ hℓW`. Distinguish the cases in `hA : ∃ A : Matrix (Fin (e + 1)) (Fin n) ℂ, IsFiniteProjection (J ⊔ Ideal.span {linForm ℓ - 1}) A`. Use `swap`. Use `⟨0, fun a b _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [varInt, dif_neg hA, sub_zero, zero_mul, le_refl]`. Take `⟨hprime, hdim, -⟩` from `SliceIdeal.proof n (e + 1) J F ℓ hJ hF hℓ`. Establish `huS` using `(SliceIdeal.proof n (e + 1) J F ℓ hJ hF hℓ).2.2 u hu`. Establish `hAp` using `hA.choose_spec`. Establish `hfin : ∀ y, (fibre (J ⊔ Ideal.span {linForm ℓ - 1}) hA.choose y).Finite` using `fun y => (FibreBound.proof n (e + 1) _ _ hprime hdim hAp y).2.1`.
+
+Establish `hint` using `SliceBandAbsEnergy.integrable_band hLI h hprime hdim hAp huS`. Establish `hE : ∀ a b : ℝ, varInt (J ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b}.indicator (fun _ => 1) x) (vecCons (fun x => Real.log (h.dualNorm x) ^ 2 / 2) fun _ x => …`. Introduce `a b`. Simplify using `only [varInt, dif_pos hA, chartInt]`. Rewrite using `[integral_sub (hint a b).1 (hint a b).2]`.
+
+Establish `hwmono : ∀ a b a' b' : ℝ, (∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), a ≤ Real.log (h.dualNorm x) → Real.log (h.dualNorm x) ≤ b → a' ≤ Real.log (h.dualNorm x) ∧ Real.log (h.dualNorm x) ≤ b') → ∀ x ∈ zeroSet (J ⊔ Ideal.span {linForm ℓ - 1}), |Real.log (h.dualNorm x) - Real.lo …`. Introduce `a b a' b' hsub x hx`. Distinguish the cases in `hxB : a ≤ Real.log (h.dualNorm x) ∧ Real.log (h.dualNorm x) ≤ b`. Establish `hxB'` using `hsub x hx hxB.1 hxB.2`. Rewrite using `[Set.indicator_of_mem (show x ∈ {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b} from hxB), Set.indicator_of_mem (show x ∈ {y | a' ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b'} from hxB')]`.
+
+Rewrite using `[Set.indicator_of_notMem (show x ∉ {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b} from hxB), mul_zero]`. Conclude with `mul_nonneg (abs_nonneg _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`. Use `set L := -Real.log (h.norm ℓ) with hL`. Establish `hunit : ∀ r : ℝ, ∫ y, (chartDens (J ⊔ Ideal.span {linForm ℓ - 1}) hA.choose (fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | r ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ r + 1}.indicator (fun _ => 1) x) (vecCons (fun x => Real.log (h.dualNorm x) ^ 2 …`. Introduce `r`.
+
+Break down `le_or_gt r₀ r with hr | hr` into its components or cases. Rewrite using `[← hE]`. Conclude with `(hC₁ r hr).trans (le_max_left _ _)`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Use `integral_mono ((hint r (r + 1)).1.sub (hint r (r + 1)).2) ((hint L (r₀ + 1)).1.sub (hint L (r₀ + 1)).2) fun y => ?_` and prove the remaining obligations.
+
+Use `SliceBandAbsEnergy.energyDens_mono hNN h (hwmono r (r + 1) L (r₀ + 1) ?_) (hfin y)` and prove the remaining obligations. Introduce `x hx _ h2`. Conclude with `⟨SliceBandAbsEnergy.neg_log_norm_le hx, by linarith⟩`. Use `set C₂ := max C₁ (∫ y, (chartDens (J ⊔ Ideal.span {linForm ℓ - 1}) hA.choose (fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | L ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ r₀ + 1}.indicator (fun _ => 1) x) (vecCons (fun x => Real.log (h.dualNorm x) ^ …`. Use `⟨max C₂ 0, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE]`. Use `set N := ⌊b - a⌋₊ with hN`. Establish `hcover : ∀ x, |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b}.indicator (fun _ => 1) x ≤ ∑ k ∈ Finset.range (N + 1), |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a + k ≤ Real.log (h.dualNorm y) ∧ Re …`. Introduce `x`. Establish `hnn : ∀ k ∈ Finset.range (N + 1), 0 ≤ |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a + k ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ a + k + 1}.indicator (fun _ => 1) x` using `fun k _ => mul_nonneg (abs_nonneg _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`.
+
+Distinguish the cases in `hxB : a ≤ Real.log (h.dualNorm x) ∧ Real.log (h.dualNorm x) ≤ b`. Use `set k := ⌊Real.log (h.dualNorm x) - a⌋₊ with hk`. Establish `hk0 : 0 ≤ Real.log (h.dualNorm x) - a` using `by linarith [hxB.1]`. Establish `hkN : k ≤ N` using `Nat.floor_le_floor (by linarith [hxB.2])`. Establish `hk1 : (k : ℝ) ≤ Real.log (h.dualNorm x) - a` using `Nat.floor_le hk0`.
+
+Establish `hk2 : Real.log (h.dualNorm x) - a < k + 1` using `Nat.lt_floor_add_one _`. Use `le_trans (le_of_eq ?_) (Finset.single_le_sum hnn (Finset.mem_range.mpr (Nat.lt_succ_of_le hkN)))` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show x ∈ {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b} from hxB), Set.indicator_of_mem (show x ∈ {y | a + (k : ℝ) ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ a + k + 1} from ⟨by linarith, by linarith⟩)]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b} from hxB), mul_zero]`. Conclude with `Finset.sum_nonneg hnn`.
+
+Establish `hpt : ∀ y, chartDens (J ⊔ Ideal.span {linForm ℓ - 1}) hA.choose (fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ b}.indicator (fun _ => 1) x) (vecCons (fun x => Real.log (h.dualNorm x) ^ 2 / 2) fun _ x => …`. Introduce `y`. Establish `hs` using `SliceBandAbsEnergy.energyDens_sum h (Finset.range (N + 1)) (fun (k : ℕ) x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a + k ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ a + k + 1}.indicator (fun _ => 1) x) (hfin y)`. Use `beta_reduce at hs`. Rewrite using `[← hs]`.
+
+Conclude with `SliceBandAbsEnergy.energyDens_mono hNN h (fun x _ => hcover x) (hfin y)`. Establish `hsumint : ∀ k ∈ Finset.range (N + 1), Integrable fun y => chartDens (J ⊔ Ideal.span {linForm ℓ - 1}) hA.choose (fun x => |Real.log (h.dualNorm x) - Real.log ‖linEval u x‖| * {y | a + k ≤ Real.log (h.dualNorm y) ∧ Real.log (h.dualNorm y) ≤ a + k + 1}.indicator (fun _ => 1) x) (vec …` using `fun k _ => (hint (a + k) (a + k + 1)).1.sub (hint (a + k) (a + k + 1)).2`. Use `(integral_mono ((hint a b).1.sub (hint a b).2) (integrable_finsetSum _ hsumint) hpt).trans ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ hsumint]`. Use `(Finset.sum_le_sum fun (k : ℕ) _ => (hunit (a + (k : ℝ))).trans (le_max_left C₂ 0)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hN1 : ((N + 1 : ℕ) : ℝ) ≤ b - a + 1`. Use `push_cast`. Combine the linear relations using `[Nat.floor_le (show 0 ≤ b - a by linarith)]`. Conclude with `mul_le_mul_of_nonneg_right hN1 (le_max_right _ _) |>.trans_eq (mul_comm _ _)`.
+-/
 theorem SliceBandAbsEnergy.proof (hLI : LogIntegrable.Statement) (hNN : LogNormEnergyDensNonneg.Statement)
     (hTube : SliceTubeBandAbsEnergy.Statement) : SliceBandAbsEnergy.Statement := by
   classical

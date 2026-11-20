@@ -19,6 +19,9 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjExpandRational.conj_expansion_rational | exact GlobalTheory.ConjExpandRational.conj_expansion_rational | (intros; apply GlobalTheory.ConjExpandRational.conj_expansion_rational <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.conjugate_twist_function_decomposition : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → AtTw fun Fm x hx i p w j => ∀ τ : ℂ ≃+* ℂ,
   (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →
   ∀ Φ Φ' : GA (Fm.D x i) (Wc (Fm.D x i) j) → ℂ, GlobalTheory.ConjTwist.ConjFun (p.O j) (p.κ j) τ 1 Φ Φ' →

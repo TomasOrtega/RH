@@ -14,11 +14,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatJet
 
+/- English proof (translation)
+Rewrite using `[J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, J.b.repr_self]`. Simplify using the standard rewrite rules.
+-/
 theorem JetRing.π_algebraMap {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ} (J : JetRing R I n) (r : R) :
     J.π (algebraMap R J.B r) = r := by
   rw [J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, J.b.repr_self]
   simp
 
+/- English proof (translation)
+Introduce `_ H _ F _ _ _ 𝔠 R _ _ _ _ I _ n J X m`. Establish `e : (𝟙 _ : Sp R ⟶ Sp R) = spMap (RingHom.id R)` using `(Cris.spMap_id R).symm`. Establish `h` using `(GlobalTheory.CrysConn.isGrpPullback_refl X.A).congr e rfl`. Establish `key : ∀ (t : Sp R ⟶ Sp R), t = spMap (RingHom.id R) → ∀ m : GrpMor (dp0 R) t X.A J.κ (spMap J.π) X.A (algebraMap R J.B) (𝟙 _) (Over.Hom.left (𝟙 X.A)), m.IsBC`. Introduce and unpack `_ rfl m`.
+
+Conclude with `GlobalTheory.CrysConn.isBC_of_lift H X.ab X.dim (isDPNilpotent_bot R) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id) h J.nil (fun r ↦ ⟨_, J.π_algebraMap r⟩) rfl m (GlobalTheory.CrysConn.isGrpPullback_refl X.A)`. Conclude with `key _ e m`.
+-/
 theorem isBC_jetRing : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
     (m : GrpMor (dp0 R) (𝟙 _) X.A J.κ (spMap J.π) X.A (algebraMap R J.B) (𝟙 _) (Over.Hom.left (𝟙 X.A))), m.IsBC := by

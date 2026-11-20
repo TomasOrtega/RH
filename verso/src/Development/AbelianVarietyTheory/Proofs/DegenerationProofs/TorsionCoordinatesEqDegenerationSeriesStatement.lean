@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Ex.CoordSeries.coord_eq_series | exact GlobalTheory.Ex.CoordSeries.coord_eq_series | (intros; apply GlobalTheory.Ex.CoordSeries.coord_eq_series <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsionCoordinates_eq_degenerationSeries : HV → BrGtSt → BrFamSt → EVSt := by
   first | exact @GlobalTheory.Ex.CoordSeries.coord_eq_series | exact GlobalTheory.Ex.CoordSeries.coord_eq_series | (intros; apply GlobalTheory.Ex.CoordSeries.coord_eq_series <;> assumption)

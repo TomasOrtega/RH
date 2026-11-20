@@ -14,6 +14,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.PlaceOverSplit
 
+/- English proof (translation)
+Introduce `D _ s Q hQ`. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE s.w Q (hQ.trans s.w_under.symm) with e | e` into its components or cases. Conclude with `Or.inl e`. Use `Or.inr (e.trans (HeightOneSpectrum.ext (Ideal.ext fun x => ?_)))` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.IdemSupport.mem_cP]`.
+
+Establish `: IsCMField.ringOfIntegersComplexConj D.host.E x = GlobalTheory.IdemSupport.cO D x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, GlobalTheory.IdemSupport.cO_coe]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem eq_or_eq_cP : ∀ (D : D7), D.host.F = maximalRealSubfield D.host.E → ∀ (s : SplitPlace D.host.E) (Q : Formalism.L2.DIV.Pl D.host.E), Q.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) = s.v.asIdeal → Q = s.w ∨ Q = GlobalTheory.IdemSupport.cP s.w := by
   intro D _ s Q hQ
   rcases GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE s.w Q (hQ.trans s.w_under.symm) with e | e

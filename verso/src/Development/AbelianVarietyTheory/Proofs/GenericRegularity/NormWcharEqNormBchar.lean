@@ -14,6 +14,15 @@ namespace GlobalTheory.WeightLie
 
 open ReciprocityTheory.ChartRestriction.G GlobalTheory.FrameNormLie
 
+/- English proof (translation)
+Establish `hu : IsUnit B.det`. Rewrite using `[PerBor.det_of_support t w hinj B hB, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => hB0 j`. Establish `hi : Supp t w B⁻¹` using `PerBor.inv_support t w B hu hB`. Establish `h1` using `norm_diag_eq_one hinj (hA.mul hi) d hd (by`.
+
+Establish `e : B.map (starRingEnd ℂ) * B⁻¹.map (starRingEnd ℂ) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu]`. Simplify using the standard rewrite rules. Establish `e' : B⁻¹ᵀ * Bᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (B⁻¹ᵀ * Bᵀ) * Matrix.diagonal d * (B.map (starRingEnd ℂ) * B⁻¹.map (starRingEnd ℂ)) := by`. Rewrite using `[h]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [e, e', Matrix.one_mul, Matrix.mul_one]) a`. Rewrite `h1` using `[Supp.mul_diag hinj hA hi, PerBor.inv_diag t w hinj B hu hB, norm_mul, norm_inv]`. Conclude with `(mul_inv_eq_one₀ (norm_ne_zero_iff.2 (hB0 a))).1 h1`.
+-/
 theorem norm_diag_eq_norm_diag {n α : Type} [Fintype n] [DecidableEq n] [Fintype α] {t : n → α} {w : n → ℕ}
     (hinj : ∀ j j', t j = t j' → w j = w j' → j = j') {A B : Matrix n n ℂ} (hA : Supp t w A) (hB : Supp t w B)
     (hB0 : ∀ j, B j j ≠ 0) (d : n → ℂ) (hd : ∀ j, d j ≠ 0)
@@ -38,6 +47,9 @@ theorem norm_diag_eq_norm_diag {n α : Type} [Fintype n] [DecidableEq n] [Fintyp
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ}
 
+/- English proof (translation)
+Rewrite using `[PerBor.moveMat_diag _ idx hb]`. Use `split_ifs`. Conclude with `PerMove.bor_diag_ne hb _ _`. Conclude with `inv_ne_zero (PerMove.bor_diag_ne hb _ _)`.
+-/
 theorem moveMat_diag_ne {Ψ : Finset (E →+* ℂ)} (q : ℕ) (idx : Fin g ≃ Ψ × Fin r) {b : Frame Ψ r}
     (hb : b ∈ Bor Ψ r) (j : Fin g) : PerBor.moveMat q idx b j j ≠ 0 := by
   rw [PerBor.moveMat_diag _ idx hb]
@@ -45,6 +57,13 @@ theorem moveMat_diag_ne {Ψ : Finset (E →+* ℂ)} (q : ℕ) (idx : Fin g ≃ �
   · exact PerMove.bor_diag_ne hb _ _
   · exact inv_ne_zero (PerMove.bor_diag_ne hb _ _)
 
+/- English proof (translation)
+Take `⟨x₀, b₀, hb₀, hgr, rfl⟩` from `(UnitFrames.frame_mul_triangular_orthonormal E r X.p0 X.Ψ X.Gm X.Gm_herm).1 x hx`. Establish `hd : IsUnit (PerBor.moveMat X.p0 idx b).det`. Rewrite using `[PerBor.det_of_support t w hinj _ (hs b hb), isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => moveMat_diag_ne _ idx hb j`. Establish `hm : ∀ b ∈ Bor X.Ψ r, ∀ y v, PerBor.moveMat X.p0 idx b *ᵥ perVec X idx y v = perVec X idx (rmul y b) v` using `fun b hb y v => (PerBor.moveMat_mulVec X.p0 idx hb X.Gm y v (perVec X idx y v) (perVec X idx (rmul y b) v) (fun _ => rfl) (fun _ => rfl)).symm`.
+
+Establish `hi : Supp t w (PerBor.moveMat X.p0 idx b)⁻¹` using `PerBor.inv_support t w _ hd (hs b hb)`. Establish `he : rmul (lact γ x) b₀ = lact γ (rmul x b₀)` using `funext fun τ => Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b₀ τ)`. Establish `h2 : ∀ v, (PerBor.moveMat X.p0 idx b₀ * (PerBor.moveMat X.p0 idx b)⁻¹) *ᵥ perVec X idx (rmul (lact γ x) b) v = perVec X idx (lact γ (rmul x b₀)) v` using `fun v => by`. Rewrite using `[← hm b hb, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul_cancel_right _ _ hd, hm b₀ hb₀, he]`. Use `⟨PerBor.moveMat X.p0 idx b₀, PerBor.moveMat X.p0 idx b₀ * (PerBor.moveMat X.p0 idx b)⁻¹, hs b₀ hb₀, (hs b₀ hb₀).mul hi, moveMat_diag_ne _ idx hb₀, fun j => ?_, fun v v' => ?_, fun v v' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Supp.mul_diag hinj (hs b₀ hb₀) hi, PerBor.inv_diag t w hinj _ hd (hs b hb)]`. Rewrite using `[hm b₀ hb₀, hm b₀ hb₀, im_diag_ortho X idx _ hgr]`. Rewrite using `[h2, h2, im_diag_ortho X idx _ fun τ => (AR.Up.PairUnfoldPf.gram_lact X hγ _ τ).trans (hgr τ)]`.
+-/
 theorem exists_tri_pair {α : Type} [Fintype α] (X : Data E r) (idx : Fin g ≃ X.Ψ × Fin r) {t : Fin g → α}
     {w : Fin g → ℕ} (hinj : ∀ j j', t j = t j' → w j = w j' → j = j')
     (hs : ∀ b ∈ Bor X.Ψ r, Supp t w (PerBor.moveMat X.p0 idx b)) (x : Frame X.Ψ r) (hx : x ∈ X.dom)

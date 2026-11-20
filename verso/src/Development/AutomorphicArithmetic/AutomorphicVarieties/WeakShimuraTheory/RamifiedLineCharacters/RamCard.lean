@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce and unpack `R D M _ _ _ _ _ _ _ _ _ _ ρ I m0 hρ hm0 _ φ₁ hφ₁ φ₂ hφ₂ hI1 ⟨g1, hg1⟩ ⟨g2, hg2I, hg2⟩`. Take `⟨c1, a1⟩` from `(mem_Z1_iff_cocycle _ _).1 hφ₁`. Take `⟨c2, a2⟩` from `(mem_Z1_iff_cocycle _ _).1 hφ₂`. Set `fn : R → M → D → M` to `fun t m g => φ₁ g • m + (t * φ₂ g) • m0`. Establish `hz : ∀ t m, fn t m ∈ Z1 ρ`.
+
+Introduce `t m`. Rewrite using `[mem_Z1_iff_cocycle]`. Use `⟨(continuous_of_discreteTopology (f := fun p : R × R => p.1 • m + (t * p.2) • m0)).comp (c1.prodMk c2), ?_⟩` and prove the remaining obligations. Introduce `g h`. Apply the tactic sequence `simp [fn, hρ g, a1 g h, a2 g h, add_smul, mul_add] <;> abel`.
+
+Set `F : Bool × M → ramLine ρ I m0` to `fun p => ⟨Submodule.Quotient.mk ⟨fn (if p.1 then 1 else 0) p.2, hz _ _⟩, (mem_ramLine ρ I m0 _).2 ⟨⟨fn (if p.1 then 1 else 0) p.2, hz _ _⟩, fun g hg => by show fn _ _ g ∈ _`. Simplify using `only [fn, hI1 g hg, zero_smul, zero_add]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self m0), rfl⟩⟩`. Establish `hF : Function.Injective F`. Introduce and unpack `⟨b, m⟩ ⟨b', m'⟩ h`.
+
+Establish `h1` using `congrArg Subtype.val h`. Rewrite `h1` using `[Submodule.Quotient.eq, Submodule.mem_comap, mem_coboundaries1]`. Take `⟨x, hx⟩` from `h1`. Establish `hpt : ∀ g, fn (if b then 1 else 0) m g = fn (if b' then 1 else 0) m' g`. Introduce `g`.
+
+Establish `h2` using `hx g`. Rewrite `h2` using `[hρ g, Module.End.one_apply, sub_self]`. Conclude with `sub_eq_zero.1 h2`. Establish `hb : b = b'`. Establish `h3` using `hpt g2`.
+
+Simplify using `only [fn, hI1 g2 hg2I, hg2, zero_smul, zero_add, mul_one] at h3`. Apply the tactic sequence `cases b <;> cases b' <;> simp_all`. Substitute `hb` using the available equality. Establish `h4` using `hpt g1`. Simplify using `only [fn, hg1, one_smul] at h4`.
+
+Rewrite using `[add_right_cancel h4]`. Establish `hc` using `Nat.card_le_card_of_injective F hF`. Rewrite `hc` using `[Nat.card_prod, Nat.card_eq_fintype_card (α := Bool), Fintype.card_bool]`. Conclude with `hc`.
+-/
 theorem UpperTheory.V.Ws.Gys.ramCard :
     ∀ (R D M : Type) [CommRing R] [TopologicalSpace R] [DiscreteTopology R] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module R M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R D M) (I : Subgroup D) (m0 : M), (∀ g, ρ g = 1) → m0 ≠ 0 → Finite (H1 ρ) →
       ∀ φ₁ ∈ Z1 (Representation.trivial R D R), ∀ φ₂ ∈ Z1 (Representation.trivial R D R), (∀ g ∈ I, φ₁ g = 0) → (∃ g, φ₁ g = 1) → (∃ g ∈ I, φ₂ g = 1) →

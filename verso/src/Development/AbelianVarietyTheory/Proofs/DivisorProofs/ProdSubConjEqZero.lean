@@ -43,6 +43,11 @@ open Polynomial
 
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
 
+/- English proof (translation)
+Establish `hne : minpoly K θ ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral θ)`. Simplify using `only [conj, Multiset.mem_toFinset, mem_aroots, ne_eq, hne, not_false_eq_true, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : minpoly K s = minpoly K θ` using `(minpoly.eq_of_irreducible_of_monic (minpoly.irreducible (Algebra.IsIntegral.isIntegral θ)) h (minpoly.monic (Algebra.IsIntegral.isIntegral θ))).symm`.
+
+Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit Ω).1 hm`. Conclude with `⟨σ, hσ⟩`. Introduce and unpack `⟨σ, rfl⟩`. Rewrite using `[aeval_algEquiv, AlgHom.comp_apply, minpoly.aeval, map_zero]`.
+-/
 theorem mem_conj_iff [Algebra.IsAlgebraic K Ω] [Normal K Ω] (θ s : Ω) :
     s ∈ conj K Ω θ ↔ ∃ σ : Ω ≃ₐ[K] Ω, σ θ = s := by
   classical
@@ -58,9 +63,17 @@ theorem mem_conj_iff [Algebra.IsAlgebraic K Ω] [Normal K Ω] (θ s : Ω) :
   · rintro ⟨σ, rfl⟩
     rw [aeval_algEquiv, AlgHom.comp_apply, minpoly.aeval, map_zero]
 
+/- English proof (translation)
+The claim follows from `(mem_conj_iff θ θ).2 ⟨1, rfl⟩`.
+-/
 theorem self_mem_conj [Algebra.IsAlgebraic K Ω] [Normal K Ω] (θ : Ω) : θ ∈ conj K Ω θ :=
   (mem_conj_iff θ θ).2 ⟨1, rfl⟩
 
+/- English proof (translation)
+Establish `hint` using `Algebra.IsIntegral.isIntegral (R := K) θ`. Establish `hsp : Splits ((minpoly K θ).map (algebraMap K Ω))` using `Normal.splits inferInstance θ`. Establish `hmo : ((minpoly K θ).map (algebraMap K Ω)).Monic` using `(minpoly.monic hint).map _`. Establish `hnd : ((minpoly K θ).map (algebraMap K Ω)).roots.Nodup` using `nodup_roots (Polynomial.Separable.map (Algebra.IsSeparable.isSeparable K θ))`. Use `conv_rhs => rw [hsp.eq_prod_roots_of_monic hmo]`.
+
+Rewrite using `[conj, aroots, Finset.prod_eq_multiset_prod, Multiset.toFinset_val, hnd.dedup]`.
+-/
 theorem prod_conj [Algebra.IsAlgebraic K Ω] [Normal K Ω] [Algebra.IsSeparable K Ω] (θ : Ω) :
     ∏ s ∈ conj K Ω θ, (X - C s) = (minpoly K θ).map (algebraMap K Ω) := by
   classical
@@ -80,10 +93,16 @@ open Polynomial
 
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
 
+/- English proof (translation)
+The claim follows from `(mem_conj_iff θ (σ θ)).2 ⟨σ, rfl⟩`.
+-/
 theorem apply_mem_conj [Algebra.IsAlgebraic K Ω] [Normal K Ω] (θ : Ω) (σ : Ω ≃ₐ[K] Ω) :
     σ θ ∈ conj K Ω θ :=
   (mem_conj_iff θ (σ θ)).2 ⟨σ, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : (∏ s ∈ conj K Ω θ, (X - C s)).eval₂ g₀ (σ' θ) = ∏ s ∈ conj K Ω θ, (σ' θ - g₀ s)`. Rewrite using `[eval₂_finset_prod]`. Simplify using the standard rewrite rules. Rewrite using `[← h1, prod_conj, eval₂_map, ← h, ← hom_eval₂, ← aeval_def, minpoly.aeval, map_zero]`.
+-/
 theorem prod_sub_conj_eq_zero [Algebra.IsAlgebraic K Ω] [Normal K Ω] [Algebra.IsSeparable K Ω]
     {B : Type} [CommRing B] (g₀ σ' : Ω →+* B)
     (h : σ'.comp (algebraMap K Ω) = g₀.comp (algebraMap K Ω)) (θ : Ω) :
@@ -92,6 +111,15 @@ theorem prod_sub_conj_eq_zero [Algebra.IsAlgebraic K Ω] [Normal K Ω] [Algebra.
     rw [eval₂_finset_prod]; simp
   rw [← h1, prod_conj, eval₂_map, ← h, ← hom_eval₂, ← aeval_def, minpoly.aeval, map_zero]
 
+/- English proof (translation)
+Use `letI : Algebra Ω B := g₀.toAlgebra`. Use `haveI : Nonempty (conj K Ω θ) := ⟨⟨θ, self_mem_conj θ⟩⟩`. Establish `hid : idem (K` using `K) g₀ θ b = GlobalTheory.Pat.lagIdem b (fun j : conj K Ω θ => (j : Ω)) := by`. Use function extensionality and compare the values at `s`. Rewrite using `[idem, GlobalTheory.Pat.lagIdem, Ring.inverse_eq_inv', Algebra.smul_def, map_prod]`.
+
+Simplify using `only [map_sub, aeval_X, aeval_C, RingHom.algebraMap_toAlgebra]`. Establish `hu : ∀ i j : conj K Ω θ, i ≠ j → IsUnit ((i : Ω) - j)` using `fun i j h => (sub_ne_zero.2 (Subtype.coe_injective.ne h)).isUnit`. Establish `hP : aeval b (∏ j : conj K Ω θ, (X - C (j : Ω))) = 0`. Rewrite using `[map_prod]`. Simplify using `only [map_sub, aeval_X, aeval_C, RingHom.algebraMap_toAlgebra]`.
+
+Rewrite using `[Finset.prod_coe_sort (conj K Ω θ) (fun s => b - g₀ s)]`. Conclude with `hb`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.lagIdem_spec Ω B (conj K Ω θ) b _ hu hP`. Rewrite using `[hid]`. Use `⟨h1, fun s => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2 s, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Use `conv_lhs => rw [h3]`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+-/
 theorem idem_spec [Algebra.IsAlgebraic K Ω] [Normal K Ω] {B : Type} [CommRing B] (g₀ : Ω →+* B)
     (θ : Ω) (b : B) (hb : ∏ s ∈ conj K Ω θ, (b - g₀ s) = 0) :
     CompleteOrthogonalIdempotents (idem (K := K) g₀ θ b) ∧ (∀ s : conj K Ω θ, b * idem (K := K) g₀ θ b s = g₀ s * idem (K := K) g₀ θ b s) ∧
@@ -117,6 +145,9 @@ theorem idem_spec [Algebra.IsAlgebraic K Ω] [Normal K Ω] {B : Type} [CommRing 
   · conv_lhs => rw [h3]
     simp only [Algebra.smul_def, RingHom.algebraMap_toAlgebra]
 
+/- English proof (translation)
+Establish `hex : ∃ g : Fin k → (Ω ≃ₐ[K] Ω), ∀ i, g i θ = t i` using `by choose g hg using fun i => (mem_conj_iff θ (t i)).1 (ht i)`. Conclude with `⟨g, hg⟩`. Rewrite using `[pick, dif_pos hex]`. Conclude with `hex.choose_spec i`.
+-/
 theorem pick_spec [Algebra.IsAlgebraic K Ω] [Normal K Ω] (k : ℕ) (θ : Ω) (t : Fin k → Ω)
     (ht : ∀ i, t i ∈ conj K Ω θ) (i : Fin k) : pick K Ω k θ t i θ = t i := by
   have hex : ∃ g : Fin k → (Ω ≃ₐ[K] Ω), ∀ i, g i θ = t i := by

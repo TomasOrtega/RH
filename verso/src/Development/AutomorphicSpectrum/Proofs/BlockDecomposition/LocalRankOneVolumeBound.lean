@@ -12,6 +12,25 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.DilPush
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM d b v lam hlam P c hP hbound u S hS`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Use `haveI := hlam.1`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `set Q : (Fin 1 → Fin M → Fv F v ⊗[F] E) → Fv F v := fun X => algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (gramR (Fv F v) σ J X 0 0) with hQ`.
+
+Use `set D : (Fin 1 → Fin M → Fv F v ⊗[F] E) → (Fin 1 → Fin M → Fv F v ⊗[F] E) := fun X p k => (u : Fv F v ⊗[F] E) * X p k with hD`. Use `set n : Fv F v := Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E) with hn`. Establish `hn0 : n ≠ 0` using `(u.isUnit.map (Algebra.norm (Fv F v))).ne_zero`. Establish `hdil : ∀ X, Q (D X) = n * Q X` using `fun X => GlobalTheory.T.trace_gram_unit_scaling F E σ hσ M J hJ v u X`. Use `set S' : Set (Fv F v) := (fun t => n * t) ⁻¹' S with hS'def`.
+
+Establish `hmul : Measurable (fun t : Fv F v => n * t)` using `(continuous_const_mul n).measurable`. Establish `hS' : MeasurableSet S'` using `hmul hS`. Establish `hset : D '' P ∩ Q ⁻¹' S = D '' (P ∩ Q ⁻¹' S')`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨X, hX, rfl⟩, hY⟩`. Use `⟨X, ⟨hX, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show n * Q X ∈ S`. Rewrite using `[← hdil]`. Conclude with `hY`.
+
+Introduce and unpack `⟨X, ⟨hX, hXS⟩, rfl⟩`. Use `⟨⟨X, hX, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Q (D X) ∈ S`. Rewrite using `[hdil]`. Conclude with `hXS`.
+
+Establish `hQc : Continuous Q`. Establish `h1 : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))` using `PI.VolStabSW.SdUniqW.continuous_trace_tens (F := F) (E := E) (Fv F v)`. Establish `h2 : Continuous fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => gramR (Fv F v) σ J X 0 0` using `(continuous_apply_apply 0 0).comp (PI.VolStabS.continuous_gramR (Fv F v) σ J)`. Conclude with `continuous_const.mul (h1.comp h2)`. Establish `hQm : Measurable Q` using `hQc.measurable`.
+
+Establish `hlamS : lam S' = (‖n‖₊ : ℝ≥0∞)⁻¹ * lam S`. Establish `h` using `GlobalTheory.CompanionTheory.SW.ProdFormula.map_mul_left_finite v n hn0 lam hlam.1`. Establish `h2` using `congrArg (fun μ : Measure (Fv F v) => μ S) h`. Simplify using `only [Measure.smul_apply] at h2`. Rewrite `h2` using `[Measure.map_apply hmul hS]`.
+
+Rewrite using `[hS'def, h2, ENNReal.smul_def, smul_eq_mul]`. Simplify using `[ENNReal.coe_inv (nnnorm_ne_zero_iff.2 hn0)]`. Rewrite using `[hset, GlobalTheory.T.unit_scaling_rank_one_volume F E σ hσ M d b v lam hlam u _ (hP.inter (hQm hS'))]`. Use `set a : ℝ≥0∞ := (‖n‖₊ : ℝ≥0∞) with ha`. Establish `ha0 : a ≠ 0` using `by simpa [ha] using hn0`.
+
+Establish `hat : a ≠ ⊤` using `ENNReal.coe_ne_top`. Establish `hpow : a ^ M = a ^ (M - 1) * a` using `by rw [← pow_succ, Nat.sub_add_cancel hM]`. Establish `haa : a * a⁻¹ = 1` using `ENNReal.mul_inv_cancel ha0 hat`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem push_dil : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 1 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (P : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) (c : ℝ≥0), MeasurableSet P → (∀ S : Set (Fv F v), MeasurableSet S → coordW (Fv F v) b lam 1 M (P ∩ (fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (gramR (Fv F v) σ J X 0 0)) ⁻¹' S) ≤ (c : ℝ≥0∞) * lam S) → ∀ (u : (Fv F v ⊗[F] E)ˣ) (S : Set (Fv F v)), MeasurableSet S → coordW (Fv F v) b lam 1 M ((fun (X : Fin 1 → Fin M → Fv F v ⊗[F] E) (p : Fin 1) (k : Fin M) => (u : Fv F v ⊗[F] E) * X p k) '' P ∩ (fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (gramR (Fv F v) σ J X 0 0)) ⁻¹' S) ≤ ((c * ‖Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E)‖₊ ^ (M - 1) : ℝ≥0) : ℝ≥0∞) * lam S := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM d b v lam hlam P c hP hbound u S hS
   haveI : FiniteDimensional F E := Module.Finite.of_basis b

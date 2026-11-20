@@ -11,12 +11,20 @@ section MQ
 
 variable {k : ℕ} {E : Type} [Field E] [NumberField E] {a : Fin k → ℤ} {α : Fin k → E}
 
+/- English proof (translation)
+Introduce `h0`. Establish `h2` using `h.1 i`. Rewrite `h2` using `[h0, zero_pow two_ne_zero]`. Conclude with `ha i (by exact_mod_cast h2.symm)`.
+-/
 lemma mq_alpha_ne_zero (h : IsMQ a α) (ha : ∀ i, a i ≠ 0) (i : Fin k) : α i ≠ 0 := by
   intro h0
   have h2 := h.1 i
   rw [h0, zero_pow two_ne_zero] at h2
   exact ha i (by exact_mod_cast h2.symm)
 
+/- English proof (translation)
+Establish `hsq : (σ (α i)) ^ 2 = (α i) ^ 2`. Rewrite using `[← map_pow, h.1 i, map_intCast]`. Unfold `galSign`. Use `split_ifs with hs`. Simplify using `[hs]`.
+
+Establish `: (σ (α i) - α i) * (σ (α i) + α i) = 0` using `by ring_nf; rw [hsq]; ring`. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h1) hs`. Simplify using `[eq_neg_of_add_eq_zero_left h1]`.
+-/
 lemma mq_sigma (h : IsMQ a α) (σ : Gal(E/ℚ)) (i : Fin k) :
     σ (α i) = (((galSign α σ i : ℤˣ) : ℤ) : E) * α i := by
   have hsq : (σ (α i)) ^ 2 = (α i) ^ 2 := by
@@ -29,6 +37,11 @@ lemma mq_sigma (h : IsMQ a α) (σ : Gal(E/ℚ)) (i : Fin k) :
     · exact absurd (sub_eq_zero.1 h1) hs
     · simp [eq_neg_of_add_eq_zero_left h1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hne` using `mq_alpha_ne_zero h ha i`. Establish `hστ` using `mq_sigma h (σ * τ) i`. Rewrite `hστ` using `[AlgEquiv.mul_apply, mq_sigma h τ i, map_mul, map_intCast, mq_sigma h σ i]`. Establish `hcoef : (((galSign α (σ * τ) i : ℤˣ) : ℤ) : E) = (((galSign α σ i * galSign α τ i : ℤˣ) : ℤ) : E)`.
+
+Use `hστ.symm` as an intermediate fact. Rewrite `this` using `[show ((((galSign α τ i : ℤˣ) : ℤ) : E) * ((((galSign α σ i : ℤˣ) : ℤ) : E) * α i)) = (((galSign α σ i * galSign α τ i : ℤˣ) : ℤ) : E) * α i by push_cast; ring]`. Conclude with `mul_right_cancel₀ hne this`. Use `Int.cast_injective (α := E) hcoef` as an intermediate fact. Conclude with `Units.ext this`.
+-/
 lemma mq_galSign_mul (h : IsMQ a α) (ha : ∀ i, a i ≠ 0) (σ τ : Gal(E/ℚ)) :
     galSign α (σ * τ) = galSign α σ * galSign α τ := by
   funext i
@@ -43,11 +56,19 @@ lemma mq_galSign_mul (h : IsMQ a α) (ha : ∀ i, a i ≠ 0) (σ τ : Gal(E/ℚ)
   have := Int.cast_injective (α := E) hcoef
   exact Units.ext this
 
+/- English proof (translation)
+Establish `halg : ∀ x ∈ Set.range α, IsAlgebraic ℚ x` using `fun x _ => Algebra.IsAlgebraic.isAlgebraic x`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg, h.2]`. Both sides reduce to the same expression.
+-/
 lemma mq_algAdjoin (h : IsMQ a α) : Algebra.adjoin ℚ (Set.range α) = ⊤ := by
   have halg : ∀ x ∈ Set.range α, IsAlgebraic ℚ x := fun x _ => Algebra.IsAlgebraic.isAlgebraic x
   rw [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg, h.2]
   rfl
 
+/- English proof (translation)
+Introduce `σ τ hst`. Establish `hsub : ∀ x ∈ Set.range α, (σ : E →ₐ[ℚ] E) x = (τ : E →ₐ[ℚ] E) x`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [AlgEquiv.coe_algHom]`. Rewrite using `[mq_sigma h σ i, mq_sigma h τ i, hst]`.
+
+Use `AlgHom.ext_of_adjoin_eq_top (mq_algAdjoin h) hsub` as an intermediate fact. Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+-/
 lemma mq_injective (h : IsMQ a α) : Function.Injective (galSign α) := by
   intro σ τ hst
   have hsub : ∀ x ∈ Set.range α, (σ : E →ₐ[ℚ] E) x = (τ : E →ₐ[ℚ] E) x := by
@@ -58,6 +79,19 @@ lemma mq_injective (h : IsMQ a α) : Function.Injective (galSign α) := by
   ext x
   exact DFunLike.congr_fun this x
 
+/- English proof (translation)
+Use `set p : ℚ[X] := ∏ i, (X ^ 2 - C ((a i : ℚ))) with hp`. Establish `hmon : p.Monic` using `monic_prod_of_monic _ _ (fun i _ => monic_X_pow_sub_C _ two_ne_zero)`. Establish `hroot : ∀ i, α i ∈ p.rootSet E`. Introduce `i`. Rewrite using `[mem_rootSet]`.
+
+Use `⟨hmon.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, map_prod]`. Apply `Finset.prod_eq_zero (Finset.mem_univ i)` to reduce the goal to its premises. Simplify using `[h.1 i]`. Establish `hsplit : (p.map (algebraMap ℚ E)).Splits`.
+
+Rewrite using `[hp, Polynomial.map_prod]`. Apply `Splits.prod` to reduce the goal to its premises. Introduce `i _`. Establish `hfac : (X ^ 2 - C ((a i : ℚ))).map (algebraMap ℚ E) = (X - C (α i)) * (X - C (-α i))`. Establish `hc : (C ((a i : ℚ))).map (algebraMap ℚ E) = C (α i) ^ 2`.
+
+Rewrite using `[Polynomial.map_C, map_intCast, ← h.1 i, C_pow]`. Rewrite using `[Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, hc, C_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac]`. Conclude with `(Splits.X_sub_C _).mul (Splits.X_sub_C _)`.
+
+Use `haveI : p.IsSplittingField ℚ E := by`. Use `Polynomial.IsSplittingField.mk hsplit ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← mq_algAdjoin h]`. Conclude with `Algebra.adjoin_mono (by rintro _ ⟨i, rfl⟩; exact hroot i)`. Use `haveI : Normal ℚ E := Normal.of_isSplittingField p`.
+
+Conclude with `IsGalois.mk`.
+-/
 lemma mq_isGalois (h : IsMQ a α) : IsGalois ℚ E := by
   classical
   set p : ℚ[X] := ∏ i, (X ^ 2 - C ((a i : ℚ))) with hp
@@ -93,12 +127,24 @@ section Exists
 
 variable {k : ℕ} (a : Fin k → ℤ)
 
+/- English proof (translation)
+Use `choose β hβ using fun i => IsAlgClosed.exists_pow_nat_eq ((a i : AlgebraicClosure ℚ)) two_pos`. Conclude with `⟨β, hβ⟩`.
+-/
 lemma exists_square_roots_closure : ∃ β : Fin k → AlgebraicClosure ℚ, ∀ i, β i ^ 2 = (a i : AlgebraicClosure ℚ) := by
   choose β hβ using fun i => IsAlgClosed.exists_pow_nat_eq ((a i : AlgebraicClosure ℚ)) two_pos
   exact ⟨β, hβ⟩
 
 end Exists
 
+/- English proof (translation)
+Use `letI : Algebra ℚ K := K.algebra'`. Establish `himg : K.val '' Set.range α' = Set.range β`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hα i`. Establish `hmap` using `IntermediateField.adjoin_map ℚ (Set.range α') K.val`. Rewrite `hmap` using `[himg, ← hK]`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : (x : L) ∈ (IntermediateField.adjoin ℚ (Set.range α')).map K.val`. Rewrite using `[hmap]`. Conclude with `x.2`. Take `⟨y, hy, hyx⟩` from `(IntermediateField.mem_map _).1 hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`.
+
+Conclude with `hyx' ▸ hy`.
+-/
 private lemma adjoin_range_subtype_eq_whole_field {L : Type} [Field L] [Algebra ℚ L] (K : IntermediateField ℚ L)
     {k : ℕ} (β : Fin k → L) (hK : K = IntermediateField.adjoin ℚ (Set.range β)) (α' : Fin k → K)
     (hα : ∀ i, (α' i : L) = β i) :
@@ -119,6 +165,9 @@ private lemma adjoin_range_subtype_eq_whole_field {L : Type} [Field L] [Algebra 
   have hyx' : y = x := Subtype.ext hyx
   exact hyx' ▸ hy
 
+/- English proof (translation)
+Take `rfl : inst = K.algebra'` from `Subsingleton.elim _ _`. Conclude with `adjoin_range_subtype_eq_whole_field K β hK α' hα`.
+-/
 lemma adjoin_subtype_top {L : Type} [Field L] [Algebra ℚ L] (K : IntermediateField ℚ L)
     {k : ℕ} (β : Fin k → L) (hK : K = IntermediateField.adjoin ℚ (Set.range β)) (α' : Fin k → K)
     (hα : ∀ i, (α' i : L) = β i) [inst : Algebra ℚ K] :
@@ -126,10 +175,20 @@ lemma adjoin_subtype_top {L : Type} [Field L] [Algebra ℚ L] (K : IntermediateF
   obtain rfl : inst = K.algebra' := Subsingleton.elim _ _
   exact adjoin_range_subtype_eq_whole_field K β hK α' hα
 
+/- English proof (translation)
+Introduce `k E _ _ a α h ha`. Conclude with `⟨mq_isGalois h, mq_sigma h, mq_galSign_mul h ha, mq_injective h⟩`.
+-/
 theorem mqGalois : MQGalois := by
   intro k E _ _ a α h ha
   exact ⟨mq_isGalois h, mq_sigma h, mq_galSign_mul h ha, mq_injective h⟩
 
+/- English proof (translation)
+Introduce `k a`. Take `⟨β, hβ⟩` from `exists_square_roots_closure a`. Use `set K := IntermediateField.adjoin ℚ (Set.range β) with hK`. Establish `hint : ∀ x ∈ Set.range β, IsIntegral ℚ x`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Use `⟨X ^ 2 - C ((a i : ℚ)), monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_sub, eval₂_X_pow, eval₂_C, hβ i, map_intCast, sub_self]`. Use `haveI : FiniteDimensional ℚ K := IntermediateField.finiteDimensional_adjoin hint`. Use `haveI : NumberField K := ⟨⟩`. Set `α' : Fin k → K` to `fun i => ⟨β i, IntermediateField.subset_adjoin ℚ _ ⟨i, rfl⟩⟩`.
+
+Use `⟨K, inferInstance, inferInstance, α', ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[α', hβ i]`. Conclude with `adjoin_subtype_top K β hK α' (fun i => rfl)`.
+-/
 theorem mqExists : MQExists := by
   intro k a
   obtain ⟨β, hβ⟩ := exists_square_roots_closure a

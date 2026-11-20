@@ -10,6 +10,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.UnRep
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers`. Consider the case `exact _root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers`. Consider the case `(apply _root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers ..)`.
+-/
 theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ m : ℕ, 0 < m ∧ ∃ b : 𝓞 E, (b : E) = (m : E) * a := by
   first
@@ -20,6 +25,11 @@ theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (a : E) :
   | (intros; apply @_root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NatMultipleRingOfIntegers.exists_pos_nat_mul_mem_ringOfIntegers ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem`. Consider the case `exact _root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem ..)`.
+-/
 theorem exists_nat_smul_mem_of_span {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (y : Fin n → E) : ∃ d : ℕ, 0 < d ∧ (d : E) • y ∈ L := by
@@ -31,6 +41,15 @@ theorem exists_nat_smul_mem_of_span {E : Type} [Field E] [NumberField E] {n : �
   | (intros; apply @_root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NatMulIntegral.exists_nat_smul_mem ..)
 
+/- English proof (translation)
+Use `choose d hd hdL using exists_nat_smul_mem_of_span L hL`. Take `⟨S, hS⟩` from `hfg`. Use `⟨∏ s ∈ S, d (φ s), Finset.prod_pos fun s _ => hd _, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[← hS]`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← Finset.prod_erase_mul S _ (Finset.mem_coe.1 hx), Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul E (∏ s ∈ S.erase x, d (φ s))]`. Conclude with `L.toAddSubmonoid.nsmul_mem (hdL _) _`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, smul_add]`. Conclude with `L.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `h1 : φ (a • x) = (a : E) • φ x` using `φ.map_smul (a : E) x`.
+
+Rewrite using `[h1, smul_comm]`. Conclude with `L.smul_mem a hx`.
+-/
 theorem exists_nat_smul_map_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (φ : (Fin n → E) →ₗ[E] (Fin n → E)) : ∃ d : ℕ, 0 < d ∧ ∀ v ∈ L, (d : E) • φ v ∈ L := by
@@ -54,6 +73,23 @@ theorem exists_nat_smul_map_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     rw [h1, smul_comm]
     exact L.smul_mem a hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c n G hG L hfg hL x u N D hx hu hN hD`. Establish `hap` using `(GlobalTheory.UnRep.ReflLaws.refl_laws F E c n G hG x hx).1`. Set `φ : (Fin n → E) →ₗ[E] (Fin n → E)` to `{ toFun := fun v => (hermE c G v x / hermE c G x x) • x map_add' := by`. Introduce `v w`. Rewrite using `[← add_smul, ← add_div]`.
+
+Use `congr 2`. Simplify using `[hermE, add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `a v`. Rewrite using `[RingHom.id_apply, smul_smul, ← mul_div_assoc]`.
+
+Use `congr 2`. Simplify using `[hermE, Finset.mul_sum, mul_assoc] }`. Take `⟨d, hd, hdL⟩` from `exists_nat_smul_map_mem L hfg hL φ`. Establish `hap' : ∀ a v, refl c G x a *ᵥ v = v + (a - 1) • φ v`. Introduce `a v`.
+
+Rewrite using `[hap]`. Use `show _ = v + (a - 1) • ((hermE c G v x / hermE c G x x) • x)`. Rewrite using `[smul_smul, mul_div_assoc]`. Take `⟨u', hu', ⟨t, ht, b, hb⟩, s, hs, ⟨b₁, hb₁⟩, b₂, hb₂⟩` from `GlobalTheory.T.normOne_approximation_at_level_primes F E c hG.1 hG.2.1 u N (D * d) hu hN (Nat.mul_pos hD hd)`. Establish `key : ∀ (a : E) (b : 𝓞 E), (s : E) * (a - 1) = ((D * d : ℕ) : E) * (b : E) → ∀ v ∈ L, s • (refl c G x a *ᵥ v) ∈ L`.
+
+Introduce `a b hb v hv`. Rewrite using `[hap', smul_add]`. Use `L.add_mem (L.smul_mem s hv) ?_` and prove the remaining obligations. Establish `: s • ((a - 1) • φ v) = ((D : 𝓞 E) * b) • ((d : E) • φ v)` using `by show (s : E) • ((a - 1) • φ v) = (((D : 𝓞 E) * b : 𝓞 E) : E) • ((d : E) • φ v)`. Rewrite using `[smul_smul, smul_smul, hb]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `L.smul_mem _ (hdL v hv)`.
+
+Use `⟨u', hu', ⟨t, ht, fun v hv => ⟨b • ((d : E) • φ v), L.smul_mem b (hdL v hv), ?_⟩⟩, s, hs, fun v hv => ⟨key _ _ hb₁ v hv, key _ _ hb₂ v hv⟩⟩` and prove the remaining obligations. Rewrite using `[hap', add_sub_cancel_left, ← Nat.cast_smul_eq_nsmul E t, ← Nat.cast_smul_eq_nsmul E D]`. Use `show _ = (D : E) • ((b : E) • ((d : E) • φ v))`. Rewrite using `[smul_smul, smul_smul, smul_smul, hb]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_refl_correction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), IsHermForm c G → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ (x : Fin n → E) (u : E) (N D : ℕ), hermE c G x x ≠ 0 → u * c u = 1 → 0 < N → 0 < D → ∃ u' : E, u' * c u' = 1 ∧ CongAt L N D (refl c G x (u' / u)) ∧ ∃ s : 𝓞 E, SplitOr c N s ∧ ∀ v ∈ L, s • (refl c G x u' *ᵥ v) ∈ L ∧ s • (refl c G x u'⁻¹ *ᵥ v) ∈ L := by
   intro F E _ _ _ _ _ c n G hG L hfg hL x u N D hx hu hN hD
   have hap := (GlobalTheory.UnRep.ReflLaws.refl_laws F E c n G hG x hx).1

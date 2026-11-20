@@ -14,6 +14,33 @@ section Proj
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Set `q : V →ₗ[𝓞 K] V ⧸ W` to `W.mkQ.restrictScalars (𝓞 K)`. Set `Lb : Submodule (𝓞 K) (V ⧸ W)` to `L.map q`. Establish `hfin : Module.Finite (𝓞 K) Lb` using `Module.Finite.iff_fg.2 (hfg.map q)`. Establish `hcancel : ∀ (d : 𝓞 K) (x : V ⧸ W), d ≠ 0 → d • x = 0 → x = 0`. Introduce `d x hd h`.
+
+Rewrite `h` using `[← IsScalarTower.algebraMap_smul K d x]`. Conclude with `(smul_eq_zero.1 h).resolve_left (by simpa using hd)`. Establish `hflat : Module.Flat (𝓞 K) Lb`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨d, hd⟩`.
+
+Establish `: (d : 𝓞 K) • (x : V ⧸ W) = 0` using `congrArg Subtype.val hd`. Conclude with `Subtype.ext (hcancel d x (nonZeroDivisors.coe_ne_zero d) this)`. Establish `hfp : Module.FinitePresentation (𝓞 K) Lb` using `Module.finitePresentation_of_finite _ _`. Establish `hproj : Module.Projective (𝓞 K) Lb` using `Module.Flat.projective_of_finitePresentation`. Set `qL : L →ₗ[𝓞 K] Lb` to `q.submoduleMap L`.
+
+Take `⟨s, hs⟩` from `Module.projective_lifting_property qL LinearMap.id (LinearMap.submoduleMap_surjective q L)`. Establish `hs' : ∀ y : Lb, q (s y : V) = y` using `fun y => congrArg Subtype.val (LinearMap.congr_fun hs y)`. Set `p0 : L →ₗ[𝓞 K] V` to `L.subtype - L.subtype ∘ₗ s ∘ₗ qL`. Establish `hp0 : ∀ x : L, p0 x = (x : V) - s (qL x)` using `fun x => rfl`. Establish `hden : ∀ v : V, ∃ d : 𝓞 K, d ≠ 0 ∧ d • v ∈ L`.
+
+Introduce `v`. Establish `hv : v ∈ Submodule.span K (L : Set V)` using `by rw [hsp]; trivial`. Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K (L : Set V) v hv`. Rewrite `hd` using `[Submodule.span_eq]`. Conclude with `⟨d, nonZeroDivisors.coe_ne_zero d, hd⟩`.
+
+Establish `hunit : ∀ x : nonZeroDivisors (𝓞 K), IsUnit (algebraMap (𝓞 K) (Module.End (𝓞 K) V) x)` using `(isLocalizedModule_id (nonZeroDivisors (𝓞 K)) V K).map_units`. Use `haveI hloc : IsLocalizedModule (nonZeroDivisors (𝓞 K)) L.subtype := by`. Use `⟨hunit, fun v => ?_, fun {x y} h => ⟨1, by simpa using Subtype.ext h⟩⟩` and prove the remaining obligations. Take `⟨d, hd, hv⟩` from `hden v`. Conclude with `⟨(⟨d • v, hv⟩, ⟨d, mem_nonZeroDivisors_of_ne_zero hd⟩), rfl⟩`.
+
+Set `P0 : V →ₗ[𝓞 K] V` to `IsLocalizedModule.lift (nonZeroDivisors (𝓞 K)) L.subtype p0 hunit`. Establish `hP0 : ∀ x : L, P0 (x : V) = p0 x` using `fun x => IsLocalizedModule.lift_apply _ L.subtype p0 hunit x`. Set `P : V →ₗ[K] V` to `P0.extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 K)) K`. Establish `hP : ∀ v, P v = P0 v` using `fun v => rfl`. Establish `hW : ∀ x : L, p0 x ∈ W`.
+
+Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `q (p0 x) = 0`. Rewrite using `[hp0, map_sub, hs']`. Conclude with `sub_self _`.
+
+Use `⟨P, fun v => ?_, fun w hw => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hv⟩` from `hden v`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Apply `hcancel d _ hd` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `d • q (P0 v) = 0`.
+
+Rewrite using `[← map_smul, ← map_smul, show d • v = ((⟨d • v, hv⟩ : L) : V) from rfl, hP0]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).2 (hW _)`. Take `⟨d, hd, hv⟩` from `hden w`. Establish `h0 : qL ⟨d • w, hv⟩ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `q (d • w) = 0`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `d • (Submodule.Quotient.mk w : V ⧸ W) = 0`. Rewrite using `[(Submodule.Quotient.mk_eq_zero W).2 hw, smul_zero]`. Establish `h1 : d • P0 w = d • w`.
+
+Rewrite using `[← map_smul, show d • w = ((⟨d • w, hv⟩ : L) : V) from rfl, hP0, hp0, h0, map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hP]`. Rewrite `h1` using `[← IsScalarTower.algebraMap_smul K d, ← IsScalarTower.algebraMap_smul K d w]`. Conclude with `smul_right_injective V (by simpa using hd) h1`.
+
+Rewrite using `[hP, show v = ((⟨v, hv⟩ : L) : V) from rfl, hP0, hp0]`. Conclude with `L.sub_mem hv (s _).2`.
+-/
 theorem exists_proj (L : Submodule (𝓞 K) V) (hfg : L.FG) (hsp : Submodule.span K (L : Set V) = ⊤) (W : Submodule K V) :
     ∃ P : V →ₗ[K] V, (∀ v, P v ∈ W) ∧ (∀ w ∈ W, P w = w) ∧ ∀ v ∈ L, P v ∈ L := by
   classical
@@ -86,6 +113,11 @@ end Proj
 section Form
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : HermSpace K V} {r : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (LinearMap.range H.B.flip).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_dualCoannihilator]`. Conclude with `H.nondeg x fun y => hx _ ⟨y, rfl⟩`.
+
+Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := LinearMap.range H.B.flip)`. Rewrite `h2` using `[h1, Submodule.dualAnnihilator_bot]`. Establish `h3 : f ∈ LinearMap.range H.B.flip` using `h2 ▸ Submodule.mem_top`. Take `⟨y, hy⟩` from `h3`. Conclude with `⟨y, fun x => by rw [← hy]; rfl⟩`.
+-/
 theorem exists_rep [FiniteDimensional K V] (H : HermSpace K V) (f : V →ₗ[K] K) : ∃ y, ∀ x, H.B x y = f x := by
   have h1 : (LinearMap.range H.B.flip).dualCoannihilator = ⊥ := by
     rw [eq_bot_iff]
@@ -98,17 +130,26 @@ theorem exists_rep [FiniteDimensional K V] (H : HermSpace K V) (f : V →ₗ[K] 
   obtain ⟨y, hy⟩ := h3
   exact ⟨y, fun x => by rw [← hy]; rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← H.herm, h, star_zero]`.
+-/
 theorem swap_zero {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by rw [← H.herm, h, star_zero]
 
 def Hyp (H : HermSpace K V) (e y : Fin r → V) : Prop :=
   (∀ a b, H.B (e a) (e b) = 0) ∧ (∀ a b, H.B (y a) (y b) = 0) ∧ ∀ a b, H.B (e a) (y b) = if a = b then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[← H.herm, h.2.2]`. Distinguish the cases in `hab : a = b`. Simplify using `[hab]`. Simplify using `[hab, Ne.symm hab]`.
+-/
 theorem Hyp.ye {e y : Fin r → V} (h : Hyp H e y) (a b : Fin r) : H.B (y a) (e b) = if a = b then 1 else 0 := by
   rw [← H.herm, h.2.2]
   by_cases hab : a = b
   · simp [hab]
   · simp [hab, Ne.symm hab]
 
+/- English proof (translation)
+Establish `h3'` using `fun a => swap_zero (h3 a)`. Establish `h4'` using `fun a => swap_zero (h4 a)`. Simplify using `[map_add, map_sum, LinearMap.add_apply, LinearMap.sum_apply, h.1, h.2.1, h.2.2, h.ye, h1, h2, h3', h4', mul_comm]`. Conclude with `add_comm _ _`.
+-/
 theorem Hyp.pair {e y : Fin r → V} (h : Hyp H e y) (s t s' t' : Fin r → K) {n n' : V}
     (h1 : ∀ a, H.B n (e a) = 0) (h2 : ∀ a, H.B n (y a) = 0) (h3 : ∀ a, H.B n' (e a) = 0) (h4 : ∀ a, H.B n' (y a) = 0) :
     H.B (∑ a, s a • e a + ∑ a, t a • y a + n) (∑ a, s' a • e a + ∑ a, t' a • y a + n') =
@@ -121,23 +162,40 @@ theorem Hyp.pair {e y : Fin r → V} (h : Hyp H e y) (s t s' t' : Fin r → K) {
 noncomputable def mid (H : HermSpace K V) (e y : Fin r → V) : V →ₗ[K] V :=
   LinearMap.id - ∑ a, (H.B.flip (y a)).smulRight (e a) - ∑ a, (H.B.flip (e a)).smulRight (y a)
 
+/- English proof (translation)
+Simplify using `[mid]`.
+-/
 theorem mid_apply (e y : Fin r → V) (v : V) :
     mid H e y v = v - ∑ a, H.B v (y a) • e a - ∑ a, H.B v (e a) • y a := by
   simp [mid]
 
+/- English proof (translation)
+Simplify using `[mid_apply, h.1, h.ye]`.
+-/
 theorem Hyp.mid_e {e y : Fin r → V} (h : Hyp H e y) (v : V) (a : Fin r) : H.B (mid H e y v) (e a) = 0 := by
   simp [mid_apply, h.1, h.ye]
 
+/- English proof (translation)
+Simplify using `[mid_apply, h.2.1, h.2.2]`.
+-/
 theorem Hyp.mid_y {e y : Fin r → V} (h : Hyp H e y) (v : V) (a : Fin r) : H.B (mid H e y v) (y a) = 0 := by
   simp [mid_apply, h.2.1, h.2.2]
 
 noncomputable def move (H : HermSpace K V) (e y e' y' : Fin r → V) : V →ₗ[K] V :=
   ∑ a, (H.B.flip (y a)).smulRight (e' a) + ∑ a, (H.B.flip (e a)).smulRight (y' a) + mid H e' y' ∘ₗ mid H e y
 
+/- English proof (translation)
+Simplify using `[move]`.
+-/
 theorem move_apply (e y e' y' : Fin r → V) (v : V) :
     move H e y e' y' v = ∑ a, H.B v (y a) • e' a + ∑ a, H.B v (e a) • y' a + mid H e' y' (mid H e y v) := by
   simp [move]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => simp [h1, h2]`.
+
+Consider the case `smul a x _ h1 => simp [h1]`.
+-/
 theorem perp_of_span {e : Fin r → V} {v x : V} (h : ∀ a, H.B v (e a) = 0) (hx : x ∈ Submodule.span K (Set.range e)) :
     H.B v x = 0 := by
   induction hx using Submodule.span_induction with
@@ -146,6 +204,13 @@ theorem perp_of_span {e : Fin r → V} {v x : V} (h : ∀ a, H.B v (e a) = 0) (h
   | add x y _ _ h1 h2 => simp [h1, h2]
   | smul a x _ h1 => simp [h1]
 
+/- English proof (translation)
+Establish `hd : ∀ u : V, u = ∑ a, H.B u (y a) • e a + ∑ a, H.B u (e a) • y a + mid H e y u` using `fun u => by`. Rewrite using `[mid_apply]`. Normalize the expressions using the abelian group laws. Establish `hp : ∀ u a, H.B (mid H e y u) (e' a) = 0` using `fun u a => perp_of_span (h.mid_e u) (hs a)`. Establish `hp' : ∀ u a, H.B (e' a) (mid H e y u) = 0` using `fun u a => swap_zero (hp u a)`.
+
+Establish `hm : H.B (mid H e' y' (mid H e y v)) (mid H e' y' (mid H e y w)) = H.B (mid H e y v) (mid H e y w)`. Rewrite using `[mid_apply e' y' (mid H e y w)]`. Simplify using `only [map_sub, map_sum, LinearMap.map_smulₛₗ, h'.mid_e, h'.mid_y, smul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[mid_apply e' y' (mid H e y v)]`. Simplify using `[hp, hp']`.
+
+Rewrite using `[move_apply, move_apply, h'.pair _ _ _ _ (h'.mid_e _) (h'.mid_y _) (h'.mid_e _) (h'.mid_y _), hm]`. Use `conv_rhs => rw [hd v, hd w]`. Rewrite using `[h.pair _ _ _ _ (h.mid_e _) (h.mid_y _) (h.mid_e _) (h.mid_y _)]`.
+-/
 theorem move_isom {e y e' y' : Fin r → V} (h : Hyp H e y) (h' : Hyp H e' y')
     (hs : ∀ a, e' a ∈ Submodule.span K (Set.range e)) (v w : V) :
     H.B (move H e y e' y' v) (move H e y e' y' w) = H.B v w := by
@@ -162,6 +227,11 @@ theorem move_isom {e y e' y' : Fin r → V} (h : Hyp H e y) (h' : Hyp H e' y')
   conv_rhs => rw [hd v, hd w]
   rw [h.pair _ _ _ _ (h.mid_e _) (h.mid_y _) (h.mid_e _) (h.mid_y _)]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Simplify using `[mid_apply, h.1, h.2.2]`. Consider the case `zero => simp`. Consider the case `add x y _ _ h1 h2 => simp [h1, h2]`.
+
+Consider the case `smul a x _ h1 => simp [h1]`.
+-/
 theorem Hyp.mid_span {e y : Fin r → V} (h : Hyp H e y) {x : V} (hx : x ∈ Submodule.span K (Set.range e)) :
     mid H e y x = 0 := by
   induction hx using Submodule.span_induction with
@@ -170,6 +240,9 @@ theorem Hyp.mid_span {e y : Fin r → V} (h : Hyp H e y) {x : V} (hx : x ∈ Sub
   | add x y _ _ h1 h2 => simp [h1, h2]
   | smul a x _ h1 => simp [h1]
 
+/- English proof (translation)
+Unfold `FlagD.X FlagD.Xa`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem x_eq_span (F : FlagD H r) : F.X = Submodule.span K (Set.range fun a : Fin r => F.e a.castSucc) := by
   unfold FlagD.X FlagD.Xa
   congr 1
@@ -182,11 +255,19 @@ section Lat
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {H : HermSpace K V} {r : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hU.2, mem_dual_iff, hU.1.2]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_iff_pair {Λ : Submodule (𝓞 K) V} (hU : IsUnimod H Λ) (x : V) :
     x ∈ Λ ↔ ∀ x' ∈ Λ, H.B x x' ∈ (1 : Submodule (𝓞 K) K) := by
   conv_lhs => rw [← hU.2, mem_dual_iff, hU.1.2]
   simp
 
+/- English proof (translation)
+Rewrite `ht` using `[AdaptInv.xa_eq h]`. Establish `h1 : t • F.e a - x ∈ F.Xa a.val`. Use `Submodule.neg_mem _ (Submodule.add_mem _ ht (Submodule.smul_mem _ t (h a)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `h2 : x + (t • F.e a - x) ∈ Λ ⊔ rs (𝓞 K) (F.Xa a.val)` using `Submodule.add_mem_sup hx h1`. Simplify `h2` using `[lead]`.
+-/
 theorem mem_lead {F G : FlagD H r} (h : SameGr F G) {Λ : Submodule (𝓞 K) V} (a : Fin (r + 1)) {t : K} {x : V}
     (hx : x ∈ Λ) (ht : x - t • G.e a ∈ G.Xa a.val) : t ∈ lead F Λ a := by
   rw [AdaptInv.xa_eq h] at ht
@@ -197,6 +278,9 @@ theorem mem_lead {F G : FlagD H r} (h : SameGr F G) {Λ : Submodule (𝓞 K) V} 
   have h2 : x + (t • F.e a - x) ∈ Λ ⊔ rs (𝓞 K) (F.Xa a.val) := Submodule.add_mem_sup hx h1
   simpa [lead] using h2
 
+/- English proof (translation)
+Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : n ≤ b.val`. Simplify using `[hc b hb]`. Conclude with `Submodule.smul_mem _ _ (AdaptInv.e_mem_xa G b (not_le.1 hb))`.
+-/
 theorem sum_mem_xa (G : FlagD H r) (n : ℕ) (c : Fin r → K) (hc : ∀ b : Fin r, n ≤ b.val → c b = 0) :
     ∑ b, c b • G.e b.castSucc ∈ G.Xa n := by
   refine Submodule.sum_mem _ fun b _ => ?_
@@ -204,6 +288,19 @@ theorem sum_mem_xa (G : FlagD H r) (n : ℕ) (c : Fin r → K) (hc : ∀ b : Fin
   · simp [hc b hb]
   · exact Submodule.smul_mem _ _ (AdaptInv.e_mem_xa G b (not_le.1 hb))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro c hc _ b`. Rewrite using `[hc b (Nat.zero_le _)]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n ih`.
+
+Introduce `c hc hx`. Distinguish the cases in `hn : n < r`. Set `a : Fin r` to `⟨n, hn⟩`. Establish `hc' : ∀ b : Fin r, n ≤ b.val → Function.update c a 0 b = 0`. Introduce `b hb`.
+
+Distinguish the cases in `hba : b = a`. Simplify using `[hba]`. Rewrite using `[Function.update_of_ne hba]`. Use `hc b ?_` and prove the remaining obligations. Establish `: b.val ≠ n` using `fun e => hba (Fin.ext e)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `he : ∑ b, Function.update c a 0 b • G.e b.castSucc = ∑ b, c b • G.e b.castSucc - c a • G.e a.castSucc`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ (fun b => c b • G.e b.castSucc) (Finset.mem_univ a)]`. Rewrite using `[Function.update_self, zero_smul, zero_add, add_sub_cancel_left]`. Conclude with `Finset.sum_congr rfl fun b hb => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hb)]`.
+
+Establish `ha : c a ∈ aa a` using `h1 a _ _ hx (he ▸ sum_mem_xa G n _ hc')`. Establish `hr` using `ih _ hc' (he ▸ Λ.sub_mem hx (h2 a _ ha))`. Introduce `b`. Distinguish the cases in `hba : b = a`. Rewrite using `[hba]`.
+
+Conclude with `ha`. Use `hr b` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hba]`. Then use the resulting hypothesis. Conclude with `ih c (fun b hb => absurd (lt_of_le_of_lt hb b.2) hn) hx`.
+-/
 theorem coeff_mem (G : FlagD H r) {Λ : Submodule (𝓞 K) V} {aa : Fin r → Submodule (𝓞 K) K}
     (h1 : ∀ (a : Fin r) (t : K), ∀ x ∈ Λ, x - t • G.e a.castSucc ∈ G.Xa a.val → t ∈ aa a)
     (h2 : ∀ a, ∀ t ∈ aa a, t • G.e a.castSucc ∈ Λ) (n : ℕ) :
@@ -235,12 +332,34 @@ theorem coeff_mem (G : FlagD H r) {Λ : Submodule (𝓞 K) V} {aa : Fin r → Su
         rwa [Function.update_of_ne hba] at this
     · exact ih c (fun b hb => absurd (lt_of_le_of_lt hb b.2) hn) hx
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `Submodule.mem_one.1 ht`. Rewrite using `[algebraMap_smul]`. Conclude with `Λ.smul_mem s hx`.
+-/
 theorem smul_mem_of_one {Λ : Submodule (𝓞 K) V} {t : K} (ht : t ∈ (1 : Submodule (𝓞 K) K)) {x : V} (hx : x ∈ Λ) :
     t • x ∈ Λ := by
   obtain ⟨s, rfl⟩ := Submodule.mem_one.1 ht
   rw [algebraMap_smul]
   exact Λ.smul_mem s hx
 
+/- English proof (translation)
+Establish `hL` using `(isLatMod_top_bot_iff Λ).1 hU.1`. Set `L : ((Fin r → K) × K) →ₗ[K] V` to `(Fintype.linearCombination K fun a : Fin r => G.e a.castSucc).coprod (LinearMap.toSpanSingleton K V G.z)`. Establish `hLa : ∀ p, L p = ∑ b, p.1 b • G.e b.castSucc + p.2 • G.z` using `fun p => by`. Simplify using `[L, Fintype.linearCombination_apply]`. Establish `hinj : LinearMap.ker L = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `⟨c, t⟩ hp`. Rewrite `hp` using `[LinearMap.mem_ker, hLa]`. Establish `h5` using `congrArg (fun v => H.B v G.z) hp`. Establish `h6 : ∀ a : Fin r, H.B (G.e a.castSucc) G.z = 0` using `G.zperp`.
+
+Establish `h7 : H.B G.z G.z = -G.T` using `G.zz`. Simplify using `[h6, h7, G.hT] at h5`. Substitute `h5` using the available equality. Simplify using `only [zero_smul, add_zero] at hp`. Use `Fintype.linearIndependent_iff.1 G.indep c hp` as an intermediate fact.
+
+Establish `hc : c = 0` using `funext this`. Simplify using `[hc]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective L hinj`. Establish `hg' : ∀ p, g (L p) = p` using `fun p => LinearMap.congr_fun hg p`. Take `⟨P, hP1, hP2, hP3⟩` from `exists_proj Λ hL.fg hL.span_eq_top (LinearMap.range L)`.
+
+Use `choose y hy using fun b : Fin r => exists_rep H (LinearMap.proj b ∘ₗ LinearMap.fst K _ K ∘ₗ g ∘ₗ P)`. Establish `hy' : ∀ b p, H.B (L p) (y b) = p.1 b` using `fun b p => by`. Rewrite using `[hy]`. Simplify using `[hP2 _ ⟨p, rfl⟩, hg']`. Use `⟨y, fun a b => ?_, fun b => ?_, fun x hx b => ?_⟩` and prove the remaining obligations.
+
+Use `hy' b (Pi.single a 1, 0)` as an intermediate fact. Rewrite `this` using `[hLa]`. Simplify `this` using `[Pi.single_apply, eq_comm]`. Use `hy' b (0, 1)` as an intermediate fact. Rewrite `this` using `[hLa]`.
+
+Simplify using `using this`. Take `⟨p, hp⟩` from `hP1 x`. Establish `e1 : H.B x (y b) = p.1 b` using `by rw [hy]; simp [← hp, hg']`. Establish `e2 : L p ∈ Λ` using `hp ▸ hP3 x hx`. Rewrite `e2` using `[hLa]`.
+
+Establish `e3 : p.2 ∈ (1 : Submodule (𝓞 K) K)` using `h3 _ _ e2 (by`. Rewrite using `[add_sub_cancel_right]`. Conclude with `sum_mem_xa G r _ fun b hb => absurd b.2 (not_lt.2 hb))`. Establish `e4` using `Λ.sub_mem e2 (smul_mem_of_one e3 h4)`. Rewrite `e4` using `[add_sub_cancel_right]`.
+
+Rewrite using `[e1]`. Conclude with `coeff_mem G h1 h2 r _ (fun b hb => absurd b.2 (not_lt.2 hb)) e4 b`.
+-/
 theorem exists_dual [FiniteDimensional K V] (G : FlagD H r) {Λ : Submodule (𝓞 K) V} (hU : IsUnimod H Λ)
     {aa : Fin r → Submodule (𝓞 K) K}
     (h1 : ∀ (a : Fin r) (t : K), ∀ x ∈ Λ, x - t • G.e a.castSucc ∈ G.Xa a.val → t ∈ aa a)
@@ -291,6 +410,9 @@ theorem exists_dual [FiniteDimensional K V] (G : FlagD H r) {Λ : Submodule (�
     rw [e1]
     exact coeff_mem G h1 h2 r _ (fun b hb => absurd b.2 (not_lt.2 hb)) e4 b
 
+/- English proof (translation)
+Rewrite using `[mem_iff_pair hU]`. Introduce `x' hx'`. Use `(mem_iff_pair hU x).1 hx _ (h x' hx')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[← H.herm x' y, mul_comm, starRingEnd_apply]`.
+-/
 theorem smul_dual_mem {Λ : Submodule (𝓞 K) V} (hU : IsUnimod H Λ) {e y : V} (h : ∀ x ∈ Λ, H.B x y • e ∈ Λ)
     {x : V} (hx : x ∈ Λ) : H.B x e • y ∈ Λ := by
   rw [mem_iff_pair hU]
@@ -299,6 +421,21 @@ theorem smul_dual_mem {Λ : Submodule (𝓞 K) V} (hU : IsUnimod H Λ) {e y : V}
   convert this using 1
   simp [← H.herm x' y, mul_comm, starRingEnd_apply]
 
+/- English proof (translation)
+Take `⟨y, hy1, hy2, hy3⟩` from `exists_dual G hU h1 h2 h3 h4`. Take `⟨w, hw⟩` from `GlobalTheory.exists_integer_add_star_eq_one_of_isCMUnram K hK`. Establish `hw' : star (w : K) = ((1 - w : 𝓞 K) : K)`. Establish `: ((1 - w : 𝓞 K) : K) = 1 - (w : K)` using `by simp`. Rewrite using `[this, ← hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hye : ∀ a b, H.B (y a) (G.e b.castSucc) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← H.herm, hy1]`. Distinguish the cases in `hab : a = b`.
+
+Simplify using `[hab]`. Simplify using `[hab, Ne.symm hab]`. Establish `hz : ∀ a : Fin r, H.B G.z (G.e a.castSucc) = 0` using `fun a => swap_zero (G.zperp a)`. Use `⟨fun a => y a - ∑ b, ((w : K) * H.B (y a) (y b)) • G.e b.castSucc, ⟨G.iso, fun a b => ?_, fun a b => ?_⟩, fun b => ?_, fun x hx a => ?_⟩` and prove the remaining obligations. Establish `hh : (starRingEnd K) (H.B (y b) (y a)) = H.B (y a) (y b)` using `H.herm _ _`.
+
+Establish `hw2 : (w : K) + (starRingEnd K) (w : K) = 1` using `hw`. Simplify using `[G.iso, hye, hy1, hh]`. Take the linear combination `(-H.B (y a) (y b)) * hw2`. Simplify using `[G.iso, hy1]`. Simplify using `[hy2, hz]`.
+
+Rewrite using `[map_sub, map_sum]`. Use `Submodule.sub_mem _ (hy3 x hx a) (Submodule.sum_mem _ fun b _ => ?_)` and prove the remaining obligations. Establish `e1` using `hy3 _ (smul_dual_mem hU (fun x' hx' => h2 b _ (hy3 x' hx' b)) hx) a`. Establish `e2` using `(aa a).smul_mem (1 - w) e1`. Use `e2 using 1` and compare the differences between its conclusion and the goal.
+
+Establish `hh : (starRingEnd K) (H.B (y a) (y b)) = H.B (y b) (y a)` using `H.herm _ _`. Establish `hw2 : (starRingEnd K) (w : K) = ((1 - w : 𝓞 K) : K)` using `hw'`. Rewrite using `[LinearMap.map_smulₛₗ, map_mul, hh, hw2, smul_eq_mul, Algebra.smul_def, map_smul]`. Simplify using `only [smul_eq_mul, LinearMap.smul_apply]`. Express the relevant statement in the definitionally equal form `_ = ((1 - w : 𝓞 K) : K) * _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_hyp [FiniteDimensional K V] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (G : FlagD H r) {Λ : Submodule (𝓞 K) V}
     (hU : IsUnimod H Λ) {aa : Fin r → Submodule (𝓞 K) K}
     (h1 : ∀ (a : Fin r) (t : K), ∀ x ∈ Λ, x - t • G.e a.castSucc ∈ G.Xa a.val → t ∈ aa a)
@@ -340,6 +477,35 @@ theorem exists_hyp [FiniteDimensional K V] (hK : Formalism.HermitianLatticesTheo
 
 end Lat
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK r F G aa Λ hU hF hS _ haa hz hz'`. Establish `hFF : SameGr F F` using `fun a => by simp`. Take `⟨y, hy, hyz, hyΛ⟩` from `exists_hyp hK F hU (aa := aa) (fun a t x hx h => hF.1 a ▸ mem_lead hFF a.castSucc hx h) (fun a t ht => (haa a t ht).1) (fun t x hx h => hF.2 ▸ mem_lead hFF (Fin.last r) hx h) hz`. Take `⟨y', hy', hyz', hyΛ'⟩` from `exists_hyp hK G hU (aa := aa) (fun a t x hx h => hF.1 a ▸ mem_lead hS a.castSucc hx h) (fun a t ht => (haa a t ht).2) (fun t x hx h => hF.2 ▸ mem_lead hS (Fin.last r) hx h) hz'`. Use `set e : Fin r → V := fun a => F.e a.castSucc with he`.
+
+Use `set e' : Fin r → V := fun a => G.e a.castSucc with he'`. Establish `hX : F.X = Submodule.span K (Set.range e)` using `x_eq_span F`. Establish `hX' : F.X = Submodule.span K (Set.range e')` using `(AdaptInv.x_eq hS).symm.trans (x_eq_span G)`. Establish `heX : ∀ a, e a ∈ F.X` using `fun a => hX ▸ Submodule.subset_span ⟨a, rfl⟩`. Establish `heX' : ∀ a, e' a ∈ F.X` using `fun a => hX' ▸ Submodule.subset_span ⟨a, rfl⟩`.
+
+Use `set M := move H e y e' y' with hM`. Establish `hiso : ∀ v w, H.B (M v) (M w) = H.B v w` using `move_isom hy hy' fun a => hX ▸ heX' a`. Establish `hinj : Function.Injective M`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+
+Conclude with `H.nondeg v fun w => by rw [← hiso, hv]; simp`. Establish `hbij : Function.Bijective M` using `⟨hinj, LinearMap.injective_iff_surjective.1 hinj⟩`. Establish `hee : ∀ x ∈ Λ, ∀ a, H.B x (y a) • e a ∈ Λ` using `fun x hx a => (haa a _ (hyΛ x hx a)).1`. Establish `hee' : ∀ x ∈ Λ, ∀ a, H.B x (y a) • e' a ∈ Λ` using `fun x hx a => (haa a _ (hyΛ x hx a)).2`. Establish `he'e : ∀ x ∈ Λ, ∀ a, H.B x (y' a) • e a ∈ Λ` using `fun x hx a => (haa a _ (hyΛ' x hx a)).1`.
+
+Establish `he'e' : ∀ x ∈ Λ, ∀ a, H.B x (y' a) • e' a ∈ Λ` using `fun x hx a => (haa a _ (hyΛ' x hx a)).2`. Establish `hmid : ∀ e y : Fin r → V, (∀ x ∈ Λ, ∀ a, H.B x (y a) • e a ∈ Λ) → ∀ x ∈ Λ, mid H e y x ∈ Λ`. Introduce `e y h x hx`. Rewrite using `[mid_apply]`. Conclude with `Λ.sub_mem (Λ.sub_mem hx (Λ.sum_mem fun a _ => h x hx a)) (Λ.sum_mem fun a _ => smul_dual_mem hU (fun x' hx' => h x' hx' a) hx)`.
+
+Establish `hMΛ : ∀ x ∈ Λ, M x ∈ Λ`. Introduce `x hx`. Rewrite using `[hM, move_apply]`. Conclude with `Λ.add_mem (Λ.add_mem (Λ.sum_mem fun a _ => hee' x hx a) (Λ.sum_mem fun a _ => smul_dual_mem hU (fun x' hx' => he'e x' hx' a) hx)) (hmid _ _ he'e' _ (hmid _ _ hee x hx))`. Establish `hMe : ∀ a, M (e a) = e' a`.
+
+Introduce `a`. Rewrite using `[hM, move_apply, hy.mid_span (Submodule.subset_span ⟨a, rfl⟩)]`. Simplify using `[hy.1, hy.2.2]`. Establish `hMz : M F.z = G.z`. Establish `h1 : ∀ a, H.B F.z (e a) = 0` using `fun a => swap_zero (F.zperp a)`.
+
+Establish `h2 : ∀ a, H.B G.z (e' a) = 0` using `fun a => swap_zero (G.zperp a)`. Establish `h3 : mid H e y F.z = F.z` using `by simp [mid_apply, h1, hyz]`. Establish `h4 : mid H e' y' G.z = G.z` using `by simp [mid_apply, h2, hyz']`. Establish `h5 : mid H e' y' (G.z - F.z) = 0` using `hy'.mid_span (hX' ▸ hS (Fin.last r))`. Rewrite `h5` using `[map_sub, h4, sub_eq_zero]`.
+
+Rewrite using `[hM, move_apply, h3, ← h5]`. Simplify using `[h1, hyz]`. Use `⟨LinearEquiv.ofBijective M hbij, ⟨hiso, hbij, fun a => ?_, fun v hv => ?_⟩, ?_, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M (e a) - e a ∈ _`. Rewrite using `[hMe]`.
+
+Conclude with `hS a.castSucc`. Express the relevant statement in the definitionally equal form `M v - v ∈ _`. Establish `hv' : ∀ a, H.B v (e a) = 0` using `fun a => swap_zero (hv a)`. Establish `hp : ∀ a, H.B (mid H e y v) (e' a) = 0` using `fun a => perp_of_span (hy.mid_e v) (hX ▸ heX' a)`. Establish `: M v - v = ∑ a, H.B v (y a) • e' a - ∑ a, H.B v (y a) • e a - ∑ a, H.B (mid H e y v) (y' a) • e' a`.
+
+Rewrite using `[hM, move_apply, mid_apply e' y']`. Simplify using `only [hp, hv', zero_smul, Finset.sum_const_zero]`. Use `nth_rewrite 1 [mid_apply e y v]`. Simplify using `only [hv', zero_smul, Finset.sum_const_zero]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this]`. Conclude with `F.X.sub_mem (F.X.sub_mem (F.X.sum_mem fun a _ => F.X.smul_mem _ (heX' a)) (F.X.sum_mem fun a _ => F.X.smul_mem _ (heX a))) (F.X.sum_mem fun a _ => F.X.smul_mem _ (heX' a))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hMΛ x hx`.
+
+Introduce `x hx`. Take `⟨v, rfl⟩` from `hbij.2 x`. Use `⟨v, ?_, rfl⟩` and prove the remaining obligations. Use `(mem_iff_pair hU v).2 fun x' hx' => ?_` and prove the remaining obligations. Rewrite using `[← hiso]`.
+
+Conclude with `(mem_iff_pair hU _).1 hx _ (hMΛ x' hx')`. Express the relevant statement in the definitionally equal form `M (F.e a) = _`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact hMz`. Consider the case `cast a => exact hMe a`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F G : FlagD H r) (aa : Fin r → Submodule (𝓞 K) K) (Λ : Submodule (𝓞 K) V), IsUnimod H Λ → IsFrame F Λ aa → SameGr F G → F.T = G.T → (∀ a, ∀ t ∈ aa a, t • F.e a.castSucc ∈ Λ ∧ t • G.e a.castSucc ∈ Λ) → F.z ∈ Λ → G.z ∈ Λ → ∃ m : V ≃ₗ[K] V, F.InN (m : V →ₗ[K] V) ∧ m • Λ = Λ ∧ ∀ a, m (F.e a) = G.e a := by
   intro K V _ _ _ _ _ _ _ _ H hK r F G aa Λ hU hF hS _ haa hz hz'
   have hFF : SameGr F F := fun a => by simp

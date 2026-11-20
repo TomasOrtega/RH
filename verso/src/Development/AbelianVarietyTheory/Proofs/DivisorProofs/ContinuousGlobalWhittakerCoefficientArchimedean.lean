@@ -7,6 +7,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Matrix
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `E _ _ _ a φ hφ g h`. Establish `hc : Continuous φ.1` using `hφ.continuous`. Establish `hW : Continuous (GlobalTheory.JSW.whit φ.1)`. Establish `: GlobalTheory.JSW.whit φ.1 = GroundTheory.Automorphic.FourierWhittaker.partialCoeff φ.1 0`. Use function extensionality and compare the values at `x`.
+
+Conclude with `GroundTheory.Automorphic.FourierWhittaker.whittaker_eq_partialCoeff_zero hc x`. Rewrite using `[this]`. Conclude with `GroundTheory.Automorphic.FourierWhittaker.continuous_partialCoeff hc 0`. Conclude with `hW.comp ((continuous_const.mul GlobalTheory.ConstTermSmooth.continuous_infGL).mul continuous_const)`.
+-/
 theorem continuous_whit_infGL : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsAutForm φ → ∀ g h : GA E a,
       Continuous (fun y : GL (Fin a) (Cinf E) => GlobalTheory.JSW.whit φ.1 (g * infGL E a y * h)) := by

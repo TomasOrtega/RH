@@ -16,6 +16,9 @@ variable {D : D7}
 
 open GlobalTheory.FockCompare in
 
+/- English proof (translation)
+Establish `hex : ∃ w : Mx D T.rank S.rank, w.map (finPart D) = 0 ∧ ∀ τ, compAt θ τ w = Matrix.of fun i j => Z τ i j` using `⟨iotaW σ T S Z, hσ.real_iota T S Z, fun τ => congrFun (hσ.pi_iota T S Z) τ⟩`. Establish `hs` using `Classical.epsilon_spec hex`. Conclude with `hσ.real_ext hs.1 (hσ.real_iota T S Z) (funext fun τ => (hs.2 τ).trans (congrFun (hσ.pi_iota T S Z) τ).symm)`.
+-/
 theorem realPt_eq_iota {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) (S T : HSp D) (Z : RW T S) :
     realPt θ (m := T.rank) (n := S.rank) (fun τ => Matrix.of fun i j => Z τ i j) = iotaW σ T S Z := by
   have hex : ∃ w : Mx D T.rank S.rank, w.map (finPart D) = 0 ∧ ∀ τ, compAt θ τ w = Matrix.of fun i j => Z τ i j :=
@@ -23,6 +26,9 @@ theorem realPt_eq_iota {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} 
   have hs := Classical.epsilon_spec hex
   exact hσ.real_ext hs.1 (hσ.real_iota T S Z) (funext fun τ => (hs.2 τ).trans (congrFun (hσ.pi_iota T S Z) τ).symm)
 
+/- English proof (translation)
+Simplify using `[embH, toHom, Matrix.toLin'_apply]`.
+-/
 theorem embH_toHom_apply (S T : HSp D) (δ : ℂ) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (τ : D.what₂.Tau)
     (i : Fin T.rank) (j : Fin S.rank) :
     embH (tauE D) δ (toHom S T rfl rfl γ) τ i j = δ * tauE D τ (γ i j) := by
@@ -32,6 +38,11 @@ end GlobalTheory.AdForm.HeisRead
 
 namespace GlobalTheory.AdForm.HeisRead
 
+/- English proof (translation)
+Establish `hn : Complex.normSq δ ≠ 0` using `Complex.normSq_pos.2 hδ |>.ne'`. Establish `hsc' : sc = 2 * k / Complex.normSq δ`. Rewrite using `[Complex.normSq_eq_norm_sq, eq_div_iff (by rwa [← Complex.normSq_eq_norm_sq]), hsc]`. Substitute `hsc'` using the available equality. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.inv_re, Complex.inv_im, Complex.conj_re, Complex.conj_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.neg_re, Complex.neg_im]`.
+
+Rewrite `hn`, the goal using `[Complex.normSq_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_eq (k sc : ℝ) (δ w g : ℂ) (hδ : δ ≠ 0) (hsc : sc * ‖δ‖ ^ 2 = 2 * k) :
     2 * (Complex.I * (k : ℂ) * ((starRingEnd ℂ) g * -(δ⁻¹ * w))).re = ((sc : ℂ) * (w * (starRingEnd ℂ) (δ * g))).im := by
   have hn : Complex.normSq δ ≠ 0 := Complex.normSq_pos.2 hδ |>.ne'
@@ -48,6 +59,9 @@ end GlobalTheory.AdForm.HeisRead
 namespace GlobalTheory.AdForm.HeisRead
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [HV, LinearMap.mk₂'ₛₗ_apply, map_mul, map_sum, Complex.conj_ofReal, Complex.conj_conj]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem HV_conj {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) (z w : VV ι a b) :
     HV sc w z = starRingEnd ℂ (HV sc z w) := by
   simp only [HV, LinearMap.mk₂'ₛₗ_apply, map_mul, map_sum, Complex.conj_ofReal, Complex.conj_conj]
@@ -56,6 +70,13 @@ theorem HV_conj {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) (z w : VV ι a b
 
 open GlobalTheory.OrientedHeis in
 
+/- English proof (translation)
+Simplify using `only [omO, LinearMap.mk₂_apply, HV, LinearMap.mk₂'ₛₗ_apply, embH_toHom_apply, formAt, hP.gS, hP.gT, inv_one, Matrix.one_apply, apply_ite (tauE D _), map_one, map_zero, hP.xi]`. Simplify using `only [ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hin : ∀ τ (x1 : Fin S.rank), (∑ x2 : Fin S.rank, ∑ x3 : Fin T.rank, if x1 = x2 then (starRingEnd ℂ) ((tauE D τ) (γ x3 x2)) * -(δ⁻¹ * z τ x3 x1) else 0) = ∑ x3 : Fin T.rank, (starRingEnd ℂ) ((tauE D τ) (γ x3 x1)) * -(δ⁻¹ * z τ x3 x1)` using `fun τ x1 => by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Simplify using `only [hin]`. Rewrite using `[Finset.mul_sum, Complex.im_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum, Complex.re_sum, Finset.mul_sum, Finset.mul_sum, Complex.im_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum, Complex.re_sum, Finset.mul_sum, Finset.mul_sum, Complex.im_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `term_eq _ sc δ _ _ hP.ne hP.scale`.
+-/
 theorem omO_eq_im (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (δ : ℂ) (sc : ℝ) (hP : StdPair θ S T δ sc ψ)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (z : VCx D.what₂.Tau S.rank T.rank) :
     omO S T (fun τ i j => -(δ⁻¹ * z τ i j)) (fun τ i j => tauE D τ (γ i j)) =
@@ -79,6 +100,29 @@ namespace GlobalTheory.AdForm.HeisRead
 
 open GlobalTheory.FockCompare GlobalTheory.OrientedHeis in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP f hf γ v hv`. Substitute `hS hT` using the available equality. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hP.inf`. Use function extensionality and compare the values at `z`. Set `G : RW T S` to `fun τ i j => tauE D τ (γ i j)`.
+
+Set `Z : RW T S` to `fun τ i j => -(δ⁻¹ * z τ i j)`. Establish `hrat : ratW T S γ = v + iotaW σ T S G`. Establish `h1 : ratW T S γ - v = iotaW σ T S G`. Use `hσ.real_ext (x := ratW T S γ - v) ?_ (hσ.real_iota _ _ _) ?_` and prove the remaining obligations. Use `show (ratW T S γ - v).map (finPart D) = 0`.
+
+Rewrite using `[Matrix.map_sub _ (finPart D).map_sub, hv.2, sub_self]`. Rewrite using `[hσ.pi_iota, map_sub]`. Use function extensionality and compare the values at `τ i j`. Establish `h0 : piW θ T S v τ i j = 0` using `by show θ τ (infPart D (v i j)) = 0`. Rewrite using `[show infPart D (v i j) = 0 from congrFun (congrFun hv.1 i) j, map_zero]`.
+
+Use `show θ τ (infPart D (incA D (γ i j))) - piW θ T S v τ i j = _`. Rewrite using `[h0, sub_zero, comp_incA hP.inf]`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Establish `hX : ∀ τ i j, embH (tauE D) δ (toHom S T rfl rfl γ) τ i j = δ * tauE D τ (γ i j)` using `GlobalTheory.AdForm.HeisRead.embH_toHom_apply S T δ γ`.
+
+Establish `hp : realPt θ (m` using `T.rank) (n := S.rank) (fun τ => Matrix.of fun i j => -(δ⁻¹ * z τ (Fin.cast rfl i) (Fin.cast rfl j))) = iotaW σ T S Z := by`. Simplify using `using GlobalTheory.AdForm.HeisRead.realPt_eq_iota hσ S T Z`. Establish `hp' : realPt θ (m` using `T.rank) (n := S.rank) (fun τ => Matrix.of fun i j => -(δ⁻¹ * (z + embH (tauE D) δ (toHom S T rfl rfl γ)) τ (Fin.cast rfl i) (Fin.cast rfl j))) = iotaW σ T S (Z - G) := by`. Rewrite using `[← GlobalTheory.AdForm.HeisRead.realPt_eq_iota hσ S T (Z - G)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ i j`. Simplify using `only [Fin.cast_eq_self, Pi.add_apply, hX, Matrix.of_apply, Pi.sub_apply, Z, G]`. Clear denominators, using `[hP.ne]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Unfold `xiN Formalism.L2.Th1.H.opU heisO`.
+
+Use `beta_reduce`. Rewrite using `[hp, hp']`. Establish `e0 : symplOH S T (iotaW σ T S Z) v = 0` using `GlobalTheory.FinTranslate.symplOH_real_fin hv.1 (hσ.real_iota _ _ _)`. Establish `e1 : iotaW σ T S Z + v = ratW T S γ + iotaW σ T S (Z - G)` using `by rw [hrat, map_sub]; abel`. Establish `e2 : f (ratW T S γ + iotaW σ T S (Z - G)) = ψ (symplOH S T (iotaW σ T S (Z - G)) (iotaW σ T S G)) * f (iotaW σ T S (Z - G))`.
+
+Rewrite using `[hf.quasi, ← GlobalTheory.FinTranslate.symplOH_skew, hrat, symplOH_add_right, GlobalTheory.FinTranslate.symplOH_real_fin hv.1 (hσ.real_iota _ _ _), zero_add]`. Establish `e3 : ψ (symplOH S T (iotaW σ T S (Z - G)) (iotaW σ T S G)) = Complex.exp (-(Real.pi * Complex.I) * ((HV sc z (embH (tauE D) δ (toHom S T rfl rfl γ))).im : ℂ))`. Rewrite using `[psi_symplOH hσ hP.std, hσ.pi_iota, LinearMap.map_sub₂, omO_self hσ, sub_zero]`. Conclude with `congrArg (fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * (t : ℂ))) (GlobalTheory.AdForm.HeisRead.omO_eq_im θ ψ S T δ sc hP γ z)`. Rewrite using `[e0, AddChar.map_zero_eq_one, one_mul, e1, e2, e3]`.
+
+Use `set X := embH (tauE D) δ (toHom S T rfl rfl γ)`. Establish `hadd : HV sc (z + X) (z + X) = HV sc z z + HV sc z X + HV sc X z + HV sc X X`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : HV sc X z = starRingEnd ℂ (HV sc z X)` using `GlobalTheory.AdForm.HeisRead.HV_conj sc z X`.
+
+Establish `hcj : starRingEnd ℂ (HV sc z X) = HV sc z X - 2 * Complex.I * ((HV sc z X).im : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Rewrite using `[← mul_assoc, ← Complex.exp_add, mul_right_comm, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[hadd, hc, hcj]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiN_heisO_finOf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ f, IsThetaFunO ψ S T f → ∀ γ v, GlobalTheory.AdTh.IsFinOf S T γ v → xiN θ S T hS hT δ sc (heisO ψ S T v f) = Formalism.L2.Th1.H.opU (HV sc) (embH (tauE D) δ (toHom S T hS hT γ)) (xiN θ S T hS hT δ sc f) := by
   intro D ψ θ S T a b hS hT δ sc hP f hf γ v hv
   subst hS hT

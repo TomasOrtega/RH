@@ -6,6 +6,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hy1 : 1 ≤ y` using `by linarith`. Establish `hpow : ∀ a b : ℕ, a ≤ b → y ^ a ≤ y ^ b` using `fun a b h => pow_le_pow_right₀ hy1 h`. Establish `hk8 : 8 ≤ k`. Use `hpow 1 9 (by norm_num)` as an intermediate fact.
+
+Rewrite `this` using `[pow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 1 ≤ Real.log k`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkk : k ≤ k * Real.log k` using `le_mul_of_one_le_right (by linarith) hlog`. Establish `hff : f ≤ f * Real.log k` using `le_mul_of_one_le_right (le_trans (by positivity) hf) hlog`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_rows_of_crude_bounds (y m k f L l A B : ℝ) (hy : 8 ≤ y) (hA : 64 * A ≤ y) (hB : B ≤ y)
     (hm0 : 0 ≤ m) (hm : m ≤ 2 * y) (hk : y ^ 9 ≤ k) (hf : y ^ 4 ≤ f) (hL0 : 0 ≤ L) (hL : L ≤ y)
     (hl0 : 0 ≤ l) (hl : l ≤ y ^ 2) :
@@ -46,6 +55,23 @@ theorem rank_rows_of_crude_bounds (y m k f L l A B : ℝ) (hy : 8 ≤ y) (hA : 6
       _ ≤ f := (hpow 2 4 (by norm_num)).trans hf
       _ ≤ _ := hff
 
+/- English proof (translation)
+Introduce `eps he0 he1 C _`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨(max 8 (max (64 * C.P.Ck6) C.P.CfL)) ^ 2, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L _ hx hV`. Take `⟨⟨hn, -⟩, ⟨-, hm⟩, ⟨hk, -⟩, -⟩` from `hV.ranks`. Establish `hx1` using `L.sc.one_lt_alt`.
+
+Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hp` using `L.sc.eps_pos`. Establish `hq` using `L.sc.eps_lt`. Establish `hy : max 8 (max (64 * C.P.Ck6) C.P.CfL) ≤ L.sc.x ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.sqrt_eq_rpow]`.
+
+Conclude with `Real.le_sqrt_of_sq_le hx`. Establish `hnat : ∀ j : ℕ, (L.sc.x ^ ((1 : ℝ) / 2)) ^ j = L.sc.x ^ ((j : ℝ) / 2)`. Introduce `j`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmono : ∀ a b : ℝ, a ≤ b → L.sc.x ^ a ≤ L.sc.x ^ b` using `fun a b h => Real.rpow_le_rpow_of_exponent_le hx1.le h`. Use `rank_rows_of_crude_bounds (L.sc.x ^ ((1 : ℝ) / 2)) _ _ _ _ _ _ _ ((le_max_left _ _).trans hy) (((le_max_left _ _).trans (le_max_right _ _)).trans hy) (((le_max_right _ _).trans (le_max_right _ _)).trans hy) (Nat.cast_nonneg _) ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `hm.trans ?_` and prove the remaining obligations. Rewrite using `[← Real.sqrt_eq_rpow]`.
+
+Establish `hd : L.sc.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1.le (by linarith)`. Establish `: L.sc.x * L.sc.delta1 ≤ L.sc.x` using `mul_le_of_le_one_right hx0.le hd`. Use `gcongr`. Rewrite using `[hnat]`. Conclude with `(hmono _ _ (by push_cast; linarith)).trans hk`.
+
+Rewrite using `[hnat]`. Use `((hmono _ _ (by push_cast; linarith)).trans hn).trans ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) ≤ D.R.n` using `Nat.cast_nonneg _`. Unfold `Ranks.f`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.rpow_nonneg hx0.le _`. Conclude with `hmono _ _ (by linarith)`. Conclude with `Real.log_nonneg hx1.le`. Rewrite using `[hnat]`.
+
+Use `Real.log_le_sub_one_of_pos hx0` as an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_rank_lower_bounds :
     SzRow (fun C D L => ((D.R.m : ℝ) ^ 2 * L.sc.L ≤ D.R.k) ∧ ((D.R.m : ℝ) * L.sc.x ^ ((1 : ℝ) / 2) * Real.log L.sc.x ≤ D.R.k) ∧ (C.P.Ck6 * (D.R.m : ℝ) ^ 6 * L.sc.L ≤ (D.R.k : ℝ) * Real.log D.R.k) ∧ (C.P.CfL * L.sc.L ≤ (D.R.f : ℝ) * Real.log D.R.k)) := by
   intro eps he0 he1 C _

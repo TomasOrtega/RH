@@ -8,6 +8,9 @@ namespace Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
 
 open Formalism.BasicNotions NumberField Matrix
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ClearDenominatorsLattice.exists_integer_smul_mem_of_span_top L hL x`.
+-/
 theorem exists_integer_smul_mem_of_span_top {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (hL : Submodule.span K (L : Set V) = ⊤) (x : V) :
     ∃ r : 𝓞 K, r ≠ 0 ∧ r • x ∈ L :=
@@ -15,6 +18,13 @@ theorem exists_integer_smul_mem_of_span_top {K V : Type} [Field K] [NumberField 
 
 variable (D : D7) (u : D.what₂.Word)
 
+/- English proof (translation)
+Establish `hL : ∀ x ∈ ((D.fm u).lat 0).L, ∃ y, (D.fm u).emb 0 y = (D.mem u).A.Nm v ((D.fm u).emb 0 x)`. Introduce `x hx`. Use `choose ys _ hys using fun a => (D.fm u).rhoT_lat v a x hx`. Use `⟨∑ a, ys a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Unfold `ColumnsAtT.Nm`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => hys a`. Take `⟨r, hr, hrx⟩` from `exists_integer_smul_mem_of_span_top ((D.fm u).lat 0).L ((D.fm u).lat_good 0).2.2 x`. Take `⟨y, hy⟩` from `hL _ hrx`.
+
+Establish `hrK : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 D.what₂.LL) D.what₂.LL)]`. Conclude with `hr`. Use `⟨(algebraMap (𝓞 D.what₂.LL) D.what₂.LL r)⁻¹ • y, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, hy, ← algebraMap_smul D.what₂.LL r x, LinearMap.map_smulₛₗ, map_smul, smul_smul, ← map_mul, inv_mul_cancel₀ hrK, map_one, one_smul]`.
+-/
 theorem norm_preserves_rational_form (v : (D.mem u).A.vT) (x : ((D.fm u).lat 0).V) :
     ∃ y, (D.fm u).emb 0 y = (D.mem u).A.Nm v ((D.fm u).emb 0 x) := by
   have hL : ∀ x ∈ ((D.fm u).lat 0).L, ∃ y, (D.fm u).emb 0 y = (D.mem u).A.Nm v ((D.fm u).emb 0 x) := by
@@ -33,6 +43,39 @@ theorem norm_preserves_rational_form (v : (D.mem u).A.vT) (x : ((D.fm u).lat 0).
   rw [LinearMap.map_smulₛₗ, hy, ← algebraMap_smul D.what₂.LL r x, LinearMap.map_smulₛₗ, map_smul, smul_smul,
     ← map_mul, inv_mul_cancel₀ hrK, map_one, one_smul]
 
+/- English proof (translation)
+Use `choose yv hyv using fun v j => norm_preserves_rational_form D u v (((D.fm u).lat 0).b j)`. Set `A : Matrix ((D.mem u).A.vT × ((D.fm u).lat 0).ι) ((D.fm u).lat 0).ι D.what₂.LL` to `fun p j => ((D.fm u).lat 0).b.repr (yv p.1 j) p.2`. Establish `hE : ∀ x : ((D.fm u).lat 0).V, (D.fm u).emb 0 x = ∑ i, D.what₂.embLL (((D.fm u).lat 0).b.repr x i) • (D.fm u).emb 0 (((D.fm u).lat 0).b i)`. Introduce `x`. Use `conv_lhs => rw [← ((D.fm u).lat 0).b.sum_repr x]`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ _ _ _`. Establish `key : ∀ (v : (D.mem u).A.vT) (c : ((D.fm u).lat 0).ι → ℂ), (D.mem u).A.Nm v (∑ j, c j • (D.fm u).emb 0 (((D.fm u).lat 0).b j)) = ∑ i, ((A.map D.what₂.embLL) *ᵥ c) (v, i) • (D.fm u).emb 0 (((D.fm u).lat 0).b i)`. Introduce `v c`. Rewrite using `[map_sum]`.
+
+Establish `hj : ∀ j, (D.mem u).A.Nm v (c j • (D.fm u).emb 0 (((D.fm u).lat 0).b j)) = c j • ∑ i, D.what₂.embLL (((D.fm u).lat 0).b.repr (yv v j) i) • (D.fm u).emb 0 (((D.fm u).lat 0).b i)`. Introduce `j`. Rewrite using `[map_smul, ← hyv, ← hE (yv v j)]`. Rewrite using `[Finset.sum_congr rfl fun j _ => hj j]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[Matrix.mulVec, dotProduct]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hli` using `((D.fm u).emb_basis 0).1`. Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `hzMu : z ∈ (D.mem u).A.Mu0` using `hz.1`. Rewrite `hzMu` using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hzMu`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hz0` to reduce the goal to its premises. Rewrite using `[← hc]`.
+
+Simplify using the standard rewrite rules. Establish `hAc : (A.map D.what₂.embLL) *ᵥ c = 0`. Use function extensionality and compare the values at `p`. Take `⟨v, i⟩` from `p`. Establish `hv : (D.mem u).A.Nm v z = 0`.
+
+Establish `: z ∈ ⨅ v, LinearMap.ker ((D.mem u).A.Nm v)` using `hz.2`. Rewrite `this` using `[Submodule.mem_iInf]`. Conclude with `this v`. Rewrite `hv` using `[← hc, key]`. Conclude with `(Fintype.linearIndependent_iff.1 hli) _ hv i`.
+
+Establish `hx : ∃ x : ((D.fm u).lat 0).ι → D.what₂.LL, x ≠ 0 ∧ A *ᵥ x = 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hker : LinearMap.ker A.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Conclude with `hne x hx0 hx`. Take `⟨g, hg⟩` from `A.mulVecLin.exists_leftInverse_of_injective hker`. Establish `hBA : LinearMap.toMatrix' g * A = 1`.
+
+Establish `h1` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Establish `hBA' : (LinearMap.toMatrix' g).map D.what₂.embLL * A.map D.what₂.embLL = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero _) (map_one _)]`. Apply `hc0` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.one_mulVec c, ← hBA', ← Matrix.mulVec_mulVec, hAc, Matrix.mulVec_zero]`. Take `⟨x, hx0, hAx⟩` from `hx`. Establish `hX0 : ∑ j, x j • ((D.fm u).lat 0).b j ≠ 0`. Introduce `h0`. Conclude with `hx0 (funext fun j => (Fintype.linearIndependent_iff.1 ((D.fm u).lat 0).b.linearIndependent) x h0 j)`.
+
+Establish `hEX : (D.fm u).emb 0 (∑ j, x j • ((D.fm u).lat 0).b j) = ∑ j, (D.what₂.embLL ∘ x) j • (D.fm u).emb 0 (((D.fm u).lat 0).b j)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => LinearMap.map_smulₛₗ _ _ _`. Use `Submodule.ne_bot_iff _ |>.2 ⟨_, ?_, hX0⟩` and prove the remaining obligations. Use `show (D.fm u).emb 0 (∑ j, x j • ((D.fm u).lat 0).b j) ∈ (D.mem u).A.Mram`.
+
+Rewrite using `[hEX]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `show _ ∈ ⨅ v, LinearMap.ker ((D.mem u).A.Nm v)`.
+
+Rewrite using `[Submodule.mem_iInf]`. Introduce `v`. Rewrite using `[LinearMap.mem_ker, key]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: ((A.map D.what₂.embLL) *ᵥ (D.what₂.embLL ∘ x)) (v, i) = 0`.
+
+Rewrite using `[← RingHom.map_mulVec, hAx, Pi.zero_apply, map_zero]`. Rewrite using `[this, zero_smul]`.
+-/
 theorem ramified_rational_ne_bot (h : (D.mem u).A.Mram ≠ ⊥) : (D.fm u).ramSub ≠ ⊥ := by
   classical
   choose yv hyv using fun v j => norm_preserves_rational_form D u v (((D.fm u).lat 0).b j)
@@ -111,6 +154,13 @@ theorem ramified_rational_ne_bot (h : (D.mem u).A.Mram ≠ ⊥) : (D.fm u).ramSu
       rw [← RingHom.map_mulVec, hAx, Pi.zero_apply, map_zero]
     rw [this, zero_smul]
 
+/- English proof (translation)
+Take `⟨X, hX, hX0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (ramified_rational_ne_bot D u h)`. Take `⟨r, hr, hrX⟩` from `exists_integer_smul_mem_of_span_top ((D.fm u).lat 0).L ((D.fm u).lat_good 0).2.2 X`. Establish `hrK : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 D.what₂.LL) D.what₂.LL)]`. Conclude with `hr`.
+
+Use `Submodule.ne_bot_iff _ |>.2 ⟨r • X, ⟨hrX, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show r • X ∈ (D.fm u).ramSub`. Rewrite using `[← algebraMap_smul D.what₂.LL r X]`. Conclude with `(D.fm u).ramSub.smul_mem _ hX`. Rewrite using `[← algebraMap_smul D.what₂.LL r X]`.
+
+Conclude with `smul_ne_zero hrK hX0`.
+-/
 theorem ramified_lattice_ne_bot (h : (D.mem u).A.Mram ≠ ⊥) : (D.fm u).ramL ≠ ⊥ := by
   obtain ⟨X, hX, hX0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (ramified_rational_ne_bot D u h)
   obtain ⟨r, hr, hrX⟩ := exists_integer_smul_mem_of_span_top ((D.fm u).lat 0).L ((D.fm u).lat_good 0).2.2 X
@@ -123,6 +173,11 @@ theorem ramified_lattice_ne_bot (h : (D.mem u).A.Mram ≠ ⊥) : (D.fm u).ramL �
   · rw [← algebraMap_smul D.what₂.LL r X]
     exact smul_ne_zero hrK hX0
 
+/- English proof (translation)
+Introduce `h0`. Establish `hdu : (D.mem u).A.du = 0`. Unfold `ColumnsAtT.du`. Rewrite using `[h0, finrank_bot]`. Establish `h` using `ramified_rank_mul (D.mem u).A M`.
+
+Rewrite `h` using `[hdu, zero_mul]`. Establish `hpos : 0 < (D.duS u) * ((D.mem u).A.T - 2) ^ D.R.f` using `Nat.mul_pos hd (Nat.pow_pos (by omega))`. Unfold `D7.duS at hpos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ramified_forms_ne_bot (M : FreeRankModel (D.mem u).A) (hT : 3 ≤ (D.mem u).A.T) (hd : 0 < D.duS u) :
     (D.mem u).A.Mram ≠ ⊥ := by
   intro h0
@@ -134,6 +189,13 @@ theorem ramified_forms_ne_bot (M : FreeRankModel (D.mem u).A) (hT : 3 ≤ (D.mem
   unfold D7.duS at hpos
   omega
 
+/- English proof (translation)
+Establish `hT : 3 ≤ (D.mem u).A.T`. Establish `h1 : 1 ≤ D.R.f`. Establish `h0 : 0 < D.R.n` using `D.R.toFrame.ord_pos`. Establish `hf : D.R.f = 2 * D.R.n` using `rfl`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : 1 ≤ D.R.N D.R.m` using `by unfold Ranks.N; have := D.R.m_add_three_le_k; omega`. Establish `h3 : 1 ≤ D.R.f * D.R.N D.R.m` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Use `hS.1` as an intermediate fact. Establish `h4 : 2 * D.R.f * D.R.N D.R.m = 2 * (D.R.f * D.R.N D.R.m)` using `by ring`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `ramified_max_slope_le D u (ramified_lattice_ne_bot D u (ramified_forms_ne_bot D u M hT hd))`.
+-/
 theorem ramified_max_slope_le_of_model (M : FreeRankModel (D.mem u).A) (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (hd : 0 < D.duS u) :
     (D.fm u).ramLat.muMax ≤ ((D.fm u).lat 0).muMax := by
   have hT : 3 ≤ (D.mem u).A.T := by

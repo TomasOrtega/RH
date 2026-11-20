@@ -18,6 +18,11 @@ noncomputable def descend (f : π.IntertwiningMap σ) (B A : Subrepresentation �
     ext v
     exact f.isIntertwining _ _ g v.1
 
+/- English proof (translation)
+Introduce `v hv`. Establish `h1` using `LinearMap.congr_fun (hz (GlobalTheory.CompanionTheory.Filtration.descend f B A hA)) (Submodule.Quotient.mk ⟨v, hv⟩)`. Establish `h2 : (GlobalTheory.CompanionTheory.Filtration.descend f B A hA).toLinearMap (Submodule.Quotient.mk ⟨v, hv⟩) = f v` using `by first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.CompanionTheory.Filtration.descend, Submodule.liftQ_apply]`.
+
+Rewrite using `[← h2, h1, LinearMap.zero_apply]`.
+-/
 theorem vanish_step (f : π.IntertwiningMap σ) {A B : Subrepresentation π}
     (hA : ∀ v ∈ A.toSubmodule, f v = 0)
     (hz : ∀ φ : (subQuot B A).IntertwiningMap σ, φ.toLinearMap = 0) :
@@ -30,6 +35,11 @@ theorem vanish_step (f : π.IntertwiningMap σ) {A B : Subrepresentation π}
       | simp [GlobalTheory.CompanionTheory.Filtration.descend, Submodule.liftQ_apply]
   rw [← h2, h1, LinearMap.zero_apply]
 
+/- English proof (translation)
+Proceed by induction on `hi, hle using Nat.le_induction with`. Consider the case `base`. Introduce `_ _`. Conclude with `h0`. Consider the case `succ k hk ih`.
+
+Introduce `hhi hz`. Establish `hkN : k < N` using `Nat.lt_of_succ_lt_succ hhi`. Establish `ih'` using `ih (Nat.lt_succ_of_lt hkN) (fun t h1 h2 => hz t h1 (Nat.lt_succ_of_lt h2))`. Conclude with `GlobalTheory.CompanionTheory.Filtration.vanish_step f (A := S (⟨k, hkN⟩ : Fin N).castSucc) (B := S (⟨k, hkN⟩ : Fin N).succ) ih' (hz ⟨k, hkN⟩ hk (Nat.lt_succ_self k))`.
+-/
 theorem vanish_climb {N : ℕ} (S : Fin (N + 1) → Subrepresentation π) (f : π.IntertwiningMap σ)
     (lo : ℕ) (hlo : lo < N + 1)
     (h0 : ∀ v ∈ (S ⟨lo, hlo⟩).toSubmodule, f v = 0) (hi : ℕ) (hle : lo ≤ hi) :
@@ -50,6 +60,33 @@ theorem vanish_climb {N : ℕ} (S : Fin (N + 1) → Subrepresentation π) (f : �
       (A := S (⟨k, hkN⟩ : Fin N).castSucc) (B := S (⟨k, hkN⟩ : Fin N).succ) ih'
       (hz ⟨k, hkN⟩ hk (Nat.lt_succ_self k))
 
+/- English proof (translation)
+Introduce `G V W _ _ _ _ _ π σ N S _ hS0 hST t₀ hmult hzero φ ψ`. Establish `happ : ∀ (f : π.IntertwiningMap σ) (v : V), f.toLinearMap v = f v` using `fun f v => Representation.IntertwiningMap.toLinearMap_apply π σ f v`. Establish `hbot : ∀ f : π.IntertwiningMap σ, ∀ v ∈ (S ⟨0, Nat.succ_pos N⟩).toSubmodule, f v = 0`. Introduce `f v hv`. Establish `e0 : (⟨0, Nat.succ_pos N⟩ : Fin (N + 1)) = 0` using `by first`.
+
+Consider the case `exact Fin.mk_zero`. Consider the case `exact Fin.ext (by simp)`. Rewrite `hv` using `[e0, hS0]`. Establish `hv0 : v = 0` using `by first`. Consider the case `exact (Submodule.mem_bot ℂ).1 hv`.
+
+Consider the case `exact hv`. Consider the case `simpa using hv`. Consider the case `exact (Submodule.mem_bot ℂ).1 ((bot_le : (⊥ : Subrepresentation π) ≤ ⟨⊥, fun g w hw => by rw [(Submodule.mem_bot ℂ).1 hw, map_zero]; exact Submodule.zero_mem _⟩) hv)`. Rewrite using `[hv0, ← happ, map_zero]`. Establish `htop : ∀ v : V, v ∈ (S (Fin.last N)).toSubmodule`.
+
+Introduce `v`. Rewrite using `[hST]`. Use `first`. Consider the case `exact Submodule.mem_top`. Consider the case `trivial`.
+
+Consider the case `exact (le_top : (⟨⊤, fun _ _ _ => Submodule.mem_top⟩ : Subrepresentation π) ≤ ⊤) (Submodule.mem_top (x := v))`. Consider the case `simp`. Establish `hlow : ∀ f : π.IntertwiningMap σ, ∀ v ∈ (S t₀.castSucc).toSubmodule, f v = 0` using `fun f => GlobalTheory.CompanionTheory.Filtration.vanish_climb S f 0 (Nat.succ_pos N) (hbot f) t₀.val (Nat.zero_le _) (Nat.lt_succ_of_lt t₀.isLt) (fun t _ ht => hzero t (by rintro rfl; exact lt_irrefl _ ht))`. Establish `hup : ∀ f : π.IntertwiningMap σ, (∀ v ∈ (S t₀.succ).toSubmodule, f v = 0) → ∀ v, f v = 0`. Introduce `f hf v`.
+
+Establish `h` using `GlobalTheory.CompanionTheory.Filtration.vanish_climb S f (t₀.val + 1) (Nat.succ_lt_succ t₀.isLt) hf N t₀.isLt (Nat.lt_succ_self N) (fun t h1 _ => hzero t (by rintro rfl; exact Nat.not_succ_le_self _ h1))`. Conclude with `h v (htop v)`. Establish `hdesc : ∀ (f : π.IntertwiningMap σ) (hf : ∀ v ∈ (S t₀.castSucc).toSubmodule, f v = 0) (v : V) (hv : v ∈ (S t₀.succ).toSubmodule), (GlobalTheory.CompanionTheory.Filtration.descend f (S t₀.succ) (S t₀.castSucc) hf).toLinearMap (Submodule.Quotient.mk ⟨v, hv⟩) = f v`. Introduce `f hf v hv`. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp [GlobalTheory.CompanionTheory.Filtration.descend, Submodule.liftQ_apply]`. Break down `hmult (GlobalTheory.CompanionTheory.Filtration.descend φ (S t₀.succ) (S t₀.castSucc) (hlow φ)) (GlobalTheory.CompanionTheory.Filtration.descend ψ (S t₀.succ) (S t₀.castSucc) (hlow ψ)) with h | ⟨c, hc⟩` into its components or cases. Use `left`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Rewrite using `[LinearMap.zero_apply, happ]`. Use `hup φ ?_ v` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[← hdesc φ (hlow φ) w hw, h, LinearMap.zero_apply]`.
+
+Use `right`. Use `⟨c, ?_⟩` and prove the remaining obligations. Set `χ : π.IntertwiningMap σ` to `{ toLinearMap := ψ.toLinearMap - c • φ.toLinearMap isIntertwining' := fun g => by first`. Consider the case `rw [LinearMap.sub_comp, LinearMap.smul_comp, LinearMap.comp_sub, LinearMap.comp_smul, ψ.isIntertwining' g, φ.isIntertwining' g]`. Consider the case `(ext v`.
+
+Establish `h1` using `LinearMap.congr_fun (ψ.isIntertwining' g) v`. Establish `h2` using `LinearMap.congr_fun (φ.isIntertwining' g) v`. Simplify using `only [LinearMap.comp_apply] at h1 h2`. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, h1, h2, map_sub, map_smul]) }`. Establish `hχ : ∀ v, χ v = ψ v - c • φ v`.
+
+Introduce `v`. Rewrite using `[← happ, ← happ, ← happ]`. Both sides reduce to the same expression. Establish `hχS : ∀ v ∈ (S t₀.succ).toSubmodule, χ v = 0`. Introduce `v hv`.
+
+Rewrite using `[hχ, ← hdesc ψ (hlow ψ) v hv, ← hdesc φ (hlow φ) v hv, hc, LinearMap.smul_apply, sub_self]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `h` using `hup χ hχS v`. Rewrite `h` using `[hχ, sub_eq_zero]`.
+
+Rewrite using `[LinearMap.smul_apply, happ, happ]`. Conclude with `h`.
+-/
 theorem intertwining_proportional :
     ∀ {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
       (π : Representation ℂ G V) (σ : Representation ℂ G W) (N : ℕ)

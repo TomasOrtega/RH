@@ -19,18 +19,30 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {V V' : Type
 def conjE (e : V ≃ₗ[Ω] V') : (V × Module.Dual Ω V) ≃ₗ[Ω] (V' × Module.Dual Ω V') :=
   e.prodCongr e.symm.dualMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjE_apply (e : V ≃ₗ[Ω] V') (y : V × Module.Dual Ω V) :
     conjE e y = (e y.1, y.2 ∘ₗ e.symm.toLinearMap) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjE_symm_apply (e : V ≃ₗ[Ω] V') (y : V' × Module.Dual Ω V') :
     (conjE e).symm y = (e.symm y.1, y.2 ∘ₗ e.toLinearMap) := rfl
 
 def cj (g : F ≃ₗ[Ω] F') (ρ : 𝓞 E →+* Module.End Ω F) : 𝓞 E →+* Module.End Ω F' :=
   (g.conjRingEquiv : Module.End Ω F →+* Module.End Ω F').comp ρ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_apply (g : F ≃ₗ[Ω] F') (ρ : 𝓞 E →+* Module.End Ω F) (a : 𝓞 E) (y : F') :
     cj g ρ a y = g (ρ a (g.symm y)) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`. Conclude with `⟨_, h, by simp⟩`.
+-/
 theorem mem_map_equiv (M : Lat ξ F) (g : F ≃ₗ[Ω] F') (p : Cpt ξ) (y : F') :
     y ∈ M.map g.toLinearMap p ↔ g.symm y ∈ M p := by
   constructor
@@ -39,6 +51,9 @@ theorem mem_map_equiv (M : Lat ξ F) (g : F ≃ₗ[Ω] F') (p : Cpt ξ) (y : F')
   · intro h
     exact ⟨_, h, by simp⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use extensionality with `y`. Rewrite using `[mem_map_equiv, mem_map_equiv]`. Simplify using the standard rewrite rules.
+-/
 theorem map_symm_map (M : Lat ξ F) (g : F ≃ₗ[Ω] F') :
     (M.map g.toLinearMap).map g.symm.toLinearMap = M := by
   funext p
@@ -46,6 +61,9 @@ theorem map_symm_map (M : Lat ξ F) (g : F ≃ₗ[Ω] F') :
   rw [mem_map_equiv, mem_map_equiv]
   simp
 
+/- English proof (translation)
+Use `⟨(LinearMap.linearIndependent_iff g.toLinearMap (LinearEquiv.ker g)).2 h.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.map _ (M p) = _`. Rewrite using `[h.2, Submodule.map_span, Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem isFrameAt_map {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {r : ℕ} {b : Fin r → F} {p : Cpt ξ}
     (h : M.IsFrameAt b p) : (M.map g.toLinearMap).IsFrameAt (g ∘ b) p := by
   refine ⟨(LinearMap.linearIndependent_iff g.toLinearMap (LinearEquiv.ker g)).2 h.1, ?_⟩
@@ -53,6 +71,11 @@ theorem isFrameAt_map {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {r : ℕ} {b : Fin r 
   rw [h.2, Submodule.map_span, Set.range_comp]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isFrameAt_map g.symm h` as an intermediate fact. Rewrite `this` using `[map_symm_map]`. Then use the resulting hypothesis. Introduce `h`.
+
+Use `isFrameAt_map g h` as an intermediate fact. Establish `e : g ∘ g.symm ∘ b = b` using `by funext i; simp`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isFrameAt_map_iff {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {r : ℕ} {b : Fin r → F'} {p : Cpt ξ} :
     (M.map g.toLinearMap).IsFrameAt b p ↔ M.IsFrameAt (g.symm ∘ b) p := by
   constructor
@@ -64,6 +87,11 @@ theorem isFrameAt_map_iff {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {r : ℕ} {b : Fi
     have e : g ∘ g.symm ∘ b = b := by funext i; simp
     rwa [e] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [detLat]`. Use `congr 1`. Use extensionality with `t`. Use `exists_congr fun A => and_congr_left fun _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[isFrameAt_map_iff]`. Establish `e : (g.symm ∘ fun i => ∑ j, A i j • u j) = fun i => ∑ j, A i j • (g.symm ∘ u) j`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+-/
 theorem detLat_map (M : Lat ξ F) (g : F ≃ₗ[Ω] F') {r : ℕ} (u : Fin r → F') :
     detLat (M.map g.toLinearMap) u = detLat M (g.symm ∘ u) := by
   funext p
@@ -77,6 +105,13 @@ theorem detLat_map (M : Lat ξ F) (g : F ≃ₗ[Ω] F') {r : ℕ} (u : Fin r →
     simp
   rw [e]
 
+/- English proof (translation)
+Establish `e : (fun q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => cj g ρ (RingOfIntegers.basis E q.2) ((g ∘ t) q.1)) = g ∘ fun q : Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => ρ (RingOfIntegers.basis E q.2) (t q.1)`. Use function extensionality and compare the values at `q`. Simplify using `[cj_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `(LinearMap.linearIndependent_iff g.toLinearMap (LinearEquiv.ker g)).2 h.1`. Establish `e2 : ((M.map g.toLinearMap p : Submodule _ F') : Set F') = g '' (M p : Set F)` using `rfl`. Rewrite using `[e2]`. Use `Submodule.map_span g.toLinearMap (M p : Set F)` as an intermediate fact. Rewrite `this` using `[h.2.1, Submodule.map_top, LinearEquiv.range]`.
+
+Conclude with `this.symm`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Submodule.map _ (M p) = _`. Rewrite using `[h.2.2, Submodule.map_span, Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem isFreeOn_map {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {ρ : 𝓞 E →+* Module.End Ω F} {p : Cpt ξ} {N : ℕ}
     {t : Fin N → F} (h : HT.IsFreeOn ρ (M p) t) :
     HT.IsFreeOn (cj g ρ) (M.map g.toLinearMap p) (g ∘ t) := by
@@ -99,16 +134,27 @@ theorem isFreeOn_map {M : Lat ξ F} (g : F ≃ₗ[Ω] F') {ρ : 𝓞 E →+* Mod
     rw [h.2.2, Submodule.map_span, Set.range_comp]
     rfl
 
+/- English proof (translation)
+Simplify using `[HT.eigProj, LinearMap.sum_apply, cj_apply, map_sum]`.
+-/
 theorem eigProj_cj (g : F ≃ₗ[Ω] F') (ρ : 𝓞 E →+* Module.End Ω F) (σ : E →+* Ω) (y : F') :
     HT.eigProj (cj g ρ) σ y = g (HT.eigProj ρ σ (g.symm y)) := by
   simp [HT.eigProj, LinearMap.sum_apply, cj_apply, map_sum]
 
+/- English proof (translation)
+Rewrite using `[HT.LatBasic.mem_eigSp, HT.LatBasic.mem_eigSp]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[cj_apply, ← map_smul, LinearEquiv.eq_symm_apply]`.
+-/
 theorem mem_eigSp_cj (g : F ≃ₗ[Ω] F') (ρ : 𝓞 E →+* Module.End Ω F) (σ : E →+* Ω) (y : F') :
     y ∈ HT.eigSp (cj g ρ) σ ↔ g.symm y ∈ HT.eigSp ρ σ := by
   rw [HT.LatBasic.mem_eigSp, HT.LatBasic.mem_eigSp]
   refine forall_congr' fun a => ?_
   rw [cj_apply, ← map_smul, LinearEquiv.eq_symm_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, by simp [eigProj_cj]⟩`.
+
+Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨x, hx, rfl⟩, by simp [eigProj_cj]⟩`.
+-/
 theorem eigQuot_map (M : Lat ξ F) (g : F ≃ₗ[Ω] F') (ρ : 𝓞 E →+* Module.End Ω F) (σ : E →+* Ω) :
     (M.map g.toLinearMap).map (HT.eigProj (cj g ρ) σ) = (M.map (HT.eigProj ρ σ)).map g.toLinearMap := by
   funext p
@@ -175,6 +221,13 @@ def transport (e : V ≃ₗ[Ω] V') (𝓗 : HodgeLat L ρ bar r) (h : ∀ a v, e
     rw [hb, Submodule.map_top, LinearEquiv.range] at this
     exact this.symm
 
+/- English proof (translation)
+Introduce `u hu hsp`. Establish `hq : (transport e 𝓗 h).quot σ = (𝓗.quot σ).map (conjE e).toLinearMap` using `eigQuot_map 𝓗.HL (conjE e) 𝓗.ρH σ`. Rewrite using `[hq, detLat_map]`. Use `hd _ ((LinearMap.linearIndependent_iff (conjE e).symm.toLinearMap (LinearEquiv.ker _)).2 hu) ?_` and prove the remaining obligations. Use extensionality with `y`.
+
+Establish `h1 : Set.range ((conjE e).symm ∘ u) = (conjE e).symm.toLinearMap '' Set.range u` using `Set.range_comp _ _`. Rewrite using `[h1, ← Submodule.map_span, hsp]`. Express the relevant statement in the definitionally equal form `_ ↔ y ∈ HT.eigSp 𝓗.ρH σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `(mem_eigSp_cj (conjE e) 𝓗.ρH σ z).1 hz`. Introduce `hy`. Use `⟨conjE e y, (mem_eigSp_cj (conjE e) 𝓗.ρH σ _).2 (by simpa using hy), by simp⟩` and prove the remaining obligations.
+-/
 theorem transport_degZero (e : V ≃ₗ[Ω] V') (𝓗 : HodgeLat L ρ bar r) (h : ∀ a v, e (ρ a v) = ρ' a (e v))
     (σ : E →+* Ω) (ϖ : Ω) (hd : 𝓗.DegZero σ ϖ) : (transport e 𝓗 h).DegZero σ ϖ := by
   intro u hu hsp
@@ -194,6 +247,9 @@ theorem transport_degZero (e : V ≃ₗ[Ω] V') (𝓗 : HodgeLat L ρ bar r) (h 
 
 end HodgeTransport
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ V V' _ _ _ _ e L ρ ρ' bar r 𝓗 h`. Conclude with `⟨HodgeTransport.transport e 𝓗 h, fun σ ϖ hd => HodgeTransport.transport_degZero e 𝓗 h σ ϖ hd⟩`.
+-/
 theorem hodgeLat_transport : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [Field E] [NumberField E] (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω V'] (e : V ≃ₗ[Ω] V') (L : Lat ξ V) (ρ : 𝓞 E →+* Module.End Ω V) (ρ' : 𝓞 E →+* Module.End Ω V') (bar : 𝓞 E ≃+* 𝓞 E) (r : ℕ) (𝓗 : HodgeLat L ρ bar r), (∀ a v, e (ρ a v) = ρ' a (e v)) → ∃ 𝓗' : HodgeLat (L.map e.toLinearMap) ρ' bar r, ∀ σ ϖ, 𝓗.DegZero σ ϖ → 𝓗'.DegZero σ ϖ := by
   intro X Ω _ ξ E _ _ V V' _ _ _ _ e L ρ ρ' bar r 𝓗 h
   exact ⟨HodgeTransport.transport e 𝓗 h, fun σ ϖ hd => HodgeTransport.transport_degZero e 𝓗 h σ ϖ hd⟩

@@ -12,6 +12,13 @@ namespace GlobalTheory.SecTensor
 
 open TensorProduct
 
+/- English proof (translation)
+Establish `hc : IsBaseChange B c` using `(isLocalizedModule_iff_isBaseChange (.powers r) B c).1 inferInstance`. Establish `hd : IsBaseChange B d` using `(isLocalizedModule_iff_isBaseChange (.powers r) B d).1 inferInstance`. Use `show IsLocalizedModule (.powers r) _`. Rewrite using `[isLocalizedModule_iff_isBaseChange (.powers r) B]`. Establish `h1` using `isBaseChange_tensorProduct_map (R := R) (P := N) B hc`.
+
+Establish `h2` using `h1.comp (IsBaseChange.ofEquiv hd.equiv)`. Establish `heq : TensorProduct.lift ((LinearMap.mul R B).compl₁₂ c d) = (hd.equiv.toLinearMap.restrictScalars R) ∘ₗ (AlgebraTensorModule.map c (LinearMap.id (R` using `R) (M := N))).restrictScalars R := by`. Use extensionality with `m n`. Simplify using `[IsBaseChange.equiv_tmul]`. Rewrite using `[heq]`.
+
+Conclude with `h2`.
+-/
 theorem isLocalizedModule_mulTensor {R M N B : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [CommRing B] [Algebra R B] (r : R) [IsLocalization.Away r B]
     (c : M →ₗ[R] B) (d : N →ₗ[R] B) [IsLocalizedModule.Away r c] [IsLocalizedModule.Away r d] :
@@ -30,6 +37,11 @@ theorem isLocalizedModule_mulTensor {R M N B : Type*} [CommRing R] [AddCommGroup
   rw [heq]
   exact h2
 
+/- English proof (translation)
+Establish `(r : s)` using `isLocalizedModule_mulTensor r.1 (c r) (d r)`. Use `bijective_of_isLocalized_span s hs (fun r => B r) (fun r => TensorProduct.lift ((LinearMap.mul R (B r)).compl₁₂ (c r) (d r))) (fun r => B r) e μ fun r => ?_` and prove the remaining obligations. Establish `: IsLocalizedModule.map (.powers r.1) (TensorProduct.lift ((LinearMap.mul R (B r)).compl₁₂ (c r) (d r))) (e r) μ = LinearMap.id`. Apply `IsLocalizedModule.linearMap_ext (.powers r.1) (TensorProduct.lift ((LinearMap.mul R (B r)).compl₁₂ (c r) (d r))) (e r)` to reduce the goal to its premises. Rewrite using `[IsLocalizedModule.map_comp]`.
+
+Use extensionality with `m n`. Simplify using `[h]`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+-/
 theorem bijective_of_mulTensor {R M N P : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [AddCommGroup P] [Module R P] (μ : M ⊗[R] N →ₗ[R] P)
     (s : Set R) (hs : Ideal.span s = ⊤) (B : s → Type*) [∀ r, CommRing (B r)]
@@ -115,6 +127,11 @@ def chartEquivTop (L : LB T) (hL : L.IsLB) (r : Γ(T, ⊤)) (i : L.ι) (h : T.ba
       rw [AbLaw.SecOn.smul_basicOpen_def]
       exact ((chartEquiv hL i h).map_smul _ s).trans (Algebra.smul_def a _).symm }
 
+/- English proof (translation)
+Use `haveI := AbLaw.SecOn.isLocalizedModule_resBasicOpen hL (isAffineOpen_top T) r`. Use `haveI := IsLocalizedModule.of_linearEquiv (S := .powers r) (f := AbLaw.SecOn.resBasicOpen L r) (chartEquivTop L hL r i h)`. Use `haveI := IsLocalizedModule.of_linearEquiv_right (S := .powers r) (f := (chartEquivTop L hL r i h).toLinearMap ∘ₗ AbLaw.SecOn.resBasicOpen L r) (globalEquiv L).symm`. Establish `e : chartLoc L r i h = ((chartEquivTop L hL r i h).toLinearMap ∘ₗ AbLaw.SecOn.resBasicOpen L r) ∘ₗ (globalEquiv L).symm.toLinearMap`. Use extensionality with `s`.
+
+Express the relevant statement in the definitionally equal form `resG T h (s.f i) = chartEquiv hL i h (AbLaw.SecOn.restrict L _ (ofSec s ⊤))`. Rewrite using `[chartEquiv_apply, AbLaw.SecOn.restrict_eq_map, coord_map, coord_ofSec, resG_resG, resG_resG]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem isLocalizedModule_chartLoc [IsAffine T] (L : LB T) (hL : L.IsLB) (r : Γ(T, ⊤)) (i : L.ι)
     (h : T.basicOpen r ≤ L.U i) : IsLocalizedModule.Away r (chartLoc L r i h) := by
   haveI := AbLaw.SecOn.isLocalizedModule_resBasicOpen hL (isAffineOpen_top T) r
@@ -137,6 +154,17 @@ namespace GlobalTheory.SecTensor
 
 open TensorProduct GlobalTheory.LB
 
+/- English proof (translation)
+Introduce `T _ A B hA hB`. Set `s : Set Γ(T, ⊤)` to `{f | ∃ i j, T.basicOpen f ≤ A.U i ⊓ B.U j}`. Establish `hs : Ideal.span s = ⊤`. Rewrite using `[← (isAffineOpen_top T).self_le_iSup_basicOpen_iff]`. Introduce `x hx`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hA.cover.ge (TopologicalSpace.Opens.mem_top x))`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hB.cover.ge (TopologicalSpace.Opens.mem_top x))`. Take `⟨f, hf, hxf⟩` from `(isAffineOpen_top T).exists_basicOpen_le (V := A.U i ⊓ B.U j) ⟨x, hi, hj⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, i, j, hf⟩, hxf⟩`. Establish `(r : s)` using `(isAffineOpen_top T).isLocalization_basicOpen r.1`.
+
+Set `i (r : s) : A.ι` to `r.2.choose`. Set `j (r : s) : B.ι` to `r.2.choose_spec.choose`. Establish `hij (r : s) : T.basicOpen r.1 ≤ A.U (i r) ⊓ B.U (j r)` using `r.2.choose_spec.choose_spec`. Establish `(r : s)` using `isLocalizedModule_chartLoc A hA r.1 (i r) ((hij r).trans inf_le_left)`. Establish `(r : s)` using `isLocalizedModule_chartLoc B hB r.1 (j r) ((hij r).trans inf_le_right)`.
+
+Establish `(r : s)` using `isLocalizedModule_chartLoc (CechPic.tens A B) (CechPic.isLB_tens hA hB) r.1 ((i r, j r) : A.ι × B.ι) (hij r)`. Use `⟨LinearEquiv.ofBijective (TensorProduct.lift (mulBil A B)) (bijective_of_mulTensor _ s hs (fun r => Γ(T, T.basicOpen r.1)) (fun r => chartLoc A r.1 (i r) ((hij r).trans inf_le_left)) (fun r => chartLoc B r.1 (j r) ((hij r).trans inf_le_right)) (fun r => chartLoc (CechPic.tens A B …` and prove the remaining obligations. Rewrite using `[TensorProduct.lift.tmul]`. Express the relevant statement in the definitionally equal form `resG T (hij r) (mulFun A B m n (i r, j r)) = _ * _`. Simplify using `only [mulFun, map_mul, resG_resG]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tensorSecEquiv : ∀ (T : Scheme.{0}) [IsAffine T] (A B : LB T), A.IsLB → B.IsLB →
     Nonempty (TensorProduct Γ(T, ⊤) (LB.Sec A) (LB.Sec B) ≃ₗ[Γ(T, ⊤)]
       LB.Sec (GlobalTheory.CechPic.tens A B)) := by

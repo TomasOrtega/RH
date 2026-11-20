@@ -16,6 +16,9 @@ noncomputable section
 
 namespace ArithmeticVolumeDegreeZero
 
+/- English proof (translation)
+Unfold `arVolP`. Establish `hu : ∀ k : ℕ, 0 ≤ smallSectionCount P La (a * k) / (((a * k : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))` using `fun k => div_nonneg (Real.log_natCast_nonneg _) (by positivity)`. Distinguish the cases in `hb : IsBoundedUnder (· ≤ ·) atTop (fun k : ℕ => smallSectionCount P La (a * k) / (((a * k : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)))`. Conclude with `le_limsup_of_frequently_le (Frequently.of_forall hu) hb`. Rewrite using `[Real.limsup_of_not_isBoundedUnder hb]`.
+-/
 theorem arithmeticVolume_nonneg {Ω : Type*} [CommRing Ω] (P : ℕ → Ω → Prop) (La : ℕ → AddSubgroup Ω) (a D : ℕ) :
     0 ≤ arVolP P La a D := by
   unfold arVolP
@@ -26,6 +29,11 @@ theorem arithmeticVolume_nonneg {Ω : Type*} [CommRing Ω] (P : ℕ → Ω → P
   · exact le_limsup_of_frequently_le (Frequently.of_forall hu) hb
   · rw [Real.limsup_of_not_isBoundedUnder hb]
 
+/- English proof (translation)
+Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hmem : (MvPolynomial.C (n : ℤ) : MRing ι) ∈ mCoordIdeal y` using `by show mConeMap y (MvPolynomial.C (n : ℤ)) = 0`. Rewrite using `[mConeMap, MvPolynomial.aeval_C, eq_intCast, Int.cast_natCast, ← map_natCast (MvPolynomial.C : Ω →+* MvPolynomial K Ω), hn, map_zero]`. Establish `h' : (n : ℤ) ∈ (mCoordIdeal y).comap (MvPolynomial.C : ℤ →+* MRing ι)` using `hmem`. Rewrite `h'` using `[h]`.
+
+Conclude with `(Submodule.mem_bot _).mp h'` after adjusting the coercions.
+-/
 theorem charZero_of_horizontal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (h : IsHorizontal (mCoordIdeal y)) : CharZero Ω := by
   refine charZero_of_inj_zero fun n hn => ?_
@@ -37,6 +45,21 @@ theorem charZero_of_horizontal {K : Type} [Fintype K] {ι : K → Type} [∀ k, 
   rw [h] at h'
   exact_mod_cast (Submodule.mem_bot _).mp h'
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hpos`. Rewrite `hpos` using `[not_le]`. Use `set g : Polynomial ℝ := p - Polynomial.C C * ((Polynomial.X + 1) * r) with hg`. Establish `hr1 : r.coeff (D + 1) = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `hgc : g.coeff (D + 1) = p.coeff (D + 1) - C * r.coeff D`.
+
+Rewrite using `[hg, Polynomial.coeff_sub, Polynomial.coeff_C_mul, add_mul, one_mul, Polynomial.coeff_add, Polynomial.coeff_X_mul, hr1, add_zero]`. Establish `hgpos : 0 < g.coeff (D + 1)`. Rewrite using `[hgc]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgdeg : g.natDegree ≤ D + 1`.
+
+Use `(Polynomial.natDegree_sub_le _ _).trans (max_le hp ?_)` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_mul_le).trans ?_` and prove the remaining obligations. Establish `: (Polynomial.X + 1 : Polynomial ℝ).natDegree ≤ 1`. Use `(Polynomial.natDegree_add_le _ _).trans (max_le Polynomial.natDegree_X_le ?_)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hgnat : g.natDegree = D + 1` using `le_antisymm hgdeg (Polynomial.le_natDegree_of_ne_zero hgpos.ne')`. Establish `hlead : 0 ≤ g.leadingCoeff`. Rewrite using `[Polynomial.leadingCoeff, hgnat]`.
+
+Conclude with `hgpos.le`. Establish `hdeg : 0 < g.degree`. Rewrite using `[Polynomial.degree_eq_natDegree (fun h0 => by simp [h0] at hgpos), hgnat]`. Conclude with `Nat.succ_pos D` after adjusting the coercions. Establish `ht` using `(g.tendsto_atTop_of_leadingCoeff_nonneg hdeg hlead).comp tendsto_natCast_atTop_atTop`.
+
+Take `⟨q, hq1, hq⟩` from `((eventually_ge_atTop 1).and (ht.eventually (eventually_gt_atTop 0))).exists`. Establish `hev : g.eval (q : ℝ) = p.eval (q : ℝ) - C * ((q : ℝ) + 1) * r.eval (q : ℝ)`. Simplify using `only [hg, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one]`. Expand and normalize the polynomial expressions, which then agree. Use `h q hq1` as an intermediate fact.
+
+Simplify using `only [Function.comp_apply] at hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem coeff_le_of_eval_le_mul {D : ℕ} (p r : Polynomial ℝ) {C : ℝ} (hC : 0 ≤ C) (hp : p.natDegree ≤ D + 1)
     (hr : r.natDegree ≤ D) (hrD : r.coeff D ≤ 0)
     (h : ∀ q : ℕ, 1 ≤ q → p.eval (q : ℝ) ≤ C * ((q : ℝ) + 1) * r.eval (q : ℝ)) : p.coeff (D + 1) ≤ 0 := by
@@ -76,6 +99,13 @@ theorem coeff_le_of_eval_le_mul {D : ℕ} (p r : Polynomial ℝ) {C : ℝ} (hC :
 
 end ArithmeticVolumeDegreeZero
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 II hD hII har hb hP0 hs hnef hc hdeg`. Establish `: CharZero Ω` using `ArithmeticVolumeDegreeZero.charZero_of_horizontal y har.2.2.1`. Use `le_trans ?_ (ArithmeticVolumeDegreeZero.arithmeticVolume_nonneg _ _ _ _)` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `hV K ι Ω y D A P0 hD har hb hP0 hs hnef hc`. Take `⟨p, hpdeg, hpc, hp⟩` from `hI K ι II (mCoordIdeal y) (D + 1) A (fsH ι) hII har hs.1 (GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1)`.
+
+Take `⟨r, hrdeg, hrc, hr⟩` from `hG K ι (mCoordIdeal y) D A.a ((1 : ℤ) • (fsH ι).a) har`. Establish `hbound : ∀ q : ℕ, 1 ≤ q → p.eval (q : ℝ) ≤ C * ((q : ℝ) + 1) * r.eval (q : ℝ)`. Introduce `q hq`. Rewrite using `[← hp q, ← hr q]`. Conclude with `(hB K ι Ω y D _ P0 II hD hII har hb (hN K ι Ω y D A P0 hD har hb hP0 hs hnef hc q hq)).trans (hC q hq)`.
+
+Rewrite using `[← hpc]`. Conclude with `ArithmeticVolumeDegreeZero.coeff_le_of_eval_le_mul p r hC0 hpdeg hrdeg (by rw [hrc]; exact_mod_cast hdeg) hbound`.
+-/
 theorem ArithmeticVolumeDegreeZero.proof (hB : G6.StatementB) (hN : ShiftNefBig.Statement) (hV : ShiftVolumeBound.Statement)
     (hI : ShiftIntersectionPolynomial.Statement) (hG : ShiftDegreePolynomial.Statement) :
     ArithmeticVolumeDegreeZero.Statement := by

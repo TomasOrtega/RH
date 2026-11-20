@@ -11,6 +11,17 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 namespace GlobalTheory.CompanionTheory.GapInt
 
+/- English proof (translation)
+Introduce `Wq _ _ _ k r z π u hz hT hty i hi j hj`. Take `⟨hi1, hi2⟩` from `Finset.mem_Icc.1 hi`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Take `⟨Bs, hB⟩` from `Formalism.FourierDecayAlt.P.Qx8.frame_exists hz hT`.
+
+Take `⟨hnt, hrep, hcont, -, -, hcap⟩` from `hty`. Establish `hR : Qr.IsRepW (n + 1) r z π` using `⟨hrep, hcont⟩`. Take `⟨hgl, hq⟩` from `Formalism.FourierDecayAlt.P.frame_general_linear Wq (n + 1) r (n + 1) z π Bs hR hB`. Establish `hc : ∀ w v, qdet (Qr.EB π Bs) w v = Qr.cpol (fun a : Fin (n + 1) => (u ((a : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2) w • v`. Introduce `w v`.
+
+Rewrite using `[← hq w v, hcap Bs hB w v, Formalism.FourierDecayAlt.P.FrameExtension.prod_Icc_fin]`. Use `congr 1`. Unfold `Qr.cpol`. Use `Finset.prod_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨N, hN⟩` from `GlobalTheory.CompanionTheory.GapLie.capelli_params_diff_int Wq (n + 1) (Qr.EB π Bs) _ hgl hc ⟨i - 1, by omega⟩ ⟨j - 1, by omega⟩`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `e1 : i - 1 + 1 = i` using `by omega`. Establish `e2 : j - 1 + 1 = j` using `by omega`. Simplify using `only [e1, e2] at hN`.
+
+Establish `h : ((u i : ℝ) : ℂ) - (u j : ℂ) = (N : ℂ)` using `by linear_combination hN`. Conclude with `h` after adjusting the coercions.
+-/
 theorem type_param_diff_int : ∀ (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : B.Mat k r → (Wq →L[ℂ] Wq)) (u : ℕ → ℝ), inWb k r z → 0 < Tz k r z → IsType k r z π u → ∀ i ∈ Finset.Icc 1 k, ∀ j ∈ Finset.Icc 1 k, ∃ N : ℤ, u i - u j = (N : ℝ) := by
   intro Wq _ _ _ k r z π u hz hT hty i hi j hj
   obtain ⟨hi1, hi2⟩ := Finset.mem_Icc.1 hi

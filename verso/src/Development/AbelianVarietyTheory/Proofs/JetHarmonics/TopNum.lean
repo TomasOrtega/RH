@@ -7,6 +7,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.TopNum
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `h1 : (1 : ℝ) ≤ b ^ (C * ((2 * r + 2 : ℕ) : ℝ))` using `Real.one_le_rpow hb1 (mul_nonneg hC (Nat.cast_nonneg _))`. Establish `h2 : max 1 T ≤ b ^ (C * ((2 * r + 2 : ℕ) : ℝ))` using `max_le h1 hT`. Establish `h3 : (C + 10) * ((2 * r + 2 : ℕ) : ℝ) = C * ((2 * r + 2 : ℕ) : ℝ) + ((20 * (r + 1) : ℕ) : ℝ)` using `by push_cast; ring`.
+
+Rewrite using `[h3, Real.rpow_add hb0, Real.rpow_natCast]`. Unfold `Hsq`. Conclude with `mul_le_mul_of_nonneg_right h2 (pow_nonneg hb0.le _)`.
+-/
 theorem hsq_le (r : ℕ) (T b C : ℝ) (hC : 0 ≤ C) (hb : 2 ≤ b)
     (hT : T ≤ b ^ (C * ((2 * r + 2 : ℕ) : ℝ))) :
     Hsq r T b ≤ b ^ ((C + 10) * ((2 * r + 2 : ℕ) : ℝ)) := by
@@ -22,6 +27,11 @@ theorem hsq_le (r : ℕ) (T b C : ℝ) (hC : 0 ≤ C) (hb : 2 ≤ b)
   unfold Hsq
   exact mul_le_mul_of_nonneg_right h2 (pow_nonneg hb0.le _)
 
+/- English proof (translation)
+Introduce `r T T' b C hC hb hT hT'`. Establish `hb0 : 0 < b` using `by linarith`. Establish `h1` using `hsq_le r T b C hC hb hT`. Establish `h2` using `hsq_le r T' b C hC hb hT'`. Establish `hp : 0 ≤ b ^ ((C + 10) * ((2 * r + 2 : ℕ) : ℝ))` using `Real.rpow_nonneg hb0.le _`.
+
+Establish `h0 : 0 ≤ Hsq r T' b`. Unfold `Hsq`. Conclude with `mul_nonneg (le_trans zero_le_one (le_max_left _ _)) (pow_nonneg hb0.le _)`. Rewrite using `[Real.sqrt_le_left hp, sq]`. Conclude with `mul_le_mul h1 h2 h0 hp`.
+-/
 theorem top_num : ∀ (r : ℕ) (T T' b C : ℝ), 0 ≤ C → 2 ≤ b → T ≤ b ^ (C * ((2 * r + 2 : ℕ) : ℝ)) → T' ≤ b ^ (C * ((2 * r + 2 : ℕ) : ℝ)) → Real.sqrt (Hsq r T b * Hsq r T' b) ≤ b ^ ((C + 10) * ((2 * r + 2 : ℕ) : ℝ)) := by
   intro r T T' b C hC hb hT hT'
   have hb0 : 0 < b := by linarith

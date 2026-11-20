@@ -5,6 +5,13 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isCompact_univ.image hg).isBounded.exists_norm_le`. Establish `hcont : Continuous (Function.uncurry fun (x : K) (t : ℝ) => g (x * c t))`. Unfold `Function.uncurry`. Use `fun_prop`. Establish `hint : Integrable (Function.uncurry fun (x : K) (t : ℝ) => g (x * c t)) (μ.prod (volume.restrict (Set.Ioc (0:ℝ) 1)))`.
+
+Use `Integrable.of_bound hcont.aestronglyMeasurable C (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `hC _ ⟨_, Set.mem_univ _, rfl⟩`. Repeatedly rewrite using `[intervalIntegral.integral_of_le (zero_le_one' ℝ)]`. Rewrite using `[integral_integral_swap hint]`. Repeatedly rewrite using `[integral_mul_right_eq_self g]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_intervalIntegral_mul_right_curve {K : Type} [Group K] [TopologicalSpace K]
     [IsTopologicalGroup K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
     (μ : Measure K) [μ.IsMulRightInvariant] [IsProbabilityMeasure μ]
@@ -25,6 +32,13 @@ theorem integral_intervalIntegral_mul_right_curve {K : Type} [Group K] [Topologi
   simp_rw [integral_mul_right_eq_self g]
   simp
 
+/- English proof (translation)
+Use `set a : ℝ := ∫ t in (0:ℝ)..1, ‖h t‖ with ha`. Establish `h1 : ‖∫ t in (0:ℝ)..1, h t‖ ≤ a` using `intervalIntegral.norm_integral_le_integral_norm zero_le_one`. Establish `h2 : 0 ≤ ∫ t in (0:ℝ)..1, (‖h t‖ - a) ^ 2` using `intervalIntegral.integral_nonneg zero_le_one fun t _ => sq_nonneg _`. Establish `hn : Continuous fun t => ‖h t‖` using `hh.norm`. Establish `h3 : ∫ t in (0:ℝ)..1, (‖h t‖ - a) ^ 2 = (∫ t in (0:ℝ)..1, ‖h t‖ ^ 2) - a ^ 2`.
+
+Establish `e : ∀ t, (‖h t‖ - a) ^ 2 = (‖h t‖ ^ 2 - 2 * a * ‖h t‖) + a ^ 2` using `fun t => by ring`. Repeatedly rewrite using `[e]`. Rewrite using `[intervalIntegral.integral_add, intervalIntegral.integral_sub, intervalIntegral.integral_const_mul, ← ha]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Apply the tactic sequence `all_goals exact Continuous.intervalIntegrable (by fun_prop) _ _`. Establish `h4 : ‖∫ t in (0:ℝ)..1, h t‖ ^ 2 ≤ a ^ 2` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_intervalIntegral_unit_sq_le (h : ℝ → ℂ) (hh : Continuous h) :
     ‖∫ t in (0:ℝ)..1, h t‖ ^ 2 ≤ ∫ t in (0:ℝ)..1, ‖h t‖ ^ 2 := by
   set a : ℝ := ∫ t in (0:ℝ)..1, ‖h t‖ with ha
@@ -45,6 +59,13 @@ theorem norm_intervalIntegral_unit_sq_le (h : ℝ → ℂ) (hh : Continuous h) :
     gcongr
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ _ μ _ _ _ c hc h0 f f' hf hf' hd`. Establish `key : ∀ x, f (x * c 1) - f x = ∫ t in (0:ℝ)..1, f' (x * c t)`. Introduce `x`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ => hd x t) (Continuous.intervalIntegrable (by fun_prop) _ _)]`. Simplify using `[h0]`.
+
+Establish `hI : ∀ {E : Type} [NormedAddCommGroup E] [SecondCountableTopology E] (g : K → E), Continuous g → Integrable g μ` using `fun g hg => hg.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace g)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← integral_intervalIntegral_mul_right_curve μ c hc (fun x => ‖f' x‖ ^ 2) (by fun_prop)]`. Use `integral_mono (hI _ (by fun_prop)) (hI _ ?_) fun x => ?_` and prove the remaining obligations. Conclude with `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' (f := fun (x : K) (t : ℝ) => ‖f' (x * c t)‖ ^ 2) (by unfold Function.uncurry; fun_prop) 0 1`.
+
+Simplify using `only [key]`. Conclude with `norm_intervalIntegral_unit_sq_le _ (by fun_prop)`. Rewrite using `[← integral_intervalIntegral_mul_right_curve μ c hc f' hf']`. Repeatedly rewrite using `[← key]`. Rewrite using `[integral_sub (hI _ (by fun_prop)) (hI _ hf), integral_mul_right_eq_self f, sub_self]`.
+-/
 theorem right_translation_curve_sq_le_and_integral_deriv_eq_zero :
     ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
       [T2Space K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsHaarMeasure]

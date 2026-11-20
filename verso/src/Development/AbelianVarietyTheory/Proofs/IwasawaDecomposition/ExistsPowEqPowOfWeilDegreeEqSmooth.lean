@@ -7,6 +7,17 @@ namespace GlobalTheory.WeilDeligne
 
 open NumberField IsDedekindDomain Polynomial Module in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h V _ _ _ ρ hρ σ τ hdeg`. Set `x : ℕ → _root_.GlobalTheory.WeilDeligne.Weil h` to `fun k ↦ (τ ^ k)⁻¹ * σ ^ k`. Establish `hmem : ∀ k, ρ (x k) ∈ Set.range fun ι ↦ ρ (_root_.GlobalTheory.WeilDeligne.ineIncl h ι)`. Introduce `k`. Establish `h0 : _root_.GlobalTheory.WeilDeligne.deg (x k) = 0`.
+
+Simplify using `only [x, _root_.GlobalTheory.WeilDeligne.deg_mul, _root_.GlobalTheory.WeilDeligne.deg_inv, _root_.GlobalTheory.WeilDeligne.deg_pow, hdeg]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, _root_.GlobalTheory.WeilDeligne.deg_eq_zero_iff.mp h0⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `congr 1`.
+
+Take `⟨k, l, hkl, hρkl⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem hmem hρ.finite_range`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hkl`. Establish `hx : ρ (x k) = ρ (x (k + m + 1))` using `hρkl`. Use `⟨m + 1, Nat.succ_pos m, ?_⟩` and prove the remaining obligations. Establish `key : σ ^ (m + 1) = τ ^ (k + m + 1) * x (k + m + 1) * (x k)⁻¹ * (τ ^ k)⁻¹`.
+
+Simplify using `only [x]`. Use `group`. Establish `key' : τ ^ (m + 1) = τ ^ (k + m + 1) * (τ ^ k)⁻¹` using `by group`. Establish `hinv : ρ (x k) * ρ (x k)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+
+Rewrite using `[← map_pow, ← map_pow, key, key']`. Simplify using `only [map_mul]`. Rewrite using `[← hx, mul_assoc (ρ _) (ρ (x k)), hinv, mul_one]`.
+-/
 theorem _root_.GlobalTheory.WeilDeligne.exists_pow_eq_pow_of_deg_eq : ∀ (E Ω : Type) [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : _root_.Formalism.ConjugateSelfDual.IsPlaceOver A w) (V : Type) [AddCommGroup V] [Module ℂ V]

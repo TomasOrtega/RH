@@ -37,6 +37,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.AnPer.Hol.fn, h]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_of_mem (f : _root_.GlobalTheory.AnPer.Hol W) {p : E} (h : p ∈ W) :
     f.fn p = f.1 ⟨p, h⟩ := by
   simp [_root_.GlobalTheory.AnPer.Hol.fn, h]
@@ -47,6 +50,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun p ↦ ?_)` and prove the remaining obligations. Establish `hp` using `h p p.2`. Rewrite `hp` using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem f p.2, _root_.GlobalTheory.AnPer.Hol.fn_of_mem g p.2]`. Conclude with `hp`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.ext_fn {f g : _root_.GlobalTheory.AnPer.Hol W}
     (h : ∀ p ∈ W, f.fn p = g.fn p) : f = g := by
   refine Subtype.ext (funext fun p ↦ ?_)
@@ -60,6 +66,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Take `⟨F, hF, e⟩ : ∃ F : E → ℂ, AnalyticOnNhd ℂ F W ∧ ∀ p : W, f.1 p = F p` from `f.2`. Introduce `p hp`. Use `(hF p hp).congr ?_` and prove the remaining obligations. Use `filter_upwards [W.isOpen.mem_nhds hp] with q hq`. Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem f hq, e]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.analytic (f : _root_.GlobalTheory.AnPer.Hol W) :
     AnalyticOnNhd ℂ f.fn W := by
   obtain ⟨F, hF, e⟩ : ∃ F : E → ℂ, AnalyticOnNhd ℂ F W ∧ ∀ p : W, f.1 p = F p := f.2
@@ -76,6 +85,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_mk (F : E → ℂ) (h : AnalyticOnNhd ℂ F W) {p : E} (hp : p ∈ W) :
     (_root_.GlobalTheory.AnPer.Hol.mk F h).fn p = F p := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]
@@ -90,6 +102,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem f hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.ev_apply (p : E) (hp : p ∈ W) (f : _root_.GlobalTheory.AnPer.Hol W) :
     _root_.GlobalTheory.AnPer.Hol.ev p hp f = f.fn p := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem f hp]
@@ -101,6 +116,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_add (f g : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
     (f + g).fn p = f.fn p + g.fn p := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]
@@ -112,6 +130,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_mul (f g : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
     (f * g).fn p = f.fn p * g.fn p := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]
@@ -123,6 +144,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_smul (c : ℂ) (f : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
     (c • f).fn p = c * f.fn p := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp, _root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]
@@ -134,6 +158,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_algebraMap (c : ℂ) {p : E} (hp : p ∈ W) :
     (algebraMap ℂ (_root_.GlobalTheory.AnPer.Hol W) c).fn p = c := by
   rw [_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]
@@ -154,6 +181,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_of_mem _ hp]`. Conclude with `(_root_.GlobalTheory.AnPer.Hol.fn_of_mem f (h p hp)).symm`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_comap (Φ : E' → E) (hΦ : AnalyticOnNhd ℂ Φ W') (h : ∀ p ∈ W', Φ p ∈ W)
     (f : _root_.GlobalTheory.AnPer.Hol W) {p : E'} (hp : p ∈ W') :
     (_root_.GlobalTheory.AnPer.Hol.comap Φ hΦ h f).fn p = f.fn (Φ p) := by
@@ -166,6 +196,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Use `Filter.EventuallyEq.fderiv_eq ?_` and prove the remaining obligations. Use `filter_upwards [W.isOpen.mem_nhds hp] with q hq using e q hq`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fderiv_fn_congr (f : _root_.GlobalTheory.AnPer.Hol W) {F : E → ℂ}
     (e : ∀ q ∈ W, f.fn q = F q) {p : E} (hp : p ∈ W) :
     fderiv ℂ f.fn p = fderiv ℂ F p := by
@@ -182,6 +215,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.AnPer.Hol.fn_mk _ _ hp`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_derFun (v : E) (f : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
     (_root_.GlobalTheory.AnPer.Hol.derFun v f).fn p =
       fderiv ℂ f.fn p v :=
@@ -213,6 +249,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.AnPer.Hol.fn_derFun v f hp`.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_der (v : E) (f : _root_.GlobalTheory.AnPer.Hol W) {p : E} (hp : p ∈ W) :
     (_root_.GlobalTheory.AnPer.Hol.der v f).fn p =
       fderiv ℂ f.fn p v :=
@@ -224,6 +263,9 @@ variable {E E' E'' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAdd
   [NormedAddCommGroup E''] [NormedSpace ℂ E''] in
 variable {W : Opens E} {W' : Opens E'} {W'' : Opens E''} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.AnPer.Hol.fn_der v _ hp, _root_.GlobalTheory.AnPer.Hol.fderiv_fn_congr _ (F := f.fn ∘ Φ) (fun q hq ↦ _root_.GlobalTheory.AnPer.Hol.fn_comap Φ hΦ h f hq) hp, fderiv_comp p (f.analytic (Φ p) (h p hp)).differentiableAt (hΦ p hp).differentiableAt]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.AnPer.Hol.fn_der_comap (Φ : E' → E) (hΦ : AnalyticOnNhd ℂ Φ W')
     (h : ∀ p ∈ W', Φ p ∈ W) (v : E') (f : _root_.GlobalTheory.AnPer.Hol W) {p : E'} (hp : p ∈ W') :
     (_root_.GlobalTheory.AnPer.Hol.der v (_root_.GlobalTheory.AnPer.Hol.comap Φ hΦ h f)).fn p =

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HaarMeasureProductG
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.mulEquivHaarChar_heisenberg_chart | exact GlobalTheory.mulEquivHaarChar_heisenberg_chart | (intros; apply GlobalTheory.mulEquivHaarChar_heisenberg_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.haar_measure_product_groups : ∀ (N A B : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N]
     [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N]
     [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A]

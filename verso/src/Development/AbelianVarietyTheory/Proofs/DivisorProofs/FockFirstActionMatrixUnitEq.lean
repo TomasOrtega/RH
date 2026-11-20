@@ -14,12 +14,20 @@ def zVar (m k l : ℕ) : Fin k × Fin m → Ix m 0 × Ix k l := fun w => (.inl w
 
 def yVar' (m k l : ℕ) : Fin l × Fin m → Ix m 0 × Ix k l := fun w => (.inl w.2, .inr w.1.rev)
 
+/- English proof (translation)
+Simplify using `only [omE, raiB, lowB, hu, hv, if_true]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem omE_pp {p q r s : ℕ} (u v : Ln p q r s) (hu : linePos u = true) (hv : linePos v = true)
     (P : Pol p q r s) :
     omE u v P = X u * pderiv v P + (if u = v then (1 / 2 : ℂ) else 0) • P := by
   simp only [omE, raiB, lowB, hu, hv, if_true]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `: omE u v P = -(pderiv u (X v * P)) + (if u = v then (1 / 2 : ℂ) else 0) • P`. Simplify using `only [omE, raiB, lowB, hu, hv, Bool.false_eq_true, if_false]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, pderiv_X_mul']`. Use `split_ifs`.
+
+Use `module`. Simplify using the standard rewrite rules.
+-/
 theorem omE_nn {p q r s : ℕ} (u v : Ln p q r s) (hu : linePos u = false) (hv : linePos v = false)
     (P : Pol p q r s) :
     omE u v P = -(X v * pderiv u P) - (if u = v then (1 / 2 : ℂ) else 0) • P := by
@@ -31,6 +39,11 @@ theorem omE_nn {p q r s : ℕ} (u v : Ln p q r s) (hu : linePos u = false) (hv :
   · module
   · simp
 
+/- English proof (translation)
+Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, mixedOp_apply, ← Equiv.sum_comp Fin.revPerm (fun d : Fin l => omE _ _ P)]`. Simplify using `only [omE_pp (Sum.inl _, Sum.inl _) (Sum.inl _, Sum.inl _) rfl rfl, omE_nn (Sum.inl _, Sum.inr _) (Sum.inl _, Sum.inr _) rfl rfl, zVar, yVar', Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib, Fin.revPerm_apply, Prod.mk.injEq, Sum.inl.injEq, and_true, Finset …`. Use `split_ifs`. Use `push_cast`. Use `module`.
+
+Simplify using `[sub_eq_add_neg]`.
+-/
 theorem fockFirstAction_matrixUnit_eq (i j : Fin m) (P : Pol m 0 k l) :
     fockAct1 m 0 k l (Eab (.inl i) (.inl j)) P = mixedOp ℂ (zVar m k l) (yVar' m k l) i j P +
       (if i = j then ((cPair k l : ℚ) : ℂ) else 0) • P := by
@@ -45,6 +58,11 @@ theorem fockFirstAction_matrixUnit_eq (i j : Fin m) (P : Pol m 0 k l) :
   · push_cast; module
   · simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, rowOp_apply]`. Simplify using `only [omE_pp (Sum.inl _, Sum.inl _) (Sum.inl _, Sum.inl _) rfl rfl, zVar, Finset.sum_add_distrib, Finset.univ_eq_empty, Finset.sum_empty, add_zero, Prod.mk.injEq, Sum.inl.injEq, true_and, Finset.sum_const, Finset.card_univ, Fintype.card_fin, cPair, ← Nat.cast_smul_eq_nsmul ℂ]`. Use `split_ifs`. Use `push_cast`. Use `module`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fock_action_left_block (c c' : Fin k) (P : Pol m 0 k l) :
     fockAct2 m 0 k l (Eab (.inl c) (.inl c')) P = rowOp ℂ (zVar m k l) c c' P +
       (if c = c' then ((cPair m 0 : ℚ) : ℂ) else 0) • P := by
@@ -57,6 +75,11 @@ theorem fock_action_left_block (c c' : Fin k) (P : Pol m 0 k l) :
   · push_cast; module
   · simp
 
+/- English proof (translation)
+Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type, rowOp_apply]`. Simplify using `only [omE_nn (Sum.inl _, Sum.inr _) (Sum.inl _, Sum.inr _) rfl rfl, yVar', Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.univ_eq_empty, Finset.sum_empty, add_zero, Prod.mk.injEq, Sum.inr.injEq, true_and, Finset.sum_const, Finset.card_univ, Fintype.card_fin, cPair, ← Nat. …`. Use `split_ifs`. Use `push_cast`. Use `module`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fock_action_right_block (d d' : Fin l) (P : Pol m 0 k l) :
     fockAct2 m 0 k l (Eab (.inr d.rev) (.inr d'.rev)) P = -rowOp ℂ (yVar' m k l) d' d P -
       (if d = d' then ((cPair m 0 : ℚ) : ℂ) else 0) • P := by
@@ -69,12 +92,24 @@ theorem fock_action_right_block (d d' : Fin l) (P : Pol m 0 k l) :
   · push_cast; module
   · simp
 
+/- English proof (translation)
+Simplify using `[hwSub, wtSub, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_hwSub_iff {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) (v : V) :
     v ∈ hwSub act μ ↔ (∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v) ∧
       ∀ a b, posC a b → act (Eab a b) v = 0 := by
   simp [hwSub, wtSub, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Establish `hf` using `fun Z hZ => ((GlobalTheory.FockParts.explicit_parts m 0 k l).2 Z hZ P).2`. Prove the components needed by the constructor for the conclusion. Introduce `h c d`. Establish `hZ : IsPC (Eab (.inr d.rev) (.inl c) : Mat k l)`. Apply the tactic sequence `rintro (a | a) (b | b) hab <;> simp [Eab, sameBlock] at hab ⊢`.
+
+Use `h _ hZ` as an intermediate fact. Rewrite `this` using `[hf _ hZ]`. Simplify using `[Eab, Matrix.single_apply, ite_and, linePos, Fintype.sum_sum_type] at this`. Simplify `this` using `[zVar, yVar', pderiv_swap (Sum.inl _, Sum.inl _)]`. Introduce `h Z hZ`.
+
+Rewrite using `[hf _ hZ]`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Break down `c with c | c` into its components or cases. Simplify using `[linePos, Fintype.sum_sum_type]`. Break down `d with d | d` into its components or cases.
+
+Use `h d c.rev` as an intermediate fact. Simplify using `only [zVar, yVar', Fin.rev_rev, pderiv_swap (Sum.inl _, Sum.inl _)] at this`. Simplify using `[linePos, Fintype.sum_sum_type, ← Finset.smul_sum, this]`. Simplify using `[hZ (.inr c) (.inr d) trivial]`.
+-/
 theorem mem_harm1_iff (P : Pol m 0 k l) : P ∈ harm1 m 0 k l ↔
     ∀ c d, ∑ i, pderiv (zVar m k l (c, i)) (pderiv (yVar' m k l (d, i)) P) = 0 := by
   have hf := fun Z hZ => ((GlobalTheory.FockParts.explicit_parts m 0 k l).2 Z hZ P).2
@@ -97,6 +132,13 @@ theorem mem_harm1_iff (P : Pol m 0 k l) : P ∈ harm1 m 0 k l ↔
       simp [linePos, Fintype.sum_sum_type, ← Finset.smul_sum, this]
     · simp [hZ (.inr c) (.inr d) trivial]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem P hP => exact hP`. Consider the case `zero => simp [mem_harm1_iff]`. Consider the case `add P Q _ _ hP hQ`.
+
+Rewrite `*` using `[mem_harm1_iff]`. Introduce `c d`. Simplify using `only [map_add, Finset.sum_add_distrib, hP, hQ, add_zero]`. Consider the case `smul s P _ hP`. Rewrite `*` using `[mem_harm1_iff]`.
+
+Introduce `c d`. Simplify using `only [Derivation.map_smul, ← Finset.smul_sum, hP, smul_zero]`.
+-/
 theorem mem_span_harm1_iff (P : Pol m 0 k l) :
     P ∈ Submodule.span ℂ (harm1 m 0 k l) ↔ P ∈ harm1 m 0 k l := by
   refine ⟨fun h => ?_, fun h => Submodule.subset_span h⟩
@@ -112,6 +154,15 @@ theorem mem_span_harm1_iff (P : Pol m 0 k l) :
     intro c d
     simp only [Derivation.map_smul, ← Finset.smul_sum, hP, smul_zero]
 
+/- English proof (translation)
+Simplify using `only [Submodule.mem_inf, mem_hwSub_iff, mem_span_harm1_iff, mem_harm1_iff, JointTop, Sum.forall, posC, IsEmpty.forall_iff, false_imp_iff, implies_true, and_true, true_and, fockFirstAction_matrixUnit_eq, fock_action_left_block, if_true, shiftNu]`. Establish `e1 : (∀ a b : Fin m, a < b → mixedOp ℂ (zVar m k l) (yVar' m k l) a b P + (if a = b then ((cPair k l : ℚ) : ℂ) else 0) • P = 0) ↔ ∀ a b : Fin m, a < b → mixedOp ℂ (zVar m k l) (yVar' m k l) a b P = 0` using `forall₃_congr fun a b h => by simp [h.ne]`. Establish `e2 : (∀ a b : Fin k, a < b → rowOp ℂ (zVar m k l) a b P + (if a = b then ((cPair m 0 : ℚ) : ℂ) else 0) • P = 0) ↔ ∀ a b : Fin k, a < b → rowOp ℂ (zVar m k l) a b P = 0` using `forall₃_congr fun a b h => by simp [h.ne]`. Establish `e3 : (∀ a b : Fin l, a < b → fockAct2 m 0 k l (Eab (.inr a) (.inr b)) P = 0) ↔ ∀ a b : Fin l, a < b → rowOp ℂ (yVar' m k l) a b P = 0`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b hab`. Use `h _ _ (Fin.rev_lt_rev.2 hab)` as an intermediate fact. Rewrite `this` using `[fock_action_right_block]`. Simplify `this` using `[hab.ne']`. Introduce `h a b hab`.
+
+Rewrite using `[← a.rev_rev, ← b.rev_rev, fock_action_right_block, h _ _ (Fin.rev_lt_rev.2 hab)]`. Simplify using `[hab.ne]`. Establish `e4 : (∀ a : Fin l, fockAct2 m 0 k l (Eab (.inr a) (.inr a)) P = (μ' (.inr a) : ℂ) • P) ↔ ∀ a : Fin l, rowOp ℂ (yVar' m k l) a a P = ((-(μ' (.inr a.rev) + cPair m 0) : ℚ) : ℂ) • P`. Rewrite using `[← Fin.revPerm.forall_congr_right]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.revPerm_apply, fock_action_right_block, if_pos rfl, sub_eq_iff_eq_add, neg_eq_iff_eq_neg]`. Use `push_cast`. Rewrite using `[neg_smul, add_smul]`. Simplify using `only [e1, e2, e3, e4, Rat.cast_sub, sub_smul, eq_sub_iff_add_eq]`. The claim follows by propositional logic.
+-/
 theorem mem_iff_jointTop (μ : Ix m 0 → ℚ) (μ' : Ix k l → ℚ) (P : Pol m 0 k l) :
     P ∈ hwSub (fockAct1 m 0 k l) μ ⊓ hwSub (fockAct2 m 0 k l) μ' ⊓
       Submodule.span ℂ (harm1 m 0 k l) ↔
@@ -150,6 +201,11 @@ theorem mem_iff_jointTop (μ : Ix m 0 → ℚ) (μ' : Ix k l → ℚ) (P : Pol m
   simp only [e1, e2, e3, e4, Rat.cast_sub, sub_smul, eq_sub_iff_add_eq]
   tauto
 
+/- English proof (translation)
+Use `(List.getD_map (x ++ List.replicate n 0 ++ y) (0 : ℤ) (fun v : ℤ => (v : ℚ))).trans ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `h1 : i < x.length`. Rewrite using `[List.append_assoc, List.getD_append _ _ _ _ h1, if_neg (by omega), add_zero]`. Rewrite using `[List.getD_eq_default x _ (by omega), zero_add] split_ifs with h2`.
+
+Rewrite using `[List.getD_append_right _ _ _ _ (by simpa using h2)]`. Simplify using the standard rewrite rules. Rewrite using `[List.getD_append _ _ _ _ (by simp; omega), List.getD_append_right _ _ _ _ (by omega)]`. Rewrite using `[List.getD_eq_getElem _ _ (by simp; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem getD_pad (x : List ℤ) (n : ℕ) (y : List ℤ) (i : ℕ) :
     (pad x n y).getD i 0 = ((x.getD i 0 +
       if x.length + n ≤ i then y.getD (i - (x.length + n)) 0 else 0 : ℤ) : ℚ) := by
@@ -165,6 +221,15 @@ theorem getD_pad (x : List ℤ) (n : ℕ) (y : List ℤ) (i : ℕ) :
       rw [List.getD_eq_getElem _ _ (by simp; omega)]
       simp
 
+/- English proof (translation)
+Use `⟨fun i => ?_, fun c => ?_, fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[getD_pad, mixedWeight_apply, sub_eq_add_neg]`. Use `i.2` as an intermediate fact. Use `congr 2`. Use `split_ifs with h1`.
+
+Rewrite using `[ha]`. Conclude with `List.getD_eq_default _ _ (by omega)`. Apply the tactic sequence `simp only [hb] split_ifs with h1 h2 h3 h2 h3 <;> first | omega | simp`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[getD_pad, ← ha]`. Simplify using the standard rewrite rules. Rewrite using `[getD_pad, ← Int.cast_natCast, hb, ← Int.cast_neg]`. Use `d.2` as an intermediate fact. Use `congr 1`.
+
+Simplify using `only [List.getD_nil, List.length_nil, zero_add, Fin.val_rev]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | omega | simp`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pad_values (la lb : List ℤ) (a : Fin k → ℕ) (b : Fin l → ℕ)
     (h : la.length + lb.length ≤ m) (hp : la.length ≤ k) (hq : lb.length ≤ l)
     (ha : ∀ c, (a c : ℤ) = la.getD c 0)
@@ -192,14 +257,26 @@ theorem pad_values (la lb : List ℤ) (a : Fin k → ℕ) (b : Fin l → ℕ)
     congr 2
     omega
 
+/- English proof (translation)
+Introduce `u w e` and use `by simpa [zVar, Prod.ext_iff, and_comm] using e`.
+-/
 theorem zVar_inj : Function.Injective (zVar m k l) := fun u w e => by
   simpa [zVar, Prod.ext_iff, and_comm] using e
 
+/- English proof (translation)
+Introduce `u w e` and use `by simpa [yVar', Prod.ext_iff, and_comm] using e`.
+-/
 theorem yVar'_inj : Function.Injective (yVar' m k l) := fun u w e => by
   simpa [yVar', Prod.ext_iff, and_comm] using e
 
+/- English proof (translation)
+Simplify using `[zVar, yVar']`.
+-/
 theorem zVar_ne (u w) : zVar m k l u ≠ yVar' m k l w := by simp [zVar, yVar']
 
+/- English proof (translation)
+Break down `s with ⟨i | i, c | c⟩` into its components or cases. Conclude with `.inl ⟨(c, i), rfl⟩`. Conclude with `.inr ⟨(c.rev, i), by simp [yVar']⟩`. Conclude with `i.elim0`. Conclude with `i.elim0`.
+-/
 theorem zVar_or (s : Ix m 0 × Ix k l) : (∃ u, zVar m k l u = s) ∨ ∃ w, yVar' m k l w = s := by
   rcases s with ⟨i | i, c | c⟩
   · exact .inl ⟨(c, i), rfl⟩
@@ -207,6 +284,9 @@ theorem zVar_or (s : Ix m 0 × Ix k l) : (∃ u, zVar m k l u = s) ∨ ∃ w, yV
   · exact i.elim0
   · exact i.elim0
 
+/- English proof (translation)
+Rewrite using `[← sum_dite_lt (show p ≤ m by omega), ← sum_dite_rev_lt (show q ≤ m by omega), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Rewrite using `[mixedWeight_apply]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem sum_abs_mixedWeight {p q : ℕ} (h : p + q ≤ m) (a : Fin p → ℕ) (b : Fin q → ℕ) :
     ∑ i, |mixedWeight m a b i| = ∑ c, (a c : ℤ) + ∑ d, (b d : ℤ) := by
   rw [← sum_dite_lt (show p ≤ m by omega), ← sum_dite_rev_lt (show q ≤ m by omega),
@@ -216,6 +296,51 @@ theorem sum_abs_mixedWeight {p q : ℕ} (h : p + q ≤ m) (a : Fin p → ℕ) (b
   rw [mixedWeight_apply]
   split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Introduce `m k l μ μ'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨la, lb, lc, ld, ha, -, hb, -, pa, pb, -, -, h1, h2, h3, h4, e1, e2⟩`. Take `rfl : lc = []` from `List.length_eq_zero_iff.1 (by omega)`. Take `rfl : ld = []` from `List.length_eq_zero_iff.1 (by omega)`.
+
+Simplify using `only [List.length_nil, add_zero, zero_add, Nat.sub_zero] at h3 h4 e1 e2`. Establish `ha' : ∀ i, 0 ≤ la.getD i 0` using `fun i => by`. Distinguish the cases in `hi : i < la.length`. Rewrite using `[List.getD_eq_getElem _ _ hi]`. Conclude with `(ha _ (List.getElem_mem _)).le`.
+
+Rewrite using `[List.getD_eq_default _ _ (by omega)]`. Establish `hb' : ∀ i, lb.getD i 0 ≤ 0` using `fun i => by`. Distinguish the cases in `hi : i < lb.length`. Rewrite using `[List.getD_eq_getElem _ _ hi]`. Conclude with `(hb _ (List.getElem_mem _)).le`.
+
+Rewrite using `[List.getD_eq_default _ _ (by omega)]`. Establish `mono : ∀ L : List ℤ, L.Pairwise (· ≥ ·) → ∀ i j, i ≤ j → j < L.length → L.getD j 0 ≤ L.getD i 0` using `fun L hL i j hij hj => by`. Break down `hij.eq_or_lt with rfl | hij` into its components or cases. Both sides reduce to the same expression. Rewrite using `[List.getD_eq_getElem _ _ hj, List.getD_eq_getElem _ _ (hij.trans hj)]`.
+
+Conclude with `List.pairwise_iff_getElem.1 hL i j _ _ hij`. Take `⟨a, hae⟩ : ∃ a : Fin k → ℕ, ∀ c, (a c : ℤ) = la.getD c 0` from `⟨fun c => (la.getD c 0).toNat, fun c => Int.toNat_of_nonneg (ha' c)⟩`. Take `⟨b, hbe⟩ : ∃ b : Fin l → ℕ, ∀ d, (b d : ℤ) = if (d : ℕ) < lb.length then -lb.getD (lb.length - 1 - d) 0 else 0` from `⟨fun d => (if (d : ℕ) < lb.length then -lb.getD (lb.length - 1 - d) 0 else 0).toNat, fun d => Int.toNat_of_nonneg (by split_ifs`. Conclude with `neg_nonneg.2 (hb' _)`. Use the proof step `rfl)⟩`.
+
+Take `⟨v1, v2, v3⟩` from `pad_values la lb a b h1 h3 h4 hae hbe`. Take `⟨P₀, hP0, hP, hu⟩` from `exists_unique_jointTop _ zVar_inj _ yVar'_inj zVar_ne zVar_or h1 h3 h4 a b (fun i j hij => by`. Use `Int.ofNat_le.1 ?_` and prove the remaining obligations. Rewrite using `[hae, hae]`. Distinguish the cases in `hj : (j : ℕ) < la.length`.
+
+Conclude with `mono la pa i j hij hj`. Rewrite using `[List.getD_eq_default _ _ (by omega)]; exact ha' _)`. Use the proof step `(fun i j hij => by`. Use `Int.ofNat_le.1 ?_` and prove the remaining obligations. Establish `hij' : (i : ℕ) ≤ j` using `hij`.
+
+Rewrite using `[hbe, hbe]`. Use `split_ifs with g1 g2 g2`. Conclude with `neg_le_neg (mono lb pb _ _ (by omega) (by omega))`. Use linear arithmetic over natural numbers and integers. Conclude with `neg_nonneg.2 (hb' _)`.
+
+Use the proof step `rfl)`. Use the proof step `(fun c hc => by`. Use `hae c` as an intermediate fact. Rewrite `this` using `[List.getD_eq_default _ _ hc]`. Conclude with `this)` after adjusting the coercions.
+
+Use the proof step `(fun c hc => by`. Use `hbe c` as an intermediate fact. Rewrite `this` using `[if_neg (by omega)]`. Conclude with `this)` after adjusting the coercions. Establish `key : ∀ P, P ∈ hwSub (fockAct1 m 0 k l) μ ⊓ hwSub (fockAct2 m 0 k l) μ' ⊓ Submodule.span ℂ (harm1 m 0 k l) ↔ JointTop (zVar m k l) (yVar' m k l) (fun i => (mixedWeight m a b i : ℂ)) (fun c => a c) (fun d => b d) P` using `fun P => by`.
+
+Rewrite using `[mem_iff_jointTop, e1, e2]`. Simplify using `only [ofBlocks, v1, v2, v3, neg_neg, Rat.cast_intCast, Rat.cast_natCast]`. Establish `: hwSub (fockAct1 m 0 k l) μ ⊓ hwSub (fockAct2 m 0 k l) μ' ⊓ Submodule.span ℂ (harm1 m 0 k l) = ℂ ∙ P₀`. Use `le_antisymm (fun P h => ?_) ((Submodule.span_singleton_le_iff_mem _ _).2 ((key _).2 hP))` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hu P ((key P).1 h)`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Rewrite using `[this, finrank_span_singleton hP0]`. Introduce `P hP hP0`. Take `⟨a, b, p, q, h, hp, hq, ha, hb, e1, e2, e3, hhom⟩` from `weights_of_jointTop _ zVar_inj _ yVar'_inj zVar_ne zVar_or _ _ _ hP0 ((mem_iff_jointTop μ μ' P).1 hP)`. Establish `ha0 : ∀ c : Fin k, p ≤ c → a c = 0` using `fun c hc => by have := ha c; omega`.
+
+Establish `hb0 : ∀ c : Fin l, q ≤ c → b c = 0` using `fun c hc => by have := hb c; omega`. Establish `f1 : ∀ i, shiftNu (cPair k l) μ (.inl i) = mixedWeight m a b i` using `fun i => by`. Conclude with `congrFun e1 i` after adjusting the coercions. Establish `f2 : ∀ c, shiftNu (cPair m 0) μ' (.inl c) = a c` using `fun i => by`. Conclude with `congrFun e2 i` after adjusting the coercions.
+
+Establish `f3 : ∀ d : Fin l, -shiftNu (cPair m 0) μ' (.inr d.rev) = b d` using `fun i => by`. Conclude with `congrFun e3 i` after adjusting the coercions. Use `⟨⟨_, ?_, hhom⟩, ?_⟩` and prove the remaining obligations. Use `sum_abs_mixedWeight h (fun c => a (Fin.castLE hp c)) (fun d => b (Fin.castLE hq d))` as an intermediate fact. Rewrite `this` using `[mixedWeight_restrict hp hq a b ha0 hb0, sum_castLE hp (fun c => (a c : ℤ)) fun c hc => by simp [ha0 c hc], sum_castLE hq (fun c => (b c : ℤ)) fun c hc => by simp [hb0 c hc]]`.
+
+Simplify using `only [degW, Fintype.sum_sum_type, f1, Finset.univ_eq_empty, Finset.sum_empty, add_zero]`. Conclude with `this.symm` after adjusting the coercions. Set `la : List ℤ` to `List.ofFn fun c : Fin p => (a (Fin.castLE hp c) : ℤ)`. Set `lb : List ℤ` to `List.ofFn fun j : Fin q => -(b (Fin.castLE hq j.rev) : ℤ)`. Establish `lla : la.length = p` using `List.length_ofFn`.
+
+Establish `llb : lb.length = q` using `List.length_ofFn`. Take `⟨v1, v2, v3⟩` from `pad_values (m := m) la lb a b (by omega) (by omega) (by omega) (fun c => by`. Distinguish the cases in `hc : (c : ℕ) < p`. Rewrite using `[List.getD_eq_getElem _ _ (by omega)]; simp [la]`. Rewrite using `[List.getD_eq_default _ _ (by omega), ha0 c (by omega)]; rfl)`.
+
+Use the proof step `(fun d => by split_ifs with hd`. Rewrite using `[List.getD_eq_getElem _ _ (by omega)]`. Simplify using `only [lb, List.getElem_ofFn, neg_neg]`. Use `congr 2`. Use `ext`.
+
+Simplify using `at hd ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hb0 d (by omega)]; rfl)`. Use `⟨la, lb, fun v hv => ?_, fun v hv => ?_, by omega, by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `List.mem_ofFn.1 hv`.
+
+Conclude with `(ha _).2 c.2` after adjusting the coercions. Take `⟨c, rfl⟩` from `List.mem_ofFn.1 hv`. Conclude with `neg_neg_of_pos (by exact_mod_cast (hb _).2 c.rev.2)`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases.
+
+Rewrite using `[f1, ← v1]`. Both sides reduce to the same expression. Conclude with `i.elim0`. Use function extensionality and compare the values at `c`. Break down `c with c | d` into its components or cases.
+
+Rewrite using `[f2, ← v2]`. Both sides reduce to the same expression. Establish `g1` using `f3 d.rev`. Establish `g2` using `v3 d.rev`. Rewrite `g1`, `g2` using `[Fin.rev_rev]`.
+
+Rewrite `g2` using `[← g1, neg_neg]`. Conclude with `g2.symm`.
+-/
 theorem compact_member_harmonics : ∀ (m k l : ℕ) (μ : Ix m 0 → ℚ) (μ' : Ix k l → ℚ), (JointShape m 0 k l μ μ' → Module.finrank ℂ ↥(hwSub (fockAct1 m 0 k l) μ ⊓ hwSub (fockAct2 m 0 k l) μ' ⊓ Submodule.span ℂ (harm1 m 0 k l)) = 1) ∧ (∀ P ∈ hwSub (fockAct1 m 0 k l) μ ⊓ hwSub (fockAct2 m 0 k l) μ' ⊓ Submodule.span ℂ (harm1 m 0 k l), P ≠ 0 → (∃ d : ℕ, (d : ℚ) = degW (cPair k l) μ ∧ P ∈ homog (Ix m 0 × Ix k l) d) ∧ ∃ a b : List ℤ, (∀ v ∈ a, 0 < v) ∧ (∀ v ∈ b, v < 0) ∧ a.length + b.length ≤ m ∧ a.length ≤ k ∧ b.length ≤ l ∧ shiftNu (cPair k l) μ = ofBlocks (pad a (m - a.length - b.length) b) [] ∧ shiftNu (cPair m 0) μ' = ofBlocks (pad a (k - a.length) []) (pad [] (l - b.length) b)) := by
   intro m k l μ μ'
   constructor

@@ -11,11 +11,19 @@ universe u
 
 variable {R G : Type u} [CommRing R] [Group G] [Fintype G]
 
+/- English proof (translation)
+Rewrite `ha` using `[Representation.mem_invariants]`. Simplify using `[Representation.norm, LinearMap.sum_apply, ha]`.
+-/
 theorem norm_apply_of_mem_invariants (A : Rep.{u} R G) {a : A} (ha : a ∈ A.ρ.invariants) :
     A.ρ.norm a = Fintype.card G • a := by
   rw [Representation.mem_invariants] at ha
   simp [Representation.norm, LinearMap.sum_apply, ha]
 
+/- English proof (translation)
+Set `e` to `((tateCohomologyZeroIso R G).app A).toLinearEquiv`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective (normRangeInvariants A) (e x)`. Rewrite using `[← hy]`.
+
+Establish `h : (Submodule.Quotient.mk (Fintype.card G • y) : A.ρ.invariants ⧸ normRangeInvariants A) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_normRangeInvariants_iff]`. Conclude with `⟨y, by rw [norm_apply_of_mem_invariants A y.2]; rfl⟩`. Rewrite `h` using `[Submodule.Quotient.mk_smul]`. Conclude with `h`.
+-/
 theorem card_smul_tateCohomology_zero (A : Rep.{u} R G) (x : tateCohomology A 0) :
     Fintype.card G • x = 0 := by
   let e := ((tateCohomologyZeroIso R G).app A).toLinearEquiv
@@ -30,6 +38,9 @@ theorem card_smul_tateCohomology_zero (A : Rep.{u} R G) (x : tateCohomology A 0)
   rw [Submodule.Quotient.mk_smul] at h
   exact h
 
+/- English proof (translation)
+Set `e` to `(coindShiftIso A n).toLinearEquiv`. Take `⟨y, rfl⟩` from `e.surjective x`. Rewrite using `[← map_nsmul, h, map_zero]`.
+-/
 private theorem card_smul_succ {n : ℤ}
     (h : ∀ (A : Rep.{u} R G) (x : tateCohomology A n), Fintype.card G • x = 0)
     (A : Rep.{u} R G) (x : tateCohomology A (n + 1)) : Fintype.card G • x = 0 := by
@@ -37,6 +48,9 @@ private theorem card_smul_succ {n : ℤ}
   obtain ⟨y, rfl⟩ := e.surjective x
   rw [← map_nsmul, h, map_zero]
 
+/- English proof (translation)
+Set `e` to `(indShiftIso A n).toLinearEquiv`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, h]`.
+-/
 private theorem card_smul_pred {n : ℤ}
     (h : ∀ (A : Rep.{u} R G) (x : tateCohomology A (n + 1)), Fintype.card G • x = 0)
     (A : Rep.{u} R G) (x : tateCohomology A n) : Fintype.card G • x = 0 := by
@@ -44,6 +58,11 @@ private theorem card_smul_pred {n : ℤ}
   apply e.injective
   rw [map_nsmul, map_zero, h]
 
+/- English proof (translation)
+Proceed by induction on `n using Int.induction_on generalizing A with`. Consider the case `zero => exact card_smul_tateCohomology_zero A x`. Consider the case `succ n ih => exact card_smul_succ (fun A x => ih A x) A x`. Consider the case `pred n ih`. Use `card_smul_pred ?_ A x` and prove the remaining obligations.
+
+Rewrite using `[sub_add_cancel]`. Conclude with `ih`.
+-/
 theorem card_smul_tateCohomology (A : Rep.{u} R G) (n : ℤ) (x : tateCohomology A n) :
     Fintype.card G • x = 0 := by
   induction n using Int.induction_on generalizing A with

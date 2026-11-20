@@ -9,6 +9,9 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.TopSpan
 
+/- English proof (translation)
+Introduce `K _ _ _ S G _ _ r P ψ f`. Establish `h` using `congrArg (fun s : Set S.Forms => f ∈ s) (GlobalTheory.Mem.LiftForms.range_lvlForm S r P ψ)`. Simplify using `only [Set.mem_range, GlobalTheory.Mem.LiftForms.lvlForm_apply] at h`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem lvlE_range_iff : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (S : CSD K) (G : Type) [Group G] [Fintype G] (r : Representation K G S.Forms) (P : Subgroup G) (ψ : P →* Kˣ) (f : S.Forms), (∃ x, S.basis.equivFun.symm ((S.lvlE r P ψ).mulVec x) = f) ↔ ∀ h : P, r h f = ((ψ h : Kˣ) : K) • f := by
   intro K _ _ _ S G _ _ r P ψ f
   have h := congrArg (fun s : Set S.Forms => f ∈ s) (GlobalTheory.Mem.LiftForms.range_lvlForm S r P ψ)

@@ -18,6 +18,9 @@ namespace PositivityTheory.Xgp.c_bm_exists_period
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.ringHom_ext (A := 𝓞 E) h`.
+-/
 theorem emb_ext {σ σ' : E →+* ℂ} (h : ∀ t : 𝓞 E, σ t = σ' t) : σ = σ' :=
   IsFractionRing.ringHom_ext (A := 𝓞 E) h
 
@@ -25,6 +28,25 @@ variable {Xo : ∀ l : Level H, Moduli D l} {l : Level H} {c : Coeff l} {Y : Mod
   {S : Finset ℕ} {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
   {y : (Σ k, ι k) → Φ} {M : FlagModel y (CMType H) (D.p + D.q) D.p} {𝔐 : HodgeCpt Y S M.x}
 
+/- English proof (translation)
+Take `⟨g, ty, hty⟩` from `GlobalTheory.AllClasses.exists_isTypeFn H D.p D.q`. Take `⟨FU⟩` from `hN E H D l (Xo l) _ g ty hpq hτ hty`. Establish `hfr` using `fun τ => PositivityTheory.Xgp.isFrameAt_comap_gbS E H D Xo l c Y S K ι Φ y M 𝔐 tie F hF τ _ hg`. Take `⟨i, ρ, B, P, W, G, hρ, hρ', hB, h0, hsub, hP, hW, hall, hder⟩` from `model_periods 𝔐 (fun a : CMType H × Fin (D.p + D.q) => gb tie F a.1 a.2) p τ₀ FU hp hc hi (fun a => GlobalTheory.T.hodge_generated_sum_specialization E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ (gbS tie F a.1) (p 0) (𝔐.all _) (hfr a.1) a.2)`. Set `s : CMType H → (E →+* ℂ)` to `fun τ => τ₀.comp (τ.1.codRestrict c.F (c.conj τ.1))`.
+
+Establish `hs : ∀ τ, s τ (H.rt : E) = H.rt0` using `fun τ => by`. Rewrite using `[← hτ]`. Conclude with `congrArg τ₀ (Subtype.ext τ.2)`. Set `Γ : CMType H → (Fin n → ℂ) → Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) ℂ` to `fun τ u => Matrix.of fun i j => (Real.pi : ℂ) * hermForm (G u) (W (τ, j) u) (W (τ, i) u)`. Establish `hΓ : ∀ τ, ∀ u ∈ B, 𝔐.M.GramAt 𝔐.t.PP.L (p ((ρ : ℂ) • u)) (gb tie F τ) (Γ τ u)` using `fun τ u hu => (hall u hu).2.1 _ fun k => (τ, k)`.
+
+Establish `hb0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Establish `hpos : ∀ τ, (Γ τ 0).PosDef` using `fun τ => by`. Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ (hi 0 hb0)`. Take `⟨Γ', h1, h2⟩` from `GlobalTheory.T.pair_sum_frame_at_point E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 (.inl τ) (.inr τ) (D.p + D.q) (gbS tie F τ) _ (𝔐.all _) hpol (hfr τ)`. Establish `h3` using `hΓ τ 0 h0`.
+
+Rewrite `h3` using `[smul_zero]`. Rewrite using `[GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 _ _ _ _ _ hpol h3 h1]`. Conclude with `h2`. Establish `key` using `fun τ => exists_period_of_frames hty hB h0 hP (hs τ) (W := fun k => W (τ, k)) (fun k => hW _) (fun u hu a j hj => by`. Assume the negation of the conclusion as `hne`.
+
+Use `hj (emb_ext fun t => ?_)` and prove the remaining obligations. Establish `hm : gb tie F τ (omEmb D.p D.q a) ∈ 𝔐.Vgen (.inr τ)`. Simplify using `only [gb, gbS, ← blockEquiv_inl, Equiv.symm_apply_apply, Sum.elim_inl]`. Conclude with `(dualFam tie F τ a).2`. Rewrite using `[mul_right_cancel₀ hne ((hall u hu).2.2 (τ, omEmb D.p D.q a) _ hm t j)]`.
+
+Use `show s τ ((H.bar t : 𝓞 E) : E) = _`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Use the proof step `rfl)`. Use the proof step `(fun u hu a j hj => by`. Assume the negation of the conclusion as `hne`.
+
+Use `hj (emb_ext fun t => ?_)` and prove the remaining obligations. Establish `hm : gb tie F τ (wEmb D.p D.q a) ∈ 𝔐.Vgen (.inl τ)`. Simplify using `only [gb, gbS, ← blockEquiv_inr, Equiv.symm_apply_apply, Sum.elim_inr]`. Conclude with `wFrame_mem tie F τ a`. Conclude with `mul_right_cancel₀ hne ((hall u hu).2.2 (τ, wEmb D.p D.q a) _ hm t j))`.
+
+Use the proof step `(fun u hu => (hall u hu).1) (Γ := Γ τ) (fun u _ => rfl) (hpos τ)`. Use `choose B' Pi hB' h0' hsub' hPi hgr hd using key`. Use `⟨ρ, B ∩ ⋂ τ, B' τ, Pi, Γ, hρ, hρ', hB.inter (isOpen_iInter_of_finite hB'), ⟨h0, Set.mem_iInter.2 h0'⟩, fun u hu => hsub hu.1, fun τ => (hPi τ).mono fun u hu => Set.mem_iInter.1 hu.2 τ, fun τ u hu => ⟨hΓ τ u hu.1, hgr τ u (Set.mem_iInter.1 hu.2 τ)⟩, fun v hv => hder v ?_⟩` and prove the remaining obligations. Take `⟨α, β, h1, h2, h3, h4⟩` from `deriv_zero FU i hB h0 hP v`. Use `fun U f hU => h4 (fun j k hj => ?_) U f hU` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective fun τ : CMType H => (⟨s τ, hs τ⟩ : CMType H)` using `fun τ τ' e => Subtype.ext (RingHom.ext fun a => congrArg Subtype.val (τ₀.injective (DFunLike.congr_fun (congrArg Subtype.val e) a)))`. Take `⟨τ, hτ'⟩` from `Finite.surjective_of_injective hinj ⟨ty j, hj⟩`. Conclude with `hd τ v (hv τ) α β h1 h2 h3 j k (congrArg Subtype.val hτ').symm`.
+-/
 theorem family_period (hN : N1c) (tie : FlagTie M 𝔐) (hpq : 1 ≤ D.p + D.q)
     {F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (hF : M.IsFrame F) {n : ℕ}
     (p : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X)) (τ₀ : c.F →+* ℂ)
@@ -96,6 +118,11 @@ theorem family_period (hN : N1c) (tie : FlagTie M 𝔐) (hpq : 1 ≤ D.p + D.q)
   obtain ⟨τ, hτ'⟩ := Finite.surjective_of_injective hinj ⟨ty j, hj⟩
   exact hd τ v (hv τ) α β h1 h2 h3 j k (congrArg Subtype.val hτ').symm
 
+/- English proof (translation)
+Establish `tp` using `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ`. Establish `hex : ∃ (Γ : Matrix (Fin r) (Fin r) ℂ) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z w ∧ 𝔐.Interior z ∧ 𝔐.M.GramAt 𝔐.t.PP.L z b Γ` using `⟨Γ, z, hw, hi, h1⟩`. Unfold `HodgeMetric.gramFn`. Rewrite using `[dif_pos hex]`. Take `⟨z₀, hw₀, -, hΓ₀⟩` from `hex.choose_spec`.
+
+Establish `hz : z₀ = z` using `(tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw₀⟩ ⟨𝔐.all _, hw⟩`. Rewrite `hΓ₀` using `[hz]`. Conclude with `GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ (GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi) hΓ₀ h1`.
+-/
 theorem gramFn_eq {r : ℕ} {b : Fin r → 𝔐.Li} {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, baseIdx ι M.blk k) → ℂ}
     {Γ : Matrix (Fin r) (Fin r) ℂ} (hw : CoordsAt 𝔐.ξ M.x z w) (hi : 𝔐.Interior z)
     (h1 : 𝔐.M.GramAt 𝔐.t.PP.L z b Γ) : HodgeMetric.gramFn 𝔐 b w = Γ := by
@@ -110,6 +137,15 @@ theorem gramFn_eq {r : ℕ} {b : Fin r → 𝔐.Li} {z : Sp ℂ ⟶ 𝔐.X} {w :
   exact GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _
     (GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi) hΓ₀ h1
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Rb.A.cover x`. Establish `ho : IsOpen ((Rb.A.chart j).target ∩ (Rb.A.chart j).symm ⁻¹' (Rb.U x ∩ Zᶜ))` using `(Rb.A.chart j).isOpen_inter_preimage_symm ((Rb.isOpen_U x).inter hZ.isOpen_compl)`. Take `⟨r, hr, hb⟩` from `Metric.isOpen_iff.1 ho (Rb.A.chart j x) ⟨(Rb.A.chart j).map_source hj, by`. Rewrite using `[Set.mem_preimage, (Rb.A.chart j).left_inv hj]`. Conclude with `⟨Rb.mem_U x, hx⟩⟩`.
+
+Establish `hm : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, Rb.A.chart j x + (r : ℂ) • u ∈ (Rb.A.chart j).target ∩ (Rb.A.chart j).symm ⁻¹' (Rb.U x ∩ Zᶜ)` using `fun u hu => hb (by`. Rewrite `hu` using `[mem_ball_zero_iff]`. Rewrite using `[mem_ball_iff_norm, add_sub_cancel_left, norm_smul, Complex.norm_real, Real.norm_of_nonneg hr.le]`. Use the proof step `nlinarith)`. Establish `hex : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, ∃ z : Sp ℂ ⟶ 𝔐.X, genPt 𝔐.ξ ⤳ centre z ∧ CoordsAt 𝔐.ξ M.x z (Rb.lift x ((Rb.A.chart j).symm (Rb.A.chart j x + (r : ℂ) • u)))` using `fun u hu => (GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).1 (Rb.mem x _ (hm u hu).2.1)`.
+
+Use `haveI : Nonempty (Sp ℂ ⟶ 𝔐.X) := ⟨(hex 0 (by simp)).choose⟩`. Use `choose! p hp₀ hp using hex`. Use `⟨j, r, p, hr, hj, differentiableOn_pi.2 fun q u hu => ?_, fun u hu => ⟨(hm u hu).2.2, hp u hu, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(Rb.holo x q j _ ⟨(hm u hu).1, (hm u hu).2.1⟩).differentiableAt`. Establish `h2 : DifferentiableAt ℂ (fun u : Fin n → ℂ => Rb.A.chart j x + (r : ℂ) • u) u` using `by fun_prop`.
+
+Conclude with `(h1.comp u h2).differentiableWithinAt`. Take `⟨a, ha, e⟩` from `Rb.compat _ x _ ⟨Rb.mem_U _, (hm u hu).2.1⟩`. Conclude with `(((GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ).2.2 _ _ (𝔐.all _) (hp u hu)).2 _).2 ⟨fun k => Units.mk0 (a k) (ha k), e⟩`.
+-/
 theorem exists_family {n : ℕ} (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) {Z : Set Rb.X} (hZ : IsClosed Z) {x : Rb.X}
     (hx : x ∉ Z) : ∃ (j : Fin Rb.A.n) (r : ℝ) (p : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X)), 0 < r ∧ x ∈ (Rb.A.chart j).source ∧
       DifferentiableOn ℂ (fun u => Rb.lift x ((Rb.A.chart j).symm (Rb.A.chart j x + (r : ℂ) • u))) (Metric.ball 0 1) ∧
@@ -140,6 +176,11 @@ theorem exists_family {n : ℕ} (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) {Z : Set
     exact (((GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ).2.2 _ _ (𝔐.all _) (hp u hu)).2 _).2
       ⟨fun k => Units.mk0 (a k) (ha k), e⟩
 
+/- English proof (translation)
+Establish `hcont : ContinuousOn (fun x' => r⁻¹ • (A.chart j x' - A.chart j x)) (A.chart j).source` using `((A.chart j).continuousOn.sub continuousOn_const).const_smul r⁻¹`. Use `⟨hcont.isOpen_inter_preimage (A.chart j).open_source hB, ⟨hx, by simpa using h0⟩, fun f hf k t ht => ?_⟩` and prove the remaining obligations. Establish `h1 : AnalyticAt ℂ (fun t => r⁻¹ • (A.chart j ((A.chart k).symm t) - A.chart j x)) t`. Use `((A.holo k j t ⟨ht.1, ht.2.1⟩).sub (analyticAt_const (v := A.chart j x))).const_smul (c := r⁻¹)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `(GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hB hf _ ht.2.2).comp_of_eq' h1 rfl`.
+-/
 theorem to_manifold {n : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas n X) (j : Fin A.n) {x : X}
     (hx : x ∈ (A.chart j).source) {r : ℂ} {B : Set (Fin n → ℂ)} (hB : IsOpen B) (h0 : 0 ∈ B) :
     IsOpen ((A.chart j).source ∩ (fun x' => r⁻¹ • (A.chart j x' - A.chart j x)) ⁻¹' B) ∧

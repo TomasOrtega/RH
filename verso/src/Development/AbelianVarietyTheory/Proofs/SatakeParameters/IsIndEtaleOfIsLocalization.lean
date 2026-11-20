@@ -21,6 +21,9 @@ variable {D s M}
 
 def Idx.unit (j : J) : Idx D s M := ⟨j, 1, by simpa using M.one_mem⟩
 
+/- English proof (translation)
+Establish `h` using `congr(($(s.naturality φ)).hom x)`. Simplify using `using h`.
+-/
 theorem app_map_apply {j k : J} (φ : j ⟶ k) (x : D.obj j) :
     (s.app k).hom ((D.map φ).hom x) = (s.app j).hom x := by
   have h := congr(($(s.naturality φ)).hom x)
@@ -39,11 +42,20 @@ instance : SmallCategory (Idx D s M) where
   comp_id _ := Subtype.ext (Category.comp_id _)
   assoc _ _ _ := Subtype.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_val {a b c : Idx D s M} (φ : a ⟶ b) (ψ : b ⟶ c) :
     (φ ≫ ψ).1 = φ.1 ≫ ψ.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_val (a : Idx D s M) : (𝟙 a : a ⟶ a).1 = 𝟙 a.j := rfl
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `φ.2`. Use `isUnit_of_mul_isUnit_left (y := algebraMap _ (Localization.Away b.e) c) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hc]`. Conclude with `IsLocalization.Away.algebraMap_isUnit b.e`.
+-/
 theorem isUnit_map {a b : Idx D s M} (φ : a ⟶ b) :
     IsUnit (algebraMap (D.obj b.j) (Localization.Away b.e) ((D.map φ.1).hom a.e)) := by
   obtain ⟨c, hc⟩ := φ.2
@@ -55,6 +67,9 @@ def locMap {a b : Idx D s M} (φ : a ⟶ b) : Localization.Away a.e →+* Locali
   IsLocalization.Away.lift a.e (g := (algebraMap _ (Localization.Away b.e)).comp (D.map φ.1).hom)
     (isUnit_map φ)
 
+/- English proof (translation)
+Simplify using `[locMap, IsLocalization.Away.lift]`.
+-/
 @[simp] theorem locMap_algebraMap {a b : Idx D s M} (φ : a ⟶ b) (x : D.obj a.j) :
     locMap φ (algebraMap _ _ x) = algebraMap _ (Localization.Away b.e) ((D.map φ.1).hom x) := by
   simp [locMap, IsLocalization.Away.lift]
@@ -121,6 +136,9 @@ def leg (a : Idx D s M) : Localization.Away a.e →+* S' :=
   IsLocalization.Away.lift a.e (g := (algebraMap S S').comp ((s.app a.j).hom : D.obj a.j →+* S))
     (IsLocalization.map_units S' (⟨(s.app a.j).hom a.e, a.mem⟩ : M))
 
+/- English proof (translation)
+Simplify using `[leg, IsLocalization.Away.lift]`.
+-/
 @[simp] theorem leg_algebraMap (a : Idx D s M) (x : D.obj a.j) :
     leg S' a (algebraMap (D.obj a.j) (Localization.Away a.e) x) =
       algebraMap S S' (((s.app a.j).hom : D.obj a.j →+* S) x) := by
@@ -222,6 +240,13 @@ end GlobalTheory.IndEtaleLoc
 
 namespace GlobalTheory.IndEtaleLoc
 
+/- English proof (translation)
+Introduce `R S S' _ _ _ _ _ _ _ M _ h`. Take `⟨J, _, _, D, t, s, hs, hst⟩` from `h`. Use `⟨Idx D s M, inferInstance, inferInstance, diag D s M, fromBase t, toLoc S', isColimitToLoc S' hs, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show RingHom.Etale ((algebraMap (D.obj a.j) (Localization.Away a.e)).comp (t.app a.j).hom)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (hst a.j).1 (RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway a.e))`.
+
+Use extensionality with `x`. Establish `h` using `congr(($((hst a.j).2)).hom x)`. Express the relevant statement in the definitionally equal form `(s.app a.j).hom ((t.app a.j).hom x) = algebraMap R S x at h`. Express the relevant statement in the definitionally equal form `leg S' a (algebraMap _ (Localization.Away a.e) ((t.app a.j).hom x)) = algebraMap R S' x`. Rewrite using `[leg_algebraMap]`.
+
+Express the relevant statement in the definitionally equal form `algebraMap S S' ((s.app a.j).hom ((t.app a.j).hom x)) = _`. Rewrite using `[h, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem isIndEtale_of_isLocalization : ∀ (R S S' : Type) [CommRing R] [CommRing S] [CommRing S']
     [Algebra R S] [Algebra S S'] [Algebra R S'] [IsScalarTower R S S'] (M : Submonoid S)
     [IsLocalization M S'], GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap R S) →

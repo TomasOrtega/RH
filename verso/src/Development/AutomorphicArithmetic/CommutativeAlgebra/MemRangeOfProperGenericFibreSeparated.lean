@@ -5,6 +5,35 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsSpecializesLif
 open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `R Ω _ _ _ _ hinj B Y D C ι _ π _ _ j _ hd q hq c _ v hpb y hy`. Use `set g := Spec.map (CommRingCat.ofHom (algebraMap R Ω)) with hg`. Set `U' : Y.Opens` to `π ⁻¹ᵁ ι.opensRange`. Establish `hjU : Set.range j ⊆ Set.range U'.ι`. Introduce and unpack `_ ⟨d, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Use `show π (j d) ∈ ι.opensRange`. Rewrite using `[← Scheme.Hom.comp_apply, hq, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Set `jU : D ⟶ U'` to `IsOpenImmersion.lift U'.ι j hjU`.
+
+Establish `hjUf : jU ≫ U'.ι = j` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hπU : Set.range (U'.ι ≫ π) ⊆ Set.range ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `z.2`. Set `w : (U' : Scheme) ⟶ Sp R` to `IsOpenImmersion.lift ι (U'.ι ≫ π) hπU`.
+
+Establish `hw : w ≫ ι = U'.ι ≫ π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hjw : jU ≫ w = q`. Rewrite using `[← cancel_mono ι, Category.assoc, hw, ← Category.assoc, hjUf, hq]`. Use `haveI : IsSeparated (w ≫ ι) := by rw [hw]; infer_instance`. Use `haveI : IsSeparated w := IsSeparated.of_comp w ι`.
+
+Set `m : C ⟶ pullback w g` to `pullback.lift (v ≫ jU) c (by rw [Category.assoc, hjw, hpb.w])`. Establish `hm : m ≫ pullback.snd w g = c` using `pullback.lift_snd _ _ _`. Use `haveI : UniversallyClosed (m ≫ pullback.snd w g) := by rw [hm]; infer_instance`. Use `haveI : UniversallyClosed m := UniversallyClosed.of_comp_of_isSeparated m (pullback.snd w g)`. Establish `hleft : IsPullback m v (pullback.fst w g) jU`.
+
+Use `IsPullback.of_right ?_ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback w g).flip` and prove the remaining obligations. Rewrite using `[hm, hjw]`. Conclude with `hpb.flip`. Establish `hI : hleft.isoPullback.inv ≫ m = pullback.fst (pullback.fst w g) jU` using `(Iso.inv_comp_eq _).mpr hleft.isoPullback_hom_fst.symm`. Establish `hrange : (pullback.fst w g) ⁻¹' Set.range jU ⊆ Set.range m`.
+
+Introduce `z hz`. Establish `e` using `IsOpenImmersion.range_pullbackFst jU (pullback.fst w g)`. Establish `hz' : z ∈ Set.range (pullback.fst (pullback.fst w g) jU)`. Rewrite using `[e]`. Conclude with `hz`.
+
+Take `⟨t, rfl⟩` from `hz'`. Use `⟨hleft.isoPullback.inv t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hI]`. Take `⟨p, hp⟩` from `hy`. Establish `hyU : y ∈ U'` using `by show π y ∈ ι.opensRange`.
+
+Rewrite using `[← hp, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Set `yU : U'` to `⟨y, hyU⟩`. Establish `e1 : ι (w yU) = π y` using `by show (w ≫ ι) yU = π y`. Rewrite using `[hw]`.
+
+Both sides reduce to the same expression. Establish `hwy : w yU = g p`. Apply `ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[e1, ← hp]`. Both sides reduce to the same expression.
+
+Take `⟨y', hy'1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := w) (g := g) yU p hwy`. Establish `hξ : genericPoint Y ∈ Set.range j`. Rewrite using `[(genericPoint_spec Y).mem_open_set_iff j.isOpenEmbedding.isOpen_range, Set.univ_inter]`. Conclude with `hd.nonempty`. Take `⟨d, hdξ⟩` from `hξ`.
+
+Establish `hsp : jU d ⤳ yU`. Apply `(U'.ι.isOpenEmbedding.isInducing.specializes_iff).mp` to reduce the goal to its premises. Establish `e2 : U'.ι (jU d) = genericPoint Y`. Rewrite using `[← Scheme.Hom.comp_apply, hjUf, hdξ]`. Rewrite using `[e2]`.
+
+Conclude with `(genericPoint_spec Y).specializes (Set.mem_univ _)`. Take `⟨x', hx'sp, hx'fst⟩` from `UpperTheory.exists_specializes_lift_generic_base_change R Ω hinj w y' (jU d) (by rw [hy'1]; exact hsp)`. Establish `hx'm : x' ∈ Set.range m` using `hrange ⟨d, hx'fst.symm⟩`. Establish `hy'm : y' ∈ Set.range m` using `hx'sp.mem_closed m.isClosedMap.isClosed_range hx'm`. Take `⟨c0, hc0⟩` from `hy'm`.
+
+Use `⟨v c0, ?_⟩` and prove the remaining obligations. Establish `h1 : pullback.fst w g (m c0) = jU (v c0)`. Rewrite using `[← Scheme.Hom.comp_apply, hleft.w, Scheme.Hom.comp_apply]`. Rewrite using `[← hjUf, Scheme.Hom.comp_apply, ← h1, hc0, hy'1]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.mem_range_of_proper_generic_fibre_separated :
     ∀ (R Ω : Type) [CommRing R] [IsDomain R] [Field Ω] [Algebra R Ω], Function.Injective (algebraMap R Ω) → ∀ {B Y D C : Scheme.{0}} (ι : Sp R ⟶ B) [IsOpenImmersion ι] (π : Y ⟶ B) [IsSeparated π] [IrreducibleSpace Y] (j : D ⟶ Y) [IsOpenImmersion j], Dense (Set.range j) → ∀ (q : D ⟶ Sp R), j ≫ π = q ≫ ι → ∀ (c : C ⟶ Sp Ω) [IsProper c] (v : C ⟶ D), IsPullback v c q (Spec.map (CommRingCat.ofHom (algebraMap R Ω))) → ∀ (y : Y), π y ∈ Set.range (Spec.map (CommRingCat.ofHom (algebraMap R Ω)) ≫ ι) → y ∈ Set.range j := by
   intro R Ω _ _ _ _ hinj B Y D C ι _ π _ _ j _ hd q hq c _ v hpb y hy

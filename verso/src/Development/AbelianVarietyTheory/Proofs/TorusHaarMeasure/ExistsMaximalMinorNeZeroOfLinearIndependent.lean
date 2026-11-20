@@ -9,6 +9,15 @@ namespace GlobalTheory
 open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
 
+/- English proof (translation)
+Use `set A : Matrix (Fin r) ι K := Matrix.of fun k a => w a k with hA`. Establish `hcol : A.col = w` using `rfl`. Establish `hrank : A.rank = Fintype.card ι`. Rewrite using `[Matrix.rank_eq_finrank_span_cols, hcol, finrank_span_eq_card hw]`. Establish `htop : Submodule.span K (Set.range A.row) = ⊤`.
+
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank_eq_finrank_span_row, hrank, Module.finrank_fintype_fun_eq_card]`. Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' K A.row`. Use `haveI : Fintype κ := Fintype.ofInjective a ha`. Set `b` to `Module.Basis.mk hli (by rw [hspan, htop])`.
+
+Establish `hcard : Fintype.card ι = Fintype.card κ`. Rewrite using `[← Module.finrank_fintype_fun_eq_card (R := K), Module.finrank_eq_card_basis b]`. Set `f : ι ≃ κ` to `Fintype.equivOfCardEq hcard`. Use `⟨a ∘ f, ha.comp f.injective, ?_⟩` and prove the remaining obligations. Establish `hrow : LinearIndependent K (Matrix.of fun k a' => w a' ((a ∘ f) k)).row` using `hli.comp f f.injective`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hrow)).ne_zero`.
+-/
 theorem _root_.GlobalTheory.exists_maximal_minor_ne_zero_of_linearIndependent
     (K : Type) [Field K] (r : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → K)
     (hw : LinearIndependent K w) :

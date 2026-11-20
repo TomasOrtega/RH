@@ -8,11 +8,19 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.Shin.HatInd
 
+/- English proof (translation)
+Unfold `InPar gal`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, map_eq_zero]`.
+-/
 theorem inPar_gal {F' : Type} [Field F'] (u : F' →+* F') (a : ℕ) {n : ℕ} (x : GL (Fin n) F') :
     InPar a (gal u n x) ↔ InPar a x := by
   unfold InPar gal
   simp only [Matrix.GeneralLinearGroup.map_apply, map_eq_zero]
 
+/- English proof (translation)
+Take `⟨H, π, hH, -, hπ, hmat, -⟩` from `GlobalTheory.T.exists_blockParabolic_subgroup_levi_projection F' a b n h`. Use `⟨fun x y hx hy => (hH _).1 (H.mul_mem ((hH x).2 hx) ((hH y).2 hy)), (hH 1).1 H.one_mem, fun x hx => (hH _).1 (H.inv_mem ((hH x).2 hx)), fun x y hx hy => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `π.map_mul ⟨x, (hH x).2 hx⟩ ⟨y, (hH y).2 hy⟩` as an intermediate fact. Rewrite `this` using `[hπ, hπ, hπ]`. Conclude with `congrArg Prod.fst this`.
+
+Use `(hmat ⟨x, (hH x).2 hx⟩).1` as an intermediate fact. Rewrite `this` using `[hπ]`. Conclude with `this`.
+-/
 theorem par_facts {F' : Type} [Field F'] (a b n : ℕ) (h : n = a + b) :
     (∀ x y : GL (Fin n) F', InPar a x → InPar a y → InPar a (x * y)) ∧ InPar a (1 : GL (Fin n) F') ∧
     (∀ x : GL (Fin n) F', InPar a x → InPar a x⁻¹) ∧
@@ -29,6 +37,11 @@ theorem par_facts {F' : Type} [Field F'] (a b n : ℕ) (h : n = a + b) :
     rw [hπ] at this
     exact this
 
+/- English proof (translation)
+Establish `hm` using `(par_facts (F' := F') a b n h).2.2.2.2`. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[hm _ ((inPar_gal u a x).2 hx)]`. Unfold `gal`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.map_apply, hm _ hx]`. Unfold `tl ent`. Apply the tactic sequence `split_ifs <;> simp [Matrix.GeneralLinearGroup.map_apply]`.
+-/
 theorem tlG_gal {F' : Type} [Field F'] (u : F' →+* F') (a b n : ℕ) (h : n = a + b) (x : GL (Fin n) F')
     (hx : InPar a x) : tlG a (gal u n x) = gal u a (tlG a x) := by
   have hm := (par_facts (F' := F') a b n h).2.2.2.2
@@ -40,13 +53,58 @@ theorem tlG_gal {F' : Type} [Field F'] (u : F' →+* F') (a b n : ℕ) (h : n = 
   unfold tl ent
   split_ifs <;> simp [Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+The claim follows from `Finite.of_injective (fun e : F' ≃ₐ[F] F' => (e : F' → F')) (fun _ _ h => AlgEquiv.ext (congrFun h))`.
+-/
 theorem finite_gal (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] :
     Finite (F' ≃ₐ[F] F') :=
   Finite.of_injective (fun e : F' ≃ₐ[F] F' => (e : F' → F')) (fun _ _ h => AlgEquiv.ext (congrFun h))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galAct_symm {F F' : Type} [Field F] [Field F'] [Algebra F F'] (n : ℕ) (u : F' ≃ₐ[F] F')
     (x : GL (Fin n) F') : (galAct F F' n u).symm x = gal ((u⁻¹ : F' ≃ₐ[F] F') : F' →+* F') n x := rfl
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ a b n hn X hX`. Use `haveI : Finite (F' ≃ₐ[F] F') := finite_gal F F'`. Use `haveI : Finite (GHat F F' n) := Finite.of_equiv _ SemidirectProduct.equivProd.symm`. Use `haveI : Finite (GHat F F' a) := Finite.of_equiv _ SemidirectProduct.equivProd.symm`. Take `⟨hmul, hone, hinv, htl, -⟩` from `par_facts (F' := F') a b n hn`.
+
+Set `P : Subgroup (GHat F F' n)` to `{ carrier := {x | InPar a x.left} mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, mul_left, galAct_apply] at hx hy ⊢`. Conclude with `hmul _ _ hx ((inPar_gal _ a _).2 hy)`. Use the proof step `one_mem' := by simpa using hone`. Use the proof step `inv_mem' := fun {x} hx => by`.
+
+Simplify using `only [Set.mem_setOf_eq, inv_left, galAct_apply] at hx ⊢`. Conclude with `(inPar_gal _ a _).2 (hinv _ hx) }`. Establish `hP : ∀ x : GHat F F' n, x ∈ P ↔ InPar a x.left` using `fun _ => Iff.rfl`. Set `πh : P →* GHat F F' a` to `MonoidHom.mk' (fun p => (⟨tlG a p.1.left, p.1.right⟩ : GHat F F' a)) (fun p q => by`. Establish `hp` using `(hP _).1 p.2`.
+
+Establish `hq` using `(hP _).1 q.2`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, mul_left, galAct_apply]`. Rewrite using `[htl _ _ hp ((inPar_gal _ a _).2 hq), tlG_gal _ a b n hn _ hq]`. Use the proof step `simp)`.
+
+Establish `hcl` using `(virt_mul_comap_conj_ind_linear (GHat F F' a)).2.2.1 X hX`. Use `set ψ : P → ℂ := fun p => X (πh p) with hψ`. Use `⟨ind P ψ, (virt_mul_comap_conj_ind_linear (GHat F F' n)).2.2.2.1 P ψ ((virt_mul_comap_conj_ind_linear (GHat F F' a)).2.1 X hX P πh), fun t δ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (w : GHat F F' n) (u : F' ≃ₐ[F] F'), ext0 P ψ ((inr u)⁻¹ * w * inr u) = ext0 P ψ w`. Introduce `w u`.
+
+Establish `hl : ((inr u)⁻¹ * w * inr u).left = gal ((u⁻¹ : F' ≃ₐ[F] F') : F' →+* F') n w.left`. Simplify using `[mul_left, galAct_apply, galAct_symm]`. Establish `hr : ((inr u)⁻¹ * w * inr u).right = u⁻¹ * w.right * u` using `by simp`. Unfold `ext0`. Distinguish the cases in `hw : InPar a w.left`.
+
+Establish `hw' : (inr u)⁻¹ * w * inr u ∈ P` using `by rw [hP, hl]; exact (inPar_gal _ a _).2 hw`. Rewrite using `[dif_pos hw', dif_pos ((hP w).2 hw)]`. Simplify using `only [hψ]`. Establish `: πh ⟨(inr u)⁻¹ * w * inr u, hw'⟩ = (inr u)⁻¹ * πh ⟨w, (hP w).2 hw⟩ * inr u`. Apply `SemidirectProduct.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `tlG a ((inr u)⁻¹ * w * inr u).left = _`. Rewrite using `[hl, tlG_gal _ a b n hn _ hw]`. Simplify using `[MonoidHom.mk'_apply, mul_left, galAct_apply, galAct_symm, πh]`. Express the relevant statement in the definitionally equal form `((inr u)⁻¹ * w * inr u).right = _`. Rewrite using `[hr]`.
+
+Simplify using `[MonoidHom.mk'_apply, πh]`. Rewrite using `[this]`. Use `hcl (πh ⟨w, (hP w).2 hw⟩) (inr u)` as an intermediate fact. Simplify using `using this`. Establish `hw' : (inr u)⁻¹ * w * inr u ∉ P`.
+
+Rewrite using `[hP, hl]`. Conclude with `fun h => hw ((inPar_gal _ a _).1 h)`. Rewrite using `[dif_neg hw', dif_neg (fun h => hw ((hP w).1 h))]`. Use `haveI : Fintype (GHat F F' n) := Fintype.ofFinite _`. Use `haveI : Fintype (GL (Fin n) F') := Fintype.ofFinite _`.
+
+Use `haveI : Fintype (F' ≃ₐ[F] F') := Fintype.ofFinite _`. Use `set g : GHat F F' n := inl δ * inr t with hg`. Establish `hval : ∀ y : GL (Fin n) F', ext0 P ψ ((inl y)⁻¹ * g * inl y) = if InPar a (y⁻¹ * δ * gal (t : F' →+* F') n y) then X (inl (tlG a (y⁻¹ * δ * gal (t : F' →+* F') n y)) * inr t) * 1 else 0`. Introduce `y`. Establish `hl : ((inl y)⁻¹ * g * inl y).left = y⁻¹ * δ * gal (t : F' →+* F') n y`.
+
+Simplify using `[hg, mul_left, galAct_apply]`. Establish `hr : ((inl y)⁻¹ * g * inl y).right = t` using `by simp [hg]`. Unfold `ext0`. Distinguish the cases in `hw : InPar a (y⁻¹ * δ * gal (t : F' →+* F') n y)`. Rewrite using `[dif_pos (by rw [hP, hl]; exact hw), if_pos hw, mul_one]`.
+
+Simplify using `only [hψ]`. Use `congr 1`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `tlG a ((inl y)⁻¹ * g * inl y).left = _`. Rewrite using `[hl]`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `((inl y)⁻¹ * g * inl y).right = _`. Rewrite using `[hr]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg (by rw [hP, hl]; exact hw), if_neg hw]`.
+
+Establish `hz : ∀ (y : GL (Fin n) F') (u : F' ≃ₐ[F] F'), ((SemidirectProduct.equivProd (φ` using `galAct F F' n)).symm (y, u)) = inl y * inr u := by`. Introduce `y u`. Apply the tactic sequence `apply SemidirectProduct.ext <;> simp [SemidirectProduct.equivProd]`. Establish `hsum : ∑ᶠ z : GHat F F' n, ext0 P ψ (z⁻¹ * g * z) = (Nat.card (F' ≃ₐ[F] F') : ℂ) * ∑ᶠ y : GL (Fin n) F', ext0 P ψ ((inl y)⁻¹ * g * inl y)`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← (SemidirectProduct.equivProd (φ := galAct F F' n)).symm.sum_comp, Fintype.sum_prod_type, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `: ∀ u : F' ≃ₐ[F] F', ext0 P ψ ((inl y * inr u)⁻¹ * g * (inl y * inr u)) = ext0 P ψ ((inl y)⁻¹ * g * inl y)`. Introduce `u`. Establish `e : (inl y * inr u)⁻¹ * g * (inl y * inr u) = (inr u)⁻¹ * ((inl y)⁻¹ * g * inl y) * inr u`. Simplify using `only [mul_inv_rev, mul_assoc]`.
+
+Rewrite using `[e, key]`. Simplify using `only [hz, this, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Establish `hcard : Nat.card P = Nat.card {p : GL (Fin n) F' // InPar a p} * Nat.card (F' ≃ₐ[F] F')`. Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr { toFun := fun p => (⟨p.1.left, p.2⟩, p.1.right) invFun := fun q => ⟨⟨q.1.1, q.2⟩, q.1.2⟩ left_inv := fun p => rfl right_inv := fun q => rfl }`.
+
+Establish `hB : (Nat.card (F' ≃ₐ[F] F') : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := F' ≃ₐ[F] F')).ne'` after adjusting the coercions. Unfold `ind hcTw`. Rewrite using `[hcard, hsum]`. Simplify using `only [hval]`.
+
+Use `push_cast`. Rewrite using `[mul_inv, mul_assoc, ← mul_assoc _ (Nat.card (F' ≃ₐ[F] F') : ℂ), inv_mul_cancel₀ hB, one_mul]`.
+-/
 theorem hat_ind : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (a b n : ℕ), n = a + b →
     ∀ X ∈ Virt ℂ ℂ (GHat F F' a), ∃ Z ∈ Virt ℂ ℂ (GHat F F' n), ∀ (t : F' ≃ₐ[F] F') (δ : GL (Fin n) F'),
       Z (inl δ * inr t) = hcTw (t : F' →+* F') a b (fun d => X (inl d * inr t)) (fun _ => 1) n δ := by

@@ -10,6 +10,31 @@ namespace GlobalTheory.WeilM
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Take `⟨N, hN, hK⟩` from `exists_nat_mul_integral_of_isCompact F hg.2.isCompact`. Use `haveI := discreteTopology_denomLattice F κ hN`. Establish `hw` using `ZLattice.summable_norm_pow_inv (denomLattice F κ N) (Module.finrank ℤ (denomLattice F κ N) + 1) (Nat.lt_succ_self _)`. Use `set k := Module.finrank ℤ (denomLattice F κ N) + 1 with hkdef`.
+
+Use `set W := ∑' z : denomLattice F κ N, ‖z‖⁻¹ ^ k with hWdef`. Establish `hW0 : 0 ≤ W` using `tsum_nonneg fun _ => by positivity`. Use `⟨{(0, 0), (k, 0)}, max B 0 * (1 + W), mul_nonneg (le_max_right _ _) (by linarith), fun f => ?_⟩` and prove the remaining obligations. Use `set M := (({(0, 0), (k, 0)} : Finset (ℕ × ℕ)).sup (schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)) f with hMdef`. Establish `h00 : ∀ x, ‖f x‖ ≤ M` using `fun x => (SchwartzMap.norm_le_seminorm ℂ f x).trans (Seminorm.le_finset_sup_apply (p := schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ) (i := (0, 0)) (by simp))`.
+
+Establish `hk0 : ∀ x, ‖x‖ ^ k * ‖f x‖ ≤ M` using `fun x => by`. Use `SchwartzMap.le_seminorm ℂ k 0 f x` as an intermediate fact. Rewrite `this` using `[norm_iteratedFDeriv_zero]`. Conclude with `this.trans (Seminorm.le_finset_sup_apply (p := schwartzSeminormFamily ℂ (κ → mixedEmbedding.mixedSpace F) ℂ) (i := (k, 0)) (by simp))`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (h00 0)`.
+
+Establish `hpt : ∀ z : denomLattice F κ N, ‖f z‖ ≤ (if z = 0 then M else 0) + ‖z‖⁻¹ ^ k * M` using `fun z => by`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `only [if_true]`. Use `h00 0` as an intermediate fact.
+
+Establish `h2 : 0 ≤ ‖(0 : denomLattice F κ N)‖⁻¹ ^ k * M` using `by positivity`. Simplify using `using (show ‖f 0‖ ≤ M + ‖(0 : denomLattice F κ N)‖⁻¹ ^ k * M by linarith)`. Rewrite using `[if_neg hz, zero_add]`. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Rewrite using `[inv_pow, ← div_eq_inv_mul, le_div_iff₀ (pow_pos hz0 _), mul_comm]`.
+
+Conclude with `hk0 z`. Establish `hs1 : HasSum (fun z : denomLattice F κ N => if z = 0 then M else 0) M`. Use `hasSum_ite_eq (0 : denomLattice F κ N) M` and compare the differences between its conclusion and the goal. Establish `hsumL : Summable fun z : denomLattice F κ N => (if z = 0 then M else 0) + ‖z‖⁻¹ ^ k * M` using `hs1.summable.add (hw.mul_right M)`. Establish `hfL : Summable fun z : denomLattice F κ N => ‖f z‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hpt hsumL`.
+
+Establish `hLbound : ∑' z : denomLattice F κ N, ‖f z‖ ≤ (1 + W) * M`. Use `(hfL.tsum_le_tsum hpt hsumL).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hs1.summable.tsum_add (hw.mul_right M), hs1.tsum_eq, tsum_mul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : pureA F f g ∈ schA F κ` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+
+Set `S : Set (κ → F)` to `{ξ | (fun i => mixedEmbedding F (ξ i)) ∈ denomLattice F κ N}`. Establish `hsupp : Function.support (fun ξ : κ → F => ‖pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))‖) ⊆ S`. Introduce `ξ hξ`. Rewrite `hξ` using `[Function.mem_support, norm_ne_zero_iff, pureA_algebraMap]`. Establish `h0` using `right_ne_zero_of_mul hξ`.
+
+Use `show ∀ i, _`. Introduce `i`. Take `⟨y, hy⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hK _ (subset_tsupport _ h0) i v`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`.
+
+Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Establish `hterm : ∀ ξ : S, ‖pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ.1 i))‖ ≤ max B 0 * ((fun z : denomLattice F κ N => ‖f z‖) ∘ j) ξ` using `fun ξ => by`. Rewrite using `[pureA_algebraMap, norm_mul, mul_comm, Function.comp_apply]`. Conclude with `mul_le_mul (le_max_of_le_left (hB _)) le_rfl (norm_nonneg _) (le_max_right _ _)`. Establish `hsumS : Summable ((fun z : denomLattice F κ N => ‖f z‖) ∘ j)` using `hfL.comp_injective hj`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem thetaSum_pureA_bound {κ : Type} [Fintype κ] {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) : ∃ (s : Finset (ℕ × ℕ)) (C : ℝ), 0 ≤ C ∧
     ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,
@@ -92,6 +117,13 @@ theorem thetaSum_pureA_bound {κ : Type} [Fintype κ] {g : (κ → FiniteAdeleRi
     _ ≤ max B 0 * ((1 + W) * M) := mul_le_mul_of_nonneg_left hLbound (le_max_right _ _)
     _ = max B 0 * (1 + W) * M := by ring
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `LinearMap.exists_extend (thetaLin F κ)`. Establish `hl' : ∀ Φ ∈ schA F κ, l Φ = thetaSum F Φ` using `fun Φ h => by`. Use `LinearMap.congr_fun hl ⟨Φ, h⟩` as an intermediate fact. Simplify using `using this`. Use `⟨l, fun g hg => ?_, hl'⟩` and prove the remaining obligations.
+
+Establish `hmem : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hadd : ∀ f f' : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, pureA F (f + f') g = pureA F f g + pureA F f' g` using `fun f f' => by`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, add_mul]`. Establish `hsmul : ∀ (a : ℂ) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ), pureA F (a • f) g = a • pureA F f g` using `fun a f => by`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`. Set `T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ` to `SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) (fun f => thetaSum F (pureA F f g)) (fun f f' => by rw [hadd]; exact thetaSum_add F (hmem f) (hmem f')) (fun a f => by rw [hsmul, thetaSum_smul]; rfl) (thetaSum_pureA_bound F hg)`. Conclude with `⟨T, fun f => hl' _ (hmem f)⟩`.
+-/
 theorem exists_adm_eq_thetaSum_of_locallyCompact (F : Type) [Field F] [NumberField F] [LocallyCompactSpace (AdeleRing (𝓞 F) F)]
     (κ : Type) [Fintype κ] : ∃ l : ((κ → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ℂ, l ∈ (adeleClass F).adm κ ∧
       ∀ Φ ∈ schA F κ, l Φ = thetaSum F Φ := by

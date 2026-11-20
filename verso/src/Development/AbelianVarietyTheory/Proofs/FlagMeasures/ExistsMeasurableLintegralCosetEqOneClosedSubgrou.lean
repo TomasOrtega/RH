@@ -8,6 +8,31 @@ open MeasureTheory in
 open scoped ENNReal in
 open scoped Pointwise in
 
+/- English proof (translation)
+Set `K` to `CompactExhaustion.choice G`. Use `set a : ℕ → ℝ≥0∞ := fun n => ν (j ⁻¹' (K n * (K n)⁻¹)) with ha_def`. Establish `ha : ∀ n, a n ≠ ∞` using `fun n => (hj.isCompact_preimage ((K.isCompact n).mul (K.isCompact n).inv)).measure_lt_top.ne`. Use `set c : ℕ → ℝ≥0∞ := fun n => (2⁻¹ : ℝ≥0∞) ^ n / (a n + 1) with hc_def`. Establish `hc_pos : ∀ n, c n ≠ 0` using `fun n => (ENNReal.div_pos (pow_ne_zero _ (by simp)) (by simp [ha n])).ne'`.
+
+Establish `hc_le : ∀ n, c n ≤ 2⁻¹ ^ n` using `fun n => ENNReal.div_le_of_le_mul (le_mul_of_one_le_right' le_add_self)`. Establish `hca : ∀ n, c n * a n ≤ 2⁻¹ ^ n` using `fun n => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hKm : ∀ n, MeasurableSet (K n)` using `fun n => (K.isCompact n).isClosed.measurableSet`. Use `set f : G → ℝ≥0∞ := fun y => ∑' n, (K n).indicator (fun _ => c n) y with hf_def`.
+
+Establish `hf : Measurable f` using `Measurable.ennreal_tsum fun n => measurable_const.indicator (hKm n)`. Establish `hf_pos : ∀ y, f y ≠ 0`. Introduce `y`. Take `⟨n, hn⟩` from `K.exists_mem y`. Use `ne_of_gt (lt_of_lt_of_le (pos_iff_ne_zero.2 (hc_pos n)) ?_)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hjg : ∀ g, Measurable fun h => j h * g` using `fun g => hj.continuous.measurable.mul_const g`. Establish `hmeas : ∀ g, Measurable fun h => f (j h * g)` using `fun g => hf.comp (hjg g)`. Use `set F : G → ℝ≥0∞ := fun g => ∫⁻ h, f (j h * g) ∂ν with hF_def`. Establish `hF : Measurable F` using `Measurable.lintegral_prod_right' (ν := ν) (f := fun p : G × H => f (j p.2 * p.1)) (hf.comp ((hj.continuous.measurable.comp measurable_snd).mul measurable_fst))`.
+
+Establish `hF_inv : ∀ h' g, F (j h' * g) = F g`. Introduce `h' g`. Establish `e : ∀ h, f (j h * (j h' * g)) = (fun k => f (j k * g)) (h * h')`. Introduce `h`. Simplify using `only [map_mul, mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hF0 : ∀ g, F g ≠ 0`. Introduce `g h0`. Rewrite `h0` using `[hF_def, lintegral_eq_zero_iff (hmeas g), Filter.EventuallyEq, ae_iff]`. Establish `: ν Set.univ = 0` using `by simpa [hf_pos] using h0`.
+
+Conclude with `NeZero.ne ν (Measure.measure_univ_eq_zero.1 this)`. Establish `hFtop : ∀ g, F g ≠ ∞`. Introduce `g`. Take `⟨m, hm⟩` from `K.exists_mem g`. Establish `hterm : ∀ n, ∫⁻ h, (K n).indicator (fun _ => c n) (j h * g) ∂ν ≤ (1 + a m) * 2⁻¹ ^ n`.
+
+Introduce `n`. Establish `hsub : (fun h => j h * g) ⁻¹' K n ⊆ j ⁻¹' (K (max n m) * (K (max n m))⁻¹)`. Introduce `h hh`. Establish `h1 : j h * g ∈ K (max n m)` using `K.subset (le_max_left n m) hh`. Establish `h2 : g ∈ K (max n m)` using `K.subset (le_max_right n m) hm`.
+
+Establish `e : j h = (j h * g) * g⁻¹` using `by group`. Rewrite using `[Set.mem_preimage, e]`. Conclude with `Set.mul_mem_mul h1 (Set.inv_mem_inv.2 h2)`. Establish `hle : ν ((fun h => j h * g) ⁻¹' K n) ≤ a n + a m`. Use `(measure_mono hsub).trans ?_` and prove the remaining obligations.
+
+Break down `le_total n m with hnm | hnm` into its components or cases. Rewrite using `[max_eq_right hnm]`. Conclude with `le_add_self`. Rewrite using `[max_eq_left hnm]`. Conclude with `le_self_add`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hF_eq : F g = ∑' n, ∫⁻ h, (K n).indicator (fun _ => c n) (j h * g) ∂ν` using `lintegral_tsum fun n => ((measurable_const.indicator (hKm n)).comp (hjg g)).aemeasurable`. Rewrite using `[hF_eq]`. Use `ne_top_of_le_ne_top ?_ (ENNReal.tsum_le_tsum hterm)` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_geometric]`.
+
+Conclude with `ENNReal.mul_ne_top (by simp [ha m]) (by simp)`. Use `⟨fun g => f g * (F g)⁻¹, hf.mul hF.inv, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [hF_inv]`. Rewrite using `[lintegral_mul_const _ (hmeas g)]`. Conclude with `ENNReal.mul_inv_cancel (hF0 g) (hFtop g)`.
+-/
 theorem _root_.GlobalTheory.exists_measurable_lintegral_coset_eq_one
     (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H]

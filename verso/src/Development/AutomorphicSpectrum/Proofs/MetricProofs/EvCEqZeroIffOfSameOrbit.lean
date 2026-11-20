@@ -24,6 +24,11 @@ section Forms
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Simplify using `only [evC, eval_map]`. Rewrite using `[eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h1 : ∏ p : Σ k, ι k, c p.1 ^ m p = ∏ k, c k ^ b k`. Rewrite using `[Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ m ⟨k, i⟩ = c k ^ b k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf m hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evC_torus {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     evC (fun p => c p.1 * z p) f = (∏ k, c k ^ b k) * evC z f := by
   classical
@@ -38,6 +43,9 @@ theorem evC_torus {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) (c : K 
   simp only [mul_pow, Finset.prod_mul_distrib, h1]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Establish `h0 : ∏ k, c k ^ b k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[evC_torus hf]`. Simplify using `[h0]`.
+-/
 theorem evC_eq_zero_iff_of_sameOrbit {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b)
     {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : evC z f = 0 ↔ evC z' f = 0 := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -45,14 +53,31 @@ theorem evC_eq_zero_iff_of_sameOrbit {f : MRing ι} {b : K → ℕ} (hf : IsMult
   rw [evC_torus hf]
   simp [h0]
 
+/- English proof (translation)
+Rewrite using `[evC, map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem evC_rename (v : (Σ k, ι k) → Σ k, ι' k) (z : (Σ k, ι' k) → ℂ) (f : MRing ι) :
     evC z (rename v f) = evC (fun p => z (v p)) f := by
   rw [evC, map_rename, eval_rename]
   rfl
 
+/- English proof (translation)
+Simplify using `[evC]`.
+-/
 theorem evC_mul (z : (Σ k, ι k) → ℂ) (f g : MRing ι) : evC z (f * g) = evC z f * evC z g := by
   simp [evC]
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add]`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf, hg]`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `single p n`. Establish `hR : (∑ q : Σ k, ι k, if κ q.1 = k' then (Finsupp.single p n) q else 0) = if κ p.1 = k' then n else 0`.
+
+Rewrite using `[Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[Finsupp.single_apply, Ne.symm hq]`. Simplify using the standard rewrite rules.
+
+Establish `hL : ∀ q : Σ k, ι' k, ∑ i, (Finsupp.single q n) ⟨k', i⟩ = if q.1 = k' then n else 0`. Introduce and unpack `⟨kq, iq⟩`. Distinguish the cases in `h : kq = k'`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`.
+
+Simplify using `[Finsupp.single_apply, h]`. Rewrite using `[Finsupp.mapDomain_single, hL, hR, hv]`.
+-/
 theorem sum_mapDomain {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : ∀ p, (v p).1 = κ p.1)
     [DecidableEq K'] (m : (Σ k, ι k) →₀ ℕ) (k' : K') :
     ∑ i, (Finsupp.mapDomain v m) ⟨k', i⟩ = ∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0 := by
@@ -81,6 +106,13 @@ theorem sum_mapDomain {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hv : �
       · simp [Finsupp.single_apply, h]
     rw [Finsupp.mapDomain_single, hL, hR, hv]
 
+/- English proof (translation)
+Introduce `m hm k'`. Rewrite `hm` using `[support_rename_of_injective hb.2.1, Finset.mem_image]`. Take `⟨m₀, hm₀, rfl⟩` from `hm`. Rewrite using `[sum_mapDomain hb.2.2.1, Fintype.sum_sigma]`. Distinguish the cases in `hk : ∃ k, κ k = k'`.
+
+Take `⟨k, rfl⟩` from `hk`. Rewrite using `[hb.1.extend_apply, Finset.sum_eq_single k]`. Simplify using `using hf m₀ hm₀ k`. Introduce `k₂ _ hne`. Conclude with `Finset.sum_eq_zero fun i _ => if_neg (hb.1.ne hne)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ hk]`. Conclude with `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩`.
+-/
 theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hb : IsBlockMap κ v) {f : MRing ι}
     {b : K → ℕ} (hf : IsMultiHomog f b) : IsMultiHomog (rename v f) (Function.extend κ b 0) := by
   classical
@@ -98,6 +130,9 @@ theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (
   · rw [Function.extend_apply' _ _ _ hk]
     exact Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.1 (support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m₁ h₁ k, hg m₂ h₂ k]`.
+-/
 theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -112,6 +147,9 @@ section Sides
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)]
 
+/- English proof (translation)
+Take `⟨K₀, _, ι₀, _, κ, v, U, lam, β, b, hb, -, hor, hβ, hn, hz⟩` from `h`. Use `⟨rename v β, Function.extend κ b 0, isMultiHomog_rename hb hβ, hn, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[evC_rename, ← evC_eq_zero_iff_of_sameOrbit hβ (hor x)]`. Conclude with `hz _ hx`.
+-/
 theorem exists_bdry_form {P₁ : Ideal (MRing ι₁)} {D : ℕ} {σ : Type} {S : AnSys D σ} (Re : Realis S P₁)
     (h : AlgOver Re) : ∃ (γ : MRing ι₁) (c : K₁ → ℕ), IsMultiHomog γ c ∧ γ ∉ P₁ ∧
       ∀ x, Re.π x ∈ bdry S.s → evC (Re.R.lift x x) γ = 0 := by
@@ -120,6 +158,9 @@ theorem exists_bdry_form {P₁ : Ideal (MRing ι₁)} {D : ℕ} {σ : Type} {S :
   rw [evC_rename, ← evC_eq_zero_iff_of_sameOrbit hβ (hor x)]
   exact hz _ hx
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨π, hπ, h1, h2, h3, -⟩` from `GlobalTheory.T.algebraic_realisation_holomorphic_map K ι K₁ ι₁ κ₁ v₁ P J D σ S Re R hb har alg`. Conclude with `⟨π, hπ, h1, h2, h3⟩`.
+-/
 theorem side {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : IsBlockMap κ₁ v₁) {P J : Ideal (MRing ι)}
     {D : ℕ} {σ : Type} {S : AnSys D σ} {P₁ : Ideal (MRing ι₁)} (Re : Realis S P₁) (e : imageZ v₁ P = P₁)
     (R : AnLogRes P J D) (har : IsArithVar P (D + 1)) (alg : AlgOver Re) :
@@ -133,6 +174,9 @@ theorem side {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : 
   obtain ⟨π, hπ, h1, h2, h3, -⟩ := GlobalTheory.T.algebraic_realisation_holomorphic_map K ι K₁ ι₁ κ₁ v₁ P J D σ S Re R hb har alg
   exact ⟨π, hπ, h1, h2, h3⟩
 
+/- English proof (translation)
+Establish `hmem : (fun p => R.lift x x (v₁ p)) ∈ mcPts P₁` using `e ▸ (GlobalTheory.T.block_pullback_herm_line K₁ ι₁ K ι κ₁ v₁ hb).2.2.1 P _ (R.mem x x (R.mem_U x))`. Take `⟨x₁, hx₁⟩` from `GlobalTheory.T.log_resolution_covers_complex_points K₁ ι₁ P₁ _ D Re.R Re.arith _ hmem`. Rewrite using `[evC_rename, ← evC_eq_zero_iff_of_sameOrbit hγ hx₁]`. Conclude with `hz x₁ (hπ x x₁ hx₁ ▸ hx)`.
+-/
 theorem evC_bdry {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} (hb : IsBlockMap κ₁ v₁) {P J : Ideal (MRing ι)}
     {D : ℕ} {σ : Type} {S : AnSys D σ} {P₁ : Ideal (MRing ι₁)} (Re : Realis S P₁) (e : imageZ v₁ P = P₁)
     (R : AnLogRes P J D) {π : R.X → S.X}

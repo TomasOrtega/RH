@@ -35,6 +35,9 @@ def capelliC (E : Fin n → Fin n → 𝒰) (x : ℂ) : 𝒰 :=
 
 end Ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isGlRep_iff_glRelR {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) : IsGlRep E ↔ GlRelR E :=
   Iff.rfl

@@ -151,9 +151,15 @@ structure FieldHas (G : GridData Lc sc) {K : Type} [Field K] (e : K →+* ℂ) :
 
   roots : ∀ v ∈ G.pl.S0, ∃ z : K, IsPrimitiveRoot z (Ideal.absNorm v.asIdeal ^ G.pl.depth sc v)
 
+/- English proof (translation)
+The claim follows from `(div_eq_mul_inv _ _).symm`.
+-/
 theorem lambdaGrid_apply (G : GridData Lc sc) (l : ℕ) (j a : Fin D.R.m) :
     (lamOf G).lam0 l j a = Lc.C.mu0 j * Lc.C.delAt l / G.ch.chiH (a.1 + 1) := (div_eq_mul_inv _ _).symm
 
+/- English proof (translation)
+Use `⟨fun g => 2 * cen D sc.cGap (D.eTau.symm g) (a.1 + 1), fun g => by simp [lamOf], fun k => ?_⟩` and prove the remaining obligations. Use `(G.ch.inf (a.1 + 1) (by omega) a.2 k).trans (Fintype.prod_equiv D.eTau _ _ fun τ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem lamOf_hasInfQ (G : GridData Lc sc) (a : Fin D.R.m) :
     ((lamOf G).chi a).HasInfQ (embPsi D.host) fun g => ((lamOf G).c a g : ℚ) := by
   refine ⟨fun g => 2 * cen D sc.cGap (D.eTau.symm g) (a.1 + 1), fun g => by simp [lamOf], fun k => ?_⟩
@@ -161,14 +167,29 @@ theorem lamOf_hasInfQ (G : GridData Lc sc) (a : Fin D.R.m) :
   simp only [Equiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Introduce `a w hw x hx` and use `G.ch.wild (a.1 + 1) (by omega) a.2 w hw x (by rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply] at hx)`.
+-/
 theorem lamOf_teich (G : GridData Lc sc) : (lamOf G).Teich := fun a w hw x hx =>
   G.ch.wild (a.1 + 1) (by omega) a.2 w hw x (by rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply] at hx)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i h1 h2 v hv => (h.values i h1 h2 v hv).elim fun y hy => ⟨j y, hy⟩, fun v hv => (h.roots v hv).elim fun z hz => ⟨j z, hz.map_of_injective j.injective⟩⟩`.
+-/
 theorem FieldHas.map {G : GridData Lc sc} {K K' : Type} [Field K] [Field K'] {e' : K' →+* ℂ} (j : K →+* K')
     (h : FieldHas G (e'.comp j)) : FieldHas G e' :=
   ⟨fun i h1 h2 v hv => (h.values i h1 h2 v hv).elim fun y hy => ⟨j y, hy⟩,
     fun v hv => (h.roots v hv).elim fun z hz => ⟨j z, hz.map_of_injective j.injective⟩⟩
 
+/- English proof (translation)
+Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Establish `hpos : ∀ v : HeightOneSpectrum (𝓞 D.host.F), 0 < Ideal.absNorm v.asIdeal ^ G.pl.depth sc v` using `fun v => pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)) _`. Establish `h1 : ∀ a : Fin D.R.m, ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ (G.ch.chiH (a.1 + 1)).ValuesIn 0 M.val.toRingHom` using `fun a => by`. Take `⟨n, hn, hi⟩` from `lamOf_hasInfQ G a`. Use `GlobalTheory.T.algebraicHeckeChar_values_in_numberField D.host.F D.host.E c (D.R.Psi) (embPsi D.host) hcm _ n 0 hi fun g => by` as an intermediate fact.
+
+Establish `h3 : (n g : ℚ) = 2 * ((lamOf G).c a g : ℚ)` using `hn g`. Establish `h2 : n g = 2 * (lamOf G).c a g` using `by exact_mod_cast h3`. Conclude with `⟨(lamOf G).c a g, by rw [h2]; ring⟩`. Rewrite `this` using `[Int.cast_zero, zero_div]`. Conclude with `this`.
+
+Use `choose Mc hMc hMc' using h1`. Use `choose Mr hMr hMr' using fun v : G.pl.S0 => GlobalTheory.Mem.FrameVal.exists_roots _ (hpos v)`. Use `⟨(⨆ a, Mc a) ⊔ ⨆ v, Mr v, inferInstance, fun i a b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ k, i = k + 1` from `⟨i - 1, by omega⟩`. Conclude with `GlobalTheory.Mem.FrameVal.valuesIn_mono (hMc' ⟨i, b⟩) ((le_iSup Mc _).trans le_sup_left)`.
+
+Establish `hz` using `Complex.isPrimitiveRoot_exp _ (hpos v).ne'`. Conclude with `⟨⟨_, ((le_iSup Mr ⟨v, hv⟩).trans le_sup_right) (hMr' ⟨v, hv⟩ _ hz.pow_eq_one)⟩, IsPrimitiveRoot.of_map_of_injective (f := IntermediateField.val _) hz Subtype.val_injective⟩`.
+-/
 theorem exists_fieldHas (G : GridData Lc sc) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ FieldHas G M.val.toRingHom := by
   obtain ⟨c, -, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm D.R D.host
@@ -197,6 +218,9 @@ def TwistedPlaceChoiceLiesOverPair (D : D7) (c : NChoice D) : Prop :=
     (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.LiesUnder D (c.twI w) w ∨ GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.LiesUnder D (c.twI w) (D.what₂.places.conj w))) ∧
   ∀ w w', GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w → GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w' → GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.SamePair D w w' → c.Q w ≠ ∅ → c.twI w = c.twI w'
 
+/- English proof (translation)
+The claim follows from `(h.1 w hw).2.elim (fun h1 => ⟨w, hw, h1⟩) fun h1 => ⟨_, (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw, h1⟩`.
+-/
 theorem TwistedPlaceChoiceLiesOverPair.inW1 {D : D7} {c : NChoice D} (h : TwistedPlaceChoiceLiesOverPair D c) {w : D.what₂.places.Pl} (hw : GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w) :
     D.ntw.NonzeroIndexPlace (c.twI w) :=
   (h.1 w hw).2.elim (fun h1 => ⟨w, hw, h1⟩) fun h1 => ⟨_, (GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj w).2 hw, h1⟩
@@ -218,9 +242,19 @@ structure GridFit (p : PtAt ex Csz) {CF : ℝ} (G : Grid p CF) : Prop where
 
   list : GlobalTheory.LamTie.IsLamTieFull D.ntw (lamOf G)
 
+/- English proof (translation)
+The claim follows from `h.field.map D.LL0.val.toRingHom`.
+-/
 theorem GridFit.fieldLL {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} (h : GridFit p G) : FieldHas G D.what₂.embLL :=
   h.field.map D.LL0.val.toRingHom
 
+/- English proof (translation)
+Take `⟨⟨N0, hN⟩, hall⟩` from `h.2.1`. Establish `hg` using `(hall N0 hN).1`. Use `⟨h1, h2, ⟨hg.1.1, fun w w' a b c _ => hg.1.2 w w' a b c⟩, fun w hw => ?_, ⟨N0, fun w hw a ha => ?_⟩, h3, h4⟩` and prove the remaining obligations. Take `⟨c, -, -, -, S, -, hS⟩` from `hg.2.1 w hw`. Establish `e` using `(hS 1 isCoprime_one_left).1`.
+
+Conclude with `⟨fun P hP => (e.1 P hP).1, (Finset.disjoint_union_right.1 e.2.1).1, c⟩`. Take `⟨-, -, -, -, S, -, hS⟩` from `hg.2.1 w hw`. Establish `e : ∃ b : ℤ, IsCoprime b (D.ntw.l (ex.nch.twI w) : ℤ) ∧ BlochKatoReduction.Gen.psiAt (ex.nch.sd w) (ex.nch.psi' w) ^ b = ex.nch.psi' w ^ a`. Consider the cases of `ex.nch.sd w`. Conclude with `⟨-a, ha.neg_left, by simp [BlochKatoReduction.Gen.psiAt]⟩`.
+
+Conclude with `⟨a, ha, by simp [BlochKatoReduction.Gen.psiAt]⟩`. Take `⟨b, hb, e⟩` from `e`. Conclude with `e ▸ (hS b hb).2.2.2.2.1`.
+-/
 theorem GridFit.of_twistAt {p : PtAt ex Csz} {CF : ℝ} {G : Grid p CF} {xd v0 rep} (h : GlobalTheory.EX.TwistAt L ex.nch xd v0 rep)
     (h1 : ValLL0 D p.R.C) (h2 : FieldHas G (embLL0 D)) (h3 : Formalism.L2.Host.PsiChoiceCompatible D p.R.C ex.nch p.Tp)
     (h4 : GlobalTheory.LamTie.IsLamTieFull D.ntw (lamOf G)) : GridFit p G := by
@@ -308,17 +342,26 @@ def Fun0Fit (Fld : FldT) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed 
 
 def FamGrid (Fld : FldT) (CF : ℝ) : FamClass := fun Fm => FamHyp Fm ∧ EvPt Fm fun _ _ _ p => HasGrid Fld p CF
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha⟩ := hP let ⟨b, hb⟩ := hQ ⟨max a b, fun x hx h i p hp => ⟨ha x hx (le_of_max_le_left h) i p hp, hb x hx (le_of_max_le_right h) i p hp⟩⟩`.
+-/
 theorem evPt_and {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (hP : EvPt Fm P) (hQ : EvPt Fm Q) : EvPt Fm fun x hx i p => P x hx i p ∧ Q x hx i p :=
   let ⟨a, ha⟩ := hP
   let ⟨b, hb⟩ := hQ
   ⟨max a b, fun x hx h i p hp => ⟨ha x hx (le_of_max_le_left h) i p hp, hb x hx (le_of_max_le_right h) i p hp⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha⟩ := hP ⟨a, fun x hx h' i p hp => h x hx i p hp (ha x hx h' i p hp)⟩`.
+-/
 theorem evPt_imp {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (hP : EvPt Fm P) (h : ∀ x hx i p, p.Rows → P x hx i p → Q x hx i p) : EvPt Fm Q :=
   let ⟨a, ha⟩ := hP
   ⟨a, fun x hx h' i p hp => h x hx i p hp (ha x hx h' i p hp)⟩
 
+/- English proof (translation)
+Take `⟨CF0, h⟩` from `h`. Use `⟨CF0, fun CF hCF => (h CF hCF).imp fun Fm CH _ a hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, a⟩` from `a hN`. Conclude with `⟨C0, fun C hC => evPt_imp (a C hC) fun _ _ _ p hp b d hd => (h' p CF d C CH hp hd).2 (b d (h' p CF d C CH hp hd).1)⟩`.
+-/
 theorem Lf.mono {Comparison₂ Tie' : TieT} {Q Q' : PropT} (h : Lf Comparison₂ Q)
     (h' : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ) (d : FunIn p CF) (C CH : ℝ), p.Rows → Tie' p CF d →
       Comparison₂ p CF d ∧ (Q p CF d C CH → Q' p CF d C CH)) : Lf Tie' Q' := by
@@ -328,6 +371,11 @@ theorem Lf.mono {Comparison₂ Tie' : TieT} {Q Q' : PropT} (h : Lf Comparison₂
   exact ⟨C0, fun C hC => evPt_imp (a C hC) fun _ _ _ p hp b d hd =>
     (h' p CF d C CH hp hd).2 (b d (h' p CF d C CH hp hd).1)⟩
 
+/- English proof (translation)
+Take `⟨a, h⟩` from `h`. Take `⟨b, h'⟩` from `h'`. Use `⟨max a b, fun CF hCF => ((h CF (le_of_max_le_left hCF)).and (h' CF (le_of_max_le_right hCF))).imp fun Fm CH _ c hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, c1⟩` from `c.1 hN`. Take `⟨C1, c2⟩` from `c.2 hN`.
+
+Conclude with `⟨max C0 C1, fun C hC => evPt_imp (evPt_and (c1 C (le_of_max_le_left hC)) (c2 C (le_of_max_le_right hC))) fun _ _ _ _ _ e d hd => ⟨e.1 d hd, e.2 d hd⟩⟩`.
+-/
 theorem Lf.and {Comparison₂ : TieT} {Q Q' : PropT} (h : Lf Comparison₂ Q) (h' : Lf Comparison₂ Q') :
     Lf Comparison₂ fun p CF d C CH => Q p CF d C CH ∧ Q' p CF d C CH := by
   obtain ⟨a, h⟩ := h
@@ -339,9 +387,25 @@ theorem Lf.and {Comparison₂ : TieT} {Q Q' : PropT} (h : Lf Comparison₂ Q) (h
   exact ⟨max C0 C1, fun C hC => evPt_imp (evPt_and (c1 C (le_of_max_le_left hC)) (c2 C (le_of_max_le_right hC)))
     fun _ _ _ _ _ e d hd => ⟨e.1 d hd, e.2 d hd⟩⟩
 
+/- English proof (translation)
+The claim follows from `h.mono fun _ _ _ _ _ _ _ => ⟨trivial, id⟩`.
+-/
 theorem Lf.of_noTie {Q : PropT} (h : Lf trivialTieCondition Q) (Comparison₂ : TieT) : Lf Comparison₂ Q :=
   h.mono fun _ _ _ _ _ _ _ => ⟨trivial, id⟩
 
+/- English proof (translation)
+Take `⟨a, hA⟩` from `Lf.and h1 <| Lf.and h2 <| Lf.and h3 <| Lf.and h4 <| Lf.and h5 <| Lf.and (Lf.of_noTie h6 _) <| Lf.and h7 <| Lf.and h8 <| Lf.and h9 <| Lf.and h10 <| Lf.and h11 <| Lf.and h12 <| Lf.and (Lf.of_noTie h13 _) <| Lf.and (Lf.of_noTie h14 _) <| Lf.and (Lf.of_noTie h15 _) (Lf.of_noTie h16 _ …`. Take `⟨b, hE⟩` from `hE`. Use `⟨max a b, fun CF hCF => (((hA CF (le_of_max_le_left hCF)).and (hE CF (le_of_max_le_right hCF))).and hS).imp fun Fm CH _ c hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, c1⟩` from `c.1.1 hN`. Use `evPt_imp (evPt_and (evPt_and (c1 (max C0 1) (le_max_left _ _)) (c.1.2 hN)) c.2) fun x hx i p hp e hG C => ?_` and prove the remaining obligations.
+
+Take `⟨⟨e1, e2⟩, s1, s2, s3⟩` from `e`. Take `⟨G, W, g1, g2, g3⟩` from `hG`. Take `⟨d, rfl, hd⟩` from `e2 G W g1 g2 g3`. Take `⟨l1, ⟨ze, z1, z2, l2⟩, l3, ⟨Tf, dF, l4⟩, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16⟩` from `e1 d ⟨g2, hd⟩`. Take `⟨wf, R0, hR⟩` from `hB p hp`.
+
+Establish `v0 : (d.data ze Tf dF).vmu p.P.A3.fam3.base3.μ0 = d.V p.P.A3.fam3.base3.μ0` using `by show (ze _)⁻¹ • _ = _`. Rewrite using `[z1, inv_one]`. Conclude with `one_smul _ _`. Establish `v1 : ∀ Tf dF t, (d.data (fun _ => 1) Tf dF).vmu t = d.V t` using `fun _ _ _ => by show (1 : _)⁻¹ • _ = _`. Rewrite using `[inv_one]`.
+
+Conclude with `one_smul _ _`. Establish `hRR` using `R0.RR_spec Formalism.DivisionValues.lattice_gluing wf`. Use `functional_lower_bound_of_conditions_numeric wf (p.S false) p.Z C CH (d.data ze Tf dF) (max C0 1) (hR ▸ R0.D_pos) (hR ▸ R0.h0) (hR ▸ R0.l1a) (hR ▸ R0.l1c) (hR ▸ R0.frames.1) (hR ▸ hRR.1) (hR ▸ hRR.2) (le_max_right _ _) s1 s2 s3 l1 l2 ?_ ?_ ⟨?_, l6⟩ l7 l8 l9 l10 l11 l13.1 l13.2 l1 …` and prove the remaining obligations. Establish `: LinearMap.ker (d.O.vmu _).mulVecLin = _` using `l3`. Rewrite `this` using `[v1]`.
+
+Use `show LinearMap.ker ((d.data ze Tf dF).vmu _).mulVecLin = _`. Rewrite using `[v0]`. Conclude with `this`. Use `GlobalTheory.finitePlaceBound_inv_rootOfUnity_smul _ ze _ _ _ z2 l4` as an intermediate fact. Simplify using `only [v1] at this`.
+
+Conclude with `this`. Introduce `vb hvb`. Conclude with `l5 vb (hvb.trans v0)`.
+-/
 theorem fun0Fit_of_leaves (Fld : FldT) (Comparison₂ : TieT) (hB : Bundle) (hS : Scale) (hE : Ex Fld Comparison₂) (h1 : MM Comparison₂) (h2 : OneMap Comparison₂)
     (h3 : Ker Comparison₂) (h4 : FP Comparison₂) (h5 : IPa Comparison₂) (h6 : IPb) (h7 : OneSq Comparison₂) (h8 : Den Comparison₂) (h9 : Int Comparison₂) (h10 : Arch Comparison₂)
     (h11 : Thb Comparison₂) (h12 : Wt Comparison₂) (h13 : DesH) (h14 : RankGapBound) (h15 : RamifiedSumBound) (h16 : DesPol) : Fun0Fit Fld := by
@@ -386,15 +450,27 @@ def FunIn.ofGrid {p : PtAt ex Csz} {CF : ℝ} (G : Grid p CF) (W : G.Weil) (h : 
   ⟨G, W, h, n, fun _ => 1, Submodule.span _ (Set.range (Pi.basisFun D.what₂.LL (Fin n))), V, fun _ _ => 1, fun _ => 0, ∅, ∅,
     fun _ _ _ => 0, fun _ => 1, fun _ => 1, fun _ _ => 1, fun _ _ _ => 1, fun _ _ _ => 0, fun _ => true, 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (p : PtAt ex Csz) : p.Z.b = L.sc.b ∧ p.Z.x = L.sc.x := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Simplify `h.fieldLL.roots _ (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl))` using `[GlobalTheory.ChiGrid.Places.depth]`.
+-/
 example (p : PtAt ex Csz) (CF : ℝ) (G : Grid p CF) (h : GridFit p G) : ∃ z : D.what₂.LL,
     IsPrimitiveRoot z (Ideal.absNorm G.pl.v0.asIdeal ^ GlobalTheory.ChiGrid.depth0 D CF p.Z.b) := by
   simpa [GlobalTheory.ChiGrid.Places.depth] using h.fieldLL.roots _ (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl))
 
+/- English proof (translation)
+The claim follows from `h.list.nonempty (h.setting.inW1 hw)`.
+-/
 example (p : PtAt ex Csz) (CF : ℝ) (G : Grid p CF) (h : GridFit p G) (w) (hw : TwistedAt D w) :
     Nonempty (D.ntw.abelian₂ (ex.nch.twI w)) := h.list.nonempty (h.setting.inW1 hw)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ => h.imp fun _ _ _ a hN => evPt_imp (a hN) fun _ _ _ _ _ b _ => b⟩`.
+-/
 example (Fld : FldT) (h : Fun0) : Fun0Fit Fld :=
   ⟨0, fun _ _ => h.imp fun _ _ _ a hN => evPt_imp (a hN) fun _ _ _ _ _ b _ => b⟩
 

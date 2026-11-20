@@ -5,6 +5,21 @@ open scoped ContDiff BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g Λ hΛ hspan ι U c hU hper hcov hc hcper hcoc`. Take `⟨s, ρ, hρ, hsum⟩` from `exists_smooth_periodic_partition_of_unity g Λ hΛ hspan ι U hU hper hcov`. Establish `hzero : ∀ k z, z ∉ U k → ρ k z = 0`. Introduce `k z hz`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hz ((hρ k).2.2 (subset_tsupport _ (Function.mem_support.mpr h)))`. Use `⟨fun i z => ∑ k ∈ s, (ρ k z : ℂ) * c k i z, fun i => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `ContDiffOn.sum (fun k _ => ?_)` and prove the remaining obligations. Establish `hρc : ContDiff ℝ ∞ (fun z => (ρ k z : ℂ))` using `ofRealCLM.contDiff.comp (hρ k).1`. Apply `contDiffOn_of_locally_contDiffOn` to reduce the goal to its premises.
+
+Introduce `x _`. Distinguish the cases in `hxk : x ∈ U k`. Use `⟨U k, hU k, hxk, ?_⟩` and prove the remaining obligations. Conclude with `hρc.contDiffOn.mul ((hc k i).mono fun z hz => ⟨hz.2, hz.1⟩)`. Use `⟨(tsupport (ρ k))ᶜ, (isClosed_tsupport _).isOpen_compl, fun h => hxk ((hρ k).2.2 h), ?_⟩` and prove the remaining obligations.
+
+Use `(contDiffOn_const (c := (0 : ℂ))).congr fun z hz => ?_` and prove the remaining obligations. Simplify using `[image_eq_zero_of_notMem_tsupport hz.2]`. Introduce `l z hz`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[(hρ k).2.1 l z]`.
+
+Distinguish the cases in `hzk : z ∈ U k`. Rewrite using `[hcper k i l z ⟨hzk, hz⟩]`. Simplify using `[hzero k z hzk]`. Introduce `i j z hz`. Establish `hone : c i j z = ∑ k ∈ s, (ρ k z : ℂ) * c i j z`.
+
+Rewrite using `[← Finset.sum_mul, ← Complex.ofReal_sum, hsum z]`. Simplify using the standard rewrite rules. Rewrite using `[hone, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hzk : z ∈ U k`.
+
+Rewrite using `[← hcoc k i j z ⟨⟨hzk, hz.1⟩, hz.2⟩]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hzero k z hzk]`.
+-/
 theorem periodic_cech_cocycle_smooth_coboundary : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ (ι : Type) (U : ι → Set (Fin g → ℂ)) (c : ι → ι → (Fin g → ℂ) → ℂ), (∀ i, IsOpen (U i)) → (∀ i (l : Λ) z, z ∈ U i → z + l ∈ U i) → (∀ z, ∃ i, z ∈ U i) → (∀ i j, ContDiffOn ℝ ∞ (c i j) (U i ∩ U j)) → (∀ i j (l : Λ), ∀ z ∈ U i ∩ U j, c i j (z + l) = c i j z) → (∀ i j k, ∀ z ∈ U i ∩ U j ∩ U k, c i j z + c j k z = c i k z) → ∃ b : ι → (Fin g → ℂ) → ℂ, (∀ i, ContDiffOn ℝ ∞ (b i) (U i) ∧ ∀ (l : Λ), ∀ z ∈ U i, b i (z + l) = b i z) ∧ ∀ i j, ∀ z ∈ U i ∩ U j, c i j z = b j z - b i z := by
   intro g Λ hΛ hspan ι U c hU hper hcov hc hcper hcoc
   obtain ⟨s, ρ, hρ, hsum⟩ :=

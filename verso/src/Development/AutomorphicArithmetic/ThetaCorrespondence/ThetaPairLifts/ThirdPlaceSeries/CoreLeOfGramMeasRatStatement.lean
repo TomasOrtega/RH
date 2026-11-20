@@ -8,6 +8,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt | exact _root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt | (intros; apply _root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coreLe_of_gram_meas_liftRational : _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.MeasureCondition → _root_.GlobalTheory.CovTop.LiftRational → _root_.GlobalTheory.CovTop.CoreBound' := by
   first | exact @_root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt | exact _root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt | (intros; apply _root_.GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat_alt <;> assumption)
 end

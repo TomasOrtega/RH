@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 
 namespace GlobalTheory.CompanionTheory.OmCech
 
+/- English proof (translation)
+Use `letI := GlobalTheory.HodgeCoh.algΓ q`. Apply `(GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).injective` to reduce the goal to its premises. Establish `h1 : ∀ z : CO q U a j, GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j (cechOmAdd q U hU hUaff a j z) = cechHAddEquivH.{0} U hU hUaff (GlobalTheory.HodgeCoh.Omega q a) j z` using `fun z => (GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).apply_symm_apply _`. Establish `h2` using `cechHAddEquivH_naturality.{0} U hU hUaff (smulHom (GlobalTheory.HodgeCoh.Omega q a) (algebraMap K Γ(X, ⊤) r)) j x`. Establish `h3` using `GlobalTheory.coh.toH_map K (smulHom (GlobalTheory.HodgeCoh.Omega q a) (algebraMap K Γ(X, ⊤) r)) j (cechOmAdd q U hU hUaff a j x)`.
+
+Rewrite `h3`, the goal using `[h1]`. Conclude with `h2.trans h3.symm`.
+-/
 theorem cechOmAdd_smul {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {ι : Type}
     (U : ι → X.Opens) (hU : iSup U = ⊤) (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a)))
     (a j : ℕ) (r : K) (x : CO q U a j) :

@@ -120,6 +120,9 @@ def T2 (σ : E →ₐ[F] E) (r : ℕ) (T T' : 𝓞 F) (Z : Matrix (Fin (r + 1)) 
     (Matrix.fromBlocks (TFE E r T) Z (cT (σ : E →+* E) Z) (TFE E r T'))
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Unfold `TFE TF`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases h' : a = Fin.last r <;> simp [h']`. Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]`.
+-/
 theorem TFE_herm (σ : E →ₐ[F] E) (r : ℕ) (T : 𝓞 F) (a b : Fin (r + 1)) :
     σ (TFE E r T b a) = TFE E r T a b := by
   unfold TFE TF
@@ -128,11 +131,17 @@ theorem TFE_herm (σ : E →ₐ[F] E) (r : ℕ) (T : 𝓞 F) (a b : Fin (r + 1))
     by_cases h' : a = Fin.last r <;> simp [h']
   · simp [Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ (Ne.symm h)]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Unfold `T2`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm a with a | a <;> rcases finSumFinEquiv.symm b with b | b <;>`. Simplify using `[cT, TFE_herm, sig_sig h]`.
+-/
 theorem blockMatrix_hermitian {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (r : ℕ) (T T' : 𝓞 F)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin ((r + 1) + (r + 1))) :
     σ (T2 σ r T T' Z b a) = T2 σ r T T' Z a b := by
@@ -255,9 +264,15 @@ def MassFormula : Prop :=
         ((μ 𝓕).toReal * ρ * (∏' v, (m Z v).toReal) / (μf (Kf σ J Λ)).toReal)) ∧
       mass Z = ENNReal.ofReal (AA * GlobalTheory.SgGlob.normInf (G Z) ^ (k - 1) * ∏' v, dens Z v))
 
+/- English proof (translation)
+Unfold `lev`. Rewrite using `[if_pos h₁]`.
+-/
 example (v : Pl F) (h₁ : ((2 : ℕ) : 𝓞 F) ∈ v.asIdeal) : lev 2 3 v = 2 := by
   unfold lev; rw [if_pos h₁]
 
+/- English proof (translation)
+Simplify using `[aEnt, Algebra.TensorProduct.one_def]`.
+-/
 example {v : Pl F} (δ : Fv F v) (r : ℕ) : aEnt E δ r (Fin.last r) = 1 := by
   simp [aEnt, Algebra.TensorProduct.one_def]
 

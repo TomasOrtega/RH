@@ -31,6 +31,9 @@ instance : Inhabited Consts := ⟨⟨1, 1800, Real.exp 1⟩⟩
 
 variable {T : Type}
 
+/- English proof (translation)
+Establish `e : gramAt D (negSp V) τ = -gramAt D V τ` using `Matrix.ext fun i j => map_neg (tauE D τ) _`. Rewrite using `[e]`. Use `⟨by rw [neg_mul_neg, h.1], ?_, by rw [neg_mul_neg]; exact h.2.2⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_neg, neg_mul_neg, mul_neg, h.2.1]`.
+-/
 theorem isCartanInv_neg {V : HSp D} {τ : D.what₂.Tau} {s : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (h : IsCartanInv (gramAt D V τ) s) : IsCartanInv (gramAt D (negSp V) τ) (-s) := by
   have e : gramAt D (negSp V) τ = -gramAt D V τ := Matrix.ext fun i j => map_neg (tauE D τ) _
@@ -89,22 +92,40 @@ def stAbar (sc : Consts) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E :=
 
 def sigma0 (sc : Consts) : ℝ := ∑ v ∈ P.S0, (P.depth sc v : ℝ) * Real.log (Ideal.absNorm v.asIdeal)
 
+/- English proof (translation)
+Simplify using `[S0]`.
+-/
 theorem mem_S0_of_sum_eq {v : Pl D.host.F} : v ∈ P.S0 ↔ v = P.v0 ∨ v ∈ S1 D := by simp [S0]
 
+/- English proof (translation)
+The claim follows from `P.w_over v h`.
+-/
 theorem under_w {v : Pl D.host.F} (h : v ∈ P.S0) : (P.w v).under (𝓞 D.host.F) = v := P.w_over v h
 
+/- English proof (translation)
+Unfold `W0`. Use `Finset.card_image_of_injOn fun v hv v' hv' h => (P.under_w hv).symm.trans ((congrArg _ h).trans (P.under_w hv'))` and compare the differences between its conclusion and the goal.
+-/
 theorem card_chosenPlaces_eq : P.W0.card = P.S0.card := by
   classical
   unfold W0
   convert Finset.card_image_of_injOn fun v hv v' hv' h =>
     (P.under_w hv).symm.trans ((congrArg _ h).trans (P.under_w hv'))
 
+/- English proof (translation)
+Apply the tactic sequence `unfold depth depth0; split_ifs <;> omega`.
+-/
 theorem depth_pos (sc : Consts) (v : Pl D.host.F) : 0 < P.depth sc v := by
   unfold depth depth0; split_ifs <;> omega
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (P.w v).ne_bot`.
+-/
 theorem modul_ne_bot (sc : Consts) : P.modul sc ≠ ⊥ :=
   Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (P.w v).ne_bot
 
+/- English proof (translation)
+Simplify using `only [stairId, stA, stAbar, mul_pow, inv_pow, mul_inv, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stairId_st (sc : Consts) (c : ℕ) (p : Fin c) : stairId (P.stA sc) (P.stAbar sc) c p =
     stairId D.host.AA D.host.AAbar c p *
       ((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ (p.1 + 1) *
@@ -138,6 +159,9 @@ structure Chars {L : LevCh D T} (P : Places L) (C : ℝ) where
   lev0 : ∀ i, 1 ≤ i → i ≤ D.R.m → ∀ PP : Pl D.host.E, PP.under (𝓞 D.host.F) = P.v0 →
     (chiH i).LevelLe PP 1 ∧ ¬ (chiH i).UnrAt PP
 
+/- English proof (translation)
+Introduce `h` and use `by have hm : 1 ≤ D.R.m := by have := D.R.two_le_m; omega have e := P.under_w (P.mem_S0_of_sum_eq.2 (Or.inl rfl)) exact (X.lev1 1 le_rfl hm _ (by rw [e]; exact h)).2 (X.lev0 1 le_rfl hm _ e).1`.
+-/
 theorem Chars.basePlace_not_mem_chiGridBadPlaces {L : LevCh D T} {P : Places L} {C : ℝ} (X : Chars P C) : P.v0 ∉ S1 D := fun h => by
   have hm : 1 ≤ D.R.m := by have := D.R.two_le_m; omega
   have e := P.under_w (P.mem_S0_of_sum_eq.2 (Or.inl rfl))
@@ -147,11 +171,17 @@ def columnBlock (L : LevCh D T) : ℕ → LSp D
   | 0 => ⟨Yc D 0, L.ΛY 0⟩
   | j + 1 => if j + 1 < D.R.m then ⟨Yc D (j + 1), L.ΛY (j + 1)⟩ else ⟨D.sp.X', L.ΛX⟩
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j => exact if_pos h`.
+-/
 theorem colY_lt (L : LevCh D T) {j : ℕ} (h : j < D.R.m) : columnBlock L j = ⟨Yc D j, L.ΛY j⟩ := by
   cases j with
   | zero => rfl
   | succ j => exact if_pos h
 
+/- English proof (translation)
+Take `⟨j, hj⟩ : ∃ j, D.R.m = j + 1` from `⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩`. Establish `: columnBlock L (j + 1) = ⟨D.sp.X', L.ΛX⟩` using `if_neg (by omega)`. Rewrite using `[← this, ← hj]`.
+-/
 theorem colY_m (L : LevCh D T) : columnBlock L D.R.m = ⟨D.sp.X', L.ΛX⟩ := by
   obtain ⟨j, hj⟩ : ∃ j, D.R.m = j + 1 := ⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩
   have : columnBlock L (j + 1) = ⟨D.sp.X', L.ΛX⟩ := if_neg (by omega)
@@ -284,9 +314,15 @@ def ori : Pair T → Orientation
   | .core _ => .neg
   | .top _ _ => .pos
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp only [InRange, Node.InRange] at h ⊢ <;> omega`.
+-/
 theorem InRange.small {m : ℕ} {p : Pair T} (h : p.InRange m) : p.small.InRange m := by
   cases p <;> simp only [InRange, Node.InRange] at h ⊢ <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp only [Node.rank, len, rankV, rankP, rankX] <;> ring`.
+-/
 theorem rank_big (p : Pair T) : p.big.rank D = p.small.rank D + p.len D := by
   cases p <;> simp only [Node.rank, len, rankV, rankP, rankX] <;> ring
 
@@ -327,6 +363,9 @@ namespace Arrow
   | .coreDown i => .core i
   | .col _ j => .top (j + 1)
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> simp`.
+-/
 theorem src_tgt (a : Arrow T) : (a.src = a.pair.small ∧ a.tgt = a.pair.big) ∨ (a.src = a.pair.big ∧ a.tgt = a.pair.small) := by
   cases a <;> simp
 
@@ -355,10 +394,21 @@ abbrev Λ (X : Node) : Submodule (𝓞 D.host.E) (Fin (G.V X).rank → D.host.E)
 
 abbrev modul : Ideal (𝓞 D.host.E) := G.pl.modul sc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem node_zero_zero : G.node (.grid 0 0) = ⟨Yc D 0, L.ΛY 0⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem node_top_zero : G.node (.top 0) = G.node (.core D.R.m) := rfl
 
+/- English proof (translation)
+Break down `X with ⟨_ | i, j⟩ | i | _ | j` into its components or cases. Conclude with `absurd rfl (h0 j)`. Conclude with `G.sp.V_is (i + 1) j (by omega) h.1 h.2`. Conclude with `G.sp.P_is i h`. Use `G.sp.P_is D.R.m le_rfl` as an intermediate fact.
+
+Rewrite `this` using `[Nat.sub_self]`. Use `show (G.sp.P D.R.m).IsV (rankP D D.R.m + 0 * (D.R.t + 1)) 0`. Rewrite using `[zero_mul, add_zero]` and apply the resulting hypothesis. Conclude with `G.sp.X_is (j + 1) (by omega) h`.
+-/
 theorem isV {X : Node} (h : X.InRange D.R.m) (h0 : ∀ j, X ≠ .grid 0 j) : (G.node X).IsV (X.rank D) (X.neg D.R.m) := by
   rcases X with ⟨_ | i, j⟩ | i | _ | j
   · exact absurd rfl (h0 j)
@@ -396,6 +446,9 @@ abbrev Kplus : Subgroup (GL (Fin (G.V (.top 0)).rank) (Formalism.IndefR.Lev.EAf 
 
 abbrev ClPlus : Type := Cl D.sp.cm (G.V (.top 0)).gram G.Kplus
 
+/- English proof (translation)
+The claim follows from `congLev_mono le_top`.
+-/
 theorem levCong_le (X : Node) : G.levCong X ≤ G.levMax X := congLev_mono le_top
 
 @[reducible] def pS : Pair T → HSp D
@@ -440,6 +493,9 @@ def chrT (p : Pair T) : (AE D)ˣ →* Circle := Formalism.IndefR.Lift.attChr (G.
 
 def nu (t : T) (i j : ℕ) : (AE D)ˣ →* Circle := L.mu t j / G.ch.chi (D.R.m - i)
 
+/- English proof (translation)
+Establish `h1 : (G.pS (.core i)).rank = rankP D (i + 1)` using `(G.sp.P_is _ h).rank`. Establish `h2 : (G.pT (.core i)).rank = rankP D i` using `(G.sp.P_is _ (by omega)).rank`. Rewrite using `[chrS, chrT, h1, h2]`. Simplify using `[Formalism.IndefR.Lift.attChr, chr, Nat.not_odd_iff_even.2 (even_rankP D _)]`.
+-/
 theorem chr_core {i : ℕ} (h : i + 1 ≤ D.R.m) :
     G.chrS (.core i) = G.ch.chi (D.R.m - i) ∧ G.chrT (.core i) = G.ch.chi (D.R.m - i) := by
   have h1 : (G.pS (.core i)).rank = rankP D (i + 1) := (G.sp.P_is _ h).rank
@@ -447,6 +503,11 @@ theorem chr_core {i : ℕ} (h : i + 1 ≤ D.R.m) :
   rw [chrS, chrT, h1, h2]
   simp [Formalism.IndefR.Lift.attChr, chr, Nat.not_odd_iff_even.2 (even_rankP D _)]
 
+/- English proof (translation)
+Establish `key : ∀ k, k ≤ D.R.m → (columnBlock L k).sp.rank = D.R.r + k * D.R.t` using `fun k hk => by`. Break down `hk.eq_or_lt with rfl | hk` into its components or cases. Rewrite using `[colY_m]`. Conclude with `D.sp.X'_rank`. Rewrite using `[colY_lt L hk]`.
+
+Conclude with `(D.sp.Y_rank _ (min_le_right _ _)).trans (by rw [min_eq_left hk.le]; rfl)`. Rewrite using `[Formalism.IndefR.Lift.chrStep_eq_att _ _ (odd_r D) D.R.t_odd (by omega), Nat.add_sub_cancel, ← key j (by omega), ← key (j + 1) h]`. Both sides reduce to the same expression.
+-/
 theorem chr_mu_zero (t : T) {j : ℕ} (h : j + 1 ≤ D.R.m) :
     (G.chrS (.mu t 0 j), G.chrT (.mu t 0 j)) = Formalism.IndefR.Lift.chrStep (L.mu t) L.eta (j + 1) := by
   have key : ∀ k, k ≤ D.R.m → (columnBlock L k).sp.rank = D.R.r + k * D.R.t := fun k hk => by
@@ -462,6 +523,11 @@ abbrev CosAt (i : ℕ) : Type := Cos (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0))
 
 abbrev Datum : Type := ∀ i : Fin D.R.m, G.CosAt i
 
+/- English proof (translation)
+Establish `: ∀ i : Fin D.R.m, Finite (G.CosAt i)` using `fun ⟨i, hi⟩ => by`. Use `finite_cos (G.sp.V_is (i + 1) 0 (by omega) hi (by omega)).sd.1 ?_ (G.pl.modul_ne_bot sc)` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `zero => exact h`. Consider the case `succ i => exact (G.sp.V_is (i + 1) 0 (by omega) (by omega) (by omega)).sd.1.fg`.
+
+Use `infer_instance`.
+-/
 theorem finite_datum (h : (L.ΛY 0).FG) : Finite G.Datum := by
   have : ∀ i : Fin D.R.m, Finite (G.CosAt i) := fun ⟨i, hi⟩ => by
     refine finite_cos (G.sp.V_is (i + 1) 0 (by omega) hi (by omega)).sd.1 ?_ (G.pl.modul_ne_bot sc)
@@ -542,6 +608,9 @@ def kerA : ∀ a : Arrow T, (WO (G.pS a.pair) (G.pT a.pair) → ℂ) → GA D (G
   | .coreDown i, f, g, h => W.ker (.core i) f h g
   | .col t j, f, g, h => W.ker (.top t j) f g h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerA_coreUp (i : ℕ) (f : WO (G.pS (.core i)) (G.pT (.core i)) → ℂ) (g : GA D (G.V (.core i)))
     (h : GA D (G.V (.core (i + 1)))) : W.kerA (.coreUp i) f g h = star (W.kerA (.coreDown i) f h g) := rfl
 
@@ -579,9 +648,15 @@ structure GridData.Weil.Over {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A
 
   omX : ∀ t k, k + 1 = D.R.m → HEq (W.om (.mu t 0 k)) (R.ωX t)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ((List.range 5).map fun i => (Node.core i).neg 4) = [2, 2, 1, 1, 0] ∧
     ((List.range 5).map fun j => (Node.grid 3 j).neg 4) = [2, 1, 1, 0, 0] := by decide
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+-/
 example (t : T) (i j : ℕ) : (Arrow.down t i j).src = (Arrow.right i (j + 1) : Arrow T).src ∧
     (Arrow.right i j : Arrow T).tgt = (Arrow.down t (i + 1) j).tgt ∧
     (Arrow.down t i j).tgt = (Arrow.right i j : Arrow T).src ∧

@@ -23,6 +23,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatModel.eventually_isPlaceRing | exact GlobalTheory.LatModel.eventually_isPlaceRing | (intros; apply GlobalTheory.LatModel.eventually_isPlaceRing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eventually_place_ring : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]),
     Eventually l lam (IsPlaceRing E l lam) := by
   first | exact @GlobalTheory.LatModel.eventually_isPlaceRing | exact GlobalTheory.LatModel.eventually_isPlaceRing | (intros; apply GlobalTheory.LatModel.eventually_isPlaceRing <;> assumption)

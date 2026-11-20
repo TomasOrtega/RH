@@ -13,6 +13,9 @@ abbrev altM {T : Type 1} [Category.{0} T] {X Y : CosimplicialObject T} (g : X �
     altC X F ⟶ altC Y F :=
   (AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).map (Functor.whiskerRight g F)
 
+/- English proof (translation)
+Establish `h` using `ConcreteCategory.congr_hom ((altM g F).comm n m) w`. Rewrite `h` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Conclude with `h`.
+-/
 theorem altM_d {T : Type 1} [Category.{0} T] {X Y : CosimplicialObject T} (g : X ⟶ Y) (F : T ⥤ AddCommGrpCat.{1})
     (n m : ℕ) (w : (altC X F).X n) :
     (altC Y F).d n m ((altM g F).f n w) = (altM g F).f m ((altC X F).d n m w) := by
@@ -20,6 +23,9 @@ theorem altM_d {T : Type 1} [Category.{0} T] {X Y : CosimplicialObject T} (g : X
   rw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at h
   exact h
 
+/- English proof (translation)
+Use `show F.map (h.app _) (F.map (g.app _) w) = F.map (g.app _ ≫ h.app _) w`. Rewrite using `[F.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem altM_comp {T : Type 1} [Category.{0} T] {X Y Z : CosimplicialObject T} (g : X ⟶ Y) (h : Y ⟶ Z)
     (F : T ⥤ AddCommGrpCat.{1}) (n : ℕ) (w : (altC X F).X n) :
     (altM h F).f n ((altM g F).f n w) = (altM (g ≫ h) F).f n w := by
@@ -27,18 +33,49 @@ theorem altM_comp {T : Type 1} [Category.{0} T] {X Y Z : CosimplicialObject T} (
   rw [F.map_comp]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `altM_comp g h F n w`.
+-/
 theorem altM_comp' {T : Type 1} [Category.{0} T] {X Y Z : CosimplicialObject T} (g : X ⟶ Y) (h : Y ⟶ Z)
     (g' : X ⟶ Z) (e : g ≫ h = g') (F : T ⥤ AddCommGrpCat.{1}) (n : ℕ) (w : (altC X F).X n) :
     (altM h F).f n ((altM g F).f n w) = (altM g' F).f n w := by
   subst e
   exact altM_comp g h F n w
 
+/- English proof (translation)
+Rewrite `h` using `[HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2) (by simp) (by simp), ShortComplex.ab_exact_iff]`. Conclude with `h w hw`.
+-/
 theorem exact_elt {T : Type 1} [Category.{0} T] (X : CosimplicialObject T) (F : T ⥤ AddCommGrpCat.{1}) (n : ℕ)
     (h : (altC X F).ExactAt (n + 1)) (w : (altC X F).X (n + 1)) (hw : (altC X F).d (n + 1) (n + 2) w = 0) :
     ∃ v : (altC X F).X n, (altC X F).d n (n + 1) v = w := by
   rw [HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2) (by simp) (by simp), ShortComplex.ab_exact_iff] at h
   exact h w hw
 
+/- English proof (translation)
+Introduce `T _ N hN J _ _ U X a cU cX b hU hX hab hW`. Establish `fe` using `(GlobalTheory.T.preservesFilteredColimits_addCommGrp_iff_elements T N).1 hN`. Establish `hNc : ∀ {A B C : T} (f : A ⟶ B) (g : B ⟶ C) (x : N.obj A), N.map (f ≫ g) x = N.map g (N.map f x)` using `by intros; simp`. Establish `hab' : ∀ j (k : SimplexCategory), (a.app j).app k ≫ (cX.ι.app j).app k = cU.ι.app j ≫ b.app k`. Introduce `j k`.
+
+Conclude with `NatTrans.congr_app (hab j) k`. Establish `hnat : ∀ {j j' : J} (f : j ⟶ j') (k : SimplexCategory), (a.app j).app k ≫ (X.map f).app k = U.map f ≫ (a.app j').app k`. Introduce `j j' f k`. Conclude with `(NatTrans.congr_app (a.naturality f) k).symm`. Establish `hXι : ∀ {j j' : J} (f : j ⟶ j') (k : SimplexCategory), (X.map f).app k ≫ (cX.ι.app j').app k = (cX.ι.app j).app k`.
+
+Introduce `j j' f k`. Conclude with `NatTrans.congr_app (cX.w f) k`. Establish `feX : ∀ k : SimplexCategory, (∀ x : N.obj (cX.pt.obj k), ∃ j y, N.map ((cX.ι.app j).app k) y = x) ∧ ∀ j (y : N.obj ((X.obj j).obj k)), N.map ((cX.ι.app j).app k) y = 0 → ∃ (j' : J) (f : j ⟶ j'), N.map ((X.map f).app k) y = 0`. Introduce `k`. Conclude with `fe J (X ⋙ (evaluation SimplexCategory T).obj k) _ (hX k).some`.
+
+Establish `feU` using `fe J U cU hU`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨j, y, rfl⟩` from `feU.1 x`.
+
+Establish `h0 : N.map ((cX.ι.app j).app (SimplexCategory.mk 0)) (N.map ((a.app j).app (SimplexCategory.mk 0)) y) = 0`. Rewrite using `[← hNc, hab', hNc]`. Simplify using `using hx`. Take `⟨k, f, hf⟩` from `(feX _).2 j _ h0`. Rewrite `hf` using `[← hNc, hnat, hNc]`.
+
+Establish `hk` using `(hW k).1 (hf.trans (map_zero _).symm)`. Rewrite using `[← cU.w f, hNc]`. Simplify using `only [Functor.comp_obj] at hk`. Rewrite using `[hk, map_zero]`. Introduce `y hy`.
+
+Take `⟨j, y', rfl⟩` from `(feX _).1 y`. Establish `hδ : ∀ {Y Z : CosimplicialObject T} (g : Y ⟶ Z) (i : Fin 2), Y.δ (n` using `0) i ≫ g.app (SimplexCategory.mk 1) = g.app (SimplexCategory.mk 0) ≫ Z.δ (n := 0) i := fun g i => g.naturality _`. Use `set d' := N.map ((X.obj j).δ (n := 0) 0) y' - N.map ((X.obj j).δ (n := 0) 1) y' with hd'`. Establish `h1 : N.map ((cX.ι.app j).app (SimplexCategory.mk 1)) d' = 0`. Rewrite using `[hd', map_sub, ← hNc, ← hNc, hδ, hδ, hNc, hNc]`.
+
+Conclude with `sub_eq_zero.mpr hy`. Take `⟨k, f, hf⟩` from `(feX _).2 j _ h1`. Establish `h2 : N.map ((X.obj k).δ (n` using `0) 0) (N.map ((X.map f).app (SimplexCategory.mk 0)) y') = N.map ((X.obj k).δ (n := 0) 1) (N.map ((X.map f).app (SimplexCategory.mk 0)) y') := by`. Rewrite using `[← sub_eq_zero, ← hNc, ← hNc, ← hδ, ← hδ, hNc, hNc, ← map_sub]`. Conclude with `hf`.
+
+Take `⟨x, hx⟩` from `(hW k).2.1 _ h2`. Use `⟨N.map (cU.ι.app k) x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hNc, ← hab', hNc]`. Simplify using `only [Functor.comp_obj] at hx`. Rewrite using `[hx, ← hNc, hXι]`.
+
+Introduce `n`. Rewrite using `[HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2) (by simp) (by simp), ShortComplex.ab_exact_iff]`. Introduce `z hz`. Take `⟨j, z', rfl⟩` from `(feX _).1 z`. Establish `h1 : (altM (cX.ι.app j) N).f (n + 2) ((altC (X.obj j) N).d (n + 1) (n + 2) z') = 0`.
+
+Conclude with `(altM_d (cX.ι.app j) N (n + 1) (n + 2) z').symm.trans hz`. Take `⟨k, f, hf⟩` from `(feX _).2 j _ h1`. Establish `h2 : (altC (X.obj k) N).d (n + 1) (n + 2) ((altM (X.map f) N).f (n + 1) z') = 0`. Conclude with `(altM_d (X.map f) N (n + 1) (n + 2) z').trans hf`. Take `⟨v, hv⟩` from `exact_elt _ N n ((hW k).2.2 n) _ h2`.
+
+Use `⟨(altM (cX.ι.app k) N).f n v, ?_⟩` and prove the remaining obligations. Use `show (altC cX.pt N).d n (n + 1) ((altM (cX.ι.app k) N).f n v) = (altM (cX.ι.app j) N).f (n + 1) z'`. Rewrite using `[altM_d, hv]`. Conclude with `altM_comp' (X.map f) (cX.ι.app k) (cX.ι.app j) (cX.w f) N (n + 1) z'`.
+-/
 theorem wExact_colimit : ∀ (T : Type 1) [Category.{0} T] (N : T ⥤ AddCommGrpCat.{1}), PreservesFilteredColimitsOfSize.{0, 0} N → ∀ (J : Type) [SmallCategory J] [IsFiltered J] (U : J ⥤ T) (X : J ⥤ CosimplicialObject T) (a : U ⋙ CosimplicialObject.const T ⟶ X) (cU : Cocone U) (cX : Cocone X) (b : (CosimplicialObject.const T).obj cU.pt ⟶ cX.pt), IsColimit cU → (∀ k : SimplexCategory, Nonempty (IsColimit (((evaluation SimplexCategory T).obj k).mapCocone cX))) → (∀ j, a.app j ≫ cX.ι.app j = (CosimplicialObject.const T).map (cU.ι.app j) ≫ b) → (∀ j, WExact N (a.app j)) → WExact N b := by
   intro T _ N hN J _ _ U X a cU cX b hU hX hab hW
   have fe := (GlobalTheory.T.preservesFilteredColimits_addCommGrp_iff_elements T N).1 hN

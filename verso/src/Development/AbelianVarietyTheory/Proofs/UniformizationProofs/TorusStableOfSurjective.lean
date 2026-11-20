@@ -14,6 +14,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Rewrite `hi` using `[torusCompat_iff]`. Set `P : Over S` to `splitTorus S X ⊗ G`. Set `p : pullback P.hom f ⟶ P.left` to `pullback.fst P.hom f`. Set `Z₀ : Over S'` to `Over.mk (pullback.snd P.hom f)`. Establish `hT` using `SplitTorus.isPullback_bcMap f X`.
+
+Establish `w₁ : (p ≫ (fst (splitTorus S X) G).left) ≫ (splitTorus S X).hom = pullback.snd P.hom f ≫ f`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `pullback.condition`. Establish `w₂ : (p ≫ (snd (splitTorus S X) G).left) ≫ G.hom = pullback.snd P.hom f ≫ f`. Rewrite using `[Category.assoc, Over.w]`.
+
+Conclude with `pullback.condition`. Set `t₀ : Z₀ ⟶ splitTorus S' X` to `Over.homMk (hT.lift _ _ w₁) (hT.lift_snd _ _ w₁)`. Set `g₀ : Z₀ ⟶ G₀` to `Over.homMk (hF.1.lift _ _ w₂) (hF.1.lift_snd _ _ w₂)`. Establish `ht₀ : t₀.left ≫ SplitTorus.bcMap f X = p ≫ (fst (splitTorus S X) G).left` using `hT.lift_fst _ _ w₁`. Establish `hg₀ : g₀.left ≫ F = p ≫ (snd (splitTorus S X) G).left` using `hF.1.lift_fst _ _ w₂`.
+
+Set `ρ : Over.mk (Z₀.hom ≫ f) ⟶ P` to `Over.homMk p pullback.condition`. Establish `h1 : (ρ ≫ fst (splitTorus S X) G ≫ i).left = (t₀ ≫ i₀).left ≫ F`. Express the relevant statement in the definitionally equal form `_ = (t₀.left ≫ i₀.left) ≫ F`. Rewrite using `[Category.assoc, ← hi, ← Category.assoc t₀.left, ht₀, Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `h2 : (ρ ≫ snd (splitTorus S X) G).left = g₀.left ≫ F` using `hg₀.symm`. Establish `h3` using `hF.2 Z₀ (t₀ ≫ i₀) g₀ _ _ h1 h2`. Set `l : Z₀ ⟶ splitTorus S' X ⊗ G₀` to `lift t₀ g₀`. Establish `h4 : p ≫ ((fst (splitTorus S X) G ≫ i) * snd _ G).left = l.left ≫ ((fst (splitTorus S' X) G₀ ≫ i₀) * snd _ G₀).left ≫ F`. Establish `e : l ≫ ((fst (splitTorus S' X) G₀ ≫ i₀) * snd _ G₀) = (t₀ ≫ i₀) * g₀`.
+
+Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, ← h3, ← MonObj.comp_mul]`. Both sides reduce to the same expression. Establish `h5 : p ≫ (snd (splitTorus S X) G).left = l.left ≫ (snd (splitTorus S' X) G₀).left ≫ F`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd, hg₀]`.
+
+Establish `h6 : (p ≫ (snd (splitTorus S X) G).left) ⁻¹ᵁ W ≤ (p ≫ ((fst (splitTorus S X) G ≫ i) * snd _ G).left) ⁻¹ᵁ W`. Rewrite using `[h4, h5]`. Conclude with `fun z hz => hW hz`. Introduce `x hx`. Take `⟨z, rfl⟩` from `p.surjective x`.
+
+Conclude with `h6 hx`.
+-/
 theorem torus_stable_of_surjective {S S' : Scheme.{0}} (f : S' ⟶ S) [Surjective f]
     (X : Type) [AddCommGroup X] (G : Over S) [GrpObj G] (G₀ : Over S') [GrpObj G₀]
     (F : G₀.left ⟶ G.left) (hF : IsGrpPullback G₀ G f F)
@@ -57,6 +74,9 @@ theorem torus_stable_of_surjective {S S' : Scheme.{0}} (f : S' ⟶ S) [Surjectiv
   obtain ⟨z, rfl⟩ := p.surjective x
   exact h6 hx
 
+/- English proof (translation)
+Introduce `A _ J hJ X _ G _ G₀ _ F hF i₀ i hi W hW`. Use `haveI := surjective_red hJ`. Conclude with `torus_stable_of_surjective (red J) X G G₀ F hF i₀ i hi W hW`.
+-/
 theorem torus_stable_of_red : ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (X : Type) [AddCommGroup X] (G : Over (Spec (CommRingCat.of A))) [GrpObj G] (G₀ : Over (Spec (CommRingCat.of (A ⧸ J)))) [GrpObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (red J) F → ∀ (i₀ : splitTorus _ X ⟶ G₀) (i : splitTorus _ X ⟶ G), TorusCompat (red J) F i₀ i → ∀ W : G.left.Opens, (snd (splitTorus _ X) G₀).left ⁻¹ᵁ (F ⁻¹ᵁ W) ≤ ((fst (splitTorus _ X) G₀ ≫ i₀) * snd _ G₀).left ⁻¹ᵁ (F ⁻¹ᵁ W) → (snd (splitTorus _ X) G).left ⁻¹ᵁ W ≤ ((fst (splitTorus _ X) G ≫ i) * snd _ G).left ⁻¹ᵁ W := by
   intro A _ J hJ X _ G _ G₀ _ F hF i₀ i hi W hW
   haveI := surjective_red hJ

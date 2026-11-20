@@ -9,6 +9,9 @@ namespace UpperTheory.V.Fr
 
 def pq (a : Fin 3) : ZMod 2 := ((w 3 a : ℤ) : ZMod 2)
 
+/- English proof (translation)
+The claim follows from `Int.cast_sub _ _`.
+-/
 theorem pw_eq (a b : Fin 3) : pw a b = pq a - pq b := Int.cast_sub _ _
 
 def GrM {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R) (α β : Fin 3 → ZMod 2)
@@ -34,6 +37,9 @@ variable {B : Box F 3 K} {π : F.V → Fin 3 → ZMod 2}
 
 def Ev.ad (h : B.Ev π) (j : ZMod 2) : Representation K F.Γ (adp K j) := B.ad.subrepresentation (adp K j) (h.stab j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Ev.ad_apply (h : B.Ev π) (j : ZMod 2) (s : F.Γ) (X : adp K j) :
     ((h.ad j s X : adp K j) : Matrix (Fin 3) (Fin 3) K) = B.ad s X := rfl
 

@@ -9,6 +9,15 @@ namespace PositivityTheory.Rg.Sw.FFTSteps
 
 open PosProof
 
+/- English proof (translation)
+Rewrite using `[← integral_mon_self m]`. Unfold `gip`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[mon_prod]`.
+
+Establish `h1 : (eval z) (monomial m (1 : ℂ)) = ∏ s : Sg ι A B, z s ^ m s`. Rewrite using `[eval_monomial, one_mul, Finsupp.prod_fintype]`. Introduce `i`. Simplify using the standard rewrite rules. Rewrite using `[h1, star_prod, ← Finset.prod_mul_distrib, Complex.ofReal_sum, ← Finset.sum_neg_distrib, Complex.exp_sum, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hk_diag, star_pow, ← mul_pow]`. Establish `h2 : z s * star (z s) = ((‖z s‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[h2]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 private theorem gip_monomial_self_eq_prod_jr {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype A] [Fintype B]
     (m : Sg ι A B →₀ ℕ) :
     gip (monomial m (1 : ℂ)) (monomial m (1 : ℂ)) = ((∏ s : Sg ι A B, jr (m s) : ℝ) : ℂ) := by
@@ -31,6 +40,9 @@ private theorem gip_monomial_self_eq_prod_jr {ι A B : Type} [Fintype ι] [Decid
   push_cast
   ring_nf
 
+/- English proof (translation)
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Rewrite using `[PosProof.eval_sub, Phi_diag, eval_mul, eval_C, eval_monomial, eval_monomial, one_mul, one_mul, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`. Use `push_cast`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`.
+-/
 private theorem pos_lemma {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype A] [Fintype B]
     (d : ι → ℝ) (m : Sg ι A B →₀ ℕ) :
     sub 1 (Matrix.diagonal fun i => (d i : ℂ)) (monomial m (1 : ℂ)) =
@@ -42,6 +54,13 @@ private theorem pos_lemma {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype
   push_cast
   simp only [mul_pow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `hP : (0 : ℝ) < ∏ s : Sg ι A B, jr (m s)` using `Finset.prod_pos fun s _ => jr_pos _`. Establish `h` using `gip_diag (A := A) (B := B) d (monomial m (1 : ℂ))`. Rewrite `h` using `[pos_lemma, support_monomial, if_neg one_ne_zero, Finset.sum_singleton, coeff_monomial, if_pos rfl, Complex.normSq_one, one_mul]`. Establish `h3 : gip (C ((∏ s : Sg ι A B, kap d s ^ m s : ℝ) : ℂ) * monomial m (1 : ℂ)) (monomial m (1 : ℂ)) = ((∏ s : Sg ι A B, kap d s ^ m s : ℝ) : ℂ) * ((∏ s : Sg ι A B, jr (m s) : ℝ) : ℂ)`. Rewrite using `[← gip_monomial_self_eq_prod_jr]`.
+
+Unfold `gip`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[eval_mul, eval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h3]`. Establish `h4 : (∏ s : Sg ι A B, kap d s ^ m s) * (∏ s : Sg ι A B, jr (m s)) = lam d m * ∏ s : Sg ι A B, jr (m s)`. Conclude with `h` after adjusting the coercions. Conclude with `(mul_right_cancel₀ hP.ne' h4).symm`.
+-/
 private theorem lam_eq_prod_kap_pow {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype A] [Fintype B]
     (d : ι → ℝ) (m : Sg ι A B →₀ ℕ) :
     lam d m = ∏ s : Sg ι A B, kap d s ^ m s := by
@@ -65,6 +84,11 @@ private theorem lam_eq_prod_kap_pow {ι A B : Type} [Fintype ι] [DecidableEq ι
     exact_mod_cast h
   exact (mul_right_cancel₀ hP.ne' h4).symm
 
+/- English proof (translation)
+Establish `hcont : Continuous fun z : Sg ι A B → ℂ => (eval z) (sub 1 M f) * star ((eval z) f) * Complex.exp (-↑(∑ s : Sg ι A B, ‖z s‖ ^ 2))` using `((continuous_eval _).mul (continuous_star.comp (continuous_eval _))).mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp (continuous_finset_sum _ fun s _ => (continuous_norm.comp (continuous_apply s)).pow 2)).neg)`. Unfold `gip`. Rewrite using `[integral_Phi U hU1 hU2 _ hcont]`. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [PosProof.eval_sub]`.
+
+Rewrite using `[← Phi_mul, ← Phi_mul, hMU, norm_Phi U hU1]`.
+-/
 private theorem gip_sub_eq_of_unitary_conj_diag {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype A] [Fintype B]
     (M U D : Matrix ι ι ℂ) (hU1 : star U * U = 1) (hU2 : U * star U = 1) (hMU : M * U = U * D)
     (f : PV ι A B) :
@@ -80,6 +104,25 @@ private theorem gip_sub_eq_of_unitary_conj_diag {ι A B : Type} [Fintype ι] [De
   simp only [PosProof.eval_sub]
   rw [← Phi_mul, ← Phi_mul, hMU, norm_Phi U hU1]
 
+/- English proof (translation)
+Introduce `ι A B _ _ _ _ M hM f`. Establish `hH` using `hM.isHermitian`. Establish `hMe : M = (hH.eigenvectorUnitary : Matrix ι ι ℂ) * Matrix.diagonal (fun i => (hH.eigenvalues i : ℂ)) * star (hH.eigenvectorUnitary : Matrix ι ι ℂ)` using `by conv_lhs => rw [hH.spectral_theorem]`. Rewrite using `[Unitary.conjStarAlgAut_apply]`. Both sides reduce to the same expression.
+
+Establish `hU1 : star (hH.eigenvectorUnitary : Matrix ι ι ℂ) * (hH.eigenvectorUnitary : Matrix ι ι ℂ) = 1` using `Unitary.coe_star_mul_self _`. Establish `hU2 : (hH.eigenvectorUnitary : Matrix ι ι ℂ) * star (hH.eigenvectorUnitary : Matrix ι ι ℂ) = 1`. Simplify `Unitary.coe_mul_star_self hH.eigenvectorUnitary` using `[Unitary.coe_star]`. Establish `hMU : M * (hH.eigenvectorUnitary : Matrix ι ι ℂ) = (hH.eigenvectorUnitary : Matrix ι ι ℂ) * Matrix.diagonal (fun i => (hH.eigenvalues i : ℂ))`. Establish `h` using `congrArg (· * (hH.eigenvectorUnitary : Matrix ι ι ℂ)) hMe`.
+
+Rewrite using `[h, Matrix.mul_assoc (_ * _), hU1, Matrix.mul_one]`. Establish `hkap : ∀ s : Sg ι A B, 0 ≤ kap hH.eigenvalues s`. Introduce `s`. Break down `s with s | s` into its components or cases. Simplify using `[kap]`.
+
+Simplify using `only [kap, Sum.elim_inr]`. Conclude with `hM.eigenvalues_nonneg _`. Rewrite using `[gip_sub_eq_of_unitary_conj_diag M _ _ hU1 hU2 hMU f, gip_diag]`. Simplify using `only [Complex.ofReal_re, Complex.ofReal_im]`. Use `⟨?_, trivial, ?_⟩` and prove the remaining obligations.
+
+Use `Finset.sum_nonneg fun m _ => mul_nonneg (mul_nonneg (Complex.normSq_nonneg _) ?_) (Finset.prod_nonneg fun s _ => (jr_pos _).le)` and prove the remaining obligations. Rewrite using `[lam_eq_prod_kap_pow]`. Conclude with `Finset.prod_nonneg fun s _ => pow_nonneg (hkap s) _`. Introduce `hPD hf`. Establish `hkap' : ∀ s : Sg ι A B, 0 < kap hH.eigenvalues s`.
+
+Introduce `s`. Break down `s with s | s` into its components or cases. Simplify using `[kap]`. Simplify using `only [kap, Sum.elim_inr]`. Conclude with `hPD.eigenvalues_pos _`.
+
+Establish `hinv : sub 1 (star (hH.eigenvectorUnitary : Matrix ι ι ℂ)) (sub 1 (hH.eigenvectorUnitary : Matrix ι ι ℂ) f) = f`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Rewrite using `[PosProof.eval_sub, PosProof.eval_sub, ← Phi_mul, hU2, Phi_one]`. Establish `hg : sub 1 (hH.eigenvectorUnitary : Matrix ι ι ℂ) f ≠ 0`.
+
+Introduce `hg`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← hinv, hg, map_zero]`. Use `Finset.sum_pos (fun m hm => mul_pos (mul_pos (Complex.normSq_pos.2 (mem_support_iff.1 hm)) ?_) (Finset.prod_pos fun s _ => jr_pos _)) ?_` and prove the remaining obligations. Rewrite using `[lam_eq_prod_kap_pow]`.
+
+Conclude with `Finset.prod_pos fun s _ => pow_pos (hkap' s) _`. Conclude with `Finset.nonempty_iff_ne_empty.2 (by rwa [Ne, MvPolynomial.support_eq_empty])`.
+-/
 theorem pos : Pos := by
   intro ι A B _ _ _ _ M hM f
   have hH := hM.isHermitian

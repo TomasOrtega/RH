@@ -12,6 +12,13 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalProj
 
+/- English proof (translation)
+Introduce `E _ _ Ω Vs C _ _ _ _ R' g ℓ ψ ρH ρHC HL ev σ σC h hp hev htie hst`. Use `choose hc hψ using htie`. Establish `hsum : (⟨_, hp⟩ : HL) = ∑ k, (⟨σ (HT.dualInt E k), hc _⟩ : R') • (⟨ρH (RingOfIntegers.basis E k) (h : Vs × Module.Dual Ω Vs), hst _ _ h.2⟩ : HL)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression. Rewrite using `[hsum, map_sum]`. Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.map_smulₛₗ, hψ, hev.1 _ h]`.
+-/
 theorem ev_eigProj : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs C : Type) [Field Ω] [AddCommGroup Vs] [Module Ω Vs] [Field C]
     (R' : Subring Ω) (g : ℕ) (ℓ : Fin g → Vs) (ψ : R' →+* C)
     (ρH : 𝓞 E →+* Module.End Ω (Vs × Module.Dual Ω Vs))

@@ -21,6 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Set `K : Subgroup M` to `(powMonoidHom N : M →* M).ker`. Establish `hK : ∀ a, a ∈ K ↔ a ^ N = 1` using `fun a => Iff.rfl`. Establish `hcK : Nat.card K = Nat.card {x : M // x ^ N = 1}` using `rfl`. Establish `: Finite K` using `Nat.finite_of_card_ne_zero (hcK ▸ hfin)`. Establish `hex' : ∀ a b : K, ∃ ζ, w a b ζ` using `fun a b => (hex a b a.2 b.2).exists`.
+
+Use `choose v hv using hex'`. Establish `hu : ∀ (a b : K) ζ, w a b ζ → v a b = ζ` using `fun a b ζ h => (hex a b a.2 b.2).unique (hv a b) h`. Establish `h1 : ∀ a a' b : K, v (a * a') b = v a b * v a' b` using `fun a a' b => hu _ _ _ (hmul _ _ _ _ _ (hv a b) (hv a' b))`. Establish `hs : ∀ a b : K, v b a = (v a b)⁻¹` using `fun a b => hu _ _ _ (hsymm _ _ _ (hv a b))`. Establish `hTK : T ≤ K` using `hT`.
+
+Establish `hHK : H ≤ K` using `hH`. Establish `key` using `(GlobalTheory.perfectPairing_orthogonal_of_card F K (fun a b => φ (v a b)) (fun a a' b => by rw [h1, map_mul]) (fun a b b' => by rw [hs (b * b') a, h1, mul_inv, ← hs, ← hs, map_mul]) (fun a ha => Subtype.ext (hnd a a.2 fun y hy => by`. Establish `h` using `hv a ⟨y, hy⟩`. Rewrite using `[hφ ((ha ⟨y, hy⟩).trans φ.map_one.symm)] at h))` and apply the resulting hypothesis. Use the proof step `(T.subgroupOf K) (H.subgroupOf K)`.
+
+Use the proof step `(fun t ht h hh => by rw [hu _ _ _ (hTH t ht h hh), map_one])`. Use the proof step `(by`. Rewrite using `[Nat.card_congr (Subgroup.subgroupOfEquivOfLe hTK).toEquiv, Nat.card_congr (Subgroup.subgroupOfEquivOfLe hHK).toEquiv, hc, hcK])).1 ⟨x, hx⟩`. Conclude with `key.1 fun h hh => by rw [hu ⟨x, hx⟩ h _ (hxH h hh), map_one]`.
+-/
 theorem mem_of_orthogonal_of_card {F : Type} [Field F] {M U : Type} [CommGroup M] [CommGroup U] (φ : U →* Fˣ)
     (hφ : Function.Injective φ) (N : ℕ) (w : M → M → U → Prop)
     (hex : ∀ x y, x ^ N = 1 → y ^ N = 1 → ∃! ζ, w x y ζ)
@@ -56,6 +65,11 @@ theorem mem_of_orthogonal_of_card {F : Type} [Field F] {M U : Type} [CommGroup M
         Nat.card_congr (Subgroup.subgroupOfEquivOfLe hHK).toEquiv, hc, hcK])).1 ⟨x, hx⟩
   exact key.1 fun h hh => by rw [hu ⟨x, hx⟩ h _ (hxH h hh), map_one]
 
+/- English proof (translation)
+Introduce `hL V _ _ _ A G _ _ s F _ _ _ N hN T H hT hH hc hTH x hx hxH`. Take `⟨hcard, hnd⟩` from `GlobalTheory.T.generic_fibre_card_torsion_cubical_pairing_perfect hL V A G s F N hN`. Set `ε₀ : Γ(Spec (CommRingCat.of F), ⊤) ≃+* F` to `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv`. Use `mem_of_orthogonal_of_card (F := F) (M := TF (R := V) F ⟶ G) (U := Γ((TF (R := V) F).left, ⊤)ˣ) (Units.map ε₀.toMonoidHom) (Units.map_injective ε₀.injective) N (CubWeil s.P.c N) (fun _ _ hx hy => existsUnique_cubWeil _ hx hy) (fun _ _ _ _ _ h h' => h.mul_left h') (fun _ _ _ h => h …` and prove the remaining obligations. Rewrite using `[hcard]`.
+
+Conclude with `pow_ne_zero _ (by omega)`.
+-/
 theorem mem_of_cubWeil_orthogonal : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (N : ℕ), 1 ≤ N → ∀ T H : Subgroup (TF (R := V) F ⟶ G), (∀ x ∈ T, x ^ N = 1) → (∀ x ∈ H, x ^ N = 1) → Nat.card T * Nat.card H = N ^ (2 * A.g) → (∀ x ∈ T, ∀ y ∈ H, CubWeil s.P.c N x y 1) → ∀ x, x ^ N = 1 → (∀ y ∈ H, CubWeil s.P.c N x y 1) → x ∈ T := by
   intro hL V _ _ _ A G _ _ s F _ _ _ N hN T H hT hH hc hTH x hx hxH
   obtain ⟨hcard, hnd⟩ := GlobalTheory.T.generic_fibre_card_torsion_cubical_pairing_perfect hL V A G s F N hN

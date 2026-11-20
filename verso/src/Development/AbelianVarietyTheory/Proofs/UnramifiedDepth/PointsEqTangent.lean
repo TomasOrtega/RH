@@ -5,9 +5,17 @@ open TensorProduct IsLocalRing Matrix ReciprocityTheory.PGsh ReciprocityTheory.P
 
 namespace GlobalTheory.CotPoints
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma comp_assoc' {R₀ : Type} [CommRing R₀] {A B C D : LAlg R₀} (h : LHom C D)
     (g : LHom B C) (f : LHom A B) : (h.comp g).comp f = h.comp (g.comp f) := rfl
 
+/- English proof (translation)
+Establish `h : (fun m : Fin g → N => ∑ k, b k ⊗ₜ[R] m k) = (TensorProduct.equivFinsuppOfBasisLeft (N` using `N) b).symm ∘ Finsupp.equivFunOnFinite.symm := by`. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp, TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h]`. Conclude with `(LinearEquiv.bijective _).comp (Equiv.bijective _)`.
+-/
 private lemma coords_bijective {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {g : ℕ} (b : Module.Basis (Fin g) R M) :
     Function.Bijective (fun m : Fin g → N => ∑ k, b k ⊗ₜ[R] m k) := by
@@ -21,6 +29,9 @@ private lemma coords_bijective {R M N : Type} [CommRing R] [AddCommGroup M] [Mod
   rw [h]
   exact (LinearEquiv.bijective _).comp (Equiv.bijective _)
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => (map_nsmul (TensorProduct.mk R M N (b k)) n (m k)).symm`.
+-/
 private lemma coords_nsmul {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {g : ℕ} (b : Module.Basis (Fin g) R M) (n : ℕ)
     (m : Fin g → N) : n • ∑ k, b k ⊗ₜ[R] m k = ∑ k, b k ⊗ₜ[R] (n • m k) := by
@@ -33,6 +44,9 @@ variable {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : B
   {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe]
   {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ t) (D.pt_p t)))`.
+-/
 private lemma ptMap_spec (t : Nb p g) :
     (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = LHom.id Tw.O ∧
       B.map (D.ptMap t) (D.fin.y (D.ptIdx t)) = ptOf B D.L.τ t ∧
@@ -41,11 +55,29 @@ private lemma ptMap_spec (t : Nb p g) :
   Classical.choose_spec (Classical.choose_spec
     (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ t) (D.pt_p t)))
 
+/- English proof (translation)
+Simplify using `[ptOf]`.
+-/
 private lemma ptOf_zero : ptOf B D.L.τ (0 : Nb p g) = 0 := by
   simp [ptOf]
 
 end
 
+/- English proof (translation)
+Introduce `R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D S s π hπ hs`. Take `⟨-, h2, h3⟩` from `ptMap_spec D 0`. Rewrite `h2`, `h3` using `[ptOf_zero D]`. Use `⟨fun m hm => ?_, fun φ hφ hπφ => ?_⟩` and prove the remaining obligations. Establish `hz : p • B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m k) = 0`.
+
+Rewrite using `[← map_nsmul, coords_nsmul]`. Simplify using `[hm]`. Take `⟨i, φ, e1, e2, e3⟩` from `D.fin.univ S s _ hz`. Establish `h4` using `h3 i (π.comp φ) (by rw [comp_assoc', e1, hs]) (by rw [B.map_comp, e2]; exact (B.tg_ker π hπ _).2 ⟨_, rfl⟩)`. Take `⟨hi, hφ⟩` from `h4`.
+
+Substitute `hi` using the available equality. Use `⟨φ, ⟨e1, eq_of_heq hφ, e2⟩, fun φ' h' => ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (e3 _ φ' h'.1 h'.2.2).2`. Establish `h0 : B.map π (B.map φ (D.fin.y (D.ptIdx 0))) = 0`. Rewrite using `[← B.map_comp, hπφ, h2]`.
+
+Take `⟨v, hv⟩` from `(B.tg_ker π hπ _).1 h0`. Establish `hb` using `coords_bijective (N := π.ker) D.ch.gb`. Take `⟨m, hm⟩` from `hb.2 v`. Establish `hm' : ∑ k, D.ch.gb k ⊗ₜ[R₀] m k = v` using `hm`. Establish `hp : p • v = 0`.
+
+Apply `B.tg_inj π hπ` to reduce the goal to its premises. Rewrite using `[map_nsmul, hv, ← map_nsmul, D.fin.y_p, map_zero, map_zero]`. Use `⟨m, ⟨fun k => ?_, by rw [hm', hv]⟩, fun m' h' => ?_⟩` and prove the remaining obligations. Establish `: (fun k => p • m k) = (0 : Fin g → π.ker)`. Apply `hb.1` to reduce the goal to its premises.
+
+Use `show ∑ k, D.ch.gb k ⊗ₜ[R₀] (p • m k) = ∑ k, D.ch.gb k ⊗ₜ[R₀] (0 : Fin g → π.ker) k`. Rewrite using `[← coords_nsmul, hm', hp]`. Simplify using the standard rewrite rules. Conclude with `congrFun this k`. Apply `hb.1` to reduce the goal to its premises.
+
+Apply `B.tg_inj π hπ` to reduce the goal to its premises. Use `show B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m' k) = B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m k)`. Rewrite using `[← h'.2, hm', hv]`.
+-/
 theorem points_eq_tangent :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp), ∀ (S : LAlg R₀) (s : LHom Tw.O S) (π : LHom S Tw.O) (hπ : π.SqZero), π.comp s = LHom.id Tw.O →
     (∀ m : Fin g → π.ker, (∀ k, p • m k = 0) → ∃! φ : LHom (D.fin.AAx (D.ptIdx 0)) S, φ.comp (D.fin.sO (D.ptIdx 0)) = s ∧ π.comp φ = (D.ptMap 0) ∧

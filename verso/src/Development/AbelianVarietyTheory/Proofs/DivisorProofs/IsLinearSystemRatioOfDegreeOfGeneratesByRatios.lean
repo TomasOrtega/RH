@@ -41,6 +41,11 @@ def sameDegQuot (ev : V →ₗ[K] Ω) : IntermediateField K Ω where
     · refine ⟨e, x * q, hxq, mul_ne_zero hx hq0, ?_⟩
       rwa [show x⁻¹ * (x * q) = q by field_simp]
 
+/- English proof (translation)
+Rewrite using `[ratioField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `a ⟨v, w, rfl⟩`. Distinguish the cases in `hw : ev w = 0`. Rewrite using `[hw, div_zero]`. Conclude with `(sameDegQuot ev).zero_mem`.
+
+Use `⟨1, ev w, by simp, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hw, pow_one]`. Conclude with `LinearMap.mem_range_self ev v`.
+-/
 theorem ratioField_le_sameDegQuot (ev : V →ₗ[K] Ω) : ratioField ev ≤ sameDegQuot ev := by
   rw [ratioField, IntermediateField.adjoin_le_iff]
   rintro a ⟨v, w, rfl⟩
@@ -50,6 +55,13 @@ theorem ratioField_le_sameDegQuot (ev : V →ₗ[K] Ω) : ratioField ev ≤ same
     rw [div_mul_cancel₀ _ hw, pow_one]
     exact LinearMap.mem_range_self ev v
 
+/- English proof (translation)
+Introduce and unpack `⟨hev, htop⟩ τ t`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, ev w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hev (LinearMap.ext h)`.
+
+Establish `hmem : t / ev w ^ τ ∈ sameDegQuot ev`. Apply `ratioField_le_sameDegQuot ev` to reduce the goal to its premises. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨e, q, hq, hq0, hp⟩` from `hmem`.
+
+Use `⟨e, q, hq, hq0, ?_⟩` and prove the remaining obligations. Establish `: t * q = (t / ev w ^ τ * q) * ev w ^ τ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, add_comm, pow_add]`. Conclude with `Submodule.mul_mem_mul hp (Submodule.pow_mem_pow _ (LinearMap.mem_range_self ev w) τ)`.
+-/
 theorem isRatio_of_genRatios (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω]
     (ev : V →ₗ[K] Ω) : GenRatios ev → ∀ (τ : ℕ) (t : Ω), IsRatio ev τ t := by
   rintro ⟨hev, htop⟩ τ t

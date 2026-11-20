@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Num
 
 open Filter Topology
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.Ar.Top.RootModel.arFun, GlobalTheory.CompanionTheory.Ar.Top.RootModel.PP, Module.Basis.constr_apply, Finsupp.sum]`. Use `tendsto_finsetSum _ (fun m _ => ?_)` and prove the remaining obligations. Take `⟨L, hL⟩` from `h m`. Conclude with `(tendsto_nhds_limUnder ⟨L, hL⟩).const_smul _`.
+-/
 theorem arFun_tendsto_PP {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (II : IntersectionSystem)
     (h : M.Converges II) (F : RPA Ψ N) :
     Tendsto (fun t => M.arFun II t F) (𝓝[>] 0) (𝓝 (M.PP II F)) := by
@@ -17,6 +20,11 @@ theorem arFun_tendsto_PP {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N)
   obtain ⟨L, hL⟩ := h m
   exact (tendsto_nhds_limUnder ⟨L, hL⟩).const_smul _
 
+/- English proof (translation)
+Introduce `Ψ _ N M M' II hM hM' F c hF`. Establish `h1` using `arFun_tendsto_PP M II hM F`. Establish `h2` using `(arFun_tendsto_PP M' II hM' F).add_const c`. Use `tendsto_nhds_unique h1 (h2.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t ht`.
+
+Conclude with `(hF t ht).symm`.
+-/
 theorem PP_eq_add_of_arFun_eq_add :
     ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M M' : RootModel Ψ N) (II : IntersectionSystem), M.Converges II →
       M'.Converges II → ∀ (F : RPA Ψ N) (c : ℝ), (∀ t : ℝ, 0 < t → M.arFun II t F = M'.arFun II t F + c) →

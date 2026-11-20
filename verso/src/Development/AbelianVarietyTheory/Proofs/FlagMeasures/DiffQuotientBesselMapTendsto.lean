@@ -18,6 +18,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hcont : ContinuousAt F g` using `hF.continuousOn.continuousAt (hU.mem_nhds hgU)`. Use `(hcont.continuousWithinAt (s := UH H)).congr_of_eventuallyEq ?_ (hfF g hgU hg)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with x hxU hxH`.
+
+Conclude with `hfF x hxU hxH`.
+-/
 theorem smoothOnH_continuousOn {H : Matrix (Fin n) (Fin n) ℂ} {f : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : SmoothOnH H f) : ContinuousOn f (UH H) := by
   intro g hg
@@ -27,6 +32,13 @@ theorem smoothOnH_continuousOn {H : Matrix (Fin n) (Fin n) ℂ} {f : Matrix (Fin
   filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with x hxU hxH
   exact hfF x hxU hxH
 
+/- English proof (translation)
+Establish `hc : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * g) (X * g) 0`. Use `hasDerivAt_iff_tendsto_slope.2 ?_` and prove the remaining obligations. Establish `h` using `(Formalism.REAL.tendsto_slope_exp_smul X).mul_const g`. Use `h.congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [slope_def_module, sub_mul, smul_mul_assoc]`.
+
+Establish `hFd : HasFDerivAt F (fderiv ℝ F g) g` using `((hF.differentiableOn (by simp)) g hg).differentiableAt (hU.mem_nhds hg) |>.hasFDerivAt`. Establish `hcomp` using `hFd.comp_hasDerivAt_of_eq (0 : ℝ) hc (by simp)`. Establish `h0 : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * g) 0 = g` using `by simp`. Establish `hcU : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) * g) ⁻¹' U ∈ 𝓝 (0 : ℝ)` using `hc.continuousAt.preimage_mem_nhds (by rw [show NormedSpace.exp (((0 : ℝ) : ℂ) • X) * g = g by simp]; exact hU.mem_nhds hg)`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hcU] with t ht`. Conclude with `hfF _ ht (AAInvW.ana_mul (AAInvW.ana_expt hH hX t) hgH)`.
+-/
 theorem left_hasDerivAt {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
     {f F : Matrix (Fin n) (Fin n) ℂ → E} {U : Set (Matrix (Fin n) (Fin n) ℂ)} {g X : Matrix (Fin n) (Fin n) ℂ}
     (hU : IsOpen U) (hg : g ∈ U) (hgH : inUH H g) (hF : ContDiffOn ℝ ∞ F U)
@@ -47,6 +59,13 @@ theorem left_hasDerivAt {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
   filter_upwards [hcU] with t ht
   exact hfF _ ht (AAInvW.ana_mul (AAInvW.ana_expt hH hX t) hgH)
 
+/- English proof (translation)
+Establish `hL : ContDiff ℝ ∞ (fun x : Matrix (Fin n) (Fin n) ℂ => X * x)`. Establish `h` using `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)).contDiff (n := ∞)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Apply the tactic sequence `first | simp | rfl`.
+
+Use `⟨fun g₀ hg₀ => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U, fun x => fderiv ℝ F x (X * x), hU, hg₀U, ?_, fun x hxU hxH => ?_⟩` and prove the remaining obligations. Conclude with `(((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hF).2).clm_apply hL.contDiffOn`. Conclude with `(hf' x hxH _ (left_hasDerivAt hH hU hxU hxH hF hfF hX)).symm`.
+
+Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hd` using `left_hasDerivAt hH hU hgU hg hF hfF hX`. Establish `e` using `hf' g hg _ hd`. Rewrite `hd` using `[e]`. Conclude with `hd`.
+-/
 theorem left_smooth {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
     {f f' : Matrix (Fin n) (Fin n) ℂ → E} {X : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnH H f) (hX : AAInvW.inLH H X)
@@ -75,13 +94,22 @@ section Rep
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Conclude with `⟨Formalism.QuantumDeterminants.GBasic.Hpk_herm k r, Formalism.QuantumDeterminants.GBasic.Hpk_sq k r⟩`.
+-/
 theorem hInvol (k r : ℕ) : AAInvW.HInvol (Hpk k r) := by
   exact ⟨Formalism.QuantumDeterminants.GBasic.Hpk_herm k r, Formalism.QuantumDeterminants.GBasic.Hpk_sq k r⟩
 
+/- English proof (translation)
+Conclude with `AAInvW.ana_expt (hInvol k r) hX t`.
+-/
 theorem exp_mem {X : Mat k r} (hX : InLieHpk k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ GG k r := by
   exact AAInvW.ana_expt (hInvol k r) hX t
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.EquivariantSubspace.smoothOnH_add hv hw`. Use `show SmoothOnH _ (fun g => σ g (v + w))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 theorem sm_add {σ : Mat k r → (H →L[ℂ] H)} {v w : H} (hv : IsSmoothVec σ v) (hw : IsSmoothVec σ w) :
     IsSmoothVec σ (v + w) := by
   have h := GlobalTheory.EquivariantSubspace.smoothOnH_add hv hw
@@ -90,6 +118,9 @@ theorem sm_add {σ : Mat k r → (H →L[ℂ] H)} {v w : H} (hv : IsSmoothVec σ
   funext g
   simp
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.EquivariantSubspace.smoothOnH_smul a hv`. Use `show SmoothOnH _ (fun g => σ g (a • v))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 theorem sm_smul {σ : Mat k r → (H →L[ℂ] H)} (a : ℂ) {v : H} (hv : IsSmoothVec σ v) :
     IsSmoothVec σ (a • v) := by
   have h := GlobalTheory.EquivariantSubspace.smoothOnH_smul a hv
@@ -98,11 +129,17 @@ theorem sm_smul {σ : Mat k r → (H →L[ℂ] H)} (a : ℂ) {v : H} (hv : IsSmo
   funext g
   simp
 
+/- English proof (translation)
+Establish `h` using `sm_add hv (sm_smul (-1) hw)`. Simplify `h` using `[sub_eq_add_neg]`.
+-/
 theorem sm_sub {σ : Mat k r → (H →L[ℂ] H)} {v w : H} (hv : IsSmoothVec σ v) (hw : IsSmoothVec σ w) :
     IsSmoothVec σ (v - w) := by
   have h := sm_add hv (sm_smul (-1) hw)
   simpa [sub_eq_add_neg] using h
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.EquivariantSubspace.smoothOnH_zero (E := H) (Hpk k r)`. Use `show SmoothOnH _ (fun g => σ g 0)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 theorem sm_zero (σ : Mat k r → (H →L[ℂ] H)) : IsSmoothVec σ (0 : H) := by
   have h := GlobalTheory.EquivariantSubspace.smoothOnH_zero (E := H) (Hpk k r)
   show SmoothOnH _ (fun g => σ g 0)
@@ -110,6 +147,11 @@ theorem sm_zero (σ : Mat k r → (H →L[ℂ] H)) : IsSmoothVec σ (0 : H) := b
   funext g
   simp
 
+/- English proof (translation)
+Establish `h1 : inUH (Hpk k r) (1 : Mat k r)` using `by show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Take `⟨U, F, hU, h1U, hF, hfF⟩` from `(hv : SmoothOnH (Hpk k r) (fun g => σ g v)) 1 h1`. Establish `hd` using `left_hasDerivAt (hInvol k r) hU h1U h1 hF hfF hX`. Simplify using `only [mul_one] at hd`.
+
+Conclude with `hd.differentiableAt.hasDerivAt`.
+-/
 theorem hasDerivAt_dsig {σ : Mat k r → (H →L[ℂ] H)} {v : H} {X : Mat k r} (hv : IsSmoothVec σ v)
     (hX : InLieHpk k r X) :
     HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) (dsig σ X v) 0 := by
@@ -123,16 +165,25 @@ theorem hasDerivAt_dsig {σ : Mat k r → (H →L[ℂ] H)} {v : H} {X : Mat k r}
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Conclude with `((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).1 g hg`.
+-/
 theorem sm_translate {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     {g : Mat k r} (hg : g ∈ GG k r) : IsSmoothVec σ (σ g v) := by
   exact ((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).1 g hg
 
+/- English proof (translation)
+Conclude with `(((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).2 Y hY).1`.
+-/
 theorem sm_dsig {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     {Y : Mat k r} (hY : InLieHpk k r Y) : IsSmoothVec σ (dsig σ Y v) := by
   exact (((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).2 Y hY).1
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g).toLinearMap, norm_map' := hσ.2.1 g hg }`. Conclude with `L.inner_map_map v w`.
+-/
 theorem inner_map {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {g : Mat k r} (hg : g ∈ GG k r) (v w : H) :
     ⟪σ g v, σ g w⟫_ℂ = ⟪v, w⟫_ℂ := by
   let L : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g).toLinearMap, norm_map' := hσ.2.1 g hg }
@@ -140,6 +191,15 @@ theorem inner_map {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Establish `hv'` using `hasDerivAt_dsig hv hX`. Establish `hw'` using `hasDerivAt_dsig hw hX`. Establish `key : ∀ t : ℝ, ⟪σ (NormedSpace.exp ((t : ℂ) • X)) v, w⟫_ℂ = ⟪v, σ (NormedSpace.exp (((-t : ℝ) : ℂ) • X)) w⟫_ℂ`. Introduce `t`. Establish `hcomm : Commute (((-t : ℝ) : ℂ) • X) ((t : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`.
+
+Establish `hm : NormedSpace.exp (((-t : ℝ) : ℂ) • X) * NormedSpace.exp ((t : ℂ) • X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hcomm, ← add_smul]`. Simplify using the standard rewrite rules. Establish `h` using `inner_map hσ (exp_mem hX (-t)) (σ (NormedSpace.exp ((t : ℂ) • X)) v) w`. Rewrite `h` using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (exp_mem hX (-t)) _ (exp_mem hX t), hm, hσ.1.1, ContinuousLinearMap.one_apply]`.
+
+Conclude with `h.symm`. Establish `hw'' : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) w) (dsig σ X w) (-0)`. Rewrite using `[neg_zero]`. Conclude with `hw'`. Establish `hn` using `hw''.scomp (0 : ℝ) (hasDerivAt_neg (0 : ℝ))`.
+
+Establish `h1` using `HasDerivAt.inner ℂ hv' (hasDerivAt_const (0 : ℝ) w)`. Establish `h2` using `HasDerivAt.inner ℂ (hasDerivAt_const (0 : ℝ) v) hn`. Establish `h3` using `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => key t))`. Simplify using `at h3`. Rewrite using `[h3]`.
+-/
 theorem dsig_skew {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v w : H} {X : Mat k r}
     (hv : IsSmoothVec σ v) (hw : IsSmoothVec σ w) (hX : InLieHpk k r X) :
     ⟪dsig σ X v, w⟫_ℂ = -⟪v, dsig σ X w⟫_ℂ := by
@@ -166,6 +226,11 @@ theorem dsig_skew {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ
   simp at h3
   rw [h3]
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => intro u hu`. Conclude with `hu`. Consider the case `cons X W ih`. Introduce `u hu`.
+
+Conclude with `sm_dsig hσ (ih (fun Y hY => hW Y (by simp [hY])) u hu) (hW X (by simp))`.
+-/
 theorem dsigW_mem {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) : ∀ u, IsSmoothVec σ u → IsSmoothVec σ (dsigW σ W u) := by
   induction W with
@@ -175,6 +240,9 @@ theorem dsigW_mem {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ
     exact sm_dsig hσ (ih (fun Y hY => hW Y (by simp [hY])) u hu) (hW X (by simp))
 
 omit [CompleteSpace H] in
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih => show dsig σ X (dsigW σ (W ++ [Y]) u) = dsig σ X (dsigW σ W (dsig σ Y u))`. Rewrite using `[ih]`.
+-/
 theorem dsigW_append (σ : Mat k r → (H →L[ℂ] H)) (W : List (Mat k r)) (Y : Mat k r) (u : H) :
     dsigW σ (W ++ [Y]) u = dsigW σ W (dsig σ Y u) := by
   induction W with
@@ -183,6 +251,13 @@ theorem dsigW_append (σ : Mat k r → (H →L[ℂ] H)) (W : List (Mat k r)) (Y 
     show dsig σ X (dsigW σ (W ++ [Y]) u) = dsig σ X (dsigW σ W (dsig σ Y u))
     rw [ih]
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => intro w _; exact ⟨w, fun u _ => by rfl⟩`. Consider the case `cons X W ih`. Introduce `w hw`. Establish `hX : InLieHpk k r X` using `hW X (by simp)`.
+
+Establish `hW' : ∀ Y ∈ W, InLieHpk k r Y` using `fun Y hY => hW Y (by simp [hY])`. Take `⟨w₀, hw₀⟩` from `ih hW' (dsig σ X w) (sm_dsig hσ hw hX)`. Use `⟨-w₀, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hs` using `dsig_skew hσ hw (dsigW_mem hσ W hW' u hu) hX`. Use `show ⟪w, dsig σ X (dsigW σ W u)⟫_ℂ = ⟪-w₀, u⟫_ℂ`.
+
+Rewrite using `[inner_neg_left, ← hw₀ u hu, hs, neg_neg]`.
+-/
 theorem dsigW_adjoint {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) :
     ∀ w, IsSmoothVec σ w → ∃ w' : H, ∀ u, IsSmoothVec σ u → ⟪w, dsigW σ W u⟫_ℂ = ⟪w', u⟫_ℂ := by
@@ -199,6 +274,9 @@ theorem dsigW_adjoint {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r
     rw [inner_neg_left, ← hw₀ u hu, hs, neg_neg]
 
 omit [CompleteSpace H] in
+/- English proof (translation)
+Establish `hsub : closure {v | IsSmoothVec σ v} ⊆ {y | ⟪y, x⟫_ℂ = 0}` using `closure_minimal (fun v hv => h v hv) (isClosed_eq (Continuous.inner continuous_id continuous_const) continuous_const)`. Conclude with `inner_self_eq_zero.1 (hsub hx)`.
+-/
 theorem eq_zero_of_closure {σ : Mat k r → (H →L[ℂ] H)} {x : H} (hx : x ∈ closure {v | IsSmoothVec σ v})
     (h : ∀ w, IsSmoothVec σ w → ⟪w, x⟫_ℂ = 0) : x = 0 := by
   have hsub : closure {v | IsSmoothVec σ v} ⊆ {y | ⟪y, x⟫_ℂ = 0} :=
@@ -206,6 +284,11 @@ theorem eq_zero_of_closure {σ : Mat k r → (H →L[ℂ] H)} {x : H} (hx : x �
       continuous_const)
   exact inner_self_eq_zero.1 (hsub hx)
 
+/- English proof (translation)
+Establish `h` using `(((hasDerivAt_dsig hx hX).sub (hasDerivAt_dsig hy hX)).const_smul a).sub (hasDerivAt_dsig hz hX)`. Establish `h' : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (a • (x - y) - z)) (a • (dsig σ X x - dsig σ X y) - dsig σ X z) 0`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `[map_sub, map_smul]`.
+
+Conclude with `h'.deriv`.
+-/
 private theorem dsig_smul_sub_sub {σ : Mat k r → (H →L[ℂ] H)} {X : Mat k r} (hX : InLieHpk k r X) (a : ℂ)
     {x y z : H} (hx : IsSmoothVec σ x) (hy : IsSmoothVec σ y) (hz : IsSmoothVec σ z) :
     dsig σ X (a • (x - y) - z) = a • (dsig σ X x - dsig σ X y) - dsig σ X z := by
@@ -217,6 +300,11 @@ private theorem dsig_smul_sub_sub {σ : Mat k r → (H →L[ℂ] H)} {X : Mat k 
     simp [map_sub, map_smul]
   exact h'.deriv
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons X W ih`. Establish `hX : InLieHpk k r X` using `hW X (by simp)`. Establish `hW' : ∀ Y ∈ W, InLieHpk k r Y` using `fun Y hY => hW Y (by simp [hY])`.
+
+Use `show dsig σ X (dsigW σ W (a • (x - y) - z)) = a • (dsig σ X (dsigW σ W x) - dsig σ X (dsigW σ W y)) - dsig σ X (dsigW σ W z)`. Rewrite using `[ih hW']`. Conclude with `dsig_smul_sub_sub hX a (dsigW_mem hσ W hW' x hx) (dsigW_mem hσ W hW' y hy) (dsigW_mem hσ W hW' z hz)`.
+-/
 theorem dsigW_comb {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) (a : ℂ) {x y z : H} (hx : IsSmoothVec σ x) (hy : IsSmoothVec σ y)
     (hz : IsSmoothVec σ z) :
@@ -231,6 +319,13 @@ theorem dsigW_comb {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) �
     rw [ih hW']
     exact dsig_smul_sub_sub hX a (dsigW_mem hσ W hW' x hx) (dsigW_mem hσ W hW' y hy) (dsigW_mem hσ W hW' z hz)
 
+/- English proof (translation)
+Establish `hmem : D - dsigW σ W c' ∈ closure {v | IsSmoothVec σ v}`. Establish `hsl` using `(hasDerivAt_iff_tendsto_slope.1 hD').sub_const (dsigW σ W c')`. Use `mem_closure_of_tendsto hsl (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show IsSmoothVec σ (slope (fun t => dsigW σ W (c t)) 0 t - dsigW σ W c')`. Rewrite using `[slope_def_module]`.
+
+Establish `h` using `sm_smul (((t - 0)⁻¹ : ℝ) : ℂ) (sm_sub (dsigW_mem hσ W hW (c t) (hc t)) (dsigW_mem hσ W hW (c 0) (hc 0)))`. Rewrite `h` using `[Complex.coe_smul]`. Conclude with `sm_sub h (dsigW_mem hσ W hW c' hc')`. Use `sub_eq_zero.1 (eq_zero_of_closure hmem fun w hw => ?_)` and prove the remaining obligations. Take `⟨w', hw'⟩` from `dsigW_adjoint hσ W hW w hw`.
+
+Establish `h1` using `HasDerivAt.inner ℂ (hasDerivAt_const (0 : ℝ) w) hD'`. Establish `h2` using `HasDerivAt.inner ℂ (hasDerivAt_const (0 : ℝ) w') hd`. Establish `h3` using `h1.unique (h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => hw' (c t) (hc t)))`. Simplify using `at h3`. Rewrite using `[inner_sub_right, h3, hw' c' hc', sub_self]`.
+-/
 theorem dsigW_deriv_eq {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) {c : ℝ → H} {c' D : H} (hc : ∀ t, IsSmoothVec σ (c t))
     (hc' : IsSmoothVec σ c') (hd : HasDerivAt c c' 0)
@@ -252,6 +347,11 @@ theorem dsigW_deriv_eq {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k 
   simp at h3
   rw [inner_sub_right, h3, hw' c' hc', sub_self]
 
+/- English proof (translation)
+Use `left_smooth (hInvol k r) hs hY (fun g hg D hD => ?_)` and prove the remaining obligations. Establish `hg' : g ∈ GG k r` using `hg`. Establish `hgv` using `sm_translate hσ hv hg'`. Use `dsigW_deriv_eq hσ W hW (c := fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Y)) (σ g v)) (fun t => sm_translate hσ hgv (exp_mem hY t)) (sm_dsig hσ hgv hY) (hasDerivAt_dsig hgv hY) ?_` and prove the remaining obligations. Use `hD.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hσ.1.2 _ (exp_mem hY t) _ hg', ContinuousLinearMap.comp_apply]`.
+-/
 theorem dsigW_orbit {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     (W : List (Mat k r)) (hW : ∀ X ∈ W, InLieHpk k r X)
     (hs : SmoothOnH (Hpk k r) (fun g => dsigW σ W (σ g v)))
@@ -268,6 +368,11 @@ theorem dsigW_orbit {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) 
   refine hD.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)
   simp only [hσ.1.2 _ (exp_mem hY t) _ hg', ContinuousLinearMap.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `W using List.reverseRecOn with`. Consider the case `nil => exact hv`. Consider the case `append_singleton W Y ih`. Establish `hW' : ∀ X ∈ W, InLieHpk k r X` using `fun X hX => hW X (by simp [hX])`. Establish `hY : InLieHpk k r Y` using `hW Y (by simp)`.
+
+Establish `h` using `(dsigW_orbit hσ hv W hW' (ih hW') Y hY).1`. Simplify using `only [dsigW_append]`. Conclude with `h`.
+-/
 theorem dsigW_orbit_smooth {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     (W : List (Mat k r)) (hW : ∀ X ∈ W, InLieHpk k r X) :
     SmoothOnH (Hpk k r) (fun g => dsigW σ W (σ g v)) := by
@@ -290,6 +395,11 @@ section Main
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨C, Ws, hWs, hbd⟩` from `hB`. Establish `hsum : Tendsto (fun a => (Ws.map fun w => ‖dsigW σ w (u a)‖).sum) l (𝓝 0)`. Establish `h` using `tendsto_list_sum (l := Ws) (f := fun w a => ‖dsigW σ w (u a)‖) (a := fun _ => (0 : ℝ)) (fun w hw => by simpa using (h w (hWs w hw)).norm)`. Simplify using `using h`. Establish `hg : Tendsto (fun a => C * (Ws.map fun w => ‖dsigW σ w (u a)‖).sum) l (𝓝 0)`.
+
+Simplify using `using hsum.const_mul C`. Conclude with `squeeze_zero_norm' (hu.mono fun a ha => hbd (u a) ha) hg`.
+-/
 theorem cw_tendsto {σ : Mat k r → (H →L[ℂ] H)} {V : Type} [NormedAddCommGroup V] {Bm : H → V}
     (hB : IsCWCont (k := k) (r := r) σ Bm) {α : Type} {l : Filter α} {u : α → H}
     (hu : ∀ᶠ a in l, IsSmoothVec σ (u a))
@@ -306,6 +416,11 @@ theorem cw_tendsto {σ : Mat k r → (H →L[ℂ] H)} {V : Type} [NormedAddCommG
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Establish `h` using `dsigW_comb hσ W hW 1 (sm_zero σ) (sm_zero σ) (sm_zero σ)`. Simplify using `only [sub_self, smul_zero, zero_sub, one_smul] at h`. Establish `h2 : (2 : ℂ) • dsigW σ W 0 = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [h]`.
+
+Conclude with `neg_add_cancel _`. Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+-/
 theorem dsigW_zero {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) : dsigW σ W 0 = 0 := by
   have h := dsigW_comb hσ W hW 1 (sm_zero σ) (sm_zero σ) (sm_zero σ)
@@ -316,6 +431,13 @@ theorem dsigW_zero {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) �
     exact neg_add_cancel _
   exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Establish `h1 : inUH (Hpk k r) (1 : Mat k r)` using `by show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Establish `hd` using `(dsigW_orbit hσ hx W hW (dsigW_orbit_smooth hσ hx W hW) X hX).2 1 h1`. Simplify using `only [mul_one, hσ.1.1, ContinuousLinearMap.one_apply] at hd`. Establish `hsl` using `(hasDerivAt_iff_tendsto_slope.1 hd).sub_const (dsigW σ W (dsig σ X x))`.
+
+Rewrite `hsl` using `[sub_self]`. Use `hsl.congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hxt` using `sm_translate hσ hx (exp_mem hX t)`. Simplify using `only`. Rewrite using `[dsigW_comb hσ W hW _ hxt hx (sm_dsig hσ hx hX), slope_def_module]`.
+
+Simplify using `only [sub_zero, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1, ContinuousLinearMap.one_apply]`. Rewrite using `[← Complex.ofReal_inv, Complex.coe_smul t⁻¹]`.
+-/
 theorem word_quot_tendsto {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {x : H} (hx : IsSmoothVec σ x)
     {X : Mat k r} (hX : InLieHpk k r X) (W : List (Mat k r)) (hW : ∀ Y ∈ W, InLieHpk k r Y) :
     Tendsto (fun t : ℝ => dsigW σ W ((t : ℂ)⁻¹ • (σ (NormedSpace.exp ((t : ℂ) • X)) x - x) - dsig σ X x))
@@ -335,6 +457,13 @@ theorem word_quot_tendsto {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG
     ContinuousLinearMap.one_apply]
   rw [← Complex.ofReal_inv, Complex.coe_smul t⁻¹]
 
+/- English proof (translation)
+Establish `h0 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ (NormedSpace.exp ((s : ℂ) • X)) x)) (σ (NormedSpace.exp ((t : ℂ) • X)) (dsig σ X x)) (t - t)`. Rewrite using `[sub_self]`. Establish `h` using `((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dsig hx hX)`. Simplify `h` using `[Function.comp_def]`. Establish `h1` using `HasDerivAt.comp_sub_const t t h0`.
+
+Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Establish `hcomm : Commute ((t : ℂ) • X) (((u - t : ℝ) : ℂ) • X)` using `((Commute.refl X).smul_left _).smul_right _`. Establish `hsum : (t : ℂ) • X + ((u - t : ℝ) : ℂ) • X = (u : ℂ) • X`. Rewrite using `[← add_smul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (exp_mem hX t) _ (exp_mem hX (u - t)), ← Matrix.exp_add_of_commute _ _ hcomm, hsum]`.
+-/
 theorem orbit_hasDerivAt {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {x : H} (hx : IsSmoothVec σ x)
     {X : Mat k r} (hX : InLieHpk k r X) (t : ℝ) :
     HasDerivAt (fun u : ℝ => σ (NormedSpace.exp ((u : ℂ) • X)) x)
@@ -364,6 +493,23 @@ end GlobalTheory.DiffQuot
 
 open GlobalTheory.DiffQuot in
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ σ z ψ π l x X hσ hl hx hX`. Establish `hd` using `sm_dsig hσ hx hX`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hsm : ∀ t : ℝ, IsSmoothVec σ ((t : ℂ)⁻¹ • (σ (NormedSpace.exp ((t : ℂ) • X)) x - x))` using `fun t => sm_smul _ (sm_sub (sm_translate hσ hx (exp_mem hX t)) hx)`. Establish `hT` using `cw_tendsto hl.2.2.2 (l := nhdsWithin (0 : ℝ) {0}ᶜ) (u := fun t : ℝ => (t : ℂ)⁻¹ • (σ (NormedSpace.exp ((t : ℂ) • X)) x - x) - dsig σ X x) (Filter.Eventually.of_forall fun t => sm_sub (hsm t) hd) (fun W hW => word_quot_tendsto hσ hx hX W hW)`.
+
+Establish `h` using `hT.add_const (l (dsig σ X x))`. Rewrite `h` using `[zero_add]`. Use `h.congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `e` using `hl.1 _ (sm_sub (hsm t) hd) _ hd`. Rewrite `e` using `[sub_add_cancel]`.
+
+Conclude with `e.symm`. Introduce `g₀ hg₀`. Establish `hsm0` using `sm_translate hσ hx hg₀`. Establish `hw : ∀ W : List (Mat k r), (∀ Y ∈ W, InLieHpk k r Y) → Tendsto (fun g => dsigW σ W (σ g x - σ g₀ x)) (nhdsWithin g₀ (GG k r)) (nhds 0)`. Introduce `W hW`.
+
+Establish `hc` using `smoothOnH_continuousOn (dsigW_orbit_smooth hσ hx W hW) g₀ hg₀`. Establish `h` using `hc.tendsto.sub_const (dsigW σ W (σ g₀ x))`. Rewrite `h` using `[sub_self]`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with g hg`.
+
+Establish `e` using `dsigW_comb hσ W hW 1 (sm_translate hσ hx hg) hsm0 (sm_zero σ)`. Rewrite `e` using `[dsigW_zero hσ W hW]`. Simplify using `using e.symm`. Establish `hT` using `cw_tendsto hl.2.2.2 (l := nhdsWithin g₀ (GG k r)) (u := fun g => σ g x - σ g₀ x) (by filter_upwards [self_mem_nhdsWithin] with g hg; exact sm_sub (sm_translate hσ hx hg) hsm0) hw`. Establish `h` using `hT.add_const (l (σ g₀ x))`.
+
+Rewrite `h` using `[zero_add]`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with g hg`. Establish `e` using `hl.1 _ (sm_sub (sm_translate hσ hx hg) hsm0) _ hsm0`. Rewrite `e` using `[sub_add_cancel]`.
+
+Conclude with `e.symm`. Introduce `t`. Use `⟨exp_mem hX t, ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous (fun u : ℝ => σ (NormedSpace.exp ((u : ℂ) • X)) (dsig σ X x))` using `continuous_iff_continuousAt.2 fun u => (orbit_hasDerivAt hσ hd hX u).continuousAt`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun u _ => orbit_hasDerivAt hσ hx hX u) (hcont.intervalIntegrable 0 t)]`.
+
+Simplify using `[hσ.1.1]`.
+-/
 theorem GlobalTheory.diffQuot_bessel : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (z : Fin (2 * r + k + 1) → ℂ) (ψ : Mat k r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (l : H → Wp) (x : H) (X : Mat k r), IsURepOn (GG k r) σ → IsBesselMapSm z ψ σ π l → IsSmoothVec σ x → InLieHpk k r X → Filter.Tendsto (fun t : ℝ => l ((t : ℂ)⁻¹ • (σ (NormedSpace.exp ((t : ℂ) • X)) x - x))) (nhdsWithin 0 {0}ᶜ) (nhds (l (dsig σ X x))) ∧ ContinuousOn (fun g => l (σ g x)) (GG k r) ∧ ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ GG k r ∧ σ (NormedSpace.exp ((t : ℂ) • X)) x - x = ∫ u in (0 : ℝ)..t, σ (NormedSpace.exp ((u : ℂ) • X)) (dsig σ X x) := by
   intro k r H _ _ _ Wp _ _ _ _ σ z ψ π l x X hσ hl hx hX
   have hd := sm_dsig hσ hx hX

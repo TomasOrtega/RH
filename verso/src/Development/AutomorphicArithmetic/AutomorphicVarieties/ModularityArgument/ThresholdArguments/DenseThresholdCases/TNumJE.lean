@@ -27,21 +27,40 @@ open UpperTheory.V.Z.Desc.V0
 section SlopeTestRemainingChoices
 open Formalism.MainNotions.N
 variable {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ}
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h g => by obtain ⟨g, rfl⟩ := hφ g; exact h g, fun h g => h (φ g)⟩`.
+-/
 private theorem inv_comp {φ : Γ' →* Γ} (hφ : Function.Surjective φ) (r : Γ →* GL (Fin n) k) (M : Submodule k (Fin n → k)) :
     IsInv (r.comp φ) M ↔ IsInv r M :=
   ⟨fun h g => by obtain ⟨g, rfl⟩ := hφ g; exact h g, fun h g => h (φ g)⟩
+/- English proof (translation)
+Introduce `M hM` and use `by obtain ⟨M', h1, h2⟩ := h M ((inv_comp hφ r M).1 hM) exact ⟨M', (inv_comp hφ r M').2 h1, h2⟩`.
+-/
 private theorem ss_comp {φ : Γ' →* Γ} (hφ : Function.Surjective φ) {r : Γ →* GL (Fin n) k} (h : IsSSRep r) :
     IsSSRep (r.comp φ) := fun M hM => by
   obtain ⟨M', h1, h2⟩ := h M ((inv_comp hφ r M).1 hM)
   exact ⟨M', (inv_comp hφ r M').2 h1, h2⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun _ _ _ => Submodule.mem_top, fun M hM hi => h.2.2 M hM fun g => hi (φ g)⟩`.
+-/
 private theorem irr_of_comp (φ : Γ' →* Γ) {r : Γ →* GL (Fin n) k} (h : Af.IsIrr (r.comp φ)) : Af.IsIrr r :=
   ⟨h.1, fun _ _ _ => Submodule.mem_top, fun M hM hi => h.2.2 M hM fun g => hi (φ g)⟩
+/- English proof (translation)
+Introduce `M hM` and use `by rcases h.2.2 M le_top hM with rfl | rfl · exact ⟨⊤, h.2.1, isCompl_bot_top⟩ · refine ⟨⊥, fun g v hv => ?_, isCompl_top_bot⟩ rw [(Submodule.mem_bot k).1 hv] simp`.
+-/
 private theorem ss_of_irr {r : Γ →* GL (Fin n) k} (h : Af.IsIrr r) : IsSSRep r := fun M hM => by
   rcases h.2.2 M le_top hM with rfl | rfl
   · exact ⟨⊤, h.2.1, isCompl_bot_top⟩
   · refine ⟨⊥, fun g v hv => ?_, isCompl_top_bot⟩
     rw [(Submodule.mem_bot k).1 hv]
     simp
+/- English proof (translation)
+Take `⟨P, hP⟩` from `e`. Use `⟨h.1, fun _ _ _ => Submodule.mem_top, fun M _ hM => ?_⟩` and prove the remaining obligations. Set `E : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `(Matrix.GeneralLinearGroup.toLin P).toLinearEquiv`. Establish `hE : ∀ v, E v = (P : Matrix (Fin n) (Fin n) k).mulVec v` using `fun v => rfl`. Establish `hi : IsInv r (M.comap (E : (Fin n → k) →ₗ[k] (Fin n → k)))` using `fun g v hv => by`.
+
+Use `hM g _ hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `(r' g : Matrix (Fin n) (Fin n) k).mulVec ((P : Matrix (Fin n) (Fin n) k).mulVec v) ∈ M at this`. Express the relevant statement in the definitionally equal form `(P : Matrix (Fin n) (Fin n) k).mulVec _ ∈ M`. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, hP, inv_mul_cancel_right, Units.val_mul, ← Matrix.mulVec_mulVec]`. Then use the resulting hypothesis. Establish `hm : M = (M.comap (E : (Fin n → k) →ₗ[k] (Fin n → k))).map (E : (Fin n → k) →ₗ[k] (Fin n → k))` using `(Submodule.map_comap_eq_of_surjective E.surjective M).symm`.
+
+Break down `h.2.2 _ le_top hi with h0 | h0` into its components or cases. Use `left`. Rewrite using `[hm, h0, Submodule.map_bot]`. Use `right`. Rewrite using `[hm, h0, Submodule.map_top, LinearEquiv.range]`.
+-/
 private theorem irr_iso {r r' : Γ →* GL (Fin n) k} (e : Af.RepIso r r') (h : Af.IsIrr r) : Af.IsIrr r' := by
   obtain ⟨P, hP⟩ := e
   refine ⟨h.1, fun _ _ _ => Submodule.mem_top, fun M _ hM => ?_⟩
@@ -57,6 +76,9 @@ private theorem irr_iso {r r' : Γ →* GL (Fin n) k} (e : Af.RepIso r r') (h : 
   rcases h.2.2 _ le_top hi with h0 | h0
   · left; rw [hm, h0, Submodule.map_bot]
   · right; rw [hm, h0, Submodule.map_top, LinearEquiv.range]
+/- English proof (translation)
+Take `⟨P, hP⟩` from `AlgebraTools.Det.bnRep (W.mat r) (W.mat r') h h' fun g => by`. Rewrite using `[← (AlgebraTools.Det.repApi (W.mat r)).2.1 g, ← (AlgebraTools.Det.repApi (W.mat r')).2.1 g, e]`. Use `⟨P, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_mul_inv_iff_mul_eq]`. Conclude with `Units.ext (hP g).symm`.
+-/
 private theorem iso_of_det {r r' : Γ →* GL (Fin n) k} (h : IsSSRep r) (h' : IsSSRep r')
     (e : W.GDet.ofRep (W.mat r) = W.GDet.ofRep (W.mat r')) : Af.RepIso r' r := by
   obtain ⟨P, hP⟩ := AlgebraTools.Det.bnRep (W.mat r) (W.mat r') h h' fun g => by
@@ -64,6 +86,9 @@ private theorem iso_of_det {r r' : Γ →* GL (Fin n) k} (h : IsSSRep r) (h' : I
   refine ⟨P, fun g => ?_⟩
   rw [eq_mul_inv_iff_mul_eq]
   exact Units.ext (hP g).symm
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb).comp (Ideal.quotientKerAlgEquivOfSurjective hf).symm.toAlgHom, fun b => by have : (Ideal.quotientKerAlgEquivOfSurjective hf).symm (f b) = Ideal.Quotient.mk _ b := by rw [AlgEquiv.symm_apply_eq]; rfl exact (congrArg (Idea …`.
+-/
 private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [CommRing K] [Algebra O A] [Algebra O T]
     [Algebra O K] (f : A →ₐ[O] T) (hf : Function.Surjective f) (x : A →ₐ[O] K) (hx : RingHom.ker f ≤ RingHom.ker x) :
     ∃ y : T →ₐ[O] K, ∀ b, y (f b) = x b :=
@@ -72,10 +97,22 @@ private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [
       have : (Ideal.quotientKerAlgEquivOfSurjective hf).symm (f b) = Ideal.Quotient.mk _ b := by
         rw [AlgEquiv.symm_apply_eq]; rfl
       exact (congrArg (Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb) this).trans rfl⟩
+/- English proof (translation)
+Take `rfl : x = y.comp f` from `RingHom.ext fun b => (h b).symm`. Both sides reduce to the same expression.
+-/
 private theorem map_comp {n : ℕ} {A T K Γ : Type} [CommRing A] [CommRing T] [CommRing K] [Group Γ] (D : W.GDet n A Γ)
     (f : A →+* T) (y : T →+* K) (x : A →+* K) (h : ∀ b, y (f b) = x b) : (D.map f).map y = D.map x := by
   obtain rfl : x = y.comp f := RingHom.ext fun b => (h b).symm
   rfl
+/- English proof (translation)
+Use `letI : Module B M := Module.compHom M φ`. Establish `h0 : ∀ (b : B) (m : M), b • m = φ b m` using `fun _ _ => rfl`. Establish `h1 : Module.annihilator B M = J`. Use extensionality with `b`. Rewrite using `[Module.mem_annihilator, hJ, LinearMap.ext_iff]`.
+
+Both sides reduce to the same expression. Use `⟨inferInstance, h0, fun a m => ?_, inferInstance, inferInstance, hr, fun p _ => by rw [h1], fun c hc a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[h0, hj]`. Both sides reduce to the same expression. Rewrite `ha`, the goal using `[hJ]`.
+
+Rewrite `ha` using `[map_mul, hj]`. Use extensionality with `m`. Establish `h2 : c • φ a m = 0` using `LinearMap.congr_fun ha m`. Use `(Module.Free.chooseBasis A M).repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Establish `h3` using `congrArg (fun v => (Module.Free.chooseBasis A M).repr v i) h2`.
+
+Simplify using `only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, Finsupp.zero_apply] at h3`. Rewrite using `[(mul_eq_zero.1 h3).resolve_left hc, LinearMap.zero_apply, map_zero, Finsupp.zero_apply]`.
+-/
 private theorem datEnd {O A B M : Type} [CommRing O] [CommRing A] [IsDomain A] [CommRing B] [Algebra O A] [Algebra O B]
     [AddCommGroup M] [Module A M] [Module.Free A M] [Module.Finite A M] (j : A →ₐ[O] B) (φ : B →+* Module.End A M)
     (hj : ∀ a, φ (j a) = algebraMap A _ a) (J : Ideal B) (hJ : ∀ b, b ∈ J ↔ φ b = 0) (hr : J.IsRadical) :
@@ -97,6 +134,9 @@ private theorem datEnd {O A B M : Type} [CommRing O] [CommRing A] [IsDomain A] [
     have h3 := congrArg (fun v => (Module.Free.chooseBasis A M).repr v i) h2
     simp only [map_smul, map_zero, Finsupp.smul_apply, smul_eq_mul, Finsupp.zero_apply] at h3
     rw [(mul_eq_zero.1 h3).resolve_left hc, LinearMap.zero_apply, map_zero, Finsupp.zero_apply]
+/- English proof (translation)
+The claim follows from `datEnd j ((heckeAlg Y op).val.toRingHom.comp f) (fun a => congrArg Subtype.val (hj a)) _ (fun _ => RingHom.mem_ker.trans Subtype.ext_iff) hr`.
+-/
 private theorem datHecke {O A B N κ : Type} [CommRing O] [CommRing A] [IsDomain A] [CommRing B] [Algebra O A] [Algebra O B]
     [AddCommGroup N] [Module A N] (Y : Submodule A N) (op : κ → Module.End A N) [Fact (CommOn Y op)] [Module.Free A Y]
     [Module.Finite A Y] (j : A →ₐ[O] B) (f : B →+* heckeAlg Y op) (hj : ∀ a, f (j a) = algebraMap A _ a)
@@ -104,11 +144,17 @@ private theorem datHecke {O A B N κ : Type} [CommRing O] [CommRing A] [IsDomain
     ∃ _ : Module B Y, (∀ (b : B) (m : Y), b • m = (f b).1 m) ∧ UpperTheory.V.J.Dat j (RingHom.ker f) Y :=
   datEnd j ((heckeAlg Y op).val.toRingHom.comp f) (fun a => congrArg Subtype.val (hj a)) _
     (fun _ => RingHom.mem_ker.trans Subtype.ext_iff) hr
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, Module.Free.of_subsingleton A PUnit, ⟨⟨∅, Subsingleton.elim _ _⟩⟩, le_top, fun p _ => by rw [Module.annihilator_eq_top_iff.2 ⟨fun _ _ => rfl⟩], fun _ _ _ _ => Submodule.mem_top⟩`.
+-/
 private theorem datTop {O A B : Type} [CommRing O] [CommRing A] [CommRing B] [Algebra O A] [Algebra O B] (j : A →ₐ[O] B) :
     UpperTheory.V.J.Dat j ⊤ PUnit :=
   ⟨fun _ _ => rfl, Module.Free.of_subsingleton A PUnit, ⟨⟨∅, Subsingleton.elim _ _⟩⟩, le_top, fun p _ => by
     rw [Module.annihilator_eq_top_iff.2 ⟨fun _ _ => rfl⟩], fun _ _ _ _ => Submodule.mem_top⟩
 end SlopeTestRemainingChoices
+/- English proof (translation)
+Establish `h0 : IsUnit (N : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Conclude with `(PadicInt.norm_natCast_eq_one_iff).2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 h)`. Establish `h1` using `(h0.map (algebraMap ℤ_[l] c.O)).map (algebraMap c.O A)`. Simplify using `using h1`.
+-/
 private theorem unitN {l : ℕ} [Fact l.Prime] {c : Coef l} {A : Type} [CommRing A] [Algebra c.O A] {N : ℕ} (h : ¬ l ∣ N) :
     IsUnit (N : A) := by
   have h0 : IsUnit (N : ℤ_[l]) := by
@@ -117,6 +163,13 @@ private theorem unitN {l : ℕ} [Fact l.Prime] {c : Coef l} {A : Type} [CommRing
   have h1 := (h0.map (algebraMap ℤ_[l] c.O)).map (algebraMap c.O A)
   simpa using h1
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨-, hfi, hfr⟩` from `(hiComm L Ω l n c H hA A θ hθ K).2.2.2 a₀`. Take `⟨y, hy⟩` from `factor f hf x hx`. Establish `e1 : y.toRingHom.comp (algebraMap A _) = (x.comp j).toRingHom` using `RingHom.ext fun b => (congrArg y (hj b)).symm.trans (hy _)`. Take `⟨ρ, hc, hss, -, hD, -⟩` from `out.pt lam hl y (e1 ▸ har)`. Establish `hi` using `hρ ρ hc hss ((map_comp D₀ f.toRingHom y.toRingHom x hy).symm.trans hD)`.
+
+Take `⟨d, ξ, c0, sp, hsp, htr⟩` from `hSp L Ω l n c H hA A θ hθ ι (x.comp j) lam har`. Take `⟨hne, -⟩` from `hMu L Ω l n c H hA A θ hθ ι (x.comp j) lam d ξ c0 sp hsp K a₀ R j f hf hs hact y e1`. Establish `hmu` using `hME L Ω l n c H hA A θ hθ ι (x.comp j) lam d ξ c0 sp hsp htr K a₀ R j f hf hs hact y e1 G K₀ K₁ β a N hNK hE hu e hep`. Establish `e2 : y.comp f = x` using `AlgHom.ext hy`. Rewrite `hmu` using `[e2]`.
+
+Use `⟨x.comp j, d, ξ, c0, sp, _, hsp, fun v i => ?_, hne, fun Y hY => ?_, hmu⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `hU L Ω l n c H hA A θ hθ ι K a₀ I _ ψ out.univ y v i`. Take `⟨g, hg⟩` from `hP L Ω l n c H hA A θ hθ ι (x.comp j) lam d ξ c0 sp hsp K a₀ y e1 I _ ψ out.univ ρ hc hi hD Y hY`. Conclude with `irr_iso ⟨g, hg⟩ hi`.
+-/
 private theorem absDimE (hMu : MuZ) (hME : MuZE) (hSp : Spec2) (hU : UnitEv) (hP : _root_.UpperTheory.V.Z.J.D.PartRepAlt) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (hA : H.Ax) {A : Type} [CommRing A]
     [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ) (hθ : H.IsWt θ) (ι : Qbar l ≃+* ℂ)
@@ -150,6 +203,13 @@ private theorem absDimE (hMu : MuZ) (hME : MuZE) (hSp : Spec2) (hU : UnitEv) (hP
   · obtain ⟨g, hg⟩ := hP L Ω l n c H hA A θ hθ ι (x.comp j) lam d ξ c0 sp hsp K a₀ y e1 I _ ψ out.univ ρ hc hi hD Y hY
     exact irr_iso ⟨g, hg⟩ hi
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hpr : Function.Surjective V.pr` using `fun g => by`. Take `⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1` from `QuotientGroup.mk_surjective g.1`. Take `⟨σ, rfl⟩` from `(V.hη τ).1 (by rw [hτ]; exact g.2)`. Conclude with `⟨σ, Subtype.ext hτ⟩`. Take `⟨ρ, -, hρ, hi⟩` from `hx`.
+
+Establish `hr : x.IsRep (ρ₀.comp V.pr)` using `by replace hD : x.D = W.GDet.ofRep (W.mat ρ₀) := hD`. Express the relevant statement in the definitionally equal form `x.D.comap V.pr = _`. Rewrite using `[hD]`. Conclude with `(AlgebraTools.Det.repApi (W.mat ρ₀)).2.2.2.2.2.2.1 V.pr`. Establish `e : Af.RepIso (ρ₀.comp V.pr) ρ` using `iso_of_det (ss_of_irr hi) (ss_comp hpr hs) (hρ.symm.trans hr)`.
+
+Conclude with `irr_of_comp V.pr (irr_iso e.symm' hi)`.
+-/
 private theorem irrOf {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} {V : s.Lev} {c : Coef l}
     {r : Resid V.frame c.O n} {B : UniversalOrdinaryDeterminantRing r} (x : B.Pt) (hx : UpperTheory.V.J.IrrPt x)
@@ -168,6 +228,15 @@ private theorem irrOf {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberFi
   have e : Af.RepIso (ρ₀.comp V.pr) ρ := iso_of_det (ss_of_irr hi) (ss_comp hpr hs) (hρ.symm.trans hr)
   exact irr_of_comp V.pr (irr_iso e.symm' hi)
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hMu hME hEx hSp hNS hZ hU hP H hM hC l _ L Ω _ _ _ _ _ _ s n hn V hV h4 Q c r ι B Λ R K J hdom hJ hrad`. Break down `hJ with ⟨_, rfl⟩ | ⟨i1, i2, f, -, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `⟨PUnit, inferInstance, inferInstance, inferInstance, datTop _, 0, ⟨by simp, fun _ _ => by simp⟩, fun x _ _ hx => absurd (hx (Submodule.mem_top (x := 1))) (by simp)⟩`. Establish `hA` using `_root_.UpperTheory.V.Hi.axU_s H.litN l L Ω s n hn V Q c R.m R.τ₀`. Take `⟨-, hfi, hfr⟩` from `(hiComm L Ω l n c (hset Q R.τ₀) hA Λ.Λ R.θ R.isWt K).2.2.2 R.a`.
+
+Take `⟨i3, hact, hdat⟩` from `datHecke ((hset Q R.τ₀).MK R.θ R.a K) ((hset Q R.τ₀).op Λ.Λ) (Λ.toPair B.u) f.toRingHom hlam hrad`. Take `⟨a, N, hE, hlN, hz⟩` from `hZ H hM hC l L Ω s n hn V hV h4`. Establish `hNK` using `hNS l L Ω s n hn V hV Q c R.m R.τ₀`. Establish `hu : IsUnit (N : Λ.Λ)` using `unitN (c := c) hlN`. Take `⟨e, hep, hee, hec⟩` from `hEx L Ω l n c (hset Q R.τ₀) hA Λ.Λ R.θ R.isWt K R.a _ _ _ (sec0 n s) a N hNK hE hu`.
+
+Use `⟨_, inferInstance, i3, inferInstance, hdat, e, ⟨hee, fun b m => ?_⟩, fun x y w hx hy ha hg ix iy => ?_⟩` and prove the remaining obligations. Rewrite using `[hact, hact]`. Conclude with `LinearMap.congr_fun (hec (f b)) m`. Take `⟨⟨lam, hl⟩, hb⟩` from `_root_.UpperTheory.V.Hi.arith_good_iff_hset_of_theta_incr_weight H.litN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta w ha.1`. Establish `out` using `_root_.UpperTheory.V.Z.Ord.core_hecke_of_automorphic_hecke_dense_weight H.litN L Ω l n c (hset Q R.τ₀) hA Λ.Λ R.θ R.isWt ι (_root_.UpperTheory.V.Hi.CaseU.UnitaryPointProperties r ι) (_root_.UpperTheory.V.Hi.automorphicHeckeSet_unitaryPointProperties_of_typeFor H l L Ω s n hn V Q …`.
+
+Establish `h` using `hz Q c r ι R.m R.τ₀ R.type Λ.Λ R.θ R.isWt lam K _ _ (absDimE hMu hME hSp hU hP (hset Q R.τ₀) hA R.θ R.isWt ι R.a K B.u.D (Λ.toPair B.u) f hsurj hlam out hdat.hs hact (sec0 n s) a N hNK hE hu e hep x hx lam (Set.mem_univ _) ((hb lam hl x).1.1 ha) fun ρ _ hs hD => irrOf x ix ρ hs h …`. Conclude with `⟨h.1, h.2.le⟩`.
+-/
 theorem UpperTheory.V.Z.Desc.V0.numJE_alt :
     UpperTheory.V.Z.J.D.MuZ → MuZE → EEx → Spec2 → NormS → _root_.UpperTheory.V.Z.Desc.V0.ZEqDimEAlt → UpperTheory.V.Z.J.D.UnitEv → _root_.UpperTheory.V.Z.J.D.PartRepAlt → _root_.UpperTheory.V.Z.Desc.V0.NumJEAlt := by
   intro hMu hME hEx hSp hNS hZ hU hP H hM hC l _ L Ω _ _ _ _ _ _ s n hn V hV h4 Q c r ι B Λ R K J hdom hJ hrad

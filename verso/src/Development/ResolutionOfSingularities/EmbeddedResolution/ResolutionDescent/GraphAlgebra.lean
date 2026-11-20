@@ -26,10 +26,16 @@ instance instAlgebraBaseGraphAlgebra (f : τ → MvPolynomial σ R) :
     Algebra (MvPolynomial τ R) (GraphAlgebra f) :=
   (aevalGraphAlgebra f).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_graphAlgebra (f : τ → MvPolynomial σ R) (p : MvPolynomial τ R) :
     algebraMap (MvPolynomial τ R) (GraphAlgebra f) p = graphAlgebraEquiv f (MvPolynomial.aeval f p) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[algebraMap_graphAlgebra, AlgHom.commutes, AlgEquiv.commutes]`.
+-/
 private theorem algebraMap_graphAlgebra_eq_algebraMap_mvPolynomial (f : τ → MvPolynomial σ R) (r : R) :
     algebraMap R (GraphAlgebra f) r
       = algebraMap (MvPolynomial τ R) (GraphAlgebra f) (algebraMap R (MvPolynomial τ R) r) := by
@@ -50,10 +56,16 @@ def graphAlgebraAeval (f : τ → MvPolynomial σ R) :
     MvPolynomial σ (MvPolynomial τ R) →ₐ[MvPolynomial τ R] GraphAlgebra f :=
   MvPolynomial.aeval (fun i : σ => graphAlgebraEquiv f (MvPolynomial.X i))
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.aeval_X _ i`.
+-/
 theorem graphAlgebraAeval_X (f : τ → MvPolynomial σ R) (i : σ) :
     graphAlgebraAeval f (MvPolynomial.X i) = graphAlgebraEquiv f (MvPolynomial.X i) :=
   MvPolynomial.aeval_X _ i
 
+/- English proof (translation)
+Establish `h : graphAlgebraAeval f (MvPolynomial.C a) = algebraMap (MvPolynomial τ R) (GraphAlgebra f) a`. Simplify using `[graphAlgebraAeval]`. Rewrite using `[h, algebraMap_graphAlgebra]`.
+-/
 private theorem graphAlgebraAeval_C (f : τ → MvPolynomial σ R) (a : MvPolynomial τ R) :
     graphAlgebraAeval f (MvPolynomial.C a) = graphAlgebraEquiv f (MvPolynomial.aeval f a) := by
   have h : graphAlgebraAeval f (MvPolynomial.C a)
@@ -61,6 +73,9 @@ private theorem graphAlgebraAeval_C (f : τ → MvPolynomial σ R) (a : MvPolyno
     simp [graphAlgebraAeval]
   rw [h, algebraMap_graphAlgebra]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`. Simplify using `only [MvPolynomial.map_C, graphAlgebraAeval_C, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, MvPolynomial.map_X, hp, graphAlgebraAeval_X]`.
+-/
 private theorem graphAlgebraAeval_map_C (f : τ → MvPolynomial σ R) (p : MvPolynomial σ R) :
     graphAlgebraAeval f (MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) p)
       = graphAlgebraEquiv f p := by
@@ -71,10 +86,16 @@ private theorem graphAlgebraAeval_map_C (f : τ → MvPolynomial σ R) (p : MvPo
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p i hp => simp only [map_mul, MvPolynomial.map_X, hp, graphAlgebraAeval_X]
 
+/- English proof (translation)
+Simplify using `only [graphRelation, map_sub, graphAlgebraAeval_C, graphAlgebraAeval_map_C, MvPolynomial.aeval_X, sub_self]`.
+-/
 theorem graphAlgebraAeval_graphRelation (f : τ → MvPolynomial σ R) (i : τ) :
     graphAlgebraAeval f (graphRelation f i) = 0 := by
   simp only [graphRelation, map_sub, graphAlgebraAeval_C, graphAlgebraAeval_map_C, MvPolynomial.aeval_X, sub_self]
 
+/- English proof (translation)
+Rewrite using `[graphAlgebraAeval_map_C, AlgEquiv.apply_symm_apply]`.
+-/
 private theorem graphAlgebraAeval_map_C_graphAlgebraEquiv_symm (f : τ → MvPolynomial σ R) (x : GraphAlgebra f) :
     graphAlgebraAeval f (MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
       ((graphAlgebraEquiv f).symm x)) = x := by
@@ -86,14 +107,23 @@ private def graphSubstitutionHom (f : τ → MvPolynomial σ R) :
     ((MvPolynomial.aeval f : MvPolynomial τ R →ₐ[R] MvPolynomial σ R).toRingHom)
     MvPolynomial.X
 
+/- English proof (translation)
+Simplify using `[graphSubstitutionHom]`.
+-/
 private theorem graphSubstitutionHom_C (f : τ → MvPolynomial σ R) (a : MvPolynomial τ R) :
     graphSubstitutionHom f (MvPolynomial.C a) = MvPolynomial.aeval f a := by
   simp [graphSubstitutionHom]
 
+/- English proof (translation)
+Simplify using `[graphSubstitutionHom]`.
+-/
 private theorem graphSubstitutionHom_X (f : τ → MvPolynomial σ R) (i : σ) :
     graphSubstitutionHom f (MvPolynomial.X i) = MvPolynomial.X i := by
   simp [graphSubstitutionHom]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => rw [graphAlgebraAeval_C, graphSubstitutionHom_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X q i hq => simp only [map_mul, hq, graphAlgebraAeval_X, graphSubstitutionHom_X]`.
+-/
 private theorem graphAlgebraAeval_eq_graphAlgebraEquiv_graphSubstitutionHom (f : τ → MvPolynomial σ R)
     (p : MvPolynomial σ (MvPolynomial τ R)) :
     graphAlgebraAeval f p = graphAlgebraEquiv f (graphSubstitutionHom f p) := by
@@ -102,6 +132,15 @@ private theorem graphAlgebraAeval_eq_graphAlgebraEquiv_graphSubstitutionHom (f :
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X q i hq => simp only [map_mul, hq, graphAlgebraAeval_X, graphSubstitutionHom_X]
 
+/- English proof (translation)
+Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `key : (MvPolynomial.C (MvPolynomial.C r : MvPolynomial τ R) : MvPolynomial σ (MvPolynomial τ R)) - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (MvPolynomial.aeval f (MvPolynomial.C r : MvPolynomial τ R)) = 0`. Simplify using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[key]`.
+
+Conclude with `Ideal.zero_mem _`. Consider the case `add p q hp hq`. Establish `key : (MvPolynomial.C (p + q) : MvPolynomial σ (MvPolynomial τ R)) - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (MvPolynomial.aeval f (p + q)) = (MvPolynomial.C p - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (MvPolynomial.aeval f p)) + (MvPolynomia …`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Conclude with `Ideal.add_mem _ hp hq`. Consider the case `mul_X p j hp`. Establish `hrel : graphRelation f j ∈ graphRelationIdeal f` using `Ideal.subset_span ⟨j, rfl⟩`. Establish `key : (MvPolynomial.C (p * MvPolynomial.X j) : MvPolynomial σ (MvPolynomial τ R)) - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (MvPolynomial.aeval f (p * MvPolynomial.X j)) = MvPolynomial.C p * graphRelation f j + (MvPolynomial.C p - MvPolynomial.map (MvPolynomial …`.
+
+Simplify using `only [graphRelation, map_mul, MvPolynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hrel) (Ideal.mul_mem_right _ _ hp)`.
+-/
 private theorem C_sub_map_C_aeval_mem_graphRelationIdeal (f : τ → MvPolynomial σ R) (a : MvPolynomial τ R) :
     MvPolynomial.C a - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)
       (MvPolynomial.aeval f a) ∈ graphRelationIdeal f := by
@@ -140,6 +179,15 @@ private theorem C_sub_map_C_aeval_mem_graphRelationIdeal (f : τ → MvPolynomia
       rw [key]
       exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ hrel) (Ideal.mul_mem_right _ _ hp)
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[graphSubstitutionHom_C]`. Conclude with `C_sub_map_C_aeval_mem_graphRelationIdeal f a`. Consider the case `add p q hp hq`.
+
+Establish `key : p + q - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitutionHom f (p + q)) = (p - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitutionHom f p)) + (q - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitu …`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Ideal.add_mem _ hp hq`.
+
+Consider the case `mul_X q i hq`. Establish `key : q * MvPolynomial.X i - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitutionHom f (q * MvPolynomial.X i)) = (q - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitutionHom f q)) * MvPolynomial.X i`. Simplify using `only [map_mul, graphSubstitutionHom_X, MvPolynomial.map_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hq`.
+-/
 private theorem sub_map_C_mem_graphRelationIdeal (f : τ → MvPolynomial σ R)
     (p : MvPolynomial σ (MvPolynomial τ R)) :
     p - MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphSubstitutionHom f p)
@@ -176,10 +224,20 @@ def graphAlgebraGenerators (f : τ → MvPolynomial σ R) :
     MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) ((graphAlgebraEquiv f).symm x)
   aeval_val_σ' := graphAlgebraAeval_map_C_graphAlgebraEquiv_symm f
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_ker_graphAlgebraGenerators_iff (f : τ → MvPolynomial σ R)
     (p : MvPolynomial σ (MvPolynomial τ R)) :
     p ∈ (graphAlgebraGenerators f).ker ↔ graphAlgebraAeval f p = 0 := Iff.rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x ⟨i, rfl⟩`. Simplify using `only [SetLike.mem_coe]`. Conclude with `(mem_ker_graphAlgebraGenerators_iff f _).2 (graphAlgebraAeval_graphRelation f i)`.
+
+Introduce `p hp`. Establish `hp' : graphAlgebraAeval f p = 0` using `(mem_ker_graphAlgebraGenerators_iff f p).1 hp`. Establish `h0 : graphSubstitutionHom f p = 0`. Establish `h1` using `graphAlgebraAeval_eq_graphAlgebraEquiv_graphSubstitutionHom f p`. Rewrite `h1` using `[hp']`.
+
+Establish `h2 : graphAlgebraEquiv f (graphSubstitutionHom f p) = graphAlgebraEquiv f 0`. Rewrite using `[← h1, map_zero]`. Conclude with `(graphAlgebraEquiv f).injective h2`. Establish `hmem` using `sub_map_C_mem_graphRelationIdeal f p`. Rewrite `hmem` using `[h0, map_zero, sub_zero]`. Then use the resulting hypothesis.
+-/
 private theorem span_range_graphRelation_eq_ker (f : τ → MvPolynomial σ R) :
     Ideal.span (Set.range (graphRelation f)) = (graphAlgebraGenerators f).ker := by
   apply le_antisymm
@@ -211,11 +269,17 @@ def graphPreSubmersivePresentation (f : τ → MvPolynomial σ R) (v : τ → σ
   map := v
   map_inj := hv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphPreSubmersivePresentation_relation (f : τ → MvPolynomial σ R) (v : τ → σ)
     (hv : Function.Injective v) :
     (graphPreSubmersivePresentation f v hv).relation = graphRelation f :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphPreSubmersivePresentation_map (f : τ → MvPolynomial σ R) (v : τ → σ)
     (hv : Function.Injective v) :
     (graphPreSubmersivePresentation f v hv).map = v :=
@@ -224,10 +288,16 @@ def graphPreSubmersivePresentation (f : τ → MvPolynomial σ R) (v : τ → σ
 def graphJacobianMinorMatrix (f : τ → MvPolynomial σ R) (v : τ → σ) : Matrix τ τ (MvPolynomial σ R) :=
   Matrix.of fun i j => MvPolynomial.pderiv (v i) (f j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem graphJacobianMinorMatrix_apply (f : τ → MvPolynomial σ R) (v : τ → σ) (i j : τ) :
     graphJacobianMinorMatrix f v i j = MvPolynomial.pderiv (v i) (f j) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobiMatrix_apply]`. Simplify using `only [graphPreSubmersivePresentation_relation, graphPreSubmersivePresentation_map, graphRelation, map_sub, MvPolynomial.pderiv_C, MvPolynomial.pderiv_map, zero_sub, Matrix.neg_apply, Matrix.map_apply, graphJacobianMinorMatrix_apply]`.
+-/
 theorem graphPreSubmersivePresentation_jacobiMatrix [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
     (graphPreSubmersivePresentation f v hv).jacobiMatrix
@@ -239,6 +309,9 @@ theorem graphPreSubmersivePresentation_jacobiMatrix [Fintype τ] [DecidableEq τ
     graphRelation, map_sub, MvPolynomial.pderiv_C, MvPolynomial.pderiv_map, zero_sub,
     Matrix.neg_apply, Matrix.map_apply, graphJacobianMinorMatrix_apply]
 
+/- English proof (translation)
+Establish `hmap : ((graphJacobianMinorMatrix f v).map (fun p => MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) p)).det = MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R) (graphJacobianMinorMatrix f v).det` using `(RingHom.map_det (MvPolynomial.map (MvPolynomial.C : R →+* MvPolynomial τ R)) (graphJacobianMinorMatrix f v)).symm`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, graphPreSubmersivePresentation_jacobiMatrix, Matrix.det_neg, hmap, map_mul, map_pow, map_neg, map_one]`. Use `congr 1`. Conclude with `graphAlgebraAeval_map_C f _`.
+-/
 theorem graphPreSubmersivePresentation_jacobian [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
     (graphPreSubmersivePresentation f v hv).jacobian

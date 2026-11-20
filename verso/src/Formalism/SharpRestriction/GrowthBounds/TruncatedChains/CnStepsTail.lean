@@ -8,6 +8,11 @@ section Pos
 
 variable {α : Type*} [BEq α] [LawfulBEq α]
 
+/- English proof (translation)
+Introduce `hx1`. Use `first`. Consider the case `exact List.disjoint_of_nodup_append h hx1 hx`. Consider the case `exact (List.nodup_append.1 h).2.2 hx1 hx`. Consider the case `exact (List.nodup_append.1 h).2.2 x hx1 x hx rfl`.
+
+Consider the case `simp_all [List.nodup_append]`.
+-/
 theorem cn_notMem {l1 l2 : List α} (h : (l1 ++ l2).Nodup) {x : α} (hx : x ∈ l2) : x ∉ l1 := by
   intro hx1
   first
@@ -16,18 +21,29 @@ theorem cn_notMem {l1 l2 : List α} (h : (l1 ++ l2).Nodup) {x : α} (hx : x ∈ 
   | exact (List.nodup_append.1 h).2.2 x hx1 x hx rfl
   | simp_all [List.nodup_append]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [List.idxOf_cons]`. Consider the case `exact List.idxOf_cons_self l`. Consider the case `simp [List.idxOf, List.findIdx_cons]`.
+-/
 private theorem idxOf_cons_self_eq_zero (a : α) (l : List α) : (a :: l).idxOf a = 0 := by
   first
   | simp [List.idxOf_cons]
   | exact List.idxOf_cons_self l
   | simp [List.idxOf, List.findIdx_cons]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [List.idxOf_cons, h]`. Consider the case `exact List.idxOf_cons_ne l h`. Consider the case `simp [List.idxOf, List.findIdx_cons, h]`.
+-/
 private theorem idxOf_cons_of_ne (a u : α) (h : a ≠ u) (l : List α) : (a :: l).idxOf u = l.idxOf u + 1 := by
   first
   | simp [List.idxOf_cons, h]
   | exact List.idxOf_cons_ne l h
   | simp [List.idxOf, List.findIdx_cons, h]
 
+/- English proof (translation)
+Proceed by induction on `l1 with`. Consider the case `nil => simp`. Consider the case `cons a t ih`. Establish `hau : a ≠ u`. Introduce and unpack `rfl`.
+
+Simplify using `at hu`. Establish `ht : u ∉ t` using `fun h' => hu (List.mem_cons_of_mem _ h')`. Rewrite using `[List.cons_append, idxOf_cons_of_ne a u hau, ih ht, List.length_cons]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem idxOf_append_of_not_mem_left (l1 : List α) (u : α) (hu : u ∉ l1) (l : List α) :
     (l1 ++ l).idxOf u = l1.length + l.idxOf u := by
   induction l1 with
@@ -40,6 +56,11 @@ private theorem idxOf_append_of_not_mem_left (l1 : List α) (u : α) (hu : u ∉
     rw [List.cons_append, idxOf_cons_of_ne a u hau, ih ht, List.length_cons]
     omega
 
+/- English proof (translation)
+Proceed by induction on `l1 with`. Consider the case `nil => simp at hu`. Consider the case `cons a t ih`. Distinguish the cases in `hau : a = u`. Rewrite using `[hau, List.cons_append, idxOf_cons_self_eq_zero, idxOf_cons_self_eq_zero]`.
+
+Simplify using the standard rewrite rules. Establish `ht : u ∈ t` using `by simpa [Ne.symm hau] using hu`. Take `⟨h1, h2⟩` from `ih ht`. Rewrite using `[List.cons_append, idxOf_cons_of_ne a u hau, idxOf_cons_of_ne a u hau, h1, List.length_cons]`. Conclude with `⟨rfl, by omega⟩`.
+-/
 private theorem idxOf_append_of_mem_left_and_lt_length (l1 : List α) (u : α) (hu : u ∈ l1) (l : List α) :
     (l1 ++ l).idxOf u = l1.idxOf u ∧ l1.idxOf u < l1.length := by
   induction l1 with
@@ -53,6 +74,13 @@ private theorem idxOf_append_of_mem_left_and_lt_length (l1 : List α) (u : α) (
       rw [List.cons_append, idxOf_cons_of_ne a u hau, idxOf_cons_of_ne a u hau, h1, List.length_cons]
       exact ⟨rfl, by omega⟩
 
+/- English proof (translation)
+Distinguish the cases in `hux : u = x`. Apply the tactic sequence `refine Or.inl ⟨hux, ?_, ?_⟩ <;> rw [hux] <;>`. Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 x hx, idxOf_cons_self_eq_zero, idxOf_cons_of_ne y x (Ne.symm hxy)] <;> omega`. Distinguish the cases in `huy : u = y`. Apply the tactic sequence `refine Or.inr (Or.inl ⟨huy, ?_, ?_⟩) <;> rw [huy] <;>`.
+
+Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 y hy, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x y hxy] <;> omega`. Use `Or.inr (Or.inr ⟨hux, huy, ?_⟩)` and prove the remaining obligations. Distinguish the cases in `hu1 : u ∈ l1`. Take `⟨e1, e2⟩` from `idxOf_append_of_mem_left_and_lt_length l1 u hu1 (x :: y :: l2)`. Take `⟨e3, _⟩` from `idxOf_append_of_mem_left_and_lt_length l1 u hu1 (y :: x :: l2)`.
+
+Conclude with `⟨by rw [e1, e3], Or.inl (by rw [e1]; exact e2)⟩`. Apply the tactic sequence `refine ⟨?_, Or.inr ?_⟩ <;>`. Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 u hu1, idxOf_cons_of_ne x u (Ne.symm hux), idxOf_cons_of_ne y u (Ne.symm huy)] <;> omega`.
+-/
 theorem cn_pos_swap (l1 l2 : List α) (x y : α) (hxy : x ≠ y) (hx : x ∉ l1) (hy : y ∉ l1) (u : α) :
     (u = x ∧ (l1 ++ x :: y :: l2).idxOf u = l1.length ∧ (l1 ++ y :: x :: l2).idxOf u = l1.length + 1) ∨
     (u = y ∧ (l1 ++ x :: y :: l2).idxOf u = l1.length + 1 ∧ (l1 ++ y :: x :: l2).idxOf u = l1.length) ∨
@@ -72,6 +100,15 @@ theorem cn_pos_swap (l1 l2 : List α) (x y : α) (hxy : x ≠ y) (hx : x ∉ l1)
       · refine ⟨?_, Or.inr ?_⟩ <;>
           simp only [idxOf_append_of_not_mem_left l1 u hu1, idxOf_cons_of_ne x u (Ne.symm hux), idxOf_cons_of_ne y u (Ne.symm huy)] <;> omega
 
+/- English proof (translation)
+Distinguish the cases in `hux : u = x`. Apply the tactic sequence `refine Or.inl ⟨hux, ?_, ?_⟩ <;> rw [hux] <;>`. Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 x hx, idxOf_cons_self_eq_zero, idxOf_cons_of_ne y x (Ne.symm hxy), idxOf_cons_of_ne z x (Ne.symm hxz)] <;> omega`. Distinguish the cases in `huy : u = y`. Apply the tactic sequence `refine Or.inr (Or.inl ⟨huy, ?_, ?_⟩) <;> rw [huy] <;>`.
+
+Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 y hy, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x y hxy, idxOf_cons_of_ne z y (Ne.symm hyz)] <;> omega`. Distinguish the cases in `huz : u = z`. Apply the tactic sequence `refine Or.inr (Or.inr (Or.inl ⟨huz, ?_, ?_⟩)) <;> rw [huz] <;>`. Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 z hz, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x z hxz, idxOf_cons_of_ne y z hyz] <;> omega`. Use `Or.inr (Or.inr (Or.inr ⟨hux, huy, huz, ?_⟩))` and prove the remaining obligations.
+
+Distinguish the cases in `hu1 : u ∈ l1`. Take `⟨e1, e2⟩` from `idxOf_append_of_mem_left_and_lt_length l1 u hu1 (x :: y :: z :: l2)`. Take `⟨e3, _⟩` from `idxOf_append_of_mem_left_and_lt_length l1 u hu1 (z :: y :: x :: l2)`. Conclude with `⟨by rw [e1, e3], Or.inl (by rw [e1]; exact e2)⟩`. Apply the tactic sequence `refine ⟨?_, Or.inr ?_⟩ <;>`.
+
+Apply the tactic sequence `simp only [idxOf_append_of_not_mem_left l1 u hu1, idxOf_cons_of_ne x u (Ne.symm hux), idxOf_cons_of_ne y u (Ne.symm huy), idxOf_cons_of_ne z u (Ne.symm huz)] <;> omega`.
+-/
 theorem cn_pos_braid (l1 l2 : List α) (x y z : α) (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
     (hx : x ∉ l1) (hy : y ∉ l1) (hz : z ∉ l1) (u : α) :
     (u = x ∧ (l1 ++ x :: y :: z :: l2).idxOf u = l1.length ∧ (l1 ++ z :: y :: x :: l2).idxOf u = l1.length + 2) ∨
@@ -98,6 +135,15 @@ theorem cn_pos_braid (l1 l2 : List α) (x y z : α) (hxy : x ≠ y) (hxz : x ≠
             simp only [idxOf_append_of_not_mem_left l1 u hu1, idxOf_cons_of_ne x u (Ne.symm hux), idxOf_cons_of_ne y u (Ne.symm huy),
               idxOf_cons_of_ne z u (Ne.symm huz)] <;> omega
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp at hx`. Consider the case `cons a t ih`. Rewrite `hnd` using `[List.nodup_cons]`. Take `⟨hat, hnd'⟩` from `hnd`.
+
+Rewrite using `[List.reverse_cons, List.length_cons]`. Distinguish the cases in `hax : a = x`. Establish `hat' : x ∉ t` using `hax ▸ hat`. Establish `hr : x ∉ t.reverse` using `by simpa using hat'`. Rewrite using `[hax]`.
+
+Simplify using `only [idxOf_append_of_not_mem_left t.reverse x hr, idxOf_cons_self_eq_zero, List.length_reverse]`. Apply the tactic sequence `all_goals omega`. Establish `hxt : x ∈ t` using `by simpa [Ne.symm hax] using hx`. Establish `hxr : x ∈ t.reverse` using `by simpa using hxt`. Take `⟨e1, _⟩` from `idxOf_append_of_mem_left_and_lt_length t.reverse x hxr [a]`.
+
+Rewrite using `[e1, idxOf_cons_of_ne a x hax]`. Use `ih hnd' hxt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cn_idx_rev {l : List α} (hnd : l.Nodup) {x : α} (hx : x ∈ l) :
     l.reverse.idxOf x + l.idxOf x + 1 = l.length := by
   induction l with
@@ -119,6 +165,15 @@ theorem cn_idx_rev {l : List α} (hnd : l.Nodup) {x : α} (hx : x ∈ l) :
       have := ih hnd' hxt
       omega
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact Or.inl ⟨[], [], by simp, by simp, by simp⟩`. Consider the case `cons a t ih`. Break down `ih with ⟨lF, lG, rfl, hF, hG⟩ | ⟨l1, g, f, lF, lG, rfl, hg, hf, hF, hG⟩` into its components or cases. Distinguish the cases in `ha : F a`.
+
+Use `Or.inl ⟨a :: lF, lG, by simp, ?_, hG⟩` and prove the remaining obligations. Introduce `r hr`. Break down `List.mem_cons.1 hr with h | h` into its components or cases. Conclude with `h ▸ ha`. Conclude with `hF r h`.
+
+Consider the cases of `lF with`. Consider the case `nil`. Use `Or.inl ⟨[], a :: lG, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Break down `List.mem_cons.1 hr with h | h` into its components or cases.
+
+Conclude with `h ▸ ha`. Conclude with `hG r h`. Consider the case `cons f lF'`. Conclude with `Or.inr ⟨[], a, f, lF', lG, by simp, ha, hF f (List.mem_cons_self ..), fun r hr => hF r (List.mem_cons_of_mem _ hr), hG⟩`. Conclude with `Or.inr ⟨a :: l1, g, f, lF, lG, by simp, hg, hf, hF, hG⟩`.
+-/
 theorem cn_decomp (F : α → Prop) (l : List α) :
     (∃ lF lG, l = lF ++ lG ∧ (∀ r ∈ lF, F r) ∧ (∀ r ∈ lG, ¬ F r)) ∨
     (∃ l1 g f lF lG, l = l1 ++ g :: f :: (lF ++ lG) ∧ ¬ F g ∧ F f ∧ (∀ r ∈ lF, F r) ∧ (∀ r ∈ lG, ¬ F r)) := by
@@ -150,18 +205,27 @@ variable {n : ℕ}
 
 abbrev Steps (n : ℕ) := Relation.ReflTransGen (Step n)
 
+/- English proof (translation)
+Apply the tactic sequence `cases h <;> (simp only [List.append_assoc, List.cons_append]`. Apply the tactic sequence `constructor <;> assumption)`.
+-/
 theorem cn_step_tail {l l' : List (Fin n × Fin n)} (h : Step n l l') (R : List (Fin n × Fin n)) :
     Step n (l ++ R) (l' ++ R) := by
   cases h <;>
     (simp only [List.append_assoc, List.cons_append]
      constructor <;> assumption)
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `tail _ hs ih => exact ih.tail (cn_step_tail hs R)`.
+-/
 theorem cn_steps_tail {l l' : List (Fin n × Fin n)} (h : Steps n l l') (R : List (Fin n × Fin n)) :
     Steps n (l ++ R) (l' ++ R) := by
   induction h with
   | refl => exact Relation.ReflTransGen.refl
   | tail _ hs ih => exact ih.tail (cn_step_tail hs R)
 
+/- English proof (translation)
+Consider the cases of `h with`. Consider the case `swap l1 l2 a b c d h1 h2 h3 h4`. Simplify using `using Step.swap l2.reverse l1.reverse c d a b h1.symm h3.symm h2.symm h4.symm`. Consider the case `braid l1 l2 a b c h1 h2 => simpa using Step.braid' l2.reverse l1.reverse a b c h1 h2`. Consider the case `braid' l1 l2 a b c h1 h2 => simpa using Step.braid l2.reverse l1.reverse a b c h1 h2`.
+-/
 theorem cn_step_rev {l l' : List (Fin n × Fin n)} (h : Step n l l') : Step n l.reverse l'.reverse := by
   cases h with
   | swap l1 l2 a b c d h1 h2 h3 h4 =>
@@ -169,6 +233,9 @@ theorem cn_step_rev {l l' : List (Fin n × Fin n)} (h : Step n l l') : Step n l.
   | braid l1 l2 a b c h1 h2 => simpa using Step.braid' l2.reverse l1.reverse a b c h1 h2
   | braid' l1 l2 a b c h1 h2 => simpa using Step.braid l2.reverse l1.reverse a b c h1 h2
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `tail _ hs ih => exact ih.tail (cn_step_rev hs)`.
+-/
 theorem cn_steps_rev {l l' : List (Fin n × Fin n)} (h : Steps n l l') : Steps n l.reverse l'.reverse := by
   induction h with
   | refl => exact Relation.ReflTransGen.refl

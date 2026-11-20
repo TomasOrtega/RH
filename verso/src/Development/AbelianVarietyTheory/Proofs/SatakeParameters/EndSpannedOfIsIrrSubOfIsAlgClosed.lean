@@ -5,6 +5,29 @@ open Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.SplitField
 
 namespace GlobalTheory.SplitField
 
+/- English proof (translation)
+Introduce `Γ E _ _ _ a σ U h`. Establish `hinv : ∀ g, ∀ v ∈ U, (Matrix.toLin' ((σ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E)) v ∈ U` using `fun g v hv => by rw [Matrix.toLin'_apply]; exact h.2.1 g v hv`. Set `r : Representation E Γ U` to `{ toFun := fun g => (Matrix.toLin' ((σ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E)).restrict (hinv g) map_one' := by`. Use extensionality with `v i`. Simplify using `[LinearMap.restrict_apply]`.
+
+Use the proof step `map_mul' := fun g g' => by`. Use extensionality with `v i`. Simplify using `[LinearMap.restrict_apply, Matrix.mulVec_mulVec] }`. Establish `hr : ∀ g (v : U), ((r g v : U) : Fin a → E) = ((σ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E).mulVec v` using `fun g v => by simp [r, LinearMap.restrict_apply]`. Establish `hirr : r.IsIrreducible`.
+
+Establish `hnt : Nontrivial (Subrepresentation r)`. Use `⟨⊥, ⊤, fun hbt => h.1 ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subrepresentation.toSubmodule hbt`. Express the relevant statement in the definitionally equal form `(⊥ : Submodule E U) = ⊤ at h2`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `v hv`. Establish `: (⟨v, hv⟩ : U) ∈ (⊥ : Submodule E U)` using `by rw [h2]; trivial`. Rewrite `this` using `[Submodule.mem_bot]`. Simplify using `using congrArg Subtype.val this`. Use `⟨fun W => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : W.toSubmodule.map U.subtype ≤ U`. Introduce and unpack `_ ⟨v, _, rfl⟩`. Conclude with `v.2`. Establish `hinvW : IsInv σ (W.toSubmodule.map U.subtype)`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`.
+
+Use `⟨r g v, W.apply_mem_toSubmodule g hv, ?_⟩` and prove the remaining obligations. Simplify using `[hr]`. Break down `h.2.2 _ hle hinvW with h1 | h1` into its components or cases. Use `left`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun v hv => ?_)` and prove the remaining obligations.
+
+Establish `: (v : Fin a → E) ∈ W.toSubmodule.map U.subtype` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h1, Submodule.mem_bot]`. Use `show v ∈ (⊥ : Submodule E U)`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext this`.
+
+Use `right`. Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `: (v : Fin a → E) ∈ W.toSubmodule.map U.subtype` using `by rw [h1]; exact v.2`. Take `⟨w, hw, hwv⟩` from `this`. Rewrite `hw` using `[show w = v from Subtype.ext hwv]`. Then use the resulting hypothesis.
+
+Establish `hs` using `GlobalTheory.BurnsideField.span_range_eq_top_of_isAlgClosed r hirr`. Introduce `φ`. Establish `hφ : φ ∈ Submodule.span E (Set.range r)` using `by rw [hs]; trivial`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨g, rfl⟩` from `hx`. Conclude with `⟨_, Submodule.subset_span ⟨g, rfl⟩, fun w => (hr g w).symm⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun w => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨X, hX, hXw⟩` from `hx`.
+
+Take `⟨Y, hY, hYw⟩` from `hy`. Conclude with `⟨X + Y, Submodule.add_mem _ hX hY, fun w => by rw [Matrix.add_mulVec, hXw, hYw]; simp⟩`. Consider the case `smul c x _ hx`. Take `⟨X, hX, hXw⟩` from `hx`. Conclude with `⟨c • X, Submodule.smul_mem _ c hX, fun w => by rw [Matrix.smul_mulVec, hXw]; simp⟩`.
+-/
 theorem endSpanned_of_isIrrSub_of_isAlgClosed :
     ∀ {Γ E : Type} [Group Γ] [Field E] [IsAlgClosed E] {a : ℕ} (σ : Γ →* GL (Fin a) E)
       (U : Submodule E (Fin a → E)), IsIrrSub σ U → EndSpanned σ U := by

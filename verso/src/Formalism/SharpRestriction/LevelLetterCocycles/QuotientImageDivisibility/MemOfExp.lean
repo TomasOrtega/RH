@@ -20,6 +20,15 @@ section E1
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Apply `hMC T hT c w K hK hwl` to reduce the goal to its premises. Introduce `ζ hζ j`. Take `⟨u, hu, hu0⟩` from `lev_q_simple W c ζ hζ`. Take `⟨m, hm⟩` from `W.levN_supp T c ζ ⟨W.Q ^ K • w, hK⟩`. Take `⟨dz, hdzLB, hdz⟩` from `div_exists hm u hu0 K`.
+
+Take `⟨δ, hδ, χ, hχ0, hN', hA'⟩` from `hTr ζ hζ`. Establish `htr` using `trans_d W T hs hR c δ hδ ζ ζ₀ χ hχ0 hN' hA' (hwΔ δ hδ) hK u u₀ hu hu₀ hu0 ⟨_, hdzLB⟩ hdd hdz.symm he`. Establish `hanti` using `Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T c 0`. Establish `hDg : Dg (fun a => Formalism.MainNotions.WachCoordinates.FilLev W T c 0 a) 0 dz`. Introduce `i`.
+
+Rewrite using `[htr, zero_sub]`. Conclude with `(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (-i)).smul_mem _ (hF i)`. Rewrite using `[← hdz, mul_pow, smulS_mul hdzLB, smulS_X_pow (LB_smulS hdzLB _)]`. Establish `h` using `Dg_smulS hanti hdzLB hDg (u ^ K) (j - K)`. Rewrite `h` using `[show (0 : ℤ) - (j - K) = (K : ℤ) - j by ring]`.
+
+Conclude with `h`.
+-/
 theorem mem_of_exp [NeZero n] [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (hMC : MemCrit W) (hT : IsCrys PD T.ρ) (c : ZMod n) (ζ₀ : LL)
     (hTr : ∀ ζ : LL, IsPrimitiveRoot ζ PD.p → ∃ δ ∈ W.DelF, ∃ χ : LL, χ ≠ 0 ∧

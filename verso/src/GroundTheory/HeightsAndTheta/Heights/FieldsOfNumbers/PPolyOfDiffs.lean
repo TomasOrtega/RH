@@ -10,6 +10,11 @@ namespace PolyOfDiffs
 
 variable {K : Type}
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum, map_sum]`. Use `totalDegree_finsetSum_le fun α hα => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, algebraMap_eq]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+
+Unfold `Finsupp.prod`. Use `(totalDegree_finsetProd _ _).trans ((Finset.sum_le_sum fun j _ => ?_).trans (le_totalDegree hα))` and prove the remaining obligations. Conclude with `(totalDegree_pow _ _).trans (by simpa using Nat.mul_le_mul_left (α j) (hg j))`.
+-/
 theorem totalDegree_aeval_le (g : K → MvPolynomial K ℚ) (hg : ∀ j, (g j).totalDegree ≤ 1)
     (P : MvPolynomial K ℚ) : (aeval g P).totalDegree ≤ P.totalDegree := by
   conv_lhs => rw [P.as_sum, map_sum]
@@ -24,6 +29,15 @@ theorem totalDegree_aeval_le (g : K → MvPolynomial K ℚ) (hg : ∀ j, (g j).t
 
 variable [DecidableEq K]
 
+/- English proof (translation)
+Use `⟨Polynomial.C ((a + 1 : ℚ)⁻¹) * (Polynomial.bernoulli (a + 1)).comp (Polynomial.X + 1), ?_, fun x => ?_⟩` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `Polynomial.natDegree_comp_le.trans ?_` and prove the remaining obligations. Establish `hX : (Polynomial.X + 1 : Polynomial ℚ).natDegree = 1`. Rewrite using `[← Polynomial.C_1]`.
+
+Conclude with `Polynomial.natDegree_X_add_C 1`. Rewrite using `[hX, mul_one, Polynomial.bernoulli]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_monomial_le _).trans (Nat.sub_le _ _)`. Establish `h` using `Polynomial.bernoulli_eval_one_add (a + 1) x`.
+
+Rewrite `h` using `[Nat.add_sub_cancel]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, sub_add_cancel]`. Rewrite using `[add_comm x 1, h]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_antideriv (a : ℕ) : ∃ F : Polynomial ℚ, F.natDegree ≤ a + 1 ∧
     ∀ x : ℚ, F.eval x - F.eval (x - 1) = x ^ a := by
   refine ⟨Polynomial.C ((a + 1 : ℚ)⁻¹) *
@@ -44,6 +58,9 @@ theorem exists_pow_antideriv (a : ℕ) : ∃ F : Polynomial ℚ, F.natDegree ≤
     field_simp
     ring
 
+/- English proof (translation)
+Proceed by induction on `F using Polynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p r hp hr => rw [map_add, map_add, hp, hr, Polynomial.eval_add]`. Consider the case `monomial n a _ => simp`.
+-/
 theorem eval_aeval_X (y : K → ℚ) (k : K) (F : Polynomial ℚ) :
     eval y (Polynomial.aeval (X k) F) = F.eval (y k) := by
   induction F using Polynomial.induction_on with
@@ -51,6 +68,23 @@ theorem eval_aeval_X (y : K → ℚ) (k : K) (F : Polynomial ℚ) :
   | add p r hp hr => rw [map_add, map_add, hp, hr, Polynomial.eval_add]
   | monomial n a _ => simp
 
+/- English proof (translation)
+Establish `key : ∀ α ∈ q.support, ∃ P : MvPolynomial K ℚ, P.totalDegree ≤ q.totalDegree + 1 ∧ ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x (monomial α (q.coeff α))`. Introduce `α hα`. Take `⟨F, hFd, hF⟩` from `exists_pow_antideriv (α k)`. Use `⟨monomial (α.erase k) (q.coeff α) * Polynomial.aeval (X k) F, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hsum : ((α.erase k).sum fun _ e => e) + α k ≤ q.totalDegree`.
+
+Use `le_trans (le_of_eq ?_) (le_totalDegree hα)` and prove the remaining obligations. Use `conv_rhs => rw [← Finsupp.single_add_erase k α]`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl, add_comm]`. Establish `h1 : (monomial (α.erase k) (q.coeff α)).totalDegree ≤ (α.erase k).sum fun _ e => e` using `totalDegree_monomial_le _ _`. Establish `h2 : (Polynomial.aeval (X k : MvPolynomial K ℚ) F).totalDegree ≤ α k + 1`.
+
+Rewrite using `[Polynomial.aeval_eq_sum_range]`. Use `totalDegree_finsetSum_le fun i hi => ?_` and prove the remaining obligations. Use `(totalDegree_smul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X_pow]`. Conclude with `(Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)).trans hFd`.
+
+Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `hmono : monomial α (q.coeff α) = monomial (α.erase k) (q.coeff α) * X k ^ (α k)`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, add_comm, Finsupp.single_add_erase]`. Establish `hsh : eval (x - Pi.single k 1) (monomial (α.erase k) (q.coeff α)) = eval x (monomial (α.erase k) (q.coeff α))`.
+
+Simplify using `only [eval_monomial]`. Use `congr 1`. Use `Finsupp.prod_congr fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≠ k`. Rewrite `hj` using `[Finsupp.support_erase]`.
+
+Conclude with `(Finset.mem_erase.1 hj).1`. Simplify using `[Pi.single_apply, hjk]`. Establish `hev : ∀ y : K → ℚ, eval y (Polynomial.aeval (X k) F) = F.eval (y k)` using `fun y => eval_aeval_X y k F`. Rewrite using `[hmono, map_mul, map_mul, hsh, hev, hev, map_mul, map_pow, eval_X, ← mul_sub]`. Use `congr 1`.
+
+Rewrite using `[← hF (x k)]`. Simplify using the standard rewrite rules. Use `choose! P hPd hPe using key`. Use `⟨∑ α ∈ q.support, P α, totalDegree_finsetSum_le hPd, fun x => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [q.as_sum]`.
+
+Simplify using `only [map_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun α hα => hPe α hα x`.
+-/
 theorem exists_antideriv (k : K) (q : MvPolynomial K ℚ) : ∃ P : MvPolynomial K ℚ,
     P.totalDegree ≤ q.totalDegree + 1 ∧
     ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x q := by
@@ -100,6 +134,9 @@ theorem exists_antideriv (k : K) (q : MvPolynomial K ℚ) : ∃ P : MvPolynomial
 noncomputable def freeze (s : Finset K) (N : K → ℚ) : K → MvPolynomial K ℚ :=
   fun j => if j ∈ s then X j else C (N j)
 
+/- English proof (translation)
+Unfold `freeze`. Use `split_ifs`. Conclude with `(totalDegree_X j).le`. Rewrite using `[totalDegree_C]`. Conclude with `zero_le_one`.
+-/
 theorem totalDegree_freeze_le (s : Finset K) (N : K → ℚ) (j : K) :
     (freeze s N j).totalDegree ≤ 1 := by
   unfold freeze
@@ -107,6 +144,11 @@ theorem totalDegree_freeze_le (s : Finset K) (N : K → ℚ) (j : K) :
   · exact (totalDegree_X j).le
   · rw [totalDegree_C]; exact zero_le_one
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p r hp hr => rw [map_add, map_add, hp, hr, map_add]`. Consider the case `mul_X p j hp`. Simplify using `only [map_mul, hp, aeval_X, eval_X, freeze]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eval_aeval_freeze (s : Finset K) (N x : K → ℚ) (P : MvPolynomial K ℚ) :
     eval x (aeval (freeze s N) P) = eval (fun j => if j ∈ s then x j else N j) P := by
   induction P using MvPolynomial.induction_on with
@@ -119,6 +161,41 @@ theorem eval_aeval_freeze (s : Finset K) (N x : K → ℚ) (P : MvPolynomial K �
 def pathPt (N : K → ℤ) (s : Finset K) (m : K → ℤ) : K → ℤ :=
   fun j => if j ∈ s then m j else N j
 
+/- English proof (translation)
+Introduce `K _ _ h d hq`. Use `choose q hqd hqe using hq`. Establish `hP : ∀ k, ∃ P : MvPolynomial K ℚ, P.totalDegree ≤ d ∧ ∀ x : K → ℚ, eval x P - eval (x - Pi.single k 1) P = eval x (q k)`. Introduce `k`. Break down `hqd k with h0 | hlt` into its components or cases.
+
+Conclude with `⟨0, by simp, fun x => by simp [h0]⟩`. Take `⟨P, hPd, hPe⟩` from `exists_antideriv k (q k)`. Conclude with `⟨P, hPd.trans hlt, hPe⟩`. Use `choose P hPd hPe using hP`. Establish `hqe' : ∀ k, ∀ᶠ m in Filter.atTop, ((diffStep (Pi.single k 1) h m : ℤ) : ℚ) = eval (fun j => (m j : ℚ)) (q k)` using `hqe`.
+
+Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 (Filter.eventually_all.2 hqe')`. Establish `hstep : ∀ k, ∀ y : K → ℤ, N ≤ y → (h y : ℚ) - eval (fun j => (y j : ℚ)) (P k) = (h (y - Pi.single k 1) : ℚ) - eval (fun j => ((y - Pi.single k 1 : K → ℤ) j : ℚ)) (P k)`. Introduce `k y hy`. Establish `e1` using `hN y hy k`. Establish `e2` using `hPe k (fun j => (y j : ℚ))`.
+
+Establish `e3 : (fun j => (y j : ℚ)) - Pi.single k 1 = fun j => ((y - Pi.single k 1 : K → ℤ) j : ℚ)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hj]`. Rewrite `e2` using `[e3]`. Simplify using `only [diffStep] at e1`. Move the coercions through the operations in `at e1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hline : ∀ k, ∀ x : K → ℤ, N ≤ x → x k = N k → ∀ t : ℤ, N k ≤ t → (h (Function.update x k t) : ℚ) - eval (fun j => (Function.update x k t j : ℚ)) (P k) = (h x : ℚ) - eval (fun j => (x j : ℚ)) (P k)`. Introduce `k x hx hxk t ht`. Proceed by induction on `t, ht using Int.le_induction with`. Consider the case `base => rw [← hxk, Function.update_eq_self]`. Consider the case `succ t ht ih`.
+
+Establish `hy : N ≤ Function.update x k (t + 1)`. Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[hj]`. Conclude with `hx j`. Establish `hsh : Function.update x k (t + 1) - Pi.single k 1 = Function.update x k t`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[hstep k _ hy, hsh, ih]`.
+
+Establish `key : ∀ s : Finset K, ∃ Q : MvPolynomial K ℚ, Q.totalDegree ≤ d ∧ ∀ m : K → ℤ, N ≤ m → (h (pathPt N s m) : ℚ) = eval (fun j => (m j : ℚ)) Q`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨C (h N : ℚ), by rw [totalDegree_C]; exact Nat.zero_le _, fun m _ => ?_⟩` and prove the remaining obligations.
+
+Establish `e : pathPt N ∅ m = N` using `by funext j; simp [pathPt]`. Rewrite using `[e, eval_C]`. Consider the case `insert k s hk ih`. Take `⟨Q, hQd, hQ⟩` from `ih`. Use `⟨Q + aeval (freeze (insert k s) (fun j => (N j : ℚ))) (P k) - aeval (freeze s (fun j => (N j : ℚ))) (P k), ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Use `(totalDegree_sub _ _).trans (max_le ((totalDegree_add _ _).trans (max_le hQd ?_)) ?_)` and prove the remaining obligations. Conclude with `(totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)`. Conclude with `(totalDegree_aeval_le _ (totalDegree_freeze_le _ _) _).trans (hPd k)`. Establish `hx : N ≤ pathPt N s m` using `fun j => by`. Simplify using `only [pathPt]`.
+
+Use `split_ifs`. Conclude with `hm j`. Conclude with `le_rfl`. Establish `hxk : pathPt N s m k = N k` using `by simp [pathPt, hk]`. Establish `hupd : pathPt N (insert k s) m = Function.update (pathPt N s m) k (m k)`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[pathPt]`. Simplify using `[pathPt, hj]`.
+
+Establish `e` using `hline k (pathPt N s m) hx hxk (m k) (hm k)`. Rewrite `e` using `[← hupd]`. Establish `c1 : ∀ t : Finset K, (fun j => ((pathPt N t m j : ℤ) : ℚ)) = fun j => if j ∈ t then (m j : ℚ) else (N j : ℚ)`. Apply the tactic sequence `intro t; funext j; simp only [pathPt]; split_ifs <;> rfl`. Rewrite using `[map_sub, map_add, eval_aeval_freeze, eval_aeval_freeze, ← hQ m hm, ← c1, ← c1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Q, hQd, hQ⟩` from `key Finset.univ`. Use `⟨Q, hQd, ?_⟩` and prove the remaining obligations. Rewrite using `[EventuallyPoly, Filter.eventually_atTop]`. Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Establish `e : pathPt N Finset.univ m = m` using `by funext j; simp [pathPt]`. Rewrite using `[← e]`. Conclude with `(hQ m hm).trans (by rw [e])`.
+-/
 theorem proof : PolyOfDiffs.Statement := by
   intro K _ _ h d hq
   choose q hqd hqe using hq

@@ -18,9 +18,19 @@ variable {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* �
   {I : Type} [Fintype I] {n : ℕ} {lam : I → DomWeight n} {W : Type} [AddCommGroup W] [Module ℂ W]
   {c₀ : VV K lam →ₛₗ[σ] W} {c' : VV K' lam →ₛₗ[σ'] W}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV ι lam _ v.2⟩, hE v _ rfl⟩`.
+-/
 theorem exists_ext_val (hE : IsCoefExt ι lam c₀ c') (v : VV K lam) : ∃ v' : VV K' lam, c' v' = c₀ v :=
   ⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV ι lam _ v.2⟩, hE v _ rfl⟩
 
+/- English proof (translation)
+Establish `hv : v' ∈ Submodule.span K' (Set.range (bVV K' lam))` using `by rw [(bVV K' lam).span_eq]; exact Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Take `⟨F, hF, hj⟩` from `GlobalTheory.Proof.TensorMapDescent.bVVfun_desc ι lam j`.
+
+Rewrite using `[hE ⟨F, hF⟩ (bVV K' lam j) ((bVV_coe _ _ _).trans hj)]`. Conclude with `h0 _`. Consider the case `zero => have := h0 0`. Rewrite `this`, the goal using `[map_zero]`. Conclude with `this`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hadd _ _ hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`. Conclude with `hsmul _ _ hx`.
+-/
 theorem ext_induction (hE : IsCoefExt ι lam c₀ c') {p : W → Prop} (h0 : ∀ v, p (c₀ v)) (hadd : ∀ x y, p x → p y → p (x + y))
     (hsmul : ∀ (a : K') x, p x → p (σ' a • x)) (v' : VV K' lam) : p (c' v') := by
   have hv : v' ∈ Submodule.span K' (Set.range (bVV K' lam)) := by rw [(bVV K' lam).span_eq]; exact Submodule.mem_top
@@ -34,6 +44,11 @@ theorem ext_induction (hE : IsCoefExt ι lam c₀ c') {p : W → Prop} (h0 : ∀
   | add x y _ _ hx hy => rw [map_add]; exact hadd _ _ hx hy
   | smul a x _ hx => rw [map_smulₛₗ]; exact hsmul _ _ hx
 
+/- English proof (translation)
+Use `ext_induction hE (p := fun w => ∃ u', c' u' = T w) (fun v => ?_) ?_ ?_ v'` and prove the remaining obligations. Take `⟨u, hu⟩` from `hT v`. Take `⟨u', hu'⟩` from `exists_ext_val hE u`. Conclude with `⟨u', hu'.trans hu⟩`. Introduce and unpack `x y ⟨u, hu⟩ ⟨u', hu'⟩`.
+
+Conclude with `⟨u + u', by rw [map_add, map_add, hu, hu']⟩`. Introduce and unpack `a x ⟨u, hu⟩`. Conclude with `⟨a • u, by rw [map_smulₛₗ, map_smul, hu]⟩`.
+-/
 theorem ext_stable (hE : IsCoefExt ι lam c₀ c') (T : W →ₗ[ℂ] W) (hT : ∀ v, ∃ u, c₀ u = T (c₀ v)) (v' : VV K' lam) :
     ∃ u', c' u' = T (c' v') := by
   refine ext_induction hE (p := fun w => ∃ u', c' u' = T w) (fun v => ?_) ?_ ?_ v'
@@ -45,6 +60,17 @@ theorem ext_stable (hE : IsCoefExt ι lam c₀ c') (T : W →ₗ[ℂ] W) (hT : �
   · rintro a x ⟨u, hu⟩
     exact ⟨a • u, by rw [map_smulₛₗ, map_smul, hu]⟩
 
+/- English proof (translation)
+Establish `key : ∀ v' : VV K' lam, ∃ a : VVIdx lam → K', c' v' = ∑ j, σ' (a j) • c₀ (bVV K lam j)`. Use `ext_induction hE (p := fun w => ∃ a : VVIdx lam → K', w = ∑ j, σ' (a j) • c₀ (bVV K lam j)) (fun v => ?_) ?_ ?_` and prove the remaining obligations. Use `⟨fun j => ι ((bVV K lam).repr v j), ?_⟩ conv_lhs => rw [← (bVV K lam).sum_repr v, map_sum]` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, ← RingHom.congr_fun hσ]`.
+
+Both sides reduce to the same expression. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, by simp [← Finset.sum_add_distrib, add_smul]⟩`. Introduce and unpack `c _ ⟨a, rfl⟩`. Conclude with `⟨fun j => c * a j, by simp [Finset.smul_sum, mul_smul]⟩`.
+
+Take `⟨a, ha⟩` from `key v`. Take `⟨b, hb⟩` from `key u`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, a j ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Conclude with `hv (by simp [ha, hn])`. Establish `h0 : ∑ j, (σ' (b j) - z * σ' (a j)) • c₀ (bVV K lam j) = 0`. Simplify using `only [sub_smul, mul_smul, Finset.sum_sub_distrib, ← Finset.smul_sum, ← ha, ← hb, h, sub_self]`. Establish `h1` using `Fintype.linearIndependent_iff.1 hli _ h0 j`. Use `⟨b j / a j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_div₀, div_eq_iff ((map_ne_zero σ').2 hj)]`. Conclude with `sub_eq_zero.1 h1`.
+-/
 theorem scalar_mem (hσ : σ'.comp ι = σ) (hE : IsCoefExt ι lam c₀ c')
     (hli : LinearIndependent ℂ fun j => c₀ (bVV K lam j)) {z : ℂ} {u v : VV K' lam} (hv : c' v ≠ 0) (h : c' u = z • c' v) :
     ∃ a : K', σ' a = z := by
@@ -80,6 +106,13 @@ variable {Gp Γ : Type} [Group Gp] [Group Γ] {ι : Γ →* Gp} {J : Subgroup Gp
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨i, ⟨γ, k, hg⟩, -⟩` from `hy g`. Use `⟨i, fun h => ?_⟩` and prove the remaining obligations. Establish `key : ∀ j, (∃ (γ' : Γ) (k' : J), h = ι γ' * Function.update y i g j * k') ↔ ∃ (γ' : Γ) (k' : J), h = ι γ' * y j * k'`. Introduce `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Rewrite using `[Function.update_self]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ', k', rfl⟩`. Conclude with `⟨γ' * γ, k * k', by rw [hg]; simp [mul_assoc]⟩`.
+
+Introduce and unpack `⟨γ', k', rfl⟩`. Conclude with `⟨γ' * γ⁻¹, k⁻¹ * k', by rw [hg]; simp [mul_assoc]⟩`. Rewrite using `[Function.update_of_ne hj]`. Simplify using `only [key]`. Conclude with `hy h`.
+-/
 theorem isReps_update {I : Type} {y : I → Gp} (hy : Bridge.IsReps ι J y) (g : Gp) :
     ∃ i, Bridge.IsReps ι J (Function.update y i g) := by
   obtain ⟨i, ⟨γ, k, hg⟩, -⟩ := hy g
@@ -108,10 +141,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T)
   {K' : Type} [Field K'] {σ' : K' →+* ℂ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamV_eq : GlobalTheory.IndefiniteRowSideFullHecke.RationalFormValues.lamV D i = FWT.lamV D i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formFn_eq (x : A.fam.amb.FL i t) : formFn R i t x = (R.HV i t).e (jVx R i t x) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h v`. Conclude with `⟨⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV jL _ _ v.2⟩, rfl, h v _ rfl⟩`. Introduce `h v v' hv`. Take `⟨w, hw, hc⟩` from `h v`.
+
+Rewrite using `[show v' = w from Subtype.ext (hv.trans hw.symm)]`. Conclude with `hc`.
+-/
 theorem isCoefExt_iff_c0BC (jL : D.what₂.LL →+* K') (c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W)
     (c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W) :
     IsCoefExt jL (FWT.lamV D i) c₀ c' ↔ CoefficientBaseChange R i jL σ' c₀ c' := by
@@ -125,6 +169,11 @@ theorem isCoefExt_iff_c0BC (jL : D.what₂.LL →+* K') (c₀ : VsV D i D.what�
 
 variable (c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H x k`. Take `⟨v, hv⟩` from `H x`. Conclude with `⟨v k, (hv k).symm⟩`. Introduce `H x choose v hv using H x`.
+
+Conclude with `⟨v, fun k => (hv k).symm⟩`.
+-/
 theorem placeEx_iff {Cl : Type} (h : Cl → GA D (Vc D i)) :
     PlaceEx R i t h c' ↔ ∀ (x : A.fam.amb.FL i t) (k : Cl), ∃ v, c' v = formFn R i t x (fin _ (h k)) := by
   constructor
@@ -135,9 +184,15 @@ theorem placeEx_iff {Cl : Type} (h : Cl → GA D (Vc D i)) :
     choose v hv using H x
     exact ⟨v, fun k => (hv k).symm⟩
 
+/- English proof (translation)
+The claim follows from `(placeEx_iff R i t c' h).2 fun x k => H x _`.
+-/
 theorem placeEx_of_valuesIn (H : ValuesIn R i t c') {Cl : Type} (h : Cl → GA D (Vc D i)) : PlaceEx R i t h c' :=
   (placeEx_iff R i t c' h).2 fun x k => H x _
 
+/- English proof (translation)
+Use `⟨fun H Cl h => placeEx_of_valuesIn R i t c' H h, fun H x g => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `(finHom (Vc D i)).rangeRestrict_surjective g`. Take `⟨v, hv⟩` from `(placeEx_iff R i t c' fun _ : Unit => h).1 (H Unit _) x ()`. Conclude with `⟨v, hv.trans (congrArg _ hh)⟩`.
+-/
 theorem valuesIn_iff_forall_placeEx :
     ValuesIn R i t c' ↔ ∀ (Cl : Type) (h : Cl → GA D (Vc D i)), PlaceEx R i t h c' := by
   refine ⟨fun H Cl h => placeEx_of_valuesIn R i t c' H h, fun H x g => ?_⟩
@@ -145,6 +200,11 @@ theorem valuesIn_iff_forall_placeEx :
   obtain ⟨v, hv⟩ := (placeEx_iff R i t c' fun _ : Unit => h).1 (H Unit _) x ()
   exact ⟨v, hv.trans (congrArg _ hh)⟩
 
+/- English proof (translation)
+Use `⟨fun H Cl _ h _ => placeEx_of_valuesIn R i t c' H h, fun H x g => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `isReps_update (R.B.L i t).pres.reps g`. Use `choose h hh using fun k => (finHom (Vc D i)).rangeRestrict_surjective (Function.update (R.B.L i t).pres.y c g k)`. Establish `hr : Bridge.IsReps (Bridge.ratF (Vc D i)) (levJ R i t) (fun k => fin _ (h k))`. Rewrite using `[show (fun k => fin _ (h k)) = Function.update (R.B.L i t).pres.y c g from funext hh]`.
+
+Conclude with `hc`. Take `⟨v, hv⟩` from `(placeEx_iff R i t c' h).1 (@H _ (A.MtCSD i t).finCl h hr) x c`. Conclude with `⟨v, hv.trans (congrArg _ ((hh c).trans (Function.update_self ..)))⟩`.
+-/
 theorem valuesIn_iff_forall_reps :
     ValuesIn R i t c' ↔ ∀ (Cl : Type) [Fintype Cl] (h : Cl → GA D (Vc D i)),
       Bridge.IsReps (Bridge.ratF (Vc D i)) (levJ R i t) (fun k => fin _ (h k)) → PlaceEx R i t h c' := by
@@ -163,6 +223,9 @@ def TypeIn (σ' : K' →+* ℂ) (J' : Subgroup (Bridge.Gf (Vc D i))) : Prop :=
 
 variable {R i t c'}
 
+/- English proof (translation)
+Establish `hm` using `(hV i t).2.1.le (LinearMap.mem_range_self (R.HV i t).e (R.jV i t x))`. Conclude with `hm γ g k`.
+-/
 theorem formFn_law (hV : R.models_HV) (x : A.fam.amb.FL i t) (γ : GQ (Vc D i)) (g : Bridge.Gf (Vc D i)) (k : levJ R i t) :
     formFn R i t x (Bridge.ratF (Vc D i) γ * g * k) =
       (((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ k : ℂˣ) : ℂ) • (R.cV i).coef.ρ γ (formFn R i t x g) := by
@@ -173,6 +236,13 @@ variable {gramR : Matrix (Fin D.sp.X'.rank) (Fin D.sp.X'.rank) D.host.E}
   {c0R : VV D.what₂.LL (fun τ => Bridge.lamRdef (Ptw D) τ) →ₛₗ[D.what₂.embLL] R.cX.coef.W}
   {c0L : ∀ i : Fin D.R.m, VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).coef.W} {jL : D.what₂.LL →+* K'}
 
+/- English proof (translation)
+Use `⟨fun H => placeEx_of_valuesIn R i t c' H h, fun H x g => ?_⟩` and prove the remaining obligations. Take `⟨c, ⟨γ, k, hg⟩, -⟩` from `hr g`. Take `⟨v, hv⟩` from `(placeEx_iff R i t c' h).1 H x c`. Take `⟨a, ha⟩` from `hχ ⟨k, hJ k.2⟩ k.2`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat (Vc D i) γ γE := by`.
+
+Take `⟨g, hg⟩` from `γ.2`. Conclude with `⟨g, hg.2.symm⟩`. Take `⟨u, hu⟩` from `ext_stable ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc) ((R.cV i).coef.ρ γ) (fun w => ⟨_, (hT.mapL i).1 γ γE hγ w⟩) v`. Use `⟨a • u, ?_⟩` and prove the remaining obligations. Establish `hl` using `formFn_law hV x γ (fin _ (h c)) ⟨k, hJ k.2⟩`.
+
+Rewrite using `[map_smulₛₗ, hu, hv, ha, hg]`. Conclude with `hl.symm`.
+-/
 theorem valuesIn_iff_placeEx_of_typeIn (hV : R.models_HV)
     (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (FWT.lamV D)
       gramR c0R c0L) (hc : CoefficientBaseChange R i jL σ' (c0L i) c')
@@ -195,6 +265,11 @@ theorem valuesIn_iff_placeEx_of_typeIn (hV : R.models_HV)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hne`. Take `⟨g, hg⟩` from `Function.ne_iff.1 hx`. Introduce `k _`. Take `⟨v, hv⟩` from `H x g`. Take `⟨u, hu⟩` from `H x (Bridge.ratF (Vc D i) 1 * g * k)`.
+
+Establish `h1 : (R.cV i).coef.ρ 1 (formFn R i t x g) = formFn R i t x g` using `LinearMap.congr_fun (MonoidHom.map_one (R.cV i).coef.ρ) _`. Establish `hl` using `hu.trans ((formFn_law hV x 1 g k).trans (congrArg (HSMul.hSMul _) (h1.trans hv.symm)))`. Establish `hli : LinearIndependent ℂ fun j => (c0L i (bVV D.what₂.LL (FWT.lamV D i) j) : (R.cV i).W)` using `(hT.mapL i).2.1`. Conclude with `scalar_mem (W := (R.cV i).W) (c₀ := c0L i) (c' := c') (lam := FWT.lamV D i) hσ ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc) hli (u := u) (v := v) (fun h0 => hg (hv.symm.trans h0)) hl`.
+-/
 theorem typeIn_of_valuesIn (hV : R.models_HV)
     (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (FWT.lamV D)
       gramR c0R c0L) (hσ : σ'.comp jL = D.what₂.embLL) (hc : CoefficientBaseChange R i jL σ' (c0L i) c')
@@ -211,6 +286,9 @@ theorem typeIn_of_valuesIn (hV : R.models_HV)
   exact scalar_mem (W := (R.cV i).W) (c₀ := c0L i) (c' := c') (lam := FWT.lamV D i) hσ
     ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc) hli (u := u) (v := v) (fun h0 => hg (hv.symm.trans h0)) hl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨placeEx_of_valuesIn R i t c' H h, fun k _ => typeIn_of_valuesIn hV hT hσ hc hne H k trivial⟩, fun H => (valuesIn_iff_placeEx_of_typeIn hV hT hc hJ hr H.2).2 H.1⟩`.
+-/
 theorem valuesIn_iff_placeEx_and_typeIn (hV : R.models_HV)
     (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (FWT.lamV D)
       gramR c0R c0L) (hσ : σ'.comp jL = D.what₂.embLL) (hc : CoefficientBaseChange R i jL σ' (c0L i) c')
@@ -220,6 +298,9 @@ theorem valuesIn_iff_placeEx_and_typeIn (hV : R.models_HV)
   ⟨fun H => ⟨placeEx_of_valuesIn R i t c' H h, fun k _ => typeIn_of_valuesIn hV hT hσ hc hne H k trivial⟩,
     fun H => (valuesIn_iff_placeEx_of_typeIn hV hT hc hJ hr H.2).2 H.1⟩
 
+/- English proof (translation)
+The claim follows from `typeIn_of_valuesIn hV hT hσ hc hne ((valuesIn_iff_placeEx_of_typeIn hV hT hc hJ hr hχ).2 H)`.
+-/
 theorem typeIn_top_of_placeEx (hV : R.models_HV)
     (hT : Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (FWT.lamV D)
       gramR c0R c0L) (hσ : σ'.comp jL = D.what₂.embLL) (hc : CoefficientBaseChange R i jL σ' (c0L i) c')
@@ -235,11 +316,17 @@ def CoefPins (i : Fin D.R.m) (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ) (
     ∃ gramR c0R c0L, Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ)
       (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L ∧ CoefficientBaseChange R i jL σ' (c0L i) c'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.field, H.c0⟩`.
+-/
 theorem CoefPins.of_thPinsR {v₀ : (R.MW i (sg0 D A)).Vec} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)} {M : ℕ} {Mh : Ideal (𝓞 D.host.E)} {lev : G → La →ₗ[𝓞 D.host.E] La}
     (H : ThPinsR R i jL σ' v₀ c' ι M Mh lev) : CoefPins R i jL σ' c' :=
   ⟨H.field, H.c0⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `H i K' _ jL σ' c' ⟨hσ, gramR, c0R, c0L, hT, hc⟩ t`. Conclude with `H gramR c0R c0L hT i t K' jL σ' hσ c' ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc)`. Introduce `H gramR c0R c0L hT i t K' _ jL σ' hσ c' hc`. Conclude with `H i K' jL σ' c' ⟨hσ, gramR, c0R, c0L, hT, (isCoefExt_iff_c0BC R i jL (c0L i) c').1 hc⟩ t`.
+-/
 theorem rationalValuesAt_iff_pins : RationalValuesAt R ↔
     ∀ (i : Fin D.R.m) (K' : Type) [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ) (c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W),
       CoefPins R i jL σ' c' → ∀ t, ValuesIn R i t c' := by
@@ -254,6 +341,9 @@ def PlaceAt : Prop :=
     CoefPins R i jL σ' c' → ∀ (t : T) (Cl : Type) [Fintype Cl] (h : Cl → GA D (Vc D i)) (J' : Subgroup (Bridge.Gf (Vc D i))),
       J' ≤ levJ R i t → Bridge.IsReps (Bridge.ratF (Vc D i)) J' (fun k => fin _ (h k)) → PlaceEx R i t h c'
 
+/- English proof (translation)
+Rewrite using `[rationalValuesAt_iff_pins]`. Conclude with `⟨fun H i K' _ jL σ' c' hp t Cl _ h _ _ _ => placeEx_of_valuesIn R i t c' (H i K' jL σ' c' hp t) h, fun H i K' _ jL σ' c' hp t => (valuesIn_iff_forall_reps R i t c').2 fun Cl _ h hr => H i K' jL σ' c' hp t Cl h _ le_rfl hr⟩`.
+-/
 theorem rationalValuesAt_iff : RationalValuesAt R ↔ PlaceAt R := by
   rw [rationalValuesAt_iff_pins]
   exact ⟨fun H i K' _ jL σ' c' hp t Cl _ h _ _ _ => placeEx_of_valuesIn R i t c' (H i K' jL σ' c' hp t) h,
@@ -265,10 +355,18 @@ def PlacePinnedAt : Prop :=
       (J' : Subgroup (Bridge.Gf (Vc D i))) (Lh : Cl → Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)) (gam : Cl → ℕ) (vol : K'),
       RepsR R i t h bad J' Lh gam vol → PlaceEx R i t h c'
 
+/- English proof (translation)
+Introduce `i K' _ jL σ' c' hp t Cl _ h _ J' _ _ _ hr` and use `(rationalValuesAt_iff R).1 H i K' jL σ' c' hp t Cl h J' hr.2.2.1 hr.2.2.2.2.2.1`.
+-/
 theorem placePinnedAt_of_rationalValuesAt (H : RationalValuesAt R) : PlacePinnedAt R :=
   fun i K' _ jL σ' c' hp t Cl _ h _ J' _ _ _ hr =>
     (rationalValuesAt_iff R).1 H i K' jL σ' c' hp t Cl h J' hr.2.2.1 hr.2.2.2.2.2.1
 
+/- English proof (translation)
+Use `⟨placePinnedAt_of_rationalValuesAt R, fun H => (rationalValuesAt_iff_pins R).2 fun i K' _ jL σ' c' hp t => ?_⟩` and prove the remaining obligations. Take `⟨Cl, _, h, bad, J', Lh, gam, vol, ⟨h1, h2, h3, h4, -, h6, h7⟩, hχ⟩` from `hex i t`. Establish `hP` using `H i K' jL σ' c' hp t Cl h bad J' Lh gam _ ⟨h1, h2, h3, h4, rfl, h6, h7⟩`. Take `⟨hσ, gramR, c0R, c0L, hT, hc⟩` from `hp`. Use `(valuesIn_iff_placeEx_of_typeIn hV hT hc h3 h6 fun k hk => ?_).2 hP` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hχ k hk`. Conclude with `⟨jL a, (RingHom.congr_fun hσ a).trans ha⟩`.
+-/
 theorem rationalValuesAt_iff_placePinnedAt (hV : R.models_HV)
     (hex : ∀ i t, ∃ (Cl : Type) (_ : Fintype Cl) (h : Cl → GA D (Vc D i)) (bad : ℕ) (J' : Subgroup (Bridge.Gf (Vc D i)))
       (Lh : Cl → Submodule (𝓞 D.host.E) (Fin (Vc D i).rank → D.host.E)) (gam : Cl → ℕ) (vol : D.what₂.LL),
@@ -289,6 +387,9 @@ def PlaceRow : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
     R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → PlaceAt R
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H D G _ _ Pl0 T A Ks _ _ _ R F h1 h2 h3 h4 => (rationalValuesAt_iff R).1 (H D G Pl0 T A Ks R F h1 h2 h3 h4), fun H D G _ _ Pl0 T A Ks _ _ _ R F h1 h2 h3 h4 => (rationalValuesAt_iff R).2 (H D G Pl0 T A Ks R F h1 h2 h3 h4)⟩`.
+-/
 theorem rationalValues_iff : RationalValues ↔ PlaceRow :=
   ⟨fun H D G _ _ Pl0 T A Ks _ _ _ R F h1 h2 h3 h4 => (rationalValuesAt_iff R).1 (H D G Pl0 T A Ks R F h1 h2 h3 h4),
     fun H D G _ _ Pl0 T A Ks _ _ _ R F h1 h2 h3 h4 => (rationalValuesAt_iff R).2 (H D G Pl0 T A Ks R F h1 h2 h3 h4)⟩

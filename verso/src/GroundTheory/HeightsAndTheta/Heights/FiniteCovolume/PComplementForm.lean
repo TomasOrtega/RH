@@ -12,10 +12,16 @@ variable {W : Type*} [AddCommGroup W] [Module E W]
 
 namespace ComplementForm
 
+/- English proof (translation)
+The claim follows from `LinearMap.isSymm_def.1 h.isSymm x y`.
+-/
 theorem conj_apply (h : HermitianForm F E W) (x y : W) :
     conjHom F E (h.toSesq x y) = h.toSesq y x :=
   LinearMap.isSymm_def.1 h.isSymm x y
 
+/- English proof (translation)
+Rewrite using `[← conj_apply h v w, hp.2.2, map_one]`.
+-/
 theorem apply_w_v {h : HermitianForm F E W} {v w : W} (hp : IsHyperbolicPair h v w) :
     h.toSesq w v = 1 := by
   rw [← conj_apply h v w, hp.2.2, map_one]
@@ -29,13 +35,22 @@ def proj (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) :
         map_smul, smul_eq_mul, hp.1, hp.2.1, hp.2.2, apply_w_v hp]
       constructor <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) (x : W) :
     (proj h v w hp x : W) = x - h.toSesq w x • v - h.toSesq v x • w := rfl
 
+/- English proof (translation)
+Rewrite using `[proj_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem eq_add_proj (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) (x : W) :
     x = h.toSesq w x • v + (proj h v w hp x : W) + h.toSesq v x • w := by
   rw [proj_apply]; abel
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mem_hypComplement.1 x.2`. Use `ext`. Rewrite using `[proj_apply, h1, h2, zero_smul, zero_smul, sub_zero, sub_zero]`.
+-/
 theorem proj_of_mem (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w)
     (x : hypComplement h v w) : proj h v w hp x = x := by
   obtain ⟨h1, h2⟩ := mem_hypComplement.1 x.2
@@ -50,6 +65,9 @@ def restr (h : HermitianForm F E W) (v w : W) :
     (fun _ _ _ => by simp only [Submodule.coe_add, map_add])
     (fun _ _ _ => by simp only [Submodule.coe_smul, map_smul, smul_eq_mul, RingHom.id_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restr_apply (h : HermitianForm F E W) (v w : W) (x y : hypComplement h v w) :
     restr h v w x y = h.toSesq x y := rfl
 
@@ -91,6 +109,9 @@ def form (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) :
 
 end ComplementForm
 
+/- English proof (translation)
+Introduce `v w hp` and use `⟨ComplementForm.form h v w hp, fun _ _ => rfl⟩`.
+-/
 theorem ComplementForm.proof (h : HermitianForm F E W) : ComplementForm.Statement h :=
   fun v w hp => ⟨ComplementForm.form h v w hp, fun _ _ => rfl⟩
 

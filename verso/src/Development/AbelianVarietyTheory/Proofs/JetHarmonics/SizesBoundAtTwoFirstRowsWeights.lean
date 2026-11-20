@@ -13,10 +13,20 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 
 namespace GlobalTheory.RunDepth
 
+/- English proof (translation)
+Unfold `vd2`. Conclude with `Real.logb_nonneg (by norm_num) (by exact_mod_cast D.host.QS_pos)`.
+-/
 theorem vd2_nonneg_of_D7 (D : D7) : 0 ≤ vd2 D := by
   unfold vd2
   exact Real.logb_nonneg (by norm_num) (by exact_mod_cast D.host.QS_pos)
 
+/- English proof (translation)
+Establish `hm : 0 ≤ m` using `hq.trans hqm`. Establish `e1 : T * (f * q * (1 + v / 2) * A + q * S) = q * (f * (1 + v / 2) * (2 * b + Sc) + T * S)`. Rewrite using `[← hA]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : f * (1 + v / 2) * (2 * b + Sc) + T * S ≤ (2 + v) * (2 * f * b + f * (Sc + η))`.
+
+Establish `p1 : 0 ≤ f * (1 + v / 2) * (2 * b + Sc)` using `by positivity`. Establish `p2 : 0 ≤ (1 + v) * (f * η)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : 0 ≤ (2 + v) * (2 * f * b + f * (Sc + η))` using `by positivity`. Rewrite using `[e1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sizes_two_arith (T f q m v A S C b Sc η : ℝ) (hf : 0 ≤ f) (hq : 0 ≤ q) (hqm : q ≤ m) (hv : 0 ≤ v)
     (hC : 1 ≤ C) (hb : 0 ≤ b) (hSc : 0 ≤ Sc) (hη : 0 ≤ η) (hA : T * A = 2 * b + Sc) (hS : T * S ≤ f * η) :
     T * (f * q * (1 + v / 2) * A + q * S) ≤ C * m * (2 + v) * (2 * f * b + f * (Sc + η)) := by
@@ -35,6 +45,29 @@ theorem sizes_two_arith (T f q m v A S C b Sc η : ℝ) (hf : 0 ≤ f) (hq : 0 �
     _ ≤ C * (m * ((2 + v) * (2 * f * b + f * (Sc + η)))) := le_mul_of_one_le_left (mul_nonneg hm h0) hC
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `D L Pm Tp hK Q hQ hx hkb C hC j hj`. Take `⟨hSe, hw⟩` from `GlobalTheory.T.cloudSizes_between_zero_and_twice_b D L Pm hx hkb`. Take `⟨hw1, -, -⟩` from `hw j hj`. Take `⟨-, -, hP, hN, hwt⟩` from `GlobalTheory.T.weightExponents_embeddings_degree D Q hQ j hj (lR Tp hK j)`. Establish `hT : (0 : ℝ) < (Tp.TO : ℝ)` using `by exact_mod_cast TO_pos Tp`.
+
+Establish `hb : 0 ≤ L.sc.b` using `(Real.exp_pos _).le`. Establish `hSc` using `L.Sc_pos.le`. Establish `hη` using `L.etaSz_pos.le`. Establish `hplus : ∀ t, (Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aP t) 0 : ℝ) ≤ 2 * L.sc.b + L.Sc`. Introduce `t`.
+
+Unfold `Formalism.L2.Pj.ext0`. Use `split_ifs with h`. Establish `h1 : (Tp.TO : ℝ) * ((lR Tp hK j).aP t ⟨0, h⟩ : ℝ) ≤ ((kaR Tp hK j).aP t ⟨0, h⟩ : ℝ)`. Conclude with `(GlobalTheory.T.mul_rows_scaledWeight_le_kappaRows D L Pm Tp hK j t).1 ⟨0, h⟩` after adjusting the coercions. Take `⟨h2, h3, -⟩` from `GlobalTheory.T.kappaRows_entries_le_sizes D L Pm Tp hK j hj t`.
+
+Break down `Nat.lt_or_ge 0 (D.R.k - 1) with hk | hk` into its components or cases. Use `h2 ⟨0, h⟩ hk` as an intermediate fact. Use `(hw1 t).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `h3 ⟨0, h⟩ hk` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Nat.cast_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hminus : ∀ t, (Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aM t) 0 : ℝ) ≤ L.etaSz`. Introduce `t`.
+
+Unfold `Formalism.L2.Pj.ext0`. Use `split_ifs with h`. Establish `h1 : (Tp.TO : ℝ) * ((lR Tp hK j).aM t ⟨0, h⟩ : ℝ) ≤ ((kaR Tp hK j).aM t ⟨0, h⟩ : ℝ)`. Conclude with `(GlobalTheory.T.mul_rows_scaledWeight_le_kappaRows D L Pm Tp hK j t).2.1 ⟨0, h⟩` after adjusting the coercions. Conclude with `h1.trans ((GlobalTheory.T.kappaRows_entries_le_sizes D L Pm Tp hK j hj t).2.2 _)`.
+
+Simplify using `using hη`. Use `⟨(2 * L.sc.b + L.Sc) / Tp.TO, by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Take `⟨t, rfl⟩` from `(hP τ).1 hτ`. Rewrite using `[(hwt t 0).1, le_div_iff₀ hT, mul_comm]`.
+
+Conclude with `hplus t`. Establish `hq : (Q.Dw j).q ≤ D.R.m`. Rewrite using `[(hQ.2.2.2 j hj).2.1]`. Conclude with `Nat.sub_le _ _`. Use `sizes_two_arith _ _ _ _ _ _ _ _ _ _ _ (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by exact_mod_cast hq) (vd2_nonneg_of_D7 D) hC hb hSc hη (by field_simp) ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Establish `hcard : (Finset.univ.filter (fun τ => ¬ InPsi Q.H τ)).card ≤ D.R.f`. Rewrite using `[← (GlobalTheory.T.realPlaceLabel_bijective_card_eq_f D).2, ← Finset.card_univ]`. Use `le_trans (Finset.card_le_card ?_) (Finset.card_image_le (f := fun t => ComplexEmbedding.conjugate (DV.tauEmb D t)))` and prove the remaining obligations. Introduce `τ hτ`.
+
+Take `⟨t, rfl⟩` from `(hN τ).1 (Finset.mem_filter.1 hτ).2`. Conclude with `Finset.mem_image.2 ⟨t, Finset.mem_univ _, rfl⟩`. Use `(Finset.sum_le_card_nsmul _ _ L.etaSz ?_).trans ?_` and prove the remaining obligations. Introduce `τ hτ`. Take `⟨t, rfl⟩` from `(hN τ).1 (Finset.mem_filter.1 hτ).2`.
+
+Rewrite using `[(hwt t 0).2]`. Conclude with `hminus t`. Rewrite using `[nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hη`.
+-/
 theorem sizes_bound_two : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (Q : Par D), Q.Pins → 3 ≤ L.sc.x → (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b → ∀ C : ℝ, 1 ≤ C → ∀ j, InR D j → ∃ Ap : ℝ, 0 ≤ Ap ∧ (∀ τ, InPsi Q.H τ → (wtA (lR Tp hK j) (τ, 0) : ℝ) ≤ Ap) ∧ (open Classical in (Tp.TO : ℝ) * ((D.R.f : ℝ) * (Q.Dw j).q * (1 + vd2 D / 2) * Ap + (Q.Dw j).q * ∑ τ ∈ Finset.univ.filter (fun τ => ¬ InPsi Q.H τ), (wtA (lR Tp hK j) (τ, 0) : ℝ)) ≤ C * D.R.m * (2 + vd2 D) * (2 * (D.R.f : ℝ) * L.sc.b + (D.R.f : ℝ) * (L.Sc + L.etaSz))) := by
   classical
   intro D L Pm Tp hK Q hQ hx hkb C hC j hj

@@ -19,16 +19,28 @@ def TateModule : AddSubgroup (ℕ → A) where
 
 variable {ℓ A}
 
+/- English proof (translation)
+The claim follows from `t.2.1 k`.
+-/
 theorem TateModule.pow_nsmul (t : TateModule ℓ A) (k : ℕ) : ℓ ^ k • (t : ℕ → A) k = 0 :=
   t.2.1 k
 
+/- English proof (translation)
+The claim follows from `t.2.2 k`.
+-/
 theorem TateModule.nsmul_succ (t : TateModule ℓ A) (k : ℕ) :
     ℓ • (t : ℕ → A) (k + 1) = (t : ℕ → A) k :=
   t.2.2 k
 
+/- English proof (translation)
+Rewrite using `[← mul_nsmul', mul_comm, mul_nsmul']`.
+-/
 theorem nsmul_swap (a b : ℕ) (x : A) : a • b • x = b • a • x := by
   rw [← mul_nsmul', mul_comm, mul_nsmul']
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, mul_nsmul', ← add_assoc, (TateModule.nsmul_succ t), ih]`.
+-/
 theorem TateModule.pow_nsmul_add (t : TateModule ℓ A) (i j : ℕ) :
     ℓ ^ j • (t : ℕ → A) (i + j) = (t : ℕ → A) i := by
   induction j with
@@ -36,6 +48,9 @@ theorem TateModule.pow_nsmul_add (t : TateModule ℓ A) (i j : ℕ) :
   | succ j ih =>
     rw [pow_succ, mul_nsmul', ← add_assoc, (TateModule.nsmul_succ t), ih]
 
+/- English proof (translation)
+Simplify using `using (TateModule.pow_nsmul t) 0`.
+-/
 theorem TateModule.zero_apply (t : TateModule ℓ A) : (t : ℕ → A) 0 = 0 := by
   simpa using (TateModule.pow_nsmul t) 0
 
@@ -47,6 +62,9 @@ variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime] {A : Type*} [AddCommGroup A]
 
 instance neZero_pow_prime (k : ℕ) : NeZero (ℓ ^ k) := ⟨pow_ne_zero k hℓ.out.ne_zero⟩
 
+/- English proof (translation)
+Rewrite using `[← h, ZMod.val_natCast, ← nsmul_eq_mod_nsmul N hP]`.
+-/
 theorem val_nsmul_eq {k : ℕ} {P : A} (hP : ℓ ^ k • P = 0) {x : ZMod (ℓ ^ k)} {N : ℕ}
     (h : (N : ZMod (ℓ ^ k)) = x) : x.val • P = N • P := by
   rw [← h, ZMod.val_natCast, ← nsmul_eq_mod_nsmul N hP]
@@ -59,6 +77,9 @@ noncomputable instance TateModule.instSMul : SMul ℤ_[ℓ] (TateModule ℓ A) w
       exact (val_nsmul_eq ((TateModule.pow_nsmul t) k)
         (by rw [ZMod.natCast_val, PadicInt.cast_toZModPow _ _ (Nat.le_succ k)])).symm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TateModule.smul_apply (a : ℤ_[ℓ]) (t : TateModule ℓ A) (k : ℕ) :
     ((a • t : TateModule ℓ A) : ℕ → A) k = (PadicInt.toZModPow k a).val • (t : ℕ → A) k :=
   rfl
@@ -94,6 +115,9 @@ variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime] {A : Type*} [AddCommGroup A]
 noncomputable def zmodMulHom (m : ℕ) (P : A) (hP : m • P = 0) : ZMod m →+ A :=
   ZMod.lift m ⟨zmultiplesHom A P, by simp [hP]⟩
 
+/- English proof (translation)
+Establish `h : ((a.val : ℤ) : ZMod m) = a` using `by simp`. Use `conv_lhs => rw [← h]`. Rewrite using `[zmodMulHom, ZMod.lift_coe]`. Simplify using `only [zmultiplesHom_apply, natCast_zsmul]`.
+-/
 theorem zmodMulHom_apply {m : ℕ} [NeZero m] (P : A) (hP : m • P = 0) (a : ZMod m) :
     zmodMulHom m P hP a = a.val • P := by
   have h : ((a.val : ℤ) : ZMod m) = a := by simp
@@ -104,9 +128,29 @@ theorem zmodMulHom_apply {m : ℕ} [NeZero m] (P : A) (hP : m • P = 0) (a : ZM
 variable (hcard : ∀ k, Nat.card {P : A // ℓ ^ k • P = 0} = (ℓ ^ k) ^ 2)
 include hcard
 
+/- English proof (translation)
+The claim follows from `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (NeZero.ne _))`.
+-/
 theorem finite_torsion_of_card (k : ℕ) : Finite {P : A // ℓ ^ k • P = 0} :=
   Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (NeZero.ne _))
 
+/- English proof (translation)
+Set `D` to `torsionBy A ((ℓ ^ (k + 1) : ℕ) : ℤ)`. Set `C` to `torsionBy A ((ℓ ^ k : ℕ) : ℤ)`. Establish `hD : Nat.card D = (ℓ ^ (k + 1)) ^ 2`. Rewrite using `[← hcard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun P => torsionBy.nsmul_iff)`.
+
+Establish `hC : Nat.card C = (ℓ ^ k) ^ 2`. Rewrite using `[← hcard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun P => torsionBy.nsmul_iff)`. Establish `: Finite C` using `Nat.finite_of_card_ne_zero (by rw [hC]; exact pow_ne_zero _ (NeZero.ne _))`. Establish `: Finite D` using `Nat.finite_of_card_ne_zero (by rw [hD]; exact pow_ne_zero _ (NeZero.ne _))`.
+
+Use `finite_torsion_of_card hcard 1` as an intermediate fact. Set `ψ : D →+ C` to `{ toFun := fun Q => ⟨ℓ • (Q : A), by`. Rewrite using `[torsionBy.nsmul_iff, ← mul_nsmul', ← pow_succ, torsionBy.nsmul_iff.mp Q.2]⟩`. Use the proof step `map_zero' := Subtype.ext (nsmul_zero ℓ)`. Use the proof step `map_add' := fun Q R => Subtype.ext (nsmul_add (Q : A) R ℓ) }`.
+
+Establish `hker : Nat.card ψ.ker ≤ (ℓ ^ 1) ^ 2`. Rewrite using `[← hcard 1]`. Use `Nat.card_le_card_of_injective (fun Q => ⟨((Q : D) : A), by` and prove the remaining obligations. Establish `h` using `Q.2`. Rewrite `h` using `[AddMonoidHom.mem_ker]`.
+
+Rewrite using `[pow_one]`. Conclude with `congrArg Subtype.val h⟩) ?_`. Introduce `Q R h`. Conclude with `Subtype.ext (Subtype.ext (by simpa using congrArg Subtype.val h))`. Establish `htot : Nat.card D = Nat.card ψ.ker * Nat.card ψ.range`.
+
+Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup ψ.ker, Nat.card_congr (QuotientAddGroup.quotientKerEquivRange ψ).toEquiv, mul_comm]`. Establish `hrange : ψ.range = ⊤`. Apply `AddSubgroup.eq_top_of_le_card` to reduce the goal to its premises. Rewrite using `[hC]`. Establish `h1 : (ℓ ^ (k + 1)) ^ 2 ≤ (ℓ ^ 1) ^ 2 * Nat.card ψ.range`.
+
+Rewrite using `[← hD, htot]`. Conclude with `Nat.mul_le_mul_right _ hker`. Establish `h2 : (ℓ ^ (k + 1)) ^ 2 = (ℓ ^ 1) ^ 2 * (ℓ ^ k) ^ 2` using `by ring`. Rewrite `h1` using `[h2]`. Conclude with `Nat.le_of_mul_le_mul_left h1 (pow_pos (pow_pos hℓ.out.pos 1) 2)`.
+
+Take `⟨Q, hQ⟩` from `AddMonoidHom.range_eq_top.mp hrange ⟨P, torsionBy.nsmul_iff.mpr hP⟩`. Conclude with `⟨Q, torsionBy.nsmul_iff.mp Q.2, congrArg Subtype.val hQ⟩`.
+-/
 theorem exists_nsmul_eq_of_card (k : ℕ) (P : A) (hP : ℓ ^ k • P = 0) :
     ∃ Q : A, ℓ ^ (k + 1) • Q = 0 ∧ ℓ • Q = P := by
   let D := torsionBy A ((ℓ ^ (k + 1) : ℕ) : ℤ)
@@ -153,16 +197,27 @@ private noncomputable def rootSeq (k : ℕ) (P : A) (hP : ℓ ^ k • P = 0) :
     ⟨(exists_nsmul_eq_of_card hcard (k + m) _ (rootSeq k P hP m).2).choose,
       (exists_nsmul_eq_of_card hcard (k + m) _ (rootSeq k P hP m).2).choose_spec.1⟩
 
+/- English proof (translation)
+The claim follows from `(exists_nsmul_eq_of_card hcard (k + m) _ (rootSeq hcard k P hP m).2).choose_spec.2`.
+-/
 private theorem rootSeq_spec (k : ℕ) (P : A) (hP : ℓ ^ k • P = 0) (m : ℕ) :
     ℓ • (rootSeq hcard k P hP (m + 1)).1 = (rootSeq hcard k P hP m).1 :=
   (exists_nsmul_eq_of_card hcard (k + m) _ (rootSeq hcard k P hP m).2).choose_spec.2
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [rootSeq]`. Consider the case `succ m ih => rw [pow_succ, mul_nsmul', rootSeq_spec, ih]`.
+-/
 private theorem rootSeq_pow (k : ℕ) (P : A) (hP : ℓ ^ k • P = 0) (m : ℕ) :
     ℓ ^ m • (rootSeq hcard k P hP m).1 = P := by
   induction m with
   | zero => simp [rootSeq]
   | succ m ih => rw [pow_succ, mul_nsmul', rootSeq_spec, ih]
 
+/- English proof (translation)
+Use `⟨⟨fun j => ℓ ^ k • (rootSeq hcard k P hP j).1, fun j => ?_, fun j => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ℓ ^ j • ℓ ^ k • _ = 0`. Rewrite using `[← mul_nsmul', ← pow_add, add_comm]`. Conclude with `(rootSeq hcard k P hP j).2`. Use `show ℓ • ℓ ^ k • _ = ℓ ^ k • _`.
+
+Rewrite using `[nsmul_swap, rootSeq_spec]`. Conclude with `rootSeq_pow hcard k P hP k`.
+-/
 theorem exists_tateModule_apply_eq (k : ℕ) (P : A) (hP : ℓ ^ k • P = 0) :
     ∃ t : TateModule ℓ A, (t : ℕ → A) k = P := by
   refine ⟨⟨fun j => ℓ ^ k • (rootSeq hcard k P hP j).1, fun j => ?_, fun j => ?_⟩, ?_⟩
@@ -179,6 +234,11 @@ section Basis
 
 variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime] {A : Type*} [AddCommGroup A]
 
+/- English proof (translation)
+Establish `hi : ∀ i, (ℓ : ℤ) ^ i ∣ ((x (i + 1)).val : ℤ) - ((x i).val : ℤ)`. Introduce `i`. Establish `h` using `(ZMod.intCast_eq_intCast_iff_dvd_sub ((x i).val : ℤ) ((x (i + 1)).val : ℤ) (ℓ ^ i)).mp (by rw [Int.cast_natCast, Int.cast_natCast, hx i]; simp)`. Conclude with `h` after adjusting the coercions. Use `⟨PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun k => ((x k).val : ℤ)) ℓ hi), fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ _ hi]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_toZModPow_eq (x : ∀ k : ℕ, ZMod (ℓ ^ k))
     (hx : ∀ k, ((x (k + 1)).val : ZMod (ℓ ^ k)) = x k) :
     ∃ a : ℤ_[ℓ], ∀ k, PadicInt.toZModPow k a = x k := by
@@ -192,6 +252,15 @@ theorem exists_toZModPow_eq (x : ∀ k : ℕ, ZMod (ℓ ^ k))
   rw [PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ _ hi]
   simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Introduce `a b h`. Establish `hk : a • (t : ℕ → A) k + b • (s : ℕ → A) k = 0`.
+
+Rewrite using `[← TateModule.nsmul_succ t k, ← TateModule.nsmul_succ s k, nsmul_swap a ℓ, nsmul_swap b ℓ, ← nsmul_add, h, nsmul_zero]`. Take `⟨⟨a', rfl⟩, ⟨b', rfl⟩⟩` from `ih a b hk`. Establish `h' : a' • (t : ℕ → A) 1 + b' • (s : ℕ → A) 1 = 0`. Rewrite using `[← TateModule.pow_nsmul_add t 1 k, ← TateModule.pow_nsmul_add s 1 k, add_comm 1 k, nsmul_swap a' (ℓ ^ k), nsmul_swap b' (ℓ ^ k), ← mul_nsmul', ← mul_nsmul']`. Conclude with `h`.
+
+Take `⟨ha, hb⟩` from `h1 a' b' h'`. Prove the components needed by the constructor for the conclusion. Rewrite using `[pow_succ]`. Conclude with `mul_dvd_mul_left _ ha`. Rewrite using `[pow_succ]`.
+
+Conclude with `mul_dvd_mul_left _ hb`.
+-/
 theorem TateModule.dvd_of_nsmul_add_nsmul_eq_zero (t s : TateModule ℓ A)
     (h1 : ∀ a b : ℕ, a • (t : ℕ → A) 1 + b • (s : ℕ → A) 1 = 0 → ℓ ∣ a ∧ ℓ ∣ b) (k : ℕ) :
     ∀ a b : ℕ, a • (t : ℕ → A) k + b • (s : ℕ → A) k = 0 → ℓ ^ k ∣ a ∧ ℓ ^ k ∣ b := by
@@ -212,6 +281,35 @@ theorem TateModule.dvd_of_nsmul_add_nsmul_eq_zero (t s : TateModule ℓ A)
     · rw [pow_succ]; exact mul_dvd_mul_left _ ha
     · rw [pow_succ]; exact mul_dvd_mul_left _ hb
 
+/- English proof (translation)
+Take `⟨P, Q, hP, hQ, hPQ⟩` from `hbase`. Take `⟨t, ht⟩` from `exists_tateModule_apply_eq hcard 1 P (by rwa [pow_one])`. Take `⟨s, hs⟩` from `exists_tateModule_apply_eq hcard 1 Q (by rwa [pow_one])`. Establish `h1 : ∀ a b : ℕ, a • (t : ℕ → A) 1 + b • (s : ℕ → A) 1 = 0 → ℓ ∣ a ∧ ℓ ∣ b`. Rewrite using `[ht, hs]`.
+
+Conclude with `hPQ`. Establish `hind` using `TateModule.dvd_of_nsmul_add_nsmul_eq_zero t s h1`. Set `g : ∀ k, ZMod (ℓ ^ k) × ZMod (ℓ ^ k) →+ A` to `fun k => (zmodMulHom _ _ (TateModule.pow_nsmul t k)).coprod (zmodMulHom _ _ (TateModule.pow_nsmul s k))`. Establish `hg : ∀ k x, g k x = x.1.val • (t : ℕ → A) k + x.2.val • (s : ℕ → A) k`. Introduce `k x`.
+
+Simplify using `[g, zmodMulHom_apply]`. Establish `hginj : ∀ k, Function.Injective (g k)`. Introduce `k`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, y⟩ hxy`.
+
+Rewrite `hxy` using `[hg]`. Take `⟨hx, hy⟩` from `hind k _ _ hxy`. Establish `hx0 : x = 0`. Rewrite using `[← ZMod.val_eq_zero]`. Conclude with `Nat.eq_zero_of_dvd_of_lt hx (ZMod.val_lt x)`.
+
+Establish `hy0 : y = 0`. Rewrite using `[← ZMod.val_eq_zero]`. Conclude with `Nat.eq_zero_of_dvd_of_lt hy (ZMod.val_lt y)`. Simplify using `[hx0, hy0]`. Set `Φ : ℤ_[ℓ] × ℤ_[ℓ] →ₗ[ℤ_[ℓ]] TateModule ℓ A` to `(LinearMap.toSpanSingleton ℤ_[ℓ] _ t).coprod (LinearMap.toSpanSingleton ℤ_[ℓ] _ s)`.
+
+Establish `hΦ : ∀ a b k, ((Φ (a, b) : TateModule ℓ A) : ℕ → A) k = g k (PadicInt.toZModPow k a, PadicInt.toZModPow k b)`. Introduce `a b k`. Rewrite using `[hg]`. Simplify using `[Φ, LinearMap.coprod_apply, TateModule.smul_apply]`. Establish `hinj : Function.Injective Φ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨a, b⟩ hab`. Establish `hk : ∀ k, PadicInt.toZModPow k a = 0 ∧ PadicInt.toZModPow k b = 0`. Introduce `k`. Establish `h` using `congrArg (fun u : TateModule ℓ A => (u : ℕ → A) k) hab`.
+
+Simplify using `only [hΦ, ZeroMemClass.coe_zero, Pi.zero_apply] at h`. Establish `h0` using `hginj k (h.trans (map_zero (g k)).symm)`. Conclude with `⟨congrArg Prod.fst h0, congrArg Prod.snd h0⟩`. Establish `ha : a = 0` using `PadicInt.ext_of_toZModPow.mp fun k => by rw [(hk k).1, map_zero]`. Establish `hb : b = 0` using `PadicInt.ext_of_toZModPow.mp fun k => by rw [(hk k).2, map_zero]`.
+
+Simplify using `[ha, hb]`. Establish `hsurj : Function.Surjective Φ`. Introduce `u`. Establish `hlev : ∀ k, ∃ x : ZMod (ℓ ^ k) × ZMod (ℓ ^ k), g k x = (u : ℕ → A) k`. Introduce `k`.
+
+Use `finite_torsion_of_card hcard k` as an intermediate fact. Set `G : ZMod (ℓ ^ k) × ZMod (ℓ ^ k) → {P : A // ℓ ^ k • P = 0}` to `fun x => ⟨g k x, by`. Rewrite using `[hg, nsmul_add, nsmul_swap (ℓ ^ k) x.1.val, nsmul_swap (ℓ ^ k) x.2.val, TateModule.pow_nsmul t k, TateModule.pow_nsmul s k]`. Use the proof step `simp⟩`. Establish `hG : Function.Injective G` using `fun x y h => hginj k (congrArg Subtype.val h)`.
+
+Establish `hGb` using `hG.bijective_of_nat_card_le (by rw [hcard, Nat.card_prod, Nat.card_zmod, sq])`. Take `⟨x, hx⟩` from `hGb.2 ⟨(u : ℕ → A) k, TateModule.pow_nsmul u k⟩`. Conclude with `⟨x, congrArg Subtype.val hx⟩`. Use `choose x hx using hlev`. Establish `hcompat : ∀ k, (((x (k + 1)).1.val : ZMod (ℓ ^ k)), ((x (k + 1)).2.val : ZMod (ℓ ^ k))) = x k`.
+
+Introduce `k`. Apply `hginj k` to reduce the goal to its premises. Rewrite using `[hx k, hg]`. Simplify using `only`. Rewrite using `[val_nsmul_eq (TateModule.pow_nsmul t k) rfl, val_nsmul_eq (TateModule.pow_nsmul s k) rfl, ← TateModule.nsmul_succ t k, ← TateModule.nsmul_succ s k, nsmul_swap _ ℓ, nsmul_swap _ ℓ, ← nsmul_add, ← hg (k + 1) (x (k + 1)), hx (k + 1), TateModule.nsmul_succ u k]`.
+
+Take `⟨a, ha⟩` from `exists_toZModPow_eq (fun k => (x k).1) fun k => congrArg Prod.fst (hcompat k)`. Take `⟨b, hb⟩` from `exists_toZModPow_eq (fun k => (x k).2) fun k => congrArg Prod.snd (hcompat k)`. Use `⟨(a, b), Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations. Rewrite using `[hΦ, ha, hb]`. Conclude with `hx k`.
+
+Conclude with `⟨(Module.Basis.finTwoProd ℤ_[ℓ]).map (LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩)⟩`.
+-/
 theorem TateModule.exists_basis
     (hcard : ∀ k, Nat.card {P : A // ℓ ^ k • P = 0} = (ℓ ^ k) ^ 2)
     (hbase : ∃ P Q : A, ℓ • P = 0 ∧ ℓ • Q = 0 ∧ ∀ a b : ℕ, a • P + b • Q = 0 → ℓ ∣ a ∧ ℓ ∣ b) :
@@ -295,11 +393,21 @@ section Curve
 variable {F : Type*} [Field F] [IsSepClosed F] [DecidableEq F] (W : WeierstrassCurve F)
   [W.IsElliptic] (ℓ : ℕ) [hℓ : Fact ℓ.Prime]
 
+/- English proof (translation)
+Rewrite using `[← card_torsionBy W (n := ℓ ^ k) (by push_cast; exact pow_ne_zero _ hℓF)]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun P => torsionBy.nsmul_iff.symm)`.
+-/
 theorem card_nsmul_pow_eq_zero (hℓF : (ℓ : F) ≠ 0) (k : ℕ) :
     Nat.card {P : W.toAffine.Point // ℓ ^ k • P = 0} = (ℓ ^ k) ^ 2 := by
   rw [← card_torsionBy W (n := ℓ ^ k) (by push_cast; exact pow_ne_zero _ hℓF)]
   exact Nat.card_congr (Equiv.subtypeEquivRight fun P => torsionBy.nsmul_iff.symm)
 
+/- English proof (translation)
+Take `⟨e⟩` from `nonempty_torsionBy_addEquiv W hℓF`. Use `⟨(e.symm (1, 0) : W.toAffine.Point), (e.symm (0, 1) : W.toAffine.Point), torsionBy.nsmul_iff.mp (e.symm (1, 0)).2, torsionBy.nsmul_iff.mp (e.symm (0, 1)).2, fun a b h => ?_⟩` and prove the remaining obligations. Establish `hab : ((a : ZMod ℓ), (b : ZMod ℓ)) = a • ((1 : ZMod ℓ), (0 : ZMod ℓ)) + b • ((0 : ZMod ℓ), (1 : ZMod ℓ))`. Apply the tactic sequence `ext <;> simp`. Establish `h' : e.symm ((a : ZMod ℓ), (b : ZMod ℓ)) = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hab, map_add, map_nsmul, map_nsmul]`. Simplify using `using h`. Establish `h''` using `congrArg e h'`. Rewrite `h''` using `[AddEquiv.apply_symm_apply, map_zero]`.
+
+Conclude with `⟨(ZMod.natCast_eq_zero_iff a ℓ).mp (congrArg Prod.fst h''), (ZMod.natCast_eq_zero_iff b ℓ).mp (congrArg Prod.snd h'')⟩`.
+-/
 theorem exists_independent_torsion_prime (hℓF : (ℓ : F) ≠ 0) :
     ∃ P Q : W.toAffine.Point, ℓ • P = 0 ∧ ℓ • Q = 0 ∧
       ∀ a b : ℕ, a • P + b • Q = 0 → ℓ ∣ a ∧ ℓ ∣ b := by
@@ -319,14 +427,23 @@ theorem exists_independent_torsion_prime (hℓF : (ℓ : F) ≠ 0) :
   exact ⟨(ZMod.natCast_eq_zero_iff a ℓ).mp (congrArg Prod.fst h''),
     (ZMod.natCast_eq_zero_iff b ℓ).mp (congrArg Prod.snd h'')⟩
 
+/- English proof (translation)
+The claim follows from `TateModule.exists_basis (card_nsmul_pow_eq_zero W ℓ hℓF) (exists_independent_torsion_prime W ℓ hℓF)`.
+-/
 theorem tateModule_basis (hℓF : (ℓ : F) ≠ 0) :
     Nonempty (Module.Basis (Fin 2) ℤ_[ℓ] (TateModule ℓ W.toAffine.Point)) :=
   TateModule.exists_basis (card_nsmul_pow_eq_zero W ℓ hℓF) (exists_independent_torsion_prime W ℓ hℓF)
 
+/- English proof (translation)
+The claim follows from `let ⟨b⟩ := tateModule_basis W ℓ hℓF Module.Free.of_basis b`.
+-/
 theorem tateModule_free (hℓF : (ℓ : F) ≠ 0) : Module.Free ℤ_[ℓ] (TateModule ℓ W.toAffine.Point) :=
   let ⟨b⟩ := tateModule_basis W ℓ hℓF
   Module.Free.of_basis b
 
+/- English proof (translation)
+Take `⟨b⟩` from `tateModule_basis W ℓ hℓF`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+-/
 theorem finrank_tateModule (hℓF : (ℓ : F) ≠ 0) :
     Module.finrank ℤ_[ℓ] (TateModule ℓ W.toAffine.Point) = 2 := by
   obtain ⟨b⟩ := tateModule_basis W ℓ hℓF
@@ -341,6 +458,9 @@ variable {ℓ : ℕ} {A : Type*} [AddCommGroup A]
 instance TateModule.instTopologicalSpace : TopologicalSpace (TateModule ℓ A) :=
   TopologicalSpace.induced (fun t => (t : ℕ → A)) (@Pi.topologicalSpace ℕ (fun _ => A) fun _ => ⊥)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace A := ⊥`. Establish `: DiscreteTopology A` using `⟨rfl⟩`. Establish `hc : Continuous (fun f : ℕ → A => f k)` using `continuous_apply k`. Conclude with `isOpen_induced (hc.isOpen_preimage {a} (isOpen_discrete {a}))`.
+-/
 theorem TateModule.isOpen_setOf_apply_eq (k : ℕ) (a : A) :
     IsOpen {t : TateModule ℓ A | (t : ℕ → A) k = a} := by
   letI : TopologicalSpace A := ⊥
@@ -361,6 +481,9 @@ noncomputable def TateModule.map (f : A →+ A) : TateModule ℓ A →ₗ[ℤ_[�
   map_add' s t := Subtype.ext (funext fun k => map_add f _ _)
   map_smul' a t := Subtype.ext (funext fun k => map_nsmul f _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TateModule.map_apply (f : A →+ A) (t : TateModule ℓ A) (k : ℕ) :
     ((TateModule.map f t : TateModule ℓ A) : ℕ → A) k = f ((t : ℕ → A) k) :=
   rfl
@@ -377,11 +500,25 @@ noncomputable def tateRep {G : Type*} [Monoid G] (φ : G →* AddMonoid.End A) :
     rw [map_mul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateRep_apply {G : Type*} [Monoid G] (φ : G →* AddMonoid.End A) (g : G)
     (t : TateModule ℓ A) (k : ℕ) :
     ((tateRep φ g t : TateModule ℓ A) : ℕ → A) k = φ g ((t : ℕ → A) k) :=
   rfl
 
+/- English proof (translation)
+Use `letI : TopologicalSpace A := ⊥`. Establish `: DiscreteTopology A` using `⟨rfl⟩`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `k`.
+
+Rewrite using `[continuous_discrete_rng]`. Introduce `a`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `⟨g0, t0⟩ hp`. Express the relevant statement in the definitionally equal form `φ g0 ((t0 : ℕ → A) k) = a at hp`.
+
+Use `⟨{p : G × TateModule ℓ A | φ (g0⁻¹ * p.1) ((t0 : ℕ → A) k) = (t0 : ℕ → A) k ∧ (p.2 : ℕ → A) k = (t0 : ℕ → A) k}, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, t⟩ ⟨hg, ht⟩`. Express the relevant statement in the definitionally equal form `φ g ((t : ℕ → A) k) = a`. Rewrite using `[ht, ← hp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_inv_cancel_left]`. Use `_ = φ g0 (φ (g0⁻¹ * g) ((t0 : ℕ → A) k)) := by rw [map_mul]; rfl`. Use `_ = φ g0 ((t0 : ℕ → A) k) := by rw [hg]`. Conclude with `((hφ _).preimage (continuous_const.mul continuous_fst)).inter ((TateModule.isOpen_setOf_apply_eq k _).preimage continuous_snd)`. Use `⟨?_, rfl⟩ show φ (g0⁻¹ * g0) _ = _` and prove the remaining obligations.
+
+Rewrite using `[inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem continuous_tateRep {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (φ : G →* AddMonoid.End A) (hφ : ∀ a : A, IsOpen {g : G | φ g a = a}) :
     Continuous (fun p : G × TateModule ℓ A => tateRep φ p.1 p.2) := by
@@ -424,12 +561,18 @@ noncomputable abbrev galTateRep :
     Representation ℤ_[ℓ] Gal(L/K) (TateModule ℓ (W.baseChange L).toAffine.Point) :=
   tateRep (galPointsHom K L W)
 
+/- English proof (translation)
+The claim follows from `continuous_tateRep _ fun P => isOpen_stabilizer_point W (GroundTheory.ProfCoh.stabilizer (galPointsZ K L W).ρ P) P fun _ h => h`.
+-/
 theorem continuous_galTateRep [Algebra.IsIntegral K L] :
     Continuous (fun p : Gal(L/K) × TateModule ℓ (W.baseChange L).toAffine.Point =>
       galTateRep K L W ℓ p.1 p.2) :=
   continuous_tateRep _ fun P =>
     isOpen_stabilizer_point W (GroundTheory.ProfCoh.stabilizer (galPointsZ K L W).ρ P) P fun _ h => h
 
+/- English proof (translation)
+The claim follows from `tateModule_basis (W.baseChange L) ℓ (by rw [← map_natCast (algebraMap K L)] exact (map_ne_zero_iff _ (algebraMap K L).injective).mpr hℓK)`.
+-/
 theorem galTateRep_basis [IsSepClosed L] [W.IsElliptic] (hℓK : (ℓ : K) ≠ 0) :
     Nonempty (Module.Basis (Fin 2) ℤ_[ℓ] (TateModule ℓ (W.baseChange L).toAffine.Point)) :=
   tateModule_basis (W.baseChange L) ℓ (by

@@ -14,6 +14,9 @@ def tailT (t : ℕ) (la : Fin (r + K) → ℤ) : Fin (K + t) → ℤ := fun l =>
 def glueT (t : ℕ) (be : ℤ) (τ : Fin (K + t) → ℤ) : Fin (r + K) → ℤ := fun m =>
   if h : m.val < r - t then be else if h' : m.val - (r - t) < K + t then τ ⟨m.val - (r - t), h'⟩ else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Establish `hl` using `l.2`. Establish `h1 : (r - t) + l.val < r + K` using `by omega`. Simplify using `only [tailT, glueT, dif_pos h1]`. Simplify using the standard rewrite rules.
+-/
 theorem tailT_glueT (t : ℕ) (ht : t ≤ r) (be : ℤ) (τ : Fin (K + t) → ℤ) : tailT (r := r) t (glueT t be τ) = τ := by
   funext l
   have hl := l.2
@@ -21,6 +24,9 @@ theorem tailT_glueT (t : ℕ) (ht : t ≤ r) (be : ℤ) (τ : Fin (K + t) → �
   simp only [tailT, glueT, dif_pos h1]
   simp
 
+/- English proof (translation)
+Unfold `tailT`. Rewrite using `[dif_pos]`.
+-/
 theorem tailT_apply (t : ℕ) (ht : t ≤ r) (la : Fin (r + K) → ℤ) (l : Fin (K + t)) :
     tailT t la l = la ⟨(r - t) + l.val, by have := l.2; omega⟩ := by
   unfold tailT; rw [dif_pos]
@@ -28,6 +34,11 @@ theorem tailT_apply (t : ℕ) (ht : t ≤ r) (la : Fin (r + K) → ℤ) (l : Fin
 section
 variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → Fin N} {bb : Fin N → ℝ} {a La : ℝ} {p : ℕ}
 
+/- English proof (translation)
+Establish `hS : (SP (r` using `r) (K := K) LL n0 B).Finite := by`. Use `(Set.Finite.pi (t := fun _ : Fin (N + 1) => Set.pi Set.univ fun _ : Fin (r + K) => Set.Icc (-(beA n0 B : ℤ)) (beA n0 B)) fun _ => Set.Finite.pi fun _ => Set.finite_Icc _ _).subset ?_` and prove the remaining obligations. Introduce and unpack `μ ⟨dd, hpa⟩`. Take `⟨P, rfl⟩` from `hpa.path`. Simplify using `only [Set.mem_pi, Set.mem_univ, Set.mem_Icc, forall_const, true_implies]`.
+
+Introduce `s m`. Conclude with `⟨le_trans (neg_le_neg (by exact_mod_cast dminus_le_beA H hpa.degs s.val)) (neg_dminus_le_mu P s.val s.2 m), path_le_beA H P hpa s.val s.2 m⟩`. Use `(hS.biUnion fun μ _ => (Set.finite_singleton μ).prod (finite_St (tanPart μ))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨μ, I⟩ ⟨h1, h2⟩`. Conclude with `Set.mem_biUnion h1 ⟨rfl, h2⟩`.
+-/
 theorem finite_SAll [NeZero r] [NeZero K] (H : HypT N n0 r K LL B od bb a La p) :
     (SAll (r := r) (K := K) LL n0 B).Finite := by
   have hS : (SP (r := r) (K := K) LL n0 B).Finite := by
@@ -48,6 +59,17 @@ def Af (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) (s : ℕ) (μ0 : Fin (N 
   hfin.toFinset.filter fun q => ∀ t : Fin (N + 1), t.val ≤ s → q.1 t = μ0 t
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `q`. Simplify using `only [Af, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hq, h⟩, h'⟩`. Use `⟨hq, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : t = (⟨s, hs⟩ : Fin N).succ`. Substitute `e` using the available equality. Rewrite using `[Function.update_apply, if_pos rfl]`. Conclude with `h'`. Rewrite using `[Function.update_of_ne e]`.
+
+Apply `h` to reduce the goal to its premises. Establish `: t.val ≠ s + 1` using `fun h2 => e (Fin.ext (by simp [h2]))`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨hq, h⟩`. Use `⟨⟨hq, fun t ht => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e : t ≠ (⟨s, hs⟩ : Fin N).succ`. Introduce and unpack `rfl`. Simplify using `at ht`. Rewrite using `[h t (by omega), Function.update_of_ne e]`. Rewrite using `[h _ (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Af_fiber (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) (s : ℕ) (hs : s < N)
     (μ0 : Fin (N + 1) → Fin (r + K) → ℤ) (la' : Fin (r + K) → ℤ) :
     (Af hfin s μ0).filter (fun q => q.1 (⟨s, hs⟩ : Fin N).succ = la') =
@@ -74,6 +96,13 @@ theorem Af_fiber (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) (s : ℕ) (hs 
     · rw [h _ (by simp)]
       simp
 
+/- English proof (translation)
+Simplify using `only [Af, Finset.mem_filter, Set.Finite.mem_toFinset] at hq`. Take `⟨⟨hsp, -⟩, hμ⟩` from `hq`. Take `⟨dd, hpa⟩` from `hsp`. Take `⟨P, hP⟩` from `hpa.path`. Establish `hc : q.1 (⟨s, hs⟩ : Fin N).castSucc = μ0 (⟨s, hs⟩ : Fin N).castSucc` using `hμ _ (by simp)`.
+
+Rewrite using `[← hc]`. Establish `hstep` using `P.step ⟨s, hs⟩`. Rewrite `hstep` using `[hP]`. Use `⟨by rw [← hP]; exact P.dom _, fun hlt => ?_, fun hge => ⟨⟨dd ⟨s, hs⟩, ?_⟩, fun m hm => hpa.head _ m hge hm⟩⟩` and prove the remaining obligations. Rewrite using `[← hpa.degs _ hlt]` and apply the resulting hypothesis.
+
+Establish `hv : LL.vec ⟨s, hs⟩ = true` using `H.vec_true_of_late _ (Nat.le_add_right_of_le hge)`. Rewrite `hstep` using `[if_pos hv]`. Then use the resulting hypothesis.
+-/
 theorem Af_step (H : HypT N n0 r K LL B od bb a La p) (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) (s : ℕ)
     (hs : s < N) (μ0 : Fin (N + 1) → Fin (r + K) → ℤ) (q : QT N r K) (hq : q ∈ Af hfin s μ0) :
     Dominant (q.1 (⟨s, hs⟩ : Fin N).succ) ∧
@@ -94,6 +123,9 @@ theorem Af_step (H : HypT N n0 r K LL B od bb a La p) (hfin : (SAll (r := r) (K 
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.card_eq_sum_card_fiberwise hE]`. Use `Finset.sum_congr rfl fun la' _ => ?_` and prove the remaining obligations. Rewrite using `[Af_fiber hfin s hs]`.
+-/
 theorem Af_card_sum (hfin : (SAll (r := r) (K := K) LL n0 B).Finite) (s : ℕ) (hs : s < N)
     (μ0 : Fin (N + 1) → Fin (r + K) → ℤ) (E : Finset (Fin (r + K) → ℤ))
     (hE : ∀ q ∈ Af hfin s μ0, q.1 (⟨s, hs⟩ : Fin N).succ ∈ E) :

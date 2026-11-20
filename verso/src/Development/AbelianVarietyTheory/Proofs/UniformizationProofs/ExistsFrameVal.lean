@@ -29,6 +29,11 @@ noncomputable section
 namespace GlobalTheory.UT.SmallPoint
 open CoefBasic
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h q`. Establish `h₁` using `hS (insert i₀ S) (Finset.subset_insert _ _)`. Establish `h₂ : (q : WithTop ℚ) ≤ v (∑ i ∈ (insert i₀ S).erase i₀, f i)` using `v.map_le_sum fun i hi => hq i (Finset.ne_of_mem_erase hi)`. Rewrite `h₁` using `[← Finset.add_sum_erase _ _ (Finset.mem_insert_self i₀ S), zero_sub, v.map_neg]`. Use `v.map_le_sub h₁ h₂` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem le_of_sumV {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix : Type} {f : Ix → F} (h : SumV v f 0)
     (i₀ : Ix) (q : ℚ) (hq : ∀ i, i ≠ i₀ → (q : WithTop ℚ) ≤ v (f i)) : (q : WithTop ℚ) ≤ v (f i₀) := by
   classical
@@ -40,6 +45,11 @@ theorem le_of_sumV {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix :
   have := v.map_le_sub h₁ h₂
   rwa [add_sub_cancel_right] at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 hx)`. Take `⟨n, hn⟩` from `exists_nat_gt q`. Establish `e` using `h n`. Rewrite `e` using `[v.map_mul, v.map_pow, hu, nsmul_zero, add_zero, ← hq, WithTop.coe_le_coe]`.
+
+Establish `: ((n + 1 : ℕ) : ℚ) ≤ ((N * (n + 1) : ℕ) : ℚ)` using `by exact_mod_cast Nat.le_mul_of_pos_left _ hN`. Move the coercions through the operations in `at this e`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_val {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {x u : F} (hu : v u = 0) {N : ℕ}
     (hN : 1 ≤ N) (h : ∀ n : ℕ, (((N * (n + 1) : ℕ) : ℚ) : WithTop ℚ) ≤ v (x * u ^ n)) : x = 0 := by
   by_contra hx
@@ -54,6 +64,9 @@ theorem eq_zero_of_val {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {
 abbrev PSec {X : Scheme.{0}} (L : LB X) (n : ℕ) : Type :=
   LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ)))
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => 𝟙 X) (ε' := fun _ => ((N * (n + 1) : ℕ) : ℤ)) (H1.SquareUnits.formEq_of_add fun U _ h => by`. Simplify using the standard rewrite rules. Use the proof step `module) (H1.SectionArithmetic.mulSec σ (H1.SectionArithmetic.powSec fun _ : Fin n => ρ))`. Use `⟨τ, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hτ Z r z J hJ, H1.SectionArithmetic.sval_mulSec _ _ _ z hJ, H1.SectionArithmetic.sval_powSec _ _ z hJ, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem exists_mul_pow {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {N : ℕ} (σ ρ : PSec L N) (n : ℕ) :
     ∃ τ : PSec L (N * (n + 1)), ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (J), Good L z J →
       sval τ r z J = sval σ r z J * sval ρ r z J ^ n := by
@@ -65,6 +78,15 @@ theorem exists_mul_pow {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {N : ℕ} (σ �
   rw [hτ Z r z J hJ, H1.SectionArithmetic.sval_mulSec _ _ _ z hJ, H1.SectionArithmetic.sval_powSec _ _ z hJ, Finset.prod_const,
     Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨M, s, hcov, haff⟩` from `hV ⊤ hS`. Use `choose r hr hsurj using fun i => (haff i).2`. Take `⟨i', hi⟩ : ∃ i' : A.left ⟶ (A.hom ⁻¹ᵁ ⊤).toScheme, i' ≫ (A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` from `⟨A.left.topIso.inv, A.left.topIso.inv_hom_id⟩`. Establish `sec : ∀ j, ∃ σ : PSec L n, ∀ (Z : Scheme.{0}) (r : Z ⟶ A.left) (z : Z) (J), Good L z J → sval σ r z J = sval (L` using `L) (φ := fun _ : Fin n => (A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) (s j) (r ≫ i') z J := fun j => by`. Take `⟨s', hs'⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => 𝟙 A.left) (ε' := fun _ => (n : ℤ)) (fun U _ f => by`.
+
+Simplify using `only [hi, zpow_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_one, zpow_natCast])`. Use the proof step `(H1.SectionArithmetic.pullSec (L := L) (φ := fun _ : Fin n => (A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) (s j) i')`. Conclude with `⟨s', fun Z r z J hJ => (hs' Z r z J hJ).trans (H1.SectionArithmetic.sval_pullSec _ _ r z hJ)⟩`. Use `choose σ hσ using sec`. Establish `key : p.left ≫ i' = q.left ≫ i'`.
+
+Use `AutUniq.hom_eq_of_sval (L := L) (φ := fun _ : Fin n => (A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) s (A.hom ∣_ ⊤) _ _ ?_ hcov (fun i => (haff i).1) r hr hsurj fun y => ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (⊤ : S.Opens).ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, reassoc_of% hi, Over.w]`. Take `⟨J, hJ, u, hu⟩` from `H y`. Conclude with `⟨J, hJ, u, fun j => by rw [← hσ j _ _ y J hJ, ← hσ j _ _ y J hJ, hu]⟩`.
+
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `congrArg (fun q => q ≫ (A.hom ⁻¹ᵁ ⊤).ι) key` as an intermediate fact. Simplify `this` using `only [Category.assoc, hi, Category.comp_id]`.
+-/
 theorem eq_of_veryAmple {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB)
     (hS : IsAffineOpen (⊤ : S.Opens)) {n : ℕ} (hV : VeryAmpleAt A L n) {T : Over S} (p q : T ⟶ A)
     (H : ∀ z : T.left, ∃ J, Good L z J ∧ ∃ u : (T.left.presheaf.stalk z)ˣ, ∀ σ : PSec L n,
@@ -108,6 +130,15 @@ def Ev {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) {n : ℕ} (σ : P
 
 variable {hϖ hv}
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨G', hG', vG'⟩` from `exists_gen hL (φ' := fun _ : Fin 1 => m.left ≫ 𝟙 _) (ε' := fun _ => (n : ℤ)) (fun U _ h => by simp) (GeneratorPullback.powGen _ _ _ G n) (powGen_isGen _ _ _ _ hG n)`. Take `⟨x₀, hx₀⟩` from `TwistUnit.exists_ratio_local (R := TWO.Ov v) hL (H1.SectionArithmetic.pullSec σ m.left) G' hG'`. Establish `key : ∀ {E : Type} [CommRing E] (φ : TWO.Ov v →+* E) (z : Spec (CommRingCat.of E)), gs (Spec.map (CommRingCat.ofHom φ)) z ⊤ x₀ = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of E)).inv.hom (φ ((Scheme.ΓSpecIso (CommRingCat.of (TWO.Ov v))).hom.hom x₀)))` using `fun φ z => by`. Establish `e` using `gs_pull (𝟙 _) (Spec.map (CommRingCat.ofHom φ)) z ⊤ trivial x₀`.
+
+Rewrite `e` using `[Category.id_comp]`. Conclude with `e.symm.trans (congrArg (gs (𝟙 _) z ⊤) (TWM.appTop_specMap (CommRingCat.ofHom φ) x₀))`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of (TWO.Ov v))).hom.hom x₀, fun z J hJ => ?_, fun z J hJ hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← H1.SectionArithmetic.sval_pullSec σ m.left _ z hJ]`. Use `(hx₀ _ _ z J hJ).trans (congrArg₂ (· * ·) (key (algebraMap (TWO.Ov v) F) z) ?_)` and prove the remaining obligations.
+
+Rewrite using `[vG' _ _ z J hJ, UUA.val_powGen', Units.val_pow_eq_pow_val]`. Establish `e` using `hx₀ _ (Spec.map (CommRingCat.ofHom (residue (TWO.Ov v)))) z J hJ`. Rewrite `e` using `[H1.SectionArithmetic.sval_pullSec _ _ _ z hJ]`. Establish `h₁` using `isUnit_of_mul_isUnit_left ((congrArg IsUnit e).mp hu)`. Rewrite `h₁` using `[key]`.
+
+Use `isUnit_of_map_unit (residue (TWO.Ov v)) _ (IsUnit.mk0 _ fun h0 => ?_)` and prove the remaining obligations. Rewrite `h₁` using `[h0, map_zero, gs_eq _ _ ⊤ trivial, map_zero, map_zero]`. Conclude with `not_isUnit_zero h₁`.
+-/
 theorem exists_ev_int {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) (hG : G.IsGen) {n : ℕ}
     (σ : PSec D.toPre.P.L n) : ∃ x : TWO.Ov v, Ev hϖ hv G σ x ∧
       ∀ (z : Spec (CommRingCat.of (ResidueField (TWO.Ov v)))) (J), Good D.toPre.P.L z J →
@@ -134,11 +165,19 @@ theorem exists_ev_int {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) (h
     rw [h0, map_zero, gs_eq _ _ ⊤ trivial, map_zero, map_zero] at h₁
     exact not_isUnit_zero h₁
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `exists_ev_int G hG σ`. Conclude with `⟨x, x.2, hx⟩`.
+-/
 theorem exists_ev {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) (hG : G.IsGen) {n : ℕ}
     (σ : PSec D.toPre.P.L n) : ∃ x : F, 0 ≤ v x ∧ Ev hϖ hv G σ x := by
   obtain ⟨x, hx, -⟩ := exists_ev_int G hG σ
   exact ⟨x, x.2, hx⟩
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Set `z : Spec (CommRingCat.of (ResidueField (TWO.Ov v)))` to `closedPoint _`. Take `⟨σ, hσ⟩` from `TwistUnit.unitAt_pow hA D.toPre.P n hn (𝟙 _) ((Spec.map (CommRingCat.ofHom (residue (TWO.Ov v))) ≫ m.left) z)`. Take `⟨J, hJ⟩` from `exists_good' hL z`. Take `⟨x, hx, hu⟩` from `exists_ev_int G hG σ`.
+
+Conclude with `⟨σ, x, TWO.v_unit v (hu z J hJ (TwistUnit.isUnit_sval_of hL σ _ z hσ J hJ)).unit, hx⟩`.
+-/
 theorem exists_ev_unit (hA : AmpleSt) {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) (hG : G.IsGen) {n : ℕ}
     (hn : 4 ≤ n) : ∃ (σ : PSec D.toPre.P.L n) (x : F), v x = 0 ∧ Ev hϖ hv G σ x := by
   have hL := D.toPre.P.isLB
@@ -149,6 +188,9 @@ theorem exists_ev_unit (hA : AmpleSt) {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : P
   obtain ⟨x, hx, hu⟩ := exists_ev_int G hG σ
   exact ⟨σ, x, TWO.v_unit v (hu z J hJ (TwistUnit.isUnit_sval_of hL σ _ z hσ J hJ)).unit, hx⟩
 
+/- English proof (translation)
+Introduce `z J hJ` and use `by rw [hτ _ _ z J hJ, hx z J hJ, hy z J hJ] simp only [cst_eq, map_mul, map_pow] ring`.
+-/
 theorem Ev.mul_pow {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} {G : PGen hϖ hv m} {N n : ℕ} {σ ρ : PSec D.toPre.P.L N}
     {τ : PSec D.toPre.P.L (N * (n + 1))} (hτ : ∀ (Z : Scheme.{0}) (r : Z ⟶ D.toPre.P.A.left) (z : Z) (J),
       Good D.toPre.P.L z J → sval τ r z J = sval σ r z J * sval ρ r z J ^ n) {x y : F}
@@ -157,6 +199,15 @@ theorem Ev.mul_pow {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} {G : PGen hϖ hv m} {N n 
   simp only [cst_eq, map_mul, map_pow]
   ring
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨σB, hσB⟩` from `exists_sec hL (φ' := D.toPre.famφB 0) (ε' := DegPre.famε j) (fun U _ h => by`. Establish `p` using `SectionScalarValuation.prod_famB D.toPre (𝟙 _) 0 j h`. Establish `c : SectionScalarValuation.cQ D.toPre D.toPre.P.A 0 = 1` using `cPoint_zero _`. Simplify using `only [Over.id_left, Category.id_comp, c, _root_.mul_one] at p`.
+
+Rewrite using `[p, Fin.prod_univ_one, inv_mul_cancel_right, zpow_sub_one, inv_mul_cancel_right]) σ`. Establish `hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB 0 i) (DegPre.famε j) (DegPre.famφ D.toPre F 0) (DegPre.famε j)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Take `⟨s, hs⟩` from `exists_sec hL hformF (H1.SectionArithmetic.pullSec σB (DegPre.prB D.toPre F).left)`. Establish `hs' : ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J → sval s ρ z J = sval σB (ρ ≫ (DegPre.prB D.toPre F).left) z J` using `fun Z ρ z J hJ => (hs Z ρ z J hJ).trans (H1.SectionArithmetic.sval_pullSec _ _ ρ z hJ)`. Take `⟨S, rfl, hS⟩` from `FamFree.exists_fam_single hG D.tau_bimult hj 0 s`.
+
+Use `⟨S, ExactTerm.nuGe_of_single hϖ hQ hv hj S 0 0 hS ⟨1, fun _ => 1, fun _ => σB, fun _ => S.s 0, fun _ => ?_, fun _ => ?_, fun j => ?_⟩, fun β hβ => hS β fun mu e => hβ mu (by rw [← e, zero_add]), fun b z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `SectionScalarValuation.secScal_of_sval hL fun y J hJ => (hs' _ (𝟙 _) y J hJ).symm`. Rewrite using `[AddValuation.map_one, QForm.Q_zero hϖ D hQ]`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_one, DVR.constBF_eq, map_one]`.
+
+Simplify using `[resTop]`. Rewrite using `[hs' _ _ z J hJ, ← Over.comp_left, lift_snd, hσB _ _ z J hJ]`.
+-/
 theorem exists_fam (hG : GlobalFnsSt) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) (hϖ : Irreducible ϖ)
     (hv : ValOver ϖ F v) {j : ℕ} (hj : 1 ≤ j) (σ : PSec D.toPre.P.L j) :
     ∃ S : Fam D.toPre F j, NuGe D Q F v j S 0 ∧ (∀ β, (∀ mu, β ≠ j • mu) → ∀ i, (S.s β).f i = 0) ∧
@@ -185,6 +236,15 @@ theorem exists_fam (hG : GlobalFnsSt) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.
     simp [resTop]
   · rw [hs' _ _ z J hJ, ← Over.comp_left, lift_snd, hσB _ _ z J hJ]
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨W, hW, vW⟩` from `exists_gen hL (φ' := TWM.lineφO hϖ hv m) (ε' := DegPre.lineε j) (fun U _ h => by`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two, TWM.lineφO, DegPre.lineε])`. Use the proof step `(LB.mulGen _ _ _ _ _ (GeneratorPullback.powGen _ _ _ G₀ j) (LB.invGen _ _ _ (GeneratorPullback.powGen _ _ _ G j)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ hG₀ j) (invGen_isGen _ _ _ _ (powGen_isGen _ _ _ _ hG j)))`.
+
+Establish `hφ : ∀ i, DegPre.lineφ D.toPre F b i = (TWM.ιS hϖ hv).left ≫ TWM.lineφO hϖ hv m i` using `fun i => by fin_cases i`. Conclude with `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) (MonObj.comp_one (M := D.toPre.P.A) (TWM.ιS hϖ hv)).symm`. Conclude with `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) hb.symm`. Take `⟨c, hc, vc⟩` from `TWM.exists_ratio (F := F) hL w hw (LB.pullGen _ _ _ W (TWM.ιS hϖ hv).left) (pullGen_isGen _ _ _ _ hW _) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [hφ])`. Take `⟨ω, hω⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 hc)`.
+
+Establish `e : ∀ z J, Good D.toPre.P.L z J → (val w (𝟙 _) z J).val = cst F z c * (val W (TWM.ιS hϖ hv).left z J).val` using `fun z J hJ => by`. Establish `e₁` using `val_pull hJ W (TWM.ιS hϖ hv).left (𝟙 _)`. Rewrite `e₁` using `[Category.id_comp]`. Conclude with `(vc _ (𝟙 _) z J hJ).trans (congrArg (fun u : _ˣ => cst F z c * u.val) e₁)`. Use `⟨c, ω, hω.symm, ⟨_, hφ, W, hW, c, hω.symm, e⟩, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e z J hJ, vW _ _ z J hJ, val_mul hJ, val_inv, UUA.val_powGen', UUA.val_powGen', _root_.mul_assoc, ← Units.val_pow_eq_pow_val, ← Units.val_mul, inv_mul_cancel_right, Units.val_pow_eq_pow_val]`.
+-/
 theorem exists_frame_val {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m) (hG : G.IsGen)
     (G₀ : PGen hϖ hv (1 : _ ⟶ D.toPre.P.A)) (hG₀ : G₀.IsGen) {j : ℕ} {b : TF (R := V) F ⟶ D.toPre.P.A}
     (hb : TWM.ιS hϖ hv ≫ m = b) (w : Frm D.toPre F j b) (hw : w.IsGen) :
@@ -214,6 +274,9 @@ theorem exists_frame_val {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} (G : PGen hϖ hv m)
   rw [e z J hJ, vW _ _ z J hJ, val_mul hJ, val_inv, UUA.val_powGen', UUA.val_powGen', _root_.mul_assoc,
     ← Units.val_pow_eq_pow_val, ← Units.val_mul, inv_mul_cancel_right, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Use `⟨LB.pullGen D.toPre.P.L (fun _ : PUnit => eSec D.toPre.P.A) (fun _ => 1) D.toPre.rig (TWM.TO hϖ hv).hom, pullGen_isGen _ _ _ _ D.toPre.rig_gen _, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `val_pull (φ := fun _ : PUnit => eSec D.toPre.P.A) (ε := fun _ => 1) hJ D.toPre.rig (TWM.TO hϖ hv).hom (TWM.ιS hϖ hv).left`. Rewrite `e` using `[Over.w]`. Conclude with `e`.
+-/
 theorem exists_rig : ∃ G₀ : PGen hϖ hv (1 : _ ⟶ D.toPre.P.A), G₀.IsGen ∧ ∀ z J, Good D.toPre.P.L z J →
     val G₀ (TWM.ιS hϖ hv).left z J = rigV D.toPre (TF (R := V) F).hom z J := by
   refine ⟨LB.pullGen D.toPre.P.L (fun _ : PUnit => eSec D.toPre.P.A) (fun _ => 1) D.toPre.rig (TWM.TO hϖ hv).hom,
@@ -223,6 +286,15 @@ theorem exists_rig : ∃ G₀ : PGen hϖ hv (1 : _ ⟶ D.toPre.P.A), G₀.IsGen 
   rw [Over.w] at e
   exact e
 
+/- English proof (translation)
+Introduce `χ`. Take `⟨hb, hs⟩` from `(isZero_iff o).1 ho`. Take `⟨t, ht, vt⟩` from `exists_gen D.toPre.P.isLB (φ' := TWM.gtφO hϖ hv (D := D) 1 χ) (ε' := DegPre.gtε) (fun U _ h => by`. Rewrite using `[Fintype.prod_empty]`. Simplify using `[Fin.prod_univ_four, TWM.gtφO, DegPre.gtε])`.
+
+Use the proof step `(LB.oneGen D.toPre.P.L (Y := (TWM.TO hϖ hv).left))`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Establish `e₁ : TWM.ιS hϖ hv ≫ (1 : _ ⟶ D.toPre.P.A) = 1` using `MonObj.comp_one _`. Establish `e₂` using `comp_cP D.toPre (TWM.ιS hϖ hv) χ`. Use `⟨_, fun i => ?_, t, ht, 1, by rw [v.map_one]; rfl, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb] fin_cases i`. Use `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) (show cP D.toPre _ χ * 1 = TWM.ιS hϖ hv ≫ (cP D.toPre _ χ * 1) from ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_one, _root_.mul_one, e₂]`. Conclude with `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) e₂.symm`. Conclude with `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) e₁.symm`.
+
+Conclude with `congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) e₁.symm`. Rewrite using `[hs χ z J hJ, vt _ _ z J hJ, val_one, cst_eq, map_one, _root_.one_mul]`.
+-/
 theorem gtV_zero {o : GtPtF D.toPre F} (ho : o.IsZero) : GtV hϖ hv o 0 := by
   intro χ
   obtain ⟨hb, hs⟩ := (isZero_iff o).1 ho
@@ -245,12 +317,18 @@ theorem gtV_zero {o : GtPtF D.toPre F} (ho : o.IsZero) : GtV hϖ hv o 0 := by
     · exact congrArg (fun q : TF (R := V) F ⟶ D.toPre.P.A => q.left) e₁.symm
   · rw [hs χ z J hJ, vt _ _ z J hJ, val_one, cst_eq, map_one, _root_.one_mul]
 
+/- English proof (translation)
+The claim follows from `coef_eq fun z J hJ => by rw [UUA.sval_zero_of h _ z J (hJ.mem _ _), cst_eq, map_zero] simp only [MulZeroClass.zero_mul]`.
+-/
 theorem coef_zero {j : ℕ} (S : Fam D.toPre F j) (g : GtPtF D.toPre F) (w : Frm D.toPre F j g.b) {β : D.toPre.X}
     (h : ∀ i, (S.s β).f i = 0) : coef S g w β = 0 :=
   coef_eq fun z J hJ => by
     rw [UUA.sval_zero_of h _ z J (hJ.mem _ _), cst_eq, map_zero]
     simp only [MulZeroClass.zero_mul]
 
+/- English proof (translation)
+The claim follows from `coef_eq fun z J hJ => by have e := hx z J hJ have e' := hc z J hJ rw [hb] at e rw [hS _ z J hJ, e, val_corr hJ g.s_zero, val_one, Units.val_one] simp only [cst_eq, map_mul] at e' ⊢ linear_combination (-cstH z x) * e'`.
+-/
 theorem coef_at_zero {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} {G : PGen hϖ hv m} {j : ℕ} (S : Fam D.toPre F j)
     (g : GtPtF D.toPre F) (hb : TWM.ιS hϖ hv ≫ m = g.b) (w : Frm D.toPre F j g.b) {σ : PSec D.toPre.P.L j} {x c : F}
     (hS : ∀ (b : TF (R := V) F ⟶ D.toPre.P.A) z J, Good D.toPre.P.L z J →
@@ -267,6 +345,51 @@ theorem coef_at_zero {m : TWM.TO hϖ hv ⟶ D.toPre.P.A} {G : PGen hϖ hv m} {j 
 
 end Values
 
+/- English proof (translation)
+Introduce `hL hT hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv k hk d o l ho hl hlQ H`. Establish `I` using `GlobalTheory.UT.CoefVal.main hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv`. Establish `I'` using `GlobalTheory.UT.CoefUnit.exists_fam_coef_val hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv`. Establish `hM` using `D.toPre.P.isLB`. Establish `hob : o.b = 1` using `((isZero_iff o).1 ho).1`.
+
+Establish `hob' : TWM.ιS hϖ hv ≫ (1 : _ ⟶ D.toPre.P.A) = o.b` using `(MonObj.comp_one _).trans hob.symm`. Take `⟨l', hl', -⟩` from `(I d).1`. Establish `hll : ∀ χ, l χ = l' χ`. Take `⟨w, hw⟩` from `(coef_basic V D.toPre F 4 d).1`. Take `⟨ω, hω, -⟩` from `(I d).2.1 4 w hw`.
+
+Establish `le : ∀ l₁ l₂, GtV hϖ hv d l₁ → GtV hϖ hv d l₂ → ∀ χ, l₁ χ ≤ l₂ χ` using `fun l₁ l₂ h₁ h₂ χ => by`. Take `⟨s, hs, -, e⟩` from `I' 4 le_rfl d w l₂ ω hw h₂ hω χ`. Use `((I d).2.2.2.2.2.2 4 (by omega) w s hw).2 l₁ ω 0 h₁ hω hs χ` as an intermediate fact. Rewrite `this` using `[e, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `fun χ => le_antisymm (le _ _ hl hl' χ) (le _ _ hl' hl χ)`. Take `⟨m, hm⟩` from `TWM.exists_liftO hϖ hv (D := D) d.b`. Take `⟨G, hG⟩ : ∃ G : PGen hϖ hv m, G.IsGen` from `exists_gen_of_local (V := TWO.Ov v) _ hM _ _`. Take `⟨G₀, hG₀, vG₀⟩` from `exists_rig (hϖ := hϖ) (hv := hv) (D := D)`. Establish `A : ∀ n j : ℕ, 1 ≤ n → j = k * n → ∀ (σ₁ σ₂ : PSec D.toPre.P.L j) (x₁ x₂ y₁ y₂ : F), Ev hϖ hv G σ₁ x₁ → Ev hϖ hv G σ₂ x₂ → Ev hϖ hv G₀ σ₁ y₁ → Ev hϖ hv G₀ σ₂ y₂ → v y₂ = 0 → ((j : ℚ) : WithTop ℚ) ≤ v (x₁ * y₂ - x₂ * y₁)`.
+
+Introduce `n j hn hj σ₁ σ₂ x₁ x₂ y₁ y₂ hx₁ hx₂ hy₁ hy₂ hu`. Establish `hj1 : 1 ≤ j` using `hj ▸ Nat.mul_pos hk hn`. Establish `hj0 : (0 : ℚ) < j` using `by exact_mod_cast hj1`. Take `⟨w₁, hw₁⟩` from `(coef_basic V D.toPre F j o).2.1 hob`. Take `⟨w, hw, Hw⟩` from `H n j hn hj w₁ hw₁`.
+
+Take `⟨c, ω, hcω, hω, vw⟩` from `exists_frame_val G hG G₀ hG₀ hm w hw`. Establish `vw' : ∀ z J, Good D.toPre.P.L z J → (val w (𝟙 _) z J).val * (val G (TWM.ιS hϖ hv).left z J).val ^ j = cst F z c * (rigV D.toPre (TF (R` using `V) F).hom z J).val ^ j := fun z J hJ => by rw [vw z J hJ, vG₀ z J hJ]`. Establish `vw₁ : ∀ z J, Good D.toPre.P.L z J → (val w₁ (𝟙 _) z J).val * (val G₀ (TWM.ιS hϖ hv).left z J).val ^ j = cst F z 1 * (rigV D.toPre (TF (R` using `V) F).hom z J).val ^ j := fun z J hJ => by`. Rewrite using `[hw₁.2 z J hJ, vG₀ z J hJ, cst_eq, map_one, Units.val_one]`. Take `⟨S₁, n₁, z₁, e₁⟩` from `exists_fam hL.1.globalFns hQ hϖ hv hj1 σ₁`.
+
+Take `⟨S₂, n₂, z₂, e₂⟩` from `exists_fam hL.1.globalFns hQ hϖ hv hj1 σ₂`. Establish `hQj : ∀ mu, (Q (j • mu) : ℚ) / j = j * Q mu` using `fun mu => by`. Rewrite using `[Q_nsmul hϖ hQ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `bo : ∀ S : Fam D.toPre F j, NuGe D Q F v j S 0 → ∀ mu, (((j : ℚ) * Q mu : ℚ) : WithTop ℚ) ≤ v (coef S o w₁ (j • mu))` using `fun S hS mu => by`. Use `((I o).2.2.2.2.2.2 j hj1 w₁ S hw₁.1).2 0 0 0 (gtV_zero ho) ((I o).2.2.1 j w₁ hw₁ hob) hS (j • mu)` as an intermediate fact. Rewrite `this` using `[hQj, Pi.zero_apply, add_zero, add_zero, zero_add]`. Then use the resulting hypothesis. Establish `bd : ∀ S : Fam D.toPre F j, NuGe D Q F v j S 0 → ∀ mu, ((ω : ℚ) : WithTop ℚ) ≤ v (coef S d w (j • mu))` using `fun S hS mu => by`. Use `le_trans (WithTop.coe_le_coe.2 ?_) (((I d).2.2.2.2.2.2 j hj1 w S hw).2 l' ω 0 hl' hω hS (j • mu))` and prove the remaining obligations.
+
+Use `(abs_le.1 (hlQ mu)).1` as an intermediate fact. Rewrite using `[hQj, map_nsmul, ← hll, nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hQ1 : ∀ mu, j • mu ≠ 0 → (j : ℚ) ≤ j * Q mu` using `fun mu h => by`. Establish `: (1 : ℚ) ≤ Q mu` using `by exact_mod_cast QForm.Q_pos hϖ D hQ (fun e => h (by rw [e, smul_zero]))`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hne : ¬ SumV v (coef S₂ o w₁) 0` using `fun h => by`. Use `le_of_sumV h 0 j fun χ hχ => by` as an intermediate fact. Distinguish the cases in `e : ∃ mu, χ = j • mu`. Take `⟨mu, rfl⟩` from `e`.
+
+Conclude with `le_trans (WithTop.coe_le_coe.2 (hQ1 mu hχ)) (bo S₂ n₂ mu)`. Rewrite using `[coef_zero S₂ o w₁ (z₂ χ fun mu h => e ⟨mu, h⟩), v.map_zero]`. Conclude with `le_top`. Rewrite `this` using `[coef_at_zero S₂ o hob' w₁ e₂ hy₂ vw₁, _root_.one_mul, hu, ← WithTop.coe_zero, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `term : ∀ S S' : Fam D.toPre F j, NuGe D Q F v j S 0 → NuGe D Q F v j S' 0 → (∀ β, (∀ mu, β ≠ j • mu) → ∀ i, (S.s β).f i = 0) → ∀ χ, χ ≠ 0 → ((ω + j : ℚ) : WithTop ℚ) ≤ v (coef S d w χ * coef S' o w₁ (0 - χ))` using `fun S S' hS hS' hz χ hχ => by`. Distinguish the cases in `e : ∃ mu, χ = j • mu`. Take `⟨mu, rfl⟩` from `e`. Rewrite using `[v.map_mul, zero_sub, ← smul_neg, WithTop.coe_add]`. Use `add_le_add (bd S hS mu) (le_trans (WithTop.coe_le_coe.2 (hQ1 (-mu) ?_)) (bo S' hS' (-mu)))` and prove the remaining obligations.
+
+Rewrite using `[smul_neg, neg_ne_zero]` and apply the resulting hypothesis. Rewrite using `[coef_zero S d w (hz χ fun mu h => e ⟨mu, h⟩), MulZeroClass.zero_mul, v.map_zero]`. Conclude with `le_top`. Establish `key` using `le_of_sumV (Hw S₁ S₂ hne 0) 0 (ω + j) fun χ hχ => v.map_le_sub (term S₁ S₂ n₁ n₂ z₁ χ hχ) (term S₂ S₁ n₂ n₁ z₂ χ hχ)`. Rewrite `key` using `[sub_zero, coef_at_zero S₁ d hm w e₁ hx₁ vw', coef_at_zero S₂ d hm w e₂ hx₂ vw', coef_at_zero S₁ o hob' w₁ e₁ hy₁ vw₁, coef_at_zero S₂ o hob' w₁ e₂ hy₂ vw₁, show c * x₁ * (1 * y₂) - c * x₂ * (1 * y₁) = c * (x₁ * y₂ - x₂ * y₁) by ring, v.map_mul, hcω, WithTop.coe_add]`.
+
+Conclude with `(WithTop.add_le_add_iff_left WithTop.coe_ne_top).1 key`. Establish `hN : 4 ≤ k * 4` using `by omega`. Take `⟨ρ, y, hy0, hy⟩` from `exists_ev_unit hL.1.ample G₀ hG₀ hN`. Take `⟨x, hx0', hx⟩` from `exists_ev G hG ρ`. Establish `hx0 : v x = 0`.
+
+Take `⟨ρ', x', hx'0, hx'⟩` from `exists_ev_unit hL.1.ample G hG hN`. Take `⟨y', hy'0, hy'⟩` from `exists_ev G₀ hG₀ ρ'`. Establish `h₁` using `A 4 _ (by omega) rfl ρ' ρ x' x y' y hx' hx hy' hy hy0`. Establish `h₂ : (0 : WithTop ℚ) < v (x' * y - x * y')` using `lt_of_lt_of_le (by exact_mod_cast (by omega : 0 < k * 4)) h₁`. Assume the negation of the conclusion as `hne`.
+
+Establish `h₃ : 0 < v (x * y')`. Rewrite using `[v.map_mul]`. Conclude with `add_pos_of_pos_of_nonneg (lt_of_le_of_ne hx0' (Ne.symm hne)) hy'0`. Establish `h₄` using `v.map_lt_add h₂ h₃`. Rewrite `h₄` using `[sub_add_cancel, v.map_mul, hx'0, hy0, add_zero]`.
+
+Conclude with `lt_irrefl _ h₄`. Establish `B : ∀ (σ : PSec D.toPre.P.L (k * 4)) (a b : F), Ev hϖ hv G σ a → Ev hϖ hv G₀ σ b → a * y = x * b`. Introduce `σ a b ha hb`. Use `sub_eq_zero.1 (eq_zero_of_val (v := v) (u := x * y) (N := k * 4) (by rw [v.map_mul, hx0, hy0, add_zero]) (by omega) fun n => ?_)` and prove the remaining obligations. Take `⟨τ₁, hτ₁⟩` from `exists_mul_pow hM σ ρ n`.
+
+Take `⟨τ₂, hτ₂⟩` from `exists_mul_pow hM ρ ρ n`. Use `A (4 * (n + 1)) _ (by omega) (_root_.mul_assoc _ _ _) τ₁ τ₂ _ _ _ _ (ha.mul_pow hτ₁ hx) (hx.mul_pow hτ₂ hx) (hb.mul_pow hτ₁ hy) (hy.mul_pow hτ₂ hy) (by rw [v.map_mul, v.map_pow, hy0, nsmul_zero, add_zero])` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hxne : x ≠ 0` using `fun h => by rw [h, v.map_zero] at hx0; exact WithTop.top_ne_zero hx0`.
+
+Establish `hyne : y ≠ 0` using `fun h => by rw [h, v.map_zero] at hy0; exact WithTop.top_ne_zero hy0`. Use `(eq_of_veryAmple hM (isAffineOpen_top _) (hL.1.ample _ D.toPre.P _ hN).2 1 d.b fun z => ?_).symm` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hM z`. Use `⟨J, hJ, Units.map (cstH (R := V) z).toMonoidHom (Units.mk0 (x / y) (div_ne_zero hxne hyne)) * val G (TWM.ιS hϖ hv).left z J ^ (k * 4) * (val G₀ (TWM.ιS hϖ hv).left z J ^ (k * 4))⁻¹, fun σ => ?_⟩` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `exists_ev G hG σ`.
+
+Take `⟨b, -, hb⟩` from `exists_ev G₀ hG₀ σ`. Establish `e : a = x / y * b`. Use `B σ a b ha hb` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+
+Establish `ea` using `ha z J hJ`. Establish `eb` using `hb z J hJ`. Rewrite `ea` using `[hm]`. Rewrite `eb` using `[hob', hob]`. Rewrite using `[ea, eb, e, Units.val_mul, Units.val_mul, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, cst_eq, cst_eq, map_mul]`.
+
+Use `Units.inv_mul (val G₀ (TWM.ιS hϖ hv).left z J ^ (k * 4))` as an intermediate fact. Use `show _ = cstH z (x / y) * _ * _ * _`. Take the linear combination `(-(cstH z (x / y) * cstH z b * (val G (TWM.ιS hϖ hv).left z J ^ (k * 4)).val)) * this`.
+-/
 theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ (k : ℕ), 1 ≤ k → ∀ (d o : GtPtF D.toPre F) (l : D.toPre.X → ℚ), o.IsZero → GtV hϖ hv d l → (∀ m, |l m| ≤ Q m) → (∀ (n j : ℕ), 1 ≤ n → j = k * n → ∀ (w₁ : Frm D.toPre F j o.b), FrmOne w₁ → ∃ w : Frm D.toPre F j d.b, w.IsGen ∧ ∀ S₁ S₂ : Fam D.toPre F j, ¬ SumV v (coef S₂ o w₁) 0 → ∀ α, SumV v (fun χ => coef S₁ d w χ * coef S₂ o w₁ (α - χ) - coef S₂ d w χ * coef S₁ o w₁ (α - χ)) 0) → d.b = 1 := by
   intro hL hT hVR hTW hUU V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv k hk d o l ho hl hlQ H
   have I := GlobalTheory.UT.CoefVal.main hL hT hVR hTW hUU V hc ϖ hϖ D Q hQ F v hv

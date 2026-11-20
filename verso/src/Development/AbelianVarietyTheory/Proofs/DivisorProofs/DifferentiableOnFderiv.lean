@@ -6,6 +6,19 @@ open scoped Topology ContDiff
 
 namespace GlobalTheory.HoloNormed
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨R, hR, M, hRU, hM⟩` from `SCV.exists_ball_bound hU hf hc`. Use `set r := R / 2 with hr`. Establish `hr0 : 0 < r` using `by positivity`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM c (mem_ball_self hR))`.
+
+Establish `hsub : ∀ x ∈ ball c r, ball x r ⊆ ball c R` using `fun x hx => ball_subset_ball' (by linarith [mem_ball.mp hx])`. Establish `hrU : ball c r ⊆ U` using `(ball_subset_ball (by linarith)).trans hRU`. Use `set C := 2 * M / r with hC`. Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hb : ∀ v, ∀ x ∈ ball c r, ‖fderiv ℂ f x v‖ ≤ C * ‖v‖` using `fun v x hx => (fderiv ℂ f x).le_of_opNorm_le (SCV.norm_fderiv_le_of_ball hr0 (hf.mono ((hsub x hx).trans hRU)) fun z hz => hM z (hsub x hx hz)) v`.
+
+Establish `hd : ∀ v, DifferentiableOn ℂ (fun x => fderiv ℂ f x v) U` using `SCV.differentiableOn_fderiv_apply hU hf`. Establish `hda : ∀ v, DifferentiableAt ℂ (fun x => fderiv ℂ f x v) c` using `fun v => (hd v).differentiableAt (hU.mem_nhds hc)`. Set `L₀ : E →ₗ[ℂ] E →L[ℂ] V` to `{ toFun := fun v => fderiv ℂ (fun x => fderiv ℂ f x v) c map_add' := fun v u => by`. Simplify using `only [map_add]`. Conclude with `fderiv_fun_add (hda v) (hda u)`.
+
+Use the proof step `map_smul' := fun a v => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Conclude with `fderiv_fun_const_smul (hda v) a }`. Set `L : E →L[ℂ] E →L[ℂ] V` to `L₀.mkContinuous (2 * C / r) fun v => (SCV.norm_fderiv_le_of_ball hr0 ((hd v).mono hrU) (hb v)).trans_eq (by ring)`. Establish `key : ∀ z ∈ ball c r, ‖fderiv ℂ f z - fderiv ℂ f c - L.flip (z - c)‖ ≤ 4 * C / r ^ 2 * ‖‖z - c‖ ^ 2‖`.
+
+Introduce `z hz`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun v => ?_` and prove the remaining obligations. Use `(SCV.norm_sub_sub_fderiv_le_of_ball ((hd v).mono hrU) (hb v) hz).trans_eq ?_` and prove the remaining obligations. Rewrite using `[norm_pow, norm_norm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF : HasFDerivAt (fderiv ℂ f) L.flip c`. Rewrite using `[hasFDerivAt_iff_isLittleO]`. Use `(Asymptotics.IsBigO.of_bound _ (mem_of_superset (ball_mem_nhds c hr0) key)).trans_isLittleO ?_` and prove the remaining obligations. Conclude with `Asymptotics.isLittleO_pow_sub_sub c one_lt_two`. Conclude with `hF.differentiableAt.differentiableWithinAt`.
+-/
 theorem differentiableOn_fderiv {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] {f : E → V} {U : Set E} (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f U) : DifferentiableOn ℂ (fderiv ℂ f) U := by
@@ -46,6 +59,11 @@ theorem differentiableOn_fderiv {E V : Type*} [NormedAddCommGroup E] [NormedSpac
     exact Asymptotics.isLittleO_pow_sub_sub c one_lt_two
   exact hF.differentiableAt.differentiableWithinAt
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro V _ _ _ f hf`. Conclude with `contDiffOn_zero.mpr hf.continuousOn`. Consider the case `succ n ih`. Introduce `V _ _ _ f hf`.
+
+Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Conclude with `⟨hf, by simp, ih (differentiableOn_fderiv hU hf)⟩`.
+-/
 theorem contDiffOn_nat {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E} (hU : IsOpen U) (n : ℕ) :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] {f : E → V},
       DifferentiableOn ℂ f U → ContDiffOn ℂ n f U := by
@@ -56,6 +74,9 @@ theorem contDiffOn_nat {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {U 
     rw [Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]
     exact ⟨hf, by simp, ih (differentiableOn_fderiv hU hf)⟩
 
+/- English proof (translation)
+The claim follows from `((contDiffOn_nat hU 2 hf).contDiffAt (hU.mem_nhds hz)).restrict_scalars ℝ`.
+-/
 theorem contDiffAt_two_real {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [IsScalarTower ℝ ℂ E] {U : Set E} (hU : IsOpen U) {f : E → ℂ} (hf : DifferentiableOn ℂ f U) {z : E}
     (hz : z ∈ U) : ContDiffAt ℝ 2 f z :=

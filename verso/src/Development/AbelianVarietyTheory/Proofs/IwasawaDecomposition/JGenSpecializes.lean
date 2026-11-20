@@ -14,30 +14,52 @@ section Val
 
 variable {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] {y : Sp K ⟶ Z} {f g : Z.functionField}
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]`.
+-/
 theorem valAt_algebraMap (a : Z.presheaf.stalk (below y)) :
     valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
   rw [valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Rewrite using `[← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]`.
+-/
 theorem valAt_mul (hf : RegAt (below y) f) (hg : RegAt (below y) g) :
     valAt y (f * g) = valAt y f * valAt y g := by
   obtain ⟨a, rfl⟩ := hf
   obtain ⟨b, rfl⟩ := hg
   rw [← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Conclude with `⟨a ^ n, map_pow _ _ _⟩`.
+-/
 theorem regAt_pow {x : Z} (hf : RegAt x f) (n : ℕ) : RegAt x (f ^ n) := by
   obtain ⟨a, rfl⟩ := hf
   exact ⟨a ^ n, map_pow _ _ _⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hf`. Rewrite using `[← map_pow, valAt_algebraMap, valAt_algebraMap, map_pow]`.
+-/
 theorem valAt_pow (hf : RegAt (below y) f) (n : ℕ) : valAt y (f ^ n) = valAt y f ^ n := by
   obtain ⟨a, rfl⟩ := hf
   rw [← map_pow, valAt_algebraMap, valAt_algebraMap, map_pow]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[valAt_algebraMap]`. Conclude with `(ha.map (Scheme.stalkClosedPointTo y).hom).ne_zero`.
+-/
 theorem valAt_ne_zero (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
   rw [valAt_algebraMap]
   exact (ha.map (Scheme.stalkClosedPointTo y).hom).ne_zero
 
+/- English proof (translation)
+Establish `e : fnOf U h a = algebraMap _ Z.functionField (Z.presheaf.germ U (below y) hy a)` using `(algebraMap_germ hy a).symm`. Establish `ht : ⊤ ≤ y ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hy).ge`. Establish `H` using `congrArg (fun φ => φ.hom a) (Scheme.germ_stalkClosedPointTo y U hy)`. Rewrite using `[e, valAt_algebraMap]`. Use `first`.
+
+Consider the case `rw [valR, dif_pos ht]`. Consider the case `simp only [valR, dif_pos ht]`. Consider the case `simp only [valR, ht, dite_true]`. Use `H.trans ?_` and prove the remaining obligations. Use `first`.
+
+Consider the case `rfl`. Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom]; done)`. Consider the case `(simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom]; rfl)`. Consider the case `(simp [Scheme.Hom.appLE]; done)`.
+-/
 theorem valAt_fnOf {U : Z.Opens} (hy : below y ∈ U) (h : genericPoint Z ∈ U) (a : Γ(Z, U)) :
     valAt y (fnOf U h a) = valR y U a := by
   have e : fnOf U h a = algebraMap _ Z.functionField (Z.presheaf.germ U (below y) hy a) :=
@@ -58,6 +80,9 @@ theorem valAt_fnOf {U : Z.Opens} (hy : below y ∈ U) (h : genericPoint Z ∈ U)
       Functor.mapIso_hom, Iso.op_hom, eqToIso.hom]; rfl)
   | (simp [Scheme.Hom.appLE]; done)
 
+/- English proof (translation)
+Rewrite using `[ratVal, dif_pos hf]`. Establish `he` using `hf.exists_fnOf.choose_spec.choose_spec.choose_spec`. Use `conv_rhs => rw [← he]`. Conclude with `(valAt_fnOf hf.exists_fnOf.choose_spec.choose _ _).symm`.
+-/
 theorem ratVal_eq_valAt {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* ℂ} (y : CxPts q σ)
     (hf : RegAt (under y) f) : ratVal f y = valAt y.1 f := by
   rw [ratVal, dif_pos hf]
@@ -65,6 +90,11 @@ theorem ratVal_eq_valAt {k : Type} [CommRing k] {q : Z ⟶ Sp k} {σ : k →+* �
   conv_rhs => rw [← he]
   exact (valAt_fnOf hf.exists_fnOf.choose_spec.choose _ _).symm
 
+/- English proof (translation)
+Use `haveI := hx`. Take `⟨a, ha⟩` from `h`. Establish `hint : IsIntegral (Z.presheaf.stalk x) f`. Use `⟨Polynomial.X ^ n - Polynomial.C a, Polynomial.monic_X_pow_sub_C a hn.ne', ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_sub, ha]`.
+
+Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := Z.presheaf.stalk x) (K := Z.functionField)).1 hint`. Conclude with `⟨b, hb⟩`.
+-/
 theorem regAt_of_pow {x : Z} (hx : IsIntegrallyClosed (Z.presheaf.stalk x)) {n : ℕ} (hn : 0 < n)
     (h : RegAt x (f ^ n)) : RegAt x f := by
   haveI := hx
@@ -86,12 +116,18 @@ variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : Y ⟶ X)
 def fnMap : X.functionField →+* Y.functionField :=
   (X.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y)).hom
 
+/- English proof (translation)
+Use `show (X.presheaf.germ U _ h ≫ X.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y)).hom s = (j.app U ≫ Y.presheaf.germ (j ⁻¹ᵁ U) (genericPoint Y) h').hom s`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_assoc, Scheme.Hom.germ_stalkMap]`.
+-/
 theorem fnMap_fnOf {U : X.Opens} (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ j ⁻¹ᵁ U)
     (s : Γ(X, U)) : fnMap j hη (fnOf U h s) = fnOf (j ⁻¹ᵁ U) h' (j.app U s) := by
   show (X.presheaf.germ U _ h ≫ X.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y)).hom s =
     (j.app U ≫ Y.presheaf.germ (j ⁻¹ᵁ U) (genericPoint Y) h').hom s
   rw [TopCat.Presheaf.germ_stalkSpecializes_assoc, Scheme.Hom.germ_stalkMap]
 
+/- English proof (translation)
+Establish `e1` using `Scheme.Hom.stalkSpecializes_stalkMap_apply j (genericPoint Y) y ((genericPoint_spec Y).specializes trivial) b`. Simplify using `only [RingHom.algebraMap_toAlgebra, fnMap]`. Rewrite using `[← e1]`. Simplify using `only [CommRingCat.comp_apply, TopCat.Presheaf.stalkSpecializes_comp_apply]`.
+-/
 private theorem fnMap_algebraMap_eq_algebraMap_stalkMap (y : Y) (b : X.presheaf.stalk (j y)) :
     fnMap j hη (algebraMap _ X.functionField b) = algebraMap _ Y.functionField (j.stalkMap y b) := by
   have e1 := Scheme.Hom.stalkSpecializes_stalkMap_apply j (genericPoint Y) y
@@ -100,16 +136,27 @@ private theorem fnMap_algebraMap_eq_algebraMap_stalkMap (y : Y) (b : X.presheaf.
   rw [← e1]
   simp only [CommRingCat.comp_apply, TopCat.Presheaf.stalkSpecializes_comp_apply]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hu`. Take `⟨b, rfl⟩` from `j.stalkMap_surjective y a`. Conclude with `⟨algebraMap _ X.functionField b, ⟨b, rfl⟩, fnMap_algebraMap_eq_algebraMap_stalkMap j hη y b⟩`.
+-/
 theorem exists_fnMap_eq [IsPreimmersion j] {y : Y} {u : Y.functionField}
     (hu : RegAt y u) : ∃ t, RegAt (j y) t ∧ fnMap j hη t = u := by
   obtain ⟨a, rfl⟩ := hu
   obtain ⟨b, rfl⟩ := j.stalkMap_surjective y a
   exact ⟨algebraMap _ X.functionField b, ⟨b, rfl⟩, fnMap_algebraMap_eq_algebraMap_stalkMap j hη y b⟩
 
+/- English proof (translation)
+Introduce `u` and use `let ⟨t, _, ht⟩ := exists_fnMap_eq j hη (regAt_genericPoint u) ⟨t, ht⟩`.
+-/
 theorem fnMap_surjective [IsPreimmersion j] : Function.Surjective (fnMap j hη) := fun u =>
   let ⟨t, _, ht⟩ := exists_fnMap_eq j hη (regAt_genericPoint u)
   ⟨t, ht⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t', ht', e⟩` from `exists_fnMap_eq j hη h`. Rewrite `ht'` using `[(fnMap j hη).injective e]`. Then use the resulting hypothesis. Introduce and unpack `⟨b, rfl⟩`.
+
+Conclude with `⟨_, (fnMap_algebraMap_eq_algebraMap_stalkMap j hη y b).symm⟩`.
+-/
 theorem regAt_fnMap_iff [IsPreimmersion j] {y : Y} {t : X.functionField} :
     RegAt y (fnMap j hη t) ↔ RegAt (j y) t := by
   constructor
@@ -119,6 +166,9 @@ theorem regAt_fnMap_iff [IsPreimmersion j] {y : Y} {t : X.functionField} :
   · rintro ⟨b, rfl⟩
     exact ⟨_, (fnMap_algebraMap_eq_algebraMap_stalkMap j hη y b).symm⟩
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `h`. Rewrite using `[fnMap_algebraMap_eq_algebraMap_stalkMap, valAt_algebraMap]`. Use `Eq.trans ?_ (valAt_algebraMap (y := y ≫ j) b).symm` and prove the remaining obligations. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
+-/
 theorem valAt_fnMap {K : Type} [Field K] (y : Sp K ⟶ Y) {t : X.functionField}
     (h : RegAt (j (below y)) t) : valAt y (fnMap j hη t) = valAt (y ≫ j) t := by
   obtain ⟨b, rfl⟩ := h
@@ -133,11 +183,19 @@ section Model
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} (M : Model Y)
 
+/- English proof (translation)
+Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Conclude with `MorphismProperty.of_isPullback (P := @IsPreimmersion) M.pb.flip this`.
+-/
 theorem isPreimmersion_j : IsPreimmersion M.j := by
   have : IsPreimmersion (spMap (algebraMap (𝓞 F) F)) :=
     IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))
   exact MorphismProperty.of_isPullback (P := @IsPreimmersion) M.pb.flip this
 
+/- English proof (translation)
+Use `haveI := s.isPrime`. Establish `hs : s.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Establish `e : (spMap (algebraMap (𝓞 F) F) s).asIdeal = Ideal.comap (algebraMap (𝓞 F) F) s.asIdeal` using `by first`. Consider the case `rfl`. Consider the case `simp [spMap]`.
+
+Consider the case `simp [spMap, Spec.map_base]`. Rewrite using `[e, hs]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)`.
+-/
 private theorem asIdeal_spMap_algebraMap_eq_bot (s : Sp F) : (spMap (algebraMap (𝓞 F) F) s).asIdeal = ⊥ := by
   haveI := s.isPrime
   have hs : s.asIdeal = ⊥ := Ideal.eq_bot_of_prime _
@@ -149,6 +207,11 @@ private theorem asIdeal_spMap_algebraMap_eq_bot (s : Sp F) : (spMap (algebraMap 
   rw [e, hs]
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective (𝓞 F) F)
 
+/- English proof (translation)
+Establish `e : M.p x = spMap (algebraMap (𝓞 F) F) (IsLocalRing.closedPoint F)` using `PrimeSpectrum.ext (hx.trans (asIdeal_spMap_algebraMap_eq_bot _).symm)`. Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback x _ e`. Use `⟨M.pb.isoPullback.inv z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz1, ← M.pb.isoPullback_inv_fst]`. Use `first`.
+
+Consider the case `rfl`. Consider the case `exact (Scheme.comp_apply _ _ _).symm`. Consider the case `simp`.
+-/
 theorem mem_range_j {x : M.X} (hx : (M.p x).asIdeal = ⊥) : x ∈ Set.range M.j := by
   have e : M.p x = spMap (algebraMap (𝓞 F) F) (IsLocalRing.closedPoint F) :=
     PrimeSpectrum.ext (hx.trans (asIdeal_spMap_algebraMap_eq_bot _).symm)
@@ -160,6 +223,9 @@ theorem mem_range_j {x : M.X} (hx : (M.p x).asIdeal = ⊥) : x ∈ Set.range M.j
   | exact (Scheme.comp_apply _ _ _).symm
   | simp
 
+/- English proof (translation)
+Establish `e : M.p (M.j y) = spMap (algebraMap (𝓞 F) F) (Y.str y)` using `by first`. Consider the case `(show (M.j ≫ M.p) y = (Y.str ≫ spMap _) y`. Rewrite using `[M.pb.w])`. Consider the case `rw [← Scheme.comp_apply, M.pb.w, Scheme.comp_apply]`. Rewrite using `[e, asIdeal_spMap_algebraMap_eq_bot]`.
+-/
 theorem asIdeal_p_j (y : Y.X) : (M.p (M.j y)).asIdeal = ⊥ := by
   have e : M.p (M.j y) = spMap (algebraMap (𝓞 F) F) (Y.str y) := by
     first
@@ -168,6 +234,9 @@ theorem asIdeal_p_j (y : Y.X) : (M.p (M.j y)).asIdeal = ⊥ := by
     | rw [← Scheme.comp_apply, M.pb.w, Scheme.comp_apply]
   rw [e, asIdeal_spMap_algebraMap_eq_bot]
 
+/- English proof (translation)
+Take `⟨y⟩ : Nonempty Y.X` from `inferInstance`. Establish `hs : genericPoint M.X ⤳ M.j y` using `(genericPoint_spec M.X).specializes trivial`. Establish `h3 : (M.p (genericPoint M.X)).asIdeal ≤ (M.p (M.j y)).asIdeal` using `(PrimeSpectrum.le_iff_specializes _ _).2 (M.p.base.hom.map_specializes hs)`. Rewrite `h3` using `[asIdeal_p_j]`. Conclude with `le_bot_iff.1 h3`.
+-/
 theorem asIdeal_p_gen [IsIntegral M.X] : (M.p (genericPoint M.X)).asIdeal = ⊥ := by
   obtain ⟨y⟩ : Nonempty Y.X := inferInstance
   have hs : genericPoint M.X ⤳ M.j y := (genericPoint_spec M.X).specializes trivial
@@ -176,6 +245,9 @@ theorem asIdeal_p_gen [IsIntegral M.X] : (M.p (genericPoint M.X)).asIdeal = ⊥ 
   rw [asIdeal_p_j] at h3
   exact le_bot_iff.1 h3
 
+/- English proof (translation)
+Take `⟨y0, hy0⟩` from `mem_range_j M (asIdeal_p_gen M)`. Rewrite using `[← hy0]`. Conclude with `M.j.base.hom.map_specializes ((genericPoint_spec Y.X).specializes trivial)`.
+-/
 theorem j_gen_specializes [IsIntegral M.X] : M.j (genericPoint Y.X) ⤳ genericPoint M.X := by
   obtain ⟨y0, hy0⟩ := mem_range_j M (asIdeal_p_gen M)
   rw [← hy0]

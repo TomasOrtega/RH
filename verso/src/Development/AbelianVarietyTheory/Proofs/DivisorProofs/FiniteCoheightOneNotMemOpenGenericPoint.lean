@@ -6,6 +6,15 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.VerticalUnit
 
+/- English proof (translation)
+Take `⟨T, hT, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hS.isClosed_compl`. Use `(hT.image fun Z => if h : IsIrreducible Z then h.genericPoint else genericPoint X).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h1, hxS⟩`. Take `⟨Z, hZ, hxZ⟩` from `hU.le hxS`. Establish `hg` using `(hi Z hZ).isGenericPoint_genericPoint (hc Z hZ)`.
+
+Use `set z := (hi Z hZ).genericPoint`. Establish `hzS : z ∉ S` using `hU.ge (Set.subset_sUnion_of_mem hZ hg.mem)`. Establish `hxz : x ≤ z` using `hg.specializes hxZ`. Establish `hzη : z < genericPoint X` using `lt_of_le_not_ge (genericPoint_specializes z) fun h => hzS ((show z ⤳ genericPoint X from h).mem_open hS hη)`. Use `⟨Z, hZ, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (hi Z hZ)]`. Assume the negation of the conclusion as `hne`. Establish `hxlt : x < z` using `lt_of_le_not_ge hxz fun h => hne ((show x ⤳ z from h).antisymm (show z ⤳ x from hxz)).eq.symm`. Establish `a1` using `Order.coheight_add_one_le hxlt`. Establish `a2` using `Order.coheight_add_one_le hzη`.
+
+Rewrite `a1` using `[h1]`. Establish `: (2 : ℕ∞) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd this (by decide)`.
+-/
 theorem finite_coheight_one_notMem (X : Scheme.{0}) [IsIntegral X] [AlgebraicGeometry.IsNoetherian X]
     (S : Set X) (hS : IsOpen S) (hη : genericPoint X ∈ S) :
     {x : X | Order.coheight x = 1 ∧ x ∉ S}.Finite := by

@@ -6,5 +6,8 @@ open Formalism.IndefR.Datum GlobalTheory.Mem.AutSpace GlobalTheory.IndefiniteRow
 open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RatAnnih.ratL_annihilator | exact GlobalTheory.RatAnnih.ratL_annihilator | (intros; apply GlobalTheory.RatAnnih.ratL_annihilator <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationalSymplecticPoints_self_annihilator : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (x : WO S T), (∀ γ ∈ ratL T S, ψ (symplO S T x γ) = 1) ↔ x ∈ ratL T S := by
   first | exact @GlobalTheory.RatAnnih.ratL_annihilator | exact GlobalTheory.RatAnnih.ratL_annihilator | (intros; apply GlobalTheory.RatAnnih.ratL_annihilator <;> assumption)

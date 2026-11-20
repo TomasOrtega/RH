@@ -49,11 +49,28 @@ def openBallIdeal : Ideal (closedBallSubring K) where
 
 variable {K}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_closedBallSubring {x : K} : x ∈ closedBallSubring K ↔ ‖x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_openBallIdeal {x : closedBallSubring K} :
     x ∈ openBallIdeal K ↔ ‖(x : K)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `hu : ‖((u : closedBallSubring K) : K)‖ ≤ 1` using `(u : closedBallSubring K).2`. Establish `hv : ‖((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).1‖ ≤ 1` using `((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).2`. Establish `hprod : ‖((u : closedBallSubring K) : K)‖ * ‖((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).1‖ = 1`.
+
+Rewrite using `[← norm_mul]`. Establish `h` using `congrArg Subtype.val u.mul_inv`. Simplify using `only [Subring.coe_mul, Subring.coe_one] at h`. Rewrite using `[h, norm_one]`. Use `le_antisymm hu ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Establish `hx0 : (x : K) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one h`. Establish `hinv : (x : K)⁻¹ ∈ closedBallSubring K`. Rewrite using `[mem_closedBallSubring, norm_inv, h, inv_one]`. Use `isUnit_iff_exists_inv.mpr ⟨⟨(x : K)⁻¹, hinv⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Subring.coe_mul, Subring.coe_one]`. Conclude with `mul_inv_cancel₀ hx0`.
+-/
 theorem isUnit_iff_norm_eq_one {x : closedBallSubring K} : IsUnit x ↔ ‖(x : K)‖ = 1 := by
   constructor
   · rintro ⟨u, rfl⟩
@@ -83,6 +100,9 @@ theorem isUnit_iff_norm_eq_one {x : closedBallSubring K} : IsUnit x ↔ ‖(x : 
     simp only [Subring.coe_mul, Subring.coe_one]
     exact mul_inv_cancel₀ hx0
 
+/- English proof (translation)
+Rewrite using `[mem_openBallIdeal, isUnit_iff_norm_eq_one]`. Establish `hle : ‖(x : K)‖ ≤ 1` using `mem_closedBallSubring.mp x.2`. Conclude with `⟨fun h he => (ne_of_lt h) he, fun h => lt_of_le_of_ne hle h⟩`.
+-/
 theorem mem_openBallIdeal_iff_not_isUnit {x : closedBallSubring K} :
     x ∈ openBallIdeal K ↔ ¬ IsUnit x := by
   rw [mem_openBallIdeal, isUnit_iff_norm_eq_one]
@@ -94,11 +114,17 @@ variable (K)
 instance isLocalRing_closedBallSubring : IsLocalRing (closedBallSubring K) :=
   inferInstanceAs (IsLocalRing (closedBallValuationSubring K))
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_openBallIdeal_iff_not_isUnit, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+-/
 theorem openBallIdeal_eq_maximalIdeal :
     openBallIdeal K = IsLocalRing.maximalIdeal (closedBallSubring K) := by
   ext x
   rw [mem_openBallIdeal_iff_not_isUnit, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
 
+/- English proof (translation)
+Rewrite using `[openBallIdeal_eq_maximalIdeal]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`.
+-/
 theorem openBallIdeal_isMaximal : (openBallIdeal K).IsMaximal := by
   rw [openBallIdeal_eq_maximalIdeal]
   exact IsLocalRing.maximalIdeal.isMaximal _

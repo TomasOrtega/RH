@@ -12,6 +12,11 @@ open scoped Matrix
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hI : Ideal.span {((p : ℕ) : (Int.castRingHom Ω).range)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top, isUnit_iff_exists_inv]`. Introduce and unpack `⟨⟨_, c, rfl⟩, hc⟩`. Establish `h1 : ((p : ℕ) : Ω) * ((c : ℤ) : Ω) = 1` using `congrArg Subtype.val hc`. Establish `h2 : ((p : ℕ) : ℤ) * c = 1` using `by exact_mod_cast h1`.
+
+Establish `h3 : ((p : ℕ) : ℤ) = 1` using `Int.eq_one_of_mul_eq_one_right (by positivity) h2`. Conclude with `hp.one_lt.ne' (by exact_mod_cast h3)`. Take `⟨A, -, hA⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Conclude with `⟨A, A.mem_nonunits_iff.1 (hA ⟨((p : ℕ) : (Int.castRingHom Ω).range), Ideal.mem_span_singleton_self _, by simp⟩)⟩`.
+-/
 private theorem regElt_place {Ω : Type} [Field Ω] [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 := by
   have hI : Ideal.span {((p : ℕ) : (Int.castRingHom Ω).range)} ≠ ⊤ := by
@@ -24,11 +29,31 @@ private theorem regElt_place {Ω : Type} [Field Ω] [CharZero Ω] (p : ℕ) (hp 
   obtain ⟨A, -, hA⟩ := Ideal.image_subset_nonunits_valuationSubring _ hI
   exact ⟨A, A.mem_nonunits_iff.1 (hA ⟨((p : ℕ) : (Int.castRingHom Ω).range), Ideal.mem_span_singleton_self _, by simp⟩)⟩
 
+/- English proof (translation)
+Introduce `h`. Use `he (isOfFinOrder_iff_pow_eq_one.2 ⟨n.toNat, by omega, ?_⟩)` and prove the remaining obligations. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg hn.le, h]`.
+-/
 private theorem regElt_zpow_ne {G : Type} [Group G] (e : G) (he : ¬ IsOfFinOrder e) (n : ℤ) (hn : 0 < n) : e ^ n ≠ 1 := by
   intro h
   refine he (isOfFinOrder_iff_pow_eq_one.2 ⟨n.toNat, by omega, ?_⟩)
   rw [← zpow_natCast, Int.toNat_of_nonneg hn.le, h]
 
+/- English proof (translation)
+Establish `hsq : ∀ j : ℤ, |j| ≤ 2 → x ^ 2 ≠ e ^ j`. Introduce `j hj h`. Establish `hj'` using `(abs_le.1 hj).2`. Establish `hpos : 0 < (2 * (m : ℤ) - j) * (k : ℤ)`. Establish `: (0 : ℤ) < k` using `by exact_mod_cast hk`.
+
+Establish `: (2 : ℤ) ≤ m` using `by exact_mod_cast hm`. Apply the tactic sequence `apply mul_pos <;> omega`. Use `regElt_zpow_ne e he _ hpos ?_` and prove the remaining obligations. Establish `h1 : (e ^ (m : ℤ)) ^ k * (e ^ (m : ℤ)) ^ k = (e ^ j) ^ k`. Rewrite using `[← hx, ← h, ← pow_add, ← pow_mul, two_mul]`.
+
+Establish `h2 : e ^ ((2 * (m : ℤ) - j) * (k : ℤ)) = (e ^ (m : ℤ)) ^ k * (e ^ (m : ℤ)) ^ k * ((e ^ j) ^ k)⁻¹`. Simplify using `only [← zpow_natCast, ← zpow_mul, ← zpow_neg, ← zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, h1, mul_inv_cancel]`.
+
+Use `⟨fun hf => ?_, fun i hi h => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hf`. Establish `hpos : 0 < (m : ℤ) * k * n`. Establish `a : (0 : ℤ) < m` using `by exact_mod_cast (by omega : 0 < m)`. Establish `b : (0 : ℤ) < k` using `by exact_mod_cast hk`.
+
+Establish `c : (0 : ℤ) < n` using `by exact_mod_cast hn`. Check the signs of the components of the expression. Use `regElt_zpow_ne e he _ hpos ?_` and prove the remaining obligations. Rewrite using `[zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, ← hx, ← pow_mul, mul_comm, pow_mul, h, one_pow]`. Establish `hx0 : (x : K) ≠ 0` using `x.ne_zero`.
+
+Establish `hE0 : ((e : K) ^ i) ≠ 0` using `zpow_ne_zero _ e.ne_zero`. Establish `hz : ((x : K) ^ 2 - (e : K) ^ i) * ((x : K) ^ 2 - ((e : K) ^ i)⁻¹) = 0`. Rewrite `h` using `[Units.val_inv_eq_inv_val, zpow_neg]`. Clear denominators, using `at h ⊢` for the nonvanishing conditions. Take the linear combination `(exp := 1) h`.
+
+Break down `mul_eq_zero.1 hz with h0 | h0` into its components or cases. Use `hsq i hi (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val]`. Conclude with `sub_eq_zero.1 h0`. Use `hsq (-i) (by rwa [abs_neg]) (Units.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, zpow_neg]`. Conclude with `sub_eq_zero.1 h0`.
+-/
 private theorem regElt_key {K : Type} [Field K] (e x : Kˣ) (m k : ℕ) (hm : 2 ≤ m) (hk : 0 < k)
     (hx : x ^ k = (e ^ (m : ℤ)) ^ k) (he : ¬ IsOfFinOrder e) :
     ¬ IsOfFinOrder x ∧ ∀ i : ℤ, |i| ≤ 2 →
@@ -71,6 +96,17 @@ private theorem regElt_key {K : Type} [Field K] (e x : Kˣ) (m k : ℕ) (hm : 2 
       rw [Units.val_pow_eq_pow_val, Units.val_zpow_eq_zpow_val, zpow_neg]
       exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ _ l _ ι M m r hr H hH`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Take `⟨A, hA⟩` from `regElt_place (Ω := Ω) l (Fact.out)`. Take `⟨b0, k, κ, hk, ⟨g, hg⟩, hκ⟩` from `hr.above A hA`. Take `⟨s, hsH, hsI, hinf⟩` from `UpperTheory.V.Z.Sym.Ga.ineInf L Ω l A hA H hH`.
+
+Set `t : ↥(Dec (F` to `L) A) := ⟨s, Ine_le_Dec A hsI⟩`. Take `⟨h0, h1⟩` from `hκ t hsI`. Establish `hcp : (r s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (X - C ((κ 0 t : (Qbar l)ˣ) : Qbar l)) * (X - C ((κ 1 t : (Qbar l)ˣ) : Qbar l))`. Establish `e : ((g * r s * g⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (r s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`.
+
+Conclude with `Matrix.charpoly_units_conj g _`. Rewrite using `[← e, Matrix.charpoly_of_isUpperTriangular _ (fun i j hij => (hg t).1 i j hij), Fin.prod_univ_two]`. Establish `e0 : ((g * r s * g⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) 0 0 = ((κ 0 t : (Qbar l)ˣ) : Qbar l)` using `(hg t).2 0`. Establish `e1 : ((g * r s * g⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 1 = ((κ 1 t : (Qbar l)ˣ) : Qbar l)` using `(hg t).2 1`. Rewrite using `[e0, e1]`.
+
+Establish `hx : (κ 0 t / κ 1 t) ^ k = (cycBar L Ω l s ^ (m : ℤ)) ^ k`. Rewrite using `[div_pow, h0, h1, zpow_add, mul_pow]`. Conclude with `mul_div_cancel_left _ _`. Establish `key` using `regElt_key (cycBar L Ω l s) (κ 0 t / κ 1 t) m k hr.gap hk hx hinf`. Use `⟨s, hsH, ?_, κ 0 t, κ 1 t, key.1, hcp⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨i, hi, hb⟩`. Establish `huf` using `(UpperTheory.V.Z.Sym.Ga.ufFacts _ (r s)).1 _ _ hcp`. Rewrite `hb` using `[huf]`. Conclude with `key.2 i hi hb`.
+-/
 theorem UpperTheory.V.Z.Sym.Ga.regElt :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (M m : ℕ) (r : G L Ω →* GL (Fin 2) (Qbar l)), AdIn ι M m r → ∀ H : Subgroup (G L Ω), IsOpen (H : Set (G L Ω)) → ∃ s ∈ H, s ∉ Ga.Bad r ∧ ∃ a b : (Qbar l)ˣ, ¬ IsOfFinOrder (a / b) ∧ (r s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly = (X - C (a : Qbar l)) * (X - C (b : Qbar l)) := by
   intro L Ω _ _ _ _ _ _ l _ ι M m r hr H hH

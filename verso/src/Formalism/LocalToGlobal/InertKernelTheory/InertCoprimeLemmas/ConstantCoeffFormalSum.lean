@@ -15,6 +15,13 @@ section Char
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `CharP.exists (WW p)`. Break down `CharP.char_is_prime_or_zero (WW p) q with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h0 : ((q : ℕ) : WW p) = 0` using `CharP.cast_eq_zero (WW p) q`. Establish `h1 : ((q : ℕ) : kb p) = 0`.
+
+Use `congrArg (WittVector.constantCoeff (p := p) (R := kb p)) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `this`. Establish `h2 : p ∣ q` using `(CharP.cast_eq_zero_iff (kb p) p q).mp h1`. Establish `h3 : p = q` using `(Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) h).mp h2`.
+
+Establish `h4 : ((p : ℕ) : WW p) = ((q : ℕ) : WW p)` using `congrArg (Nat.cast) h3`. Conclude with `WittVector.p_nonzero p (kb p) (h4.trans h0)`. Substitute `h` using the available equality. Conclude with `CharP.charP_to_charZero (WW p)`.
+-/
 theorem charZero_WW : CharZero (WW p) := by
   obtain ⟨q, hq⟩ := CharP.exists (WW p)
   rcases CharP.char_is_prime_or_zero (WW p) q with h | h
@@ -39,6 +46,9 @@ end Char
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.coeff_expS f hf n (n.degree + 1) (Nat.lt_succ_self _)]`. Use `show (∑ k ∈ Finset.range (n.degree + 1), ((k.factorial : K0 p))⁻¹ * MvPowerSeries.coeff n (f ^ k)) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem expS_eq {σ : Type} (f : MvPowerSeries σ (K0 p)) (hf : MvPowerSeries.constantCoeff f = 0) :
     expS p f = Formalism.HermitianLattices.ExpSeriesBivariate.expS f := by
   ext n
@@ -47,45 +57,75 @@ theorem expS_eq {σ : Type} (f : MvPowerSeries σ (K0 p)) (hf : MvPowerSeries.co
   refine Finset.sum_congr rfl fun k _ => ?_
   simp
 
+/- English proof (translation)
+Rewrite using `[expS_eq f hf, expS_eq g hg, expS_eq (f + g) (by rw [map_add, hf, hg, add_zero])]`. Conclude with `Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.expS_add f g hf hg`.
+-/
 theorem expS_add' {σ : Type} (f g : MvPowerSeries σ (K0 p)) (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : expS p (f + g) = expS p f * expS p g := by
   rw [expS_eq f hf, expS_eq g hg, expS_eq (f + g) (by rw [map_add, hf, hg, add_zero])]
   exact Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.expS_add f g hf hg
 
+/- English proof (translation)
+Rewrite using `[expS_eq 0 (map_zero _)]`. Conclude with `Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.expS_zero`.
+-/
 theorem expS_zero' {σ : Type} : expS p (0 : MvPowerSeries σ (K0 p)) = 1 := by
   rw [expS_eq 0 (map_zero _)]
   exact Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.expS_zero
 
+/- English proof (translation)
+Rewrite using `[← expS_add' (-f) f (by rw [map_neg, hf, neg_zero]) hf, neg_add_cancel, expS_zero']`.
+-/
 theorem expS_neg_mul {σ : Type} (f : MvPowerSeries σ (K0 p)) (hf : MvPowerSeries.constantCoeff f = 0) :
     expS p (-f) * expS p f = 1 := by
   rw [← expS_add' (-f) f (by rw [map_neg, hf, neg_zero]) hf, neg_add_cancel, expS_zero']
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[logF, PowerSeries.coeff_mk]`.
+-/
 theorem cc_log : PowerSeries.constantCoeff (logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [logF, PowerSeries.coeff_mk]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (by simp) _ cc_log`.
+-/
 theorem cc_logX {ι : Type} (i : ι) :
     MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries ι (K0 p)) (logF p)) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (by simp) _ cc_log
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero cc_logX`.
+-/
 theorem hasSubst_log {ι : Type} [Finite ι] :
     MvPowerSeries.HasSubst (fun i : ι => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries ι (K0 p)) (logF p)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero cc_logX
 
+/- English proof (translation)
+Unfold `inParam`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (hasSubst_log (p := p))]`. Conclude with `map_zero _`.
+-/
 theorem inParam_zero {ι : Type} [Finite ι] : inParam p (0 : MvPowerSeries ι (K0 p)) = 0 := by
   unfold inParam
   rw [← MvPowerSeries.coe_substAlgHom (hasSubst_log (p := p))]
   exact map_zero _
 
+/- English proof (translation)
+Use `⟨by rw [sub_self, map_zero], 0, map_zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self, inParam_zero, expS_zero', map_zero, add_zero]`.
+-/
 theorem simeq_refl' {ι : Type} [Finite ι] (f : MvPowerSeries ι (K0 p)) : Simeq p f f := by
   refine ⟨by rw [sub_self, map_zero], 0, map_zero _, ?_⟩
   rw [sub_self, inParam_zero, expS_zero', map_zero, add_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `hB.ab 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])` as an intermediate fact. Simplify using `at this`.
+-/
 theorem cc_be {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be) : MvPowerSeries.constantCoeff be = 0 := by
   by_contra h
   have := hB.ab 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])
   simp at this
 
+/- English proof (translation)
+Establish `ha : ∀ i, MvPowerSeries.constantCoeff ((![x, y] : Fin 2 → MvPowerSeries τ (K0 p)) i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp [hx, hy]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha h0`.
+-/
 theorem constantCoeff_sub2_eq_zero {τ : Type} {be : MvPowerSeries (Fin 2) (K0 p)} (h0 : MvPowerSeries.constantCoeff be = 0)
     (x y : MvPowerSeries τ (K0 p)) (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     MvPowerSeries.constantCoeff (sub2 p be x y) = 0 := by
@@ -93,12 +133,18 @@ theorem constantCoeff_sub2_eq_zero {τ : Type} {be : MvPowerSeries (Fin 2) (K0 p
     intro i; fin_cases i <;> simp [hx, hy]
   exact MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha h0
 
+/- English proof (translation)
+Unfold `sumBe`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => constantCoeff_sub2_eq_zero h0 _ _ (by simp) (by simp)`.
+-/
 theorem cc_sumBe {ι : Type} [Fintype ι] {be : MvPowerSeries (Fin 2) (K0 p)} (h0 : MvPowerSeries.constantCoeff be = 0) :
     MvPowerSeries.constantCoeff (sumBe p be : MvPowerSeries (ι ⊕ ι) (K0 p)) = 0 := by
   unfold sumBe
   rw [map_sum]
   exact Finset.sum_eq_zero fun e _ => constantCoeff_sub2_eq_zero h0 _ _ (by simp) (by simp)
 
+/- English proof (translation)
+Introduce `p _ ι _ K1 _ _ R1 be Th hB hE hI`. Establish `h0` using `cc_sumBe (ι := ι) (cc_be hB)`. Use `⟨sumBe p be, Th * MvPowerSeries.map (algebraMap (K0 p) K1) (expS p (sumBe p be)), ?_, hI, hE, hB, simeq_refl' _⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← map_mul, expS_neg_mul _ h0, map_one, mul_one]`.
+-/
 theorem first_kernel_of_sum : FirstKernelGeneratorOfSum := by
   intro p _ ι _ K1 _ _ R1 be Th hB hE hI
   have h0 := cc_sumBe (ι := ι) (cc_be hB)
@@ -120,6 +166,9 @@ section Gen
 
 variable {σ τ K : Type} [CommRing K]
 
+/- English proof (translation)
+Establish `hX : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ K))` using `PowerSeries.hasSubst_iff.mp (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i))`. Rewrite using `[PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply hX hb, MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression.
+-/
 theorem subst_single_var {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.HasSubst b) (i : σ) (f : PowerSeries K) :
     MvPowerSeries.subst b (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K) f) =
       PowerSeries.subst (b i) f := by
@@ -128,6 +177,9 @@ theorem subst_single_var {b : σ → MvPowerSeries τ K} (hb : MvPowerSeries.Has
   rw [PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply hX hb, MvPowerSeries.subst_X hb]
   rfl
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => MvPowerSeries.constantCoeff_X _`.
+-/
 theorem hasSubst_X_comp [Finite σ] (g : σ → τ) :
     MvPowerSeries.HasSubst (fun s => (MvPowerSeries.X (g s) : MvPowerSeries τ K)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => MvPowerSeries.constantCoeff_X _
@@ -136,6 +188,11 @@ end Gen
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map]`. Simplify using `only [logF, lgF, PowerSeries.coeff_mk, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_logF : PowerSeries.map (k0ToC l) (logF l) = lgF ℂ_[l] l := by
   ext n
   rw [PowerSeries.coeff_map]
@@ -144,6 +201,9 @@ theorem map_logF : PowerSeries.map (k0ToC l) (logF l) = lgF ℂ_[l] l := by
   rw [pow_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `inParamK`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[show @algebraMap (K0 l) ℂ_[l] _ _ (wittFractionAlgebraCp l) = k0ToC l from rfl, map_logF]`. Both sides reduce to the same expression.
+-/
 theorem inParamK_eq {ι : Type} (f : MvPowerSeries ι ℂ_[l]) :
     @inParamK l _ ι ℂ_[l] _ (wittFractionAlgebraCp l) f = MvPowerSeries.subst (fun i => at1 i (lgF ℂ_[l] l)) f := by
   unfold inParamK
@@ -158,8 +218,16 @@ variable {l : ℕ} [Fact l.Prime]
 
 local notation "lgC" => lgF ℂ_[l] l
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mvExp_eq {σ : Type} (f : MvPowerSeries σ ℂ_[l]) : mvExp f = Formalism.HermitianLattices.ExpSeriesBivariate.expS f := rfl
 
+/- English proof (translation)
+Rewrite using `[expS_eq g hg, mvExp_eq]`. Use extensionality with `d`. Rewrite using `[MvPowerSeries.coeff_map, Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.coeff_expS g hg d (d.degree + 1) (Nat.lt_succ_self _), Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.coeff_expS _ (by rw [MvPowerSeries.constantCoeff_map, hg, map_zero]) …`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← map_pow, MvPowerSeries.coeff_map]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem map_expS {σ : Type} (g : MvPowerSeries σ (K0 l)) (hg : MvPowerSeries.constantCoeff g = 0) :
     MvPowerSeries.map (k0ToC l) (expS l g) = mvExp (MvPowerSeries.map (k0ToC l) g) := by
   rw [expS_eq g hg, mvExp_eq]
@@ -172,15 +240,26 @@ theorem map_expS {σ : Type} (g : MvPowerSeries σ (K0 l)) (hg : MvPowerSeries.c
   congr 1
   simp
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero hasSubst_log cc_logX hg`.
+-/
 theorem cc_inParam {σ : Type} [Finite σ] (g : MvPowerSeries σ (K0 l)) (hg : MvPowerSeries.constantCoeff g = 0) :
     MvPowerSeries.constantCoeff (inParam l g) = 0 :=
   MvPowerSeries.constantCoeff_subst_eq_zero hasSubst_log cc_logX hg
 
+/- English proof (translation)
+Rewrite using `[expS_eq g hg, expS_eq _ (cc_inParam g hg)]`. Conclude with `Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.subst_expS _ cc_logX g hg`.
+-/
 theorem inParam_expS {σ : Type} [Finite σ] (g : MvPowerSeries σ (K0 l)) (hg : MvPowerSeries.constantCoeff g = 0) :
     inParam l (expS l g) = expS l (inParam l g) := by
   rw [expS_eq g hg, expS_eq _ (cc_inParam g hg)]
   exact Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.subst_expS _ cc_logX g hg
 
+/- English proof (translation)
+Unfold `inParam`. Rewrite using `[MvPowerSeries.map_subst hasSubst_log]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)), map_logF, MvPowerSeries.map_X]`.
+
+Both sides reduce to the same expression.
+-/
 theorem map_inParam {σ : Type} [Finite σ] (g : MvPowerSeries σ (K0 l)) :
     MvPowerSeries.map (k0ToC l) (inParam l g) =
       MvPowerSeries.subst (fun i => at1 i lgC) (MvPowerSeries.map (k0ToC l) g) := by
@@ -192,17 +271,29 @@ theorem map_inParam {σ : Type} [Finite σ] (g : MvPowerSeries σ (K0 l)) :
     MvPowerSeries.map_X]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_logF, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_log, map_zero]`.
+-/
 theorem cc_lgC : PowerSeries.constantCoeff lgC = 0 := by
   rw [← map_logF, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
     PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_log, map_zero]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ cc_lgC`.
+-/
 theorem constantCoeff_inVar_eq_zero {σ : Type} (i : σ) : MvPowerSeries.constantCoeff (at1 i lgC : MvPowerSeries σ ℂ_[l]) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ cc_lgC
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero constantCoeff_inVar_eq_zero`.
+-/
 theorem hasSubst_single_var_log {σ : Type} [Finite σ] :
     MvPowerSeries.HasSubst (fun i : σ => (at1 i lgC : MvPowerSeries σ ℂ_[l])) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero constantCoeff_inVar_eq_zero
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integral_X {σ : Type} (i : σ) : Integral (MvPowerSeries.X i : MvPowerSeries σ ℂ_[l]) := by
   classical
   intro n
@@ -214,17 +305,29 @@ abbrev E1 (ι : Type) : Type := ι × Fin 1 × Fin 1
 def sideVariable {ι : Type} : Bool × E1 ι → MvPowerSeries (ι ⊕ ι) ℂ_[l] :=
   fun w => if w.1 then MvPowerSeries.X (Sum.inr w.2.1) else MvPowerSeries.X (Sum.inl w.2.1)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sideVariable; split_ifs <;> simp`.
+-/
 theorem cc_renS {ι : Type} (w : Bool × E1 ι) : MvPowerSeries.constantCoeff (sideVariable (l := l) w) = 0 := by
   unfold sideVariable; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `sideVariable`. Use `split_ifs`. Conclude with `integral_X _`. Conclude with `integral_X _`.
+-/
 theorem integral_renS {ι : Type} (w : Bool × E1 ι) : Integral (sideVariable (l := l) w) := by
   unfold sideVariable; split_ifs
   · exact integral_X _
   · exact integral_X _
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero cc_renS`.
+-/
 theorem hasSubst_renS {ι : Type} [Finite ι] : MvPowerSeries.HasSubst (sideVariable (l := l) (ι := ι)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero cc_renS
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_extended_index {ι M : Type} [Fintype ι] [AddCommMonoid M] (g : E1 ι → M) :
     ∑ e : E1 ι, g e = ∑ e : ι, g (e, 0, 0) := by
   rw [Fintype.sum_prod_type]
@@ -240,6 +343,9 @@ variable {l : ℕ} [Fact l.Prime]
 
 local notation "lgC" => lgF ℂ_[l] l
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.C.flin`. Establish `hA : MvPowerSeries.constantCoeff (∑ k, MvPowerSeries.C (c k) * PowerSeries.subst (v k) lgC) = 0`. Simplify using `only [map_sum, map_mul, MvPowerSeries.constantCoeff_C]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [PowerSeries.constantCoeff_subst_eq_zero (hv k) _ cc_lgC, mul_zero]`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' (expSpec ℂ_[l] l hl).1) (PowerSeries.HasSubst.of_constantCoeff_zero hA), (expSpec ℂ_[l] l hl).2.1, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hA)]`.
+-/
 theorem lg_flin (hl : 2 ≤ l) {σ m : Type} [Fintype m] (c : m → ℂ_[l]) (v : m → MvPowerSeries σ ℂ_[l])
     (hv : ∀ k, MvPowerSeries.constantCoeff (v k) = 0) :
     PowerSeries.subst (Formalism.L2.Th1.C.flin lgC (expF ℂ_[l] l) c v) lgC =
@@ -252,6 +358,9 @@ theorem lg_flin (hl : 2 ≤ l) {σ m : Type} [Fintype m] (c : m → ℂ_[l]) (v 
     (PowerSeries.HasSubst.of_constantCoeff_zero hA), (expSpec ℂ_[l] l hl).2.1,
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hA)]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.C.flin`. Establish `hA : MvPowerSeries.constantCoeff (∑ k, MvPowerSeries.C (c k) * PowerSeries.subst (v k) lgC) = 0`. Simplify using `only [map_sum, map_mul, MvPowerSeries.constantCoeff_C]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [PowerSeries.constantCoeff_subst_eq_zero (hv k) _ cc_lgC, mul_zero]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hA _ (expSpec ℂ_[l] l hl).1`.
+-/
 theorem cc_flin (hl : 2 ≤ l) {σ m : Type} [Fintype m] (c : m → ℂ_[l]) (v : m → MvPowerSeries σ ℂ_[l])
     (hv : ∀ k, MvPowerSeries.constantCoeff (v k) = 0) :
     MvPowerSeries.constantCoeff (Formalism.L2.Th1.C.flin lgC (expF ℂ_[l] l) c v) = 0 := by
@@ -265,16 +374,29 @@ variable {ι n : Type} [Fintype ι] [Fintype n]
 
 def ext1 (f : ι → n → MaximalUnramifiedExtension l) : E1 ι → n → MaximalUnramifiedExtension l := fun e => f e.1
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.E.hypCoord`. Apply the tactic sequence `exact cc_flin hl _ _ fun k => by cases k <;> simp`.
+-/
 theorem cc_hypCoord (hl : 2 ≤ l) (f f' : ι → n → MaximalUnramifiedExtension l) (i : n) :
     MvPowerSeries.constantCoeff
       (Formalism.L2.Th1.E.hypCoord lgC (expF ℂ_[l] l) (MaximalUnramifiedExtension l).subtype (ext1 f) (ext1 f') i) = 0 := by
   unfold Formalism.L2.Th1.E.hypCoord
   exact cc_flin hl _ _ fun k => by cases k <;> simp
 
+/- English proof (translation)
+Unfold `hypLin`. Simplify using the standard rewrite rules.
+-/
 theorem cc_hypLin (f f' : ι → n → MaximalUnramifiedExtension l) (i : n) : MvPowerSeries.constantCoeff (hypLin l f f' i) = 0 := by
   unfold hypLin
   simp
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.E.hypCoord`. Apply the tactic sequence `rw [lg_flin hl _ _ fun k => by cases k <;> simp]`. Unfold `hypLin`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hasSubst_single_var_log, ← MvPowerSeries.coe_substAlgHom hasSubst_renS]`. Simplify using `only [map_sum, map_add, map_mul]`.
+
+Simplify using `only [MvPowerSeries.coe_substAlgHom hasSubst_single_var_log, MvPowerSeries.coe_substAlgHom hasSubst_renS, MvPowerSeries.subst_C, MvPowerSeries.subst_X hasSubst_single_var_log]`. Rewrite using `[Fintype.sum_sum_type, sum_extended_index, sum_extended_index, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, ext1]`. Rewrite using `[subst_single_var hasSubst_renS, subst_single_var hasSubst_renS]`.
+
+Simplify using `[sideVariable, at1]`.
+-/
 theorem coord (hl : 2 ≤ l) (f f' : ι → n → MaximalUnramifiedExtension l) (i : n) :
     MvPowerSeries.subst (fun v => (at1 v lgC : MvPowerSeries (ι ⊕ ι) ℂ_[l])) (hypLin l f f' i) =
       MvPowerSeries.subst sideVariable
@@ -292,13 +414,24 @@ theorem coord (hl : 2 ≤ l) (f f' : ι → n → MaximalUnramifiedExtension l) 
   rw [subst_single_var hasSubst_renS, subst_single_var hasSubst_renS]
   simp [sideVariable, at1]
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_hypLin f f')`.
+-/
 theorem hasSubst_hypLin (f f' : ι → n → MaximalUnramifiedExtension l) : MvPowerSeries.HasSubst (hypLin l f f') :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_hypLin f f')
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_hypCoord hl f f')`.
+-/
 theorem hasSubst_hypCoord (hl : 2 ≤ l) (f f' : ι → n → MaximalUnramifiedExtension l) :
     MvPowerSeries.HasSubst (Formalism.L2.Th1.E.hypCoord lgC (expF ℂ_[l] l) (MaximalUnramifiedExtension l).subtype (ext1 f) (ext1 f')) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_hypCoord hl f f')
 
+/- English proof (translation)
+Establish `h2 : MvPowerSeries.HasSubst (fun s : n => MvPowerSeries.subst (Formalism.L2.Th1.E.hypCoord lgC (expF ℂ_[l] l) (MaximalUnramifiedExtension l).subtype (ext1 f) (ext1 f')) (at1 s lgC))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst_hypCoord hl f f') (cc_hypCoord hl f f') (constantCoeff_inVar_eq_zero s)`. Unfold `inHyp`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_hypLin f f') hasSubst_single_var_log, MvPowerSeries.subst_comp_subst_apply hasSubst_single_var_log (hasSubst_hypCoord hl f f'), MvPowerSeries.subst_comp_subst_apply h2 hasSubst_renS]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[show (at1 i lgC : MvPowerSeries n ℂ_[l]) = PowerSeries.subst (MvPowerSeries.X i) lgC from rfl, subst_single_var (hasSubst_hypCoord hl f f') i, coord hl f f' i]`.
+-/
 theorem param_hyp (hl : 2 ≤ l) (f f' : ι → n → MaximalUnramifiedExtension l) (Θ : MvPowerSeries n ℂ_[l]) :
     MvPowerSeries.subst (fun v => (at1 v lgC : MvPowerSeries (ι ⊕ ι) ℂ_[l])) (MvPowerSeries.subst (hypLin l f f') Θ) =
       MvPowerSeries.subst sideVariable (inHyp l (ext1 f) (ext1 f') (MvPowerSeries.subst (fun i => at1 i lgC) Θ)) := by
@@ -323,11 +456,23 @@ variable {l : ℕ} [Fact l.Prime]
 
 local notation "lgC" => lgF ℂ_[l] l
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => by fin_cases j <;> simp [hx, hy]`.
+-/
 theorem hasSubst_pair_of_constantCoeff_eq_zero {σ R : Type} [CommRing R] [Finite σ] (x y : MvPowerSeries σ R)
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     MvPowerSeries.HasSubst (![x, y] : Fin 2 → MvPowerSeries σ R) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => by fin_cases j <;> simp [hx, hy]
 
+/- English proof (translation)
+Unfold `sumBe Formalism.L2.Th1.D.sumE`. Establish `hsum : inParam l (∑ e : ι, sub2 l be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e))) = ∑ e : ι, inParam l (sub2 l be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e)))`. Unfold `inParam`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hasSubst_log, map_sum]`. Rewrite using `[hsum, map_sum, ← MvPowerSeries.coe_substAlgHom hasSubst_renS, map_sum, sum_extended_index]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom hasSubst_renS, map_inParam, map_inParam]`. Unfold `sub2`. Apply the tactic sequence `rw [MvPowerSeries.map_subst (hasSubst_pair_of_constantCoeff_eq_zero _ _ (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _)), MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => by fin_cases j <;> simp) hasSubst_single_var_l …`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using `only [at1, Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, MvPowerSeries.map_X, MvPowerSeries.subst_X hasSubst_single_var_log]`. Rewrite using `[subst_single_var (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => MvPowerSeries.constantCoeff_X _), subst_single_var hasSubst_renS]`. Simplify using `[sideVariable]`.
+
+Conclude with `MvPowerSeries.subst_X (hasSubst_single_var_log (l := l)) _`. Simplify using `only [at1, Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_fin_one, MvPowerSeries.map_X, MvPowerSeries.subst_X hasSubst_single_var_log]`. Rewrite using `[subst_single_var (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => MvPowerSeries.constantCoeff_X _), subst_single_var hasSubst_renS]`. Simplify using `[sideVariable]`. Conclude with `MvPowerSeries.subst_X (hasSubst_single_var_log (l := l)) _`.
+-/
 theorem M_eq {ι : Type} [Fintype ι] (be : MvPowerSeries (Fin 2) (K0 l)) :
     MvPowerSeries.map (k0ToC l) (inParam l (sumBe l be : MvPowerSeries (ι ⊕ ι) (K0 l))) =
       MvPowerSeries.subst sideVariable (Formalism.L2.Th1.D.sumE (ι := ι) (N0 := 1) (N1 := 1)
@@ -366,6 +511,11 @@ theorem M_eq {ι : Type} [Fintype ι] (be : MvPowerSeries (Fin 2) (K0 l)) :
     simp [sideVariable]
     exact MvPowerSeries.subst_X (hasSubst_single_var_log (l := l)) _
 
+/- English proof (translation)
+Establish `R` using `Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] σ`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using R.1 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+
+Conclude with `R.2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem simeq_fsum {σ α : Type} (s : Finset α) (u v : α → MvPowerSeries σ ℂ_[l])
     (h : ∀ a ∈ s, Formalism.InvariantFactorPaths.G7.Simeq (u a) (v a)) :
     Formalism.InvariantFactorPaths.G7.Simeq (∑ a ∈ s, u a) (∑ a ∈ s, v a) := by
@@ -378,6 +528,9 @@ theorem simeq_fsum {σ α : Type} (s : Finset α) (u v : α → MvPowerSeries σ
     exact R.2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self a s))
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.D.sumE`. Use `simeq_fsum _ _ _ fun e _ => ?_` and prove the remaining obligations. Conclude with `(Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] (Fin 2)).2.2.2.2 (Bool × E1 ιr) T Cb _ (fun a => MvPowerSeries.constantCoeff_X _) (fun a => integral_X _) h`.
+-/
 theorem simeq_sumE {ιr : Type} [Fintype ιr] {T Cb : MvPowerSeries (Fin 2) ℂ_[l]} (h : Formalism.InvariantFactorPaths.G7.Simeq T Cb) :
     Formalism.InvariantFactorPaths.G7.Simeq (Formalism.L2.Th1.D.sumE (ι := ιr) (N0 := 1) (N1 := 1) T)
       (Formalism.L2.Th1.D.sumE (ι := ιr) (N0 := 1) (N1 := 1) Cb) := by
@@ -386,6 +539,11 @@ theorem simeq_sumE {ιr : Type} [Fintype ιr] {T Cb : MvPowerSeries (Fin 2) ℂ_
   exact (Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] (Fin 2)).2.2.2.2 (Bool × E1 ιr) T Cb _
     (fun a => MvPowerSeries.constantCoeff_X _) (fun a => integral_X _) h
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `hP`. Use `⟨fun e i => h1 e.1 i, fun e i => h2 e.1 i, fun e e' => h3 e.1 e'.1, fun e e' => h4 e.1 e'.1, fun e e' => ?_⟩` and prove the remaining obligations. Simplify using `only [ext1]`. Rewrite using `[h5 e.1 e'.1]`. Distinguish the cases in `h : e.1 = e'.1`.
+
+Establish `he : e = e'` using `Prod.ext h (Subsingleton.elim _ _)`. Simplify using `[h, he]`. Establish `he : e ≠ e'` using `fun hh => h (hh ▸ rfl)`. Simplify using `[h, he]`.
+-/
 theorem hyperbolic_pair_extend {ι n : Type} [DecidableEq ι] [Fintype n] {σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l} {f f' : ι → n → MaximalUnramifiedExtension l}
     (hP : IsHypPair σ f f') : IsHypPair σ (ext1 f) (ext1 f') := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := hP
@@ -399,6 +557,17 @@ theorem hyperbolic_pair_extend {ι n : Type} [DecidableEq ι] [Fintype n] {σ : 
   · have he : e ≠ e' := fun hh => h (hh ▸ rfl)
     simp [h, he]
 
+/- English proof (translation)
+Introduce `l _ h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n _ _ _ _ f f' hP be hbe0 hTie Θ hI`. Establish `hl : 2 ≤ l` using `by omega`. Take `⟨U0, Φ, hU0, hΦ0, hΦ, hEq⟩` from `hypShape l h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN 1 1 ι n (ext1 f) (ext1 f') (hyperbolic_pair_extend hP) _ hI`. Rewrite `hEq` using `[inParamK_eq]`. Establish `hS0 : MvPowerSeries.constantCoeff (sumBe l be : MvPowerSeries (ι ⊕ ι) (K0 l)) = 0` using `cc_sumBe hbe0`.
+
+Establish `hM0 : MvPowerSeries.constantCoeff (MvPowerSeries.map (k0ToC l) (inParam l (sumBe l be : MvPowerSeries (ι ⊕ ι) (K0 l))) : MvPowerSeries (ι ⊕ ι) ℂ_[l]) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, cc_inParam _ hS0, map_zero]`. Establish `hR0 : MvPowerSeries.constantCoeff (MvPowerSeries.subst sideVariable Φ : MvPowerSeries (ι ⊕ ι) ℂ_[l]) = 0` using `MvPowerSeries.constantCoeff_subst_eq_zero hasSubst_renS cc_renS hΦ0`. Establish `hsim : Formalism.InvariantFactorPaths.G7.Simeq (MvPowerSeries.map (k0ToC l) (inParam l (sumBe l be : MvPowerSeries (ι ⊕ ι) (K0 l))) : MvPowerSeries (ι ⊕ ι) ℂ_[l]) (MvPowerSeries.subst sideVariable Φ)`. Establish `R` using `Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] (Bool × E1 ι)`.
+
+Establish `R'` using `Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] (ι ⊕ ι)`. Establish `h1` using `R.2.2.2.2 (ι ⊕ ι) _ _ sideVariable cc_renS integral_renS (simeq_sumE (ιr := ι) hTie)`. Establish `h2` using `R.2.2.2.2 (ι ⊕ ι) _ _ sideVariable cc_renS integral_renS hΦ`. Rewrite using `[M_eq]`. Conclude with `R'.2.2.1 _ _ _ h1 (R'.2.1 _ _ h2)`.
+
+Rewrite using `[inParamK_eq, MvPowerSeries.subst_mul hasSubst_single_var_log, param_hyp hl, hEq, ← map_inParam, inParam_expS _ hS0, map_expS _ (cc_inParam _ hS0), MvPowerSeries.subst_mul hasSubst_renS, mvExp_eq, mvExp_eq, Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.subst_ex …`. Establish `hneg : MvPowerSeries.subst sideVariable (-Φ) = -(MvPowerSeries.subst sideVariable Φ : MvPowerSeries (ι ⊕ ι) ℂ_[l])`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hasSubst_renS, map_neg]`. Rewrite using `[hneg]`. Establish `key : Formalism.HermitianLattices.ExpSeriesBivariate.expS (-(MvPowerSeries.subst sideVariable Φ : MvPowerSeries (ι ⊕ ι) ℂ_[l])) * MvPowerSeries.subst sideVariable U0 * Formalism.HermitianLattices.ExpSeriesBivariate.expS (MvPowerSeries.map (k0ToC l) (inParam l (sumBe l be : MvPowe …`.
+
+Rewrite using `[sub_eq_add_neg, Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.expS_add _ _ hM0 (by rw [map_neg, hR0, neg_zero])]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Introduce `m`. Conclude with `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' (Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' cc_renS integral_renS hU0) hsim.2 m`.
+-/
 theorem hyperbolic_of_orthogonal : HypOfOrth := by
   intro l _ h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n _ _ _ _ f f' hP be hbe0 hTie Θ hI
   have hl : 2 ≤ l := by omega
@@ -450,19 +619,33 @@ section Calc
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [Simeq, sub_zero]`.
+-/
 theorem simeq_iff_zero {ι : Type} (f g : MvPowerSeries ι (K0 p)) : Simeq p f g ↔ Simeq p (f - g) 0 := by
   simp only [Simeq, sub_zero]
 
+/- English proof (translation)
+Unfold `inParam`. Conclude with `MvPowerSeries.subst_add hasSubst_log f g`.
+-/
 theorem inParam_add {ι : Type} [Finite ι] (f g : MvPowerSeries ι (K0 p)) :
     inParam p (f + g) = inParam p f + inParam p g := by
   unfold inParam
   exact MvPowerSeries.subst_add hasSubst_log f g
 
+/- English proof (translation)
+Unfold `inParam`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hasSubst_log, map_neg]`.
+-/
 theorem inParam_neg {ι : Type} [Finite ι] (f : MvPowerSeries ι (K0 p)) :
     inParam p (-f) = -inParam p f := by
   unfold inParam
   rw [← MvPowerSeries.coe_substAlgHom hasSubst_log, map_neg]
 
+/- English proof (translation)
+Simplify using `only [Simeq, sub_zero] at h1 h2 ⊢`. Take `⟨c1, u1, hu1, e1⟩` from `h1`. Take `⟨c2, u2, hu2, e2⟩` from `h2`. Establish `hc1 : MvPowerSeries.constantCoeff d1 = 0` using `c1`. Establish `hc2 : MvPowerSeries.constantCoeff d2 = 0` using `c2`.
+
+Use `⟨by rw [map_add, hc1, hc2, add_zero], u1 + u2 + u1 * u2, by simp [hu1, hu2], ?_⟩` and prove the remaining obligations. Rewrite using `[inParam_add, expS_add' _ _ (cc_inParam d1 hc1) (cc_inParam d2 hc2), e1, e2]`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem z_add {ι : Type} [Finite ι] {d1 d2 : MvPowerSeries ι (K0 p)} (h1 : Simeq p d1 0) (h2 : Simeq p d2 0) :
     Simeq p (d1 + d2) 0 := by
   simp only [Simeq, sub_zero] at h1 h2 ⊢
@@ -475,6 +658,13 @@ theorem z_add {ι : Type} [Finite ι] {d1 d2 : MvPowerSeries ι (K0 p)} (h1 : Si
   simp only [map_add, map_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [Simeq, sub_zero] at h ⊢`. Take `⟨c, u, hu, e⟩` from `h`. Establish `hc : MvPowerSeries.constantCoeff d = 0` using `c`. Establish `hU : IsUnit (1 + u)` using `MvPowerSeries.isUnit_iff_constantCoeff.2 (by simp [hu])`. Take `⟨v, hv⟩` from `hU.exists_right_inv`.
+
+Establish `hcv : MvPowerSeries.constantCoeff v = 1`. Use `congrArg MvPowerSeries.constantCoeff hv` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_add, map_one, hu, add_zero, one_mul]`. Then use the resulting hypothesis. Use `⟨by rw [map_neg, hc, neg_zero], v - 1, by rw [map_sub, hcv, map_one, sub_self], ?_⟩` and prove the remaining obligations. Establish `hinv` using `expS_neg_mul (inParam p d) (cc_inParam d hc)`.
+
+Rewrite `hinv` using `[e]`. Establish `hx : expS p (-inParam p d) = MvPowerSeries.map (algebraMap (WW p) (K0 p)) v`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inParam_neg, hx, map_sub, map_one, add_sub_cancel]`.
+-/
 theorem z_neg {ι : Type} [Finite ι] {d : MvPowerSeries ι (K0 p)} (h : Simeq p d 0) : Simeq p (-d) 0 := by
   simp only [Simeq, sub_zero] at h ⊢
   obtain ⟨c, u, hu, e⟩ := h
@@ -499,14 +689,25 @@ theorem z_neg {ι : Type} [Finite ι] {d : MvPowerSeries ι (K0 p)} (h : Simeq p
 def sgn {σ τ : Type} (R : Type) [CommRing R] (π : σ → τ) (ε : σ → ℤ) : σ → MvPowerSeries τ R :=
   fun j => MvPowerSeries.C (ε j : R) * MvPowerSeries.X (π j)
 
+/- English proof (translation)
+Simplify using `[sgn]`.
+-/
 theorem cc_sgn {σ τ R : Type} [CommRing R] (π : σ → τ) (ε : σ → ℤ) (j : σ) :
     MvPowerSeries.constantCoeff (sgn R π ε j) = 0 := by
   simp [sgn]
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_sgn π ε)`.
+-/
 theorem hasSubst_sgn {σ τ R : Type} [CommRing R] [Finite σ] (π : σ → τ) (ε : σ → ℤ) :
     MvPowerSeries.HasSubst (sgn R π ε) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (cc_sgn π ε)
 
+/- English proof (translation)
+Establish `hodd : Odd p` using `(Fact.out : p.Prime).odd_of_ne_two hp`. Rewrite using `[show (-PowerSeries.X : PowerSeries (K0 p)) = (-1 : K0 p) • PowerSeries.X by simp, ← PowerSeries.rescale_eq_subst]`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale, map_neg]`. Simplify using `only [logF, PowerSeries.coeff_mk, Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[h, Odd.neg_one_pow (hodd.pow), neg_one_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem logF_odd (hp : p ≠ 2) :
     PowerSeries.subst (-PowerSeries.X : PowerSeries (K0 p)) (logF p) = -logF p := by
   have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two hp
@@ -520,6 +721,11 @@ theorem logF_odd (hp : p ≠ 2) :
   · rw [h, Odd.neg_one_pow (hodd.pow), neg_one_mul]
   · simp
 
+/- English proof (translation)
+Break down `he with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Establish `hX : PowerSeries.HasSubst (MvPowerSeries.X k : MvPowerSeries τ (K0 p))` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X k)`. Establish `hN : PowerSeries.HasSubst (-PowerSeries.X : PowerSeries (K0 p))` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`. Establish `h1 : PowerSeries.subst (MvPowerSeries.X k : MvPowerSeries τ (K0 p)) (-PowerSeries.X : PowerSeries (K0 p)) = -MvPowerSeries.X k`.
+
+Rewrite using `[← PowerSeries.coe_substAlgHom hX, map_neg, PowerSeries.coe_substAlgHom hX, PowerSeries.subst_X hX]`. Establish `h2` using `PowerSeries.subst_comp_subst_apply hN hX (logF p)`. Rewrite `h2` using `[h1, logF_odd hp]`. Rewrite using `[Int.cast_neg, Int.cast_one, map_neg, map_one, neg_one_mul, neg_one_mul, ← h2, ← PowerSeries.coe_substAlgHom hX, map_neg]`.
+-/
 theorem subst_log_sgn (hp : p ≠ 2) {τ : Type} (k : τ) (e : ℤ) (he : e = 1 ∨ e = -1) :
     PowerSeries.subst (MvPowerSeries.C (e : K0 p) * MvPowerSeries.X k : MvPowerSeries τ (K0 p)) (logF p) =
       MvPowerSeries.C (e : K0 p) * PowerSeries.subst (MvPowerSeries.X k : MvPowerSeries τ (K0 p)) (logF p) := by
@@ -537,6 +743,9 @@ theorem subst_log_sgn (hp : p ≠ 2) {τ : Type} (k : τ) (e : ℤ) (he : e = 1 
     rw [Int.cast_neg, Int.cast_one, map_neg, map_one, neg_one_mul, neg_one_mul, ← h2,
       ← PowerSeries.coe_substAlgHom hX, map_neg]
 
+/- English proof (translation)
+Unfold `inParam`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_sgn π ε) hasSubst_log, MvPowerSeries.subst_comp_subst_apply hasSubst_log (hasSubst_sgn π ε)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[subst_single_var (hasSubst_sgn π ε), sgn, MvPowerSeries.subst_mul hasSubst_log, MvPowerSeries.subst_C, MvPowerSeries.subst_X hasSubst_log, subst_log_sgn hp _ _ (hε j)]`.
+-/
 theorem inParam_sgn (hp : p ≠ 2) {σ τ : Type} [Finite σ] [Finite τ] (π : σ → τ) (ε : σ → ℤ)
     (hε : ∀ j, ε j = 1 ∨ ε j = -1) (d : MvPowerSeries σ (K0 p)) :
     inParam p (MvPowerSeries.subst (sgn (K0 p) π ε) d) = MvPowerSeries.subst (sgn (K0 p) π ε) (inParam p d) := by
@@ -548,6 +757,15 @@ theorem inParam_sgn (hp : p ≠ 2) {σ τ : Type} [Finite σ] [Finite τ] (π : 
   rw [subst_single_var (hasSubst_sgn π ε), sgn, MvPowerSeries.subst_mul hasSubst_log, MvPowerSeries.subst_C,
     MvPowerSeries.subst_X hasSubst_log, subst_log_sgn hp _ _ (hε j)]
 
+/- English proof (translation)
+Simplify using `only [Simeq, sub_zero] at h ⊢`. Take `⟨c, u, hu, e⟩` from `h`. Establish `hc : MvPowerSeries.constantCoeff d = 0` using `c`. Establish `hs` using `hasSubst_sgn (R := K0 p) π ε`. Establish `hsW` using `hasSubst_sgn (R := WW p) π ε`.
+
+Use `⟨MvPowerSeries.constantCoeff_subst_eq_zero hs (cc_sgn π ε) hc, MvPowerSeries.subst (sgn (WW p) π ε) u, MvPowerSeries.constantCoeff_subst_eq_zero hsW (cc_sgn π ε) hu, ?_⟩` and prove the remaining obligations. Establish `e2 : expS p (inParam p (MvPowerSeries.subst (sgn (K0 p) π ε) d)) = MvPowerSeries.subst (sgn (K0 p) π ε) (expS p (inParam p d))`. Rewrite using `[inParam_sgn hp π ε hε, expS_eq _ (MvPowerSeries.constantCoeff_subst_eq_zero hs (cc_sgn π ε) (cc_inParam d hc)), expS_eq _ (cc_inParam d hc), Formalism.HermitianLattices.ExpSeriesBivariate.ExpSeriesAddition.subst_expS _ (cc_sgn π ε) _ (cc_inParam d hc)]`. Establish `hfun : (fun j => MvPowerSeries.map (algebraMap (WW p) (K0 p)) (sgn (WW p) π ε j)) = sgn (K0 p) π ε`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[sgn, sgn, map_mul, MvPowerSeries.map_C, MvPowerSeries.map_X, map_intCast]`. Establish `e3 : MvPowerSeries.subst (sgn (K0 p) π ε) (MvPowerSeries.map (algebraMap (WW p) (K0 p)) u) = MvPowerSeries.map (algebraMap (WW p) (K0 p)) (MvPowerSeries.subst (sgn (WW p) π ε) u)`. Rewrite using `[MvPowerSeries.map_subst hsW, hfun]`. Establish `e4 : MvPowerSeries.subst (sgn (K0 p) π ε) (1 : MvPowerSeries σ (K0 p)) = 1`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hs, map_one]`.
+
+Rewrite using `[e2, e, MvPowerSeries.subst_add hs, e3, e4]`.
+-/
 theorem z_sgn (hp : p ≠ 2) {σ τ : Type} [Finite σ] [Finite τ] (π : σ → τ) (ε : σ → ℤ)
     (hε : ∀ j, ε j = 1 ∨ ε j = -1) {d : MvPowerSeries σ (K0 p)} (h : Simeq p d 0) :
     Simeq p (MvPowerSeries.subst (sgn (K0 p) π ε) d) 0 := by
@@ -580,6 +798,9 @@ section Even
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Unfold `sub2`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_pair_of_constantCoeff_eq_zero x y hx hy) ha]`. Apply the tactic sequence `exact congrArg (MvPowerSeries.subst · be) (funext fun j => by fin_cases j <;> rfl)`.
+-/
 theorem formalSum_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ (K0 p)} (ha : MvPowerSeries.HasSubst a)
     (be : MvPowerSeries (Fin 2) (K0 p)) (x y : MvPowerSeries σ (K0 p))
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -588,15 +809,28 @@ theorem formalSum_subst {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ 
   rw [MvPowerSeries.subst_comp_subst_apply (hasSubst_pair_of_constantCoeff_eq_zero x y hx hy) ha]
   exact congrArg (MvPowerSeries.subst · be) (funext fun j => by fin_cases j <;> rfl)
 
+/- English proof (translation)
+Unfold `sub2`. Apply the tactic sequence `exact congrArg (MvPowerSeries.subst · be) (funext fun j => by fin_cases j <;> rfl)`.
+-/
 theorem subst_eq_formalSum {τ : Type} (a : Fin 2 → MvPowerSeries τ (K0 p)) (be : MvPowerSeries (Fin 2) (K0 p)) :
     MvPowerSeries.subst a be = sub2 p be (a 0) (a 1) := by
   unfold sub2
   exact congrArg (MvPowerSeries.subst · be) (funext fun j => by fin_cases j <;> rfl)
 
+/- English proof (translation)
+Rewrite using `[← subst_eq_formalSum MvPowerSeries.X, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem formalSum_X_X (be : MvPowerSeries (Fin 2) (K0 p)) : sub2 p be (MvPowerSeries.X 0) (MvPowerSeries.X 1) = be := by
   rw [← subst_eq_formalSum MvPowerSeries.X, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+Unfold `sub2`. Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_subst (hasSubst_pair_of_constantCoeff_eq_zero 0 y (map_zero _) hy), map_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun d => ?_` and prove the remaining obligations. Distinguish the cases in `hd : d 0 = 0`.
+
+Establish `: MvPowerSeries.coeff d be = 0`. Assume the negation of the conclusion as `h`. Use `(hB.ab d h).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_smul]`.
+
+Establish `h0 : (d.prod fun s e => ((![0, y] : Fin 2 → MvPowerSeries σ (K0 p)) s) ^ e) = 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hd) (by simp [zero_pow hd])`. Rewrite using `[h0, map_zero, smul_zero]`.
+-/
 theorem formalSum_zero_left {σ : Type} [Finite σ] {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be)
     (y : MvPowerSeries σ (K0 p)) (hy : MvPowerSeries.constantCoeff y = 0) : sub2 p be 0 y = 0 := by
   classical
@@ -615,6 +849,13 @@ theorem formalSum_zero_left {σ : Type} [Finite σ] {be : MvPowerSeries (Fin 2) 
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hd) (by simp [zero_pow hd])
     rw [h0, map_zero, smul_zero]
 
+/- English proof (translation)
+Unfold `sub2`. Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_subst (hasSubst_pair_of_constantCoeff_eq_zero x 0 hx (map_zero _)), map_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun d => ?_` and prove the remaining obligations. Distinguish the cases in `hd : d 1 = 0`.
+
+Establish `: MvPowerSeries.coeff d be = 0`. Assume the negation of the conclusion as `h`. Use `(hB.ab d h).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_smul]`.
+
+Establish `h0 : (d.prod fun s e => ((![x, 0] : Fin 2 → MvPowerSeries σ (K0 p)) s) ^ e) = 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hd) (by simp [zero_pow hd])`. Rewrite using `[h0, map_zero, smul_zero]`.
+-/
 theorem formalSum_zero_right {σ : Type} [Finite σ] {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be)
     (x : MvPowerSeries σ (K0 p)) (hx : MvPowerSeries.constantCoeff x = 0) : sub2 p be x 0 = 0 := by
   classical
@@ -633,6 +874,11 @@ theorem formalSum_zero_right {σ : Type} [Finite σ] {be : MvPowerSeries (Fin 2)
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hd) (by simp [zero_pow hd])
     rw [h0, map_zero, smul_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `have h := z_neg (z_sgn hp (![0, 0, 1] : Fin 3 → Fin 2) ![1, -1, 1] (fun j => by fin_cases j <;> simp) hB.add1)`. Establish `hs` using `hasSubst_sgn (R := K0 p) (![0, 0, 1] : Fin 3 → Fin 2) ![1, -1, 1]`. Rewrite `h` using `[MvPowerSeries.subst_sub hs, MvPowerSeries.subst_sub hs, formalSum_subst hs _ _ _ (by simp) (by simp), formalSum_subst hs _ _ _ (by simp) (by simp), formalSum_subst hs _ _ _ (by simp) (by simp), MvPowerSeries.subst_add hs]`. Simplify using `only [MvPowerSeries.subst_X hs, sgn, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, Int.cast_one, Int.cast_neg, map_one, map_neg, one_mul, neg_mul, add_neg_cancel] at h`. Rewrite `h` using `[formalSum_zero_left hB _ (by simp), formalSum_X_X]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even1 (hp : p ≠ 2) {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be) :
     Simeq p (be + sub2 p be (-MvPowerSeries.X 0) (MvPowerSeries.X 1)) 0 := by
   have h := z_neg (z_sgn hp (![0, 0, 1] : Fin 3 → Fin 2) ![1, -1, 1]
@@ -648,6 +894,11 @@ theorem even1 (hp : p ≠ 2) {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p 
   convert h using 1
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `have h := z_neg (z_sgn hp (![0, 1, 1] : Fin 3 → Fin 2) ![1, 1, -1] (fun j => by fin_cases j <;> simp) hB.add2)`. Establish `hs` using `hasSubst_sgn (R := K0 p) (![0, 1, 1] : Fin 3 → Fin 2) ![1, 1, -1]`. Rewrite `h` using `[MvPowerSeries.subst_sub hs, MvPowerSeries.subst_sub hs, formalSum_subst hs _ _ _ (by simp) (by simp), formalSum_subst hs _ _ _ (by simp) (by simp), formalSum_subst hs _ _ _ (by simp) (by simp), MvPowerSeries.subst_add hs]`. Simplify using `only [MvPowerSeries.subst_X hs, sgn, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, Int.cast_one, Int.cast_neg, map_one, map_neg, one_mul, neg_mul, add_neg_cancel] at h`. Rewrite `h` using `[formalSum_zero_right hB _ (by simp), formalSum_X_X]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even2 (hp : p ≠ 2) {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be) :
     Simeq p (be + sub2 p be (MvPowerSeries.X 0) (-MvPowerSeries.X 1)) 0 := by
   have h := z_neg (z_sgn hp (![0, 1, 1] : Fin 3 → Fin 2) ![1, 1, -1]
@@ -669,10 +920,18 @@ section Even2
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_neg, MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_X ha]`.
+-/
 theorem subst_negX {σ τ : Type} {a : σ → MvPowerSeries τ (K0 p)} (ha : MvPowerSeries.HasSubst a) (j : σ) :
     MvPowerSeries.subst a (-MvPowerSeries.X j : MvPowerSeries σ (K0 p)) = -a j := by
   rw [← MvPowerSeries.coe_substAlgHom ha, map_neg, MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_X ha]
 
+/- English proof (translation)
+Apply the tactic sequence `have h3 := z_sgn hp (id : Fin 2 → Fin 2) ![-1, 1] (fun j => by fin_cases j <;> simp) (even2 hp hB)`. Establish `hs` using `hasSubst_sgn (R := K0 p) (id : Fin 2 → Fin 2) ![-1, 1]`. Rewrite `h3` using `[MvPowerSeries.subst_add hs, formalSum_subst hs _ _ _ (by simp) (by simp), subst_negX hs, MvPowerSeries.subst_X hs, subst_eq_formalSum]`. Simplify using `only [sgn, id, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Int.cast_one, Int.cast_neg, map_one, map_neg, one_mul, neg_mul] at h3`. Establish `h1` using `z_neg (even1 hp hB)`.
+
+Use `z_add h3 h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even3 (hp : p ≠ 2) {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p be) :
     Simeq p (sub2 p be (-MvPowerSeries.X 0) (-MvPowerSeries.X 1) - be) 0 := by
   have h3 := z_sgn hp (id : Fin 2 → Fin 2) ![-1, 1] (fun j => by fin_cases j <;> simp) (even2 hp hB)
@@ -685,6 +944,9 @@ theorem even3 (hp : p ≠ 2) {be : MvPowerSeries (Fin 2) (K0 p)} (hB : BeProp p 
   convert z_add h3 h1 using 1
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using simeq_refl' (p := p) (0 : MvPowerSeries σ (K0 p))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `z_add (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem z_sum {σ α : Type} [Finite σ] (s : Finset α) (u : α → MvPowerSeries σ (K0 p))
     (h : ∀ a ∈ s, Simeq p (u a) 0) : Simeq p (∑ a ∈ s, u a) 0 := by
   classical
@@ -694,6 +956,13 @@ theorem z_sum {σ α : Type} [Finite σ] (s : Finset α) (u : α → MvPowerSeri
     rw [Finset.sum_insert ha]
     exact z_add (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Introduce `p _ hp ι _ be hB`. Rewrite using `[simeq_iff_zero]`. Establish `hN : MvPowerSeries.HasSubst (fun i : ι ⊕ ι => (-MvPowerSeries.X i : MvPowerSeries (ι ⊕ ι) (K0 p)))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `heq : MvPowerSeries.subst (fun i => -MvPowerSeries.X i) (sumBe p be : MvPowerSeries (ι ⊕ ι) (K0 p)) - sumBe p be = ∑ e : ι, MvPowerSeries.subst (sgn (K0 p) ![Sum.inl e, Sum.inr e] ![1, 1]) (sub2 p be (-MvPowerSeries.X 0) (-MvPowerSeries.X 1) - be)`. Unfold `sumBe`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hN, map_sum, MvPowerSeries.coe_substAlgHom hN, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Establish `hσ` using `hasSubst_sgn (R := K0 p) (![Sum.inl e, Sum.inr e] : Fin 2 → ι ⊕ ι) ![1, 1]`. Rewrite using `[formalSum_subst hN _ _ _ (by simp) (by simp), MvPowerSeries.subst_X hN, MvPowerSeries.subst_X hN, MvPowerSeries.subst_sub hσ, formalSum_subst hσ _ _ _ (by simp) (by simp), subst_negX hσ, subst_negX hσ, subst_eq_formalSum]`. Simplify using `[sgn]`.
+
+Rewrite using `[heq]`. Apply the tactic sequence `exact z_sum _ _ fun e _ => z_sgn hp _ _ (fun j => by fin_cases j <;> simp) (even3 hp hB)`.
+-/
 theorem sum_beta_even : SumBeEven := by
   intro p _ hp ι _ be hB
   rw [simeq_iff_zero]
@@ -719,6 +988,9 @@ section Iff
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `Subring.sum_mem _ fun x _ => Subring.mul_mem _ (hf _) (hg _)`.
+-/
 theorem intR_mul {ι K1 : Type} [Field K1] {R1 : Subring K1} {f g : MvPowerSeries ι K1} (hf : IntR R1 f)
     (hg : IntR R1 g) : IntR R1 (f * g) := by
   classical
@@ -726,6 +998,9 @@ theorem intR_mul {ι K1 : Type} [Field K1] {R1 : Subring K1} {f g : MvPowerSerie
   rw [MvPowerSeries.coeff_mul]
   exact Subring.sum_mem _ fun x _ => Subring.mul_mem _ (hf _) (hg _)
 
+/- English proof (translation)
+Unfold `inParamK inParam`. Rewrite using `[MvPowerSeries.map_subst hasSubst_log]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)), MvPowerSeries.map_X]`.
+-/
 theorem inParamK_map {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (g : MvPowerSeries ι (K0 p)) :
     inParamK p K1 (MvPowerSeries.map (algebraMap (K0 p) K1) g) =
       MvPowerSeries.map (algebraMap (K0 p) K1) (inParam p g) := by
@@ -736,6 +1011,9 @@ theorem inParamK_map {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (
   rw [PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)),
     MvPowerSeries.map_X]
 
+/- English proof (translation)
+Unfold `inParamK`. Conclude with `MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) _ (by`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_log, map_zero])) f g`.
+-/
 theorem inParamK_mul {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (f g : MvPowerSeries ι K1) :
     inParamK p K1 (f * g) = inParamK p K1 f * inParamK p K1 g := by
   unfold inParamK
@@ -744,6 +1022,17 @@ theorem inParamK_mul {ι K1 : Type} [Finite ι] [Field K1] [Algebra (K0 p) K1] (
       rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
         PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_log, map_zero])) f g
 
+/- English proof (translation)
+Introduce `p _ hp ι _ K1 _ _ R1 hW be Th`. Use `⟨fun h => ?_, fun h => first_kernel_of_sum p ι K1 R1 be Th h.1 h.2.1 h.2.2⟩` and prove the remaining obligations. Take `⟨Ph, U, hTh, hU, -, hB, hPS⟩` from `h`. Express the relevant statement in the definitionally equal form `Simeq p Ph (sumBe p be) at hPS`. Use `⟨hB, sum_beta_even p hp ι be hB, ?_⟩` and prove the remaining obligations.
+
+Establish `hS0 : MvPowerSeries.constantCoeff (sumBe p be : MvPowerSeries (ι ⊕ ι) (K0 p)) = 0` using `cc_sumBe (cc_be hB)`. Establish `hP0 : MvPowerSeries.constantCoeff Ph = 0`. Use `hPS.1` as an intermediate fact. Rewrite `this` using `[map_sub, hS0, sub_zero]`. Then use the resulting hypothesis. Establish `hz` using `z_neg ((simeq_iff_zero Ph _).1 hPS)`.
+
+Take `⟨-, v, -, hv⟩` from `hz`. Rewrite `hv` using `[sub_zero, neg_sub]`. Establish `hD0 : MvPowerSeries.constantCoeff (sumBe p be - Ph : MvPowerSeries (ι ⊕ ι) (K0 p)) = 0`. Rewrite using `[map_sub, hS0, hP0, sub_zero]`. Establish `key : Th * MvPowerSeries.map (algebraMap (K0 p) K1) (expS p (sumBe p be)) = U * MvPowerSeries.map (algebraMap (K0 p) K1) (expS p (sumBe p be - Ph))`.
+
+Rewrite using `[hTh, sub_eq_add_neg, expS_add' _ _ hS0 (by rw [map_neg, hP0, neg_zero]), map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, inParamK_mul, inParamK_map, inParam_expS _ hD0, hv]`. Use `intR_mul hU fun n => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map, ← map_one (MvPowerSeries.map (algebraMap (WW p) (K0 p))), ← map_add, MvPowerSeries.coeff_map]`.
+
+Conclude with `hW _`.
+-/
 theorem first_kernel_general_iff : FirstKernelGeneratorIff := by
   intro p _ hp ι _ K1 _ _ R1 hW be Th
   refine ⟨fun h => ?_, fun h => first_kernel_of_sum p ι K1 R1 be Th h.1 h.2.1 h.2.2⟩
@@ -769,6 +1058,9 @@ theorem first_kernel_general_iff : FirstKernelGeneratorIff := by
     MvPowerSeries.coeff_map]
   exact hW _
 
+/- English proof (translation)
+Introduce `l _ h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n _ _ _ _ f f' hP be hB hTie Θ hI`. Use `letI := Formalism.L2.G.Pend.wittFractionAlgebraCp l`. Conclude with `first_kernel_of_sum l ι ℂ_[l] (Formalism.L2.G.Pend.OcC l) be _ hB (sum_beta_even l (by omega) ι be hB) (hyperbolic_of_orthogonal l h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n f f' hP be (cc_be hB) hTie Θ hI)`.
+-/
 theorem first_kernel_of_orthogonal : FirstKernelGeneratorOfOrthogonal := by
   intro l _ h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF hN ι n _ _ _ _ f f' hP be hB hTie Θ hI
   letI := Formalism.L2.G.Pend.wittFractionAlgebraCp l

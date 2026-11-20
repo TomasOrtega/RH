@@ -11,6 +11,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW`. Establish `h1` using `_root_.GlobalTheory.LFun.continuous_locChar h (_root_.GlobalTheory.AdelicU.splitPrime τ)`. Establish `h2` using `Continuous.units_map (_root_.GlobalTheory.LFun.complMap (_root_.GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom (_root_.GlobalTheory.LFun.SplitChart.continuous_complMap (_root_.GlobalTheory.AdelicU.splitPrime_under τ))`. Conclude with `h1.comp h2`.
+-/
 theorem _root_.GlobalTheory.StepFacNe.chrW_continuous {F E : Type} [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
     (χ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (h : Continuous χ) {v : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
@@ -25,6 +28,17 @@ theorem _root_.GlobalTheory.StepFacNe.chrW_continuous {F E : Type} [Field F] [Nu
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Establish `hw` using `_root_.GlobalTheory.AdelicU.splitPrime_under τ`. Unfold `_root_.GlobalTheory.LFun.UnrAt at h`. Use `push_neg at h`. Take `⟨y, hy1, hy2⟩` from `h`. Unfold `_root_.Formalism.L2.Host.IsUnitAt at hy1`.
+
+Take `⟨a, ha⟩` from `(_root_.GlobalTheory.LFun.SplitTie.complMap_bijective τ hw).2 (y : _)`. Establish `hv : Valued.v a = 1`. Rewrite using `[← _root_.GlobalTheory.LFun.SplitTie.valued_complMap τ hw, ha]`. Conclude with `hy1`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hv`. Use `⟨Units.mk0 a ha0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `[hv]`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `[hv]`. Introduce `h1`. Apply `hy2` to reduce the goal to its premises. Establish `hy : Units.map (_root_.GlobalTheory.LFun.complMap hw).toMonoidHom (Units.mk0 a ha0) = y` using `Units.ext (by simpa using ha)`.
+
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW at h1`. Rewrite `h1` using `[MonoidHom.comp_apply, hy]`. Conclude with `h1`.
+-/
 theorem _root_.GlobalTheory.StepFacNe.chrW_ram {F E : Type} [Field F]
     [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (χ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) {v : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)
@@ -57,6 +71,13 @@ theorem _root_.GlobalTheory.StepFacNe.chrW_ram {F E : Type} [Field F]
     rw [MonoidHom.comp_apply, hy] at h1
     exact h1
 
+/- English proof (translation)
+Establish `hB : Bounded (above E S) (charFam χ) 1 0`. Introduce `w _`. Unfold `charFam`. Use `split_ifs`. Use `⟨by simp, fun b hb => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hb` using `[Multiset.mem_singleton]`. Substitute `hb` using the available equality. Simplify using `[norm_val]`. Simplify using the standard rewrite rules. Establish `hc` using `hB.converges (s := (k : ℂ)) (by`.
+
+Simplify using `only [Complex.natCast_re, zero_add]`. Conclude with `(by omega : 1 < k))` after adjusting the coercions. Conclude with `hc.ne_zero`.
+-/
 theorem charL_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (χ : Chr F E) (S : Set (Pl F)) (k : ℕ) (hk : 2 ≤ k) : charL χ S (k : ℂ) ≠ 0 := by
   have hB : Bounded (above E S) (charFam χ) 1 0 := by

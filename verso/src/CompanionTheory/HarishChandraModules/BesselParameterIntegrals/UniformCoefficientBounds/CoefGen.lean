@@ -12,6 +12,23 @@ open CompanionTheory.D.Upq.Sm Formalism.FourierDecayAlt Formalism.FourierDecayAl
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, hiso, -⟩, -⟩` from `id hσ`. Take `⟨hc1, -⟩` from `conj_facts hP hPJ`. Establish `hG : PI.IsMatGroup (B.GV k r)` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `hrep : RepOn (B.GV k r) σ` using `repOn_of_conj hP hPJ h1 hm`. Establish `hiso' : ∀ g ∈ B.GV k r, ∀ v, ‖σ g v‖ = ‖v‖` using `fun g hg v => by`.
+
+Take `⟨b, hb, rfl⟩` from `hc1 g hg`. Conclude with `hiso b hb v`. Take `⟨S, hS, hwS, hSK⟩` from `hw`. Establish `hT : GoodSub (B.GV k r) (B.GV k r ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _)) σ S` using `⟨hS, fun v hv => hK k r ε lam H σ hlam hσ v ⟨S, hS, hv, hSK⟩, hSK⟩`. Establish `hws` using `hT.sm w hwS`.
+
+Take `⟨T, C, hT', hC, hW⟩` from `hT.words hG hrep inter_subset_left hwS m`. Use `haveI := hT'.fin`. Take `⟨C', hC', hb⟩` from `coef_bound_uniform (G := B.GV k r) (σ := σ) (T := T) (ρ := fun g => B.gN g ^ (-A)) (fun g _ => Real.rpow_nonneg (Real.sqrt_nonneg _) _) (fun a ha b hb => by`. Take `⟨C, hd⟩` from `hdec a (hT'.sm a ha) b (hT'.sm b hb)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hg0 : 0 < B.gN g` using `lt_of_lt_of_le one_pos (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg)`. Rewrite using `[Real.rpow_neg hg0.le, ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos hg0 _), mul_comm]`. Conclude with `hd g hg)`. Use `⟨C' * C * C * ‖x₀‖, fun g₀ hg₀ => ?_, fun u v hu hv huv g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `SmOn.clm hws (((innerSL ℂ w).smulRight x₀).restrictScalars ℝ) g₀ hg₀`.
+
+Conclude with `⟨U, F, hU, hgU, hF.of_le (by exact_mod_cast le_top), hfF⟩`. Establish `hlie : ∀ W : List (B.Mat k r), (∀ X ∈ W, B.unitLie k r X) → LieW (B.GV k r) W ∧ ∀ X ∈ W, ‖X‖ ≤ 1` using `fun W hW => ⟨fun X hX t => ex_mem_of_lie (hW X hX).1 t, fun X hX => (Matrix.norm_le_iff zero_le_one).2 (hW X hX).2⟩`. Take `⟨hu1, hu2⟩` from `hW u (hlie u hu).1 (hlie u hu).2 (by omega)`. Take `⟨hv1, hv2⟩` from `hW v (hlie v hv).1 (hlie v hv).2 (by omega)`. Rewrite using `[dLR_cf hrep hiso' x₀ hws hws (hlie u hu).1 (hlie v hv).1 hg, cf, norm_smul]`.
+
+Establish `hg1 : 1 ≤ B.gN g` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hg`. Establish `h2` using `hb _ hu1 _ hv1 g hg`. Establish `h3 : B.gN g ^ A * B.gN g ^ (-A) ≤ 1`. Rewrite using `[← Real.rpow_add (by linarith)]`. Simplify using the standard rewrite rules.
+
+Establish `h4 : 0 ≤ B.gN g ^ A` using `Real.rpow_nonneg (by linarith) _`. Establish `h5 : 0 ≤ B.gN g ^ (-A)` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.trans (by gcongr)`. Use `_ = (B.gN g ^ A * B.gN g ^ (-A)) * (C' * C * C * ‖x₀‖) := by ring`.
+
+Use `_ ≤ _ := mul_le_of_le_one_left (by positivity) h3`.
+-/
 theorem inCC_cf_of_dec (hK : PI.KFinSmooth) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)}
@@ -68,6 +85,9 @@ theorem inCC_cf_of_dec (hK : PI.KFinSmooth) {k r : ℕ} {ε : Fin (2 * r + k + 1
       _ = (B.gN g ^ A * B.gN g ^ (-A)) * (C' * C * C * ‖x₀‖) := by ring
       _ ≤ _ := mul_le_of_le_one_left (by positivity) h3
 
+/- English proof (translation)
+Use extensionality with `g x`. Simplify using `only [JDat.coef, cf, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_eq_cf {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (μG : Measure (Formalism.QuantumDeterminants.Mt k r))
     (A : JDat k r Wp Wq) : A.coef μG = cf A.σ (((A.scal μG : ℝ) : ℂ) •

@@ -12,6 +12,9 @@ namespace UpperTheory.NonzeroTypeTheory
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
   {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Introduce `i` and use `(ho i).preimage (continuous_inclusion (Ine_le_Dec A))`.
+-/
 theorem hsm (h : IsPlaceOver A w) {n : ℕ} (χ : Fin n → Dec (F := E) A →* ℂˣ)
     (ho : ∀ i, IsOpen ((χ i).ker : Set (Dec (F := E) A))) :
     ∀ i, GlobalTheory.WeilDeligne.IsSmooth ((χ i).comp (Subgroup.inclusion (Weil_le_Dec h))) := fun i =>

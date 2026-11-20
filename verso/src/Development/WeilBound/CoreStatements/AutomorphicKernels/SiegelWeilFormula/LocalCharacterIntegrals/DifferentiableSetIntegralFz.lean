@@ -10,12 +10,20 @@ variable {H : Type*} [MeasurableSpace H]
 
 def fz (r : H → ℝ) (u : H → ℂ) (s₀ z : ℂ) (b : H) : ℂ := (r b : ℂ) ^ (-(z - s₀)) * u b
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (by linarith)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_cpow_le {x : ℝ} (hx : 1 ≤ x) {R : ℝ} (hR : x ≤ R) (w : ℂ) :
     ‖(x : ℂ) ^ w‖ ≤ R ^ max w.re 0 := by
   rw [Complex.norm_cpow_eq_rpow_re_of_pos (by linarith)]
   calc x ^ w.re ≤ x ^ max w.re 0 := Real.rpow_le_rpow_of_exponent_le hx (le_max_left _ _)
     _ ≤ R ^ max w.re 0 := Real.rpow_le_rpow (by linarith) hR (le_max_right _ _)
 
+/- English proof (translation)
+Establish `hmeas : Measurable fun b => (r b : ℂ) ^ (-(z - s₀))` using `(Complex.measurable_ofReal.comp hrm).pow_const _`. Use `Measure.integrableOn_of_bounded (M := Rm ^ max (-(z - s₀)).re 0 * C) hSf.ne (hmeas.aestronglyMeasurable.mul hum) ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem hS] with b hb`. Use `show ‖(r b : ℂ) ^ (-(z - s₀)) * u b‖ ≤ Rm ^ max (-(z - s₀)).re 0 * C`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (PositivityTheory.SiegelWeilFormula.SwLocFin.norm_cpow_le (hr1 b) (hRm b hb) _) (hub b) (norm_nonneg _) (Real.rpow_nonneg (by linarith [hr1 b, hRm b hb]) _)`.
+-/
 theorem integrableOn_fz {ν : Measure H} {r : H → ℝ} {u : H → ℂ} {s₀ : ℂ} (hr1 : ∀ b, 1 ≤ r b) (hrm : Measurable r)
     (hum : AEStronglyMeasurable u ν) {C : ℝ} (hub : ∀ b, ‖u b‖ ≤ C) {S : Set H} (hS : MeasurableSet S)
     (hSf : ν S < ⊤) {Rm : ℝ} (hRm : ∀ b ∈ S, r b ≤ Rm) (z : ℂ) : IntegrableOn (fz r u s₀ z) S ν := by
@@ -29,6 +37,21 @@ theorem integrableOn_fz {ν : Measure H} {r : H → ℝ} {u : H → ℂ} {s₀ :
   exact mul_le_mul (PositivityTheory.SiegelWeilFormula.SwLocFin.norm_cpow_le (hr1 b) (hRm b hb) _) (hub b)
     (norm_nonneg _) (Real.rpow_nonneg (by linarith [hr1 b, hRm b hb]) _)
 
+/- English proof (translation)
+Introduce `z₀`. Use `haveI : IsFiniteMeasure (ν.restrict S) := isFiniteMeasure_restrict.mpr hSf.ne`. Establish `hofr : Measurable fun b => (r b : ℂ)` using `Complex.measurable_ofReal.comp hrm`. Establish `hmeas : ∀ z : ℂ, Measurable fun b => (r b : ℂ) ^ (-(z - s₀))` using `fun z => hofr.pow_const _`. Use `set R' := max Rm 1 with hR'`.
+
+Establish `hR'1 : 1 ≤ R'` using `le_max_right _ _`. Establish `hR'0 : 0 ≤ R'` using `by linarith`. Use `set E := max (s₀.re - z₀.re + 1) 0 with hE`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν.restrict S) (F := fun z b => PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b) (F' := fun z b => -(Complex.log (r b) * (r b : ℂ) ^ (-(z - s₀)) * u b)) (bound := fun _ => R' * R' ^ E * C) (x₀ := z₀) (Metric.ball_mem …`. Conclude with `key.2.differentiableAt`.
+
+Use `filter_upwards [ae_restrict_mem hS] with b hb z hz show ‖-(Complex.log (r b) * (r b : ℂ) ^ (-(z - s₀)) * u b)‖ ≤ R' * R' ^ E * C`. Establish `hb1` using `hr1 b`. Establish `hbR : r b ≤ R'` using `(hRm b hb).trans (le_max_left _ _)`. Establish `hlog : ‖Complex.log (r b)‖ ≤ R'`. Rewrite using `[← Complex.ofReal_log (by linarith), Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.log_nonneg hb1)]`.
+
+Combine the linear relations using `[Real.log_le_sub_one_of_pos (show 0 < r b by linarith)]`. Establish `hre : (-(z - s₀)).re ≤ s₀.re - z₀.re + 1`. Establish `h1 : dist z z₀ < 1` using `Metric.mem_ball.mp hz`. Rewrite `h1` using `[Complex.dist_eq]`. Establish `h2` using `Complex.abs_re_le_norm (z - z₀)`.
+
+Rewrite `h2` using `[Complex.sub_re, abs_le]`. Rewrite using `[Complex.neg_re, Complex.sub_re]`. Combine the linear relations using `[h2.1]`. Establish `hcp : ‖(r b : ℂ) ^ (-(z - s₀))‖ ≤ R' ^ E` using `(PositivityTheory.SiegelWeilFormula.SwLocFin.norm_cpow_le hb1 hbR _).trans (Real.rpow_le_rpow_of_exponent_le hR'1 (max_le_max hre le_rfl))`. Rewrite using `[norm_neg, norm_mul, norm_mul]`.
+
+Conclude with `mul_le_mul (mul_le_mul hlog hcp (norm_nonneg _) hR'0) (hub b) (norm_nonneg _) (mul_nonneg hR'0 (Real.rpow_nonneg hR'0 _))`. Use `Eventually.of_forall fun b z _ => ?_` and prove the remaining obligations. Establish `hne : (r b : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (by linarith [hr1 b])`. Establish `h0` using `(((hasDerivAt_id' z).sub_const s₀).neg.const_cpow (c := (r b : ℂ)) (Or.inl hne)).mul_const (u b)`. Use `show HasDerivAt (fun x => (r b : ℂ) ^ (-(x - s₀)) * u b) (-(Complex.log (r b) * (r b : ℂ) ^ (-(z - s₀)) * u b)) z`.
+
+Establish `e : (r b : ℂ) ^ (-(z - s₀)) * Complex.log (r b) * -1 * u b = -(Complex.log (r b) * (r b : ℂ) ^ (-(z - s₀)) * u b)` using `by ring`. Conclude with `h0.congr_deriv e`.
+-/
 theorem differentiable_setIntegral_fz {ν : Measure H} {r : H → ℝ} {u : H → ℂ} {s₀ : ℂ} (hr1 : ∀ b, 1 ≤ r b)
     (hrm : Measurable r) (hum : AEStronglyMeasurable u ν) {C : ℝ} (hub : ∀ b, ‖u b‖ ≤ C) {S : Set H}
     (hS : MeasurableSet S) (hSf : ν S < ⊤) {Rm : ℝ} (hRm : ∀ b ∈ S, r b ≤ Rm) :
@@ -81,6 +104,19 @@ theorem differentiable_setIntegral_fz {ν : Measure H} {r : H → ℝ} {u : H �
         -(Complex.log (r b) * (r b : ℂ) ^ (-(z - s₀)) * u b) := by ring
     exact h0.congr_deriv e
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hub`. Establish `hon : ∀ z j, IntegrableOn (PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z) (B j) ν` using `fun z j => by`. Take `⟨Rm, hRm⟩` from `hrb j`. Conclude with `PositivityTheory.SiegelWeilFormula.SwLocFin.integrableOn_fz hr1 hrm hum hC (hBm j) (hfin j) hRm z`. Establish `hG : ∀ z j, ∫ b in B j, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b ∂ν = ∫ b in B 0, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b ∂ν`.
+
+Introduce `z j`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[← ih]`.
+
+Establish `hsub : B j ⊆ B (j + 1)` using `hmono (Nat.le_succ j)`. Rewrite using `[← Set.union_diff_cancel hsub, setIntegral_union Set.disjoint_sdiff_right ((hBm _).diff (hBm _)) (hon z j) ((hon z (j + 1)).mono_set diff_subset), hshell, add_zero]`. Take `⟨R0, hR0⟩` from `hrb 0`. Use `⟨fun z => ∫ b in B 0, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b ∂ν, PositivityTheory.SiegelWeilFormula.SwLocFin.differentiable_setIntegral_fz hr1 hrm hum hC (hBm 0) (hfin 0) hR0, ?_, ?_⟩` and prove the remaining obligations. Establish `hfs : ∀ j, ∫ b in B j, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ s₀ b ∂ν = ∫ b in B j, u b ∂ν`.
+
+Introduce `j`. Simplify using `only [PositivityTheory.SiegelWeilFormula.SwLocFin.fz, sub_self, neg_zero, Complex.cpow_zero, one_mul]`. Establish `e : (fun j => ∫ b in B j, u b ∂ν) = fun _ => ∫ b in B 0, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ s₀ b ∂ν`. Use function extensionality and compare the values at `j`. Rewrite using `[← hfs j, hG]`.
+
+Rewrite `hval` using `[e]`. Conclude with `tendsto_nhds_unique tendsto_const_nhds hval`. Take `⟨t, ht⟩` from `hint`. Use `⟨t, fun z hz => ⟨ht z hz, ?_⟩⟩` and prove the remaining obligations. Establish `hlim` using `tendsto_setIntegral_of_monotone hBm hmono (ht z hz).integrableOn`.
+
+Rewrite `hlim` using `[hcov, Measure.restrict_univ]`. Establish `e : (fun j => ∫ b in B j, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b ∂ν) = fun _ => ∫ b in B 0, PositivityTheory.SiegelWeilFormula.SwLocFin.fz r u s₀ z b ∂ν` using `funext (hG z)`. Rewrite `hlim` using `[e]`. Conclude with `tendsto_nhds_unique tendsto_const_nhds hlim`.
+-/
 theorem core (ν : Measure H) (r : H → ℝ) (u : H → ℂ) (s₀ w₀ : ℂ) (B : ℕ → Set H)
     (hBm : ∀ j, MeasurableSet (B j)) (hmono : Monotone B) (hcov : ⋃ j, B j = univ)
     (hfin : ∀ j, ν (B j) < ⊤) (hr1 : ∀ b, 1 ≤ r b) (hrm : Measurable r) (hrb : ∀ j, ∃ Rm, ∀ b ∈ B j, r b ≤ Rm)

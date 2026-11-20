@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 
 namespace GlobalTheory.SelfDualFil
 
+/- English proof (translation)
+Establish `hd : M.det * N.det ≠ 0`. Rewrite using `[← Matrix.det_mul, H, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hc`. Conclude with `⟨Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (left_ne_zero_of_mul hd)).1, Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (right_ne_zero_of_mul hd)).1⟩`.
+-/
 theorem isRegular_of_mul_eq_smul {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
     {M N : Matrix (Fin h) (Fin h) A} {c : A} (hc : c ≠ 0)
     (H : M * N = c • (1 : Matrix (Fin h) (Fin h) A)) : IsRegular M ∧ IsRegular N := by
@@ -20,6 +23,9 @@ theorem isRegular_of_mul_eq_smul {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
   exact ⟨Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (left_ne_zero_of_mul hd)).1,
     Matrix.isRegular_of_isLeftRegular_det (IsRegular.of_ne_zero (right_ne_zero_of_mul hd)).1⟩
 
+/- English proof (translation)
+Apply `(isRegular_of_mul_eq_smul hc H).1.1` to reduce the goal to its premises. Use `show M * (N * M) = M * (c • 1)`. Rewrite using `[← Matrix.mul_assoc, H]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_eq_smul_comm {A : Type} [CommRing A] [IsDomain A] {h : ℕ}
     {M N : Matrix (Fin h) (Fin h) A} {c : A} (hc : c ≠ 0)
     (H : M * N = c • (1 : Matrix (Fin h) (Fin h) A)) :
@@ -35,6 +41,11 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O] {ε : PreTilt O p} {h : ℕ} {Γ : Type} [CommRing Γ]
   [Algebra ℤ_[p] Γ]
 
+/- English proof (translation)
+Apply `(isRegular_of_mul_eq_smul hμ D.G_mul_F).2.2` to reduce the goal to its premises. Use `show D.G * D.F = D.G.map (phiInv p O) * D.Ψ' * D.F`. Establish `e1 : D.G.map (phiInv p O) * D.F.map (phiInv p O) = nu ε • 1`. Rewrite using `[← Matrix.map_mul, D.G_mul_F]`. Use `ext1 i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, phiInv_mu]`. Establish `e2 : D.Ψ' * D.F = xi ε • D.F.map (phiInv p O)` using `by conv_lhs => rw [D.F_eq]`. Rewrite using `[← Matrix.mul_assoc, mul_eq_smul_comm hξ D.Ψ_mul]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_assoc, e2, Matrix.mul_smul, e1, smul_smul, xi_mul_nu, D.G_mul_F]`.
+-/
 theorem G_eq [IsDomain (Ainf p O)] (hμ : mu ε ≠ 0) (hξ : xi ε ≠ 0) (D : Datum ε h Γ) :
     D.G = D.G.map (phiInv p O) * D.Ψ' := by
   apply (isRegular_of_mul_eq_smul hμ D.G_mul_F).2.2

@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.CenRatAt
 
+/- English proof (translation)
+Substitute `hB` using the available equality. Establish `he : e = e'` using `funext fun x => h.2 x x fun i i' hi => congrArg x (Fin.ext hi)`. Substitute `he` using the available equality. Conclude with `H x'`.
+-/
 theorem transfer {K G Pl0 V : Type} [Field K] [NumberField K] [StarRing K] [Group G] [Fintype G]
     (B B' : Formalism.L2.DIV.BlockDat K G Pl0) (hB : B = B') (ℓ : Formalism.L2.DIV.Lvl K G) (Q : V → V → Prop)
     (e : (Fin (B.S.lvlDim B.r ℓ.P ℓ.ψ) → K) → V) (e' : (Fin (B'.S.lvlDim B'.r ℓ.P ℓ.ψ) → K) → V)
@@ -29,6 +32,9 @@ theorem transfer {K G Pl0 V : Type} [Field K] [NumberField K] [StarRing K] [Grou
   subst he
   exact H x'
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `s`. Take `⟨τ', hτ'⟩` from `s'`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem famR_L_eq (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok) (U U' : Set I.ι)
     (Xg : Finset (R3.Gc X.B px → X.B.LL)) (tr tr' : R3.TrI X.B px) (k : Fin X.toD7.R.m) (s : R3.TupU I U) (s' : R3.TupU I U')
     (h : s.1 = s'.1) : (R3.famR X I hX U Xg tr).A.fam.L k s = (R3.famR X I hX U' Xg tr').A.fam.L k s' := by
@@ -44,6 +50,9 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `s k z a ha x`. Establish `h5 : (tAll w.I (t.r.Y.tup s)).1 = s.1` using `(congrArg w.I.tup (t.r.tup_ix s)).trans (R3.tup_ixOf w.I s)`. Establish `h3` using `(r.all.cen (t.r.Y.tup s) z a ha).2.2 k`. Conclude with `transfer _ _ (famR_L_eq (w.st Z) w.I t.hX _ _ _ _ _ k _ _ h5) _ (fun u v => (w.st Z).toD7.ntypes.cenMt (t.r.Y.tup s) ((k : ℕ) + 1) z ((w.st Z).toD7.what₂.jMt (t.r.Y.tup s) ((k : ℕ) + 1) u) = (w.st Z).toD7.what₂.jMt (t.r.Y.tup s) ((k : ℕ) + 1) v) (r.all.eMt k (t.r.Y.tup s)) (t.r.Y …`.
+-/
 theorem cenRat_of (t : RowsT K w Z Wt p0) (r : RXs t) : GlobalTheory.CenLocAt.CenRat t.r.Y t.r.z.cG := by
   intro s k z a ha x
   have h5 : (tAll w.I (t.r.Y.tup s)).1 = s.1 := (congrArg w.I.tup (t.r.tup_ix s)).trans (R3.tup_ixOf w.I s)
@@ -55,6 +64,9 @@ theorem cenRat_of (t : RowsT K w Z Wt p0) (r : RXs t) : GlobalTheory.CenLocAt.Ce
 
 end Main
 
+/- English proof (translation)
+Introduce `_` and use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ t _ _ _ _ _ hR _ => hR.elim fun r => cenRat_of t r`.
+-/
 theorem cenRat_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ _ _ _ _ t _ _ _ => GlobalTheory.CenLocAt.CenRat t.r.Y t.r.z.cG :=
   fun _ => GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ t _ _ _ _ _ hR _ => hR.elim fun r => cenRat_of t r
 

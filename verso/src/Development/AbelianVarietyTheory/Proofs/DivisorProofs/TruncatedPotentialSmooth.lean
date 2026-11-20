@@ -16,6 +16,15 @@ open scoped ContDiff
 
 open GlobalTheory.Mean4 GlobalTheory.Mean4O in
 
+/- English proof (translation)
+Introduce `_ _ D O hO _ A T H h c u a R hR`. Take `⟨x, P, hc⟩` from `hO`. Set `I` to `h.man c`. Establish `hm : ∀ n, (O.met.hm c (some R) (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Rewrite using `[hc.hm_eq]`.
+
+Conclude with `(FlagCpt.smoothOn_met_of_eigMet _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) (I.ε a) (x.eigMetAt _ (some R)) Set.univ isOpen_univ (ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ x _ R hR (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ x _)) n).2`. Establish `h0 : ∀ n, (O.met.h0 c (I.ε a) n).SmoothOn Set.univ` using `fun n => by`. Rewrite using `[hc.h0_eq]`. Conclude with `(FlagCpt.smoothOn_met_of_eigMet _ _ _ _ _ _ _ _ _ _ _ (O.Φ.C c) (I.ε a) (x.eigMet _) Set.univ isOpen_univ (x.smoothOn_eigMet _) n).2`. Establish `hg : ((O.var c).an (I.ε a)).SmoothOn Set.univ (O.chg c (some R) u (I.ε a))`.
+
+Introduce `i`. Use `(ContDiffOn.sum (s := Finset.univ) fun r _ => (contDiffOn_const (c := u r.1 r.2)).mul (GlobalTheory.HodgeChgSmooth.smoothOn_lnRatio (hm (O.ex r)) (h0 (O.ex r)) i)).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[Setup.chg]`. Establish `key` using `GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I (O.dim_eq c) a isOpen_univ hg (f := (T.F c).phR R u a) fun z _ => (h.an c).phR R hR u a z`. Introduce `j`.
+
+Simplify using `using key j`.
+-/
 theorem GlobalTheory.InterpChgSmooth.smooth_phR : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ =>
     ∀ c u σ (R : ℝ), 2 ≤ R → ((T.M c).A σ).Smooth ((T.F c).phR R u σ) := by
   intro _ _ D O hO _ A T H h c u a R hR

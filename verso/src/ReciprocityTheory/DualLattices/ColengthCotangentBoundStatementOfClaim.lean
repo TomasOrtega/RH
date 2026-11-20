@@ -21,6 +21,21 @@ def ColengthCotangentValuation (p : ℕ) (C : Type) [Field C] (v : Valuation C N
       ∀ c, HasColen R v AA.carrier c →
         c ^ 2 = (∏ i, v (algebraMap R C (δ i))) ^ Fintype.card N
 
+/- English proof (translation)
+Take `⟨n, g, δ, hg, hgen, htri, hcol⟩` from `hcl N hN AA`. Set `q` to `((sqIdeal (augIdeal AA.carrier)).comap (augIdeal AA.carrier).subtype).mkQ`. Establish `key : ∀ x z : augIdeal AA.carrier, ((x : N → C) - z) ∈ sqIdeal (augIdeal AA.carrier) → q x = q z`. Introduce `x z h`. Conclude with `(Submodule.Quotient.eq _).mpr (by simpa [Submodule.mem_comap] using h)`.
+
+Set `y : Fin n → OmAA AA.carrier` to `fun i => q ⟨g i, hg i⟩`. Establish `hy : Submodule.span R (Set.range y) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Take `⟨⟨f, hf⟩, rfl⟩` from `Submodule.mkQ_surjective _ z`.
+
+Take `⟨r, hr⟩` from `hgen f hf`. Establish `e : q ⟨f, hf⟩ = ∑ j, r j • y j`. Simplify using `only [y, ← map_smul, ← map_sum]`. Apply `key` to reduce the goal to its premises. Simplify using `using hr`.
+
+Use `show q ⟨f, hf⟩ ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`. Establish `hrel : ∀ i, ∃ a : Fin n → R, δ i • y i = ∑ j, (if j < i then a j else 0) • y j`. Introduce `i`.
+
+Take `⟨a, ha⟩` from `htri i`. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [y, ← map_smul, ← map_sum]`. Apply `key` to reduce the goal to its premises. Establish `e2 : (((∑ j, (if j < i then a j else 0) • (⟨g j, hg j⟩ : augIdeal AA.carrier) : augIdeal AA.carrier)) : N → C) = ∑ j, (if j < i then a j else 0) • g j`.
+
+Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `ha`. Establish `hle` using `prod_le_of_gen hv hom y hy δ hrel`.
+
+Rewrite using `[hcol lenN hlen]`. Use `first`. Consider the case `exact pow_le_pow_left₀ zero_le hle _`. Consider the case `exact pow_le_pow_left zero_le hle _`. Consider the case `gcongr`.
+-/
 theorem colengthCotangentBound_of_claim (p : ℕ) [Fact p.Prime] (C : Type) [Field C] (v : Valuation C NNReal)
     (R : Type) [CommRing R] [Algebra R C] (hv : v.Integers R) (hcl : ColengthCotangentValuation p C v R)
     (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N] (hN : ∀ x : N, p • x = 0)
@@ -65,6 +80,9 @@ theorem colengthCotangentBound_of_claim (p : ℕ) [Fact p.Prime] (C : Type) [Fie
     | exact pow_le_pow_left zero_le hle _
     | gcongr
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hp N _ _ _ hN AA lenN lenOm hlen hom`. Conclude with `colengthCotangentBound_of_claim p C v R hv (hcl p C v R hv hp) N hN AA lenN lenOm hlen hom`.
+-/
 theorem colengthCotangentBoundStatement_of_claim (hcl : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C],
     v.Integers R → v (p : C) < 1 → ColengthCotangentValuation p C v R) : ColengthCotangentBoundStatement := by

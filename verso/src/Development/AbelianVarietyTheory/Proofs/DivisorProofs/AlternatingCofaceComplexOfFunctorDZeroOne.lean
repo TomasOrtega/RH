@@ -7,6 +7,9 @@ variable {T : Type 1} [Category.{0} T]
 abbrev altCx (X : CosimplicialObject T) (F : T ⥤ AddCommGrpCat.{1}) : CochainComplex AddCommGrpCat.{1} ℕ :=
   (AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj (X ⋙ F)
 
+/- English proof (translation)
+Establish `h0 : (altCx X F).d 0 1 = AlgebraicTopology.AlternatingCofaceMapComplex.objD (X ⋙ F) 0` using `CochainComplex.of_d (fun n ↦ (X ⋙ F).obj (SimplexCategory.mk n)) (AlgebraicTopology.AlternatingCofaceMapComplex.objD (X ⋙ F)) 0`. Rewrite using `[h0]`. Simplify using `[AlgebraicTopology.AlternatingCofaceMapComplex.objD, Fin.sum_univ_two, sub_eq_add_neg, CosimplicialObject.δ]`. Both sides reduce to the same expression.
+-/
 theorem alternatingCofaceComplexOfFunctor_d_zero_one (X : CosimplicialObject T) (F : T ⥤ AddCommGrpCat.{1}) (y : F.obj (X.obj (SimplexCategory.mk 0))) :
     (altCx X F).d 0 1 y = F.map (X.δ (n := 0) 0) y - F.map (X.δ (n := 0) 1) y := by
   have h0 : (altCx X F).d 0 1 = AlgebraicTopology.AlternatingCofaceMapComplex.objD (X ⋙ F) 0 :=
@@ -15,27 +18,50 @@ theorem alternatingCofaceComplexOfFunctor_d_zero_one (X : CosimplicialObject T) 
   simp [AlgebraicTopology.AlternatingCofaceMapComplex.objD, Fin.sum_univ_two, sub_eq_add_neg, CosimplicialObject.δ]
   rfl
 
+/- English proof (translation)
+Establish `h` using `((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).map (Functor.whiskerLeft X φ)).comm n m`. Conclude with `ConcreteCategory.congr_hom h w`.
+-/
 theorem altCx_nat (X : CosimplicialObject T) {F G : T ⥤ AddCommGrpCat.{1}} (φ : F ⟶ G) (n m : ℕ)
     (w : F.obj (X.obj (SimplexCategory.mk n))) :
     (altCx X G).d n m (φ.app _ w) = φ.app _ ((altCx X F).d n m w) := by
   have h := ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).map (Functor.whiskerLeft X φ)).comm n m
   exact ConcreteCategory.congr_hom h w
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom ((altCx X F).d_comp_d 0 1 2) y`.
+-/
 theorem altCx_dd (X : CosimplicialObject T) (F : T ⥤ AddCommGrpCat.{1}) (y : F.obj (X.obj (SimplexCategory.mk 0))) :
     (altCx X F).d 1 2 ((altCx X F).d 0 1 y) = 0 :=
   ConcreteCategory.congr_hom ((altCx X F).d_comp_d 0 1 2) y
 
+/- English proof (translation)
+Rewrite `h` using `[HomologicalComplex.exactAt_iff' _ 0 1 2 (by simp) (by simp), ShortComplex.ab_exact_iff]`. Conclude with `h w hw`.
+-/
 theorem altCx_exact1 (X : CosimplicialObject T) (F : T ⥤ AddCommGrpCat.{1}) (h : (altCx X F).ExactAt 1)
     (w : F.obj (X.obj (SimplexCategory.mk 1))) (hw : (altCx X F).d 1 2 w = 0) :
     ∃ v : F.obj (X.obj (SimplexCategory.mk 0)), (altCx X F).d 0 1 v = w := by
   rw [HomologicalComplex.exactAt_iff' _ 0 1 2 (by simp) (by simp), ShortComplex.ab_exact_iff] at h
   exact h w hw
 
+/- English proof (translation)
+Establish `h` using `a.naturality (SimplexCategory.δ j)`. Simplify `h.symm` using `[CosimplicialObject.δ]`.
+-/
 theorem aug_δ {U : T} {X : CosimplicialObject T} (a : (CosimplicialObject.const T).obj U ⟶ X) (j : Fin 2) :
     a.app (SimplexCategory.mk 0) ≫ X.δ j = a.app (SimplexCategory.mk 1) := by
   have h := a.naturality (SimplexCategory.δ j)
   simpa [CosimplicialObject.δ] using h.symm
 
+/- English proof (translation)
+Introduce `T _ U X a Z M N i d hi hd hM hN hZ z y hy`. Establish `hu : d.app _ ((altCx X M).d 0 1 y) = 0`. Rewrite using `[alternatingCofaceComplexOfFunctor_d_zero_one, map_sub, NatTrans.naturality_apply, NatTrans.naturality_apply, hy, ← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← N.map_comp, ← N.map_comp, aug_δ a 0, aug_δ a 1, sub_self]`. Take `⟨w, hw⟩` from `(hd _ _).1 hu`. Establish `hw2 : (altCx X Z).d 1 2 w = 0`.
+
+Establish `h1 : i.app _ ((altCx X Z).d 1 2 w) = 0`. Rewrite using `[← altCx_nat X i 1 2 w, hw, altCx_dd]`. Both sides reduce to the same expression. Conclude with `hi _ (h1.trans (map_zero _).symm)`. Take `⟨v, hv⟩` from `altCx_exact1 X Z hZ w hw2`.
+
+Establish `hy' : M.map (X.δ (n` using `0) 0) (y - i.app _ v) = M.map (X.δ (n := 0) 1) (y - i.app _ v) := by`. Rewrite using `[← sub_eq_zero, map_sub, map_sub, sub_sub_sub_comm, ← alternatingCofaceComplexOfFunctor_d_zero_one, ← alternatingCofaceComplexOfFunctor_d_zero_one, altCx_nat X i 0 1, hv, hw]`. Conclude with `sub_self _`. Take `⟨x, hx⟩` from `hM.2.1 _ hy'`. Use `⟨x, hN.1 ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `ConcreteCategory.congr_hom (d.naturality (a.app (SimplexCategory.mk 0))) x`. Simplify using `only [ConcreteCategory.comp_apply] at e`. Establish `e2 : d.app (X.obj (SimplexCategory.mk 0)) (y - i.app _ v) = N.map (a.app (SimplexCategory.mk 0)) z`. Rewrite using `[map_sub, hy, (hd _ _).2 ⟨v, rfl⟩, sub_zero]`. Rewrite `e2` using `[← hx]`.
+
+Conclude with `e.symm.trans e2`.
+-/
 theorem cartan_step : ∀ (T : Type 1) [Category.{0} T] (U : T) (X : CosimplicialObject T) (a : (CosimplicialObject.const T).obj U ⟶ X) (Z M N : T ⥤ AddCommGrpCat.{1}) (i : Z ⟶ M) (d : M ⟶ N), (∀ V, Function.Injective (i.app V)) → (∀ V (y : M.obj V), d.app V y = 0 ↔ ∃ w, i.app V w = y) → WExact M a → WExact N a → ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj (X ⋙ Z)).ExactAt 1 → ∀ (z : N.obj U) (y : M.obj (X.obj (SimplexCategory.mk (0)))), d.app _ y = N.map (a.app (SimplexCategory.mk (0))) z → ∃ x : M.obj U, d.app U x = z := by
   intro T _ U X a Z M N i d hi hd hM hN hZ z y hy
   have hu : d.app _ ((altCx X M).d 0 1 y) = 0 := by

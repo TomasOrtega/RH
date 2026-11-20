@@ -11,6 +11,59 @@ namespace MassDataMassesW.NLev
 
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hAie : ∀ a, Ai *ᵥ incl X.B.I (X.eR a) = incl X.B.I (X.eR a)`. Introduce `a`. Use `conv_lhs => rw [← hAe a]`. Rewrite using `[mulVec_mulVec, hAiA, one_mulVec]`. Establish `hspan : ∀ (s : Set (Fin D.R.rS)) (w : VA X.B.I), w ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' s) → Ai *ᵥ w ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' s)`.
+
+Introduce `s w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Rewrite using `[hAie]`.
+
+Conclude with `Submodule.subset_span ⟨b, hb, rfl⟩`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul r x _ hx => rw [mulVec_smul]`. Conclude with `Submodule.smul_mem _ r hx`. Establish `hTL` using `Tm_Lf hAiL hByL hAL`. Establish `hTmL` using `Tm_mL X.B.g hAiL hByL hAL`. Establish `hmLL` using `mL_le_Lf X.B.I X.B.g`.
+
+Establish `hcI` using `natCast_int X.B.I c`. Establish `hWL : ∀ v ∈ X.B.I.Lf, Ai *ᵥ ((By - 1) *ᵥ v) ∈ X.B.I.Lf` using `fun v hv => hAiL _ (sub_one_Lf hByL _ hv)`. Establish `heL : ∀ b, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.eR b) ∈ X.B.I.Lf`. Introduce `b`. Establish `h : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.eR b) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 b - (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 b - incl X.B.I (X.eR b))`.
+
+Rewrite using `[← smul_sub, sub_sub_cancel]`. Rewrite using `[h]`. Conclude with `sub_mem (sm X.B.I hcI (X.vectorsInLattice.1 b).1) (hmLL (hec b))`. Establish `hfL : ∀ b, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.fR b) ∈ X.B.I.Lf`. Introduce `b`.
+
+Establish `h : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.fR b) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.f0 b - (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.f0 b - incl X.B.I (X.fR b))`. Rewrite using `[← smul_sub, sub_sub_cancel]`. Rewrite using `[h]`. Conclude with `sub_mem (sm X.B.I hcI (X.vectorsInLattice.1 b).2) (hmLL (hfc b))`. Establish `hc3 : Nat.Coprime (c * c * c) X.B.g` using `Nat.Coprime.mul (Nat.Coprime.mul hc hc) hc`.
+
+Use `⟨fun a => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hv` using `hTL _ (X.vectorsInLattice.1 a).1`. Establish `hTe : Tm Ai By A (incl X.B.I (X.eR a)) = Ai *ᵥ ((By - 1) *ᵥ incl X.B.I (X.eR a))`. Simplify using `only [Tm, hAe]`. Establish `hsplit : Tm Ai By A (X.e0 a) = Ai *ᵥ ((By - 1) *ᵥ incl X.B.I (X.eR a)) + Tm Ai By A (X.e0 a - incl X.B.I (X.eR a))`.
+
+Rewrite using `[Tm_sub, hTe]`. Normalize the expressions using the abelian group laws. Establish `hw` using `hspan _ _ (hN1 a)`. Establish `hdw : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ ((By - 1) *ᵥ incl X.B.I (X.eR a))) ∈ X.B.I.Lf`. Rewrite using `[← mulVec_smul, ← mulVec_smul]`.
+
+Conclude with `hWL _ (heL a)`. Establish `hk` using `key X hfL hec hw hdw`. Unfold `InMod`. Use `close X.B.I le_sup_right hv hsplit hc hc3 hk ?_` and prove the remaining obligations. Rewrite using `[← Tm_smul]`.
+
+Conclude with `hTmL _ (hec a)`. Establish `hv` using `hTL _ X.vectorsInLattice.2.1`. Establish `hAq : A *ᵥ (Ai *ᵥ zz) = zz` using `by rw [mulVec_mulVec, hAAi, one_mulVec]`. Establish `hTq : Tm Ai By A (Ai *ᵥ zz) = Ai *ᵥ ((By - 1) *ᵥ zz)` using `by simp only [Tm, hAq]`. Establish `hsplit : Tm Ai By A X.z0 = Ai *ᵥ ((By - 1) *ᵥ zz) + -Tm Ai By A (Ai *ᵥ zz - X.z0)`.
+
+Rewrite using `[Tm_sub, hTq]`. Normalize the expressions using the abelian group laws. Establish `hw : Ai *ᵥ ((By - 1) *ᵥ zz) ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' Set.univ)` using `hspan _ _ (by rw [Set.image_univ]; exact hN2)`. Establish `hcq : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ zz) ∈ X.B.I.Lf`. Establish `h : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ zz) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.z0 + (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ zz - X.z0)`.
+
+Rewrite using `[← smul_add, add_sub_cancel]`. Rewrite using `[h]`. Conclude with `add_mem (sm X.B.I hcI X.vectorsInLattice.2.1) (hmLL hzc)`. Establish `hcz : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • zz ∈ X.B.I.Lf`. Rewrite using `[← hAq, ← mulVec_smul]`.
+
+Conclude with `hAL _ hcq`. Establish `hdw : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ ((By - 1) *ᵥ zz)) ∈ X.B.I.Lf`. Rewrite using `[← mulVec_smul, ← mulVec_smul]`. Conclude with `hWL _ hcz`. Establish `hk` using `key X hfL hec hw hdw`.
+
+Rewrite `hk` using `[Set.image_univ]`. Unfold `InMod`. Use `close X.B.I le_sup_right hv hsplit hc hc3 hk ?_` and prove the remaining obligations. Rewrite using `[smul_neg, ← Tm_smul]`. Conclude with `neg_mem (hTmL _ hzc)`.
+
+Establish `hbL` using `(X.vectorsInLattice.2.2 i).1`. Establish `hv` using `hTL _ hbL`. Take `⟨t, ht⟩ : ∃ t, A *ᵥ X.bw i = t` from `⟨_, rfl⟩`. Establish `htL : t ∈ X.B.I.Lf` using `ht ▸ hAL _ hbL`. Take `⟨t', ht'⟩ : ∃ t', t - ∑ b, hA X.B.I (incl X.B.I (X.eR b)) t • incl X.B.I (X.fR b) = t'` from `⟨_, rfl⟩`.
+
+Establish `horth : ∀ a, hA X.B.I (incl X.B.I (X.eR a)) t' = 0`. Introduce `a`. Rewrite using `[← ht', hA_sub_right, hA_sum_right]`. Simplify using `only [hA_smul_right, hA_e_f, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Establish `hsplit : Tm Ai By A (X.bw i) = Ai *ᵥ ((By - 1) *ᵥ t') + ∑ b, hA X.B.I (incl X.B.I (X.eR b)) t • (Ai *ᵥ ((By - 1) *ᵥ incl X.B.I (X.fR b)))`.
+
+Establish `h : t = t' + ∑ b, hA X.B.I (incl X.B.I (X.eR b)) t • incl X.B.I (X.fR b)`. Rewrite using `[← ht', sub_add_cancel]`. Simplify using `only [Tm, ht]`. Use `conv_lhs => rw [h]`. Rewrite using `[mulVec_add, mulVec_add, mulVec_sum, mulVec_sum]`.
+
+Simplify using `only [mulVec_smul]`. Establish `hw : Ai *ᵥ ((By - 1) *ᵥ t') ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' Set.univ)` using `hspan _ _ (by rw [Set.image_univ]; exact hN3 _ horth)`. Establish `hZ : ∀ b, ∃ τ ∈ IntAf X.B.I.F X.B.I.E, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (incl X.B.I (X.eR b)) t = (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * τ`. Introduce `b`. Establish `h1 : hA X.B.I (incl X.B.I (X.eR b)) t = hA X.B.I (incl X.B.I (X.eR b)) (X.bw i)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (incl X.B.I (X.eR b)) (X.bw i) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (X.e0 b) (X.bw i) - hA X.B.I ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 b - incl X.B.I (X.eR b))) (X.bw i)`. Rewrite using `[hA_nat_left, hA_sub_left]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t1, ht1, he1⟩` from `((X.weightVectorsIntegral i).2.2 b).1`.
+
+Take `⟨t2, ht2, he2⟩` from `hA_mL_left X.B.I X.B.g _ (hec b) _ hbL`. Conclude with `⟨(c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t1 - t2, sub_mem (mul_mem hcI ht1) ht2, by rw [h1, h2, he1, he2]; ring⟩`. Use `choose τ hτI hτ using hZ`. Establish `hterm : ∀ b (V : VA X.B.I), ((c * c : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (hA X.B.I (incl X.B.I (X.eR b)) t • V) = τ b • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • V))`. Introduce `b V`.
+
+Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`. Take the linear combination `(c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hτ b`. Establish `hr : ((c * c : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ∑ b, hA X.B.I (incl X.B.I (X.eR b)) t • (Ai *ᵥ ((By - 1) *ᵥ incl X.B.I (X.fR b))) ∈ mL X.B.I X.B.g`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hterm]`. Use `sm X.B.I (hτI b) (smul_mem_mL X.B.I X.B.g ?_)` and prove the remaining obligations. Rewrite using `[← mulVec_smul, ← mulVec_smul]`.
+
+Conclude with `hWL _ (hfL b)`. Establish `hdw : ((c * c : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (Ai *ᵥ ((By - 1) *ᵥ t')) ∈ X.B.I.Lf`. Rewrite using `[← mulVec_smul, ← mulVec_smul]`. Use `hWL _ ?_` and prove the remaining obligations. Rewrite using `[← ht', smul_sub, Finset.smul_sum]`.
+
+Use `sub_mem (sm X.B.I (natCast_int X.B.I _) htL) (Submodule.sum_mem _ fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[hterm]`. Conclude with `hmLL (sm X.B.I (hτI b) (smul_mem_mL X.B.I X.B.g (hfL b)))`. Establish `hk` using `key X hfL hec hw hdw`. Establish `hle : Submodule.span (IntAf X.B.I.F X.B.I.E) (X.e0 '' Set.univ) ⊔ mL X.B.I X.B.g ≤ Submodule.span (IntAf X.B.I.F X.B.I.E) (Set.range X.e0 ∪ X.bw '' {j | j.1 < i.1}) ⊔ mL X.B.I X.B.g` using `sup_le_sup_right (Submodule.span_mono (by rw [Set.image_univ]; exact Set.subset_union_left)) _`.
+
+Establish `hcc : Nat.Coprime (c * c) X.B.g` using `Nat.Coprime.mul hc hc`. Establish `hc4 : Nat.Coprime (c * (c * c) * c) X.B.g` using `Nat.Coprime.mul (Nat.Coprime.mul hc hcc) hc`. Unfold `InMod`. Conclude with `close X.B.I le_sup_right hv hsplit hcc hc4 (hle hk) hr`.
+-/
 theorem core {c : ℕ} (hc : Nat.Coprime c X.B.g)
     (hec : ∀ b, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 b - incl X.B.I (X.eR b)) ∈ mL X.B.I X.B.g)
     (hfc : ∀ b, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.f0 b - incl X.B.I (X.fR b)) ∈ mL X.B.I X.B.g)

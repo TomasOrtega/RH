@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowReal
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t p hp d hd`. Establish `hn` using `DefPair.nodes hp`. Establish `hom` using `W.om_is p (by`. Apply the tactic sequence `cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega)`. Take `⟨h1, h2⟩` from `GlobalTheory.FockRealVec.vec_theta_fock W S.Z hp d hd`.
+
+Establish `mem : (G.toPair p (S.N.u p.small).1 (S.N.u p.big).1).1 ∈ GfC (G.pS p) ∧ (G.toPair p (S.N.u p.small).1 (S.N.u p.big).1).2 ∈ GfC (G.pT p)`. Consider the cases of `p with`. Consider the case `chi i j => exact ⟨GlobalTheory.FockReal.negGA_mem_GfC _ (S.N.u _).2, (S.N.u _).2⟩`. Consider the case `mu t i j => exact ⟨(S.N.u _).2, (S.N.u _).2⟩`. Consider the case `core i => exact ⟨GlobalTheory.FockReal.negGA_mem_GfC _ (S.N.u _).2, (S.N.u _).2⟩`.
+
+Consider the case `top t j => exact ⟨(S.N.u _).2, (S.N.u _).2⟩`. Conclude with `GlobalTheory.FockRealMove.om_fin_fockVac D W.ψ W.θ _ _ _ _ (W.om p) hom W.θ_is _ _ _ h1 h2 _ mem.1 _ mem.2`.
+-/
 theorem movedVec_theta_fockVac : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {U : Set T}
     (S : GridChoice W U) (t : T) (p : Pair T), DefPair D.R.m p → ∀ d : FinDatum G t p, S.Z.HasVec d →
     IsThetaFunO W.ψ (G.pS p) (G.pT p) (movedVec t S d) ∧

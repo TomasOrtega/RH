@@ -11,21 +11,43 @@ namespace UpperTheory.V.Sd
 private def ee {V : Type} [Fintype V] (μ x : V → ℝ) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ))
 
+/- English proof (translation)
+Simplify using `only [ee, Pi.add_apply, Complex.ofReal_add, mul_add, Finset.sum_add_distrib, Complex.exp_add]`.
+-/
 private theorem ee_add {V : Type} [Fintype V] (μ x y : V → ℝ) : ee μ (x + y) = ee μ x * ee μ y := by
   simp only [ee, Pi.add_apply, Complex.ofReal_add, mul_add, Finset.sum_add_distrib, Complex.exp_add]
 
+/- English proof (translation)
+Simplify using `only [ee, Pi.add_apply, Complex.ofReal_add, mul_add, add_mul, Finset.sum_add_distrib, Complex.exp_add]`.
+-/
 private theorem ee_add' {V : Type} [Fintype V] (μ ν x : V → ℝ) : ee (μ + ν) x = ee μ x * ee ν x := by
   simp only [ee, Pi.add_apply, Complex.ofReal_add, mul_add, add_mul, Finset.sum_add_distrib, Complex.exp_add]
 
+/- English proof (translation)
+Simplify using `[ee]`.
+-/
 private theorem ee_zero {V : Type} [Fintype V] (μ : V → ℝ) : ee μ 0 = 1 := by simp [ee]
 
+/- English proof (translation)
+Simplify using `[ee]`.
+-/
 private theorem ee_zero' {V : Type} [Fintype V] (x : V → ℝ) : ee 0 x = 1 := by simp [ee]
 
+/- English proof (translation)
+Establish `: (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ)) = ((2 * Real.pi * ∑ v, μ v * x v : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[ee, this, Complex.norm_exp_ofReal_mul_I]`.
+-/
 private theorem norm_ee {V : Type} [Fintype V] (μ x : V → ℝ) : ‖ee μ x‖ = 1 := by
   have : (2 * Real.pi * Complex.I * ∑ v, (μ v : ℂ) * (x v : ℂ)) = ((2 * Real.pi * ∑ v, μ v * x v : ℝ) : ℂ) * Complex.I := by
     push_cast; ring
   rw [ee, this, Complex.norm_exp_ofReal_mul_I]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `Function.ne_iff.1 h`. Establish `hv' : (μ v : ℂ) ≠ 0` using `by exact_mod_cast hv`. Use `⟨Pi.single v (1 / (2 * μ v)), ?_⟩` and prove the remaining obligations. Establish `: ∑ w, (μ w : ℂ) * ((Pi.single v (1 / (2 * μ v)) : V → ℝ) w : ℂ) = 1 / 2`. Rewrite using `[Finset.sum_eq_single v]`.
+
+Simplify using `only [Pi.single_eq_same]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[ee, this, ← Complex.exp_pi_mul_I]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_ee {V : Type} [Fintype V] (μ : V → ℝ) (h : μ ≠ 0) : ∃ g, ee μ g = -1 := by
   classical
   obtain ⟨v, hv⟩ := Function.ne_iff.1 h
@@ -39,9 +61,25 @@ private theorem exists_ee {V : Type} [Fintype V] (μ : V → ℝ) (h : μ ≠ 0)
   rw [ee, this, ← Complex.exp_pi_mul_I]
   congr 1; ring
 
+/- English proof (translation)
+The claim follows from `(funext e : g = f) ▸ h`.
+-/
 private theorem hs_congr {ι : Type} {f g : ι → ℂ} {d : ℂ} (h : HasSum f d) (e : ∀ i, g i = f i) : HasSum g d :=
   (funext e : g = f) ▸ h
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨B, fun _ => le_rfl, by simp, h⟩`. Consider the case `insert j S _ ih`. Take `⟨C, h1, h2, h3⟩` from `ih`. Distinguish the cases in `hj : B j = 0`.
+
+Use `⟨C, h1, fun i hi => ?_, h3⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Simplify `h1 i` using `[hj]`. Conclude with `h2 i hi`. Take `⟨g, hg⟩` from `exists_ee (μ j) (hμ j hj)`.
+
+Use `⟨fun i => C i * ((1 + ee (μ i) g) / 2), fun i => ?_, fun i hi => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: ‖(1 + ee (μ i) g) / 2‖ ≤ 1`. Use `norm_add_le 1 (ee (μ i) g)` as an intermediate fact. Rewrite `this` using `[norm_ee, norm_one]`. Rewrite using `[norm_div, Complex.norm_two]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) this).trans (h1 i)`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Simplify using `[hg]`.
+
+Simplify using `[h2 i hi]`. Use `((h3 x).add (h3 (x + g))).div_const 2` as an intermediate fact. Rewrite `this` using `[show (d + d) / 2 = d by ring]`. Use `hs_congr this fun i => ?_` and prove the remaining obligations. Rewrite using `[ee_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem kill {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (d : ℂ) (hμ : ∀ i, B i ≠ 0 → μ i ≠ 0)
     (h : ∀ x, HasSum (fun i => B i * ee (μ i) x) d) (S : Finset ι) :
     ∃ C : ι → ℂ, (∀ i, ‖C i‖ ≤ ‖B i‖) ∧ (∀ i ∈ S, C i = 0) ∧ ∀ x, HasSum (fun i => C i * ee (μ i) x) d := by
@@ -71,6 +109,15 @@ private theorem kill {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι �
       refine hs_congr this fun i => ?_
       rw [ee_add]; ring
 
+/- English proof (translation)
+Establish `hs : Summable fun i => ‖B i‖`. Use `(h 0).summable` as an intermediate fact. Simplify using `only [ee_zero, mul_one] at this`. Conclude with `this.norm`. Establish `ht` using `tendsto_tsum_compl_atTop_zero (fun i => ‖B i‖)`.
+
+Establish `: ‖d‖ ≤ 0`. Use `ge_of_tendsto' ht fun S => ?_` and prove the remaining obligations. Take `⟨C, h1, h2, h3⟩` from `kill μ B d hμ h S`. Establish `h4` using `h3 0`. Simplify using `only [ee_zero, mul_one] at h4`.
+
+Establish `h5 : HasSum (fun i : {x // x ∉ S} => C i) d`. Use `(hasSum_subtype_iff_of_support_subset (s := {x | x ∉ S}) ?_).2 h4` and prove the remaining obligations. Introduce `i hi hS`. Conclude with `hi (h2 i hS)`. Conclude with `h5.norm_le_of_bounded (hs.subtype _).hasSum fun i => h1 i`.
+
+Simplify using `using this`.
+-/
 private theorem const_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (d : ℂ) (hμ : ∀ i, B i ≠ 0 → μ i ≠ 0)
     (h : ∀ x, HasSum (fun i => B i * ee (μ i) x) d) : d = 0 := by
   have hs : Summable fun i => ‖B i‖ := by
@@ -90,6 +137,13 @@ private theorem const_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B 
     exact h5.norm_le_of_bounded (hs.subtype _).hasSum fun i => h1 i
   simpa using this
 
+/- English proof (translation)
+Use `const_zero (fun i => μ i - μ j) (fun i => if i = j then 0 else B i) (-B j) (fun i hi => ?_) fun x => ?_` as an intermediate fact. Simplify using `using this`. Establish `: i ≠ j` using `by rintro rfl; simp at hi`. Conclude with `sub_ne_zero.2 (hμ.ne this)`. Use `((h x).mul_right (ee (-μ j) x)).sub (hasSum_ite_eq j (B j))` as an intermediate fact.
+
+Rewrite `this` using `[zero_mul, zero_sub]`. Use `hs_congr this fun i => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← ee_add', ← sub_eq_add_neg]`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+
+Simplify using `[ee_zero']`. Simplify using `[hi]`.
+-/
 private theorem coef_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B : ι → ℂ) (hμ : Function.Injective μ)
     (h : ∀ x, HasSum (fun i => B i * ee (μ i) x) 0) (j : ι) : B j = 0 := by
   classical
@@ -107,6 +161,11 @@ private theorem coef_zero {V ι : Type} [Fintype V] (μ : ι → V → ℝ) (B :
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hc : ∀ w : HeightOneSpectrum (𝓞 F), ordI w 𝔪 = ordI w 𝔫` using `fun w => by`. Use `(h.2 w).symm.trans (h'.2 w)` as an intermediate fact. Rewrite `this` using `[WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Ideal.finprod_heightOneSpectrum_factorization h.1, ← Ideal.finprod_heightOneSpectrum_factorization h'.1]`.
+
+Use `finprod_congr fun w => ?_` and prove the remaining obligations. Conclude with `congrArg (fun n => w.asIdeal ^ n) (hc w)`.
+-/
 private theorem genD_unique {y : Af F} {𝔪 𝔫 : Ideal (𝓞 F)} (h : GenD y 𝔪) (h' : GenD y 𝔫) : 𝔪 = 𝔫 := by
   have hc : ∀ w : HeightOneSpectrum (𝓞 F), ordI w 𝔪 = ordI w 𝔫 := fun w => by
     have := (h.2 w).symm.trans (h'.2 w)
@@ -116,15 +175,28 @@ private theorem genD_unique {y : Af F} {𝔪 𝔫 : Ideal (𝓞 F)} (h : GenD y 
   refine finprod_congr fun w => ?_
   exact congrArg (fun n => w.asIdeal ^ n) (hc w)
 
+/- English proof (translation)
+Establish `h' : ∃ 𝔪, GenD y 𝔪` using `⟨𝔪, h⟩`. Rewrite using `[coefAt, dif_pos h', genD_unique h'.choose_spec h]`.
+-/
 private theorem coefAt_eq {y : Af F} {𝔪 : Ideal (𝓞 F)} (h : GenD y 𝔪) (a : Ideal (𝓞 F) → ℂ) : coefAt a y = a 𝔪 := by
   have h' : ∃ 𝔪, GenD y 𝔪 := ⟨𝔪, h⟩
   rw [coefAt, dif_pos h', genD_unique h'.choose_spec h]
 
+/- English proof (translation)
+Use `Associates.finite_factors (R := 𝓞 F) hI` as an intermediate fact. Use `filter_upwards [this] with w hw`. Conclude with `hw` after adjusting the coercions.
+-/
 private theorem ordI_fin {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) : ∀ᶠ w : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ordI w I = 0 := by
   have := Associates.finite_factors (R := 𝓞 F) hI
   filter_upwards [this] with w hw
   exact_mod_cast hw
 
+/- English proof (translation)
+Use `choose t ht using fun w : HeightOneSpectrum (𝓞 F) => w.valuedAdicCompletion_surjective F (WithZero.exp ((ordI w (differentIdeal ℤ (𝓞 F)) : ℤ) - (ordI w 𝔪 : ℤ)))`. Establish `hf : ∀ᶠ w in Filter.cofinite, Valued.v (t w) = 1` using `by filter_upwards [ordI_fin h, ordI_fin (I := differentIdeal ℤ (𝓞 F)) differentIdeal_ne_bot] with w h1 h2`. Rewrite using `[ht, h1, h2]`. Simplify using the standard rewrite rules. Set `a : FiniteAdeleRing (𝓞 F) F` to `⟨t, by filter_upwards [hf] with w hw`.
+
+Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hw.le⟩`. Establish `hu : IsUnit a` using `FiniteAdeleRing.isUnit_iff.2 ⟨fun w hw => by`. Use `ht w` as an intermediate fact. Rewrite `this` using `[show t w = 0 from hw, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm, hf⟩`.
+
+Conclude with `⟨hu.unit, h, fun w => ht w⟩`.
+-/
 private theorem exists_genD {𝔪 : Ideal (𝓞 F)} (h : 𝔪 ≠ ⊥) : ∃ y : (Af F)ˣ, GenD (y : Af F) 𝔪 := by
   choose t ht using fun w : HeightOneSpectrum (𝓞 F) => w.valuedAdicCompletion_surjective F
     (WithZero.exp ((ordI w (differentIdeal ℤ (𝓞 F)) : ℤ) - (ordI w 𝔪 : ℤ)))
@@ -143,6 +215,19 @@ private theorem exists_genD {𝔪 : Ideal (𝓞 F)} (h : 𝔪 ≠ ⊥) : ∃ y :
 end UpperTheory.V.Sd
 
 open UpperTheory.V.Sd in
+/- English proof (translation)
+Introduce `F _ _ _ φ k c₀ c₀' a a' h h'`. Establish `key : ∀ (yf : (Af F)ˣ) (x : InfinitePlace F → ℝ), HasSum (fun ξ : {ξ : F // ∀ v, 0 < reAt v ξ} => ((coefAt a (algebraMap F (Af F) ξ.1 * (yf : Af F)) - coefAt a' (algebraMap F (Af F) ξ.1 * (yf : Af F))) * Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v ξ.1 : ℂ) * Complex.I)) * …`. Introduce `yf x`. Use `(h x 1 (by simp) yf).sub (h' x 1 (by simp) yf)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`.
+
+Use `hs_congr this fun ξ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, mul_assoc, ee, ← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 3`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨v₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hc : ∀ yf, c₀' yf - c₀ yf = 0` using `fun yf => const_zero _ _ _ (fun ξ _ h0 => (ξ.2 v₀).ne' (congrFun h0 v₀)) (key yf)`. Use `⟨funext fun yf => (sub_eq_zero.1 (hc yf)).symm, fun 𝔪 hm => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_genD hm`.
+
+Establish `hinj : Function.Injective fun (ξ : {ξ : F // ∀ v, 0 < reAt v ξ}) (v : InfinitePlace F) => reAt v ξ.1`. Introduce `ξ η he`. Establish `h1 : reAt v₀ ξ.1 = reAt v₀ η.1` using `congrFun he v₀`. Establish `hr` using `IsTotallyReal.isReal v₀`. Use `Subtype.ext (v₀.embedding.injective ?_)` and prove the remaining obligations.
+
+Rewrite using `[← InfinitePlace.embedding_of_isReal_apply hr, ← InfinitePlace.embedding_of_isReal_apply hr]`. Simplify using `only [reAt, ← InfinitePlace.embedding_of_isReal_apply hr, Complex.ofReal_re] at h1`. Rewrite using `[h1]`. Use `coef_zero _ _ hinj (fun x => hc y ▸ key y x) ⟨1, fun v => by simp [reAt]⟩` as an intermediate fact. Simplify using `only [map_one, one_mul, mul_eq_zero, Complex.exp_ne_zero, or_false] at this`.
+
+Rewrite `this` using `[coefAt_eq hy, coefAt_eq hy]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem UpperTheory.V.Sd.expUnique :
     UpperTheory.V.Sd.ExpUnique := by
   intro F _ _ _ φ k c₀ c₀' a a' h h'

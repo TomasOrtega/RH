@@ -11,10 +11,28 @@ noncomputable section
 
 namespace GlobalTheory.VolInvariant
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]`.
+-/
 theorem hform_eq {E : Type} [Field E] [StarRing E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (y x : Fin n → E) :
     Formalism.UG.hform (starRingEnd E) J y x = star y ⬝ᵥ (J *ᵥ x) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, starRingEnd_apply]
 
+/- English proof (translation)
+Distinguish the cases in `hall : ∀ a : E, star a = a`. Use `left`. Use extensionality with `a`. Conclude with `h a (hall a)`. Use `push Not at hall`.
+
+Take `⟨b, hb⟩` from `hall`. Use `set θ := b - star b with hθ`. Establish `hθ0 : θ ≠ 0` using `sub_ne_zero.2 hb.symm`. Establish `hs : star θ = -θ` using `by simp [hθ]`. Establish `hsq : φ θ ^ 2 = ψ θ ^ 2`.
+
+Rewrite using `[← map_pow, ← map_pow]`. Apply `h` to reduce the goal to its premises. Rewrite using `[star_pow, hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : star (2 : E) = 2` using `star_ofNat 2`.
+
+Establish `dec : ∀ a : E, ∃ u w : E, star u = u ∧ star w = w ∧ a = u + θ * w`. Introduce `a`. Use `⟨(a + star a) / 2, (a - star a) / (2 * θ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[star_div₀, star_add, star_star, h2, add_comm]`. Rewrite using `[star_div₀, star_sub, star_star, star_mul', h2, hs]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h1 | h1` into its components or cases.
+
+Use `left`. Use extensionality with `a`. Take `⟨u, w, hu, hw, rfl⟩` from `dec a`. Simplify using `only [map_add, map_mul, h u hu, h w hw, h1]`. Use `right`.
+
+Use extensionality with `a`. Take `⟨u, w, hu, hw, rfl⟩` from `dec a`. Rewrite using `[RingHom.comp_apply, ← hψ, star_add, star_mul', hu, hw, hs]`. Simplify using `only [map_add, map_mul, map_neg, h u hu, h w hw, h1]`.
+-/
 theorem eq_or_conj {E : Type} [Field E] [CharZero E] [StarRing E] (φ ψ : E →+* ℂ)
     (hψ : ∀ a, ψ (star a) = starRingEnd ℂ (ψ a)) (h : ∀ a, star a = a → φ a = ψ a) :
     φ = ψ ∨ φ = (starRingEnd ℂ).comp ψ := by
@@ -43,6 +61,19 @@ theorem eq_or_conj {E : Type} [Field E] [CharZero E] [StarRing E] (φ ψ : E →
     rw [RingHom.comp_apply, ← hψ, star_add, star_mul', hu, hw, hs]
     simp only [map_add, map_mul, map_neg, h u hu, h w hw, h1]
 
+/- English proof (translation)
+Use `set v : InfinitePlace I.F := InfinitePlace.mk (φ.comp (algebraMap I.F I.E)) with hv`. Establish `hc` using `I.cm.cmUnram.2.1`. Establish `hag : ∀ a, star a = a → φ a = I.φ v a`. Introduce `a ha`. Take `⟨c, rfl⟩` from `(I.cm.fixed a).1 ha`.
+
+Rewrite using `[I.φ_over]`. Break down `InfinitePlace.embedding_mk_eq (φ.comp (algebraMap I.F I.E)) with h1 | h1` into its components or cases. Rewrite using `[hv, h1]`. Both sides reduce to the same expression. Rewrite using `[hv, h1, ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, ha]`.
+
+Rewrite using `[← (h v).1, ← (h v).2]`. Break down `eq_or_conj φ (I.φ v) (hc _) hag with h1 | h1` into its components or cases. Establish `e0 : I.J.map φ = I.J.map (I.φ v)` using `congrArg (fun ψ : I.E →+* ℂ => I.J.map ψ) h1`. Rewrite using `[e0]`. Conclude with `GlobalTheory.AutInhab.hasSignature_inst I v`.
+
+Use `GlobalTheory.AutInhab.hasSignature_of_frame (P := (I.P v).map (starRingEnd ℂ)) ?_ ?_` and prove the remaining obligations. Conclude with `(I.P_unit v).map (starRingEnd ℂ).mapMatrix`. Use `congrArg (fun M => Matrix.map M (starRingEnd ℂ)) (I.P_spec v)` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `e1 : I.J.map φ = (I.J.map (I.φ v)).map (starRingEnd ℂ)`.
+
+Use extensionality with `i j`. Use `conv_lhs => rw [h1]`. Both sides reduce to the same expression. Establish `e2 : ((I.P v).map (starRingEnd ℂ))ᴴ = ((I.P v)ᴴ).map (starRingEnd ℂ)`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2, this]`. Use extensionality with `i j`. Simplify using `only [Formalism.REAL.Jm, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hasSignature_all (I : AutInst) {p q : ℕ} (h : HasSig I p q) (φ : I.E →+* ℂ) :
     Formalism.UG.HasSignature (I.J.map φ) p q := by
   set v : InfinitePlace I.F := InfinitePlace.mk (φ.comp (algebraMap I.F I.E)) with hv
@@ -77,6 +108,29 @@ section Transport
 
 variable {E E' : Type} [Field E] [NumberField E] [StarRing E] [Field E'] [NumberField E'] [StarRing E'] {n : ℕ}
 
+/- English proof (translation)
+Set `σ : 𝓞 E' →+* 𝓞 E` to `(RingOfIntegers.mapRingEquiv e : 𝓞 E' ≃+* 𝓞 E)`. Use `haveI : RingHomSurjective σ := ⟨(RingOfIntegers.mapRingEquiv e).surjective⟩`. Use `haveI : RingHomSurjective (e : E' →+* E) := ⟨e.surjective⟩`. Set `g : (Fin n → E') →ₛₗ[(e : E' →+* E)] (Fin n → E)` to `{ toFun := fun y => (A : Matrix (Fin n) (Fin n) E) *ᵥ (fun i => e (y i)) map_add' := fun x y => by`. Rewrite using `[← Matrix.mulVec_add]`.
+
+Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c x => by`. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Use `congr 1`. Use extensionality with `i`. Simplify using `}`. Set `f : (Fin n → E') →ₛₗ[σ] (Fin n → E)` to `{ toFun := g map_add' := g.map_add map_smul' := fun c x => g.map_smulₛₗ (c : E') x }`. Establish `hf : ∀ y, f y = (A : Matrix (Fin n) (Fin n) E) *ᵥ (fun i => e (y i))` using `fun _ => rfl`.
+
+Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Use `congrArg (fun z => ((A⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ z) hxy` as an intermediate fact. Simplify using `only [hf, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this`. Use extensionality with `i`.
+
+Conclude with `e.injective (congrFun this i)`. Establish `hsurj : Function.Surjective f`. Introduce `x`. Use `⟨fun i => e.symm ((((A⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) i), ?_⟩` and prove the remaining obligations. Simplify using `only [hf, RingEquiv.apply_symm_apply]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hform : ∀ x y, star (f y) ⬝ᵥ (J *ᵥ f x) = e (star y ⬝ᵥ (J' *ᵥ x))`. Introduce `x y`. Rewrite using `[hf, hf, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA]`. Simplify using `[dotProduct, Matrix.mulVec, he]`.
+
+Establish `hint : ∀ a : E', e a ∈ (algebraMap (𝓞 E) E).range ↔ a ∈ (algebraMap (𝓞 E') E').range`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨(RingOfIntegers.mapRingEquiv e).symm c, e.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hc]`. Conclude with `e.apply_symm_apply _`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨σ c, rfl⟩`. Establish `hmem : ∀ y, y ∈ L ↔ f y ∈ L.map f` using `fun y => ⟨fun h => ⟨y, h, rfl⟩, fun ⟨z, hz, h⟩ => hinj h ▸ hz⟩`.
+
+Use `⟨L.map f, ⟨hL.fg.map f, ?_⟩, ?_, hmem⟩` and prove the remaining obligations. Establish `: ((L.map f : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) = g '' (L : Set (Fin n → E'))` using `rfl`. Rewrite using `[this, ← Submodule.map_span, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hsurj`. Introduce `x`.
+
+Take `⟨x, rfl⟩` from `hsurj x`. Rewrite using `[← hmem, hd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Rewrite using `[hform, hint]`.
+
+Conclude with `h y hy`. Introduce `h y hy`. Rewrite using `[← hint, ← hform]`. Conclude with `h _ ⟨y, hy, rfl⟩`.
+-/
 theorem exists_image (e : E' ≃+* E) (he : ∀ y, e (star y) = star (e y)) (J : Matrix (Fin n) (Fin n) E)
     (J' : Matrix (Fin n) (Fin n) E') (A : GL (Fin n) E)
     (hA : (A : Matrix (Fin n) (Fin n) E)ᴴ * J * (A : Matrix (Fin n) (Fin n) E) = J'.map e)
@@ -137,6 +191,13 @@ theorem exists_image (e : E' ≃+* E) (he : ∀ y, e (star y) = star (e y)) (J :
     · intro h y hy
       rw [← hint, ← hform]; exact h _ ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨Λ₁, h1, h2, -⟩` from `exists_image e he (J'.map e) J' 1 (by simp) L' hL' hd'`. Establish `hh : (J'.map e)ᴴ = J'.map e`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.map_apply, ← he, ← Matrix.conjTranspose_apply, hJ']`.
+
+Establish `hde : (J'.map e).det ≠ 0`. Use `RingHom.map_det (e : E' →+* E) J'` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Establish `h3 : (J'.map e).det = e J'.det` using `this.symm`. Rewrite using `[h3]`.
+
+Conclude with `(map_ne_zero e).2 hdet'`. Take `⟨γ, hγ⟩` from `GlobalTheory.T.hermitian_spaces_same_signature_isometric E hE _ J (J'.map e) hJ hh hdet hde ⟨L, hL, hd⟩ ⟨Λ₁, h1, h2⟩ fun φ => ⟨p, q, hs φ, hs' (φ.comp (e : E' →+* E))⟩`. Take `⟨Λ, h3, h4, h5⟩` from `exists_image e he J J' γ hγ L' hL' hd'`. Conclude with `⟨γ, Λ, hγ, h3, h4, h5⟩`.
+-/
 theorem exists_isometry (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (e : E' ≃+* E) (he : ∀ y, e (star y) = star (e y)) {n' : ℕ}
     (hn : n' = n) (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin n') (Fin n') E')
     (hJ : Jᴴ = J) (hJ' : J'ᴴ = J') (hdet : J.det ≠ 0) (hdet' : J'.det ≠ 0)
@@ -168,10 +229,16 @@ theorem exists_isometry (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (e 
 
 end Transport
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (I.E →+* ℂ)` from `inferInstance`. Simplify using `using (Formalism.UG.P.sig_data _ p q (hasSignature_all I h φ)).1`.
+-/
 theorem rank_eq (I : AutInst) {p q : ℕ} (h : HasSig I p q) : I.n = p + q := by
   obtain ⟨φ⟩ : Nonempty (I.E →+* ℂ) := inferInstance
   simpa using (Formalism.UG.P.sig_data _ p q (hasSignature_all I h φ)).1
 
+/- English proof (translation)
+Introduce and unpack `I I' p q ⟨e, he⟩ h h' c μf _ _ c' μf' _ _ hc hc'`. Establish `hn : I'.n = I.n` using `(rank_eq I' h').trans (rank_eq I h).symm`. Apply the tactic sequence `obtain ⟨A, Λ, hA, hΛ, hd, hmem⟩ := exists_isometry I.cm.cmUnram e he hn I.J I'.J I.J_herm I'.J_herm I.J_det I'.J_det I.L ⟨I.L_fg, I.L_span⟩ (by simpa only [hform_eq] using I.L_dual) I'.L ⟨I'.L_fg, I'.L_span⟩ (by simpa only [hform_eq] using I'.L_dual) (hasSignature_all I h) (hasSi …`. Take `⟨xf, hx⟩` from `GlobalTheory.T.exists_finiteAdelicPoint_lattice_eq_selfDual I Λ hΛ (by simpa only [hform_eq] using hd)`. Conclude with `GlobalTheory.T.gaugeVolume_eq_of_semilinear_isometry_genus I I' e A xf he hn hA (hx ▸ hmem) c μf c' μf' hc hc'`.
+-/
 theorem volumeInvariant : VolumeInvariant := by
   rintro I I' p q ⟨e, he⟩ h h' c μf _ _ c' μf' _ _ hc hc'
   have hn : I'.n = I.n := (rank_eq I' h').trans (rank_eq I h).symm

@@ -41,6 +41,11 @@ section Ord
 
 variable {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
 
+/- English proof (translation)
+Establish `h1 : Scheme.ord (1 : X.functionField) z = 0` using `(unitAt_one z).ord_eq_zero`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [zpow_add_one₀ hf, Scheme.ord_mul (zpow_ne_zero _ hf) hf, ih]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `pred n ih`. Establish `h2` using `Scheme.ord_mul (x := z) (zpow_ne_zero (-(n : ℤ) - 1) hf) hf`. Rewrite `h2` using `[← zpow_add_one₀ hf, sub_add_cancel, ih]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ord_zpow {f : X.functionField} (hf : f ≠ 0) (z : X) (n : ℤ) :
     Scheme.ord (f ^ n) z = n * Scheme.ord f z := by
   have h1 : Scheme.ord (1 : X.functionField) z = 0 := (unitAt_one z).ord_eq_zero
@@ -52,6 +57,15 @@ theorem ord_zpow {f : X.functionField} (hf : f ≠ 0) (z : X) (n : ℤ) :
     rw [← zpow_add_one₀ hf, sub_add_cancel, ih] at h2
     linarith
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hz`. Break down `ValuationRing.isInteger_or_isInteger (X.presheaf.stalk z) f with h1 | h1` into its components or cases. Conclude with `h1`. Take `⟨a, ha⟩` from `h1`. Take `⟨U, hzU, s, rfl⟩` from `X.presheaf.exists_germ_eq a`.
+
+Use `haveI : Nonempty U := ⟨⟨z, hzU⟩⟩`. Establish `e : X.germToFunctionField U s = f⁻¹` using `(Scheme.algebraMap_germ_eq_germToFunctionField _ hzU s).symm.trans ha`. Establish `hs : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `e` using `[map_zero]`.
+
+Conclude with `inv_ne_zero hf e.symm`. Establish `h2` using `Scheme.ord_le_smul hzU hs f`. Establish `e2 : s • f = 1`. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `X.germToFunctionField U s * f = 1`.
+
+Rewrite using `[e, inv_mul_cancel₀ hf]`. Rewrite `h2` using `[e2, (unitAt_one z).ord_eq_zero]`. Conclude with `(GlobalTheory.WeilCartier.unitAt_of_ord_eq_zero hz hf (le_antisymm h2 h)).regAt`.
+-/
 theorem regAt_of_ord_nonneg [GlobalTheory.IsNormalScheme X] {z : X} (hz : Order.coheight z = 1) {f : X.functionField}
     (hf : f ≠ 0) (h : 0 ≤ Scheme.ord f z) : RegAt z f := by
   haveI := GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hz
@@ -75,6 +89,27 @@ theorem regAt_of_ord_nonneg [GlobalTheory.IsNormalScheme X] {z : X} (hz : Order.
 
 end Ord
 
+/- English proof (translation)
+Take `⟨V, j, _, _, hj⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint w`. Establish `hn0 : (n : Γ(V, ⊤)) = 0`. Assume the negation of the conclusion as `h0`. Establish `h1 : genericPoint V ∈ V.basicOpen (n : Γ(V, ⊤))`. Use `((genericPoint_spec V).mem_open_set_iff (V.basicOpen _).isOpen).2 ?_` and prove the remaining obligations.
+
+Establish `: V.basicOpen (n : Γ(V, ⊤)) ≠ ⊥` using `fun h => h0 (eq_zero_of_basicOpen_eq_bot _ h)`. Take `⟨y, hy⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 this`. Conclude with `⟨y, trivial, hy⟩`. Establish `h2` using `Scheme.preimage_basicOpen j (U := ⊤) (n : Γ(X, ⊤))`. Rewrite `h2` using `[map_intCast]`.
+
+Establish `h3 : j (genericPoint V) ∈ X.basicOpen (n : Γ(X, ⊤))` using `h2.ge h1`. Rewrite `h3` using `[hj]`. Conclude with `(mem_under_iff w _).1 hw ((X.mem_basicOpen (n : Γ(X, ⊤)) w trivial).1 h3)`. Establish `hl0 : ringChar Γ(V, ⊤) ≠ 0`. Introduce `h`.
+
+Use `haveI : CharZero Γ(V, ⊤) := (CharP.ringChar_zero_iff_CharZero _).1 h`. Conclude with `hn (Int.cast_eq_zero.1 hn0)`. Use `set l := ringChar Γ(V, ⊤) with hl`. Use `haveI : CharP Γ(V, ⊤) l := ringChar.charP _`. Use `haveI : Fact l.Prime := ⟨(CharP.char_is_prime_or_zero Γ(V, ⊤) l).resolve_right hl0⟩`.
+
+Use `letI : Algebra (ZMod l) Γ(V, ⊤) := ZMod.algebra _ l`. Use `hX.finite` as an intermediate fact. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`.
+
+Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e1 : strHom (ZMod l) V ≫ spMap (Int.castRingHom (ZMod l)) = j ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom (ZMod l) V ≫ spMap (Int.castRingHom (ZMod l)))` using `by rw [e1]; infer_instance`. Establish `: IsProper (strHom (ZMod l) V)` using `IsProper.of_comp _ (spMap (Int.castRingHom (ZMod l)))`. Take `⟨x', rfl⟩ : x ∈ Set.range j` from `hwx.mem_closed j.isClosedEmbedding.isClosed_range ⟨_, hj⟩`.
+
+Establish `hx' : IsClosed ({x'} : Set V)`. Use `hx.preimage j.continuous` as an intermediate fact. Rewrite `this` using `[← Set.image_singleton, Set.preimage_image_eq _ j.isClosedEmbedding.injective]`. Then use the resulting hypothesis. Take `⟨y, hyU, hyx, hyd⟩` from `GlobalTheory.T.closed_point_specialization_curve (ZMod l) V (strHom (ZMod l) V) x' (j ⁻¹ᵁ U) hx' ⟨genericPoint V, show j _ ∈ U from hj ▸ hwU⟩ hxU`. Take `⟨Z, i, _, _, hi⟩` from `GlobalTheory.exists_isClosedImmersion_genericPoint y`.
+
+Establish `hr : Set.range i = closure {y}`. Use `(genericPoint_spec Z).image i.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`. Conclude with `this.symm`. Use `⟨Z, i ≫ j, inferInstance, inferInstance, ZMod l, inferInstance, inferInstance, (i.appTop.hom.comp (algebraMap (ZMod l) Γ(V, ⊤))).toAlgebra, ?_, fun z => ?_, ?_, genericPoint Z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr, hyd]`. Rewrite using `[Scheme.Hom.comp_apply, ← hj]`. Conclude with `(genericPoint_specializes _).map j.continuous`. Take `⟨z, hz⟩ : x' ∈ Set.range i` from `hr ▸ specializes_iff_mem_closure.1 hyx`. Conclude with `⟨z, by rw [Scheme.Hom.comp_apply, hz]⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply, hi]`. Conclude with `hyU`.
+-/
 theorem exists_vertical_curve {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {e : ℕ} (hX : IsArithVar p e)
     {w x : X} {n : ℤ} (hn : n ≠ 0) (hw : (n : Γ(X, ⊤)) ∈ under w) (hwx : w ⤳ x) (hx : IsClosed ({x} : Set X))
     (U : X.Opens) (hwU : w ∈ U) (hxU : x ∉ U) :
@@ -133,6 +168,39 @@ theorem exists_vertical_curve {k : Type} [CommRing k] {X : Scheme.{0}} {p : X �
   · rw [Scheme.Hom.comp_apply, hi]
     exact hyU
 
+/- English proof (translation)
+Use `haveI := hX.isNoetherian`. Use `haveI := hX.finite`. Establish `hPm : P.IsMaximal` using `hP.isMaximal hP0`. Establish `hinj : Function.Injective (algebraMap Γ(X, ⊤) X.functionField)` using `X.germToFunctionField_injective ⊤`. Use `set T := algebraMap Γ(X, ⊤) X.functionField t with hT`.
+
+Establish `hT0 : T ≠ 0` using `(map_ne_zero_iff _ hinj).2 ht0`. Set `g : L.B.ι → X.functionField` to `fun a => T ^ ρ.num * (((r a)⁻¹ ^ ρ.den : X.functionFieldˣ) : X.functionField)`. Establish `hg0 : ∀ a, g a ≠ 0` using `fun a => mul_ne_zero (zpow_ne_zero _ hT0) (Units.ne_zero _)`. Establish `hord : ∀ a z, z ∈ L.B.U a → (Scheme.ord (g a) z : ℚ) = ρ.den * (ρ * Scheme.ord T z - (L.div hr).mult z)`. Introduce `a z hz`.
+
+Establish `h1 : (L.div hr).mult z = Scheme.ord (r a : X.functionField) z` using `((presents_divOfRatSec L.isLB hr).isEqn a z hz).mult_eq`. Establish `h2 : (((r a)⁻¹ ^ ρ.den : X.functionFieldˣ) : X.functionField) = (r a : X.functionField) ^ (-(ρ.den : ℤ))`. Rewrite using `[zpow_neg, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow]`. Simplify using `only [g]`. Rewrite using `[Scheme.ord_mul (zpow_ne_zero _ hT0) (Units.ne_zero _), h2, ord_zpow hT0, ord_zpow (r a).ne_zero, h1]`.
+
+Use `push_cast`. Rewrite using `[← Rat.mul_den_eq_num ρ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hden : (0 : ℚ) < ρ.den` using `Nat.cast_pos.2 ρ.pos`. Establish `hreg : ∀ a x, x ∈ L.B.U a → under x = P → RegAt x (g a)`.
+
+Introduce `a x hx hxP`. Use `GlobalTheory.WeilCartier.regAt_of_forall_coheight_one x _ fun z hzx hz => ?_` and prove the remaining obligations. Establish `hzU : z ∈ L.B.U a` using `hzx.mem_open (L.B.U a).isOpen hx`. Use `regAt_of_ord_nonneg hz (hg0 a) ?_` and prove the remaining obligations. Establish `h1` using `hord a z hzU`.
+
+Distinguish the cases in `h0 : under z = ⊥`. Establish `h2 : (L.div hr).mult z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hvert z hne (GlobalTheory.T.generic_fibre_maps_to_zero_ideal F X p e hX z h0)`. Rewrite `h1` using `[h2, hT, ord_eq_zero_of_under_eq_bot z t h0 ht0]`.
+
+Establish `: (Scheme.ord (g a) z : ℚ) = 0` using `by rw [h1]; simp`. Conclude with `this.ge` after adjusting the coercions. Establish `h2 : under z = P` using `((under_isPrime z).isMaximal h0).eq_of_le hP.ne_top (hxP ▸ under_le_of_specializes hzx)`. Establish `h3` using `hle z h2 hz`. Establish `: (0 : ℚ) ≤ Scheme.ord (g a) z` using `by rw [h1]; exact mul_nonneg hden.le (by linarith)`.
+
+Conclude with `this` after adjusting the coercions. Take `⟨x, ⟨hxi, hxk⟩, hx⟩` from `(isClosed_closure.inter isClosed_closure).exists_closed_singleton hmeet`. Establish `hix : zi ⤳ x` using `specializes_iff_mem_closure.2 hxi`. Establish `hkx : zk ⤳ x` using `specializes_iff_mem_closure.2 hxk`. Take `⟨a, ha⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart L.isLB x`.
+
+Establish `hia : zi ∈ L.B.U a` using `hix.mem_open (L.B.U a).isOpen ha`. Establish `hka : zk ∈ L.B.U a` using `hkx.mem_open (L.B.U a).isOpen ha`. Assume the negation of the conclusion as `hne`. Establish `hnu : ¬ UnitAt x (g a)`. Introduce `hu`.
+
+Take `⟨V, hxV, hV⟩` from `hu.exists_nhds`. Establish `h1` using `hord a zk hka`. Rewrite `h1` using `[(hV zk (hkx.mem_open V.isOpen hxV)).ord_eq_zero]`. Establish `h2` using `(mul_eq_zero.1 (h1.symm.trans Int.cast_zero)).resolve_left hden.ne'`. Conclude with `hne (by linarith)`.
+
+Establish `hui : UnitAt zi (g a)`. Use `GlobalTheory.WeilCartier.unitAt_of_ord_eq_zero hci (hg0 a) ?_` and prove the remaining obligations. Establish `h1` using `hord a zi hia`. Rewrite `h1` using `[heq, sub_self, mul_zero]`. Conclude with `h1` after adjusting the coercions.
+
+Take `⟨V, hiV, hV⟩` from `hui.exists_nhds`. Take `⟨c, hcP, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP0`. Take `⟨n, hnP, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (Ideal.comap_ne_bot_of_integral_mem (R := ℤ) hc0 hcP (Algebra.IsIntegral.isIntegral c))`. Establish `hnP' : (n : Γ(X, ⊤)) ∈ under zi`. Rewrite using `[hzi]`.
+
+Simplify using `using hnP`. Take `⟨Z, i, _, _, κ, _, _, _, hd, hZ, ⟨z₀, hz₀⟩, z₁, hz₁⟩` from `exists_vertical_curve hX hn0 hnP' hix hx (V ⊓ L.B.U a) ⟨hiV, hia⟩ (fun h => hnu (hV x h.1))`. Establish `hZP : ∀ z, under (i z) = P` using `fun z => (hPm.eq_of_le (under_isPrime _).ne_top (hzi ▸ under_le_of_specializes (hZ z))).symm`. Establish `hr' : IsRatSec L.dual.B fun a => (r a)⁻¹`. Introduce `b b' h`.
+
+Express the relevant statement in the definitionally equal form `genericPoint X ∈ L.B.U b ⊓ L.B.U b' at h`. Establish `h1` using `hr b b' h`. Establish `h2 : fnOf (L.B.U b ⊓ L.B.U b') h ((L.B.g b b' : Γ(X, L.B.U b ⊓ L.B.U b'))) * fnOf (L.B.U b ⊓ L.B.U b') h (((L.B.g b b')⁻¹ : Γ(X, L.B.U b ⊓ L.B.U b')ˣ) : Γ(X, L.B.U b ⊓ L.B.U b')) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Express the relevant statement in the definitionally equal form `(((r b)⁻¹ : X.functionFieldˣ) : X.functionField) = fnOf (L.B.U b ⊓ L.B.U b') h (((L.B.g b b')⁻¹ : Γ(X, L.B.U b ⊓ L.B.U b')ˣ) : Γ(X, L.B.U b ⊓ L.B.U b')) * (((r b')⁻¹ : X.functionFieldˣ) : X.functionField)`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, h1, mul_inv, eq_inv_of_mul_eq_one_right h2]`. Establish `hmem : ∀ (y : X) (J : (L.dual.pow ρ.den).B.ι), y ∈ (L.dual.pow ρ.den).B.U J ↔ y ∈ L.B.U (J PUnit.unit)`. Introduce `y J`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.Tor.mem_pull (L := L.B) (F := 𝟙 X) (x := y) (J := J)`. Take `⟨s, hs⟩` from `GlobalTheory.T.cartier_divisor_section_nonzero_locus X Z (L.dual.pow ρ.den).B (L.dual.pow ρ.den).isLB _ (GlobalTheory.TrueGeo.SmallSec.isRatSec_pow hr' ρ.den) (T ^ ρ.num) i (fun z J hz => hreg (J PUnit.unit) (i z) ((hmem _ _).1 hz) (hZP z))`.
+
+Establish `hpos` using `GlobalTheory.T.section_degree_positive_on_curve _ X p e hX Z i κ hd _ (ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull (L.dual.pow ρ.den).isLB i) s ⟨z₁, (hs z₁ (fun _ => a) ((hmem _ _).2 hz₁.2)).2 (hV _ hz₁.1)⟩ ⟨z₀, fun h => hnu (hz₀ ▸ (hs z₀ (fun _ => a) ((hmem _ _).2 (hz …`. Rewrite `hpos` using `[GlobalTheory.NefHodgeTateAt.topSelf_pow hX.isProjOver _ _ Z i κ hd, GlobalTheory.NefDeRhamCover.topSelf_dual hX.isProjOver _ Z i κ hd, hdeg Z i κ hd]`. Simplify using `at hpos`.
+-/
 theorem mult_eq_of_meets (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [Ring.DimensionLEOne Γ(X, ⊤)] [Module.Finite ℤ Γ(X, ⊤)]
     (p : X ⟶ Sp (𝓞 F)) (e : ℕ) (hX : IsArithVar p e) [GlobalTheory.IsNormalScheme X]
@@ -242,6 +310,53 @@ theorem mult_eq_of_meets (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hPr F _ _ X _ _ p e hX hA hN L r hr hvert hdeg`. Use `haveI : IsDomain Γ(X, ⊤) := inferInstance`. Use `haveI : GlobalTheory.IsNormalScheme X := GlobalTheory.IsNormalScheme.of_pred hN`. Use `haveI : IsIntegrallyClosed Γ(X, ⊤) := inferInstance`. Use `haveI : CharZero Γ(X, ⊤) := hX.charZero`.
+
+Use `haveI : Module.Finite ℤ Γ(X, ⊤) := GlobalTheory.T.global_sections_finite_over_integers F X p hA`. Take `⟨hDed, hCl⟩` from `GlobalTheory.T.integrally_closed_finite_dedekind_class_finite Γ(X, ⊤)`. Establish `hinj : Function.Injective (algebraMap Γ(X, ⊤) X.functionField)` using `X.germToFunctionField_injective ⊤`. Establish `hunif : ∀ P : Ideal Γ(X, ⊤), P.IsPrime → P ≠ ⊥ → ∃ π ∈ P, π ∉ P ^ 2`. Introduce `P hP h0`.
+
+Establish `hP1 : P ≠ ⊤` using `hP.ne_top`. Establish `hlt : P ^ 2 < P ^ 1` using `Ideal.pow_right_strictAnti P h0 hP1 (by norm_num)`. Rewrite `hlt` using `[pow_one]`. Take `⟨π, h1, h2⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨π, h1, h2⟩`.
+
+Use `choose! π hπP hπ2 using hunif`. Establish `hπ0 : ∀ P : Ideal Γ(X, ⊤), P.IsPrime → P ≠ ⊥ → π P ≠ 0` using `fun P hP h0 e => hπ2 P hP h0 (e ▸ (P ^ 2).zero_mem)`. Use `haveI := hX.isNoetherian`. Establish `hq : ∀ P : Ideal Γ(X, ⊤), P.IsPrime → P ≠ ⊥ → ∃ q : ℚ, ∀ z : X, under z = P → ((L.div hr).mult z : ℚ) = q * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z`. Introduce `P hP h0`.
+
+Establish `hPm : P.IsMaximal` using `hP.isMaximal h0`. Establish `ht : π P ∈ P` using `hπP P hP h0`. Establish `ht0 : π P ≠ 0` using `hπ0 P hP h0`. Take `⟨hZfin, hcov⟩` from `GlobalTheory.T.fibre_over_maximal_codim_one_finite X P (π P) hPm ht ht0`. Establish `hoff : ∀ z : X, Order.coheight z ≠ 1 → (L.div hr).mult z = 0 ∧ Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z = 0` using `fun z hc => ⟨by_contra fun h => hc (GlobalTheory.Cartier.CartierDiv.coheight_eq_one_of_mult_ne_zero h), Scheme.ord_eq_zero_of_coheight_neq_one hc _⟩`.
+
+Establish `hpos : ∀ z : X, under z = P → Order.coheight z = 1 → 0 < Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z` using `fun z hz hc => GlobalTheory.T.order_positive_along_fibre X z (π P) (hz ▸ ht) ht0 hc`. Distinguish the cases in `hne : {z : X | under z = P ∧ Order.coheight z = 1}.Nonempty`. Use `swap`. Use `⟨0, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hc : Order.coheight z ≠ 1` using `fun h => hne ⟨z, hz, h⟩`.
+
+Simplify using `[(hoff z hc).1]`. Take `⟨zi, hzi, hmax⟩` from `hZfin.toFinset.exists_max_image (fun z => ((L.div hr).mult z : ℚ) / Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z) (by simpa using hne)`. Rewrite `hzi` using `[Set.Finite.mem_toFinset]`. Use `set ρ0 : ℚ := ((L.div hr).mult zi : ℚ) / Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) zi with hρ0`. Establish `hle : ∀ z : X, under z = P → Order.coheight z = 1 → ((L.div hr).mult z : ℚ) ≤ ρ0 * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z`.
+
+Introduce `z hz hc`. Establish `h1` using `hmax z ((Set.Finite.mem_toFinset _).2 ⟨hz, hc⟩)`. Establish `h2 : (0 : ℚ) < Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z`. Conclude with `hpos z hz hc` after adjusting the coercions. Rewrite `h1` using `[div_le_iff₀ h2]`. Then use the resulting hypothesis.
+
+Establish `hzi0 : ((L.div hr).mult zi : ℚ) = ρ0 * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) zi`. Establish `h2 : (Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) zi : ℚ) ≠ 0`. Conclude with `(hpos zi hzi.1 hzi.2).ne'` after adjusting the coercions. Rewrite using `[hρ0, div_mul_cancel₀ _ h2]`. Use `⟨ρ0, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hc : Order.coheight z = 1`. Use `swap`. Simplify using `[(hoff z hc).1, (hoff z hc).2]`. Assume the negation of the conclusion as `hneq`. Establish `hsub : ∀ w ∈ hZfin.toFinset, closure {w} ⊆ {x : X | under x = P}`.
+
+Introduce `w hw y hy`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `h1` using `under_le_of_specializes (specializes_iff_mem_closure.2 hy)`. Rewrite `h1` using `[hw.1]`. Conclude with `(hPm.eq_of_le (under_isPrime y).ne_top h1).symm`.
+
+Take `⟨i, hi, k, hk, hi0, hk0, hik⟩` from `GlobalTheory.T.preconnected_fibre_adjacent_components X {x : X | under x = P} hZfin.toFinset (fun w => ρ0 * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) w - (L.div hr).mult w) (GlobalTheory.T.stein_fibre_isPreconnected hPr F X p e hX hA P) hsub (fun x hx => by`. Take `⟨w, hw1, hw2, hw3⟩` from `hcov x hx`. Conclude with `⟨w, (Set.Finite.mem_toFinset _).2 ⟨hw1, hw2⟩, specializes_iff_mem_closure.1 hw3⟩)`. Use the proof step `(fun w hw => by`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`.
+
+Use `hle w hw.1 hw.2` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `⟨zi, (Set.Finite.mem_toFinset _).2 hzi, by rw [hzi0]; ring⟩`. Use the proof step `⟨z, (Set.Finite.mem_toFinset _).2 ⟨hz, hc⟩, by`. Use `hle z hz hc` as an intermediate fact.
+
+Conclude with `lt_of_le_of_ne (by linarith) (fun h => hneq (by linarith))⟩`. Rewrite `hi`, `hk` using `[Set.Finite.mem_toFinset]`. Use `mult_eq_of_meets F X p e hX L r hr hvert hdeg P (π P) ρ0 i k hP h0 ht0 hle hi.1 hi.2 hk.2 (by linarith) hik` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose! q hq using hq`.
+
+Establish `hfin : (Function.support (L.div hr).mult).Finite` using `(L.div hr).finite_support_mult`. Take `⟨m, a, b, hm, ha0, hb0, hab⟩` from `GlobalTheory.T.prescribed_valuation_difference_elements Γ(X, ⊤) (hfin.toFinset.image under) q`. Establish `hb' : algebraMap Γ(X, ⊤) X.functionField b ≠ 0` using `(map_ne_zero_iff _ hinj).2 hb0`. Establish `ha' : algebraMap Γ(X, ⊤) X.functionField a ≠ 0` using `(map_ne_zero_iff _ hinj).2 ha0`. Set `g : X.functionFieldˣ` to `Units.mk0 (algebraMap Γ(X, ⊤) X.functionField a / algebraMap Γ(X, ⊤) X.functionField b) (div_ne_zero ha' hb')`.
+
+Use `⟨m, g, a, b, hm, hb0, ?_, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [g, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Establish `hga : (g : X.functionField) * algebraMap Γ(X, ⊤) X.functionField b = algebraMap Γ(X, ⊤) X.functionField a`. Simplify using `only [g, Units.val_mk0]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hord : Scheme.ord (g : X.functionField) z = Scheme.ord (algebraMap Γ(X, ⊤) X.functionField a) z - Scheme.ord (algebraMap Γ(X, ⊤) X.functionField b) z`. Use `Scheme.ord_mul (x := z) g.ne_zero hb'` as an intermediate fact. Rewrite `this` using `[hga]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[GlobalTheory.SmallSecHeight.mult_nsmul, hord]`. Distinguish the cases in `hz : under z = ⊥`. Establish `h1 : (L.div hr).mult z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hvert z hne (GlobalTheory.T.generic_fibre_maps_to_zero_ideal F X p e hX z hz)`.
+
+Rewrite using `[h1, ord_eq_zero_of_under_eq_bot z a hz ha0, ord_eq_zero_of_under_eq_bot z b hz hb0]`. Simplify using the standard rewrite rules. Use `set P := under z with hPdef`. Establish `hP : P.IsPrime` using `under_isPrime z`. Take `⟨na, nb, ha1, ha2, hb1, hb2, hn⟩` from `hab P hP hz`.
+
+Rewrite using `[GlobalTheory.T.uniformizer_order_multiplicative X z P (π P) a na hP hz rfl (hπP P hP hz) (hπ2 P hP hz) ha1 ha2, GlobalTheory.T.uniformizer_order_multiplicative X z P (π P) b nb hP hz rfl (hπP P hP hz) (hπ2 P hP hz) hb1 hb2]`. Establish `key` using `hq P hP hz z rfl`. Distinguish the cases in `hS : P ∈ hfin.toFinset.image under`. Rewrite `hn` using `[if_pos hS]`. Establish `: ((m : ℤ) * (L.div hr).mult z : ℚ) = (((na : ℤ) * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z - (nb : ℤ) * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z : ℤ) : ℚ)`.
+
+Use `push_cast`. Rewrite using `[key]`. Establish `: ((na : ℚ) - nb) * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z = (m : ℚ) * q P * Scheme.ord (algebraMap Γ(X, ⊤) X.functionField (π P)) z` using `by rw [hn]`. Take the linear combination `-this`. Conclude with `this` after adjusting the coercions.
+
+Rewrite `hn` using `[if_neg hS, mul_zero, sub_eq_zero]`. Establish `hn' : na = nb` using `by exact_mod_cast hn`. Establish `h1 : (L.div hr).mult z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hS (Finset.mem_image.2 ⟨z, hfin.mem_toFinset.2 hne, rfl⟩)`.
+
+Rewrite using `[h1, hn']`. Simplify using the standard rewrite rules.
+-/
 theorem exists_smul_mult_eq_ord : GlobalTheory.CovTop.Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),
     IsArithVar p e → IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0 → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X →
     ∀ (L : HermLB p) (r : L.B.ι → X.functionFieldˣ) (hr : GlobalTheory.Cartier.IsRatSec L.B r),

@@ -20,6 +20,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hBE' : MarkedIdealWithBoundary.SameNontrivialBoundary (T.withBoundary E').boundary T.boundary` using `hBE.symm`. Establish `h` using `hvbr (T.withBoundary E') T.boundary hV hBE'`. Establish `he : (T.withBoundary E').withBoundary T.boundary = T` using `MarkedIdealWithBoundary.withBoundary_self T`. Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+-/
 theorem isAdmissible_of_withBoundary_isAdmissible
     (hvbr : ∀ (S : MarkedIdealWithBoundary.{u}) (F : List S.scheme.IdealSheafData), S.IsAdmissible →
       MarkedIdealWithBoundary.SameNontrivialBoundary S.boundary F → (S.withBoundary F).IsAdmissible)
@@ -31,6 +34,9 @@ theorem isAdmissible_of_withBoundary_isAdmissible
   have he : (T.withBoundary E').withBoundary T.boundary = T := MarkedIdealWithBoundary.withBoundary_self T
   rwa [he] at h
 
+/- English proof (translation)
+Rewrite using `[DivisorReduction.containedComponentsIdeal_eq_componentsInOrderLocusIdeal (S.withBoundary E') j hjE, DivisorReduction.containedComponentsIdeal_eq_componentsInOrderLocusIdeal S j hj]`. Conclude with `congrArg (fun D => DivisorReduction.componentsInOrderLocusIdeal S.ideal S.mult D) hget`.
+-/
 private theorem containedComponentsIdeal_withBoundary_of_get_eq (S : MarkedIdealWithBoundary.{u})
     (E' : List S.scheme.IdealSheafData) (j : ℕ) (hjE : j < E'.length)
     (hj : j < S.boundary.length)
@@ -40,11 +46,19 @@ private theorem containedComponentsIdeal_withBoundary_of_get_eq (S : MarkedIdeal
     DivisorReduction.containedComponentsIdeal_eq_componentsInOrderLocusIdeal S j hj]
   exact congrArg (fun D => DivisorReduction.componentsInOrderLocusIdeal S.ideal S.mult D) hget
 
+/- English proof (translation)
+Unfold `DivisorReduction.lowerIdealWithoutBlowup`. Simplify using `[Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem lowerIdealWithoutBlowup_eq_ideal (S : MarkedIdealWithBoundary.{u}) :
     DivisorReduction.lowerIdealWithoutBlowup S = S.ideal := by
   unfold DivisorReduction.lowerIdealWithoutBlowup
   simp [Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+Introduce `T hV K iK iCZ f E' hBE j hj hjE htake hV'`. Establish `hVb : (T.baseChange K f).IsAdmissible` using `isAdmissible_of_withBoundary_isAdmissible hvbr (T.baseChange K f) E' hBE hV'`. Establish `hj' : j < (T.baseChange K f).boundary.length`. Establish `h` using `congrArg List.length htake`. Rewrite `h` using `[List.length_take, List.length_take]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hget : E'.get ⟨j, hjE⟩ = (T.baseChange K f).boundary.get ⟨j, hj'⟩` using `get_eq_get_of_take_succ_eq E' (T.baseChange K f).boundary j htake hjE hj'`. Rewrite using `[containedComponentsIdeal_withBoundary_of_get_eq (T.baseChange K f) E' j hjE hj' hget]`. Conclude with `hfacts.preIdeal_baseChange T hV K f hVb j hj hj'`.
+-/
 theorem containedComponentsIdeal_withBoundary_baseChange
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}} {hno : BlowupPreservesNoetherian.{u}}
     (hfacts : DivisorReductionTerminationProperties hres hno)
@@ -71,6 +85,9 @@ theorem containedComponentsIdeal_withBoundary_baseChange
   rw [containedComponentsIdeal_withBoundary_of_get_eq (T.baseChange K f) E' j hjE hj' hget]
   exact hfacts.preIdeal_baseChange T hV K f hVb j hj hj'
 
+/- English proof (translation)
+Introduce `T K iK iCZ f E'`. Rewrite using `[lowerIdealWithoutBlowup_eq_ideal, lowerIdealWithoutBlowup_eq_ideal, MarkedIdealWithBoundary.withBoundary_ideal]`. Conclude with `MarkedIdealWithBoundary.baseChange_ideal T K f`.
+-/
 theorem lowerIdealWithoutBlowup_withBoundary_baseChange :
     ∀ (T : MarkedIdealWithBoundary.{u}) (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
       (E' : List (T.baseChange K f).scheme.IdealSheafData),

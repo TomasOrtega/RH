@@ -15,12 +15,38 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Unfold `phiS`. Rewrite using `[dif_pos h]`.
+-/
 theorem phiS_val {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ} {c : ℝ}
     {Ψ : Mx D m n → ℂ} {Q : PX m n} (h : tens θ τ fr (fP c Q) Ψ ∈ schwartzA θ m n) :
     (phiS θ τ fr c Ψ Q).1 = tens θ τ fr (fP c Q) Ψ := by
   unfold phiS
   rw [dif_pos h]
 
+/- English proof (translation)
+Establish `hl0` using `hLZ D ψ θ l hcx.hψ hcx.hθ hcx.hl`. Establish `hmem` using `hTM D n V θ l s τ ε fr hcx.hθ hl0 hcx.hs hcx.hfr Ψ hΨ`. Take `⟨L, hL⟩` from `hLo D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx`. Take `⟨sL, ρ, p, q, e, hgood, hLD, hsL, hρ⟩` from `hLi D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL`. Take `⟨sec, I, hsec, hI⟩` from `hLS D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨ`.
+
+Establish `hstd1 : PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν (phiS θ τ fr (cLoc l τ) Ψ 1)` using `⟨hcx.hψ, hcx.hχ, hcx.hη, hcx.hθ, hcx.hμ, hcx.hω, hcx.hH, hcx.hl, hcx.hs, hcx.hν, by rw [phiS_val (hmem 1).1]; exact (hmem 1).2⟩`. Establish `hsecSec : IsSection χ (s0 V n) (fun x => sec 1 x)`. Take `⟨𝓕, h𝓕⟩` from `hcx.hμ`. Use `GlobalTheory.StdUnn.SiegelSection.fock_mem_degenerate D n V ψ hcx.hψ χ hcx.hχ hcx.hη θ hcx.hθ μ 𝓕 h𝓕 ω hcx.hω l hcx.hl s hcx.hs _ hstd1.hΦ` as an intermediate fact. Rewrite using `[hsec 1]`.
+
+Conclude with `this`. Establish `hn0 : 0 < n` using `hcx.hn`. Establish `hGD : GlobData ε (cLoc l τ) sL ρ (G D n) (P D n) (GF D n) ι (s0 V n) H sec I (lamSet ψ)` using `{ ιcont := hcx.hι.1 split := by`. Introduce `g`. Take `⟨x, y, S, r, hr, hg, hx⟩` from `hGS D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL Ψ hΨ g`.
+
+Use `⟨x, y, S, r, hr, hg, fun y' => ⟨(hx y').1, fun Q' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsec Q', hsL Q' y']`. Conclude with `(hx y').2 Q'`. Use `Icont := by`. Rewrite using `[hI 1]`.
+
+Conclude with `(hIa D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨ).1`. Use `Ileft := by`. Rewrite using `[hI 1]`. Conclude with `(hIa D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨ).2`. Use `Ik := by`.
+
+Introduce `Q' g k hk`. Rewrite using `[hI Q', hI (ρ k Q')]`. Conclude with `hIk D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL ρ hρ Ψ hΨ Q' g k hk`. Use `Iinv := by`. Introduce `g a b Q'`.
+
+Rewrite using `[hI]`. Conclude with `hIi D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨ g a b Q'`. Use `Idil := by`. Introduce `g X a ha`. Take `⟨U, F, hU, hU', hFc, hF⟩` from `hId D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx Ψ hΨ g X a ha`.
+
+Use `⟨U, F, hU, hU', hFc, fun y => ⟨(hF y).1, fun t => ?_, fun r => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hI]`. Conclude with `(hF y).2.1 t`. Rewrite using `[hI]`. Conclude with `(hF y).2.2 r`.
+
+Use `eis := hEis D n hn0 χ V.rank hcx.hχ hcx.hη H hcx.hH (s0 V n) _ hsecSec (s0 V n)`. Use `Λadd := fun L' hL' => (hLB D n ψ hcx.hψ L' hL').1`. Use `Λbd := fun L' hL' => (hLB D n ψ hcx.hψ L' hL').2`. Use `Λsing := fun F hF hinv hz => hLsg D n ψ θ τ ι hcx.hψ hcx.hθ hcx.hι F hF hinv hz`. Use `Λval := by`.
+
+Introduce and unpack `L' ⟨nb, lam, 𝓖, β, g', hcd, hβ, rfl⟩`. Use `hCo D n V ψ χ θ μ ω H l s ν _ hstd1 hcx.hr nb lam 𝓖 hcd β hβ g'` as an intermediate fact. Rewrite using `[hI 1, hsec 1]`. Conclude with `this }`. Use `hA V.rank n ε (cLoc l τ) (tLoc l τ) p q e sL ρ hLD hgood (G D n) (P D n) (GF D n) ι (s0 V n) H sec I (lamSet ψ) hGD Q g` as an intermediate fact.
+
+Rewrite `this` using `[hsec Q, hI Q]`. Conclude with `this`.
+-/
 theorem perPsi (hA : AbsThm) (hTM : TensMem) (hLo : LocOpEx) (hLi : LocInst) (hLS : LinSec) (hGS : GSplit)
     (hIa : GIauto) (hIk : GIk) (hIi : GIinv) (hId : GIdil) (hEis : EisStrong) (hLB : GLamBd) (hLsg : GLsing)
     (hCo : PositivityTheory.PfSWUS.CoefND) (hLZ : LNZ)
@@ -91,6 +117,27 @@ theorem perPsi (hA : AbsThm) (hTM : TensMem) (hLo : LocOpEx) (hLi : LocInst) (hL
   rw [hsec Q, hI Q] at this
   exact this
 
+/- English proof (translation)
+Introduce `hA hFr hEmb hSig hSp hTM hLo hLi hLS hGS hIa hIk hIi hId hEis hLB hLsg hCo hCR hTL hLZ`. Introduce `D n V ψ χ θ μ ω H l s ν Φ hStd hR hn g`. Take `⟨τ, hτ⟩` from `hSig D n V s hR hStd.hs`. Take `⟨ε, fr, hfr⟩` from `hFr D V τ s (hStd.hs τ)`. Take `⟨ι, hι⟩` from `hEmb D n θ τ hStd.hθ`.
+
+Establish `hcx : Cx D n V ψ χ θ μ ω H l s ν τ ε fr ι` using `⟨hStd.hψ, hStd.hχ, hStd.hη, hStd.hθ, hStd.hμ, hStd.hω, hStd.hH, hStd.hl, hStd.hs, hStd.hν, hR, hn, hfr, hι, hτ ε fr hfr⟩`. Establish `hl0` using `hLZ D ψ θ l hStd.hψ hStd.hθ hStd.hl`. Take `⟨k, Pi, Ψi, hΨ, hsum⟩` from `hSp D n V θ l s τ ε fr hStd.hθ hfr Φ.1 hStd.hΦ`. Establish `hmem : ∀ i, tens θ τ fr (fP (cLoc l τ) (Pi i)) (Ψi i) ∈ schwartzA θ V.rank n ∧ tens θ τ fr (fP (cLoc l τ) (Pi i)) (Ψi i) ∈ fockA θ V n l s` using `fun i => hTM D n V θ l s τ ε fr hStd.hθ hl0 hStd.hs hfr (Ψi i) (hΨ i) (Pi i)`. Set `Φi : Fin k → schwartzA θ V.rank n` to `fun i => phiS θ τ fr (cLoc l τ) (Ψi i) (Pi i)`.
+
+Establish `hval : ∀ i, (Φi i).1 = tens θ τ fr (fP (cLoc l τ) (Pi i)) (Ψi i)` using `fun i => phiS_val (hmem i).1`. Establish `hΦeq : Φ = ∑ i, Φi i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [hval]`.
+
+Conclude with `hsum`. Establish `hstdT : ∀ T : Finset (Fin k), PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν (∑ i ∈ T, Φi i)` using `fun T => ⟨hStd.hψ, hStd.hχ, hStd.hη, hStd.hθ, hStd.hμ, hStd.hω, hStd.hH, hStd.hl, hStd.hs, hStd.hν, by`. Rewrite using `[Submodule.coe_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by rw [hval]; exact (hmem i).2⟩`. Establish `hstdi : ∀ i, PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν (Φi i)` using `fun i => ⟨hStd.hψ, hStd.hχ, hStd.hη, hStd.hθ, hStd.hμ, hStd.hω, hStd.hH, hStd.hl, hStd.hs, hStd.hν, by`.
+
+Rewrite using `[hval]`. Conclude with `(hmem i).2⟩`. Establish `key : ∀ i, HolValueAt (PositivityTheory.PfSWUS.eis ω H (Φi i) g) (s0 V n) (thetaInt ω ν (Φi i) g)` using `fun i => perPsi hA hTM hLo hLi hLS hGS hIa hIk hIi hId hEis hLB hLsg hCo hLZ hcx (hΨ i) (Pi i) g`. Establish `hth : ∀ T : Finset (Fin k), thetaInt ω ν (∑ i ∈ T, Φi i) g = ∑ i ∈ T, thetaInt ω ν (Φi i) g`. Introduce `T`.
+
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `hTL D n V ψ χ θ μ ω H l s ν 0 0 (by simpa using hstdT ∅) (by simpa using hstdT ∅) hR g`. Rewrite `h0` using `[add_zero]`. Simplify using `only [Finset.sum_empty]`.
+
+Take the linear combination `-h0`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hTL D n V ψ χ θ μ ω H l s ν _ _ (hstdi a) (hstdT T) hR g, ih]`. Use `choose σi hσi using fun i => hCR D n V ψ χ θ μ ω H l s ν (Φi i) (hstdi i) hR`. Establish `hsect : ∀ z, sect ω H (∑ i, Φi i) z = fun x => ∑ i, sect ω H (Φi i) z x`.
+
+Introduce `z`. Use function extensionality and compare the values at `x`. Simplify using `only [sect, map_sum, Submodule.coe_sum, Finset.sum_apply, Finset.mul_sum]`. Establish `heq : EqRight (fun z => ∑ i, PositivityTheory.PfSWUS.eis ω H (Φi i) g z) (PositivityTheory.PfSWUS.eis ω H Φ g)`. Use `⟨∑ i, |σi i|, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : ∀ i, σi i < z.re` using `fun i => lt_of_le_of_lt ((le_abs_self _).trans (Finset.single_le_sum (fun j _ => abs_nonneg (σi j)) (Finset.mem_univ i))) hz`. Use `show ∑ i, PositivityTheory.PfSWUS.eis ω H (Φi i) g z = PositivityTheory.PfSWUS.eis ω H Φ g z`. Rewrite using `[hΦeq]`. Unfold `PositivityTheory.PfSWUS.eis`. Rewrite using `[hsect z, cosetSum_finsum _ _ _ _ _ (fun i _ => hσi i z (hz' i) g)]`.
+
+Establish `hv : thetaInt ω ν Φ g = ∑ i, thetaInt ω ν (Φi i) g`. Rewrite using `[hΦeq]`. Conclude with `hth Finset.univ`. Rewrite using `[hv]`. Conclude with `(holValueAt_finsum Finset.univ fun i _ => key i).congr heq`.
+-/
 theorem main : MainSt := by
   intro hA hFr hEmb hSig hSp hTM hLo hLi hLS hGS hIa hIk hIi hId hEis hLB hLsg hCo hCR hTL hLZ
   intro D n V ψ χ θ μ ω H l s ν Φ hStd hR hn g

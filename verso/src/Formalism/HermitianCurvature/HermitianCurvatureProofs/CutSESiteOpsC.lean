@@ -32,6 +32,11 @@ namespace SiteC
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.JF besselJ`. Rewrite using `[← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [B7.ae_inSS Bs] with p hp`. Establish `hp'` using `hι p hp h`.
+
+Simplify using `only [B.sgs] at hp'`. Simplify using `only [hp', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm (ι h)]`.
+-/
 theorem jf_mul_inv (Bs : B.RealPlaceData k r Wp Wq) (ι : B.Mat k r → ℂ)
     (hι : ∀ p : B.SS k r, Bs.inSS p → ∀ g, ι (B.sgs p g) = ι g) (G : B.Mat k r → (Wq →L[ℂ] Wp))
     (h : B.Mat k r) : B.JF Bs (fun g => ι g • G g) h = ι h • B.JF Bs G h := by
@@ -43,16 +48,25 @@ theorem jf_mul_inv (Bs : B.RealPlaceData k r Wp Wq) (ι : B.Mat k r → ℂ)
   simp only [B.sgs] at hp'
   simp only [hp', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm (ι h)]
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp g _`.
+-/
 theorem first_minor_double_coset_invariant (Bs : B.RealPlaceData k r Wp Wq) (p : B.SS k r) (hp : Bs.inSS p) (g : B.Mat k r) :
     Dmin k r Bs.z Bs.z' (B.sgs p g) ⟨1, by omega⟩ = Dmin k r Bs.z Bs.z' g ⟨1, by omega⟩ :=
   Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs Bs hp g _
 
+/- English proof (translation)
+Unfold `Dmin`. Use `erw [Matrix.det_fin_one]`. Both sides reduce to the same expression.
+-/
 private theorem dmin_one_eq_herm_mulVec_fvec {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
     Dmin k r z z' g ⟨1, by omega⟩ = herm (Hpk k r) (g *ᵥ fvec k r z' 0) (fvec k r z 0) := by
   unfold Dmin
   erw [Matrix.det_fin_one]
   rfl
 
+/- English proof (translation)
+Use `JCx2.mn_good_congr (c := fun g => herm (Hpk k r) (g *ᵥ fvec k r Bs.z' 0) (fvec k r Bs.z 0)) ?_ (JCx2.mn_good_herm _ _)` and prove the remaining obligations. Introduce `g _`. Rewrite using `[dmin_one_eq_herm_mulVec_fvec]`.
+-/
 theorem first_minor_good_function (Bs : B.RealPlaceData k r Wp Wq) (ε : ℝ) :
     Formalism.FourierDecayAlt.P.JCx2.mnGood Bs ε (fun g => Dmin k r Bs.z Bs.z' g ⟨1, by omega⟩) := by
   refine JCx2.mn_good_congr (c := fun g => herm (Hpk k r) (g *ᵥ fvec k r Bs.z' 0) (fvec k r Bs.z 0)) ?_
@@ -60,6 +74,9 @@ theorem first_minor_good_function (Bs : B.RealPlaceData k r Wp Wq) (ε : ℝ) :
   intro g _
   rw [dmin_one_eq_herm_mulVec_fvec]
 
+/- English proof (translation)
+Use `JCx2.mn_good_congr (c := fun g => (Complex.conjCLE.toContinuousLinearMap.comp (JCx2.mnLinHerm (k := k) (r := r) (fvec k r Bs.z' 0) (fvec k r Bs.z 0))) g) ?_ (JCx2.mn_good_lin _)` and prove the remaining obligations. Introduce `g _`. Rewrite using `[dmin_one_eq_herm_mulVec_fvec]`. Simplify using `[JCx2.mnLinHerm]`.
+-/
 theorem first_minor_conj_good_function (Bs : B.RealPlaceData k r Wp Wq) (ε : ℝ) :
     Formalism.FourierDecayAlt.P.JCx2.mnGood Bs ε (fun g => star (Dmin k r Bs.z Bs.z' g ⟨1, by omega⟩)) := by
   refine JCx2.mn_good_congr
@@ -70,6 +87,15 @@ theorem first_minor_conj_good_function (Bs : B.RealPlaceData k r Wp Wq) (ε : �
   rw [dmin_one_eq_herm_mulVec_fvec]
   simp [JCx2.mnLinHerm]
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Establish `h` using `Qx6.wCell_succ (k := k) (⟨0, hr⟩ : Fin r) c`.
+
+Simplify using `only [Fin.succ_mk, Fin.castSucc_mk, Fin.mk_zero, Qx6.wCell_zero, one_mul] at h`. Rewrite using `[h, Qx4.w1_mulVec_bvec_eI]`. Consider the case `succ n ih`. Introduce `hi`. Establish `h` using `Qx6.wCell_succ (k := k) (⟨n + 1, hi⟩ : Fin r) c`.
+
+Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h`. Establish `h1 : eI k r ⟨0, hr⟩ ≠ eI k r ⟨n + 1, hi⟩`. Simplify using `[eI, Fin.ext_iff]`. Establish `h2 : eI k r ⟨0, hr⟩ ≠ esI k r ⟨n + 1, hi⟩`. Simplify using `[eI, esI, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h, ← Matrix.mulVec_mulVec, Qx3.reflection_fixes_basis_vector _ _ h1 h2, ih (by omega)]`.
+-/
 private theorem wCell_succ_mulVec_bvec_eI_zero_eq_smul {k r : ℕ} (hr : 0 < r) (c : Fin r → ℂ) :
     ∀ (i : ℕ) (hi : i < r), wCell k r ⟨i + 1, by omega⟩ c *ᵥ bvec (eI k r ⟨0, hr⟩) =
       c ⟨0, hr⟩ • bvec (esI k r ⟨0, hr⟩) := by
@@ -90,6 +116,13 @@ private theorem wCell_succ_mulVec_bvec_eI_zero_eq_smul {k r : ℕ} (hr : 0 < r) 
       simp [eI, esI, Fin.ext_iff]; omega
     rw [h, ← Matrix.mulVec_mulVec, Qx3.reflection_fixes_basis_vector _ _ h1 h2, ih (by omega)]
 
+/- English proof (translation)
+Rewrite using `[dmin_one_eq_herm_mulVec_fvec]`. Establish `hf : ∀ w : Fin (2 * r + k + 1) → ℂ, fvec k r w 0 = bvec (eI k r ⟨0, hr⟩)`. Introduce `w`. Simplify using `[fvec, hr]`. Rewrite using `[hf, hf, ← Matrix.mulVec_mulVec, (hg.2 ⟨0, hr⟩ (by simp; omega)).1]`.
+
+Establish `h3` using `wCell_succ_mulVec_bvec_eI_zero_eq_smul (k := k) hr c (r - 1) (by omega)`. Establish `e : (⟨r - 1 + 1, by omega⟩ : Fin (r + 1)) = Fin.last r` using `by ext; simp; omega`. Rewrite `h3` using `[e]`. Rewrite using `[h3]`. Simplify using `only [herm, bvec, eI, esI]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, Matrix.mulVec_single_one]`. Simplify using `[Hpk, hr]`.
+-/
 theorem first_minor_at_cell_eq_coefficient {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') (hr : 0 < r)
     (c : Fin r → ℂ) {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) :
     Dmin k r z z' (wCell k r (Fin.last r) c * g) ⟨1, by omega⟩ = c ⟨0, hr⟩ := by
@@ -109,6 +142,25 @@ theorem first_minor_at_cell_eq_coefficient {z z' : Fin (2 * r + k + 1) → ℂ} 
 end SiteC
 
 open SiteC in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D _ _ _ hz hz' hπ hπ' l hl j hj Φ hΦ`. Substitute `hz hz' hπ hπ'` using the available equality. Establish `hr : 0 < P.r` using `by have := l.2; omega`. Establish `hl' : l = ⟨0, hr⟩` using `Fin.ext hl`. Establish `key : ∀ Ψ, IsWaveJ P D.z D.z' D.π D.π' D l Ψ → IsWaveJ P D.z D.z' D.π D.π' D l (X.op l j Ψ)`.
+
+Introduce and unpack `Ψ ⟨hlc, s, ε, G, hε, hG, hΨ⟩`. Break down `hj with rfl | rfl` into its components or cases. Use `⟨?_, s, ε, fun g => Dmin P.k P.r D.z D.z' g ⟨1, by omega⟩ • G g, hε, first_minor_good_function D ε G hG, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨U, hU, hcU, K, hK, hKs, hv⟩` from `hlc c hc`.
+
+Use `⟨U, hU, hcU, K, hK, hKs, fun c' hc' g hg hgK => ?_⟩` and prove the remaining obligations. Rewrite using `[X.op_apply]`. Simplify using `[crd, opL, cOp, hv c' hc' g hg hgK]`. Introduce `y hy`. Rewrite using `[X.op_apply]`.
+
+Simplify using `only [crd, opL, cOp]`. Rewrite using `[hΨ y hy]`. Simplify using `only [resG]`. Rewrite using `[jf_mul_inv D _ (fun p hp g => BigCellZetaMinors.dmin_sgs D hp g _) G, first_minor_at_cell_eq_coefficient D.z_mem D.z'_mem hr y.1 hy.2.1, hl']`. Simplify using `only [smul_smul]`.
+
+Put the polynomial expressions in normal form. Use `⟨?_, s, ε, fun g => star (Dmin P.k P.r D.z D.z' g ⟨1, by omega⟩) • G g, hε, first_minor_conj_good_function D ε G hG, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨U, hU, hcU, K, hK, hKs, hv⟩` from `hlc c hc`. Use `⟨U, hU, hcU, K, hK, hKs, fun c' hc' g hg hgK => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[X.op_apply]`. Simplify using `[crd, opL, cbOp, hv c' hc' g hg hgK]`. Introduce `y hy`. Rewrite using `[X.op_apply]`. Simplify using `only [crd, opL, cbOp]`.
+
+Rewrite using `[hΨ y hy]`. Simplify using `only [resG]`. Rewrite using `[jf_mul_inv D _ (fun p hp g => by rw [BigCellZetaMinors.dmin_sgs D hp g _]) G, first_minor_at_cell_eq_coefficient D.z_mem D.z'_mem hr y.1 hy.2.1, hl']`. Simplify using `only [smul_smul]`. Put the polynomial expressions in normal form.
+
+Use `Submodule.span_induction (p := fun Φ _ => X.op l j Φ ∈ waveJ P D.z D.z' D.π D.π' D l) ?_ ?_ ?_ ?_ hΦ` and prove the remaining obligations. Introduce `x hx`. Conclude with `Submodule.subset_span (key x hx)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `a x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem site_operators_preserve_orbital : SiteOpsWaveJC := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D _ _ _ hz hz' hπ hπ' l hl j hj Φ hΦ
   subst hz hz' hπ hπ'
@@ -158,6 +210,9 @@ theorem site_operators_preserve_orbital : SiteOpsWaveJC := by
     rw [map_smul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ hΦ`. Conclude with `⟨site_operators_preserve_orbital Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl 1 (Or.inl rfl) Φ hΦ, site_operators_preserve_orbital Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl 4 (Or.inr rfl) Φ hΦ⟩`.
+-/
 theorem site_multiplication_orbital : SiteMulWaveJ := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ hΦ
   exact ⟨site_operators_preserve_orbital Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl 1 (Or.inl rfl) Φ hΦ,

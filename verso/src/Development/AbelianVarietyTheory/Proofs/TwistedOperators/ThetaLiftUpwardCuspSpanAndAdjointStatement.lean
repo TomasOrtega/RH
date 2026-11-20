@@ -22,5 +22,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.UpLift.upSpan_upAdj | exact GlobalTheory.EvenOnto.UpLift.upSpan_upAdj | (intros; apply GlobalTheory.EvenOnto.UpLift.upSpan_upAdj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLiftUpward_cuspSpan_and_adjoint : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, UpSpan D ∧ UpAdj D := by
   first | exact @GlobalTheory.EvenOnto.UpLift.upSpan_upAdj | exact GlobalTheory.EvenOnto.UpLift.upSpan_upAdj | (intros; apply GlobalTheory.EvenOnto.UpLift.upSpan_upAdj <;> assumption)

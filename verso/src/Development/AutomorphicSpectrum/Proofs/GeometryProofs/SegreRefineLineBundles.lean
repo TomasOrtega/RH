@@ -16,9 +16,27 @@ section Charts
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective`.
+-/
 theorem isLocalRing_regAt (p : Cpt ξ) : IsLocalRing (regAt ξ p) :=
   IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective
 
+/- English proof (translation)
+Establish `hz : ∀ i, ∃ a : A, (a : Ω) * f = z i` using `fun i => by`. Establish `hi : z i ∈ Submodule.span A {f}` using `h ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hi`. Conclude with `⟨a, ha⟩`. Use `choose a ha using hz`.
+
+Establish `hf' : f ∈ Submodule.span A (Set.range z)` using `h ▸ Submodule.mem_span_singleton_self f`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 hf'`. Establish `hsum : ∑ i, c i * a i = 1`. Establish `h1 : (∑ i, (c i : Ω) * a i) * f = 1 * f`. Rewrite using `[Finset.sum_mul, _root_.one_mul]`.
+
+Use `conv_rhs => rw [← hc]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [_root_.mul_assoc, ha]; rfl`. Establish `h2` using `mul_right_cancel₀ hf h1`. Conclude with `Subtype.ext (by simpa using h2)`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, IsUnit (a l) := by`.
+
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `h1 : (1 : A) ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[← hsum]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hn i))`.
+
+Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal A).ne_top h1`. Take `⟨b, hb⟩` from `hl.exists_right_inv`. Establish `hb' : (a l : Ω) * b = 1` using `by simpa using congrArg (Subtype.val) hb`. Establish `ha0 : (a l : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one hb'`. Use `⟨l, by rw [← ha]; exact mul_ne_zero ha0 hf, fun l' => ?_⟩` and prove the remaining obligations.
+
+Establish `e : z l' / z l = ((a l' * b : A) : Ω)`. Rewrite using `[← ha, ← ha, mul_div_mul_right _ _ hf]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `: (b : Ω) = (a l : Ω)⁻¹` using `eq_inv_of_mul_eq_one_right hb'`.
+
+Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `(a l' * b).2`.
+-/
 theorem exists_unit_gen {B : Type} [Fintype B] (A : Subring Ω) [IsLocalRing A] (z : B → Ω) {f : Ω} (hf : f ≠ 0)
     (h : Submodule.span A (Set.range z) = Submodule.span A {f}) :
     ∃ l, z l ≠ 0 ∧ ∀ l', z l' / z l ∈ A := by
@@ -58,6 +76,9 @@ theorem exists_unit_gen {B : Type} [Fintype B] (A : Subring Ω) [IsLocalRing A] 
   rw [e]
   exact (a l' * b).2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero hu.1 hv.1, fun q => by show u q.1 * v q.2 / (u c * v e) ∈ _ rw [mul_div_mul_comm] exact mul_mem (hu.2 _) (hv.2 _)⟩`.
+-/
 theorem inChart_pair {α β : Type} {u : α → Ω} {v : β → Ω} {c : α} {e : β} {p : Cpt ξ}
     (hu : InChart ξ u c p) (hv : InChart ξ v e p) :
     InChart ξ (fun q : α × β => u q.1 * v q.2) (c, e) p :=
@@ -66,6 +87,9 @@ theorem inChart_pair {α β : Type} {u : α → Ω} {v : β → Ω} {c : α} {e 
     rw [mul_div_mul_comm]
     exact mul_mem (hu.2 _) (hv.2 _)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Finset.prod_ne_zero_iff.2 fun a _ => (h a).1, fun l' => by show (∏ a, z a (l' a)) / ∏ a, z a (l a) ∈ _ rw [← Finset.prod_div_distrib] exact prod_mem fun a _ => (h a).2 _⟩`.
+-/
 theorem inChart_pi {A : Type} [Fintype A] {B : A → Type} {z : ∀ a, B a → Ω} {l : ∀ a, B a} {p : Cpt ξ}
     (h : ∀ a, InChart ξ (z a) (l a) p) : InChart ξ (fun l' : ∀ a, B a => ∏ a, z a (l' a)) l p :=
   ⟨Finset.prod_ne_zero_iff.2 fun a _ => (h a).1, fun l' => by
@@ -73,10 +97,16 @@ theorem inChart_pi {A : Type} [Fintype A] {B : A → Type} {z : ∀ a, B a → �
     rw [← Finset.prod_div_distrib]
     exact prod_mem fun a _ => (h a).2 _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun c' => by simpa using h.2 (e.symm c')⟩, fun h => ⟨h.1, fun c' => h.2 _⟩⟩`.
+-/
 theorem inChart_equiv_iff {κ κ₂ : Type} {x : κ → Ω} (e : κ₂ ≃ κ) (c : κ₂) (p : Cpt ξ) :
     InChart ξ (fun c' => x (e c')) c p ↔ InChart ξ x (e c) p :=
   ⟨fun h => ⟨h.1, fun c' => by simpa using h.2 (e.symm c')⟩, fun h => ⟨h.1, fun c' => h.2 _⟩⟩
 
+/- English proof (translation)
+The claim follows from `h.gen cover p := by obtain ⟨c, hc⟩ := h.cover p exact ⟨e.symm c, (inChart_equiv_iff e _ p).2 (by simpa using hc)⟩ affine c hc := by obtain ⟨U, hU, hq⟩ := h.affine (e c) hc exact ⟨U, hU, fun q => (hq q).trans (exists_congr fun _ => (inChart_equiv_iff e c _).symm)⟩ ring c hc a := b …`.
+-/
 theorem coordTie_equiv {o : Type} [CommRing o] [Algebra o Ω] {κ κ₂ : Type} {x : κ → Ω} (e : κ₂ ≃ κ)
     (h : CoordTie o ξ x) : CoordTie o ξ (fun c => x (e c)) where
   gen := h.gen
@@ -93,6 +123,9 @@ theorem coordTie_equiv {o : Type} [CommRing o] [Algebra o Ω] {κ κ₂ : Type} 
     rw [hr, h.ring (e c) hc a]
     exact forall_congr' fun p => imp_congr (inChart_equiv_iff e c p).symm Iff.rfl
 
+/- English proof (translation)
+Introduce `p hp` and use `by obtain ⟨U, hU, b, -, hb⟩ := h p hp exact ⟨U, hU, r, b, fun q hq hqU => (hb q hq hqU).2⟩`.
+-/
 theorem isCohOn_of_isVBOn {E : Type} [AddCommGroup E] [Module Ω E] {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ}
     {V : Submodule Ω E} (h : L.IsVBOn T r V) : L.IsCohOn T := fun p hp => by
   obtain ⟨U, hU, b, -, hb⟩ := h p hp
@@ -100,6 +133,11 @@ theorem isCohOn_of_isVBOn {E : Type} [AddCommGroup E] [Module Ω E] {L : Lat ξ 
 
 variable {κ : Type} {x : κ → Ω} {Λ : Lat ξ Ω} {d n : ℕ} {z : Fin n → Ω}
 
+/- English proof (translation)
+Take `⟨c, hcp⟩` from `hc p`. Take `⟨e, he, hL, -⟩` from `Flat.exists_gen_of_isVB_one hv p`. Use `haveI := isLocalRing_regAt p`. Take `⟨l, hl0, hl⟩` from `exists_unit_gen (regAt ξ p) _ he ((H c p hcp).symm.trans hL)`. Establish `hx : (x c ^ d)⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ hcp.1)`.
+
+Use `⟨l, fun h0 => hl0 (by simp [h0]), fun l' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hl l'`. Simplify using `only [smul_eq_mul] at h1`. Rewrite `h1` using `[mul_div_mul_left _ _ hx]`. Then use the resulting hypothesis.
+-/
 theorem exists_inChart_of_twist (hc : ∀ p : Cpt ξ, ∃ c, InChart ξ x c p)
     (H : ∀ c (p : Cpt ξ), InChart ξ x c p →
       Λ p = Submodule.span (regAt ξ p) (Set.range fun k => (x c ^ d)⁻¹ • z k))
@@ -114,6 +152,13 @@ theorem exists_inChart_of_twist (hc : ∀ p : Cpt ξ, ∃ c, InChart ξ x c p)
   simp only [smul_eq_mul] at h1
   rwa [mul_div_mul_left _ _ hx] at h1
 
+/- English proof (translation)
+Rewrite using `[H c p hx]`. Establish `h0` using `hz.1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `Submodule.mem_span_singleton.2 ⟨⟨z k / z l, hz.2 k⟩, ?_⟩` and prove the remaining obligations. Use `show (z k / z l) * ((x c ^ d)⁻¹ * z l) = (x c ^ d)⁻¹ • z k`. Rewrite using `[smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Conclude with `Submodule.subset_span ⟨l, rfl⟩`.
+-/
 theorem stalk_eq_of_twist
     (H : ∀ c (p : Cpt ξ), InChart ξ x c p →
       Λ p = Submodule.span (regAt ξ p) (Set.range fun k => (x c ^ d)⁻¹ • z k))
@@ -169,6 +214,9 @@ def blockEquiv : ((k : K ⊕ Option A) → BJ J κ n k) ≃ κ × (((k : K) → 
 
 variable {J κ n} {Ω : Type} [Field Ω] [Fintype K] [Fintype A]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum_type, Fintype.prod_option]`. Use `show (∏ k, y ⟨k, c (.inl k)⟩) * (x (c (.inr none)) * ∏ a, z a (c (.inr (some a)))) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem segre_blockCo (y : (Σ k, J k) → Ω) (x : κ → Ω) (z : ∀ a, Fin (n a) → Ω)
     (c : (k : K ⊕ Option A) → BJ J κ n k) :
     ∏ k, blockCo J κ n y x z ⟨k, c k⟩ =
@@ -177,6 +225,13 @@ theorem segre_blockCo (y : (Σ k, J k) → Ω) (x : κ → Ω) (z : ∀ a, Fin (
   show (∏ k, y ⟨k, c (.inl k)⟩) * (x (c (.inr none)) * ∏ a, z a (c (.inr (some a)))) = _
   ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum_type, Fintype.prod_option]`. Establish `h1 : ∏ k : K, blockCo J κ n y x z ⟨.inl k, c (.inl k)⟩ ^ blockDeg (K` using `K) d a (.inl k) = 1 := Finset.prod_eq_one fun k _ => zpow_zero _`. Establish `h2 : ∏ a' : A, blockCo J κ n y x z ⟨.inr (some a'), c (.inr (some a'))⟩ ^ blockDeg (K` using `K) d a (.inr (some a')) = z a (c (.inr (some a))) := by`. Rewrite using `[Finset.prod_eq_single a]`. Use `show z a _ ^ (if a = a then (1 : ℤ) else 0) = _`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb show z b _ ^ (if b = a then (1 : ℤ) else 0) = 1`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, _root_.one_mul]`.
+
+Use `show x _ ^ (-(d a : ℤ)) * _ = _`. Rewrite using `[zpow_neg, zpow_natCast]`.
+-/
 theorem deg_blockCo [DecidableEq A] (y : (Σ k, J k) → Ω) (x : κ → Ω) (z : ∀ a, Fin (n a) → Ω) (d : A → ℕ) (a : A)
     (c : (k : K ⊕ Option A) → BJ J κ n k) :
     ∏ k, blockCo J κ n y x z ⟨k, c k⟩ ^ blockDeg d a k =
@@ -199,6 +254,15 @@ theorem deg_blockCo [DecidableEq A] (y : (Σ k, J k) → Ω) (x : κ → Ω) (z 
 
 end Blocks
 
+/- English proof (translation)
+Introduce `o _ Ω _ _ κ _ x M K _ J _ y A _ Λ hy hv`. Use `haveI := Fintype.ofFinite κ`. Use `haveI := Fintype.ofFinite A`. Establish `hs : ∀ a, ∃ (d n : ℕ) (z : Fin n → Ω), ∀ c (p : Cpt M.ξ), InChart M.ξ x c p → Λ a p = Submodule.span (regAt M.ξ p) (Set.range fun k => (x c ^ d)⁻¹ • z k)` using `fun a => GlobalTheory.T.coherent_lattice_chart_span o Ω κ x M Ω (Λ a) (isCohOn_of_isVBOn (hv a))`. Use `choose d n z H using hs`.
+
+Set `w : ((k : K) → J k) × ((a : A) → Fin (n a)) → Ω` to `fun q => (∏ k, y ⟨k, q.1 k⟩) * ∏ a, z a (q.2 a)`. Establish `hw : ∀ p : Cpt M.ξ, ∃ l, InChart M.ξ w l p`. Introduce `p`. Take `⟨c₀, h₀⟩` from `hy p`. Use `choose l hl using fun a => exists_inChart_of_twist M.tie.cover (H a) (hv a) p`.
+
+Conclude with `⟨(c₀, l), inChart_pair h₀ (inChart_pi hl)⟩`. Establish `ht` using `coordTie_equiv (blockEquiv J κ n) (GlobalTheory.T.join_coords_coordTie o Ω κ x M _ w hw)`. Use `⟨K ⊕ Option A, inferInstance, BJ J κ n, fintypeBJ J κ n, blockCo J κ n y x z, Sum.inl, fun k => Equiv.refl _, fun a => blockDeg d a, Sum.inl_injective, fun _ _ => rfl, ?_, fun a => ⟨one_ne_zero, fun p _ c hc => ?_⟩⟩` and prove the remaining obligations. Establish `e : (fun c' : (k : K ⊕ Option A) → BJ J κ n k => ∏ k, blockCo J κ n y x z ⟨k, c' k⟩) = fun c => joinCo (RingHom.id Ω) x w (blockEquiv J κ n c)`. Use function extensionality and compare the values at `fun c => segre_blockCo y x z c`.
+
+Rewrite using `[e]`. Conclude with `ht`. Establish `hx : InChart M.ξ x (c (.inr none)) p` using `⟨Lat.block_coord_ne_zero hc (.inr none), fun i => Lat.block_ratio_mem hc (.inr none) i⟩`. Establish `hz : InChart M.ξ (z a) (c (.inr (some a))) p` using `⟨Lat.block_coord_ne_zero hc (.inr (some a)), fun i => Lat.block_ratio_mem hc (.inr (some a)) i⟩`. Rewrite using `[stalk_eq_of_twist (H a) hx hz, deg_blockCo, smul_eq_mul, _root_.mul_one]`.
+-/
 theorem exists_blocks_of_lines : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (A : Type) [Finite A] (Λ : A → Lat M.ξ Ω), (∀ p : Cpt M.ξ, ∃ c₀, InChart M.ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c₀ p) → (∀ a, (Λ a).IsVB 1 ⊤) → ∃ (K' : Type) (_ : Fintype K') (J' : K' → Type) (_ : ∀ k, Fintype (J' k)) (y' : (Σ k, J' k) → Ω) (bk : K → K') (bx : ∀ k, J k ≃ J' (bk k)) (deg : A → K' → ℤ), Function.Injective bk ∧ (∀ k a, y' ⟨bk k, bx k a⟩ = y ⟨k, a⟩) ∧ CoordTie o M.ξ (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩) ∧ ∀ a, (Λ a).IsDegOn Set.univ y' (deg a) 1 := by
   intro o _ Ω _ _ κ _ x M K _ J _ y A _ Λ hy hv
   classical

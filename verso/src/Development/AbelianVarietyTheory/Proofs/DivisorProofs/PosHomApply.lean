@@ -29,6 +29,11 @@ def latPos {n d : ℕ} (X : Spc F E n) (W : Spc F E d)
     (co : Darboux Bf (Fin n × Fin d)) (eq : Fin n × Fin d ≃ ι ⊕ κ₁) (v : Pl F) : AddSubgroup (ι → Fv F v) :=
   ((latAtV X W v).map (GlobalTheory.LatVac.locCo co v)).map (posHom eq)
 
+/- English proof (translation)
+Simplify using `only [latPos, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨γ, hγ, rfl⟩, rfl⟩`. Conclude with `⟨γ, hγ, fun i => rfl⟩`. Introduce and unpack `⟨γ, hγ, h⟩`.
+
+Conclude with `⟨_, ⟨γ, hγ, rfl⟩, funext h⟩`.
+-/
 theorem mem_latPos {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
     {Bf : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n) (Fin d) (AE F E) → AF F} {ι κ₁ : Type}
     {co : Darboux Bf (Fin n × Fin d)} {eq : Fin n × Fin d ≃ ι ⊕ κ₁} {v : Pl F} {y : ι → Fv F v} :

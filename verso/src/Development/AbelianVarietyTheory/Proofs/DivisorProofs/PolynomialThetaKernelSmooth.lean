@@ -17,6 +17,11 @@ open scoped ContDiff
 
 namespace GlobalTheory.ThAutSmall.Smooth
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hK hT ι _ z Ψ hΨ h`. Establish `hD` using `GlobalTheory.KDecayProof.kDecay_of_classicalTheorems hK F E σ B a a' G X om om' hT`. Establish `hS : ∀ i, z i • Ψ i ∈ G.M'.So B.ψ B.τ₁` using `fun i => Submodule.smul_mem _ _ (Submodule.mem_inf.1 (hΨ i)).2`. Rewrite using `[GlobalTheory.ThK.PolynomialMatching.I'_sum hT Finset.univ (fun i => z i • Ψ i) (fun i _ => GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' _ (hS i)) (fun i _ => (hD.2 _ (hS i)).2.1) h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum_smul]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem I_sum_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →
@@ -40,6 +45,53 @@ namespace GlobalTheory.ThAutSmall.Smooth
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcc Φ hΦ k γ hγ g`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Use `haveI : CompleteSpace (Matrix (Fin (a + a')) (Fin (a + a')) ℂ) := FiniteDimensional.complete ℝ _`. Set `J'` to `c • G.W.J.map σ`. Set `FF : ((Fin a' × Fin (a + a') → AF F) → ℂ) → GAd σ J' → ℂ` to `fun Ψ x => G.M'.I om' Ψ ((toGAd hσ G.W.J hc).symm x)`.
+
+Set `P : (Fin k → ℝ) → GAd σ J'` to `fun t => (List.ofFn fun i => γ i (t i)).prod`. Set `S : Set ((Fin k → ℝ) → ℂ)` to `{f | ∃ Ψ ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, f = fun t => FF Ψ (g * P t)}`. Establish `hP : Continuous P`. Establish `e : P = fun t => ((List.finRange k).map fun i => γ i (t i)).prod`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[P, List.ofFn_eq_map]`. Rewrite using `[e]`. Conclude with `continuous_list_prod (f := fun (i : Fin k) (t : Fin k → ℝ) => γ i (t i)) _ fun i _ => (GlobalTheory.T.real_line_continuous F E σ hcm _ J' (γ i) (hγ i)).comp (continuous_apply i)`. Use `GlobalTheory.T.cont_diff_of_partial_derivative_closure k S ?_ ?_ _ ⟨Φ, hΦ, rfl⟩` and prove the remaining obligations. Introduce and unpack `f ⟨Ψ, hΨ, rfl⟩`.
+
+Conclude with `(GlobalTheory.T.polynomial_theta_kernel_continuous F E σ hσ B a a' G X om om' hK hT c hc hcc Ψ hΨ).comp (continuous_const.mul hP)`. Introduce and unpack `f ⟨Ψ, hΨ, rfl⟩ j`. Take `⟨w, τ, Z, -, hZ⟩` from `hγ j`. Take `⟨D, hDP, hDd⟩` from `GlobalTheory.T.exists_differential_operator_infinite_place F E σ hσ B a a' G X om om' hK hT c hc hcc w τ`. Set `A : GAd σ J' →* Matrix (Fin (a + a')) (Fin (a + a')) ℂ` to `(GlobalTheory.Orb.archMat σ J' τ).comp (projArch σ J' w)`.
+
+Set `suf : (Fin k → ℝ) → GAd σ J'` to `fun t => (List.ofFn fun i => if j < i then γ i (t i) else 1).prod`. Set `Zt : (Fin k → ℝ) → Matrix (Fin (a + a')) (Fin (a + a')) ℂ` to `fun t => A (suf t)⁻¹ * Z * A (suf t)`. Establish `hexp : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin (a + a')) (Fin (a + a')) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Establish `hA : ContDiff ℝ ∞ fun t => A (suf t)` using `by choose Zi hZi using fun i => GlobalTheory.UAut.Model.exists_exp hcm τ (hγ i)`. Establish `e : (fun t => A (suf t)) = fun t => ((List.finRange k).map fun i => (if j < i then NormedSpace.exp (t i • Zi i) else 1 : Matrix (Fin (a + a')) (Fin (a + a')) ℂ)).prod`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [suf, List.ofFn_eq_map, map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Use `split_ifs`. Conclude with `hZi i (t i)`. Conclude with `map_one A`. Rewrite using `[e]`. Use `GlobalTheory.ThKAutV.Smooth.contDiff_list_prod_mat _ _ fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : j < i`. Simplify using `only [h, if_true]`. Conclude with `hexp.comp ((contDiff_apply ℝ ℝ i).smul contDiff_const)`. Simplify using `only [h, if_false]`. Conclude with `contDiff_const`.
+
+Establish `hinv : ∀ t, A (suf t)⁻¹ = Ring.inverse (A (suf t))` using `fun t => by`. Rewrite using `[← MonoidHom.coe_toHomUnits A (suf t), Ring.inverse_unit, ← map_inv, MonoidHom.coe_toHomUnits]`. Establish `hAi : ContDiff ℝ ∞ fun t => A (suf t)⁻¹`. Simplify using `only [hinv]`. Use `contDiff_iff_contDiffAt.2 fun t => ?_` and prove the remaining obligations.
+
+Establish `h1` using `contDiffAt_ringInverse ℝ (n := ∞) (A.toHomUnits (suf t))`. Rewrite `h1` using `[MonoidHom.coe_toHomUnits]`. Conclude with `h1.comp t hA.contDiffAt`. Establish `hZt : ContDiff ℝ ∞ Zt` using `(hAi.mul contDiff_const).mul hA`. Set `bm : Fin (a + a') × Fin (a + a') × Bool → Matrix (Fin (a + a')) (Fin (a + a')) ℂ` to `fun x => Matrix.single x.1 x.2.1 (if x.2.2 then Complex.I else 1)`.
+
+Set `cf : Fin (a + a') × Fin (a + a') × Bool → (Fin k → ℝ) → ℝ` to `fun x t => if x.2.2 then (Zt t x.1 x.2.1).im else (Zt t x.1 x.2.1).re`. Establish `hcf : ∀ x, ContDiff ℝ ∞ fun t => ((cf x t : ℝ) : ℂ)`. Introduce `x`. Establish `he : ContDiff ℝ ∞ fun t => Zt t x.1 x.2.1` using `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ x.1 x.2.1)).contDiff.comp hZt`. Break down `x with ⟨p, q, b⟩` into its components or cases.
+
+Consider the cases of `b`. Conclude with `Complex.ofRealCLM.contDiff.comp (Complex.reCLM.contDiff.comp he)`. Conclude with `Complex.ofRealCLM.contDiff.comp (Complex.imCLM.contDiff.comp he)`. Establish `hZe : ∀ t, Zt t = ∑ x, cf x t • bm x`. Introduce `t`.
+
+Use extensionality with `p q`. Simplify using `only [Matrix.sum_apply, Fintype.sum_prod_type, Fintype.sum_bool, Matrix.smul_apply, bm, cf, Matrix.single_apply, if_true, Bool.false_eq_true, if_false]`. Simplify using `[Finset.sum_add_distrib, Complex.real_smul, ite_and]`. Use `conv_lhs => rw [← Complex.re_add_im (Zt t p q)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨Fin (a + a') × Fin (a + a') × Bool, inferInstance, fun x t => (cf x t : ℂ), fun x t => FF (D (bm x) Ψ) (g * P t), hcf, fun x => ⟨_, hDP _ Ψ hΨ, rfl⟩, fun t => ?_⟩` and prove the remaining obligations. Set `γ' : ℝ → GAd σ J'` to `fun s => (suf t)⁻¹ * γ j s * suf t`. Establish `hγe : ∀ s, ∃ y, γ' s = embArch σ J' w ((projArch σ J' w (suf t))⁻¹ * y * projArch σ J' w (suf t)) ∧ GlobalTheory.Orb.archMat σ J' τ y = NormedSpace.exp (s • Z)`. Introduce `s`. Take `⟨y, hy, hy2⟩` from `hZ s`.
+
+Conclude with `⟨y, by simp only [γ']; rw [hy]; exact GlobalTheory.T.arch_embedding_conj_by_adelic F E σ _ J' w y (suf t), hy2⟩`. Establish `h1 : ∀ s, embArch σ J' w (projArch σ J' w (γ' s)) = γ' s`. Introduce `s`. Take `⟨y, hy, -⟩` from `hγe s`. Rewrite using `[hy, projArch_embArch_self]`.
+
+Establish `h2 : ∀ s, GlobalTheory.Orb.archMat σ J' τ (projArch σ J' w (γ' s)) = NormedSpace.exp (s • Zt t)`. Introduce `s`. Take `⟨y, hy, hy2⟩` from `hγe s`. Rewrite using `[hy, projArch_embArch_self, map_mul, map_mul, hy2]`. Set `Ui : (Matrix (Fin (a + a')) (Fin (a + a')) ℂ)ˣ` to `A.toHomUnits (suf t)⁻¹`.
+
+Establish `hU1 : (Ui : Matrix (Fin (a + a')) (Fin (a + a')) ℂ) = A (suf t)⁻¹` using `MonoidHom.coe_toHomUnits _ _`. Establish `hU2 : ((Ui⁻¹ : (Matrix (Fin (a + a')) (Fin (a + a')) ℂ)ˣ) : Matrix _ _ ℂ) = A (suf t)`. Simplify using `only [Ui]`. Rewrite using `[← map_inv, inv_inv, MonoidHom.coe_toHomUnits]`. Establish `e1 : s • Zt t = (Ui : Matrix _ _ ℂ) * (s • Z) * ((Ui⁻¹ : (Matrix (Fin (a + a')) (Fin (a + a')) ℂ)ˣ) : Matrix _ _ ℂ)`.
+
+Rewrite using `[hU1, hU2]`. Simplify using `only [Zt, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[e1, Matrix.exp_units_conj, hU1, hU2]`. Simplify using `only [A, MonoidHom.comp_apply, map_inv]`. Establish `hPs : ∀ s, g * P (t + s • Pi.single j 1) = g * P t * γ' s`.
+
+Introduce `s`. Establish `e1 : (fun i => γ i ((t + s • (Pi.single j 1 : Fin k → ℝ)) i)) = Function.update (fun i => γ i (t i)) j (γ j (t j) * γ j s)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+
+Simplify using `[GlobalTheory.T.real_line_one_parameter_homomorphism F E σ hcm _ J' (γ i) (hγ i)]`. Simplify using `[hi, Function.update_of_ne hi]`. Simplify using `only [P, γ', suf, e1, GlobalTheory.T.list_prod_update_conjugate, mul_assoc]`. Establish `hd` using `hDd (Zt t) γ' h1 h2 Ψ hΨ (g * P t)`. Establish `hval : G.M'.I om' (D (Zt t) Ψ) ((toGAd hσ G.W.J hc).symm (g * P t)) = ∑ x, (cf x t : ℂ) * FF (D (bm x) Ψ) (g * P t)`.
+
+Establish `e2 : D (Zt t) Ψ = ∑ x, (cf x t : ℂ) • D (bm x) Ψ`. Rewrite using `[hZe t, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply]`. Use function extensionality and compare the values at `y`.
+
+Simplify using `[Complex.real_smul]`. Rewrite using `[e2]`. Conclude with `GlobalTheory.ThAutSmall.Smooth.I_sum_small F E σ B a a' G X om om' hK hT _ _ _ (fun x => hDP _ Ψ hΨ) _`. Rewrite using `[← hval]`. Use `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Simplify using `only [FF, hPs]`.
+-/
 theorem isSm_theta_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

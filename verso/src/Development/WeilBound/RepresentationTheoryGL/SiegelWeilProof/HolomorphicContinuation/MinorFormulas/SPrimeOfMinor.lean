@@ -8,9 +8,15 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.SP
 
+/- English proof (translation)
+The claim follows from `sPrime_of bridge (cayDiv_of comm (minorZ_of h) (minorZ'_of h) null)`.
+-/
 theorem sPrime_of_minor (h : MinorFormula) : SPrime :=
   sPrime_of bridge (cayDiv_of comm (minorZ_of h) (minorZ'_of h) null)
 
+/- English proof (translation)
+The claim follows from `wrOrd_of (sPrime_of_minor h)`.
+-/
 theorem wrOrd_of_minor (h : MinorFormula) : PositivityTheory.SiegelWeilFormula.Gen.WROrd := wrOrd_of (sPrime_of_minor h)
 
 end PositivityTheory.Rg.Sw.SP

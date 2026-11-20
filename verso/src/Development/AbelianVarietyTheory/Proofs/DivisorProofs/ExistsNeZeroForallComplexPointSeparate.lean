@@ -3,6 +3,19 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNeZeroForallC
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra B F := (j₁.comp (algebraMap B A)).toAlgebra`. Set `J₁ : A →ₐ[B] F` to `{ j₁ with commutes' := fun _ => rfl }`. Set `J₂ : A →ₐ[B] F` to `{ j₂ with commutes' := fun b => (RingHom.congr_fun h b).symm }`. Set `u : F` to `(j₁ a - j₂ a)⁻¹`. Set `D : Subalgebra B F` to `(Subalgebra.map J₁ ⊤ ⊔ Subalgebra.map J₂ ⊤) ⊔ Algebra.adjoin B (({u} : Finset F) : Set F)`.
+
+Establish `hA : (⊤ : Subalgebra B A).FG` using `Algebra.FiniteType.out`. Establish `hD : D.FG` using `((hA.map J₁).sup (hA.map J₂)).sup (Subalgebra.fg_adjoin_finset _)`. Use `haveI : Algebra.FiniteType B D := (Subalgebra.fg_iff_finiteType D).1 hD`. Establish `h1 : ∀ x, J₁ x ∈ D` using `fun x => (le_sup_left.trans le_sup_left : Subalgebra.map J₁ ⊤ ≤ D) ⟨x, trivial, rfl⟩`. Establish `h2 : ∀ x, J₂ x ∈ D` using `fun x => (le_sup_right.trans le_sup_left : Subalgebra.map J₂ ⊤ ≤ D) ⟨x, trivial, rfl⟩`.
+
+Establish `hu : u ∈ D` using `(le_sup_right : _ ≤ D) (Algebra.subset_adjoin (by simp))`. Establish `hBD : Function.Injective (algebraMap B D)` using `fun x y hxy => hinj (congrArg Subtype.val hxy)`. Take `⟨q, hq, H⟩` from `GlobalTheory.exists_ne_zero_forall_complexPoint_extend B D hBD`. Use `⟨q, hq, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `H φ hφ`.
+
+Set `K₁ : A →ₐ[B] D` to `J₁.codRestrict D h1`. Set `K₂ : A →ₐ[B] D` to `J₂.codRestrict D h2`. Use `⟨ψ.comp (K₁ : A →+* D), ψ.comp (K₂ : A →+* D), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, AlgHom.comp_algebraMap, hψ]`. Rewrite using `[RingHom.comp_assoc, AlgHom.comp_algebraMap, hψ]`.
+
+Introduce `heq`. Establish `hone : (⟨u, hu⟩ : D) * (K₁ a - K₂ a) = 1` using `Subtype.ext (inv_mul_cancel₀ (sub_ne_zero.2 ha))`. Establish `h3` using `congrArg ψ hone`. Establish `heq' : ψ (K₁ a) = ψ (K₂ a)` using `heq`. Rewrite `h3` using `[map_mul, map_sub, heq', sub_self, mul_zero, map_one]`.
+
+Conclude with `zero_ne_one h3`.
+-/
 theorem exists_ne_zero_forall_complexPoint_separate
     (B A F : Type) [CommRing B] [IsDomain B] [IsNoetherianRing B] [CommRing A] [Algebra B A]
     [Algebra.FiniteType B A] [Field F] (j₁ j₂ : A →+* F)

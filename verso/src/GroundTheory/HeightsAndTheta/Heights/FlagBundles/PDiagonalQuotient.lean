@@ -22,14 +22,23 @@ noncomputable def diagToPoly : (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) →�
 noncomputable def polyToDiag : Polynomial R →ₐ[R] (MvPolynomial (Fin 2) R ⧸ diagonalIdeal R) :=
   Polynomial.aeval (Ideal.Quotient.mk (diagonalIdeal R) (X 0))
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton'.2 ⟨-1, by ring⟩`.
+-/
 lemma mk_X_one_eq : Ideal.Quotient.mk (diagonalIdeal R) (X 1) =
     Ideal.Quotient.mk (diagonalIdeal R) (X 0) := by
   rw [Ideal.Quotient.eq]
   exact Ideal.mem_span_singleton'.2 ⟨-1, by ring⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma diagToPoly_mk (p : MvPolynomial (Fin 2) R) :
     diagToPoly R (Ideal.Quotient.mk _ p) = diagEval R p := rfl
 
+/- English proof (translation)
+Simplify using `[diagEval]`.
+-/
 @[simp] lemma diagEval_X (i : Fin 2) : diagEval R (X i) = Polynomial.X := by
   simp [diagEval]
 
@@ -67,16 +76,31 @@ noncomputable def mixedUnit : (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R)�
     rw [← map_mul, ← map_one (Ideal.Quotient.mk (mixedDiagonalIdeal R)), Ideal.Quotient.eq]
     exact Ideal.mem_span_singleton'.2 ⟨-1, by ring⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma mixedToLaurent_mk (p : MvPolynomial (Fin 2) R) :
     mixedToLaurent R (Ideal.Quotient.mk _ p) = mixedEval R p := rfl
 
+/- English proof (translation)
+Simplify using `[mixedEval]`.
+-/
 @[simp] lemma mixedEval_X_zero : mixedEval R (X 0) = T 1 := by simp [mixedEval]
 
+/- English proof (translation)
+Simplify using `[mixedEval]`.
+-/
 @[simp] lemma mixedEval_X_one : mixedEval R (X 1) = T (-1) := by simp [mixedEval]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma mixedUnit_val : ((mixedUnit R : (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R)ˣ) :
     MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R) = Ideal.Quotient.mk _ (X 0) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma mixedUnit_inv_val : (((mixedUnit R)⁻¹ : (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R)ˣ) :
     MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R) = Ideal.Quotient.mk _ (X 1) := rfl
 
@@ -87,11 +111,17 @@ noncomputable def laurentToMixed :
       show LaurentPolynomial.eval₂ _ _ (algebraMap R (LaurentPolynomial R) r) = _
       rw [← LaurentPolynomial.C_eq_algebraMap, LaurentPolynomial.eval₂_C] }
 
+/- English proof (translation)
+The claim follows from `LaurentPolynomial.eval₂_T _ _ n`.
+-/
 @[simp] lemma laurentToMixed_alt (n : ℤ) :
     laurentToMixed R (T n) = ((mixedUnit R ^ n : (MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R)ˣ) :
       MvPolynomial (Fin 2) R ⧸ mixedDiagonalIdeal R) :=
   LaurentPolynomial.eval₂_T _ _ n
 
+/- English proof (translation)
+Rewrite using `[LaurentPolynomial.C_eq_algebraMap, AlgHom.commutes]`.
+-/
 @[simp] lemma laurentToMixed_C (a : R) :
     laurentToMixed R (LaurentPolynomial.C a) = algebraMap R _ a := by
   rw [LaurentPolynomial.C_eq_algebraMap, AlgHom.commutes]
@@ -118,6 +148,13 @@ end DiagonalQuotient
 
 open DiagonalQuotient in
 
+/- English proof (translation)
+Introduce `R _`. Use `⟨⟨diagEquiv R, ?_, ?_⟩, ?_, ?_, ⟨mixedEquiv R, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[diagEquiv]`. Simplify using `[diagEquiv]`. Conclude with `Module.Flat.of_linearEquiv (diagEquiv R).toLinearEquiv`.
+
+Introduce `_`. Conclude with `Function.Injective.isDomain (diagEquiv R) (diagEquiv R).injective`. Simplify using `[mixedEquiv]`. Simplify using `[mixedEquiv]`. Conclude with `Module.Flat.of_linearEquiv (mixedEquiv R).toLinearEquiv`.
+
+Introduce `_`. Conclude with `Function.Injective.isDomain (mixedEquiv R) (mixedEquiv R).injective`.
+-/
 theorem DiagonalQuotient.proof : DiagonalQuotient.Statement := by
   intro R _
   refine ⟨⟨diagEquiv R, ?_, ?_⟩, ?_, ?_, ⟨mixedEquiv R, ?_, ?_⟩, ?_, ?_⟩

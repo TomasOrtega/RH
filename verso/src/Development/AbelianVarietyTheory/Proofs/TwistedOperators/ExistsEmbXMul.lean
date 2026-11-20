@@ -11,6 +11,25 @@ open GlobalTheory.StepData
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
+/- English proof (translation)
+Take `⟨b, hb, w, hw, rfl⟩` from `iwasawa_blockTriangular k _ (Sum.elim (fun _ => 0) (fun _ => 1)) m`. Establish `hi` using `BlockLevi.blockTriangular_inv _ b hb`. Take `⟨w1, w2⟩` from `mem_KO.1 hw`. Establish `b1 : ∀ i r, b.val (Sum.inr i) r ∈ 𝒪[k]` using `fun i r => by`. Establish `: b.val = (b * w).val * (w⁻¹).val` using `by rw [← Units.val_mul]; simp`.
+
+Rewrite using `[this, Matrix.mul_apply]`. Conclude with `sum_mem fun s _ => mul_mem (h1 i s) (w2 s r)`. Establish `b2 : ∀ i r, (b⁻¹).val r (Sum.inr i) ∈ 𝒪[k]` using `fun i r => by`. Establish `: (b⁻¹).val = w.val * ((b * w)⁻¹).val` using `by rw [← Units.val_mul]; simp`. Rewrite using `[this, Matrix.mul_apply]`.
+
+Conclude with `sum_mem fun s _ => mul_mem (w1 r s) (h2 i s)`. Establish `z1 : b.val.toBlocks₂₁ = 0`. Use extensionality with `i j; exact hb (show Sum.elim (fun _ => 0) (fun _ => 1) (Sum.inl j : n ⊕ Fin c) < Sum.elim (fun _ => 0) (fun _ => 1) (Sum.inr i : n ⊕ Fin c) by simp)`. Establish `z2 : (b⁻¹).val.toBlocks₂₁ = 0`. Use extensionality with `i j; exact hi (show Sum.elim (fun _ => 0) (fun _ => 1) (Sum.inl j : n ⊕ Fin c) < Sum.elim (fun _ => 0) (fun _ => 1) (Sum.inr i : n ⊕ Fin c) by simp)`.
+
+Establish `e1` using `b.mul_inv`. Establish `e2` using `b.inv_mul`. Establish `hD : IntM b.val.toBlocks₂₂` using `fun i j => b1 i _`. Establish `hB' : IntM (b⁻¹).val.toBlocks₁₂` using `fun i j => b2 j _`. Establish `hD' : IntM (b⁻¹).val.toBlocks₂₂` using `fun i j => b2 j _`.
+
+Establish `f1` using `fromBlocks_toBlocks b.val`. Establish `f2` using `fromBlocks_toBlocks (b⁻¹).val`. Rewrite `f1` using `[z1]`. Rewrite `f2` using `[z2]`. Generalize the expression as in `b.val.toBlocks₁₁ = A, b.val.toBlocks₁₂ = B, b.val.toBlocks₂₂ = D at *`.
+
+Generalize the expression as in `(b⁻¹).val.toBlocks₁₁ = A', (b⁻¹).val.toBlocks₁₂ = B', (b⁻¹).val.toBlocks₂₂ = D' at *`. Rewrite `e1`, `e2` using `[← f1, ← f2, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e1 e2`. Set `g : GL n k` to `⟨A, A', e1.1, e2.1⟩`. Use `⟨g, (embX c g)⁻¹ * b * w, mul_mem (mem_KO.2 ⟨?_, ?_⟩) hw, by group⟩` and prove the remaining obligations.
+
+Establish `: ((embX c g)⁻¹ * b).val = fromBlocks 1 (-(B' * D)) 0 D`. Rewrite using `[← map_inv, Units.val_mul, ← f1]`. Express the relevant statement in the definitionally equal form `fromBlocks A' 0 0 1 * _ = _`. Simplify using `[fromBlocks_multiply, e2.1, eq_neg_of_add_eq_zero_left e2.2.1]`. Rewrite using `[this]`.
+
+Introduce and unpack `(r | r) (s | s)`. Use `exacts [intM_one r s, (hB'.mul hD).neg r s, zero_mem _, hD r s]`. Establish `: (((embX c g)⁻¹ * b)⁻¹).val = fromBlocks 1 B' 0 D'`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, ← f2]`. Express the relevant statement in the definitionally equal form `_ * fromBlocks A 0 0 1 = _`.
+
+Simplify using `[fromBlocks_multiply, e2.1]`. Rewrite using `[this]`. Introduce and unpack `(r | r) (s | s)`. Use `exacts [intM_one r s, hB' r s, zero_mem _, hD' r s]`.
+-/
 theorem exists_embX_mul (m : GL (n ⊕ Fin c) k) (h1 : ∀ i r, m.val (Sum.inr i) r ∈ 𝒪[k])
     (h2 : ∀ i r, (m⁻¹).val r (Sum.inr i) ∈ 𝒪[k]) :
     ∃ g : GL n k, ∃ w ∈ KO k (n ⊕ Fin c), m = embX c g * w := by
@@ -62,6 +81,13 @@ theorem exists_embX_mul (m : GL (n ⊕ Fin c) k) (h1 : ∀ i r, m.val (Sum.inr i
     exacts [intM_one r s, hB' r s, zero_mem _, hD' r s]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr i)]`. Simplify using `[affPt, basePt, Free]`. Introduce `s _ hs`. Distinguish the cases in `h : lev p s < lev p r`. Rewrite using `[hM h, zero_mul]`.
+
+Break down `s with s | s` into its components or cases. Establish `: ¬ p < i.val + 1` using `by simp only [lev, Sum.elim_inl] at h hr; omega`. Simplify using `[affPt, basePt, Free, this]`. Establish `h1 : s.val ≠ i.val` using `fun e => hs (by rw [Fin.ext e])`. Establish `: ¬ s < i`.
+
+Rewrite using `[Fin.lt_def]`. Simplify using `only [lev, Sum.elim_inr] at h hr`. Use linear arithmetic over natural numbers and integers. Simplify using `[affPt, basePt, Free, this, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem tri_mul_affPt {p : ℕ} {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (hM : M.BlockTriangular (lev p))
     (x₀ : Matrix n n' k) (e) (i : Fin c) (r : n ⊕ Fin c) (hr : i.val + 1 ≤ lev p r) :
     (M * affPt (c := c) p x₀ e : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) r (Sum.inr i.castSucc) = M r (Sum.inr i) := by
@@ -82,6 +108,27 @@ theorem tri_mul_affPt {p : ℕ} {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (hM :
 
 omit [Fintype n'] in
 
+/- English proof (translation)
+Take `⟨b, hb, w, hw, rfl⟩` from `iwasawa_blockTriangular k _ (lev p) h`. Establish `hi` using `BlockLevi.blockTriangular_inv _ b hb`. Take `⟨w1, w2⟩` from `mem_KO.1 hw`. Establish `hA' : IntM ((b⁻¹).val * affPt (c` using `c) p x₀ e) := by`. Establish `: (b⁻¹).val = w.val * ((b * w)⁻¹).val` using `by rw [← Units.val_mul]; simp`.
+
+Rewrite using `[this, Matrix.mul_assoc]`. Conclude with `w1.mul hA`. Set `m : GL (n ⊕ Fin c) k` to `⟨BlockLevi.diagPart (lev p) b.val, BlockLevi.diagPart (lev p) (b⁻¹).val, BlockLevi.diagPart_mul_diagPart _ hb hi b.mul_inv, BlockLevi.diagPart_mul_diagPart _ hi hb b.inv_mul⟩`. Establish `hu : b * m⁻¹ ∈ N k n c p`. Use `Subgroup.subset_closure fun r s h => ?_` and prove the remaining obligations.
+
+Establish `: (b * m⁻¹).val = b.val * BlockLevi.diagPart (lev p) (b⁻¹).val` using `rfl`. Rewrite using `[this, BlockLevi.mul_diagPart_apply _ hb hi h, b.mul_inv]`. Take `⟨g, w', hw', hm⟩` from `exists_embX_mul m (fun i r => by`. Express the relevant statement in the definitionally equal form `(if lev p (Sum.inr i : n ⊕ Fin c) = lev p r then b.val (Sum.inr i) r else 0) ∈ _`. Use `split_ifs with hr`.
+
+Establish `hr' : lev p r = i.val + 1` using `hr.symm`. Set `E : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k` to `Matrix.single r (Sum.inr i.succ) 1`. Establish `hE : IntM E` using `fun a a' => by`. Simplify using `only [E, Matrix.single_apply]`. Use `split_ifs`.
+
+Use `exacts [one_mem _, zero_mem _]`. Establish `hbE : ∀ a a', (b.val * E) a a' = if a' = Sum.inr i.succ then b.val a r else 0`. Introduce `a a'`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using `[E]`. Simplify using `[E, Matrix.mul_single_apply_of_ne, h]`. Use `hB (b.val * E) (fun a a' ha => ?_) ?_` as an intermediate fact. Simplify `this` using `[ch, hbE]`. Rewrite using `[hbE] split_ifs with h`.
+
+Substitute `h` using the available equality. Apply `hb` to reduce the goal to its premises. Rewrite using `[hr']`. Apply the tactic sequence `rcases a with a | a <;> simp [Free, lev] at ha ⊢ <;> omega`. Both sides reduce to the same expression.
+
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul]`. Simplify using `only [_root_.mul_inv_rev, inv_mul_cancel_right]`. Conclude with `w2.mul hE`. Conclude with `zero_mem _) (fun i r => by`. Express the relevant statement in the definitionally equal form `(if lev p r = lev p (Sum.inr i : n ⊕ Fin c) then (b⁻¹).val r (Sum.inr i) else 0) ∈ _`.
+
+Use `split_ifs with hr`. Rewrite using `[← tri_mul_affPt hi x₀ e i r hr.ge]`. Conclude with `hA' _ _`. Conclude with `zero_mem _)`. Use `⟨b * m⁻¹ * embX c g, mul_mem (Subgroup.mem_sup_right hu) (Subgroup.mem_sup_left ⟨g, rfl⟩), w' * w, mul_mem hw' hw, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← mul_assoc (embX c g), ← hm]`. Use `group`.
+-/
 theorem mem_coset {p : ℕ} (h : GL (n ⊕ Fin c) k) (x₀ : Matrix n n' k)
     (e) (hA : IntM ((h⁻¹).val * affPt (c := c) p x₀ e))
     (hB : ∀ D : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k, (∀ r s, ¬ Free p (r, s) → D r s = 0) →
@@ -137,6 +184,9 @@ theorem mem_coset {p : ℕ} (h : GL (n ⊕ Fin c) k) (x₀ : Matrix n n' k)
 
 open ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] {n n' : Type} {c : ℕ} in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.RootEx.affPt, Matrix.add_apply, Matrix.of_apply, dif_neg hf, add_zero]`.
+-/
 private theorem affPt_apply_of_not_free {p : ℕ} (x₀ : Matrix n n' k)
     (e : { rs // _root_.GlobalTheory.RootEx.Free p rs } → k) {r : n ⊕ Fin c} {s : n' ⊕ Fin (c + 1)}
     (hf : ¬ _root_.GlobalTheory.RootEx.Free p (r, s)) :
@@ -145,6 +195,9 @@ private theorem affPt_apply_of_not_free {p : ℕ} (x₀ : Matrix n n' k)
 
 open ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] {n n' : Type} {c : ℕ} in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.RootEx.affPt, _root_.GlobalTheory.RootEx.basePt, Matrix.add_apply, Matrix.of_apply, dif_pos hf]`. Establish `hf'` using `hf`. Apply the tactic sequence `rcases r with i | l <;> rcases s with j | m <;> simp only [_root_.GlobalTheory.RootEx.Free] at hf' <;>`. Apply the tactic sequence `simp [Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂] <;>`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem affPt_apply_of_free {p : ℕ} (x₀ : Matrix n n' k)
     (e : { rs // _root_.GlobalTheory.RootEx.Free p rs } → k) {r : n ⊕ Fin c} {s : n' ⊕ Fin (c + 1)}
     (hf : _root_.GlobalTheory.RootEx.Free p (r, s)) :
@@ -158,6 +211,9 @@ private theorem affPt_apply_of_free {p : ℕ} (x₀ : Matrix n n' k)
 
 open ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] {n n' : Type} {c : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.RootEx.basePt`. Use `_root_.GlobalTheory.StepData.intM_fromBlocks.mpr ⟨hx, _root_.GlobalTheory.StepData.intM_zero, _root_.GlobalTheory.StepData.intM_zero, fun l i => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+-/
 private theorem intM_basePt_of_intM {x₀ : Matrix n n' k}
     (hx : _root_.GlobalTheory.StepData.IntM x₀) :
     _root_.GlobalTheory.StepData.IntM (_root_.GlobalTheory.RootEx.basePt c x₀) := by
@@ -173,6 +229,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] [Fintype n']
   [DecidableEq n'] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j => ?_, fun rs => ?_⟩` and prove the remaining obligations. Establish `hij` using `h (Sum.inl i) (Sum.inl j)`. Rewrite `hij` using `[affPt_apply_of_not_free x₀ e (by simp [_root_.GlobalTheory.RootEx.Free]), _root_.GlobalTheory.RootEx.basePt, Matrix.fromBlocks_apply₁₁]`. Then use the resulting hypothesis.
+
+Take `⟨⟨r, s⟩, hf⟩` from `rs`. Establish `hrs` using `h r s`. Rewrite `hrs` using `[affPt_apply_of_free x₀ e hf]`. Then use the resulting hypothesis. Introduce and unpack `⟨hx, he⟩ r s`. Distinguish the cases in `hf : _root_.GlobalTheory.RootEx.Free p (r, s)`.
+
+Rewrite using `[affPt_apply_of_free x₀ e hf]`. Conclude with `he _`. Rewrite using `[affPt_apply_of_not_free x₀ e hf]`. Conclude with `intM_basePt_of_intM hx r s`.
+-/
 theorem _root_.GlobalTheory.RootEx.Unram.intM_affPt {p : ℕ} (x₀ : Matrix n n' k) (e) :
     _root_.GlobalTheory.StepData.IntM (_root_.GlobalTheory.RootEx.affPt (c := c) p x₀ e) ↔
       _root_.GlobalTheory.StepData.IntM x₀ ∧ ∀ rs, e rs ∈ 𝒪[k] := by
@@ -193,6 +256,17 @@ theorem _root_.GlobalTheory.RootEx.Unram.intM_affPt {p : ℕ} (x₀ : Matrix n n
       exact intM_basePt_of_intM hx r s
 
 omit [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Establish `hK : (∀ r, β r ∈ 𝒪[k]) → colE c (p + 1) β ∈ KO k (n ⊕ Fin c)` using `fun hβ => by`. Establish `: IntM (Matrix.of fun r (i : Fin c) => if i.val + 1 = p + 1 then β r else 0)` using `fun r i => by`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Use `exacts [hβ r, zero_mem _]`.
+
+Use `mem_KO.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(r | r) (s | s) exacts [intM_one r s, this r s, zero_mem _, intM_one r s]`. Introduce and unpack `(r | r) (s | s) exacts [intM_one r s, this.neg r s, zero_mem _, intM_one r s]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hβ : ∀ r, β r ∈ 𝒪[k]` using `fun r => by`. Establish `h1` using `h (Sum.inl r) (Sum.inr (Fin.castSucc ⟨p, hp⟩))`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr ⟨p, hp⟩)]`. Establish `: -β r ∈ 𝒪[k]` using `by simpa [affPt, basePt, Free, colE, upU] using h1`. Simplify using `using neg_mem this`.
+
+Introduce and unpack `(s | s) _ hs`. Simplify using `[affPt, basePt, Free]`. Establish `: s.val ≠ p` using `fun e => hs (by rw [Fin.ext (show s.val = (⟨p, hp⟩ : Fin c).val from e)])`. Simplify using `[colE, upU, this]`. Simplify using the standard rewrite rules.
+
+Use `⟨?_, hβ⟩` and prove the remaining obligations. Use `(mem_KO.1 (hK hβ)).1.mul h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨h, hβ⟩`. Conclude with `(mem_KO.1 (hK hβ)).2.mul h`.
+-/
 theorem intM_colE {p : ℕ} (hp : p + 1 ≤ c) (β : n → k) (x₀ : Matrix n n' k) (e) :
     IntM (((colE c (p + 1) β)⁻¹).val * affPt (c := c) (p + 1) x₀ e) ↔
       IntM (affPt (c := c) (p + 1) x₀ e) ∧ ∀ r, β r ∈ 𝒪[k] := by
@@ -227,6 +301,9 @@ theorem intM_colE {p : ℕ} (hp : p + 1 ≤ c) (β : n → k) (x₀ : Matrix n n
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
+/- English proof (translation)
+Establish `h1` using `(hψ x).mpr (by`. Rewrite using `[Units.val_one, map_one]`. Conclude with `(Valuation.mem_integer_iff _ _).mp hx)`. Conclude with `h1 x le_rfl`.
+-/
 theorem _root_.GlobalTheory.RootEx.Unram.psi_eq_one {ψ : AddChar k Circle}
     (hψ : _root_.GlobalTheory.SplitWeil.HasConductor ψ 1) {x : k} (hx : x ∈ 𝒪[k]) : ψ x = 1 := by
   have h1 := (hψ x).mpr (by
@@ -237,6 +314,13 @@ theorem _root_.GlobalTheory.RootEx.Unram.psi_eq_one {ψ : AddChar k Circle}
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} in
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff]`. Establish `hmain` using `(hψ x).mp ?_`. Simplify using `using hmain`. Introduce `y hy`. Distinguish the cases in `hx0 : x = 0`.
+
+Substitute `hx0` using the available equality. Establish `hy0 : y = 0` using `by simpa using hy`. Simplify using `[hy0]`. Establish `hv : valuation k (y / x) ≤ 1`. Rewrite using `[map_div₀]`.
+
+Conclude with `div_le_one_of_le₀ hy zero_le'`. Establish `hyx` using `hx (y / x) ((Valuation.mem_integer_iff _ _).mpr hv)`. Rewrite `hyx` using `[div_mul_cancel₀ y hx0]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.RootEx.Unram.mem_of_psi {ψ : AddChar k Circle}
     (hψ : _root_.GlobalTheory.SplitWeil.HasConductor ψ 1) {x : k}
     (hx : ∀ t ∈ 𝒪[k], ψ (t * x) = 1) : x ∈ 𝒪[k] := by
@@ -258,6 +342,11 @@ variable [MeasurableSpace k] [BorelSpace k]
 
 open ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] {n n' : Type} {c : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.RootEx.ch`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `hf : _root_.GlobalTheory.RootEx.Free (n` using `n) (n' := n') p (Sum.inr i, Sum.inr i.succ) := by`. Simplify using `[_root_.GlobalTheory.RootEx.Free]`. Rewrite using `[affPt_apply_of_free x₀ e hf]`.
+
+Conclude with `he _`.
+-/
 private theorem ch_affPt_mem_of_integral {p : ℕ} (x₀ : Matrix n n' k)
     (e : { rs // _root_.GlobalTheory.RootEx.Free p rs } → k) (he : ∀ rs, e rs ∈ 𝒪[k]) :
     _root_.GlobalTheory.RootEx.ch (_root_.GlobalTheory.RootEx.affPt (c := c) p x₀ e) ∈ 𝒪[k] := by
@@ -274,6 +363,17 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 variable [MeasurableSpace k] [BorelSpace k] in
 omit [DecidableEq n] [DecidableEq n'] in
 open Classical in
+/- English proof (translation)
+Use `haveI := _root_.GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := hν.1`. Use `set S : Set ({ rs // _root_.GlobalTheory.RootEx.Free (n := n) (c := c) (n' := n') p rs } → k) := Set.univ.pi fun _ => (𝒪[k] : Set k) with hS`. Establish `hSm : MeasurableSet S` using `MeasurableSet.univ_pi fun _ => (_root_.GlobalTheory.SplitWeil.isOpen_int k).measurableSet`. Establish `hint : ∀ e : { rs // _root_.GlobalTheory.RootEx.Free (n` using `n) (c := c) (n' := n') p rs } → k, Ψ (_root_.GlobalTheory.RootEx.affPt p x₀ e) * ((ψ (-_root_.GlobalTheory.RootEx.ch (_root_.GlobalTheory.RootEx.affPt p x₀ e)) : Circle) : ℂ) = if P then S.indicator (fun _ => (1 : ℂ)) e else 0 := by`.
+
+Introduce `e`. Rewrite using `[h e]`. Distinguish the cases in `hP : P`. Distinguish the cases in `he : ∀ rs, e rs ∈ 𝒪[k]`. Establish `heS : e ∈ S` using `fun rs _ => he rs`.
+
+Rewrite using `[if_pos ⟨hP, he⟩, if_pos hP, Set.indicator_of_mem heS, _root_.GlobalTheory.RootEx.Unram.psi_eq_one hψ (neg_mem (ch_affPt_mem_of_integral x₀ e he))]`. Simplify using the standard rewrite rules. Establish `heS : e ∉ S` using `fun heS => he fun rs => heS rs (Set.mem_univ _)`. Rewrite using `[if_neg (fun h' => he h'.2), if_pos hP, Set.indicator_of_notMem heS, zero_mul]`. Rewrite using `[if_neg (fun h' => hP h'.1), if_neg hP, zero_mul]`.
+
+Unfold `_root_.GlobalTheory.RootEx.opE`. Repeatedly rewrite using `[hint]`. Use `split_ifs with hP`. Rewrite using `[integral_indicator_const _ hSm, Measure.real_def, hS, Measure.pi_pi]`. Simplify using `[hν.2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.RootEx.Unram.opE_of_ite {p : ℕ} {ψ : AddChar k Circle}
     (hψ : _root_.GlobalTheory.SplitWeil.HasConductor ψ 1) {ν : Measure k} (hν : _root_.GlobalTheory.SplitWeil.IsUnitVol ν)
     (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k) (P : Prop)
@@ -314,6 +414,17 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 variable [MeasurableSpace k] [BorelSpace k] in
 omit [DecidableEq n] [DecidableEq n'] in
 
+/- English proof (translation)
+Use `haveI := _root_.GlobalTheory.SplitWeil.secondCountable k`. Use `set d : { rs // _root_.GlobalTheory.RootEx.Free (n := n) (c := c) (n' := n') p rs } → k := fun rs => D rs.1.1 rs.1.2 with hd`. Establish `haff : ∀ e, _root_.GlobalTheory.RootEx.affPt p x₀ (e + d) = _root_.GlobalTheory.RootEx.affPt p x₀ e + D`. Introduce `e`. Use extensionality with `r s`.
+
+Simplify using `only [_root_.GlobalTheory.RootEx.affPt, Matrix.add_apply, Matrix.of_apply]`. Distinguish the cases in `hf : _root_.GlobalTheory.RootEx.Free p (r, s)`. Simplify using `only [dif_pos hf, Pi.add_apply, hd]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dif_neg hf, hD r s hf, add_zero]`.
+
+Establish `hch : ∀ A B : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k, _root_.GlobalTheory.RootEx.ch (A + B) = _root_.GlobalTheory.RootEx.ch A + _root_.GlobalTheory.RootEx.ch B`. Introduce `A B`. Simplify using `[_root_.GlobalTheory.RootEx.ch, Finset.sum_add_distrib]`. Establish `key : _root_.GlobalTheory.RootEx.opE ψ ν p Ψ x₀ = ((ψ (-_root_.GlobalTheory.RootEx.ch D) : Circle) : ℂ) * _root_.GlobalTheory.RootEx.opE ψ ν p Ψ x₀`. Unfold `_root_.GlobalTheory.RootEx.opE`.
+
+Rewrite using `[← integral_const_mul, ← integral_add_right_eq_self _ d]`. Use `congr 1`. Use extensionality with `e`. Rewrite using `[haff, hΨ, hch, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : ((ψ (-_root_.GlobalTheory.RootEx.ch D) : Circle) : ℂ) = 1` using `mul_right_cancel₀ h (key.symm.trans (one_mul _).symm)`. Conclude with `Circle.ext (h1.trans Circle.coe_one.symm)`.
+-/
 theorem _root_.GlobalTheory.RootEx.Unram.psi_ch_eq_one {p : ℕ} (ψ : AddChar k Circle)
     (ν : Measure k) [ν.IsAddHaarMeasure]
     (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k)
@@ -349,6 +460,21 @@ theorem _root_.GlobalTheory.RootEx.Unram.psi_ch_eq_one {p : ℕ} (ψ : AddChar k
     mul_right_cancel₀ h (key.symm.trans (one_mul _).symm)
   exact Circle.ext (h1.trans Circle.coe_one.symm)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ hψ ν hν μ Φ hΦ`. Establish `hΦ' : ∀ x, Φ x = if IntM x then 1 else 0` using `fun x => by`. Rewrite using `[hΦ, Set.indicator_apply]`. Conclude with `if_congr Iff.rfl rfl rfl`. Use `⟨fun h x₀ hne => ?_, ?_, fun β hp => ?_⟩` and prove the remaining obligations.
+
+Use `hν.1` as an intermediate fact. Establish `hA : ∃ e, IntM ((h⁻¹).val * affPt (c` using `c) p x₀ e) := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `hne` to reduce the goal to its premises.
+
+Simplify using `only [opE, om, hΦ', Units.val_one, Matrix.mul_one, hn, if_false, mul_zero, zero_mul, integral_zero]`. Take `⟨e, he⟩` from `hA`. Use `mem_coset h x₀ e he fun D hD hI => mem_of_psi hψ fun t ht => ?_` and prove the remaining obligations. Use `psi_ch_eq_one ψ ν _ x₀ hne ((-t) • D) (fun r s hf => by simp [hD r s hf]) fun x => by` as an intermediate fact. Establish `h1 : IntM ((h⁻¹).val * ((-t) • D))`.
+
+Rewrite using `[Matrix.mul_smul]`. Conclude with `fun r s => mul_mem (neg_mem ht) (hI r s)`. Establish `h2 : IntM ((h⁻¹).val * (x + (-t) • D)) ↔ IntM ((h⁻¹).val * x)`. Rewrite using `[Matrix.mul_add]`. Conclude with `⟨fun h => by simpa using h.add h1.neg, fun h => h.add h1⟩`.
+
+Simplify using `only [om, hΦ', Units.val_one, Matrix.mul_one, h2]`. Simplify `this` using `[ch, Finset.mul_sum]`. Use function extensionality and compare the values at `x₀`. Rewrite using `[opE_of_ite hψ hν Φ x₀ (IntM x₀) fun e => by simp only [hΦ', intM_affPt], Set.indicator_apply]`. Conclude with `if_congr Iff.rfl rfl rfl`.
+
+Use function extensionality and compare the values at `x₀`. Establish `hdet : Matrix.GeneralLinearGroup.det (colE c (p + 1) β) = 1`. Use `ext`. Simplify using `[colE, upU]`. Rewrite using `[opE_of_ite hψ hν _ x₀ (IntM x₀ ∧ ∀ r, β r ∈ 𝒪[k]) fun e => by`.
+
+Simplify using `only [om, hΦ', hdet, Units.val_one, Matrix.mul_one, intM_colE hp, intM_affPt, and_right_comm]`. Simplify using `[nabs], Set.indicator_apply]`. Conclude with `@if_congr _ _ _ (_) (_) _ _ _ _ Iff.rfl rfl rfl`.
+-/
 theorem opE_unramified : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (_ : HasConductor ψ 1) (ν : Measure k) (_ : IsUnitVol ν) (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (_ : Φ = Set.indicator {x | ∀ r s, valuation k (x r s) ≤ 1} 1), (∀ (h : GL (n ⊕ Fin c) k) (x₀ : Matrix n n' k), opE ψ ν p (om μ 1 h Φ) x₀ ≠ 0 → ∃ r ∈ R k n c p, ∃ w ∈ KO k (n ⊕ Fin c), h = r * w) ∧ opE ψ ν p Φ = Set.indicator {x | ∀ r s, valuation k (x r s) ≤ 1} 1 ∧ ∀ β : n → k, p + 1 ≤ c → opE ψ ν (p + 1) (om μ 1 (colE c (p + 1) β) Φ) = Set.indicator {x | (∀ r s, valuation k (x r s) ≤ 1) ∧ ∀ r, valuation k (β r) ≤ 1} 1 := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ hψ ν hν μ Φ hΦ
   classical

@@ -16,6 +16,9 @@ namespace GlobalTheory.InertWitt
 def stdLat (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule (𝓞 E) (Fin n → E) :=
   LinearMap.range (LinearMap.pi fun i : Fin n => (Algebra.linearMap (𝓞 E) E).comp (LinearMap.proj i))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `(y i).2`. Introduce `h`. Use `⟨fun i => ⟨x i, h i⟩, funext fun i => rfl⟩` and prove the remaining obligations.
+-/
 theorem mem_stdLat {E : Type} [Field E] [NumberField E] {n : ℕ} (x : Fin n → E) :
     x ∈ stdLat E n ↔ ∀ i, IsIntegral ℤ (x i) := by
   constructor
@@ -24,6 +27,13 @@ theorem mem_stdLat {E : Type} [Field E] [NumberField E] {n : ℕ} (x : Fin n →
   · intro h
     refine ⟨fun i => ⟨x i, h i⟩, funext fun i => rfl⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stdLat, LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map _`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : x = ∑ i, x i • Pi.single i (1 : E)`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Use `(mem_stdLat _).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_apply, h]`.
+-/
 theorem stdLat_isLattice (E : Type) [Field E] [NumberField E] (n : ℕ) : (stdLat E n).IsLattice E := by
   refine ⟨?_, ?_⟩
   · rw [stdLat, LinearMap.range_eq_map]

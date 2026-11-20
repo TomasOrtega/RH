@@ -7,11 +7,17 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Rewrite using `[PI.WGL.pol_apply]`. Simplify using `[rowE, LinearMap.sum_apply]`.
+-/
 theorem pol_eq_rowE_apply (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (g : MvPolynomial (Fin r × Fin n) R) :
     PI.WGL.pol R a b g = rowE R r n a b g := by
   rw [PI.WGL.pol_apply]
   simp [rowE, LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `h` using `PI.WGL.rowDiv_succ ℚ a b k g`. Rewrite `h` using `[pol_eq_rowE_apply]`. Rewrite using `[← h]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.smul_def, mul_comm]`.
+-/
 theorem rowDiv_succ_smul {r n : ℕ} (a b : Fin r) (k : ℕ) (g : MvPolynomial (Fin r × Fin n) ℚ) :
     ((k : ℚ) + 1) • rowDiv ℚ a b (k + 1) g =
       rowDiv ℚ a b k (rowE ℚ r n a b g) - (if a = b then (k : ℚ) • rowDiv ℚ a b k g else 0) := by
@@ -20,6 +26,15 @@ theorem rowDiv_succ_smul {r n : ℕ} (a b : Fin r) (k : ℕ) (g : MvPolynomial (
   rw [← h]
   split_ifs <;> simp [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Introduce `r n T hT a b k`. Establish `hE : ∀ g, T (rowE ℚ r n a b g) = rowE ℚ r n a b (T g)` using `fun g => by`. Use `LinearMap.congr_fun (hT a b) g` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply]`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro f`. Rewrite using `[PI.WGL.rowDiv_zero, PI.WGL.rowDiv_zero]`. Consider the case `succ k ih`. Introduce `f`. Establish `hne : ((k : ℚ) + 1) ≠ 0` using `by positivity`.
+
+Apply `smul_right_injective _ hne` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← map_smul, rowDiv_succ_smul, rowDiv_succ_smul, map_sub, ih, hE]`. Use `split_ifs`. Rewrite using `[map_smul, ih]`.
+
+Rewrite using `[map_zero]`.
+-/
 theorem comm_rowDiv_of_comm_rowE : ∀ (r n : ℕ) (T : Module.End ℚ (MvPolynomial (Fin r × Fin n) ℚ)),
     (∀ a b, T * rowE ℚ r n a b = rowE ℚ r n a b * T) →
       ∀ a b k f, T (rowDiv ℚ a b k f) = rowDiv ℚ a b k (T f) := by

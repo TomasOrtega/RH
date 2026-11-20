@@ -10,6 +10,9 @@ open scoped DirectSum TensorProduct Kronecker Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℂ W`. Apply `(TensorProduct.equivFinsuppOfBasisRight (M := V) b).injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `[TensorProduct.equivFinsuppOfBasisRight_apply, h]`.
+-/
 theorem tensor_eq_zero_of_forall_contract_right {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (z : V ⊗[ℂ] W)
     (h : ∀ l : Module.Dual ℂ W, TensorProduct.rid ℂ V (LinearMap.lTensor V l z) = 0) : z = 0 := by
@@ -19,6 +22,19 @@ theorem tensor_eq_zero_of_forall_contract_right {V W : Type} [AddCommGroup V] [M
   ext i
   simp [TensorProduct.equivFinsuppOfBasisRight_apply, h]
 
+/- English proof (translation)
+Introduce `G H V W V' W' _ _ _ _ _ _ _ _ _ _ ρ σ ρ' σ' h φ`. Establish `hpure : ∀ (v : V) (w : W), φ (v ⊗ₜ[ℂ] w) = 0`. Introduce `v w`. Apply `tensor_eq_zero_of_forall_contract_right` to reduce the goal to its premises. Introduce `l`.
+
+Set `f : V →ₗ[ℂ] V'` to `(TensorProduct.rid ℂ V').toLinearMap ∘ₗ LinearMap.lTensor V' l ∘ₗ φ.toLinearMap ∘ₗ (TensorProduct.mk ℂ V W).flip w`. Establish `hf : ∀ (g : G) (x : V), f (ρ g x) = ρ' g (f x)`. Introduce `g x`. Establish `key : ∀ y : V' ⊗[ℂ] W', TensorProduct.rid ℂ V' (LinearMap.lTensor V' l (TensorProduct.map (ρ' g) (σ' 1) y)) = ρ' g (TensorProduct.rid ℂ V' (LinearMap.lTensor V' l y))`. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Establish `e1 : ρ g x ⊗ₜ[ℂ] w = (Representation.tprod (ρ.comp (MonoidHom.fst G H)) (σ.comp (MonoidHom.snd G H))) (g, 1) (x ⊗ₜ[ℂ] w)`.
+
+Simplify using `[Representation.tprod_apply]`. Establish `e2` using `Representation.IntertwiningMap.isIntertwining _ _ φ (g, 1) (x ⊗ₜ[ℂ] w)`. Simplify using `only [f, LinearMap.comp_apply, LinearMap.flip_apply, TensorProduct.mk_apply, Representation.IntertwiningMap.toLinearMap_apply, LinearEquiv.coe_coe]`. Rewrite using `[e1, e2, Representation.tprod_apply]`. Conclude with `key _`.
+
+Establish `h0` using `h (f.intertwiningMap_of_isIntertwiningMap ρ ρ' hf)`. Establish `hv` using `congrArg (fun ψ : ρ.IntertwiningMap ρ' => ψ v) h0`. Simplify `hv` using `[f]`. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `TensorProduct.ext'` to reduce the goal to its premises.
+
+Introduce `v w`. Simplify using `[hpure]`.
+-/
 theorem outerTensor_intertwining_eq_zero_of_left :
     ∀ (G H V W V' W' : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (ρ' : Representation ℂ G V') (σ' : Representation ℂ H W'), (∀ ψ : ρ.IntertwiningMap ρ', ψ = 0) → ∀ φ : (Representation.tprod (ρ.comp (MonoidHom.fst G H)) (σ.comp (MonoidHom.snd G H)) : Representation ℂ (G × H) (V ⊗[ℂ] W)).IntertwiningMap (Representation.tprod (ρ'.comp (MonoidHom.fst G H)) (σ'.comp (MonoidHom.snd G H)) : Representation ℂ (G × H) (V' ⊗[ℂ] W')), φ = 0 := by
   intro G H V W V' W' _ _ _ _ _ _ _ _ _ _ ρ σ ρ' σ' h φ

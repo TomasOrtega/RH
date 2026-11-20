@@ -21,6 +21,11 @@ namespace GlobalTheory.HaarConj
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `ψ : G ≃ᵐ H` to `⟨φ.toEquiv, hc, hc'⟩`. Establish `hψ : MeasurePreserving ψ μ (μ.map φ)` using `⟨ψ.measurable, rfl⟩`. Establish `e : φ '' 𝓕 = φ.symm ⁻¹' 𝓕` using `φ.toEquiv.image_eq_preimage_symm 𝓕`. Rewrite using `[e]`. Conclude with `h.preimage_of_equiv (f := φ.symm) (MeasurePreserving.symm ψ hψ).quasiMeasurePreserving (e := fun γ => ⟨φ γ, (hQ γ).1 γ.2⟩) ⟨fun a b hab => Subtype.ext (φ.injective (congrArg Subtype.val hab)), fun b => ⟨⟨φ.symm b, (hQ _).2 (by simp)⟩, Subtype.ext (by simp)⟩⟩ fun γ y => by show φ. …`.
+
+Rewrite using `[map_mul, φ.symm_apply_apply]`.
+-/
 theorem isFundamentalDomain_image {G H : Type} [Group G] [Group H] [MeasurableSpace G] [MeasurableSpace H]
     (φ : G ≃* H) (hc : Measurable φ) (hc' : Measurable φ.symm) (Γ : Subgroup G) (Γ' : Subgroup H)
     (hQ : ∀ g, g ∈ Γ ↔ φ g ∈ Γ') (μ : Measure G) (𝓕 : Set G) (h : IsFundamentalDomain Γ 𝓕 μ) :
@@ -37,9 +42,15 @@ theorem isFundamentalDomain_image {G H : Type} [Group G] [Group H] [MeasurableSp
       show φ.symm (φ γ * y) = γ * φ.symm y
       rw [map_mul, φ.symm_apply_apply]
 
+/- English proof (translation)
+Simplify using `[cA, sigR, incA, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (D.sp.cm.sig e) := by
   simp [cA, sigR, incA, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (R := 𝓞 D.host.F) (K := D.host.F))`.
+-/
 theorem incA_inj : Function.Injective (incA D) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (R := 𝓞 D.host.F) (K := D.host.F))
 
@@ -68,6 +79,9 @@ def conjE (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.hos
       GeneralLinearGroup.map (cA D) (matHom V b)
     rw [map_mul, map_mul])
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun u : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J => u.1)` using `continuous_subtype_val`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`. Conclude with `(Units.continuous_coe_inv.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`.
+-/
 theorem continuous_conjInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (hc : c ≠ 0)
     (h : J = c • V.gram) : Continuous (conjInv V c hc h) := by
   have h1 : Continuous (fun u : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J => u.1) := continuous_subtype_val
@@ -75,6 +89,19 @@ theorem continuous_conjInv (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.h
   · exact (Units.continuous_val.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)
   · exact (Units.continuous_coe_inv.comp h1).matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)
 
+/- English proof (translation)
+Establish `hg : Formalism.UG.cT (cA D) g.1.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM V.gram * g.1.1 = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM V.gram` using `g.2`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨x, -, hx⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hq)`. Use `Subgroup.mem_subgroupOf.2 ⟨GeneralLinearGroup.map (D.sp.cm.sig : D.host.E →+* D.host.E) x, ?_⟩` and prove the remaining obligations.
+
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `congrArg (fun y : GL (Fin V.rank) (AE D) => y.1 i j) hx` as an intermediate fact. Use `show incA D (D.sp.cm.sig (x.1 i j)) = cA D (g.1.1 i j)`. Rewrite using `[← this, ← cA_incA]`. Both sides reduce to the same expression.
+
+Introduce `hq`. Take `⟨w, hw⟩` from `Subgroup.mem_subgroupOf.1 hq`. Establish `hw' : ∀ i j, incA D (w.1 i j) = cA D (g.1.1 i j)` using `fun i j => congrArg (fun y : GL (Fin V.rank) (AE D) => y.1 i j) hw`. Establish `hx : ∀ i j, incA D (D.sp.cm.sig (w.1 i j)) = g.1.1 i j` using `fun i j => by`. Rewrite using `[← cA_incA, hw', cA_cA]`.
+
+Set `x` to `GeneralLinearGroup.map (D.sp.cm.sig : D.host.E →+* D.host.E) w`. Establish `hxm : x.1.map (incA D) = g.1.1` using `Matrix.ext fun i j => hx i j`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨x, ?_, Units.ext (Matrix.ext fun i j => hx i j)⟩)` and prove the remaining obligations. Use `show Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) x.1 * V.gram * x.1 = V.gram`. Establish `key : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) x.1 * V.gram * x.1).map (incA D) = V.gram.map (incA D)`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, hxm]`. Establish `e1 : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) x.1).map (incA D) = Formalism.UG.cT (cA D) g.1.1`. Rewrite using `[← hxm]`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply]`.
+
+Conclude with `(cA_incA _).symm`. Rewrite using `[e1]`. Conclude with `hg`. Conclude with `Matrix.ext fun i j => incA_inj (congrFun (congrFun key i) j)`.
+-/
 theorem mem_ratU_iff (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (hc : c ≠ 0)
     (h : J = c • V.gram) (g : GA D V) :
     g ∈ GQ V ↔ conjE V c hc h g ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU D.sp.cm.sig J := by
@@ -110,6 +137,11 @@ theorem mem_ratU_iff (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
       exact hg
     exact Matrix.ext fun i j => incA_inj (congrFun (congrFun key i) j)
 
+/- English proof (translation)
+Introduce `D V c hc J hJ ν fd hν hfd`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J)` using `⟨rfl⟩`. Establish `c1 : Continuous (conjE V c hc hJ)` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conjU V c hJ`.
+
+Establish `c2 : Continuous (conjE V c hc hJ).symm` using `continuous_conjInv V c hc hJ`. Conclude with `⟨conjE V c hc hJ '' fd, MulEquiv.isHaarMeasure_map ν (conjE V c hc hJ) c1 c2, isFundamentalDomain_image (conjE V c hc hJ) c1.measurable c2.measurable (GQ V) _ (mem_ratU_iff V c hc hJ) ν fd hfd⟩`.
+-/
 theorem haarConj : ∀ {D : D7} (V : HSp D) (c : D.host.E), c ≠ 0 → ∀ {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (hJ : J = c • V.gram)
     (ν : Measure (GA D V)) (fd : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) fd ν →
     ∃ dom : Set (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J), (ν.map (conjU V c hJ)).IsHaarMeasure ∧

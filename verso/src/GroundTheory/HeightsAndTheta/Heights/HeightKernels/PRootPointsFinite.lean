@@ -16,6 +16,13 @@ variable {K : Type*} {ι : K → Type*}
 def homog (q : Polynomial ℤ) (p a : Σ k, ι k) : MRing ι :=
   ∑ i ∈ Finset.range (q.natDegree + 1), C (q.coeff i) * X p ^ i * X a ^ (q.natDegree - i)
 
+/- English proof (translation)
+Use `show mConeMap y _ = 0`. Establish `hterm : ∀ n ∈ Finset.range (q.natDegree + 1), mConeMap y (C (q.coeff n) * X ⟨k, i⟩ ^ n * X ⟨k, i₀⟩ ^ (q.natDegree - n)) = MvPolynomial.C ((q.coeff n : ℂ) * y ⟨k, i⟩ ^ n) * MvPolynomial.X k ^ q.natDegree`. Introduce `n hn`. Establish `hle : n ≤ q.natDegree` using `by simpa [Nat.lt_succ_iff] using hn`. Simplify using `only [mConeMap, map_mul, map_pow, map_intCast, aeval_X, ha, map_one, one_mul]`.
+
+Use `conv_rhs => rw [← pow_mul_pow_sub (MvPolynomial.X k) hle]`. Rewrite using `[aeval_C, eq_intCast (algebraMap ℤ (MvPolynomial K ℂ))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[homog, map_sum, Finset.sum_congr rfl hterm, ← Finset.sum_mul, ← map_sum]`. Establish `: ∑ n ∈ Finset.range (q.natDegree + 1), (q.coeff n : ℂ) * y ⟨k, i⟩ ^ n = 0`.
+
+Rewrite using `[← hq, Polynomial.eval₂_eq_sum_range]`. Both sides reduce to the same expression. Rewrite using `[this, map_zero, zero_mul]`.
+-/
 theorem homog_mem (y : (Σ k, ι k) → ℂ) (k : K) (i i₀ : ι k) (ha : y ⟨k, i₀⟩ = 1) (q : Polynomial ℤ)
     (hq : q.eval₂ (Int.castRingHom ℂ) (y ⟨k, i⟩) = 0) :
     homog q ⟨k, i⟩ ⟨k, i₀⟩ ∈ mCoordIdeal y := by
@@ -34,6 +41,11 @@ theorem homog_mem (y : (Σ k, ι k) → ℂ) (k : K) (i i₀ : ι k) (ha : y ⟨
     rw [← hq, Polynomial.eval₂_eq_sum_range]; rfl
   rw [this, map_zero, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval₂_eq_sum_range, Finset.mul_sum, homog, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Establish `hle : n ≤ q.natDegree` using `by simpa [Nat.lt_succ_iff] using hn`. Simplify using `only [map_mul, map_pow, map_intCast, map_X, eval_X, eq_intCast]`. Use `conv_rhs => rw [← pow_mul_pow_sub (z a) hle, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem homog_eval (z : (Σ k, ι k) → ℂ) (p a : Σ k, ι k) (hza : z a ≠ 0) (q : Polynomial ℤ) :
     eval z (map (Int.castRingHom ℂ) (homog q p a)) =
       z a ^ q.natDegree * q.eval₂ (Int.castRingHom ℂ) (z p / z a) := by
@@ -44,9 +56,17 @@ theorem homog_eval (z : (Σ k, ι k) → ℂ) (p a : Σ k, ι k) (hza : z a ≠ 
   conv_rhs => rw [← pow_mul_pow_sub (z a) hle, div_pow]
   field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ k - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hk.ne', by simp [hx]⟩`.
+-/
 theorem isIntegral_of_pow_eq_one {x : ℂ} {k : ℕ} (hk : 0 < k) (hx : x ^ k = 1) : IsIntegral ℤ x :=
   ⟨Polynomial.X ^ k - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hk.ne', by simp [hx]⟩
 
+/- English proof (translation)
+Use `IsIntegral.det fun a b => ?_` and prove the remaining obligations. Simplify using `only [colsOf, Matrix.submatrix_apply, id, onePipe, Matrix.of_apply]`. Generalize the expression as in `(p.2.1.orderEmbOfFin p.2.2) b = c`. Use `Fin.addCases (fun c => ?_) (fun c => ?_) c` and prove the remaining obligations. Rewrite using `[Fin.append_left, Matrix.one_apply] split_ifs`.
+
+Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Rewrite using `[Fin.append_right]`. Take `⟨k, hk, hx⟩` from `hζ p.1 a c`. Conclude with `isIntegral_of_pow_eq_one hk hx`.
+-/
 theorem rootCoord_isIntegral {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) (hζ : IsRootMatrix ζ)
     (p : Σ _ : Fin f, PlIdx j m) : IsIntegral ℤ (rootCoord ζ p) := by
   refine IsIntegral.det fun a b => ?_
@@ -65,6 +85,23 @@ end RootPointsFiniteAlt
 
 open RootPointsFiniteAlt in
 
+/- English proof (translation)
+Introduce `f j m ζ hζ`. Establish `hint : ∀ p, ∃ q : Polynomial ℤ, q.Monic ∧ q.eval₂ (Int.castRingHom ℂ) (rootCoord ζ p) = 0`. Introduce `p`. Take `⟨q, hqm, hq⟩` from `rootCoord_isIntegral ζ hζ p`. Conclude with `⟨q, hqm, by rwa [← RingHom.ext_int (algebraMap ℤ ℂ) (Int.castRingHom ℂ)]⟩`.
+
+Use `choose q hqm hq using hint`. Set `S : Set ((Σ _ : Fin f, PlIdx j m) → ℂ)` to `Set.pi Set.univ fun p => {u | Polynomial.IsRoot ((q p).map (Int.castRingHom ℂ)) u}`. Establish `hS : S.Finite` using `Set.Finite.pi fun p => Polynomial.finite_setOfPred_isRoot ((hqm p).map _).ne_zero`. Establish `hmem : ∀ z ∈ mcPts (rootPointIdeal ζ), (fun p : Σ _ : Fin f, PlIdx j m => z p / z ⟨p.1, plAnchor j m⟩) ∈ S`. Introduce `z hz p _`.
+
+Establish `hza` using `h f j m ζ hζ z hz p.1`. Establish `h0` using `hz.2 _ (homog_mem (rootCoord ζ) p.1 p.2 (plAnchor j m) (by simp [rootCoord, anchor_minor]) (q p) (hq p))`. Rewrite `h0` using `[homog_eval z _ _ hza]`. Simplify `h0` using `[Polynomial.IsRoot, Polynomial.eval_map, hza]`. Set `F : McClasses (rootPointIdeal ζ) → S` to `Quot.lift (fun z => ⟨fun p => z.1 p / z.1 ⟨p.1, plAnchor j m⟩, hmem z.1 z.2⟩) (by`.
+
+Introduce and unpack `z z' ⟨c, hc, hz'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Simplify using `only [hz']`. Conclude with `(mul_div_mul_left _ _ (hc p.1)).symm)`.
+
+Use `hS.to_subtype` as an intermediate fact. Use `Finite.of_injective F ?_` and prove the remaining obligations. Introduce `x x'`. Proceed by induction on `x using Quot.ind with | mk z => ?_`. Proceed by induction on `x' using Quot.ind with | mk z' => ?_`.
+
+Introduce `hF`. Establish `hfun` using `fun p => congrFun (congrArg Subtype.val hF) p`. Apply `Quot.sound` to reduce the goal to its premises. Use `⟨fun τ => z'.1 ⟨τ, plAnchor j m⟩ / z.1 ⟨τ, plAnchor j m⟩, fun τ => div_ne_zero (h f j m ζ hζ z'.1 z'.2 τ) (h f j m ζ hζ z.1 z.2 τ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+
+Establish `hza` using `h f j m ζ hζ z.1 z.2 p.1`. Establish `hza'` using `h f j m ζ hζ z'.1 z'.2 p.1`. Establish `e : z.1 p / z.1 ⟨p.1, plAnchor j m⟩ = z'.1 p / z'.1 ⟨p.1, plAnchor j m⟩` using `hfun p`. Rewrite `e` using `[div_eq_div_iff hza hza']`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hza]`.
+
+Take the linear combination `-e`.
+-/
 theorem RootPointsFinite.proof (h : RootAnchorNonzero.Statement) : RootPointsFinite.Statement := by
   intro f j m ζ hζ
   have hint : ∀ p, ∃ q : Polynomial ℤ, q.Monic ∧ q.eval₂ (Int.castRingHom ℂ) (rootCoord ζ p) = 0 := by

@@ -109,6 +109,41 @@ def LemT : Prop :=
       (1 - Real.exp (11 * (N : ℝ) ^ 2 * ell0 N a - min La ((r + K : ℕ) : ℝ) / 32)) * (rkA r K n0 B : ℝ) ≤
         ((SGood (r := r) (K := K) LL n0 B od bb La p).ncard : ℝ)
 
+/- English proof (translation)
+Introduce `N n0 r K _ _ LL B od bb a La p H`. Take `⟨hfin, hcard⟩` from `ha N n0 r K LL B od bb a La p H`. Take `⟨hPfin, hPcard⟩` from `hb N n0 r K LL B od bb a La p H`. Establish `hc'` using `hc N n0 r K LL B od bb a La p H`. Establish `hd'` using `hd N n0 r K LL B od bb a La p H`.
+
+Use `set SA := SAll (r := r) (K := K) LL n0 B with hSA`. Use `set SG := SGood (r := r) (K := K) LL n0 B od bb La p with hSG`. Establish `hGA : SG ⊆ SA` using `fun q hq => ⟨hq.1, hq.2.2⟩`. Establish `hGfin : SG.Finite` using `hfin.subset hGA`. Use `⟨hGfin, ?_⟩` and prove the remaining obligations.
+
+Set `SB : Set (QT N r K)` to `{q | q ∈ SA ∧ ¬ Typ LL B od bb La p q.1}`. Establish `hBfin : SB.Finite` using `hfin.subset fun q hq => hq.1`. Establish `hcov : SA ⊆ SG ∪ SB`. Introduce `q hq`. Distinguish the cases in `ht : Typ LL B od bb La p q.1`.
+
+Conclude with `Or.inl ⟨hq.1, hd' q.1 hq.1 ht, hq.2⟩`. Conclude with `Or.inr ⟨hq, ht⟩`. Establish `h1 : SA.ncard ≤ SG.ncard + SB.ncard` using `le_trans (Set.ncard_le_ncard hcov (hGfin.union hBfin)) (Set.ncard_union_le _ _)`. Use `set cR : ℝ := Real.exp (9 * (N : ℝ) ^ 2 * ell0 N a - min (La * ((K : ℝ) - 2 * N) / (16 * ((r + K : ℕ) : ℝ))) (((K : ℝ) - 2 * N) / 12)) * (rkA r K n0 B : ℝ) with hcR`. Establish `hcR0 : 0 ≤ cR` using `by positivity`.
+
+Establish `h2 : (SB.ncard : ℝ) ≤ ((SP (r` using `r) (K := K) LL n0 B).ncard : ℝ) * cR := by`. Rewrite using `[Set.ncard_eq_toFinset_card _ hBfin, Set.ncard_eq_toFinset_card _ hPfin]`. Establish `hmaps : ∀ q ∈ hBfin.toFinset, q.1 ∈ hPfin.toFinset`. Introduce `q hq`. Rewrite `hq`, the goal using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `hq.1.1`. Establish `hfib : ∀ μ ∈ hPfin.toFinset, ((hBfin.toFinset.filter fun q => q.1 = μ).card : ℝ) ≤ cR`. Introduce `μ hμ`. Rewrite `hμ` using `[Set.Finite.mem_toFinset]`. Distinguish the cases in `ht : Typ LL B od bb La p μ`.
+
+Establish `: hBfin.toFinset.filter (fun q => q.1 = μ) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `q hq hqμ`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`. Conclude with `hq.2 (hqμ ▸ ht)`.
+
+Rewrite using `[this]`. Simplify using `using hcR0`. Use `le_trans ?_ (hc' μ hμ ht)` and prove the remaining obligations. Establish `hIfin : ({I | IsSt (tanPart μ) I} : Set (ℤ → Finset (Fin K))).Finite`. Use `(hfin.image Prod.snd).subset ?_` and prove the remaining obligations.
+
+Introduce `I hI`. Conclude with `⟨(μ, I), ⟨hμ, hI⟩, rfl⟩`. Rewrite using `[Set.ncard_eq_toFinset_card _ hIfin]`. Establish `: (hBfin.toFinset.filter fun q => q.1 = μ).card ≤ hIfin.toFinset.card`. Use `Finset.card_le_card_of_injOn Prod.snd ?_ ?_` and prove the remaining obligations.
+
+Introduce `q hq`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Set.Finite.mem_toFinset] at hq`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Use `hq.1.1.2` as an intermediate fact. Rewrite `this` using `[hq.2]`. Then use the resulting hypothesis.
+
+Introduce `q hq q' hq' hqq`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hq hq'`. Conclude with `Prod.ext (hq.2.trans hq'.2.symm) hqq`. Conclude with `this` after adjusting the coercions. Establish `hsum : (hBfin.toFinset.card : ℝ) = ∑ μ ∈ hPfin.toFinset, ((hBfin.toFinset.filter fun q => q.1 = μ).card : ℝ)`.
+
+Use `Finset.card_eq_sum_card_fiberwise (f := Prod.fst) (s := hBfin.toFinset) (t := hPfin.toFinset) (fun q hq => hmaps q hq)` as an intermediate fact. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hsum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hk0 : (0 : ℝ) < ((r + K : ℕ) : ℝ)`. Establish `: 0 < r + K` using `by have := H.r1; omega`. Conclude with `this` after adjusting the coercions. Establish `hmin : min La ((r + K : ℕ) : ℝ) / 32 ≤ min (La * ((K : ℝ) - 2 * N) / (16 * ((r + K : ℕ) : ℝ))) (((K : ℝ) - 2 * N) / 12)`.
+
+Establish `hH4` using `H.H4`. Use `le_min ?_ ?_` and prove the remaining obligations. Establish `h3 : La / 32 ≤ La * ((K : ℝ) - 2 * N) / (16 * ((r + K : ℕ) : ℝ))`. Rewrite using `[div_le_div_iff₀ (by norm_num) (by positivity)]`. Use `mul_le_mul_of_nonneg_left hH4 H.La_pos.le` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_trans (div_le_div_of_nonneg_right (min_le_left _ _) (by norm_num)) h3`. Establish `h3 : ((r + K : ℕ) : ℝ) / 32 ≤ ((K : ℝ) - 2 * N) / 12` using `by linarith`. Conclude with `le_trans (div_le_div_of_nonneg_right (min_le_right _ _) (by norm_num)) h3`. Establish `hrk0 : (0 : ℝ) ≤ (rkA r K n0 B : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `h3 : (SB.ncard : ℝ) ≤ Real.exp (11 * (N : ℝ) ^ 2 * ell0 N a - min La ((r + K : ℕ) : ℝ) / 32) * (rkA r K n0 B : ℝ)`. Use `le_trans h2 (le_trans (mul_le_mul_of_nonneg_right hPcard hcR0) ?_)` and prove the remaining obligations. Rewrite using `[hcR, ← mul_assoc, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr ?_) hrk0` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1' : (rkA r K n0 B : ℝ) ≤ (SG.ncard : ℝ) + (SB.ncard : ℝ)`. Rewrite using `[← hcard]`. Conclude with `h1` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lemT_of (ha : PathWeightEqRank) (hb : PathCountFinite) (hc : AtypicalPathSmallWeight) (hd : TypicalPathOrdersSmall) : LemT := by
   classical
   intro N n0 r K _ _ LL B od bb a La p H

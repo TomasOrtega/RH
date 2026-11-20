@@ -8,6 +8,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.CycWordTrace
 
+/- English proof (translation)
+Introduce `B _ n m X`. Conclude with `(GlobalTheory.TraceCycWord.etr_succ_eq_sum_cycWord X m).symm`.
+-/
 theorem sum_cycWord_eq_etr : ∀ (B : Type) [Ring B] (n m : ℕ) (X : Fin n → Fin n → B),
     ∑ a : Fin (m + 1) → Fin n, ((GlobalTheory.Dec.cycWord a).map fun p => X p.1 p.2).prod
       = Formalism.REAL.etr X (m + 1) := by

@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.WeightTwoHeckePower
 
+/- English proof (translation)
+Introduce `p _ D hC gb N hN hNp X r`. Establish `hX : IsProjOver X.s` using `GlobalTheory.UPel.HT.GenProj.isProjOver_genModel p D hC gb N hN hNp X`. Conclude with `GlobalTheory.KS.isProjOver_pow ℂ X.X X.s hX X.univ.A X.univ.ab _ (LB.isLB_pull X.univ.isLB _) X.univ.ample r`.
+-/
 theorem isProjOver_sPow : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p), D.CompactB → ∀ (gb : GBase D.toG ℂ) (N : ℕ), 3 ≤ N →
     N.Coprime p → ∀ (X : GenModel gb N) (r : ℕ), IsProjOver (sPow X r) := by
   intro p _ D hC gb N hN hNp X r

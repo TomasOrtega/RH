@@ -5,6 +5,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Kleiman.TranslateEq
 
+/- English proof (translation)
+The claim follows from `(TwistFinite.equiv_ne LineBundle.proof).mp hT1`.
+-/
 theorem TwistFiniteNe.proof (hT1 : Kleiman.TwistFinite.Statement.{0, 0}) : TwistFiniteNe.Statement :=
   (TwistFinite.equiv_ne LineBundle.proof).mp hT1
 

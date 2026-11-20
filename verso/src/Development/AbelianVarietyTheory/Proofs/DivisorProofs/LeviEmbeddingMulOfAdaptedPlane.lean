@@ -15,6 +15,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.IndLine
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) :
     form σ J y x = -σ (form σ J x y) := by
@@ -23,6 +26,9 @@ theorem form_swap {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [form, add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem form_add_smul {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (a : E) (z w c : Fin n → E) :
     form σ J (a • z + w) c = a * form σ J z c + form σ J w c := by
@@ -31,11 +37,41 @@ theorem form_add_smul {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →
 def cols {E : Type} [Field E] {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) : Fin (n₁ + 2) → Fin (n₁ + 2) → E :=
   Fin.cons H.x (Fin.cons H.y fun j r => H.ι r j : Fin (n₁ + 1) → Fin (n₁ + 2) → E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cols_zero {E : Type} [Field E] {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) : cols H 0 = H.x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cols_one {E : Type} [Field E] {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) : cols H (Fin.succ 0) = H.y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cols_succ_succ {E : Type} [Field E] {n₁ : ℕ} (H : Plane E (n₁ + 2) n₁) (j : Fin n₁) :
     cols H j.succ.succ = fun r => H.ι r j := rfl
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Simplify using `only [Fin.sum_univ_succ, cols_zero, cols_one, cols_succ_succ] at hg`. Use `set u : Fin d₁ → E := fun j => g j.succ.succ with hu`. Establish `hιu : (∑ j : Fin d₁, g j.succ.succ • fun r => H'.ι r j) = H'.ι *ᵥ u`.
+
+Use function extensionality and compare the values at `r`. Simplify using `[Matrix.mulVec, dotProduct, u, mul_comm]`. Rewrite `hg` using `[hιu]`. Establish `hy` using `congrArg (fun z => form σ W.J z H'.y) hg`. Establish `hx` using `congrArg (fun z => form σ W.J z H'.x) hg`.
+
+Simplify using `only [form_add_smul] at hy hx`. Establish `h0y : form σ W.J 0 H'.y = 0` using `by simp [form]`. Establish `h0x : form σ W.J 0 H'.x = 0` using `by simp [form]`. Establish `hyx : form σ W.J H'.y H'.x = -1` using `by rw [form_swap σ hσ W.J hJ, hH.xy, map_one]`. Rewrite `hy` using `[hH.xy, hH.yy, (hH.orth u).2, h0y]`.
+
+Rewrite `hx` using `[hH.xx, hyx, (hH.orth u).1, h0x]`. Establish `hg0 : g 0 = 0` using `by simpa using hy`. Establish `hg1 : g (Fin.succ 0) = 0` using `by simpa using hx`. Rewrite `hg` using `[hg0, hg1, zero_smul, zero_smul, zero_add, zero_add]`. Establish `h1 : W₁.J *ᵥ (fun j => σ (u j)) = 0`.
+
+Rewrite using `[← hH.gram, ← Matrix.mulVec_mulVec]`. Establish `e : H'.ι.map σ *ᵥ (fun j => σ (u j)) = fun i => σ ((H'.ι *ᵥ u) i)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[e, hg]`.
+
+Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `Matrix.mulVec_zero _`. Take `⟨w₀⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `set τ := (B.emb w₀).1 with hτ`. Establish `hz0 : (Complex.I • W₁.J.map τ) *ᵥ (fun j => τ (σ (u j))) = 0`.
+
+Rewrite using `[Matrix.smul_mulVec]`. Establish `: W₁.J.map τ *ᵥ (fun j => τ (σ (u j))) = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec τ W₁.J (fun j => σ (u j)) i` as an intermediate fact. Rewrite `this` using `[h1]`.
+
+Simplify `this.symm` using `[Function.comp_def]`. Rewrite using `[this, smul_zero]`. Establish `hz : (fun j => τ (σ (u j))) = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos` using `(hW₁.cartan w₀).2.2 (star fun j => τ (σ (u j))) (by simpa using hne)`.
+
+Rewrite `hpos` using `[star_star, hz0]`. Simplify using `at hpos`. Establish `hu0 : ∀ j, u j = 0` using `fun j => by`. Use `congrFun hz j` as an intermediate fact. Conclude with `(map_eq_zero σ).1 ((map_eq_zero τ).1 this)`.
+
+Introduce `i`. Use `Fin.cases hg0 (Fin.cases hg1 (fun j => hu0 j)) i` and prove the remaining obligations.
+-/
 theorem cols_linearIndependent {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) {d₁ i₀ i₁ r₁ s₁ : ℕ} (W : Spc F E (d₁ + 2)) (W₁ : Spc F E d₁) (H' : Plane E (d₁ + 2) d₁)
     (hσ : ∀ z, σ (σ z) = z) (hJ : ∀ i j, σ (W.J j i) = -W.J i j) (hW₁ : W₁.IsSkew σ B r₁ s₁)
@@ -90,6 +126,15 @@ def leviDiag {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
     (t : (AE F E)ˣ) : Fin (n₁ + 2) → AE F E :=
   Fin.cons t.1 (Fin.cons (cA σ (t⁻¹).1) fun _ => 1 : Fin (n₁ + 1) → AE F E)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hh`. Establish `h3' : mat h * incM F H'.ι = incM F H'.ι` using `h3.trans (Matrix.mul_one _)`. Use extensionality with `r c`. Rewrite using `[Matrix.mul_diagonal]`. Establish `key : ∀ c, (mat h * incM F (Matrix.of fun r c => cols H' c r)) r c = (mat h *ᵥ incV F (cols H' c)) r`.
+
+Introduce `c`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, incM, incV]`. Rewrite using `[key]`. Use `Fin.cases ?_ (Fin.cases ?_ (fun j => ?_)) c` and prove the remaining obligations. Rewrite using `[cols_zero, h1]`.
+
+Simplify using `[leviDiag, incM, incV, mul_comm]`. Rewrite using `[cols_one, h2]`. Simplify using `[leviDiag, incM, incV, mul_comm]`. Both sides reduce to the same expression. Use `congrFun (congrFun h3' r) j` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply] at this`. Simplify using `[leviDiag, incM, incV, Matrix.mulVec, dotProduct]`. Simplify `this` using `[incM]`.
+-/
 theorem levi_mul_cols {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d₁ : ℕ} {W : Spc F E (d₁ + 2)} {W₁ : Spc F E d₁} (H' : Plane E (d₁ + 2) d₁) (t : (AE F E)ˣ)
     (h : UA σ W.J) (hh : IsLevi H' t (1 : UA σ W₁.J) h) :
@@ -110,6 +155,17 @@ theorem levi_mul_cols {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     simp [leviDiag, incM, incV, Matrix.mulVec, dotProduct]
     simpa [incM] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH t t' k k' hk hk'`. Take `rfl` from `hH.rank`. Take `⟨w₀⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `hσ : ∀ z, σ (σ z) = z` using `fun z => by`. Apply `(B.emb w₀).1.injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hli` using `cols_linearIndependent σ B W W₁ H' hσ hW.skew hW₁ hH`. Establish `hC : IsUnit (Matrix.of fun r c => cols H' c r)` using `Matrix.linearIndependent_cols_iff_isUnit.1 hli`. Establish `hP : IsUnit (incM F (Matrix.of fun r c => cols H' c r))`. Use `hC.map (RingHom.mapMatrix (inclR (F := F) (E := E) (AF F)) : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E →+* Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) (AE F E))` as an intermediate fact.
+
+Simplify `this` using `[incM]`. Establish `hA` using `levi_mul_cols H' t k hk`. Establish `hA'` using `levi_mul_cols H' t' k' hk'`. Establish `hDD : Matrix.diagonal (leviDiag σ (n₁` using `d₁) t) * Matrix.diagonal (leviDiag σ t') = Matrix.diagonal (leviDiag σ t') * Matrix.diagonal (leviDiag σ t) := by`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_comm _ _`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show mat k * mat k' = mat k' * mat k`. Use `hP.mul_right_cancel ?_` and prove the remaining obligations. Use `set P := incM F (Matrix.of fun r c => cols H' c r)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem levi_commute : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ),
     B.IsGood σ → W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →

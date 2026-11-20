@@ -12,6 +12,9 @@ namespace UpperTheory.SectionEquivalence
 
 variable {T U : Scheme.{0}} {G' : Over T} [GrpObj G'] {G : Over U} [GrpObj G] {f : T ⟶ U} {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `hp.2 _ h h' x₀ y₀ hx hy`.
+-/
 private theorem mul_left (hp : IsGrpPullback G' G f φ) (h h' : 𝟙_ (Over T) ⟶ G') {g : T ⟶ U} (hg : 𝟙 T ≫ f = g)
     (x₀ y₀ : Over.mk g ⟶ G) (hx : x₀.left = h.left ≫ φ) (hy : y₀.left = h'.left ≫ φ) :
     (x₀ * y₀).left = (h * h').left ≫ φ := by
@@ -35,9 +38,15 @@ private def secEquiv (hp : IsGrpPullback G' G f φ) : (𝟙_ (Over T) ⟶ G') �
   map_mul' h h' := Over.OverMorphism.ext
     (mul_left hp h h' (Category.id_comp f) _ _ rfl rfl).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem secEquiv_left (hp : IsGrpPullback G' G f φ) (h : 𝟙_ (Over T) ⟶ G') :
     (secEquiv hp h).left = h.left ≫ φ := rfl
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[secEquiv_left, Over.comp_left, Over.comp_left, secEquiv_left, Category.assoc, Category.assoc, e]`.
+-/
 private theorem secEquiv_comp {H' : Over T} [GrpObj H'] {H : Over U} [GrpObj H] {φ₁ : H'.left ⟶ H.left}
     (hp : IsGrpPullback G' G f φ) (hp₁ : IsGrpPullback H' H f φ₁) (α : G' ⟶ H') (β : G ⟶ H)
     (e : α.left ≫ φ₁ = φ ≫ β.left) (h : 𝟙_ (Over T) ⟶ G') :
@@ -49,6 +58,33 @@ end UpperTheory.SectionEquivalence
 
 open UpperTheory.SectionEquivalence
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N hN hNp hpu hm r w j c hw hr hj hc S _ s o Rd Sd k _ _ x`. Take `⟨ox, ⟨m⟩⟩` from `IsogRep.exists_pull x o (s' := x ≫ s) rfl`. Establish `hp' : IsGrpPullback ox.A o.A x m.φ` using `m.cart`. Use `letI := Sd.grp`. Use `haveI := Sd.hom`.
+
+Set `Ksub : Subgroup (Over.mk x ⟶ o.A)` to `(IsMonHom.monoidHom Sd.i (Over.mk x)).range`. Set `H₀ : Subgroup (𝟙_ (Over (Sp k)) ⟶ ox.A)` to `Ksub.comap (secEquiv hp').toMonoidHom`. Establish `memH : ∀ h, h ∈ H₀ ↔ InSub Sd.i (secEquiv hp' h)` using `fun h => Iff.rfl`. Establish `hstab : ∀ (a : D.O), ∀ h ∈ H₀, h ≫ ox.act.act a ∈ H₀`. Introduce `a h hh`.
+
+Rewrite `hh`, the goal using `[memH]`. Take `⟨z, hz⟩` from `hh`. Take `⟨g, hg⟩` from `Sd.stable a`. Use `⟨z ≫ g, ?_⟩` and prove the remaining obligations. Rewrite using `[secEquiv_comp hp' hp' _ _ (m.act a) h, Category.assoc, hg, ← Category.assoc, hz]`.
+
+Establish `hkill : ∀ h ∈ H₀, ES.KilledBy ox w h`. Introduce `h hh c hc`. Establish `hk` using `Sd.killed _ _ ((memH h).1 hh) c hc`. Rewrite `hk` using `[← secEquiv_comp hp' hp' _ _ (m.act _) h, ← map_one (secEquiv hp')]`. Conclude with `(secEquiv hp').injective hk`.
+
+Establish `hcard : Nat.card H₀ = Ideal.absNorm w ^ j` using `by haveI := Sd.mono haveI := Sd.fin haveI := Sd.et`. Establish `hmem : ∀ z : Over.mk x ⟶ Sd.K, (secEquiv hp').symm (z ≫ Sd.i) ∈ H₀` using `fun z => by`. Rewrite using `[memH, MulEquiv.apply_symm_apply]`. Conclude with `⟨z, rfl⟩`. Establish `e1 : H₀ ≃ (Over.mk x ⟶ Sd.K)`.
+
+Use `(Equiv.ofBijective (fun z : Over.mk x ⟶ Sd.K => (⟨_, hmem z⟩ : H₀)) ⟨?_, ?_⟩).symm` and prove the remaining obligations. Introduce `z z' hzz`. Establish `hz` using `congrArg (fun u : H₀ => secEquiv hp' u.1) hzz`. Simplify using `only [MulEquiv.apply_symm_apply] at hz`. Conclude with `(cancel_mono Sd.i).1 hz`.
+
+Introduce and unpack `⟨h, hh⟩`. Take `⟨z, hz⟩` from `(memH h).1 hh`. Use `⟨z, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [hz, MulEquiv.symm_apply_apply]`. Establish `e2 : (Over.mk x ⟶ Sd.K) ≃ {t : Spec (CommRingCat.of k) ⟶ Sd.K.left // t ≫ Sd.K.hom = x}` using `{ toFun := fun z => ⟨z.left, by simpa using Over.w z⟩ invFun := fun t => Over.homMk t.1 t.2 left_inv := fun z => Over.OverMorphism.ext rfl right_inv := fun t => Subtype.ext rfl }`.
+
+Set `pt : ↥(Spec (CommRingCat.of k))` to `IsLocalRing.closedPoint k`. Take `⟨-, hc⟩` from `GlobalTheory.FinEt.card_points_eq_finrank Sd.K.hom x pt`. Rewrite using `[Nat.card_congr (e1.trans e2), hc]`. Establish `hK : (toUnit Sd.K).left = Sd.K.hom` using `by simpa using Over.w (toUnit Sd.K)`. Establish `hr` using `Sd.deg.rank (x pt)`.
+
+Rewrite `hr` using `[hK]`. Conclude with `hr`. Take `⟨o', ψ, hiso, htj, hker⟩` from `UpperTheory.exists_isogeny_with_kernel_subgroup p D R b N hN hNp hpu hm r w j c hw hr hc k (x ≫ s) ox H₀ hstab hkill hcard`. Take `⟨y, ⟨hy, m₀', m₁, hsq⟩, -⟩` from `Rd.univ (Sp k) x ox o' m ψ hiso htj`. Substitute `hy` using the available equality.
+
+Use `⟨y, rfl, ?_⟩` and prove the remaining obligations. Introduce `a₀ a ha`. Establish `hp₀` using `m₀'.cart`. Establish `hp₁` using `m₁.cart`. Take `⟨mm, hmm⟩` from `IsogRep.exists_comp m₀' Rd.m₀`.
+
+Establish `hφ : m.φ = m₀'.φ ≫ Rd.m₀.φ`. Rewrite using `[← hmm]`. Conclude with `GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique_of_base_eq p D R b N hN hNp _ _ _ _ o ox _ _ m mm rfl`. Take `⟨h, rfl⟩ : ∃ h, secEquiv hp₀ h = a₀` from `⟨(secEquiv hp₀).symm a₀, MulEquiv.apply_symm_apply _ _⟩`. Establish `haa : a = secEquiv hp' h`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[secEquiv_left, hφ, ← Category.assoc, ← secEquiv_left hp₀, ha]`. Establish `hψ1 : secEquiv hp₀ h ≫ Rd.ψ = secEquiv hp₁ (h ≫ ψ)` using `(secEquiv_comp hp₀ hp₁ ψ Rd.ψ hsq.symm h).symm`. Establish `hkb : ∀ I : Ideal (𝓞 D.F), ES.KilledBy Rd.o₀ I (secEquiv hp₀ h) ↔ ES.KilledBy ox I h`. Introduce `I`.
+
+Use `forall₂_congr fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← secEquiv_comp hp₀ hp₀ _ _ (m₀'.act _) h, ← map_one (secEquiv hp₀), (secEquiv hp₀).injective.eq_iff]`. Rewrite using `[haa, ← memH, ← hker, hψ1, ← map_one (secEquiv hp₁), (secEquiv hp₁).injective.eq_iff]`. Simplify using `only [hkb]`.
+-/
 theorem UpperTheory.repData_geometric_points_of_subData :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → D.m = 1 → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (Rd : RepData b N r w j c s o) (Sd : SubData w j o) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S), ∃ y : Sp k ⟶ Rd.Y.left, y ≫ Rd.Y.hom = x ∧ KerGeo Rd Sd y := by
   intro p _ D R _ _ b N hN hNp hpu hm r w j c hw hr hj hc S _ s o Rd Sd k _ _ x

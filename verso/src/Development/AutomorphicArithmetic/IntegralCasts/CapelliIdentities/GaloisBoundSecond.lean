@@ -2,6 +2,15 @@ import Mathlib
 
 open NumberField
 
+/- English proof (translation)
+Establish `hdvd : Ideal.absNorm I ∣ Ideal.absNorm (Ideal.span {y})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem I).2 hy)`. Rewrite `hdvd` using `[Ideal.absNorm_span_singleton]`. Establish `hpos : 0 < (Algebra.norm ℤ y).natAbs`. Rewrite using `[Int.natAbs_pos]`. Conclude with `(Algebra.norm_ne_zero_iff).2 h0`.
+
+Establish `hle` using `Nat.le_of_dvd hpos hdvd`. Establish `hprod : ∏ w : InfinitePlace F, w (y : F) = ((|Algebra.norm ℚ (y : F)| : ℚ) : ℝ)`. Rewrite using `[← InfinitePlace.prod_eq_abs_norm]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(NumberField.IsTotallyReal.isReal w).mult_eq_one, pow_one]`.
+
+Rewrite using `[hprod, ← Algebra.coe_norm_int]`. Establish `: ((Algebra.norm ℤ y).natAbs : ℝ) = |((Algebra.norm ℤ y : ℤ) : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Establish `h2 : (Ideal.absNorm I : ℝ) ≤ ((Algebra.norm ℤ y).natAbs : ℝ)` using `by exact_mod_cast hle`. Rewrite `h2` using `[this]`.
+
+Use `push_cast`. Conclude with `h2`.
+-/
 private lemma norm_le_prod {F : Type} [Field F] [NumberField F] [NumberField.IsTotallyReal F]
     (I : Ideal (RingOfIntegers F)) (y : RingOfIntegers F) (hy : y ∈ I) (h0 : y ≠ 0) :
     (Ideal.absNorm I : ℝ) ≤ ∏ w : InfinitePlace F, w (y : F) := by
@@ -24,6 +33,15 @@ private lemma norm_le_prod {F : Type} [Field F] [NumberField F] [NumberField.IsT
   push_cast
   exact h2
 
+/- English proof (translation)
+Take `⟨y, hy, hyx⟩` from `hx`. Take `⟨y', hy', hyx'⟩` from `hx'`. Establish `hN' : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hcoe : ((y - y' : RingOfIntegers F) : F) = (N : F) * (x - x')`. Establish `e : ((y - y' : RingOfIntegers F) : F) = (y : F) - (y' : F)` using `map_sub _ _ _`.
+
+Rewrite using `[e, hyx, hyx']`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : y - y' ≠ 0`. Introduce `h`. Rewrite `hcoe` using `[h]`.
+
+Establish `: (N : F) * (x - x') = 0` using `by simpa using hcoe.symm`. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `hN' h1`. Conclude with `hne (sub_eq_zero.1 h1)`. Use `norm_le_prod I (y - y') (I.sub_mem hy hy') h0` as an intermediate fact.
+
+Rewrite `this` using `[hcoe]`. Then use the resulting hypothesis.
+-/
 private lemma sep {F : Type} [Field F] [NumberField F] [NumberField.IsTotallyReal F]
     (N : ℕ) (hN : 0 < N) (I : Ideal (RingOfIntegers F)) (x x' : F)
     (hx : ∃ y ∈ I, (y : F) = (N : F) * x) (hx' : ∃ y ∈ I, (y : F) = (N : F) * x') (hne : x ≠ x') :
@@ -45,6 +63,53 @@ private lemma sep {F : Type} [Field F] [NumberField F] [NumberField.IsTotallyRea
   have := norm_le_prod I (y - y') (I.sub_mem hy hy') h0
   rwa [hcoe] at this
 
+/- English proof (translation)
+Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Break down `S.eq_empty_or_nonempty with hE | ⟨x0, hx0⟩` into its components or cases. Substitute `hE` using the available equality. Use `⟨Set.finite_empty, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.ncard_empty, Nat.cast_zero, zero_mul]`.
+
+Check the signs of the components of the expression. Establish `hmem : ∀ x, x ∈ S → x ≠ 0 ∧ (∃ y ∈ I, (y : F) = (N : F) * x) ∧ ∀ w : InfinitePlace F, (w : F → ℝ) x ≤ B` using `fun x hx => by`. Rewrite `hx` using `[hS]`. Conclude with `hx`. Use `set n := Module.finrank ℚ F with hn_def`.
+
+Establish `hn : 0 < n` using `Module.finrank_pos`. Establish `hcard : Fintype.card (InfinitePlace F) = n`. Rewrite using `[hn_def, ← InfinitePlace.sum_mult_eq, Finset.card_univ.symm, Finset.card_eq_sum_ones]`. Conclude with `Finset.sum_congr rfl fun w _ => ((NumberField.IsTotallyReal.isReal w).mult_eq_one).symm`. Use `set C : ℝ := B * N with hC`.
+
+Establish `hC0 : 0 ≤ C` using `by positivity`. Use `set A : ℝ := (Ideal.absNorm I : ℝ) with hA`. Establish `hA0 : 0 < A`. Establish `: Ideal.absNorm I ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Rewrite using `[hA]`.
+
+Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Use `set s : ℝ := A ^ ((n : ℝ)⁻¹) with hs_def`. Establish `hs : s ^ n = A` using `Real.rpow_inv_natCast_pow hA0.le hn.ne'`. Establish `hs0 : 0 < s` using `Real.rpow_pos_of_pos hA0 _`. Establish `hN'F : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`.
+
+Establish `hwN : ∀ (w : InfinitePlace F) (z : F), w ((N : F) * z) = N * w z`. Introduce `w z`. Rewrite using `[map_mul]`. Use `congr 1`. Use `w.norm_embedding_eq (N : F)` as an intermediate fact.
+
+Rewrite using `[← this]`. Simplify using the standard rewrite rules. Establish `hAC : A ≤ C ^ n`. Establish `h1` using `sep N hN I x0 0 (hmem x0 hx0).2.1 ⟨0, I.zero_mem, by simp⟩ (hmem x0 hx0).1`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← hcard, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun w _ => w.1.nonneg _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[sub_zero, hwN, hC, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right ((hmem x0 hx0).2.2 w) hNr.le`. Establish `hsC : s ≤ C`.
+
+Establish `: s ^ n ≤ C ^ n` using `by rw [hs]; exact hAC`. Conclude with `(pow_le_pow_iff_left₀ hs0.le hC0 hn.ne').1 this`. Set `ρ : InfinitePlace F → (F →+* ℝ)` to `fun w => InfinitePlace.embedding_of_isReal (NumberField.IsTotallyReal.isReal w)`. Establish `hρ : ∀ w z, |ρ w z| = w z` using `fun w z => by`. Simplify `InfinitePlace.norm_embedding_of_isReal (NumberField.IsTotallyReal.isReal w) z` using `[Real.norm_eq_abs]`.
+
+Use `set K : ℤ := ⌊2 * C / s⌋ with hK`. Set `f : F → InfinitePlace F → ℤ` to `fun x w => ⌊((N : ℝ) * ρ w x + C) / s⌋`. Set `T : Finset (InfinitePlace F → ℤ)` to `Fintype.piFinset fun _ => Finset.Icc 0 K`. Establish `hmaps : ∀ x ∈ S, f x ∈ (T : Set (InfinitePlace F → ℤ))`. Introduce `x hx`.
+
+Simplify using `only [T, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]`. Introduce `w`. Establish `hb : |ρ w x| ≤ B` using `by rw [hρ]; exact (hmem x hx).2.2 w`. Take `⟨hb1, hb2⟩` from `abs_le.1 hb`. Establish `h1 : -C ≤ (N : ℝ) * ρ w x`.
+
+Use `mul_le_mul_of_nonneg_left hb1 hNr.le` as an intermediate fact. Rewrite using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (N : ℝ) * ρ w x ≤ C`. Use `mul_le_mul_of_nonneg_left hb2 hNr.le` as an intermediate fact.
+
+Rewrite using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Conclude with `Int.floor_nonneg.2 (div_nonneg (by linarith) hs0.le)`. Conclude with `Int.floor_mono (div_le_div_of_nonneg_right (by linarith) hs0.le)`.
+
+Establish `hinj : Set.InjOn f S`. Introduce `x hx x' hx' hff`. Assume the negation of the conclusion as `hne`. Establish `h1` using `sep N hN I x x' (hmem x hx).2.1 (hmem x' hx').2.1 hne`. Establish `hz : (N : F) * (x - x') ≠ 0` using `mul_ne_zero hN'F (sub_ne_zero.2 hne)`.
+
+Establish `h2 : ∏ w : InfinitePlace F, w ((N : F) * (x - x')) < ∏ _w : InfinitePlace F, s`. Use `Finset.prod_lt_prod_of_nonempty (fun w _ => w.pos_iff.2 hz) (fun w _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Establish `hw` using `congrFun hff w`. Establish `h3` using `Int.abs_sub_lt_one_of_floor_eq_floor hw`. Rewrite `h3` using `[← sub_div, abs_div, abs_of_pos hs0, div_lt_one hs0]`.
+
+Establish `h4 : w ((N : F) * (x - x')) = |(N : ℝ) * ρ w x + C - ((N : ℝ) * ρ w x' + C)|`. Rewrite using `[hwN, ← hρ w (x - x'), map_sub, ← abs_of_pos hNr, ← abs_mul, abs_of_pos hNr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`.
+
+Conclude with `h3`. Rewrite `h2` using `[Finset.prod_const, Finset.card_univ, hcard, hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTfin : (T : Set (InfinitePlace F → ℤ)).Finite` using `T.finite_toSet`. Use `⟨Set.Finite.of_injOn (f := f) hmaps hinj hTfin, ?_⟩` and prove the remaining obligations.
+
+Establish `hle` using `Set.ncard_le_ncard_of_injOn f hmaps hinj hTfin`. Establish `hK0 : 0 ≤ K` using `Int.floor_nonneg.2 (by positivity)`. Establish `hTc : (T : Set (InfinitePlace F → ℤ)).ncard = (K.toNat + 1) ^ n`. Rewrite using `[Set.ncard_coe_finset]`. Simplify using `only [T, Fintype.card_piFinset, Int.card_Icc, Finset.prod_const, Finset.card_univ, hcard]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hle` using `[hTc]`. Establish `hle' : (S.ncard : ℝ) ≤ ((K : ℝ) + 1) ^ n`. Establish `: (S.ncard : ℝ) ≤ (((K.toNat + 1) ^ n : ℕ) : ℝ)` using `by exact_mod_cast hle`.
+
+Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`. Use `congr 2`. Conclude with `Int.toNat_of_nonneg hK0` after adjusting the coercions. Establish `hKs : ((K : ℝ) + 1) * s ≤ 4 * C`.
+
+Establish `h1 : (K : ℝ) ≤ 2 * C / s` using `Int.floor_le _`. Establish `h2 : (K : ℝ) * s ≤ 2 * C` using `(le_div_iff₀ hs0).1 h1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK1 : (0 : ℝ) ≤ (K : ℝ) + 1`. Establish `: (0 : ℝ) ≤ K` using `by exact_mod_cast hK0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs]`. Conclude with `mul_le_mul_of_nonneg_right hle' hA0.le`. Use `_ = (((K : ℝ) + 1) * s) ^ n := (mul_pow _ _ _).symm`.
+
+Use `_ ≤ (4 * C) ^ n := pow_le_pow_left₀ (by positivity) hKs n`. Use `_ = (4 * B * N) ^ n := by rw [hC]; ring_nf`.
+-/
 private lemma key {F : Type} [Field F] [NumberField F] [NumberField.IsTotallyReal F]
     (N : ℕ) (hN : 0 < N) (I : Ideal (RingOfIntegers F)) (hI : I ≠ ⊥) (B : ℝ) (hB : 0 ≤ B)
     (S : Set F)
@@ -164,6 +229,9 @@ private lemma key {F : Type} [Field F] [NumberField F] [NumberField.IsTotallyRea
     _ ≤ (4 * C) ^ n := pow_le_pow_left₀ (by positivity) hKs n
     _ = (4 * B * N) ^ n := by rw [hC]; ring_nf
 
+/- English proof (translation)
+Introduce `F _ _ _ N hN I hI B hB`. Conclude with `key N hN I hI B hB _ rfl`.
+-/
 theorem UpperTheory.Reformulated.B.GaloisBoundSecond.main :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] [NumberField.IsTotallyReal F] (N : ℕ),
       (0 : ℕ) < N →

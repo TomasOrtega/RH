@@ -19,18 +19,29 @@ section BoxValues
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Unfold `gm`. Rewrite using `[dif_pos h]`. Conclude with `map_inv _ a`.
+-/
 private theorem gm_inv' {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : Γ(Y, U)ˣ) :
     gm r z U a⁻¹ = (gm r z U a)⁻¹ := by
   unfold gm
   rw [dif_pos h]
   exact map_inv _ a
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[← gs_unit r z V h, ← gs_unit r z U (hle h)]`. Conclude with `gs_res r z hle h a.val`.
+-/
 private theorem gm_res' {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {U V : Y.Opens} (hle : V ≤ U) (h : r z ∈ V)
     (a : Γ(Y, U)ˣ) : gm r z V (res hle a) = gm r z U a := by
   ext
   rw [← gs_unit r z V h, ← gs_unit r z U (hle h)]
   exact gs_res r z hle h a.val
 
+/- English proof (translation)
+Establish `hD : r z ∈ (LB.div B A).U (b, a)` using `divLe a b hz`. Rewrite using `[← gs_res r z (inf_le_left : A.U a ⊓ B.U b ≤ A.U a) hz]`. Express the relevant statement in the definitionally equal form `gs r z _ (rs inf_le_left ((secOfIso t hu hA hB).f a)) = _`. Rewrite using `[secOfIso_spec t hu hA hB a b, isoCand, gs_mul r z _ hz, gs_unit r z _ hz, gm_inv' r z _ hz, gm_res' r z (divLe a b) hz]`. Use `congr 1`.
+
+Conclude with `gs_res r z inf_le_right hz (t.f b)`.
+-/
 theorem gs_secOfIso_eq {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGen) (hA : A.IsLB) (hB : B.IsLB)
     (a : A.ι) (b : B.ι) (r : Z ⟶ Y) (z : Z) (hz : r z ∈ A.U a ⊓ B.U b) :
     gs r z (A.U a) ((secOfIso t hu hA hB).f a) =
@@ -43,6 +54,9 @@ theorem gs_secOfIso_eq {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGe
   congr 1
   exact gs_res r z inf_le_right hz (t.f b)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `gs r z _ (boxSecGenF L pr φ' ε p φ hφ σ jN) = _`. Rewrite using `[boxSecGenF, gs_prod r z _ hz]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[gs_res r z _ hz]`. Conclude with `gs_pull r (p i) z _ (box_le_of_comp L pr φ' (φ i) (p i) i (hφ i) jN hz) _`.
+-/
 theorem gs_boxSecGen_eq {X' Y' : Scheme.{0}} (L : LB X) {j : ℕ} (pr : Fin j → (X' ⟶ X)) {K : Type} [Fintype K]
     (φ' : K → (Y' ⟶ X')) (ε : K → ℤ) (p : Fin j → (Y' ⟶ Y)) (φ : Fin j → K → (Y ⟶ X))
     (hφ : ∀ i a, φ' a ≫ pr i = p i ≫ φ i a) (σ : ∀ i, LB.Sec (LB.LinComb L (φ i) ε))
@@ -55,6 +69,13 @@ theorem gs_boxSecGen_eq {X' Y' : Scheme.{0}} (L : LB X) {j : ℕ} (pr : Fin j �
   rw [gs_res r z _ hz]
   exact gs_pull r (p i) z _ (box_le_of_comp L pr φ' (φ i) (p i) i (hφ i) jN hz) _
 
+/- English proof (translation)
+Use `⟨secOfIso (u := LB.linCombIso w φ' ε) (boxSecGen M pr φ' ε p φ hφ σ) (linCombIso_isGen w hw φ' ε) (linComb_isLB M' hM' φ' ε) (linComb_isLB _ (linComb_isLB M hM pr _) φ' ε), ?_⟩` and prove the remaining obligations. Introduce `Z r z J J' hJ hJ'`. Establish `hA : r z ∈ LB.wchart M' φ' (fun a => J' (r ≫ φ' a))` using `Good.mem hJ' φ' r`. Establish `hB : r z ∈ LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J ((r ≫ φ' a) ≫ pr i))` using `Set.mem_iInter.2 fun a => Good.mem hJ pr (r ≫ φ' a)`. Establish `h1` using `gs_secOfIso_eq (LB.linCombIso w φ' ε) (boxSecGen M pr φ' ε p φ hφ σ) (linCombIso_isGen w hw φ' ε) (linComb_isLB M' hM' φ' ε) (linComb_isLB _ (linComb_isLB M hM pr _) φ' ε) (fun a => J' (r ≫ φ' a)) (fun a i => J ((r ≫ φ' a) ≫ pr i)) r z ⟨hA, hB⟩`.
+
+Establish `h2` using `gs_boxSecGen_eq M pr φ' ε p φ hφ σ (fun a i => J ((r ≫ φ' a) ≫ pr i)) r z hB`. Establish `h3` using `gm_linCombIso w φ' ε r z (fun a i => J ((r ≫ φ' a) ≫ pr i)) (fun a => J' (r ≫ φ' a)) ⟨hB, hA⟩`. Rewrite using `[sval_of _ r z J' (fun a => J' (r ≫ φ' a)) (fun _ => rfl)]`. Use `erw [h1, h3, h2, Units.mul_inv_cancel_left]`. Use `Finset.prod_congr rfl (fun i _ => (sval_of (σ i) (r ≫ p i) z J _ (fun a => ?_)).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, hφ]`.
+-/
 theorem exists_boxSec_val {X' Y' : Scheme.{0}} {M : LB X} {M' : LB X'} (hM : M.IsLB) (hM' : M'.IsLB) {j : ℕ}
     {pr : Fin j → (X' ⟶ X)} (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen) {K : Type} [Fintype K]
     (φ' : K → (Y' ⟶ X')) (ε : K → ℤ) (p : Fin j → (Y' ⟶ Y)) (φ : Fin j → K → (Y ⟶ X))
@@ -80,6 +101,11 @@ theorem exists_boxSec_val {X' Y' : Scheme.{0}} {M : LB X} {M' : LB X'} (hM : M.I
 
 end BoxValues
 
+/- English proof (translation)
+Introduce `R _ _ j A A' pA F _ _ k t`. Establish `hφ : ∀ (i : Fin j) (_ : Fin 1), (snd (TFK (R` using `R) F) A'.A).left ≫ (pA.pr i).left = ((TFK (R := R) F) ◁ pA.pr i).left ≫ (snd (TFK (R := R) F) A.A).left := fun i _ => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerLeft_snd]`. Take `⟨t', ht'⟩` from `exists_boxSec_val A.isLB A'.isLB pA.w pA.w_gen (fun _ : Fin 1 => (snd (TFK (R := R) F) A'.A).left) (fun _ => (k : ℤ)) (fun i => ((TFK (R := R) F) ◁ pA.pr i).left) (fun _ _ => (snd (TFK (R := R) F) A.A).left) hφ t`. Use `⟨t', fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `ht' Z r z J J' hJ hJ'`. Rewrite `h` using `[Fin.prod_univ_one, zpow_natCast]`. Conclude with `h`.
+-/
 theorem exists_boxSec_pow_ext : ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (pA : IsPowPolAV A' A j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (t : Fin j → LB.Sec (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A.A).left) (fun _ => (k : ℤ)))), ∃ t' : LB.Sec (LB.LinComb A'.L (K := Fin 1) (fun _ => (snd (TFK (R := R) F) A'.A).left) (fun _ => (k : ℤ))), (∀ (Z : Scheme.{0}) (r : Z ⟶ ((TFK (R := R) F) ⊗ A'.A).left) (z : Z) (J J'), Geo.Tor.Good A.L z J → Geo.Tor.Good A'.L z J' → (bw pA.w (r ≫ (snd (TFK (R := R) F) A'.A).left) z (fun i => J ((r ≫ (snd (TFK (R := R) F) A'.A).left) ≫ (pA.pr i).left)) (J' (r ≫ (snd (TFK (R := R) F) A'.A).left)) ^ k).val * Geo.Tor.sval t' r z J' = ∏ i, Geo.Tor.sval (t i) (r ≫ ((TFK (R := R) F) ◁ pA.pr i).left) z J) := by
   intro R _ _ j A A' pA F _ _ k t
   have hφ : ∀ (i : Fin j) (_ : Fin 1), (snd (TFK (R := R) F) A'.A).left ≫ (pA.pr i).left =

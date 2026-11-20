@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.PartitionSolutions.HdFacts
 open UpperTheory.V.Cj.A
 
+/- English proof (translation)
+Introduce `Γ V S I _ _ _ _ d G`. Use `⟨fun q k u u' c h hz => ?_, fun ι hι q => ?_⟩` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => exact fun x hx => (h x hx).symm.trans (hz x hx)`. Consider the case `succ q`.
+
+Take `⟨b, hb, hdb, hz⟩` from `hz`. Conclude with `⟨b, hb, fun x hx => (hdb x hx).trans (h x hx), hz⟩`. Proceed by induction on `q with`. Consider the case `zero => exact fun k u c hz x hx => hz (x.map ι) (by rw [List.length_map, hx])`. Consider the case `succ q ih`.
+
+Introduce and unpack `k u c ⟨b, hb, hdb, hz⟩`. Use `⟨fun x => b (x.map ι), fun γ x hx => ?_, fun x hx => hdb (x.map ι) (by rw [List.length_map, hx]), ?_⟩` and prove the remaining obligations. Establish `h` using `hb γ (x.map ι) (by rw [List.length_map, hx])`. Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using `only [List.map_map]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `δ`. Conclude with `hι γ δ`. Establish `h` using `ih (k + 1) _ c hz`. Establish `e : (fun x : List Γ => UpperTheory.V.Lit.Geo.hd b (x.map ι)) = UpperTheory.V.Lit.Geo.hd (fun x : List Γ => b (x.map ι))`.
+
+Use function extensionality and compare the values at `fun x => (hdFacts.2.2.1 I Γ _ ι b x).symm`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem UpperTheory.V.Cj.A.zigFormal :
     ZigFormal := by
   intro Γ V S I _ _ _ _ d G

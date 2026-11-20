@@ -23,6 +23,13 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {s : HidaSetting l L Ω} {V0 : s.Lev} {c : Coef l} {n : ℕ} {r : Resid V0.frame c.O n} {V : s.Lev}
   (h : (Pa.globOf r V).Hom (Pa.globOf r V0))
 variable (Q0 : QData V0) (Q : QData V) (hS : V0.S' ⊆ V.S')
+/- English proof (translation)
+Introduce `t' ht'`. Use `haveI : Finite (ResidueField c.O) := Module.finite_of_finite (ResidueField ℤ_[l])`. Establish `hk : ∀ i, (p0 h).ker ≤ (t' i).ker` using `fun i g hg => by`. Use `teich_ext _ _ ?_ (ht' i g).2 (one_pow _)` and prove the remaining obligations. Rewrite using `[(ht' i g).1, rUp_chib, MonoidHom.mem_ker.1 hg, map_one]`.
+
+Simplify using the standard rewrite rules. Set `t : Fin n → V0.frame.G₀ →* c.Oˣ` to `fun i => (p0 h).liftOfSurjective (surjective_levelChangeBaseGroupHom h) ⟨t' i, hk i⟩`. Establish `e : ∀ i g, t i (p0 h g) = t' i g` using `fun i g => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g`. Use `ht t fun i g => by` as an intermediate fact. Take `⟨x, rfl⟩` from `surjective_levelChangeBaseGroupHom h g`.
+
+Rewrite using `[e, ← rUp_chib]`. Conclude with `ht' i x`. Establish `e2 : ∀ (u : s.St) i, (t' i).comp (V.pr.comp (Ine (F` using `L) (s.A u)).subtype) = (t i).comp (V0.pr.comp (Ine (F := L) (s.A u)).subtype) := fun u i => MonoidHom.ext fun x => (e i (V.pr x)).symm.trans (congrArg (t i) (levelChangeBaseGroupHom_apply_projection h hp x))`. Simplify using `only [e2]`. Conclude with `this`.
+-/
 theorem type_for_r_up_of_type_for (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (ι : Qbar l ≃+* ℂ) {m : ℕ}
     (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (ht : _root_.UpperTheory.V.Hi.CaseU.TypeForAlt r ι τ₀) : _root_.UpperTheory.V.Hi.CaseU.TypeForAlt (rUp h) ι τ₀ := by
   intro t' ht'

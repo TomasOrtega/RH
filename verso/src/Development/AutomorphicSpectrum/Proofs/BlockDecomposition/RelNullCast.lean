@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RelKill
 
+/- English proof (translation)
+Substitute `hc hc' hN hN'` using the available equality. Conclude with `h`.
+-/
 theorem relNull_cast {K : Type} [CommRing K] {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of K))
     {Q : ObjectProperty (Thick (smFun Y q))} {a n c c' N N' : ℕ} (hc : 1 + a = c) (hc' : 1 + a = c') (hN : 2 + n = N)
     (hN' : 2 + n = N') (r : CH.Cn (G q 1) 2) (z : CH.Cn (G q a) n)
@@ -27,6 +30,11 @@ theorem relNull_cast {K : Type} [CommRing K] {Y : Scheme.{0}} (q : Y ⟶ Spec (C
   subst hc hc' hN hN'
   exact h
 
+/- English proof (translation)
+Introduce `hTop hFU hOR hSL hCD hZR hAO hON hAR hFL hDW hDL hFC hC1 hDC hCK K _ _ W Z Y q _ _ i π _ D d hd hB r hr hc1 a n z hz hzr`. Take `⟨B⟩` from `hB`. Use `haveI := B.closed`. Take `⟨m, U, σ, hσ, hU, haff, hcov⟩` from `hDC K W Z Y q i π D d B`. Take `⟨-, hQ, -⟩` from `hSL K (pullback i π) Y Y (π ≫ q) (pullback.snd i π) (𝟙 Y)`.
+
+Conclude with `relNull_cast (π ≫ q) _ _ _ _ r z (kill_over hTop hFU hOR hSL hCD hZR hAO hAR hFL hDW hDL hFC hC1 hCK D hQ B.f B.f_nat B.f_u U σ hσ hU haff hcov r hr hc1 a n z hz hzr)`.
+-/
 theorem relKillOf : TopRes → FormUniq → OmRes → RelKillOf := by
   intro hTop hFU hOR hSL hCD hZR hAO hON hAR hFL hDW hDL hFC hC1 hDC hCK K _ _ W Z Y q _ _ i π _ D d hd hB r hr hc1 a n z hz hzr
   obtain ⟨B⟩ := hB

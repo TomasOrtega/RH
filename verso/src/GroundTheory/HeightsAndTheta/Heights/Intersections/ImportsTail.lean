@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+The claim follows from `poincareLelong_of_hironaka hRes (resDivPush_of (resExists_of_hironaka hRes) resBridge hInt hSide hPt)`.
+-/
 theorem PoincareLelongAlt.proof (hRes : ReciprocityTheory.AnForm.R.FinalTheorems.GFLogStC ∧ ReciprocityTheory.AnForm.R.FinalTheorems.FinTypeQE)
     (hInt : PtsIntegrableStatement) (hSide : DivPushResSideStatement)
     (hPt : DivPushPointStatement) : ArithmeticPoincareLelongFormula :=

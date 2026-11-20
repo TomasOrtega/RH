@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 
 namespace GlobalTheory.ConjElOverReal
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hc`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, map_inv₀, Complex.inv_eq_conj]`. Apply `Complex.norm_eq_one_of_pow_eq_one (n := m) _ hm` to reduce the goal to its premises. Rewrite using `[← map_pow, hx, map_one]`.
+-/
 private theorem exists_ne_zero_smul_mem_of_mem_span' (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (c : G E Ω) (hc : IsConjEl c)
     (x : Ω) (m : ℕ) (hm : m ≠ 0) (hx : x ^ m = 1) : c x = x⁻¹ := by
   obtain ⟨j, hj⟩ := hc
@@ -15,6 +18,19 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' (E Ω : Type) [Field E] [Fi
   apply Complex.norm_eq_one_of_pow_eq_one (n := m) _ hm
   rw [← map_pow, hx, map_one]
 
+/- English proof (translation)
+Establish `hZ : cycZ E Ω l c = -1`. Unfold `cycZ`. Apply `Units.ext` to reduce the goal to its premises. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, cyclotomicCharacter.toZModPow, Units.val_neg, Units.val_one, map_neg, map_one]`.
+
+Use `symm`. Apply `modularCyclotomicCharacter.unique` to reduce the goal to its premises. Introduce `t ht`. Establish `hm : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ n) := ⟨hm⟩`.
+
+Establish `ht' : (t : Ω) ^ (l ^ n) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 ht, Units.val_one]`. Establish `hd : l ^ n ∣ (-1 : ZMod (l ^ n)).val + 1`. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`.
+
+Rewrite using `[ZMod.natCast_zmod_val, neg_add_cancel]`. Take `⟨q, hq⟩` from `hd`. Establish `h1 : (t : Ω) ^ (-1 : ZMod (l ^ n)).val * t = 1`. Rewrite using `[← pow_succ, hq, pow_mul, ht', one_pow]`. Use `show c (t : Ω) = _`.
+
+Rewrite using `[exists_ne_zero_smul_mem_of_mem_span' E Ω c hc _ _ hm ht']`. Conclude with `(eq_inv_of_mul_eq_one_left h1).symm`. Unfold `cycBar`. Rewrite using `[MonoidHom.comp_apply, hZ]`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem main_lemma_2 (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] [CharZero Ω] [IsAlgClosed Ω]
     (l : ℕ) [Fact l.Prime] (c : G E Ω) (hc : IsConjEl c) : cycBar E Ω l c = -1 := by
   have hZ : cycZ E Ω l c = -1 := by
@@ -45,6 +61,9 @@ private theorem main_lemma_2 (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] [
   ext
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed K, haveI := IsAlgClosure.isAlgebraic (R := K) (K := Ω); Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩; cycBar (maximalRealSubfield K) Ω l c = -1 := by intro K Ω _ _ _ _ _ haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).in …`.
+-/
 theorem main : ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω], (∃ c : G (maximalRealSubfield K) Ω, IsConjEl c) ∧ ∀ (l : ℕ) [Fact l.Prime] (c : G (maximalRealSubfield K) Ω), IsConjEl c → haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, haveI := IsAlgClosure.isAlgebraic (R := K) (K := Ω); Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩; cycBar (maximalRealSubfield K) Ω l c = -1 := by
   intro K Ω _ _ _ _ _
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap K Ω).injective

@@ -10,6 +10,11 @@ section Gen
 
 variable {R K H : Type} [CommRing R] [CommRing K] [Group H]
 
+/- English proof (translation)
+Unfold `prj`. Establish `h : ∀ p : Polynomial R, Polynomial.aeval (F X) (p.map f) = F (Polynomial.aeval X p)`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [Polynomial.map_add, map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `monomial n a`. Rewrite using `[Polynomial.map_monomial, Polynomial.aeval_monomial, Polynomial.aeval_monomial, map_mul, map_pow, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, hF, map_one]`. Rewrite using `[← h, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+-/
 private theorem cl_prj (f : R →+* K) (F : M4 R →+* M4 K) (hF : ∀ (a : R) X, F (a • X) = f a • F X)
     (c : Fin 4 → R) (X : M4 R) (i : Fin 4) : prj (fun a => f (c a)) (F X) i = F (prj c X i) := by
   unfold prj
@@ -23,6 +28,15 @@ private theorem cl_prj (f : R →+* K) (F : M4 R →+* M4 K) (hF : ∀ (a : R) X
   rw [← h, Polynomial.map_prod]
   simp only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]
 
+/- English proof (translation)
+Establish `e0 : ∀ g, adj (r' g) * r' g = F (adj (r g) * r g)` using `fun g => by rw [hr, hadj, map_mul]`. Establish `e1 : ∀ a : R, f a • (1 : M4 K) = F (a • 1)` using `fun a => by rw [hF, map_one]`. Establish `e2 : (∏ j, (Polynomial.X - Polynomial.C (f (ps j s₀)))) = (∏ j, (Polynomial.X - Polynomial.C (ps j s₀))).map f`. Rewrite using `[Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+
+Establish `e3 : ∀ i, prj (fun a => f (ps a s₀)) (r' s₀) i = F (prj (fun a => ps a s₀) (r s₀) i)` using `fun i => by`. Rewrite using `[hr, cl_prj f F hF (fun a => ps a s₀)]`. Use `⟨fun ⟨h1, h⟩ => ⟨fun g => ?_, ?_, fun g i j hij => ?_, fun s hs i => ?_⟩, fun hf hi ⟨h1, h⟩ => ⟨fun g => hi ?_, Polynomial.map_injective f hf ?_, fun g i j hij => hi ?_, fun s hs i => hi ?_⟩⟩` and prove the remaining obligations. Conclude with `(e0 g).trans ((congrArg F (h1 g)).trans (e1 _).symm)`. Rewrite using `[hr, hch, h.charpoly, e2]`.
+
+Rewrite using `[e3, e3, hr, ← map_mul, ← map_mul, h.stable g i j hij, map_zero]`. Rewrite using `[e3, hr s, e1, ← map_sub, ← map_mul, ← map_mul, h.inert s hs i, map_zero]`. Conclude with `(e0 g).symm.trans ((h1 g).trans (e1 _))`. Rewrite using `[← hch, ← hr, h.charpoly, e2]`. Rewrite using `[map_mul, map_mul, ← e3, ← e3, ← hr, h.stable g i j hij, map_zero]`.
+
+Rewrite using `[map_mul, map_mul, map_sub, ← e3, ← hr, ← e1, h.inert s hs i, map_zero]`.
+-/
 private theorem cl_eqs (f : R →+* K) (F : M4 R →+* M4 K) (hF : ∀ (a : R) X, F (a • X) = f a • F X)
     (hadj : ∀ X, adj (F X) = F (adj X)) (hch : ∀ X : M4 R, (F X).charpoly = X.charpoly.map f)
     (I : Subgroup H) (ν : H → R) (ps : Fin 4 → H → R) (s₀ : H) (r : H →* M4 R) (r' : H →* M4 K)
@@ -52,6 +66,9 @@ private theorem cl_eqs (f : R →+* K) (F : M4 R →+* M4 K) (hF : ∀ (a : R) X
   · rw [map_mul, map_mul, ← e3, ← e3, ← hr, h.stable g i j hij, map_zero]
   · rw [map_mul, map_mul, map_sub, ← e3, ← hr, ← e1, h.inert s hs i, map_zero]
 
+/- English proof (translation)
+Establish `h` using `cl_eqs f f.mapMatrix (fun a X => by ext i j; simp) (fun X => by`. Use extensionality with `i j`. Simplify using `only [adj_apply, RingHom.mapMatrix_apply, Matrix.map_apply, map_zsmul])`. Use the proof step `(fun X => Matrix.charpoly_map X f) I ν ps s₀ r (mapRep f r) fun _ => rfl`. Conclude with `⟨h.1, fun hf => h.2 hf fun X Y e => Matrix.map_injective hf e⟩`.
+-/
 private theorem cl_map (f : R →+* K) (I : Subgroup H) (ν : H → R) (ps : Fin 4 → H → R) (s₀ : H) (r : H →* M4 R) :
     ((∀ g, IsGSp (ν g) (r g)) ∧ Ord I ps s₀ r →
       (∀ g, IsGSp (f (ν g)) (mapRep f r g)) ∧ Ord I (fun i g => f (ps i g)) s₀ (mapRep f r)) ∧
@@ -83,6 +100,15 @@ private def cl_conj (τ : ℤ × ℤ → R) (h0 : τ 0 = 1) (hm : ∀ i j, τ (i
   map_zero' := by ext a b; simp
   map_add' X Y := by ext a b; simp [mul_add]
 
+/- English proof (translation)
+Set `F` to `cl_conj (fun j => (t (Multiplicative.ofAdd j) : R)) (by simp) (fun i j => by simp [ofAdd_add])`. Establish `hF : ∀ X a b, F X a b = t (Multiplicative.ofAdd (wt a b)) * X a b` using `fun _ _ _ => rfl`. Use `⟨F.toMonoidHom.comp r, fun _ _ _ => rfl, (cl_eqs (RingHom.id R) F (fun a X => ?_) (fun X => ?_) (fun X => ?_) I ν ps s₀ r _ fun _ => rfl).1 h⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hF, mul_left_comm]`.
+
+Use extensionality with `i j`. Simplify using `only [adj_apply, hF, wt_rev, mul_smul_comm]`. Set `d : Fin 4 → Rˣ` to `fun a => t (Multiplicative.ofAdd (lamW a, muW a))`. Set `u : (M4 R)ˣ` to `⟨Matrix.diagonal fun a => d a, Matrix.diagonal fun a => ((d a)⁻¹ : Rˣ), by simp [Matrix.diagonal_mul_diagonal], by simp [Matrix.diagonal_mul_diagonal]⟩`. Establish `: F X = u.val * X * u⁻¹.val`.
+
+Use extensionality with `a b`. Use `show _ = (Matrix.diagonal (fun a => (d a : R)) * X * Matrix.diagonal fun a => (((d a)⁻¹ : Rˣ) : R)) a b`. Establish `e : wt a b = (lamW a, muW a) - (lamW b, muW b)` using `rfl`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, hF, e, ofAdd_sub, map_div, div_eq_mul_inv, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, Polynomial.map_id, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 private theorem cl_tor (t : Multiplicative (ℤ × ℤ) →* Rˣ) (I : Subgroup H) (ν : H → R) (ps : Fin 4 → H → R) (s₀ : H)
     (r : H →* M4 R) (h : (∀ g, IsGSp (ν g) (r g)) ∧ Ord I ps s₀ r) :
     ∃ r' : H →* M4 R, (∀ g a b, r' g a b = t (Multiplicative.ofAdd (wt a b)) * r g a b) ∧
@@ -108,6 +134,13 @@ private theorem cl_tor (t : Multiplicative (ℤ × ℤ) →* Rˣ) (I : Subgroup 
 
 end Gen
 
+/- English proof (translation)
+Establish `h1 : ∀ i, u i ∈ wts` using `fun i => by`. Assume the negation of the conclusion as `hn`. Establish `h2 : dimsL (u i) = 0`. Unfold `dimsL`. Rewrite using `[if_neg, if_neg hn]`.
+
+Apply the tactic sequence `rintro (e | e | e | e | e) <;> exact hn (by rw [e]; decide)`. Use `haveI : Nonempty {k // u k = u i} := ⟨⟨i, rfl⟩⟩`. Conclude with `Nat.card_pos.ne' ((h _).trans h2)`. Establish `h3` using `Finset.card_eq_sum_card_fiberwise (s := Finset.univ) (t := wts) (f := u) fun i _ => h1 i`. Establish `h4 : ∀ j, (Finset.univ.filter fun i => u i = j).card = dimsL j` using `fun j => by`.
+
+Rewrite using `[← h j, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `only [h4, Finset.card_univ, Fintype.card_fin] at h3`. Rewrite using `[h3]`. Evaluate the decidable proposition.
+-/
 private theorem cl_count {n : ℕ} (u : Fin n → ℤ × ℤ) (h : ∀ j, Nat.card {i // u i = j} = dimsL j) : n = 14 := by
   classical
   have h1 : ∀ i, u i ∈ wts := fun i => by
@@ -125,6 +158,23 @@ private theorem cl_count {n : ℕ} (u : Fin n → ℤ × ℤ) (h : ∀ j, Nat.ca
   rw [h3]
   decide
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ R _ _ _ ρ hρ`. Use `haveI : CompactSpace (D.Gp l) := isCompact_iff_compactSpace.1 (isClosed_Dec (F := ℚ) (D.pl l)).isCompact`. Establish `hmap : ∀ (B B' : Type) [CommRing B] [Algebra c.O B] [CommRing B'] [Algebra c.O B'] (f : B →ₐ[c.O] B') (r : D.Gp l →* M4 B), (EqL D r → EqL D (mapRep (f : B →+* B') r)) ∧ (Function.Injective f → EqL D (mapRep (f : B →+* B') r) → EqL D r)`. Introduce `B B' _ _ _ _ f r`. Establish `h` using `cl_map (f : B →+* B') ((D.Ip l).subgroupOf (D.Gp l)) (fun g => algebraMap c.O B (D.th g)) (fun i g => algebraMap c.O B (D.ps i g)) D.s0 r`.
+
+Establish `hy : ∀ a : c.O, (f : B →+* B') (algebraMap c.O B a) = algebraMap c.O B' a` using `fun a => f.commutes a`. Simplify using `only [hy] at h`. Conclude with `h`. Take `⟨ρ₁, h₁, hpt⟩` from `r0pt D hD`. Establish `hr0 : (D.loc ρ₁ l).hom = D.r0At l` using `congrArg (fun r : G ℚ Ω →* M4 c.O => r.comp (D.Gp l).subtype) h₁`.
+
+Establish `h0 : EqL D (D.loc ρ₁ l).hom`. Take `⟨B, _, _, _, _, ρ', h1, -, y, hy⟩` from `hpt.atL`. Rewrite using `[← hy]`. Conclude with `(hmap B c.O y ρ'.hom).1 h1`. Establish `hst : ρ.TStable fun a => (lamW a, muW a)`.
+
+Introduce `R' _ _ _ f t ht`. Take `⟨r', h1, h2⟩` from `cl_tor t _ _ _ _ (ρ.map f).hom ((hρ R').1 f)`. Set `ρ' : Lift c.O (D.rbarAt l) R'` to `{ hom := r' cont := fun a b N => by`. Simplify using `only [h1, map_mul]`. Conclude with `((ρ.map f).cont a b N).comp (_ * ·)`.
+
+Use `red := fun g a b => by rw [h1, map_mul, ht, one_mul, (ρ.map f).red] }`. Take `⟨f', hf', -⟩` from `(hρ R').2 ρ' h2`. Use `⟨f', fun g a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hf']`. Conclude with `h1 g a b`.
+
+Take `⟨x, P, n, u, φ, h1, h2, h3, h4, h5⟩` from `liftChart (l := l) (D.rbarAt l) (fun a => (lamW a, muW a)) E R ρ (fun B _ _ r => EqL D r) hmap hρ hst (D.loc ρ₁ l) h0 (fun g a b hab => by`. Rewrite using `[hr0]`. Conclude with `Matrix.diagonal_apply_ne (fun i => (D.ps i g : c.O)) fun e : a = b => hab (by rw [e]))`. Use the proof step `(fun B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' hπ' p hp hπp r' e1 e2 e3 => by`. Take `⟨r, k1, k2, k3⟩` from `spLiftL hP D hD E B π hπ B' π' hπ' p hp hπp r' ⟨hr0 ▸ e1, e2⟩ e3`.
+
+Conclude with `⟨r, k1.cont, k2, k3⟩)`. Establish `h6 : ∀ j, Nat.card {i // u i = j} = dimsL j` using `fun j => by`. Take `⟨S, hS, hS'⟩` from `h5 j`. Rewrite `hS'` using `[hr0]`. Conclude with `hS.trans (UpperTheory.tangent_space_deformation_at_l hP D hD E j S hS')`.
+
+Take `rfl` from `cl_count u h6`. Conclude with `⟨x, P, u, φ, by rw [h1, hr0], h2, h3, h6, h4⟩`.
+-/
 theorem UpperTheory.V.Loc.spChartL :
     LocalPublishedTheorems → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (hD : D.Good) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra ↥c.O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ↥c.O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing ↥c.O E] (R : Type) [CommRing R] [Algebra ↥c.O R] [IsCO ↥c.O R] (ρ : Lift c.O (D.rbarAt l) R), Represents D.condL ρ → ∃ (x : R →ₐ[c.O] c.O) (P : Ideal R) (w : Fin 14 → ℤ × ℤ) (φ : R →ₐ[c.O] MvPowerSeries (Fin 14) E), (ρ.map x).hom = D.r0At l ∧ UpperTheory.V.Loc.IsCompl P x φ ∧ (∃ y, x y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) ∧ (∀ j, Nat.card {i // w i = j} = dimsL j) ∧ ∀ g a b, φ (ρ.hom g a b) ∈ wtPart E w (wt a b) := by
   intro hP Ω _ _ _ l _ c D hD E _ _ _ _ _ _ _ _ R _ _ _ ρ hρ

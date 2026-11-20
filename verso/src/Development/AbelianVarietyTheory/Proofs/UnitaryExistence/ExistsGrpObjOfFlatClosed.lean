@@ -13,6 +13,19 @@ section
 universe v u
 variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C]
 
+/- English proof (translation)
+Use `letI M : MonObj H := { one := o mul := m one_mul := by`. Rewrite using `[← cancel_mono j, Category.assoc, hm, ← tensorHom_id, tensorHom_comp_tensorHom_assoc, ho, Category.id_comp, tensorHom_def', Category.assoc, MonObj.one_mul, leftUnitor_naturality]`. Use `mul_one := by`. Rewrite using `[← cancel_mono j, Category.assoc, hm, ← id_tensorHom, tensorHom_comp_tensorHom_assoc, ho, Category.id_comp, MonoidalCategory.tensorHom_def, Category.assoc, MonObj.mul_one, rightUnitor_naturality]`. Use `mul_assoc := by`.
+
+Rewrite using `[← cancel_mono j]`. Simplify using `only [Category.assoc, hm]`. Rewrite using `[← tensorHom_id, ← id_tensorHom, tensorHom_comp_tensorHom_assoc, tensorHom_comp_tensorHom_assoc, hm, Category.id_comp]`. Establish `h1 : ((j ⊗ₘ j) ≫ μ[G] ⊗ₘ j) = ((j ⊗ₘ j) ⊗ₘ j) ≫ μ[G] ▷ G`. Rewrite using `[← tensorHom_id, tensorHom_comp_tensorHom, Category.comp_id]`.
+
+Establish `h2 : (j ⊗ₘ (j ⊗ₘ j) ≫ μ[G]) = (j ⊗ₘ (j ⊗ₘ j)) ≫ G ◁ μ[G]`. Rewrite using `[← id_tensorHom, tensorHom_comp_tensorHom, Category.comp_id]`. Rewrite using `[h1, h2, Category.assoc, Category.assoc, MonObj.mul_assoc, associator_naturality_assoc] }`. Use `⟨{ inv := n, left_inv := ?_, right_inv := ?_ }, ⟨ho, hm⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono j]`.
+
+Express the relevant statement in the definitionally equal form `(lift n (𝟙 H) ≫ m) ≫ j = (toUnit H ≫ o) ≫ j`. Rewrite using `[Category.assoc, hm, lift_map_assoc, hn, Category.assoc, ho, Category.id_comp]`. Use `j ≫= GrpObj.left_inv G` as an intermediate fact. Rewrite `this` using `[comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`. Conclude with `this`.
+
+Rewrite using `[← cancel_mono j]`. Express the relevant statement in the definitionally equal form `(lift (𝟙 H) n ≫ m) ≫ j = (toUnit H ≫ o) ≫ j`. Rewrite using `[Category.assoc, hm, lift_map_assoc, hn, Category.assoc, ho, Category.id_comp]`. Use `j ≫= GrpObj.right_inv G` as an intermediate fact. Rewrite `this` using `[comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`.
+
+Conclude with `this`.
+-/
 theorem exists_grpObj_of_mono {H G : C} [GrpObj G] (j : H ⟶ G) [Mono j]
     (o : 𝟙_ C ⟶ H) (m : H ⊗ H ⟶ H) (n : H ⟶ H) (ho : o ≫ j = η[G])
     (hm : m ≫ j = (j ⊗ₘ j) ≫ μ[G]) (hn : n ≫ j = j ≫ GrpObj.inv) :
@@ -50,6 +63,9 @@ theorem exists_grpObj_of_mono {H G : C} [GrpObj G] (j : H ⟶ G) [Mono j]
     rw [comp_lift_assoc, Category.comp_id, comp_toUnit_assoc] at this
     exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← cancel_mono i, Category.assoc, h.one_hom, IsMonHom.one_hom]`. Rewrite using `[← cancel_mono i, Category.assoc, h.mul_hom, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc]`.
+-/
 theorem isMonHom_of_comp_mono {A B D : C} [MonObj A] [MonObj B] [MonObj D] (e : A ⟶ B) (i : B ⟶ D)
     [Mono i] [IsMonHom i] [h : IsMonHom (e ≫ i)] : IsMonHom e := by
   constructor
@@ -57,6 +73,9 @@ theorem isMonHom_of_comp_mono {A B D : C} [MonObj A] [MonObj B] [MonObj D] (e : 
   · rw [← cancel_mono i, Category.assoc, h.mul_hom, Category.assoc, IsMonHom.mul_hom,
       tensorHom_comp_tensorHom_assoc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← cancel_mono j, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]`.
+-/
 theorem isCommMonObj_of_mono [BraidedCategory C] {H G : C} [MonObj H] [MonObj G] (j : H ⟶ G)
     [Mono j] [IsMonHom j] [IsCommMonObj G] : IsCommMonObj H := by
   constructor
@@ -65,6 +84,15 @@ theorem isCommMonObj_of_mono [BraidedCategory C] {H G : C} [MonObj H] [MonObj G]
 
 end
 
+/- English proof (translation)
+Establish `h1 : Flat (𝟙_ (Over S)).hom` using `inferInstanceAs (Flat (𝟙 S))`. Establish `h2 : Flat (Ga ⊗ Ga).hom` using `inferInstanceAs (Flat (pullback.fst Ga.hom Ga.hom ≫ Ga.hom))`. Establish `hm : Mono io` using `(Over.forget S).mono_of_mono_map (inferInstanceAs (Mono io.left))`. Establish `hm' : Mono ((Over.pullback f).map io)` using `inferInstance`. Establish `h' : e.inv ≫ (Over.pullback f).map io = i` using `by rw [← h, e.inv_hom_id_assoc]`.
+
+Establish `hmi : Mono i` using `by rw [← h']; infer_instance`. Take `⟨o, ⟨ho, -⟩, -⟩` from `existsUnique_lift_of_flat f io η[P] (Functor.OplaxMonoidal.η (Over.pullback f) ≫ η[Z] ≫ e.inv) (by`. Rewrite using `[Category.assoc, Category.assoc, h', hi.one_hom, Functor.obj.η_def, Functor.Monoidal.η_ε_assoc])`. Take `⟨m, ⟨hm, -⟩, -⟩` from `existsUnique_lift_of_flat f io ((io ⊗ₘ io) ≫ μ[P]) (Functor.OplaxMonoidal.δ (Over.pullback f) Ga Ga ≫ (e.hom ⊗ₘ e.hom) ≫ μ[Z] ≫ e.inv) (by`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[h', hi.mul_hom, tensorHom_comp_tensorHom_assoc, h, Functor.obj.μ_def, Functor.LaxMonoidal.μ_natural_assoc, Functor.Monoidal.δ_μ_assoc, Functor.map_comp])`. Take `⟨n, ⟨hn, -⟩, -⟩` from `existsUnique_lift_of_flat f io (io ≫ GrpObj.inv) (e.hom ≫ GrpObj.inv ≫ e.inv) (by`. Simplify using `only [Category.assoc]`. Rewrite using `[h', GrpObj.inv_hom, ← Category.assoc, h, Functor.obj.ι_def, Functor.map_comp])`. Take `⟨G, hG⟩` from `exists_grpObj_of_mono io o m n ho hm hn`.
+
+Use `⟨G, hG, ?_, fun _ => isCommMonObj_of_mono io⟩` and prove the remaining obligations. Establish `: IsMonHom (e.hom ≫ i)` using `by rw [h]; infer_instance`. Conclude with `isMonHom_of_comp_mono e.hom i`.
+-/
 theorem exists_grpObj_of_flat_closed {S S' : Scheme.{0}} (f : S' ⟶ S)
     [IsSchemeTheoreticallyDominant f] [QuasiCompact f] (P Ga : Over S) [GrpObj P] (io : Ga ⟶ P)
     (Z : Over S') [GrpObj Z] (i : Z ⟶ (Over.pullback f).obj P) (e : (Over.pullback f).obj Ga ≅ Z)
@@ -95,6 +123,9 @@ theorem exists_grpObj_of_flat_closed {S S' : Scheme.{0}} (f : S' ⟶ S)
   have : IsMonHom (e.hom ≫ i) := by rw [h]; infer_instance
   exact isMonHom_of_comp_mono e.hom i
 
+/- English proof (translation)
+Introduce `T K _ _ _ _ _ _ P Ga _ io Z _ i e _ _ _ h`. Use `schemeTheoreticallyDominant_fractionField T K` as an intermediate fact. Conclude with `exists_grpObj_of_flat_closed _ P Ga io Z i e h`.
+-/
 theorem flat_closure_subgroup :
     ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (P Ga : Over (Sp T)) [GrpObj P] (io : Ga ⟶ P) (Z : Over (Sp K)) [GrpObj Z] (i : Z ⟶ (Over.pullback (spMap (algebraMap T K))).obj P) (e : (Over.pullback (spMap (algebraMap T K))).obj Ga ≅ Z), IsClosedImmersion io.left → Flat Ga.hom → IsMonHom i → e.hom ≫ i = (Over.pullback (spMap (algebraMap T K))).map io → ∃ _ : GrpObj Ga, IsMonHom io ∧ IsMonHom e.hom ∧ (IsCommMonObj P → IsCommMonObj Ga) := by
   intro T K _ _ _ _ _ _ P Ga _ io Z _ i e _ _ _ h

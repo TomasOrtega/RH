@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.WeilOriented
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `p.exists_isCompl`. Set `T : (p × q) ≃ₗ[ℂ] M'` to `(Submodule.prodEquivOfIsCompl p q hq).trans E`. Establish `hT : ∀ Φ : p, T (Φ, 0) = E Φ.1` using `fun Φ => by simp [T]`. Use `⟨{ toFun := fun g => T.toLinearMap ∘ₗ (LinearMap.prodMap (om g) LinearMap.id) ∘ₗ T.symm.toLinearMap map_one' := ?_ map_mul' := fun a b => ?_ }, fun g Φ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using the standard rewrite rules. Simplify using `[← hT]`.
+-/
 theorem exists_extend {G M M' : Type} [Monoid G] [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M']
     (p : Submodule ℂ M) (E : M ≃ₗ[ℂ] M') (om : G →* Module.End ℂ p) :
     ∃ om' : G →* Module.End ℂ M', ∀ (g : G) (Φ : p), om' g (E Φ.1) = E (om g Φ).1 := by
@@ -31,6 +36,11 @@ theorem exists_extend {G M M' : Type} [Monoid G] [AddCommGroup M] [Module ℂ M]
     simp
   · simp [← hT]
 
+/- English proof (translation)
+Establish `key` using `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact G Γ K hK hcov).2`. Take `⟨N, hN⟩` from `key f hf hp`. Take `⟨N', hN'⟩` from `key f' hf' hp'`. Take `⟨h0, h1, h2, h3⟩` from `hN μ 𝓕 hμ h𝓕`. Take `⟨-, -, h2', h3'⟩` from `hN' μ 𝓕 hμ h𝓕`.
+
+Rewrite `h` using `[h3, h3']`. Establish `: N = N'` using `NNReal.coe_injective (mul_left_cancel₀ (ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩) h)`. Rewrite using `[h2, h2', this]`.
+-/
 theorem lintegral_eq_of_integral_eq {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (Γ : AddSubgroup G) [DiscreteTopology Γ] {K : Set G} (hK : IsCompact K) (hcov : ∀ x : G, ∃ γ ∈ Γ, γ + x ∈ K)
@@ -47,6 +57,9 @@ theorem lintegral_eq_of_integral_eq {G : Type} [AddCommGroup G] [TopologicalSpac
   have : N = N' := NNReal.coe_injective (mul_left_cancel₀ (ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩) h)
   rw [h2, h2', this]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨γ, rfl⟩ w`. Use `congrArg norm (hf.quasi γ w)` as an intermediate fact. Rewrite `this` using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `this`.
+-/
 theorem norm_periodic {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V W : HSp D}
     {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) : ∀ γ ∈ ratL W V, ∀ w, ‖f (γ + w)‖ = ‖f w‖ := by
   rintro _ ⟨γ, rfl⟩ w
@@ -54,6 +67,31 @@ theorem norm_periodic {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar
   rw [norm_mul, hψ.1.2.1, one_mul] at this
   exact this
 
+/- English proof (translation)
+Introduce `D ψ hψ V W χ χ' om ha hr hw`. Take `⟨e, hc, hcs, he, hrat, hsm, hheis, hth, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W hr.le`. Set `E : (WA V W → ℂ) ≃ₗ[ℂ] (WO V W → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ e.toEquiv`. Take `⟨omO, hom⟩` from `exists_extend (ThS ψ V W) E om`. Establish `hom' : ∀ p (Φ : ThS ψ V W), omO p (fun x => Φ.1 (e x)) = fun x => (om p Φ).1 (e x)` using `hom`.
+
+Establish `hsurj : ∀ f, IsThetaFunO ψ V W f → ∃ Φ : ThS ψ V W, f = fun x => Φ.1 (e x)` using `fun f hf => by`. Establish `e1 : f = fun x => (fun y => f (e.symm y)) (e x)` using `by funext x; simp`. Use `⟨⟨fun y => f (e.symm y), mem_ThS.2 ((hth ψ _).1 ?_)⟩, e1⟩` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `hf`.
+
+Establish `hTh : ∀ Φ : ThS ψ V W, IsThetaFunO ψ V W fun x => Φ.1 (e x)` using `fun Φ => (hth ψ _).2 (mem_ThS.1 Φ.2)`. Establish `hact : ∀ g h x, e (actO V W g h x) = actHom V W g h (e x)` using `fun g h x => by`. Rewrite using `[he, he]`. Conclude with `(GlobalTheory.OrientedSmall.bridgeSmall D V W hr.le).2 g h x`. Use `⟨omO, ⟨hψ, ha.2.1.1, ha.2.2.1.1, ha.2.2.2.1, ha.2.2.2.2, fun p f hf => ?_, fun g h w₀ f hf => ?_, fun γ hγ γ' hγ' f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_, fun ε hε g h hg hh x y hx hy => ?_⟩, fun p Φ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Φ, rfl⟩` from `hsurj f hf`. Rewrite using `[hom']`. Conclude with `hTh _`. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Set `Φ' : ThS ψ V W` to `⟨Heisenberg₂ ψ V W (e w₀) Φ.1, mem_ThS.2 (GlobalTheory.Mem.ThetaClosed.isThetaFun_heis hψ (mem_ThS.1 Φ.2) _)⟩`.
+
+Rewrite using `[hheis, hom', hheis, hact, ← hw.Heisenberg₂ g h (e w₀) Φ Φ' rfl]`. Conclude with `hom' _ Φ'`. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Rewrite using `[hom']`. Simplify using `only [map_zero]`.
+
+Conclude with `hw.aut γ hγ γ' hγ' Φ`. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Simplify using `only [hom']`. Conclude with `hw.cont Φ (e w)`. Take `⟨Φ, rfl⟩` from `hsurj f hf`.
+
+Rewrite using `[hom']`. Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V`. Take `⟨j1, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D V W`. Establish `: BorelSpace (WA V W)` using `⟨rfl⟩`. Establish `: BorelSpace (WO V W)` using `⟨rfl⟩`.
+
+Take `⟨ν, hν, hF, hint⟩` from `GlobalTheory.exists_isAddHaarMeasure_isAddFundamentalDomain_preimage (WA V W) (WO V W) e.symm hcs (by simpa using hc) (ratL V W) (ratL W V) (fun x => by rw [← hrat, e.apply_symm_apply]) μ 𝓕 hμ h𝓕`. Use `lintegral_eq_of_integral_eq (ratL W V) hK hcov (hTh _).cont (hTh _).cont (norm_periodic hψ (hTh _)) (norm_periodic hψ (hTh _)) hμ h𝓕 ?_` and prove the remaining obligations. Rewrite using `[← hint, ← hint]`. Simplify using `only [e.apply_symm_apply]`. Conclude with `hw.unit ν _ hν hF p Φ`.
+
+Take `⟨r, hr0, hℓ⟩` from `hw.split ε hε g h hg hh x y hx hy`. Use `⟨r, hr0, fun ℓ hinv f hf => ?_⟩` and prove the remaining obligations. Take `⟨Φ, rfl⟩` from `hsurj f hf`. Use `hℓ (ℓ ∘ₗ E.toLinearMap ∘ₗ (ThS ψ V W).subtype) (fun u hu Ψ Ψ' hΨ => ?_) Φ` as an intermediate fact. Rewrite using `[hom']`.
+
+Unfold `splitFac at this`. Rewrite `this` using `[if_pos hr.le]`. Conclude with `this`. Establish `hu' : cA D ε • e.symm u = e.symm u`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[hsm, e.apply_symm_apply]`. Conclude with `Matrix.ext hu`. Use `hinv (e.symm u) (fun i j => congrFun (congrFun hu' i) j) _ (hTh Ψ)` as an intermediate fact. Rewrite `this` using `[hheis, e.apply_symm_apply, ← hΨ]`. Conclude with `this`.
+
+Simplify using `only [← he]`. Conclude with `hom' p Φ`.
+-/
 theorem exists_isWeilDatumO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D) (χ χ' : IdC D) (om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)), admitted V W χ χ' → V.rank < W.rank → IsWeilOn ψ V W χ χ' om → ∃ omO : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ), IsWeilDatumO ψ V W χ χ' omO ∧ ∀ (p : GA D V × GA D W) (Φ : ThS ψ V W), omO p (fun x => Φ.1 (toTWsmall V W x)) = fun x => (om p Φ).1 (toTWsmall V W x) := by
   intro D ψ hψ V W χ χ' om ha hr hw
   obtain ⟨e, hc, hcs, he, hrat, hsm, hheis, hth, -⟩ := GlobalTheory.OrientedCoord.exists_coord D V W hr.le

@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Establish `hL` using `Formalism.L2.SG.Pf.StabIntSh.locShapeL (D := D)`. Establish `hG` using `Formalism.L2.SG.Pf.StabIntSh.locShapeG (D := D)`. Establish `hLG` using `Formalism.L2.SG.Pf.StabIntSh.locGlob (D := D)`. Establish `hNZ` using `Formalism.L2.SG.Pf.StabIntSh.shapeNZ (D := D)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a', ha, hlo, b, hb, hZ, hp⟩`. Use `⟨a', ha, hlo, b, hb, hZ, (Formalism.L2.SG.Pf.StabIntSh.glob_iff hLG hNZ _ _).1 fun p => ?_⟩` and prove the remaining obligations. Take `⟨l, ρ, hl, hρ, hm⟩` from `hp p`. Take `⟨e1, e2⟩` from `Formalism.L2.SG.Pf.StabShape.uniq δ M u u' (hA p) _ _ hlo hb l ρ hl.1 hρ.1 hm`. Rewrite `hl` using `[e1]`.
+
+Rewrite `hρ` using `[e2]`. Conclude with `(Formalism.L2.SG.Pf.StabIntSh.loc_iff hL hG (p := p) hA hlo hb).1 ⟨hl, hρ⟩`. Introduce and unpack `⟨a', ha, hlo, b, hb, hZ, he⟩`. Use `⟨a', ha, hlo, b, hb, hZ, fun p => ?_⟩` and prove the remaining obligations. Establish `h` using `(Formalism.L2.SG.Pf.StabIntSh.loc_iff hL hG (p := p) hA hlo hb).2 ((Formalism.L2.SG.Pf.StabIntSh.glob_iff hLG hNZ _ _).2 he p)`.
+
+Conclude with `⟨_, _, h.1, h.2, Formalism.L2.SG.Pf.StabShape.move δ M u u' (hA p) _ _ hlo hb⟩`.
+-/
 theorem mem_stZSet_iff (hA : ∀ p, Agree δ M p) (Z L : MatR D) (a : GLR D) :
     a ∈ stZSet M δ u u' Z L ↔ ∃ a' : GLR D, (a : MatR D) = L⁻¹ * (a' : MatR D) * L ∧ IsLoUni (a' : MatR D) ∧
       ∃ b : MatR D, IsUpUni b ∧ (a' : MatR D) * ZhatOM Z * b = ZhatOM Z ∧

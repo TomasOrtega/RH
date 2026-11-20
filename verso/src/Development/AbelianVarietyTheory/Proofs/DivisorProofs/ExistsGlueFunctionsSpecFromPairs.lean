@@ -8,6 +8,21 @@ open CategoryTheory AlgebraicGeometry Opposite ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.CechDR.AffLoc
 
+/- English proof (translation)
+Establish `sub : ∀ (p q : Pair x) (y : Sp B), y ∈ p.1.1.1 → y ∈ q.1.1.1 → ∃ r : Pair x, r ≤ p ∧ r ≤ q ∧ y ∈ r.1.1.1`. Introduce `p q y hp hq`. Establish `hyU : x.base y ∈ p.1.2.1 ⊓ q.1.2.1` using `⟨p.2 hp, q.2 hq⟩`. Take `⟨W, hW, hyW, hWs⟩` from `exists_isAffineOpen_mem_and_subset hyU`. Establish `hyV : y ∈ p.1.1.1 ⊓ q.1.1.1 ⊓ x ⁻¹ᵁ W` using `⟨⟨hp, hq⟩, hyW⟩`.
+
+Take `⟨V, hV, hyV', hVs⟩` from `exists_isAffineOpen_mem_and_subset hyV`. Use `⟨⟨(⟨V, hV⟩, ⟨W, hW⟩), fun z hz ↦ (hVs hz).2⟩, ?_, ?_, hyV'⟩` and prove the remaining obligations. Conclude with `⟨fun z hz ↦ (hVs hz).1.1, fun z hz ↦ (hWs hz).1⟩`. Conclude with `⟨fun z hz ↦ (hVs hz).1.2, fun z hz ↦ (hWs hz).2⟩`. Establish `cover : ∀ y : Sp B, ∃ p : Pair x, y ∈ p.1.1.1`.
+
+Introduce `y`. Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_mem_and_subset (show x.base y ∈ (⊤ : X.Opens) from trivial)`. Take `⟨V, hV, hyV, hVs⟩` from `exists_isAffineOpen_mem_and_subset (show y ∈ x ⁻¹ᵁ W from hyW)`. Conclude with `⟨⟨(⟨V, hV⟩, ⟨W, hW⟩), fun z hz ↦ hVs hz⟩, hyV⟩`. Establish `key : ∀ (p r : Pair x) (hr : r ≤ p) (y : Sp B) (hy : y ∈ r.1.1.1), (Sp B).presheaf.germ p.1.1.1 y (Pair.le_fst hr hy) (h p) = (Sp B).presheaf.germ r.1.1.1 y hy (h r)`.
+
+Introduce `p r hr y hy`. Rewrite using `[← hh r p hr]`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm`. Set `U : Pair x → (Sp B).Opens` to `fun p ↦ p.1.1.1`. Establish `hc : TopCat.Presheaf.IsCompatible (Sp B).presheaf U h`.
+
+Introduce `i j`. Use `TopCat.Presheaf.section_ext (Sp B).sheaf _ _ _ fun y hy ↦ ?_` and prove the remaining obligations. Take `⟨r, hri, hrj, hyr⟩` from `sub i j y hy.1 hy.2`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).trans ((key i r hri y hyr).trans ((key j r hrj y hyr).symm.trans (TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm))`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (Sp B).sheaf U ⊤ (fun _ ↦ homOfLE le_top) (fun y _ ↦ TopologicalSpace.Opens.mem_iSup.2 (cover y)) h hc`.
+
+Use `⟨(Scheme.ΓSpecIso (CommRingCat.of B)).hom s, fun p ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hs p]`. Establish `e1 : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom s) = s` using `Iso.hom_inv_id_apply _ _`. Express the relevant statement in the definitionally equal form `((𝟙 (Sp B) : Sp B ⟶ Sp B).appLE ⊤ p.1.1.1 le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom s)) = _`. Rewrite using `[e1]`.
+
+Simplify using `[Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+-/
 theorem exists_glue_pair {X : Scheme.{0}} (B : Type) [CommRing B] (x : Sp B ⟶ X)
     (h : ∀ p : Pair x, Γ(Sp B, p.1.1.1))
     (hh : ∀ p q : Pair x, ∀ hpq : p ≤ q,

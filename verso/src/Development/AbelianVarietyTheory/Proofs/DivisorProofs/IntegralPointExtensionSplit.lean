@@ -20,6 +20,13 @@ open GlobalTheory.HTMap
 
 section Gen
 
+/- English proof (translation)
+Use `haveI : NeZero q := ⟨hq⟩`. Establish `hb : Function.Bijective (restrictRootsOfUnity x q)`. Use `⟨(injective_iff_map_eq_one _).2 fun a ha => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one ((mem_rootsOfUnity' _ _).1 a.2)`. Establish `h1 : x ((a : Aˣ) : A) = 1` using `congrArg (fun z : rootsOfUnity q O => ((z : Oˣ) : O)) ha`.
+
+Rewrite `h1` using `[← hi, map_pow, hx.pow_eq_one_iff_dvd, ← hζ.pow_eq_one_iff_dvd, hi]`. Conclude with `Subtype.ext (Units.ext h1)`. Take `⟨i, -, hi⟩` from `hx.eq_pow_of_pow_eq_one ((mem_rootsOfUnity' _ _).1 a.2)`. Use `⟨hζ.toRootsOfUnity ^ i, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← hi, map_pow]`.
+
+Simplify using the standard rewrite rules. Set `r` to `MulEquiv.ofBijective _ hb`. Use `⟨(rootsOfUnity q A).subtype.comp (r.symm.toMonoidHom.comp (c.codRestrict (rootsOfUnity q O) hc)), fun d => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun z : rootsOfUnity q O => ((z : Oˣ) : O)) (r.apply_symm_apply ⟨c d, hc d⟩)`.
+-/
 theorem lift_roots {A O : Type} [CommRing A] [IsDomain A] [CommRing O] [IsDomain O] (x : A →+* O) {q : ℕ} (hq : q ≠ 0)
     {ζ : A} (hζ : IsPrimitiveRoot ζ q) (hx : IsPrimitiveRoot (x ζ) q) {D : Type} [Group D] (c : D →* Oˣ)
     (hc : ∀ d, c d ^ q = 1) : ∃ χ : D →* Aˣ, ∀ d, x (χ d) = c d := by
@@ -38,6 +45,9 @@ theorem lift_roots {A O : Type} [CommRing A] [IsDomain A] [CommRing O] [IsDomain
   refine ⟨(rootsOfUnity q A).subtype.comp (r.symm.toMonoidHom.comp (c.codRestrict (rootsOfUnity q O) hc)), fun d => ?_⟩
   exact congrArg (fun z : rootsOfUnity q O => ((z : Oˣ) : O)) (r.apply_symm_apply ⟨c d, hc d⟩)
 
+/- English proof (translation)
+Use `haveI : NeZero (q : O) := ⟨Nat.cast_ne_zero.2 hq⟩`. Establish `h` using `hζ.isRoot_cyclotomic (Nat.pos_of_ne_zero hq)`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, Polynomial.IsRoot.def, ← Polynomial.map_cyclotomic q x, Polynomial.eval_map, Polynomial.eval₂_hom, h.eq_zero, map_zero]`.
+-/
 theorem prim_map {A O : Type} [CommRing A] [IsDomain A] [CommRing O] [IsDomain O] [CharZero O] (x : A →+* O) {q : ℕ}
     (hq : q ≠ 0) {ζ : A} (hζ : IsPrimitiveRoot ζ q) : IsPrimitiveRoot (x ζ) q := by
   haveI : NeZero (q : O) := ⟨Nat.cast_ne_zero.2 hq⟩
@@ -45,6 +55,9 @@ theorem prim_map {A O : Type} [CommRing A] [IsDomain A] [CommRing O] [IsDomain O
   rw [← Polynomial.isRoot_cyclotomic_iff, Polynomial.IsRoot.def, ← Polynomial.map_cyclotomic q x, Polynomial.eval_map,
     Polynomial.eval₂_hom, h.eq_zero, map_zero]
 
+/- English proof (translation)
+The claim follows from `IsIntegrallyClosed.isIntegral_iff.1 ⟨Polynomial.X ^ q - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hq, by simp [hu]⟩`.
+-/
 theorem root_mem {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
     [IsFractionRing R K] {q : ℕ} (hq : q ≠ 0) {u : K} (hu : u ^ q = 1) : ∃ a : R, algebraMap R K a = u :=
   IsIntegrallyClosed.isIntegral_iff.1 ⟨Polynomial.X ^ q - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hq, by simp [hu]⟩
@@ -81,15 +94,27 @@ def fracToK : FractionRing R →+* K := (FractionRing.algEquiv R K).toRingEquiv.
 
 def kToFrac : K →+* FractionRing R := (FractionRing.algEquiv R K).symm.toRingEquiv.toRingHom
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => (FractionRing.algEquiv R K).commutes a`.
+-/
 theorem fracToK_comp : (fracToK R K).comp (algebraMap R (FractionRing R)) = algebraMap R K :=
   RingHom.ext fun a => (FractionRing.algEquiv R K).commutes a
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => (FractionRing.algEquiv R K).symm.commutes a`.
+-/
 theorem kToFrac_comp : (kToFrac R K).comp (algebraMap R K) = algebraMap R (FractionRing R) :=
   RingHom.ext fun a => (FractionRing.algEquiv R K).symm.commutes a
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => (FractionRing.algEquiv R K).apply_symm_apply a`.
+-/
 theorem fracToK_kToFrac : (fracToK R K).comp (kToFrac R K) = RingHom.id K :=
   RingHom.ext fun a => (FractionRing.algEquiv R K).apply_symm_apply a
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => (FractionRing.algEquiv R K).symm_apply_apply a`.
+-/
 theorem kToFrac_fracToK : (kToFrac R K).comp (fracToK R K) = RingHom.id _ :=
   RingHom.ext fun a => (FractionRing.algEquiv R K).symm_apply_apply a
 
@@ -102,6 +127,9 @@ section Tr
 
 variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (x : Sp R ⟶ X) (q : ℕ)
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 
 def trEquiv : Gam t x q ≃* TorsK t (spMap (algebraMap R K) ≫ x) q :=
@@ -109,16 +137,27 @@ def trEquiv : Gam t x q ≃* TorsK t (spMap (algebraMap R K) ≫ x) q :=
     (by rw [spc_assoc, fracToK_comp]) (by rw [spc_assoc, kToFrac_comp])
     (by rw [spc, kToFrac_fracToK, spMap_id']) (by rw [spc, fracToK_kToFrac, spMap_id'])) q
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trEquiv_left (a : Gam t x q) :
     ((trEquiv (K := K) x q a).1).left = spMap (fracToK R K) ≫ a.1.left := rfl
 
 def gen {x : Sp R ⟶ X} {q : ℕ} (σ : Over.mk x ⟶ t.G) (hσ : σ ^ q = 1) : Gam t x q :=
   ⟨pull _ rfl σ, MonoidHom.mem_ker.2 (by rw [powMonoidHom_apply, ← map_pow, hσ, map_one])⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Over.OverMorphism.ext (by rw [trEquiv_left, hk]; exact (spc_assoc _ _ _).trans (by rw [fracToK_comp])))`.
+-/
 theorem trEquiv_gen {σ : Over.mk x ⟶ t.G} (hσ : σ ^ q = 1) (k : TorsK t (spMap (algebraMap R K) ≫ x) q)
     (hk : k.1.left = spMap (algebraMap R K) ≫ σ.left) : trEquiv x q (gen σ hσ) = k :=
   Subtype.ext (Over.OverMorphism.ext (by rw [trEquiv_left, hk]; exact (spc_assoc _ _ _).trans (by rw [fracToK_comp])))
 
+/- English proof (translation)
+Introduce `Ω _ io w hw`. Establish `e1 : spMap (io.comp (kToFrac R K)) ≫ spMap (algebraMap R K) ≫ x = spMap (io.comp (algebraMap R (FractionRing R))) ≫ x`. Rewrite using `[spc_assoc, RingHom.comp_assoc, kToFrac_comp]`. Take `⟨w₀, h₀⟩` from `h Ω (io.comp (kToFrac R K)) (pull (𝟙 _) (by rw [Category.id_comp, e1]) w) (by rw [← map_pow, hw, map_one])`. Use `⟨spMap (kToFrac R K) ≫ w₀, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spc, h₀, pull_left, Category.id_comp]`.
+-/
 theorem splitTors_of_splitK (h : SplitK t (spMap (algebraMap R K) ≫ x) q) : SplitTors t x q := by
   intro Ω _ io w hw
   have e1 : spMap (io.comp (kToFrac R K)) ≫ spMap (algebraMap R K) ≫ x =
@@ -135,6 +174,11 @@ section Pts
 
 variable {A : Type} [CommRing A] [IsDomain A] {x₀ : Sp A ⟶ X} {q : ℕ}
 
+/- English proof (translation)
+Take `⟨β₀, hβ₀⟩` from `hP.at (φ := RingHom.id A) (fun 𝔪 h𝔪 => by rw [Ideal.comap_id]; exact h𝔮 𝔪 h𝔪) (y := x₀) (by rw [spMap_id', Category.id_comp]) σ hσ`. Use `⟨β₀, hβ₀, ?_⟩` and prove the remaining obligations. Establish `h2` using `hβ₀.map (algebraMap A (FractionRing A))`. Rewrite `h2` using `[RingHom.comp_id]`. Establish `h3` using `hb.1 (gen σ hσ).1.left _ h2`.
+
+Rewrite `h3` using `[kap_left]`. Conclude with `IsFractionRing.injective A (FractionRing A) h3`.
+-/
 theorem at_pt {P : FP t x₀ q} {𝔮 : Ideal A} (hP : P.Full 𝔮) (h𝔮 : ∀ 𝔪 : Ideal A, 𝔪.IsMaximal → 𝔪 = 𝔮)
     {χ₀ : Gam t x₀ q →* Aˣ} {b : P.Bˣ} (hb : P.Gl (kap χ₀) b) (σ : Over.mk x₀ ⟶ t.G) (hσ : σ ^ q = 1) :
     ∃ β₀ : P.B →+* A, P.At (RingHom.id A) σ.left β₀ ∧ β₀ b = χ₀ (gen σ hσ) := by
@@ -147,6 +191,13 @@ theorem at_pt {P : FP t x₀ q} {𝔮 : Ideal A} (hP : P.Full 𝔮) (h𝔮 : ∀
   rw [kap_left] at h3
   exact IsFractionRing.injective A (FractionRing A) h3
 
+/- English proof (translation)
+Set `ℓ : Localization.Away P.f →+* A` to `IsLocalization.Away.lift P.f (g := RingHom.id A) hA`. Establish `hℓ : ℓ.comp (algebraMap A _) = RingHom.id A` using `IsLocalization.Away.lift_comp _ _`. Establish `h'` using `h.map (algebraMap O (FractionRing O))`. Establish `e : (algebraMap O (FractionRing O)).comp φ = ((algebraMap O (FractionRing O)).comp (φ.comp ℓ)).comp (algebraMap A (Localization.Away P.f))`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, hℓ, RingHom.comp_id]`.
+
+Rewrite `h'` using `[e]`. Take `⟨σ, hσ⟩` from `FP.At.sect h'`. Use `⟨ℓ.comp σ.toRingHom, RingHom.ext fun a => ?_, RingHom.ext fun z => ?_⟩` and prove the remaining obligations. Use `show ℓ (σ (algebraMap (Localization.Away P.f) P.B (algebraMap A _ a))) = a`. Rewrite using `[σ.commutes]`.
+
+Conclude with `RingHom.congr_fun hℓ a`. Conclude with `IsFractionRing.injective O (FractionRing O) (RingHom.congr_fun hσ z)`.
+-/
 theorem sect_of {P : FP t x₀ q} (hA : IsUnit P.f) {O : Type} [CommRing O] [IsDomain O] (φ : A →+* O)
     {w : Sp O ⟶ t.G.left} {β : P.B →+* O} (h : P.At φ w β) :
     ∃ β₀ : P.B →+* A, β₀.comp P.str = RingHom.id A ∧ β = φ.comp β₀ := by
@@ -170,6 +221,21 @@ section Chi
 
 variable {A : Type} [CommRing A] {x₀ : Sp A ⟶ X} {q : ℕ}
 
+/- English proof (translation)
+Take `⟨x', rfl⟩` from `FP.ex_lift hu`. Establish `e₁ : spMap x' ≫ spMap (algebraMap A _) ≫ x₀ = spMap (algebraMap O O) ≫ spMap (x'.comp (algebraMap A _)) ≫ x₀`. Rewrite using `[spc_assoc, spc_assoc]`. Establish `e₂ : spMap P.toK ≫ spMap (algebraMap A _) ≫ x₀ = spMap (algebraMap A (FractionRing A)) ≫ x₀`. Rewrite using `[spc_assoc, P.toK_comp]`.
+
+Establish `ht : ∀ d : P.secs hq, d.1 ^ q = 1` using `fun d => d.2.choose_spec.tors`. Establish `ht' : ∀ d : P.secs hq, pull _ e₁ d.1 ^ q = 1` using `fun d => by rw [← map_pow, ht, map_one]`. Set `c₀ : P.secs hq →* Oˣ` to `MonoidHom.mk' (fun d => c.χ O (pull _ e₁ d.1)) fun d d' => by`. Rewrite using `[Subgroup.coe_mul, map_mul, c.mul O _ _ (ht' d) (ht' d')]`. Take `⟨χ₀, h₀⟩` from `lift_roots (x'.comp (algebraMap A _)) hq hζ hx c₀ fun d => by`.
+
+Rewrite using `[← map_pow, show d ^ q = 1 from Subtype.ext (ht d), map_one]`. Set `i : P.secs hq →* Gam t x₀ q` to `((pull _ e₂).comp (P.secs hq).subtype).codRestrict _ fun d => by show pull _ e₂ d.1 ^ q = 1`. Rewrite using `[← map_pow, ht, map_one]`. Establish `hi : Function.Injective i` using `fun d d' h => by`. Take `⟨β, hβ⟩` from `d.2`.
+
+Take `⟨β', hβ'⟩` from `d'.2`. Establish `h1 : spMap P.toK ≫ d.1.left = spMap P.toK ≫ d'.1.left` using `congrArg (fun z : Gam t x₀ q => z.1.left) h`. Establish `h2` using `hβ.map P.toK`. Rewrite `h2` using `[h1]`. Establish `h3 : β = β'` using `RingHom.ext fun z => P.toK_inj (RingHom.congr_fun (h2.mono (hβ'.map P.toK)) z)`.
+
+Conclude with `Subtype.ext (Over.OverMorphism.ext (by rw [← hβ.2, ← hβ'.2, h3]))`. Take `⟨χ, hχ⟩` from `ext_char hq hζ (fun a => Subtype.ext a.2) i hi χ₀`. Use `⟨χ, fun b hb w β h => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `FP.At.sect (φ := (algebraMap O (FractionRing O)).comp x') (h.map (algebraMap O (FractionRing O)))`. Take `rfl : β = x'.comp σ.toRingHom` from `RingHom.ext fun z => IsFractionRing.injective O (FractionRing O) (RingHom.congr_fun hσ z)`.
+
+Set `d : P.secs hq` to `⟨mkPt _ (P.at_sect σ).over, _, P.at_sect σ⟩`. Establish `h1 : w = pull _ e₁ d.1` using `Over.OverMorphism.ext (h.2.symm.trans (spc_assoc _ _ _).symm)`. Establish `h2 : spMap (P.toK.comp σ.toRingHom) ≫ P.u.left = (i d).1.left` using `(spc_assoc _ _ _).symm`. Establish `h3` using `hb.1 _ _ (P.at_sectK σ)`. Rewrite `h3` using `[h2, kap_left, hχ, ← P.toK_comp]`.
+
+Rewrite using `[h1]`. Conclude with `(h₀ d).symm.trans (congrArg x' (P.toK_inj h3)).symm`.
+-/
 theorem ex_chi' [IsDomain A] [Finite (Gam t x₀ q)] (hq : q ≠ 0) {ζ : A} (hζ : IsPrimitiveRoot ζ q) {O : Type}
     [CommRing O] [IsDomain O] {x : A →+* O} (hx : IsPrimitiveRoot (x ζ) q) (P : FP t x₀ q) (hu : IsUnit (x P.f))
     (c : TorsChar t (spMap x ≫ x₀) q) : ∃ χ : Gam t x₀ q →* Aˣ, ∀ b, P.Gl (kap χ) b →
@@ -212,9 +278,37 @@ theorem ex_chi' [IsDomain A] [Finite (Gam t x₀ q)] (hq : q ≠ 0) {ζ : A} (h�
 
 end Chi
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (MonoidHom.mem_ker.1 a.2)`.
+-/
 theorem ker_pow {M : Type} [CommGroup M] {q : ℕ} (a : (powMonoidHom q : M →* M).ker) : a ^ q = 1 :=
   Subtype.ext (MonoidHom.mem_ker.1 a.2)
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t K _ _ ξ q hq hζK hs R _ _ _ _ _ _ x hx`. Take `⟨ζ, hζ⟩` from `hζK`. Substitute `hx` using the available equality. Use `haveI : CharZero R := ⟨fun m n h => Nat.cast_injective (R := K) (by simpa using congrArg (algebraMap R K) h)⟩`. Establish `hF` using `ex_full hq (splitTors_of_splitK x q hs)`.
+
+Use `haveI := finite_gam hF`. Use `haveI : Finite (TorsK t (spMap (algebraMap R K) ≫ x) q) := Finite.of_equiv _ (trEquiv x q).toEquiv`. Take `⟨ζR, hζR⟩` from `root_mem (R := R) hq hζ.pow_eq_one`. Establish `hζR' : IsPrimitiveRoot ζR q` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap R K) (by rw [hζR]; exact hζ) (IsFractionRing.injective R K)`. Use `⟨inferInstance, fun p _ ψ z _ hz => ?_⟩` and prove the remaining obligations.
+
+Substitute `hz` using the available equality. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Take `⟨P, hP⟩` from `hF ((IsLocalRing.maximalIdeal _).comap ψ) inferInstance`. Establish `h𝔮 : ∀ 𝔪 : Ideal R, 𝔪.IsMaximal → 𝔪 = (IsLocalRing.maximalIdeal _).comap ψ` using `fun 𝔪 h𝔪 => by`. Rewrite using `[IsLocalRing.maximalIdeal_comap ψ]`.
+
+Conclude with `IsLocalRing.eq_maximalIdeal h𝔪`. Establish `hu : IsUnit (ψ P.f)` using `by by_contra hn; exact hP.1 hn`. Establish `hA : IsUnit P.f`. Assume the negation of the conclusion as `hn; exact hP.1 (by rw [IsLocalRing.maximalIdeal_comap ψ]; exact hn)`. Establish `hψ : (algebraMap ↥(intO ℂ_[p]) ↥(intO ℂ_[p])).comp ψ = ψ.comp (RingHom.id R)`.
+
+Rewrite using `[Algebra.algebraMap_self, RingHom.id_comp, RingHom.comp_id]`. Establish `hval : ∀ {χ₀ : Gam t x q →* Rˣ} {b : P.Bˣ}, P.Gl (kap χ₀) b → ∀ (c : TorsChar t (spMap ψ ≫ x) q), (∀ (w : Over.mk (spMap (algebraMap ↥(intO ℂ_[p]) ↥(intO ℂ_[p])) ≫ spMap ψ ≫ x) ⟶ t.G) (β : P.B →+* ↥(intO ℂ_[p])), P.At ((algebraMap ↥(intO ℂ_[p]) ↥(intO ℂ_[p])).comp ψ) w.left β → ( …`. Introduce `χ₀ b hb c hc σ hσ w hw`. Take `⟨β₀, h1, h2⟩` from `at_pt hP h𝔮 hb σ hσ`. Establish `h3` using `h1.map ψ`.
+
+Rewrite `h3` using `[← hψ, ← hw]`. Rewrite using `[hc w _ h3, RingHom.comp_apply, h2]`. Use `⟨fun χ => ?_, fun c => ?_, fun χ c c' hc hc' => ?_⟩` and prove the remaining obligations. Take `⟨χ₀, h₀⟩` from `lift_roots (algebraMap R K) hq hζR' (by rw [hζR]; exact hζ) (χ.comp (trEquiv x q).toMonoidHom) fun d => by rw [← map_pow, ker_pow, map_one]`. Take `⟨b, hb⟩` from `P.ex_gl (mult_kap χ₀)`.
+
+Take `⟨c, hc⟩` from `ex_char hP hb`. Use `⟨c, fun σ k a w hσ hk hw ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hval hb c (hc _) σ hσ w hw]`. Use `congr 1`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises.
+
+Rewrite using `[h₀, ha, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, trEquiv_gen x q hσ k hk]`. Take `⟨χ₀, h₀⟩` from `ex_chi' hq hζR' (prim_map ψ hq hζR') P hu c`. Use `⟨(Units.map (algebraMap R K).toMonoidHom).comp (χ₀.comp (trEquiv x q).symm.toMonoidHom), fun σ k a w hσ hk hw ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `P.ex_gl (mult_kap χ₀)`. Rewrite using `[hval hb c (h₀ b hb) σ hσ w hw]`.
+
+Use `congr 1`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Rewrite using `[ha, MonoidHom.comp_apply, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, ← trEquiv_gen x q hσ k hk, MulEquiv.symm_apply_apply, Units.coe_map]`. Both sides reduce to the same expression. Use `fun B _ _ _ w hw => GlobalTheory.T.torsionChar_eq_of_eq_on_torsion E H X t ℂ_[p] _ q hq c c' (fun w hw => ?_) B w hw` and prove the remaining obligations.
+
+Take `⟨β, hβ⟩` from `hP.at_fin _ w hw`. Take `⟨β₀, hβ₀, rfl⟩` from `sect_of hA _ hβ`. Establish `hσA : P.At (RingHom.id R) (spMap β₀ ≫ P.u.left) β₀` using `⟨hβ₀, rfl⟩`. Set `σ : Over.mk x ⟶ t.G` to `mkPt (spMap β₀ ≫ P.u.left) (hσA.over.trans (by rw [spMap_id', Category.id_comp]))`. Establish `hσ : σ ^ q = 1` using `FP.At.tors (w := σ) hσA`.
+
+Establish `hw' : w.left = spMap ψ ≫ σ.left`. Rewrite using `[← hβ.2, Algebra.algebraMap_self, RingHom.id_comp, ← spc_assoc]`. Both sides reduce to the same expression. Set `k` to `trEquiv (K := K) x q (gen σ hσ)`. Establish `hk : k.1.left = spMap (algebraMap R K) ≫ σ.left`.
+
+Rewrite using `[trEquiv_left]; exact (spc_assoc _ _ _).trans (by rw [fracToK_comp])`. Take `⟨a, ha⟩` from `root_mem (R := R) hq (u := ((χ k : Kˣ) : K)) (by rw [← Units.val_pow_eq_pow_val, ← map_pow, ker_pow, map_one, Units.val_one])`. Conclude with `Units.ext ((hc σ k a w hσ hk hw' ha).trans (hc' σ k a w hσ hk hw' ha).symm)`.
+-/
 theorem induced_chars : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (K : Type) [Field K] [CharZero K] (ξ : Sp K ⟶ X) (q : ℕ), q ≠ 0 → (∃ ζ : K, IsPrimitiveRoot ζ q) → SplitK t ξ q → ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] [Algebra R K] [IsFractionRing R K] (x : Sp R ⟶ X), spMap (algebraMap R K) ≫ x = ξ → Finite (TorsK t ξ q →* Kˣ) ∧ ∀ (p : ℕ) [Fact p.Prime] (ψ : R →+* ↥(intO ℂ_[p])) (z : Sp ↥(intO ℂ_[p]) ⟶ X), IsLocalHom ψ → spMap ψ ≫ x = z → (∀ χ : TorsK t ξ q →* Kˣ, ∃ c : TorsChar t z q, InducedBy χ x (algebraMap R K) ψ c) ∧ (∀ c : TorsChar t z q, ∃ χ : TorsK t ξ q →* Kˣ, InducedBy χ x (algebraMap R K) ψ c) ∧ ∀ (χ : TorsK t ξ q →* Kˣ) (c c' : TorsChar t z q), InducedBy χ x (algebraMap R K) ψ c → InducedBy χ x (algebraMap R K) ψ c' → Agree c c' := by
   intro E _ _ _ H X _ t K _ _ ξ q hq hζK hs R _ _ _ _ _ _ x hx
   obtain ⟨ζ, hζ⟩ := hζK

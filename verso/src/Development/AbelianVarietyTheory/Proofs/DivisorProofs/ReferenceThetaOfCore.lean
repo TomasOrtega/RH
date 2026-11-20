@@ -16,6 +16,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.RefSum
 
+/- English proof (translation)
+Introduce `hS hR`. Establish `hW` using `GlobalTheory.T.quotient_weight_gap_bounds hS`. Use `Closed.imp (Closed.and hR hW) fun _ _ _ ⟨⟨C, hC, a, h⟩, _, _, b, h'⟩ => ⟨C, hC, max a b, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨S, e, s, hPS, hT, hq⟩` from `h x hx ((le_max_left _ _).trans hle) ι p hp i hi u1 hu`. Establish `hD` using `(h' x hx ((le_max_right _ _).trans hle) ι p hp i hi u1 hu).2.2.2.2.2.2.1`.
+
+Use `⟨S, e, s, hPS, hT, fun q hq' => le_trans ?_ (hq q hq')⟩` and prove the remaining obligations. Conclude with `refExp_vp_cover_le _ p.T _ Y _ _ p.fw.laws ⟨by omega, by omega⟩ hY.1 _ _ hD _ q hq'`.
+-/
 theorem refTheta_of_refCore : Size → RefCore → RefTheta := by
   intro hS hR
   have hW := GlobalTheory.T.quotient_weight_gap_bounds hS

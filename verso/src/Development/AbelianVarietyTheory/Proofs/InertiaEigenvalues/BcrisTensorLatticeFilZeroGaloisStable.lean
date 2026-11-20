@@ -17,6 +17,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.BKGal.FilStable
 
+/- English proof (translation)
+Use `RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l (f := C.ι.comp (Per.σB g)) (g := (Per.σD g).comp C.ι) fun x => ?_) β` and prove the remaining obligations. Establish `h1 : Per.σB g (algebraMap (Per.Acris l) (Per.Bcris l) x) = algebraMap (Per.Acris l) (Per.Bcris l) (GlobalTheory.MemLoc.sigA g x)` using `GlobalTheory.CrisMaps.σB_sigA g x`. Express the relevant statement in the definitionally equal form `C.ι (Per.σB g (algebraMap (Per.Acris l) (Per.Bcris l) x)) = Per.σD g (C.ι (algebraMap (Per.Acris l) (Per.Bcris l) x))`. Rewrite using `[h1, C.ι_j, C.ι_j, GlobalTheory.MemLoc.FilLaws.σD_alg, GlobalTheory.MemLoc.CrisUnique.equivariant C.j_cris]`.
+-/
 theorem ι_σB {l : ℕ} [Fact l.Prime] (C : GlobalTheory.MemLoc.Core l) (g : Per.Gq l) (β : Per.Bcris l) :
     C.ι (Per.σB g β) = Per.σD g (C.ι β) := by
   refine RingHom.congr_fun (GlobalTheory.CrisLoc.bcris_hom_ext l
@@ -28,6 +31,15 @@ theorem ι_σB {l : ℕ} [Fact l.Prime] (C : GlobalTheory.MemLoc.Core l) (g : Pe
     Per.σD g (C.ι (algebraMap (Per.Acris l) (Per.Bcris l) x))
   rw [h1, C.ι_j, C.ι_j, GlobalTheory.MemLoc.FilLaws.σD_alg, GlobalTheory.MemLoc.CrisUnique.equivariant C.j_cris]
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ _ _ _ T g C v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨β, x, hβ, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨Per.σB (sQ l g) β, T.actT g x, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `rotate_left 1`. Simplify using `only [actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, galOB, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Both sides reduce to the same expression. Rewrite using `[ι_σB]`. Conclude with `(GlobalTheory.MemLoc.filD_laws l).2.2.2.2.2.1 _ 0 _ hβ`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem fil_zero_stable : ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (T : LocLat (Gl l) ℚ_[l] K O) (g : Gl l) (C : GlobalTheory.MemLoc.Core l), ∀ v ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x}, actB (sQ l) T g v ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x} := by
   intro l _ O K _ _ _ _ _ _ _ _ _ T g C v hv
   induction hv using Submodule.span_induction with

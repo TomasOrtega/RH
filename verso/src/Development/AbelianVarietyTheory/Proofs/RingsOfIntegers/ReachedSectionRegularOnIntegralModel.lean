@@ -27,6 +27,15 @@ namespace GlobalTheory.ReachRegular
 section BC
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (L : RigLB A) {T T' : Over S} (h : T' ⟶ T)
 
+/- English proof (translation)
+Establish `hL` using `L.isLB`. Take `⟨α₀, α, h0, hn, hc, htw⟩` from `H`. Establish `key : ∀ U : Over S, ∃ β : LB.Gen (LB.LinComb L.L (K` using `Fin 2) ![(snd U A).left, (snd U A ≫ φ).left] ![a, -b]), β.IsGen ∧ LB.Gen.Corr L.L _ _ _ _ β (LB.pullGen L.L _ _ α₀ (snd U A).left) := fun U => by`. Take `⟨α, hα, hv⟩` from `exists_gen hL (φ' := ![(snd U A).left, (snd U A ≫ φ).left]) (ε' := ![a, -b]) (fun U _ f => by`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `congrArg (fun q => f q ^ a) (Category.comp_id _)`. Use the proof step `rfl)`. Use the proof step `(LB.pullGen L.L ![𝟙 A.left, φ.left] ![a, -b] α₀ (snd U A).left)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ h0 _)`.
+
+Conclude with `⟨α, hα, corr_of_val hL fun y J hJ => hv _ _ y J hJ⟩`. Take `⟨α', hα', hc'⟩` from `key T'`. Use `⟨α₀, α', h0, hn, hc', ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e : endT A T' φ ≫ h ▷ A = h ▷ A ≫ endT A T φ := by ext1 <;> simp [endT]`. Take `rfl` from `GlobalTheory.TwistBaseChange.eq_pullS_of_isPullSec A b h hs`.
+
+Take `rfl` from `GlobalTheory.TwistBaseChange.eq_pullS_of_isPullSec A a h ht`. Use `GlobalTheory.VVRank.isTwistPull_of_sv A hL hα' fun y J hJ => ?_` and prove the remaining obligations. Establish `v : val α' (𝟙 _) y J = val α (𝟙 _ ≫ (h ▷ A).left) y J`. Rewrite using `[val_corr hJ hc', val_pull hJ, val_corr hJ hc, val_pull hJ, Category.assoc _ (h ▷ A).left, ← Over.comp_left, whiskerRight_snd]`. Rewrite using `[GlobalTheory.VVRank.sv_pullS A a h t _ y hJ, GlobalTheory.VVRank.sv_pullS A b h s _ y hJ, v, GlobalTheory.VVRank.sv_of_isTwistPull A htw _ y hJ, Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, e]`.
+-/
 theorem isNormPull_baseChange (φ : A ⟶ A) (a b : ℤ) {s : LB.Sec (LPow A L.L b T)} {t : LB.Sec (LPow A L.L a T)}
     {s' : LB.Sec (LPow A L.L b T')} {t' : LB.Sec (LPow A L.L a T')} (H : IsNormPull A L φ a b s t)
     (hs : IsPullSec A L.L b (h ▷ A) (whiskerRight_snd _ _) s s')
@@ -57,6 +66,9 @@ theorem isNormPull_baseChange (φ : A ⟶ A) (a b : ℤ) {s : LB.Sec (LPow A L.L
     GlobalTheory.VVRank.sv_of_isTwistPull A htw _ y hJ, Category.assoc, Category.assoc, ← Over.comp_left,
     ← Over.comp_left, e]
 
+/- English proof (translation)
+Take `⟨hb, U, hU, hact⟩` from `H`. Take `⟨U', -, -, h1, h2⟩` from `GlobalTheory.ThetaPullback.exists_thetaGrp_pullback S A L.L L.isLB N T T' h U`. Conclude with `⟨by rw [← MonObj.comp_pow, hb, MonObj.comp_one], U', h1 _ _ hU, h2 _ _ _ _ hact hs ht⟩`.
+-/
 theorem isSymAct_baseChange (N : ℕ) (b : T ⟶ A) {s t : LB.Sec (LPow A L.L (N : ℤ) T)}
     {s' t' : LB.Sec (LPow A L.L (N : ℤ) T')} (H : IsSymAct A L N b s t)
     (hs : IsPullSec A L.L N (h ▷ A) (whiskerRight_snd _ _) s s')
@@ -68,6 +80,17 @@ end BC
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ T io y C hC k F₀ hR`. Take `⟨-, P, hP⟩` from `hC`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Establish `hQ : ∃ Q : P.D.toPre.X → ℤ, IsQ P.D.toPre ϖ Q` using `by choose Q hQ using exists_QVal hϖ P.D`. Conclude with `⟨Q, hQ⟩`.
+
+Take `⟨Q, hQ⟩` from `hQ`. Establish `hch : CharZero T.Fr` using `charZero_of_injective_ringHom io.injective`. Take `⟨F, _, _, _, _, _, _, v, hv, -⟩` from `GlobalTheory.ClosedValuedField.exists_field_over_cdvr T ϖ hϖ hch`. Set `xF : Sp F ⟶ Xo.X` to `spMap (algebraMap T.Fr F) ≫ xOf y`. Set `h : ptO Xo xF ⟶ ptO Xo (xOf y)` to `Over.homMk (spMap (algebraMap T.Fr F)) rfl`.
+
+Establish `hh : h.left = spMap (algebraMap T.Fr F)` using `rfl`. Establish `main : 1 ≤ k ∧ ∀ G : SecN Xo xF k, IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((k : ℕ) : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₀ G → ∀ σ s, SecTieF C.I P F xF k σ G → P.U.toUnifPre.ExpandsG F k σ s → NuGe P.D Q F v k s 0`. Proceed by induction on `hR with`. Consider the case `base => exact ⟨le_rfl, GlobalTheory.T.generator_section_expansion_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh⟩`. Consider the case `pull k N k' a F₁ F₂ _ hk hN ha hk' hp ih`.
+
+Use `⟨hk' ▸ Nat.mul_pos ih.1 hN.pos, fun G hG => ?_⟩` and prove the remaining obligations. Take `⟨G₁, hG₁⟩` from `exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₁`. Conclude with `GlobalTheory.T.normalised_pullback_section_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k N k' a G₁ G hk hN.pos ha hk' (isNormPull_baseChange _ h _ _ _ hp hG₁ hG) (ih.2 G₁ hG₁)`. Consider the case `move k b F₁ F₂ _ hm ih`. Use `⟨ih.1, fun G hG => ?_⟩` and prove the remaining obligations.
+
+Take `⟨G₁, hG₁⟩` from `exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₁`. Conclude with `GlobalTheory.T.symmetric_torsion_translate_section_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k (h ≫ b) G₁ G ih.1 (isSymAct_baseChange _ h _ b hm hG₁ hG) (ih.2 G₁ hG₁)`. Take `⟨G, hG⟩` from `exists_isPullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₀`. Conclude with `GlobalTheory.T.section_regular_on_model_of_nu_nonneg E H Dw l Xo c T io y C.I P hP ϖ hϖ Q hQ F v hv xF h hh k F₀ G main.1 hG (main.2 G hG)`.
+-/
 theorem regular_of_reach : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ (k : ℕ) (F : SecN Xo (xOf y) k), Reach Xo (sOf1 y) k F → Regular C k F := by
   intro E _ _ _ H Dw l Xo c _ _ T io y C hC k F₀ hR
   obtain ⟨-, P, hP⟩ := hC

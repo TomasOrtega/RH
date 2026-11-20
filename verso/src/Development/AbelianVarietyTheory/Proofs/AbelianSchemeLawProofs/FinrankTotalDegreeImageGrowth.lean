@@ -15,10 +15,16 @@ def boxSpan (K : Type) {B : Type} [Field K] [CommRing B] [Algebra K B] {s n : �
   Submodule.span K (Set.range fun al : (Fin s → Fin (D + 1)) × Fin n =>
     (∏ i, y i ^ (al.1 i : ℕ)) * b al.2)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨(fun i => ⟨a i, Nat.lt_succ_of_le (ha i)⟩, l), rfl⟩`.
+-/
 theorem mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D : ℕ) (a : Fin s → ℕ)
     (ha : ∀ i, a i ≤ D) (l : Fin n) : (∏ i, y i ^ a i) * b l ∈ boxSpan K y b D :=
   Submodule.subset_span ⟨(fun i => ⟨a i, Nat.lt_succ_of_le (ha i)⟩, l), rfl⟩
 
+/- English proof (translation)
+Use `finrank_range_le_card (R := K) (fun al : (Fin s → Fin (D + 1)) × Fin n => (∏ i, y i ^ (al.1 i : ℕ)) * b al.2)` as an intermediate fact. Use `le_trans this ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem finrank_boxSpan_le {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D : ℕ) :
     Module.finrank K (boxSpan K y b D) ≤ (D + 1) ^ s * n := by
   have := finrank_range_le_card (R := K) (fun al : (Fin s → Fin (D + 1)) × Fin n =>
@@ -30,6 +36,13 @@ instance finite_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D : ℕ
     Module.Finite K (boxSpan K y b D) :=
   Module.Finite.span_of_finite K (Set.finite_range _)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨c, l⟩, rfl⟩` from `hx`. Establish `h` using `mem_boxSpan (K := K) y b (D + d) (fun i => (c i : ℕ) + a i) (fun i => add_le_add (Nat.le_of_lt_succ (c i).2) (ha i)) l`. Simplify using `only [pow_add, Finset.prod_mul_distrib] at h`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [mul_add]`. Conclude with `add_mem hx hz`.
+
+Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem monomial_mul_mem {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : ℕ) (a : Fin s → ℕ)
     (ha : ∀ i, a i ≤ d) {x : B} (hx : x ∈ boxSpan K y b D) :
     (∏ i, y i ^ a i) * x ∈ boxSpan K y b (D + d) := by
@@ -45,12 +58,26 @@ theorem monomial_mul_mem {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : 
   | add x z _ _ hx hz => rw [mul_add]; exact add_mem hx hz
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Simplify using `using monomial_mul_mem y b D d (fun _ => 0) (fun _ => Nat.zero_le _) hx`.
+-/
 theorem boxSpan_mono {s n : ℕ} (y : Fin s → B) (b : Fin n → B) {D E : ℕ} (h : D ≤ E) :
     boxSpan K y b D ≤ boxSpan K y b E := by
   intro x hx
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
   simpa using monomial_mul_mem y b D d (fun _ => 0) (fun _ => Nat.zero_le _) hx
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on'' with`. Consider the case `C a`. Take `⟨D, hD⟩` from `hx`. Use `⟨D, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_C, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ hD`. Consider the case `monomial_add a c f _ _ h1' h2`. Take `⟨D1, h1⟩` from `h2`. Take `⟨D2, h2⟩` from `h1'`. Use `⟨max D1 D2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, add_mul]`. Conclude with `add_mem (boxSpan_mono y b (le_max_left _ _) h1) (boxSpan_mono y b (le_max_right _ _) h2)`. Consider the case `mul_X p i h`. Take `⟨D, hD⟩` from `h`. Use `⟨D + 1, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `have := monomial_mul_mem y b D 1 (Pi.single i 1) (fun j => by by_cases hj : j = i <;> simp [hj]) hD`. Establish `e : ∏ j, y j ^ (Pi.single i 1 : Fin s → ℕ) j = y i`. Apply the tactic sequence `rw [Finset.prod_eq_single i] <;> simp +contextual`. Rewrite `this` using `[e]`. Rewrite using `[map_mul, MvPolynomial.aeval_X]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_aeval_mul_mem {s n : ℕ} (y : Fin s → B) (b : Fin n → B)
     (p : MvPolynomial (Fin s) K) {x : B} (hx : ∃ D, x ∈ boxSpan K y b D) :
     ∃ D, MvPolynomial.aeval y p * x ∈ boxSpan K y b D := by
@@ -78,6 +105,13 @@ theorem exists_aeval_mul_mem {s n : ℕ} (y : Fin s → B) (b : Fin n → B)
     convert this using 1
     ring
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨c, l⟩, rfl⟩` from `hx`. Establish `h` using `monomial_mul_mem y b d D (fun i => (c i : ℕ)) (fun i => Nat.le_of_lt_succ (c i).2) (hz l)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [mul_add]`. Conclude with `add_mem hx hz`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : ℕ) (z : B)
     (hz : ∀ l, z * b l ∈ boxSpan K y b d) {x : B} (hx : x ∈ boxSpan K y b D) :
     z * x ∈ boxSpan K y b (d + D) := by
@@ -92,6 +126,11 @@ theorem mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : �
   | add x z _ _ hx hz => rw [mul_add]; exact add_mem hx hz
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Use `mul_mem_boxSpan y b _ d z hz ih` as an intermediate fact. Rewrite using `[show (k + 1) * d + D = d + (k * d + D) by ring, show z ^ (k + 1) * x = z * (z ^ k * x) by ring]`.
+
+Conclude with `this`.
+-/
 theorem pow_mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : ℕ) (z : B)
     (hz : ∀ l, z * b l ∈ boxSpan K y b d) (k : ℕ) {x : B} (hx : x ∈ boxSpan K y b D) :
     z ^ k * x ∈ boxSpan K y b (k * d + D) := by
@@ -102,6 +141,9 @@ theorem pow_mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d
     rw [show (k + 1) * d + D = d + (k * d + D) by ring, show z ^ (k + 1) * x = z * (z ^ k * x) by ring]
     exact this
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hx`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, _root_.mul_assoc, add_mul, add_assoc]`. Conclude with `pow_mul_mem_boxSpan y b _ d (r i) (hr i) (a i) ih`.
+-/
 theorem prod_mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D d : ℕ) {I : Type}
     (r : I → B) (hr : ∀ i l, r i * b l ∈ boxSpan K y b d) (S : Finset I) (a : I → ℕ) {x : B}
     (hx : x ∈ boxSpan K y b D) :
@@ -113,6 +155,15 @@ theorem prod_mul_mem_boxSpan {s n : ℕ} (y : Fin s → B) (b : Fin n → B) (D 
     rw [Finset.prod_insert hi, Finset.sum_insert hi, _root_.mul_assoc, add_mul, add_assoc]
     exact pow_mul_mem_boxSpan y b _ d (r i) (hr i) (a i) ih
 
+/- English proof (translation)
+Use `choose f hf using hall`. Take `⟨d, hd⟩ : ∃ d, ∀ il : Fin m × Fin n, f (r il.1 * b il.2) ≤ d` from `(Set.finite_range fun il : Fin m × Fin n => f (r il.1 * b il.2)).bddAbove.imp fun d hd il => hd ⟨il, rfl⟩`. Establish `hr : ∀ i l, r i * b l ∈ boxSpan K y b d` using `fun i l => boxSpan_mono y b (hd (i, l)) (hf _)`. Use `⟨n * (d + f 1 + 1) ^ s, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hle : (MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap ≤ boxSpan K y b (t * d + f 1)`.
+
+Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `hp' : p.totalDegree ≤ t` using `(MvPolynomial.mem_restrictTotalDegree _ _ _).1 hp`. Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Establish `h1` using `prod_mul_mem_boxSpan y b (f 1) d r hr a.support a (hf 1)`.
+
+Establish `h2 : ∑ i ∈ a.support, a i ≤ t` using `(MvPolynomial.le_totalDegree ha).trans hp'`. Rewrite using `[AlgHom.toLinearMap_apply, MvPolynomial.aeval_monomial, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite `h1` using `[_root_.mul_one]`. Conclude with `boxSpan_mono y b (by gcongr) h1`.
+
+Use `(Submodule.finrank_mono hle).trans ((finrank_boxSpan_le y b _).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_comm, _root_.mul_assoc, ← mul_pow]`. Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem upper {s n m : ℕ} (y : Fin s → B) (b : Fin n → B)
     (hall : ∀ x : B, ∃ D, x ∈ boxSpan K y b D) (r : Fin m → B) :
     ∃ C : ℕ, ∀ t : ℕ, 1 ≤ t →
@@ -143,6 +194,19 @@ theorem upper {s n m : ℕ} (y : Fin s → B) (b : Fin n → B)
   gcongr
   nlinarith
 
+/- English proof (translation)
+Use `choose q hq using fun i => hr (φ (MvPolynomial.X i))`. Use `set E : ℕ := (∑ i, (q i).totalDegree) + 1 with hE`. Establish `hE0 : 0 < E` using `Nat.succ_pos _`. Use `⟨E ^ s, Nat.one_le_pow _ _ hE0, fun t => ?_⟩` and prove the remaining obligations. Use `set V := (MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap with hV`.
+
+Set `e : (Fin s → Fin (t / E + 1)) → (Fin s →₀ ℕ)` to `fun a => Finsupp.equivFunOnFinite.symm fun i => (a i : ℕ)`. Establish `he : Function.Injective e`. Introduce `a a' h`. Use function extensionality and compare the values at `i`. Use `congrArg (fun z : Fin s →₀ ℕ => z i) h` as an intermediate fact.
+
+Conclude with `Fin.ext (by simpa [e] using this)`. Establish `hli : LinearIndependent K fun a => φ (MvPolynomial.monomial (e a) (1 : K))`. Establish `h1` using `((MvPolynomial.basisMonomials (Fin s) K).linearIndependent.comp e he).map' φ.toLinearMap (LinearMap.ker_eq_bot.2 hφ)`. Simplify `h1` using `[Function.comp_def]`. Establish `hmem : ∀ a, φ (MvPolynomial.monomial (e a) (1 : K)) ∈ V`.
+
+Introduce `a`. Use `⟨∏ i, q i ^ (a i : ℕ), ?_, ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.mem_restrictTotalDegree _ _ _).2 ?_` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finset_prod _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Finset.mul_sum]`. Conclude with `Nat.mul_le_mul_left _ (Nat.le_succ _)`. Use `_ ≤ t := Nat.div_mul_le_self _ _`. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `[hq, e]`.
+
+Establish `hli' : LinearIndependent K fun a => (⟨_, hmem a⟩ : V)` using `LinearIndependent.of_comp V.subtype hli`. Establish `hc` using `hli'.fintype_card_le_finrank`. Simplify using `only [Fintype.card_pi, Fintype.card_fin, Finset.prod_const, Finset.card_univ] at hc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lower {s m : ℕ} (φ : MvPolynomial (Fin s) K →ₐ[K] B) (hφ : Function.Injective φ)
     (r : Fin m → B)
     (hr : Function.Surjective (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B)) :
@@ -188,6 +252,21 @@ theorem lower {s m : ℕ} (φ : MvPolynomial (Fin s) K →ₐ[K] B) (hφ : Funct
 
 end DegreeGrowth
 
+/- English proof (translation)
+Introduce `K B _ _ _ _ m g r hr hg`. Use `haveI : Algebra.FiniteType K B := Algebra.FiniteType.of_surjective _ hr`. Take `⟨s, φ, hinj, hfin⟩` from `exists_finite_inj_algHom_of_fg K B`. Use `letI : Algebra (MvPolynomial (Fin s) K) B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial (Fin s) K) B := IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`.
+
+Use `haveI : Module.Finite (MvPolynomial (Fin s) K) B := hfin`. Use `haveI : FaithfulSMul (MvPolynomial (Fin s) K) B := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `hs : s = g`. Establish `h` using `trdeg_add_eq K (MvPolynomial (Fin s) K) (A := B)`. Rewrite `h` using `[MvPolynomial.trdeg_of_isDomain, trdeg_eq_zero, hg]`.
+
+Simplify using `using h`. Substitute `hs` using the available equality. Take `⟨n, b, hb⟩` from `Module.Finite.exists_fin (R := MvPolynomial (Fin s) K) (M := B)`. Establish `hall : ∀ x : B, ∃ D, x ∈ DegreeGrowth.boxSpan K (fun i => φ (MvPolynomial.X i)) b D`. Introduce `x`.
+
+Establish `hx : x ∈ Submodule.span (MvPolynomial (Fin s) K) (Set.range b)` using `hb ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`. Conclude with `⟨0, by simpa using DegreeGrowth.mem_boxSpan (K := K) (fun i => φ (MvPolynomial.X i)) b 0 (fun _ => 0) (fun _ => le_rfl) l⟩`.
+
+Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `add x z _ _ h1 h2`. Take `⟨D1, h1⟩` from `h1`. Take `⟨D2, h2⟩` from `h2`. Conclude with `⟨max D1 D2, add_mem (DegreeGrowth.boxSpan_mono _ b (le_max_left _ _) h1) (DegreeGrowth.boxSpan_mono _ b (le_max_right _ _) h2)⟩`.
+
+Consider the case `smul p x _ hx`. Establish `h` using `DegreeGrowth.exists_aeval_mul_mem _ b p hx`. Establish `e : MvPolynomial.aeval (fun i => φ (MvPolynomial.X i)) = φ` using `(MvPolynomial.aeval_unique φ).symm`. Rewrite `h` using `[e]`. Conclude with `h`.
+
+Take `⟨C, hC⟩` from `DegreeGrowth.upper _ b hall r`. Take `⟨c, hc1, hc⟩` from `DegreeGrowth.lower φ hinj r hr`. Conclude with `⟨c, C, hc1, fun t ht => ⟨hc t, hC t ht⟩⟩`.
+-/
 theorem finrank_totalDegree_image_growth : ∀ (K B : Type) [Field K] [CommRing B] [IsDomain B] [Algebra K B] (m g : ℕ) (r : Fin m → B), Function.Surjective (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B) → Algebra.trdeg K B = g → ∃ c C : ℕ, 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ g ≤ c * Module.finrank K ((MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap) ∧ Module.finrank K ((MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap) ≤ C * t ^ g := by
   intro K B _ _ _ _ m g r hr hg
   haveI : Algebra.FiniteType K B := Algebra.FiniteType.of_surjective _ hr

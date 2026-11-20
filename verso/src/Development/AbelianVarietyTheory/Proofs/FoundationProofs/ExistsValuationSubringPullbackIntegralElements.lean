@@ -8,6 +8,11 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory.K5
 
+/- English proof (translation)
+Introduce `Ω _ _ _ p _ Ωl _ _ hC j`. Take `⟨v, hv, -, -, hp1⟩` from `exists_valuation_isInt p Ωl hC`. Set `w : Valuation Ω NNReal` to `v.comap j`. Use `⟨w.valuationSubring, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_nonunits_iff, ← map_one w.valuationSubring.valuation, ← w.isEquiv_valuation_valuationSubring.lt_iff_lt, map_one] show v (j ((p : ℕ) : Ω)) < 1`.
+
+Rewrite using `[map_natCast]`. Conclude with `hp1`. Rewrite using `[Valuation.mem_valuationSubring_iff]`. Conclude with `hv (j x)`.
+-/
 theorem exists_valuationSubring_isInt_comap :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : ℕ) [Fact p.Prime] (Ωl : Type)
       [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ j : Ω →+* Ωl,

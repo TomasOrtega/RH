@@ -5,6 +5,9 @@ universe u
 
 namespace GlobalTheory.CompanionTheory.EisTube
 
+/- English proof (translation)
+Introduce `ι _ P _ _ h hh hloc ψ hm hc hv` and use `laplaceEntire ι P h hh hloc ψ hm hc hv`.
+-/
 theorem laplaceEntire_firstCountable : ∀ (ι : Type) [Fintype ι] (P : Type u) [TopologicalSpace P] [FirstCountableTopology P] (h : P → ℝ), (∀ p, 0 ≤ h p) →
     (∀ p, ∃ U ∈ nhds p, BddAbove (h '' U)) →
     ∀ ψ : P → (ι → ℝ) → ℂ, (∀ p, MeasureTheory.AEStronglyMeasurable (ψ p)) →

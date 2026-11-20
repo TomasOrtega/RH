@@ -21,6 +21,21 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.SpreadAb
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `hp`. Establish `P` using `ProjSpace.isPullback_baseChange N (algebraMap R K)`. Use `set b := ProjSpace.baseChange N (algebraMap R K)`. Establish `hfl : Flat (spMap (algebraMap R K))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat K (nonZeroDivisors R))`. Establish `hpre : IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `hqb : QuasiCompact b` using `MorphismProperty.of_isPullback P.flip inferInstance`. Set `w` to `i ≫ b`. Set `s` to `w.imageι ≫ PSpace.str R N`.
+
+Establish `hw : w.toImage ≫ s = (i ≫ PSpace.str K N) ≫ spMap (algebraMap R K)`. Simplify using `only [s, w, Scheme.Hom.toImage_imageι_assoc, Category.assoc, P.w]`. Establish `hd` using `isSchemeTheoreticallyDominant_toImage w`. Establish `: QuasiCompact (w.toImage ≫ w.imageι)` using `by rw [w.toImage_imageι]; infer_instance`. Establish `: QuasiCompact w.toImage` using `QuasiCompact.of_comp w.toImage w.imageι`.
+
+Set `l : X ⟶ pullback w.imageι b` to `pullback.lift w.toImage i w.toImage_imageι`. Establish `hl₁ : l ≫ pullback.fst _ _ = w.toImage` using `pullback.lift_fst _ _ _`. Establish `hl₂ : l ≫ pullback.snd _ _ = i` using `pullback.lift_snd _ _ _`. Establish `hbf : Flat b` using `MorphismProperty.of_isPullback P.flip hfl`. Establish `hbm : IsPreimmersion b` using `MorphismProperty.of_isPullback P.flip hpre`.
+
+Establish `: IsClosedImmersion (l ≫ pullback.snd _ _)` using `by rwa [hl₂]`. Establish `: IsClosedImmersion l` using `IsClosedImmersion.of_comp l (pullback.snd _ _)`. Establish `Q : IsPullback l (𝟙 X) (pullback.fst w.imageι b) w.toImage` using `⟨⟨by rw [hl₁, Category.id_comp]⟩, ⟨PullbackCone.IsLimit.mk _ (fun c => c.snd) (fun c => by rw [← cancel_mono (pullback.fst w.imageι b), Category.assoc, hl₁, c.condition]) (fun c => Category.comp_id _) (fun c m _ h => by rw [← h, Category.comp_id])⟩⟩`. Establish `: IsSchemeTheoreticallyDominant l` using `.of_isPullback Q.flip`. Establish `: IsIso l` using `IsClosedImmersion.isIso_iff_ker_eq_bot.2 l.ker_eq_bot`.
+
+Use `⟨_, s, w.toImage, ⟨N, w.imageι, inferInstance, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `Q₂` using `(IsPullback.of_hasPullback w.imageι b).paste_vert P`. Use `IsPullback.of_iso Q₂ (asIso l).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[← hl₁]`. Simplify using `[← hl₂]`.
+
+Simplify using `[s]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_projModel (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K]
     {X : Scheme.{0}} (p : X ⟶ Sp K) (hp : IsProjOver p) :
     ∃ (Z : Scheme.{0}) (s : Z ⟶ Sp R) (φ : X ⟶ Z), IsProjOver s ∧ IsPullback φ p s (spMap (algebraMap R K)) := by
@@ -60,6 +75,11 @@ theorem exists_projModel (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFr
   · simp [s]
   · simp
 
+/- English proof (translation)
+Substitute `he` using the available equality. Establish `h₂` using `(IsPullback.of_hasPullback (pullback.snd s (spMap c)) (spMap d)).paste_horiz (IsPullback.of_hasPullback s (spMap c))`. Establish `e : spMap d ≫ spMap c = spMap (d.comp c)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite `h₂` using `[e]`. Rewrite using `[← P.cancel_left_of_respectsIso (h.isoIsPullback _ _ h₂).hom, IsPullback.isoIsPullback_hom_snd]`.
+-/
 theorem iff_iterated (P : MorphismProperty Scheme.{0}) [P.RespectsIso] {R R₁ R₂ : Type} [CommRing R] [CommRing R₁]
     [CommRing R₂] {Z Y : Scheme.{0}} {s : Z ⟶ Sp R} (c : R →+* R₁) (d : R₁ →+* R₂) {e : R →+* R₂}
     (he : d.comp c = e) {a : Y ⟶ Z} {q : Y ⟶ Sp R₂} (h : IsPullback a q s (spMap e)) :
@@ -77,10 +97,16 @@ def toFrac (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K
   IsLocalization.Away.lift f (g := algebraMap R K)
     (IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hf))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_comp _ _`.
+-/
 theorem toFrac_comp (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K] {f : R} (hf : f ≠ 0) :
     (toFrac R K hf).comp (algebraMap R _) = algebraMap R K :=
   IsLocalization.Away.lift_comp _ _
 
+/- English proof (translation)
+Use `(IsLocalization.lift_injective_iff _).2 fun x y => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `congrArg (toFrac R K hf) h` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, ← RingHom.comp_apply, toFrac_comp]`. Then use the resulting hypothesis. Rewrite using `[IsFractionRing.injective R K h]`.
+-/
 theorem toFrac_injective (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFractionRing R K] {f : R}
     (hf : f ≠ 0) : Function.Injective (toFrac R K hf) := by
   refine (IsLocalization.lift_injective_iff _).2 fun x y => ⟨fun h => ?_, fun h => ?_⟩
@@ -88,6 +114,15 @@ theorem toFrac_injective (R K : Type) [CommRing R] [Field K] [Algebra R K] [IsFr
     rwa [← RingHom.comp_apply, ← RingHom.comp_apply, toFrac_comp] at this
   · rw [IsFractionRing.injective R K h]
 
+/- English proof (translation)
+Take `⟨f₁, h₁, H⟩` from `h`. Take `⟨⟨a, u⟩, hu⟩` from `IsLocalization.surj (Submonoid.powers f) f₁`. Establish `hunit` using `IsLocalization.map_units (Localization.Away f) u`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hu` using `[map_zero, hunit.mul_left_eq_zero]`. Conclude with `h₁ (by rw [hu, map_zero])`. Use `⟨f * a, mul_ne_zero hf ha, fun R' _ φ hφ => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[map_mul, IsUnit.mul_iff]`. Use `⟨hφ.1, ?_⟩` and prove the remaining obligations.
+
+Set `d : Localization.Away f →+* R'` to `IsLocalization.Away.lift f hφ.1`. Establish `hd : d.comp (algebraMap R _) = φ` using `IsLocalization.Away.lift_comp _ _`. Use `(iff_iterated P _ d hd (IsPullback.of_hasPullback _ _)).2 (H R' d ?_)` and prove the remaining obligations. Establish `e` using `congrArg d hu`. Rewrite `e` using `[map_mul, ← RingHom.comp_apply d (algebraMap R _) a, hd]`.
+
+Conclude with `isUnit_of_mul_isUnit_left (e ▸ hφ.2)`.
+-/
 theorem near_of_away (P : MorphismProperty Scheme.{0}) [P.RespectsIso] (R K : Type) [CommRing R] [IsDomain R]
     [Field K] [Algebra R K] [IsFractionRing R K] {f : R} (hf : f ≠ 0) {Z : Scheme.{0}} (s : Z ⟶ Sp R)
     (h : ∃ f₁ : Localization.Away f, toFrac R K hf f₁ ≠ 0 ∧ ∀ (R' : Type) [CommRing R']
@@ -112,12 +147,20 @@ theorem near_of_away (P : MorphismProperty Scheme.{0}) [P.RespectsIso] (R K : Ty
   rw [map_mul, ← RingHom.comp_apply d (algebraMap R _) a, hd] at e
   exact isUnit_of_mul_isUnit_left (e ▸ hφ.2)
 
+/- English proof (translation)
+Take `⟨N, i, _, rfl⟩` from `hs`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Use `infer_instance`.
+-/
 theorem isProper_of_isProjOver {R : Type} [CommRing R] {Z : Scheme.{0}} {s : Z ⟶ Sp R} (hs : IsProjOver s) :
     IsProper s := by
   obtain ⟨N, i, _, rfl⟩ := hs
   have : IsProper (PSpace.str R N) := isProper_str R N
   infer_instance
 
+/- English proof (translation)
+Establish `hpr : IsProper s` using `isProper_of_isProjOver hs`. Establish `: MorphismProperty.RespectsIso (C` using `Scheme.{0}) @GeometricallyConnected := by`. Rewrite using `[GeometricallyConnected.eq_geometrically]`. Use `infer_instance`. Establish `: MorphismProperty.RespectsIso (C` using `Scheme.{0}) (@SmoothOfRelativeDimension g) := @MorphismProperty.IsStableUnderBaseChange.respectsIso _ _ _ (smoothOfRelativeDimension_isStableUnderBaseChange g)`.
+
+Take `⟨f₁, hf₁, H₁⟩` from `GlobalTheory.generic_flatness_scheme R Z s inferInstance inferInstance`. Take `⟨f₂, hf₂, H₂⟩` from `near_of_away (@SmoothOfRelativeDimension g) R K hf₁ s (GlobalTheory.SmoothNearFibre.exists_smoothOfRelativeDimension_of_isUnit _ _ _ g K (toFrac R K hf₁) inferInstance (H₁ _ _ (IsLocalization.Away.algebraMap_isUnit f₁)) ((iff_iterated (@SmoothOfRelativeDimension g) _ _ (toFrac_co …`. Establish `hsm` using `(H₂ (Localization.Away f₂) _ (IsLocalization.Away.algebraMap_isUnit f₂)).2`. Take `⟨f₃, hf₃, H₃⟩` from `near_of_away @GeometricallyConnected R K hf₂ s (GlobalTheory.ConnOpen.geometricallyConnected_near _ _ _ K (toFrac R K hf₂) (ProjSpace.isProjOver_pullback_snd _ hs) (SmoothOfRelativeDimension.smooth g _) ((iff_iterated @GeometricallyConnected _ _ (toFrac_comp R K hf₂) h).1 hc))`. Conclude with `⟨f₃, hf₃, fun R' _ c hc => ⟨(H₂ R' c (H₃ R' c hc).1).2, (H₃ R' c hc).2⟩⟩`.
+-/
 theorem near_smooth_connected (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {X Z : Scheme.{0}} {p : X ⟶ Sp K} {s : Z ⟶ Sp R} {φ : X ⟶ Z} (hs : IsProjOver s)
     (h : IsPullback φ p s (spMap (algebraMap R K))) (g : ℕ) (hg : SmoothOfRelativeDimension g p)
@@ -140,6 +183,13 @@ theorem near_smooth_connected (R K : Type) [CommRing R] [IsDomain R] [IsNoetheri
       ((iff_iterated @GeometricallyConnected _ _ (toFrac_comp R K hf₂) h).1 hc))
   exact ⟨f₃, hf₃, fun R' _ c hc => ⟨(H₂ R' c (H₃ R' c hc).1).2, (H₃ R' c hc).2⟩⟩
 
+/- English proof (translation)
+Take `⟨f, hf, u', H⟩` from `GlobalTheory.morphisms_generic_spread_out R K B Z pB pZ Unit (fun _ => h.isoPullback.inv ≫ u) ‹_› ‹_› ‹_› (fun _ => by rw [Category.assoc, hu, h.isoPullback_inv_fst_assoc])`. Take `⟨H₁, H₂⟩` from `H ()`. Use `⟨f, hf, fun R' _ c hc Y a q w => ?_⟩` and prove the remaining obligations. Set `d : Localization.Away f →+* R'` to `IsLocalization.Away.lift f hc`. Establish `hd : d.comp (algebraMap R _) = c` using `IsLocalization.Away.lift_comp _ _`.
+
+Set `k : Y ⟶ pullback pB (spMap (algebraMap R (Localization.Away f)))` to `pullback.lift a (q ≫ spMap d) (by`. Rewrite using `[w, Category.assoc, ← Spec.map_comp, ← hd]`. Use the proof step `rfl)`. Establish `hk : k ≫ pullback.fst _ _ = a` using `pullback.lift_fst _ _ _`. Use `⟨k ≫ u' (), by rw [Category.assoc, H₁, reassoc_of% hk], fun j hj => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `H₂ (h.isoPullback.inv ≫ j ≫ k) (by simp only [Category.assoc, hk, hj, h.isoPullback_inv_fst])`. Rewrite using `[← cancel_epi h.isoPullback.inv, ← e]`. Simplify using `only [Category.assoc]`.
+-/
 theorem near_hom (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {B Z W : Scheme.{0}} (pB : B ⟶ Sp R) (pZ : Z ⟶ Sp R) [QuasiCompact pB] [QuasiSeparated pB]
     [LocallyOfFinitePresentation pZ] {φ : W ⟶ B} {p : W ⟶ Sp K} (h : IsPullback φ p pB (spMap (algebraMap R K)))
@@ -161,6 +211,9 @@ theorem near_hom (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Fi
   rw [← cancel_epi h.isoPullback.inv, ← e]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Use `ExtUnique.over_hom_ext_of_isPullback (IsPullback.of_hasPullback X.hom j) ?_` and prove the remaining obligations. Conclude with `congrArg (fun z => z.left) (h (Over.mk (pullback.snd X.hom j)) (Over.homMk (pullback.fst X.hom j) (by simpa using pullback.condition)))`.
+-/
 theorem hom_ext_of_points {Z U : Scheme.{0}} (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
     {X Y : Over Z} [Flat X.hom] [IsSeparated Y.hom] {f g : X ⟶ Y}
     (h : ∀ (T : Over U) (t : Over.mk (T.hom ≫ j) ⟶ X), t ≫ f = t ≫ g) : f = g := by
@@ -170,6 +223,23 @@ theorem hom_ext_of_points {Z U : Scheme.{0}} (j : U ⟶ Z) [QuasiCompact j] [IsS
 
 open GrpDense (pushPt_surjective pushPt_mul pushPt_inv pushPt_one) in
 
+/- English proof (translation)
+Use `ExtUnique.flat_tensorUnit (S := Z)` as an intermediate fact. Use `ExtUnique.flat_tensorObj G G` as an intermediate fact. Use `ExtUnique.flat_tensorObj (𝟙_ _) G` as an intermediate fact. Use `ExtUnique.flat_tensorObj G (𝟙_ _)` as an intermediate fact. Use `ExtUnique.flat_tensorObj (G ⊗ G) G` as an intermediate fact.
+
+Establish `hM` using `fun {T : Over U} => pushPt_mul h.w hm (T := T)`. Establish `hI` using `fun {T : Over U} => pushPt_inv h.w hi (T := T)`. Establish `hE` using `pushPt_one h.w he`. Use `letI : MonObj G := { one := e mul := m one_mul := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+
+Take `rfl : t = lift (toUnit _) (pushPt h.w x)` from `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) (by rw [lift_snd, hx])`. Rewrite using `[lift_whiskerRight_assoc, hE, hM, _root_.one_mul, lift_leftUnitor_hom]`. Use `mul_one := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _)`. Take `rfl : t = lift (pushPt h.w x) (toUnit _)` from `CartesianMonoidalCategory.hom_ext _ _ (by rw [lift_fst, hx]) (toUnit_unique _ _)`.
+
+Rewrite using `[lift_whiskerLeft_assoc, hE, hM, _root_.mul_one, lift_rightUnitor_hom]`. Use `mul_assoc := hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ fst _ _)`. Take `⟨y, hy⟩` from `pushPt_surjective h T (t ≫ fst _ _ ≫ snd _ _)`. Take `⟨z, hz⟩` from `pushPt_surjective h T (t ≫ snd _ _)`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : t = lift (lift (pushPt h.w x) (pushPt h.w y)) (pushPt h.w z) := by`. Apply the tactic sequence `ext <;> simp [hx, hy, hz]`. Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hM, hM, hM, hM, _root_.mul_assoc] }`. Use `letI : GrpObj G := { inv := i left_inv := hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`. Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, inv_mul_cancel, comp_toUnit_assoc, hE]`. Use `right_inv := hom_ext_of_points j fun T t => by`. Take `⟨x, rfl⟩` from `pushPt_surjective h T t`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ _ ≫ e`.
+
+Rewrite using `[comp_lift_assoc, Category.comp_id, hI, hM, mul_inv_cancel, comp_toUnit_assoc, hE] }`. Use `⟨inferInstance, ⟨hom_ext_of_points j fun T t => ?_⟩, h, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `pushPt_surjective h T (t ≫ fst _ _)`. Take `⟨y, hy⟩` from `pushPt_surjective h T (t ≫ snd _ _)`. Apply the tactic sequence `obtain rfl : t = lift (pushPt h.w x) (pushPt h.w y) := by ext <;> simp [hx, hy]`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ m`. Rewrite using `[lift_braiding_hom_assoc, hM, hM, _root_.mul_comm]`. Take `rfl : x₀ = pushPt h.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₀ = pushPt h.w y` from `Over.OverMorphism.ext hy`. Conclude with `congrArg (fun z => z.left) (hM x y)`.
+-/
 theorem grpObj_of_dominant {Z U : Scheme.{0}} (j : U ⟶ Z) [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
     (G : Over Z) [Flat G.hom] [IsSeparated G.hom] (A : Over U) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ G.left)
     (h : IsPullback φ A.hom G.hom j) (m : G ⊗ G ⟶ G) (i : G ⟶ G) (e : 𝟙_ (Over Z) ⟶ G)
@@ -225,6 +295,9 @@ theorem grpObj_of_dominant {Z U : Scheme.{0}} (j : U ⟶ Z) [QuasiCompact j] [Is
     obtain rfl : y₀ = pushPt h.w y := Over.OverMorphism.ext hy
     exact congrArg (fun z => z.left) (hM x y)
 
+/- English proof (translation)
+Establish `h₁ : IsPullback (pullback.map p p s s φ φ j h.w.symm h.w.symm) (pullback.fst p p) (pullback.fst s s) φ`. Use `IsPullback.of_right (h₁₂ := pullback.snd s s) (v₁₃ := s) (h₂₂ := s) ?_ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback s s).flip` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, h.w]`. Conclude with `(IsPullback.of_hasPullback p p).flip.paste_horiz h`. Conclude with `h₁.paste_vert h`.
+-/
 theorem isPullback_square {S U Z X : Scheme.{0}} {s : Z ⟶ S} {j : U ⟶ S} {p : X ⟶ U} {φ : X ⟶ Z}
     (h : IsPullback φ p s j) :
     IsPullback (pullback.map p p s s φ φ j h.w.symm h.w.symm) (pullback.fst p p ≫ p) (pullback.fst s s ≫ s) j := by
@@ -235,6 +308,31 @@ theorem isPullback_square {S U Z X : Scheme.{0}} {s : Z ⟶ S} {j : U ⟶ S} {p 
     exact (IsPullback.of_hasPullback p p).flip.paste_horiz h
   exact h₁.paste_vert h
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ P`. Take `⟨Z, s, φ, hs, h⟩` from `exists_projModel R K P.A.hom (ProjSpace.isProjOver_polAV P)`. Establish `hpr : IsProper s` using `isProper_of_isProjOver hs`. Establish `hfp : LocallyOfFinitePresentation s` using `inferInstance`. Take `⟨f₀, hf₀, H₀⟩` from `near_smooth_connected R K hs h P.g P.smoothDim P.isAb.geomConnected`.
+
+Take `⟨f₁, hf₁, H₁⟩` from `near_hom R K (pullback.fst s s ≫ s) s (isPullback_square h) ((μ[P.A]).left ≫ φ) (by`. Rewrite using `[(isPullback_square h).w, Category.assoc, h.w, Over.w_assoc]`. Use the proof step `rfl)`. Take `⟨f₂, hf₂, H₂⟩` from `near_hom R K s s h ((ι[P.A]).left ≫ φ) (by rw [Category.assoc, h.w, Over.w_assoc])`. Take `⟨f₃, hf₃, H₃⟩` from `near_hom R K (𝟙 _) s (IsPullback.id_vert (spMap (algebraMap R K))) ((η[P.A]).left ≫ φ) (by rw [Category.assoc, h.w, Over.w_assoc]; simp)`.
+
+Establish `hf : f₀ * f₁ * f₂ * f₃ ≠ 0` using `by simp [hf₀, hf₁, hf₂, hf₃]`. Set `R'` to `Localization.Away (f₀ * f₁ * f₂ * f₃)`. Set `c` to `algebraMap R R'`. Establish `hu : IsUnit (c (f₀ * f₁ * f₂ * f₃))` using `IsLocalization.Away.algebraMap_isUnit _`. Simplify using `only [map_mul, IsUnit.mul_iff] at hu`.
+
+Take `⟨⟨⟨u₀, u₁⟩, u₂⟩, u₃⟩` from `hu`. Set `ψ` to `toFrac R K hf`. Establish `hψ : spMap ψ ≫ spMap c = spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, ← toFrac_comp R K hf]`. Both sides reduce to the same expression.
+
+Set `G : Over (Sp R')` to `Over.mk (pullback.snd s (spMap c))`. Set `a : G.left ⟶ Z` to `pullback.fst s (spMap c)`. Establish `hG : IsPullback a G.hom s (spMap c)` using `IsPullback.of_hasPullback _ _`. Set `φ' : P.A.left ⟶ G.left` to `hG.lift φ (P.A.hom ≫ spMap ψ) (by rw [h.w, Category.assoc, hψ])`. Establish `hφ₁ : φ' ≫ a = φ` using `hG.lift_fst _ _ _`.
+
+Establish `hφ₂ : φ' ≫ G.hom = P.A.hom ≫ spMap ψ` using `hG.lift_snd _ _ _`. Establish `hφ : IsPullback φ' P.A.hom G.hom (spMap ψ)` using `IsPullback.of_right (by rwa [hφ₁, hψ]) hφ₂ hG`. Take `⟨hsm, hgc⟩` from `H₀ R' c u₀`. Establish `hsm' : Smooth G.hom` using `SmoothOfRelativeDimension.smooth P.g (pullback.snd s (spMap c))`. Establish `hpr' : IsProper G.hom` using `inferInstanceAs (IsProper (pullback.snd s (spMap c)))`.
+
+Take `⟨m, hm₁, hm₂⟩` from `H₁ R' c u₁ _ _ _ (isPullback_square hG).w`. Take `⟨i, hi₁, hi₂⟩` from `H₂ R' c u₂ _ _ _ hG.w`. Take `⟨e, he₁, he₂⟩` from `H₃ R' c u₃ _ (spMap c) (𝟙 _) (by simp)`. Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom ψ) (toFrac_injective R K hf)` as an intermediate fact. Use `P.isAb.comm` as an intermediate fact.
+
+Establish `L : ∀ (Y : Over (Sp R')) (u : Y.left ⟶ Z), u ≫ s = Y.hom ≫ spMap c → ∃ v : Y ⟶ G, v.left ≫ a = u` using `fun Y u w => ⟨Over.homMk (hG.lift u Y.hom w) (hG.lift_snd _ _ _), hG.lift_fst _ _ _⟩`. Take `⟨m', hm'⟩` from `L (G ⊗ G) m (hm₁.trans (isPullback_square hG).w)`. Take `⟨i', hi'⟩` from `L G i (hi₁.trans hG.w)`. Take `⟨e', he'⟩` from `L (𝟙_ _) e (he₁.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Take `⟨_, hc, hp⟩` from `grpObj_of_dominant (spMap ψ) G P.A φ' hφ m' i' e' (fun φ₂ ⟨k₁, k₂⟩ => by`.
+
+Apply `hG.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hφ₁, hm']`. Use `hm₂ φ₂ (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, ← hφ₁]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ a) k₁).trans (Category.assoc _ _ _))`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, ← hφ₁]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ a) k₂).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc, ← Over.w (fst G G), reassoc_of% k₁, hφ₂, Over.w_assoc])`. Use the proof step `(by`. Apply `hG.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hφ₁, hi']`. Conclude with `hi₂ φ' hφ₁`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc])`. Use the proof step `(by`. Apply `hG.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hφ₁, he']`. Conclude with `he₂ _ hψ`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hφ₂, Over.w_assoc]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm)`. Conclude with `⟨_, hf, ψ, G, inferInstance, φ', toFrac_comp R K hf, ⟨hc, hsm', hpr', hgc⟩, hsm, hp⟩`.
+-/
 theorem exists_abelianScheme_away : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (P : Out.PolAV (Sp K)), ∃ (f : R) (_ : f ≠ 0) (ψ : (Localization.Away f) →+* K) (A : Over (Sp (Localization.Away f))) (_ : GrpObj A) (φ : P.A.left ⟶ A.left), ψ.comp (algebraMap R _) = algebraMap R K ∧ IsAbelianScheme A ∧ SmoothOfRelativeDimension P.g A.hom ∧ IsGrpPullback P.A A (spMap ψ) φ := by
   intro R K _ _ _ _ _ _ P
   obtain ⟨Z, s, φ, hs, h⟩ := exists_projModel R K P.A.hom (ProjSpace.isProjOver_polAV P)

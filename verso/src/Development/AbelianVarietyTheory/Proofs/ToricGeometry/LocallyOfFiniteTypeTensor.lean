@@ -15,6 +15,25 @@ namespace GlobalTheory
 
 namespace ThetaModelGroup
 
+/- English proof (translation)
+Establish `hu : ∀ y : 𝟙_ C ⟶ X, y ≫ toUnit X = 𝟙 _` using `fun y => Subsingleton.elim _ _`. Establish `p2 : ∀ y : 𝟙_ C ⟶ X ⊗ X, ∃ z w, y = lift (ex z) (ex w)` using `fun y => by`. Take `⟨z, hz⟩` from `hs (y ≫ fst _ _)`. Take `⟨w, hw⟩` from `hs (y ≫ snd _ _)`. Apply the tactic sequence `exact ⟨z, w, by rw [hz, hw]; ext <;> simp⟩`.
+
+Establish `p3 : ∀ y : 𝟙_ C ⟶ (X ⊗ X) ⊗ X, ∃ z w v, y = lift (lift (ex z) (ex w)) (ex v)` using `fun y => by`. Take `⟨z, w, hz⟩` from `p2 (y ≫ fst _ _)`. Take `⟨v, hw⟩` from `hs (y ≫ snd _ _)`. Apply the tactic sequence `exact ⟨z, w, v, by rw [← hz, hw]; ext <;> simp⟩`. Set `G : GrpObj X` to `{ one := ex 0 mul := m inv := i one_mul := by`.
+
+Rewrite using `[← cancel_epi (λ_ X).inv, Iso.inv_hom_id]`. Use `e1 _ _ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Establish `: ex z ≫ (λ_ X).inv ≫ ex 0 ▷ X = lift (ex 0) (ex z)`. Use `ext`.
+
+Simplify using `[reassoc_of% hu]`. Simplify using the standard rewrite rules. Rewrite using `[reassoc_of% this, hm, zero_add, Category.comp_id]`. Use `mul_one := by`. Rewrite using `[← cancel_epi (ρ_ X).inv, Iso.inv_hom_id]`.
+
+Use `e1 _ _ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Establish `: ex z ≫ (ρ_ X).inv ≫ X ◁ ex 0 = lift (ex z) (ex 0)`. Use `ext`. Simplify using the standard rewrite rules.
+
+Simplify using `[reassoc_of% hu]`. Rewrite using `[reassoc_of% this, hm, add_zero, Category.comp_id]`. Use `mul_assoc := by`. Use `e3 _ _ fun y => ?_` and prove the remaining obligations. Take `⟨z, w, v, rfl⟩` from `p3 y`.
+
+Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hm, hm, hm, hm, add_assoc]`. Use `left_inv := by`. Use `e1 _ _ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Rewrite using `[comp_lift_assoc, hi, Category.comp_id, hm, reassoc_of% hu, neg_add_cancel]`.
+
+Use `right_inv := by`. Use `e1 _ _ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Rewrite using `[comp_lift_assoc, hi, Category.comp_id, hm, reassoc_of% hu, add_neg_cancel] }`. Use `⟨G, ⟨e2 _ _ fun y => ?_⟩, fun z w => (hm z w).symm⟩` and prove the remaining obligations.
+
+Take `⟨z, w, rfl⟩` from `p2 y`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ m = _ ≫ m`. Rewrite using `[lift_braiding_hom_assoc, hm, hm, add_comm]`.
+-/
 theorem grpObj_of_points {C : Type*} [Category C] [CartesianMonoidalCategory C] [BraidedCategory C] (X : C)
     {A : Type*} [AddCommGroup A] (ex : A → (𝟙_ C ⟶ X)) (hs : Function.Surjective ex) (m : X ⊗ X ⟶ X) (i : X ⟶ X)
     (hm : ∀ z w, lift (ex z) (ex w) ≫ m = ex (z + w)) (hi : ∀ z, ex z ≫ i = ex (-z))
@@ -79,11 +98,19 @@ def RegOn (U : Y.left.Opens) (s : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ) : Prop 
 def RegAt (y : 𝟙_ (Over (Sp ℂ)) ⟶ Y) (s : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ) : Prop :=
   ∃ U : Y.left.Opens, ⊤ ≤ y.left ⁻¹ᵁ U ∧ RegOn U s
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `h`. Conclude with `⟨resG _ e ρ, fun y' hy' => (valAt'_res _ e ρ hy').trans (hρ y' (top_le_preimage_mono _ e hy'))⟩`.
+-/
 theorem RegOn.mono {U V : Y.left.Opens} {s : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ} (h : RegOn U s) (e : V ≤ U) :
     RegOn V s := by
   obtain ⟨ρ, hρ⟩ := h
   exact ⟨resG _ e ρ, fun y' hy' => (valAt'_res _ e ρ hy').trans (hρ y' (top_le_preimage_mono _ e hy'))⟩
 
+/- English proof (translation)
+Use `Fintype.ofFinite κ` as an intermediate fact. Use `choose U hU hR using h`. Use `⟨Finset.univ.inf U, ?_, fun c => (hR c).mono (Finset.inf_le (Finset.mem_univ c))⟩` and prove the remaining obligations. Generalize the expression as in `(Finset.univ : Finset κ) = t`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => exact le_top`. Consider the case `insert a t _ ih`. Rewrite using `[Finset.inf_insert]`. Conclude with `(top_le_preimage_inf _ _ _).2 ⟨hU a, ih⟩`.
+-/
 theorem exists_regOn_family {κ : Type} [Finite κ] {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y}
     {s : κ → (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ} (h : ∀ c, RegAt y (s c)) :
     ∃ U : Y.left.Opens, ⊤ ≤ y.left ⁻¹ᵁ U ∧ ∀ c, RegOn U (s c) := by
@@ -98,6 +125,11 @@ theorem exists_regOn_family {κ : Type} [Finite κ] {y : 𝟙_ (Over (Sp ℂ)) �
     rw [Finset.inf_insert]
     exact (top_le_preimage_inf _ _ _).2 ⟨hU a, ih⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hs⟩` from `hs`. Take `⟨V, hV, ht⟩` from `ht`. Take `⟨ρ, hρ⟩` from `hs.mono (inf_le_left (b := V))`. Take `⟨ρ', hρ'⟩` from `ht.mono (inf_le_right (a := U))`. Conclude with `⟨U ⊓ V, (top_le_preimage_inf _ _ _).2 ⟨hU, hV⟩, ρ * ρ', fun y' hy' => by`.
+
+Rewrite using `[valAt'_mul, hρ y' hy', hρ' y' hy']⟩`.
+-/
 theorem RegAt.mul {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y} {s t : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ} (hs : RegAt y s) (ht : RegAt y t) :
     RegAt y (fun y' => s y' * t y') := by
   obtain ⟨U, hU, hs⟩ := hs
@@ -107,6 +139,9 @@ theorem RegAt.mul {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y} {s t : (𝟙_ (Over (Sp ℂ)
   exact ⟨U ⊓ V, (top_le_preimage_inf _ _ _).2 ⟨hU, hV⟩, ρ * ρ', fun y' hy' => by
     rw [valAt'_mul, hρ y' hy', hρ' y' hy']⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hR⟩` from `exists_regOn_family h`. Use `choose ρ hρ using hR`. Conclude with `⟨U, hU, ∑ c, ρ c, fun y' hy' => by`. Rewrite using `[valAt'_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => hρ c y' hy'⟩`.
+-/
 theorem RegAt.sum {κ : Type} [Fintype κ] {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y}
     {s : κ → (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ} (h : ∀ c, RegAt y (s c)) : RegAt y (fun y' => ∑ c, s c y') := by
   obtain ⟨U, hU, hR⟩ := exists_regOn_family h
@@ -114,12 +149,22 @@ theorem RegAt.sum {κ : Type} [Fintype κ] {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y}
   exact ⟨U, hU, ∑ c, ρ c, fun y' hy' => by
     rw [valAt'_sum]; exact Finset.sum_congr rfl fun c _ => hρ c y' hy'⟩
 
+/- English proof (translation)
+Take `⟨U, hU, ρ, hρ⟩` from `h`. Use `⟨p.left ⁻¹ᵁ U, (top_le_preimage_comp _ _ _).1 hU, (p.left.app U).hom ρ, fun y' hy' => ?_⟩` and prove the remaining obligations. Conclude with `(valAt'_comp _ _ _ _).trans (hρ (y' ≫ p) ((top_le_preimage_comp _ _ _).2 hy'))`.
+-/
 theorem RegAt.comp {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y} (p : Y ⟶ X) {s : (𝟙_ (Over (Sp ℂ)) ⟶ X) → ℂ}
     (h : RegAt (y ≫ p) s) : RegAt y (fun y' => s (y' ≫ p)) := by
   obtain ⟨U, hU, ρ, hρ⟩ := h
   refine ⟨p.left ⁻¹ᵁ U, (top_le_preimage_comp _ _ _).1 hU, (p.left.app U).hom ρ, fun y' hy' => ?_⟩
   exact (valAt'_comp _ _ _ _).trans (hρ (y' ≫ p) ((top_le_preimage_comp _ _ _).2 hy'))
 
+/- English proof (translation)
+Take `⟨U, hU, hR⟩` from `exists_regOn_family h`. Take `⟨q, hq⟩` from `hR c`. Establish `e : Y.left.basicOpen q ≤ U` using `Y.left.basicOpen_le q`. Establish `hne : ∀ y' : 𝟙_ (Over (Sp ℂ)) ⟶ Y, ⊤ ≤ y'.left ⁻¹ᵁ Y.left.basicOpen q → s c y' ≠ 0` using `fun y' hy' => by`. Rewrite using `[← hq y' (top_le_preimage_mono _ e hy')]`.
+
+Conclude with `(top_le_preimage_basicOpen_iff _ _ _).1 hy'`. Use `⟨Y.left.basicOpen q, (top_le_preimage_basicOpen_iff _ _ _).2 (by rwa [hq y hU]), hne, fun c' => ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `(hR c').mono e`. Take `⟨u, hu⟩ : IsUnit (resG _ e q)` from `Y.left.toRingedSpace.isUnit_res_basicOpen q`. Use `⟨ρ * (u⁻¹).val, fun y' hy' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[valAt'_mul, valAt'_units_inv _ hy', hρ y' hy', hu, valAt'_res _ e q hy', hq y' (top_le_preimage_mono _ e hy')]`. Conclude with `(div_eq_mul_inv _ _).symm`.
+-/
 theorem exists_regOn_div {κ : Type} [Finite κ] {y : 𝟙_ (Over (Sp ℂ)) ⟶ Y}
     {s : κ → (𝟙_ (Over (Sp ℂ)) ⟶ Y) → ℂ} (h : ∀ c, RegAt y (s c)) (c : κ) (hc : s c y ≠ 0) :
     ∃ U : Y.left.Opens, ⊤ ≤ y.left ⁻¹ᵁ U ∧ (∀ y' : 𝟙_ (Over (Sp ℂ)) ⟶ Y, ⊤ ≤ y'.left ⁻¹ᵁ U → s c y' ≠ 0) ∧
@@ -137,12 +182,20 @@ theorem exists_regOn_div {κ : Type} [Finite κ] {y : 𝟙_ (Over (Sp ℂ)) ⟶ 
   rw [valAt'_mul, valAt'_units_inv _ hy', hρ y' hy', hu, valAt'_res _ e q hy', hq y' (top_le_preimage_mono _ e hy')]
   exact (div_eq_mul_inv _ _).symm
 
+/- English proof (translation)
+Establish `: x.left (default : PrimeSpectrum ℂ) ∈ ⨆ c, D c` using `by rw [hD]; trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨c, (top_le_preimage_iff_mem _ _).2 hc⟩`.
+-/
 theorem exists_chart {κ : Type} {D : κ → X.left.Opens} (hD : ⨆ c, D c = ⊤) (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) :
     ∃ c, ⊤ ≤ x.left ⁻¹ᵁ D c := by
   have : x.left (default : PrimeSpectrum ℂ) ∈ ⨆ c, D c := by rw [hD]; trivial
   obtain ⟨c, hc⟩ := TopologicalSpace.Opens.mem_iSup.1 this
   exact ⟨c, (top_le_preimage_iff_mem _ _).2 hc⟩
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂_C, MvPolynomial.eval_C]`. Conclude with `valAt'_constFn x.left X.hom (Over.w x) U a h`. Consider the case `add p q hp hq => rw [MvPolynomial.eval₂_add, valAt'_add, hp, hq, map_add]`.
+
+Consider the case `mul_X p c hp => rw [MvPolynomial.eval₂_mul, valAt'_mul, hp, MvPolynomial.eval₂_X, map_mul, MvPolynomial.eval_X]`.
+-/
 theorem valAt'_eval₂ {κ : Type} (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) (U : X.left.Opens) (h : ⊤ ≤ x.left ⁻¹ᵁ U)
     (r : κ → Γ(X.left, U)) (F : MvPolynomial κ ℂ) :
     valAt' x.left U (MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ U le_top).hom
@@ -157,6 +210,9 @@ theorem valAt'_eval₂ {κ : Type} (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) (U : X.left
 def PointCriterion : Prop :=
   ∀ (X Y : Over (Sp ℂ)), IsReduced Y.left → LocallyOfFiniteType Y.hom → ∀ F : (𝟙_ (Over (Sp ℂ)) ⟶ Y) → (𝟙_ (Over (Sp ℂ)) ⟶ X), (∀ y : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ∃ (U : Y.left.Opens) (D : X.left.Opens), ⊤ ≤ (y).left ⁻¹ᵁ U ∧ IsAffineOpen D ∧ (∀ y' : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ⊤ ≤ (y').left ⁻¹ᵁ U → ⊤ ≤ (F y').left ⁻¹ᵁ D) ∧ ∀ φ : Γ(X.left, D), ∃ ρ : Γ(Y.left, U), ∀ y' : (𝟙_ (Over (Sp ℂ)) ⟶ Y), ⊤ ≤ (y').left ⁻¹ᵁ U → valAt' y'.left U ρ = valAt' (F y').left D φ) → ∃! m : Y ⟶ X, ∀ y, y ≫ m = F y
 
+/- English proof (translation)
+Use `(H X Y h1 h2 (fun y => y ≫ f) fun y => ?_).unique (fun _ => rfl) (fun y => (h y).symm)` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_chart hD (y ≫ f)`. Conclude with `⟨f.left ⁻¹ᵁ D c, D c, (top_le_preimage_comp _ _ _).1 hc, ha c, fun y' hy' => (top_le_preimage_comp _ _ _).2 hy', fun φ => ⟨(f.left.app (D c)).hom φ, fun y' _ => valAt'_comp _ _ _ _⟩⟩`.
+-/
 theorem hom_ext_points (H : PointCriterion) (h1 : IsReduced Y.left) (h2 : LocallyOfFiniteType Y.hom)
     {κ : Type} {D : κ → X.left.Opens} (hD : ⨆ c, D c = ⊤) (ha : ∀ c, IsAffineOpen (D c)) (f g : Y ⟶ X)
     (h : ∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ Y, y ≫ f = y ≫ g) : f = g := by
@@ -166,6 +222,13 @@ theorem hom_ext_points (H : PointCriterion) (h1 : IsReduced Y.left) (h2 : Locall
     fun y' hy' => (top_le_preimage_comp _ _ _).2 hy',
     fun φ => ⟨(f.left.app (D c)).hom φ, fun y' _ => valAt'_comp _ _ _ _⟩⟩
 
+/- English proof (translation)
+Use `(H X Y h1 h2 (fun y => ex (G y)) fun y => ?_).exists` and prove the remaining obligations. Take `⟨c, hcy⟩` from `exists_chart hD (ex (G y))`. Take `⟨ha, hm, r, hr, hF⟩` from `hc c`. Take `⟨l, hl, hR⟩` from `hG y`. Take `⟨U, hU, hne, hq⟩` from `exists_regOn_div hR c (mul_ne_zero hl ((hm _).1 hcy))`.
+
+Use `choose ρ hρ using hq`. Use `⟨U, D c, hU, ha, fun y' hy' => (hm _).2 (right_ne_zero_of_mul (hne y' hy')), fun φ => ?_⟩` and prove the remaining obligations. Take `⟨F, rfl⟩` from `hF φ`. Use `⟨MvPolynomial.eval₂ (RingHom.comp (Y.hom.appLE ⊤ U le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) ρ F, fun y' hy' => ?_⟩` and prove the remaining obligations. Establish `h0` using `right_ne_zero_of_mul (hne y' hy')`.
+
+Rewrite using `[valAt'_eval₂ y' U hy', valAt'_eval₂ _ _ ((hm _).2 h0)]`. Use `congr 2`. Use function extensionality and compare the values at `c'`. Rewrite using `[hρ c' y' hy', hr c' _ h0]`. Conclude with `mul_div_mul_left _ _ (left_ne_zero_of_mul (hne y' hy'))`.
+-/
 theorem exists_hom_of_coords (H : PointCriterion) (h1 : IsReduced Y.left) (h2 : LocallyOfFiniteType Y.hom)
     {κ A : Type} [Finite κ] {D : κ → X.left.Opens} (hD : ⨆ c, D c = ⊤) (ex : A → (𝟙_ (Over (Sp ℂ)) ⟶ X))
     (θ : κ → A → ℂ)
@@ -197,6 +260,11 @@ def IsLevel {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) (f : (Fin g �
   Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') =
     eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z
 
+/- English proof (translation)
+Use `⟨h.1.comp (differentiable_id (𝕜 := ℂ) (E := Fin g → ℂ)).neg, fun n n' z => ?_⟩` and prove the remaining obligations. Use `h.2 (-n) (-n') (-z)` as an intermediate fact. Simplify using `only [ofIntVec_neg, mulVec_neg, neg_dotProduct, dotProduct_neg, neg_neg] at this`. Rewrite using `[← this]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem IsLevel.neg {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {N : ℕ} {f : (Fin g → ℂ) → ℂ} (h : IsLevel τ N f) :
     IsLevel τ N (fun z => f (-z)) := by
   refine ⟨h.1.comp (differentiable_id (𝕜 := ℂ) (E := Fin g → ℂ)).neg, fun n n' z => ?_⟩
@@ -206,6 +274,11 @@ theorem IsLevel.neg {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {N : ℕ} {f : (
   congr 1
   abel
 
+/- English proof (translation)
+Use `⟨h.1.pow 2, fun n n' z => ?_⟩` and prove the remaining obligations. Simplify using `only [h.2, mul_pow, eC]`. Use `congr 1`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsLevel.sq {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {N : ℕ} {f : (Fin g → ℂ) → ℂ} (h : IsLevel τ N f) :
     IsLevel τ (N * 2) (fun z => f z ^ 2) := by
   refine ⟨h.1.pow 2, fun n n' z => ?_⟩
@@ -216,6 +289,9 @@ theorem IsLevel.sq {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {N : ℕ} {f : (F
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`.
+-/
 theorem locallyOfFiniteType_tensor [LocallyOfFiniteType X.hom] [LocallyOfFiniteType Y.hom] :
     LocallyOfFiniteType (X ⊗ Y).hom := by
   rw [Over.tensorObj_hom]
@@ -225,6 +301,27 @@ end ThetaModelGroup
 
 open ThetaModelGroup in
 
+/- English proof (translation)
+Introduce `_ _ H Hred Hadd Hth _ Hne _ g τ hτ N hN X ex D ⟨hint, hprop, hs, hker, _, hc, hD⟩ hreg`. Establish `hX : IsReduced X.left` using `inferInstance`. Establish `hXf : LocallyOfFiniteType X.hom` using `inferInstance`. Establish `hXXf : LocallyOfFiniteType (X ⊗ X).hom` using `locallyOfFiniteType_tensor`. Establish `hXX : IsReduced (X ⊗ X).left` using `Hred X X hX hX hXf hXf`.
+
+Establish `hXXXf : LocallyOfFiniteType ((X ⊗ X) ⊗ X).hom` using `locallyOfFiniteType_tensor`. Establish `hXXX : IsReduced ((X ⊗ X) ⊗ X).left` using `Hred _ X hXX hX hXXf hXf`. Establish `hlev` using `(Hth g τ hτ N (by omega)).1`. Generalize the expression as in `hθ : (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) = θ`. Establish `hθ' : ∀ c z, theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) = θ c z` using `fun c z => by rw [← hθ]`.
+
+Simplify using `only [hθ'] at hc hlev`. Use `replace hlev : ∀ c, IsLevel τ N (θ c) := hlev`. Establish `hc'` using `fun c => And.intro (hc c).1 (hc c).2.2`. Use `choose s hs' using hs`. Establish `hch : ∀ x, ∃ a, θ a (s x) ≠ 0` using `fun x => by`.
+
+Take `⟨a, ha⟩` from `exists_chart hD (ex (s x))`. Conclude with `⟨a, ((hc a).2.2.1 _).1 ha⟩`. Establish `hq : ∀ (d : ℕ) (p q : (Fin g → ℂ) → ℂ), IsLevel τ (N * d) p → IsLevel τ (N * d) q → ∀ x, q (s x) ≠ 0 → RegAt x (fun x' => p (s x') / q (s x'))` using `fun d p q hp hq x hx => by`. Take `⟨U, φ, hU⟩` from `hreg d p q hp hq`. Use `⟨U, by simpa only [hs'] using (hU (s x)).1.2 hx, φ, fun x' hx' => ?_⟩` and prove the remaining obligations.
+
+Use `hU (s x')` as an intermediate fact. Rewrite `this` using `[hs']`. Conclude with `this.2 (this.1.1 hx')`. Establish `hsub : ∀ z, s (ex z) - z ∈ periodLattice τ` using `fun z => (hker _ _).1 (hs' _)`. Take `⟨m, hm⟩` from `exists_hom_of_coords H hXX hXXf hD ex θ hc' (fun y => s (y ≫ fst X X) + s (y ≫ snd X X)) (fun y => by`.
+
+Take `⟨a, ha⟩` from `hch (y ≫ fst X X)`. Take `⟨b, hb⟩` from `hch (y ≫ snd X X)`. Take `⟨f', hf', hf0⟩` from `Hne g τ hτ N (by omega) (s (y ≫ fst X X) - s (y ≫ snd X X))`. Use `⟨fun y' => f' (s (y' ≫ fst X X) - s (y' ≫ snd X X)) / (θ a (s (y' ≫ fst X X)) ^ 2 * θ b (s (y' ≫ snd X X)) ^ 2), div_ne_zero hf0 (mul_ne_zero (pow_ne_zero _ ha) (pow_ne_zero _ hb)), fun c => ?_⟩` and prove the remaining obligations. Take `⟨n, h, k, hhk, hsum⟩` from `Hadd g τ hτ N (by omega) (θ c) f' (hlev c) hf'`.
+
+Use `RegAt.sum (y := y) fun i : Fin n => ((hq 2 (h i) _ (by rw [mul_comm]; exact (hhk i).1) (hlev a).sq _ (pow_ne_zero _ ha)).comp (fst X X)).mul ((hq 2 (k i) _ (by rw [mul_comm]; exact (hhk i).2) (hlev b).sq _ (pow_ne_zero _ hb)).comp (snd X X))` as an intermediate fact. Use `this using 2 with y'` and compare the differences between its conclusion and the goal. Rewrite using `[div_mul_eq_mul_div, mul_comm (f' _), hsum, Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [div_mul_div_comm])`. Take `⟨i, hi⟩` from `exists_hom_of_coords H hX hXf hD ex θ hc' (fun y => - s y) (fun y => by`.
+
+Take `⟨a, ha⟩` from `hch y`. Use `⟨fun y' => (θ a (s y'))⁻¹, inv_ne_zero ha, fun c => ?_⟩` and prove the remaining obligations. Use `hq 1 _ _ (by rw [Nat.mul_one]; exact (hlev c).neg) (by rw [Nat.mul_one]; exact hlev a) y ha` as an intermediate fact. Use `this using 2 with y'` and compare the differences between its conclusion and the goal. Rewrite using `[div_eq_inv_mul])`.
+
+Establish `ha : ∀ c, IsAffineOpen (D c)` using `fun c => (hc c).1`. Use `grpObj_of_points X ex (fun x => ⟨s x, hs' x⟩) m i (fun z w => ?_) (fun z => ?_) (hom_ext_points H hX hXf hD ha) (hom_ext_points H hXX hXXf hD ha) (hom_ext_points H hXXX hXXXf hD ha)` and prove the remaining obligations. Rewrite using `[hm, lift_fst, lift_snd, hker, add_sub_add_comm]`. Conclude with `add_mem (hsub z) (hsub w)`. Rewrite using `[hi, hker, neg_sub_neg, ← neg_sub]`.
+
+Conclude with `neg_mem (hsub z)`.
+-/
 theorem thetaModel_groupLaw : (∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (X
     Y : Over (Sp ℂ)) (a : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (b : E → (𝟙_ (Over (Sp ℂ)) ⟶ Y)), (∀ (U
     : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (a

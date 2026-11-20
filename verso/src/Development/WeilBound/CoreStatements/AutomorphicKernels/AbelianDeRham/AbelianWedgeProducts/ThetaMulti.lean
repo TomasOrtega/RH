@@ -14,6 +14,9 @@ variable {K : Type} [Field K] {V W : Type} [AddCommGroup V] [Module K V] [AddCom
 def theta (g : Fin 2 → Module.Dual K V) : Module.Dual K (⋀[K]^2 W) :=
   exteriorPower.pairingDual K W 2 (exteriorPower.ιMulti K 2 ![g 0 ∘ₗ r₁, g 1 ∘ₗ r₂])
 
+/- English proof (translation)
+Simplify using `[theta, Matrix.det_fin_two]`.
+-/
 theorem theta_ιMulti (g : Fin 2 → Module.Dual K V) (v : Fin 2 → W) :
     theta r₁ r₂ g (exteriorPower.ιMulti K 2 v) =
       g 0 (r₁ (v 0)) * g 1 (r₂ (v 1)) - g 1 (r₂ (v 0)) * g 0 (r₁ (v 1)) := by
@@ -21,6 +24,21 @@ theorem theta_ιMulti (g : Fin 2 → Module.Dual K V) (v : Fin 2 → W) :
 
 end
 
+/- English proof (translation)
+Establish `e11 : ∀ x, r₁ (p x) = x` using `fun x => LinearMap.congr_fun h11 x`. Establish `e12 : ∀ x, r₁ (q x) = 0` using `fun x => LinearMap.congr_fun h12 x`. Establish `e21 : ∀ x, r₂ (p x) = 0` using `fun x => LinearMap.congr_fun h21 x`. Establish `e22 : ∀ x, r₂ (q x) = x` using `fun x => LinearMap.congr_fun h22 x`. Establish `hkill : ∀ g : Fin 2 → Module.Dual K V, exteriorPower.pairingDual K V 2 (exteriorPower.ιMulti K 2 g) t = 0`.
+
+Introduce `g`. Establish `hA : (theta r₁ r₂ g) ∘ₗ exteriorPower.map 2 (p + q) = exteriorPower.pairingDual K V 2 (exteriorPower.ιMulti K 2 g)`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[theta_ιMulti, exteriorPower.map_apply_ιMulti, e11, e12, e21, e22, Matrix.det_fin_two]`.
+
+Establish `hB : (theta r₁ r₂ g) ∘ₗ exteriorPower.map 2 p = 0`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[theta_ιMulti, exteriorPower.map_apply_ιMulti, e21]`. Establish `hC : (theta r₁ r₂ g) ∘ₗ exteriorPower.map 2 q = 0`.
+
+Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[theta_ιMulti, exteriorPower.map_apply_ιMulti, e12]`. Establish `h0` using `congrArg (theta r₁ r₂ g) ht`. Rewrite `h0` using `[map_add]`.
+
+Establish `h1` using `LinearMap.congr_fun hA t`. Establish `h2` using `LinearMap.congr_fun hB t`. Establish `h3` using `LinearMap.congr_fun hC t`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at h1 h2 h3`. Rewrite using `[← h1, h0, h2, h3, add_zero]`.
+
+Take `⟨I, b⟩` from `Module.Free.exists_basis K V`. Use `letI : LinearOrder I := linearOrderOfSTO WellOrderingRel`. Apply `(b.exteriorPower 2).ext_elem` to reduce the goal to its premises. Introduce `s`. Rewrite using `[exteriorPower.basis_repr_apply, map_zero, Finsupp.coe_zero, Pi.zero_apply]`.
+
+Conclude with `hkill _`.
+-/
 theorem key_alg {K : Type} [Field K] {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     (p q : V →ₗ[K] W) (r₁ r₂ : W →ₗ[K] V) (h11 : r₁ ∘ₗ p = LinearMap.id) (h12 : r₁ ∘ₗ q = 0)
     (h21 : r₂ ∘ₗ p = 0) (h22 : r₂ ∘ₗ q = LinearMap.id) (t : ⋀[K]^2 V)

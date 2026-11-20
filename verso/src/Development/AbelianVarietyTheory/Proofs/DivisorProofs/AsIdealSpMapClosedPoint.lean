@@ -28,12 +28,24 @@ section Generic
 
 variable {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c)
 
+/- English proof (translation)
+Use `show Ideal.comap φ (IsLocalRing.maximalIdeal K) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Both sides reduce to the same expression.
+-/
 theorem asIdeal_spMap_closedPoint {A K : Type} [CommRing A] [Field K] (φ : A →+* K) :
     ((spMap φ (IsLocalRing.closedPoint K) : Sp A) : PrimeSpectrum A).asIdeal = RingHom.ker φ := by
   show Ideal.comap φ (IsLocalRing.maximalIdeal K) = _
   rw [IsLocalRing.maximalIdeal_eq_bot]
   rfl
 
+/- English proof (translation)
+Take `⟨C, ψ, z, t', hz, hb⟩` from `(Reg.evLaws_genFr_atlas E H Dw l Xo c).2.2.2 h L Q`. Establish `hsp : ptOf (X.ptY (genFr h C.Z)) ⤳ ptOf (X.ptY Q)`. Rewrite using `[X.ptY_frBor C.bor, ← X.ptY_frMap C.gen, ← X.ptY_frBor hb, ← X.ptY_frMap hz, ptOf_comp, ptOf_comp]`. Use `Specializes.map ?_ (X.ptY C.y).continuous` and prove the remaining obligations. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations.
+
+Use `show ((spMap _ (IsLocalRing.closedPoint _) : Sp C.R) : PrimeSpectrum C.R).asIdeal ≤ ((spMap _ (IsLocalRing.closedPoint _) : Sp C.R) : PrimeSpectrum C.R).asIdeal`. Rewrite using `[asIdeal_spMap_closedPoint, asIdeal_spMap_closedPoint]`. Use `le_of_eq_of_le ((RingHom.injective_iff_ker_eq_bot _).1 ?_) bot_le` and prove the remaining obligations. Conclude with `Subtype.val_injective`. Establish `hZ : C.Z = Z`.
+
+Establish `h1 : ptOf (X.ptY Q) ∈ X.π ⁻¹ᵁ barComp Y Z` using `(le_iff_ptOf_mem _ _).1 ((ptY_le_iff X Z Q).2 hQ)`. Establish `h2` using `hsp.mem_open (Opens.isOpen _) h1`. Establish `hl : LiesOn Z (genFr h C.Z)` using `(ptY_le_iff X Z _).1 ((le_iff_ptOf_mem _ _).2 h2)`. Assume the negation of the conclusion as `hne`. Establish `h3` using `GlobalTheory.AllWt.evC_eq_zero h hne (idem_mem_suppOn Z)`.
+
+Rewrite `h3` using `[evC, evR_idem hl (GlobalTheory.FlagTan.fromTest_of_isLocalRing _)]`. Conclude with `one_ne_zero h3`. Conclude with `hZ ▸ hsp`.
+-/
 theorem specializes_ptY_genFr (h : GenFrEx Xo c) {L : Type} [Field L] [Algebra c.F L] (Q : FrPt Xo c L)
     (hQ : LiesOn Z Q) : ptOf (X.ptY (genFr h Z)) ⤳ ptOf (X.ptY Q) := by
   obtain ⟨C, ψ, z, t', hz, hb⟩ := (Reg.evLaws_genFr_atlas E H Dw l Xo c).2.2.2 h L Q
@@ -58,6 +70,13 @@ theorem specializes_ptY_genFr (h : GenFrEx Xo c) {L : Type} [Field L] [Algebra c
 
 variable {X Z} (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw))
 
+/- English proof (translation)
+Establish `h1 : ⊤ ≤ X.ptY (genFr h Z) ⁻¹ᵁ (X.π ⁻¹ᵁ barComp Y Z)` using `(ptY_le_iff X Z _).2 (GlobalTheory.AllWt.liesOn_genFr h Z)`. Establish `hr : Set.range (X.ptY (genFr h Z)) ⊆ Set.range (inc₀ X Z)`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨⟨_, h1 (Set.mem_univ s)⟩, rfl⟩`. Take `⟨w, hw⟩ : ∃ w, w ≫ inc₀ X Z = X.ptY (genFr h Z)` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`.
+
+Establish `hU : ⊤ ≤ w ⁻¹ᵁ U₀ X Z` using `fun s _ => by show (w ≫ inc₀ X Z) s ∈ flagOpen X`. Rewrite using `[hw, ← X.pt_inc]`. Conclude with `(top_le_inc X) (Set.mem_univ _)`. Take `⟨z, hz, -⟩` from `M.existsUnique_lift w hU`. Use `⟨z, by rw [toFlag, ← Category.assoc, hz, hw], fun s _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[M.off_eq]`. Use `show (z ≫ M.σ) s ∈ U₀ X Z`. Rewrite using `[hz]`. Conclude with `hU (Set.mem_univ s)`.
+-/
 theorem exists_lift_genFr (h : GenFrEx Xo c) :
     ∃ z : Sp (Om Z) ⟶ M.X, z ≫ toFlag M = X.ptY (genFr h Z) ∧ ⊤ ≤ z ⁻¹ᵁ M.off := by
   have h1 : ⊤ ≤ X.ptY (genFr h Z) ⁻¹ᵁ (X.π ⁻¹ᵁ barComp Y Z) := (ptY_le_iff X Z _).2 (GlobalTheory.AllWt.liesOn_genFr h Z)
@@ -75,6 +94,23 @@ theorem exists_lift_genFr (h : GenFrEx Xo c) :
   rw [hz]
   exact hU (Set.mem_univ s)
 
+/- English proof (translation)
+Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← M.dense.closure_eq]`. Use `closure_minimal (fun y hy => ?_) isClosed_closure` and prove the remaining obligations. Use `specializes_iff_mem_closure.1 ?_` and prove the remaining obligations. Establish `hy' : y ∈ M.opn` using `hy`.
+
+Establish `hyU : M.σ y ∈ U₀ X Z` using `hy'`. Establish `hF : toFlag M y ∈ flagOpen X` using `hyU`. Establish `hY : toFlag M y ∈ X.π ⁻¹ᵁ barComp Y Z` using `(M.σ y).2`. Establish `hO' : ⊤ ≤ (resPt y ≫ toFlag M) ⁻¹ᵁ flagOpen X`. Use `(le_iff_ptOf_mem _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[ptOf_comp, ptOf_resPt]`. Conclude with `hF`. Take `⟨_, hch⟩` from `exists_chartFr _ hO'`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (X.F.cover.ge (Set.mem_univ (toFlag M y)))`. Establish `hk' : ⊤ ≤ (resPt y ≫ toFlag M) ⁻¹ᵁ X.F.U k`.
+
+Use `(le_iff_ptOf_mem _ _).2 ?_` and prove the remaining obligations. Rewrite using `[ptOf_comp, ptOf_resPt]`. Conclude with `hk`. Take `⟨Q, hQ⟩` from `hch k hk'`. Establish `e : resPt y ≫ toFlag M = X.ptY Q` using `FlagCover.eq_ptY hQ.lies`.
+
+Establish `hQZ : LiesOn Z Q`. Use `(ptY_le_iff X Z Q).1 ((le_iff_ptOf_mem _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e, ptOf_comp, ptOf_resPt]`. Conclude with `hY`. Establish `sp` using `specializes_ptY_genFr X Z h Q hQZ`.
+
+Rewrite `sp` using `[← hz, ← e, ptOf_comp, ptOf_comp, ptOf_resPt]`. Establish `: IsOpenImmersion (M.opn.ι ≫ M.σ)`. Rewrite using `[← morphismRestrict_ι]`. Use `M.iso` as an intermediate fact. Use `infer_instance`.
+
+Establish `hg : IsOpenImmersion (M.opn.ι ≫ toFlag M)`. Rewrite using `[toFlag, ← Category.assoc]`. Use `infer_instance`. Establish `hz' : ptOf z ∈ M.opn`. Use `(le_iff_ptOf_mem _ _).1 hO` as an intermediate fact.
+
+Rewrite `this` using `[M.off_eq]`. Then use the resulting hypothesis. Establish `sp' : (⟨ptOf z, hz'⟩ : M.opn) ⤳ ⟨y, hy'⟩` using `(M.opn.ι ≫ toFlag M).isOpenEmbedding.isInducing.specializes_iff.1 sp`. Conclude with `sp'.map continuous_subtype_val`.
+-/
 theorem isGenericPoint_of_lift (h : GenFrEx Xo c) {z : Sp (Om Z) ⟶ M.X} (hz : z ≫ toFlag M = X.ptY (genFr h Z))
     (hO : ⊤ ≤ z ⁻¹ᵁ M.off) : IsGenericPoint (ptOf z) Set.univ := by
   refine Set.eq_univ_of_univ_subset ?_
@@ -124,19 +160,47 @@ section Coords
 variable {Y : Model Xo c (RingHom.id c.F)} {X : FlagCover Y} {Z : Comp Xo c} {r : ℕ}
   {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
+/- English proof (translation)
+The claim follows from `evalPt_res x (inf_le_inf_right _ h) (GlobalTheory.FlagMod.le_preimage_inf hO hi) (GlobalTheory.FlagMod.le_preimage_inf hO' hi) _`.
+-/
 theorem val_restr' {k : Type} [CommRing k] {T : Scheme.{0}} {p : T ⟶ Sp k} {B : LB T} {O O' : T.Opens} (h : O' ≤ O)
     {A : Type} [CommRing A] (x : Sp A ⟶ T) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hO' : ⊤ ≤ x ⁻¹ᵁ O') (hi : ⊤ ≤ x ⁻¹ᵁ B.U i)
     (f : H0 p B O) : H0.val x i hO' hi (restr h f) = H0.val x i hO hi f :=
   evalPt_res x (inf_le_inf_right _ h) (GlobalTheory.FlagMod.le_preimage_inf hO hi) (GlobalTheory.FlagMod.le_preimage_inf hO' hi) _
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem valR_eq_evalPt {A : Type} [CommRing A] {T : Scheme.{0}} (x : Sp A ⟶ T) (O : T.Opens) (h : ⊤ ≤ x ⁻¹ᵁ O)
     (f : Γ(T, O)) : valR x O f = evalPt x O h f := dif_pos h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem chartFr_congr {S : Type} [CommRing S] [Algebra c.F S] {k : X.F.J} {z z' : Sp S ⟶ X.YY} (e : z = z')
     {hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k} {hz' : ⊤ ≤ z' ⁻¹ᵁ X.F.U k} {Q : FrPt Xo c S} (h : X.F.ChartFr k z hz Q) :
     X.F.ChartFr k z' hz' Q := by
   subst e; exact h
 
+/- English proof (translation)
+Establish `e₁ : (z ≫ R.σ) ≫ inc₀ X Z = X.pt (genFr h Z) ≫ X.inc`. Rewrite using `[Category.assoc, X.pt_inc]`. Conclude with `hz`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (X.F.cover.ge (Set.mem_univ (ptOf ((z ≫ R.σ) ≫ inc₀ X Z))))`. Establish `hk₂ : ⊤ ≤ ((z ≫ R.σ) ≫ inc₀ X Z) ⁻¹ᵁ X.F.U k` using `(le_iff_ptOf_mem _ _).2 hk`.
+
+Establish `hk₁ : ⊤ ≤ (X.pt (genFr h Z) ≫ X.inc) ⁻¹ᵁ X.F.U k` using `e₁ ▸ hk₂`. Take `⟨Q, t, hQ, ht⟩` from `X.exists_chartFr_frBor (genFr h Z) k hk₁`. Establish `hQ₂ : X.F.ChartFr k ((z ≫ R.σ) ≫ inc₀ X Z) hk₂ Q` using `chartFr_congr e₁.symm hQ`. Establish `hU : ⊤ ≤ (z ≫ R.σ) ⁻¹ᵁ U₀ X Z`. Introduce `s _`.
+
+Use `hO (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[R.off_eq]`. Conclude with `this`. Establish `hO₂ : ⊤ ≤ ((z ≫ R.σ) ≫ inc₀ X Z) ⁻¹ᵁ flagOpen X` using `hU`. Take `⟨n, hn⟩` from `exists_chart R.Δ₁.isLB (ptOf z)`.
+
+Establish `hz' : ptOf z ∈ R.off` using `(le_iff_ptOf_mem _ _).1 hO`. Establish `hm : ptOf z ∈ ((L₀ X Z P.u₁).pull R.σ).U (flagIdx R.toModif P.u₁ k)` using `(R.com.mem _ _ _).2 hk`. Establish `hi : ptOf z ∈ R.L.U (flagIdx R.toModif P.u₁ k, n)` using `⟨hm, hn⟩`. Establish `hτ : valR z _ (R.Δ₁.t.f n) ≠ 0` using `(valR_ne_zero_iff z hn _).2 ((mem_nonzeroLocus_iff_basicOpen R.Δ₁.t hn).1 ((R.Δ₁.mem_nonzeroLocus _).2 (R.notMem_support hfree _ hz')))`. Take `⟨T, hT0, hT⟩ : ∃ T : Om Z, T ≠ 0 ∧ ∀ f : secZ Xo c (exOf Dw P.u₁ 0), evR Xo c f.1 (genFr h Z) = T * H0.val (B` from `X.LL (exOf Dw P.u₁ 0)) ((z ≫ R.σ) ≫ inc₀ X Z) k hO₂ hk₂ (secOf X _ f) := ⟨_, Units.ne_zero _, fun f => evR_eq_val_secOf f hO₂ hQ₂ ht⟩`.
+
+Use `⟨(flagIdx R.toModif P.u₁ k, n), (valR z _ (R.Δ₁.t.f n) * T)⁻¹, hi, inv_ne_zero (mul_ne_zero hτ hT0), fun g w hw => ?_⟩` and prove the remaining obligations. Establish `hTop : ⊤ ≤ z ⁻¹ᵁ (⊤ : R.X.Opens)` using `fun _ _ => trivial`. Establish `hTop' : ⊤ ≤ (z ≫ R.σ) ⁻¹ᵁ (⊤ : (Y₀ X Z).Opens)` using `fun _ _ => trivial`. Establish `hi'` using `(le_iff_ptOf_mem z _).2 hi`. Establish `hm'` using `(le_iff_ptOf_mem z _).2 hm`.
+
+Establish `hn'` using `(le_iff_ptOf_mem z _).2 hn`. Establish `hm'' : ⊤ ≤ (z ≫ R.σ) ⁻¹ᵁ (L₀ X Z P.u₁).U (flagIdx R.toModif P.u₁ k PUnit.unit)`. Establish `hm₀ : R.σ (ptOf z) ∈ (L₀ X Z P.u₁).U (flagIdx R.toModif P.u₁ k PUnit.unit)` using `mem_pull.1 hm`. Conclude with `(le_iff_ptOf_mem _ _).2 hm₀`. Establish `v₁ : valR z (R.L.U (flagIdx R.toModif P.u₁ k, n)) ((toSec (R.Δ₁.lift w)).f (flagIdx R.toModif P.u₁ k, n)) = H0.val z _ hTop hi' (R.Δ₁.lift w)`.
+
+Use `H0.val_ofSec (p := R.str) z (flagIdx R.toModif P.u₁ k, n) hTop hi' (toSec (R.Δ₁.lift w))` as an intermediate fact. Rewrite `this` using `[ofSec_toSec]`. Rewrite using `[this, valR_eq_evalPt z _ hi']`. Establish `v₂` using `(divChart (LB.isLB_pull (isLB_L₀ X Z P.u₁) R.σ) R.Δ₁.isLB).val_mul (ofSec R.str ⊤ R.Δ₁.t) (R.Δ₁.lift w) (flagIdx R.toModif P.u₁ k, n) z hTop hn' hi' hm'`. Establish `v₃ : H0.val z _ hTop hm' (H0.pull R.σ le_top w.1) = H0.val (z ≫ R.σ) _ hTop' hm'' w.1` using `H0.val_pull R.σ le_top z _ hTop hm' hTop' hm'' w.1`.
+
+Establish `v₄` using `val_restr' (p := str₀ X Z) (le_top : U₀ X Z ≤ ⊤) (z ≫ R.σ) _ hTop' hU hm'' w.1`. Establish `v₅ : H0.val (z ≫ R.σ) _ hU hm'' (cuspSec X Z U P.u₁ g) = H0.val (B` using `X.LL (exOf Dw P.u₁ 0)) ((z ≫ R.σ) ≫ inc₀ X Z) k hO₂ hk₂ (secOf X _ ⟨g.1, cusp_le_secZ Z U _ g.2⟩) := H0.val_pull (inc₀ X Z) le_rfl (z ≫ R.σ) _ hU hm'' hO₂ hk₂ _`. Establish `v₆ : genVal Z g.1 = evR Xo c g.1 (genFr h Z)` using `rfl`. Establish `v₇ : H0.val z _ hTop hn' (ofSec R.str ⊤ R.Δ₁.t) = valR z _ (R.Δ₁.t.f n)`. Rewrite using `[H0.val_ofSec, valR_eq_evalPt z _ hn']`.
+
+Establish `v₈` using `hT ⟨g.1, cusp_le_secZ Z U _ g.2⟩`. Rewrite using `[v₁, v₆, v₈, ← v₅, ← hw, v₄, ← v₃, ← R.Δ₁.incl_lift w]`. Establish `v₉ : H0.val z _ hTop hm' (R.Δ₁.incl ⊤ (R.Δ₁.lift w)) = valR z _ (R.Δ₁.t.f n) * H0.val z _ hTop hi' (R.Δ₁.lift w)` using `v₂.trans (congrArg (· * _) v₇)`. Rewrite using `[v₉]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_chart_val (h : GenFrEx Xo c) {P : WtPar Dw} (R : Choice X Z U P) (hfree : FreeOnOpen X Z U P.u₁)
     {z : Sp (Om Z) ⟶ R.X} (hz : z ≫ toFlag R.toModif = X.ptY (genFr h Z)) (hO : ⊤ ≤ z ⁻¹ᵁ R.off) :
     ∃ (i : R.L.ι) (a : Om Z), ptOf z ∈ R.L.U i ∧ a ≠ 0 ∧ ∀ (g : Cusp Z U P.u₁) (w : space X Z U P.u₁),
@@ -200,6 +264,15 @@ theorem exists_chart_val (h : GenFrEx Xo c) {P : WtPar Dw} (R : Choice X Z U P) 
 
 end Coords
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k`. Establish `hG : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Use `⟨(dimFlag_eq Dw).symm, f₁.b, f₁.isFrame, ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hO⟩` from `exists_lift_genFr R.toModif hG`. Establish `hgen` using `isGenericPoint_of_lift R.toModif hG hz hO`.
+
+Establish `hV` using `(R.isAlgebraicData R.Δ₁ h.ext₁.equiv f₁ (dense_U₀ X Z) h.conn h.one_le k.abelian₂).variety`. Establish `: IsIntegral (h.data f₁ f₂ th k).toHermSys.toLinSys.Y` using `hV.isIntegral`. Establish `hstr : z ≫ (h.data f₁ f₂ th k).toHermSys.toLinSys.str = spMap (algebraMap c.F (Om Z))` using `by show z ≫ (toFlag R.toModif ≫ flagStr X) = _`. Rewrite using `[← Category.assoc, hz, ptY_str]`. Take `⟨i, a, hi, ha, hv⟩` from `exists_chart_val hG R h.free₁ hz hO`.
+
+Take `⟨b, hb, hb', -⟩` from `(h.data f₁ f₂ th k).toHermSys.toLinSys.exists_frame_change z i hi`. Use `GlobalTheory.CompHt.imageIdeal_eq_coneIdeal_of_generic c.F (Om Z) _ ⟨z, hstr⟩ hgen (b⁻¹ * a) _ (mul_ne_zero (inv_ne_zero hb) ha) (funext fun j => ?_)` and prove the remaining obligations. Establish `e₁` using `hb' ((h.data f₁ f₂ th k).toHermSys.toLinSys.b j)`. Establish `e₂` using `hv (f₁.b j) (h.ext₁.equiv (f₁.b j)) (h.ext₁.restr_equiv _)`. Establish `e₃` using `e₁.symm.trans e₂`.
+
+Use `show (h.data f₁ f₂ th k).toHermSys.toLinSys.val z _ = (b⁻¹ * a) * genVal Z (f₁.b j).1`. Rewrite using `[mul_assoc, ← e₃, inv_mul_cancel_left₀ hb]`.
+-/
 theorem compPresents_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice X Z U P) (ω : CanId R.toModif) (x : ℝ) (D : Formalism.BasicNotions.D7) (V : (c.F →+* ℂ) → Formalism.BasicNotions.TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : Ready R ω x V dict) (f₁ : CuspFrame Z U x V dict P.u₁) (f₂ : CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : Consts), GlobalTheory.CompHt.CompPresents U x V dict Z (GlobalTheory.AllWt.wtOf Dw P.u₁ 0) (h.data f₁ f₂ th k).toHermSys := by
   intro E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k
   have hG : GenFrEx Xo c := (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1

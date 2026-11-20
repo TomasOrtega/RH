@@ -20,6 +20,13 @@ namespace GlobalTheory.HeightCounting.Up
 
 open GlobalTheory.Mem.R3.Tr in
 
+/- English proof (translation)
+Introduce `hPr hSer hL`. Use `StepW.trans (GlobalTheory.T.geometric_laws_all_states hPr hSer hL) (StepW.of_all fun K B f T w _ _ hq P x D0 l hC => ?_)` and prove the remaining obligations. Establish `hlaw` using `hq P x l`. Take `⟨x', hl', ho, hLc⟩` from `GlobalTheory.T.exists_lb2_of_theta_tie hL x l (GlobalTheory.GeoTie.geoNTh hlaw) (GlobalTheory.GeoTie.geoTie hlaw)`. Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`.
+
+Simplify using `only at ho`. Substitute `ho` using the available equality. Use `⟨⟨oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw)), fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩, hl', carried_thTw D0 (Dof x) _ hC, fun cDep hLs => ?_⟩` and prove the remaining obligations. Take `⟨G, hF, hTie⟩` from `hLs`. Establish `eL : m'.z.R.toRealDat.toLevCh = (by with_unfolding_all exact ((levCh (a` using `x.o.Z) (oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw))).Z x.m.z.R.toRealDat.toLevCh) :)) := eq_of_heq hLc`.
+
+Use `show ListPin _ m'.z.R.toRealDat.toLevCh cDep K.s.b`. Rewrite using `[eL]`. Conclude with `⟨(by with_unfolding_all exact ((GlobalTheory.Mem.GridMove.gdC (a := x.o.Z) (oTw x (thTw (Dof x) (GlobalTheory.GeoTie.geoNTh hlaw))).Z G) :)), ⟨(by with_unfolding_all exact (hF.values :)), (by with_unfolding_all exact (hF.roots :))⟩, (by with_unfolding_all exact (hTie :))⟩`.
+-/
 theorem points_carried : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ P x => ∀ D0 : D7, SeriesLevel hL x →
     Carried D0 (Dof x) → ∃ x' : St P, Nonempty (StrictHenselianAcyclic hL x') ∧ Carried D0 (Dof x') ∧ ∀ cDep : ℝ, ListSt cDep x → ListSt cDep x' := by
   intro hPr hSer hL

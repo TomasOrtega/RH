@@ -11,6 +11,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {Tau : Type} [Fintype Tau] {LL : Type} [Field LL] {p : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ∀ τ, atInf emb γ τ * atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ = 1`. Introduce `τ`. Rewrite using `[← atInf_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using `[atInf]`. Use `⟨⟨fun τ => atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * z.1 τ, fun τ => ?_⟩, fun τ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (h1 τ)).mul (z.2 τ)`. Use `show z.1 τ = atInf emb γ τ * (atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ * z.1 τ)`. Rewrite using `[← Matrix.mul_assoc, ← atInf_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using `[atInf]`.
+-/
 theorem frames_tr (emb : Tau → E →+* ℂ) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (γ : GL (Fin n) E)
     (hγ : γ ∈ UJ (σ : E →+* E) J) (z : Frames (gramC J emb)) : ∃ z' : Frames (gramC J emb), IsTr (atInf emb γ) z' z := by
   have h1 : ∀ τ, atInf emb γ τ * atInf emb ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) τ = 1 := by
@@ -38,6 +43,13 @@ def PtEx : Prop :=
 
 variable {S emb embLL G A pos embV yc}
 
+/- English proof (translation)
+Introduce `x i L Q Q' hL h h'`. Use `choose g0 hg0 hLg using hL`. Set `g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)` to `fun v => ((Matrix.isUnit_iff_isUnit_det _).2 (hg0 v)).unit`. Establish `hg : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))` using `hLg`. Take `⟨c, γ, κ, hγ, hpt⟩` from `hp i g`.
+
+Establish `hz : evC G.P A.rk pos (gramC J emb) (crdB emb A.B) (MvPolynomial.map embLL Q - MvPolynomial.map embLL Q') = 0`. Use function extensionality and compare the values at `z`. Take `⟨z', hz'⟩` from `frames_tr emb hc γ hγ z`. Rewrite using `[map_sub, Pi.sub_apply, h.2 g hg c γ hγ κ hpt z z' hz', h'.2 g hg c γ hγ κ hpt z z' hz', sub_self]`. Both sides reduce to the same expression.
+
+Use `hi _ hz` as an intermediate fact. Conclude with `MvPolynomial.map_injective embLL embLL.injective (sub_eq_zero.1 this)`.
+-/
 theorem valUniq_of (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hi : EvInj emb G A pos (J := J))
     (hp : PtEx S G A yc) : ValUniq S emb embLL G A pos embV yc := by
   intro x i L Q Q' hL h h'

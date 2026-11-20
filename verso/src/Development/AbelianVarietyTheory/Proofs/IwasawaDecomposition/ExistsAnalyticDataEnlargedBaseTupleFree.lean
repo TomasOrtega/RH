@@ -25,6 +25,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 noncomputable section
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Introduce `p1 p2 p3 p4 p5 p6 p7`. Use `StepW.trans (StepW.and (GlobalTheory.T.exists_firstAnalyticData_enlargedColumnChoices p1 p2 p3 p4 p5 p6 p7) (GlobalTheory.T.reset_tuple_free_fields_keeps_clauses_comparison p1 p2 p3 p4 p5 p6 p7)) (StepW.of_all fun K B' f' T' w' _ _ H => ?_)` and prove the remaining obligations. Introduce `B f T w e hf hp hpx Z hX Wt z g1 g2 fz hl Z' hX' g3 g4 vt core' alg' a1 a2 a3 hq lc cn dw pb`. Take `⟨Xg, tr₀, R₀, cG, hc⟩` from `H.1 B f T w e hf hp hpx Z hX Wt z g1 g2 fz hl Z' hX' g3 g4 vt core' alg' a1 a2 a3 hq lc cn dw pb`. Take `⟨R₁, cG₁, hc1⟩` from `H.2 B f T w e hf hp hpx Z hX Wt z g1 g2 fz hl Z' hX' g3 g4 vt core' alg' a1 a2 a3 hq lc cn dw pb Xg tr₀ R₀ cG hc`.
+
+Conclude with `⟨Xg, tr₀, R₁, cG₁, hc1⟩`.
+-/
 theorem exists_realDat_keep_rsideW : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

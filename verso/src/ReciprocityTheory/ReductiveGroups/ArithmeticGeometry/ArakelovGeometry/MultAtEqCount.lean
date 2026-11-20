@@ -8,6 +8,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `mono : ∀ k : ℕ, ∀ hk : k ≤ N, J ≤ F ⟨k, Nat.lt_succ_of_le hk⟩`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `hk`.
+
+Establish `e : (⟨0, Nat.lt_succ_of_le hk⟩ : Fin (N + 1)) = 0` using `Fin.ext (by simp)`. Rewrite using `[e, h0]`. Consider the case `succ k ih`. Introduce `hk`. Establish `hk' : k < N` using `hk`.
+
+Establish `step` using `(hj ⟨k, hk'⟩).1`. Combine the equalities or inequalities in the displayed calculation. Introduce `g hg`. Conclude with `((hj j).2 g).2 (Ideal.mul_mem_right _ _ (mono j.val j.isLt.le hg))`.
+-/
 theorem le_colon_chain {J : Ideal (MRing ι)} {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)}
     {f : Fin N → MRing ι} {q : Fin N → Ideal (MRing ι)} (h0 : F 0 = J)
     (hj : ∀ j : Fin N, F j.succ = F j.castSucc ⊔ Ideal.span {f j} ∧
@@ -30,6 +37,11 @@ theorem le_colon_chain {J : Ideal (MRing ι)} {N : ℕ} {F : Fin (N + 1) → Ide
   intro g hg
   exact ((hj j).2 g).2 (Ideal.mul_mem_right _ _ (mono j.val j.isLt.le hg))
 
+/- English proof (translation)
+Establish `hp : W'.IsPrime` using `hW'.1.1`. Establish `hJq : ∀ j, J ≤ q j` using `le_colon_chain h0 fun j => ⟨(hj j).1, (hj j).2.2⟩`. Establish `hmin : ∀ j, q j ≤ W' → q j = W'` using `fun j h => le_antisymm h (hW'.2 ⟨(hj j).2.1, hJq j⟩ h)`. Use `length_loc_chain W' N F f q hlast hj hmin` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Unfold `multAt`. Rewrite using `[dif_pos hp, this]`. Simplify using the standard rewrite rules.
+-/
 theorem multAt_eq_count {J : Ideal (MRing ι)} {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)}
     {f : Fin N → MRing ι} {q : Fin N → Ideal (MRing ι)} (h0 : F 0 = J) (hlast : F (Fin.last N) = ⊤)
     (hj : ∀ j : Fin N, F j.succ = F j.castSucc ⊔ Ideal.span {f j} ∧ (q j).IsPrime ∧
@@ -46,6 +58,9 @@ theorem multAt_eq_count {J : Ideal (MRing ι)} {N : ℕ} {F : Fin (N + 1) → Id
   rw [dif_pos hp, this]
   simp
 
+/- English proof (translation)
+The claim follows from `|lg W a - lg W (a - Pi.single b 1) - L * (geoNum (m + 1) W (Fin.snoc (fun _ k => (a k : ℤ)) (uv b)) : ℝ) / m.factorial| ≤ C * m * ((tdeg a : ℝ) + 1) ^ (m - 1) := by classical obtain ⟨hWp, hWm, hWr⟩ := hW obtain ⟨i, hi⟩ := hWr b set s : MRing ι := X ⟨b, i⟩ with hsdef have hs : IsM …`.
+-/
 theorem block_step {L : ℝ} {m p : ℕ} (hp : p.Prime) {W : Ideal (MRing ι)} (hW : IsMultiProjPrime W)
     (hpW : (p : MRing ι) ∈ W)
     (hdim : ringKrullDim (MRing ι ⧸ W) = ((m + 1 + Fintype.card K : ℕ) : WithBot ℕ∞))

@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.SpanPowerSupremum
 
+/- English proof (translation)
+Establish `hp : Prime Q` using `Ideal.prime_of_isPrime hQ ‹_›`. Establish `hle : Ideal.span {π} ⊔ Q ^ 2 ≤ Q` using `sup_le ((Ideal.span_singleton_le_iff_mem Q).mpr h1) (Ideal.pow_le_self two_ne_zero)`. Establish `hdvd : Ideal.span {π} ⊔ Q ^ 2 ∣ Q ^ 2` using `Ideal.dvd_iff_le.mpr le_sup_right`. Take `⟨i, hi, hassoc⟩` from `(dvd_prime_pow hp 2).mp hdvd`. Establish `heq : Ideal.span {π} ⊔ Q ^ 2 = Q ^ i` using `associated_iff_eq.mp hassoc`.
+
+Use `interval_cases i`. Rewrite `heq` using `[pow_zero, Ideal.one_eq_top]`. Rewrite `hle` using `[heq, top_le_iff]`. Conclude with `(Ideal.IsPrime.ne_top ‹_› hle).elim`. Rewrite `heq` using `[pow_one]`.
+
+Conclude with `heq`. Establish `hmem : π ∈ Ideal.span {π} ⊔ Q ^ 2` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self π)`. Rewrite `hmem` using `[heq]`. Conclude with `(h2 hmem).elim`.
+-/
 theorem span_sup_sq_eq {A : Type} [CommRing A] [IsDedekindDomain A] {Q : Ideal A} [Q.IsPrime]
     (hQ : Q ≠ ⊥) {π : A} (h1 : π ∈ Q) (h2 : π ∉ Q ^ 2) :
     Ideal.span {π} ⊔ Q ^ 2 = Q := by
@@ -23,6 +30,15 @@ theorem span_sup_sq_eq {A : Type} [CommRing A] [IsDedekindDomain A] {Q : Ideal A
     rw [heq] at hmem
     exact (h2 hmem).elim
 
+/- English proof (translation)
+Establish `hπ : Ideal.span {π} ≤ Q` using `(Ideal.span_singleton_le_iff_mem Q).mpr h1`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `hπm : Ideal.span {π ^ m} ≤ Q ^ m`.
+
+Rewrite using `[← Ideal.span_singleton_pow]`. Conclude with `Ideal.pow_right_mono hπ m`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup]`. Use `sup_le (sup_le ?_ ?_) (sup_le ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_mul_span_singleton, ← pow_succ]`. Conclude with `le_sup_left`. Use `le_sup_of_le_right ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_sup_of_le_right ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `le_sup_of_le_right ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_le_span_pow_sup {A : Type} [CommRing A] [IsDedekindDomain A] {Q : Ideal A}
     [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (h1 : π ∈ Q) (h2 : π ∉ Q ^ (2 : ℕ)) (m : ℕ) :
     Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + (1 : ℕ)) := by

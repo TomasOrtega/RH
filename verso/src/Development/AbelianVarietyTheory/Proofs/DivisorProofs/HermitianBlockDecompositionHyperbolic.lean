@@ -7,6 +7,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n₁ d G J₁ K hJ h1 h2 h00 h11 h01 h10 z z'`. Simplify using `only [symp, hTens, incM, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← map_add, ← map_add]`. Use `congr 1`. Simplify using `only [Fin.sum_univ_add, Fin.sum_univ_two, hJ, h1, h2, h00, h11, h01, h10, map_zero, map_one, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_one, Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_split_hyperbolic_plane : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n₁ d : ℕ)
     (G : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E) (J₁ : Matrix (Fin n₁) (Fin n₁) E) (K : Matrix (Fin d) (Fin d) E),
     (∀ i i', G (Fin.castAdd 2 i) (Fin.castAdd 2 i') = J₁ i i') → (∀ i t, G (Fin.castAdd 2 i) (Fin.natAdd n₁ t) = 0) →

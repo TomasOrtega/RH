@@ -9,11 +9,19 @@ open scoped ComplexConjugate ComplexOrder
 
 noncomputable section
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => le_trans hle (h.2.2 g hg hne)⟩`.
+-/
 theorem nice_mono {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} {ε ε' : ℝ}
     (h : JC.NiceCoef Bs ε F) (hle : ε' ≤ ε) : JC.NiceCoef Bs ε' F :=
   ⟨h.1, h.2.1, fun g hg hne => le_trans hle (h.2.2 g hg hne)⟩
 
+/- English proof (translation)
+Use `choose e1 he1 hn1 using fun e => (cpt_nice_bsr (hx e)).1`. Use `choose e2 he2 hn2 using fun e => (cpt_nice_bsr (hx' e)).1`. Use `choose R1 hR1 using fun e => (cpt_nice_bsr (hx e)).2`. Use `choose R2 hR2 using fun e => (cpt_nice_bsr (hx' e)).2`. Take `⟨ε1, hε1, h1⟩` from `Formalism.FourierDecayAlt.P.JCx2.exists_common_eps (fun e ε => JC.NiceCoef Bs ε (x e)) (fun e ε ε' _ h hF => nice_mono hF h) (fun e => ⟨e1 e, he1 e, hn1 e⟩)`.
+
+Take `⟨ε2, hε2, h2⟩` from `Formalism.FourierDecayAlt.P.JCx2.exists_common_eps (fun e ε => JC.NiceCoef Bs ε (x' e)) (fun e ε ε' _ h hF => nice_mono hF h) (fun e => ⟨e2 e, he2 e, hn2 e⟩)`. Set `R` to `(∑ e, |R1 e|) + ∑ e, |R2 e|`. Establish `hb1 : ∀ e, R1 e ≤ R` using `fun e => (le_abs_self _).trans ((Finset.single_le_sum (f := fun e => |R1 e|) (fun _ _ => abs_nonneg _) (Finset.mem_univ e)).trans (le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)))`. Establish `hb2 : ∀ e, R2 e ≤ R` using `fun e => (le_abs_self _).trans ((Finset.single_le_sum (f := fun e => |R2 e|) (fun _ _ => abs_nonneg _) (Finset.mem_univ e)).trans (le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)))`. Use `⟨min ε1 ε2, lt_min hε1 hε2, R, fun e => nice_mono (h1 e) (min_le_left _ _), fun e g hg hne => (hR1 e g hg hne).trans (hb1 e), fun e => nice_mono (h2 e) (min_le_right _ _), fun e g hg hne => (hR2 e g hg hne).trans (hb2 e)⟩` and prove the remaining obligations.
+-/
 theorem common_eps_R {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq)
     {ι ι' : Type} [Fintype ι] [Fintype ι'] (x : ι → B.Mat k r → (Wq →L[ℂ] Wp)) (x' : ι' → B.Mat k r → (Wq →L[ℂ] Wp))
@@ -37,6 +45,49 @@ theorem common_eps_R {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
     fun e g hg hne => (hR1 e g hg hne).trans (hb1 e), fun e => nice_mono (h2 e) (min_le_right _ _),
     fun e g hg hne => (hR2 e g hg hne).trans (hb2 e)⟩
 
+/- English proof (translation)
+Introduce `hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys`. Establish `hOK : P.OK` using `p.hP.1`. Take `⟨hl1, hlk, -⟩` from `p.hl`. Establish `hqpos` using `qw_pos P hOK p.l0 hl1 hlk w ys hc1 hc2`. Use `⟨fun y hy => (hqpos y hy).1, ?_⟩` and prove the remaining obligations.
+
+Introduce `x x' hx hx'`. Take `⟨ε, hε, R, hxN, hxR, hx'N, hx'R⟩` from `common_eps_R (p.T.bs j) x x' hx hx'`. Set `jF : Fin (P.r + 1)` to `⟨j, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`.
+
+Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`. Take `⟨μ0, hμ0⟩` from `Formalism.FourierDecayAlt.P.JCTx5.exists_haar_level_zero (Nat.sub_self P.r) (p.T.bs P.r)`. Use `set μ := μ0.map (Formalism.FourierDecayAlt.P.JCTx5.embL P.k (P.r - j)) with hμ`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X μ L st p.l0` using `⟨hPl, Formalism.FourierDecayAlt.P.JCTx5.haar_glev μ0 hμ0, h1, h2, h3, h4, h5, h6⟩`. Take `⟨K, hThm, -, -, hJc⟩` from `hP Wp Wq (Fin (KB.plusW ys w).length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`.
+
+Take `⟨Cst, hC, hform⟩` from `Formalism.FourierDecayAlt.P.radial_module_form Wp Wq P p.T jF X μ L st p.l0 hD`. Establish `hJ' : PicsInBS p.T jF (K 0)` using `fun F ε R hε hF hR => pic_of_cptClause (p.T.bs jF) (K 0) hJc hε hF hR`. Use `choose Φ hΦK hΦ using fun a => hJ' (x a) ε R hε (hxN a) (hxR a)`. Use `choose Φ' hΦ'K hΦ' using fun a => hJ' (x' a) ε R hε (hx'N a) (hx'R a)`. Set `Pts : Set ℝ` to `{Y | (∃ l ∈ KB.plusW ys w, l.2 = Y) ∨ (∃ l ∈ KB.minusW ys w, l.2 = Y)}`.
+
+Establish `hW1` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.plusW ys w) hc1.1 hc1.2`. Establish `hW2` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.minusW ys w) hc2.1 hc2.2`. Establish `hPts : ∀ Y ∈ Pts, ∃ s0 : Fin (KB.plusW ys w).length, WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ (Fin (KB.plusW ys w).length))]`. Introduce `Y hY`. Establish `hn : 0 < (KB.plusW ys w).length ∧ I.OnCut P.u P.u' p.l0 Y`.
+
+Break down `hY with ⟨l, hl, rfl⟩ | ⟨l, hl, rfl⟩` into its components or cases. Conclude with `⟨List.length_pos_of_mem hl, cutWord_mem P hc1 hl⟩`. Conclude with `⟨by rw [← len_pm]; exact List.length_pos_of_mem hl, cutWord_mem P hc2 hl⟩`. Use `⟨⟨0, hn.1⟩, wordOK_gen (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 _ (by simp) (fun l hl => ⟨Y, by simp at hl; rw [hl], hn.2⟩) (by simp)⟩` and prove the remaining obligations. Establish `hΦU : ∀ e, Φ e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => pic_mem_UclsC hD hJ' Pts hε (hxN e) (hxR e) (Φ e) (hΦ e)`.
+
+Establish `hΦ'U : ∀ e, Φ' e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => pic_mem_UclsC hD hJ' Pts hε (hx'N e) (hx'R e) (Φ' e) (hΦ' e)`. Establish `hS` using `isStart_QQi _ _ _ _ _ X μ L st p.l0 hD 0`. Establish `hle` using `Ucls_le (K 0) (Gen L st Pts)`. Establish `hU` using `(sesquilinear_level_zero_pairing hThm).mono hle`. Establish `hP1 : ∀ l ∈ Lw ys w ++ Ww ys w, ∃ Y ∈ Pts, l.pt = (Y : ℂ)`.
+
+Introduce `l hl`. Rewrite `hl` using `[Lw_append_Ww]`. Unfold `D.positionted at hl`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hl`. Conclude with `⟨((KB.plusW ys w).get a).2, Or.inl ⟨_, List.get_mem _ _, rfl⟩, rfl⟩`.
+
+Establish `hLmem : ∀ l ∈ Lw ys w, ∃ y ∈ ys, l.pt = (y : ℂ)`. Introduce `l hl`. Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem hl`. Rewrite using `[Lw_getElem]`. Conclude with `⟨_, List.getElem_mem _, rfl⟩`.
+
+Establish `hP2 : ∀ l ∈ Lw ys w, ∃ Y ∈ Pts, l.pt + 1 = (Y : ℂ)`. Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Use `⟨y + 1, Or.inr ⟨(false, y + 1), ?_, rfl⟩, by rw [e]; push_cast; ring⟩` and prove the remaining obligations. Rewrite using `[minusW_eq]`.
+
+Conclude with `List.mem_append_left _ (List.mem_map.2 ⟨y, hy, rfl⟩)`. Establish `hOK1 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 (Lw ys w ++ Ww ys w)` using `by rw [Lw_append_Ww]; exact hW1`. Establish `hOK2 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 ((Lw ys w).map dl ++ Ww ys w)`. Rewrite using `[Lw_dual]`. Conclude with `cast_map_pred (len_pm ys w) (fun k u => WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 u) _ hW2`.
+
+Establish `hDK : FormPairingAction.DKHyp (M.qC (JC.parLev P jF)) (Ww ys w) (Lw ys w)`. Use `⟨Lw_plus ys w, good_of_adm st _ hOK1.1, good_of_adm st _ hOK2.1, Lw_pairwise w ys hys, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Rewrite using `[e, qw_Ww]`.
+
+Introduce `h0`. Use `(hqpos y hy).1` as an intermediate fact. Rewrite `this` using `[show qw (M.qC P) (D.positionted w) (y : ℂ) = qw (M.qC (JC.parLev P jF)) (D.positionted w) (y : ℂ) from rfl, h0]`. Simplify using `at this`. Establish `dk` using `dk_radial hD hThm Pts hPts (Ww ys w) (Lw ys w) hDK hOK1 hOK2 hP1 hP2 Φ (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) hΦU (fun e => hΦ'U _)`.
+
+Establish `hRRw : RRw (QQi L st 0) (D.positionted w) ∈ entSub (adjB (Ucls (K 0) (Gen L st Pts)) (bet μ) hU)`. Use `rrw_mem_at _ _ fun l hl a b => ?_` and prove the remaining obligations. Unfold `D.positionted at hl`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hl`. Use `gen_mem_adjB hThm hS Pts hPts ⟨(w.get i).2, Or.inl ⟨w.get i, ?_, rfl⟩, a, b, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[plusW_eq]`. Conclude with `List.mem_append_right _ (List.get_mem _ _)`. Establish `hodd` using `bet_neg (k := (JC.parLev P jF).k) (r := (JC.parLev P jF).r) (z := (p.T.bs jF).z) (z' := (p.T.bs jF).z') (π := (p.T.bs jF).π) (π' := (p.T.bs jF).π') μ`. Establish `hmn : w.length ≤ (KB.plusW ys w).length` using `by rw [len_plusW]; omega`. Establish `ePlus` using `hform (KB.plusW ys w) x x Φ Φ ε hε hxN hxN hΦ hΦ`.
+
+Establish `eMinus` using `hform (KB.minusW ys w) x' x' Φ' Φ' ε hε hx'N hx'N hΦ' hΦ'`. Establish `ePJ` using `pairJ_rel (w := w) (fun F Ψ => JC.NiceCoef (p.T.bs jF) ε F ∧ IsPic p.T jF Ψ F) (Cst : ℂ) (p.form j hj w) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun u u' v v' hu hu' => hform w u u' v v' ε hε (fun e => (hu e).1) (fun e => (hu' e).1) (fun e => (hu e) …`. Establish `eXi` using `pairJ_rel (w := w) (fun a b => a = b ∧ a ∈ Ucls (K 0) (Gen L st Pts)) (1 : ℂ) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun x x' => ∑ e, bet μ (actP (RRw (QQi L st 0) (D.positionted w)) x e) (x' e)) (fun u u' v v' hu hu' => by`. Establish `e1 : u = v` using `funext fun e => (hu e).1`. Establish `e2 : u' = v'` using `funext fun e => (hu' e).1`.
+
+Substitute `e1 e2` using the available equality. Rewrite using `[one_mul]`. Establish `hin : InU (Ucls (K 0) (Gen L st Pts)) (actP (RRw (QQi L st 0) (D.positionted w)) u)` using `blockMulVec_apply_mem (fun a b x hx => (hRRw a b).1 x hx) (fun e => (hu e).2)`. Conclude with `form_zero_eq_position_pairing_of_le hThm hmn _ _ (fun a => hle (hin a)) (fun a => hle (hu' a).2))`. Use `ys Φ Φ' Φ Φ' (fun e => ⟨rfl, hΦU e⟩) (fun e => ⟨rfl, hΦ'U e⟩)`.
+
+Establish `ePosition` using `position_pair (V := RadSp (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π') (bet μ) hodd (QQi L st 0) w ys Φ Φ'`. Establish `eA : form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.plusW ys w))) Φ) Φ 0` using `by rw [Lw_append_Ww]`. Establish `eB : form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.minusW ys w))) Φ') Φ' 0`. Rewrite using `[Lw_dual]`. Use `show form μ 0 (actP (RRw (QQi L st 0) ((D.positionted (KB.minusW ys w)).map (castL (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = _`.
+
+Establish `hc` using `blockMulVec_cast (QQi L st 0) (len_pm ys w) (D.positionted (KB.minusW ys w)) Φ'`. Conclude with `(congrArg (fun V => form μ 0 V (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0) hc).trans (form_castIx μ (len_pm ys w) _ _ 0)`. Take `⟨hAi, -, hBi, -, hdk⟩` from `dk`. Establish `ePlus' : p.form j hj (KB.plusW ys w) x x = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0` using `ePlus.trans (congrArg _ eA.symm)`. Establish `eMinus' : p.form j hj (KB.minusW ys w) x' x' = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0` using `eMinus.trans (congrArg _ eB.symm)`.
+
+Establish `hPJ : KB.pairJ (p.form j hj w) ys x x' = (Cst : ℂ) * pairS (bet μ) (actP (JL (Lw ys w) * RRw (QQi L st 0) (Ww ys w)) Φ) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))` using `ePJ.trans (congrArg (fun t => (Cst : ℂ) * t) (eXi.trans ((one_mul _).trans ePosition.symm)))`. Establish `hQ : ((Lw ys w).map fun l => qw (M.qC (JC.parLev P jF)) (Ww ys w) l.pt).prod = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).prod` using `congrArg List.prod (Lw_qw _ ys w)`. Establish `hre : (ys.map fun y : ℝ => (qw (M.qC P) (D.positionted w) (y : ℂ)).re) = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).map Complex.re`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[hPJ, ePlus', eMinus', hre]`. Use `final_ineq Cst _ _ _ _ _ hQ (fun z hz => ?_) hAi hBi hdk` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hqpos y hy`.
+-/
 theorem pb_sizeStdCpt_main : Formalism.FourierDecayAlt.KB.SizeStdCpt := by
   intro hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys
   have hOK : P.OK := p.hP.1
@@ -186,6 +237,9 @@ end Formalism.FourierDecayAlt.P.PBF
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBF.pb_sizeStdCpt_main`.
+-/
 theorem size_standard_compact : Formalism.FourierDecayAlt.KB.SizeStdCpt := PBF.pb_sizeStdCpt_main
 
 end Formalism.FourierDecayAlt.P

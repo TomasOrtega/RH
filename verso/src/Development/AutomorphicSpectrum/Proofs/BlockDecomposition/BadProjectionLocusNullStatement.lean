@@ -10,6 +10,9 @@ open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit segre fibre IsGoodProj IsSheet HermLine IsSmoothHerm sheetDensity maDensity ptsIntegral ptsIntegralAt pot)
 open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.Crit.volume_chart_crit <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bad_projection_locus_null : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ),
     GlobalTheory.IsArithVar (i ≫ mpStr ℤ m n) D → ∀ Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D,
       IsGoodProj (ptIdeal (i (genericPoint X))) Ψ → ∀ c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D,

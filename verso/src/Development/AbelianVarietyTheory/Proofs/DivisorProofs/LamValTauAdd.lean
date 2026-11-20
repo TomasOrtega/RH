@@ -17,6 +17,31 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 
 namespace GlobalTheory.MumfordE8Bimultiplicative
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hL : (abelian₂ B M.L).IsLB` using `DVR.linComb_isLB _ M.isLB _ _`. Establish `hL' : (abelian₂ B₀ M₀.L).IsLB` using `DVR.linComb_isLB _ M₀.isLB _ _`. Set `β₂ : (G2 B₀).left ⟶ (G2 B).left` to `(lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left`. Establish `Hlam : ∀ {T₀ : Over S} (p q : T₀ ⟶ B₀) {U : Type} [CommGroup U] (h : (T₀.left ⟶ B.left) → U), ∏ i, h (((lift p q).left ≫ β₂) ≫ lamφ B i) ^ lamε i = h ((p ≫ a) * (q ≫ b)).left * (h (p ≫ a).left)⁻¹ * (h (q ≫ b).left)⁻¹ * h (1 : T₀ ⟶ B).left` using `fun p q U _ h => by`.
+
+Rewrite using `[GlobalTheory.MumRigidZero.lift_comp_left]`. Conclude with `prod_lam (p ≫ a) (q ≫ b) h`. Take `⟨l₁, l₂, hl₁, hl₂, cl₁, cl₂, vl⟩` from `exists_laws M₀ c₀`. Set `φ3` to `law1φ B₀ (x3 B₀ 0) (x3 B₀ 1) (x3 B₀ 2)`. Set `β₃ : (G3 B₀).left ⟶ (G3 B).left` to `(lift (x3 B₀ 0 ≫ a) (lift (x3 B₀ 1 ≫ a) (x3 B₀ 2 ≫ b))).left`.
+
+Establish `fe3 : FormEq (fun I => β₃ ≫ thφ B (x3 B) I) thε (flatφ (lamφ B) (fun k => φ3 k ≫ β₂)) (flatε lamε lawε)` using `fun U _ h => by`. Establish `e₁` using `prod_cub (x3 B₀ 0 ≫ a) (x3 B₀ 1 ≫ a) (x3 B₀ 2 ≫ b) h`. Establish `e₂` using `prod_law₁ (x3 B₀ 0) (x3 B₀ 1) (x3 B₀ 2) (fun χ => ∏ i, h ((χ ≫ β₂) ≫ lamφ B i) ^ lamε i)`. Rewrite `e₂` using `[id₃]`. Simplify using `only [Over.id_left, Category.id_comp, Hlam, MonObj.mul_comp] at e₂`.
+
+Rewrite using `[e₁, prod_flat, e₂]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Take `⟨g₃, hg₃, hv₃⟩` from `exists_gen M.isLB fe3 (LB.pullGen M.L (thφ B (x3 B)) thε c.t β₃) (DVR.pullGen_isGen _ _ _ _ c.isGen β₃)`.
+
+Establish `ht₃` using `nest_isGen (L := M.L) (φ := lamφ B) (δ := lamε) hg₃`. Establish `Ft3 : ∀ {T₀ : Over S} (p p' q : T₀ ⟶ B₀) (z₀ : T₀.left) (J₀ : (T₀.left ⟶ B.left) → M.L.ι), Good M.L z₀ J₀ → val (L` using `abelian₂ B M.L) (nest M.L (lamφ B) lamε (fun k => φ3 k ≫ β₂) lawε g₃) (lift p (lift p' q)).left z₀ (ind B J₀) = cubV c z₀ J₀ (p ≫ a) (p' ≫ a) (q ≫ b) := by`. Introduce `T₀ p p' q z₀ J₀ hJ₀`. Use `show val (L := LB.LinComb M.L (lamφ B) lamε) (nest M.L (lamφ B) lamε (fun k => φ3 k ≫ β₂) lawε g₃) _ z₀ (ind B J₀) = _`. Rewrite using `[val_nest hg₃ _ (good_ind hJ₀) hJ₀]`.
+
+Simplify using `only [adj_ind M.isLB hJ₀, one_zpow, Finset.prod_const_one, _root_.one_mul]`. Rewrite using `[hv₃ _ _ z₀ J₀ hJ₀]`. Use `(val_pull hJ₀ _ _ _).trans ?_` and prove the remaining obligations. Use `congrArg (fun r => val (L := M.L) (φ := thφ B (x3 B)) (ε := thε) c.t r z₀ J₀) ?_` and prove the remaining obligations. Use `show (lift p (lift p' q) ≫ lift (x3 B₀ 0 ≫ a) (lift (x3 B₀ 1 ≫ a) (x3 B₀ 2 ≫ b))).left = (lift (p ≫ a) (lift (p' ≫ a) (q ≫ b))).left`.
+
+Simplify using `only [comp_lift, ← Category.assoc, cartesian_lift_three_comp_projection]`. Both sides reduce to the same expression. Establish `Fa3 : ∀ {T₀ : Over S} (p p' q : T₀ ⟶ B₀) (z₀ : T₀.left) (J₀' : (T₀.left ⟶ B₀.left) → M₀.L.ι), Good M₀.L z₀ J₀' → val (L` using `abelian₂ B₀ M₀.L) l₁ (lift p (lift p' q)).left z₀ (ind B₀ J₀') = cubV c₀ z₀ J₀' p p' q := by`. Introduce `T₀ p p' q z₀ J₀' hJ₀'`. Use `show val (L := lamLB M₀) l₁ _ z₀ (ind B₀ J₀') = _`.
+
+Rewrite using `[(vl z₀ (ind B₀ J₀') (good_ind hJ₀') J₀' hJ₀').1 p p' q, adj_ind M₀.isLB hJ₀', adj_ind M₀.isLB hJ₀', adj_ind M₀.isLB hJ₀']`. Simplify using the standard rewrite rules. Establish `Fp3 : ∀ {T₀ : Over S} (p p' q : T₀ ⟶ B₀) (z₀ : T₀.left) (J₀ : (T₀.left ⟶ B.left) → M.L.ι) (J₀' : (T₀.left ⟶ B₀.left) → M₀.L.ι), pw w φ3 lawε (lift p (lift p' q)).left z₀ (fun k => ind B J₀ ((lift p (lift p' q)).left ≫ φ3 k ≫ β₂)) (fun k => ind B₀ J₀' ((lift p (lift p' q)).left ≫ …`. Introduce `T₀ p p' q z₀ J₀ J₀'`. Rewrite using `[pw_eq]`.
+
+Conclude with `prod_law₁ p p' q (fun χ => lamVal w χ z₀ J₀ J₀')`. Establish `sj3 : Function.Surjective ((snd B₀ (B₀ ⊗ B₀)).left ≫ (snd B₀ B₀).left ≫ B₀.hom).appTop.hom` using `surj_comp (surj_snd hG hB₀ _) (surj_comp (surj_snd hG hB₀ _) (hG _ _ hB₀).2)`. Establish `he3 : (lift (1 : 𝟙_ (Over S) ⟶ B₀) (lift 1 1)).left ≫ (snd B₀ (B₀ ⊗ B₀)).left ≫ (snd B₀ B₀).left ≫ B₀.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w (lift (1 : 𝟙_ (Over S) ⟶ B₀) (lift 1 1))`.
+
+Establish `R3` using `rigid_pw w hw hL hL' φ3 lawε hl₁ ht₃ _ _ he3 sj3 (fun y₀ => by`. Take `⟨J₁, hJ₁⟩` from `GlobalTheory.UU.exists_good_pt M.isLB y₀`. Take `⟨J₁', hJ₁'⟩` from `GlobalTheory.UU.exists_good_pt M₀.isLB y₀`. Use `⟨ind B J₁, ind B₀ J₁', good_ind hJ₁, good_ind hJ₁', ?_⟩` and prove the remaining obligations. Rewrite using `[Ft3 (T₀ := 𝟙_ (Over S)) 1 1 1 y₀ J₁ hJ₁, Fp3, Fa3 1 1 1 y₀ J₁' hJ₁', GlobalTheory.MumRigidZero.one_comp_hom a, _root_.mul_one, (isCub_cubV c hJ₁).face, (isCub_cubV c₀ hJ₁').face, hn (𝟙_ (Over S)) y₀ J₁ J₁' hJ₁ hJ₁']`.
+
+Use the proof step `simp)`. Establish `E3` using `R3 T.left (lift x (lift x' y)).left z (ind B J) (ind B₀ J') (good_ind hJ) (good_ind hJ')`. Rewrite `E3` using `[Ft3 x x' y z J hJ, Fp3, Fa3 x x' y z J' hJ']`. Rewrite using `[E3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lamVal_law₁ {S : Scheme.{0}} (B₀ B : Over S) [GrpObj B₀] [IsCommMonObj B₀] [GrpObj B] [IsCommMonObj B]
     (M₀ : RigLB B₀) (M : RigLB B) (c₀ : CubicalStr B₀ M₀) (c : CubicalStr B M) (hB₀ : IsAbelianScheme B₀)
     (a b : B₀ ⟶ B) [IsMonHom a] [IsMonHom b]

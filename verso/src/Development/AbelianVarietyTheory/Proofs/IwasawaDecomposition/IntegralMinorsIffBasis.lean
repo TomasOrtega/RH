@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.WeylLatDualProof
 
+/- English proof (translation)
+Simplify using `only [h, zsmul_eq_mul]`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem prod_zsum_expand {A : Type*} [CommRing A] {L : Type*} [Fintype L] [DecidableEq L]
     {α β : L → Type*} [∀ s, Fintype (β s)] (f : ∀ s, α s → A) (g : ∀ s, β s → A)
     (c : ∀ s, α s → β s → ℤ) (h : ∀ s j, f s j = ∑ k, c s j k • g s k) (j : ∀ s, α s) :
@@ -18,6 +23,9 @@ theorem prod_zsum_expand {A : Type*} [CommRing A] {L : Type*} [Fintype L] [Decid
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_dual_zsum_le_one (p : ℕ) [Fact p.Prime] {M : Type*} [AddCommGroup M] [Module ℂ_[p] M]
     (φ : Module.Dual ℂ_[p] M) {κ : Type*} [Fintype κ] (n : κ → ℤ) (x : κ → M)
     (hx : ∀ k, ‖φ (x k)‖ ≤ 1) : ‖φ (∑ k, n k • x k)‖ ≤ 1 := by
@@ -28,6 +36,21 @@ theorem norm_dual_zsum_le_one (p : ℕ) [Fact p.Prime] {M : Type*} [AddCommGroup
         mul_le_mul (IsUltrametricDist.norm_intCast_le_one _ _) (hx k) (norm_nonneg _) zero_le_one
     _ = 1 := one_mul 1
 
+/- English proof (translation)
+Introduce `p _ Lt _ N nu hY ι _ b c d hc hd φ`. Set `Ψ : Lt → MvPolynomial (Fin N × Fin N) ℚ →+* MvPolynomial (Lt × ℕ × Fin N) ℂ_[p]` to `fun s => (MvPolynomial.map (algebraMap ℚ ℂ_[p])).comp (MvPolynomial.rename (sig N s)).toRingHom`. Establish `hF : ∀ J : WeylLatticeDuality.ColChoice N nu, MvPolynomial.map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J) = ∏ s, Ψ s (GlobalTheory.WeylMinorDual.colProd ℚ N (nu s) (hY s) (J s))`. Introduce `J`. Establish `h1 : Int.castRingHom ℂ_[p] = (algebraMap ℚ ℂ_[p]).comp (Int.castRingHom ℚ)` using `RingHom.ext_int _ _`.
+
+Rewrite using `[h1, ← MvPolynomial.map_map, map_nablaX ℚ N nu hY J, map_prod]`. Both sides reduce to the same expression. Establish `hG : ∀ κ : (∀ s, ι s), MvPolynomial.map (algebraMap ℚ ℂ_[p]) (∏ s, MvPolynomial.rename (sig N s) (b s (κ s))) = ∏ s, Ψ s (b s (κ s))`. Introduce `κ`. Rewrite using `[map_prod]`.
+
+Both sides reduce to the same expression. Establish `hc' : ∀ s J, Ψ s (GlobalTheory.WeylMinorDual.colProd ℚ N (nu s) (hY s) J) = ∑ k, c s J k • Ψ s (b s k)`. Introduce `s J`. Rewrite using `[hc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `hd' : ∀ s k, Ψ s (b s k) = ∑ J, d s k J • Ψ s (GlobalTheory.WeylMinorDual.colProd ℚ N (nu s) (hY s) J)`. Introduce `s k`. Use `conv_lhs => rw [hd]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[← map_zsmul, Int.cast_smul_eq_zsmul]`. Prove the components needed by the constructor for the conclusion. Introduce `h κ`. Rewrite using `[hG, prod_zsum_expand (fun s k => Ψ s (b s k)) _ d hd' κ]`.
+
+Use `norm_dual_zsum_le_one p φ _ _ fun J => ?_` and prove the remaining obligations. Conclude with `(le_of_eq (congrArg (fun x => ‖φ x‖) (hF J)).symm).trans (h J)`. Introduce `h J`. Rewrite using `[hF, prod_zsum_expand (fun s J => Ψ s (GlobalTheory.WeylMinorDual.colProd ℚ N (nu s) (hY s) J)) _ c hc' J]`. Use `norm_dual_zsum_le_one p φ _ _ fun κ => ?_` and prove the remaining obligations.
+
+Use `h κ` as an intermediate fact. Rewrite `this` using `[hG]`. Conclude with `this`.
+-/
 theorem integral_minors_iff_basis : ∀ (p : ℕ) [Fact p.Prime] (Lt : Type) [Fintype Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (ι : Lt → Type) [∀ s, Fintype (ι s)]
     (b : ∀ s, ι s → MvPolynomial (Fin N × Fin N) ℚ)

@@ -14,6 +14,15 @@ section Phi
 
 variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `: (LinearMap.compLeft (Algebra.linearMap O K) (Fin k)) u = ∑ j, u j • (Pi.single j 1 : Fin k → K)`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single a]`.
+
+Simplify using `[Algebra.smul_def]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem stdG_span (O K : Type) [CommRing O] [Field K] [Algebra O K] (k : ℕ) :
     stdG O K k = Submodule.span O (Set.range fun j : Fin k => (Pi.single j 1 : Fin k → K)) := by
   apply le_antisymm
@@ -37,6 +46,15 @@ theorem stdG_span (O K : Type) [CommRing O] [Field K] [Algebra O K] (k : ℕ) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot (τ₁₂ := (D.nbr i w hw).eO.toRingHom), eq_bot_iff]`. Introduce `x hx`. Take `⟨u, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Establish `h1 : Br.vecS (D.nbr i w hw) k u ∈ stdG (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) k`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Take `⟨c, hc⟩` from `h1`. Use `⟨fun j => (D.nbr i w hw).eO.symm (c j), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Apply `(Br.toLLK (D.nbr i w hw)).injective` to reduce the goal to its premises. Use `congrFun hc j` as an intermediate fact. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Algebra.linearMap_apply] at this`. Use `show Br.toLLK (D.nbr i w hw) (algebraMap _ _ ((D.nbr i w hw).eO.symm (c j))) = Br.toLLK (D.nbr i w hw) (u j)`.
+
+Rewrite using `[Br.toLLK_alg, RingEquiv.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem phi_injective (k : ℕ) : Function.Injective (Br.phi (D.nbr i w hw) k) := by
   rw [← LinearMap.ker_eq_bot (τ₁₂ := (D.nbr i w hw).eO.toRingHom), eq_bot_iff]
   intro x hx
@@ -58,6 +76,13 @@ theorem phi_injective (k : ℕ) : Function.Injective (Br.phi (D.nbr i w hw) k) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `key : Br.vecS (D.nbr i w hw) k ((matRep (mapM (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) M) (Br.ι (D.nbr i w hw) g)) u) = (matRep (Br.locM (D.nbr i w hw) M) g) (Br.vecS (D.nbr i w hw) k u)`. Use function extensionality and compare the values at `p`. Use `show Br.toLLK (D.nbr i w hw) (((mapM (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) M (Br.ι (D.nbr i w hw) g)).mulVec u) p) = ((Br.locM (D.nbr i w hw) M g).mulVec (fun j => Br.toLLK (D.nbr i w hw) (u j))) p`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show Br.toLLK (D.nbr i w hw) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (M (Br.ι (D.nbr i w hw) g) p q)) = _`. Rewrite using `[Br.toLLK_alg]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun z : Fin k → Br.LLw (D.nbr i w hw) => (Submodule.Quotient.mk z : (Fin k → Br.LLw (D.nbr i w hw)) ⧸ stdG (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) k)) key`.
+-/
 theorem phi_act {k : ℕ} (M : Gw D.nd w →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : ↥(GK (D.nbr i w hw).Kw))
     (x : KOG (D.nd.O i) k) :
     Br.phi (D.nbr i w hw) k (actD (stdLatG (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))) M)
@@ -80,6 +105,15 @@ theorem phi_act {k : ℕ} (M : Gw D.nd w →* Matrix (Fin k) (Fin k) (D.nd.O i))
 
 end Phi
 
+/- English proof (translation)
+Unfold `lenUnit`. Use `set A := Module.length O M`. Use `set B := Module.length O (O ⧸ Ideal.span {(l : O)})`. Establish `hnc : (0 : ℝ) ≤ (n : ℝ) * (c : ℝ)` using `by positivity`. Distinguish the cases in `hB : B.toNat = 0`.
+
+Rewrite using `[hB, Nat.cast_zero, div_zero]`. Simplify using `using hnc`. Establish `hBt : B ≠ ⊤` using `fun h => hB (by rw [h]; rfl)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.1 hBt`. Rewrite `h`, `hB`, the goal using `[← hm]`.
+
+Establish `h' : A ≤ ((n * c * m : ℕ) : ℕ∞)` using `by simpa using h`. Establish `h1 : A.toNat ≤ n * c * m`. Use `ENat.toNat_le_toNat h' (ENat.coe_ne_top _)` as an intermediate fact. Simplify using `using this`. Simplify using `only [ENat.toNat_coe] at hB ⊢`.
+
+Establish `hBpos : (0 : ℚ) < (m : ℚ)` using `by exact_mod_cast Nat.pos_of_ne_zero hB`. Establish `h2 : ((A.toNat : ℚ) / (m : ℚ)) ≤ (n : ℚ) * (c : ℚ)`. Rewrite using `[div_le_iff₀ hBpos]`. Conclude with `h1` after adjusting the coercions. Conclude with `h2` after adjusting the coercions.
+-/
 theorem lenUnit_le {O : Type} [CommRing O] (l : ℕ) (M : Type) [AddCommGroup M] [Module O M] (n c : ℕ)
     (h : Module.length O M ≤ (n : ℕ∞) * (c : ℕ∞) * Module.length O (O ⧸ Ideal.span {(l : O)})) :
     (lenUnit (O := O) l M : ℝ) ≤ (n : ℝ) * (c : ℝ) := by

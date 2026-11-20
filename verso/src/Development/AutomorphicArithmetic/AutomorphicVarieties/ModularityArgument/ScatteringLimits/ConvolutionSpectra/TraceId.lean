@@ -10,6 +10,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X κ hk hX ψ δ T a hψ hT ha htc`. Take `⟨-, -, -, -, hP, -, -, hL⟩` from `projLaws M`. Establish `hP'` using `(projLaws M.swap).2.2.2.2.1`. Take `⟨t1, -, -, -, -⟩` from `bandTC M X κ hk hX ψ δ (T - a) T hψ (by linarith)`. Take `⟨-, t2, t3, -, -⟩` from `bandTC M X κ hk hX ψ δ T (T + a) hψ (by linarith)`.
+
+Establish `hcomm` using `((avSpec M.F).2.2.2 _ (avApprox.2.1 ψ _ _ hψ).2.1).2.2.2.2 M.F (M.F.U (-a)) (fun t h => by rw [← M.F.add, ← M.F.add, add_comm])`. Use `set Ψ := M.F.av (fun t => (ψ t : ℂ)) with hΨ`. Use `set Y := Ψ ∘L X with hY`. Establish `mI : ∀ x : ℝ, MeasurableSet (Ioi x)` using `fun _ => measurableSet_Ioi`. Establish `mc : ∀ x y : ℝ, MeasurableSet (Ioc x y)` using `fun _ _ => measurableSet_Ioc`.
+
+Establish `s1 : M.P' (Ioi T) = M.P' (Ioc T (T + a)) + M.P' (Ioi (T + a))`. Use `(hP' _ _ (mc T (T + a)) (mI (T + a))).2.2.2.1 (Ioc_disjoint_Ioi le_rfl)` as an intermediate fact. Rewrite `this` using `[Ioc_union_Ioi_eq_Ioi (by linarith)]`. Then use the resulting hypothesis. Establish `s2 : M.P (Ioi (T - a)) = M.P (Ioc (T - a) T) + M.P (Ioi T)`. Use `(hP _ _ (mc (T - a) T) (mI T)).2.2.2.1 (Ioc_disjoint_Ioi le_rfl)` as an intermediate fact.
+
+Rewrite `this` using `[Ioc_union_Ioi_eq_Ioi (by linarith)]`. Then use the resulting hypothesis. Take `⟨-, -, l0, -, -, -, -, l3, l4⟩` from `hL T T (by linarith)`. Take `⟨-, -, m0, -, -, m1, m2, -, -⟩` from `hL (T - a) (T + a) (by linarith)`. Establish `e0 : M.P' (Ioc T (T + a)) ∘L M.P' (Ioc T (T + a)) = M.P' (Ioc T (T + a))`. Use `(hP' _ _ (mc T (T + a)) (mc T (T + a))).1` as an intermediate fact.
+
+Rewrite `this` using `[inter_self]`. Then use the resulting hypothesis. Establish `e1 : M.P' (Ioi T) ∘L M.P' (Ioc T (T + a)) = M.P' (Ioc T (T + a))`. Use `(hP' _ _ (mI T) (mc T (T + a))).1` as an intermediate fact. Rewrite `this` using `[inter_eq_right.2 Ioc_subset_Ioi_self]`. Then use the resulting hypothesis. Establish `e2 : M.P' (Ioc T (T + a)) ∘L M.P' (Ioi T) = M.P' (Ioc T (T + a))`.
+
+Use `(hP' _ _ (mc T (T + a)) (mI T)).1` as an intermediate fact. Rewrite `this` using `[inter_eq_left.2 Ioc_subset_Ioi_self]`. Then use the resulting hypothesis. Establish `e3 : M.P (Ioi (T - a)) ∘L M.P (Ioc (T - a) T) = M.P (Ioc (T - a) T)`. Use `(hP _ _ (mI (T - a)) (mc (T - a) T)).1` as an intermediate fact. Rewrite `this` using `[inter_eq_right.2 Ioc_subset_Ioi_self]`. Then use the resulting hypothesis.
+
+Establish `e4 : M.P (Ioc (T - a) T) ∘L M.P (Ioi (T - a)) = M.P (Ioc (T - a) T)`. Use `(hP _ _ (mc (T - a) T) (mI (T - a))).1` as an intermediate fact. Rewrite `this` using `[inter_eq_left.2 Ioc_subset_Ioi_self]`. Then use the resulting hypothesis. Take `⟨tc, key⟩` from `twoProj (M.abelian₂ T T) (M.P' (Ioc T (T + a))) (M.abelian₂ (T - a) (T + a)) (M.P (Ioc (T - a) T)) Y (by simp only [Sc.abelian₂, s1, s2]; abel) l0 e0 m0 (by simpa using (hP _ _ (mc (T - a) T) (mc (T - a) T)).1) (by rw [← e1, ← ContinuousLinearMap.comp_assoc, l3, ContinuousLinearM …`. Rewrite using `[key]`.
+
+Use `congr 1`. Establish `u1 : ∀ h, M.F.U a (M.abelian₂ T T h) = M.abelian₂ (T - a) (T + a) (M.F.U a h)` using `fun h => by`. Take `⟨x1, x2⟩` from `(hP _ _ (mI T) (mI T)).2.2.2.2 a`. Establish `y1 : (fun x : ℝ => x + a) ⁻¹' Ioi T = Ioi (T - a)` using `by ext x; simp [sub_lt_iff_lt_add]`. Establish `y2 : (fun x : ℝ => x - a) ⁻¹' Ioi T = Ioi (T + a)` using `by ext x; simp [lt_sub_iff_add_lt]`.
+
+Rewrite `x1` using `[y1]`. Rewrite `x2` using `[y2]`. Establish `z1` using `DFunLike.congr_fun x1 h`. Establish `z2` using `DFunLike.congr_fun x2 h`. Simplify using `only [ContinuousLinearMap.comp_apply] at z1 z2`.
+
+Simplify using `only [Sc.abelian₂, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply, map_sub, z1, z2]`. Establish `inv1 : ∀ h, M.F.U (-a) (M.F.U a h) = h` using `fun h => by rw [← M.F.add, neg_add_cancel, M.F.zero]`. Establish `inv2 : ∀ h, M.F.U a (M.F.U (-a) h) = h` using `fun h => by rw [← M.F.add, add_neg_cancel, M.F.zero]`. Establish `u2 : ∀ h, M.F.U (-a) (M.abelian₂ (T - a) (T + a) h) = M.abelian₂ T T (M.F.U (-a) h)` using `fun h => by conv_lhs => rw [← inv2 h, ← u1, inv1]`. Establish `hYU : ∀ h, Y (M.F.U a h) = M.F.U (-a) (Y h)` using `fun h => by show Ψ (X (M.F.U a h)) = M.F.U (-a) (Ψ (X h))`.
+
+Rewrite using `[(carLaws M X κ hk hX).1]`. Conclude with `(DFunLike.congr_fun hcomm _).symm`. Use `trace_comp_comm (tc.comp_left (M.F.U (-a))) (M.F.U a)` as an intermediate fact. Establish `f1 : M.F.U a ∘L (M.F.U (-a) ∘L (M.abelian₂ (T - a) (T + a) ∘L Y ∘L M.abelian₂ (T - a) (T + a))) = M.abelian₂ (T - a) (T + a) ∘L Y ∘L M.abelian₂ (T - a) (T + a)`. Use extensionality with `h`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, inv2]`. Establish `f2 : (M.F.U (-a) ∘L (M.abelian₂ (T - a) (T + a) ∘L Y ∘L M.abelian₂ (T - a) (T + a))) ∘L M.F.U a = M.abelian₂ T T ∘L M.F.U (-(2 * a)) ∘L Y ∘L M.abelian₂ T T`. Use extensionality with `h`. Use `show M.F.U (-a) (M.abelian₂ (T - a) (T + a) (Y (M.abelian₂ (T - a) (T + a) (M.F.U a h)))) = M.abelian₂ T T (M.F.U (-(2 * a)) (Y (M.abelian₂ T T h)))`. Rewrite using `[← u1, hYU, u2, ← M.F.add]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[f1, f2]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.traceId :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (κ : ℝ → V →L[ℂ] W), Ker κ → M.Carries X κ → ∀ (ψ : ℝ → ℝ) (δ T a : ℝ), Bump ψ (-δ) 0 → M.T₀ ≤ T → 0 ≤ a →
       IsTraceClass (M.abelian₂ T T ∘L (M.F.av (fun t => (ψ t : ℂ)) ∘L X) ∘L M.abelian₂ T T) →

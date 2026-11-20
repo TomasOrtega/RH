@@ -5,6 +5,33 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Introduce `hinj hθ hf hth hfr hpr hsup hrank`. Establish `hkill : ∀ z ∈ ⨆ s : {s : Λ →+* O // s ≠ σ}, eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) s.1, π z = 0` using `GlobalTheory.T.theta_projection_eigen_image p O C Λ N h σ f ρ e π hinj hth hfr hpr`. Establish `hdec : ∀ z : Fin h → C, ∃ x ∈ eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ, ∃ z' ∈ ⨆ s : {s : Λ →+* O // s ≠ σ}, eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) s.1, x + z' = z`. Introduce `z`. Establish `hsplit : (⨆ s : Λ →+* O, eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) s) = eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ ⊔ ⨆ s : {s : Λ →+* O // s ≠ σ}, eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) s.1`.
+
+Rewrite using `[iSup_split_single _ σ, iSup_subtype']`. Establish `hz : z ∈ eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ ⊔ ⨆ s : {s : Λ →+* O // s ≠ σ}, eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) s.1`. Rewrite using `[← hsplit, hsup]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Submodule.mem_sup.mp hz`.
+
+Establish `hπsurj : Function.Surjective π`. Take `⟨r, hr⟩` from `hf 1`. Establish `hs : ∀ i : Fin N, Pi.single i (1 : C) ∈ LinearMap.range π`. Introduce `i`. Use `⟨fun j => algebraMap O C (WittVector.fontaineTheta O p (e (Pi.single i r) j)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hpr]`. Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hr]`.
+
+Simplify using `[Pi.single_apply, hk]`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← (Pi.basisFun C (Fin N)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `using hs i`. Set `π₀ : eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ →ₗ[C] (Fin N → C)` to `π ∘ₗ (eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ).subtype`.
+
+Establish `hsurj : Function.Surjective π₀`. Introduce `v`. Take `⟨z, rfl⟩` from `hπsurj v`. Take `⟨x, hx, z', hz', rfl⟩` from `hdec z`. Conclude with `⟨⟨x, hx⟩, by simp [π₀, map_add, hkill z' hz']⟩`.
+
+Establish `hinj0 : Function.Injective π₀` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by rw [hrank, Module.finrank_fin_fun])).mpr hsurj`. Set `q` to `LinearEquiv.ofBijective π₀ ⟨hinj0, hsurj⟩`. Establish `hq : ∀ x, q x = π x` using `fun x => rfl`. Use `⟨q, hq, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [quotLattice, Set.mem_setOf_eq, RingHom.mem_range, hq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `hlift : ∀ j, ∃ a : Ainf p O, WittVector.fontaineTheta O p a = t j` using `fun j => hθ (t j)`. Use `choose a ha using hlift`. Establish `h1 : π (fun j => algebraMap O C (t j)) = fun i => algebraMap O C (f (e.symm a i))`.
+
+Use `hpr (e.symm a)` as an intermediate fact. Simplify `this` using `[ha]`. Establish `h2` using `hkill _ ht`. Rewrite `h2` using `[map_sub, sub_eq_zero, h1]`. Introduce `i`.
+
+Conclude with `⟨f (e.symm a i), by rw [← h2]⟩`. Introduce `hx choose c hc using hx`. Establish `hlift : ∀ i, ∃ r, f r = c i` using `fun i => hf (c i)`. Use `choose w hw using hlift`. Use `⟨fun j => WittVector.fontaineTheta O p (e w j), ?_⟩` and prove the remaining obligations.
+
+Take `⟨x', hx', z', hz', hsum⟩` from `hdec (fun j => algebraMap O C (WittVector.fontaineTheta O p (e w j)))`. Establish `h1` using `hpr w`. Establish `hqq : q ⟨x', hx'⟩ = q x`. Rewrite using `[hq, hq]`. Establish `: π (x' + z') = π x'` using `by rw [map_add, hkill z' hz', add_zero]`.
+
+Rewrite using `[← this, hsum, h1]`. Use function extensionality and compare the values at `i`. Simplify using `[hw, ← hc i]`. Establish `hxx : (⟨x', hx'⟩ : eig C (fun l => (ρ l).map (WittVector.fontaineTheta O p)) σ) = x` using `q.injective hqq`. Establish `hz : (fun j => algebraMap O C (WittVector.fontaineTheta O p (e w j))) - (x : Fin h → C) = z'`.
+
+Rewrite using `[← hsum, ← hxx]`. Simplify using the standard rewrite rules. Rewrite using `[hz]`. Conclude with `hz'`.
+-/
 theorem projEigenspaceEquiv (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (C : Type) [Field C] [Algebra O C] (Λ : Type)
     [CommRing Λ] [Algebra ℤ_[p] Λ] (N h : ℕ) (σ : Λ →+* O) (f : RL p O Λ →+* O)

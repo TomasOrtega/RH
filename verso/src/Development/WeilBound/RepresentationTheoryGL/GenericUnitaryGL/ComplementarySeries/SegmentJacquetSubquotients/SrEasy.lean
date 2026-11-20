@@ -22,13 +22,22 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 namespace SrEasy
 
+/- English proof (translation)
+The claim follows from `isSmooth_parInd _ _`.
+-/
 theorem isSmooth_prod {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) :
     IsSmooth (multiProd (consecBlocks l d) (segTerm σ.ρ l)) := isSmooth_parInd _ _
 
+/- English proof (translation)
+The claim follows from `isSmooth_twist σ.smooth ((isSmoothChar_absPow _).comp _ continuous_glDet)`.
+-/
 private theorem isSmooth_segTerm_segment_jacquet_subquotients {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) (a : Fin l) :
     IsSmooth (segTerm σ.ρ l a) :=
   isSmooth_twist σ.smooth ((isSmoothChar_absPow _).comp _ continuous_glDet)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k l (l * d) (fun _ => d) (fun a => ⟨σ.V, segTerm σ.ρ l a, isSmooth_segTerm_segment_jacquet_subquotients σ a, isIrreducible_twist σ.irr _⟩) (consecBlocks l …`. Conclude with `h`.
+-/
 theorem hasFiniteLength_prod {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) :
     HasFiniteLength (multiProd (consecBlocks l d) (segTerm σ.ρ l)) := by
   have h := GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k l (l * d)
@@ -37,6 +46,11 @@ theorem hasFiniteLength_prod {d l : ℕ} (σ : IrrRep (GL (Fin d) k)) :
     (consecBlocks l d)
   exact h
 
+/- English proof (translation)
+Introduce `v`. Establish `h` using `hπ (v : V)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `congrArg Subtype.val hg`. Introduce `hg`. Conclude with `Subtype.ext hg`.
+-/
 theorem isSmooth_sub {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} (hπ : IsSmooth π) (S : Subrepresentation π) : IsSmooth S.toRepresentation := by
   intro v
@@ -54,6 +68,25 @@ end SrEasy
 
 open SrEasy
 
+/- English proof (translation)
+Take `⟨S, ⟨hS0, hST⟩, hmin⟩` from `hwf.wf.has_min {S : Subrepresentation ρ | S.toSubmodule ≠ ⊥ ∧ S.toSubmodule ≤ T.toSubmodule} ⟨T, hT, le_rfl⟩`. Use `⟨S, ?_, hST⟩` and prove the remaining obligations. Set `img : Subrepresentation S.toRepresentation → Subrepresentation ρ` to `fun U => ⟨U.toSubmodule.map S.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨S.toRepresentation g w, U.apply_mem_toSubmodule g hw, rfl⟩⟩`.
+
+Establish `hne : (⊥ : Subrepresentation S.toRepresentation) ≠ ⊤`. Introduce `h`. Apply `hS0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+
+Establish `h1 : (⟨v, hv⟩ : S.toSubmodule) ∈ (⊤ : Subrepresentation S.toRepresentation).toSubmodule` using `show _ ∈ (⊤ : Submodule ℂ S.toSubmodule) from Submodule.mem_top`. Rewrite `h1` using `[← h]`. Establish `h0 : (⟨v, hv⟩ : S.toSubmodule) = 0` using `(Submodule.mem_bot ℂ).1 h1`. Establish `h2 : v = 0` using `congrArg Subtype.val h0`. Rewrite using `[h2]`.
+
+Conclude with `Submodule.zero_mem _`. Use `{ exists_pair_ne := ⟨⊥, ⊤, hne⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Distinguish the cases in `hU : U.toSubmodule = ⊥`. Use `left`. Conclude with `Subrepresentation.ext hU`.
+
+Use `right`. Establish `himg0 : (img U).toSubmodule ≠ ⊥`. Introduce `h`. Apply `hU` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective S.toSubmodule.injective_subtype` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.map_bot]`. Conclude with `h`. Establish `himgS : img U ≤ S`. Introduce and unpack `_ ⟨w, _, rfl⟩`. Conclude with `w.2`.
+
+Establish `heq : img U = S`. Assume the negation of the conclusion as `hne'`. Conclude with `hmin (img U) ⟨himg0, le_trans himgS hST⟩ (lt_of_le_of_ne himgS hne')`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Apply `eq_top_iff.2` to reduce the goal to its premises.
+
+Introduce `w _`. Establish `hw : (w : V) ∈ (img U).toSubmodule`. Rewrite using `[heq]`. Conclude with `w.2`. Take `⟨u, hu, hu'⟩` from `hw`.
+
+Establish `: u = w` using `Subtype.ext hu'`. Rewrite using `[← this]`. Conclude with `hu`.
+-/
 private theorem exists_irreducible_subrep_le_of_ne_bot {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (hwf : WellFoundedLT (Subrepresentation ρ))
     (T : Subrepresentation ρ) (hT : T.toSubmodule ≠ ⊥) :
@@ -107,6 +140,9 @@ private theorem exists_irreducible_subrep_le_of_ne_bot {G V : Type} [Group G] [A
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hfl` using `hasFiniteLength_prod (l := l) σ`. Rewrite `hfl` using `[hasFiniteLength_iff_wellFounded]`. Conclude with `exists_irreducible_subrep_le_of_ne_bot hfl.2 T hT`.
+-/
 theorem exists_irred_le {d l : ℕ} (hd : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (Fin d) k))
     (hσ : IsCuspidal σ.ρ) (T : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)))
     (hT : T.toSubmodule ≠ ⊥) :
@@ -118,10 +154,16 @@ theorem exists_irred_le {d l : ℕ} (hd : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ 2`.
+-/
 theorem isIrreducible_segTensor {d : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) :
     (piTensor (segTerm σ.ρ 2)).IsIrreducible :=
   PositivityTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ 2
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ProdLength.hasFiniteLength_of_injective (LinearMap.intertwiningMap_of_isIntertwiningMap S.toRepresentation π S.toSubmodule.subtype (fun _ _ => rfl)) (fun a b h => Subtype.ext h) hπ`.
+-/
 private theorem hasFiniteLength_subrepresentation {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} (hπ : HasFiniteLength π) (S : Subrepresentation π) :
     HasFiniteLength S.toRepresentation :=
@@ -132,6 +174,9 @@ private theorem hasFiniteLength_subrepresentation {G V : Type} [Group G] [AddCom
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Conclude with `GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k _ _ _ (consecBlocks 2 d) _ S.toRepresentation (isSmooth_sub (isSmooth_prod σ) S) (hasFiniteLength_subrepresentation (hasFiniteLength_prod σ) S)`.
+-/
 theorem hasFiniteLength_jac_sub {d : ℕ} (hd : 0 < d)
     (σ : IrrRep (GL (Fin d) k)) (hσ : IsCuspidal σ.ρ)
     (S : Subrepresentation (multiProd (consecBlocks 2 d) (segTerm σ.ρ 2))) :

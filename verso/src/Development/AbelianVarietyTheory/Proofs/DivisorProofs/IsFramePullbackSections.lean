@@ -30,12 +30,18 @@ section Columns
 
 variable {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ}
 
+/- English proof (translation)
+Introduce `l`. Take `⟨s, hs, hsv⟩` from `hv l`. Conclude with `⟨fun j => resM _ h (s j), hs.res h, fun j => by rw [app_resM, hsv]⟩`.
+-/
 theorem spans_res {X : Scheme.{0}} {F : X.Modules} {fl : Vert.Flag F m} {V W : X.Opens}
     {v : Fin m → Γ(F, V)} (hv : Spans fl V v) (h : W ≤ V) : Spans fl W fun j => resM F h (v j) := by
   intro l
   obtain ⟨s, hs, hsv⟩ := hv l
   exact ⟨fun j => resM _ h (s j), hs.res h, fun j => by rw [app_resM, hsv]⟩
 
+/- English proof (translation)
+Simplify using `only [pullCol, map_sum, resM_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `QCoh.res_pullbackSections π E hV h (e l)`.
+-/
 theorem res_pullCol (e : Fin m → Γ(E, U)) {V W : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) (h : W ≤ V)
     (M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
     resM _ h (pullCol π e hV M j) = pullCol π e (h.trans hV) (M.map (resG Y h)) j := by
@@ -44,12 +50,18 @@ theorem res_pullCol (e : Fin m → Γ(E, U)) {V W : Y.Opens} (hV : V ≤ π ⁻�
   congr 1
   exact QCoh.res_pullbackSections π E hV h (e l)
 
+/- English proof (translation)
+Use `spans_res hM h` as an intermediate fact. Rewrite `this` using `[funext (res_pullCol π e hV h M)]`. Then use the resulting hypothesis.
+-/
 theorem spans_pullCol_res {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) m} (e : Fin m → Γ(E, U))
     {V W : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) (h : W ≤ V) {M : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (hM : Spans fl V (pullCol π e hV M)) : Spans fl W (pullCol π e (h.trans hV) (M.map (resG Y h))) := by
   have := spans_res hM h
   rwa [funext (res_pullCol π e hV h M)] at this
 
+/- English proof (translation)
+Simplify using `only [pullCol, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem sum_smul_pullCol (e : Fin m → Γ(E, U)) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     (N M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
     ∑ k, M k j • pullCol π e hV N k = pullCol π e hV (N * M) j := by
@@ -58,11 +70,17 @@ theorem sum_smul_pullCol (e : Fin m → Γ(E, U)) {V : Y.Opens} (hV : V ≤ π �
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Use `(he.pullback π).res hV` as an intermediate fact. Rewrite `this` using `[funext fun i => QCoh.res_pullbackSections π E le_rfl hV (e i)]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_pullbackSections [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens}
     (hV : V ≤ π ⁻¹ᵁ U) : IsFrame fun l => QCoh.pullbackSections π E hV (e l) := by
   have := (he.pullback π).res hV
   rwa [funext fun i => QCoh.res_pullbackSections π E le_rfl hV (e i)] at this
 
+/- English proof (translation)
+Establish `hb` using `isFrame_pullbackSections π he hV V le_rfl`. Use `choose c hc using fun j => hb.2 (v j)`. Use `⟨Matrix.of fun l j => c j l, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc j, Fintype.linearCombination_apply]`. Simplify using `only [pullCol, Matrix.of_apply, resM_self]`.
+-/
 theorem exists_pullCol [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens}
     (hV : V ≤ π ⁻¹ᵁ U) (v : Fin m → Γ((Scheme.Modules.pullback π).obj E, V)) :
     ∃ M : Matrix (Fin m) (Fin m) Γ(Y, V), ∀ j, v j = pullCol π e hV M j := by
@@ -72,6 +90,11 @@ theorem exists_pullCol [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFram
   rw [← hc j, Fintype.linearCombination_apply]
   simp only [pullCol, Matrix.of_apply, resM_self]
 
+/- English proof (translation)
+Establish `hb` using `isFrame_pullbackSections π he hV V le_rfl`. Use extensionality with `l j`. Use `hb.1 (a₁ := fun l => M l j) (a₂ := fun l => N l j) (by` as an intermediate fact. Simplify using `only [Fintype.linearCombination_apply, resM_self]`. Conclude with `h j)`.
+
+Conclude with `congrFun this l`.
+-/
 theorem pullCol_injective [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens}
     (hV : V ≤ π ⁻¹ᵁ U) {M N : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (h : ∀ j, pullCol π e hV M j = pullCol π e hV N j) : M = N := by
@@ -82,6 +105,9 @@ theorem pullCol_injective [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsF
     exact h j)
   exact congrFun this l
 
+/- English proof (translation)
+Take `⟨T, h₁, h₂, h₃⟩` from `spans_change _ _ _ fl V _ _ hM hN`. Conclude with `⟨T, h₁, h₂, pullCol_injective π he hV fun j => (h₃ j).trans (sum_smul_pullCol π e hV M T j)⟩`.
+-/
 theorem exists_upper_of_spans [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens}
     (hV : V ≤ π ⁻¹ᵁ U) {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) m} {M N : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (hM : Spans fl V (pullCol π e hV M)) (hN : Spans fl V (pullCol π e hV N)) :
@@ -89,6 +115,9 @@ theorem exists_upper_of_spans [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he :
   obtain ⟨T, h₁, h₂, h₃⟩ := spans_change _ _ _ fl V _ _ hM hN
   exact ⟨T, h₁, h₂, pullCol_injective π he hV fun j => (h₃ j).trans (sum_smul_pullCol π e hV M T j)⟩
 
+/- English proof (translation)
+Use `Spans.mul_upper _ _ _ fl V _ T hM h₁ h₂` as an intermediate fact. Rewrite `this` using `[funext (sum_smul_pullCol π e hV M T)]`. Then use the resulting hypothesis.
+-/
 theorem spans_pullCol_mul (e : Fin m → Γ(E, U)) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) m} {M T : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (hM : Spans fl V (pullCol π e hV M)) (h₁ : T.BlockTriangular id) (h₂ : IsUnit T.det) :
@@ -96,6 +125,11 @@ theorem spans_pullCol_mul (e : Fin m → Γ(E, U)) {V : Y.Opens} (hV : V ≤ π 
   have := Spans.mul_upper _ _ _ fl V _ T hM h₁ h₂
   rwa [funext (sum_smul_pullCol π e hV M T)] at this
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hM.exists_basis`. Establish `h (j : Fin m) : pullCol π e hV (M * Matrix.of fun k j => b.repr (pullCol π e hV 1 j) k) j = pullCol π e hV 1 j`. Rewrite using `[← sum_smul_pullCol]`. Simplify using `only [Matrix.of_apply, ← hb]`. Conclude with `b.sum_repr _`.
+
+Conclude with `Matrix.isUnit_det_of_right_inverse (pullCol_injective π he hV h)`.
+-/
 theorem isUnit_det_of_spans [E.IsQuasicoherent] {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens}
     (hV : V ≤ π ⁻¹ᵁ U) {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) m} {M : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (hM : Spans fl V (pullCol π e hV M)) : IsUnit M.det := by

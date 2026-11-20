@@ -16,6 +16,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain Recipr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Use `CompFin.isNoetherian_XF Xo c` as an intermediate fact. Establish `hZ : IsIrreducible (Z : Set (Xo.XF c))` using `Z.2.1`. Take `⟨z, hz⟩` from `hZ.nonempty`.
+
+Establish `h1 : (Z : Set (Xo.XF c)) ⊆ connectedComponent z` using `hZ.isConnected.isPreconnected.subset_connectedComponent hz`. Establish `h2 : IsIrreducible (connectedComponent z)` using `⟨⟨z, mem_connectedComponent⟩, GlobalTheory.KeyFam.isPreirreducible_connectedComponent_of_smooth (strK (Xo := Xo) (c := c)) z⟩`. Rewrite using `[Set.Subset.antisymm h1 (Z.2.2 h2 h1)]`. Conclude with `⟨isClosed_connectedComponent, isOpen_connectedComponent_of_noetherianSpace z⟩`.
+-/
 theorem isClopen_comp (Z : Comp Xo c) : IsClopen (Z : Set (Xo.XF c)) := by
   have := Xo.smooth
   have : Smooth Xo.s := SmoothOfRelativeDimension.smooth Dw.dim Xo.s

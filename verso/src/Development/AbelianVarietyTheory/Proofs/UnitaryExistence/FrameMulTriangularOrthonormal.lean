@@ -18,6 +18,25 @@ namespace GlobalTheory.UnitFrames
 
 open ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData
 
+/- English proof (translation)
+Establish `hdet : ∀ c : Fin n, (blk A c).det ≠ 0`. Introduce `c h0`. Establish `h` using `hs ⟨c, Nat.lt_succ_of_lt c.isLt⟩`. Establish `: lminor A ⟨c, Nat.lt_succ_of_lt c.isLt⟩ = 0` using `h0`. Rewrite `h` using `[this]`.
+
+Simplify using `at h`. Use `set B := (uMat A)ᵀ * A * (uMat A).map (starRingEnd ℂ) with hB`. Establish `hH : B.IsHermitian`. Establish `e : (uMat A).map (starRingEnd ℂ) = ((uMat A)ᵀ)ᴴ`. Use extensionality with `a c`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[hB, e]`. Conclude with `Matrix.isHermitian_mul_mul_conjTranspose _ hA`. Establish `hdiag : B = Matrix.diagonal fun k => B k k`. Use extensionality with `a c`.
+
+Break down `lt_trichotomy a c with hac | hac | hac` into its components or cases. Rewrite using `[Matrix.diagonal_apply_ne _ (ne_of_lt hac), ← hH.apply a c, hB, uGu_lower _ hdet hac, star_zero]`. Substitute `hac` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Rewrite using `[Matrix.diagonal_apply_ne _ (ne_of_gt hac), hB, uGu_lower _ hdet hac]`.
+
+Establish `hprod : ∀ i : Fin (n + 1), lminor A i = ∏ j : Fin i, (fun k => B k k) (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)`. Introduce `i`. Establish `e : lminor B i = lminor A i`. Rewrite using `[hB, lminor_conj (uMat_upper _) i]`. Simplify using `only [uMat_diag, Finset.prod_const_one, one_mul, map_one, mul_one]`.
+
+Rewrite using `[← e]`. Conclude with `(congrArg (fun M => lminor M i) hdiag).trans (lminor_diagonal _ i)`. Establish `hre : ∀ k, (B k k).im = 0` using `fun k => Complex.conj_eq_iff_im.1 (hH.apply k k)`. Use `⟨fun k => (B k k).re, fun k => ?_, ?_⟩` and prove the remaining obligations. Establish `hsucc : lminor A k.succ = lminor A k.castSucc * B k k`.
+
+Rewrite using `[hprod k.succ, hprod k.castSucc]`. Conclude with `prod_castLE_succ (f := fun k => B k k) k.isLt`. Establish `h1` using `hs k.succ`. Establish `h0` using `hs k.castSucc`. Rewrite `h1` using `[hsucc, Complex.mul_re, hre, mul_zero, sub_zero, Fin.val_succ, psgn_succ]`.
+
+Rewrite `h0` using `[Fin.val_castSucc]`. Use `(pos_iff_pos_of_mul_pos (a := psgn p0 k * (lminor A k.castSucc).re) ?_).1 h0` and prove the remaining obligations. Conclude with `h1.trans_eq (by ring)`. Rewrite using `[hdiag]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem uMat_conj_eq_diagonal {n : ℕ} (p0 : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.IsHermitian)
     (hs : ∀ i : Fin (n + 1), 0 < psgn p0 i * (lminor A i).re) :
     ∃ d : Fin n → ℝ, (∀ k : Fin n, 0 < sgn p0 k * d k) ∧
@@ -66,6 +85,15 @@ theorem uMat_conj_eq_diagonal {n : ℕ} (p0 : ℕ) (A : Matrix (Fin n) (Fin n) �
     funext k
     apply Complex.ext <;> simp [hre]
 
+/- English proof (translation)
+Take `⟨d, hd, hA'⟩` from `uMat_conj_eq_diagonal p0 A hA hs`. Use `⟨uMat A * Matrix.diagonal fun k : Fin n => (((√(sgn p0 k * d k))⁻¹ : ℝ) : ℂ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, det_uMat, one_mul, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_ne_zero.2 (inv_ne_zero (Real.sqrt_pos.2 (hd k)).ne')`.
+
+Conclude with `(uMat_upper A).mul (Matrix.blockTriangular_diagonal _)`. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul, Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _), ← Matrix.mul_assoc, Matrix.mul_assoc _ (uMat A)ᵀ, Matrix.mul_assoc _ ((uMat A)ᵀ * A), hA', Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, ← Complex.ofReal_mul, Complex.ofReal_inj]`.
+
+Establish `h1` using `Real.mul_self_sqrt (hd k).le`. Establish `h2` using `(Real.sqrt_pos.2 (hd k)).ne'`. Use `set s := √(sgn p0 k * d k)`. Establish `h3 : d k = sgn p0 k * (s * s)`. Rewrite using `[h1]`.
+
+Apply the tactic sequence `rcases sgn_sq p0 k with h | h <;> simp [h]`. Rewrite using `[h3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_upper_conj_eq_signature {n : ℕ} (p0 : ℕ) (A : Matrix (Fin n) (Fin n) ℂ)
     (hA : A.IsHermitian) (hs : ∀ i : Fin (n + 1), 0 < psgn p0 i * (lminor A i).re) :
     ∃ b : Matrix (Fin n) (Fin n) ℂ, b.det ≠ 0 ∧ b.BlockTriangular id ∧
@@ -93,6 +121,15 @@ theorem exists_upper_conj_eq_signature {n : ℕ} (p0 : ℕ) (A : Matrix (Fin n) 
     rw [h3]
     field_simp
 
+/- English proof (translation)
+Introduce `E _ _ _ r p0 Ψ Gm hG`. Use `⟨fun x hx => ?_, fun τ x₀ x₁ h0 h1 => ?_⟩` and prove the remaining obligations. Use `choose b hb using fun τ : Ψ => exists_upper_conj_eq_signature p0 (gram τ.1 Gm (mat x τ)) (gram_isHermitian τ.1 hG _) (hx τ).2`. Use `⟨rmul x fun τ => b τ, fun τ => b τ, fun τ => ⟨(hb τ).1, fun a c hca => (hb τ).2.1 hca⟩, fun τ => ?_, rfl⟩` and prove the remaining obligations. Use `show gram τ.1 Gm (mat x τ * b τ) = _`.
+
+Rewrite using `[FrameDegreeData.gram_mul]`. Conclude with `(hb τ).2.2`. Establish `hdet : IsUnit x₀.det`. Use `isUnit_iff_ne_zero.2 fun h => ?_` and prove the remaining obligations. Establish `h2` using `congrArg Matrix.det h0`.
+
+Rewrite `h2` using `[FrameDegreeData.gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h, zero_mul, zero_mul, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun k _ => ?_) h2.symm` and prove the remaining obligations. Apply the tactic sequence `rcases sgn_sq p0 k with h' | h' <;> simp [h']`. Use `⟨x₁ * x₀⁻¹, ?_, (Matrix.nonsing_inv_mul_cancel_right _ _ hdet).symm⟩` and prove the remaining obligations. Rewrite using `[← FrameDegreeData.gram_eq, FrameDegreeData.gram_mul, h1, ← FrameDegreeData.gram_mul, Matrix.mul_nonsing_inv _ hdet, FrameDegreeData.gram_eq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem frame_mul_triangular_orthonormal :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r p0 : ℕ) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin r) (Fin r) E), (∀ a b, cc (Gm a b) = Gm b a) → (∀ x ∈ GG Ψ Gm p0, ∃ x₀ : Frame Ψ r, ∃ b ∈ Bor Ψ r, (∀ τ : Ψ, gram τ.1 Gm (mat x₀ τ) = Matrix.diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) ∧ x₀ = rmul x b) ∧ ∀ (τ : E →+* ℂ) (x₀ x₁ : Matrix (Fin r) (Fin r) ℂ), gram τ Gm x₀ = (Matrix.diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) → gram τ Gm x₁ = gram τ Gm x₀ → ∃ u : Matrix (Fin r) (Fin r) ℂ, uᵀ * Gm.map τ * u.map (starRingEnd ℂ) = Gm.map τ ∧ x₁ = u * x₀ := by
   intro E _ _ _ r p0 Ψ Gm hG

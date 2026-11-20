@@ -32,14 +32,23 @@ abbrev markedTripleOfIdeal (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) : MarkedIdealWithBoundary.{u} :=
   { base := k, scheme := Y, structMap := q, ideal := J, mult := 1, boundary := [] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOfIdeal_scheme (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
     (markedTripleOfIdeal k Y q J).scheme = Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOfIdeal_structureMorphism (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
     (markedTripleOfIdeal k Y q J).structMap = q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem markedTripleOfIdeal_ideal (k : Type u) [Field k] (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of k)) (J : Y.IdealSheafData) :
     (markedTripleOfIdeal k Y q J).ideal = J := rfl
@@ -48,12 +57,20 @@ def HasLocalEtaleCharts {X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) : Prop :=
   ∀ x : X', ∃ (W : X'.Opens) (_ : x ∈ W) (n : ℕ), Nonempty (EtaleChart p W n)
 
+/- English proof (translation)
+Introduce `U`. Conclude with `Ideal.map_mono h`.
+-/
 private theorem ofIdealTop_mono {X : Scheme.{u}} {I J : Ideal Γ(X, ⊤)} (h : I ≤ J) :
     AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop I ≤
       AlgebraicGeometry.Scheme.IdealSheafData.ofIdealTop J := by
   intro U
   exact Ideal.map_mono h
 
+/- English proof (translation)
+Simplify using `only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, coordSubspaceIdeal_eq_ofIdealTop_span_coord]`. Apply `Scheme.IdealSheafData.comap_mono` to reduce the goal to its premises. Apply `ofIdealTop_mono` to reduce the goal to its premises. Apply `Ideal.span_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨i, hi, rfl⟩`.
+
+Conclude with `⟨i, Finset.mem_coe.mpr (h (Finset.mem_coe.mp hi)), rfl⟩`.
+-/
 theorem EtaleChart.coordIdeal_mono {Y : Scheme.{u}} {k : Type u} [Field k]
     {p : Y ⟶ Spec (CommRingCat.of k)} {U : Y.Opens} {m : ℕ} (ch : EtaleChart p U m)
     {S S' : Finset (Fin m)} (h : S ⊆ S') :
@@ -65,6 +82,13 @@ theorem EtaleChart.coordIdeal_mono {Y : Scheme.{u}} {k : Type u} [Field k]
   rintro x ⟨i, hi, rfl⟩
   exact ⟨i, Finset.mem_coe.mpr (h (Finset.mem_coe.mp hi)), rfl⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ z, ((FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).hom ≫ τ).base z = (Scheme.Hom.ker τ).subschemeι.base z`. Introduce `z`. Rewrite using `[FunctorialResolution.EmbeddedResolution.kerSubschemeIso_hom_comp τ]`. Establish `h2 : ∀ x, ((FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).inv ≫ (Scheme.Hom.ker τ).subschemeι).base x = τ.base x`. Introduce `x`.
+
+Rewrite using `[FunctorialResolution.EmbeddedResolution.kerSubschemeIso_inv_comp τ]`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `y ⟨z, rfl⟩`. Conclude with `⟨(FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).hom.base z, h1 z⟩`.
+
+Introduce and unpack `y ⟨x, rfl⟩`. Conclude with `⟨(FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).inv.base x, h2 x⟩`.
+-/
 private theorem coe_support_ker_eq_range {X X' : Scheme.{u}} (τ : X ⟶ X') [IsClosedImmersion τ] :
     (↑(Scheme.Hom.ker τ).support : Set X') = Set.range τ.base := by
   have h1 : ∀ z, ((FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).hom ≫ τ).base z
@@ -82,6 +106,11 @@ private theorem coe_support_ker_eq_range {X X' : Scheme.{u}} (τ : X ⟶ X') [Is
   · rintro y ⟨x, rfl⟩
     exact ⟨(FunctorialResolution.EmbeddedResolution.kerSubschemeIso τ).inv.base x, h2 x⟩
 
+/- English proof (translation)
+Rewrite using `[restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.eq_top_iff_support_eq_empty, support_comap_eq, coe_support_ker_eq_range τ]`. Use `Set.subset_empty_iff.mp ?_` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx⟩`. Use `absurd ?_ (h x)` and prove the remaining obligations. Rewrite using `[hx]`.
+
+Conclude with `y.2`.
+-/
 theorem restrictIdeal_ker_eq_top_of_not_mem {X X' : Scheme.{u}} (τ : X ⟶ X')
     [IsClosedImmersion τ] (U : X'.Opens) (h : ∀ x : X, τ.base x ∉ U) :
     restrictIdeal τ.ker U = ⊤ := by
@@ -105,6 +134,9 @@ structure AdaptedEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
   coord_mem : coord ∈ idxSet
   restrictIdeal_ker : restrictIdeal τ.ker opens = chart.coordIdeal idxSet
 
+/- English proof (translation)
+Simplify using `only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrict_map]`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+-/
 private theorem coordIdeal_restrict {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U V : X.Opens} {m : ℕ} (ch : EtaleChart p U m)
     (h : V ≤ U) (S : Finset (Fin m)) :
@@ -112,6 +144,11 @@ private theorem coordIdeal_restrict {X : Scheme.{u}} {k : Type u} [Field k]
   simp only [EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrict_map]
   rw [Scheme.IdealSheafData.comap_comp]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, hxU, m, ch, S, hcard, hker⟩` from `hcodim x`. Take `⟨V, hxV, hVU⟩` from `AlgebraicGeometry.Scheme.exists_affineOpens_mem_le hxU`. Establish `hSne : S.Nonempty` using `Finset.card_pos.mp (by rw [hcard]; omega)`. Take `⟨j, hj⟩` from `hSne`.
+
+Use `⟨⟨(V : X'.Opens), V.2, m, ch.restrict hVU, S, hcard, j, hj, ?_⟩, hxV⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_eq_comap_homOfLE_restrictIdeal (Scheme.Hom.ker τ) hVU, hker, coordIdeal_restrict ch hVU S]`.
+-/
 theorem exists_adaptedEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') (c : ℕ) (hc : 1 ≤ c)
     (hcodim : HasEtaleCoordCodim p τ c) :
@@ -133,6 +170,15 @@ structure DisjointEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
   chart : EtaleChart p opens coordCount
   not_mem : ∀ x : X, τ.base x ∉ opens
 
+/- English proof (translation)
+Take `⟨W, hyW, n, ⟨ch⟩⟩` from `hcharts y`. Establish `hclosed : IsClosed (Set.range τ.base)`. Rewrite using `[← coe_support_ker_eq_range τ]`. Conclude with `(Scheme.Hom.ker τ).support.2`. Establish `hopen : IsOpen ((W : Set X') ∩ (Set.range τ.base)ᶜ)` using `W.isOpen.inter hclosed.isOpen_compl`.
+
+Establish `hynot : y ∉ Set.range τ.base`. Introduce and unpack `⟨x, hx⟩`. Conclude with `hy x hx`. Use `set O : X'.Opens := ⟨(W : Set X') ∩ (Set.range τ.base)ᶜ, hopen⟩`. Establish `hyO : y ∈ O` using `Set.mem_inter hyW hynot`.
+
+Take `⟨U, hyU, hUO⟩` from `AlgebraicGeometry.Scheme.exists_affineOpens_mem_le hyO`. Establish `hUW : (U : X'.Opens) ≤ W`. Introduce `z hz`. Conclude with `(hUO hz).1`. Use `⟨⟨(U : X'.Opens), U.2, n, ch.restrict hUW, ?_⟩, hyU⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `(hUO hx).2 ⟨x, rfl⟩`.
+-/
 theorem exists_disjointEtaleChart {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') [IsClosedImmersion τ]
     (hcharts : HasLocalEtaleCharts p) (y : X') (hy : ∀ x : X, τ.base x ≠ y) :
@@ -162,11 +208,17 @@ def coverOpens {X X' : Scheme.{u}} {k : Type u} [Field k]
   | Sum.inl a => (A a).opens
   | Sum.inr b => (B b).opens
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverOpens_inl {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (a : α) :
     coverOpens A B (Sum.inl a) = (A a).opens := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverOpens_inr {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (b : β) :
@@ -179,11 +231,17 @@ def coverHypersurfaceIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
   | Sum.inl a => (A a).chart.coordIdeal {(A a).coord}
   | Sum.inr _ => ⊤
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coverHypersurfaceIdeal_inl {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (a : α) :
     coverHypersurfaceIdeal A B (Sum.inl a) = (A a).chart.coordIdeal {(A a).coord} := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coverHypersurfaceIdeal_inr {X X' : Scheme.{u}} {k : Type u} [Field k]
     {p : X' ⟶ Spec (CommRingCat.of k)} {τ : X ⟶ X'} {c : ℕ} {α : Type v} {β : Type w}
     (A : α → AdaptedEtaleChart p τ c) (B : β → DisjointEtaleChart p τ) (b : β) :
@@ -207,6 +265,23 @@ structure MaximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
         restrictIdeal τ.ker (toCoverData.opens i) = ch.coordIdeal S ∧
         toCoverData.localIdeal i = ch.coordIdeal {j}
 
+/- English proof (translation)
+Establish `hSpec : IsCompact (Set.univ : Set ↥(Spec (CommRingCat.of k)))`. Establish `h` using `(AlgebraicGeometry.isAffineOpen_top (Spec (CommRingCat.of k))).isCompact`. Rewrite `h` using `[TopologicalSpace.Opens.coe_top]`. Then use the resulting hypothesis. Establish `hX'c : IsCompact (Set.univ : Set ↥X')`. Establish `h` using `AlgebraicGeometry.QuasiCompact.isCompact_preimage (f := p) Set.univ isOpen_univ hSpec`.
+
+Rewrite `h` using `[Set.preimage_univ]`. Then use the resulting hypothesis. Establish `hcover : ∀ y : ↥X', ∃ q : AdaptedEtaleChart p τ c ⊕ DisjointEtaleChart p τ, y ∈ coverOpens (fun a : AdaptedEtaleChart p τ c => a) (fun b : DisjointEtaleChart p τ => b) q`. Introduce `y`. Distinguish the cases in `hy : ∃ x : ↥X, τ.base x = y`. Take `⟨x, hx⟩` from `hy`.
+
+Take `⟨A, hA⟩` from `exists_adaptedEtaleChart p τ c hc hcodim x`. Use `⟨Sum.inl A, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `hA`. Establish `hy' : ∀ x : X, τ.base x ≠ y` using `fun x hx => hy ⟨x, hx⟩`.
+
+Take `⟨F, hF⟩` from `exists_disjointEtaleChart p τ hcharts y hy'`. Conclude with `⟨Sum.inr F, hF⟩`. Establish `hsub : (Set.univ : Set ↥X') ⊆ ⋃ q : AdaptedEtaleChart p τ c ⊕ DisjointEtaleChart p τ, ((coverOpens (fun a : AdaptedEtaleChart p τ c => a) (fun b : DisjointEtaleChart p τ => b) q : X'.Opens) : Set ↥X')`. Introduce `y _`. Take `⟨q, hq⟩` from `hcover y`.
+
+Conclude with `Set.mem_iUnion.2 ⟨q, hq⟩`. Take `⟨t, ht⟩` from `hX'c.elim_finite_subcover (fun q : AdaptedEtaleChart p τ c ⊕ DisjointEtaleChart p τ => ((coverOpens (fun a : AdaptedEtaleChart p τ c => a) (fun b : DisjointEtaleChart p τ => b) q : X'.Opens) : Set ↥X')) (fun q => (coverOpens (fun a : AdaptedEtaleChart p τ c => a) (fun b : Disjoin …`. Use `⟨⟨⟨{ q : AdaptedEtaleChart p τ c ⊕ DisjointEtaleChart p τ // q ∈ t }, inferInstance, fun q => coverOpens (fun a : AdaptedEtaleChart p τ c => a) (fun b : DisjointEtaleChart p τ => b) q.1, fun q => coverHypersurfaceIdeal (fun a : AdaptedEtaleChart p τ c => a) (fun b : DisjointEtale …` and prove the remaining obligations. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Rewrite using `[TopologicalSpace.Opens.coe_iSup, TopologicalSpace.Opens.coe_top]`.
+
+Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨q, hqt, hq⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `Set.mem_iUnion.2 ⟨⟨q, hqt⟩, hq⟩`. Introduce and unpack `⟨A | F, _⟩`. Conclude with `A.isAffine`.
+
+Conclude with `F.isAffine`. Introduce and unpack `⟨A | F, _⟩`. Conclude with `⟨A.coordCount, ⟨A.chart⟩⟩`. Conclude with `⟨F.coordCount, ⟨F.chart⟩⟩`. Introduce and unpack `⟨A | F, _⟩`.
+
+Conclude with `Or.inr ⟨A.coordCount, A.chart, A.coord, rfl⟩`. Conclude with `Or.inl rfl`. Introduce and unpack `⟨A | F, _⟩`. Conclude with `Or.inr ⟨A.coordCount, A.chart, A.idxSet, A.coord, A.card_idxSet, A.coord_mem, A.restrictIdeal_ker, rfl⟩`. Conclude with `Or.inl ⟨rfl, F.not_mem⟩`.
+-/
 theorem nonempty_maximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.QuasiCompact p]
     (τ : X ⟶ X') [IsClosedImmersion τ] (I : X.IdealSheafData) (c : ℕ) (hc : 1 ≤ c)
@@ -275,15 +350,24 @@ variable {X X' : Scheme.{u}} {k : Type u} [Field k] {p : X' ⟶ Spec (CommRingCa
 abbrev projection (C : MaximalContactCover p τ I c) : C.toCoverData.disjointUnion ⟶ X' :=
   C.toCoverData.disjointUnionMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem projection_eq (C : MaximalContactCover p τ I c) :
     C.projection = C.toCoverData.disjointUnionMap := rfl
 
+/- English proof (translation)
+The claim follows from `MaxContactReduction.FiniteOpenCoverWithIdeals.isAffine_disjointUnion C.toCoverData C.isAffine`.
+-/
 theorem isAffine_disjointUnion (C : MaximalContactCover p τ I c) : IsAffine C.toCoverData.disjointUnion :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.isAffine_disjointUnion C.toCoverData C.isAffine
 
 instance instIsAffineTotal (C : MaximalContactCover p τ I c) : IsAffine C.toCoverData.disjointUnion :=
   C.isAffine_disjointUnion
 
+/- English proof (translation)
+The claim follows from `MaxContactReduction.FiniteOpenCoverWithIdeals.quasiCompact_disjointUnionMap_comp C.toCoverData C.isAffine`.
+-/
 theorem quasiCompact_projection_comp (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.QuasiCompact (C.projection ≫ p) :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.quasiCompact_disjointUnionMap_comp C.toCoverData C.isAffine
@@ -292,6 +376,9 @@ instance instQuasiCompactProjComp (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.QuasiCompact (C.projection ≫ p) :=
   C.quasiCompact_projection_comp
 
+/- English proof (translation)
+Establish `h : AlgebraicGeometry.Smooth C.toCoverData.disjointUnionMap` using `MaxContactReduction.FiniteOpenCoverWithIdeals.smooth_disjointUnionMap C.toCoverData`. Conclude with `MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) C.toCoverData.disjointUnionMap p h inferInstance`.
+-/
 theorem smooth_projection_comp (C : MaximalContactCover p τ I c) [AlgebraicGeometry.Smooth p] :
     AlgebraicGeometry.Smooth (C.projection ≫ p) := by
   have h : AlgebraicGeometry.Smooth C.toCoverData.disjointUnionMap :=
@@ -303,6 +390,9 @@ instance instSmoothProjComp (C : MaximalContactCover p τ I c) [AlgebraicGeometr
     AlgebraicGeometry.Smooth (C.projection ≫ p) :=
   C.smooth_projection_comp
 
+/- English proof (translation)
+Establish `h1 : AlgebraicGeometry.LocallyOfFiniteType C.projection` using `MaxContactReduction.FiniteOpenCoverWithIdeals.locallyOfFiniteType_disjointUnionMap C.toCoverData`. Conclude with `MorphismProperty.comp_mem (@AlgebraicGeometry.LocallyOfFiniteType) C.projection p h1 inferInstance`.
+-/
 theorem locallyOfFiniteType_projection_comp (C : MaximalContactCover p τ I c)
     [AlgebraicGeometry.LocallyOfFiniteType p] :
     AlgebraicGeometry.LocallyOfFiniteType (C.projection ≫ p) := by
@@ -316,10 +406,16 @@ instance instLocallyOfFiniteTypeProjComp (C : MaximalContactCover p τ I c)
     AlgebraicGeometry.LocallyOfFiniteType (C.projection ≫ p) :=
   C.locallyOfFiniteType_projection_comp
 
+/- English proof (translation)
+The claim follows from `MaxContactReduction.FiniteOpenCoverWithIdeals.isSmoothDivisor_iInfImageIdeal_of_forall_eq_top_or_coordIdeal C.toCoverData C.hypersurface C.hasChart`.
+-/
 theorem isSmoothDivisor_iInfImageIdeal (C : MaximalContactCover p τ I c) :
     IsSmoothDivisor (C.projection ≫ p) C.toCoverData.iInfImageIdeal :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.isSmoothDivisor_iInfImageIdeal_of_forall_eq_top_or_coordIdeal C.toCoverData C.hypersurface C.hasChart
 
+/- English proof (translation)
+The claim follows from `MaxContactReduction.FiniteOpenCoverWithIdeals.surjective_disjointUnionMap C.toCoverData C.covers`.
+-/
 theorem surjective_projection (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.projection :=
   MaxContactReduction.FiniteOpenCoverWithIdeals.surjective_disjointUnionMap C.toCoverData C.covers
@@ -333,10 +429,16 @@ abbrev pullbackFiberToTotal (C : MaximalContactCover p τ I c) : C.pullbackFiber
 abbrev pullbackFiberToBase (C : MaximalContactCover p τ I c) : C.pullbackFiber ⟶ X :=
   Limits.pullback.fst τ C.projection
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback τ C.projection`.
+-/
 theorem isPullback_pullbackFiber (C : MaximalContactCover p τ I c) :
     IsPullback C.pullbackFiberToBase C.pullbackFiberToTotal τ C.projection :=
   IsPullback.of_hasPullback τ C.projection
 
+/- English proof (translation)
+Establish `h : IsClosedImmersion τ` using `inferInstance`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.IsClosedImmersion) C.isPullback_pullbackFiber h`.
+-/
 theorem isClosedImmersion_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     IsClosedImmersion C.pullbackFiberToTotal := by
   have h : IsClosedImmersion τ := inferInstance
@@ -347,6 +449,9 @@ instance instIsClosedImmersionStarEmb (C : MaximalContactCover p τ I c) [IsClos
     IsClosedImmersion C.pullbackFiberToTotal :=
   C.isClosedImmersion_pullbackFiberToTotal
 
+/- English proof (translation)
+Establish `h : AlgebraicGeometry.Flat C.projection` using `MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) C.isPullback_pullbackFiber.flip h`.
+-/
 theorem flat_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Flat C.pullbackFiberToBase := by
   have h : AlgebraicGeometry.Flat C.projection :=
@@ -358,6 +463,9 @@ instance instFlatStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Flat C.pullbackFiberToBase :=
   C.flat_pullbackFiberToBase
 
+/- English proof (translation)
+Establish `h : AlgebraicGeometry.Smooth C.projection` using `MaxContactReduction.FiniteOpenCoverWithIdeals.smooth_disjointUnionMap C.toCoverData`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Smooth) C.isPullback_pullbackFiber.flip h`.
+-/
 theorem smooth_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Smooth C.pullbackFiberToBase := by
   have h : AlgebraicGeometry.Smooth C.projection :=
@@ -369,6 +477,9 @@ instance instSmoothStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Smooth C.pullbackFiberToBase :=
   C.smooth_pullbackFiberToBase
 
+/- English proof (translation)
+Establish `h : AlgebraicGeometry.Surjective C.projection` using `C.surjective_projection`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Surjective) C.isPullback_pullbackFiber.flip h`.
+-/
 theorem surjective_pullbackFiberToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.pullbackFiberToBase := by
   have h : AlgebraicGeometry.Surjective C.projection := C.surjective_projection
@@ -379,6 +490,9 @@ instance instSurjectiveStarToBase (C : MaximalContactCover p τ I c) :
     AlgebraicGeometry.Surjective C.pullbackFiberToBase :=
   C.surjective_pullbackFiberToBase
 
+/- English proof (translation)
+Establish `hq : AlgebraicGeometry.QuasiCompact τ` using `inferInstance`. Establish `hq' : AlgebraicGeometry.QuasiCompact C.pullbackFiberToTotal` using `quasiCompact_of_isPullback C.isPullback_pullbackFiber`. Establish `hf : AlgebraicGeometry.Flat C.projection` using `MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData`. Conclude with `ker_eq_comap_ker_of_isPullback_of_flat C.isPullback_pullbackFiber`.
+-/
 theorem ker_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     Scheme.Hom.ker C.pullbackFiberToTotal = τ.ker.comap C.projection := by
   have hq : AlgebraicGeometry.QuasiCompact τ := inferInstance
@@ -388,6 +502,15 @@ theorem ker_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImm
     MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData
   exact ker_eq_comap_ker_of_isPullback_of_flat C.isPullback_pullbackFiber
 
+/- English proof (translation)
+Establish `hle : C.toCoverData.iInfImageIdeal ≤ Scheme.Hom.ker C.pullbackFiberToTotal`. Establish `hker : Scheme.Hom.ker C.pullbackFiberToTotal = (Scheme.Hom.ker τ).comap C.toCoverData.disjointUnionMap` using `C.ker_pullbackFiberToTotal`. Rewrite using `[hker]`. Use `MaxContactReduction.FiniteOpenCoverWithIdeals.le_of_comap_summandι_le C.toCoverData ?_` and prove the remaining obligations. Introduce `i`.
+
+Establish `e1 : C.toCoverData.iInfImageIdeal.comap (C.toCoverData.summandι i) = C.toCoverData.localIdeal i` using `MaxContactReduction.FiniteOpenCoverWithIdeals.comap_iInfImageIdeal_summandι C.toCoverData i`. Establish `e2 : ((Scheme.Hom.ker τ).comap C.toCoverData.disjointUnionMap).comap (C.toCoverData.summandι i) = restrictIdeal (Scheme.Hom.ker τ) (C.toCoverData.opens i)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, MaxContactReduction.FiniteOpenCoverWithIdeals.summandι_comp_disjointUnionMap, restrictIdeal_eq_comap_ι]`. Rewrite using `[e1, e2]`. Break down `C.adapted i with ⟨htop, hnot⟩ | ⟨n, ch, S, j, hcard, hjS, hrestrict, hloc⟩` into its components or cases.
+
+Conclude with `le_of_eq (htop.trans (restrictIdeal_ker_eq_top_of_not_mem τ _ hnot).symm)`. Rewrite using `[hloc, hrestrict]`. Conclude with `ch.coordIdeal_mono (Finset.singleton_subset_iff.mpr hjS)`. Establish `hle' : Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι ≤ Scheme.Hom.ker C.pullbackFiberToTotal`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]` and apply the resulting hypothesis.
+
+Conclude with `⟨IsClosedImmersion.lift C.toCoverData.iInfImageIdeal.subschemeι C.pullbackFiberToTotal hle', IsClosedImmersion.lift_fac C.toCoverData.iInfImageIdeal.subschemeι C.pullbackFiberToTotal hle'⟩`.
+-/
 theorem exists_factor_pullbackFiberToTotal (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     ∃ f : C.pullbackFiber ⟶ C.toCoverData.iInfImageIdeal.subscheme,
       f ≫ C.toCoverData.iInfImageIdeal.subschemeι = C.pullbackFiberToTotal := by
@@ -420,21 +543,33 @@ def pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImme
     C.pullbackFiber ⟶ C.toCoverData.iInfImageIdeal.subscheme :=
   (C.exists_factor_pullbackFiberToTotal).choose
 
+/- English proof (translation)
+The claim follows from `(C.exists_factor_pullbackFiberToTotal).choose_spec`.
+-/
 theorem pullbackFiberToHypersurface_comp_subschemeι (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     C.pullbackFiberToHypersurface ≫ C.toCoverData.iInfImageIdeal.subschemeι = C.pullbackFiberToTotal :=
   (C.exists_factor_pullbackFiberToTotal).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, C.pullbackFiberToHypersurface_comp_subschemeι]`.
+-/
 theorem pullbackFiberToHypersurface_comp_subschemeι_assoc (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     {Z : Scheme.{u}} (h : C.toCoverData.disjointUnion ⟶ Z) :
     C.pullbackFiberToHypersurface ≫ C.toCoverData.iInfImageIdeal.subschemeι ≫ h = C.pullbackFiberToTotal ≫ h := by
   rw [← Category.assoc, C.pullbackFiberToHypersurface_comp_subschemeι]
 
+/- English proof (translation)
+Rewrite using `[C.pullbackFiberToHypersurface_comp_subschemeι]`. Use `infer_instance`.
+-/
 private theorem isClosedImmersion_pullbackFiberToHypersurface_comp_subschemeι (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
     IsClosedImmersion (C.pullbackFiberToHypersurface ≫ C.toCoverData.iInfImageIdeal.subschemeι) := by
   rw [C.pullbackFiberToHypersurface_comp_subschemeι]
   infer_instance
 
+/- English proof (translation)
+Use `isClosedImmersion_pullbackFiberToHypersurface_comp_subschemeι C` as an intermediate fact. Conclude with `AlgebraicGeometry.IsClosedImmersion.of_comp C.pullbackFiberToHypersurface C.toCoverData.iInfImageIdeal.subschemeι`.
+-/
 theorem isClosedImmersion_pullbackFiberToHypersurface (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     IsClosedImmersion C.pullbackFiberToHypersurface := by
   have := isClosedImmersion_pullbackFiberToHypersurface_comp_subschemeι C
@@ -448,6 +583,9 @@ instance instIsClosedImmersionStarFactor (C : MaximalContactCover p τ I c) [IsC
 def comapImageIdealSheaf (C : MaximalContactCover p τ I c) : C.toCoverData.disjointUnion.IdealSheafData :=
   (imageIdealSheaf τ I).comap C.projection
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comapImageIdealSheaf_eq (C : MaximalContactCover p τ I c) :
     C.comapImageIdealSheaf = (imageIdealSheaf τ I).comap C.projection := rfl
 
@@ -455,9 +593,17 @@ def idealOnHypersurface (C : MaximalContactCover p τ I c) :
     C.toCoverData.iInfImageIdeal.subscheme.IdealSheafData :=
   C.comapImageIdealSheaf.comap C.toCoverData.iInfImageIdeal.subschemeι
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idealOnHypersurface_eq_comap (C : MaximalContactCover p τ I c) :
     C.idealOnHypersurface = C.comapImageIdealSheaf.comap C.toCoverData.iInfImageIdeal.subschemeι := rfl
 
+/- English proof (translation)
+Break down `C.adapted i with ⟨htop, hnot⟩ | ⟨n, ch, S, j, hcard, hjS, hker, hloc⟩` into its components or cases. Establish `h1` using `restrictIdeal_ker_eq_top_of_not_mem τ (C.toCoverData.opens i) hnot`. Rewrite using `[htop]`. Conclude with `h1.ge`. Rewrite using `[hloc, hker]`.
+
+Conclude with `ch.coordIdeal_mono (Finset.singleton_subset_iff.mpr hjS)`.
+-/
 private theorem localIdeal_le_restrictIdeal_ker (C : MaximalContactCover p τ I c) [IsClosedImmersion τ]
     (i : C.toCoverData.idx) :
     C.toCoverData.localIdeal i ≤ restrictIdeal (Scheme.Hom.ker τ) (C.toCoverData.opens i) := by
@@ -468,6 +614,9 @@ private theorem localIdeal_le_restrictIdeal_ker (C : MaximalContactCover p τ I 
   · rw [hloc, hker]
     exact ch.coordIdeal_mono (Finset.singleton_subset_iff.mpr hjS)
 
+/- English proof (translation)
+Use `MaxContactReduction.FiniteOpenCoverWithIdeals.le_of_comap_summandι_le C.toCoverData ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[MaxContactReduction.FiniteOpenCoverWithIdeals.comap_iInfImageIdeal_summandι, ← Scheme.IdealSheafData.comap_comp, MaxContactReduction.FiniteOpenCoverWithIdeals.summandι_comp_disjointUnionMap]`. Conclude with `localIdeal_le_restrictIdeal_ker C i`.
+-/
 private theorem iInfImageIdeal_le_comap_ker (C : MaximalContactCover p τ I c) [IsClosedImmersion τ] :
     C.toCoverData.iInfImageIdeal ≤ (Scheme.Hom.ker τ).comap C.toCoverData.disjointUnionMap := by
   refine MaxContactReduction.FiniteOpenCoverWithIdeals.le_of_comap_summandι_le C.toCoverData ?_
@@ -477,6 +626,11 @@ private theorem iInfImageIdeal_le_comap_ker (C : MaximalContactCover p τ I c) [
     MaxContactReduction.FiniteOpenCoverWithIdeals.summandι_comp_disjointUnionMap]
   exact localIdeal_le_restrictIdeal_ker C i
 
+/- English proof (translation)
+Establish `hG : Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι = C.toCoverData.iInfImageIdeal`. Simplify using the standard rewrite rules. Establish `hle : Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι ≤ C.comapImageIdealSheaf`. Rewrite using `[hG, C.comapImageIdealSheaf_eq]`. Conclude with `le_trans (iInfImageIdeal_le_comap_ker C) (Scheme.IdealSheafData.comap_mono C.projection (ker_le_map_idealSheaf τ I))`.
+
+Establish `h2` using `ker_subschemeι_comp_eq_of_ker_le C.toCoverData.iInfImageIdeal.subschemeι C.comapImageIdealSheaf hle C.idealOnHypersurface C.idealOnHypersurface_eq_comap`. Conclude with `h2.symm`.
+-/
 theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
     C.comapImageIdealSheaf = imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι C.idealOnHypersurface := by
@@ -490,6 +644,11 @@ theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : Maximal
     C.idealOnHypersurface C.idealOnHypersurface_eq_comap
   exact h2.symm
 
+/- English proof (translation)
+Establish `hqc : AlgebraicGeometry.QuasiCompact τ` using `inferInstance`. Establish `hflat : AlgebraicGeometry.Flat C.projection` using `MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData`. Establish `h1 : (imageIdealSheaf τ I).comap C.projection = imageIdealSheaf C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase)` using `comap_map_eq_map_comap_of_isPullback C.isPullback_pullbackFiber I`. Establish `h2 : imageIdealSheaf C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase) = imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))`. Establish `h` using `Scheme.IdealSheafData.map_comp (I.comap C.pullbackFiberToBase) C.pullbackFiberToHypersurface C.toCoverData.iInfImageIdeal.subschemeι`.
+
+Rewrite `h` using `[C.pullbackFiberToHypersurface_comp_subschemeι]`. Conclude with `h`. Establish `h3 : (imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))).comap C.toCoverData.iInfImageIdeal.subschemeι = imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)` using `Blowup.comap_map_of_isClosedImmersion C.toCoverData.iInfImageIdeal.subschemeι (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))`. Rewrite using `[C.idealOnHypersurface_eq_comap, C.comapImageIdealSheaf_eq, h1, h2, h3]`.
+-/
 theorem idealOnHypersurface_eq_imageIdealSheaf (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
     C.idealOnHypersurface = imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) := by

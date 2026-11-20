@@ -29,6 +29,17 @@ def whittaker (ϕ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n)
 
 def gePosZeroEquiv : GePos n 0 ≃ Pos n := Equiv.subtypeUnivEquiv fun _ => Nat.zero_le _
 
+/- English proof (translation)
+Rewrite using `[partialCoeff_eq_setIntegral hϕ _ 0 rfl (Nat.zero_le n), whittaker]`. Set `E` to `MeasurableEquiv.piCongrLeft (fun _ : Pos n => 𝔸[K]) (gePosZeroEquiv (n := n))`. Establish `hE : MeasurePreserving E (vecMeasure K (GePos n 0)) (vecMeasure K (Pos n))` using `measurePreserving_piCongrLeft (fun _ : Pos n => GroundTheory.Global.adeleMeasure K) gePosZeroEquiv`. Establish `hext : ∀ Z : GePos n 0 → 𝔸[K], extGe Z = E Z`. Introduce `Z`.
+
+Use function extensionality and compare the values at `p`. Rewrite using `[extGe, dif_pos (Nat.zero_le _)]`. Simplify using `[E, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, gePosZeroEquiv]`. Establish `hpre : E ⁻¹' vecDomain K (Pos n) = vecDomain K (GePos n 0)`. Use extensionality with `Z`.
+
+Simplify using `only [Set.mem_preimage, vecDomain, Set.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion. Introduce `h q`. Use `h (gePosZeroEquiv q)` as an intermediate fact. Simplify `this` using `[E, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, gePosZeroEquiv]`.
+
+Introduce `h p`. Use `h (gePosZeroEquiv.symm p)` as an intermediate fact. Simplify `this` using `[E, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft, gePosZeroEquiv]`. Rewrite using `[← hE.setIntegral_preimage_emb E.measurableEmbedding, hpre]`. Use `setIntegral_congr_fun measurableSet_vecDomain fun Z _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [wInt, hext]`.
+-/
 theorem whittaker_eq_partialCoeff_zero {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ)
     (g : AdelicGLn.AdelicGL K n) : whittaker ϕ g = partialCoeff ϕ 0 g := by
   rw [partialCoeff_eq_setIntegral hϕ _ 0 rfl (Nat.zero_le n), whittaker]
@@ -54,6 +65,11 @@ theorem whittaker_eq_partialCoeff_zero {ϕ : AdelicGLn.AdelicGL K n → ℂ} (h�
   refine setIntegral_congr_fun measurableSet_vecDomain fun Z _ => ?_
   simp only [wInt, hext]
 
+/- English proof (translation)
+Establish `hx : ∀ x : Fin 0 → 𝔸[K], x = 0` using `fun x => funext fun i => i.elim0`. Establish `hc : ∀ x : Fin 0 → 𝔸[K], F (colGL 0 x * g) * (GroundTheory.Global.adelicChar K (-pair (lastVec 0) x) : ℂ) = F g`. Introduce `x`. Rewrite using `[hx x, colGL_zero, one_mul, pair_zero, neg_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]`. Rewrite using `[stepCoeff, vecCoeff]`.
+
+Repeatedly rewrite using `[hc]`. Rewrite using `[setIntegral_const, measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]`.
+-/
 theorem stepCoeff_zero (F : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) :
     stepCoeff 0 F g = F g := by
   have hx : ∀ x : Fin 0 → 𝔸[K], x = 0 := fun x => funext fun i => i.elim0
@@ -66,15 +82,24 @@ theorem stepCoeff_zero (F : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.Adeli
   simp_rw [hc]
   rw [setIntegral_const, measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[partialCoeff_of_lt ϕ hn, stepCoeff_zero]`.
+-/
 theorem partialCoeff_zero_eq_one (ϕ : AdelicGLn.AdelicGL K n → ℂ) (hn : 0 < n) :
     partialCoeff ϕ 0 = partialCoeff ϕ 1 := by
   funext g
   rw [partialCoeff_of_lt ϕ hn, stepCoeff_zero]
 
+/- English proof (translation)
+Rewrite using `[whittaker_eq_partialCoeff_zero hϕ, partialCoeff_zero_eq_one ϕ hn]`.
+-/
 theorem whittaker_eq_partialCoeff {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : Continuous ϕ) (hn : 0 < n)
     (g : AdelicGLn.AdelicGL K n) : whittaker ϕ g = partialCoeff ϕ 1 g := by
   rw [whittaker_eq_partialCoeff_zero hϕ, partialCoeff_zero_eq_one ϕ hn]
 
+/- English proof (translation)
+The claim follows from `hϕ.isSmooth.1 fin := by obtain ⟨U, -, hU⟩ := exists_openSubgroup_rightInvariant hϕ.isSmooth hϕ.isKFinite exact ⟨U, hU⟩ left := hϕ.isLeftInvariant`.
+-/
 theorem isUSmooth_of_isAutomorphicForm {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : IsAutomorphicForm ϕ) :
     IsUSmooth ϕ where
   arch := hϕ.isSmooth.1
@@ -83,6 +108,9 @@ theorem isUSmooth_of_isAutomorphicForm {ϕ : AdelicGLn.AdelicGL K n → ℂ} (h�
     exact ⟨U, hU⟩
   left := hϕ.isLeftInvariant
 
+/- English proof (translation)
+The claim follows from `hasSum_partialCoeff_of_vecCoeff_zero (isUSmooth_of_isAutomorphicForm hϕ.1) hk (fun g => vecCoeff_zero_of_isCuspidal hϕ.1.continuous hϕ.1.isLeftInvariant hϕ.2 hk0 hk g) g`.
+-/
 theorem hasSum_partialCoeff_cusp {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : ϕ ∈ cuspForms K n) {k : ℕ}
     (hk0 : 0 < k) (hk : k < n) (g : AdelicGLn.AdelicGL K n) :
     HasSum (fun ξ : {ξ : Fin k → K // ξ ≠ 0} =>
@@ -106,6 +134,11 @@ def mirabolic (k : ℕ) : Subgroup (GL (Fin k) K) where
 def lastRow {k : ℕ} (γ : GL (Fin k) K) : Fin k → K :=
   Matrix.vecMul (lastVec k) (γ : Matrix (Fin k) (Fin k) K)
 
+/- English proof (translation)
+Introduce `h`. Establish `hlv : lastVec (K` using `K) k ≠ 0 := fun h0 => by`. Use `congrFun h0 ⟨k - 1, by omega⟩` as an intermediate fact. Simplify using `[lastVec] at this`. Use linear arithmetic over natural numbers and integers.
+
+Apply `hlv` to reduce the goal to its premises. Use `congrArg (fun v => Matrix.vecMul v ((γ⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)) h` as an intermediate fact. Simplify using `only [lastRow, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one, Matrix.zero_vecMul] at this`. Conclude with `this`.
+-/
 theorem lastRow_ne_zero {k : ℕ} (hk : 0 < k) (γ : GL (Fin k) K) : lastRow γ ≠ 0 := by
   intro h
   have hlv : lastVec (K := K) k ≠ 0 := fun h0 => by
@@ -117,6 +150,13 @@ theorem lastRow_ne_zero {k : ℕ} (hk : 0 < k) (γ : GL (Fin k) K) : lastRow γ 
     Matrix.vecMul_one, Matrix.zero_vecMul] at this
   exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h show Matrix.vecMul (lastVec k) ((γ' * γ⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) = lastVec k`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul]`. Express the relevant statement in the definitionally equal form `Matrix.vecMul (lastRow γ') _ = _`. Rewrite using `[← h, lastRow, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`.
+
+Introduce `h`. Establish `h' : Matrix.vecMul (lastVec k) ((γ' * γ⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) = lastVec k` using `h`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lastRow, Units.val_mul, ← Matrix.vecMul_vecMul]`.
+
+Use `_ = lastRow γ := by rw [h']; rfl`.
+-/
 theorem lastRow_eq_iff {k : ℕ} (γ γ' : GL (Fin k) K) :
     lastRow γ = lastRow γ' ↔ γ' * γ⁻¹ ∈ mirabolic K k := by
   constructor
@@ -148,6 +188,11 @@ def cosetEquiv {k : ℕ} (hk : 0 < k) :
     exact vecMul_rowCompletion (lastRow_ne_zero hk γ)
   right_inv ξ := Subtype.ext (vecMul_rowCompletion ξ.2)
 
+/- English proof (translation)
+Rewrite using `[← (cosetEquiv (K := K) hk0).symm.hasSum_iff]`. Use `(hasSum_partialCoeff_cusp hϕ hk0 hk g).congr_fun fun ξ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `partialCoeff_blockGL_eq_of_vecMul_eq hϕ.1.isLeftInvariant hk.le ?_ g` and prove the remaining obligations. Establish `hc : ((cosetEquiv (K` using `K) hk0).symm ξ) = Quotient.mk _ (rowCompletion ξ.1) := rfl`.
+
+Establish `hrel` using `Quotient.mk_out (s := QuotientGroup.rightRel (mirabolic K k)) (rowCompletion ξ.1)`. Rewrite using `[hc]`. Use `(lastRow_eq_iff _ _).2 (QuotientGroup.rightRel_apply.1 hrel)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem hasSum_partialCoeff_cusp_cosets {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : ϕ ∈ cuspForms K n)
     {k : ℕ} (hk0 : 0 < k) (hk : k < n) (g : AdelicGLn.AdelicGL K n) :
     HasSum (fun c : Quotient (QuotientGroup.rightRel (mirabolic K k)) =>
@@ -171,6 +216,13 @@ def nestedWhittaker (ϕ : AdelicGLn.AdelicGL K n → ℂ) : ℕ → AdelicGLn.Ad
         nestedWhittaker ϕ (k + 1) (AdelicGLn.diagonal K n (blockGL h.le c.out) * g)
     else 0
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro h`. Conclude with `absurd h (lt_irrefl 0)`. Consider the case `succ k ih`.
+
+Introduce `_ hkn`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Use function extensionality and compare the values at `g`. Conclude with `(whittaker_eq_partialCoeff hϕ.1.continuous hkn g).symm`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`.
+
+Use function extensionality and compare the values at `g`. Establish `hlt : m + 1 < n` using `by omega`. Rewrite using `[nestedWhittaker]`. Simplify using `only`. Rewrite using `[dif_pos hlt, ← (hasSum_partialCoeff_cusp_cosets hϕ hk0 hlt g).tsum_eq, ih hk0 hlt.le]`.
+-/
 theorem partialCoeff_eq_nestedWhittaker {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : ϕ ∈ cuspForms K n) :
     ∀ k, 0 < k → k ≤ n → partialCoeff ϕ k = nestedWhittaker ϕ k := by
   intro k
@@ -188,6 +240,9 @@ theorem partialCoeff_eq_nestedWhittaker {ϕ : AdelicGLn.AdelicGL K n → ℂ} (h
       dsimp only
       rw [dif_pos hlt, ← (hasSum_partialCoeff_cusp_cosets hϕ hk0 hlt g).tsum_eq, ih hk0 hlt.le]
 
+/- English proof (translation)
+Rewrite using `[← partialCoeff_eq_nestedWhittaker hϕ n hn le_rfl, partialCoeff_self]`.
+-/
 theorem eq_nestedWhittaker {ϕ : AdelicGLn.AdelicGL K n → ℂ} (hϕ : ϕ ∈ cuspForms K n) (hn : 0 < n)
     (g : AdelicGLn.AdelicGL K n) : ϕ g = nestedWhittaker ϕ n g := by
   rw [← partialCoeff_eq_nestedWhittaker hϕ n hn le_rfl, partialCoeff_self]

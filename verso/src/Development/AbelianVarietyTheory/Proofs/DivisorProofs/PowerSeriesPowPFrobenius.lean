@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.UPel.HT.PrimTors
 
+/- English proof (translation)
+Introduce `p _ D R _ b N w0 _ hp S _ s o r`. Establish `hw0 : w0 ≠ ⊥`. Introduce `h`. Rewrite `hp` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hp`.
+
+Establish `hwr : w0 ^ r ≠ ⊥`. Rewrite `*` using `[Ne, ← Ideal.zero_eq_bot]`. Conclude with `pow_ne_zero r hw0`. Take `⟨K, _, i, -, _, hfin, hflat, hK⟩` from `GlobalTheory.IwLevel.HTTorsionFF.exists_torsion_finite_flat p D R b N (w0 ^ r) S s o hwr`. Establish `key : ∀ (T : Over S) (x : T ⟶ o.A), GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) ((w0 ^ r).map (algebraMap (𝓞 D.F) D.O)) x ↔ ∀ c ∈ w0 ^ r, x ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`.
+
+Introduce `T x`. Unfold `Ideal.map`. Rewrite using `[GlobalTheory.IwLevel.killedBy_span]`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`.
+
+Conclude with `h _ ⟨c, hc, rfl⟩`. Introduce and unpack `h _ ⟨c, hc, rfl⟩`. Conclude with `h c hc`. Use `⟨r, le_rfl, K, i, hfin, hflat, (key _ i).1 ((hK _ i).1 ⟨𝟙 _, Category.id_comp _⟩), fun T x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hK T x).2 ((key T x).2 hx)`.
+
+Conclude with `⟨y, hy, fun y' hy' => (cancel_mono i).1 (hy'.trans hy.symm)⟩`.
+-/
 theorem exists_finite_flat_wPow : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w0 : Ideal (𝓞 D.F)), w0.IsMaximal → (p : 𝓞 D.F) ∈ w0 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (r : ℕ), ∃ r' : ℕ, r ≤ r' ∧ ∃ (H : Over S) (i : H ⟶ o.A), IsFinite H.hom ∧ Flat H.hom ∧ (∀ c ∈ w0 ^ r', i ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) ∧ ∀ (T : Over S) (x : T ⟶ o.A), (∀ c ∈ w0 ^ r', x ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃! y : T ⟶ H, y ≫ i = x := by
   intro p _ D R _ b N w0 _ hp S _ s o r
   have hw0 : w0 ≠ ⊥ := by

@@ -3,6 +3,11 @@ import GroundTheory.GlobalFields.ExistenceTheorem.PowerIndex
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Establish `h1` using `Subgroup.card_mul_index f.range`. Establish `h2` using `Subgroup.card_mul_index f.ker`. Establish `hk : f.ker.index = Nat.card f.range` using `by show Nat.card (T ⧸ f.ker) = _`. Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivRange f).toEquiv`. Rewrite `h2` using `[hk]`.
+
+Establish `hpos : 0 < Nat.card f.range` using `Nat.card_pos`. Establish `h3 : Nat.card f.range * f.range.index = Nat.card f.range * Nat.card f.ker`. Rewrite using `[h1, ← h2, mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h3`.
+-/
 private theorem index_range_eq_card_ker {T : Type*} [CommGroup T] [Finite T] (f : T →* T) :
     f.range.index = Nat.card f.ker := by
   have h1 := Subgroup.card_mul_index f.range
@@ -16,6 +21,9 @@ private theorem index_range_eq_card_ker {T : Type*} [CommGroup T] [Finite T] (f 
     rw [h1, ← h2, mul_comm]
   exact Nat.eq_of_mul_eq_mul_left hpos h3
 
+/- English proof (translation)
+Introduce `v hv`. Establish `h` using `hb v hv`. Rewrite `h` using `[Units.val_pow_eq_pow_val, map_pow]`. Simplify `h` using `[hp]`.
+-/
 private theorem mem_unit_of_pow_mem {K : Type} [Field K] [NumberField K] {S : Set (HeightOneSpectrum (𝓞 K))} {p : ℕ}
     (hp : p ≠ 0) {b : Kˣ} (hb : b ^ p ∈ S.unit K) : b ∈ S.unit K := by
   intro v hv
@@ -23,6 +31,13 @@ private theorem mem_unit_of_pow_mem {K : Type} [Field K] [NumberField K] {S : Se
   rw [Units.val_pow_eq_pow_val, map_pow] at h
   simpa [hp] using h
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, powK.eq_1, MonoidHom.mem_range, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Rewrite `hb` using `[powMonoidHom_apply]`.
+
+Establish `hbS : b ∈ S.unit K` using `mem_unit_of_pow_mem hp (by rw [hb]; exact x.2)`. Use `⟨⟨b, hbS⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hb`. Introduce and unpack `⟨c, hc⟩`.
+
+Use `⟨c.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Simplify using the standard rewrite rules.
+-/
 private theorem powK_subgroupOf {K : Type} [Field K] [NumberField K] (S : Set (HeightOneSpectrum (𝓞 K))) {p : ℕ}
     (hp : p ≠ 0) : (powK K p).subgroupOf (S.unit K) = (powMonoidHom p : S.unit K →* S.unit K).range := by
   ext x
@@ -39,6 +54,13 @@ private theorem powK_subgroupOf {K : Type} [Field K] [NumberField K] (S : Set (H
     rw [← hc]
     simp
 
+/- English proof (translation)
+Establish `hfin : ∀ ζ : rootsOfUnity n K, IsOfFinOrder (ζ : Kˣ)` using `fun ζ => isOfFinOrder_iff_pow_eq_one.mpr ⟨n, NeZero.pos n, (mem_rootsOfUnity _ _).mp ζ.2⟩`. Establish `hS : ∀ ζ : rootsOfUnity n K, (ζ : Kˣ) ∈ S.unit K` using `fun ζ v _ => GroundTheory.Global.SUnit.valuation_eq_one_of_isOfFinOrder (hfin ζ) v`. Use `Nat.card_congr { toFun := fun t => ⟨t.1.1.1, (mem_rootsOfUnity _ _).mpr (by` and prove the remaining obligations. Establish `h` using `congrArg (fun y : CommGroup.torsion (S.unit K) => ((y : S.unit K) : Kˣ)) (MonoidHom.mem_ker.mp t.2)`. Simplify using `using h)⟩`.
+
+Use `invFun := fun ζ => ⟨⟨⟨ζ.1, hS ζ⟩, (CommGroup.mem_torsion _).mpr (isOfFinOrder_iff_pow_eq_one.mpr ⟨n, NeZero.pos n, Subtype.ext (by`. Simplify using `using (mem_rootsOfUnity _ _).mp ζ.2)⟩)⟩,`. Use the proof step `MonoidHom.mem_ker.mpr (Subtype.ext (Subtype.ext (by`. Simplify using `using (mem_rootsOfUnity _ _).mp ζ.2)))⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl }`.
+-/
 private theorem card_ker_eq {K : Type} [Field K] [NumberField K] (S : Set (HeightOneSpectrum (𝓞 K))) (n : ℕ) [NeZero n] :
     Nat.card (powMonoidHom n : CommGroup.torsion (S.unit K) →* CommGroup.torsion (S.unit K)).ker =
       Nat.card (rootsOfUnity n K) := by
@@ -59,6 +81,9 @@ private theorem card_ker_eq {K : Type} [Field K] [NumberField K] (S : Set (Heigh
       left_inv := fun _ => rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Introduce `K _ _ S n _ hS`. Use `haveI : Finite S := hS`. Rewrite using `[← Subgroup.index_eq_card, powK_subgroupOf S (NeZero.ne n), GroundTheory.Global.index_range_powMonoidHom_eq_pow_mul (NeZero.ne n), GroundTheory.Global.SUnit.finrank_quotient_torsion, index_range_eq_card_ker, card_ker_eq, Units.rank, InfinitePlace.card_eq_nrRealPlaces_add_nrComple …`.
+-/
 theorem UpperTheory.V.Kum.cardSUnit :
     ∀ (K : Type) [Field K] [NumberField K] (S : Set (HeightOneSpectrum (𝓞 K))) (n : ℕ) [NeZero n], S.Finite → Nat.card (S.unit K ⧸ (powK K n).subgroupOf (S.unit K)) = n ^ (InfinitePlace.nrRealPlaces K + InfinitePlace.nrComplexPlaces K - 1 + Nat.card S) * Nat.card (rootsOfUnity n K) := by
   intro K _ _ S n _ hS

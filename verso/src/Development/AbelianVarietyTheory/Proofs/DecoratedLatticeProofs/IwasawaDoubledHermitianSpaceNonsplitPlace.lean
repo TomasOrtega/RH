@@ -21,9 +21,21 @@ section Ring
 variable {O : Type} [CommRing O] {s : O →+* O}
 
 omit [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `hs _`.
+-/
 theorem cT_cT (hs : ∀ x, s (s x) = x) (M : Matrix n ι O) : cT s (cT s M) = M := by
   ext i j; exact hs _
 
+/- English proof (translation)
+Take `⟨Z, hZ⟩ : ∃ Z : Matrix ι n O, cT s Y * Q * Z = 1` from `⟨(hu.unit⁻¹).1 * cT s U, by`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Q, hu.mul_val_inv, Matrix.one_mul, ← cT_mul, hU, cT_one]⟩`. Establish `key : ∀ X X' : Matrix ι n O, cT s (cT s X * Q * X') = cT s X' * Q * X` using `fun X X' => by`. Rewrite using `[cT_mul, cT_mul, cT_cT hs, hQ, Matrix.mul_assoc]`. Establish `hZ' : cT s Z * Q * Y = 1` using `by rw [← key, hZ, cT_one]`.
+
+Use `set H := cT s Z * Q * Z with hH`. Establish `h1 : cT s Y * Q * (Z - τ • (Y * H)) = 1`. Rewrite using `[Matrix.mul_sub, hZ, Matrix.mul_smul, ← Matrix.mul_assoc, hY, Matrix.zero_mul, smul_zero, sub_zero]`. Use `⟨Z - τ • (Y * H), h1, by rw [← key, h1, cT_one], ?_⟩` and prove the remaining obligations. Establish `e : cT s (Z - τ • (Y * H)) = cT s Z - s τ • (H * cT s Y)`.
+
+Establish `: H * cT s Y = cT s (Y * H)` using `by rw [cT_mul, hH, key]`. Rewrite using `[this]`. Generalize the expression as in `Y * H = X`. Use extensionality with `i j`. Simplify using `[cT]`.
+
+Rewrite using `[e, Matrix.sub_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_assoc H, Matrix.mul_assoc H, h1, Matrix.mul_sub, ← hH, Matrix.mul_smul, ← Matrix.mul_assoc, hZ', Matrix.one_mul, Matrix.mul_one, sub_sub, ← add_smul, hτ, one_smul, sub_self]`.
+-/
 theorem exists_dual_isotropic (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s τ = 1) {Q : Matrix ι ι O} (hQ : cT s Q = Q)
     (hu : IsUnit Q) {Y : Matrix ι n O} {U : Matrix n ι O} (hU : U * Y = 1) (hY : cT s Y * Q * Y = 0) :
     ∃ Z : Matrix ι n O, cT s Y * Q * Z = 1 ∧ cT s Z * Q * Y = 1 ∧ cT s Z * Q * Z = 0 := by
@@ -47,6 +59,11 @@ theorem exists_dual_isotropic (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s �
     Matrix.mul_sub, ← hH, Matrix.mul_smul, ← Matrix.mul_assoc, hZ', Matrix.one_mul, Matrix.mul_one, sub_sub, ← add_smul,
     hτ, one_smul, sub_self]
 
+/- English proof (translation)
+Take `⟨Z, h1, h2, h3⟩` from `exists_dual_isotropic hs hτ hQ hu hU hY`. Establish `hT : cT s (fromCols Y Z) * Q * fromCols Y Z = fromBlocks 0 1 1 0`. Establish `: cT s (fromCols Y Z) = fromRows (cT s Y) (cT s Z)`. Apply the tactic sequence `ext (i | i) j <;> rfl`. Rewrite using `[this, fromRows_mul, fromRows_mul_fromCols, hY, h1, h2, h3]`.
+
+Establish `hS : (fromBlocks 0 1 1 0 : Matrix (n ⊕ n) (n ⊕ n) O) * (cT s (fromCols Y Z) * Q) * fromCols Y Z = (1 : Matrix (n ⊕ n) (n ⊕ n) O)`. Rewrite using `[Matrix.mul_assoc, hT, fromBlocks_multiply]`. Simplify using the standard rewrite rules. Conclude with `⟨_, _, hS, (mul_eq_one_comm_of_equiv e).1 hS, hT, by simp [fromCols_mul_fromRows]⟩`.
+-/
 theorem exists_hyperbolic (e : n ⊕ n ≃ ι) (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s τ = 1) {Q : Matrix ι ι O}
     (hQ : cT s Q = Q) (hu : IsUnit Q) {Y : Matrix ι n O} {U : Matrix n ι O} (hU : U * Y = 1)
     (hY : cT s Y * Q * Y = 0) :
@@ -63,6 +80,13 @@ theorem exists_hyperbolic (e : n ⊕ n ≃ ι) (hs : ∀ x, s (s x) = x) {τ : O
     simp
   exact ⟨_, _, hS, (mul_eq_one_comm_of_equiv e).1 hS, hT, by simp [fromCols_mul_fromRows]⟩
 
+/- English proof (translation)
+Take `⟨T, S, h1, h2, h3, h4⟩` from `exists_hyperbolic e hs hτ hQ hu hU hY`. Take `⟨T', S', h1', h2', h3', h4'⟩` from `exists_hyperbolic e hs hτ hQ hu hU' hY'`. Use `⟨⟨T * S', T' * S, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc S', h1', Matrix.one_mul, h2]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc S, h1, Matrix.one_mul, h2']`.
+
+Express the relevant statement in the definitionally equal form `cT s (T * S') * Q * (T * S') = Q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT s (T' * S') * Q * (T' * S') := by`.
+
+Rewrite using `[h3, ← h3', cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Q := by rw [h2', cT_one, Matrix.one_mul, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `T * S' * Y' = Y`. Rewrite using `[← h4', Matrix.mul_assoc, ← Matrix.mul_assoc S', h1', Matrix.one_mul, h4]`.
+-/
 theorem exists_isometry (e : n ⊕ n ≃ ι) (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s τ = 1) {Q : Matrix ι ι O}
     (hQ : cT s Q = Q) (hu : IsUnit Q) {Y Y' : Matrix ι n O} {U U' : Matrix n ι O} (hU : U * Y = 1)
     (hY : cT s Y * Q * Y = 0) (hU' : U' * Y' = 1) (hY' : cT s Y' * Q * Y' = 0) :
@@ -96,36 +120,57 @@ def fCol (e : n ⊕ n ≃ ι) : Matrix ι n A := (fromRows 1 0 : Matrix (n ⊕ n
 variable (e : n ⊕ n ≃ ι)
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [dCol, mulVec, dotProduct, one_apply]`.
+-/
 theorem dCol_mulVec (x : n → A) : dCol A e *ᵥ x = pairVec e x x := by
   funext j
   obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [dCol, mulVec, dotProduct, one_apply]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [fCol, mulVec, dotProduct, one_apply]`.
+-/
 theorem fCol_mulVec (x : n → A) : fCol A e *ᵥ x = pairVec e x 0 := by
   funext j
   obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [fCol, mulVec, dotProduct, one_apply]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[fCol, mul_apply, ← e.sum_comp, one_apply, toRows₁]`.
+-/
 theorem transpose_fCol_mul (M : Matrix (n ⊕ n) n A) : (fCol A e)ᵀ * M.submatrix e.symm id = M.toRows₁ := by
   ext i j
   simp [fCol, mul_apply, ← e.sum_comp, one_apply, toRows₁]
 
 omit [Fintype n] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `j k`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [dCol, one_apply, apply_ite f]`.
+-/
 theorem dCol_map {B : Type} [CommRing B] (f : A →+* B) : (dCol A e).map f = dCol B e := by
   ext j k
   obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [dCol, one_apply, apply_ite f]
 
 omit [Fintype n] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `j k`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [fCol, one_apply, apply_ite f]`.
+-/
 theorem fCol_map {B : Type} [CommRing B] (f : A →+* B) : (fCol A e).map f = fCol B e := by
   ext j k
   obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp [fCol, one_apply, apply_ite f]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[cT, dCol_map]`. Use extensionality with `i j`. Simplify using `[dCol, dblGram, blkMat, mul_apply, ← e.sum_comp, one_apply]`.
+-/
 theorem dCol_isotropic (σ : A →+* A) (J : Matrix n n A) : cT σ (dCol A e) * dblGram e J * dCol A e = 0 := by
   rw [cT, dCol_map]
   ext i j
   simp [dCol, dblGram, blkMat, mul_apply, ← e.sum_comp, one_apply]
 
+/- English proof (translation)
+The claim follows from `keepsDiag_of_mulVec fun w hw => by obtain ⟨x, rfl⟩ := (mem_diagSub e).1 hw rw [← dCol_mulVec, mulVec_mulVec, h, ← mulVec_mulVec, dCol_mulVec] exact (pairVec_mem_diagSub e).2 rfl`.
+-/
 theorem keepsDiag_of_dCol {M : Matrix ι ι A} {c : Matrix n n A} (h : M * dCol A e = dCol A e * c) : KeepsDiag e M :=
   keepsDiag_of_mulVec fun w hw => by
     obtain ⟨x, rfl⟩ := (mem_diagSub e).1 hw
@@ -135,6 +180,17 @@ theorem keepsDiag_of_dCol {M : Matrix ι ι A} {c : Matrix n n A} (h : M * dCol 
 def HasFrames (O : Subring A) : Prop :=
   ∀ g : GL ι A, ∃ (k : GL ι O) (c : GL n A), g.1 * fCol A e = k.1.map O.subtype * fCol A e * c.1
 
+/- English proof (translation)
+Establish `hc : ∀ {a b : Type} (M : Matrix a b O), cT σ (M.map O.subtype) = (cT s M).map O.subtype` using `fun M => by`. Use extensionality with `i j`. Conclude with `(hσ _).symm`. Establish `hd : dblGram e (J.map O.subtype) = (dblGram e J).map O.subtype`. Rewrite using `[dblGram, dblGram, blkMat_map e _ (map_zero _), Matrix.map_neg _ (map_neg _)]`.
+
+Set `W : GL ι A` to `⟨(fromBlocks 1 0 1 1 : Matrix (n ⊕ n) (n ⊕ n) A).submatrix e.symm e.symm, (fromBlocks 1 0 (-1) 1 : Matrix (n ⊕ n) (n ⊕ n) A).submatrix e.symm e.symm, by simp [submatrix_mul_equiv, fromBlocks_multiply], by simp [submatrix_mul_equiv, fromBlocks_multiply]⟩`. Establish `hW : W.1 * fCol A e = dCol A e`. Simplify using `[W, fCol, dCol, submatrix_mul_equiv, fromBlocks_mul_fromRows]`. Take `⟨k, c, hk⟩` from `hO (h * W)`. Rewrite `hk` using `[Units.val_mul, Matrix.mul_assoc, hW, ← fCol_map e O.subtype, ← Matrix.map_mul]`.
+
+Establish `h0 : cT s (k.1 * fCol O e) * dblGram e J * (k.1 * fCol O e) = 0`. Establish `h1 : (k.1 * fCol O e).map O.subtype = h.1 * (dCol A e * (c⁻¹).1)`. Rewrite using `[← Matrix.mul_assoc, hk, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.map _ O.subtype = Matrix.map _ O.subtype`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, ← hc, ← hd, h1, Matrix.map_zero _ (map_zero _)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hh, dCol_isotropic, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Apply the tactic sequence `obtain ⟨κ, h1, h2⟩ := exists_isometry e hs hτ (Q := dblGram e J) (by rw [dblGram, cT_blkMat, hJ, show cT s (-J) = -cT s J from by ext i j; simp [cT], hJ]) (by rw [isUnit_iff_isUnit_det, dblGram, det_blkMat, ← det_mul, ← isUnit_iff_isUnit_det]; exact hu.mul hu.neg) (U := (fCol O e …`. Conclude with `(transpose_fCol_mul e _).trans (by simp)) h0`. Use the proof step `((transpose_fCol_mul e _).trans (by simp)) (dCol_isotropic e s J)`. Conclude with `⟨κ, h1, c.1, by rw [hk, ← h2, Matrix.map_mul, dCol_map]⟩`.
+-/
 theorem exists_std (O : Subring A) (hO : HasFrames e O) {σ : A →+* A} {s : O →+* O} (hσ : ∀ x : O, (s x : A) = σ x)
     (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s τ = 1) {J : Matrix n n O} (hJ : cT s J = J) (hu : IsUnit J)
     {h : GL ι A} (hh : h ∈ UJ σ (dblGram e (J.map O.subtype))) :
@@ -169,6 +225,9 @@ theorem exists_std (O : Subring A) (hO : HasFrames e O) {σ : A →+* A} {s : O 
   exact ⟨κ, h1, c.1, by rw [hk, ← h2, Matrix.map_mul, dCol_map]⟩
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `key : ∀ (M : Matrix ι ι O) (y : ι → A), (∀ i, y i ∈ O) → ∀ i, (M.map O.subtype *ᵥ y) i ∈ O` using `fun M y hy i => sum_mem fun j _ => mul_mem (M i j).2 (hy j)`. Use `⟨key _ y, fun h => ?_⟩` and prove the remaining obligations. Use `key (k⁻¹).1 _ h` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mulVec_mem_iff (O : Subring A) (k : GL ι O) (y : ι → A) :
     (∀ i, y i ∈ O) ↔ ∀ i, (k.1.map O.subtype *ᵥ y) i ∈ O := by
   have key : ∀ (M : Matrix ι ι O) (y : ι → A), (∀ i, y i ∈ O) → ∀ i, (M.map O.subtype *ᵥ y) i ∈ O := fun M y hy i =>
@@ -178,6 +237,11 @@ theorem mulVec_mem_iff (O : Subring A) (k : GL ι O) (y : ι → A) :
   rwa [mulVec_mulVec, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec] at this
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Establish `e : ∀ x y, hform σ M x y = (σ ∘ x) ⬝ᵥ (M *ᵥ y)` using `fun x y => by`. Simplify using `[hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `e' : σ ∘ (a *ᵥ x) = (σ ∘ x) ᵥ* cT σ a`. Rewrite using `[cT, Matrix.vecMul_transpose]`. Conclude with `funext fun i => RingHom.map_mulVec σ a x i`.
+
+Rewrite using `[e, e', ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem hform_mulVec (σ : A →+* A) (M a : Matrix n n A) (x y : n → A) :
     hform σ M (a *ᵥ x) (a *ᵥ y) = (σ ∘ x) ⬝ᵥ ((cT σ a * M * a) *ᵥ y) := by
   have e : ∀ x y, hform σ M x y = (σ ∘ x) ⬝ᵥ (M *ᵥ y) := fun x y => by
@@ -187,6 +251,19 @@ theorem hform_mulVec (σ : A →+* A) (M a : Matrix n n A) (x y : n → A) :
     exact funext fun i => RingHom.map_mulVec σ a x i
   rw [e, e', ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use `set B := cT σ a.1 * J * a.1 with hB`. Establish `hu' : IsUnit B`. Use `(IsUnit.mul (IsUnit.of_mul_eq_one (cT σ (a⁻¹).1) ?_) hu).mul a.isUnit` and prove the remaining obligations. Rewrite using `[← cT_mul, Units.inv_mul, cT_one]`. Establish `hs : ∀ j i : n, (Pi.single j 1 : n → A) i ∈ O` using `fun j i => by`.
+
+Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`. Establish `h1 : ∀ i j, B i j ∈ O` using `fun i j => by`.
+
+Use `(hΛ _).1 ((ha _).1 (hs j)) _ ((ha _).1 (hs i))` as an intermediate fact. Rewrite using `[hform_mulVec, ← hB, show σ ∘ Pi.single i 1 = Pi.single i 1 from funext fun k => by`. Distinguish the cases in `e : k = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[e]] at this`. Simplify using `using this`. Establish `h2 : ∀ i j, (hu'.unit⁻¹).1 i j ∈ O` using `fun i j => by`. Use `(ha ((hu'.unit⁻¹).1 *ᵥ Pi.single j 1)).2 ((hΛ _).2 fun x hx => by` as an intermediate fact. Establish `e : a.1 *ᵥ ((a⁻¹).1 *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+
+Establish `h1` using `(ha _).2 (e.symm ▸ hx) j`. Rewrite using `[← e, hform_mulVec, ← hB, Matrix.mulVec_mulVec, hu'.mul_val_inv, Matrix.one_mulVec, dotProduct_single, mul_one]`. Conclude with `hσ _ h1) i`. Simplify using `using this`. Use `⟨Matrix.of fun i j => ⟨_, h1 i j⟩, IsUnit.of_mul_eq_one (Matrix.of fun i j => ⟨_, h2 i j⟩) ?_, rfl⟩` and prove the remaining obligations.
+
+Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hu'.mul_val_inv`.
+-/
 theorem exists_gram (O : Subring A) {σ : A →+* A} (hσ : ∀ x ∈ O, σ x ∈ O) {J : Matrix n n A} (hu : IsUnit J)
     {Λ : Submodule O (n → A)} (hΛ : ∀ y, y ∈ Λ ↔ ∀ x ∈ Λ, hform σ J x y ∈ O) {a : GL n A}
     (ha : ∀ y, (∀ i, y i ∈ O) ↔ a.1 *ᵥ y ∈ Λ) :
@@ -219,6 +296,23 @@ theorem exists_gram (O : Subring A) {σ : A →+* A} (hσ : ∀ x ∈ O, σ x �
   rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
   exact hu'.mul_val_inv
 
+/- English proof (translation)
+Take `⟨B, hB, eB⟩` from `exists_gram O hσ hu hΛ ha`. Set `s : O →+* O` to `σ.restrict O O hσ`. Establish `hc : ∀ {a b : Type} (M : Matrix a b O), cT σ (M.map O.subtype) = (cT s M).map O.subtype` using `fun M => rfl`. Establish `hd : dblGram e (B.map O.subtype) = (dblGram e B).map O.subtype`. Rewrite using `[dblGram, dblGram, blkMat_map e _ (map_zero _), Matrix.map_neg _ (map_neg _)]`.
+
+Use `set b := blkGL e (a, a) with hb`. Establish `hQ : dblGram e (B.map O.subtype) = cT σ b.1 * dblGram e J * b.1`. Rewrite using `[eB, hb, val_blkGL, cT_blkMat, dblGram, dblGram, blkMat_mul, blkMat_mul, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hconj : ∀ x : GL ι A, x ∈ UJ σ (dblGram e (B.map O.subtype)) ↔ b * x * b⁻¹ ∈ UJ σ (dblGram e J)` using `fun x => by`. Establish `hub : IsUnit (cT σ b.1)` using `IsUnit.of_mul_eq_one (cT σ (b⁻¹).1) (by rw [← cT_mul, Units.inv_mul, cT_one])`.
+
+Express the relevant statement in the definitionally equal form `cT σ x.1 * _ * x.1 = _ ↔ cT σ (b * x * b⁻¹).1 * _ * (b * x * b⁻¹).1 = _`. Rewrite using `[hQ, ← hub.mul_right_inj (b := cT σ (b * x * b⁻¹).1 * _ * _), ← b.isUnit.mul_left_inj (b := cT σ b.1 * (_ * _))]`. Use `Eq.congr ?_ rfl` and prove the remaining obligations. Establish `: (b * x * b⁻¹).1 * b.1 = b.1 * x.1` using `by rw [← Units.val_mul, inv_mul_cancel_right, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨k, hk, c, hkc⟩` from `exists_std e O hO (σ := σ) (s := s) (fun _ => rfl) (fun x => Subtype.ext (hs x)) (τ := ⟨τ, hτO⟩) (Subtype.ext hτ) (J := B) (by`. Apply `Matrix.map_injective O.subtype_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.map _ O.subtype = Matrix.map _ O.subtype`. Rewrite using `[← hc, eB, cT_mul, cT_mul, cT_cT hs, hJ, Matrix.mul_assoc]) hB (h := b⁻¹ * g⁻¹ * b)`. Use the proof step `((hconj _).2 (by simpa [mul_assoc] using inv_mem hg))`.
+
+Establish `hL : ∀ w : ι → A, (∀ i, w i ∈ O) ↔ b.1 *ᵥ w ∈ sumLat e Λ Λ` using `fun w => by`. Rewrite using `[← pairVec_eta e w, hb, val_blkGL, blkMat_mulVec, pairVec_mem_sumLat, ← ha, ← ha, pairVec_eta]`. Conclude with `⟨fun h => ⟨fun i => h _, fun i => h _⟩, fun h j => by`. Take `⟨i | i, rfl⟩` from `e.surjective j`. Use `exacts [h.1 i, h.2 i]⟩`.
+
+Establish `hbd : ∀ x : GL n A, (blkGL e (x, x)).1 * dCol A e = dCol A e * x.1` using `fun x => Matrix.ext_of_mulVec_single fun j => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dCol_mulVec, dCol_mulVec, val_blkGL, blkMat_mulVec]`. Use `⟨b * bc O.subtype k * b⁻¹, (hconj _).1 ?_, fun w => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cT σ (k.1.map O.subtype) * _ * k.1.map O.subtype = _`. Rewrite using `[hc, hd, ← Matrix.map_mul, ← Matrix.map_mul, hk]`.
+
+Take `⟨w, rfl⟩ : ∃ w', w = b.1 *ᵥ w'` from `⟨(b⁻¹).1 *ᵥ w, by rw [mulVec_mulVec, Units.mul_inv, one_mulVec]⟩`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, ← mulVec_mulVec, ← hL, ← hL]`. Conclude with `mulVec_mem_iff O k w`. Establish `hbP : b ∈ stabGL (diagSub A e)` using `mem_stabGL_diagSub.2 (keepsDiag_of_dCol e (hbd a))`. Establish `: (bc O.subtype k)⁻¹ * (b⁻¹ * g⁻¹ * b) ∈ stabGL (diagSub A e)`.
+
+Use `mem_stabGL_diagSub.2 (keepsDiag_of_dCol e (c := c) ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_assoc, hkc, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Rewrite using `[show k.1.map O.subtype = (bc O.subtype k).1 from rfl, Units.inv_mul, Matrix.one_mul]`. Use `mul_mem (mul_mem hbP (inv_mem this)) (inv_mem hbP) using 1` and compare the differences between its conclusion and the goal. Use `group`.
+-/
 theorem exists_stab (O : Subring A) (hO : HasFrames e O) {σ : A →+* A} (hσ : ∀ x ∈ O, σ x ∈ O)
     (hs : ∀ x, σ (σ x) = x) {τ : A} (hτO : τ ∈ O) (hτ : τ + σ τ = 1) {J : Matrix n n A} (hJ : cT σ J = J)
     (hu : IsUnit J) {Λ : Submodule O (n → A)} (hΛ : ∀ y, y ∈ Λ ↔ ∀ x ∈ Λ, hform σ J x y ∈ O) {a : GL n A}
@@ -268,6 +362,9 @@ theorem exists_stab (O : Subring A) (hO : HasFrames e O) {σ : A →+* A} (hσ :
     convert mul_mem (mul_mem hbP (inv_mem this)) (inv_mem hbP) using 1
     group
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨k, b, hb, hg⟩ := GlobalTheory.ValIwasawa.iwasawa V K (m + m) (bc φ.toRingHom g) let ψ : V →+* O := (φ.symm.toRingHom.comp V.subtype).codRestrict O fun x => (hφ _).2 (by simp) let b' := bc φ.symm.toRingHom b have h0 : (b'.1.submatrix finSumFinEquiv finSumFinEquiv).toBlo …`.
+-/
 theorem hasFrames_of_equiv {m : ℕ} (O : Subring A) {K : Type} [Field K] (V : ValuationSubring K) (φ : A ≃+* K)
     (hφ : ∀ y, y ∈ O ↔ φ y ∈ V) : HasFrames (finSumFinEquiv : Fin m ⊕ Fin m ≃ _) O := fun g => by
   obtain ⟨k, b, hb, hg⟩ := GlobalTheory.ValIwasawa.iwasawa V K (m + m) (bc φ.toRingHom g)
@@ -303,6 +400,9 @@ section Place
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.LFun
 
+/- English proof (translation)
+Introduce `g` and use `by have h := (InertChart.under_eq_iff hw w).2 rfl obtain ⟨a, ha⟩ := Frames.exists_isLatticeFrame (F := F) L have eQ : JR (F := F) (Fv F v) Q = dblGram finSumFinEquiv (JR (Fv F v) J) := hQ ▸ JR_dblGram _ J obtain ⟨k, h1, h2, h3⟩ := exists_stab finSumFinEquiv (intLoc F E v) (hasFra …`.
+-/
 theorem hasIwasawa_of_inert {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {c : 𝓞 E} (hc : (c : E) + σ c = 1) {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {Q : Matrix (Fin (n + n)) (Fin (n + n)) E}
@@ -335,6 +435,13 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.Cusp GlobalTheory.AdelicU Gl
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (FinPl Lat)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D A L hL v hv`. Use `haveI := hL.1`. Use `v.isMaximal` as an intermediate fact. Take `⟨P, hP, hPv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+
+Establish `hw : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPv.over.symm`. Establish `hi` using `GlobalTheory.LPositivity.split_or_inert D w`. Rewrite `hi` using `[hw]`. Take `⟨c, hc⟩` from `D.host.exists_trace_one`. Rewrite `hc` using `[← show D.sp.cm.sig (c : D.host.E) = D.host.conj c from D.host.φ₀.injective (((isCMExt_host D).2.2.2 _ _).trans (Formalism.HC.HostAx.conjE_apply _ _ _).symm)]`.
+
+Conclude with `hasIwasawa_of_inert (GlobalTheory.LFun.InertChart.conj_conj (isCMExt_host D)) (c := c) hc (GlobalTheory.Doubling.isHermND_gram A) (gram_hdbl A) (hi.resolve_left hv) ((SelfDual.forall_isSelfDualAt_iff (σ := D.sp.cm.sig) (GlobalTheory.Doubling.isHermND_gram A).2 hL.1).2 (fun y => h …`.
+-/
 theorem hasIwasawa_inert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ v : FinPl D,
     ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v →
       HasIwasawa D.sp.cm.sig (dblSp A).gram (KFin D.sp.cm.sig (dblSp A).gram L v) := by

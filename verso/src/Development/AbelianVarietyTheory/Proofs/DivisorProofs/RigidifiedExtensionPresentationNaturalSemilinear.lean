@@ -8,6 +8,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InvariantDifferenti
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemilinearPDivGroupHomEvalTwoVariableSeries
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `p k k' _ _ σ d e G G' c c' s μ φ ρ ρ' hμ hφ hρ hρ' t w ht`. Establish `hz : (fun n => c.ev₂ n t) ∈ G.cocycles` using `(GlobalTheory.T.isSymmetricFormalGroupCocycle_iff_mem_cocycles p k d G c μ hμ t).1 ht`. Establish `hu : (fun n => ∑ i, w i • dUnit k (c.x n i)) ∈ G.omegaSub` using `(GlobalTheory.T.invariantDifferentials_connectedPDivGroup_coordinates p k d G c).1 w`. Rewrite using `[hρ t w ⟨_, hz⟩ ⟨_, hu⟩ (fun _ => rfl) (fun _ => rfl), SemiHom.rig_mk]`. Establish `hev : ∀ n, c'.ev₂ n (pull2 φ (MvPowerSeries.map σ t)) = (s.app n).two (c.ev₂ n t)`.
+
+Introduce `n`. Conclude with `GlobalTheory.Katz.semiHom_ev₂_pull2 p k k' σ d e G G' c c' s φ hφ n t`. Use `hρ' _ _ _ _ (fun n => ?_) (fun n => ?_)` and prove the remaining obligations. Rewrite using `[SemiHom.cocycles_val, hev n]`. Rewrite using `[SemiHom.omega_val]`.
+
+Express the relevant statement in the definitionally equal form `(s.app n).cot (∑ i, w i • dUnit k (c.x n i)) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ, SemiBialgHom.cot_d]`. Establish `hd : ∀ i, dUnit k' (s.app n (c.x n i)) = ∑ l, lin (φ i) l • dUnit k' (c'.x n l)` using `fun i => by`. Rewrite using `[← hφ n i]`.
+
+Conclude with `(GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k' e (G'.A n) (c'.x n) (c'.nil n) (c'.aug n) (φ i)).2`. Simplify using `only [hd, Finset.smul_sum, smul_smul, pullLin, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem GlobalTheory.Katz.rig_pull_natural_semi : ∀ (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k') (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e) (s : SemiHom σ G' G) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (φ : Fin d → MvPowerSeries (Fin e) k') (ρ : MvPowerSeries (Fin d ⊕ Fin d) k × (Fin d → k) →ₗ[k] G.RigExt) (ρ' : MvPowerSeries (Fin e ⊕ Fin e) k' × (Fin e → k') →ₗ[k'] G'.RigExt), c.IsLawOf μ → (∀ n j, c'.ev n (φ j) = s.app n (c.x n j)) → (∀ t w (z : G.cocycles) (u : G.omega), (∀ n, z.1 n = c.ev₂ n t) → (∀ n, u.1 n = ∑ i, w i • dUnit k (c.x n i)) → ρ (t, w) = G.rigMk (z, u)) → (∀ t w (z : G'.cocycles) (u : G'.omega), (∀ n, z.1 n = c'.ev₂ n t) → (∀ n, u.1 n = ∑ i, w i • dUnit k' (c'.x n i)) → ρ' (t, w) = G'.rigMk (z, u)) → ∀ t w, IsCoc μ t → ρ' (pull2 φ (MvPowerSeries.map σ t), pullLin φ (fun i => σ (w i))) = s.rig (ρ (t, w)) := by
   intro p k k' _ _ σ d e G G' c c' s μ φ ρ ρ' hμ hφ hρ hρ' t w ht
   have hz : (fun n => c.ev₂ n t) ∈ G.cocycles := (GlobalTheory.T.isSymmetricFormalGroupCocycle_iff_mem_cocycles p k d G c μ hμ t).1 ht

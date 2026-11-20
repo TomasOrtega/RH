@@ -6,6 +6,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.WTop
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem mulVec_add_mul {R ι : Type} [CommRing R] [Fintype ι] (N : Matrix ι ι R) (a b : ι → R) (s : R) (i : ι) :
     N.mulVec (fun j => a j + s * b j) i = N.mulVec a i + s * N.mulVec b i := by
   simp only [Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib, Finset.mul_sum]
@@ -14,6 +17,11 @@ theorem mulVec_add_mul {R ι : Type} [CommRing R] [Fintype ι] (N : Matrix ι ι
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε ι _ N v0 hN h`. Use `choose c hc using h`. Take `⟨z, hz⟩` from `(GlobalTheory.T.ainf_frobenius_semilinear_equation_existsUnique p C v O hv ε hε ι N hN).1 c`. Use `⟨fun i => v0 i + Sandwich.mu ε * z i, fun i => ⟨z i, by ring⟩, fun i => ?_⟩` and prove the remaining obligations. Establish `hw : (fun j => WittVector.frobenius (v0 j + Sandwich.mu ε * z j)) = fun j => WittVector.frobenius (v0 j) + (WittVector.frobenius (xi ε) * Sandwich.mu ε) * WittVector.frobenius (z j)`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[map_add, map_mul, GlobalTheory.WinLift.frob_mu]`. Rewrite using `[hw, mulVec_add_mul]`. Take the linear combination `(-1 : Ainf p O) * hc i + WittVector.frobenius (xi ε) * Sandwich.mu ε * hz i`.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (ι : Type) [Fintype ι] (N : Matrix ι ι (Ainf p O)) (v0 : ι → Ainf p O), IsNil (WittVector.fontaineTheta O p) WittVector.frobenius N → (∀ i, WittVector.frobenius (xi ε) * Sandwich.mu ε ∣ N.mulVec (fun j => WittVector.frobenius (v0 j)) i - WittVector.frobenius (xi ε) * v0 i) → ∃ w : ι → Ainf p O, (∀ i, Sandwich.mu ε ∣ w i - v0 i) ∧ ∀ i, WittVector.frobenius (xi ε) * w i = N.mulVec (fun j => WittVector.frobenius (w j)) i := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε ι _ N v0 hN h
   choose c hc using h

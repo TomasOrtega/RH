@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.EtaVal.RatBound
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ν.map_mul, ih]`.
+-/
 theorem addVal_prod {K : Type} [CommRing K] (ν : AddValuation K (WithTop ℚ)) {I : Type} (s : Finset I) (f : I → K) :
     ν (∏ i ∈ s, f i) = ∑ i ∈ s, ν (f i) := by
   classical
@@ -24,6 +27,11 @@ theorem addVal_prod {K : Type} [CommRing K] (ν : AddValuation K (WithTop ℚ)) 
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ν.map_mul, ih]
 
+/- English proof (translation)
+Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Move the coercions through the operations in `at ih ⊢`. Conclude with `ν.map_le_add ih ν.map_one.ge`.
+
+Consider the case `pred i ih`. Move the coercions through the operations in `at ih ⊢`. Conclude with `ν.map_le_sub ih ν.map_one.ge`.
+-/
 theorem addVal_intCast_nonneg {K : Type} [CommRing K] (ν : AddValuation K (WithTop ℚ)) (m : ℤ) : 0 ≤ ν (m : K) := by
   induction m using Int.induction_on with
   | zero => simp
@@ -34,6 +42,11 @@ theorem addVal_intCast_nonneg {K : Type} [CommRing K] (ν : AddValuation K (With
     push_cast at ih ⊢
     exact ν.map_le_sub ih ν.map_one.ge
 
+/- English proof (translation)
+Rewrite using `[addVal_prod]`. Establish `e : (((Fintype.card G : ℚ) * t : ℚ) : WithTop ℚ) = ∑ _g : G, (t : WithTop ℚ)`. Rewrite using `[← WithTop.coe_sum]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Use `Finset.sum_le_sum fun g _ => ν.map_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ν.map_mul, addVal_prod]`. Conclude with `(h g j).trans (le_add_of_nonneg_left (addVal_intCast_nonneg ν _))`.
+-/
 theorem le_addVal_prod_sum {K : Type} [CommRing K] (ν : AddValuation K (WithTop ℚ)) {G J : Type} [Fintype G]
     [Fintype J] {n : ℕ} (cf : J → ℤ) (a : G → J → Fin n → K) (t : ℚ)
     (h : ∀ g j, (t : WithTop ℚ) ≤ ∑ b, ν (a g j b)) :
@@ -51,6 +64,9 @@ end GlobalTheory.EtaVal.RatBound
 
 namespace GlobalTheory.EtaVal
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw k _ J _ n cf xs F _ v w q h`. Use `Fintype.ofFinite (LevGrp Dw k)` as an intermediate fact. Establish `e : etaExpr k cf xs w = ∏ g : LevGrp Dw k, ∑ j, (cf j : F) * ∏ b, w (g (xs j b))` using `finprod_eq_prod_of_fintype _`. Rewrite using `[e, Nat.card_eq_fintype_card]`. Conclude with `RatBound.le_addVal_prod_sum v cf (fun (g : LevGrp Dw k) j b => w (g (xs j b))) q h`.
+-/
 theorem card_mul_le_addVal_etaExpr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (k : ℕ) [Finite (LevGrp Dw k)] (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (xs : J → Fin n → LatMod Dw k) (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)) (w : LatMod Dw k → F) (q : ℚ), (∀ (g : LevGrp Dw k) j, (q : WithTop ℚ) ≤ ∑ b, v (w (g (xs j b)))) → (((Nat.card (LevGrp Dw k) : ℚ) * q : ℚ) : WithTop ℚ) ≤ v (etaExpr k cf xs w) := by
   intro E _ _ _ H Dw k _ J _ n cf xs F _ v w q h
   have := Fintype.ofFinite (LevGrp Dw k)

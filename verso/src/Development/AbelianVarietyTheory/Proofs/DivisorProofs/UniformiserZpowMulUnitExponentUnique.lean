@@ -11,6 +11,19 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective V (FractionRing V)`. Establish `hx : algebraMap V (FractionRing V) ϖ ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ hinj]`. Conclude with `hϖ.ne_zero`. Establish `hw : algebraMap V (FractionRing V) (w : V) ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero_iff _ hinj]`. Conclude with `w.ne_zero`. Establish `key : ∀ (n : ℕ) (u : Vˣ), algebraMap V (FractionRing V) ϖ ^ n = algebraMap V (FractionRing V) (u : V) → n = 0`. Introduce `n u hn`. Rewrite `hn` using `[← map_pow]`.
+
+Establish `h1` using `hinj hn`. Assume the negation of the conclusion as `hne`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Rewrite using `[← isUnit_pow_iff hne, h1]`. Conclude with `u.isUnit`.
+
+Establish `hab : algebraMap V (FractionRing V) ϖ ^ (a - b) = algebraMap V (FractionRing V) ((w' * w⁻¹ : Vˣ) : V)`. Rewrite using `[zpow_sub₀ hx, Units.val_mul, map_mul, map_units_inv, div_eq_iff (zpow_ne_zero _ hx)]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`. Break down `Int.eq_nat_or_neg (a - b) with ⟨n, hn | hn⟩` into its components or cases.
+
+Rewrite `hab` using `[hn, zpow_natCast]`. Use `key n _ hab` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hab` using `[hn, zpow_neg, zpow_natCast]`. Establish `h2 : algebraMap V (FractionRing V) ϖ ^ n = algebraMap V (FractionRing V) (((w' * w⁻¹)⁻¹ : Vˣ) : V)`.
+
+Rewrite using `[map_units_inv, ← hab, inv_inv]`. Use `key n _ h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exponent_uniformiser_unique {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {ϖ : V} (hϖ : Irreducible ϖ) (a b : ℤ) (w w' : Vˣ)
     (h : algebraMap V (FractionRing V) ϖ ^ a * algebraMap V (FractionRing V) (w : V) =

@@ -41,6 +41,9 @@ open Classical in
 
 def cl (μ : Measure (GA E a)) (φ : Sm E a) : HL μ := if h : InL μ φ then h.toL2 else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cl_eq {μ : Measure (GA E a)} {φ : Sm E a} (h : InL μ φ) : cl μ φ = h.toL2 := dif_pos h
 
 def Grow (φ : GA E a → ℂ) : Prop := ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ (g * infGL E a y)‖ ≤ C * GlobalTheory.CuspRep.height y ^ N
@@ -53,6 +56,9 @@ structure IsOp (N : Submodule ℂ (Sm E a)) (T : Module.End ℂ (Sm E a)) : Prop
   lie : ∀ X, ∀ φ ∈ N, lie E a X (T φ) = T (lie E a X φ)
   rt : ∀ g, ∀ φ ∈ N, rt E a g (T φ) = T (rt E a g φ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => h, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem isOp_one (N : Submodule ℂ (Sm E a)) : IsOp N 1 := ⟨fun _ h => h, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 def LocLim (f : ℕ → Sm E a) (φ : Sm E a) : Prop :=
@@ -81,6 +87,9 @@ variable {Ξ : AlgRep E a} {q : ℕ}
 def app (T : Module.End ℂ (Sm E a)) (ω : Co Ξ q) : Co Ξ q :=
   ((T.rTensor (Fin Ξ.d → ℂ)).restrictScalars ℝ).compAlternatingMap ω
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem app_apply (T : Module.End ℂ (Sm E a)) (ω : Co Ξ q) (X : Fin q → Herm E a) :
     app T ω X = T.rTensor _ (ω X) := rfl
 
@@ -499,6 +508,11 @@ def HarmSS : Prop :=
     (∀ ω, ω ∈ M ↔ IsH r m ω) → (∀ x, ∀ ω ∈ M, trans x ω ∈ M) →
     ∀ N ≤ M, (∀ x, ∀ ω ∈ N, trans x ω ∈ N) → ∃ N' ≤ M, (∀ x, ∀ ω ∈ N', trans x ω ∈ N') ∧ N ⊓ N' = ⊥ ∧ N ⊔ N' = M
 
+/- English proof (translation)
+Use `partH_of_ss h0 fun E _ _ _ a ha Ξ m hm q => ?_` and prove the remaining obligations. Take `⟨n, e, he⟩` from `h1 E a`. Take `⟨r, hr⟩` from `h2 E a Ξ`. Take `⟨M, hM, hT⟩` from `h3 E a ha Ξ r m q`. Use `⟨M, hT, fun ω h => ⟨((hM ω).1 h).lev, ((hM ω).1 h).closed⟩, fun ω h => ((hM ω).1 h).aut, h4 E a ha Ξ r m q M hM hT, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `α ⟨U, hUo, hUc, hα⟩ hd hs`. Take `⟨h, p1, p2, p3, p4, p5, p6⟩` from `h5 E a ha n e he U hUo hUc Ξ r hr q α hα hd hs`. Establish `hc` using `h6 E a ha n e he Ξ r m hm q h p1.equiv p2 p3 p4`. Conclude with `⟨h, (hM h).2 ⟨⟨U, hUo, hUc, p1⟩, p2, fun X i => ⟨h7 E a U hUo Ξ m q h p1 X i (hc X i) (p5 X i), hc X i⟩, p4⟩, U, hUo, hUc, p6⟩`.
+-/
 theorem partH_of (h0 : ExactSub) (h1 : FrameEx) (h2 : OneReal) (h3 : HarmSub) (h4 : HarmSS) (h5 : HodgeEx) (h6 : CharOf)
     (h7 : AutOf) : PartH := by
   refine partH_of_ss h0 fun E _ _ _ a ha Ξ m hm q => ?_

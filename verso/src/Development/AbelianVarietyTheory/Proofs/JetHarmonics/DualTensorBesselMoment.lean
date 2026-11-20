@@ -21,11 +21,23 @@ namespace GlobalTheory
 
 namespace BesselProjectorValue
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma star_Hpk (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     star (Formalism.QuantumDeterminants.Hpk k r i j) = Formalism.QuantumDeterminants.Hpk k r i j := by
   unfold Formalism.QuantumDeterminants.Hpk
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+
+Establish `h1 : ∀ i, star (flat k r f i) = ∑ p, f p * Formalism.QuantumDeterminants.Hpk k r p i`. Introduce `i`. Simplify using `[flat, Formalism.QuantumDeterminants.herm, dotProduct, Matrix.mulVec_single_one, Matrix.col, star_Hpk]`. Simplify using `only [h1, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h2 : ∀ p, ∑ i, f p * Formalism.QuantumDeterminants.Hpk k r p i * Formalism.QuantumDeterminants.Hpk k r i j = f p * (1 : Mx k r) p j`. Introduce `p`. Rewrite using `[← Formalism.QuantumDeterminants.GBasic.Hpk_sq k r, Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [mul_assoc]`. Simplify using `only [h2, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma ev_flat {k r : ℕ} (R : Rep k r) (f : Fin (2 * r + k + 1) → ℂ) (x : Fin (2 * r + k + 1) → R.H) :
     ev (Formalism.QuantumDeterminants.Hpk k r) R (flat k r f) x = ∑ j, f j • x j := by
   unfold ev
@@ -45,6 +57,13 @@ lemma ev_flat {k r : ℕ} (R : Rep k r) (f : Fin (2 * r + k + 1) → ℂ) (x : F
   simp only [h2, Matrix.one_apply]
   simp
 
+/- English proof (translation)
+Establish `hd : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hg`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Establish `: (g *ᵥ (g⁻¹ *ᵥ f)) j = f j`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hd, Matrix.one_mulVec]`. Rewrite using `[← this]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => mul_comm _ _`.
+-/
 lemma sum_frame {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g)
     (f : Fin n → ℂ) (x : Fin n → V) :
     ∑ j, f j • x j = ∑ d, (g⁻¹ *ᵥ f) d • ∑ c, g c d • x c := by
@@ -60,6 +79,11 @@ lemma sum_frame {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (g : Matrix
   simp only [Matrix.mulVec, dotProduct]
   exact Finset.sum_congr rfl fun d _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hd : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hg`. Simplify using `only [smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Establish `: ((g⁻¹)ᵀ *ᵥ (gᵀ *ᵥ ω)) c = ω c`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.transpose_one, Matrix.one_mulVec]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 lemma sum_coframe {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g)
     (ω : Fin n → ℂ) (v : V) (c : Fin n) :
     ∑ d, g⁻¹ d c • ((gᵀ *ᵥ ω) d • v) = ω c • v := by
@@ -77,6 +101,37 @@ end BesselProjectorValue
 
 open BesselProjectorValue in
 
+/- English proof (translation)
+Introduce `hy k r ε mu R RI io pr Wp _ _ _ _ z π u μW μN μG νq l hk hR hRI hT hS hB s`. Establish `hK : PI.KFinSmooth` using `hy.1.2.2.1`. Take `⟨hz, hTz, ⟨u₀, hu₀⟩, hcap, -⟩` from `hS`. Establish `hπ1 : π 1 = 1` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_facts hTz hu₀).1`. Take `⟨g, hg, -⟩` from `hu₀`.
+
+Take `⟨hgu, hN, ⟨hfr, hunit⟩, hf, hω⟩` from `GlobalTheory.T.frameW_conj_matrix_units k r z g hz hTz hg`. Establish `hd : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hgu`. Establish `hQ : IsUnit g⁻¹` using `(Matrix.isUnit_nonsing_inv_iff).2 hgu`. Establish `hgi : g⁻¹⁻¹ = g` using `Matrix.nonsing_inv_nonsing_inv g hd`. Take `⟨E, hE, hEg⟩` from `GlobalTheory.T.smoothVectors_discreteSeries_glModule hK k r ε mu R hR g⁻¹ hQ`.
+
+Use `choose F hF hFg using fun t => GlobalTheory.T.smoothVectors_discreteSeries_glModule hK k r ε _ (RI t) (hRI t) g⁻¹ hQ`. Take `⟨io', pr', hcomm, -, hsum, -, -, hio, hpr⟩` from `GlobalTheory.T.dual_tensor_cayley_compatible hK k r ε mu R hR RI _ io pr g⁻¹ E F hRI hT hQ hE hF`. Establish `hn : 2 ≤ 2 * r + k + 1` using `by omega`. Establish `hqE` using `GlobalTheory.T.quantum_determinant_eigenvalue hy k r ε mu R hR g⁻¹ E hQ hE`. Establish `hcE` using `GlobalTheory.T.casimir_scalar_of_capelliDeterminant_eigenvalue _ _ E mu hn hEg hqE`.
+
+Establish `hcF` using `fun t => GlobalTheory.T.casimir_scalar_of_capelliDeterminant_eigenvalue _ _ (F t) _ hn (hFg t) (GlobalTheory.T.quantum_determinant_eigenvalue hy k r ε _ (RI t) (hRI t) g⁻¹ (F t) hQ (hF t))`. Establish `hsp` using `fun t => GlobalTheory.T.splitCasimir_eigenvalue_on_dualTensor_summand _ _ _ E (F t) (io' t) mu t hcE (hcF t) (hcomm t)`. Set `L : R.smSub →ₗ[ℂ] Wp` to `{ toFun := fun v => l v map_add' := fun v w => hB.1 _ v.2 _ w.2 map_smul' := fun c v => hB.2.1 c _ v.2 }`. Establish `hL : ∀ v : R.smSub, L v = l v` using `fun _ => rfl`. Establish `hE' : ∀ a b (v : R.smSub), ((E a b v : R.smSub) : R.H) = R.dC (g * Matrix.single a b 1 * g⁻¹) v`.
+
+Introduce `a b v`. Rewrite using `[hE a b v, hgi]`. Take `⟨c, hc, hcv⟩` from `GlobalTheory.T.projector_entry_value_under_linear_functional R.smSub Wp k r E L (fun a b => Formalism.QuantumDeterminants.ell k r z (g * Matrix.single a b 1 * g⁻¹) - star (Formalism.QuantumDeterminants.ell k r z (-((Formalism.QuantumDeterminants.Hpk k r) * (g * Matrix.single a b …`. Rewrite using `[hL, hL, hE']`. Conclude with `GlobalTheory.T.bessel_functional_lie_triangular_eq_character_smul hK k r ε mu R hR Wp z π l hz (fun x => by rw [hπ1]; rfl) hB _ (hN a b hab hnot).1 _ v.2,`.
+
+Use the proof step `(hN a b hab hnot).2⟩)`. Use `mu u (fun i j => Formalism.FourierDecayAlt.Q.EcRep (Formalism.QuantumDeterminants.Hpk k r) π (Formalism.FourierDecayAlt.Q.unitB (Formalism.QuantumDeterminants.Hpk k r) (fun i : Fin k => g *ᵥ Pi.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) 1) i j))`. Use the proof step `hR.1.1.injective hqE`. Use the proof step `(fun i j v => by`. Rewrite using `[hL, hL, hE', hunit]`.
+
+Conclude with `GlobalTheory.T.bessel_frame_entry_relation hK k r ε mu R hR Wp z π l g hz hTz hg hB i j _ v.2)`. Use the proof step `(fun w x => hcap _ hfr w x) s`. Use `set a : ℂ := (if r = 0 then -((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) else 1) with ha`. Use `set b : ℂ := (if r = 0 then ((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) else 1) with hb`. Use `set i₀ : Fin (2 * r + k + 1) := (if r = 0 then Fin.last (2 * r + k) else 0) with hi₀`.
+
+Establish `hf' : g⁻¹ *ᵥ Formalism.QuantumDeterminants.fvec k r z 0 = b • Pi.single i₀ 1`. Rewrite using `[hf, hb, hi₀]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨b * c * a, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hc, ha, hb]`.
+
+Establish `hsq : Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) ^ 2 = Formalism.QuantumDeterminants.Tz k r z` using `Real.sq_sqrt hTz.le`. Establish `hab : |Real.sqrt (Formalism.QuantumDeterminants.Tz k r z)| = Real.sqrt (Formalism.QuantumDeterminants.Tz k r z)` using `abs_of_nonneg (Real.sqrt_nonneg _)`. Use `split_ifs`. Rewrite using `[norm_neg, Complex.norm_real, Real.norm_eq_abs, hab]`. Generalize the expression as in `((∏ i ∈ Icc 1 k, |mu s - 1 / 2 - u i|) / ∏ t ∈ univ.erase s, |mu s - mu t|) = P`.
+
+Take the linear combination `P * hsq`. Rewrite using `[hsq, norm_one, one_mul, mul_one]`. Set `v' : R.smSub` to `⟨v, hv⟩`. Set `x : Fin (2 * r + k + 1) → R.smSub` to `Pi.single (Fin.last (2 * r + k)) (a • v')`. Establish `hx : ∀ d, ((x d : R.smSub) : R.H) = (gᵀ *ᵥ flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) d • v`.
+
+Introduce `d`. Rewrite using `[hω]`. Distinguish the cases in `h : d = Fin.last (2 * r + k)`. Substitute `h` using the available equality. Simplify using `[x, v']`.
+
+Simplify using `[x, Pi.single_eq_of_ne h]`. Establish `hp : ((pr' s x : (RI s).smSub) : (RI s).H) = ∑ d, pr s d (tm R (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) v d)`. Rewrite using `[hpr]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [hx]`.
+
+Rewrite using `[sum_coframe g hgu]`. Both sides reduce to the same expression. Establish `hmain` using `hcv (a • v') (fun t => io' t (pr' t x)) (fun t => hsp t _) (hsum x)`. Rewrite using `[ev_flat, sum_frame g hgu, ← hp, hf']`. Establish `h3 : ∀ d, ∑ c', g c' d • io s c' ((pr' s x : (RI s).smSub) : (RI s).H) = ((io' s (pr' s x) d : R.smSub) : R.H)`.
+
+Introduce `d`. Rewrite using `[hio, hgi]`. Simplify using `only [h3]`. Rewrite using `[Finset.sum_eq_single i₀ (fun d _ hd => by simp [Pi.single_eq_of_ne hd]) (by simp)]`. Establish `h4 : (b • Pi.single i₀ (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) i₀ = b` using `by simp`.
+
+Rewrite using `[h4]`. Establish `h5 : l (b • ((io' s (pr' s x) i₀ : R.smSub) : R.H)) = b • L (io' s (pr' s x) i₀)` using `hB.2.1 b _ (io' s (pr' s x) i₀).2`. Rewrite using `[h5, hmain, map_smul, hL, smul_smul, smul_smul]`.
+-/
 theorem bessel_ev_projector_value : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (RI : Fin (2 * r + k + 1) → Rep k r) (io : ∀ s, Fin (2 * r + k + 1) → (RI s).H → R.H) (pr : ∀ s, Fin (2 * r + k + 1) → R.H → (RI s).H) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (l : R.H → Wp), 1 ≤ k → R.IsDS ε mu → (∀ s, (RI s).IsDS ε (mu - Pi.single s 1)) → TensRaw dualM R RI io pr → SideG k r z π u μW μN μG νq → IsBes R z π l → ∀ s, ∃ c : ℂ, ‖c‖ = Formalism.QuantumDeterminants.Tz k r z * ((∏ i ∈ Icc 1 k, |mu s - 1 / 2 - u i|) / ∏ t ∈ univ.erase s, |mu s - mu t|) ∧ ∀ v ∈ R.sm, l (ev (Formalism.QuantumDeterminants.Hpk k r) R (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) (fun c' => io s c' (∑ d, pr s d (tm R (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) v d)))) = c • l v := by
   intro hy k r ε mu R RI io pr Wp _ _ _ _ z π u μW μN μG νq l hk hR hRI hT hS hB s
   have hK : PI.KFinSmooth := hy.1.2.2.1

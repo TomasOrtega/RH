@@ -11,6 +11,17 @@ namespace GlobalTheory.CompanionTheory.GaussRec
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `hn : ∀ b, (Finset.univ.filter fun x => π x = b).card = (Finset.univ.filter fun x => π x = 0).card`. Introduce `b`. Take `⟨x0, rfl⟩` from `hπ b`. Use `Finset.card_equiv (Equiv.subRight x0) ?_` and prove the remaining obligations. Introduce `i`.
+
+Simplify using `[map_sub, sub_eq_zero]`. Establish `hcard : Fintype.card A = (Finset.univ.filter fun x => π x = 0).card * Fintype.card B`. Establish `h1` using `Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset A)) (t := (Finset.univ : Finset B)) (f := π) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _))`. Rewrite `h1` using `[Finset.card_univ]`. Rewrite using `[h1, Finset.sum_congr rfl (fun b _ => hn b)]`.
+
+Simplify using `[mul_comm]`. Establish `hpos : 0 < Fintype.card B` using `Fintype.card_pos`. Establish `hc' : (Finset.univ.filter fun x => π x = 0).card = c`. Establish `: (Finset.univ.filter fun x => π x = 0).card * Fintype.card B = c * Fintype.card B`. Rewrite using `[← hcard, hc]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right hpos this`. Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := π) (f := fun x => G (π x)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: ∀ x ∈ Finset.univ.filter (fun x => π x = b), G (π x) = G b`. Introduce `x hx`.
+
+Rewrite using `[(Finset.mem_filter.1 hx).2]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, hn b, hc', nsmul_eq_mul]`.
+-/
 theorem sum_comp_surj {A B : Type} [AddCommGroup A] [AddCommGroup B] [Fintype A] [Fintype B]
     (π : A →+ B) (hπ : Function.Surjective π) (c : ℕ)
     (hc : Fintype.card A = c * Fintype.card B) (G : B → ℂ) :
@@ -46,6 +57,9 @@ def gaussTerm (σ : R →+* R) (ϖ : R) (hfix : σ ϖ = ϖ) (ψ : ∀ k, AddChar
     (k : ℕ) (w : R ⧸ lev ϖ k) : ℂ :=
   ψ k (Ideal.Quotient.mk (lev ϖ k) a * (barσ σ ϖ hfix k w * w))
 
+/- English proof (translation)
+Simplify using `only [gaussTerm, barσ_mk, map_mul]`.
+-/
 theorem gaussTerm_mk (σ : R →+* R) (ϖ : R) (hfix : σ ϖ = ϖ) (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ)
     (a : R) (k : ℕ) (x : R) :
     gaussTerm σ ϖ hfix ψ a k (Ideal.Quotient.mk _ x)
@@ -58,6 +72,9 @@ def traceChar (σ : R →+* R) (ϖ : R) (hfix : σ ϖ = ϖ) (ψ : ∀ k, AddChar
     (fun t => Ideal.Quotient.mk (lev ϖ 1) c * t + barσ σ ϖ hfix 1 (Ideal.Quotient.mk (lev ϖ 1) c * t))
     (by intro x y; simp only [mul_add, map_add]; abel))
 
+/- English proof (translation)
+Use `show ψ 1 (Ideal.Quotient.mk (lev ϖ 1) c * Ideal.Quotient.mk _ y + barσ σ ϖ hfix 1 (Ideal.Quotient.mk (lev ϖ 1) c * Ideal.Quotient.mk _ y)) = _`. Rewrite using `[← map_mul, barσ_mk, ← map_add]`.
+-/
 theorem traceChar_mk (σ : R →+* R) (ϖ : R) (hfix : σ ϖ = ϖ) (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ)
     (c y : R) :
     traceChar σ ϖ hfix ψ c (Ideal.Quotient.mk _ y)
@@ -66,6 +83,15 @@ theorem traceChar_mk (σ : R →+* R) (ϖ : R) (hfix : σ ϖ = ϖ) (ψ : ∀ k, 
     + barσ σ ϖ hfix 1 (Ideal.Quotient.mk (lev ϖ 1) c * Ideal.Quotient.mk _ y)) = _
   rw [← map_mul, barσ_mk, ← map_add]
 
+/- English proof (translation)
+Use `split_ifs with hc`. Establish `h1 : ∀ t, traceChar σ ϖ hR.fix_ϖ ψ c t = 1`. Introduce `t`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Rewrite using `[traceChar_mk]`.
+
+Establish `: Ideal.Quotient.mk (lev ϖ 1) (c * y + σ (c * y)) = 0`. Establish `h0 : Ideal.Quotient.mk (lev ϖ 1) c = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hc`. Rewrite using `[map_add, ← barσ_mk σ ϖ hR.fix_ϖ, map_mul, h0]`. Simplify using the standard rewrite rules. Rewrite using `[this, AddChar.map_zero_eq_one]`.
+
+Simplify using `[h1]`. Establish `hne : traceChar σ ϖ hR.fix_ϖ ψ c ≠ 1`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Use `trace_nondeg hR hψ 1 c (fun t => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `traceChar_mk σ ϖ hR.fix_ϖ ψ c t`. Rewrite `h1` using `[h0, AddChar.one_apply]`. Rewrite using `[mul_comm t c]`. Conclude with `h1.symm`. Conclude with `AddChar.sum_eq_zero_of_ne_one hne`.
+-/
 theorem sum_traceChar {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     [Fintype (R ⧸ lev ϖ 1)] {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ) (c : R)
     [Decidable (c ∈ lev ϖ 1)] :
@@ -92,6 +118,11 @@ theorem sum_traceChar {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnr
       exact h1.symm
     exact AddChar.sum_eq_zero_of_ne_one hne
 
+/- English proof (translation)
+Establish `hp` using `psi_pow hψ 1 (j + 1) (a * σ x * y + σ (a * σ x * y))`. Rewrite `hp` using `[show 1 + (j + 1) = j + 2 by omega]`. Rewrite using `[← map_add, gaussTerm_mk, gaussTerm_mk, traceChar_mk, ← hp, ← AddChar.map_add_eq_mul, ← map_add]`. Use `congr 1`. Rewrite using `[Ideal.Quotient.eq]`.
+
+Use `mem_lev_iff.2 ⟨ϖ ^ j * (a * σ y * y), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add, map_pow, hfix, ha, hinv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussTerm_shift {σ : R →+* R} {ϖ : R} (hinv : ∀ a, σ (σ a) = a) (hfix : σ ϖ = ϖ)
     {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ) (j : ℕ) {a : R} (ha : σ a = a)
     (x y : R) :
@@ -108,6 +139,15 @@ theorem gaussTerm_shift {σ : R →+* R} {ϖ : R} (hinv : ∀ a, σ (σ a) = a) 
   simp only [map_mul, map_add, map_pow, hfix, ha, hinv]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨v, hv⟩` from `(hR.fixLocal a ha ha1).exists_left_inv`. Establish `h1 : σ x ∈ lev ϖ 1`. Establish `: σ x = v * (a * σ x)` using `by rw [← mul_assoc, hv, one_mul]`.
+
+Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ h`. Take `⟨c, hc⟩` from `mem_lev_iff.1 h1`. Use `mem_lev_iff.2 ⟨σ c, ?_⟩` and prove the remaining obligations. Use `congrArg σ hc` as an intermediate fact.
+
+Simplify `this` using `[hR.inv, hR.fix_ϖ]`. Introduce `h`. Take `⟨c, rfl⟩` from `mem_lev_iff.1 h`. Use `mem_lev_iff.2 ⟨a * σ c, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, hR.fix_ϖ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_lev_one_iff {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε) {a : R}
     (ha : σ a = a) (ha1 : a ∉ lev ϖ 1) (x : R) : a * σ x ∈ lev ϖ 1 ↔ x ∈ lev ϖ 1 := by
   constructor
@@ -130,10 +170,24 @@ theorem mem_lev_one_iff {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsU
 def lft (ϖ : R) (k : ℕ) (w : R ⧸ lev ϖ k) : R :=
   Function.surjInv (Ideal.Quotient.mk_surjective (I := lev ϖ k)) w
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq _ w`.
+-/
 @[simp] theorem mk_lft (ϖ : R) (k : ℕ) (w : R ⧸ lev ϖ k) :
     Ideal.Quotient.mk (lev ϖ k) (lft ϖ k w) = w :=
   Function.surjInv_eq _ w
 
+/- English proof (translation)
+Establish `shift : ∀ t : R ⧸ lev ϖ 1, ∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a (j + 2) w = ∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a (j + 2) w * traceChar σ ϖ hR.fix_ϖ ψ (a * σ (lft ϖ (j + 2) w)) t`. Introduce `t`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ ^ (j + 1) * lft ϖ 1 t)))]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h` using `gaussTerm_shift hR.inv hR.fix_ϖ hψ j ha (lft ϖ (j + 2) w) (lft ϖ 1 t)`.
+
+Rewrite `h` using `[mk_lft, mk_lft]`. Conclude with `h`. Establish `hcard : (Fintype.card (R ⧸ lev ϖ 1) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Apply `mul_left_cancel₀ hcard` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ = ∑ t : R ⧸ lev ϖ 1, ∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a (j + 2) w * traceChar σ ϖ hR.fix_ϖ ψ (a * σ (lft ϖ (j + 2) w)) t := Finset.sum_congr rfl fun t _ => shift t`. Use `_ = ∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a (j + 2) w * ∑ t, traceChar σ ϖ hR.fix_ϖ ψ (a * σ (lft ϖ (j + 2) w)) t := by`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => (Finset.mul_sum _ _ _).symm`. Use `_ = _ := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[sum_traceChar hR hψ]`.
+
+Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem sum_stationary {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     [∀ k, Fintype (R ⧸ lev ϖ k)] {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ)
     (j : ℕ) {a : R} (ha : σ a = a) [DecidablePred fun c => c ∈ lev ϖ 1] :
@@ -167,6 +221,9 @@ theorem sum_stationary {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUn
         rw [sum_traceChar hR hψ]
         split_ifs <;> ring
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Ideal.Quotient.eq]`. Take `⟨c, hc⟩` from `mem_lev_iff.1 h`. Use `mem_lev_iff.2 ⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_sub, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mk_mul_eq (ϖ : R) (j : ℕ) {x y : R}
     (h : Ideal.Quotient.mk (lev ϖ (j + 1)) x = Ideal.Quotient.mk (lev ϖ (j + 1)) y) :
     Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * x) = Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * y) := by
@@ -176,6 +233,11 @@ theorem mk_mul_eq (ϖ : R) (j : ℕ) {x y : R}
   rw [← mul_sub, hc]
   ring
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Ideal.Quotient.eq]`. Take `⟨c, hc⟩` from `mem_lev_iff.1 h`. Use `mem_lev_iff.2 ⟨c, hreg ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_sub, hc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mk_of_mul_eq {ϖ : R} (hreg : IsSMulRegular R ϖ) (j : ℕ) {x y : R}
     (h : Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * x) = Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * y)) :
     Ideal.Quotient.mk (lev ϖ (j + 1)) x = Ideal.Quotient.mk (lev ϖ (j + 1)) y := by
@@ -186,6 +248,9 @@ theorem mk_of_mul_eq {ϖ : R} (hreg : IsSMulRegular R ϖ) (j : ℕ) {x y : R}
   rw [mul_sub, hc]
   ring
 
+/- English proof (translation)
+Rewrite using `[gaussTerm_mk, gaussTerm_mk, ← psi_pow hψ j 2 (a * (σ x * x))]`. Use `congr 2`. Simplify using `only [map_mul, hfix]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussTerm_mul {σ : R →+* R} {ϖ : R} (hfix : σ ϖ = ϖ)
     {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ) (j : ℕ) (a x : R) :
     gaussTerm σ ϖ hfix ψ a (j + 2) (Ideal.Quotient.mk _ (ϖ * x))
@@ -195,6 +260,17 @@ theorem gaussTerm_mul {σ : R →+* R} {ϖ : R} (hfix : σ ϖ = ϖ)
   simp only [map_mul, hfix]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_nbij (fun w' => Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * lft ϖ (j + 1) w')) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w' _`. Use `Finset.mem_filter.2 ⟨Finset.mem_univ _, (mem_lev_one_iff hR ha ha1 _).2 ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `mk_lft ϖ (j + 2) (Ideal.Quotient.mk (lev ϖ (j + 2)) (ϖ * lft ϖ (j + 1) w'))`. Rewrite `h` using `[Ideal.Quotient.eq]`. Take `⟨c, hc⟩` from `mem_lev_iff.1 h`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc]`.
+
+Use `mem_lev_iff.2 ⟨ϖ ^ (j + 1) * c + lft ϖ (j + 1) w', ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `x _ y _ h`. Use `mk_of_mul_eq hR.reg j h` as an intermediate fact. Simplify using `using this`.
+
+Introduce `w hw`. Establish `hw'` using `(mem_lev_one_iff hR ha ha1 _).1 (Finset.mem_filter.1 hw).2`. Take `⟨c, hc⟩` from `mem_lev_iff.1 hw'`. Use `⟨Ideal.Quotient.mk _ c, by simp, ?_⟩` and prove the remaining obligations. Establish `h1` using `mk_mul_eq ϖ j (mk_lft ϖ (j + 1) (Ideal.Quotient.mk _ c))`.
+
+Simplify using `only`. Rewrite using `[h1, ← mk_lft ϖ (j + 2) w, hc, pow_one]`. Introduce `w' _ conv_lhs => rw [← mk_lft ϖ (j + 1) w']`. Rewrite using `[Ideal.Quotient.factor_mk, gaussTerm_mul hR.fix_ϖ hψ]`.
+-/
 theorem sum_filter_eq {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     [∀ k, Fintype (R ⧸ lev ϖ k)] {ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ} (hψ : IsLevelChars σ ϖ ψ)
     (j : ℕ) {a : R} (ha : σ a = a) (ha1 : a ∉ lev ϖ 1) [DecidablePred fun c => c ∈ lev ϖ 1] :
@@ -231,6 +307,13 @@ theorem sum_filter_eq {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnr
 end GlobalTheory.CompanionTheory.GaussRec
 
 open GlobalTheory.CompanionTheory.GaussRec in
+/- English proof (translation)
+Introduce `R _ σ ϖ q ε hR _ ψ hψ j a ha ha1`. Establish `hle : lev ϖ (j + 1) ≤ lev ϖ j` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (Nat.le_succ j))`. Establish `h1` using `sum_stationary hR hψ j ha`. Rewrite `h1` using `[sum_filter_eq hR hψ j ha ha1]`. Establish `hc : Fintype.card (R ⧸ lev ϖ (j + 1)) = q ^ 2 * Fintype.card (R ⧸ lev ϖ j)`.
+
+Establish `e1` using `GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR (j + 1)`. Establish `e2` using `GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR j`. Rewrite `e1`, `e2` using `[Nat.card_eq_fintype_card]`. Rewrite using `[e1, e2, ← pow_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `sum_comp_surj (Ideal.Quotient.factor hle).toAddMonoidHom (Ideal.Quotient.factor_surjective hle) (q ^ 2) hc (gaussTerm σ ϖ hR.fix_ϖ ψ a j)`. Establish `h3 : (∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a (j + 2) w) = ((q ^ 2 : ℕ) : ℂ) * ∑ w, gaussTerm σ ϖ hR.fix_ϖ ψ a j w` using `h1.trans h2`. Simplify `h3` using `[gaussTerm]`.
+-/
 theorem GlobalTheory.CompanionTheory.GaussRec.gauss_recursion : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ) (hR : IsUnrQuad R σ ϖ q ε) [∀ k, Fintype (R ⧸ lev ϖ k)] (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ), IsLevelChars σ ϖ ψ → ∀ (j : ℕ) (a : R), σ a = a → a ∉ lev ϖ 1 → (∑ w : R ⧸ lev ϖ (j + 2), ψ (j + 2) (Ideal.Quotient.mk (lev ϖ (j + 2)) a * (barσ σ ϖ hR.fix_ϖ (j + 2) w * w))) = (q : ℂ) ^ 2 * ∑ w : R ⧸ lev ϖ j, ψ j (Ideal.Quotient.mk (lev ϖ j) a * (barσ σ ϖ hR.fix_ϖ j w * w)) := by
   intro R _ σ ϖ q ε hR _ ψ hψ j a ha ha1
   classical

@@ -16,6 +16,11 @@ def Par (L : ℕ) (b : Fin c → ℕ) (M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     M r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s
 
 omit [Fintype n] in
+/- English proof (translation)
+Introduce `r s hrs`. Establish `hne : r ≠ s`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hrs`. Rewrite using `[h r s _ hrs.le, Matrix.one_apply_ne hne]`.
+
+Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp_all`.
+-/
 theorem Par.blockTri {L : ℕ} {b : Fin c → ℕ} {M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (h : Par L b M) :
     M.BlockTriangular (Sum.elim (fun _ => L) b) := by
   intro r s hrs
@@ -25,6 +30,11 @@ theorem Par.blockTri {L : ℕ} {b : Fin c → ℕ} {M : Matrix (n ⊕ Fin c) (n 
   rw [h r s _ hrs.le, Matrix.one_apply_ne hne]
   rcases r with r | r <;> rcases s with s | s <;> simp_all
 
+/- English proof (translation)
+Establish `: (M * M') r s = ((1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * M') r s`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Break down `le_or_gt (Sum.elim (fun _ => L) b t) (Sum.elim (fun _ => L) b r) with ht | ht` into its components or cases. Rewrite using `[h r t (Or.inl hr) ht]`.
+
+Rewrite using `[h' (lt_of_le_of_lt hrs ht), mul_zero, mul_zero]`. Rewrite using `[this, Matrix.one_mul]`.
+-/
 theorem Par.mul_left {L : ℕ} {b : Fin c → ℕ} {M M' : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (h : Par L b M)
     (h' : M'.BlockTriangular (Sum.elim (fun _ => L) b)) {r s : n ⊕ Fin c} (hr : r.isRight)
     (hrs : Sum.elim (fun _ => L) b s ≤ Sum.elim (fun _ => L) b r) : (M * M') r s = M' r s := by
@@ -36,6 +46,11 @@ theorem Par.mul_left {L : ℕ} {b : Fin c → ℕ} {M M' : Matrix (n ⊕ Fin c) 
     · rw [h' (lt_of_le_of_lt hrs ht), mul_zero, mul_zero]
   rw [this, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `: (M' * M) r s = (M' * (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)) r s`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Break down `le_or_gt (Sum.elim (fun _ => L) b s) (Sum.elim (fun _ => L) b t) with ht | ht` into its components or cases. Rewrite using `[h t s (Or.inr hs) ht]`.
+
+Rewrite using `[h' (lt_of_lt_of_le ht hrs), zero_mul, zero_mul]`. Rewrite using `[this, Matrix.mul_one]`.
+-/
 theorem Par.mul_right {L : ℕ} {b : Fin c → ℕ} {M M' : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (h : Par L b M)
     (h' : M'.BlockTriangular (Sum.elim (fun _ => L) b)) {r s : n ⊕ Fin c} (hs : s.isRight)
     (hrs : Sum.elim (fun _ => L) b s ≤ Sum.elim (fun _ => L) b r) : (M' * M) r s = M' r s := by
@@ -47,6 +62,9 @@ theorem Par.mul_right {L : ℕ} {b : Fin c → ℕ} {M M' : Matrix (n ⊕ Fin c)
     · rw [h' (lt_of_lt_of_le ht hrs), zero_mul, zero_mul]
   rw [this, Matrix.mul_one]
 
+/- English proof (translation)
+Use `letI : Invertible g.val := g.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular h.blockTri`.
+-/
 theorem Par.blockTri_inv {L : ℕ} {b : Fin c → ℕ} {g : GL (n ⊕ Fin c) k} (h : Par L b g.val) :
     (g⁻¹).val.BlockTriangular (Sum.elim (fun _ => L) b) := by
   letI : Invertible g.val := g.invertible
@@ -69,11 +87,19 @@ def parGroup (k : Type*) [Field k] (n : Type*) [Fintype n] [DecidableEq n] (L : 
     · rw [← Par.mul_left hg (Par.blockTri_inv hg) hr hrs, Units.mul_inv]
     · rw [← Par.mul_right hg (Par.blockTri_inv hg) hs hrs, Units.inv_mul]
 
+/- English proof (translation)
+Introduce `r s hor _`. Rewrite using `[embX_val]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp_all [Matrix.one_apply]`.
+-/
 theorem embX_mem (L : ℕ) (b : Fin c → ℕ) (x : GL n k) : embX c x ∈ parGroup k n L b := by
   intro r s hor _
   rw [embX_val]
   rcases r with r | r <;> rcases s with s | s <;> simp_all [Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `r s`. Simplify using `only [Units.val_mul, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.mul_apply, Fintype.sum_sum_type]`. Rewrite using `[add_eq_left]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Break down `le_total (b t) L with ht | ht` into its components or cases.
+
+Rewrite using `[hg (Sum.inl r) (Sum.inr t) (by simp) ht, Matrix.one_apply_ne (by simp), zero_mul]`. Rewrite using `[hh (Sum.inr t) (Sum.inl s) (by simp) ht, Matrix.one_apply_ne (by simp), mul_zero]`.
+-/
 theorem toBlocks₁₁_mul {L : ℕ} {b : Fin c → ℕ} {g h : GL (n ⊕ Fin c) k} (hg : g ∈ parGroup k n L b)
     (hh : h ∈ parGroup k n L b) : (g * h).val.toBlocks₁₁ = g.val.toBlocks₁₁ * h.val.toBlocks₁₁ := by
   ext r s
@@ -84,6 +110,15 @@ theorem toBlocks₁₁_mul {L : ℕ} {b : Fin c → ℕ} {g h : GL (n ⊕ Fin c)
   · rw [hg (Sum.inl r) (Sum.inr t) (by simp) ht, Matrix.one_apply_ne (by simp), zero_mul]
   · rw [hh (Sum.inr t) (Sum.inl s) (by simp) ht, Matrix.one_apply_ne (by simp), mul_zero]
 
+/- English proof (translation)
+Establish `h1 : ((1 : GL (n ⊕ Fin c) k)).val.toBlocks₁₁ = 1`. Use extensionality with `r s`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Set `x : GL n k` to `⟨g.val.toBlocks₁₁, (g⁻¹).val.toBlocks₁₁, by rw [← toBlocks₁₁_mul hg (inv_mem hg), mul_inv_cancel, h1], by rw [← toBlocks₁₁_mul (inv_mem hg) hg, inv_mul_cancel, h1]⟩`. Use `⟨x, embX c x⁻¹ * g, ?_, by rw [map_inv, mul_inv_cancel_left]⟩` and prove the remaining obligations.
+
+Establish `hm : embX c x⁻¹ * g ∈ parGroup k n L b` using `mul_mem (embX_mem L b _) hg`. Establish `h11 : (embX c x⁻¹ * g).val.toBlocks₁₁ = 1`. Rewrite using `[toBlocks₁₁_mul (embX_mem L b _) hg, embX_val, Matrix.toBlocks_fromBlocks₁₁]`. Conclude with `x.inv_mul`. Introduce `r s hrs`.
+
+Distinguish the cases in `hor : r.isRight ∨ s.isRight`. Conclude with `hm r s hor hrs`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Use `congrFun (congrFun h11 r) s` as an intermediate fact. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply] at this`.
+
+Rewrite using `[this]`. Simplify using `[Matrix.one_apply]`. Apply the tactic sequence `all_goals simp at hor`.
+-/
 theorem exists_eq_embX_mul {L : ℕ} {b : Fin c → ℕ} {g : GL (n ⊕ Fin c) k} (hg : g ∈ parGroup k n L b) :
     ∃ (x : GL n k) (u : GL (n ⊕ Fin c) k), Uni (Sum.elim (fun _ => L) b) u.val ∧ g = embX c x * u := by
   have h1 : ((1 : GL (n ⊕ Fin c) k)).val.toBlocks₁₁ = 1 := by
@@ -107,14 +142,25 @@ theorem exists_eq_embX_mul {L : ℕ} {b : Fin c → ℕ} {g : GL (n ⊕ Fin c) k
       simp [Matrix.one_apply]
     all_goals simp at hor
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_sup_left ⟨x, rfl⟩`.
+-/
 theorem embX_mem_R (p : ℕ) (x : GL n k) : embX c x ∈ R k n c p :=
   Subgroup.mem_sup_left ⟨x, rfl⟩
 
+/- English proof (translation)
+Use `sup_le ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `embX_mem L b x`.
+-/
 theorem R_le {L p : ℕ} {b : Fin c → ℕ} (h : N k n c p ≤ parGroup k n L b) : R k n c p ≤ parGroup k n L b := by
   refine sup_le ?_ h
   rintro _ ⟨x, rfl⟩
   exact embX_mem L b x
 
+/- English proof (translation)
+Introduce `k _ n _ _ c ρ`. Use `⟨fun g => ⟨fun hg => ?_, fun hg => ?_⟩, fun h1 hc g => ⟨fun hg => ?_, fun hg => ?_⟩⟩` and prove the remaining obligations. Conclude with `R_le (L := ρ) (b := fun i : Fin c => i.val + 1) (fun u hu r s _ hrs => (mem_N_iff u).1 hu r s hrs) hg`. Take `⟨x, u, hu, rfl⟩` from `exists_eq_embX_mul (L := ρ) (b := fun i : Fin c => i.val + 1) hg`. Conclude with `mul_mem (embX_mem_R ρ x) (Subgroup.mem_sup_right ((mem_N_iff u).2 hu))`.
+
+Establish `hN : NFJ k n c ρ ≤ parGroup k n (2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1))` using `fun u hu r s _ hrs => ((GlobalTheory.RootEx.FJUnipotent.fj_unipotent k n c ρ h1 hc).2.1 u).1 hu r s hrs`. Conclude with `sup_le (R_le (le_sup_left.trans hN)) (R_le (le_sup_right.trans hN)) hg`. Take `⟨x, u, hu, rfl⟩` from `exists_eq_embX_mul (L := 2 * ρ + 1) (b := fun i : Fin c => 2 * (i.val + 1)) hg`. Establish `hN : NFJ k n c ρ ≤ RFJ k n c ρ` using `sup_le_sup le_sup_right le_sup_right`. Conclude with `mul_mem (Subgroup.mem_sup_left (embX_mem_R ρ x)) (hN (((GlobalTheory.RootEx.FJUnipotent.fj_unipotent k n c ρ h1 hc).2.1 u).2 hu))`.
+-/
 theorem mem_R_iff_and_mem_RFJ_iff : ∀ (k : Type) [Field k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ), (∀ g : GL (n ⊕ Fin c) k, g ∈ R k n c ρ ↔ ∀ r s : n ⊕ Fin c, (r.isRight ∨ s.isRight) → Sum.elim (fun _ => ρ) (fun i : Fin c => i.val + 1) s ≤ Sum.elim (fun _ => ρ) (fun i : Fin c => i.val + 1) r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s) ∧ (1 ≤ ρ → ρ < c → ∀ g : GL (n ⊕ Fin c) k, g ∈ RFJ k n c ρ ↔ ∀ r s : n ⊕ Fin c, (r.isRight ∨ s.isRight) → Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) s ≤ Sum.elim (fun _ => 2 * ρ + 1) (fun i : Fin c => 2 * (i.val + 1)) r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s) := by
   intro k _ n _ _ c ρ
   refine ⟨fun g => ⟨fun hg => ?_, fun hg => ?_⟩, fun h1 hc g => ⟨fun hg => ?_, fun hg => ?_⟩⟩

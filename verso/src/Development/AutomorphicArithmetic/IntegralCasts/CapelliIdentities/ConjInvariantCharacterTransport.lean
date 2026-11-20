@@ -4,6 +4,9 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.eLast :
     (k : Type) → [Field k] → (n : ℕ) → Fin (n + (1 : ℕ)) → k :=
     fun (k : Type) [Field k] (n : ℕ) ↦ Pi.single (Fin.last n) (1 : k)
 
+/- English proof (translation)
+Introduce `k _ n a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, ha, hb]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.aux2 :
     ∀ (k : Type) [inst : Field k] (n : ℕ) {a b : GL (Fin (n + (1 : ℕ))) k},
       a ∈
@@ -22,6 +25,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.aux2 :
   simp only [Set.mem_setOf_eq] at ha hb ⊢
   rw [Units.val_mul, ← Matrix.vecMul_vecMul, ha, hb]
 
+/- English proof (translation)
+Introduce `k _ n`. Rewrite using `[Units.val_one, Matrix.vecMul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.aux3 :
     ∀ (k : Type) [inst : Field k] (n : ℕ),
       Matrix.vecMul (UpperTheory.Reformulated.B.DYhc8.eLast k n)
@@ -30,6 +36,11 @@ theorem UpperTheory.Reformulated.B.DYhc8.aux3 :
   intro k _ n
   rw [Units.val_one, Matrix.vecMul_one]
 
+/- English proof (translation)
+Introduce `k _ n a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `h : (↑a : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) * (↑a⁻¹ : GL (Fin (n + (1 : ℕ))) k) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `conv_lhs => rw [← ha]`.
+
+Rewrite using `[Matrix.vecMul_vecMul, h, Matrix.vecMul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.aux4 :
     ∀ (k : Type) [inst : Field k] (n : ℕ) {a : GL (Fin (n + (1 : ℕ))) k},
       a ∈
@@ -93,6 +104,11 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.colMat :
     fun (k : Type) [Field k] (n : ℕ) (v : Fin n → k) (i j : Fin (n + (1 : ℕ))) ↦
       if j = Fin.last n then Fin.lastCases (0 : k) v i else (0 : k)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, UpperTheory.Reformulated.B.DYhc8.colMat, Matrix.zero_apply]`. Rewrite using `[Finset.sum_eq_zero]`. Introduce `l _`. Distinguish the cases in `hl : l = Fin.last n`.
+
+Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hl]`.
+-/
 private theorem colMat_mul (k : Type) [Field k] (n : ℕ) (v w : Fin n → k) :
     UpperTheory.Reformulated.B.DYhc8.colMat k n v * UpperTheory.Reformulated.B.DYhc8.colMat k n w = 0 := by
   ext i j
@@ -104,6 +120,11 @@ private theorem colMat_mul (k : Type) [Field k] (n : ℕ) (v w : Fin n → k) :
     simp
   · simp [hl]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.colMat, Matrix.add_apply]`. Distinguish the cases in `hj : j = Fin.last n`. Simplify using `only [hj, if_true]`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last => simp`. Consider the case `cast i => simp`. Simplify using `[hj]`.
+-/
 private theorem colMat_add (k : Type) [Field k] (n : ℕ) (v w : Fin n → k) :
     UpperTheory.Reformulated.B.DYhc8.colMat k n (v + w) =
       UpperTheory.Reformulated.B.DYhc8.colMat k n v + UpperTheory.Reformulated.B.DYhc8.colMat k n w := by
@@ -116,6 +137,11 @@ private theorem colMat_add (k : Type) [Field k] (n : ℕ) (v w : Fin n → k) :
     | cast i => simp
   · simp [hj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.colMat, Matrix.zero_apply]`. Distinguish the cases in `hj : j = Fin.last n`. Simplify using `only [hj, if_true]`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last => simp`. Consider the case `cast i => simp`. Simplify using `[hj]`.
+-/
 private theorem colMat_zero (k : Type) [Field k] (n : ℕ) :
     UpperTheory.Reformulated.B.DYhc8.colMat k n 0 = 0 := by
   ext i j
@@ -127,18 +153,27 @@ private theorem colMat_zero (k : Type) [Field k] (n : ℕ) :
     | cast i => simp
   · simp [hj]
 
+/- English proof (translation)
+Rewrite using `[add_mul, mul_sub, mul_sub, colMat_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem one_add_mul_one_sub (k : Type) [Field k] (n : ℕ) (v : Fin n → k) :
     ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n v) *
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) - UpperTheory.Reformulated.B.DYhc8.colMat k n v) = 1 := by
   rw [add_mul, mul_sub, mul_sub, colMat_mul]
   simp
 
+/- English proof (translation)
+Rewrite using `[sub_mul, mul_add, mul_add, colMat_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem one_sub_mul_one_add (k : Type) [Field k] (n : ℕ) (v : Fin n → k) :
     ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) - UpperTheory.Reformulated.B.DYhc8.colMat k n v) *
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n v) = 1 := by
   rw [sub_mul, mul_add, mul_add, colMat_mul]
   simp
 
+/- English proof (translation)
+Introduce `k _ n v`. Conclude with `one_add_mul_one_sub k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.laurent_T_neg_one_mul_T_one :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (v : Multiplicative (Fin n → k)),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) +
@@ -149,6 +184,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.laurent_T_neg_one_mul_T_one :
   intro k _ n v
   exact one_add_mul_one_sub k n _
 
+/- English proof (translation)
+Introduce `k _ n v`. Conclude with `one_sub_mul_one_add k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.aux11 :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (v : Multiplicative (Fin n → k)),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) -
@@ -159,6 +197,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.aux11 :
   intro k _ n v
   exact one_sub_mul_one_add k n _
 
+/- English proof (translation)
+Introduce `k _ n`. Conclude with `one_add_mul_one_sub k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.aux12 :
     ∀ (k : Type) [inst : Field k] (n : ℕ),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) +
@@ -171,6 +212,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.aux12 :
   intro k _ n
   exact one_add_mul_one_sub k n _
 
+/- English proof (translation)
+Introduce `k _ n`. Conclude with `one_sub_mul_one_add k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.algebra_smulCommClass_complex :
     ∀ (k : Type) [inst : Field k] (n : ℕ),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) -
@@ -183,6 +227,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.algebra_smulCommClass_complex :
   intro k _ n
   exact one_sub_mul_one_add k n _
 
+/- English proof (translation)
+Introduce `k _ n`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n 0 = 1`. Rewrite using `[colMat_zero, add_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.zero_contDiffOn_supported :
     ∀ (k : Type) [inst : Field k] (n : ℕ),
       {
@@ -202,6 +249,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.zero_contDiffOn_supported :
   change (1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n 0 = 1
   rw [colMat_zero, add_zero]
 
+/- English proof (translation)
+Introduce `k _ n v w`. Conclude with `one_add_mul_one_sub k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.sign_action_map_comm :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (v w : Multiplicative (Fin n → k)),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) +
@@ -212,6 +262,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.sign_action_map_comm :
   intro k _ n v w
   exact one_add_mul_one_sub k n _
 
+/- English proof (translation)
+Introduce `k _ n v w`. Conclude with `one_sub_mul_one_add k n _`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.column_matrix_mul_inverse :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (v w : Multiplicative (Fin n → k)),
       ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) -
@@ -222,6 +275,11 @@ theorem UpperTheory.Reformulated.B.DYhc8.column_matrix_mul_inverse :
   intro k _ n v w
   exact one_sub_mul_one_add k n _
 
+/- English proof (translation)
+Introduce `k _ n v w`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n (Multiplicative.toAdd v + Multiplicative.toAdd w) = ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n (Multiplicative.toAdd v)) …`. Rewrite using `[colMat_add, add_mul, mul_add, mul_add, colMat_mul]`. Simplify using `only [one_mul, mul_one, add_zero]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.complex_normed_instance_compat :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (v w : Multiplicative (Fin n → k)),
       {
@@ -288,6 +346,13 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.MirUin :
     (k : Type) → [inst : Field k] → (n : ℕ) → Subgroup ↥(UpperTheory.Reformulated.B.DYhc8.Mir k n) :=
     fun (k : Type) [Field k] (n : ℕ) ↦ (UpperTheory.Reformulated.B.DYhc8.MirU k n).subgroupOf (UpperTheory.Reformulated.B.DYhc8.Mir k n)
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs m`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨n, v, rfl⟩`. Take `⟨h, hθ⟩` from `hs m n`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`.
+
+Establish `key : ρ (s m) (ρ (↑n : G) v - (↑(θ n) : ℂ) • v) = ρ (↑(⟨s m * (↑n : G) * (s m)⁻¹, h⟩ : ↥N) : G) (ρ (s m) v) - (↑(θ ⟨s m * (↑n : G) * (s m)⁻¹, h⟩) : ℂ) • ρ (s m) v`. Rewrite using `[hθ, map_sub, map_smul]`. Use `congr 1`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+
+Use `group`. Rewrite using `[key]`. Conclude with `Submodule.subset_span ⟨_, _, rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -314,6 +379,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem :
   rw [key]
   exact Submodule.subset_span ⟨_, _, rfl⟩
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs`. Conclude with `UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem ρ N θ s hs 1`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.rootGL_mem_unitary :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -326,6 +394,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.rootGL_mem_unitary :
   intro G V _ _ _ ρ N θ M _ s hs
   exact UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem ρ N θ s hs 1
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `[Submodule.mapQ_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_transport :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G)
@@ -342,6 +413,9 @@ theorem UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_transport :
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   simp [Submodule.mapQ_apply]
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs a b`. Conclude with `UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem ρ N θ s hs (a * b)`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.span_sub_smul_le_comap_mul_twKer :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -355,6 +429,11 @@ theorem UpperTheory.Reformulated.B.DYhc8.span_sub_smul_le_comap_mul_twKer :
   intro G V _ _ _ ρ N θ M _ s hs a b
   exact UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_mem ρ N θ s hs (a * b)
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs a b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `[Submodule.mapQ_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.conj_invariant_character_apply :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G)
@@ -410,6 +489,13 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.glEmbMat :
       Fin.lastCases (Fin.lastCases (1 : k) (fun (x : Fin n) ↦ (0 : k)) j)
         (fun (i' : Fin n) ↦ Fin.lastCases (0 : k) (fun (j' : Fin n) ↦ A i' j') j) i
 
+/- English proof (translation)
+Introduce `k _ n`. Use extensionality with `i j`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.glEmbMat]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp [Matrix.one_apply, (Fin.castSucc_lt_last j).ne']`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simp [Matrix.one_apply, (Fin.castSucc_lt_last i).ne]`. Consider the case `cast j => simp [Matrix.one_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.glEmbMat_one_eq_one :
     ∀ (k : Type) [inst : Field k] (n : ℕ),
       UpperTheory.Reformulated.B.DYhc8.glEmbMat k n (1 : Matrix (Fin n) (Fin n) k) = (1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) := by
@@ -426,6 +512,13 @@ theorem UpperTheory.Reformulated.B.DYhc8.glEmbMat_one_eq_one :
     | last => simp [Matrix.one_apply, (Fin.castSucc_lt_last i).ne]
     | cast j => simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `k _ n A B`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.glEmbMat]`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp`. Consider the case `cast i`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp [Matrix.mul_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.glEmbMat_mul_eq_mul :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (A B : Matrix (Fin n) (Fin n) k),
       UpperTheory.Reformulated.B.DYhc8.glEmbMat k n (A * B) = UpperTheory.Reformulated.B.DYhc8.glEmbMat k n A * UpperTheory.Reformulated.B.DYhc8.glEmbMat k n B := by
@@ -454,6 +547,11 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.glEmb :
     (k : Type) → [inst : Field k] → (n : ℕ) → GL (Fin n) k →* GL (Fin (n + (1 : ℕ))) k :=
     fun (k : Type) [Field k] (n : ℕ) ↦ Units.map (UpperTheory.Reformulated.B.DYhc8.glEmbHom k n)
 
+/- English proof (translation)
+Introduce `k _ n g`. Express the relevant statement in the definitionally equal form `Matrix.vecMul (UpperTheory.Reformulated.B.DYhc8.eLast k n) (UpperTheory.Reformulated.B.DYhc8.glEmbMat k n (↑g)) = UpperTheory.Reformulated.B.DYhc8.eLast k n`. Use extensionality with `j`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.eLast, Matrix.single_one_vecMul, UpperTheory.Reformulated.B.DYhc8.glEmbMat, Fin.lastCases_last]`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simp [UpperTheory.Reformulated.B.DYhc8.glEmbMat]`. Consider the case `cast j => simp [UpperTheory.Reformulated.B.DYhc8.glEmbMat]`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.glEmb_mem_mirabolic :
     ∀ (k : Type) [inst : Field k] (n : ℕ) (g : GL (Fin n) k),
       (UpperTheory.Reformulated.B.DYhc8.glEmb k n : GL (Fin n) k → GL (Fin (n + (1 : ℕ))) k) g ∈ UpperTheory.Reformulated.B.DYhc8.Mir k n := by
@@ -470,6 +568,11 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.levi :
     fun (k : Type) [Field k] (n : ℕ) ↦
       (UpperTheory.Reformulated.B.DYhc8.glEmb k n).codRestrict (UpperTheory.Reformulated.B.DYhc8.Mir k n) (UpperTheory.Reformulated.B.DYhc8.glEmb_mem_mirabolic k n)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.glEmbMat, UpperTheory.Reformulated.B.DYhc8.colMat]`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast i => simp [Matrix.mulVec, dotProduct]`. Simplify using `[hj]`.
+-/
 private theorem glEmbMat_mul_colMat (k : Type) [Field k] (n : ℕ) (A : Matrix (Fin n) (Fin n) k)
     (v : Fin n → k) :
     UpperTheory.Reformulated.B.DYhc8.glEmbMat k n A * UpperTheory.Reformulated.B.DYhc8.colMat k n v =
@@ -484,6 +587,11 @@ private theorem glEmbMat_mul_colMat (k : Type) [Field k] (n : ℕ) (A : Matrix (
     | cast i => simp [Matrix.mulVec, dotProduct]
   · simp [hj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.glEmbMat, UpperTheory.Reformulated.B.DYhc8.colMat]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [(Fin.castSucc_lt_last _).ne]`.
+
+Consider the case `cast j => simp [(Fin.castSucc_lt_last _).ne]`.
+-/
 private theorem colMat_mul_glEmbMat (k : Type) [Field k] (n : ℕ) (A : Matrix (Fin n) (Fin n) k)
     (v : Fin n → k) :
     UpperTheory.Reformulated.B.DYhc8.colMat k n v * UpperTheory.Reformulated.B.DYhc8.glEmbMat k n A =
@@ -495,6 +603,9 @@ private theorem colMat_mul_glEmbMat (k : Type) [Field k] (n : ℕ) (A : Matrix (
   | last => simp [(Fin.castSucc_lt_last _).ne]
   | cast j => simp [(Fin.castSucc_lt_last _).ne]
 
+/- English proof (translation)
+Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.DYhc8.glEmbMat k n (↑g) * ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat k n (Multiplicative.toAdd v)) = ((1 : Matrix (Fin (n + (1 : ℕ))) (Fin (n + (1 : ℕ))) k) + UpperTheory.Reformulated.B.DYhc8.colMat …`. Rewrite using `[mul_add, add_mul, mul_one, one_mul, glEmbMat_mul_colMat, colMat_mul_glEmbMat]`.
+-/
 private theorem conj_unip (k : Type) [Field k] (n : ℕ) (g : GL (Fin n) k)
     (v : Multiplicative (Fin n → k)) :
     UpperTheory.Reformulated.B.DYhc8.glEmb k n g * UpperTheory.Reformulated.B.DYhc8.unip k n v * (UpperTheory.Reformulated.B.DYhc8.glEmb k n g)⁻¹ =
@@ -510,6 +621,11 @@ private theorem conj_unip (k : Type) [Field k] (n : ℕ) (g : GL (Fin n) k)
       UpperTheory.Reformulated.B.DYhc8.glEmbMat k n (↑g)
   rw [mul_add, add_mul, mul_one, one_mul, glEmbMat_mul_colMat, colMat_mul_glEmbMat]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n m u`. Establish `hu : ((u : ↥(UpperTheory.Reformulated.B.DYhc8.Mir k n)) : GL (Fin (n + (1 : ℕ))) k) ∈ (UpperTheory.Reformulated.B.DYhc8.unip k n).range` using `Subgroup.mem_subgroupOf.mp u.2`. Take `⟨v, hv⟩` from `hu`. Establish `hmem : UpperTheory.Reformulated.B.DYhc8.levi k n m * (↑u : ↥(UpperTheory.Reformulated.B.DYhc8.Mir k n)) * (UpperTheory.Reformulated.B.DYhc8.levi k n m)⁻¹ ∈ UpperTheory.Reformulated.B.DYhc8.MirUin k n`. Use `Subgroup.mem_subgroupOf.mpr ⟨Multiplicative.ofAdd ((↑m : Matrix (Fin n) (Fin n) k).mulVec (Multiplicative.toAdd v)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← conj_unip, hv]`. Both sides reduce to the same expression. Conclude with `⟨hmem, rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.levi_conj_unipotent_mem :
     ∀ {k : Type} [inst : Field k] [inst_1 : ValuativeRel k] [inst_2 : TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (n : ℕ) (m : GL (Fin n) k) (u : ↥(UpperTheory.Reformulated.B.DYhc8.MirUin k n)),
@@ -562,6 +678,13 @@ noncomputable def UpperTheory.Reformulated.B.DYhc8.SmPsiMinus :
         (τ : Representation ℂ (↥(UpperTheory.Reformulated.B.DYhc8.Mir k n)) V),
         UpperTheory.Reformulated.B.DYhc8.IsSmooth τ → UpperTheory.Reformulated.B.DYhc8.IsSmooth (UpperTheory.Reformulated.B.DYhc8.psiMinus k τ)
 
+/- English proof (translation)
+Use `continuous_matrix ?_` and prove the remaining obligations. Introduce `i j`. Simplify using `only [UpperTheory.Reformulated.B.DYhc8.glEmbMat]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simpa using continuous_const`. Consider the case `cast j => simpa using continuous_const`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simpa using continuous_const`. Consider the case `cast j => simpa using continuous_id.matrix_elem i j`.
+-/
 private theorem continuous_glEmbMat (k : Type) [Field k] [TopologicalSpace k] (n : ℕ) :
     Continuous (UpperTheory.Reformulated.B.DYhc8.glEmbMat k n) := by
   refine continuous_matrix ?_
@@ -577,12 +700,22 @@ private theorem continuous_glEmbMat (k : Type) [Field k] [TopologicalSpace k] (n
     | last => simpa using continuous_const
     | cast j => simpa using continuous_id.matrix_elem i j
 
+/- English proof (translation)
+Establish `h : Continuous (UpperTheory.Reformulated.B.DYhc8.glEmb k n)` using `Continuous.units_map (UpperTheory.Reformulated.B.DYhc8.glEmbHom k n) (continuous_glEmbMat k n)`. Conclude with `h.subtype_mk _`.
+-/
 private theorem continuous_levi (k : Type) [Field k] [TopologicalSpace k] (n : ℕ) :
     Continuous (UpperTheory.Reformulated.B.DYhc8.levi k n) := by
   have h : Continuous (UpperTheory.Reformulated.B.DYhc8.glEmb k n) :=
     Continuous.units_map (UpperTheory.Reformulated.B.DYhc8.glEmbHom k n) (continuous_glEmbMat k n)
   exact h.subtype_mk _
 
+/- English proof (translation)
+Set `S : Subgroup G` to `{ carrier := {g : G | ρ g x = x} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`.
+
+Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`.
+
+Conclude with `S.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hU.mem_nhds h1) hsub)`.
+-/
 private theorem isOpen_fixed {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [_root_.Module ℂ W] (ρ : Representation ℂ G W) (x : W) (U : Set G)
     (hU : IsOpen U) (h1 : (1 : G) ∈ U) (hsub : ∀ g ∈ U, ρ g x = x) :
@@ -601,6 +734,11 @@ private theorem isOpen_fixed {G W : Type} [Group G] [TopologicalSpace G] [IsTopo
         rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }
   exact S.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hU.mem_nhds h1) hsub)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ τ hτ x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `isOpen_fixed (UpperTheory.Reformulated.B.DYhc8.psiMinus k τ) _ (UpperTheory.Reformulated.B.DYhc8.levi k n ⁻¹' {g | τ g v = v}) ((hτ v).preimage (continuous_levi k n)) (by simp) ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : τ (UpperTheory.Reformulated.B.DYhc8.levi k n g) v = v` using `hg`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (τ (UpperTheory.Reformulated.B.DYhc8.levi k n g) v) = _`. Rewrite using `[hg']`.
+-/
 theorem UpperTheory.Reformulated.B.DYhc8.main :
     ∀ (k : Type) [inst : Field k] [inst_1 : ValuativeRel k] [inst_2 : TopologicalSpace k]
       [inst_3 : IsNonarchimedeanLocalField k], UpperTheory.Reformulated.B.DYhc8.SmPsiMinus k := by

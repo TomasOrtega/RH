@@ -21,9 +21,15 @@ def schwartzBruhat : Submodule ℂ (K → ℂ) where
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.smul_left (f := fun _ => c)⟩
 
 omit [Field K] [ValuativeRel K] [IsNonarchimedeanLocalField K] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_schwartzBruhat {f : K → ℂ} :
     f ∈ schwartzBruhat K ↔ IsLocallyConstant f ∧ HasCompactSupport f := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{z | z - x ∈ valBall K N}, (isOpen_valBall N).preimage (continuous_id.sub continuous_const), by simp, fun z hz => ?_⟩` and prove the remaining obligations. Use `hg x (z - x) hz` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isLocallyConstant_of_add_valBall {g : K → ℂ} {N : ℤ}
     (hg : ∀ x, ∀ h ∈ valBall K N, g (x + h) = g x) : IsLocallyConstant g := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -33,6 +39,23 @@ theorem isLocallyConstant_of_add_valBall {g : K → ℂ} {N : ℤ}
   have := hg x (z - x) hz
   rwa [add_sub_cancel] at this
 
+/- English proof (translation)
+Take `⟨hlc, hcs⟩` from `hf`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, tsupport f ⊆ (valBall K (-(m : ℤ)) : Set K) := by`. Use `hcs.isCompact.elim_directed_cover (fun m : ℕ => (valBall K (-(m : ℤ)) : Set K)) (fun m => isOpen_valBall _) ?_ ?_` and prove the remaining obligations. Introduce `x _`. Simplify using `only [Set.mem_iUnion]`.
+
+Conclude with `exists_mem_valBall_neg_nat x`. Conclude with `Monotone.directed_le fun a b hab => valBall_antitone (by omega)`. Establish `hloc : ∀ x : K, ∃ n : ℤ, ∀ h ∈ valBall K n, f (x + h) = f x`. Introduce `x`. Establish `ho : IsOpen {h : K | f (x + h) = f x}` using `(hlc.isOpen_fiber (f x)).preimage (continuous_const.add continuous_id)`.
+
+Take `⟨n, -, hn⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp (ho.mem_nhds (by simp))`. Conclude with `⟨n, fun h hh => hn hh⟩`. Use `choose n hn using hloc`. Take `⟨t, -, ht⟩` from `hcs.isCompact.elim_nhds_subcover (fun x => {z : K | z - x ∈ valBall K (n x)}) (fun x _ => ((isOpen_valBall _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp))`. Take `⟨N, hN⟩` from `(t.image n).exists_le`.
+
+Establish `hval : ∀ y ∈ tsupport f, ∀ h ∈ valBall K N, f (y + h) = f y`. Introduce `y hy h hh`. Use `ht hy` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hxt, hyx⟩` from `this`.
+
+Establish `hN' : valBall K N ≤ valBall K (n x)` using `valBall_antitone (hN _ (Finset.mem_image_of_mem n hxt))`. Establish `e1 : f y = f x`. Use `hn x (y - x) hyx` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `e2 : f (y + h) = f x`.
+
+Use `hn x (y + h - x) (by rw [show y + h - x = (y - x) + h by ring]; exact add_mem hyx (hN' hh))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[e1, e2]`. Use `⟨N, -(m : ℤ), fun y h hh => ?_, fun x hx => hm (subset_tsupport f hx)⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport f`.
+
+Conclude with `hval y hy h hh`. Distinguish the cases in `hyh : y + h ∈ tsupport f`. Use `hval (y + h) hyh (-h) (neg_mem hh)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyh]`.
+-/
 theorem exists_invariant_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruhat K) :
     ∃ N M : ℤ, (∀ x, ∀ h ∈ valBall K N, f (x + h) = f x) ∧ ∀ x, f x ≠ 0 → x ∈ valBall K M := by
   obtain ⟨hlc, hcs⟩ := hf
@@ -81,6 +104,9 @@ theorem exists_invariant_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwa
 
 end SchwartzBruhat
 
+/- English proof (translation)
+Establish `: (1 - a) * c = 0` using `by rw [sub_mul, one_mul, ← h, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr (Ne.symm ha))`.
+-/
 theorem eq_zero_of_eq_mul_of_ne_one {a c : ℂ} (ha : a ≠ 1) (h : c = a * c) : c = 0 := by
   have : (1 - a) * c = 0 := by rw [sub_mul, one_mul, ← h, sub_self]
   exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr (Ne.symm ha))
@@ -91,6 +117,13 @@ variable [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsAddHaarMeasur
 
 open scoped Classical in
 
+/- English proof (translation)
+Use `split_ifs with h`. Establish `e : ∀ x ∈ (valBall K k : Set K), (χ x : ℂ) = 1` using `fun x hx => by simp [h x hx]`. Rewrite using `[setIntegral_congr_fun (measurableSet_valBall k) e, setIntegral_const, Complex.real_smul, mul_one]`. Take `⟨h₀, hh₀, hne⟩ : ∃ h₀ ∈ valBall K k, χ h₀ ≠ 1` from `by simpa [IsTrivialOn] using h`. Set `g : K → ℂ` to `(valBall K k : Set K).indicator fun x => (χ x : ℂ)`.
+
+Establish `hg : ∀ x, g (h₀ + x) = (χ h₀ : ℂ) * g x`. Introduce `x`. Establish `hiff : h₀ + x ∈ valBall K k ↔ x ∈ valBall K k` using `⟨fun h' => by simpa using sub_mem h' hh₀, fun h' => add_mem hh₀ h'⟩`. Distinguish the cases in `hx : x ∈ valBall K k`. Simplify using `[g, Set.indicator_of_mem (show x ∈ (valBall K k : Set K) from hx), Set.indicator_of_mem (show h₀ + x ∈ (valBall K k : Set K) from hiff.mpr hx), AddChar.map_add_eq_mul]`.
+
+Simplify using `[g, Set.indicator_of_notMem (show x ∉ (valBall K k : Set K) from hx), Set.indicator_of_notMem (show h₀ + x ∉ (valBall K k : Set K) from mt hiff.mp hx)]`. Establish `key : ∫ x in valBall K k, (χ x : ℂ) ∂μ = (χ h₀ : ℂ) * ∫ x in valBall K k, (χ x : ℂ) ∂μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_indicator (measurableSet_valBall k)]`. Conclude with `eq_zero_of_eq_mul_of_ne_one (fun h' => hne (Circle.coe_eq_one.mp h')) key`.
+-/
 theorem integral_valBall_char (χ : AddChar K Circle) (k : ℤ) :
     ∫ x in valBall K k, (χ x : ℂ) ∂μ =
       if IsTrivialOn χ k then (μ.real (valBall K k) : ℂ) else 0 := by
@@ -125,6 +158,9 @@ variable (ψ : AddChar K Circle)
 def localFourier (f : K → ℂ) (y : K) : ℂ := ∫ x, f x * (ψ (x * y) : ℂ) ∂μ
 
 omit [ValuativeRel K] [IsNonarchimedeanLocalField K] in
+/- English proof (translation)
+The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+-/
 theorem integrable_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruhat K) :
     Integrable f μ :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
@@ -133,11 +169,21 @@ variable {ψ} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
 include hψ hψ1
 
 omit hψ1 in
+/- English proof (translation)
+The claim follows from `(hf.1.continuous.mul ((continuous_subtype_val.comp hψ).comp (continuous_id.mul continuous_const))).integrable_of_hasCompactSupport hf.2.mul_right`.
+-/
 theorem integrable_mul_char_of_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruhat K)
     (y : K) : Integrable (fun x => f x * (ψ (x * y) : ℂ)) μ :=
   (hf.1.continuous.mul ((continuous_subtype_val.comp hψ).comp
     (continuous_id.mul continuous_const))).integrable_of_hasCompactSupport hf.2.mul_right
 
+/- English proof (translation)
+Rewrite `hy` using `[← isTrivialOn_mulShift_iff_mem hψ hψ1]`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hne⟩ : ∃ h ∈ valBall K N, ψ (y * h) ≠ 1 := by`. Simplify `hy` using `[IsTrivialOn, AddChar.mulShift_apply]`. Establish `key : localFourier μ ψ f y = (ψ (h * y) : ℂ) * localFourier μ ψ f y`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use extensionality with `x`. Rewrite using `[add_comm h x, hfN x h hh, add_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (ψ (h * y) : ℂ) * localFourier μ ψ f y := integral_const_mul _ _`.
+
+Use `eq_zero_of_eq_mul_of_ne_one (fun h' => hne ?_) key` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `Circle.coe_eq_one.mp h'`.
+-/
 theorem localFourier_eq_zero_of_notMem {f : K → ℂ} {N : ℤ}
     (hfN : ∀ x, ∀ h ∈ valBall K N, f (x + h) = f x) {y : K}
     (hy : y ∉ valBall K (addCharConductor ψ - N)) : localFourier μ ψ f y = 0 := by
@@ -159,6 +205,11 @@ theorem localFourier_eq_zero_of_notMem {f : K → ℂ} {N : ℤ}
 
 omit [BorelSpace K] [μ.IsAddHaarMeasure] in
 
+/- English proof (translation)
+Unfold `localFourier`. Use `congr 1`. Use extensionality with `x`. Distinguish the cases in `hx : f x = 0`. Simplify using `[hx]`.
+
+Establish `: ψ (x * h) = 1` using `isTrivialOn_addCharConductor hψ hψ1 _ (by`. Use `mul_mem_valBall (hfM x hx) hh` as an intermediate fact. Rewrite using `[add_sub_cancel] at this)` and apply the resulting hypothesis. Rewrite using `[mul_add, AddChar.map_add_eq_mul, this, mul_one]`.
+-/
 theorem localFourier_add_eq {f : K → ℂ} {M : ℤ} (hfM : ∀ x, f x ≠ 0 → x ∈ valBall K M) (y : K)
     {h : K} (hh : h ∈ valBall K (addCharConductor ψ - M)) :
     localFourier μ ψ f (y + h) = localFourier μ ψ f y := by
@@ -172,6 +223,9 @@ theorem localFourier_add_eq {f : K → ℂ} {M : ℤ} (hfM : ∀ x, f x ≠ 0 �
     rwa [add_sub_cancel] at this)
   rw [mul_add, AddChar.map_add_eq_mul, this, mul_one]
 
+/- English proof (translation)
+Take `⟨N, M, hN, hM⟩` from `exists_invariant_of_mem_schwartzBruhat hf`. Use `⟨isLocallyConstant_of_add_valBall (N := addCharConductor ψ - M) fun y h hh => localFourier_add_eq μ hψ hψ1 hM y hh, ?_⟩` and prove the remaining obligations. Conclude with `HasCompactSupport.intro (isCompact_valBall (addCharConductor ψ - N)) fun y hy => localFourier_eq_zero_of_notMem μ hψ hψ1 hN hy`.
+-/
 theorem localFourier_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruhat K) :
     localFourier μ ψ f ∈ schwartzBruhat K := by
   obtain ⟨N, M, hN, hM⟩ := exists_invariant_of_mem_schwartzBruhat hf
@@ -180,6 +234,31 @@ theorem localFourier_mem_schwartzBruhat {f : K → ℂ} (hf : f ∈ schwartzBruh
   exact HasCompactSupport.intro (isCompact_valBall (addCharConductor ψ - N))
     fun y hy => localFourier_eq_zero_of_notMem μ hψ hψ1 hN hy
 
+/- English proof (translation)
+Take `⟨N, M, hN, hM⟩` from `exists_invariant_of_mem_schwartzBruhat hf`. Establish `hfi : Integrable f μ` using `integrable_of_mem_schwartzBruhat μ hf`. Establish `hψc : Continuous fun x => (ψ x : ℂ)` using `continuous_subtype_val.comp hψ`. Set `B : Set K` to `valBall K (addCharConductor ψ - N)`. Establish `hBm : MeasurableSet B` using `measurableSet_valBall _`.
+
+Establish `: IsFiniteMeasure (μ.restrict B)` using `isFiniteMeasure_restrict.mpr (isCompact_valBall _).measure_lt_top.ne`. Establish `hA : localFourier μ ψ (localFourier μ ψ f) z = ∫ y in B, localFourier μ ψ f y * (ψ (y * z) : ℂ) ∂μ`. Rewrite using `[show localFourier μ ψ (localFourier μ ψ f) z = ∫ y, localFourier μ ψ f y * (ψ (y * z) : ℂ) ∂μ from rfl]`. Conclude with `(setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by`. Rewrite using `[localFourier_eq_zero_of_notMem μ hψ hψ1 hN hy, zero_mul]).symm`.
+
+Set `G : K → K → ℂ` to `fun y x => f x * (ψ (x * y) : ℂ) * (ψ (y * z) : ℂ)`. Establish `hG : Integrable (Function.uncurry G) ((μ.restrict B).prod μ)`. Establish `hdom : Integrable (fun p : K × K => (1 : ℝ) * ‖f p.2‖) ((μ.restrict B).prod μ)` using `(integrable_const (1 : ℝ)).mul_prod hfi.norm`. Use `hdom.mono' ?_ (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Conclude with `((hf.1.continuous.comp continuous_snd).mul (hψc.comp (continuous_snd.mul continuous_fst))).mul (hψc.comp (continuous_fst.mul continuous_const))`. Simplify using `[G, Function.uncurry, Circle.norm_coe]`. Establish `hB : ∫ y in B, localFourier μ ψ f y * (ψ (y * z) : ℂ) ∂μ = ∫ y in B, ∫ x, G y x ∂μ ∂μ`. Use `congr 1`. Use extensionality with `y`.
+
+Conclude with `(integral_mul_const _ _).symm`. Establish `hinner : ∀ x, ∫ y in B, G y x ∂μ = (valBall K N : Set K).indicator (fun _ => f (-z) * (μ.real B : ℂ)) (x + z)`. Introduce `x`. Establish `e : ∀ y, G y x = f x * ((ψ.mulShift (x + z)) y : ℂ)` using `fun y => by`. Simplify using `only [G, AddChar.mulShift_apply]`.
+
+Rewrite using `[mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[integral_const_mul, integral_valBall_char]`.
+
+Distinguish the cases in `hxz : x + z ∈ valBall K N`. Establish `ht : IsTrivialOn (ψ.mulShift (x + z)) (addCharConductor ψ - N)`. Rewrite using `[isTrivialOn_mulShift_iff_mem hψ hψ1]`. Simplify using `using hxz`. Rewrite using `[if_pos ht, Set.indicator_of_mem (show x + z ∈ (valBall K N : Set K) from hxz)]`.
+
+Establish `: f x = f (-z)`. Use `hN (-z) (x + z) hxz` as an intermediate fact. Rewrite `this` using `[show -z + (x + z) = x by ring]`. Conclude with `this`. Rewrite using `[this]`.
+
+Establish `ht : ¬ IsTrivialOn (ψ.mulShift (x + z)) (addCharConductor ψ - N)`. Rewrite using `[isTrivialOn_mulShift_iff_mem hψ hψ1]`. Simplify using `using hxz`. Rewrite using `[if_neg ht, Set.indicator_of_notMem (show x + z ∉ (valBall K N : Set K) from hxz), mul_zero]`. Rewrite using `[hA, hB, integral_integral_swap hG]`.
+
+Simplify using `only [hinner]`. Establish `hpre : ∫ x, (valBall K N : Set K).indicator (fun _ => f (-z) * (μ.real B : ℂ)) (x + z) ∂μ = ∫ x, (valBall K N : Set K).indicator (fun _ => f (-z) * (μ.real B : ℂ)) x ∂μ` using `integral_add_right_eq_self (fun x => (valBall K N : Set K).indicator (fun _ => f (-z) * (μ.real B : ℂ)) x) z`. Rewrite using `[hpre, integral_indicator_const _ (measurableSet_valBall N), Complex.real_smul]`. Simplify using `only [B]`. Rewrite using `[measureReal_valBall μ N, measureReal_valBall μ (addCharConductor ψ - N)]`.
+
+Establish `hq : (residueCard K : ℝ) ≠ 0` using `by exact_mod_cast residueCard_ne_zero`. Establish `: (residueCard K : ℝ) ^ (-addCharConductor ψ) = (residueCard K : ℝ) ^ (-N) * (residueCard K : ℝ) ^ (-(addCharConductor ψ - N))`. Rewrite using `[← zpow_add₀ hq]`. Put the polynomial expressions in normal form. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localFourier_localFourier {f : K → ℂ} (hf : f ∈ schwartzBruhat K) (z : K) :
     localFourier μ ψ (localFourier μ ψ f) z =
       (((residueCard K : ℝ) ^ (-addCharConductor ψ) * μ.real (valBall K 0) ^ 2 : ℝ) : ℂ) * f (-z) := by

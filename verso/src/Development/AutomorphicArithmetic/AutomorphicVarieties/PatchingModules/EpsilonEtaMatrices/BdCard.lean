@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.FinAm
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, f g i j = f g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (h i j).eventually_eq g0`. Use `filter_upwards [this] with g hg`. Conclude with `Matrix.ext hg`.
+-/
 private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -16,6 +19,11 @@ private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ →
   filter_upwards [this] with g hg
   exact Matrix.ext hg
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨m, hm⟩` from `(mem_Bl ρ).1 hz`. Take `rfl : z = fun g => ρ g m - m` from `funext hm`. Use `⟨(h m).comp (· - m), fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] [Module R M]
     (ρ : Representation R Γ M) (h : LC ρ) : Bl ρ ≤ Zl ρ := by
   intro z hz
@@ -25,6 +33,19 @@ private theorem block_le₂ {R Γ M : Type} [CommRing R] [Group Γ] [Topological
   simp only [map_mul, map_sub, Module.End.mul_apply]
   abel
 
+/- English proof (translation)
+Establish `hP` using `(polZ l F A R n ρ _ V rep had).2`. Take `⟨a1, a2⟩` from `had`. Simplify using `only [one_smul] at a1 a2`. Establish `e : Bd F ρ V = (fun (y : F.Γ → V) (g : F.G₀) => (y g : Matrix (Fin n) (Fin n) R)) '' {z | z ∈ Bl rep ∧ z F.c = 0}`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, hY, hT, rfl⟩`. Use `⟨fun g => rep g ⟨Y, hY⟩ - ⟨Y, hY⟩, ⟨(mem_Bl rep).2 ⟨_, fun _ => rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `sub_eq_zero.2 (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[a2]`.
+
+Use `show -Yᵀ = Y`. Rewrite using `[hT, neg_neg]`. Use function extensionality and compare the values at `g show ((rep g ⟨Y, hY⟩ - ⟨Y, hY⟩ : V) : Matrix (Fin n) (Fin n) R) = _`. Rewrite using `[Submodule.coe_sub, a1]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨y, ⟨hy, hc⟩, rfl⟩`. Take `⟨Y, hY⟩` from `(mem_Bl rep).1 hy`. Use `⟨Y, Y.2, ?_, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[hY, sub_eq_zero]`. Use `a2 Y` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Conclude with `neg_eq_iff_eq_neg.1 this.symm`. Use `show (y g : Matrix (Fin n) (Fin n) R) = _`. Rewrite using `[hY, Submodule.coe_sub, a1]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Set.InjOn.ncard_image]`. Introduce and unpack `y ⟨h1, h2⟩ y' ⟨h3, h4⟩ hh`. Use `sub_eq_zero.1 ((hP (y - y') (block_le₂ rep hlc (sub_mem h1 h3)) ?_).2 fun g => ?_)` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, h2, h4, sub_zero]`. Conclude with `sub_eq_zero.2 (Subtype.ext (congrFun hh g))`.
+-/
 private theorem bd_card {l : ℕ} [Fact l.Prime] (F : GFrame l) {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
     {n : ℕ} (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (V : Submodule A (Matrix (Fin n) (Fin n) R))
     (rep : Representation A F.Γ V) (had : IsAd F ρ (fun _ => 1) V rep) (hlc : LC rep) :
@@ -62,6 +83,29 @@ private theorem bd_card {l : ℕ} [Fact l.Prime] (F : GFrame l) {A R : Type} [Co
   · rw [Pi.sub_apply, h2, h4, sub_zero]
   · exact sub_eq_zero.2 (Subtype.ext (congrFun hh g))
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k m rep hl had hfin`. Take `⟨-, -, fD, -, -, -, ht, h2, -⟩` from `finAm l G0.frame n x m k.g`. Establish `hlc : LC rep` using `(lc1 l L G G0 h n x k m).2.2 _ _ rep (IsLocallyConstant.const _) had`. Take `⟨-, -, -, -, hine⟩` from `rho1 l G0.frame n x k (x.Am m)`. Use `haveI : Finite (k.M1 (x.Am m)) := Subtype.finite`.
+
+Take `⟨c1, -, c3⟩` from `cCount x.A G.Γ (k.M1 (x.Am m)) rep G.c G.c_sq (h2 hl)`. Establish `hP` using `(polZ l G.frame x.A _ n _ _ _ rep had).1`. Establish `a1 : ∀ (g : G.G₀) (Z : k.M1 (x.Am m)), (rep g Z : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) = k.ρ1 (x.Am m) (h.p₀ g) * Z * k.ρ1 (x.Am m) (h.p₀ g⁻¹)` using `fun g Z => (had.1 g Z).trans (one_smul _ _)`. Establish `pφ : ∀ v g, h.p₀ (G.φ v g) = G0.φ v g` using `fun v g => Subtype.ext (h.φ v g)`. Establish `pφu : ∀ u g, h.p₀ (G.φu u g) = G0.φu u g` using `fun u g => Subtype.ext (h.φu u g)`.
+
+Set `Z : AddSubgroup (G.Γ → k.M1 (x.Am m))` to `{ carrier := {z | z ∈ Zl rep ∧ (∀ v, z ∘ (G.η.ker.subtype.comp (G.φ v)) ∈ (Bl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation x.A (L.Gv v) _)).toAddSubgroup ⊔ k.Zb (x.Am m) v) ∧ ∀ u, ∀ g ∈ L.Ju u, z (G.φu u g) = 0} add_mem' := fun ⟨p1, p2, p3⟩ ⟨q1, q2, q3⟩ => ⟨add_mem p …`. Rewrite using `[Pi.add_apply, p3 u g hg, q3 u g hg, add_zero]⟩`. Use the proof step `zero_mem' := ⟨zero_mem _, fun v => zero_mem _, fun _ _ _ => rfl⟩`. Use the proof step `neg_mem' := fun ⟨p1, p2, p3⟩ => ⟨neg_mem p1, fun v => neg_mem (p2 v), fun u g hg => by`. Rewrite using `[Pi.neg_apply, p3 u g hg, neg_zero]⟩ }`.
+
+Establish `fZ : (Z : Set (G.Γ → k.M1 (x.Am m))).Finite` using `(Set.toFinite (Zl rep : Set (G.Γ → k.M1 (x.Am m)))).subset fun z hz => hz.1`. Establish `hB : (Bl rep).toAddSubgroup ≤ Z`. Introduce `z hz`. Use `⟨block_le₂ rep hlc hz, fun v => AddSubgroup.mem_sup_left ?_, fun u g hg => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `(mem_Bl rep).1 hz`.
+
+Conclude with `(mem_Bl _).2 ⟨Y, fun g => hY _⟩`. Take `⟨Y, hY⟩` from `(mem_Bl rep).1 hz`. Rewrite using `[hY, sub_eq_zero]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[a1, ← map_inv, pφu, pφu, hine u _ ⟨g, hg, rfl⟩, hine u _ ⟨g⁻¹, inv_mem hg, rfl⟩, one_mul, mul_one]`.
+
+Establish `hc` using `c1 Z fZ hB fun z hz => hz.1.2`. Establish `fS : {z | z ∈ Z ∧ z G.c = 0}.Finite` using `fZ.subset fun z hz => hz.1`. Establish `hsub : Sel1 h (x.Am m) k ⊆ (fun (y : G.Γ → k.M1 (x.Am m)) (g : G.G₀) => (y g : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g))) '' {z | z ∈ Z ∧ z G.c = 0}`. Introduce and unpack `z ⟨s1, s2, s3, s4, s5, s6⟩`. Take `⟨y, y1, y2, y3⟩` from `hP z s1 (lc_mat z fun i j => (adicLC _ _ _ m _ ht).1 (s2 i j)) (fun g g' => by rw [one_smul]; exact s3 g g') (fun g => by rw [one_smul]; exact s4 g)`.
+
+Use `⟨y, ⟨⟨y1, fun v => ?_, fun u g hg => Subtype.ext ?_⟩, y2⟩, funext y3⟩` and prove the remaining obligations. Take `⟨Y, hY, hloc⟩` from `s6 v`. Establish `hb : (fun g => rep g ⟨Y, hY⟩ - ⟨Y, hY⟩) ∈ Bl rep` using `(mem_Bl rep).2 ⟨_, fun _ => rfl⟩`. Take `⟨w1, w2⟩` from `sub_mem y1 (block_le₂ rep hlc hb)`. Use `set β : G.Γ → k.M1 (x.Am m) := y - fun g => rep g ⟨Y, hY⟩ - ⟨Y, hY⟩ with hβ`.
+
+Establish `hv : ∀ g : G.G₀, (β g : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) = z g - dY G.frame (fun g => k.ρ1 (x.Am m) (h.p₀ g)) Y g` using `fun g => by`. Rewrite using `[hβ, Pi.sub_apply, Submodule.coe_sub, Submodule.coe_sub, a1, y3]`. Both sides reduce to the same expression. Use `AddSubgroup.mem_sup.2 ⟨fun g => rep (G.φ v g) ⟨Y, hY⟩ - ⟨Y, hY⟩, (mem_Bl _).2 ⟨_, fun _ => rfl⟩, fun g => β (G.φ v g), ⟨?_, fun g g' => ?_, fun g i j hij => ?_, fun g hg i => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `w1.comp_continuous (continuous_subtype_val.comp (G.φ_cont v))`.
+
+Use `show (β (G.φ v (g * g')) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) = β (G.φ v g) + k.ρ1 (x.Am m) (G0.φ v g) * β (G.φ v g') * k.ρ1 (x.Am m) (G0.φ v g)⁻¹`. Rewrite using `[map_mul, Subgroup.coe_mul, w2, Submodule.coe_add, a1, map_inv, pφ]`. Use `show (k.wi1 (x.Am m) v * (β (G.φ v g) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.w1 (x.Am m) v) i j = 0`. Rewrite using `[hv]`. Conclude with `(hloc g).1 i j hij`.
+
+Use `show (k.wi1 (x.Am m) v * (β (G.φ v g) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.w1 (x.Am m) v) i i = 0`. Rewrite using `[hv]`. Conclude with `(hloc g).2 hg i`. Use function extensionality and compare the values at `g`. Conclude with `add_sub_cancel _ _`.
+
+Conclude with `(y3 _).trans (s5 u _ ⟨g, hg, rfl⟩)`. Use `⟨(fS.image _).subset hsub, ?_, ?_⟩` and prove the remaining obligations. Use `le_trans (Nat.mul_le_mul_right _ (((Set.ncard_le_ncard hsub (fS.image _))).trans (Set.ncard_image_le fS))) ?_` and prove the remaining obligations. Conclude with `hc.symm.le`. Conclude with `(congrArg (· * _) (bd_card G.frame _ _ rep had hlc)).trans c3`.
+-/
 theorem UpperTheory.V.Pa.selN :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (m : ℕ) (rep : Representation x.A G.Γ (k.M1 (x.Am m))), l ≠ 2 → IsAd G.frame (fun g => k.ρ1 (x.Am m) (h.p₀ g)) (fun _ => 1) (k.M1 (x.Am m)) rep → Finite (Zl rep) → (Sel1 h (x.Am m) k).Finite ∧ (Sel1 h (x.Am m) k).ncard * Nat.card (k.M1 (x.Am m)) ≤ {z | z ∈ Zl rep ∧ (∀ v, z ∘ (G.η.ker.subtype.comp (G.φ v)) ∈ (Bl (rep.comp (G.η.ker.subtype.comp (G.φ v)) : Representation x.A (L.Gv v) _)).toAddSubgroup ⊔ k.Zb (x.Am m) v) ∧ ∀ u, ∀ g ∈ L.Ju u, z (G.φu u g) = 0}.ncard * Nat.card {y : k.M1 (x.Am m) // rep G.c y = y} ∧ (Bd1 h (x.Am m) k).ncard * Nat.card rep.invariants = Nat.card {y : k.M1 (x.Am m) // rep G.c y = y} := by
   intro l _ L G G0 h n x k m rep hl had hfin

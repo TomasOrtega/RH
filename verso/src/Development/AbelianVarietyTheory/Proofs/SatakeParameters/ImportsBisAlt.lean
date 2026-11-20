@@ -6,6 +6,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.AdmIface
 
+/- English proof (translation)
+Introduce `D`. Use `⟨?_, ?_, ?_, Iff.rfl, ?_, Iff.rfl⟩` and prove the remaining obligations. Introduce `h i`. Conclude with `h i`. Introduce and unpack `⟨h1, h2, h3, -⟩`.
+
+Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Introduce `S`. Rewrite using `[dense_iff_closure_eq]`. Use `h3 (S : Set (PlE D.host)) S.finite_toSet` as an intermediate fact. Simplify `this` using `only [Finset.mem_coe]`.
+
+Introduce `h i σ P hP`. Establish `hne : D.what₂.isot (D.nd.j i) σ ≠ ⊥`. Introduce `h0`. Apply `hP.1` to reduce the goal to its premises. Rewrite using `[h0, Submodule.map_bot]`.
+
+Take `⟨-, ⟨Sig, hS, hB⟩, -⟩` from `h i σ hne`. Conclude with `⟨Sig, hS, hB P hP⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h i σ P hP w hw`. Conclude with `h i σ P hP w hw`.
+
+Introduce `h i σ P hP w hw`. Conclude with `h i σ P hP w hw`.
+-/
 theorem main : ∀ D : D7, (Formalism.MainNotions.SumRepresentations.adm1 D → ∀ i, BCEx D.nd D.naut i) ∧ (Formalism.MainNotions.SumRepresentations.adm5 D → ChebSplit D.nd ∧ GlobalTheory.RowCopy.IsobaricCuspidalStrongMultiplicityOne D.nd D.naut ∧ GlobalTheory.RowCopy.IsobaricDiscreteSelfDualStrongMultiplicityOne D.nd D.naut) ∧ (Formalism.MainNotions.SumRepresentations.Conclusion42 D → ∀ i, GlobalTheory.ThetaExh.LiftParam D.nd D.naut i) ∧ (Formalism.MainNotions.SumRepresentations.adm7 D ↔ GlobalTheory.RowCopy.TempCSD D) ∧ (Formalism.MainNotions.SumRepresentations.adm3 D ↔ ∀ i, GlobalTheory.ThetaExh.SplitLift D.nd D.naut i) ∧ (Formalism.MainNotions.SumRepresentations.adm8 D ↔ Rows.IsotInternal D.what₂) := by
   intro D
   refine ⟨?_, ?_, ?_, Iff.rfl, ?_, Iff.rfl⟩

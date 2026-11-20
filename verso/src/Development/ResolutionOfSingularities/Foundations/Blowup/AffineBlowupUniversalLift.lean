@@ -18,11 +18,17 @@ def polynomialEvalInvSelf (φ : R →+* S) (s : S) : Polynomial R →+* Localiza
     (((algebraMap S (Localization.Away s)) : S →+* Localization.Away s).comp φ)
     (Localization.Away.invSelf s)
 
+/- English proof (translation)
+Simplify using `[polynomialEvalInvSelf]`.
+-/
 theorem polynomialEvalInvSelf_monomial (φ : R →+* S) (s : S) (n : ℕ) (r : R) :
     polynomialEvalInvSelf φ s (Polynomial.monomial n r) =
       algebraMap S (Localization.Away s) (φ r) * Localization.Away.invSelf s ^ n := by
   simp [polynomialEvalInvSelf]
 
+/- English proof (translation)
+Establish `hmem : φ r ∈ Ideal.span {s ^ n}`. Establish `h1 : φ r ∈ Ideal.map φ (I ^ n)` using `Ideal.mem_map_of_mem φ hr`. Rewrite `h1` using `[Ideal.map_pow, hI, Ideal.span_singleton_pow]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp hmem`. Conclude with `⟨c, by rw [hc, mul_comm]⟩`.
+-/
 theorem exists_mul_pow_of_mem_pow (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (n : ℕ) (r : R) (hr : r ∈ I ^ n) :
     ∃ c : S, φ r = c * s ^ n := by
@@ -32,12 +38,22 @@ theorem exists_mul_pow_of_mem_pow (I : Ideal R) (φ : R →+* S) (s : S)
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton.mp hmem
   exact ⟨c, by rw [hc, mul_comm]⟩
 
+/- English proof (translation)
+Establish `h : Localization.Away.invSelf t = Localization.mk 1 ⟨t, Submonoid.mem_powers t⟩` using `rfl`. Rewrite using `[h, Localization.mk_eq_mk', mul_comm, IsLocalization.mk'_spec, map_one]`.
+-/
 private theorem algebraMap_mul_invSelf {T : Type v} [CommRing T] (t : T) :
     algebraMap T (Localization.Away t) t * Localization.Away.invSelf t = 1 := by
   have h : Localization.Away.invSelf t
       = Localization.mk 1 ⟨t, Submonoid.mem_powers t⟩ := rfl
   rw [h, Localization.mk_eq_mk', mul_comm, IsLocalization.mk'_spec, map_one]
 
+/- English proof (translation)
+Establish `hmem : ∀ i : ℕ, (p : Polynomial R).coeff i ∈ I ^ i`. Establish `hp` using `p.2`. Rewrite `hp` using `[mem_reesAlgebra_iff]`. Conclude with `hp`. Establish `key : ∀ i : ℕ, ∃ c : S, φ ((p : Polynomial R).coeff i) = c * s ^ i` using `fun i => exists_mul_pow_of_mem_pow I φ s hI i ((p : Polynomial R).coeff i) (hmem i)`.
+
+Use `choose c hc using key`. Use `⟨∑ i ∈ Finset.range ((p : Polynomial R).natDegree + 1), c i, ?_⟩` and prove the remaining obligations. Establish `hEval : polynomialEvalInvSelf φ s (p : Polynomial R) = Polynomial.eval₂ (((algebraMap S (Localization.Away s)) : S →+* Localization.Away s).comp φ) (Localization.Away.invSelf s) (p : Polynomial R)` using `rfl`. Rewrite using `[map_sum, hEval, Polynomial.eval₂_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, hc i, map_mul, map_pow, mul_assoc, ← mul_pow, algebraMap_mul_invSelf s, one_pow, mul_one]`.
+-/
 theorem exists_algebraMap_eq_polynomialEvalInvSelf (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (p : ↥(reesAlgebra I)) :
     ∃ c : S, algebraMap S (Localization.Away s) c = polynomialEvalInvSelf φ s (p : Polynomial R) := by
@@ -63,6 +79,9 @@ def reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
     (p : ↥(reesAlgebra I)) : S :=
   (exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose
 
+/- English proof (translation)
+The claim follows from `(exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose_spec`.
+-/
 theorem algebraMap_reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
     (p : ↥(reesAlgebra I)) :
@@ -70,6 +89,9 @@ theorem algebraMap_reesAlgebraLiftFun (I : Ideal R) (φ : R →+* S) (s : S)
       polynomialEvalInvSelf φ s (p : Polynomial R) :=
   (exists_algebraMap_eq_polynomialEvalInvSelf I φ s hI p).choose_spec
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[algebraMap_reesAlgebraLiftFun I φ s hI hs 1]`. Simplify using the standard rewrite rules.
+-/
 private theorem reesAlgebraLiftFun_one (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) :
     reesAlgebraLiftFun I φ s hI hs 1 = 1 := by
@@ -79,6 +101,11 @@ private theorem reesAlgebraLiftFun_one (I : Ideal R) (φ : R →+* S) (s : S)
   rw [algebraMap_reesAlgebraLiftFun I φ s hI hs 1]
   simp
 
+/- English proof (translation)
+Establish `hM : Submonoid.powers s ≤ nonZeroDivisors S`. Introduce `x hx`. Take `⟨n, rfl⟩` from `hx`. Conclude with `pow_mem hs n`. Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (S := Localization.Away s) (M := Submonoid.powers s) hM`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `hcoe : ((p * q : ↥(reesAlgebra I)) : Polynomial R) = (p : Polynomial R) * (q : Polynomial R)` using `rfl`. Rewrite using `[map_mul, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_mul]`.
+-/
 private theorem reesAlgebraLiftFun_mul (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
     (p q : ↥(reesAlgebra I)) :
@@ -94,6 +121,9 @@ private theorem reesAlgebraLiftFun_mul (I : Ideal R) (φ : R →+* S) (s : S)
       = (p : Polynomial R) * (q : Polynomial R) := rfl
   rw [map_mul, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_mul]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[algebraMap_reesAlgebraLiftFun I φ s hI hs 0]`. Simplify using the standard rewrite rules.
+-/
 private theorem reesAlgebraLiftFun_zero (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) :
     reesAlgebraLiftFun I φ s hI hs 0 = 0 := by
@@ -103,6 +133,11 @@ private theorem reesAlgebraLiftFun_zero (I : Ideal R) (φ : R →+* S) (s : S)
   rw [algebraMap_reesAlgebraLiftFun I φ s hI hs 0]
   simp
 
+/- English proof (translation)
+Establish `hM : Submonoid.powers s ≤ nonZeroDivisors S`. Introduce `x hx`. Take `⟨n, rfl⟩` from `hx`. Conclude with `pow_mem hs n`. Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (S := Localization.Away s) (M := Submonoid.powers s) hM`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `hcoe : ((p + q : ↥(reesAlgebra I)) : Polynomial R) = (p : Polynomial R) + (q : Polynomial R)` using `rfl`. Rewrite using `[map_add, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, algebraMap_reesAlgebraLiftFun, hcoe, map_add]`.
+-/
 private theorem reesAlgebraLiftFun_add (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
     (p q : ↥(reesAlgebra I)) :
@@ -127,11 +162,19 @@ def reesAlgebraLift (I : Ideal R) (φ : R →+* S) (s : S)
   map_zero' := reesAlgebraLiftFun_zero I φ s hI hs
   map_add' := reesAlgebraLiftFun_add I φ s hI hs
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reesAlgebraLift_apply (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
     (p : ↥(reesAlgebra I)) :
     reesAlgebraLift I φ s hI hs p = reesAlgebraLiftFun I φ s hI hs p := rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[reesAlgebraLift_apply, algebraMap_reesAlgebraLiftFun I φ s hI hs]`. Establish `hcoe : ((algebraMap R ↥(reesAlgebra I) r : ↥(reesAlgebra I)) : Polynomial R) = Polynomial.C r` using `rfl`. Rewrite using `[hcoe]`.
+
+Simplify using `[polynomialEvalInvSelf]`.
+-/
 theorem reesAlgebraLift_algebraMap (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S) (r : R) :
     reesAlgebraLift I φ s hI hs (algebraMap R ↥(reesAlgebra I) r) = φ r := by
@@ -144,6 +187,9 @@ theorem reesAlgebraLift_algebraMap (I : Ideal R) (φ : R →+* S) (s : S)
   rw [hcoe]
   simp [polynomialEvalInvSelf]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap S (Localization.Away s))` using `IsLocalization.injective (Localization.Away s) (Submonoid.powers_le.mpr hs)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[reesAlgebraLift_apply, algebraMap_reesAlgebraLiftFun I φ s hI hs, reesGenerator_coe, polynomialEvalInvSelf_monomial, ha, pow_one, algebraMap_mul_invSelf, map_one (algebraMap S (Localization.Away s))]`.
+-/
 theorem reesAlgebraLift_reesGenerator (I : Ideal R) (φ : R →+* S) (s : S)
     (hI : Ideal.map φ I = Ideal.span {s}) (hs : s ∈ nonZeroDivisors S)
     (a : ↥I) (ha : φ (a : R) = s) :
@@ -164,6 +210,9 @@ variable {R : Type u} [CommRing R]
 def globalSectionsRingHom {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R)) : R →+* Γ(W, ⊤) :=
   ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ g.appTop).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem globalSectionsRingHom_eq {W : Scheme.{u}} (g : W ⟶ Spec (CommRingCat.of R)) :
     globalSectionsRingHom g = ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ g.appTop).hom := rfl
 
@@ -176,10 +225,16 @@ private def homogeneousLocalizationAwayVal {B : Type u} [CommRing B] (J : Ideal 
   map_zero' := by simp
   map_add' := fun p q => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem homogeneousLocalizationAwayVal_apply {B : Type u} [CommRing B] (J : Ideal B) (a : ↥J)
     (p : HomogeneousLocalization.Away (reesGrading J) (reesGenerator J a)) :
     homogeneousLocalizationAwayVal J a p = HomogeneousLocalization.val p := rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨n, hn⟩` from `y.2`. Establish `hy : (y : ↥(reesAlgebra J)) = reesGenerator J a ^ n` using `hn.symm`. Rewrite using `[hy, map_pow, reesAlgebraLift_reesGenerator J φ (φ (a : B)) hgen hnzd a rfl, one_pow]`. Conclude with `isUnit_one`.
+-/
 private theorem isUnit_reesAlgebraLift_powers {B : Type u} [CommRing B] (J : Ideal B)
     {T : Type v} [CommRing T] (φ : B →+* T) (a : ↥J)
     (hgen : Ideal.map φ J = Ideal.span {φ (a : B)})
@@ -202,6 +257,11 @@ private def homogeneousAwayLift {B : Type u} [CommRing B] (J : Ideal B)
       (g := reesAlgebraLift J φ (φ (a : B)) hgen hnzd) (isUnit_reesAlgebraLift_powers J φ a hgen hnzd))
     (homogeneousLocalizationAwayVal J a)
 
+/- English proof (translation)
+Establish `hcoe : ((algebraMap B ↥(reesAlgebra J) r : ↥(reesAlgebra J)) : Polynomial B) = Polynomial.C r` using `rfl`. Establish `h1 : ((reesDegreeZeroEquiv J r : ↥(reesGrading J 0)) : ↥(reesAlgebra J)) = algebraMap B ↥(reesAlgebra J) r`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[reesDegreeZeroEquiv_coe_coe, hcoe]`. Establish `hz : HomogeneousLocalization.val (HomogeneousLocalization.fromZeroRingHom (reesGrading J) (Submonoid.powers (reesGenerator J a)) (reesDegreeZeroEquiv J r)) = Localization.mk ((reesDegreeZeroEquiv J r : ↥(reesGrading J 0)) : ↥(reesAlgebra J)) 1` using `rfl`.
+
+Establish `hval : HomogeneousLocalization.val (chartRingHom J a r) = algebraMap ↥(reesAlgebra J) (Localization.Away (reesGenerator J a)) (algebraMap B ↥(reesAlgebra J) r)`. Rewrite using `[chartRingHom_apply, hz, h1, Localization.mk_one_eq_algebraMap]`. Unfold `homogeneousAwayLift`. Rewrite using `[RingHom.comp_apply, homogeneousLocalizationAwayVal_apply, hval, IsLocalization.lift_eq, reesAlgebraLift_algebraMap]`.
+-/
 private theorem homogeneousAwayLift_chartRingHom {B : Type u} [CommRing B] (J : Ideal B)
     {T : Type v} [CommRing T] (φ : B →+* T) (a : ↥J)
     (hgen : Ideal.map φ J = Ideal.span {φ (a : B)})
@@ -225,6 +285,13 @@ private theorem homogeneousAwayLift_chartRingHom {B : Type u} [CommRing B] (J : 
   rw [RingHom.comp_apply, homogeneousLocalizationAwayVal_apply, hval, IsLocalization.lift_eq,
     reesAlgebraLift_algebraMap]
 
+/- English proof (translation)
+Use `⟨W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd)) ≫ affineBlowupChart I a, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : affineBlowupChart I a ≫ AffineBlowup.toSpec I = Spec.map (CommRingCat.ofHom (chartRingHom I a))`. Rewrite using `[affineBlowupChart_comp_toSpec, algebraMap_chart_eq_chartRingHom]`. Establish `h3 : CommRingCat.ofHom (chartRingHom I a) ≫ CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd) = CommRingCat.ofHom (globalSectionsRingHom g)`. Rewrite using `[← CommRingCat.ofHom_comp]`.
+
+Conclude with `congrArg CommRingCat.ofHom (RingHom.ext fun r => homogeneousAwayLift_chartRingHom I (globalSectionsRingHom g) a hgen hnzd r)`. Establish `nat : W.toSpecΓ ≫ Spec.map g.appTop = g ≫ (Spec (CommRingCat.of R)).toSpecΓ`. Rewrite using `[Scheme.toSpecΓ_naturality]`. Establish `tri : (Spec (CommRingCat.of R)).toSpecΓ ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv = 𝟙 (Spec (CommRingCat.of R))`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc, Category.assoc, h2, ← Spec.map_comp, h3, globalSectionsRingHom_eq, CommRingCat.ofHom_hom, Spec.map_comp, ← Category.assoc, nat, Category.assoc, tri, Category.comp_id]`. Introduce and unpack `x ⟨w, rfl⟩`. Conclude with `⟨(W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (homogeneousAwayLift I (globalSectionsRingHom g) a hgen hnzd))).base w, by simp⟩`.
+-/
 theorem exists_lift_affineBlowup (I : Ideal R) {W : Scheme.{u}} [IsAffine W]
     (g : W ⟶ Spec (CommRingCat.of R)) (a : ↥I)
     (hgen : Ideal.map (globalSectionsRingHom g) I = Ideal.span {globalSectionsRingHom g (a : R)})

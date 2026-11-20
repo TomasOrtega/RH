@@ -30,6 +30,9 @@ open Classical in
 
 def dcFn (U : Subgroup G) (x : G) : G → ℂ := fun g => if ∃ a ∈ U, ∃ b ∈ U, g = a * x * b then 1 else 0
 
+/- English proof (translation)
+Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨u⁻¹ * a, U.mul_mem (U.inv_mem hu) ha, b, hb, by rw [mul_assoc, mul_assoc, ← mul_assoc a, ← e, inv_mul_cancel_left]⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨u * a, U.mul_mem hu ha, b, hb, by simp only [mul_assoc]⟩`.
+-/
 theorem dcFn_left (U : Subgroup G) (x : G) {u : G} (hu : u ∈ U) (g : G) : dcFn U x (u * g) = dcFn U x g := by
   classical
   refine if_congr ⟨?_, ?_⟩ rfl rfl
@@ -38,6 +41,9 @@ theorem dcFn_left (U : Subgroup G) (x : G) {u : G} (hu : u ∈ U) (g : G) : dcFn
   · rintro ⟨a, ha, b, hb, rfl⟩
     exact ⟨u * a, U.mul_mem hu ha, b, hb, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * u⁻¹, U.mul_mem hb (U.inv_mem hu), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b * u, U.mul_mem hb hu, by simp only [mul_assoc]⟩`.
+-/
 theorem dcFn_right (U : Subgroup G) (x : G) {u : G} (hu : u ∈ U) (g : G) : dcFn U x (g * u) = dcFn U x g := by
   classical
   refine if_congr ⟨?_, ?_⟩ rfl rfl
@@ -46,8 +52,16 @@ theorem dcFn_right (U : Subgroup G) (x : G) {u : G} (hu : u ∈ U) (g : G) : dcF
   · rintro ⟨a, ha, b, hb, rfl⟩
     exact ⟨a, ha, b * u, U.mul_mem hb hu, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+The claim follows from `if_pos ⟨1, U.one_mem, 1, U.one_mem, by simp⟩`.
+-/
 theorem dcFn_self (U : Subgroup G) (x : G) : dcFn U x x = 1 := if_pos ⟨1, U.one_mem, 1, U.one_mem, by simp⟩
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology ho`. Establish `h : IsCompact ((fun a : G => ((a * x : G) : G ⧸ U)) '' U)` using `hc.image (QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const))`. Use `h.finite_of_discrete.subset fun q hq => ?_` and prove the remaining obligations. Establish `hq' : ∃ a ∈ U, ∃ b ∈ U, q.out = a * x * b`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hq (if_neg hn)`. Take `⟨a, ha, b, hb, e⟩` from `hq'`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q, e]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ hb).symm`.
+-/
 theorem dcFn_fin [TopologicalSpace G] [IsTopologicalGroup G] {U : Subgroup G} (ho : IsOpen (U : Set G)) (hc : IsCompact (U : Set G))
     (x : G) : {q : G ⧸ U | dcFn U x q.out ≠ 0}.Finite := by
   haveI : DiscreteTopology (G ⧸ U) := QuotientGroup.discreteTopology ho
@@ -66,14 +80,23 @@ namespace HeckeFn
 
 variable {U : Subgroup G} (f : HeckeFn U)
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U g`. Rewrite using `[hh]`. Conclude with `f.right _ h.2 g`.
+-/
 theorem apply_out (g : G) : f.toFun ((g : G ⧸ U).out) = f.toFun g := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul U g
   rw [hh]; exact f.right _ h.2 g
 
 def supp : Finset (G ⧸ U) := f.fin.toFinset
 
+/- English proof (translation)
+The claim follows from `f.fin.mem_toFinset`.
+-/
 theorem mem_supp {q : G ⧸ U} : q ∈ f.supp ↔ f.toFun q.out ≠ 0 := f.fin.mem_toFinset
 
+/- English proof (translation)
+Rewrite using `[mem_supp, apply_out]`.
+-/
 theorem mk_mem_supp {g : G} : (g : G ⧸ U) ∈ f.supp ↔ f.toFun g ≠ 0 := by rw [mem_supp, apply_out]
 
 open Classical in
@@ -94,6 +117,9 @@ def dc [TopologicalSpace G] [IsTopologicalGroup G] (ho : IsOpen (U : Set G)) (hc
 
 instance : Inhabited (HeckeFn U) := ⟨one U⟩
 
+/- English proof (translation)
+The claim follows from `if_pos U.one_mem`.
+-/
 example : (one U).toFun 1 = 1 := if_pos U.one_mem
 
 end HeckeFn
@@ -102,15 +128,26 @@ variable {U : Subgroup G} {M : Type} [AddCommGroup M] [Module ℂ M]
 
 def heckeOp (ρ : Representation ℂ G M) (f : HeckeFn U) : Module.End ℂ M := ∑ q ∈ f.supp, f.toFun q.out • ρ q.out
 
+/- English proof (translation)
+Simplify using `[heckeOp, LinearMap.sum_apply]`.
+-/
 theorem heckeOp_apply (ρ : Representation ℂ G M) (f : HeckeFn U) (m : M) :
     heckeOp ρ f m = ∑ q ∈ f.supp, f.toFun q.out • ρ q.out m := by
   simp [heckeOp, LinearMap.sum_apply]
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U g`. Rewrite using `[hh, f.right _ h.2, map_mul, Module.End.mul_apply, hm _ h.2]`.
+-/
 theorem heckeOp_term (ρ : Representation ℂ G M) (f : HeckeFn U) {m : M} (hm : m ∈ Hi.fixd ρ U) (g : G) :
     f.toFun (g : G ⧸ U).out • ρ (g : G ⧸ U).out m = f.toFun g • ρ g m := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul U g
   rw [hh, f.right _ h.2, map_mul, Module.End.mul_apply, hm _ h.2]
 
+/- English proof (translation)
+Rewrite using `[heckeOp_apply, Finset.sum_subset (s₂ := s.image fun i => (x i : G ⧸ U)), Finset.sum_image hinj]`. Conclude with `Finset.sum_congr rfl fun i _ => heckeOp_term ρ f hm _`. Introduce `q hq`. Take `⟨i, hi, e⟩` from `hcov _ (f.mem_supp.1 hq)`. Conclude with `Finset.mem_image.2 ⟨i, hi, e.trans (QuotientGroup.out_eq' q)⟩`.
+
+Introduce `q _ hq`. Rewrite using `[not_not.1 (mt f.mem_supp.2 hq), zero_smul]`.
+-/
 theorem heckeOp_eq_sum (ρ : Representation ℂ G M) (f : HeckeFn U) {m : M} (hm : m ∈ Hi.fixd ρ U) {ι : Type} (s : Finset ι) (x : ι → G)
     (hinj : Set.InjOn (fun i => (x i : G ⧸ U)) s) (hcov : ∀ g, f.toFun g ≠ 0 → ∃ i ∈ s, (x i : G ⧸ U) = g) :
     heckeOp ρ f m = ∑ i ∈ s, f.toFun (x i) • ρ (x i) m := by
@@ -123,6 +160,11 @@ theorem heckeOp_eq_sum (ρ : Representation ℂ G M) (f : HeckeFn U) {m : M} (hm
   · intro q _ hq
     rw [not_not.1 (mt f.mem_supp.2 hq), zero_smul]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hq : ∀ q : G ⧸ U, MulAction.toPerm u q = ((u * q.out : G) : G ⧸ U)` using `fun q => by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[heckeOp_apply, map_sum]`. Use `Finset.sum_equiv (MulAction.toPerm u) (fun q => ?_) fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hq, f.mk_mem_supp, f.left u hu, f.mem_supp]`. Rewrite using `[hq, heckeOp_term ρ f hm, f.left u hu, map_smul, map_mul, Module.End.mul_apply]`.
+-/
 theorem heckeOp_mem_fixd (ρ : Representation ℂ G M) (f : HeckeFn U) {m : M} (hm : m ∈ Hi.fixd ρ U) : heckeOp ρ f m ∈ Hi.fixd ρ U := by
   intro u hu
   have hq : ∀ q : G ⧸ U, MulAction.toPerm u q = ((u * q.out : G) : G ⧸ U) := fun q => by
@@ -133,15 +175,26 @@ theorem heckeOp_mem_fixd (ρ : Representation ℂ G M) (f : HeckeFn U) {m : M} (
   · rw [hq, f.mk_mem_supp, f.left u hu, f.mem_supp]
   · rw [hq, heckeOp_term ρ f hm, f.left u hu, map_smul, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[heckeOp_apply]`. Conclude with `W.sum_mem fun q _ => W.smul_mem _ (hW _ m hm)`.
+-/
 theorem heckeOp_mem_of_stable (ρ : Representation ℂ G M) (f : HeckeFn U) {W : Submodule ℂ M} (hW : ∀ g, ∀ m ∈ W, ρ g m ∈ W) {m : M}
     (hm : m ∈ W) : heckeOp ρ f m ∈ W := by
   rw [heckeOp_apply]
   exact W.sum_mem fun q _ => W.smul_mem _ (hW _ m hm)
 
+/- English proof (translation)
+Simplify using `only [heckeOp_apply, map_sum, map_smul, hT]`.
+-/
 theorem map_heckeOp {N : Type} [AddCommGroup N] [Module ℂ N] (ρ : Representation ℂ G M) (σ : Representation ℂ G N) (f : HeckeFn U)
     (T : M →ₗ[ℂ] N) (hT : ∀ g m, T (ρ g m) = σ g (T m)) (m : M) : T (heckeOp ρ f m) = heckeOp σ f (T m) := by
   simp only [heckeOp_apply, map_sum, map_smul, hT]
 
+/- English proof (translation)
+Rewrite using `[heckeOp_eq_sum ρ _ hm (Finset.univ : Finset Unit) (fun _ => 1) (fun _ _ _ _ _ => rfl) fun g hg => ⟨(), Finset.mem_univ _, ?_⟩]`. Simplify using `[HeckeFn.one]`. Establish `h : g ∈ U`. Assume the negation of the conclusion as `hn`. Conclude with `hg (if_neg hn)`.
+
+Rewrite using `[← one_mul g]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ h).symm`.
+-/
 theorem heckeOp_one (ρ : Representation ℂ G M) {m : M} (hm : m ∈ Hi.fixd ρ U) : heckeOp ρ (HeckeFn.one U) m = m := by
   rw [heckeOp_eq_sum ρ _ hm (Finset.univ : Finset Unit) (fun _ => 1) (fun _ _ _ _ _ => rfl) fun g hg => ⟨(), Finset.mem_univ _, ?_⟩]
   · simp [HeckeFn.one]
@@ -162,12 +215,26 @@ end Hecke
 
 section Casimir
 
+/- English proof (translation)
+Establish `h : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1}` using `by decide`. Rewrite using `[Formalism.REAL.qdet, Formalism.REAL.qminor, h, Finset.sum_pair (by decide)]`. Simplify using `[Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]`.
+-/
 private theorem qdet_two' {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 → A) (u : ℂ) :
     Formalism.REAL.qdet E u = (algebraMap ℂ A u + E 0 0) * (algebraMap ℂ A (u - 1) + E 1 1) - E 1 0 * E 0 1 := by
   have h : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1} := by decide
   rw [Formalism.REAL.qdet, Formalism.REAL.qminor, h, Finset.sum_pair (by decide)]
   simp [Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `hI` using `Complex.I_mul_I`. Establish `hc : E 1 0 φ = E 0 1 φ - (Complex.I * k) • φ` using `by rw [← h1]; abel`. Establish `ha : E 0 0 φ = Complex.I • E 0 1 φ + ((k + c) / 2) • φ`. Rewrite `h2` using `[hc]`. Take the linear combination `(norm := skip) (1 / 2 : ℂ) • h0 + (1 / 2 : ℂ) • h2`.
+
+Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (k / 2) * hI | linear_combination (-k / 2) * hI`. Establish `hd : E 1 1 φ = c • φ - E 0 0 φ` using `by rw [← h0]; abel`. Establish `r1 : E 0 0 (E 0 1 φ) = E 0 1 (E 0 0 φ) + E 0 1 φ`. Use `LinearMap.congr_fun (hE 0 0 0 1) φ` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `sub_eq_iff_eq_add'.1 this`. Establish `r2 : E 1 0 (E 0 1 φ) = E 0 1 (E 1 0 φ) + (E 1 1 φ - E 0 0 φ)`. Use `LinearMap.congr_fun (hE 1 0 0 1) φ` as an intermediate fact. Simplify using `at this`. Rewrite using `[← this]`.
+
+Normalize the expressions using the abelian group laws. Establish `r3 : E 0 0 (E 0 0 φ) = Complex.I • E 0 0 (E 0 1 φ) + ((k + c) / 2) • E 0 0 φ` using `by conv_lhs => rw [ha]`. Simplify using the standard rewrite rules. Rewrite using `[qdet_two']`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, Module.algebraMap_end_apply, map_add, map_smul, hd, map_sub, r2, r3, r1]`.
+
+Simplify using `only [hc, ha, map_add, map_smul, map_sub]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring_nf`.
+-/
 private theorem casimir' {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → Fin 2 → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (k c : ℂ) (φ : V) (h0 : E 0 0 φ + E 1 1 φ = c • φ)
     (h1 : E 0 1 φ - E 1 0 φ = (Complex.I * k) • φ) (h2 : E 0 0 φ - E 1 1 φ = Complex.I • (E 0 1 φ + E 1 0 φ)) (u : ℂ) :
@@ -206,12 +273,18 @@ def cw (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) : ℤ := -(
 
 omit [NumberField F] [IsTotallyReal F] in
 
+/- English proof (translation)
+Use `(lam v).anti (show (0 : Fin 2) ≤ 1 by decide)` as an intermediate fact. Unfold `kw`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_kw (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) : 2 ≤ kw lam v := by
   have := (lam v).anti (show (0 : Fin 2) ≤ 1 by decide)
   unfold kw; omega
 
 omit [NumberField F] [IsTotallyReal F] in
 
+/- English proof (translation)
+Unfold `kw`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem three_le_kw (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) : 3 ≤ kw lam v ↔ (lam v).w 1 < (lam v).w 0 := by
   unfold kw; omega
 
@@ -219,11 +292,17 @@ def kn (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) : ℕ := (k
 
 omit [NumberField F] [IsTotallyReal F] in
 
+/- English proof (translation)
+The claim follows from `Int.toNat_of_nonneg (by have := two_le_kw lam v; omega)`.
+-/
 @[simp] theorem kn_cast (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) : (kn lam v : ℤ) = kw lam v :=
   Int.toNat_of_nonneg (by have := two_le_kw lam v; omega)
 
 omit [NumberField F] [IsTotallyReal F] in
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.UnitaryBC.infOfWeight, Multiset.map_map, Multiset.map_map, ← Finset.prod_eq_multiset_prod, Fin.prod_univ_two]`. Simplify using `only [cw, kw, Function.comp]`. Use `push_cast`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem infChar_prod (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) (u : ℂ) :
     (((GlobalTheory.UnitaryBC.infOfWeight (lam v)).map Neg.neg).map (u + ·)).prod =
       (u + ((cw lam v : ℂ) + kw lam v - 1) / 2) * (u + ((cw lam v : ℂ) - kw lam v + 1) / 2) := by
@@ -233,6 +312,11 @@ theorem infChar_prod (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace 
   simp
   ring
 
+/- English proof (translation)
+Use `and_congr_right fun _ => forall_congr' fun v => and_congr_right fun h1 => and_congr_right fun h2 => ⟨fun h => ?_, fun h u => ?_⟩` and prove the remaining obligations. Establish `h0` using `h 0`. Establish `h1` using `h 1`. Rewrite `h0`, `h1` using `[infChar_prod]`. Simplify using `only [TR.cap, qdet_two', LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, Module.algebraMap_end_apply, map_add, map_smul] at h0 h1`.
+
+Move the coercions through the operations in `at h0 h1`. Take the linear combination `(norm := module) h1 - h0`. Rewrite using `[infChar_prod, ← casimir' _ (TR.glRel_Eop v) _ _ φ h h1 h2 u, TR.cap]`. Evaluate the numerical expressions.
+-/
 theorem isHolo_iff (lam : InfinitePlace F → DomWeight 2) (φ : TR.Sm F 2) :
     IsHolo lam φ ↔ TR.IsCuspForm φ ∧ ∀ v, TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = (Complex.I * (kw lam v : ℂ)) • φ ∧
       TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ) ∧
@@ -248,6 +332,9 @@ theorem isHolo_iff (lam : InfinitePlace F → DomWeight 2) (φ : TR.Sm F 2) :
   · rw [infChar_prod, ← casimir' _ (TR.glRel_Eop v) _ _ φ h h1 h2 u, TR.cap]
     norm_num
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (TR.lie_rt_fin _ g) φ`.
+-/
 theorem Eop_finRep (v : InfinitePlace F) (i j : Fin 2) (g : GF F) (φ : TR.Sm F 2) :
     TR.Eop v i j (TR.finRep F 2 g φ) = TR.finRep F 2 g (TR.Eop v i j φ) :=
   LinearMap.congr_fun (TR.lie_rt_fin _ g) φ
@@ -270,8 +357,14 @@ def holCusp (lam : InfinitePlace F → DomWeight 2) : Submodule ℂ (TR.Sm F 2) 
       linear_combination (norm := module) c • (h.2 v).2.1
     · rw [map_smul, (h.2 v).2.2, smul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_holCusp {lam : InfinitePlace F → DomWeight 2} {φ : TR.Sm F 2} : φ ∈ holCusp lam ↔ IsHolo lam φ := Iff.rfl
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_holCusp, isHolo_iff]`. Use `⟨Fb.isCuspForm_act (.fin g) h.1, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Eop_finRep]`. Rewrite using `[← map_sub, ← map_sub, ← map_add, ← map_add, (h.2 v).1, (h.2 v).2.1, (h.2 v).2.2, map_smul, map_smul, map_smul]`. Conclude with `⟨rfl, rfl, rfl⟩`.
+-/
 theorem finRep_mem_holCusp (lam : InfinitePlace F → DomWeight 2) (g : GF F) (φ : TR.Sm F 2) (h : φ ∈ holCusp lam) :
     TR.finRep F 2 g φ ∈ holCusp lam := by
   rw [mem_holCusp, isHolo_iff] at h ⊢
@@ -286,18 +379,30 @@ def holRep (lam : InfinitePlace F → DomWeight 2) : Representation ℂ (GF F) (
 def holCuspLev (lam : InfinitePlace F → DomWeight 2) (U : Subgroup (GF F)) : Submodule ℂ (TR.Sm F 2) :=
   holCusp lam ⊓ Hi.fixd (TR.finRep F 2) U
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_holCuspLev {lam : InfinitePlace F → DomWeight 2} {U : Subgroup (GF F)} {φ : TR.Sm F 2} :
     φ ∈ holCuspLev lam U ↔ IsHolo lam φ ∧ ∀ u ∈ U, TR.finRep F 2 u φ = φ := Iff.rfl
 
 def heckeHol (lam : InfinitePlace F → DomWeight 2) {U : Subgroup (GF F)} (f : HeckeFn U) : Module.End ℂ (holCuspLev lam U) :=
   heckeOn (TR.finRep F 2) (finRep_mem_holCusp lam) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem heckeHol_val (lam : InfinitePlace F → DomWeight 2) {U : Subgroup (GF F)} (f : HeckeFn U) (φ : holCuspLev lam U) :
     (heckeHol lam f φ).1 = heckeOp (TR.finRep F 2) f φ.1 := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun φ => Subtype.ext (heckeOp_one _ φ.2.2)`.
+-/
 theorem heckeHol_one (lam : InfinitePlace F → DomWeight 2) (U : Subgroup (GF F)) : heckeHol lam (HeckeFn.one U) = 1 :=
   LinearMap.ext fun φ => Subtype.ext (heckeOp_one _ φ.2.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨f, h0, h1, h2⟩ => ⟨f.codRestrict (holCusp lam) h1, fun e => h0 (LinearMap.ext fun x => congrArg Subtype.val (LinearMap.congr_fun e x)), fun g x => Subtype.ext (h2 g x)⟩, fun ⟨f, h0, h2⟩ => ⟨(holCusp lam).subtype ∘ₗ f, fun e => h0 (LinearMap.ext fun x => Subtype.ext (LinearM …`.
+-/
 theorem holoOcc_iff (lam : InfinitePlace F → DomWeight 2) (τ : SmIrr (GF F)) :
     HoloOcc lam τ ↔ ∃ f : τ.V →ₗ[ℂ] holCusp lam, f ≠ 0 ∧ ∀ g x, f (τ.ρ g x) = holRep lam g (f x) :=
   ⟨fun ⟨f, h0, h1, h2⟩ => ⟨f.codRestrict (holCusp lam) h1,
@@ -307,10 +412,16 @@ theorem holoOcc_iff (lam : InfinitePlace F → DomWeight 2) (τ : SmIrr (GF F)) 
 
 end Hol
 
+/- English proof (translation)
+Take `⟨φ, h0, h1, h2⟩` from `exists_isHolo_delta`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨φ, ⟨h1, h2⟩, h0⟩`.
+-/
 theorem holCuspLev_delta_ne_bot : holCuspLev lamDelta (Nf.K1G 1) ≠ ⊥ := by
   obtain ⟨φ, h0, h1, h2⟩ := exists_isHolo_delta
   exact (Submodule.ne_bot_iff _).2 ⟨φ, ⟨h1, h2⟩, h0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example : kw lamDelta Rat.infinitePlace = 12 ∧ cw lamDelta Rat.infinitePlace = 0 := ⟨rfl, rfl⟩
 
 section Quat
@@ -324,6 +435,9 @@ def equivD : Submodule ℂ (GF F → V) where
   zero_mem' γ g := by simp
   smul_mem' c Φ h γ g := by simp [h γ g]
 
+/- English proof (translation)
+Introduce `γ x` and use `by rw [Hi.rtr_apply, Hi.rtr_apply, mul_assoc, h]`.
+-/
 theorem rtr_mem_equivD (g : GF F) (Φ : GF F → V) (h : Φ ∈ equivD Q ρ) : Hi.rtr ℂ (GF F) V g Φ ∈ equivD Q ρ := fun γ x => by
   rw [Hi.rtr_apply, Hi.rtr_apply, mul_assoc, h]
 
@@ -333,6 +447,9 @@ def formsD (U : Subgroup (GF F)) : Submodule ℂ (GF F → V) := equivD Q ρ ⊓
 
 variable {Q ρ} in
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => forall₂_congr fun _ _ => funext_iff`.
+-/
 theorem mem_formsD {U : Subgroup (GF F)} {Φ : GF F → V} :
     Φ ∈ formsD Q ρ U ↔ (∀ γ g, Φ (Q.toFin γ * g) = ρ (Q.toInf γ) (Φ g)) ∧ ∀ u ∈ U, ∀ g, Φ (g * u) = Φ g :=
   and_congr_right fun _ => forall₂_congr fun _ _ => funext_iff
@@ -340,15 +457,24 @@ theorem mem_formsD {U : Subgroup (GF F)} {Φ : GF F → V} :
 def heckeD {U : Subgroup (GF F)} (f : HeckeFn U) : Module.End ℂ (formsD Q ρ U) :=
   heckeOn (Hi.rtr ℂ (GF F) V) (rtr_mem_equivD Q ρ) f
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `heckeOp (Hi.rtr ℂ (GF F) V) f Φ.1 g = _`. Rewrite using `[heckeOp_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem heckeD_apply {U : Subgroup (GF F)} (f : HeckeFn U) (Φ : formsD Q ρ U) (g : GF F) :
     (heckeD Q ρ f Φ).1 g = ∑ q ∈ f.supp, f.toFun q.out • Φ.1 (g * q.out) := by
   change heckeOp (Hi.rtr ℂ (GF F) V) f Φ.1 g = _
   rw [heckeOp_apply, Finset.sum_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun Φ => Subtype.ext (heckeOp_one _ Φ.2.2)`.
+-/
 theorem heckeD_one (U : Subgroup (GF F)) : heckeD Q ρ (HeckeFn.one U) = 1 :=
   LinearMap.ext fun Φ => Subtype.ext (heckeOp_one _ Φ.2.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨f, h0, h1, h2⟩ => ⟨f.codRestrict (equivD Q ρ) h1, fun e => h0 (LinearMap.ext fun x => congrArg Subtype.val (LinearMap.congr_fun e x)), fun g x => Subtype.ext (funext (h2 g x))⟩, fun ⟨f, h0, h2⟩ => ⟨(equivD Q ρ).subtype ∘ₗ f, fun e => h0 (LinearMap.ext fun x => Subtype.ext ( …`.
+-/
 theorem occurs_iff (τ : SmIrr (GF F)) :
     Q.Occurs ρ τ ↔ ∃ f : τ.V →ₗ[ℂ] equivD Q ρ, f ≠ 0 ∧ ∀ g x, f (τ.ρ g x) = repD Q ρ g (f x) :=
   ⟨fun ⟨f, h0, h1, h2⟩ => ⟨f.codRestrict (equivD Q ρ) h1,
@@ -356,6 +482,17 @@ theorem occurs_iff (τ : SmIrr (GF F)) :
     fun ⟨f, h0, h2⟩ => ⟨(equivD Q ρ).subtype ∘ₗ f, fun e => h0 (LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun e x)),
       fun x => (f x).2, fun g x => congrFun (congrArg Subtype.val (h2 g x))⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ γ γ' : Q.Dˣ, (Q.toFin γ)⁻¹ * Q.toFin γ' ∈ U → ρ (Q.toInf γ') x = ρ (Q.toInf γ) x` using `fun γ γ' h => by`. Use `hx (γ⁻¹ * γ') (by rwa [map_mul, map_inv])` as an intermediate fact. Use `conv_rhs => rw [← this]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Set `Φ : GF F → V` to `fun g => if h : ∃ γ, (Q.toFin γ)⁻¹ * g ∈ U then ρ (Q.toInf h.choose) x else 0`.
+
+Establish `hΦ : ∀ g γ, (Q.toFin γ)⁻¹ * g ∈ U → Φ g = ρ (Q.toInf γ) x` using `fun g γ h => by`. Establish `h' : ∃ γ, (Q.toFin γ)⁻¹ * g ∈ U` using `⟨γ, h⟩`. Simplify using `only [Φ, dif_pos h']`. Use `key _ _ ?_` and prove the remaining obligations. Use `U.mul_mem h (U.inv_mem h'.choose_spec)` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Use `⟨Φ, mem_formsD.2 ⟨fun γ g => ?_, fun u hu g => ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ δ, (Q.toFin δ)⁻¹ * g ∈ U`. Take `⟨δ, hδ⟩` from `h`. Rewrite using `[hΦ g δ hδ, hΦ _ (γ * δ) (by simpa [mul_assoc] using hδ), map_mul, map_mul, Module.End.mul_apply]`.
+
+Establish `h' : ¬ ∃ δ, (Q.toFin δ)⁻¹ * (Q.toFin γ * g) ∈ U` using `fun ⟨δ, hδ⟩ => h ⟨γ⁻¹ * δ, by simpa [mul_assoc] using hδ⟩`. Simplify using `only [Φ, dif_neg h, dif_neg h', map_zero]`. Distinguish the cases in `h : ∃ δ, (Q.toFin δ)⁻¹ * g ∈ U`. Take `⟨δ, hδ⟩` from `h`. Rewrite using `[hΦ g δ hδ, hΦ _ δ (by rw [← mul_assoc]; exact U.mul_mem hδ hu)]`.
+
+Establish `h' : ¬ ∃ δ, (Q.toFin δ)⁻¹ * (g * u) ∈ U` using `fun ⟨δ, hδ⟩ => h ⟨δ, by rwa [← mul_assoc, U.mul_mem_cancel_right hu] at hδ⟩`. Simplify using `only [Φ, dif_neg h, dif_neg h']`. Rewrite using `[hΦ 1 1 (by simp), map_one, map_one, Module.End.one_apply]`.
+-/
 theorem exists_mem_formsD (U : Subgroup (GF F)) (x : V) (hx : ∀ γ, Q.toFin γ ∈ U → ρ (Q.toInf γ) x = x) :
     ∃ Φ ∈ formsD Q ρ U, Φ 1 = x := by
   classical
@@ -384,6 +521,9 @@ theorem exists_mem_formsD (U : Subgroup (GF F)) (x : V) (hx : ∀ γ, Q.toFin γ
       simp only [Φ, dif_neg h, dif_neg h']
   · rw [hΦ 1 1 (by simp), map_one, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `mem_formsD.2 ⟨fun _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 example (U : Subgroup (GF F)) :
     (fun _ => (1 : ℂ)) ∈ formsD Q (Representation.trivial ℂ (InfinitePlace F → GL (Fin 2) ℂ) ℂ) U :=
   mem_formsD.2 ⟨fun _ _ => rfl, fun _ _ _ => rfl⟩
@@ -394,11 +534,17 @@ section Coef
 
 def coefDen (g : Matrix (Fin 2) (Fin 2) ℝ) : ℂ := ((g 1 0 - g 0 1 : ℝ) : ℂ) + Complex.I * ((g 0 0 + g 1 1 : ℝ) : ℂ)
 
+/- English proof (translation)
+Simplify using `[coefDen, Complex.normSq_apply, Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_coefDen (g : Matrix (Fin 2) (Fin 2) ℝ) :
     Complex.normSq (coefDen g) = g 0 0 ^ 2 + g 0 1 ^ 2 + g 1 0 ^ 2 + g 1 1 ^ 2 + 2 * g.det := by
   simp [coefDen, Complex.normSq_apply, Matrix.det_fin_two]
   ring
 
+/- English proof (translation)
+Introduce `e` and use `by have := normSq_coefDen g rw [e, map_zero] at this nlinarith [sq_nonneg (g 0 0), sq_nonneg (g 0 1), sq_nonneg (g 1 0), sq_nonneg (g 1 1)]`.
+-/
 theorem coefDen_ne_zero {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) : coefDen g ≠ 0 := fun e => by
   have := normSq_coefDen g
   rw [e, map_zero] at this
@@ -407,16 +553,28 @@ theorem coefDen_ne_zero {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) : coefD
 def lowCoef (k : ℕ) (s : ℂ) (g : Matrix (Fin 2) (Fin 2) ℝ) : ℂ :=
   if 0 < g.det then (g.det : ℂ) ^ (((k : ℂ) + s) / 2) * (2 * Complex.I) ^ k / coefDen g ^ k else 0
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem lowCoef_of_pos (k : ℕ) (s : ℂ) {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) :
     lowCoef k s g = (g.det : ℂ) ^ (((k : ℂ) + s) / 2) * (2 * Complex.I) ^ k / coefDen g ^ k := if_pos h
 
+/- English proof (translation)
+The claim follows from `if_neg h.not_gt`.
+-/
 theorem lowCoef_of_nonpos (k : ℕ) (s : ℂ) {g : Matrix (Fin 2) (Fin 2) ℝ} (h : g.det ≤ 0) : lowCoef k s g = 0 := if_neg h.not_gt
 
+/- English proof (translation)
+Rewrite using `[lowCoef_of_pos k 0 h, Complex.ofReal_cpow h.le]`. Simplify using the standard rewrite rules.
+-/
 theorem lowCoef_zero (k : ℕ) {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) :
     lowCoef k 0 g = ((g.det ^ ((k : ℝ) / 2) : ℝ) : ℂ) * (2 * Complex.I) ^ k / coefDen g ^ k := by
   rw [lowCoef_of_pos k 0 h, Complex.ofReal_cpow h.le]
   simp
 
+/- English proof (translation)
+Unfold `lowCoef`. Use `split_ifs with h`. Rewrite using `[add_div, Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 h.ne'), add_zero]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem lowCoef_eq_mul (k : ℕ) (s : ℂ) (g : Matrix (Fin 2) (Fin 2) ℝ) : lowCoef k s g = (g.det : ℂ) ^ (s / 2) * lowCoef k 0 g := by
   unfold lowCoef
   split_ifs with h
@@ -424,16 +582,29 @@ theorem lowCoef_eq_mul (k : ℕ) (s : ℂ) (g : Matrix (Fin 2) (Fin 2) ℝ) : lo
     ring
   · simp
 
+/- English proof (translation)
+Establish `e : coefDen 1 = 2 * Complex.I` using `by simp [coefDen]; ring`. Rewrite using `[lowCoef_of_pos k s (by simp), e]`. Simplify using the standard rewrite rules.
+-/
 theorem lowCoef_one (k : ℕ) (s : ℂ) : lowCoef k s 1 = 1 := by
   have e : coefDen 1 = 2 * Complex.I := by simp [coefDen]; ring
   rw [lowCoef_of_pos k s (by simp), e]
   simp
 
+/- English proof (translation)
+Rewrite using `[lowCoef_of_pos k s h]`. Use `div_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (by simp))) (pow_ne_zero _ (coefDen_ne_zero h))` and prove the remaining obligations. Simplify using `[Complex.cpow_eq_zero_iff, h.ne']`.
+-/
 theorem lowCoef_ne_zero (k : ℕ) (s : ℂ) {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) : lowCoef k s g ≠ 0 := by
   rw [lowCoef_of_pos k s h]
   refine div_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (by simp))) (pow_ne_zero _ (coefDen_ne_zero h))
   simp [Complex.cpow_eq_zero_iff, h.ne']
 
+/- English proof (translation)
+Establish `hd : (t • g).det = t * (t * g.det)` using `by simp [pow_two, mul_assoc]`. Establish `ht' : (t : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ht.ne'`. Distinguish the cases in `h : 0 < g.det`. Establish `e : coefDen (t • g) = t * coefDen g` using `by simp [coefDen]; ring`. Establish `e2 : (t : ℂ) ^ (((k : ℂ) + s) / 2) * (t : ℂ) ^ (((k : ℂ) + s) / 2) = (t : ℂ) ^ k * (t : ℂ) ^ s`.
+
+Rewrite using `[← Complex.cpow_add _ _ ht', add_halves, Complex.cpow_add _ _ ht', Complex.cpow_natCast]`. Rewrite using `[lowCoef_of_pos k s h, lowCoef_of_pos k s (by rw [hd]; positivity), hd, e, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg ht.le (by positivity), Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg ht.le h.le, ← mul_assoc, e2, mul_pow (t : ℂ)]`. Use `coefDen_ne_zero h` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[lowCoef_of_nonpos k s (not_lt.1 h), lowCoef_of_nonpos k s, mul_zero]`.
+
+Rewrite using `[hd]`. Conclude with `mul_nonpos_of_nonneg_of_nonpos ht.le (mul_nonpos_of_nonneg_of_nonpos ht.le (not_lt.1 h))`.
+-/
 theorem lowCoef_smul (k : ℕ) (s : ℂ) {t : ℝ} (ht : 0 < t) (g : Matrix (Fin 2) (Fin 2) ℝ) :
     lowCoef k s (t • g) = (t : ℂ) ^ s * lowCoef k s g := by
   have hd : (t • g).det = t * (t * g.det) := by simp [pow_two, mul_assoc]
@@ -451,6 +622,11 @@ theorem lowCoef_smul (k : ℕ) (s : ℂ) {t : ℝ} (ht : 0 < t) (g : Matrix (Fin
     rw [hd]
     exact mul_nonpos_of_nonneg_of_nonpos ht.le (mul_nonpos_of_nonneg_of_nonpos ht.le (not_lt.1 h))
 
+/- English proof (translation)
+Establish `hd : (-g).det = g.det` using `by simp [Matrix.det_neg]`. Establish `e : coefDen (-g) = -coefDen g` using `by simp [coefDen]; ring`. Unfold `lowCoef`. Rewrite using `[hd, e]`. Use `split_ifs with h`.
+
+Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ k with h1 | h1 <;> rw [neg_pow (coefDen g), h1] <;> ring`. Simplify using the standard rewrite rules.
+-/
 theorem lowCoef_neg (k : ℕ) (s : ℂ) (g : Matrix (Fin 2) (Fin 2) ℝ) : lowCoef k s (-g) = (-1) ^ k * lowCoef k s g := by
   have hd : (-g).det = g.det := by simp [Matrix.det_neg]
   have e : coefDen (-g) = -coefDen g := by simp [coefDen]; ring
@@ -462,10 +638,16 @@ theorem lowCoef_neg (k : ℕ) (s : ℂ) (g : Matrix (Fin 2) (Fin 2) ℝ) : lowCo
 
 def rotM (θ : ℝ) : Matrix (Fin 2) (Fin 2) ℝ := !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ]
 
+/- English proof (translation)
+Simplify using `[rotM, Matrix.det_fin_two]`. Use polynomial arithmetic with `[Real.sin_sq_add_cos_sq θ]`.
+-/
 theorem det_rotM (θ : ℝ) : (rotM θ).det = 1 := by
   simp [rotM, Matrix.det_fin_two]
   nlinarith [Real.sin_sq_add_cos_sq θ]
 
+/- English proof (translation)
+Rewrite using `[Complex.exp_mul_I, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Simplify using `only [coefDen, rotM, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Generalize the expression as in `Real.cos θ = a, Real.sin θ = b, Real.cos φ = c, Real.sin φ = d`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem coefDen_rot (θ φ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℝ) :
     coefDen (rotM θ * g * rotM φ) = Complex.exp (θ * Complex.I) * coefDen g * Complex.exp (φ * Complex.I) := by
   rw [Complex.exp_mul_I, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin, ← Complex.ofReal_cos, ← Complex.ofReal_sin]
@@ -474,6 +656,13 @@ theorem coefDen_rot (θ φ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℝ) :
   generalize Real.cos θ = a, Real.sin θ = b, Real.cos φ = c, Real.sin φ = d
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Establish `hd : (rotM θ * g * rotM φ).det = g.det` using `by simp [det_rotM]`. Unfold `lowCoef`. Rewrite using `[hd, coefDen_rot]`. Use `split_ifs with h`. Establish `e : Complex.exp (k * (θ + φ) * Complex.I) = Complex.exp (θ * Complex.I) ^ k * Complex.exp (φ * Complex.I) ^ k`.
+
+Rewrite using `[← mul_pow, ← Complex.exp_add, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `coefDen_ne_zero h` as an intermediate fact. Rewrite using `[Complex.exp_neg, e, mul_pow (_ * coefDen g), mul_pow _ (coefDen g)]`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem lowCoef_rot (k : ℕ) (s : ℂ) (θ φ : ℝ) (g : Matrix (Fin 2) (Fin 2) ℝ) :
     lowCoef k s (rotM θ * g * rotM φ) = Complex.exp (-(k * (θ + φ) * Complex.I)) * lowCoef k s g := by
   have hd : (rotM θ * g * rotM φ).det = g.det := by simp [det_rotM]
@@ -488,6 +677,9 @@ theorem lowCoef_rot (k : ℕ) (s : ℂ) (θ φ : ℝ) (g : Matrix (Fin 2) (Fin 2
     field_simp
   · simp
 
+/- English proof (translation)
+The claim follows from `lowCoef_of_nonpos _ _ (by simp [Matrix.det_fin_two])`.
+-/
 example : lowCoef 12 0 !![1, 0; 0, -1] = 0 := lowCoef_of_nonpos _ _ (by simp [Matrix.det_fin_two])
 
 variable {F : Type} [Field F] [NumberField F]
@@ -498,6 +690,11 @@ def atInf (v : InfinitePlace F) (y : GL (Fin 2) (TR.Rinf F)) : Matrix (Fin 2) (F
 def testInf (lam : InfinitePlace F → DomWeight 2) (y : GL (Fin 2) (TR.Rinf F)) : ℂ :=
   ∏ v, lowCoef (kn lam v) (-(cw lam v : ℂ)) (atInf v y)
 
+/- English proof (translation)
+Establish `e : ((kn lam v : ℕ) : ℂ) = (kw lam v : ℂ)` using `by rw [← kn_cast]; rfl`. Rewrite using `[lowCoef_of_pos _ _ h, e, ← Complex.cpow_intCast]`. Use `congr 3`. Simplify using `only [kw, cw]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lowCoef_weight (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlace F) {g : Matrix (Fin 2) (Fin 2) ℝ} (h : 0 < g.det) :
     lowCoef (kn lam v) (-(cw lam v : ℂ)) g = (g.det : ℂ) ^ ((lam v).w 0 + 1) * (2 * Complex.I) ^ kn lam v / coefDen g ^ kn lam v := by
   have e : ((kn lam v : ℕ) : ℂ) = (kw lam v : ℂ) := by rw [← kn_cast]; rfl
@@ -507,6 +704,9 @@ theorem lowCoef_weight (lam : InfinitePlace F → DomWeight 2) (v : InfinitePlac
   push_cast
   ring
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Establish `e : atInf v (1 : GL (Fin 2) (TR.Rinf F)) = 1`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [atInf]`. Rewrite using `[e, lowCoef_one]`.
+-/
 theorem testInf_one (lam : InfinitePlace F → DomWeight 2) : testInf lam 1 = 1 := by
   refine Finset.prod_eq_one fun v _ => ?_
   have e : atInf v (1 : GL (Fin 2) (TR.Rinf F)) = 1 := by
@@ -523,12 +723,27 @@ variable {F : Type} [Field F] [NumberField F] (w : Pl F)
 
 def iwa : Subgroup (GL (Fin 2) (w.adicCompletion F)) := GlobalTheory.SmGL.iwahori (w.adicCompletion F) (Fin 2)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori _ _`.
+-/
 theorem isOpen_iwa : IsOpen (iwa w : Set (GL (Fin 2) (w.adicCompletion F))) := GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori _ _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori _ _`.
+-/
 theorem isCompact_iwa : IsCompact (iwa w : Set (GL (Fin 2) (w.adicCompletion F))) := GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori _ _
 
 open ValuativeRel in
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))`. Establish `hπ : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff, he.lt_one_iff_lt_one, hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Evaluate the numerical expressions. Take `⟨y, hy⟩` from `valuation_surjective (uniformizer (w.adicCompletion F))`. Establish `h1 : valuation (w.adicCompletion F) y < 1` using `hy ▸ uniformizer_lt_one`. Rewrite using `[← hy, he.le_iff_le, hπ]`. Rewrite `h1` using `[he.lt_one_iff_lt_one]`.
+
+Distinguish the cases in `h0 : Valued.v y = 0`. Rewrite using `[h0]`. Conclude with `zero_le`. Rewrite `h1` using `[← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_unif :
     valuation (w.adicCompletion F) ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = uniformizer (w.adicCompletion F) := by
   haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
@@ -551,6 +766,9 @@ def tEnt (m : ℤ) : Fin 2 → (w.adicCompletion F)ˣ := fun i => atFin w (unif 
 
 def tDiag (m : ℤ) : GL (Fin 2) (w.adicCompletion F) := GlobalTheory.SmGL.diagT (w.adicCompletion F) (Fin 2) (tEnt w m)
 
+/- English proof (translation)
+Rewrite using `[tDiag, tDiag, ← map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [tEnt, ← zpow_natCast, ← zpow_mul]`.
+-/
 theorem tDiag_mul (a : ℤ) (j : ℕ) : tDiag w (a * j) = tDiag w a ^ j := by
   rw [tDiag, tDiag, ← map_pow]
   congr 1
@@ -559,6 +777,9 @@ theorem tDiag_mul (a : ℤ) (j : ℕ) : tDiag w (a * j) = tDiag w a ^ j := by
 
 def iwaInd (m : ℤ) : GL (Fin 2) (w.adicCompletion F) → ℂ := dcFn (iwa w) (tDiag w m)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Distinguish the cases in `h : ∃ a ∈ iwa w, ∃ b ∈ iwa w, g = a * tDiag w m * b`. Conclude with `(if_pos h).trans (Set.indicator_of_mem (s := GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset (tEnt w m)) h fun _ => (1 : ℂ)).symm`. Conclude with `(if_neg h).trans (Set.indicator_of_notMem (s := GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.iwahoriCoset (tEnt w m)) h fun _ => (1 : ℂ)).symm`.
+-/
 theorem iwaInd_eq (m : ℤ) : iwaInd w m = GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.cosetInd (tEnt w m) := by
   funext g
   by_cases h : ∃ a ∈ iwa w, ∃ b ∈ iwa w, g = a * tDiag w m * b
@@ -567,8 +788,14 @@ theorem iwaInd_eq (m : ℤ) : iwaInd w m = GlobalTheory.IndefiniteRowSideFullHec
 
 def iwaHecke (m : ℤ) : HeckeFn (iwa w) := HeckeFn.dc (isOpen_iwa w) (isCompact_iwa w) (tDiag w m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iwaHecke_toFun (m : ℤ) : (iwaHecke w m).toFun = iwaInd w m := rfl
 
+/- English proof (translation)
+The claim follows from `dcFn_self _ _`.
+-/
 example (m : ℤ) : iwaInd w m (tDiag w m) = 1 := dcFn_self _ _
 
 end Iwahori
@@ -579,12 +806,21 @@ variable {F : Type} [Field F] [NumberField F] (w : Pl F)
 
 def atW : GF F →* GL (Fin 2) (w.adicCompletion F) := Matrix.GeneralLinearGroup.map (pLoc F w)
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin 2) (v.adicCompletion F) => x i j) (e v)`.
+-/
 theorem gf_ext {g h : GF F} (e : ∀ v, atW v g = atW v h) : g = h := by
   refine Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext _ fun v => ?_)
   exact congrArg (fun x : GL (Fin 2) (v.adicCompletion F) => x i j) (e v)
 
+/- English proof (translation)
+The claim follows from `pLoc_locGL w x`.
+-/
 @[simp] theorem atW_locGL (x : GL (Fin 2) (w.adicCompletion F)) : atW w (locGL F 2 w x) = x := pLoc_locGL w x
 
+/- English proof (translation)
+The claim follows from `pLoc_locGL_of_ne h x`.
+-/
 theorem atW_locGL_of_ne {v : Pl F} (h : v ≠ w) (x : GL (Fin 2) (w.adicCompletion F)) : atW v (locGL F 2 w x) = 1 :=
   pLoc_locGL_of_ne h x
 
@@ -596,12 +832,24 @@ def awayW : GF F →* GF F where
     · subst e; simp
     · simp [atW_locGL_of_ne w e]
 
+/- English proof (translation)
+The claim follows from `inv_mul_cancel_right _ _`.
+-/
 theorem awayW_mul_loc (g : GF F) : awayW w g * locGL F 2 w (atW w g) = g := inv_mul_cancel_right _ _
 
+/- English proof (translation)
+Simplify using `[awayW]`.
+-/
 @[simp] theorem atW_awayW (g : GF F) : atW w (awayW w g) = 1 := by simp [awayW]
 
+/- English proof (translation)
+Simplify using `[awayW]`.
+-/
 @[simp] theorem awayW_locGL (x : GL (Fin 2) (w.adicCompletion F)) : awayW w (locGL F 2 w x) = 1 := by simp [awayW]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `awayW w g * (locGL F 2 w (atW w (awayW w g)))⁻¹ = _`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem awayW_awayW (g : GF F) : awayW w (awayW w g) = awayW w g := by
   change awayW w g * (locGL F 2 w (atW w (awayW w g)))⁻¹ = _
   simp
@@ -609,19 +857,40 @@ theorem awayW_mul_loc (g : GF F) : awayW w g * locGL F 2 w (atW w g) = g := inv_
 def levAt (U : Subgroup (GF F)) (K : Subgroup (GL (Fin 2) (w.adicCompletion F))) : Subgroup (GF F) :=
   U.comap (awayW w) ⊓ K.comap (atW w)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levAt {U : Subgroup (GF F)} {K : Subgroup (GL (Fin 2) (w.adicCompletion F))} {g : GF F} :
     g ∈ levAt w U K ↔ awayW w g ∈ U ∧ atW w g ∈ K := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))`.
+-/
 theorem continuous_atW : Continuous (atW w) :=
   Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))
 
+/- English proof (translation)
+The claim follows from `continuous_id.mul ((CuspSub.continuous_locGL w).comp (continuous_atW w)).inv`.
+-/
 theorem continuous_awayW : Continuous (awayW w) :=
   continuous_id.mul ((CuspSub.continuous_locGL w).comp (continuous_atW w)).inv
 
+/- English proof (translation)
+The claim follows from `(hU.preimage (continuous_awayW w)).inter (hK.preimage (continuous_atW w))`.
+-/
 theorem isOpen_levAt {U : Subgroup (GF F)} {K : Subgroup (GL (Fin 2) (w.adicCompletion F))} (hU : IsOpen (U : Set (GF F)))
     (hK : IsOpen (K : Set (GL (Fin 2) (w.adicCompletion F)))) : IsOpen (levAt w U K : Set (GF F)) :=
   (hU.preimage (continuous_awayW w)).inter (hK.preimage (continuous_atW w))
 
+/- English proof (translation)
+Establish `h1 : IsCompact ((U : Set (GF F)) ∩ atW w ⁻¹' {1})` using `hU.inter_right (isClosed_singleton.preimage (continuous_atW w))`. Establish `hc : Continuous fun p : GF F × GL (Fin 2) (w.adicCompletion F) => p.1 * locGL F 2 w p.2` using `continuous_fst.mul ((CuspSub.continuous_locGL w).comp continuous_snd)`. Establish `e : (levAt w U K : Set (GF F)) = (fun p : GF F × GL (Fin 2) (w.adicCompletion F) => p.1 * locGL F 2 w p.2) '' (((U : Set (GF F)) ∩ atW w ⁻¹' {1}) ×ˢ (K : Set (GL (Fin 2) (w.adicCompletion F))))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Establish `hg'` using `(mem_levAt w).1 hg`. Conclude with `⟨(awayW w g, atW w g), ⟨⟨hg'.1, atW_awayW w g⟩, hg'.2⟩, awayW_mul_loc w g⟩`. Introduce and unpack `⟨⟨a, x⟩, ⟨⟨ha, ha'⟩, hx⟩, rfl⟩`. Establish `h2 : atW w a = 1` using `ha'`.
+
+Establish `h3 : awayW w a = a` using `by conv_rhs => rw [← awayW_mul_loc w a, h2, map_one, mul_one]`. Use `(mem_levAt w).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h3, awayW_locGL, mul_one]`. Conclude with `ha`. Rewrite using `[map_mul, h2, atW_locGL, one_mul]`.
+
+Conclude with `hx`. Rewrite using `[e]`. Conclude with `(h1.prod hK).image hc`.
+-/
 theorem isCompact_levAt {U : Subgroup (GF F)} {K : Subgroup (GL (Fin 2) (w.adicCompletion F))} (hU : IsCompact (U : Set (GF F)))
     (hK : IsCompact (K : Set (GL (Fin 2) (w.adicCompletion F)))) : IsCompact (levAt w U K : Set (GF F)) := by
   have h1 : IsCompact ((U : Set (GF F)) ∩ atW w ⁻¹' {1}) := hU.inter_right (isClosed_singleton.preimage (continuous_atW w))
@@ -657,11 +926,17 @@ def HeckeFn.tensAt {U : Subgroup (GF F)} {K : Subgroup (GL (Fin 2) (w.adicComple
     · rw [← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, mem_levAt, map_mul, map_mul, map_inv, map_inv]
       exact ⟨QuotientGroup.eq.1 (congrArg Prod.fst e), QuotientGroup.eq.1 (congrArg Prod.snd e)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem HeckeFn.tensAt_apply {U : Subgroup (GF F)} {K : Subgroup (GL (Fin 2) (w.adicCompletion F))} (f : HeckeFn U)
     (h : HeckeFn K) (g : GF F) : (f.tensAt w h).toFun g = f.toFun (awayW w g) * h.toFun (atW w g) := rfl
 
 def testFin {U : Subgroup (GF F)} (f : HeckeFn U) (m : ℤ) : HeckeFn (levAt w U (iwa w)) := f.tensAt w (iwaHecke w m)
 
+/- English proof (translation)
+Simplify using `[testFin, HeckeFn.one, iwaInd, dcFn_self]`.
+-/
 example (U : Subgroup (GF F)) (m : ℤ) : (testFin w (HeckeFn.one U) m).toFun (locGL F 2 w (tDiag w m)) = 1 := by
   simp [testFin, HeckeFn.one, iwaInd, dcFn_self]
 

@@ -13,6 +13,11 @@ section
 variable {V : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   [SecondCountableTopology V]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Set `E` to `CompactExhaustion.choice U`. Establish `h : ∀ n, ∃ W, IsOpen W ∧ Subtype.val '' E n ⊆ W ∧ closure W ⊆ U ∧ IsCompact (closure W)` using `fun n => exists_open_between_and_isCompact_closure ((E.isCompact n).image continuous_subtype_val) hU (by rintro _ ⟨u, -, rfl⟩; exact u.2)`. Use `choose W hW1 hW2 hW3 hW4 using h`. Use `⟨W, fun n => ⟨hW1 n, hW4 n, hW3 n⟩, subset_antisymm (iUnion_subset fun n => subset_closure.trans (hW3 n)) ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨n, hn⟩` from `E.exists_mem ⟨x, hx⟩`. Conclude with `mem_iUnion.2 ⟨n, hW2 n ⟨_, hn, rfl⟩⟩`.
+-/
 theorem cover (U : Set V) (hU : IsOpen U) : ∃ W : ℕ → Set V,
     (∀ n, IsOpen (W n) ∧ IsCompact (closure (W n)) ∧ closure (W n) ⊆ U) ∧ ⋃ n, W n = U := by
   haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
@@ -27,6 +32,19 @@ theorem cover (U : Set V) (hU : IsOpen U) : ∃ W : ℕ → Set V,
   obtain ⟨n, hn⟩ := E.exists_mem ⟨x, hx⟩
   exact mem_iUnion.2 ⟨n, hW2 n ⟨_, hn, rfl⟩⟩
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace O := hO.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Set `E` to `CompactExhaustion.choice O`. Establish `h : ∀ k, ∃ g : C(V, ℝ), EqOn g 1 (Subtype.val '' E k) ∧ IsCompact (tsupport g) ∧ tsupport g ⊆ Subtype.val '' interior (E (k + 1)) ∧ ∀ x, g x ∈ Icc (0 : ℝ) 1` using `fun k => exists_continuousMap_one_of_isCompact_subset_isOpen ((E.isCompact k).image continuous_subtype_val) (hO.isOpenMap_subtype_val _ isOpen_interior) (image_mono (E.subset_interior_succ k))`. Use `choose g hg1 hgc hgs hg01 using h`. Establish `hsubO : ∀ k, tsupport (g k) ⊆ O` using `fun k => (hgs k).trans (by rintro _ ⟨u, -, rfl⟩; exact u.2)`.
+
+Establish `hmono : ∀ x, Monotone fun k => g k x`. Introduce `x`. Use `monotone_nat_of_le_succ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport (g k)`. Take `⟨u, hu, rfl⟩` from `hgs k hx`.
+
+Rewrite using `[hg1 (k + 1) ⟨u, interior_subset hu, rfl⟩]`. Conclude with `(hg01 k _).2`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Conclude with `(hg01 (k + 1) x).1`. Use `⟨fun k => g k, fun k => ⟨(g k).continuous, hgc k, hsubO k⟩, fun k x => hg01 k x, hmono, fun x => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ O`. Take `⟨n, hn⟩` from `E.exists_mem ⟨x, hx⟩`. Rewrite using `[indicator_of_mem hx]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun k => ?_` and prove the remaining obligations.
+
+Use `ENNReal.ofReal_le_ofReal (hg01 k x).2` as an intermediate fact. Simplify using `using this`. Use `le_iSup_of_le n ?_` and prove the remaining obligations. Establish `h1 : g n x = 1` using `hg1 n ⟨⟨x, hx⟩, hn, rfl⟩`. Use `show (1 : V → ℝ≥0∞) x ≤ ENNReal.ofReal (g n x)`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules. Rewrite using `[indicator_of_notMem hx]`. Simplify using `[image_eq_zero_of_notMem_tsupport (fun h => hx (hsubO _ h))]`.
+-/
 theorem approx (O : Set V) (hO : IsOpen O) : ∃ φ : ℕ → V → ℝ,
     (∀ k, Continuous (φ k) ∧ HasCompactSupport (φ k) ∧ tsupport (φ k) ⊆ O) ∧
     (∀ k x, 0 ≤ φ k x ∧ φ k x ≤ 1) ∧ (∀ x, Monotone fun k => φ k x) ∧
@@ -78,6 +96,15 @@ variable {X Y : Type} [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [M
 
 include hf hι hr hU h0 h2 h3
 
+/- English proof (translation)
+Take `⟨hint, hcont, hS⟩` from `h3 ψ hψ`. Use `set S : Set X := ι ⁻¹' (f '' tsupport ψ) with hSdef`. Establish `hSc : IsCompact S` using `hι.isCompact_preimage (hψ.2.1.image hf)`. Establish `hsub : tsupport ψ ⊆ f ⁻¹' (ι '' S)`. Introduce `v hv`.
+
+Take `⟨s, hs⟩` from `hr v`. Conclude with `⟨s, ⟨v, hv, hs.symm⟩, hs⟩`. Establish `hzero : ∀ b ∉ S, ∫ v, ψ v ∂(fib b) = 0`. Introduce `b hb`. Apply `integral_eq_zero_of_ae` to reduce the goal to its premises.
+
+Establish `hae : ∀ᵐ v ∂(fib b), v ∉ (f ⁻¹' {ι b} ∩ U)ᶜ` using `measure_eq_zero_iff_ae_notMem.1 (h0 b)`. Use `filter_upwards [hae] with v hv`. Simplify using `only [mem_compl_iff, not_not] at hv`. Conclude with `(eq_or_ne (ψ v) 0).resolve_right fun hne => hb ⟨v, subset_tsupport _ hne, hv.1⟩`. Establish `e1 : ∫ v in f ⁻¹' (ι '' S), ψ v ∂μ = ∫ v, ψ v ∂μ` using `setIntegral_eq_integral_of_forall_compl_eq_zero fun v hv => image_eq_zero_of_notMem_tsupport fun h => hv (hsub h)`.
+
+Establish `e2 : ∫ b in S, (∫ v, ψ v ∂(fib b)) ∂ν = ∫ b, (∫ v, ψ v ∂(fib b)) ∂ν` using `setIntegral_eq_integral_of_forall_compl_eq_zero fun b hb => hzero b hb`. Establish `hG : Integrable (fun b => ∫ v, ψ v ∂(fib b)) ν` using `hcont.integrable_of_hasCompactSupport (HasCompactSupport.intro' hSc hSc.isClosed hzero)`. Establish `hi : Integrable ψ μ` using `hψ.1.integrable_of_hasCompactSupport hψ.2.1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cc_case (ψ : V → ℝ) (hψ : IsCcOn U ψ) (h0ψ : ∀ v, 0 ≤ ψ v) :
     ∫⁻ v, ENNReal.ofReal (ψ v) ∂μ = ∫⁻ b, ∫⁻ v, ENNReal.ofReal (ψ v) ∂(fib b) ∂ν := by
   obtain ⟨hint, hcont, hS⟩ := h3 ψ hψ
@@ -111,6 +138,17 @@ theorem cc_case (ψ : V → ℝ) (hψ : IsCcOn U ψ) (h0ψ : ∀ v, 0 ≤ ψ v) 
     _ = ∫⁻ b, ∫⁻ v, ENNReal.ofReal (ψ v) ∂(fib b) ∂ν :=
         lintegral_congr fun b => ofReal_integral_eq_lintegral_ofReal (hint b) (ae_of_all _ h0ψ)
 
+/- English proof (translation)
+Take `⟨φ, hφ, h01, hmono, hlim⟩` from `approx O hO`. Establish `hcc : ∀ k, IsCcOn U (φ k)` using `fun k => ⟨(hφ k).1, (hφ k).2.1, (hφ k).2.2.trans hOU⟩`. Establish `hmeas : ∀ k, Measurable fun v => ENNReal.ofReal (φ k v)` using `fun k => ENNReal.measurable_ofReal.comp (hφ k).1.measurable`. Establish `hmon : Monotone fun k v => ENNReal.ofReal (φ k v)` using `fun i j hij v => ENNReal.ofReal_le_ofReal (hmono v hij)`. Establish `hfibO : ∀ b, fib b O = ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b)`.
+
+Introduce `b`. Rewrite using `[← lintegral_iSup hmeas hmon]`. Repeatedly rewrite using `[hlim]`. Rewrite using `[lintegral_indicator_one hO.measurableSet]`. Establish `hk : ∀ k, Measurable fun b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b)`.
+
+Introduce `k`. Establish `: (fun b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b)) = fun b => ENNReal.ofReal (∫ v, φ k v ∂(fib b))`. Use function extensionality and compare the values at `fun b => (ofReal_integral_eq_lintegral_ofReal ((h3 _ (hcc k)).1 b) (ae_of_all _ fun v => (h01 k v).1)).symm`. Rewrite using `[this]`. Conclude with `ENNReal.measurable_ofReal.comp (h3 _ (hcc k)).2.1.measurable`.
+
+Establish `hmonb : Monotone fun k b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b)` using `fun i j hij b => lintegral_mono fun v => ENNReal.ofReal_le_ofReal (hmono v hij)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hfibO]`. Conclude with `Measurable.iSup hk`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `cc_case hf hι hr hU h0 h2 h3 (φ k) (hcc k) fun v => (h01 k v).1`. Use `_ = ∫⁻ b, ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) ∂ν := (lintegral_iSup hk hmonb).symm`. Use `_ = ∫⁻ b, fib b O ∂ν := by simp_rw [hfibO]`.
+-/
 theorem open_case (O : Set V) (hO : IsOpen O) (hOU : O ⊆ U) :
     Measurable (fun b => fib b O) ∧ μ O = ∫⁻ b, fib b O ∂ν := by
   obtain ⟨φ, hφ, h01, hmono, hlim⟩ := approx O hO
@@ -146,9 +184,27 @@ theorem open_case (O : Set V) (hO : IsOpen O) (hOU : O ⊆ U) :
       _ = ∫⁻ b, ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) ∂ν := (lintegral_iSup hk hmonb).symm
       _ = ∫⁻ b, fib b O ∂ν := by simp_rw [hfibO]
 
+/- English proof (translation)
+The claim follows from `measure_mono_null (compl_subset_compl.2 inter_subset_right) (h0 b)`.
+-/
 theorem null_compl (b : X) : fib b Uᶜ = 0 :=
   measure_mono_null (compl_subset_compl.2 inter_subset_right) (h0 b)
 
+/- English proof (translation)
+Take `⟨W, hW, hWU⟩` from `cover U hU`. Establish `hWsub : ∀ n, W n ⊆ U` using `fun n => subset_closure.trans (hW n).2.2`. Establish `hfin : ∀ b n, fib b (W n) ≠ ⊤` using `fun b n => (lt_of_le_of_lt (measure_mono subset_closure) (h2 b _ (hW n).2.1 (hW n).2.2)).ne`. Establish `hP : ∀ n, ∀ A, MeasurableSet A → Measurable fun b => fib b (A ∩ W n)`. Introduce `n`.
+
+Use `MeasurableSpace.induction_on_inter (C := fun A _ => Measurable fun b => fib b (A ∩ W n)) (s := {s : Set V | IsOpen s}) BorelSpace.measurable_eq isPiSystem_isOpen ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [empty_inter, measure_empty]`. Conclude with `measurable_const`. Introduce `t ht`. Conclude with `(open_case hf hι hr hU h0 h2 h3 (t ∩ W n) ((ht : IsOpen t).inter (hW n).1) (inter_subset_right.trans (hWsub n))).1`.
+
+Introduce `t htm IH`. Establish `e : ∀ b, fib b (tᶜ ∩ W n) = fib b (W n) - fib b (t ∩ W n)`. Introduce `b`. Rewrite using `[← measure_diff inter_subset_right (htm.inter (hW n).1.measurableSet).nullMeasurableSet ((measure_mono inter_subset_right).trans_lt (lt_top_iff_ne_top.2 (hfin b n))).ne]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [mem_inter_iff, mem_compl_iff, mem_diff]`. The claim follows by propositional logic. Repeatedly rewrite using `[e]`. Conclude with `(open_case hf hι hr hU h0 h2 h3 (W n) (hW n).1 (hWsub n)).1.sub IH`.
+
+Introduce `g hd hgm IH`. Establish `e : ∀ b, fib b ((⋃ i, g i) ∩ W n) = ∑' i, fib b (g i ∩ W n)`. Introduce `b`. Rewrite using `[iUnion_inter, measure_iUnion (fun i j hij => (hd hij).mono inter_subset_left inter_subset_left) (fun i => (hgm i).inter (hW n).1.measurableSet)]`. Repeatedly rewrite using `[e]`.
+
+Conclude with `Measurable.ennreal_tsum IH`. Introduce `A hA`. Establish `hD : ∀ n, MeasurableSet (disjointed W n)` using `MeasurableSet.disjointed fun n => (hW n).1.measurableSet`. Establish `e : ∀ b, fib b A = ∑' n, fib b (A ∩ disjointed W n)`. Introduce `b`.
+
+Rewrite using `[← measure_inter_add_diff A hU.measurableSet, measure_mono_null (show A \ U ⊆ Uᶜ from fun x hx => hx.2) (null_compl hf hι hr hU h0 h2 h3 b), add_zero, ← hWU, ← iUnion_disjointed, inter_iUnion, measure_iUnion (fun i j hij => ((disjoint_disjointed W) hij).mono inter_subset_right in …`. Repeatedly rewrite using `[e]`. Use `Measurable.ennreal_tsum fun n => ?_` and prove the remaining obligations. Use `hP n (A ∩ disjointed W n) (hA.inter (hD n))` as an intermediate fact. Simplify `this` using `only [inter_eq_left.2 (inter_subset_right.trans (disjointed_subset W n))]`.
+-/
 theorem meas_fib : ∀ A, MeasurableSet A → Measurable fun b => fib b A := by
   obtain ⟨W, hW, hWU⟩ := cover U hU
   have hWsub : ∀ n, W n ⊆ U := fun n => subset_closure.trans (hW n).2.2
@@ -199,6 +255,13 @@ theorem meas_fib : ∀ A, MeasurableSet A → Measurable fun b => fib b A := by
 
 end
 
+/- English proof (translation)
+Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU fib h0 h2 h3 φ hφ`. Establish `hmf : Measurable fib` using `Measure.measurable_of_measurable_coe fib (meas_fib hf hι hr hU h0 h2 h3)`. Establish `hρ : μ.restrict U = ν.bind fib`. Take `⟨B, hB, hBU⟩` from `cover (univ : Set V) isOpen_univ`. Use `Measure.ext_of_generateFrom_of_iUnion {s : Set V | IsOpen s} B BorelSpace.measurable_eq isPiSystem_isOpen hBU (fun i => (hB i).1) (fun i => ?_) ?_` and prove the remaining obligations.
+
+Conclude with `((Measure.restrict_apply_le _ _).trans_lt ((measure_mono subset_closure).trans_lt (hB i).2.1.measure_lt_top)).ne`. Introduce `s hs`. Rewrite using `[Measure.restrict_apply (hs : IsOpen s).measurableSet, Measure.bind_apply hs.measurableSet hmf.aemeasurable, (open_case hf hι hr hU h0 h2 h3 (s ∩ U) (hs.inter hU) inter_subset_right).2]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Rewrite using `[← measure_inter_add_diff s hU.measurableSet, measure_mono_null (show s \ U ⊆ Uᶜ from fun x hx => hx.2) (null_compl hf hι hr hU h0 h2 h3 b), add_zero]`. Rewrite using `[hρ, Measure.lintegral_bind hmf.aemeasurable hφ.aemeasurable]`.
+-/
 theorem disintStep_holds : DisintStep := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU fib h0 h2 h3 φ hφ
   have hmf : Measurable fib :=
@@ -220,6 +283,9 @@ theorem disintStep_holds : DisintStep := by
           (null_compl hf hι hr hU h0 h2 h3 b), add_zero]
   rw [hρ, Measure.lintegral_bind hmf.aemeasurable hφ.aemeasurable]
 
+/- English proof (translation)
+The claim follows from `fibOfDens_of disintStep_holds`.
+-/
 theorem fibOfDens_holds : FibOfDens := fibOfDens_of disintStep_holds
 
 end PI.VolStabS.DiscreteGroups

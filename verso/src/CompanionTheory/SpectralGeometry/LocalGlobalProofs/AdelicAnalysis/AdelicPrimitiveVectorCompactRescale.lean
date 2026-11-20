@@ -22,6 +22,57 @@ def phiV (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
   (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).toRingHom.comp
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨-, almM, glueM, cptM⟩` from `GlobalTheory.T.adelic_tuple_local_global_properties F E σ hCM _ b 1 M`. Take `⟨ext1, alm1, glue1, -⟩` from `GlobalTheory.T.adelic_tuple_local_global_properties F E σ hCM _ b 1 1`.
+
+Take `⟨Ωi, hΩi, hi⟩` from `GlobalTheory.T.archimedean_primitive_vector_compact_rescale F E σ hCM M`. Use `choose Ωv hΩv hv using GlobalTheory.T.local_primitive_vector_compact_rescale F E σ hCM M`. Take `⟨good, hgoodEv, hgood⟩ : ∃ good : HeightOneSpectrum (𝓞 F) → Prop, (∀ᶠ v in Filter.cofinite, good v) ∧ ∀ v, good v → ∀ y : Fin 1 → Fin M → Fv F v ⊗[F] E, (∃ z : Fin M → Fv F v ⊗[F] E, z ⬝ᵥ y 0 = 1) → ∃ (a : (Fv F v ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Fv F v ⊗[F] E), (a : Fv F v ⊗[F] E) …` from `⟨_, GlobalTheory.T.primitive_vector_lattice_rescale_almost_all F E σ hCM _ b M, fun _ h => h⟩`. Take `⟨Cv, hCg, hCb⟩ : ∃ Cv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin M → Fv F v ⊗[F] E), (∀ v, good v → Cv v = latV b v) ∧ (∀ v, ¬ good v → Cv v = Ωv v)` from `⟨fun v => if good v then latV b v else Ωv v, fun v h => if_pos h, fun v h => if_neg h⟩`. Establish `hCcpt : ∀ v, IsCompact (Cv v)`.
+
+Introduce `v`. Distinguish the cases in `h : good v`. Rewrite using `[hCg v h]`. Conclude with `(GlobalTheory.T.contDiffOn_chart_globalWhittakerCoefficient F E σ hCM _ b 1 M v).1`. Rewrite using `[hCb v h]`.
+
+Conclude with `hΩv v`. Establish `hClat : ∀ᶠ v in Filter.cofinite, Cv v ⊆ latV b v` using `hgoodEv.mono fun v h => (hCg v h).le`. Establish `extK : ∀ x y : AF F ⊗[F] E, phiInf F E x = phiInf F E y → (∀ v, phiV F E v x = phiV F E v y) → x = y`. Introduce `x y h1 h2`. Use `ext1 (fun _ _ => x) (fun _ _ => y) (by funext a i; exact h1) (fun v => by funext a i; exact h2 v)` as an intermediate fact.
+
+Conclude with `congrFun (congrFun this 0) 0`. Establish `oneLat : ∀ᶠ v in Filter.cofinite, (fun _ _ => 1 : Fin 1 → Fin 1 → Fv F v ⊗[F] E) ∈ latV b v`. Use `(alm1 (fun _ _ => 1)).mono fun v hv => ?_` and prove the remaining obligations. Establish `e : (projV v (projFin (fun _ _ => (1 : AF F ⊗[F] E))) : Fin 1 → Fin 1 → Fv F v ⊗[F] E) = fun _ _ => 1`. Use function extensionality and compare the values at `a i`.
+
+Conclude with `map_one (phiV F E v)`. Rewrite `hv` using `[e]`. Then use the resulting hypothesis. Establish `glueK : ∀ (xi : Ainf F ⊗[F] E) (xv : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v ⊗[F] E), (∀ᶠ v in Filter.cofinite, xv v = 1) → ∃ x : AF F ⊗[F] E, phiInf F E x = xi ∧ ∀ v, phiV F E v x = xv v`. Introduce `xi xv h`. Take `⟨X, h1, h2⟩` from `glue1 (fun _ _ => xi) (fun v _ _ => xv v) ((h.and oneLat).mono fun v hv => by`.
+
+Establish `e : (fun _ _ => xv v : Fin 1 → Fin 1 → Fv F v ⊗[F] E) = fun _ _ => 1`. Use function extensionality and compare the values at `a i`. Conclude with `hv.1`. Rewrite using `[e]`. Conclude with `hv.2)`.
+
+Conclude with `⟨X 0 0, congrFun (congrFun h1 0) 0, fun v => congrFun (congrFun (h2 v) 0) 0⟩`. Use `⟨{X | projInf X ∈ Ωi ∧ ∀ v, projV v (projFin X) ∈ Cv v}, cptM Ωi Cv hΩi hCcpt hClat, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨z₀, hz₀⟩`. Establish `hzi : (fun i => phiInf F E (z₀ i)) ⬝ᵥ projInf y 0 = 1`. Use `congrArg (phiInf F E) hz₀` as an intermediate fact.
+
+Rewrite `this` using `[map_one, RingHom.map_dotProduct]`. Conclude with `this`. Take `⟨ai, zi, hai, hzi', hidi⟩` from `hi (projInf y) ⟨_, hzi⟩`. Establish `hzv : ∀ v, (fun i => phiV F E v (z₀ i)) ⬝ᵥ projV v (projFin y) 0 = 1`. Introduce `v`.
+
+Use `congrArg (phiV F E v) hz₀` as an intermediate fact. Rewrite `this` using `[map_one, RingHom.map_dotProduct]`. Conclude with `this`. Establish `loc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ (a : (Fv F v ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Fv F v ⊗[F] E), (a : Fv F v ⊗[F] E) • projV v (projFin y) ∈ Cv v ∧ z ∈ Cv v ∧ z 0 ⬝ᵥ ((a : Fv F v ⊗[F] E) • projV v (projFin y)) 0 = 1 ∧ (good v → projV v (projFin y) ∈ latV b v → (fun _ i => phiV …`. Introduce `v`.
+
+Distinguish the cases in `hg : good v`. Distinguish the cases in `hy : projV v (projFin y) ∈ latV b v ∧ (fun _ i => phiV F E v (z₀ i) : Fin 1 → Fin M → Fv F v ⊗[F] E) ∈ latV b v`. Use `⟨1, fun _ i => phiV F E v (z₀ i), ?_, ?_, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[hCg v hg, Units.val_one, one_smul]`. Conclude with `hy.1`.
+
+Rewrite using `[hCg v hg]`. Conclude with `hy.2`. Rewrite using `[Units.val_one, one_smul]`. Conclude with `hzv v`. Take `⟨a, z, h1, h2, h3⟩` from `hgood v hg _ ⟨_, hzv v⟩`.
+
+Use `⟨a, z, ?_, ?_, h3, fun _ h h' => absurd ⟨h, h'⟩ hy⟩` and prove the remaining obligations. Rewrite using `[hCg v hg]`. Conclude with `h1`. Rewrite using `[hCg v hg]`. Conclude with `h2`.
+
+Take `⟨a, z, h1, h2, h3⟩` from `hv v _ ⟨_, hzv v⟩`. Use `⟨a, z, ?_, ?_, h3, fun h => absurd h hg⟩` and prove the remaining obligations. Rewrite using `[hCb v hg]`. Conclude with `h1`. Rewrite using `[hCb v hg]`.
+
+Conclude with `h2`. Use `choose av zv hav hzv' hidv ha1 using loc`. Establish `ae1 : ∀ᶠ v in Filter.cofinite, av v = 1` using `by filter_upwards [hgoodEv, almM y, almM (fun _ i => z₀ i)] with v h1 h2 h3`. Conclude with `ha1 v h1 h2 h3`. Take `⟨a, ha_i, ha_v⟩` from `glueK (ai : Ainf F ⊗[F] E) (fun v => (av v : Fv F v ⊗[F] E)) (ae1.mono fun v h => by simp [h])`.
+
+Take `⟨a', ha'_i, ha'_v⟩` from `glueK ((ai⁻¹ : (Ainf F ⊗[F] E)ˣ) : Ainf F ⊗[F] E) (fun v => (((av v)⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) (ae1.mono fun v h => by simp [h])`. Establish `haa : a * a' = 1`. Use `extK _ _ ?_ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_one, ha_i, ha'_i, Units.mul_inv]`. Rewrite using `[map_mul, map_one, ha_v, ha'_v, Units.mul_inv]`.
+
+Take `⟨Z, hZi, hZv⟩` from `glueM zi zv (hgoodEv.mono fun v h => by`. Use `hzv' v` as an intermediate fact. Rewrite using `[hCg v h] at this)` and apply the resulting hypothesis. Establish `eI : projInf ((a : AF F ⊗[F] E) • y) = (ai : Ainf F ⊗[F] E) • projInf y`. Use function extensionality and compare the values at `p i`.
+
+Use `show phiInf F E (a * y p i) = (ai : Ainf F ⊗[F] E) * phiInf F E (y p i)`. Rewrite using `[map_mul, ha_i]`. Establish `eV : ∀ v, projV v (projFin ((a : AF F ⊗[F] E) • y)) = (av v : Fv F v ⊗[F] E) • projV v (projFin y)`. Introduce `v`. Use function extensionality and compare the values at `p i`.
+
+Use `show phiV F E v (a * y p i) = (av v : Fv F v ⊗[F] E) * phiV F E v (y p i)`. Rewrite using `[map_mul, ha_v]`. Use `⟨⟨a, a', haa, by rw [mul_comm]; exact haa⟩, Z, ⟨?_, fun v => ?_⟩, ⟨?_, fun v => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show projInf ((a : AF F ⊗[F] E) • y) ∈ Ωi`. Rewrite using `[eI]`.
+
+Conclude with `hai`. Use `show projV v (projFin ((a : AF F ⊗[F] E) • y)) ∈ Cv v`. Rewrite using `[eV]`. Conclude with `hav v`. Rewrite using `[hZi]`.
+
+Conclude with `hzi'`. Rewrite using `[hZv]`. Conclude with `hzv' v`. Use `show Z 0 ⬝ᵥ ((a : AF F ⊗[F] E) • y) 0 = 1`. Use `extK _ _ ?_ fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_one, RingHom.map_dotProduct]`. Establish `e1 : (phiInf F E ∘ Z 0) = zi 0`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun hZi 0) i`. Establish `e2 : (phiInf F E ∘ ((a : AF F ⊗[F] E) • y) 0) = ((ai : Ainf F ⊗[F] E) • projInf y) 0`.
+
+Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun eI 0) i`. Rewrite using `[e1, e2]`. Conclude with `hidi`. Rewrite using `[map_one, RingHom.map_dotProduct]`.
+
+Establish `e1 : (phiV F E v ∘ Z 0) = zv v 0`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun (hZv v) 0) i`. Establish `e2 : (phiV F E v ∘ ((a : AF F ⊗[F] E) • y) 0) = ((av v : Fv F v ⊗[F] E) • projV v (projFin y)) 0`. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrFun (congrFun (eV v) 0) i`. Rewrite using `[e1, e2]`. Conclude with `hidv v`.
+-/
 theorem unimodular_compact_mod_units : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ),
     ∃ Ω : Set (Fin 1 → Fin M → AF F ⊗[F] E), IsCompact Ω ∧

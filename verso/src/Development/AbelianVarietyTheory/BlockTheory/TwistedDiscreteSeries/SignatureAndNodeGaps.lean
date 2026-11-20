@@ -26,6 +26,11 @@ def SignatureAndGaps : Prop :=
     ((parA (Ptw D) j τ).filter fun x => x.2 = true).card + (D.R.m - j) / 2 = D.R.r + j * D.R.t ∧
     ∀ x ∈ parA (Ptw D) j τ, ∀ y ∈ parA (Ptw D) j τ, x.2 ≠ y.2 → h₀ ≤ |((x.1 - y.1 : ℚ) : ℝ)|
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `h4` using `h1 τ 0 D.R.two_le_m`. Establish `h5 : (1800 : ℝ) < ((D.R.r + D.R.m * D.R.t : ℕ) : ℝ)` using `by exact_mod_cast h3`. Establish `h6 : (1800 : ℝ) ^ 3 < ((D.R.r + D.R.m * D.R.t : ℕ) : ℝ) ^ 3` using `pow_lt_pow_left₀ h5 (by norm_num) (by norm_num)`. Establish `h7 : (0 : ℝ) ≤ D.R.t` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example (D : D7) (h₀ : ℝ) (h : SizeRows D h₀) (τ : D.what₂.Tau) :
     2 * (1800 : ℝ) ^ 3 <
       (((D.hc τ).b ⟨0 + 1, D.R.two_le_m⟩ - (D.hc τ).b ⟨0, by have := D.R.two_le_m; omega⟩ : ℚ) : ℝ) := by

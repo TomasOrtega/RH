@@ -19,15 +19,28 @@ attribute [local instance 100000] MeasurableSpace.pi
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h` using `(isFiniteMeasure_quotientMeasure (K := K) (n := n) μ).measure_univ_lt_top`. Rewrite `h` using `[quotientMeasure_univ μ (isFundamentalDomain_fundamentalDomain _ μ)]`. Conclude with `⟨by rwa [Measure.restrict_apply_univ]⟩`.
+-/
 theorem finFd {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] : IsFiniteMeasure (fd μ) := by
   have h := (isFiniteMeasure_quotientMeasure (K := K) (n := n) μ).measure_univ_lt_top
   rw [quotientMeasure_univ μ (isFundamentalDomain_fundamentalDomain _ μ)] at h
   exact ⟨by rwa [Measure.restrict_apply_univ]⟩
 
+/- English proof (translation)
+Take `⟨CN, hCN, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2 + 2) (r := 2)`. Conclude with `⟨by rw [Measure.restrict_apply_univ]; exact (measure_mono hsub).trans_lt hCN.measure_lt_top⟩`.
+-/
 private theorem finN : IsFiniteMeasure ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2)) := by
   obtain ⟨CN, hCN, hsub⟩ := exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2 + 2) (r := 2)
   exact ⟨by rw [Measure.restrict_apply_univ]; exact (measure_mono hsub).trans_lt hCN.measure_lt_top⟩
 
+/- English proof (translation)
+Introduce `g`. Take `⟨hU, hle, -⟩` from `typeFin D`. Use `haveI := D.prob`. Use `haveI := finN (K := K)`. Take `⟨CN, hCN, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := 2 + 2) (r := 2)`.
+
+Establish `hnn` using `continuous_unipOne (K := K) (n := 2 + 2) 2`. Establish `hH : Continuous fun z : G1 K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K]) => Φ (nn z.2 * z.1)` using `hΦ.comp ((hnn.comp continuous_snd).mul continuous_fst)`. Simplify using `only [hW]`. Use `fix_swap D.ν _ hU D.supp D.e D.cont _ _ hH (fun C hC => ?_) g fun X => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `(hC.prod hCN).exists_bound_of_continuousOn hH.continuousOn`.
+
+Conclude with `⟨B, (ae_restrict_mem measurableSet_unipFundamentalDomain).mono fun y hy z hz => hB (z, y) ⟨hz, hsub hy⟩⟩`. Simplify `hfix (nn X * g)` using `only [mul_assoc]`.
+-/
 private theorem fixW (D : TypeDat K (2 + 2)) (Φ W : G1 K (2 + 2) → ℂ) (hΦ : Continuous Φ) (hfix : D.Fix Φ)
     (hW : ∀ g, W g = ∫ X in unipFundamentalDomain K (2 + 2) 2, Φ (nn X * g) ∂unipMeasure K (2 + 2) 2) : D.Fix W := by
   intro g
@@ -44,11 +57,30 @@ private theorem fixW (D : TypeDat K (2 + 2)) (Φ W : G1 K (2 + 2) → ℂ) (hΦ 
     exact ⟨B, (ae_restrict_mem measurableSet_unipFundamentalDomain).mono fun y hy z hz => hB (z, y) ⟨hz, hsub hy⟩⟩
   · simpa only [mul_assoc] using hfix (nn X * g)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem sfin {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] : SFinite ν := inferInstance
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, blkLaws.2.1, mul_one, mul_one, zero_add]`.
+-/
 private theorem hsp (a b : G1 K 2) (t : ℝ) (g : G1 K (2 + 2)) : lv a b t * g = lv a b 0 * (lv 1 1 t * g) := by
   rw [← mul_assoc, blkLaws.2.1, mul_one, mul_one, zero_add]
 
+/- English proof (translation)
+Use `haveI := finFd μ₂`. Use `haveI := finN (K := K)`. Use `haveI := sfin (fd μ₂)`. Use `haveI := sfin κ`. Use `haveI := sfin ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2))`.
+
+Take `⟨⟨c, hc⟩, -⟩` from `unf μ μ₂ κ`. Take `⟨v₀, hv₀⟩` from `(A.onto f).2 ⟨hsec, hff⟩`. Establish `hS` using `secFun μ₂ τ₁ τ₂ D h₁ h₂ _ hsec hff`. Take `⟨u, hu⟩` from `(denseCc d).2.1 β v₀ hβ hβc`. Take `⟨p1, p2, p3⟩` from `bfFun _ β hS hβ hβc`.
+
+Establish `hr` using `A.spec β v₀ u hβ hβc hu`. Rewrite `hr` using `[hv₀]`. Take `⟨hi, he⟩` from `(master μ μ₂ κ c hc _ p1.cont p1.rat p2 p3 (A.J u) v hr).2.2 Φ hΦ hΓ hrep`. Rewrite `he` using `[hJ u, eq_comm, mul_eq_zero, Complex.ofReal_eq_zero, or_iff_right hc.1.ne']`. Use `Eq.trans ?_ ((fub5 _ _ _ _ _ _ hi).symm.trans he)` and prove the remaining obligations.
+
+Use `integral_congr_ae (ae_of_all _ fun t => integral_congr_ae (ae_of_all _ fun k => integral_congr_ae (ae_of_all _ fun m => ?_)))` and prove the remaining obligations. Establish `e : ∀ X, bf β f (pt (m.1, m.2, t, k, X)) = β t * Complex.exp ((2 * t : ℝ) : ℂ) * f (lv m.1 m.2 0 * k)`. Introduce `X`. Establish `h1 : HP 2 2 (pt (m.1, m.2, t, k, X)) = t`. Use `(hpSpec (K := K)).1 X m.1 m.2 t k` as an intermediate fact.
+
+Rewrite `this` using `[((hpSpec (K := K)).2.1 _ k.2).1, add_zero]`. Then use the resulting hypothesis. Establish `h2 : f (pt (m.1, m.2, t, k, X)) = f (lv m.1 m.2 0 * k)` using `by show f (nn X * lv m.1 m.2 t * k) = _`. Rewrite using `[mul_assoc, hS.unip, ← hS.ray t (lv m.1 m.2 0 * k), ← mul_assoc, blkLaws.2.1, one_mul, one_mul, add_zero]`. Rewrite using `[bf, h1, h2]`. Evaluate the numerical expressions.
+
+Simplify using `only [e, integral_const_mul]`. Rewrite using `[hW, ← hsp]`. Simplify using `only [pt, mul_assoc]`.
+-/
 private theorem pair0 [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure]
     (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)) {d : ℕ} (A : Line μ τ₁ τ₂ D d) (h₁ : CuspIrr μ₂ τ₁) (h₂ : CuspIrr μ₂ τ₂)
     (v : L2 μ) (Φ W : G1 K (2 + 2) → ℂ) (hΦ : Continuous Φ) (hΓ : ∀ γ ∈ Gam K (2 + 2), ∀ g, Φ (γ * g) = Φ g)
@@ -89,6 +121,21 @@ private theorem pair0 [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsH
   rw [hW, ← hsp]
   simp only [pt, mul_assoc]
 
+/- English proof (translation)
+Take `⟨hWc, hbd⟩` from `ctBd Φ W φ₁ φ₂ hΦ hgr hW hrat r₁.decay r₂.decay`. Use `haveI := finFd μ₂`. Establish `hK : IsCompact (KG K (2 + 2) : Set (G1 K (2 + 2)))` using `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 _).1`. Establish `hmul` using `(blkLaws (K := K)).2.1`. Establish `hlv` using `(blkLaws (K := K)).2.2.2.1`.
+
+Establish `hlv0 : Continuous fun m : G1 K 2 × G1 K 2 => lv m.1 m.2 0` using `hlv.comp (f := fun m : G1 K 2 × G1 K 2 => (m.1, m.2, (0 : ℝ))) (continuous_fst.prodMk (continuous_snd.prodMk continuous_const))`. Establish `hlv1 : Continuous fun t : ℝ => lv (1 : G1 K 2) 1 t` using `hlv.comp (f := fun t : ℝ => ((1 : G1 K 2), (1 : G1 K 2), t)) (continuous_const.prodMk (continuous_const.prodMk continuous_id))`. Establish `hF : Continuous fun m : G1 K 2 × G1 K 2 => φ₁ m.1 * φ₂ m.2` using `(r₁.cont.comp continuous_fst).mul (r₂.cont.comp continuous_snd)`. Establish `hb : ∀ C : Set (G1 K (2 + 2)), IsCompact C → ∃ B : ℝ, ∀ m : G1 K 2 × G1 K 2, ∀ g ∈ C, ‖φ₁ m.1 * φ₂ m.2‖ * ‖W (lv m.1 m.2 0 * g)‖ ≤ B` using `fun C hC => by`. Take `⟨B, hB⟩` from `hbd C hC`.
+
+Conclude with `⟨B, fun m g hg => by rw [norm_mul]; exact hB m.1 m.2 g hg⟩`. Use `haveI := D.prob`. Choose the witnesses or unpack the hypotheses as in `⟨hIi, I, hI, hIc, hIf⟩ : (∀ g, Integrable (fun m : G1 K 2 × G1 K 2 => conj (φ₁ m.1 * φ₂ m.2) * W (lv m.1 m.2 0 * g)) ((fd μ₂).prod (fd μ₂))) ∧ ∃ I : G1 K (2 + 2) → ℂ, (∀ g, I g = ∫ m : G1 K 2 × G1 K 2, conj (φ₁ m.1 * φ₂ m.2) * W (lv m.1 m.2 0 * g) ∂(fd μ₂).prod (fd μ₂)) ∧ Continu …`. Take `⟨a1, a2, a3⟩` from `absI ((fd μ₂).prod (fd μ₂)) (fun m => lv m.1 m.2 0) hlv0 (fun m => φ₁ m.1 * φ₂ m.2) hF W hWc hb D.ν _ (typeFin D).1 D.supp D.e D.cont (fixW D Φ W hΦ hfix hW)`. Conclude with `⟨a1, _, fun _ => rfl, a2, a3⟩`.
+
+Establish `e0 : (fun m : G1 K 2 × G1 K 2 => conj (φ₁ m.1 * φ₂ m.2) * W (lv m.1 m.2 t₀ * k₀)) = fun m => conj (φ₁ m.1 * φ₂ m.2) * W (lv m.1 m.2 0 * (lv 1 1 t₀ * k₀))` using `funext fun m => by rw [hsp]`. Rewrite using `[e0]`. Use `⟨hIi _, (hI _).symm.trans ?_⟩` and prove the remaining obligations. Take `⟨U, _, lam, _, x, f, hUK, hx, hux, hsec, hff, hv⟩` from `secEx μ₂ τ₁ τ₂ D h₁ h₂ φ₁ φ₂ r₁ r₂ (fun g => I (lv 1 1 t₀ * g)) (hIc.comp (continuous_const_mul _)) fun g => (integral_congr_ae (ae_of_all _ fun k => by simp only [mul_assoc])).trans (hIf (lv 1 1 t₀ * g))`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 hK`.
+
+Take `⟨κ, _, _⟩` from `ex_prob (KG K (2 + 2))`. Use `absMain ((fd μ₂).prod (fd μ₂)) (KG K (2 + 2)) U hUK κ lam (fun m => lv m.1 m.2 0) hlv0 (fun t => lv 1 1 t) hlv1 (fun m => φ₁ m.1 * φ₂ m.2) hF W hWc hb x hx (fun u m t k => ?_) I hI hIc (fun g y => ?_) t₀ f (fun m k => ?_) (pair0 μ μ₂ τ₁ τ₂ D A h₁ h₂ v Φ W hΦ hΓ hrep hJ hW f hsec …` and prove the remaining obligations. Take `⟨X, hX⟩` from `hux u`. Take `⟨Y, hY⟩` from `lv_nn m.1 m.2 t X`. Establish `e : lv m.1 m.2 t * k = nn Y * (lv (m * x u).1 (m * x u).2 0 * (lv 1 1 t * ((u : G1 K (2 + 2))⁻¹ * k)))`.
+
+Rewrite using `[← hsp, Prod.fst_mul, Prod.snd_mul, ← add_zero t, ← hmul, add_zero, ← mul_assoc, ← mul_assoc (nn Y), ← hY, mul_assoc _ (nn X), ← hX]`. Use `group`. Rewrite using `[← hsp, e, hun]`. Take `⟨B, hB⟩` from `hb _ (isCompact_singleton (x := g))`. Rewrite using `[hI]`.
+
+Conclude with `transl2 (Gam K 2) μ₂ (isFundamentalDomain_fundamentalDomain _ μ₂) (fun m => conj (φ₁ m.1 * φ₂ m.2) * W (lv m.1 m.2 0 * g)) ((Complex.continuous_conj.comp hF).mul (hWc.comp (hlv0.mul continuous_const))) B (fun m => by rw [norm_mul, RCLike.norm_conj]; exact hB m g rfl) (fun γ₁ h1 γ …`. Simplify using `only [r₁.rat _ h1, r₂.rat _ h2]`. Rewrite using `[← hrat γ₁ h1 γ₂ h2 (lv a b 0 * _), ← mul_assoc (lv γ₁ γ₂ 0), hmul, add_zero]) y`. Use `hv 0 m.1 m.2 0 k k.2` as an intermediate fact. Rewrite `this` using `[nn, unipOne_zero, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem unfZero [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure]
     (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)) {d : ℕ} (A : Line μ τ₁ τ₂ D d) (h₁ : CuspIrr μ₂ τ₁) (h₂ : CuspIrr μ₂ τ₂)
     (v : L2 μ) (Φ W : G1 K (2 + 2) → ℂ) (φ₁ φ₂ : G1 K 2 → ℂ) (hΦ : Continuous Φ) (hΓ : ∀ γ ∈ Gam K (2 + 2), ∀ g, Φ (γ * g) = Φ g)

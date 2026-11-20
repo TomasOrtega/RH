@@ -17,6 +17,49 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Pa.Lev.OpP
 
+/- English proof (translation)
+Set `T' : τ → Module.End Λ M` to `fun s => (T s).restrictScalars Λ`. Establish `hT' : ∀ i j, Commute (T' i) (T' j)`. Introduce `i j`. Conclude with `LinearMap.ext fun m => congrArg (fun g : Module.End R M => g m) (hT i j).eq`. Take `⟨e, he, hidem, hrange⟩` from `exists_idem_topNil Λ τ M T' hT'`.
+
+Establish `hcomm : ∀ ψ : Module.End Λ M, (∀ s, Commute (T' s) ψ) → Commute e ψ`. Introduce `ψ hψ`. Establish `hle : Algebra.adjoin Λ (Set.range T') ≤ Subalgebra.centralizer Λ {ψ}`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `(hψ s).eq.symm`. Establish `hmem` using `hle he`. Rewrite `hmem` using `[Subalgebra.mem_centralizer_iff]`.
+
+Conclude with `(hmem ψ rfl).symm`. Establish `heR : ∀ (r : R) (m : M), e (r • m) = r • e m`. Introduce `r m`. Establish `h` using `hcomm ((r • (LinearMap.id : M →ₗ[R] M)).restrictScalars Λ) (fun s => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Use `show T s (r • x) = r • T s x`. Conclude with `map_smul _ _ _)`. Conclude with `congrArg (fun g : Module.End Λ M => g m) h.eq`. Establish `heT : ∀ s m, e (T s m) = T s (e m)`. Introduce `s m`.
+
+Conclude with `congrArg (fun g : Module.End Λ M => g m) (hcomm (T' s) (fun s' => hT' s' s)).eq`. Establish `hee : ∀ m, e (e m) = e m` using `fun m => congrArg (fun g : Module.End Λ M => g m) hidem.eq`. Set `Ns : Submodule R M` to `{ carrier := {m | e m = m} add_mem' := by`. Introduce `a b ha hb`. Use `show e (a + b) = a + b`.
+
+Rewrite using `[map_add, show e a = a from ha, show e b = b from hb]`. Use the proof step `zero_mem' := by show e 0 = 0`. Conclude with `map_zero e`. Use the proof step `smul_mem' := by`. Introduce `r m hm`.
+
+Use `show e (r • m) = r • m`. Rewrite using `[heR, show e m = m from hm] }`. Use `haveI : IsNoetherian Λ M := isNoetherian_of_isNoetherianRing_of_finite Λ M`. Use `haveI hfin : Module.Finite Λ Ns := by haveI := isNoetherian_submodule' (Ns.restrictScalars Λ)`. Conclude with `inferInstanceAs (Module.Finite Λ (Ns.restrictScalars Λ))`.
+
+Set `Tn : τ → Module.End R Ns` to `fun s => { toFun := fun x => ⟨T s x, show e (T s x) = T s x by rw [heT, show e x = x from x.2]⟩ map_add' := fun a b => Subtype.ext (map_add _ _ _) map_smul' := fun r a => Subtype.ext (map_smul _ _ _) }`. Establish `hTn : ∀ i j, Commute (Tn i) (Tn j)`. Introduce `i j`. Conclude with `LinearMap.ext fun x => Subtype.ext (congrArg (fun g : Module.End R M => g x) (hT i j).eq)`. Set `pr : M →ₗ[Λ] Ns` to `{ toFun := fun m => ⟨e m, hee m⟩ map_add' := fun a b => Subtype.ext (map_add e a b) map_smul' := fun c m => Subtype.ext (e.map_smul c m) }`.
+
+Set `i : Ns →ₗ[Λ] M` to `{ toFun := fun x => (x : M) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hpowN : ∀ s (r : ℕ) (x : Ns), (((Tn s).restrictScalars Λ ^ r) x : M) = (T' s ^ r) (x : M)`. Introduce `s r`. Proceed by induction on `r with`. Consider the case `zero => intro x`.
+
+Both sides reduce to the same expression. Consider the case `succ r ih`. Introduce `x`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ih]`. Both sides reduce to the same expression.
+
+Establish `htop : (topNil (maximalIdeal Λ) fun s => (Tn s).restrictScalars Λ) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[mem_topNil]`. Introduce `s k`.
+
+Establish `hx : (x : M) ∈ topNil (maximalIdeal Λ) T'`. Rewrite using `[← hrange]`. Conclude with `⟨x, x.2⟩`. Rewrite `hx` using `[mem_topNil]`. Use `(hx s k).mono fun r hr => ?_` and prove the remaining obligations.
+
+Establish `hmap : (maximalIdeal Λ ^ k • ⊤ : Submodule Λ M).map pr ≤ maximalIdeal Λ ^ k • ⊤`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Establish `hin` using `hmap ⟨_, hr, rfl⟩`. Establish `heq : pr ((T' s ^ r) (x : M)) = ((Tn s).restrictScalars Λ ^ r) x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show e ((T' s ^ r) (x : M)) = _`. Rewrite using `[← hpowN]`. Conclude with `(((Tn s).restrictScalars Λ ^ r) x).2`. Rewrite `hin` using `[heq]`.
+
+Conclude with `hin`. Take `⟨act, hact⟩` from `psModule Λ R Ns τ Tn hTn htop`. Use `letI modP : Module (MvPowerSeries τ R) Ns := Module.compHom Ns act.toRingHom`. Use `haveI tow : IsScalarTower Λ (MvPowerSeries τ R) Ns := by`. Use `⟨fun c f x => ?_⟩` and prove the remaining obligations.
+
+Use `show act (c • f) x = c • act f x`. Rewrite using `[← algebraMap_smul R c f, map_smul, LinearMap.smul_apply, algebraMap_smul]`. Use `⟨Ns, inferInstance, modP, inferInstance, tow, i, pr, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `Subtype.ext x.2`.
+
+Introduce `a x show ((act (MvPowerSeries.C a) x : Ns) : M) = a • (x : M)`. Establish `hCa : (MvPowerSeries.C a : MvPowerSeries τ R) = algebraMap R (MvPowerSeries τ R) a`. Rewrite using `[MvPowerSeries.algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[hCa, act.commutes, Module.algebraMap_end_apply]`.
+
+Both sides reduce to the same expression. Introduce `s x show ((act (MvPowerSeries.X s) x : Ns) : M) = T s x`. Rewrite using `[hact s]`. Both sides reduce to the same expression. Use `show LinearMap.range i = topNil (maximalIdeal Λ) T'`.
+
+Rewrite using `[← hrange]`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, x.2⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨pr y, rfl⟩`. Introduce `φ hφ m`. Establish `h` using `hcomm φ (fun s => LinearMap.ext fun x => (hφ s x).symm)`. Conclude with `congrArg (fun g : Module.End Λ M => g m) h.eq`.
+-/
 theorem nilPart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {R M τ : Type} [CommRing R] [Algebra Λ R] [AddCommGroup M] [Module R M] [Module Λ M] [IsScalarTower Λ R M]
     [Module.Finite Λ M] [Fintype τ] (T : τ → Module.End R M) (hT : ∀ i j, Commute (T i) (T j)) :
@@ -147,6 +190,15 @@ theorem nilPart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ]
     have h := hcomm φ (fun s => LinearMap.ext fun x => (hφ s x).symm)
     exact congrArg (fun g : Module.End Λ M => g m) h.eq
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `show ∀ (i : τ) (j : ℕ), ∀ᶠ (r : ℕ) in Filter.atTop, _`. Introduce `i j`. Take `⟨d, hd⟩` from `hn i j x`.
+
+Rewrite using `[Filter.eventually_atTop]`. Use `⟨d, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Establish `key : (((Module.toModuleEnd Λ (S` using `T) Y).comp θ0) (MvPowerSeries.X i) ^ (d + e)) x = θ0 (MvPowerSeries.X i) ^ e • (θ0 (MvPowerSeries.X i) ^ d • x) := by`. Rewrite using `[← map_pow, smul_smul, ← pow_add, Nat.add_comm e d, RingHom.comp_apply, map_pow θ0]`.
+
+Both sides reduce to the same expression. Rewrite using `[key]`. Set `g : Y →ₗ[Λ] Y` to `Module.toModuleEnd Λ (S := T) Y (θ0 (MvPowerSeries.X i) ^ e)`. Establish `hle : (I ^ j • ⊤ : Submodule Λ Y).map g ≤ I ^ j • ⊤`. Rewrite using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hle ⟨_, hd, rfl⟩`.
+-/
 private theorem topNil_toModuleEnd_X_eq_top_of_pow_smul_mem {Λ τ R T Y : Type} [CommRing Λ] [CommRing R] [CommRing T] [Algebra Λ T]
     [AddCommGroup Y] [Module T Y] [Module Λ Y] [IsScalarTower Λ T Y] (I : Ideal Λ)
     (θ0 : MvPowerSeries τ R →+* T)
@@ -171,6 +223,11 @@ private theorem topNil_toModuleEnd_X_eq_top_of_pow_smul_mem {Λ τ R T Y : Type}
     exact Submodule.smul_mono le_rfl le_top
   exact hle ⟨_, hd, rfl⟩
 
+/- English proof (translation)
+Establish `hΛ : ∀ (c : Λ) (x : X), f (c • x) = c • f x`. Introduce `c x`. Establish `hc` using `hC (algebraMap Λ R c) x`. Rewrite `hc` using `[h, h', algebraMap_smul, algebraMap_smul]`. Conclude with `hc`.
+
+Set `φ : X →ₗ[Λ] X'` to `{ toFun := f, map_add' := f.map_add, map_smul' := hΛ }`. Conclude with `psLin Λ R X X' τ ((Module.toModuleEnd Λ (S := S) X).comp θ) ((Module.toModuleEnd Λ (S := S') X').comp θ') φ (topNil_toModuleEnd_X_eq_top_of_pow_smul_mem _ θ hn) (topNil_toModuleEnd_X_eq_top_of_pow_smul_mem _ θ' hn') (fun a m => hC a m) (fun i m => hX i m) t x`.
+-/
 theorem psLin' {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {R τ S S' X X' : Type} [CommRing R] [Algebra Λ R] [Fintype τ] [CommRing S] [Algebra Λ S] [CommRing S'] [Algebra Λ S']
     [AddCommGroup X] [Module S X] [Module Λ X] [IsScalarTower Λ S X] [Module.Finite Λ X]
@@ -193,6 +250,23 @@ theorem psLin' {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] 
     ((Module.toModuleEnd Λ (S := S') X').comp θ') φ (topNil_toModuleEnd_X_eq_top_of_pow_smul_mem _ θ hn) (topNil_toModuleEnd_X_eq_top_of_pow_smul_mem _ θ' hn')
     (fun a m => hC a m) (fun i m => hX i m) t x
 
+/- English proof (translation)
+Establish `hinj : Function.Injective i` using `Function.LeftInverse.injective (g := pr) hpi`. Set `E : N ≃ₗ[Λ] LinearMap.range i` to `LinearEquiv.ofInjective i hinj`. Establish `hE : ∀ x, (E x : M) = i x` using `fun x => rfl`. Set `f : M →ₗ[Λ] LinearMap.range i` to `i.rangeRestrict.comp pr`. Establish `hf : ∀ x : LinearMap.range i, f x = x`.
+
+Introduce and unpack `⟨_, y, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[f, hpi]`. Establish `hker : ∀ m, m ∈ LinearMap.ker f ↔ pr m = 0`. Introduce `m`.
+
+Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrArg Subtype.val h0`.
+
+Simplify `h1` using `[f]`. Introduce `h0 show i.rangeRestrict (pr m) = 0`. Rewrite using `[h0, map_zero]`. Set `act : MvPowerSeries (Fin q × Fin n) Λ →ₐ[Λ] Module.End Λ (LinearMap.range i)` to `{ toFun := fun z => E.conj (Algebra.lsmul Λ Λ N (s z)) map_one' := by ext x; simp [LinearEquiv.conj_apply] map_mul' := by intro a b; ext x; simp [LinearEquiv.conj_apply, mul_smul] map_zero' := by ext x; simp [LinearEquiv.conj_apply] map_add' := by intro a b; ext x; simp [LinearEq …`. Establish `hact : ∀ z y, act z (E y) = E (s z • y)`.
+
+Introduce `z y`. Use `show E.conj (Algebra.lsmul Λ Λ N (s z)) (E y) = _`. Simplify using `[LinearEquiv.conj_apply]`. Take `⟨rk, e, he⟩` from `freeSummand Λ l q n a M ρ (LinearMap.range i) (LinearMap.ker f) hl hm hP (LinearMap.isCompl_of_proj hf) (by`. Introduce and unpack `g _ ⟨y, rfl⟩`.
+
+Conclude with `⟨pr (ρ g (i y)), by rw [hρ, hpi]⟩)`. Use the proof step `(by`. Introduce `g m hm0`. Rewrite `hm0`, the goal using `[hker]`. Apply `hinj` to reduce the goal to its premises.
+
+Simplify using `[hρ, hm0])`. Use `act`. Use the proof step `(by`. Introduce and unpack `p ⟨_, y, rfl⟩`. Use `show ((act (1 + MvPowerSeries.X p)) (E y) : M) = _`.
+
+Rewrite using `[hact, hE, hs])`. Use `⟨rk, E.toAddEquiv.trans e, fun z m => ?_⟩` and prove the remaining obligations. Use `show e (E (s z • m)) = z • e (E m)`. Rewrite using `[← hact, he]`.
+-/
 theorem freePart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {l q n : ℕ} {a : Fin q → ℕ} {M S N : Type} [AddCommGroup M] [Module Λ M] [Module.Finite Λ M] [CommRing S] [Algebra Λ S]
     [AddCommGroup N] [Module S N] [Module Λ N] [IsScalarTower Λ S N] (ρ : Representation Λ (Del l n a) M) (hl : l.Prime)
@@ -250,6 +324,11 @@ theorem freePart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ
   show e (E (s z • m)) = z • e (E m)
   rw [← hact, he]
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Submonoid.prod_mem S fun p _ => ?_` and prove the remaining obligations. Use `haveI : NeZero (l ^ a p.1) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `hg : g p = (Multiplicative.ofAdd (1 : ZMod (l ^ a p.1))) ^ (Multiplicative.toAdd (g p)).val`. Rewrite using `[← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val]`.
+
+Both sides reduce to the same expression. Rewrite using `[hg, Pi.mulSingle_pow]`. Conclude with `Submonoid.pow_mem S (h p) _`.
+-/
 theorem del_gen {l q n : ℕ} (hl : l.Prime) {a : Fin q → ℕ} (S : Submonoid (Del l n a))
     (h : ∀ p, (Pi.mulSingle p (Multiplicative.ofAdd 1) : Del l n a) ∈ S) (g : Del l n a) : g ∈ S := by
   rw [← Finset.univ_prod_mulSingle g]
@@ -261,6 +340,11 @@ theorem del_gen {l q n : ℕ} (hl : l.Prime) {a : Fin q → ℕ} (S : Submonoid 
   rw [hg, Pi.mulSingle_pow]
   exact Submonoid.pow_mem S (h p) _
 
+/- English proof (translation)
+Establish `hle : f.ker ≤ g.ker` using `fun a ha => AddMonoidHom.mem_ker.mpr (h a (AddMonoidHom.mem_ker.mp ha))`. Set `eq` to `QuotientAddGroup.quotientKerEquivOfSurjective f hf`. Use `⟨(QuotientAddGroup.lift f.ker g hle).comp eq.symm.toAddMonoidHom, fun a => ?_⟩` and prove the remaining obligations. Establish `hq : eq.symm (f a) = (a : A ⧸ f.ker)`. Apply `eq.injective` to reduce the goal to its premises.
+
+Rewrite using `[AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, hq]`. Both sides reduce to the same expression.
+-/
 theorem exLift {A B C : Type} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] (f : A →+ B)
     (hf : Function.Surjective f) (g : A →+ C) (h : ∀ a, f a = 0 → g a = 0) : ∃ k : B →+ C, ∀ a, k (f a) = g a := by
   have hle : f.ker ≤ g.ker := fun a ha => AddMonoidHom.mem_ker.mpr (h a (AddMonoidHom.mem_ker.mp ha))
@@ -273,6 +357,57 @@ theorem exLift {A B C : Type} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
   simp only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, hq]
   rfl
 
+/- English proof (translation)
+Use `set J : Submodule S N := (Ideal.span (Set.range y) • ⊤ : Submodule S N) with hJ`. Establish `hkill : ∀ p m, tr (act1 (MvPolynomial.X (Sum.inr p)) m) = 0`. Introduce `p m`. Rewrite using `[← LinearMap.mem_ker, hker]`. Conclude with `Submodule.mem_iSup_of_mem p ⟨m, rfl⟩`.
+
+Establish `hC1 : ∀ (a : R) (m : M), act1 (MvPolynomial.C a) m = a • m`. Introduce `a m`. Rewrite using `[← MvPolynomial.algebraMap_eq, act1.commutes]`. Both sides reduce to the same expression. Establish `hCw : ∀ (a : R) (w : W), actw (MvPolynomial.C a) w = a • w`.
+
+Introduce `a w`. Rewrite using `[← MvPolynomial.algebraMap_eq, actw.commutes]`. Both sides reduce to the same expression. Establish `htr : ∀ t m, tr (act1 (MvPolynomial.rename Sum.inl t) m) = actw t (tr m)`. Introduce `t`.
+
+Proceed by induction on `t using MvPolynomial.induction_on`. Name the introduced variables `a`. Introduce `m`. Rewrite using `[MvPolynomial.rename_C, hC1, hCw, map_smul]`. Name the introduced variables `p1 p2 hp1 hp2`.
+
+Introduce `m`. Simplify using `only [map_add, LinearMap.add_apply, hp1, hp2]`. Name the introduced variables `p1 s hp1`. Introduce `m`. Simplify using `only [map_mul, MvPolynomial.rename_X, Module.End.mul_apply]`.
+
+Rewrite using `[hp1, hu]`. Establish `hJkill : ∀ n ∈ J, tr (i n) = 0`. Introduce `n hn`. Establish `key : ∀ b ∈ Ideal.span (Set.range y), ∀ n : N, tr (i (b • n)) = 0`. Introduce `b hb`.
+
+Use `Submodule.span_induction (p := fun b _ => ∀ n : N, tr (i (b • n)) = 0) ?_ ?_ ?_ ?_ hb` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ n`. Rewrite using `[hy, hi]`. Conclude with `hkill p _`. Introduce `n`.
+
+Rewrite using `[zero_smul, map_zero, map_zero]`. Introduce `x w _ _ hx hw n`. Rewrite using `[add_smul, map_add, map_add, hx, hw, add_zero]`. Introduce `a x _ hx n`. Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`.
+
+Conclude with `hx _`. Use `Submodule.smul_induction_on hn (fun b hb n _ => key b hb n) ?_` and prove the remaining obligations. Introduce `a b ha hb`. Rewrite using `[map_add, map_add, ha, hb, add_zero]`. Establish `hprJ : ∀ m, tr m = 0 → pr m ∈ J`.
+
+Introduce `m hm`. Rewrite `hm` using `[← LinearMap.mem_ker, hker]`. Use `Submodule.iSup_induction _ (motive := fun m => pr m ∈ J) hm ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `p _ ⟨m', rfl⟩ show pr (act1 (MvPolynomial.X (Sum.inr p)) m') ∈ J`. Rewrite using `[hpr, ← hy]`.
+
+Conclude with `Submodule.smul_mem_smul (Ideal.subset_span ⟨p, rfl⟩) Submodule.mem_top`. Use `show pr 0 ∈ J`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b ha hb show pr (a + b) ∈ J`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Take `⟨j, hj0⟩` from `exLift J.mkQ.toAddMonoidHom J.mkQ_surjective (tr.toAddMonoidHom.comp i.toAddMonoidHom) (fun a ha => hJkill a ((Submodule.Quotient.mk_eq_zero J).mp ha))`. Establish `hj : ∀ n, j (J.mkQ n) = tr (i n)` using `hj0`. Take `⟨κ, hκ0⟩` from `exLift tr.toAddMonoidHom hsurj (J.mkQ.toAddMonoidHom.comp pr.toAddMonoidHom) (fun a ha => (Submodule.Quotient.mk_eq_zero J).mpr (hprJ a ha))`.
+
+Establish `hκ : ∀ m, κ (tr m) = J.mkQ (pr m)` using `hκ0`. Use `⟨j, κ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t x`. Take `⟨n, rfl⟩` from `J.mkQ_surjective x`. Rewrite using `[← map_smul J.mkQ, hj, hj, hi, htr]`.
+
+Introduce `t v`. Take `⟨m, rfl⟩` from `hsurj v`. Rewrite using `[← htr, hκ, hκ, hpr, map_smul]`. Introduce `x`. Take `⟨n, rfl⟩` from `J.mkQ_surjective x`.
+
+Rewrite using `[hj, hκ, hpi]`. Introduce `v haveI : Module.Finite Λ W := Module.Finite.of_surjective (tr.restrictScalars Λ) hsurj`. Set `T : σ ⊕ σ → Module.End Λ M` to `fun s => (act1 (MvPolynomial.X s - MvPolynomial.C (Sum.elim ut 0 s))).restrictScalars Λ`. Set `T' : σ ⊕ σ → Module.End Λ W` to `Sum.elim (fun p => (actw (MvPolynomial.X p - MvPolynomial.C (ut p))).restrictScalars Λ) (fun _ => 0)`. Establish `hcT : ∀ s s', Commute (T s) (T s')`.
+
+Introduce `s s'`. Use `show T s * T s' = T s' * T s`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `show act1 _ (act1 _ m) = act1 _ (act1 _ m)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`.
+
+Establish `hcT' : ∀ s s', Commute (T' s) (T' s')`. Introduce and unpack `(p | p) (p' | p')`. Use `show T' (Sum.inl p) * T' (Sum.inl p') = T' (Sum.inl p') * T' (Sum.inl p)`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show actw _ (actw _ w) = actw _ (actw _ w)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`. Conclude with `Commute.zero_right _`. Conclude with `Commute.zero_left _`. Conclude with `Commute.zero_left _`. Establish `hf : ∀ s m, tr.restrictScalars Λ (T s m) = T' s (tr.restrictScalars Λ m)`.
+
+Introduce and unpack `(p | p) m`. Use `show tr (act1 (MvPolynomial.X (Sum.inl p) - MvPolynomial.C (ut p)) m) = actw (MvPolynomial.X p - MvPolynomial.C (ut p)) (tr m)`. Establish `hren : MvPolynomial.rename Sum.inl (MvPolynomial.X p - MvPolynomial.C (ut p) : MvPolynomial σ R) = (MvPolynomial.X (Sum.inl p) - MvPolynomial.C (ut p) : MvPolynomial (σ ⊕ σ) R)`. Simplify using the standard rewrite rules. Rewrite using `[← htr, hren]`.
+
+Use `show tr (act1 (MvPolynomial.X (Sum.inr p) - MvPolynomial.C 0) m) = 0`. Rewrite using `[map_zero, sub_zero]`. Conclude with `hkill p m`. Take `⟨hmap, -⟩` from `topNil_map Λ (σ ⊕ σ) M W T T' hcT hcT' (tr.restrictScalars Λ) hf`. Establish `hrange : LinearMap.range (tr.restrictScalars Λ) = ⊤` using `LinearMap.range_eq_top.mpr hsurj`.
+
+Rewrite `hmap` using `[hrange, inf_top_eq]`. Establish `hT : topNil (maximalIdeal Λ) T = LinearMap.range i` using `hr.symm`. Establish `hTW : v ∈ topNil (maximalIdeal Λ) (fun p => (actw (MvPolynomial.X p - MvPolynomial.C (ut p))).restrictScalars Λ) ↔ v ∈ topNil (maximalIdeal Λ) T'`. Rewrite using `[mem_topNil, mem_topNil]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv s k`. Break down `s with p | p` into its components or cases. Conclude with `hv p k`. Rewrite using `[Filter.eventually_atTop]`. Use `⟨1, fun r hr => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r', rfl⟩` from `Nat.exists_eq_add_of_le hr`. Use `show ((0 : Module.End Λ W) ^ (1 + r')) v ∈ _`. Rewrite using `[zero_pow (by omega), LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`. Introduce `hv p k`.
+
+Conclude with `hv (Sum.inl p) k`. Rewrite using `[hTW, ← hmap, hT]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, ⟨n, rfl⟩, rfl⟩`. Conclude with `⟨J.mkQ n, hj n⟩`.
+
+Introduce and unpack `⟨x, rfl⟩`. Take `⟨n, rfl⟩` from `J.mkQ_surjective x`. Conclude with `⟨i n, ⟨n, rfl⟩, (hj n).symm⟩`.
+-/
 theorem quotPart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {R σ S M W N : Type} [CommRing R] [Algebra Λ R] [CommRing S] [AddCommGroup M] [Module R M] [Module Λ M]
     [IsScalarTower Λ R M] [Module.Finite Λ M] [AddCommGroup W] [Module R W] [Module Λ W] [IsScalarTower Λ R W]
@@ -428,6 +563,13 @@ theorem quotPart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ
       obtain ⟨n, rfl⟩ := J.mkQ_surjective x
       exact ⟨i n, ⟨n, rfl⟩, (hj n).symm⟩
 
+/- English proof (translation)
+Take `⟨k, φ, hφ⟩` from `Module.Finite.exists_fin' B A`. Set `F : (Fin k → M) →ₗ[Λ] A ⊗[B] M` to `∑ i, ((TensorProduct.mk B A M (φ (fun j => if i = j then 1 else 0))).restrictScalars Λ).comp (LinearMap.proj i)`. Use `Module.Finite.of_surjective F ?_` and prove the remaining obligations. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact ⟨0, map_zero F⟩`. Consider the case `tmul a m`. Take `⟨v, rfl⟩` from `hφ a`. Use `⟨fun i => v i • m, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ v, TensorProduct.sum_tmul]`.
+
+Simplify using `[F, LinearMap.sum_apply, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`. Take `⟨u, rfl⟩` from `hx`. Take `⟨w, rfl⟩` from `hy`. Conclude with `⟨u + w, map_add F u w⟩`.
+-/
 theorem finTens {Λ B A M : Type} [CommRing Λ] [CommRing B] [Algebra Λ B] [CommRing A] [Algebra B A] [Algebra Λ A]
     [IsScalarTower Λ B A] [AddCommGroup M] [Module B M] [Module Λ M] [IsScalarTower Λ B M] [Module.Finite B A]
     [Module.Finite Λ M] : Module.Finite Λ (A ⊗[B] M) := by
@@ -449,6 +591,15 @@ theorem finTens {Λ B A M : Type} [CommRing Λ] [CommRing B] [Algebra Λ B] [Com
     obtain ⟨w, rfl⟩ := hy
     exact ⟨u + w, map_add F u w⟩
 
+/- English proof (translation)
+Establish `hz : ∀ a, π a = 0 → e * a = 0`. Introduce `a ha`. Establish `hmem : a ∈ Ideal.span {1 - e}` using `hker ▸ (RingHom.mem_ker.mpr ha)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hmem`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨s, hs⟩` from `exLift π.toRingHom.toAddMonoidHom hπ (AddMonoidHom.mulLeft e) (fun a ha => hz a ha)`. Establish `hs' : ∀ a, s (π a) = e * a` using `hs`. Set `sL : A' →ₗ[B] A` to `{ toFun := s map_add' := s.map_add map_smul' := by`. Introduce `b x`. Take `⟨a, rfl⟩` from `hπ x`.
+
+Rewrite using `[← map_smul, hs', hs', RingHom.id_apply, mul_smul_comm] }`. Establish `hsL : ∀ a, sL (π a) = e * a` using `hs'`. Use `⟨(sL.rTensor M).toAddMonoidHom, fun z => ?_⟩` and prove the remaining obligations. Use `show sL.rTensor M (π.toLinearMap.rTensor M z) = e • z`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.rTensor_comp]`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[LinearMap.rTensor_tmul, LinearMap.comp_apply, AlgHom.toLinearMap_apply, hsL, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x y hx hy => rw [map_add, smul_add, hx, hy]`.
+-/
 theorem tensSec {B A A' M : Type} [CommRing B] [CommRing A] [Algebra B A] [CommRing A'] [Algebra B A']
     [AddCommGroup M] [Module B M] (π : A →ₐ[B] A') (hπ : Function.Surjective π) (e : A) (he : IsIdempotentElem e)
     (hker : RingHom.ker π = Ideal.span {1 - e}) :
@@ -479,6 +630,9 @@ theorem tensSec {B A A' M : Type} [CommRing B] [CommRing A] [Algebra B A] [CommR
       TensorProduct.smul_tmul', smul_eq_mul]
   | add x y hx hy => rw [map_add, smul_add, hx, hy]
 
+/- English proof (translation)
+Set `g : V →ₗ[Λ] V'` to `{ toFun := f, map_add' := f.map_add, map_smul' := hf }`. Establish `hle : (I • ⊤ : Submodule Λ V).map g ≤ I • ⊤`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hle ⟨v, hv, rfl⟩`.
+-/
 theorem nilMap {Λ V V' : Type} [CommRing Λ] [AddCommGroup V] [Module Λ V] [AddCommGroup V'] [Module Λ V']
     (I : Ideal Λ) (f : V →+ V') (hf : ∀ (c : Λ) v, f (c • v) = c • f v) {v : V} (hv : v ∈ (I • ⊤ : Submodule Λ V)) :
     f v ∈ (I • ⊤ : Submodule Λ V') := by
@@ -488,6 +642,17 @@ theorem nilMap {Λ V V' : Type} [CommRing Λ] [AddCommGroup V] [Module Λ V] [Ad
     exact Submodule.smul_mono le_rfl le_top
   exact hle ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Establish `hroot : ∀ j i, IsIntegral B (MSplitAlg.root P n j i)`. Introduce `j i`. Use `⟨P j, hm j, ?_⟩` and prove the remaining obligations. Establish `hD : Polynomial.map (Ideal.Quotient.mk (mSplitIdeal P n)) (∏ i', (Polynomial.X - Polynomial.C (MvPolynomial.X (j, i'))) - Polynomial.map MvPolynomial.C (P j)) = 0`. Use extensionality with `k`.
+
+Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨(j, k), rfl⟩`. Simplify using `only [Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_X, Polynomial.map_C, Polynomial.map_map] at hD`. Rewrite `hD` using `[sub_eq_zero]`. Rewrite using `[Polynomial.eval₂_eq_eval_map]`.
+
+Establish `hC : (Ideal.Quotient.mk (mSplitIdeal P n)).comp MvPolynomial.C = algebraMap B (MSplitAlg P n)` using `rfl`. Rewrite using `[← hC, ← hD, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [MSplitAlg.root])`. Establish `hint : Algebra.IsIntegral B (MSplitAlg P n)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `x`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Proceed by induction on `p using MvPolynomial.induction_on`. Conclude with `isIntegral_algebraMap`. Rewrite using `[map_add]`.
+
+Conclude with `IsIntegral.add ‹_› ‹_›`. Rewrite using `[map_mul]`. Conclude with `IsIntegral.mul ‹_› (hroot _ _)`. Establish `hft : Algebra.FiniteType B (MSplitAlg P n)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ B (mSplitIdeal P n)) (Ideal.Quotient.mkₐ_surjective B _)`. Conclude with `Algebra.IsIntegral.finite`.
+-/
 private theorem module_finite_mSplitAlg_of_monic {B κ : Type} [CommRing B] [Finite κ] {n : ℕ} (P : κ → Polynomial B)
     (hm : ∀ j, (P j).Monic) : Module.Finite B (MSplitAlg P n) := by
   have hroot : ∀ j i, IsIntegral B (MSplitAlg.root P n j i) := by
@@ -521,6 +686,17 @@ private theorem module_finite_mSplitAlg_of_monic {B κ : Type} [CommRing B] [Fin
       (Ideal.Quotient.mkₐ_surjective B _)
   exact Algebra.IsIntegral.finite
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `key : ∀ b ∈ Ideal.map (algebraMap Λ B) I, ∀ z : Y, b • z ∈ (I • ⊤ : Submodule Λ Y)`. Introduce `b hb`. Use `Submodule.span_induction (p := fun b _ => ∀ z : Y, b • z ∈ (I • ⊤ : Submodule Λ Y)) ?_ ?_ ?_ ?_ hb` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, hc, rfl⟩ z`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem_smul hc Submodule.mem_top`. Introduce `z`. Rewrite using `[zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `x w _ _ hx hw z`. Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ (hx z) (hw z)`. Introduce `a x _ hx z`.
+
+Rewrite using `[smul_eq_mul, mul_comm, mul_smul]`. Conclude with `hx _`. Conclude with `Submodule.smul_induction_on hy (fun b hb z _ => key b hb z) (fun _ _ h1 h2 => Submodule.add_mem _ h1 h2)`. Introduce `hy`. Use `Submodule.smul_induction_on hy (fun c hc z _ => ?_) (fun _ _ h1 h2 => Submodule.add_mem _ h1 h2)` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul B c z]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hc) Submodule.mem_top`.
+-/
 private theorem mem_map_algebraMap_smul_top_iff_mem_smul_top {Λ B Y : Type} [CommRing Λ] [CommRing B] [Algebra Λ B] [AddCommGroup Y]
     [Module B Y] [Module Λ Y] [IsScalarTower Λ B Y] (I : Ideal Λ) (y : Y) :
     y ∈ (Ideal.map (algebraMap Λ B) I • ⊤ : Submodule B Y) ↔ y ∈ (I • ⊤ : Submodule Λ Y) := by
@@ -549,6 +725,51 @@ private theorem mem_map_algebraMap_smul_top_iff_mem_smul_top {Λ B Y : Type} [Co
     rw [← algebraMap_smul B c z]
     exact Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ hc) Submodule.mem_top
 
+/- English proof (translation)
+Take `⟨π, hπ1, hπ2, e, he1, he2, he3⟩` from `spLoc Λ B M q n P ub hm hd`. Take `⟨φ, ψ, h1, h2, h3, h4⟩` from `h`. Use `haveI : Module.Finite B (MSplitAlg P n) := module_finite_mSplitAlg_of_monic P hm`. Use `haveI : Module.Finite B (Sp P ub) := Module.Finite.of_surjective π.toLinearMap hπ2`. Take `⟨ι, hι⟩` from `tensSec (M := M) π hπ2 e he1 he2`.
+
+Use `set Pt := π.toLinearMap.rTensor M with hPtdef`. Establish `hsurj : Function.Surjective Pt` using `LinearMap.rTensor_surjective M (g := π.toLinearMap) hπ2`. Establish `hPt : ∀ (x : MSplitAlg P n) (z : MSplitAlg P n ⊗[B] M), Pt (x • z) = π x • Pt z`. Introduce `x z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a m => simp [Pt, TensorProduct.smul_tmul', LinearMap.rTensor_tmul]`. Consider the case `add y w hy hw => rw [smul_add, map_add, hy, hw, map_add, smul_add]`. Establish `hπe : π e = 1`. Establish `h0 : 1 - e ∈ RingHom.ker π`.
+
+Rewrite using `[he2]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h0` using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h0.symm`. Establish `hactC : ∀ (r : R) (w : W), act (MvPolynomial.C r) w = r • w`.
+
+Introduce `r w`. Rewrite using `[← MvPolynomial.algebraMap_eq, act.commutes]`. Both sides reduce to the same expression. Establish `hφΛ : ∀ (c : Λ) z, φ (c • z) = c • φ z`. Introduce `c z`.
+
+Establish `hh` using `h1 (MvPolynomial.C (algebraMap Λ R c)) z`. Rewrite `hh` using `[MvPolynomial.map_C, hβ, hactC, algebraMap_smul]`. Rewrite using `[← hh]`. Use `congr 1`. Use `show _ = (algebraMap B (MSplitAlg P n) (algebraMap Λ B c)) • z`.
+
+Rewrite using `[algebraMap_smul, algebraMap_smul]`. Establish `hψΛ : ∀ (c : Λ) v, ψ (c • v) = c • ψ v`. Introduce `c v`. Establish `hh` using `h2 (MvPolynomial.C (algebraMap Λ R c)) v`. Rewrite `hh` using `[MvPolynomial.map_C, hβ, hactC, algebraMap_smul]`.
+
+Rewrite using `[hh]`. Use `show (algebraMap B (MSplitAlg P n) (algebraMap Λ B c)) • ψ v = c • ψ v`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Establish `hτ : ∀ j i, Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β (MvPolynomial.X (j, i) - MvPolynomial.C (ut (j, i)))) = MSplitAlg.root P n j i - algebraMap B (MSplitAlg P n) (ub j i)`. Introduce `j i`.
+
+Rewrite using `[map_sub, MvPolynomial.map_X, MvPolynomial.map_C, map_sub, hub]`. Both sides reduce to the same expression. Establish `hu : ∀ j i, π (MSplitAlg.root P n j i - algebraMap B (MSplitAlg P n) (ub j i)) = Sp.mk P ub (MvPowerSeries.X (j, i))`. Introduce `j i`. Establish `hc : Sp.mk P ub (MvPowerSeries.C (ub j i)) = algebraMap B (Sp P ub) (ub j i)` using `(Sp.mk P ub).commutes (ub j i)`.
+
+Rewrite using `[map_sub, hπ1, AlgHom.commutes, Sp.u, map_add, hc, add_sub_cancel_left]`. Establish `hpowW : ∀ (x : PU R q n) (r : ℕ) (w : W), (((act x).restrictScalars Λ) ^ r) w = act (x ^ r) w`. Introduce `x r w`. Rewrite using `[map_pow, Module.End.pow_apply, Module.End.pow_apply]`. Both sides reduce to the same expression.
+
+Set `η : PU R q n →+* Sp P ub` to `π.toRingHom.comp ((Ideal.Quotient.mk (mSplitIdeal P n)).comp (MvPolynomial.map β))`. Establish `hη : ∀ t, η t = π (Ideal.Quotient.mk (mSplitIdeal P n) (MvPolynomial.map β t))` using `fun t => rfl`. Use `⟨finTens, ?_, η, φ.comp ι, Pt.toAddMonoidHom.comp ψ, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, i⟩ k z`. Take `⟨z0, rfl⟩` from `hsurj z`.
+
+Establish `hy : e • (e • z0) = e • z0` using `by rw [smul_smul, he1.eq]`. Take `⟨d, hd⟩` from `(he3 (e • z0)).mp hy j i k`. Use `⟨d, ?_⟩` and prove the remaining obligations. Establish `h6` using `nilMap _ Pt.toAddMonoidHom (fun c w => LinearMap.map_smul_of_tower Pt c w) ((mem_map_algebraMap_smul_top_iff_mem_smul_top _ _).mp hd)`. Rewrite `h6` using `[LinearMap.toAddMonoidHom_coe, hPt, hPt, hπe, one_smul, map_pow, hu]`.
+
+Conclude with `h6`. Introduce `a`. Rewrite using `[hη, MvPolynomial.map_C]`. Conclude with `π.commutes (β a)`. Introduce `j i`.
+
+Rewrite using `[hη, MvPolynomial.map_X]`. Conclude with `hπ1 j i`. Introduce `t z`. Take `⟨z0, rfl⟩` from `hsurj z`. Use `show φ (ι (η t • Pt z0)) = act t (φ (ι (Pt z0)))`.
+
+Rewrite using `[hη, ← hPt, hι, hι, smul_smul, mul_comm, ← smul_smul, h1]`. Introduce `t v show Pt (ψ (act t v)) = η t • Pt (ψ v)`. Rewrite using `[h2, hPt, hη]`. Introduce `z`. Take `⟨z0, rfl⟩` from `hsurj z`.
+
+Use `show Pt (ψ (φ (ι (Pt z0)))) = η f • Pt z0`. Rewrite using `[hι, h4, hPt, hPt, hπe, one_smul, hη]`. Introduce `z`. Take `⟨z0, rfl⟩` from `hsurj z`. Rewrite using `[mem_topNil]`.
+
+Introduce and unpack `⟨j, i⟩ k`. Rewrite using `[Filter.eventually_atTop]`. Establish `hy : e • (e • z0) = e • z0` using `by rw [smul_smul, he1.eq]`. Take `⟨d, hd⟩` from `(he3 (e • z0)).mp hy j i k`. Use `⟨d, fun r hr => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Use `show ((act (MvPolynomial.X (j, i) - MvPolynomial.C (ut (j, i)))).restrictScalars Λ ^ (d + s)) (φ (ι (Pt z0))) ∈ _`. Rewrite using `[hpowW, hι, ← h1]`. Simplify using `only [map_pow]`. Rewrite using `[hτ, pow_add, mul_comm, ← smul_smul]`.
+
+Apply `nilMap _ φ hφΛ` to reduce the goal to its premises. Conclude with `nilMap (maximalIdeal Λ ^ k) (DistribMulAction.toAddMonoidHom (MSplitAlg P n ⊗[B] M) ((MSplitAlg.root P n j i - algebraMap B (MSplitAlg P n) (ub j i)) ^ s)) (fun c w => smul_comm _ c w) ((mem_map_algebraMap_smul_top_iff_mem_smul_top _ _).mp hd)`. Introduce `v hv`. Rewrite `hv` using `[mem_topNil]`. Use `show φ (ι (Pt (ψ v))) = act f v`.
+
+Establish `he' : e • ψ v = ψ v`. Rewrite using `[he3]`. Introduce `j i k`. Take `⟨d, hd⟩` from `(hv (j, i) k).exists`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hd` using `[hpowW]`. Establish `h5` using `nilMap _ ψ hψΛ hd`. Rewrite `h5` using `[h2]`. Simplify using `only [map_pow] at h5`. Rewrite `h5` using `[hτ]`.
+
+Conclude with `(mem_map_algebraMap_smul_top_iff_mem_smul_top _ _).mpr h5`. Rewrite using `[hι, he', h3]`.
+-/
 theorem spPart {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ]
     {B M : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Algebra Λ B]
     [IsLocalHom (algebraMap Λ B)] [AddCommGroup M] [Module B M] [Module Λ M] [IsScalarTower Λ B M] [Module.Finite Λ M]

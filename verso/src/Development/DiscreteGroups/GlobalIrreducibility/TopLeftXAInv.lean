@@ -20,6 +20,9 @@ section RankOne
 variable (j : ℕ) (hj : j < n) (hj1 : 1 ≤ j) (ξ : Fin n → k) (hξ : ξ (i0 j hj hj1) ≠ 0)
 include hξ
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem coef_eq : (ξ (i0 j hj hj1))⁻¹ * (ξ (i0 j hj hj1) - 1) = 1 - (ξ (i0 j hj hj1))⁻¹ := by
   field_simp
 
@@ -30,16 +33,33 @@ def xA : GL (Fin n) k :=
     by rw [sub_mul, one_mul, mul_add, mul_one, Matrix.smul_mul, rankOne_mul_self, smul_smul, rowVector_at_index, coef_eq j hj hj1 ξ hξ,
       sub_smul, one_smul]; abel⟩
 
+/- English proof (translation)
+Introduce `i l h`. Use `show (1 + R1 j hj hj1 ξ) i l = _`. Rewrite using `[Matrix.add_apply, rankOne_top_left_zero j hj hj1 ξ i l h, add_zero]`.
+-/
 theorem topLeft_xA : TopLeft j ((xA j hj hj1 ξ hξ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) := by
   intro i l h
   show (1 + R1 j hj hj1 ξ) i l = _
   rw [Matrix.add_apply, rankOne_top_left_zero j hj hj1 ξ i l h, add_zero]
 
+/- English proof (translation)
+Introduce `i l h`. Use `show (1 - (ξ (i0 j hj hj1))⁻¹ • R1 j hj hj1 ξ) i l = _`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, rankOne_top_left_zero j hj hj1 ξ i l h, smul_zero, sub_zero]`.
+-/
 theorem topLeft_xA_inv : TopLeft j (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) := by
   intro i l h
   show (1 - (ξ (i0 j hj hj1))⁻¹ • R1 j hj hj1 ξ) i l = _
   rw [Matrix.sub_apply, Matrix.smul_apply, rankOne_top_left_zero j hj hj1 ξ i l h, smul_zero, sub_zero]
 
+/- English proof (translation)
+Establish `hi0 : (i0 j hj hj1).val < j` using `by simp [i0]; omega`. Establish `key : ∀ i : Fin n, (if i.val < j then ξ i * (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i a else 0) = (if i = a then ξ a else 0) - (if i = i0 j hj hj1 then vrow j hj hj1 ξ a else 0)`. Introduce `i`. Use `show (if i.val < j then ξ i * (1 - (ξ (i0 j hj hj1))⁻¹ • R1 j hj hj1 ξ) i a else 0) = _`. Distinguish the cases in `hi : i.val < j`.
+
+Rewrite using `[if_pos hi]`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, R1, of_apply, one_apply]`. Apply the tactic sequence `by_cases hia : i = a <;> by_cases hii : i = i0 j hj hj1`. Substitute `hia` using the available equality. Substitute `hii` using the available equality.
+
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Substitute `hia` using the available equality. Simplify using `[hii]`. Substitute `hii` using the available equality.
+
+Simplify using `[hia]`. Clear the denominators using the available nonvanishing facts. Simplify using `[hia, hii]`. Rewrite using `[if_neg hi, if_neg (fun e => hi (by rw [e]; exact ha)), if_neg (fun e => hi (by rw [e]; exact hi0))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[rowMul, Finset.sum_congr rfl fun i _ => key i, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _)]`. Simplify using `only [vrow, if_pos ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rowMul_xA_inv (a : Fin n) (ha : a.val < j) :
     rowMul j ξ (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) a =
       if a = i0 j hj hj1 then 1 else 0 := by
@@ -64,6 +84,9 @@ theorem rowMul_xA_inv (a : Fin n) (ha : a.val < j) :
   simp only [vrow, if_pos ha]
   ring
 
+/- English proof (translation)
+Establish `hi0 : (i0 j hj hj1).val < j` using `by simp [i0]; omega`. Rewrite using `[dotj, Finset.sum_congr rfl fun a _ => (?_ : _ = if a = i0 j hj hj1 then c a else 0), Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`. Distinguish the cases in `ha : a.val < j`. Apply the tactic sequence `rw [if_pos ha, rowMul_xA_inv j hj hj1 ξ hξ a ha] split_ifs <;> simp`. Rewrite using `[if_neg ha, if_neg (fun e => ha (by rw [e]; exact hi0))]`.
+-/
 theorem dotj_xA_inv (c : Fin n → k) :
     dotj j (rowMul j ξ (((xA j hj hj1 ξ hξ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) c = c (i0 j hj hj1) := by
   have hi0 : (i0 j hj hj1).val < j := by simp [i0]; omega

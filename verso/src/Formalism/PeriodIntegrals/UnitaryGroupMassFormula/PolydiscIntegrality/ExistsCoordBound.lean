@@ -8,6 +8,9 @@ open Filter Topology
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `⟨∑ γ ∈ S, ∑ i, γ i, fun γ hγ i => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_coord_bound {n : ℕ} (S : Finset (Fin n →₀ ℕ)) :
     ∃ B : ℕ, ∀ γ ∈ S, ∀ i, γ i ≤ B := by
   refine ⟨∑ γ ∈ S, ∑ i, γ i, fun γ hγ i => ?_⟩

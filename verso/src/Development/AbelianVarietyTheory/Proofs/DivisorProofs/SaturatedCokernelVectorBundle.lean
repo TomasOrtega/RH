@@ -16,6 +16,13 @@ open GlobalTheory.QCoh (stalkLinear)
 
 namespace GlobalTheory.VB
 
+/- English proof (translation)
+Establish `hle : LinearMap.ker π ≤ LinearMap.ker (LinearMap.id - f ∘ₗ ρ)`. Introduce `m hm`. Take `⟨a, ha, n, hn⟩` from `hk m hm`. Establish `h1 : ρ (f n) = n` using `LinearMap.congr_fun hρ n`. Establish `h2 : a • (m - f (ρ m)) = 0`.
+
+Rewrite using `[smul_sub, ← map_smul, ← map_smul, ← hn, h1, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left ha`. Use `Module.Projective.of_split (R := R) (M := M) (((LinearMap.ker π).liftQ _ hle) ∘ₗ (π.quotKerEquivOfSurjective hπ).symm.toLinearMap) π ?_` and prove the remaining obligations. Use extensionality with `q`. Take `⟨m, rfl⟩` from `hπ q`.
+
+Establish `e : (π.quotKerEquivOfSurjective hπ).symm (π m) = Submodule.Quotient.mk m` using `(LinearEquiv.symm_apply_eq _).2 rfl`. Simplify using `[e, h0]`.
+-/
 theorem projective_of_retraction_of_smul_mem {R M N Q : Type*} [CommRing R] [IsDomain R]
     [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [AddCommGroup Q] [Module R Q]
     [Module.Projective R M] [Module.IsTorsionFree R M] (f : N →ₗ[R] M) (ρ : M →ₗ[R] N)
@@ -39,6 +46,11 @@ theorem projective_of_retraction_of_smul_mem {R M N Q : Type*} [CommRing R] [IsD
 
 variable {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules}
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hm`. Take `⟨V, hV, s, rfl⟩` from `(sat i).presheaf.exists_germ_eq t`. Take `⟨U, hU, hxU, hle⟩` from `QCoh.exists_affine_mem_le x hV`. Rewrite using `[← germ_resM hle hxU, QCoh.stalkLinear_germ]`. Take `⟨a, ha, u, hu⟩` from `(mem_satSub_iff i hU (genericPoint_mem hxU)).1 ((satSub i).incl_app_mem (resM (sat i) hle s))`.
+
+Use `⟨X.presheaf.germ U x hxU a, fun h => ha (germ_injective_of_isIntegral X x hxU (h.trans (map_zero _).symm)), G.presheaf.germ U x hxU u, ?_⟩` and prove the remaining obligations. Rewrite using `[QCoh.stalkLinear_germ, hu, QCoh.germ_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_smul_mem_of_mem_range_satι (i : G ⟶ F) [F.IsQuasicoherent] [G.IsQuasicoherent]
     (x : X) {m : (F.presheaf.stalk x :)} (hm : m ∈ Set.range (stalkLinear (satι i) x)) :
     ∃ a : X.presheaf.stalk x, a ≠ 0 ∧ ∃ n, stalkLinear i x n = a • m := by
@@ -53,6 +65,15 @@ theorem exists_smul_mem_of_mem_range_satι (i : G ⟶ F) [F.IsQuasicoherent] [G.
   rw [QCoh.stalkLinear_germ, hu, QCoh.germ_smul]
   rfl
 
+/- English proof (translation)
+Introduce `C _ _ F G r φ hF hG _ H`. Use `hF.isFiniteQC` as an intermediate fact. Use `hG.isFiniteQC` as an intermediate fact. Establish `hr : genRank (Limits.cokernel (satι φ)) = r`. Use `genRank_cokernel (satι φ)` as an intermediate fact.
+
+Rewrite `this` using `[genRank_sat, hF.genRank_eq, hG.genRank_eq]`. Use linear arithmetic over natural numbers and integers. Use `isVB_of_basis_stalk C _ r fun x => ?_` and prove the remaining obligations. It suffices to establish `Module.Free (C.presheaf.stalk x) ((Limits.cokernel (satι φ)).presheaf.stalk x :) from ⟨Module.finBasisOfFinrankEq _ _ ((finrank_stalk_eq_genRank x).trans hr)⟩`. Break down `H x with h | ⟨ρ, hρ⟩` into its components or cases.
+
+Use `IsTorsionFree.isTorsionFree_stalk (isSaturated_satι φ) x infer_instance` as an intermediate fact. Take `⟨U, e, -, hxU, -, he⟩` from `hF.exists_affine (V := ⊤) (x := x) trivial`. Use `Module.Free.of_basis (he.stalkBasis x hxU)` as an intermediate fact. Use `hF.isTorsionFree.isTorsionFree_stalk x` as an intermediate fact. Establish `ex` using `(QCoh.exact_iff_stalkLinear _).1 (ShortComplex.exact_cokernel (satι φ)) x`.
+
+Use `projective_of_retraction_of_smul_mem (stalkLinear φ x) ρ hρ (stalkLinear (Limits.cokernel.π (satι φ)) x) (QCoh.stalkLinear_surjective _ x) (fun n => (ex _).2 ⟨stalkLinear (toSat φ) x n, by` as an intermediate fact. Rewrite using `[← LinearMap.comp_apply, ← QCoh.stalkLinear_comp, toSat_ι]⟩)`. Use the proof step `(fun m hm => exists_smul_mem_of_mem_range_satι φ x ((ex _).1 hm))`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+-/
 theorem isVB_cokernel_satι_of_split : ∀ (C : Scheme.{0}) [IsIntegral C] [IsLocallyNoetherian C] (F G : C.Modules) (r : ℕ) (φ : G ⟶ F), IsVB F (r + 1) → IsVB G 1 → Mono φ → (∀ x : C, IsPrincipalIdealRing (C.presheaf.stalk x) ∨ ∃ ρ : (F.presheaf.stalk x :) →ₗ[C.presheaf.stalk x] (G.presheaf.stalk x :), ρ ∘ₗ GlobalTheory.QCoh.stalkLinear φ x = LinearMap.id) → IsVB (Limits.cokernel (satι φ)) r := by
   intro C _ _ F G r φ hF hG _ H
   have := hF.isFiniteQC

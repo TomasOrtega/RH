@@ -40,6 +40,21 @@ noncomputable section
 namespace GlobalTheory.SplitVacFixRight
 open GlobalTheory.DblVacSiegel
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v dd hdd θ _ hvac w₁ hw₁ w₂ hw₂`. Establish `hSB` using `(hT.geo.hM'.vac v).1`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hT.base.std`. Establish `hstar : ∀ t, star (B.ψ t) = B.ψ (-t)`. Introduce `t`.
+
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ t]`. Simplify using the standard rewrite rules. Establish `hAt : ∀ γ ∈ latAtV G.V' G.W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1`. Establish `hco : ∀ γ ∈ latAtV G.V' G.W v, At (evFin F v) (G.M'.co.e γ).1 ∧ At (evFin F v) (G.M'.co.e γ).2`. Introduce `γ hγ`.
+
+Establish `e : ∀ u, evFin F v u = 0 → u • G.M'.co.e γ = 0` using `fun u hu => by`. Rewrite using `[← map_smul, hAt γ hγ u hu, map_zero]`. Conclude with `⟨fun u hu => congrArg Prod.fst (e u hu), fun u hu => congrArg Prod.snd (e u hu)⟩`. Establish `h1` using `GlobalTheory.DblVacEigen.eigen_pointwise v B.ψ hSB (G.M'.co.e w₁) (hco w₁ hw₁).1 (hco w₁ hw₁).2 _ (hvac w₁ hw₁)`. Establish `h2` using `GlobalTheory.DblVacEigen.eigen_pointwise v B.ψ hSB (G.M'.co.e w₂) (hco w₂ hw₂).1 (hco w₂ hw₂).2 _ (hvac w₂ hw₂)`.
+
+Establish `h2' : ∀ z, B.ψ (z ⬝ᵥ (-(G.M'.co.e w₂).2) + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (-(G.M'.co.e w₂).2))) * (fun x => star (G.M'.vac v x)) (fun i => evFin F v ((z + (G.M'.co.e w₂).1) i)) = star (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂)) * (fun x => star (G.M'.vac v x)) (fun i => evFin F v (z i)) := by`. Introduce `z`. Establish `e` using `congrArg star (h2 z)`. Simplify using `only [star_mul, hstar] at e`. Rewrite using `[hstar, show z ⬝ᵥ (-(G.M'.co.e w₂).2) + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (-(G.M'.co.e w₂).2)) = -(z ⬝ᵥ (G.M'.co.e w₂).2 + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (G.M'.co.e w₂).2)) by`.
+
+Rewrite using `[dotProduct_neg, dotProduct_neg]`. Use the proof step `ring]`. Take the linear combination `e`. Establish `hbox` using `GlobalTheory.DblVacEigen.acts_box v B.ψ (φ₁ := G.M'.vac v) (φ₂ := fun x => star (G.M'.vac v x)) (G.M'.co.e w₁).1 (G.M'.co.e w₁).2 (G.M'.co.e w₂).1 (-(G.M'.co.e w₂).2) (hco w₁ hw₁).1 (hco w₂ hw₂).1 _ _ h1 h2'`. Establish `hrho : dd.rho B.ψ (Matrix.fromCols w₁ w₂) = schr B.ψ (Sum.elim (G.M'.co.e w₁).1 (G.M'.co.e w₂).1, Sum.elim (G.M'.co.e w₁).2 (-(G.M'.co.e w₂).2))`.
+
+Rewrite using `[Darboux.rho, hdd]`. Establish `hS : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J)) (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂) = symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂ := by`. Unfold `symp`. Rewrite using `[GlobalTheory.DblVacEigen.hTens_dbl, mul_sub, map_sub]`. Establish `hc : B.ψ (⅟(2 : AF F) * (symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂)) = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁) * star (B.ψ (⅟(2 : AF F) * symp (cA …`.
+
+Rewrite using `[hstar, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrho, hS, hc]`. Conclude with `hbox`.
+-/
 theorem doubled_vac_eigen_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F),
@@ -93,6 +108,15 @@ theorem doubled_vac_eigen_any : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   rw [hrho, hS, hc]
   exact hbox
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' _ v dd _ θ _ _ omd hsp g hg φ hφ φ₁ _ hfix hact w₁ hw₁ w₂ hw₂ r hr`. Distinguish the cases in `h0 : φ₁ = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, tens]`.
+
+Establish `hr' : Rest (evFin F v) φ r` using `GlobalTheory.RestCofactor.rest_of_rest v φ₁ φ r h0 hφ hr`. Take `⟨h1m, h2m⟩` from `(GlobalTheory.T.doubledVacuumLatticeStabilizer_preserves_doubledSpaceLattice F E σ G.V' G.W v g hg (Matrix.fromCols w₁ w₂) ⟨by simpa using hw₁, by simpa using hw₂⟩).2`. Establish `hsplit : Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ = Matrix.fromCols ((Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ).toCols₁) ((Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ).toCols₂)`. Rewrite using `[Matrix.fromCols_toCols]`. Establish `hback : actB (cA σ) g (Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ) = Matrix.fromCols w₁ w₂`.
+
+Express the relevant statement in the definitionally equal form `Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ * (GlobalTheory.DblVac.matD g)ᵀ = _`. Establish `e : GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.matD g⁻¹ = 1` using `Units.mul_inv g.1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy` using `GlobalTheory.VacTransport.symp_mul_transpose (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J)) (GlobalTheory.DblVac.matD g⁻¹) (g⁻¹).2 (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂)`. Establish `hf` using `hfix _ h1m _ h2m r hr'`.
+
+Rewrite `hf` using `[← hsplit, hsy]`. Establish `h1` using `hsp.2.1.impl g (Matrix.fromCols w₁ w₂ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ) _ hr'.2`. Rewrite `h1` using `[hback, hf, GlobalTheory.VacTransport.tens_smul, map_smul, hact r hr']`. Rewrite using `[← h1, GlobalTheory.VacTransport.tens_smul]`.
+-/
 theorem transport_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F),
@@ -136,6 +160,37 @@ theorem transport_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   rw [hback, hf, GlobalTheory.VacTransport.tens_smul, map_smul, hact r hr'] at h1
   rw [← h1, GlobalTheory.VacTransport.tens_smul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v dd hdc θ hθ hvac φ hφSB hφ`. Establish `hψ` using `hT.base.std`. Establish `hn` using `GlobalTheory.StdCharFromIsStd.norm_psi hψ`. Establish `hnv : ∀ t, ‖GlobalTheory.LatVac.psiAt B.ψ v t‖ = 1` using `fun t => hn (GlobalTheory.LatVac.liftV v t)`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ.1 v`.
+
+Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hψ v`. Use `set Λ := latAtV G.V' G.W v with hΛ`. Establish `hat : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1`. Take `⟨hvSB, hv0, -⟩` from `hT.geo.hM'.vac v`. Use `set φ₀ := G.M'.vac v with hφ₀`.
+
+Use `set φd := boxFun φ₀ (fun x => star (φ₀ x)) with hφd`. Establish `loc : ∀ {κ : Type} [Fintype κ] {W' : Type} [AddCommGroup W'] [Module (AF F) W'] {Bf : W' → W' → AF F} (d : Darboux Bf κ) (f : (κ → Fv F v) → ℂ), f ∈ SB _ → ∀ γ, At (evFin F v) γ → ∀ c : ℂ, Acts (evFin F v) (d.rho B.ψ γ) f (c • f) → schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTh …`. Introduce `κ _ W' _ _ Bf d f hf γ hγ c h`. Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v f hf`. Use `GlobalTheory.DblVacLine.eq_of_tens v hr.1 hx₀ ?_` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.VacBridge.rho_acts_locCo d B.ψ v γ hγ f r hr]`. Conclude with `h r hr`. Establish `hco : ∀ w₁ w₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ w₂) = (Sum.elim (GlobalTheory.LatVac.locCo G.M'.co v w₁).1 (GlobalTheory.LatVac.locCo G.M'.co v w₂).1, Sum.elim (GlobalTheory.LatVac.locCo G.M'.co v w₁).2 (-(GlobalTheory.L …`. Introduce `w₁ w₂`. Express the relevant statement in the definitionally equal form `((fun k => evFin F v ((dd.e (Matrix.fromCols w₁ w₂)).1 k)), fun k => evFin F v ((dd.e (Matrix.fromCols w₁ w₂)).2 k)) = _`.
+
+Rewrite using `[hdc]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases k <;> rfl`. Consider the cases of `k with`. Consider the case `inl k => rfl`.
+
+Consider the case `inr k => exact map_neg (evFin F v) _`. Set `χ : Matrix (Fin a') (Fin (a + a')) (AE F E) → ℂ` to `fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ)`. Set `cf : Matrix (Fin a') (Fin (a + a')) (AE F E) → Matrix (Fin a') (Fin (a + a')) (AE F E) → ℂ` to `fun w₁ w₂ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (dbl (incM F G.W.J)) (Matrix.fromCols w₁ w₂) (Matrix.fromCols w₁ w₂))`. Establish `hcf : ∀ w₁ w₂, cf w₁ w₂ = χ w₁ * star (χ w₂)`. Introduce `w₁ w₂`.
+
+Simplify using `only [cf, χ]`. Rewrite using `[GlobalTheory.DblVacLine.symp_dbl, GlobalTheory.DblVacLine.star_eq_neg B.ψ hn, ← AddChar.map_add_eq_mul, mul_sub, sub_eq_add_neg]`. Establish `hvl : ∀ γ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v γ) φ₀ = χ γ • φ₀` using `fun γ h => loc G.M'.co φ₀ hvSB γ (hat γ h) _ (hvac γ h)`. Establish `hφl : ∀ w₁ ∈ Λ, ∀ w₂ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ w₂)) φ = cf w₁ w₂ • φ` using `fun w₁ h₁ w₂ h₂ => loc dd φ hφSB _ (GlobalTheory.DblVacLine.at_fromCols v (hat w₁ h₁) (hat w₂ h₂)) _ (hφ w₁ h₁ w₂ h₂)`. Establish `hdl : ∀ w₁ ∈ Λ, ∀ w₂ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ w₂)) φd = cf w₁ w₂ • φd`.
+
+Introduce `w₁ h₁ w₂ h₂`. Rewrite using `[hco, hφd, GlobalTheory.DblVacLine.schr_box _ hnv, hvl w₁ h₁, hvl w₂ h₂, hcf]`. Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded G.V' G.W v G.M'.co hT.geo.hV'.lat hT.geo.hW.lat`. Establish `hsd` using `GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V' G.W _ _ _ _ hT.base hT.geo.hV' hT.geo.hW v`. Establish `hfill` using `GlobalTheory.SelfDualFirstProjAny.exists_pair_of_annihilator_any F v (Fin a' × Fin (a + a')) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hnv hψ1 (Λ.map (GlobalTheory.LatVac.locCo G.M'.co v)) c hc0 (GlobalTheory.LatVac.DualLoc.map_selfDual v G.M'.co B.ψ Λ hat hsd) (fun l hl i => by`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`.
+
+Establish `hφd0 : φd ≠ 0`. Take `⟨t, ht⟩` from `Function.ne_iff.mp hv0`. Use `Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩` and prove the remaining obligations. Use `show φ₀ t * star (φ₀ t) ≠ 0`. Conclude with `mul_ne_zero ht (star_ne_zero.mpr ht)`.
+
+Take `⟨c', hc'⟩` from `GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt B.ψ v) (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1 i.2.1)) (fun i => cf i.1.1 i.2.1) (fun u hu => by`. Establish `eu : u = Sum.elim (u ∘ Sum.inl) (u ∘ Sum.inr)` using `(Sum.elim_comp_inl_inr u).symm`. Take `⟨y₁, γ₁, h₁, e₁⟩` from `hfill (u ∘ Sum.inl) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (⟨γ, hγ⟩, 0) (by` as an intermediate fact.
+
+Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero]`. Apply the tactic sequence `funext k; cases k <;> rfl)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`.
+
+Take `⟨y₂, γ₂, h₂, e₂⟩` from `hfill (u ∘ Sum.inr) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (0, ⟨-γ, neg_mem hγ⟩) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg]`. Apply the tactic sequence `funext k; cases k <;> simp)`.
+
+Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Use `⟨(⟨γ₁, h₁⟩, ⟨γ₂, h₂⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hco, e₁, e₂]`.
+
+Conclude with `eu.symm) φ φd`. Use the proof step `(fun i => hφl _ i.1.2 _ i.2.2) (fun i => hdl _ i.1.2 _ i.2.2) hφd0`. Conclude with `⟨c', hc'⟩`.
+-/
 theorem line_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F),
@@ -244,6 +299,29 @@ theorem line_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
     (fun i => hφl _ i.1.2 _ i.2.2) (fun i => hdl _ i.1.2 _ i.2.2) hφd0
   exact ⟨c', hc'⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ dd omd hdc hsp r hr g hg`. Take `⟨hvSB, -, θ, hθ, hvac⟩` from `hT.geo.hM'.vac v`. Use `set φ := G.M'.vac v with hφ`. Use `set vD := boxFun φ (fun x => star (φ x)) with hvD`. Use `set RD := boxFun r (fun x => star (r x)) with hRD`.
+
+Establish `hvDSB : vD ∈ SB _` using `GlobalTheory.VDblEigAny.boxFun_mem_SB hvSB (GlobalTheory.VDblEigAny.star_mem_SB hvSB)`. Establish `hS : boxFun (tens (evFin F v) φ r) (fun x => star (tens (evFin F v) φ r x)) = tens (evFin F v) vD RD`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, boxFun, hvD, hRD, Function.comp_def, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hRest : Rest (evFin F v) vD RD`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hz1 : At (evFin F v) (z ∘ Sum.inl)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inl i)`.
+
+Establish `hz2 : At (evFin F v) (z ∘ Sum.inr)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inr i)`. Use `show r ((x + z) ∘ Sum.inl) * star (r ((x + z) ∘ Sum.inr)) = r (x ∘ Sum.inl) * star (r (x ∘ Sum.inr))`. Rewrite using `[show (x + z) ∘ Sum.inl = x ∘ Sum.inl + z ∘ Sum.inl from rfl, show (x + z) ∘ Sum.inr = x ∘ Sum.inr + z ∘ Sum.inr from rfl, hr.1 _ _ hz1, hr.1 _ _ hz2]`.
+
+Rewrite using `[← hS]`. Conclude with `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ _ hr.2 _ (GlobalTheory.ConjSch.star_mem_schA _ _ hr.2)`. Establish `hU` using `hsp.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨φ₁, hφ₁, hA⟩ : ∃ φ₁ ∈ SB _, Acts (evFin F v) (omd g) vD φ₁ := by`. Use `GlobalTheory.DblActs.acts_of_comm v B.ψ hT.base.std (omd g) (fun Φ hΦ => hU.pres g Φ hΦ) (fun μ hμ Φ hΦ => hU.unit μ hμ g Φ hΦ) ?_ vD hvDSB` and prove the remaining obligations.
+
+Introduce `u hu x y Φ hΦ`. Use `set z := dd.e.symm (x, y) with hz`. Establish `he : dd.e (u • z) = (u • x, u • y)`. Rewrite using `[LinearEquiv.map_smul, hz, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h2` using `hg.1 u hu`.
+
+Establish `e2 : actB (cA σ) g (u • z) = u • z`. Simplify using `only [actB]`. Use `set P := GlobalTheory.DblVac.matD g with hP`. Use `set c : AE F E := algebraMap (AF F) (AE F E) u with hc`. Establish `hs1 : u • z = c • z` using `(algebraMap_smul (AE F E) u z).symm`.
+
+Establish `hs2 : u • (P - 1) = c • (P - 1)` using `(algebraMap_smul (AE F E) u (P - 1)).symm`. Establish `h2' : c • (P - 1) = 0` using `hs2 ▸ h2`. Establish `: (c • z) * Pᵀ - c • z = z * (c • (P - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `this` using `[h2']`.
+
+Simplify using `only [Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this`. Rewrite using `[hs1]`. Conclude with `this`. Establish `h3` using `hU.impl g (u • z) Φ hΦ`. Simplify using `only [Darboux.rho, he, e2] at h3`.
+
+Conclude with `h3`. Establish `hE0` using `doubled_vac_eigen_any F E σ B a a' G X om om' hT v dd hdc θ hθ hvac`. Establish `hE1` using `transport_any F E σ B a a' G X om om' hT v dd hdc θ hθ hvac omd hsp g hg vD hvDSB φ₁ hφ₁ hE0 hA`. Take `⟨μ, hμ⟩` from `line_any F E σ B a a' G X om om' hT v dd hdc θ hθ hvac φ₁ hφ₁ hE1`. Use `⟨μ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS, hA RD hRest, hμ]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_vdbl_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T →
@@ -311,6 +389,25 @@ theorem split_vdbl_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   simp only [tens, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv dd omd hdd hW r hr h0 p hp hpd μ hμ`. Take `⟨t, ht₀⟩` from `hpd`. Establish `ht : GlobalTheory.DblVac.matD p * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * (t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))` using `ht₀`. Establish `hF` using `hT.base.cm.1`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) r with hΨ`.
+
+Establish `hS` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hr.2 _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hr.2)`. Establish `hl` using `lDiag_box_ne_zero hF hr.2 h0`. Establish `hS0 : (boxFun Ψ fun x => star (Ψ x)) ≠ 0` using `fun h => hl (by rw [h, map_zero])`. Establish `hn` using `norm_eq_one_of_eigen hF hW.2.1.unit hS hS0 hμ`. Establish `hrule` using `hW.2.2 _ DiagForm.lDiag_adm (fun z φ hφ => by`.
+
+Establish `e : z * (diagCols (Fin (a + a')) : Matrix _ _ (AE F E))ᵀ = Matrix.fromCols z z`. Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[e, Darboux.rho, hdd]`. Conclude with `DiagForm.lDiag_schr B.ψ _ _ hφ) p t ht _ hS`. Establish `hvec : ∀ (g : GlobalTheory.DblVac.UD σ G.W) (s : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)), GlobalTheory.DblVac.matD g * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) …` using `fun g s hs z => by`.
+
+Establish `e : ∀ z : Fin (a + a') → AE F E, (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z = Sum.elim z z` using `fun z => by`. Rewrite using `[diagCols, Matrix.fromRows_mulVec, Matrix.one_mulVec]`. Rewrite using `[← e, Matrix.mulVec_mulVec, hs, ← Matrix.mulVec_mulVec, e]`. Both sides reduce to the same expression. Establish `ht' : GlobalTheory.DblVac.matD p⁻¹ * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * ((t⁻¹ : GL (Fin (a + a')) (AE F E)) : Matrix (Fin (a + a')) ( …`.
+
+Establish `e1 : GlobalTheory.DblVac.matD p⁻¹ * GlobalTheory.DblVac.matD p = 1` using `p.1.inv_mul`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, t.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← ht, ← Matrix.mul_assoc, e1, Matrix.one_mul]`. Establish `hunr : ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = v → UnrAt X.α P` using `fun P hP => by`.
+
+Establish `hPT : P ∉ above E (X.T : Set (Pl F))` using `fun h => hv (hP ▸ (h : P.under (𝓞 F) ∈ (X.T : Set (Pl F))))`. Conclude with `hT.chars.unrα P hPT`. Establish `hβ : X.α (Matrix.GeneralLinearGroup.det t) = 1`. Use `GlobalTheory.DblVacSiegelAny.chr_det_eq_one_any (v := v) G.W hT.geo.hW.lat hunr t (fun u hu => ?_) fun z hz => ?_` and prove the remaining obligations. Establish `e1 : (GlobalTheory.DblVac.matD p - 1) * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * ((t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) - 1)`.
+
+Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, ht, Matrix.one_mul, Matrix.mul_one]`. Establish `e2 : (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * (u • ((t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) - 1)) = 0`. Rewrite using `[Matrix.mul_smul, ← e1, ← Matrix.smul_mul, hp.1 u hu, Matrix.zero_mul]`. Rewrite `e2` using `[diagCols, Matrix.fromRows_mul, Matrix.one_mul]`. Use extensionality with `i j`.
+
+Conclude with `congrFun (congrFun e2 (Sum.inl i)) j`. Establish `hz'` using `hp.2 (Sum.elim z z) ⟨hz, hz⟩`. Conclude with `⟨hvec p _ ht z ▸ hz'.1.1, hvec p⁻¹ _ ht' z ▸ hz'.2.1⟩`. Rewrite `hrule` using `[hμ, map_smul, smul_eq_mul, hβ, Circle.coe_one, one_mul]`. Establish `hμ'` using `mul_right_cancel₀ hl hrule`.
+
+Rewrite `hn` using `[hμ', Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Rewrite using `[hμ', hn, Complex.ofReal_one]`.
+-/
 theorem siegel_eigen_eq_one_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), v ∉ X.T →
@@ -371,6 +468,25 @@ theorem siegel_eigen_eq_one_any : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   rw [hμ', Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)] at hn
   rw [hμ', hn, Complex.ofReal_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hsp₁ hv k hk r hr`. Establish `hsp₀` using `GlobalTheory.SplitSphV.isSplit_of_nonempty hT.base.cm hsp₁`. Take `⟨-, dd, omd, hdc, hsp, hbox⟩` from `hT.weil'.1`. Distinguish the cases in `hr0 : tens (evFin F v) (G.M'.vac v) r = 0`. Rewrite using `[hr0, map_zero]`.
+
+Use `set V₀ := tens (evFin F v) (G.M'.vac v) r with hV₀`. Use `set S := boxFun V₀ (fun x => star (V₀ x)) with hS`. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hr0`. Establish `hx₀' : V₀ x₀ ≠ 0` using `hx₀`. Establish `hSne : S ≠ 0` using `fun h => by`.
+
+Use `congrFun h (Sum.elim x₀ x₀)` as an intermediate fact. Simplify using `only [hS, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.zero_apply] at this`. Conclude with `mul_ne_zero hx₀' (star_ne_zero.mpr hx₀') this`. Take `⟨gd, hgd, hgdK⟩` from `GlobalTheory.T.exists_diag_mem_doubledVacuumLatticeStabilizer σ G.W v k hk`. Establish `hb` using `hbox k gd hgd V₀ hr.2 (fun x => star (V₀ x)) (GlobalTheory.T.conj_mem_adelicSchwartzSpaceNumberField_of_mem _ V₀ hr.2)`.
+
+Take `⟨c, hgS⟩` from `split_vdbl_eigen F E σ B a a' G X om om' hT v hsp₀ hv dd omd hdc hsp r hr gd hgdK`. Express the relevant statement in the definitionally equal form `omd gd S = c • S at hgS`. Take `⟨e, θ, he1, he2, he3, hθ1, hθ2, hθ3, hθ4⟩` from `GlobalTheory.T.split_place_idempotent_lattice σ B hT.base v hsp₀`. Take `⟨w₀, hw₀, hW⟩` from `GlobalTheory.T.split_lattice_double_vector σ G.W v e θ he1 he2 he3 hθ1 hθ2 hθ3 (hθ4 G.W)`. Take `⟨h1, h2⟩` from `hW k hk gd hgd hgdK`.
+
+Take `⟨μ, hμ⟩` from `split_vdbl_eigen F E σ B a a' G X om om' hT v hsp₀ hv dd omd hdc hsp r hr w₀ hw₀`. Express the relevant statement in the definitionally equal form `omd w₀ S = μ • S at hμ`. Establish `e0 : omd w₀⁻¹ (omd w₀ S) = S`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hμ0 : μ ≠ 0` using `fun h0 => by`.
+
+Apply `hSne` to reduce the goal to its premises. Rewrite using `[← e0, hμ, h0, zero_smul, map_zero]`. Establish `hinv : omd w₀⁻¹ S = μ⁻¹ • S`. Rewrite `e0` using `[hμ, LinearMap.map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hp : omd (w₀ * gd * w₀⁻¹) S = c • S`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hinv, LinearMap.map_smul, hgS, LinearMap.map_smul, LinearMap.map_smul, hμ, smul_smul, smul_smul]`. Rewrite using `[show μ⁻¹ * c * μ = c by field_simp]`. Establish `hc` using `siegel_eigen_eq_one_any F E σ B a a' G X om om' hT v hv dd omd hdc hsp r hr hr0 _ h1 h2 c hp`. Rewrite `hgS` using `[hc, one_smul]`.
+
+Express the relevant statement in the definitionally equal form `omd gd S = _ at hb`. Rewrite `hb` using `[hgS]`. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hb (Sum.elim x x₀)`. Simplify using `only [hS, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, MonoidHom.comp_apply, MonoidHom.inr_apply] at hx`.
+
+Conclude with `(mul_right_cancel₀ (star_ne_zero.mpr hx₀') hx).symm`.
+-/
 theorem vac_fixed_split_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Nonempty (E →ₐ[F] Fv F v) → v ∉ X.T →
@@ -419,6 +535,9 @@ theorem vac_fixed_split_right : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   simp only [hS, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, MonoidHom.comp_apply, MonoidHom.inr_apply] at hx
   exact (mul_right_cancel₀ (star_ne_zero.mpr hx₀') hx).symm
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT k hk` and use `vac_fixed_split_right F E σ B a a' G X om om' hT B.v₁ ⟨B.τ₁⟩ hT.chars.good.1 k hk`.
+-/
 theorem vac_fixed_good : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ k ∈ GlobalTheory.InertSph.KAt σ G.W B.v₁, Acts (evFin F B.v₁) (om' (1, k)) (G.M'.vac B.v₁) (G.M'.vac B.v₁) :=

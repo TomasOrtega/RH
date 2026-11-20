@@ -27,8 +27,14 @@ namespace PositivityTheory.RgFd
 
 open ReciprocityTheory.ChartRestriction.DS PositivityTheory.RgDs
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.RgFd.hsInt GlobalTheory.CompanionTheory.HsPsProof.hsPs hsPol phiMul phiCont`.
+-/
 theorem hsInt : HsInt := GlobalTheory.CompanionTheory.RgFd.hsInt GlobalTheory.CompanionTheory.HsPsProof.hsPs hsPol phiMul phiCont
 
+/- English proof (translation)
+Introduce `n ε lam hl`. Distinguish the cases in `h : S7.q0 ε = 0`. Conclude with `normDef n ε h lam hl`. Establish `h1 : 1 ≤ min (pOf ε) (qOf ε)` using `Nat.one_le_iff_ne_zero.2 h`. Conclude with `hI n ε (h1.trans (min_le_left _ _)) (h1.trans (min_le_right _ _)) lam hl`.
+-/
 theorem psiNorm_of (hI : NormInd) : PsiNorm := by
   intro n ε lam hl
   by_cases h : S7.q0 ε = 0
@@ -36,6 +42,9 @@ theorem psiNorm_of (hI : NormInd) : PsiNorm := by
   · have h1 : 1 ≤ min (pOf ε) (qOf ε) := Nat.one_le_iff_ne_zero.2 h
     exact hI n ε (h1.trans (min_le_left _ _)) (h1.trans (min_le_right _ _)) lam hl
 
+/- English proof (translation)
+Introduce `n ε lam T μ hl hμ`. Establish `hP : IsPsiFor ε lam T (S7.PsiM T μ)` using `⟨fun k₁ k₂ g hg => S7.psiM_equiv T μ k₁ k₂ hg, S7.psiM_one T μ, S7.psiM_smooth T μ hμ, fun g hg => S7.psiM_casimir T μ hμ hg, hL n ε lam T μ hl hμ⟩`. Conclude with `⟨hP, (hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)).1⟩`.
+-/
 theorem modelDS_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) : ModelDS := by
   intro n ε lam T μ hl hμ
   have hP : IsPsiFor ε lam T (S7.PsiM T μ) :=
@@ -43,16 +52,25 @@ theorem modelDS_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb
       fun g hg => S7.psiM_casimir T μ hμ hg, hL n ε lam T μ hl hμ⟩
   exact ⟨hP, (hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)).1⟩
 
+/- English proof (translation)
+Introduce `cd sc hc N ε lam hl H _ _ σ w hσ hw`. Establish `h1` using `h N ε lam hl H σ hσ`. Rewrite `h1` using `[GlobalTheory.FdegGap.muCD_eq_scaled cd sc hc ε]`. Conclude with `fdegOf_of_isFdeg' h1 hw`.
+-/
 theorem realMetaplectic_of_forall (h : FdAll) : GlobalTheory.Published.FormalDegreeCompactDual := by
   intro cd sc hc N ε lam hl H _ _ σ w hσ hw
   have h1 := h N ε lam hl H σ hσ
   rw [GlobalTheory.FdegGap.muCD_eq_scaled cd sc hc ε] at h1
   exact fdegOf_of_isFdeg' h1 hw
 
+/- English proof (translation)
+The claim follows from `have hM := modelDS_of (square_integrable_of_norm hN) hK hH fdAll_of hM (fdModel_of degPsi hlamStable (formF_of hlamStable (kmapZero_of hlamStable)) hN hM)`.
+-/
 theorem fdAll_of_norm (hN : PsiNorm) (hK : Key) (hH : Hilb) : FdAll :=
   have hM := modelDS_of (square_integrable_of_norm hN) hK hH
   fdAll_of hM (fdModel_of degPsi hlamStable (formF_of hlamStable (kmapZero_of hlamStable)) hN hM)
 
+/- English proof (translation)
+The claim follows from `h momW hP (kNull_of momW hP) hsPol phiMul phiLe phiCont hsInt (gapNorm_of degPsi)`.
+-/
 theorem normInd_of_steps (hP : CoefPow)
     (h : MomW → CoefPow → KNull → HsPol → PhiMul → PhiLe → PhiCont → HsInt → GapNorm → NormInd) : NormInd :=
   h momW hP (kNull_of momW hP) hsPol phiMul phiLe phiCont hsInt (gapNorm_of degPsi)

@@ -117,10 +117,22 @@ def PhiRaw (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k :
 
 def CDVR (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] : Prop :=
   IsDiscreteValuationRing V ∧ IsAdicComplete (IsLocalRing.maximalIdeal V) V ∧ CharZero V
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 example (hG : GlobalFnsSt) (D : DegPre R) : IsCPOf D (CP.ofDegPre hG D) := ⟨rfl, HEq.rfl, HEq.rfl⟩
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : DegPre R) (α : D.X) : famφT D (TF (R := R) F) α = DegPre.famφ D F α := rfl
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (D : DegPre R) (k : ℕ) (p : QkPt D F k) (w) (s s' : Fam D F k) :
     PhiRel D F k p w s s' ↔ PhiRaw D F k p.y p.g w s.s s'.s := Iff.rfl
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : CDVR ℤ_[p] := ⟨inferInstance, inferInstance, inferInstance⟩
 end GlobalTheory.UU
 end

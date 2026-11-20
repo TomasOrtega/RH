@@ -14,6 +14,17 @@ variable (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
   (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
   (I : X.IdealSheafData) (m : ℕ)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hpos` into its components or cases. Use `right`. Simplify using the standard rewrite rules. Establish `hm1 : 1 ≤ m` using `hpos`. Distinguish the cases in `h0 : orderAt I x = 0`.
+
+Conclude with `Or.inl h0`. Use `right`. Establish `hlt : m - 1 < m` using `by omega`. Establish `hle : derivIdealSheafIterate k p (m - 1) I ^ m ≤ I ^ (m - (m - 1))` using `IsDerivBalanced.derivIdealSheafIterate_pow_le k p h hlt`. Establish `hsub : m - (m - 1) = 1` using `by omega`.
+
+Rewrite `hle` using `[hsub, pow_one]`. Establish `hord : orderAt I x ≤ orderAt (derivIdealSheafIterate k p (m - 1) I ^ m) x` using `orderAt_le_of_le hle x`. Rewrite `hord` using `[orderAt_pow k p (derivIdealSheafIterate k p (m - 1) I) m x]`. Establish `hne : orderAt (derivIdealSheafIterate k p (m - 1) I) x ≠ 0`. Introduce `hz`.
+
+Rewrite `hord` using `[hz, mul_zero]`. Conclude with `h0 (le_antisymm hord (by exact zero_le))`. Establish `hmem : x ∈ (derivIdealSheafIterate k p (m - 1) I).support`. Assume the negation of the conclusion as `hc`. Conclude with `hne ((orderAt_eq_zero_iff_not_mem_support _ x).mpr hc)`.
+
+Establish `heq` using `support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm1`. Establish `hx : x ∈ orderAtLeastLocus I m`. Rewrite using `[← heq]`. Conclude with `hmem`. Conclude with `(mem_orderAtLeastLocus_iff I m x).mp hx`.
+-/
 theorem orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced
     (h : IsDerivBalanced k p I m) (x : X) :
     orderAt I x = 0 ∨ (m : ℕ∞) ≤ orderAt I x := by
@@ -45,6 +56,13 @@ theorem orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced
     exact hmem
   exact (mem_orderAtLeastLocus_iff I m x).mp hx
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_orderAtLeastLocus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : (1 : ℕ∞) ≤ orderAt I x` using `le_trans (by exact_mod_cast hm) hx`.
+
+Conclude with `(one_le_orderAt_iff_mem_support I x).mp h1`. Introduce `hx`. Establish `hx' : x ∈ I.support` using `hx`. Establish `hne : orderAt I x ≠ 0` using `fun h0 => (orderAt_eq_zero_iff_not_mem_support I x).mp h0 hx'`. Break down `orderAt_eq_zero_or_le_orderAt_of_isDerivBalanced k p I m h x with h0 | h0` into its components or cases.
+
+Conclude with `absurd h0 hne`. Conclude with `h0`.
+-/
 theorem orderAtLeastLocus_eq_support_of_isDerivBalanced
     (h : IsDerivBalanced k p I m) (hm : 1 ≤ m) :
     orderAtLeastLocus I m = (I.support : Set X) := by

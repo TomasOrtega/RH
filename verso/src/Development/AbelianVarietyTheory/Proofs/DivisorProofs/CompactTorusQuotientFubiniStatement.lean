@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoordMeasure
 open MeasureTheory
 open scoped NNReal ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ParabolicCoord.coordMeasure_isFiniteMeasureOnCompacts | exact GlobalTheory.ParabolicCoord.coordMeasure_isFiniteMeasureOnCompacts | (intros; apply GlobalTheory.ParabolicCoord.coordMeasure_isFiniteMeasureOnCompacts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_torus_quotient_fubini : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [SecondCountableTopology K]

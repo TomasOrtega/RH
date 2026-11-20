@@ -15,6 +15,19 @@ namespace GlobalTheory.ConstTanAlg
 
 open ConstTerm
 
+/- English proof (translation)
+Establish `hφ : ∀ i, FormalValue.coordφ g α i ≫ φ = spMap ρ ≫ (show Sp S₀ ⟶ _ from Out.DegPre.gtφT D₀ (Over.mk σ₀) g₀.b α₀ i)` using `hg.1`. Establish `hq : ∀ i, FormalValue.basePt g ≫ D.toPre.famφB α i = FormalValue.coordφ g α (![2, 0, 1, 3] i)` using `comp_famφB D.toPre g.b α`. Establish `hq₀` using `comp_famφB D₀ g₀.b α₀`. Establish `ejf : ∀ i, jf i = jt (![2, 0, 1, 3] i)` using `fun i => hj.2.2 (.inr (.inl i)) (.inr (.inr _)) (hq i)`. Establish `ejM : jM = jt 2` using `hj.2.2 (.inl PUnit.unit) (.inr (.inr 2)) rfl`.
+
+Establish `hk : ∀ i, ⊤ ≤ (show Sp S₀ ⟶ _ from Out.DegPre.gtφT D₀ (Over.mk σ₀) g₀.b α₀ i) ⁻¹ᵁ D₀.P.L.U (k i)` using `fun i => cg.trans (LB.wchart_le _ _ _ i)`. Establish `ek : ![k 2, k 0, k 1, k 3] = fun i => k (![2, 0, 1, 3] i)`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Rewrite using `[ek]`. Substitute `ejM` using the available equality.
+
+Take `rfl : jf = fun i => jt (![2, 0, 1, 3] i)` from `funext ejf`. Establish `hd : ∀ i, ⊤ ≤ FormalValue.coordφ g α i ⁻¹ᵁ (LB.div (D₀.P.L.pull φ) D.toPre.P.L).U (fun _ => k i, jt i)` using `fun i => le_div _ (hφ i ▸ FormalValue.top_le_comp (hk i) _) (hj.2.1.trans (LB.wchart_le _ _ _ i))`. Take `⟨t, ht, e₁⟩` from `hf (FormalValue.basePt g) (fun i => jt (![2, 0, 1, 3] i)) (fun i => k (![2, 0, 1, 3] i)) (Over.w g.b) (fun i => by rw [hq i]; exact hd _)`. Simplify using `only [hq] at ht`. Establish `cf : ⊤ ≤ (show Sp S₀ ⟶ _ from g₀.b.left) ⁻¹ᵁ D₀.P.L.wchart (D₀.famφB α₀) (fun i => k (![2, 0, 1, 3] i))` using `fun z hz => Set.mem_iInter.2 fun i => (congrArg (fun q => q z ∈ D₀.P.L.U (k (![2, 0, 1, 3] i))) (hq₀ i)).mpr (hk _ hz)`.
+
+Establish `e₂ : valR (FormalValue.basePt g ≫ φ) _ (s₀.f fun i => k (![2, 0, 1, 3] i)) = _` using `(congrArg (fun q => valR q _ (s₀.f fun i => k (![2, 0, 1, 3] i))) (hφ 2)).trans (FormalValue.valR_spMap ρ (show Sp S₀ ⟶ _ from g₀.b.left) _ cf _)`. Establish `e₃ : FormalValue.coordVal g α jt = _` using `(hg.2 jt k hd).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => valR_zpow _ _ (hd i) _ (![t 1, t 2, t 0, t 3] i) (by fin_cases i; exacts [ht 1, ht 2, ht 0, ht 3]) _) (valR_pullGen ρ (g₀.s α₀) k cg))`. Establish `e₅ : (t 0 : S) ^ j * ∏ i, ((![t 1, t 2, t 0, t 3] i ^ (-Out.DegPre.gtε i) : Sˣ) : S) = ((∏ i, t i ^ Out.DegPre.famε j i : Sˣ) : S)`. Rewrite using `[← Units.coe_prod, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← prod_factors t j]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel_right]`.
+
+Use `replace e₁ := e₁.trans (congrArg (κ r * ·) e₂)`. Use `(congrArg₂ (fun a b => a ^ j * (_ * b)) (ht 0).symm e₃).trans ?_` and prove the remaining obligations. Rewrite `e₁` using `[← e₅]`. Rewrite using `[map_mul, ← _root_.mul_assoc (κ r)]`. Use `Eq.trans ?_ (congrArg (· * _) e₁)` and prove the remaining obligations.
+
+Conclude with `(congrArg (_ * ·) (_root_.mul_left_comm _ _ _)).trans ((_root_.mul_assoc _ _ _).symm.trans (_root_.mul_assoc _ _ _).symm)`.
+-/
 theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData R I} {S : Type} [CommRing S]
     {R₀ : Type} [CommRing R₀] [IsDomain R₀] {D₀ : Out.DegPre R₀} {S₀ : Type} [CommRing S₀] {σ₀ : Sp S₀ ⟶ Sp R₀}
     (κ : R →+* S) (ρ : S₀ →+* S) {φ : D.toPre.P.A.left ⟶ D₀.P.A.left}
@@ -77,6 +90,9 @@ theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData
   exact (congrArg (_ * ·) (_root_.mul_left_comm _ _ _)).trans
     ((_root_.mul_assoc _ _ _).symm.trans (_root_.mul_assoc _ _ _).symm)
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W ν g₁ j x s₀ f r jM jf jt jt₀ hg hf hj hc`. Use `isLocalRing_dual ℂ⟦X⟧` as an intermediate fact. Conclude with `core (algebraMap ℂ⟦X⟧ (DualNumber ℂ⟦X⟧)) constEps W.w g₁ ν (hg x) s₀ f r (fun p => hf _ p _) jM jf jt jt₀ hj hc`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (ν : Out.GtPt a.D₀ (epsR ℂ)) (g₁ : Out.GtPt W.P.D.toPre (epsR ℂ⟦X⟧)) (j : ℕ) (x : a.D₀.X) (s₀ : a.D₀.SecB j x) (f : W.P.D.toPre.SecB j (W.e x)) (r : ℂ⟦X⟧) (jM : W.P.D.toPre.P.L.ι) (jf jt : Fin 4 → W.P.D.toPre.P.L.ι) (jt₀ : Fin 4 → a.D₀.P.L.ι), TanRel W ν g₁ → IsConstMul W j x s₀ f r → FormalValue.CohCharts g₁ (W.e x) jM jf jt → ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφT a.D₀ (epsR ℂ) ν.b x) jt₀ → valR (A := DualNumber ℂ⟦X⟧) g₁.b.left _ (W.w.s (fun _ => jt₀ 2, jM)).val ^ j * (FormalValue.famVal g₁ f jf * FormalValue.coordVal g₁ (W.e x) jt) = TrivSqZeroExt.inl r * constEps (valR (A := DualNumber ℂ) ν.b.left (LB.wchart a.D₀.P.L (a.D₀.famφB x) ![jt₀ 2, jt₀ 0, jt₀ 1, jt₀ 3]) (s₀.f ![jt₀ 2, jt₀ 0, jt₀ 1, jt₀ 3]) * valR (A := DualNumber ℂ) (𝟙 _) (LB.wchart a.D₀.P.L (Out.DegPre.gtφT a.D₀ (epsR ℂ) ν.b x) jt₀) ((ν.s x).s jt₀).val) := by
   intro E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W ν g₁ j x s₀ f r jM jf jt jt₀ hg hf hj hc
   have := isLocalRing_dual ℂ⟦X⟧

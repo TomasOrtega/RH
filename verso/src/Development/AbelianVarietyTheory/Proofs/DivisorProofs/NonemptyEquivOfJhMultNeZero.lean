@@ -16,6 +16,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace GlobalTheory.RegMult
 
+/- English proof (translation)
+Establish `hne : unipRad k (f i) ≠ ⊥`. Rewrite using `[GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff]`. Use `⟨f i ⟨j, ⟨0, Nat.pos_of_ne_zero hj⟩⟩, f i ⟨j', ⟨0, Nat.pos_of_ne_zero hj'⟩⟩, ?_⟩` and prove the remaining obligations. Simplify `hjj` using `[blk_apply]`. Use `haveI hs : Subsingleton (Jacquet (ρ i) (unipRad k (f i))) := (hc i).2 h (fun j => b.1 i j) (f i) hne`.
+
+Use `haveI := GlobalTheory.SmGL.CellSemis.subsingleton_piTensor (X := fun a => Jacquet (ρ a) (unipRad k (f a))) i`. Take `⟨φ⟩` from `GlobalTheory.T.relative_jacquet_functor_piTensor_equiv k (Fin h) (Fin h) (fun a => Fin (d a)) (fun i j => Fin (b.1 i j)) f X ρ`. Use `haveI : Subsingleton (Jacquet (piTensor ρ) (relUnip k f)) := φ.toLinearEquiv.injective.subsingleton`. Conclude with `GlobalTheory.SmGL.CellSemis.jhMult_relInd_of_subsingleton g _ hτ`.
+-/
 theorem jhMult_cell_eq_zero_of_row {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h : ℕ} {d : Fin h → ℕ} {X : Fin h → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] {ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)}
@@ -68,6 +73,15 @@ end
 
 namespace GlobalTheory.RegMult
 
+/- English proof (translation)
+Establish `hr : ∀ i, ∑ j, b.1 i j = d i` using `fun i => by simpa using b.2.1 i`. Establish `hc : ∀ j, ∑ i, b.1 i j = d j` using `fun j => by simpa using b.2.2 j`. Establish `h1 : ∀ i, ∃ j, b.1 i j ≠ 0` using `fun i => by`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ((hr i).trans_ne (hd i).ne')`. Conclude with `⟨j, hj⟩`.
+
+Use `choose s hs using h1`. Establish `hz : ∀ i j, j ≠ s i → b.1 i j = 0` using `fun i j hj => by_contra fun h0 => hj (hrow i _ _ h0 (hs i))`. Establish `hsurj : Function.Surjective s` using `fun j => by`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ((hc j).trans_ne (hd j).ne')`. Conclude with `⟨i, hrow i _ _ (hs i) hi⟩`.
+
+Establish `hinj : Function.Injective s` using `Finite.injective_iff_surjective.2 hsurj`. Establish `hb : ∀ i, b.1 i (s i) = d i` using `fun i => by`. Rewrite using `[← hr i, Finset.sum_eq_single (s i) (fun j _ hj => hz i j hj) (by simp)]`. Use `⟨Equiv.ofBijective s ⟨hinj, hsurj⟩, fun i => ?_, hz, hb⟩` and prove the remaining obligations. Use `show d (s i) = d i`.
+
+Rewrite using `[← hc, Finset.sum_eq_single i (fun a _ ha => hz a _ fun e => ha (hinj e).symm) (by simp), hb]`.
+-/
 theorem exists_perm {h : ℕ} {d : Fin h → ℕ} (hd : ∀ a, 0 < d a)
     (b : SizeMatrix (fun a => Fin (d a)) (fun a => Fin (d a)))
     (hrow : ∀ i j j', b.1 i j ≠ 0 → b.1 i j' ≠ 0 → j = j') :
@@ -89,6 +103,9 @@ theorem exists_perm {h : ℕ} {d : Fin h → ℕ} (hd : ∀ a, 0 < d a)
   show d (s i) = d i
   rw [← hc, Finset.sum_eq_single i (fun a _ ha => hz a _ fun e => ha (hinj e).symm) (by simp), hb]
 
+/- English proof (translation)
+The claim follows from `(jhMult_ne_zero_iff.1 h).nonempty_equiv hσ hρ`.
+-/
 theorem nonempty_equiv_of_jhMult_ne_zero {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (hσ : σ.IsIrreducible)
     (hρ : ρ.IsIrreducible) (h : jhMult σ ρ ≠ 0) : Nonempty (ρ.Equiv σ) :=

@@ -16,6 +16,13 @@ open GlobalTheory.PrimIn
 
 namespace GlobalTheory.Stage2
 
+/- English proof (translation)
+Introduce `P eps heps`. Establish `hE : GlobalTheory.Published.SiegelEisensteinContinuation` using `GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod P.q9`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.definite_positivity_both_levels_short_list P.q5 P.q3 P.q4 P.q6 P.q2 P.q1 P.q7 P.q8 hE P.q10 P.q12 eps heps`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F L hLe hLx hSz hPar hT hM hRow`.
+
+Take `⟨pV⟩` from `hPar`. Take `⟨_hGiven, _hGS, _hCD, _hLI, hTR, hUI, _hUIW⟩` from `GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM`. Take `⟨_hOk, _hGU, hGE, hBlk, _hA, _hB⟩` from `GlobalTheory.T.multiplicity_one_gives_unit_equiv P R F hT hM`. Establish `hJ` using `(GlobalTheory.Hk3.inertJunk_iff A3).1 hT.junk`. Establish `hPos : ∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos` using `hx₀ (s := 1) R F L pV hLe hLx hSz hT.ok hT.char hT.ex hT.host hT.ccK hT.guard hT.types hTR hGE hBlk hRow`.
+
+Establish `hScal` using `GlobalTheory.T.thetaLift_positiveScalars_basePlace P.q5 P.q3 P.q4 P.q6 P.q2 P.q1 P.q7 P.q8 hE P.q10 P.q11 R F hT.ok hT.char hT.ex hT.host hT.params hT.ccK hT.guard hT.types hTR hJ hGE hPos`. Conclude with `⟨hPos, hScal, GlobalTheory.PrimIn.principalLevel_rows_bijective_of_parts R F hT.ok hT.char hUI hRow hBlk⟩`.
+-/
 theorem stage2 : Hypotheses3 → ∀ eps : ℝ, 0 < eps → ∃ x₀ : ℝ, ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), ∀ (L : SizeData₂ D), L.sc.eps = eps → x₀ ≤ L.sc.x → Formalism.MainNotions.SizesAt L → Nonempty (ParameterChoice' D L) → TiesB R F → GlobalTheory.CuspMult.MultEq R.toRealDat → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) ∧ (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) ∧ R.PrincipalLevelBijective F := by
   intro P eps heps
   have hE : GlobalTheory.Published.SiegelEisensteinContinuation := GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod P.q9

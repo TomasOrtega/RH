@@ -2,11 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Hecke
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul I g`. Conclude with `⟨h, h.2, hh⟩`.
+-/
 private theorem hkMul_out {G : Type} [Group G] (I : Subgroup G) (g : G) :
     ∃ i ∈ I, (g : G ⧸ I).out = g * i := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul I g
   exact ⟨h, h.2, hh⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+-/
 private theorem hkMul_mem {G : Type} [Group G] (I : Subgroup G) (x : G) (p : G ⧸ I) :
     p ∈ MulAction.orbit I (x : G ⧸ I) ↔ ∃ a ∈ I, p = ((a * x : G) : G ⧸ I) := by
   constructor
@@ -15,6 +21,25 @@ private theorem hkMul_mem {G : Type} [Group G] (I : Subgroup G) (x : G) (p : G �
   · rintro ⟨a, ha, rfl⟩
     exact ⟨⟨a, ha⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `A G M _ _ _ _ ρ I x y hI hb hc`. Use `haveI fx : Fintype (MulAction.orbit I (x : G ⧸ I)) := (hI x).fintype`. Use `haveI fy : Fintype (MulAction.orbit I (y : G ⧸ I)) := (hI y).fintype`. Use `haveI fxy : Fintype (MulAction.orbit I ((x * y : G) : G ⧸ I)) := (hI (x * y)).fintype`. Establish `hmem : ∀ (p : MulAction.orbit I (x : G ⧸ I)) (q : MulAction.orbit I (y : G ⧸ I)), (((p : G ⧸ I).out * (q : G ⧸ I).out : G) : G ⧸ I) ∈ MulAction.orbit I ((x * y : G) : G ⧸ I)`.
+
+Introduce and unpack `⟨p, hp⟩ ⟨q, hq⟩`. Take `⟨a, ha, rfl⟩` from `(hkMul_mem I x p).1 hp`. Take `⟨b, hb', rfl⟩` from `(hkMul_mem I y q).1 hq`. Take `⟨i, hi, e1⟩` from `hkMul_out I (a * x)`. Take `⟨j, hj, e2⟩` from `hkMul_out I (b * y)`.
+
+Take `⟨a', ha', c, hc', e3⟩` from `hb (i * b) (mul_mem hi hb')`. Use `(hkMul_mem I _ _).2 ⟨a * a', mul_mem ha ha', ?_⟩` and prove the remaining obligations. Simplify using `only [e1, e2]`. Establish `: a * x * i * (b * y * j) = a * a' * (x * y) * (c * j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[this]`. Conclude with `QuotientGroup.mk_mul_of_mem _ (mul_mem hc' hj)`. Set `f : MulAction.orbit I (x : G ⧸ I) × MulAction.orbit I (y : G ⧸ I) → MulAction.orbit I ((x * y : G) : G ⧸ I)` to `fun pq => ⟨_, hmem pq.1 pq.2⟩`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨r, hr⟩`.
+
+Take `⟨a, ha, rfl⟩` from `(hkMul_mem I _ r).1 hr`. Take `⟨i, hi, e1⟩` from `hkMul_out I (a * x)`. Take `⟨j, hj, e2⟩` from `hkMul_out I (i⁻¹ * y)`. Use `⟨(⟨_, (hkMul_mem I _ _).2 ⟨a, ha, rfl⟩⟩, ⟨_, (hkMul_mem I _ _).2 ⟨i⁻¹, inv_mem hi, rfl⟩⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [f, e1, e2]`.
+
+Establish `: a * x * i * (i⁻¹ * y * j) = a * (x * y) * j` using `by group`. Rewrite using `[this]`. Conclude with `QuotientGroup.mk_mul_of_mem _ hj`. Establish `hbij : Function.Bijective f`. Use `(Fintype.bijective_iff_surjective_and_card f).2 ⟨hsurj, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_prod, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq, Nat.card_coe_set_eq, Nat.card_coe_set_eq, hc]`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `h1` using `(hkApply A G M ρ I I x (hI x)).1`. Establish `h2` using `(hkApply A G M ρ I I y (hI y)).1`. Establish `h3` using `(hkApply A G M ρ I I (x * y) (hI _)).1`.
+
+Rewrite using `[Module.End.mul_apply]`. Unfold `hk`. Rewrite using `[h1, h2, h3]`. Simplify using `only [dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, map_sum]`. Rewrite using `[← hbij.sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨i, hi, e⟩` from `hkMul_out I ((p : G ⧸ I).out * (q : G ⧸ I).out)`. Simplify using `only [f, e, map_mul, Module.End.mul_apply]`. Rewrite using `[v.2 i hi]`.
+-/
 theorem UpperTheory.V.AlgebraTools.hkMul :
     ∀ (A G M : Type) [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M) (I : Subgroup G) (x y : G), HeckePair I → (∀ b ∈ I, ∃ a ∈ I, ∃ c ∈ I, x * b * y = a * (x * y) * c) → (MulAction.orbit I ((x * y : G) : G ⧸ I)).ncard = (MulAction.orbit I (x : G ⧸ I)).ncard * (MulAction.orbit I (y : G ⧸ I)).ncard → hk ρ I x * hk ρ I y = hk ρ I (x * y) := by
   intro A G M _ _ _ _ ρ I x y hI hb hc

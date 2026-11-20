@@ -11,6 +11,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `⟨reFaceRead (R.updS R.kap lam) F Dc Sp Zsc err X0 Y, reFaceReadL (R.updS R.kap lam) F Dc Sp Zsc err X0 Y (scalReadL R F lam hX X0 Y Z), rfl, rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `kexactB HEq.refl Y.jA`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.jA0 :))`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.eMt :))`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.PY :))`.
+
+Conclude with `(by with_unfolding_all exact (HEq.refl Y.eFT :))`. Use `kexactB HEq.refl Y.IL`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.PW :))`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.eE :))`. Conclude with `(by with_unfolding_all exact (HEq.refl Y.mj.eW :))`.
+
+Use `kexactB HEq.refl Z.eRR`. Conclude with `(by with_unfolding_all exact (HEq.refl Z.jW :))`.
+-/
 theorem read_updS_keep (R : RealDat3 D A3 Ks) (F : Face3 D A3) (lam : type_of% R.lam3)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)) (Sp : ∀ Zs, SPer (Dc Zs))
     (Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3) (err : type_of% R.err0)

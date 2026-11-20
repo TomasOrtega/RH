@@ -9,6 +9,9 @@ noncomputable def trv {R : Type*} [CommRing R] {D N : ℕ} (i k : Fin (D + 1))
     MvPolynomial (TVar D N) R →ₐ[R] Polynomial (MvPolynomial (TVar D N) R) :=
   aeval fun t => if t.1 = i then Polynomial.C (X t) + e * Polynomial.C (X (k, t.2)) else Polynomial.C (X t)
 
+/- English proof (translation)
+Unfold `trv`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem trv_X {R : Type*} [CommRing R] {D N : ℕ} (i k : Fin (D + 1))
     (e : Polynomial (MvPolynomial (TVar D N) R)) (t : TVar D N) :
     trv i k e (X t) = if t.1 = i then Polynomial.C (X t) + e * Polynomial.C (X (k, t.2))
@@ -27,6 +30,23 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trv, Data.relationEliminateColumn]`. Introduce and unpack `⟨a, b⟩`. Establish `hC : ∀ x : Ω c, trv (R` using `Ω c) (D := d.D) (N := d.N) i k Polynomial.X (C x) = Polynomial.C (C x) := by`.
+
+Introduce `x`. Simplify using `[trv, Polynomial.algebraMap_apply]`. Establish `hX : ∀ r l, trv (R` using `Ω c) (D := d.D) (N := d.N) i k Polynomial.X (X (r, l)) = Polynomial.C (X (r, l)) + (if r = i then Polynomial.X * Polynomial.C (X (k, l)) else 0) := by`. Introduce `r l`. Rewrite using `[trv_X]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hXK : ∀ r l, trv (R` using `K) (D := d.D) (N := d.N) i k Polynomial.X (X (r, l)) = Polynomial.C (X (r, l)) + (if r = i then Polynomial.X * Polynomial.C (X (k, l)) else 0) := by`. Introduce `r l`. Rewrite using `[trv_X]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+
+Use `set φ : Fin (d.D + 1) → MvPolynomial (TVar d.D d.N) (Ω c) := fun r => d.relationEliminateColumn c (X (r, b)) with hφ`. Establish `hφtrv : ∀ r, trv (R` using `Ω c) (D := d.D) (N := d.N) i k Polynomial.X (φ r) = Polynomial.C (φ r) + (if r = i then Polynomial.X * Polynomial.C (φ k) else 0) := by`. Introduce `r`. Distinguish the cases in `h2 : b = d.jc c`. Establish `e1 : ∀ r', φ r' = -∑ l ∈ Finset.univ.erase (d.jc c), X (r', l) * C (ratio (Ω` using `Ω c) (d.w l c) (d.w (d.jc c) c)) := by`.
+
+Introduce `r'`. Simplify using `only [hφ, Data.relationEliminateColumn, MvPolynomial.aeval_X, h2, eq_self_iff_true, if_true]`. Rewrite using `[e1 r, e1 k, map_neg, map_sum]`. Distinguish the cases in `h1 : r = i`. Simplify using `only [h1, eq_self_iff_true, if_true, map_mul, hX, hC, map_neg, map_sum, add_mul, Finset.sum_add_distrib, mul_neg, Finset.mul_sum, mul_assoc, neg_add]`.
+
+Simplify using `only [h1, if_false, add_zero, map_mul, hX, hC, map_neg, map_sum]`. Establish `e1 : ∀ r', φ r' = X (r', b)`. Introduce `r'`. Simplify using `only [hφ, Data.relationEliminateColumn, MvPolynomial.aeval_X, h2, if_false]`. Rewrite using `[e1 r, e1 k, hX]`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Polynomial.coe_mapRingHom]`. Rewrite using `[hXK a b]`. Express the relevant statement in the definitionally equal form `_ = trv (R := Ω c) (D := d.D) (N := d.N) i k Polynomial.X (φ a)`. Rewrite using `[hφtrv a]`. Distinguish the cases in `h1 : a = i`.
+
+Simplify using `only [h1, eq_self_iff_true, if_true, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X]`. Both sides reduce to the same expression. Simplify using `only [h1, if_false, add_zero, Polynomial.map_C]`. Both sides reduce to the same expression.
+-/
 theorem relation_map_comm_transvection (c : ι) (i k : Fin (d.D + 1)) (hik : i ≠ k) :
     (Polynomial.mapRingHom (d.relationEliminateColumn c).toRingHom).comp (trv (R := K) (D := d.D) (N := d.N) i k Polynomial.X).toRingHom =
       (trv (R := Ω c) i k Polynomial.X).toRingHom.comp (d.relationEliminateColumn c).toRingHom := by
@@ -77,6 +97,29 @@ theorem relation_map_comm_transvection (c : ι) (i k : Fin (d.D + 1)) (hik : i �
     · simp only [h1, if_false, add_zero, Polynomial.map_C]
       rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ n, F0 ∣ (trv i k Polynomial.X F0).coeff n` using `fun n => (hker _).1 (by`. Establish `h2` using `congrArg (fun p => Polynomial.coeff p n) (congrArg (fun f => f F0) (d.relation_map_comm_transvection c i k hik))`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Polynomial.coe_mapRingHom, Polynomial.coeff_map] at h2`. Rewrite using `[h2, (hker F0).2 dvd_rfl, map_zero, Polynomial.coeff_zero])`. Take `⟨R, hR⟩` from `(Polynomial.C_dvd_iff_dvd_coeff _ _).2 h1`.
+
+Set `Ψ : Polynomial (KTp K d.D d.N) →+* Polynomial (KTp K d.D d.N)` to `Polynomial.eval₂RingHom (trv i k (-Polynomial.X)).toRingHom Polynomial.X`. Establish `hΨ : Ψ.comp (trv (R` using `K) (D := d.D) (N := d.N) i k Polynomial.X).toRingHom = Polynomial.C := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[Ψ, trv, MvPolynomial.algebraMap_eq]`.
+
+Introduce and unpack `⟨i', j⟩`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, trv_X, Ψ]`. Use `split_ifs with h`. Simplify using `[trv_X, h, Ne.symm hik]`. Simplify using `[trv_X, h]`.
+
+Establish `hneg : (Polynomial.compRingHom (-Polynomial.X)).comp (trv (R` using `K) (D := d.D) (N := d.N) i k Polynomial.X).toRingHom = (trv (R := K) (D := d.D) (N := d.N) i k (-Polynomial.X)).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trv, MvPolynomial.algebraMap_eq]`. Introduce and unpack `⟨i', j⟩`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, trv_X]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hC0 : (Polynomial.C F0 : Polynomial (KTp K d.D d.N)) ≠ 0` using `by simpa using hF0`. Establish `h3 : Polynomial.C F0 = Polynomial.C F0 * (R.comp (-Polynomial.X) * Ψ R)`. Establish `e1` using `congrArg (fun f => f F0) hΨ`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom] at e1`. Rewrite `e1` using `[hR, map_mul]`. Establish `e2 : Ψ (Polynomial.C F0) = trv i k (-Polynomial.X) F0` using `by simp [Ψ]`. Establish `e3` using `congrArg (fun f => f F0) hneg`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Polynomial.coe_compRingHom_apply, hR, Polynomial.mul_comp, Polynomial.C_comp] at e3`.
+
+Rewrite `e1` using `[e2, ← e3]`. Rewrite using `[← mul_assoc]`. Conclude with `e1.symm`. Establish `h4 : R.comp (-Polynomial.X) * Ψ R = 1` using `(mul_left_cancel₀ hC0 (h3.symm.trans (mul_one _).symm))`. Take `⟨u, hu, hu'⟩` from `Polynomial.isUnit_iff.1 (isUnit_iff_exists_inv.2 ⟨_, h4⟩)`.
+
+Establish `hRu : R = Polynomial.C u`. Establish `e : (R.comp (-Polynomial.X)).comp (-Polynomial.X) = R`. Rewrite using `[Polynomial.comp_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[← e, ← hu', Polynomial.C_comp]`.
+
+Establish `h5 : (trv (R` using `K) i k Polynomial.X F0).eval 0 = F0 := by`. Establish `: (Polynomial.evalRingHom 0).comp (trv (R` using `K) (D := d.D) (N := d.N) i k Polynomial.X).toRingHom = RingHom.id _ := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trv, MvPolynomial.algebraMap_eq]`.
+
+Introduce and unpack `⟨i', j⟩`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, trv_X]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `congrArg (fun f => f F0) this`. Rewrite `h5` using `[hR, hRu, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_C]`.
+
+Establish `hu1 : u = 1` using `mul_left_cancel₀ hF0 (h5.trans (mul_one F0).symm)`. Rewrite using `[hR, hRu, hu1, map_one, mul_one]`.
+-/
 theorem transvection_fix_generator (c : ι) (F0 : KTp K d.D d.N) (hF0 : F0 ≠ 0)
     (hker : ∀ Q : KTp K d.D d.N, d.relationEliminateColumn c Q = 0 ↔ F0 ∣ Q) (i k : Fin (d.D + 1)) (hik : i ≠ k) :
     trv i k Polynomial.X F0 = Polynomial.C F0 := by
@@ -134,6 +177,13 @@ theorem transvection_fix_generator (c : ι) (F0 : KTp K d.D d.N) (hF0 : F0 ≠ 0
   have hu1 : u = 1 := mul_left_cancel₀ hF0 (h5.trans (mul_one F0).symm)
   rw [hR, hRu, hu1, map_one, mul_one]
 
+/- English proof (translation)
+Use `set ev : Polynomial (MvPolynomial (TVar d.D d.N) K) →+* S := Polynomial.eval₂RingHom (aeval r : MvPolynomial (TVar d.D d.N) K →ₐ[K] S).toRingHom b with hev`. Establish `hcomp : ev.comp (trv (R` using `K) i k Polynomial.X).toRingHom = (aeval (fun t => if t.1 = i then r t + b * r (k, t.2) else r t) : MvPolynomial (TVar d.D d.N) K →ₐ[K] S).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[hev, trv]`.
+
+Introduce `t`. Apply the tactic sequence `by_cases h1 : t.1 = i <;> simp [hev, trv, h1] <;> ring`. Establish `h` using `congrArg (fun φ => φ F0) hcomp`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom] at h`. Rewrite using `[← h, transvection_fix_generator d c F0 hF0 hker i k hik]`.
+
+Simplify using `[hev]`.
+-/
 theorem aeval_trv (c : ι) (F0 : KTp K d.D d.N) (hF0 : F0 ≠ 0)
     (hker : ∀ Q : KTp K d.D d.N, d.relationEliminateColumn c Q = 0 ↔ F0 ∣ Q) (i k : Fin (d.D + 1)) (hik : i ≠ k)
     {S : Type*} [CommRing S] [Algebra K S] (r : TVar d.D d.N → S) (b : S) :

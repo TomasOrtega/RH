@@ -9,6 +9,11 @@ open Finset MvPolynomial
 namespace Formalism.CountingSumsFrames
 namespace Har4
 
+/- English proof (translation)
+Introduce `F _ k hk`. Establish `hirr : Irreducible (hXY F k)`. Establish `h` using `MvPolynomial.irreducible_sumSMulXSMulY (R := F) (n := Fin k) (Finsupp.equivFunOnFinite.symm (fun _ => (1:F))) ?_ ?_`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[hXY, sumSMulXSMulY, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`.
+
+Use `⟨⟨0, by omega⟩, by simp, ⟨1, by omega⟩, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[Fin.ext_iff]`. Introduce `r hr`. Conclude with `isUnit_of_dvd_one (by simpa using hr ⟨0, by omega⟩)`. Conclude with `hirr.prime`.
+-/
 theorem pairingPrime_holds : HPrime := by
   intro F _ k hk
   classical
@@ -23,6 +28,23 @@ theorem pairingPrime_holds : HPrime := by
       exact isUnit_of_dvd_one (by simpa using hr ⟨0, by omega⟩)
   exact hirr.prime
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨m0, hm0⟩` from `hcon`. Use `set S := G.support.filter (fun m => coeff m G ∉ R) with hS`. Establish `hne : S.Nonempty` using `⟨m0, by`.
+
+Rewrite using `[hS, Finset.mem_filter, MvPolynomial.mem_support_iff]`. Conclude with `⟨fun h => hm0 (h ▸ R.zero_mem), hm0⟩⟩`. Take `⟨m, hmS, hmax⟩` from `Finset.exists_max_image S (fun m => m (Sum.inl i0)) hne`. Establish `hbig : ∀ m' : XY k →₀ ℕ, m (Sum.inl i0) < m' (Sum.inl i0) → coeff m' G ∈ R`. Introduce `m' hlt`.
+
+Assume the negation of the conclusion as `hc`. Establish `: m' ∈ S`. Rewrite using `[hS, Finset.mem_filter, MvPolynomial.mem_support_iff]`. Conclude with `⟨fun h => hc (h ▸ R.zero_mem), hc⟩`. Use `hmax m' this` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmR : coeff m G ∉ R` using `(Finset.mem_filter.1 hmS).2`. Apply `hmR` to reduce the goal to its premises. Use `set M : XY k →₀ ℕ := Finsupp.single (Sum.inl i0) 1 + (Finsupp.single (Sum.inr i0) 1 + m) with hM`. Establish `h1` using `hG M`.
+
+Rewrite `h1` using `[hXY, Finset.sum_mul, coeff_sum, ← Finset.add_sum_erase _ _ (Finset.mem_univ i0)]`. Establish `h2 : coeff M (X (Sum.inl i0) * X (Sum.inr i0) * G) = coeff m G`. Rewrite using `[mul_assoc, hM, coeff_X_mul, coeff_X_mul]`. Establish `h3 : ∑ i ∈ Finset.univ.erase i0, coeff M (X (Sum.inl i) * X (Sum.inr i) * G) ∈ R`. Use `R.sum_mem fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi' : i ≠ i0` using `Finset.ne_of_mem_erase hi`. Rewrite using `[mul_assoc, coeff_X_mul']`. Use `split_ifs with ha`. Rewrite using `[coeff_X_mul'] split_ifs with hb`. Apply `hbig` to reduce the goal to its premises.
+
+Simplify using `[hM, hi']`. Conclude with `R.zero_mem`. Conclude with `R.zero_mem`. Rewrite `h1` using `[h2]`. Use `R.sub_mem h1 h3` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem coeff_mem_of_h_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i0 : Fin k) (G : PolXY K k)
     (hG : ∀ m, coeff m (hXY K k * G) ∈ R) : ∀ m, coeff m G ∈ R := by
   classical
@@ -64,15 +86,30 @@ theorem coeff_mem_of_h_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i0 : 
   have := R.sub_mem h1 h3
   simpa using this
 
+/- English proof (translation)
+Simplify using `only [glAct, aeval_X, Sum.elim_inl]`.
+-/
 theorem glAct_X_inl {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (i : Fin k) :
     glAct g (X (Sum.inl i)) = ∑ j : Fin k, C ((g : Matrix (Fin k) (Fin k) K) i j) * X (Sum.inl j) := by
   simp only [glAct, aeval_X, Sum.elim_inl]
 
+/- English proof (translation)
+Simplify using `only [glAct, aeval_X, Sum.elim_inr]`.
+-/
 theorem glAct_X_inr {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (i : Fin k) :
     glAct g (X (Sum.inr i)) =
       ∑ j : Fin k, C (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i) * X (Sum.inr j) := by
   simp only [glAct, aeval_X, Sum.elim_inr]
 
+/- English proof (translation)
+Establish `hm : ∀ j l : Fin k, C (∑ i : Fin k, (g : Matrix (Fin k) (Fin k) K) i j * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) l i) = (if l = j then 1 else 0 : PolXY K k)`. Introduce `j l`. Establish `e : (∑ i : Fin k, (g : Matrix (Fin k) (Fin k) K) i j * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) l i) = (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) * (g : Matrix (Fin k) (Fin k) K)) l j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`.
+
+Rewrite using `[e, Units.inv_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `hXY`. Simplify using `only [map_sum, map_mul, glAct_X_inl, glAct_X_inr]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.sum_mul_sum]`. Use `_ = ∑ j : Fin k, ∑ l : Fin k, ∑ i : Fin k, (C ((g : Matrix (Fin k) (Fin k) K) i j) * X (Sum.inl j)) * (C (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) l i) * X (Sum.inr l)) := Finset.sum_comm.trans (Finset.sum_congr rfl fun j _ => Finset.sum_comm)`. Use `_ = ∑ j : Fin k, ∑ l : Fin k, C (∑ i : Fin k, (g : Matrix (Fin k) (Fin k) K) i j * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) l i) * (X (Sum.inl j) * X (Sum.inr l)) := by`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul]; ring`. Use `_ = ∑ i : Fin k, X (Sum.inl i) * X (Sum.inr i) := by`. Simplify using `only [hm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem glAct_hXY {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) : glAct g (hXY K k) = hXY K k := by
   have hm : ∀ j l : Fin k, C (∑ i : Fin k, (g : Matrix (Fin k) (Fin k) K) i j * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) l i) =
       (if l = j then 1 else 0 : PolXY K k) := by
@@ -101,6 +138,21 @@ theorem glAct_hXY {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) : glAct g (h
         simp only [hm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq,
           Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `key : (glAct g⁻¹).comp (glAct g) = AlgHom.id K (PolXY K k)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(i | i)`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, glAct_X_inl, map_sum, map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq]`. Establish `hm : ∀ l : Fin k, C (∑ j : Fin k, (g : Matrix (Fin k) (Fin k) K) i j * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j l) = (if i = l then 1 else 0 : PolXY K k)`.
+
+Introduce `l`. Rewrite using `[← Matrix.mul_apply, Units.mul_inv, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, Finset.sum_mul, map_mul, mul_assoc, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `_ = X (Sum.inl i) := by`. Simplify using `only [hm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, glAct_X_inr, map_sum, map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, inv_inv]`. Establish `hm : ∀ l : Fin k, C (∑ j : Fin k, ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i * (g : Matrix (Fin k) (Fin k) K) l j) = (if i = l then 1 else 0 : PolXY K k)`.
+
+Introduce `l`. Establish `e : (∑ j : Fin k, ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i * (g : Matrix (Fin k) (Fin k) K) l j) = ((g : Matrix (Fin k) (Fin k) K) * ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)) l i`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Rewrite using `[e, Units.mul_inv, Matrix.one_apply]`.
+
+Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_sum, Finset.sum_mul, map_mul, mul_assoc, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `_ = X (Sum.inr i) := by`. Simplify using `only [hm, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `h2` using `congrArg (fun φ => φ f) key`.
+
+Simplify using `using h2`.
+-/
 theorem glAct_inv_glAct {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (f : PolXY K k) :
     glAct g⁻¹ (glAct g f) = f := by
   have key : (glAct g⁻¹).comp (glAct g) = AlgHom.id K (PolXY K k) := by
@@ -146,10 +198,16 @@ theorem glAct_inv_glAct {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (f : P
   have h2 := congrArg (fun φ => φ f) key
   simpa using h2
 
+/- English proof (translation)
+Simplify using `using glAct_inv_glAct g⁻¹ f`.
+-/
 theorem glAct_glAct_inv {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (f : PolXY K k) :
     glAct g (glAct g⁻¹ f) = f := by
   simpa using glAct_inv_glAct g⁻¹ f
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hS, rfl⟩`. Rewrite using `[glAct_inv_glAct]` and apply the resulting hypothesis. Introduce `hf`. Conclude with `⟨glAct g⁻¹ f, hf, glAct_glAct_inv g f⟩`.
+-/
 theorem mem_latOf_iff {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (S : Set (PolXY K k)) (f : PolXY K k) :
     f ∈ latOf g S ↔ glAct g⁻¹ f ∈ S := by
   constructor
@@ -160,10 +218,18 @@ theorem mem_latOf_iff {K : Type} [Field K] {k : ℕ} (g : GL (Fin k) K) (S : Set
 
 def wXY (k : ℕ) : XY k → ℕ × ℕ := Sum.elim (fun _ => (1, 0)) (fun _ => (0, 1))
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type]`. Apply the tactic sequence `ext <;> simp [wXY, xDeg, yDeg, Prod.fst_sum, Prod.snd_sum]`.
+-/
 theorem weight_wXY {k : ℕ} (m : XY k →₀ ℕ) : Finsupp.weight (wXY k) m = (xDeg m, yDeg m) := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type]
   ext <;> simp [wXY, xDeg, yDeg, Prod.fst_sum, Prod.snd_sum]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf d hd`. Establish `hf' : ∀ m ∈ f.support, xDeg m = A ∧ yDeg m = B` using `hf`. Establish `h1` using `hf' d (MvPolynomial.mem_support_iff.2 hd)`. Rewrite using `[weight_wXY, h1.1, h1.2]`.
+
+Introduce `hf show ∀ m ∈ f.support, xDeg m = A ∧ yDeg m = B`. Introduce `m hm`. Establish `h1` using `hf (MvPolynomial.mem_support_iff.1 hm)`. Rewrite `h1` using `[weight_wXY]`. Conclude with `⟨congrArg Prod.fst h1, congrArg Prod.snd h1⟩`.
+-/
 theorem mem_PolAB_iff {K : Type} [Field K] {k A B : ℕ} (f : PolXY K k) :
     f ∈ PolAB K k A B ↔ IsWeightedHomogeneous (wXY k) f (A, B) := by
   constructor
@@ -178,6 +244,19 @@ theorem mem_PolAB_iff {K : Type} [Field K] {k A B : ℕ} (f : PolXY K k) :
     rw [weight_wXY] at h1
     exact ⟨congrArg Prod.fst h1, congrArg Prod.snd h1⟩
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_PolAB_iff]`. Use `set σ : XY k → PolXY K k := Sum.elim (fun i : Fin k => ∑ j : Fin k, C ((g : Matrix (Fin k) (Fin k) K) i j) * X (Sum.inl j)) (fun i : Fin k => ∑ j : Fin k, C (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i) * X (Sum.inr j)) with hσdef`. Establish `hgl : glAct g = aeval σ` using `rfl`. Establish `hσ : ∀ v : XY k, IsWeightedHomogeneous (wXY k) (σ v) (wXY k v)`. Introduce and unpack `(i | i)`.
+
+Use `show IsWeightedHomogeneous (wXY k) (∑ j : Fin k, C ((g : Matrix (Fin k) (Fin k) K) i j) * X (Sum.inl j)) (wXY k (Sum.inl i))`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `j _`. Establish `h` using `(isWeightedHomogeneous_C (wXY k) ((g : Matrix (Fin k) (Fin k) K) i j)).mul (isWeightedHomogeneous_X (R := K) (wXY k) (Sum.inl j))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `[wXY]`. Use `show IsWeightedHomogeneous (wXY k) (∑ j : Fin k, C (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i) * X (Sum.inr j)) (wXY k (Sum.inr i))`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `j _`. Establish `h` using `(isWeightedHomogeneous_C (wXY k) (((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) j i)).mul (isWeightedHomogeneous_X (R := K) (wXY k) (Sum.inr j))`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[wXY]`. Rewrite using `[hgl, f.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`.
+
+Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_eq]`. Establish `hdeg` using `hf (MvPolynomial.mem_support_iff.1 hm)`. Rewrite using `[← hdeg]`. Establish `hp : IsWeightedHomogeneous (wXY k) (m.prod fun v e => σ v ^ e) (Finsupp.weight (wXY k) m)`. Rewrite using `[Finsupp.weight_apply, Finsupp.prod, Finsupp.sum]`.
+
+Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `v _`. Conclude with `(hσ v).pow (m v)`. Rewrite using `[← zero_add (Finsupp.weight (wXY k) m)]`. Conclude with `(isWeightedHomogeneous_C (wXY k) (coeff m f)).mul hp`.
+-/
 theorem glAct_mem_PolAB {K : Type} [Field K] {k A B : ℕ} (g : GL (Fin k) K) (f : PolXY K k)
     (hf : f ∈ PolAB K k A B) : glAct g f ∈ PolAB K k A B := by
   rw [mem_PolAB_iff] at hf ⊢
@@ -215,6 +294,11 @@ theorem glAct_mem_PolAB {K : Type} [Field K] {k A B : ℕ} (g : GL (Fin k) K) (f
   rw [← zero_add (Finsupp.weight (wXY k) m)]
   exact (isWeightedHomogeneous_C (wXY k) (coeff m f)).mul hp
 
+/- English proof (translation)
+Establish `hsplit : p ^ M.factorization p * (M / p ^ M.factorization p) = M` using `Nat.ordProj_mul_ordCompl_eq_self M p`. Establish `hnd : ¬ p ∣ M / p ^ M.factorization p` using `Nat.not_dvd_ordCompl hp hM`. Establish `hpK : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `e : (p : K) ^ e * (M : K)⁻¹ = (p : K) ^ (e - M.factorization p) * ((M / p ^ M.factorization p : ℕ) : K)⁻¹` using `by conv_lhs => rw [← hsplit]`. Rewrite using `[Nat.cast_mul, Nat.cast_pow, mul_inv, ← mul_assoc, ← pow_sub₀ _ hpK hv]`.
+
+Rewrite using `[e]`. Conclude with `R.mul_mem (R.pow_mem (natCast_mem R p) _) (hR _ hnd)`.
+-/
 theorem pow_mul_inv_mem {K : Type} [Field K] [CharZero K] (R : Subring K) {p : ℕ} (hp : p.Prime)
     (hR : PLocal R p) {M e : ℕ} (hM : M ≠ 0) (hv : M.factorization p ≤ e) :
     (p : K) ^ e * (M : K)⁻¹ ∈ R := by
@@ -228,6 +312,15 @@ theorem pow_mul_inv_mem {K : Type} [Field K] [CharZero K] (R : Subring K) {p : �
   rw [e]
   exact R.mul_mem (R.pow_mem (natCast_mem R p) _) (hR _ hnd)
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Break down `s.eq_empty_or_nonempty with hs | hs` into its components or cases. Substitute `hs` using the available equality.
+
+Simplify using `[Nat.multinomial_singleton]`. Rewrite using `[Nat.multinomial_insert ha, Finset.sum_insert ha, Finset.card_insert_eq_ite, if_neg ha]`. Establish `hc : (f a + ∑ i ∈ s, f i).choose (f a) ≠ 0` using `(Nat.choose_pos (Nat.le_add_right _ _)).ne'`. Establish `hm : Nat.multinomial s f ≠ 0` using `(Nat.multinomial_pos _ _).ne'`. Rewrite using `[Nat.factorization_mul hc hm, Finsupp.add_apply]`.
+
+Establish `h1 : ((f a + ∑ i ∈ s, f i).choose (f a)).factorization p ≤ Nat.log p (f a + ∑ i ∈ s, f i)` using `Nat.factorization_choose_le_log`. Establish `h2 : Nat.log p (∑ i ∈ s, f i) ≤ Nat.log p (f a + ∑ i ∈ s, f i)` using `Nat.log_mono_right (Nat.le_add_left _ _)`. Establish `hcard : 1 ≤ s.card` using `hs.card_pos`. Combine the equalities or inequalities in the displayed calculation. Establish `e : s.card + 1 - 1 = (s.card - 1) + 1` using `by omega`.
+
+Rewrite using `[e, add_mul, one_mul, add_comm]`.
+-/
 theorem multinomial_factorization_le (p : ℕ) {ι : Type} [DecidableEq ι] (s : Finset ι) (f : ι → ℕ) :
     (Nat.multinomial s f).factorization p ≤ (s.card - 1) * Nat.log p (∑ i ∈ s, f i) := by
   classical
@@ -257,37 +350,64 @@ def xMul {k : ℕ} (m : XY k →₀ ℕ) : ℕ := Nat.multinomial Finset.univ (f
 
 def yMul {k : ℕ} (m : XY k →₀ ℕ) : ℕ := Nat.multinomial Finset.univ (fun i : Fin k => m (Sum.inr i))
 
+/- English proof (translation)
+Simplify using `only [xFact, xMul, xDeg]`. Conclude with `Nat.multinomial_spec _ _`.
+-/
 theorem xFact_mul_xMul {k : ℕ} (m : XY k →₀ ℕ) : xFact m * xMul m = (xDeg m).factorial := by
   simp only [xFact, xMul, xDeg]
   exact Nat.multinomial_spec _ _
 
+/- English proof (translation)
+Simplify using `only [yFact, yMul, yDeg]`. Conclude with `Nat.multinomial_spec _ _`.
+-/
 theorem yFact_mul_yMul {k : ℕ} (m : XY k →₀ ℕ) : yFact m * yMul m = (yDeg m).factorial := by
   simp only [yFact, yMul, yDeg]
   exact Nat.multinomial_spec _ _
 
+/- English proof (translation)
+The claim follows from `(Nat.multinomial_pos _ _).ne'`.
+-/
 theorem xMul_ne_zero {k : ℕ} (m : XY k →₀ ℕ) : xMul m ≠ 0 :=
   (Nat.multinomial_pos _ _).ne'
+/- English proof (translation)
+The claim follows from `(Nat.multinomial_pos _ _).ne'`.
+-/
 theorem yMul_ne_zero {k : ℕ} (m : XY k →₀ ℕ) : yMul m ≠ 0 :=
   (Nat.multinomial_pos _ _).ne'
 
+/- English proof (translation)
+Simplify `multinomial_factorization_le p Finset.univ (fun i : Fin k => m (Sum.inl i))` using `[xMul, xDeg, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem xMul_factorization_le {k : ℕ} (p : ℕ) (m : XY k →₀ ℕ) :
     (xMul m).factorization p ≤ (k - 1) * Nat.log p (xDeg m) := by
   simpa [xMul, xDeg, Finset.card_univ, Fintype.card_fin] using
     multinomial_factorization_le p Finset.univ (fun i : Fin k => m (Sum.inl i))
 
+/- English proof (translation)
+Simplify `multinomial_factorization_le p Finset.univ (fun i : Fin k => m (Sum.inr i))` using `[yMul, yDeg, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem yMul_factorization_le {k : ℕ} (p : ℕ) (m : XY k →₀ ℕ) :
     (yMul m).factorization p ≤ (k - 1) * Nat.log p (yDeg m) := by
   simpa [yMul, yDeg, Finset.card_univ, Fintype.card_fin] using
     multinomial_factorization_le p Finset.univ (fun i : Fin k => m (Sum.inr i))
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 (fun i _ => Nat.factorial_ne_zero _)`.
+-/
 theorem xFact_ne_zero {k : ℕ} (m : XY k →₀ ℕ) : xFact m ≠ 0 :=
   Finset.prod_ne_zero_iff.2 (fun i _ => Nat.factorial_ne_zero _)
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 (fun i _ => Nat.factorial_ne_zero _)`.
+-/
 theorem yFact_ne_zero {k : ℕ} (m : XY k →₀ ℕ) : yFact m ≠ 0 :=
   Finset.prod_ne_zero_iff.2 (fun i _ => Nat.factorial_ne_zero _)
 
 section std
 variable {K : Type} [Field K] [CharZero K] {k A B : ℕ} (R : Subring K)
 
+/- English proof (translation)
+Distinguish the cases in `h : coeff m f = 0`. Conclude with `Or.inl h`. Conclude with `Or.inr ((show ∀ m ∈ f.support, xDeg m = A ∧ yDeg m = B from hf) m (MvPolynomial.mem_support_iff.2 h))`.
+-/
 theorem coeff_cases {f : PolXY K k} (hf : f ∈ PolAB K k A B) (m : XY k →₀ ℕ) :
     coeff m f = 0 ∨ (xDeg m = A ∧ yDeg m = B) := by
   by_cases h : coeff m f = 0
@@ -295,6 +415,11 @@ theorem coeff_cases {f : PolXY K k} (hf : f ∈ PolAB K k A B) (m : XY k →₀ 
   · exact Or.inr ((show ∀ m ∈ f.support, xDeg m = A ∧ yDeg m = B from hf) m
       (MvPolynomial.mem_support_iff.2 h))
 
+/- English proof (translation)
+Establish `h' : ∀ m, (xFact m : K) * coeff m f ∈ R` using `h`. Use `show ∀ m, coeff m ((A.factorial : K) • f) ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Break down `coeff_cases hf m with h0 | ⟨hx, -⟩` into its components or cases.
+
+Rewrite using `[h0, mul_zero]`. Conclude with `R.zero_mem`. Rewrite using `[← hx, ← xFact_mul_xMul, Nat.cast_mul, mul_comm (xFact m : K), mul_assoc]`. Conclude with `R.mul_mem (natCast_mem R _) (h' m)`.
+-/
 theorem fock_to_gauss {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ FockLat R) :
     (A.factorial : K) • f ∈ GaussLat R := by
   have h' : ∀ m, (xFact m : K) * coeff m f ∈ R := h
@@ -307,6 +432,13 @@ theorem fock_to_gauss {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ Fock
   · rw [← hx, ← xFact_mul_xMul, Nat.cast_mul, mul_comm (xFact m : K), mul_assoc]
     exact R.mul_mem (natCast_mem R _) (h' m)
 
+/- English proof (translation)
+Establish `h' : ∀ m, coeff m f ∈ R` using `h`. Use `show ∀ m, (xFact m : K) * coeff m (((p : K) ^ ((k - 1) * Nat.log p A) * (A.factorial : K)⁻¹) • f) ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Break down `coeff_cases hf m with h0 | ⟨hx, -⟩` into its components or cases.
+
+Rewrite using `[h0, mul_zero, mul_zero]`. Conclude with `R.zero_mem`. Establish `hxm` using `xMul_ne_zero m`. Establish `hxf : (xFact m : K) ≠ 0` using `by exact_mod_cast xFact_ne_zero m`. Establish `hmem` using `pow_mul_inv_mem R hp hR hxm (xMul_factorization_le p m)`.
+
+Rewrite using `[← hx, ← xFact_mul_xMul, Nat.cast_mul, mul_inv]`. Establish `e : (xFact m : K) * ((p : K) ^ ((k - 1) * Nat.log p (xDeg m)) * ((xFact m : K)⁻¹ * (xMul m : K)⁻¹) * coeff m f) = ((p : K) ^ ((k - 1) * Nat.log p (xDeg m)) * (xMul m : K)⁻¹) * coeff m f`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `R.mul_mem hmem (h' m)`.
+-/
 theorem gauss_to_fock {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k} (hf : f ∈ PolAB K k A B)
     (h : f ∈ GaussLat R) :
     ((p : K) ^ ((k - 1) * Nat.log p A) * (A.factorial : K)⁻¹) • f ∈ FockLat R := by
@@ -328,6 +460,13 @@ theorem gauss_to_fock {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k}
     rw [e]
     exact R.mul_mem hmem (h' m)
 
+/- English proof (translation)
+Establish `h' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m f ∈ R` using `h`. Use `show ∀ m, (xFact m : K) * coeff m ((B.factorial : K) • f) ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Break down `coeff_cases hf m with h0 | ⟨-, hy⟩` into its components or cases.
+
+Rewrite using `[h0, mul_zero, mul_zero]`. Conclude with `R.zero_mem`. Rewrite using `[← hy, ← yFact_mul_yMul, Nat.cast_mul]`. Establish `e : (xFact m : K) * (((yFact m : K) * (yMul m : K)) * coeff m f) = (yMul m : K) * (((xFact m : K) * (yFact m : K)) * coeff m f)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `R.mul_mem (natCast_mem R _) (h' m)`.
+-/
 theorem dual_to_fock {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ DualLat R) :
     (B.factorial : K) • f ∈ FockLat R := by
   have h' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m f ∈ R := h
@@ -343,6 +482,13 @@ theorem dual_to_fock {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ DualL
     rw [e]
     exact R.mul_mem (natCast_mem R _) (h' m)
 
+/- English proof (translation)
+Establish `h' : ∀ m, (xFact m : K) * coeff m f ∈ R` using `h`. Use `show ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m (((p : K) ^ ((k - 1) * Nat.log p B) * (B.factorial : K)⁻¹) • f) ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Break down `coeff_cases hf m with h0 | ⟨-, hy⟩` into its components or cases.
+
+Rewrite using `[h0, mul_zero, mul_zero]`. Conclude with `R.zero_mem`. Establish `hym` using `yMul_ne_zero m`. Establish `hyf : (yFact m : K) ≠ 0` using `by exact_mod_cast yFact_ne_zero m`. Establish `hmem` using `pow_mul_inv_mem R hp hR hym (yMul_factorization_le p m)`.
+
+Rewrite using `[← hy, ← yFact_mul_yMul, Nat.cast_mul, mul_inv]`. Establish `e : ((xFact m : K) * (yFact m : K)) * ((p : K) ^ ((k - 1) * Nat.log p (yDeg m)) * ((yFact m : K)⁻¹ * (yMul m : K)⁻¹) * coeff m f) = ((p : K) ^ ((k - 1) * Nat.log p (yDeg m)) * (yMul m : K)⁻¹) * ((xFact m : K) * coeff m f)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `R.mul_mem hmem (h' m)`.
+-/
 theorem fock_to_dual {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k} (hf : f ∈ PolAB K k A B)
     (h : f ∈ FockLat R) :
     ((p : K) ^ ((k - 1) * Nat.log p B) * (B.factorial : K)⁻¹) • f ∈ DualLat R := by
@@ -365,6 +511,13 @@ theorem fock_to_dual {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k} 
     rw [e]
     exact R.mul_mem hmem (h' m)
 
+/- English proof (translation)
+Establish `h' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m f ^ 2 ∈ R` using `h`. Use `show ∀ m, ((A.factorial * B.factorial : ℕ) : K) * coeff m f ^ 2 ∈ R`. Introduce `m`. Break down `coeff_cases hf m with h0 | ⟨hx, hy⟩` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hx, ← hy, ← xFact_mul_xMul, ← yFact_mul_yMul]`. Use `push_cast`. Establish `e : (xFact m : K) * (xMul m : K) * ((yFact m : K) * (yMul m : K)) * coeff m f ^ 2 = ((xMul m : K) * (yMul m : K)) * (((xFact m : K) * (yFact m : K)) * coeff m f ^ 2)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `R.mul_mem (R.mul_mem (natCast_mem R _) (natCast_mem R _)) (h' m)`.
+-/
 theorem sqrtFock_to_sqrtGauss {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f ∈ SqrtFockLat R) :
     f ∈ SqrtGaussLat R (A.factorial * B.factorial) := by
   have h' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m f ^ 2 ∈ R := h
@@ -380,6 +533,15 @@ theorem sqrtFock_to_sqrtGauss {f : PolXY K k} (hf : f ∈ PolAB K k A B) (h : f 
     rw [e]
     exact R.mul_mem (R.mul_mem (natCast_mem R _) (natCast_mem R _)) (h' m)
 
+/- English proof (translation)
+Establish `h' : ∀ m, ((A.factorial * B.factorial : ℕ) : K) * coeff m f ^ 2 ∈ R` using `h`. Use `show ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) • f) ^ 2 ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Break down `coeff_cases hf m with h0 | ⟨hx, hy⟩` into its components or cases.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hxb : (xMul m).factorization p ≤ (k - 1) * Nat.log p (A + B + k)` using `le_trans (xMul_factorization_le p m) (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega)))`. Establish `hyb : (yMul m).factorization p ≤ (k - 1) * Nat.log p (A + B + k)` using `le_trans (yMul_factorization_le p m) (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega)))`. Establish `hx1` using `pow_mul_inv_mem R hp hR (xMul_ne_zero m) hxb`.
+
+Establish `hy1` using `pow_mul_inv_mem R hp hR (yMul_ne_zero m) hyb`. Establish `hxf : (xMul m : K) ≠ 0` using `by exact_mod_cast xMul_ne_zero m`. Establish `hyf : (yMul m : K) ≠ 0` using `by exact_mod_cast yMul_ne_zero m`. Establish `hm` using `h' m`. Rewrite `hm` using `[← hx, ← hy, ← xFact_mul_xMul, ← yFact_mul_yMul]`.
+
+Move the coercions through the operations in `at hm`. Apply the tactic sequence `have e : ((xFact m : K) * (yFact m : K)) * (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * coeff m f) ^ 2 = ((((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * (xMul m : K)⁻¹) * (((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) * (yMul m : K)⁻¹)) * ((xFact m : K) * (xMul m : K) * ((y …`. Rewrite using `[e]`. Apply the tactic sequence `first | exact R.mul_mem (R.mul_mem hx1 hy1) hm | (convert R.mul_mem (R.mul_mem hx1 hy1) hm using 2; ring)`.
+-/
 theorem sqrtGauss_to_sqrtFock {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : PolXY K k}
     (hf : f ∈ PolAB K k A B) (h : f ∈ SqrtGaussLat R (A.factorial * B.factorial)) :
     ((p : K) ^ ((k - 1) * Nat.log p (A + B + k))) • f ∈ SqrtFockLat R := by
@@ -411,6 +573,13 @@ theorem sqrtGauss_to_sqrtFock {p : ℕ} (hp : p.Prime) (hR : PLocal R p) {f : Po
 
 end std
 
+/- English proof (translation)
+Introduce `K _ _ k A B p R g hk hp hR f hf`. Establish `hf' : glAct g⁻¹ f ∈ PolAB K k A B` using `glAct_mem_PolAB g⁻¹ f hf`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h`, the goal using `[mem_latOf_iff]`.
+
+Rewrite using `[map_smul]`. Conclude with `fock_to_gauss R hf' h`. Introduce `h`. Rewrite `h`, the goal using `[mem_latOf_iff]`. Rewrite using `[map_smul]`.
+
+Conclude with `gauss_to_fock R hp hR hf' h`.
+-/
 theorem fockGaussLatticeComparison_holds : FockGaussXY := by
   intro K _ _ k A B p R g hk hp hR f hf
   have hf' : glAct g⁻¹ f ∈ PolAB K k A B := glAct_mem_PolAB g⁻¹ f hf
@@ -424,6 +593,11 @@ theorem fockGaussLatticeComparison_holds : FockGaussXY := by
     rw [map_smul]
     exact gauss_to_fock R hp hR hf' h
 
+/- English proof (translation)
+Introduce `K _ _ k A B p O g hk hp hR f hf`. Establish `hf' : glAct g⁻¹ f ∈ PolAB K k A B` using `glAct_mem_PolAB g⁻¹ f hf`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h`, the goal using `[mem_latOf_iff]`.
+
+Conclude with `sqrtFock_to_sqrtGauss O.toSubring hf' h`. Introduce `h`. Rewrite `h`, the goal using `[mem_latOf_iff]`. Rewrite using `[map_smul]`. Conclude with `sqrtGauss_to_sqrtFock O.toSubring hp hR hf' h`.
+-/
 theorem sqrtFockGaussLatticeComparison_holds : SqrtFockGaussXY := by
   intro K _ _ k A B p O g hk hp hR f hf
   have hf' : glAct g⁻¹ f ∈ PolAB K k A B := glAct_mem_PolAB g⁻¹ f hf
@@ -436,6 +610,9 @@ theorem sqrtFockGaussLatticeComparison_holds : SqrtFockGaussXY := by
     rw [map_smul]
     exact sqrtGauss_to_sqrtFock O.toSubring hp hR hf' h
 
+/- English proof (translation)
+Proceed by induction on `j generalizing G with`. Consider the case `zero => simpa using hG`. Consider the case `succ n ih`. Establish `h1 : hXY K k * G ∈ GaussLat R` using `ih (hXY K k * G) (by rw [← mul_assoc, ← pow_succ]; exact hG)`. Conclude with `coeff_mem_of_h_mul R i0 G h1`.
+-/
 theorem coeff_mem_of_h_pow_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i0 : Fin k) (j : ℕ)
     (G : PolXY K k) (hG : hXY K k ^ j * G ∈ GaussLat R) : G ∈ GaussLat R := by
   induction j generalizing G with
@@ -444,12 +621,20 @@ theorem coeff_mem_of_h_pow_mul {K : Type} [Field K] {k : ℕ} (R : Subring K) (i
     have h1 : hXY K k * G ∈ GaussLat R := ih (hXY K k * G) (by rw [← mul_assoc, ← pow_succ]; exact hG)
     exact coeff_mem_of_h_mul R i0 G h1
 
+/- English proof (translation)
+Introduce `K _ _ k O g j G hk h`. Rewrite `h`, the goal using `[mem_latOf_iff]`. Rewrite `h` using `[map_mul, map_pow, glAct_hXY]`. Conclude with `coeff_mem_of_h_pow_mul O.toSubring ⟨0, hk⟩ j _ h`.
+-/
 theorem gaussLemmaPairing_holds : GaussLemmaH := by
   intro K _ _ k O g j G hk h
   rw [mem_latOf_iff] at h ⊢
   rw [map_mul, map_pow, glAct_hXY] at h
   exact coeff_mem_of_h_pow_mul O.toSubring ⟨0, hk⟩ j _ h
 
+/- English proof (translation)
+Establish `hG' : ∀ m, coeff m G ∈ R` using `hG`. Use `show ∀ m, coeff m (hXY K k * G) ∈ R`. Introduce `m`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `R.sum_mem fun x _ => R.mul_mem ?_ (hG' _)` and prove the remaining obligations.
+
+Unfold `hXY`. Rewrite using `[MvPolynomial.coeff_sum]`. Use `R.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X_mul', MvPolynomial.coeff_X']`. Apply the tactic sequence `split_ifs <;> first | exact R.one_mem | exact R.zero_mem`.
+-/
 theorem h_mul_mem_gauss {K : Type} [Field K] {k : ℕ} (R : Subring K) (G : PolXY K k) (hG : G ∈ GaussLat R) :
     hXY K k * G ∈ GaussLat R := by
   have hG' : ∀ m, coeff m G ∈ R := hG
@@ -463,6 +648,9 @@ theorem h_mul_mem_gauss {K : Type} [Field K] {k : ℕ} (R : Subring K) (G : PolX
   rw [MvPolynomial.coeff_X_mul', MvPolynomial.coeff_X']
   split_ifs <;> first | exact R.one_mem | exact R.zero_mem
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using hG`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `h_mul_mem_gauss R _ ih`.
+-/
 theorem h_pow_mul_mem_gauss {K : Type} [Field K] {k : ℕ} (R : Subring K) (j : ℕ) (G : PolXY K k)
     (hG : G ∈ GaussLat R) : hXY K k ^ j * G ∈ GaussLat R := by
   induction j with
@@ -471,6 +659,13 @@ theorem h_pow_mul_mem_gauss {K : Type} [Field K] {k : ℕ} (R : Subring K) (j : 
     rw [pow_succ', mul_assoc]
     exact h_mul_mem_gauss R _ ih
 
+/- English proof (translation)
+Introduce `K _ _ k a b j O g hk`. Use extensionality with `f`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, w, hw, rfl⟩`.
+
+Conclude with `⟨w, ⟨gaussLemmaPairing_holds K k O g j w hk hf, hw⟩, rfl⟩`. Introduce and unpack `⟨w, ⟨hwl, hw⟩, rfl⟩`. Use `⟨?_, w, hw, rfl⟩` and prove the remaining obligations. Rewrite `hwl`, the goal using `[mem_latOf_iff]`. Rewrite using `[map_mul, map_pow, glAct_hXY]`.
+
+Conclude with `h_pow_mul_mem_gauss O.toSubring j _ hwl`.
+-/
 theorem isotypicLattice_holds : LevelLattice := by
   intro K _ _ k a b j O g hk
   ext f
@@ -484,22 +679,51 @@ theorem isotypicLattice_holds : LevelLattice := by
     rw [map_mul, map_pow, glAct_hXY]
     exact h_pow_mul_mem_gauss O.toSubring j _ hwl
 
+/- English proof (translation)
+Simplify using `[xDeg, Finset.sum_add_distrib]`.
+-/
 theorem xDeg_add {k : ℕ} (m n : XY k →₀ ℕ) : xDeg (m + n) = xDeg m + xDeg n := by
   simp [xDeg, Finset.sum_add_distrib]
+/- English proof (translation)
+Simplify using `[yDeg, Finset.sum_add_distrib]`.
+-/
 theorem yDeg_add {k : ℕ} (m n : XY k →₀ ℕ) : yDeg (m + n) = yDeg m + yDeg n := by
   simp [yDeg, Finset.sum_add_distrib]
+/- English proof (translation)
+Simplify using `[xDeg, Finsupp.single_apply]`.
+-/
 theorem xDeg_single_inl {k : ℕ} (i : Fin k) (n : ℕ) : xDeg (Finsupp.single (Sum.inl i : XY k) n) = n := by
   simp [xDeg, Finsupp.single_apply]
+/- English proof (translation)
+Simplify using `[xDeg, Finsupp.single_apply]`.
+-/
 theorem xDeg_single_inr {k : ℕ} (i : Fin k) (n : ℕ) : xDeg (Finsupp.single (Sum.inr i : XY k) n) = 0 := by
   simp [xDeg, Finsupp.single_apply]
+/- English proof (translation)
+Simplify using `[yDeg, Finsupp.single_apply]`.
+-/
 theorem yDeg_single_inl {k : ℕ} (i : Fin k) (n : ℕ) : yDeg (Finsupp.single (Sum.inl i : XY k) n) = 0 := by
   simp [yDeg, Finsupp.single_apply]
+/- English proof (translation)
+Simplify using `[yDeg, Finsupp.single_apply]`.
+-/
 theorem yDeg_single_inr {k : ℕ} (i : Fin k) (n : ℕ) : yDeg (Finsupp.single (Sum.inr i : XY k) n) = n := by
   simp [yDeg, Finsupp.single_apply]
 
 section deg
 variable {K : Type} [Field K] {k : ℕ}
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' F ?_ ?_` and prove the remaining obligations. Introduce `s a`. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `hs : s = m + Finsupp.single v 1`. Substitute `hs` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hs, zero_mul] split_ifs with h`. Establish `hsv : s v = 0`. Assume the negation of the conclusion as `hne`. Apply `hs` to reduce the goal to its premises.
+
+Rewrite using `[← h]`. Use extensionality with `u`. Simplify using `only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with hu`. Substitute `hu` using the available equality.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Simplify using `[hsv]`. Both sides reduce to the same expression. Introduce `p q hp hq`.
+
+Rewrite using `[map_add, MvPolynomial.coeff_add, hp, hq, MvPolynomial.coeff_add, add_mul]`.
+-/
 private theorem coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth (v : XY k) (F : PolXY K k) (m : XY k →₀ ℕ) :
     coeff m (pderiv v F) = coeff (m + Finsupp.single v 1) F * ((m v : K) + 1) := by
   refine MvPolynomial.induction_on' F ?_ ?_
@@ -525,6 +749,11 @@ private theorem coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth (v : XY k
   · intro p q hp hq
     rw [map_add, MvPolynomial.coeff_add, hp, hq, MvPolynomial.coeff_add, add_mul]
 
+/- English proof (translation)
+Unfold `ctrF`. Rewrite using `[LinearMap.sum_apply, MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`. Use `show coeff m (pderiv (R := K) (Sum.inl i : XY k) (pderiv (R := K) (Sum.inr i : XY k) f)) = _`.
+
+Rewrite using `[coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth, coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth, Finsupp.add_apply, Finsupp.single_apply, if_neg Sum.inl_ne_inr, add_zero]`.
+-/
 theorem coeff_ctrF (f : PolXY K k) (m : XY k →₀ ℕ) :
     coeff m (ctrF K k f) = ∑ i : Fin k,
       coeff (m + Finsupp.single (Sum.inl i) 1 + Finsupp.single (Sum.inr i) 1) f *
@@ -537,6 +766,13 @@ theorem coeff_ctrF (f : PolXY K k) (m : XY k →₀ ℕ) :
   rw [coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth, coeff_pderiv_eq_coeff_add_single_mul_multinomial_depth, Finsupp.add_apply, Finsupp.single_apply, if_neg Sum.inl_ne_inr,
     add_zero]
 
+/- English proof (translation)
+Use `show ∀ m ∈ (ctrF K k f).support, xDeg m = a - 1 ∧ yDeg m = b - 1`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, coeff_ctrF]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Establish `hc : coeff (m + Finsupp.single (Sum.inl i) 1 + Finsupp.single (Sum.inr i) 1) f ≠ 0`.
+
+Introduce `h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hf'` using `(show ∀ m ∈ f.support, xDeg m = a ∧ yDeg m = b from hf) _ (MvPolynomial.mem_support_iff.2 hc)`.
+
+Rewrite `hf'` using `[xDeg_add, xDeg_add, yDeg_add, yDeg_add, xDeg_single_inl, xDeg_single_inr, yDeg_single_inl, yDeg_single_inr]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ctrF_mem_PolAB {a b : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     ctrF K k f ∈ PolAB K k (a - 1) (b - 1) := by
   show ∀ m ∈ (ctrF K k f).support, xDeg m = a - 1 ∧ yDeg m = b - 1
@@ -553,6 +789,11 @@ theorem ctrF_mem_PolAB {a b : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     yDeg_single_inr] at hf'
   omega
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `zero => simpa using hf`. Consider the case `succ n ih`. Rewrite using `[pow_succ']`. Use `show ctrF K k ((ctrF K k ^ n) f) ∈ _`.
+
+Establish `h` using `ctrF_mem_PolAB (K := K) ih`. Apply the tactic sequence `convert h using 2 <;> omega`.
+-/
 theorem ctrF_pow_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     (ctrF K k ^ l) f ∈ PolAB K k (a - l) (b - l) := by
   induction l with
@@ -563,12 +804,20 @@ theorem ctrF_pow_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ Pol
     have h := ctrF_mem_PolAB (K := K) ih
     convert h using 2 <;> omega
 
+/- English proof (translation)
+Unfold `ctrDiv`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (ctrF_pow_mem_PolAB l hf)`.
+-/
 theorem ctrDiv_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     ctrDiv K k l f ∈ PolAB K k (a - l) (b - l) := by
   unfold ctrDiv
   rw [LinearMap.smul_apply]
   exact Submodule.smul_mem _ _ (ctrF_pow_mem_PolAB l hf)
 
+/- English proof (translation)
+Rewrite using `[mem_PolAB_iff]`. Unfold `hXY`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `i _`. Establish `h` using `(isWeightedHomogeneous_X (R := K) (wXY k) (Sum.inl i)).mul (isWeightedHomogeneous_X (R := K) (wXY k) (Sum.inr i))`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[wXY]`.
+-/
 theorem hXY_mem_PolAB : hXY K k ∈ PolAB K k 1 1 := by
   rw [mem_PolAB_iff]
   unfold hXY
@@ -579,11 +828,19 @@ theorem hXY_mem_PolAB : hXY K k ∈ PolAB K k 1 1 := by
   convert h using 1
   simp [wXY]
 
+/- English proof (translation)
+Rewrite `hf`, `hf'`, the goal using `[mem_PolAB_iff]`. Simplify using `using hf.mul hf'`.
+-/
 theorem mul_mem_PolAB {a b a' b' : ℕ} {f f' : PolXY K k} (hf : f ∈ PolAB K k a b)
     (hf' : f' ∈ PolAB K k a' b') : f * f' ∈ PolAB K k (a + a') (b + b') := by
   rw [mem_PolAB_iff] at hf hf' ⊢
   simpa using hf.mul hf'
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `zero => simpa using hf`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc]`. Establish `h` using `mul_mem_PolAB hXY_mem_PolAB ih`.
+
+Apply the tactic sequence `convert h using 2 <;> omega`.
+-/
 theorem h_pow_mul_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     hXY K k ^ l * f ∈ PolAB K k (a + l) (b + l) := by
   induction l with
@@ -593,12 +850,20 @@ theorem h_pow_mul_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ Po
     have h := mul_mem_PolAB hXY_mem_PolAB ih
     convert h using 2 <;> omega
 
+/- English proof (translation)
+Unfold `hDiv`. Rewrite using `[LinearMap.smul_apply, LinearMap.mulLeft_apply]`. Conclude with `Submodule.smul_mem _ _ (h_pow_mul_mem_PolAB l hf)`.
+-/
 theorem hDiv_mem_PolAB {a b : ℕ} (l : ℕ) {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
     hDiv K k l f ∈ PolAB K k (a + l) (b + l) := by
   unfold hDiv
   rw [LinearMap.smul_apply, LinearMap.mulLeft_apply]
   exact Submodule.smul_mem _ _ (h_pow_mul_mem_PolAB l hf)
 
+/- English proof (translation)
+Unfold `harProj`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun l hl => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Establish `hl' : l ≤ min A B` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hl)`. Establish `h` using `hDiv_mem_PolAB (K := K) l (ctrDiv_mem_PolAB (K := K) l hf)`. Rewrite `h` using `[Nat.sub_add_cancel (le_trans hl' (min_le_left _ _)), Nat.sub_add_cancel (le_trans hl' (min_le_right _ _))]`. Then use the resulting hypothesis.
+-/
 theorem harProj_mem_PolAB {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     harProj K k A B f ∈ PolAB K k A B := by
   unfold harProj
@@ -611,6 +876,11 @@ theorem harProj_mem_PolAB {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B)
   rwa [Nat.sub_add_cancel (le_trans hl' (min_le_left _ _)),
     Nat.sub_add_cancel (le_trans hl' (min_le_right _ _))] at h
 
+/- English proof (translation)
+Unfold `levelProj`. Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Establish `h` using `hDiv_mem_PolAB (K := K) j (harProj_mem_PolAB (ctrDiv_mem_PolAB j hf))`.
+
+Establish `hA : A - j + j = A` using `Nat.sub_add_cancel (le_trans hj (min_le_left _ _))`. Establish `hB : B - j + j = B` using `Nat.sub_add_cancel (le_trans hj (min_le_right _ _))`. Rewrite `h` using `[hA, hB]`. Then use the resulting hypothesis.
+-/
 theorem levelProj_mem_PolAB {A B j : ℕ} (hj : j ≤ min A B) {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
     levelProj K k A B j f ∈ PolAB K k A B := by
   unfold levelProj
@@ -622,6 +892,11 @@ theorem levelProj_mem_PolAB {A B j : ℕ} (hj : j ≤ min A B) {f : PolXY K k} (
   have hB : B - j + j = B := Nat.sub_add_cancel (le_trans hj (min_le_right _ _))
   rwa [hA, hB] at h
 
+/- English proof (translation)
+Take `⟨h, hh, rfl⟩` from `hf`. Establish `hh' : ∀ m, coeff m h ∈ R` using `hh`. Use `⟨r • h, ?_, by rw [map_smul]⟩` and prove the remaining obligations. Use `show ∀ m, coeff m (r • h) ∈ R`. Introduce `m`.
+
+Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `R.mul_mem hr (hh' m)`.
+-/
 theorem smul_mem_latOf_gauss (R : Subring K) (g : GL (Fin k) K) {r : K} (hr : r ∈ R) {f : PolXY K k}
     (hf : f ∈ latOf g (GaussLat R)) : r • f ∈ latOf g (GaussLat R) := by
   obtain ⟨h, hh, rfl⟩ := hf
@@ -632,6 +907,11 @@ theorem smul_mem_latOf_gauss (R : Subring K) (g : GL (Fin k) K) {r : K} (hr : r 
   rw [MvPolynomial.coeff_smul, smul_eq_mul]
   exact R.mul_mem hr (hh' m)
 
+/- English proof (translation)
+Take `⟨h, hh, rfl⟩` from `hf`. Establish `hh' : ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m h ∈ R` using `hh`. Use `⟨r • h, ?_, by rw [map_smul]⟩` and prove the remaining obligations. Use `show ∀ m, ((xFact m : K) * (yFact m : K)) * coeff m (r • h) ∈ R`. Introduce `m`.
+
+Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, mul_left_comm]`. Conclude with `R.mul_mem hr (hh' m)`.
+-/
 theorem smul_mem_latOf_dual (R : Subring K) (g : GL (Fin k) K) {r : K} (hr : r ∈ R) {f : PolXY K k}
     (hf : f ∈ latOf g (DualLat R)) : r • f ∈ latOf g (DualLat R) := by
   obtain ⟨h, hh, rfl⟩ := hf
@@ -644,6 +924,25 @@ theorem smul_mem_latOf_dual (R : Subring K) (g : GL (Fin k) K) {r : K} (hr : r �
 
 end deg
 
+/- English proof (translation)
+Establish `hAf : (A.factorial : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `hBf : (B.factorial : K) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `hL : ∀ X : ℕ, X ≤ A + B + k → (k - 1) * Nat.log p X + n ≤ (k + 1) * Nat.log p (A + B + k)`. Introduce `X hX`. Establish `hlX : Nat.log p X ≤ Nat.log p (A + B + k)` using `Nat.log_mono_right hX`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ∀ a b : ℕ, a ≤ b → ∀ x : PolXY K k, ((p : K) ^ b) • x = ((p : K) ^ (b - a)) • (((p : K) ^ a) • x)`. Introduce `a b hab x`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hab]`. Establish `hpR : ∀ a : ℕ, (p : K) ^ a ∈ R` using `fun a => R.pow_mem (natCast_mem R p) a`.
+
+Use `⟨fun hG => ?_, fun hD => ?_⟩` and prove the remaining obligations. Establish `h1` using `(fockGaussLatticeComparison_holds K k A B p R g hk hp hR f hf).2 hG`. Establish `hcf : ((p : K) ^ ((k - 1) * Nat.log p A) * (A.factorial : K)⁻¹) • f ∈ PolAB K k A B` using `Submodule.smul_mem _ _ hf`. Establish `h2` using `hF _ hcf h1`. Establish `hpol : ((p : K) ^ n) • T (((p : K) ^ ((k - 1) * Nat.log p A) * (A.factorial : K)⁻¹) • f) ∈ PolAB K k A B` using `Submodule.smul_mem _ _ (hT _ hcf)`.
+
+Establish `h3` using `(fockGaussLatticeComparison_holds K k A B p R g hk hp hR _ hpol).1 h2`. Establish `e : (A.factorial : K) • (((p : K) ^ n) • T (((p : K) ^ ((k - 1) * Nat.log p A) * (A.factorial : K)⁻¹) • f)) = ((p : K) ^ ((k - 1) * Nat.log p A + n)) • T f`. Rewrite using `[map_smul, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e]`. Rewrite using `[hpow _ _ (hL A (by omega))]`. Conclude with `smul_mem_latOf_gauss R g (hpR _) h3`. Establish `hf'` using `glAct_mem_PolAB g⁻¹ f hf`.
+
+Establish `h1 : (B.factorial : K) • f ∈ latOf g (FockLat R)`. Rewrite using `[mem_latOf_iff, map_smul]`. Conclude with `dual_to_fock R hf' ((mem_latOf_iff g _ f).1 hD)`. Establish `hbf : (B.factorial : K) • f ∈ PolAB K k A B` using `Submodule.smul_mem _ _ hf`. Establish `h2` using `hF _ hbf h1`.
+
+Establish `hpol : ((p : K) ^ n) • T ((B.factorial : K) • f) ∈ PolAB K k A B` using `Submodule.smul_mem _ _ (hT _ hbf)`. Establish `h3 : ((p : K) ^ ((k - 1) * Nat.log p B) * (B.factorial : K)⁻¹) • (((p : K) ^ n) • T ((B.factorial : K) • f)) ∈ latOf g (DualLat R)`. Rewrite `h2`, the goal using `[mem_latOf_iff]`. Rewrite using `[map_smul]`. Conclude with `fock_to_dual R hp hR (glAct_mem_PolAB g⁻¹ _ hpol) h2`.
+
+Establish `e : ((p : K) ^ ((k - 1) * Nat.log p B) * (B.factorial : K)⁻¹) • (((p : K) ^ n) • T ((B.factorial : K) • f)) = ((p : K) ^ ((k - 1) * Nat.log p B + n)) • T f`. Rewrite using `[map_smul, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h3` using `[e]`. Rewrite using `[hpow _ _ (hL B (by omega))]`. Conclude with `smul_mem_latOf_dual R g (hpR _) h3`.
+-/
 theorem gauss_dual_of_fock {K : Type} [Field K] [CharZero K] {k A B p : ℕ} (R : Subring K) (g : GL (Fin k) K)
     (hk : 1 ≤ k) (hp : p.Prime) (hR : PLocal R p) (T : PolXY K k →ₗ[K] PolXY K k)
     (hT : ∀ f, f ∈ PolAB K k A B → T f ∈ PolAB K k A B) (n : ℕ) (hn : n ≤ 2 * Nat.log p (A + B + k))
@@ -706,6 +1005,9 @@ theorem gauss_dual_of_fock {K : Type} [Field K] [CharZero K] {k A B p : ℕ} (R 
     rw [hpow _ _ (hL B (by omega))]
     exact smul_mem_latOf_dual R g (hpR _) h3
 
+/- English proof (translation)
+Introduce `K _ _ k A B p R g hk hp hR f hf`. Establish `hhar` using `gauss_dual_of_fock R g hk hp hR (harProj K k A B) (fun f' hf' => harProj_mem_PolAB hf') (Nat.log p (A + B + k)) (by omega) (fun f' hf' hfl => (H K k A B p R g hk hp hR f' hf' hfl).1) f hf`. Establish `lev` using `fun (j : ℕ) (hj : j ≤ min A B) => gauss_dual_of_fock R g hk hp hR (levelProj K k A B j) (fun f' hf' => levelProj_mem_PolAB hj hf') (2 * Nat.log p (A + B + k)) le_rfl (fun f' hf' hfl => (H K k A B p R g hk hp hR f' hf' hfl).2 j hj) f hf`. Conclude with `⟨fun hG => ⟨hhar.1 hG, fun j hj => (lev j hj).1 hG⟩, fun hD => ⟨hhar.2 hD, fun j hj => (lev j hj).2 hD⟩⟩`.
+-/
 theorem gaussProj_of (H : FockProj) : GaussProj := by
   intro K _ _ k A B p R g hk hp hR f hf
   have hhar := gauss_dual_of_fock R g hk hp hR (harProj K k A B) (fun f' hf' => harProj_mem_PolAB hf')
@@ -716,6 +1018,23 @@ theorem gaussProj_of (H : FockProj) : GaussProj := by
   exact ⟨fun hG => ⟨hhar.1 hG, fun j hj => (lev j hj).1 hG⟩,
     fun hD => ⟨hhar.2 hD, fun j hj => (lev j hj).2 hD⟩⟩
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Use `set L := Nat.log p (A + B + k) with hLdef`. Use `set x : ℕ := 8 * a + k - 1 with hxdef`. Establish `hxr : (x : ℝ) = 8 * (a : ℝ) + k - 1`. Rewrite using `[hxdef, Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `he` using `[← hxr]`. Establish `hLX : (L : ℝ) ≤ Real.logb p x + 1`. Break down `Nat.eq_zero_or_pos L with hL0 | hLpos` into its components or cases.
+
+Rewrite using `[hL0]`. Use `push_cast`. Break down `Nat.eq_zero_or_pos x with hx0 | hxpos` into its components or cases. Rewrite using `[hx0]`. Simplify using the standard rewrite rules.
+
+Establish `h0 : (0 : ℝ) ≤ Real.logb p x` using `Real.logb_nonneg hp1 (by exact_mod_cast hxpos)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN : A + B + k ≠ 0` using `by omega`. Establish `hpow : p ^ L ≤ A + B + k` using `Nat.pow_log_le_self p hN`. Establish `h2 : 2 * p ^ (L - 1) ≤ p ^ L`.
+
+Establish `e1 : p ^ L = p * p ^ (L - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
+
+Conclude with `Nat.mul_le_mul_right _ hp.two_le`. Establish `hy : p ^ (L - 1) ≤ x` using `by omega`. Establish `hyR : ((p ^ (L - 1) : ℕ) : ℝ) ≤ (x : ℝ)` using `by exact_mod_cast hy`. Establish `hposR : (0 : ℝ) < ((p ^ (L - 1) : ℕ) : ℝ)` using `by exact_mod_cast pow_pos hp.pos _`. Establish `hlog` using `(Real.logb_le_logb hp1 hposR (lt_of_lt_of_le hposR hyR)).2 hyR`.
+
+Rewrite `hlog` using `[Nat.cast_pow, Real.logb_pow, Real.logb_self_eq_one hp1, mul_one]`. Establish `e2 : ((L - 1 : ℕ) : ℝ) = (L : ℝ) - 1`. Rewrite using `[Nat.cast_sub hLpos]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hX1 : 0 ≤ Real.logb p x + 1` using `le_trans (Nat.cast_nonneg L) hLX`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hfin : ((k : ℝ) + 1) * (L : ℝ) ≤ (e : ℝ)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hLX (by positivity : (0 : ℝ) ≤ (k : ℝ) + 1), mul_nonneg (by positivity : (0 : ℝ) ≤ 2 + 3 * (k : ℝ)) hX1]`. Conclude with `hfin` after adjusting the coercions.
+-/
 theorem exponent_le {k A B a p e : ℕ} (hk : 1 ≤ k) (hp : p.Prime) (hA : A ≤ 8 * a) (hB : B ≤ 8 * a)
     (he : 3 * (Real.logb p (8 * (a : ℝ) + k - 1) + 1) + 4 * (k : ℝ) * (Real.logb p (8 * (a : ℝ) + k - 1) + 1)
       ≤ (e : ℝ)) : (k + 1) * Nat.log p (A + B + k) ≤ e := by
@@ -761,6 +1080,13 @@ theorem exponent_le {k A B a p e : ℕ} (hk : 1 ≤ k) (hp : p.Prime) (hA : A �
       mul_nonneg (by positivity : (0 : ℝ) ≤ 2 + 3 * (k : ℝ)) hX1]
   exact_mod_cast hfin
 
+/- English proof (translation)
+Introduce `K _ _ k A B a p e R g hk hp hR hA hB he f hf j hj`. Establish `hE` using `exponent_le hk hp hA hB he`. Establish `hpe : (p : K) ^ e = (p : K) ^ (e - (k + 1) * Nat.log p (A + B + k)) * (p : K) ^ ((k + 1) * Nat.log p (A + B + k))`. Rewrite using `[← pow_add, Nat.sub_add_cancel hE]`. Establish `hmem : (p : K) ^ (e - (k + 1) * Nat.log p (A + B + k)) ∈ R` using `R.pow_mem (natCast_mem R p) _`.
+
+Take `⟨h1, h2⟩` from `H K k A B p R g hk hp hR f hf`. Use `⟨fun hG => ?_, fun hD => ?_⟩` and prove the remaining obligations. Rewrite using `[hpe, mul_smul]`. Conclude with `smul_mem_latOf_gauss R g hmem ((h1 hG).2 j hj)`. Rewrite using `[hpe, mul_smul]`.
+
+Conclude with `smul_mem_latOf_dual R g hmem ((h2 hD).2 j hj)`.
+-/
 theorem gaussProjText_of (H : GaussProj) : GaussProjText := by
   intro K _ _ k A B a p e R g hk hp hR hA hB he f hf j hj
   have hE := exponent_le hk hp hA hB he
@@ -777,6 +1103,11 @@ theorem gaussProjText_of (H : GaussProj) : GaussProjText := by
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra in
 open DirectSum in
+/- English proof (translation)
+Set `𝒜` to `weightedHomogeneousSubmodule K (wXY k)`. Establish `hh : hXY K k ∈ 𝒜 (1, 1)` using `(mem_PolAB_iff _).1 hXY_mem_PolAB`. Establish `hw' : w ∈ 𝒜 (A, B)` using `(mem_PolAB_iff _).1 hw`. Use `⟨(decompose 𝒜 G (A - 1, B - 1) : PolXY K k), (mem_PolAB_iff _).2 (decompose 𝒜 G (A - 1, B - 1)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← DirectSum.coe_decompose_mul_add_of_left_mem 𝒜 hh, ← h]`.
+
+Establish `: ((1, 1) + (A - 1, B - 1) : ℕ × ℕ) = (A, B)`. Apply the tactic sequence `ext <;> simp <;> omega`. Rewrite using `[this, DirectSum.decompose_of_mem_same 𝒜 hw']`.
+-/
 theorem exists_cofactor {K : Type} [Field K] {k A B : ℕ} (hA : 1 ≤ A) (hB : 1 ≤ B) {w G : PolXY K k}
     (hw : w ∈ PolAB K k A B) (h : w = hXY K k * G) :
     ∃ G' ∈ PolAB K k (A - 1) (B - 1), w = hXY K k * G' := by
@@ -790,6 +1121,15 @@ theorem exists_cofactor {K : Type} [Field K] {k A B : ℕ} (hA : 1 ≤ A) (hB : 
     ext <;> simp <;> omega
   rw [this, DirectSum.decompose_of_mem_same 𝒜 hw']
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_zero]`. Distinguish the cases in `h0 : coeff m (hXY K k * G) = 0`. Conclude with `h0`.
+
+Take `⟨hx, hy⟩` from `(show ∀ m ∈ (hXY K k * G).support, xDeg m = A ∧ yDeg m = B from hw) m (MvPolynomial.mem_support_iff.2 h0)`. Unfold `hXY`. Rewrite using `[Finset.sum_mul, MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Break down `hAB with hA | hB` into its components or cases.
+
+Establish `hle : m (Sum.inl i) ≤ xDeg m` using `Finset.single_le_sum (f := fun j => m (Sum.inl j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `hmi : m (Sum.inl i) = 0` using `by omega`. Rewrite using `[mul_assoc, MvPolynomial.coeff_X_mul', if_neg (by simpa [Finsupp.mem_support_iff] using hmi)]`. Establish `hle : m (Sum.inr i) ≤ yDeg m` using `Finset.single_le_sum (f := fun j => m (Sum.inr j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `hmi : m (Sum.inr i) = 0` using `by omega`.
+
+Rewrite using `[mul_comm (X (Sum.inl i)) (X (Sum.inr i)), mul_assoc, MvPolynomial.coeff_X_mul', if_neg (by simpa [Finsupp.mem_support_iff] using hmi)]`.
+-/
 theorem h_mul_eq_zero_of_deg {K : Type} [Field K] {k A B : ℕ} (hAB : A = 0 ∨ B = 0) {w G : PolXY K k}
     (hw : w ∈ PolAB K k A B) (h : w = hXY K k * G) : w = 0 := by
   subst h
@@ -813,6 +1153,19 @@ theorem h_mul_eq_zero_of_deg {K : Type} [Field K] {k A B : ℕ} (hAB : A = 0 ∨
       rw [mul_comm (X (Sum.inl i)) (X (Sum.inr i)), mul_assoc, MvPolynomial.coeff_X_mul',
         if_neg (by simpa [Finsupp.mem_support_iff] using hmi)]
 
+/- English proof (translation)
+Introduce `K _ _ k A B p O g hk hp hR`. Take `⟨H1a, H1b, H1c⟩` from `H1 K k A B hk`. Use `⟨fun w G hw hwG => ?_, fun f hf hfl => ?_⟩` and prove the remaining obligations. Establish `hwP : w ∈ PolAB K k A B` using `(Submodule.mem_inf.1 (show w ∈ PolAB K k A B ⊓ LinearMap.ker (ctrF K k) from hw)).1`. Distinguish the cases in `hAB : 1 ≤ A ∧ 1 ≤ B`.
+
+Take `⟨G', hG', hwG'⟩` from `exists_cofactor hAB.1 hAB.2 hwP hwG`. Establish `e1` using `H1b w hw`. Establish `e2` using `H1c hAB.1 hAB.2 G' hG'`. Rewrite `e2` using `[← hwG']`. Rewrite using `[← e1]`.
+
+Conclude with `e2`. Conclude with `h_mul_eq_zero_of_deg (by omega) hwP hwG`. Take `⟨hhar, g', hg', hdiff⟩` from `H1a f hf`. Establish `hEO : (p : K) ^ ((k + 1) * Nat.log p (A + B + k)) ∈ O.toSubring` using `O.toSubring.pow_mem (natCast_mem _ p) _`. Establish `hw` using `((H2 K k A B p O.toSubring g hk hp hR f hf).1 hfl).1`.
+
+Use `⟨((p : K) ^ ((k + 1) * Nat.log p (A + B + k))) • harProj K k A B f, Submodule.smul_mem _ _ hhar, ((p : K) ^ ((k + 1) * Nat.log p (A + B + k))) • g', Submodule.smul_mem _ _ hg', hw, ?_, ?_⟩` and prove the remaining obligations. Apply `gaussLemmaPairing_holds K k O g 1 _ hk` to reduce the goal to its premises. Rewrite using `[pow_one, mul_smul_comm, ← hdiff, smul_sub]`. Establish `hf1` using `smul_mem_latOf_gauss _ g hEO hfl`. Rewrite `hf1`, `hw`, the goal using `[mem_latOf_iff]`.
+
+Rewrite using `[map_sub]`. Establish `h1' : ∀ m, coeff m (glAct g⁻¹ (((p : K) ^ ((k + 1) * Nat.log p (A + B + k))) • f)) ∈ O.toSubring` using `hf1`. Establish `h2' : ∀ m, coeff m (glAct g⁻¹ (((p : K) ^ ((k + 1) * Nat.log p (A + B + k))) • harProj K k A B f)) ∈ O.toSubring` using `hw`. Use `show ∀ m, coeff m (_ - _) ∈ O.toSubring`. Introduce `m`.
+
+Rewrite using `[MvPolynomial.coeff_sub]`. Conclude with `O.toSubring.sub_mem (h1' m) (h2' m)`. Rewrite using `[mul_smul_comm, ← hdiff, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem harQuot_of (H1 : HarProj) (H2 : GaussProj) : HarQuot := by
   intro K _ _ k A B p O g hk hp hR
   obtain ⟨H1a, H1b, H1c⟩ := H1 K k A B hk
@@ -850,13 +1203,37 @@ theorem harQuot_of (H1 : HarProj) (H2 : GaussProj) : HarQuot := by
 
 end Har4
 
+/- English proof (translation)
+The claim follows from `Har4.fockGaussLatticeComparison_holds`.
+-/
 theorem fockGaussLatticeComparison_holds : FockGaussXY := Har4.fockGaussLatticeComparison_holds
+/- English proof (translation)
+The claim follows from `Har4.sqrtFockGaussLatticeComparison_holds`.
+-/
 theorem sqrtFockGaussLatticeComparison_holds : SqrtFockGaussXY := Har4.sqrtFockGaussLatticeComparison_holds
+/- English proof (translation)
+The claim follows from `Har4.gaussLemmaPairing_holds`.
+-/
 theorem gaussLemmaPairing_holds : GaussLemmaH := Har4.gaussLemmaPairing_holds
+/- English proof (translation)
+The claim follows from `Har4.pairingPrime_holds`.
+-/
 theorem pairingPrime_holds : HPrime := Har4.pairingPrime_holds
+/- English proof (translation)
+The claim follows from `Har4.isotypicLattice_holds`.
+-/
 theorem isotypicLattice_holds : LevelLattice := Har4.isotypicLattice_holds
+/- English proof (translation)
+The claim follows from `Har4.gaussProj_of fockLatticeProjection_holds`.
+-/
 theorem gaussLatticeProjection_holds : GaussProj := Har4.gaussProj_of fockLatticeProjection_holds
+/- English proof (translation)
+The claim follows from `Har4.gaussProjText_of gaussLatticeProjection_holds`.
+-/
 theorem gaussLatticeProjectionExponent_holds : GaussProjText := Har4.gaussProjText_of gaussLatticeProjection_holds
+/- English proof (translation)
+The claim follows from `Har4.harQuot_of harmonicProjection_holds gaussLatticeProjection_holds`.
+-/
 theorem harmonicQuotient_holds : HarQuot := Har4.harQuot_of harmonicProjection_holds gaussLatticeProjection_holds
 
 end Formalism.CountingSumsFrames

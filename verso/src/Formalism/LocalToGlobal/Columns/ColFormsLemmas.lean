@@ -17,6 +17,17 @@ section Roots
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ c` using `⟨Polynomial.X ^ m - 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [hc]⟩`. Set `c' : 𝓞 K` to `⟨c, hint⟩`. Establish `hc' : ∀ x : V, c' • x = c • x` using `fun x => by`. Rewrite using `[← algebraMap_smul K c' x]`. Both sides reduce to the same expression.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨c' • x, N.smul_mem _ hx, ?_⟩` and prove the remaining obligations. Use `show f (c' • x) = c • f x`.
+
+Rewrite using `[hc', map_smul]`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨c' ^ (m - 1) • x, N.smul_mem _ hx, ?_⟩` and prove the remaining obligations. Use `show c • f (c' ^ (m - 1) • x) = f x`. Establish `h2 : ∀ (k : ℕ) (x : V), c' ^ k • x = c ^ k • x`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`.
+
+Rewrite using `[pow_succ, mul_smul, ih, hc', pow_succ, mul_smul]`. Rewrite using `[h2, map_smul, smul_smul, ← pow_succ', Nat.sub_add_cancel hm, hc, one_smul]`.
+-/
 theorem map_root_smul {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (N : Submodule (𝓞 K) V) (f : Module.End K V) {c : K} {m : ℕ} (hm : 0 < m) (hc : c ^ m = 1) :
     N.map ((c • f).restrictScalars (𝓞 K)) = N.map (f.restrictScalars (𝓞 K)) := by
@@ -40,6 +51,11 @@ theorem map_root_smul {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) 
       | succ k ih => intro x; rw [pow_succ, mul_smul, ih, hc', pow_succ, mul_smul]
     rw [h2, map_smul, smul_smul, ← pow_succ', Nat.sub_add_cancel hm, hc, one_smul]
 
+/- English proof (translation)
+Take `⟨σ₀, hσ⟩` from `h`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hσ, map_one, mul_comm, Complex.mul_conj]`. Establish `h1 : ‖σ₀ c‖ = 1`. Establish `: σ₀ c ^ m = 1` using `by rw [← map_pow, hc, map_one]`.
+
+Conclude with `Complex.norm_eq_one_of_pow_eq_one this hm.ne'`. Rewrite using `[Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem star_mul_root [StarRing K] (h : ∃ σ₀ : K →+* ℂ, ∀ x : K, σ₀ (star x) = starRingEnd ℂ (σ₀ x))
     {c : K} {m : ℕ} (hm : 0 < m) (hc : c ^ m = 1) : star c * c = 1 := by
   obtain ⟨σ₀, hσ⟩ := h
@@ -58,28 +74,58 @@ section Form
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formGSD_smul (a : (formGSD C Λ).G) (d : (formGSD C Λ).D) :
     a • d = ((FormG.incl Λ a : UF X.E n × GLG X.E n SG) • (d : DecoSet X.E n ST SG) : DecoSet X.E n ST SG) := rfl
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg Prod.snd h`. Conclude with `Prod.ext h1 (Subtype.ext h2)`.
+-/
 theorem FormG.incl_injective : Function.Injective (FormG.incl Λ) := by
   intro a b h
   have h1 := congrArg Prod.fst h
   have h2 := congrArg Prod.snd h
   exact Prod.ext h1 (Subtype.ext h2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formGSD_rho (a : (formGSD C Λ).G) (x : C.V) :
     (formGSD C Λ).ρ a x = ((Λ.chr a.2 : X.Kˣ) : X.K) • C.rho a.1 x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H γ h d => H (γ, h) d, fun H a d => H a.1 a.2 d⟩`.
+-/
 theorem mem_formGSD_EqFun (φ : DecoSet X.E n ST SG → C.V) :
     φ ∈ (formGSD C Λ).EqFun ↔ ∀ (γ : UF X.E n) (h : ↥Λ.grp) (d : DecoSet X.E n ST SG),
       φ ((γ, (h : GLG X.E n SG)) • d) = ((Λ.chr h : X.Kˣ) : X.K) • C.rho γ (φ d) :=
   ⟨fun H γ h d => H (γ, h) d, fun H a d => H a.1 a.2 d⟩
 
+/- English proof (translation)
+Establish `hf : IsOfFinOrder h` using `isOfFinOrder_of_finite h`. Use `⟨orderOf h, hf.orderOf_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_orderOf_eq_one, map_one, Units.val_one]`.
+-/
 theorem LevFam.chr_root (h : ↥Λ.grp) : ∃ m : ℕ, 0 < m ∧ ((Λ.chr h : X.Kˣ) : X.K) ^ m = 1 := by
   have hf : IsOfFinOrder h := isOfFinOrder_of_finite h
   refine ⟨orderOf h, hf.orderOf_pos, ?_⟩
   rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_orderOf_eq_one, map_one, Units.val_one]
 
+/- English proof (translation)
+Take `⟨s, hs, hrep⟩` from `DecoSet.finite_reps (ST := ST) (SG := SG) (n := n) (posStar_of_conj hX.conjE)`. Establish `: Finite s` using `hs`. Use `Finite.of_surjective (fun d : s => (formGSD C Λ).cls d.1) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`.
+
+Consider the case `h d`. Take `⟨d0, hd0, g, hg⟩` from `hrep d`. Use `⟨⟨d0, hd0⟩, ?_⟩` and prove the remaining obligations. Use `((formGSD C Λ).cls_eq_iff d0 d).mpr ⟨((g, 1) : FormG Λ)⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : d = (((g, 1) : FormG Λ) : (formGSD C Λ).G) • (d0 : (formGSD C Λ).D)` using `hg`.
+
+Rewrite using `[h1, inv_smul_smul]`. Use `fin_stab := by`. Introduce `d`. Use `DecoSet.finite_stabilizer (posStar_of_conj hX.conjE) (d : DecoSet X.E n ST SG)` as an intermediate fact. Use `Finite.of_injective (fun a : MulAction.stabilizer (formGSD C Λ).G d => (⟨FormG.incl Λ a.1, a.2⟩ : MulAction.stabilizer (UF X.E n × GLG X.E n SG) (d : DecoSet X.E n ST SG))) ?_` and prove the remaining obligations.
+
+Introduce `a b hab`. Conclude with `Subtype.ext (FormG.incl_injective Λ (congrArg Subtype.val hab))`. Use `nab_smul := by`. Introduce `g d`. Take `⟨m, hm, hc⟩` from `Λ.chr_root g.2`.
+
+Conclude with `(hC.nab_smul (FormG.incl Λ g) d).trans (map_root_smul _ _ hm hc).symm`. Use `del_smul := by`. Introduce `g d`. Take `⟨m, hm, hc⟩` from `Λ.chr_root g.2`. Conclude with `(hC.del_smul (FormG.incl Λ g) d).trans (map_root_smul _ _ hm hc).symm`.
+
+Use `inv := by`. Introduce `g x y`. Take `⟨m, hm, hc⟩` from `Λ.chr_root g.2`. Use `show C.pair (((Λ.chr g.2 : X.Kˣ) : X.K) • C.rho g.1 x) (((Λ.chr g.2 : X.Kˣ) : X.K) • C.rho g.1 y) = C.pair x y`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, hC.inv, smul_smul]`.
+
+Use `show (star ((Λ.chr g.2 : X.Kˣ) : X.K) * _) • _ = _`. Rewrite using `[star_mul_root hX.conjK hm hc, one_smul]`.
+-/
 theorem formGSD_ok (hX : X.Ok) (hC : C.Eqv) : (formGSD C Λ).Ok where
   fin_orb := by
     obtain ⟨s, hs, hrep⟩ := DecoSet.finite_reps (ST := ST) (SG := SG) (n := n) (posStar_of_conj hX.conjE)
@@ -117,6 +163,9 @@ theorem formGSD_ok (hX : X.Ok) (hC : C.Eqv) : (formGSD C Λ).Ok where
     show (star ((Λ.chr g.2 : X.Kˣ) : X.K) * _) • _ = _
     rw [star_mul_root hX.conjK hm hc, one_smul]
 
+/- English proof (translation)
+The claim follows from `FormG.incl_injective Λ (DecoSet.stab_fst_injective (d : DecoSet X.E n ST SG) ha hb hab)`.
+-/
 theorem formGSD_stab_inj (d : (formGSD C Λ).D) {a b : (formGSD C Λ).G} (ha : a • d = d) (hb : b • d = d)
     (hab : a.1 = b.1) : a = b :=
   FormG.incl_injective Λ (DecoSet.stab_fst_injective (d : DecoSet X.E n ST SG) ha hb hab)
@@ -127,23 +176,42 @@ section Cols
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
 
+/- English proof (translation)
+The claim follows from `colVal_nab_smul W u j del_smul := colVal_del_smul W u j inv := roundPk_inv X _ _ hX.emb_star`.
+-/
 theorem colVal_eqv (hX : X.Ok) (u : Pr.Word) (j : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 X.E))) :
     (colVal W u j ST SG).Eqv where
   nab_smul := colVal_nab_smul W u j
   del_smul := colVal_del_smul W u j
   inv := roundPk_inv X _ _ hX.emb_star
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX (colVal_eqv W hX u j _ _)`.
+-/
 theorem colOk (hX : X.Ok) (u : Pr.Word) (j : ℕ) : (colGSD W Ch u j).Ok :=
   formGSD_ok _ _ hX (colVal_eqv W hX u j _ _)
 
+/- English proof (translation)
+The claim follows from `if_pos hj`.
+-/
 theorem colLev_of_lt {j : ℕ} (hj : j < R.m) (w : Pr.vGs) :
     colLev Ch j w = ⟨HX (𝓞 X.E ⧸ w.1.asIdeal) (R.N j) R.k R.t j,
       lamX (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N j) R.k R.m R.t j⟩ := if_pos hj
 
+/- English proof (translation)
+The claim follows from `if_neg (lt_irrefl _)`.
+-/
 theorem colLev_m (w : Pr.vGs) :
     colLev Ch R.m w = ⟨HXm (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m) R.r R.t R.m,
       lamXm (Ch.psi0 w) (extChi fun s => Ch.chi s w) (R.N R.m) R.r R.t R.m⟩ := if_neg (lt_irrefl _)
 
+/- English proof (translation)
+Introduce `d a ha`. Establish `hpos : 0 < (Pr.vG 0).card`. Rewrite using `[hPr.vG_card 0, Fields.f, hX.card_Tau]`. Conclude with `Module.finrank_pos`. Take `⟨w, hw⟩` from `Finset.card_pos.mp hpos`.
+
+Establish `hw' : w ∈ Pr.vGs` using `by classical`. Unfold `Primes.vGs`. Conclude with `Finset.mem_union_left _ hw`. Establish `hN : R.N 0 = R.k` using `by simp [Ranks.N]`. Establish `hm : 0 < R.m` using `lt_of_lt_of_le (by norm_num) R.two_le_m`.
+
+Establish `hmem : (a.2 : GLG X.E (R.N 0) Pr.vGs) ⟨w, hw'⟩ ∈ (colLev Ch 0 ⟨w, hw'⟩).H` using `(Subgroup.mem_pi _).mp a.2.2 ⟨w, hw'⟩ (Set.mem_univ _)`. Rewrite `hmem` using `[colLev_of_lt Ch hm]`. Establish `h1 : FormG.incl (colLev Ch 0) a = 1` using `DecoSet.decoration_stabilizer_trivial_unipotent hX hPr (d : DecoSet X.E (R.N 0) (Pr.vT u) Pr.vGs) ha 0 ⟨w, hw'⟩ hw (by rw [hN]; exact hbig) (isNilpotent_of_mem_HX_zero hN.le hmem)`. Conclude with `FormG.incl_injective _ (h1.trans (map_one _).symm)`.
+-/
 theorem colFree (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     (colGSD W Ch u 0).Free := by
   intro d a ha
@@ -165,14 +233,23 @@ theorem colFree (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u
       (isNilpotent_of_mem_HX_zero hN.le hmem)
   exact FormG.incl_injective _ (h1.trans (map_one _).symm)
 
+/- English proof (translation)
+The claim follows from `(colGSD W Ch u 0).finrank_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u)`.
+-/
 theorem finrank_MfV (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     finrank X.K (MfV W Ch u) = Nat.card (colGSD W Ch u 0).Cl * finrank X.K (VV X.K (W.lamTrue u 0)) :=
   (colGSD W Ch u 0).finrank_free (colOk W Ch hX u 0) (colFree W Ch hX hPr hbig u)
 
+/- English proof (translation)
+Introduce `φ hφ d`. Conclude with `roundPk_del_le X (W.lamTrue u j) (fun d : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs => d.1.Lsh) d (hφ d)`.
+-/
 theorem ColL_le_ColLnab (u : Pr.Word) (j : ℕ) : ColL W Ch u j ≤ ColLnab W Ch u j := by
   intro φ hφ d
   exact roundPk_del_le X (W.lamTrue u j) (fun d : DecoSet X.E (R.N j) (Pr.vT u) Pr.vGs => d.1.Lsh) d (hφ d)
 
+/- English proof (translation)
+The claim follows from `(colGSD W Ch u 0).map_intDel_free (colOk W Ch hX u 0) s (colFree W Ch hX hPr hbig u)`.
+-/
 theorem map_MfL (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word)
     (s : (colGSD W Ch u 0).Sec) :
     (MfL W Ch u).map (((colGSD W Ch u 0).resFree (colOk W Ch hX u 0) s (colFree W Ch hX hPr hbig u) :
@@ -180,6 +257,9 @@ theorem map_MfL (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u
       Submodule.pi Set.univ fun c => (colGSD W Ch u 0).Del (s.rep c) :=
   (colGSD W Ch u 0).map_intDel_free (colOk W Ch hX u 0) s (colFree W Ch hX hPr hbig u)
 
+/- English proof (translation)
+Rewrite using `[finrank_MfV W Ch hX hPr hbig u]`. Establish `: NeZero (R.N 0)` using `⟨(R.N_pos 0).ne'⟩`. Establish `h1 : Finite (colGSD W Ch u 0).Cl` using `(colOk W Ch hX u 0).fin_orb`. Establish `h2 : Nonempty (colGSD W Ch u 0).Cl` using `⟨(colGSD W Ch u 0).cls (DecoSet.base X.E (R.N 0) (Pr.vT u) Pr.vGs)⟩`. Conclude with `Nat.mul_pos Nat.card_pos (colVal W u 0 (Pr.vT u) Pr.vGs).finrank_pos`.
+-/
 theorem finrank_MfV_pos (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     0 < finrank X.K (MfV W Ch u) := by
   rw [finrank_MfV W Ch hX hPr hbig u]

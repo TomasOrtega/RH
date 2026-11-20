@@ -19,10 +19,16 @@ def LowerBounds (g N N' : ℕ) : Prop :=
   1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) < (N : ℝ) ∧
     2 * (degEmb g N : ℝ) * coordConst g * (N : ℝ) < (N' : ℝ)
 
+/- English proof (translation)
+Unfold `LowerBounds coordConst degEmb`. Evaluate the numerical expressions using `[Nat.factorial]`.
+-/
 example : LowerBounds 2 ((3 ^ 2) ^ 2) (3 ^ 11 * (3 ^ 2) ^ 2) := by
   unfold LowerBounds coordConst degEmb
   norm_num [Nat.factorial]
 
+/- English proof (translation)
+Unfold `LowerBounds coordConst degEmb`. Evaluate the numerical expressions using `[Nat.factorial]`.
+-/
 example : ¬ LowerBounds 2 ((3 ^ 2) ^ 2) (3 ^ 10 * (3 ^ 2) ^ 2) := by
   unfold LowerBounds coordConst degEmb
   norm_num [Nat.factorial]
@@ -60,6 +66,9 @@ def fn (S : ThetaSys o Ω) : S.R →+* Γ((Base S).left, ⊤) := (Scheme.ΓSpecI
 
 def cst (S : ThetaSys o Ω) : o →+* Γ((Base S).left, ⊤) := (fn S).comp (algebraMap o S.R)
 
+/- English proof (translation)
+Establish `h1` using `S.r_pos`. Establish `h2` using `S.N_ge`. Conclude with `pow_ne_zero _ (Nat.mul_ne_zero (by omega) (by omega))`.
+-/
 theorem level_ne_zero (S : ThetaSys o Ω) : (S.r * S.N) ^ 2 ≠ 0 := by
   have h1 := S.r_pos
   have h2 := S.N_ge
@@ -133,6 +142,9 @@ variable {p : ℕ} [Fact p.Prime]
 abbrev intRing (K : IntermediateField ℚ_[p] (PadicAlgCl p)) : ValuationSubring K :=
   (OO p).comap (algebraMap K (PadicAlgCl p))
 
+/- English proof (translation)
+The claim follows from `(algebraMap K (PadicAlgCl p)).injective.comp Subtype.val_injective`.
+-/
 theorem intRing_injective (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     Function.Injective ((algebraMap K (PadicAlgCl p)).comp (intRing K).subtype) :=
   (algebraMap K (PadicAlgCl p)).injective.comp Subtype.val_injective
@@ -141,6 +153,9 @@ instance fracAlgebra (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     Algebra (FractionRing (intRing K)) (PadicAlgCl p) :=
   (IsFractionRing.lift (A := intRing K) (K := FractionRing (intRing K)) (intRing_injective K)).toAlgebra
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (intRing_injective K) x`.
+-/
 example (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (x : intRing K) :
     algebraMap (FractionRing (intRing K)) (PadicAlgCl p) (algebraMap (intRing K) _ x) = ((x : K) : PadicAlgCl p) :=
   IsFractionRing.lift_algebraMap (intRing_injective K) x
@@ -192,6 +207,9 @@ def Realisation.HasUnifTests {S : ThetaSys o Ω} (Z : Realisation S) : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (y : S.R →+* PadicAlgCl p), (∀ a : o, ‖y (algebraMap o S.R a)‖ ≤ 1) →
     ∃ (t : UnifTest Z p y) (τ : S.Test p y), t.Matches τ
 
+/- English proof (translation)
+Introduce `p _ y hy` and use `let ⟨_, τ, _⟩ := h p y hy; ⟨τ⟩`.
+-/
 example {S : ThetaSys o Ω} (Z : Realisation S) (h : Z.HasUnifTests) : S.HasTests :=
   fun p _ y hy => let ⟨_, τ, _⟩ := h p y hy; ⟨τ⟩
 

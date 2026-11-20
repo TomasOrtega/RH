@@ -13,24 +13,86 @@ open CompanionTheory.D.DSIC (KRel)
 
 variable {n : ℕ} {Z : Type} [AddCommGroup Z] [Module ℂ Z]
 
+/- English proof (translation)
+Rewrite using `[ann_apply]`. Use `split_ifs`. Conclude with `Q.zero_mem`. Conclude with `Q.smul_mem _ (h _)`.
+-/
 theorem ann_mem {Q : Submodule ℂ Z} {x : Cn n Z} (h : ∀ A, x A ∈ Q) (i : Pos n) (A : Finset (Pos n)) :
     ann i x A ∈ Q := by
   rw [ann_apply]; split_ifs
   · exact Q.zero_mem
   · exact Q.smul_mem _ (h _)
 
+/- English proof (translation)
+Rewrite using `[cre_apply]`. Use `split_ifs`. Conclude with `Q.smul_mem _ (h _)`. Conclude with `Q.zero_mem`.
+-/
 theorem cre_mem {Q : Submodule ℂ Z} {x : Cn n Z} (h : ∀ A, x A ∈ Q) (i : Pos n) (A : Finset (Pos n)) :
     cre i x A ∈ Q := by
   rw [cre_apply]; split_ifs
   · exact Q.smul_mem _ (h _)
   · exact Q.zero_mem
 
+/- English proof (translation)
+Distinguish the cases in `h : i ∈ A`. Simplify using `[cre_apply, ann_apply, h, sg_erase i h, tw_self, smul_smul, sg_mul_self, insert_erase h]`. Simplify using `[cre_apply, h]`.
+-/
 theorem cre_ann_apply (i : Pos n) (x : Cn n Z) (A : Finset (Pos n)) :
     cre i (ann i x) A = if i ∈ A then x A else 0 := by
   by_cases h : i ∈ A
   · simp [cre_apply, ann_apply, h, sg_erase i h, tw_self, smul_smul, sg_mul_self, insert_erase h]
   · simp [cre_apply, h]
 
+/- English proof (translation)
+Introduce `n ε Z _ _ E a d Fil hE hF B j x hx hcyc`. Set `I` to `{i : Pos n // cpt ε i}`. Set `H : Module.End ℂ (Cn n Z)` to `∑ i : I, (lift n (d i.1) : Module.End ℂ (Cn n Z)) * cre i.1`. Set `Da : Module.End ℂ (Cn n Z)` to `∑ i : I, (lift n (a i.1) : Module.End ℂ (Cn n Z)) * ann i.1`. Set `N : Module.End ℂ Z` to `∑ i : I, a i.1 * d i.1`.
+
+Set `G : ℕ → Submodule ℂ Z` to `fun k => Nat.casesOn k ⊥ Fil`. Establish `hda : ∀ i j : I, d i.1 * a j.1 - a j.1 * d i.1 = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[hF.da i.1 j.1 i.2]`. Simplify using `only [Subtype.ext_iff (a1 := i)]`. Establish `hdG : ∀ i k, ∀ z ∈ G (k + 1), d i z ∈ G k` using `fun i k z hz => by`.
+
+Consider the cases of `k with`. Consider the case `zero => exact hF.d_zero i z hz`. Consider the case `succ k => exact hF.d_mem i k z hz`. Establish `hNG : ∀ k, ∀ z ∈ G k, N z ∈ G k` using `fun k z hz => by`. Consider the cases of `k with`.
+
+Consider the case `zero => obtain rfl : z = 0 := hz`. Simplify using the standard rewrite rules. Consider the case `succ k`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Consider the cases of `k with`. Consider the case `zero => rw [Module.End.mul_apply, hF.d_zero _ z hz, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ k => exact hF.a_mem _ k _ (hF.d_mem _ k z hz)`. Establish `hrG : ∀ i k, ∀ z ∈ G k, E i.1.1 i.1.2 z - a i z ∈ G k` using `fun i k z hz => by`.
+
+Consider the cases of `k with`. Consider the case `zero => obtain rfl : z = 0 := hz`. Simplify using the standard rewrite rules. Consider the case `succ k => exact hF.r_mem i k z hz`. Establish `hGf : ∀ k, G k ≤ filt (fun i : I => d i.1) k` using `fun k => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact bot_le`. Consider the case `succ k ih => exact fun z hz => (mem_filt_succ _ _ _).2 fun i => ih (hdG _ k z hz)`. Establish `hGm : ∀ k, G k ≤ G (k + 1)` using `fun k => by`. Consider the cases of `k with`.
+
+Consider the case `zero => exact bot_le`. Consider the case `succ k => exact hF.mono (Nat.le_succ k)`. Establish `hH : ∀ (y : Cn n Z) A, H y A = ∑ i : I, d i.1 (cre i.1 y A)` using `fun y A => by`. Simplify using `only [H, LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Establish `hHG : ∀ k (y : Cn n Z), (∀ A, y A ∈ G (k + 1)) → ∀ A, H y A ∈ G k` using `fun k y hy A => by`. Rewrite using `[hH]`. Conclude with `Submodule.sum_mem _ fun i _ => hdG _ k _ (cre_mem hy _ _)`. Establish `hρ : ∀ k (y : Cn n Z), (∀ A, y A ∈ G k) → ∀ A, (bd ε E y - Da y) A ∈ G k` using `fun k y hy A => by`. Establish `e : Da y A = ∑ i : Pos n, if cpt ε i then a i (ann i y A) else 0`.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_subtype (p := cpt ε) _ (by simp)]`. Simplify using `only [Da, LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[Pi.sub_apply, bd_apply, e, add_sub_right_comm, ← Finset.sum_sub_distrib]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => ?_) (Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun k _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hrG i _ _ (ann_mem hy _ _)`. Simplify using the standard rewrite rules. Use `split_ifs`. Conclude with `cre_mem (ann_mem (ann_mem hy _) _) _ _`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hom : Da * H + H * Da = ∑ i : I, (lift n (a i.1) : Module.End ℂ (Cn n Z)) * lift n (d i.1) + ∑ i : I, cre i.1 * ann i.1`. Use `homotopy_ring (fun i : I => (lift n (a i.1) : Module.End ℂ (Cn n Z))) (fun i => lift n (d i.1)) (fun i => ann i.1) (fun i => cre i.1) (fun i j => LinearMap.ext fun y => (lift_ann _ _ y).symm) (fun i j => LinearMap.ext fun y => (lift_cre _ _ y).symm) (fun i j => ?_) (fun i j => ?_ …` and prove the remaining obligations. Use `LinearMap.ext fun y => funext fun A => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun T : Module.End ℂ Z => T (y A)) (hda i j)`.
+
+Distinguish the cases in `h : i = j`. Simplify `e` using `[h]`. Simplify `e` using `[h]`. Rewrite using `[ann_cre]`. Simplify using `only [Subtype.ext_iff (a1 := i)]`.
+
+Establish `hHs : ∀ y : Cn n Z, Sup ε B (j + 1) y → Sup ε B (j + 2) (H y)` using `fun y hy A hA => by`. Rewrite `hA` using `[hH]`. Take `⟨i, -, hi⟩` from `exists_ne_zero_of_sum_ne_zero hA`. Take `⟨h1, h2⟩` from `cre_ne (fun h => hi (by rw [h, map_zero]) : cre i.1 y A ≠ 0)`. Take `⟨e1, e2⟩` from `hy _ h2`.
+
+Rewrite `e1` using `[filter_erase_of_not (not_not.2 i.2)]`. Rewrite `e2` using `[filter_erase]`. Use `card_erase_add_one (mem_filter.2 ⟨h1, i.2⟩ : i.1 ∈ A.filter (cpt ε))` as an intermediate fact. Conclude with `⟨e1, by omega⟩`. Establish `hΔ : ∀ y : Cn n Z, Sup ε B (j + 1) y → bd ε E y = 0 → ∀ A, bd ε E (H y) A = N (y A) + ((j + 1 : ℕ) : ℂ) • y A + ((bd ε E (H y) - Da (H y)) A + H (bd ε E y - Da y) A)`.
+
+Introduce `y hy hc A`. Establish `e` using `congrArg (fun T : Module.End ℂ (Cn n Z) => T y A) hom`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.sum_apply, Finset.sum_apply, cre_ann_apply, lift_apply] at e`. Establish `e2 : (∑ i : I, if i.1 ∈ A then y A else 0) = ((j + 1 : ℕ) : ℂ) • y A`. Distinguish the cases in `h : y A = 0`.
+
+Simplify using `[h]`. Rewrite using `[← (hy A h).2, ← Finset.sum_subtype (univ.filter (cpt ε)) (p := cpt ε) (by simp) (fun i => if i ∈ A then y A else 0), ← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Use `congr 2`. Use extensionality with `i`. Simplify using `[and_comm]`.
+
+Establish `e3 : N (y A) = ∑ i : I, a i.1 (d i.1 (y A))` using `by simp only [N, LinearMap.sum_apply]; rfl`. Rewrite using `[e3, ← e2, ← e, hc, zero_sub, map_neg, Pi.sub_apply, Pi.neg_apply]`. Normalize the expressions using the abelian group laws. Establish `main : ∀ k (y : Cn n Z), (∀ A, y A ∈ G k) → Sup ε B (j + 1) y → bd ε E y = 0 → ∃ t : Cn n Z, Sup ε B (j + 2) t ∧ bd ε E t = y`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact fun y hy _ _ => ⟨0, fun _ h => absurd rfl h, by rw [map_zero]; exact (funext hy).symm⟩`. Consider the case `succ k ihk`. Establish `inner : ∀ m (y : Cn n Z), (∀ A, y A ∈ G (k + 1)) → (∀ A, y A ∈ filt (fun i : I => d i.1) m ⊔ G k) → Sup ε B (j + 1) y → bd ε E y = 0 → ∃ t : Cn n Z, Sup ε B (j + 2) t ∧ bd ε E t = y`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => exact fun y _ hy => ihk y fun A => by simpa [filt] using hy A`. Consider the case `succ m ih`. Introduce `y hy1 hy2 hs hc`. Establish `hne : ((m : ℂ) + (j + 1 : ℕ)) ≠ 0` using `by exact_mod_cast (by omega : m + (j + 1) ≠ 0)`.
+
+Establish `hL : ∀ A, (bd ε E (H y) - Da (H y)) A + H (bd ε E y - Da y) A ∈ G k` using `fun A => Submodule.add_mem _ (hρ k _ (hHG k y hy1) A) (hHG k _ (hρ (k + 1) y hy1) A)`. Establish `hw : ∀ A, (bd ε E (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) A = (N (y A) - (m : ℂ) • y A) + ((bd ε E (H y) - Da (H y)) A + H (bd ε E y - Da y) A)` using `fun A => by`. Rewrite using `[Pi.sub_apply, hΔ y hs hc A, Pi.smul_apply, add_smul]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht, hbt⟩` from `ih (bd ε E (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) (fun A => by`.
+
+Rewrite using `[hw]`. Conclude with `Submodule.add_mem _ (Submodule.sub_mem _ (hNG (k + 1) _ (hy1 A)) (Submodule.smul_mem _ _ (hy1 A))) (hGm k (hL A)))`. Use the proof step `(fun A => by`. Rewrite using `[hw]`. Take `⟨u, hu, g, hg, e⟩` from `Submodule.mem_sup.1 (hy2 A)`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.mem_sup_right (hL A))` and prove the remaining obligations. Rewrite using `[← e, map_add, smul_add, add_sub_add_comm]`. Conclude with `Submodule.add_mem_sup (euler_filt (fun i : I => a i.1) _ (fun i j => hF.d_comm _ _) hda m u hu) (Submodule.sub_mem _ (hNG _ _ hg) (Submodule.smul_mem _ _ hg)))`. Use the proof step `(fun A hA => by`. Distinguish the cases in `h : y A = 0`.
+
+Use `sup_bd E (hHs y hs) (A := A) fun h' => hA (by simp [h, h'])` as an intermediate fact. Conclude with `⟨this.1, by omega⟩`. Conclude with `hs A h)`. Use the proof step `(by`. Rewrite using `[map_sub, map_smul, hc, smul_zero, sub_zero]`.
+
+Conclude with `LinearMap.congr_fun (hS n ε Z E hE) _)`. Use `⟨((m : ℂ) + (j + 1 : ℕ))⁻¹ • (H y - t), fun A hA => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : t A = 0`. Conclude with `hHs y hs A fun h' => hA (by simp [h, h'])`. Conclude with `ht A h`.
+
+Rewrite using `[map_smul, map_sub, hbt, sub_sub_cancel, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Conclude with `fun y hy => inner (k + 1) y hy fun A => Submodule.mem_sup_left (hGf _ (hy A))`. Use `choose f hf using hF.exh`. Conclude with `main ((univ.sup fun A => f (x A)) + 1) x (fun A => hF.mono (Finset.le_sup (f := fun A => f (x A)) (mem_univ A)) (hf _)) hx hcyc`.
+-/
 theorem acycAbs_of (hS : BdSq) : AcycAbs := by
   intro n ε Z _ _ E a d Fil hE hF B j x hx hcyc
   let I := {i : Pos n // cpt ε i}

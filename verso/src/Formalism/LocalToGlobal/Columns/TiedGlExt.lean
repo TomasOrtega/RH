@@ -16,6 +16,25 @@ variable {d : ColDat} (a : ColArgs d) (S : GSplit (Pr := d.Pr) d.sp.cm) (hCh : d
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `i v h`. Establish `e1 : (recGLev a S hCh hl hS hH hP u d.R.m le_rfl).fr i v h = glvD (d.R.N d.R.m) v (recUnit S u d.R.m i v h)` using `congrFun (congrFun (congrFun (recGLev_fr a S hCh hl hS hH hP u d.R.m le_rfl) i) v) h`. Establish `e2 : (recGLevP a S hCh hlP hS hH hP' u).fr i v h = 1` using `congrFun (congrFun (congrFun (recGLevP_fr a S hCh hlP hS hH hP' u) i) v) h`. Establish `hD : ∀ x y : Fin (d.R.N d.R.m), (glvD (d.R.N d.R.m) v (recUnit S u d.R.m i v h)).1 x y = if x = y then ((glvU (d.R.N d.R.m) v (recUnit S u d.R.m i v h) x : v.adicCompletionIntegers d.X.F) : v.adicCompletion d.X.F) else 0` using `fun x y => Matrix.diagonal_apply _ x y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `(x : Fin (d.R.N d.R.m)) (b : Fin (d.R.N d.R.m - 1)) (b' : Fin (d.R.N d.R.m)) (hb : (b : ℕ) = b')`. Rewrite using `[e1, e2, hD, Units.val_one, Matrix.mul_one, Matrix.map_apply]`. Establish `hx : CF.iXm (d.colRec a) x b = if x = b' then 1 else 0` using `by show LinearMap.toMatrix' (CF.iXc (d.colRec a)) x b = _`. Rewrite using `[LinearMap.toMatrix'_apply, hiX]`. Distinguish the cases in `hxb : x = b'`.
+
+Substitute `hxb` using the available equality. Establish `hlt : (x : ℕ) < d.R.N d.R.m - 1` using `by rw [← hb]; exact b.2`. Establish `hbx : (⟨(x : ℕ), hlt⟩ : Fin (d.R.N d.R.m - 1)) = b` using `Fin.ext hb.symm`. Rewrite using `[if_pos rfl, dif_pos hlt, hbx, Pi.single_eq_same]`. Rewrite using `[if_neg hxb]`.
+
+Distinguish the cases in `h1 : (x : ℕ) < d.R.N d.R.m - 1`. Rewrite using `[dif_pos h1, Pi.single_eq_of_ne]`. Introduce `h2`. Apply `hxb` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+
+Rewrite using `[← hb, ← h2]`. Rewrite using `[dif_neg h1]`. Rewrite using `[hx]`. Distinguish the cases in `hxb : x = b'`. Rewrite using `[if_pos hxb, if_pos hxb, map_one]`.
+
+Establish `hne : x ≠ lastIdx (d.R.N d.R.m)`. Introduce `hl`. Establish `h3 : (x : ℕ) = d.R.N d.R.m - 1` using `by rw [hl]; rfl`. Establish `h4` using `b.2`. Rewrite `h3` using `[hxb, ← hb]`.
+
+Use linear arithmetic over natural numbers and integers. Unfold `glvU`. Rewrite using `[if_neg hne]`. Both sides reduce to the same expression. Rewrite using `[if_neg hxb, if_neg hxb, map_zero]`.
+
+Introduce `(x : Fin (d.R.N d.R.m)) (l : Fin (d.R.N d.R.m)) (hl : (l : ℕ) + 1 = d.R.N d.R.m)`. Establish `hll : l = lastIdx (d.R.N d.R.m)` using `Fin.ext (by show (l : ℕ) = d.R.N d.R.m - 1; omega)`. Rewrite using `[e1, hD, hll, Pi.single_apply]`. Distinguish the cases in `hx : x = lastIdx (d.R.N d.R.m)`. Rewrite using `[if_pos hx, if_pos hx]`.
+
+Unfold `glvU recUnit`. Rewrite using `[if_pos hx, if_pos rfl]`. Both sides reduce to the same expression. Rewrite using `[if_neg hx, if_neg hx, map_zero, map_zero]`.
+-/
 theorem recFrExt (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurj d) (hP' : PtSurjP d) (u : d.what₂.Word)
     (hiX : ∀ (y : Fin (d.R.N d.R.m - 1) → d.host.E) (x : Fin (d.R.N d.R.m)),
       CF.iXc (d.colRec a) y x = if h : (x : ℕ) < d.R.N d.R.m - 1 then y ⟨x, h⟩ else 0) :

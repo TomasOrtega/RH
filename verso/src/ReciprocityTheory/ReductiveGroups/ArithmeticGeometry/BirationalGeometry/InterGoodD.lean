@@ -17,6 +17,9 @@ def subst {r : ℕ} (lam : Fin r → k) :
     MvPolynomial (Fin (r + 1)) k →ₐ[k] Polynomial (MvPolynomial (Fin r) k) :=
   aeval (substFun lam)
 
+/- English proof (translation)
+Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[substFun]`. Simplify using `only [substFun, Fin.cons_succ]`. Conclude with `Polynomial.natDegree_linear_le`.
+-/
 theorem substFun_natDegree {r : ℕ} (lam : Fin r → k) (j : Fin (r + 1)) :
     (substFun lam j).natDegree ≤ 1 := by
   refine Fin.cases ?_ (fun i => ?_) j
@@ -24,18 +27,29 @@ theorem substFun_natDegree {r : ℕ} (lam : Fin r → k) (j : Fin (r + 1)) :
   · simp only [substFun, Fin.cons_succ]
     exact Polynomial.natDegree_linear_le
 
+/- English proof (translation)
+Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[substFun]`. Simplify using `[substFun, Polynomial.coeff_C]`.
+-/
 theorem substFun_coeff_one {r : ℕ} (lam : Fin r → k) (j : Fin (r + 1)) :
     (substFun lam j).coeff 1 = C ((Fin.cons (1 : k) lam : Fin (r + 1) → k) j) := by
   refine Fin.cases ?_ (fun i => ?_) j
   · simp [substFun]
   · simp [substFun, Polynomial.coeff_C]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_more.goal1 .. | (apply Bl.general_b_fact_more.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_more.goal1 <;> assumption)`.
+-/
 theorem prod_pow_natDegree_coeff {R ι : Type*} [CommRing R] (s : Finset ι) (p : ι → Polynomial R)
     (e : ι → ℕ) (hp : ∀ i, (p i).natDegree ≤ 1) :
     (∏ i ∈ s, p i ^ e i).natDegree ≤ ∑ i ∈ s, e i ∧
       (∏ i ∈ s, p i ^ e i).coeff (∑ i ∈ s, e i) = ∏ i ∈ s, (p i).coeff 1 ^ e i := by
   first | exact Bl.general_b_fact_more.goal1 .. | (apply Bl.general_b_fact_more.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_more.goal1 <;> assumption)
 
+/- English proof (translation)
+Establish `h` using `prod_pow_natDegree_coeff m.support (substFun lam) m (substFun_natDegree lam)`. Establish `hdeg : Finsupp.degree m = ∑ i ∈ m.support, m i` using `rfl`. Simplify using `only [subst, aeval_monomial, Finsupp.prod, eval_monomial]`. Rewrite using `[hdeg, Polynomial.algebraMap_apply, algebraMap_eq]`. Use `⟨(Polynomial.natDegree_C_mul_le _ _).trans h.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.coeff_C_mul, h.2]`. Simplify using `only [substFun_coeff_one, ← map_pow, ← map_prod, ← C_mul]`.
+-/
 theorem subst_monomial {r : ℕ} (lam : Fin r → k) (m : Fin (r + 1) →₀ ℕ) (a : k) :
     (subst lam (monomial m a)).natDegree ≤ Finsupp.degree m ∧
       (subst lam (monomial m a)).coeff (Finsupp.degree m) =
@@ -48,12 +62,20 @@ theorem subst_monomial {r : ℕ} (lam : Fin r → k) (m : Fin (r + 1) →₀ ℕ
   rw [Polynomial.coeff_C_mul, h.2]
   simp only [substFun_coeff_one, ← map_pow, ← map_prod, ← C_mul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [F.as_sum, map_sum]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_` and prove the remaining obligations. Conclude with `(subst_monomial lam m _).1.trans (le_totalDegree hm)`.
+-/
 theorem subst_natDegree_le {r : ℕ} (lam : Fin r → k) (F : MvPolynomial (Fin (r + 1)) k) :
     (subst lam F).natDegree ≤ F.totalDegree := by
   conv_lhs => rw [F.as_sum, map_sum]
   refine Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_
   exact (subst_monomial lam m _).1.trans (le_totalDegree hm)
 
+/- English proof (translation)
+Rewrite using `[show subst lam F = ∑ v ∈ F.support, subst lam (monomial v (coeff v F)) by`. Rewrite using `[← map_sum, ← F.as_sum]]`. Rewrite using `[homogeneousComponent_apply, map_sum, map_sum, Polynomial.finsetSum_coeff, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hle : Finsupp.degree m ≤ F.totalDegree` using `le_totalDegree hm`.
+
+Use `split_ifs with hd`. Rewrite using `[← hd]`. Conclude with `(subst_monomial lam m _).2`. Establish `hlt : Finsupp.degree m < F.totalDegree` using `lt_of_le_of_ne hle hd`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt ((subst_monomial lam m _).1.trans_lt hlt)`.
+-/
 theorem subst_coeff_totalDegree {r : ℕ} (lam : Fin r → k) (F : MvPolynomial (Fin (r + 1)) k) :
     (subst lam F).coeff F.totalDegree =
       C (eval (Fin.cons (1 : k) lam) (homogeneousComponent F.totalDegree F)) := by
@@ -69,6 +91,9 @@ theorem subst_coeff_totalDegree {r : ℕ} (lam : Fin r → k) (F : MvPolynomial 
   · have hlt : Finsupp.degree m < F.totalDegree := lt_of_le_of_ne hle hd
     exact Polynomial.coeff_eq_zero_of_natDegree_lt ((subst_monomial lam m _).1.trans_lt hlt)
 
+/- English proof (translation)
+Take `⟨m, hm, hmax⟩` from `Finset.exists_mem_eq_sup F.support (support_nonempty.mpr hF) (fun s => s.sum fun _ e => e)`. Introduce `h0`. Use `congrArg (coeff m) h0` as an intermediate fact. Rewrite `this` using `[coeff_homogeneousComponent, if_pos (by rw [totalDegree, hmax]; rfl), coeff_zero]`. Conclude with `(mem_support_iff.mp hm) this`.
+-/
 theorem homogeneousComponent_totalDegree_ne_zero {σ : Type*} {F : MvPolynomial σ k} (hF : F ≠ 0) :
     homogeneousComponent F.totalDegree F ≠ 0 := by
   obtain ⟨m, hm, hmax⟩ := Finset.exists_mem_eq_sup F.support (support_nonempty.mpr hF)
@@ -78,11 +103,23 @@ theorem homogeneousComponent_totalDegree_ne_zero {σ : Type*} {F : MvPolynomial 
   rw [coeff_homogeneousComponent, if_pos (by rw [totalDegree, hmax]; rfl), coeff_zero] at this
   exact (mem_support_iff.mp hm) this
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.FirstBlockLemmaA.goal1 .. | (apply Bl.FirstBlockLemmaA.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaA.goal1 <;> assumption)`.
+-/
 theorem eval_smul_of_degree {σ : Type*} [Fintype σ] (H : MvPolynomial σ k) (d : ℕ)
     (hH : ∀ m ∈ H.support, Finsupp.degree m = d) (c : k) (v : σ → k) :
     eval (c • v) H = c ^ d * eval v H := by
   first | exact Bl.FirstBlockLemmaA.goal1 .. | (apply Bl.FirstBlockLemmaA.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaA.goal1 <;> assumption)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `h0` to reduce the goal to its premises. Establish `hX : H * X 0 = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+
+Introduce `y`. Rewrite using `[map_mul, eval_X, map_zero]`. Distinguish the cases in `hy : y 0 = 0`. Rewrite using `[hy, mul_zero]`. Establish `hyeq : y = y 0 • (Fin.cons (1 : k) (fun i => (y 0)⁻¹ * y i.succ) : Fin (r + 1) → k)`.
+
+Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[hy]`. Rewrite using `[hyeq, eval_smul_of_degree H d hH, hall, mul_zero, zero_mul]`.
+
+Break down `mul_eq_zero.mp hX with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (X_ne_zero 0)`.
+-/
 theorem exists_eval_cons_one_ne_zero [Infinite k] {r : ℕ} (H : MvPolynomial (Fin (r + 1)) k)
     (d : ℕ) (hH : ∀ m ∈ H.support, Finsupp.degree m = d) (h0 : H ≠ 0) :
     ∃ lam : Fin r → k, eval (Fin.cons (1 : k) lam) H ≠ 0 := by
@@ -105,6 +142,13 @@ theorem exists_eval_cons_one_ne_zero [Infinite k] {r : ℕ} (H : MvPolynomial (F
   · exact h
   · exact absurd h (X_ne_zero 0)
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[subst, Polynomial.eval₂_C, Polynomial.algebraMap_apply]`. Consider the case `add p q hp hq => rw [map_add, Polynomial.eval₂_add, hp, hq, map_add]`. Consider the case `mul_X p j hp`.
+
+Rewrite using `[map_mul, Polynomial.eval₂_mul, hp, map_mul]`. Use `congr 1`. Simplify using `only [subst, aeval_X]`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[substFun]`.
+
+Simplify using `[substFun, Algebra.smul_def]`.
+-/
 theorem eval₂_subst {R : Type*} [CommRing R] [Algebra k R] {r : ℕ} (lam : Fin r → k)
     (ℓ : Fin (r + 1) → R) (F : MvPolynomial (Fin (r + 1)) k) :
     Polynomial.eval₂ ((aeval (fun i => ℓ i.succ - lam i • ℓ 0) : MvPolynomial (Fin r) k →ₐ[k] R) :
@@ -126,6 +170,13 @@ def IntOver (k : Type*) [Field k] {R : Type*} [CommRing R] [Algebra k R] {r : �
     (x : R) : Prop :=
   ((aeval ℓ : MvPolynomial (Fin r) k →ₐ[k] R) : MvPolynomial (Fin r) k →+* R).IsIntegralElem x
 
+/- English proof (translation)
+Use `set d := F.totalDegree`. Establish `hsupp : ∀ m ∈ (homogeneousComponent d F).support, Finsupp.degree m = d`. Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_homogeneousComponent]`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hm (if_neg hne)`. Take `⟨lam, hlam⟩` from `exists_eval_cons_one_ne_zero _ d hsupp (homogeneousComponent_totalDegree_ne_zero hF)`. Use `set c := eval (Fin.cons (1 : k) lam) (homogeneousComponent d F)`. Use `⟨lam, Polynomial.C (C c⁻¹) * subst lam F, ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.monic_of_natDegree_le_of_coeff_eq_one d ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(Polynomial.natDegree_C_mul_le _ _).trans (subst_natDegree_le lam F)`. Rewrite using `[Polynomial.coeff_C_mul, subst_coeff_totalDegree, ← C_mul, inv_mul_cancel₀ hlam, C_1]`. Rewrite using `[Polynomial.eval₂_mul, eval₂_subst, h, mul_zero]`.
+-/
 theorem exists_isIntegralElem_linear [Infinite k] {R : Type*} [CommRing R] [Algebra k R] {r : ℕ}
     (ℓ : Fin (r + 1) → R) (F : MvPolynomial (Fin (r + 1)) k) (hF : F ≠ 0) (h : aeval ℓ F = 0) :
     ∃ lam : Fin r → k, IntOver k (fun i => ℓ i.succ - lam i • ℓ 0) (ℓ 0) := by

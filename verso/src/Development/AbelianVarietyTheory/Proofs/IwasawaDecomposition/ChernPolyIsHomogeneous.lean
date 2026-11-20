@@ -36,6 +36,11 @@ def gradedSubring (σ : Type) : Subring (Polynomial (MvPolynomial σ ℂ)) where
     rw [Polynomial.coeff_neg]
     exact (hp k).neg
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[Polynomial.coeff_C_mul_X]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `ha`.
+
+Conclude with `isHomogeneous_zero _ _ _`.
+-/
 theorem C_mul_X_mem {σ : Type} {a : MvPolynomial σ ℂ} (ha : a.IsHomogeneous 1) :
     Polynomial.C a * Polynomial.X ∈ gradedSubring σ := by
   intro k
@@ -44,6 +49,13 @@ theorem C_mul_X_mem {σ : Type} {a : MvPolynomial σ ℂ} (ha : a.IsHomogeneous 
   · subst h; exact ha
   · exact isHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Set `N : Matrix r r (gradedSubring σ)` to `Matrix.of fun i j => ⟨(1 : Matrix r r (Polynomial (MvPolynomial σ ℂ))) i j - Polynomial.X * Polynomial.C (M i j), by`. Use `Subring.sub_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
+
+Conclude with `Subring.zero_mem _`. Rewrite using `[mul_comm]`. Conclude with `C_mul_X_mem (hM i j)⟩`. Establish `: M.charpolyRev = (gradedSubring σ).subtype N.det`. Rewrite using `[RingHom.map_det, Matrix.charpolyRev]`.
+
+Use `congr 1`. Rewrite using `[this]`. Conclude with `Subtype.property _`.
+-/
 theorem charpolyRev_mem {σ r : Type} [Fintype r] [DecidableEq r] (M : Matrix r r (MvPolynomial σ ℂ))
     (hM : ∀ i j, (M i j).IsHomogeneous 1) : M.charpolyRev ∈ gradedSubring σ := by
   let N : Matrix r r (gradedSubring σ) := Matrix.of fun i j =>
@@ -65,6 +77,9 @@ namespace GlobalTheory.ChernCoord
 
 variable {n : ℕ} {r : Type} [Fintype r] [DecidableEq r]
 
+/- English proof (translation)
+Use `charpolyRev_mem (-curvPoly G v) (fun i j => ?_) k` and prove the remaining obligations. Simplify using `only [Matrix.neg_apply, curvPoly, Matrix.of_apply]`. Use `IsHomogeneous.neg (IsHomogeneous.sum _ _ _ fun a _ => IsHomogeneous.sum _ _ _ fun b _ => ?_)` and prove the remaining obligations. Conclude with `isHomogeneous_C_mul_X _ _`.
+-/
 theorem chernPoly_isHomogeneous (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix r r ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ) :
     (chernPoly G v k).IsHomogeneous k := by
   refine charpolyRev_mem (-curvPoly G v) (fun i j => ?_) k

@@ -7,10 +7,19 @@ namespace Formalism.MainNotions.DIV.Inh
 
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, 0, 0, 0, 0, 0, 0⟩⟩`.
+-/
 theorem nonempty_kappa_hypothesis : Nonempty WeightAlgebra.KHyp := ⟨⟨0, 0, 0, 0, 0, 0, 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, 0, 0, 0, 0, 0, 0, 0, 0⟩⟩`.
+-/
 theorem nonempty_kappa_admissible : Nonempty WeightAlgebra.KAdm := ⟨⟨0, 0, 0, 0, 0, 0, 0, 0, 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨1, 1, 1, 1⟩⟩`.
+-/
 theorem nonempty_scalars (D : D7) (B : WeightFamilies.Prov D) : Nonempty (WeightAlgebra.Scal B) := ⟨⟨1, 1, 1, 1⟩⟩
 
 def HasDat {D : D7} (P : ModuliIntegralCharts.Prov D) (j : ℕ) : Prop :=
@@ -47,17 +56,33 @@ def toyPjOfCuspZero {D : D7} (B : WeightFamilies.Prov D) (P : ModuliIntegralChar
   thAll := fun _ => ⊥
   shortTh := fun _ => ⊥
 
+/- English proof (translation)
+Take `⟨dat, h1, h2⟩` from `hP`. Conclude with `⟨toyPjOfCuspZero B P j hB dat h1 h2⟩`.
+-/
 theorem nonempty_piece_of_cusp_zero (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (hB : CuspZero B j) (hP : HasDat P j) :
     Nonempty (WeightAlgebra.PJ D B P j) := by
   obtain ⟨dat, h1, h2⟩ := hP
   exact ⟨toyPjOfCuspZero B P j hB dat h1 h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.dat, X.dat_rk, X.dat_jj⟩`.
+-/
 theorem HasDat_of_PJ {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) : HasDat P j :=
   ⟨X.dat, X.dat_rk, X.dat_jj⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun X => h.elim X.dat⟩`.
+-/
 theorem isEmpty_piece_of_no_datum (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (h : IsEmpty P.Dat) :
     IsEmpty (WeightAlgebra.PJ D B P j) := ⟨fun X => h.elim X.dat⟩
 
+/- English proof (translation)
+Rewrite using `[X.Mlat_eq]`. Introduce `la y`. Take `⟨H, hH⟩` from `X.inc_mul w w F F`. Establish `h0 : H = 0` using `Subsingleton.elim _ _`. Establish `h1` using `X.vAt_mul la y w w F F`.
+
+Rewrite `h1` using `[hH, h0, map_zero, X.vAt_zero]`. Establish `ha : X.vAt la y (X.inc w F) = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `EReal.add_ne_top hne hne h1.symm`. Rewrite using `[ha]`.
+
+Conclude with `le_top`.
+-/
 theorem PJ_forces_Mlat {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (w : WeightFamilies.Wt D j)
     (h : Subsingleton (B.Cusp j (WeightAlgebra.wadd w w))) (F : B.Cusp j w) : F ∈ B.Mlat j w := by
   rw [X.Mlat_eq]
@@ -100,6 +125,13 @@ def provBad (D : D7) (K : Type) [Field K] [NumberField K] (e : 𝓞 K ≃+* D.wh
   FJt := fun _ _ _ _ => PUnit
   sg := fun _ _ _ _ => 0
 
+/- English proof (translation)
+Take `⟨K, _, _, ⟨e⟩⟩` from `h`. Use `⟨provBad D K e, fun P j => ⟨fun X => ?_⟩⟩` and prove the remaining obligations. Set `w : WeightFamilies.Wt D j` to `WeightAlgebra.wscalar D j 2 ⟨1, rfl⟩`. Establish `hs : Subsingleton ((provBad D K e).Cusp j (WeightAlgebra.wadd w w))`. Express the relevant statement in the definitionally equal form `Subsingleton ((if (2 + 2 : ℕ) = 2 then ⊤ else ⊥ : Submodule K K) : Type)`.
+
+Rewrite using `[if_neg (by norm_num)]`. Use `infer_instance`. Set `F : (provBad D K e).Cusp j w` to `(⟨(1 : K), by rw [if_pos rfl]; trivial⟩ : ((if (2 : ℕ) = 2 then ⊤ else ⊥ : Submodule K K) : Type))`. Establish `hF : F ∈ (provBad D K e).Mlat j w` using `PJ_forces_Mlat X w hs F`. Establish `hF0 : F = 0` using `(Submodule.mem_bot (𝓞 (provBad D K e).KO)).1 hF`.
+
+Establish `: (1 : K) = 0` using `congrArg (fun z : ((if (2 : ℕ) = 2 then ⊤ else ⊥ : Submodule K K) : Type) => (z : K)) hF0`. Conclude with `one_ne_zero this`.
+-/
 theorem exists_provision_empty_pieces (D : D7) (h : OsRingOfIntegers D) :
     ∃ B : WeightFamilies.Prov D, ∀ (P : ModuliIntegralCharts.Prov D) (j : ℕ), IsEmpty (WeightAlgebra.PJ D B P j) := by
   obtain ⟨K, _, _, ⟨e⟩⟩ := h
@@ -120,6 +152,11 @@ theorem exists_provision_empty_pieces (D : D7) (h : OsRingOfIntegers D) :
 def HasFullLocalData (D : D7) : Prop :=
   ∃ P : ModuliIntegralCharts.Prov D, ∀ r j, 1 ≤ j → j + 1 ≤ r → ∃ w : P.Dat, P.rk w = r ∧ P.jj w = j
 
+/- English proof (translation)
+Establish `hk : 1 ≤ D.R.k`. Establish `h2` using `D.R.f_le_k`. Establish `h3 : 0 < D.R.ord` using `D.R.ord_pos`. Establish `h4 : D.R.f = 2 * D.R.ord` using `rfl`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hj : j < D.R.m`. Take `⟨w, hw1, hw2⟩` from `hP D.R.r (D.R.sigW j).1 (by simp only [Ranks.sigW]; omega) (by simp only [Ranks.sigW, Ranks.r]; omega)`. Conclude with `⟨w, fun _ => hw1, fun _ => hw2⟩`. Take `⟨w, _, _⟩` from `hP 2 1 le_rfl le_rfl`. Conclude with `⟨w, fun h => absurd h hj, fun h => absurd h hj⟩`.
+-/
 theorem HasDat_of_full {D : D7} (P : ModuliIntegralCharts.Prov D)
     (hP : ∀ r j, 1 ≤ j → j + 1 ≤ r → ∃ w : P.Dat, P.rk w = r ∧ P.jj w = j) (j : ℕ) (h1 : 1 ≤ j) : HasDat P j := by
   have hk : 1 ≤ D.R.k := by
@@ -134,10 +171,16 @@ theorem HasDat_of_full {D : D7} (P : ModuliIntegralCharts.Prov D)
   · obtain ⟨w, _, _⟩ := hP 2 1 le_rfl le_rfl
     exact ⟨w, fun h => absurd h hj, fun h => absurd h hj⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun j h1 h2 => (nonempty_piece_of_cusp_zero D B P j (hB j) (hP j h1 h2)).some⟩`.
+-/
 theorem nonempty_provision_of_cusp_zero (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (hB : ∀ j, CuspZero B j)
     (hP : ∀ j, 1 ≤ j → j ≤ D.R.m → HasDat P j) : Nonempty (WeightAlgebra.Prov D B P) :=
   ⟨fun j h1 h2 => (nonempty_piece_of_cusp_zero D B P j (hB j) (hP j h1 h2)).some⟩
 
+/- English proof (translation)
+Take `⟨K, _, _, ⟨e⟩⟩` from `hO`. Take `⟨P, hP⟩` from `h66`. Conclude with `⟨zeroCuspModel D K e, P, nonempty_provision_of_cusp_zero D _ P (fun j w => zero_cusp_model_subsingleton D K e j w) (fun j h1 _ => HasDat_of_full P hP j h1)⟩`.
+-/
 theorem nonempty_provision (D : D7) (hO : OsRingOfIntegers D) (h66 : HasFullLocalData D) :
     ∃ (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D), Nonempty (WeightAlgebra.Prov D B P) := by
   obtain ⟨K, _, _, ⟨e⟩⟩ := hO

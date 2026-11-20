@@ -7,6 +7,13 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 
 namespace GlobalTheory.AutGrowth
 
+/- English proof (translation)
+Introduce `E _ _ _ a ν _ α hα φ hφ l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨α, hα, by simpa using hφ.symm⟩`. Consider the case `cons X l ih`. Take `⟨β, hβ, e⟩` from `ih`.
+
+Use `⟨dens X β, isTest_dens X hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply]`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `lieD X ((l.map (lie E a)).prod φ).1 g = _`. Rewrite using `[e]`.
+
+Conclude with `lieD_smoothing ν hβ φ.2 X g`.
+-/
 theorem word_eq_smoothing_of_reproduced : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (α : Lie E a → ℂ), IsTest (invSet E a) α → ∀ φ : Sm E a,
     smoothing ν α φ.1 = φ.1 → ∀ l : List (Lie E a), ∃ β : Lie E a → ℂ, IsTest (invSet E a) β ∧

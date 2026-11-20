@@ -3,6 +3,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.SwapCoeff
 
+/- English proof (translation)
+Rewrite using `[rename_eq_subst]`. Unfold `swap at2`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with i | i <;> rfl`.
+-/
 theorem swap_eq_rename (R : Type) [CommRing R] (d : ℕ) (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     swap c = rename (Equiv.sumComm (Fin d) (Fin d)) c := by
   rw [rename_eq_subst]
@@ -11,6 +14,13 @@ theorem swap_eq_rename (R : Type) [CommRing R] (d : ℕ) (c : MvPowerSeries (Fin
   funext s
   rcases s with i | i <;> rfl
 
+/- English proof (translation)
+Introduce `R _ d c a e`. Establish `h` using `coeff_embDomain_rename (Equiv.sumComm (Fin d) (Fin d)).toEmbedding c (Finsupp.sumElim e a)`. Establish `hinj : Function.Injective (Equiv.sumComm (Fin d) (Fin d))` using `(Equiv.sumComm _ _).injective`. Establish `hE : Finsupp.embDomain (Equiv.sumComm (Fin d) (Fin d)).toEmbedding (Finsupp.sumElim e a) = Finsupp.sumElim a e`. Rewrite using `[Finsupp.embDomain_eq_mapDomain]`.
+
+Use extensionality with `x`. Break down `x with i | i` into its components or cases. Use `Finsupp.mapDomain_apply hinj (Finsupp.sumElim e a) (Sum.inr i)` as an intermediate fact. Simplify using `using this`. Use `Finsupp.mapDomain_apply hinj (Finsupp.sumElim e a) (Sum.inl i)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite `h` using `[hE]`. Rewrite using `[swap_eq_rename]`. Conclude with `h`.
+-/
 theorem coeff_swap : ∀ (R : Type) [CommRing R] (d : ℕ) (c : MvPowerSeries (Fin d ⊕ Fin d) R) (a e : Fin d →₀ ℕ), coeff (Finsupp.sumElim a e) (swap c) = coeff (Finsupp.sumElim e a) c := by
   intro R _ d c a e
   have h := coeff_embDomain_rename (Equiv.sumComm (Fin d) (Fin d)).toEmbedding c (Finsupp.sumElim e a)

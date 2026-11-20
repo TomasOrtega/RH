@@ -41,15 +41,27 @@ def expBall (P Q : ℕ) (r : ℝ) : Set (UpqT P Q) :=
   {g | ∃ X ∈ ballU P Q r, UpqT.mat g =
     NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> simp [sg]`.
+-/
 theorem sg_eq (i : Fin P ⊕ Fin Q) : sg i = 1 ∨ sg i = -1 := by
   rcases i with i | i <;> simp [sg]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases sg_eq i with h | h <;> rw [h] <;> norm_num`.
+-/
 theorem sg_ne_zero (i : Fin P ⊕ Fin Q) : sg i ≠ 0 := by
   rcases sg_eq i with h | h <;> rw [h] <;> norm_num
 
+/- English proof (translation)
+Simplify using `[qf, sg, Fintype.sum_sum_type, sub_eq_add_neg]`.
+-/
 theorem qf_eq_sum (x : Sp P Q) : qf x = ∑ i, sg i * Complex.normSq (x i) := by
   simp [qf, sg, Fintype.sum_sum_type, sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[qf_eq_sum, Finset.sum_eq_single (e none)]`. Simplify using `[baseVec]`. Introduce `b _ hb`. Simplify using `[baseVec, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem qf_baseVec (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
     qf (baseVec e) = sg (e none) := by
   rw [qf_eq_sum, Finset.sum_eq_single (e none)]
@@ -57,43 +69,86 @@ theorem qf_baseVec (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
   · intro b _ hb; simp [baseVec, hb]
   · simp
 
+/- English proof (translation)
+Simplify using `using (Fintype.card_congr e).symm`.
+-/
 theorem card_eq (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) : P + Q = P' + Q' + 1 := by
   simpa using (Fintype.card_congr e).symm
 
+/- English proof (translation)
+Simplify using `[polarPt]`.
+-/
 theorem polarPt_none (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (t : ℝ × Sp P' Q') :
     polarPt e t (e none) =
       (Real.sqrt (1 - sg (e none) * qf t.2) : ℂ) * Complex.exp ((t.1 : ℂ) * Complex.I) := by
   simp [polarPt]
 
+/- English proof (translation)
+Simplify using `[polarPt]`.
+-/
 theorem polarPt_some (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (t : ℝ × Sp P' Q')
     (i : Fin P' ⊕ Fin Q') : polarPt e t (e (some i)) = t.2 i := by
   simp [polarPt]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem weightAbsEntrySum_nonneg (Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) : 0 ≤ l1 Z :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (continuous_id.matrix_elem i j).norm`.
+-/
 theorem continuous_matrixEntryAbsSum : Continuous (l1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ → ℝ) :=
   continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ =>
     (continuous_id.matrix_elem i j).norm
 
+/- English proof (translation)
+The claim follows from `continuous_matrixEntryAbsSum.comp ((Units.continuous_val.comp continuous_subtype_val : Continuous UpqT.mat).sub continuous_const)`.
+-/
 theorem continuous_gauge : Continuous (gauge : UpqT P Q → ℝ) :=
   continuous_matrixEntryAbsSum.comp
     ((Units.continuous_val.comp continuous_subtype_val : Continuous UpqT.mat).sub continuous_const)
 
+/- English proof (translation)
+Unfold `ptGauge`. Check the signs of the components of the expression.
+-/
 theorem ptGauge_nonneg (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (y : Sp P Q) :
     0 ≤ ptGauge e y := by
   unfold ptGauge; positivity
 
+/- English proof (translation)
+Unfold `ptGauge`. Use `fun_prop`.
+-/
 theorem continuous_ptGauge (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) :
     Continuous (ptGauge e) := by
   unfold ptGauge; fun_prop
 
+/- English proof (translation)
+Unfold `tanGauge`. Check the signs of the components of the expression.
+-/
 theorem tanGauge_nonneg (t : ℝ × Sp P' Q') : 0 ≤ tanGauge t := by
   unfold tanGauge; positivity
 
+/- English proof (translation)
+Unfold `tanGauge`. Use `fun_prop`.
+-/
 theorem continuous_tanGauge : Continuous (tanGauge : ℝ × Sp P' Q' → ℝ) := by
   unfold tanGauge; fun_prop
 
+/- English proof (translation)
+Establish `key : ∀ t : ℝ, 0 < t → Tendsto (fun r => F (t * r) / V r) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (t ^ n) * c))`. Introduce `t ht`. Establish `h1 : Tendsto (fun r : ℝ => t * r) (𝓝[>] 0) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun r : ℝ => t * r) (𝓝 0) (𝓝 (t * 0))` using `(continuous_const.mul continuous_id).tendsto 0`.
+
+Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with r hr using mul_pos ht hr`. Establish `h2` using `ENNReal.Tendsto.const_mul (a := ENNReal.ofReal (t ^ n)) (hF.comp h1) (Or.inr ENNReal.ofReal_ne_top)`. Use `h2.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `h0 : ENNReal.ofReal (t ^ n) ≠ 0` using `by simpa using pow_pos ht n`. Simplify using `only [Function.comp, hV t r ht hr]`. Rewrite using `[← mul_div_assoc, ENNReal.mul_div_mul_left _ _ h0 ENNReal.ofReal_ne_top]`. Establish `lim : ∀ u : ℝ → ℝ, ContinuousAt u 1 → u 1 = 1 → Tendsto (fun t : ℝ => ENNReal.ofReal (u t ^ n) * c) (𝓝[>] 1) (𝓝 c)`.
+
+Introduce `u hu h1`. Establish `h3 : Tendsto (fun t : ℝ => ENNReal.ofReal (u t ^ n)) (𝓝 1) (𝓝 1)`. Use `(ENNReal.continuous_ofReal.continuousAt.comp (hu.pow n)).tendsto` as an intermediate fact. Simplify using `only [Function.comp, Pi.pow_apply, h1, one_pow, ENNReal.ofReal_one] at this`. Conclude with `this`.
+
+Use `ENNReal.Tendsto.mul_const (b := c) h3 (Or.inr hc)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨t, h1, h2⟩` from `(((lim (fun t => t⁻¹) (continuousAt_inv₀ one_ne_zero) inv_one).eventually (lt_mem_nhds ha)).and self_mem_nhdsWithin).exists`.
+
+Establish `ht : (1 : ℝ) < t` using `h2`. Use `filter_upwards [(key t⁻¹ (inv_pos.2 (by linarith))).eventually (lt_mem_nhds h1), hA t ht] with r h3 h4 using h3.trans_le (ENNReal.div_le_div_right h4.1 _)`. Take `⟨t, h1, h2⟩` from `(((lim (fun t => t) continuousAt_id rfl).eventually (gt_mem_nhds ha)).and self_mem_nhdsWithin).exists`. Establish `ht : (1 : ℝ) < t` using `h2`. Use `filter_upwards [(key t (by linarith)).eventually (gt_mem_nhds h1), hA t ht] with r h3 h4 using (ENNReal.div_le_div_right h4.2 _).trans_lt h3`.
+-/
 theorem tendsto_div_of_squeeze {F V A : ℝ → ℝ≥0∞} {n : ℕ} {c : ℝ≥0∞} (hc : c ≠ ⊤)
     (hV : ∀ t r : ℝ, 0 < t → 0 < r → V (t * r) = ENNReal.ofReal (t ^ n) * V r)
     (hF : Tendsto (fun r => F r / V r) (𝓝[>] 0) (𝓝 c))

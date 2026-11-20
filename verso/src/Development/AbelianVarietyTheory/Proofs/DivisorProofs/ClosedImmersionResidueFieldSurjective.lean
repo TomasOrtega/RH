@@ -3,6 +3,11 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : Function.Surjective (i.stalkMap x).hom` using `i.stalkMap_surjective x`. Establish `h2 : Function.Surjective (X.residue x).hom` using `X.residue_surjective x`. Establish `h3 : Function.Surjective (Y.residue (i x) ≫ i.residueFieldMap x).hom`. Rewrite using `[Scheme.residue_residueFieldMap]`. Conclude with `h2.comp h1`.
+
+Conclude with `Function.Surjective.of_comp (g := (Y.residue (i x)).hom) h3`.
+-/
 theorem residueFieldMap_surjective_of_isClosedImmersion
     (X Y : AlgebraicGeometry.Scheme.{0}) (i : X ⟶ Y) [AlgebraicGeometry.IsClosedImmersion i]
     (x : X) : Function.Surjective (i.residueFieldMap x).hom := by

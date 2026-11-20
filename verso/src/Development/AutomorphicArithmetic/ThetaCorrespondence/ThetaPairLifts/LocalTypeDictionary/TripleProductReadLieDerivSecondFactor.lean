@@ -17,6 +17,15 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.TripleAssembly.ReadDerB
+/- English proof (translation)
+Introduce `hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM τ Y hY γ hγ hγt Φ hΦ Φ' _ hDer`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `h.ψ ▸ hM.triple.base.std`. Establish `hG' : Γ.M'.IsGood ψ` using `h.ψ ▸ hM.triple.geo.hM'`. Establish `hW : Γ.M'.IsWeil ψ Xc.α (Xc.α / Xc.β) om'` using `h.ψ ▸ hM.triple.weil'`. Take `⟨Ψ, hΨ, rfl⟩` from `(_root_.GlobalTheory.T.triple_invariant_theta_surjective hHowe hPr D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTr hTr' R Rf hM).2 Φ hΦ`.
+
+Establish `hS` using `GlobalTheory.TripleAssembly.darbAlg_le_schA D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb hM.triple.geo.hM' hΨ`. Take `⟨m, f, φ, hf, rfl⟩` from `exists_sum_pure Γ.M' Bs.ψ Bs.emb hΨ`. Take `⟨δ, hδ⟩` from `_root_.GlobalTheory.T.twist_lie_derivative_model hPr Bs Γ Xc om om' hM.triple γ hγ`. Use `⟨m, f, fun i => δ (f i), φ, fun i => ⟨(hf i).1, (hf i).2.1, (hf i).2.2, (hδ _ (hf i).1).2⟩, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨δ (f i), φ i, (hδ _ (hf i).1).1, (hf i).2.1, (hf i).2.2, rfl⟩`.
+
+Use function extensionality and compare the values at `x`. Establish `h1` using `_root_.GlobalTheory.T.theta_sum_differentiable_along_line hPr Γ.M' ψ Xc.α (Xc.α / Xc.β) om' hM.triple.base.cm hstd hG' hW γ hγ m f (fun i => δ (f i)) φ (fun i => (hf i).2) (fun i => (hδ _ (hf i).1).2) (GlobalTheory.TripleRead.ptO (sgn false W₁).gram e x)`. Establish `hval : ∀ t : ℝ, GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho ψ (GlobalTheory.TripleRead.ptO (sgn false W₁).gram e x) (om' (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)))) = ωB (1, oneP θ X τ Y t) (GlobalTheory …`. Introduce `t`. Establish `h2` using `congrFun (hTr' _ hS 1 (oneP θ X τ Y t)) x`.
+
+Rewrite `h2` using `[GlobalTheory.LocWeilAct.conjU_one', ← hγt t]`. Conclude with `h2`. Simplify using `only [hval] at h1`. Conclude with `(hDer x).unique h1`.
+-/
 theorem tripleProduct_read_lieDeriv_second_factor : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -76,6 +85,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor | exact _root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor | (intros; apply _root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDe …`.
+-/
 theorem _root_.GlobalTheory.T.tripleProduct_lieDeriv_readoff : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

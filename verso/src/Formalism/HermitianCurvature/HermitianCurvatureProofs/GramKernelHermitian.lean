@@ -5,11 +5,17 @@ open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P.A6x8
 
+/- English proof (translation)
+Use `⟨by rw [← hφ.1]; simp, fun v' v hv => (hφ.2 v v' (by rw [← hv]; simp)).symm⟩` and prove the remaining obligations.
+-/
 theorem iso_symm {K : Type} [CommRing K] (R : Subring K) {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (Z' : Matrix (Fin n') (Fin n') K) (φ : coker R Z ≃ₗ[R] coker R Z') (hφ : φ ∈ isoZZ R Z Z') :
     φ.symm ∈ isoZZ R Z' Z := by
   refine ⟨by rw [← hφ.1]; simp, fun v' v hv => (hφ.2 v v' (by rw [← hv]; simp)).symm⟩
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr { toFun := fun φ => ⟨φ.1.symm, iso_symm R Z' Z φ.1 φ.2⟩ invFun := fun φ => ⟨φ.1.symm, iso_symm R Z Z' φ.1 φ.2⟩ left_inv := by intro φ; ext; simp right_inv := by intro φ; ext; simp }`.
+-/
 theorem iso_card {K : Type} [CommRing K] (R : Subring K) {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (Z' : Matrix (Fin n') (Fin n') K) : Nat.card (isoZZ R Z' Z) = Nat.card (isoZZ R Z Z') :=
   Nat.card_congr
@@ -18,6 +24,15 @@ theorem iso_card {K : Type} [CommRing K] (R : Subring K) {n n' : ℕ} (Z : Matri
       left_inv := by intro φ; ext; simp
       right_inv := by intro φ; ext; simp }
 
+/- English proof (translation)
+Introduce `K _ R ψ w w'`. Unfold `Kp`. Establish `h` using `AddMonoidHom.map_finsum_of_injective (starRingEnd ℂ).toAddMonoidHom (starRingEnd ℂ).injective (pairTerm R ψ w w')`. Establish `h' : conj (∑ᶠ q, pairTerm R ψ w w' q) = ∑ᶠ q, conj (pairTerm R ψ w w' q)` using `h`. Rewrite using `[h', ← finsum_comp_equiv (Equiv.prodComm (Cos R w) (Cos R w'))]`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Break down `q with ⟨q1, q2⟩` into its components or cases. Use `show pairTerm R ψ w' w (q2, q1) = conj (pairTerm R ψ w w' (q1, q2))`. Establish `hc` using `iso_card R (orbZ w (rep R q1)) (orbZ w' (rep R q2))`. Unfold `pairTerm`.
+
+Distinguish the cases in `h1 : IsInt R (orbZ w (rep R q1)) ∧ IsInt R (orbZ w' (rep R q2))`. Rewrite using `[if_pos h1, if_pos h1.symm, hc]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.symm)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem kpHerm : KpHerm := by
   intro K _ R ψ w w'
   unfold Kp
@@ -38,6 +53,11 @@ section Top
 
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Take `⟨W', hW'W, hW'o, h0⟩` from `mem_nhds_iff.1 hW`. Establish `hn : IsOpen ((fun p : K × K => p.1 * p.2) ⁻¹' W')` using `hW'o.preimage continuous_mul`. Take `⟨u, v, hu, -, hsu, htv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : K))) hC hn (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, -⟩`. Establish `ha' : a = 0` using `ha`.
+
+Simplify using `[ha', h0])`. Conclude with `⟨u, hu.mem_nhds (hsu rfl), fun a ha c hc => hW'W (huv (Set.mk_mem_prod ha (htv hc)))⟩`.
+-/
 theorem small_mul {C : Set K} (hC : IsCompact C) {W : Set K} (hW : W ∈ 𝓝 (0 : K)) :
     ∃ U ∈ 𝓝 (0 : K), ∀ u ∈ U, ∀ c ∈ C, u * c ∈ W := by
   obtain ⟨W', hW'W, hW'o, h0⟩ := mem_nhds_iff.1 hW
@@ -49,6 +69,11 @@ theorem small_mul {C : Set K} (hC : IsCompact C) {W : Set K} (hW : W ∈ 𝓝 (0
       simp [ha', h0])
   exact ⟨u, hu.mem_nhds (hsu rfl), fun a ha c hc => hW'W (huv (Set.mk_mem_prod ha (htv hc)))⟩
 
+/- English proof (translation)
+Establish `hn : IsOpen ((fun p : K × K => p.1 + p.2) ⁻¹' Om)` using `hO.preimage continuous_add`. Take `⟨u, v, -, hv, hsu, htv, huv⟩` from `generalized_tube_lemma hC (isCompact_singleton (x := (0 : K))) hn (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, hb⟩`. Establish `hb' : b = 0` using `hb`. Simplify `ha)` using `[hb']`.
+
+Conclude with `⟨v, hv.mem_nhds (htv rfl), fun z hz w hw => huv (Set.mk_mem_prod (hsu hz) hw)⟩`.
+-/
 theorem small_add {Om : Set K} (hC : IsCompact Om) (hO : IsOpen Om) :
     ∃ W ∈ 𝓝 (0 : K), ∀ z ∈ Om, ∀ w ∈ W, z + w ∈ Om := by
   have hn : IsOpen ((fun p : K × K => p.1 + p.2) ⁻¹' Om) := hO.preimage continuous_add
@@ -59,6 +84,11 @@ theorem small_add {Om : Set K} (hC : IsCompact Om) (hO : IsOpen Om) :
       simpa [hb'] using ha)
   exact ⟨v, hv.mem_nhds (htv rfl), fun z hz w hw => huv (Set.mk_mem_prod (hsu hz) hw)⟩
 
+/- English proof (translation)
+Take `⟨W, hW, h1⟩` from `small_add hC hO`. Take `⟨E, hE, h2⟩` from `small_mul hC hW`. Use `⟨E, hE, fun z hz κ hκ => ?_⟩` and prove the remaining obligations. Use `h1 z hz _ (h2 _ hκ z hz)` as an intermediate fact. Establish `e : z + (κ - 1) * z = κ * z` using `by ring`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem small_scale {Om : Set K} (hC : IsCompact Om) (hO : IsOpen Om) :
     ∃ E ∈ 𝓝 (0 : K), ∀ z ∈ Om, ∀ κ : K, κ - 1 ∈ E → κ * z ∈ Om := by
   obtain ⟨W, hW, h1⟩ := small_add hC hO
@@ -70,6 +100,11 @@ theorem small_scale {Om : Set K} (hC : IsCompact Om) (hO : IsOpen Om) :
 
 def I (R : Subring K) (a : K) : Set K := {x | ∃ r ∈ R, x = a * r}
 
+/- English proof (translation)
+Establish `: I R a = (fun r => a * r) '' (R : Set K)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨r, hr, rfl⟩`.
+
+Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨r, hr, rfl⟩`. Rewrite using `[this]`. Conclude with `hc.image (continuous_const.mul continuous_id)`.
+-/
 theorem I_compact {R : Subring K} (hc : IsCompact (R : Set K)) (a : K) : IsCompact (I R a) := by
   have : I R a = (fun r => a * r) '' (R : Set K) := by
     ext x; constructor
@@ -78,6 +113,13 @@ theorem I_compact {R : Subring K} (hc : IsCompact (R : Set K)) (a : K) : IsCompa
   rw [this]
   exact hc.image (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Establish `: I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩ show ((a⁻¹ : Kˣ) : K) * ((a : K) * r) ∈ R`. Simplify using `using hr`.
+
+Introduce `hx`. Conclude with `⟨_, hx, by simp⟩`. Rewrite using `[this]`. Use `(ho.preimage (continuous_const.mul continuous_id)).mem_nhds ?_` and prove the remaining obligations. Use `show ((a⁻¹ : Kˣ) : K) * 0 ∈ R`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem I_nhds {R : Subring K} (ho : IsOpen (R : Set K)) (a : Kˣ) : I R (a : K) ∈ 𝓝 (0 : K) := by
   have : I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K) := by
     ext x; constructor
@@ -91,6 +133,21 @@ theorem I_nhds {R : Subring K} (ho : IsOpen (R : Set K)) (a : Kˣ) : I R (a : K)
   show ((a⁻¹ : Kˣ) : K) * 0 ∈ R
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx0`. Establish `hx2 : x ^ 2 ≠ 0` using `fun h => hx0 (IsNilpotent.eq_zero ⟨2, h⟩)`. Establish `hI : ∀ y : K, y * x ∈ R`. Introduce `y`. Take `⟨m, hm⟩` from `hu y`.
+
+Take `⟨r, hr, e⟩` from `hx m`. Establish `: y * x = ϖ ^ m * y * r` using `by rw [e]; ring`. Rewrite using `[this]`. Conclude with `R.mul_mem hm hr`. Establish `hW : ({x ^ 2}ᶜ : Set K) ∈ 𝓝 (0 : K)` using `isOpen_compl_singleton.mem_nhds (by`.
+
+Simplify using `using hx2.symm)`. Take `⟨U, hU, hUR⟩` from `small_mul hc hW`. Take `⟨U', hU', hsub⟩` from `exists_nhds_half_neg hU`. Take `⟨a, -, ha⟩` from `hc.exists_mapClusterPt (f := (atTop : Filter ℕ)) (u := fun n : ℕ => (n : K) * x) (le_principal_iff.2 (mem_map.2 (Filter.univ_mem' fun n : ℕ => hI (n : K))))`. Establish `hN : {y | y - a ∈ U'} ∈ 𝓝 a`.
+
+Establish `: ContinuousAt (fun y : K => y - a) a` using `(continuous_id.sub continuous_const).continuousAt`. Conclude with `this.preimage_mem_nhds (by simpa using hU')`. Establish `hf` using `frequently_atTop.1 (ha.frequently hN)`. Take `⟨n, -, h1⟩` from `hf 0`. Take `⟨m, hm, h2⟩` from `hf (n + 1)`.
+
+Establish `h3` using `hsub _ h2 _ h1`. Take `⟨d, rfl⟩ : ∃ d, m = n + 1 + d` from `⟨m - (n + 1), by omega⟩`. Establish `e : ((n + 1 + d : ℕ) : K) * x - a - ((n : K) * x - a) = ((d + 1 : ℕ) : K) * x` using `by push_cast; ring`. Rewrite `h3` using `[e]`. Take `⟨v, hv⟩` from `hn (d + 1) (by omega)`.
+
+Establish `h4` using `hUR _ h3 _ (hI ((v⁻¹ : Kˣ) : K))`. Apply `h4` to reduce the goal to its premises. Use `show ((d + 1 : ℕ) : K) * x * (((v⁻¹ : Kˣ) : K) * x) = x ^ 2`. Rewrite using `[← hv]`. Establish `: (v : K) * ((v⁻¹ : Kˣ) : K) = 1` using `by simp`.
+
+Take the linear combination `x ^ 2 * this`.
+-/
 theorem inter_zero {R : Subring K} [T2Space K] [IsReduced K] (hc : IsCompact (R : Set K))
     (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (ϖ : K) (hu : ∀ x : K, ∃ m : ℕ, ϖ ^ m * x ∈ R)
     (x : K) (hx : ∀ n, x ∈ I R (ϖ ^ n)) : x = 0 := by
@@ -135,6 +192,17 @@ structure Adic (R : Subring K) (ϖ : Kˣ) : Prop where
   absorb : ∀ x : K, ∃ m : ℕ, (ϖ : K) ^ m * x ∈ R
   basis : ∀ W ∈ 𝓝 (0 : K), ∃ n : ℕ, ∀ r ∈ R, (ϖ : K) ^ n * r ∈ W
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ, hu⟩` from `hD.unif`. Use `hD.t2` as an intermediate fact. Use `hD.red` as an intermediate fact. Use `⟨ϖ, hD.t2, hD.isOpen, hD.isCompact, hϖ, hu, fun W hW => ?_⟩` and prove the remaining obligations. Take `⟨W', hW'W, hW'o, h0⟩` from `mem_nhds_iff.1 hW`.
+
+Establish `hs : IsCompact ((R : Set K) ∩ W'ᶜ)` using `hD.isCompact.inter_right hW'o.isClosed_compl`. Establish `hanti : Antitone fun n : ℕ => I R ((ϖ : K) ^ n)`. Introduce `n m hnm x hx`. Take `⟨r, hr, rfl⟩` from `hx`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hnm`.
+
+Conclude with `⟨(ϖ : K) ^ d * r, R.mul_mem (R.pow_mem hϖ d) hr, by ring⟩`. Take `⟨n, hn'⟩` from `hs.elim_directed_family_closed (fun n : ℕ => I R ((ϖ : K) ^ n)) (fun n => (I_compact hD.isCompact _).isClosed) (by`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `x ⟨⟨-, hxW⟩, hx⟩`. Use `inter_zero hD.isCompact hn (ϖ : K) hu x (fun n => Set.mem_iInter.1 hx n)` as an intermediate fact.
+
+Conclude with `hxW (this ▸ h0)) hanti.directed_ge`. Use `⟨n, fun r hr => hW'W ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Establish `: (ϖ : K) ^ n * r ∈ ((R : Set K) ∩ W'ᶜ) ∩ I R ((ϖ : K) ^ n)` using `⟨⟨R.mul_mem (R.pow_mem hϖ n) hr, hc⟩, r, hr, rfl⟩`. Rewrite `this` using `[hn']`.
+
+Conclude with `this`.
+-/
 theorem adic_of_datum {R : Subring K} {ψ : AddChar K ℂ} (hD : LocalDatum K R ψ)
     (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) : ∃ ϖ : Kˣ, Adic R ϖ := by
   obtain ⟨ϖ, hϖ, hu⟩ := hD.unif
@@ -163,6 +231,13 @@ theorem adic_of_datum {R : Subring K} {ψ : AddChar K ℂ} (hD : LocalDatum K R 
 
 variable {R : Subring K} {ϖ : Kˣ}
 
+/- English proof (translation)
+Use `h.t2` as an intermediate fact. Establish `hcl : IsClosed (f '' (R : Set K))` using `(h.isCompact.image hf).isClosed`. Establish `hb : b ∈ closure (f '' (R : Set K))`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `N hN`.
+
+Establish `hW : {y | b + y ∈ N} ∈ 𝓝 (0 : K)`. Establish `: ContinuousAt (fun y : K => b + y) 0` using `(continuous_const.add continuous_id).continuousAt`. Conclude with `this.preimage_mem_nhds (by simpa using hN)`. Take `⟨n, hn⟩` from `h.basis _ hW`. Take `⟨r, hr, e, he, hre⟩` from `ha n`.
+
+Conclude with `⟨f r, by rw [hre]; exact hn e he, r, hr, rfl⟩`. Rewrite `hb` using `[hcl.closure_eq]`. Take `⟨r, hr, e⟩` from `hb`. Conclude with `⟨r, hr, e⟩`.
+-/
 theorem Adic.approx (h : Adic R ϖ) (f : K → K) (hf : Continuous f) (b : K)
     (ha : ∀ n : ℕ, ∃ r ∈ R, ∃ e ∈ R, f r = b + (ϖ : K) ^ n * e) : ∃ r ∈ R, f r = b := by
   have := h.t2
@@ -180,6 +255,11 @@ theorem Adic.approx (h : Adic R ϖ) (f : K → K) (hf : Continuous f) (b : K)
   obtain ⟨r, hr, e⟩ := hb
   exact ⟨r, hr, e⟩
 
+/- English proof (translation)
+Take `⟨r, hr, rfl⟩` from `hj`. Use `h.approx (fun v => (1 + (ϖ : K) * r) * v) (continuous_const.mul continuous_id) 1 fun n => ?_` and prove the remaining obligations. Establish `hjR : -((ϖ : K) * r) ∈ R` using `R.neg_mem (R.mul_mem h.mem hr)`. Use `⟨∑ i ∈ Finset.range n, (-((ϖ : K) * r)) ^ i, R.sum_mem fun i _ => R.pow_mem hjR i, -(-r) ^ n, R.neg_mem (R.pow_mem (R.neg_mem hr) n), ?_⟩` and prove the remaining obligations. Use `mul_neg_geom_sum (-((ϖ : K) * r)) n` as an intermediate fact.
+
+Establish `e : (-((ϖ : K) * r)) ^ n = (ϖ : K) ^ n * (-r) ^ n` using `by rw [← mul_pow]; ring`. Use `show (1 + (ϖ : K) * r) * _ = _`. Rewrite `this` using `[e]`. Take the linear combination `this`.
+-/
 theorem Adic.unit_one (h : Adic R ϖ) (j : K) (hj : j ∈ I R (ϖ : K)) : ∃ v ∈ R, (1 + j) * v = 1 := by
   obtain ⟨r, hr, rfl⟩ := hj
   refine h.approx (fun v => (1 + (ϖ : K) * r) * v) (continuous_const.mul continuous_id) 1 fun n => ?_
@@ -194,18 +274,30 @@ theorem Adic.unit_one (h : Adic R ϖ) (j : K) (hj : j ∈ I R (ϖ : K)) : ∃ v 
 
 def Near (R : Subring K) (a x : K) : Prop := ∃ r ∈ R, x = 1 + a * r
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, R.zero_mem, by simp⟩`.
+-/
 theorem near_one (a : K) : Near R a 1 := ⟨0, R.zero_mem, by simp⟩
 
+/- English proof (translation)
+Take `⟨r, hr, rfl⟩` from `hx`. Take `⟨q, hq, rfl⟩` from `hy`. Conclude with `⟨r + q + a * r * q, R.add_mem (R.add_mem hr hq) (R.mul_mem (R.mul_mem ha hr) hq), by ring⟩`.
+-/
 theorem Near.mul {a x y : K} (ha : a ∈ R) (hx : Near R a x) (hy : Near R a y) : Near R a (x * y) := by
   obtain ⟨r, hr, rfl⟩ := hx
   obtain ⟨q, hq, rfl⟩ := hy
   exact ⟨r + q + a * r * q, R.add_mem (R.add_mem hr hq) (R.mul_mem (R.mul_mem ha hr) hq), by ring⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using near_one a`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul ha hx`.
+-/
 theorem Near.pow {a x : K} (ha : a ∈ R) (hx : Near R a x) (n : ℕ) : Near R a (x ^ n) := by
   induction n with
   | zero => simpa using near_one a
   | succ n ih => rw [pow_succ]; exact ih.mul ha hx
 
+/- English proof (translation)
+Take `⟨r, hr, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `ha`. Take `⟨v, hv, e⟩` from `h.unit_one ((ϖ : K) * a' * r) ⟨a' * r, R.mul_mem ha' hr, by ring⟩`. Conclude with `⟨v, e, ⟨-(r * v), R.neg_mem (R.mul_mem hr hv), by linear_combination e⟩, hv⟩`.
+-/
 theorem Adic.near_inv (h : Adic R ϖ) {a x : K} (ha : a ∈ I R (ϖ : K)) (hx : Near R a x) :
     ∃ v, x * v = 1 ∧ Near R a v ∧ v ∈ R := by
   obtain ⟨r, hr, rfl⟩ := hx
@@ -213,6 +305,11 @@ theorem Adic.near_inv (h : Adic R ϖ) {a x : K} (ha : a ∈ I R (ϖ : K)) (hx : 
   obtain ⟨v, hv, e⟩ := h.unit_one ((ϖ : K) * a' * r) ⟨a' * r, R.mul_mem ha' hr, by ring⟩
   exact ⟨v, e, ⟨-(r * v), R.neg_mem (R.mul_mem hr hv), by linear_combination e⟩, hv⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, R.zero_mem, by simp⟩`. Consider the case `succ n ih`. Take `⟨q, hq, e⟩` from `ih`. Take `⟨r, hr, e'⟩` from `hf n`.
+
+Conclude with `⟨q + r, R.add_mem hq hr, by rw [Finset.sum_range_succ, e, e']; push_cast; ring⟩`.
+-/
 theorem near_sum {a : K} (n : ℕ) (f : ℕ → K) (hf : ∀ i, Near R a (f i)) :
     ∃ q ∈ R, ∑ i ∈ Finset.range n, f i = (n : K) + a * q := by
   induction n with
@@ -222,6 +319,9 @@ theorem near_sum {a : K} (n : ℕ) (f : ℕ → K) (hf : ∀ i, Near R a (f i)) 
     obtain ⟨r, hr, e'⟩ := hf n
     exact ⟨q + r, R.add_mem hq hr, by rw [Finset.sum_range_succ, e, e']; push_cast; ring⟩
 
+/- English proof (translation)
+Establish `ha : (s : K) * c ∈ R` using `R.mul_mem (natCast_mem R s) hc`. Take `⟨q, hq, e⟩` from `near_sum (R := R) s (fun i => x ^ i * y ^ (s - 1 - i)) (fun i => (hx.pow ha i).mul ha (hy.pow ha _))`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← geom_sum₂_mul, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_diff {c : K} (hc : c ∈ R) (s : ℕ) {x y : K} (hx : Near R ((s : K) * c) x)
     (hy : Near R ((s : K) * c) y) : ∃ q ∈ R, x ^ s - y ^ s = (s : K) * (x - y) * (1 + c * q) := by
   have ha : (s : K) * c ∈ R := R.mul_mem (natCast_mem R s) hc
@@ -230,6 +330,17 @@ theorem pow_diff {c : K} (hc : c ∈ R) (s : ℕ) {x y : K} (hx : Near R ((s : K
   refine ⟨q, hq, ?_⟩
   rw [← geom_sum₂_mul, e]; ring
 
+/- English proof (translation)
+Take `⟨c', hc', hcc⟩` from `hc`. Establish `hcR : c ∈ R` using `by rw [hcc]; exact R.mul_mem h.mem hc'`. Establish `key : ∀ k : ℕ, ∃ r ∈ R, ∃ e ∈ R, (1 + (s : K) * c * r) ^ s = b + (s : K) ^ 2 * c ^ (k + 1) * e`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Take `⟨r0, hr0, e0⟩` from `hb`. Conclude with `⟨0, R.zero_mem, -r0, R.neg_mem hr0, by rw [e0]; simp⟩`. Consider the case `succ k ih`. Take `⟨r, hr, e, he, hre⟩` from `ih`.
+
+Establish `hr' : r - c ^ k * e ∈ R` using `R.sub_mem hr (R.mul_mem (R.pow_mem hcR k) he)`. Take `⟨q, hq, hd⟩` from `pow_diff (R := R) hcR s (x := 1 + (s : K) * c * (r - c ^ k * e)) (y := 1 + (s : K) * c * r) ⟨_, hr', rfl⟩ ⟨_, hr, rfl⟩`. Use `⟨_, hr', -(e * q), R.neg_mem (R.mul_mem he hq), ?_⟩` and prove the remaining obligations. Take the linear combination `hd + hre`. Take `⟨r, hr, e⟩` from `h.approx (fun r => (1 + (s : K) * c * r) ^ s) ((continuous_const.add (continuous_const.mul continuous_id)).pow s) b (fun n => by`.
+
+Take `⟨r, hr, e, he, hre⟩` from `key n`. Use `⟨r, hr, (s : K) ^ 2 * ((ϖ : K) * c' ^ (n + 1)) * e, R.mul_mem (R.mul_mem (R.pow_mem (natCast_mem R s) 2) (R.mul_mem h.mem (R.pow_mem hc' _))) he, ?_⟩` and prove the remaining obligations. Use `show (1 + (s : K) * c * r) ^ s = _`. Rewrite using `[hre, hcc]`. Use the proof step `ring)`.
+
+Conclude with `⟨_, ⟨r, hr, rfl⟩, e⟩`.
+-/
 theorem Adic.root (h : Adic R ϖ) (s : ℕ) {c : K} (hc : c ∈ I R (ϖ : K)) {b : K}
     (hb : Near R ((s : K) ^ 2 * c) b) : ∃ κ, Near R ((s : K) * c) κ ∧ κ ^ s = b := by
   obtain ⟨c', hc', hcc⟩ := hc
@@ -257,6 +368,9 @@ theorem Adic.root (h : Adic R ϖ) (s : ℕ) {c : K} (hc : c ∈ I R (ϖ : K)) {b
       rw [hre, hcc]; ring)
   exact ⟨_, ⟨r, hr, rfl⟩, e⟩
 
+/- English proof (translation)
+Use `⟨⋂ σ ∈ Sg, (fun t => σ * t) ⁻¹' I R (a : K), (Filter.biInter_finset_mem Sg).2 fun σ _ => ?_, fun t ht σ hσ => ?_⟩` and prove the remaining obligations. Establish `: ContinuousAt (fun t : K => σ * t) 0` using `(continuous_const.mul continuous_id).continuousAt`. Conclude with `this.preimage_mem_nhds (by simpa using I_nhds h.isOpen a)`. Conclude with `Set.mem_iInter₂.1 ht σ hσ`.
+-/
 theorem Adic.shift_small (h : Adic R ϖ) (Sg : Finset K) (a : Kˣ) :
     ∃ V ∈ 𝓝 (0 : K), ∀ t ∈ V, ∀ σ ∈ Sg, σ * t ∈ I R (a : K) := by
   refine ⟨⋂ σ ∈ Sg, (fun t => σ * t) ⁻¹' I R (a : K),
@@ -265,6 +379,9 @@ theorem Adic.shift_small (h : Adic R ϖ) (Sg : Finset K) (a : Kˣ) :
     exact this.preimage_mem_nhds (by simpa using I_nhds h.isOpen a)
   · exact Set.mem_iInter₂.1 ht σ hσ
 
+/- English proof (translation)
+Unfold `IsShift at h`. Establish `h1 : (t₁ : K) * ((t₁⁻¹ : Kˣ) : K) = 1` using `by simp`. Establish `h2 : ((t⁻¹ : Kˣ) : K) * (t : K) = 1` using `by simp`. Rewrite `h1` using `[h]`. Take the linear combination `(t : K) * h1 - (t₁ : K) * h2`.
+-/
 theorem shift_alg (t t₁ : Kˣ) (σ : K) (h : IsShift t t₁ σ) :
     (t₁ : K) * (1 + σ * (t : K)) = (t : K) := by
   unfold IsShift at h
@@ -273,6 +390,13 @@ theorem shift_alg (t t₁ : Kˣ) (σ : K) (h : IsShift t t₁ σ) :
   rw [h] at h1
   linear_combination (t : K) * h1 - (t₁ : K) * h2
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h.basis E hE`. Take `⟨u, hu⟩` from `hn s (by omega)`. Establish `hsR : (s : K) ∈ R` using `natCast_mem R s`. Use `⟨u ^ 2 * ϖ ^ (N + 1), ⟨(s : K) ^ 2 * (ϖ : K) ^ N, R.mul_mem (R.pow_mem hsR 2) (R.pow_mem h.mem N), by push_cast; rw [hu]; ring⟩, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hb' : Near R ((s : K) ^ 2 * (ϖ : K) ^ (N + 1)) b`.
+
+Establish `e : ((u ^ 2 * ϖ ^ (N + 1) : Kˣ) : K) = (s : K) ^ 2 * (ϖ : K) ^ (N + 1)` using `by push_cast; rw [hu]`. Rewrite `hb` using `[e]`. Then use the resulting hypothesis. Take `⟨κ, ⟨r, hr, e⟩, hκ⟩` from `h.root s (c := (ϖ : K) ^ (N + 1)) ⟨(ϖ : K) ^ N, R.pow_mem h.mem N, by ring⟩ hb'`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Establish `: κ - 1 = (ϖ : K) ^ N * ((ϖ : K) * (s : K) * r)` using `by rw [e]; ring`.
+
+Rewrite using `[this]`. Conclude with `hN _ (R.mul_mem (R.mul_mem h.mem hsR) hr)`.
+-/
 theorem Adic.root_near (h : Adic R ϖ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (s : ℕ) (hs : 1 ≤ s)
     {E : Set K} (hE : E ∈ 𝓝 (0 : K)) :
     ∃ a : Kˣ, (a : K) ∈ I R (ϖ : K) ∧ ∀ b : K, Near R (a : K) b → ∃ κ : K, κ ^ s = b ∧ κ - 1 ∈ E := by
@@ -292,6 +416,17 @@ theorem Adic.root_near (h : Adic R ϖ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n 
   rw [this]
   exact hN _ (R.mul_mem (R.mul_mem h.mem hsR) hr)
 
+/- English proof (translation)
+Use `hC.induction_on (p := fun S => ∃ M : ℕ, ∀ z ∈ S, ∀ z' : K, z * z' = 1 → (ϖ : K) ^ M * z' ∈ R) ⟨0, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `S T hST ⟨M, hM⟩`. Conclude with `⟨M, fun z hz => hM z (hST hz)⟩`. Introduce and unpack `S T ⟨M, hM⟩ ⟨M', hM'⟩`. Use `⟨M + M', fun z hz z' e => ?_⟩` and prove the remaining obligations.
+
+Break down `hz with hz | hz` into its components or cases. Use `R.mul_mem (R.pow_mem h.mem M') (hM z hz z' e)` as an intermediate fact. Establish `e' : (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M' * ((ϖ : K) ^ M * z')` using `by ring`. Rewrite using `[e']` and apply the resulting hypothesis. Use `R.mul_mem (R.pow_mem h.mem M) (hM' z hz z' e)` as an intermediate fact.
+
+Establish `e' : (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M * ((ϖ : K) ^ M' * z')` using `by ring`. Rewrite using `[e']` and apply the resulting hypothesis. Introduce `x hx`. Take `⟨u, rfl⟩` from `hU x hx`. Take `⟨M, hM⟩` from `h.absorb ((u⁻¹ : Kˣ) : K)`.
+
+Use `⟨{z | (z - (u : K)) * ((u⁻¹ : Kˣ) : K) ∈ I R (ϖ : K)}, mem_nhdsWithin_of_mem_nhds ?_, M, fun z hz z' e => ?_⟩` and prove the remaining obligations. Establish `: ContinuousAt (fun z : K => (z - (u : K)) * ((u⁻¹ : Kˣ) : K)) (u : K)` using `((continuous_id.sub continuous_const).mul continuous_const).continuousAt`. Conclude with `this.preimage_mem_nhds (by simpa using I_nhds h.isOpen ϖ)`. Take `⟨v, hv, ev⟩` from `h.unit_one _ hz`. Establish `i1 : (u : K) * ((u⁻¹ : Kˣ) : K) = 1` using `by simp`.
+
+Establish `: z' = ((u⁻¹ : Kˣ) : K) * v`. Take the linear combination `((u⁻¹ : Kˣ) : K) * v * e - z' * v * i1 - z' * ev`. Rewrite using `[this, ← mul_assoc]`. Conclude with `R.mul_mem hM hv`.
+-/
 theorem Adic.inv_bounded (h : Adic R ϖ) {Om : Set K} (hC : IsCompact Om) (hU : ∀ z ∈ Om, IsUnit z) :
     ∃ M : ℕ, ∀ z ∈ Om, ∀ z' : K, z * z' = 1 → (ϖ : K) ^ M * z' ∈ R := by
   refine hC.induction_on
@@ -325,6 +460,17 @@ theorem Adic.inv_bounded (h : Adic R ϖ) {Om : Set K} (hC : IsCompact Om) (hU : 
 
 end Top
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hn Sg`. Take `⟨ϖ, h⟩` from `adic_of_datum hD hn`. Take `⟨V, hV, hVs⟩` from `h.shift_small Sg ϖ`. Use `⟨V, hV, fun t ht σ hσ => ?_⟩` and prove the remaining obligations. Establish `hj` using `hVs _ ht σ hσ`.
+
+Take `⟨v, hv, e⟩` from `h.unit_one _ hj`. Establish `hjR : 1 + σ * (t : K) ∈ R`. Take `⟨r, hr, e'⟩` from `hj`. Rewrite using `[e']`. Conclude with `R.add_mem R.one_mem (R.mul_mem h.mem hr)`.
+
+Establish `hx : ((t⁻¹ : Kˣ) : K) + σ = ((t⁻¹ : Kˣ) : K) * (1 + σ * (t : K))`. Establish `: ((t⁻¹ : Kˣ) : K) * (t : K) = 1` using `by simp`. Take the linear combination `-σ * this`. Rewrite using `[hx]`. Use `⟨(Units.isUnit _).mul (isUnit_iff_exists_inv.2 ⟨v, e⟩), ?_⟩` and prove the remaining obligations.
+
+Establish `: mulR R (((t⁻¹ : Kˣ) : K) * (1 + σ * (t : K))) = mulR R ((t⁻¹ : Kˣ) : K)`. Use extensionality with `y`. Simplify using `only [mulR, AddSubgroup.mem_map, Subring.mem_toAddSubgroup, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`.
+
+Conclude with `⟨(1 + σ * (t : K)) * r, R.mul_mem hjR hr, by ring⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨v * r, R.mul_mem hv hr, by linear_combination ((t⁻¹ : Kˣ) : K) * r * e⟩`. Unfold `modK`. Rewrite using `[this]`.
+-/
 theorem shiftUnit : ShiftUnit := by
   intro K _ _ _ R ψ hD hn Sg
   obtain ⟨ϖ, h⟩ := adic_of_datum hD hn
@@ -351,6 +497,13 @@ theorem shiftUnit : ShiftUnit := by
   unfold modK
   rw [this]
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hn Sg W hW`. Take `⟨ϖ, h⟩` from `adic_of_datum hD hn`. Take `⟨V, hV, hVs⟩` from `h.shift_small Sg ϖ`. Take `⟨n, hn'⟩` from `h.basis W hW`. Use `⟨V ∩ I R ((ϖ ^ n : Kˣ) : K), inter_mem hV (I_nhds h.isOpen _), fun t t₁ ht σ hσ hs => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, hv, e⟩` from `h.unit_one _ (hVs _ ht.1 σ hσ)`. Take `⟨r, hr, e'⟩` from `ht.2`. Establish `h1` using `shift_alg t t₁ σ hs`. Establish `: (t₁ : K) = (ϖ : K) ^ n * (r * v)`. Move the coercions through the operations in `at e'`.
+
+Take the linear combination `(-(t₁ : K)) * e + v * h1 + v * e'`. Rewrite using `[this]`. Conclude with `hn' _ (R.mul_mem hr hv)`.
+-/
 theorem shiftSmall : ShiftSmall := by
   intro K _ _ _ R ψ hD hn Sg W hW
   obtain ⟨ϖ, h⟩ := adic_of_datum hD hn
@@ -367,6 +520,19 @@ theorem shiftSmall : ShiftSmall := by
   rw [this]
   exact hn' _ (R.mul_mem hr hv)
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hn m Sg E hE`. Take `⟨ϖ, h⟩` from `adic_of_datum hD hn`. Take `⟨a, ha, hroot⟩` from `h.root_near hn (m + 1) (by omega) hE`. Take `⟨V, hV, hVs⟩` from `h.shift_small Sg a`. Use `⟨V, hV, fun t t₁ t₂ ht σ hσ σ' hσ' hs hs' => ?_⟩` and prove the remaining obligations.
+
+Establish `haR : (a : K) ∈ R`. Take `⟨r, hr, e⟩` from `ha`. Rewrite using `[e]`. Conclude with `R.mul_mem h.mem hr`. Establish `n1 : Near R (a : K) (1 + σ * (t : K))`.
+
+Take `⟨r, hr, e⟩` from `hVs _ ht σ hσ`. Conclude with `⟨r, hr, by rw [e]⟩`. Establish `n2 : Near R (a : K) (1 + σ' * (t : K))`. Take `⟨r, hr, e⟩` from `hVs _ ht σ' hσ'`. Conclude with `⟨r, hr, by rw [e]⟩`.
+
+Take `⟨v, hv, nv, -⟩` from `h.near_inv ha n2`. Establish `a1` using `shift_alg t t₁ σ hs`. Establish `a2` using `shift_alg t t₂ σ' hs'`. Establish `hr : ((t₂ * t₁⁻¹ : Kˣ) : K) = (1 + σ * (t : K)) * v`. Establish `i1 : (t₁ : K) * ((t₁⁻¹ : Kˣ) : K) = 1` using `by simp`.
+
+Rewrite using `[Units.val_mul]`. Take the linear combination `(-((t₂ : K) * ((t₁⁻¹ : Kˣ) : K))) * hv + ((t₁⁻¹ : Kˣ) : K) * v * a2 - ((t₁⁻¹ : Kˣ) : K) * v * a1 + (1 + σ * (t : K)) * v * i1`. Take `⟨κ, hκ, hκE⟩` from `hroot _ ((n1.mul haR nv).pow haR m)`. Rewrite `hκ` using `[← hr, ← Units.val_pow_eq_pow_val]`. Establish `hu : IsUnit κ`.
+
+Establish `: IsUnit (κ ^ (m + 1))` using `by rw [hκ]; exact Units.isUnit _`. Conclude with `(isUnit_pow_iff (by omega)).1 this`. Take `⟨κ', rfl⟩` from `hu`. Conclude with `⟨κ', Units.ext (by rw [Units.val_pow_eq_pow_val, hκ]), hκE⟩`.
+-/
 theorem rootCorr : RootCorr := by
   intro K _ _ _ R ψ hD hn m Sg E hE
   obtain ⟨ϖ, h⟩ := adic_of_datum hD hn
@@ -398,6 +564,29 @@ theorem rootCorr : RootCorr := by
   obtain ⟨κ', rfl⟩ := hu
   exact ⟨κ', Units.ext (by rw [Units.val_pow_eq_pow_val, hκ]), hκE⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hn m hm Om Sg hOm`. Take `⟨hO, hC, hU, -⟩` from `hOm`. Take `⟨ϖ, h⟩` from `adic_of_datum hD hn`. Take `⟨E, hE, hscale⟩` from `small_scale hC hO`. Take `⟨a, ha, hroot⟩` from `h.root_near hn (m + 1) (by omega) hE`.
+
+Take `⟨V, hV, hVs⟩` from `h.shift_small Sg a`. Take `⟨M, hM⟩` from `h.inv_bounded hC hU`. Establish `haR : (a : K) ∈ R`. Take `⟨r, hr, e⟩` from `ha`. Rewrite using `[e]`.
+
+Conclude with `R.mul_mem h.mem hr`. Establish `step : ∀ A b : K, Near R (a : K) b → (∃ z ∈ Om, z ^ (m + 1) = A) → ∃ z ∈ Om, z ^ (m + 1) = A * b`. Introduce and unpack `A b hb ⟨z, hz, rfl⟩`. Take `⟨κ, hκ, hκE⟩` from `hroot b hb`. Conclude with `⟨κ * z, hscale z hz κ hκE, by rw [mul_pow, hκ]; ring⟩`.
+
+Use `⟨V ∩ I R ((a * ϖ ^ (M * (m + 1)) : Kˣ) : K), inter_mem hV (I_nhds h.isOpen _), fun t ht => ⟨fun σ hσ t₁ hs => ?_, fun c hc r hr => ?_⟩⟩` and prove the remaining obligations. Establish `n1 : Near R (a : K) (1 + σ * (t : K))`. Take `⟨r, hr, e⟩` from `hVs _ ht.1 σ hσ`. Conclude with `⟨r, hr, by rw [e]⟩`. Take `⟨v, hv, nv, -⟩` from `h.near_inv ha n1`.
+
+Establish `a1` using `shift_alg t t₁ σ hs`. Establish `e1 : (t₁ : K) = (t : K) * v` using `by linear_combination (-(t₁ : K)) * hv + v * a1`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+
+Use `step ((-(t₁ : K)) ^ m * c) _ (n1.pow haR m) hc` as an intermediate fact. Establish `e2 : (-(t₁ : K)) ^ m * c * (1 + σ * (t : K)) ^ m = (-(t : K)) ^ m * c`. Establish `e3 : -(t : K) = -(t₁ : K) * (1 + σ * (t : K))` using `by linear_combination a1`. Rewrite using `[e3, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Introduce `hc`. Use `step ((-(t : K)) ^ m * c) _ (nv.pow haR m) hc` as an intermediate fact. Establish `e2 : (-(t : K)) ^ m * c * v ^ m = (-(t₁ : K)) ^ m * c` using `by rw [e1]; ring`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+
+Take `⟨z, hz, e⟩` from `hc`. Take `⟨u, rfl⟩` from `hU z hz`. Establish `hb` using `hM _ hz ((u⁻¹ : Kˣ) : K) (by simp)`. Take `⟨r1, hr1, et⟩` from `ht.2`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`.
+
+Move the coercions through the operations in `at et`. Establish `htR : (t : K) ∈ R`. Rewrite using `[et]`. Conclude with `R.mul_mem (R.mul_mem haR (R.pow_mem h.mem _)) hr1`. Establish `nb : Near R (a : K) (1 + (-(t : K)) ^ (m' + 1) * r * ((u⁻¹ : Kˣ) : K) ^ (m' + 1 + 1))` using `⟨-(r1 * (-(t : K)) ^ m' * r * ((ϖ : K) ^ M * ((u⁻¹ : Kˣ) : K)) ^ (m' + 1 + 1)), R.neg_mem (R.mul_mem (R.mul_mem (R.mul_mem hr1 (R.pow_mem (R.neg_mem htR) _)) hr) (R.pow_mem hb _)), by`.
+
+Take the linear combination `(-((-(t : K)) ^ m' * r * ((u⁻¹ : Kˣ) : K) ^ (m' + 1 + 1))) * et⟩`. Use `step _ _ nb ⟨u, hz, rfl⟩` as an intermediate fact. Establish `i1 : (u : K) ^ (m' + 1 + 1) * ((u⁻¹ : Kˣ) : K) ^ (m' + 1 + 1) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+
+Establish `e2 : (u : K) ^ (m' + 1 + 1) * (1 + (-(t : K)) ^ (m' + 1) * r * ((u⁻¹ : Kˣ) : K) ^ (m' + 1 + 1)) = (-(t : K)) ^ (m' + 1) * (c + r)`. Take the linear combination `e + (-(t : K)) ^ (m' + 1) * r * i1`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem cutSame : CutSame := by
   intro K _ _ _ R ψ hD hn m hm Om Sg hOm
   obtain ⟨hO, hC, hU, -⟩ := hOm
@@ -459,12 +648,27 @@ theorem cutSame : CutSame := by
 
 end Formalism.FourierDecayAlt.P.A6x8
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.A6x8.kpHerm`.
+-/
 theorem Formalism.FourierDecayAlt.P.gramKernelHermitian : Formalism.FourierDecayAlt.A6.KpHerm := Formalism.FourierDecayAlt.P.A6x8.kpHerm
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.A6x8.shiftUnit`.
+-/
 theorem Formalism.FourierDecayAlt.P.shiftUnit_statement : Formalism.FourierDecayAlt.A6.ShiftUnit := Formalism.FourierDecayAlt.P.A6x8.shiftUnit
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.A6x8.shiftSmall`.
+-/
 theorem Formalism.FourierDecayAlt.P.shiftSmall_statement : Formalism.FourierDecayAlt.A6.ShiftSmall := Formalism.FourierDecayAlt.P.A6x8.shiftSmall
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.A6x8.cutSame`.
+-/
 theorem Formalism.FourierDecayAlt.P.rootCutStable : Formalism.FourierDecayAlt.A6.CutSame := Formalism.FourierDecayAlt.P.A6x8.cutSame
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.A6x8.rootCorr`.
+-/
 theorem Formalism.FourierDecayAlt.P.rootCorrection : Formalism.FourierDecayAlt.A6.RootCorr := Formalism.FourierDecayAlt.P.A6x8.rootCorr

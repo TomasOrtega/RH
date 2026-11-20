@@ -32,25 +32,40 @@ def pcmp (h : T ⟶ U) (g : U ⟶ X) (k : T ⟶ X) (w : h ≫ g = k) :
   Scheme.Modules.pullbackComp h g ≪≫ Scheme.Modules.pullbackCongr w
 
 @[reassoc]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pcmp_hom_app (h : T ⟶ U) (g : U ⟶ X) (k : T ⟶ X) (w : h ≫ g = k) (M : X.Modules) :
     (pcmp h g k w).hom.app M =
       (Scheme.Modules.pullbackComp h g).hom.app M ≫ (Scheme.Modules.pullbackCongr w).hom.app M := rfl
 
+/- English proof (translation)
+Simplify using `[pcmp, Scheme.Modules.pullbackCongr]`.
+-/
 theorem pcmp_rfl_hom_app (h : T ⟶ U) (g : U ⟶ X) (M : X.Modules) :
     (pcmp h g _ rfl).hom.app M = (Scheme.Modules.pullbackComp h g).hom.app M := by
   simp [pcmp, Scheme.Modules.pullbackCongr]
 
+/- English proof (translation)
+The claim follows from `pullbackComp_congr_id_app g w M @[reassoc]`.
+-/
 theorem pcmp_id_hom_app (g : U ⟶ X) (w : 𝟙 U ≫ g = g) (M : X.Modules) :
     (pcmp (𝟙 U) g g w).hom.app M =
       (Scheme.Modules.pullbackId U).hom.app ((Scheme.Modules.pullback g).obj M) :=
   pullbackComp_congr_id_app g w M
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(pcmp h g k w).hom.naturality φ`.
+-/
 theorem pcmp_nat (h : T ⟶ U) (g : U ⟶ X) (k : T ⟶ X) (w : h ≫ g = k) {M N : X.Modules} (φ : M ⟶ N) :
     (Scheme.Modules.pullback h).map ((Scheme.Modules.pullback g).map φ) ≫ (pcmp h g k w).hom.app N =
       (pcmp h g k w).hom.app M ≫ (Scheme.Modules.pullback k).map φ :=
   (pcmp h g k w).hom.naturality φ
 
+/- English proof (translation)
+Substitute `w w' w₁` using the available equality. Use `pullbackComp_congr_assoc_app g h (h ≫ g) rfl t (t ≫ h ≫ g) rfl w₂ M` as an intermediate fact. Simplify using `only [pcmp_hom_app, Category.assoc]`. Rewrite using `[← this]`. Simplify using `[Scheme.Modules.pullbackCongr]`.
+-/
 theorem pcmp_assoc (t : S ⟶ T) (h : T ⟶ U) (g : U ⟶ X) (k : T ⟶ X) (w : h ≫ g = k)
     (m : S ⟶ X) (w₁ : t ≫ k = m) (k' : S ⟶ U) (w' : t ≫ h = k') (w₂ : k' ≫ g = m) (M : X.Modules) :
     (Scheme.Modules.pullback t).map ((pcmp h g k w).hom.app M) ≫ (pcmp t k m w₁).hom.app M =
@@ -63,9 +78,15 @@ theorem pcmp_assoc (t : S ⟶ T) (h : T ⟶ U) (g : U ⟶ X) (k : T ⟶ X) (w : 
 
 end Cmp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofIso_ι {X : Scheme.{0}} {M M' : X.Modules} {n : ℕ} (fl : Vert.Flag M n) (e : M ≅ M')
     (i : Fin (n + 1)) : (fl.ofIso e).ι i = fl.ι i ≫ e.hom := rfl
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `h`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨e.hom.app V m, QCoh.app_app _ _ _ _⟩`.
+-/
 theorem range_sub_of_same {X : Scheme.{0}} {A A' M : X.Modules} {u : A ⟶ M} {v : A' ⟶ M}
     (h : Same u v) (V : X.Opens) : Set.range (u.app V) ⊆ Set.range (v.app V) := by
   obtain ⟨e, rfl⟩ := h
@@ -85,6 +106,9 @@ def stepRg {T : Scheme.{0}} {g : T ⟶ B} (fl : Fls E r g) :
 def FlEq {T : Scheme.{0}} {g : T ⟶ B} (fl fl' : Fls E r g) : Prop :=
   ∀ a i, Same ((fl a).ι i) ((fl' a).ι i)
 
+/- English proof (translation)
+Use `⟨fun h a i => same_of_range fun V => congrFun (congrFun (congrFun h a) i) V, fun h => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a i V`. Conclude with `(range_sub_of_same (h a i) V).antisymm (range_sub_of_same (h a i).symm V)`.
+-/
 theorem stepRg_eq_iff {T : Scheme.{0}} {g : T ⟶ B} (fl fl' : Fls E r g) :
     stepRg fl = stepRg fl' ↔ FlEq fl fl' := by
   refine ⟨fun h a i => same_of_range fun V => congrFun (congrFun (congrFun h a) i) V, fun h => ?_⟩
@@ -101,10 +125,18 @@ def fpt {T : Scheme.{0}} (g : T ⟶ B) (fl : Fls E r g) : FPt E r T := ⟨g, ste
 
 def FPt.fl {T : Scheme.{0}} (x : FPt E r T) : Fls E r x.1 := x.2.2.choose
 
+/- English proof (translation)
+Take `⟨g, S, h⟩` from `x`. Conclude with `congrArg (Sigma.mk g) (Subtype.ext h.choose_spec.symm)`.
+-/
 theorem FPt.eta {T : Scheme.{0}} (x : FPt E r T) : x = fpt x.1 (FPt.fl x) := by
   obtain ⟨g, S, h⟩ := x
   exact congrArg (Sigma.mk g) (Subtype.ext h.choose_spec.symm)
 
+/- English proof (translation)
+Rewrite using `[← stepRg_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[fpt, fpt, Sigma.mk.inj_iff]`. Conclude with `congrArg Subtype.val (eq_of_heq h.2)`.
+
+Introduce `h`. Conclude with `congrArg (Sigma.mk g) (Subtype.ext h)`.
+-/
 theorem fpt_eq_iff {T : Scheme.{0}} {g : T ⟶ B} (fl fl' : Fls E r g) : fpt g fl = fpt g fl' ↔ FlEq fl fl' := by
   rw [← stepRg_eq_iff]
   constructor
@@ -118,22 +150,36 @@ def pullFl {S T : Scheme.{0}} (h : S ⟶ T) {g : T ⟶ B} {k : S ⟶ B} (w : h �
     Fls E r k :=
   fun a => ((fl a).pull h).ofIso ((pcmp h g k w).app (E a))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullFl_ι {S T : Scheme.{0}} (h : S ⟶ T) {g : T ⟶ B} {k : S ⟶ B} (w : h ≫ g = k) (fl : Fls E r g)
     (a : ι) (i : Fin (r a + 1)) :
     (pullFl h w fl a).ι i = (Scheme.Modules.pullback h).map ((fl a).ι i) ≫ (pcmp h g k w).hom.app (E a) := rfl
 
+/- English proof (translation)
+Introduce `a i` and use `((H a i).pull h).comp _`.
+-/
 theorem FlEq.pull {S T : Scheme.{0}} {g : T ⟶ B} {fl fl' : Fls E r g} (H : FlEq fl fl') (h : S ⟶ T)
     {k : S ⟶ B} (w : h ≫ g = k) : FlEq (pullFl h w fl) (pullFl h w fl') :=
   fun a i => ((H a i).pull h).comp _
 
 def FPt.map {S T : Scheme.{0}} (h : S ⟶ T) (x : FPt E r T) : FPt E r S := fpt (h ≫ x.1) (pullFl h rfl (FPt.fl x))
 
+/- English proof (translation)
+Substitute `w` using the available equality. Use `(fpt_eq_iff _ _).2 (FlEq.pull ?_ h rfl)` and prove the remaining obligations. Conclude with `(stepRg_eq_iff _ _).1 (fpt g fl).2.2.choose_spec`.
+-/
 theorem fpt_map {S T : Scheme.{0}} (h : S ⟶ T) {g : T ⟶ B} (fl : Fls E r g) {k : S ⟶ B} (w : h ≫ g = k) :
     FPt.map h (fpt g fl) = fpt k (pullFl h w fl) := by
   subst w
   refine (fpt_eq_iff _ _).2 (FlEq.pull ?_ h rfl)
   exact (stepRg_eq_iff _ _).1 (fpt g fl).2.2.choose_spec
 
+/- English proof (translation)
+Take `⟨g, fl, rfl⟩ : ∃ g fl, x = fpt g fl` from `⟨_, _, x.eta⟩`. Rewrite using `[fpt_map (𝟙 T) fl (Category.id_comp g), fpt_eq_iff]`. Introduce `a i`. Use `⟨(Scheme.Modules.pullbackId T).app ((fl a).F i), ?_⟩` and prove the remaining obligations. Rewrite using `[pullFl_ι, pcmp_id_hom_app]`.
+
+Conclude with `((Scheme.Modules.pullbackId T).hom.naturality ((fl a).ι i)).symm`.
+-/
 theorem FPt.map_id {T : Scheme.{0}} (x : FPt E r T) : FPt.map (𝟙 T) x = x := by
   obtain ⟨g, fl, rfl⟩ : ∃ g fl, x = fpt g fl := ⟨_, _, x.eta⟩
   rw [fpt_map (𝟙 T) fl (Category.id_comp g), fpt_eq_iff]
@@ -142,6 +188,11 @@ theorem FPt.map_id {T : Scheme.{0}} (x : FPt E r T) : FPt.map (𝟙 T) x = x := 
   rw [pullFl_ι, pcmp_id_hom_app]
   exact ((Scheme.Modules.pullbackId T).hom.naturality ((fl a).ι i)).symm
 
+/- English proof (translation)
+Take `⟨g, fl, rfl⟩ : ∃ g fl, x = fpt g fl` from `⟨_, _, x.eta⟩`. Rewrite using `[fpt_map (b ≫ a) fl (Category.assoc b a g), fpt_map a fl rfl, fpt_map b _ rfl, fpt_eq_iff]`. Introduce `c i`. Use `⟨((pcmp b a (b ≫ a) rfl).app ((fl c).F i)).symm, ?_⟩` and prove the remaining obligations. Simplify using `only [pullFl_ι, ofIso_ι, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Functor.map_comp, Category.assoc]`.
+
+Rewrite using `[pcmp_assoc b a g (a ≫ g) rfl (b ≫ a ≫ g) rfl (b ≫ a) rfl (Category.assoc b a g), pcmp_nat_assoc, Iso.inv_hom_id_app_assoc]`.
+-/
 theorem FPt.map_comp {R S T : Scheme.{0}} (b : R ⟶ S) (a : S ⟶ T) (x : FPt E r T) :
     FPt.map (b ≫ a) x = FPt.map b (FPt.map a x) := by
   obtain ⟨g, fl, rfl⟩ : ∃ g fl, x = fpt g fl := ⟨_, _, x.eta⟩
@@ -167,6 +218,11 @@ variable (E r) in
 def flagProj : flagFunctor E r ⟶ yoneda.obj B where
   app T := TypeCat.ofHom fun x => x.1
 
+/- English proof (translation)
+Take `⟨g, fl, rfl⟩ : ∃ g fl, y = fpt g fl` from `⟨_, _, y.eta⟩`. Take `⟨g', fl', rfl⟩ : ∃ g fl, y' = fpt g fl` from `⟨_, _, y'.eta⟩`. Take `rfl : g = g'` from `𝒰.hom_ext _ _ fun i => congrArg Sigma.fst (e i)`. Use `(fpt_eq_iff _ _).2 fun a k => same_of_cover 𝒰.f 𝒰.exists_eq fun i => ?_` and prove the remaining obligations. Use `(fpt_eq_iff _ _).1 (((fpt_map _ fl rfl).symm.trans (e i)).trans (fpt_map _ fl' rfl)) a k` as an intermediate fact.
+
+Rewrite `this` using `[pullFl_ι, pullFl_ι]`. Conclude with `(same_comp_iff _).1 this`.
+-/
 theorem FPt.ext_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {y y' : FPt E r Z}
     (e : ∀ i, FPt.map (𝒰.f i) y = FPt.map (𝒰.f i) y') : y = y' := by
   obtain ⟨g, fl, rfl⟩ : ∃ g fl, y = fpt g fl := ⟨_, _, y.eta⟩
@@ -177,6 +233,19 @@ theorem FPt.ext_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {y y' : FPt E r Z}
   rw [pullFl_ι, pullFl_ι] at this
   exact (same_comp_iff _).1 this
 
+/- English proof (translation)
+Take `⟨f, hf⟩ : ∃ f : Z ⟶ B, ∀ i, 𝒰.f i ≫ f = (x i).1` from `⟨𝒰.glueMorphisms (fun i => (x i).1) fun i j => congrArg Sigma.fst (hx i j _ _ _ pullback.condition), fun i => 𝒰.ι_glueMorphisms _ _ i⟩`. Set `G : ∀ i a, Vert.Flag ((Scheme.Modules.pullback (𝒰.f i)).obj ((Scheme.Modules.pullback f).obj (E a))) (r a)` to `fun i a => (FPt.fl (x i) a).ofIso ((pcmp (𝒰.f i) f _ (hf i)).app (E a)).symm`. Establish `hG : ∀ a k, Compat 𝒰.f fun i => (G i a).ι k`. Introduce `a k i j S b c w`. Establish `w1 : b ≫ (x i).1 = c ≫ (x j).1`.
+
+Rewrite using `[← hf i, ← hf j, ← Category.assoc, w, Category.assoc]`. Establish `w5 : (c ≫ 𝒰.f j) ≫ f = c ≫ (x j).1` using `by rw [Category.assoc, hf j]`. Establish `hij : FPt.map b (fpt _ (FPt.fl (x i))) = FPt.map c (fpt _ (FPt.fl (x j)))`. Rewrite using `[← (x i).eta, ← (x j).eta]`. Conclude with `hx i j S b c w`.
+
+Rewrite `hij` using `[fpt_map b _ w1, fpt_map c _ rfl, fpt_eq_iff]`. Establish `e1` using `pcmp_assoc b (𝒰.f i) f (x i).1 (hf i) (c ≫ (x j).1) w1 (c ≫ 𝒰.f j) w w5 (E a)`. Establish `e2` using `pcmp_assoc c (𝒰.f j) f (x j).1 (hf j) (c ≫ (x j).1) rfl (c ≫ 𝒰.f j) rfl w5 (E a)`. Establish `h1` using `hij a k`. Rewrite `h1` using `[pullFl_ι, pullFl_ι]`.
+
+Rewrite using `[← same_comp_iff ((pcmp (c ≫ 𝒰.f j) f (c ≫ (x j).1) w5).hom.app (E a))]`. Simplify using `only [G, ofIso_ι, Iso.symm_hom, Iso.app_inv, Functor.map_comp, Category.assoc]`. Rewrite using `[← pcmp_hom_app_assoc, ← pcmp_rfl_hom_app, ← e1, ← e2]`. Simplify using `only [← Functor.map_comp_assoc, Category.assoc, Iso.inv_hom_id_app, Category.comp_id]`. Conclude with `h1`.
+
+Use `choose fl₀ hfl₀ using fun a => exists_flag_of_cover 𝒰.f 𝒰.exists_eq (fun i => G i a) (hG a)`. Use `⟨fpt f fl₀, fun i => ((fpt_map _ fl₀ (hf i)).trans ?_).trans (x i).eta.symm⟩` and prove the remaining obligations. Use `(fpt_eq_iff _ _).2 fun a k => ?_` and prove the remaining obligations. Use `(hfl₀ a i k).comp ((pcmp (𝒰.f i) f _ (hf i)).hom.app (E a))` as an intermediate fact. Simplify using `only [G, ofIso_ι, Iso.symm_hom, Iso.app_inv, Category.assoc, Iso.inv_hom_id_app, Category.comp_id] at this`.
+
+Rewrite using `[pullFl_ι]`. Conclude with `this`.
+-/
 theorem FPt.exists_glue {Z : Scheme.{0}} (𝒰 : Z.OpenCover) (x : ∀ i, FPt E r (𝒰.X i))
     (hx : ∀ i j (S : Scheme.{0}) (b : S ⟶ 𝒰.X i) (c : S ⟶ 𝒰.X j), b ≫ 𝒰.f i = c ≫ 𝒰.f j →
       FPt.map b (x i) = FPt.map c (x j)) : ∃ y : FPt E r Z, ∀ i, FPt.map (𝒰.f i) y = x i := by
@@ -212,6 +281,11 @@ theorem FPt.exists_glue {Z : Scheme.{0}} (𝒰 : Z.OpenCover) (x : ∀ i, FPt E 
   rw [pullFl_ι]
   exact this
 
+/- English proof (translation)
+Rewrite using `[Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]`. Introduce and unpack `Y P hP`. Take `⟨(𝒰 : Scheme.OpenCover Y), rfl⟩` from `Scheme.exists_cover_of_mem_pretopology hP`. Rewrite using `[Presieve.isSheafFor_arrows_iff]`. Introduce `x hx`.
+
+Conclude with `existsUnique_of_exists_of_unique (FPt.exists_glue 𝒰 x fun i j S b c h => hx i j S b c h) fun y y' h h' => FPt.ext_cover 𝒰 fun i => (h i).trans (h' i).symm`.
+-/
 theorem isSheaf_flagFunctor : Presieve.IsSheaf Scheme.zariskiTopology (flagFunctor E r) := by
   rw [Precoverage.isSheaf_toGrothendieck_iff_of_isStableUnderBaseChange]
   rintro Y P hP
@@ -221,6 +295,23 @@ theorem isSheaf_flagFunctor : Presieve.IsSheaf Scheme.zariskiTopology (flagFunct
   exact existsUnique_of_exists_of_unique (FPt.exists_glue 𝒰 x fun i j S b c h => hx i j S b c h)
     fun y y' h h' => FPt.ext_cover 𝒰 fun i => (h i).trans (h' i).symm
 
+/- English proof (translation)
+Introduce `B ι _ E r _ hU`. Use `choose U hxU Y π fl hfb using hU`. Set `fly : ∀ x, Fls E r (π x ≫ (U x).ι)` to `fun x a => (fl x a).ofIso ((pcmp (π x) (U x).ι _ rfl).app (E a))`. Establish `hrep : (flagFunctor E r).IsRepresentable`. Use `GlobalTheory.GenTorsor.isRepresentable_of_cover (flagFunctor E r) isSheaf_flagFunctor (flagProj E r) U ?_ Y (fun x => (fpt (π x ≫ (U x).ι) (fly x) : FPt E r (Y x))) π (fun x => rfl) ?_` and prove the remaining obligations.
+
+Conclude with `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxU x⟩`. Introduce `i Z x b hb`. Take `⟨g, flx, rfl⟩ : ∃ g fl, x = fpt g fl` from `⟨_, _, FPt.eta x⟩`. Establish `hb' : g = b ≫ (U i).ι` using `hb`. Substitute `hb'` using the available equality.
+
+Set `flb : ∀ a, Vert.Flag ((Scheme.Modules.pullback b).obj ((Scheme.Modules.pullback (U i).ι).obj (E a))) (r a)` to `fun a => (flx a).ofIso ((pcmp b (U i).ι _ rfl).app (E a)).symm`. Establish `key : ∀ (c : Z ⟶ Y i) (wc : c ≫ π i = b), (FPt.map c (fpt (π i ≫ (U i).ι) (fly i)) = fpt (b ≫ (U i).ι) flx ↔ ∀ a k, Same ((Scheme.Modules.pullback c).map ((fl i a).ι k) ≫ (Scheme.Modules.pullbackComp c (π i)).hom.app _ ≫ (Scheme.Modules.pullbackCongr wc).hom.app _) ((flb a).ι k))`. Introduce `c wc`. Establish `w' : c ≫ π i ≫ (U i).ι = b ≫ (U i).ι` using `by rw [← Category.assoc, wc]`. Rewrite using `[fpt_map c _ w', fpt_eq_iff]`.
+
+Use `forall_congr' fun a => forall_congr' fun k => ?_` and prove the remaining obligations. Rewrite using `[← same_comp_iff ((pcmp b (U i).ι _ rfl).hom.app (E a))]`. Simplify using `only [flb, fly, pullFl_ι, ofIso_ι, Iso.app_hom, Iso.symm_hom, Iso.app_inv, Functor.map_comp, Category.assoc, Iso.inv_hom_id_app, Category.comp_id]`. Rewrite using `[pcmp_assoc c (π i) (U i).ι _ rfl (b ≫ (U i).ι) w' b wc rfl (E a)]`. Simplify using `only [pcmp_hom_app c (π i) b wc, Category.assoc]`.
+
+Take `⟨c, ⟨wc, hc⟩, hu⟩` from `hfb i Z b flb`. Use `⟨c, (key c wc).2 hc, fun c' hc' => ?_⟩` and prove the remaining obligations. Establish `wc' : c' ≫ π i = b`. Use `congrArg Sigma.fst hc'` as an intermediate fact. Rewrite using `[← cancel_mono (U i).ι, Category.assoc]`.
+
+Conclude with `this`. Conclude with `hu c' ⟨wc', (key c' wc').1 hc'⟩`. Choose the witnesses or unpack the hypotheses as in `⟨Yu, u, hu⟩ : ∃ (Yu : Scheme.{0}) (u : FPt E r Yu), ∀ (Z : Scheme.{0}) (x : FPt E r Z), ∃! c : Z ⟶ Yu, FPt.map c u = x := by`. Take `⟨Yu, ⟨e⟩⟩` from `hrep.has_representation`. Establish `h : ∀ {Z : Scheme.{0}} (c : Z ⟶ Yu), FPt.map c (e.homEquiv (𝟙 Yu)) = e.homEquiv c` using `fun c => (e.homEquiv_eq c).symm`.
+
+Conclude with `⟨Yu, e.homEquiv (𝟙 Yu), fun Z x => ⟨e.homEquiv.symm x, (h _).trans (e.homEquiv.apply_symm_apply x), fun c hc => e.homEquiv.eq_symm_apply.2 ((h c).symm.trans hc)⟩⟩`. Take `⟨g, flu, rfl⟩ : ∃ g fl, u = fpt g fl` from `⟨_, _, FPt.eta u⟩`. Use `⟨Yu, g, flu, fun T g' fl' => ?_⟩` and prove the remaining obligations. Establish `key2 : ∀ (c : T ⟶ Yu) (wc : c ≫ g = g'), FPt.map c (fpt g flu) = fpt g' fl' ↔ ∀ a k, Same ((Scheme.Modules.pullback c).map ((flu a).ι k) ≫ (Scheme.Modules.pullbackComp c g).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr wc).hom.app (E a)) ((fl' a).ι k)`. Introduce `c wc`.
+
+Rewrite using `[fpt_map c flu wc, fpt_eq_iff]`. Simplify using `only [FlEq, pullFl_ι, pcmp_hom_app]`. Take `⟨c, hc, hcu⟩` from `hu T (fpt g' fl')`. Establish `wc : c ≫ g = g'` using `congrArg Sigma.fst hc`. Conclude with `⟨c, ⟨wc, (key2 c wc).1 hc⟩, fun c' ⟨wc', hc'⟩ => hcu c' ((key2 c' wc').2 hc')⟩`.
+-/
 theorem exists_isFlagBundle_of_cover : ∀ (B : Scheme.{0}) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → (∀ x : B, ∃ U : B.Opens, x ∈ U ∧ ∃ (Y : Scheme.{0}) (π : Y ⟶ U.toScheme) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj ((Scheme.Modules.pullback U.ι).obj (E a))) (r a)), IsFlagBundle π (fun a => (Scheme.Modules.pullback U.ι).obj (E a)) r fl) → ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl := by
   intro B ι _ E r _ hU
   choose U hxU Y π fl hfb using hU

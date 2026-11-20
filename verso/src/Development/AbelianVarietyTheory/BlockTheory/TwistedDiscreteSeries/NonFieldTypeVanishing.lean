@@ -26,6 +26,11 @@ def HasClassInt [MeasurableSpace G] (Γ : Subgroup G) (μ : Measure G) (𝓕 : S
   (∀ x, Summable fun δ : ratClass Γ γ => f (x⁻¹ * δ * x)) ∧ IntegrableOn (classKernel Γ γ f) 𝓕 μ ∧
     ∫ x in 𝓕, classKernel Γ γ f x ∂μ = c
 
+/- English proof (translation)
+Establish `key : ∀ g ∈ Γ, ∀ δ ∈ ratClass Γ γ, g⁻¹ * δ * g ∈ ratClass Γ γ`. Introduce and unpack `g hg _ ⟨a, ha, rfl⟩`. Conclude with `⟨a * g, mul_mem ha hg, by group⟩`. Set `e : ratClass Γ γ ≃ ratClass Γ γ` to `{ toFun := fun δ => ⟨g⁻¹ * δ * g, key g hg _ δ.2⟩ invFun := fun δ => ⟨g⁻¹⁻¹ * δ * g⁻¹, key _ (inv_mem hg) _ δ.2⟩ left_inv := fun δ => Subtype.ext (by simp [mul_assoc]) right_inv := fun δ => Subtype.ext (by simp [mul_assoc]) }`. Rewrite using `[classKernel, classKernel, ← e.tsum_eq fun δ => f (x⁻¹ * δ * x)]`.
+
+Conclude with `tsum_congr fun δ => congrArg f (by simp [e, mul_assoc])`.
+-/
 theorem classKernel_mul {Γ : Subgroup G} (γ : G) (f : G → ℂ) {g : G} (hg : g ∈ Γ) (x : G) :
     classKernel Γ γ f (g * x) = classKernel Γ γ f x := by
   have key : ∀ g ∈ Γ, ∀ δ ∈ ratClass Γ γ, g⁻¹ * δ * g ∈ ratClass Γ γ := by
@@ -109,6 +114,9 @@ def NonFieldTypeVanishing : Prop :=
     ProductClause μa μf μ fa ff (ratEmb D.sp.cm.sig V.gram γ) ∧
     ZeroClause μ (tensor D.sp.cm.sig V.gram fa ff) (ratEmb D.sp.cm.sig V.gram γ)
 
+/- English proof (translation)
+Take `⟨fa, ff, ha, hb, rfl⟩` from `hf`. Conclude with `(h D V hr S M T U hH μa μf μ hμ fa ff ha hb γ hγ).2.2`.
+-/
 theorem NonFieldTypeVanishing.zero (h : NonFieldTypeVanishing) (hr : Odd V.rank) {S : D.what₂.Tau → SPar}
     {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} (hH : HypH (k := fun v : T.S => ResF v.1) T.τ)
     {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
@@ -120,6 +128,9 @@ theorem NonFieldTypeVanishing.zero (h : NonFieldTypeVanishing) (hr : Odd V.rank)
 
 end Record
 
+/- English proof (translation)
+Establish `e : ratClass Γ γ = {γ}` using `Set.ext fun δ => ⟨fun ⟨g, _, h⟩ => by simp [h], fun h => ⟨1, one_mem _, by simpa using h⟩⟩`. Rewrite using `[classKernel, e, tsum_singleton γ fun δ => f (x⁻¹ * δ * x)]`. Simplify using the standard rewrite rules.
+-/
 example {G : Type} [CommGroup G] (Γ : Subgroup G) (γ : G) (f : G → ℂ) (x : G) : classKernel Γ γ f x = f γ := by
   have e : ratClass Γ γ = {γ} := Set.ext fun δ =>
     ⟨fun ⟨g, _, h⟩ => by simp [h], fun h => ⟨1, one_mem _, by simpa using h⟩⟩

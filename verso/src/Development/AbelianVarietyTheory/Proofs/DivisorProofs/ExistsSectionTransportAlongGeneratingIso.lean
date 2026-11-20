@@ -14,6 +14,17 @@ open Classical
 
 namespace GlobalTheory.SecTransport
 
+/- English proof (translation)
+Introduce `X M L e he hM hL σ`. Use `⟨DVR.secOfIso (u := e) σ he hM hL, ?_, DVR.nonzeroLocus_secOfIso e σ he hM hL⟩` and prove the remaining obligations. Introduce `p`. Apply `GlobalTheory.Cartier.ext_germ` to reduce the goal to its premises. Introduce `x hx`.
+
+Use `set σ' := DVR.secOfIso (u := e) σ he hM hL`. Establish `hx' : x ∈ M.U p.2 ⊓ L.U p.1` using `⟨hx.2, hx.1⟩`. Establish `h1 : (X.presheaf.germ _ x hx).hom (resG X (inf_le_left : L.U p.1 ⊓ M.U p.2 ≤ L.U p.1) (σ.f p.1)) = (X.presheaf.germ _ x hx.1).hom (σ.f p.1)` using `GlobalTheory.Cartier.germ_resG _ x hx _`. Establish `h2 : (X.presheaf.germ _ x hx).hom (resG X (inf_le_right : L.U p.1 ⊓ M.U p.2 ≤ M.U p.2) (σ'.f p.2)) = (X.presheaf.germ _ x hx.2).hom (σ'.f p.2)` using `GlobalTheory.Cartier.germ_resG _ x hx _`. Establish `h3 : (X.presheaf.germ _ x hx.2).hom (σ'.f p.2) = (X.presheaf.germ _ x hx').hom (DVR.isoCand e σ p.2 p.1)`.
+
+Rewrite using `[← DVR.secOfIso_spec (u := e) σ he hM hL p.2 p.1]`. Conclude with `(GlobalTheory.Cartier.germ_resG (inf_le_left : M.U p.2 ⊓ L.U p.1 ≤ M.U p.2) x hx' _).symm`. Establish `h4 : (X.presheaf.germ _ x hx').hom (DVR.isoCand e σ p.2 p.1) = (X.presheaf.germ _ x hx').hom (((res (DVR.divLe p.2 p.1) (e.s p))⁻¹ : Γ(X, M.U p.2 ⊓ L.U p.1)ˣ) : Γ(X, M.U p.2 ⊓ L.U p.1)) * (X.presheaf.germ _ x hx.1).hom (σ.f p.1)`. Unfold `DVR.isoCand`. Rewrite using `[map_mul]`.
+
+Use `congr 1`. Conclude with `GlobalTheory.Cartier.germ_resG (inf_le_right : M.U p.2 ⊓ L.U p.1 ≤ L.U p.1) x hx' _`. Establish `h5 : (X.presheaf.germ _ x hx').hom (((res (DVR.divLe p.2 p.1) (e.s p)) : Γ(X, M.U p.2 ⊓ L.U p.1)ˣ) : Γ(X, M.U p.2 ⊓ L.U p.1)) = (X.presheaf.germ _ x hx).hom ((@id (Γ(X, L.U p.1 ⊓ M.U p.2)ˣ) (e.s p) : Γ(X, L.U p.1 ⊓ M.U p.2)))` using `GlobalTheory.Cartier.germ_resG (DVR.divLe p.2 p.1) x hx' _`. Establish `h6 : (X.presheaf.germ _ x hx').hom (((res (DVR.divLe p.2 p.1) (e.s p)) : Γ(X, M.U p.2 ⊓ L.U p.1)ˣ) : Γ(X, M.U p.2 ⊓ L.U p.1)) * (X.presheaf.germ _ x hx').hom (((res (DVR.divLe p.2 p.1) (e.s p))⁻¹ : Γ(X, M.U p.2 ⊓ L.U p.1)ˣ) : Γ(X, M.U p.2 ⊓ L.U p.1)) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+
+Rewrite using `[map_mul, h1, h2, h3, h4, ← h5, ← _root_.mul_assoc, h6, _root_.one_mul]`.
+-/
 theorem main : ∀ {X : Scheme.{0}} {M L : LB X} (e : LB.Iso M L), e.IsGen → M.IsLB → L.IsLB →
     ∀ σ : L.Sec, ∃ σ' : M.Sec, GlobalTheory.Cartier.SecMaps e σ' σ ∧ Out.nonzeroLocus σ ≤ Out.nonzeroLocus σ' := by
   intro X M L e he hM hL σ

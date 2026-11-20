@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hJ : I ^ (e + 1) ≠ ⊤` using `fun h => hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Establish `: Nontrivial (R ⧸ I ^ (e + 1))` using `Ideal.Quotient.nontrivial_iff.2 hJ`. Establish `: IsLocalRing (R ⧸ I ^ (e + 1))` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`. Establish `: IsProper (thickObj R I e D.P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`.
+
+Use `g.q_hom` as an intermediate fact. Use `g'.i_hom` as an intermediate fact. Conclude with `splitTorus_hom_proper_trivial_local _ D'.X _ _ inferInstance`.
+-/
 lemma gtCoord_i_comp_q {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     {I : Ideal R} (hI : I ≠ ⊤) {D D' : DegPre R} {e : ℕ} {G : Over (Spec (CommRingCat.of R))}
     [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) (g' : GtCoord I D' e G) :
@@ -28,6 +33,11 @@ lemma gtCoord_i_comp_q {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsN
   have := g'.i_hom
   exact splitTorus_hom_proper_trivial_local _ D'.X _ _ inferInstance
 
+/- English proof (translation)
+Introduce `R _ _ _ I hR D D' A A' G _ _ _ U U' e`. Take `⟨hN, -, -, hC⟩` from `hR`. Establish `hI : I ≠ ⊤`. Introduce and unpack `rfl`. Establish `: Subsingleton R` using `IsHausdorff.subsingleton hC.toIsHausdorff`.
+
+Conclude with `false_of_nontrivial_of_subsingleton R`. Use `(U.gt e).q_affine` as an intermediate fact. Use `(U'.gt e).q_affine` as an intermediate fact. Conclude with `flatQuotient_iso_of_same_kernel _ _ _ _ _ _ (U.gt e).q (U.gt e).i (U'.gt e).q (U'.gt e).i (U.gt e).q_hom (U.gt e).i_hom (U.gt e).q_flat (U.gt e).q_surj inferInstance (U.gt e).isKernel (U'.gt e).q_hom (U'.gt e).i_hom (U'.gt e).q_flat (U'.gt e).q_surj inferInstance (U'.gt e).isKern …`.
+-/
 theorem unifPre_abelianPart_iso :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I →
       ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R))))

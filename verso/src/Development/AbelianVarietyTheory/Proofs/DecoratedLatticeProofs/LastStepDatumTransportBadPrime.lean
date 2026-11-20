@@ -23,6 +23,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `hq` using `qOf_ne_zero (P := P.1)`. Unfold `locTop`. Use `congr 1`. Generalize the expression as in `atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y = η`. Unfold `ftY`.
+
+Rewrite using `[if_neg hP, if_neg hP]`. Use `split_ifs with h`. Use `congr 1`. Establish `ev : ∀ z : Sp X.E (R.N (m2 + 1)), η z = ∑ j, z j * η (Pi.single j 1)` using `fun z => by conv_lhs => rw [pi_eq_sum_univ' z]`. Simplify using `[map_sum]`.
+
+Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `intCast_mem (intRing P.1) _`. Establish `hd : IntAt P.1 ((epsSg : X.E) * η (b - a))`. Rewrite using `[ev]`. Use `he.mul (intAt_sum _ fun j _ => ?_)` and prove the remaining obligations. Use `(hb j).mul (h j)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Pi.sub_apply, mul_mul_mul_comm, inv_mul_cancel₀ (pow_ne_zero _ hq), one_mul]`. Establish `hz' : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * ((epsSg : X.E) * η a))`. Take `⟨D, hD'⟩` from `Nat.exists_eq_add_of_le hD`. Use `(intAt_pow (intAt_nat (P := P.1) (qOf P.1)) D).mul (he.mul (intAt_sum Finset.univ fun j _ => (ha j).mul (h j)))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD', ev, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `hc.psi_add P _ _ hz' ((intAt_pow (intAt_nat (P := P.1) (qOf P.1)) _).mul hd)` as an intermediate fact. Rewrite `this` using `[hc.psi_int P _ hd, mul_one, ← mul_add, ← map_add, add_sub_cancel]`.
+
+Conclude with `this`. Both sides reduce to the same expression.
+-/
 theorem locTop_shiftQ (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (hD : 2 * cst.M ≤ cst.D P)
     (y : HomE X.E (R.N (m2 + 1)) (R.N R.m)) {a b : Sp X.E (R.N (m2 + 1))} (ha : ∀ i, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * a i))
     (hb : ∀ i, IntAt P.1 (((qOf P.1 : X.E) ^ cst.M)⁻¹ * (b i - a i))) :
@@ -57,6 +70,33 @@ theorem locTop_shiftQ (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) 
     exact this
   · rfl
 
+/- English proof (translation)
+Establish `hq` using `qOf_ne_zero (P := P.1)`. Use `choose t ht ez using fun s l => (⟨_, hyz s l, by field_simp; ring⟩ : ∃ t, IntAt P.1 t ∧ y (Pi.single s 1) l = z (Pi.single s 1) l + (qOf P.1 : X.E) ^ (cst.M + 1) * t)`. Establish `ez' : ∀ s l, z (Pi.single s 1) l = y (Pi.single s 1) l + (qOf P.1 : X.E) ^ (cst.M + 1) * (0 - t s l)` using `fun s l => by rw [ez]; ring`. Establish `ht' : ∀ s l, IntAt P.1 (0 - t s l)` using `fun s l => intAt_sub intAt_zero (ht s l)`. Establish `tr : ∀ (y z : HomE X.E (R.N (m2 + 1)) (R.N R.m)) (t : Fin (R.N (m2 + 1)) → Fin (R.N R.m) → X.E), (∀ s l, IntAt P.1 (t s l)) → (∀ s l, y (Pi.single s 1) l = z (Pi.single s 1) l + (qOf P.1 : X.E) ^ (cst.M + 1) * t s l) → SuppQ (m2` using `m2) P.1 cst.M z → SuppQ (m2 := m2) P.1 cst.M y := fun y z t ht ez hz s => by`.
+
+Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ez]`. Conclude with `((hz s).1 i).add ((intAt_pow (intAt_nat _) _).mul (ht _ _))`. Rewrite using `[ez, mul_add]`. Use `(hz s).2.add ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ← pow_add]`. Conclude with `(intAt_pow (intAt_nat _) _).mul (ht _ _)`. Distinguish the cases in `hz : SuppQ (m2 := m2) P.1 cst.M z`. Use `swap`. Establish `h1 : locTop Ch sel mu cst m2 P z a = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hz (suppQ_of_ne hm hP h)`. Establish `h2 : locTop Ch sel mu cst m2 P y a = 0`. Assume the negation of the conclusion as `h`. Conclude with `hz (tr z y _ ht' ez' (suppQ_of_ne hm hP h))`.
+
+Rewrite using `[h1, h2]`. Establish `hy` using `tr y z t ht ez hz`. Unfold `locTop`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Establish `he : ∀ p p', CongQ P.1 (LocE.entB (qOf P.1) R.k (cOf R (m2 + 1)) (R.N (m2 + 1)) 0 (R.N R.m - 1) 0 0 (prXp X.E R ∘ₗ y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) p p') (LocE.entB (qOf P.1) R.k (cOf R (m2 + 1)) (R.N (m2 + 1)) 0 (R.N R.m - 1) 0 0 (prXp X.E R ∘ₗ z ∘ₗ …` using `fun p p' => by`.
+
+Rewrite using `[entB_topQ hm, entB_topQ hm]`. Use `split_ifs with h`. Use `⟨(hy _).1 _, (hz _).1 _, ?_⟩ show IntAt _ ((y _ _ - z _ _) / _)` and prove the remaining obligations. Rewrite using `[ez]`. Use `(intAt_pow (intAt_nat (P := P.1) (qOf P.1)) cst.M).mul (ht ⟨p', h.2⟩ (Br.iC (N_m_succ R) ⟨p, h.1⟩)) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `congQ_zero`. Unfold `PhiTop`.
+
+Rewrite using `[if_neg hP]`. Unfold `LocE.PhiQ`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ ?_ rfl` and prove the remaining obligations. Simplify using `only [(he _ _).1, (he _ _).2.1, (he _ _).div_iff]`. Conclude with `unitV_det_congr _ fun s s' => he s.1 s'.1`.
+
+Unfold `ftY`. Establish `ev : ∀ w : HomE X.E (R.N (m2 + 1)) (R.N R.m), (atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ w) a = ∑ j, a j * w (Pi.single j 1) (Br.iL (N_m_succ R))` using `fun w => by`. Rewrite using `[LinearMap.comp_apply, atNL_last, apply_eq_sum]`. Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `intCast_mem (intRing P.1) _`. Rewrite using `[if_neg hP, if_neg hP, if_pos (fun i => by rw [LinearMap.comp_apply, atNL_last]; exact (hy _).2), if_pos (fun i => by rw [LinearMap.comp_apply, atNL_last]; exact (hz _).2), ev, ev]`.
+
+Use `congr 1`. Establish `hd : IntAt P.1 ((epsSg : X.E) * ∑ j, ((qOf P.1 : X.E) ^ cst.M * a j) * ((qOf P.1 : X.E) * t j (Br.iL (N_m_succ R))))` using `he.mul (intAt_sum _ fun j _ => (ha j).mul ((intAt_nat _).mul (ht _ _)))`. Establish `hz' : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * ((epsSg : X.E) * ∑ j, a j * z (Pi.single j 1) (Br.iL (N_m_succ R))))`. Take `⟨D, hD'⟩` from `Nat.exists_eq_add_of_le hD`. Use `(intAt_pow (intAt_nat (P := P.1) (qOf P.1)) D).mul (he.mul (intAt_sum Finset.univ fun j _ => (ha j).mul (hz j).2))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD', Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `hc.psi_add P _ _ hz' ((intAt_pow (intAt_nat (P := P.1) (qOf P.1)) _).mul hd)` as an intermediate fact. Rewrite `this` using `[hc.psi_int P _ hd, mul_one]`.
+
+Rewrite using `[← this]`. Use `congr 1`. Rewrite using `[← mul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ez]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locTop_congQ (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (hD : 2 * cst.M ≤ cst.D P)
     (y z : HomE X.E (R.N (m2 + 1)) (R.N R.m))
     (hyz : ∀ s l, IntAt P.1 (((qOf P.1 : X.E) ^ (cst.M + 1))⁻¹ * (y (Pi.single s 1) l - z (Pi.single s 1) l)))
@@ -138,6 +178,15 @@ theorem locTop_congQ (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (hP
     rw [ez]
     ring
 
+/- English proof (translation)
+Establish `h1 : (frsF sel mu p.1.1 P).symm (repY p.1.2) ∈ cosetIn p P` using `⟨_, p.repY_mem h, by rw [sub_self, smul_zero]; exact zero_mem _⟩`. Rewrite `h1` using `[← e]`. Take `⟨z, hz1, h2⟩` from `h1`. Rewrite `h2` using `[if_neg hP]`. Establish `h3` using `q.repY_mem h`.
+
+Take `⟨y, -, hY⟩` from `q.mem_ybSet h`. Establish `h4` using `(mem_locLat _ _ _ _).1 ((Set.ext_iff.1 hY _).1 hz1) P`. Establish `h5` using `(mem_locLat _ _ _ _).1 ((Set.ext_iff.1 hY _).1 h3) P`. Simplify using `only [if_neg hP, zpow_natCast] at h4 h5`. Establish `h6 : ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (z - repY q.1.2) ∈ q.1.1.deco.1.at P.1`.
+
+Use `sub_mem h4 h5` as an intermediate fact. Rewrite `this` using `[← smul_sub, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite `h6` using `[← (frsF sel mu q.1.1 P).apply_symm_apply (_ • (z - _)), frsF_mem, map_smul, map_sub]`. Establish `h7` using `add_mem h2 h6`. Rewrite `h7` using `[← smul_add, sub_add_sub_cancel]`.
+
+Simplify using `using mem_stdAt.1 h7 i`.
+-/
 theorem rep_sub_intQ {u : Pr.Word} {j : ℕ} (h : j + 1 = R.m) (p q : PtAt R sel mu cst u j) (e : cosetIn q = cosetIn p)
     {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) (i : Fin (R.N j)) :
     IntAt P.1 (((qOf P.1 : X.E) ^ cst.M)⁻¹ *
@@ -162,6 +211,25 @@ theorem rep_sub_intQ {u : Pr.Word} {j : ℕ} (h : j + 1 = R.m) (p q : PtAt R sel
 
 end TopQ
 
+/- English proof (translation)
+Introduce `B X I l ok u a n h P p q p' q' k y k' y' hp hN hp' hN' hq hq' e`. Establish `hc` using `(ok.idx_ok a).cst_ok`. Establish `hqpos : 0 < Formalism.L2.Col.qOf P.1` using `Nat.pos_of_ne_zero fun h0 => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Establish `hsq` using `Formalism.L2.Col.ciQ_notMem_sq (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr hP`.
+
+Use `⟨Formalism.L2.Col.qOf P.1, hqpos, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x x₀ hx`. Establish `hv : Valued.v ((Formalism.L2.Col.qOf P.1 * c : ℕ) : P.1.adicCompletion B.fields.E) < 1`. Rewrite using `[← map_natCast (algebraMap B.fields.E (P.1.adicCompletion B.fields.E)), valued_algebraMap, ← map_natCast (algebraMap (𝓞 B.fields.E) B.fields.E), HeightOneSpectrum.valuation_lt_one_iff_mem, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ GlobalTheory.TopStep.qOf_mem`.
+
+Establish `H` using `GlobalTheory.Transport.Last.read_cong hp hN hp' hN' hq hq' ⟨P.1, hP⟩ x x₀ (fun r s => by`. Use `lt_of_eq_of_lt (congrArg Valued.v ?_) ((hx r s).trans_lt hv)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Transport.Last.locM, GlobalTheory.Transport.Last.ratM, Matrix.sub_apply, Matrix.mul_apply, Matrix.map_apply, map_sub, map_sum, map_mul, adAt_inclE])`. Establish `f1 : ∀ {j : ℕ} (r : Formalism.L2.Col.ChPt (R` using `B.R) I.sel (I.tup a) u j), Formalism.L2.Col.frsF I.sel (I.tup a) r P = r.deco.1.liftFr ⟨P.1, hP⟩ := fun r => dif_pos hP`. Rewrite `H` using `[← f1, ← f1, ← f1, ← f1]`.
+
+Establish `hq1` using `GlobalTheory.TopStep.repY_int q.1.1 (q.mem_ybSet h) hP`. Rewrite using `[GlobalTheory.Transport.Last.locTop_shift hc hP _ hq1 (GlobalTheory.Transport.Last.rep_sub_int h p q e hP)]`. Conclude with `GlobalTheory.Transport.Last.locTop_of_cong h.symm hc hP hsq _ _ _ hq1 H`. Establish `hQ : P.1 ∈ I.Q a` using `(Finset.mem_union.1 P.2).resolve_left hP`. Establish `hD` using `(ok.idx_ok a).depthQ P hP`.
+
+Establish `hq0` using `GlobalTheory.TopStep.qOf_ne_zero (P := P.1)`. Use `⟨Formalism.L2.Col.qOf P.1 ^ ((I.cst a).M + 1), pow_pos hqpos _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x x₀ hx`. Establish `H` using `GlobalTheory.T.twist_prime_congruent_maps_frame_readings_bound I u a (n + 1) P hQ (GlobalTheory.Mem.Df.disjoint_vGs_Q I ok l a) p q p' q' k y k' y' hp hN hp' hN' hq hq' _ x x₀ hx`. Establish `hqv` using `GlobalTheory.TopStep.Model.repY_intQ q.1.1 (q.mem_ybSet h) hP`.
+
+Rewrite using `[locTop_shiftQ hc hP hD _ hqv (rep_sub_intQ h p q e hP)]`. Establish `key : ∀ s r, Formalism.L2.Col.IntAt P.1 (((Formalism.L2.Col.qOf P.1 : B.fields.E) ^ ((I.cst a).M + 1))⁻¹ * (Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup a) p.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup a) p'.1.1 P) x₀ (Pi.single s 1) r - Formalism.L2.Col.inFr (Formali …`. Introduce `s r`. Rewrite using `[GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val]`. Establish `H1` using `H r s`.
+
+Rewrite `H1` using `[Matrix.sub_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, Nat.cast_mul, Nat.cast_pow, map_mul]`. Establish `hc1 : P.1.valuation B.fields.E (c : B.fields.E) ≤ 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 B.fields.E) B.fields.E)]`. Conclude with `P.1.valuation_le_one _`. Establish `hpos : P.1.valuation B.fields.E ((Formalism.L2.Col.qOf P.1 : B.fields.E) ^ ((I.cst a).M + 1)) ≠ 0` using `(Valuation.ne_zero_iff _).2 (pow_ne_zero _ hq0)`.
+
+Rewrite using `[map_mul, map_inv₀, ← neg_sub, Valuation.map_neg]`. Combine the equalities or inequalities in the displayed calculation. Use `locTop_congQ h.symm hc hP hD _ _ ?_ hqv` and prove the remaining obligations. Introduce `s l`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, castSp_apply, castSp_apply]`.
+
+Conclude with `key s _`.
+-/
 theorem locTop_transport_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (ok : I.Ok) (u : B.Word) (a : I.ι) (n : ℕ) (h : n + 1 + 1 = B.R.m) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup a))
     (p q : PtAt B.R I.sel (I.tup a) (I.cst a) u (n + 1)) (p' q' : PtAt B.R I.sel (I.tup a) (I.cst a) u (n + 1 + 1))
     (k y : TC.GA B (B.R.N (n + 1))) (k' y' : TC.GA B (B.R.N (n + 1 + 1))),

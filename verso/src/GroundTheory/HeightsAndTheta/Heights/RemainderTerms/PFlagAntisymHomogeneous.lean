@@ -8,6 +8,11 @@ namespace RestTerms
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f N H d hH`. Establish `hmem : ∀ w : Fin f → Equiv.Perm (Fin N), blockSign f N w • blockPermute f N w H ∈ homogeneousSubmodule (Fin f × Fin N) ℚ d`. Introduce `w`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_homogeneousSubmodule]`.
+
+Conclude with `hH.rename_isHomogeneous`. Establish `hsum : antisymmetrize f N H ∈ homogeneousSubmodule (Fin f × Fin N) ℚ d` using `Submodule.sum_mem _ (fun w _ => hmem w)`. Rewrite `hsum` using `[mem_homogeneousSubmodule]`. Then use the resulting hypothesis.
+-/
 theorem FlagAntisymHomogeneous.proof : FlagAntisymHomogeneous.Statement := by
   intro f N H d hH
   have hmem : ∀ w : Fin f → Equiv.Perm (Fin N),

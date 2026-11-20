@@ -15,6 +15,9 @@ instance : IsDirected (FinSub K Ω) (· ≤ ·) :=
 
 instance : Nonempty (FinSub K Ω) := ⟨⟨⊥, inferInstance⟩⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsCofiltered (FinSub K Ω)ᵒᵖ := inferInstance
 
 def ringDiag : FinSub K Ω ⥤ CommRingCat.{0} where
@@ -30,10 +33,16 @@ def ringCocone : Cocone (ringDiag K Ω) where
 abbrev yArr (A : Type) [CommRing A] [Algebra K A] : Arrow PSh :=
   Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap K A))))
 
+/- English proof (translation)
+Rewrite using `[← Functor.map_comp, Spec.map_comp]`.
+-/
 theorem ym {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) :
     yoneda.map (Spec.map g) ≫ yoneda.map (Spec.map f) = yoneda.map (Spec.map (f ≫ g)) := by
   rw [← Functor.map_comp, Spec.map_comp]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `yoneda.map _ ≫ yoneda.map _ = yoneda.map _ ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Use `(ym _ _).trans ?_` and prove the remaining obligations. Apply the tactic sequence `congr 2 <;> (ext; rfl)`.
+-/
 theorem spec_comm {L L' : FinSub K Ω} (h : L ⟶ L') :
     yoneda.map (Spec.map ((ringDiag K Ω).map h)) ≫ (yArr K L.1).hom = (yArr K L'.1).hom ≫ 𝟙 _ := by
   change yoneda.map _ ≫ yoneda.map _ = yoneda.map _ ≫ 𝟙 _
@@ -73,7 +82,13 @@ def arrCone : Cone (arr K Ω) where
 
 def cechCone : Cone (arr K Ω ⋙ SimplicialObject.cechNerve) := SimplicialObject.cechNerve.mapCone (arrCone K Ω)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (cechCone K Ω).pt = cech (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (L : (FinSub K Ω)ᵒᵖ) : (arr K Ω ⋙ SimplicialObject.cechNerve).obj L = cech (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1))) := rfl
 
 end GlobalTheory.SepCech

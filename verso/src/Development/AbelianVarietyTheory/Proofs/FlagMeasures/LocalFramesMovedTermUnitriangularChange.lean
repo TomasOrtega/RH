@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.LocOver
 
+/- English proof (translation)
+Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[hA.1 a c h, zero_mul]`.
+
+Rewrite using `[hB.1 c b (lt_of_lt_of_le hab h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hA.2 a, hB.2 a, mul_one]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases.
+
+Rewrite using `[hA.1 a c h, zero_mul]`. Rewrite using `[hB.1 c a h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem isUpperUnitriangularFinMatrix_mul_of_both {K : Type} [CommRing K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (hA : Uni A) (hB : Uni B) :
     Uni (A * B) := by
   refine ⟨fun a b hab => ?_, fun a => ?_⟩
@@ -37,6 +44,19 @@ theorem isUpperUnitriangularFinMatrix_mul_of_both {K : Type} [CommRing K] {n : �
       · rw [hB.1 c a h, mul_zero]
     · intro h; exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Introduce `D Z p T T' F0 F0' F F' ρ U U' g f' hM hE hf'`. Take `⟨_, hU, hU', hρ, hρ'⟩` from `hM`. Establish `hs : ∀ (h : Fin (D.R.rS + 1) → (VS D).V) a, g (scaled Z p h a) = scaled Z p (fun b => ρ (h b)) a`. Introduce `h a`. Simplify using `only [scaled, map_smul]`.
+
+Rewrite using `[hE]`. Establish `uniOf : ∀ W : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, IsUpUni W → Uni W` using `fun W hW => ⟨fun a b hab => (hW a b).1 hab, fun a => (hW a a).2 rfl⟩`. Take `⟨A1, hA1, -⟩` from `tri_scaled D Z (frame F0) (fun b => ρ (frame F b)) U (uniOf U hU) (fun b => hρ b)`. Take `⟨A2, hA2, -⟩` from `tri_scaled D Z (frame F0') (fun b => ρ (frame F' b)) U' (uniOf U' hU') (fun b => hρ' b)`. Use `⟨⟨A1 p, (hA1 p).1, fun b => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show g (scaled Z p (frame F) b) = _`. Rewrite using `[hs]`. Conclude with `(hA1 p).2 b`. Take `⟨A, hA, hc⟩` from `hf'`. Use `⟨A2 p * A, isUpperUnitriangularFinMatrix_mul_of_both _ _ (hA2 p).1 hA, fun b => ?_⟩` and prove the remaining obligations.
+
+Use `show g (f' b) = _`. Rewrite using `[hc b, map_sum]`. Establish `h2 : ∀ a, g (A a b • scaled Z p (frame F') a) = ∑ d, (A a b * A2 p d a) • scaled Z p (frame F0') d`. Introduce `a`. Rewrite using `[map_smul, hs, (hA2 p).2 a, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => smul_smul _ _ _`. Rewrite using `[Finset.sum_congr rfl fun a _ => h2 a, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`.
+-/
 theorem triMove_main : ∀ {D : D7} (Z : LocDat D) (p : PlF D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T') (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U U' : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (f' : Fin (D.R.rS + 1) → Vp D p), MovesTo F0 F0' F F' ρ U U' → Ext p ρ g → Tri (D.s.atP p).Ep (scaled Z p (frame F')) f' → Tri (D.s.atP p).Ep (scaled Z p (frame F0)) (fun a => g (scaled Z p (frame F) a)) ∧ Tri (D.s.atP p).Ep (scaled Z p (frame F0')) (fun b => g (f' b)) := by
   intro D Z p T T' F0 F0' F F' ρ U U' g f' hM hE hf'
   obtain ⟨_, hU, hU', hρ, hρ'⟩ := hM

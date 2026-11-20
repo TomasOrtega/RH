@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LagrAvgAdm.avg_exists_clm | exact GlobalTheory.LagrAvgAdm.avg_exists_clm | (intros; apply GlobalTheory.LagrAvgAdm.avg_exists_clm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lagrangian_lattice_theta_integral_bound : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))), (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) →
     Module.finrank F Λ = Fintype.card κ → ∀ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), (∀ j, u j ∈ Λ) →
     LinearIndependent F (fun j => (u j).1) → (∀ v ∈ Λ, ∃ c : Fin r → F, v.1 = ∑ j, c j • (u j).1) →

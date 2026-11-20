@@ -6,6 +6,49 @@ open MeasureTheory FinHolAtlas Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `e X _ _ _ A Φ hΦ q T S hT hTS hS hint hq hdet hfin g hg`. Establish `hne` using `existsPartition A`. Rewrite using `[mInt, dif_pos hne]`. Use `set P := hne.some with hP`. Establish `hSc : IsClosed S` using `pushA_isClosed A hS`.
+
+Establish `hTc : ∀ x, x ∉ S → x ∈ Tᶜ` using `fun x hx hxT => hx (hTS hxT)`. Use `set h : Fin A.n → X → ℝ := fun j x => P.χ j x * g x * pushDens A Φ q x with hh`. Establish `hO : ∀ j, IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Sᶜ)` using `fun j => (A.chart j).isOpen_inter_preimage_symm hSc.isOpen_compl`. Establish `hloc : ∀ j, ∀ z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Sᶜ, ∃ W : Set (Fin e → ℂ), IsOpen W ∧ z ∈ W ∧ Set.InjOn (q ∘ (A.chart j).symm) W`. Introduce `j z hz`.
+
+Apply `pushA_locInj (pushA_analytic A hq j hz.1 (hTc _ hz.2))` to reduce the goal to its premises. Use `hdet _ hz.2 j ((A.chart j).map_target hz.1)` as an intermediate fact. Rewrite `this` using `[(A.chart j).right_inv hz.1]`. Then use the resulting hypothesis. Use `choose D hDm hDd hDU hDi using fun j => pushA_cover _ (hO j) _ (hloc j)`. Establish `hDO : ∀ j m, D j m ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Sᶜ`.
+
+Introduce `j m z hz`. Rewrite using `[← hDU j]`. Conclude with `Set.mem_iUnion.2 ⟨m, hz⟩`. Establish `hEq : ∀ j, Set.EqOn (fun z => Complex.normSq (LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) z : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) * h j ((A.chart j).symm z)) (fun y => P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' …`. Introduce `j z hz`.
+
+Establish `hd` using `pushA_dens A Φ hΦ hq j hz.1 (hTc _ hz.2) (hdet _ hz.2 (chartIdx A _) (Classical.choose_spec (A.cover _)))`. Simplify using `only [hh]`. Rewrite using `[← hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `hEqN : ∀ j, Set.EqOn (fun z => Complex.normSq (LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) z : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) * |h j ((A.chart j).symm z)|) (fun y => ‖P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y‖) ((A.chart j).target ∩ (A.chart j).sym …`.
+
+Introduce `j z hz`. Establish `h1 : Complex.normSq (LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) z : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) * h j ((A.chart j).symm z) = P.χ j ((A.chart j).symm z) * g ((A.chart j).symm z) * locDens A Φ j z` using `hEq j hz`. Use `show Complex.normSq (LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) z : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) * |h j ((A.chart j).symm z)| = ‖P.χ j ((A.chart j).symm z) * g ((A.chart j).symm z) * locDens A Φ j z‖`. Rewrite using `[← h1, Real.norm_eq_abs, abs_mul (Complex.normSq _) (h j ((A.chart j).symm z)), abs_of_nonneg (Complex.normSq_nonneg _)]`. Establish `hdiff : ∀ j m, ∀ z ∈ D j m, DifferentiableAt ℂ (q ∘ (A.chart j).symm) z` using `fun j m z hz => (pushA_analytic A hq j (hDO j m hz).1 (hTc _ (hDO j m hz).2)).differentiableAt`.
+
+Establish `hintT` using `fun j => pushA_intOn A P Φ g hg j`. Establish `hintO : ∀ j, IntegrableOn (fun y => P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y) (⋃ m, D j m)` using `fun j => (hintT j).mono_set (by rw [hDU j]; exact Set.inter_subset_left)`. Establish `hpc : ∀ j m, Integrable (fun y => ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x) ∧ ∫ y, ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x = ∫ y in D j m, P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A Φ j y ∧ ∫ y, ‖∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D …`. Introduce `j m`. Take `⟨hI, hJ⟩` from `pushA_piece q (A.chart j).symm (hDm j m) (hdiff j m) (hDi j m) (h j)`.
+
+Take `⟨-, hJ'⟩` from `pushA_piece q (A.chart j).symm (hDm j m) (hdiff j m) (hDi j m) (fun x => |h j x|)`. Use `⟨hI.2 (((hintT j).mono_set fun z hz => (hDO j m hz).1).congr_fun ((hEq j).mono (hDO j m)).symm (hDm j m)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, setIntegral_congr_fun (hDm j m) ((hEq j).mono (hDO j m))]`. Rewrite using `[funext fun y => pushA_piece_norm q (A.chart j).symm (hDi j m) (h j) y, hJ', setIntegral_congr_fun (hDm j m) ((hEqN j).mono (hDO j m))]`. Establish `hEd : ∀ j, Pairwise (Function.onFun Disjoint fun m => (A.chart j).symm '' D j m)`.
+
+Introduce `j m m' hmm'`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨z, hz, rfl⟩ ⟨z', hz', hzz⟩`. Establish `: z' = z`. Rewrite using `[← (A.chart j).right_inv (hDO j m' hz').1, hzz, (A.chart j).right_inv (hDO j m hz).1]`.
+
+Conclude with `Set.disjoint_left.1 (hDd j hmm') hz (this ▸ hz')`. Establish `hEU : ∀ j, ∀ x, x ∉ S → (⋃ m, (A.chart j).symm '' D j m).indicator (h j) x = h j x`. Introduce `j x hx`. Distinguish the cases in `hxs : x ∈ (A.chart j).source`. Establish `hz : A.chart j x ∈ ⋃ m, D j m`.
+
+Rewrite using `[hDU j]`. Conclude with `⟨(A.chart j).map_source hxs, show (A.chart j).symm (A.chart j x) ∈ Sᶜ by rw [(A.chart j).left_inv hxs]; exact hx⟩`. Take `⟨m, hm⟩` from `Set.mem_iUnion.1 hz`. Establish `hxU : x ∈ ⋃ m, (A.chart j).symm '' D j m` using `Set.mem_iUnion.2 ⟨m, A.chart j x, hm, (A.chart j).left_inv hxs⟩`. Conclude with `Set.indicator_of_mem hxU _`.
+
+Establish `hn : x ∉ ⋃ m, (A.chart j).symm '' D j m`. Introduce and unpack `hx'`. Take `⟨m, z, hz, rfl⟩` from `Set.mem_iUnion.1 hx'`. Conclude with `hxs ((A.chart j).map_target (hDO j m hz).1)`. Rewrite using `[Set.indicator_of_notMem hn]`.
+
+Simplify using `only [hh]`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h' => hxs (P.tsupport_subset j h'))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hser : ∀ j y, HasSum (fun m => ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x) (∑ᶠ x ∈ q ⁻¹' {y} \ S, h j x)`. Introduce `j y`.
+
+Establish `hset : ∀ m, q ⁻¹' {y} ∩ (A.chart j).symm '' D j m = (q ⁻¹' {y} \ S) ∩ (A.chart j).symm '' D j m`. Introduce `m`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, z, hz, rfl⟩`.
+
+Conclude with `⟨⟨hx1, (hDO j m hz).2⟩, z, hz, rfl⟩`. Introduce and unpack `⟨⟨hx1, -⟩, hx2⟩`. Conclude with `⟨hx1, hx2⟩`. Simplify using `only [hset, pushA_finsum_inter, finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Use `hasSum_sum fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hxS : x ∉ S` using `((hfin y).mem_toFinset.1 hx).2`. Rewrite using `[← hEU j x hxS]`. Conclude with `pushA_hasSum_ind _ (hEd j) (h j) x`. Establish `hnsum : ∀ j, Summable fun m => ∫ y, ‖∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x‖`. Introduce `j`.
+
+Simplify using `only [fun m => (hpc j m).2.2]`. Conclude with `(hasSum_integral_iUnion (hDm j) (hDd j) (hintO j).norm).summable`. Establish `hts : ∀ j, Integrable fun y => ∑' m, ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x` using `fun j => pushA_intTsum (fun m => (hpc j m).1) (fun y => (hser j y).summable) (hnsum j)`. Establish `hpt : ∀ y, ∑ j, ∑' m, ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x = ∑ᶠ x ∈ q ⁻¹' {y} \ S, g x * pushDens A Φ q x`. Introduce `y`.
+
+Rewrite using `[Finset.sum_congr rfl fun j _ => (hser j y).tsum_eq, pushA_sum_finsum (hfin y)]`. Use `finsum_mem_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [hh, ← Finset.sum_mul, P.sum_eq_one, one_mul]`. Establish `hfun : (fun y => ∑ᶠ x ∈ q ⁻¹' {y} \ S, g x * pushDens A Φ q x) = fun y => ∑ j, ∑' m, ∑ᶠ x ∈ q ⁻¹' {y} ∩ (A.chart j).symm '' D j m, h j x`. Use function extensionality and compare the values at `fun y => (hpt y).symm`.
+
+Rewrite using `[hfun]`. Use `⟨integrable_finsetSum _ fun j _ => hts j, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => hts j, integralWith]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hnull : ((A.chart j).target : Set (Fin e → ℂ)) =ᵐ[volume] (((A.chart j).target ∩ (A.chart j).symm ⁻¹' Sᶜ : Set (Fin e → ℂ)))`.
+
+Use `ae_eq_set.2 ⟨measure_mono_null ?_ (analyticNull A S hS hint j), ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzO⟩`. Establish `hzS : (A.chart j).symm z ∈ S`. Assume the negation of the conclusion as `hc`. Conclude with `hzO ⟨hz, hc⟩`.
+
+Conclude with `⟨(A.chart j).symm z, ⟨hzS, (A.chart j).map_target hz⟩, (A.chart j).right_inv hz⟩`. Rewrite using `[Set.sdiff_eq_empty.2 Set.inter_subset_left]`. Conclude with `measure_empty`. Rewrite using `[setIntegral_congr_set hnull, ← hDU j, integral_iUnion (hDm j) (hDd j) (hintO j), ← integral_tsum_of_summable_integral_norm (fun m => (hpc j m).1) (hnsum j)]`. Conclude with `tsum_congr fun m => ((hpc j m).2.1).symm`.
+-/
 theorem pushB_forward : PushForwardStatement := by
   intro e X _ _ _ A Φ hΦ q T S hT hTS hS hint hq hdet hfin g hg
   have hne := existsPartition A

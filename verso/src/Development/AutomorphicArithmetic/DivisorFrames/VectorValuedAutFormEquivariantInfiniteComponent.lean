@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain TensorProduct
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR GlobalTheory.UnitaryBC GlobalTheory.FrameAut Formalism.CohomologicalDescent.DepthNonnegative
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `e' : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat _ D.sp.cm.sig V.gram h = Matrix.GeneralLinearGroup.map (incA D) γ₀` using `e`. Unfold `Formalism.MainNotions.StandardLattice.infMat`. Rewrite using `[e']`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `θ τ (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ⊗ₜ[D.host.F] γ₀.val a b)) = tauE D τ (γ₀.val a b)`.
+
+Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `(hθ τ).1 _`.
+-/
 private theorem UpperTheory.infinite_matrix_rational {D : D7} {V : HSp D}
     (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (h : GA D V) (γ₀ : GL (Fin V.rank) D.host.E)
@@ -21,6 +26,15 @@ private theorem UpperTheory.infinite_matrix_rational {D : D7} {V : HSp D}
   rw [Algebra.TensorProduct.map_tmul, map_one]
   exact (hθ τ).1 _
 
+/- English proof (translation)
+Take `⟨B, rfl⟩` from `hA`. Establish `key : ∀ (x : UA E n) (γ₀ : GL (Fin n) E), (Matrix.GeneralLinearGroup.map σ γ₀ : GL (Fin n) ℂ).val = B.val * (cEmb σ x : Matrix (Fin n) (Fin n) ℂ) * (B.val)⁻¹ → Matrix.GeneralLinearGroup.map σ γ₀ = B * cEmb σ x * B⁻¹` using `fun x γ₀ h => by`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h, Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Break down `hε with rfl | rfl` into its components or cases.
+
+Conclude with `⟨B, key⟩`. Use `⟨Matrix.GeneralLinearGroup.map (starRingEnd ℂ) B, fun x γ₀ h => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (Matrix.GeneralLinearGroup.map (starRingEnd ℂ)) (key x γ₀ h)`. Rewrite `h1` using `[map_mul, map_mul, map_inv]`. Establish `h2 : Matrix.GeneralLinearGroup.map (starRingEnd ℂ) (cEmb σ x) = cEmb (ComplexEmbedding.conjugate σ) x`.
+
+Use extensionality with `a b`. Conclude with `(GlobalTheory.DefiniteBC.coord_conjugate σ _).symm`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1]`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.exists_conjugate_embedding {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (σ ε : E →+* ℂ)
     (hε : ε = σ ∨ ε = ComplexEmbedding.conjugate σ) (A : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A) :
     ∃ B : GL (Fin n) ℂ, ∀ (x : UA E n) (γ₀ : GL (Fin n) E),
@@ -46,6 +60,9 @@ private theorem UpperTheory.exists_conjugate_embedding {E : Type} [Field E] [Num
     ext a b
     rfl
 
+/- English proof (translation)
+Rewrite using `[h, ← Module.End.mul_apply, ← wtOp_mul, ← mul_assoc, inv_mul_cancel_left, wtOp_mul]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.weight_operator_conjugate {n : ℕ} {ι : Type} [Fintype ι] (mu : ι → ℕ → ℕ) (sh : ι → ℤ)
     (B C G : ι → GL (Fin n) ℂ) (h : G = B * C * B⁻¹) (u : NablaT ℂ n mu) :
     wtOp ℂ n mu sh B⁻¹ (wtOp ℂ n mu sh G u) = wtOp ℂ n mu sh C (wtOp ℂ n mu sh B⁻¹ u) := by
@@ -53,10 +70,30 @@ private theorem UpperTheory.weight_operator_conjugate {n : ℕ} {ι : Type} [Fin
   rw [h, ← Module.End.mul_apply, ← wtOp_mul, ← mul_assoc, inv_mul_cancel_left, wtOp_mul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [map_mul, hx, mul_one]`.
+-/
 private theorem UpperTheory.monoidHom_kernel_invariance {G H K : Type} [Monoid G] [Monoid H] [Monoid K] (j : G →* H) (φ : H →* K)
     (g x : G) (h : H) (hx : φ (j x) = 1) : φ (j (g * x) * h) = φ (j g * h) := by
   simp only [map_mul, hx, mul_one]
 
+/- English proof (translation)
+Introduce `D _ V θ j h₀ hθ hT emb hemb mu sh Fm hF hrat hlev`. Take `⟨-, hQ, -, hI, ⟨A, hA, hAe⟩, -⟩` from `hT`. Use `choose B hB using fun τ => UpperTheory.exists_conjugate_embedding (tauE D τ) (emb τ) (hemb τ) (A τ) (hA τ)`. Use `⟨fun x => wtOp ℂ V.rank mu sh B⁻¹ (Fm ((finHom V).rangeRestrict (j x * h₀))), ?_, ?_, ?_, ?_, _, fun _ => rfl⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hF` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨k, rfl⟩` from `(finHom V).rangeRestrict_surjective g`. Establish `h1` using `congrArg (wtOp ℂ V.rank mu sh B) (congrFun h0 (j.symm (k * h₀⁻¹)))`. Simplify using `only [ContinuousMulEquiv.apply_symm_apply, inv_mul_cancel_right, Pi.zero_apply, map_zero] at h1`.
+
+Rewrite `h1` using `[← Module.End.mul_apply, ← wtOp_mul, mul_inv_cancel, wtOp_one]`. Conclude with `h1`. Introduce `γ hγ g`. Establish `hj : j γ ∈ GQ V` using `(hQ γ).1 hγ`. Take `⟨γ₀, -, e⟩` from `id hj`.
+
+Establish `e' : matHom V (j γ) = Matrix.GeneralLinearGroup.map (incA D) γ₀` using `e.symm`. Establish `h1` using `hrat ⟨j γ, hj⟩ γ₀ e' ((finHom V).rangeRestrict (j g * h₀))`. Establish `h2 : (finHom V).rangeRestrict (j (γ * g) * h₀) = Bridge.ratF V ⟨j γ, hj⟩ * (finHom V).rangeRestrict (j g * h₀)`. Establish `h4 : j (γ * g) * h₀ = j γ * (j g * h₀)` using `by rw [map_mul, mul_assoc]`. Conclude with `(congrArg (finHom V).rangeRestrict h4).trans (map_mul (finHom V).rangeRestrict _ _)`.
+
+Establish `h3 : (fun τ => Matrix.GeneralLinearGroup.map (emb τ) γ₀) = B * (fun τ => cEmb (emb τ) γ) * B⁻¹`. Use function extensionality and compare the values at `τ`. Conclude with `hB τ γ γ₀ ((UpperTheory.infinite_matrix_rational θ hθ _ γ₀ e' τ).symm.trans (hAe τ γ))`. Conclude with `(congrArg (wtOp ℂ V.rank mu sh B⁻¹) ((congrArg Fm h2).trans h1)).trans (UpperTheory.weight_operator_conjugate mu sh B _ _ h3 _)`. Introduce `x hx g`.
+
+Establish `hj : finHom V (j x) = 1` using `(hI x).1 hx`. Establish `h1 : (finHom V).rangeRestrict (j x) = 1` using `Subtype.ext hj`. Conclude with `congrArg (fun z => wtOp ℂ V.rank mu sh B⁻¹ (Fm z)) (UpperTheory.monoidHom_kernel_invariance j.toMulEquiv.toMonoidHom (finHom V).rangeRestrict g x h₀ h1)`. Establish `hc : Continuous fun y : UA D.host.E V.rank => h₀⁻¹ * j y * h₀` using `(continuous_const.mul j.continuous).mul continuous_const`. Establish `ht : Filter.Tendsto (fun y : UA D.host.E V.rank => h₀⁻¹ * j y * h₀) (nhds 1) (nhds 1)`.
+
+Conclude with `hc.tendsto' 1 1 (by simp only [map_one, mul_one, inv_mul_cancel])`. Use `filter_upwards [ht.eventually hlev] with y hy g`. Establish `h1 : j (g * y) * h₀ = j g * h₀ * (h₀⁻¹ * j y * h₀)`. Rewrite using `[map_mul]`. Use `group`.
+
+Conclude with `congrArg (wtOp ℂ V.rank mu sh B⁻¹) ((congrArg Fm ((congrArg (finHom V).rangeRestrict h1).trans (map_mul (finHom V).rangeRestrict _ _))).trans (hy _))`.
+-/
 theorem UpperTheory.vectorValued_autForm_equivariant_infinite_component :
     ∀ (D : D7) [IsCMField D.host.E] (V : HSp D) (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
         (j : UA D.host.E V.rank ≃ₜ* GA D V) (h₀ : GA D V), IsInfFam θ → GlobalTheory.DefTransfer.IsTransfer V θ j h₀ →

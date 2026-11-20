@@ -12,6 +12,15 @@ open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore
 
+/- English proof (translation)
+Introduce `D θ hθ V ε fr h b τ`. Establish `h1 : infMat D.sp.cm.sig V.gram (θ τ) b * infMat D.sp.cm.sig V.gram (θ τ) b⁻¹ = 1`. Rewrite using `[← Formalism.L2.Fam.ThC.infMat_mul, mul_inv_cancel, Formalism.L2.Fam.ThC.infMat_one]`. Establish `h2 : infMat D.sp.cm.sig V.gram (θ τ) b⁻¹ * infMat D.sp.cm.sig V.gram (θ τ) b = 1`. Rewrite using `[← Formalism.L2.Fam.ThC.infMat_mul, inv_mul_cancel, Formalism.L2.Fam.ThC.infMat_one]`.
+
+Establish `hu : IsUnit (infMat D.sp.cm.sig V.gram (θ τ) b⁻¹)` using `IsUnit.of_mul_eq_one _ h2`. Establish `hinv : (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹ = infMat D.sp.cm.sig V.gram (θ τ) b⁻¹` using `Matrix.inv_eq_right_inv h1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹)`. Rewrite using `[hinv]`.
+
+Conclude with `(h τ).1.mul hu`. Use `show (fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹)ᴴ * Formalism.REAL.Jm (ε τ) * (fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹) = _`. Rewrite using `[hinv, Matrix.conjTranspose_mul]`. Apply the tactic sequence `have e := GlobalTheory.Doubling.infMat_isometry (V := V) hθ τ b⁻¹`. Rewrite `e`, the goal using `[← (h τ).2]`.
+
+Simplify `e` using `only [Matrix.mul_assoc]`.
+-/
 theorem isFrameFam_mul_infMat_inv : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ →
     ∀ (V : HSp D) (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ),
       IsFrameFam V ε fr → ∀ b : GA D V,

@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DoublingCont.continuous_and_rat | exact GlobalTheory.DoublingCont.continuous_and_rat | (intros; apply GlobalTheory.DoublingCont.continuous_and_rat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubling_embedding_continuous_rational : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (J₂ : Matrix (Fin (d + d)) (Fin (d + d)) E),
     ∀ i : UA σ J × UA σ J →* UA σ J₂, (∀ h h', mat (i (h, h')) = blkMat finSumFinEquiv (mat h) (mat h')) →

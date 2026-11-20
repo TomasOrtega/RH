@@ -15,11 +15,17 @@ abbrev LoI (ι : Type*) (r : ℕ) : Type _ := {i : Ix ι r // i.2.2 < i.2.1}
 def Umat (y : UpI ι r → ℂ) (τ : ι) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.of fun a b => if h : ¬ b < a then y ⟨(τ, a, b), h⟩ else 0
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Umat, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma Umat_add (y y' : UpI ι r → ℂ) (τ : ι) : Umat (y + y') τ = Umat y τ + Umat y' τ := by
   ext a b
   simp only [Umat, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Umat, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma Umat_smul (c : ℂ) (y : UpI ι r → ℂ) (τ : ι) : Umat (c • y) τ = c • Umat y τ := by
   ext a b
   simp only [Umat, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]
@@ -33,6 +39,11 @@ def Lβ (β : ι → Matrix (Fin r) (Fin r) ℂ) : (UpI ι r → ℂ) →ₗ[ℂ
 def keyU (e : ι ≃ Fin (Fintype.card ι)) (i : UpI ι r) : ℕ ×ₗ (ℕ ×ₗ Fin (Fintype.card ι)) :=
   toLex ((i.1.2.2 : ℕ), toLex (r - (i.1.2.1 : ℕ), e i.1.1))
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨τ, a, b⟩, hi⟩ ⟨⟨τ', a', b'⟩, hj⟩ h`. Simplify using `only [keyU, toLex_inj, Prod.mk.injEq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Establish `ha : (a : ℕ) = a'` using `by have := a.isLt; have := a'.isLt; omega`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨e.injective h3, Fin.ext ha, Fin.ext h1⟩`.
+-/
 lemma keyU_injective (e : ι ≃ Fin (Fintype.card ι)) : Function.Injective (keyU (r := r) e) := by
   rintro ⟨⟨τ, a, b⟩, hi⟩ ⟨⟨τ', a', b'⟩, hj⟩ h
   simp only [keyU, toLex_inj, Prod.mk.injEq] at h
@@ -42,6 +53,17 @@ lemma keyU_injective (e : ι ≃ Fin (Fintype.card ι)) : Function.Injective (ke
   simp only [Prod.mk.injEq]
   exact ⟨e.injective h3, Fin.ext ha, Fin.ext h1⟩
 
+/- English proof (translation)
+Take `⟨⟨τ, a, b⟩, hi⟩` from `i`. Take `⟨⟨τ', a', b'⟩, hj⟩` from `j`. Rewrite using `[LinearMap.toMatrix'_apply]`. Simplify using `only [Lβ, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_apply, Umat, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single a']`.
+
+Distinguish the cases in `h : τ' = τ ∧ b' = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[hj, Pi.single_apply]`. Rewrite using `[if_neg h] split_ifs with h'`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Pi.single_apply, if_neg, mul_zero]`. Introduce `heq`. Apply `h` to reduce the goal to its premises. Simplify using `only [Subtype.mk.injEq, Prod.mk.injEq] at heq`. Conclude with `⟨heq.1.symm, heq.2.2.symm⟩`.
+
+Introduce `c _ hc split_ifs with h'`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg, mul_zero]`. Introduce `heq`. Simplify using `only [Subtype.mk.injEq, Prod.mk.injEq] at heq`.
+
+Conclude with `hc heq.2.1`. Simplify using the standard rewrite rules.
+-/
 private lemma toMatrix_entry_lemma (β : ι → Matrix (Fin r) (Fin r) ℂ) (i j : UpI ι r) :
     LinearMap.toMatrix' (Lβ β) i j =
       if j.1.1 = i.1.1 ∧ j.1.2.2 = i.1.2.2 then β i.1.1 i.1.2.1 j.1.2.1 else 0 := by
@@ -70,6 +92,13 @@ private lemma toMatrix_entry_lemma (β : ι → Matrix (Fin r) (Fin r) ℂ) (i j
       exact hc heq.2.1
   · simp
 
+/- English proof (translation)
+Rewrite using `[toMatrix_entry_lemma]`. Use `split_ifs with h`. Take `⟨⟨τ, a, b⟩, hi⟩` from `i`. Take `⟨⟨τ', a', b'⟩, hj⟩` from `j`. Take `⟨rfl, rfl⟩` from `h`.
+
+Simplify using `only [keyU, Prod.Lex.toLex_lt_toLex, lt_irrefl, false_or, and_false, or_false, true_and] at hij`. Apply `hβ _` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Use `a'.isLt` as an intermediate fact. Use `show (a' : ℕ) < a`.
+
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 lemma toMatrix_Lβ_zero (e : ι ≃ Fin (Fintype.card ι)) (β : ι → Matrix (Fin r) (Fin r) ℂ)
     (hβ : ∀ τ, (β τ).BlockTriangular id) (i j : UpI ι r) (hij : keyU e i < keyU e j) :
     LinearMap.toMatrix' (Lβ β) i j = 0 := by
@@ -86,10 +115,18 @@ lemma toMatrix_Lβ_zero (e : ι ≃ Fin (Fintype.card ι)) (β : ι → Matrix (
     omega
   · rfl
 
+/- English proof (translation)
+Rewrite using `[toMatrix_entry_lemma, if_pos ⟨rfl, rfl⟩]`.
+-/
 lemma toMatrix_Lβ_diag (β : ι → Matrix (Fin r) (Fin r) ℂ) (hβ : ∀ τ, (β τ).BlockTriangular id) (i : UpI ι r) :
     LinearMap.toMatrix' (Lβ β) i i = β i.1.1 i.1.2.1 i.1.2.1 := by
   rw [toMatrix_entry_lemma, if_pos ⟨rfl, rfl⟩]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.det_toMatrix']`. Set `e` to `Fintype.equivFin ι`. Use `letI : LinearOrder (UpI ι r) := LinearOrder.lift' (keyU (r := r) e) (keyU_injective e)`. Establish `h` using `Matrix.det_of_lowerTriangular (LinearMap.toMatrix' (Lβ β)) (fun i j hij => toMatrix_Lβ_zero e β hβ i j hij)`. Use `h using 2 with i` and compare the differences between its conclusion and the goal.
+
+Conclude with `(toMatrix_Lβ_diag β hβ i).symm`.
+-/
 theorem det_Lβ (β : ι → Matrix (Fin r) (Fin r) ℂ) (hβ : ∀ τ, (β τ).BlockTriangular id) :
     LinearMap.det (Lβ β) = ∏ i : UpI ι r, β i.1.1 i.1.2.1 i.1.2.1 := by
   rw [← LinearMap.det_toMatrix']

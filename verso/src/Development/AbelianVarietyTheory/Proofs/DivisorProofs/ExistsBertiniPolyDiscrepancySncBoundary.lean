@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Use `choose W hW hxW Q hQ hP using h`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover W hW (fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩)`. Use `⟨∏ x ∈ t, Q x, Finset.prod_ne_zero_iff.2 fun x _ => hQ x, fun c hc y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Rewrite `hc` using `[map_prod]`.
+
+Conclude with `hP x c (Finset.prod_ne_zero_iff.1 hc x hx) y hy`.
+-/
 theorem exists_mvPolynomial_of_forall_nhds {X : Type} [TopologicalSpace X] [CompactSpace X]
     {ι : Type} (P : (ι → ℂ) → X → Prop)
     (h : ∀ x₀ : X, ∃ W : Set X, IsOpen W ∧ x₀ ∈ W ∧ ∃ Q : MvPolynomial ι ℂ, Q ≠ 0 ∧
@@ -29,6 +34,17 @@ theorem exists_mvPolynomial_of_forall_nhds {X : Type} [TopologicalSpace X] [Comp
   rw [map_prod] at hc
   exact hP x c (Finset.prod_ne_zero_iff.1 hc x hx) y hy
 
+/- English proof (translation)
+Introduce `Y _ _ q n _ hproj B hB A ι _ s hs`. Use `haveI : IsProper q := ((isProjOver_iff_isProper_and_exists_isAmpleLB q).1 hproj).1`. Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace q`. Use `(exists_mvPolynomial_of_forall_nhds (X := Y) (fun c y => ∀ t : Y.functionFieldˣ, (t : Y.functionField) = ∑ i, Cartier.constFn q (c i) * s i → (∃ i, A.GeneratesAt y (s i)) → ∀ (η : RatForms q n) (K Θ : CartierDiv Y) (m : ℕ) (c' : ℚ) (g f : Y.functionFieldˣ), η ≠ 0 → IsDivOfForm K …` and prove the remaining obligations. Take `⟨W, hW, z, w, u, e, f, hfr, he, hf, hch⟩` from `GlobalTheory.T.exists_affine_snc_chart_cartier_single_equation Y q n B hB A ι s hs y₀`.
+
+Take `⟨Q, hQ, hQc⟩` from `GlobalTheory.T.bertini_coordinateStrata_etaleChart_cotangent Y q n W z hfr ι f`. Use `⟨W, W.isOpen, hW, Q, hQ, fun c hc y hy t ht hgen η K Θ m c' g f' hη hK hm hΘ hc' hmult hg hf' E hE => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, hJz⟩` from `hch y hy`. Establish `hFv : fnOf W (gen_mem hy) (∑ i, algX q W (c i) * f i) = ((t * e : Y.functionFieldˣ) : Y.functionField)`. Rewrite using `[Units.val_mul, ht, Finset.sum_mul, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hf i, ← RingHom.comp_apply, fnOf_comp_algX, mul_assoc]`. Establish `hunit : UnitAt y ((f' : Y.functionField) / ((t * e : Y.functionFieldˣ) : Y.functionField))` using `((CartierDiv.isEqn_principal t y).add (he y hy)).iff_unitAt.1 hf'`. Establish `hbas : ∃ i, y ∈ Y.basicOpen (f i)`. Take `⟨i, hi⟩` from `hgen`.
+
+Use `⟨i, (unitAt_fnOf_iff hy (gen_mem hy) (f i)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[hf i]`. Conclude with `(he y hy).generatesAt_iff.1 hi`. Rewrite using `[GlobalTheory.T.discrepancy_eq_formOrder_sub_weighted_coordOrders Y q n B y W hy z J w u hJ η K Θ m g hη hK hm hΘ hg E hE]`. Conclude with `GlobalTheory.T.discrepancy_lt_adaptedCoords_independent_function Y q n B y W hy z J w u hJ hJz _ (fun h => hQc c hc y hy hbas J h) (t * e) f' (fun j => (Θ.mult (w j) : ℚ) / m) c' hFv.symm hunit (fun j hj => by`.
+
+Use `hmult (w j) (hJ.spec j hj)` as an intermediate fact. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Rewrite using `[div_lt_one hm']`. Conclude with `this) hc' E hE` after adjusting the coercions.
+-/
 theorem exists_poly_neg_one_lt_discrep_member : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ) [SmoothOfRelativeDimension n q], IsProjOver q → ∀ (B : Closeds Y), FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B) → ∀ (A : CartierDiv Y) (ι : Type) [Fintype ι] (s : ι → Y.functionField), (∀ i, s i ∈ A.sections) → ∃ Q : MvPolynomial ι ℂ, Q ≠ 0 ∧ ∀ u : ι → ℂ, MvPolynomial.eval u Q ≠ 0 → ∀ t : Y.functionFieldˣ, (t : Y.functionField) = ∑ i, Cartier.constFn q (u i) * s i → ∀ y : Y, (∃ i, A.GeneratesAt y (s i)) → ∀ (η : RatForms q n) (K Θ : CartierDiv Y) (m : ℕ) (c : ℚ) (g f : Y.functionFieldˣ), η ≠ 0 → IsDivOfForm K η → 0 < m → Θ.supp ≤ B → c < 1 → (∀ w, w ⤳ y → Θ.mult w < m) → (Θ + m • K).IsEqn y g → (GlobalTheory.Cartier.CartierDiv.principal t + A).IsEqn y f → ∀ E : DivOver q, E.Through y → -1 < discrep E η m g - c * E.ord f := by
   intro Y _ _ q n _ hproj B hB A ι _ s hs
   haveI : IsProper q := ((isProjOver_iff_isProper_and_exists_isAmpleLB q).1 hproj).1

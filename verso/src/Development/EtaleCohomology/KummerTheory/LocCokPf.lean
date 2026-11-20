@@ -17,12 +17,24 @@ def CokAff : Prop := A2 → DivisorNaturality → B1 → ∀ (q : ℕ) [NeZero q
   ∃ (C : CommRingCat.{0}) (t : B ⟶ C), t.hom.Etale ∧ (∃ w : Spec C, Spec.map t w = b) ∧
     ∃ y, lh q p (Spec.map (s ≫ t)) i r c M n y = N • pull _ (sch.map (bcMap p s (s ≫ t) t rfl)) _ _ x
 
+/- English proof (translation)
+Introduce `R U u`. Take `⟨b, hb⟩` from `U.left.affineCover.covers u`. Conclude with `⟨_, Spec.preimage (U.left.affineCover.f (U.left.affineCover.idx u) ≫ U.hom), U.left.affineCover.f (U.left.affineCover.idx u), U.left.affineCover.map_prop _, b, by simp, hb⟩`.
+-/
 theorem affNbhd : AffNbhd := by
   intro R U u
   obtain ⟨b, hb⟩ := U.left.affineCover.covers u
   exact ⟨_, Spec.preimage (U.left.affineCover.f (U.left.affineCover.idx u) ≫ U.hom),
     U.left.affineCover.f (U.left.affineCover.idx u), U.left.affineCover.map_prop _, b, by simp, hb⟩
 
+/- English proof (translation)
+Introduce `h2 h6 hb1 q _ X R p _ _ hq i r c M N n hiso U u x`. Take `⟨B, s, ι, _, b, hs, hb'⟩` from `hA U u`. Set `g0 : Over.mk (Spec.map s) ⟶ U` to `Over.homMk ι hs`. Take `⟨C, t, ht, ⟨w, hw⟩, y, hy⟩` from `hC h2 h6 hb1 q p hq i r c M N n hiso B s b (pull _ (sch.map (rst p g0)) _ _ x)`. Establish `: Etale (Spec.map t)` using `(HasRingHomProperty.Spec_iff (P := @Etale)).2 ht`.
+
+Set `g : Over.mk (Spec.map (s ≫ t)) ⟶ U` to `Over.homMk (Spec.map t ≫ ι) (by simp [hs, Spec.map_comp])`. Use `⟨Over.mk (Spec.map (s ≫ t)), g, ⟨?_, w, ?_⟩, y, ?_⟩` and prove the remaining obligations. Use `show Etale (Spec.map t ≫ ι)`. Use `infer_instance`. Use `show (Spec.map t ≫ ι) w = u`.
+
+Rewrite using `[Scheme.Hom.comp_apply, hw, hb']`. Use `show lh q p (Spec.map (s ≫ t)) i r c M n y = _`. Establish `key : bcMap p s (s ≫ t) t rfl ≫ rst p g0 = rst p g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [bcMap, rst, g, g0, pullback.map, Over.homMk_left, Category.assoc, Category.comp_id] erw [pullback.lift_fst, pullback.lift_fst, pullback.lift_fst]`.
+
+Both sides reduce to the same expression. Simplify using `only [bcMap, rst, g, g0, pullback.map, Over.homMk_left, Category.assoc, Category.comp_id] erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[hy, ← pull_comp, ← Functor.map_comp, key]`.
+-/
 theorem locCok_of (hA : AffNbhd) (hC : CokAff) : LocCok := by
   intro h2 h6 hb1 q _ X R p _ _ hq i r c M N n hiso U u x
   obtain ⟨B, s, ι, _, b, hs, hb'⟩ := hA U u
@@ -47,6 +59,9 @@ theorem locCok_of (hA : AffNbhd) (hC : CokAff) : LocCok := by
         rfl
     rw [hy, ← pull_comp, ← Functor.map_comp, key]
 
+/- English proof (translation)
+The claim follows from `locCok_of affNbhd hC`.
+-/
 theorem locCok_of_cokAff (hC : CokAff) : LocCok := locCok_of affNbhd hC
 
 end LateralTheory.KummerTheory.LHCut

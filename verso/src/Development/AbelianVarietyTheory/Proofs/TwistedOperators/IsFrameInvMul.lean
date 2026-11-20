@@ -22,6 +22,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SplitPlaceRed
 
+/- English proof (translation)
+Introduce `x`. Establish `hAm : ∀ z, z ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) L ↔ A.1.mulVec z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Rewrite using `[← SetLike.mem_coe, ← hA]`. Conclude with `⟨z, hz, rfl⟩`. Introduce `hz`. Rewrite `hz` using `[← SetLike.mem_coe, ← hA]`. Take `⟨z', hz', e⟩` from `hz`.
+
+Establish `e2` using `congrArg (A⁻¹).1.mulVec e`. Rewrite `e2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `e2 ▸ hz'`. Rewrite using `[hAm, hβ]`. Establish `e : ((A⁻¹ * β)⁻¹).1 = (β⁻¹).1 * A.1`.
+
+Rewrite using `[mul_inv_rev, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[e, ← Matrix.mulVec_mulVec]`.
+-/
 theorem isFrame_inv_mul {D : D7} {n : ℕ} {L Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (β A : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β Λ)
     (hA : A.1.mulVec '' (Formalism.L2.Herm.hatL (F := D.host.F) L : Set (Fin n → Formalism.IndefR.Lev.EAf D)) =
@@ -47,6 +56,15 @@ theorem isFrame_inv_mul {D : D7} {n : ℕ} {L Λ : Submodule (𝓞 D.host.E) (Fi
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set Φ : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D) →* GL (Fin V.rank) (Fv D.host.F v) := Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ) with hΦ`. Establish `hfin : ∀ h : GA D V, Φ (finE V h) = Matrix.GeneralLinearGroup.map (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ) (Formalism.L2.Theta.matHom V h)`. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises.
+
+Introduce `p q`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdE φ ((finE V h).1 p q) = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA φ ((Formalism.L2.Theta.matHom V h).1 p q)`. Rewrite using `[GlobalTheory.LevSplit.finE_val]`. Conclude with `GlobalTheory.SplitProjChart.rdE_toEAf φ _`. Establish `hk : Φ (finE V (embV V v g)) = splitHom D.sp.cm.sig V.gram (GlobalTheory.SplitProjChart.emb φ) g`.
+
+Rewrite using `[hfin]`. Conclude with `GlobalTheory.SplitChartLink.rdA_matHom_embV V φ _`. Establish `hyv : Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y = β⁻¹ * Formalism.L2.DIV.frGL β y * β` using `by show _ = β⁻¹ * (β * _ * β⁻¹) * β group`. Rewrite using `[hyv, hy]`. Use `show _ = (Φ ((finE V A)⁻¹ * β))⁻¹ * _ * Φ ((finE V A)⁻¹ * β)`.
+
+Simplify using `only [map_mul, map_inv, hk]`. Use `group`.
+-/
 theorem map_intGL_eq {D : D7} (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.SplitProj D v)
     (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (A : GA D V) (g : Gv V v)
     (y : GL (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E))
@@ -81,6 +99,27 @@ namespace GlobalTheory.SplitPlaceRed
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V β Λ N a hB hL v PP hv hc hst`. Establish `hcc : Formalism.IndefR.Lev.IsConjPl PP (Formalism.L2.DIV.conjPl PP)`. Introduce `c hc'`. Use `⟨Formalism.L2.DIV.starO c, ?_, Formalism.L2.DIV.starO_coe c⟩` and prove the remaining obligations. Use `show Formalism.L2.DIV.starO (Formalism.L2.DIV.starO c) ∈ PP.asIdeal`.
+
+Rewrite using `[Formalism.L2.DIV.starO_starO]`. Conclude with `hc'`. Establish `hne : PP ≠ Formalism.L2.DIV.conjPl PP` using `fun e => hc (by`. Use `hcc` as an intermediate fact. Rewrite `this` using `[← e]`.
+
+Conclude with `this)`. Establish `hv' : (Formalism.L2.DIV.conjPl PP).under (𝓞 D.host.F) = v` using `(GlobalTheory.LevelPlaces.under_eq_of_isConjPl hcc).symm.trans hv`. Take `⟨τ, hτ, -⟩` from `existsUnique_splitPrime_eq (isCMExt_host D) hne hv hv'`. Use `set φ : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.SplitProj D v := splitProj τ with hφ`. Establish `hemb : GlobalTheory.SplitProjChart.emb φ = τ`.
+
+Use extensionality with `x`. Simplify using `[hφ, GlobalTheory.SplitProjChart.emb, splitProj]`. Establish `hfr` using `isFrame_inv_mul β (finE V (a : GA D V)) hB.1 hL.2`. Establish `hsb` using `GlobalTheory.ChartStab.isSplitBasis_frCo hfr φ`. Set `s : SplitAt D.sp.cm.sig V.gram (frameLat V) v` to `⟨GlobalTheory.SplitProjChart.emb φ, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.frCo φ ((finE V (a : GA D V))⁻¹ * β), isCMExt_host D, GlobalTheory.ChartStab.hermND D V, GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat_of_cm D.sp.cm V v, hsb⟩`.
+
+Establish `hP : splitPrime (GlobalTheory.SplitProjChart.emb φ) = PP` using `hemb ▸ hτ`. Set `ρ : ResF v ≃+* kP PP` to `(splitResidueEquiv (GlobalTheory.SplitProjChart.emb φ)).symm.trans (Ideal.quotEquivOfEq (congrArg HeightOneSpectrum.asIdeal hP))`. Use `⟨s, ρ, fun k i j => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hst k`. Establish `hg0 : ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) = (a : GA D V) * embV V v (k : Gv V v) * (a : GA D V)⁻¹`.
+
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, coe_locFin, Subgroup.coe_inv]`. Rewrite using `[← hy, redFn_frGL]`. Rewrite `hy` using `[hg0]`. Use `show resS D.host.F PP (y.1 i j) = ρ ((s.red k).1 i j)`. Establish `hg : ∀ x : 𝓞 D.host.E, ((ρ : ResF v →+* kP PP).comp ((IsLocalRing.residue _).comp (GlobalTheory.PlaceRed.rdS φ))) (oToS D.host.F D.host.E x) = Ideal.Quotient.mk PP.asIdeal x`.
+
+Introduce `x`. Simplify using `only [RingHom.comp_apply, GlobalTheory.PlaceRed.rdS_oToS]`. Establish `e1 : GlobalTheory.PlaceRed.rdO φ x = splitInt (GlobalTheory.SplitProjChart.emb φ) x` using `Subtype.ext rfl`. Rewrite using `[e1, ← splitResidueEquiv_mk]`. Use `show Ideal.quotEquivOfEq (congrArg HeightOneSpectrum.asIdeal hP) ((splitResidueEquiv _).symm (splitResidueEquiv _ _)) = _`.
+
+Rewrite using `[RingEquiv.symm_apply_apply, Ideal.quotEquivOfEq_mk]`. Rewrite using `[← GlobalTheory.PlaceRed.eq_resS PP _ hg]`. Use `show ρ (IsLocalRing.residue _ (GlobalTheory.PlaceRed.rdS φ (y.1 i j))) = ρ ((s.red k).1 i j)`. Use `congr 1`. Establish `hred : (s.red k).1 i j = IsLocalRing.residue _ ((stabLocEquiv (isCMExt_host D) (GlobalTheory.ChartStab.hermND D V) (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat_of_cm D.sp.cm V v) hsb k).1 i j)` using `by show (splitRed _ _ _ _ k).1 i j = _`.
+
+Rewrite using `[splitRed_val]`. Both sides reduce to the same expression. Rewrite using `[hred]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[coe_stabLocEquiv, splitEquivIn_apply]`. Conclude with `congrArg (fun m : GL (Fin V.rank) (Fv D.host.F v) => m.1 i j) (map_intGL_eq V φ β (a : GA D V) (k : Gv V v) y hy)`.
+-/
 theorem splitRed_frame : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (a : GfC V), IsBaseFrame V β Λ N → GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsLatIsom V V (frameLat V) Λ (finE V (a : GA D V)).val → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (PP : Pl D.host.E), PP.under (𝓞 D.host.F) = v → ¬ Formalism.IndefR.Lev.IsConjPl PP PP → (∀ k : Kv V v, finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) ∈ St β) → ∃ (s : SplitAt D.sp.cm.sig V.gram (frameLat V) v) (ρ : ResF v ≃+* kP PP), ∀ (k : Kv V v) (i j : Fin V.rank), (redFn β PP (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V))).1 i j = ρ ((s.red k).1 i j) := by
   intro D V β Λ N a hB hL v PP hv hc hst
 

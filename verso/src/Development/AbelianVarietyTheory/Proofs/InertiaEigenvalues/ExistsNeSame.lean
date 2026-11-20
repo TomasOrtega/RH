@@ -13,6 +13,37 @@ namespace GlobalTheory.TwistChoice
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Take `⟨b1, b2, b3, b4, b5, b6, -⟩` from `h`. Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Consider the cases of `D`. Consider the cases of `‹Rows.Data _›`.
+
+Consider the cases of `‹NData _ _ _›`. Consider the cases of `‹NTw _ _ _ _ _›`. Consider the cases of `D'`. Consider the cases of `‹Rows.Data _›`. Consider the cases of `‹NData _ _ _›`.
+
+Consider the cases of `‹NTw _ _ _ _ _›`. Simplify using `only at a1 a2 a3 b1 b2 b3 b4 b5 b6 nOm ninstOm nalgOm nplOm nPlG xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xz …`. Substitute `a1` using the available equality. Substitute `a2` using the available equality. Substitute `a3` using the available equality.
+
+Substitute `b1` using the available equality. Substitute `b2` using the available equality. Substitute `b3` using the available equality. Substitute `b4` using the available equality. Substitute `nOm` using the available equality.
+
+Substitute `ninstOm` using the available equality. Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Substitute `xcc` using the available equality.
+
+Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality. Substitute `xOk` using the available equality.
+
+Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality. Substitute `xpD` using the available equality. Substitute `xchi1` using the available equality.
+
+Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality. Substitute `xside` using the available equality. Substitute `xrhoS` using the available equality.
+
+Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality. Substitute `xsideL` using the available equality. Substitute `xRCG` using the available equality.
+
+Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality. Substitute `xth` using the available equality. Substitute `b5` using the available equality.
+
+Substitute `b6` using the available equality. Use `⟨rfl, id, ⟨RingEquiv.refl _, fun i i' hi b x => ?_⟩, fun ψ ψ' hψ => ?_, fun w w' hw => ?_⟩` and prove the remaining obligations. Substitute `hi` using the available equality. Conclude with `HEq.rfl`. Substitute `hψ` using the available equality.
+
+Use `⟨id, fun w w' hw => ?_⟩` and prove the remaining obligations. Substitute `hw` using the available equality. Conclude with `⟨HEq.rfl, id⟩`. Substitute `hw` using the available equality. Use `⟨HEq.rfl, fun i i' hi b => ?_, fun p p' hp b ψ ψ' hψ => ?_⟩` and prove the remaining obligations.
+
+Substitute `hi` using the available equality. Conclude with `Iff.rfl`. Substitute `hp` using the available equality. Substitute `hψ` using the available equality. Introduce and unpack `⟨ρ, hρ⟩`.
+
+Conclude with `⟨@Reading.mk _ _ _ _ _ ρ.Oe ρ.cr ρ.dom ρ.dvr ρ.alg ρ.inj ρ.fin ρ.loc ρ.emb ρ.emb_w ρ.emb_side, hρ⟩`.
+-/
 theorem SameField.basic {D D' : D7} (h : SameField D D') (h1 : SameGalois D.nd D'.nd) (h2 : TwistDataAgreeAcrossCoefficients D.ntw D'.ntw) :
     D.what₂.places.Pl = D'.what₂.places.Pl ∧ (IsGalois ℚ ↥D.LL0 → IsGalois ℚ ↥D'.LL0) ∧
     (∃ φ : ↥D.LL0 ≃+* ↥D'.LL0, ∀ (i : D.ntw.Tw) (i' : D'.ntw.Tw), HEq i i' → ∀ b x,

@@ -7,5 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.B
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.ExistsUniqueStatement
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK | exact GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationality_of_resolution_statement : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ReciprocityTheory.ChartRestriction.G.AI.I2.RatRStatement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK | exact GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.ratR_of_resK <;> assumption)

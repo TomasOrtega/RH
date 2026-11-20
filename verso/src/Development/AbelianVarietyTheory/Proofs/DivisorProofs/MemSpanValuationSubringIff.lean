@@ -14,6 +14,9 @@ def embVal (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : Λ) :
     (Λ →+* O) → v.valuationSubring :=
   fun σ => ⟨algebraMap O C (σ α), (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_embVal (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : Λ) (σ : Λ →+* O) :
     (embVal v hv α σ : C) = algebraMap O C (σ α) := rfl
 
@@ -21,6 +24,17 @@ def modelLattice {S : Type} {h N : ℕ} (Φ : (Fin h → C) ≃ₗ[C] (S → Fin
     (L : Submodule O (Fin h → O)) : Submodule v.valuationSubring (S → Fin N → C) :=
   Submodule.span v.valuationSubring ((fun t => Φ (incl C h t)) '' (L : Set (Fin h → O)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx`. Take `⟨o, ho⟩` from `hv.exists_of_le_one ((Valuation.mem_valuationSubring_iff _ _).1 c.2)`. Establish `: c • x = o • x`. Rewrite using `[← algebraMap_smul C c x, ← algebraMap_smul C o x, ho]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul o x _ hx`. Set `c : v.valuationSubring` to `⟨algebraMap O C o, (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)⟩`.
+
+Establish `: o • x = c • x`. Rewrite using `[← algebraMap_smul C c x, ← algebraMap_smul C o x]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mem_span_valuationSubring_iff (hv : v.Integers O) {W : Type} [AddCommGroup W] [Module C W]
     [Module O W] [IsScalarTower O C W] [Module v.valuationSubring W]
     [IsScalarTower v.valuationSubring C W] (s : Set W) (x : W) :
@@ -50,6 +64,11 @@ theorem mem_span_valuationSubring_iff (hv : v.Integers O) {W : Type} [AddCommGro
       rw [this]
       exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Unfold `modelLattice`. Rewrite using `[mem_span_valuationSubring_iff v hv]`. Establish `: (fun t => Φ (incl C h t)) '' (L : Set (Fin h → O)) = (L.map ((Φ.toLinearMap.restrictScalars O) ∘ₗ incl C h) : Set (S → Fin N → C))`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, Submodule.span_eq, Submodule.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_modelLattice (hv : v.Integers O) {S : Type} {h N : ℕ}
     (Φ : (Fin h → C) ≃ₗ[C] (S → Fin N → C)) (L : Submodule O (Fin h → O)) (w : S → Fin N → C) :
     w ∈ modelLattice v Φ L ↔ ∃ t ∈ L, Φ (incl C h t) = w := by
@@ -61,11 +80,23 @@ theorem mem_modelLattice (hv : v.Integers O) {S : Type} {h N : ℕ}
   rw [this, Submodule.span_eq, Submodule.mem_map]
   rfl
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`.
+-/
 theorem mem_eig_iff {Λ : Type} [CommRing Λ] {h : ℕ} (ρ : Λ → Matrix (Fin h) (Fin h) O)
     (τ : Λ →+* O) (x : Fin h → C) :
     x ∈ eig C ρ τ ↔ ∀ l, (ρ l).map (algebraMap O C) *ᵥ x = algebraMap O C (τ l) • x := by
   simp only [eig, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_eig_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx σ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, σ l ≠ τ l := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hσ (RingHom.ext hc)`. Establish `e` using `hΦ l x σ`. Rewrite `e` using `[hx l, map_smul, Pi.smul_apply, ← sub_eq_zero, ← sub_smul, smul_eq_zero]`. Break down `e with e | e` into its components or cases.
+
+Conclude with `absurd (hv.hom_inj (sub_eq_zero.1 e)).symm hl`. Conclude with `e`. Introduce `hx l`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+
+Rewrite using `[hΦ, map_smul, Pi.smul_apply]`. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ]`. Rewrite using `[hx σ hσ, smul_zero, smul_zero]`.
+-/
 theorem mem_eig_iff_support (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ)
@@ -90,6 +121,17 @@ theorem mem_eig_iff_support (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N :
     · rw [hσ]
     · rw [hx σ hσ, smul_zero, smul_zero]
 
+/- English proof (translation)
+Set `j : O →+* v.valuationSubring` to `(algebraMap O C).codRestrict v.valuationSubring fun o => (Valuation.mem_valuationSubring_iff _ _).2 (hv.map_le_one _)`. Establish `hj : Function.Surjective j` using `fun c => by`. Take `⟨o, ho⟩` from `hv.exists_of_le_one ((Valuation.mem_valuationSubring_iff _ _).1 c.2)`. Conclude with `⟨o, Subtype.ext ho⟩`. Establish `key : ∀ (f : Polynomial O) (σ : Λ →+* O), (((f.map j).eval (embVal v hv α σ) : v.valuationSubring) : C) = algebraMap O C (f.eval (σ α))`.
+
+Introduce `f σ`. Establish `: embVal v hv α σ = j (σ α)` using `rfl`. Rewrite using `[this, Polynomial.eval_map, Polynomial.eval₂_at_apply]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hw`. Establish `: ∀ i, Φ.symm w i ∈ (algebraMap O C).range`. Rewrite using `[hΦ]`. Introduce `i`. Take `⟨f, hf⟩` from `hw i`.
+
+Take `⟨g, rfl⟩` from `Polynomial.map_surjective j hj f`. Conclude with `⟨g, fun σ => by rw [Φ.apply_symm_apply, hf, key]⟩`. Use `choose t ht using this`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: incl C h t = Φ.symm w` using `funext ht`.
+
+Rewrite using `[this, Φ.apply_symm_apply]`. Introduce and unpack `⟨t, rfl⟩ i`. Take `⟨f, hf⟩` from `(hΦ (incl C h t)).1 (fun i => ⟨t i, rfl⟩) i`. Conclude with `⟨f.map j, fun σ => by rw [hf, key]⟩`.
+-/
 theorem mem_freeLattice_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : Λ) {h N : ℕ}
     (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ z, (∀ i, z i ∈ (algebraMap O C).range) ↔
@@ -125,6 +167,9 @@ theorem mem_freeLattice_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] (α : 
     obtain ⟨f, hf⟩ := (hΦ (incl C h t)).1 (fun i => ⟨t i, rfl⟩) i
     exact ⟨f.map j, fun σ => by rw [hf, key]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show _ = algebraMap O C ((X *ᵥ t) i)`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem mulVec_incl {h k : ℕ} (X : Matrix (Fin k) (Fin h) O) (t : Fin h → O) :
     X.map (algebraMap O C) *ᵥ incl C h t = incl C k (X *ᵥ t) := by
   funext i
@@ -132,12 +177,20 @@ theorem mulVec_incl {h k : ℕ} (X : Matrix (Fin k) (Fin h) O) (t : Fin h → O)
   rw [RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `u u' e`. Use function extensionality and compare the values at `i`. Conclude with `hv.hom_inj (congrFun e i)`.
+-/
 theorem incl_injective (hv : v.Integers O) (h : ℕ) :
     Function.Injective (incl C h : (Fin h → O) → (Fin h → C)) := by
   intro u u' e
   funext i
   exact hv.hom_inj (congrFun e i)
 
+/- English proof (translation)
+Use `haveI : IsDomain O := hv.hom_inj.isDomain`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Take `⟨o, ho⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) y`. Use `choose t ht using ho`. Use `⟨o, t, fun e => nonZeroDivisors.coe_ne_zero o (hv.hom_inj (by rw [e, map_zero])), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Use `show algebraMap O C (t i) = _`. Rewrite using `[ht i, Pi.smul_apply, algebraMap_smul]`.
+-/
 theorem exists_smul_eq_incl (hv : v.Integers O) {h : ℕ} (y : Fin h → C) :
     ∃ (o : O) (t : Fin h → O), algebraMap O C o ≠ 0 ∧ incl C h t = algebraMap O C o • y := by
   haveI : IsDomain O := hv.hom_inj.isDomain
@@ -149,6 +202,15 @@ theorem exists_smul_eq_incl (hv : v.Integers O) {h : ℕ} (y : Fin h → C) :
   show algebraMap O C (t i) = _
   rw [ht i, Pi.smul_apply, algebraMap_smul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.iSup_induction' with`. Consider the case `mem σ x hx => exact (mem_eig_iff_support v hv ρ Φ hΦ σ.1 x).1 hx τ σ.2.symm`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, Pi.add_apply, hx, hy, add_zero]`. Introduce `hx`. Use `letI := Fintype.ofFinite (Λ →+* O)`. Establish `e : x = ∑ σ, Φ.symm (Pi.single σ (Φ x σ))`. Rewrite using `[← map_sum, Finset.univ_sum_single, Φ.symm_apply_apply]`.
+
+Rewrite using `[e]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ, hx, Pi.single_zero, map_zero]`. Conclude with `zero_mem _`.
+
+Use `Submodule.mem_iSup_of_mem (⟨σ, hσ⟩ : {σ : Λ →+* O // σ ≠ τ}) ?_` and prove the remaining obligations. Rewrite using `[mem_eig_iff_support v hv ρ Φ hΦ]`. Introduce `s hs`. Rewrite using `[Φ.apply_symm_apply, Pi.single_eq_of_ne hs]`.
+-/
 theorem mem_iSup_eig_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (Λ →+* O)] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ)
@@ -175,6 +237,9 @@ theorem mem_iSup_eig_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (
       intro s hs
       rw [Φ.apply_symm_apply, Pi.single_eq_of_ne hs]
 
+/- English proof (translation)
+Use `⟨Φ.symm (Pi.single τ w), ?_, by rw [Φ.apply_symm_apply, Pi.single_eq_same]⟩` and prove the remaining obligations. Rewrite using `[mem_eig_iff_support v hv ρ Φ hΦ]`. Introduce `s hs`. Rewrite using `[Φ.apply_symm_apply, Pi.single_eq_of_ne hs]`.
+-/
 theorem exists_eig_apply_eq (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ)
@@ -185,6 +250,11 @@ theorem exists_eig_apply_eq (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N :
   intro s hs
   rw [Φ.apply_symm_apply, Pi.single_eq_of_ne hs]
 
+/- English proof (translation)
+Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[map_zero, Pi.zero_apply]`. Distinguish the cases in `hσ : σ = τ`. Rewrite using `[hσ, h0]`.
+
+Conclude with `(mem_eig_iff_support v hv ρ Φ hΦ τ x).1 hx σ hσ`.
+-/
 theorem eq_zero_of_apply_eq_zero (hv : v.Integers O) {Λ : Type} [CommRing Λ] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ)
@@ -196,6 +266,11 @@ theorem eq_zero_of_apply_eq_zero (hv : v.Integers O) {Λ : Type} [CommRing Λ] {
   · rw [hσ, h0]
   · exact (mem_eig_iff_support v hv ρ Φ hΦ τ x).1 hx σ hσ
 
+/- English proof (translation)
+Unfold `eigPart`. Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_sup]`. Use `and_congr Iff.rfl ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, ⟨t, ht, rfl⟩, r, hr, rfl⟩`. Rewrite `hr` using `[Submodule.restrictScalars_mem, mem_iSup_eig_iff v hv ρ Φ hΦ]`.
+
+Conclude with `⟨t, ht, by rw [map_add, Pi.add_apply, hr, add_zero]⟩`. Introduce and unpack `⟨t, ht, e⟩`. Use `⟨_, ⟨t, ht, rfl⟩, x - incl C h t, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, mem_iSup_eig_iff v hv ρ Φ hΦ, map_sub, Pi.sub_apply, e, sub_self]`.
+-/
 theorem mem_eigPart_iff (hv : v.Integers O) {Λ : Type} [CommRing Λ] [Finite (Λ →+* O)] {h N : ℕ}
     (ρ : Λ → Matrix (Fin h) (Fin h) O) (Φ : (Fin h → C) ≃ₗ[C] ((Λ →+* O) → Fin N → C))
     (hΦ : ∀ l z σ, Φ ((ρ l).map (algebraMap O C) *ᵥ z) σ = algebraMap O C (σ l) • Φ z σ)

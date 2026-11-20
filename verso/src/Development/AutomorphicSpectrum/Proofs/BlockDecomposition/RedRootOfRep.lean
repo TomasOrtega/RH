@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 
 namespace GlobalTheory.CompanionTheory.EdgeMap
 
+/- English proof (translation)
+Introduce `hRoot hOp hConc inOp inRed Q q _ _ hq i X ζ ξ hξ`. Establish `h1 : Rep (rootClass i ζ) (resGen i ζ)` using `(hRoot Q i X ζ).2`. Establish `h2 : Rep (rootClass i ξ) (resGen i ξ)` using `(hRoot q i X ξ).2`. Establish `h3` using `hOp inOp _ _ _ _ (redMap Q q i) X 0 (rootClass i ζ) _ h1`. Rewrite `h3` using `[inRed Q q hq i X ζ ξ hξ]`.
+
+Conclude with `(hConc (ZMod q) _ X 0 (resGen i ξ)).2.2 _ _ h3 h2`.
+-/
 theorem redRoot_of_rep : CrystallineSemistableComparison.E.RepRoot → CrystallineSemistableComparison.E.RepOp → CrystallineSemistableComparison.E.RepConc → CrystallineSemistableComparison.E.RedRoot := by
   intro hRoot hOp hConc inOp inRed Q q _ _ hq i X ζ ξ hξ
   have h1 : Rep (rootClass i ζ) (resGen i ζ) := (hRoot Q i X ζ).2

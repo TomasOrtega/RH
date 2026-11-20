@@ -24,15 +24,24 @@ def mulR (c : Coef l) (n : ℕ) (a : c.O) : Red c n →+ Red c n :=
     calc _ ≤ 1 * ‖(x : Qbar l)‖ := mul_le_mul_of_nonneg_right (norm_le_one c a) (norm_nonneg _)
       _ ≤ _ := by rw [one_mul]; exact hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulR_red (c : Coef l) (n : ℕ) (a x : c.O) : mulR c n a (red c n x) = red c n (a * x) := rfl
 
 def redV (c : Coef l) (n : ℕ) (x : Fin 2 → c.O) : Fin 2 → Red c n := fun i => red c n (x i)
 
+/- English proof (translation)
+Introduce `m`. Use `choose x hx using fun i => red_surjective c n (m i)`. Conclude with `⟨x, funext hx⟩`.
+-/
 theorem redV_surjective (c : Coef l) (n : ℕ) : Function.Surjective (redV c n) := by
   intro m
   choose x hx using fun i => red_surjective c n (m i)
   exact ⟨x, funext hx⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[redV]`.
+-/
 theorem redV_add (c : Coef l) (n : ℕ) (x y : Fin 2 → c.O) :
     redV c n (x + y) = redV c n x + redV c n y := by
   funext i; simp [redV]
@@ -43,6 +52,9 @@ def act (c : Coef l) (n : ℕ) (B : Matrix (Fin 2) (Fin 2) c.O) :
   map_zero' := by funext i; simp
   map_add' m m' := by funext i; simp [Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [act, AddMonoidHom.coe_mk, ZeroHom.coe_mk, redV, mulR_red, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem act_redV (c : Coef l) (n : ℕ) (B : Matrix (Fin 2) (Fin 2) c.O) (x : Fin 2 → c.O) :
     act c n B (redV c n x) = redV c n (B *ᵥ x) := by
   funext i
@@ -55,16 +67,25 @@ def Vo (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s : G �
     Matrix (Fin 2) (Fin 2) c.O :=
   fun i j => ⟨mat V s i j, hD s i j⟩
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Vo]`.
+-/
 theorem Vo_mulVec_coe (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s : G ℚ Ω)
     (x : Fin 2 → c.O) (i : Fin 2) :
     ((Vo c V hD s *ᵥ x) i : Qbar l) = (mat V s *ᵥ fun j => (x j : Qbar l)) i := by
   simp [Matrix.mulVec, dotProduct, Vo]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Vo, mat, Matrix.mul_apply]`.
+-/
 theorem Vo_mul (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s t : G ℚ Ω) :
     Vo c V hD (s * t) = Vo c V hD s * Vo c V hD t := by
   ext i j
   simp [Vo, mat, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Vo, mat, h]`.
+-/
 theorem Vo_eq_one (c : Coef l) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) {s : G ℚ Ω}
     (h : V s = 1) : Vo c V hD s = 1 := by
   ext i j
@@ -85,6 +106,9 @@ def repG (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c
       act c n (Vo c V hD s) (act c n (Vo c V hD t) (redV c n x))
     rw [act_redV, act_redV, act_redV, Vo_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repG_apply (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O) (s : G ℚ Ω)
     (m : Fin 2 → Red c n) : repG c n V hD s m = act c n (Vo c V hD s) m := rfl
 
@@ -102,6 +126,9 @@ def repS (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c
     rw [Vo_eq_one c V hD (hK a (by rw [toGS, QuotientGroup.ker_mk']; exact ha)), act_redV,
       Matrix.one_mulVec])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repS_mk (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1) (g : G ℚ Ω) :
     repS S c n V hD hK (QuotientGroup.mk g) = repG c n V hD g := rfl
@@ -114,6 +141,13 @@ open GlobalTheory.Ord2.TwistTriv
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl)
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.Gal.ContAction`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Rewrite using `[(QuotientGroup.isQuotientMap_mk (NS Ω (S : Set Pl))).continuous_iff]`. Take `⟨x, rfl⟩` from `redV_surjective c n m`. Establish `e : ((fun q => repS S c n V hD hK q (redV c n x)) ∘ (QuotientGroup.mk : G ℚ Ω → GS Ω (S : Set Pl))) = fun g => redV c n (Vo c V hD g *ᵥ x)`.
+
+Use function extensionality and compare the values at `g`. Conclude with `act_redV c n _ x`. Rewrite using `[e]`. Use `continuous_pi fun i => continuous_red_comp c n (fun g => (Vo c V hD g *ᵥ x) i) ?_` and prove the remaining obligations. Simplify using `only [Vo_mulVec_coe]`.
+
+Establish `hm : Continuous fun g => mat V g` using `Units.continuous_val.comp hc`. Conclude with `(continuous_apply i).comp (hm.matrix_mulVec continuous_const)`.
+-/
 theorem contAction_repS (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1) (hc : Continuous V) :
     ReciprocityTheory.Gal.ContAction (repS S c n V hD hK) := by
@@ -134,11 +168,17 @@ def zr (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k,
     Fin 2 → Red c n :=
   redV c n fun k => ⟨z s k, hz s k⟩
 
+/- English proof (translation)
+Simplify using `only [zr, redV, funext_iff, red_eq_iff, Cv]`.
+-/
 theorem zr_eq_iff (c : Coef l) (n : ℕ) (z z' : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (hz' : ∀ s k, z' s k ∈ c.O) (s : G ℚ Ω) :
     zr c n z hz s = zr c n z' hz' s ↔ Cv n (z s) (z' s) := by
   simp only [zr, redV, funext_iff, red_eq_iff, Cv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `show red c n ⟨z a k, hz a k⟩ = 0`. Rewrite using `[red_eq_zero_iff, mem_nbhd]`. Use `h k` as an intermediate fact. Simplify `this` using `[Cg]`.
+-/
 theorem zr_eq_zero (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (a : G ℚ Ω) (h : Cv n (z a) 0) : zr c n z hz a = 0 := by
   funext k
@@ -147,6 +187,11 @@ theorem zr_eq_zero (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (h
   have := h k
   simpa [Cg] using this
 
+/- English proof (translation)
+Rewrite using `[repG_apply, zr, zr, zr, act_redV, ← redV_add]`. Use function extensionality and compare the values at `k`. Simplify using `only [redV]`. Rewrite using `[red_eq_iff, Pi.add_apply, AddMemClass.coe_add, Vo_mulVec_coe]`. Establish `h` using `hcoc s t k`.
+
+Simplify `h` using `only [Pi.add_apply]`.
+-/
 theorem zr_mul (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (hcoc : ∀ s t, Cv n (z (s * t)) (z s + mat V s *ᵥ z t)) (s t : G ℚ Ω) :
@@ -162,6 +207,9 @@ def zbar (c : Coef l) (n : ℕ) (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s 
     (q : GS Ω (S : Set Pl)) : Fin 2 → Red c n :=
   zr c n z hz q.out
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (NS Ω (S : Set Pl)) g`. Unfold `zbar`. Rewrite using `[hh, zr_mul c n V hD z hz hcoc, zr_eq_zero c n z hz (h : G ℚ Ω) (hker _ (by rw [toGS, QuotientGroup.ker_mk']; exact h.2)), map_zero, add_zero]`.
+-/
 theorem zbar_mk (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O)
     (hcoc : ∀ s t, Cv n (z (s * t)) (z s + mat V s *ᵥ z t))
@@ -173,6 +221,11 @@ theorem zbar_mk (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i 
     zr_eq_zero c n z hz (h : G ℚ Ω) (hker _ (by rw [toGS, QuotientGroup.ker_mk']; exact h.2)), map_zero,
     add_zero]
 
+/- English proof (translation)
+Use `⟨?_, fun q₁ q₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[(QuotientGroup.isQuotientMap_mk (NS Ω (S : Set Pl))).continuous_iff]`. Establish `e : zbar S c n z hz ∘ (QuotientGroup.mk : G ℚ Ω → GS Ω (S : Set Pl)) = zr c n z hz`. Use function extensionality and compare the values at `g`. Conclude with `zbar_mk S c n V hD z hz hcoc hker g`.
+
+Rewrite using `[e]`. Conclude with `continuous_pi fun k => continuous_red_comp c n (fun g => (⟨z g k, hz g k⟩ : c.O)) ((continuous_apply k).comp hzc)`. Proceed by induction on `q₁ using QuotientGroup.induction_on with | H g => ?_`. Proceed by induction on `q₂ using QuotientGroup.induction_on with | H h => ?_`. Rewrite using `[← QuotientGroup.mk_mul, zbar_mk S c n V hD z hz hcoc hker, zbar_mk S c n V hD z hz hcoc hker, zbar_mk S c n V hD z hz hcoc hker, repS_mk, zr_mul c n V hD z hz hcoc]`.
+-/
 theorem zbar_mem (c : Coef l) (n : ℕ) (V : R2 Ω l) (hD : ∀ s i j, mat V s i j ∈ c.O)
     (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1)
     (z : G ℚ Ω → Fin 2 → Qbar l) (hz : ∀ s k, z s k ∈ c.O) (hzc : Continuous z)
@@ -197,6 +250,15 @@ namespace GlobalTheory.Ord2.GwFin
 
 open GlobalTheory.Ord2.TwistTriv
 
+/- English proof (translation)
+Use `haveI : Finite ((B1 σ).comap (Z1 σ).subtype) := by haveI : Finite (B1 σ) := by haveI : Finite (Set.range (d0 σ)) := Set.finite_range _`. Conclude with `Finite.of_injective (fun x : B1 σ => (⟨x.1, x.2⟩ : Set.range (d0 σ))) (fun x y h => Subtype.ext (congrArg Subtype.val h))`. Conclude with `Finite.of_injective (fun x : (B1 σ).comap (Z1 σ).subtype => (⟨x.1.1, x.2⟩ : B1 σ)) (fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `using this)`. Set `P` to `(B1 σ).comap (Z1 σ).subtype`. Set `s` to `Function.surjInv (Submodule.Quotient.mk_surjective P)`. Establish `hs : ∀ x : Z1 σ, x - s (Submodule.Quotient.mk x) ∈ P` using `fun x => (Submodule.Quotient.eq P).1 (Function.surjInv_eq (Submodule.Quotient.mk_surjective P) _).symm`.
+
+Use `Finite.of_injective (fun x : Z1 σ => ((Submodule.Quotient.mk x : Z1 σ ⧸ P), (⟨_, hs x⟩ : P))) ?_` and prove the remaining obligations. Introduce `x y h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Rewrite `h2` using `[h1]`.
+
+Simplify using `using h2`.
+-/
 theorem finite_cocycles_of_finite_h1 {R : Type*} [CommRing R] {H : Type*} [Group H] [TopologicalSpace H]
     {Q : Type*} [AddCommGroup Q] [Module R Q] [TopologicalSpace Q] [IsTopologicalAddGroup Q]
     [ContinuousConstSMul R Q] [Finite Q] (σ : Representation R H Q) [Finite (H1 σ)] :
@@ -224,6 +286,15 @@ theorem finite_cocycles_of_finite_h1 {R : Type*} [CommRing R] {H : Type*} [Group
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `haveI : Subsingleton (Red c 0) := by`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `red_surjective c 0 a`. Take `⟨y, rfl⟩` from `red_surjective c 0 b`.
+
+Rewrite using `[red_eq_iff]`. Unfold `Cg`. Rewrite using `[pow_zero, norm_one]`. Establish `hxy : ‖(x : Qbar l) - y‖ ≤ max ‖(x : Qbar l)‖ ‖-(y : Qbar l)‖`. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `hxy` using `[norm_neg]`. Conclude with `hxy.trans (max_le (norm_le_one c x) (norm_le_one c y))`. Use `infer_instance`. Use `haveI := (hL.gf ℚ Ω l n (Fin 2 → Red c n) S (repS S c n V hD hK) hn hS (contAction_repS S c n V hD hK hc)).2.1`.
+
+Conclude with `finite_cocycles_of_finite_h1 _`.
+-/
 theorem finite_cocycles_restricted_rep (hL : GlobalTheory.Mem.LiteralAutomorphy.LitCoh) (c : Coef l) (n : ℕ) (V : R2 Ω l)
     (hD : ∀ s i j, mat V s i j ∈ c.O) (hK : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, V a = 1)
     (hc : Continuous V) (hS : ContainsAbove S l) : Finite (Z1 (repS S c n V hD hK)) := by
@@ -244,6 +315,17 @@ theorem finite_cocycles_restricted_rep (hL : GlobalTheory.Mem.LiteralAutomorphy.
       (contAction_repS S c n V hD hK hc)).2.1
     exact finite_cocycles_of_finite_h1 _
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ e S A W hN c hW n`. Establish `hD` using `galoisRepRankTwoTateDual_matrix_mem_coefRing_of_normalForm l Ω e S A W hN c hW`. Establish `hK` using `galoisRepRankTwoTateDual_eq_one_of_mem_ker_unramified l Ω e S A W hN`. Establish `hc` using `DualCont.continuous_galoisRepRankTwoTateDual l Ω e S A W hN`. Use `haveI := finite_cocycles_restricted_rep S hL c n (dual1 W) hD hK hc hN.above`.
+
+Use `⟨Nat.card (Z1 (repS S c n (dual1 W) hD hK)), fun N z hz hne => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ i s k, z i s k ∈ c.O` using `fun i => (hz i).1.2.1`. Establish `hcont : ∀ i, Continuous (z i)` using `fun i => by`. Establish `h` using `(hz i).1.1`. Rewrite `h` using `[Subgroup.coe_top, continuousOn_univ]`. Then use the resulting hypothesis.
+
+Establish `hcoc : ∀ i s t, Cv n (z i (s * t)) (z i s + mat (dual1 W) s *ᵥ z i t)` using `fun i s t => (hz i).1.2.2 s (Subgroup.mem_top s) t (Subgroup.mem_top t)`. Set `f : Fin N → Z1 (repS S c n (dual1 W) hD hK)` to `fun i => ⟨zbar S c n (z i) (hint i), zbar_mem S c n (dual1 W) hD hK (z i) (hint i) (hcont i) (hcoc i) (hz i).2⟩`. Establish `hf : Function.Injective f`. Introduce `i j hij`. Assume the negation of the conclusion as `hij'`.
+
+Apply `hne i j hij'` to reduce the goal to its premises. Use `⟨0, fun _ => zero_mem _, fun s _ => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun y : Z1 (repS S c n (dual1 W) hD hK) => y.1 (QuotientGroup.mk s)) hij`. Simplify using `only [f, zbar_mk S c n (dual1 W) hD (z i) (hint i) (hcoc i) (hz i).2, zbar_mk S c n (dual1 W) hD (z j) (hint j) (hcoc j) (hz j).2] at h1`. Establish `h2` using `(zr_eq_iff c n (z i) (z j) (hint i) (hint j) s).1 h1`.
+
+Introduce `k`. Establish `h3` using `h2 k`. Simplify `h3` using `[Cg]`. Simplify using `using Nat.card_le_card_of_injective f hf`.
+-/
 theorem card_dualCocyclesModPrimePow_unramifiedOutsideS_bounded : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ c : Coef l, (∀ s i j, mat W s i j ∈ c.O) → ∀ n : ℕ, ∃ B : ℕ, ∀ (N : ℕ) (z : Fin N → G ℚ Ω → Fin 2 → Qbar l), (∀ i, Coc1 c n (dual1 W) ⊤ (z i) ∧ ∀ a ∈ (toGS Ω (S : Set Pl)).ker, Cv n (z i a) 0) → (∀ i j, i ≠ j → ¬ Cob1 c n (dual1 W) ⊤ (z i - z j)) → N ≤ B := by
   intro hL l _ Ω _ _ _ e S A W hN c hW n
   have hD := galoisRepRankTwoTateDual_matrix_mem_coefRing_of_normalForm l Ω e S A W hN c hW

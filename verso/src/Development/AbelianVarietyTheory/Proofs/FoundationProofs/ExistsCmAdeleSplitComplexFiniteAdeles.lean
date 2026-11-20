@@ -12,6 +12,23 @@ namespace GlobalTheory.Eis.Conv.AdeleCMSplit
 open scoped TensorProduct NNReal Matrix in
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ`. Take `⟨e₁, he₁, -, he₁s⟩` from `_root_.GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `choose θ hθ using fun τ => (_root_.GlobalTheory.Mem.VolEmb.existsUnique_infEmb F E σ hσ τ).exists`. Establish `hcm : _root_.GlobalTheory.Mem.Vol.IsCMFam (fun w : InfinitePlace E => w.embedding)`. Unfold `_root_.GlobalTheory.Mem.Vol.IsCMFam`.
+
+Simplify using `only [InfinitePlace.mk_embedding]`. Conclude with `Function.bijective_id`. Take `⟨e₂, he₂, -, he₂s, -⟩` from `_root_.GlobalTheory.Mem.VolInfIso.exists_infAdele_equiv F E σ (InfinitePlace E) (fun w => w.embedding) (fun w => θ w.embedding) hσ hcm (fun w => hθ _)`. Take `⟨ι, hι1, hι2, -⟩` from `_root_.GlobalTheory.AdeleBaseChange.exists_tensor_finiteAdele_equiv F E`. Establish `hιs` using `_root_.GlobalTheory.AdeleBaseChange.continuous_symm_finite F E ι hι2`.
+
+Use `⟨e₁.trans (RingEquiv.prodCongr e₂ ι), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `he₁s.comp ((he₂s.comp continuous_fst).prodMk (hιs.comp continuous_snd))`. Introduce `x`. Establish `h1 : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) x = (1 : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ⊗ₜ[F] x := rfl`. Establish `h2 : e₁ ((1 : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ⊗ₜ[F] x) = ((1 : InfiniteAdeleRing F) ⊗ₜ[F] x, (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x)`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[(he₁ _).1]`. Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`. Rewrite using `[(he₁ _).2]`. Conclude with `Algebra.TensorProduct.map_tmul _ _ _ _`.
+
+Rewrite using `[h1, RingEquiv.trans_apply, h2]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `(he₂ _ w).trans ((hθ _).1 x)`. Conclude with `hι1 x`.
+
+Establish `h0 : ((_root_.GlobalTheory.Eis.Conv.halfE F E).1 : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E) = ((algebraMap F (InfiniteAdeleRing F) 2⁻¹, (1 : FiniteAdeleRing (𝓞 F) F)) : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ⊗ₜ[ …` using `rfl`. Establish `h2 : e₁ (((algebraMap F (InfiniteAdeleRing F) 2⁻¹, (1 : FiniteAdeleRing (𝓞 F) F)) : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) ⊗ₜ[F] (1 : E)) = ((1 : InfiniteAdeleRing F) ⊗ₜ[F] algebraMap F E 2⁻¹, 1)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[(he₁ _).1]`. Use `(Algebra.TensorProduct.map_tmul _ _ _ _).trans ?_` and prove the remaining obligations.
+
+Use `show algebraMap F (InfiniteAdeleRing F) 2⁻¹ ⊗ₜ[F] (1 : E) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[(he₁ _).2]; exact (Algebra.TensorProduct.map_tmul _ _ _ _).trans (by rfl)`. Rewrite using `[h0]`. Use `(congrArg (RingEquiv.prodCongr e₂ ι) h2).trans ?_` and prove the remaining obligations.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Use `((he₂ ((1 : InfiniteAdeleRing F) ⊗ₜ[F] algebraMap F E 2⁻¹) w).trans ((hθ _).1 _)).trans ?_` and prove the remaining obligations. Simplify using `only [map_inv₀, map_ofNat]`. Conclude with `map_one ι`.
+-/
 theorem _root_.GlobalTheory.Eis.Conv.AdeleCMSplit.exists_adele_split : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ →
     ∃ e : (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F ⊗[F] E) ≃+* (InfinitePlace E → ℂ) × FiniteAdeleRing (𝓞 E) E,

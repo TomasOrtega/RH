@@ -13,6 +13,19 @@ namespace Formalism.L2.SG.Pf.MainEqPoints
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u _ νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, ν, t, ht, hv, -, hpt, -⟩` from `hγ`. Establish `hG : t.toTerm.G ≠ 0`. Introduce `h`.
+
+Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`. Establish `h' : t.G = 0` using `h`. Simplify using `[Gt, h']`. Establish `hrel : t.toTerm.relevant`.
+
+Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `hOV D X Y u u t hr`. Use `show vec (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t = 0`. Unfold `vec ampN`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `hAt D X Y u u t.toTerm hG hrel`. Establish `hat` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`.
+
+Take `⟨F', ⟨hP, -⟩, -, hcell⟩` from `hat`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `frame_mem _ hrow.2.1.2.2.1.1 hrow.2.2`. Establish `hF' : ∀ b, frame F' b ∈ t.toTerm.lam` using `frame_mem _ hP.1.1 hP.2.2.2`. Establish `hE` using `blockEndMinors_of_cell _ (zhatOM_isIntegral _ _ hrow.2.1.2.1 hF hF') _ hcell`.
+
+Rewrite using `[← hpt]`. Conclude with `hE`.
+-/
 theorem stepPointsG_of
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
       Formalism.L2.SG.TermOp.KExpCut.OOVanish (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X))
@@ -48,6 +61,9 @@ theorem stepPointsG_of
   exact hE
 
 open Formalism.L2.SG.TermOp.Vanish in
+/- English proof (translation)
+Use `stepPointsG_of ?_ hAt` and prove the remaining obligations. Introduce `D X Y u u'`. Unfold `Formalism.L2.SG.TermOp.KExpCut.OOVanish`. Introduce `t ht`. Conclude with `ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht`.
+-/
 theorem stepPointsG_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)
     (hAt : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word)

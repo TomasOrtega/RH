@@ -14,6 +14,15 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing 
   [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E}
   {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Establish `hform` using `hπ.2.2.2`. Establish `hL` using `fun a => (hπ.2.1 (v a)).1 (hv a)`. Establish `hc : ∀ a b, InP ϖ (e (H.h (v b) (v a) - G₀ a b)).1 ↔ resF F (∑ k, ∑ l, (π (v b)).1 k * (Ph k l : F) * (π (v a)).2 l) = resF F ((e (G₀ a b)).1)`. Introduce `a b`. Rewrite using `[map_sub, Prod.fst_sub, hform]`.
+
+Conclude with `inP_sub_iff hϖ (bil_mem _ _ (hL b).1 (hL a).2 Ph) ((hO _).1 (h1 a b)).1`. Establish `hc2 : ∀ a b, (e (H.h (v b) (v a) - G₀ a b)).2 = (e (H.h (v a) (v b) - G₀ b a)).1`. Introduce `a b`. Establish `hg : e (G₀ a b) = (e (G₀ b a)).swap` using `by rw [h2 b a, hes]`. Rewrite using `[map_sub, map_sub, Prod.snd_sub, Prod.fst_sub, hform, hform, hg]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Conclude with `(hc a b).1 ((mem_span_irr_iff e hO ϖ _).1 (h a b)).1`. Introduce `h a b`.
+
+Rewrite using `[mem_span_irr_iff e hO ϖ]`. Conclude with `⟨(hc a b).2 (h a b), by rw [hc2]; exact (hc b a).2 (h b a)⟩`.
+-/
 theorem gram_iff [IsDiscreteValuationRing 𝒪[F]] (e : E ≃ₐ[F] F × F)
     (hes : ∀ x, e (M.L.cj x) = (e x).swap)
     (hO : ∀ x : E, x ∈ M.L.O ↔ (e x).1 ∈ 𝒪[F] ∧ (e x).2 ∈ 𝒪[F]) (H : Loc.HermSp M V)
@@ -41,6 +50,9 @@ theorem gram_iff [IsDiscreteValuationRing 𝒪[F]] (e : E ≃ₐ[F] F × F)
     rw [mem_span_irr_iff e hO ϖ]
     exact ⟨(hc a b).2 (h a b), by rw [hc2]; exact (hc b a).2 (h b a)⟩
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Simplify using `only [hπa]`. Conclude with `Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum])`.
+-/
 theorem pi_sum (e : E ≃ₐ[F] F × F) {n : ℕ} (π : V ≃+ (Fin n → F) × (Fin n → F))
     (hπa : ∀ (a : E) (x : V), π (a • x) = ((e a).1 • (π x).1, (e a).2 • (π x).2))
     {ι : Type} [Fintype ι] (v : ι → V) (c : ι → E) :
@@ -49,6 +61,47 @@ theorem pi_sum (e : E ≃ₐ[F] F × F) {n : ℕ} (π : V ≃+ (Fin n → F) × 
   simp only [hπa]
   exact Prod.ext (by simp [Prod.fst_sum]) (by simp [Prod.snd_sum])
 
+/- English proof (translation)
+Use `set X : ι → Fin n → F := fun a => (π (v a)).1 with hXd`. Use `set Y : ι → Fin n → F := fun a => (π (v a)).2 with hYd`. Establish `hX : ∀ a k, X a k ∈ 𝒪[F]` using `fun a k => ((hπL (v a)).1 (hv a)).1 k`. Establish `hY : ∀ a k, Y a k ∈ 𝒪[F]` using `fun a k => ((hπL (v a)).1 (hv a)).2 k`. Establish `hsum` using `pi_sum e π hπa v`.
+
+Establish `hpiS : ∀ u w : Fin n → F, π (π.symm (u, w)) = (u, w)` using `fun u w => AddEquiv.apply_symm_apply _ _`. Establish `hLI : LinearIndependent E v ↔ LinearIndependent F X ∧ LinearIndependent F Y`. Prove the components needed by the constructor for the conclusion. Introduce `hind`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h0` using `Fintype.linearIndependent_iff.1 hind (fun i => e.symm (c i, 0)) (by`. Apply `π.injective` to reduce the goal to its premises. Rewrite using `[hsum, map_zero]`.
+
+Simplify using `only [AlgEquiv.apply_symm_apply, zero_smul, Finset.sum_const_zero]`. Use extensionality with `k`. Simplify `congrFun hc k` using `[hXd]`. Use the proof step `simp) i`. Use `congrArg (fun z => (e z).1) h0` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h0` using `Fintype.linearIndependent_iff.1 hind (fun i => e.symm (0, c i)) (by`. Apply `π.injective` to reduce the goal to its premises.
+
+Rewrite using `[hsum, map_zero]`. Simplify using `only [AlgEquiv.apply_symm_apply, zero_smul, Finset.sum_const_zero]`. Use extensionality with `k`. Simplify using the standard rewrite rules. Simplify `congrFun hc k) i` using `[hYd]`.
+
+Use `congrArg (fun z => (e z).2) h0` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨hXi, hYi⟩`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+
+Establish `h0` using `congrArg π hc`. Rewrite `h0` using `[hsum, map_zero]`. Establish `a1` using `Fintype.linearIndependent_iff.1 hXi (fun i => (e (c i)).1) (congrArg Prod.fst h0) i`. Establish `a2` using `Fintype.linearIndependent_iff.1 hYi (fun i => (e (c i)).2) (congrArg Prod.snd h0) i`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Conclude with `Prod.ext a1 a2`. Establish `hSat : (∀ x ∈ Λ, x ∈ Submodule.span E (Set.range v) → x ∈ Submodule.span M.L.O (Set.range v)) ↔ SatF F X ∧ SatF F Y`. Establish `hOsum : ∀ d : ι → M.L.O, ∑ i, d i • v i = ∑ i, (d i : E) • v i` using `fun d => rfl`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hs`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `u hu ⟨c, hc⟩`. Establish `hxL : π.symm (u, 0) ∈ Λ` using `(hπL _).2 (by rw [hpiS]; exact ⟨hu, fun k => Subring.zero_mem _⟩)`. Establish `hxs : π.symm (u, 0) ∈ Submodule.span E (Set.range v)`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun i => e.symm (c i, 0), ?_⟩` and prove the remaining obligations. Apply `π.injective` to reduce the goal to its premises. Rewrite using `[hsum, hpiS]`. Simplify using `only [AlgEquiv.apply_symm_apply, zero_smul, Finset.sum_const_zero]`.
+
+Rewrite using `[← hc]`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).1 (hs _ hxL hxs)`. Use `⟨fun i => (e (d i)).1, fun i => ((hO _).1 (d i).2).1, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (fun z => (π z).1) hd`. Simplify using `only [hOsum, hsum, hpiS] at h0`.
+
+Conclude with `h0`. Introduce and unpack `u hu ⟨c, hc⟩`. Establish `hxL : π.symm (0, u) ∈ Λ` using `(hπL _).2 (by rw [hpiS]; exact ⟨fun k => Subring.zero_mem _, hu⟩)`. Establish `hxs : π.symm (0, u) ∈ Submodule.span E (Set.range v)`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+
+Use `⟨fun i => e.symm (0, c i), ?_⟩` and prove the remaining obligations. Apply `π.injective` to reduce the goal to its premises. Rewrite using `[hsum, hpiS]`. Simplify using `only [AlgEquiv.apply_symm_apply, zero_smul, Finset.sum_const_zero]`. Rewrite using `[← hc]`.
+
+Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).1 (hs _ hxL hxs)`. Use `⟨fun i => (e (d i)).2, fun i => ((hO _).1 (d i).2).2, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (fun z => (π z).2) hd`. Simplify using `only [hOsum, hsum, hpiS] at h0`. Conclude with `h0`.
+
+Introduce and unpack `⟨sX, sY⟩ x hx hxs`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hxs`. Establish `hπx` using `hsum c`. Rewrite `hπx` using `[hc]`. Establish `hxc` using `(hπL x).1 hx`.
+
+Take `⟨c1, hc1, hs1⟩` from `sX (π x).1 hxc.1 ⟨_, (congrArg Prod.fst hπx).symm⟩`. Take `⟨c2, hc2, hs2⟩` from `sY (π x).2 hxc.2 ⟨_, (congrArg Prod.snd hπx).symm⟩`. Establish `hmem : ∀ i, e.symm (c1 i, c2 i) ∈ M.L.O` using `fun i => by`. Rewrite using `[hO, AlgEquiv.apply_symm_apply]`. Conclude with `⟨hc1 i, hc2 i⟩`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun i => ⟨_, hmem i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hOsum]`. Apply `π.injective` to reduce the goal to its premises. Rewrite using `[hsum]`.
+
+Simplify using `only [AlgEquiv.apply_symm_apply]`. Conclude with `Prod.ext hs1 hs2`. Establish `hP : H.Prim Λ v ↔ (LinearIndependent F X ∧ LinearIndependent F Y) ∧ (SatF F X ∧ SatF F Y)`. Unfold `Loc.HermSp.Prim`. Rewrite using `[← hLI, ← hSat]`.
+
+Conclude with `⟨fun h => ⟨h.2.1, h.2.2⟩, fun h => ⟨hv, h.1, h.2⟩⟩`. Rewrite using `[hP, ← dvr_prim_iff hϖ X hX, ← dvr_prim_iff hϖ Y hY]`. The claim follows by propositional logic.
+-/
 theorem prim_iff [IsDiscreteValuationRing 𝒪[F]] (e : E ≃ₐ[F] F × F)
     (hO : ∀ x : E, x ∈ M.L.O ↔ (e x).1 ∈ 𝒪[F] ∧ (e x).2 ∈ 𝒪[F]) (H : Loc.HermSp M V)
     (Λ : Submodule M.L.O V) {n : ℕ} (π : V ≃+ (Fin n → F) × (Fin n → F))

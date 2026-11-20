@@ -10,6 +10,25 @@ namespace GlobalTheory.Poinc.MinSys
 
 open Matrix
 
+/- English proof (translation)
+Use `set S : Matrix (Fin r) (Fin r) ℤ := LinearMap.BilinForm.toMatrix' G with hS`. Establish `hGS : ∀ x, G x x = x ⬝ᵥ S *ᵥ x` using `fun x => by`. Rewrite using `[← Matrix.toBilin'_apply', hS, Matrix.toBilin'_toMatrix']`. Establish `hdet : S.det ≠ 0`. Introduce `h`.
+
+Take `⟨z, hz, hSz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `h1` using `hp z hz`. Rewrite `h1` using `[hGS, hSz, dotProduct_zero]`. Conclude with `lt_irrefl _ h1`. Establish `hpsd : (S.map (Int.cast : ℤ → ℝ)).PosSemidef`.
+
+Establish `h` using `GlobalTheory.Poinc.QWDom.gram_posSemidef G hs hn (fun u => Pi.single u 1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u v`. Simplify using `[hS, LinearMap.BilinForm.toMatrix'_apply]`. Establish `hpd : (S.map (Int.cast : ℤ → ℝ)).PosDef`.
+
+Rewrite using `[hpsd.posDef_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← Int.cast_det]`. Conclude with `hdet` after adjusting the coercions. Take `⟨c, hc, hP⟩` from `GlobalTheory.Poinc.QWDom.exists_pos_posSemidef_sub_smul_one hpd`. Establish `key : ∀ x : Fin r → ℤ, c * ∑ u, ((x u : ℝ)) ^ 2 ≤ (G x x : ℝ)`. Introduce `x`.
+
+Establish `h` using `hP.dotProduct_mulVec_nonneg (fun u => (x u : ℝ))`. Simplify using `only [star_trivial, sub_mulVec, dotProduct_sub, sub_nonneg] at h`. Establish `e1 : (fun u => (x u : ℝ)) ⬝ᵥ (S.map (Int.cast : ℤ → ℝ)) *ᵥ (fun u => (x u : ℝ)) = ((x ⬝ᵥ S *ᵥ x : ℤ) : ℝ)`. Simplify using `[dotProduct, mulVec, Matrix.map_apply]`. Establish `e2 : (fun u => (x u : ℝ)) ⬝ᵥ (c • (1 : Matrix (Fin r) (Fin r) ℝ)) *ᵥ (fun u => (x u : ℝ)) = c * ∑ u, ((x u : ℝ)) ^ 2`.
+
+Simplify using `[dotProduct, Matrix.mulVec, Matrix.one_apply, Finset.mul_sum, sq]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Rewrite `h` using `[e1, e2]`. Rewrite using `[hGS]`. Conclude with `h`.
+
+Take `⟨M, hM⟩ : ∃ M : ℕ, (B : ℝ) / c ≤ M` from `exists_nat_ge _`. Rewrite `hM` using `[div_le_iff₀ hc]`. Use `(Set.Finite.pi' (fun _ : Fin r => Set.finite_Icc (-(M : ℤ)) M)).subset fun x hx => ?_` and prove the remaining obligations. Introduce `u`. Establish `hxB : (G x x : ℝ) ≤ B` using `by exact_mod_cast hx`.
+
+Establish `h1 : ((x u : ℝ)) ^ 2 ≤ ∑ v, ((x v : ℝ)) ^ 2` using `Finset.single_le_sum (f := fun v => ((x v : ℝ)) ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ u)`. Establish `h2 : c * ((x u : ℝ)) ^ 2 ≤ c * M`. Use `(mul_le_mul_of_nonneg_left h1 hc.le).trans ((key x).trans hxB)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ((x u : ℝ)) ^ 2 ≤ M` using `le_of_mul_le_mul_left h2 hc`.
+
+Establish `h4 : (x u) ^ 2 ≤ (M : ℤ)` using `by exact_mod_cast h3`. Establish `h5` using `Int.le_self_sq (x u)`. Establish `h6` using `Int.le_self_sq (-(x u))`. Rewrite `h6` using `[neg_sq]`. Conclude with `⟨by linarith, by linarith⟩`.
+-/
 theorem finite_of_pos {r : ℕ} (G : LinearMap.BilinForm ℤ (Fin r → ℤ)) (hs : ∀ a b, G a b = G b a)
     (hn : ∀ x, 0 ≤ G x x) (hp : ∀ x, x ≠ 0 → 0 < G x x) (B : ℤ) : {x | G x x ≤ B}.Finite := by
   classical
@@ -61,6 +80,11 @@ theorem finite_of_pos {r : ℕ} (G : LinearMap.BilinForm ℤ (Fin r → ℤ)) (h
   rw [neg_sq] at h6
   exact ⟨by linarith, by linarith⟩
 
+/- English proof (translation)
+Simplify using `only [qW, LinearMap.sum_apply, LinearMap.smul_apply, nsmul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qW_sum_nsmul {s m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] (cf : Fin m → ℕ)
     (γ : Fin m → LinearMap.BilinForm ℤ X) (y : Fin s → X) :
     qW W (∑ j, cf j • γ j) y = ∑ j, (cf j : ℤ) * qW W (γ j) y := by
@@ -71,12 +95,42 @@ theorem qW_sum_nsmul {s m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [Ad
   refine Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [qW, LinearMap.smul_apply, nsmul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qW_nsmul {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] (k : ℕ)
     (b : LinearMap.BilinForm ℤ X) (y : Fin s → X) : qW W (k • b) y = (k : ℤ) * qW W b y := by
   simp only [qW, LinearMap.smul_apply, nsmul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `φ W hW N _ _ r m γ hC hdef`. Take `⟨c0, hc0, hge⟩` from `GlobalTheory.Poinc.QWDom.qW_ge 8 W hW`. Establish `hsym : ∀ j a b, γ j a b = γ j b a` using `fun j => (hC.mem j).1`. Establish `hnn : ∀ j y, 0 ≤ γ j y y` using `hC.nonneg`. Establish `hq0 : ∀ j (α : Fin 8 → Fin r → ℤ), 0 ≤ qW W (γ j) α` using `fun j α => by`.
+
+Establish `h` using `hge (Fin r → ℤ) (γ j) (hsym j) (hnn j) α`. Establish `h1 : (0 : ℝ) ≤ c0 * ((∑ u, γ j (α u) (α u) : ℤ) : ℝ)` using `mul_nonneg hc0.le (by exact_mod_cast Finset.sum_nonneg fun u _ => hnn j (α u))`. Conclude with `h1.trans h` after adjusting the coercions. Use `set G : LinearMap.BilinForm ℤ (Fin r → ℤ) := ∑ j, γ j with hG`. Establish `hGapp : ∀ a b, G a b = ∑ j, γ j a b` using `fun a b => by simp [hG, LinearMap.sum_apply]`.
+
+Establish `hGsym : ∀ a b, G a b = G b a` using `fun a b => by simp only [hGapp, hsym _ a b]`. Establish `hGnn : ∀ y, 0 ≤ G y y` using `fun y => by rw [hGapp]; exact Finset.sum_nonneg fun j _ => hnn j y`. Establish `hGpos : ∀ x, x ≠ 0 → 0 < G x x` using `fun x hx => by rw [hGapp]; exact hdef x hx`. Establish `hGq : ∀ α, qW W G α = ∑ j, qW W (γ j) α` using `fun α => by`. Use `qW_sum_nsmul W (fun _ => 1) γ α` as an intermediate fact.
+
+Simplify `this` using `[hG]`. Establish `hfinG : ∀ B : ℤ, {α : Fin 8 → Fin r → ℤ | qW W G α ≤ B}.Finite`. Introduce `B`. Take `⟨M, hM⟩ : ∃ M : ℕ, (B : ℝ) / c0 ≤ M` from `exists_nat_ge _`. Rewrite `hM` using `[div_le_iff₀ hc0]`.
+
+Use `(Set.Finite.pi' fun _ : Fin 8 => finite_of_pos G hGsym hGnn hGpos M).subset fun α hα u => ?_` and prove the remaining obligations. Establish `h` using `hge (Fin r → ℤ) G hGsym hGnn α`. Establish `h1 : G (α u) (α u) ≤ ∑ v, G (α v) (α v)` using `Finset.single_le_sum (f := fun v => G (α v) (α v)) (fun v _ => hGnn (α v)) (Finset.mem_univ u)`. Establish `hα' : (qW W G α : ℝ) ≤ B` using `by exact_mod_cast hα`. Establish `h1' : ((G (α u) (α u) : ℤ) : ℝ) ≤ ((∑ v, G (α v) (α v) : ℤ) : ℝ)` using `by exact_mod_cast h1`.
+
+Establish `h2 : c0 * (G (α u) (α u) : ℝ) ≤ c0 * M`. Use `(mul_le_mul_of_nonneg_left h1' hc0.le).trans (h.trans hα')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (G (α u) (α u) : ℝ) ≤ M` using `le_of_mul_le_mul_left h2 hc0`. Use `show G (α u) (α u) ≤ ((M : ℕ) : ℤ)`.
+
+Conclude with `h3` after adjusting the coercions. Set `T : (Fin 8 → Fin r → ZMod N) → Type` to `fun c => {α : Fin 8 → Fin r → ℤ // ∀ u i, ((α u i : ℤ) : ZMod N) = c u i}`. Establish `hD : ∀ c, ∃ F : Finset (T c), ∀ α : T c, ∃ β ∈ F, (fun j => (qW W (γ j) β.1).toNat) ≤ (fun j => (qW W (γ j) α.1).toNat)` using `fun c => GlobalTheory.dickson_finite_below_every m (fun (α : T c) j => (qW W (γ j) α.1).toNat)`. Use `choose F hF using hD`. Set `Bd : (Fin 8 → Fin r → ZMod N) → ℤ` to `fun c => ∑ β ∈ F c, qW W G β.1`.
+
+Establish `hfin : {μ : (Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ) | ∀ c, μ c ∈ {α | qW W G α ≤ Bd c}}.Finite` using `Set.Finite.pi' fun c => hfinG (Bd c)`. Use `⟨hfin.toFinset, fun b k cf hk hcf hkb μ hμ hmin => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Introduce `c`. Take `⟨β, hβF, hβ⟩` from `hF c ⟨μ c, hμ c⟩`.
+
+Establish `hle : ∀ j, qW W (γ j) β.1 ≤ qW W (γ j) (μ c)` using `fun j => by`. Establish `h1 : (qW W (γ j) β.1).toNat ≤ (qW W (γ j) (μ c)).toNat` using `hβ j`. Use `hq0 j β.1` as an intermediate fact. Use `hq0 j (μ c)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hkq : ∀ α, (k : ℤ) * qW W b α = ∑ j, (cf j : ℤ) * qW W (γ j) α` using `fun α => by`. Rewrite using `[← qW_nsmul, hkb, qW_sum_nsmul]`. Establish `h2 : ∑ j, (cf j : ℤ) * qW W (γ j) (μ c) ≤ ∑ j, (cf j : ℤ) * qW W (γ j) β.1`. Rewrite using `[← hkq, ← hkq]`. Conclude with `mul_le_mul_of_nonneg_left (hmin c β.1 β.2) (by positivity)`.
+
+Establish `h3 : ∀ j, qW W (γ j) (μ c) - qW W (γ j) β.1 ≤ (cf j : ℤ) * qW W (γ j) (μ c) - (cf j : ℤ) * qW W (γ j) β.1` using `fun j => by`. Establish `h4` using `hle j`. Establish `h5 : (1 : ℤ) ≤ cf j` using `by exact_mod_cast hcf j`. Use the polynomial consequences of the given equalities and inequalities. Establish `h6 : ∑ j, qW W (γ j) (μ c) ≤ ∑ j, qW W (γ j) β.1`.
+
+Establish `h7` using `Finset.sum_le_sum fun j (_ : j ∈ Finset.univ) => h3 j`. Simplify using `only [Finset.sum_sub_distrib] at h7`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : qW W G β.1 ≤ Bd c` using `Finset.single_le_sum (f := fun β : T c => qW W G β.1) (fun β _ => by rw [hGq]; exact Finset.sum_nonneg fun j _ => hq0 j β.1) hβF`. Rewrite `h8`, the goal using `[hGq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finite_minimiser_systems : ∀ (φ : InvFun ℤ), ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), PosW W → ∀ (N : ℕ) [NeZero N], 3 ≤ N → ∀ r : ℕ, ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ (Fin r → ℤ)), IsCone id φ γ → (∀ x, x ≠ 0 → 0 < ∑ j, γ j x x) → ∃ Sμ : Finset ((Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ)), ∀ (b : LinearMap.BilinForm ℤ (Fin r → ℤ)) (k : ℕ) (cf : Fin m → ℕ), 0 < k → (∀ j, 0 < cf j) → k • b = ∑ j, cf j • γ j → ∀ μ : (Fin 8 → Fin r → ZMod N) → (Fin 8 → Fin r → ℤ), (∀ c u i, ((μ c u i : ℤ) : ZMod N) = c u i) → (∀ c (α : Fin 8 → Fin r → ℤ), (∀ u i, ((α u i : ℤ) : ZMod N) = c u i) → qW W b (μ c) ≤ qW W b α) → μ ∈ Sμ := by
   intro φ W hW N _ _ r m γ hC hdef
   classical

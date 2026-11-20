@@ -16,17 +16,29 @@ namespace GlobalTheory.SecondLawGauge
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [ha, hb, hc, he]`.
+-/
 theorem gp4 {n : ℕ} {a b c e : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) (he : GP e) :
     ∀ j, GP (![a, b, c, e] j) := by
   intro j; fin_cases j; exacts [ha, hb, hc, he]
 
+/- English proof (translation)
+The claim follows from `gp_addOf _ G.const _ _ ha hb`.
+-/
 theorem gp_add (G : FGLaw k d) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) : GP (addOf G.F a b) :=
   gp_addOf _ G.const _ _ ha hb
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]`.
+-/
 theorem germEv_germEv_two_points {m n : ℕ} (V : Fin m → Pt k n d) (a b : Pt k m d) (hV : ∀ j, GP (V j)) (ha : GP a)
     (hb : GP b) (f : PS k 2 d) : ev V (ev ![a, b] f) = ev ![evP V a, evP V b] f := by
   rw [gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V _ hV (triple_points_zero_constant ha hb hc)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem germEv_germEv_three_points {m n : ℕ} (V : Fin m → Pt k n d) (a b c : Pt k m d) (hV : ∀ j, GP (V j)) (ha : GP a)
     (hb : GP b) (hc : GP c) (f : PS k 3 d) :
     ev V (ev ![a, b, c] f) = ev ![evP V a, evP V b, evP V c] f := by
@@ -34,6 +46,11 @@ theorem germEv_germEv_three_points {m n : ℕ} (V : Fin m → Pt k n d) (a b c :
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 3 × Fin d => (![pt k (n := 3) d 0, pt k d 1, pt k d 2] p.1) p.2) f = f`. Establish `e : (fun p : Fin 3 × Fin d => (![pt k (n` using `3) d 0, pt k d 1, pt k d 2] p.1) p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`.
+
+Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_self3 (f : PS k 3 d) : ev (n := 3) ![pt k d 0, pt k d 1, pt k d 2] f = f := by
   change MvPowerSeries.subst (fun p : Fin 3 × Fin d => (![pt k (n := 3) d 0, pt k d 1, pt k d 2] p.1) p.2) f = f
   have e : (fun p : Fin 3 × Fin d => (![pt k (n := 3) d 0, pt k d 1, pt k d 2] p.1) p.2) = X := by
@@ -43,12 +60,18 @@ theorem ev_self3 (f : PS k 3 d) : ev (n := 3) ![pt k d 0, pt k d 1, pt k d 2] f 
   rw [e, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[GlobalTheory.FormalCalc.pderiv_subst (gt_hasSubst V hV), Fintype.sum_prod_type]`.
+-/
 theorem pderiv_ev {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f : PS k m d)
     (v : Fin n × Fin d) :
     pderiv k v (ev V f) = ∑ j : Fin m, ∑ l : Fin d, ev V (pderiv k (j, l) f) * pderiv k v (V j l) := by
   unfold ev
   rw [GlobalTheory.FormalCalc.pderiv_subst (gt_hasSubst V hV), Fintype.sum_prod_type]
 
+/- English proof (translation)
+Unfold `pt`. Rewrite using `[pderiv_X_of_ne]`. Introduce `e`. Conclude with `h (congrArg Prod.fst e)`.
+-/
 theorem pderiv_pt_ne {n : ℕ} {a b : Fin n} (h : b ≠ a) (i l : Fin d) :
     pderiv k (a, i) (pt k d b l) = 0 := by
   unfold pt
@@ -56,6 +79,9 @@ theorem pderiv_pt_ne {n : ℕ} {a b : Fin n} (h : b ≠ a) (i l : Fin d) :
   intro e
   exact h (congrArg Prod.fst e)
 
+/- English proof (translation)
+Unfold `addOf`. Rewrite using `[pderiv_ev _ (pair_points_zero_constant ha hb), Fin.sum_univ_two]`. Simplify using `[h1, h2]`.
+-/
 theorem pderiv_addOf_zero {n : ℕ} (F : Fin d → PS k 2 d) (a b : Pt k n d) (ha : GP a) (hb : GP b)
     (v : Fin n × Fin d) (h1 : ∀ l, pderiv k v (a l) = 0) (h2 : ∀ l, pderiv k v (b l) = 0) (l : Fin d) :
     pderiv k v (addOf F a b l) = 0 := by
@@ -63,6 +89,11 @@ theorem pderiv_addOf_zero {n : ℕ} (F : Fin d → PS k 2 d) (a b : Pt k n d) (h
   rw [pderiv_ev _ (pair_points_zero_constant ha hb), Fin.sum_univ_two]
   simp [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev _ (pair_points_zero_constant (gp_pt a) hy), Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, h, mul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[pt]`. Introduce `l _ hl`.
+
+Unfold `pt`. Rewrite using `[pderiv_X_of_ne, mul_zero]`. Introduce `e`. Conclude with `hl (congrArg Prod.snd e)`. Simplify using the standard rewrite rules.
+-/
 theorem pderiv_ev_fst {n : ℕ} (a : Fin n) (y : Pt k n d) (hy : GP y) (i : Fin d)
     (h : ∀ l, pderiv k (a, i) (y l) = 0) (f : PS k 2 d) :
     pderiv k (a, i) (ev ![pt k d a, y] f) = ev ![pt k d a, y] (pderiv k ((0 : Fin 2), i) f) := by
@@ -77,6 +108,9 @@ theorem pderiv_ev_fst {n : ℕ} (a : Fin n) (y : Pt k n d) (hy : GP y) (i : Fin 
     exact hl (congrArg Prod.snd e)
   · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `congrArg (ev ![b]) (G.unit i)` as an intermediate fact. Rewrite `this` using `[germEv_germEv_two_points _ _ _ (single_point_zero_constant hb) gp_zero₂ (gp_pt _), evP_zero _ (single_point_zero_constant hb), evP_pt _ (single_point_zero_constant hb), gt_ev_X _ (single_point_zero_constant hb)]`. Conclude with `this`.
+-/
 theorem addOf_zero_left (G : FGLaw k d) {n : ℕ} (b : Pt k n d) (hb : GP b) : addOf G.F 0 b = b := by
   funext i
   have := congrArg (ev ![b]) (G.unit i)
@@ -93,6 +127,37 @@ local macro "push_ev" loc:(Lean.Parser.Tactic.location)? : tactic =>
   `(tactic| simp (disch := gp) only [germEv_germEv_two_points, germEv_germEv_three_points, gt_ev_add, gt_ev_sub, gt_ev_mul, gt_ev_zero, ev_one,
     evP_pt, evP_addOf, evP_zero, Matrix.cons_val] $[$loc]?)
 
+/- English proof (translation)
+Introduce `H1 H2 k _ _ d O _ _ B hB`. Establish `c1 : constantCoeff B.ph2 = 1`. Use `congrArg constantCoeff B.cocycleRight_zero_fst` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (by gp), map_one]`. Then use the resulting hypothesis. Take `⟨L, hL0, hL⟩ : ∃ L : PS k 3 d, constantCoeff L = 0 ∧ FB.expS k L = B.ph2` from `⟨_, constantCoeff_logS c1, exp_log c1⟩`.
+
+Establish `cL : ∀ {n : ℕ} {a b c : Pt k n d}, GP a → GP b → GP c → constantCoeff (ev ![a, b, c] L) = 0` using `fun ha hb hc => gt_const_ev _ (triple_points_zero_constant ha hb hc) _ hL0`. Establish `eL : ∀ {n : ℕ} {a b c : Pt k n d}, GP a → GP b → GP c → ev ![a, b, c] B.ph2 = FB.expS k (ev ![a, b, c] L)`. Introduce `n a b c ha hb hc`. Rewrite using `[← hL, gt_ev_expS _ (triple_points_zero_constant ha hb hc) _ hL0]`. Establish `inj : ∀ {n : ℕ} {f g : PS k n d}, constantCoeff f = 0 → constantCoeff g = 0 → FB.expS k f = FB.expS k g → f = g` using `fun hf hg h => exp_inj hf hg h`.
+
+Establish `inj2 : ∀ {n : ℕ} {f g f' g' : PS k n d}, constantCoeff f = 0 → constantCoeff g = 0 → constantCoeff f' = 0 → constantCoeff g' = 0 → FB.expS k f * FB.expS k g = FB.expS k f' * FB.expS k g' → f + g = f' + g'`. Introduce `n f g f' g' hf hg hf' hg' h`. Use `inj (by simp [hf, hg]) (by simp [hf', hg']) ?_` and prove the remaining obligations. Rewrite using `[gt_expS_add _ _ hf hg, gt_expS_add _ _ hf' hg', h]`. Establish `e0 : ∀ {n : ℕ}, FB.expS k (0 : PS k n d) = 1` using `exp_zero`.
+
+Establish `Lax : ev (n` using `2) ![pt k d 1, 0, pt k d 0] L = 0 := by`. Use `congrArg (ev (n := 2) ![pt k d 1, pt k d 0]) B.cocycleRight_zero_snd` as an intermediate fact. Use `push_ev at this`. Use `inj (cL (by gp) (by gp) (by gp)) (map_zero _) ?_` and prove the remaining obligations. Rewrite using `[← eL (by gp) (by gp) (by gp), this, e0]`.
+
+Establish `Lcomm : ev (n` using `3) ![pt k d 2, pt k d 1, pt k d 0] L = ev (n := 3) ![pt k d 2, pt k d 0, pt k d 1] L := by`. Use `congrArg (ev (n := 3) ![pt k d 2, pt k d 0, pt k d 1]) B.cocycleRight_comm` as an intermediate fact. Use `push_ev at this`. Use `inj (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) ?_` and prove the remaining obligations. Rewrite using `[← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), this]`.
+
+Establish `Lassoc : ev (n` using `4) ![pt k d 3, pt k d 0, pt k d 1] L + ev (n := 4) ![pt k d 3, addOf B.G.F (pt k d 0) (pt k d 1), pt k d 2] L = ev (n := 4) ![pt k d 3, pt k d 1, pt k d 2] L + ev (n := 4) ![pt k d 3, pt k d 0, addOf B.G.F (pt k d 1) (pt k d 2)] L := by`. Use `congrArg (ev (n := 4) ![pt k d 3, pt k d 0, pt k d 1, pt k d 2]) B.cocycleRight_assoc` as an intermediate fact. Use `push_ev at this`. Use `inj2 (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) ?_` and prove the remaining obligations. Rewrite using `[← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), this]`.
+
+Establish `Lint : ev (n` using `4) ![addOf B.G.F (pt k d 2) (pt k d 3), pt k d 0, pt k d 1] L = ev (n := 4) ![pt k d 2, pt k d 0, pt k d 1] L + ev (n := 4) ![pt k d 3, pt k d 0, pt k d 1] L := by`. Use `congrArg (ev (n := 4) ![pt k d 2, pt k d 3, pt k d 0, pt k d 1]) B.interchange` as an intermediate fact. Rewrite `this` using `[hB]`. Use `push_ev at this`. Rewrite using `[← zero_add (ev _ L)]`.
+
+Use `inj2 (map_zero _) (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) (cL (by gp) (by gp) (by gp)) ?_` and prove the remaining obligations. Rewrite using `[← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), ← eL (by gp) (by gp) (by gp), e0]`. Simplify using `using this`. Take `⟨g, g0, g1, hg⟩` from `H1 k d B.G (ev (n := 3) ![pt k d 2, pt k d 0, pt k d 1] L) (by push_ev; exact Lax) (by push_ev; exact Lcomm) (by push_ev; exact Lassoc)`. Establish `hg' : ∀ {n : ℕ} {x a b : Pt k n d}, GP x → GP a → GP b → ev ![x, a, b] L = ev ![a, x] g + ev ![b, x] g - ev ![addOf B.G.F a b, x] g`.
+
+Introduce `n x a b hx ha hb`. Use `congrArg (ev ![a, b, x]) hg` as an intermediate fact. Use `push_ev at this`. Conclude with `this`. Establish `g1' : ∀ {n : ℕ} {x : Pt k n d}, GP x → ∀ i, ev ![0, x] (pderiv k ((0 : Fin 2), i) g) = 0`.
+
+Introduce `n x hx i`. Use `congrArg (ev ![x]) (g1 i)` as an intermediate fact. Use `push_ev at this`. Conclude with `this`. Establish `hu : ev (n` using `3) ![pt k d 0, pt k d 1] g + ev (n := 3) ![pt k d 0, pt k d 2] g - ev (n := 3) ![pt k d 0, addOf B.G.F (pt k d 1) (pt k d 2)] g = 0 := by`.
+
+Use `H2 k d B.G 2 _ ?_ ?_` and prove the remaining obligations. Establish `v : ∀ y : Pt k 4 d, (Fin.cons y (fun j : Fin 2 => pt k d j.succ.succ) : Fin 3 → Pt k 4 d) = ![y, pt k d 2, pt k d 3]`. Apply the tactic sequence `intro y; funext j; fin_cases j <;> rfl`. Rewrite using `[v, v, v]`. Use `push_ev`.
+
+Rewrite `Lint` using `[hg' (by gp) (by gp) (by gp), hg' (by gp) (by gp) (by gp), hg' (by gp) (by gp) (by gp)]`. Take the linear combination `Lint`. Introduce `i`. Establish `v : (Fin.cons 0 (fun j : Fin 2 => pt k d j) : Fin 3 → Pt k 2 d) = ![0, pt k d 0, pt k d 1]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+
+Rewrite using `[v, map_sub, map_add, pderiv_ev_fst _ _ (by gp) _ (pderiv_pt_ne (by decide) i), pderiv_ev_fst _ _ (by gp) _ (pderiv_pt_ne (by decide) i), pderiv_ev_fst _ _ (by gp) _ (pderiv_addOf_zero _ _ _ (by gp) (by gp) _ (pderiv_pt_ne (by decide) i) (pderiv_pt_ne (by decide) i))]`. Use `push_ev`. Rewrite using `[g1' (by gp), g1' (by gp), g1' (by gp)]`. Simplify using the standard rewrite rules. Use `⟨ev (n := 2) ![pt k d 1, pt k d 0] g, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (ev (n := 1) ![pt k d 0, 0, 0]) hu push_ev at this` as an intermediate fact. Rewrite `this` using `[addOf_zero_left _ _ (by gp), add_sub_cancel_right]`. Use `push_ev`. Conclude with `this`. Use `push_ev`.
+
+Conclude with `g0`. Use `congrArg (ev (n := 3) ![pt k d 2, pt k d 0, pt k d 1]) hu push_ev at this push_ev` as an intermediate fact. Conclude with `this`. Use `push_ev`. Rewrite using `[← hg' (by gp) (by gp) (by gp), ev_self3, hL]`.
+-/
 theorem exists_gauge_second_law : (∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (G : FGLaw k d) (c : PS k 3 d), ev (n := 2) ![0, pt k d 0, pt k d 1] c = 0 → ev (n := 3) ![pt k d 1, pt k d 0, pt k d 2] c = c → ev (n := 4) ![pt k d 0, pt k d 1, pt k d 3] c + ev (n := 4) ![addOf G.F (pt k d 0) (pt k d 1), pt k d 2, pt k d 3] c = ev (n := 4) ![pt k d 1, pt k d 2, pt k d 3] c + ev (n := 4) ![pt k d 0, addOf G.F (pt k d 1) (pt k d 2), pt k d 3] c → ∃ h : PS k 2 d, ev (n := 1) ![0, pt k d 0] h = 0 ∧ (∀ i, ev (n := 1) ![0, pt k d 0] (pderiv k ((0 : Fin 2), i) h) = 0) ∧ c = (ev (n := 3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf G.F (pt k d 0) (pt k d 1), pt k d 2] h)) → (∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (G : FGLaw k d) (q : ℕ) (g : PS k (q + 1) d), ev (n := q + 2) (Fin.cons (addOf G.F (pt k d 0) (pt k d 1)) (fun j : Fin q => pt k d j.succ.succ)) g = ev (n := q + 2) (Fin.cons (pt k d 0) (fun j : Fin q => pt k d j.succ.succ)) g + ev (n := q + 2) (Fin.cons (pt k d 1) (fun j : Fin q => pt k d j.succ.succ)) g → (∀ i, ev (n := q) (Fin.cons 0 (fun j : Fin q => pt k d j)) (pderiv k ((0 : Fin (q + 1)), i) g) = 0) → g = 0) → ∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB k d O), B.ph1 = 1 → ∃ h : PS k 2 d, (ev (n := 1) ![0, pt k d 0] h = 0 ∧ ev (n := 1) ![pt k d 0, 0] h = 0) ∧ (ev (n := 3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf B.G.F (pt k d 0) (pt k d 1), pt k d 2] h) = 0 ∧ B.ph2 = FB.expS k (ev (n := 3) ![pt k d 0, pt k d 1] h + ev (n := 3) ![pt k d 0, pt k d 2] h - ev (n := 3) ![pt k d 0, addOf B.G.F (pt k d 1) (pt k d 2)] h) := by
   intro H1 H2 k _ _ d O _ _ B hB
   have c1 : constantCoeff B.ph2 = 1 := by

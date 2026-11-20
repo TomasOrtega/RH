@@ -4,6 +4,11 @@ open scoped ComplexOrder ENNReal Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hji`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Establish `e1 : j + m + j + k - (j + m) = j + k` using `by omega`. Establish `e2 : j + m - j = m` using `by omega`. Establish `e3 : j + m + j + k - m = j + j + k` using `by omega`.
+
+Establish `e4 : j + m + j + k - (j + m + j) = k` using `by omega`. Rewrite using `[e1, e2, e3, e4, ← pow_add, ← pow_add, ← pow_mul]`. Apply `pow_le_pow_of_le_one h0 h1` to reduce the goal to its premises. Use polynomial arithmetic with `[Nat.mul_le_mul hj hj]`.
+-/
 theorem driftWeight_sq_le (ε : ℝ) (h0 : 0 ≤ ε) (h1 : ε ≤ 1) (r i j : ℕ) (hj : 0 < j) (hji : j ≤ i)
     (hr : i + j ≤ r) :
     (ε ^ (i * (r - i))) ^ 2 ≤
@@ -18,6 +23,11 @@ theorem driftWeight_sq_le (ε : ℝ) (h0 : 0 ≤ ε) (h1 : ε ≤ 1) (r i j : �
   apply pow_le_pow_of_le_one h0 h1
   nlinarith [Nat.mul_le_mul hj hj]
 
+/- English proof (translation)
+Establish `hM : 0 ≤ M` using `le_trans (mul_nonneg he₁ hu) h₁`. Establish `hs0` using `Real.sqrt_nonneg (u * v)`. Establish `k3 : (x * Real.sqrt (u * v)) ^ 2 ≤ (ε * M) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt (mul_nonneg hu hv)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[mul_nonneg hx hs0, mul_nonneg hε hM]`.
+-/
 theorem mul_sqrt_le_of_weights (x e₁ e₂ ε u v M : ℝ) (hx : 0 ≤ x) (he₁ : 0 ≤ e₁) (he₂ : 0 ≤ e₂)
     (hε : 0 ≤ ε) (hu : 0 ≤ u) (hv : 0 ≤ v) (h : x ^ 2 ≤ ε ^ 2 * (e₁ * e₂))
     (h₁ : e₁ * u ≤ M) (h₂ : e₂ * v ≤ M) : x * Real.sqrt (u * v) ≤ ε * M := by
@@ -33,6 +43,31 @@ theorem mul_sqrt_le_of_weights (x e₁ e₂ ε u v M : ℝ) (hx : 0 ≤ x) (he�
       _ = (ε * M) ^ 2 := by ring
   nlinarith [mul_nonneg hx hs0, mul_nonneg hε hM]
 
+/- English proof (translation)
+Introduce `Y σ _ r t α c C B hc0 hc1 hC hα hB halt`. Establish `hrC : 0 ≤ (r : ℝ) * C` using `mul_nonneg (Nat.cast_nonneg r) hC`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε0, hε1, hkey⟩ : ∃ ε : ℝ, 0 < ε ∧ ε ≤ 1 ∧ (r : ℝ) * C * ε < 1 - c := by`. Establish `hden : 0 < 2 * ((r : ℝ) * C + 1)` using `by linarith`. Use `⟨(1 - c) / (2 * ((r : ℝ) * C + 1)), div_pos (by linarith) hden, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_le_one hden]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hεe : (1 - c) / (2 * ((r : ℝ) * C + 1)) * (2 * ((r : ℝ) * C + 1)) = 1 - c` using `div_mul_cancel₀ _ hden.ne'`. Establish `hpos : 0 < (1 - c) / (2 * ((r : ℝ) * C + 1))` using `div_pos (by linarith) hden`. Use polynomial arithmetic with `[mul_nonneg hrC hpos.le]`.
+
+Use `⟨fun i => ε ^ (i * (r - i)), c + (r : ℝ) * C * ε, 2 * (r : ℝ) * C * ε * max B 0, fun i => pow_pos hε0 _, add_nonneg hc0 (mul_nonneg hrC hε0.le), by linarith, mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg zero_le_two (Nat.cast_nonneg r)) hC) hε0.le) (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `y`. Simplify using `only`. Take `⟨Φ, hΦ⟩ : ∃ Φ : ℝ, Φ = ∑ i ∈ Finset.Ioo 0 r, ε ^ (i * (r - i)) * α i y` from `⟨_, rfl⟩`. Establish `hΦ0 : 0 ≤ Φ`.
+
+Rewrite using `[hΦ]`. Conclude with `Finset.sum_nonneg fun i hi => mul_nonneg (pow_nonneg hε0.le _) (hα i (Finset.mem_Ioo.1 hi).2.le y)`. Establish `hB0 : 0 ≤ B` using `le_trans (hα 0 (Nat.zero_le _) y) (hB y).1`. Take `⟨M, hM⟩ : ∃ M : ℝ, M = Φ + 2 * B` from `⟨_, rfl⟩`. Establish `hM0 : 0 ≤ M` using `by rw [hM]; linarith`.
+
+Establish `hbd : ∀ k ≤ r, ε ^ (k * (r - k)) * α k y ≤ M`. Introduce `k hk`. Break down `Nat.eq_zero_or_pos k with hk0 | hk0` into its components or cases. Rewrite using `[hk0, zero_mul, pow_zero, one_mul]`. Combine the linear relations using `[(hB y).1]`.
+
+Break down `eq_or_lt_of_le hk with hkr | hkr` into its components or cases. Rewrite using `[hkr, Nat.sub_self, mul_zero, pow_zero, one_mul]`. Combine the linear relations using `[(hB y).2]`. Establish `h1 : ε ^ (k * (r - k)) * α k y ≤ Φ`. Rewrite using `[hΦ]`.
+
+Conclude with `Finset.single_le_sum (f := fun i => ε ^ (i * (r - i)) * α i y) (fun i hi => mul_nonneg (pow_nonneg hε0.le _) (hα i (Finset.mem_Ioo.1 hi).2.le y)) (Finset.mem_Ioo.2 ⟨hk0, hkr⟩)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hterm : ∀ i ∈ Finset.Ioo 0 r, ∑ s, ε ^ (i * (r - i)) * α i (t s y) ≤ (Fintype.card σ : ℝ) * (c * (ε ^ (i * (r - i)) * α i y)) + (Fintype.card σ : ℝ) * (C * ε * M)`. Introduce `i hi`. Take `⟨hi0, hir⟩` from `Finset.mem_Ioo.1 hi`.
+
+Establish `hA : 0 ≤ (Fintype.card σ : ℝ) * (c * (ε ^ (i * (r - i)) * α i y))` using `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg hc0 (mul_nonneg (pow_nonneg hε0.le _) (hα i hir.le y)))`. Establish `hB' : 0 ≤ (Fintype.card σ : ℝ) * (C * ε * M)` using `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (mul_nonneg hC hε0.le) hM0)`. Break down `halt y i hi0 hir with hcon | ⟨j, hj0, hji, hjr, hint⟩` into its components or cases. Rewrite using `[← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hs : ∀ s, ε ^ (i * (r - i)) * α i (t s y) ≤ C * ε * M`. Introduce `s`. Establish `h1` using `driftWeight_sq_le ε hε0.le hε1 r i j hj0 hji hjr`. Establish `h2` using `mul_sqrt_le_of_weights (ε ^ (i * (r - i))) (ε ^ ((i - j) * (r - (i - j)))) (ε ^ ((i + j) * (r - (i + j)))) ε (α (i - j) y) (α (i + j) y) M (pow_nonneg hε0.le _) (pow_nonneg hε0.le _) (pow_nonneg hε0.le _) hε0.le (hα _ (by omega) y) (hα _ hjr y) h1 (hbd _ (by omega)) (hbd _ hjr)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ _ := le_add_of_nonneg_left hA`. Establish `hcard : ((Finset.Ioo 0 r).card : ℝ) ≤ r`. Conclude with `(by rw [Nat.card_Ioo]; omega)` after adjusting the coercions.
+
+Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum, ← Finset.mul_sum, hΦ]`. Use `_ ≤ (Fintype.card σ : ℝ) * (c * Φ) + (r : ℝ) * ((Fintype.card σ : ℝ) * (C * ε * M)) := add_le_add le_rfl (mul_le_mul_of_nonneg_right hcard (mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (mul_nonneg hC hε0.le) hM0)))`. Use `_ = (Fintype.card σ : ℝ) * ((c + (r : ℝ) * C * ε) * Φ + 2 * (r : ℝ) * C * ε * max B 0) := by`.
+
+Rewrite using `[max_eq_left hB0, hM]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hΦ]`.
+-/
 theorem weighted_sum_drift_inequality : (∀ (Y σ : Type) [Fintype σ] (r : ℕ) (t : σ → Y → Y) (α : ℕ → Y → ℝ) (c C B : ℝ), 0 ≤ c → c < 1 → 0 ≤ C → (∀ i ≤ r, ∀ y, 0 ≤ α i y) → (∀ y, α 0 y ≤ B ∧ α r y ≤ B) → (∀ (y : Y) (i : ℕ), 0 < i → i < r → (∑ s, α i (t s y) ≤ Fintype.card σ * (c * α i y)) ∨ ∃ j : ℕ, 0 < j ∧ j ≤ i ∧ i + j ≤ r ∧ ∀ s, α i (t s y) ≤ C * Real.sqrt (α (i - j) y * α (i + j) y)) → ∃ (e : ℕ → ℝ) (c' b : ℝ), (∀ i, 0 < e i) ∧ 0 ≤ c' ∧ c' < 1 ∧ 0 ≤ b ∧ ∀ y, ∑ s, (∑ i ∈ Finset.Ioo 0 r, e i * α i (t s y)) ≤ Fintype.card σ * (c' * (∑ i ∈ Finset.Ioo 0 r, e i * α i y) + b)) := by
   intro Y σ _ r t α c C B hc0 hc1 hC hα hB halt
   have hrC : 0 ≤ (r : ℝ) * C := mul_nonneg (Nat.cast_nonneg r) hC

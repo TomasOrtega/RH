@@ -23,35 +23,53 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun z : GL (Fin n) (E ⊗[F] (P.under (𝓞 F)).adicCompletion F) => z.1 i j) h`. Conclude with `AdT.LocSplice.adAt_eq_of_prV P e`.
+-/
 theorem adAt_entry_of_bc {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) {η η' : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) (P.under (𝓞 F))) η = bc (prV (E := E) (P.under (𝓞 F))) η') (i j : Fin n) :
     adAt F P (η.1 i j) = adAt F P (η'.1 i j) := by
   have e := congrArg (fun z : GL (Fin n) (E ⊗[F] (P.under (𝓞 F)).adicCompletion F) => z.1 i j) h
   exact AdT.LocSplice.adAt_eq_of_prV P e
 
+/- English proof (translation)
+Rewrite using `[adAt_entry_of_bc P (η' := 1) (h.trans (map_one _).symm) i j, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem adAt_entry_one {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) {η : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) (P.under (𝓞 F))) η = 1) (i j : Fin n) :
     adAt F P (η.1 i j) = if i = j then 1 else 0 := by
   rw [adAt_entry_of_bc P (η' := 1) (h.trans (map_one _).symm) i j, Units.val_one, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul]`.
+-/
 theorem adAt_mul_entry {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (g κ : GL (Fin n) (AfE F E)) (i j : Fin n) :
     adAt F P ((g * κ).1 i j) = ∑ l, adAt F P (g.1 i l) * adAt F P (κ.1 l j) := by
   rw [Units.val_mul, Matrix.mul_apply, map_sum]
   simp only [map_mul]
 
+/- English proof (translation)
+Rewrite using `[adAt_mul_entry]`. Simplify using `only [adAt_entry_one P h, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem adAt_mul_of_one {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) (AfE F E)) {κ : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) (P.under (𝓞 F))) κ = 1) (i j : Fin n) :
     adAt F P ((g * κ).1 i j) = adAt F P (g.1 i j) := by
   rw [adAt_mul_entry]
   simp only [adAt_entry_one P h, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[adAt_mul_entry, adAt_mul_entry]`. Simplify using `only [adAt_entry_of_bc P h]`.
+-/
 theorem adAt_mul_congr {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) (AfE F E)) {κ κ' : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) (P.under (𝓞 F))) κ = bc (prV (E := E) (P.under (𝓞 F))) κ') (i j : Fin n) :
     adAt F P ((g * κ).1 i j) = adAt F P ((g * κ').1 i j) := by
   rw [adAt_mul_entry, adAt_mul_entry]
   simp only [adAt_entry_of_bc P h]
 
+/- English proof (translation)
+Establish `h' : bc (prV (E` using `E) (P.under (𝓞 F))) κ⁻¹ = 1 := by rw [map_inv, h, inv_one]`. Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct, map_sum]`. Simplify using `only [map_mul, adAt_entry_one P h', ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem adAt_pullV_mul {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n) (AfE F E)) {κ : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) (P.under (𝓞 F))) κ = 1) (x : Sp E n) (i : Fin n) :
     adAt F P (pullV (g * κ) x i) = adAt F P (pullV g x i) := by
@@ -60,12 +78,24 @@ theorem adAt_pullV_mul {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (g : GL (Fin n
   rw [_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct, map_sum]
   simp only [map_mul, adAt_entry_one P h', ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => PtExist.ad_ext fun P => ?_)` and prove the remaining obligations. Use `adAt_entry_of_bc P ?_ i j` and prove the remaining obligations. Apply the tactic sequence `rcases h (P.under (𝓞 F)) with h1 | h1 <;> simp [map_mul, h1]`.
+-/
 theorem comm_of_bc {n : ℕ} (κ k : GL (Fin n) (AfE F E))
     (h : ∀ v, bc (prV (E := E) v) κ = 1 ∨ bc (prV (E := E) v) k = 1) : κ * k = k * κ := by
   refine Units.ext (Matrix.ext fun i j => PtExist.ad_ext fun P => ?_)
   refine adAt_entry_of_bc P ?_ i j
   rcases h (P.under (𝓞 F)) with h1 | h1 <;> simp [map_mul, h1]
 
+/- English proof (translation)
+Establish `hne : ∀ (v w : HeightOneSpectrum (𝓞 F)), w ≠ v → ∀ (h : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), bc (prV (E` using `E) w) (Formalism.UG.P.afsplitU v h k) = bc (prV (E := E) w) k := by`. Introduce `v w hw h k`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_prV_ne v w hw, ← Formalism.UG.P.afsplit_coe_bc_prV]`. Proceed by induction on `W using Finset.induction_on with`.
+
+Consider the case `empty => exact ⟨1, one_mem _, fun v hv => absurd hv (Finset.notMem_empty v), fun v _ => map_one _⟩`. Consider the case `insert v W hvW ih`. Take `⟨κ, hκ, h1, h2⟩` from `ih`. Use `⟨Formalism.UG.P.afsplitU v (bc (prV (E := E) v) x) κ, Formalism.UG.P.afsplitU_mem v sg J _ _ (Formalism.UG.P.afsplit_bc_mem sg J v x hx) hκ, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w = v`.
+
+Substitute `e` using the available equality. Conclude with `Formalism.UG.P.afsplit_right1 _ _ _`. Rewrite using `[hne v w e]`. Conclude with `h1 w ((Finset.mem_insert.1 hw).resolve_left e)`. Establish `e : w ≠ v` using `fun e => hw (e ▸ Finset.mem_insert_self _ _)`.
+
+Rewrite using `[hne v w e]`. Conclude with `h2 w fun h => hw (Finset.mem_insert_of_mem h)`.
+-/
 theorem exists_splice {n : ℕ} (sg : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (W : Finset (HeightOneSpectrum (𝓞 F)))
     (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hx : x ∈ UPts sg J (FiniteAdeleRing (𝓞 F) F)) :
     ∃ κ ∈ UPts sg J (FiniteAdeleRing (𝓞 F) F), (∀ v ∈ W, bc (prV (E := E) v) κ = bc (prV (E := E) v) x) ∧
@@ -93,6 +123,25 @@ theorem exists_splice {n : ℕ} (sg : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n)
       rw [hne v w e]
       exact h2 w fun h => hw (Finset.mem_insert_of_mem h)
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) (stdLat E n) := Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg`. Establish `helper : ∀ (A : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F)) (t : Fin n → E ⊗[F] v.adicCompletion F), A *ᵥ (fun i => Formalism.UG.P.afsplitIE v (t i)) ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) ↔ A.map (prV (E := E) v) *ᵥ t ∈ Formalism.L2.Herm.locL v (stdLat E n) := by`. Introduce `A v t`. Establish `hv : ∀ w, (fun i => prV (E` using `E) w ((A *ᵥ (fun i => Formalism.UG.P.afsplitIE v (t i))) i)) = A.map (prV (E := E) w) *ᵥ (fun i => prV (E := E) w (Formalism.UG.P.afsplitIE v (t i))) := fun w => by`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.LevPin.mem_hatL_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `h v` as an intermediate fact. Rewrite `this` using `[hv v, funext fun i => Formalism.UG.P.afsplit_prV_IE v (t i)]`. Then use the resulting hypothesis. Introduce `h w`. Rewrite using `[hv w]`. Distinguish the cases in `e : w = v`.
+
+Substitute `e` using the available equality. Rewrite using `[funext fun i => Formalism.UG.P.afsplit_prV_IE w (t i)]` and apply the resulting hypothesis. Rewrite using `[funext fun i => Formalism.UG.P.afsplit_prV_IE_ne v w e (t i)]`. Establish `e0 : (fun _ : Fin n => (0 : E ⊗[F] w.adicCompletion F)) = 0` using `rfl`. Rewrite using `[e0, Matrix.mulVec_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `key : ∀ v (t : Fin n → E ⊗[F] v.adicCompletion F), t ∈ Formalism.L2.Herm.locL v (stdLat E n) ↔ (((bc (prV (E` using `E) v) z)⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ t ∈ Formalism.L2.Herm.locL v (stdLat E n) := by`. Introduce `v t`. Break down `h v with e | e` into its components or cases. Rewrite using `[e]`.
+
+Establish `h1` using `helper 1 v t`. Establish `h2` using `helper ((x⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) v t`. Establish `h3` using `hx (fun i => Formalism.UG.P.afsplitIE v (t i))`. Rewrite `h1` using `[Matrix.one_mulVec, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Rewrite using `[← map_inv, Formalism.UG.P.afsplit_coe_bc_prV]`.
+
+Conclude with `h1.symm.trans (h3.trans h2)`. Rewrite using `[e, inv_one, Units.val_one, Matrix.one_mulVec]`. Introduce `y`. Rewrite using `[GlobalTheory.LevPin.mem_hatL_iff, GlobalTheory.LevPin.mem_hatL_iff]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[key v]`. Establish `e : (fun i => prV (E` using `E) v ((((z⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ y) i)) = (((bc (prV (E := E) v) z)⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ fun i => prV (E := E) v (y i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec, ← map_inv, Formalism.UG.P.afsplit_coe_bc_prV]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`.
+-/
 theorem carries_of_local [StarRing E] {n : ℕ} (x z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hx : Formalism.L2.Herm.Carries x (stdLat E n) (stdLat E n))
     (h : ∀ v, bc (prV (E := E) v) z = bc (prV (E := E) v) x ∨ bc (prV (E := E) v) z = 1) :
@@ -149,6 +198,9 @@ theorem carries_of_local [StarRing E] {n : ℕ} (x z : GL (Fin n) (E ⊗[F] Fini
 
 omit [NumberField F] [Algebra F E] in
 
+/- English proof (translation)
+Distinguish the cases in `hs : P ∈ SG`. Simplify using `only [ptFr, dif_pos hs, hd]`. Simplify using `only [ptFr, dif_neg hs, dif_neg h, dif_neg h', hd]`.
+-/
 theorem ptFr_eq [StarRing E] {n : ℕ} {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 E))} (p : DecoF E n ST SG Q)
     (p' : DecoF E n ST SG Q') (hd : p.deco = p'.deco) {P : HeightOneSpectrum (𝓞 E)} (h : P ∉ Q) (h' : P ∉ Q') :
     ptFr p P = ptFr p' P := by
@@ -168,6 +220,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hN : (extTo SQ p1).deco.1.N = (extTo SQ p0).deco.1.N` using `by show p1.deco.1.N = p0.deco.1.N`. Rewrite using `[hdeco]`. Establish `hxU : (y * k)⁻¹ * g1 ∈ UPts hc.sig 1 (FiniteAdeleRing (𝓞 F) F)` using `mul_mem (inv_mem hpt.uni) hg1.uni`. Establish `hxC : Formalism.L2.Herm.Carries ((y * k)⁻¹ * g1) (stdLat E n) (stdLat E n)`. Introduce `z`.
+
+Establish `e1` using `hpt.lat (((y * k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) _) *ᵥ z)`. Establish `e2` using `hg1.lat (((y * k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) _) *ᵥ z)`. Rewrite `e1` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite `e2` using `[hN]`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul, ← Matrix.mulVec_mulVec, ← e2, e1]`.
+
+Take `⟨κ, hκU, hκin, hκout⟩` from `exists_splice hc.sig 1 W ((y * k)⁻¹ * g1) hxU`. Establish `hκC : Formalism.L2.Herm.Carries κ (stdLat E n) (stdLat E n)` using `carries_of_local _ κ hxC fun v => if hv : v ∈ W then Or.inl (hκin v hv) else Or.inr (hκout v hv)`. Establish `hcomm : κ * k = k * κ` using `comm_of_bc κ k fun v => if hv : v ∈ W then Or.inr (hk v hv) else Or.inl (hκout v hv)`. Establish `hmv : y * κ * k = y * k * κ` using `by rw [mul_assoc, hcomm, ← mul_assoc]`. Establish `hof : ∀ P : HeightOneSpectrum (𝓞 E), (P ∈ ST ∨ P ∈ SG) → bc (prV (E` using `E) (P.under (𝓞 F))) κ = 1 := fun P hP => hκout _ (hoff P hP)`.
+
+Establish `hd' : (extTo SQ p1).deco = (extTo SQ p0).deco` using `hdeco`. Establish `h1 : IsPtOf hc (y * κ * k) (extTo SQ p1)`. Rewrite using `[hmv]`. Use `⟨mul_mem hpt.uni hκU, ?_, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`.
+
+Conclude with `GlobalTheory.Mem.Col2.TC.ChTw.Match.LocForm.carries_mul hpt.lat hκC`. Rewrite using `[adAt_pullV_mul P.1 (y * k) (hof P.1 (Or.inl P.2)), hd']`. Conclude with `hpt.f P x (by rw [← hN]; exact hx) i hi`. Rewrite using `[adAt_pullV_mul w.1 (y * k) (hof w.1 (Or.inr w.2)), hd']`. Conclude with `hpt.be w x (by rw [← hN]; exact hx) i`.
+
+Distinguish the cases in `hv : P.1.under (𝓞 F) ∈ W`. Rewrite using `[adAt_mul_congr P.1 (y * k) (hκin _ hv) i j, mul_inv_cancel_left]`. Conclude with `hg1.fr P i j`. Establish `hQa : P.1 ∉ Q1` using `fun h => hv (hQ1 _ h)`. Rewrite using `[adAt_mul_of_one P.1 (y * k) (hκout _ hv) i j, hpt.fr P i j, extTo_fr, extTo_fr, ptFr_eq p0 p1 hdeco.symm (hQ0 P.1) hQa]`.
+
+Use `⟨κ, hκout, h1, ⟨h1.uni, ?_, fun P x hx i hi => ?_, fun w x hx i => ?_, fun P => absurd P.2 (hQ0 P.1)⟩⟩` and prove the remaining obligations. Establish `e` using `h1.lat`. Rewrite `e` using `[hN]`. Conclude with `e`. Establish `e` using `h1.f P x (by rw [hN]; exact hx) i hi`.
+
+Rewrite `e` using `[hd']`. Conclude with `e`. Establish `e` using `h1.be w x (by rw [hN]; exact hx) i`. Rewrite `e` using `[hd']`. Conclude with `e`.
+-/
 theorem coreGen (hc : CMData F E) {n : ℕ} {ST SG Q0 Q1 SQ : Finset (HeightOneSpectrum (𝓞 E))}
     (W : Finset (HeightOneSpectrum (𝓞 F))) (p0 : DecoF E n ST SG Q0) (p1 : DecoF E n ST SG Q1)
     (hdeco : p1.deco = p0.deco) (hQ0 : ∀ P, P ∉ Q0) (hQ1 : ∀ P ∈ Q1, P.under (𝓞 F) ∈ W)
@@ -230,6 +299,13 @@ end GlobalTheory.Mem.Col2.ZeroMove
 
 namespace GlobalTheory.Mem.Col2.ZeroMove
 
+/- English proof (translation)
+Introduce and unpack `⟨P', hP', e⟩`. Establish `hg` using `(LevTwist.good_of_mem hOk (ColIn.Q_subset_SQ I a hP')).2.2.2`. Rewrite `hg` using `[e]`. Break down `hP with hP | hP` into its components or cases. Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`.
+
+Establish `hT0 : (B.primes X).piT u ≠ 0` using `fun h => by`. Use `hPr.piT_norm u` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `(hPr.T_prime u).ne_zero (Nat.cast_eq_zero.1 this.symm)`. Establish `hE : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`.
+
+Rewrite using `[← hPr.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ ((mem_divs hT0 P).1 hP)`. Establish `e2` using `(ReadTwist.plc_under_eq_iff (F := B.host.F) P (hPr.T_prime u)).2 hE`. Conclude with `hg (e2 ▸ hOk.T_mem u)`. Conclude with `hg (LevTwist.plc_mem hOk hP)`.
+-/
 theorem not_underQ {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (u : B.Word) (a : I.ι) {P : HeightOneSpectrum (𝓞 B.fields.E)}
     (hP : P ∈ (B.primes X).vT u ∨ P ∈ (B.primes X).vGs) : ¬ I.UnderQ a (P.under (𝓞 B.host.F)) := by
   rintro ⟨P', hP', e⟩
@@ -250,6 +326,17 @@ theorem not_underQ {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (u : 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u Ch0 chOf0 F a Q hQ hStd k hR c`. Establish `hk : ∀ v ∈ Q, bc (prV (E` using `(I.rec7 l Z).host.E) v) k = 1 := by`. Introduce `v hv`. Take `⟨P, hP, hPv⟩` from `(hQ v).1 hv`. Use `hR.k_off () v ?_ ?_ (Or.inl rfl)` and prove the remaining obligations.
+
+Rewrite using `[← hPv]`. Conclude with `LevTwist.T_notMem_under_uSG B X I hOk u P (Finset.mem_union_right _ (ColIn.Q_subset_SQ I a hP))`. Introduce and unpack `⟨P', hP', -⟩`. Rewrite `hP'` using `[ColIn.twistPrimes_reference_tuple_eq_empty]`. Conclude with `Finset.notMem_empty _ hP'`.
+
+Establish `hdeco : ((I.stp u a 0).rep (I.eCls0 l u a c)).1.1.deco = ((I.stp u I.mu0 0).rep c).1.1.deco` using `ClsZero.stepZero_corresponding_representatives_same_deco hOk u a (l.idx0 a).some c`. Take `⟨g1, hg1⟩` from `PtTwist.exists_ptOf_twists I hOk u _ (extTo I.SQ ((I.stp u a 0).rep (I.eCls0 l u a c)).1.1)`. Establish `hQ0 : ∀ P, P ∉ I.Q I.mu0` using `fun P h => by`. Rewrite `h` using `[ColIn.twistPrimes_reference_tuple_eq_empty]`. Conclude with `Finset.notMem_empty _ h`.
+
+Take `⟨κ, hκout, h1, h0⟩` from `coreGen B.sp.cm Q _ _ hdeco hQ0 (fun P h => (hQ _).2 ⟨P, h, rfl⟩) (fun P hP hv => not_underQ I hOk u a hP ((hQ _).1 hv)) _ k g1 hk (hR.pt c) hg1`. Establish `e1 : (I.stp u I.mu0 0).act c.1 1 ((I.stp u I.mu0 0).rep c) = (I.stp u I.mu0 0).rep c` using `@one_smul _ _ _ ((I.stp u I.mu0 0).actD c.1) _`. Establish `hkeep` using `AdT.keeps_one I ((I.stp u I.mu0 0).rep c)`. Establish `hmem : κ ∈ F.to0.cls0.lev.U` using `(hR.lev c κ _ h0).2 ⟨1, hkeep.1, by rw [e1], hkeep.2⟩`. Establish `hchi : F.to0.cls0.lev.chi ⟨κ, hmem⟩ = 1`.
+
+Establish `h` using `hR.chr c ⟨κ, hmem⟩ 1 hkeep.1 (by rw [e1]; exact h0)`. Rewrite `h` using `[map_one, Units.val_one, map_one]`. Conclude with `Units.ext h`. Conclude with `⟨⟨κ, hmem⟩, hκout, hchi, h1⟩`.
+-/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))), (∀ v, v ∈ Q ↔ I.UnderQ a v) → I.StdF l Z u F → ∀ (k : GA B (B.R.N 0)), I.Reads u I.mu0 0 (fun _ => ()) (fun _ => F.to0.cls0.lev.Lb) (fun _ => F.to0.cls0.lev.U) (fun _ => F.to0.cls0.lev.chi) (fun c => (F.to0.cls0.y c).1) (fun c s => (F.to0.cls0.stabI c s).1) (fun _ => k) → ∀ c, ∃ κ : F.to0.cls0.lev.U, (∀ v, v ∉ Q → bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) ∧ F.to0.cls0.lev.chi κ = 1 ∧ PtOf (B := B) ((show GA B (B.R.N 0) from (F.to0.cls0.y c).1 * κ.1) * k) (extTo I.SQ ((I.stp u a 0).rep (I.eCls0 l u a c)).1.1) := by
   intro B X I hOk hPins l Z u Ch0 chOf0 F a Q hQ hStd k hR c
   classical

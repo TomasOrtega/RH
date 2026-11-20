@@ -20,21 +20,35 @@ variable {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* �
   {I : Type} [Fintype I] {n : ℕ} {lam : I → DomWeight n} {W : Type} [AddCommGroup W] [Module ℂ W]
   {c₀ : VV K lam →ₛₗ[σ] W} {c' c'' : VV K' lam →ₛₗ[σ'] W}
 
+/- English proof (translation)
+Take `⟨F, hF, hj⟩` from `GlobalTheory.Proof.TensorMapDescent.bVVfun_desc ι lam j`. Conclude with `⟨⟨F, hF⟩, (bVV_coe _ _ _).trans hj⟩`.
+-/
 theorem exists_basis_val (lam : I → DomWeight n) (ι : K →+* K') (j : VVIdx lam) :
     ∃ v : VV K lam, ((bVV K' lam j : VV K' lam) : Pol K' I n) = MvPolynomial.map ι (v : Pol K I n) := by
   obtain ⟨F, hF, hj⟩ := GlobalTheory.Proof.TensorMapDescent.bVVfun_desc ι lam j
   exact ⟨⟨F, hF⟩, (bVV_coe _ _ _).trans hj⟩
 
+/- English proof (translation)
+Use `(bVV K' lam).ext fun j => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_basis_val lam ι j`. Rewrite using `[h v _ hv, h' v _ hv]`.
+-/
 theorem ext_unique (h : IsCoefExt ι lam c₀ c') (h' : IsCoefExt ι lam c₀ c'') : c' = c'' := by
   refine (bVV K' lam).ext fun j => ?_
   obtain ⟨v, hv⟩ := exists_basis_val lam ι j
   rw [h v _ hv, h' v _ hv]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bVV K' lam).sum_repr v, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => map_smulₛₗ _ _ _`.
+-/
 theorem apply_eq_sum [Fintype (VVIdx lam)] (c' : VV K' lam →ₛₗ[σ'] W) (v : VV K' lam) :
     c' v = ∑ j, σ' ((bVV K' lam).repr v j) • c' (bVV K' lam j) := by
   conv_lhs => rw [← (bVV K' lam).sum_repr v, map_sum]
   exact Finset.sum_congr rfl fun j _ => map_smulₛₗ _ _ _
 
+/- English proof (translation)
+Rewrite `hli`, the goal using `[linearIndependent_iff_card_le_finrank_span]`. Establish `: FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun j => c' (bVV K' lam j)))` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Use `hli.trans (Submodule.finrank_mono (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨v', hv'⟩` from `exists_ext_val h (bVV K lam j)`.
+
+Use `show c₀ (bVV K lam j) ∈ Submodule.span ℂ (Set.range fun j => c' (bVV K' lam j))`. Rewrite using `[← hv', apply_eq_sum c' v']`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem ext_linearIndependent (h : IsCoefExt ι lam c₀ c') (hli : LinearIndependent ℂ fun j => c₀ (bVV K lam j)) :
     LinearIndependent ℂ fun j => c' (bVV K' lam j) := by
   classical
@@ -48,6 +62,9 @@ theorem ext_linearIndependent (h : IsCoefExt ι lam c₀ c') (hli : LinearIndepe
   rw [← hv', apply_eq_sum c' v']
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero c').2 fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[apply_eq_sum c' v]`. Establish `h1` using `Fintype.linearIndependent_iff.1 (ext_linearIndependent h hli) _ hv`. Conclude with `(bVV K' lam).forall_coord_eq_zero_iff.1 fun j => (map_eq_zero σ').1 (h1 j)`.
+-/
 theorem ext_injective (h : IsCoefExt ι lam c₀ c') (hli : LinearIndependent ℂ fun j => c₀ (bVV K lam j)) :
     Function.Injective c' := by
   classical
@@ -63,30 +80,45 @@ section Row
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
+/- English proof (translation)
+Take `⟨-, _, _, _, hT, hc⟩` from `hp`. Conclude with `GlobalTheory.RationalValues.placeEx R i jL σ' t h c' hM.jV hT hc hL hG.chiW hF.pl_onto hF.muVal`.
+-/
 theorem placeEx_of_pins (hL : R.toLevCh.Is A.μ0) (hG : R.IsGrp F) (hF : R.IsFam) (hM : R.IsModels) (i : Fin D.R.m)
     {K' : Type} [Field K'] {jL : D.what₂.LL →+* K'} {σ' : K' →+* ℂ} {c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W}
     (hp : CoefPins R i jL σ' c') (t : T) {Cl : Type} [Fintype Cl] (h : Cl → GA D (Vc D i)) : PlaceEx R i t h c' := by
   obtain ⟨-, _, _, _, hT, hc⟩ := hp
   exact GlobalTheory.RationalValues.placeEx R i jL σ' t h c' hM.jV hT hc hL hG.chiW hF.pl_onto hF.muVal
 
+/- English proof (translation)
+Take `⟨gramR, c0R, c0L, hT⟩` from `hF`. Take `⟨c', hc⟩` from `GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R.cV i).W) jL σ' hσ (FWT.lamV D i) (c0L i)`. Conclude with `⟨c', hσ, gramR, c0R, c0L, hT, hc⟩`.
+-/
 theorem exists_coefPins (hF : R.fam_tie) (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ)
     (hσ : σ'.comp jL = D.what₂.embLL) : ∃ c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W, CoefPins R i jL σ' c' := by
   obtain ⟨gramR, c0R, c0L, hT⟩ := hF
   obtain ⟨c', hc⟩ := GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R.cV i).W) jL σ' hσ (FWT.lamV D i) (c0L i)
   exact ⟨c', hσ, gramR, c0R, c0L, hT, hc⟩
 
+/- English proof (translation)
+Take `⟨c', hc⟩` from `GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R.cV i).W) jL σ' hσ (FWT.lamV D i) c₀`. Conclude with `⟨c', hc, fun c'' hc'' => ext_unique ((isCoefExt_iff_c0BC R i jL c₀ c'').2 hc'') ((isCoefExt_iff_c0BC R i jL c₀ c').2 hc)⟩`.
+-/
 theorem existsUnique_c0BC (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ)
     (hσ : σ'.comp jL = D.what₂.embLL) (c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W) :
     ∃! c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W, CoefficientBaseChange R i jL σ' c₀ c' := by
   obtain ⟨c', hc⟩ := GlobalTheory.Mem.PlaceVal.exists_ext_VV (W := (R.cV i).W) jL σ' hσ (FWT.lamV D i) c₀
   exact ⟨c', hc, fun c'' hc'' => ext_unique ((isCoefExt_iff_c0BC R i jL c₀ c'').2 hc'') ((isCoefExt_iff_c0BC R i jL c₀ c').2 hc)⟩
 
+/- English proof (translation)
+Take `⟨-, _, _, c0L, hT, hc⟩` from `hp`. Establish `hli : LinearIndependent ℂ fun j => (c0L i (bVV D.what₂.LL (FWT.lamV D i) j) : (R.cV i).W)` using `(hT.mapL i).2.1`. Conclude with `ext_injective (W := (R.cV i).W) (c₀ := c0L i) (lam := FWT.lamV D i) ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc) hli`.
+-/
 theorem injective_of_pins (i : Fin D.R.m) {K' : Type} [Field K'] {jL : D.what₂.LL →+* K'} {σ' : K' →+* ℂ}
     {c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W} (hp : CoefPins R i jL σ' c') : Function.Injective c' := by
   obtain ⟨-, _, _, c0L, hT, hc⟩ := hp
   have hli : LinearIndependent ℂ fun j => (c0L i (bVV D.what₂.LL (FWT.lamV D i) j) : (R.cV i).W) := (hT.mapL i).2.1
   exact ext_injective (W := (R.cV i).W) (c₀ := c0L i) (lam := FWT.lamV D i) ((isCoefExt_iff_c0BC R i jL (c0L i) c').2 hc) hli
 
+/- English proof (translation)
+The claim follows from `funext fun k => injective_of_pins R i hp ((hx k).symm.trans (hx' k))`.
+-/
 theorem place_unique (i : Fin D.R.m) {K' : Type} [Field K'] {jL : D.what₂.LL →+* K'} {σ' : K' →+* ℂ}
     {c' : VsV D i K' →ₛₗ[σ'] (R.cV i).W} (hp : CoefPins R i jL σ' c') (t : T) {Cl : Type} (h : Cl → GA D (Vc D i))
     (y : (R.HV i t).H) {x x' : Cl → VsV D i K'} (hx : Place R i t h c' y x) (hx' : Place R i t h c' y x') : x = x' :=
@@ -94,11 +126,20 @@ theorem place_unique (i : Fin D.R.m) {K' : Type} [Field K'] {jL : D.what₂.LL �
 
 end Row
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ R F hL hG hF hM i _ _ _ _ _ hp t _ _ h _ _ _` and use `placeEx_of_pins R F hL hG hF hM i hp t h`.
+-/
 theorem placeRow : PlaceRow :=
   fun _ _ _ _ _ _ _ _ _ _ _ R F hL hG hF hM i _ _ _ _ _ hp t _ _ h _ _ _ => placeEx_of_pins R F hL hG hF hM i hp t h
 
+/- English proof (translation)
+The claim follows from `rationalValues_iff.2 placeRow`.
+-/
 theorem rationalValues : RationalValues := rationalValues_iff.2 placeRow
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hG hF hM i K' _ jL σ' hσ`. Use `⟨exists_coefPins R hF.tie i jL σ' hσ, fun c' hp t Cl _ h => ?_⟩` and prove the remaining obligations. Establish `H` using `placeEx_of_pins R F hL hG hF hM i hp t h`. Conclude with `⟨H, fun x₀ => (H x₀).imp fun x hx => ⟨hx, fun x' hx' => place_unique R i hp t h _ hx' hx⟩⟩`.
+-/
 theorem placeEx_on_objects :
     ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
       (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
@@ -113,6 +154,9 @@ theorem placeEx_on_objects :
   have H := placeEx_of_pins R F hL hG hF hM i hp t h
   exact ⟨H, fun x₀ => (H x₀).imp fun x hx => ⟨hx, fun x' hx' => place_unique R i hp t h _ hx' hx⟩⟩
 
+/- English proof (translation)
+The claim follows from `placeEx_of_pins R F hR.lev hR.grp hR.fam hR.models i (CoefPins.of_thPinsR R hP) t h`.
+-/
 theorem placeEx_of_thPinsR {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (hR : R.Char F)
     (i : Fin D.R.m) {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ) {v₀ : (R.MW i (sg0 D A)).Vec}

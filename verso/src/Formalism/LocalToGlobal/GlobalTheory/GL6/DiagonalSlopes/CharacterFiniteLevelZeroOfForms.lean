@@ -10,18 +10,27 @@ namespace Formalism.L2.Forms
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `show UpTie T.lv0 T.cls0 T.val0`. Conclude with `UpNatTie.upTie T.up_natural_level_zero`.
+-/
 theorem Forms0.up {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0) :
     UpTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h) := by
   subst h
   show UpTie T.lv0 T.cls0 T.val0
   exact UpNatTie.upTie T.up_natural_level_zero
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `show DnTie T.lv0 T.cls0 T.val0`. Conclude with `DnNatTie.dnTie T.down_natural_level_zero`.
+-/
 theorem Forms0.dn {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0) :
     DnTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h) := by
   subst h
   show DnTie T.lv0 T.cls0 T.val0
   exact DnNatTie.dnTie T.down_natural_level_zero
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `T.glev0.chi_unit x`.
+-/
 theorem Forms0.chi_unit {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0)
     (x : (T.cls i hi h).lev.U) : ‖((T.cls i hi h).lev.chi x : ℂ)‖ = 1 := by
   subst h

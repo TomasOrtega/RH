@@ -33,6 +33,15 @@ abbrev famVals {Y : Scheme.{0}} (π : Y ⟶ D.P.A.left) : Set (Vals D.P.L Y) :=
 
 variable {D k α}
 
+/- English proof (translation)
+Establish `hZ : h ≫ (T ⊗ D.P.A).hom = π ≫ D.P.A.hom`. Rewrite using `[← Over.w (snd T D.P.A), ← Category.assoc, hπ]`. Set `Z : Over (Spec (CommRingCat.of V))` to `Over.mk (π ≫ D.P.A.hom)`. Set `hO : Z ⟶ T ⊗ D.P.A` to `Over.homMk h hZ`. Set `πO : Z ⟶ D.P.A` to `Over.homMk π`.
+
+Establish `h1 : hO ≫ snd T D.P.A = πO`. Use `ext`. Simplify `hπ` using `[hO, πO]`. Establish `e1 : hO ≫ translPt D.P.A (toUnit T ≫ D.c α) = πO ≫ padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c α)`. Unfold `translPt padd`.
+
+Simplify using `only [comp_lift_assoc, comp_toUnit_assoc, h1, Category.comp_id]`. Conclude with `mul_comm (toUnit Z ≫ D.c α) πO`. Establish `hmor : h ≫ (translPt D.P.A (toUnit T ≫ D.c α)).left = π ≫ (padd D.P.A (𝟙 D.P.A) (toUnit D.P.A ≫ D.c α)).left`. Establish `e2` using `congrArg Over.Hom.left e1`. Simplify `e2` using `[hO, πO]`.
+
+Use `mul_mem_iff D.P.isLB _ (DVR.pullGen_isGen _ _ _ u hu _) ?_ w` and prove the remaining obligations. Introduce `U _ g`. Establish `hπ' : h ≫ pullback.snd T.hom D.P.A.hom = π` using `hπ`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_four, twφ, ptφ, DegPre.famφB, DegPre.famε, hmor, hπ', Over.toUnit_left]`. Conclude with `(mul_assoc _ _ _).symm`.
+-/
 theorem mul_mem_famVals (u : LB.Gen (LB.LinComb D.P.L (ptφ D α) ![-1, 1])) (hu : u.IsGen)
     (T : Over (Spec (CommRingCat.of V))) {Y : Scheme.{0}} (h : Y ⟶ (T ⊗ D.P.A).left) {π : Y ⟶ D.P.A.left}
     (hπ : h ≫ (snd T D.P.A).left = π) (w : Vals D.P.L Y) :
@@ -61,12 +70,28 @@ theorem mul_mem_famVals (u : LB.Gen (LB.LinComb D.P.L (ptφ D α) ![-1, 1])) (hu
     Over.toUnit_left]
   exact (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[Over.snd_left, Over.fst_left]`. Conclude with `(IsPullback.of_hasPullback T.hom D.P.A.hom).flip`.
+-/
 theorem isPullback_snd (T : Over (Spec (CommRingCat.of V))) :
     IsPullback (snd T D.P.A).left (fst T D.P.A).left D.P.A.hom T.hom := by
   rw [Over.snd_left, Over.fst_left]
   exact (IsPullback.of_hasPullback T.hom D.P.A.hom).flip
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Take `⟨b0, hb0⟩` from `(hT _ D.P k hk R t (toUnit (Over.mk t) ≫ D.c α)).1`. Take `⟨u, hu⟩` from `DVR.exists_gen_of_local D.P.L D.P.isLB (ptφ D α) ![-1, 1]`. Set `e` to `H.flip.isoPullback`. Establish `hπ : e.hom ≫ (snd (Over.mk t) D.P.A).left = π` using `H.flip.isoPullback_hom_snd`. Establish `hf : e.hom ≫ (fst (Over.mk t) D.P.A).left = f` using `H.flip.isoPullback_hom_fst`.
+
+Set `gR : R →+* Γ((Over.mk t ⊗ D.P.A).left, ⊤)` to `(fst (Over.mk t) D.P.A).left.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Establish `hb1 : IsBas ((fn D.P.L _).comp gR) (secVals D.P.L (twφ D α (Over.mk t)) ![(k : ℤ) - 1, 1]) (fun i => ev (b0 i))`. Use `isBas_of_comb D.P.isLB gR b0 (fun s => ?_)` and prove the remaining obligations. Take `⟨r, hr, hru⟩` from `hb0 s`. Use `⟨fun i => (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (r i), fun j => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hr j]`. Simplify using `[gR, resTop]`. Apply the tactic sequence `try rfl`. Apply the tactic sequence `have h2 := hru (fun i => (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (a i)) (fun j => by rw [ha j]; simp [gR, resTop]; try rfl)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← h2]`. Simplify using the standard rewrite rules. Establish `key` using `fun w => mul_mem_famVals (k := k) u hu (Over.mk t) e.hom hπ w`. Establish `hinj : Function.Injective (pull D.P.L e.hom)` using `Function.LeftInverse.injective (g := pull D.P.L e.inv) (fun w => by rw [pull_pull, Iso.inv_hom_id, pull_id])`. Establish `hS : ∀ s', s' ∈ famVals D k α π ↔ ∃ s ∈ secVals D.P.L (twφ D α (Over.mk t)) ![(k : ℤ) - 1, 1], s' = pull D.P.L e.hom s * (evU (LB.pullGen D.P.L _ _ u (π ≫ D.P.A.hom)))`.
+
+Introduce `s'`. Prove the components needed by the constructor for the conclusion. Introduce `hs'`. Use `⟨pull D.P.L e.inv (s' * ↑(evU (LB.pullGen D.P.L _ _ u (π ≫ D.P.A.hom)))⁻¹), pull_mem ((key _).1 (by rw [Units.inv_mul_cancel_right]; exact hs')) e.inv (fun j => by simp), ?_⟩` and prove the remaining obligations. Rewrite using `[pull_pull, Iso.hom_inv_id, pull_id, Units.inv_mul_cancel_right]`.
+
+Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `(key _).2 (pull_mem hs e.hom (fun j => rfl))`. Conclude with `⟨_, IsBas.transfer (fun a => pull_cst (RingHom.id R) (by simpa using hf) a) hinj (evU (LB.pullGen D.P.L _ _ u (π ≫ D.P.A.hom))) hS hb1⟩`.
+-/
 private theorem exists_isBas_famVals_of_isPullback [IsLocalRing V] (hT : SecTwistSt) (hk : 1 ≤ k) {R : Type} [CommRing R] [IsLocalRing R]
     {t : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of V)} {Y : Scheme.{0}} {π : Y ⟶ D.P.A.left}
     {f : Y ⟶ Spec (CommRingCat.of R)} (H : IsPullback π f D.P.A.hom t) :
@@ -107,6 +132,9 @@ private theorem exists_isBas_famVals_of_isPullback [IsLocalRing V] (hT : SecTwis
 
 variable [IsLocalRing V]
 
+/- English proof (translation)
+The claim follows from `exists_isBas_famVals_of_isPullback hT hk H`.
+-/
 theorem exists_isBas (hT : SecTwistSt) (hk : 1 ≤ k) {R : Type} [CommRing R] [IsLocalRing R]
     {t : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of V)} {Y : Scheme.{0}} {π : Y ⟶ D.P.A.left}
     {f : Y ⟶ Spec (CommRingCat.of R)} (H : IsPullback π f D.P.A.hom t) :
@@ -115,6 +143,23 @@ theorem exists_isBas (hT : SecTwistSt) (hk : 1 ≤ k) {R : Type} [CommRing R] [I
 abbrev resPt (V : Type) [CommRing V] [IsLocalRing V] : Over (Spec (CommRingCat.of V)) :=
   Over.mk (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)) ≫ 𝟙 _)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `DVR.exists_gen_of_local D.P.L D.P.isLB (ptφ D α) ![-1, 1]`. Establish `keyX` using `fun v => mul_mem_famVals (k := k) u hu (resPt V) (𝟙 _) (π := (snd (resPt V) D.P.A).left) (Category.id_comp _) v`. Establish `hw1` using `(keyX (w * ↑(evU (LB.pullGen D.P.L _ _ u ((snd (resPt V) D.P.A).left ≫ D.P.A.hom)))⁻¹)).1 (by rw [Units.inv_mul_cancel_right]; exact hw)`. Set `whisk : resPt V ⊗ D.P.A ⟶ Over.mk (𝟙 (Spec (CommRingCat.of V))) ⊗ D.P.A` to `Over.homMk (V := Over.mk (𝟙 (Spec (CommRingCat.of V)))) (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))`. Use `rfl ▷ D.P.A`.
+
+Establish `ht0 : whisk ≫ snd _ D.P.A = snd (resPt V) D.P.A` using `whiskerRight_snd _ _`. Establish `ht1 : whisk ≫ translPt D.P.A (toUnit _ ≫ D.c α) = translPt D.P.A (toUnit (resPt V) ≫ D.c α)`. Simplify using `only [whisk, translPt, comp_lift_assoc, whiskerRight_snd, comp_toUnit_assoc]`. Establish `hφ : (fun j => 𝟙 _ ≫ twφ D α (resPt V) j) = fun j => whisk.left ≫ ![(snd (Over.mk (𝟙 (Spec (CommRingCat.of V)))) D.P.A).left, (translPt D.P.A (toUnit (Over.mk (𝟙 (Spec (CommRingCat.of V)))) ≫ D.c α)).left] j`. Use function extensionality and compare the values at `j`.
+
+Use `match j with`. Consider the case `0`. Simplify using `only [twφ, Matrix.cons_val_zero, Category.id_comp]`. Rewrite using `[← Over.comp_left, ht0]`. Consider the case `1`.
+
+Simplify using `only [twφ, Matrix.cons_val_one, Matrix.cons_val_zero, Category.id_comp]`. Rewrite using `[← Over.comp_left, ht1]`. Rewrite `hw1` using `[hφ]`. Take `⟨sbar, hsbar⟩` from `hw1`. Take `⟨s, hs⟩` from `(hT _ D.P k hk V (𝟙 _) (toUnit _ ≫ D.c α)).2 sbar`.
+
+Establish `hps : sbar = DVR.pullSec D.P.L _ _ s whisk.left` using `DVR.SecOps.sec_ext (fun j => hs j)`. Establish `hev : ev sbar = pull D.P.L whisk.left (ev s)`. Rewrite using `[hps]`. Conclude with `ev_pullSec _ _`. Set `i : D.P.A.left ⟶ (Over.mk (𝟙 (Spec (CommRingCat.of V))) ⊗ D.P.A).left` to `pullback.lift D.P.A.hom (𝟙 _) (by simp)`.
+
+Establish `hi : i ≫ (snd (Over.mk (𝟙 (Spec (CommRingCat.of V)))) D.P.A).left = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `key0` using `fun v => mul_mem_famVals (k := k) u hu (Over.mk (𝟙 (Spec (CommRingCat.of V)))) i hi v`. Use `⟨pull D.P.L i (ev s) * ↑(evU (LB.pullGen D.P.L _ _ u (𝟙 _ ≫ D.P.A.hom))), (key0 _).2 (pull_mem ⟨s, rfl⟩ i (fun j => rfl)), ?_⟩` and prove the remaining obligations. Establish `hc` using `pullback.condition (f := (resPt V).hom) (g := D.P.A.hom)`. Establish `hsi : (snd (resPt V) D.P.A).left ≫ i = whisk.left`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, i, pullback.lift_fst, whisk, Over.whiskerRight_left_fst]`. Simplify using `using hc.symm`. Simplify using `only [Category.assoc, i, pullback.lift_snd, Category.comp_id, whisk, Over.whiskerRight_left_snd]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_mul, pull_pull, hsi, ← hev, hsbar, pull_evU, pull_pull, Category.id_comp, ← pull_evU, Units.inv_mul_cancel_right]`.
+-/
 theorem exists_lift (hT : SecTwistSt) (hk : 1 ≤ k) (w : Vals D.P.L (resPt V ⊗ D.P.A).left)
     (hw : w ∈ famVals D k α (snd (resPt V) D.P.A).left) :
     ∃ s ∈ famVals D k α (𝟙 _), w = pull D.P.L (snd (resPt V) D.P.A).left s := by
@@ -163,6 +208,17 @@ theorem exists_lift (hT : SecTwistSt) (hk : 1 ≤ k) (w : Vals D.P.L (resPt V �
   rw [map_mul, pull_pull, hsi, ← hev, hsbar, pull_evU, pull_pull, Category.id_comp, ← pull_evU,
     Units.inv_mul_cancel_right]
 
+/- English proof (translation)
+Establish `: Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1))` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal V).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Establish `: IsLocalRing (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1))` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Set `g' : V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1) →+* IsLocalRing.ResidueField V` to `Ideal.Quotient.lift _ (IsLocalRing.residue V) (fun a ha => (IsLocalRing.residue_eq_zero_iff a).2 (Ideal.pow_le_self (Nat.succ_ne_zero e) ha))`. Establish `hg' : ∀ v, g' (Ideal.Quotient.mk _ v) = IsLocalRing.residue V v` using `fun v => rfl`. Establish `: IsLocalHom g'` using `⟨fun a ha => by`.
+
+Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[hg']`. Conclude with `(isUnit_of_map_unit (IsLocalRing.residue V) v ha).map _⟩`. Establish `hm : (snd (resPt V) D.P.A).left ≫ D.P.A.hom = ((fst (resPt V) D.P.A).left ≫ Spec.map (CommRingCat.ofHom g')) ≫ thick V (IsLocalRing.maximalIdeal V) e`. Rewrite using `[Over.w (snd (resPt V) D.P.A)]`.
+
+Express the relevant statement in the definitionally equal form `pullback.fst _ _ ≫ (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)) ≫ 𝟙 _) = (pullback.fst _ _ ≫ Spec.map (CommRingCat.ofHom g')) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk _))`. Rewrite using `[Category.comp_id, Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `m` to `pullback.lift (snd (resPt V) D.P.A).left ((fst (resPt V) D.P.A).left ≫ Spec.map (CommRingCat.ofHom g')) hm`. Take `⟨b', hb'⟩` from `exists_isBas (α := α) hT hk (IsPullback.of_hasPullback D.P.A.hom (thick V (IsLocalRing.maximalIdeal V) e))`.
+
+Take `⟨b'', hb''⟩` from `exists_isBas (α := α) hT hk (isPullback_snd (D := D) (resPt V))`. Use `IsBas.reduce (ρ' := pull D.P.L m) (g' := g') (fun a => pull_cst _ pullback.condition a) (fun a => pull_cst g' (pullback.lift_snd _ _ _) a) ?_ ?_ ?_ hb hb' hb''` and prove the remaining obligations. Introduce `s hs`. Conclude with `pull_mem hs _ (fun i => by simp)`. Introduce `s hs`.
+
+Conclude with `pull_mem hs m (fun i => (pullback.lift_fst_assoc _ _ _ _).symm)`. Introduce `s hs`. Take `⟨s0, hs0, rfl⟩` from `exists_lift hT hk s hs`. Conclude with `⟨s0, hs0, by rw [pull_pull]; exact congrArg (fun x => pull D.P.L x s0) (pullback.lift_fst _ _ _).symm⟩`.
+-/
 theorem isBas_thick (hT : SecTwistSt) (hk : 1 ≤ k) {b : Fin (k ^ D.P.g) → Vals D.P.L D.P.A.left}
     (hb : IsBas (cst D.P.L D.P.A.hom) (famVals D k α (𝟙 _)) b) (e : ℕ) :
     IsBas (cst D.P.L (pullback.snd D.P.A.hom (thick V (IsLocalRing.maximalIdeal V) e)))
@@ -203,6 +259,15 @@ theorem isBas_thick (hT : SecTwistSt) (hk : 1 ≤ k) {b : Fin (k ^ D.P.g) → Va
     exact ⟨s0, hs0, by rw [pull_pull]; exact congrArg (fun x => pull D.P.L x s0) (pullback.lift_fst _ _ _).symm⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Simplify using `only [Category.id_comp] at hb`. Establish `hmem : ∀ e, ev (f e) ∈ secVals L (fun i => π e ≫ φ i) ε` using `fun e => ⟨f e, rfl⟩`. Establish `hlim` using `existsUnique_limit I (T := fun e => Vals L (Y e)) (c := cst L p) (c' := fun e => cst L (q e)) (ρ := fun e => pull L (π e)) (τ := fun e => pull L (θ e)) (fun e a => pull_cst (Ideal.Quotient.mk (I ^ (e + 1))) (by rw [hq e]) a) (fun e w => by simp only [pull_pull, hθ]) (S := secVals …`. Express the relevant statement in the definitionally equal form `sval (f (e + 1)) (𝟙 _ ≫ θ e) y J.1 = sval (f e) (𝟙 _) y J.1`. Rewrite using `[Category.id_comp]`.
+
+Conclude with `hf e y J.1 J.2))`. Take `⟨w, ⟨⟨s, rfl⟩, hwf⟩, hwu⟩` from `hlim`. Use `⟨s, fun e z J hJ => ?_, fun s' hs' => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (congrFun (congrFun (hwf e) (Y e)) (𝟙 _)) z) ⟨J, hJ⟩`. Express the relevant statement in the definitionally equal form `sval s (𝟙 _ ≫ π e) z J = sval (f e) (𝟙 _) z J at h1`.
+
+Rewrite `h1` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hev : ev s' = ev s` using `hwu (ev s') ⟨⟨s', rfl⟩, fun e => secVals_ext hL (pull_mem ⟨s', rfl⟩ (π e) (fun j => rfl)) (hmem e) (fun y J => by`. Express the relevant statement in the definitionally equal form `sval s' (𝟙 _ ≫ π e) y J.1 = sval (f e) (𝟙 _) y J.1`. Rewrite using `[Category.id_comp]`. Conclude with `hs' e y J.1 J.2)⟩`.
+
+Conclude with `eq_of_val hL (fun y J => by rw [hev])`.
+-/
 private theorem existsUnique_sec_of_isBas_lemma {X B : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (B ⟶ X)} {ε : K → ℤ} {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R]
     {p : B ⟶ Spec (CommRingCat.of R)} {Y : ℕ → Scheme.{0}} {π : ∀ e, Y e ⟶ B}
@@ -239,6 +304,9 @@ private theorem existsUnique_sec_of_isBas_lemma {X B : Scheme.{0}} {L : LB X} (h
 
 end Twist
 
+/- English proof (translation)
+The claim follows from `existsUnique_sec_of_isBas_lemma hL I hθ hq hb hb' f hf`.
+-/
 theorem existsUnique_sec_of_isBas {X B : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (B ⟶ X)} {ε : K → ℤ} {R : Type} [CommRing R] (I : Ideal R) [IsAdicComplete I R]
     {p : B ⟶ Spec (CommRingCat.of R)} {Y : ℕ → Scheme.{0}} {π : ∀ e, Y e ⟶ B}
@@ -250,6 +318,11 @@ theorem existsUnique_sec_of_isBas {X B : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K
     (hf : ∀ e z J, Good L z J → sval (f (e + 1)) (θ e) z J = sval (f e) (𝟙 _) z J) :
     ∃! s : LB.Sec (LB.LinComb L φ ε), ∀ e z J, Good L z J → sval s (π e) z J = sval (f e) (𝟙 _) z J := existsUnique_sec_of_isBas_lemma hL I hθ hq hb hb' f hf
 
+/- English proof (translation)
+Introduce `_ hL2 V _ _ _ hV D k hk α f hf`. Establish `hT : SecTwistSt`. Take `⟨⟩` from `hL2`. Use the matching hypothesis. Establish `: IsAdicComplete (IsLocalRing.maximalIdeal V) V` using `hV.2.1`.
+
+Take `⟨b, hb⟩` from `exists_isBas (α := α) (R := V) (t := 𝟙 _) hT hk (IsPullback.of_horiz_isIso (fst := 𝟙 D.P.A.left) (snd := D.P.A.hom) ⟨by simp⟩)`. Conclude with `existsUnique_sec_of_isBas D.P.isLB (IsLocalRing.maximalIdeal V) (p := D.P.A.hom) (π := fun e => (D.prBe (IsLocalRing.maximalIdeal V) e).left) (q := fun e => (thickObj V (IsLocalRing.maximalIdeal V) e D.P.A).hom) (θ := fun e => thickMap V (IsLocalRing.maximalIdeal V) e D.P.A) (fun …`. Simplify using `[thickMap, DegPre.prBe]`. Conclude with `(pullback.lift_fst _ _ _).trans (Category.comp_id _)) (fun e => pullback.condition) hb`. Use the proof step `(fun e => isBas_thick hT hk hb e) f hf`.
+-/
 theorem existsUnique_sec_of_compatible : Laws → Laws2 → (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (D : DegPre V) (k : ℕ), 1 ≤ k → ∀ (α : D.X) (f : ∀ e, LB.Sec (LB.LinComb D.P.L (fun i => (D.prBe (IsLocalRing.maximalIdeal V) e).left ≫ D.famφB α i) (DegPre.famε k))), (∀ e z J, Good D.P.L z J → sval (f (e + 1)) (thickMap V _ e D.P.A) z J = sval (f e) (𝟙 _) z J) → ∃! s : D.SecB k α, ∀ e z J, Good D.P.L z J → sval s (D.prBe (IsLocalRing.maximalIdeal V) e).left z J = sval (f e) (𝟙 _) z J) := by
   intro _ hL2 V _ _ _ hV D k hk α f hf
   have hT : SecTwistSt := by

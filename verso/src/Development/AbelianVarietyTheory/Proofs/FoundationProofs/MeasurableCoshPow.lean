@@ -9,6 +9,9 @@ open Filter Topology
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Establish `h : Continuous fun g : UpqT p q => GlobalTheory.PolarLogCont.halfLog (UpqT.mat g)` using `GlobalTheory.PolarLogCont.continuousOn_halfLog.comp_continuous GlobalTheory.UpqTopology.continuous_mat fun g => Units.isUnit (show Formalism.UG.Upq p q from g).1`. Establish `hc : Continuous fun M : Mat p q => M.toBlocks₁₂`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `continuous_id.matrix_elem (Sum.inl i) (Sum.inr j)`. Conclude with `hc.comp h`.
+-/
 theorem continuous_cartanB : Continuous (cartanB : UpqT p q → Matrix (Fin p) (Fin q) ℂ) := by
   have h : Continuous fun g : UpqT p q => GlobalTheory.PolarLogCont.halfLog (UpqT.mat g) :=
     GlobalTheory.PolarLogCont.continuousOn_halfLog.comp_continuous GlobalTheory.UpqTopology.continuous_mat
@@ -20,6 +23,21 @@ theorem continuous_cartanB : Continuous (cartanB : UpqT p q → Matrix (Fin p) (
 
 def sPad (B : Matrix (Fin p) (Fin q) ℂ) (j : Fin q) : ℝ := if (j : ℕ) < p then singVal B j else 0
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, hB⟩` from `GlobalTheory.RectSVD.exists_svd_singularValues p q B`. Establish `h1 : Uᴴ * U = 1` using `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `h2 : Vᴴ * V = 1` using `Matrix.mem_unitaryGroup_iff'.mp hV`. Use `⟨V, h2, ?_⟩` and prove the remaining obligations. Use `set D : Matrix (Fin p) (Fin q) ℂ := Matrix.of fun (i : Fin p) (j : Fin q) => if (i : ℕ) = (j : ℕ) then (((Matrix.toEuclideanLin B).singularValues i : ℝ) : ℂ) else 0 with hD`.
+
+Establish `hDD : Dᴴ * D = Matrix.diagonal (fun j => ((sPad B j : ℝ) : ℂ) ^ 2)`. Use extensionality with `j j'`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hj : (j : ℕ) < p`. Rewrite using `[Finset.sum_eq_single (⟨j, hj⟩ : Fin p)]`.
+
+Distinguish the cases in `hjj : j = j'`. Substitute `hjj` using the available equality. Simplify using `[hD, sPad, hj, singVal, sq]`. Establish `: (j : ℕ) ≠ j'` using `fun h => hjj (Fin.ext h)`. Simplify using `[hD, hjj, this]`.
+
+Introduce `i _ hi`. Establish `: (i : ℕ) ≠ j` using `fun h => hi (Fin.ext h)`. Simplify using `[hD, this]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero]`.
+
+Distinguish the cases in `hjj : j = j'`. Substitute `hjj` using the available equality. Simplify using `[sPad, hj]`. Simplify using `[hjj]`. Introduce `i _`.
+
+Establish `: (i : ℕ) ≠ j` using `fun h => hj (h ▸ i.isLt)`. Simplify using `[hD, this]`. Rewrite using `[← hDD]`. Use `conv_lhs => rw [hB]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Uᴴ U, h1, Matrix.one_mul]`.
+-/
 theorem exists_gram (B : Matrix (Fin p) (Fin q) ℂ) : ∃ V : Matrix (Fin q) (Fin q) ℂ, Vᴴ * V = 1 ∧
     Bᴴ * B = V * Matrix.diagonal (fun j => ((sPad B j : ℝ) : ℂ) ^ 2) * Vᴴ := by
   obtain ⟨U, hU, V, hV, hB⟩ := GlobalTheory.RectSVD.exists_svd_singularValues p q B
@@ -55,6 +73,11 @@ theorem exists_gram (B : Matrix (Fin p) (Fin q) ℂ) : ∃ V : Matrix (Fin q) (F
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc Uᴴ U, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [mul_eq_one_comm.1 h]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Vᴴ V, h, Matrix.one_mul]`.
+-/
 theorem conj_pow {n : Type} [Fintype n] [DecidableEq n] (V A : Matrix n n ℂ) (h : Vᴴ * V = 1) (k : ℕ) :
     (V * A * Vᴴ) ^ k = V * A ^ k * Vᴴ := by
   induction k with
@@ -67,6 +90,9 @@ theorem conj_pow {n : Type} [Fintype n] [DecidableEq n] (V A : Matrix n n ℂ) (
 def coshSum (n : ℕ) (B : Matrix (Fin p) (Fin q) ℂ) : Matrix (Fin q) (Fin q) ℂ :=
   ∑ k ∈ Finset.range n, (((2 * k).factorial : ℕ) : ℂ)⁻¹ • (Bᴴ * B) ^ k
 
+/- English proof (translation)
+Unfold `coshSum`. Use `continuous_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Establish `h : Continuous fun B : Matrix (Fin p) (Fin q) ℂ => Bᴴ * B` using `continuous_id.matrix_conjTranspose.matrix_mul continuous_id`. Conclude with `(h.pow k).const_smul ((((2 * k).factorial : ℕ) : ℂ)⁻¹)`.
+-/
 theorem continuous_coshSum (n : ℕ) : Continuous (coshSum n : Matrix (Fin p) (Fin q) ℂ → _) := by
   unfold coshSum
   refine continuous_finset_sum _ fun k _ => ?_
@@ -74,6 +100,13 @@ theorem continuous_coshSum (n : ℕ) : Continuous (coshSum n : Matrix (Fin p) (F
     continuous_id.matrix_conjTranspose.matrix_mul continuous_id
   exact (h.pow k).const_smul ((((2 * k).factorial : ℕ) : ℂ)⁻¹)
 
+/- English proof (translation)
+Take `⟨V, hV, h⟩` from `exists_gram B`. Establish `e : coshSum n B = V * Matrix.diagonal (fun j => ((∑ k ∈ Finset.range n, sPad B j ^ (2 * k) / ((2 * k).factorial : ℕ) : ℝ) : ℂ)) * Vᴴ`. Establish `e1 : Matrix.diagonal (fun j => ((∑ k ∈ Finset.range n, sPad B j ^ (2 * k) / ((2 * k).factorial : ℕ) : ℝ) : ℂ)) = ∑ k ∈ Finset.range n, (((2 * k).factorial : ℕ) : ℂ)⁻¹ • (Matrix.diagonal (fun j => ((sPad B j : ℝ) : ℂ) ^ 2)) ^ k`. Use extensionality with `i j`. Simplify using `only [Matrix.diagonal_pow, Matrix.sum_apply, Matrix.smul_apply, Matrix.diagonal_apply]`.
+
+Use `split_ifs`. Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[pow_mul, div_eq_inv_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1, coshSum, h, Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[conj_pow _ _ hV, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e, Matrix.det_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul, Matrix.det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+-/
 theorem det_coshSum (n : ℕ) (B : Matrix (Fin p) (Fin q) ℂ) : (coshSum n B).det.re =
     ∏ j : Fin q, ∑ k ∈ Finset.range n, sPad B j ^ (2 * k) / ((2 * k).factorial : ℕ) := by
   obtain ⟨V, hV, h⟩ := exists_gram B
@@ -95,6 +128,13 @@ theorem det_coshSum (n : ℕ) (B : Matrix (Fin p) (Fin q) ℂ) : (coshSum n B).d
   rw [e, Matrix.det_mul_comm, ← Matrix.mul_assoc, hV, Matrix.one_mul, Matrix.det_diagonal,
     ← Complex.ofReal_prod, Complex.ofReal_re]
 
+/- English proof (translation)
+Unfold `sPad`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => Real.cosh (if j < p then singVal B j else 0)) q]`. Use `symm`. Use `Finset.prod_subset_one_on_sdiff (Finset.range_subset_range.2 (min_le_right p q)) ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `: ¬ x < p`. Simplify using `only [Finset.mem_sdiff, Finset.mem_range] at hx`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Introduce `x hx`.
+
+Establish `: x < p`. Simplify using `only [Finset.mem_range] at hx`. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+-/
 theorem prod_cosh_sPad (B : Matrix (Fin p) (Fin q) ℂ) :
     ∏ j : Fin q, Real.cosh (sPad B j) = ∏ i ∈ Finset.range (min p q), Real.cosh (singVal B i) := by
   unfold sPad
@@ -110,12 +150,20 @@ theorem prod_cosh_sPad (B : Matrix (Fin p) (Fin q) ℂ) :
       simp only [Finset.mem_range] at hx; omega
     simp [this]
 
+/- English proof (translation)
+Simplify using `only [det_coshSum, ← prod_cosh_sPad]`. Conclude with `tendsto_finset_prod _ fun j _ => (Real.hasSum_cosh (sPad B j)).tendsto_sum_nat`.
+-/
 theorem tendsto_det_coshSum (B : Matrix (Fin p) (Fin q) ℂ) :
     Tendsto (fun n => (coshSum n B).det.re) atTop
       (𝓝 (∏ i ∈ Finset.range (min p q), Real.cosh (singVal B i))) := by
   simp only [det_coshSum, ← prod_cosh_sPad]
   exact tendsto_finset_prod _ fun j _ => (Real.hasSum_cosh (sPad B j)).tendsto_sum_nat
 
+/- English proof (translation)
+Introduce `p q c`. Establish `: BorelSpace (UpqT p q)` using `(GlobalTheory.UpqTopology.upq_lcsc p q).2.2.2.2.1`. Establish `h : Measurable fun g : UpqT p q => ∏ i ∈ Finset.range (min p q), Real.cosh (singVal (cartanB g) i)`. Use `measurable_of_tendsto_metrizable (f := fun n (g : UpqT p q) => (coshSum n (cartanB g)).det.re) (fun n => ?_) (tendsto_pi_nhds.2 fun g => tendsto_det_coshSum _)` and prove the remaining obligations. Conclude with `(Complex.continuous_re.comp (((continuous_coshSum n).comp continuous_cartanB).matrix_det)).measurable`.
+
+Establish `e : (coshPow c : UpqT p q → ℝ) = fun g => (∏ i ∈ Finset.range (min p q), Real.cosh (singVal (cartanB g) i)) ^ (-c)`. Use function extensionality and compare the values at `g`. Conclude with `Real.finset_prod_rpow _ _ (fun i _ => (Real.cosh_pos _).le) _`. Rewrite using `[e]`. Conclude with `h.pow_const _`.
+-/
 theorem measurable_coshPow : ∀ (p q : ℕ) (c : ℝ), Measurable (coshPow c : UpqT p q → ℝ) := by
   intro p q c
   have : BorelSpace (UpqT p q) := (GlobalTheory.UpqTopology.upq_lcsc p q).2.2.2.2.1

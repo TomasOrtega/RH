@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ hρ W hW`. Set `S : Subrepresentation ρ` to `⟨W, fun g v hv => hW g v hv⟩`. Break down `hρ.eq_bot_or_eq_top S with h | h` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule h)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule h)`.
+-/
 theorem UpperTheory.Reformulated.B.Qe20.irrCases :
     ∀ {G V : Type} [inst : Group G]
     [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V),

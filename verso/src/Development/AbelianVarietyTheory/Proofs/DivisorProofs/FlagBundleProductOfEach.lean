@@ -19,6 +19,9 @@ namespace GlobalTheory.FlagFamily
 
 open Limits
 
+/- English proof (translation)
+Establish `: IsProper q` using `projProper k B q hq`. Establish `h` using `ProjSpace.isProjOver_comp_of_isClosedImmersion (pullback.mapDesc f g q) (ProjSpace.isProjOver_pullback hf hg)`. Rewrite `h` using `[pullback.lift_fst_assoc, Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem isProjOver_pullback_over {k : Type} [CommRing k] {B X Y : Scheme.{0}} {q : B ⟶ Sp k} (hq : IsProjOver q)
     {f : X ⟶ B} {g : Y ⟶ B} (hf : IsProjOver (f ≫ q)) (hg : IsProjOver (g ≫ q)) :
     IsProjOver (pullback.fst f g ≫ f ≫ q) := by
@@ -27,6 +30,19 @@ theorem isProjOver_pullback_over {k : Type} [CommRing k] {B X Y : Scheme.{0}} {q
     (ProjSpace.isProjOver_pullback hf hg)
   rwa [pullback.lift_fst_assoc, Category.comp_id] at h
 
+/- English proof (translation)
+Proceed by induction on `ι using Finite.induction_empty_option with`. Consider the case `@of_equiv α β e ih`. Introduce `Z ρ hρ`. Take `⟨Y, π, p, hp, hY, H⟩` from `ih (fun a => Z (e a)) (fun a => ρ (e a)) fun a => hρ _`. Set `p' : ∀ b, Y ⟶ Z b` to `Equiv.piCongrLeft (fun b => Y ⟶ Z b) e p`.
+
+Establish `hp' (a : α) : p' (e a) = p a` using `Equiv.piCongrLeft_apply_apply _ _ _ _`. Use `⟨Y, π, p', e.forall_congr_right.1 fun a => by rw [hp', hp], hY, fun T g h hh => ?_⟩` and prove the remaining obligations. Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (e a)) fun a => hh _`. Conclude with `⟨g', ⟨h₁, e.forall_congr_right.1 fun a => by rw [hp', h₂]⟩, fun y hy => u y ⟨hy.1, fun a => by rw [← hp', hy.2]⟩⟩`. Consider the case `h_empty`.
+
+Introduce `Z ρ _`. Conclude with `⟨B, 𝟙 B, fun a => a.elim, fun a => a.elim, by rwa [Category.id_comp], fun T g _ _ => ⟨g, ⟨Category.comp_id g, fun a => a.elim⟩, fun y hy => (Category.comp_id y).symm.trans hy.1⟩⟩`. Consider the case `@h_option α _ ih`. Introduce `Z ρ hρ`. Take `⟨Y, π, p, hp, hY, H⟩` from `ih (fun a => Z (some a)) (fun a => ρ (some a)) fun a => hρ _`.
+
+Use `⟨pullback π (ρ none), pullback.fst _ _ ≫ π, fun a => Option.rec (pullback.snd _ _) (fun a => pullback.fst _ _ ≫ p a) a, ?_, by simpa only [Category.assoc] using isProjOver_pullback_over hq hY (hρ none), fun T g h hh => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.condition.symm`. Conclude with `(Category.assoc _ _ _).trans (congrArg _ (hp a))`. Take `⟨g', ⟨h₁, h₂⟩, u⟩` from `H T g (fun a => h (some a)) fun a => hh _`.
+
+Use `⟨pullback.lift g' (h none) (h₁.trans (hh none).symm), ⟨by rw [pullback.lift_fst_assoc, h₁], ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | a)`. Conclude with `pullback.lift_snd _ _ _`. Conclude with `(pullback.lift_fst_assoc _ _ _ _).trans (h₂ a)`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[pullback.lift_fst]`. Conclude with `u _ ⟨(Category.assoc _ _ _).trans hy.1, fun a => (Category.assoc _ _ _).trans (hy.2 (some a))⟩`. Rewrite using `[pullback.lift_snd]`. Conclude with `hy.2 none`.
+-/
 theorem exists_widePullback {k : Type} [CommRing k] {B : Scheme.{0}} {q : B ⟶ Sp k} (hq : IsProjOver q)
     (ι : Type) [Finite ι] : ∀ (Z : ι → Scheme.{0}) (ρ : ∀ a, Z a ⟶ B), (∀ a, IsProjOver (ρ a ≫ q)) →
       ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (p : ∀ a, Y ⟶ Z a), (∀ a, p a ≫ ρ a = π) ∧ IsProjOver (π ≫ q) ∧
@@ -71,6 +87,11 @@ def compIso {X Y B : Scheme.{0}} (p : X ⟶ Y) (ρ : Y ⟶ B) {π : X ⟶ B} (w 
     (Scheme.Modules.pullback p).obj ((Scheme.Modules.pullback ρ).obj E) ≅ (Scheme.Modules.pullback π).obj E :=
   (Scheme.Modules.pullbackComp p ρ).app E ≪≫ (Scheme.Modules.pullbackCongr w).app E
 
+/- English proof (translation)
+Substitute `w w'` using the available equality. Establish `h` using `Scheme.Modules.pseudofunctor_associativity t p ρ`. Rewrite `h` using `[Iso.inv_comp_eq, ← Functor.isoWhiskerRight_inv, Iso.inv_comp_eq]`. Establish `h'` using `congrArg (fun φ => φ.app E) h`. Simplify using `[compIso, Scheme.Modules.pullbackCongr] at h' ⊢`.
+
+Simplify using `using h'.symm`.
+-/
 theorem compIso_assoc {T X Y B : Scheme.{0}} (t : T ⟶ X) (p : X ⟶ Y) (ρ : Y ⟶ B) {π : X ⟶ B} (w : p ≫ ρ = π)
     {g : T ⟶ B} (w' : t ≫ π = g) (w'' : (t ≫ p) ≫ ρ = g) (E : B.Modules) :
     (Scheme.Modules.pullback t).map (compIso p ρ w E).hom ≫ (compIso t π w' E).hom =
@@ -87,12 +108,22 @@ def Induces {T Y B : Scheme.{0}} (t : T ⟶ Y) (π : Y ⟶ B) {g : T ⟶ B} (w :
   ∀ i, ∃ e : (Scheme.Modules.pullback t).obj (fl.F i) ≅ fl'.F i,
     e.hom ≫ fl'.ι i = (Scheme.Modules.pullback t).map (fl.ι i) ≫ (compIso t π w E).hom
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem Induces.congr {T Y B : Scheme.{0}} {t t' : T ⟶ Y} {π : Y ⟶ B} {g : T ⟶ B} {w : t ≫ π = g} {E : B.Modules} {n : ℕ}
     {fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n} {fl' : Vert.Flag ((Scheme.Modules.pullback g).obj E) n}
     (h : Induces t π w fl fl') (e : t = t') (w' : t' ≫ π = g) : Induces t' π w' fl fl' := by
   subst e
   exact h
 
+/- English proof (translation)
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `key : (Scheme.Modules.pullback t).map ((Scheme.Modules.pullback p).map (fl.ι i) ≫ (compIso p ρ w E).hom) ≫ (compIso t π w' E).hom = (Scheme.Modules.pullbackComp t p).hom.app (fl.F i) ≫ (Scheme.Modules.pullback (t ≫ p)).map (fl.ι i) ≫ (compIso (t ≫ p) ρ w'' E).hom`. Rewrite using `[Functor.map_comp, Category.assoc, compIso_assoc t p ρ w w' w'', ← (Scheme.Modules.pullbackComp t p).hom.naturality_assoc]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e, he⟩`. Use `⟨((Scheme.Modules.pullbackComp t p).app (fl.F i)).symm ≪≫ e, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.trans_hom, Category.assoc, Iso.symm_hom, Iso.inv_comp_eq]`. Conclude with `he.trans key`. Introduce and unpack `⟨e, he⟩`.
+
+Use `⟨(Scheme.Modules.pullbackComp t p).app (fl.F i) ≪≫ e, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.trans_hom, Category.assoc, he]`. Conclude with `key.symm`.
+-/
 theorem induces_pull_iff {T X Y B : Scheme.{0}} (t : T ⟶ X) (p : X ⟶ Y) (ρ : Y ⟶ B) {π : X ⟶ B} (w : p ≫ ρ = π)
     {g : T ⟶ B} (w' : t ≫ π = g) (w'' : (t ≫ p) ≫ ρ = g) {E : B.Modules} {n : ℕ}
     (fl : Vert.Flag ((Scheme.Modules.pullback ρ).obj E) n) (fl' : Vert.Flag ((Scheme.Modules.pullback g).obj E) n) :
@@ -114,6 +145,11 @@ theorem induces_pull_iff {T X Y B : Scheme.{0}} (t : T ⟶ X) (p : X ⟶ Y) (ρ 
     rw [Iso.trans_hom, Category.assoc, he]
     exact key.symm
 
+/- English proof (translation)
+Introduce `T g fl'`. Establish `h₀ (a : ι) : ∃! h : T ⟶ Z a, ∃ w : h ≫ ρ a = g, ∀ _ : Unit, Induces h (ρ a) w (fl a ()) (fl' a)` using `hfl a T g fun _ => fl' a`. Use `choose h hh u using h₀`. Use `choose w hw using hh`. Take `⟨g', ⟨h₁, h₂⟩, u'⟩` from `H T g h w`.
+
+Establish `w₂ (y : T ⟶ Y) (hy : y ≫ π = g) (a : ι) : (y ≫ p a) ≫ ρ a = g` using `by rw [Category.assoc, hp, hy]`. Use `⟨g', ⟨h₁, fun a => ?_⟩, fun y ⟨hy, hy'⟩ => u' y ⟨hy, fun a => u a _ ⟨w₂ y hy a, fun _ => ?_⟩⟩⟩` and prove the remaining obligations. Use `(induces_pull_iff g' (p a) (ρ a) (hp a) h₁ (w₂ g' h₁ a) (fl a ()) (fl' a)).2 ?_` and prove the remaining obligations. Conclude with `(hw a ()).congr (h₂ a).symm _`. Conclude with `(induces_pull_iff y (p a) (ρ a) (hp a) hy (w₂ y hy a) (fl a ()) (fl' a)).1 (hy' a)`.
+-/
 theorem isFlagBundle_of_widePullback {B Y : Scheme.{0}} {ι : Type} (E : ι → B.Modules) (r : ι → ℕ)
     {Z : ι → Scheme.{0}} (ρ : ∀ a, Z a ⟶ B)
     (fl : ∀ a, Unit → Vert.Flag ((Scheme.Modules.pullback (ρ a)).obj (E a)) (r a))
@@ -134,6 +170,9 @@ theorem isFlagBundle_of_widePullback {B Y : Scheme.{0}} {ι : Type} (E : ι → 
     exact (hw a ()).congr (h₂ a).symm _
   · exact (induces_pull_iff y (p a) (ρ a) (hp a) hy (w₂ y hy a) (fl a ()) (fl' a)).1 (hy' a)
 
+/- English proof (translation)
+Introduce `k _ B q ι _ E r hq h`. Use `choose Z ρ fl hfl hρ using h`. Take `⟨Y, π, p, hp, hY, H⟩` from `exists_widePullback hq ι Z ρ hρ`. Conclude with `⟨Y, π, _, isFlagBundle_of_widePullback E r ρ fl hfl π p hp H, hY⟩`.
+-/
 theorem exists_isFlagBundle_isProjOver : ∀ (k : Type) [CommRing k] (B : Scheme.{0}) (q : B ⟶ Sp k) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ), IsProjOver q → (∀ a, ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ _ : Unit, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), GlobalTheory.CovTest.IsFlagBundle π (fun _ : Unit => E a) (fun _ => r a) fl ∧ IsProjOver (π ≫ q)) → ∃ (Y : Scheme.{0}) (π : Y ⟶ B) (fl : ∀ a, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), GlobalTheory.CovTest.IsFlagBundle π E r fl ∧ IsProjOver (π ≫ q) := by
   intro k _ B q ι _ E r hq h
   choose Z ρ fl hfl hρ using h

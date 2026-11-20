@@ -30,6 +30,9 @@ def IsAddLawHom (m : schemeOver W ⊗ schemeOver W ⟶ schemeOver W) : Prop :=
 
 variable [W.IsElliptic]
 
+/- English proof (translation)
+Introduce `A _ ρ P Q T hP hQ hT h x y hx hy`. Set `: Algebra R A` to `ρ.toAlgebra`. Take `rfl : x = ptOver W (A` from `A) P hP := Over.OverMorphism.ext hx`. Take `rfl : y = ptOver W (A` from `A) Q hQ := Over.OverMorphism.ext hy`. Conclude with `congrArg (·.left) (ptOver_mul_ptOver W (A := A) hP hQ hT ⟨h.1, h.2⟩)`.
+-/
 theorem isAddLawHom_mul : IsAddLawHom W μ[schemeOver W] := by
   intro A _ ρ P Q T hP hQ hT h x y hx hy
   let : Algebra R A := ρ.toAlgebra
@@ -37,6 +40,15 @@ theorem isAddLawHom_mul : IsAddLawHom W μ[schemeOver W] := by
   obtain rfl : y = ptOver W (A := A) Q hQ := Over.OverMorphism.ext hy
   exact congrArg (·.left) (ptOver_mul_ptOver W (A := A) hP hQ hT ⟨h.1, h.2⟩)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `hom_ext_of_localRing_points _ _ _ _ fun A _ _ (t : Sp A ⟶ (schemeOver W ⊗ schemeOver W).left) => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Spec.map_surjective (t ≫ (schemeOver W ⊗ schemeOver W).hom)`. Take `⟨ρ, hρ⟩ : ∃ ρ : R →+* A, t ≫ (schemeOver W ⊗ schemeOver W).hom = spMap ρ` from `⟨g.hom, hg.symm⟩`. Set `t' : Over.mk (spMap ρ) ⟶ schemeOver W ⊗ schemeOver W` to `Over.homMk t hρ`.
+
+Take `⟨P, hP, eP⟩` from `exists_eq_ptHom_of_isLocalRing R W A ρ (t' ≫ fst _ _).left (Over.w (t' ≫ fst _ _))`. Take `⟨Q, hQ, eQ⟩` from `exists_eq_ptHom_of_isLocalRing R W A ρ (t' ≫ snd _ _).left (Over.w (t' ≫ snd _ _))`. Set `: Algebra R A` to `ρ.toAlgebra`. Take `⟨S, hS, hS', -⟩` from `exists_ptOver_mul_ptOver_eq W (A := A) hP hQ`. Establish `hs : IsSumTriple (W.map ρ) P Q S`.
+
+Break down `hS' with rfl | rfl` into its components or cases. Use `exacts [isSumTriple_addXYZ hP.equation hQ.equation, isSumTriple_diagXYZ hP.equation hQ.equation]`. Establish `e` using `h A ρ P Q S hP hQ hS ⟨hs.add, hs.diag⟩ _ _ eP eQ`. Establish `e'` using `h' A ρ P Q S hP hQ hS ⟨hs.add, hs.diag⟩ _ _ eP eQ`. Rewrite `e`, `e'` using `[lift_comp_fst_snd]`.
+
+Conclude with `e.trans e'.symm`.
+-/
 theorem IsAddLawHom.unique {m m' : schemeOver W ⊗ schemeOver W ⟶ schemeOver W}
     (h : IsAddLawHom W m) (h' : IsAddLawHom W m') : m = m' := by
   refine Over.OverMorphism.ext ?_
@@ -60,6 +72,9 @@ theorem IsAddLawHom.unique {m m' : schemeOver W ⊗ schemeOver W ⟶ schemeOver 
   rw [lift_comp_fst_snd] at e e'
   exact e.trans e'.symm
 
+/- English proof (translation)
+The claim follows from `(congrArg (_ ≫ ·) (inv_left W)).trans (ptHom_negHom W ρ P hP)`.
+-/
 theorem ptHom_grpObj_inv {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) :
     ptHom W ρ P hP ≫ (GrpObj.inv : schemeOver W ⟶ schemeOver W).left = ptHom W ρ _ hP.neg :=
@@ -67,6 +82,9 @@ theorem ptHom_grpObj_inv {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 →
 
 omit [W.IsElliptic] in
 
+/- English proof (translation)
+The claim follows from `haveI : W.IsElliptic := ⟨hΔ⟩ ⟨grpObj W, isCommMonObj W, one_left W, isAddLawHom_mul W, fun _ _ ρ P hP => ⟨hP.neg, ptHom_grpObj_inv W ρ P hP⟩⟩`.
+-/
 theorem exists_grpObj_isAddLawHom (hΔ : IsUnit W.Δ) :
     ∃ _ : GrpObj (schemeOver W), IsCommMonObj (schemeOver W) ∧ η[schemeOver W].left = zero W ∧
       IsAddLawHom W μ[schemeOver W] ∧

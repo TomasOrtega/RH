@@ -31,6 +31,9 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 open GroundTheory.Automorphic.GodementSection
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Use `conv_lhs => rw [← ofFinite_mul_ofInfinite τ]`. Rewrite using `[map_mul, Units.val_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem ω_split (ω : HChar F) (τ : IdeleGroup F) :
     ((ω.1 τ : ℂˣ) : ℂ) = ωI ω (toInfinite F τ) * ωF ω (toFinite F τ) := by
   conv_lhs => rw [← ofFinite_mul_ofInfinite τ]
@@ -45,6 +48,13 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 open GroundTheory.Automorphic.GodementSection
 
+/- English proof (translation)
+Establish `hs : ∀ x, UpperTheory.V.TR.pInf F (UpperTheory.V.TR.sInf F x) = x` using `fun x => (UpperTheory.V.TR.infEq F).symm_apply_apply x`. Establish `hf : ∀ x, UpperTheory.V.TR.pInf F (sFin F x) = 0` using `fun x => map_zero (UpperTheory.V.TR.infEq F).symm`. Establish `h1 : UpperTheory.V.TR.pInf F ((UpperTheory.V.TR.infId F y : (Ad F)ˣ) : Ad F) = y.val`. Express the relevant statement in the definitionally equal form `UpperTheory.V.TR.pInf F (1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val) = y.val`. Rewrite using `[map_add, map_sub, map_one, hs, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : UpperTheory.V.TR.pInf F ((finId F yf : (Ad F)ˣ) : Ad F) = 1`. Express the relevant statement in the definitionally equal form `UpperTheory.V.TR.pInf F (1 - sFin F 1 + sFin F (yf : Af F)) = 1`. Rewrite using `[map_add, map_sub, map_one, hf, hf]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[yAd, Units.val_mul, map_mul, h1, h2, mul_one]`.
+-/
 theorem pInf_yAd (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) : UpperTheory.V.TR.pInf F (yAd y yf) = y.val := by
   have hs : ∀ x, UpperTheory.V.TR.pInf F (UpperTheory.V.TR.sInf F x) = x := fun x => (UpperTheory.V.TR.infEq F).symm_apply_apply x
   have hf : ∀ x, UpperTheory.V.TR.pInf F (sFin F x) = 0 := fun x => map_zero (UpperTheory.V.TR.infEq F).symm
@@ -56,6 +66,13 @@ theorem pInf_yAd (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) : UpperTheory
     rw [map_add, map_sub, map_one, hf, hf]; ring
   rw [yAd, Units.val_mul, map_mul, h1, h2, mul_one]
 
+/- English proof (translation)
+Establish `h1 : pFin F ((UpperTheory.V.TR.infId F y : (Ad F)ˣ) : Ad F) = 1`. Express the relevant statement in the definitionally equal form `pFin F (1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val) = 1`. Rewrite using `[map_add, map_sub, map_one]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : pFin F ((finId F yf : (Ad F)ˣ) : Ad F) = yf`. Express the relevant statement in the definitionally equal form `pFin F (1 - sFin F 1 + sFin F (yf : Af F)) = yf`. Rewrite using `[map_add, map_sub, map_one]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 1 + (yf : Af F) = yf`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[yAd, Units.val_mul, map_mul, h1, h2, one_mul]`.
+-/
 theorem pFin_yAd (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) : pFin F (yAd y yf) = (yf : Af F) := by
   have h1 : pFin F ((UpperTheory.V.TR.infId F y : (Ad F)ˣ) : Ad F) = 1 := by
     change pFin F (1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val) = 1
@@ -69,25 +86,46 @@ theorem pFin_yAd (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) : pFin F (yAd
     ring
   rw [yAd, Units.val_mul, map_mul, h1, h2, one_mul]
 
+/- English proof (translation)
+Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`.
+-/
 theorem reAt_eq' (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[reAt_eq']`. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v) (algebraMap F (InfiniteAdeleRing F) x v) = _`. Simplify using the standard rewrite rules.
+-/
 theorem pInf_alg' (v : InfinitePlace F) (x : F) : UpperTheory.V.TR.pInf F (algebraMap F (Ad F) x) v = reAt v x := by
   rw [reAt_eq']
   change InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)
     (algebraMap F (InfiniteAdeleRing F) x v) = _
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pInf_tau (τ : IdeleGroup F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F (τ : Ad F) v = rc (toInfinite F τ) v := rfl
 
+/- English proof (translation)
+Rewrite using `[← pInf_tau]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← Pi.mul_apply, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one, Pi.one_apply]`.
+-/
 theorem pInf_tau_inv (τ : IdeleGroup F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F ((τ⁻¹ : IdeleGroup F) : Ad F) v = (rc (toInfinite F τ) v)⁻¹ := by
   rw [← pInf_tau]
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← Pi.mul_apply, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one, Pi.one_apply]
 
+/- English proof (translation)
+Establish `hA : ∀ v, UpperTheory.V.TR.pInf F ((τ : Ad F) * yAd y yf) v = rc (toInfinite F τ) v * y.val v`. Introduce `v`. Rewrite using `[map_mul, Pi.mul_apply, pInf_yAd, pInf_tau]`. Establish `hZ : ∀ v, UpperTheory.V.TR.pInf F (τ⁻¹ • algebraMap F (Ad F) ξ) v = (rc (toInfinite F τ) v)⁻¹ * reAt v ξ`. Introduce `v`.
+
+Rewrite using `[Units.smul_def, smul_eq_mul, map_mul, Pi.mul_apply, pInf_tau_inv, pInf_alg']`. Establish `hA' : pFin F ((τ : Ad F) * yAd y yf) = (toFinite F τ : Af F) * (yf : Af F)`. Rewrite using `[map_mul, pFin_yAd]`. Both sides reduce to the same expression. Establish `hZ' : pFin F (τ⁻¹ • algebraMap F (Ad F) ξ) = (((toFinite F τ)⁻¹ : (Af F)ˣ) : Af F) * algebraMap F (Af F) ξ`.
+
+Rewrite using `[Units.smul_def, smul_eq_mul, map_mul, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[kernF, archK, finK, hA', hZ']`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hA, hZ]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem kernF_split (c : HeightOneSpectrum (𝓞 F) → ℕ) (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) (ξ : F)
     (τ : IdeleGroup F) :
     kernF c ((τ : Ad F) * yAd y yf) (τ⁻¹ • algebraMap F (Ad F) ξ) =
@@ -119,6 +157,15 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 open GroundTheory.Automorphic.GodementSection
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Establish `hb0 : pLoc F w (b : Af F) ≠ 0`. Introduce `h0`. Use `congrArg (fun a : Af F => pLoc F w a) b.mul_inv` as an intermediate fact. Simplify using `only [map_mul, map_one, h0, zero_mul] at this`. Conclude with `zero_ne_one this`.
+
+Establish `h1 : Valued.v (pLoc F w (b : Af F)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h.1`. Establish `h2 : Valued.v (pLoc F w ((b⁻¹ : (Af F)ˣ) : Af F)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 h.2`. Establish `hm : pLoc F w (b : Af F) * pLoc F w ((b⁻¹ : (Af F)ˣ) : Af F) = 1`. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `h3 : Valued.v (pLoc F w (b : Af F)) = 1`.
+
+Use `le_antisymm h1 ?_` and prove the remaining obligations. Use `congrArg Valued.v hm` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Use `valued_eq_exp_neg_ord hb0` as an intermediate fact.
+
+Rewrite `this` using `[h3, ← WithZero.exp_zero, WithZero.exp_inj]`. Unfold `ordAt`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordAt_eq_zero {b : (Af F)ˣ} {w : HeightOneSpectrum (𝓞 F)} (h : IsIntegralUnitAt b w) : ordAt b w = 0 := by
   have hb0 : pLoc F w (b : Af F) ≠ 0 := by
     intro h0
@@ -142,6 +189,9 @@ theorem ordAt_eq_zero {b : (Af F)ˣ} {w : HeightOneSpectrum (𝓞 F)} (h : IsInt
   omega
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `mul_mem h.1 h'.1`. Rewrite using `[mul_inv_rev, Units.val_mul]`. Conclude with `mul_mem h'.2 h.2`.
+-/
 theorem isIntegralUnitAt_mul {b b' : (Af F)ˣ} {w : HeightOneSpectrum (𝓞 F)} (h : IsIntegralUnitAt b w)
     (h' : IsIntegralUnitAt b' w) : IsIntegralUnitAt (b * b') w := by
   refine ⟨?_, ?_⟩
@@ -151,12 +201,44 @@ theorem isIntegralUnitAt_mul {b b' : (Af F)ˣ} {w : HeightOneSpectrum (𝓞 F)} 
     exact mul_mem h'.2 h.2
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+Introduce `h0`. Use `congrArg (fun a : Af F => pLoc F w a) b.mul_inv` as an intermediate fact. Simplify using `only [map_mul, map_one, h0, zero_mul] at this`. Conclude with `zero_ne_one this`.
+-/
 theorem pLoc_unit_ne_zero (b : (Af F)ˣ) (w : HeightOneSpectrum (𝓞 F)) : pLoc F w (b : Af F) ≠ 0 := by
   intro h0
   have := congrArg (fun a : Af F => pLoc F w a) b.mul_inv
   simp only [map_mul, map_one, h0, zero_mul] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Establish `hfin0 : {w : HeightOneSpectrum (𝓞 F) | c w ≠ 0 ∨ dd w ≠ 0}.Finite`. Use `(L2.finite_support H).union ((Ideal.finite_factors (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F))).subset ?_)` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : ordI w (differentIdeal ℤ (𝓞 F)) ≠ 0`. Introduce `h0`.
+
+Apply `hw` to reduce the goal to its premises. Simplify using `[dd, h0]`. Conclude with `(Associates.count_ne_zero_iff_dvd (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F)) w.irreducible).1 hw'`. Use `set S0 := hfin0.toFinset with hS0`. Use `⟨∏ v ∈ S0, cst ω c v, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `v _`. Unfold `cst`. Use `split_ifs with hcv`. Conclude with `zpow_ne_zero _ (Units.ne_zero _)`.
+
+Conclude with `(hR F ω c H v hcv).2`. Introduce `yf ξ`. Use `set S : Finset (HeightOneSpectrum (𝓞 F)) := S0 ∪ (finite_setOf_not_isIntegralUnitAt yf).toFinset ∪ (finite_setOf_not_isIntegralUnitAt (xiF ξ)).toFinset with hSdef`. Establish `hS : ∀ w ∉ S, c w = 0 ∧ dd w = 0 ∧ IsIntegralUnitAt yf w ∧ IsIntegralUnitAt (xiF ξ) w`. Introduce `w hw`.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> by_contra hcon <;> apply hw <;> simp [hSdef, hS0, hcon]`. Establish `hloc` using `fun v => hLI F ω c H yf ξ v`. Take `⟨hint, heq⟩` from `hFS F ω c H yf ξ S hS (fun v => (hloc v).1)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, Finset.prod_congr rfl (fun v _ => (hloc v).2), Finset.prod_mul_distrib, Finset.prod_inv_distrib]`.
+
+Establish `hxi : ωF ω (xiF ξ) = ∏ v ∈ S, ((ω.loc v (Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom ξ) : ℂˣ) : ℂ)`. Rewrite using `[hOP F ω c H (xiF ξ) S (fun w hw => ⟨(hS w hw).1, (hS w hw).2.2.2⟩)]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `congr 3`. Rewrite using `[← hxi]`.
+
+Use `set m : HeightOneSpectrum (𝓞 F) → ℤ := fun w => ordAt (xiF ξ * yf) w + dd w with hm`. Establish `hite : ∀ v ∈ S, (if ordAt (xiF ξ * yf) v + dd v < 0 then 0 else cst ω c v * ∑ j ∈ Finset.range ((ordAt (xiF ξ * yf) v + dd v).toNat + 1), chiW ω c v ^ j) = if 0 ≤ m v then cst ω c v * ∑ j ∈ Finset.range ((m v).toNat + 1), chiW ω c v ^ j else 0`. Introduce `v _`. Distinguish the cases in `h0 : 0 ≤ ordAt (xiF ξ * yf) v + dd v`. Rewrite using `[if_neg (not_lt.2 h0), if_pos h0]`.
+
+Rewrite using `[if_pos (lt_of_not_ge h0), if_neg h0]`. Rewrite using `[Finset.prod_congr rfl hite, Finset.prod_ite_zero]`. Establish `hz : (algebraMap F (Af F) (ξ : F) * (yf : Af F)) = ((xiF ξ * yf : (Af F)ˣ) : Af F)`. Rewrite using `[Units.val_mul]`. Both sides reduce to the same expression.
+
+Establish `hcd` using `hCD F ω c (algebraMap F (Af F) (ξ : F) * (yf : Af F)) m S (fun w => by`. Establish `hne` using `pLoc_unit_ne_zero (xiF ξ * yf) w`. Rewrite using `[hz, valued_eq_exp_neg_ord hne]`. Use `congr 1`. Simplify using `only [hm, ordAt]`.
+
+Use the proof step `ring)`. Use the proof step `(fun w hw => by`. Establish `h1` using `hS w hw`. Simplify using `only [hm, ordAt_eq_zero (isIntegralUnitAt_mul h1.2.2.2 h1.2.2.1), h1.2.1, add_zero])`. Rewrite using `[hcd]`.
+
+Establish `hcst : ∏ v ∈ S, cst ω c v = ∏ v ∈ S0, cst ω c v`. Use `symm`. Use `Finset.prod_subset (fun v hv => by simp [hSdef, hv]) fun v _ hv0 => ?_` and prove the remaining obligations. Establish `h1 : c v = 0`. Assume the negation of the conclusion as `h`.
+
+Apply `hv0` to reduce the goal to its premises. Simplify using `[hS0, h]`. Establish `h2 : dd v = 0`. Assume the negation of the conclusion as `h`. Apply `hv0` to reduce the goal to its premises.
+
+Simplify using `[hS0, h]`. Simplify using `[cst, h1, h2]`. Use `split_ifs with hall`. Rewrite using `[Finset.prod_mul_distrib, hcst]`. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fin_int (hLI : LocInt) (hFS : FinSplit) (hOP : OmegaProd) (hCD : CoefDiv) (hR : LocRam)
     (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (H : Hyp ω c) :
     ∃ Cf : ℂ, Cf ≠ 0 ∧ ∀ (yf : (Af F)ˣ) (ξ : Fˣ),
@@ -236,6 +318,21 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 open L4 GroundTheory.Automorphic.GodementSection
 
+/- English proof (translation)
+Introduce `hfin hK F _ _ _ ω c H`. Take `⟨κ, hκ, hκF⟩` from `hK F c (hfin F ω c H)`. Take `⟨Cf, hCf, hfinI⟩` from `fin_int hLI hFS hOP hCD hR ω c H`. Use `⟨κ * (2 : ℂ) ^ Fintype.card (InfinitePlace F) * Cf, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero hκ (pow_ne_zero _ two_ne_zero)) hCf`.
+
+Introduce `y hy yf ξ`. Use `set gI : (InfiniteAdeleRing F)ˣ → ℂ := fun a => archK y (ξ : F) a * (ωI ω a)⁻¹`. Use `set gF : (Af F)ˣ → ℂ := fun b => finK c yf (ξ : F) b * (ωF ω b)⁻¹`. Establish `hpt : ∀ τ : IdeleGroup F, kern c (yAd y yf) τ ξ * ((ω.1 τ : ℂˣ) : ℂ)⁻¹ * ((ideleModule F τ : ℝ) : ℂ) = κ * (gI (toInfinite F τ) * gF (toFinite F τ))`. Introduce `τ`.
+
+Simplify using `only [kern, hκF, kernF_split, ω_split, gI, gF]`. Establish `h1 : ((ideleModule F τ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (ideleModule F τ).2.ne'`. Clear the denominators using the available nonvanishing facts. Take `⟨hAi, hAe⟩` from `hA F ω c H y hy ξ`. Take `⟨hFi, hFe⟩` from `hfinI yf ξ`.
+
+Establish `hprod : Integrable (fun p : (InfiniteAdeleRing F)ˣ × (Af F)ˣ => κ * (gI p.1 * gF p.2)) ((infiniteIdeleMeasure F).prod (finiteIdeleMeasure F))` using `(hAi.mul_prod hFi).const_mul κ`. Establish `hmap : ∀ p : (InfiniteAdeleRing F)ˣ × (Af F)ˣ, toInfinite F ((prodEquiv F).symm p) = p.1 ∧ toFinite F ((prodEquiv F).symm p) = p.2` using `fun p => ⟨toInfinite_symm p, toFinite_symm p⟩`. Prove the components needed by the constructor for the conclusion. Establish `: Integrable (fun τ : IdeleGroup F => κ * (gI (toInfinite F τ) * gF (toFinite F τ))) (ideleMeasure F)`. Rewrite using `[ideleMeasure]`.
+
+Use `(integrable_map_equiv (prodEquiv F).symm.toHomeomorph.toMeasurableEquiv _).2 ?_` and prove the remaining obligations. Use `hprod using 2 with p` and compare the differences between its conclusion and the goal. Conclude with `congrArg₂ (fun a b => κ * (gI a * gF b)) (hmap p).1 (hmap p).2`. Conclude with `this.congr (Filter.Eventually.of_forall fun τ => (hpt τ).symm)`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_ideleMeasure]`.
+
+Simplify using `only [(hmap _).1, (hmap _).2]`. Rewrite using `[integral_const_mul, integral_prod_mul, hAe, hFe]`. Use `split_ifs with hξ`. Rewrite using `[hPos F ω c H ξ hξ, inv_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sLocal_of (hA : ArchInt) (hLI : LocInt) (hFS : FinSplit) (hOP : OmegaProd) (hCD : CoefDiv) (hR : LocRam)
     (hPos : OmegaPos) : SFin → SKern → SLocal := by
   intro hfin hK F _ _ _ ω c H
@@ -279,6 +376,9 @@ end UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
+/- English proof (translation)
+The claim follows from `sLocal_of archimedean_integral_holds (local_integral_of_substitution inverse_substitution_holds) finite_split_holds character_product_holds coefficient_divisor_holds local_ramified_holds character_positive_holds`.
+-/
 theorem local_expansion_holds : SFin → SKern → SLocal :=
   sLocal_of archimedean_integral_holds (local_integral_of_substitution inverse_substitution_holds) finite_split_holds character_product_holds coefficient_divisor_holds local_ramified_holds
     character_positive_holds

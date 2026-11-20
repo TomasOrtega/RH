@@ -15,13 +15,44 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.K
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem sfinite_of_finite {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] : SFinite ν := inferInstance
 
+/- English proof (translation)
+Break down `ht.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `hB`. Conclude with `le_of_mul_le_mul_right (by nlinarith) h0`.
+-/
 private theorem le_of_sq_le {t B : ℝ} (ht : 0 ≤ t) (hB : 0 ≤ B) (h : t ^ 2 ≤ B * t) : t ≤ B := by
   rcases ht.eq_or_lt with h0 | h0
   · rw [← h0]; exact hB
   · exact le_of_mul_le_mul_right (by nlinarith) h0
 
+/- English proof (translation)
+Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' a P hP ha hD`. Use `haveI := Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := 2 + 2) μ`. Use `haveI hsf : SFinite (quotientMeasure (Gam K (2 + 2)) μ) := sfinite_of_finite _`. Use `haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by simp⟩`. Use `haveI : SecondCountableTopology (RightCosetSpace (Gam K (2 + 2))) := (isOpenQuotientMap_mk (Gam K (2 + 2))).isQuotientMap.secondCountableTopology (isOpenQuotientMap_mk (Gam K (2 + 2))).isOpenMap`.
+
+Use `haveI : MeasurableSpace.CountablyGenerated (RightCosetSpace (Gam K (2 + 2))) := BorelSpace.countablyGenerated`. Use `haveI : IsSeparable (quotientMeasure (Gam K (2 + 2)) μ) := isSeparable_of_sigmaFinite _`. Use `haveI : SecondCountableTopology (Lp ℂ 2 (quotientMeasure (Gam K (2 + 2)) μ)) := Lp.SecondCountableTopology`. Use `haveI : TopologicalSpace.SeparableSpace (Lp ℂ 2 (quotientMeasure (Gam K (2 + 2)) μ)) := TopologicalSpace.SecondCountableTopology.to_separableSpace`. Use `choose k hk hkγ hkO hkm using fun T => UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kT μ a T`.
+
+Establish `hsa : ∀ u w : L2 μ, ⟪P u, w⟫_ℂ = ⟪u, P w⟫_ℂ` using `fun u w => hP.1.isSymmetric u w`. Establish `hPP : ∀ u : L2 μ, P (P u) = P u` using `fun u => DFunLike.congr_fun hP.2.1 u`. Establish `hsq : ∀ u : L2 μ, ‖P u‖ ^ 2 = ‖⟪u, P u⟫_ℂ‖`. Introduce `u`. Establish `h : ⟪u, P u⟫_ℂ = ⟪P u, P u⟫_ℂ` using `by rw [hsa, hPP]`.
+
+Rewrite using `[h, inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Establish `hPn : ∀ u : L2 μ, ‖P u‖ ≤ ‖u‖` using `fun u => le_of_sq_le (norm_nonneg _) (norm_nonneg _) ((hsq u).trans_le (norm_inner_le_norm _ _))`. Take `⟨q1, -, -⟩` from `qhtBasic K (2 + 2)`. Establish `q0 : ∀ x : G1 K (2 + 2), 0 ≤ qht x` using `fun x => zero_le_one.trans (q1 x)`.
+
+Establish `hfar : ∀ N' : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ T x, 0 ≤ T → ¬ Om T x → ‖P (k T x)‖ ≤ C * (qht x ^ N')⁻¹`. Introduce `N'`. Take `⟨C, hC, h⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.mainBd K μ μ₂ τ₁ τ₂ hp D d d' A A' a P hP ha hD N'`. Use `⟨C, hC, fun T x hT hx => ?_⟩` and prove the remaining obligations. Use `le_of_sq_le (norm_nonneg _) (mul_nonneg hC (inv_nonneg.2 (pow_nonneg (q0 x) _))) ?_` and prove the remaining obligations.
+
+Rewrite using `[hsq, hk]`. Conclude with `h T x _ hT (hPP _) hx`. Take `⟨C₁, N₁, hC₁, b₁⟩` from `(kvBd K (2 + 2) μ a).1 (UpperTheory.ConvolutionTheory.C.polyBdAll K (2 + 2) μ a)`. Take `⟨C₂, hC₂, b₂⟩` from `hfar 0`. Establish `hnear : ∀ T x, Om T x → ‖P (k T x)‖ ≤ C₁ * qht x ^ N₁` using `fun T x hx => by`.
+
+Rewrite using `[hkO T x hx]`. Conclude with `(hPn _).trans (b₁ x)`. Establish `hfar0 : ∀ T x, 0 ≤ T → ¬ Om T x → ‖P (k T x)‖ ≤ C₂` using `fun T x hT hx => by simpa using b₂ T x hT hx`. Use `⟨fun T x => P (k T x), fun T γ hγ x => by simp only [hkγ T γ hγ x], fun T x hx => by simp only [hkO T x hx], hfar, ⟨C₁ + C₂, N₁, add_nonneg hC₁ hC₂, fun T x hT => ?_⟩, fun T Λ hT hΛ => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ qht x ^ N₁` using `one_le_pow₀ (q1 x)`.
+
+Distinguish the cases in `hx : Om T x`. Conclude with `(hnear T x hx).trans (by nlinarith)`. Conclude with `(hfar0 T x hT hx).trans (by nlinarith)`. Take `⟨C, c, N, -, hC, hb⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.omBd (K := K)`. Establish `hB : ∀ x, ‖P (k T x)‖ ≤ C₁ * (C * Real.exp (N * T)) ^ N₁ + C₂`.
+
+Introduce `x`. Distinguish the cases in `hx : Om T x`. Use `(hnear T x hx).trans (le_add_of_le_of_nonneg ?_ hC₂)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (q0 x) ((hb T x hT).1 hx) _) hC₁`. Conclude with `(hfar0 T x hT hx).trans (le_add_of_nonneg_left (by positivity))`.
+
+Establish `hm : StronglyMeasurable fun y : RightCosetSpace (Gam K (2 + 2)) => P (k T (Quotient.out y))` using `P.continuous.comp_stronglyMeasurable (hkm T)`. Establish `hae : ∀ φ, ((Λ ∘L Rop μ a ∘L P) φ : RightCosetSpace (Gam K (2 + 2)) → ℂ) =ᵐ[quotientMeasure (Gam K (2 + 2)) μ] fun y => ⟪P (k T (Quotient.out y)), φ⟫_ℂ`. Introduce `φ`. Establish `hr` using `(UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.lamRep K μ μ₂ τ₁ τ₂ hp D d d' A A' P Λ T hP hT hΛ).2.2 a hD (P φ) (hPP φ)`. Establish `hm2 : ∀ᵐ y ∂(Measure.map (mk (Gam K (2 + 2))) (μ.restrict (fundamentalDomain (Gam K (2 + 2))))), ((Λ ∘L Rop μ a ∘L P) φ : RightCosetSpace (Gam K (2 + 2)) → ℂ) y = ⟪P (k T (Quotient.out y)), φ⟫_ℂ`.
+
+Use `(ae_map_iff (measurable_mk (Gam K (2 + 2))).aemeasurable (measurableSet_eq_fun (Lp.stronglyMeasurable _).measurable (hm.inner stronglyMeasurable_const).measurable)).2 ?_` and prove the remaining obligations. Use `ae_restrict_of_ae (Filter.Eventually.mono hr fun y hy => ?_)` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `GroundTheory.Automorphic.RightCosetSpace.mk_eq_mk_iff.1 (show mk (Gam K (2 + 2)) (Quotient.out (mk (Gam K (2 + 2)) y)) = mk (Gam K (2 + 2)) y from Quotient.out_eq _)`. Establish `e : k T (Quotient.out (mk (Gam K (2 + 2)) y)) = k T y`. Rewrite using `[← hγ]`.
+
+Conclude with `hkγ T _ γ.2 y`. Rewrite using `[e, hsa, hk]`. Conclude with `hy`. Rewrite `hm2` using `[map_restrict_eq_quotientMeasure μ (isFundamentalDomain_fundamentalDomain (Gam K (2 + 2)) μ)]`. Then use the resulting hypothesis. Conclude with `⟨⟨_, hB⟩, hm, hsOfKer (quotientMeasure (Gam K (2 + 2)) μ) _ _ (MemLp.of_bound hm.aestronglyMeasurable _ (Filter.Eventually.of_forall fun y => hB _)) hae, hae⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncKer :
     ForAllC fun K _ _ μ _ _ _ _ _ D _ _ A A' => ∀ (a : CC K (2 + 2)) (P : L2 μ →L[ℂ] L2 μ), IsOrthogonalProjectionTwoLines A.J A'.J P → IsLeftSmooth a → D.Hecke a →
       ∃ kk : ℝ → G1 K (2 + 2) → L2 μ, (∀ T, ∀ γ ∈ Gam K (2 + 2), ∀ x, kk T (γ * x) = kk T x) ∧ (∀ T x, Om T x → kk T x = P (kv μ a x)) ∧

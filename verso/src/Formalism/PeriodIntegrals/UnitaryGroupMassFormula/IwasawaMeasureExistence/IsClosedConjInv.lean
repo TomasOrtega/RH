@@ -19,6 +19,13 @@ def ChartDens1 : Prop :=
       Tendsto j (𝓝 0) (𝓝 c) ∧
       ∀ T : Set (lieSp K), MeasurableSet T → T ⊆ ball 0 δ → haarH K hc (expSet1 K T) = ∫⁻ x in T, j x
 
+/- English proof (translation)
+Unfold `conjInv`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Establish `e : y * (MulAut.conj y⁻¹).toMonoidHom h * y⁻¹ = h`.
+
+Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`. Rewrite using `[e]`. Conclude with `hh`. Introduce `hg`.
+
+Use `⟨y * g * y⁻¹, hg, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+-/
 theorem mem_conjInv (H : Subgroup (Formalism.REAL.UJ ε)) (y g : Formalism.REAL.UJ ε) :
     g ∈ conjInv H y ↔ y * g * y⁻¹ ∈ H := by
   unfold conjInv

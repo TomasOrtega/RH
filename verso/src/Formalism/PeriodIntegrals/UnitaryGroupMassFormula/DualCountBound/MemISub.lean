@@ -21,6 +21,9 @@ def toO (M : Model F E) : 𝒪[F] →+* M.L.O where
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma toO_coe (M : Model F E) (x : 𝒪[F]) : ((toO M x : M.L.O) : E) = algebraMap F E (x : F) := rfl
 
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}

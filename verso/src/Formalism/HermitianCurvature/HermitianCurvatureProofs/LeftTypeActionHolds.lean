@@ -17,11 +17,19 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
   [NormedSpace ℂ Wq] [FiniteDimensional ℂ Wp] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
   {π' : Mx k r → (Wq →L[ℂ] Wq)} {D : Set (Mx k r)} {J : Mx k r → (Wq →L[ℂ] Wp)} {i : Fin (r + 1)} {mm : ℕ∞}
 
+/- English proof (translation)
+Use `Qx8.dom_mem hD hg hh (Qx8.nlev_one _) (Qx8.uw_one z') (Qx8.nlev_one _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mem_left (hD : IsDom k r z z' i D) {g h : Mx k r} (hg : g ∈ Glev k r i ∩ D)
     (hh : h ∈ UWset k r z) : h * g ∈ Glev k r i ∩ D := by
   have := Qx8.dom_mem hD hg hh (Qx8.nlev_one _) (Qx8.uw_one z') (Qx8.nlev_one _)
   simpa using this
 
+/- English proof (translation)
+Establish `e1` using `hJ.2.2.2 g hg 1 (Qx8.uw_one z) 1 (Qx8.uw_one z')`. Establish `e2` using `hJ.2.2.2 g hg h hh 1 (Qx8.uw_one z')`. Rewrite `e1` using `[Matrix.one_mul, Matrix.mul_one, hπ.1]`. Rewrite `e2` using `[Matrix.mul_one]`. Establish `e3 : (1 : Wp →L[ℂ] Wp).comp ((J g).comp (π' 1)) = (J g).comp (π' 1)` using `ContinuousLinearMap.id_comp _`.
+
+Rewrite `e1` using `[e3]`. Rewrite using `[e2, ← e1]`.
+-/
 theorem J_left (hπ : IsCRepOn (UWset k r z) π) (hJ : J ∈ Gr.FFlM mm k r z z' π π' i D) {g h : Mx k r}
     (hg : g ∈ Glev k r i ∩ D) (hh : h ∈ UWset k r z) : J (h * g) = (π h).comp (J g) := by
   have e1 := hJ.2.2.2 g hg 1 (Qx8.uw_one z) 1 (Qx8.uw_one z')
@@ -32,6 +40,11 @@ theorem J_left (hπ : IsCRepOn (UWset k r z) π) (hJ : J ∈ Gr.FFlM mm k r z z'
   rw [e3] at e1
   rw [e2, ← e1]
 
+/- English proof (translation)
+Establish `h` using `QrD.dOp_hasDeriv hπ hc hX`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)` to `(ContinuousLinearMap.compL ℂ Wq Wp Wp B).comp ((ContinuousLinearMap.compL ℂ Wq Wp Wp).flip (J g))`. Establish `h2` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Establish `h3 : (fun t : ℝ => F (NormedSpace.exp ((t : ℂ) • X) * g)) = (L.restrictScalars ℝ) ∘ fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X))`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[hF _ (mem_left hD hg (QrD.exp_uw hX t)), J_left hπ hJ hg (QrD.exp_uw hX t)]`. Both sides reduce to the same expression. Unfold `LdV`. Rewrite using `[h3]`. Conclude with `h2.deriv`.
+-/
 theorem ld_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
     (hc : ContinuousOn π (UWset k r z)) (hJ : J ∈ Gr.FFlM mm k r z z' π π' i D)
     {F : Mx k r → (Wq →L[ℂ] Wp)} {B : Wp →L[ℂ] Wp}
@@ -50,6 +63,9 @@ theorem ld_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
   rw [h3]
   exact h2.deriv
 
+/- English proof (translation)
+Unfold `LZ QrD.ecOp`. Rewrite using `[ld_left hD hπ hc hJ hF h1 hg, ld_left hD hπ hc hJ hF h2 hg]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem lz_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
     (hc : ContinuousOn π (UWset k r z)) (hJ : J ∈ Gr.FFlM mm k r z z' π π' i D)
     {F : Mx k r → (Wq →L[ℂ] Wp)} {B : Wp →L[ℂ] Wp}
@@ -62,6 +78,15 @@ theorem lz_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
   ext v
   simp
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Introduce `F B hF g hg v`. Simplify using `only [List.map_nil, List.foldl_nil, List.foldr_nil]`. Rewrite using `[hF g hg]`.
+
+Both sides reduce to the same expression. Consider the case `cons p L ih`. Introduce `F B hF g hg v`. Establish `hp` using `hL p (by simp)`. Simplify using `only [List.map_cons, List.foldl_cons, List.foldr_cons]`.
+
+Rewrite using `[ih (fun q hq => hL q (by simp [hq])) (p.1 • F + LZ (Hpk k r) p.2 F) (p.1 • B + B.comp (QrD.ecOp π p.2)) (fun x hx => by`. Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Rewrite using `[lz_left hD hπ hc hJ hF hp.1 hp.2 hx, hF x hx]`. Use extensionality with `v`. Use the proof step `simp) g hg v, QrD.ecRep_eq hπ hc hp.1 hp.2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fold_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
     (hc : ContinuousOn π (UWset k r z)) (hJ : J ∈ Gr.FFlM mm k r z z' π π' i D)
     (L : List (ℂ × Mx k r))
@@ -90,6 +115,13 @@ theorem fold_left (hD : IsDom k r z z' i D) (hπ : IsCRepOn (UWset k r z) π)
 
 end LeftTypeActionHermitianCurvature
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ k r m z z' π π' D mm _ _ hD hπ hc J hJ g hg Bs hB w v`. Unfold `capLft capRep qmFrev qmF`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, _root_.sum_apply, _root_.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `e1` using `LeftTypeActionHermitianCurvature.fold_left hD hπ hc hJ (List.ofFn fun j : Fin m => ((if σ j = j then w - ((j : ℕ) : ℂ) else 0 : ℂ), unitB (Hpk k r) Bs (σ j) j)) (by`. Introduce `p hp`. Rewrite `hp` using `[List.mem_ofFn]`. Take `⟨j, rfl⟩` from `hp`. Conclude with `QrD.frame_lie hB (σ j) j) J 1 (fun x _ => (ContinuousLinearMap.id_comp _).symm) g hg v`.
+
+Simplify using `only [List.map_ofFn, Function.comp_def, ite_smul, zero_smul] at e1`. Simplify using `only [id]`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 theorem left_type_action_holds : LeftTypeAction0 := by
   intro Wp Wq _ _ _ _ _ k r m z z' π π' D mm _ _ hD hπ hc J hJ g hg Bs hB w v
   unfold capLft capRep qmFrev qmF

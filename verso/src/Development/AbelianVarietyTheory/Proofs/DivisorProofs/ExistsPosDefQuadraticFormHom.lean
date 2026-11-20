@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Establish `hl` using `(GlobalTheory.T.abelianVarietyMumfordClass_bilinear K B d A.X f.hom g.hom g.hom (-1)).2.2.2.2`. Establish `hq` using `(GlobalTheory.T.mumfordClass_symmetric_pullback_quadratic K A B d hd g (-1)).2`. Rewrite `hl` using `[zpow_neg_one]`. Rewrite `hq` using `[neg_one_zsmul]`. Evaluate the numerical expressions using `at hq`.
+
+Establish `e1 : CechPic.pull (f + g).hom.left d = lam d f.hom g.hom + CechPic.pull f.hom.left d + CechPic.pull g.hom.left d`. Rewrite using `[lam, add_hom]`. Normalize the expressions using the abelian group laws. Establish `e2 : CechPic.pull (f - g).hom.left d = lam d f.hom (g.hom⁻¹) + CechPic.pull f.hom.left d + CechPic.pull g.hom.left d`. Rewrite using `[sub_eq_add_neg, ← hq, lam, add_hom, neg_hom]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e1, e2, hl]`. Simplify using `only [neg_one_smul, two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pull_add_add_pull_sub {K : Type} [Field K] {A B : AbVar K} (d : Pic B.X.left)
     (hd : CechPic.pull (Hom.hom (-(𝟙 B))).left d = d) (f g : A ⟶ B) :
     CechPic.pull (f + g).hom.left d + CechPic.pull (f - g).hom.left d
@@ -34,6 +41,17 @@ theorem pull_add_add_pull_sub {K : Type} [Field K] {A B : AbVar K} (d : Pic B.X.
   simp only [neg_one_smul, two_smul]
   abel
 
+/- English proof (translation)
+Introduce `K _ A B`. Take `⟨d, hdA, hd⟩` from `GlobalTheory.AV.AbVar.exists_symm_ample K B`. Take `⟨c, hc⟩` from `GlobalTheory.AV.exists_isAmpleCls K A`. Break down `hA : A.dim with _ | n` into its components or cases. Use `⟨fun _ => 0, fun _ _ => by simp, fun _ => le_rfl, fun f _ => GlobalTheory.T.eq_zero_of_dim_eq_zero' K A B (Or.inl hA) f⟩` and prove the remaining obligations.
+
+Take `⟨⟨M, hM⟩, -⟩` from `GlobalTheory.T.intersection_number_multilinear_symm K A (Fin (n + 1)) (by simp [hA])`. Use `⟨fun f => inter A (Fin.cons (CechPic.pull f.hom.left d) (fun _ : Fin n => c) : Fin (n + 1) → Pic A.X.left), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g`. Simplify using `only [← hM]`. Rewrite using `[← MultilinearMap.cons_add, pull_add_add_pull_sub d hd f g, MultilinearMap.cons_add, MultilinearMap.cons_smul, MultilinearMap.cons_smul]`.
+
+Simplify using `[two_mul]`. Introduce `f`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Establish `h0` using `(GlobalTheory.T.mumfordClass_symmetric_pullback_quadratic K A B d hd (0 : A ⟶ B) 0).2`.
+
+Rewrite `h0` using `[zero_smul]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_smul] at h0`. Use `show 0 ≤ inter A _`. Rewrite using `[← hM, h0, M.map_coord_zero (0 : Fin (n + 1)) (by simp)]`. Conclude with `(GlobalTheory.T.ample_pullback_intersection_degree_pos_of_ne_zero K A B n hA c d hc hdA f hf).le`.
+
+Introduce `f hf0`. Assume the negation of the conclusion as `hf`. Conclude with `(GlobalTheory.T.ample_pullback_intersection_degree_pos_of_ne_zero K A B n hA c d hc hdA f hf).ne' hf0`.
+-/
 theorem exists_posDef_quadratic_hom : ∀ (K : Type) [Field K] (A B : AbVar K), ∃ Q : (A ⟶ B) → ℤ,
     (∀ f g, Q (f + g) + Q (f - g) = 2 * Q f + 2 * Q g) ∧ (∀ f, 0 ≤ Q f) ∧ ∀ f, Q f = 0 → f = 0 := by
   intro K _ A B

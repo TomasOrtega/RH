@@ -18,6 +18,9 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.InertFrameUnimod
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s hW v w hw`. Take `⟨t, ht0, s₁, s₂, h1, h2, c1, c2⟩` from `GlobalTheory.T.exists_baseField_generator_localDifferent_inertPlace hw`. Conclude with `⟨t, ht0, GlobalTheory.T.skewHermitianLattice_selfDual_smul_transpose_inert σ B W r s hW hw t ht0 s₁ s₂ h1 h2 c1 c2⟩`.
+-/
 theorem selfDual_scaled : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), W.IsSkew σ B r s →
   ∀ {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}, Formalism.UG.IsInertAt F E v w →
@@ -26,12 +29,34 @@ theorem selfDual_scaled : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
   obtain ⟨t, ht0, s₁, s₂, h1, h2, c1, c2⟩ := GlobalTheory.T.exists_baseField_generator_localDifferent_inertPlace hw
   exact ⟨t, ht0, GlobalTheory.T.skewHermitianLattice_selfDual_smul_transpose_inert σ B W r s hW hw t ht0 s₁ s₂ h1 h2 c1 c2⟩
 
+/- English proof (translation)
+Introduce `y` and use `congrArg (fun z => toCompl (under_eq_of_isInertAt hw) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ z)) ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply y)`.
+-/
 theorem isConjAt_conjW {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w) :
     IsConjAt σ (under_eq_of_isInertAt hw) (GlobalTheory.InertBigCell.conjW σ hw) := fun y =>
   congrArg (fun z => toCompl (under_eq_of_isInertAt hw) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ z))
     ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply y)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s _hB hW v w hw`. Establish `hc` using `isConjAt_conjW σ hw`. Take `⟨t, ht0, hsd⟩` from `selfDual_scaled σ B W r s hW hw`. Use `haveI := hW.lat`. Take `⟨a, ha⟩` from `InertChart.exists_isFrameAt (L := W.L) hw Submodule.IsLattice.fg Submodule.IsLattice.span_eq_top`.
+
+Establish `hdet : (algebraMap F E t • W.Jᵀ).det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ ((map_ne_zero _).2 ht0)) (GlobalTheory.FinUniq.det_ne_zero_skew hW)`. Take `⟨B0, hB0, eB0⟩` from `InertChart.exists_gram hw hc hdet hsd ha`. Take `⟨C, hC⟩` from `hB0`.
+
+Use `set δ : w.adicCompletion E := algebraMap E (w.adicCompletion E) (algebraMap F E t) with hδdef`. Establish `hδ : GlobalTheory.InertBigCell.conjW σ hw δ = δ`. Rewrite using `[hδdef, InertChart.conj_algebraMap hc, AlgHom.commutes]`. Establish `key : δ • ((a : Matrix (Fin d) (Fin d) (w.adicCompletion E))ᵀ * W.J.map (algebraMap E (w.adicCompletion E)) * (a : Matrix (Fin d) (Fin d) (w.adicCompletion E)).map (GlobalTheory.InertBigCell.conjW σ hw)) = (B0 : Matrix (Fin d) (Fin d) (w.adicCompletion E))ᵀ`. Rewrite using `[eB0, Matrix.transpose_mul, Matrix.transpose_mul]`.
+
+Establish `e1 : ((algebraMap F E t • W.Jᵀ).map (algebraMap E (w.adicCompletion E)))ᵀ = δ • W.J.map (algebraMap E (w.adicCompletion E))`. Use extensionality with `i j`. Simplify using `only [hδdef, Matrix.map_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `e2 : (Formalism.UG.cT (GlobalTheory.InertBigCell.conjW σ hw) (a : Matrix (Fin d) (Fin d) (w.adicCompletion E)))ᵀ = (a : Matrix (Fin d) (Fin d) (w.adicCompletion E)).map (GlobalTheory.InertBigCell.conjW σ hw)`. Simplify using `[Formalism.UG.cT]`.
+
+Rewrite using `[e1, e2, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Establish `hBC : (B0 : Matrix (Fin d) (Fin d) (w.adicCompletion E)) = (C : Matrix (Fin d) (Fin d) (Formalism.UG.Ov E w)).map (Formalism.UG.Ov E w).subtype`. Rewrite using `[← hC]`. Both sides reduce to the same expression. Establish `hdetB : (B0 : Matrix (Fin d) (Fin d) (w.adicCompletion E)).det = (Formalism.UG.Ov E w).subtype (C : Matrix (Fin d) (Fin d) (Formalism.UG.Ov E w)).det`.
+
+Rewrite using `[hBC, ← RingHom.mapMatrix_apply, RingHom.map_det]`. Establish `hCu : IsUnit (C : Matrix (Fin d) (Fin d) (Formalism.UG.Ov E w)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 C.isUnit`. Use `⟨a, δ, fun u => ?_, hδ, fun i j => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `ha ((a⁻¹ : GL (Fin d) (w.adicCompletion E)).1 *ᵥ u)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `h1.symm`. Rewrite using `[key, Matrix.transpose_apply, hBC, Matrix.map_apply]`. Conclude with `(C.1 j i).2`. Rewrite using `[key, Matrix.det_transpose, hdetB]`. Introduce `h0`.
+
+Conclude with `hCu.ne_zero (Subtype.ext h0)`. Rewrite using `[key, Matrix.det_transpose, hdetB]`. Take `⟨u, hu⟩` from `hCu`. Establish `: (Formalism.UG.Ov E w).subtype (C : Matrix (Fin d) (Fin d) (Formalism.UG.Ov E w)).det * (Formalism.UG.Ov E w).subtype (u⁻¹ : (Formalism.UG.Ov E w)ˣ) = 1`. Rewrite using `[← map_mul, ← hu, Units.mul_inv, map_one]`.
+
+Rewrite using `[inv_eq_of_mul_eq_one_right this]`. Conclude with `(u⁻¹ : (Formalism.UG.Ov E w)ˣ).1.2`.
+-/
 theorem exists_frame_unimod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →
   ∀ {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w),

@@ -7,17 +7,26 @@ open MeasureTheory
 def monomialOfMultiindex {g : ℕ} (α : Fin g →₀ ℕ) (z : EuclideanSpace ℂ (Fin g)) : ℂ :=
   ∏ i ∈ α.support, z i ^ α i
 
+/- English proof (translation)
+Unfold `monomialOfMultiindex`. Conclude with `Finset.prod_subset (Finset.subset_univ _) fun i _ hi => by`. Rewrite using `[Finsupp.notMem_support_iff.mp hi, pow_zero]`.
+-/
 theorem fa1Mono_eq {g : ℕ} (α : Fin g →₀ ℕ) (z : EuclideanSpace ℂ (Fin g)) :
     monomialOfMultiindex α z = ∏ i, z i ^ α i := by
   unfold monomialOfMultiindex
   exact Finset.prod_subset (Finset.subset_univ _) fun i _ hi => by
     rw [Finsupp.notMem_support_iff.mp hi, pow_zero]
 
+/- English proof (translation)
+Establish `h : monomialOfMultiindex α = fun z : EuclideanSpace ℂ (Fin g) => ∏ i, z i ^ α i` using `funext (fa1Mono_eq α)`. Rewrite using `[h]`. Conclude with `continuous_finsetProd _ fun i _ => (PiLp.continuous_apply 2 _ i).pow _`.
+-/
 theorem fa1Mono_continuous {g : ℕ} (α : Fin g →₀ ℕ) : Continuous (monomialOfMultiindex α) := by
   have h : monomialOfMultiindex α = fun z : EuclideanSpace ℂ (Fin g) => ∏ i, z i ^ α i := funext (fa1Mono_eq α)
   rw [h]
   exact continuous_finsetProd _ fun i _ => (PiLp.continuous_apply 2 _ i).pow _
 
+/- English proof (translation)
+Rewrite using `[fa1Mono_eq, norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (PiLp.norm_apply_le z i) _`.
+-/
 theorem fa1Mono_norm_le {g : ℕ} (α : Fin g →₀ ℕ) (z : EuclideanSpace ℂ (Fin g)) :
     ‖monomialOfMultiindex α z‖ ≤ ‖z‖ ^ (∑ i, α i) := by
   rw [fa1Mono_eq, norm_prod, ← Finset.prod_pow_eq_pow_sum]
@@ -25,12 +34,28 @@ theorem fa1Mono_norm_le {g : ℕ} (α : Fin g →₀ ℕ) (z : EuclideanSpace �
   rw [norm_pow]
   exact pow_le_pow_left₀ (norm_nonneg _) (PiLp.norm_apply_le z i) _
 
+/- English proof (translation)
+Rewrite using `[fa1Mono_eq, fa1Mono_eq, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[PiLp.smul_apply, Complex.real_smul, mul_pow]`.
+-/
 theorem fa1Mono_smul {g : ℕ} (α : Fin g →₀ ℕ) (r : ℝ) (z : EuclideanSpace ℂ (Fin g)) :
     monomialOfMultiindex α (r • z) = (r : ℂ) ^ (∑ i, α i) * monomialOfMultiindex α z := by
   rw [fa1Mono_eq, fa1Mono_eq, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [PiLp.smul_apply, Complex.real_smul, mul_pow]
 
+/- English proof (translation)
+Establish `hx : 0 ≤ b / 2 * t ^ 2` using `by positivity`. Establish `h1 : 1 ≤ Real.exp (b / 2 * t ^ 2)` using `Real.one_le_exp hx`. Establish `h2 : (b / 2 * t ^ 2) ^ n / n.factorial ≤ Real.exp (b / 2 * t ^ 2)` using `Real.pow_div_factorial_le_exp (x := b / 2 * t ^ 2) hx n`. Establish `h3 : t ^ n ≤ 1 + t ^ (2 * n)`. Break down `le_total t 1 with h | h` into its components or cases.
+
+Establish `: t ^ n ≤ 1` using `pow_le_one₀ ht h`. Combine the linear relations using `[pow_nonneg ht (2 * n)]`. Establish `: t ^ n ≤ t ^ (2 * n)` using `pow_le_pow_right₀ h (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : t ^ (2 * n) = (2 / b) ^ n * (b / 2 * t ^ 2) ^ n`.
+
+Rewrite using `[pow_mul, ← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hfac : (0 : ℝ) < n.factorial` using `by exact_mod_cast Nat.factorial_pos n`. Establish `h5 : t ^ (2 * n) ≤ n.factorial * (2 / b) ^ n * Real.exp (b / 2 * t ^ 2)`.
+
+Rewrite using `[h4]`. Establish `h2'` using `(div_le_iff₀ hfac).mp h2`. Establish `hb2 : 0 ≤ (2 / b) ^ n` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : Real.exp (b / 2 * t ^ 2) * Real.exp (-b * t ^ 2) = Real.exp (-(b / 2) * t ^ 2)`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : t ^ n ≤ (1 + n.factorial * (2 / b) ^ n) * Real.exp (b / 2 * t ^ 2)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hexp]`.
+-/
 theorem pow_mul_exp_neg_mul_sq_le (n : ℕ) {b t : ℝ} (hb : 0 < b) (ht : 0 ≤ t) :
     t ^ n * Real.exp (-b * t ^ 2) ≤
       (1 + n.factorial * (2 / b) ^ n) * Real.exp (-(b / 2) * t ^ 2) := by
@@ -66,6 +91,11 @@ theorem pow_mul_exp_neg_mul_sq_le (n : ℕ) {b t : ℝ} (hb : 0 < b) (ht : 0 ≤
     _ = (1 + n.factorial * (2 / b) ^ n) * Real.exp (-(b / 2) * t ^ 2) := by
         rw [mul_assoc, hexp]
 
+/- English proof (translation)
+Establish `hc` using `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := EuclideanSpace ℂ (Fin g)) (b := (b : ℂ)) (by simpa using hb) 0 0`. Use `hc.norm.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero]`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`.
+
+Simplify using `[← Complex.ofReal_pow]`.
+-/
 theorem integrable_exp_neg_mul_norm_sq_euclidean {g : ℕ} {b : ℝ} (hb : 0 < b) :
     Integrable (fun z : EuclideanSpace ℂ (Fin g) => Real.exp (-b * ‖z‖ ^ 2)) := by
   have hc := GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := EuclideanSpace ℂ (Fin g))
@@ -76,6 +106,11 @@ theorem integrable_exp_neg_mul_norm_sq_euclidean {g : ℕ} {b : ℝ} (hb : 0 < b
   congr 1
   simp [← Complex.ofReal_pow]
 
+/- English proof (translation)
+Establish `hb2 : 0 < b / 2` using `by positivity`. Use `((integrable_exp_neg_mul_norm_sq_euclidean (g := g) hb2).const_mul (1 + n.factorial * (2 / b) ^ n)).mono' ?_ ?_` and prove the remaining obligations. Conclude with `(by fun_prop : Continuous fun z : EuclideanSpace ℂ (Fin g) => ‖z‖ ^ n * Real.exp (-b * ‖z‖ ^ 2)).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+
+Conclude with `pow_mul_exp_neg_mul_sq_le n hb (norm_nonneg z)`.
+-/
 theorem integrable_norm_pow_mul_exp_neg_mul_norm_sq_euclidean {g : ℕ} (n : ℕ) {b : ℝ} (hb : 0 < b) :
     Integrable (fun z : EuclideanSpace ℂ (Fin g) => ‖z‖ ^ n * Real.exp (-b * ‖z‖ ^ 2)) := by
   have hb2 : 0 < b / 2 := by positivity
@@ -86,12 +121,20 @@ theorem integrable_norm_pow_mul_exp_neg_mul_norm_sq_euclidean {g : ℕ} (n : ℕ
     rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
     exact pow_mul_exp_neg_mul_sq_le n hb (norm_nonneg z)
 
+/- English proof (translation)
+Conclude with `((integrable_norm_pow_mul_exp_neg_mul_norm_sq_euclidean n hb).const_mul C).mono' hf.aestronglyMeasurable (Filter.Eventually.of_forall h)`.
+-/
 theorem integrable_of_norm_le_gaussian {g : ℕ} {E : Type*} [NormedAddCommGroup E]
     {f : EuclideanSpace ℂ (Fin g) → E} (hf : Continuous f) (n : ℕ) {b C : ℝ} (hb : 0 < b)
     (h : ∀ z, ‖f z‖ ≤ C * (‖z‖ ^ n * Real.exp (-b * ‖z‖ ^ 2))) : Integrable f := by
   exact ((integrable_norm_pow_mul_exp_neg_mul_norm_sq_euclidean n hb).const_mul C).mono' hf.aestronglyMeasurable
     (Filter.Eventually.of_forall h)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun z : EuclideanSpace ℂ (Fin g) => monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ)` using `((fa1Mono_continuous α).mul (Complex.continuous_conj.comp (fa1Mono_continuous β))).mul (Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_norm.pow 2).neg))`. Use `integrable_of_norm_le_gaussian hcont (∑ i, α i + ∑ i, β i) one_pos (C := 1) fun z => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), one_mul, neg_one_mul, pow_add]`. Establish `h1` using `fa1Mono_norm_le α z`. Establish `h2` using `fa1Mono_norm_le β z`.
+
+Establish `he` using `(Real.exp_pos (-‖z‖ ^ 2)).le`. Use `gcongr`.
+-/
 theorem integrable_monomial_mul_conj_gaussian {g : ℕ} (α β : Fin g →₀ ℕ) :
     Integrable (fun z : EuclideanSpace ℂ (Fin g) =>
       monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ)) := by
@@ -107,6 +150,9 @@ theorem integrable_monomial_mul_conj_gaussian {g : ℕ} (α β : Fin g →₀ �
   have he := (Real.exp_pos (-‖z‖ ^ 2)).le
   gcongr
 
+/- English proof (translation)
+Establish `hcont : Continuous fun z : EuclideanSpace ℂ (Fin g) => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-b * ‖z‖ ^ 2)` using `((fa1Mono_continuous α).norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`. Use `integrable_of_norm_le_gaussian hcont (2 * ∑ i, α i) hb (C := 1) fun z => ?_` and prove the remaining obligations. Rewrite using `[one_mul, Real.norm_eq_abs, abs_of_nonneg (by positivity), pow_mul']`. Establish `h1` using `fa1Mono_norm_le α z`. Use `gcongr`.
+-/
 theorem integrable_norm_monomial_sq_gaussian {g : ℕ} (α : Fin g →₀ ℕ) {b : ℝ} (hb : 0 < b) :
     Integrable (fun z : EuclideanSpace ℂ (Fin g) => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-b * ‖z‖ ^ 2)) := by
   have hcont : Continuous fun z : EuclideanSpace ℂ (Fin g) =>
@@ -123,6 +169,9 @@ noncomputable def coordinateRotation {g : ℕ} (j : Fin g) (u : Circle) :
   LinearIsometryEquiv.piLpCongrRight 2
     (fun i => if i = j then rotation u else LinearIsometryEquiv.refl ℝ ℂ)
 
+/- English proof (translation)
+Simplify using `only [coordinateRotation, LinearIsometryEquiv.piLpCongrRight_apply]`. Use `split_ifs with h`. Simplify using `[rotation_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem fa1Rot_apply {g : ℕ} (j : Fin g) (u : Circle) (z : EuclideanSpace ℂ (Fin g)) (i : Fin g) :
     coordinateRotation j u z i = (if i = j then (u : ℂ) else 1) * z i := by
   simp only [coordinateRotation, LinearIsometryEquiv.piLpCongrRight_apply]
@@ -130,6 +179,9 @@ theorem fa1Rot_apply {g : ℕ} (j : Fin g) (u : Circle) (z : EuclideanSpace ℂ 
   · simp [rotation_apply]
   · simp
 
+/- English proof (translation)
+Rewrite using `[fa1Mono_eq, fa1Mono_eq]`. Simplify using `only [fa1Rot_apply, mul_pow, Finset.prod_mul_distrib, ite_pow, one_pow, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem fa1Mono_rot {g : ℕ} (α : Fin g →₀ ℕ) (j : Fin g) (u : Circle)
     (z : EuclideanSpace ℂ (Fin g)) :
     monomialOfMultiindex α (coordinateRotation j u z) = (u : ℂ) ^ (α j) * monomialOfMultiindex α z := by
@@ -137,6 +189,17 @@ theorem fa1Mono_rot {g : ℕ} (α : Fin g →₀ ℕ) (j : Fin g) (u : Circle)
   simp only [fa1Rot_apply, mul_pow, Finset.prod_mul_distrib, ite_pow, one_pow,
     Finset.prod_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, α j ≠ β j := by`. Assume the negation of the conclusion as `hcon`. Conclude with `h (Finsupp.ext fun j => not_not.mp fun hne => hcon ⟨j, hne⟩)`. Establish `hm : ((α j : ℝ) - β j) ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast hj)`. Use `set u : Circle := Circle.exp (Real.pi / ((α j : ℝ) - β j)) with hu`.
+
+Use `set F : EuclideanSpace ℂ (Fin g) → ℂ := fun z => monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ) with hF`. Establish `hc : (u : ℂ) ^ (α j) * (starRingEnd ℂ) ((u : ℂ) ^ (β j)) = -1`. Rewrite using `[hu, Circle.coe_exp, map_pow, ← Complex.exp_conj, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `hm' : ((α j : ℂ) - β j) ≠ 0` using `by exact_mod_cast hm`. Establish `: (α j : ℂ) * (↑(Real.pi / ((α j : ℝ) - β j)) * Complex.I) + (β j : ℂ) * (starRingEnd ℂ) (↑(Real.pi / ((α j : ℝ) - β j)) * Complex.I) = Real.pi * Complex.I`.
+
+Rewrite using `[map_mul, Complex.conj_ofReal, Complex.conj_I]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_pi_mul_I]`.
+
+Establish `hrot : ∀ z, F (coordinateRotation j u z) = ((u : ℂ) ^ (α j) * (starRingEnd ℂ) ((u : ℂ) ^ (β j))) * F z`. Introduce `z`. Simplify using `only [hF, fa1Mono_rot, LinearIsometryEquiv.norm_map, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∫ z, F (coordinateRotation j u z) = ∫ z, F z` using `(coordinateRotation j u).measurePreserving.integral_comp (coordinateRotation j u).toHomeomorph.measurableEmbedding F`.
+
+Rewrite `hint` using `[hrot, hc]`. Rewrite `hint` using `[integral_const_mul]`. Take the linear combination `(-1 / 2 : ℂ) * hint`.
+-/
 theorem integral_monomial_mul_conj_gaussian_eq_zero {g : ℕ} {α β : Fin g →₀ ℕ} (h : α ≠ β) :
     ∫ z : EuclideanSpace ℂ (Fin g),
       monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ) = 0 := by
@@ -170,6 +233,15 @@ theorem integral_monomial_mul_conj_gaussian_eq_zero {g : ℕ} {α β : Fin g →
   rw [integral_const_mul] at hint
   linear_combination (-1 / 2 : ℂ) * hint
 
+/- English proof (translation)
+Use `set f : EuclideanSpace ℂ (Fin g) → ℝ := fun z => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) with hf`. Establish `hcont : Continuous f` using `((fa1Mono_continuous α).norm.pow 2).mul (Real.continuous_exp.comp (continuous_norm.pow 2).neg)`. Establish `hint : Integrable f`. Use `integrable_norm_monomial_sq_gaussian α one_pos` as an intermediate fact. Simplify `this` using `[neg_one_mul]`.
+
+Establish `hnn : 0 ≤ f` using `fun z => by`. Simplify using `only [Pi.zero_apply, hf]`. Check the signs of the components of the expression. Rewrite using `[integral_pos_iff_support_of_nonneg hnn hint]`. Set `z₀ : EuclideanSpace ℂ (Fin g)` to `WithLp.toLp 2 (fun _ => (1 : ℂ))`.
+
+Establish `hz₁ : monomialOfMultiindex α z₀ = 1`. Rewrite using `[fa1Mono_eq]`. Simplify using `[z₀]`. Establish `hz₀ : f z₀ ≠ 0`. Simplify using `only [hf, hz₁, norm_one, one_pow, one_mul]`.
+
+Conclude with `(Real.exp_pos _).ne'`. Conclude with `hcont.isOpen_support.measure_pos _ ⟨z₀, hz₀⟩`.
+-/
 theorem integral_norm_monomial_sq_gaussian_pos {g : ℕ} (α : Fin g →₀ ℕ) :
     0 < ∫ z : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) := by
   set f : EuclideanSpace ℂ (Fin g) → ℝ := fun z => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) with hf
@@ -191,6 +263,13 @@ theorem integral_norm_monomial_sq_gaussian_pos {g : ℕ} (α : Fin g →₀ ℕ)
     exact (Real.exp_pos _).ne'
   exact hcont.isOpen_support.measure_pos _ ⟨z₀, hz₀⟩
 
+/- English proof (translation)
+Establish `hs2 : Real.sqrt 2 ^ 2 = 2` using `Real.sq_sqrt (by norm_num)`. Establish `hpt : ∀ x : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α (Real.sqrt 2 • x)‖ ^ 2 * Real.exp (-(1 / 2) * ‖Real.sqrt 2 • x‖ ^ 2) = 2 ^ (∑ i, α i) * (‖monomialOfMultiindex α x‖ ^ 2 * Real.exp (-‖x‖ ^ 2))`. Introduce `x`. Rewrite using `[fa1Mono_smul, norm_mul, norm_pow, Complex.norm_real, norm_smul, Real.norm_of_nonneg (Real.sqrt_nonneg 2), mul_pow, mul_pow, ← pow_mul, mul_comm (∑ i, α i) 2, pow_mul, hs2, show -(1 / 2) * (2 * ‖x‖ ^ 2) = -‖x‖ ^ 2 by ring]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e1 : ∫ x : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α (Real.sqrt 2 • x)‖ ^ 2 * Real.exp (-(1 / 2) * ‖Real.sqrt 2 • x‖ ^ 2) = 2 ^ (∑ i, α i) * ∫ x : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α x‖ ^ 2 * Real.exp (-‖x‖ ^ 2)`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall hpt)`. Establish `hdim : |(Real.sqrt 2 ^ Module.finrank ℝ (EuclideanSpace ℂ (Fin g)))⁻¹| = ((2 : ℝ) ^ g)⁻¹`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin, pow_mul, hs2, abs_of_pos (by positivity)]`.
+
+Establish `e2` using `MeasureTheory.Measure.integral_comp_smul (volume : Measure (EuclideanSpace ℂ (Fin g))) (fun z => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-(1 / 2) * ‖z‖ ^ 2)) (Real.sqrt 2)`. Use `beta_reduce at e2`. Rewrite `e2` using `[hdim, smul_eq_mul, e1]`. Establish `h2g : (2 : ℝ) ^ g ≠ 0` using `by positivity`. Rewrite using `[pow_add, mul_assoc, e2, ← mul_assoc, mul_inv_cancel₀ h2g, one_mul]`.
+-/
 theorem integral_norm_monomial_sq_gaussian_half {g : ℕ} (α : Fin g →₀ ℕ) :
     ∫ z : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-(1 / 2) * ‖z‖ ^ 2) =
       2 ^ (g + ∑ i, α i) *

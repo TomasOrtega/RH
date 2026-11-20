@@ -9,22 +9,51 @@ namespace GlobalTheory.Hk3.HoweG.GramA
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq_dot (σ : L →+* L) {n : ℕ} (J : Matrix (Fin n) (Fin n) L) (a b : Fin n → L) :
     Formalism.UG.hform σ J a b = (fun i => σ (a i)) ⬝ᵥ (J *ᵥ b) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Formalism.UG.cT, dotProduct, Matrix.mulVec, Matrix.vecMul, map_sum, mul_comm]`.
+-/
 theorem map_mulVec_eq (σ : L →+* L) {n m : ℕ} (A : Matrix (Fin n) (Fin m) L) (w : Fin m → L) :
     (fun i => σ ((A *ᵥ w) i)) = (fun i => σ (w i)) ᵥ* Formalism.UG.cT σ A := by
   ext i
   simp [Formalism.UG.cT, dotProduct, Matrix.mulVec, Matrix.vecMul, map_sum, mul_comm]
 
+/- English proof (translation)
+The claim follows from `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (ha k) (hb k)`.
+-/
 theorem dot_mem (O : Subring L) {n : ℕ} {a b : Fin n → L} (ha : ∀ i, a i ∈ O) (hb : ∀ i, b i ∈ O) : a ⬝ᵥ b ∈ O :=
   Subring.sum_mem _ fun k _ => Subring.mul_mem _ (ha k) (hb k)
 
+/- English proof (translation)
+Introduce `i` and use `dot_mem O (hA i) hb`.
+-/
 theorem mulVec_mem (O : Subring L) {n m : ℕ} {A : Matrix (Fin n) (Fin m) L} {b : Fin m → L}
     (hA : ∀ i j, A i j ∈ O) (hb : ∀ i, b i ∈ O) : ∀ i, (A *ᵥ b) i ∈ O :=
   fun i => dot_mem O (hA i) hb
 
+/- English proof (translation)
+Introduce `L _ _ σ n n' JS JT hσ hv hJS hJT hS hT x hx u u' w w' hu hxu hw hu' hxu' hw'`. Establish `hS'` using `HoweSwap.cT_herm hS`. Establish `hT'` using `HoweSwap.cT_herm hT`. Establish `hSi` using `HoweSwap.cT_inv_herm JS hS'`. Establish `iS : ∀ i j, (JS : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L` using `(HoweSwap.glint_int hJS).1`.
+
+Establish `iT : ∀ i j, (JT : Matrix (Fin n') (Fin n') L) i j ∈ Formalism.UG.intL L` using `(HoweSwap.glint_int hJT).1`. Establish `hσO : ∀ z, z ∈ Formalism.UG.intL L → σ z ∈ Formalism.UG.intL L`. Introduce `z hz`. Simplify using `only [Formalism.UG.intL, Valuation.mem_integer_iff] at hz ⊢`. Rewrite using `[hv]`.
+
+Conclude with `hz`. Establish `e1 : (JS : Matrix (Fin n) (Fin n) L) * adj σ JS JT x = Formalism.UG.cT σ x * (JT : Matrix (Fin n') (Fin n') L)`. Unfold `adj`. Rewrite using `[Matrix.mul_assoc, HoweSwap.mul_inv_cl]`. Establish `e2 : Formalism.UG.cT σ (adj σ JS JT x) * (JS : Matrix (Fin n) (Fin n) L) = (JT : Matrix (Fin n') (Fin n') L) * x`.
+
+Unfold `adj`. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hT', hSi, HoweSwap.cT_cT hσ, Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `e3 : x * adj σ JS JT x = (x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.transpose (x.map σ)) * (JT : Matrix (Fin n') (Fin n') L)`. Unfold `adj Formalism.UG.cT`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `h1 : ∀ b : Fin n → L, Formalism.UG.hform σ (JS : Matrix (Fin n) (Fin n) L) (u + adj σ JS JT x *ᵥ w) b = (fun i => σ (u i)) ⬝ᵥ ((JS : Matrix (Fin n) (Fin n) L) *ᵥ b) + (fun i => σ (w i)) ⬝ᵥ ((JT : Matrix (Fin n') (Fin n') L) *ᵥ (x *ᵥ b))`. Introduce `b`. Establish `: (fun i => σ ((u + adj σ JS JT x *ᵥ w) i)) = (fun i => σ (u i)) + fun i => σ ((adj σ JS JT x *ᵥ w) i)`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hform_eq_dot, this, add_dotProduct, map_mulVec_eq, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, e2, Matrix.mulVec_mulVec]`. Establish `h2 : (fun i => σ (u i)) ⬝ᵥ ((JS : Matrix (Fin n) (Fin n) L) *ᵥ (adj σ JS JT x *ᵥ w')) = (fun i => σ ((x *ᵥ u) i)) ⬝ᵥ ((JT : Matrix (Fin n') (Fin n') L) *ᵥ w')`. Rewrite using `[map_mulVec_eq, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e1]`. Establish `h3 : x *ᵥ (adj σ JS JT x *ᵥ w') = (x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.transpose (x.map σ)) *ᵥ ((JT : Matrix (Fin n') (Fin n') L) *ᵥ w')`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e3]`.
+
+Rewrite using `[h1, Matrix.mulVec_add, dotProduct_add, h2, Matrix.mulVec_add, h3]`. Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `dot_mem _ (fun i => hσO _ (hu i)) (mulVec_mem _ iS hu')`. Conclude with `dot_mem _ (fun i => hσO _ (hxu i)) (mulVec_mem _ iT hw')`. Use `dot_mem _ (fun i => hσO _ (hw i)) (mulVec_mem _ iT fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `add_mem (hxu' i) (mulVec_mem _ hx (mulVec_mem _ iT hw') i)`.
+-/
 theorem hform_integral : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L),
     (∀ z, σ (σ z) = z) → (∀ z, Valued.v (σ z) = Valued.v z) →
     JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → JT ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) →

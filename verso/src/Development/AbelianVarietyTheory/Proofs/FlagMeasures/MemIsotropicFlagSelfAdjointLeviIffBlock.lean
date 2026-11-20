@@ -10,9 +10,17 @@ variable {n n₀ a : ℕ} {j : Fin a → ℕ} {ε : Fin n → Bool} {ε₀ : Fin
   {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {B₀ : Matrix (Fin n) (Fin n₀) ℂ}
   {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
 
+/- English proof (translation)
+Conclude with `Matrix.mulVec_injective (funext h)`.
+-/
 theorem ext_mulVec {p q : ℕ} {M N : Matrix (Fin p) (Fin q) ℂ} (h : ∀ v, M *ᵥ v = N *ᵥ v) : M = N := by
   exact Matrix.mulVec_injective (funext h)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_sum, Finset.sum_eq_single k]`. Rewrite using `[Matrix.mulVec_mulVec, h.1 k, Matrix.one_mulVec]`. Introduce `l _ hl`. Rewrite using `[Matrix.mulVec_mulVec, h.2.1 k l (Ne.symm hl), Matrix.zero_mulVec]`. Introduce `hk`.
+
+Conclude with `absurd (Finset.mem_univ k) hk`.
+-/
 theorem proj (h : IsFrame ε ε₀ B B₀) (u : ∀ i, Fin (j i) → ℂ) (k : Fin a) :
     (B k)ᴴ *ᵥ ∑ l, B l *ᵥ u l = u k := by
   rw [Matrix.mulVec_sum, Finset.sum_eq_single k]
@@ -22,6 +30,13 @@ theorem proj (h : IsFrame ε ε₀ B B₀) (u : ∀ i, Fin (j i) → ℂ) (k : F
   · intro hk
     exact absurd (Finset.mem_univ k) hk
 
+/- English proof (translation)
+Rewrite using `[hW]`. Use `⟨Pi.single i v, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : l ≠ i`. Introduce and unpack `rfl`. Conclude with `hl (by simp only [Fin.lt_def, Fin.val_castSucc, Fin.val_succ]; omega)`.
+
+Conclude with `Pi.single_eq_of_ne (M := fun l => Fin (j l) → ℂ) hne v`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same]`. Introduce `l _ hl`. Rewrite using `[Pi.single_eq_of_ne (M := fun l => Fin (j l) → ℂ) hl, Matrix.mulVec_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem col_mem (hW : SpansFlag B W) (i : Fin a) (v : Fin (j i) → ℂ) : B i *ᵥ v ∈ W i.succ := by
   classical
   rw [hW]
@@ -37,6 +52,11 @@ theorem col_mem (hW : SpansFlag B W) (i : Fin a) (v : Fin (j i) → ℂ) : B i *
     · intro hi
       exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Apply `ext_mulVec` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Matrix.zero_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Take `⟨u, hu, hyu⟩` from `(hW _ _).1 (hM _ _ (col_mem hW i v))`. Rewrite using `[hyu, proj h]`.
+
+Apply `hu` to reduce the goal to its premises. Introduce `hlt`. Establish `hik'` using `Fin.lt_def.1 hik`. Simplify using `only [Fin.lt_def, Fin.val_castSucc, Fin.val_succ] at hlt`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem upper (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : ∀ k, ∀ y ∈ W k, M *ᵥ y ∈ W k) {i k : Fin a} (hik : i < k) : (B k)ᴴ * M * B i = 0 := by
   apply ext_mulVec
@@ -50,6 +70,11 @@ theorem upper (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fi
   simp only [Fin.lt_def, Fin.val_castSucc, Fin.val_succ] at hlt
   omega
 
+/- English proof (translation)
+Apply `ext_mulVec` to reduce the goal to its premises. Introduce `v`. Take `⟨u, -, hyu⟩` from `(hW _ _).1 (hM _ _ (col_mem hW i v))`. Establish `hk : ∀ k, (B k * ((B k)ᴴ * M * B i)) *ᵥ v = B k *ᵥ u k`. Introduce `k`.
+
+Establish `e : (B k * ((B k)ᴴ * M * B i)) *ᵥ v = B k *ᵥ ((B k)ᴴ *ᵥ (M *ᵥ (B i *ᵥ v)))`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[e, hyu, proj h]`. Rewrite using `[Matrix.sum_mulVec, Finset.sum_congr rfl (fun k _ => hk k), ← hyu, Matrix.mulVec_mulVec]`.
+-/
 theorem expand (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : ∀ k, ∀ y ∈ W k, M *ᵥ y ∈ W k) (i : Fin a) : M * B i = ∑ k, B k * ((B k)ᴴ * M * B i) := by
   apply ext_mulVec
@@ -62,6 +87,13 @@ theorem expand (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (F
     rw [e, hyu, proj h]
   rw [Matrix.sum_mulVec, Finset.sum_congr rfl (fun k _ => hk k), ← hyu, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[expand h hW hM i, Finset.sum_eq_single i]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with hlt | hgt` into its components or cases. Establish `e` using `upper h hW hM' hlt`. Establish `e' : (B k)ᴴ * M * B i = 0`.
+
+Use `congrArg Matrix.conjTranspose e` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e', Matrix.mul_zero]`. Rewrite using `[upper h hW hM hgt, Matrix.mul_zero]`. Introduce `hi`.
+
+Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem diag (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : ∀ k, ∀ y ∈ W k, M *ᵥ y ∈ W k) (hM' : ∀ k, ∀ y ∈ W k, Mᴴ *ᵥ y ∈ W k) (i : Fin a) :
     M * B i = B i * ((B i)ᴴ * M * B i) := by
@@ -77,6 +109,11 @@ theorem diag (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) {M : Matrix (Fin
   · intro hi
     exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `(hW _ _).1 hy`. Rewrite using `[hW]`. Use `⟨fun i => x i *ᵥ u i, fun i hi => by show x i *ᵥ u i = 0` and prove the remaining obligations. Rewrite using `[hu i hi, Matrix.mulVec_zero], ?_⟩`. Rewrite using `[Matrix.mulVec_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_mulVec, h.lev_mul_B x g i]`.
+-/
 theorem lev_keeps (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) (x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ)
     (g : Matrix (Fin n₀) (Fin n₀) ℂ) (k : Fin (a + 1)) (y : Fin n → ℂ) (hy : y ∈ W k) :
     lev ε B B₀ x g *ᵥ y ∈ W k := by
@@ -89,10 +126,44 @@ theorem lev_keeps (h : IsFrame ε ε₀ B B₀) (hW : SpansFlag B W) (x : ∀ i,
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [Matrix.mulVec_mulVec, h.lev_mul_B x g i]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hU, Jm_mul_self]`.
+-/
 theorem left_inv {p : ℕ} {ε : Fin p → Bool} {M : Matrix (Fin p) (Fin p) ℂ} (hU : Mᴴ * Jm ε * M = Jm ε) :
     Jm ε * Mᴴ * Jm ε * M = 1 := by
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hU, Jm_mul_self]
 
+/- English proof (translation)
+Establish `hJJ : Jm ε * Jm ε = 1` using `Jm_mul_self ε`. Establish `hJH : (Jm ε)ᴴ = Jm ε` using `Jm_conjTranspose ε`. Establish `hR : M * (Jm ε * Mᴴ * Jm ε) = 1` using `mul_eq_one_comm.1 (left_inv hU)`. Establish `hMJ : M * Jm ε * Mᴴ = Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Use `_ = Jm ε := by rw [hR, Matrix.one_mul]`. Establish `hy : ∀ i, ((B i)ᴴ * Jm ε * Mᴴ * Jm ε * B i) * x i = 1`. Introduce `i`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc (Mᴴ * Jm ε), hU]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJJ, Matrix.mul_one, h.1 i]`. Establish `hdet : ∀ i, (x i).det ≠ 0` using `fun i => Matrix.det_ne_zero_of_left_inverse (hy i)`. Establish `hdetU : ∀ i, IsUnit (x i).det` using `fun i => isUnit_iff_ne_zero.2 (hdet i)`.
+
+Establish `hA : ∀ i, Mᴴ * Jm ε * B i = Jm ε * B i * (x i)⁻¹`. Introduce `i`. Establish `e : Mᴴ * Jm ε * B i * x i = Jm ε * B i`. Rewrite using `[Matrix.mul_assoc (Mᴴ * Jm ε) (B i) (x i), ← h1 i, ← Matrix.mul_assoc (Mᴴ * Jm ε) M (B i), hU]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hC : ∀ i, M * (Jm ε * B i) = Jm ε * B i * (x i)⁻¹ᴴ`. Introduce `i`. Establish `e : M * (Jm ε * B i) * (x i)ᴴ = Jm ε * B i`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : IsUnit ((x i)ᴴ).det`.
+
+Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.2 (star_ne_zero.2 (hdet i))`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ∀ i, (B i)ᴴ * (M * B₀) = 0`. Introduce `i`.
+
+Establish `hBM : (B i)ᴴ * M = x i * (B i)ᴴ`. Use `congrArg Matrix.conjTranspose (h2 i)` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul]`. Rewrite using `[← Matrix.mul_assoc, hBM, Matrix.mul_assoc, h.2.2.2.1 i, Matrix.mul_zero]`. Establish `e2 : ∀ i, (B i)ᴴ * Jm ε * (M * B₀) = 0`.
+
+Introduce `i`. Establish `hBJM : (B i)ᴴ * Jm ε * M = ((x i)⁻¹)ᴴ * ((B i)ᴴ * Jm ε)`. Use `congrArg Matrix.conjTranspose (hA i)` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc, hBJM, Matrix.mul_assoc, h.J_B₀ i, Matrix.mul_zero]`.
+
+Establish `hD : M * B₀ = B₀ * (B₀ᴴ * M * B₀)`. Establish `s1 : ∀ i, B i * (B i)ᴴ * (M * B₀) = 0` using `fun i => by`. Rewrite using `[Matrix.mul_assoc, e1 i, Matrix.mul_zero]`. Establish `s2 : ∀ i, Jm ε * B i * (B i)ᴴ * Jm ε * (M * B₀) = 0` using `fun i => by`. Rewrite using `[show Jm ε * B i * (B i)ᴴ * Jm ε * (M * B₀) = Jm ε * B i * ((B i)ᴴ * Jm ε * (M * B₀)) by`.
+
+Simplify using `only [Matrix.mul_assoc], e2 i, Matrix.mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.2.2.2.2.2.2, Matrix.one_mul]`. Use `_ = B₀ * (B₀ᴴ * M * B₀) := by`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.sum_mul, Matrix.sum_mul]`.
+
+Simplify using `only [s1, s2, Finset.sum_const_zero, zero_add]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hJB₀ : Jm ε * B₀ = B₀ * Jm ε₀` using `h.2.2.2.2.2.1`. Establish `hE : inUJ ε₀ (B₀ᴴ * M * B₀)` using `by show (B₀ᴴ * M * B₀)ᴴ * Jm ε₀ * (B₀ᴴ * M * B₀) = Jm ε₀`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = B₀ᴴ * Mᴴ * Jm ε * (B₀ * (B₀ᴴ * M * B₀)) := by`. Rewrite using `[← hJB₀]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B₀ᴴ * (Mᴴ * Jm ε * M) * B₀ := by`.
+
+Rewrite using `[← hD]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B₀ᴴ * B₀ * Jm ε₀ := by`. Rewrite using `[hU, Matrix.mul_assoc, hJB₀, ← Matrix.mul_assoc]`. Use `_ = Jm ε₀ := by rw [h.2.2.2.2.1, Matrix.one_mul]`.
+
+Use `⟨hdet, hE, ?_⟩` and prove the remaining obligations. Apply `h.ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[h1 i, h.lev_mul_B]`. Introduce `i`.
+
+Rewrite using `[hC i, h.lev_mul_JB]`. Rewrite using `[hD, h.lev_mul_B₀]`.
+-/
 theorem block (h : IsFrame ε ε₀ B B₀) {M : Matrix (Fin n) (Fin n) ℂ} (hU : Mᴴ * Jm ε * M = Jm ε)
     {x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ} (h1 : ∀ i, M * B i = B i * x i)
     (h2 : ∀ i, Mᴴ * B i = B i * (x i)ᴴ) :
@@ -182,6 +253,19 @@ theorem block (h : IsFrame ε ε₀ B B₀) {M : Matrix (Fin n) (Fin n) ℂ} (hU
     rw [hC i, h.lev_mul_JB]
   · rw [hD, h.lev_mul_B₀]
 
+/- English proof (translation)
+Introduce `n n₀ a j ε ε₀ B B₀ h W hW m`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `hm' : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i ∧ (uMat m)ᴴ *ᵥ y ∈ W i` using `hm`. Establish `hM : ∀ k, ∀ y ∈ W k, uMat m *ᵥ y ∈ W k` using `fun k y hy => (hm' k y hy).1`.
+
+Establish `hM' : ∀ k, ∀ y ∈ W k, (uMat m)ᴴ *ᵥ y ∈ W k` using `fun k y hy => (hm' k y hy).2`. Establish `hM'' : ∀ k, ∀ y ∈ W k, (uMat m)ᴴᴴ *ᵥ y ∈ W k`. Introduce `k y hy`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Conclude with `hM k y hy`.
+
+Establish `hU : (uMat m)ᴴ * Jm ε * uMat m = Jm ε` using `m.2`. Establish `h2 : ∀ i, (uMat m)ᴴ * B i = B i * ((B i)ᴴ * uMat m * B i)ᴴ`. Introduce `i`. Rewrite using `[diag h hW hM' hM'' i]`. Simplify using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Take `⟨hdet, hE, heq⟩` from `block h hU (x := fun i => (B i)ᴴ * uMat m * B i) (fun i => diag h hW hM hM' i) h2`. Establish `hinv : (Jm ε₀ * (B₀ᴴ * uMat m * B₀)ᴴ * Jm ε₀) * (B₀ᴴ * uMat m * B₀) = 1` using `left_inv hE`. Establish `hinv' : (B₀ᴴ * uMat m * B₀) * (Jm ε₀ * (B₀ᴴ * uMat m * B₀)ᴴ * Jm ε₀) = 1` using `mul_eq_one_comm.1 hinv`. Use `⟨fun i => (B i)ᴴ * uMat m * B i, ⟨⟨B₀ᴴ * uMat m * B₀, Jm ε₀ * (B₀ᴴ * uMat m * B₀)ᴴ * Jm ε₀, hinv', hinv⟩, hE⟩, hdet, ?_⟩` and prove the remaining obligations. Conclude with `heq`.
+
+Introduce and unpack `⟨x, g, -, hmg⟩ show ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i ∧ (uMat m)ᴴ *ᵥ y ∈ W i`. Introduce `k y hy`. Rewrite using `[hmg]`. Use `⟨lev_keeps h hW x (uMat g) k y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[lev_conjTranspose]`.
+
+Conclude with `lev_keeps h hW _ _ k y hy`.
+-/
 theorem mem_flagM_iff : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool)
     (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ), IsFrame ε ε₀ B B₀ →
     ∀ W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ), SpansFlag B W → ∀ m : Formalism.REAL.UJ ε,

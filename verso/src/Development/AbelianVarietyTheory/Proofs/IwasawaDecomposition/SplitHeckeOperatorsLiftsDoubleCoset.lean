@@ -19,12 +19,18 @@ namespace GlobalTheory.Mem.R3.LiftBrg.SplitTie
 
 open GlobalTheory.Mem.R3.LiftBrg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finiteAdelicUnitary_conj_integralFrame X I hX U Xg tr L i t A k hF`.
+-/
 theorem frame_equiv (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k) :
     ∃ Φ : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i), ∀ u,
       castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ u : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = A * k * (u : GL (Fin X.B.R.nV) (EA X)) * (A * k)⁻¹ :=
   GlobalTheory.T.finiteAdelicUnitary_conj_integralFrame X I hX U Xg tr L i t A k hF
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.splitPlaceSupport_level_standardCoordinates X I hX U Xg tr L hI hV hL cV i t A k hF x v Pb hPb hv g u hg`.
+-/
 theorem loc_iff (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k)
@@ -40,6 +46,9 @@ theorem loc_iff (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX :
       (g ∈ (envL X I hX U Xg tr L cV i t).lev.J ↔ u ∈ Formalism.L2.Col.mhlKv X.toD7.sp.cm X.B.R.nV v)) :=
   GlobalTheory.T.splitPlaceSupport_level_standardCoordinates X I hX U Xg tr L hI hV hL cV i t A k hF x v Pb hPb hv g u hg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.liftFormLevel_splits_at_offLevel_splitPlace X I hX U Xg tr L hI hV hL cV i t x j hj`.
+-/
 theorem lev_split (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (x : (famR X I hX U Xg tr).A.ok t × ℕ)
@@ -49,6 +58,9 @@ theorem lev_split (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX
       ∀ l, (envL X I hX U Xg tr L cV i t).isLoc x l → Commute j₂ l :=
   GlobalTheory.T.liftFormLevel_splits_at_offLevel_splitPlace X I hX U Xg tr L hI hV hL cV i t x j hj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.frameTransport_eta_isHeckeElement_lifts X I hX U Xg tr L hI hV hL cV i t A k hF x hx1 hx2 v Pb hPb hv Ut g hg`.
+-/
 theorem eta_isT (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k)
@@ -63,6 +75,9 @@ theorem eta_isT (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX :
     (envL X I hX U Xg tr L cV i t).isT x g :=
   GlobalTheory.T.frameTransport_eta_isHeckeElement_lifts X I hX U Xg tr L hI hV hL cV i t A k hF x hx1 hx2 v Pb hPb hv Ut g hg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.liftLevelType_trivial_splitPlaceSupport X I hX U Xg tr L hI hV hL cV i t x j hj`.
+-/
 theorem chi_loc_lift (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (x : (famR X I hX U Xg tr).A.ok t × ℕ)
@@ -70,6 +85,19 @@ theorem chi_loc_lift (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) 
     (envL X I hX U Xg tr L cV i t).lev.χ j = 1 :=
   GlobalTheory.T.liftLevelType_trivial_splitPlaceSupport X I hX U Xg tr L hI hV hL cV i t x j hj
 
+/- English proof (translation)
+Establish `hK' : ∀ y : H, y ∈ K' ↔ Φ.symm y ∈ K` using `fun y => by rw [← hK, MulEquiv.apply_symm_apply]`. Establish `hmem : ∀ b, b ∈ R.map Φ.toEquiv.toEmbedding ↔ Φ.symm b ∈ R`. Introduce `b`. Rewrite using `[Finset.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu`. Introduce `hb`. Conclude with `⟨Φ.symm b, hb, by simp⟩`. Use `⟨fun a ha => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hu` using `(hmem a).1 ha`. Take `⟨k₁, k₂, e⟩` from `h.1 _ hu`. Use `⟨⟨Φ k₁, (hK _).2 k₁.2⟩, ⟨Φ k₂, (hK _).2 k₂.2⟩, ?_⟩` and prove the remaining obligations. Use `show a = Φ k₁ * Φ x * Φ k₂`. Rewrite using `[← map_mul, ← map_mul, ← e, MulEquiv.apply_symm_apply]`.
+
+Take `⟨k₁, k₂, e⟩` from `hg`. Establish `hg' : Φ.symm g = Φ.symm k₁ * x * Φ.symm k₂`. Rewrite using `[e, map_mul, map_mul, MulEquiv.symm_apply_apply]`. Take `⟨a, ⟨ha, haK⟩, hu⟩` from `h.2 (Φ.symm g) ⟨⟨_, (hK' _).1 k₁.2⟩, ⟨_, (hK' _).1 k₂.2⟩, hg'⟩`. Use `⟨Φ a, ⟨(hmem _).2 (by simpa using ha), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hK', map_mul, map_inv, MulEquiv.symm_apply_apply]`. Conclude with `haK`. Introduce and unpack `b ⟨hb, hbK⟩`. Establish `hb'` using `(hmem b).1 hb`. Rewrite `hbK` using `[hK', map_mul, map_inv]`.
+
+Use `hu (Φ.symm b) ⟨hb', hbK⟩` as an intermediate fact. Rewrite using `[← this, MulEquiv.apply_symm_apply]`.
+-/
 theorem isDC_map {G H : Type} [Group G] [Group H] (Φ : G ≃* H) (K : Subgroup G) (K' : Subgroup H)
     (hK : ∀ u, Φ u ∈ K' ↔ u ∈ K) {x : G} {R : Finset G} (h : Bridge.IsDC K x R) :
     Bridge.IsDC K' (Φ x) (R.map Φ.toEquiv.toEmbedding) := by
@@ -107,6 +135,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
   (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Formalism.L2.DIV.Pl E}
   (U : Formalism.L2.Col.MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+Take `⟨κ₁, h₁, κ₂, h₂, e⟩` from `Formalism.L2.Col.mhl_cosets_out hc U k ha`. Take `⟨h, eh⟩` from `QuotientGroup.mk_out_eq_mul (Formalism.L2.Col.mhlKv hc n v) a`. Use `⟨κ₁, h₁, κ₂ * (h : Formalism.L2.Col.UAd hc n)⁻¹, Subgroup.mul_mem _ h₂ (Subgroup.inv_mem _ h.2), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e, eh, mul_inv_cancel_right]`.
+-/
 theorem rep_mem_dc {a : Formalism.L2.Col.UAd hc n}
     (ha : (QuotientGroup.mk a : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v) ∈ Formalism.L2.Col.mhlCosets hc v U k) :
     ∃ κ₁ ∈ Formalism.L2.Col.mhlKv hc n v, ∃ κ₂ ∈ Formalism.L2.Col.mhlKv hc n v, a = κ₁ * Formalism.L2.Col.mhlEta hc n v U.hπ0 k * κ₂ := by
@@ -115,6 +146,13 @@ theorem rep_mem_dc {a : Formalism.L2.Col.UAd hc n}
   refine ⟨κ₁, h₁, κ₂ * (h : Formalism.L2.Col.UAd hc n)⁻¹, Subgroup.mul_mem _ h₂ (Subgroup.inv_mem _ h.2), ?_⟩
   rw [← mul_assoc, ← e, eh, mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨κ₁, h₁, κ₂, h₂, e⟩` from `rep_mem_dc hc U k (hR.mapsTo ha)`. Conclude with `⟨⟨κ₁, h₁⟩, ⟨κ₂, h₂⟩, e⟩`. Take `⟨k₁, k₂, e⟩` from `hg`. Establish `hc' : (QuotientGroup.mk g : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v) ∈ Formalism.L2.Col.mhlCosets hc v U k` using `⟨k₁, k₁.2, k₂, k₂.2, by rw [e]⟩`.
+
+Take `⟨a, ha, hag⟩` from `hR.surjOn hc'`. Use `⟨a, ⟨ha, QuotientGroup.eq.1 hag⟩, fun b hb => ?_⟩` and prove the remaining obligations. Apply `hR.injOn hb.1 ha` to reduce the goal to its premises. Establish `hag' : (QuotientGroup.mk a : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v) = QuotientGroup.mk g` using `hag`. Use `show (QuotientGroup.mk b : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v) = QuotientGroup.mk a`.
+
+Rewrite using `[hag']`. Conclude with `QuotientGroup.eq.2 hb.2`.
+-/
 theorem isDC_of_reps (R : Finset (Formalism.L2.Col.UAd hc n))
     (hR : Set.BijOn (fun η : Formalism.L2.Col.UAd hc n => (QuotientGroup.mk η : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v)) R
       (Formalism.L2.Col.mhlCosets hc v U k)) :
@@ -133,6 +171,9 @@ theorem isDC_of_reps (R : Finset (Formalism.L2.Col.UAd hc n))
     rw [hag']
     exact QuotientGroup.eq.2 hb.2
 
+/- English proof (translation)
+Take `⟨κ₁, h₁, κ₂, h₂, e⟩` from `rep_mem_dc hc U k (hR.mapsTo hu)`. Rewrite using `[e]`. Conclude with `Formalism.L2.Col.mhl_off_mul hc (Formalism.L2.Col.mhl_off_mul hc h₁.1 (Formalism.L2.Col.mhlEta_off hc U k)) h₂.1 w hw`.
+-/
 theorem reps_off (R : Finset (Formalism.L2.Col.UAd hc n))
     (hR : Set.BijOn (fun η : Formalism.L2.Col.UAd hc n => (QuotientGroup.mk η : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v)) R
       (Formalism.L2.Col.mhlCosets hc v U k)) (u : Formalism.L2.Col.UAd hc n) (hu : u ∈ R)
@@ -142,6 +183,13 @@ theorem reps_off (R : Finset (Formalism.L2.Col.UAd hc n))
   rw [e]
   exact Formalism.L2.Col.mhl_off_mul hc (Formalism.L2.Col.mhl_off_mul hc h₁.1 (Formalism.L2.Col.mhlEta_off hc U k)) h₂.1 w hw
 
+/- English proof (translation)
+Substitute `hQ hd` using the available equality. Establish `hB` using `Formalism.L2.Col.mhl_split_bij' hc U k ST SG hov hST hSG hsp hk y`. Establish `hout` using `Formalism.L2.Col.mhs_decoOf_out hc (v := v) ST SG hST hSG y`. Use `⟨fun u hu => ?_, fun u hu u' hu' h => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Use `hB.mapsTo (hR.mapsTo hu)` as an intermediate fact.
+
+Simplify using `only [hout] at this`. Conclude with `this`. Establish `h' : Formalism.L2.Col.decoOf ST SG ((y * (QuotientGroup.mk u : Formalism.L2.Col.UAd hc n ⧸ Formalism.L2.Col.mhlKv hc n v).out : Formalism.L2.Col.UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = Formalism.L2.Col.decoOf ST SG ((y * (QuotientGroup.mk u' : Formalism.L2.Col.U …`. Rewrite using `[hout, hout]`. Conclude with `h`.
+
+Conclude with `hR.injOn hu hu' (hB.injOn (hR.mapsTo hu) (hR.mapsTo hu') h')`. Take `⟨c, hc', rfl⟩` from `hB.surjOn hd`. Take `⟨u, hu, rfl⟩` from `hR.surjOn hc'`. Conclude with `⟨u, hu, (hout u).symm⟩`.
+-/
 theorem reps_bij (ST SG : Finset (Formalism.L2.DIV.Pl E)) (hov : Formalism.L2.Col.IsOver v Pb)
     (hST : ∀ Q ∈ ST, ¬ Formalism.L2.Col.IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ Formalism.L2.Col.IsOver v Q)
     (hsp : Formalism.L2.Col.conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) (R : Finset (Formalism.L2.Col.UAd hc n))
@@ -169,6 +217,15 @@ theorem reps_bij (ST SG : Finset (Formalism.L2.DIV.Pl E)) (hov : Formalism.L2.Co
 
 end Std
 
+/- English proof (translation)
+Establish `hmem : ∀ b, b ∈ R.map Φ.toEquiv.toEmbedding ↔ Φ.symm b ∈ R`. Introduce `b`. Rewrite using `[Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Simplify using `using hu`. Introduce `hb`. Conclude with `⟨Φ.symm b, hb, by simp⟩`. Use `⟨fun b hb => ?_, fun b hb b' hb' h => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Use `hf.mapsTo ((hmem b).1 hb)` as an intermediate fact.
+
+Rewrite `this` using `[← he, MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `h' : f (Φ.symm b) = f (Φ.symm b')` using `by rw [← he, ← he, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]; exact h`. Use `hf.injOn ((hmem b).1 hb) ((hmem b').1 hb') h'` as an intermediate fact. Simplify using `using congrArg Φ this`. Take `⟨u, hu, rfl⟩` from `hf.surjOn hd`.
+
+Conclude with `⟨Φ u, (hmem _).2 (by simpa using hu), he u⟩`.
+-/
 theorem bijOn_map_equiv {G H T : Type} [Group G] [Group H] (Φ : G ≃* H) (R : Finset G) (S : Set T) (f : G → T) (f' : H → T)
     (hf : Set.BijOn f (R : Set G) S) (he : ∀ u, f' (Φ u) = f u) :
     Set.BijOn f' ((R.map Φ.toEquiv.toEmbedding : Finset H) : Set H) S := by
@@ -189,6 +246,11 @@ theorem bijOn_map_equiv {G H T : Type} [Group G] [Group H] (Φ : G ≃* H) (R : 
   · obtain ⟨u, hu, rfl⟩ := hf.surjOn hd
     exact ⟨Φ u, (hmem _).2 (by simpa using hu), he u⟩
 
+/- English proof (translation)
+Establish `hmul : castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ w * Φ u : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ w : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) * castGL (rkEq X i) …`. Rewrite using `[Subgroup.coe_mul, map_mul, map_mul]`. Use `show Formalism.L2.Col.decoOf ∅ (sgL X I U t) (A⁻¹ * castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ w * Φ u : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) * A * k) = _`. Rewrite using `[hmul, hΦ, hΦ]`. Use `congr 1`.
+
+Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+-/
 theorem ptL_frame (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.ι) (i : Fin X.toD7.R.m) (t : TupU I U)
     (A k : GL (Fin X.B.R.nV) (EA X)) (Φ : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i))
     (hΦ : ∀ u, castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ u : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = A * k * (u : GL (Fin X.B.R.nV) (EA X)) * (A * k)⁻¹) (hk : k ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) (w u : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) :
@@ -201,6 +263,9 @@ theorem ptL_frame (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U 
   simp only [Subgroup.coe_mul]
   group
 
+/- English proof (translation)
+Use `show Formalism.L2.Col.decoOf ∅ (sgL X I U t) (A⁻¹ * castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ w : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) * A * k) = _`. Rewrite using `[hΦ]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+-/
 theorem ptL_frame0 (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.ι) (i : Fin X.toD7.R.m) (t : TupU I U)
     (A k : GL (Fin X.B.R.nV) (EA X)) (Φ : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV ≃* Bridge.Gf (Vc X.toD7 i))
     (hΦ : ∀ u, castGL (rkEq X i).symm (Formalism.UG.bc (swapAE X.toD7) ((Φ u : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _)) = A * k * (u : GL (Fin X.B.R.nV) (EA X)) * (A * k)⁻¹) (hk : k ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) (w : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) :
@@ -211,6 +276,9 @@ theorem ptL_frame0 (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U
   simp only [Subgroup.coe_mul]
   group
 
+/- English proof (translation)
+The claim follows from `(S.res h).symm_apply_apply _`.
+-/
 theorem heckeCSD_symm_apply {E : Type} [Field E] [NumberField E] [StarRing E] {K : Type} [Field K] [NumberField K] [StarRing K]
     {n : ℕ} {ST SG' : Finset (HeightOneSpectrum (𝓞 E))} (S : Formalism.L2.Col.GSD K) (h : S.Ok) (c : Formalism.L2.Col.DecoPts S E n ST SG')
     (SG : Finset (HeightOneSpectrum (𝓞 E))) (S0 : Set (HeightOneSpectrum (𝓞 E))) (x : Formalism.L2.DIV.offSub ST SG SG' S0 × ℕ)
@@ -218,6 +286,17 @@ theorem heckeCSD_symm_apply {E : Type} [Field E] [NumberField E] [StarRing E] {K
     (S.res h).symm (Formalism.L2.DIV.heckeCSD S h c SG S0 x f) = Formalism.L2.Col.heckeFam c S0 (⟨x.1.1.1, x.1.2⟩, x.2) ((S.res h).symm f) :=
   (S.res h).symm_apply_apply _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[hR, Bridge.dcOp]`. Simplify using `only [hR]`. Use `erw [heckeCSD_symm_apply]`. Rewrite using `[Formalism.L2.Col.heckeFam]`.
+
+Use `erw [Formalism.L2.Col.heckeD_op_apply]`. Use `erw [map_sum]`. Unfold `Formalism.L2.Col.DecoPts.nb`. Rewrite using `[Finset.sum_map]`. Establish `hP0` using `(x.1.1.1).ne_bot`.
+
+Establish `hP1` using `Formalism.L2.Col.conjIdeal_ne_bot hP0`. Use `symm`. Use `Finset.sum_nbij (fun a => ptL X I U i t A k (g * a)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `(Formalism.L2.Col.DecoSet.mem_heckeNb hP0 hP1 _ _ _).2 ((hB g).mapsTo ha)`.
+
+Introduce `a ha b hb hab`. Conclude with `(hB g).injOn ha hb hab`. Introduce `d hd`. Establish `hd'` using `(Formalism.L2.Col.DecoSet.mem_heckeNb hP0 hP1 _ _ _).1 hd`. Take `⟨a, ha, rfl⟩` from `(hB g).surjOn hd'`.
+
+Conclude with `⟨a, ha, rfl⟩`. Introduce `a _`. Rewrite using `[hR]`. Both sides reduce to the same expression.
+-/
 theorem op_eq_of_bij (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X))
@@ -255,6 +334,33 @@ theorem op_eq_of_bij (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) 
     rw [hR]
     rfl
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `frame_equiv X I hX U Xg tr L i t A k hF`. Establish `hmem : (x.1.1.1 : HeightOneSpectrum (𝓞 X.toD7.host.E)) ∈ Formalism.L2.DIV.offSet (E` using `X.toD7.host.E) ∅ (sgL X I U t) ∅ := x.1.2`. Take `⟨hc1, hc2, hc3⟩` from `hmem`. Set `P : HeightOneSpectrum (𝓞 X.toD7.host.E)` to `x.1.1.1`. Set `Pb : HeightOneSpectrum (𝓞 X.toD7.host.E)` to `Formalism.L2.Col.conjPrime₂ P`.
+
+Establish `hcc : Formalism.L2.Col.conjPrime₂ Pb = P` using `Formalism.L2.Col.conjPrime_conjPrime P`. Take `⟨v, hov⟩ : ∃ v : HeightOneSpectrum (𝓞 X.toD7.host.F), Formalism.L2.Col.IsOver v Pb` from `⟨HeightOneSpectrum.under (𝓞 X.toD7.host.F) Pb, rfl⟩`. Establish `hsp : Formalism.L2.Col.conjPrime₂ Pb ≠ Pb`. Introduce `h`. Apply `hc1` to reduce the goal to its premises.
+
+Conclude with `(Formalism.L2.Col.conjIdeal_asIdeal P).trans (congrArg HeightOneSpectrum.asIdeal (hcc.symm.trans h).symm)`. Establish `hST : ∀ Q ∈ (∅ : Finset (Pl X.toD7.host.E)), ¬ Formalism.L2.Col.IsOver v Q` using `by simp`. Establish `hSG : ∀ Q ∈ sgL X I U t, ¬ Formalism.L2.Col.IsOver v Q`. Introduce `Q hQ hQv`. Break down `Formalism.L2.Col.mhl_over_eq X.toD7.sp.cm hov Q hQv with h | h` into its components or cases.
+
+Conclude with `hc3 Q (by simp [hQ]) ((congrArg HeightOneSpectrum.asIdeal h).trans (Formalism.L2.Col.conjIdeal_asIdeal P).symm)`. Establish `h' : Q = P` using `h.trans hcc`. Conclude with `hc2 (Set.mem_union_right _ (Finset.mem_coe.2 (show P ∈ sgL X I U t from h' ▸ hQ)))`. Take `⟨Ut⟩` from `Formalism.L2.Col.MhlUnif.nonempty hsp`. Establish `hxn : x.2 ≤ X.B.R.nV` using `by rw [rkEq X i]; exact hx2`.
+
+Take `⟨R, hR⟩` from `Formalism.L2.Col.mhs_exists_reps X.toD7.sp.cm Ut x.2 ∅ (sgL X I U t) hov hST hSG hsp hxn`. Set `Off : Subgroup (Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV)` to `{ carrier := {u | ∀ w, w ≠ v → Formalism.UG.bc (Formalism.UG.prV (E := X.toD7.host.E) w) (u : GL (Fin X.B.R.nV) (EA X)) = 1} one_mem' := fun w _ => by rw [OneMemClass.coe_one, map_one] mul_mem' := fun {a b} ha hb w hw => by rw [Subgroup.coe_mul, map_mul, ha w hw, hb w hw, mul_one …`. Establish `hKvOff : ∀ u, u ∈ Formalism.L2.Col.mhlKv X.toD7.sp.cm X.B.R.nV v → u ∈ Off` using `fun u hu => hu.1`. Establish `hEtaOff : (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2) ∈ Off` using `fun w hw => Formalism.L2.Col.mhlEta_off X.toD7.sp.cm Ut x.2 w hw`. Establish `hoffR : ∀ u ∈ R, u ∈ Off` using `fun u hu w hw => reps_off X.toD7.sp.cm Ut x.2 R hR u hu w hw`.
+
+Set `Lc : Subgroup (Bridge.Gf (Vc X.toD7 i))` to `Off.map Φ.toMonoidHom`. Establish `hLc : ∀ u, Φ u ∈ Lc ↔ u ∈ Off`. Introduce `u`. Rewrite using `[Subgroup.mem_map_equiv, MulEquiv.symm_apply_apply]`. Establish `hisLoc : ∀ u, (envL X I hX U Xg tr L cV i t).isLoc x (Φ u) ↔ u ∈ Off` using `fun u => (loc_iff X I hX U Xg tr L hI hV hL cV i t A k hF x v Pb hcc hov (Φ u) u (hΦ u)).1`.
+
+Establish `hJ : ∀ u, u ∈ Off → (Φ u ∈ (envL X I hX U Xg tr L cV i t).lev.J ↔ u ∈ Formalism.L2.Col.mhlKv X.toD7.sp.cm X.B.R.nV v)` using `fun u hu => (loc_iff X I hX U Xg tr L hI hV hL cV i t A k hF x v Pb hcc hov (Φ u) u (hΦ u)).2 ((hisLoc u).2 hu)`. Establish `hLoc' : ∀ l, (envL X I hX U Xg tr L cV i t).isLoc x l ↔ l ∈ Lc`. Introduce `l`. Use `hisLoc (Φ.symm l)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`.
+
+Rewrite using `[this, ← hLc, MulEquiv.apply_symm_apply]`. Establish `hKiff : ∀ u, Φ u ∈ (envL X I hX U Xg tr L cV i t).lev.J ⊓ Lc ↔ u ∈ Formalism.L2.Col.mhlKv X.toD7.sp.cm X.B.R.nV v`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `(hJ u ((hLc u).1 h2)).1 h1`. Introduce `h`. Conclude with `⟨(hJ u (hKvOff u h)).2 h, (hLc u).2 (hKvOff u h)⟩`. Establish `hmemR : ∀ a, a ∈ R.map Φ.toEquiv.toEmbedding → ∃ u ∈ R, a = Φ u`. Introduce `a ha`.
+
+Take `⟨u, hu, e⟩` from `Finset.mem_map.1 ha`. Conclude with `⟨u, hu, e.symm⟩`. Establish `hDCl : Bridge.IsDC ((envL X I hX U Xg tr L cV i t).lev.J ⊓ Lc) (Φ (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2)) (R.map Φ.toEquiv.toEmbedding)` using `isDC_map Φ _ _ hKiff (isDC_of_reps X.toD7.sp.cm Ut x.2 R hR)`. Establish `hDC : Bridge.IsDC (envL X I hX U Xg tr L cV i t).lev.J (Φ (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2)) (R.map Φ.toEquiv.toEmbedding)`. Use `GlobalTheory.RowPartsOrth.isDC_of_local (envL X I hX U Xg tr L cV i t).lev.J Lc (Φ (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2)) (R.map Φ.toEquiv.toEmbedding) ((hLc _).2 hEtaOff) ?_ ?_ hDCl` and prove the remaining obligations.
+
+Introduce `j hj`. Take `⟨j₁, hj₁, j₂, hj₂, hl₁, e, hc⟩` from `lev_split X I hX U Xg tr L hI hV hL cV i t x j hj`. Conclude with `⟨j₁, hj₁, j₂, hj₂, (hLoc' j₁).1 hl₁, e, fun l hl => hc l ((hLoc' l).2 hl)⟩`. Introduce `a ha`. Take `⟨u, hu, rfl⟩` from `hmemR a ha`.
+
+Conclude with `(hLc u).2 (hoffR u hu)`. Use `⟨Φ (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2), R.map Φ.toEquiv.toEmbedding, eta_isT X I hX U Xg tr L hI hV hL cV i t A k hF x hx1 hx2 v Pb hcc hov Ut (Φ (Formalism.L2.Col.mhlEta X.toD7.sp.cm X.B.R.nV v Ut.hπ0 x.2)) (hΦ _), ?_, hDC, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨u, hu, rfl⟩` from `hmemR a ha`. Conclude with `(hisLoc u).2 (hoffR u hu)`.
+
+Introduce `g`. Establish `hk : k ∈ Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV` using `hF.2.2.2.1`. Take `⟨w, rfl⟩` from `Φ.surjective g`. Conclude with `bijOn_map_equiv Φ R _ _ _ (reps_bij X.toD7.sp.cm Ut x.2 ∅ (sgL X I U t) hov hST hSG hsp hxn R hR P hcc ((⟨k, hk⟩ : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) * w) _ (ptL_frame0 X I U i t A k Φ hΦ hk w).symm) (fun u => ptL_frame X I U i t A k Φ hΦ hk w u)`.
+-/
 theorem loc_data (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hV : ValsIn I) (hL : LevOf X I U L) (cV : ∀ i, CoefA (Vc X.toD7 i))
     (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (EA X)) (hF : FrameOK X I U i t A k)
@@ -340,6 +446,11 @@ theorem loc_data (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hX 
         (ptL_frame0 X I U i t A k Φ hΦ hk w).symm)
       (fun u => ptL_frame X I U i t A k Φ hΦ hk w u)
 
+/- English proof (translation)
+Introduce `X px I hX U Xg tr L eG hI hV hL hG cV i t A k hF P hR`. Establish `key : ∀ x : (famR X I hX U Xg tr).A.ok t × ℕ, 1 ≤ x.2 ∧ x.2 ≤ (Vc X.toD7 i).rank → ∃ (hx : Bridge.Gf (Vc X.toD7 i)) (hA : Finset (Bridge.Gf (Vc X.toD7 i))), (envL X I hX U Xg tr L cV i t).isT x hx ∧ (∀ a ∈ hA, (envL X I hX U Xg tr L cV i t).isLoc x a) ∧ Bridge.IsDC (envL X I hX U …`. Introduce `x hx`. Take `⟨hx', hA, h1, h2, h3, h4⟩` from `loc_data X I hX U Xg tr L hI hV hL cV i t A k hF x hx.1 hx.2`. Conclude with `⟨hx', hA, h1, h2, h3, fun f => op_eq_of_bij X I hX U Xg tr L cV i t A k x hA h4 P hR f⟩`.
+
+Use `choose! hxf hAf hxok hAloc hDC hop using key`. Conclude with `⟨⟨hxf, hAf, hxok, hAloc, fun x _ j hj => chi_loc_lift X I hX U Xg tr L hI hV hL cV i t x j hj, hDC, hop⟩⟩`.
+-/
 theorem split_tie : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m) (t : TupU I U) (A k : GL (Fin X.B.R.nV) (LiftBrg.EA X)), LiftBrg.FrameOK X I U i t A k → ∀ P : LiftBrg.PresL X I hX U Xg tr L cV i t, LiftBrg.ReadsStd X I hX U Xg tr L cV i t A k P →
     Nonempty (Bridge.HeckeTie (Bridge.ratF (Vc X.toD7 i)) P ((famR X I hX U Xg tr).A.heckeL i t)
       (fun x => 1 ≤ x.2 ∧ x.2 ≤ (Vc X.toD7 i).rank) (LiftBrg.envL X I hX U Xg tr L cV i t).isT

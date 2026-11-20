@@ -20,9 +20,21 @@ structure SameG {y : Ys X n} (p p' : PtY ST SG Q y) : Prop where
   at_eq : ∀ w : SG, p'.1.1.deco.1.at w.1 = p.1.1.deco.1.at w.1
   be : p'.1.1.deco.1.be = p.1.1.deco.1.be
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, fun _ => rfl, rfl⟩`.
+-/
 theorem SameG.refl {y : Ys X n} (p : PtY ST SG Q y) : SameG p p :=
   ⟨rfl, rfl, fun _ => rfl, rfl⟩
 
+/- English proof (translation)
+Establish `hs : ∀ (s : 𝓞 E) (z : Sp E n), g.symm (s • z) = s • g.symm z` using `fun s z => ((g.symm : Sp E n →ₗ[E] Sp E n).restrictScalars (𝓞 E)).map_smul s z`. Establish `hmemL : ∀ (M : Submodule (𝓞 E) (Sp E n)) (x : Sp E n), x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M ↔ ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ M` using `fun _ _ => Iff.rfl`. Establish `hmemg : ∀ (M : Submodule (𝓞 E) (Sp E n)) (x : Sp E n), x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.HermitianLatticesTheory.gmap g M) ↔ g.symm x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M`. Introduce `M x`. Rewrite using `[hmemL, hmemL]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs0, hx⟩`. Take `⟨z, hz, hzx⟩` from `Submodule.mem_map.mp hx`. Establish `hz' : z = g.symm (s • x)`. Rewrite using `[← hzx]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨s, hs0, by rw [← hs, ← hz']; exact hz⟩`. Introduce and unpack `⟨s, hs0, hx⟩`. Use `⟨s, hs0, Submodule.mem_map.mpr ⟨g.symm (s • x), by rw [hs]; exact hx, by simp⟩⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Rewrite using `[hmemg, hmemg, h]`.
+-/
 private theorem locP_gmap_eq_of_locP_eq {E : Type} [Field E] [NumberField E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E))
     (g : Sp E n ≃ₗ[E] Sp E n) {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N' = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N) :
@@ -48,6 +60,9 @@ private theorem locP_gmap_eq_of_locP_eq {E : Type} [Field E] [NumberField E] {n 
   ext x
   rw [hmemg, hmemg, h]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun F => fun P => (FrmG.incl Λ Θ h).1.1 * F P * ((FrmG.incl Λ Θ h).2.2 P)⁻¹.1) r.fr ys := congrArg (fun S => (fun v => h.1.1 v) '' S) r.ys at_eq w := by show Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal (Formalism.HermitianLatticesTheory.gmap h.1.1 p'.1.1 …`.
+-/
 theorem SameG.smul {y : Ys X n} {Λ : LevFam X.E X.K n SG} {Θ : LevQFam X.E X.K n Q} (h : FrmG Λ Θ) {p p' : PtY ST SG Q y}
     (r : SameG p p') : SameG ((ptYAct y Λ Θ).toSMul.smul h p) ((ptYAct y Λ Θ).toSMul.smul h p') where
   fr := congrArg (fun F => fun P => (FrmG.incl Λ Θ h).1.1 * F P * ((FrmG.incl Λ Θ h).2.2 P)⁻¹.1) r.fr
@@ -58,6 +73,13 @@ theorem SameG.smul {y : Ys X n} {Λ : LevFam X.E X.K n SG} {Θ : LevQFam X.E X.K
     exact locP_gmap_eq_of_locP_eq w.1 h.1.1 (r.at_eq w)
   be := congrArg (fun B => fun w x => ((FrmG.incl Λ Θ h).2.1 w).1.mulVec (B w (h.1.1.symm x))) r.be
 
+/- English proof (translation)
+Unfold `PtY.mv`. Use `Eq.mpr (apply_dite (SameG p) _ _ _) ?_` and prove the remaining obligations. Use `split`. Use `⟨rfl, rfl, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `show (p.1.1.deco.dn P f').1.at w.1 = p.1.1.deco.1.at w.1`.
+
+Unfold `DecoSet.dn`. Use `split_ifs with hok`. Conclude with `((p.1.1.deco.2.dnN_spec P hP.ne).2.2.1 w.1 (hP.sg w).1 (hP.sg w).2).localization_eq`. Both sides reduce to the same expression. Use `show (p.1.1.deco.dn P f').1.be = p.1.1.deco.1.be`.
+
+Unfold `DecoSet.dn`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `SameG.refl p`.
+-/
 theorem SameG.dn {y : Ys X n} (p : PtY ST SG Q y) (P : ST) (hP : MoveHyp ST SG P) (f' : Sp X.E n → 𝓞 X.E ⧸ P.1.asIdeal) :
     SameG p (p.mv (p.1.1.deco.dn P f')) := by
   classical
@@ -79,6 +101,11 @@ end Same
 
 section Coset
 
+/- English proof (translation)
+Establish `hfr : ∀ P, frsF sel mu q'.1.1 P = frsF sel mu q.1.1 P`. Introduce `P`. Unfold `frsF`. Use `split_ifs with hP`. Unfold `Deco.liftFr`.
+
+Rewrite using `[r.at_eq ⟨P.1, hP⟩, r.be]`. Conclude with `congrFun r.fr _`. Use function extensionality and compare the values at `P`. Unfold `cosetIn`. Rewrite using `[r.ys, hfr P]`.
+-/
 private theorem cosetIn_eq_of_sameG' {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}
     {q q' : PtAt R sel mu cst u j} (r : SameG q q') : cosetIn q' = cosetIn q := by
@@ -95,6 +122,9 @@ private theorem cosetIn_eq_of_sameG' {X : Fields} {Pr : Primes X} {R : Ranks} {s
 
 open Classical GlobalTheory.TopStep in
 
+/- English proof (translation)
+The claim follows from `cosetIn_eq_of_sameG' r`.
+-/
 theorem cosetIn_eq_of_sameG {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ} (hX : X.Ok) (hPr : Pr.Ok)
     {q q' : PtAt R sel mu cst u j} (r : SameG q q') : cosetIn q' = cosetIn q :=
@@ -104,12 +134,18 @@ end Coset
 
 section Normal
 
+/- English proof (translation)
+Unfold `prefRep`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.2`.
+-/
 theorem prefRep_pref {G D : Type} [Group G] [MulAction G D] (pref : D → Prop) (q : MulAction.orbitRel.Quotient G D)
     (h : ∃ p, Quotient.mk (MulAction.orbitRel G D) p = q ∧ pref p) : pref (prefRep pref q) := by
   unfold prefRep
   rw [dif_pos h]
   exact h.choose_spec.2
 
+/- English proof (translation)
+Unfold `GStep.NormalFor at hq hq'`. Rewrite using `[hq, hq']`. Conclude with `congrArg (@Classical.epsilon A ⟨f q⟩) (funext fun r => propext (h r))`.
+-/
 theorem GStep.NormalFor.eq {E K A : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {S : GStep E K n} {b : S.β} {f : S.D b → A}
     {q q' : S.D b} (hq : S.NormalFor b f q) (hq' : S.NormalFor b f q')
     (h : ∀ r, (∃ g : S.G b, r = f (g • q)) ↔ ∃ g : S.G b, r = f (g • q')) : f q = f q' := by
@@ -117,6 +153,13 @@ theorem GStep.NormalFor.eq {E K A : Type} [Field E] [NumberField E] [Field K] {n
   rw [hq, hq']
   exact congrArg (@Classical.epsilon A ⟨f q⟩) (funext fun r => propext (h r))
 
+/- English proof (translation)
+Establish `hex : ∃ r, ∃ g : S.G b, r = f (g • q)` using `⟨f q, 1, by rw [one_smul]⟩`. Take `⟨g, hg⟩` from `Classical.epsilon_spec hex`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hset : (fun r => ∃ g : S.G b, r = f (g • q)) = (fun r => ∃ g' : S.G b, r = f (g' • g • q))`. Use function extensionality and compare the values at `r`.
+
+Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', rfl⟩`. Conclude with `⟨g' * g⁻¹, by rw [mul_smul, inv_smul_smul]⟩`. Introduce and unpack `⟨g', rfl⟩`.
+
+Conclude with `⟨g' * g, by rw [mul_smul]⟩`. Unfold `GStep.NormalFor`. Conclude with `hg.symm.trans (congrArg (@Classical.epsilon A ⟨f q⟩) hset)`.
+-/
 theorem GStep.exists_normalFor {E K A : Type} [Field E] [NumberField E] [Field K] {n : ℕ} (S : GStep E K n) (b : S.β) (f : S.D b → A)
     (q : S.D b) : ∃ g : S.G b, S.NormalFor b f (g • q) := by
   have hex : ∃ r, ∃ g : S.G b, r = f (g • q) := ⟨f q, 1, by rw [one_smul]⟩
@@ -133,6 +176,11 @@ theorem GStep.exists_normalFor {E K A : Type} [Field E] [NumberField E] [Field K
   unfold GStep.NormalFor
   exact hg.symm.trans (congrArg (@Classical.epsilon A ⟨f q⟩) hset)
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : S.G b, k • d' = prefRep pf (Quotient.mk (MulAction.orbitRel (S.G b) (S.D b)) d')` from `Quotient.exact (prefRep_spec pf (Quotient.mk (MulAction.orbitRel (S.G b) (S.D b)) d'))`. Use `GStep.NormalFor.eq (hn _) (hn q) fun r => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g * k, by rw [← hk, ← mul_smul, hd]⟩`. Introduce and unpack `⟨g, rfl⟩`.
+
+Conclude with `⟨g * k⁻¹, by rw [← hd, ← hk, mul_smul, inv_smul_smul]⟩`.
+-/
 theorem GStep.prefRep_eq_of_normal {E K A : Type} [Field E] [NumberField E] [Field K] {n : ℕ} (S : GStep E K n) (b : S.β) (f : S.D b → A)
     (pf : S.D b → Prop) (hn : ∀ q : MulAction.orbitRel.Quotient (S.G b) (S.D b), S.NormalFor b f (prefRep pf q)) (q : MulAction.orbitRel.Quotient (S.G b) (S.D b)) (d' : S.D b)
     (hd : ∀ h : S.G b, f (h • d') = f (h • prefRep pf q)) :
@@ -145,6 +193,9 @@ theorem GStep.prefRep_eq_of_normal {E K A : Type} [Field E] [NumberField E] [Fie
   · rintro ⟨g, rfl⟩
     exact ⟨g * k⁻¹, by rw [← hd, ← hk, mul_smul, inv_smul_smul]⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GStep.exists_normalFor S b f (Quotient.out q)`. Establish `hex : ∃ p, Quotient.mk (MulAction.orbitRel (S.G b) (S.D b)) p = q ∧ pf p` using `⟨g • Quotient.out q, (Quotient.sound (s := MulAction.orbitRel (S.G b) (S.D b)) (MulAction.mem_orbit _ g)).trans (Quotient.out_eq q), hnp _ hg⟩`. Conclude with `hpf _ (prefRep_pref pf q hex)`.
+-/
 theorem GStep.prefRep_normal {E K A : Type} [Field E] [NumberField E] [Field K] {n : ℕ} (S : GStep E K n) (b : S.β) (f : S.D b → A)
     (pf : S.D b → Prop) (hpf : ∀ p, pf p → S.NormalFor b f p) (hnp : ∀ p, S.NormalFor b f p → pf p)
     (q : MulAction.orbitRel.Quotient (S.G b) (S.D b)) : S.NormalFor b f (prefRep pf q) := by
@@ -156,6 +207,9 @@ theorem GStep.prefRep_normal {E K A : Type} [Field E] [NumberField E] [Field K] 
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Establish `hm` using `B.R.two_le_m`. Use `⟨fun h0 => absurd hj (by omega), fun _ => h, ?_⟩` and prove the remaining obligations. Use `show ∀ h : j = B.R.m, _`. Introduce `hjm`. Conclude with `absurd hjm (by omega)`.
+-/
 theorem TC.pref_of_normalFor (u : B.Word) (a : I.ι) (j : ℕ) (hj : j + 1 = B.R.m) (b : (I.stp0 u a j).β) (p : (I.stp0 u a j).D b)
     (h : (I.stp0 u a j).NormalFor b (fun q' : (I.stp0 u a j).D b => cosetIn q') p) : I.pref u a j b p := by
   have hm := B.R.two_le_m
@@ -164,6 +218,15 @@ theorem TC.pref_of_normalFor (u : B.Word) (a : I.ι) (j : ℕ) (hj : j + 1 = B.R
   intro hjm
   exact absurd hjm (by omega)
 
+/- English proof (translation)
+Take `⟨b, q⟩` from `c`. Establish `r0 : SameG ((I.stp u a i).rep ⟨b, q⟩) (((I.atIn u a).A i).dn b ((I.stp u a i).rep ⟨b, q⟩) v f)` using `SameG.dn _ v (moveHyp_of_ok hPr u v) f`. Distinguish the cases in `hi : i + 1 = B.R.m`. Conclude with `GStep.prefRep_eq_of_normal (I.stp0 u a i) b (fun q' => cosetIn q') (I.pref u a i b) (GStep.prefRep_normal (I.stp0 u a i) b _ (I.pref u a i b) (fun p hp => hp.2.1 hi) (fun p hp => I.pref_of_normalFor u a i hi b p hp)) q _ (fun h => cosetIn_eq_of_sameG' (SameG.smul h r0))`. Establish `hemp : ∀ p : PtAt B.R I.sel (I.tup a) (I.cst a) u i, cosetIn p = fun _ => ∅`.
+
+Introduce `p`. Establish `hys : ∀ (Y : Set (Sp B.fields.E (B.R.N i))) (N : Submodule (𝓞 B.fields.E) (Sp B.fields.E (B.R.N i))), Y ∈ (ysAt B.R I.sel (I.tup a) (I.cst a) i).ys N → Y = ∅`. Introduce `Y N hY`. Unfold `ysAt at hY`. Rewrite `hY` using `[if_neg hi]`.
+
+Conclude with `hY`. Establish `hp : p.1.2 = ∅` using `hys _ _ p.2`. Use function extensionality and compare the values at `P`. Unfold `cosetIn`. Rewrite using `[hp]`.
+
+Use extensionality with `z`. Simplify using the standard rewrite rules. Conclude with `(hemp _).trans (hemp _).symm`.
+-/
 private theorem TC.cosetIn_rep_cl_dn_eq (hPr : (B.primes X).Ok) (u : B.Word) (a : I.ι) (i : ℕ) (v : (B.primes X).vT u)
     (c : (I.stp u a i).Cl) (f : Sp B.fields.E (B.R.N i) → Res v.1) :
     cosetIn ((I.stp u a i).rep ((I.stp u a i).cl c.1 (((I.atIn u a).A i).dn c.1 ((I.stp u a i).rep c) v f))) =
@@ -195,6 +258,9 @@ private theorem TC.cosetIn_rep_cl_dn_eq (hPr : (B.primes X).Ok) (u : B.Word) (a 
 
 end Normal
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u a i hi bad Ch chOf K eY eV L hK _ _ _ v β c g _`. Take `⟨k, hR⟩` from `hK`. Conclude with `((hR.key ((I.fm l u a).dn i v c.1 g) c.1).mpr ⟨rfl, I.cosetIn_rep_cl_dn_eq l.pr u a i v c.1 _⟩).trans c.2`.
+-/
 theorem TC.dn_keeps_chart : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (eV : (I.atT l u a).vT ≃ {v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) // (B.T u : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal}) (L : LevelCompatibleLattices (D := (I.rec7 l Z)) (I.fm l u a) (B.T u) (I.resT l u a) i hi fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)), I.ReadsK l Z u a i hi chOf K → I.IdY l Z u a i hi eY → I.IdV l u a eV → I.IdL l Z u a i hi L → ∀ (v : (I.atT l u a).vT) (β : Ch) (c : {c // chOf c = β}) (g : Module.Dual (Res v.1) (((I.atIn u a).A i).lk v c.1)), g ≠ 0 → chOf ((I.fm l u a).dn i v c.1 g) = β := by
   intro B X I _ _ l Z u a i hi bad Ch chOf K eY eV L hK _ _ _ v β c g _
 

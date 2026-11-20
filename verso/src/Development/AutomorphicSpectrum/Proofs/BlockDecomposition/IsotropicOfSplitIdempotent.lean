@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SaGen.IsoSplit
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_comb {R : Type} [CommRing R] {n : Type} [Fintype n] (c : R →+* R) (Jm : Matrix n n R)
     (a b a' b' : n → R) (s t p q : R) :
     Formalism.UG.hform c Jm (s • a + t • b) (p • a' + q • b') =
@@ -21,6 +24,9 @@ theorem hform_comb {R : Type} [CommRing R] {n : Type} [Fintype n] (c : R →+* R
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hs : ∀ t : E, sigR K σ (inclR K t) = inclR K (σ t)`. Introduce `t`. Simplify using `[sigR, inclR]`. Simplify using `only [hR, Formalism.UG.hform, hf, incV, JR, Matrix.map_apply, map_sum, map_mul, hs]`.
+-/
 theorem hR_incV (K : Type) [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (p q : Fin M → E) :
     hR K σ J (incV K p) (incV K q) = inclR K (hf σ J p q) := by
@@ -29,12 +35,24 @@ theorem hR_incV (K : Type) [CommRing K] [Algebra F K] (σ : E →ₐ[F] E) {M : 
     simp [sigR, inclR]
   simp only [hR, Formalism.UG.hform, hf, incV, JR, Matrix.map_apply, map_sum, map_mul, hs]
 
+/- English proof (translation)
+Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_smul_right (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (p q : Fin M → E) (s : E) :
     hf σ J p (s • q) = s * hf σ J p q := by
   simp only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨P, d, -, hPd, -, hd⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal (c := (σ : E →+* E)) two_ne_zero hσ (G := J.transpose) (fun a b => hJ.1 a b)`. Establish `hd'` using `hd (by rw [Matrix.det_transpose]; exact hJ.2)`. Establish `key : ∀ a b, hf σ J (fun k => P k b) (fun k => P k a) = Matrix.diagonal d a b`. Introduce `a b`. Rewrite using `[← hPd]`.
+
+Simplify using `only [hf, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.coe_toRingHom, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree. Establish `hij : (⟨0, by omega⟩ : Fin M) ≠ ⟨1, by omega⟩` using `by simp`.
+
+Use `⟨fun k => P k ⟨0, by omega⟩, fun k => P k ⟨1, by omega⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.diagonal_apply_eq]`. Conclude with `hd' _`. Rewrite using `[key, Matrix.diagonal_apply_eq]`. Conclude with `hd' _`.
+
+Rewrite using `[key, Matrix.diagonal_apply_ne _ hij.symm]`. Rewrite using `[key, Matrix.diagonal_apply_ne _ hij]`.
+-/
 theorem exists_orthogonal_pair [NumberField E] (σ : E →ₐ[F] E) (hσ : ∀ t, σ (σ t) = t) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hM : 2 ≤ M) (hJ : IsHermND σ J) :
     ∃ x y : Fin M → E, hf σ J x x ≠ 0 ∧ hf σ J y y ≠ 0 ∧ hf σ J x y = 0 ∧ hf σ J y x = 0 := by
@@ -55,6 +73,17 @@ theorem exists_orthogonal_pair [NumberField E] (σ : E →ₐ[F] E) (hσ : ∀ t
   · rw [key, Matrix.diagonal_apply_ne _ hij.symm]
   · rw [key, Matrix.diagonal_apply_ne _ hij]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hM hJ K _ _ e he hsum hprod`. Establish `hσ : ∀ t, σ (σ t) = t`. Introduce `t`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`. Take `⟨x, y, hx, hy, hxy, hyx⟩` from `exists_orthogonal_pair σ hσ J hM hJ`. Use `set c := sigR K σ with hc`. Establish `hcc : c (c e) = e`. Establish `h` using `congrArg c hsum`.
+
+Rewrite `h` using `[map_add, map_one]`. Take the linear combination `h - hsum`. Establish `hce : c e * c e = c e` using `by rw [← map_mul, he]`. Use `⟨e • incV K x + c e • incV K y, e • incV K ((hf σ J y y)⁻¹ • y) + c e • incV K ((hf σ J x x)⁻¹ • x), ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.hform (sigR K σ) (JR K J) _ _ = 0`.
+
+Rewrite using `[hform_comb]`. Express the relevant statement in the definitionally equal form `c e * e * hR K σ J _ _ + c e * c e * hR K σ J _ _ + c (c e) * e * hR K σ J _ _ + c (c e) * c e * hR K σ J _ _ = 0`. Simplify using `only [hR_incV, hxy, hyx, map_zero, hcc]`. Take the linear combination `(inclR K (hf σ J x x) + inclR K (hf σ J y y)) * hprod`. Express the relevant statement in the definitionally equal form `Formalism.UG.hform (sigR K σ) (JR K J) _ _ = 1`.
+
+Rewrite using `[hform_comb]`. Express the relevant statement in the definitionally equal form `c e * e * hR K σ J _ _ + c e * c e * hR K σ J _ _ + c (c e) * e * hR K σ J _ _ + c (c e) * c e * hR K σ J _ _ = 1`. Simplify using `only [hR_incV, hf_smul_right, hxy, hyx, mul_zero, map_zero, hcc, inv_mul_cancel₀ hx, inv_mul_cancel₀ hy, map_one]`. Take the linear combination `he + hce + hsum`.
+-/
 theorem isoAt_of_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), 2 ≤ M → IsHermND σ J → ∀ (K : Type) [Field K] [Algebra F K] (e : K ⊗[F] E), e * e = e → e + sigR K σ e = 1 → e * sigR K σ e = 0 → IsoAt K σ J := by
   intro F E _ _ _ _ _ σ hcm M J hM hJ K _ _ e he hsum hprod
   have hσ : ∀ t, σ (σ t) = t := by

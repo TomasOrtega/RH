@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HalfFlag
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HalfGlue.locFlag_of_halfFlag | exact GlobalTheory.HalfGlue.locFlag_of_halfFlag | (intros; apply GlobalTheory.HalfGlue.locFlag_of_halfFlag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.reversed_flag_local_height_log_formula : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g N : ℕ} (h : N = g + g)
     (A B : Fin g → Adl C Y) (p : ℕ),
     (∀ k x, UnitAt x (genAt (B k).D x * genAt (A (Fin.rev k)).D x)) →

@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped Matrix ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompactOpenLattice.inner_eq_const_mul | exact GlobalTheory.CompactOpenLattice.inner_eq_const_mul | (intros; apply GlobalTheory.CompactOpenLattice.inner_eq_const_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_intertwiner_unique_scalar : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) [Invertible (2 : Fv F v)] (κ : Type) [Fintype κ]
     (ψv : AddChar (Fv F v) ℂ), Continuous ψv → ψv ≠ 1 →
     ∀ (T : ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ) (A : (κ → Fv F v) × (κ → Fv F v) → (κ → Fv F v) × (κ → Fv F v)),

@@ -21,14 +21,25 @@ def levelProduct (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Let
   if h : i < r then levelProduct L w (i + 1) * bTl L ⟨i, h⟩ w else 1
 termination_by r - i
 
+/- English proof (translation)
+Rewrite using `[levelProduct, dif_pos h]`.
+-/
 theorem level_product_of_lt (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Letter ℂ S)) (i : ℕ) (h : i < r) :
     levelProduct L w i = levelProduct L w (i + 1) * bTl L ⟨i, h⟩ w := by
   rw [levelProduct, dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[levelProduct, dif_neg (by omega)]`.
+-/
 theorem level_product_of_ge (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Letter ℂ S)) (i : ℕ) (h : r ≤ i) :
     levelProduct L w i = 1 := by
   rw [levelProduct, dif_neg (by omega)]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hn hi`. Rewrite using `[level_product_of_ge L w i (by omega)]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ihn`. Introduce `i hn hi`. Establish `hlt : i < r` using `by omega`. Rewrite using `[level_product_of_lt L w i hlt, ihn (i + 1) (by omega) (by omega), List.range'_succ, List.reverse_cons, List.map_append, List.prod_append]`. Simplify using `[hlt]`.
+-/
 theorem level_product_eq_list_prod (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Letter ℂ S)) (n : ℕ) :
     ∀ i, r - i = n → i ≤ r →
     levelProduct L w i = ((List.range' i n).reverse.map fun j => if h : j < r then bTl L ⟨j, h⟩ w else 1).prod := by
@@ -44,6 +55,11 @@ theorem level_product_eq_list_prod (L : R.LevelData (Pr (RadSp k r z z' π π'))
       List.map_append, List.prod_append]
     simp [hlt]
 
+/- English proof (translation)
+Establish `hfr : (List.finRange r).map Fin.val = List.range r` using `by first`. Consider the case `exact List.map_val_finRange r`. Consider the case `exact List.map_coe_finRange r`. Consider the case `exact List.map_coe_finRange`. Consider the case `simp`.
+
+Rewrite using `[level_product_eq_list_prod L w r 0 (Nat.sub_zero r) (Nat.zero_le r), bTall, ← List.range_eq_range', ← hfr, List.map_reverse, List.map_map, List.map_reverse]`. Use `congr 2`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `j _`. Simplify using `[j.isLt]`.
+-/
 theorem level_product_zero (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Letter ℂ S)) :
     levelProduct L w 0 = bTall L w := by
   have hfr : (List.finRange r).map Fin.val = List.range r := by
@@ -59,6 +75,9 @@ theorem level_product_zero (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w :
   intro j _
   simp [j.isLt]
 
+/- English proof (translation)
+Rewrite using `[level_product_of_lt L w l.val l.isLt, act_mul]`.
+-/
 theorem level_product_act_succ (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (w : List (Letter ℂ S)) (l : Fin r)
     (x : Ix S → RadSp k r z z' π π') :
     act (levelProduct L w l.val) x = act (levelProduct L w (l.val + 1)) (act (bTl L l w) x) := by
@@ -73,6 +92,9 @@ def levelIntegrand (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Sta
 def coordinateSplitAssoc (l : Fin r) {β : Type} [MeasurableSpace β] : Cf r l.castSucc × β ≃ᵐ ℂ × (Cf r l.succ × β) :=
   ((coordinateSplit l).prodCongr (MeasurableEquiv.refl β)).trans MeasurableEquiv.prodAssoc
 
+/- English proof (translation)
+Establish `h1 : MeasurePreserving (Prod.map (coordinateSplit l) (id : β → β)) (volume.prod ν) ((volume : Measure (ℂ × Cf r l.succ)).prod ν)` using `(coordinate_split_measurePreserving l).prod (MeasurePreserving.id ν)`. Conclude with `(measurePreserving_prodAssoc volume volume ν).comp h1`.
+-/
 theorem coordinate_split_assoc_measurePreserving (l : Fin r) {β : Type} [MeasurableSpace β] (ν : Measure β) [SFinite ν] :
     MeasurePreserving (coordinateSplitAssoc l (β := β)) (volume.prod ν) (volume.prod (volume.prod ν)) := by
   have h1 : MeasurePreserving (Prod.map (coordinateSplit l) (id : β → β)) (volume.prod ν)
@@ -80,6 +102,11 @@ theorem coordinate_split_assoc_measurePreserving (l : Fin r) {β : Type} [Measur
     (coordinate_split_measurePreserving l).prod (MeasurePreserving.id ν)
   exact (measurePreserving_prodAssoc volume volume ν).comp h1
 
+/- English proof (translation)
+Establish `hq : (coordinateSplitAssoc l).symm (t, q) = ((coordinateSplit l).symm (t, q.1), q.2)` using `rfl`. Rewrite using `[hq]`. Simplify using `only [levelIntegrand]`. Rewrite using `[weight_coordinate_split l ((coordinateSplit l).symm (t, q.1)), glue_coordinate_split l c]`. Simplify using `only [MeasurableEquiv.apply_symm_apply, Fin.coe_castSucc, Fin.val_succ, level_product_act_succ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem level_integrand_split_point (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (w : List (Letter ℂ S)) (l : Fin r) (x y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ) (t : ℂ)
     (q : Cf r l.succ × Mt k r) :
@@ -114,6 +141,15 @@ def LevelIntegralFormula (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (�
     Integrable (levelIntegrand L st w i x y c) (volume.prod μ) ∧
       RRform L st μ i w x y c = ∫ q, levelIntegrand L st w i x y c q ∂(volume.prod μ)
 
+/- English proof (translation)
+It suffices to establish `H : ∀ n i, P.r - i = n → ∀ (hi : i ≤ P.r) (x : Ix S → RadSp P.k P.r z z' π π'), InK (K ⟨i, Nat.lt_succ_of_le hi⟩) x → InK (K (Fin.last P.r)) (act (levelProduct L w i) x) by`. Introduce `x hx`. Conclude with `H _ i.val rfl (Nat.lt_succ_iff.mp i.isLt) x hx`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `i hn hi x hx`. Establish `hir : i = P.r` using `by omega`. Substitute `hir` using the available equality. Rewrite using `[level_product_of_ge L w _ le_rfl, act_one_hermitian_curvature]`.
+
+Conclude with `hx`. Consider the case `succ n ihn`. Introduce `i hn hi x hx`. Establish `hlt : i < P.r` using `by omega`. Rewrite using `[show levelProduct L w i = levelProduct L w (i + 1) * bTl L ⟨i, hlt⟩ w from level_product_of_lt L w i hlt, act_mul]`.
+
+Conclude with `ihn (i + 1) (by omega) hlt (act (bTl L ⟨i, hlt⟩ w) x) (hS w hw ⟨i, hlt⟩ x hx)`.
+-/
 theorem level_product_preserves_compact (hS : SliceIn (S := S) P z z' π π' L st K l0) (w : List (Letter ℂ S))
     (hw : WordOK P z z' π π' st l0 w) (i : Fin (P.r + 1)) :
     ∀ x : Ix S → RadSp P.k P.r z z' π π', InK (K i) x → InK (K (Fin.last P.r)) (act (levelProduct L w i.val) x) := by
@@ -135,6 +171,13 @@ theorem level_product_preserves_compact (hS : SliceIn (S := S) P z z' π π' L s
     rw [show levelProduct L w i = levelProduct L w (i + 1) * bTl L ⟨i, hlt⟩ w from level_product_of_lt L w i hlt, act_mul]
     exact ihn (i + 1) (by omega) hlt (act (bTl L ⟨i, hlt⟩ w) x) (hS w hw ⟨i, hlt⟩ x hx)
 
+/- English proof (translation)
+Introduce `x y hx hy c hc`. Take `⟨hI, hE⟩` from `hT w hw x y hx hy c hc`. Establish `hf : levelIntegrand L st w (Fin.last P.r) x y c = fun q => topDens L st w x y c (Matrix.of q.2)`. Use function extensionality and compare the values at `q`. Simplify using `only [levelIntegrand, Fin.val_last, level_product_of_ge L w P.r le_rfl, act_one_hermitian_curvature, glue_last_level]`.
+
+Use `haveI : IsEmpty {l : Fin P.r // P.r ≤ l.val} := ⟨fun l => by have := l.1.isLt; have := l.2; omega⟩`. Rewrite using `[Fintype.prod_empty]`. Simplify using the standard rewrite rules. Establish `hT'` using `integral_top_level_point μ (fun q : Cf P.r (Fin.last P.r) × Mt P.k P.r => topDens L st w x y c (Matrix.of q.2))`. Rewrite using `[hf]`.
+
+Conclude with `⟨hT'.1.2 hI, hE.trans hT'.2.symm⟩`.
+-/
 theorem level_integral_formula_top (hT : TopIdent (S := S) P z z' π π' μ L st K l0) (w : List (Letter ℂ S))
     (hw : WordOK P z z' π π' st l0 w) : LevelIntegralFormula P z z' π π' μ L st K w (Fin.last P.r) := by
   intro x y hx hy c hc
@@ -149,6 +192,11 @@ theorem level_integral_formula_top (hT : TopIdent (S := S) P z z' π π' μ L st
   rw [hf]
   exact ⟨hT'.1.2 hI, hE.trans hT'.2.symm⟩
 
+/- English proof (translation)
+Establish `hI : Integrable (fun t : ℂ => (1 + ‖t‖) ^ (-(4 : ℝ)))` using `integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)`. Use `(hI.const_mul C).mono' hφc.aestronglyMeasurable (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h4 : (1 + ‖t‖) ^ (-(4 : ℝ)) = (1 + ‖t‖) ^ (-4 : ℤ)`. Rewrite using `[show (-(4 : ℝ)) = ((-4 : ℤ) : ℝ) by norm_num, Real.rpow_intCast]`. Rewrite using `[h4]`.
+
+Conclude with `hC t`.
+-/
 theorem integrable_of_quartic_decay (φ : ℂ → ℂ) (hφc : Continuous φ) (C : ℝ) (hC : ∀ t, ‖φ t‖ ≤ C * (1 + ‖t‖) ^ (-4 : ℤ)) :
     Integrable φ := by
   have hI : Integrable (fun t : ℂ => (1 + ‖t‖) ^ (-(4 : ℝ))) :=
@@ -159,25 +207,46 @@ theorem integrable_of_quartic_decay (φ : ℂ → ℂ) (hφc : Continuous φ) (C
   rw [h4]
   exact hC t
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem ae_complex_ne_zero : ∀ᵐ t : ℂ, t ≠ 0 := by
   rw [ae_iff]
   simp
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Complex.nonneg_iff.mp hz`. Establish `hz' : z = (z.re : ℂ)` using `Complex.ext rfl (by simp [← h2])`. Use `conv_lhs => rw [hz']`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg h1]`.
+-/
 theorem complex_norm_eq_re_of_nonneg {z : ℂ} (hz : 0 ≤ z) : ‖z‖ = z.re := by
   obtain ⟨h1, h2⟩ := Complex.nonneg_iff.mp hz
   have hz' : z = (z.re : ℂ) := Complex.ext rfl (by simp [← h2])
   conv_lhs => rw [hz']
   rw [Complex.norm_real, Real.norm_of_nonneg h1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [act, Pi.add_apply, Pi.smul_apply, map_add, map_smul, Finset.sum_add_distrib, Finset.smul_sum]`.
+-/
 private lemma act_add_smul_hermitian_curvature (M : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')))
     (x y : Ix S → RadSp P.k P.r z z' π π') (a : ℂ) : act M (x + a • y) = act M x + a • act M y := by
   funext b
   simp only [act, Pi.add_apply, Pi.smul_apply, map_add, map_smul, Finset.sum_add_distrib, Finset.smul_sum]
 
+/- English proof (translation)
+Introduce `b` and use `Kc.add_mem (hx b) (Kc.smul_mem a (hy b))`.
+-/
 private lemma inK_add_smul_of_inK {Kc : Submodule ℂ (RadSp P.k P.r z z' π π')} {x y : Ix S → RadSp P.k P.r z z' π π'}
     (hx : InK Kc x) (hy : InK Kc y) (a : ℂ) : InK Kc (x + a • y) :=
   fun b => Kc.add_mem (hx b) (Kc.smul_mem a (hy b))
 
+/- English proof (translation)
+Unfold `levelIntegrand`. Distinguish the cases in `h0 : ∀ j, q.1 j ≠ 0`. Establish `hg : glue i c q.1 ∈ OmX P.r`. Simplify using `only [OmX, Set.mem_setOf_eq]`. Introduce `l`.
+
+Unfold `glue`. Use `split_ifs with h`. Conclude with `h0 _`. Conclude with `hc l`. Establish `hwt : (0 : ℂ) ≤ ((∏ l, ‖q.1 l‖ ^ (-2 : ℤ) : ℝ) : ℂ)` using `Complex.zero_le_real.mpr (Finset.prod_nonneg fun l _ => zpow_nonneg (norm_nonneg _) _)`.
+
+Conclude with `mul_nonneg hwt (hN w hw _ (level_product_preserves_compact hS w hw i u hu) _ hg _)`. Use `push_neg at h0`. Take `⟨j, hj⟩` from `h0`. Establish `h1 : (∏ l, ‖q.1 l‖ ^ (-2 : ℤ)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ j) (by rw [hj, norm_zero]; exact zero_zpow _ (by norm_num))`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 private lemma densNonneg_S_consequence (hN : TopDensNonneg (S := S) P z z' π π' L st K l0)
     (hS : SliceIn (S := S) P z z' π π' L st K l0) (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w)
     (i : Fin (P.r + 1)) (u : Ix S → RadSp P.k P.r z z' π π') (hu : InK (K i) u) (c : Fin P.r → ℂ)
@@ -201,6 +270,31 @@ private lemma densNonneg_S_consequence (hN : TopDensNonneg (S := S) P z z' π π
     rw [h1]
     simp
 
+/- English proof (translation)
+Introduce `x y hx hy c hc`. Establish `hE` using `coordinate_split_assoc_measurePreserving lf (β := Mt P.k P.r) μ`. Establish `hEs` using `MeasurePreserving.symm (coordinateSplitAssoc lf) hE`. Establish `hupd : ∀ t : ℂ, t ≠ 0 → Function.update c lf t ∈ OmX P.r`. Introduce `t ht`.
+
+Simplify using `only [OmX, Set.mem_setOf_eq] at hc ⊢`. Introduce `j`. Distinguish the cases in `hj : j = lf`. Substitute `hj` using the available equality. Simplify using `[ht]`.
+
+Rewrite using `[Function.update_of_ne hj]`. Conclude with `hc j`. Establish `hSl : ∀ u, InK (K lf.castSucc) u → InK (K lf.succ) (act (bTl L lf w) u)` using `fun u hu => hS w hw lf u hu`. Establish `hmeasF : ∀ u v, InK (K lf.castSucc) u → InK (K lf.castSucc) v → AEStronglyMeasurable (levelIntegrand L st w lf.castSucc u v c) (volume.prod μ)` using `fun u v hu hv => level_integrand_aestronglyMeasurable hM w _ _ (level_product_preserves_compact hS w hw _ u hu) (level_product_preserves_compact hS w hw _ v hv) lf.castSucc c`. Establish `hdiag : ∀ u, InK (K lf.castSucc) u → Integrable (levelIntegrand L st w lf.castSucc u u c) (volume.prod μ)`.
+
+Introduce `u hu`. Take `⟨φ, hφc, hφe, ⟨C, hC⟩, -⟩` from `hD w hw lf u u hu hu c hc`. Establish `hφi` using `integrable_of_quartic_decay φ hφc C hC`. Rewrite using `[← hEs.integrable_comp_emb (coordinateSplitAssoc lf).symm.measurableEmbedding]`. Use `(integrable_prod_iff ((hmeasF u u hu hu).comp_measurePreserving hEs)).mpr ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [ae_complex_ne_zero] with t ht`. Simplify using `only [Function.comp_apply, level_integrand_split_point]`. Conclude with `((ih _ _ (hSl u hu) (hSl u hu) _ (hupd t ht)).1).const_mul _`. Use `hφi.re.congr ?_ filter_upwards [ae_complex_ne_zero] with t ht` and prove the remaining obligations. Establish `hF` using `ih _ _ (hSl u hu) (hSl u hu) _ (hupd t ht)`.
+
+Establish `hnn` using `fun q => densNonneg_S_consequence hN hS w hw lf.succ _ (hSl u hu) _ (hupd t ht) q`. Establish `ha : (0 : ℝ) ≤ ‖t‖ ^ (-2 : ℤ)` using `zpow_nonneg (norm_nonneg _) _`. Establish `hre : ∫ q, (levelIntegrand L st w lf.succ (act (bTl L lf w) u) (act (bTl L lf w) u) (Function.update c lf t) q).re ∂(volume.prod μ) = (∫ q, levelIntegrand L st w lf.succ (act (bTl L lf w) u) (act (bTl L lf w) u) (Function.update c lf t) q ∂(volume.prod μ)).re`. Use `integral_re hF.1` as an intermediate fact. Simplify using `using this`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ph, hF.2, Complex.re_ofReal_mul]`. Use `_ = ∫ q, ‖t‖ ^ (-2 : ℤ) * (levelIntegrand L st w lf.succ (act (bTl L lf w) u) (act (bTl L lf w) u) (Function.update c lf t) q).re ∂(volume.prod μ) := by`. Rewrite using `[integral_const_mul, hre]`. Use `_ = ∫ q, ‖(levelIntegrand L st w lf.castSucc u u c ∘ (coordinateSplitAssoc lf).symm) (t, q)‖ ∂(volume.prod μ) := by`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[Function.comp_apply, level_integrand_split_point, norm_mul, Complex.norm_real, Real.norm_of_nonneg ha, complex_norm_eq_re_of_nonneg (hnn q)]`. Establish `hint : ∀ u v, InK (K lf.castSucc) u → InK (K lf.castSucc) v → Integrable (levelIntegrand L st w lf.castSucc u v c) (volume.prod μ)`. Introduce `u v hu hv`.
+
+Establish `hb` using `fun s : ℂ => hdiag (u + s • v) (inK_add_smul_of_inK hu hv s)`. Use `(((((hb 1).norm.add (hb Complex.I).norm).add (hb (-1)).norm).add (hb (-Complex.I)).norm).div_const 4).mono' (hmeasF u v hu hv) (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `sesquilinear_polarization_norm (fun a b => levelIntegrand L st w lf.castSucc a b c q) (fun a a' b s => ?_) (fun a b b' s => ?_) u v` and prove the remaining obligations. Simplify using `only [levelIntegrand, act_add_smul_hermitian_curvature, top_density_add_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [levelIntegrand, act_add_smul_hermitian_curvature, top_density_add_right]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hint x y hx hy, ?_⟩` and prove the remaining obligations. Take `⟨φ, -, hφe, -, hφI⟩` from `hD w hw lf x y hx hy c hc`. Establish `hGi : Integrable (fun p => levelIntegrand L st w lf.castSucc x y c ((coordinateSplitAssoc lf).symm p)) (volume.prod (volume.prod μ))` using `(hEs.integrable_comp_emb (coordinateSplitAssoc lf).symm.measurableEmbedding).mpr (hint x y hx hy)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_complex_ne_zero] with t ht`. Rewrite using `[hφe t ht, ph, (ih _ _ (hSl x hx) (hSl y hy) _ (hupd t ht)).2]`. Simplify using `only [level_integrand_split_point]`.
+
+Rewrite using `[integral_const_mul]`. Use `_ = ∫ p, levelIntegrand L st w lf.castSucc x y c ((coordinateSplitAssoc lf).symm p) ∂(volume.prod (volume.prod μ)) := (integral_prod _ hGi).symm`. Use `_ = _ := hEs.integral_comp' _`.
+-/
 theorem level_integral_formula_step (hN : TopDensNonneg (S := S) P z z' π π' L st K l0)
     (hS : SliceIn (S := S) P z z' π π' L st K l0) (hD : StepDens (S := S) P z z' π π' μ L st K l0)
     (hM : TopDensMeas S P z z' π π' μ L st K) (w : List (Letter ℂ S)) (hw : WordOK P z z' π π' st l0 w)
@@ -283,6 +377,17 @@ theorem level_integral_formula_step (hN : TopDensNonneg (S := S) P z z' π π' L
         (integral_prod _ hGi).symm
     _ = _ := hEs.integral_comp' _
 
+/- English proof (translation)
+Introduce `w hw x y hx hy c hc`. Establish `H : ∀ n (i : Fin (P.r + 1)), P.r - i.val = n → LevelIntegralFormula P z z' π π' μ L st K w i`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `i hn`. Establish `hi : i = Fin.last P.r` using `Fin.ext (by rw [Fin.val_last]; have := i.isLt; omega)`. Substitute `hi` using the available equality. Conclude with `level_integral_formula_top hT w hw`. Consider the case `succ n ihn`.
+
+Introduce `i hn`. Establish `hlt : i.val < P.r` using `by omega`. Establish `hi : i = (⟨i.val, hlt⟩ : Fin P.r).castSucc` using `Fin.ext rfl`. Rewrite using `[hi]`. Conclude with `level_integral_formula_step hN hS hD hM w hw ⟨i.val, hlt⟩ (ihn _ (by show P.r - (i.val + 1) = n; omega))`.
+
+Establish `h0` using `H _ 0 rfl x y hx hy c hc`. Establish `hf : levelIntegrand L st w 0 x y c = fun q => ((∏ l, ‖q.1 l‖ ^ (-2 : ℤ) : ℝ) : ℂ) * topDens L st w (act (bTall L w) x) (act (bTall L w) y) (glue 0 c q.1) (Matrix.of q.2)`. Use function extensionality and compare the values at `q`. Simplify using `only [levelIntegrand, Fin.val_zero, level_product_zero]`. Rewrite `h0` using `[hf]`.
+
+Conclude with `h0`.
+-/
 theorem integral_formula_level_zero (hT : TopIdent (S := S) P z z' π π' μ L st K l0) (hN : TopDensNonneg (S := S) P z z' π π' L st K l0)
     (hS : SliceIn (S := S) P z z' π π' L st K l0) (hD : StepDens (S := S) P z z' π π' μ L st K l0)
     (hM : TopDensMeas S P z z' π π' μ L st K) : CompositeFormulaLevelZero (S := S) P z z' π π' μ L st K l0 := by
@@ -309,6 +414,9 @@ theorem integral_formula_level_zero (hT : TopIdent (S := S) P z z' π π' μ L s
   rw [hf] at h0
   exact h0
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' μ _ L st l0 K hT hN hS hD hM`. Conclude with `integral_formula_level_zero hT hN hS hD hM`.
+-/
 theorem integral_formula_of_steps : CompositeFormulaOfDensities := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' μ _ L st l0 K hT hN hS hD hM
   exact integral_formula_level_zero hT hN hS hD hM

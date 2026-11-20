@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HorizontalHo
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol
 open GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HorizProof.horizSt | exact GlobalTheory.HorizProof.horizSt | (intros; apply GlobalTheory.HorizProof.horizSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.horizontal_holds : HorizSt := by
   first | exact @GlobalTheory.HorizProof.horizSt | exact GlobalTheory.HorizProof.horizSt | (intros; apply GlobalTheory.HorizProof.horizSt <;> assumption)

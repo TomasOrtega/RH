@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CotIn
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `R _ _ _ κ _ x hx`. Take `⟨hm, hli⟩` from `(cotInd_iff R x).mp hx`. Use `set v : κ → CotangentSpace R := fun k => (maximalIdeal R).toCotangent ⟨x k, hm k⟩ with hv`. Set `bW` to `Module.Basis.span hli`. Set `bQ` to `Module.finBasis (ResidueField R) (CotangentSpace R ⧸ Submodule.span (ResidueField R) (Set.range v))`.
+
+Set `B` to `Module.Basis.sumQuot bW bQ`. Use `choose z hz using fun i => (maximalIdeal R).toCotangent_surjective (B (Sum.inr i))`. Use `⟨_, fun i => (z i : R), ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ j, Sum.elim x (fun i => (z i : R)) j ∈ maximalIdeal R`. Introduce and unpack `(k | i)`.
+
+Conclude with `hm k`. Conclude with `(z i).2`. Establish `hB : (fun j => (maximalIdeal R).toCotangent ⟨Sum.elim x (fun i => (z i : R)) j, hmem j⟩) = ⇑B`. Use function extensionality and compare the values at `j`. Break down `j with k | i` into its components or cases.
+
+Simplify using `[B, bW, Module.Basis.span_apply, hv]`. Simplify using `using hz i`. Establish `hfg : (maximalIdeal R).FG` using `IsNoetherian.noetherian _`. Use `⟨(cotInd_iff R _).mpr ⟨hmem, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`.
+
+Conclude with `B.linearIndependent`. Set `g : κ ⊕ Fin _ → maximalIdeal R` to `fun j => ⟨Sum.elim x (fun i => (z i : R)) j, hmem j⟩`. Establish `hspan : Submodule.span R (Set.range g) = ⊤`. Rewrite using `[← CotangentSpace.span_image_eq_top_iff, ← Set.range_comp]`. Establish `: (maximalIdeal R).toCotangent ∘ g = ⇑B` using `hB`.
+
+Rewrite using `[this, B.span_eq]`. Use `congrArg (Submodule.map (maximalIdeal R).subtype) hspan` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `this`. Rewrite using `[spanFinrank_maximalIdeal_eq_finrank_cotangentSpace_of_fg hfg, Module.finrank_eq_card_basis B, Fintype.card_sum, Fintype.card_fin]`.
+-/
 theorem UpperTheory.V.AlgebraTools.cotInd_extend :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (κ : Type) [Fintype κ] (x : κ → R), CotInd R x →
       ∃ (s : ℕ) (y : Fin s → R), CotInd R (Sum.elim x y) ∧

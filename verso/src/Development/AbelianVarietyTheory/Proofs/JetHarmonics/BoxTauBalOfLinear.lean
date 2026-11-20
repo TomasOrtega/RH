@@ -10,12 +10,18 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BoxTauLin
 
+/- English proof (translation)
+Establish `e : f' = powMap p f` using `pow_ext p fun i => by rw [h, powMap_pr]`. Rewrite using `[e]`. Conclude with `powMap_isMonHom p f`.
+-/
 theorem isMonHom_of_coord {S : Scheme.{0}} {A' A : Over S} [GrpObj A'] [GrpObj A] {n : ℕ} (p : IsPowGrp A' A n)
     (f : A ⟶ A) [IsMonHom f] (f' : A' ⟶ A') (h : ∀ i, f' ≫ p.pr i = p.pr i ≫ f) : IsMonHom f' := by
   have e : f' = powMap p f := pow_ext p fun i => by rw [h, powMap_pr]
   rw [e]
   exact powMap_isMonHom p f
 
+/- English proof (translation)
+Introduce `hG R _ _ D' D n pD f g f' g' a a' hf hg ef eg hr ca ca' hT`. Conclude with `GlobalTheory.TauBalBox.tauBal_pow hG R n D D' pD f g f' g' hf hg (isMonHom_of_coord pD.pw f f' ef) (isMonHom_of_coord pD.pw g g' eg) ef eg hr a a' _ _ (fun x i => by rw [AddEquiv.apply_symm_apply]) (fun x i => by rw [AddEquiv.apply_symm_apply]) ca ca' hT`.
+-/
 theorem boxTauBal_of_linear : GlobalFnsSt →
     ∀ (R : Type) [CommRing R] [IsDomain R] (D' D : DegPre R) (n : ℕ) (pD : IsPowDeg D' D n)
     (f g : D.P.A ⟶ D.P.A) (f' g' : D'.P.A ⟶ D'.P.A) (a a' : D.X → D.X), IsMonHom f → IsMonHom g →

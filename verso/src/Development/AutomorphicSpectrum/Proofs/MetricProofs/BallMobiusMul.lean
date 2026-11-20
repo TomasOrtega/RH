@@ -14,21 +14,37 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.MoebAct
 
 variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[ballMat, ballPt]`.
+-/
 theorem ballMat_ballPt (q : Ψ × Fin j × Fin j' ≃ Fin n) (W : Ψ → Matrix (Fin j') (Fin j) ℂ) (τ : Ψ) :
     ballMat q (ballPt q W) τ = (W τ)ᵀ := by
   ext a b
   simp [ballMat, ballPt]
 
+/- English proof (translation)
+Simplify using `[sgI, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def, sub_eq_add_neg, neg_mulVec, Finset.sum_neg_distrib]`.
+-/
 theorem sgI_form (a : Fin j → ℂ) (b : Fin j' → ℂ) :
     star (Sum.elim a b : Sg j j' → ℂ) ⬝ᵥ (sgI j j' *ᵥ Sum.elim a b) = star a ⬝ᵥ a - star b ⬝ᵥ b := by
   simp [sgI, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, Function.comp_def, sub_eq_add_neg,
     neg_mulVec, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `hv' : vᴴ * sgI j j' * v = sgI j j'` using `hv`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hv']`.
+-/
 theorem form_mulVec {v : Matrix (Sg j j') (Sg j j') ℂ} (hv : IsSgU v) (z : Sg j j' → ℂ) :
     star (v *ᵥ z) ⬝ᵥ (sgI j j' *ᵥ (v *ᵥ z)) = star z ⬝ᵥ (sgI j j' *ᵥ z) := by
   have hv' : vᴴ * sgI j j' * v = sgI j j' := hv
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hv']
 
+/- English proof (translation)
+Establish `hc : star y ≠ 0` using `by simpa using hy`. Establish `h` using `hW.dotProduct_mulVec_pos hc`. Establish `hw : Wᵀ *ᵥ star y = star (Wᴴ *ᵥ y)`. Rewrite using `[star_mulVec, conjTranspose_conjTranspose, mulVec_transpose]`. Establish `e : star (star y) ⬝ᵥ ((1 - (Wᵀ)ᴴ * Wᵀ) *ᵥ star y) = star y ⬝ᵥ y - star (Wᴴ *ᵥ y) ⬝ᵥ (Wᴴ *ᵥ y)`.
+
+Rewrite using `[sub_mulVec, one_mulVec, ← mulVec_mulVec, hw, dotProduct_sub, star_star, dotProduct_comm y (star y)]`. Use `congr 1`. Rewrite using `[dotProduct_mulVec, vecMul_conjTranspose, hw, star_star, dotProduct_comm]`. Rewrite `h` using `[e]`. Use `(Complex.lt_def.1 h).1` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem norm_lt_of_ball {W : Matrix (Fin j') (Fin j) ℂ} (hW : (1 - (Wᵀ)ᴴ * Wᵀ).PosDef) {y : Fin j' → ℂ}
     (hy : y ≠ 0) : (star (Wᴴ *ᵥ y) ⬝ᵥ (Wᴴ *ᵥ y)).re < (star y ⬝ᵥ y).re := by
   have hc : star y ≠ 0 := by simpa using hy
@@ -44,6 +60,23 @@ theorem norm_lt_of_ball {W : Matrix (Fin j') (Fin j) ℂ} (hW : (1 - (Wᵀ)ᴴ *
   have := (Complex.lt_def.1 h).1
   simpa using this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h0 : (v.toBlocks₁₁ + v.toBlocks₁₂ * W).det = 0` using `by simpa using hne`. Take `⟨x, hx, hPx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hz : v *ᵥ Sum.elim x (W *ᵥ x) = Sum.elim (0 : Fin j → ℂ) ((v.toBlocks₂₁ + v.toBlocks₂₂ * W) *ᵥ x)` using `by conv_lhs => rw [← fromBlocks_toBlocks v]`. Rewrite using `[fromBlocks_mulVec]`.
+
+Establish `h1 : v.toBlocks₁₁ *ᵥ x + v.toBlocks₁₂ *ᵥ (W *ᵥ x) = 0`. Rewrite using `[← hPx, add_mulVec, mulVec_mulVec]`. Use `show Sum.elim (v.toBlocks₁₁ *ᵥ x + v.toBlocks₁₂ *ᵥ (W *ᵥ x)) (v.toBlocks₂₁ *ᵥ x + v.toBlocks₂₂ *ᵥ (W *ᵥ x)) = _`. Rewrite using `[h1, add_mulVec, mulVec_mulVec]`. Establish `hen` using `form_mulVec hv (Sum.elim x (W *ᵥ x))`.
+
+Rewrite `hen` using `[hz, sgI_form, sgI_form]`. Use `set y := W *ᵥ x with hy`. Use `set Qx := (v.toBlocks₂₁ + v.toBlocks₂₂ * W) *ᵥ x`. Establish `hxx : 0 < (star x ⬝ᵥ x).re`. Use `(Complex.lt_def.1 (dotProduct_star_self_pos_iff.2 hx)).1` as an intermediate fact.
+
+Simplify using `using this`. Establish `hQ : 0 ≤ (star Qx ⬝ᵥ Qx).re` using `(Complex.le_def.1 (dotProduct_star_self_nonneg Qx)).1`. Establish `hre` using `congrArg Complex.re hen`. Simplify using `only [Complex.sub_re, star_zero, dotProduct_zero, Complex.zero_re] at hre`. Establish `hyy : (star x ⬝ᵥ x).re ≤ (star y ⬝ᵥ y).re` using `by linarith`.
+
+Establish `hy0 : y ≠ 0`. Introduce `h`. Rewrite `hyy` using `[h]`. Simplify using `at hyy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlt` using `norm_lt_of_ball hW hy0`. Use `set w := Wᴴ *ᵥ y with hw`. Establish `hnn : 0 ≤ (star (x - w) ⬝ᵥ (x - w)).re` using `(Complex.le_def.1 (dotProduct_star_self_nonneg (x - w))).1`. Establish `h1 : star x ⬝ᵥ w = star y ⬝ᵥ y`. Rewrite using `[hw, dotProduct_mulVec, hy, star_mulVec]`.
+
+Establish `h2 : star w ⬝ᵥ x = star y ⬝ᵥ y`. Rewrite using `[hw, star_mulVec, conjTranspose_conjTranspose, ← dotProduct_mulVec]`. Establish `hexp : star (x - w) ⬝ᵥ (x - w) = star x ⬝ᵥ x - star x ⬝ᵥ w - star w ⬝ᵥ x + star w ⬝ᵥ w`. Simplify using `only [star_sub, sub_dotProduct, dotProduct_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hnn` using `[hexp, h1, h2]`. Simplify using `only [Complex.add_re, Complex.sub_re] at hnn`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isUnit_det_P {v : Matrix (Sg j j') (Sg j j') ℂ} (hv : IsSgU v) {W : Matrix (Fin j') (Fin j) ℂ}
     (hW : (1 - (Wᵀ)ᴴ * Wᵀ).PosDef) : IsUnit (v.toBlocks₁₁ + v.toBlocks₁₂ * W).det := by
   by_contra hne
@@ -89,6 +122,17 @@ theorem isUnit_det_P {v : Matrix (Sg j j') (Sg j j') ℂ} (hv : IsSgU v) {W : Ma
   simp only [Complex.add_re, Complex.sub_re] at hnn
   linarith
 
+/- English proof (translation)
+Use `set P := v.toBlocks₁₁ + v.toBlocks₁₂ * W with hPd`. Use `set Q := v.toBlocks₂₁ + v.toBlocks₂₂ * W with hQd`. Establish `hPP : P⁻¹ * P = 1` using `nonsing_inv_mul _ hP`. Establish `hPP' : P * P⁻¹ = 1` using `mul_nonsing_inv _ hP`. Establish `hv : moebW v W = Q * P⁻¹` using `rfl`.
+
+Establish `huv : u * v = fromBlocks (u.toBlocks₁₁ * v.toBlocks₁₁ + u.toBlocks₁₂ * v.toBlocks₂₁) (u.toBlocks₁₁ * v.toBlocks₁₂ + u.toBlocks₁₂ * v.toBlocks₂₂) (u.toBlocks₂₁ * v.toBlocks₁₁ + u.toBlocks₂₂ * v.toBlocks₂₁) (u.toBlocks₂₁ * v.toBlocks₁₂ + u.toBlocks₂₂ * v.toBlocks₂₂)`. Rewrite using `[← fromBlocks_multiply, fromBlocks_toBlocks, fromBlocks_toBlocks]`. Establish `e1 : (u * v).toBlocks₁₁ + (u * v).toBlocks₁₂ * W = (u.toBlocks₁₁ + u.toBlocks₁₂ * (Q * P⁻¹)) * P`. Establish `hr : (u.toBlocks₁₁ + u.toBlocks₁₂ * (Q * P⁻¹)) * P = u.toBlocks₁₁ * P + u.toBlocks₁₂ * Q`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc u.toBlocks₁₂, Matrix.mul_assoc Q, hPP, Matrix.mul_one]`.
+
+Rewrite using `[hr, huv, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, hPd, hQd]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `e2 : (u * v).toBlocks₂₁ + (u * v).toBlocks₂₂ * W = (u.toBlocks₂₁ + u.toBlocks₂₂ * (Q * P⁻¹)) * P`. Establish `hr : (u.toBlocks₂₁ + u.toBlocks₂₂ * (Q * P⁻¹)) * P = u.toBlocks₂₁ * P + u.toBlocks₂₂ * Q`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_assoc u.toBlocks₂₂, Matrix.mul_assoc Q, hPP, Matrix.mul_one]`. Rewrite using `[hr, huv, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, hPd, hQd]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[hv]`.
+
+Unfold `moebW`. Rewrite using `[e1, e2, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP', Matrix.one_mul]`.
+-/
 theorem moebW_mul (u v : Matrix (Sg j j') (Sg j j') ℂ) (W : Matrix (Fin j') (Fin j) ℂ)
     (hP : IsUnit (v.toBlocks₁₁ + v.toBlocks₁₂ * W).det) :
     moebW (u * v) W = moebW u (moebW v W) := by
@@ -121,6 +165,11 @@ theorem moebW_mul (u v : Matrix (Sg j j') (Sg j j') ℂ) (W : Matrix (Fin j') (F
   unfold moebW
   rw [e1, e2, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP', Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `Ψ _ j j' n q u v hu hv t ht`. Unfold `moebBall`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[ballMat_ballPt, transpose_transpose]`.
+
+Use `moebW_mul _ _ _ (isUnit_det_P (hv τ) ?_)` and prove the remaining obligations. Simplify using `using ht τ`.
+-/
 theorem moebBall_mul : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (u v : Ψ → Matrix (Sg j j') (Sg j j') ℂ), (∀ τ, IsSgU (u τ)) → (∀ τ, IsSgU (v τ)) → ∀ t ∈ ballDom q, moebBall q (fun τ => u τ * v τ) t = moebBall q u (moebBall q v t) := by
   intro Ψ _ j j' n q u v hu hv t ht
   unfold moebBall

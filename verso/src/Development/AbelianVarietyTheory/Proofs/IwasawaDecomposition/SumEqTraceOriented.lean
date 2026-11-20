@@ -21,6 +21,9 @@ section Generic
 
 variable {R : Type} [CommRing R] (c : R →+* R) {n m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_eq_trace_oriented (P : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R)
     (x y : Matrix (Fin m) (Fin n) R) :
     ∑ a, ∑ b, ∑ e, ∑ d, P a b * c (y e b) * K e d * x d a = (P * (y.map c)ᵀ * K * x).trace := by
@@ -32,6 +35,11 @@ theorem sum_eq_trace_oriented (P : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m)
     _ = ∑ e, ∑ d, ∑ b, P a b * c (y e b) * K e d * x d a := Finset.sum_congr rfl fun e _ => Finset.sum_comm
     _ = _ := Finset.sum_comm
 
+/- English proof (translation)
+Establish `e1 : Jᵀ * Pᵀ = 1` using `by rw [← Matrix.transpose_mul, hPJ, Matrix.transpose_one]`. Rewrite using `[Matrix.transpose_map, Matrix.transpose_transpose, Matrix.map_mul, hP, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Use `_ = (y.map c * Pᵀ * (Jᵀ * Pᵀ) * xᵀ * Kᵀ).trace := by rw [e1, Matrix.mul_one]`.
+
+Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem trace_coord (J P : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m) R)
     (hPJ : P * J = 1) (hP : P.map c = Pᵀ) (x y : Matrix (Fin m) (Fin n) R) :
     (P * (y.map c)ᵀ * K * x).trace = ((((y * P)ᵀ).map c)ᵀ * Jᵀ * (x * P)ᵀ * Kᵀ).trace := by
@@ -46,6 +54,9 @@ theorem trace_coord (J P : Matrix (Fin n) (Fin n) R) (K : Matrix (Fin m) (Fin m)
     _ = (y.map c * Pᵀ * (Jᵀ * Pᵀ) * xᵀ * Kᵀ).trace := by rw [e1, Matrix.mul_one]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hJP : J * P = 1` using `mul_eq_one_comm.1 hPJ`. Establish `key : g' * P = P * (g.map c)ᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (h * x), key]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem act_coord (J P g g' : Matrix (Fin n) (Fin n) R) (h : Matrix (Fin m) (Fin m) R)
     (hPJ : P * J = 1) (hg : (g.map c)ᵀ * J * g = J) (hgg : g * g' = 1) (x : Matrix (Fin m) (Fin n) R) :
     (h * x * g' * P)ᵀ = g.map c * (x * P)ᵀ * hᵀ := by
@@ -62,17 +73,31 @@ end Generic
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[cA, sigR, incA, inclR, CMData.sig, starRingEnd_apply]`.
+-/
 theorem cA_incA (a : D.host.E) : cA D (incA D a) = incA D (star a) := by
   simp [cA, sigR, incA, inclR, CMData.sig, starRingEnd_apply]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+-/
 theorem gram_conjTranspose (V : HSp D) : V.gramᴴ = V.gram := by
   refine Matrix.ext fun i j => ?_
   exact V.herm.eq (V.frame j) (V.frame i)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem gramInv_mul (V : HSp D) : (V.gram⁻¹).map (incA D) * V.gram.map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `h : (V.gram⁻¹)ᴴ = V.gram⁻¹` using `by rw [Matrix.conjTranspose_nonsing_inv, gram_conjTranspose]`. Use extensionality with `i j`. Use `congrFun (congrFun h j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply]`.
+
+Rewrite using `[cA_incA, this]`.
+-/
 theorem gramInv_map (V : HSp D) :
     ((V.gram⁻¹).map (incA D)).map (cA D) = ((V.gram⁻¹).map (incA D))ᵀ := by
   have h : (V.gram⁻¹)ᴴ = V.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, gram_conjTranspose]
@@ -82,11 +107,19 @@ theorem gramInv_map (V : HSp D) :
   simp only [Matrix.map_apply, Matrix.transpose_apply]
   rw [cA_incA, this]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+-/
 theorem mt_mul_inv (V : HSp D) (g : GA D V) :
     Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Unfold `hO hHom`. Rewrite using `[if_pos hr]`. Establish `s` using `sum_eq_trace (cA D) (S.gram.map (incA D)) (T.gram.map (incA D)) (toTWsmall S T y) (toTWsmall S T x)`. Establish `s'` using `sum_eq_trace_oriented (cA D) ((S.gram⁻¹).map (incA D)) (T.gram.map (incA D)) x y`. Simplify using `only [Matrix.map_apply] at s s'`.
+
+Rewrite using `[s, s']`. Conclude with `trace_coord (cA D) _ _ _ (gramInv_mul S) (gramInv_map S) x y`.
+-/
 theorem hO_eq (S T : HSp D) (hr : S.rank ≤ T.rank) (x y : WO S T) :
     hO S T x y = hHom S T (toTWsmall S T y) (toTWsmall S T x) := by
   unfold hO hHom
@@ -98,6 +131,11 @@ theorem hO_eq (S T : HSp D) (hr : S.rank ≤ T.rank) (x y : WO S T) :
   rw [s, s']
   exact trace_coord (cA D) _ _ _ (gramInv_mul S) (gramInv_map S) x y
 
+/- English proof (translation)
+Introduce `S T hr`. Use `⟨fun x y => ?_, fun g h x => ?_⟩` and prove the remaining obligations. Unfold `symplO sympl`. Rewrite using `[hO_eq S T hr]`. Unfold `actHom`.
+
+Rewrite using `[if_pos hr]`. Conclude with `act_coord (cA D) _ _ _ _ _ (gramInv_mul S) (mt_rel S g) (mt_mul_inv S g) x`.
+-/
 theorem bridgeSmall (D : D7) : BridgeSmall D := by
   intro S T hr
   refine ⟨fun x y => ?_, fun g h x => ?_⟩

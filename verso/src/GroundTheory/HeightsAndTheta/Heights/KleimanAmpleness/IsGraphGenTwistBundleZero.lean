@@ -43,6 +43,35 @@ def mulMemIdeal (A : Subalgebra S Ω) (r : Ω) : Ideal A where
     intro c a ha
     simpa [smul_eq_mul, mul_assoc] using A.mul_mem c.2 ha
 
+/- English proof (translation)
+Establish `hone : (1 : Ω) ∈ Submodule.span A (Set.range g) * Q'`. Rewrite using `[hQQ]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hwQ, hsum⟩ : ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = 1 := by`. Use `Submodule.mul_induction_on (C := fun z => ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = z) hone ?_ ?_` and prove the remaining obligations.
+
+Introduce `q hq q' hq'`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hq`. Use `⟨fun b => (a b : Ω) * q', fun b => Q'.smul_mem (a b) hq', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ _ ⟨w, hw, rfl⟩ ⟨w', hw', rfl⟩`. Use `⟨w + w', fun b => Q'.add_mem (hw b) (hw' b), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => by simp [mul_add]`. Establish `hgA : ∀ a b, g a * w b ∈ A`. Introduce `a b`. Establish `h` using `Submodule.mul_mem_mul (Submodule.subset_span ⟨a, rfl⟩ : g a ∈ Submodule.span A (Set.range g)) (hwQ b)`. Rewrite `h` using `[hQQ, Submodule.mem_one]`.
+
+Take `⟨y, hy⟩` from `h`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `htw : ∀ b, t * w b ∈ A`. Introduce `b`.
+
+Establish `hM : ∀ j, ∃ M : ℕ, (g j * w j) ^ M * (t * w b) ∈ A`. Introduce `j`. Distinguish the cases in `hj : g j = 0`. Conclude with `⟨1, by simp [hj]⟩`. Establish `h1 : t / g j ∈ powMulMem A (g j * w j) (hgA j j)`.
+
+Use `((hR j hj).trans ?_) (ht j hj)` and prove the remaining obligations. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (ha | ⟨c, rfl⟩)`. Conclude with `⟨0, by simpa using ha⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Establish `: (g j * w j) ^ 1 * (g c / g j) = g c * w j`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `hgA c j`. Take `⟨M, hM⟩` from `h1`.
+
+Use `⟨M, ?_⟩` and prove the remaining obligations. Establish `: (g j * w j) ^ M * (t * w b) = (g j * w j) ^ M * (t / g j) * (g j * w b)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `A.mul_mem hM (hgA j b)`.
+
+Use `choose M hM using hM`. Set `e : Fin m → A` to `fun j => ⟨g j * w j, hgA j j⟩`. Establish `hspan : Ideal.span (Set.range e) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : A) = ∑ j, e j` using `Subtype.ext (by simp [e, hsum])`.
+
+Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.subset_span ⟨j, rfl⟩`. Establish `hpow` using `Ideal.span_pow_eq_top _ hspan (∑ j, M j)`. Establish `hle : Ideal.span ((fun a => a ^ (∑ j, M j)) '' Set.range e) ≤ mulMemIdeal A (t * w b)`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Establish `hj : M j ≤ ∑ j, M j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Express the relevant statement in the definitionally equal form `((e j ^ (∑ j, M j) : A) : Ω) * (t * w b) ∈ A`. Rewrite using `[SubmonoidClass.coe_pow, ← Nat.sub_add_cancel hj, pow_add, mul_assoc]`. Conclude with `A.mul_mem (A.pow_mem (hgA j j) _) (hM j)`.
+
+Rewrite `hle` using `[hpow]`. Establish `h1 : (1 : A) ∈ mulMemIdeal A (t * w b)` using `hle Submodule.mem_top`. Simplify `h1` using `[mulMemIdeal]`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun b => ⟨t * w b, htw b⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Subalgebra.smul_def, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ => by ring`. Use `_ = t := by rw [hsum, mul_one]`.
+-/
 theorem mem_span_of_div_mem (A : Subalgebra S Ω) (Q' : Submodule A Ω) {m : ℕ} (g : Fin m → Ω)
     (hQQ : Submodule.span A (Set.range g) * Q' = 1) (R : Fin m → Subalgebra S Ω)
     (hR : ∀ j, g j ≠ 0 → R j ≤ Algebra.adjoin S ((A : Set Ω) ∪ Set.range fun b => g b / g j))
@@ -139,20 +168,41 @@ def graphDeg (n : ℤ) : Unit ⊕ Unit → ℤ := Sum.elim (fun _ => -n) (fun _ 
 def graphChart (i : Fin (N + 1)) (j : Fin m) : ∀ k, graphIdx N m k :=
   IndefiniteRowSideFullHecke.Kleiman2.joinChart (fun _ : Unit => i) (fun _ : Unit => j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphVec_inl (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (a : Fin (N + 1)) :
     graphVec x s ⟨Sum.inl (), a⟩ = x a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphVec_inr (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (b : Fin m) :
     graphVec x s ⟨Sum.inr (), b⟩ = s b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphChart_inl (i : Fin (N + 1)) (j : Fin m) : graphChart i j (Sum.inl ()) = i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphChart_inr (i : Fin (N + 1)) (j : Fin m) : graphChart i j (Sum.inr ()) = j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphDeg_inl (n : ℤ) : graphDeg n (Sum.inl ()) = -n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem graphDeg_inr (n : ℤ) : graphDeg n (Sum.inr ()) = 1 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with ⟨⟩ | ⟨⟩ <;> rfl`.
+-/
 theorem graphChart_eta (c : ∀ k, graphIdx N m k) : c = graphChart (c (Sum.inl ())) (c (Sum.inr ())) := by
   funext k
   rcases k with ⟨⟩ | ⟨⟩ <;> rfl
@@ -164,14 +214,23 @@ abbrev graphRing (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (i : Fin (N + 1)) (
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨⟨Sum.inl (), a⟩, rfl⟩`.
+-/
 theorem div_mem_graphRing_inl (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (i a : Fin (N + 1)) (j : Fin m) :
     x a / x i ∈ graphRing S x s i j :=
   Algebra.subset_adjoin ⟨⟨Sum.inl (), a⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨⟨Sum.inr (), b⟩, rfl⟩`.
+-/
 theorem div_mem_graphRing_inr (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (i : Fin (N + 1)) (j b : Fin m) :
     s b / s j ∈ graphRing S x s i j :=
   Algebra.subset_adjoin ⟨⟨Sum.inr (), b⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← TranslateEq.chartRing.equiv S x hi]`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `div_mem_graphRing_inl x s i a j`.
+-/
 theorem chartRing_le_graphRing (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {i : Fin (N + 1)} (hi : x i ≠ 0)
     (j : Fin m) : Kleiman.chartRing S x (Kleiman.singleChart hi) ≤ graphRing S x s i j := by
   rw [← TranslateEq.chartRing.equiv S x hi]
@@ -179,6 +238,9 @@ theorem chartRing_le_graphRing (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {i : 
   rintro _ ⟨a, rfl⟩
   exact div_mem_graphRing_inl x s i a j
 
+/- English proof (translation)
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨⟩ | ⟨⟩, a⟩, rfl⟩`. Conclude with `hA (Kleiman.ratio hi a).2`. Conclude with `hs a`.
+-/
 theorem graphRing_le (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {i : Fin (N + 1)} (hi : x i ≠ 0) (j : Fin m)
     (T : Subalgebra S Ω) (hA : Kleiman.chartRing S x (Kleiman.singleChart hi) ≤ T)
     (hs : ∀ b, s b / s j ∈ T) : graphRing S x s i j ≤ T := by
@@ -187,11 +249,19 @@ theorem graphRing_le (x : Fin (N + 1) → Ω) (s : Fin m → Ω) {i : Fin (N + 1
   · exact hA (Kleiman.ratio hi a).2
   · exact hs a
 
+/- English proof (translation)
+Simplify using `only [Fintype.prod_sum_type, Fintype.univ_unit, Finset.prod_singleton]`. Both sides reduce to the same expression.
+-/
 theorem prod_graph (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (β : Unit ⊕ Unit → ℤ) (i : Fin (N + 1)) (j : Fin m) :
     ∏ k, graphVec x s ⟨k, graphChart i j k⟩ ^ (-β k) = x i ^ (-β (Sum.inl ())) * s j ^ (-β (Sum.inr ())) := by
   simp only [Fintype.prod_sum_type, Fintype.univ_unit, Finset.prod_singleton]
   rfl
 
+/- English proof (translation)
+Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`. Use `h (graphChart i j) (by rintro (⟨⟩ | ⟨⟩); exacts [hi, hj])` as an intermediate fact. Rewrite `this` using `[prod_graph]`. Then use the resulting hypothesis.
+
+Introduce `h c hc`. Take `⟨i, j, rfl⟩ : ∃ (i : Fin (N + 1)) (j : Fin m), c = graphChart i j` from `⟨c (Sum.inl ()), c (Sum.inr ()), graphChart_eta c⟩`. Rewrite using `[prod_graph]`. Conclude with `h i j (hc (Sum.inl ())) (hc (Sum.inr ()))`.
+-/
 theorem mem_secOver_graph_iff (x : Fin (N + 1) → Ω) (s : Fin m → Ω) (β : Unit ⊕ Unit → ℤ) (t : Ω) :
     t ∈ secOver S (graphVec x s) β ↔ ∀ i j, x i ≠ 0 → s j ≠ 0 →
       t * (x i ^ (-β (Sum.inl ())) * s j ^ (-β (Sum.inr ()))) ∈ graphRing S x s i j := by
@@ -216,6 +286,11 @@ variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N m : �
 def IsGraphGen (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) : Prop :=
   ∀ I, Submodule.span (Kleiman.chartRing S x I) (Set.range s) = (Q.twist (Kleiman.twistSys S x n)).sub I
 
+/- English proof (translation)
+Rewrite using `[Kleiman.SubSystem.secs, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Conclude with `h _`. Introduce `h I`.
+
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).mp (I.2.2 hi)`. Conclude with `F.mono _ I (Finset.singleton_subset_iff.mpr hi) t (h i hxi)`.
+-/
 theorem mem_secs_iff (F : Kleiman.SubSystem S x Ω) (t : Ω) :
     t ∈ F.secs ↔ ∀ i (hi : x i ≠ 0), t ∈ F.sub (Kleiman.singleChart hi) := by
   rw [Kleiman.SubSystem.secs, Submodule.mem_iInf]
@@ -227,6 +302,31 @@ theorem mem_secs_iff (F : Kleiman.SubSystem S x Ω) (t : Ω) :
     have hxi : x i ≠ 0 := (Kleiman.mem_support x).mp (I.2.2 hi)
     exact F.mono _ I (Finset.singleton_subset_iff.mpr hi) t (h i hxi)
 
+/- English proof (translation)
+Use `set I := Kleiman.singleChart hi with hIdef`. Establish `hiI : i ∈ I.1` using `Finset.mem_singleton_self i`. Establish `hxn : x i ^ n ≠ 0` using `zpow_ne_zero n hi`. Set `g : Fin m → Ω` to `fun b => x i ^ (-n) * s b`. Establish `hgQ : Submodule.span (Kleiman.chartRing S x I) (Set.range g) = Q.sub I`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Establish `hb : s b ∈ (Q.twist (Kleiman.twistSys S x n)).sub I`. Rewrite using `[← hgen I]`.
+
+Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Take `⟨y, hy, hyb⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI (s b)).mp hb`. Establish `: g b = y`. Simplify using `only [g, hyb, smul_eq_mul, zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[SetLike.mem_coe, this]`. Conclude with `hy`. Introduce `y hy`. Establish `hy' : x i ^ n * y ∈ Submodule.span (Kleiman.chartRing S x I) (Set.range s)`. Rewrite using `[hgen I]`.
+
+Conclude with `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI _).mpr ⟨y, hy, rfl⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hy'`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [g, Subalgebra.smul_def, smul_eq_mul] at ha ⊢`.
+
+Establish `: ∑ b, (a b : Ω) * (x i ^ (-n) * s b) = x i ^ (-n) * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[this, ha, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hgdiv : ∀ b j, g b / g j = s b / s j`.
+
+Introduce `b j`. Simplify using `only [g, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hgt : ∀ j, t / g j = t * (x i ^ n * (s j)⁻¹)`. Introduce `j`.
+
+Simplify using `only [g, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hgQ]`. Prove the components needed by the constructor for the conclusion. Introduce `ht j _`.
+
+Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp ht`. Rewrite using `[← hgt, Finset.sum_div]`. Use `Subalgebra.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, mul_div_assoc, hgdiv]`. Conclude with `Subalgebra.mul_mem _ (chartRing_le_graphRing x s hi j (a b).2) (div_mem_graphRing_inr x s i j b)`.
+
+Introduce `ht`. Take `⟨Q', hQ'⟩` from `Q.invertible I`. Rewrite `hQ'` using `[← hgQ]`. Use `mem_span_of_div_mem _ Q' g hQ' (fun j => graphRing S x s i j) ?_ t ?_` and prove the remaining obligations. Introduce `j _`.
+
+Use `graphRing_le x s hi j _ (fun a ha => Algebra.subset_adjoin (Or.inl ha)) fun b => ?_` and prove the remaining obligations. Rewrite using `[← hgdiv]`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨b, rfl⟩)`. Introduce `j hj`. Establish `hsj : s j ≠ 0`.
+
+Introduce `h0`. Apply `hj` to reduce the goal to its premises. Simplify using `[g, h0]`. Rewrite using `[hgt]`. Conclude with `ht j hsj`.
+-/
 theorem mem_sub_iff_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s)
     {i : Fin (N + 1)} (hi : x i ≠ 0) (t : Ω) :
@@ -290,6 +390,11 @@ theorem mem_sub_iff_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → 
       rw [hgt]
       exact ht j hsj
 
+/- English proof (translation)
+Use extensionality with `t`. Rewrite using `[mem_secs_iff, mem_secOver_graph_iff]`. Simplify using `only [graphDeg_inl, graphDeg_inr, neg_neg, zpow_neg, zpow_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`.
+
+Conclude with `(mem_sub_iff_graph Q n s hgen hi t).mp (h i hi) j hj`. Introduce `h i hi`. Conclude with `(mem_sub_iff_graph Q n s hgen hi t).mpr fun j hj => h i j hi hj`.
+-/
 theorem secs_eq_secOver (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) :
     Q.secs = secOver S (graphVec x s) (graphDeg n) := by
@@ -302,6 +407,21 @@ theorem secs_eq_secOver (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω
   · intro h i hi
     exact (mem_sub_iff_graph Q n s hgen hi t).mpr fun j hj => h i j hi hj
 
+/- English proof (translation)
+Use extensionality with `t`. Rewrite using `[mem_secs_iff, mem_secOver_graph_iff]`. Establish `hb1 : (graphDeg n + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg baseBlock) (Sum.inl ()) = -n + c`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Establish `hb2 : (graphDeg n + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg baseBlock) (Sum.inr ()) = 1`.
+
+Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Rewrite using `[hb1, hb2]`. Establish `key : ∀ i (hi : x i ≠ 0), t ∈ (Q.twist (Kleiman.twistSys S x c)).sub (Kleiman.singleChart hi) ↔ x i ^ (-c) * t ∈ Q.sub (Kleiman.singleChart hi)`. Introduce `i hi`. Rewrite using `[TranslateEq.mem_twist_twistSys_iff Q.toSubSystem c _ (Finset.mem_singleton_self i)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `: x i ^ (-c) * x i ^ c • y = y`. Rewrite using `[smul_eq_mul, zpow_neg, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero c hi), one_mul]`. Rewrite using `[this]`.
+
+Conclude with `hy`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, zpow_neg, ← mul_assoc, mul_inv_cancel₀ (zpow_ne_zero c hi), one_mul]`. Establish `hmul : ∀ i j, x i ≠ 0 → x i ^ (-c) * t * (x i ^ n * (s j)⁻¹) = t * (x i ^ (-(-n + c)) * s j ^ (-(1 : ℤ)))`.
+
+Introduce `i j hi`. Rewrite using `[zpow_neg_one, show -(-n + c) = n + -c by ring, zpow_add₀ hi]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`.
+
+Rewrite using `[← hmul i j hi]`. Conclude with `(mem_sub_iff_graph Q n s hgen hi _).mp ((key i hi).mp (h i hi)) j hj`. Introduce `h i hi`. Use `(key i hi).mpr ((mem_sub_iff_graph Q n s hgen hi _).mpr fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[hmul i j hi]`.
+
+Conclude with `h i j hi hj`.
+-/
 theorem twist_secs_eq_secOver (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω)
     (hgen : IsGraphGen Q n s) (c : ℤ) :
     (Q.twist (Kleiman.twistSys S x c)).secs =

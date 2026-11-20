@@ -28,6 +28,11 @@ namespace GlobalTheory.RatInv
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
+/- English proof (translation)
+Establish `hint : ∀ l ∈ stdLat g, ∀ i, ∃ k : ℤ, l i = k`. Introduce `l hl i`. Take `⟨k, hk⟩` from `((Pi.basisFun ℝ (Fin g ⊕ Fin g)).mem_span_iff_repr_mem ℤ l).1 hl i`. Conclude with `⟨k, by simpa using hk.symm⟩`. Introduce `l hl l' hl'`.
+
+Use `choose a ha using hint l (hle hl)`. Use `choose a' ha' using hint l' (hle hl')`. Conclude with `⟨∑ i, (a (Sum.inr i) * a' (Sum.inl i) - a (Sum.inl i) * a' (Sum.inr i)), by`. Simplify using `[riem, ha, ha']⟩`.
+-/
 theorem riem_int {g : ℕ} {M : Submodule ℤ (Fl g)} (hle : M ≤ stdLat g) :
     ∀ l ∈ M, ∀ l' ∈ M, ∃ k : ℤ, riem l l' = k := by
   have hint : ∀ l ∈ stdLat g, ∀ i, ∃ k : ℤ, l i = k := by
@@ -40,6 +45,9 @@ theorem riem_int {g : ℕ} {M : Submodule ℤ (Fl g)} (hle : M ≤ stdLat g) :
   exact ⟨∑ i, (a (Sum.inr i) * a' (Sum.inl i) - a (Sum.inl i) * a' (Sum.inr i)), by
     simp [riem, ha, ha']⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hd.1, hM, ⟨fun l hl => hd.2.2.1.1 l (hle hl), fun l hl l' hl' => hd.2.2.1.2 l (hle hl) l' (hle hl')⟩, ⟨hd.2.2.2.1, hd.2.2.2.2.1, fun l hl => hd.2.2.2.2.2 l (hle hl)⟩⟩`.
+-/
 theorem restrict {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {M M' : Submodule ℤ (Fl g)} {j : Fl g → Pt E g → ℂ}
     {h : Pt E g → ℝ} (hd : IsDatum B τ M' j h) (hM : IsLat M) (hle : M ≤ M') :
@@ -47,6 +55,11 @@ theorem restrict {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
   ⟨hd.1, hM, ⟨fun l hl => hd.2.2.1.1 l (hle hl), fun l hl l' hl' => hd.2.2.1.2 l (hle hl) l' (hle hl')⟩,
     ⟨hd.2.2.2.1, hd.2.2.2.2.1, fun l hl => hd.2.2.2.2.2 l (hle hl)⟩⟩
 
+/- English proof (translation)
+Establish `hfin : Finite (stdLat g ⧸ M.submoduleOf (stdLat g))` using `GlobalTheory.finite_quotient_of_isLat_le M (stdLat g) hM hd.2.1 hle`. Establish `hall : ∀ χ : AddChar (stdLat g ⧸ M.submoduleOf (stdLat g)) ℂ, IsTorsionForm τ (stdLat g) (twistFactor M (stdLat g) χ j) m β b T` using `fun χ => GlobalTheory.T.flat_datum_uniqueness_on_simply_connected hN.2.2.1 hN.2.2.2.1 E g n B τ hB (stdLat g) (riem_int le_rfl) j _ m m hd hc (GlobalTheory.T.datum_twist_by_character E g B τ M (stdLat g) j m hd hM hle χ) hc β b hb T hT`. Establish `h` using `hN.2.2.2.2.2.1 E g n B τ M (stdLat g) j m hd hM hle β b hb (fun _ => T) hall`. Establish `e : ∑ᶠ _ : AddChar (stdLat g ⧸ M.submoduleOf (stdLat g)) ℂ, T = Nat.card (stdLat g ⧸ M.submoduleOf (stdLat g)) • T`. Use `Fintype.ofFinite (stdLat g ⧸ M.submoduleOf (stdLat g))` as an intermediate fact.
+
+Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, AddChar.card_eq, Nat.card_eq_fintype_card]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem cover_flat (hN : Naturality) {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {g n : ℕ} {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hB : SimplyConnectedSpace B) {j : Fl g → Pt E g → ℂ} {m : Pt E g → ℝ}
@@ -68,6 +81,21 @@ theorem cover_flat (hN : Naturality) {E : Type} [NormedAddCommGroup E] [NormedSp
       Nat.card_eq_fintype_card]
   rwa [e] at h
 
+/- English proof (translation)
+Introduce `hBK hN g γ hγ s hs`. Take `⟨hU, hSC⟩` from `GlobalTheory.T.siegel_period_map_simply_connected g`. Establish `hτ'` using `GlobalTheory.SympBase.main hU γ`. Establish `hsymm : ∀ s ∈ siegel g, tauU (actB γ s) = moeb γ (tauU s)` using `fun s hs => GlobalTheory.UnivAction.tauU_symPart_of_isSymm (hτ'.1.2.2 s hs).1`. Establish `hmaps : Set.MapsTo (actB γ) (siegel g) (siegel g)` using `fun s hs => by show IsSiegel (tauU (actB γ s))`.
+
+Rewrite using `[hsymm s hs]`. Conclude with `hτ'.1.2.2 s hs`. Use `⟨hmaps hs, ?_⟩` and prove the remaining obligations. Introduce and unpack `v T ⟨j, m, hd, hc, hT⟩`. Take `⟨M, hM, hMle, hL, hLle, hpos, hcard⟩` from `GlobalTheory.T.lattice_index_preserved_by_action g γ hγ`.
+
+Establish `hdiff : DifferentiableOn ℂ (actB γ) (siegel g)`. Establish `h1 : DifferentiableOn ℂ (fun s : symMat g => fun i k => moeb γ (tauU s) i k) (siegel g)` using `differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun k => hτ'.1.2.1 i k`. Conclude with `((GlobalTheory.UnivAction.symPartL g).differentiable.comp_differentiableOn h1).congr fun s _ => rfl`. Establish `h1` using `cover_flat hN hSC hd hc hL hLle ![fderiv ℂ (actB γ) s v] (hmaps hs) hT`. Establish `h2` using `(hN.1 (symMat g) (symMat g) g 1 (siegel g) tauU (latAct M γ) j m (restrict hd hL hLle) (siegel g) (actB γ) hU.1 hdiff hmaps ![v] s hs _).2 (by`.
+
+Establish `hβ : (fun i => fderiv ℂ (actB γ) s (![v] i)) = ![fderiv ℂ (actB γ) s v]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[hβ]`.
+
+Conclude with `h1)`. Establish `h3` using `GlobalTheory.T.isTorsionForm_congr_of_eventuallyEq (symMat g) g 1 (tauU ∘ actB γ) (fun s => moeb γ (tauU s)) _ _ _ _ s _ (Filter.eventually_of_mem (hU.1.mem_nhds hs) fun s hs => hsymm s hs) h2`. Establish `h4` using `hN.2.2.2.2.1 (symMat g) g 1 (siegel g) tauU M γ _ _ hU (GlobalTheory.T.datum_transform_under_symplectic g γ (latAct M γ) hL hLle j m hd) ![v] s hs _ h3`. Take `⟨hd2, hc2⟩` from `GlobalTheory.T.flat_datum_transform_under_unipotent g γ M hM hLle j m hd hc`. Establish `h5` using `GlobalTheory.T.flat_datum_uniqueness_on_simply_connected hN.2.2.1 hN.2.2.2.1 (symMat g) g 1 (siegel g) tauU hSC M (riem_int hMle) _ j _ m hd2 hc2 (restrict hd hM hMle) hc ![v] s hs _ h4`.
+
+Take `⟨T0, -, hT0⟩` from `hBK (symMat g) g 1 (siegel g) tauU (stdLat g) j m hd (hN.2.2.2.2.2.2 (symMat g) g (siegel g) tauU (stdLat g) j m hd hc) ![v]`. Establish `h6` using `cover_flat hN hSC hd hc hM hMle ![v] hs (((hT0 s hs).1 _).2 rfl)`. Take `⟨TM, -, hTM⟩` from `hBK (symMat g) g 1 (siegel g) tauU M j m (restrict hd hM hMle) (hN.2.2.2.2.2.2 (symMat g) g (siegel g) tauU M j m (restrict hd hM hMle) hc) ![v]`. Establish `e1` using `((hTM s hs).1 _).1 h5`. Establish `e2` using `((hTM s hs).1 _).1 h6`.
+
+Establish `e : T = T0 s`. Rewrite `e1` using `[← hcard]`. Conclude with `smul_right_injective _ hpos.ne' (e1.trans e2.symm)`. Conclude with `⟨j, m, hd, hc, e ▸ ((hT0 s hs).1 _).2 rfl⟩`.
+-/
 theorem univTorsion_ratInv : GlobalTheory.Published.BismutKoehlerTorsion → Naturality → ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g),
     (∀ i l, ∃ r : ℚ, γ.mat i l = r) → ∀ s ∈ siegel g, actB γ s ∈ siegel g ∧
       ∀ (v : symMat g) (T : Ext (1 + 1)), IsUnivTorsion g (actB γ s) (fderiv ℂ (actB γ) s v) T →

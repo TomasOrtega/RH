@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.RealMultAdjoint
 
+/- English proof (translation)
+Introduce `HR HD F _ _ 𝔠 R _ X c ψ hψ b x y`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Establish `gAB` using `smooth_prod X.dim X.dim`. Establish `C` using `cupSquare_of_free HR.1 hAB gAB`. Use `X.rm.hom` as an intermediate fact.
+
+Take `⟨φ, hφ, h2φ⟩` from `GlobalTheory.PolPairing.exists_isCorrForm_diag HR F 𝔠 R X c`. Take `⟨φ', hφ', h2φ'⟩` from `GlobalTheory.PolPairing.exists_isCorrForm_diag HR F 𝔠 R X (b • c)`. Establish `eψ : ψ = (2 : R) • φ` using `IsPolForm.unique HR.1 X.ab X.dim (pull_isLB (X.isLB c) _) hψ h2φ`. Take `⟨χ, hχ, k⟩` from `hφ.pull (X.isLB c) (homMor (dp0 R) (𝟙 _) (𝟙 X.A)) (homMor (dp0 R) (𝟙 _) (X.rm.act b)) (h := (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act b)).left) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category. …`. Take `rfl` from `hχ.unique C (X.isLB (b • c)) hφ'`.
+
+Establish `key : ∀ u v, χ u v = φ u (push (dp0 R) (𝟙 _) (X.rm.act b) v)` using `fun u v ↦ by`. Establish `e` using `k (push (dp0 R) (𝟙 _) (𝟙 X.A) u) u (push (dp0 R) (𝟙 _) (X.rm.act b) v) v (fun _ ↦ rfl) fun _ ↦ rfl`. Rewrite `e` using `[push_id, LinearMap.id_apply, RingHom.id_apply]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `ψ (push (dp0 R) (𝟙 _) (X.rm.act b) x) y = ψ x (push (dp0 R) (𝟙 _) (X.rm.act b) y)`. Establish `e₁` using `(LinearMap.IsAlt.neg hψ.isAlt y (push (dp0 R) (𝟙 _) (X.rm.act b) x)).symm`.
+
+Establish `e₂` using `LinearMap.IsAlt.neg h2φ'.isAlt y x`. Rewrite using `[e₁, eψ]`. Simplify using `only [LinearMap.smul_apply, ← key] at e₂ ⊢`. Conclude with `e₂`.
+-/
 theorem polForm_adjoint_rm : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) (c : 𝔠.elt) (ψ : LinearMap.BilinForm R (HdR X.A)),
     IsPolForm (dp0 R) (𝟙 _) X.A (X.diag c) ψ → ∀ (b : 𝓞 F) (x y : HdR X.A),

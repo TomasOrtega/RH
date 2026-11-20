@@ -4,6 +4,25 @@ namespace GlobalTheory
 
 open Representation
 
+/- English proof (translation)
+Set `M : Submodule ℂ S.toSubmodule` to `R.toSubmodule.comap S.toSubmodule.subtype`. Set `f : M →ₗ[ℂ] U` to `F.toLinearMap ∘ₗ S.toSubmodule.subtype ∘ₗ M.subtype`. Set `ψ : M →ₗ[ℂ] Y` to `φ.toLinearMap ∘ₗ M.subtype`. Establish `hker : LinearMap.ker f ≤ LinearMap.ker ψ`. Introduce `m hm`.
+
+Simplify using `only [LinearMap.mem_ker] at hm ⊢`. Conclude with `h (m : S.toSubmodule) m.2 hm`. Set `φ0 : LinearMap.range f →ₗ[ℂ] Y` to `(LinearMap.ker f).liftQ ψ hker ∘ₗ f.quotKerEquivRange.symm.toLinearMap`. Establish `hφ0 : ∀ m : M, φ0 ⟨f m, m, rfl⟩ = ψ m`. Introduce `m`.
+
+Simplify using `only [φ0, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[f.quotKerEquivRange_symm_apply_image m ⟨m, rfl⟩]`. Both sides reduce to the same expression. Set `S' : Subrepresentation σ` to `{ toSubmodule := LinearMap.range f apply_mem_toSubmodule := by`. Introduce and unpack `g _ ⟨m, rfl⟩`.
+
+Set `t : S.toSubmodule` to `S.toRepresentation g (m : S.toSubmodule)`. Establish `htM : t ∈ M` using `by show (t : V) ∈ R.toSubmodule`. Conclude with `R.apply_mem_toSubmodule g m.2`. Use `⟨⟨t, htM⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [f, LinearMap.comp_apply, Submodule.subtype_apply]`.
+
+Use `show F (ρ g _) = _`. Rewrite using `[F.isIntertwining]`. Use `rfl }`. Establish `hint : ∀ (g : H) (u : S'.toSubmodule), φ0 (S'.toRepresentation g u) = θ g (φ0 u)`. Introduce and unpack `g ⟨_, m, rfl⟩`.
+
+Set `t : S.toSubmodule` to `S.toRepresentation g (m : S.toSubmodule)`. Establish `htM : t ∈ M` using `by show (t : V) ∈ R.toSubmodule`. Conclude with `R.apply_mem_toSubmodule g m.2`. Establish `e1 : (S'.toRepresentation g ⟨f m, m, rfl⟩ : LinearMap.range f) = ⟨f ⟨t, htM⟩, ⟨t, htM⟩, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show σ g (F _) = F (ρ g _)`. Rewrite using `[F.isIntertwining]`. Both sides reduce to the same expression. Rewrite using `[e1, hφ0, hφ0]`. Use `show φ (S.toRepresentation g _) = θ g (φ _)`.
+
+Conclude with `IntertwiningMap.isIntertwining _ _ φ g _`. Use `⟨S', ⟨φ0, fun g => by ext u; exact hint g u⟩, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg (fun q : S'.toRepresentation.IntertwiningMap θ => q ⟨f ⟨s, hsR⟩, ⟨s, hsR⟩, rfl⟩) h0` as an intermediate fact. Simplify using `only [IntertwiningMap.coe_zero, Pi.zero_apply] at this`.
+
+Apply `hs` to reduce the goal to its premises. Establish `e2` using `hφ0 ⟨s, hsR⟩`. Conclude with `e2.symm.trans this`.
+-/
 theorem intertwining_peel_factor {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V)
     (σ : Representation ℂ H U) (θ : Representation ℂ H Y) (F : ρ.IntertwiningMap σ)
@@ -60,6 +79,15 @@ theorem intertwining_peel_factor {H V U Y : Type} [Group H] [AddCommGroup V] [Mo
   have e2 := hφ0 ⟨s, hsR⟩
   exact e2.symm.trans this
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `R s hsR hs hinj`. It suffices to derive a contradiction. Establish `h0 : (s : V) = 0` using `hinj _ hsR (by simp)`.
+
+Establish `: s = 0` using `Subtype.ext h0`. Conclude with `hs (by rw [this, map_zero])`. Consider the case `insert j T hj ih`. Introduce `R s hsR hs hinj`. Distinguish the cases in `hA : ∃ t : S.toSubmodule, (t : V) ∈ R.toSubmodule ∧ E j t = 0 ∧ φ t ≠ 0`.
+
+Take `⟨t, htR, htE, htφ⟩` from `hA`. Use `ih (R ⊓ (E j).ker) t ⟨htR, htE⟩ htφ ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hvR, hvE⟩ hv`. Use `hinj v hvR ?_` and prove the remaining obligations. Introduce `i hi`.
+
+Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `hvE`. Conclude with `hv i hi`. Use `push_neg at hA`. Conclude with `intertwining_peel_factor ρ σ θ (E j) R S φ s hsR hs (fun t htR htE => hA t htR htE)`.
+-/
 theorem intertwining_peel_finset {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
     [Module ℂ U] [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V)
     (σ : Representation ℂ H U) (θ : Representation ℂ H Y) {ι : Type}
@@ -90,6 +118,9 @@ theorem intertwining_peel_finset {H V U Y : Type} [Group H] [AddCommGroup V] [Mo
     · push_neg at hA
       exact intertwining_peel_factor ρ σ θ (E j) R S φ s hsR hs (fun t htR htE => hA t htR htE)
 
+/- English proof (translation)
+Introduce `hsR hs hinj`. Conclude with `intertwining_peel_finset ρ σ θ E S φ Finset.univ R s hsR hs (fun v hv h => hinj v hv (fun i => h i (Finset.mem_univ i)))`.
+-/
 theorem intertwining_peel {H V U Y : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     [AddCommGroup Y] [Module ℂ Y] (ρ : Representation ℂ H V) (σ : Representation ℂ H U)
     (θ : Representation ℂ H Y) {ι : Type} [Fintype ι] (E : ι → ρ.IntertwiningMap σ)

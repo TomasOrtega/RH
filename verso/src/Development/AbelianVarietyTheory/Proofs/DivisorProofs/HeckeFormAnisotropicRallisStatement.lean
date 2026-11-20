@@ -19,5 +19,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (sZero)
 open GlobalTheory.Mem.Th (CptF)
 open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses | exact GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses | (intros; apply GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hecke_form_anisotropic_rallis : GlobalTheory.FunPr.Hypotheses₂ → ∀ D : D7, GlobalTheory.RallisBottom.HeckeFormAniso D := by
   first | exact @GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses | exact GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses | (intros; apply GlobalTheory.RallisBottom.heckeFormAniso_all_of_hypotheses <;> assumption)

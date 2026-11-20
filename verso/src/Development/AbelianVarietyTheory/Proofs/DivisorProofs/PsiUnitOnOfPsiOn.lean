@@ -11,15 +11,36 @@ noncomputable section
 
 namespace GlobalTheory.PsiUnitOfPsiOn
 
+/- English proof (translation)
+Introduce `a b e`. Use `congrArg (inv f).hom e` as an intermediate fact. Rewrite `this` using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, IsIso.hom_inv_id, CommRingCat.id_apply, CommRingCat.id_apply]`. Then use the resulting hypothesis.
+-/
 theorem injective_of_isIso {A B : CommRingCat} (f : A ⟶ B) [IsIso f] : Function.Injective f.hom := by
   intro a b e
   have := congrArg (inv f).hom e
   rwa [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, IsIso.hom_inv_id, CommRingCat.id_apply,
     CommRingCat.id_apply] at this
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun _ => hz`.
+-/
 theorem mem_wchart1 {Y B : Scheme.{0}} (M : LB B) (φ : Y ⟶ B) (z : Y) (i : M.ι) (hz : φ z ∈ M.U i) :
     z ∈ LB.wchart M (fun _ : PUnit => φ) (fun _ => i) := Set.mem_iInter.2 fun _ => hz
 
+/- English proof (translation)
+Introduce `R _ _ D W ψ y j V _ hVW hj h`. Take `⟨p, rfl⟩ : ∃ p, j = fun _ => p` from `⟨j PUnit.unit, funext fun _ => rfl⟩`. Establish `hle : W.ι ⁻¹ᵁ V ≤ LB.wchart D.P.L (fun _ : PUnit => (toUnit (TW W) ≫ D.c y).left) (fun _ => p)` using `fun z hz => mem_wchart1 _ _ _ _ (hj hz)`. Establish `hVr : V ≤ W.ι.opensRange` using `by rw [Scheme.Opens.opensRange_ι]; exact hVW`. Use `haveI := W.ι.isIso_app V hVr`.
+
+Use `set u : Γ(W.toScheme, W.ι ⁻¹ᵁ V)ˣ := res hle ((ψ.psi y).s (fun _ => p)) with hu`. Use `set r : Γ(Spec (CommRingCat.of R), V) := (inv (W.ι.app V)).hom u.val with hr`. Establish `hr' : (W.ι.app V).hom r = u.val`. Rewrite using `[hr, ← CommRingCat.comp_apply, IsIso.inv_hom_id, CommRingCat.id_apply]`. Use `⟨r, u.isUnit.map (inv (W.ι.app V)).hom, ?_⟩` and prove the remaining obligations.
+
+Establish `hKr : jK R ⁻¹ᵁ V ≤ (jK R ⁻¹ᵁ W).ι.opensRange`. Rewrite using `[Scheme.Opens.opensRange_ι]`. Conclude with `fun z hz => hVW hz`. Use `haveI := (jK R ⁻¹ᵁ W).ι.isIso_app (jK R ⁻¹ᵁ V) hKr`. Apply `injective_of_isIso ((jK R ⁻¹ᵁ W).ι.app (jK R ⁻¹ᵁ V))` to reduce the goal to its premises.
+
+Apply `fn_ext` to reduce the goal to its premises. Introduce `z hz`. Establish `hι : (jK R ∣_ W) ≫ W.ι = (jK R ⁻¹ᵁ W).ι ≫ jK R` using `morphismRestrict_ι _ _`. Establish `hzV : jK R ((jK R ⁻¹ᵁ W).ι z) ∈ V` using `hz`. Establish `hpt : W.ι ((jK R ∣_ W) z) = jK R ((jK R ⁻¹ᵁ W).ι z)` using `congrArg (fun q => q z) hι`.
+
+Establish `hm : (jK R ∣_ W) z ∈ W.ι ⁻¹ᵁ V` using `by show W.ι ((jK R ∣_ W) z) ∈ V`. Rewrite using `[hpt]`. Conclude with `hzV`. Establish `h₁ : (𝟙 _ : (jK R ⁻¹ᵁ W).toScheme ⟶ _) z ∈ LB.wchart D.P.L (fun _ : PUnit => (jK R ∣_ W) ≫ (toUnit (TW W) ≫ D.c y).left) (fun _ => p)` using `mem_wchart1 _ _ _ _ (hj hm)`. Establish `h₂ : (𝟙 _ : (jK R ⁻¹ᵁ W).toScheme ⟶ _) z ∈ LB.wchart D.P.L (fun _ : PUnit => (jK R ⁻¹ᵁ W).ι ≫ D.xK y) (fun _ => p)` using `mem_wchart1 _ _ _ _ (hj hzV)`.
+
+Establish `e₃` using `(gm_pullGen D.P.L _ _ (ψ.psi y) (jK R ∣_ W) (𝟙 _) z (fun _ => p) h₁).symm.trans ((gm_corr D.P.L (ψ.psi_eq y) (𝟙 _) z p h₁ h₂).trans (gm_pullGen D.P.L _ _ (D.psi y) (jK R ⁻¹ᵁ W).ι (𝟙 _) z (fun _ => p) h₂))`. Rewrite `e₃` using `[Category.id_comp, Category.id_comp]`. Establish `l₁` using `gs_pull (𝟙 _) (jK R ⁻¹ᵁ W).ι z (jK R ⁻¹ᵁ V) hz ((jK R).app V |>.hom r)`. Establish `l₂` using `gs_pull (𝟙 _) (jK R ⁻¹ᵁ W).ι z (jK R ⁻¹ᵁ V) hz (((TK R).left.presheaf.map (homOfLE h).op).hom ((D.psi y).s (fun _ => p)).val)`. Rewrite `l₁`, `l₂` using `[Category.id_comp]`.
+
+Rewrite using `[l₁, l₂, gs_pull _ _ z V hzV r, ← hι, ← gs_pull _ _ z V hm r, hr', hu, gs_unit _ z _ hm]`. Use `erw [gm_res _ z hle hm]`. Use `erw [gs_res _ z h hz]`. Rewrite using `[gs_unit _ z _ (h hz)]`. Conclude with `congrArg Units.val e₃`.
+-/
 theorem psiUnitOn_of_psiOn : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (W : (Spec (CommRingCat.of R)).Opens), PsiOn D W → ∀ y : D.X, PsiUnitOn D y (W : Set (Spec (CommRingCat.of R))) := by
   intro R _ _ D W ψ y j V _ hVW hj h
   obtain ⟨p, rfl⟩ : ∃ p, j = fun _ => p := ⟨j PUnit.unit, funext fun _ => rfl⟩

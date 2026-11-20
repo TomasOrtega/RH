@@ -76,6 +76,21 @@ namespace GlobalTheory.LiftSys
 
 open Twist
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ hpar S v hv hs`. Establish `hex : ∀ (U V : AffOp X₀) (a : U ⟶ V), ∃! θ : Ω[Sec s₀ U.unop.1⁄R₀] →+ S.F.obj V, (∀ b w, θ (S.p U b • w) = mp S.F a b * θ w) ∧ (∀ w, θ w ∈ I.map (algebraMap R (S.F.obj V))) ∧ ∀ w : GlobForm s₀, θ (w.1 U) = (v w).1 U V a` using `fun U V a ↦ exists_unique_formExt R R₀ I hI π hπ hk X₀ s₀ hpar U _ _ (S.p U) (S.semi U) (S.surj U) (S.ker U) (mp S.F a) (ev v a) (fun r w ↦ by show (v (π r • w)).1 U V a = r • (v w).1 U V a; rw [hs]; rfl) (fun w ↦ hv w U V a)`. Use `choose θ hθ huniq using hex`. Establish `hsm` using `fun U V a ↦ (hθ U V a).1`. Establish `hmem` using `fun U V a ↦ (hθ U V a).2.1`.
+
+Establish `hglob` using `fun U V a ↦ (hθ U V a).2.2`. Establish `hid : ∀ U, θ U U (𝟙 U) = 0` using `fun U ↦ (huniq U U (𝟙 U) 0 ⟨fun b w ↦ by simp, fun w ↦ by simp, fun w ↦ by rw [AddMonoidHom.zero_apply, Z1.id]⟩).symm`. Establish `hcomp' : ∀ (U V W : AffOp X₀) (a : U ⟶ V) (b : V ⟶ W) (x : Ω[Sec s₀ U.unop.1⁄R₀]), θ U W (a ≫ b) x = mp S.F b (θ U V a x) + θ V W b (p1 (OAff s₀) a x)`. Introduce `U V W a b`. Set `ψ : Ω[Sec s₀ U.unop.1⁄R₀] →+ S.F.obj W` to `AddMonoidHom.mk' (fun x ↦ mp S.F b (θ U V a x) + θ V W b (p1 (OAff s₀) a x)) (fun x y ↦ by`.
+
+Simplify using `only [map_add]`. Use the proof step `abel)`. Establish `e : ψ = θ U W (a ≫ b)`. Use `huniq U W (a ≫ b) ψ ⟨fun c x ↦ ?_, fun x ↦ ?_, fun w ↦ ?_⟩` and prove the remaining obligations. Use `show mp S.F b (θ U V a (S.p U c • x)) + θ V W b (p1 (OAff s₀) a (S.p U c • x)) = mp S.F (a ≫ b) c * (mp S.F b (θ U V a x) + θ V W b (p1 (OAff s₀) a x))`.
+
+Rewrite using `[hsm, oneFormsMapOfFunctorMorphism_smul, ← S.nat, hsm, map_mul, mp_comp, mul_add]`. Conclude with `Ideal.add_mem _ (algHom_mem_map I (mp S.F b) (hmem U V a x)) (hmem V W b _)`. Use `show mp S.F b (θ U V a (w.1 U)) + θ V W b (p1 (OAff s₀) a (w.1 U)) = (v w).1 U W (a ≫ b)`. Rewrite using `[← w.2 a, hglob, hglob, Z1.comp]`. Introduce `x`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Establish `hcomp : ∀ (U V W : AffOp X₀) (a : U ⟶ V) (b : V ⟶ W) (c : S.F.obj U), θ U W (a ≫ b) (D R₀ _ (S.p U c)) = mp S.F b (θ U V a (D R₀ _ (S.p U c))) + θ V W b (D R₀ _ (S.p V (mp S.F a c)))`. Introduce `U V W a b c`. Rewrite using `[hcomp', p1_D, S.nat]`.
+
+Set `S'` to `twistSys S hI θ hsm hmem hid hcomp`. Set `Φ : S.LocIso S'` to `⟨fun _ ↦ AlgEquiv.refl, fun _ _ ↦ rfl⟩`. Use `⟨S', Φ, θ, fun U V a ↦ ⟨fun b w ↦ ?_, fun b ↦ ?_, hmem U V a⟩, fun w U V a ↦ hglob U V a w⟩` and prove the remaining obligations. Use `show θ U V a (S.p U b • w) = (mp S.F a b + θ U V a (D R₀ _ (S.p U b))) * θ U V a w`. Rewrite using `[hsm, add_mul, mul_eq_zero_of_mem_map hI (hmem U V a _) (hmem U V a _), add_zero]`.
+
+Use `show θ U V a (D R₀ _ (S.p U b)) = (mp S.F a b + θ U V a (D R₀ _ (S.p U b))) - mp S.F a b`. Rewrite using `[add_sub_cancel_left]`.
+-/
 theorem exists_twist : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), Par s₀ → ∀ (S : Sys I π s₀) (v : GlobForm s₀ →+ Z1 S.F), (∀ w, S.IsIdealValuedLiftSystemCocycle (v w)) → (∀ (r : R) w, v (π r • w) = r • v w) → ∃ (S' : Sys I π s₀) (Φ : S.LocIso S') (θ : ∀ (U V : AffOp X₀) (_ : U ⟶ V), Ω[Sec s₀ U.unop.1⁄R₀] →+ S'.F.obj V), Φ.IsDefect θ ∧ ∀ (w : GlobForm s₀) U V a, θ U V a (w.1 U) = Φ.φ V ((v w).1 U V a) := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ hpar S v hv hs
   have hex : ∀ (U V : AffOp X₀) (a : U ⟶ V), ∃! θ : Ω[Sec s₀ U.unop.1⁄R₀] →+ S.F.obj V,

@@ -13,12 +13,18 @@ namespace CrystallineSemistableComparison.Pb.Diso
 
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[map_mul, map_natCast]`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+-/
 theorem l_mem_GI (T : Thick (smFun X q)) : ∀ x ∈ Ideal.span {(l : O)}, T.i x ∈ GI (l := l) T := by
   intro x hx
   obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hx
   rw [map_mul, map_natCast]
   exact Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_map]`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Conclude with `Ideal.mem_map_of_mem _ (l_mem_GI T x hx)`.
+-/
 theorem Iom_le (T : Thick (smFun X q)) (m : ℕ) : Iom l O m ≤ (GJ (l := l) T m).comap (iG T m) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_map]
   rw [Ideal.map_le_iff_le_comap]
@@ -28,6 +34,11 @@ theorem Iom_le (T : Thick (smFun X q)) (m : ℕ) : Iom l O m ≤ (GJ (l := l) T 
 def psG (T : Thick (smFun X q)) (m : ℕ) : Om l O m ⧸ Iom l O m →+* GB (l := l) T m ⧸ GJ (l := l) T m :=
   Ideal.quotientMap _ (iG T m) (Iom_le T m)
 
+/- English proof (translation)
+Rewrite using `[Category.assoc]`. Establish `h2 : pt T ≫ q = Spec.map (CommRingCat.ofHom (T.y.1.1.comp (Ideal.Quotient.mk ⊥)))` using `T.y.2`. Rewrite using `[h2, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `thG (l := l) T m (T.y.1.1 (Ideal.Quotient.mk ⊥ a)) = psG T m (κm l O m a)`. Rewrite using `[show T.y.1.1 (Ideal.Quotient.mk ⊥ a) = Ideal.Quotient.mk T.J (T.i a) from T.w a]`. Both sides reduce to the same expression.
+-/
 theorem ptCond (T : Thick (smFun X q)) (m : ℕ) :
     (Spec.map (CommRingCat.ofHom (thG (l := l) T m)) ≫ pt T) ≫ q =
       Spec.map (CommRingCat.ofHom ((psG T m).comp (κm l O m))) := by
@@ -44,12 +55,18 @@ def ptG (T : Thick (smFun X q)) (m : ℕ) (h : OL l O) :
     (Lm h q m).Pt.obj (CommRingCat.of (GB (l := l) T m ⧸ GJ (l := l) T m)) :=
   ⟨(psG T m, Spec.map (CommRingCat.ofHom (thG (l := l) T m)) ≫ pt T), ptCond T m⟩
 
+/- English proof (translation)
+Use `⟨fun _ => ⟨m, ?_⟩, fun h => absurd h (Fact.out : l.Prime).ne_zero⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk (lm (l := l) T m)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem thickening_ideal_nilpotent (T : Thick (smFun X q)) (m : ℕ) :
     (l ≠ 0 → IsNilpotent ((l : ℕ) : GB (l := l) T m)) ∧ (l = 0 → IsNilpotent (GJ (l := l) T m)) := by
   refine ⟨fun _ => ⟨m, ?_⟩, fun h => absurd h (Fact.out : l.Prime).ne_zero⟩
   rw [← map_natCast (Ideal.Quotient.mk (lm (l := l) T m)), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+The claim follows from `RL.pd_mor (Ideal.Quotient.mk _) (Ideal.Quotient.mk _) (Ideal.span {(l : O)}) (GI (l := l) T) (pdm h m) (GD T m hT) T.i (iG T m) Ideal.Quotient.mk_surjective (pdI_l l h.unit) (isPdm h m) (GD_spec T m hT) (l_mem_GI T) (fun _ => rfl)`.
+-/
 theorem dp_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) :
     IsDPMorphism (pdm h m) (GD T m hT) (iG T m) :=
   RL.pd_mor (Ideal.Quotient.mk _) (Ideal.Quotient.mk _) (Ideal.span {(l : O)}) (GI (l := l) T) (pdm h m) (GD T m hT) T.i
@@ -58,6 +75,9 @@ theorem dp_G (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) 
 def GObj (h : OL l O) (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) : Thick (Lm h q m) :=
   mkT (GB (l := l) T m) (iG T m) (GJ (l := l) T m) (GD T m hT) (thickening_ideal_nilpotent T m) (dp_G h T m hT) (ptG T m h) (fun _ => rfl)
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `φ.φ ((l : T.B) ^ m) ∈ lm (l := l) T' m`. Rewrite using `[map_pow, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem lm_map {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) : lm (l := l) T m ≤ (lm (l := l) T' m).comap φ.φ := by
   rw [Ideal.span_le, Set.singleton_subset_iff]
   change φ.φ ((l : T.B) ^ m) ∈ lm (l := l) T' m
@@ -67,6 +87,11 @@ theorem lm_map {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) : lm (l := l
 def gφ {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) : GB (l := l) T m →+* GB (l := l) T' m :=
   Ideal.quotientMap _ φ.φ (lm_map φ m)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Use `add_mem (Ideal.mem_sup_left (φ.hle hy)) (Ideal.mem_sup_right ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+
+Rewrite using `[map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem GI_map {T T' : Thick (smFun X q)} (φ : T ⟶ T') : ∀ x ∈ GI (l := l) T, φ.φ x ∈ GI (l := l) T' := by
   intro x hx
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
@@ -76,16 +101,29 @@ theorem GI_map {T T' : Thick (smFun X q)} (φ : T ⟶ T') : ∀ x ∈ GI (l := l
   rw [map_mul, map_natCast]
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `RL.pd_mor (Ideal.Quotient.mk _) (Ideal.Quotient.mk _) (GI (l := l) T) (GI (l := l) T') (GD T m hT) (GD T' m hT') φ.φ (gφ φ m) Ideal.Quotient.mk_surjective hT.2.1 (GD_spec T m hT) (GD_spec T' m hT') (GI_map φ) (fun _ => rfl)`.
+-/
 theorem dp_gφ {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) (hT : Good (l := l) T m) (hT' : Good (l := l) T' m) :
     IsDPMorphism (GD T m hT) (GD T' m hT') (gφ φ m) :=
   RL.pd_mor (Ideal.Quotient.mk _) (Ideal.Quotient.mk _) (GI (l := l) T) (GI (l := l) T') (GD T m hT) (GD T' m hT') φ.φ
     (gφ φ m) Ideal.Quotient.mk_surjective hT.2.1 (GD_spec T m hT) (GD_spec T' m hT') (GI_map φ) (fun _ => rfl)
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Conclude with `Ideal.mem_map_of_mem _ (GI_map φ x hx)`.
+-/
 theorem GJ_le {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) : GJ (l := l) T m ≤ (GJ (l := l) T' m).comap (gφ φ m) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_map, Ideal.map_le_iff_le_comap]
   intro x hx
   exact Ideal.mem_map_of_mem _ (GI_map φ x hx)
 
+/- English proof (translation)
+Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ideal.quotientMap (GJ (l := l) T' m) (gφ φ m) (GJ_le φ m)).comp (psG T m) = psG T' m`. Use `Ideal.Quotient.ringHom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun a => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (φ.φ (T.i a))) = Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (T'.i a))`. Rewrite using `[φ.comm]`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (Ideal.quotientMap (GJ (l := l) T' m) (gφ φ m) (GJ_le φ m))) ≫ (Spec.map (CommRingCat.ofHom (thG (l := l) T m)) ≫ pt T) = Spec.map (CommRingCat.ofHom (thG (l := l) T' m)) ≫ pt T'`. Rewrite using `[Site.pt_hom φ, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (φ.φ x)) = Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (φ.φ x))`.
+
+Both sides reduce to the same expression.
+-/
 theorem ptG_map (h : OL l O) {T T' : Thick (smFun X q)} (φ : T ⟶ T') (m : ℕ) :
     (Lm h q m).Pt.map (CommRingCat.ofHom (Ideal.quotientMap (GJ (l := l) T' m) (gφ φ m) (GJ_le φ m))) (ptG T m h) =
       ptG T' m h := by

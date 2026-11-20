@@ -18,6 +18,11 @@ namespace GlobalTheory.CompanionTheory.ConeZig
 
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `(CH.mulP _).cupC _ (resB A h (cupListC _ fun i => l (Fin.castSucc i))) (resB A h (l (Fin.last k))) = _`. Rewrite using `[ih]`.
+
+Both sides reduce to the same expression.
+-/
 theorem res_cupList {A : C ⥤ CommAlgCat.{0} R} {U V : ObjectProperty C} (h : V ≤ U) {k : ℕ} (l : Fin k → Ch A U 1) :
     resB A h (cupListC (U.ι ⋙ A) l) = cupListC (V.ι ⋙ A) fun j => resB A h (l j) := by
   induction k with
@@ -27,6 +32,15 @@ theorem res_cupList {A : C ⥤ CommAlgCat.{0} R} {U V : ObjectProperty C} (h : V
     rw [ih]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, rfl, fun i => (one_smul ℤ _).symm⟩`. Consider the case `succ k ih`. Take `⟨e, he, h⟩` from `ih`. Use `⟨(-1) ^ k * e, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_mul_mul_comm, he, ← mul_pow]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(-1 : ℤ) ^ k • BB b k k (PP b hWV z k) i = _`. Establish `hLL : ∀ j : Fin k, resB A (cap_le W (Fin.last (k + 1)) i) (LL b (fc (Fin.last (k + 1)) i) j.castSucc j.succ) = LL b i j.castSucc.castSucc j.castSucc.succ`. Introduce `j`.
+
+Apply the tactic sequence `refine res_LL b i _ _ _ _ _ _ (congrArg i.1 ?_) (congrArg i.1 ?_) <;>`. Use `j.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Rewrite using `[BB_apply, h, map_zsmul, bm_apply, res_cupList, mul_smul]`. Simplify using `only [hLL]`. Both sides reduce to the same expression.
+-/
 theorem PP_eq {A : C ⥤ CommAlgCat.{0} R} {N : ℕ} {W : Fin N → ObjectProperty C} (b : ∀ α, Ch A (W α) 1)
     {V : ObjectProperty C} (hWV : ∀ α, W α ≤ V) (z : Ch A V 2) (k : ℕ) :
     ∃ e : ℤ, e * e = 1 ∧ ∀ i : Idx (k + 1) N, PP b hWV z k i =
@@ -50,6 +64,11 @@ theorem PP_eq {A : C ⥤ CommAlgCat.{0} R} {N : ℕ} {W : Fin N → ObjectProper
       simp only [hLL]
       rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `i _ σ`. Rewrite using `[hF.top _ (by simp)]`. Discharge the goal by the elementary cases of `trivial`.
+
+Consider the case `succ k ih`. Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Introduce `i _`. Use `Lm_cup (a := Fil k) (b := Fil 1) (fun T x y hx hy => hF.mul k 1 T hx (by simpa using hy)) rfl (Lm_res (cap_le W _ i) (ih (fc (Fin.last (k + 1)) i) trivial)) (sub_mem (Lm_res _ (hb1 _)) (Lm_res _ (hb1 _)))` and prove the remaining obligations.
+-/
 theorem PP_mem (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) (hF : IsFil Φ Fil) {N : ℕ} {W : Fin N → ObjectProperty C}
     (b : ∀ α, Ch Φ.A (W α) 1) {V : ObjectProperty C} (hWV : ∀ α, W α ≤ V) (z : Ch Φ.A V 2)
     (hb1 : ∀ α, b α ∈ Lm (Fil 1) (W α) 1) (k : ℕ) :
@@ -65,6 +84,9 @@ theorem PP_mem (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) (hF : IsFil Φ Fil) {N : 
     refine Lm_cup (a := Fil k) (b := Fil 1) (fun T x y hx hy => hF.mul k 1 T hx (by simpa using hy)) rfl
       (Lm_res (cap_le W _ i) (ih (fc (Fin.last (k + 1)) i) trivial)) (sub_mem (Lm_res _ (hb1 _)) (Lm_res _ (hb1 _)))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Use `propext ⟨fun h α hα => ?_, fun h a => h _ (Finset.mem_image_of_mem _ (Finset.mem_univ a))⟩` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hα`. Conclude with `h a`.
+-/
 theorem capT_eq {N : ℕ} (W : Fin N → ObjectProperty C) {m : ℕ} (i : Fin m → Fin N) :
     capT W i = capS W (Finset.univ.image i) := by
   funext T
@@ -72,6 +94,13 @@ theorem capT_eq {N : ℕ} (W : Fin N → ObjectProperty C) {m : ℕ} (i : Fin m 
   obtain ⟨a, -, rfl⟩ := Finset.mem_image.1 hα
   exact h a
 
+/- English proof (translation)
+Establish `hH : ∀ (i : Idx (p + 1) N) (j : ℕ), j ≠ r → Subsingleton (HU (gr Fil r) (capT W i.1) j)`. Introduce `i j hj`. Rewrite using `[capT_eq]`. Conclude with `hS _ ⟨i.1 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩ _ _ (by exact_mod_cast hj)`. Consider the cases of `q with`.
+
+Consider the case `zero`. Introduce `x hx hd i _ σ`. Conclude with `ex_zero (a := (Fil r).res (capT W i.1).ι) (b := (Fil (r + 1)).res (capT W i.1).ι) (hH i 0 hq) (x i) (hx i trivial) (hd i trivial) σ`. Consider the case `succ q`. Introduce `x hx hd`.
+
+Establish `h` using `fun i : Idx (p + 1) N => ex_succ (a := (Fil r).res (capT W i.1).ι) (b := (Fil (r + 1)).res (capT W i.1).ι) (hH i (q + 1) hq) (x i) (hx i trivial) (hd i trivial)`. Use `choose v hv hv' using h`. Conclude with `⟨v, fun i _ => hv i, fun i _ => hv' i⟩`.
+-/
 theorem KEx (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) (hF : IsFil Φ Fil) {N : ℕ} (W : Fin N → ObjectProperty C)
     (hS : ∀ S : Finset (Fin N), S.Nonempty → ∀ (r : ℤ) (j : ℕ), (j : ℤ) ≠ r → Subsingleton (HU (gr Fil r) (capS W S) j))
     (r : ℕ) (p q : ℕ) (hq : q ≠ r) : (dfil (W := W) Fil hF.anti).Ex (r : ℤ) p q := by
@@ -92,6 +121,9 @@ theorem KEx (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) (hF : IsFil Φ Fil) {N : ℕ
     choose v hv hv' using h
     exact ⟨v, fun i _ => hv i, fun i _ => hv' i⟩
 
+/- English proof (translation)
+Establish `h3 : Cl = e • Pv` using `by rw [h1, smul_smul, he, one_smul]`. Rewrite using `[h3, h2, smul_add, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem alg_fin {M : Type*} [AddCommGroup M] {ι : Type} [Fintype ι] (e s : ℤ) (he : e * e = 1) (Cl Pv E : M) (t : ι → M)
     (sg : ι → ℤ) (h1 : Pv = e • Cl) (h2 : Pv = ∑ k, sg k • t k + s • E) :
     Cl - ∑ k, (e * sg k) • t k = (e * s) • E := by
@@ -100,6 +132,9 @@ theorem alg_fin {M : Type*} [AddCommGroup M] {ι : Type} [Fintype ι] (e s : ℤ
   simp only [smul_smul]
   abel
 
+/- English proof (translation)
+Establish `e : IsEmpty (Idx (p + 1) (n + 2))` using `⟨fun i => by`. Use `Fintype.card_le_of_injective _ i.2.injective` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Use the proof step `omega⟩`. Conclude with `⟨fun x y => funext fun i => (e.false i).elim⟩`.
+-/
 theorem KV (A : C ⥤ CommAlgCat.{0} R) (n : ℕ) (W : Fin (n + 2) → ObjectProperty C) (p q : ℕ) (h : n + 1 < p) :
     Subsingleton ((KK A W).X p q) := by
   have e : IsEmpty (Idx (p + 1) (n + 2)) := ⟨fun i => by
@@ -108,6 +143,11 @@ theorem KV (A : C ⥤ CommAlgCat.{0} R) (n : ℕ) (W : Fin (n + 2) → ObjectPro
     omega⟩
   exact ⟨fun x y => funext fun i => (e.false i).elim⟩
 
+/- English proof (translation)
+Establish `hG : ∀ k : Fin (n + 2), CH.d _ (n + 1) (gC ((Fil ((n : ℤ) + 1)).res (capS W (Finset.univ.erase k)).ι) ((Fil ((n : ℤ) + 1 + 1)).res (capS W (Finset.univ.erase k)).ι) (w k) (hw k)) = 0` using `fun k => gC_d (a := (Fil ((n : ℤ) + 1)).res (capS W (Finset.univ.erase k)).ι) (b := (Fil ((n : ℤ) + 1 + 1)).res (capS W (Finset.univ.erase k)).ι) (w k) (hw k) (fun s => hdw k s)`. Establish `hY : ∀ k : Fin (n + 2), CH.d _ (n + 1) ((resU (gr Fil ((n : ℤ) + 1)) (capS_univ_le W (Finset.univ.erase k))).pullC (n + 1) (gC ((Fil ((n : ℤ) + 1)).res (capS W (Finset.univ.erase k)).ι) ((Fil ((n : ℤ) + 1 + 1)).res (capS W (Finset.univ.erase k)).ι) (w k) (hw k))) = 0` using `fun k => by`. Rewrite using `[CH.Mor.d_pullC]`. Conclude with `(congrArg _ (hG k)).trans (map_zero _)`. Use `⟨fun k => (CH.cx _).cls (gC ((Fil ((n : ℤ) + 1)).res (capS W (Finset.univ.erase k)).ι) ((Fil ((n : ℤ) + 1 + 1)).res (capS W (Finset.univ.erase k)).ι) (w k) (hw k)) (hG k), f, hf, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hEq]`. Use `(show _ ∈ Lm (Fil ((n : ℤ) + 1)) _ (n + 1) from sub_mem hCl (Submodule.sum_mem _ fun k _ => ?_))` and prove the remaining obligations. Conclude with `Lm_res _ (hw k)`. Conclude with `rep_fin hc _ (fun k : Fin (n + 2) => resB Φ.A (capS_univ_le W (Finset.univ.erase k)) (w k)) hY (fun k s => rfl) hEq`.
+-/
 theorem fin_step {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF R C) (Fil : ℤ → IdF Φ.A) (n : ℕ)
     (W : Fin (n + 2) → ObjectProperty C) (Cl : Ch Φ.A (capS W Finset.univ) (n + 1))
     (hCl : Cl ∈ Lm (Fil ((n : ℤ) + 1)) _ (n + 1))
@@ -139,6 +179,31 @@ theorem fin_step {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF
     exact Lm_res _ (hw k)
   · exact rep_fin hc _ (fun k : Fin (n + 2) => resB Φ.A (capS_univ_le W (Finset.univ.erase k)) (w k)) hY (fun k s => rfl) hEq
 
+/- English proof (translation)
+Introduce `R _ C _ Φ Fil hF s n W _ _ hS _ z hz hz1 b hb1 hb hcob c hc`. Establish `hWV : ∀ α, W α ≤ (fun T : C => ∃ α, W α T)` using `fun α T h => ⟨α, h⟩`. Establish `hd` using `cupPow_d _ z hz (n + 1)`. Take `⟨u, hu⟩ : cupPowC ((ObjectProperty.ι fun T : C => ∃ α, W α T) ⋙ Φ.A) z (n + 1) ∈ LinearMap.range (CH.d _ (2 * n + 1))` from `((CrystallineSemistableComparison.P.cls_surj (CH.cx _) _).2.1 _ hd).1 (hcob hd)`. Set `v : (KK Φ.A W).X 0 (2 * n + 1)` to `fun i => resB Φ.A (capV hWV i) u`.
+
+Establish `hv1 : (KK Φ.A W).dv 0 (2 * n + 1) v = aa hWV z (n + 1)`. Use function extensionality and compare the values at `i`. Rewrite using `[dv_apply]`. Express the relevant statement in the definitionally equal form `CH.d _ _ (resB Φ.A _ u) = resB Φ.A _ _`. Rewrite using `[d_resB, hu]`.
+
+Establish `hv2 : (KK Φ.A W).dh 0 (2 * n + 1) v = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[dh_apply, Fin.sum_univ_two]`. Establish `e : resB Φ.A (cap_le W 0 i) (v (fc 0 i)) = resB Φ.A (cap_le W 1 i) (v (fc 1 i))` using `rfl`. Rewrite using `[e, Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul, one_smul, add_neg_cancel]`.
+
+Both sides reduce to the same expression. Establish `hTop : ∀ p q, (dfil (W` using `W) Fil hF.anti).L 0 p q = ⊤ := fun p q => (Submodule.eq_top_iff'.2 fun x i _ σ => by rw [hF.top 0 le_rfl]; trivial)`. Establish `hPm : PP b hWV z (n + 1) ∈ (dfil (W` using `W) Fil hF.anti).L ((n : ℤ) + 1) (n + 1) (n + 1) := by`. Establish `h` using `PP_mem Φ Fil hF b hWV z (fun α σ => hb1 α σ) (n + 1)`. Rewrite `h` using `[Nat.cast_succ]`. Then use the resulting hypothesis.
+
+Take `⟨ω, f, hω, hdω, hf, hP⟩` from `zig_stair (BB b) (dfil (W := W) Fil hF.anti) n hTop (fun p q h => KV _ n W p q h) (KEx Φ Fil hF W hS) (BB_dh b) (BB_dv b hWV z hb) (aa hWV z) (gg b hWV z) (PP b hWV z) (gg_dv b hWV z hz hb) (gg_dh b hWV z) rfl (fun k => rfl) hPm v hv1 hv2`. Set `tp : Idx (n + 1 + 1) (n + 2)` to `⟨id, strictMono_id⟩`. Take `⟨e, he, hPe⟩` from `PP_eq b hWV z (n + 1)`. Establish `hU : capS W Finset.univ ≤ capT W tp.1` using `fun T h a => h a (Finset.mem_univ a)`. Establish `hEk : ∀ k : Fin (n + 2), capS W (Finset.univ.erase k) ≤ capT W (fc k tp).1` using `fun k T h a => h _ (Finset.mem_erase.2 ⟨Fin.succAbove_ne k a, Finset.mem_univ _⟩)`.
+
+Establish `hCl : resB Φ.A hU (PP b hWV z (n + 1) tp) = e • cupListC ((capS W Finset.univ).ι ⋙ Φ.A) fun k : Fin (n + 1) => resB Φ.A (capS_le_univ W k.castSucc) (b k.castSucc) - resB Φ.A (capS_le_univ W k.succ) (b k.succ)`. Rewrite using `[hPe]`. Use `(map_zsmul ((rM Φ.A hU).pullC (n + 1)) e _).trans ?_` and prove the remaining obligations. Establish `h` using `res_cupList (A := Φ.A) hU (fun j : Fin (n + 1) => LL b tp j.castSucc j.succ)`. Conclude with `congrArg (e • ·) (h.trans (congrArg _ (funext fun j => resB_sub hU _ _)))`.
+
+Establish `hP2 : resB Φ.A hU (PP b hWV z (n + 1) tp) = ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) • resB Φ.A (hU.trans (cap_le W k tp)) (ω (fc k tp)) + ((-1 : ℤ) ^ (n + 1)) • CH.d _ n (resB Φ.A hU (f tp))`. Establish `h` using `congrFun hP tp`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(rM Φ.A hU).pullC (n + 1) ((KK Φ.A W).dh n (n + 1) ω tp + (-1 : ℤ) ^ (n + 1) • CH.d _ n (f tp)) = _`. Rewrite using `[dh_apply, map_add, map_sum, map_zsmul]`.
+
+Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun k _ => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression. Rewrite using `[d_resB]`. Both sides reduce to the same expression.
+
+Establish `hEq` using `alg_fin e ((-1 : ℤ) ^ (n + 1)) he _ _ _ _ (fun k : Fin (n + 2) => (-1 : ℤ) ^ (k : ℕ)) hCl hP2`. Establish `hd' : CH.d _ n ((e * (-1 : ℤ) ^ (n + 1)) • resB Φ.A hU (f tp)) = (e * (-1 : ℤ) ^ (n + 1)) • CH.d _ n (resB Φ.A hU (f tp))` using `map_zsmul _ _ _`. Establish `hClm : (cupListC ((capS W Finset.univ).ι ⋙ Φ.A) fun k : Fin (n + 1) => resB Φ.A (capS_le_univ W k.castSucc) (b k.castSucc) - resB Φ.A (capS_le_univ W k.succ) (b k.succ)) ∈ Lm (Fil ((n : ℤ) + 1)) _ (n + 1)`. Establish `h1 : resB Φ.A hU (PP b hWV z (n + 1) tp) ∈ Lm (Fil ((n : ℤ) + 1)) _ (n + 1)` using `Lm_res _ (hPm tp trivial)`. Rewrite `h1` using `[hCl]`.
+
+Establish `h2` using `Submodule.smul_of_tower_mem _ e h1`. Rewrite `h2` using `[smul_smul, he, one_smul]`. Then use the resulting hypothesis. Establish `hw : ∀ k : Fin (n + 2), (e * (-1 : ℤ) ^ (k : ℕ)) • resB Φ.A (hEk k) (ω (fc k tp)) ∈ Lm (Fil ((n : ℤ) + 1)) _ (n + 1)` using `fun k => Submodule.smul_of_tower_mem _ _ (Lm_res _ (hω (fc k tp) trivial))`. Establish `hdw : ∀ k : Fin (n + 2), CH.d _ (n + 1) ((e * (-1 : ℤ) ^ (k : ℕ)) • resB Φ.A (hEk k) (ω (fc k tp))) ∈ Lm (Fil ((n : ℤ) + 1 + 1)) _ (n + 2)` using `fun k => by`. Rewrite using `[map_zsmul, d_resB]`.
+
+Conclude with `Submodule.smul_of_tower_mem _ _ (Lm_res _ (hdω (fc k tp) trivial))`. Establish `hfm : (e * (-1 : ℤ) ^ (n + 1)) • resB Φ.A hU (f tp) ∈ Lm (Fil (n : ℤ)) _ n` using `Submodule.smul_of_tower_mem _ _ (Lm_res hU (hf tp trivial))`. Use `fin_step Φ Fil n W _ hClm c hc _ hw hdw _ hfm ?_` and prove the remaining obligations. Establish `e3 : ∀ k : Fin (n + 2), resB Φ.A (capS_univ_le W (Finset.univ.erase k)) ((e * (-1 : ℤ) ^ (k : ℕ)) • resB Φ.A (hEk k) (ω (fc k tp))) = (e * (-1 : ℤ) ^ (k : ℕ)) • resB Φ.A (hU.trans (cap_le W k tp)) (ω (fc k tp))` using `fun k => map_zsmul ((rM Φ.A (capS_univ_le W (Finset.univ.erase k))).pullC (n + 1)) _ _`. Simplify using `only [e3]`.
+
+Rewrite using `[hd']`. Conclude with `hEq`.
+-/
 theorem cech_top_cup_power : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (Φ : PDF R C) (Fil : ℤ → IdF Φ.A),
     IsFil Φ Fil → ∀ (s n : ℕ) (W : Fin (n + 2) → ObjectProperty C), (∀ T, (∃ α, W α T) → (Fil s).S T = ⊥) →
     (∀ α ⦃T T' : C⦄, (T ⟶ T') → W α T → (∃ β, W β T') → W α T') →

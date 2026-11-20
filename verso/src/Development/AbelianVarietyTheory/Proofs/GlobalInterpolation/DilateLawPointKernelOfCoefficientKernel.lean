@@ -10,6 +10,11 @@ namespace GlobalTheory.LvT.Built.DilPass
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hs : ∀ x : Fin n → Lc.K, ∃ y, Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) y = x` using `fun x => ⟨Matrix.mulVec ((g⁻¹ : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K) x, by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LocF.Raw.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `hs x`. Rewrite using `[(h₁ y).1, (h₂ y).1]`. Use function extensionality and compare the values at `x`. Take `⟨y, rfl⟩` from `hs x`. Rewrite using `[(h₁ y).2, (h₂ y).2]`.
+-/
 theorem isAct_unique {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} {g : GL (Fin n) Lc.K} {p p₁ p₂ : LocF.PP Lc n}
     (h₁ : p.IsAct g p₁) (h₂ : p.IsAct g p₂) : p₁ = p₂ := by
   have hs : ∀ x : Fin n → Lc.K, ∃ y, Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) y = x := fun x =>
@@ -24,6 +29,11 @@ theorem isAct_unique {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} {g
     obtain ⟨y, rfl⟩ := hs x
     rw [(h₁ y).2, (h₂ y).2]
 
+/- English proof (translation)
+Establish `hs : ∀ x : Fin n → Lc.K, ∃ y, Matrix.mulVec (g : Matrix (Fin n) (Fin n) Lc.K) y = x` using `fun x => ⟨Matrix.mulVec ((g⁻¹ : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K) x, by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hs x`.
+
+Rewrite using `[(h₁ y).1, (h₂ y).1, h.1]`. Take `⟨y, rfl⟩` from `hs x`. Rewrite using `[(h₁ y).2, (h₂ y).2, h.2]`.
+-/
 theorem isDil_act {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} {g : GL (Fin n) Lc.K} {a : F}
     {p p' p₁ p₁' : LocF.PP Lc n} (h : LocF.PP.IsDil a p p') (h₁ : p.IsAct g p₁) (h₂ : p'.IsAct g p₁') :
     LocF.PP.IsDil a p₁ p₁' := by
@@ -37,6 +47,9 @@ theorem isDil_act {q : ℕ} {F : Type} [Field F] {Lc : LocF q F} {n : ℕ} {g : 
   · obtain ⟨y, rfl⟩ := hs x
     rw [(h₁ y).2, (h₂ y).2, h.2]
 
+/- English proof (translation)
+Use `⟨M.smul_fst g q p h.1, fun v' hv => ?_, isDil_act h.2.2 (M.smul_snd g p v) (M.smul_snd g q v)⟩` and prove the remaining obligations. Establish `h1` using `M.smul_snd g q v'`. Rewrite `h1` using `[h.2.1 v' hv]`. Conclude with `isAct_unique h1 (M.smul_snd g p v')`.
+-/
 theorem dil_smul {X : Ch D u} {i : ℕ} (M : PtModel X i) {v : X.A.vT} {a : X.A.Fv v} {p q : M.Pt} (h : M.Dil v a p q)
     (g : M.G) : M.Dil v a (g • p) (g • q) := by
   refine ⟨M.smul_fst g q p h.1, fun v' hv => ?_, isDil_act h.2.2 (M.smul_snd g p v) (M.smul_snd g q v)⟩
@@ -44,6 +57,11 @@ theorem dil_smul {X : Ch D u} {i : ℕ} (M : PtModel X i) {v : X.A.vT} {a : X.A.
   rw [h.2.1 v' hv] at h1
   exact isAct_unique h1 (M.smul_snd g p v')
 
+/- English proof (translation)
+Use `Prod.ext (h.1.trans h'.1.symm) (funext fun v' => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LocF.Raw.ext` to reduce the goal to its premises.
+
+Rewrite using `[h.2.2.1, h'.2.2.1]`. Use function extensionality and compare the values at `x`. Rewrite using `[h.2.2.2, h'.2.2.2]`. Rewrite using `[h.2.1 v' hv, h'.2.1 v' hv]`.
+-/
 theorem dil_unique {X : Ch D u} {i : ℕ} (M : PtModel X i) {v : X.A.vT} {a : X.A.Fv v} {p q q' : M.Pt} (h : M.Dil v a p q)
     (h' : M.Dil v a p q') : q = q' := by
   refine Prod.ext (h.1.trans h'.1.symm) (funext fun v' => ?_)
@@ -56,6 +74,15 @@ theorem dil_unique {X : Ch D u} {i : ℕ} (M : PtModel X i) {v : X.A.vT} {a : X.
       rw [h.2.2.2, h'.2.2.2]
   · rw [h.2.1 v' hv, h'.2.1 v' hv]
 
+/- English proof (translation)
+Establish `hs : ∀ (P : B.ch.A.vT) (x : Fin (D.R.N i) → (M.Lc P).K), ∃ y : Fin (D.R.N i) → B.E, (fun c => R.iK P (y c)) = x` using `fun P x => ⟨fun c => (R.iK P).symm (x c), funext fun c => by simp⟩`. Establish `hL : ∀ P, ((R.pt b ((B.J.A i).dia b (B.pr v) a d)).2 P).1.L = ((R.pt b d).2 P).1.L`. Introduce `P`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hs P x`.
+
+Rewrite using `[R.pt_L, R.pt_L, (B.hJ.lev i).dia_N b (B.pr v) a d]`. Use `⟨?_, fun v' hv => ?_, hL v, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `(R.fst 1 b ((B.J.A i).dia b (B.pr v) a d) d).2 ⟨1, map_one _, map_one _, by rw [one_smul]; exact (sp.off b).symm (sp.off_dia b d (B.pr v) a)⟩`. Rewrite `h` using `[map_one, one_smul]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `LocF.Raw.ext (hL v')` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨y, rfl⟩` from `hs v' x`. Conclude with `(R.pt_f _ _ v' y).trans ((congrFun (sp.dia_deco b d (B.pr v) (B.pr v') a hv) y).trans (R.pt_f _ _ v' y).symm)`. Take `⟨y, rfl⟩` from `hs v x`.
+
+Use `(R.pt_f _ _ v y).trans (((B.hJ.lev i).dia_f b (B.pr v) a d y).trans ?_)` and prove the remaining obligations. Rewrite using `[← R.pt_f b d v y]`. Both sides reduce to the same expression.
+-/
 theorem dil_pt {B : Built.Dat D u} {i : ℕ} {sp : Split (B.J.A i) B.J.T} {M : PtModel B.ch i} (R : B.Real i sp M)
     (v : B.ch.A.vT) (a : (B.ch.A.Fv v)ˣ) (b : (B.I.S i).β) (d : (B.I.S i).D b) :
     M.Dil v a (R.pt b d) (R.pt b ((B.J.A i).dia b (B.pr v) a d)) := by
@@ -80,6 +107,15 @@ theorem dil_pt {B : Built.Dat D u} {i : ℕ} {sp : Split (B.J.A i) B.J.T} {M : P
     rw [← R.pt_f b d v y]
     rfl
 
+/- English proof (translation)
+Establish `hsp : M.Val = Submodule.span ℂ (Set.range (B.ev i))` using `R.val_eq.trans (span_evV _ _ _ _).symm`. Use extensionality with `⟨y, hy⟩`. Establish `hy' : y ∈ Submodule.span ℂ (Set.range (B.ev i))` using `hsp ▸ hy`. Establish `key : ∀ y ∈ Submodule.span ℂ (Set.range (B.ev i)), ∀ hy : y ∈ M.Val, φ ⟨y, hy⟩ = ψ ⟨y, hy⟩`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨F, rfl⟩` from `hz`. Conclude with `fun hy => h F _ rfl`. Consider the case `zero => exact fun hy => (map_zero φ).trans (map_zero ψ).symm`.
+
+Consider the case `add a b ha hb iha ihb`. Introduce `hy`. Establish `ha' : a ∈ M.Val` using `hsp ▸ ha`. Establish `hb' : b ∈ M.Val` using `hsp ▸ hb`. Conclude with `(map_add φ ⟨a, ha'⟩ ⟨b, hb'⟩).trans ((congrArg₂ (· + ·) (iha ha') (ihb hb')).trans (map_add ψ ⟨a, ha'⟩ ⟨b, hb'⟩).symm)`.
+
+Consider the case `smul r a ha iha`. Introduce `hy`. Establish `ha' : a ∈ M.Val` using `hsp ▸ ha`. Conclude with `(map_smul φ r ⟨a, ha'⟩).trans ((congrArg (r • ·) (iha ha')).trans (map_smul ψ r ⟨a, ha'⟩).symm)`. Conclude with `key y hy' hy`.
+-/
 theorem ext_ev {B : Built.Dat D u} {i : ℕ} {sp : Split (B.J.A i) B.J.T} {M : PtModel B.ch i} (R : B.Real i sp M)
     {V : Type} [AddCommGroup V] [Module ℂ V] (φ ψ : M.Val →ₗ[ℂ] V)
     (h : ∀ F (y : M.Val), y.1 = B.ev i F → φ y = ψ y) : φ = ψ := by
@@ -104,6 +140,13 @@ theorem ext_ev {B : Built.Dat D u} {i : ℕ} {sp : Split (B.J.A i) B.J.T} {M : P
       exact (map_smul φ r ⟨a, ha'⟩).trans ((congrArg (r • ·) (iha ha')).trans (map_smul ψ r ⟨a, ha'⟩).symm)
   exact key y hy' hy
 
+/- English proof (translation)
+Introduce `D u B i sp sp' M M' R R' k K hT hI hD v a p q p' q' h h'`. Take `⟨ζ, b, d, rfl⟩` from `R.surj p`. Take `⟨ζ', b', d', rfl⟩` from `R'.surj p'`. Establish `hq` using `dil_unique M h (dil_smul M (dil_pt R v a b d) (R.zeta ζ))`. Establish `hq'` using `dil_unique M' h' (dil_smul M' (dil_pt R' v a b' d') (R'.zeta ζ'))`.
+
+Establish `h0 : K.k (R.pt b ((B.J.A i).dia b (B.pr v) a d)) (R'.pt b' ((B.J.A (i + 1)).dia b' (B.pr v) a d')) = K.k (R.pt b d) (R'.pt b' d')`. Use `ext_ev R _ _ fun F y hy => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hI _ _ _ _ F y hy, hI _ _ _ _ F y hy, hD b b' d d' (B.pr v) a]`. Establish `hs : ∀ y : M.Val, M.act (R.zeta ζ) (M.act (R.zeta ζ)⁻¹ y) = y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[hq, hq']`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[← hs y, K.src, K.src, hT, hT, h0]`.
+-/
 theorem dilLaw_of_kerDil : ∀ (D : D7) (u : D.what₂.Word) (B : Built.Dat D u) (i : ℕ) (sp : Split (B.J.A i) B.J.T) (sp' : Split (B.J.A (i + 1)) B.J.T) (M : PtModel B.ch i) (M' : PtModel B.ch (i + 1)) (R : B.Real i sp M) (R' : B.Real (i + 1) sp' M') (k : B.Ker i) (K : KerPt M M'), K.TgtEq → Built.Dat.KerIs R R' K k → Built.Dat.KerDil k → K.DilLaw := by
   intro D u B i sp sp' M M' R R' k K hT hI hD v a p q p' q' h h'
   obtain ⟨ζ, b, d, rfl⟩ := R.surj p

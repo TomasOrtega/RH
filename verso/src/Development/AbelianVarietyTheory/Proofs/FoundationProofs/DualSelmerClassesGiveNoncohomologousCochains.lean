@@ -13,6 +13,19 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.Ord2.SelPerp
 
+/- English proof (translation)
+Introduce `l _ c n`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `h : ∀ x : Mn c n, tbA c n (x 0 * y 1 - x 1 * y 0) = 0` using `fun x : Mn c n => by`.
+
+Rewrite using `[← Phi_apply, hy]`. Both sides reduce to the same expression. Establish `h1 : y 1 = 0` using `GlobalTheory.T.ordDualGeneratorPairing_modPow_nondegenerate l c n _ fun a => by simpa using h (Pi.single 0 a)`. Establish `h0 : y 0 = 0` using `GlobalTheory.T.ordDualGeneratorPairing_modPow_nondegenerate l c n _ fun a => by simpa using h (Pi.single 1 (-a))`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`. Introduce `φ`. Set `φ' : Mn c n →ₗ[ZMod (l ^ n)] ZMod (l ^ n)` to `φ`.
+
+Take `⟨b0, h0⟩` from `GlobalTheory.T.exists_eq_ordDualGeneratorPairing_of_additiveMap l c n (φ'.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin 2 => Qn c n) 0))`. Take `⟨b1, h1⟩` from `GlobalTheory.T.exists_eq_ordDualGeneratorPairing_of_additiveMap l c n (φ'.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Fin 2 => Qn c n) 1))`. Use `⟨![-b1, b0], TDual.ext fun x => ?_⟩` and prove the remaining obligations. Establish `e : x = Pi.single 0 (x 0) + Pi.single 1 (x 1)`. Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+
+Establish `e2 : φ x = φ' (Pi.single 0 (x 0)) + φ' (Pi.single 1 (x 1))`. Rewrite using `[← map_add, ← e]`. Both sides reduce to the same expression. Establish `h0' : φ' (Pi.single 0 (x 0)) = tbA c n (x 0 * b0)` using `h0 (x 0)`. Establish `h1' : φ' (Pi.single 1 (x 1)) = tbA c n (x 1 * b1)` using `h1 (x 1)`.
+
+Rewrite using `[Phi_apply, e2, h0', h1', ← map_add]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem phi_bijective : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ), Function.Bijective (GlobalTheory.Ord2.SelPerp.Phi c n) := by
   intro l _ c n
   constructor
@@ -41,6 +54,15 @@ theorem phi_bijective : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ), Fun
     congr 1
     simp
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ c n hn W hint hdet hcont S hN μ hμ B v hB hup f hf y hy`. Take `⟨m, hm⟩` from `GlobalTheory.T.dualCocycle_coboundary_on_stableLine_of_orthogonal hL l Ω c n hn W hint hcont S hN μ hμ B v hB hup f hf`. Take `⟨w, rfl⟩` from `(phi_bijective l c n).2 m`. Use `⟨w 1, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h10 : matQ c n (dual1 W) (CupCob.dual_representation_integral c W hdet hint) s 1 0 = 0`.
+
+Rewrite using `[matQ_apply, ← map_zero (red c n)]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show mat (dual1 W) s 1 0 = 0`. Rewrite using `[CupCob.mat_dual1 W hdet, Matrix.smul_apply, hup s hs, smul_zero]`.
+
+Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.ordDualGeneratorPairing_modPow_nondegenerate l c n _ fun u => ?_` and prove the remaining obligations. Establish `h` using `hm ⟨s, hs⟩ u`. Establish `e` using `GlobalTheory.T.planePairing_equivariant_twist_cartierDual l Ω c n W hint hdet S hN μ hμ s w`. Establish `e' : twDual μ (rhoS c n W hint S hN) (locHom (S : Set Pl) B ⟨s, hs⟩) (Phi c n w) = Phi c n (matQ c n (dual1 W) (CupCob.dual_representation_integral c W hdet hint) s *ᵥ w)` using `e.symm`.
+
+Rewrite `h` using `[← hy s hs, e', Phi_apply, Phi_apply, Phi_apply, ← map_sub, ← sub_eq_zero, ← map_sub]`. Rewrite using `[← h]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two, h10, Pi.single_eq_same, ne_eq, one_ne_zero, not_false_eq_true, Pi.single_eq_of_ne]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_perp : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ), 1 ≤ n → ∀ (W : R2 Ω l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hdet : dt W ^ 2 = 1) (hcont : Continuous W) (S : Finset Pl) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ), μ.comp (toGS Ω (S : Set Pl)) = cycMod ℚ Ω l n → ∀ (B : ValuationSubring Ω) (v : Pl), IsPlaceOver B v → (∀ s ∈ Dec (F := ℚ) B, mat W s 1 0 = 0) → ∀ f : Z1 ((twDual μ (rhoS c n W hint S hN)).comp (locHom (S : Set Pl) B)), (∀ a ∈ ordCond c n W hint S hN B, cupH1H1TwistedDual μ (rhoS c n W hint S hN) (locHom (S : Set Pl) B) ((contAction_rhoS c n W hint S hN hcont).comp' (continuous_locHom _ B)) (Submodule.mkQ _ f) a = 0) → ∀ y : G ℚ Ω → Mn c n, (∀ (s : G ℚ Ω) (hs : s ∈ Dec (F := ℚ) B), GlobalTheory.Ord2.SelPerp.Phi c n (y s) = f.1 ⟨s, hs⟩) → ∃ m : Qn c n, ∀ s ∈ Dec (F := ℚ) B, y s 1 = matQ c n (dual1 W) (CupCob.dual_representation_integral c W hdet hint) s 1 1 * m - m := by
   intro hL l _ Ω _ _ _ c n hn W hint hdet hcont S hN μ hμ B v hB hup f hf y hy
   obtain ⟨m, hm⟩ := GlobalTheory.T.dualCocycle_coboundary_on_stableLine_of_orthogonal hL l Ω c n hn W hint hcont S hN μ hμ B v hB hup f hf
@@ -67,6 +89,45 @@ theorem ord_perp : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ e S A W hW c hint hN n hn μ hμ`. Establish `hdet` using `hW.det2`. Establish `hint'` using `CupCob.dual_representation_integral c W hdet hint`. Establish `hbij : Function.Bijective (Phi c n)` using `phi_bijective l c n`. Use `set E := LinearEquiv.ofBijective (Phi c n) hbij with hE`.
+
+Establish `hΦΨ : ∀ φ, Phi c n (E.symm φ) = φ` using `fun φ => E.apply_symm_apply φ`. Establish `heq` using `GlobalTheory.T.planePairing_equivariant_twist_cartierDual l Ω c n W hint hdet S hN μ hμ`. Establish `hΨeq : ∀ s φ, E.symm (twDual μ (rhoS c n W hint S hN) (toGS Ω (S : Set Pl) s) φ) = matQ c n (dual1 W) hint' s *ᵥ E.symm φ`. Introduce `s φ`. Apply `hbij.1` to reduce the goal to its premises.
+
+Rewrite using `[hΦΨ, heq, hΦΨ]`. Use `set rho := rhoS c n W hint S hN with hrho_def`. Establish `hcA : ContAction rho` using `contAction_rhoS c n W hint S hN hW.cont`. Set `rep : SelD c n W hint S hN A hW.cont μ → Z1 (twDual μ rho)` to `fun x => Function.surjInv (Submodule.mkQ_surjective _) x.1`. Establish `hrep : ∀ x, Submodule.mkQ _ (rep x) = x.1` using `fun x => Function.surjInv_eq (Submodule.mkQ_surjective _) x.1`.
+
+Set `Y : SelD c n W hint S hN A hW.cont μ → G ℚ Ω → Mn c n` to `fun x s => E.symm ((rep x).1 (toGS Ω (S : Set Pl) s))`. Establish `hY : ∀ x s, Phi c n (Y x s) = (rep x).1 (toGS Ω (S : Set Pl) s)` using `fun x s => hΦΨ _`. Establish `hYc : ∀ x s t, Y x (s * t) = Y x s + matQ c n (dual1 W) hint' s *ᵥ Y x t`. Introduce `x s t`. Simplify using `only [Y, map_mul, (rep x).2.2, map_add, hΨeq]`.
+
+Use `⟨fun x s => lftV c n (Y x s), fun x => ?_, fun x x' hne hcob => ?_⟩` and prove the remaining obligations. Establish `hsel0` using `(mem_Sel _ _ _ _ _).1 x.2`. Use `⟨⟨?_, fun s i => lftV_mem c n _ i, fun s _ t _ => ?_⟩, fun a ha => ?_, fun q hq hlq => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous fun s => (rep x).1 (toGS Ω (S : Set Pl) s)` using `(rep x).2.1.comp (continuous_toGS Ω _)`. Establish `h2 : Continuous fun s => lftV c n (E.symm ((rep x).1 (toGS Ω (S : Set Pl) s)))` using `(continuous_of_discreteTopology (f := fun φ => lftV c n (E.symm φ))).comp h1`.
+
+Conclude with `h2.continuousOn`. Introduce `i dsimp only`. Establish `hb : ∀ i, (lftV c n (Y x s) + mat (dual1 W) s *ᵥ lftV c n (Y x t)) i ∈ c.O` using `fun i => add_mem (lftV_mem c n _ i) (CupCob.mulVec_mem c _ _ (hint' s) (lftV_mem c n _) i)`. Use `cg_of_red (lftV_mem c n _ i) (hb i) ?_` and prove the remaining obligations. Establish `e1 : (⟨(lftV c n (Y x s) + mat (dual1 W) s *ᵥ lftV c n (Y x t)) i, hb i⟩ : c.O) = ⟨lftV c n (Y x s) i, lftV_mem c n _ i⟩ + ⟨(mat (dual1 W) s *ᵥ lftV c n (Y x t)) i, CupCob.mulVec_mem c _ _ (hint' s) (lftV_mem c n _) i⟩` using `rfl`.
+
+Rewrite using `[e1, map_add, red_lftV, red_mulVec c n _ (hint' s) _ (lftV_mem c n _), red_lftV, hYc]`. Simplify using `only [red_lftV, Pi.add_apply]`. Both sides reduce to the same expression. Introduce `i`. Establish `h1 : toGS Ω (S : Set Pl) a = 1` using `MonoidHom.mem_ker.1 ha`.
+
+Establish `h0 : (rep x).1 1 = 0`. Use `(rep x).2.2 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, map_one, Module.End.one_apply]`. Conclude with `add_left_cancel (this.symm.trans (add_zero _).symm)`. Use `show Cg n (lftV c n (Y x a) i) 0`.
+
+Use `cg_of_red (lftV_mem c n _ i) (zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[red_lftV]`. Simplify using `only [Y, h1, h0, map_zero, Pi.zero_apply]`. Conclude with `(map_zero (red c n)).symm`. Take `⟨v0, hA0, hl0⟩` from `hW.atL`.
+
+Establish `hnot : ¬ IsPlaceOver A q` using `fun h => hlq ((eq_of_isPlaceOver hA0 h) ▸ hl0)`. Establish `hBq : IsPlaceOver (Av A S ⟨q, hq⟩) q` using `isPlaceOver_Av A S ⟨q, hq⟩`. Establish `hsel` using `hsel0 ⟨q, hq⟩`. Establish `hLc : Lc c n W hint S hN A ⟨q, hq⟩ = H1ur ((rhoS c n W hint S hN).comp (locFam S (Av A S) ⟨q, hq⟩)) ((Ine (F` using `ℚ) (Av A S ⟨q, hq⟩)).subgroupOf (Dec (F := ℚ) (Av A S ⟨q, hq⟩))) := if_neg hnot`. Rewrite `hsel` using `[mem_perpCond, hLc, ← hrep x]`.
+
+Take `⟨m, hm⟩` from `GlobalTheory.T.dualCocycle_coboundary_on_inertia_of_orthogonal hL l Ω n hn S (Mn c n) rho hcA μ hμ (Av A S ⟨q, hq⟩) q hBq hlq (restrictCocycles1 _ (locFam S (Av A S) ⟨q, hq⟩) (continuous_locFam S (Av A S) ⟨q, hq⟩) (rep x)) hsel`. Use `⟨Av A S ⟨q, hq⟩, hBq, lftV c n (E.symm m), lftV_mem c n _, fun s hs i => ?_⟩` and prove the remaining obligations. Establish `hsD : s ∈ Dec (F` using `ℚ) (Av A S ⟨q, hq⟩) := hs.1`. Establish `hms : (rep x).1 (toGS Ω (S : Set Pl) s) = twDual μ rho (toGS Ω (S : Set Pl) s) m - m` using `hm ⟨s, hsD⟩ hs`. Establish `hb : (mat (dual1 W) s *ᵥ lftV c n (E.symm m) - lftV c n (E.symm m)) i ∈ c.O` using `sub_mem (CupCob.mulVec_mem c _ _ (hint' s) (lftV_mem c n _) i) (lftV_mem c n _ i)`.
+
+Use `cg_of_red (lftV_mem c n _ i) hb ?_` and prove the remaining obligations. Establish `e1 : (⟨(mat (dual1 W) s *ᵥ lftV c n (E.symm m) - lftV c n (E.symm m)) i, hb⟩ : c.O) = ⟨(mat (dual1 W) s *ᵥ lftV c n (E.symm m)) i, CupCob.mulVec_mem c _ _ (hint' s) (lftV_mem c n _) i⟩ - ⟨lftV c n (E.symm m) i, lftV_mem c n _ i⟩` using `rfl`. Rewrite using `[e1, map_sub, red_mulVec c n _ (hint' s) _ (lftV_mem c n _), red_lftV, red_lftV]`. Simplify using `only [red_lftV, Y, hms, map_sub, hΨeq, Pi.sub_apply]`. Both sides reduce to the same expression.
+
+Take `⟨v0, hA0, hl0⟩` from `hW.atL`. Establish `hv0 : v0 ∈ S` using `hW.above v0 hl0`. Establish `hAv : Av A S ⟨v0, hv0⟩ = A` using `if_pos hA0`. Establish `hsel` using `hsel0 ⟨v0, hv0⟩`. Establish `hLc : Lc c n W hint S hN A ⟨v0, hv0⟩ = ordCond c n W hint S hN (Av A S ⟨v0, hv0⟩)` using `if_pos hA0`.
+
+Rewrite `hsel` using `[mem_perpCond, hLc, ← hrep x]`. Establish `hup : ∀ s ∈ Dec (F` using `ℚ) (Av A S ⟨v0, hv0⟩), mat W s 1 0 = 0 := by`. Rewrite using `[hAv]`. Conclude with `hW.upper`. Take `⟨m, hm⟩` from `ord_perp hL l Ω c n hn W hint hdet hW.cont S hN μ hμ (Av A S ⟨v0, hv0⟩) v0 (isPlaceOver_Av A S ⟨v0, hv0⟩) hup (restrictCocycles1 _ _ (continuous_locFam S (Av A S) ⟨v0, hv0⟩) (rep x)) hsel (Y x) (fun s hs => hY x s)`.
+
+Rewrite `hm` using `[hAv]`. Use `⟨lft c n m, (lft c n m).2, fun s hs => ?_⟩` and prove the remaining obligations. Use `cg_of_red (lftV_mem c n _ 1) (sub_mem (mul_mem (hint' s 1 1) (lft c n m).2) (lft c n m).2) ?_` and prove the remaining obligations. Rewrite using `[red_lftV, hm s hs]`. Use `show _ = red c n (⟨mat (dual1 W) s 1 1, hint' s 1 1⟩ * lft c n m - lft c n m)`.
+
+Rewrite using `[map_sub, map_mul, red_lft]`. Both sides reduce to the same expression. Apply `hne` to reduce the goal to its premises. Take `⟨v, hv, hcv⟩` from `hcob`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[← hrep x, ← hrep x', ← sub_eq_zero, ← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Use `(mem_coboundaries1 _ _).2 ⟨Phi c n (fun i => red c n ⟨v i, hv i⟩), fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective g`. Establish `hs : ∀ i, Cg n (lftV c n (Y x s) i - lftV c n (Y x' s) i) ((mat (dual1 W) s *ᵥ v - v) i)` using `hcv s (Subgroup.mem_top s)`. Establish `key : Y x s - Y x' s = matQ c n (dual1 W) hint' s *ᵥ (fun i => red c n ⟨v i, hv i⟩) - (fun i => red c n ⟨v i, hv i⟩)`.
+
+Use function extensionality and compare the values at `i`. Establish `h` using `red_of_cg (sub_mem (lftV_mem c n (Y x s) i) (lftV_mem c n (Y x' s) i)) (sub_mem (CupCob.mulVec_mem c _ _ (hint' s) hv i) (hv i)) (hs i)`. Rewrite `h` using `[show (⟨lftV c n (Y x s) i - lftV c n (Y x' s) i, sub_mem (lftV_mem c n (Y x s) i) (lftV_mem c n (Y x' s) i)⟩ : c.O) = ⟨lftV c n (Y x s) i, lftV_mem c n _ i⟩ - ⟨lftV c n (Y x' s) i, lftV_mem c n _ i⟩ from rfl, show (⟨(mat (dual1 W) s *ᵥ v) i - v i, sub_mem (CupCob.mulVec_mem c _ …`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, h]`. Both sides reduce to the same expression.
+
+Establish `h2` using `congrArg (Phi c n) key`. Rewrite `h2` using `[map_sub, map_sub, hY x s, hY x' s, heq s]`. Conclude with `h2`.
+-/
 theorem sel_perp : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (hW : Nf e S A W) (c : Coef l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (n : ℕ), 1 ≤ n → ∀ μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ, μ.comp (toGS Ω (S : Set Pl)) = cycMod ℚ Ω l n → ∃ z : SelD c n W hint S hN A hW.cont μ → (G ℚ Ω → Fin 2 → Qbar l), (∀ x, GwCount.SelN c n S A (dual1 W) (z x)) ∧ ∀ x x', x ≠ x' → ¬ Cob1 c n (dual1 W) ⊤ (z x - z x') := by
   intro hL l _ Ω _ _ _ e S A W hW c hint hN n hn μ hμ
   have hdet := hW.det2

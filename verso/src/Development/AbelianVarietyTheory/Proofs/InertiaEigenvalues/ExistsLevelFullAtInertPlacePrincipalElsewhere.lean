@@ -23,6 +23,9 @@ namespace GlobalTheory.InertLevel
 section MixMat
 variable {R : Type*} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : p * (1 - p) = 0` using `by rw [mul_sub, mul_one, hp, sub_self]`. Establish `h2 : (1 - p) * p = 0` using `by rw [mul_comm, h1]`. Establish `h3 : (1 - p) * (1 - p) = 1 - p` using `by rw [sub_mul, one_mul, h1, sub_zero]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hp, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+-/
 theorem mix_mul (p : R) (hp : p * p = p) (A B C D : Matrix (Fin n) (Fin n) R) :
     (p • A + (1 - p) • B) * (p • C + (1 - p) • D) = p • (A * C) + (1 - p) • (B * D) := by
   have h1 : p * (1 - p) = 0 := by rw [mul_sub, mul_one, hp, sub_self]
@@ -31,9 +34,15 @@ theorem mix_mul (p : R) (hp : p * p = p) (A B C D : Matrix (Fin n) (Fin n) R) :
   simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hp, h1, h2, h3,
     zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem mix_one (p : R) : p • (1 : Matrix (Fin n) (Fin n) R) + (1 - p) • 1 = 1 := by
   rw [← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjT, map_sub, hp]`.
+-/
 theorem conjT_mix (σ : R →+* R) (p : R) (hp : σ p = p) (A B : Matrix (Fin n) (Fin n) R) :
     conjT σ (p • A + (1 - p) • B) = p • conjT σ A + (1 - p) • conjT σ B := by
   ext i j
@@ -43,6 +52,9 @@ end MixMat
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_GA_iff (x : GL (Fin n) (AL L)) :
     x ∈ ReciprocityTheory.Aut.GA L n ↔ (x : Matrix (Fin n) (Fin n) (AL L)) * conjT (conjAL L) x = 1 := Iff.rfl
 
@@ -57,6 +69,9 @@ def mixG (p : AL L) (hp : p * p = p) (hc : conjAL L p = p) (g h : GAf L n) : GAf
       conjT (conjAL L) (p • (g.1 : Matrix (Fin n) (Fin n) (AL L)) + (1 - p) • (h.1 : Matrix (Fin n) (Fin n) (AL L))) = 1
     rw [conjT_mix _ p hc, mix_mul p hp, (mem_GA_iff _).1 g.2, (mem_GA_iff _).1 h.2, mix_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mixG_val (p : AL L) (hp : p * p = p) (hc : conjAL L p = p) (g h : GAf L n) :
     ((mixG p hp hc g h).1 : Matrix (Fin n) (Fin n) (AL L)) =
       p • (g.1 : Matrix (Fin n) (Fin n) (AL L)) + (1 - p) • (h.1 : Matrix (Fin n) (Fin n) (AL L)) := rfl
@@ -75,12 +90,23 @@ def idemAt (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : AL L :=
 section Idem
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
 
+/- English proof (translation)
+Rewrite using `[idemAt, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_same, ← Algebra.TensorProduct.one_def]`.
+-/
 theorem compAt_idemAt_self : compAt L v (idemAt v) = 1 := by
   rw [idemAt, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_same, ← Algebra.TensorProduct.one_def]
 
+/- English proof (translation)
+Rewrite using `[idemAt, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_ne L v 1 hw, tmul_zero]`.
+-/
 theorem compAt_idemAt_ne {w} (hw : w ≠ v) : compAt L w (idemAt v) = 0 := by
   rw [idemAt, GlobalTheory.InertUmax.compAt_tmul, GlobalTheory.InertUmax.sgl_ne L v 1 hw, tmul_zero]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.InertUmax.eq_zero_of_compAt` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_sub, map_mul]`. Break down `eq_or_ne w v with rfl | hw` into its components or cases.
+
+Rewrite using `[compAt_idemAt_self]`. Simplify using the standard rewrite rules. Rewrite using `[compAt_idemAt_ne v hw]`. Simplify using the standard rewrite rules.
+-/
 theorem idemAt_mul_self : idemAt (L := L) v * idemAt v = idemAt v := by
   rw [← sub_eq_zero]
   apply GlobalTheory.InertUmax.eq_zero_of_compAt
@@ -90,26 +116,46 @@ theorem idemAt_mul_self : idemAt (L := L) v * idemAt v = idemAt v := by
   · rw [compAt_idemAt_self]; simp
   · rw [compAt_idemAt_ne v hw]; simp
 
+/- English proof (translation)
+Simplify using `[idemAt, conjAL, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem conjAL_idemAt : conjAL L (idemAt v) = idemAt v := by
   simp [idemAt, conjAL, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.InertUmax.one_tmul_sgl_mem L v 1 (one_mem _)`.
+-/
 theorem idemAt_mem : idemAt (L := L) v ∈ ALint L :=
   GlobalTheory.InertUmax.one_tmul_sgl_mem L v 1 (one_mem _)
 
+/- English proof (translation)
+The claim follows from `Subring.sub_mem _ (one_mem _) (idemAt_mem v)`.
+-/
 theorem one_sub_idemAt_mem : 1 - idemAt (L := L) v ∈ ALint L :=
   Subring.sub_mem _ (one_mem _) (idemAt_mem v)
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem one_entry_mem (S : Subring (AL L)) (i j : Fin n) :
     (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ S := by
   rw [Matrix.one_apply]; split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compAt_one_entry (w : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (i j : Fin n) :
     compAt L w ((1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (1 : Matrix (Fin n) (Fin n) _) i j := by
   simp only [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `GlobalTheory.InertUmax.eq_zero_of_compAt` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_sub, map_sub, map_one, compAt_one_entry]`. Break down `eq_or_ne w v with rfl | hw` into its components or cases. Rewrite using `[compAt_idemAt_self]`.
+
+Simplify using the standard rewrite rules. Establish `h` using `congrFun (congrFun (hx w (by simpa using hw)) i) j`. Rewrite `h` using `[Matrix.map_apply]`. Rewrite using `[h, sub_self, mul_zero]`.
+-/
 theorem away_eq_zero {x : GAf L n} (hx : TrivOutside {v} x) (i j : Fin n) :
     (1 - idemAt v) * ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j) = 0 := by
   apply GlobalTheory.InertUmax.eq_zero_of_compAt
@@ -126,22 +172,34 @@ end Idem
 def DivBy (N : ℕ) (M : Matrix (Fin n) (Fin n) (AL L)) : Prop :=
   ∀ i j, ∃ y ∈ ALint L, M i j = (N : AL L) * y
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨y, hy, e⟩ := hA i j obtain ⟨z, hz, f⟩ := hB i j exact ⟨y + z, Subring.add_mem _ hy hz, by rw [Matrix.add_apply, e, f, mul_add]⟩`.
+-/
 theorem DivBy.add {N : ℕ} {A B : Matrix (Fin n) (Fin n) (AL L)} (hA : DivBy N A) (hB : DivBy N B) :
     DivBy N (A + B) := fun i j => by
   obtain ⟨y, hy, e⟩ := hA i j
   obtain ⟨z, hz, f⟩ := hB i j
   exact ⟨y + z, Subring.add_mem _ hy hz, by rw [Matrix.add_apply, e, f, mul_add]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨y, hy, e⟩ := hA i j exact ⟨-y, Subring.neg_mem _ hy, by rw [Matrix.neg_apply, e, mul_neg]⟩`.
+-/
 theorem DivBy.neg {N : ℕ} {A : Matrix (Fin n) (Fin n) (AL L)} (hA : DivBy N A) : DivBy N (-A) := fun i j => by
   obtain ⟨y, hy, e⟩ := hA i j
   exact ⟨-y, Subring.neg_mem _ hy, by rw [Matrix.neg_apply, e, mul_neg]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by choose y hy e using hA exact ⟨∑ k, y i k * B k j, Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hy i k) (hB k j), by simp only [Matrix.mul_apply, e, Finset.mul_sum, mul_assoc]⟩`.
+-/
 theorem DivBy.mul_int {N : ℕ} {A B : Matrix (Fin n) (Fin n) (AL L)} (hA : DivBy N A)
     (hB : ∀ i j, B i j ∈ ALint L) : DivBy N (A * B) := fun i j => by
   choose y hy e using hA
   exact ⟨∑ k, y i k * B k j, Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hy i k) (hB k j), by
     simp only [Matrix.mul_apply, e, Finset.mul_sum, mul_assoc]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by choose y hy e using hA exact ⟨∑ k, B i k * y k j, Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hB i k) (hy k j), by simp only [Matrix.mul_apply, e, Finset.mul_sum]; refine Finset.sum_congr rfl fun k _ => by ring⟩`.
+-/
 theorem DivBy.int_mul {N : ℕ} {A B : Matrix (Fin n) (Fin n) (AL L)} (hA : DivBy N A)
     (hB : ∀ i j, B i j ∈ ALint L) : DivBy N (B * A) := fun i j => by
   choose y hy e using hA
@@ -177,6 +235,27 @@ end GlobalTheory.InertLevel
 
 namespace GlobalTheory.InertLevel
 
+/- English proof (translation)
+Introduce `L _ _ _ n v N _`. Establish `hp` using `idemAt_mul_self (L := L) v`. Establish `hc` using `conjAL_idemAt (L := L) v`. Use `⟨levelAt (n := n) v N, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `κ ⟨hU, hκ⟩`.
+
+Use `⟨hU, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hκ i j`. Use `⟨(1 - idemAt v) * y, Subring.mul_mem _ (one_sub_idemAt_mem v) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `κ hκ`. Use `⟨fun h => h.1, fun h => ⟨h, fun i j => ⟨0, zero_mem _, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, away_eq_zero v hκ, mul_zero]`. Introduce and unpack `κ ⟨hU, hκ⟩`. Use `⟨mixG (idemAt v) hp hc κ 1, mixG (idemAt v) hp hc 1 κ, ?_, ?_, ?_, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul, mixG_val, mix_mul _ hp, OneMemClass.coe_one, Units.val_one, mul_one, one_mul]`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Introduce `i j`.
+
+Rewrite using `[mixG_val, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ (idemAt_mem v) (hU i j)) (Subring.mul_mem _ (one_sub_idemAt_mem v) (by simpa using one_entry_mem (ALint L) i j))`. Introduce `w hw`. Establish `hw' : w ≠ v` using `by simpa using hw`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, mixG_val, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, map_sub, map_one, compAt_idemAt_ne v hw']`. Simplify using `only [OneMemClass.coe_one, Units.val_one, compAt_one_entry, zero_mul, zero_add, sub_zero, one_mul]`. Introduce `i j`. Rewrite using `[mixG_val, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `Subring.add_mem _ (Subring.mul_mem _ (idemAt_mem v) (by simpa using one_entry_mem (ALint L) i j)) (Subring.mul_mem _ (one_sub_idemAt_mem v) (hU i j))`.
+
+Introduce `i j`. Take `⟨y, hy, e⟩` from `hκ i j`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Rewrite using `[← e, mixG_val, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`.
+
+Simplify using `only [OneMemClass.coe_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Establish `hX : (x.1 : Matrix (Fin n) (Fin n) (AL L)) = idemAt v • (x.1 : Matrix (Fin n) (Fin n) (AL L)) + (1 - idemAt v) • 1`. Use extensionality with `i j`.
+
+Establish `h` using `away_eq_zero v hx i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Take the linear combination `h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Subgroup.coe_mul, Units.val_mul, mixG_val, OneMemClass.coe_one, Units.val_one]`. Rewrite using `[hX, mix_mul _ hp, mix_mul _ hp]`. Simplify using `only [mul_one, one_mul]`.
+-/
 theorem exists_level : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (N : ℕ), 0 < N → ∃ U : Subgroup (GAf L n), (∀ κ, NG.Cong L n N κ → κ ∈ U) ∧ (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) ∧ ∀ κ ∈ U, ∃ a b : GAf L n, κ = a * b ∧ a ∈ Umax L n ∧ TrivOutside {v} a ∧ NG.Cong L n N b ∧ ∀ x : GAf L n, TrivOutside {v} x → b * x = x * b := by
   intro L _ _ _ n v N _
   have hp := idemAt_mul_self (L := L) v

@@ -27,6 +27,11 @@ def GsTauBijective (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) : Prop 
 set_option maxHeartbeats 1000000 in
 include hS hev in
 
+/- English proof (translation)
+Introduce `τ hτ r s h`. Establish `hTC` using `isTotallyComplex_of_gsOpenSubgroup_le S hS hev hL W₀ hW₀ hU`. Set `` to `fintypePlacesOver (L := L) S`. Establish `: Nonempty (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))` using `nonempty_placesOver_of_natCast_mem S Nat.prime_two (mem_of_natCast_two_mem_of_even S hS hev)`. Establish `hSL : ∀ w : HeightOneSpectrum (𝓞 L.1), ((N : ℕ) : 𝓞 L.1) ∈ w.asIdeal → w ∈ placesOver S` using `fun w hw => mem_placesOver_of_natCast_mem hS hw`.
+
+Conclude with `bijective_compactZmodDualityMap_gsOpenSubgroup_of_surjective S ιs hL N τ hτ _ (gsLevelBijective_gsCompactInv (placesOver S) (gsMackeyEmbeddings hL ιs) hSL (Or.inr hTC)) h`.
+-/
 theorem gsTauBijective_gsOpenSubgroup {L : FiniteSubfield} [Fact (K ≤ L)]
     (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
     (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))

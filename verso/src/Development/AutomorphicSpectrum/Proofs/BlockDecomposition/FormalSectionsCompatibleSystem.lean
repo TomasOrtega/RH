@@ -10,6 +10,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg
 
+/- English proof (translation)
+Introduce `z k k' hk hk'`. Establish `hm : z ∈ (H.pull β).U (fun _ => k) ⊓ H'.U k'` using `⟨mem_pull.2 hk, hk'⟩`. Establish `hm' : z ∈ (H.pull β).U (fun _ => k)` using `hm.1`. Establish `e` using `congrArg (gs (𝟙 X') z _) (h ((fun _ => k), k'))`. Establish `e1 : gs (𝟙 X') z _ (resG X' (inf_le_left : (H.pull β).U (fun _ => k) ⊓ H'.U k' ≤ _) ((Cartier.secPull s β).f (fun _ => k))) = gs β z _ (s.f k)`.
+
+Use `(gs_res _ z _ hm _).trans ((gs_res _ z _ hm' _).trans ?_)` and prove the remaining obligations. Rewrite using `[gs_pull (𝟙 X') β z _ hk, Category.id_comp]`. Rewrite `e` using `[e1]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rel_of_secMaps {X X' : Scheme.{0}} {H : LB X} {H' : LB X'} {β : X' ⟶ X}
     {w : LB.Iso H' (H.pull β)} {s : H.Sec} {s' : H'.Sec} (h : SecMaps w s' (Cartier.secPull s β)) :
     GlobalTheory.Degen.FormalEmb.Rel β w s s' := by
@@ -26,6 +33,11 @@ theorem rel_of_secMaps {X X' : Scheme.{0}} {H : LB X} {H' : LB X'} {β : X' ⟶ 
   rw [gs_mul _ z _ hm, gs_res _ z _ hm, gs_unit _ z _ hm]
   rfl
 
+/- English proof (translation)
+Use `⟨h.1, fun i => ?_⟩` and prove the remaining obligations. Take `⟨ha, r, hr, hs⟩` from `h.2 i`. Use `⟨ha, r, hr, fun p => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hs p`. Take `⟨q', rfl⟩` from `MvPolynomial.map_surjective g hg q`.
+
+Use `⟨q', ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Degen.FormalEmb.cst_comp_spec, MvPolynomial.eval₂Hom_map_hom]`.
+-/
 theorem veryAmpleBy_comp_spec {A B : Type} [CommRing A] [CommRing B] (g : A →+* B)
     (hg : Function.Surjective g) {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of B)) {H : LB X} {m : ℕ}
     {s : Fin (m + 1) → LB.Sec H} (h : VeryAmpleBy f H s) :
@@ -38,6 +50,9 @@ theorem veryAmpleBy_comp_spec {A B : Type} [CommRing A] [CommRing B] (g : A →+
   refine ⟨q', ?_⟩
   rw [GlobalTheory.Degen.FormalEmb.cst_comp_spec, MvPolynomial.eval₂Hom_map_hom]
 
+/- English proof (translation)
+Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback P.hom (thick R I (e + 1)))` and prove the remaining obligations. Establish `h1 : thickMap R I e P ≫ pullback.fst P.hom (thick R I (e + 1)) = pullback.fst P.hom (thick R I e)` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Rewrite using `[h1, thickTrans_comp]`. Conclude with `IsPullback.of_hasPullback _ _`.
+-/
 theorem isPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (P : Over (Spec (CommRingCat.of R))) (e : ℕ) :
     IsPullback (thickMap R I e P) (pullback.snd P.hom (thick R I e))
       (pullback.snd P.hom (thick R I (e + 1))) (thickTrans R I e) := by
@@ -47,6 +62,15 @@ theorem isPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (P : Over (Spe
   rw [h1, thickTrans_comp]
   exact IsPullback.of_hasPullback _ _
 
+/- English proof (translation)
+Set `w : LB.Iso A L` to `⟨fun p => (isUnit_resG_sec (s (c p.2)) p.1 (inf_le_right.trans (h2 p.2)) inf_le_left).unit⟩`. Use `⟨w, ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, q⟩ ⟨p', q'⟩`. Establish `hp : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ L.U p` using `inf_le_left.trans inf_le_left`. Establish `hq : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ A.U q` using `inf_le_left.trans inf_le_right`.
+
+Establish `hp' : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ L.U p'` using `inf_le_right.trans inf_le_left`. Establish `hq' : L.U p ⊓ A.U q ⊓ (L.U p' ⊓ A.U q') ≤ A.U q'` using `inf_le_right.trans inf_le_right`. Establish `key : res (le_inf hp hq) (@id (Γ(Y, L.U p ⊓ A.U q)ˣ) (w.s (p, q))) * res (le_inf hq hq') (A.g q q') = res (le_inf hp hp') (L.g p p') * res (le_inf hp' hq') (@id (Γ(Y, L.U p' ⊓ A.U q')ˣ) (w.s (p', q')))`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Y (le_inf hp hq) (resG Y inf_le_left ((s (c q)).f p)) * resG Y (le_inf hq hq') (A.g q q').val = resG Y (le_inf hp hp') (L.g p p').val * resG Y (le_inf hp' hq') (resG Y inf_le_left ((s (c q')).f p'))`.
+
+Rewrite using `[resG_resG, resG_resG, ← sec_compat _ p p' hp hp']`. Establish `e1` using `congrArg (resG Y (le_inf hp hq)) (h3 q p (c q'))`. Rewrite `e1` using `[map_mul, resG_resG, resG_resG, resG_resG]`. Establish `e2` using `sec_compat (t (c q')) q q' hq hq'`. Rewrite `e2` using `[h1 q', map_one, mul_one]`.
+
+Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (@id (Γ(Y, L.U p ⊓ A.U q)ˣ) (w.s (p, q))) = res (le_inf hp hp') (L.g p p') * (res (le_inf hq hq') (A.g q q'))⁻¹ * res (le_inf hp' hq') (@id (Γ(Y, L.U p' ⊓ A.U q')ˣ) (w.s (p', q')))`. Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`. Introduce and unpack `⟨k, a⟩`. Conclude with `h3 a k j`.
+-/
 theorem exists_iso_of_chart {Y : Scheme.{0}} {A L : LB Y} {τ : Type} (t : τ → A.Sec) (s : τ → L.Sec)
     (c : A.ι → τ) (h1 : ∀ a, (t (c a)).f a = 1) (h2 : ∀ a, A.U a ≤ nonzeroLocus (s (c a)))
     (h3 : ∀ a k j, resG Y (inf_le_left : L.U k ⊓ A.U a ≤ L.U k) ((s j).f k) =
@@ -78,6 +102,13 @@ theorem exists_iso_of_chart {Y : Scheme.{0}} {A L : LB Y} {τ : Type} (t : τ �
   · rintro ⟨k, a⟩
     exact h3 a k j
 
+/- English proof (translation)
+Use `ext_germ fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `LB.mem_of_cover hB x`. Establish `hm : x ∈ B.U p ⊓ A.U c` using `⟨hp, hx⟩`. Establish `g` using `fun (b : B.Sec) (a : A.Sec) (hh : SecMaps w a b) => by`. Use `congrArg (X.presheaf.germ (B.U p ⊓ A.U c) x hm).hom (hh (p, c))` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, germ_resG, germ_resG]`. Then use the resulting hypothesis. Establish `e` using `congrArg (X.presheaf.germ (B.U p) x hp).hom (h p)`. Rewrite `e` using `[map_mul, map_mul, g _ _ h₁, g _ _ h₂, g _ _ h₃, g _ _ h₄]`. Establish `u : IsUnit ((X.presheaf.germ (B.U p ⊓ A.U c) x hm).hom ((@id (Γ(X, B.U p ⊓ A.U c)ˣ) (w.s (p, c)) : Γ(X, B.U p ⊓ A.U c))))` using `(Units.isUnit _).map _`. Rewrite using `[map_mul, map_mul]`.
+
+Establish `e' : ((X.presheaf.germ (B.U p ⊓ A.U c) x hm).hom ((@id (Γ(X, B.U p ⊓ A.U c)ˣ) (w.s (p, c)) : Γ(X, B.U p ⊓ A.U c)))) ^ 2 * ((X.presheaf.germ _ x hx).hom (a₁.f c) * (X.presheaf.germ _ x hx).hom (a₂.f c)) = ((X.presheaf.germ (B.U p ⊓ A.U c) x hm).hom ((@id (Γ(X, B.U p ⊓ A.U c)ˣ) (w. …`. Take the linear combination `e`. Conclude with `(u.pow 2).mul_left_cancel e'`.
+-/
 theorem secQuad_of_secMaps {X : Scheme.{0}} {A B : LB X} (hB : B.IsLB) (w : LB.Iso A B) {a₁ a₂ a₃ a₄ : A.Sec}
     {b₁ b₂ b₃ b₄ : B.Sec} (h₁ : SecMaps w a₁ b₁) (h₂ : SecMaps w a₂ b₂) (h₃ : SecMaps w a₃ b₃)
     (h₄ : SecMaps w a₄ b₄) (h : ∀ c, b₁.f c * b₂.f c = b₃.f c * b₄.f c) (c : A.ι) :
@@ -102,6 +133,9 @@ theorem secQuad_of_secMaps {X : Scheme.{0}} {A B : LB X} (hB : B.IsLB) (w : LB.I
     linear_combination e
   exact (u.pow 2).mul_left_cancel e'
 
+/- English proof (translation)
+Rewrite using `[app_resG, resG_resG, resG_resG, Scheme.Hom.comp_appLE]`. Simplify using `only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]`.
+-/
 theorem resG_app_resG_app {Y C D : Scheme.{0}} (b : Y ⟶ C) (j : C ⟶ D) {U : D.Opens} {V : C.Opens}
     (hV : V ≤ j ⁻¹ᵁ U) {W' : Y.Opens} (hW' : W' ≤ b ⁻¹ᵁ V) {W : Y.Opens} (hW : W ≤ W')
     (hh : W ≤ (b ≫ j) ⁻¹ᵁ U) (x : Γ(D, U)) :
@@ -109,6 +143,9 @@ theorem resG_app_resG_app {Y C D : Scheme.{0}} (b : Y ⟶ C) (j : C ⟶ D) {U : 
   rw [app_resG, resG_resG, resG_resG, Scheme.Hom.comp_appLE]
   simp only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply]
 
+/- English proof (translation)
+The claim follows from `resG_app_resG_app b j _ _ h h' _`.
+-/
 theorem resG_secPull_secPull_coord {R : Type} [CommRing R] {M : ℕ} {Y C : Scheme.{0}} (j : C ⟶ PSpace R M)
     (b : Y ⟶ C) (l : Fin (M + 1)) (a : PUnit → PUnit → Fin (M + 1)) {W : Y.Opens}
     (h : W ≤ (((O1 R M).pull j).pull b).U a) (h' : W ≤ (b ≫ j) ⁻¹ᵁ chart R M (a ⟨⟩ ⟨⟩)) :
@@ -116,6 +153,15 @@ theorem resG_secPull_secPull_coord {R : Type} [CommRing R] {M : ℕ} {Y C : Sche
       pullRatio (b ≫ j) W (a ⟨⟩ ⟨⟩) h' l :=
   resG_app_resG_app b j _ _ h h' _
 
+/- English proof (translation)
+Establish `hU : ∀ a : PUnit → PUnit → Fin (M + 1), (((O1 R M).pull j).pull b).U a ≤ (b ≫ j) ⁻¹ᵁ chart R M (a ⟨⟩ ⟨⟩)` using `fun a y hy => by`. Establish `h1` using `mem_pull.1 hy`. Conclude with `mem_pull.1 h1`. Establish `hc : ∀ i, (b ≫ j) ⁻¹ᵁ chart R M i = nonzeroLocus (s i)` using `fun i => by`. Rewrite using `[h, toProj_preimage_chart]`.
+
+Establish `hsec : ∀ (i l : Fin (M + 1)) (k : L.ι) {W : Y.Opens} (hW : W ≤ (b ≫ j) ⁻¹ᵁ chart R M i) (hk : W ≤ L.U k), resG Y hk ((s l).f k) = pullRatio (b ≫ j) W i hW l * resG Y hk ((s i).f k)`. Introduce `i l k W hW hk`. Use `revert hW`. Rewrite using `[h]`. Introduce `hW`.
+
+Conclude with `sec_eq_pullRatio_toProj_mul f s hs i l k hW hk`. Use `exists_iso_of_chart (A := ((O1 R M).pull j).pull b) _ s (fun a => a ⟨⟩ ⟨⟩) (fun a => ?_) (fun a => ?_) (fun a k l => ?_)` and prove the remaining obligations. Conclude with `(resG_self _ _).symm.trans ((resG_secPull_secPull_coord j b _ a le_rfl (hU a)).trans pullRatio_self)`. Conclude with `(hU a).trans (hc _).le`. Establish `hW : L.U k ⊓ (((O1 R M).pull j).pull b).U a ≤ (b ≫ j) ⁻¹ᵁ chart R M (a ⟨⟩ ⟨⟩)` using `inf_le_right.trans (hU a)`.
+
+Conclude with `(hsec _ l k hW inf_le_left).trans ((mul_comm _ _).trans (congrArg _ (resG_secPull_secPull_coord j b l a inf_le_right hW).symm))`.
+-/
 theorem exists_iso_pull_pull {R : Type} [CommRing R] {M : ℕ} {Y C : Scheme.{0}} {L : LB Y}
     (f : Y ⟶ Spec (CommRingCat.of R)) (s : Fin (M + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     (j : C ⟶ PSpace R M) (b : Y ⟶ C) (h : b ≫ j = toProj f s hs) :
@@ -142,6 +188,9 @@ theorem exists_iso_pull_pull {R : Type} [CommRing R] {M : ℕ} {Y C : Scheme.{0}
     exact (hsec _ l k hW inf_le_left).trans ((mul_comm _ _).trans
       (congrArg _ (resG_secPull_secPull_coord j b l a inf_le_right hW).symm))
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Rewrite using `[← toProj_secPull hs g]`. Conclude with `toProj_eq_of_secMaps ht _ h`.
+-/
 theorem toProj_comp_of_secMaps {R : Type} [CommRing R] {M : ℕ} {Y Z : Scheme.{0}} {L : LB Y} {B : LB Z}
     (g : Z ⟶ Y) (f : Y ⟶ Spec (CommRingCat.of R)) (f' : Z ⟶ Spec (CommRingCat.of R)) (hf : g ≫ f = f')
     (s : Fin (M + 1) → L.Sec) (t : Fin (M + 1) → B.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
@@ -151,12 +200,22 @@ theorem toProj_comp_of_secMaps {R : Type} [CommRing R] {M : ℕ} {Y Z : Scheme.{
   rw [← toProj_secPull hs g]
   exact toProj_eq_of_secMaps ht _ h
 
+/- English proof (translation)
+The claim follows from `((MvPolynomial.isHomogeneous_X R a).mul (MvPolynomial.isHomogeneous_X R b)).sub ((MvPolynomial.isHomogeneous_X R c).mul (MvPolynomial.isHomogeneous_X R d))`.
+-/
 theorem isHomogeneous_quadric {R : Type} [CommRing R] {σ : Type} (a b c d : σ) :
     (MvPolynomial.X a * MvPolynomial.X b - MvPolynomial.X c * MvPolynomial.X d :
       MvPolynomial σ R).IsHomogeneous 2 :=
   ((MvPolynomial.isHomogeneous_X R a).mul (MvPolynomial.isHomogeneous_X R b)).sub
     ((MvPolynomial.isHomogeneous_X R c).mul (MvPolynomial.isHomogeneous_X R d))
 
+/- English proof (translation)
+Establish `key` using `fun k : PUnit → Fin (M + 1) => (show MvPolynomial.eval₂Hom (cst (φ ≫ PSpace.str R M) (((O1 R M).pull φ).U k)) (fun j => (Cartier.secPull (coord R M j) φ).f k) (MvPolynomial.X a * MvPolynomial.X b - MvPolynomial.X c * MvPolynomial.X d) = _ by`. Simplify using `only [map_sub, map_mul, MvPolynomial.eval₂Hom_X']`. Use the proof step `rfl).symm.trans`. Use the proof step `(GlobalTheory.ProjQuot.eval₂Hom_secPull_coord φ k (MvPolynomial.X a * MvPolynomial.X b - MvPolynomial.X c * MvPolynomial.X d))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i`. Establish `e` using `(key (fun _ => i)).symm.trans (sub_eq_zero.2 (h _))`. Establish `h'` using `congrArg (resG _ (Cartier.pull_U (O1 R M) φ (fun _ => i)).ge) e`. Conclude with `((resG_resG _ _ _).trans (resG_self _ _)).symm.trans (h'.trans (map_zero _))`. Introduce `h k`.
+
+Use `sub_eq_zero.1 ((key k).trans ((congrArg _ (h _)).trans (map_zero _)))` and prove the remaining obligations.
+-/
 theorem quadric_app_iff {R : Type} [CommRing R] {M : ℕ} {T : Scheme.{0}} (φ : T ⟶ PSpace R M)
     (a b c d : Fin (M + 1)) :
     (∀ k : PUnit → Fin (M + 1), (Cartier.secPull (coord R M a) φ).f k * (Cartier.secPull (coord R M b) φ).f k =
@@ -179,6 +238,9 @@ theorem quadric_app_iff {R : Type} [CommRing R] {M : ℕ} {T : Scheme.{0}} (φ :
   · intro h k
     refine sub_eq_zero.1 ((key k).trans ((congrArg _ (h _)).trans (map_zero _)))
 
+/- English proof (translation)
+Rewrite using `[← sup_eq_right]`. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (fun i => ⟨chart R M i, isAffineOpen_chart R M i⟩) ?_ fun i => ?_` and prove the remaining obligations. Conclude with `top_unique fun y _ => (exists_mem_chart R M y).elim fun i hi => TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Rewrite using `[Scheme.IdealSheafData.ideal_sup, Pi.sup_apply, GlobalTheory.ProjQuot.ideal_secIdeal_formSec, sup_eq_right, Scheme.Hom.ker_apply, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`. Conclude with `h i`.
+-/
 theorem quadricIdeal_le_ker {R : Type} [CommRing R] {M : ℕ} {T : Scheme.{0}} (ψ : T ⟶ PSpace R M)
     [QuasiCompact ψ] (F : MvPolynomial (Fin (M + 1)) R) (hF : F.IsHomogeneous 2)
     (h : ∀ i, (ψ.app (chart R M i)).hom (MvPolynomial.aeval (ratio R M i) F) = 0) :
@@ -190,6 +252,9 @@ theorem quadricIdeal_le_ker {R : Type} [CommRing R] {M : ℕ} {T : Scheme.{0}} (
       Scheme.Hom.ker_apply, Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]
     exact h i
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Scheme.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(q.app _).hom ((ι.app U).hom x) = 0`. Rewrite using `[hx, map_zero]`.
+-/
 theorem app_eq_zero_of_fac {A B C : Scheme.{0}} (q : A ⟶ B) (ι : B ⟶ C) (j : A ⟶ C) (h : q ≫ ι = j)
     (U : C.Opens) (x : Γ(C, U)) (hx : (ι.app U).hom x = 0) : (j.app U).hom x = 0 := by
   subst h
@@ -197,6 +262,15 @@ theorem app_eq_zero_of_fac {A B C : Scheme.{0}} (q : A ⟶ B) (ι : B ⟶ C) (j 
   change (q.app _).hom ((ι.app U).hom x) = 0
   rw [hx, map_zero]
 
+/- English proof (translation)
+Set `K` to `GlobalTheory.ThickeningDetermines.secIdeal (On_isLB R M (2 : ℕ)) (formSec 2 F hF)`. Establish `hle : ∀ e, Scheme.Hom.ker K.subschemeι ≤ Scheme.Hom.ker (b e ≫ j)` using `fun e => by`. Rewrite using `[K.ker_subschemeι]`. Use `hq e` as an intermediate fact. Conclude with `quadricIdeal_le_ker _ F hF (h e)`.
+
+Establish `hl : ∀ e, IsClosedImmersion.lift K.subschemeι (b e ≫ j) (hle e) ≫ K.subschemeι = b e ≫ j` using `fun e => IsClosedImmersion.lift_fac _ _ _`. Establish `hiso : IsIso (pullback.fst j K.subschemeι)` using `GlobalTheory.CompanionTheory.FormalClosed.isIso_of_isClosedImmersion_of_thickenings R I hc X hX _ _ inferInstance fun e => ⟨(hb e).isoPullback.inv ≫ pullback.lift (b e) _ (hl e).symm, by`. Rewrite using `[Category.assoc, pullback.lift_fst]`. Conclude with `(hb e).isoPullback_inv_fst⟩`. Establish `hfac : (inv (pullback.fst j K.subschemeι) ≫ pullback.snd j K.subschemeι) ≫ K.subschemeι = j`.
+
+Rewrite using `[Category.assoc, ← pullback.condition, IsIso.inv_hom_id_assoc]`. Establish `hK : (K.subschemeι.app (chart R M i)).hom (MvPolynomial.aeval (ratio R M i) F) = 0`. Establish `m : MvPolynomial.aeval (ratio R M i) F ∈ K.ideal ⟨chart R M i, isAffineOpen_chart R M i⟩` using `(GlobalTheory.ProjQuot.ideal_secIdeal_formSec i 2 F hF).ge (Ideal.mem_span_singleton_self _)`. Rewrite `m` using `[← K.ker_subschemeι_app]`. Conclude with `RingHom.mem_ker.1 m`.
+
+Conclude with `app_eq_zero_of_fac _ _ _ hfac _ _ hK`.
+-/
 theorem app_eq_zero_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] (I : Ideal R)
     (hc : IsAdicComplete I R) (X : Over (Spec (CommRingCat.of R))) (hX : IsProper X.hom) {M : ℕ}
     (j : X.left ⟶ PSpace R M) (T : ℕ → Scheme.{0}) (b : ∀ e, T e ⟶ X.left)
@@ -227,6 +301,39 @@ theorem app_eq_zero_of_thickenings {R : Type} [CommRing R] [IsNoetherianRing R] 
     exact RingHom.mem_ker.1 m
   exact app_eq_zero_of_fac _ _ _ hfac _ _ hK
 
+/- English proof (translation)
+Introduce `hge R _ _ I hc Y β hβ E w hE m z hz hva`. Establish `hVA : ∀ e, VeryAmpleBy (Y e).hom (E e) (z e)`. Introduce and unpack `(_ | e)`. Conclude with `hva`. Take `⟨j₀, hj, w', hw, hr⟩` from `GlobalTheory.Degen.FormalEmb.tower I Y β hβ E w hE z (fun e j => rel_of_secMaps (hz e j)) e`.
+
+Conclude with `GlobalTheory.AbLaw.veryAmpleBy_of_isNilpotent _ _ _ (Ideal.Quotient.factor_surjective _) (GlobalTheory.Degen.isNilpotent_ker_factor_pow I _) _ _ _ _ j₀ hj _ _ w' m _ _ (hE _).1 (hE _).1 ((isGen_iff _).2 hw) hr hva`. Set `π : ∀ e, (Y e).left ⟶ Spec (CommRingCat.of R)` to `fun e => (Y e).hom ≫ thick R I e`. Establish `hVR : ∀ e, VeryAmpleBy (π e) (E e) (z e)` using `fun e => veryAmpleBy_comp_spec _ Ideal.Quotient.mk_surjective _ (hVA e)`. Establish `hs : ∀ e, ⨆ i, nonzeroLocus (z e i) = ⊤` using `fun e => (hVA e).1`. Set `φ : ∀ e, (Y e).left ⟶ PSpace R m` to `fun e => toProj (π e) (z e) (hs e)`.
+
+Establish `hφc : ∀ e, IsClosedImmersion (φ e)` using `fun e => ((veryAmpleBy_iff _ _).1 (hVR e)).2`. Establish `hφs : ∀ e, φ e ≫ PSpace.str R m = π e` using `fun e => toProj_str _ _ _`. Establish `hπ : ∀ e, β e ≫ π (e + 1) = π e` using `fun e => by`. Simplify using `only [π]`. Rewrite using `[← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`.
+
+Establish `hφβ : ∀ e, β e ≫ φ (e + 1) = φ e` using `fun e => toProj_comp_of_secMaps (β e) (π (e + 1)) (π e) (hπ e) _ _ _ _ (w e) (hz e)`. Set `P : Over (Spec (CommRingCat.of R))` to `Over.mk (GroundTheory.Arith.SchemeCoh.ProjSpace.toSpecBase R m)`. Set `i : ∀ e, (Y e).left ⟶ (thickObj R I e P).left` to `fun e => pullback.lift (f := P.hom) (g := thick R I e) (φ e) (Y e).hom (hφs e)`. Establish `hifst : ∀ e, i e ≫ pullback.fst P.hom (thick R I e) = φ e` using `fun e => pullback.lift_fst _ _ _`. Establish `hisnd : ∀ e, i e ≫ pullback.snd P.hom (thick R I e) = (Y e).hom` using `fun e => pullback.lift_snd _ _ _`.
+
+Establish `hic : ∀ e, IsClosedImmersion (i e)` using `fun e => by`. Establish `: IsClosedImmersion (i e ≫ pullback.fst P.hom (thick R I e))`. Rewrite using `[hifst]`. Conclude with `hφc e`. Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`.
+
+Conclude with `IsClosedImmersion.of_comp _ (pullback.fst P.hom (thick R I e))`. Establish `hipb : ∀ e, IsPullback (β e) (i e) (i (e + 1)) (thickMap R I e P)` using `fun e => by`. Use `IsPullback.of_bot ?_ ?_ (isPullback_thickMap I P e)` and prove the remaining obligations. Rewrite using `[hisnd, hisnd]`. Conclude with `hβ e`.
+
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hifst]`. Conclude with `(hφβ e).trans ((hifst e).symm.trans (congrArg (i e ≫ ·) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm))`. Rewrite using `[Category.assoc, Category.assoc, hisnd]`. Conclude with `(hβ e).w.trans ((congrArg (· ≫ _) (hisnd e).symm).trans ((Category.assoc _ _ _).trans (congrArg (i e ≫ ·) (pullback.lift_snd _ _ _).symm)))`.
+
+Take `⟨C', j, b, hj, hb, hbc⟩` from `hge R I hc m (fun e => (Y e).left) i β hic hipb`. Set `j' : C' ⟶ PSpace R m` to `j`. Establish `hj' : IsClosedImmersion j'` using `hj`. Establish `hbφ : ∀ e, b e ≫ j' = φ e` using `fun e => (hb e).w.trans (hifst e)`. Set `X : Over (Spec (CommRingCat.of R))` to `Over.mk (j' ≫ PSpace.str R m)`.
+
+Establish `hX : IsProper X.hom`. Use `isProper_str R m` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsProper (j' ≫ PSpace.str R m)`. Use `infer_instance`. Use `choose ω hωg hωs using fun e => exists_iso_pull_pull (π e) (z e) (hs e) j' (b e) (hbφ e)`.
+
+Establish `hpb : ∀ e, IsPullback (b e) (Y e).hom X.hom (thick R I e)` using `fun e => by`. Establish `h` using `(hb e).paste_vert (IsPullback.of_hasPullback P.hom (thick R I e))`. Rewrite `h` using `[hisnd]`. Conclude with `h`. Establish `hQ : ((O1 R m).pull j').IsLB` using `LB.isLB_pull (O1_isLB R m) j'`.
+
+Use `⟨X, (O1 R m).pull j', fun l => Cartier.secPull (coord R m l) j', b, ω, hQ, hX, veryAmpleBy_secPull_coord j', hpb, hbc, hωg, hωs, ?_, ?_⟩` and prove the remaining obligations. Introduce `a₁ a₂ a₃ a₄ H c`. Establish `hq : ∀ e i₀, ((b e ≫ j').app (chart R m i₀)).hom (MvPolynomial.aeval (ratio R m i₀) (MvPolynomial.X a₁ * MvPolynomial.X a₂ - MvPolynomial.X a₃ * MvPolynomial.X a₄ : MvPolynomial (Fin (m + 1)) R)) = 0` using `fun e => by`. Rewrite using `[hbφ e]`. Conclude with `(quadric_app_iff (φ e) a₁ a₂ a₃ a₄).1 fun k => secQuad_of_secMaps (hE e).1 (toProjIso (π e) (z e) (hs e)) (secMaps_toProjIso _ _ _ a₁) (secMaps_toProjIso _ _ _ a₂) (secMaps_toProjIso _ _ _ a₃) (secMaps_toProjIso _ _ _ a₄) (H e) k`.
+
+Conclude with `(quadric_app_iff j' a₁ a₂ a₃ a₄).2 (fun i₀ => app_eq_zero_of_thickenings I hc X hX j' (fun e => (Y e).left) b (fun e => (Y e).hom) hpb (fun e => by rw [hbφ e]; have := hφc e; infer_instance) _ (isHomogeneous_quadric _ _ _ _) hq i₀) c`. Introduce `S hS`. Establish `: UniversallyClosed X.hom` using `inferInstance`. Use `top_unique fun x _ => ?_` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.FormalClosed.mem_of_forall_mem_over_closedFibre (IsAdicComplete.le_jacobson_bot I) X.hom (W := ((⨆ i ∈ S, nonzeroLocus (Cartier.secPull (coord R m i) j') : X.left.Opens) : Set X.left)) (TopologicalSpace.Opens.isOpen _) (fun x hx => ?_) x` and prove the remaining obligations.
+
+Establish `hx' : X.hom x ∈ PrimeSpectrum.zeroLocus (RingHom.ker (Ideal.Quotient.mk (I ^ (0 + 1))) : Set R)` using `fun a ha => hx (by simpa [Ideal.Quotient.eq_zero_iff_mem] using ha)`. Rewrite `hx'` using `[← range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective]`. Take `⟨y₀, hy₀⟩ : ∃ y₀, thick R I 0 y₀ = X.hom x` from `hx'`. Take `⟨t, ht, -⟩` from `Scheme.Pullback.exists_preimage_pullback x y₀ hy₀.symm`. Establish `hy : b 0 ((hpb 0).isoPullback.inv t) = x`.
+
+Rewrite using `[← ht, ← (hpb 0).isoPullback_inv_fst]`. Both sides reduce to the same expression. Establish `hm : (hpb 0).isoPullback.inv t ∈ ⨆ i ∈ S, nonzeroLocus (z 0 i)` using `by rw [hS]; trivial`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hm`. Take `⟨i₀, hi, hm⟩` from `hm`.
+
+Establish `e₁` using `(hωs 0 i₀).nonzeroLocus_eq (LB.isLB_pull hQ _) (hE 0).1`. Rewrite `e₁` using `[Cartier.nonzeroLocus_secPull]`. Rewrite `hm` using `[← e₁]`. Establish `hm' : b 0 ((hpb 0).isoPullback.inv t) ∈ nonzeroLocus (Cartier.secPull (coord R m i₀) j')` using `hm`. Rewrite `hm'` using `[hy]`.
+
+Express the relevant statement in the definitionally equal form `x ∈ (⨆ i ∈ S, nonzeroLocus (Cartier.secPull (coord R m i) j') : X.left.Opens)`. Simplify using `only [TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨i₀, hi, hm'⟩`.
+-/
 theorem exists_tower_algebraisation : GEClosedProj → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → ∀ (E : ∀ e, LB (Y e).left) (w : ∀ e, LB.Iso (E e) ((E (e + 1)).pull (β e))), (∀ e, (E e).IsLB ∧ (w e).IsGen) → ∀ (m : ℕ) (z : ∀ e, Fin (m + 1) → LB.Sec (E e)), (∀ e j, SecMaps (w e) (z e j) (Cartier.secPull (z (e + 1) j) (β e))) → VeryAmpleBy (Y 0).hom (E 0) (z 0) → ∃ (X : Over (Spec (CommRingCat.of R))) (Q : LB X.left) (ζ : Fin (m + 1) → LB.Sec Q) (b : ∀ e, (Y e).left ⟶ X.left) (ω : ∀ e, LB.Iso (Q.pull (b e)) (E e)), Q.IsLB ∧ IsProper X.hom ∧ VeryAmpleBy X.hom Q ζ ∧ (∀ e, IsPullback (b e) (Y e).hom X.hom (thick R I e)) ∧ (∀ e, β e ≫ b (e + 1) = b e) ∧ (∀ e, (ω e).IsGen) ∧ (∀ e j, SecMaps (ω e) (Cartier.secPull (ζ j) (b e)) (z e j)) ∧ (∀ i₁ i₂ i₃ i₄, (∀ e (c : (E e).ι), (z e i₁).f c * (z e i₂).f c = (z e i₃).f c * (z e i₄).f c) → ∀ c : Q.ι, (ζ i₁).f c * (ζ i₂).f c = (ζ i₃).f c * (ζ i₄).f c) ∧ (∀ S : Set (Fin (m + 1)), (⨆ i ∈ S, nonzeroLocus (z 0 i) = ⊤) → ⨆ i ∈ S, nonzeroLocus (ζ i) = ⊤) := by
   intro hge R _ _ I hc Y β hβ E w hE m z hz hva
   have hVA : ∀ e, VeryAmpleBy (Y e).hom (E e) (z e) := by

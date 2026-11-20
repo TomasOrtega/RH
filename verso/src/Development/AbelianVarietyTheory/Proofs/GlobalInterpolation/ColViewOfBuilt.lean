@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `b.pin.jets rowInt := b.what₂.rowInt tw_eq := congrArg (fun s => s.2.2.1) b.ker_eq tup := ⟨b.n.tp, b.n.xi⟩`.
+-/
 theorem colView_of_built {𝒮 : GlobalTheory.Mem.Top.Bl.Slots} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt}
     {c : V4.Core K (w.st Z) f T} (b : GlobalTheory.Mem.Top.Bl.Built 𝒮 K w Z c) : ColView w Z c.O.tw c.O.nch where
   jets := b.pin.jets
@@ -17,6 +20,9 @@ theorem colView_of_built {𝒮 : GlobalTheory.Mem.Top.Bl.Slots} {K : Ctx} {B : B
   tw_eq := congrArg (fun s => s.2.2.1) b.ker_eq
   tup := ⟨b.n.tp, b.n.xi⟩
 
+/- English proof (translation)
+Introduce `𝒮`. Establish `key : ∀ P : CP, (∀ K B f T w Z c, P K B f T w Z c → BuiltC 𝒮 K B f T w Z c) → OverCols (positionOf P)` using `fun P hP K X f T c hc => positionOf_mono (fun K B f T w Z c h => let ⟨b⟩ := hP K B f T w Z c h; colView_of_built b) K X f T c hc`. Conclude with `⟨key (BuiltC 𝒮) fun _ _ _ _ _ _ _ h => h, key⟩`.
+-/
 theorem overCols_built : ∀ 𝒮 : Slots, OverCols (IsBuilt 𝒮) ∧ ∀ P : CP, (∀ K B f T w Z c, P K B f T w Z c → BuiltC 𝒮 K B f T w Z c) →
     OverCols (positionOf P) := by
   intro 𝒮

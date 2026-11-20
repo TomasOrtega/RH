@@ -9,10 +9,21 @@ namespace Formalism.MainNotions.Ext.Lw
 
 open Formalism.BasicNotions Formalism.MainNotions
 
+/- English proof (translation)
+Introduce `j` and use `J.splitsF_g D j`.
+-/
 theorem splitsF_g_all (D : D7) : ∀ j, StandardLattice.SplitsF D (D.host.g j) := fun j => J.splitsF_g D j
 
+/- English proof (translation)
+The claim follows from `J.level_prime_splits_totally_real D u`.
+-/
 theorem splitsF_T_all (D : D7) (u : D.what₂.Word) : StandardLattice.SplitsF D (D.mem u).A.T := J.level_prime_splits_totally_real D u
 
+/- English proof (translation)
+Unfold `RankTiesF`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x0, hx0⟩`. Conclude with `⟨x0, fun x hx i u => ((hx0 x hx i).2 u).2⟩`. Introduce and unpack `⟨x0, hx0⟩`.
+
+Conclude with `⟨x0, fun x hx i => ⟨splitsF_g_all (Fm.D x i), fun u => ⟨splitsF_T_all (Fm.D x i) u, hx0 x hx i u⟩⟩⟩`.
+-/
 theorem rank_conditions_iff_lowest_space {eps : ℝ} (Fm : FamP eps) :
     RankTiesF Fm ↔ ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), StandardLattice.Mu0Tie (Fm.D x i) u := by
   unfold RankTiesF
@@ -22,10 +33,18 @@ theorem rank_conditions_iff_lowest_space {eps : ℝ} (Fm : FamP eps) :
   · rintro ⟨x0, hx0⟩
     exact ⟨x0, fun x hx i => ⟨splitsF_g_all (Fm.D x i), fun u => ⟨splitsF_T_all (Fm.D x i) u, hx0 x hx i u⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `(rank_conditions_iff_lowest_space Fm).2 h`.
+-/
 theorem rank_conditions_of_lowest_space {eps : ℝ} (Fm : FamP eps)
     (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word), StandardLattice.Mu0Tie (Fm.D x i) u) : RankTiesF Fm :=
   (rank_conditions_iff_lowest_space Fm).2 h
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Use `rank_conditions_of_lowest_space Fm ⟨max x0 (max 3 (Fm.x1 + 1)), fun x hx i u => ?_⟩` and prove the remaining obligations. Establish `e0 : x0 ≤ x` using `(le_max_left _ _).trans hx`. Establish `e3 : 3 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hx`. Establish `e1 : Fm.x1 < x`.
+
+Use `((le_max_right 3 (Fm.x1 + 1)).trans (le_max_right x0 _)).trans hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h17, hp, hW, hX⟩` from `h x e1 e0 i`. Take `⟨X, hX⟩` from `hX u`. Conclude with `StandardLattice.mu0Tie_of_col (Fm.D x i) (Fm.ex x e1 i).lev h17 hp (GlobalTheoryTheory.JDB.gBig_fam Fm x e3 e1 i) hW u X hX`.
+-/
 theorem rankTiesF_of_col {eps : ℝ} (Fm : FamP eps)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
       StandardLattice.adm17 (Fm.D x i) (Fm.ex x hx i).lev ∧ StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev ∧ StandardLattice.AdmittedWeylDimension (Fm.D x i) ∧

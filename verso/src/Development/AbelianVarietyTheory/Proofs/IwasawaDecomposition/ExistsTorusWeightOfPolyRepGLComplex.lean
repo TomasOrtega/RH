@@ -15,16 +15,70 @@ def diagGLOfNeZero {n : ℕ} (d : Fin n → ℂ) (h : ∀ i, d i ≠ 0) : GL (Fi
     rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; simp [h i],
    by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; simp [h i]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagGLOfNeZero_val {n : ℕ} (d : Fin n → ℂ) (h : ∀ i, d i ≠ 0) :
     (diagGLOfNeZero d h).val = diagonal d := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagGLOfNeZero_inv_val {n : ℕ} (d : Fin n → ℂ) (h : ∀ i, d i ≠ 0) :
     ((diagGLOfNeZero d h)⁻¹).val = diagonal d⁻¹ := rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[diagGLOfNeZero_val, diagonal_mul_diagonal]`.
+-/
 theorem diagGLOfNeZero_mul {n : ℕ} (s t : Fin n → ℂ) (hs : ∀ i, s i ≠ 0) (ht : ∀ i, t i ≠ 0) :
     diagGLOfNeZero (s * t) (fun i => mul_ne_zero (hs i) (ht i)) = diagGLOfNeZero s hs * diagGLOfNeZero t ht := by
   ext1; simp [diagGLOfNeZero_val, diagonal_mul_diagonal]
 
+/- English proof (translation)
+Introduce `n ι _ _ _ Φ hΦ`. Set `T : {D : GL (Fin n) ℂ // D.val.IsDiag} → (ι → ℂ) →ₗ[ℂ] (ι → ℂ)` to `fun D => Matrix.toLin' (Φ D.1)`. Establish `hcomm : ∀ D D' : {D : GL (Fin n) ℂ // D.val.IsDiag}, D.1 * D'.1 = D'.1 * D.1`. Introduce `D D'`. Use `ext1`.
+
+Establish `h1` using `D.2.diagonal_diag`. Establish `h2` using `D'.2.diagonal_diag`. Rewrite using `[Units.val_mul, Units.val_mul, ← h1, ← h2, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hT : ∀ i j x, T i (T j x) = T j (T i x)`. Introduce `i j x`. Simplify using `only [T, Matrix.toLin'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hΦ.mul, ← hΦ.mul, hcomm]`.
+
+Take `⟨v, -, hv0, hv⟩` from `GlobalTheory.exists_common_eigenvector_mem T hT ⊤ top_ne_bot (fun _ _ _ => Submodule.mem_top)`. Use `choose c hc using hv`. Establish `hc' : ∀ (D : GL (Fin n) ℂ) (hD : D.val.IsDiag), Φ D *ᵥ v = c ⟨D, hD⟩ • v`. Introduce `D hD`. Simplify `hc ⟨D, hD⟩` using `[T]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, v a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hv0 (funext h)`. Establish `cancel : ∀ x y : ℂ, x • v = y • v → x = y`.
+
+Introduce `x y h`. Use `congrFun h a` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ ha this`. Set `χ : (Fin n → ℂ) → ℂ` to `fun d => if h : ∀ i, d i ≠ 0 then (Φ (diagGLOfNeZero d h) *ᵥ v) a / v a else 0`.
+
+Establish `hχ : ∀ d (h : ∀ i, d i ≠ 0), Φ (diagGLOfNeZero d h) *ᵥ v = χ d • v`. Introduce `d h`. Establish `e` using `hc' (diagGLOfNeZero d h) (by rw [diagGLOfNeZero_val]; exact isDiag_diagonal d)`. Rewrite using `[e]`. Use `congr 1`.
+
+Simplify using `only [χ, dif_pos h, e, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ ha]`. Establish `h1 : χ 1 = 1`. Establish `e : diagGLOfNeZero (1 : Fin n → ℂ) (fun _ => one_ne_zero) = 1` using `by ext1; simp [diagGLOfNeZero_val]`. Use `cancel _ _ ?_` and prove the remaining obligations. Rewrite using `[← hχ 1 (fun _ => one_ne_zero), e, hΦ.one, one_mulVec, one_smul]`.
+
+Establish `hmul : ∀ s t : Fin n → ℂ, (∀ i, s i ≠ 0) → (∀ i, t i ≠ 0) → χ (s * t) = χ s * χ t`. Introduce `s t hs ht`. Use `cancel _ _ ?_` and prove the remaining obligations. Rewrite using `[← hχ (s * t) (fun i => mul_ne_zero (hs i) (ht i)), diagGLOfNeZero_mul s t hs ht, hΦ.mul, ← mulVec_mulVec, hχ t ht, mulVec_smul, hχ s hs, smul_smul, mul_comm]`. Use `choose Q hQ using hΦ.poly`.
+
+Establish `hline : ∀ i : Fin n, ∃ k : ℤ, ∀ t : ℂ, t ≠ 0 → χ (Pi.mulSingle i t) = t ^ k`. Introduce `i`. Establish `nz : ∀ t : ℂ, t ≠ 0 → ∀ j, (Pi.mulSingle i t : Fin n → ℂ) j ≠ 0`. Introduce `t ht j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using `[ht]`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Set `g : (Fin n × Fin n) ⊕ (Fin n × Fin n) → ℂ → ℂ` to `Sum.elim (fun q t => diagonal (Pi.mulSingle i t : Fin n → ℂ) q.1 q.2) (fun q t => diagonal (Pi.mulSingle i t⁻¹ : Fin n → ℂ) q.1 q.2)`. Establish `hg : ∀ s, ∃ (N : ℕ) (p : Polynomial ℂ), ∀ t : ℂ, t ≠ 0 → t ^ N * g s t = p.eval t`.
+
+Introduce and unpack `(⟨q1, q2⟩ | ⟨q1, q2⟩)`. Use `⟨0, if q1 = q2 then (if q1 = i then Polynomial.X else 1) else 0, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [g, Sum.elim_inl, diagonal_apply, Pi.mulSingle_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨1, if q1 = q2 then (if q1 = i then 1 else Polynomial.X) else 0, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [g, Sum.elim_inr, diagonal_apply, Pi.mulSingle_apply]`. Apply the tactic sequence `split_ifs <;> simp [ht]`. Establish `hent : ∀ (t : ℂ) (ht : t ≠ 0) (b c : ι), Φ (diagGLOfNeZero (Pi.mulSingle i t) (nz t ht)) b c = MvPolynomial.eval (fun s => g s t) (Q b c)`. Introduce `t ht b c`. Rewrite using `[hQ]`.
+
+Use `congrArg (fun x => MvPolynomial.eval x (Q b c)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Break down `s with ⟨q1, q2⟩ | ⟨q1, q2⟩` into its components or cases. Simplify using `[g, diagGLOfNeZero_val]`. Establish `hinv : (Pi.mulSingle i t : Fin n → ℂ)⁻¹ = Pi.mulSingle i t⁻¹`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hj]`.
+
+Simplify using `only [g, Sum.elim_inr, diagGLOfNeZero_inv_val, hinv]`. Set `g2 : ι → ℂ → ℂ` to `fun c t => MvPolynomial.eval (fun s => g s t) (Q a c)`. Take `⟨N, p, hp⟩` from `GlobalTheory.T.exists_pow_mul_mvEval_eq_eval_of_laurent ι g2 (fun c => GlobalTheory.T.exists_pow_mul_mvEval_eq_eval_of_laurent _ g hg (Q a c)) (∑ c, MvPolynomial.C (v c) * MvPolynomial.X c)`. Use `GlobalTheory.T.exists_zpow_of_multiplicative_of_pow_mul_eq_eval (fun t => χ (Pi.mulSingle i t)) ?_ ?_ N (Polynomial.C (v a)⁻¹ * p) ?_` and prove the remaining obligations. Introduce `s t hs ht show χ (Pi.mulSingle i (s * t)) = χ (Pi.mulSingle i s) * χ (Pi.mulSingle i t)`.
+
+Rewrite using `[Pi.mulSingle_mul]`. Conclude with `hmul _ _ (nz s hs) (nz t ht)`. Simplify using `using h1`. Introduce `t ht`. Establish `e1` using `congrFun (hχ _ (nz t ht)) a`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mulVec, dotProduct, hent t ht] at e1`. Establish `e2` using `hp t ht`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X, g2] at e2`. Establish `e3 : (∑ c, v c * MvPolynomial.eval (fun s => g s t) (Q a c)) = χ (Pi.mulSingle i t) * v a`. Rewrite using `[← e1]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Rewrite `e2` using `[e3]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, ← e2]`. Clear the denominators using the available nonvanishing facts. Take `⟨μ, hμ⟩` from `GlobalTheory.T.exists_monomial_of_multiplicative_of_single_eq_zpow n χ h1 hmul hline`.
+
+Use `⟨μ, v, hv0, fun D hD => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ i, D.val i i ≠ 0`. Introduce `i h0`. Establish `hdet : D.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 D.isUnit).ne_zero`. Rewrite `hdet` using `[← hD.diagonal_diag, det_diagonal]`.
+
+Conclude with `hdet (Finset.prod_eq_zero (Finset.mem_univ i) h0)`. Establish `eD : D = diagGLOfNeZero (fun i => D.val i i) hd` using `by ext1`. Rewrite using `[diagGLOfNeZero_val]`. Conclude with `hD.diagonal_diag.symm`. Use `conv_lhs => rw [eD]`.
+
+Rewrite using `[hχ _ hd, hμ _ hd]`.
+-/
 theorem exists_isWt_of_isPolyRep : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Nonempty ι]
     (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), IsPolyRep Φ → ∃ μ : Fin n → ℤ, IsWt Φ μ := by
   intro n ι _ _ _ Φ hΦ

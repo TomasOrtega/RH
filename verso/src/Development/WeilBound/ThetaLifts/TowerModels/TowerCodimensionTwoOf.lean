@@ -9,12 +9,18 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `a`. Rewrite using `[h a]`. Simplify using `[pow_add]`.
+-/
 theorem resEtaPow_of_add_two {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : Subgroup Rˣ}
     {χ : Eˣ →* Circle} {n : ℕ} (h : ResEtaPow K χ (n + 2)) : ResEtaPow K χ n := by
   intro a
   rw [h a]
   simp [pow_add]
 
+/- English proof (translation)
+Introduce `a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h a, h' a]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[div_eq_mul_inv, ← inv_pow, inv_neg, inv_one, ← pow_add]`.
+-/
 theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : Subgroup Rˣ}
     {χ χ' : Eˣ →* Circle} {n m : ℕ} (h : ResEtaPow K χ n) (h' : ResEtaPow K χ' m) :
     ResEtaPow K (χ / χ') (n + m) := by
@@ -24,11 +30,29 @@ theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : 
   · simp
   · rw [div_eq_mul_inv, ← inv_pow, inv_neg, inv_one, ← pow_add]
 
+/- English proof (translation)
+Use `⟨h.1.div' h'.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+-/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {χ χ' : Chr F E} (h : IsHecke F E χ) (h' : IsHecke F E χ') : IsHecke F E (χ / χ') := by
   refine ⟨h.1.div' h'.1, fun x => ?_⟩
   simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G X om om' hT hq`. Establish `g` using `hT.geo`. Establish `c` using `hT.chars`. Establish `hb` using `g.aBig`. Establish `hl` using `g.lt`.
+
+Take `⟨Y', V₁, H, hY', hV₁, hH⟩` from `hP.1 F E σ B hT.base (b + 2) b rfl (by omega) G.V' G.q (b + 2 - G.q) hq (by omega) g.hV' 0 (b + 1) (by omega) (by omega)`. Take `⟨W', W₁, H', hW', hW₁, hH'⟩` from `hP.2 F E σ B hT.base (a + (b + 2)) (a + b) (by omega) (by omega) G.W (a + (b + 2) - (G.p + G.q)) (G.p + G.q) (by omega) (by omega) g.hW a (a + b + 1) (by omega) (by omega)`. Establish `hV0 : (reS G.V G.V).IsHerm σ B (a - G.p) G.p` using `g.hV`. Take `⟨M₁, hM₁⟩` from `hM F E σ B hT.base a (a + b) (reS G.V G.V) W₁ _ _ _ _ hV0 hW₁`. Take `⟨M₁', hM₁'⟩` from `hM F E σ B hT.base b (a + b) V₁ W₁ _ _ _ _ hV₁ hW₁`.
+
+Establish `rα : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.α b` using `resEtaPow_of_add_two c.resα`. Take `⟨om₁, hom₁⟩` from `hW F E σ B hT.base a (a + b) (reS G.V G.V) W₁ _ _ _ _ hV0 hW₁ M₁ hM₁ X.β (X.β / X.α) c.heckeβ (isHecke_div c.heckeβ c.heckeα) c.resβ (resEtaPow_div c.resβ rα)`. Take `⟨om₁', hom₁'⟩` from `hW F E σ B hT.base b (a + b) V₁ W₁ _ _ _ _ hV₁ hW₁ M₁' hM₁' X.α (X.α / X.β) c.heckeα (isHecke_div c.heckeα c.heckeβ) rα (by rw [Nat.add_comm]; exact resEtaPow_div rα c.resβ)`. Use `⟨G.V, Y', W', ⟨hT.base, ⟨g.lt, g.even, g.kappa, g.eBig, g.aBig, hV0, hY', hW', ⟨g.hM.rat, g.hM.vac, g.hM.std, g.hM.haar, g.hM.dom⟩, ⟨g.hM'.rat, g.hM'.vac, g.hM'.std, g.hM'.haar, g.hM'.dom⟩⟩, c, hT.weil, hT.weil'⟩, ⟨G.p, G.q - 1, reS G.V G.V, V₁, W₁, M₁, M₁'⟩, H, H', ⟨rfl, rfl, ?_ …` and prove the remaining obligations. Use `show G.q - 1 + 1 = G.q`.
+
+Use linear arithmetic over natural numbers and integers. Establish `he` using `g.eBig`. Use `⟨by omega, ?_, fun w => ?_, ?_, ?_, hV0, ?_, ?_, hM₁, hM₁'⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `g.even`. Conclude with `⟨k - 1, by omega⟩`.
+
+Use `g.kappa w` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers. Use `show 2 * (G.p + (G.q - 1)) + 1 < (a - b) / 2`. Use linear arithmetic over natural numbers and integers.
+
+Use `show 2 * (G.p + (G.q - 1)) + 1 < b`. Use linear arithmetic over natural numbers and integers. Use `show V₁.IsHerm σ B (G.q - 1) (b - (G.q - 1))`. Rewrite using `[show b - (G.q - 1) = b + 2 - G.q - 1 by omega]`. Conclude with `hV₁`.
+
+Use `show W₁.IsSkew σ B (a + b - (G.p + (G.q - 1))) (G.p + (G.q - 1))`. Rewrite using `[show a + b - (G.p + (G.q - 1)) = a + (b + 2) - (G.p + G.q) - 1 by omega, show G.p + (G.q - 1) = G.p + G.q - 1 by omega]`. Conclude with `hW₁`. Conclude with `⟨c.heckeα, c.heckeβ, rα, c.resβ, c.expα, c.expβ, c.disj, c.sub, c.ram, c.unrα, c.unrβ, c.good⟩`.
+-/
 theorem towerB_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerB := by
   intro F E _ _ _ _ _ σ B a b G X om om' hT hq
   have g := hT.geo
@@ -72,6 +96,25 @@ theorem towerB_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerB := by
       exact hW₁
   · exact ⟨c.heckeα, c.heckeβ, rα, c.resβ, c.expα, c.expβ, c.disj, c.sub, c.ram, c.unrα, c.unrβ, c.good⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G X om om' hT hq0 hp`. Establish `g` using `hT.geo`. Establish `c` using `hT.chars`. Establish `hb` using `g.aBig`. Establish `hl` using `g.lt`.
+
+Establish `he` using `g.eBig`. Rewrite `hb`, `he` using `[hq0]`. Take `⟨Y', V₁, H, hY', hV₁, hH⟩` from `hP.1 F E σ B hT.base (b + 2) b rfl (by omega) G.V (b + 2 - G.p) G.p (by omega) hp g.hV 0 (b + 1) (by omega) (by omega)`. Establish `hW0` using `g.hW`. Rewrite `hW0` using `[hq0]`.
+
+Take `⟨W', W₁, H', hW', hW₁, hH'⟩` from `hP.2 F E σ B hT.base (b + 2 + a') (b + a') (by omega) (by omega) G.W (b + 2 + a' - (G.p + 0)) (G.p + 0) (by omega) (by omega) hW0 0 (b + 1) (by omega) (by omega)`. Establish `hV0' : (reS G.V' G.V').IsHerm σ B 0 (a' - 0)`. Use `g.hV'` as an intermediate fact. Rewrite `this` using `[hq0]`. Conclude with `this`.
+
+Take `⟨M₁, hM₁⟩` from `hM F E σ B hT.base b (b + a') V₁ W₁ _ _ _ _ hV₁ hW₁`. Take `⟨M₁', hM₁'⟩` from `hM F E σ B hT.base a' (b + a') (reS G.V' G.V') W₁ _ _ _ _ hV0' hW₁`. Establish `rβ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.β b` using `resEtaPow_of_add_two c.resβ`. Take `⟨om₁, hom₁⟩` from `hW F E σ B hT.base b (b + a') V₁ W₁ _ _ _ _ hV₁ hW₁ M₁ hM₁ X.β (X.β / X.α) c.heckeβ (isHecke_div c.heckeβ c.heckeα) rβ (resEtaPow_div rβ c.resα)`. Take `⟨om₁', hom₁'⟩` from `hW F E σ B hT.base a' (b + a') (reS G.V' G.V') W₁ _ _ _ _ hV0' hW₁ M₁' hM₁' X.α (X.α / X.β) c.heckeα (isHecke_div c.heckeα c.heckeβ) c.resα (by rw [Nat.add_comm]; exact resEtaPow_div c.resα rβ)`.
+
+Use `⟨Y', G.V', W', ⟨hT.base, ⟨g.lt, g.even, g.kappa, g.eBig, g.aBig, hY', g.hV', (by show (reS G.W W').IsSkew σ B (b + 2 + a' - (G.p + G.q)) (G.p + G.q); rw [hq0]; exact hW'), ⟨g.hM.rat, g.hM.vac, g.hM.std, g.hM.haar, g.hM.dom⟩, ⟨g.hM'.rat, g.hM'.vac, g.hM'.std, g.hM'.haar, g.hM'.dom …` and prove the remaining obligations. Use `show G.p - 1 + 1 = G.p`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, ?_, fun w => ?_, ?_, ?_, ?_, hV0', ?_, hM₁, hM₁'⟩` and prove the remaining obligations. Use `show a' < b`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩` from `g.even`. Conclude with `⟨k - 1, by omega⟩`. Use `g.kappa w` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Use `show 2 * (G.p - 1 + 0) + 1 < (b - a') / 2`. Use linear arithmetic over natural numbers and integers. Use `show 2 * (G.p - 1 + 0) + 1 < a'`. Use linear arithmetic over natural numbers and integers.
+
+Use `show V₁.IsHerm σ B (b - (G.p - 1)) (G.p - 1)`. Rewrite using `[show b - (G.p - 1) = b + 2 - G.p - 1 by omega]`. Conclude with `hV₁`. Use `show W₁.IsSkew σ B (b + a' - (G.p - 1 + 0)) (G.p - 1 + 0)`. Rewrite using `[show b + a' - (G.p - 1 + 0) = b + 2 + a' - (G.p + 0) - 1 by omega, show G.p - 1 + 0 = G.p + 0 - 1 by omega]`.
+
+Conclude with `hW₁`. Conclude with `⟨c.heckeα, c.heckeβ, c.resα, rβ, c.expα, c.expβ, c.disj, c.sub, c.ram, c.unrα, c.unrβ, c.good⟩`.
+-/
 theorem towerA_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerA := by
   intro F E _ _ _ _ _ σ B b a' G X om om' hT hq0 hp
   have g := hT.geo
@@ -125,6 +168,23 @@ theorem towerA_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : TowerA := by
       exact hW₁
   · exact ⟨c.heckeα, c.heckeβ, c.resα, rβ, c.expα, c.expβ, c.disj, c.sub, c.ram, c.unrα, c.unrβ, c.good⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G X om om' hT hp`. Establish `g` using `hT.geo`. Establish `c` using `hT.chars`. Establish `hb` using `g.aBig`. Establish `hl` using `g.lt`.
+
+Establish `he` using `g.eBig`. Take `⟨Y', V₁, H, hY', hV₁, hH⟩` from `hP.1 F E σ B hT.base (b + 2) b rfl (by omega) G.V (b + 2 - G.p) G.p (by omega) hp g.hV 0 (b + 1) (by omega) (by omega)`. Take `⟨W', W₁, H', hW', hW₁, hH'⟩` from `hP.2 F E σ B hT.base (b + 2 + a') (b + a') (by omega) (by omega) G.W (b + 2 + a' - (G.p + G.q)) (G.p + G.q) (by omega) (by omega) g.hW 0 (b + 1) (by omega) (by omega)`. Establish `hV0' : (reS G.V' G.V').IsHerm σ B G.q (a' - G.q)` using `g.hV'`. Take `⟨M₁, hM₁⟩` from `hM F E σ B hT.base b (b + a') V₁ W₁ _ _ _ _ hV₁ hW₁`.
+
+Take `⟨M₁', hM₁'⟩` from `hM F E σ B hT.base a' (b + a') (reS G.V' G.V') W₁ _ _ _ _ hV0' hW₁`. Establish `rβ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.β b` using `resEtaPow_of_add_two c.resβ`. Take `⟨om₁, hom₁⟩` from `hW F E σ B hT.base b (b + a') V₁ W₁ _ _ _ _ hV₁ hW₁ M₁ hM₁ X.β (X.β / X.α) c.heckeβ (isHecke_div c.heckeβ c.heckeα) rβ (resEtaPow_div rβ c.resα)`. Take `⟨om₁', hom₁'⟩` from `hW F E σ B hT.base a' (b + a') (reS G.V' G.V') W₁ _ _ _ _ hV0' hW₁ M₁' hM₁' X.α (X.α / X.β) c.heckeα (isHecke_div c.heckeα c.heckeβ) c.resα (by rw [Nat.add_comm]; exact resEtaPow_div c.resα rβ)`. Use `⟨Y', G.V', W', ⟨hT.base, ⟨g.lt, g.even, g.kappa, g.eBig, g.aBig, hY', g.hV', hW', ⟨g.hM.rat, g.hM.vac, g.hM.std, g.hM.haar, g.hM.dom⟩, ⟨g.hM'.rat, g.hM'.vac, g.hM'.std, g.hM'.haar, g.hM'.dom⟩⟩, c, hT.weil, hT.weil'⟩, ⟨G.p - 1, G.q, V₁, reS G.V' G.V', W₁, M₁, M₁'⟩, H, H', ⟨rfl, rf …` and prove the remaining obligations.
+
+Use `show G.p - 1 + 1 = G.p`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, ?_, fun w => ?_, ?_, ?_, ?_, hV0', ?_, hM₁, hM₁'⟩` and prove the remaining obligations. Use `show a' < b`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨k, hk⟩` from `g.even`. Conclude with `⟨k - 1, by omega⟩`. Use `g.kappa w` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Use `show 2 * (G.p - 1 + G.q) + 1 < (b - a') / 2`. Use linear arithmetic over natural numbers and integers. Use `show 2 * (G.p - 1 + G.q) + 1 < a'`. Use linear arithmetic over natural numbers and integers. Use `show V₁.IsHerm σ B (b - (G.p - 1)) (G.p - 1)`.
+
+Rewrite using `[show b - (G.p - 1) = b + 2 - G.p - 1 by omega]`. Conclude with `hV₁`. Use `show W₁.IsSkew σ B (b + a' - (G.p - 1 + G.q)) (G.p - 1 + G.q)`. Rewrite using `[show b + a' - (G.p - 1 + G.q) = b + 2 + a' - (G.p + G.q) - 1 by omega, show G.p - 1 + G.q = G.p + G.q - 1 by omega]`. Conclude with `hW₁`.
+
+Conclude with `⟨c.heckeα, c.heckeβ, c.resα, rβ, c.expα, c.expβ, c.disj, c.sub, c.ram, c.unrα, c.unrβ, c.good⟩`.
+-/
 theorem towerCodimensionTwo_of (hP : PlaneEx) (hM : ModelEx) (hW : WeilEx) : PositivityTheory.ThKEnd.TowerCodimensionTwo := by
   intro F E _ _ _ _ _ σ B b a' G X om om' hT hp
   have g := hT.geo

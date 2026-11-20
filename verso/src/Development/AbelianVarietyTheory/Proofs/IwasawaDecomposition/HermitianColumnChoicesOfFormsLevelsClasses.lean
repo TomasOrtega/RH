@@ -10,6 +10,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u Ch chOf F hS i h1 h2 β`. Take `⟨k, hk⟩` from `hS.mid i h1 h2`. Take `⟨L, hLb, hUl, hU⟩` from `GlobalTheory.T.hermitianStepLevel_of_chartFormsLevel I hOk hP l Z u F hS i (le_of_succ_m h2) (F.ch i h1 h2 β) (F.glevC i h1 h2 β) (hk.lb β)`. Take `⟨C, hy, hst⟩` from `GlobalTheory.T.hermitianClassCondition_of_chartClasses (I.rec7 l Z) i (le_of_succ_m h2) (Equiv.refl _) (fun c : {c // chOf i c = β} => (I.rec7 l Z).clsLat u i c.1) (F.ch i h1 h2 β) L hLb hU`. Conclude with `⟨⟨L, C⟩, { Lb_eq := hLb, Uloc_eq := hUl, U_eq := hU, y_eq := hy, st_eq := hst }⟩`.
+-/
 theorem chart_level_classes : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf), I.StdF l Z u F → ∀ (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ (I.rec7 l Z).R.m) (β : Ch i),
   ∃ P : (L : Formalism.L2.Herm.StepLevel (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X i) (I.rec7 l Z).host.g ((I.rec7 l Z).mem u).A.T (I.rec7 l Z).R.f) ×'
       Formalism.L2.Herm.ClassTie (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X i) L.Lb L.U (fun c : {c // chOf i c = β} => ((I.rec7 l Z).mem u).C.stab i c.1) (fun c => (I.rec7 l Z).clsLat u i c.1),
@@ -24,6 +27,11 @@ theorem chart_level_classes : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.
   exact ⟨⟨L, C⟩, { Lb_eq := hLb, Uloc_eq := hUl, U_eq := hU, y_eq := hy, st_eq := hst }⟩
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u Ch chOf F hS i hm him β hβ`. Substitute `him` using the available equality. Take `⟨k, hk⟩` from `hS.ends _ hm (Or.inr rfl)`. Take `⟨L, hLb, hUl, hU⟩` from `GlobalTheory.T.hermitianStepLevel_of_chartFormsLevel I hOk hP l Z u F hS _ hm ((F.cls _ hm (Or.inr rfl)).toChart) F.glevM (hk.lb ())`. Take `⟨C, hy, hst⟩` from `GlobalTheory.T.hermitianClassCondition_of_chartClasses (I.rec7 l Z) _ hm (Equiv.subtypeUnivEquiv hβ) (fun c => (I.rec7 l Z).clsLat u _ c) ((F.cls _ hm (Or.inr rfl)).toChart) L hLb hU`.
+
+Conclude with `⟨⟨L, C⟩, { Lb_eq := hLb, Uloc_eq := hUl, U_eq := hU, y_eq := fun c => hy ⟨c, hβ c⟩, st_eq := fun c => hst ⟨c, hβ c⟩ }⟩`.
+-/
 theorem top_level_classes : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf), I.StdF l Z u F → ∀ (i : ℕ) (hm : i ≤ (I.rec7 l Z).R.m) (him : i = (I.rec7 l Z).R.m) (β : Ch i) (hβ : ∀ c, chOf i c = β),
   ∃ P : (L : Formalism.L2.Herm.StepLevel (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X i) (I.rec7 l Z).host.g ((I.rec7 l Z).mem u).A.T (I.rec7 l Z).R.f) ×'
       Formalism.L2.Herm.ClassTie (I.rec7 l Z).sp.cm ((I.rec7 l Z).sp.X i) L.Lb L.U (fun c : {c // chOf i c = β} => ((I.rec7 l Z).mem u).C.stab i c.1) (fun c => (I.rec7 l Z).clsLat u i c.1),
@@ -39,6 +47,13 @@ theorem top_level_classes : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok
   exact ⟨⟨L, C⟩, { Lb_eq := hLb, Uloc_eq := hUl, U_eq := hU, y_eq := fun c => hy ⟨c, hβ c⟩, st_eq := fun c => hst ⟨c, hβ c⟩ }⟩
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Distinguish the cases in `h2 : i + 1 ≤ (I.rec7 l Z).R.m`. Take `⟨P, hP2⟩` from `chart_level_classes I hOk hP l Z u F hS i h1 h2 β`. Conclude with `⟨P, fun _ => hP2, fun him _ => absurd h2 (by omega)⟩`. Establish `him : i = (I.rec7 l Z).R.m` using `by omega`. Establish `hβ : ∀ c, chOf i c = β`.
+
+Introduce `c`. Substitute `him` using the available equality. Take `⟨U⟩` from `hU`. Conclude with `Subsingleton.elim _ _`. Take `⟨P, hP3⟩` from `top_level_classes I hOk hP l Z u F hS i hm him β hβ`.
+
+Conclude with `⟨P, fun h => absurd h h2, fun _ _ => hP3⟩`.
+-/
 theorem level_classes_of {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf)
     (hS : I.StdF l Z u F) (hU : Nonempty (Unique (Ch (I.rec7 l Z).R.m))) (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ (I.rec7 l Z).R.m) (β : Ch i) :
@@ -65,6 +80,11 @@ theorem level_classes_of {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok)
     exact ⟨P, fun h => absurd h h2, fun _ _ => hP3⟩
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Introduce `B X I hOk hP l Z Ch chOf F hf hm hS`. Establish `L0` using `fun u => GlobalTheory.T.columnLevel_of_stepZeroFormsLevel_trueColumns I hOk hP l Z u (F u) (hS u)`. Establish `LP` using `fun u i h1 hm' β => level_classes_of I hOk hP l Z u (F u) (hS u) (hm u) i h1 hm' β`. Establish `LF` using `fun u v => GlobalTheory.T.residueField_equiv_realSubfieldQuotient_trueColumns I hOk hP l Z u (F u) (hS u) v`. Use `⟨fun u => (L0 u).choose, fun u i h1 hm' β => (LP u i h1 hm' β).choose.1, fun u i h1 hm' β => (LP u i h1 hm' β).choose.2, fun u => (F u).atT.eV, fun u v => (LF u v).choose, ?_⟩` and prove the remaining obligations.
+
+Conclude with `{ eV := fun u => rfl fv := fun u v a => (LF u v).choose_spec a car0 := fun u => (L0 u).choose_spec.1 carC := fun u i h1 h2 β => (LP u i h1 (le_of_succ_m h2) β).choose_spec.1 h2 carM := fun u => (LP u _ (one_le_m _) le_rfl _).choose_spec.2 rfl (fun c => @Unique.eq_default _ (hm u) …`.
+-/
 theorem hermColsCh_of_forms : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (Ch : B.Word → ℕ → Type) (chOf : ∀ u i, ((I.rec7 l Z).mem u).C.cls i → Ch u i) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (Ch u) (chOf u)) (hf : ∀ u i, Finite (Ch u i)) (hm : ∀ u, Nonempty (Unique (Ch u B.R.m))), (∀ u, I.StdF l Z u (F u)) → ∃ lev0 lev cls vT Fv, CarH (D := (I.rec7 l Z)) { lev0 := lev0, Ch := Ch, ChFin := hf, Ch_m := hm, chOf := chOf, lev := lev, cls := cls, vT := vT, Fv := Fv } F := by
   intro B X I hOk hP l Z Ch chOf F hf hm hS
   have L0 := fun u => GlobalTheory.T.columnLevel_of_stepZeroFormsLevel_trueColumns I hOk hP l Z u (F u) (hS u)

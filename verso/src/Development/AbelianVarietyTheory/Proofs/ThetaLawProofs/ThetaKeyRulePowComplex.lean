@@ -13,6 +13,9 @@ open GlobalTheory.KeyCl
 
 namespace GlobalTheory.KeyCl
 
+/- English proof (translation)
+Establish `key` using `KeyPow.value_at_normalForm (fun _ => 1) 0 (κ ℂ) x.P.g a b (Nat.zero_le _) (fun P hg rig hr th hth v hv th' hth' v' hv' a M _ h₁ h₂ => hH ℂ P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂) (fun z hz σ hN => by`. Take `⟨u, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `(KeyPow.normalAt_one_iff z σ _ _).1 hN`. Conclude with `hT z u σ _ _ h₁ h₂ (fun i => hab.1 _) (fun i => hab.2 _) h₃ h₄ h₅ h₆)`. Use `x rfl τ M c hc hM h`. Simplify `key` using `only [_root_.pow_one]`.
+-/
 theorem value_of_normalAt {κ : Rule} (hH : Homog (fun _ => 1) κ) (hT : ThetaOne κ) (x : KeyIn ℂ)
     {τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ} {a b : Fin x.P.g → ℂ} {c : ℂ} (hab : KeyPow.charHalf x.P.g a b)
     (hc : c ≠ 0) (hM : M.det ≠ 0) (h : KeyPow.NormalAt x τ M a b c) : (κ ℂ x : ℂ) = M.det ^ 4 / c ^ 8 := by
@@ -25,6 +28,13 @@ theorem value_of_normalAt {κ : Rule} (hH : Homog (fun _ => 1) κ) (hT : ThetaOn
     x rfl τ M c hc hM h
   simpa only [_root_.pow_one] using key
 
+/- English proof (translation)
+Introduce `κ hH hT x y j hp`. Take `⟨⟨τ, M, a, b, c, hab, hc, hM, hN⟩, -⟩` from `KeyNormalExists.exists_normalAt GlobalTheory.thetaUnifAV_all x`. Establish `hre : ∀ f : Fin x.P.g → ℂ, (∀ i, f i = 0 ∨ f i = 1 / 2) → (fun k => ((f k).re : ℂ)) = f`. Introduce `f hf`. Use function extensionality and compare the values at `k`.
+
+Apply the tactic sequence `rcases hf k with h | h <;> rw [h] <;> norm_num`. Establish `ha` using `hre a hab.1`. Establish `hb` using `hre b hab.2`. Take `⟨e, τ', M', hdet, hN'⟩` from `KeyPow.normalAt_pow x y j τ M (fun k => (a k).re) (fun k => (b k).re) c hp (by rw [ha, hb]; exact hN)`. Establish `hx` using `value_of_normalAt hH hT x hab hc hM hN`.
+
+Establish `hy` using `value_of_normalAt hH hT y ⟨fun p => by rw [congrFun ha (e.symm p).2]; exact hab.1 _, fun p => by rw [congrFun hb (e.symm p).2]; exact hab.2 _⟩ (pow_ne_zero j hc) (by rw [hdet]; exact pow_ne_zero j hM) hN'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hy, hx, hdet, div_pow, ← _root_.pow_mul, ← _root_.pow_mul, ← _root_.pow_mul, ← _root_.pow_mul, mul_comm j 4, mul_comm j 8]`.
+-/
 theorem value_pow_complex : ∀ κ : Rule, Homog (fun _ => 1) κ → ThetaOne κ →
     ∀ (x y : KeyIn ℂ) (j : ℕ), GlobalTheory.KeyPow.IsKeyPow y x j → κ ℂ y = κ ℂ x ^ j := by
   intro κ hH hT x y j hp

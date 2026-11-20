@@ -58,6 +58,11 @@ def AmpTransport : Prop :=
         ENNReal.ofReal (θ' ^ (-(2 : ℤ))) *
           ENNReal.ofReal (hsNormSq (A.J (ENNReal.ofReal θ' • νR.map (fun x => fun i j => (n' * Matrix.of x) i j)) g₀))
 
+/- English proof (translation)
+Establish `hu` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg`. Use function extensionality and compare the values at `x i j`. Establish `e : Matrix.of (fun i j => (g * Matrix.of x * g⁻¹) i j) = g * Matrix.of x * g⁻¹` using `rfl`. Establish `e2 : g⁻¹ * (g * Matrix.of x * g⁻¹) * g = Matrix.of x`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
+
+Simplify using `only [id, e, e2, Matrix.of_apply]`.
+-/
 theorem conj_conj_id {k r : ℕ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     (fun x : Mt k r => fun i j => (g⁻¹ * Matrix.of (fun i j => (g * Matrix.of x * g⁻¹) i j) * g) i j) = id := by
   have hu := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg
@@ -68,6 +73,9 @@ theorem conj_conj_id {k r : ℕ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r +
       ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]
   simp only [id, e, e2, Matrix.of_apply]
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem measurable_conjL {k r : ℕ} (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (fun x : Mt k r => fun i j => (a * Matrix.of x * b) i j) := by
   apply Continuous.measurable
@@ -75,6 +83,25 @@ theorem measurable_conjL {k r : ℕ} (a b : Matrix (Fin (2 * r + k + 1)) (Fin (2
   simp only [Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Introduce `D τ w w' θ W hW lam' A hA hT hT' γ p hrel θ' hθ' νR hRM`. Establish `hz : inWb D.R.k D.R.rS W.z` using `hW.2.2.1`. Establish `hz' : inWb D.R.k D.R.rS W.z'` using `hW.2.2.2.1`. Establish `hTz : Tz D.R.k D.R.rS W.z = Tr D w` using `hW.2.2.2.2.1`. Establish `hTz' : Tz D.R.k D.R.rS W.z' = Tr D w'` using `hW.2.2.2.2.2.1`.
+
+Take `⟨n, hn, n', hn', g₀, hγ, hg₀, hZ, hG, hMon, μ₀, hnull, hmap, hquot⟩` from `hCR D W γ p θ' νR hz hz' (hTz ▸ hT) (hTz' ▸ hT') hrel hRM`. Establish `hka : 0 < D.host.ka`. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Apply `div_pos Real.pi_pos` to reduce the goal to its premises. Apply `half_pos` to reduce the goal to its premises.
+
+Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero _))`. Establish `hgpos : (0:ℝ) < (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)` using `mul_pos (Nat.cast_pos.2 (D.host.g_prime 0).pos) (Nat.cast_pos.2 (D.host.g_prime 1).pos)`. Establish `hcpos : 0 < 2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))` using `by positivity`. Establish `hcnorm : ‖(toBessel D τ w w' θ W lam' A hW hA hT hT').c‖ = 2 * D.host.ka / gg D` using `by show ‖((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ)‖ = _`.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hcpos.le]`. Both sides reduce to the same expression. Establish `hc0 : (toBessel D τ w w' θ W lam' A hW hA hT hT').c ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (fun c : ℂ => ‖c‖) h`.
+
+Simplify using `only [norm_zero] at h2`. Rewrite `h2` using `[hcnorm]`. Unfold `gg at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hstar : star (toBessel D τ w w' θ W lam' A hW hA hT hT').c = (toBessel D τ w w' θ W lam' A hW hA hT hT').c` using `by show star (((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ)) = _`.
+
+Rewrite using `[Complex.star_def]`. Conclude with `Complex.conj_ofReal _`. Establish `hPt : IsPtRepO (toBessel D τ w w' θ W lam' A hW hA hT hT') p g₀` using `⟨hg₀, hZ⟩`. Establish `hmap' : μ₀.map (rootCoords D.R.k D.R.rS (toBessel D τ w w' θ W lam' A hW hA hT hT').z' p) = ENNReal.ofReal ((‖(toBessel D τ w w' θ W lam' A hW hA hT hT').c‖ / (2 * Real.pi)) ^ (rootPat p).card) • volume`. Rewrite using `[hcnorm]`.
+
+Conclude with `hmap`. Establish `hRM'` using `hRJ D.R.k D.R.rS _ p g₀ μ₀ hPt hG hnull hmap'`. Establish `hHaar` using `hRH D.R.k D.R.rS _ p g₀ μ₀ hc0 hPt hG hnull hmap'`. Take `⟨ν, hν⟩` from `hOQ D.R.k D.R.rS _ p g₀ _ hPt hG hHaar`. Establish `hRel` using `hRA D.R.k D.R.rS _ p g₀ hstar hPt hG`.
+
+Take `⟨hq0, hamp⟩` from `hTr D τ w w' θ W hW lam' A hA hT hT' n n' g₀ hn hn' hg₀ θ' hθ' μ₀ νR hnull hquot`. Use `⟨g₀, μ₀.map (fun x => fun i j => (g₀ * Matrix.of x * g₀⁻¹) i j), ENNReal.ofReal θ' • νR.map (fun x => fun i j => (n' * Matrix.of x) i j), ν, hPt, hG, hMon, hRel, hRM', hHaar, hν, ?_, ?_⟩` and prove the remaining obligations. Establish `hid : (fun x : Mt D.R.k D.R.rS => fun i j => (g₀⁻¹ * Matrix.of x * g₀) i j) ∘ (fun x : Mt D.R.k D.R.rS => fun i j => (g₀ * Matrix.of x * g₀⁻¹) i j) = id` using `conj_conj_id hg₀`. Rewrite using `[Measure.map_map (measurable_conjL _ _) (measurable_conjL _ _), hid, Measure.map_id]`. Conclude with `hq0`.
+
+Rewrite using `[hγ]`. Conclude with `le_of_eq hamp`.
+-/
 theorem rootCmp_of (hCR : CellRep) (hTr : AmpTransport) (hRJ : RootJac) (hRH : RootHaar) (hOQ : OrbQuotEx)
     (hRA : RelAtPt) : RootCmp := by
   intro D τ w w' θ W hW lam' A hA hT hT' γ p hrel θ' hθ' νR hRM

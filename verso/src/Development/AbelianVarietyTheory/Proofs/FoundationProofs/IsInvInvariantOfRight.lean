@@ -19,6 +19,13 @@ namespace GlobalTheory.CartanInt
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Set `c : ENNReal` to `Measure.haarScalarFactor μ.inv μ`. Establish `hc : μ.inv = c • μ` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`. Establish `h1 : Measure.map Inv.inv (Measure.map Inv.inv μ) = c ^ 2 • μ`. Rewrite using `[← Measure.inv_def μ, hc, Measure.map_smul, ← Measure.inv_def μ, hc, smul_smul, pow_two]`.
+
+Establish `μeq : μ = c ^ 2 • μ`. Rewrite `h1` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`. Simplify `h1` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Establish `K : TopologicalSpace.PositiveCompacts G` using `Classical.arbitrary _`. Establish `h2 : c ^ 2 * μ K = 1 ^ 2 * μ K` using `by conv_rhs => rw [μeq]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj (Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne' K.isCompact.measure_lt_top.ne).1 h2`. Establish `h4 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective h3`. Rewrite using `[hc, h4, one_smul]`.
+-/
 theorem isInvInvariant_of_right {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
@@ -41,8 +48,18 @@ theorem isInvInvariant_of_right {G : Type} [Group G] [TopologicalSpace G]
   have h4 : c = 1 := (ENNReal.pow_right_strictMono two_ne_zero).injective h3
   rw [hc, h4, one_smul]
 
+/- English proof (translation)
+The claim follows from `Units.isUnit _`.
+-/
 theorem isUnit_mat (g : UpqT p q) : IsUnit (UpqT.mat g) := Units.isUnit _
 
+/- English proof (translation)
+Establish `h : Kc p q = ⋂ a, ⋂ b, ⋂ (_ : ¬ sameBlock a b), {x : UpqT p q | UpqT.mat x a b = 0}`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq]`. Conclude with `Iff.rfl`. Establish `hcl : IsClosed (Kc p q)`.
+
+Rewrite using `[h]`. Use `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (GlobalTheory.UpqTopology.continuous_mat.matrix_elem a b) continuous_const`. Establish `hc : IsCompact (Set.univ.pi fun _ : Ix p q => Set.univ.pi fun _ : Ix p q => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `(GlobalTheory.UpqTopology.isClosedEmbedding_mat.isCompact_preimage (K := _) hc).of_isClosed_subset hcl ?_` and prove the remaining obligations.
+
+Introduce `x hx a _ b _`. Simplify using `using entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 (star_mul_of_mem_Kc hx)) a b`.
+-/
 theorem isCompact_Kc : IsCompact (Kc p q) := by
   have h : Kc p q = ⋂ a, ⋂ b, ⋂ (_ : ¬ sameBlock a b), {x : UpqT p q | UpqT.mat x a b = 0} := by
     ext x
@@ -58,6 +75,17 @@ theorem isCompact_Kc : IsCompact (Kc p q) := by
   intro x hx a _ b _
   simpa using entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 (star_mul_of_mem_Kc hx)) a b
 
+/- English proof (translation)
+Take `⟨i1, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc p q`. Set `ψ : UpqT p q → (Fin p → Fin q → ℂ) → (Fin p → Fin q → ℂ)` to `fun g B => L (UpqT.mat (eP B * g))`. Establish `key : ∀ (x κ : UpqT p q) (B' : Fin p → Fin q → ℂ), κ ∈ Kc p q → x = κ * eP B' → L (UpqT.mat x) = B'`. Introduce `x κ B' hκ hx`. Rewrite using `[hx, mat_mul, mat_eP]`.
+
+Conclude with `hLk _ _ (star_mul_of_mem_Kc hκ)`. Establish `dec : ∀ g B, ∃ κ ∈ Kc p q, eP B * g = κ * eP (ψ g B)`. Introduce `g B`. Take `⟨κ, hκ, B', h⟩` from `exists_cartan (eP B * g)`. Establish `: ψ g B = B'` using `key _ κ B' hκ h`.
+
+Conclude with `⟨κ, hκ, by rw [this]; exact h⟩`. Establish `inv : ∀ g B, ψ g⁻¹ (ψ g B) = B`. Introduce `g B`. Take `⟨κ, hκ, h⟩` from `dec g B`. Use `key _ κ⁻¹ B ((Ksg p q).inv_mem hκ) ?_` and prove the remaining obligations.
+
+Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, ← h, mul_inv_cancel_right]`. Use `⟨ψ g, ?_, ?_, dec g⟩` and prove the remaining obligations. Conclude with `hL.comp_continuous (GlobalTheory.UpqTopology.continuous_mat.comp (continuous_eP.mul continuous_const)) fun B => isUnit_mat _`. Use `Function.bijective_iff_has_inverse.2 ⟨ψ g⁻¹, inv g, fun B => ?_⟩` and prove the remaining obligations. Use `inv g⁻¹ B` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem exists_action (L : Mat p q → (Fin p → Fin q → ℂ)) (hL : ContinuousOn L {g | IsUnit g})
     (hLk : ∀ (k : Mat p q) (B : Fin p → Fin q → ℂ), kᴴ * k = 1 → L (k * NormedSpace.exp (pY B)) = B)
     (g : UpqT p q) : ∃ ψ : (Fin p → Fin q → ℂ) → (Fin p → Fin q → ℂ), Continuous ψ ∧ Function.Bijective ψ ∧
@@ -86,6 +114,27 @@ theorem exists_action (L : Mat p q → (Fin p → Fin q → ℂ)) (hL : Continuo
     have := inv g⁻¹ B
     rwa [inv_inv] at this
 
+/- English proof (translation)
+Introduce `p q m hm`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc p q`. Use `haveI := GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure p q m hm`. Use `haveI := isInvInvariant_of_right m`. Take `⟨mK, hprob, hK0, hleft, hright⟩` from `GlobalTheory.exists_biinvariant_probability_on_compact_subgroup (UpqT p q) (Ksg p q) isCompact_Kc`.
+
+Take `⟨L, hLc, hL⟩` from `GlobalTheory.PolarLogCont.exists_continuousOn_polar_log p q`. Establish `hpos : ∀ B : Fin p → Fin q → ℂ, 0 < polJ (pY B)` using `fun B => one_pos.trans_le (one_le_polJ _)`. Establish `hJc : Continuous fun B : Fin p → Fin q → ℂ => polJ (pY B)` using `(continuous_polJ p q).comp continuous_pY`. Establish `hJm : Measurable fun B : Fin p → Fin q → ℂ => ENNReal.ofReal (polJ (pY B))` using `ENNReal.measurable_ofReal.comp hJc.measurable`. Establish `hdet : ∀ B : Fin p → Fin q → ℂ, LinearMap.det (sP (pY B)) = polJ (pY B)` using `fun B => det_sinhc_eq_polarJacobian p q _ (SinhcPres.sAd_pY p q B)`.
+
+Establish `hem : Measurable (eP : (Fin p → Fin q → ℂ) → UpqT p q)` using `continuous_eP.measurable`. Use `haveI : IsLocallyFiniteMeasure ((volume : Measure (Fin p → Fin q → ℂ)).withDensity fun B => ENNReal.ofReal (polJ (pY B))) := IsLocallyFiniteMeasure.withDensity_ofReal hJc`. Take `⟨c, hc, hf⟩` from `GlobalTheory.Twist.lintegral_haar_eq_transversal (UpqT p q) (Fin p → Fin q → ℂ) m mK (volume.withDensity fun B => ENNReal.ofReal (polJ (pY B))) (Kc p q) eP hem hK0 hright (by`. Introduce `h0`. Rewrite `h0` using `[withDensity_eq_zero_iff hJm.aemeasurable]`.
+
+Use `haveI : (volume : Measure (Fin q → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin p → Fin q → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (ae (volume : Measure (Fin p → Fin q → ℂ))).NeBot := ae_neBot.2 fun h => (isOpen_univ.measure_ne_zero (volume : Measure (Fin p → Fin q → ℂ)) Set.univ_nonempty) (by rw [h]; rfl)`. Take `⟨B, hB⟩` from `h0.exists`. Conclude with `absurd hB (by simpa using hpos B))`.
+
+Use the proof step `(by`. Introduce `C hC`. Establish `hcomp : IsCompact (L '' (UpqT.mat '' C))` using `(hC.image GlobalTheory.UpqTopology.continuous_mat).image_of_continuousOn (hLc.mono (by`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `isUnit_mat x))`.
+
+Use `lt_of_le_of_lt (measure_mono ?_) hcomp.measure_lt_top` and prove the remaining obligations. Introduce and unpack `B ⟨k, hk, hB⟩`. Use `⟨_, ⟨_, hB, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, mat_eP]`. Conclude with `hL _ B (star_mul_of_mem_Kc hk))`.
+
+Use the proof step `(by`. Introduce `g`. Take `⟨ψ, hψc, hψb, hψ⟩` from `exists_action L hLc hL g`. Use `⟨ψ, hψc.measurable, GlobalTheory.map_withDensity_of_jacobian p q _ ψ hJc hψc hψb ?_, hψ⟩` and prove the remaining obligations. Use `jacobian_action_p p q (UpqT.mat g) ψ hψc (fun B => by` as an intermediate fact.
+
+Take `⟨κ, hκ, h⟩` from `hψ B`. Take `⟨U, hU, V, hV, hm⟩` from `(mem_Kc_iff κ).1 hκ`. Use `⟨U, hU, V, hV, ?_⟩` and prove the remaining obligations. Use `congrArg UpqT.mat h` as an intermediate fact. Rewrite using `[mat_mul, mat_mul, mat_eP, mat_eP, hm] at this)` and apply the resulting hypothesis.
+
+Use the proof step `(fun B => by rw [hdet]; exact hpos B) (SinhcPres.sAd_pY p q)`. Use the proof step `(fun B => hasStrictFDerivAt_exp_two_pY p q B (hasDerivAt_exp_two_add_smul p q (pY B)))`. Simplify `this)` using `only [hdet]`. Use `⟨c, mK, hc, hprob, hK0, hleft, fun f hfm => ?_⟩` and prove the remaining obligations. Rewrite using `[hf f hfm, lintegral_withDensity_eq_lintegral_mul _ hJm]`.
+
+Use `congr 1`. Use `lintegral_congr fun B => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, mul_comm]`. Conclude with `Measurable.lintegral_prod_right' (f := fun z : (Fin p → Fin q → ℂ) × UpqT p q => f (z.2 * eP z.1)) (hfm.comp (measurable_snd.mul (hem.comp measurable_fst)))`.
+-/
 theorem haar_polar : ∀ (p q : ℕ) (m : Measure (UpqT p q)), m.IsHaarMeasure → ∃ (c : ℝ) (mK : Measure (UpqT p q)), 0 < c ∧ IsProbabilityMeasure mK ∧ mK (Kc p q)ᶜ = 0 ∧ (∀ k ∈ Kc p q, Measure.map (fun x => k * x) mK = mK) ∧ ∀ f : UpqT p q → ENNReal, Measurable f → ∫⁻ g, f g ∂m = ENNReal.ofReal c * ∫⁻ B : Fin p → Fin q → ℂ, (∫⁻ k, f (k * eP B) ∂mK) * ENNReal.ofReal (polJ (pY B)) := by
   intro p q m hm
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc p q

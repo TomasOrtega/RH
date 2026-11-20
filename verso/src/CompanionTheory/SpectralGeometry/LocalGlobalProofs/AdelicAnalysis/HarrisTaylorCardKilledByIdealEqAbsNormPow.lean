@@ -11,15 +11,24 @@ section Char
 
 variable {R : Type} [CommRing R] {ψ : R → ℂ}
 
+/- English proof (translation)
+Introduce `h` and use `by have := hn x simp [h] at this`.
+-/
 theorem psi_ne (hn : ∀ x, ‖ψ x‖ = 1) (x : R) : ψ x ≠ 0 := fun h => by
   have := hn x
   simp [h] at this
 
+/- English proof (translation)
+Use `ha 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left₀ (psi_ne hn 0)).1 this.symm`.
+-/
 theorem psi_zero (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1) : ψ 0 = 1 := by
   have := ha 0 0
   rw [add_zero] at this
   exact (mul_eq_left₀ (psi_ne hn 0)).1 this.symm
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using psi_zero ha hn`. Consider the case `insert a s h ih => rw [Finset.sum_insert h, Finset.prod_insert h, ha, ih]`.
+-/
 theorem psi_sum (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1) {ι : Type}
     (s : Finset ι) (f : ι → R) : ψ (∑ i ∈ s, f i) = ∏ i ∈ s, ψ (f i) := by
   classical
@@ -27,6 +36,9 @@ theorem psi_sum (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖
   | empty => simpa using psi_zero ha hn
   | insert a s h ih => rw [Finset.sum_insert h, Finset.prod_insert h, ha, ih]
 
+/- English proof (translation)
+The claim follows from `psi_sum ha hn _ _`.
+-/
 theorem psi_dot (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1) {ι : Type} [Fintype ι]
     (x y : ι → R) : ψ (x ⬝ᵥ y) = ∏ i, ψ (x i * y i) :=
   psi_sum ha hn _ _
@@ -54,6 +66,15 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
   [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R]
   {ψ : R → ℂ}
 
+/- English proof (translation)
+Use `set f : R → ℂ := (A : Set R).indicator fun x => ψ (x * t) with hf`. Establish `e1 : ∫ x, f x ∂lam = ∫ x in (A : Set R), ψ (x * t) ∂lam` using `integral_indicator hA`. Establish `e2 : ∀ x, f (x + a) = ψ (a * t) * f x`. Introduce `x`. Distinguish the cases in `hx : x ∈ A`.
+
+Establish `hxa : x + a ∈ A` using `A.add_mem hx haA`. Simplify using `only [hf, Set.indicator_of_mem (SetLike.mem_coe.2 hx), Set.indicator_of_mem (SetLike.mem_coe.2 hxa)]`. Rewrite using `[add_mul, ha, mul_comm]`. Establish `hxa : x + a ∉ A` using `fun h => hx (by simpa using A.sub_mem h haA)`. Simplify using `only [hf, Set.indicator_of_notMem (show x ∉ (A : Set R) from hx), Set.indicator_of_notMem (show x + a ∉ (A : Set R) from hxa), mul_zero]`.
+
+Establish `e3 : ∫ x, f x ∂lam = ψ (a * t) * ∫ x, f x ∂lam`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1]`. Establish `e4 : (1 - ψ (a * t)) * ∫ x, f x ∂lam = 0`. Rewrite using `[sub_mul, one_mul, ← e3, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 e4).resolve_left (sub_ne_zero.2 (Ne.symm hne))`.
+-/
 theorem integral_subgroup_eq_zero (lam : Measure R) [lam.IsAddHaarMeasure] (A : AddSubgroup R)
     (hA : MeasurableSet (A : Set R)) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (t a : R) (haA : a ∈ A)
     (hne : ψ (a * t) ≠ 1) : ∫ x in (A : Set R), ψ (x * t) ∂lam = 0 := by
@@ -77,11 +98,39 @@ theorem integral_subgroup_eq_zero (lam : Measure R) [lam.IsAddHaarMeasure] (A : 
     rw [sub_mul, one_mul, ← e3, sub_self]
   exact (mul_eq_zero.1 e4).resolve_left (sub_ne_zero.2 (Ne.symm hne))
 
+/- English proof (translation)
+Rewrite using `[setIntegral_congr_fun hA (g := fun _ => (1 : ℂ)) (fun x hx => h x hx)]`. Simplify using `[Measure.real]`.
+-/
 theorem integral_subgroup_eq_real (lam : Measure R) (A : Set R) (hA : MeasurableSet A) (t : R)
     (h : ∀ x ∈ A, ψ (x * t) = 1) : ∫ x in A, ψ (x * t) ∂lam = (lam.real A : ℂ) := by
   rw [setIntegral_congr_fun hA (g := fun _ => (1 : ℂ)) (fun x hx => h x hx)]
   simp [Measure.real]
 
+/- English proof (translation)
+Use `haveI := hsd.1`. Use `set P := ann ha hn L with hPdef`. Establish `hLm : MeasurableSet (L : Set R)` using `hLo.measurableSet`. Establish `hPm : MeasurableSet (P : Set R)` using `hP.isClosed.measurableSet`. Use `set Φ : R → ℂ := (L : Set R).indicator 1 with hΦ`.
+
+Establish `hcl : IsClopen (L : Set R)` using `⟨AddSubgroup.isClosed_of_isOpen _ hLo, hLo⟩`. Establish `Φc : Continuous Φ` using `continuous_indicator (by simp [hcl.frontier_eq]) continuous_one.continuousOn`. Establish `Φs : HasCompactSupport Φ`. Use `HasCompactSupport.intro hLc fun x hx => ?_` and prove the remaining obligations. Simplify using `[hΦ, hx]`.
+
+Establish `hat : ∀ y, ∫ x, Φ x * ψ (x * y) ∂lam = (P : Set R).indicator (fun _ => (lam.real (L : Set R) : ℂ)) y`. Introduce `y`. Establish `e : (fun x => Φ x * ψ (x * y)) = (L : Set R).indicator fun x => ψ (x * y)`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ (L : Set R) <;> simp [hΦ, hx]`.
+
+Rewrite using `[e, integral_indicator hLm]`. Distinguish the cases in `hy : y ∈ P`. Rewrite using `[Set.indicator_of_mem (SetLike.mem_coe.2 hy)]`. Conclude with `integral_subgroup_eq_real lam _ hLm y hy`. Rewrite using `[Set.indicator_of_notMem (show y ∉ (P : Set R) from hy)]`.
+
+Establish `: ∃ a ∈ L, ψ (a * y) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hy hcon`. Take `⟨a, haL, hne⟩` from `this`.
+
+Conclude with `integral_subgroup_eq_zero lam L hLm ha y a haL hne`. Establish `hint : Integrable (fun y => ∫ x, Φ x * ψ (x * y) ∂lam) lam`. Simplify using `only [hat]`. Conclude with `(integrable_indicator_iff hPm).2 (integrableOn_const hP.measure_lt_top.ne)`. Establish `inv` using `hsd.2 Φ Φc Φs hint`.
+
+Establish `inv' : ∀ z, (lam.real (L : Set R) : ℂ) * ∫ y in (P : Set R), ψ (y * z) ∂lam = Φ (-z)`. Introduce `z`. Rewrite using `[← inv z, ← integral_const_mul, ← integral_indicator hPm]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : y ∈ (P : Set R) <;> simp [hat, hy]`.
+
+Establish `hone : (lam.real (L : Set R) : ℂ) * (lam.real (P : Set R) : ℂ) = 1`. Establish `h0` using `inv' 0`. Rewrite `h0` using `[integral_subgroup_eq_real lam _ hPm 0 (by simp [psi_zero ha hn])]`. Rewrite using `[h0]`. Simplify using `[hΦ, L.zero_mem]`.
+
+Establish `hone' : lam.real (L : Set R) * lam.real (P : Set R) = 1` using `by exact_mod_cast hone`. Use `⟨hone', ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `h1` using `inv' z`. Rewrite `h1` using `[integral_subgroup_eq_real lam _ hPm z (fun x hx => hz x hx), hone]`.
+
+Assume the negation of the conclusion as `hzL`. Establish `: -z ∉ (L : Set R)` using `fun h => hzL (by simpa using L.neg_mem h)`. Simplify using `[hΦ, this] at h1`. Establish `hpos : lam (P : Set R) ≠ 0`. Introduce `h0`.
+
+Establish `: lam.real (P : Set R) = 0` using `by simp [Measure.real, h0]`. Simplify using `[this] at hone'`. Establish `hn0` using `MeasureTheory.Measure.sub_mem_nhds_zero_of_addHaar_pos lam (P : Set R) hPm (pos_iff_ne_zero.2 hpos)`. Use `AddSubgroup.isOpen_of_mem_nhds P (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset hn0 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha', b, hb', rfl⟩`. Conclude with `P.sub_mem ha' hb'`.
+-/
 theorem dual_facts (hc : Continuous ψ) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1)
     (lam : Measure R) (hsd : SelfDual lam (fun s t => ψ (s * t))) (L : AddSubgroup R)
     (hLc : IsCompact (L : Set R)) (hLo : IsOpen (L : Set R))
@@ -160,6 +209,13 @@ abbrev box (ι : Type) (A : Set R) : Set (ι → R) := Set.pi Set.univ fun _ => 
 
 open Classical in
 
+/- English proof (translation)
+Repeatedly rewrite using `[mul_comm s]`. Distinguish the cases in `h : s ∈ L`. Rewrite using `[if_pos h]`. Conclude with `integral_subgroup_eq_real lam _ hPm s fun x hx => by`. Rewrite using `[mul_comm]`.
+
+Conclude with `hLP s h x hx`. Rewrite using `[if_neg h]`. Establish `: ∃ a ∈ P, ψ (a * s) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `h (hPL s hcon)`. Take `⟨a, haP, hne⟩` from `this`. Conclude with `integral_subgroup_eq_zero lam P hPm ha s a haP hne`.
+-/
 theorem integral_ann_eq (lam : Measure R) [lam.IsAddHaarMeasure] (L P : AddSubgroup R)
     (hPm : MeasurableSet (P : Set R)) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y)
     (hLP : ∀ s ∈ L, ∀ t ∈ P, ψ (s * t) = 1) (hPL : ∀ z, (∀ t ∈ P, ψ (t * z) = 1) → z ∈ L) (s : R) :
@@ -178,6 +234,13 @@ theorem integral_ann_eq (lam : Measure R) [lam.IsAddHaarMeasure] (L P : AddSubgr
     obtain ⟨a, haP, hne⟩ := this
     exact integral_subgroup_eq_zero lam P hPm ha s a haP hne
 
+/- English proof (translation)
+Rewrite using `[Measure.restrict_pi_pi]`. Repeatedly rewrite using `[psi_dot ha hn]`. Rewrite using `[integral_fintype_prod_eq_prod (fun i t => ψ (w i * t))]`. Repeatedly rewrite using `[integral_ann_eq lam L P hPm ha hLP hPL]`. Distinguish the cases in `hw : w ∈ box ι (L : Set R)`.
+
+Rewrite using `[Set.indicator_of_mem hw]`. Establish `: ∀ i, w i ∈ L` using `fun i => hw i (Set.mem_univ i)`. Simplify using `[this]`. Rewrite using `[Set.indicator_of_notMem hw]`. Establish `: ∃ i, w i ∉ L`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hw fun i _ => hcon i`. Take `⟨i, hi⟩` from `this`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])`.
+-/
 theorem integral_box (lam : Measure R) [lam.IsAddHaarMeasure] [SigmaFinite lam] (L P : AddSubgroup R)
     (hPm : MeasurableSet (P : Set R)) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1)
     (hLP : ∀ s ∈ L, ∀ t ∈ P, ψ (s * t) = 1) (hPL : ∀ z, (∀ t ∈ P, ψ (t * z) = 1) → z ∈ L)
@@ -201,10 +264,20 @@ theorem integral_box (lam : Measure R) [lam.IsAddHaarMeasure] [SigmaFinite lam] 
     obtain ⟨i, hi⟩ := this
     exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])
 
+/- English proof (translation)
+The claim follows from `hc.comp (hf.dotProduct hg)`.
+-/
 theorem continuous_psi_dot (hc : Continuous ψ) {X : Type} [TopologicalSpace X] {f g : X → ι → R}
     (hf : Continuous f) (hg : Continuous g) : Continuous fun p => ψ (f p ⬝ᵥ g p) :=
   hc.comp (hf.dotProduct hg)
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (μ.restrict B) := ⟨by rwa [Measure.restrict_apply_univ]⟩`. Establish `e1 : ∀ y, (∫ x, Φ x * ψ (x ⬝ᵥ y) ∂μ) * ψ (y ⬝ᵥ z) = ∫ x, Φ x * ψ ((x + z) ⬝ᵥ y) ∂μ`. Introduce `y`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Φ x * ψ (x ⬝ᵥ y) * ψ (y ⬝ᵥ z) = Φ x * ψ ((x + z) ⬝ᵥ y)`. Rewrite using `[add_dotProduct, ha, dotProduct_comm z y, mul_assoc]`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_integral_swap]`. Repeatedly rewrite using `[integral_const_mul]`.
+
+Establish `h0 : Integrable (fun p : (ι → R) × (ι → R) => (1 : ℂ) * Φ p.2) ((μ.restrict B).prod μ)` using `(integrable_const (1 : ℂ)).mul_prod hi`. Use `h0.mono ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Conclude with `(Φc.comp continuous_snd).mul (continuous_psi_dot hc (continuous_snd.add continuous_const) continuous_fst)`. Simplify using `[Function.uncurry, hn]`.
+-/
 theorem fubini_box (hc : Continuous ψ) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1)
     (μ : Measure (ι → R)) [SFinite μ] (B : Set (ι → R)) (hBf : μ B < ⊤) (Φ : (ι → R) → ℂ)
     (Φc : Continuous Φ) (hi : Integrable Φ μ) (z : ι → R) :
@@ -228,6 +301,13 @@ theorem fubini_box (hc : Continuous ψ) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y)
         (continuous_psi_dot hc (continuous_snd.add continuous_const) continuous_fst)
     · simp [Function.uncurry, hn]
 
+/- English proof (translation)
+Establish `hBf : (Measure.pi fun _ : ι => lam) (box ι (P : Set R)) < ⊤`. Rewrite using `[Measure.pi_pi]`. Conclude with `ENNReal.prod_lt_top fun _ _ => hPf`. Rewrite using `[fubini_box hc ha hn _ _ hBf Φ Φc hi z]`. Repeatedly rewrite using `[integral_box lam L P hPm ha hn hLP hPL]`.
+
+Use `set g : (ι → R) → ℂ := (box ι (L : Set R)).indicator fun u => (lam.real (P : Set R) : ℂ) ^ Fintype.card ι * Φ (u - z) with hg`. Establish `hbm : MeasurableSet (box ι (L : Set R))` using `MeasurableSet.univ_pi fun _ => hLm`. Establish `e : ∀ x, Φ x * (box ι (L : Set R)).indicator (fun _ => (lam.real (P : Set R) : ℂ) ^ Fintype.card ι) (x + z) = g (x + z)`. Introduce `x`. Distinguish the cases in `hx : x + z ∈ box ι (L : Set R)`.
+
+Simplify using `only [hg, Set.indicator_of_mem hx, add_sub_cancel_right]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hg, Set.indicator_of_notMem hx, mul_zero]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_add_right_eq_self g z, hg, integral_indicator hbm, integral_const_mul]`.
+-/
 theorem box_formula (hc : Continuous ψ) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (hn : ∀ x, ‖ψ x‖ = 1)
     (lam : Measure R) [lam.IsAddHaarMeasure] [SigmaFinite lam] (L P : AddSubgroup R)
     (hLm : MeasurableSet (L : Set R)) (hPm : MeasurableSet (P : Set R)) (hPf : lam (P : Set R) < ⊤)
@@ -257,6 +337,15 @@ theorem box_formula (hc : Continuous ψ) (ha : ∀ x y, ψ (x + y) = ψ x * ψ y
   simp_rw [e]
   rw [integral_add_right_eq_self g z, hg, integral_indicator hbm, integral_const_mul]
 
+/- English proof (translation)
+Establish `hBf : (Measure.pi fun _ : ι => lam) (box ι A) < ⊤`. Rewrite using `[Measure.pi_pi]`. Conclude with `ENNReal.prod_lt_top fun _ _ => hAf`. Establish `hvol : (Measure.pi fun _ : ι => lam).real (box ι A) = lam.real A ^ Fintype.card ι`. Simplify using `[Measure.real, Measure.pi_pi, ENNReal.toReal_prod]`.
+
+Establish `hone : (c : ℝ) ^ Fintype.card ι * (Measure.pi fun _ : ι => lam).real (box ι A) = 1`. Rewrite using `[hvol, ← mul_pow, mul_comm, hcm, one_pow]`. Establish `hconst : IntegrableOn (fun _ : ι → R => v) (box ι A) (Measure.pi fun _ : ι => lam)` using `integrableOn_const hBf.ne`. Establish `e : (c : ℂ) ^ Fintype.card ι * ∫ u in box ι A, f u ∂(Measure.pi fun _ : ι => lam) - v = (c : ℂ) ^ Fintype.card ι * ∫ u in box ι A, (f u - v) ∂(Measure.pi fun _ : ι => lam)`. Rewrite using `[integral_sub hf hconst, setIntegral_const, mul_sub]`.
+
+Establish `h1 : (c : ℂ) ^ Fintype.card ι * ((Measure.pi fun _ : ι => lam).real (box ι A) : ℂ) = 1`. Conclude with `hone` after adjusting the coercions. Rewrite using `[Complex.real_smul, ← mul_assoc, h1, one_mul]`. Rewrite using `[e, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hc0]`. Establish `hb` using `norm_setIntegral_le_of_norm_le_const hBf h`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mean_close (lam : Measure R) [lam.IsAddHaarMeasure] [SigmaFinite lam] (A : Set R)
     (hAm : MeasurableSet A) (hAf : lam A < ⊤) (c : ℝ) (hc0 : 0 ≤ c) (hcm : lam.real A * c = 1)
     (f : (ι → R) → ℂ) (hf : IntegrableOn f (box ι A) (Measure.pi fun _ : ι => lam)) (v : ℂ) (ε : ℝ)
@@ -290,6 +379,31 @@ end Many
 
 section Main
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ _ _ ψ hc ha hn lam hsd _ hC hK hU ι _`. Use `haveI := hsd.1`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Introduce `Φ Φc Φs hint z`. Express the relevant statement in the definitionally equal form `Integrable (fun y => ∫ x, Φ x * ψ (x ⬝ᵥ y) ∂(Measure.pi fun _ : ι => lam)) (Measure.pi fun _ : ι => lam) at hint`.
+
+Express the relevant statement in the definitionally equal form `∫ y, (∫ x, Φ x * ψ (x ⬝ᵥ y) ∂(Measure.pi fun _ : ι => lam)) * ψ (y ⬝ᵥ z) ∂(Measure.pi fun _ : ι => lam) = Φ (-z)`. Establish `hi : Integrable Φ (Measure.pi fun _ : ι => lam)` using `Φc.integrable_of_hasCompactSupport Φs`. Establish `hPc : ∀ L : AddSubgroup R, IsCompact (L : Set R) → IsOpen (L : Set R) → IsCompact (ann ha hn L : Set R)` using `hC`. Take `⟨U, hUb⟩` from `(𝓝 (0 : R)).exists_antitone_basis`. Use `choose L hLc hLo hLU using fun n => hU (U n) (hUb.mem n)`.
+
+Establish `hLs : ∀ S ∈ 𝓝 (0 : R), ∀ᶠ n in Filter.atTop, (L n : Set R) ⊆ S`. Introduce `S hS`. Take `⟨N, -, hN⟩` from `hUb.1.mem_iff.1 hS`. Use `filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Conclude with `(hLU n).trans ((hUb.2 hn).trans hN)`.
+
+Establish `hD` using `fun n => dual_facts hc ha hn lam hsd (L n) (hLc n) (hLo n) (hPc _ (hLc n) (hLo n))`. Establish `hex : ∀ t : R, ∀ᶠ n in Filter.atTop, t ∈ ann ha hn (L n)`. Introduce `t`. Take `⟨M, hMc, hMo, hMt⟩` from `hK {t} isCompact_singleton`. Establish `hMo'` using `(dual_facts hc ha hn lam hsd M hMc hMo (hPc _ hMc hMo)).2.2`.
+
+Establish `hnb : (ann ha hn M : Set R) ∈ 𝓝 (0 : R)` using `hMo'.mem_nhds (ann ha hn M).zero_mem`. Use `filter_upwards [hLs _ hnb] with n hn s hs`. Use `hn hs t (hMt rfl)` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Then use the resulting hypothesis. Use `set f : (ι → R) → ℂ := fun y => (∫ x, Φ x * ψ (x ⬝ᵥ y) ∂(Measure.pi fun _ : ι => lam)) * ψ (y ⬝ᵥ z) with hf`.
+
+Establish `hbm : ∀ n, MeasurableSet (box ι (ann ha hn (L n) : Set R))` using `fun n => MeasurableSet.univ_pi fun _ => (hPc _ (hLc n) (hLo n)).isClosed.measurableSet`. Establish `fm : AEStronglyMeasurable f (Measure.pi fun _ : ι => lam)` using `hint.aestronglyMeasurable.mul (continuous_psi_dot hc continuous_id continuous_const).aestronglyMeasurable`. Establish `lim1 : Filter.Tendsto (fun n => ∫ y in box ι (ann ha hn (L n) : Set R), f y ∂(Measure.pi fun _ : ι => lam)) Filter.atTop (𝓝 (∫ y, f y ∂(Measure.pi fun _ : ι => lam)))`. Repeatedly rewrite using `[← integral_indicator (hbm _)]`. Use `tendsto_integral_of_dominated_convergence (fun y => ‖∫ x, Φ x * ψ (x ⬝ᵥ y) ∂(Measure.pi fun _ : ι => lam)‖) ?_ hint.norm ?_ ?_` and prove the remaining obligations.
+
+Conclude with `fun n => fm.indicator (hbm n)`. Use `fun n => Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Use `(norm_indicator_le_norm_self _ _).trans ?_` and prove the remaining obligations. Simplify using `[hf, hn]`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+
+Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Establish `: ∀ᶠ n in Filter.atTop, ∀ i, y i ∈ ann ha hn (L n)` using `Filter.eventually_all.2 fun i => hex (y i)`. Use `filter_upwards [this] with n hn'`. Rewrite using `[Set.indicator_of_mem (show y ∈ box ι (ann ha hn (L n) : Set R) from fun i _ => hn' i)]`. Establish `lim2 : Filter.Tendsto (fun n => ∫ y in box ι (ann ha hn (L n) : Set R), f y ∂(Measure.pi fun _ : ι => lam)) Filter.atTop (𝓝 (Φ (-z)))`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hcont : ContinuousAt (fun u : ι → R => Φ (u - z)) 0` using `by fun_prop`. Establish `hS : ∀ᶠ u in 𝓝 (0 : ι → R), ‖Φ (u - z) - Φ (-z)‖ < ε / 2`. Use `(Metric.tendsto_nhds.1 hcont.tendsto) (ε / 2) (half_pos hε)` as an intermediate fact.
+
+Simplify `this` using `[dist_eq_norm]`. Establish `hS'` using `hS`. Rewrite `hS'` using `[Filter.Eventually, nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hIt⟩` from `hS'`. Establish `hall : ∀ᶠ n in Filter.atTop, ∀ i, (L n : Set R) ⊆ t i` using `Filter.eventually_all.2 fun i => hLs _ (ht i)`.
+
+Use `filter_upwards [hall] with n hn'`. Take `⟨d1, -, -⟩` from `hD n`. Establish `hbf` using `box_formula hc ha hn lam (L n) (ann ha hn (L n)) (hLo n).measurableSet (hPc _ (hLc n) (hLo n)).isClosed.measurableSet (hPc _ (hLc n) (hLo n)).measure_lt_top (fun s hs t ht => ht s hs) (hD n).2.1 Φ Φc hi z`. Rewrite using `[hf, hbf, dist_eq_norm]`. Establish `hsub : HasCompactSupport fun u : ι → R => Φ (u - z)` using `Φs.comp_homeomorph (Homeomorph.subRight z)`.
+
+Establish `hint2 : Integrable (fun u : ι → R => Φ (u - z)) (Measure.pi fun _ : ι => lam)` using `(Φc.comp (continuous_id.sub continuous_const)).integrable_of_hasCompactSupport hsub`. Use `lt_of_le_of_lt (mean_close lam (L n : Set R) (hLo n).measurableSet (hLc n).measure_lt_top _ measureReal_nonneg d1 _ hint2.integrableOn (Φ (-z)) (ε / 2) ?_) (half_lt_self hε)` and prove the remaining obligations. Introduce `u hu`. Use `le_of_lt (hIt fun i _ => hn' i (hu i (Set.mem_univ i)))` and prove the remaining obligations. Conclude with `tendsto_nhds_unique lim1 lim2`.
+-/
 theorem selfDual_pi : ∀ (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] (ψ : R → ℂ), Continuous ψ → (∀ x y, ψ (x + y) = ψ x * ψ y) → (∀ x, ‖ψ x‖ = 1) → ∀ lam : Measure R, SelfDual lam (fun s t => ψ (s * t)) → (∃ L : AddSubgroup R, IsCompact (L : Set R) ∧ IsOpen (L : Set R)) → (∀ L : AddSubgroup R, IsCompact (L : Set R) → IsOpen (L : Set R) → IsCompact {t | ∀ s ∈ L, ψ (s * t) = 1}) → (∀ K : Set R, IsCompact K → ∃ L : AddSubgroup R, IsCompact (L : Set R) ∧ IsOpen (L : Set R) ∧ K ⊆ L) → (∀ U ∈ 𝓝 (0 : R), ∃ L : AddSubgroup R, IsCompact (L : Set R) ∧ IsOpen (L : Set R) ∧ (L : Set R) ⊆ U) → ∀ (ι : Type) [Fintype ι], SelfDual (Measure.pi fun _ : ι => lam) (fun x y => ψ (x ⬝ᵥ y)) := by
   intro R _ _ _ _ _ _ _ _ ψ hc ha hn lam hsd _ hC hK hU ι _
   haveI := hsd.1

@@ -12,6 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.IsoPhaseComm.thetaSum_ev_phase | exact GlobalTheory.ThK.IsoPhaseComm.thetaSum_ev_phase | (intros; apply GlobalTheory.ThK.IsoPhaseComm.thetaSum_ev_phase <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.herm_adapted_evaluation_reduction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁) (r s n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ)
     (M₂ : Model σ X₁ W₁), B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B X X₁ j₀ j₁ → ∀ e' : Fn F n d₁ →ₗ[ℂ] Fn F n₁ d₁,
     IsEv B M₁ M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e' → ∀ φ ∈ schA F (Fin n × Fin d₁),

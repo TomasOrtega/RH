@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.UnrOff
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[← Nat.prod_factorization_pow_eq_self hN.ne', Nat.cast_finsuppProd]`. Take `⟨p, hp, hpw⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := w.isPrime)).1 h`. Simplify using `only at hpw`. Rewrite `hpw` using `[Nat.cast_pow]`.
+
+Conclude with `hw p (hS (Nat.support_factorization N ▸ hp)) (w.isPrime.mem_of_pow_mem _ hpw)`.
+-/
 theorem natCast_not_mem {D : D7} {S : Finset ℕ} {w : Pl D.host.E} (hw : Off S w) {N : ℕ} (hN : 0 < N)
     (hS : N.primeFactors ⊆ S) : ((N : 𝓞 D.host.E)) ∉ w.asIdeal := by
   intro h
@@ -19,6 +24,11 @@ theorem natCast_not_mem {D : D7} {S : Finset ℕ} {w : Pl D.host.E} (hw : Off S 
   rw [Nat.cast_pow] at hpw
   exact hw p (hS (Nat.support_factorization N ▸ hp)) (w.isPrime.mem_of_pow_mem _ hpw)
 
+/- English proof (translation)
+Take `⟨hee, hec, v, ε, ⟨α, hε, -, -⟩, hs⟩` from `he`. Establish `h1 : e = e * algebraMap (AF D.host.F) (AE D) ε`. Rewrite using `[← hs, mul_add, hee, hec, add_zero]`. Establish `h2 : infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0`. Substitute `hε` using the available equality.
+
+Establish `e1 : (algebraMap (AF D.host.F) (AE D)) (pairA D.host.F 0 α) = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Rewrite using `[e1]`. Simplify using `only [infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[h1, map_mul, h2, mul_zero]`.
+-/
 theorem infPart_idem {D : D7} {e : AE D} (he : Formalism.L2.Theta.IsSplitIdem D e) : infPart D e = 0 := by
   obtain ⟨hee, hec, v, ε, ⟨α, hε, -, -⟩, hs⟩ := he
   have h1 : e = e * algebraMap (AF D.host.F) (AE D) ε := by
@@ -31,9 +41,23 @@ theorem infPart_idem {D : D7} {e : AE D} (he : Formalism.L2.Theta.IsSplitIdem D 
     exact TensorProduct.zero_tmul _ _
   rw [h1, map_mul, h2, mul_zero]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩`.
+-/
 theorem intAE_one {D : D7} : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x h`. Take `⟨a, ha, s, rfl⟩` from `h`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y h'`.
+
+Take `⟨b, hb, t, rfl⟩` from `h'`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, s * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [mul_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [mul_neg]`. Conclude with `neg_mem h1`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`.
+
+Consider the case `add x z _ _ h1 h2 => rw [add_mul]`. Conclude with `add_mem h1 h2`. Consider the case `neg x _ h1 => rw [neg_mul]`. Conclude with `neg_mem h1`.
+-/
 theorem intAE_mul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
   induction hx using AddSubgroup.closure_induction with
@@ -52,6 +76,17 @@ theorem intAE_mul {D : D7} {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x �
   | add x z _ _ h1 h2 => rw [add_mul]; exact add_mem h1 h2
   | neg x _ h1 => rw [neg_mul]; exact neg_mem h1
 
+/- English proof (translation)
+Introduce `D c hc`. Take `⟨N, hN, hN1, -⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D c hc`. Use `⟨N.primeFactors, fun q hq => Nat.prime_of_mem_primeFactors hq, ?_⟩` and prove the remaining obligations. Introduce `w hw e he x hx h1 h2`. Establish `hNw` using `natCast_not_mem hw hN le_rfl`.
+
+Establish `hN0 : ((N : 𝓞 D.host.E)) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hg : finPart D (e * incA D (((N : 𝓞 D.host.E) : D.host.E))⁻¹) ∈ intAE D` using `not_not.1 ((he.2 _ hN0).not.1 hNw)`. Establish `hNE : (((N : 𝓞 D.host.E) : D.host.E)) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hi : (N : AE D) * incA D (((N : 𝓞 D.host.E) : D.host.E))⁻¹ = 1`. Rewrite using `[show (N : AE D) = incA D (((N : 𝓞 D.host.E) : D.host.E)) by simp, ← map_mul, mul_inv_cancel₀ hNE, map_one]`.
+
+Establish `key : (x : AE D) - 1 = (N : AE D) * (e * incA D (((N : 𝓞 D.host.E) : D.host.E))⁻¹ * ((x : AE D) - 1))`. Take the linear combination `(-1 : AE D) * hx - (e * ((x : AE D) - 1)) * hi`. Use `hN1 x ⟨?_, h1, h2⟩ ⟨finPart D (e * incA D (((N : 𝓞 D.host.E) : D.host.E))⁻¹) * (finPart D (x : AE D) - 1), intAE_mul hg (sub_mem h1 intAE_one), ?_⟩` and prove the remaining obligations. Establish `h0` using `infPart_idem he.1`. Use `congrArg (infPart D) hx` as an intermediate fact.
+
+Simplify using `only [RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, h0, zero_mul, zero_add, sub_zero] at this`. Conclude with `this.symm`. Use `congrArg (finPart D) key` as an intermediate fact. Simplify using `only [RingHom.map_sub, RingHom.map_one, RingHom.map_mul, map_natCast] at this`. Rewrite using `[nsmul_eq_mul]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [RingHom.map_mul, map_natCast]`.
+-/
 theorem unr_off : ∀ (D : D7) (c : (AE D)ˣ →* Circle), Continuous c →
     ∃ S : Finset ℕ, (∀ q ∈ S, q.Prime) ∧ ∀ w : Pl D.host.E, Off S w → ∀ e, Formalism.L2.NTheta.IsIdemAt e w → UnrIdem c e := by
   intro D c hc

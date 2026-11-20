@@ -18,6 +18,13 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Introduce `k _ X _ p t D hX ι _ L hL Φ`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `H : ∀ (M : HermLB p) (τ : ℤ →+* ℂ), (wZ M t τ).IsCInf` using `fun M τ => GlobalTheory.T.wZ_isCInf' k X p t M τ`. Establish `hZ : IsArithVar t D` using `isArithVar_int k X p t D hX`. Establish `key : ∀ (n : ι → ℤ) (a : ℝ), (comb (fun i => toZ (L i) t (hL i)) n).IsSelfInter a ↔ (comb L n).IsSelfInter a`.
+
+Introduce `n a`. Establish `e : (toZ (comb L n) t (H _)).Isometric (comb (fun i => toZ (L i) t (hL i)) n)` using `(GlobalTheory.T.toZ_pow_comb_isometric k X p t H).2 ι L n`. Prove the components needed by the constructor for the conclusion. Introduce `h₀`. Take `⟨h, h₁, h₂⟩` from `e.symm.isSelfInter hZ h₀`.
+
+Conclude with `⟨h, (GlobalTheory.T.toZ_isArithHeight_iff k X p t D hX (comb L n) (H _) h).1 h₁, h₂⟩`. Introduce and unpack `⟨h, h₁, h₂⟩`. Conclude with `e.isSelfInter hZ ⟨h, (GlobalTheory.T.toZ_isArithHeight_iff k X p t D hX (comb L n) (H _) h).2 h₁, h₂⟩`. Conclude with `⟨fun h => ⟨fun n => (key n _).1 (h.1 n), h.2⟩, fun h => ⟨fun n => (key n _).2 (h.1 n), h.2⟩⟩`.
+-/
 theorem isArFun_toZ_iff : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (D : ℕ),
     IsArithVar p D → ∀ (ι : Type) [Fintype ι] (L : ι → HermLB p) (hL : ∀ i τ, (wZ (L i) t τ).IsCInf)
     (Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), IsArFun (fun i => toZ (L i) t (hL i)) D Φ ↔ IsArFun L D Φ := by

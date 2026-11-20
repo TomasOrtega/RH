@@ -6,18 +6,30 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Conclude with `Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)` after adjusting the coercions.
+-/
 lemma one_le_natCast (q : ℕ) [NeZero q] : (1 : ℝ) ≤ q := by
   exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
 
+/- English proof (translation)
+Establish `hq` using `one_le_natCast q`. Apply `Real.log_le_log (by norm_num)` to reduce the goal to its premises. Use polynomial arithmetic with `[abs_nonneg t]`.
+-/
 lemma log_two_le_log_mul_abs_add_two (q : ℕ) [NeZero q] (t : ℝ) :
     Real.log 2 ≤ Real.log ((q : ℝ) * (|t| + 2)) := by
   have hq := one_le_natCast q
   apply Real.log_le_log (by norm_num)
   nlinarith [abs_nonneg t]
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (Real.log_pos (by norm_num)) (log_two_le_log_mul_abs_add_two q t)`.
+-/
 lemma log_mul_abs_add_two_pos (q : ℕ) [NeZero q] (t : ℝ) :
     0 < Real.log ((q : ℝ) * (|t| + 2)) := lt_of_lt_of_le (Real.log_pos (by norm_num)) (log_two_le_log_mul_abs_add_two q t)
 
+/- English proof (translation)
+Unfold `InRegion at *`. Establish `hL` using `log_mul_abs_add_two_pos q s.im`. Use `div_le_div_of_nonneg_right h hL.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma inRegion_mono' {c c' : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (h : c ≤ c') (hs : InRegion c q s) :
     InRegion c' q s := by
   unfold InRegion at *
@@ -25,6 +37,11 @@ lemma inRegion_mono' {c c' : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (h : c ≤ c') 
   have := div_le_div_of_nonneg_right h hL.le
   linarith
 
+/- English proof (translation)
+Unfold `InRegion at hs`. Establish `hL` using `log_two_le_log_mul_abs_add_two q s.im`. Establish `hLpos` using `log_mul_abs_add_two_pos q s.im`. Establish `h2pos : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `h1` using `div_le_div_of_nonneg_right hc hLpos.le`.
+
+Establish `h2 : (1 / 2 : ℝ) / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ (1 / 2) / Real.log 2` using `div_le_div_of_nonneg_left (by norm_num) h2pos hL`. Establish `h3 : (1 / 2 : ℝ) / Real.log 2 < 1`. Rewrite using `[div_lt_one h2pos]`. Combine the linear relations using `[Real.log_two_gt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma re_pos_of_inRegion {c : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hc : c ≤ 1 / 2) (hs : InRegion c q s) :
     0 < s.re := by
   unfold InRegion at hs
@@ -38,6 +55,11 @@ lemma re_pos_of_inRegion {c : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hc : c ≤ 1 
     rw [div_lt_one h2pos]; linarith [Real.log_two_gt_d9]
   linarith
 
+/- English proof (translation)
+Unfold `InRegion at hs`. Establish `hq` using `one_le_natCast q`. Establish `hT : (2 : ℝ) ≤ |s.im| + 2` using `by linarith [abs_nonneg s.im]`. Establish `hlogT : 0 < Real.log (|s.im| + 2)` using `Real.log_pos (by linarith)`. Establish `hle : Real.log (|s.im| + 2) ≤ Real.log ((q : ℝ) * (|s.im| + 2))` using `Real.log_le_log (by linarith) (by nlinarith)`.
+
+Establish `hLpos` using `log_mul_abs_add_two_pos q s.im`. Establish `h1` using `div_le_div_of_nonneg_right h hLpos.le`. Establish `h2` using `div_le_div_of_nonneg_left hcz.le hlogT hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma one_sub_div_log_le_re {c cz : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hcz : 0 < cz) (h : c ≤ cz)
     (hs : InRegion c q s) : 1 - cz / Real.log (|s.im| + 2) ≤ s.re := by
   unfold InRegion at hs
@@ -51,6 +73,27 @@ lemma one_sub_div_log_le_re {c cz : ℝ} {q : ℕ} [NeZero q] {s : ℂ} (hcz : 0
   have h2 := div_le_div_of_nonneg_left hcz.le hlogT hle
   linarith
 
+/- English proof (translation)
+Introduce `hZ hT hN hL hS h2`. Take `⟨cz, hcz, hZ⟩` from `hZ`. Take `⟨cN, hcN, hN⟩` from `hN`. Take `⟨δ, cS, hδ, hcS, hS⟩` from `hS`. Take `⟨cL, hcL, hL⟩` from `hL δ hδ`.
+
+Take `⟨c2, hc2, h2⟩` from `h2`. Use `set c := min (min (min cz cN) (min cL cS)) (min c2 (1 / 2)) with hc`. Establish `hc0 : 0 < c` using `lt_min (lt_min (lt_min hcz hcN) (lt_min hcL hcS)) (lt_min hc2 (by norm_num))`. Establish `hccz : c ≤ cz` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hccN : c ≤ cN` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_right _ _))`.
+
+Establish `hccL : c ≤ cL` using `(min_le_left _ _).trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hccS : c ≤ cS` using `(min_le_left _ _).trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hcc2 : c ≤ c2` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `hc12 : c ≤ 1 / 2` using `(min_le_right _ _).trans (min_le_right _ _)`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations.
+
+Introduce `q _ χ s hs hz`. Establish `key : ∀ (χ : DirichletCharacter ℂ q) (s : ℂ), InRegion c q s → IsLZero χ s → χ ^ 2 = 1 ∧ χ ≠ 1 ∧ |s.im| < δ / Real.log ((q : ℝ) * (|s.im| + 2))`. Introduce `χ s hs hz`. Take `⟨hne, h0⟩` from `hz`. Establish `hχ1 : χ ≠ 1`.
+
+Introduce and unpack `rfl`. Establish `hs1 : s ≠ 1` using `hne.resolve_left (fun h => h rfl)`. Establish `hre` using `re_pos_of_inRegion hc12 hs`. Conclude with `hZ s hs1 (one_sub_div_log_le_re hcz hccz hs) (hT q s hre hs1 h0)`. Establish `hsq : χ ^ 2 = 1`.
+
+Assume the negation of the conclusion as `hsq`. Conclude with `hN q χ s hsq (inRegion_mono' hccN hs) h0`. Use `⟨hsq, hχ1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Conclude with `hL q χ s hsq hχ1 hlt (inRegion_mono' hccL hs) h0`. Take `⟨hsq, hχ1, hsm⟩` from `key χ s hs hz`. Take `⟨him, hder, -⟩` from `hS q χ hsq hχ1 s s hsm hsm (inRegion_mono' hccS hs) (inRegion_mono' hccS hs) hz.2 hz.2`. Use `⟨hsq, hχ1, him, hder, ?_⟩` and prove the remaining obligations. Introduce `χ' s' hs' hz'`.
+
+Take `⟨hsq', hχ1', hsm'⟩` from `key χ' s' hs' hz'`. Establish `him'` using `(hS q χ' hsq' hχ1' s' s' hsm' hsm' (inRegion_mono' hccS hs') (inRegion_mono' hccS hs') hz'.2 hz'.2).1`. Establish `hχeq : χ' = χ`. Assume the negation of the conclusion as `hne`. Establish `es : ((s.re : ℝ) : ℂ) = s` using `Complex.ext (by simp) (by simp [him])`.
+
+Establish `es' : ((s'.re : ℝ) : ℂ) = s'` using `Complex.ext (by simp) (by simp [him'])`. Establish `r1 : InRegion c2 q ((s.re : ℝ) : ℂ)` using `by rw [es]; exact inRegion_mono' hcc2 hs`. Establish `r2 : InRegion c2 q ((s'.re : ℝ) : ℂ)` using `by rw [es']; exact inRegion_mono' hcc2 hs'`. Break down `h2 q χ χ' hsq hsq' hχ1 hχ1' (Ne.symm hne) s.re s'.re r1 r2 with h | h` into its components or cases. Conclude with `h (by rw [es]; exact hz.2)`.
+
+Conclude with `h (by rw [es']; exact hz'.2)`. Use `⟨hχeq, ?_⟩` and prove the remaining obligations. Rewrite `hz'` using `[hχeq]`. Conclude with `(hS q χ hsq hχ1 s s' hsm hsm' (inRegion_mono' hccS hs) (inRegion_mono' hccS hs') hz.2 hz'.2).2.2`.
+-/
 theorem zeroFreeRegionExceptionalZeroOfBounds : ZFRDirichletOf := by
   intro hZ hT hN hL hS h2
   obtain ⟨cz, hcz, hZ⟩ := hZ

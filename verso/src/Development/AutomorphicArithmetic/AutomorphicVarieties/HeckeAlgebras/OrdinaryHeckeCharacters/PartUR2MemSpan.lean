@@ -8,6 +8,17 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Introduce `i ℓ`. Establish `: toForm ι e ((0 : Fin m → (Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ)) i) ℓ = 0`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [toForm, Pi.zero_apply, map_zero]`. Rewrite using `[this]`. Conclude with `σ.zero_mem`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `i ℓ`. Establish `: toForm ι e ((x + y) i) ℓ = toForm ι e (x i) ℓ + toForm ι e (y i) ℓ`. Use function extensionality and compare the values at `g`. Simplify using `only [toForm, Pi.add_apply, map_add]`. Rewrite using `[this]`.
+
+Conclude with `σ.add_mem (hx i ℓ) (hy i ℓ)`. Consider the case `smul a x _ hx`. Introduce `i ℓ`. Establish `: toForm ι e ((a • x) i) ℓ = a • toForm ι e (x i) ℓ`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [toForm, Pi.smul_apply, map_smul]`. Rewrite using `[this]`. Conclude with `σ.smul_mem a (hx i ℓ)`.
+-/
 private theorem UpperTheory.V.Hi.partUR2Mem_span {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ}
     {V : s.Lev} (ι : Qbar l ≃+* ℂ) (m : ℕ)
     {lam : Wt L l n} {d : ℕ} (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) (σ : Submodule ℂ (UA L n → ℂ))
@@ -35,6 +46,11 @@ private theorem UpperTheory.V.Hi.partUR2Mem_span {l : ℕ} [Fact l.Prime] {L Ω 
       simp only [toForm, Pi.smul_apply, map_smul]
     rw [this]; exact σ.smul_mem a (hx i ℓ)
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n _ V Q c ι m τ₀ lam d e ξ σ F`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.1, UpperTheory.V.Hi.partUR2Mem_span ι m e σ F h.2⟩`. Introduce `h`.
+
+Conclude with `⟨h.1, Submodule.subset_span h.2⟩`.
+-/
 theorem UpperTheory.V.Hi.partUR2Mem :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

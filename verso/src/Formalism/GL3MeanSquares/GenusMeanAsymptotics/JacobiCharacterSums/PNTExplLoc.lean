@@ -9,6 +9,11 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hinf`. Take `⟨x, hxK, hacc⟩` from `Set.Infinite.exists_accPt_of_subset_isCompact hinf (isCompact_closedBall z₀ s) (fun y hy => hy.1)`. Establish `hxd : dist x z₀ ≤ s` using `Metric.mem_closedBall.mp hxK`. Establish `hxU : x ∈ Metric.ball z₀ r` using `Metric.mem_ball.mpr (lt_of_le_of_lt hxd hs)`. Establish `hfreq : ∃ᶠ y in nhdsWithin x {x}ᶜ, f y = 0` using `(accPt_iff_frequently_nhdsNE.mp hacc).mono (fun y hy => hy.2)`.
+
+Establish `hz0 : z₀ ∈ Metric.ball z₀ r` using `Metric.mem_ball_self (lt_of_le_of_lt dist_nonneg (lt_of_le_of_lt hxd hs))`. Conclude with `hfz₀ (hfa.eqOn_zero_of_preconnected_of_frequently_eq_zero (convex_ball z₀ r).isPreconnected hxU hfreq hz0)`.
+-/
 private theorem zeros_in_closedBall_finite_of_analyticOnNhd (f : ℂ → ℂ) (z₀ : ℂ) (r s : ℝ) (hs : s < r)
     (hfa : AnalyticOnNhd ℂ f (Metric.ball z₀ r)) (hfz₀ : f z₀ ≠ 0) :
     {ρ | ρ ∈ Metric.closedBall z₀ s ∧ f ρ = 0}.Finite := by
@@ -24,6 +29,37 @@ private theorem zeros_in_closedBall_finite_of_analyticOnNhd (f : ℂ → ℂ) (z
   exact hfz₀ (hfa.eqOn_zero_of_preconnected_of_frequently_eq_zero
     (convex_ball z₀ r).isPreconnected hxU hfreq hz0)
 
+/- English proof (translation)
+Take `⟨P, hP⟩ : ∃ P : ℂ → ℂ, P = fun w => ∏ ρ ∈ Z, (w - ρ) ^ analyticOrderNatAt f ρ` from `⟨_, rfl⟩`. Establish `hPd : Differentiable ℂ P`. Rewrite using `[hP]`. Use `fun_prop`. Establish `hPne : ∀ w, w ∉ Z → P w ≠ 0`.
+
+Introduce `w hw`. Rewrite using `[hP, Finset.prod_ne_zero_iff]`. Introduce `ρ hρ`. Conclude with `pow_ne_zero _ (sub_ne_zero.mpr (fun h => hw (h ▸ hρ)))`. Establish `hPz : ∀ ρ ∈ Z, P ρ = 0`.
+
+Introduce `ρ hρ`. Rewrite using `[hP]`. Conclude with `Finset.prod_eq_zero hρ (by rw [sub_self]; exact zero_pow (by have := hn ρ hρ; omega))`. Establish `hloc : ∀ ρ ∈ Z, ∃ k : ℂ → ℂ, DifferentiableAt ℂ k ρ ∧ k ρ ≠ 0 ∧ ∀ᶠ w in nhdsWithin ρ {ρ}ᶜ, f w / P w = k w`. Introduce `ρ hρ`.
+
+Take `⟨h, hha, hhne, hfeq⟩` from `(hfa ρ hρ).analyticOrderAt_ne_top.mp (hfin ρ hρ)`. Take `⟨Q, hQ⟩ : ∃ Q : ℂ → ℂ, Q = fun w => ∏ σ ∈ Z.erase ρ, (w - σ) ^ analyticOrderNatAt f σ` from `⟨_, rfl⟩`. Establish `hQρ : Q ρ ≠ 0`. Rewrite using `[hQ, Finset.prod_ne_zero_iff]`. Introduce `σ hσ`.
+
+Conclude with `pow_ne_zero _ (sub_ne_zero.mpr (fun h => (Finset.ne_of_mem_erase hσ) h.symm))`. Establish `hQd : Differentiable ℂ Q`. Rewrite using `[hQ]`. Use `fun_prop`. Establish `hPQ : ∀ w, P w = (w - ρ) ^ analyticOrderNatAt f ρ * Q w`.
+
+Introduce `w`. Rewrite using `[hP, hQ]`. Conclude with `(Finset.mul_prod_erase Z (fun σ => (w - σ) ^ analyticOrderNatAt f σ) hρ).symm`. Use `⟨fun w => h w / Q w, hha.differentiableAt.div (hQd ρ) hQρ, div_ne_zero hhne hQρ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hfeq] with w hw hfw`.
+
+Rewrite using `[hfw, hPQ, smul_eq_mul]`. Establish `h1 : (w - ρ) ^ analyticOrderNatAt f ρ ≠ 0` using `pow_ne_zero _ (sub_ne_zero.mpr hw)`. Rewrite using `[mul_div_mul_left _ _ h1]`. Use `choose! k hkd hkne hkeq using hloc`. Take `⟨g, hg⟩ : ∃ g : ℂ → ℂ, g = fun w => if w ∈ Z then k w w else f w / P w` from `⟨_, rfl⟩`.
+
+Establish `hgk : ∀ ρ ∈ Z, g =ᶠ[nhds ρ] k ρ`. Introduce `ρ hρ`. Establish `hopen : IsOpen ((↑(Z.erase ρ) : Set ℂ)ᶜ)` using `(Finset.finite_toSet _).isClosed.isOpen_compl`. Establish `hmem : ρ ∈ ((↑(Z.erase ρ) : Set ℂ)ᶜ)` using `by simp`. Use `filter_upwards [hopen.mem_nhds hmem, eventually_nhdsWithin_iff.mp (hkeq ρ hρ)] with w hw1 hw2`.
+
+Distinguish the cases in `hwρ : w = ρ`. Rewrite using `[hwρ, hg]`. Simplify using `[hρ]`. Establish `hwZ : w ∉ Z`. Introduce `hwZ`.
+
+Conclude with `hw1 (by simp [Finset.mem_erase, hwρ, hwZ])`. Rewrite using `[hg]`. Simplify using `only [if_neg hwZ]`. Conclude with `hw2 hwρ`. Use `⟨g, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Distinguish the cases in `hzZ : z ∈ Z`. Conclude with `((hkd z hzZ).congr_of_eventuallyEq (hgk z hzZ)).differentiableWithinAt`. Establish `hopen : IsOpen ((↑Z : Set ℂ)ᶜ)` using `(Finset.finite_toSet _).isClosed.isOpen_compl`. Establish `hev : g =ᶠ[nhdsWithin z K] fun w => f w / P w` using `by filter_upwards [nhdsWithin_le_nhds (hopen.mem_nhds (by simpa using hzZ))] with w hw`.
+
+Rewrite using `[hg]`. Simplify `hw)]` using `only [if_neg (show w ∉ Z by simpa`. Use `((hd z hz).div (hPd z).differentiableWithinAt (hPne z hzZ)).congr_of_eventuallyEq hev ?_` and prove the remaining obligations. Rewrite using `[hg]`. Simplify using `only [if_neg hzZ]`.
+
+Both sides reduce to the same expression. Introduce `z hz`. Establish `hPe : (∏ ρ ∈ Z, (z - ρ) ^ analyticOrderNatAt f ρ) = P z` using `by rw [hP]`. Rewrite using `[hPe]`. Distinguish the cases in `hzZ : z ∈ Z`.
+
+Rewrite using `[hZ0 z hzZ, hPz z hzZ, zero_mul]`. Rewrite using `[hg]`. Simplify using `only [if_neg hzZ]`. Rewrite using `[mul_div_cancel₀ _ (hPne z hzZ)]`. Introduce `ρ hρ`.
+
+Rewrite using `[(hgk ρ hρ).self_of_nhds]`. Conclude with `hkne ρ hρ`.
+-/
 private theorem exists_factor_zeros_differentiableOn_nonvanishing (f : ℂ → ℂ) (K : Set ℂ) (Z : Finset ℂ)
     (hd : DifferentiableOn ℂ f K) (hZ0 : ∀ ρ ∈ Z, f ρ = 0)
     (hfa : ∀ ρ ∈ Z, AnalyticAt ℂ f ρ) (hfin : ∀ ρ ∈ Z, analyticOrderAt f ρ ≠ ⊤)
@@ -112,6 +148,73 @@ private theorem exists_factor_zeros_differentiableOn_nonvanishing (f : ℂ → �
 
 open Filter Topology Metric in
 
+/- English proof (translation)
+Establish `hr3 : r / 3 < r` using `by linarith`. Establish `hball : DifferentiableOn ℂ f (Metric.ball z₀ r)` using `hf.mono Metric.ball_subset_closedBall`. Establish `hfa : AnalyticOnNhd ℂ f (Metric.ball z₀ r)` using `hball.analyticOnNhd Metric.isOpen_ball`. Establish `hz₀ : z₀ ∈ Metric.ball z₀ r` using `Metric.mem_ball_self hr`. Establish `hfin` using `zeros_in_closedBall_finite_of_analyticOnNhd f z₀ r (r / 3) hr3 hfa hfz₀`.
+
+Take `⟨Z, hZdef⟩ : ∃ Z : Finset ℂ, Z = hfin.toFinset` from `⟨_, rfl⟩`. Establish `hZmem : ∀ ρ : ℂ, ρ ∈ Z ↔ (ρ ∈ Metric.closedBall z₀ (r / 3) ∧ f ρ = 0)`. Introduce `ρ`. Rewrite using `[hZdef, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+
+Establish `hZball : ∀ ρ ∈ Z, ρ ∈ Metric.ball z₀ r` using `fun ρ hρ => Metric.closedBall_subset_ball hr3 ((hZmem ρ).mp hρ).1`. Establish `hord0 : analyticOrderAt f z₀ ≠ ⊤`. Rewrite using `[(hfa z₀ hz₀).analyticOrderAt_eq_zero.mpr hfz₀]`. Conclude with `ENat.zero_ne_top`. Establish `hfinord : ∀ ρ ∈ Z, analyticOrderAt f ρ ≠ ⊤` using `fun ρ hρ => hfa.analyticOrderAt_ne_top_of_isPreconnected (convex_ball z₀ r).isPreconnected hz₀ (hZball ρ hρ) hord0`.
+
+Establish `hn1 : ∀ ρ ∈ Z, 1 ≤ analyticOrderNatAt f ρ`. Introduce `ρ hρ`. Establish `h1 : analyticOrderAt f ρ ≠ 0` using `(hfa ρ (hZball ρ hρ)).analyticOrderAt_ne_zero.mpr ((hZmem ρ).mp hρ).2`. Establish `h2` using `Nat.cast_analyticOrderNatAt (hfinord ρ hρ)`. Rewrite using `[Nat.one_le_iff_ne_zero]`.
+
+Introduce `h0`. Rewrite `h2` using `[h0]`. Conclude with `h1 (by rw [← h2]; simp)`. Take `⟨g, hgd, hfg, hgZ⟩` from `exists_factor_zeros_differentiableOn_nonvanishing f (Metric.closedBall z₀ r) Z hf (fun ρ hρ => ((hZmem ρ).mp hρ).2) (fun ρ hρ => hfa ρ (hZball ρ hρ)) hfinord hn1`. Take `⟨P, hP⟩ : ∃ P : ℂ → ℂ, P = fun w => ∏ ρ ∈ Z, (w - ρ) ^ analyticOrderNatAt f ρ` from `⟨_, rfl⟩`.
+
+Establish `hfP : ∀ z ∈ Metric.closedBall z₀ r, f z = P z * g z`. Introduce `z hz`. Rewrite using `[hP]`. Conclude with `hfg z hz`. Establish `hPne : ∀ w, w ∉ Z → P w ≠ 0`.
+
+Introduce `w hw`. Rewrite using `[hP, Finset.prod_ne_zero_iff]`. Introduce `ρ hρ`. Conclude with `pow_ne_zero _ (sub_ne_zero.mpr (fun h => hw (h ▸ hρ)))`. Take `⟨N, hN⟩ : ∃ N : ℕ, N = ∑ ρ ∈ Z, analyticOrderNatAt f ρ` from `⟨_, rfl⟩`.
+
+Establish `hz₀c : z₀ ∈ Metric.closedBall z₀ r` using `Metric.mem_closedBall_self hr.le`. Establish `hz₀Z : z₀ ∉ Z` using `fun h => hfz₀ ((hZmem z₀).mp h).2`. Establish `hgz₀ : g z₀ ≠ 0`. Introduce `h`. Apply `hfz₀` to reduce the goal to its premises.
+
+Rewrite using `[hfP z₀ hz₀c, h, mul_zero]`. Establish `hgpos : 0 < ‖g z₀‖` using `norm_pos_iff.mpr hgz₀`. Establish `hr3pos : 0 < r / 3` using `by positivity`. Establish `hPz₀ : ‖P z₀‖ ≤ (r / 3) ^ N`. Rewrite using `[hP, norm_prod, hN, ← Finset.prod_pow_eq_pow_sum]`.
+
+Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `ρ _`. Check the signs of the components of the expression. Introduce `ρ hρ`. Rewrite using `[norm_pow]`.
+
+Apply `pow_le_pow_left₀ (norm_nonneg _)` to reduce the goal to its premises. Use `Metric.mem_closedBall.mp ((hZmem ρ).mp hρ).1` as an intermediate fact. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `this`. Establish `hPsph : ∀ z ∈ Metric.sphere z₀ r, 2 ^ N * (r / 3) ^ N ≤ ‖P z‖`.
+
+Introduce `z hz`. Establish `hzd : dist z z₀ = r` using `Metric.mem_sphere.mp hz`. Rewrite using `[← mul_pow, hP, norm_prod, hN, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `ρ _`.
+
+Check the signs of the components of the expression. Introduce `ρ hρ`. Rewrite using `[norm_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `hρd` using `Metric.mem_closedBall.mp ((hZmem ρ).mp hρ).1`.
+
+Establish `htri` using `dist_triangle z ρ z₀`. Rewrite using `[← dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨M, hM⟩ : ∃ M : ℝ, M = B / 2 ^ N` from `⟨_, rfl⟩`. Establish `h2N : (0 : ℝ) < 2 ^ N` using `by positivity`.
+
+Establish `hsph : ∀ z ∈ Metric.sphere z₀ r, ‖g z‖ ≤ M * ‖g z₀‖`. Introduce `z hz`. Establish `hzc : z ∈ Metric.closedBall z₀ r` using `Metric.sphere_subset_closedBall hz`. Establish `hPpos : 0 < 2 ^ N * (r / 3) ^ N` using `by positivity`. Establish `hfz` using `hbound z hzc`.
+
+Rewrite `hfz` using `[hfP z hzc, hfP z₀ hz₀c, norm_mul, norm_mul]`. Establish `h1 : ‖g z‖ * (2 ^ N * (r / 3) ^ N) ≤ ‖g z‖ * ‖P z‖` using `mul_le_mul_of_nonneg_left (hPsph z hz) (norm_nonneg _)`. Establish `h2 : B * (‖P z₀‖ * ‖g z₀‖) ≤ B * ((r / 3) ^ N * ‖g z₀‖)`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hPz₀ (norm_nonneg _)`.
+
+Establish `h3 : ‖g z‖ * (2 ^ N * (r / 3) ^ N) ≤ (M * ‖g z₀‖) * (2 ^ N * (r / 3) ^ N)`. Establish `: (M * ‖g z₀‖) * (2 ^ N * (r / 3) ^ N) = B * ((r / 3) ^ N * ‖g z₀‖)`. Rewrite using `[hM]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Combine the linear relations using `[mul_comm (‖P z‖) (‖g z‖)]`. Conclude with `le_of_mul_le_mul_right h3 hPpos`. Establish `hgcl : DiffContOnCl ℂ g (Metric.ball z₀ r)`. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball z₀ hr.ne']`.
+
+Conclude with `hgd`. Establish `hmax : ∀ z ∈ Metric.closedBall z₀ r, ‖g z‖ ≤ M * ‖g z₀‖`. Introduce `z hz`. Apply `Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball hgcl` to reduce the goal to its premises. Rewrite using `[frontier_ball z₀ hr.ne']`.
+
+Conclude with `hsph`. Rewrite using `[closure_ball z₀ hr.ne']`. Conclude with `hz`. Establish `hM1 : 1 ≤ M`. Use `hmax z₀ hz₀c` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h2B : (2 : ℝ) ^ N ≤ B`. Rewrite `hM1` using `[hM, le_div_iff₀ h2N, one_mul]`. Conclude with `hM1`. Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`.
+
+Establish `hcount : (N : ℝ) ≤ Real.log B / Real.log 2`. Rewrite using `[le_div_iff₀ hlog2, ← Real.log_pow]`. Conclude with `Real.log_le_log h2N h2B`. Establish `hMB : Real.log M ≤ Real.log B`. Apply `Real.log_le_log (by linarith)` to reduce the goal to its premises.
+
+Rewrite using `[hM]`. Conclude with `div_le_self (by linarith) (one_le_pow₀ one_le_two)`. Establish `hgS : ∀ z ∈ Metric.closedBall z₀ (r / 3), g z ≠ 0`. Introduce `z hz hgz`. Distinguish the cases in `hzZ : z ∈ Z`.
+
+Conclude with `hgZ z hzZ hgz`. Apply `hzZ` to reduce the goal to its premises. Rewrite using `[hZmem]`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hfP z (Metric.closedBall_subset_closedBall hr3.le hz), hgz, mul_zero]`.
+
+Take `⟨Z', m', hZ', -, -, hest⟩` from `Formalism.ZF.landauLocal g z₀ r M hr hM1 hgd hgz₀ hmax`. Establish `hZ'e : Z' = ∅`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `ρ hρ`. Conclude with `hgS ρ ((hZ' ρ).mp hρ).1 ((hZ' ρ).mp hρ).2`.
+
+Use `⟨Z, fun ρ => analyticOrderNatAt f ρ, hZmem, hn1, fun ρ _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hN]`. Conclude with `hcount`. Introduce `z hz hfz`. Establish `hr6 : r / 6 < r` using `by linarith`.
+
+Establish `hzb : z ∈ Metric.ball z₀ r` using `Metric.closedBall_subset_ball hr6 hz`. Establish `hzc : z ∈ Metric.closedBall z₀ r` using `Metric.ball_subset_closedBall hzb`. Establish `hzZ : z ∉ Z` using `fun h => hfz ((hZmem z).mp h).2`. Establish `hgz : g z ≠ 0`. Introduce `h`.
+
+Apply `hfz` to reduce the goal to its premises. Rewrite using `[hfP z hzc, h, mul_zero]`. Establish `hPz : P z ≠ 0` using `hPne z hzZ`. Establish `hnhd : Metric.closedBall z₀ r ∈ 𝓝 z` using `mem_of_superset (Metric.isOpen_ball.mem_nhds hzb) Metric.ball_subset_closedBall`. Establish `hgdz : DifferentiableAt ℂ g z` using `hgd.differentiableAt hnhd`.
+
+Establish `hPdz : DifferentiableAt ℂ P z`. Rewrite using `[hP]`. Use `fun_prop`. Establish `hev : f =ᶠ[𝓝 z] fun w => P w * g w` using `by filter_upwards [hnhd] with w hw`. Conclude with `hfP w hw`.
+
+Establish `hderiv : deriv f z = deriv P z * g z + P z * deriv g z`. Rewrite using `[hev.deriv_eq]`. Conclude with `deriv_mul hPdz hgdz`. Establish `hlog : deriv P z / P z = ∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) / (z - ρ)`. Rewrite using `[← logDeriv_apply, hP]`.
+
+Apply `Formalism.ZF.landauLocal_logDeriv_prod` to reduce the goal to its premises. Introduce `ρ hρ h`. Conclude with `hzZ (by rw [sub_eq_zero] at h; rw [h]; exact hρ)`. Establish `hsplit : deriv f z / f z - ∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) / (z - ρ) = deriv g z / g z`. Rewrite using `[← hlog, hderiv, hfP z hzc]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hg6` using `hest z hz hgz`. Rewrite `hg6` using `[hZ'e, Finset.sum_empty, sub_zero]`. Rewrite using `[hsplit]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right _ hr.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ex_landau_ord_core (f : ℂ → ℂ) (z₀ : ℂ) (r B : ℝ) (hr : 0 < r) (hB : 1 ≤ B)
     (hf : DifferentiableOn ℂ f (Metric.closedBall z₀ r)) (hfz₀ : f z₀ ≠ 0)
     (hbound : ∀ z ∈ Metric.closedBall z₀ r, ‖f z‖ ≤ B * ‖f z₀‖) :
@@ -298,6 +401,11 @@ theorem ex_landau_ord_core (f : ℂ → ℂ) (z₀ : ℂ) (r B : ℝ) (hr : 0 < 
         apply div_le_div_of_nonneg_right _ hr.le
         linarith
 
+/- English proof (translation)
+Take `⟨Z, m, hZ, hm1, hmo, hcnt, hest⟩` from `ex_landau_ord_core f z₀ r B hr hB hf hfz₀ hbound`. Establish `hsum : ∀ z : ℂ, ∑ ρ ∈ Z, (analyticOrderNatAt f ρ : ℂ) / (z - ρ) = ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ)` using `fun z => Finset.sum_congr rfl (fun ρ hρ => by rw [hmo ρ hρ])`. Use `⟨Z, hZ, fun ρ hρ => by rw [hmo ρ hρ]; exact hm1 ρ hρ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl hmo]`. Conclude with `hcnt`.
+
+Introduce `z hz hfz`. Rewrite using `[hsum z]`. Conclude with `hest z hz hfz`.
+-/
 theorem ex_landau_ord (f : ℂ → ℂ) (z₀ : ℂ) (r B : ℝ) (hr : 0 < r) (hB : 1 ≤ B)
     (hf : DifferentiableOn ℂ f (Metric.closedBall z₀ r)) (hfz₀ : f z₀ ≠ 0)
     (hbound : ∀ z ∈ Metric.closedBall z₀ r, ‖f z‖ ≤ B * ‖f z₀‖) :

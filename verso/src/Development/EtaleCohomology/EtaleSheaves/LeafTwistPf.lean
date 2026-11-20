@@ -15,6 +15,9 @@ def LeafTwSec : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], Prim q
     ∀ {V U : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ Spec (CommRingCat.of B)) (s : Sec (tw q i) U),
       e V (g ≫ x) (Sec.res g s) = Sec.res g (e U x s)
 
+/- English proof (translation)
+Introduce `hy q _ B _ hP n i j`. Take `⟨ζ⟩` from `hP`. Take `⟨e, he⟩` from `hT q B ζ i j`. Conclude with `hL hy (ZMod q) (Spec (CommRingCat.of B)) (tw q i) (tw q j) e he n`.
+-/
 theorem LeafTwist_of (hL : LeafLoc) (hT : LeafTwSec) : LateralTheory.E.LeafKumCut.LeafTwist := by
   intro hy q _ B _ hP n i j
   obtain ⟨ζ⟩ := hP

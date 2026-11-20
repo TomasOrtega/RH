@@ -15,8 +15,14 @@ namespace PositivityTheory.Rg.BcB.F.Rd.B
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem bsG' (n : ℕ) : BorelSpace (G n) := ⟨rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem bsF' (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) : BorelSpace (Hf E a b) := ⟨rfl⟩
 
 attribute [local instance] bsG' bsF'
@@ -32,6 +38,11 @@ def phiG (x : ChAlg g X) : Matrix B.I B.I (H E B.a B.b → ℂ) :=
     h.choose
   else 0
 
+/- English proof (translation)
+Use `haveI := B.ha`. Use `haveI := B.hb`. Use `haveI := B.hν`. Establish `hm` using `hTM E B.a B.b B.D B.μa B.μb B.ν B.Ma B.Mb B.κ t.ka t₀.ka t.kb t₀.kb t.va t₀.va t.vb t₀.vb t.T t₀.T t.ψ t₀.ψ B.compat ht.ka ht.kb ht₀.ka ht₀.kb ht.ψ ht₀.ψ`. Establish `hΦ : mulM B.D.μ t.Φ t₀.Φ = (t.mul t₀).Φ` using `hm.2`.
+
+Take `⟨-, -, hok, hop, -⟩` from `hBO E B t t₀ ht ht₀`. Establish `h2` using `hBO E B (t.mul t₀) (t.mul t₀) hok hok`. Rewrite using `[hΦ, ← hop]`. Conclude with `⟨h2.1, h2.2.1⟩`.
+-/
 theorem mul_facts (hTM : TensMul) (hBO : BlockOperatorsProductAdjoint) (t : PT B) (ht : t.Ok) (ht₀ : t₀.Ok) :
     IsTestM (mulM B.D.μ t.Φ t₀.Φ) ∧ IsROp B.D (mulM B.D.μ t.Φ t₀.Φ) (t.op * t₀.op) := by
   haveI := B.ha; haveI := B.hb; haveI := B.hν
@@ -43,12 +54,32 @@ theorem mul_facts (hTM : TensMul) (hBO : BlockOperatorsProductAdjoint) (t : PT B
   rw [hΦ, ← hop]
   exact ⟨h2.1, h2.2.1⟩
 
+/- English proof (translation)
+Use `hok y` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this`.
+-/
 theorem ok_of_inr {t : PT B} {y : Γ} (hok : ∀ x, (g x).Ok) (hy : g y = Sum.inr t) : t.Ok := by
   have := hok y
   rw [hy] at this
   exact this
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `ht₀ : t₀.Ok` using `ok_of_inr g hok ha₀`. Establish `ea : ((genE g X a₀ : ChAlg g X) : B.Hb →L[ℂ] B.Hb) = t₀.op` using `by show (g a₀).op = _`. Rewrite using `[ha₀]`. Both sides reduce to the same expression. Establish `hspec : ∀ x : ChAlg g X, IsTestM (phiG g X t₀ x) ∧ IsROp B.D (phiG g X t₀ x) ((x : B.Hb →L[ℂ] B.Hb) * t₀.op)` using `fun x => by`.
+
+Establish `h` using `phiEx hBO hBW hBS hAW g X tX t₀ hok htX hXe ht₀ x`. Unfold `phiG`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Use `letI : CommRing (ChAlg g X) := chComm g X hc hXc hXs`.
+
+Establish `hCc : ({1} ∪ Set.range (genE g X) ∪ {XE g X} : Set (ChAlg g X)).Countable` using `((Set.countable_singleton _).union (Set.countable_range _)).union (Set.countable_singleton _)`. Take `⟨M, s, f, hlim, hk⟩` from `hE2 E B.a B.b B.D B.I B.Hb (ContinuousLinearMap.id ℂ B.Hb) (fun v => rfl) (ChAlg g X) (StarSubalgebra.subtype _) χ (genE g X a₀) ({1} ∪ Set.range (genE g X) ∪ {XE g X}) (phiG g X t₀) hχ hχ0 hCc (Or.inl (Or.inl rfl)) (fun x => (hspec x).1) (fun x => ⟨_, (hspec x).2, fun v => by`. Express the relevant statement in the definitionally equal form `((x : B.Hb →L[ℂ] B.Hb) * t₀.op) v = ((x : B.Hb →L[ℂ] B.Hb) * ((genE g X a₀ : ChAlg g X) : B.Hb →L[ℂ] B.Hb)) v`. Rewrite using `[ea], fun u hu => by`. Establish `hu0 : u = 0` using `inner_self_eq_zero.1 (hu u)`.
+
+Rewrite using `[hu0, map_zero]⟩)`. Use `⟨M, fun k x => s k x, f, fun y => hlim _ (Or.inl (Or.inr ⟨y, rfl⟩)), hlim _ (Or.inr rfl), fun k => ?_⟩` and prove the remaining obligations. Take `⟨h0, hcont, hne, hL, hW, hconv⟩` from `hk k`. Establish `key : ∀ x ∈ ({1} ∪ Set.range (genE g X) ∪ {XE g X} : Set (ChAlg g X)), ∀ Ψ, IsTestM Ψ → IsROp B.D Ψ ((x : B.Hb →L[ℂ] B.Hb) * t₀.op) → PositivityTheory.Rg.BcB.E.conv B.D.μ Ψ (f k) = s k (x * genE g X a₀) • f k` using `fun x hx Ψ h1 h2 => (PositivityTheory.Rg.BcB.E2.conv_eq_of_isROp B.D h1 (hspec x).1 h2 (hspec x).2 hcont hL).trans (hconv x hx)`. Use `⟨h0, hcont, hne, hL, hW, ?_, fun y t hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h0'` using `hBO E B t₀ t₀ ht₀ ht₀`. Establish `h` using `key 1 (Or.inl (Or.inl rfl)) t₀.Φ h0'.1 (by show IsROp B.D t₀.Φ (1 * t₀.op)`. Rewrite using `[one_mul]`. Conclude with `h0'.2.1)`. Rewrite `h` using `[one_mul]`.
+
+Conclude with `h`. Establish `ht` using `ok_of_inr g hok hy`. Establish `hm` using `mul_facts t₀ hTM hBO t ht ht₀`. Establish `e : ((genE g X y : ChAlg g X) : B.Hb →L[ℂ] B.Hb) = t.op` using `by show (g y).op = _`. Rewrite using `[hy]`.
+
+Both sides reduce to the same expression. Establish `h` using `key (genE g X y) (Or.inl (Or.inr ⟨y, rfl⟩)) _ hm.1 (by rw [e]; exact hm.2)`. Rewrite `h` using `[map_mul]`. Conclude with `h`. Establish `hm` using `mul_facts t₀ hTM hBO tX htX ht₀`.
+
+Establish `e : ((XE g X : ChAlg g X) : B.Hb →L[ℂ] B.Hb) = tX.op` using `hXe`. Establish `h` using `key (XE g X) (Or.inr rfl) _ hm.1 (by rw [e]; exact hm.2)`. Rewrite `h` using `[map_mul]`. Conclude with `h`.
+-/
 theorem realise_commuting_family (hE2 : E2) (hTM : TensMul) (hBO : BlockOperatorsProductAdjoint) (hBW : BlockWordOperators) (hBS : BlockLinearCombinations) (hAW : AdjWords)
     [Countable Γ] (a₀ : Γ) (tX : PT B) (χ : ChAlg g X →⋆ₐ[ℂ] ℂ)
     (hok : ∀ x, (g x).Ok) (htX : tX.Ok) (hXe : X = tX.op) (ha₀ : g a₀ = Sum.inr t₀)
@@ -116,6 +147,9 @@ theorem realise_commuting_family (hE2 : E2) (hTM : TensMul) (hBO : BlockOperator
 
 end Real
 
+/- English proof (translation)
+Introduce `E _ _ _ B Γ _ g a₀ t₀ X tX χ hok htX hXe ha₀ hc hXc hXs hχ hχ0`. Conclude with `realise_commuting_family g X t₀ hE2 hTM hBO hBW hBS hAW a₀ tX χ hok htX hXe ha₀ hc hXc hXs hχ hχ0`.
+-/
 theorem realise (hE2 : E2) (hTM : TensMul) (hBO : BlockOperatorsProductAdjoint) (hBW : BlockWordOperators) (hBS : BlockLinearCombinations) (hAW : AdjWords) :
     RealiseSt := by
   intro E _ _ _ B Γ _ g a₀ t₀ X tX χ hok htX hXe ha₀ hc hXc hXs hχ hχ0

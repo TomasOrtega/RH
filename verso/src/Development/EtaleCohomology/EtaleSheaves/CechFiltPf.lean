@@ -15,6 +15,9 @@ def Filt : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {E₀ E : Spc} (g : E
     (((chains R).map g).f (-(p : ℤ))))) F n)) →
   Subsingleton (Hrel R g F n)
 
+/- English proof (translation)
+Introduce `R _ F E₀ E g n h`. Conclude with `hF R F g n (fun p => hP R F g p n (h p))`.
+-/
 theorem CechFilt_of (hP : Piece) (hF : Filt) : LateralTheory.E.SSPf.CechFilt := by
   intro R _ F E₀ E g n h
   exact hF R F g n (fun p => hP R F g p n (h p))
@@ -26,18 +29,27 @@ def FiltGen : Prop := ∀ {C : Type u} [Category.{v} C] [Abelian C] {K L I : Coc
   (∀ k ≤ 0, Subsingleton (CohomologyClass (mappingCone ((HomologicalComplex.single C (ComplexShape.up ℤ) k).map (φ.f k))) I n)) →
   Subsingleton (CohomologyClass (mappingCone φ) I n)
 
+/- English proof (translation)
+Unfold `chains`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show -(i : ℤ) ≠ j omega)`.
+-/
 theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (j : ℤ) (hj : 0 < j) : IsZero (((chains R).obj E).X j) := by
   unfold chains
   exact HomologicalComplex.isZero_extend_X _ _ _ (fun i => by
     show -(i : ℤ) ≠ j
     omega)
 
+/- English proof (translation)
+Unfold `res InjectiveResolution.cochainComplex`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show (i : ℤ) ≠ j omega)`.
+-/
 theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (j : ℤ) (hj : j < 0) : IsZero ((res R F).X j) := by
   unfold res InjectiveResolution.cochainComplex
   exact HomologicalComplex.isZero_extend_X _ _ _ (fun i => by
     show (i : ℤ) ≠ j
     omega)
 
+/- English proof (translation)
+Introduce `R _ F E₀ E g n h`. Apply `hG ((chains R).map g) n (chains_isZero R E₀) (chains_isZero R E) (res_isZero R F)` to reduce the goal to its premises. Introduce `k hk`. Take `⟨p, rfl⟩ : ∃ p : ℕ, k = -(p : ℤ)` from `⟨(-k).toNat, by omega⟩`. Conclude with `h p`.
+-/
 theorem Filt_of (hG : FiltGen.{2, 1}) : Filt := by
   intro R _ F E₀ E g n h
   apply hG ((chains R).map g) n (chains_isZero R E₀) (chains_isZero R E) (res_isZero R F)
@@ -55,10 +67,16 @@ def ShiftLvl : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {E₀ E : Spc} (g
   Subsingleton (HK R (mappingCone ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map
     (((chains R).map g).f (-(p : ℤ))))) F n)
 
+/- English proof (translation)
+Introduce `R _ F E₀ E g p n h`. Conclude with `hS R F g p n (hD R F _ _ h)`.
+-/
 theorem Piece_of (hD : DiscLvl) (hS : ShiftLvl) : Piece := by
   intro R _ F E₀ E g p n h
   exact hS R F g p n (hD R F _ _ h)
 
+/- English proof (translation)
+The claim follows from `CechFilt_of (Piece_of hD hS) (Filt_of hG)`.
+-/
 theorem CechFilt_of_disc_shift_filtGen (hD : DiscLvl) (hS : ShiftLvl) (hG : FiltGen.{2, 1}) : LateralTheory.E.SSPf.CechFilt :=
   CechFilt_of (Piece_of hD hS) (Filt_of hG)
 

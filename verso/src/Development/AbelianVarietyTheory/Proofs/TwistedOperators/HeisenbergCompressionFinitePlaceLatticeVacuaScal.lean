@@ -22,6 +22,11 @@ open GlobalTheory.SplitScalar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h2 : algebraMap D.host.F (Fv D.host.F v) (2 : D.host.F)⁻¹ ∈ v.adicCompletionIntegers D.host.F` using `GlobalTheory.LatVac.half_mem_adicCompletionIntegers D.host.F v h`. Establish `hsum : algebraMap D.host.F (Fv D.host.F v) (2 : D.host.F)⁻¹ + algebraMap D.host.F (Fv D.host.F v) (2 : D.host.F)⁻¹ = 1`. Rewrite using `[← map_add, ← two_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Use `⟨algebraMap (AF D.host.F) (AE D) (GlobalTheory.SplitIdem.placeHom D.host.F v (algebraMap D.host.F (Fv D.host.F v) (2 : D.host.F)⁻¹)), ?_, ?_⟩` and prove the remaining obligations. Unfold `intAE finPart`.
+
+Use `AddSubgroup.subset_closure ⟨_, GlobalTheory.SplitIdem.singleV_mem_intAf D.host.F v ⟨_, h2⟩, 1, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp [GlobalTheory.SplitIdem.placeHom, Algebra.TensorProduct.algebraMap_apply] <;> rfl`. Rewrite using `[← map_add, ← map_add, hsum]`. Both sides reduce to the same expression.
+-/
 theorem exists_half_idem (v : FinPl D) (h : (2 : 𝓞 D.host.F) ∉ v.asIdeal) :
     ∃ b : AE D, finPart D b ∈ intAE D ∧ b + b = idem D (.inl v) := by
   have h2 : algebraMap D.host.F (Fv D.host.F v) (2 : D.host.F)⁻¹ ∈ v.adicCompletionIntegers D.host.F :=
@@ -40,6 +45,21 @@ theorem exists_half_idem (v : FinPl D) (h : (2 : 𝓞 D.host.F) ∉ v.asIdeal) :
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
   {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Establish `hidem` using `(GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).2.2.2.1 v`. Distinguish the cases in `h2 : (2 : 𝓞 D.host.F) ∈ v.asIdeal`. Take `⟨e, hee, hec, hsum, -⟩` from `GlobalTheory.SplitIdem.exists_split_idempotent D v h2`. Establish `hsum' : e + cA D e = idem D (.inl v)` using `by rw [hsum]; rfl`. Establish `hsp : IsSplitIdem D e`.
+
+Unfold `IsSplitIdem`. Conclude with `⟨hee, hec, v, _, hidem.2.2, hsum⟩`. Establish `hsp' : IsSplitIdem D (cA D e)` using `isSplitIdem_conj hsp`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hint : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hee])`.
+
+Establish `hint' : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hcc])`. Establish `hm1` using `GlobalTheory.LatticeStable.smul_mem_latO D S T LS LT _ e hint u hu`. Establish `hm2` using `GlobalTheory.LatticeStable.smul_mem_latO D S T LS LT _ (cA D e) hint' u hu`. Establish `hh1 : IsHalf e (e • u)` using `(isHalf_iff e (e • u)).2 (by rw [smul_smul, hee])`. Establish `hh2 : IsHalf (cA D e) (cA D e • u)` using `(isHalf_iff (cA D e) (cA D e • u)).2 (by rw [smul_smul, hcc])`.
+
+Establish `hsplit : e • u + cA D e • u = u` using `by rw [← add_smul, hsum', hi]`. Use `⟨-symplOH S T (e • u) (cA D e • u), fun f hf => ?_⟩` and prove the remaining obligations. Unfold `IsLatVac at hf`. Establish `k1` using `hf.2 e hsp _ hm1 hh1`. Establish `k2` using `hf.2 _ hsp' _ hm2 hh2`.
+
+Establish `key` using `heisO_heisO ψ S T (e • u) (cA D e • u) f`. Rewrite `key` using `[k2, k1, hsplit]`. Use `conv_rhs => rw [key]`. Rewrite using `[smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul]`. Take `⟨b, hb, hbb⟩` from `exists_half_idem v h2`.
+
+Use `⟨0, fun f hf => ?_⟩` and prove the remaining obligations. Unfold `IsLatVac at hf`. Establish `hm` using `GlobalTheory.LatticeStable.smul_mem_latO D S T LS LT _ b hb u hu`. Establish `h2u : 2 • (b • u) = u` using `by rw [two_nsmul, ← add_smul, hbb, hi]`. Rewrite using `[AddChar.map_zero_eq_one, one_smul, ← h2u]`.
+
+Conclude with `hf.1 _ hm`.
+-/
 theorem exists_char_act (v : FinPl D) {u : WO S T} (hu : u ∈ latO S T LS LT fun w => w = v)
     (hi : idem D (.inl v) • u = u) :
     ∃ y : AF D.host.F, ∀ f, IsLatVac (heisO ψ S T) (latO S T LS LT fun w => w = v) f →
@@ -79,6 +99,11 @@ theorem exists_char_act (v : FinPl D) {u : WO S T} (hu : u ∈ latO S T LS LT fu
     rw [AddChar.map_zero_eq_one, one_smul, ← h2u]
     exact hf.1 _ hm
 
+/- English proof (translation)
+Unfold `ipO`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `t`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ipO_smul_smul' {m n : ℕ} (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)) (a b : ℂ)
     (f g : Mx D m n → ℂ) : ipO μ 𝓕 (a • f) (b • g) = (a * starRingEnd ℂ b) * ipO μ 𝓕 f g := by
   unfold ipO
@@ -88,6 +113,31 @@ private theorem ipO_smul_smul' {m n : ℕ} (μ : Measure (Mx D m n)) (𝓕 : Set
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
   ring
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT μ 𝓕 hψ hS hT hμ v w`. Establish `hn : ∀ a, ‖ψ a‖ = 1`. Establish `h` using `hψ`. Unfold `IsStdChar IsCharAF at h`. Conclude with `h.1.2.1`.
+
+Take `⟨hI1, -, hI3, hI4, -⟩` from `GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D`. Take `⟨ι, hι⟩ : ∃ ι, ι = idem D (.inl v)` from `⟨_, rfl⟩`. Establish `hιι : ι * ι = ι` using `by rw [hι]; exact hI1 _`. Establish `hcι : cA D ι = ι` using `by rw [hι]; exact hI3 _`. Establish `hinf : infPart D ι = 0` using `by rw [hι]; exact (hI4 v).1`.
+
+Take `⟨x, hx⟩ : ∃ x, x = ι • w` from `⟨_, rfl⟩`. Rewrite using `[wAt_eq_smul, ← hι, ← hx]`. Establish `hιx : ι • x = x` using `by rw [hx, smul_smul, hιι]`. Establish `hloc : ∀ u ∈ latO S T ΛS ΛT (fun _ => True), ι • u ∈ latO S T ΛS ΛT (fun u => u = v)`. Introduce `u hu`.
+
+Establish `h` using `((GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT (fun _ => True) u hu) (.inl v)).1`. Rewrite `h` using `[wAt_eq_smul, ← hι]`. Conclude with `latO_mono (fun v' h' => Sum.inl.inj h'.2) h`. Establish `hloc' : ∀ u ∈ latO S T ΛS ΛT (fun u => u = v), ι • u ∈ latO S T ΛS ΛT (fun u => u = v)`. Introduce `u hu`.
+
+Establish `h` using `((GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice D S T ΛS ΛT (fun u => u = v) u hu) (.inl v)).1`. Rewrite `h` using `[wAt_eq_smul, ← hι]`. Conclude with `latO_mono (fun v' h' => h'.1) h`. Establish `hpair : ∀ a, symplO S T (ι • a) x = symplO S T a x`. Introduce `a`.
+
+Rewrite using `[symplO_smul, hcι, hιx]`. Distinguish the cases in `hA : ∀ l ∈ latO S T ΛS ΛT (fun u => u = v), ψ (symplO S T l x) = 1`. Establish `hxg : x ∈ latO S T ΛS ΛT (fun _ => True)`. Use `((GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hS hT).1 x ?_).2 ?_` and prove the remaining obligations. Rewrite using `[hx]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, map_mul, hinf]`. Introduce `u' hu'`. Rewrite using `[symplO_skew, AddChar.map_neg_eq_inv, ← hpair, hA _ (hloc u' hu'), inv_one]`. Establish `hxv : x ∈ latO S T ΛS ΛT (fun u => u = v)`.
+
+Rewrite using `[← hιx]`. Conclude with `hloc x hxg`. Take `⟨y, hy⟩` from `exists_char_act (ψ := ψ) v hxv (by rw [← hι]; exact hιx)`. Use `⟨starRingEnd ℂ (ψ y), fun f g hf hg hvf hvg => ?_⟩` and prove the remaining obligations. Rewrite using `[hy f hvf]`.
+
+Conclude with `((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g f hg hf).2.2.1 (ψ y)).2`. Use `push_neg at hA`. Take `⟨l, hl, hl1⟩` from `hA`. Establish `hιl : ι • (ι • l) = ι • l` using `by rw [smul_smul, hιι]`. Take `⟨y, hy⟩` from `exists_char_act (ψ := ψ) v (hloc' l hl) (by rw [← hι]; exact hιl)`.
+
+Use `⟨0, fun f g hf hg hvf hvg => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`. Establish `hxf : IsThetaFunO ψ S T (heisO ψ S T x f)` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 x f hf`. Establish `hU` using `((GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ g (heisO ψ S T x f) hg hxf).2.2.2.2.2.2.1 (ι • l)).1`. Rewrite `hU` using `[hy g hvg, heisO_comm, hy f hvf, heisO_smul, smul_smul, ipO_smul_smul', map_mul]`.
+
+Establish `hc : ψ y * starRingEnd ℂ (ψ y) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Evaluate the numerical expressions. Establish `hs : starRingEnd ℂ (ψ (symplO S T (ι • l) x)) ≠ 1`. Rewrite using `[hpair]`.
+
+Introduce `h`. Conclude with `hl1 ((starRingEnd ℂ).injective (by rw [h, map_one]))`. Establish `h0 : (starRingEnd ℂ (ψ (symplO S T (ι • l) x)) - 1) * ipO μ 𝓕 g (heisO ψ S T x f) = 0`. Take the linear combination `hU - (starRingEnd ℂ (ψ (symplO S T (ι • l) x)) * ipO μ 𝓕 g (heisO ψ S T x f)) * hc`. Conclude with `(mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hs)`.
+-/
 theorem compress_fin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → IsCovolOne (ratL T S) μ 𝓕 → ∀ (v : FinPl D) (w : WO S T), ∃ γ : ℂ, ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun u => u = v) f → IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun u => u = v) g → ipO μ 𝓕 g (heisO ψ S T (wAt (.inl v) w) f) = γ * ipO μ 𝓕 g f := by
   intro D ψ S T ΛS ΛT μ 𝓕 hψ hS hT hμ v w
   classical

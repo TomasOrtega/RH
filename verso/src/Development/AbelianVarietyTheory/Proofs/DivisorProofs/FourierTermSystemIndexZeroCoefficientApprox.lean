@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.Sep.UnitZero
 
+/- English proof (translation)
+Simplify using `only [qW, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ N (ν u), ← Nat.cast_smul_eq_nsmul ℤ N (ν v), LinearMap.map_smul₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qW_nsmul {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X)
     (N : ℕ) (ν : Fin s → X) : qW W β (fun u => N • ν u) = (N : ℤ) ^ 2 * qW W β ν := by
   simp only [qW, Finset.mul_sum]
@@ -22,6 +25,11 @@ theorem qW_nsmul {s : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommG
     smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [mono]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, qW_nsmul]`. Use `congr 1`.
+
+Establish `: (N : ℤ) ^ 2 * qW W (δ k) ν = (((qW W (δ k) ν).toNat * N ^ 2 : ℕ) : ℤ)`. Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg (hν k)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Int.toNat_natCast]`.
+-/
 theorem mono_nsmul {s m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X] {V : Type} [CommRing V]
     (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (ν : Fin s → X) (hν : ∀ k, 0 ≤ qW W (δ k) ν) (N : ℕ) :
     mono W t δ (fun u => N • ν u) = mono W t δ ν ^ (N ^ 2) := by
@@ -36,6 +44,13 @@ theorem mono_nsmul {s m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddC
     ring
   rw [this, Int.toNat_natCast]
 
+/- English proof (translation)
+Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (R := V) (M := V ⧸ I) (maximalIdeal V) (IsLocalRing.maximalIdeal_le_jacobson ⊥)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hx : Ideal.Quotient.mk I x ∈ ⨅ i : ℕ, maximalIdeal V ^ i • (⊤ : Submodule V (V ⧸ I))`. Rewrite using `[Submodule.mem_iInf]`. Introduce `j`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (h j)`. Establish `: Ideal.Quotient.mk I (a + b) = a • Ideal.Quotient.mk I 1`. Rewrite using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 hb, add_zero, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, map_one, _root_.mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul ha Submodule.mem_top`.
+
+Rewrite `hx` using `[hK]`. Conclude with `(Submodule.mem_bot _).1 hx`.
+-/
 theorem mem_of_forall_mem_pow_sup {V : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V] (I : Ideal V) (x : V)
     (h : ∀ j : ℕ, x ∈ maximalIdeal V ^ j ⊔ I) : x ∈ I := by
   have hK := Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (R := V) (M := V ⧸ I) (maximalIdeal V)
@@ -53,6 +68,23 @@ theorem mem_of_forall_mem_pow_sup {V : Type} [CommRing V] [IsLocalRing V] [IsNoe
   rw [hK] at hx
   exact (Submodule.mem_bot _).1 hx
 
+/- English proof (translation)
+Set `P : (Fin m → Bool) → V` to `fun p => ∏ k, t k ^ (if p k then 1 else 0)`. Set `pat : Ix → Fin m → Bool` to `fun ν k => decide (0 < a ν k)`. Establish `hdvd : ∀ ν, P (pat ν) ∣ ∏ k, t k ^ a ν k` using `fun ν => Finset.prod_dvd_prod_of_dvd _ _ fun k _ => pow_dvd_pow _ (by`. Apply the tactic sequence `by_cases h : 0 < a ν k <;> simp [pat, h] <;> omega)`. Establish `hP : ∀ p, ∃ n, (∃ ν ∈ Z, pat ν = p) → P p ^ n ∈ J`.
+
+Introduce `p`. Distinguish the cases in `hp : ∃ ν ∈ Z, pat ν = p`. Take `⟨ν, hν, rfl⟩` from `hp`. Establish `hK : (∏ k, t k ^ a ν k) ∣ P (pat ν) ^ (∑ k, a ν k)`. Simplify using `only [P]`.
+
+Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_dvd_prod_of_dvd _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `pow_dvd_pow _ ?_` and prove the remaining obligations. Distinguish the cases in `h : 0 < a ν k`.
+
+Simplify using `only [pat, h, decide_true, if_true, Nat.one_mul]`. Conclude with `Finset.single_le_sum (f := a ν) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Simplify using `only [pat, h, decide_false]`. Simplify using `only [Bool.false_eq_true, if_false, Nat.zero_mul]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c, hc⟩` from `hK`. Establish `h1 : P (pat ν) ^ (∑ k, a ν k) ∈ J.radical`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (hrad ν hν)`. Take `⟨n, hn⟩` from `Ideal.mem_radical_of_pow_mem h1`.
+
+Conclude with `⟨n, fun _ => hn⟩`. Conclude with `⟨0, fun h => (hp h).elim⟩`. Use `choose nP hnP using hP`. Use `⟨(Finset.univ.sup nP) * e, fun ν hν M hM => ?_⟩` and prove the remaining obligations. Establish `hle : nP (pat ν) * e ≤ M` using `le_trans (Nat.mul_le_mul_right _ (Finset.le_sup (f := nP) (Finset.mem_univ _))) hM`.
+
+Establish `h1 : P (pat ν) ^ (nP (pat ν) * e) ∈ J ^ e`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_mem_pow (hnP _ ⟨ν, hν, rfl⟩) e`. Establish `h2 : P (pat ν) ^ (nP (pat ν) * e) ∣ (∏ k, t k ^ a ν k) ^ M` using `(pow_dvd_pow _ hle).trans (pow_dvd_pow_of_dvd (hdvd ν) M)`. Take `⟨c, hc⟩` from `h2`.
+
+Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ h1`.
+-/
 theorem pow_mem_of_radical {V : Type} [CommRing V] (J : Ideal V) {m : ℕ} (t : Fin m → V) {Ix : Type}
     (a : Ix → Fin m → ℕ) (Z : Set Ix) (hrad : ∀ ν ∈ Z, (∏ k, t k ^ a ν k) ∈ J.radical) (e : ℕ) :
     ∃ n, ∀ ν ∈ Z, ∀ M, n ≤ M → (∏ k, t k ^ a ν k) ^ M ∈ J ^ e := by
@@ -99,6 +131,9 @@ end GlobalTheory.Poinc.Sep.UnitZero
 
 namespace GlobalTheory.Poinc.Sep.UnitZero
 
+/- English proof (translation)
+Take `⟨gam, -, -, -, hmu⟩` from `h`. Introduce `i`. Take `⟨w, hw⟩` from `hmu i`. Conclude with `⟨w, by simpa using hw⟩`.
+-/
 theorem mem_orbit_zero {O : Type} [CommRing O] {X₀ X : Type} [AddCommGroup X₀] [Module O X₀] [AddCommGroup X]
     [Module O X] {N₁ N : ℕ} {k : X₀ →ₗ[ℤ] X} {Ix : Type} {mu : Ix → X} (h : mu ∈ orbit O N₁ N k (0 : Ix → X₀)) :
     ∀ i, ∃ w, mu i = N • w := by
@@ -107,6 +142,9 @@ theorem mem_orbit_zero {O : Type} [CommRing O] {X₀ X : Type} [AddCommGroup X�
   obtain ⟨w, hw⟩ := hmu i
   exact ⟨w, by simpa using hw⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearMap.id, fun c x => ⟨0, by simp⟩, by simp, fun x => ⟨0, by simp⟩, fun i => ⟨0, by simp⟩⟩`.
+-/
 theorem zero_mem_orbit {O : Type} [CommRing O] {X₀ X : Type} [AddCommGroup X₀] [Module O X₀] [AddCommGroup X]
     [Module O X] {N₁ N : ℕ} {k : X₀ →ₗ[ℤ] X} {Ix : Type} : (0 : Ix → X) ∈ orbit O N₁ N k (0 : Ix → X₀) :=
   ⟨LinearMap.id, fun c x => ⟨0, by simp⟩, by simp, fun x => ⟨0, by simp⟩, fun i => ⟨0, by simp⟩⟩
@@ -115,6 +153,47 @@ end GlobalTheory.Poinc.Sep.UnitZero
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Introduce `O _ bar q s W A _ _ Φ N₁ h3 hEx hLam hFour huniq c₀ e`. Break down `isEmpty_or_nonempty Φ.Y with hY | ⟨⟨y₀⟩⟩` into its components or cases. Conclude with `⟨0, fun y => (IsEmpty.false y).elim⟩`. Take `⟨cW, hcW, hqW⟩` from `QWDom.qW_ge s W Φ.posW`. Take `⟨C, hC⟩` from `hLam`.
+
+Establish `hnn : ∀ y (k : Fin (Φ.m y)) (ν : Fin s → Φ.X y), 0 ≤ qW W (Φ.δ y k) ν` using `fun y k ν => GlobalTheory.Poinc.qW_nonneg Φ.posW (Φ.bal y k).1 (Φ.nonneg y k) ν`. Establish `hspec : ∃ n : ℕ, ∀ y, Φ.m y ≠ 1 → ∀ ν : Fin s → Φ.X y, ν ≠ 0 → ∀ M, n ≤ M → mono W (Φ.t y) (Φ.δ y) ν ^ M ∈ (maximalIdeal A ^ e).map (Φ.ev y)`. Distinguish the cases in `h : ∃ y₁, Φ.m y₁ ≠ 1`. Take `⟨y₁, hy₁⟩` from `h`. Take `⟨n, hn⟩` from `UnitZero.pow_mem_of_radical ((maximalIdeal A).map (Φ.ev y₁)) (Φ.t y₁) (fun ν k => (qW W (Φ.δ y₁ k) ν).toNat) {ν | ν ≠ 0} (fun ν hν => GlobalTheory.T.fourierMonomial_mem_radical_extended_maximalIdeal O bar q s W A Φ N₁ h3 hEx y₁ ν hν) e`.
+
+Use `⟨n, fun y hy => ?_⟩` and prove the remaining obligations. Take `rfl` from `huniq y y₁ hy hy₁`. Introduce `ν hν M hM`. Rewrite using `[Ideal.map_pow]`. Conclude with `hn ν hν M hM`.
+
+Conclude with `⟨0, fun y hy => (h ⟨y, hy⟩).elim⟩`. Take `⟨n, hn⟩` from `hspec`. Take `⟨N, hN₀, -, k, -, -, hF⟩` from `hFour y₀ (n + ⌈((e * C : ℕ) : ℝ) / cW⌉₊ + 1)`. Take `⟨f, hf⟩` from `hF 1 0 (fun _ => c₀) e`. Use `⟨f, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hN2 : N ≤ N ^ 2` using `Nat.le_self_pow two_ne_zero N`. Establish `hNc : ((e * C : ℕ) : ℝ) ≤ (N : ℝ) ^ 2 * cW`. Establish `h1 : ((e * C : ℕ) : ℝ) / cW ≤ (N : ℝ) ^ 2`. Use `(Nat.le_ceil _).trans ?_` and prove the remaining obligations. Conclude with `(show ⌈((e * C : ℕ) : ℝ) / cW⌉₊ ≤ N ^ 2 by omega)` after adjusting the coercions.
+
+Rewrite `h1` using `[div_le_iff₀ hcW]`. Then use the resulting hypothesis. Establish `hmono : ∀ ν : Fin s → Φ.X y, ν ≠ 0 → mono W (Φ.t y) (Φ.δ y) (fun v => N • ν v) ∈ (maximalIdeal A ^ e).map (Φ.ev y)`. Introduce `ν hν`. Distinguish the cases in `hm : Φ.m y = 1`. Take `⟨v, hv⟩` from `Function.ne_iff.1 hν`.
+
+Take `⟨i, hi⟩` from `Φ.pos y (ν v) hv`. Take `⟨h, hh, hdiv⟩` from `hC y hm i (ν v) hv`. Establish `hexp : e * (C * (Φ.δ y i (ν v) (ν v)).toNat) ≤ (qW W (Φ.δ y i) (fun u => N • ν u)).toNat`. Establish `hq` using `hqW (Φ.X y) (Φ.δ y i) (Φ.bal y i).1 (Φ.nonneg y i) ν`. Establish `hsum : Φ.δ y i (ν v) (ν v) ≤ ∑ u, Φ.δ y i (ν u) (ν u)` using `Finset.single_le_sum (f := fun u => Φ.δ y i (ν u) (ν u)) (fun u _ => Φ.nonneg y i _) (Finset.mem_univ v)`.
+
+Establish `hsumR : ((Φ.δ y i (ν v) (ν v) : ℤ) : ℝ) ≤ ((∑ u, Φ.δ y i (ν u) (ν u) : ℤ) : ℝ)` using `by exact_mod_cast hsum`. Establish `hD0 : (0 : ℝ) ≤ ((Φ.δ y i (ν v) (ν v) : ℤ) : ℝ)` using `by exact_mod_cast hi.le`. Establish `hR : ((e * C : ℕ) : ℝ) * ((Φ.δ y i (ν v) (ν v) : ℤ) : ℝ) ≤ (N : ℝ) ^ 2 * (qW W (Φ.δ y i) ν : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hZ : ((e * C : ℕ) : ℤ) * Φ.δ y i (ν v) (ν v) ≤ (N : ℤ) ^ 2 * qW W (Φ.δ y i) ν` using `by exact_mod_cast hR`.
+
+Establish `hpos : 0 ≤ (N : ℤ) ^ 2 * qW W (Φ.δ y i) ν` using `mul_nonneg (by positivity) (hnn y i ν)`. Rewrite using `[UnitZero.qW_nsmul, ← Nat.cast_le (α := ℤ), Int.toNat_of_nonneg hpos]`. Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg hi.le]`. Move the coercions through the operations in `at hZ`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Φ.ev y (h ^ e) ∈ (maximalIdeal A ^ e).map (Φ.ev y)` using `Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow hh e)`. Establish `h2 : Φ.ev y (h ^ e) ∣ mono W (Φ.t y) (Φ.δ y) (fun u => N • ν u)`. Rewrite using `[map_pow]`. Use `(pow_dvd_pow_of_dvd hdiv e).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul]`. Use `(pow_dvd_pow _ ((Nat.mul_comm _ _).le.trans hexp)).trans ?_` and prove the remaining obligations. Unfold `mono`. Conclude with `Finset.dvd_prod_of_mem (fun k => Φ.t y k ^ (qW W (Φ.δ y k) (fun u => N • ν u)).toNat) (Finset.mem_univ i)`. Take `⟨c, hc⟩` from `h2`.
+
+Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ h1`. Rewrite using `[UnitZero.mono_nsmul W (Φ.t y) (Φ.δ y) ν (fun k => hnn y k ν) N]`. Conclude with `hn y hm ν hν _ (le_trans (by omega) hN2)`. Establish `hterm : ∀ mu ∈ orbit O N₁ N (k y) (0 : Fin 1 × Fin s → Φ.X y₀), mu ≠ 0 → (∏ i : Fin 1, Φ.u y (fun v => mu (i, v)) c₀ * mono W (Φ.t y) (Φ.δ y) (fun v => mu (i, v))) ∈ (maximalIdeal A ^ e).map (Φ.ev y)`.
+
+Introduce `mu hmu hmu0`. Use `choose w hw using UnitZero.mem_orbit_zero hmu`. Establish `hν : (fun v => w (0, v)) ≠ 0`. Introduce `h0`. Apply `hmu0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `⟨i, v⟩`. Establish `hi0 : i = 0` using `Subsingleton.elim _ _`. Substitute `hi0` using the available equality. Rewrite using `[hw, Pi.zero_apply]`. Use `congrFun h0 v` as an intermediate fact.
+
+Simplify using `only [Pi.zero_apply] at this`. Rewrite using `[this, smul_zero]`. Rewrite using `[Fin.prod_univ_one]`. Establish `: (fun v => mu (0, v)) = fun v => N • w (0, v)` using `funext fun v => hw _`. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (hmono _ hν)`. Establish `hmem : ∀ j : ℕ, Φ.ev y f - Φ.u y 0 c₀ ∈ maximalIdeal (Φ.V y) ^ j ⊔ (maximalIdeal A ^ e).map (Φ.ev y)`. Introduce `j`. Take `⟨S, hS, htail, hap⟩` from `hf y (j + 1)`. Establish `h0 : (0 : Fin 1 × Fin s → Φ.X y) ∈ S`.
+
+Assume the negation of the conclusion as `h0`. Use `htail 0 UnitZero.zero_mem_orbit h0` as an intermediate fact. Simplify using `only [lin, qW, Pi.zero_apply, map_zero, LinearMap.zero_apply, mul_zero, Finset.sum_const_zero] at this`. Use linear arithmetic over natural numbers and integers. Rewrite `hap` using `[← Finset.add_sum_erase S _ h0]`.
+
+Establish `hz : (∏ i : Fin 1, Φ.u y (fun v => (0 : Fin 1 × Fin s → Φ.X y) (i, v)) c₀ * mono W (Φ.t y) (Φ.δ y) (fun v => (0 : Fin 1 × Fin s → Φ.X y) (i, v))) = Φ.u y 0 c₀`. Rewrite using `[Fin.prod_univ_one]`. Use `show Φ.u y 0 c₀ * mono W (Φ.t y) (Φ.δ y) 0 = Φ.u y 0 c₀`. Simplify using `[mono, qW]`. Rewrite `hap` using `[hz]`.
+
+Establish `hle : maximalIdeal (Φ.V y) ^ (j + 1) ⊔ (maximalIdeal A ^ e).map (Φ.ev y) ≤ maximalIdeal (Φ.V y) ^ j ⊔ (maximalIdeal A ^ e).map (Φ.ev y)` using `sup_le_sup_right (Ideal.pow_le_pow_right (Nat.le_succ j)) _`. Establish `key` using `Submodule.add_mem _ (hle hap) (Ideal.mem_sup_right (Ideal.sum_mem _ fun mu hmu => hterm mu (hS (Finset.mem_of_mem_erase hmu)) (Finset.ne_of_mem_erase hmu)))`. Use `key using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `haveI : IsNoetherianRing (Φ.V y) := (Φ.cn y).1`.
+
+Conclude with `UnitZero.mem_of_forall_mem_pow_sup _ _ hmem`.
+-/
 theorem coeffZero_approx : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ) (A : Type) [CommRing A] [IsLocalRing A] (Φ : VPre bar q W A) (N₁ : ℕ), 3 ≤ N₁ → Φ.Exact N₁ → Φ.abelian₂ → Φ.Four N₁ → (∀ y y', Φ.m y ≠ 1 → Φ.m y' ≠ 1 → y = y') → ∀ (c₀ : Φ.Q) (e : ℕ), ∃ a : A, ∀ y, Φ.ev y a - Φ.u y 0 c₀ ∈ (maximalIdeal A ^ e).map (Φ.ev y) := by
   intro O _ bar q s W A _ _ Φ N₁ h3 hEx hLam hFour huniq c₀ e
   classical

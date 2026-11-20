@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K _ M a ha hM`. Establish `hev : ∀ i, Module.End.HasEigenvalue (Matrix.toLin' M) (a i)`. Introduce `i`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hM, Polynomial.IsRoot.def, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+
+Use `choose v hv using fun i => (hev i).exists_hasEigenvector`. Establish `hli : LinearIndependent K v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' M) a ha v hv`. Set `P : Matrix (Fin 4) (Fin 4) K` to `Matrix.of fun r c => v c r`. Establish `hP : IsUnit P` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`.
+
+Establish `hMP : M * P = P * Matrix.diagonal a`. Use extensionality with `r c`. Establish `h` using `congrFun (hv c).apply_eq_smul r`. Rewrite `h` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal, mul_comm]`.
+
+Conclude with `h`. Use `⟨P, P⁻¹, Matrix.mul_nonsing_inv P hdet, Matrix.nonsing_inv_mul P hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hMP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul P hdet, Matrix.one_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh2.diagz :
     ∀ {K : Type} [inst : Field K]
     (M : Matrix (Fin (4 : ℕ)) (Fin (4 : ℕ)) K) (a : Fin (4 : ℕ) → K),

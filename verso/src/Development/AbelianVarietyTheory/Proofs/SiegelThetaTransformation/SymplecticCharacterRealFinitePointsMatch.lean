@@ -18,6 +18,9 @@ namespace GlobalTheory.FormMatch
 
 open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_comm`.
+-/
 theorem sum_four_eq_trace {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (P : Matrix (Fin n) (Fin n) A)
     (Q : Matrix (Fin m) (Fin m) A) (x y : Matrix (Fin m) (Fin n) A) :
     ∑ a, ∑ b, ∑ c, ∑ d, P a b * σ (y c b) * Q c d * x d a = (P * (y.map σ)ᵀ * Q * x).trace := by
@@ -28,6 +31,13 @@ theorem sum_four_eq_trace {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (
   conv_rhs => rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_comm
 
+/- English proof (translation)
+Substitute `hP hP'` using the available equality. Rewrite using `[sum_four_eq_trace, sum_four_eq_trace]`. Establish `hk1 : (k.map σ)ᵀ * k = 1` using `by simpa only [Matrix.mul_one] using hk`. Establish `hk2 : k * (k.map σ)ᵀ = 1` using `mul_eq_one_comm.mp hk1`. Establish `hg' : ∀ R : Matrix (Fin m) (Fin n) A, (g.map σ)ᵀ * (Q * (g * R)) = Q * R`.
+
+Introduce `R`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.one_mul, Matrix.mul_assoc, hg']`. Use `conv_lhs => rw [Matrix.trace_mul_comm]`.
+
+Simplify using `only [Matrix.mul_assoc, hk2, Matrix.mul_one]`.
+-/
 theorem sum_unitary {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (Q g : Matrix (Fin m) (Fin m) A)
     (P P' k : Matrix (Fin n) (Fin n) A) (hP : P = 1) (hP' : P' = 1) (hg : (g.map σ)ᵀ * Q * g = Q)
     (hk : (k.map σ)ᵀ * P' * k = P') (x y : Matrix (Fin m) (Fin n) A) :
@@ -45,6 +55,11 @@ theorem sum_unitary {A : Type} [CommRing A] {m n : ℕ} (σ : A →+* A) (Q g : 
   conv_lhs => rw [Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc, hk2, Matrix.mul_one]
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_single a (fun b hb => by simp [Matrix.one_apply_ne (Ne.symm hb)])]`. Simplify using `only [Matrix.one_apply_eq, one_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_one_four {A : Type} [CommRing A] {m n : ℕ} (u : Fin m → Fin n → A) (Q : Fin m → Fin m → A)
     (x : Fin m → Fin n → A) :
     ∑ a, ∑ b, ∑ c, ∑ d, (1 : Matrix (Fin n) (Fin n) A) a b * u c b * Q c d * x d a =
@@ -58,6 +73,13 @@ theorem sum_one_four {A : Type} [CommRing A] {m n : ℕ} (u : Fin m → Fin n �
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hinv : ((HSpace.gram S)⁻¹).map (incA D) = 1`. Rewrite using `[hS, Matrix.inv_eq_left_inv (Matrix.mul_one 1), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `key` using `sum_unitary (cA D) ((HSpace.gram T).map (incA D)) (Formalism.L2.Theta.mt T g) (((HSpace.gram S)⁻¹).map (incA D)) 1 (Formalism.L2.Theta.mt S h⁻¹) hinv rfl ?hg ?hk w w'`. Unfold `hO actO`. Simplify `key` using `only [Matrix.map_apply]`.
+
+Establish `hu` using `g.2`. Conclude with `hu`. Establish `hu : ((Formalism.L2.Theta.mt S h⁻¹).map (cA D))ᵀ * (HSpace.gram S).map (incA D) * Formalism.L2.Theta.mt S h⁻¹ = (HSpace.gram S).map (incA D)` using `(h⁻¹).2`. Establish `h1 : (HSpace.gram S).map (incA D) = 1`. Rewrite using `[hS]`.
+
+Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `hu` using `[h1]`. Conclude with `hu`.
+-/
 theorem hO_actO (hS : S.gram = 1) (h : GA D S) (g : GA D T) (w w' : WO S T) :
     hO S T (actO S T h g w) (actO S T h g w') = hO S T w w' := by
   have hinv : ((HSpace.gram S)⁻¹).map (incA D) = 1 := by
@@ -76,6 +98,11 @@ theorem hO_actO (hS : S.gram = 1) (h : GA D S) (g : GA D T) (w w' : WO S T) :
     rw [h1] at hu
     exact hu
 
+/- English proof (translation)
+Unfold `GlobalTheory.LatVac.hRat ReciprocityTheory.ChartRestriction.G.FD.herm`. Rewrite using `[C.m.gS, C.m.gT, Matrix.inv_eq_left_inv (Matrix.mul_one 1)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_single k (fun b hb => by simp [Matrix.one_apply_ne (Ne.symm hb)])]`. Simplify using `only [Matrix.one_apply_eq, one_mul, Matrix.transpose_apply]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hs : star (y' k c) = ReciprocityTheory.ChartRestriction.G.FD.cc (y' k c)` using `rfl`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hRat_eq (C : Ctx S T) (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ = ∑ k, herm C.X.Gm (y k) (y' k) := by
   unfold GlobalTheory.LatVac.hRat ReciprocityTheory.ChartRestriction.G.FD.herm
@@ -89,6 +116,9 @@ theorem hRat_eq (C : Ctx S T) (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E)
   rw [hs]
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.ThFr.EF_def]`. Rewrite using `[← map_sum, ← Finset.mul_sum, ← hRat_eq C, C.m.ka, Algebra.trace_trace, show -(2 * D.host.xi0 / 2) * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ = -(D.host.xi0 * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ) by ring, map_neg]`.
+-/
 theorem sum_EF (C : Ctx S T) (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     ∑ k, EF C.X (y k) (y' k) = -Algebra.trace ℚ D.host.F
       (Algebra.trace D.host.F D.host.E (D.host.xi0 * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ)) := by
@@ -97,6 +127,9 @@ theorem sum_EF (C : Ctx S T) (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) 
     show -(2 * D.host.xi0 / 2) * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ = -(D.host.xi0 * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ) by ring,
     map_neg]
 
+/- English proof (translation)
+Rewrite using `[← (GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1 (ratW T S M) (ratW T S N)]`. Establish `h2 : symplOH S T (ratW T S M) (ratW T S N) = algebraMap D.host.F (AF D.host.F) (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * GlobalTheory.LatVac.hRat S T M N))` using `GlobalTheory.OrientedFormLaws.symplOH_rat M N`. Rewrite using `[h2, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symplO_rat (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplO S T (ratW T S M) (ratW T S N) = algebraMap D.host.F (AF D.host.F)
       (Algebra.trace D.host.F D.host.E (D.host.xi0 * GlobalTheory.LatVac.hRat S T M N)) := by
@@ -108,6 +141,9 @@ theorem symplO_rat (M N : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   congr 1
   ring
 
+/- English proof (translation)
+Establish `key : ∀ k, conj (-ξ) * ∑ a, ∑ b, conj (x a k) * conj (Q b a) * conj (conj (y b k)) = conj (-ξ * ∑ a, ∑ b, x a k * Q b a * conj (y b k))`. Introduce `k`. Simplify using `only [map_mul, map_sum, map_neg]`. Simplify using `only [key, Complex.conj_re, neg_mul, Complex.neg_re, mul_neg, Finset.sum_neg_distrib, neg_inj]`. Rewrite using `[← Finset.mul_sum, ← Complex.re_sum, ← Finset.mul_sum]`.
+-/
 theorem re_match {m n : ℕ} (ξ : ℂ) (Q : Fin m → Fin m → ℂ) (x y : Fin m → Fin n → ℂ) :
     ∑ k, 2 * (conj (-ξ) * ∑ a, ∑ b, conj (x a k) * conj (Q b a) * conj (conj (y b k))).re =
       -(2 * (ξ * ∑ k, ∑ d, ∑ c, x d k * Q c d * conj (y c k)).re) := by
@@ -118,6 +154,15 @@ theorem re_match {m n : ℕ} (ξ : ℂ) (Q : Fin m → Fin m → ℂ) (x y : Fin
   simp only [key, Complex.conj_re, neg_mul, Complex.neg_re, mul_neg, Finset.sum_neg_distrib, neg_inj]
   rw [← Finset.mul_sum, ← Complex.re_sum, ← Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[omO_apply, ← Finset.sum_neg_distrib]`. Unfold `EFR Ctx.realPt compAt`. Rewrite using `[← C.m.e.sum_comp]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hS1 : gramAt D S τ = 1`.
+
+Unfold `gramAt`. Rewrite using `[C.m.gS]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hom : -omAt S T τ (piW C.θ T S w τ) (piW C.θ T S w' τ) = ∑ k, 2 * (conj (-(tauE D τ D.host.xi0)) * ∑ a, ∑ b, conj (piW C.θ T S w τ a k) * conj (gramAt D T τ b a) * conj (conj (piW C.θ T S w' τ b k))).re`. Rewrite using `[re_match (tauE D τ D.host.xi0) (gramAt D T τ) (piW C.θ T S w τ) (piW C.θ T S w' τ), neg_inj]`.
+
+Unfold `omAt hAt`. Establish `h4` using `GlobalTheory.OrientedChar.trace_four ((gramAt D S τ)⁻¹) (piW C.θ T S w' τ) (gramAt D T τ) (piW C.θ T S w τ)`. Establish `h5` using `sum_one_four (fun c b => starRingEnd ℂ (piW C.θ T S w' τ c b)) (gramAt D T τ) (piW C.θ T S w τ)`. Rewrite using `[h4, hS1, Matrix.inv_eq_left_inv (Matrix.mul_one 1)]`. Conclude with `congrArg (fun s => 2 * (tauE D τ D.host.xi0 * s).re) h5`.
+
+Rewrite using `[hom]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hx : -(2 * D.host.xi0 / 2) = -D.host.xi0` using `by ring`. Simplify using `only [Equiv.symm_apply_apply, ReciprocityTheory.ChartRestriction.G.FD.hermC, C.m.e_emb τ, NumberField.ComplexEmbedding.conjugate_coe_eq, C.m.ka, C.m.gT, Matrix.transpose_apply, Matrix.map_apply, hx, map_neg]`. Both sides reduce to the same expression.
+-/
 theorem EFR_realPt (C : Ctx S T) (w w' : WO S T) :
     EFR C.X (C.realPt w) (C.realPt w') = -omO S T (piW C.θ T S w) (piW C.θ T S w') := by
   rw [omO_apply, ← Finset.sum_neg_distrib]
@@ -145,8 +190,20 @@ theorem EFR_realPt (C : Ctx S T) (w w' : WO S T) :
     hx, map_neg]
   rfl
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1 x y).symm`.
+-/
 theorem symplO_eq_add (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := ((GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1 x y).symm
 
+/- English proof (translation)
+Establish `hf : ∀ z : Matrix (Fin S.rank) (Fin T.rank) D.host.E, finW S T z = GlobalTheory.LatVac.finTens 1 zᵀ` using `fun z => rfl`. Establish `h` using `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1 (finW S T y) (finW S T y')`. Rewrite `h` using `[hf, hf, GlobalTheory.LatVac.symplO_finTens]`. Simplify using `only [one_mul] at h`. Rewrite using `[hf, hf]`.
+
+Establish `key : ∀ X Y : AF D.host.F, X + X = Y + Y → X = Y`. Introduce `X Y hXY`. Establish `h2 : (2 : D.host.F) • X = (2 : D.host.F) • Y` using `by rw [two_smul, two_smul, hXY]`. Establish `h3` using `congrArg (fun Z => (2 : D.host.F)⁻¹ • Z) h2`. Simplify `h3` using `only [smul_smul, inv_mul_cancel₀ (two_ne_zero : (2 : D.host.F) ≠ 0), one_smul]`.
+
+Establish `hp : ∀ u v : Af D.host.F, pairA D.host.F 0 u + pairA D.host.F 0 v = pairA D.host.F 0 (u + v)`. Introduce `u v`. Unfold `pairA`. Conclude with `Prod.ext (add_zero _) rfl`. Apply `key` to reduce the goal to its premises.
+
+Rewrite using `[h, hp, ← map_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symplOH_finW (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
     symplOH S T (finW S T y) (finW S T y') = pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F)
       (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * GlobalTheory.LatVac.hRat S T yᵀ y'ᵀ))) := by
@@ -170,6 +227,27 @@ theorem symplOH_finW (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) :
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `D S T C`. Establish `hadd` using `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `halt` using `GlobalTheory.SymplecticOrthogonalSesquilinear.symplO_alt D S T`. Establish `htr : ∀ t : D.host.F, Algebra.trace ℚ D.host.F (1 / 2 * t) = 1 / 2 * Algebra.trace ℚ D.host.F t`. Introduce `t`.
+
+Rewrite using `[show (1 / 2 : D.host.F) = algebraMap ℚ D.host.F (1 / 2) by simp, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Use `⟨?_, ?_, ?_, ?_, halt.2.2.2.1, fun w w' w'' => ⟨halt.1 w w' w'', halt.2.2.1 w w'⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `y y' t ht`. Rewrite `ht` using `[symplO_rat]`. Establish `: Nontrivial (AF D.host.F)`.
+
+Unfold `AF AdeleRing`. Use `infer_instance`. Rewrite using `[sum_EF C, (algebraMap D.host.F (AF D.host.F)).injective ht]`. Introduce `w w' hw _`. Rewrite using `[GlobalTheory.OrientedChar.char_symplOH D C.θ C.ψ C.inf C.std S T w w' (Or.inl hw), EFR_realPt C]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `y y'`. Rewrite using `[symplOH_finW, GlobalTheory.StdRat.stdChar_fin_rat D C.ψ C.std, sum_EF C, htr]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `w u hw hu`. Establish `h0 : symplOH S T w u = 0` using `hadd.2.2.2.2.2.2.2.2 w u hw hu`.
+
+Establish `h1 : symplO S T w u = 0` using `by rw [← hadd.2.2.2.1 w u, h0, add_zero]`. Conclude with `⟨h1, by rw [halt.2.2.1 u w, h1, neg_zero]⟩`. Introduce `h g w w'`. Unfold `symplO`. Rewrite using `[hO_actO C.m.gS]`.
+
+Introduce `y`. Use `⟨?_, finRat_inf S T yᵀ, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `σ k a`. Unfold `Ctx.realPt compAt`. Take `⟨τ, rfl⟩` from `C.m.e.surjective σ`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Establish `e` using `congrFun (congrFun (congrFun (piW_ratW C.inf S T yᵀ) τ) a) k`. Simplify using `only [Matrix.map_apply, embR, C.m.e_emb τ, NumberField.ComplexEmbedding.conjugate_coe_eq]`. Use `congr 1`. Use `show (ratW T S yᵀ - finW S T y).map (finPart D) = 0`.
+
+Establish `e` using `finRat_fin S T yᵀ`. Use extensionality with `i j`. Establish `e2` using `congrFun (congrFun e i) j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub, Matrix.zero_apply] at e2 ⊢`. Rewrite using `[← e2]`.
+
+Conclude with `sub_self _`. Introduce `y'`. Use extensionality with `a k`. Simplify using `only [finW, Matrix.of_apply, Matrix.add_apply, TensorProduct.tmul_add]`.
+-/
 theorem forms_match : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), (∀ (y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E) (t : D.host.F), symplO S T (ratW T S yᵀ) (ratW T S y'ᵀ) = algebraMap D.host.F (AF D.host.F) t → ∑ k, EF C.X (y k) (y' k) = -Algebra.trace ℚ D.host.F t) ∧ (∀ w w' : WO S T, IsRealPt w → IsRealPt w' → C.ψ (symplOH S T w w') = cexp (π * I * (EFR C.X (C.realPt w) (C.realPt w') : ℝ))) ∧ (∀ y y' : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.ψ (symplOH S T (finW S T y) (finW S T y')) = cexp (-(π * I * ((∑ k, EF C.X (y k) (y' k) : ℚ) : ℂ)))) ∧ (∀ w u : WO S T, IsRealPt w → IsFinPt u → symplO S T w u = 0 ∧ symplO S T u w = 0) ∧ (∀ w : WO S T, symplO S T w w = 0) ∧ (∀ w w' w'' : WO S T, symplO S T (w + w') w'' = symplO S T w w'' + symplO S T w' w'' ∧ symplO S T w w' = -symplO S T w' w) ∧ (∀ (h : GA D S) (g : GA D T) (w w' : WO S T), symplO S T (actO S T h g w) (actO S T h g w') = symplO S T w w') ∧ ∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, C.realPt (ratW T S yᵀ) = embR C.X y ∧ IsFinPt (finW S T y) ∧ IsRealPt (ratW T S yᵀ - finW S T y) ∧ ∀ y', finW S T (y + y') = finW S T y + finW S T y' := by
   intro D S T C
   have hadd := GlobalTheory.OrientedFormLaws.symplOH_laws D S T

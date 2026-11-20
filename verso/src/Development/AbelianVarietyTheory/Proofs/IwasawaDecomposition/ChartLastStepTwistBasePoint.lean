@@ -30,6 +30,11 @@ section Rho
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1 : prV (E` using `E) v (x.1 i j - x'.1 i j) = 0 := by`. Use `congrArg (fun g : GL (Fin n) _ => g.1 i j) h` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+
+Establish `h2` using `((GlobalTheory.T.placeProjection_zero_integral_iff_components_above F E v _).1.1 h1) P hv`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `h2`.
+-/
 theorem localComponent_congr (P : HeightOneSpectrum (𝓞 E)) {v : HeightOneSpectrum (𝓞 F)} (hv : P.under (𝓞 F) = v) {x x' : GL (Fin n) (AfE F E)}
     (h : bc (prV (E := E) v) x = bc (prV (E := E) v) x') : rhoP F P x = rhoP F P x' := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -41,6 +46,11 @@ theorem localComponent_congr (P : HeightOneSpectrum (𝓞 E)) {v : HeightOneSpec
   rw [map_sub, sub_eq_zero] at h2
   exact h2
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1 : prV (E` using `E) v (x.1 i j - (1 : Matrix (Fin n) (Fin n) (AfE F E)) i j) = 0 := by`. Use `(GlobalTheory.T.placeProjection_zero_integral_iff_components_above F E v _).1.2 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[map_sub, h w hw, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Use `h1.trans ?_` and prove the remaining obligations. Use `show _ = (1 : Matrix (Fin n) (Fin n) _) i j`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem bc_prV_eq_one {v : HeightOneSpectrum (𝓞 F)} {x : GL (Fin n) (AfE F E)}
     (h : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ i j : Fin n, adAt F w (x.1 i j) = if i = j then 1 else 0) :
     bc (prV (E := E) v) x = 1 := by
@@ -55,12 +65,18 @@ theorem bc_prV_eq_one {v : HeightOneSpectrum (𝓞 F)} {x : GL (Fin n) (AfE F E)
   rw [Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `e : rhoP F P (k * t)⁻¹ = rhoP F P k⁻¹`. Rewrite using `[_root_.mul_inv_rev, map_mul, map_inv (rhoP F P) t, ht, inv_one, one_mul]`. Conclude with `congrArg (fun g : GL (Fin n) (P.adicCompletion E) => g.1 r j) e`.
+-/
 theorem localComponent_mul_inv_entry (P : HeightOneSpectrum (𝓞 E)) (k t : GL (Fin n) (AfE F E)) (ht : rhoP F P t = 1) (r j : Fin n) :
     adAt F P (((k * t)⁻¹ : GL (Fin n) (AfE F E)).1 r j) = adAt F P (((k)⁻¹ : GL (Fin n) (AfE F E)).1 r j) := by
   have e : rhoP F P (k * t)⁻¹ = rhoP F P k⁻¹ := by
     rw [_root_.mul_inv_rev, map_mul, map_inv (rhoP F P) t, ht, inv_one, one_mul]
   exact congrArg (fun g : GL (Fin n) (P.adicCompletion E) => g.1 r j) e
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => (h i j).trans ?_)` and prove the remaining obligations. Use `show _ = (1 : Matrix _ _ _) i j`. Rewrite using `[Matrix.one_apply]`.
+-/
 theorem localComponent_eq_one (P : HeightOneSpectrum (𝓞 E)) (t : GL (Fin n) (AfE F E)) (h : ∀ i j : Fin n, adAt F P (t.1 i j) = if i = j then 1 else 0) :
     rhoP F P t = 1 := by
   refine Units.ext (Matrix.ext fun i j => (h i j).trans ?_)
@@ -73,6 +89,9 @@ section Chi
 
 variable {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.levelCharacterAtQ_finite_order_and_trivial F E K n Q σ U t Θ d hd N hdN hΘ`.
+-/
 theorem topChi_facts (_hc : CMData F E) (n : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 E))) (σ : K →+* ℂ) (U : Subgroup (GL (Fin n) (AfE F E)))
     (t : GL (Fin n) (AfE F E)) (Θ : LevQFam E K n Q) (d : Q → E) (hd : ∀ P, d P ≠ 0) (N : Q → ℕ)
     (hdN : ∀ P : Q, P.1.valuation E (d P) ≤ WithZero.exp (-(N P : ℤ)))
@@ -91,6 +110,11 @@ open TopCh TwTop Formalism.L2.Herm
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Establish `h : ((I.stp u a B.R.m).rep c).1.2 = ∅`. Establish `h1` using `((I.stp u a B.R.m).rep c).2`. Rewrite `h1` using `[ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) (by omega)]`. Conclude with `h1`. Use function extensionality and compare the values at `P`.
+
+Use extensionality with `z`. Simplify using `[cosetIn, h]`.
+-/
 theorem cosetIn_top (u : B.Word) (a : I.ι) (c : (I.stp u a B.R.m).Cl) : cosetIn ((I.stp u a B.R.m).rep c) = fun _ => ∅ := by
   have h : ((I.stp u a B.R.m).rep c).1.2 = ∅ := by
     have h1 := ((I.stp u a B.R.m).rep c).2
@@ -100,11 +124,17 @@ theorem cosetIn_top (u : B.Word) (a : I.ι) (c : (I.stp u a B.R.m).Cl) : cosetIn
   ext z
   simp [cosetIn, h]
 
+/- English proof (translation)
+The claim follows from `(Idx.eq_top b le_rfl).trans (Idx.eq_top b' le_rfl).symm`.
+-/
 theorem idx_top (u : B.Word) (a : I.ι) (b b' : (I.stp u a B.R.m).β) : b = b' :=
   (Idx.eq_top b le_rfl).trans (Idx.eq_top b' le_rfl).symm
 
 abbrev dTop (a : I.ι) : I.Q a → B.host.E := fun P => ((qOf P.1 : ℕ) : B.host.E) ^ (topDep B.R (I.cst a).M + 1)
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ GlobalTheory.TopStep.qOf_ne_zero`.
+-/
 theorem dTop_ne (a : I.ι) (P : I.Q a) : I.dTop a P ≠ 0 := pow_ne_zero _ GlobalTheory.TopStep.qOf_ne_zero
 
 section Top
@@ -121,6 +151,13 @@ variable (u : B.Word) (a : I.ι) (N : I.Q a → ℕ) (hdN : ∀ P : I.Q a, P.1.v
 
 include hdN hΘ hkU hkQ ht hU in
 
+/- English proof (translation)
+Establish `core` using `GlobalTheory.T.mem_framedLevel_iff_two_adelic_points B.host.F B.host.E B.LL B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) ((I.Tp a).levG B.R.m) ((I.Tp a).levQ B.R.m) (I.dTop a) (I.dTop_ne a) N hdN hΘ U0 k t y x _ q hkU hkQ ht hU h1 h2`. Take `⟨e, he⟩` from `(GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u a).1 c`. Rewrite using `[core]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, θ, hh⟩`.
+
+Take `⟨-, e2, -, e4, e5, -⟩` from `he (e.symm (1, h, θ))`. Simplify using `only [Equiv.apply_symm_apply] at e2 e4`. Conclude with `⟨e.symm (1, h, θ), e2.trans (map_one _), e4.trans hh, e5⟩`. Introduce and unpack `⟨κ, g1, g2, -⟩`. Take `⟨-, e2, -, e4, -, -⟩` from `he κ`.
+
+Establish `hγ : (e κ).1 = 1` using `Subtype.ext ((toGLm B.host.E (B.R.N B.R.m)).injective ((e2.symm.trans g1).trans (map_one (toGLm B.host.E (B.R.N B.R.m)).toMonoidHom).symm))`. Use `⟨(e κ).2.1, (e κ).2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← g2, e4, hγ]`.
+-/
 theorem lev_top (c : (I.stp u a B.R.m).Cl) (y x : GA B (B.R.N B.R.m)) (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u B.R.m)
     (h1 : PtOf (y * (k * t)) ((I.stp u a B.R.m).rep c).1.1) (h2 : PtOf (y * x * (k * t)) q) :
     x ∈ topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a) ↔ ∃ κ : (I.stp u a B.R.m).G c.1, (I.stp u a B.R.m).gam c.1 κ = 1 ∧ ((I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c)).1.1 = q ∧
@@ -142,6 +179,11 @@ theorem lev_top (c : (I.stp u a B.R.m).Cl) (y x : GA B (B.R.N B.R.m)) (q : ChPt 
 
 include hkU hkQ ht hχ in
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u a).1 c`. Take `⟨-, e2, e3, e4, -, -⟩` from `he κ`. Establish `hγ : (e κ).1 = 1` using `Subtype.ext ((toGLm B.host.E (B.R.N B.R.m)).injective ((e2.symm.trans g1).trans (map_one (toGLm B.host.E (B.R.N B.R.m)).toMonoidHom).symm))`. Rewrite `g2` using `[e4, hγ]`. Rewrite using `[e3]`.
+
+Conclude with `GlobalTheory.T.levelFrameCharacter_mul_movedPoint B.host.F B.host.E B.LL B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) ((I.Tp a).levG B.R.m) ((I.Tp a).levQ B.R.m) (I.dTop a) (I.dTop_ne a) N hdN hΘ B.embLL U0 chi0 k t y _ hkU hkQ ht hχ x (e κ).2.1 (e κ).2.2 h1 …`.
+-/
 theorem chr_top (c : (I.stp u a B.R.m).Cl) (y : GA B (B.R.N B.R.m)) (x : topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a)) (κ : (I.stp u a B.R.m).G c.1)
     (h1 : PtOf (y * (k * t)) ((I.stp u a B.R.m).rep c).1.1) (g1 : (I.stp u a B.R.m).gam c.1 κ = 1)
     (g2 : PtOf (y * x.1 * (k * t)) ((I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c)).1.1) :
@@ -156,6 +198,13 @@ theorem chr_top (c : (I.stp u a B.R.m).Cl) (y : GA B (B.R.N B.R.m)) (x : topU U0
 
 include hdN hΘ hkU hkQ ht hU hχ in
 
+/- English proof (translation)
+Take `⟨-, -, -, hne⟩` from `GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u a`. Use `{ key := fun c c' => ⟨fun _ => ⟨idx_top I u a _ _, by rw [cosetIn_top, cosetIn_top]⟩, fun _ => rfl⟩ onto := fun _ => ⟨hne.some, rfl⟩ lb := fun _ x => hlb x k_std := fun _ => hstd k_off := fun _ v h1 h2 _ => hoff v h1 h2 k_T := fun _ => hT pt := hpt lev := fun c x q hq => ?_ chr : …` and prove the remaining obligations. Use `show x ∈ Uc ↔ _`. Rewrite using `[hUc]`. Conclude with `lev_top I u a N hdN hΘ U0 k t hkU hkQ ht hU c (yc c) x q (hpt' c) hq`.
+
+Establish `hx : x.1 ∈ topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a)` using `hUc ▸ x.2`. Establish `e` using `chr_top I u a N hdN hΘ U0 chi0 k t hkU hkQ ht hχ c (yc c) ⟨x.1, hx⟩ κ (hpt' c) g1 g2`. Establish `e'` using `hchi x ⟨x.1, topU_le _ _ _ _ hx⟩ ⟨x.1, hx⟩ rfl rfl`. Use `show ((chi x : ℂˣ) : ℂ) = _`. Rewrite using `[e', e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem reads_top (Lbc : Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)) (Uc : Subgroup (GA B (B.R.N B.R.m))) (chi : Uc →* ℂˣ)
     (yc : (I.stp u a B.R.m).Cl → GA B (B.R.N B.R.m)) (st : ∀ c, (I.stp u a B.R.m).Stab c → GL (Fin (B.R.N B.R.m)) B.host.E)
     (hlb : ∀ x, x ∈ Lbc ↔ x ∈ baseL B (B.R.N B.R.m) (X.piT u))
@@ -192,6 +241,11 @@ theorem reads_top (Lbc : Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host
 
 include hχ hU in
 
+/- English proof (translation)
+Take `⟨m1, hm1, e1⟩` from `GlobalTheory.T.exists_levelFamily_character_exponent ((I.Tp a).levG B.R.m)`. Take `⟨m2, hm2, e2⟩` from `(topChi_facts B.sp.cm (B.R.N B.R.m) (I.Q a) B.embLL U0 t ((I.Tp a).levQ B.R.m) _ (I.dTop_ne a) N hdN hΘ).1 (fun P => topLevAt_root I.Ch I.sel (I.tup a) I.Ps _ B.R.m P)`. Use `⟨m1 * m2, Nat.mul_pos hm1 hm2, fun κ => ?_⟩` and prove the remaining obligations. Establish `hx : κ.1 ∈ topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a)` using `hUc ▸ κ.2`. Establish `hx0 : κ.1 ∈ U0` using `topU_le _ _ _ _ hx`.
+
+Take `⟨z, hz, hze⟩` from `(hU _ (hle hx0)).1 hx0`. Establish `hc` using `hχ ⟨κ.1, hx0⟩ z ⟨(redG B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs z)⁻¹, inv_mem hz⟩ hze (by simp)`. Rewrite using `[hchi κ ⟨κ.1, hx0⟩ ⟨κ.1, hx⟩ rfl rfl, hc, mul_pow, ← map_pow, pow_mul, e1, one_pow, map_one, one_mul, mul_comm m1 m2, pow_mul, e2, one_pow]`.
+-/
 theorem root_top (hle : U0 ≤ UAd B.sp.cm (B.R.N B.R.m)) (Uc : Subgroup (GA B (B.R.N B.R.m))) (chi : Uc →* ℂˣ)
     (hUc : Uc = topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a))
     (hchi : ∀ (x : Uc) (x' : U0) (x'' : topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a)), x.1 = x'.1 → x.1 = x''.1 →
@@ -209,6 +263,9 @@ theorem root_top (hle : U0 ≤ UAd B.sp.cm (B.R.N B.R.m)) (Uc : Subgroup (GA B (
 
 include hdN hΘ hkU hkQ ht hU in
 
+/- English proof (translation)
+Establish `h3 : PtOf (g * (g⁻¹ * y) * (k * t)) p` using `by rwa [mul_inv_cancel_left]`. Use `(GlobalTheory.T.mem_framedLevel_iff_two_adelic_points B.host.F B.host.E B.LL B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) ((I.Tp a).levG B.R.m) ((I.Tp a).levQ B.R.m) (I.dTop a) (I.dTop_ne a) N hdN hΘ U0 k t g _ p p hkU hkQ ht hU h1 h3).2 ⟨1, 1, ?_⟩` and prove the remaining obligations. Conclude with `one_smul _ _`.
+-/
 theorem top_base (p : DecoF B.host.E (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a)) (y g : GA B (B.R.N B.R.m))
     (h1 : PtOf (g * (k * t)) p) (h2 : PtOf (y * (k * t)) p) : g⁻¹ * y ∈ topU U0 t ((I.Tp a).levQ B.R.m) (I.dTop a) := by
   have h3 : PtOf (g * (g⁻¹ * y) * (k * t)) p := by rwa [mul_inv_cancel_left]
@@ -220,6 +277,47 @@ end Top
 
 set_option maxHeartbeats 16000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a Q K hQ hk`. Take `⟨k, hk⟩` from `hk`. Take `⟨hQ0, hf'⟩` from `GlobalTheory.T.twistPrimes_away_level_and_type_primes I hOk`. Establish `hf` using `hf' u a`. Take `⟨hU, hχ, hLb⟩` from `GlobalTheory.T.trueColumn_member_level_read_at_base_point I hOk hPins l Z u a K k hk`.
+
+Establish `hgram` using `((spaces_in_coordinates I hOk hPins l Z).2.2.2 B.R.m le_rfl).1`. Establish `hcrd` using `(((spaces_in_coordinates I hOk hPins l Z).2.2.2 B.R.m le_rfl).2.2 u a).1`. Take `⟨N, hdN, hΘ⟩` from `GlobalTheory.T.lastStep_twist_level_contains_principal_congruence I a`. Take `⟨t, ht, htP, htw⟩` from `GlobalTheory.T.exists_unitaryAdelic_twist_diagonal_at_primes B.host.F B.host.E B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) (fun P hP => (hf P hP).1) (X.piT u) (fun P hP => (hf P hP).2.1)`. Establish `hkstd` using `hk.k_std ()`.
+
+Establish `hkU : k () ∈ UAd B.sp.cm (B.R.N B.R.m)`. Take `⟨p, hp, -⟩` from `hkstd`. Conclude with `hp.uni`. Establish `hnoU : ∀ v, ¬ I.UnderQ I.mu0 v`. Introduce and unpack `v ⟨P, hP, -⟩`.
+
+Rewrite `hP` using `[hQ0]`. Conclude with `absurd hP (Finset.notMem_empty _)`. Establish `hoff : ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E` using `B.host.E) v) (k ()) = 1 := fun v hv => hk.k_off () v hv (hnoU v) (Or.inl rfl)`. Establish `hkQ : ∀ P : I.Q a, rhoP B.host.F P.1 (k ()) = 1` using `fun P => by`. Use `TwTop.localComponent_congr (F := B.host.F) P.1 (v := P.1.under (𝓞 B.host.F)) rfl (x := k ()) (x' := 1) (by` as an intermediate fact.
+
+Rewrite using `[hoff _ (hf P.1 P.2).2.2, map_one])`. Rewrite using `[this, map_one]`. Use `choose g hg using fun c : (I.stp u a B.R.m).Cl => GlobalTheory.T.exists_adelicPoint_decoratedLattice_allTwists I hOk u (B.R.N B.R.m) (extTo I.SQ ((I.stp u a B.R.m).rep c).1.1)`. Establish `hdisj : Disjoint (B.primes X).vGs (I.Q a)` using `Finset.disjoint_right.2 fun P hP => (hf P hP).1.2.1`. Set `y : (I.stp u a B.R.m).Cl → GA B (B.R.N B.R.m)` to `fun c => g c * (k () * t)⁻¹`.
+
+Establish `hy : ∀ c, y c * (k () * t) = g c` using `fun c => inv_mul_cancel_right _ _`. Establish `hpt : ∀ c, IsPtOf B.sp.cm (y c * (k () * t)) ((I.stp u a B.R.m).rep c).1.1` using `fun c => by`. Rewrite using `[hy]`. Conclude with `(hg c).of_extTo (I.Q_subset_SQ a) hdisj`. Take `⟨hG, hcl1, hcl2, hcl3⟩` from `GlobalTheory.T.lastStep_tuple_group_classes_coordinates I u a`.
+
+Establish `hstepOk` using `(l.ch u a).step B.R.m`. Set `gm : ∀ c : {c : (I.stp u a B.R.m).Cl // (fun _ : (I.stp u a B.R.m).Cl => ()) c = ()}, (I.chain l u a).stab B.R.m c.1 →* UF B.host.E (B.R.N B.R.m)` to `fun c => (MonoidHom.fst _ _).comp (Subgroup.subtype _)`. Establish `hgm : ∀ c, Function.Injective (gm c)` using `fun c => (injective_iff_map_eq_one (gm c)).2 fun s hs => Subtype.ext (hstepOk.stab_inj c.1.1 s.1 ((I.stp u a B.R.m).rep c.1) s.2 (by show ufGL B.host.E (B.R.N B.R.m) (gm c s) = 1`. Rewrite using `[hs, map_one]))`. Establish `hgr : ∀ c (γ : UF B.host.E (B.R.N B.R.m)), γ ∈ (gm c).range ↔ ∃ (h : ((I.Tp a).levG B.R.m).grp) (θ : ((I.Tp a).levQ B.R.m).grp), ((γ, h.1, θ.1) : UF B.host.E (B.R.N B.R.m) × GLG B.host.E (B.R.N B.R.m) (B.primes X).vGs × GLQ B.host.E (B.R.N B.R.m) (I.Q a)) • ((I.stp u a B.R.m).rep …`.
+
+Introduce `c γ`. Take `⟨e, he⟩` from `hG c.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Take `⟨e1, -, -, e4, -, -⟩` from `he s.1`.
+
+Establish `e5 : ((I.stp u a B.R.m).act c.1.1 s.1 ((I.stp u a B.R.m).rep c.1)).1.1 = ((I.stp u a B.R.m).rep c.1).1.1` using `congrArg (fun q => q.1.1) s.2`. Establish `e6 : (e s.1).1 = gm c s` using `e1`. Use `⟨(e s.1).2.1, (e s.1).2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← e6]`. Conclude with `e4.symm.trans e5`.
+
+Introduce and unpack `⟨h, θ, hh⟩`. Take `⟨e1, -, -, e4, -, e6⟩` from `he (e.symm (γ, h, θ))`. Simplify using `only [Equiv.apply_symm_apply] at e1 e4`. Conclude with `⟨⟨e.symm (γ, h, θ), e6 (e4.trans hh)⟩, e1.symm⟩`. Establish `hchiQ` using `topChi_facts B.sp.cm (B.R.N B.R.m) (I.Q a) B.embLL K.lev.U t ((I.Tp a).levQ B.R.m) _ (I.dTop_ne a) N hdN hΘ`.
+
+Establish `hunder : ∀ P : HeightOneSpectrum (𝓞 B.host.E), (conjPrime₂ P).under (𝓞 B.host.F) = P.under (𝓞 B.host.F)` using `fun P => (under_eq_iff B.host P _).2 (Or.inr rfl)`. Take `⟨C, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_framed_chart_from_adelic_dictionary B.host.F B.host.E B.LL B.sp.cm (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a) _ (B.T u) _ _ K.lev Q ((I.Tp a).levG B.R.m) ((I.Tp a).levQ B.R.m) (topDep B.R (I.cst a).M + 1) (I.dTop a) (I.dTop_ne a) N hdN hΘ (k …`. Take `⟨P, hP, rfl⟩` from `(hQ v).1 hv`. Conclude with `(hf P hP).2.2) (fun P hP => (hf P hP).1) (fun _ => rfl) hkU hkQ ht hU hLb (fun c => hpt c.1)`. Use the proof step `(fun c c' γ h θ e => Subtype.ext (hcl1 c.1 c'.1 γ h θ e))`.
+
+Use the proof step `(fun p => by`. Take `⟨c, γ, h, θ, e⟩` from `hcl2 p`. Conclude with `⟨⟨c, rfl⟩, γ, h, θ, e⟩)`. Use the proof step `(fun c => (hcrd c.1)) hgm hgr (fun x hx => (hchiQ).2 x hx)`. Establish `hkT` using `hk.k_T ()`.
+
+Establish `hUle : (K.lev.U : Subgroup (GA B (B.R.N B.R.m))) ≤ UAd B.sp.cm (B.R.N B.R.m)` using `fun x hx => by`. Establish `h0` using `((K.lev.U_eq x).1 hx).1`. Rewrite `h0` using `[hgram]`. Conclude with `h0`. Establish `hy5 : ∀ c, (C.y ⟨c, rfl⟩).1 = y c` using `fun c => h5 ⟨c, rfl⟩`.
+
+Establish `hlb : ∀ x, x ∈ (C.lev.Lb : Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E)) ↔ x ∈ baseL B (B.R.N B.R.m) (X.piT u)` using `fun x => by`. Use `hk.lb () x` as an intermediate fact. Rewrite `this` using `[← h1]`. Conclude with `this`. Establish `hoff' : ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → ¬ I.UnderQ a v → bc (prV (E` using `B.host.E) v) (k () * t) = 1 := fun v hT hnQ => by`.
+
+Rewrite using `[map_mul, hoff v hT, one_mul]`. Use `bc_prV_eq_one fun w hw i j => htw w (fun hwQ => hnQ ⟨w, hwQ, hw⟩) (fun hwQ => hnQ ⟨conjPrime₂ w, hwQ, ?_⟩) i j` and prove the remaining obligations. Rewrite using `[← hw]`. Conclude with `hunder w`. Establish `hT' : ∀ (P : (B.primes X).vT u) (r j : Fin (B.R.N B.R.m)), r.1 + 1 = B.R.N B.R.m → HasRes P.1 (adAt B.host.F P.1 (((k () * t)⁻¹ : GA B (B.R.N B.R.m)).1 r j)) (if j = r then Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) else 0)` using `fun P r j hr => by`.
+
+Establish `hP1 : P.1 ∉ I.Q a` using `fun h => (hf _ h).1.1 P.2`. Establish `hP2 : conjPrime₂ P.1 ∉ I.Q a` using `fun h => (hf _ h).1.2.2.1 (by rw [CharValCompare.conjP_conjP]; exact P.2)`. Apply the tactic sequence `rw [localComponent_mul_inv_entry _ _ _ (localComponent_eq_one _ _ (htw _ hP1 hP2))]`. Conclude with `hkT P r j hr`. Use `⟨fun _ => ⟨C.lev, C.y, C.y_bij, C.y_lat, C.stabI, C.stabI_inj, C.stabI_range⟩, ⟨fun _ => k () * t, ?_, fun _ d g₁ g₂ hd he => GlobalTheory.T.pointOverX_has_adelicPoint_blockExtend_mul I hOk hPins l Z u a (k ()) t hkstd hoff hkT ht htP d g₁ g₂ hd he⟩, ?_, fun v hv => h3 v hv, ?_, …` and prove the remaining obligations.
+
+Conclude with `reads_top I u a N hdN hΘ K.lev.U K.lev.chi (k ()) t hkU hkQ ht hU hχ C.lev.Lb C.lev.U C.lev.chi (fun c => (C.y ⟨c, rfl⟩).1) (fun c s => (C.stabI ⟨c, rfl⟩ s).1) hlb (GlobalTheory.T.exists_ptOf_mul_K1_standard _ _ _ (k ()) t ht hkstd) hoff' hT' (fun c => by rw [hy5, hy]; exact hg c …`. Introduce `c d g₁ g₂ hrep hd he`. Establish `hp` using `GlobalTheory.T.pointOverX_has_adelicPoint_blockExtend_mul I hOk hPins l Z u a (k ()) t hkstd hoff hkT ht htP d g₁ g₂ hd he`. Establish `hp2 : PtOf (y c * (k () * t)) (tilF I.sel (I.tup a) u d)` using `hrep ▸ hpt c`. Use `top_base I u a N hdN hΘ K.lev.U (k ()) t hkU hkQ ht hU _ (y c) g₂ hp hp2` as an intermediate fact.
+
+Use `show g₂⁻¹ * (C.y ⟨c, rfl⟩).1 ∈ C.lev.U`. Rewrite using `[h2, hy5]`. Conclude with `this`. Conclude with `root_top I u a N hdN hΘ K.lev.U K.lev.chi (k ()) t hU hχ hUle C.lev.U C.lev.chi h2 h4`. Introduce `κ κ' e hv`.
+
+Establish `hx : κ.1 ∈ topU (K.lev.U : Subgroup (GA B (B.R.N B.R.m))) t ((I.Tp a).levQ B.R.m) (I.dTop a)` using `h2 ▸ κ.2`. Establish `e4` using `h4 κ κ' ⟨κ.1, hx⟩ e rfl`. Establish `e5` using `(hchiQ).2 ⟨κ.1, hx⟩ (fun P => by`. Use `TwTop.localComponent_congr (F := B.host.F) P.1 (v := P.1.under (𝓞 B.host.F)) rfl (x := κ.1) (x' := 1) ((hv _ ((hQ _).2 ⟨P.1, P.2, rfl⟩)).trans (map_one _).symm)` as an intermediate fact. Conclude with `this.trans (map_one _))`.
+
+Conclude with `e4.trans ((congrArg (fun w => K.lev.chi κ' * w) e5).trans (mul_one _))`.
+-/
 theorem chart_twm : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClsTied (D := (I.rec7 l Z)) u B.R.m le_rfl), (∀ v, v ∈ Q ↔ I.UnderQ a v) → (∃ k, I.Reads u I.mu0 B.R.m (fun _ => ()) (fun _ => K.lev.Lb) (fun _ => K.lev.U) (fun _ => K.lev.chi) (fun c => (K.y c).1) (fun c s => (K.stabI c s).1) k) → ∃ (K1 : ∀ β : Unit, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) B.R.m le_rfl (fun c : {c // (fun _ : (I.stp u a B.R.m).Cl => ()) c = β} => (I.chain l u a).stab B.R.m c.1) (fun c => latCrd (I.rec7 l Z) B.R.m le_rfl (I.latAt u a B.R.m c.1))), (∃ k, I.Reads u a B.R.m (fun _ => ()) (fun β => (K1 β).lev.Lb) (fun β => (K1 β).lev.U) (fun β => (K1 β).lev.chi) (fun c => ((K1 ()).y ⟨c, rfl⟩).1) (fun c s => ((K1 ()).stabI ⟨c, rfl⟩ s).1) k ∧ ∀ β (d : XPt (B.primes X) B.R I.sel (I.tup a)) (g' : GA B (B.R.N B.R.m - 1)) (g : GA B (B.R.N B.R.m)), PtOf g' d → IsExt (I.rec7 l Z) (z0 X u) (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) g'.1 g.1 → PtOf (g * k β) (tilF I.sel (I.tup a) u d)) ∧ I.TopBase l Z u a (K1 ()).lev.U (fun c => ((K1 ()).y ⟨c, rfl⟩).1) ∧ (∀ v, v ∉ Q → (K1 ()).lev.Uloc v = K.lev.Uloc v) ∧ (∃ n : ℕ, 0 < n ∧ ∀ κ, (K1 ()).lev.chi κ ^ n = 1) ∧ ∀ (κ : (K1 ()).lev.U) (κ' : K.lev.U), κ.1 = κ'.1 → (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → (K1 ()).lev.chi κ = K.lev.chi κ' := by
   intro B X I hOk hPins l Z u a Q K hQ hk
   obtain ⟨k, hk⟩ := hk

@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open GlobalTheory.CuspRep (SmIrr Af invT finId pFin)
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `F _ _ _ a π`. Conclude with `⟨π.dual, ⟨π.toDual, fun k φ => π.op_toDual (.fin k) φ, fun k φ => π.op_toDual (.cpt k) φ, fun X φ => π.op_toDual (.lie X) φ⟩, fun _ _ h => h.dual, fun _ _ h => h.dual⟩`.
+-/
 theorem UpperTheory.exists_contragredient_cuspSub :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (π : TR.CuspSub F a), ∃ π₂ : TR.CuspSub F a, (∃ S : π.V ≃ₗ[ℂ] π₂.V, (∀ k φ, π₂.op (.fin k) (S φ) = S (π.op (.fin (invT a (Af F) k)) φ)) ∧
           (∀ k φ, π₂.op (.cpt k) (S φ) = S (π.op (.cpt k) φ)) ∧

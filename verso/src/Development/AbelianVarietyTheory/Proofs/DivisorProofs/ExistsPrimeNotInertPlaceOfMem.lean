@@ -13,12 +13,28 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FunObj.SqNum
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[show ((Formalism.L2.Col.cO D.host.E x : 𝓞 D.host.E) : D.host.E) = star (x : D.host.E) from rfl, Formalism.BasicNotions.bridge_star_holds D.R D.host]`. Both sides reduce to the same expression.
+-/
 theorem conj_smul_int {D : D7} (x : 𝓞 D.host.E) : (D.host.conj • x : 𝓞 D.host.E) = Formalism.L2.Col.cO _ x := by
   apply RingOfIntegers.ext
   rw [show ((Formalism.L2.Col.cO D.host.E x : 𝓞 D.host.E) : D.host.E) = star (x : D.host.E) from rfl,
     Formalism.BasicNotions.bridge_star_holds D.R D.host]
   rfl
 
+/- English proof (translation)
+Introduce `D T L P v hv`. Take `⟨e, he⟩` from `P.w_split v hv`. Establish `hunder` using `P.w_over v hv`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqv⟩ : ∃ q : ℕ, q.Prime ∧ ((q : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by`. Use `v.isMaximal` as an intermediate fact.
+
+Establish `: Finite (𝓞 D.host.F ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Use `letI := Ideal.Quotient.field v.asIdeal`. Use `⟨ringChar (𝓞 D.host.F ⧸ v.asIdeal), CharP.char_is_prime (𝓞 D.host.F ⧸ v.asIdeal) _, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using CharP.cast_eq_zero (𝓞 D.host.F ⧸ v.asIdeal) (ringChar _))`. Use `⟨q, hq, fun hin => ?_, hqv⟩` and prove the remaining obligations.
+
+Establish `hqQ : ((q : ℕ) : 𝓞 D.host.E) ∈ (P.w v).asIdeal`. Establish `h1 : ((q : ℕ) : 𝓞 D.host.F) ∈ ((P.w v).under (𝓞 D.host.F)).asIdeal` using `by rw [hunder]; exact hqv`. Simplify `h1` using `[HeightOneSpectrum.under]`. Establish `hfix` using `hin (P.w v).asIdeal (P.w v).isPrime (P.w v).ne_bot hqQ`. Establish `hf : ∀ x, x ∈ (P.w v).asIdeal → Formalism.L2.Col.cO _ x ∈ (P.w v).asIdeal` using `fun x hx => by`.
+
+Rewrite using `[← conj_smul_int, ← hfix]`. Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hx`. Establish `hmem : ∀ x, x ∈ (P.w v).asIdeal ↔ Formalism.L2.Col.cO _ x ∈ (P.w v).asIdeal` using `fun x => ⟨hf x, fun hx => by simpa [Formalism.L2.Col.cO_cO] using hf _ hx⟩`. Establish `hc` using `GlobalTheory.MovedIdem.isIdemAt_conj he hmem`. Establish `e1 : e = Formalism.L2.Theta.cA D e` using `(GlobalTheory.ExportSeries.idemAt_eq he).symm.trans (GlobalTheory.ExportSeries.idemAt_eq hc)`.
+
+Establish `e0 : e = 0`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hxQ, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (P.w v).ne_bot`. Establish `h2` using `(he.2 x hx0).1 hxQ`. Rewrite `h2` using `[e0, zero_mul, map_zero]`.
+
+Conclude with `h2 (zero_mem _)`.
+-/
 theorem exists_prime_notInert_place : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (v : HeightOneSpectrum (𝓞 D.host.F)),
     v ∈ P.S0 → ∃ q : ℕ, q.Prime ∧ ¬ InertQ D q ∧ ((q : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by
   intro D T L P v hv

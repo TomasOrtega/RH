@@ -11,6 +11,9 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal
 
+/- English proof (translation)
+Introduce `D _ hp h2 hq hd P hP` and use `GlobalTheory.HubLoc.ramIdx_eq_one D.host hp (UpperTheory.Small.not_dvd_condN D.host hp h2 hq hd) P hP`.
+-/
 theorem host_ramificationIdx_eq_one :
     ∀ (D : D7) (p : ℕ), p.Prime → p ∉ D.host.small → p ≠ D.host.q → p ≠ D.host.d → ∀ P ∈ placesOver D.host.E p, P.asIdeal.ramificationIdx ℤ = 1 :=
   fun D _ hp h2 hq hd P hP => GlobalTheory.HubLoc.ramIdx_eq_one D.host hp (UpperTheory.Small.not_dvd_condN D.host hp h2 hq hd) P hP

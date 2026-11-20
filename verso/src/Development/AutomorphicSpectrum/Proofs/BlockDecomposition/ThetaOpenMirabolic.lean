@@ -14,6 +14,9 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def lastCol {n : ℕ} (u : MirUin k n) : Fin n → k :=
   fun i => (((u : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n)
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h : Continuous fun u : MirUin k n => (((u : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Conclude with `h.matrix_elem _ _`.
+-/
 theorem continuous_lastCol (n : ℕ) : Continuous (lastCol k (n := n)) := by
   refine continuous_pi fun i => ?_
   have h : Continuous fun u : MirUin k n =>
@@ -21,6 +24,13 @@ theorem continuous_lastCol (n : ℕ) : Continuous (lastCol k (n := n)) := by
     Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
   exact h.matrix_elem _ _
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n` from `Subgroup.mem_subgroupOf.1 u.2`. Establish `key : (unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u) = w`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hw.symm`.
+
+Establish `hcol : lastCol k u = w.toAdd`. Use function extensionality and compare the values at `i`. Simplify using `only [lastCol, ← hw]`. Conclude with `unip_apply_castSucc_last k n w i`. Use `show Circle.toUnits (ψ (a ⬝ᵥ ((unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u)).toAdd)) = _`.
+
+Rewrite using `[key, hcol]`.
+-/
 theorem thetaA_apply (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (u : MirUin k n) :
     thetaA k ψ a u = Circle.toUnits (ψ (a ⬝ᵥ lastCol k u)) := by
   obtain ⟨w, hw⟩ : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n := Subgroup.mem_subgroupOf.1 u.2
@@ -36,6 +46,13 @@ theorem thetaA_apply (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (u : Mi
     ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) u)).toAdd)) = _
   rw [key, hcol]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx' : ψ x = 1` using `hx`. Establish `ht : Filter.Tendsto (fun y : k => y - x) (𝓝 x) (𝓝 0)`.
+
+Simplify using `using (continuous_sub_right x).tendsto x`. Use `filter_upwards [ht (cball_mem_nhds s)] with y hy`. Establish `h1 : ψ (y - x) = 1` using `hs _ hy`. Establish `h2 : ψ y = ψ (y - x) * ψ x` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Use `show ψ y = 1`.
+
+Rewrite using `[h2, h1, hx', one_mul]`.
+-/
 theorem isOpen_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ) : IsOpen {x : k | ψ x = 1} := by
   obtain ⟨s, hs⟩ := exists_cball_addChar_eq_one ψ hψ
   rw [isOpen_iff_mem_nhds]
@@ -49,6 +66,15 @@ theorem isOpen_addChar_eq_one (ψ : AddChar k Circle) (hψ : Continuous ψ) : Is
   show ψ y = 1
   rw [h2, h1, hx', one_mul]
 
+/- English proof (translation)
+Introduce `ψ hψ n a`. Establish `hc : Continuous fun u : MirUin k n => a ⬝ᵥ lastCol k u`. Establish `h` using `continuous_lastCol k n`. Simplify using `only [dotProduct]`. Conclude with `continuous_finset_sum _ fun i _ => continuous_const.mul ((continuous_apply i).comp h)`.
+
+Establish `he : ((thetaA k ψ a).ker : Set (MirUin k n)) = (fun u : MirUin k n => a ⬝ᵥ lastCol k u) ⁻¹' {x : k | ψ x = 1}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, thetaA_apply, Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Apply `Circle.ext` to reduce the goal to its premises. Simplify using `using congrArg Units.val h`. Introduce `h`. Rewrite using `[h, map_one]`. Rewrite using `[he]`.
+
+Conclude with `(isOpen_addChar_eq_one k ψ hψ).preimage hc`.
+-/
 theorem thetaOpen : ThetaOpen k := by
   intro ψ hψ n a
   have hc : Continuous fun u : MirUin k n => a ⬝ᵥ lastCol k u := by

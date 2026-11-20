@@ -14,6 +14,33 @@ import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.Quo
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ K _ _ _ _ v hv A _ _ 𝒜 _ _ x hW r s r' s' m Q hF hG h2 h3 h4 a h5 T hT J hJ hsec hZ`. Establish `hfg` using `fg_holds O A 𝒜 x hW`. Establish `hN : ∀ i, (mN 𝒜 (Q.F (Fin.last r)) i).FG`. Introduce `i`. Use `fin_cases i`.
+
+Conclude with `hfg _`. Conclude with `hfg _`. Conclude with `(Submodule.fg_span_singleton _).sup (((hfg _).mul (hfg _)).mul (hfg _))`. Set `X : HidaSetting 3` to `{ B := 𝒜 0, R := mR Q, 𝒜 := mGr Q, std := std_holds (𝒜 0) A 3 _ hN }`. Establish `hself : (GMod.self (mGr Q)).IsGr (mGr Q)` using `⟨fun {d e} {p} {q : mR Q} (hp : p ∈ mGr Q d) (hq : q ∈ mGr Q e) => (SetLike.mul_mem_graded hp hq : p * q ∈ mGr Q (d + e)), rees_internal _, Module.Finite.self (mR Q)⟩`.
+
+Establish `hGr : (mQ Q J).IsGr (mGr Q)` using `((ruleGr 3 X _ hself).1 J hJ).2`. Establish `hfin : ∀ d, Module.Finite (𝒜 0) ((mQ Q J).gr d)` using `(ruleFin 3 X _ hGr).1`. Take `⟨hI, -, -⟩` from `hom_holds O A 𝒜 x hW r s r' s' m Q`. Establish `hD : ∀ ξ : A →ₐ[O] K, TwoSigned 𝒜 ξ ↔ ¬ idD 𝒜 ≤ RingHom.ker (res0 𝒜 ξ)`. Introduce `ξ`.
+
+Take `⟨hn, hp⟩` from `sign_holds O A 𝒜 x hW K ξ`. Rewrite using `[TwoSigned, hn, hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨f, hf, hf0⟩, g, hg, hg0⟩ hle`. Establish `hm : f * g ∈ 𝒜 0`.
+
+Use `SetLike.GradedMul.mul_mem hf hg` as an intermediate fact. Simplify using `using this`. Establish `h1 : (⟨f * g, hm⟩ : 𝒜 0) ∈ idD 𝒜` using `Ideal.subset_span ⟨f, hf, g, hg, rfl⟩`. Establish `h2 : ξ (f * g) = 0` using `hle h1`. Rewrite `h2` using `[map_mul]`.
+
+Conclude with `mul_ne_zero hf0 hg0 h2`. Introduce `h`. Assume the negation of the conclusion as `hc`. Use `h (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `b ⟨f, hf, g, hg, hb⟩`.
+
+Use `show ξ (b : A) = 0`. Rewrite using `[hb, map_mul]`. Assume the negation of the conclusion as `hne`. Conclude with `hc ⟨⟨f, hf, left_ne_zero_of_mul hne⟩, g, hg, right_ne_zero_of_mul hne⟩`. Establish `hpos : ∀ ξ ∈ T, ξ a ≠ 0 ∧ 0 ≤ v (ξ a)` using `fun ξ hξ => ⟨h5.2.2 ξ (hT.1 ξ hξ).1 (hT.1 ξ hξ).2, valuation_nonneg_apply_degreeZero_of_onS O K v hv A 𝒜 x Q.ideal h2 ξ (hT.1 ξ hξ).1 a a.2 (h5.2.2 ξ (hT.1 ξ hξ).1 (hT.1 ξ hξ).2)⟩`.
+
+Establish `hsum : ∑ σ ∈ T.image (res0 𝒜), v (σ a) ≤ ∑ ξ ∈ T, v (ξ a)` using `Finset.sum_image_le_of_nonneg (f := fun σ : 𝒜 0 →ₐ[O] K => v (σ a)) (g := res0 𝒜) (s := T) fun σ hσ => by`. Take `⟨ξ, hξ, rfl⟩` from `Finset.mem_image.1 hσ`. Conclude with `(hpos ξ hξ).2`. Use `filter_upwards [eventually_mQ_gr_finite_annihilator O K A 𝒜 x hW r s r' s' m Q hF hG h2 h3 J hJ hsec hZ, eventually_ge_atTop 1] with d hd hd1`. Use `haveI := hfin d`.
+
+Establish `key` using `th_holds O K v hv (𝒜 0) ((mQ Q J).gr d) hd.1 a (T.image (res0 𝒜)) (2 ^ (r + 1 + r')) ?_ ?_`. Rewrite using `[chi_single0 _ hGr.internal]`. Use `key.trans ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_left hsum (by positivity)`.
+
+Introduce `σ hσ`. Take `⟨ξ, hξ, rfl⟩` from `Finset.mem_image.1 hσ`. Use `⟨(hpos ξ hξ).1, (hpos ξ hξ).2, ?_⟩` and prove the remaining obligations. Establish `hσ'` using `(hD ξ).1 (hT.1 ξ hξ).2`. Use `(locLen_mQ_gr_le_locLen_aPiece O K A 𝒜 x hW r s r' s' m Q J hsec hZ _ hσ' d hd1).trans ?_` and prove the remaining obligations.
+
+Use `push_cast`. Conclude with `locLen_aPiece_ideal2_le_two_pow O K A 𝒜 x hW r s r' s' m Q _ (locLen_quotientWeightPiece_le_one O K A 𝒜 x hW _ hI h2 h4 _ hσ') _`. Introduce `σ hσ`. Use `hd.2 σ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_or]`. Take `⟨ξ, hξ, rfl⟩` from `tsp_holds O K A 𝒜 x hW _ hI σ fun b hb => by`. Assume the negation of the conclusion as `hne`. Conclude with `hc.2 ⟨b, hb, hne⟩`. Take `⟨ξ', hξ', t, rfl⟩` from `hT.2 ξ hξ ((hD ξ).2 hc.1)`.
+
+Use `hσ (Finset.mem_image.2 ⟨ξ', hξ', AlgHom.ext fun b => ?_⟩)` and prove the remaining obligations. Use `show ξ' (b : A) = act 𝒜 (tz t) ξ' (b : A)`. Rewrite using `[act_of_mem 𝒜 _ _ b.2]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Alg.M.up_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]
       (K : Type) [Field K] [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K] (v : K → ℝ), IsNVal O K v →

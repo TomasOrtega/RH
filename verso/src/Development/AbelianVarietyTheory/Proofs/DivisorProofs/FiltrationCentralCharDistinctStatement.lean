@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FiltLevi.homLeOne_of_filtration | exact GlobalTheory.FiltLevi.homLeOne_of_filtration | (intros; apply GlobalTheory.FiltLevi.homLeOne_of_filtration <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.filtration_central_char_distinct : ∀ {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G V) (τ : Representation ℂ G Y) (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ),
     Monotone S → S 0 = ⊥ → S (Fin.last N) = ⊤ →

@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 
 include hc in
 
+/- English proof (translation)
+Take `⟨b0, hb0⟩` from `rll_norm_mem hc a`. Take `⟨b1, hb1⟩` from `rll_norm_mem hc (a + 1)`. Use `⟨b1 - b0 - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_one, hb1, hb0, map_add (cO E), map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gls_trace_mem (a : 𝓞 E) : ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b = a + cO E a := by
   obtain ⟨b0, hb0⟩ := rll_norm_mem hc a
   obtain ⟨b1, hb1⟩ := rll_norm_mem hc (a + 1)
@@ -31,6 +34,21 @@ variable {X : Fields} {Pr : Primes X} (hc : Formalism.BasicNotions.CMData X.F X.
 
 include hPr in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `gls_trace_mem hc (Pr.piG i)`. Establish `hsig : ∀ x : X.E, hc.sig x = star x` using `fun _ => rfl`. Establish `hN : algebraMap X.F X.E ((Pr.g i : 𝓞 X.F) : X.F) = (Pr.piG i : X.E) * hc.sig (Pr.piG i : X.E)`. Use `congrArg (algebraMap (𝓞 X.E) X.E) (hPr.piG_norm i)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`.
+
+Establish `h0 : (((Pr.g i : ℕ) : 𝓞 X.F) : X.F) = ((Pr.g i : ℕ) : X.F)` using `map_natCast (algebraMap (𝓞 X.F) X.F) _`. Rewrite using `[h0, map_natCast]`. Conclude with `this.symm`. Establish `ht' : algebraMap X.F X.E (t : X.F) = (Pr.piG i : X.E) + hc.sig (Pr.piG i : X.E)`. Use `congrArg (algebraMap (𝓞 X.E) X.E) ht` as an intermediate fact.
+
+Rewrite `this` using `[map_add, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 X.F) X.F X.E]`. Conclude with `this`. Establish `htv : t ∉ v.asIdeal`. Introduce `htv`. Establish `hov` using `gwOf_over hc hPr i v h`.
+
+Establish `h1 : algebraMap (𝓞 X.F) (𝓞 X.E) t ∈ (gwOf hc hPr i v h).1.asIdeal`. Establish `: t ∈ (gwOf hc hPr i v h).1.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))` using `hov ▸ htv`. Conclude with `this`. Establish `h3 : X.conjO (Pr.piG i) ∈ (gwOf hc hPr i v h).1.asIdeal` using `decoFin_mem_of_mem_divs (gwOf_mem hc hPr i v h)`. Establish `h4 : Pr.piG i ∈ (gwOf hc hPr i v h).1.asIdeal`.
+
+Establish `h5 : Pr.piG i = algebraMap (𝓞 X.F) (𝓞 X.E) t - X.conjO (Pr.piG i)`. Rewrite using `[ht]`. Use `show Pr.piG i = Pr.piG i + cO X.E (Pr.piG i) - cO X.E (Pr.piG i)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`.
+
+Conclude with `Ideal.sub_mem _ h1 h3`. Take `⟨a, b, e⟩` from `hPr.piG_cop i`. Apply `one_notMem (gwOf hc hPr i v h).1` to reduce the goal to its premises. Rewrite using `[← e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h4) (Ideal.mul_mem_left _ _ h3)`.
+
+Take `⟨s⟩` from `Formalism.MainNotions.Gaps.LG.sc_core hc.sig (fun x => by rw [hsig, hsig, star_star]) (fun x hx => (hc.fixed x).1 hx) hc.deg2 v (Pr.piG i) t (Pr.g i : 𝓞 X.F) ht' hN h htv`. Conclude with `Formalism.MainNotions.Gaps.LG.sc_orient s (Pr.piG i) (Pr.g i : 𝓞 X.F) h hN.symm`.
+-/
 theorem gls_exists (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal) :
     Nonempty (Formalism.MainNotions.Gaps.LG.SplitAt hc.sig v (hc.sig (Pr.piG i : X.E))) := by
   obtain ⟨t, ht⟩ := gls_trace_mem hc (Pr.piG i)

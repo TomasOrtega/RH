@@ -8,6 +8,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 
 namespace GlobalTheory.ApproxIdem
 
+/- English proof (translation)
+Use `⟨1 - (1 - e ^ m) ^ m, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow 1 e m`. Rewrite `hc` using `[one_pow]`. Rewrite using `[hc]`. Establish `: f (1 - ((1 - e) * c) ^ m) - 1 = -((-(f e - 1)) * f c) ^ m`.
+
+Simplify using `only [map_sub, map_one, map_pow, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_neg, norm_pow, norm_mul, norm_neg]`. Use `pow_le_pow_left₀ (by positivity) ?_ m` and prove the remaining obligations. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hf c)).trans h1`.
+
+Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow 1 (1 - e ^ m) m`. Rewrite `hc` using `[one_pow, sub_sub_cancel]`. Rewrite using `[hc, map_mul, norm_mul, map_pow, norm_pow]`. Conclude with `(mul_le_of_le_one_right (by positivity) (hg c)).trans (pow_le_pow_left₀ (norm_nonneg _) h2 m)`.
+-/
 theorem improve {O F : Type*} [CommRing O] [NormedField F] (f g : O →+* F) (hf : ∀ a, ‖f a‖ ≤ 1)
     (hg : ∀ a, ‖g a‖ ≤ 1) (r : ℝ) (e : O) (h1 : ‖f e - 1‖ ≤ r) (h2 : ‖g e‖ ≤ r) (m : ℕ) :
     ∃ ε : O, ‖f ε - 1‖ ≤ r ^ m ∧ ‖g ε‖ ≤ r ^ m := by
@@ -25,6 +32,19 @@ theorem improve {O F : Type*} [CommRing O] [NormedField F] (f g : O →+* F) (hf
     rw [hc, map_mul, norm_mul, map_pow, norm_pow]
     exact (mul_le_of_le_one_right (by positivity) (hg c)).trans (pow_le_pow_left₀ (norm_nonneg _) h2 m)
 
+/- English proof (translation)
+Establish `hpn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Establish `h : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `by simp`. Rewrite using `[h, norm_algebraMap', Padic.norm_p]`. Establish `hz : ∀ z : ℤ, ‖(p : ℂ_[p]) * z‖ ≤ (p : ℝ)⁻¹` using `fun z => by`. Rewrite using `[norm_mul, hpn]`.
+
+Conclude with `mul_le_of_le_one_right (by positivity) (IsUltrametricDist.norm_intCast_le_one _ z)`. Establish `hlt : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Establish `key : ∀ a b : ℂ_[p], a + b = 1 + p * k → a * b = p * n → ‖a‖ = 1 → ‖a - 1‖ ≤ (p : ℝ)⁻¹ ∧ ‖b‖ ≤ (p : ℝ)⁻¹` using `fun a b hs hp h => by`. Establish `h2 : ‖b‖ ≤ (p : ℝ)⁻¹`. Use `hz n` as an intermediate fact.
+
+Rewrite `this` using `[← hp, norm_mul, h, one_mul]`. Then use the resulting hypothesis. Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `: a - 1 = (p : ℂ_[p]) * k + -b` using `by linear_combination hs`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hz k) (by rwa [norm_neg]))`.
+
+Break down `ha.eq_or_lt with h | h` into its components or cases. Conclude with `Or.inl (key a b hs hp h)`. Break down `hb.eq_or_lt with h' | h'` into its components or cases. Conclude with `Or.inr (key b a (by rw [add_comm, hs]) (by rw [mul_comm, hp]) h')`. It suffices to derive a contradiction.
+
+Establish `h1 : (1 : ℂ_[p]) = (a + b) + -((p : ℂ_[p]) * k)` using `by linear_combination -hs`. Establish `h2 : ‖(1 : ℂ_[p])‖ < 1`. Rewrite using `[h1]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h h')`.
+
+Rewrite using `[norm_neg]`. Conclude with `(hz k).trans_lt hlt`. Simplify using `at h2`.
+-/
 theorem dichotomy {p : ℕ} [Fact p.Prime] (a b : ℂ_[p]) (k n : ℤ) (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1)
     (hs : a + b = 1 + p * k) (hp : a * b = p * n) :
     (‖a - 1‖ ≤ (p : ℝ)⁻¹ ∧ ‖b‖ ≤ (p : ℝ)⁻¹) ∨ (‖b - 1‖ ≤ (p : ℝ)⁻¹ ∧ ‖a‖ ≤ (p : ℝ)⁻¹) := by
@@ -57,6 +77,29 @@ theorem dichotomy {p : ℕ} [Fact p.Prime] (a b : ℂ_[p]) (k n : ℤ) (ha : ‖
     · rw [norm_neg]; exact (hz k).trans_lt hlt
   simp at h2
 
+/- English proof (translation)
+Take `⟨-, σ, θ, hσ, hθ, hσθ, -, hint, -⟩` from `quadratic_subfield D`. Establish `e : conjK D θ = -θ` using `(Subtype.ext (hσ θ).symm : conjK D θ = σ θ).trans hσθ`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`.
+
+Take `⟨m, hm⟩ : ∃ m : ℕ, D.host.d + 1 = 8 * m` from `⟨(D.host.d + 1) / 8, by omega⟩`. Establish `hm' : (D.host.d : D.host.K) + 1 = 8 * (m : D.host.K)` using `by exact_mod_cast hm`. Use `⟨⟨(1 + θ) / 2, hint⟩, 0, m, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 + θ) / 2 + conjK D ((1 + θ) / 2) = _`. Rewrite using `[map_div₀, map_add, map_one, map_ofNat, e]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(1 + θ) / 2 * conjK D ((1 + θ) / 2) = _`. Rewrite using `[map_div₀, map_add, map_one, map_ofNat, e]`. Use `push_cast`.
+
+Take the linear combination `(-1 / 4 : D.host.K) * hθ + (1 / 4 : D.host.K) * hm'`. Establish `hj : jacobiSym (-(D.host.d : ℤ)) p = 1` using `h.resolve_left h2`. Take `⟨a, ha⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hj` using `[← jacobiSym.legendreSym.to_jacobiSym]`. Rewrite `hj` using `[(legendreSym.eq_zero_iff p _).2 (by simpa using ha)]`. Conclude with `zero_ne_one hj`. Establish `h20 : (2 : ZMod p) ≠ 0`. Introduce `h0`.
+
+Establish `: ((2 : ℕ) : ZMod p) = 0` using `by exact_mod_cast h0`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`. Take `⟨A, rfl⟩` from `ZMod.intCast_surjective a`. Take `⟨T, hT⟩` from `ZMod.intCast_surjective (2 * (A : ZMod p))⁻¹`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : (p : ℤ) ∣ T * (2 * A) - 1 := by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hT, inv_mul_cancel₀ (mul_ne_zero h20 ha0), sub_self]`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : (p : ℤ) ∣ A * A + D.host.d := by`.
+
+Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at ha ⊢`. Rewrite using `[← ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `hθi : IsIntegral ℤ θ`.
+
+Establish `: θ = (1 + θ) / 2 + (1 + θ) / 2 - 1` using `by ring`. Rewrite using `[this]`. Conclude with `(hint.add hint).sub isIntegral_one`. Establish `hk' : (T : D.host.K) * (2 * A) - 1 = p * k` using `by exact_mod_cast hk`. Establish `hn' : (A : D.host.K) * A + D.host.d = p * n` using `by exact_mod_cast hn`.
+
+Establish `hI : IsIntegral ℤ ((T : D.host.K) * (A + θ))` using `(isIntegral_algebraMap (R := ℤ) (x := T)).mul ((isIntegral_algebraMap (R := ℤ) (x := A)).add hθi)`. Use `⟨⟨(T : D.host.K) * (A + θ), hI⟩, k, T ^ 2 * n, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(T : D.host.K) * (A + θ) + conjK D ((T : D.host.K) * (A + θ)) = _`. Rewrite using `[map_mul, map_add, map_intCast, map_intCast, e]`. Take the linear combination `hk'`.
+
+Express the relevant statement in the definitionally equal form `(T : D.host.K) * (A + θ) * conjK D ((T : D.host.K) * (A + θ)) = _`. Rewrite using `[map_mul, map_add, map_intCast, map_intCast, e]`. Use `push_cast`. Take the linear combination `(T : D.host.K) ^ 2 * hn' - (T : D.host.K) ^ 2 * hθ`.
+-/
 theorem exists_trace_one (D : D7) (p : ℕ) [Fact p.Prime] (h : Formalism.L2.Ker.SplitK D p) :
     ∃ (e : 𝓞 D.host.K) (k n : ℤ), (e : D.host.K) + conjK D e = 1 + p * k ∧ (e : D.host.K) * conjK D e = p * n := by
   obtain ⟨-, σ, θ, hσ, hθ, hσθ, -, hint, -⟩ := quadratic_subfield D
@@ -113,6 +156,13 @@ theorem exists_trace_one (D : D7) (p : ℕ) [Fact p.Prime] (h : Formalism.L2.Ker
       push_cast
       linear_combination (T : D.host.K) ^ 2 * hn' - (T : D.host.K) ^ 2 * hθ
 
+/- English proof (translation)
+Introduce `D p _ lam h m`. Take `⟨e, k, n, hs, hp⟩` from `exists_trace_one D p h`. Establish `hs'` using `congrArg (homP D lam) hs`. Establish `hp'` using `congrArg (homP D lam) hp`. Simplify using `only [map_add, map_mul, map_one, map_natCast, map_intCast, homP_conjK] at hs' hp'`.
+
+Establish `hex : ∃ e : 𝓞 D.host.K, ‖homP D lam e - 1‖ ≤ (p : ℝ)⁻¹ ∧ ‖homPbar D lam e‖ ≤ (p : ℝ)⁻¹`. Break down `dichotomy _ _ k n (norm_int_le D _ e) (norm_int_le D _ e) hs' hp' with h | h` into its components or cases. Conclude with `⟨e, h⟩`. Conclude with `⟨conjO D e, by rwa [coe_conjO, homP_conjK, homPbar_conjK]⟩`. Take `⟨e₁, h1, h2⟩` from `hex`.
+
+Take `⟨ε, hε⟩` from `improve ((homP D lam).comp (algebraMap (𝓞 D.host.K) D.host.K)) ((homPbar D lam).comp (algebraMap (𝓞 D.host.K) D.host.K)) (norm_int_le D (homP D lam)) (norm_int_le D (homPbar D lam)) _ e₁ h1 h2 m`. Use `⟨ε, (isIdem_iff D lam m ε).2 ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `hε`.
+-/
 theorem exists_isIdem : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), Formalism.L2.Ker.SplitK D p →
     ∀ m : ℕ, ∃ ε : 𝓞 D.host.K, IsIdem D lam m ε := by
   intro D p _ lam h m

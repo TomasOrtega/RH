@@ -27,6 +27,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.OneColTranslate
 
+/- English proof (translation)
+Establish `h0 : a.act 0 = 1`. Establish `h1` using `a.add 0 0`. Rewrite `h1` using `[add_zero]`. Conclude with `(mul_eq_left.mp h1.symm)`. Establish `hn : ∀ n : ℕ, b ≫ a.act (n : O) = b ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, h0, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [Nat.cast_succ, a.add, MonObj.comp_mul, ih, a.one, Category.comp_id, pow_succ]`. Use `haveI := a.hom α`.
+
+Rewrite using `[← hn, ← h, mul_comm, a.mul, ← Category.assoc, hb, MonObj.one_comp]`.
+-/
 theorem pow_eq_one_of_act {S : Scheme.{0}} {O : Type} [CommRing O] {G T : Over S} [GrpObj G]
     (a : ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O G) (b : T ⟶ G) (α β : O) (N : ℕ) (h : α * β = (N : O))
     (hb : b ≫ a.act β = 1) : b ^ N = 1 := by
@@ -42,6 +49,25 @@ theorem pow_eq_one_of_act {S : Scheme.{0}} {O : Type} [CommRing O] {G T : Over S
   haveI := a.hom α
   rw [← hn, ← h, mul_comm, a.mul, ← Category.assoc, hb, MonObj.one_comp]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y I P ϖ hϖ F _ _ _ φ hφ yF hyF α N hN hα`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra`. Establish `hLL` using `GlobalTheory.firstFiveLaws`.
+
+Establish `hL : Laws` using `hLL.1`. Establish `hN1 : 1 ≤ N` using `hN.pos`. Establish `hx : yF.x = spMap (algebraMap T.Fr F) ≫ (letI` using `io.toAlgebra; y.x) := by`. Establish `h1` using `hyF.1`. Rewrite `h1` using `[hφ]`.
+
+Conclude with `h1`. Establish `hbij` using `GlobalTheory.expandsG_bijective_of_dvr hL hLL.2.1 hLL.2.2.2.1 GlobalTheory.twistBaseChange_and_valuation_statements.1 T.V P.D P.A I.G.G P.U F`. Establish `hsec` using `GlobalTheory.T.powPullbackSec_modelUniversal_bijective E H Dw l Xo c T io y I P F yF.x hx`. Take `⟨σs, hσs, -⟩` from `(hsec 1).2.1 yF.s`. Take `⟨θ₁, hθ₁, -⟩` from `(hbij 1 le_rfl).1 σs`.
+
+Take `⟨π, -, hπ⟩` from `GlobalTheory.PullLin.exists_pull_linearMap hL T.V P.D F (𝓞 E) P.oD H.w0 P.w0 α N 1 hN1 le_rfl hα`. Establish `hpull : PullAl P.D F P.oD α 1 N θ₁ (π θ₁)` using `(hπ _ _).2 rfl`. Use `⟨θ₁, π θ₁, GlobalTheory.T.thetaFrame_expansion_framedPoint_generator E H Dw l Xo c T io y I P ϖ hϖ F φ hφ yF hyF σs θ₁ hσs hθ₁, hpull, ?_⟩` and prove the remaining obligations. Introduce `p w ζ x r₀ r σ hw hfin hto hxk hphi hsm hσ`. Take `⟨e, he, hea⟩` from `GlobalTheory.T.exists_mulEquiv_uniformisedPoints_universal E H Dw l Xo c T io y I P F yF.x hx`.
+
+Establish `hb : e x ≫ Xo.univ.t.act.act (star α) = 1` using `by rw [← hea, hxk, map_one]`. Establish `hbN : e x ^ N = 1` using `pow_eq_one_of_act _ _ α (star α) N hα hb`. Take `⟨hh, hhh⟩` from `GlobalTheory.T.exists_translated_normalisedPullback_section E H Dw l Xo c F yF.x α N hN hα yF.s (e x) hbN`. Take `⟨h₁, hnp, hsym⟩` from `id hhh`. Take `⟨σ₁, hσ₁, -⟩` from `(hsec N).2.1 h₁`.
+
+Take `⟨σ₀, hσ₀, -⟩` from `(hsec N).2.1 hh`. Establish `hex₁` using `GlobalTheory.T.normalisedPullback_section_expands_family E H Dw l Xo c T io y I P F yF.x hx α N 1 N (_root_.one_mul N) hα hN1 (Or.inl rfl) σs yF.s θ₁ σ₁ h₁ (π θ₁) hσs hθ₁ hnp hσ₁ hpull`. Establish `key : ∀ (q : ℕ) (eq : q = N) (θ : Fam P.D.toPre F q) (p : QkPt P.D.toPre F q) (w : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F p.g.b) (DegPre.lineε q))) (r₀ r : Fam P.D.toPre F q), P.U.toUnifPre.ExpandsG F N σ₁ (PowGerm.famCast (Dp` using `P.D.toPre) (F := F) eq θ) → w.IsGen → FinOrd P.D F q p w ζ → P.ToA F q p x → PhiRel P.D.toPre F q p w θ r₀ → Fam.IsSmul P.D.toPre F ζ r₀ r → ∃ (u : F) (t' : Fam P.D.toPre F N), (∃ m : ℕ, 0 < m ∧ u ^ m = 1) ∧ Fam.IsSmul P.D.toPre F u (PowGerm.famCast (Dp := P.D.toPre) (F := F) eq …`. Introduce `q eq`. Take `rfl : N = q` from `eq.symm`.
+
+Introduce `θ p w r₀ r hθ hw hfin hto hphi hsm`. Conclude with `GlobalTheory.T.symmetric_lift_acts_root_of_unity_on_expansions E H Dw l Xo c T io y I P F yF.x hx N hN1 σ₁ σ₀ h₁ hh θ r₀ r x (e x) p w ζ hσ₁ hσ₀ hθ hsym ((he _ _).2 rfl) hto hw hfin hphi hsm`. Take `⟨u, t', ⟨m, hm, hum⟩, hut, hex₀⟩` from `key (1 * N) (one_mul N) (π θ₁) p w r₀ r hex₁ hw hfin hto hphi hsm`. Establish `hu : u ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hum` using `[zero_pow hm.ne']`. Conclude with `zero_ne_one hum`. Rewrite `hut` using `[isSmul_iff]`. Set `σ' : P.U.toUnifPre.SecGF F N` to `SecOps.secScale (Out.scal (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left u⁻¹) σ₀`. Establish `hex'` using `GlobalTheory.GroupExpansionLinear.expandsG_sum T.V P.D P.A I.G.G P.U F N 1 (fun _ => u⁻¹) (fun _ => σ₀) (fun _ => t') σ' (fun _ => hex₀) (fun jj => by rw [Fin.sum_univ_one]; rfl)`.
+
+Rewrite `hex'` using `[Fin.sum_univ_one, hut, smul_smul, inv_mul_cancel₀ hu, one_smul]`. Establish `hσσ : σ = σ'` using `((hbij N hN1).2 _).unique hσ hex'`. Use `⟨u⁻¹, e x, hh, σ₀, ⟨m, hm, by rw [inv_pow, hum, inv_one]⟩, hb, hhh, hσ₀, fun jj => ?_⟩` and prove the remaining obligations. Rewrite using `[hσσ]`. Both sides reduce to the same expression.
+-/
 theorem oneColumn_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I : IntData Xo c T io y) (P : PELUnif (maximalIdeal T.V) I.G) (ϖ : T.V), Irreducible ϖ → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra T.Fr F], letI := io.toAlgebra; letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra; ∀ (φ : T.Fr →ₐ[c.F] F), φ.toRingHom = algebraMap T.Fr F → ∀ (yF : FrPt Xo c F), FrMap φ y yF → ∀ (α : 𝓞 E) (N : ℕ), Odd N → α * star α = (N : 𝓞 E) → ∃ (θ₁ : Fam P.D.toPre F 1) (θα₁ : Fam P.D.toPre F (1 * N)), ThFrame P.D ϖ F θ₁ ∧ PullAl P.D F P.oD α 1 N θ₁ θα₁ ∧ ∀ (p : QkPt P.D.toPre F (1 * N)) (w : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F p.g.b) (DegPre.lineε (1 * N)))) (ζ : F) (x : TFK (R := T.V) F ⟶ P.A.A) (r₀ r : Fam P.D.toPre F (1 * N)) (σ : P.U.toUnifPre.SecGF F N), w.IsGen → FinOrd P.D F (1 * N) p w ζ → P.ToA F (1 * N) p x → x ≫ P.oA.act (star α) = 1 → PhiRel P.D.toPre F (1 * N) p w θα₁ r₀ → Fam.IsSmul P.D.toPre F ζ r₀ r → P.U.toUnifPre.ExpandsG F N σ (PowGerm.famCast (Dp := P.D.toPre) (F := F) (one_mul N) r) → ∃ (u : F) (b : ptO Xo yF.x ⟶ Xo.univ.t.G) (hh : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (N : ℤ) (ptO Xo yF.x))) (σ₀ : P.U.toUnifPre.SecGF F N), (∃ m : ℕ, 0 < m ∧ u ^ m = 1) ∧ b ≫ Xo.univ.t.act.act (star α) = 1 ∧ IsTransPull Xo.univ.t.G Xo.univ.t.PP (Xo.univ.t.act.act α) N yF.s b hh ∧ SecTieF I P F yF.x N σ₀ hh ∧ ∀ jj, σ.f jj = resTop ((LB.LinComb P.U.LG.L (K := Fin 1) (fun _ => UnifPre.gFK (R := T.V) (G := I.G.G) F) (fun _ => (N : ℤ))).U jj) (scal (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left u) * σ₀.f jj := by
   intro E _ _ _ H Dw l Xo c T io y I P ϖ hϖ F _ _ _ φ hφ yF hyF α N hN hα
   letI := H.starRing

@@ -7,6 +7,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.MonoTrace
 
+/- English proof (translation)
+Use `haveI : NeZero (N : k) := ⟨hN⟩`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Use `haveI : NeZero N := ⟨hN0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k N`. Establish `hs : {μ : k | μ ^ N = 1} = (nthRootsFinset N (1 : k) : Set k)`.
+
+Use extensionality with `x`. Simplify using `[mem_nthRootsFinset (Nat.pos_of_ne_zero hN0)]`. Rewrite using `[hs]`. Conclude with `⟨Finset.finite_toSet _, by rw [Set.ncard_coe_finset, hζ.card_nthRootsFinset]⟩`.
+-/
 theorem ncard_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (N : ℕ) (hN : (N : k) ≠ 0) :
     {μ : k | μ ^ N = 1}.Finite ∧ {μ : k | μ ^ N = 1}.ncard = N := by
   haveI : NeZero (N : k) := ⟨hN⟩
@@ -19,6 +24,13 @@ theorem ncard_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (N : ℕ) (hN : (N
   rw [hs]
   exact ⟨Finset.finite_toSet _, by rw [Set.ncard_coe_finset, hζ.card_nthRootsFinset]⟩
 
+/- English proof (translation)
+Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Establish `hne : ∀ μ : k, μ ^ N = 1 → μ ≠ 0`. Introduce and unpack `μ h rfl`. Simplify using `[hN0] at h`. Establish `hmaps : Set.MapsTo θ {μ : k | μ ^ N = 1} {μ : ℂ | μ ^ N = 1}`.
+
+Introduce `μ h`. Simplify using `only [Set.mem_setOf_eq] at h ⊢`. Rewrite using `[← map_pow, h, map_one]`. Establish `hinj : Set.InjOn θ {μ : k | μ ^ N = 1}` using `fun x hx y hy h => hθ x y (hne x hx) (hne y hy) h`. Take `⟨_, h1⟩` from `ncard_pow_eq_one k N hN`.
+
+Take `⟨f2, h2⟩` from `ncard_pow_eq_one ℂ N (by exact_mod_cast hN0)`. Establish `himg : θ '' {μ : k | μ ^ N = 1} = {μ : ℂ | μ ^ N = 1}`. Apply `Set.eq_of_subset_of_ncard_le hmaps.image_subset _ f2` to reduce the goal to its premises. Rewrite using `[hinj.ncard_image, h1, h2]`. Conclude with `⟨hmaps, hinj, himg.ge⟩`.
+-/
 theorem bijOn_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ)
     (hθ : ∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (N : ℕ) (hN : (N : k) ≠ 0) :
     Set.BijOn θ {μ : k | μ ^ N = 1} {μ : ℂ | μ ^ N = 1} := by
@@ -39,6 +51,15 @@ theorem bijOn_pow_eq_one (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ)
     rw [hinj.ncard_image, h1, h2]
   exact ⟨hmaps, hinj, himg.ge⟩
 
+/- English proof (translation)
+Introduce `k _ _ θ hθ n N σ c hc hN hA hB`. Establish `hN0 : N ≠ 0` using `by rintro rfl; simp at hN`. Establish `hE` using `GlobalTheory.T.finrank_eigenspace_monomial_matrix_lift k θ hθ n σ c hc`. Use `set A : Matrix (Fin n) (Fin n) k := Matrix.of fun i j => if i = σ j then c j else 0 with hAdef`. Use `set B : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if i = σ j then θ (c j) else 0 with hBdef`.
+
+Establish `h1` using `GlobalTheory.T.sum_charpoly_roots_eq_finsum_eigenspace_finrank k (Fin n → k) (Matrix.toLin' A) N hN (by rw [← Matrix.toLin'_pow, hA, Matrix.toLin'_one]; rfl) θ`. Establish `h2` using `GlobalTheory.T.sum_charpoly_roots_eq_finsum_eigenspace_finrank ℂ (Fin n → ℂ) (Matrix.toLin' B) N (by exact_mod_cast hN0) (by rw [← Matrix.toLin'_pow, hB, Matrix.toLin'_one]; rfl) id`. Rewrite `h1`, `h2` using `[Matrix.charpoly_toLin']`. Rewrite using `[Matrix.trace_eq_sum_roots_charpoly, h1]`. Rewrite `h2` using `[Multiset.map_id]`.
+
+Rewrite using `[h2]`. Use `symm`. Apply `finsum_mem_eq_of_bijOn θ (bijOn_pow_eq_one k θ hθ N hN)` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hμ0 : μ ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `[hN0] at hμ`. Rewrite using `[hE μ hμ0]`. Both sides reduce to the same expression.
+-/
 theorem trace_lift_monomial : ∀ (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ), (∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) → ∀ (n N : ℕ) (σ : Equiv.Perm (Fin n)) (c : Fin n → k), (∀ j, c j ≠ 0) → (N : k) ≠ 0 → (Matrix.of fun i j => if i = σ j then c j else 0 : Matrix (Fin n) (Fin n) k) ^ N = 1 → (Matrix.of fun i j => if i = σ j then θ (c j) else 0 : Matrix (Fin n) (Fin n) ℂ) ^ N = 1 → Matrix.trace (Matrix.of fun i j => if i = σ j then θ (c j) else 0 : Matrix (Fin n) (Fin n) ℂ) = ((Matrix.charpoly (Matrix.of fun i j => if i = σ j then c j else 0 : Matrix (Fin n) (Fin n) k)).roots.map θ).sum := by
   intro k _ _ θ hθ n N σ c hc hN hA hB
   have hN0 : N ≠ 0 := by rintro rfl; simp at hN

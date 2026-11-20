@@ -16,6 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ g EC _ _ MC y hy y' t hb τ r hr u yb hu hyb`. Substitute `hr` using the available equality. Introduce `i`. Take `⟨hx, hcomb, -⟩` from `hb`. Take `⟨cf, h1, h2, h3⟩` from `hcomb τ i`.
+
+Use `⟨cf, h1, h2, ?_⟩` and prove the remaining obligations. Take `⟨hw, hval⟩` from `GlobalTheory.T.abelian_map_lie_model_field_point E H Dw l Xo c O β Y X tX f m F g EC MC y hy (Dw.mult τ) (y.u τ) (fun j => y.tan τ j) u hu cf (y'.u τ i) h3`. Establish `hF : Small.ptF y' = Small.ptF y`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Small.ptF_fst, Small.ptF_fst, hx]`.
+
+Rewrite using `[Small.ptF_snd, Small.ptF_snd]`. Establish `htan : FinRd.Roots.LieBasis.tanW Y y (y'.u τ i) hw = Small.tanY Y y' τ i`. Unfold `FinRd.Roots.LieBasis.tanW Small.tanY`. Use `congr 1`. Apply `Small.eq_tanF` to reduce the goal to its premises.
+
+Conclude with `IsPullback.lift_fst _ _ _ _`. Rewrite using `[hF]`. Conclude with `IsPullback.lift_snd _ _ _ _`. Establish `hleft : (MC.pt (yb i)).left = (MC.pt (∑ j, cf j • u j)).left`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hval, htan]`. Conclude with `hyb i`. Rewrite using `[Over.w (MC.pt (yb i)), Over.w (MC.pt (∑ j, cf j • u j))]`. Conclude with `MC.inj (Over.OverMorphism.ext hleft)`.
+-/
 theorem triIn_of_frBor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (X : Scheme.{0}) (tX : SAB H X) (f : X ⟶ Y.X) (m : SABMap tX Y.t f) (F : Type) [Field F] [Algebra c.F F] (g : Spec (CommRingCat.of F) ⟶ X) (EC : Type) [AddCommGroup EC] [Module F EC] (MC : LieModel tX.G g EC) (y : FrPt Xo c F), Small.ptY Y y = g ≫ f → ∀ (y' : FrPt Xo c F) (t : Ix Dw → Fˣ), FrBor t y y' → ∀ (τ : E →+* ℂ) (r : ℕ) (hr : r = Dw.mult τ) (u yb : Fin r → EC), (∀ i, (MC.pt (u i)).left ≫ m.φ = Small.tanY Y y τ (Fin.cast hr i)) → (∀ i, (MC.pt (yb i)).left ≫ m.φ = Small.tanY Y y' τ (Fin.cast hr i)) → FinRd.Roots.TriIn u (fun i => (t (some ⟨τ, Fin.cast hr i⟩) : F)) yb := by
   intro E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ g EC _ _ MC y hy y' t hb τ r hr u yb hu hyb
   subst hr

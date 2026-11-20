@@ -23,9 +23,19 @@ namespace GlobalTheory.LKGeo.DenEnd
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩`.
+-/
 theorem inAf_mem (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨c, x, hc, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a * c, x, fun w => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem (ha w) (hc w)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_mem (D : Datum p) {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) :
     a • v ∈ LaHat D := by
   induction hv using AddSubgroup.closure_induction with
@@ -38,6 +48,17 @@ theorem smul_mem (D : Datum p) {a : AfP p} (ha : IsIntAf a) {v : AfP p ⊗[ℚ] 
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Establish `hadd : ∀ u w : AfP p ⊗[ℚ] VQ D, (∃ d : ℕ, 0 < d ∧ d • u ∈ LaHat D) → (∃ d : ℕ, 0 < d ∧ d • w ∈ LaHat D) → ∃ d : ℕ, 0 < d ∧ d • (u + w) ∈ LaHat D`. Introduce and unpack `u w ⟨d, hd, hu⟩ ⟨e, he, hw⟩`. Use `⟨d * e, Nat.mul_pos hd he, ?_⟩` and prove the remaining obligations. Establish `: (d * e) • (u + w) = e • (d • u) + d • (e • w)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm e d]`.
+
+Rewrite using `[this]`. Conclude with `add_mem (nsmul_mem hu _) (nsmul_mem hw _)`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add u w hu hw => exact hadd u w hu hw`.
+
+Consider the case `tmul a w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by rw [TensorProduct.tmul_zero, smul_zero]; exact zero_mem _⟩`. Consider the case `add u w hu hw => rw [TensorProduct.tmul_add]`. Conclude with `hadd _ _ hu hw`.
+
+Consider the case `tmul q x`. Take `⟨d, hd, h⟩` from `GlobalTheory.DenAway.exists_nat_adele (q • a)`. Use `⟨d, hd, AddSubgroup.subset_closure ⟨(d : AfP p) * (q • a), x, h, ?_⟩⟩` and prove the remaining obligations. Establish `e : q ⊗ₜ[ℤ] x = q • ((1 : ℚ) ⊗ₜ[ℤ] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[e, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', nsmul_eq_mul]`.
+-/
 theorem exists_nsmul_mem (D : Datum p) (v : AfP p ⊗[ℚ] VQ D) : ∃ d : ℕ, 0 < d ∧ d • v ∈ LaHat D := by
   have hadd : ∀ u w : AfP p ⊗[ℚ] VQ D, (∃ d : ℕ, 0 < d ∧ d • u ∈ LaHat D) → (∃ d : ℕ, 0 < d ∧ d • w ∈ LaHat D) →
       ∃ d : ℕ, 0 < d ∧ d • (u + w) ∈ LaHat D := by
@@ -61,6 +82,13 @@ theorem exists_nsmul_mem (D : Datum p) (v : AfP p ⊗[ℚ] VQ D) : ∃ d : ℕ, 
         rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]
       rw [e, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', nsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[AlgHom.commutes, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : v.1.valuation ℚ (algebraMap ℤ ℚ (p : ℤ)) = 1`. Use `le_antisymm (v.1.valuation_le_one _) (not_lt.1 fun h => v.2 ?_)` and prove the remaining obligations. Rewrite `h` using `[IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+
+Establish `hm : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp Fact.out).irreducible`. Conclude with `(hm.eq_of_le v.1.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h)).symm`. Establish `h2 : Valued.v (algebraMap ℚ (v.1.adicCompletion ℚ) (p : ℚ)⁻¹) = v.1.valuation ℚ (p : ℚ)⁻¹` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v.1 _`. Rewrite using `[h2, map_inv₀]`. Simplify using `only [eq_intCast, Int.cast_natCast] at h1`.
+
+Rewrite using `[h1, inv_one]`.
+-/
 theorem isIntAf_inv : IsIntAf (algebraMap ℚ (AfP p) (p : ℚ)⁻¹) := by
   intro v
   rw [AlgHom.commutes, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -76,6 +104,13 @@ theorem isIntAf_inv : IsIntAf (algebraMap ℚ (AfP p) (p : ℚ)⁻¹) := by
   simp only [eq_intCast, Int.cast_natCast] at h1
   rw [h1, inv_one]
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `exists_nsmul_mem D v`. Take `⟨k, t, ht, hdt⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd.ne' p (Fact.out : p.Prime).ne_one`. Establish `ht0 : 0 < t` using `Nat.pos_of_ne_zero fun h => ht (h ▸ dvd_zero p)`. Use `⟨t, ht0, ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 ht).symm, ?_⟩` and prove the remaining obligations. Establish `hint : IsIntAf (algebraMap ℚ (AfP p) (p : ℚ)⁻¹ ^ k)` using `fun u => by`.
+
+Rewrite using `[map_pow]`. Conclude with `pow_mem (isIntAf_inv u) k`. Establish `hm` using `smul_mem D hint h`. Establish `hp : (p : ℚ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Use `hm using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hdt, ← map_pow, algebraMap_smul, ← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[inv_pow, ← _root_.mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hp), _root_.one_mul]`.
+-/
 theorem exists_coprime_nsmul_mem (D : Datum p) (v : AfP p ⊗[ℚ] VQ D) :
     ∃ t : ℕ, 0 < t ∧ t.Coprime p ∧ t • v ∈ LaHat D := by
   obtain ⟨d, hd, h⟩ := exists_nsmul_mem D v
@@ -92,6 +127,25 @@ theorem exists_coprime_nsmul_mem (D : Datum p) (v : AfP p ⊗[ℚ] VQ D) :
   push_cast
   rw [inv_pow, ← _root_.mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hp), _root_.one_mul]
 
+/- English proof (translation)
+Introduce `p _ D A`. Use `D.freeLa` as an intermediate fact. Use `D.finLa` as an intermediate fact. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Use `choose t ht0 htc ht using fun i => exists_coprime_nsmul_mem D (A (inAf D (b i)))`.
+
+Use `⟨∏ i, t i, Finset.prod_pos fun i _ => ht0 i, Nat.Coprime.prod_left fun i _ => htc i, ?_⟩` and prove the remaining obligations. Establish `hbase : ∀ x : D.La, (∏ i, t i) • A (inAf D x) ∈ LaHat D`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem t (Finset.mem_univ i)`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `nsmul_mem (ht i) k`.
+
+Consider the case `zero`. Establish `: inAf D 0 = 0` using `by simp [inAf]`. Rewrite using `[this, map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`.
+
+Establish `: inAf D (y + z) = inAf D y + inAf D z` using `by simp only [inAf, TensorProduct.tmul_add]`. Rewrite using `[this, map_add, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Establish `: inAf D (c • y) = c • inAf D y`.
+
+Simplify using `only [inAf, TensorProduct.tmul_smul]`. Rewrite using `[this, map_zsmul, smul_comm]`. Conclude with `zsmul_mem hy c`. Introduce `v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Establish `e : a ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x) = a • inAf D x`. Rewrite using `[inAf, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e, map_smul, smul_comm]`.
+
+Conclude with `smul_mem D ha (hbase x)`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem exists_coprime_nsmul_map_mem : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p)
     (A : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)), ∃ j : ℕ, 0 < j ∧ j.Coprime p ∧ ∀ v ∈ LaHat D, j • A v ∈ LaHat D := by
   intro p _ D A

@@ -38,6 +38,9 @@ def rowBasis (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B
     Basis (Fin g ⊕ Fin g) ℝ (Fl g) :=
   (Pi.basisFun ℝ (Fin g ⊕ Fin g)).map (rowEquiv B hB)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[rowBasis, rowEquiv, Matrix.vecMul, dotProduct, Pi.single_apply]`.
+-/
 theorem rowBasis_apply (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B.det) (i) :
     rowBasis B hB i = B i := by
   ext j
@@ -47,10 +50,16 @@ abbrev rowLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit 
     Submodule ℤ (Fl g) :=
   Submodule.span ℤ (Set.range (rowBasis B hB))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isLat_rowLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B.det) :
     IsLat (rowLat B hB) :=
   ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Rewrite using `[ZLattice.covolume_eq_det _ ((rowBasis B hB).restrictScalars ℤ)]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Basis.restrictScalars_apply, rowBasis_apply]`.
+-/
 theorem covolume_rowLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B.det) :
     ZLattice.covolume (rowLat B hB) = |B.det| := by
   rw [ZLattice.covolume_eq_det _ ((rowBasis B hB).restrictScalars ℤ)]
@@ -58,11 +67,19 @@ theorem covolume_rowLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB
   ext i j
   simp [Basis.restrictScalars_apply, rowBasis_apply]
 
+/- English proof (translation)
+Unfold `stdLat`. Rewrite using `[Basis.mem_span_iff_repr_mem ℤ (Pi.basisFun ℝ (Fin g ⊕ Fin g)) x]`. Simplify using `[eq_comm]`.
+-/
 theorem mem_stdLat_iff (x : Fl g) : x ∈ stdLat g ↔ ∀ i, ∃ k : ℤ, x i = k := by
   unfold stdLat
   rw [Basis.mem_span_iff_repr_mem ℤ (Pi.basisFun ℝ (Fin g ⊕ Fin g)) x]
   simp [eq_comm]
 
+/- English proof (translation)
+Unfold `stdLat rowLat`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[rowBasis_apply]`. Use extensionality with `j`.
+
+Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+-/
 theorem stdLat_eq_rowLat_one : stdLat g = rowLat (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ)
     (by simp) := by
   unfold stdLat rowLat
@@ -72,6 +89,9 @@ theorem stdLat_eq_rowLat_one : stdLat g = rowLat (1 : Matrix (Fin g ⊕ Fin g) (
   ext j
   simp [Matrix.one_apply, Pi.single_apply, eq_comm]
 
+/- English proof (translation)
+Use `covolume_rowLat (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (by simp)` as an intermediate fact. Rewrite `this` using `[← stdLat_eq_rowLat_one]`. Simplify using `using this`.
+-/
 theorem covolume_stdLat : ZLattice.covolume (stdLat g) = 1 := by
   have := covolume_rowLat (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (by simp)
   rw [← stdLat_eq_rowLat_one] at this
@@ -83,6 +103,9 @@ scoped instance instDiscreteStdLat : DiscreteTopology (stdLat g) := by
 scoped instance instZLatticeStdLat : IsZLattice ℝ (stdLat g) := by
   unfold stdLat; infer_instance
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_stdLat_iff, rowBasis_apply]`. Conclude with `hZ i`.
+-/
 theorem rowLat_le_stdLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B.det)
     (hZ : ∀ i j, ∃ k : ℤ, B i j = k) : rowLat B hB ≤ stdLat g := by
   rw [Submodule.span_le]
@@ -90,6 +113,9 @@ theorem rowLat_le_stdLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (h
   rw [SetLike.mem_coe, mem_stdLat_iff, rowBasis_apply]
   exact hZ i
 
+/- English proof (translation)
+Establish `h` using `ZLattice.covolume_div_covolume_eq_relIndex (rowLat B hB) (stdLat g) (rowLat_le_stdLat B hB hZ)`. Rewrite `h` using `[covolume_stdLat, div_one, covolume_rowLat]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem card_quot_rowLat (B : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) (hB : IsUnit B.det)
     (hZ : ∀ i j, ∃ k : ℤ, B i j = k) :
     (Nat.card (stdLat g ⧸ (rowLat B hB).submoduleOf (stdLat g)) : ℝ) = |B.det| := by
@@ -104,6 +130,9 @@ end GlobalTheory.RatLatIndex
 namespace GlobalTheory.RatLatIndex
 open Module
 
+/- English proof (translation)
+Establish `h1 : (γ⁻¹).mat = -Matrix.J (Fin g) ℝ * (γ.mat)ᵀ * Matrix.J (Fin g) ℝ` using `SymplecticGroup.coe_inv γ`. Rewrite using `[h1, hG, Matrix.map_mul, Matrix.map_mul, Matrix.map_neg _ (fun a => map_neg _ a), Matrix.map_J, Matrix.transpose_map]`.
+-/
 theorem ratSp_inv_map {g : ℕ} (γ : Sp g) (G : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℚ)
     (hG : γ.mat = G.map (Rat.castHom ℝ)) :
     (γ⁻¹).mat = (-(Matrix.J (Fin g) ℚ) * Gᵀ * Matrix.J (Fin g) ℚ).map (Rat.castHom ℝ) := by
@@ -112,6 +141,11 @@ theorem ratSp_inv_map {g : ℕ} (γ : Sp g) (G : Matrix (Fin g ⊕ Fin g) (Fin g
   rw [h1, hG, Matrix.map_mul, Matrix.map_mul, Matrix.map_neg _ (fun a => map_neg _ a), Matrix.map_J,
     Matrix.transpose_map]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Use `⟨c * q.num, ?_⟩` and prove the remaining obligations. Establish `: (N : ℚ) * q = ((c * q.num : ℤ) : ℚ)`. Rewrite using `[hc]`. Use `push_cast`.
+
+Rewrite using `[← Rat.mul_den_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun t : ℚ => (t : ℝ)) this`. Move the coercions through the operations in `at h2 ⊢`. Conclude with `h2`.
+-/
 theorem int_of_den_dvd (q : ℚ) (N : ℕ) (h : q.den ∣ N) : ∃ k : ℤ, (N : ℝ) * (q : ℝ) = k := by
   obtain ⟨c, hc⟩ := h
   refine ⟨c * q.num, ?_⟩
@@ -126,6 +160,31 @@ end GlobalTheory.RatLatIndex
 
 open GlobalTheory.RatLatIndex in
 
+/- English proof (translation)
+Introduce `g γ hrat`. Use `choose G hG using hrat`. Establish `hGm : γ.mat = (Matrix.of G).map (Rat.castHom ℝ)`. Use extensionality with `i l`. Simplify using `[hG]`.
+
+Use `set Aq := -(Matrix.J (Fin g) ℚ) * (Matrix.of G)ᵀ * Matrix.J (Fin g) ℚ with hAq`. Establish `hA : (γ⁻¹).mat = Aq.map (Rat.castHom ℝ)` using `ratSp_inv_map γ _ hGm`. Use `set N : ℕ := ∏ i, ∏ j, (Aq i j).den with hN`. Establish `hN0 : N ≠ 0`. Rewrite using `[hN, Finset.prod_ne_zero_iff]`.
+
+Introduce `i _`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Conclude with `(Aq i j).den_nz`. Establish `hNR : (N : ℝ) ≠ 0` using `by exact_mod_cast hN0`.
+
+Establish `hAint : ∀ i j, ∃ k : ℤ, (N : ℝ) * (γ⁻¹).mat i j = k`. Introduce `i j`. Rewrite using `[hA, Matrix.map_apply, Rat.coe_castHom]`. Apply `int_of_den_dvd` to reduce the goal to its premises. Conclude with `(Finset.dvd_prod_of_mem _ (Finset.mem_univ j)).trans (Finset.dvd_prod_of_mem (fun i => ∏ j, (Aq i j).den) (Finset.mem_univ i))`.
+
+Establish `hdetA : ((γ⁻¹).mat).det = 1` using `SymplecticGroup.det_eq_one (γ⁻¹).2`. Use `set B1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ := (N : ℝ) • (1 : Matrix _ _ ℝ) with hB1`. Use `set B2 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ := (N : ℝ) • (γ⁻¹).mat with hB2`. Establish `hd1 : B1.det = (N : ℝ) ^ Fintype.card (Fin g ⊕ Fin g)`. Rewrite using `[hB1, Matrix.det_smul, Matrix.det_one, mul_one]`.
+
+Establish `hd2 : B2.det = (N : ℝ) ^ Fintype.card (Fin g ⊕ Fin g)`. Rewrite using `[hB2, Matrix.det_smul, hdetA, mul_one]`. Establish `hu1 : IsUnit B1.det` using `by rw [hd1]; exact (pow_ne_zero _ hNR).isUnit`. Establish `hu2 : IsUnit B2.det` using `by rw [hd2]; exact (pow_ne_zero _ hNR).isUnit`. Establish `hZ1 : ∀ i j, ∃ k : ℤ, B1 i j = k`.
+
+Introduce `i j`. Distinguish the cases in `h : i = j`. Conclude with `⟨N, by simp [hB1, h]⟩`. Conclude with `⟨0, by simp [hB1, h]⟩`. Establish `hZ2 : ∀ i j, ∃ k : ℤ, B2 i j = k`.
+
+Introduce `i j`. Take `⟨k, hk⟩` from `hAint i j`. Conclude with `⟨k, by simp [hB2, hk]⟩`. Establish `hlat : latAct (rowLat B1 hu1) γ = rowLat B2 hu2`. Unfold `latAct rowLat`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, rowBasis_apply, LinearMap.coe_restrictScalars, Matrix.vecMulLinear_apply]`. Use extensionality with `j`.
+
+Simplify using `[hB1, hB2, Matrix.vecMul, dotProduct, Matrix.one_apply, ite_mul]`. Use `⟨rowLat B1 hu1, isLat_rowLat _ _, rowLat_le_stdLat _ _ hZ1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Conclude with `isLat_rowLat _ _`. Rewrite using `[hlat]`.
+
+Conclude with `rowLat_le_stdLat _ _ hZ2`. Establish `h` using `card_quot_rowLat B1 hu1 hZ1`. Rewrite `h` using `[hd1]`. Establish `: (0 : ℝ) < (Nat.card (stdLat g ⧸ (rowLat B1 hu1).submoduleOf (stdLat g)) : ℝ)`. Rewrite using `[h]`.
+
+Check the signs of the components of the expression. Conclude with `this` after adjusting the coercions. Apply `Nat.cast_injective (R := ℝ)` to reduce the goal to its premises. Rewrite using `[hlat, card_quot_rowLat B1 hu1 hZ1, card_quot_rowLat B2 hu2 hZ2, hd1, hd2]`.
+-/
 theorem GlobalTheory.ratSp_exists_sublat_same_index : ∀ (g : ℕ) (γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g),
     (∀ i l, ∃ r : ℚ, γ.mat i l = r) → ∃ M : Submodule ℤ (Fl g), IsLat M ∧ M ≤ stdLat g ∧
       IsLat (latAct M γ) ∧ latAct M γ ≤ stdLat g ∧

@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullRk
 open MeasureTheory GlobalTheory.SplitFlip
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.mem_augRk_of_fibre_eq_zero | exact GlobalTheory.FullRankCoinv.mem_augRk_of_fibre_eq_zero | (intros; apply GlobalTheory.FullRankCoinv.mem_augRk_of_fibre_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.full_rank_zeta_kernel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →
     ∀ Ψ ∈ GlobalTheory.FullRankCoinv.fullRk k n d,

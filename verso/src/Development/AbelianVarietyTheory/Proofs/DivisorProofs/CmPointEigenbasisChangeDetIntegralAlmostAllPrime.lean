@@ -30,6 +30,17 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 open MonObj
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ z f La hz`. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_finset_valuation_div_le_one_of_isLocGen z.K z.LamL.I z.U.det`. Use `⟨S, fun p hp T iK _hfin hval M => ?_⟩` and prove the remaining obligations. Use `letI := (iK.comp (algebraMap c.F z.K)).toAlgebra`. Introduce `φ yT y' g a hφ hmap hchg hg hint`.
+
+Take `⟨A, hA, hloc⟩` from `hz.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 p`. Take `⟨nu, mu, C, hCint, hU, hAmu, hC⟩` from `GlobalTheory.T.tangent_letters_integralLieBasis_eigenframe_relation E H Dw l Xo c z f La hz p T iK M hval A hA φ yT y' g a hφ hmap hchg hg hint`. Set `Cv : Matrix (Fin z.Φ.T.g) (Fin z.Φ.T.g) T.V` to `Matrix.of fun i k => (hCint (z.e.symm i) k).choose`. Establish `hCv : Cv.map (algebraMap T.V T.Fr) = Matrix.of fun i k => C (z.e.symm i) k`. Use extensionality with `i k`.
+
+Conclude with `(hCint (z.e.symm i) k).choose_spec`. Take `⟨hUdet, hdet⟩` from `GlobalTheory.T.det_block_change_of_basis_via_two_families_implicit Dw.mult z.e (fullB yT) (ReciprocityTheory.ChartRestriction.G.PullbackSections.fullB_basis yT) nu mu (z.U.map iK) (A.map iK) C g (by simpa using hU) (by simpa using hAmu) hC`. Establish `e1 : (z.U.map iK).det = iK z.U.det` using `(RingHom.map_det iK z.U).symm`. Establish `e2 : (A.map iK).det = iK A.det` using `(RingHom.map_det iK A).symm`. Establish `e3 : (Cv.map (algebraMap T.V T.Fr)).det = algebraMap T.V T.Fr Cv.det` using `(RingHom.map_det _ Cv).symm`.
+
+Rewrite `hUdet`, `hdet` using `[e1]`. Rewrite `hdet` using `[e2]`. Establish `hU0 : z.U.det ≠ 0` using `fun h => hUdet (by rw [h, map_zero])`. Take `⟨r, hr⟩` from `(hval _).2 (hS p hp A.det hloc hU0)`. Use `⟨Cv.det * r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← e3, hCv, hr, map_div₀, ← mul_div_assoc, div_eq_iff hUdet, hdet]`.
+-/
 theorem GlobalTheory.DetInt.det_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →
     ∃ S : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 z.K)), ∀ p ∉ S, ∀ (T : CDVR) (iK : z.K →+* T.Fr), T.FinRes →

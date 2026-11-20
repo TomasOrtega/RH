@@ -14,6 +14,31 @@ namespace GlobalTheory.ExpLin
 
 open GlobalTheory.TangentOrigin
 
+/- English proof (translation)
+Introduce `X G _ _ g hab hsm y e e' α he he' hα`. Take `⟨Λ, hdisc, -, hker⟩` from `GlobalTheory.T.complexFibreExponential_kernel_full_lattice X G g hab hsm y e' he'`. Use `letI : CommGroup (Over.mk y ⟶ G) := inferInstance`. Set `ex : (Fin g → ℂ) →+ Additive (Over.mk y ⟶ G)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (e' z)) he'.1`. Set `G' : (Fin g → ℂ) →+ Additive (Over.mk y ⟶ G)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (e z ≫ α)) (fun z w ↦ by show e (z + w) ≫ α = (e z ≫ α) * (e w ≫ α)`.
+
+Rewrite using `[he.1]`. Conclude with `MonObj.mul_comp _ _ α)`. Set `pt : (Over.mk y).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (Over.mk y).left, q = pt` using `fun q ↦ Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (e' 0).left pt) (U := ⊤) (Set.mem_univ _)`.
+
+Establish `h0 : ⊤ ≤ (e' 0).left ⁻¹ᵁ U`. Introduce `q _`. Rewrite using `[hsub q]`. Conclude with `hpU`. Establish `hker' : (ex.ker : Set (Fin g → ℂ)) = Λ` using `Set.ext fun z ↦ hker z`.
+
+Establish `hholG : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun z ↦ (e z).left ≫ α.left)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp he.2.2.1 α.left`. Establish `hS0 : (0 : Additive (Over.mk y ⟶ G)) ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}`. Rewrite using `[← map_zero ex]`. Conclude with `h0`. Establish `hsep : ∀ a ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}, ∀ b ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}, (∀ s : Γ(G.left, U), valAt' (Additive.toMul a).left U s = valAt' (Additive.toMul b).left U s) → a = b`.
+
+Introduce `a ha b hb h`. Conclude with `Over.OverMorphism.ext (f := Additive.toMul a) (g := Additive.toMul b) (ext_evalPt (R := ℂ) hU ha hb (RingHom.ext fun s ↦ (valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s))))`. Establish `hSe : IsOpen {z : Fin g → ℂ | ⊤ ≤ (e' z).left ⁻¹ᵁ U}`. Use `(he'.2.2.1 U 0).1` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`.
+
+Conclude with `this`. Establish `hSG : IsOpen {z : Fin g → ℂ | ⊤ ≤ ((e z).left ≫ α.left) ⁻¹ᵁ U}`. Use `(hholG U 0).1` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`.
+
+Establish `hfe : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (e' z).left U s) {z | ⊤ ≤ (e' z).left ⁻¹ᵁ U}`. Introduce `s`. Use `(he'.2.2.1 U s).2` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`.
+
+Establish `hfG : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' ((e z).left ≫ α.left) U s) {z | ⊤ ≤ ((e z).left ≫ α.left) ⁻¹ᵁ U}`. Introduce `s`. Use `(hholG U s).2` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`.
+
+Establish `hD : ∀ w : Fin g → ℂ, (∀ s : Γ(G.left, U), fderiv ℂ (fun z ↦ valAt' (e' z).left U s) 0 w = 0) → w = 0`. Introduce `w hw`. Take `⟨v, hv, -⟩` from `he'.2.2.2.1 w`. Take `⟨v0, hv0, -⟩` from `he'.2.2.2.1 0`. Establish `hvU : ⊤ ≤ v.left ⁻¹ᵁ U` using `(top_le_preimage_iff v.left U).2 (hv.1 ▸ h0)`.
+
+Establish `hv0U : ⊤ ≤ v0.left ⁻¹ᵁ U` using `(top_le_preimage_iff v0.left U).2 (hv0.1 ▸ h0)`. Establish `key : ∀ (u : Sp (DualNumber ℂ) ⟶ G.left) (hu : ⊤ ≤ u ⁻¹ᵁ U) (x : Sp ℂ ⟶ G.left) (hx : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(G.left, U)), spMap fstC ≫ u = x → (evalPt u U hu s).fst = evalPt x U hx s`. Introduce and unpack `u hu x hx s rfl`. Conclude with `(evalPt_spMap_comp fstC u U hu hx s).symm`. Establish `heq : v.left = v0.left`.
+
+Use `ext_evalPt (R := DualNumber ℂ) hU hvU hv0U (RingHom.ext fun s ↦ TrivSqZeroExt.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(key _ hvU _ h0 s hv.1).trans (key _ hv0U _ h0 s hv0.1).symm`. Establish `a` using `hv.2 U hvU s`. Establish `b` using `hv0.2 U hv0U s`. Rewrite `b` using `[map_zero]`.
+
+Conclude with `a.trans ((hw s).trans b.symm)`. Establish `hv0' : IsDerivAt0 (fun z ↦ (e' z).left) w v0.left` using `heq ▸ hv`. Conclude with `(he'.2.2.2.2 v0 hv0.1).unique hv0' hv0`. Take `⟨F, hF, hu⟩` from `GlobalTheory.existsUnique_linear_lift_of_separating (ex := ex) (G := G') he'.2.1 (hker' ▸ isDiscrete_iff_discreteTopology.2 hdisc) (S := {a | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}) (f := fun (s : Γ(G.left, U)) a ↦ valAt' (Additive.toMul a).left U s) hS0 hsep hSe hSG hfe hfG hD`. Conclude with `⟨F, hF, fun M hM ↦ hu M hM⟩`.
+-/
 theorem existsUnique_linear_lift :
     ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G →
       SmoothOfRelativeDimension g G.hom → ∀ (y : Sp ℂ ⟶ X) (e e' : (Fin g → ℂ) → (Over.mk y ⟶ G)) (α : G ⟶ G),

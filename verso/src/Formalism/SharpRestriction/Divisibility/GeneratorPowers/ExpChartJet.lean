@@ -18,6 +18,13 @@ section Jets
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Unfold `psTrunc`. Rewrite using `[map_sum, Finset.sum_eq_single 0]`. Apply the tactic sequence `rw [MvPolynomial.constantCoeff_monomial, if_pos rfl] first | rfl | simp`. Introduce `e _ he`. Rewrite using `[MvPolynomial.constantCoeff_monomial, if_neg he]`.
+
+Introduce `h0`. It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Unfold `degLE`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`.
+
+Use `⟨⟨fun _ => 0, Finset.mem_univ _, ?_⟩, by simp⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 private lemma cc_psTrunc_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ R) :
     MvPolynomial.constantCoeff (psTrunc m f) = MvPowerSeries.constantCoeff f := by
   unfold psTrunc
@@ -35,6 +42,11 @@ private lemma cc_psTrunc_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (m : �
     ext i
     simp
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [MvPolynomial.constantCoeff_coe]; exact hP)`. Consider the case `exact hP`. Consider the case `(show MvPowerSeries.coeff 0 (P : MvPowerSeries κ R) = 0`. Rewrite using `[MvPolynomial.coeff_coe]`.
+
+Conclude with `hP)`. Consider the case `simpa using hP`.
+-/
 theorem const_coeff_coe_zero {κ : Type} (P : MvPolynomial κ R) (hP : MvPolynomial.constantCoeff P = 0) :
     MvPowerSeries.constantCoeff (P : MvPowerSeries κ R) = 0 := by
   first
@@ -44,6 +56,11 @@ theorem const_coeff_coe_zero {κ : Type} (P : MvPolynomial κ R) (hP : MvPolynom
      rw [MvPolynomial.coeff_coe]; exact hP)
   | simpa using hP
 
+/- English proof (translation)
+Establish `hX : ∀ j, (MvPolynomial.X j : MvPolynomial κ R) ∈ orig R κ` using `fun j => by`. Unfold `orig`. Conclude with `Ideal.subset_span ⟨j, rfl⟩`. Rewrite using `[MvPolynomial.monomial_eq]`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises.
+
+Use `Ideal.pow_le_pow_right he ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun j _ => Ideal.pow_mem_pow (hX j) _`.
+-/
 private lemma mono_mem_lemma_2 {κ : Type} (m : ℕ) (e : κ →₀ ℕ) (c : R) (he : m + 1 ≤ e.sum fun _ k => k) :
     MvPolynomial.monomial e c ∈ orig R κ ^ (m + 1) := by
   have hX : ∀ j, (MvPolynomial.X j : MvPolynomial κ R) ∈ orig R κ := fun j => by
@@ -55,6 +72,9 @@ private lemma mono_mem_lemma_2 {κ : Type} (m : ℕ) (e : κ →₀ ℕ) (c : R)
   rw [Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]
   exact Ideal.prod_mem_prod fun j _ => Ideal.pow_mem_pow (hX j) _
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.as_sum Q]`. Use `Ideal.sum_mem _ fun e he => mono_mem_lemma_2 m e _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `(MvPolynomial.mem_support_iff.mp he) (h e (by omega))`.
+-/
 private lemma mem_of_coeff_lemma_3 {κ : Type} (m : ℕ) (Q : MvPolynomial κ R)
     (h : ∀ e : κ →₀ ℕ, (e.sum fun _ k => k) ≤ m → MvPolynomial.coeff e Q = 0) : Q ∈ orig R κ ^ (m + 1) := by
   rw [MvPolynomial.as_sum Q]
@@ -62,6 +82,13 @@ private lemma mem_of_coeff_lemma_3 {κ : Type} (m : ℕ) (Q : MvPolynomial κ R)
   by_contra hlt
   exact (MvPolynomial.mem_support_iff.mp he) (h e (by omega))
 
+/- English proof (translation)
+Unfold `degLE`. Rewrite using `[Finset.mem_filter, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+
+Use `⟨⟨fun i => ⟨e i, ?_⟩, Finset.mem_univ _, ?_⟩, h⟩` and prove the remaining obligations. Establish `hi : e i ≤ e.sum fun _ k => k`. Distinguish the cases in `hs : i ∈ e.support`. Conclude with `Finset.single_le_sum (f := fun j => e j) (fun j _ => Nat.zero_le _) hs`. Establish `h0 : e i = 0` using `by simpa using hs`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 private lemma mem_degLE_lemma_5 {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (e : κ →₀ ℕ) :
     e ∈ degLE m ↔ (e.sum fun _ k => k) ≤ m := by
   unfold degLE
@@ -79,6 +106,9 @@ private lemma mem_degLE_lemma_5 {κ : Type} [Fintype κ] [DecidableEq κ] (m : �
     · ext i
       simp
 
+/- English proof (translation)
+Unfold `psTrunc`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`.
+-/
 private lemma coeff_psTrunc_lemma_4 {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ R)
     (e : κ →₀ ℕ) :
     MvPolynomial.coeff e (psTrunc m f) = if e ∈ degLE m then MvPowerSeries.coeff e f else 0 := by
@@ -87,6 +117,11 @@ private lemma coeff_psTrunc_lemma_4 {κ : Type} [Fintype κ] [DecidableEq κ] (m
   simp only [MvPolynomial.coeff_monomial]
   rw [Finset.sum_ite_eq']
 
+/- English proof (translation)
+Establish `e : ∀ i, psTrunc m (g i) - MvPolynomial.C (MvPolynomial.constantCoeff (psTrunc m (g i))) = psTrunc m (g i)` using `fun i => by rw [cc_psTrunc_lemma, hg i, map_zero, sub_zero]`. Unfold `jetSubstPS jetMap`. Use `first`. Consider the case `(simp only [e]; done)`. Consider the case `(congr 1; simp only [e]; done)`.
+
+Consider the case `(congr; funext i; exact e i)`.
+-/
 theorem jetSubstPS_eq {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (g : κ → MvPowerSeries κ' R)
     (hg : ∀ i, MvPowerSeries.constantCoeff (g i) = 0) :
     (jetSubstPS (m := m) g) = jetMap (fun i => psTrunc m (g i)) (fun i => psTrunc_mem_orig m (g i) (hg i)) := by
@@ -98,11 +133,17 @@ theorem jetSubstPS_eq {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) 
   | (congr 1; simp only [e]; done)
   | (congr; funext i; exact e i)
 
+/- English proof (translation)
+Rewrite using `[psJet_subst m g hg, jetSubstPS_eq m g hg]`.
+-/
 theorem jetSubstPS_psJet {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (m : ℕ)
     (g : κ → MvPowerSeries κ' R) (hg : ∀ i, MvPowerSeries.constantCoeff (g i) = 0) (f : MvPowerSeries κ R) :
     (jetSubstPS (m := m) g) (psJet m f) = psJet m (MvPowerSeries.subst g f) := by
   rw [psJet_subst m g hg, jetSubstPS_eq m g hg]
 
+/- English proof (translation)
+Unfold `jetSubstPS jetMap psJet`. Simplify using `[liftJet, cc_psTrunc_lemma, hg]`. Use `erw [Ideal.Quotient.lift_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem jetSubstPS_mk {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (g : κ → MvPowerSeries κ' R)
     (hg : ∀ i, MvPowerSeries.constantCoeff (g i) = 0) (i : κ) :
     (jetSubstPS (m := m) g) (Ideal.Quotient.mk _ (MvPolynomial.X i)) = psJet m (g i) := by
@@ -111,6 +152,11 @@ theorem jetSubstPS_mk {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) 
   erw [Ideal.Quotient.lift_mk]
   simp
 
+/- English proof (translation)
+Unfold `jetSubstP jetSubstPS jetMap`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, MvPolynomial.aeval_X, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_of_coeff_lemma_3` to reduce the goal to its premises. Introduce `e he`. Simplify using `[MvPolynomial.coeff_sub, coeff_psTrunc_lemma_4, (mem_degLE_lemma_5 m e).mpr he, MvPolynomial.coeff_coe, cc_psTrunc_lemma, hP, fun i => const_coeff_coe_zero _ (hP i)]`.
+-/
 theorem jetSubstP_eq_jetSubstPS {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (P : κ → MvPolynomial κ' R)
     (hP : ∀ i, MvPolynomial.constantCoeff (P i) = 0) :
     jetSubstP m P = jetSubstPS (m := m) (fun i => (P i : MvPowerSeries κ' R)) := by
@@ -125,6 +171,9 @@ theorem jetSubstP_eq_jetSubstPS {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] 
   simp [MvPolynomial.coeff_sub, coeff_psTrunc_lemma_4, (mem_degLE_lemma_5 m e).mpr he, MvPolynomial.coeff_coe,
     cc_psTrunc_lemma, hP, fun i => const_coeff_coe_zero _ (hP i)]
 
+/- English proof (translation)
+Unfold `jetSubstPS jetMap`. Simplify using `[liftJet, cc_psTrunc_lemma]`. Use `erw [Ideal.Quotient.lift_mk]`. Simplify using the standard rewrite rules.
+-/
 private lemma jetSubstPS_X_lemma_6 {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (g : κ → MvPowerSeries κ' R)
     (i : κ) :
     (jetSubstPS (m := m) g) (Ideal.Quotient.mk _ (MvPolynomial.X i)) =
@@ -134,6 +183,13 @@ private lemma jetSubstPS_X_lemma_6 {κ κ' : Type} [Fintype κ'] [DecidableEq κ
   erw [Ideal.Quotient.lift_mk]
   simp
 
+/- English proof (translation)
+Unfold `jetTrunc`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Rewrite using `[jetSubstPS_X_lemma_6]`. Use `first`. Consider the case `(simp only [Ideal.Quotient.factorₐ_apply_mk]; rw [jetSubstPS_X_lemma_6, Ideal.Quotient.eq])`. Consider the case `(simp only [Ideal.Quotient.factorₐ_mk]; rw [jetSubstPS_X_lemma_6, Ideal.Quotient.eq])`. Consider the case `(erw [Ideal.Quotient.factor_mk, Ideal.Quotient.factor_mk]; rw [jetSubstPS_X_lemma_6, Ideal.Quotient.eq])`.
+
+Apply `mem_of_coeff_lemma_3` to reduce the goal to its premises. Introduce `e he`. Simplify using `[MvPolynomial.coeff_sub, coeff_psTrunc_lemma_4, (mem_degLE_lemma_5 m e).mpr he, (mem_degLE_lemma_5 (m + 1) e).mpr (by omega)]`.
+-/
 theorem jetSubstPS_trunc' {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (g : κ → MvPowerSeries κ' R) :
     (jetTrunc : Jet R κ' (m + 1) →ₐ[R] Jet R κ' m).comp (jetSubstPS (m := m + 1) g) =
       (jetSubstPS (m := m) g).comp (jetTrunc : Jet R κ (m + 1) →ₐ[R] Jet R κ m) := by
@@ -152,6 +208,9 @@ theorem jetSubstPS_trunc' {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : �
   simp [MvPolynomial.coeff_sub, coeff_psTrunc_lemma_4, (mem_degLE_lemma_5 m e).mpr he,
     (mem_degLE_lemma_5 (m + 1) e).mpr (by omega)]
 
+/- English proof (translation)
+Unfold `psJet jetAug`. Use `first`. Consider the case `(simp [liftJet, cc_psTrunc_lemma, MvPolynomial.coe_aeval_eq_eval, MvPolynomial.eval_zero']; done)`. Consider the case `(simp [liftJet])`. Consider the case `unfold liftJet`.
+-/
 theorem aug_psJet {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ R) :
     (jetAug : Jet R κ m →ₐ[R] R) (psJet m f) = MvPowerSeries.constantCoeff f := by
   unfold psJet jetAug
@@ -160,6 +219,11 @@ theorem aug_psJet {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPow
   | (simp [liftJet])
   | unfold liftJet
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[jetSubstPS_mk m g hg i, aug_psJet, hg i]`.
+
+Unfold `jetAug`. Simplify using `[liftJet]`.
+-/
 theorem aug_comp_jetSubstPS {κ κ' : Type} [Fintype κ'] [DecidableEq κ'] (m : ℕ) (g : κ → MvPowerSeries κ' R)
     (hg : ∀ i, MvPowerSeries.constantCoeff (g i) = 0) :
     (jetAug : Jet R κ' m →ₐ[R] R).comp (jetSubstPS (m := m) g) = jetAug := by
@@ -184,6 +248,11 @@ def ExpActOf (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin 
     MvPowerSeries.subst (fun q : Fin 1 × Fin (dL Dw) =>
       algebraMap c.F S (embK c ((ltIdx Dw).symm q.2).1 a) • MvPowerSeries.X q) (φ j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Unfold `actP`. Rewrite using `[MvPolynomial.coe_mul, MvPolynomial.coe_C, MvPolynomial.coe_X]`. Use `first`. Consider the case `rw [MvPowerSeries.smul_eq_C_mul]`.
+
+Consider the case `(rw [Algebra.smul_def, MvPowerSeries.algebraMap_apply, Algebra.id.map_eq_self])`. Consider the case `(ext e; simp [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_smul])`.
+-/
 theorem actS_eq (a : 𝓞 E) :
     (fun q : Fin 1 × Fin (dL Dw) => algebraMap c.F S (embK c ((ltIdx Dw).symm q.2).1 a) •
       (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) =
@@ -196,6 +265,15 @@ theorem actS_eq (a : 𝓞 E) :
   | (rw [Algebra.smul_def, MvPowerSeries.algebraMap_apply, Algebra.id.map_eq_self])
   | (ext e; simp [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_smul])
 
+/- English proof (translation)
+Unfold `atPt`. Establish `hS : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin (dL Dw) => (MvPowerSeries.X (b, q.2) : MvPowerSeries (Fin n × Fin (dL Dw)) S))` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => by simp`.
+
+Rewrite using `[MvPowerSeries.constantCoeff_subst hS]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality.
+
+Simplify using `[hg]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, d s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hd (Finsupp.ext h)`.
+
+Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs), smul_zero]`. Simplify using `[MvPowerSeries.constantCoeff_X, zero_pow hs]`.
+-/
 theorem cc_atPt {n : ℕ} (b : Fin n) {g : MvPowerSeries (Fin 1 × Fin (dL Dw)) S}
     (hg : MvPowerSeries.constantCoeff g = 0) : MvPowerSeries.constantCoeff (atPt (Dw := Dw) b g) = 0 := by
   unfold atPt
@@ -218,6 +296,11 @@ theorem cc_atPt {n : ℕ} (b : Fin n) {g : MvPowerSeries (Fin 1 × Fin (dL Dw)) 
     rw [Finsupp.prod, map_prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs), smul_zero]
     simp [MvPowerSeries.constantCoeff_X, zero_pow hs]
 
+/- English proof (translation)
+Unfold `jetCopy jetSubstPS jetMap`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, MvPolynomial.aeval_X, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_of_coeff_lemma_3` to reduce the goal to its premises. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_sub, coeff_psTrunc_lemma_4, if_pos ((mem_degLE_lemma_5 m e).mpr he), cc_psTrunc_lemma, MvPowerSeries.constantCoeff_X, map_zero, MvPolynomial.coeff_zero, sub_zero, ← MvPolynomial.coe_X, MvPolynomial.coeff_coe, sub_self]`.
+-/
 theorem jetCopy_eq {d n : ℕ} (m : ℕ) (i : Fin n) :
     jetCopy (S := S) d m i = jetSubstPS (m := m)
       (fun p : Fin 1 × Fin d => (MvPowerSeries.X (i, p.2) : MvPowerSeries (Fin n × Fin d) S)) := by
@@ -235,17 +318,28 @@ theorem jetCopy_eq {d n : ℕ} (m : ℕ) (i : Fin n) :
 
 variable (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
 
+/- English proof (translation)
+Rewrite using `[xExp, ← Category.assoc, GermD.homAt_comp, jφ, aug_comp_jetSubstPS m (fun p : Fin 1 × Fin C.d => φ p.2) (fun p => hφ.const p.2)]`. Conclude with `C.chart.zero m`.
+-/
 theorem xExp_zero (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) :
     homAt y.x (jetAug : Jet S (Fin 1 × Fin (dL Dw)) m →ₐ[S] S) ≫ xExp y C φ m = 1 := by
   rw [xExp, ← Category.assoc, GermD.homAt_comp, jφ, aug_comp_jetSubstPS m (fun p : Fin 1 × Fin C.d => φ p.2) (fun p => hφ.const p.2)]
   exact C.chart.zero m
 
+/- English proof (translation)
+Rewrite using `[xExp, xExp, ← Category.assoc, GermD.homAt_comp, jφ, jφ, jetSubstPS_trunc', ← GermD.homAt_comp, Category.assoc, C.chart.trunc m]`.
+-/
 theorem xExp_trunc (m : ℕ) :
     homAt y.x (jetTrunc : Jet S (Fin 1 × Fin (dL Dw)) (m + 1) →ₐ[S] Jet S (Fin 1 × Fin (dL Dw)) m) ≫
       xExp y C φ (m + 1) = xExp y C φ m := by
   rw [xExp, xExp, ← Category.assoc, GermD.homAt_comp, jφ, jφ, jetSubstPS_trunc', ← GermD.homAt_comp,
     Category.assoc, C.chart.trunc m]
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Establish `h1 : (jetCopy (S` using `S) C.d m i) (Ideal.Quotient.mk _ (MvPolynomial.X p)) = Ideal.Quotient.mk _ (MvPolynomial.X (i, p.2)) := by`. Rewrite using `[jetCopy, jetMap_mk, MvPolynomial.aeval_X]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, h1, jetSubstPS_mk m (fun p : Fin 2 × Fin C.d => atPt p.1 (φ p.2)) (fun q => cc_atPt q.1 (hφ.const q.2)), jφ, jetSubstPS_mk m (fun p : Fin 1 × Fin C.d => φ p.2) (fun q => hφ.const q.2), jetCopy_eq, jetSubstPS_psJet m (fun p : Fin 1 × Fin (dL …`.
+
+Apply the tactic sequence `all_goals rfl`.
+-/
 theorem jφ_copy (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) (i : Fin 2) :
     (jetCopy (dL Dw) m i).comp (jφ φ m) =
       (jetSubstPS (m := m) (fun p : Fin 2 × Fin C.d => atPt p.1 (φ p.2))).comp (jetCopy C.d m i) := by
@@ -260,6 +354,11 @@ theorem jφ_copy (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) (i : Fin 2) :
       (fun _ => MvPowerSeries.constantCoeff_X _)]
   all_goals rfl
 
+/- English proof (translation)
+Establish `hP : ∀ q, MvPolynomial.constantCoeff (addP (Dw` using `Dw) (S := S) q) = 0 := fun q => by simp [addP]`. Establish `hF : jetSubstP m (fun p : Fin 1 × Fin C.d => psTrunc m (C.B.G.F p.2)) = jetSubstPS (m` using `m) (fun p : Fin 1 × Fin C.d => C.B.G.F p.2) := rfl`. Rewrite using `[hF, jetSubstP_eq_jetSubstPS m _ hP]`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`.
+
+Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jφ, jetSubstPS_mk m (fun p : Fin 1 × Fin C.d => φ p.2) (fun q => hφ.const q.2), jetSubstPS_mk m (fun p : Fin 1 × Fin C.d => C.B.G.F p.2) (fun q => C.B.G.const q.2), jetSubstPS_psJet m (fun q : Fin 1 × Fin (dL Dw) => (addP (Dw := Dw) (S := S) …`. Simplify using `only [addP, MvPolynomial.coe_add, MvPolynomial.coe_X]`.
+-/
 theorem jφ_law (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) :
     (jetSubstP m (addP (Dw := Dw) (S := S))).comp (jφ φ m) =
       (jetSubstPS (m := m) (fun p : Fin 2 × Fin C.d => atPt p.1 (φ p.2))).comp
@@ -276,6 +375,9 @@ theorem jφ_law (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) :
     jetSubstPS_psJet m (fun p : Fin 2 × Fin C.d => atPt p.1 (φ p.2)) (fun q => cc_atPt q.1 (hφ.const q.2)), hφ.hom p.2]
   simp only [addP, MvPolynomial.coe_add, MvPolynomial.coe_X]
 
+/- English proof (translation)
+Establish `e0 : ∀ i : Fin 2, jpt y (dL Dw) (xExp y C φ) m i = homAt y.x (jetSubstPS (m` using `m) (fun p : Fin 2 × Fin C.d => atPt p.1 (φ p.2))) ≫ jpt y C.d C.x m i := by`. Introduce `i`. Rewrite using `[jpt, jpt, xExp, ← Category.assoc, GermD.homAt_comp, jφ_copy C φ hφ, ← GermD.homAt_comp, Category.assoc]`. Rewrite using `[e0, e0, ← MonObj.comp_mul, ← C.chart.law m, xExp, ← Category.assoc, GermD.homAt_comp, jφ_law C φ hφ, ← GermD.homAt_comp, Category.assoc]`.
+-/
 theorem xExp_law (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) :
     homAt y.x (jetSubstP m (addP (Dw := Dw) (S := S))) ≫ xExp y C φ m =
       jpt y (dL Dw) (xExp y C φ) m (0 : Fin 2) * jpt y (dL Dw) (xExp y C φ) m (1 : Fin 2) := by
@@ -286,6 +388,11 @@ theorem xExp_law (hφ : IsExpOf C.B.G.F C.uvec φ) (m : ℕ) :
   rw [e0, e0, ← MonObj.comp_mul, ← C.chart.law m, xExp, ← Category.assoc, GermD.homAt_comp, jφ_law C φ hφ,
     ← GermD.homAt_comp, Category.assoc]
 
+/- English proof (translation)
+Establish `hP : ∀ q, MvPolynomial.constantCoeff (actP (Dw` using `Dw) (S := S) c a q) = 0 := fun q => by simp [actP]`. Establish `hA' : (jφ φ m).comp (jetSubstPS (m` using `m) (fun p : Fin 1 × Fin C.d => C.B.A.act a p.2)) = (jetSubstP m (actP (Dw := Dw) (S := S) c a)).comp (jφ φ m) := by`. Rewrite using `[jetSubstP_eq_jetSubstPS m _ hP]`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `p`.
+
+Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, jφ, jetSubstPS_mk m (fun p : Fin 1 × Fin C.d => C.B.A.act a p.2) (fun q => C.B.A.const a q.2), jetSubstPS_mk m (fun p : Fin 1 × Fin C.d => φ p.2) (fun q => hφ.const q.2), jetSubstPS_psJet m (fun p : Fin 1 × Fin C.d => φ p.2) (fun q => hφ.con …`. Establish `hC : C.x m ≫ Xo.univ.t.act.act a = homAt y.x (jetSubstPS (m` using `m) (fun p : Fin 1 × Fin C.d => C.B.A.act a p.2)) ≫ C.x m := C.chart.act m a`. Rewrite using `[xExp, Category.assoc, hC, ← Category.assoc, GermD.homAt_comp, hA', ← GermD.homAt_comp, Category.assoc]`.
+-/
 theorem xExp_act (hφ : IsExpOf C.B.G.F C.uvec φ) (hA : ExpActOf C φ) (m : ℕ) (a : 𝓞 E) :
     xExp y C φ m ≫ Xo.univ.t.act.act a =
       homAt y.x (jetSubstP m (actP (Dw := Dw) (S := S) c a)) ≫ xExp y C φ m := by
@@ -318,8 +425,16 @@ variable (C : ChartAt Xo c y)
 def pOf (g : Fin 1 × Fin C.d → S) : overAt y.x (DualNumber S) ⟶ Xo.univ.t.G :=
   homAt y.x (tp g) ≫ C.x 1
 
+/- English proof (translation)
+The claim follows from `Prod.ext (Subsingleton.elim _ _) rfl`.
+-/
 theorem fin_one_pair_eq {d : ℕ} (q : Fin 1 × Fin d) : ((0 : Fin 1), q.2) = q := Prod.ext (Subsingleton.elim _ _) rfl
 
+/- English proof (translation)
+Establish `h : (tp (0 : Fin 1 × Fin C.d → S)) = (Algebra.ofId S (DualNumber S)).comp (jetAug : Jet S (Fin 1 × Fin C.d) (0 + 1) →ₐ[S] S)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[tp_mk, AlgHom.comp_apply]`. Use `show TrivSqZeroExt.inr (0 : S) = algebraMap S (DualNumber S) (MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.X q))`.
+
+Rewrite using `[MvPolynomial.aeval_X, map_zero, TrivSqZeroExt.inr_zero]`. Establish `hz : homAt y.x (jetAug : Jet S (Fin 1 × Fin C.d) (0 + 1) →ₐ[S] S) ≫ C.x 1 = 1` using `C.chart.zero 1`. Rewrite using `[pOf, h, ← GermD.homAt_comp, Category.assoc, hz, MonObj.comp_one]`.
+-/
 theorem pOf_zero : pOf C 0 = 1 := by
   have h : (tp (0 : Fin 1 × Fin C.d → S)) =
       (Algebra.ofId S (DualNumber S)).comp (jetAug : Jet S (Fin 1 × Fin C.d) (0 + 1) →ₐ[S] S) := by
@@ -335,6 +450,17 @@ theorem pOf_zero : pOf C 0 = 1 := by
 def tp2 (g g' : Fin 1 × Fin C.d → S) : Jet S (Fin 2 × Fin C.d) (0 + 1) →ₐ[S] DualNumber S :=
   tp (fun p : Fin 2 × Fin C.d => (![fun j => g (0, j), fun j => g' (0, j)] : Fin 2 → Fin C.d → S) p.1 p.2)
 
+/- English proof (translation)
+Establish `hc : ∀ i : Fin 2, (tp2 C g g').comp (jetCopy C.d (0 + 1) i) = tp (fun q : Fin 1 × Fin C.d => (![fun j => g (0, j), fun j => g' (0, j)] : Fin 2 → Fin C.d → S) i q.2)`. Introduce `i`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[AlgHom.comp_apply, jetCopy, jetMap_mk, MvPolynomial.aeval_X, tp2, tp_mk, tp_mk]`.
+
+Establish `h0 : tp (fun q : Fin 1 × Fin C.d => (![fun j => g (0, j), fun j => g' (0, j)] : Fin 2 → Fin C.d → S) 0 q.2) = tp g`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `only [Matrix.cons_val_zero, fin_one_pair_eq]`. Establish `h1 : tp (fun q : Fin 1 × Fin C.d => (![fun j => g (0, j), fun j => g' (0, j)] : Fin 2 → Fin C.d → S) 1 q.2) = tp g'`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `only [Matrix.cons_val_one, Matrix.cons_val_zero, fin_one_pair_eq]`. Establish `hF : (tp2 C g g').comp (jetSubstPS (m` using `0 + 1) (fun p : Fin 1 × Fin C.d => C.B.G.F p.2)) = tp (g + g') := by`. Apply `jet_hom_ext` to reduce the goal to its premises.
+
+Introduce `q`. Rewrite using `[AlgHom.comp_apply, jetSubstPS_mk (0 + 1) (fun p : Fin 1 × Fin C.d => C.B.G.F p.2) (fun p => C.B.G.const p.2), tp2, tp_psJet, tp_mk, C.B.G.const, TrivSqZeroExt.inl_zero, zero_add, lin_F]`. Simplify using `only [Pi.add_apply, fin_one_pair_eq]`. Establish `hl : homAt y.x (jetSubstPS (m` using `0 + 1) (fun p : Fin 1 × Fin C.d => C.B.G.F p.2)) ≫ C.x 1 = (homAt y.x (jetCopy C.d (0 + 1) (0 : Fin 2)) ≫ C.x 1) * (homAt y.x (jetCopy C.d (0 + 1) (1 : Fin 2)) ≫ C.x 1) := C.chart.law 1`. Establish `e` using `congrArg (fun f => homAt y.x (tp2 C g g') ≫ f) hl`.
+
+Simplify using `only [MonObj.comp_mul, ← Category.assoc, GermD.homAt_comp, hc, hF, h0, h1] at e`. Conclude with `e`.
+-/
 theorem pOf_add (g g' : Fin 1 × Fin C.d → S) : pOf C (g + g') = pOf C g * pOf C g' := by
   have hc : ∀ i : Fin 2, (tp2 C g g').comp (jetCopy C.d (0 + 1) i) =
       tp (fun q : Fin 1 × Fin C.d => (![fun j => g (0, j), fun j => g' (0, j)] : Fin 2 → Fin C.d → S) i q.2) := by
@@ -365,11 +491,19 @@ theorem pOf_add (g g' : Fin 1 × Fin C.d → S) : pOf C (g + g') = pOf C g * pOf
   simp only [MonObj.comp_mul, ← Category.assoc, GermD.homAt_comp, hc, hF, h0, h1] at e
   exact e
 
+/- English proof (translation)
+The claim follows from `| 0, f => by rw [Fin.sum_univ_zero, List.ofFn_zero, List.prod_nil, pOf_zero] | n + 1, f => by rw [Fin.sum_univ_succ, pOf_add, pOf_sum n, List.ofFn_succ, List.prod_cons]`.
+-/
 theorem pOf_sum : ∀ (n : ℕ) (f : Fin n → Fin 1 × Fin C.d → S),
     pOf C (∑ i, f i) = (List.ofFn fun i => pOf C (f i)).prod
   | 0, f => by rw [Fin.sum_univ_zero, List.ofFn_zero, List.prod_nil, pOf_zero]
   | n + 1, f => by rw [Fin.sum_univ_succ, pOf_add, pOf_sum n, List.ofFn_succ, List.prod_cons]
 
+/- English proof (translation)
+Establish `h : (TrivSqZeroExt.map (a • LinearMap.id : S →ₗ[S] S)).comp (tp g) = tp (a • g)`. Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[AlgHom.comp_apply, tp_mk, tp_mk, TrivSqZeroExt.map_inr]`. Both sides reduce to the same expression.
+
+Rewrite using `[pOf, ← h]`. Simplify using `only [Over.comp_left, homAt, Over.homMk_left, ← Category.assoc, spMap, epsMul, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem eps_pOf (a : S) (g : Fin 1 × Fin C.d → S) :
     spMap (epsMul a) ≫ (homAt y.x (tp g) ≫ C.x 1).left = (pOf C (a • g)).left := by
   have h : (TrivSqZeroExt.map (a • LinearMap.id : S →ₗ[S] S)).comp (tp g) = tp (a • g) := by
@@ -384,6 +518,9 @@ theorem eps_pOf (a : S) (g : Fin 1 × Fin C.d → S) :
 
 variable (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
 
+/- English proof (translation)
+Apply `jet_hom_ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[AlgHom.comp_apply, jφ, jetSubstPS_mk (0 + 1) (fun p : Fin 1 × Fin C.d => φ p.2) (fun p => hφ.const p.2), jetTan_eq_tp, tp_psJet, tp_mk, hφ.const, TrivSqZeroExt.inl_zero, zero_add]`. Simplify using `only [ite_mul, _root_.one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem tan_jφ (hφ : IsExpOf C.B.G.F C.uvec φ) (j : Fin (dL Dw)) :
     (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin (dL Dw)) (0 + 1) →ₐ[S] DualNumber S).comp (jφ φ (0 + 1)) =
       tp (fun q : Fin 1 × Fin C.d => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ q.2)) := by
@@ -393,6 +530,19 @@ theorem tan_jφ (hφ : IsExpOf C.B.G.F C.uvec φ) (j : Fin (dL Dw)) :
     jetTan_eq_tp, tp_psJet, tp_mk, hφ.const, TrivSqZeroExt.inl_zero, zero_add]
   simp only [ite_mul, _root_.one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hv : ∀ j : Fin (dL Dw), homAt y.x (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin (dL Dw)) (0 + 1) →ₐ[S] DualNumber S) ≫ xExp y C φ 1 = homAt y.x (tp fun q : Fin 1 × Fin C.d => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ q.2)) ≫ C.x 1`. Introduce `j`. Use `show homAt y.x _ ≫ (homAt y.x (jφ φ (0 + 1)) ≫ C.x 1) = _`. Rewrite using `[← Category.assoc, GermD.homAt_comp, tan_jφ C φ hφ j]`. Take `⟨u, hu, hprod⟩` from `C.chart.tan ℓ`.
+
+Establish `hu' : u = fun i => pOf C (C.uvec ℓ i • fun q : Fin 1 × Fin C.d => if q = ((0 : Fin 1), i) then (1 : S) else 0)`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i]`. Simplify using `only`.
+
+Rewrite using `[jetTan_eq_tp, eps_pOf]`. Establish `hq : ∀ (q : Fin 1 × Fin C.d) (i : Fin C.d), (q = ((0 : Fin 1), i)) = (i = q.2)` using `fun q i => propext ⟨fun h => by rw [h], fun h => by rw [h, fin_one_pair_eq]⟩`. Establish `hs1 : (∑ i, C.uvec ℓ i • fun q : Fin 1 × Fin C.d => if q = ((0 : Fin 1), i) then (1 : S) else 0) = fun q => C.uvec ℓ q.2`. Use function extensionality and compare the values at `q`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, hq, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hy : (pOf C fun q => C.uvec ℓ q.2).left = y.u ℓ.1 ℓ.2`. Rewrite using `[← hs1, pOf_sum, ← hprod, hu']`. Establish `hs2 : (∑ j : Fin (dL Dw), (if j = ltIdx Dw ℓ then (1 : S) else 0) • fun q : Fin 1 × Fin C.d => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ q.2)) = fun q => C.uvec ℓ q.2`. Use function extensionality and compare the values at `q`.
+
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[_root_.one_mul]`. Conclude with `hφ.lin ℓ q.2`. Use `⟨fun j => pOf C ((if j = ltIdx Dw ℓ then (1 : S) else 0) • fun q : Fin 1 × Fin C.d => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ q.2)), fun j => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[hv j, eps_pOf]`. Rewrite using `[← pOf_sum, hs2, hy]`.
+-/
 theorem xExp_tan (hφ : IsExpOf C.B.G.F C.uvec φ) (ℓ : Lt1 Dw) : IsCombAt y.x
     (fun j : Fin (dL Dw) => (homAt y.x (jetTan ((0 : Fin 1), j) :
       Jet S (Fin 1 × Fin (dL Dw)) (0 + 1) →ₐ[S] DualNumber S) ≫ xExp y C φ 1).left)
@@ -443,6 +593,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
+/- English proof (translation)
+The claim follows from `xExp_zero C φ hφ trunc := xExp_trunc C φ law := xExp_law C φ hφ act := xExp_act C φ hφ hA tan := xExp_tan C φ hφ`.
+-/
 theorem isExpChart_of_expOf (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : IsExpOf C.B.G.F C.uvec φ) (hA : ExpActOf C φ) : IsExpChart y (xExp y C φ) where
   zero := xExp_zero C φ hφ

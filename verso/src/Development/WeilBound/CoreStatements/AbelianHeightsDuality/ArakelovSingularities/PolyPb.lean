@@ -17,6 +17,11 @@ def sumTensEquiv (σ τ : Type) : MvPolynomial (τ ⊕ σ) k ≃+* MvPolynomial 
   (MvPolynomial.sumAlgEquiv k τ σ).toRingEquiv.trans
     (MvPolynomial.algebraTensorAlgEquiv k (MvPolynomial σ k)).symm.toRingEquiv
 
+/- English proof (translation)
+Establish `h1 : (MvPolynomial.sumAlgEquiv k τ σ) (MvPolynomial.C r) = MvPolynomial.C (MvPolynomial.C r)`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgEquiv.commutes]`. Both sides reduce to the same expression. Establish `h2 : (MvPolynomial.C (MvPolynomial.C r) : MvPolynomial τ (MvPolynomial σ k)) = MvPolynomial.monomial 0 (MvPolynomial.C r)` using `rfl`. Use `show (MvPolynomial.algebraTensorAlgEquiv k (MvPolynomial σ k)).symm ((MvPolynomial.sumAlgEquiv k τ σ) (MvPolynomial.C r)) = _`.
+
+Rewrite using `[h1, h2, MvPolynomial.algebraTensorAlgEquiv_symm_monomial, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem sumTensEquiv_C (σ τ : Type) (r : k) :
     sumTensEquiv σ τ (MvPolynomial.C r) = algebraMap k (MvPolynomial σ k ⊗[k] MvPolynomial τ k) r := by
   have h1 : (MvPolynomial.sumAlgEquiv k τ σ) (MvPolynomial.C r) = MvPolynomial.C (MvPolynomial.C r) := by
@@ -42,6 +47,9 @@ variable {f g} {e : Sp (MvPolynomial σ k) ⟶ X} {e' : Sp (MvPolynomial τ k) �
   {he : e ≫ f = spMap (MvPolynomial.C : k →+* MvPolynomial σ k)}
   {he' : e' ≫ g = spMap (MvPolynomial.C : k →+* MvPolynomial τ k)}
 
+/- English proof (translation)
+Unfold `prodChart`. Establish `: IsIso (CommRingCat.ofHom (sumTensEquiv (k` using `k) σ τ).symm.toRingHom) := (sumTensEquiv (k := k) σ τ).symm.toCommRingCatIso.isIso_hom`. Establish `: IsIso (spMap (sumTensEquiv (k` using `k) σ τ).symm.toRingHom) := inferInstanceAs (IsIso (Spec.map _))`. Establish `: IsOpenImmersion (pullback.map (Spec.map (CommRingCat.ofHom (algebraMap k (MvPolynomial σ k)))) (Spec.map (CommRingCat.ofHom (algebraMap k (MvPolynomial τ k)))) f g e e' (𝟙 _) (by rw [Category.comp_id, he]; rfl) (by rw [Category.comp_id, he']; rfl))` using `Scheme.pullback_map_isOpenImmersion _ _ _ _ _ _ _ _ _`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_prodChart [IsOpenImmersion e] [IsOpenImmersion e'] :
     IsOpenImmersion (prodChart f g e e' he he') := by
   unfold prodChart
@@ -54,6 +62,11 @@ theorem isOpenImmersion_prodChart [IsOpenImmersion e] [IsOpenImmersion e'] :
     Scheme.pullback_map_isOpenImmersion _ _ _ _ _ _ _ _ _
   infer_instance
 
+/- English proof (translation)
+Unfold `prodChart`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst_assoc, Category.assoc, he, pullbackSpecIso_inv_fst_assoc]`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use `ext1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(sumTensEquiv (k := k) σ τ).symm (Algebra.TensorProduct.includeLeftRingHom (MvPolynomial.C r)) = MvPolynomial.C r`. Rewrite using `[RingEquiv.symm_apply_eq, sumTensEquiv_C]`. Both sides reduce to the same expression.
+-/
 theorem prodChart_str : prodChart f g e e' he he' ≫ (pullback.fst f g ≫ f) =
     spMap (MvPolynomial.C : k →+* MvPolynomial (τ ⊕ σ) k) := by
   unfold prodChart
@@ -68,6 +81,17 @@ theorem prodChart_str : prodChart f g e e' he he' ≫ (pullback.fst f g ≫ f) =
   rw [RingEquiv.symm_apply_eq, sumTensEquiv_C]
   rfl
 
+/- English proof (translation)
+Establish `e₁ : Spec.map (CommRingCat.ofHom (algebraMap k (MvPolynomial σ k))) ≫ 𝟙 (Sp k) = e ≫ f`. Rewrite using `[Category.comp_id, he]`. Both sides reduce to the same expression. Establish `e₂ : Spec.map (CommRingCat.ofHom (algebraMap k (MvPolynomial τ k))) ≫ 𝟙 (Sp k) = e' ≫ g`. Rewrite using `[Category.comp_id, he']`.
+
+Both sides reduce to the same expression. Establish `hr` using `Scheme.Pullback.range_map _ _ f g e e' (𝟙 _) e₁ e₂`. Establish `: IsIso (CommRingCat.ofHom (sumTensEquiv (k` using `k) σ τ).symm.toRingHom) := (sumTensEquiv (k := k) σ τ).symm.toCommRingCatIso.isIso_hom`. Establish `: IsIso (spMap (sumTensEquiv (k` using `k) σ τ).symm.toRingHom) := inferInstanceAs (IsIso (Spec.map _))`. Set `a` to `spMap (sumTensEquiv (k := k) σ τ).symm.toRingHom ≫ (pullbackSpecIso k (MvPolynomial σ k) (MvPolynomial τ k)).inv`.
+
+Establish `ha : Function.Surjective a` using `(inferInstance : Surjective a).surj`. Establish `hc : prodChart f g e e' he he' = a ≫ pullback.map _ _ f g e e' (𝟙 _) e₁ e₂`. Simplify using `only [prodChart, a, Category.assoc]`. Rewrite using `[hc, ← hr]`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨a t, (Scheme.Hom.comp_apply a _ t).symm⟩`. Introduce and unpack `⟨u, rfl⟩`. Take `⟨t, rfl⟩` from `ha u`.
+
+Conclude with `⟨t, Scheme.Hom.comp_apply a _ t⟩`.
+-/
 theorem range_prodChart : Set.range (prodChart f g e e' he he') =
     pullback.fst f g ⁻¹' Set.range e ∩ pullback.snd f g ⁻¹' Set.range e' := by
   have e₁ : Spec.map (CommRingCat.ofHom (algebraMap k (MvPolynomial σ k))) ≫ 𝟙 (Sp k) = e ≫ f := by
@@ -92,6 +116,17 @@ theorem range_prodChart : Set.range (prodChart f g e e' he he') =
     obtain ⟨t, rfl⟩ := ha u
     exact ⟨t, Scheme.Hom.comp_apply a _ t⟩
 
+/- English proof (translation)
+Take `⟨ξ, hξ, hX⟩` from `hf`. Take `⟨η, hη, hY⟩` from `hg`. Establish `heq : f ξ = g η` using `((hξ (g η)).antisymm (hη (f ξ))).eq`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback ξ η heq`. Use `⟨z, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Hom.comp_apply, hz1]`. Conclude with `hξ y`. Take `⟨σ, _, e, he1, he2, he3, hxe, hξe⟩` from `hX (pullback.fst f g x)`. Take `⟨τ, _, e', he1', he2', he3', hxe', hηe'⟩` from `hY (pullback.snd f g x)`. Use `⟨τ ⊕ σ, inferInstance, prodChart f g e e' he3 he3', isOpenImmersion_prodChart, ?_, prodChart_str, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_sum, he2, he2', add_comm]`. Rewrite using `[range_prodChart]`. Conclude with `⟨hxe, hxe'⟩`. Rewrite using `[range_prodChart]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show pullback.fst f g z ∈ Set.range e`. Rewrite using `[hz1]`. Conclude with `hξe`. Use `show pullback.snd f g z ∈ Set.range e'`. Rewrite using `[hz2]`.
+
+Conclude with `hηe'`.
+-/
 theorem polyCovered_pullback' {X Y : Scheme.{0}} (f : X ⟶ Sp k) (g : Y ⟶ Sp k) (a b : ℕ) (hf : PolyCovered f a)
     (hg : PolyCovered g b) : PolyCovered (pullback.fst f g ≫ f) (a + b) := by
   obtain ⟨ξ, hξ, hX⟩ := hf

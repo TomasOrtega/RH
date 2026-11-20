@@ -4,6 +4,23 @@ namespace GlobalTheory
 
 open PowerSeries in
 
+/- English proof (translation)
+Take `⟨z, rfl⟩ : X ∣ y` from `by rwa [PowerSeries.X_dvd_iff]`. Establish `hs : HasSubst (X * z)` using `HasSubst.of_constantCoeff_zero' hy`. Establish `hu1 : coeff 1 (X * z) = constantCoeff z`. Rewrite using `[coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Rewrite `hu` using `[hu1]`.
+
+Establish `hc : ∀ n, coeff n (a.subst (X * z)) = ∑ d ∈ Finset.range (n + 1), coeff d a * coeff (n - d) (z ^ d)`. Introduce `n`. Rewrite using `[coeff_subst' hs, finsum_eq_sum_of_support_subset (s := Finset.range (n + 1))]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, coeff_X_pow_mul', if_pos (Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)), smul_eq_mul]`.
+
+Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises.
+
+Rewrite using `[mul_pow, coeff_X_pow_mul', if_neg (by omega), smul_zero]`. Establish `main : ∀ k, 0 < k → coeff k a = 0`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`.
+
+Introduce `hk`. Establish `h1` using `hc k`. Rewrite `h1` using `[ha, Finset.sum_range_succ, Finset.sum_eq_zero, zero_add, Nat.sub_self, coeff_zero_eq_constantCoeff_apply, map_pow]`. Establish `h2 : coeff k a * (1 - constantCoeff z ^ k) = 0`. Rewrite using `[mul_sub, mul_one, ← h1, sub_self]`.
+
+Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (sub_eq_zero.mp h).symm (hu k hk)`. Introduce `d hd`. Break down `Nat.eq_zero_or_pos d with rfl | hd0` into its components or cases.
+
+Simplify using `[coeff_one, hk.ne']`. Rewrite using `[ih d (Finset.mem_range.mp hd) hd0, zero_mul]`. Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[coeff_C, if_neg (Nat.succ_ne_zero n)]`. Conclude with `main (n + 1) (Nat.succ_pos n)`.
+-/
 theorem powerSeries_eq_C_of_subst_eq_self (L : Type) [Field L] (y : PowerSeries L)
     (hy : PowerSeries.constantCoeff y = 0)
     (hu : ∀ k : ℕ, 0 < k → (PowerSeries.coeff 1 y) ^ k ≠ 1) (a : PowerSeries L)

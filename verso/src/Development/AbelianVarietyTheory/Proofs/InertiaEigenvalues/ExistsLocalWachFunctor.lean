@@ -13,6 +13,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChiGamPowNeOne
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.HWL
 namespace GlobalTheory.HWL.Assembly
 
+/- English proof (translation)
+Take `⟨ht, hπ, -⟩` from `GlobalTheory.MemLoc.TiedUnif.tied_uniformiser l P AI hT`. Use `exists_of_layers P AI (fun K s LL g => ?_) ht hπ` and prove the remaining obligations. Take `⟨Γ⟩` from `GlobalTheory.HWL.GroupLayer.nonempty_gamS l P K s LL g`. Take `⟨R⟩` from `GlobalTheory.HWL.Ser.nonempty_wSer l P K s LL g Γ`. Take `⟨I, hI⟩` from `GlobalTheory.HWL.IoLayer.main l P AI K s LL g Γ R`.
+
+Take `⟨E⟩` from `GlobalTheory.HWL.EtMod.nonempty_wEt l P AI K s LL g Γ R I hI (GlobalTheory.EtaleBasis.exists_etBasis l P AI hF K s LL g Γ R I hI)`. Take `⟨Mo⟩` from `hW K s LL g Γ R I hI E`. Take `⟨Cl⟩` from `GlobalTheory.HerrClassMaps.exists_classMaps l P AI K s LL g Γ R I hI E`. Take `⟨Cm⟩` from `GlobalTheory.HWL.Cmp.nonempty_cmpS l P AI hT K s LL g Γ R I hI E Mo`. Conclude with `⟨⟨Γ, R, I, hI, E, Mo, Cl, Cm⟩⟩`.
+-/
 theorem exists_wach (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (hF : FaithH AI) (hW : WachEx AI) :
     ∃ H : LocHW l P, ∃ F : LocFon l P AI H, Nonempty (LocCmpT l P AI H F) := by

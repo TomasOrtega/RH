@@ -6,6 +6,11 @@ namespace Formalism.L2.KerInert
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
+/- English proof (translation)
+Introduce `D cc δ B hcc hδ p _ hp hin lam s hs`. Take `⟨σ, r, v, hσ, hv, hint⟩` from `hA D cc δ B hcc hδ p hp hin lam`. Take `⟨r₄, v₄, hv₄, hint₄⟩` from `hC D cc δ B hcc hδ p hp hin lam σ r v hσ hv (fun s1 hs1 => ⟨hE D cc δ B hcc hδ p hp hin 1 1 s1 hs1, hint s1 hs1⟩)`. Take `⟨rb, b, hb, hon, hloc⟩` from `hD D p hp hin lam`. Use `⟨rb, b, hb, hon, ?_⟩` and prove the remaining obligations.
+
+Introduce `C wq hC hwq`. Conclude with `hB D cc δ hcc hδ p hp hin lam σ hσ 2 2 _ r₄ rb v₄ _ _ hv₄ (hloc σ hσ) (hint₄ s hs) C wq hC hwq`.
+-/
 theorem thFourInt_of (hA : OneCopyLoc) (hB : LocInv) (hC : FourProd) (hD : GlobONB) (hE : AlgZero) : ThFourInt := by
   intro D cc δ B hcc hδ p _ hp hin lam s hs
   obtain ⟨σ, r, v, hσ, hv, hint⟩ := hA D cc δ B hcc hδ p hp hin lam

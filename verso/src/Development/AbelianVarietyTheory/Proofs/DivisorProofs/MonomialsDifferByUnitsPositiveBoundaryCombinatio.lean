@@ -8,6 +8,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TInj
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Introduce `V _ _ _ r m N n hn ε s₁ s₂ ga h1m h1u h2m h2u hprod`. Set `v` to `(IsDiscreteValuationRing.maximalIdeal V).valuation (FractionRing V)`. Set `ℓ : FractionRing V → ℤ` to `fun x => WithZero.log (v x)`. Establish `hinj` using `IsFractionRing.injective V (FractionRing V)`. Establish `hne : ∀ x : V, x ≠ 0 → algebraMap V (FractionRing V) x ≠ 0` using `fun x hx => (map_ne_zero_iff _ hinj).2 hx`.
+
+Establish `hv0 : ∀ x : FractionRing V, x ≠ 0 → v x ≠ 0` using `fun x hx => (Valuation.ne_zero_iff v).2 hx`. Establish `ℓmul : ∀ x y : FractionRing V, x ≠ 0 → y ≠ 0 → ℓ (x * y) = ℓ x + ℓ y` using `fun x y hx hy => by`. Simplify using `only [ℓ, map_mul, WithZero.log_mul (hv0 x hx) (hv0 y hy)]`. Establish `ℓzpow : ∀ (x : FractionRing V) (z : ℤ), ℓ (x ^ z) = z * ℓ x` using `fun x z => by`. Simplify using `only [ℓ, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`.
+
+Establish `ℓprod : ∀ (J : Type) (t : Finset J) (g : J → FractionRing V), (∀ i, g i ≠ 0) → ℓ (∏ i ∈ t, g i) = ∑ i ∈ t, ℓ (g i)`. Introduce `J t g hg`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [ℓ]`. Consider the case `insert j t hj ih`.
+
+Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, ℓmul _ _ (hg j) (Finset.prod_ne_zero_iff.2 fun i _ => hg i), ih]`. Establish `hunit : ∀ x : V, IsUnit x → ℓ (algebraMap V (FractionRing V) x) = 0`. Introduce `x hx`. Establish `h1 : v (algebraMap V (FractionRing V) x) = 1`. Use `le_antisymm (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ x) ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hlt`. Use `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (IsDiscreteValuationRing.maximalIdeal V) x).1 (lt_of_not_ge hlt)` as an intermediate fact. Conclude with `(IsLocalRing.mem_maximalIdeal x).1 this hx`. Simplify using `only [ℓ, h1, WithZero.log_one]`. Establish `hneg : ∀ x : V, x ∈ maximalIdeal V → x ≠ 0 → ℓ (algebraMap V (FractionRing V) x) < 0`.
+
+Introduce `x hm hx`. Establish `h1 : v (algebraMap V (FractionRing V) x) < 1` using `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem (IsDiscreteValuationRing.maximalIdeal V) x).2 hm`. Use `(WithZero.log_lt_log (hv0 _ (hne x hx)) one_ne_zero).2 h1` as an intermediate fact. Simplify `this` using `[ℓ, WithZero.log_one]`. Establish `hs0 : ∀ (s : (Fin m ⊕ Fin N) → V), (∀ k, s (.inl k) ∈ maximalIdeal V ∧ s (.inl k) ≠ 0) → (∀ k, IsUnit (s (.inr k))) → ∀ i, algebraMap V (FractionRing V) (s i) ≠ 0`.
+
+Introduce `s hm hu i`. Break down `i with k | k` into its components or cases. Conclude with `hne _ (hm k).2`. Conclude with `hne _ (hu k).ne_zero`. Establish `hsum : ∀ (s : (Fin m ⊕ Fin N) → V), (∀ k, s (.inl k) ∈ maximalIdeal V ∧ s (.inl k) ≠ 0) → (∀ k, IsUnit (s (.inr k))) → ∀ z : (Fin m ⊕ Fin N) → ℤ, ℓ (∏ i, algebraMap V (FractionRing V) (s i) ^ z i) = ∑ k, z (.inl k) * ℓ (algebraMap V (FractionRing V) (s (.inl k)))`.
+
+Introduce `s hm hu z`. Rewrite using `[ℓprod _ _ _ (fun i => zpow_ne_zero _ (hs0 s hm hu i)), Fintype.sum_sum_type]`. Simplify using `only [ℓzpow, hunit _ (hu _), mul_zero, Finset.sum_const_zero, add_zero]`. Set `c₁ : Fin m → ℕ` to `fun k => (-ℓ (algebraMap V (FractionRing V) (s₁ (.inl k)))).toNat`. Set `c₂ : Fin m → ℕ` to `fun k => (-ℓ (algebraMap V (FractionRing V) (s₂ (.inl k)))).toNat`.
+
+Establish `hc₁ : ∀ k, (c₁ k : ℤ) = -ℓ (algebraMap V (FractionRing V) (s₁ (.inl k)))` using `fun k => by`. Use `hneg _ (h1m k).1 (h1m k).2` as an intermediate fact. Simplify using `only [c₁]`. Use linear arithmetic over natural numbers and integers. Establish `hc₂ : ∀ k, (c₂ k : ℤ) = -ℓ (algebraMap V (FractionRing V) (s₂ (.inl k)))` using `fun k => by`.
+
+Use `hneg _ (h2m k).1 (h2m k).2` as an intermediate fact. Simplify using `only [c₂]`. Use linear arithmetic over natural numbers and integers. Use `⟨c₁, c₂, fun k => ?_, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `hc₁ k` as an intermediate fact.
+
+Use `hneg _ (h1m k).1 (h1m k).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hc₂ k` as an intermediate fact. Use `hneg _ (h2m k).1 (h2m k).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `LinearMap.ext fun a => LinearMap.ext fun b => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hprod a b`. Establish `key` using `congrArg ℓ hu`. Rewrite `key` using `[ℓmul _ _ (hne _ u.ne_zero) (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hs0 s₁ h1m h1u i)), hunit _ u.isUnit, zero_add, hsum s₂ h2m h2u, hsum s₁ h1m h1u]`. Establish `hn' : (n : ℤ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, pull_apply, nsmul_eq_mul]`. Use `beta_reduce at key`. Establish `key' : (n:ℤ) * ∑ k, ((c₂ k : ℤ) * ε (.inl k) (ga a) (ga b)) = (n:ℤ) * ∑ k, ((c₁ k:ℤ) * ε (.inl k) a b)`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_congr rfl (fun k _ => show (n:ℤ) * ((c₂ k : ℤ) * ε (.inl k) (ga a) (ga b)) = -((n:ℤ) * ε (.inl k) (ga a) (ga b) * ℓ (algebraMap V (FractionRing V) (s₂ (.inl k)))) by rw [hc₂]; ring), Finset.sum_congr rfl (fun k _ => show (n:ℤ) * ((c₁ k …`. Use `(mul_left_cancel₀ hn' key').symm` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem coneval : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (r m N n : ℕ), 1 ≤ n → ∀ (ε : (Fin m ⊕ Fin N) → LinearMap.BilinForm ℤ (Fin r → ℤ)) (s₁ s₂ : (Fin m ⊕ Fin N) → V) (ga : (Fin r → ℤ) ≃ₗ[ℤ] (Fin r → ℤ)), (∀ k, s₁ (.inl k) ∈ maximalIdeal V ∧ s₁ (.inl k) ≠ 0) → (∀ k, IsUnit (s₁ (.inr k))) → (∀ k, s₂ (.inl k) ∈ maximalIdeal V ∧ s₂ (.inl k) ≠ 0) → (∀ k, IsUnit (s₂ (.inr k))) → (∀ a b, ∃ u : Vˣ, ∏ i, algebraMap V (FractionRing V) (s₂ i) ^ ((n : ℤ) * ε i (ga a) (ga b)) = algebraMap V (FractionRing V) u * ∏ i, algebraMap V (FractionRing V) (s₁ i) ^ ((n : ℤ) * ε i (a) (b))) → ∃ c₁ c₂ : Fin m → ℕ, (∀ k, 0 < c₁ k) ∧ (∀ k, 0 < c₂ k) ∧ ∑ k, c₁ k • ε (.inl k) = ∑ k, c₂ k • pull ga.toLinearMap (ε (.inl k)) := by
   intro V _ _ _ r m N n hn ε s₁ s₂ ga h1m h1u h2m h2u hprod
   classical

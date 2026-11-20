@@ -12,6 +12,31 @@ namespace GlobalTheory.CM
 open NumberField Module in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Use `set φ : K →ₗ[𝓞 K] V := (LinearMap.toSpanSingleton K V v).restrictScalars (𝓞 K) with hφ`. Establish `hφapp : ∀ t, φ t = t • v` using `fun t => rfl`. Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Simplify using `only [hφapp] at hab`.
+
+Conclude with `smul_left_injective K hv hab`. Establish `hΛmap : Λ = (𝔠 : Submodule (𝓞 K) K).map φ`. Use extensionality with `z`. Rewrite using `[hΛ, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, rfl, ht⟩`. Conclude with `⟨t, ht, rfl⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `⟨t, rfl, ht⟩`. Establish `hform : ∀ s, h.form s v v = (m s : ℂ)`.
+
+Introduce `s`. Establish `hc` using `h.conj_symm s v v`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hf s]`. Simplify using `only [Complex.ofReal_im]`.
+
+Conclude with `Complex.conj_eq_iff_im.mp hc`. Establish `hcFG : (𝔠 : Submodule (𝓞 K) K).FG` using `FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔠`. Take `⟨r, w, hw⟩` from `_root_.ReciprocityTheory.GeometryOfNumbersTheory.exists_isFullRankFamily_of_fg (𝔠 : Submodule (𝓞 K) K) hcFG`. Establish `hw'` using `hw`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame at hw'`.
+
+Take `⟨hwmem, hwli, hwspan⟩` from `hw'`. Establish `hrange : Set.range (fun i => φ (w i)) = φ '' Set.range w` using `Set.range_comp φ w`. Establish `hframe : _root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame K Λ (fun i => φ (w i))`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.IsFrame`. Use `⟨fun i => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΛmap]`. Conclude with `Submodule.mem_map_of_mem (hwmem i)`. Conclude with `hwli.map' (LinearMap.toSpanSingleton K V v) (LinearMap.ker_toSpanSingleton K hv)`. Introduce `z hz`. Rewrite `hz` using `[SetLike.mem_coe, hΛ]`.
+
+Take `⟨t, rfl, ht⟩` from `hz`. Establish `ht' : t ∈ Submodule.span K (Set.range w)` using `hwspan ht`. Establish `hmem` using `Submodule.mem_map_of_mem (f := LinearMap.toSpanSingleton K V v) ht'`. Rewrite `hmem` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `hmem`.
+
+Establish `hΛFG : Λ.FG` using `hΛmap ▸ hcFG.map φ`. Establish `hrel : (Submodule.span (𝓞 K) (Set.range (fun i => φ (w i)))).toAddSubgroup.relIndex Λ.toAddSubgroup = (Submodule.span (𝓞 K) (Set.range w)).toAddSubgroup.relIndex (𝔠 : Submodule (𝓞 K) K).toAddSubgroup`. Rewrite using `[hΛmap, hrange, ← Submodule.map_span, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`. Establish `hgram : ∀ σ, h.gram σ (fun i => φ (w i)) = (_root_.GlobalTheory.lineHerm m hm).gram σ w`.
+
+Introduce `σ`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hφapp, _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.ds_form_smul_left, _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam.smul_right, hform]`. Unfold `_root_.GlobalTheory.lineHerm`.
+
+Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.degreeOfFamily`. Rewrite using `[hrel]`.
+
+Repeatedly rewrite using `[hgram]`. Use `_ = _root_.ReciprocityTheory.GeometryOfNumbersTheory.deg (_root_.GlobalTheory.lineHerm m hm) (𝔠 : Submodule (𝓞 K) K) := (_root_.ReciprocityTheory.GeometryOfNumbersTheory.arakelovDegree_eq_degreeOfFamily _ hcFG hw).symm`. Use `_ = _ := _root_.GlobalTheory.deg_lineHerm m hm h𝔠`.
+-/
 theorem _root_.GlobalTheory.CM.deg_ideal_smul {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K V) (Λ : Submodule (𝓞 K) V) {v : V} (hv : v ≠ 0)
@@ -82,6 +107,39 @@ theorem _root_.GlobalTheory.CM.deg_ideal_smul {K V : Type} [Field K] [NumberFiel
 open NumberField Module in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `E K V _ _ _ _ _ _ _ _ _ h Λ v τ 𝔞 β n h𝔞 hv hn hβ hf hΛ`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Take `⟨s⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Simplify using `using (hβ s).1`.
+
+Use `set 𝔞' : FractionalIdeal (𝓞 E)⁰ E := FractionalIdeal.spanSingleton (𝓞 E)⁰ β * _root_.GlobalTheory.conjFrac 𝔞 with h𝔞'def`. Establish `h𝔞' : 𝔞' ≠ 0` using `mul_ne_zero (by rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]) (_root_.GlobalTheory.conjFrac_ne_zero h𝔞)`. Take `⟨𝔟, h𝔟, h𝔟span, h𝔟log⟩` from `_root_.GlobalTheory.exists_fractionalIdeal_eq_span_image τ h𝔞'`. Establish `hm : ∀ s : K →+* ℂ, 0 < (s (τ β)).re * n s` using `fun s => mul_pos (hβ (s.comp τ)).1 (hn s)`. Establish `hmemΛ : ∀ z, z ∈ Λ ↔ ∃ t : K, z = t • v ∧ t ∈ 𝔟⁻¹`.
+
+Introduce `z`. Rewrite using `[hΛ]`. Use `exists_congr fun t => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_inv_iff h𝔟]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H y hy`. Rewrite `hy` using `[← FractionalIdeal.mem_coe, h𝔟span]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`.
+
+Rewrite `hx` using `[SetLike.mem_coe, h𝔞'def, FractionalIdeal.mem_singleton_mul]`. Take `⟨z, hz, rfl⟩` from `hx`. Rewrite `hz` using `[_root_.GlobalTheory.mem_conjFrac]`. Establish `key` using `H _ hz`. Rewrite `key` using `[show _root_.ReciprocityTheory.ChartRestriction.G.FD.cc z = IsCMField.complexConj E z from rfl, IsCMField.complexConj_apply_apply]`.
+
+Conclude with `(_root_.GlobalTheory.mem_one_fractionalIdeal_iff).2 key`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[mul_add, ← FractionalIdeal.mem_coe]`. Rewrite `hx`, `hy` using `[← FractionalIdeal.mem_coe]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[mul_smul_comm, ← FractionalIdeal.mem_coe]`. Conclude with `Submodule.smul_mem _ a hx`. Introduce `H b hb`.
+
+Rewrite using `[← _root_.GlobalTheory.mem_one_fractionalIdeal_iff]`. Apply `H` to reduce the goal to its premises. Rewrite using `[← FractionalIdeal.mem_coe, h𝔟span]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨β * IsCMField.complexConj E b, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[SetLike.mem_coe, h𝔞'def, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨IsCMField.complexConj E b, _root_.GlobalTheory.cc_mem_conjFrac.2 hb, rfl⟩`. Establish `hdeg` using `_root_.GlobalTheory.CM.deg_ideal_smul h Λ hv hm hf (inv_ne_zero h𝔟) hmemΛ`. Establish `hsumE : ∑ s : E →+* ℂ, Real.log (s β).re = Real.log |((Algebra.norm ℚ β : ℚ) : ℝ)|`. Rewrite using `[← Real.log_prod (fun s _ => ne_of_gt (hβ s).1)]`.
+
+Use `congr 1`. Establish `hprodC : ((∏ s : E →+* ℂ, (s β).re : ℝ) : ℂ) = (((Algebra.norm ℚ β : ℚ) : ℝ) : ℂ)`. Use `push_cast`. Establish `hre : ∀ s : E →+* ℂ, ((s β).re : ℂ) = s β` using `fun s => Complex.ext (by simp) (by simp [(hβ s).2])`. Repeatedly rewrite using `[hre]`.
+
+Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun s => s β) (fun σ => σ β) (fun s => rfl), ← Algebra.norm_eq_prod_embeddings ℚ ℂ β]`. Simplify using the standard rewrite rules. Establish `hprod : (∏ s : E →+* ℂ, (s β).re : ℝ) = ((Algebra.norm ℚ β : ℚ) : ℝ)`. Conclude with `hprodC` after adjusting the coercions. Rewrite using `[hprod, abs_of_pos]`.
+
+Rewrite using `[← hprod]`. Conclude with `Finset.prod_pos fun s _ => (hβ s).1`. Establish `hM : _root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog K (fun s => (s (τ β)).re * n s) = Real.log |((Algebra.norm ℚ β : ℚ) : ℝ)| / finrank ℚ E + _root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog K n`. Establish `hsplit : _root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog K (fun s => (s (τ β)).re * n s) = _root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog K (fun s => ((s.comp τ) β).re) + _root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog K n`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog`.
+
+Rewrite using `[← add_div, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `Real.log_mul (ne_of_gt (hβ (s.comp τ)).1) (ne_of_gt (hn s))`. Establish `hres` using `_root_.GlobalTheory.meanLog_comp τ (fun s : E →+* ℂ => (s β).re)`.
+
+Rewrite using `[hsplit, hres, ← hsumE]`. Unfold `_root_.ReciprocityTheory.GeometryOfNumbersTheory.meanLog`. Both sides reduce to the same expression. Establish `hlog𝔞' : Real.log (FractionalIdeal.absNorm 𝔞' : ℝ) = Real.log |((Algebra.norm ℚ β : ℚ) : ℝ)| + Real.log (FractionalIdeal.absNorm 𝔞 : ℝ)`. Rewrite using `[h𝔞'def, map_mul, FractionalIdeal.absNorm_span_singleton, Rat.cast_mul, Rat.cast_abs, Real.log_mul, _root_.GlobalTheory.log_absNorm_conjFrac h𝔞]`.
+
+Conclude with `abs_ne_zero.mpr (Rat.cast_ne_zero.mpr ((Algebra.norm_ne_zero_iff).mpr hβ0))`. Conclude with `Rat.cast_ne_zero.mpr (fun h0 => _root_.GlobalTheory.conjFrac_ne_zero h𝔞 (FractionalIdeal.absNorm_eq_zero_iff.mp h0))`. Establish `hinv : -Real.log (FractionalIdeal.absNorm 𝔟⁻¹ : ℝ) / finrank ℚ K = Real.log (FractionalIdeal.absNorm 𝔟 : ℝ) / finrank ℚ K`. Rewrite using `[map_inv₀, Rat.cast_inv, Real.log_inv, neg_neg]`. Rewrite using `[hdeg, hinv, h𝔟log, hlog𝔞', hM]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.CM.two_mul_deg_dual_line : ∀ (E K V : Type) [Field E] [NumberField E] [IsCMField E]
     [Field K] [NumberField K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : _root_.ReciprocityTheory.GeometryOfNumbersTheory.HermFam K V)

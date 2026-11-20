@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 
 namespace GlobalTheory.Proof.FockBlockMonotone
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.mfact`. Use `Finset.prod_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `k _ hk`. Establish `: m k = 0` using `by simpa using hk`. Rewrite using `[this, Nat.factorial_zero]`.
+-/
 private theorem mfact_eq_prod_factorial {σ : Type} [Fintype σ] (m : σ →₀ ℕ) :
     Formalism.L2.DIV.mfact m = ∏ k, (m k).factorial := by
   unfold Formalism.L2.DIV.mfact
@@ -16,6 +19,11 @@ private theorem mfact_eq_prod_factorial {σ : Type} [Fintype σ] (m : σ →₀ 
   have : m k = 0 := by simpa using hk
   rw [this, Nat.factorial_zero]
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.fockB`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h' : b ≠ a` using `fun e => h e.symm`. Simplify using `[h, h']`.
+-/
 private theorem fockB_monomial_monomial {σ : Type} [DecidableEq σ] (a b : σ →₀ ℕ) :
     Formalism.L2.DIV.fockB (MvPolynomial.monomial a (1 : ℂ)) (MvPolynomial.monomial b 1) =
       if a = b then (Formalism.L2.DIV.mfact a : ℂ) else 0 := by
@@ -27,11 +35,23 @@ private theorem fockB_monomial_monomial {σ : Type} [DecidableEq σ] (a b : σ �
   · have h' : b ≠ a := fun e => h e.symm
     simp [h, h']
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : α →₀ ℕ => f x) (Formalism.MainNotions.product_first_zeroth_parts.comap_sum v τ)`. Simplify `h` using `[Finsupp.comapDomain_apply]`.
+-/
 private theorem sum_mapDomain_prodMk_apply {ι α : Type} [Fintype ι] (v : ι → (α →₀ ℕ)) (τ : ι) (x : α) :
     (∑ σ, (v σ).mapDomain (Prod.mk σ)) (τ, x) = v τ x := by
   have h := congrArg (fun f : α →₀ ℕ => f x) (Formalism.MainNotions.product_first_zeroth_parts.comap_sum v τ)
   simpa [Finsupp.comapDomain_apply] using h
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.ten_monomial, Formalism.MainNotions.product_first_zeroth_parts.ten_monomial, fockB_monomial_monomial]`. Repeatedly rewrite using `[fockB_monomial_monomial]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using `only [if_true]`.
+
+Rewrite using `[mfact_eq_prod_factorial, Fintype.prod_prod_type]`. Repeatedly rewrite using `[mfact_eq_prod_factorial, sum_mapDomain_prodMk_apply]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hA : (∑ σ, (v σ).mapDomain (Prod.mk σ)) ≠ ∑ σ, (w σ).mapDomain (Prod.mk σ)`.
+
+Introduce `hE`. Apply `h` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Use extensionality with `x`. Use `congrArg (fun f : ι × Fin n × Fin n →₀ ℕ => f (τ, x)) hE` as an intermediate fact.
+
+Simplify `this` using `only [sum_mapDomain_prodMk_apply]`. Take `⟨τ, hτ⟩` from `Function.ne_iff.mp h`. Rewrite using `[if_neg hA]`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)).symm`.
+-/
 private theorem fockB_ten_monomial_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (v w : ι → (Fin n × Fin n →₀ ℕ)) :
     Formalism.L2.DIV.fockB (Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.monomial (v τ) (1 : ℂ))
       (Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.monomial (w τ) (1 : ℂ)) =
@@ -57,6 +77,13 @@ private theorem fockB_ten_monomial_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (v
     rw [if_neg hA]
     exact (Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)).symm
 
+/- English proof (translation)
+Establish `h1 : ∀ (v : ι → (Fin n × Fin n →₀ ℕ)) (g : ι → MvPolynomial (Fin n × Fin n) ℂ), Formalism.L2.DIV.fockB (Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.monomial (v τ) (1 : ℂ)) (Formalism.MainNotions.product_first_zeroth_parts.ten g) = ∏ τ, Formalism.L2. …`. Introduce `v g`. Establish `key : (Formalism.L2.DIV.fockBL (Formalism.MainNotions.product_first_zeroth_parts.ten fun τ => MvPolynomial.monomial (v τ) (1 : ℂ))).compMultilinearMap (Formalism.MainNotions.product_first_zeroth_parts.tenM (ι` using `ι) n) = (MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap (fun τ => Formalism.L2.DIV.fockBL (MvPolynomial.monomial (v τ) (1 : ℂ))) := by`. Use `Module.Basis.ext_multilinear (fun _ => MvPolynomial.basisMonomials (Fin n × Fin n) ℂ) fun w => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Formalism.MainNotions.product_first_zeroth_parts.tenM_apply, Formalism.L2.DIV.fockBL_apply, MvPolynomial.coe_basisMonomials]`.
+
+Conclude with `fockB_ten_monomial_eq_prod v w`. Use `congrArg (fun F => F g) key` as an intermediate fact. Simplify `this` using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Formalism.MainNotions.product_first_zeroth_parts.tenM_apply, Formalism.L2.DIV.fockBL_apply]`. Establish `key : ((Formalism.L2.DIV.fockBL (K` using `ℂ)).flip (Formalism.MainNotions.product_first_zeroth_parts.ten g)).compMultilinearMap (Formalism.MainNotions.product_first_zeroth_parts.tenM (ι := ι) n) = (MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap (fun τ => (Formalism.L2.DIV.fockBL (K := ℂ)).flip (g τ)) := by`. Use `Module.Basis.ext_multilinear (fun _ => MvPolynomial.basisMonomials (Fin n × Fin n) ℂ) fun v => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Formalism.MainNotions.product_first_zeroth_parts.tenM_apply, LinearMap.flip_apply, Formalism.L2.DIV.fockBL_apply, MvPolynomial.coe_basisMonomials]`. Conclude with `h1 v g`. Use `congrArg (fun F => F f) key` as an intermediate fact. Simplify `this` using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, Formalism.MainNotions.product_first_zeroth_parts.tenM_apply, LinearMap.flip_apply, Formalism.L2.DIV.fockBL_apply]`.
+-/
 private theorem fockB_ten_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     Formalism.L2.DIV.fockB (Formalism.MainNotions.product_first_zeroth_parts.ten f) (Formalism.MainNotions.product_first_zeroth_parts.ten g) = ∏ τ, Formalism.L2.DIV.fockB (f τ) (g τ) := by
   have h1 : ∀ (v : ι → (Fin n × Fin n →₀ ℕ)) (g : ι → MvPolynomial (Fin n × Fin n) ℂ),
@@ -88,22 +115,38 @@ private theorem fockB_ten_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (f g : ι �
     MultilinearMap.mkPiAlgebra_apply, Formalism.MainNotions.product_first_zeroth_parts.tenM_apply, LinearMap.flip_apply,
     Formalism.L2.DIV.fockBL_apply] using this
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.toUnit Formalism.MainNotions.product_first_zeroth_parts.ten`. Rewrite using `[MvPolynomial.renameEquiv_apply, Fintype.prod_unique]`. Both sides reduce to the same expression.
+-/
 private theorem toUnit_eq_ten_const {N : ℕ} (f : MvPolynomial (Fin N × Fin N) ℂ) :
     Formalism.L2.Ker.toUnit ℂ N f = Formalism.MainNotions.product_first_zeroth_parts.ten (fun _ : Unit => f) := by
   unfold Formalism.L2.Ker.toUnit Formalism.MainNotions.product_first_zeroth_parts.ten
   rw [MvPolynomial.renameEquiv_apply, Fintype.prod_unique]
   rfl
 
+/- English proof (translation)
+Rewrite using `[toUnit_eq_ten_const, toUnit_eq_ten_const, fockB_ten_eq_prod, Fintype.prod_unique]`.
+-/
 private theorem fockB_toUnit_toUnit {N : ℕ} (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     Formalism.L2.DIV.fockB (Formalism.L2.Ker.toUnit ℂ N f) (Formalism.L2.Ker.toUnit ℂ N g) = Formalism.L2.DIV.fockB f g := by
   rw [toUnit_eq_ten_const, toUnit_eq_ten_const, fockB_ten_eq_prod, Fintype.prod_unique]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.product_first_zeroth_parts.ten`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.rename_C, Finset.prod_mul_distrib, map_prod]`.
+-/
 private theorem ten_smul_eq_prod_smul {ι : Type} [Fintype ι] {n : ℕ} (c : ι → ℂ)
     (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => c τ • f τ) = (∏ τ, c τ) • Formalism.MainNotions.product_first_zeroth_parts.ten f := by
   unfold Formalism.MainNotions.product_first_zeroth_parts.ten
   simp only [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.rename_C, Finset.prod_mul_distrib, map_prod]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.Br.projVV`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, Submodule.coe_sum, Submodule.coe_smul, Formalism.L2.DIV.bVV_coe, Formalism.L2.DIV.fockBL_apply]`. Rewrite using `[← Formalism.L2.DIV.fockBL_apply]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Formalism.L2.DIV.fockBL_apply]`. Establish `e1 : ∀ i, Formalism.L2.DIV.fockB (Formalism.L2.DIV.bVVfun ℂ lam j) (Formalism.L2.DIV.bVVfun ℂ lam i) = Formalism.L2.Col.Br.gramB (K` using `ℂ) lam j i := fun i => rfl`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[Finset.sum_comm]`. Establish `e2 : ∀ k, ∑ i, (Formalism.L2.Col.Br.gramB (K` using `ℂ) lam)⁻¹ i k * (Formalism.L2.DIV.fockB (Formalism.L2.DIV.bVVfun ℂ lam k) x * Formalism.L2.Col.Br.gramB (K := ℂ) lam j i) = (Formalism.L2.Col.Br.gramB (K := ℂ) lam * (Formalism.L2.Col.Br.gramB (K := ℂ) lam)⁻¹) j k * Formalism.L2.DIV.fockB (Formalism.L2.DIV.bVVfun ℂ lam k) x := by`. Introduce `k`. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2, Matrix.mul_nonsing_inv _ hG, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 private theorem fockB_proj_of_isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (lam : κ → DomWeight m)
     (hG : IsUnit (Formalism.L2.Col.Br.gramB (K := ℂ) lam).det) (x : Formalism.L2.DIV.Pol ℂ κ m)
     (j : Formalism.L2.DIV.VVIdx lam) :
@@ -130,6 +173,17 @@ private theorem fockB_proj_of_isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (l
   simp_rw [e2, Matrix.mul_nonsing_inv _ hG, Matrix.one_apply, ite_mul, one_mul, zero_mul,
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hd0 : ∀ j, Formalism.L2.DIV.fockB (Formalism.L2.DIV.bVVfun ℂ lam j) ((Formalism.L2.Col.Br.projVV lam x - ⟨v, hv⟩ : Formalism.L2.DIV.VV ℂ lam) : Formalism.L2.DIV.Pol ℂ κ m) = 0`. Introduce `j`. Rewrite using `[Submodule.coe_sub, ← Formalism.L2.DIV.fockBL_apply, map_sub, Formalism.L2.DIV.fockBL_apply, Formalism.L2.DIV.fockBL_apply, fockB_proj_of_isUnit_gramB lam hG x j, Submodule.coe_mk, h j, sub_self]`. Establish `hc : Formalism.L2.Col.Br.gramB (K` using `ℂ) lam *ᵥ ((Formalism.L2.DIV.bVV ℂ lam).repr (Formalism.L2.Col.Br.projVV lam x - ⟨v, hv⟩) : Formalism.L2.DIV.VVIdx lam → ℂ) = 0 := by`. Use function extensionality and compare the values at `j`.
+
+Use `hd0 j` as an intermediate fact. Rewrite `this` using `[← (Formalism.L2.DIV.bVV ℂ lam).sum_repr (Formalism.L2.Col.Br.projVV lam x - ⟨v, hv⟩)]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Formalism.L2.DIV.bVV_coe] at this`. Rewrite `this` using `[← Formalism.L2.DIV.fockBL_apply, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, Formalism.L2.DIV.fockBL_apply] at this`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hc0 : ((Formalism.L2.DIV.bVV ℂ lam).repr (Formalism.L2.Col.Br.projVV lam x - ⟨v, hv⟩) : Formalism.L2.DIV.VVIdx lam → ℂ) = 0`. Use `congrArg (fun w => (Formalism.L2.Col.Br.gramB (K := ℂ) lam)⁻¹ *ᵥ w) hc` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hG]`. Establish `hd : Formalism.L2.Col.Br.projVV lam x - ⟨v, hv⟩ = 0`. Apply `(Formalism.L2.DIV.bVV ℂ lam).repr.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use extensionality with `i`. Conclude with `congrFun hc0 i`. Use `congrArg Subtype.val (sub_eq_zero.mp hd)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem proj_unique_of_isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (lam : κ → DomWeight m)
     (hG : IsUnit (Formalism.L2.Col.Br.gramB (K := ℂ) lam).det) (x v : Formalism.L2.DIV.Pol ℂ κ m)
     (hv : v ∈ Formalism.L2.DIV.VV ℂ lam)
@@ -166,6 +220,11 @@ private theorem proj_unique_of_isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (
   have := congrArg Subtype.val (sub_eq_zero.mp hd)
   simpa using this
 
+/- English proof (translation)
+Take `⟨K, sz, hsz, I, -, -, hb⟩` from `((Formalism.GradedWeylDivisibility.sSBasis ℂ n n ν).choose_spec.2 i).2.2`. Unfold `Formalism.L2.DIV.ssB`. Rewrite using `[hb]`. Unfold `Formalism.GradedWeylDivisibility.bideterminant Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply, MvPolynomial.map_X]`.
+-/
 private theorem map_conj_ssB {n : ℕ} (ν : Fin n → ℕ) (i : Formalism.GradedWeylDivisibility.ssIdx n n ν) :
     MvPolynomial.map (starRingEnd ℂ) (Formalism.L2.DIV.ssB ℂ ν i) = Formalism.L2.DIV.ssB ℂ ν i := by
   obtain ⟨K, sz, hsz, I, -, -, hb⟩ := ((Formalism.GradedWeylDivisibility.sSBasis ℂ n n ν).choose_spec.2 i).2.2
@@ -179,6 +238,9 @@ private theorem map_conj_ssB {n : ℕ} (ν : Fin n → ℕ) (i : Formalism.Grade
   ext p q
   simp [RingHom.mapMatrix_apply, Matrix.map_apply, MvPolynomial.map_X]
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.bVVfun Formalism.L2.DIV.ten`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `Formalism.GradedWeylDivisibility.blockEmb`. Rewrite using `[MvPolynomial.map_rename, map_conj_ssB]`.
+-/
 private theorem map_conj_bVVfun {κ : Type} [Fintype κ] {m : ℕ} (lam : κ → DomWeight m)
     (i : Formalism.L2.DIV.VVIdx lam) :
     MvPolynomial.map (starRingEnd ℂ) (Formalism.L2.DIV.bVVfun ℂ lam i) = Formalism.L2.DIV.bVVfun ℂ lam i := by
@@ -188,6 +250,9 @@ private theorem map_conj_bVVfun {κ : Type} [Fintype κ] {m : ℕ} (lam : κ →
   unfold Formalism.GradedWeylDivisibility.blockEmb
   rw [MvPolynomial.map_rename, map_conj_ssB]
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.fockB Formalism.L2.DIV.fockS`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congrArg (MvPolynomial.coeff m) hf` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_map, starRingEnd_apply]`. Rewrite using `[this]`.
+-/
 private theorem fockB_eq_fockS_of_map_conj_eq {σ : Type} (f g : MvPolynomial σ ℂ)
     (hf : MvPolynomial.map (starRingEnd ℂ) f = f) :
     Formalism.L2.DIV.fockB f g = Formalism.L2.DIV.fockS f g := by
@@ -197,6 +262,17 @@ private theorem fockB_eq_fockS_of_map_conj_eq {σ : Type} (f g : MvPolynomial σ
   rw [MvPolynomial.coeff_map, starRingEnd_apply] at this
   rw [this]
 
+/- English proof (translation)
+Establish `hre` using `congrArg Complex.re h`. Unfold `Formalism.L2.DIV.fockS at hre`. Rewrite `hre` using `[Complex.re_sum, Complex.zero_re]`. Establish `hterm : ∀ m ∈ w.support, (star (w.coeff m) * w.coeff m * (Formalism.L2.DIV.mfact m : ℂ)).re = Complex.normSq (w.coeff m) * (Formalism.L2.DIV.mfact m : ℝ)`. Introduce `m _`.
+
+Establish `e : star (w.coeff m) * w.coeff m = (Complex.normSq (w.coeff m) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[e, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`. Rewrite `hre` using `[Finset.sum_congr rfl hterm]`.
+
+Establish `hnn : ∀ m ∈ w.support, 0 ≤ Complex.normSq (w.coeff m) * (Formalism.L2.DIV.mfact m : ℝ)` using `fun m _ => mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`. Rewrite `hre` using `[Finset.sum_eq_zero_iff_of_nonneg hnn]`. Assume the negation of the conclusion as `hw`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : w.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`.
+
+Conclude with `hw`. Establish `h2` using `hre m hm`. Break down `mul_eq_zero.mp h2 with h1 | h1` into its components or cases. Conclude with `(MvPolynomial.mem_support_iff.mp hm) (Complex.normSq_eq_zero.mp h1)`. Establish `hne : (Formalism.L2.DIV.mfact m : ℝ) ≠ 0`.
+
+Establish `: Formalism.L2.DIV.mfact m ≠ 0`. Unfold `Formalism.L2.DIV.mfact`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => Nat.factorial_ne_zero _`. Conclude with `this` after adjusting the coercions. Conclude with `hne h1`.
+-/
 private theorem eq_zero_of_fockS_self_eq_zero {σ : Type} (w : MvPolynomial σ ℂ) (h : Formalism.L2.DIV.fockS w w = 0) :
     w = 0 := by
   classical
@@ -228,6 +304,17 @@ private theorem eq_zero_of_fockS_self_eq_zero {σ : Type} (w : MvPolynomial σ �
       exact_mod_cast this
     exact hne h1
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv0` to reduce the goal to its premises. Establish `hS : ∀ y : Formalism.L2.DIV.Pol ℂ κ m, Formalism.L2.DIV.fockL (∑ i, v i • Formalism.L2.DIV.bVVfun ℂ lam i) y = ∑ i, star (v i) * Formalism.L2.DIV.fockL (Formalism.L2.DIV.bVVfun ℂ lam i) y`.
+
+Introduce `y`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Establish `hz : ∀ i, Formalism.L2.DIV.fockL (Formalism.L2.DIV.bVVfun ℂ lam i) (∑ j, v j • Formalism.L2.DIV.bVVfun ℂ lam j) = 0`.
+
+Introduce `i`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, Formalism.L2.DIV.fockL_apply]`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← fockB_eq_fockS_of_map_conj_eq _ _ (map_conj_bVVfun lam i), mul_comm]`. Both sides reduce to the same expression. Establish `hw : (∑ j, v j • Formalism.L2.DIV.bVVfun ℂ lam j) = 0`.
+
+Apply `eq_zero_of_fockS_self_eq_zero` to reduce the goal to its premises. Rewrite using `[← Formalism.L2.DIV.fockL_apply, hS]`. Simplify using `only [hz, mul_zero, Finset.sum_const_zero]`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp (Formalism.L2.DIV.bVVfun_spec ℂ lam).1 v hw i`.
+-/
 private theorem isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (lam : κ → DomWeight m) :
     IsUnit (Formalism.L2.Col.Br.gramB (K := ℂ) lam).det := by
   classical
@@ -258,12 +345,24 @@ private theorem isUnit_gramB {κ : Type} [Fintype κ] {m : ℕ} (lam : κ → Do
   funext i
   exact Fintype.linearIndependent_iff.mp (Formalism.L2.DIV.bVVfun_spec ℂ lam).1 v hw i
 
+/- English proof (translation)
+Rewrite using `[toUnit_eq_ten_const]`. Both sides reduce to the same expression.
+-/
 private theorem toUnit_ssB_eq_bVVfun {n : ℕ} (s : DomWeight n) (a : Formalism.GradedWeylDivisibility.ssIdx n n s.natW) :
     Formalism.L2.Ker.toUnit ℂ n (Formalism.L2.DIV.ssB ℂ s.natW a) =
       Formalism.L2.DIV.bVVfun ℂ (fun _ : Unit => s) (fun _ => a) := by
   rw [toUnit_eq_ten_const]
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Establish `e : (∏ u : Unit, Formalism.GradedWeylDivisibility.blockEmb ℂ u (F u)) = Formalism.L2.Ker.toUnit ℂ n (F ())`.
+
+Rewrite using `[toUnit_eq_ten_const]`. Both sides reduce to the same expression. Rewrite using `[e, AlgEquiv.symm_apply_apply]`. Conclude with `hF ()`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`.
+-/
 private theorem toUnit_symm_mem_nablaSq_of_mem_VV {n : ℕ} (s : DomWeight n) (P : Formalism.L2.DIV.Pol ℂ Unit n)
     (hP : P ∈ Formalism.L2.DIV.VV ℂ (fun _ : Unit => s)) :
     (Formalism.L2.Ker.toUnit ℂ n).symm P ∈ nablaSq ℂ n s := by
@@ -284,6 +383,9 @@ private theorem toUnit_symm_mem_nablaSq_of_mem_VV {n : ℕ} (s : DomWeight n) (P
     rw [map_smul]
     exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Rewrite using `[toUnit_eq_ten_const]`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.ten`. Rewrite using `[Fintype.prod_unique, MvPolynomial.rename_monomial]`.
+-/
 private theorem toUnit_monomial {N : ℕ} (a : Fin N × Fin N →₀ ℕ) :
     Formalism.L2.Ker.toUnit ℂ N (MvPolynomial.monomial a 1) =
       MvPolynomial.monomial (a.mapDomain (Prod.mk ())) 1 := by
@@ -291,6 +393,11 @@ private theorem toUnit_monomial {N : ℕ} (a : Fin N × Fin N →₀ ℕ) :
   unfold Formalism.MainNotions.product_first_zeroth_parts.ten
   rw [Fintype.prod_unique, MvPolynomial.rename_monomial]
 
+/- English proof (translation)
+Establish `e : (W.comapDomain (Prod.mk ()) (Prod.mk_right_injective ()).injOn).mapDomain (Prod.mk ()) = W`. Use extensionality with `⟨u, x⟩`. Consider the cases of `u`. Rewrite using `[Finsupp.mapDomain_apply (Prod.mk_right_injective ()), Finsupp.comapDomain_apply]`. Apply `(Formalism.L2.Ker.toUnit ℂ n).injective` to reduce the goal to its premises.
+
+Rewrite using `[AlgEquiv.apply_symm_apply, toUnit_monomial, e]`.
+-/
 private theorem toUnit_symm_monomial {n : ℕ} (W : Unit × Fin n × Fin n →₀ ℕ) :
     (Formalism.L2.Ker.toUnit ℂ n).symm (MvPolynomial.monomial W 1) =
       MvPolynomial.monomial (W.comapDomain (Prod.mk ()) (Prod.mk_right_injective ()).injOn) 1 := by
@@ -301,6 +408,19 @@ private theorem toUnit_symm_monomial {n : ℕ} (W : Unit × Fin n × Fin n →�
   apply (Formalism.L2.Ker.toUnit ℂ n).injective
   rw [AlgEquiv.apply_symm_apply, toUnit_monomial, e]
 
+/- English proof (translation)
+Establish `hev : ∀ (τ : ι) (u : Unit) (x : Fin N × Fin N), ((M.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn).mapDomain (Prod.mk ())) (u, x) = M (τ, x)`. Introduce `τ u x`. Consider the cases of `u`. Rewrite using `[Finsupp.mapDomain_apply (Prod.mk_right_injective ()), Finsupp.comapDomain_apply]`. Establish `hiff : Formalism.L2.Col.Br.IsTop hN (Formalism.L2.Col.Br.bExp hN lam sg) M ↔ ∀ τ, Formalism.L2.Col.Br.IsTop hN (Formalism.L2.Col.Br.bExp hN (fun _ : Unit => lam τ) (fun _ : Unit => sg τ)) ((M.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn).mapDomain (Prod.mk ()))`.
+
+Unfold `Formalism.L2.Col.Br.IsTop`. Simplify using `only [hev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ τ`. Conclude with `⟨fun _ s => h1 τ s, fun _ a => h2 τ a⟩`.
+
+Introduce `h`. Conclude with `⟨fun τ s => (h τ).1 () s, fun τ a => (h τ).2 () a⟩`. Rewrite using `[Formalism.L2.Col.Br.coefLast_monomial]`. Repeatedly rewrite using `[toUnit_monomial, Formalism.L2.Col.Br.coefLast_monomial, apply_ite (Formalism.L2.Ker.toUnit ℂ n).symm, map_zero, toUnit_symm_monomial]`. Distinguish the cases in `hT : Formalism.L2.Col.Br.IsTop hN (Formalism.L2.Col.Br.bExp hN lam sg) M`.
+
+Rewrite using `[if_pos hT]`. Establish `hT'` using `hiff.mp hT`. Simplify using `only [hT', if_true]`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.ten_monomial]`. Use `congrArg (fun A => MvPolynomial.monomial A (1 : ℂ)) ?_` and prove the remaining obligations.
+
+Use extensionality with `⟨τ, a, s⟩`. Rewrite using `[sum_mapDomain_prodMk_apply]`. Simplify using `only [Finsupp.comapDomain_apply]`. Conclude with `(hev τ () _).symm`. Rewrite using `[if_neg hT]`.
+
+Take `⟨τ, hτ⟩` from `not_forall.mp (mt hiff.mpr hT)`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.ten`. Use `(Finset.prod_eq_zero (Finset.mem_univ τ) ?_).symm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[if_neg hτ, map_zero]`.
+-/
 private theorem coefLast_monomial' {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (M : ι × Fin N × Fin N →₀ ℕ) :
     Formalism.L2.Col.Br.coefLast (K := ℂ) hN (Formalism.L2.Col.Br.bExp hN lam sg) (MvPolynomial.monomial M 1) =
@@ -345,6 +465,17 @@ private theorem coefLast_monomial' {ι : Type} [Fintype ι] {N n : ℕ} (hN : N 
     dsimp only
     rw [if_neg hτ, map_zero]
 
+/- English proof (translation)
+Establish `hL : ∀ τ, Formalism.L2.Ker.brOne ℂ hN (lam τ) (sg τ) (MvPolynomial.monomial (M.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn) 1) = Formalism.L2.Col.Br.brConst hN ℂ (fun _ : Unit => lam τ) (fun _ : Unit => sg τ) • (Formalism.L2.Ker.toUnit ℂ n).symm (Formalism.L2.Col.Br …`. Introduce `τ`. Simplify using `only [Formalism.L2.Ker.brOne, LinearMap.coe_comp, Function.comp_apply, AlgEquiv.toLinearMap_apply, Submodule.coe_subtype]`. Rewrite using `[Formalism.L2.Col.Br.brStdP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.coe_smul, map_smul]`. Repeatedly rewrite using `[hL]`.
+
+Rewrite using `[ten_smul_eq_prod_smul, Formalism.L2.Col.Br.brStdP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.coe_smul, coefLast_monomial']`. Establish `hc : (∏ τ, Formalism.L2.Col.Br.brConst hN ℂ (fun _ : Unit => lam τ) (fun _ : Unit => sg τ)) = Formalism.L2.Col.Br.brConst hN ℂ lam sg`. Unfold `Formalism.L2.Col.Br.brConst`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique]`.
+
+Rewrite using `[hc]`. Use `congr 1`. Use `symm`. Apply `proj_unique_of_isUnit_gramB sg (isUnit_gramB sg)` to reduce the goal to its premises. Use `show _ ∈ Formalism.GradedWeylDivisibility.tensorLat ℂ ℂ _`.
+
+Conclude with `Submodule.subset_span ⟨_, fun τ => toUnit_symm_mem_nablaSq_of_mem_VV (sg τ) _ (Submodule.coe_mem _), rfl⟩`. Introduce `j`. Rewrite using `[show Formalism.L2.DIV.bVVfun ℂ sg j = Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => Formalism.L2.DIV.ssB ℂ (sg τ).natW (j τ)) from rfl, fockB_ten_eq_prod, fockB_ten_eq_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← fockB_toUnit_toUnit, ← fockB_toUnit_toUnit (Formalism.L2.DIV.ssB ℂ (sg τ).natW (j τ)), AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply, toUnit_ssB_eq_bVVfun]`.
+
+Conclude with `fockB_proj_of_isUnit_gramB (fun _ : Unit => sg τ) (isUnit_gramB _) _ (fun _ => j τ)`.
+-/
 private theorem ten_brOne_monomial_eq_brStdP {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (M : ι × Fin N × Fin N →₀ ℕ) :
     Formalism.MainNotions.product_first_zeroth_parts.ten (fun τ => Formalism.L2.Ker.brOne ℂ hN (lam τ) (sg τ)
@@ -385,6 +516,11 @@ private theorem ten_brOne_monomial_eq_brStdP {ι : Type} [Fintype ι] {N n : ℕ
       AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply, toUnit_ssB_eq_bVVfun]
     exact fockB_proj_of_isUnit_gramB (fun _ : Unit => sg τ) (isUnit_gramB _) _ (fun _ => j τ)
 
+/- English proof (translation)
+Introduce `ι _ N n hN lam sg p`. Establish `hlin : Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑(Formalism.L2.Ker.brOne ℂ hN (lam τ) (sg τ))) = (Formalism.L2.DIV.VV ℂ sg).subtype ∘ₗ Br.brStdP hN lam sg`. Use `(MvPolynomial.basisMonomials (ι × Fin N × Fin N) ℂ).ext fun M => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Submodule.subtype_apply]`. Unfold `Formalism.MainNotions.product_first_zeroth_parts.blk`.
+
+Rewrite using `[Module.Basis.constr_basis]`. Simplify using `only [MvPolynomial.coe_basisMonomials]`. Conclude with `ten_brOne_monomial_eq_brStdP hN lam sg M`. Conclude with `LinearMap.congr_fun hlin p`.
+-/
 theorem blk_brOne_eq : ∀ {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n) (p : Pol ℂ ι N), Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => Formalism.L2.Ker.brOne ℂ hN (lam τ) (sg τ)) p = (Br.brStdP hN lam sg p : Pol ℂ ι n) := by
   intro ι _ N n hN lam sg p
   have hlin : Formalism.MainNotions.product_first_zeroth_parts.blk (fun τ => ⇑(Formalism.L2.Ker.brOne ℂ hN (lam τ) (sg τ))) =

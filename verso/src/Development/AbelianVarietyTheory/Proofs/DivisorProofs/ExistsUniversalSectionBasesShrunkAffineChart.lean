@@ -16,6 +16,25 @@ open ReciprocityTheory.ChartRestriction.G.Out
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M U₀ w _ hw P N hN`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hle : M.ringOn U₀ ≤ M.O w` using `RatModel.ringOn_le_O hw`. Set `p : PrimeSpectrum (M.ringOn U₀)` to `⟨(IsLocalRing.maximalIdeal (M.O w)).comap (Subalgebra.inclusion hle).toRingHom, inferInstance⟩`. Take `⟨V₁, m₁, b₁, hb₁⟩` from `GlobalTheory.ThetaReal.exists_univBasis hL₂.secBaseChangeAny P 1 le_rfl p`.
+
+Take `⟨V₂, m₂, b₂, hb₂⟩` from `GlobalTheory.ThetaReal.exists_univBasis hL₂.secBaseChangeAny P N hN p`. Take `⟨_, ⟨f, rfl⟩, hpf, hfV⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (u := ((V₁ ⊓ V₂ : (Sp (M.ringOn U₀)).Opens) : Set (Sp (M.ringOn U₀)))) (a := p) ⟨m₁, m₂⟩ (V₁ ⊓ V₂).isOpen`. Establish `hfu : IsUnit (Subalgebra.inclusion hle f)`. Assume the negation of the conclusion as `hn`. Conclude with `hpf ((IsLocalRing.mem_maximalIdeal _).2 hn)`.
+
+Take `⟨h0, hinv⟩` from `(RatModel.isUnit_O_iff _).1 hfu`. Take `⟨U, g, hU, hwU, hUU₀, hg⟩` from `RatModel.exists_affine_of_mem_O hinv hw`. Establish `h : M.ringOn U₀ ≤ M.ringOn U` using `RatModel.ringOn_anti (fun x hx => hUU₀ hx)`. Establish `finv : ((f : Ω))⁻¹ ∈ M.ringOn U` using `(RatModel.mem_ringOn_iff_exists ⟨w, hwU⟩).2 ⟨g, hg⟩`. Establish `hrange : ∀ V : (Sp (M.ringOn U₀)).Opens, V₁ ⊓ V₂ ≤ V → Set.range (spMap (Subalgebra.inclusion h).toRingHom) ⊆ V`.
+
+Introduce and unpack `V hV _ ⟨q, rfl⟩`. Apply `hV` to reduce the goal to its premises. Apply `hfV` to reduce the goal to its premises. Use `show f ∉ (PrimeSpectrum.comap (Subalgebra.inclusion h).toRingHom q).asIdeal`. Introduce `hq`.
+
+Establish `hu : IsUnit (Subalgebra.inclusion h f)` using `IsUnit.of_mul_eq_one ⟨_, finv⟩ (Subtype.ext (mul_inv_cancel₀ h0))`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hq hu)`. Establish `fac : ∀ V : (Sp (M.ringOn U₀)).Opens, V₁ ⊓ V₂ ≤ V → ∃ τ : Sp (M.ringOn U) ⟶ (overRes (T` using `baseOver (Sp (M.ringOn U₀))) V).left, τ ≫ (overRes (T := baseOver (Sp (M.ringOn U₀))) V).hom = spMap (Subalgebra.inclusion h).toRingHom := fun V hV => ⟨IsOpenImmersion.lift V.ι (spMap (Subalgebra.inclusion h).toRingHom) (by rw [Scheme.Opens.range_ι]; exact hrange V hV), by`. Express the relevant statement in the definitionally equal form `_ ≫ V.ι ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id, IsOpenImmersion.lift_fac]⟩`.
+
+Take `⟨τ₁, hτ₁⟩` from `fac V₁ inf_le_left`. Take `⟨τ₂, hτ₂⟩` from `fac V₂ inf_le_right`. Take `⟨P', φ, hg, hφ, hiso⟩` from `GlobalTheory.exists_isPolFibre hL.polBaseChange (Subalgebra.inclusion h).toRingHom P`. Use `⟨U, h, P', φ, hUU₀, hU, hwU, hφ, hiso.symm, hg, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c₁, hc₁⟩` from `GlobalTheory.T.universalBasis_move_baseChange _ _ _ P P' φ hφ hiso.symm _ _ _ τ₁ hτ₁ b₁ hb₁ haveI : Unique (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance`.
+
+Establish `key : GlobalTheory.ThetaReal.UnivBasis P' ((1 : ℕ) : ℤ) (fun _ : Fin 1 => c₁ default)`. Introduce `T hT u`. Establish `h2` using `@hc₁ T hT u`. Take `⟨c, hc⟩` from `h2`. Conclude with `⟨c.reindex (finCongr (one_pow _)), fun i => (Module.Basis.reindex_apply c _ i).trans ((hc _).trans (congrArg _ (congrArg c₁ (Subsingleton.elim _ _))))⟩`.
+
+Conclude with `⟨SecM.toSec P'.A (c₁ default), key⟩`. Take `⟨c₂, hc₂⟩` from `GlobalTheory.T.universalBasis_move_baseChange _ _ _ P P' φ hφ hiso.symm _ _ _ τ₂ hτ₂ b₂ hb₂`. Set `e : Fin (N ^ P.g) ≃ Fin (N ^ P'.g)` to `finCongr (by rw [hg])`. Use `⟨fun i => c₂ (e.symm i), fun T hT u => ?_⟩` and prove the remaining obligations. Establish `h2` using `@hc₂ T hT u`.
+
+Take `⟨c, hc⟩` from `h2`. Conclude with `⟨c.reindex e, fun i => (Module.Basis.reindex_apply c _ i).trans (hc _)⟩`.
+-/
 theorem GlobalTheory.Poinc.exists_univBasis_affineChart : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U₀ : M.Z.Opens) (w : M.Z), IsAffineOpen U₀ → w ∈ U₀ → ∀ (P : PolAV (Sp (M.ringOn U₀))) (N : ℕ), 1 ≤ N → ∃ (U : M.Z.Opens) (h : M.ringOn U₀ ≤ M.ringOn U) (P' : PolAV (Sp (M.ringOn U))) (φ : P'.A.left ⟶ P.A.left), U ≤ U₀ ∧ IsAffineOpen U ∧ w ∈ U ∧ IsGrpPullback P'.A P.A (spMap (Subalgebra.inclusion h).toRingHom) φ ∧ LBIso P'.L (P.L.pull φ) ∧ P'.g = P.g ∧ (∃ th : LB.Sec (LPow P'.A P'.L 1 (baseOver (Sp (M.ringOn U)))), GlobalTheory.ThetaReal.UnivBasis P' 1 (fun _ : Fin 1 => SecM.ofSec P'.A th)) ∧ ∃ b : Fin (N ^ P'.g) → SecM P'.A P'.L (N : ℕ) (baseOver (Sp (M.ringOn U))), GlobalTheory.ThetaReal.UnivBasis P' (N : ℕ) b := by
   intro o Ω _ _ _ M U₀ w _ hw P N hN
   obtain ⟨hL, hL₂⟩ := GlobalTheory.abelianSchemeLaws_all

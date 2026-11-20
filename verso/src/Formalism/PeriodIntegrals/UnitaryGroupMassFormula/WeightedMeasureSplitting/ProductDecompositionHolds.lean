@@ -8,6 +8,11 @@ namespace PI.UnitaryGroupMassFormula.MeasWCore
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures MeasureTheory NumberField
 
+/- English proof (translation)
+Use extensionality with `B hB`. Establish `hf : Measurable (B.indicator (1 : G → ENNReal))` using `measurable_one.indicator hB`. Establish `hv : Measurable (Prod.map (Subtype.val : N → G) (Subtype.val : H → G))` using `measurable_subtype_coe.prodMap measurable_subtype_coe`. Establish `hm : Measurable (fun p : G × G => p.1 * p.2)` using `measurable_mul`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Measure.map_prod_map μN μH measurable_subtype_coe measurable_subtype_coe]`. Use `_ = ∫⁻ x, B.indicator 1 x ∂(((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) := (lintegral_map hf hm).symm`. Use `_ = (((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) B := lintegral_indicator_one hB`.
+-/
 theorem amb_eq_map_mul_of_lintegral {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [MeasurableMul₂ G] {K N H : Subgroup G} (μK : Measure K) (μN : Measure N) (μH : Measure H)
     [SFinite μN] [SFinite μH]
@@ -33,6 +38,11 @@ theorem amb_eq_map_mul_of_lintegral {G : Type} [Group G] [TopologicalSpace G] [M
         (lintegral_map hf hm).symm
     _ = (((amb μN).prod (amb μH)).map (fun p => p.1 * p.2)) B := lintegral_indicator_one hB
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r P T hCM hJ hStd μNf μHf hN hH`. Take `⟨⟨μS, hμS, hprod⟩, -⟩` from `level_s_all_split F E σ hCM n J hJ hJ r P T hStd ∅ ∅ ∅ (by simp [PI.LevelKSplit.Adapted]) μNf hN μHf hH`. Use `⟨μS, hμS, ?_⟩` and prove the remaining obligations. Use `hN` as an intermediate fact. Use `hH` as an intermediate fact.
+
+Conclude with `amb_eq_map_mul_of_lintegral μS μNf μHf hprod`.
+-/
 theorem product_decomposition_holds : SProd := by
   intro F E _ _ _ _ _ σ n J r P T hCM hJ hStd μNf μHf hN hH
   obtain ⟨⟨μS, hμS, hprod⟩, -⟩ := level_s_all_split F E σ hCM n J hJ hJ r P T hStd ∅ ∅ ∅

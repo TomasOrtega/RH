@@ -9,6 +9,9 @@ open scoped IntermediateField Polynomial RatFunc
 open GlobalTheory.Nef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Nef.local_index_scaled | exact GlobalTheory.Nef.local_index_scaled | (intros; apply GlobalTheory.Nef.local_index_scaled <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.functionFieldPlace_localIndex_scaled_uniformiser : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (v : Place k F) (n : ℕ) (M : Matrix (Fin n) (Fin n) F) (d : ℕ), M.det ≠ 0 →
     (∀ i j, v.1 (M⁻¹ i j) ≤ WithZero.exp (d : ℤ)) →

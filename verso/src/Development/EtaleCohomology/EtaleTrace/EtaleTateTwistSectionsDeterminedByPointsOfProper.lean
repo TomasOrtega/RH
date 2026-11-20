@@ -14,6 +14,9 @@ def EtaleTateTwistSectionsDeterminedByPointsOfProper : Prop := ∀ (l : ℕ) [Fa
     ((∀ y : Pt p, Sec.res y.1 s = 0) → s = 0) ∧
     (ConnectedSpace X → ∀ y y' : Pt p, Sec.res y.1 s = Sec.res y'.1 s)
 
+/- English proof (translation)
+The claim follows from `hB.1.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem base_gives_h0_locally_constant (hB : Base) : A9 := hB.1.2.2.2.2.2.2.2.2.2.2.2.1
 
 end LateralTheory.EtaleTrace

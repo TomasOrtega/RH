@@ -38,11 +38,17 @@ variable [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [LocallyCompa
   [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] {Γ : Subgroup G} {n : X → G} {a : G} {lam : Measure X}
   [IsProbabilityMeasure lam] {l : ℂ} {φ c : G → ℂ} {V : Set G} {η : G → ℝ} (μ : Measure G) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `h.cont` as an intermediate fact. Conclude with `Continuous.integrable_of_hasCompactSupport (by fun_prop) (HasCompactSupport.mul_left (h.cpt.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)))`.
+-/
 theorem Bump.int (h : Bump V η) (hφ : Continuous φ) (g : G) : Integrable (fun y => φ (g * y) * η y) μ := by
   have := h.cont
   exact Continuous.integrable_of_hasCompactSupport (by fun_prop)
     (HasCompactSupport.mul_left (h.cpt.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)))
 
+/- English proof (translation)
+Use `h.cont` as an intermediate fact. Establish `e : conv μ η φ = fun g => ∫ y in tsupport η, φ (g * y) * η y ∂μ` using `funext fun g => (setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by simp [image_eq_zero_of_notMem_tsupport hy]).symm`. Rewrite using `[e]`. Conclude with `continuous_parametric_integral_of_continuous (by fun_prop) h.cpt`.
+-/
 theorem Bump.conv_cont (h : Bump V η) (hφ : Continuous φ) : Continuous (conv μ η φ) := by
   have := h.cont
   have e : conv μ η φ = fun g => ∫ y in tsupport η, φ (g * y) * η y ∂μ := funext fun g =>
@@ -50,6 +56,15 @@ theorem Bump.conv_cont (h : Bump V η) (hφ : Continuous φ) : Continuous (conv 
   rw [e]
   exact continuous_parametric_integral_of_continuous (by fun_prop) h.cpt
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hc : Continuous fun y => (D (g * y) / D g).re` using `by fun_prop`. Take `⟨η, hη, e⟩` from `h {y | 0 < (D (g * y) / D g).re} ((isOpen_lt continuous_const hc).mem_nhds (by simp [h0]))`. Establish `hi` using `(hη.int μ hD g).div_const (D g)`. Establish `h1 : ∫ y, (D (g * y) / D g).re * η y ∂μ = 0`.
+
+Use `congrArg (fun z => (z / D g).re) e` as an intermediate fact. Simplify using `only [conv, zero_div, Complex.zero_re] at this`. Rewrite `this` using `[← integral_div, ← RCLike.re_to_complex, ← integral_re hi]`. Rewrite using `[← this]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[mul_div_right_comm]`. Simplify using the standard rewrite rules. Use `hη.cont` as an intermediate fact. Use `(Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (by fun_prop) hη.cpt.mul_left (fun y => ?_) (by simp [h0, hη.one])).ne' h1` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ tsupport η`. Conclude with `mul_nonneg (hη.sub hy).le (hη.nonneg y)`. Simplify using `[image_eq_zero_of_notMem_tsupport hy]`.
+-/
 theorem Bump.zero (D : G → ℂ) (hD : Continuous D) (g : G) (h : ∀ V ∈ 𝓝 (1 : G), ∃ η, Bump V η ∧ conv μ η D g = 0) : D g = 0 := by
   by_contra h0
   have hc : Continuous fun y => (D (g * y) / D g).re := by fun_prop
@@ -73,6 +88,11 @@ theorem Bump.zero (D : G → ℂ) (hD : Continuous D) (g : G) (h : ∀ V ∈ �
 
 omit [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [TopologicalSpace X]
   [OpensMeasurableSpace X] [IsProbabilityMeasure lam] in
+/- English proof (translation)
+Take `⟨η, -, h2⟩` from `hC.lip _ univ_mem`. Take `⟨D, Ω', h3, h4⟩` from `h2 ∅ isCompact_empty`. Take `⟨M, hM⟩` from `(h3.mul hK).exists_bound_of_continuousOn h.cont.continuousOn`. Use `⟨M, fun x g hg => ?_⟩` and prove the remaining obligations. Take `⟨γ, h5, u, h6, h7, -⟩` from `h4 x 0`.
+
+Rewrite `h7` using `[pow_zero, mul_one, one_mul]`. Rewrite using `[← h.inv γ h5, ← mul_assoc, h7]`. Conclude with `hM _ (Set.mul_mem_mul h6 hg)`.
+-/
 theorem Dat.bound (hC : Cusp Γ n a) (h : Dat Γ n a lam l φ c) {K : Set G} (hK : IsCompact K) :
     ∃ M, ∀ x, ∀ g ∈ K, ‖φ (n x * g)‖ ≤ M := by
   obtain ⟨η, -, h2⟩ := hC.lip _ univ_mem
@@ -84,6 +104,15 @@ theorem Dat.bound (hC : Cusp Γ n a) (h : Dat Γ n a lam l φ c) {K : Set G} (hK
   rw [← h.inv γ h5, ← mul_assoc, h7]
   exact hM _ (Set.mul_mem_mul h6 hg)
 
+/- English proof (translation)
+Use `⟨hη.conv_cont μ h.cont, fun γ hγ g => ?_, hη.conv_cont μ h.contc, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [Two.conv, mul_assoc, h.inv γ hγ]`. Simplify using `only [Two.conv, h.av, ← integral_mul_const, mul_assoc]`. Use `integral_integral_swap ?_` and prove the remaining obligations. Take `⟨M, hM⟩` from `h.bound hC (hη.cpt.isCompact.image (continuous_const_mul g))`.
+
+Use `h.cont` as an intermediate fact. Use `hη.cont` as an intermediate fact. Use `Integrable.mono' ((hη.cont.integrable_of_hasCompactSupport hη.cpt).mul_prod (integrable_const M)) (Continuous.aestronglyMeasurable (by fun_prop)) (.of_forall fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : z.1 ∈ tsupport η`. Simplify using `only [Function.uncurry, norm_mul, Complex.norm_real, Real.norm_of_nonneg (hη.nonneg _)]`.
+
+Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ _ ⟨_, hy, rfl⟩) (hη.nonneg _)`. Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport hy]`. Simplify using `only [Two.conv]`. Rewrite using `[← integral_sub (hη.int μ h.contc _) (hη.int μ h.contc _), ← integral_sub (hη.int μ h.contc _) (hη.int μ h.contc _), ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Use `h.law (g * y)` as an intermediate fact. Simplify using `only [mul_assoc]`. Take the linear combination `(η y : ℂ) * this`.
+-/
 theorem Dat.conv (hC : Cusp Γ n a) (hn : Continuous n) (h : Dat Γ n a lam l φ c) (hη : Bump V η) :
     Dat Γ n a lam l (conv μ η φ) (conv μ η c) := by
   refine ⟨hη.conv_cont μ h.cont, fun γ hγ g => ?_, hη.conv_cont μ h.contc, fun g => ?_, fun g => ?_⟩
@@ -111,6 +140,9 @@ theorem Dat.conv (hC : Cusp Γ n a) (hn : Continuous n) (h : Dat Γ n a lam l φ
 
 omit [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [TopologicalSpace X] [OpensMeasurableSpace X] [IsProbabilityMeasure lam] in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ' a, mul_assoc, h.law, ih, pow_succ' l, mul_assoc]`.
+-/
 theorem Dat.pow (h : Dat Γ n a lam l φ c) (k : ℕ) (g : G) : c (a * (a ^ k * g)) - c (a ^ k * g) = l ^ k * (c (a * g) - c g) := by
   induction k with
   | zero => simp
@@ -118,6 +150,9 @@ theorem Dat.pow (h : Dat Γ n a lam l φ c) (k : ℕ) (g : G) : c (a * (a ^ k * 
 
 omit [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [TopologicalSpace X] [OpensMeasurableSpace X] [IsProbabilityMeasure lam] in
+/- English proof (translation)
+Introduce `Ω hΩ` and use `by have := h.contc obtain ⟨M, hM⟩ := hΩ.exists_bound_of_continuousOn h.contc.continuousOn obtain ⟨M', hM'⟩ := hΩ.exists_bound_of_continuousOn (f := fun g => c (a * g) - c g) (Continuous.continuousOn (by fun_prop)) refine ⟨M + (1 - ‖l‖)⁻¹ * M', fun k κ hκ => ?_⟩ have e : c (a ^ k …`.
+-/
 theorem Dat.gr (h : Dat Γ n a lam l φ c) (hl : ‖l‖ < 1) : Gr a 0 c := fun Ω hΩ => by
   have := h.contc
   obtain ⟨M, hM⟩ := hΩ.exists_bound_of_continuousOn h.contc.continuousOn
@@ -137,6 +172,23 @@ theorem Dat.gr (h : Dat Γ n a lam l φ c) (hl : ‖l‖ < 1) : Gr a 0 c := fun 
   rw [norm_mul]
   exact mul_le_mul e2 (hM' κ hκ) (norm_nonneg _) ((norm_nonneg _).trans e2)
 
+/- English proof (translation)
+Take `⟨η, hη, h2⟩` from `hC.lip V hV`. Use `⟨η, hη, fun Ω hΩ => ?_⟩` and prove the remaining obligations. Establish `h'` using `h.conv μ hC hn hη`. Take `⟨D, Ω', h3, h4⟩` from `h2 Ω hΩ`. Take `⟨C₀, hC₀⟩` from `h'.gr hl Ω hΩ`.
+
+Establish `hK : IsCompact (Ω' * (Ω * tsupport η) ∪ Ω * tsupport η)` using `(h3.mul (hΩ.mul hη.cpt)).union (hΩ.mul hη.cpt)`. Take `⟨C, hCC⟩` from `hm _ hK`. Use `set K := Ω' * (Ω * tsupport η) ∪ Ω * tsupport η`. Use `⟨C₀ + C * D * μ.real K, fun k κ hκ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x, ‖Two.conv μ η φ (a ^ k * κ) - Two.conv μ η φ (n x * (a ^ k * κ))‖ ≤ C * D * μ.real K * (2 ^ k) ^ m` using `fun x => by`.
+
+Take `⟨γ, h5, u, h6, h7, h8⟩` from `h4 x k`. Establish `e : ∀ z, Two.conv μ η φ (a ^ k * z) = ∫ y, φ (a ^ k * y) * η (z⁻¹ * y) ∂μ` using `fun z => by`. Rewrite using `[Two.conv, ← integral_mul_left_eq_self _ z⁻¹]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Establish `i : ∀ z, Integrable (fun y => φ (a ^ k * y) * η (z⁻¹ * y)) μ` using `fun z => by`.
+
+Simplify `(hη.int μ h.cont (a ^ k * z)).comp_mul_left z⁻¹` using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← h'.inv γ h5 (n x * _), ← mul_assoc γ, ← mul_assoc _ _ κ, h7, mul_assoc _ u, e, e, ← integral_sub (i _) (i _), ← setIntegral_eq_integral_of_forall_compl_eq_zero (s := K) fun y hy => ?_]`. Use `(norm_setIntegral_le_of_norm_le_const (C := C * D * (2 ^ k) ^ m) hK.measure_lt_top fun y hy => ?_).trans_eq (by ring)` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_sub_comm, mul_inv_rev, mul_assoc κ⁻¹]`. Use `(mul_le_mul (hCC k y hy) (h8 κ hκ y) (abs_nonneg _) ((norm_nonneg _).trans (hCC k y hy))).trans_eq ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `z1 : η (κ⁻¹ * y) = 0` using `image_eq_zero_of_notMem_tsupport fun hh => hy (Or.inr ⟨κ, hκ, _, hh, by simp⟩)`. Establish `z2 : η ((u * κ)⁻¹ * y) = 0` using `image_eq_zero_of_notMem_tsupport fun hh => hy (Or.inl ⟨u, h6, _, ⟨κ, hκ, _, hh, rfl⟩, by simp [mul_assoc]⟩)`. Rewrite using `[z1, z2, sub_self]`.
+
+Take `⟨M, hM⟩` from `h'.bound hC (isCompact_singleton (x := a ^ k * κ))`. Use `h'.cont` as an intermediate fact. Establish `hi : Integrable (fun x => Two.conv μ η φ (n x * (a ^ k * κ))) lam` using `.of_bound (Continuous.aestronglyMeasurable (by fun_prop)) M (.of_forall fun x => hM x _ rfl)`. Establish `e : Two.conv μ η φ (a ^ k * κ) = Two.conv μ η c (a ^ k * κ) + ∫ x, (Two.conv μ η φ (a ^ k * κ) - Two.conv μ η φ (n x * (a ^ k * κ))) ∂lam`. Rewrite using `[integral_sub (integrable_const _) hi, ← h'.av]`.
+
+Simplify using the standard rewrite rules. Establish `h9` using `hC₀ k κ hκ`. Rewrite `h9` using `[pow_zero, mul_one]`. Establish `h10 : (1 : ℝ) ≤ (2 ^ k) ^ m` using `one_le_pow₀ (one_le_pow₀ one_le_two)`. Rewrite using `[e, add_mul]`.
+
+Use `(norm_add_le _ _).trans (add_le_add (h9.trans (le_mul_of_one_le_right ((norm_nonneg _).trans h9) h10)) ?_)` and prove the remaining obligations. Simplify using `using norm_integral_le_of_norm_le_const (μ := lam) (.of_forall key)`.
+-/
 theorem Dat.step (hC : Cusp Γ n a) (hn : Continuous n) (h : Dat Γ n a lam l φ c) (hl : ‖l‖ < 1) {m : ℕ} (hm : Gr a (m + 1) φ)
     (hV : V ∈ 𝓝 (1 : G)) : ∃ η, Bump V η ∧ Gr a m (Two.conv μ η φ) := by
   obtain ⟨η, hη, h2⟩ := hC.lip V hV
@@ -180,6 +232,13 @@ theorem Dat.step (hC : Cusp Γ n a) (hn : Continuous n) (h : Dat Γ n a lam l φ
   refine (norm_add_le _ _).trans (add_le_add (h9.trans (le_mul_of_one_le_right ((norm_nonneg _).trans h9) h10)) ?_)
   simpa using norm_integral_le_of_norm_le_const (μ := lam) (.of_forall key)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `φ c h hm`. Take `⟨Ω, hΩ, hs⟩` from `hC.siegel`. Take `⟨C, hCC⟩` from `hm Ω hΩ`.
+
+Use `h0 φ c h ⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, a1, k, κ, a2, a3⟩` from `hs g`. Simplify `hCC k κ a2` using `[← a3, h.inv γ a1]`. Consider the case `succ m ih`. Introduce `φ c h hm`.
+
+Use `h1 φ c h fun V hV => ?_` and prove the remaining obligations. Take `⟨η, a1, a2⟩` from `h.step μ hC hn hl hm hV`. Conclude with `⟨η, a1, ih _ _ (h.conv μ hC hn a1) a2⟩`.
+-/
 theorem kill_ind (hC : Cusp Γ n a) (hn : Continuous n) (hl : ‖l‖ < 1) (P : (G → ℂ) → (G → ℂ) → Prop)
     (h0 : ∀ φ c, Dat Γ n a lam l φ c → (∃ M, ∀ g, ‖φ g‖ ≤ M) → P φ c)
     (h1 : ∀ φ c, Dat Γ n a lam l φ c → (∀ V ∈ 𝓝 (1 : G), ∃ η, Bump V η ∧ P (conv μ η φ) (conv μ η c)) → P φ c)
@@ -198,6 +257,15 @@ theorem kill_ind (hC : Cusp Γ n a) (hn : Continuous n) (hl : ‖l‖ < 1) (P : 
     obtain ⟨η, a1, a2⟩ := h.step μ hC hn hl hm hV
     exact ⟨η, a1, ih _ _ (h.conv μ hC hn a1) a2⟩
 
+/- English proof (translation)
+Use `kill_ind (Measure.haar) hC hn hl (fun _ c => ∀ g, c (a * g) = c g) (fun φ c h ⟨M, hM⟩ g => ?_) (fun φ c h h1 g => ?_) m φ c h hm g` and prove the remaining obligations. Establish `hc : ∀ g, ‖c g‖ ≤ M` using `fun g => by`. Rewrite using `[h.av]`. Simplify using `using norm_integral_le_of_norm_le_const (μ := lam) (.of_forall fun x => hM (n x * g))`. Establish `t : Tendsto (fun k : ℕ => ‖l‖ ^ k * (M + M)) atTop (𝓝 (0 * (M + M)))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg l) hl).mul_const _`.
+
+Rewrite `t` using `[zero_mul]`. Use `sub_eq_zero.1 (norm_le_zero_iff.1 (ge_of_tendsto' t fun k => ?_))` and prove the remaining obligations. Use `h.pow k ((a ^ k)⁻¹ * g)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite using `[this, norm_mul, norm_pow]`.
+
+Conclude with `mul_le_mul_of_nonneg_left ((norm_sub_le _ _).trans (add_le_add (hc _) (hc _))) (by positivity)`. Use `h.contc` as an intermediate fact. Use `sub_eq_zero.1 (Bump.zero Measure.haar (fun g => c (a * g) - c g) (by fun_prop) g fun V hV => ?_)` and prove the remaining obligations. Take `⟨η, a1, a2⟩` from `h1 V hV`. Use `⟨η, a1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sub_eq_zero.2 (a2 g), conv, conv, conv, ← integral_sub (a1.int _ h.contc _) (a1.int _ h.contc _)]`. Simplify using `only [sub_mul, mul_assoc]`.
+-/
 theorem kill (hC : Cusp Γ n a) (hn : Continuous n) (hl : ‖l‖ < 1) {m : ℕ} (h : Dat Γ n a lam l φ c) (hm : Gr a m φ) (g : G) :
     c (a * g) = c g := by
   refine kill_ind (Measure.haar) hC hn hl (fun _ c => ∀ g, c (a * g) = c g) (fun φ c h ⟨M, hM⟩ g => ?_) (fun φ c h h1 g => ?_) m φ c h hm g

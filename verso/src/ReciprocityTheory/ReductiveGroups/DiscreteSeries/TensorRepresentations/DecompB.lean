@@ -11,6 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c'`. Simplify using `only [tensF, cond_false, tensV_coord, Pi.add_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases h1 : c' = c <;> by_cases h2 : c' = a <;> by_cases h3 : b = c <;> subst_vars <;> simp_all`.
+-/
 theorem dc_tensF_single_false {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (a b c : Fin n) (v : M) :
     tensF false E a b (Pi.single c v) = Pi.single c (E a b v) + (if b = c then Pi.single a v else 0) := by
@@ -18,6 +21,9 @@ theorem dc_tensF_single_false {M : Type*} [AddCommGroup M] [Module ℂ M] (E : F
   simp only [tensF, cond_false, tensV_coord, Pi.add_apply, Pi.single_apply]
   by_cases h1 : c' = c <;> by_cases h2 : c' = a <;> by_cases h3 : b = c <;> subst_vars <;> simp_all
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c'`. Simplify using `only [tensF, cond_true, tensVd_coord, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases h1 : c' = c <;> by_cases h2 : c' = b <;> by_cases h3 : a = c <;> subst_vars <;> simp_all`.
+-/
 theorem dc_tensF_single_true {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (a b c : Fin n) (v : M) :
     tensF true E a b (Pi.single c v) = Pi.single c (E a b v) - (if a = c then Pi.single b v else 0) := by
@@ -25,10 +31,30 @@ theorem dc_tensF_single_true {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fi
   simp only [tensF, cond_true, tensVd_coord, Pi.sub_apply, Pi.single_apply]
   by_cases h1 : c' = c <;> by_cases h2 : c' = b <;> by_cases h3 : a = c <;> subst_vars <;> simp_all
 
+/- English proof (translation)
+Simplify using `[tensSub, Submodule.mem_pi]`.
+-/
 theorem dc_mem_tensSub {M : Type*} [AddCommGroup M] [Module ℂ M] {S : Submodule ℂ M} {f : Fin n → M} :
     f ∈ tensSub S ↔ ∀ c, f c ∈ S := by
   simp [tensSub, Submodule.mem_pi]
 
+/- English proof (translation)
+Set `S : Submodule ℂ M` to `⨅ c, T.comap (LinearMap.single ℂ (fun _ : Fin n => M) c)`. Establish `hS : ∀ x, x ∈ S ↔ ∀ c, Pi.single c x ∈ T`. Introduce `x`. Simplify using `[S, Submodule.mem_iInf]`. Establish `hVS : V ≤ S`.
+
+Introduce `x hx`. Rewrite using `[hS]`. Introduce `c`. Use `hVT (dc_mem_tensSub.mpr fun i => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Conclude with `hx`. Conclude with `V.zero_mem`. Establish `hSt : ∀ a b, ∀ v ∈ S, E a b v ∈ S`. Introduce `a b v hv`.
+
+Rewrite `hv`, the goal using `[hS]`. Introduce `c`. Consider the cases of `dual`. Establish `: Pi.single c (E a b v) = tensF false E a b (Pi.single c v) - (if b = c then Pi.single a v else 0)`. Rewrite using `[dc_tensF_single_false]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Use `T.sub_mem (hT a b _ (hv c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hv a`.
+
+Conclude with `T.zero_mem`. Establish `: Pi.single c (E a b v) = tensF true E a b (Pi.single c v) + (if a = c then Pi.single b v else 0)`. Rewrite using `[dc_tensF_single_true]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Use `T.add_mem (hT a b _ (hv c)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hv b`. Conclude with `T.zero_mem`. Establish `hgen : genSub E V ≤ S` using `sInf_le ⟨hVS, hSt⟩`.
+
+Introduce `f hf`. Rewrite using `[← Finset.univ_sum_single f]`. Conclude with `T.sum_mem fun c _ => (hS _).1 (hgen (dc_mem_tensSub.mp hf c)) c`.
+-/
 theorem dc_tens_gen_le {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
     {V : Submodule ℂ M} (dual : Bool) {T : Submodule ℂ (Fin n → M)} (hVT : tensSub V ≤ T)
     (hT : ∀ a b, ∀ f ∈ T, tensF dual E a b f ∈ T) : tensSub (genSub E V) ≤ T := by
@@ -74,17 +100,28 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submo
   {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {E : Fin n → Fin n → Module.End ℂ D}
   {S : Submodule ℂ D} {dual : Bool}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [kDiag, map_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem dc_kDiag_add (k : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → H) :
     kDiag dual σ k (fun c => x c + y c) = fun c => kDiag dual σ k x c + kDiag dual σ k y c := by
   funext c
   simp only [kDiag, map_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [kDiag, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun d _ => smul_comm _ _ _`.
+-/
 theorem dc_kDiag_smul (k : Matrix (Fin n) (Fin n) ℂ) (a : ℂ) (x : Fin n → H) :
     kDiag dual σ k (fun c => a • x c) = fun c => a • kDiag dual σ k x c := by
   funext c
   simp only [kDiag, map_smul, Finset.smul_sum]
   exact Finset.sum_congr rfl fun d _ => smul_comm _ _ _
 
+/- English proof (translation)
+Use `⟨fun f hf => (tensSub S).add_mem (hA.1 f hf) (hB.1 f hf), fun a b f hf => ?_, fun k hk f hf f' hf' h => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, map_add, hA.2.1 a b f hf, hB.2.1 a b f hf]`. Establish `e1` using `hA.2.2 k hk f hf f' hf' h`. Establish `e2` using `hB.2.2 k hk f hf f' hf' h`. Simplify using `only [LinearMap.add_apply, Pi.add_apply, Submodule.coe_add]`.
+
+Rewrite using `[dc_kDiag_add, ← e1, ← e2]`.
+-/
 theorem dc_isGKEndo_add' {A B : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dual ε σ E S A)
     (hB : IsGKEndo dual ε σ E S B) : IsGKEndo dual ε σ E S (A + B) := by
   refine ⟨fun f hf => (tensSub S).add_mem (hA.1 f hf) (hB.1 f hf), fun a b f hf => ?_,
@@ -95,6 +132,9 @@ theorem dc_isGKEndo_add' {A B : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dua
     simp only [LinearMap.add_apply, Pi.add_apply, Submodule.coe_add]
     rw [dc_kDiag_add, ← e1, ← e2]
 
+/- English proof (translation)
+Use `⟨fun f hf => (tensSub S).smul_mem a (hA.1 f hf), fun x y f hf => ?_, fun k hk f hf f' hf' h => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, map_smul, hA.2.1 x y f hf]`. Establish `e1` using `hA.2.2 k hk f hf f' hf' h`. Simplify using `only [LinearMap.smul_apply, Pi.smul_apply, Submodule.coe_smul]`. Rewrite using `[dc_kDiag_smul, ← e1]`.
+-/
 theorem dc_isGKEndo_smul' {A : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dual ε σ E S A) (a : ℂ) :
     IsGKEndo dual ε σ E S (a • A) := by
   refine ⟨fun f hf => (tensSub S).smul_mem a (hA.1 f hf), fun x y f hf => ?_,
@@ -104,20 +144,36 @@ theorem dc_isGKEndo_smul' {A : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dual
     simp only [LinearMap.smul_apply, Pi.smul_apply, Submodule.coe_smul]
     rw [dc_kDiag_smul, ← e1]
 
+/- English proof (translation)
+Use `⟨fun f hf => hA.1 _ (hB.1 f hf), fun a b f hf => ?_, fun k hk f hf f' hf' h => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, hB.2.1 a b f hf, hA.2.1 a b _ (hB.1 f hf)]`. Conclude with `hA.2.2 k hk _ (hB.1 f hf) _ (hB.1 f' hf') (hB.2.2 k hk f hf f' hf' h)`.
+-/
 theorem dc_isGKEndo_mul' {A B : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dual ε σ E S A)
     (hB : IsGKEndo dual ε σ E S B) : IsGKEndo dual ε σ E S (A * B) := by
   refine ⟨fun f hf => hA.1 _ (hB.1 f hf), fun a b f hf => ?_, fun k hk f hf f' hf' h => ?_⟩
   · simp only [Module.End.mul_apply, hB.2.1 a b f hf, hA.2.1 a b _ (hB.1 f hf)]
   · exact hA.2.2 k hk _ (hB.1 f hf) _ (hB.1 f' hf') (hB.2.2 k hk f hf f' hf' h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f hf => hf, fun _ _ _ _ => rfl, fun _ _ _ _ _ _ h => h⟩`.
+-/
 theorem dc_isGKEndo_one' : IsGKEndo dual ε σ E S 1 :=
   ⟨fun f hf => hf, fun _ _ _ _ => rfl, fun _ _ _ _ _ _ h => h⟩
 
+/- English proof (translation)
+Use `⟨fun _ _ => (tensSub S).zero_mem, fun _ _ _ _ => by simp, fun k _ _ _ _ _ _ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `[kDiag]`.
+-/
 theorem dc_isGKEndo_zero' : IsGKEndo dual ε σ E S 0 := by
   refine ⟨fun _ _ => (tensSub S).zero_mem, fun _ _ _ _ => by simp, fun k _ _ _ _ _ _ => ?_⟩
   funext c
   simp [kDiag]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `dc_isGKEndo_add' hp hq`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, Module.algebraMap_end_eq_smul_id]`.
+
+Use `dc_isGKEndo_mul' (dc_isGKEndo_smul' dc_isGKEndo_one' a) ?_` and prove the remaining obligations. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `dc_isGKEndo_one'`. Consider the case `succ k ih => rw [pow_succ]`.
+
+Conclude with `dc_isGKEndo_mul' ih hA`.
+-/
 theorem dc_isGKEndo_aeval {A : Module.End ℂ (Fin n → D)} (hA : IsGKEndo dual ε σ E S A) (p : ℂ[X]) :
     IsGKEndo dual ε σ E S (aeval A p) := by
   induction p using Polynomial.induction_on' with
@@ -149,6 +205,21 @@ def dc_wsh (dual : Bool) (μ : Fin n → ℝ) (c : Fin n) : Fin n → ℝ :=
 section
 variable {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
 
+/- English proof (translation)
+Establish `hne : (univ.filter fun c => f c ≠ 0).Nonempty`. Take `⟨c, hc⟩` from `Function.ne_iff.mp h0`. Conclude with `⟨c, by simpa using hc⟩`. Use `set c := (univ.filter fun c => f c ≠ 0).max' hne with hcdef`. Establish `hc : f c ≠ 0`.
+
+Use `Finset.max'_mem _ hne` as an intermediate fact. Simplify using `using this`. Establish `hmax : ∀ b, c < b → f b = 0`. Introduce `b hb`. Assume the negation of the conclusion as `h`.
+
+Use `Finset.le_max' (univ.filter fun c => f c ≠ 0) b (by simpa using h)` as an intermediate fact. Conclude with `absurd hb (not_lt.mpr this)`. Use `⟨c, hc, fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (hf.1 a) c`. Simplify using `only [tensF, cond_false, tensV_coord, Pi.smul_apply] at h`.
+
+Simplify using `only [dc_wsh, Bool.false_eq_true, if_false, Pi.sub_apply, Pi.single_apply]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Simplify using `only [if_true] at h ⊢`. Rewrite using `[eq_sub_of_add_eq h]`.
+
+Use `push_cast`. Rewrite using `[sub_smul, one_smul]`. Establish `hac : a ≠ c` using `Ne.symm hca`. Simplify using `only [hca, hac, if_false, add_zero] at h ⊢`. Rewrite using `[h]`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Establish `h` using `congrFun (hf.2 a b hab he) c`. Simplify using `only [tensF, cond_false, tensV_coord, Pi.zero_apply] at h`. Distinguish the cases in `hca : c = a`.
+
+Substitute `hca` using the available equality. Simplify `h` using `[hmax b hab]`. Simplify `h` using `[hca]`.
+-/
 theorem dc_top_coord_false {μ : Fin n → ℝ} {f : Fin n → M} (hf : IsKHWVec ε (tensF false E) μ f)
     (h0 : f ≠ 0) : ∃ c, f c ≠ 0 ∧ IsKHWVec ε E (dc_wsh false μ c) (f c) := by
   classical
@@ -186,6 +257,21 @@ theorem dc_top_coord_false {μ : Fin n → ℝ} {f : Fin n → M} (hf : IsKHWVec
       simpa [hmax b hab] using h
     · simpa [hca] using h
 
+/- English proof (translation)
+Establish `hne : (univ.filter fun c => f c ≠ 0).Nonempty`. Take `⟨c, hc⟩` from `Function.ne_iff.mp h0`. Conclude with `⟨c, by simpa using hc⟩`. Use `set c := (univ.filter fun c => f c ≠ 0).min' hne with hcdef`. Establish `hc : f c ≠ 0`.
+
+Use `Finset.min'_mem _ hne` as an intermediate fact. Simplify using `using this`. Establish `hmin : ∀ a, a < c → f a = 0`. Introduce `a ha`. Assume the negation of the conclusion as `h`.
+
+Use `Finset.min'_le (univ.filter fun c => f c ≠ 0) a (by simpa using h)` as an intermediate fact. Conclude with `absurd ha (not_lt.mpr this)`. Use `⟨c, hc, fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (hf.1 a) c`. Simplify using `only [tensF, cond_true, tensVd_coord, Pi.smul_apply] at h`.
+
+Simplify using `only [dc_wsh, if_true, Pi.add_apply, Pi.single_apply]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Simplify using `only [if_true] at h ⊢`. Rewrite using `[eq_add_of_sub_eq h]`.
+
+Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Establish `hac : a ≠ c` using `Ne.symm hca`. Simplify using `only [hca, hac, if_false, sub_zero] at h ⊢`. Rewrite using `[h]`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Establish `h` using `congrFun (hf.2 a b hab he) c`. Simplify using `only [tensF, cond_true, tensVd_coord, Pi.zero_apply] at h`. Distinguish the cases in `hcb : c = b`.
+
+Substitute `hcb` using the available equality. Simplify `h` using `[hmin a hab]`. Simplify `h` using `[hcb]`.
+-/
 theorem dc_top_coord_true {μ : Fin n → ℝ} {f : Fin n → M} (hf : IsKHWVec ε (tensF true E) μ f)
     (h0 : f ≠ 0) : ∃ c, f c ≠ 0 ∧ IsKHWVec ε E (dc_wsh true μ c) (f c) := by
   classical
@@ -223,6 +309,9 @@ theorem dc_top_coord_true {μ : Fin n → ℝ} {f : Fin n → M} (hf : IsKHWVec 
       simpa [hmin a hab] using h
     · simpa [hcb] using h
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `dc_top_coord_false hf h0`. Conclude with `dc_top_coord_true hf h0`.
+-/
 theorem dc_top_coord {dual : Bool} {μ : Fin n → ℝ} {f : Fin n → M} (hf : IsKHWVec ε (tensF dual E) μ f)
     (h0 : f ≠ 0) : ∃ c, f c ≠ 0 ∧ IsKHWVec ε E (dc_wsh dual μ c) (f c) := by
   cases dual
@@ -238,21 +327,38 @@ abbrev dc_TX (n : ℕ) (D : Type*) [NormedAddCommGroup D] [InnerProductSpace ℂ
 
 def dc_eqv : dc_TX n D ≃ₗ[ℂ] (Fin n → D) := WithLp.linearEquiv 2 ℂ (Fin n → D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dc_eqv_apply (x : dc_TX n D) : dc_eqv x = x.ofLp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dc_eqv_symm_apply (f : Fin n → D) : (dc_eqv (n := n)).symm f = WithLp.toLp 2 f := rfl
 
 def dc_tensX (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (a b : Fin n) : Module.End ℂ (dc_TX n D) :=
   dc_eqv.symm.conj (tensF dual E a b)
 
+/- English proof (translation)
+Simplify using `[dc_tensX, LinearEquiv.conj_apply]`.
+-/
 theorem dc_tensX_apply (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (a b : Fin n) (x : dc_TX n D) :
     dc_tensX dual E a b x = dc_eqv.symm (tensF dual E a b (dc_eqv x)) := by
   simp [dc_tensX, LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[dc_tensX_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem dc_eqv_tensX (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (a b : Fin n) (x : dc_TX n D) :
     dc_eqv (dc_tensX dual E a b x) = tensF dual E a b (dc_eqv x) := by
   rw [dc_tensX_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hT : IsGlRep (tensF dual E)`. Consider the cases of `dual`. Conclude with `tensV_isGlRep hE`. Conclude with `tensVd_isGlRep hE`. Introduce `a b c d`.
+
+Use `LinearMap.ext fun x => dc_eqv.injective ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hT a b c d) (dc_eqv x)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, dc_eqv_tensX, map_sub] at h ⊢`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp [dc_eqv_tensX]`.
+-/
 theorem dc_tensX_isGlRep {dual : Bool} {E : Fin n → Fin n → Module.End ℂ D} (hE : IsGlRep E) :
     IsGlRep (dc_tensX dual E) := by
   have hT : IsGlRep (tensF dual E) := by
@@ -266,16 +372,27 @@ theorem dc_tensX_isGlRep {dual : Bool} {E : Fin n → Fin n → Module.End ℂ D
   rw [h]
   split_ifs <;> simp [dc_eqv_tensX]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem dc_sum_inner_ite_left (a : Fin n) (u : D) (g : Fin n → D) :
     ∑ i, inner ℂ (if i = a then u else 0) (g i) = inner ℂ u (g a) := by
   rw [Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single b (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem dc_sum_inner_ite_right (b : Fin n) (u : D) (g : Fin n → D) :
     ∑ i, inner ℂ (g i) (if i = b then u else 0) = inner ℂ (g b) u := by
   rw [Finset.sum_eq_single b (fun i _ hi => by simp [hi]) (by simp)]
   simp
 
+/- English proof (translation)
+Introduce `a b hab x y`. Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`. Simplify using `only [← dc_eqv_apply, dc_eqv_tensX]`. Consider the cases of `dual`. Simplify using `only [tensF, cond_false, tensV_coord, inner_add_left, inner_add_right, Finset.sum_add_distrib, hU a b hab]`.
+
+Use `congr 1`. Simplify using `only [dc_sum_inner_ite_left, dc_sum_inner_ite_right]`. Simplify using `only [tensF, cond_true, tensVd_coord, inner_sub_left, inner_sub_right, Finset.sum_sub_distrib, hU a b hab]`. Use `congr 1`. Simplify using `only [dc_sum_inner_ite_left, dc_sum_inner_ite_right]`.
+-/
 theorem dc_tensX_isKUnitary {dual : Bool} {E : Fin n → Fin n → Module.End ℂ D} (hU : IsKUnitary ε E) :
     IsKUnitary ε (dc_tensX dual E) := by
   intro a b hab x y

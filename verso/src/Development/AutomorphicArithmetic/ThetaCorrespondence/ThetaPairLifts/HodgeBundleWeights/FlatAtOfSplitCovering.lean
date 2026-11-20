@@ -25,6 +25,25 @@ namespace GlobalTheory.FlatSplit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
+/- English proof (translation)
+Take `⟨hcx, hgood, hflat, hc1, hlog⟩` from `hc`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, by have := i.2; omega⟩`. Establish `hUn` using `_root_.GlobalTheory.T.unramified_points_of_deep_cover hP D p.T ((i : ℕ) + 1) Y _ _ p.fw.laws hj hY.1`. Establish `hrank : 1 ≤ (dat p i).p + (dat p i).q` using `Inhab.rank_pos p.T.toCore p.fw.laws.pins ((i : ℕ) + 1) hj`. Establish `hev : Even (p.κ i).n` using `hW.dom.2`.
+
+Establish `hFL` using `((GlobalTheory.T.flatLine_thetaRoot_twist_twistingSection hP.p5 D p.T.Q.H (dat p i) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U (fun _ => D.sp.W ((i : ℕ) + 1)) Y.dict hcx hY.1.geo hrank hgood hflat hUn (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1)) ((p.κ i).n / 2)).2 (uM p i) 0).2 hD …`. Take `⟨-, hrk, hdeg⟩` from `hFL`. Establish `hex : exZ (dat p i) (Gs p i (-(cZero D ((i : ℕ) + 1)))) = exZ (dat p i) (wtOf (dat p i) (uM p i + parWt (dat p i) (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1))) ((0 : ℤ) + (((p.κ i).n / 2 : ℕ) : ℤ)))`. Use `exZ_shift_neg (dat p i) (wtA (p.κ i)) ((p.κ i).n / 2) (D.R.k - 1) (cZero D ((i : ℕ) + 1))` as an intermediate fact. Rewrite `this` using `[Nat.two_mul_div_two_of_even hev]`. Then use the resulting hypothesis.
+
+Establish `hcg` using `congr_exZ Y.U (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) Y.dict hY.1.unf hex`. Establish `hR0` using `hDG.2.2.2.2.1`. Unfold `FlatAt`. Establish `e1 : Y.mu (Gs p i (-(cZero D ((i : ℕ) + 1)))) = slopeW_sq Y.U (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) Y.dict (wtOf (dat p i) (uM p i + parWt (dat p i) (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1))) ((0 : ℤ) + (((p.κ i).n / 2 : ℕ) : ℤ)))` using `hcg.2.2`. Establish `e2 : Y.rk (Gs p i (-(cZero D ((i : ℕ) + 1)))) = rankW Y.U (wtOf (dat p i) (uM p i) 0)` using `hcg.2.1.trans hrk`.
+
+Establish `hR : (0 : ℝ) < (rankW Y.U (wtOf (dat p i) (uM p i) 0) : ℝ)` using `by rw [← e2]; exact_mod_cast hR0`. Rewrite `hdeg` using `[degW_eq, degW_eq, hrk]`. Rewrite using `[e1]`. Establish `hb1 : 1 ≤ L.sc.b` using `by have := hH.room; rwa [Real.rpow_zero] at this`. Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hH.f8`.
+
+Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hL` using `hH.big.2.1`. Establish `hll` using `hH.big.2.2.2`. Establish `k1 : (1 : ℝ) ≤ D.R.f * D.R.m` using `by nlinarith`. Establish `k2 : (1 : ℝ) ≤ D.R.f * D.R.m * L.sc.L` using `by nlinarith`.
+
+Establish `k3 : (1 : ℝ) ≤ D.R.f * D.R.m * L.sc.L * Real.log (Real.log L.sc.x)` using `by nlinarith`. Establish `k4 : (1 : ℝ) ≤ D.R.f * D.R.m * L.sc.b * Real.log (Real.log L.sc.x)` using `by nlinarith`. Establish `hbE : L.sc.b ≤ unitE p`. Rewrite using `[hW.unit]; nlinarith [mul_le_mul_of_nonneg_left k3 (by linarith : (0 : ℝ) ≤ L.sc.b)]`. Establish `hLE : L.sc.L ≤ unitE p`.
+
+Rewrite using `[hW.unit]; nlinarith [mul_le_mul_of_nonneg_left k4 (by linarith : (0 : ℝ) ≤ L.sc.L)]`. Establish `hfr : (((Module.finrank ℚ D.host.E / 2 * ((dat p i).p + (dat p i).q) : ℕ) : ℝ)) = (D.R.f : ℝ) * D.R.r`. Rewrite using `[hH.deg, hW.sig.2.2, Nat.mul_div_cancel_left _ (by norm_num)]; push_cast; ring`. Establish `hm : 2 * ((((p.κ i).n / 2 : ℕ) : ℝ)) ≤ (D.R.nV : ℝ)`. Use `Nat.mul_div_le (p.κ i).n 2` as an intermediate fact.
+
+Rewrite `this` using `[hW.cols]`. Rewrite using `[hW.cols]; exact_mod_cast (by omega : 2 * (D.R.nV / 2) ≤ D.R.nV)`. Establish `num` using `twice_twist_ge (fun τ => (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ)) (c1 Y.U (xiR D)) (((dat p i).p : ℝ) - (dat p i).q) ((dat p i).q : ℝ) (ofRecord D L p.Del p.h0).logOm L.sc.L L.sc.b (unitE p) (mainT p i) CA (GlobalTheory.IndefiniteRowSideFullHecke.DifferentCon …`. Rewrite `hdeg` using `[← mul_add]`. Establish `key` using `le_of_mul_le_mul_left hdeg hR`.
+
+Use `show slopeW_sq Y.U (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) Y.dict (wtOf (dat p i) (uM p i) 0) - mainT p i - (11 * CA + 83) * unitE p ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem flat_at_of_split_covering (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i) (hY : GoodCov p i Y) (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems)
     (hDG : DeepGoodAt p i Y)
     (hc : GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum.IsComplexData Y.U (fun _ => D.sp.W ((i : ℕ) + 1)) Y.dict ∧ (∀ q : ℕ, q.Prime → Y.d.l₂.GoodAt q) ∧
@@ -90,6 +109,11 @@ theorem flat_at_of_split_covering (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i
   linarith
 end GlobalTheory.FlatSplit
 namespace GlobalTheory.FlatSplit
+/- English proof (translation)
+Introduce `hP hDG hFD hA`. Use `Closed.imp (Closed.and (Closed.and (Closed.and (Closed.and hDG (GlobalTheory.T.flat_line_c1_log_bound hFD)) hA) GlobalTheory.T.weight_bound_holds) (GlobalTheory.CovTop.Sizes.hostN 0)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨⟨⟨C1, -, h1⟩, ⟨C2, -, h2⟩⟩, ⟨CA, hCA, h3⟩⟩, ⟨C4, -, h4⟩⟩, ⟨C5, -, h5⟩⟩`. Use `⟨11 * CA + 83, by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx⟩` from `(((h1.and h2).and h3).and h4).and h5`.
+
+Use `⟨x0, fun x hx' hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩` from `hx x hx' hle ι p hp`. Conclude with `_root_.GlobalTheory.FlatSplit.flat_at_of_split_covering p i Y hY hP (a1 i hi Y hY) (a2 i hi Y hY) (a3 i) (a4 i) (a5 i)`.
+-/
 theorem flat_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → FlatDeg → Anchor → Flat := by
   intro hP hDG hFD hA
   refine Closed.imp (Closed.and (Closed.and (Closed.and (Closed.and hDG (GlobalTheory.T.flat_line_c1_log_bound hFD)) hA) GlobalTheory.T.weight_bound_holds)
@@ -107,6 +131,9 @@ end
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlatSplit.flat_alt | exact _root_.GlobalTheory.FlatSplit.flat_alt | (intros; apply _root_.GlobalTheory.FlatSplit.flat_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_of_anchor : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → FlatDeg → Anchor → Flat := by
   first | exact @_root_.GlobalTheory.FlatSplit.flat_alt | exact _root_.GlobalTheory.FlatSplit.flat_alt | (intros; apply _root_.GlobalTheory.FlatSplit.flat_alt <;> assumption)
 end

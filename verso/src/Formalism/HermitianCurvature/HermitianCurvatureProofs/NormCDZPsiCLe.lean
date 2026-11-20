@@ -11,6 +11,11 @@ section Lim
 
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
+/- English proof (translation)
+Use `tendsto_integral_of_dominated_convergence (fun x => ‖I x‖ + M * ‖J x‖) (fun n => ((hum n).mul hI.1).add ((hvm n).mul hJ.1)) (hI.norm.add (hJ.norm.const_mul M)) (fun n => Filter.Eventually.of_forall fun x => ?_) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_right (hu n x) (norm_nonneg _)) (mul_le_mul_of_nonneg_right (hv n x) (norm_nonneg _))`. Use `_ = ‖I x‖ + M * ‖J x‖ := by ring`.
+
+Use `filter_upwards [hl] with x hx`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hx] with n hn`. Rewrite using `[hn.1, hn.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tendsto_int_uv_ae (I J : α → ℂ) (hI : Integrable I μ) (hJ : Integrable J μ) (u v : ℕ → α → ℂ) (M : ℝ)
     (hum : ∀ n, AEStronglyMeasurable (u n) μ) (hvm : ∀ n, AEStronglyMeasurable (v n) μ)
     (hu : ∀ n x, ‖u n x‖ ≤ 1) (hv : ∀ n x, ‖v n x‖ ≤ M) (hl : ∀ᵐ x ∂μ, ∀ᶠ n in atTop, u n x = 1 ∧ v n x = 0) :
@@ -36,12 +41,29 @@ section Main
 
 def psiC (n : ℕ) (c : ℂ) : ℂ := ((psiL n c : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `Complex.ofRealCLM.contDiff.comp (psiL_contDiff n)`.
+-/
 theorem psiC_contDiff (n : ℕ) : ContDiff ℝ ∞ (psiC n) := Complex.ofRealCLM.contDiff.comp (psiL_contDiff n)
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (psiL n) c` using `(psiL_contDiffAt n c).differentiableAt (by simp)`. Conclude with `(Complex.ofRealCLM.hasFDerivAt.comp c hd.hasFDerivAt).fderiv`.
+-/
 theorem fderiv_psiC (n : ℕ) (c : ℂ) : fderiv ℝ (psiC n) c = Complex.ofRealCLM.comp (fderiv ℝ (psiL n) c) := by
   have hd : DifferentiableAt ℝ (psiL n) c := (psiL_contDiffAt n c).differentiableAt (by simp)
   exact (Complex.ofRealCLM.hasFDerivAt.comp c hd.hasFDerivAt).fderiv
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `only [zero_mul, norm_zero]`. Conclude with `(norm_nonneg _).trans (hC 0)`. Rewrite using `[dZ_eq, fderiv_psiC, norm_mul]`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply]`. Establish `hD` using `norm_mul_fderiv_psiL_le hC n c hc`. Establish `ha : ‖((fderiv ℝ (psiL n) c 1 : ℝ) : ℂ)‖ ≤ ‖fderiv ℝ (psiL n) c‖`. Rewrite using `[Complex.norm_real]`. Simplify using `using (fderiv ℝ (psiL n) c).le_opNorm 1`.
+
+Establish `hb : ‖((fderiv ℝ (psiL n) c Complex.I : ℝ) : ℂ)‖ ≤ ‖fderiv ℝ (psiL n) c‖`. Rewrite using `[Complex.norm_real]`. Simplify using `using (fderiv ℝ (psiL n) c).le_opNorm Complex.I`. Establish `hz : ‖(1 / 2 : ℂ) * (((fderiv ℝ (psiL n) c 1 : ℝ) : ℂ) - Complex.I * ((fderiv ℝ (psiL n) c Complex.I : ℝ) : ℂ))‖ ≤ ‖fderiv ℝ (psiL n) c‖`. Rewrite using `[norm_mul]`.
+
+Establish `h3 : ‖((fderiv ℝ (psiL n) c 1 : ℝ) : ℂ) - Complex.I * ((fderiv ℝ (psiL n) c Complex.I : ℝ) : ℂ)‖ ≤ 2 * ‖fderiv ℝ (psiL n) c‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_I, one_mul]`. Conclude with `add_le_add ha hb`. Use `_ = 2 * ‖fderiv ℝ (psiL n) c‖ := by ring`.
+
+Establish `h2 : ‖(1 / 2 : ℂ)‖ = 1 / 2` using `by simp`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_c_dZ_psiC_le {C : ℝ} (hC : ∀ t, ‖deriv bumpR t‖ ≤ C) (n : ℕ) (c : ℂ) :
     ‖c * NF.dZ (psiC n) c‖ ≤ C := by
   by_cases hc : c = 0
@@ -74,6 +96,11 @@ theorem norm_c_dZ_psiC_le {C : ℝ} (hC : ∀ t, ‖deriv bumpR t‖ ≤ C) (n :
     calc ‖c‖ * _ ≤ ‖c‖ * ‖fderiv ℝ (psiL n) c‖ := mul_le_mul_of_nonneg_left hz (norm_nonneg c)
       _ ≤ C := hD
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_gt |Real.log ‖c‖|`. Use `filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Establish `hlt : |Real.log ‖c‖| < (n : ℝ) + 1`. Establish `: (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hev` using `psiL_one_near n c hc hlt`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[psiC, hev.eq_of_nhds]`. Rewrite using `[dZ_eq, fderiv_psiC, hev.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem psiC_eventually (c : ℂ) (hc : c ≠ 0) :
     ∀ᶠ n : ℕ in atTop, psiC n c = 1 ∧ c * NF.dZ (psiC n) c = 0 := by
   obtain ⟨N, hN⟩ := exists_nat_gt |Real.log ‖c‖|
@@ -87,6 +114,9 @@ theorem psiC_eventually (c : ℂ) (hc : c ≠ 0) :
   · rw [dZ_eq, fderiv_psiC, hev.fderiv_eq]
     simp
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun w => φ w * f w) c = φ c • fderiv ℝ f c + f c • fderiv ℝ φ c` using `fderiv_mul hφ hf`. Rewrite using `[dZ_eq, dZ_eq, dZ_eq, h]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_mul {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt ℝ φ c) (hf : DifferentiableAt ℝ f c) :
     NF.dZ (fun w => φ w * f w) c = NF.dZ φ c * f c + φ c * NF.dZ f c := by
   have h : fderiv ℝ (fun w => φ w * f w) c = φ c • fderiv ℝ f c + f c • fderiv ℝ φ c := fderiv_mul hφ hf
@@ -94,6 +124,25 @@ theorem dZ_mul {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt ℝ φ c) 
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `exists_deriv_bump_bound`. Establish `hUo : IsOpen {c : ℂ | c ≠ 0}` using `isOpen_ne`. Establish `hfd : ∀ c ≠ 0, DifferentiableAt ℝ f c` using `fun c hc => (hf.differentiableOn one_ne_zero c hc).differentiableAt (hUo.mem_nhds hc)`. Use `set F : ℕ → ℂ → ℂ := fun n c => psiC n c * f c with hF`. Establish `hFc : ∀ n, ContDiff ℝ 1 (F n)`.
+
+Introduce `n`. Use `contDiff_iff_contDiffAt.mpr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Use `ContDiffAt.congr_of_eventuallyEq (contDiffAt_const (c := (0 : ℂ))) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [psiL_zero_near0 n] with w hw`. Simplify using `[hF, psiC, hw]`. Conclude with `((psiC_contDiff n).contDiffAt.of_le (by simp)).mul ((hf.contDiffAt (hUo.mem_nhds hc)))`. Establish `hψs : ∀ n, tsupport (psiC n) ⊆ tsupport (psiL n)` using `fun n => tsupport_comp_subset (g := fun x : ℝ => (x : ℂ)) Complex.ofReal_zero (psiL n)`. Establish `hFs : ∀ n, HasCompactSupport (F n)` using `fun n => (((psiL_hasCompactSupport n).comp_left (g := fun x : ℝ => (x : ℂ)) Complex.ofReal_zero).mul_right)`.
+
+Establish `hF0 : ∀ n, (0 : ℂ) ∉ tsupport (F n)` using `fun n h => zero_notMem_tsupport_psiL n (hψs n ((tsupport_mul_subset_left) h))`. Establish `key` using `fun n => pLogAdj_cpt (F n) g (hFc n) (hFs n) (hF0 n) hg`. Establish `hLe : ∀ n, (fun c => c * NF.dZ (F n) c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => psiC n c * (c * NF.dZ f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) + (c * NF.dZ (psiC n) c) * (f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ))`. Introduce `n`. Use function extensionality and compare the values at `c`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Establish `hd` using `dZ_mul (φ := psiC n) (f := f) (((psiC_contDiff n).differentiable (by simp)) c) (hfd c hc)`. Rewrite using `[show NF.dZ (F n) c = NF.dZ (fun w => psiC n w * f w) c from rfl, hd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hRe : ∀ n, (fun c => F n c * conj (conj c * NF.dZb g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => psiC n c * (f c * conj (conj c * NF.dZb g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) + (0 : ℂ) * (f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ))`. Introduce `n`. Use function extensionality and compare the values at `c`. Simplify using `only [hF]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hψm : ∀ n, AEStronglyMeasurable (psiC n) volume` using `fun n => (psiC_contDiff n).continuous.aestronglyMeasurable`. Establish `hvm : ∀ n, AEStronglyMeasurable (fun c : ℂ => c * NF.dZ (psiC n) c) volume` using `fun n => (continuous_id.mul (dZ_contDiff (psiC_contDiff n)).continuous).aestronglyMeasurable`. Establish `hae : ∀ᵐ c ∂(volume : Measure ℂ), c ≠ 0` using `Measure.ae_ne volume 0`. Establish `hL` using `tendsto_int_uv_ae _ _ h1 h0 (fun n => psiC n) (fun n c => c * NF.dZ (psiC n) c) C hψm hvm (fun n c => by simpa [psiC] using psiL_le_one n c) (fun n c => norm_c_dZ_psiC_le hC n c) (hae.mono fun c hc => psiC_eventually c hc)`.
+
+Establish `hR` using `tendsto_int_uv_ae _ _ h2 h0 (fun n => psiC n) (fun _ _ => (0 : ℂ)) C hψm (fun _ => aestronglyMeasurable_const) (fun n c => by simpa [psiC] using psiL_le_one n c) (fun _ _ => by simpa using (norm_nonneg _).trans (hC 0)) (hae.mono fun c hc => (psiC_eventually c hc).mono fun n hn => …`. Establish `hL' : Tendsto (fun n => ∫ c, c * NF.dZ (F n) c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) atTop (𝓝 (∫ c, c * NF.dZ f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))`. Simplify using `only [hLe]`. Conclude with `hL`. Establish `hR' : Tendsto (fun n => ∫ c, c * NF.dZ (F n) c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) atTop (𝓝 (-∫ c, f c * conj (conj c * NF.dZb g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))`.
+
+Simplify using `only [key, hRe]`. Conclude with `hR.neg`. Conclude with `tendsto_nhds_unique hL' hR'`.
+-/
 theorem pLogAdj (f g : ℂ → ℂ) (hf : ContDiffOn ℝ 1 f {c | c ≠ 0}) (hg : ContDiffOn ℝ 1 g {c | c ≠ 0})
     (h0 : Integrable (fun c => f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))
     (h1 : Integrable (fun c => c * NF.dZ f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))

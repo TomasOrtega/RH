@@ -30,6 +30,13 @@ def prodChar {O : Type} [CommRing O] {x : Sp O ⟶ X} {q N : ℕ} (c : Fin N →
     exact Finset.prod_congr rfl fun m _ => by
       rw [Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, (c m).nat B B' φ g g' hg hg']
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t K _ _ ξ q hq hζ hs R _ _ _ _ _ _ x hx p _ ψ z hψ hz N χ ch hχ hch c'`. Take `⟨-, h⟩` from `GlobalTheory.HtChar.induced_chars E H X t K ξ q hq hζ hs R x hx`. Take `⟨-, h2, h3⟩` from `h p ψ z hψ hz`. Take `⟨χ', hχ'⟩` from `h2 c'`. Take `⟨n, rfl⟩` from `hχ χ'`.
+
+Use `⟨n, h3 _ c' (prodChar ch n) hχ' fun σ k a w hσ hk hw ha => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ m, ∃ b : R, algebraMap R K b = ((χ m k : Kˣ) : K)` using `fun m => GlobalTheory.HtChar.root_mem hq (by rw [← Units.val_pow_eq_pow_val, ← map_pow, GlobalTheory.HtChar.ker_pow, map_one, Units.val_one])`. Use `choose b hb using hr`. Take `rfl : a = ∏ m, b m ^ n m` from `IsFractionRing.injective R K (by`. Rewrite using `[ha, map_prod, MonoidHom.finset_prod_apply, Units.coe_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun m _ => by rw [map_pow, hb, MonoidHom.pow_apply, Units.val_pow_eq_pow_val])`. Use `show ((∏ m, (ch m).χ _ w ^ n m : (↥(intO ℂ_[p]))ˣ) : ↥(intO ℂ_[p])) = _`. Rewrite using `[map_prod, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun m _ => by`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, hch m σ k (b m) w hσ hk hw (hb m)]`.
+-/
 theorem gens : GensSt := by
   intro E _ _ _ H X _ t K _ _ ξ q hq hζ hs R _ _ _ _ _ _ x hx p _ ψ z hψ hz N χ ch hχ hch c'
   obtain ⟨-, h⟩ := GlobalTheory.HtChar.induced_chars E H X t K ξ q hq hζ hs R x hx

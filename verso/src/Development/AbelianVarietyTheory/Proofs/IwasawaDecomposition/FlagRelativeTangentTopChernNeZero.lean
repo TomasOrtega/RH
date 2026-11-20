@@ -4,6 +4,11 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
 
 namespace GlobalTheory.GoodMetric
 
+/- English proof (translation)
+Introduce `ι _ m`. Unfold `rootDiscr`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun j _ => Finset.prod_ne_zero_iff.mpr fun i hi => ?_` and prove the remaining obligations. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+
+Establish `h2` using `X_injective (σ := Root m) (R := ℝ) h`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at h2`. Conclude with `(Finset.mem_Iio.mp hi).ne h2.symm`.
+-/
 theorem rootDiscr_ne_zero : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ), rootDiscr m ≠ 0 := by
   intro ι _ m
   unfold rootDiscr

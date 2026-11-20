@@ -10,6 +10,9 @@ noncomputable section
 
 namespace ProjIdealFormValue
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.mapDomain, Finsupp.sum, Finsupp.sum, Finset.sum_apply, Finsupp.finsetSum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : v.1 = k`. Simplify using `[blockWeight, h]`. Simplify using `[blockWeight, Ne.symm h]`.
+-/
 theorem weight_blockWeight_apply {K : Type*} [DecidableEq K] {ι : K → Type*} (m : (Σ k, ι k) →₀ ℕ)
     (k : K) : Finsupp.weight (blockWeight ι) m k = Finsupp.mapDomain Sigma.fst m k := by
   rw [Finsupp.weight_apply, Finsupp.mapDomain, Finsupp.sum, Finsupp.sum, Finset.sum_apply,
@@ -19,6 +22,9 @@ theorem weight_blockWeight_apply {K : Type*} [DecidableEq K] {ι : K → Type*} 
   · simp [blockWeight, h]
   · simp [blockWeight, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[eval₂_monomial, eval₂_monomial, monomial_eq, C_1, one_mul, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Simplify using `only [mul_pow, Finsupp.prod_mul, map_mul, RingHom.coe_comp, Function.comp_apply, map_finsuppProd, map_pow, mul_assoc]`.
+-/
 theorem eval₂_monomial_cone {F Φ : Type*} [CommRing F] [CommRing Φ] (α : F →+* Φ) {K : Type*}
     {ι : K → Type*} (z : (Σ k, ι k) → Φ) (m : (Σ k, ι k) →₀ ℕ) (c : F) :
     eval₂ (C.comp α) (fun p => C (z p) * X p.1) (monomial m c) =
@@ -28,6 +34,15 @@ theorem eval₂_monomial_cone {F Φ : Type*} [CommRing F] [CommRing Φ] (α : F 
   simp only [mul_pow, Finsupp.prod_mul, map_mul, RingHom.coe_comp, Function.comp_apply,
     map_finsuppProd, map_pow, mul_assoc]
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ ι y N E _ _ w M φ Φ _ _ t d x hx`. Establish `hx' : IsWeightedHomogeneous (blockWeight (bundleIdx ι M)) x d` using `hx`. Rewrite using `[projIdeal, RingHom.mem_ker, coe_eval₂Hom]`. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality.
+
+Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨m₀, hm₀⟩ : x.support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, support_eq_empty]`. Conclude with `hx0`. Establish `hD : ∀ m ∈ x.support, Finsupp.mapDomain Sigma.fst m = Finsupp.mapDomain Sigma.fst m₀`.
+
+Introduce `m hm`. Use extensionality with `o`. Rewrite using `[← weight_blockWeight_apply, ← weight_blockWeight_apply, hx' (mem_support_iff.mp hm), hx' (mem_support_iff.mp hm₀)]`. Establish `key : eval₂ (C.comp ((algebraMap Ω Φ).comp (algebraMap F Ω))) (fun p => C (projCoord y w φ t p) * X p.1) x = C (eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ t) x) * monomial (Finsupp.mapDomain Sigma.fst m₀) 1` using `by conv_lhs => rw [x.as_sum] conv_rhs => rw [x.as_sum]`. Rewrite using `[eval₂_sum, eval₂_sum, map_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[eval₂_monomial_cone, hD m hm]`. Rewrite using `[key, mul_eq_zero, C_eq_zero, monomial_eq_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem proof : ProjIdealFormValue.Statement := by
   intro F _ Ω _ _ K _ ι y N E _ _ w M φ Φ _ _ t d x hx
   have hx' : IsWeightedHomogeneous (blockWeight (bundleIdx ι M)) x d := hx

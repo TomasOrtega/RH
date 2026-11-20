@@ -10,22 +10,37 @@ noncomputable section
 
 def entrySum {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) : ℝ := ∑ j, ∑ k, |A j k|
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem entrySum_nonneg {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) : 0 ≤ entrySum A :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun i _ => mul_self_nonneg (v i)`.
+-/
 theorem dot_self_nonneg {ι : Type*} [Fintype ι] (v : ι → ℝ) : 0 ≤ v ⬝ᵥ v :=
   Finset.sum_nonneg fun i _ => mul_self_nonneg (v i)
 
+/- English proof (translation)
+The claim follows from `Finset.single_le_sum (f := fun i => x i * x i) (fun i _ => mul_self_nonneg (x i)) (Finset.mem_univ j)`.
+-/
 theorem mul_self_le_dot {ι : Type*} [Fintype ι] (x : ι → ℝ) (j : ι) : x j * x j ≤ x ⬝ᵥ x :=
   Finset.single_le_sum (f := fun i => x i * x i) (fun i _ => mul_self_nonneg (x i))
     (Finset.mem_univ j)
 
+/- English proof (translation)
+The claim follows from `|x j| * |x k| ≤ x ⬝ᵥ x := by have hj := mul_self_le_dot x j have hk := mul_self_le_dot x k nlinarith [abs_mul_abs_self (x j), abs_mul_abs_self (x k), sq_nonneg (|x j| - |x k|)]`.
+-/
 theorem abs_mul_le_dot {ι : Type*} [Fintype ι] (x : ι → ℝ) (j k : ι) :
     |x j| * |x k| ≤ x ⬝ᵥ x := by
   have hj := mul_self_le_dot x j
   have hk := mul_self_le_dot x k
   nlinarith [abs_mul_abs_self (x j), abs_mul_abs_self (x k), sq_nonneg (|x j| - |x k|)]
 
+/- English proof (translation)
+The claim follows from `|x ⬝ᵥ (A *ᵥ x)| ≤ entrySum A * (x ⬝ᵥ x) := by have h : x ⬝ᵥ (A *ᵥ x) = ∑ j, ∑ k, x j * A j k * x k := by simp only [dotProduct, mulVec, Finset.mul_sum] exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring rw [h, entrySum, Finset.sum_mul] refine (Finset.ab …`.
+-/
 theorem abs_quad_le {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) (x : ι → ℝ) :
     |x ⬝ᵥ (A *ᵥ x)| ≤ entrySum A * (x ⬝ᵥ x) := by
   have h : x ⬝ᵥ (A *ᵥ x) = ∑ j, ∑ k, x j * A j k * x k := by
@@ -39,6 +54,9 @@ theorem abs_quad_le {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) (x : ι →
   calc |x j| * |A j k| * |x k| = |A j k| * (|x j| * |x k|) := by ring
     _ ≤ |A j k| * (x ⬝ᵥ x) := mul_le_mul_of_nonneg_left (abs_mul_le_dot x j k) (abs_nonneg _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_mulVec, dotProduct_add, ih]`.
+-/
 theorem quad_sum {ι κ : Type*} [Fintype ι] (s : Finset κ) (A : κ → Matrix ι ι ℝ) (x : ι → ℝ) :
     x ⬝ᵥ ((∑ j ∈ s, A j) *ᵥ x) = ∑ j ∈ s, x ⬝ᵥ (A j *ᵥ x) := by
   classical
@@ -46,30 +64,53 @@ theorem quad_sum {ι κ : Type*} [Fintype ι] (s : Finset κ) (A : κ → Matrix
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_mulVec, dotProduct_add, ih]
 
+/- English proof (translation)
+Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, one_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem quad_smul_one_sub {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℝ) (l : ℝ)
     (x : ι → ℝ) : x ⬝ᵥ ((l • (1 : Matrix ι ι ℝ) - A) *ᵥ x) = l * (x ⬝ᵥ x) - x ⬝ᵥ (A *ᵥ x) := by
   rw [sub_mulVec, dotProduct_sub, smul_mulVec, one_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, one_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem quad_sub_smul_one {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℝ) (l : ℝ)
     (x : ι → ℝ) : x ⬝ᵥ ((A - l • (1 : Matrix ι ι ℝ)) *ᵥ x) = x ⬝ᵥ (A *ᵥ x) - l * (x ⬝ᵥ x) := by
   rw [sub_mulVec, dotProduct_sub, smul_mulVec, one_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `PosSemidef.of_dotProduct_mulVec_nonneg ((conjTranspose_eq_transpose_of_trivial A).trans hs) (by simpa using h)`.
+-/
 theorem posSemidef_of_real {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hs : Aᵀ = A)
     (h : ∀ x : ι → ℝ, 0 ≤ x ⬝ᵥ (A *ᵥ x)) : A.PosSemidef :=
   PosSemidef.of_dotProduct_mulVec_nonneg
     ((conjTranspose_eq_transpose_of_trivial A).trans hs) (by simpa using h)
 
+/- English proof (translation)
+Simplify using `using hA.dotProduct_mulVec_nonneg x`.
+-/
 theorem quad_nonneg {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hA : A.PosSemidef)
     (x : ι → ℝ) : 0 ≤ x ⬝ᵥ (A *ᵥ x) := by
   simpa using hA.dotProduct_mulVec_nonneg x
 
+/- English proof (translation)
+The claim follows from `(conjTranspose_eq_transpose_of_trivial A).symm.trans hA.isHermitian`.
+-/
 theorem transpose_of_posSemidef {ι : Type*} {A : Matrix ι ι ℝ} (hA : A.PosSemidef) : Aᵀ = A :=
   (conjTranspose_eq_transpose_of_trivial A).symm.trans hA.isHermitian
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose, hs]`.
+-/
 theorem quad_symm {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hs : Aᵀ = A) (u v : ι → ℝ) :
     v ⬝ᵥ (A *ᵥ u) = u ⬝ᵥ (A *ᵥ v) := by
   rw [dotProduct_mulVec, dotProduct_comm, ← mulVec_transpose, hs]
 
+/- English proof (translation)
+Establish `hvu` using `quad_symm (transpose_of_posSemidef hA) u v`. Establish `key : ∀ t : ℝ, 0 ≤ (v ⬝ᵥ (A *ᵥ v)) * (t * t) + (2 * (u ⬝ᵥ (A *ᵥ v))) * t + u ⬝ᵥ (A *ᵥ u)`. Introduce `t`. Establish `h` using `quad_nonneg hA (u + t • v)`. Simplify using `only [mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, smul_eq_mul, hvu] at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `discrim_le_zero key` as an intermediate fact. Unfold `discrim at this`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem quad_cs {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hA : A.PosSemidef) (u v : ι → ℝ) :
     (u ⬝ᵥ (A *ᵥ v)) ^ 2 ≤ (u ⬝ᵥ (A *ᵥ u)) * (v ⬝ᵥ (A *ᵥ v)) := by
   have hvu := quad_symm (transpose_of_posSemidef hA) u v
@@ -84,6 +125,13 @@ theorem quad_cs {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hA : A.PosSemi
   unfold discrim at this
   nlinarith
 
+/- English proof (translation)
+Establish `hs : Aᵀ = A`. Use `transpose_of_posSemidef h` as an intermediate fact. Rewrite `this` using `[transpose_sub, transpose_smul, transpose_one]`. Conclude with `sub_left_injective this`. Use `posDef_iff_dotProduct_mulVec.mpr ⟨(conjTranspose_eq_transpose_of_trivial A).trans hs, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `quad_nonneg h x`. Rewrite `h1` using `[quad_sub_smul_one]`. Establish `h2 : 0 < x ⬝ᵥ x`. Break down `(dot_self_nonneg x).lt_or_eq with h3 | h3` into its components or cases. Conclude with `h3`.
+
+Conclude with `absurd (dotProduct_self_eq_zero.mp h3.symm) hx`. Simplify using `using (by nlinarith : 0 < x ⬝ᵥ (A *ᵥ x))`.
+-/
 theorem posDef_of_ge {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι ℝ} {c : ℝ}
     (hc : 0 < c) (h : (A - c • (1 : Matrix ι ι ℝ)).PosSemidef) : A.PosDef := by
   have hs : Aᵀ = A := by
@@ -100,6 +148,15 @@ theorem posDef_of_ge {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι �
     · exact absurd (dotProduct_self_eq_zero.mp h3.symm) hx
   simpa using (by nlinarith : 0 < x ⬝ᵥ (A *ᵥ x))
 
+/- English proof (translation)
+Establish `hA : A.PosDef` using `posDef_of_ge hc h`. Establish `hdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).mp hA.isUnit`. Establish `hs : Aᵀ = A` using `transpose_of_posSemidef hA.posSemidef`. Use `posSemidef_of_real ?_ fun x => ?_` and prove the remaining obligations. Rewrite using `[transpose_sub, transpose_smul, transpose_one, transpose_nonsing_inv, hs]`.
+
+Rewrite using `[quad_smul_one_sub] set y := A⁻¹ *ᵥ x with hy`. Establish `hx : A *ᵥ y = x` using `by rw [hy, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`. Establish `h1 : c * (y ⬝ᵥ y) ≤ x ⬝ᵥ y`. Use `quad_nonneg h y` as an intermediate fact. Rewrite `this` using `[quad_sub_smul_one, hx, dotProduct_comm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 0 ≤ (x - c • y) ⬝ᵥ (x - c • y)` using `dot_self_nonneg _`. Simplify using `only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, smul_eq_mul, dotProduct_comm y x] at h3`. Establish `key : c * (x ⬝ᵥ y) ≤ x ⬝ᵥ x` using `by nlinarith`. Use `mul_le_mul_of_nonneg_left key (inv_nonneg.mpr hc.le)` as an intermediate fact.
+
+Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hc.ne', one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inv_le_of_ge {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι ℝ} {c : ℝ}
     (hc : 0 < c) (h : (A - c • (1 : Matrix ι ι ℝ)).PosSemidef) :
     (c⁻¹ • (1 : Matrix ι ι ℝ) - A⁻¹).PosSemidef := by
@@ -123,6 +180,17 @@ theorem inv_le_of_ge {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι �
     rw [← mul_assoc, inv_mul_cancel₀ hc.ne', one_mul] at this
     linarith
 
+/- English proof (translation)
+Establish `hdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).mp hA.isUnit`. Establish `hs : Aᵀ = A` using `transpose_of_posSemidef hA.posSemidef`. Use `posSemidef_of_real ?_ fun x => ?_` and prove the remaining obligations. Rewrite using `[transpose_sub, transpose_smul, transpose_one, transpose_nonsing_inv, hs]`. Rewrite using `[quad_sub_smul_one] set y := A⁻¹ *ᵥ x with hy`.
+
+Establish `hx : A *ᵥ y = x` using `by rw [hy, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`. Establish `hcs` using `quad_cs hA.posSemidef y x`. Establish `e1 : y ⬝ᵥ (A *ᵥ x) = x ⬝ᵥ x` using `by rw [← quad_symm hs, hx]`. Establish `e2 : y ⬝ᵥ (A *ᵥ y) = x ⬝ᵥ y` using `by rw [hx, dotProduct_comm]`. Rewrite `hcs` using `[e1, e2]`.
+
+Establish `hxy : 0 ≤ x ⬝ᵥ y` using `e2 ▸ quad_nonneg hA.posSemidef y`. Establish `hlx : x ⬝ᵥ (A *ᵥ x) ≤ l * (x ⬝ᵥ x)`. Use `quad_nonneg h x` as an intermediate fact. Rewrite `this` using `[quad_smul_one_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hxx` using `dot_self_nonneg x`. Break down `hxx.lt_or_eq with hpos | hzero` into its components or cases. Establish `h4 : (x ⬝ᵥ x) * (x ⬝ᵥ x) ≤ (l * (x ⬝ᵥ y)) * (x ⬝ᵥ x)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlx hxy]`. Establish `h5 : x ⬝ᵥ x ≤ l * (x ⬝ᵥ y)` using `le_of_mul_le_mul_right h4 hpos`.
+
+Use `mul_le_mul_of_nonneg_left h5 (inv_nonneg.mpr hl.le)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ hl.ne', one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hzero]`. Simplify using `using hxy`.
+-/
 theorem inv_ge_of_le {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι ℝ} {l : ℝ}
     (hl : 0 < l) (hA : A.PosDef) (h : (l • (1 : Matrix ι ι ℝ) - A).PosSemidef) :
     (A⁻¹ - l⁻¹ • (1 : Matrix ι ι ℝ)).PosSemidef := by
@@ -154,6 +222,15 @@ theorem inv_ge_of_le {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι �
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Establish `hs : ∀ j k, A k j = A j k` using `fun j k => by`. Simplify using `using congrFun (congrFun (transpose_of_posSemidef hA) j) k`. Use `PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun w => ?_` and prove the remaining obligations. Use extensionality with `j k`. Simplify using `[conjTranspose_apply, hs]`.
+
+Use `set a : ι → ℝ := fun k => (w k).re set b : ι → ℝ := fun k => (w k).im`. Establish `ha` using `quad_nonneg hA a`. Establish `hb` using `quad_nonneg hA b`. Establish `hre : (star w ⬝ᵥ (A.map (fun x : ℝ => (x : ℂ)) *ᵥ w)).re = a ⬝ᵥ (A *ᵥ a) + b ⬝ᵥ (A *ᵥ b)`. Simplify using `only [dotProduct, mulVec, map_apply, Pi.star_apply, Complex.re_sum, Complex.mul_re, Complex.mul_im, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im, a, b, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations. Establish `him : (star w ⬝ᵥ (A.map (fun x : ℝ => (x : ℂ)) *ᵥ w)).im = 0`. Establish `e : (star w ⬝ᵥ (A.map (fun x : ℝ => (x : ℂ)) *ᵥ w)).im = ∑ j, ∑ k, (w j).re * (A j k * (w k).im) - ∑ j, ∑ k, (w j).im * (A j k * (w k).re)`. Simplify using `only [dotProduct, mulVec, map_apply, Pi.star_apply, Complex.mul_im, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.im_sum, Complex.ofReal_re, Complex.ofReal_im, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`.
+
+Establish `hsw : ∑ j, ∑ k, (w j).re * (A j k * (w k).im) = ∑ j, ∑ k, (w j).im * (A j k * (w k).re)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by rw [hs]; ring`. Rewrite using `[e, hsw, sub_self]`. Conclude with `Complex.nonneg_iff.mpr ⟨hre ▸ add_nonneg ha hb, him.symm⟩`.
+-/
 theorem posSemidef_map_ofReal {ι : Type*} [Fintype ι] {A : Matrix ι ι ℝ} (hA : A.PosSemidef) :
     (A.map (fun x : ℝ => (x : ℂ))).PosSemidef := by
   have hs : ∀ j k, A k j = A j k := fun j k => by

@@ -5,6 +5,29 @@ open scoped Uniformity
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ _ p hp X₁ X₂ _ _ _ _ j₁ j₂ hinj hcl D₂ hdense F h₁ h₂ b i`. Use `haveI : ContinuousSMul ℂ E := hp.continuousSMul`. Use `haveI : FirstCountableTopology E := hp.firstCountableTopology`. Use `haveI : PolynormableSpace ℂ E := hp.toPolynormableSpace`. Use `haveI : IsTopologicalAddGroup E := inferInstance`.
+
+Use `set Y : Submodule ℂ E := LinearMap.range j₁ with hYdef`. Establish `hYc : IsClosed (Y : Set E)` using `by simpa [Y, LinearMap.coe_range] using hcl`. Use `haveI : IsUniformAddGroup Y := Y.toAddSubgroup.isUniformAddGroup`. Use `haveI : CompleteSpace Y := hYc.completeSpace_coe`. Use `haveI : FirstCountableTopology Y := Topology.IsInducing.subtypeVal.firstCountableTopology`.
+
+Use `haveI : (𝓤 Y).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated`. Use `haveI : BarrelledSpace ℂ Y := inferInstance`. Set `e : X₁ ≃ₗ[ℂ] Y` to `LinearEquiv.ofInjective j₁ hinj`. Establish `he : ∀ w, ((e w : Y) : E) = j₁ w` using `fun w => rfl`. Set `gl : D₂ → Y →ₗ[ℂ] E` to `fun a => (F.flip (a : X₂)).comp e.symm.toLinearMap`.
+
+Establish `hgl : ∀ a y, gl a y = F (e.symm y) a` using `fun a y => rfl`. Establish `hgc : ∀ a, Continuous (gl a)`. Introduce `a`. Use `hp.continuous_of_continuous_comp (gl a) fun k => ?_` and prove the remaining obligations. Take `⟨q, hq, hle⟩` from `h₂ a a.2 k`.
+
+Use `Seminorm.continuous_of_le (q := q.comp Y.subtype) (hq.comp continuous_subtype_val) ?_` and prove the remaining obligations. Introduce `y`. Use `hle (e.symm y)` as an intermediate fact. Rewrite `this` using `[← he, e.apply_symm_apply]`. Simplify `this` using `[Seminorm.comp_apply, hgl]`.
+
+Set `g : D₂ → Y →L[ℂ] E` to `fun a => ⟨gl a, hgc a⟩`. Set `l : Filter D₂` to `Filter.comap (fun a : D₂ => j₂ a) (𝓝 (j₂ b))`. Use `haveI : l.NeBot := by`. Rewrite using `[Filter.comap_neBot_iff]`. Introduce `t ht`.
+
+Take `⟨_, htx, ⟨a, ha, rfl⟩⟩` from `mem_closure_iff_nhds.mp (hdense b) t ht`. Conclude with `⟨⟨a, ha⟩, htx⟩`. Establish `hT : Tendsto (fun a y => g a y) l (𝓝 fun y => F (e.symm y) b)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `y`.
+
+Rewrite using `[hp.tendsto_nhds]`. Introduce `k ε hε`. Take `⟨q, hq, hle⟩` from `h₁ (e.symm y) k`. Establish `ht : Tendsto (fun a : D₂ => q (j₂ a - j₂ b)) l (𝓝 0)`. Establish `h0 : Tendsto (fun a : D₂ => j₂ a - j₂ b) l (𝓝 (j₂ b - j₂ b))` using `tendsto_comap.sub tendsto_const_nhds`.
+
+Use `(hq.tendsto _).comp h0` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Use `filter_upwards [ht.eventually (gt_mem_nhds hε)] with a ha`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[g, hgl, map_sub]`.
+
+Use `_ ≤ q (j₂ ((a : X₂) - b)) := hle _`. Use `_ < ε := by simpa [map_sub] using ha`. Set `G : Y →L[ℂ] E` to `continuousLinearMapOfTendsto g hT`. Establish `hG : ∀ y, G y = F (e.symm y) b` using `fun y => rfl`. Establish `hr : Continuous ((p i).comp G.toLinearMap)` using `(hp.continuous_seminorm i).comp G.continuous`.
+
+Take `⟨q, hq, hle⟩` from `Seminorm.exists_le_comp_of_isInducing hr (f := Y.subtype) .subtypeVal`. Use `⟨q, hq, fun w => ?_⟩` and prove the remaining obligations. Use `hle (e w)` as an intermediate fact. Simplify `this` using `[Seminorm.comp_apply, hG, he]`.
+-/
 theorem bilinear_bound_of_dense_right : ∀ {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [T2Space E]
     {p : ℕ → Seminorm ℂ E}, WithSeminorms p →
     ∀ {X₁ X₂ : Type} [AddCommGroup X₁] [Module ℂ X₁] [AddCommGroup X₂] [Module ℂ X₂]

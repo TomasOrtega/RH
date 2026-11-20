@@ -9,6 +9,13 @@ noncomputable section
 namespace GlobalTheory.PBFc
 variable {R : Type} [CommRing R]
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Set `D` to `(dblF R).obj ((freeBi R).obj X)`. Set `M` to `((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).mapHomologicalComplex (ComplexShape.down ℕ)).obj D`. Establish `h1 : (biChains R X).d (-((a + 1 : ℕ) : ℤ)) (-(a : ℤ)) = (M.extendXIso ComplexShape.embeddingDownNat (i` using `a + 1) rfl).hom ≫ M.d (a + 1) a ≫ (M.extendXIso ComplexShape.embeddingDownNat (i := a) rfl).inv := HomologicalComplex.extend_d_eq M ComplexShape.embeddingDownNat rfl rfl`. Establish `h2 : ∀ p : ℕ, (biChainsXIso R X p b).inv = @CategoryStruct.comp _ _ _ ((M.X p).X (-(b : ℤ))) _ ((D.X p).extendXIso ComplexShape.embeddingDownNat (i` using `b) rfl).inv ((M.extendXIso ComplexShape.embeddingDownNat (i := p) rfl).inv.f (-(b : ℤ))) := fun p => rfl`. Establish `h3 : (M.d (a + 1) a).f (-(b : ℤ)) = ((D.X (a+1)).extendXIso ComplexShape.embeddingDownNat (i` using `b) rfl).hom ≫ (D.d (a + 1) a).f b ≫ ((D.X a).extendXIso ComplexShape.embeddingDownNat (i := b) rfl).inv := HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := b) rfl`.
+
+Establish `key : (M.extendXIso ComplexShape.embeddingDownNat (i` using `a + 1) rfl).inv.f (-(b : ℤ)) ≫ (M.extendXIso ComplexShape.embeddingDownNat (i := a + 1) rfl).hom.f (-(b : ℤ)) = 𝟙 _ := by`. Rewrite using `[← HomologicalComplex.comp_f, Iso.inv_hom_id, HomologicalComplex.id_f]`. Rewrite using `[h1, h2, h2, HomologicalComplex.comp_f, HomologicalComplex.comp_f, Category.assoc, reassoc_of% key, h3, Category.assoc, Iso.inv_hom_id_assoc]`. Simplify using `only [← Category.assoc]`. Use `congr 2`.
+
+Rewrite using `[show D.d (a + 1) a = ∑ i : Fin (a + 2), (-1 : ℤ) ^ (i : ℕ) • (((SimplicialObject.whiskering _ _).obj (AlgebraicTopology.alternatingFaceMapComplex (Shv R))).obj ((freeBi R).obj X)).δ i from AlgebraicTopology.alternatingFaceMapComplex_obj_d _ a]`. Rewrite using `[← HomologicalComplex.eval_map, Functor.map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Functor.map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem biChains_dh (X : SimplicialObject Spc) (a b : ℕ) :
     (biChainsXIso R X (a + 1) b).inv ≫ ((biChains R X).d (-((a + 1 : ℕ) : ℤ)) (-(a : ℤ))).f (-(b : ℤ)) =
       (∑ i : Fin (a + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map ((X.δ i).app (op (SimplexCategory.mk b)))) ≫
@@ -42,6 +49,11 @@ theorem biChains_dh (X : SimplicialObject Spc) (a b : ℕ) :
   rfl
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Set `D` to `(dblF R).obj ((freeBi R).obj X)`. Set `M` to `((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).mapHomologicalComplex (ComplexShape.down ℕ)).obj D`. Establish `h2 : ∀ q : ℕ, (biChainsXIso R X a q).inv = @CategoryStruct.comp _ _ _ ((M.X a).X (-(q : ℤ))) _ ((D.X a).extendXIso ComplexShape.embeddingDownNat (i` using `q) rfl).inv ((M.extendXIso ComplexShape.embeddingDownNat (i := a) rfl).inv.f (-(q : ℤ))) := fun q => rfl`. Establish `h3 : (M.X a).d (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) = ((D.X a).extendXIso ComplexShape.embeddingDownNat (i` using `b + 1) rfl).hom ≫ (D.X a).d (b + 1) b ≫ ((D.X a).extendXIso ComplexShape.embeddingDownNat (i := b) rfl).inv := HomologicalComplex.extend_d_eq _ ComplexShape.embeddingDownNat rfl rfl`. Establish `hc : (M.extendXIso ComplexShape.embeddingDownNat (i` using `a) rfl).inv.f (-((b + 1 : ℕ) : ℤ)) ≫ ((biChains R X).X (-(a : ℤ))).d (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) = (M.X a).d (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) ≫ (M.extendXIso ComplexShape.embeddingDownNat (i := a) rfl).inv.f (-(b : ℤ)) := HomologicalComplex.Hom.comm _ _ _`.
+
+Rewrite using `[h2, h2, Category.assoc, hc, h3, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc]`. Simplify using `only [← Category.assoc]`. Use `congr 2`. Rewrite using `[show (D.X a).d (b + 1) b = ∑ j : Fin (b + 2), (-1 : ℤ) ^ (j : ℕ) • ((freeBi R).obj X |>.obj (op (SimplexCategory.mk a))).δ j from AlgebraicTopology.alternatingFaceMapComplex_obj_d _ b]`. Both sides reduce to the same expression.
+-/
 theorem biChains_dv (X : SimplicialObject Spc) (a b : ℕ) :
     (biChainsXIso R X a (b + 1)).inv ≫ ((biChains R X).X (-(a : ℤ))).d (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) =
       (∑ j : Fin (b + 2), (-1 : ℤ) ^ (j : ℕ) • (free R).map ((X.obj (op (SimplexCategory.mk a))).δ j)) ≫
@@ -82,6 +94,9 @@ variable {K : Cx R} {k : ℤ}
 def evD (γ : Cochain (totChains R X) K k) (t : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx X a b U) : Sec (K.X t) U :=
   if h : -((a + b : ℕ) : ℤ) + k = t then evT γ a b t h U y else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem evD_eq (γ : Cochain (totChains R X) K k) (t : ℤ) (a b : ℕ) (h : -((a + b : ℕ) : ℤ) + k = t) (U : Scheme.{0})
     (y : BSx X a b U) : evD γ t a b U y = evT γ a b t h U y := dif_pos h
 
@@ -95,6 +110,9 @@ def vB (γ : Cochain (totChains R X) K k) (t : ℤ) : ∀ (a b : ℕ) (U : Schem
 
 end Faces
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ιTotal_v_congr {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Cochain (totChains R X) K k) (i₁ i₂ p p' t : ℤ)
     (hp : p = p') (h : ComplexShape.π (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ) ⟨i₁, i₂⟩ = p)
     (h' : ComplexShape.π (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ) ⟨i₁, i₂⟩ = p')
@@ -104,6 +122,15 @@ theorem ιTotal_v_congr {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Co
   subst hp
   rfl
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `zero`. Rewrite using `[HomologicalComplex₂.d₁_eq _ _ (show (ComplexShape.up ℤ).Rel (-((0 : ℕ) : ℤ)) 1 from by simp) (-(b : ℤ)) p (by simp only [ComplexShape.π_def]; omega), (biChains_isZero X 1 (-(b : ℤ)) (Or.inl one_pos)).eq_of_tgt (HomologicalComplex.Hom.f _ _) 0]`. Simplify using `only [zero_comp, smul_zero, comp_zero]`. Conclude with `map_zero (mapHom _ _ (freeGen R _ U y))`.
+
+Consider the case `succ a`. Apply the tactic sequence `rw [HomologicalComplex₂.d₁_eq _ _ (show (ComplexShape.up ℤ).Rel (-((a + 1 : ℕ) : ℤ)) (-(a : ℤ)) from by simp <;> omega) (-(b : ℤ)) p (by simp only [ComplexShape.π_def]; omega)]`. Use `show _ = ∑ i : Fin (a + 2), (-1 : ℤ) ^ (i : ℕ) • evD γ t a b U (y.hface i)`. Rewrite using `[show (ComplexShape.up ℤ).ε₁ (ComplexShape.up ℤ) (ComplexShape.up ℤ) (-((a + 1 : ℕ) : ℤ), -(b : ℤ)) = 1 from rfl, one_smul, Category.assoc, ← Category.assoc _ (HomologicalComplex.Hom.f _ _), biChains_dh, Category.assoc, Preadditive.sum_comp]`. Use `(map_sum (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Preadditive.zsmul_comp, map_zsmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Sec.map (_ ≫ _ ≫ γ.v p t hv) (Sec.map ((free R).map _) (freeGen R _ U y)) = _`. Rewrite using `[freeGen_map, evD_eq γ t a b (by omega)]`. Unfold `evT`.
+
+Rewrite using `[ιTotal_v_congr γ _ _ p (-((a + b : ℕ) : ℤ)) t (by omega) _ (by simp only [ComplexShape.π_def]; omega) hv]`. Both sides reduce to the same expression.
+-/
 theorem evT_dh {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Cochain (totChains R X) K k) (a b : ℕ) (p t : ℤ)
     (hp : -((a + b : ℕ) : ℤ) + 1 = p) (hv : p + k = t) (U : Scheme.{0}) (y : BSx X a b U) :
     Sec.map ((biChainsXIso R X a b).inv ≫ (biChains R X).d₁ (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) p ≫ γ.v p t hv)
@@ -131,6 +158,15 @@ theorem evT_dh {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Cochain (to
     rw [ιTotal_v_congr γ _ _ p (-((a + b : ℕ) : ℤ)) t (by omega) _ (by simp only [ComplexShape.π_def]; omega) hv]
     rfl
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `zero`. Rewrite using `[HomologicalComplex₂.d₂_eq _ _ _ (show (ComplexShape.up ℤ).Rel (-((0 : ℕ) : ℤ)) 1 from by simp) p (by simp only [ComplexShape.π_def]; omega), (biChains_isZero X (-(a : ℤ)) 1 (Or.inr one_pos)).eq_of_tgt (HomologicalComplex.d _ _ _) 0]`. Simplify using `only [zero_comp, smul_zero, comp_zero]`. Conclude with `(map_zero (mapHom _ _ (freeGen R _ U y))).trans (smul_zero _).symm`.
+
+Consider the case `succ b => show _ = (a : ℤ).negOnePow • ∑ j : Fin (b + 2), (-1 : ℤ) ^ (j : ℕ) • evD γ t a b U (y.vface j)`. Apply the tactic sequence `rw [HomologicalComplex₂.d₂_eq _ _ _ (show (ComplexShape.up ℤ).Rel (-((b + 1 : ℕ) : ℤ)) (-(b : ℤ)) from by simp <;> omega) p (by simp only [ComplexShape.π_def]; omega), show (ComplexShape.up ℤ).ε₂ (ComplexShape.up ℤ) (ComplexShape.up ℤ) (-(a : ℤ), -((b + 1 : ℕ) : ℤ)) = (a : ℤ).neg …`. Use `(map_zsmul (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `congr 1`.
+
+Rewrite using `[Category.assoc, ← Category.assoc _ (HomologicalComplex.d _ _ _), biChains_dv, Category.assoc, Preadditive.sum_comp]`. Use `(map_sum (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Preadditive.zsmul_comp, map_zsmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Sec.map (_ ≫ _ ≫ γ.v p t hv) (Sec.map ((free R).map _) (freeGen R _ U y)) = _`.
+
+Rewrite using `[freeGen_map, evD_eq γ t a b (by omega)]`. Unfold `evT`. Rewrite using `[ιTotal_v_congr γ _ _ p (-((a + b : ℕ) : ℤ)) t (by omega) _ (by simp only [ComplexShape.π_def]; omega) hv]`. Both sides reduce to the same expression.
+-/
 theorem evT_dv {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Cochain (totChains R X) K k) (a b : ℕ) (p t : ℤ)
     (hp : -((a + b : ℕ) : ℤ) + 1 = p) (hv : p + k = t) (U : Scheme.{0}) (y : BSx X a b U) :
     Sec.map ((biChainsXIso R X a b).inv ≫ (biChains R X).d₂ (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ)) p ≫ γ.v p t hv)
@@ -162,6 +198,13 @@ theorem evT_dv {X : SimplicialObject Spc} {K : Cx R} {k : ℤ} (γ : Cochain (to
     rw [ιTotal_v_congr γ _ _ p (-((a + b : ℕ) : ℤ)) t (by omega) _ (by simp only [ComplexShape.π_def]; omega) hv]
     rfl
 
+/- English proof (translation)
+Rewrite using `[evT, δ_v k k' hk γ _ t ht s (-((a + b : ℕ) : ℤ) + 1) (by omega) rfl, Preadditive.comp_add, Preadditive.comp_add]`. Use `(map_add (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans (congrArg₂ (· + ·) ?_ ?_)` and prove the remaining obligations. Simplify using `only [← Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[Units.smul_def, Preadditive.comp_zsmul, Preadditive.comp_zsmul]`.
+
+Use `(map_zsmul (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `congr 1`. Rewrite using `[HomologicalComplex₂.total_d, Preadditive.add_comp, Preadditive.comp_add, ← Category.assoc, HomologicalComplex₂.ι_D₁, HomologicalComplex₂.ι_D₂_assoc, Preadditive.comp_add]`. Use `(map_add (mapHom _ (K.X t) (freeGen R _ U y)) _ _).trans (congrArg₂ (· + ·) ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `evT_dh γ a b _ t rfl _ U y`. Conclude with `evT_dv γ a b _ t rfl _ U y`.
+-/
 theorem evT_δ {X : SimplicialObject Spc} {K : Cx R} {k k' : ℤ} (hk : k + 1 = k') (γ : Cochain (totChains R X) K k)
     (a b : ℕ) (s t : ℤ) (hs : -((a + b : ℕ) : ℤ) + k = s) (ht : -((a + b : ℕ) : ℤ) + k' = t) (U : Scheme.{0})
     (y : BSx X a b U) :
@@ -184,11 +227,17 @@ theorem evT_δ {X : SimplicialObject Spc} {K : Cx R} {k k' : ℤ} (hk : k + 1 = 
 section Cross2
 variable {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc} (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B)
 
+/- English proof (translation)
+Establish `h` using `ℓ.naturality (SimplexCategory.δ i).op`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h (op (SimplexCategory.mk b))) (op U)) y`.
+-/
 theorem vertS_hface {a b : ℕ} {U : Scheme.{0}} (y : BSx (twX E V) (a + 1) b U) (i : Fin (a + 2)) :
     vertS V ℓ (y.hface i) = vertS V ℓ y := by
   have h := ℓ.naturality (SimplexCategory.δ i).op
   exact ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h (op (SimplexCategory.mk b))) (op U)) y
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (NatTrans.congr_app ((ℓ.app (op (SimplexCategory.mk a))).naturality (SimplexCategory.δ j).op) (op U)) y`.
+-/
 theorem vertS_vface {a b : ℕ} {U : Scheme.{0}} (y : BSx (twX E V) a (b + 1) U) (j : Fin (b + 2)) :
     vertS V ℓ (y.vface j) = (vertS V ℓ y).face j :=
   ConcreteCategory.congr_hom (NatTrans.congr_app ((ℓ.app (op (SimplexCategory.mk a))).naturality
@@ -211,12 +260,20 @@ def xv (α : Cochain ((chains R).obj E) I n) (z : Cochain ((chains R).obj B) J m
     (v : Sx B r U) : Sec (K.X w) U :=
   if h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = w then μ.mul U _ _ w h (ev α p _ rfl U x) (ev z r _ rfl U v) else 0
 
+/- English proof (translation)
+Substitute `hs ht` using the available equality. Conclude with `dif_pos h`.
+-/
 theorem xv_eq (α : Cochain ((chains R).obj E) I n) (z : Cochain ((chains R).obj B) J m) (w : ℤ) (p r : ℕ) (x : Sx E p U)
     (v : Sx B r U) (s t : ℤ) (hs : -(p : ℤ) + n = s) (ht : -(r : ℤ) + m = t) (h : s + t = w) :
     xv μ α z w p r x v = μ.mul U s t w h (ev α p s hs U x) (ev z r t ht U v) := by
   subst hs ht
   exact dif_pos h
 
+/- English proof (translation)
+Rewrite using `[xv_eq μ _ z w p r x v s' t (by omega) ht h]`. Consider the cases of `p with`. Consider the case `zero => rw [ev_δ_zero hn α U s s' hs, bisimplexFunctionBoundaryFirst, smul_zero, sub_zero]`. Consider the case `succ p`. Rewrite using `[ev_δ_succ hn α U p s s' hs, bisimplexFunctionBoundaryFirst, map_add, LinearMap.add_apply, sg_smul, map_zsmul, LinearMap.smul_apply, map_sum, LinearMap.sum_apply, eq_sub_iff_add_eq]`.
+
+Use `congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply, xv_eq μ α z w p r _ v s' t (by omega) ht h]`.
+-/
 theorem xv_δ_left {n₁ : ℤ} (hn : n + 1 = n₁) (α : Cochain ((chains R).obj E) I n) (z : Cochain ((chains R).obj B) J m)
     (w : ℤ) (p r : ℕ) (x : Sx E p U) (v : Sx B r U) (s s' t : ℤ) (hs : -(p : ℤ) + n = s) (hs' : s + 1 = s')
     (ht : -(r : ℤ) + m = t) (h : s' + t = w) :
@@ -231,6 +288,11 @@ theorem xv_δ_left {n₁ : ℤ} (hn : n + 1 = n₁) (α : Cochain ((chains R).ob
     refine congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))
     rw [map_zsmul, LinearMap.smul_apply, xv_eq μ α z w p r _ v s' t (by omega) ht h]
 
+/- English proof (translation)
+Rewrite using `[xv_eq μ α _ w p r x v s t' hs (by omega) h]`. Consider the cases of `r with`. Consider the case `zero => rw [ev_δ_zero hm z U t t' ht, bisimplexFunctionBoundarySecond, smul_zero, sub_zero]`. Consider the case `succ r`. Rewrite using `[ev_δ_succ hm z U r t t' ht, bisimplexFunctionBoundarySecond, map_add, sg_smul, map_zsmul, map_sum, eq_sub_iff_add_eq]`.
+
+Use `congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[map_zsmul, xv_eq μ α z w p r x _ s t' hs (by omega) h]`.
+-/
 theorem xv_δ_right {m₁ : ℤ} (hm : m + 1 = m₁) (α : Cochain ((chains R).obj E) I n) (z : Cochain ((chains R).obj B) J m)
     (w : ℤ) (p r : ℕ) (x : Sx E p U) (v : Sx B r U) (s t t' : ℤ) (hs : -(p : ℤ) + n = s)
     (ht : -(r : ℤ) + m = t) (ht' : t + 1 = t') (h : s + t' = w) :
@@ -244,6 +306,9 @@ theorem xv_δ_right {m₁ : ℤ} (hm : m + 1 = m₁) (α : Cochain ((chains R).o
     refine congrArg₂ (· + ·) rfl (congrArg _ (Finset.sum_congr rfl fun i _ => ?_))
     rw [map_zsmul, xv_eq μ α z w p r x _ s t' hs (by omega) h]
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Rewrite using `[xv_eq μ α z w p r x v _ _ rfl rfl h, μ.leibniz, xv_δ_left μ hn α z _ p r x v _ _ _ rfl rfl rfl, xv_δ_right μ hm α z _ p r x v _ _ _ rfl rfl rfl, sg_smul]`.
+-/
 theorem d_xv {n₁ m₁ : ℤ} (hn : n + 1 = n₁) (hm : m + 1 = m₁) (α : Cochain ((chains R).obj E) I n)
     (z : Cochain ((chains R).obj B) J m) (w w' : ℤ) (hw : w + 1 = w') (p r : ℕ) (x : Sx E p U) (v : Sx B r U)
     (h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = w) :
@@ -256,6 +321,9 @@ theorem d_xv {n₁ m₁ : ℤ} (hn : n + 1 = n₁) (hm : m + 1 = m₁) (α : Coc
 
 end Two
 
+/- English proof (translation)
+Unfold `evT`. Rewrite using `[Units.smul_def, Units.smul_def, Cochain.smul_v, Preadditive.comp_zsmul, Preadditive.comp_zsmul]`. Conclude with `map_zsmul (mapHom _ _ (freeGen R _ U y)) _ _`.
+-/
 theorem evT_usmul {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (c : ℤˣ) (γ : Cochain (totChains R X) L t) (a b : ℕ) (s : ℤ)
     (h : -((a + b : ℕ) : ℤ) + t = s) (U : Scheme.{0}) (y : BSx X a b U) :
     evT (c • γ) a b s h U y = c • evT γ a b s h U y := by
@@ -268,16 +336,27 @@ variable {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc} (ℓ : twX E 
   {I J K : Cx R} (μ : Pair I J K) {n m k : ℤ} (hk : n + m = k) (α : Cochain ((chains R).obj E) I n)
   (z : Cochain ((chains R).obj B) J m)
 
+/- English proof (translation)
+Rewrite using `[evT_crossT, xv_eq μ α z w a b _ _ _ _ rfl rfl (by push_cast at h; omega), sg_smul]`.
+-/
 theorem evT_crossT_xv (a b : ℕ) (w : ℤ) (h : -((a + b : ℕ) : ℤ) + k = w) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     evT (crossT V ℓ μ hk α z) a b w h U y = sg (m * a) • xv μ α z w a b (baseS V y) (vertS V ℓ y) := by
   rw [evT_crossT, xv_eq μ α z w a b _ _ _ _ rfl rfl (by push_cast at h; omega), sg_smul]
 
+/- English proof (translation)
+Distinguish the cases in `h : -((a + b : ℕ) : ℤ) + k = w`. Rewrite using `[evD_eq _ _ _ _ h, evT_crossT_xv]`. Rewrite using `[evD, dif_neg h, xv, dif_neg (by push_cast at h; omega), smul_zero]`.
+-/
 theorem evD_crossT (w : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     evD (crossT V ℓ μ hk α z) w a b U y = sg (m * a) • xv μ α z w a b (baseS V y) (vertS V ℓ y) := by
   by_cases h : -((a + b : ℕ) : ℤ) + k = w
   · rw [evD_eq _ _ _ _ h, evT_crossT_xv]
   · rw [evD, dif_neg h, xv, dif_neg (by push_cast at h; omega), smul_zero]
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `zero => rw [hB, bisimplexFunctionBoundaryFirst, smul_zero]`. Consider the case `succ a`. Rewrite using `[hB, bisimplexFunctionBoundaryFirst, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[evD_crossT, vertS_hface, smul_comm]`. Use `congr 1`. Rewrite using `[show m * ((a + 1 : ℕ) : ℤ) + m = m * a + (m + m) by push_cast; ring, sg_add, sg_add, sg_sq, mul_one]`.
+-/
 theorem hB_crossT (w : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     hB (crossT V ℓ μ hk α z) w a b U y = sg (m * a + m) • bisimplexFunctionBoundaryFirst (xv μ α z w) a b (baseS V y) (vertS V ℓ y) := by
   cases a with
@@ -289,6 +368,11 @@ theorem hB_crossT (w : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx (twX E V) a b 
     congr 1
     rw [show m * ((a + 1 : ℕ) : ℤ) + m = m * a + (m + m) by push_cast; ring, sg_add, sg_add, sg_sq, mul_one]
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `zero => rw [vB, bisimplexFunctionBoundarySecond, smul_zero]`. Consider the case `succ b`. Rewrite using `[vB, bisimplexFunctionBoundarySecond, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[evD_crossT, vertS_vface, smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem vB_crossT (w : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     vB (crossT V ℓ μ hk α z) w a b U y = sg (m * a) • bisimplexFunctionBoundarySecond (xv μ α z w) a b (baseS V y) (vertS V ℓ y) := by
   cases b with
@@ -301,6 +385,15 @@ theorem vB_crossT (w : ℤ) (a b : ℕ) (U : Scheme.{0}) (y : BSx (twX E V) a b 
 
 end Cross3
 
+/- English proof (translation)
+Use `evT_ext _ _ fun a b t ht U y => ?_` and prove the remaining obligations. Rewrite using `[evT_add, evT_usmul, evT_δ hk' _ a b (-((a + b : ℕ) : ℤ) + k) t rfl ht U y, evT_crossT_xv, evT_crossT_xv, evT_crossT_xv, hB_crossT, vB_crossT]`. Establish `hd` using `d_xv μ hn hm α z (-((a + b : ℕ) : ℤ) + k) t (by omega) a b (baseS V y) (vertS V ℓ y) (by push_cast; omega)`. Rewrite `hd` using `[Sec.map]`. Rewrite using `[Sec.map, map_zsmul, hd]`.
+
+Use `clear hd`. Substitute `hn hm hk hk'` using the available equality. Establish `e1 : sg ((m + 1) * (a : ℤ)) = sg (m * a) * sg a` using `by rw [add_mul, one_mul, sg_add]`. Rewrite using `[e1]`. Simplify using `only [sg_smul, sg_add, sg_neg, sg_one]`.
+
+Establish `q1` using `sg_sq m`. Establish `q2` using `sg_sq n`. Establish `q3` using `sg_sq (a : ℤ)`. Establish `q4` using `sg_sq (m * (a : ℤ))`. Generalize the expression as in `sg m = σm at *`.
+
+Generalize the expression as in `sg n = σn at *`. Generalize the expression as in `sg (a : ℤ) = σa at *`. Generalize the expression as in `sg (m * (a : ℤ)) = σ at *`. Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (-(σ * σn)) * q1 | linear_combination (σ * σn) * q1`.
+-/
 theorem crossT_leibniz {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc}
     (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B) {I J K : Cx R} (μ : Pair I J K) {n m k n' m' k' : ℤ}
     (hk : n + m = k) (hn : n + 1 = n') (hm : m + 1 = m') (hk' : k + 1 = k') (hk₁ : n' + m = k') (hk₂ : n + m' = k')

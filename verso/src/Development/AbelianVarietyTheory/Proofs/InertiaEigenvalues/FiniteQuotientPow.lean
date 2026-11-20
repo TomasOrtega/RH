@@ -9,6 +9,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.LocalIntegers
 
+/- English proof (translation)
+Establish `h : Ideal.span {((l : ℕ) : O) ^ n} = (Ideal.span {((l : ℕ) : ℤ_[l]) ^ n}).map (algebraMap ℤ_[l] O)`. Simplify using `[Ideal.map_span]`. Rewrite using `[h]`. Use `haveI : Finite (ℤ_[l] ⧸ Ideal.span {((l : ℕ) : ℤ_[l]) ^ n}) := by`. Rewrite using `[← PadicInt.ker_toZModPow]`.
+
+Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `Finite.of_injective _ (RingHom.kerLift_injective (PadicInt.toZModPow (p := l) n))`. Use `haveI : Module.Finite (ℤ_[l] ⧸ Ideal.span {((l : ℕ) : ℤ_[l]) ^ n}) (O ⧸ (Ideal.span {((l : ℕ) : ℤ_[l]) ^ n}).map (algebraMap ℤ_[l] O)) := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`. Conclude with `Module.finite_of_finite (ℤ_[l] ⧸ Ideal.span {((l : ℕ) : ℤ_[l]) ^ n})`.
+-/
 theorem finite_quotient_pow (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Finite ℤ_[l] O] (n : ℕ) : Finite (O ⧸ Ideal.span {((l : ℕ) : O) ^ n}) := by
   have h : Ideal.span {((l : ℕ) : O) ^ n} =
@@ -24,6 +29,11 @@ theorem finite_quotient_pow (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Al
     Module.Finite.of_restrictScalars_finite ℤ_[l] _ _
   exact Module.finite_of_finite (ℤ_[l] ⧸ Ideal.span {((l : ℕ) : ℤ_[l]) ^ n})
 
+/- English proof (translation)
+Establish `h : Set.range (algebraMap ↥(OL LL) ↥LL.1) = (fun x : ↥LL.1 => (x : PadicAlgCl l)) ⁻¹' Metric.closedBall 0 1`. Use extensionality with `x`. Rewrite using `[Set.mem_preimage, mem_closedBall_zero_iff, ← mem_integralClosure_padicInt_iff]`. Conclude with `⟨by rintro ⟨y, rfl⟩; exact y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`. Rewrite using `[h]`.
+
+Conclude with `(IsUltrametricDist.isOpen_closedBall _ one_ne_zero).preimage continuous_subtype_val`.
+-/
 theorem isOpen_integers (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     IsOpen (Set.range (algebraMap ↥(OL LL) ↥LL.1)) := by
   have h : Set.range (algebraMap ↥(OL LL) ↥LL.1) =
@@ -34,6 +44,11 @@ theorem isOpen_integers (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
   rw [h]
   exact (IsUltrametricDist.isOpen_closedBall _ one_ne_zero).preimage continuous_subtype_val
 
+/- English proof (translation)
+Introduce `l _ LL`. Use `haveI := LL.2`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := finite_integralClosure_padicInt l ↥LL.1`. Use `haveI : ContinuousSMul ℚ_[l] ↥LL.1 := Topology.IsInducing.continuousSMul (f := id) (g := fun x : ↥LL.1 => (x : PadicAlgCl l)) Topology.IsInducing.subtypeVal continuous_id rfl`. Use `haveI : IsTopologicalRing ↥LL.1 := inferInstanceAs (IsTopologicalRing ↥LL.1.toSubfield.toSubring)`.
+
+Use `⟨⟨⟨inferInstance, isDiscreteValuationRing_integralClosure_padicInt l ↥LL.1, isFractionRing_integralClosure_padicInt l ↥LL.1⟩, LL.2, isModuleTopologyOfFiniteDimensional, inferInstance, isOpen_integers l LL⟩, finite_quotient_pow l _⟩` and prove the remaining obligations.
+-/
 theorem good_integers : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL) ∧ ∀ n : ℕ, Finite (↥(OL LL) ⧸ Ideal.span {((l : ℕ) : ↥(OL LL)) ^ n}) := by
   intro l _ LL
   haveI := LL.2

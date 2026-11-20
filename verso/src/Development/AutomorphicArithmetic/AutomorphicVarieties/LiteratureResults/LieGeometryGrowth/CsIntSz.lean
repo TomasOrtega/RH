@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo.Cs
 open scoped ContDiff Topology
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Introduce `F _ _ _ Φ _ h`. Simplify using `only [norm_iteratedFDeriv_zero] at h ⊢`. Use `intervalIntegral.norm_integral_le_of_norm_le_const (a := 0) (b := 1) (C := b) (f := fun t => Φ (p, t)) (fun t ht => h t (by` as an intermediate fact.
+
+Rewrite `ht` using `[Set.uIoc_of_le zero_le_one]`. Conclude with `Set.Ioc_subset_Icc_self ht))`. Simplify using `using this`. Consider the case `succ i ih`. Introduce `F _ _ _ Φ hΦ h`.
+
+Set `Ψ : V × ℝ → V →L[ℝ] F` to `fun z => (fderiv ℝ Φ z).comp (ContinuousLinearMap.inl ℝ V ℝ)`. Establish `hΨ : ContDiffOn ℝ ∞ Ψ O` using `(hΦ.fderiv_of_isOpen hO (by simp)).clm_comp contDiffOn_const`. Establish `hd : ∀ x t, (x, t) ∈ O → fderiv ℝ (fun y => Φ (y, t)) x = Ψ (x, t)` using `fun x t hx => by`. Establish `h1 : DifferentiableAt ℝ Φ (x, t)` using `(hΦ.contDiffAt (hO.mem_nhds hx)).differentiableAt (by simp)`. Conclude with `(h1.hasFDerivAt.comp x (hasFDerivAt_prodMk_left x t)).fderiv`.
+
+Establish `htube : ∀ᶠ x in 𝓝 p, ∀ t ∈ Set.Icc (0 : ℝ) 1, (x, t) ∈ O` using `isCompact_Icc.eventually_forall_of_forall_eventually fun t ht => hO.mem_nhds (hp t ht)`. Establish `e : fderiv ℝ (fun x => ∫ t in (0 : ℝ)..1, Φ (x, t)) =ᶠ[𝓝 p] fun x => ∫ t in (0 : ℝ)..1, Ψ (x, t)` using `by filter_upwards [htube] with x hx`. Rewrite using `[(UpperTheory.V.Lit.Dr.paramDeriv V F x O Φ hO hx hΦ).2.fderiv]`. Use `intervalIntegral.integral_congr fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`.
+
+Conclude with `hd x t (hx t ht)`. Rewrite using `[← norm_iteratedFDeriv_fderiv, (e.iteratedFDeriv ℝ i).eq_of_nhds]`. Use `ih _ Ψ hΨ fun t ht => ?_` and prove the remaining obligations. Establish `e' : fderiv ℝ (fun y => Φ (y, t)) =ᶠ[𝓝 p] fun x => Ψ (x, t)` using `by filter_upwards [htube] with x hx using hd x t (hx t ht)`. Rewrite using `[← (e'.iteratedFDeriv ℝ i).eq_of_nhds, norm_iteratedFDeriv_fderiv]`.
+
+Conclude with `h t ht`.
+-/
 private theorem parametric_integral_deriv_bound (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (p : V)
     (O : Set (V × ℝ)) (hO : IsOpen O) (hp : ∀ t ∈ Set.Icc (0 : ℝ) 1, (p, t) ∈ O) (b : ℝ) (i : ℕ) :
     ∀ (F : Type) [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] (Φ : V × ℝ → F), ContDiffOn ℝ ∞ Φ O →
@@ -40,6 +53,9 @@ private theorem parametric_integral_deriv_bound (V : Type) [NormedAddCommGroup V
     rw [← (e'.iteratedFDeriv ℝ i).eq_of_nhds, norm_iteratedFDeriv_fderiv]
     exact h t ht
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ _ _ k p O Φ b hO hp hΦ h i hi`. Conclude with `parametric_integral_deriv_bound V p O hO hp b i F Φ hΦ fun t ht => h t ht i hi`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.intSz :
     IntSz := by
   intro V F _ _ _ _ _ _ k p O Φ b hO hp hΦ h i hi

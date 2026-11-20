@@ -7,6 +7,21 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK.LevNorm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n₁ X X₁ H t a hL n hn`. Take `⟨hx, -, hι⟩` from `hL`. Establish `hmul : ∀ g h : UA σ X.J, mat (g * h) = mat g * mat h` using `fun _ _ => rfl`. Establish `hinv : mat a⁻¹ * mat a = 1` using `by show ((a⁻¹ : UA σ X.J) : GL (Fin (n₁ + 2)) (AE F E)).val * (a : GL (Fin (n₁ + 2)) (AE F E)).val = 1`. Rewrite using `[Subgroup.coe_inv, Units.inv_mul]`.
+
+Establish `hone : mat (1 : UA σ X₁.J) = 1` using `rfl`. Rewrite `hι` using `[hone, Matrix.mul_one]`. Establish `hιinv : mat a⁻¹ * incM F H.ι = incM F H.ι`. Combine the equalities or inequalities in the displayed calculation. Establish `hxinv : mat a⁻¹ *ᵥ incV F H.x = (t⁻¹ : (AE F E)ˣ).1 • incV F H.x`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = (t⁻¹ : (AE F E)ˣ).1 • (mat a⁻¹ *ᵥ (mat a *ᵥ incV F H.x)) := by rw [hx, Matrix.mulVec_smul]`. Use `_ = (t⁻¹ : (AE F E)ˣ).1 • incV F H.x := by rw [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Set `S : Set (UA σ X.J)` to `{u | mat u *ᵥ incV F H.x = incV F H.x ∧ ∀ z, ∃ c : AE F E, mat u *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + c • incV F H.x}`.
+
+Establish `hS : ∀ u ∈ S, a * u * a⁻¹ ∈ S`. Introduce and unpack `u ⟨hu1, hu2⟩`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hmul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hxinv, Matrix.mulVec_smul, hu1, Matrix.mulVec_smul, hx, smul_smul, Units.inv_mul, one_smul]`. Take `⟨c, hc⟩` from `hu2 z`.
+
+Use `⟨c * t.1, ?_⟩` and prove the remaining obligations. Establish `h1 : mat a⁻¹ *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z` using `by rw [Matrix.mulVec_mulVec, hιinv]`. Establish `h2 : mat a *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z` using `by rw [Matrix.mulVec_mulVec, hι]`. Rewrite using `[hmul, hmul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h1, hc, Matrix.mulVec_add, h2, Matrix.mulVec_smul, hx, smul_smul]`. Establish `hle : unip σ X H ≤ (unip σ X H).comap (MulAut.conj a).toMonoidHom`.
+
+Rewrite using `[unip, Subgroup.closure_le]`. Introduce `u hu`. Use `show (MulAut.conj a) u ∈ Subgroup.closure S`. Rewrite using `[MulAut.conj_apply]`. Conclude with `Subgroup.subset_closure (hS u hu)`.
+
+Use `hle hn` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`.
+-/
 theorem conj_unip_mem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁),
     ∀ (t : (AE F E)ˣ) (a : UA σ X.J), IsLevi (W₁ := X₁) H t 1 a → ∀ n ∈ unip σ X H, a * n * a⁻¹ ∈ unip σ X H := by

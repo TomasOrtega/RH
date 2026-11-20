@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Lefsc
 open UpperTheory.Gal.LocalSmoothExtension
 
 open CategoryTheory Limits AlgebraicGeometry in
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_congr' {B : Scheme.{0}} {R : Type} [Field R] (Θ : UpperTheory.Gal.G3.Th.{0} B R) {X Y : Scheme.{0}}
     {p : X ⟶ B} {q : Y ⟶ B} {f f' : Y ⟶ X} (e : f = f') (hf : f ≫ p = q) (hf' : f' ≫ p = q) (x : Θ.H p) :
     Θ.pull f hf x = Θ.pull f' hf' x := by
@@ -12,6 +15,9 @@ private theorem pull_congr' {B : Scheme.{0}} {R : Type} [Field R] (Θ : UpperThe
 
 open CategoryTheory Limits AlgebraicGeometry in
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `H x`.
+-/
 private theorem pull_base {B : Scheme.{0}} {R : Type} [Field R] (Θ : UpperTheory.Gal.G3.Th.{0} B R) {W Z Z' : Scheme.{0}}
     {p : Z ⟶ B} {p' : Z' ⟶ B} (c : W ⟶ Z) {J : Type} [Fintype J] (f : J → (W ⟶ Z')) (A : Θ.H p' →ₗ[R] Θ.H p)
     (r : W ⟶ B) (hc : c ≫ p = r) (hf : ∀ j, f j ≫ p' = r)
@@ -22,6 +28,23 @@ private theorem pull_base {B : Scheme.{0}} {R : Type} [Field R] (Θ : UpperTheor
 
 open CategoryTheory Limits AlgebraicGeometry in
 
+/- English proof (translation)
+Substitute `hK hM` using the available equality. Establish `hcnt` using `hFn Γ (X.K i) K' (X.K m) h hKK hn hidx hadm`. Establish `hIsFn : X.IsFn i (cntFn (X.K i) K' (X.K m) h)`. Use `⟨fun k hk g => hcnt.1 k hk g, fun g hg => ?_, hcnt.2.2⟩` and prove the remaining obligations. Take `⟨k, hk, c, hc, e⟩` from `hcnt.2.1 g hg`.
+
+Rewrite using `[e]`. Conclude with `X.Δ.mul_mem (X.K_le i k hk) (hΔ c hc)`. Establish `hne : (X.K i).relIndex K' ≠ 0`. Introduce `h0`. Establish `hd` using `Subgroup.relIndex_dvd_of_le_left K' hMK`.
+
+Rewrite `hd` using `[h0]`. Conclude with `hidx (Nat.eq_zero_of_zero_dvd hd)`. Use `haveI : ((X.K i).subgroupOf K').FiniteIndex := ⟨hne⟩`. Use `haveI : IsFinite (X.tr m i 1 a1 b1) := X.fin m i a1 b1`. Use `haveI : Etale (X.tr m i 1 a1 b1) := X.etale m i a1 b1`.
+
+Establish `hsig` using `hSig (X.Z m) (X.Z i) (X.tr m i 1 a1 b1) (K' ⧸ (X.K i).subgroupOf K')`. Use `⟨hIsFn, hsig.1, hsig.2, fun Θ hΘ => ?_⟩` and prove the remaining obligations. Take `⟨Γ₀, _, _, r, cadm, hr, huq, hgal⟩` from `hGal X m i ⟨a1, b1⟩ (fun k hk u hu => hn k (hKK hk) u hu)`. Use `letI : Fintype Γ₀ := Fintype.ofFinite Γ₀`. Use `letI : Fintype (K' ⧸ (X.K i).subgroupOf K') := Fintype.ofFinite _`.
+
+Establish `HarishChandraLabels : ∀ c ∈ K', X.admitted m i (h * c)` using `fun c hc => ⟨hΔ c hc, fun u hu => hadm c hc u hu⟩`. Establish `adm : ∀ z : (K' ⧸ (X.K i).subgroupOf K') × Γ₀, X.admitted m i (h * (z.1.out : Γ) * r z.2)` using `fun z => UpperTheory.Gal.G3.Tower.admitted.mul (cadm z.2) (HarishChandraLabels _ z.1.out.2)`. Establish `ecomp : ∀ z : (K' ⧸ (X.K i).subgroupOf K') × Γ₀, (X.tr m m (r z.2) (cadm z.2).1 (cadm z.2).2 ≫ Sigma.ι (fun _ : K' ⧸ (X.K i).subgroupOf K' => X.Z m) z.1) ≫ Sigma.desc (fun c : K' ⧸ (X.K i).subgroupOf K' => X.tr m i (h * (c.out : Γ)) (aT c) (bT c)) = X.tr m i (h * (z.1.out : Γ) * …`. Introduce `z`. Rewrite using `[Category.assoc, Sigma.ι_desc]`.
+
+Conclude with `X.tr_mul _ _ _ _ _ _ _ _ _ _ _`. Establish `hspl` using `hSpl (X.Z m) (X.Z i) (X.Z m) (X.tr m i 1 a1 b1) (K' ⧸ (X.K i).subgroupOf K') (X.tr m i 1 a1 b1) Γ₀ (fun x => X.tr m m (r x) (cadm x).1 (cadm x).2) hgal.2.2.2.2.2`. Use `⟨X.Z m, X.tr m i 1 a1 b1, Γ₀, inferInstance, inferInstance, fun x => X.tr m m (r x) (cadm x).1 (cadm x).2, (K' ⧸ (X.K i).subgroupOf K') × Γ₀, inferInstance, fun z => X.tr m m (r z.2) (cadm z.2).1 (cadm z.2).2 ≫ Sigma.ι (fun _ : K' ⧸ (X.K i).subgroupOf K' => X.Z m) z.1, fun z => b …` and prove the remaining obligations. Use `pull_base Θ _ _ _ (X.q m) (X.tr_q m i 1 a1 b1) (fun z => by rw [ecomp z, X.tr_q]) (fun y => ?_) _ y` and prove the remaining obligations. Establish `hHop` using `(hEx X Θ hΘ i (cntFn (X.K i) K' (X.K m) h) hIsFn).1`.
+
+Establish `hop` using `hHop m hMK (fun g hg => by`. Take `⟨k, hk, c, hc, e⟩` from `hcnt.2.1 g hg`. Rewrite using `[e]`. Conclude with `UpperTheory.Gal.G3.Tower.admitted.mul (HarishChandraLabels c hc) (X.tower_admissible_self hk)) y`. Establish `hsum` using `hSum Γ (X.K i) K' (X.K m) h hMK hKK hn hadm Γ₀ r hr huq (Θ.H (X.q m)) (fun g => X.pl Θ m i g y) (fun k hk c hc => X.pl_left Θ (HarishChandraLabels c hc) hk y)`.
+
+Use `((by rw [X.pl_eq Θ (show X.admitted m i 1 from ⟨a1, b1⟩)] : Θ.pull (X.tr m i 1 a1 b1) (X.tr_q m i 1 a1 b1) (X.hecke Θ i (cntFn (X.K i) K' (X.K m) h) y) = X.pl Θ m i 1 (X.hecke Θ i (cntFn (X.K i) K' (X.K m) h) y))).trans (hop.trans (hsum.symm.trans (Finset.sum_congr rfl fun z _ => …` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[X.pl_eq Θ (adm z)]`. Conclude with `pull_congr' Θ (ecomp z).symm _ _ y`.
+-/
 private theorem op_core (hFn : CntFn) (hSum : CntSum) (hSig : SigmaFEt) (hSpl : SigmaSplit)
     (hGal : UpperTheory.Gal.G3.TwGal) (hEx : UpperTheory.Gal.G3.HopEx.{0})
     {B : Scheme.{0}} {Γ : Type} [Group Γ] (X : UpperTheory.Gal.G3.Tower B Γ) (i m : X.ι) (K K' M : Subgroup Γ) (h : Γ)
@@ -94,6 +117,17 @@ private theorem op_core (hFn : CntFn) (hSum : CntSum) (hSig : SigmaFEt) (hSpl : 
   rw [X.pl_eq Θ (adm z)]
   exact pull_congr' Θ (ecomp z).symm _ _ y
 
+/- English proof (translation)
+Introduce `hKN hFn hSum hSig hSpl hGal hEx p _ D G L R _ _ gb k T N J g j`. Establish `hMN : L.KN ↑(g j).M ≤ L.KN ↑N` using `UpperTheory.Gal.Int.Geo.KN_anti (g j).dvd`. Establish `hMK' : L.KN ↑(g j).M ≤ (g j).K` using `hMN.trans (g j).le`. Establish `hnorm` using `hKN p D G L ↑(g j).M`. Establish `hpos : 0 < (↑(g j).M : ℕ)`.
+
+Use `(g j).M.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hidx : (L.KN ↑(g j).M).relIndex (g j).K ≠ 0`. Introduce `h0`. Apply `hnorm.2 hpos` to reduce the goal to its premises.
+
+Rewrite using `[← Subgroup.relIndex_mul_relIndex (hHK := hMK') (hKL := (g j).le_one), h0, zero_mul]`. Establish `hΔ : ∀ c ∈ (g j).K, (g j).h * c ∈ T.X.Δ` using `fun c hc => (T.Δ_eq _).2 (UpperTheory.Gal.Int.Geo.Integ.mul (g j).int (UpperTheory.Gal.Int.Geo.integ_of_mem ((g j).le_one hc)))`. Establish `a1 : (1 : G.GAf) ∈ T.X.Δ` using `T.X.Δ.one_mem`. Establish `b1 : ∀ u ∈ T.X.K (T.lev (g j).M), (1 : G.GAf) * u * 1⁻¹ ∈ T.X.K (T.lev N)`. Introduce `u hu`.
+
+Rewrite `hu`, the goal using `[T.K_eq]`. Simplify using `using hMN hu`. Establish `aT : ∀ c : (g j).K ⧸ (L.KN ↑N).subgroupOf (g j).K, (g j).h * (c.out : G.GAf) ∈ T.X.Δ` using `fun c => hΔ _ c.out.2`. Establish `bT : ∀ c : (g j).K ⧸ (L.KN ↑N).subgroupOf (g j).K, ∀ u ∈ T.X.K (T.lev (g j).M), (g j).h * (c.out : G.GAf) * u * ((g j).h * (c.out : G.GAf))⁻¹ ∈ T.X.K (T.lev N)`. Introduce `c u hu`.
+
+Rewrite `hu`, the goal using `[T.K_eq]`. Conclude with `(g j).adm _ c.out.2 u hu`. Conclude with `op_core hFn hSum hSig hSpl hGal hEx T.X (T.lev N) (T.lev (g j).M) (L.KN ↑N) (g j).K (L.KN ↑(g j).M) (g j).h (T.K_eq N) (T.K_eq _) hMN (g j).le (fun c hc u hu => hnorm.1 c ((g j).le_one hc) u hu) hidx (g j).adm hΔ a1 b1 aT bT`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.memOp2_of :
     KNNormal → CntFn → CntSum → SigmaFEt → SigmaSplit → UpperTheory.Gal.G3.TwGal → UpperTheory.Gal.G3.HopEx.{0} → MemOp := by
   intro hKN hFn hSum hSig hSpl hGal hEx p _ D G L R _ _ gb k T N J g j

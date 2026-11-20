@@ -9,17 +9,26 @@ namespace UpperTheory.Cb.RelativeCohomologyColimit
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut LateralTheory.E.SecondDegreeKilling.Nbhd
   LateralTheory.E.NeighbourhoodKilling LateralTheory.E.SecondDegreeKilling LateralTheory.E.Bridge_yfiPf
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CochainComplex.HomComplex.CohomologyClass.mk (CochainComplex.HomComplex.Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+-/
 private theorem hk_id {R : Type} [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) :
     HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CochainComplex.HomComplex.CohomologyClass.mk (CochainComplex.HomComplex.Cocycle.ext ?_)
   simp [zcomp]
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Conclude with `CochainComplex.mappingCone.map_id φ`.
+-/
 private theorem cone_id {R : Type} [CommRing R] {K L : Cx R} (φ : K ⟶ L) (a : K ⟶ K) (b : L ⟶ L) (ha : a = 𝟙 K)
     (hb : b = 𝟙 L) (comm) : CochainComplex.mappingCone.map φ φ a b comm = 𝟙 _ := by
   subst ha hb
   exact CochainComplex.mappingCone.map_id φ
 
+/- English proof (translation)
+Substitute `hu he` using the available equality. Establish `key : rmap (ZMod q) (sch.map f) (sch.map f) (sch.map (𝟙 U)) (sch.map (𝟙 E)) (by rw [← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp, h]) = 𝟙 _` using `cone_id _ _ _ (by rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id]) (by rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id]) _`. Conclude with `(congrArg (fun c => HK.pull (ZMod q) c (tw q i) n y) key).trans (hk_id _ _ _ y)`.
+-/
 private theorem rpl_one (q : ℕ) (i : ℤ) {U E : Scheme.{0}} (f : U ⟶ E) (u : U ⟶ U) (e : E ⟶ E)
     (h : f ≫ e = u ≫ f) (hu : u = 𝟙 U) (he : e = 𝟙 E) (n : ℤ)
     (y : Hrel (ZMod q) (sch.map f) (tw q i) n) : rpl q i f f u e h n y = y := by
@@ -30,6 +39,9 @@ private theorem rpl_one (q : ℕ) (i : ℤ) {U E : Scheme.{0}} (f : U ⟶ E) (u 
       (by rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id]) _
   exact (congrArg (fun c => HK.pull (ZMod q) c (tw q i) n y) key).trans (hk_id _ _ _ y)
 
+/- English proof (translation)
+Substitute `hu he` using the available equality. Conclude with `LateralTheory.E.SecondDegreeKilling.Comp.rpl_comp q i f f' f'' u e comm u' e' comm' comm2 n y`.
+-/
 private theorem rpl_two (q : ℕ) (i : ℤ) {U E U' E' U'' E'' : Scheme.{0}} (f : U ⟶ E) (f' : U' ⟶ E') (f'' : U'' ⟶ E'')
     (u : U' ⟶ U) (e : E' ⟶ E) (comm : f' ≫ e = u ≫ f) (u' : U'' ⟶ U') (e' : E'' ⟶ E') (comm' : f'' ≫ e' = u' ≫ f')
     (u2 : U'' ⟶ U) (e2 : E'' ⟶ E) (comm2 : f'' ≫ e2 = u2 ≫ f) (hu : u' ≫ u = u2) (he : e' ≫ e = e2) (n : ℤ)
@@ -38,11 +50,17 @@ private theorem rpl_two (q : ℕ) (i : ℤ) {U E U' E' U'' E'' : Scheme.{0}} (f 
   subst hu he
   exact LateralTheory.E.SecondDegreeKilling.Comp.rpl_comp q i f f' f'' u e comm u' e' comm' comm2 n y
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[CategoryTheory.Functor.map_id, pull_id]`.
+-/
 private theorem pull_one {X : Scheme.{0}} (a : X ⟶ X) (h : a = 𝟙 X) (q : ℕ) (i n : ℤ) (y : Ht q (sch.obj X) n i) :
     pull (ZMod q) (sch.map a) (tw q i) n y = y := by
   subst h
   rw [CategoryTheory.Functor.map_id, pull_id]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[CategoryTheory.Functor.map_comp, pull_comp]`.
+-/
 private theorem pull_two {X X' X'' : Scheme.{0}} (c : X ⟶ X'') (a : X ⟶ X') (b : X' ⟶ X'') (h : c = a ≫ b) (q : ℕ)
     (i n : ℤ) (y : Ht q (sch.obj X'') n i) :
     pull (ZMod q) (sch.map c) (tw q i) n y =
@@ -50,6 +68,9 @@ private theorem pull_two {X X' X'' : Scheme.{0}} (c : X ⟶ X'') (a : X ⟶ X') 
   subst h
   rw [CategoryTheory.Functor.map_comp, pull_comp]
 
+/- English proof (translation)
+Rewrite using `[← pull_two _ a b rfl, ← pull_two _ c d rfl, h]`.
+-/
 private theorem pull_sq {X X' X'' X''' : Scheme.{0}} (a : X ⟶ X') (b : X' ⟶ X''') (c : X ⟶ X'') (d : X'' ⟶ X''')
     (h : a ≫ b = c ≫ d) (q : ℕ) (i n : ℤ) (y : Ht q (sch.obj X''') n i) :
     pull (ZMod q) (sch.map a) (tw q i) n (pull (ZMod q) (sch.map b) (tw q i) n y) =
@@ -61,11 +82,17 @@ private def obsC (q : ℕ) [NeZero q] {U E : Spc} (u : U ⟶ E) (i n m : ℤ) (h
   subst h
   exact LateralTheory.E.GlueRelPf.obs q u i n
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hO q u i n y hy`.
+-/
 private theorem obsC_exact (hO : ObsExact) (q : ℕ) [NeZero q] {U E : Spc} (u : U ⟶ E) (i n m : ℤ) (h : n + 1 = m)
     (y : Hrel (ZMod q) u (tw q i) m) (hy : fgt (ZMod q) u (tw q i) m y = 0) : ∃ w, obsC q u i n m h w = y := by
   subst h
   exact hO q u i n y hy
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hN q f f' u e comm i n w`.
+-/
 private theorem obsC_nat (hN : ObsNat) (q : ℕ) [NeZero q] {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (u : U' ⟶ U)
     (e : E' ⟶ E) (comm : f' ≫ e = u ≫ f) (i n m : ℤ) (h : n + 1 = m) (w : Ht q U n i) :
     rpull (ZMod q) f f' u e comm (tw q i) m (obsC q f i n m h w) =
@@ -73,11 +100,17 @@ private theorem obsC_nat (hN : ObsNat) (q : ℕ) [NeZero q] {U E U' E' : Spc} (f
   subst h
   exact hN q f f' u e comm i n w
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(LateralTheory.E.GlueRelPfCone.coneExact (ZMod q) ((chains (ZMod q)).map u) (tw q i) n w).1 hw`.
+-/
 private theorem obsC_lift (q : ℕ) [NeZero q] {U E : Spc} (u : U ⟶ E) (i n m : ℤ) (h : n + 1 = m) (w : Ht q U n i)
     (hw : obsC q u i n m h w = 0) : ∃ y, pull (ZMod q) u (tw q i) n y = w := by
   subst h
   exact (LateralTheory.E.GlueRelPfCone.coneExact (ZMod q) ((chains (ZMod q)).map u) (tw q i) n w).1 hw
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(LateralTheory.E.GlueRelPfCone.coneExact (ZMod q) ((chains (ZMod q)).map u) (tw q i) n).apply_apply_eq_zero y`.
+-/
 private theorem obsC_pull (q : ℕ) [NeZero q] {U E : Spc} (u : U ⟶ E) (i n m : ℤ) (h : n + 1 = m)
     (y : Ht q E n i) : obsC q u i n m h (pull (ZMod q) u (tw q i) n y) = 0 := by
   subst h
@@ -202,11 +235,19 @@ private def Fam.tri (F : Fam J) (q : ℕ) [NeZero q] (i n m : ℤ) (h : n + 1 = 
 
 attribute [local instance] Sys.cat Sys.filt Sys.ring
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [pullback.lift_fst]`. Simplify using the standard rewrite rules. Use `erw [pullback.lift_snd]`. Simplify using the standard rewrite rules.
+
+Conclude with `Category.comp_id _`.
+-/
 private theorem resY_id {Y B : Scheme.{0}} (p : Y ⟶ B) (U : B.Etale) : resY p (𝟙 U) = 𝟙 _ := by
   apply pullback.hom_ext
   · erw [pullback.lift_fst]; simp
   · erw [pullback.lift_snd]; simp; exact Category.comp_id _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [pullback.lift_fst]`. Simplify using `[resY_id]`. Use `erw [pullback.lift_snd]`. Simplify using the standard rewrite rules.
+-/
 private theorem resYW_id {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) (U : B.Etale) : resYW p ι (𝟙 U) = 𝟙 _ := by
   apply pullback.hom_ext
   · erw [pullback.lift_fst]; simp [resY_id]
@@ -245,6 +286,11 @@ end UpperTheory.Cb.RelativeCohomologyColimit
 open UpperTheory.Cb.RelativeCohomologyColimit LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut
   LateralTheory.E.SecondDegreeKilling.Nbhd LateralTheory.E.NeighbourhoodKilling LateralTheory.E.SecondDegreeKilling LateralTheory.E.Bridge_yfiPf in
 attribute [local instance] LateralTheory.E.Bridge_yfiPf.Sys.cat LateralTheory.E.Bridge_yfiPf.Sys.filt LateralTheory.E.Bridge_yfiPf.Sys.ring in
+/- English proof (translation)
+Introduce `hO hN q _ i B W Y p ι U m u S z`. Take `⟨j0⟩ : Nonempty S.J` from `IsFiltered.nonempty`. Use `⟨S.J, inferInstance, inferInstance, (fam S).tri q i (m - 1) m (sub_add_cancel m 1) hO hN S.injY S.surY S.injW, j0, rY q i p ι (S.a j0) m z, S.A, inferInstance, S.t, S.sh, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `(rpl_two q i (prU p ι U) (prU p ι (S.V j0)) (prS p ι (S.t ≫ U.hom)) _ _ _ _ _ (S.sq j0) (tW p ι U S.t) (tY p U S.t) (pullback.lift_fst _ _ _).symm (S.gW_a j0) (S.gY_a j0) m z).trans h`.
+
+Introduce `j f h`. Use `⟨S.V j, S.a j, S.mem j, ?_⟩` and prove the remaining obligations. Rewrite using `[← S.tr_a f, rY_comp]`. Conclude with `h`.
+-/
 theorem UpperTheory.relativeCohomology_colimit_of_exact_of_naturality :
     LateralTheory.E.NeighbourhoodKilling.ObsExact → LateralTheory.E.NeighbourhoodKilling.ObsNat → LateralTheory.E.Bridge_yfiPf.Pack := by
   intro hO hN q _ i B W Y p ι U m u S z

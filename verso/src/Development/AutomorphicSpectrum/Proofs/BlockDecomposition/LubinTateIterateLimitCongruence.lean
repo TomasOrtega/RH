@@ -7,10 +7,20 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer.QLim
 
+/- English proof (translation)
+The claim follows from `S.add_mem (S.mul_mem hϖ hx) (S.pow_mem hx q)`.
+-/
 theorem map_mem {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ ∈ S) (q : ℕ) {x : B}
     (hx : x ∈ S) : ϖ * x + x ^ q ∈ S :=
   S.add_mem (S.mul_mem hϖ hx) (S.pow_mem hx q)
 
+/- English proof (translation)
+Take `⟨s, hs, hqs⟩` from `hq`. Establish `hy : ϖ ^ m * c ∈ S` using `S.mul_mem (S.pow_mem hϖ m) hc`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion (Polynomial.X ^ q : Polynomial S) (⟨b, hb⟩ : S) (⟨ϖ ^ m * c, hy⟩ : S)`. Establish `hk' : (b + ϖ ^ m * c) ^ q = b ^ q + (q : B) * b ^ (q - 1) * (ϖ ^ m * c) + (k : B) * (ϖ ^ m * c) ^ 2`. Establish `h` using `congrArg (Subtype.val) hk`.
+
+Simplify `h` using `[Polynomial.derivative_X_pow]`. Establish `ha : a = b + ϖ ^ m * c` using `by linear_combination hab`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Use `⟨c + s * b ^ (q - 1) * c + (k : B) * ϖ ^ m' * c ^ 2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `S.add_mem (S.add_mem hc (S.mul_mem (S.mul_mem hs (S.pow_mem hb _)) hc)) (S.mul_mem (S.mul_mem k.2 (S.pow_mem hϖ _)) (S.pow_mem hc _))`.
+
+Rewrite using `[ha, hk', hqs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_congr {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ ∈ S) {q : ℕ}
     (hq : ∃ s ∈ S, (q : B) = ϖ * s) {a b c : B} (hb : b ∈ S) (hc : c ∈ S) {m : ℕ} (hm : 1 ≤ m)
     (hab : a - b = ϖ ^ m * c) :
@@ -30,6 +40,13 @@ theorem step_congr {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ �
       (S.mul_mem (S.mul_mem k.2 (S.pow_mem hϖ _)) (S.pow_mem hc _))
   · rw [ha, hk', hqs]; ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `a b c m _ _ hc _ hab`. Conclude with `⟨c, hc, by simpa [ltIter] using hab⟩`. Consider the case `succ n ih`.
+
+Introduce `a b c m ha hb hc hm hab`. Take `⟨c₁, hc₁, h₁⟩` from `step_congr hϖ hq hb hc hm hab`. Take `⟨c₂, hc₂, h₂⟩` from `ih (map_mem hϖ q ha) (map_mem hϖ q hb) hc₁ (by omega) h₁`. Use `⟨c₂, hc₂, ?_⟩` and prove the remaining obligations. Establish `e : m + (n + 1) = m + 1 + n` using `by omega`.
+
+Rewrite using `[e]`. Conclude with `h₂`.
+-/
 theorem iter_congr {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ ∈ S) {q : ℕ}
     (hq : ∃ s ∈ S, (q : B) = ϖ * s) (n : ℕ) :
     ∀ {a b c : B} {m : ℕ}, a ∈ S → b ∈ S → c ∈ S → 1 ≤ m → a - b = ϖ ^ m * c →
@@ -47,6 +64,21 @@ theorem iter_congr {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ �
     rw [e]
     exact h₂
 
+/- English proof (translation)
+Introduce `B _ S F ϖ E q _ hq v hv hvq`. Establish `hd : ∀ n, ∃ e ∈ S, ltIter ϖ q (n + 1) (v (n + 1)) - ltIter ϖ q n (v n) = ϖ ^ (n + 1) * e`. Introduce `n`. Establish `h1 : (ϖ * v (n + 1) + v (n + 1) ^ q) - v n = ϖ ^ 1 * v (n + 1)`. Rewrite using `[hvq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, h⟩` from `iter_congr E.mem hq n (map_mem E.mem q (hv (n + 1))) (hv n) (hv (n + 1)) le_rfl h1`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `e : ltIter ϖ q (n + 1) (v (n + 1)) = ltIter ϖ q n (ϖ * v (n + 1) + v (n + 1) ^ q)` using `rfl`. Rewrite using `[e, h, add_comm n 1]`.
+
+Use `choose e he hde using hd`. Set `s : ℕ → B` to `fun n => Nat.casesOn n (v 0) e`. Establish `hs : ∀ n, s n ∈ S`. Introduce `n`. Consider the cases of `n with`.
+
+Consider the case `zero => exact hv 0`. Consider the case `succ n => exact he n`. Take `⟨r, hr, hsum⟩` from `E.sumS s hs`. Establish `tel : ∀ N, ∑ n ∈ Finset.range (N + 1), ϖ ^ n * s n = ltIter ϖ q N (v N)`. Introduce `N`.
+
+Proceed by induction on `N with`. Consider the case `zero => simp [s, ltIter]`. Consider the case `succ N ih`. Rewrite using `[Finset.sum_range_succ, ih]`. Establish `hN : s (N + 1) = e N` using `rfl`.
+
+Rewrite using `[hN, ← hde N]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨r, hr, fun n => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `hsum (n + 1)`. Rewrite `h` using `[tel n]`.
+
+Conclude with `⟨a, ha, h⟩`.
+-/
 theorem exists_limit : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B}, PerEnv S F ϖ → ∀ (q : ℕ), 2 ≤ q → (∃ s ∈ S, (q : B) = ϖ * s) →
     ∀ (v : ℕ → B), (∀ n, v n ∈ S) → (∀ n, v (n + 1) ^ q = v n) →
       ∃ Q ∈ S, ∀ n, ∃ a ∈ S, Q - ltIter ϖ q n (v n) = ϖ ^ (n + 1) * a := by

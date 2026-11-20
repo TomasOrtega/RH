@@ -10,6 +10,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.NL.ZgAll
 
+/- English proof (translation)
+Establish `hc : IsClosed (lam '' (S : Set G))` using `(hS.isCompact.image hlam).isClosed`. Establish `hsub : Set.range (fun n : ℤ => Multiplicative.ofAdd (n : ℤ_[l])) ⊆ lam '' (S : Set G)`. Introduce and unpack `_ ⟨n, rfl⟩`. Use `⟨g₀ ^ n, S.zpow_mem hg₀ n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, h₀, ← ofAdd_zsmul]`.
+
+Simplify using the standard rewrite rules. Establish `hd : DenseRange (fun n : ℤ => Multiplicative.ofAdd (n : ℤ_[l]))` using `PadicInt.denseRange_intCast`. Establish `hmem : lam g ∈ lam '' (S : Set G)` using `hc.closure_subset_iff.2 hsub (hd (lam g))`. Take `⟨a, ha, hag⟩` from `hmem`. Establish `h1 : g * a⁻¹ ∈ S` using `hker _ (by rw [map_mul, map_inv, hag, mul_inv_cancel])`.
+
+Simplify using `using S.mul_mem h1 ha`.
+-/
 theorem eq_top_of_closed {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     (lam : G →* Multiplicative ℤ_[l]) (hlam : Continuous lam) (g₀ : G)
     (h₀ : lam g₀ = Multiplicative.ofAdd 1) (S : Subgroup G) (hS : IsClosed (S : Set G))
@@ -34,12 +41,26 @@ namespace GlobalTheory.NL.ZgAll
 variable {l : ℕ} [Fact l.Prime] {G M : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
   [AddCommGroup M] [TopologicalSpace M] [T2Space M]
 
+/- English proof (translation)
+Use `hZm g⁻¹ g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1]`. Conclude with `eq_neg_of_add_eq_zero_left this.symm`.
+-/
 theorem coc_inv (a : G → M →+ M) (Z : G → M) (hZm : ∀ g h, Z (g * h) = Z g + a g (Z h))
     (h1 : Z 1 = 0) (g : G) : Z g⁻¹ = -a g⁻¹ (Z g) := by
   have := hZm g⁻¹ g
   rw [inv_mul_cancel, h1] at this
   exact eq_neg_of_add_eq_zero_left this.symm
 
+/- English proof (translation)
+Establish `h1 : Z 1 = 0` using `hZk 1 (map_one lam)`. Set `S : Subgroup G` to `{ carrier := {g | Z g ∈ J} one_mem' := by simp [h1] mul_mem' := by`. Introduce `g h hg hh`. Simplify using `only [Set.mem_setOf_eq, hZm] at hg hh ⊢`. Conclude with `J.add_mem hg (hJa g _ hh)`.
+
+Use the proof step `inv_mem' := by`. Introduce `g hg`. Simplify using `only [Set.mem_setOf_eq, coc_inv a Z hZm h1] at hg ⊢`. Conclude with `J.neg_mem (hJa _ _ hg) }`. Establish `hS : IsClosed (S : Set G)` using `hJ.preimage hZc`.
+
+Establish `hall : ∀ g, Z g ∈ J` using `fun g => eq_top_of_closed lam hlam g₀ h₀ S hS (fun h hh => by`. Express the relevant statement in the definitionally equal form `Z h ∈ J`. Rewrite using `[hZk h hh]; exact J.zero_mem) (by change Z g₀ ∈ J; rw [hZ₀]; exact hz) g`. Use `⟨hall, fun g => ?_⟩` and prove the remaining obligations. Use `set k := g₀ * g * (g * g₀)⁻¹ with hk`.
+
+Establish `hk1 : lam k = 1`. Simplify using `only [hk, map_mul, map_inv]`. Rewrite using `[mul_comm (lam g) (lam g₀), mul_inv_cancel]`. Establish `e1 : g₀ * g = k * (g * g₀)` using `by rw [hk, inv_mul_cancel_right]`. Establish `e2 : Z (g₀ * g) = Z (g * g₀)`.
+
+Rewrite using `[e1, hZm, hZk k hk1, zero_add, hJk k hk1 _ (hall _)]`. Rewrite `e2` using `[hZm, hZm, hZ₀]`. Rewrite using `[sub_eq_sub_iff_add_eq_add, add_comm (a g z), ← e2, add_comm]`.
+-/
 theorem mem_and_comm (a : G → M →+ M)
     (lam : G →* Multiplicative ℤ_[l]) (hlam : Continuous lam) (g₀ : G) (h₀ : lam g₀ = Multiplicative.ofAdd 1)
     (J : AddSubgroup M) (hJ : IsClosed (J : Set M)) (hJa : ∀ g, ∀ x ∈ J, a g x ∈ J)
@@ -75,6 +96,13 @@ theorem mem_and_comm (a : G → M →+ M)
   rw [hZm, hZm, hZ₀] at e2
   rw [sub_eq_sub_iff_add_eq_add, add_comm (a g z), ← e2, add_comm]
 
+/- English proof (translation)
+Establish `h1 : Z 1 = 0` using `hZk 1 (map_one lam)`. Establish `h1' : Z' 1 = 0` using `hZk' 1 (map_one lam)`. Set `S : Subgroup G` to `{ carrier := {g | Z g = Z' g} one_mem' := by simp [h1, h1'] mul_mem' := by`. Introduce `g h hg hh`. Simplify using `only [Set.mem_setOf_eq, hZm, hZm'] at hg hh ⊢`.
+
+Rewrite using `[hg, hh]`. Use the proof step `inv_mem' := by`. Introduce `g hg`. Simplify using `only [Set.mem_setOf_eq, coc_inv a Z hZm h1, coc_inv a Z' hZm' h1'] at hg ⊢`. Rewrite using `[hg] }`.
+
+Conclude with `eq_top_of_closed lam hlam g₀ h₀ S (isClosed_eq hZc hZc') (fun h hh => by change Z h = Z' h; rw [hZk h hh, hZk' h hh]) h₀' g`.
+-/
 theorem uniq (a : G → M →+ M)
     (lam : G →* Multiplicative ℤ_[l]) (hlam : Continuous lam) (g₀ : G) (h₀ : lam g₀ = Multiplicative.ofAdd 1)
     (Z Z' : G → M) (hZc : Continuous Z) (hZc' : Continuous Z')
@@ -103,6 +131,43 @@ namespace GlobalTheory.NL.ZgAll
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W E T hT y z hz hyz`. Establish `hc` using `GlobalTheory.HerrClassMaps.compact_GK K`. Establish `H2` using `GlobalTheory.HWL.Coord.exists_gamma_coordinates l (D.loc l) K s LL h (gamOf W ((HW l).W_s K s LL h))`. Break down `H2 with ⟨⟨lam₀, hlc₀, hl1₀, hlg₀, ⟨g₁, hg₁⟩, hcl⟩, -⟩` into its components or cases. Establish `hcs : CompactSpace ↥W.GKs` using `isCompact_iff_compactSpace.1 hcl.isCompact`.
+
+Establish `hlamW : ∃ lam : ↥W.GKs →* Multiplicative ℤ_[l], Continuous lam ∧ (∀ g : ↥W.GKs, lam g = 1 ↔ W.resΓ (g : ↥(GK K)) = 1) ∧ (∀ g : ↥W.GKs, lam g = Multiplicative.ofAdd 1 ↔ W.resΓ (g : ↥(GK K)) = W.gam) ∧ ∃ g : ↥W.GKs, lam g = Multiplicative.ofAdd 1` using `⟨lam₀, hlc₀, hl1₀, hlg₀, g₁, hg₁⟩`. Break down `hlamW with ⟨lam, hlc, hl1, hlg, g₀, hg₀⟩` into its components or cases. Establish `H1` using `GlobalTheory.T.etaleComparison_pi_wachLattice_closed_weak D HW F l K s LL h T hT`. Break down `H1 with ⟨τ, hT2, hTG, hact, hemb, hclo⟩` into its components or cases. Set `a : ↥W.GKs → TW (RW LL) T →+ TW (RW LL) T` to `fun g => (TWact ((D.locA l).gRW LL (((g : ↥(GK K))) : GQ l)) T (g : ↥(GK K))).toAddMonoidHom`.
+
+Establish `ha1 : ∀ g x, a g x = TWact ((D.locA l).gRW LL (((g : ↥(GK K))) : GQ l)) T (g : ↥(GK K)) x` using `fun g x => rfl`. Establish `hamul : ∀ g g' x, a (g * g') x = a g (a g' x)`. Introduce `g g' x`. Simplify using `only [ha1]`. Conclude with `GlobalTheory.HerrClassMaps.TWact_mul _ _ _ (fun r => GlobalTheory.HerrClassMaps.gRW_mul (D.locA l) LL _ _ r) T _ _ x`.
+
+Establish `ha1t : ∀ g (t : ↥T.L.T), a g ((1 : RW LL) ⊗ₜ[↥(OL LL)] t) = (1 : RW LL) ⊗ₜ[↥(OL LL)] (⟨T.ρ (g : ↥(GK K)) t, T.L.stable _ t t.2⟩ : ↥T.L.T)` using `fun g t => GlobalTheory.HerrClassMaps.TWact_one_tmul _ T _ t`. Establish `haj : ∀ g (w : W.DD T), a g (E.jD T w) = E.jD T (W.γD T (W.resΓ (g : ↥(GK K))) w)` using `fun g w => (E.jD_act T (g : ↥(GK K)) w).symm`. Use `letI := τ`. Establish `hl1'` using `hl1`. Establish `hlg'` using `hlg`.
+
+Establish `hstab : ∀ (γ' : W.Gam) (w : W.DD T), w ∈ aN W T letπ → W.γD T γ' w ∈ aN W T letπ`. Introduce `γ' w hw`. Take `⟨n, hn, rfl⟩` from `hw`. Establish `hx : (letπ : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) • n ∈ W.N T` using `(W.N T).smul_mem _ hn`. Take `⟨y', hy', e⟩` from `W.N_π T γ' _ hx`.
+
+Use `⟨n + y', (W.N T).add_mem hn hy', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(letπ : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) • (n + y') = W.γD T γ' ((letπ : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) • n)`. Rewrite using `[smul_add, ← e]`. Normalize the expressions using the abelian group laws. Set `J : AddSubgroup (TW (RW LL) T)` to `(aN W T letπ).toAddSubgroup.map (E.jD T).toAddMonoidHom`.
+
+Establish `hJm : ∀ x, x ∈ J ↔ ∃ w ∈ aN W T letπ, E.jD T w = x` using `fun x => AddSubgroup.mem_map`. Establish `hJ : IsClosed (J : Set (TW (RW LL) T))`. Establish `: (J : Set (TW (RW LL) T)) = E.jD T '' (aN W T letπ : Set (W.DD T))`. Use extensionality with `x`. Conclude with `(hJm x).trans Iff.rfl`.
+
+Rewrite using `[this]`. Conclude with `hclo`. Establish `hJa : ∀ g, ∀ x ∈ J, a g x ∈ J`. Introduce `g x hx`. Take `⟨w, hw, rfl⟩` from `(hJm x).1 hx`.
+
+Rewrite using `[haj]`. Conclude with `(hJm _).2 ⟨_, hstab _ w hw, rfl⟩`. Establish `hJk : ∀ h' : ↥W.GKs, lam h' = 1 → ∀ x ∈ J, a h' x = x`. Introduce `h' hh x hx`. Take `⟨w, -, rfl⟩` from `(hJm x).1 hx`.
+
+Rewrite using `[haj, (hl1' h').1 hh, W.γD_one]`. Use `haveI hCA : ContinuousAdd (TW (RW LL) T) := hTG.toContinuousAdd`. Use `haveI hCN : ContinuousNeg (TW (RW LL) T) := hTG.toContinuousNeg`. Use `haveI hCS : ContinuousSub (TW (RW LL) T) := ⟨Continuous.congr (continuous_fst.add continuous_snd.neg) (fun p => (sub_eq_add_neg p.1 p.2).symm)⟩`. Set `Zf : TW (RW LL) T → ↥(latticeCocycles (resLat T W.GKs)) → ↥W.GKs → TW (RW LL) T` to `fun b c g => (1 : RW LL) ⊗ₜ[↥(OL LL)] (⟨(c : ↥W.GKs → T.V) g, GlobalTheory.HerrClassMaps.mem_T c g⟩ : ↥T.L.T) + (a g b - b)`.
+
+Establish `hZc : ∀ b c, Continuous (Zf b c)` using `fun b c => (hemb.comp (c.2.1.1.subtype_mk fun g => GlobalTheory.HerrClassMaps.mem_T c g)).add (((hact b).comp continuous_subtype_val).sub continuous_const)`. Establish `hZm : ∀ b c g g', Zf b c (g * g') = Zf b c g + a g (Zf b c g')`. Introduce `b c g g'`. Establish `e : (⟨(c : ↥W.GKs → T.V) (g * g'), GlobalTheory.HerrClassMaps.mem_T c (g * g')⟩ : ↥T.L.T) = ⟨(c : ↥W.GKs → T.V) g, GlobalTheory.HerrClassMaps.mem_T c g⟩ + ⟨T.ρ (g : ↥(GK K)) ((c : ↥W.GKs → T.V) g'), T.L.stable _ _ (GlobalTheory.HerrClassMaps.mem_T c g')⟩` using `Subtype.ext (c.2.1.2 g g')`. Simplify using `only [Zf, map_add, map_sub, ha1t, hamul, e, TensorProduct.tmul_add]`.
+
+Normalize the expressions using the abelian group laws. Establish `hfit : ∀ b, TWmap (φRW LL) T b - b = E.jD T y → ∃ c : ↥(latticeCocycles (resLat T W.GKs)), Submodule.Quotient.mk c = W.cl T ⟨(y, z), hyz⟩ ∧ (∀ h' : ↥W.GKs, lam h' = 1 → Zf b c h' = 0) ∧ Zf b c g₀ = E.jD T z`. Introduce `b hb`. Establish `H` using `E.cl_def T ⟨(y, z), hyz⟩ b hb`. Break down `H with ⟨c, hc1, hc2⟩` into its components or cases.
+
+Use `⟨c, hc1, fun h' hh => ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `(hc2 h' ⟨_, GlobalTheory.HerrClassMaps.mem_T c h'⟩ rfl).1 ((hl1' h').1 hh)`. Simplify using `only [Zf]`. Rewrite using `[e]`. Conclude with `neg_add_cancel _`.
+
+Establish `e` using `(hc2 g₀ ⟨_, GlobalTheory.HerrClassMaps.mem_T c g₀⟩ rfl).2 ((hlg' g₀).1 hg₀)`. Simplify using `only [Zf]`. Simplify using `only [e]`. Conclude with `sub_add_cancel _ _`. Establish `hb₀ex` using `(GlobalTheory.WittTensorFixed.main l K LL T).1 (E.jD T y)`.
+
+Break down `hb₀ex with ⟨b₀, hb₀⟩` into its components or cases. Establish `H0` using `hfit b₀ hb₀`. Break down `H0 with ⟨c₀, -, hk₀, hg₀'⟩` into its components or cases. Establish `hzJ : E.jD T z ∈ J` using `(hJm _).2 ⟨z, hz, rfl⟩`. Establish `HM` using `mem_and_comm a lam hlc g₀ hg₀ J hJ hJa hJk _ hzJ (Zf b₀ c₀) (hZc b₀ c₀) (hZm b₀ c₀) hk₀ hg₀'`.
+
+Break down `HM with ⟨hall, hcomm⟩` into its components or cases. Use `choose zz hzz hzzj using fun g => (hJm _).1 (hall g)`. Use `⟨zz, hzz, fun g => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Apply `E.jD_inj T` to reduce the goal to its premises. Establish `h1` using `hcomm g`.
+
+Simplify using `only [← hzzj g, haj, (hlg' g₀).1 hg₀] at h1`. Simplify using `only [map_sub, LocWach.γ]`. Conclude with `h1`. Establish `H` using `hfit b hb`. Break down `H with ⟨c, hc1, hk, hgc⟩` into its components or cases.
+
+Use `⟨c, hc1, fun g => ⟨⟨_, GlobalTheory.HerrClassMaps.mem_T c g⟩, rfl, ?_⟩⟩` and prove the remaining obligations. Establish `hu` using `uniq a lam hlc g₀ hg₀ (Zf b c) (Zf b₀ c₀) (hZc b c) (hZc b₀ c₀) (hZm b c) (hZm b₀ c₀) hk hk₀ (hgc.trans hg₀'.symm) g`. Simplify using `only [hzzj g, ← hu]`. Simplify using `only [Zf]`. Conclude with `(add_sub_cancel_right _ _).symm`.
+-/
 theorem zg_formula_let : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (y z : W.DD T), z ∈ aN W T letπ → ∀ hyz : (y, z) ∈ W.divisibleCocycles T, ∃ zz : ↥W.GKs → W.DD T, (∀ g, zz g ∈ aN W T letπ) ∧ (∀ g, W.γ T (zz g) - zz g = W.γD T (W.resΓ g) z - z) ∧ ∀ b : TW (RW LL) T, TWmap (φRW LL) T b - b = E.jD T y → ∃ c : ↥(latticeCocycles (resLat T W.GKs)), Submodule.Quotient.mk c = W.cl T ⟨(y, z), hyz⟩ ∧ ∀ g : ↥W.GKs, ∃ t : ↥T.L.T, (t : T.V) = (c : ↥W.GKs → T.V) g ∧ (1 : RW LL) ⊗ₜ[↥(OL LL)] t = E.jD T (zz g) - (TWact ((D.locA l).gRW LL ((g : ↥(GK K)) : GQ l)) T g b - b) := by
   intro D HW F l _ K s LL h W E T hT y z hz hyz
   have hc := GlobalTheory.HerrClassMaps.compact_GK K
@@ -216,6 +281,9 @@ theorem zg_formula_let : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (
     simp only [Zf]
     exact (add_sub_cancel_right _ _).symm
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h` and use `zg_formula_let D HW F l K s LL h`.
+-/
 theorem zg_formula : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (y z : ((HW l).W K s LL h).DD T), z ∈ aN ((HW l).W K s LL h) T letπ → ∀ hyz : (y, z) ∈ ((HW l).W K s LL h).divisibleCocycles T, ∃ zz : ↥((HW l).W K s LL h).GKs → ((HW l).W K s LL h).DD T, (∀ g, zz g ∈ aN ((HW l).W K s LL h) T letπ) ∧ (∀ g, ((HW l).W K s LL h).γ T (zz g) - zz g = ((HW l).W K s LL h).γD T (((HW l).W K s LL h).resΓ g) z - z) ∧ ∀ b : TW (RW LL) T, TWmap (φRW LL) T b - b = ((F l).E K s LL h).tie.jD T y → ∃ c : ↥(latticeCocycles (resLat T ((HW l).W K s LL h).GKs)), Submodule.Quotient.mk c = ((HW l).W K s LL h).cl T ⟨(y, z), hyz⟩ ∧ ∀ g : ↥((HW l).W K s LL h).GKs, ∃ t : ↥T.L.T, (t : T.V) = (c : ↥((HW l).W K s LL h).GKs → T.V) g ∧ (1 : RW LL) ⊗ₜ[↥(OL LL)] t = ((F l).E K s LL h).tie.jD T (zz g) - (TWact ((D.locA l).gRW LL ((g : ↥(GK K)) : GQ l)) T g b - b) :=
   fun D HW F l _ K s LL h => zg_formula_let D HW F l K s LL h
 

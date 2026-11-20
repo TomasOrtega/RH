@@ -18,6 +18,9 @@ variable {K : Type} [CommRing K] {W Z Y : Scheme.{0}}
 def inU (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : ObjectProperty (Thick (smFun Z q)) :=
   InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) V
 
+/- English proof (translation)
+Introduce `_ _ _ h` and use `h`.
+-/
 theorem cosieve_bot {C : Type 1} [Category.{0} C] : Cosieve (⊥ : ObjectProperty C) := fun _ _ _ h => h
 
 def Sec (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : Type := Γ(Z, V)

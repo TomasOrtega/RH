@@ -12,11 +12,25 @@ def FFAlg : Prop := ∀ {Z : Scheme.{0}} [IsIntegral Z], AICSch Z → IsAlgClose
 def NormAIC : Prop := ∀ (K : Type) [Field K] [IsAlgClosed K] {W : Scheme.{0}} (g : Spec (CommRingCat.of K) ⟶ W)
   [QuasiCompact g] [QuasiSeparated g], AICSch g.normalization
 
+/- English proof (translation)
+Rewrite using `[quasiCompact_iff_forall_isAffineOpen]`. Introduce `U _`. Conclude with `(Set.toFinite _).isCompact`.
+-/
 theorem spec_field_qc (K : Type) [Field K] {W : Scheme.{0}} (g : Spec (CommRingCat.of K) ⟶ W) : QuasiCompact g := by
   rw [quasiCompact_iff_forall_isAffineOpen]
   intro U _
   exact (Set.toFinite _).isCompact
 
+/- English proof (translation)
+Introduce `Z W f _ hZ ⟨U, s, hU, hs⟩`. Establish `: IsIntegral Z` using `hZ.1`. Establish `hUa` using `h0 U hZ hU`. Use `hUa.1` as an intermediate fact. Use `h1 hUa` as an intermediate fact.
+
+Set `g0 : Spec (CommRingCat.of U.toScheme.functionField) ⟶ U.toScheme` to `U.toScheme.fromSpecStalk _`. Set `g` to `g0 ≫ s`. Use `spec_field_qc _ g` as an intermediate fact. Use `⟨g.normalization, g.fromNormalization, inferInstance, h2 _ g, ?_⟩` and prove the remaining obligations. Establish `hg0 : IsDominant g0`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[denseRange_iff_closure_range, Scheme.range_fromSpecStalk]`. Conclude with `Set.eq_univ_of_univ_subset ((genericPoint_spec U.toScheme).def ▸ closure_mono (Set.singleton_subset_iff.mpr (specializes_refl _)))`. Establish `hU' : IsDominant U.ι`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[denseRange_iff_closure_range, Scheme.Opens.range_ι]`. Conclude with `(U.isOpen.dense hU).closure_eq`. Establish `e : g.toNormalization ≫ g.fromNormalization ≫ f = g0 ≫ U.ι`. Rewrite using `[reassoc_of% g.toNormalization_fromNormalization, Category.assoc, hs]`. Establish `: IsDominant (g.toNormalization ≫ g.fromNormalization ≫ f)` using `by rw [e]; infer_instance`.
+
+Conclude with `IsDominant.of_comp g.toNormalization _`.
+-/
 theorem Norm_of (h0 : OpenNbhdIC) (h1 : FFAlg) (h2 : NormAIC) : LateralTheory.E.ChowCut.Norm := by
   intro Z W f _ hZ ⟨U, s, hU, hs⟩
   have : IsIntegral Z := hZ.1

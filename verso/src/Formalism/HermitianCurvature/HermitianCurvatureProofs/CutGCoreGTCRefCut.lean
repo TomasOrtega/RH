@@ -44,6 +44,15 @@ def GTCRefAn : Prop :=
 
 def GTCRefOfCut : Prop := GTCReal → GTCCurvId → GTCCurvTr → GTCRefTrace → GTCRefAn → GTCRef
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ)` using `by first`. Consider the case `exact contDiff_id.star`. Consider the case `exact Complex.conjCLE.contDiff`. Consider the case `simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))`. Establish `h : modA P ρ = fun ζ : ℂ => (M.aC P ρ : ℂ) * star ζ * (ζ * star ζ - (P.TT : ℂ))⁻¹`.
+
+Use function extensionality and compare the values at `ζ`. Simplify using `only [modA, div_eq_mul_inv]`. Rewrite using `[← Complex.mul_conj]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Apply `ContDiffOn.mul` to reduce the goal to its premises. Conclude with `(contDiff_const.mul hs).contDiffOn`. Apply `ContDiffOn.inv` to reduce the goal to its premises. Conclude with `((contDiff_id.mul hs).sub contDiff_const).contDiffOn`. Introduce `ζ hζ`.
+
+Establish `hz : ζ * star ζ = ((Complex.normSq ζ : ℝ) : ℂ)` using `Complex.mul_conj ζ`. Rewrite using `[hz, ← Complex.ofReal_sub]`. Conclude with `Complex.ofReal_ne_zero.mpr (sub_pos.mpr hζ).ne'`.
+-/
 private theorem contDiffOn_modA_ann (P : M.Par) (ρ : M.Ty P) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (modA P ρ) (Ann P) := by
   have hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ) := by
@@ -66,6 +75,13 @@ private theorem contDiffOn_modA_ann (P : M.Par) (ρ : M.Ty P) :
       rw [hz, ← Complex.ofReal_sub]
       exact Complex.ofReal_ne_zero.mpr (sub_pos.mpr hζ).ne'
 
+/- English proof (translation)
+Introduce `hReal hCurvId hCurvTr hTrace hAn Wp Wq _ _ _ _ _ _ P Bs X d hH`. Take `⟨e0, he0, hk0, A0, B0, hAB, hC, hn⟩` from `hTrace Wp Wq P Bs X d hH`. Establish `hB : ∀ ρ, ∀ ζ ∈ Ann P, B0 ρ ζ = star (A0 ρ ζ)` using `hReal Wp Wq P Bs X d hH e0 he0 hk0 A0 B0 hAB hC`. Use `⟨e0, he0, hk0, A0, B0, hAB, hC, hCurvTr Wp Wq P Bs X d hH e0 he0 hk0 A0 B0 hAB hC hB (hCurvId Wp Wq P Bs X d hH), ?_⟩` and prove the remaining obligations. Introduce `ρ R hR hR2`.
+
+Take `⟨n, hn'⟩` from `hn ρ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hsm : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (modA P ρ) (Ann P)` using `contDiffOn_modA_ann P ρ`. Establish `key` using `hAn (max P.TT 0) (fun w => modA P ρ w - A0 ρ w) ((n : ℝ) / 2) (le_max_right _ _) ((hsm.sub (hAB ρ).1).mono (fun ζ hζ => show P.TT < Complex.normSq ζ from lt_of_le_of_lt (le_max_left _ _) (show max P.TT 0 < Complex.normSq ζ from hζ))) (fun ζ hζ => hn' ζ (show P.TT < Complex.normSq …`. Rewrite using `[key]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gTCRef_of_cut : GTCRefOfCut := by
   intro hReal hCurvId hCurvTr hTrace hAn Wp Wq _ _ _ _ _ _ P Bs X d hH
   obtain ⟨e0, he0, hk0, A0, B0, hAB, hC, hn⟩ := hTrace Wp Wq P Bs X d hH

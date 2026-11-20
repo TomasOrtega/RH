@@ -18,30 +18,48 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace SequenceOfBlowupsPullback
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem base_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : ↥A) :
     (f ≫ g).base x = g.base (f.base x) := by
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Substitute `h'` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_base_trans {A B C : Scheme.{u}} (h : A = B) (h' : B = C)
     (x : ↥A) : (eqToHom h').base ((eqToHom h).base x) = (eqToHom (h.trans h')).base x := by
   subst h
   subst h'
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_base_self {A : Scheme.{u}} (h : A = A) (x : ↥A) :
     (eqToHom h).base x = x := by
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem inv_base_hom_base {A B : Scheme.{u}} (e : A ≅ B) (x : ↥A) :
     e.inv.base (e.hom.base x) = x := by
   simp
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using `using hz`.
+-/
 private theorem eqToHom_base_mem_support_center {X : Scheme.{u}} (d : BlowupSequenceData X) {a b : ℕ}
     (hab : a = b) (h : d.obj a = d.obj b) (z : ↥(d.obj a))
     (hz : z ∈ (d.center a).support) : (eqToHom h).base z ∈ (d.center b).support := by
   subst hab
   simpa using hz
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem projectionToBase_base_eqToHom_base {X : Scheme.{u}} (d : BlowupSequenceData X) {a b : ℕ}
     (hab : a = b) (h : d.obj a = d.obj b) (z : ↥(d.obj a)) :
     (d.projectionToBase b).base ((eqToHom h).base z) = (d.projectionToBase a).base z := by
@@ -59,10 +77,16 @@ private def mapOfLengthEqOne {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenc
   | 1, _ => eqToHom (t'.toSequenceOfBlowups_schemeAt 1) ≫ q ≫ eqToHom (t.toSequenceOfBlowups_schemeAt 1).symm
   | (_ + 2), h => absurd h (by rw [BlowupSequenceData.toSequenceOfBlowups_length, ht']; omega)
 
+/- English proof (translation)
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.toSequenceOfBlowups_length, ht', ht]`.
+-/
 private theorem length_eq_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenceData X) (t' : BlowupSequenceData Y)
     (ht : t.length = 1) (ht' : t'.length = 1) : t'.toSequenceOfBlowups.length = t.toSequenceOfBlowups.length := by
   rw [BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.toSequenceOfBlowups_length, ht', ht]
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[length_eq_of_length_eq_one t t' ht ht']`. Conclude with `hj`.
+-/
 private theorem lt_length_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenceData X) (t' : BlowupSequenceData Y)
     (ht : t.length = 1) (ht' : t'.length = 1) :
     ∀ j : ℕ, j < t'.toSequenceOfBlowups.length → j < t.toSequenceOfBlowups.length := by
@@ -70,10 +94,26 @@ private theorem lt_length_of_length_eq_one {X Y : Scheme.{u}} (t : BlowupSequenc
   rw [length_eq_of_length_eq_one t t' ht ht'] at hj
   exact hj
 
+/- English proof (translation)
+Introduce `j _` and use `Nat.lt_succ_self j`.
+-/
 private theorem index_strictMono_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequenceData Y)
     (_ht' : t'.length = 1) : ∀ j : ℕ, j < t'.toSequenceOfBlowups.length → j < j + 1 :=
   fun j _ => Nat.lt_succ_self j
 
+/- English proof (translation)
+Establish `hlen : t'.toSequenceOfBlowups.length = 1` using `by rw [BlowupSequenceData.toSequenceOfBlowups_length, ht']`. Establish `hzero : IsPullback (t'.isoZero.hom ≫ g ≫ t.isoZero.inv) t'.isoZero.hom t.isoZero.hom g`. Establish `hsq : CommSq t'.isoZero.hom (t'.isoZero.hom ≫ g ≫ t.isoZero.inv) g t.isoZero.hom`. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
+
+Conclude with `(IsPullback.of_horiz_isIso hsq).flip`. Establish `hs0' : t'.toSequenceOfBlowups.projectionToBase 0 = t'.isoZero.hom`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase, BlowupSequenceData.projectionToBase_zero]`. Establish `hs0 : t.toSequenceOfBlowups.projectionToBase 0 = t.isoZero.hom`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase, BlowupSequenceData.projectionToBase_zero]`.
+
+Establish `hs1' : t'.toSequenceOfBlowups.projectionToBase 1 = t'.map 0 ≫ t'.isoZero.hom`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase]`. Use `show t'.projectionToBase (0 + 1) = t'.map 0 ≫ t'.isoZero.hom`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, BlowupSequenceData.projectionToBase_zero]`. Establish `hs1 : t.toSequenceOfBlowups.projectionToBase 1 = t.map 0 ≫ t.isoZero.hom`.
+
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase]`. Use `show t.projectionToBase (0 + 1) = t.map 0 ≫ t.isoZero.hom`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, BlowupSequenceData.projectionToBase_zero]`. Introduce `j hj`. Establish `hj1 : j = 0 ∨ j = 1` using `by omega`.
+
+Break down `hj1 with rfl | rfl` into its components or cases. Establish `hmap : mapOfLengthEqOne g t t' ht' q 0 hj = t'.isoZero.hom ≫ g ≫ t.isoZero.inv` using `(Category.id_comp ((t'.isoZero.hom ≫ g ≫ t.isoZero.inv) ≫ eqToHom (t.toSequenceOfBlowups_schemeAt 0).symm)).trans (Category.comp_id (t'.isoZero.hom ≫ g ≫ t.isoZero.inv))`. Rewrite using `[hmap, hs0, hs0']`. Conclude with `hzero`. Establish `hmap : mapOfLengthEqOne g t t' ht' q 1 hj = q` using `(Category.id_comp (q ≫ eqToHom (t.toSequenceOfBlowups_schemeAt 1).symm)).trans (Category.comp_id q)`.
+
+Rewrite using `[hmap, hs1, hs1']`. Conclude with `hq.paste_vert hzero`.
+-/
 private theorem isPullback_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
     (hq : IsPullback q (t'.map 0) (t.map 0) (t'.isoZero.hom ≫ g ≫ t.isoZero.inv)) :
@@ -112,6 +152,11 @@ private theorem isPullback_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t 
     rw [hmap, hs1, hs1']
     exact hq.paste_vert hzero
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hlen : t'.toSequenceOfBlowups.length = t'.length` using `t'.toSequenceOfBlowups_length`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality. Establish `h1 : t'.toSequenceOfBlowups.transitionMapSucc 0 = t'.map 0` using `t'.toSequenceOfBlowups_blowupMorphism 0`.
+
+Establish `h2 : t.toSequenceOfBlowups.transitionMap (le_of_lt (index_strictMono_of_length_eq_one t' ht' 0 hj)) = t.map 0` using `(t.toSequenceOfBlowups.blowupMorphism_eq_transitionMap 0).symm.trans (t.toSequenceOfBlowups_blowupMorphism 0)`. Rewrite using `[h1, h2]`. Use `show t'.map 0 ≫ (𝟙 (t'.obj 0) ≫ (t'.isoZero.hom ≫ g ≫ t.isoZero.inv) ≫ 𝟙 (t.obj 0)) = (𝟙 (t'.obj 1) ≫ q ≫ 𝟙 (t.obj 1)) ≫ t.map 0`. Simplify using `only [Category.id_comp, Category.comp_id]`. Conclude with `hq.w.symm`.
+-/
 private theorem blowupMorphism_comp_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
     (hq : IsPullback q (t'.map 0) (t.map 0) (t'.isoZero.hom ≫ g ≫ t.isoZero.inv)) :
@@ -132,6 +177,11 @@ private theorem blowupMorphism_comp_of_length_eq_one {X Y : Scheme.{u}} (g : Y �
   simp only [Category.id_comp, Category.comp_id]
   exact hq.w.symm
 
+/- English proof (translation)
+Establish `hlen : t'.toSequenceOfBlowups.length = 1` using `by rw [BlowupSequenceData.toSequenceOfBlowups_length, ht']`. Introduce `j hj`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality. Establish `hmap : mapOfLengthEqOne g t t' ht' q 0 (le_of_lt hj) = t'.isoZero.hom ≫ g ≫ t.isoZero.inv` using `(Category.id_comp ((t'.isoZero.hom ≫ g ≫ t.isoZero.inv) ≫ eqToHom (t.toSequenceOfBlowups_schemeAt 0).symm)).trans (Category.comp_id (t'.isoZero.hom ≫ g ≫ t.isoZero.inv))`.
+
+Rewrite using `[hmap, BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.toSequenceOfBlowups_center]`. Conclude with `hcen`.
+-/
 private theorem center_eq_comap_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (_ht : t.length = 1) (ht' : t'.length = 1) (q : t'.obj 1 ⟶ t.obj 1)
     (hcen : t'.center 0 = (t.center 0).comap (t'.isoZero.hom ≫ g ≫ t.isoZero.inv)) :
@@ -149,6 +199,11 @@ private theorem center_eq_comap_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X
   rw [hmap, BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.toSequenceOfBlowups_center]
   exact hcen
 
+/- English proof (translation)
+Establish `hlen : t'.toSequenceOfBlowups.length = 1` using `by rw [BlowupSequenceData.toSequenceOfBlowups_length, ht']`. Introduce `j hj`. Rewrite `hj` using `[hlen]`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality.
+
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_center]`. Conclude with `hne`.
+-/
 private theorem center_ne_top_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequenceData Y)
     (ht' : t'.length = 1) (hne : t'.center 0 ≠ ⊤) :
     ∀ j : ℕ, j < t'.toSequenceOfBlowups.length → t'.toSequenceOfBlowups.center j ≠ ⊤ := by
@@ -160,6 +215,11 @@ private theorem center_ne_top_of_length_eq_one {Y : Scheme.{u}} (t' : BlowupSequ
   rw [BlowupSequenceData.toSequenceOfBlowups_center]
   exact hne
 
+/- English proof (translation)
+Establish `hlen : t.toSequenceOfBlowups.length = 1` using `t.toSequenceOfBlowups_length.trans ht`. Establish `hlen' : t'.toSequenceOfBlowups.length = 1` using `t'.toSequenceOfBlowups_length.trans ht'`. Introduce `i hi hmiss`. Establish `hi0 : i = 0` using `by omega`. Establish `h0 : (0 : ℕ) < t'.toSequenceOfBlowups.length` using `by omega`.
+
+Conclude with `absurd hi0.symm (hmiss 0 h0)`.
+-/
 private theorem disjoint_omitted_centers_of_length_eq_one {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (t' : BlowupSequenceData Y) (ht : t.length = 1) (ht' : t'.length = 1) :
     ∀ i : ℕ, i < t.toSequenceOfBlowups.length → (∀ j : ℕ, j < t'.toSequenceOfBlowups.length → j ≠ i) →
@@ -191,6 +251,13 @@ def ofLengthOne {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X) (t' 
 
 end
 
+/- English proof (translation)
+Establish `hcomm : u ≫ π = g`. Establish `h` using `hu.w`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hb : ∀ y : ↥Y, π.base (u.base y) = g.base y`. Introduce `y`.
+
+Establish `h1 : (u ≫ π).base y = g.base y` using `by rw [hcomm]`. Simplify using `using h1`. Establish `hsupp : (I.comap u).support = ⊥`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations.
+
+Introduce `y hy`. Establish `hz : u.base y ∈ I.support` using `hy`. Conclude with `absurd (hb y).symm (hmiss (u.base y) hz y)`. Conclude with `(Scheme.IdealSheafData.support_eq_bot_iff _).mp hsupp`.
+-/
 theorem comap_eq_top_of_forall_support_not_mem_range {X Y T : Scheme.{u}} (g : Y ⟶ X) (π : T ⟶ X)
     (I : T.IdealSheafData)
     (hmiss : ∀ z : ↥T, z ∈ I.support → ∀ y : ↥Y, g.base y ≠ π.base z)
@@ -216,6 +283,15 @@ private def IsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSe
   ∀ i : ℕ, i < t.length → ∀ z : ↥(t.obj i), z ∈ (t.center i).support →
     ∀ y : ↥Y, g.base y ≠ (t.projectionToBase i).base z
 
+/- English proof (translation)
+Establish `hB : Blowup.IsBlowupAlongIdealSheaf (t.map i) (t.center i)` using `t.isBlowup i hi`. Establish `htop : (t.center i).comap u = ⊤` using `comap_eq_top_of_forall_support_not_mem_range g (t.projectionToBase i) (t.center i) (hmiss i hi) u hu`. Establish `hEC : Blowup.IsLocallyGeneratedByNonZeroDivisor ((t.center i).comap u)`. Rewrite using `[htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_top Y`.
+
+Take `⟨k, hk, -⟩` from `hB.existsUnique_lift Y u hEC`. Establish `hw : k ≫ t.map i = 𝟙 Y ≫ u` using `by rw [hk, Category.id_comp]`. Establish `hEC2 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((t.center i).comap (pullback.snd (t.map i) u ≫ u))`. Establish `hc : (t.center i).comap (pullback.snd (t.map i) u ≫ u) = ((t.center i).comap u).comap (pullback.snd (t.map i) u)`. Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+
+Rewrite using `[hc, htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_comap_top _`. Use `⟨⟨pullback.lift k (𝟙 Y) hw, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.id_comp]`.
+
+Use `hB.hom_ext_of_comp_eq hEC2 ?_ pullback.condition` and prove the remaining obligations. Rewrite using `[Category.assoc, hk]`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]`. Rewrite using `[pullback.lift_snd]`.
+-/
 private theorem isIso_pullbackSnd_of_flat_of_disjoint {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
     (hu : IsPullback u (𝟙 Y) (t.projectionToBase i) g) : IsIso (pullback.snd (t.map i) u) := by
@@ -247,6 +323,11 @@ private noncomputable def liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g 
   letI := isIso_pullbackSnd_of_flat_of_disjoint g t hmiss i hi u hu
   inv (pullback.snd (t.map i) u) ≫ pullback.fst (t.map i) u
 
+/- English proof (translation)
+Establish `hiso : IsIso (pullback.snd (t.map i) u)` using `isIso_pullbackSnd_of_flat_of_disjoint g t hmiss i hi u hu`. Establish `hsq : IsPullback (inv (pullback.snd (t.map i) u) ≫ pullback.fst (t.map i) u) (𝟙 Y) (t.map i) u`. Use `IsPullback.of_iso_pullback ⟨?_⟩ (asIso (pullback.snd (t.map i) u)).symm ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc, Category.id_comp]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Establish `hpaste` using `hsq.paste_vert hu`. Simplify using `only [Category.comp_id] at hpaste`. Rewrite using `[BlowupSequenceData.projectionToBase_succ]`. Conclude with `hpaste`.
+-/
 private theorem isPullback_liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
     (hu : IsPullback u (𝟙 Y) (t.projectionToBase i) g) :
@@ -263,6 +344,11 @@ private theorem isPullback_liftSuccOfIsDisjointFromCenters {X Y : Scheme.{u}} (g
   rw [BlowupSequenceData.projectionToBase_succ]
   exact hpaste
 
+/- English proof (translation)
+Establish `hiso : IsIso (t.projectionToBase 0)`. Rewrite using `[t.projectionToBase_zero]`. Use `infer_instance`. Establish `hsq : CommSq (𝟙 Y) (g ≫ t.isoZero.inv) g (t.projectionToBase 0)`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `[t.projectionToBase_zero]`. Conclude with `(IsPullback.of_horiz_isIso hsq).flip`.
+-/
 private theorem isPullback_comp_isoObjZero_inv {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X) :
     IsPullback (g ≫ t.isoZero.inv) (𝟙 Y) (t.projectionToBase 0) g := by
   have hiso : IsIso (t.projectionToBase 0) := by
@@ -286,6 +372,9 @@ private noncomputable def liftToLastOfFlatOfIsDisjointFromCenters {X Y : Scheme.
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) : Y ⟶ t.obj t.length :=
   (liftOfIsDisjointFromCenters g t hmiss t.length le_rfl).1
 
+/- English proof (translation)
+Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality. Conclude with `e.toSequenceOfBlowups_schemeAt 0`.
+-/
 private theorem schemeAt_eq_schemeAt_zero_of_length_eq_zero {Y : Scheme.{u}} (e : BlowupSequenceData Y) (he : e.length = 0) (j : ℕ)
     (hj : j ≤ e.toSequenceOfBlowups.length) : e.toSequenceOfBlowups.schemeAt j = e.obj 0 := by
   have hlen : e.toSequenceOfBlowups.length = 0 := e.toSequenceOfBlowups_length.trans he
@@ -299,21 +388,37 @@ private noncomputable def mapToLastOfFlatOfLengthEqZero {X Y : Scheme.{u}} (g : 
   eqToHom (schemeAt_eq_schemeAt_zero_of_length_eq_zero e he j hj) ≫ e.isoZero.hom ≫ liftToLastOfFlatOfIsDisjointFromCenters g t hmiss ≫
     eqToHom (t.toSequenceOfBlowups_schemeAt t.length).symm
 
+/- English proof (translation)
+The claim follows from `(t.toSequenceOfBlowups_length).symm`.
+-/
 private theorem length_eq_toSequenceOfBlowups_length {X : Scheme.{u}} (t : BlowupSequenceData X) :
     t.length = t.toSequenceOfBlowups.length := (t.toSequenceOfBlowups_length).symm
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length, he]`. Conclude with `absurd hj (Nat.not_lt_zero j)`.
+-/
 private theorem length_lt_toSequenceOfBlowups_length_of_lt {X Y : Scheme.{u}} (t : BlowupSequenceData X) (e : BlowupSequenceData Y)
     (he : e.length = 0) : ∀ j : ℕ, j < e.toSequenceOfBlowups.length → t.length < t.toSequenceOfBlowups.length := by
   intro j hj
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length, he]`. Conclude with `absurd hj (Nat.not_lt_zero j)`.
+-/
 private theorem length_lt_length_of_lt_length_of_eq_zero {X Y : Scheme.{u}} (t : BlowupSequenceData X) (e : BlowupSequenceData Y)
     (he : e.length = 0) : ∀ j : ℕ, j < e.toSequenceOfBlowups.length → t.length < t.length := by
   intro j hj
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
+/- English proof (translation)
+Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Introduce `j hj`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality. Establish `hpb : IsPullback (liftToLastOfFlatOfIsDisjointFromCenters g t hmiss) (𝟙 Y) (t.projectionToBase t.length) g` using `(liftOfIsDisjointFromCenters g t hmiss t.length le_rfl).2`.
+
+Establish `hiso : IsPullback e.isoZero.hom e.isoZero.hom (𝟙 Y) (𝟙 Y)` using `IsPullback.of_horiz_isIso ⟨rfl⟩`. Establish `hcomp` using `hiso.paste_horiz hpb`. Simplify using `only [Category.id_comp] at hcomp`. Establish `hmap : mapToLastOfFlatOfLengthEqZero g t hmiss e he 0 hj = e.isoZero.hom ≫ liftToLastOfFlatOfIsDisjointFromCenters g t hmiss` using `by show 𝟙 (e.obj 0) ≫ e.isoZero.hom ≫ liftToLastOfFlatOfIsDisjointFromCenters g t hmiss ≫ 𝟙 (t.obj t.length) = e.isoZero.hom ≫ liftToLastOfFlatOfIsDisjointFromCenters g t hmiss`. Simplify using the standard rewrite rules.
+
+Establish `hs : e.toSequenceOfBlowups.projectionToBase 0 = e.isoZero.hom` using `(e.toSequenceOfBlowups_projectionToBase 0).trans e.projectionToBase_zero`. Establish `hf : t.toSequenceOfBlowups.projectionToBase t.length = t.projectionToBase t.length` using `t.toSequenceOfBlowups_projectionToBase t.length`. Rewrite using `[hmap, hs, hf]`. Conclude with `hcomp`.
+-/
 private theorem isPullback_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j ≤ e.toSequenceOfBlowups.length),
@@ -339,6 +444,9 @@ private theorem isPullback_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) 
   rw [hmap, hs, hf]
   exact hcomp
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Conclude with `absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)`.
+-/
 private theorem blowupMorphism_comp_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j < e.toSequenceOfBlowups.length),
@@ -349,6 +457,9 @@ private theorem blowupMorphism_comp_of_disjoint_centers {X Y : Scheme.{u}} (g : 
   have hlen : e.toSequenceOfBlowups.length = 0 := e.toSequenceOfBlowups_length.trans he
   exact absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)
 
+/- English proof (translation)
+Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Introduce `j hj`. Conclude with `absurd hj (by omega)`.
+-/
 private theorem center_eq_comap_lastCenter_of_disjoint_of_flat {X Y : Scheme.{u}} (g : Y ⟶ X) [AlgebraicGeometry.Flat g]
     (t : BlowupSequenceData X) (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j < e.toSequenceOfBlowups.length),
@@ -358,12 +469,20 @@ private theorem center_eq_comap_lastCenter_of_disjoint_of_flat {X Y : Scheme.{u}
   intro j hj
   exact absurd hj (by omega)
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length, he]`. Conclude with `absurd hj (Nat.not_lt_zero j)`.
+-/
 private theorem center_ne_top_of_length_eq_zero {Y : Scheme.{u}} (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ j : ℕ, j < e.toSequenceOfBlowups.length → e.toSequenceOfBlowups.center j ≠ ⊤ := by
   intro j hj
   rw [BlowupSequenceData.toSequenceOfBlowups_length, he] at hj
   exact absurd hj (Nat.not_lt_zero j)
 
+/- English proof (translation)
+Introduce `i hi _hmiss z hz x'`. Establish `hi' : i < t.length`. Rewrite `hi` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Then use the resulting hypothesis. Establish `hz' : z ∈ (t.center i).support`. Rewrite `hz` using `[BlowupSequenceData.toSequenceOfBlowups_center]`. Then use the resulting hypothesis.
+
+Establish `hne` using `hmiss i hi' z hz' x'`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_projectionToBase]` and apply the resulting hypothesis.
+-/
 private theorem disjoint_omitted_centers_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (_he : e.length = 0) :
     ∀ i : ℕ, i < t.toSequenceOfBlowups.length → (∀ j : ℕ, j < e.toSequenceOfBlowups.length → t.length ≠ i) →
@@ -398,6 +517,9 @@ end
 
 section
 
+/- English proof (translation)
+Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_schemeAt s' j, BlowupSequenceData.toSequenceOfBlowups_schemeAt (s'.append n) j, BlowupSequenceData.append_schemeAt_of_le_length s' n hj]`.
+-/
 private theorem schemeAt_eq_schemeAt_append {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
     s'.toSequenceOfBlowups.schemeAt j = (s'.append n).toSequenceOfBlowups.schemeAt j := by
@@ -405,6 +527,9 @@ private theorem schemeAt_eq_schemeAt_append {X' : Scheme.{u}} (s' : BlowupSequen
   rw [BlowupSequenceData.toSequenceOfBlowups_schemeAt s' j, BlowupSequenceData.toSequenceOfBlowups_schemeAt (s'.append n) j,
     BlowupSequenceData.append_schemeAt_of_le_length s' n hj]
 
+/- English proof (translation)
+Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem le_length_append_of_length_eq_zero {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
     j ≤ (s'.append n).toSequenceOfBlowups.length := by
@@ -418,6 +543,9 @@ private noncomputable def mapOfAppendLengthEqZero {X X' : Scheme.{u}} (φ : X' �
     s'.toSequenceOfBlowups.schemeAt j ⟶ s.schemeAt (c.idx j) :=
   eqToHom (schemeAt_eq_schemeAt_append s' n j hj) ≫ c.map j (le_length_append_of_length_eq_zero s' n hn j hj)
 
+/- English proof (translation)
+Establish `h1 : (s'.append n).toSequenceOfBlowups.length = s'.toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← h1]`. Conclude with `c.idx_length`.
+-/
 private theorem index_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) : c.idx s'.toSequenceOfBlowups.length = s.length := by
@@ -427,6 +555,11 @@ private theorem index_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : 
   rw [← h1]
   exact c.idx_length
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Establish `h : j < (s'.append n).toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `c.idx_lt j h`.
+-/
 private theorem index_lt_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -438,6 +571,9 @@ private theorem index_lt_length_of_append_length_eq_zero {X X' : Scheme.{u}} (φ
     omega
   exact c.idx_lt j h
 
+/- English proof (translation)
+Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Use `c.idx_strictMono j ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem index_lt_index_succ_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -448,11 +584,17 @@ private theorem index_lt_index_succ_of_append_length_eq_zero {X X' : Scheme.{u}}
   rw [BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]
   omega
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_comp_eqToHom_comp_eq {A B C : Scheme.{u}} (h : A = B) (h' : B = A)
     (g : A ⟶ C) : eqToHom h ≫ eqToHom h' ≫ g = g := by
   subst h
   simp
 
+/- English proof (translation)
+Establish `hjl : j ≤ s'.length` using `by rwa [BlowupSequenceData.toSequenceOfBlowups_length] at hj`. Establish `h1 : (s'.append n).toSequenceOfBlowups.projectionToBase j = (s'.append n).projectionToBase j` using `BlowupSequenceData.toSequenceOfBlowups_projectionToBase (s'.append n) j`. Establish `h2 : s'.toSequenceOfBlowups.projectionToBase j = s'.projectionToBase j` using `BlowupSequenceData.toSequenceOfBlowups_projectionToBase s' j`. Rewrite using `[h1, h2, BlowupSequenceData.projectionToBase_append_of_le_length s' n hjl]`. Conclude with `eqToHom_comp_eqToHom_comp_eq _ _ _`.
+-/
 private theorem eqToHom_comp_append_projectionToBase {X' : Scheme.{u}} (s' : BlowupSequenceData X')
     (n : BlowupSequenceData (s'.obj s'.length)) (j : ℕ) (hj : j ≤ s'.toSequenceOfBlowups.length) :
     eqToHom (schemeAt_eq_schemeAt_append s' n j hj) ≫ (s'.append n).toSequenceOfBlowups.projectionToBase j = s'.toSequenceOfBlowups.projectionToBase j := by
@@ -463,6 +605,11 @@ private theorem eqToHom_comp_append_projectionToBase {X' : Scheme.{u}} (s' : Blo
   rw [h1, h2, BlowupSequenceData.projectionToBase_append_of_le_length s' n hjl]
   exact eqToHom_comp_eqToHom_comp_eq _ _ _
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hc` using `c.isPullback j (le_length_append_of_length_eq_zero s' n hn j hj)`. Establish `hsq : CommSq (eqToHom (schemeAt_eq_schemeAt_append s' n j hj)) (s'.toSequenceOfBlowups.projectionToBase j) ((s'.append n).toSequenceOfBlowups.projectionToBase j) (𝟙 X')`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.comp_id]`.
+
+Conclude with `eqToHom_comp_append_projectionToBase s' n j hj`. Establish `hiso : IsPullback (eqToHom (schemeAt_eq_schemeAt_append s' n j hj)) (s'.toSequenceOfBlowups.projectionToBase j) ((s'.append n).toSequenceOfBlowups.projectionToBase j) (𝟙 X')` using `IsPullback.of_horiz_isIso hsq`. Establish `hpaste` using `hiso.paste_horiz hc`. Rewrite `hpaste` using `[Category.id_comp]`. Conclude with `hpaste`.
+-/
 private theorem isPullback_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -481,6 +628,9 @@ private theorem isPullback_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X'
   rw [Category.id_comp] at hpaste
   exact hpaste
 
+/- English proof (translation)
+Substitute `hA` using the available equality. Substitute `hB` using the available equality. Simplify using `only [eqToHom_refl, Category.id_comp, Category.comp_id] at h ⊢`. Conclude with `h.symm`.
+-/
 private theorem comp_eqToHom_eq_eqToHom_comp {A B A' B' : Scheme.{u}} (f : A ⟶ B) (f' : A' ⟶ B')
     (hA : A = A') (hB : B = B') (h : f' = eqToHom hA.symm ≫ f ≫ eqToHom hB) :
     f ≫ eqToHom hB = eqToHom hA ≫ f' := by
@@ -489,6 +639,13 @@ private theorem comp_eqToHom_eq_eqToHom_comp {A B A' B' : Scheme.{u}} (f : A ⟶
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id] at h ⊢
   exact h.symm
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hjl : j < s'.length` using `by rwa [BlowupSequenceData.toSequenceOfBlowups_length] at hj`. Establish `hjc : j < (s'.append n).toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hkey : s'.toSequenceOfBlowups.transitionMapSucc j ≫ eqToHom (schemeAt_eq_schemeAt_append s' n j (le_of_lt hj)) = eqToHom (schemeAt_eq_schemeAt_append s' n (j + 1) hj) ≫ (s'.append n).toSequenceOfBlowups.transitionMapSucc j`. Use `comp_eqToHom_eq_eqToHom_comp (s'.toSequenceOfBlowups.transitionMapSucc j) ((s'.append n).toSequenceOfBlowups.transitionMapSucc j) (schemeAt_eq_schemeAt_append s' n (j + 1) hj) (schemeAt_eq_schemeAt_append s' n j (le_of_lt hj)) ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]`. Conclude with `BlowupSequenceData.append_blowupMorphism_of_lt_length s' n hjl`. Establish `hstep : (s'.append n).toSequenceOfBlowups.transitionMapSucc j ≫ c.map j (le_length_append_of_length_eq_zero s' n hn j (le_of_lt hj)) = c.map (j + 1) (le_length_append_of_length_eq_zero s' n hn (j + 1) hj) ≫ s.transitionMap (le_of_lt (index_lt_index_succ_of_append_length_eq_zero φ …` using `c.step j hjc`.
+
+Use `show s'.toSequenceOfBlowups.transitionMapSucc j ≫ eqToHom (schemeAt_eq_schemeAt_append s' n j (le_of_lt hj)) ≫ c.map j (le_length_append_of_length_eq_zero s' n hn j (le_of_lt hj)) = (eqToHom (schemeAt_eq_schemeAt_append s' n (j + 1) hj) ≫ c.map (j + 1) (le_length_append_of_length …`. Rewrite using `[← Category.assoc, hkey, Category.assoc, hstep, Category.assoc]`.
+-/
 private theorem blowupMorphism_comp_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -516,11 +673,19 @@ private theorem blowupMorphism_comp_of_append_length_eq_zero {X X' : Scheme.{u}}
       s.transitionMap (le_of_lt (index_lt_index_succ_of_append_length_eq_zero φ s' s n hn c j hj))
   rw [← Category.assoc, hkey, Category.assoc, hstep, Category.assoc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem comap_eqToHom_comap_eqToHom {A B : Scheme.{u}} (h : A = B) (h' : B = A)
     (I : A.IdealSheafData) : (I.comap (eqToHom h')).comap (eqToHom h) = I := by
   subst h
   simp
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hjl : j < s'.length` using `by rwa [BlowupSequenceData.toSequenceOfBlowups_length] at hj`. Establish `hj' : j < (s'.append n).toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hc : (s'.append n).toSequenceOfBlowups.center j = (s.center (c.idx j)).comap (c.map j (le_length_append_of_length_eq_zero s' n hn j (le_of_lt hj)))` using `c.center_comap j hj'`. Use `show s'.toSequenceOfBlowups.center j = (s.center (c.idx j)).comap (eqToHom (schemeAt_eq_schemeAt_append s' n j (le_of_lt hj)) ≫ c.map j (le_length_append_of_length_eq_zero s' n hn j (le_of_lt hj)))`. Rewrite using `[Scheme.IdealSheafData.comap_comp, ← hc, BlowupSequenceData.toSequenceOfBlowups_center s' j, BlowupSequenceData.toSequenceOfBlowups_center (s'.append n) j, BlowupSequenceData.append_center_of_lt_length s' n hjl]`. Conclude with `(comap_eqToHom_comap_eqToHom _ _ _).symm`.
+-/
 private theorem center_eq_comap_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -541,6 +706,13 @@ private theorem center_eq_comap_of_append_length_eq_zero {X X' : Scheme.{u}} (φ
     BlowupSequenceData.toSequenceOfBlowups_center (s'.append n) j, BlowupSequenceData.append_center_of_lt_length s' n hjl]
   exact (comap_eqToHom_comap_eqToHom _ _ _).symm
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hjl : j < s'.length` using `by rwa [BlowupSequenceData.toSequenceOfBlowups_length] at hj`. Establish `hjc : j < (s'.append n).toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hne` using `c.center_ne_top j hjc`. Rewrite `hne` using `[BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.append_center_of_lt_length s' n hjl]`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_center]`. Introduce `htop`. Rewrite `hne` using `[htop]`.
+
+Conclude with `hne (Scheme.IdealSheafData.comap_top _)`.
+-/
 private theorem center_ne_top_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -557,6 +729,11 @@ private theorem center_ne_top_of_append_length_eq_zero {X X' : Scheme.{u}} (φ :
   rw [htop] at hne
   exact hne (Scheme.IdealSheafData.comap_top _)
 
+/- English proof (translation)
+Introduce `i hi hmiss`. Use `c.omitted i hi ?_` and prove the remaining obligations. Introduce `j hj`. Use `hmiss j ?_` and prove the remaining obligations. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.append_length, hn]`.
+
+Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem disjoint_omitted_centers_of_append_length_eq_zero {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : SequenceOfBlowups X) (n : BlowupSequenceData (s'.obj s'.length)) (hn : n.length = 0)
     (c : SequenceOfBlowupsPullback φ (s'.append n).toSequenceOfBlowups s) :
@@ -590,6 +767,15 @@ end
 
 section
 
+/- English proof (translation)
+Establish `hEC : Blowup.IsLocallyGeneratedByNonZeroDivisor (I.comap u)`. Rewrite using `[htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_top Y`. Take `⟨k, hk, -⟩` from `hB.existsUnique_lift Y u hEC`. Establish `hw : k ≫ π = 𝟙 Y ≫ u` using `by rw [hk, Category.id_comp]`.
+
+Establish `hEC2 : Blowup.IsLocallyGeneratedByNonZeroDivisor (I.comap (pullback.snd π u ≫ u))`. Establish `hc : I.comap (pullback.snd π u ≫ u) = (I.comap u).comap (pullback.snd π u)`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[hc, htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_comap_top _`.
+
+Use `⟨⟨pullback.lift k (𝟙 Y) hw, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.id_comp]`. Use `hB.hom_ext_of_comp_eq hEC2 ?_ pullback.condition` and prove the remaining obligations. Rewrite using `[Category.assoc, hk]`.
+
+Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]`. Rewrite using `[pullback.lift_snd]`.
+-/
 theorem isIso_pullback_snd_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     {I : T.IdealSheafData} (hB : Blowup.IsBlowupAlongIdealSheaf π I) (u : Y ⟶ T) (htop : I.comap u = ⊤) :
     IsIso (pullback.snd π u) := by
@@ -611,6 +797,11 @@ theorem isIso_pullback_snd_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     · rw [Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]
   · rw [pullback.lift_snd]
 
+/- English proof (translation)
+Establish `hiso : IsIso (pullback.snd π u)` using `isIso_pullback_snd_of_comap_eq_top hB u htop`. Use `⟨inv (pullback.snd π u) ≫ pullback.fst π u, ?_, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_iso_pullback ⟨?_⟩ (asIso (pullback.snd π u)).symm ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc, Category.id_comp]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]`.
+-/
 theorem exists_lift_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     {I : T.IdealSheafData} (hB : Blowup.IsBlowupAlongIdealSheaf π I) (u : Y ⟶ T) (htop : I.comap u = ⊤) :
     ∃ v : Y ⟶ T', IsPullback v (𝟙 Y) π u ∧ v ≫ π = u := by
@@ -622,6 +813,11 @@ theorem exists_lift_of_comap_eq_top {Y T T' : Scheme.{u}} {π : T' ⟶ T}
     · simp
   · rw [Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]
 
+/- English proof (translation)
+Take `⟨v, hv, hvc⟩` from `exists_lift_of_comap_eq_top (t.isBlowup i hi) u htop`. Use `⟨v, ?_, hvc⟩` and prove the remaining obligations. Establish `hpaste` using `hv.paste_vert hu`. Simplify using `only [Category.comp_id] at hpaste`. Rewrite using `[BlowupSequenceData.projectionToBase_succ]`.
+
+Conclude with `hpaste`.
+-/
 theorem exists_lift_succ_of_comap_center_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X)
     (t : BlowupSequenceData X) (i : ℕ) (hi : i < t.length) (u : Y ⟶ t.obj i)
     (hu : IsPullback u (𝟙 Y) (t.projectionToBase i) g) (htop : (t.center i).comap u = ⊤) :
@@ -633,6 +829,13 @@ theorem exists_lift_succ_of_comap_center_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X)
   rw [BlowupSequenceData.projectionToBase_succ]
   exact hpaste
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨g ≫ t.isoZero.inv, isPullback_comp_isoObjZero_inv g t⟩`.
+
+Consider the case `succ i ih`. Introduce `hi`. Establish `hi' : i < t.length` using `by omega`. Take `⟨u, hu⟩` from `ih (le_of_lt hi')`. Take `⟨v, hv, -⟩` from `exists_lift_succ_of_comap_center_eq_top g t i hi' u hu (h i hi' u hu)`.
+
+Conclude with `⟨v, hv⟩`.
+-/
 theorem exists_lift_of_forall_comap_eq_top {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (h : ∀ i : ℕ, i < t.length → ∀ u : Y ⟶ t.obj i, IsPullback u (𝟙 Y) (t.projectionToBase i) g →
       (t.center i).comap u = ⊤) :
@@ -654,6 +857,19 @@ end
 
 section
 
+/- English proof (translation)
+Introduce `i`. Break down `Nat.eq_zero_or_pos i with rfl | hipos` into its components or cases. Introduce `z hz`. Simplify using `only [Nat.add_zero]`. Establish `hh : (s.append n).obj s.length = s.obj s.length` using `BlowupSequenceData.append_schemeAt_of_le_length s n (le_refl s.length)`.
+
+Use `⟨(eqToHom hh.symm).base (n.isoZero.hom.base z), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.append_center_length]`. Use `Scheme.IdealSheafData.mem_support_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[eqToHom_base_trans, eqToHom_base_self]`. Use `Scheme.IdealSheafData.mem_support_comap.mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[inv_base_hom_base]`. Conclude with `hz`. Rewrite using `[BlowupSequenceData.projectionToBase_append_of_le_length s n (le_refl s.length), base_comp_apply, eqToHom_base_trans, eqToHom_base_self, BlowupSequenceData.projectionToBase_zero]`. Take `⟨k, rfl⟩ : ∃ k : ℕ, i = k + 1` from `⟨i - 1, by omega⟩`. Introduce `z hz`.
+
+Establish `hgt : s.length < s.length + (k + 1)` using `by omega`. Establish `h1 : (s.append n).obj (s.length + (k + 1)) = n.obj (s.length + (k + 1) - s.length)` using `BlowupSequenceData.append_schemeAt_of_length_lt s n hgt`. Establish `hsub : s.length + (k + 1) - s.length = k + 1` using `by omega`. Establish `hobj : n.obj (k + 1) = (s.append n).obj (s.length + (k + 1))`. Rewrite using `[h1, hsub]`.
+
+Use `⟨(eqToHom hobj).base z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.append_center_of_length_lt s n hgt]`. Use `Scheme.IdealSheafData.mem_support_comap.mpr ?_` and prove the remaining obligations. Rewrite using `[eqToHom_base_trans]`. Conclude with `eqToHom_base_mem_support_center n hsub.symm _ z hz`.
+
+Rewrite using `[BlowupSequenceData.projectionToBase_append_of_length_lt s n hgt, base_comp_apply, base_comp_apply, eqToHom_base_trans, projectionToBase_base_eqToHom_base n hsub.symm]`.
+-/
 private theorem exists_mem_support_center_append {X : Scheme.{u}} (s : BlowupSequenceData X)
     (n : BlowupSequenceData (s.obj s.length)) :
     ∀ (i : ℕ) (z : ↥(n.obj i)), z ∈ (n.center i).support →
@@ -692,6 +908,13 @@ private theorem exists_mem_support_center_append {X : Scheme.{u}} (s : BlowupSeq
     · rw [BlowupSequenceData.projectionToBase_append_of_length_lt s n hgt, base_comp_apply, base_comp_apply,
         eqToHom_base_trans, projectionToBase_base_eqToHom_base n hsub.symm]
 
+/- English proof (translation)
+Introduce `i hi z hz y hyeq`. Take `⟨z', hz', hp⟩` from `exists_mem_support_center_append s n i z hz`. Establish `hst : s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length = s.projectionToBase s.length` using `BlowupSequenceData.toSequenceOfBlowups_projectionToBase s s.length`. Establish `hw : c.lastMap ≫ s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length = s'.toSequenceOfBlowups.projectionToBase s'.toSequenceOfBlowups.length ≫ φ` using `c.isPullback_lastMap.w`. Establish `h0` using `congrArg (fun f : s'.toSequenceOfBlowups.schemeAt s'.toSequenceOfBlowups.length ⟶ X => f.base y) hw`.
+
+Establish `hA` using `base_comp_apply c.lastMap (s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length) y`. Establish `hB` using `base_comp_apply (s'.toSequenceOfBlowups.projectionToBase s'.toSequenceOfBlowups.length) φ y`. Establish `h1 : (s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length).base (c.lastMap.base y) = φ.base ((s'.toSequenceOfBlowups.projectionToBase s'.toSequenceOfBlowups.length).base y)` using `hA.symm.trans (h0.trans hB)`. Establish `h3 : (s.toSequenceOfBlowups.projectionToBase s.toSequenceOfBlowups.length).base (c.lastMap.base y) = (s.projectionToBase s.length).base (c.lastMap.base y)` using `congrArg (fun f : s.obj s.length ⟶ X => f.base (c.lastMap.base y)) hst`. Use `hmiss (s.length + i) (Nat.le_add_right _ _) (by omega) z' hz' ((s'.toSequenceOfBlowups.projectionToBase s'.toSequenceOfBlowups.length).base y) ?_` and prove the remaining obligations.
+
+Conclude with `(h1.symm.trans h3).trans ((congrArg (fun w : ↥(s.obj s.length) => (s.projectionToBase s.length).base w) hyeq).trans hp.symm)`.
+-/
 private theorem disjoint_centers_lastMap_of_append {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : BlowupSequenceData X) (n : BlowupSequenceData (s.obj s.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)
@@ -719,6 +942,9 @@ private theorem disjoint_centers_lastMap_of_append {X X' : Scheme.{u}} (φ : X' 
   exact (h1.symm.trans h3).trans
     ((congrArg (fun w : ↥(s.obj s.length) => (s.projectionToBase s.length).base w) hyeq).trans hp.symm)
 
+/- English proof (translation)
+The claim follows from `exists_lift_of_forall_comap_eq_top g t (fun i hi u hu => comap_eq_top_of_forall_support_not_mem_range g (t.projectionToBase i) (t.center i) (hmiss i hi) u hu) t.length le_rfl`.
+-/
 private theorem exists_lift_schemeAt_length_of_disjoint_centers {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) :
     ∃ u : Y ⟶ t.obj t.length, IsPullback u (𝟙 Y) (t.projectionToBase t.length) g :=
@@ -730,6 +956,9 @@ private noncomputable def chosenLiftToLastOfIsDisjointFromCenters {X Y : Scheme.
     (hmiss : IsDisjointFromCenters g t) : Y ⟶ t.obj t.length :=
   (exists_lift_schemeAt_length_of_disjoint_centers g t hmiss).choose
 
+/- English proof (translation)
+The claim follows from `(exists_lift_schemeAt_length_of_disjoint_centers g t hmiss).choose_spec`.
+-/
 private theorem isPullback_chosenLiftToLastOfIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) :
     IsPullback (chosenLiftToLastOfIsDisjointFromCenters g t hmiss) (𝟙 Y) (t.projectionToBase t.length) g :=
@@ -741,6 +970,13 @@ private noncomputable def mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ 
   eqToHom (schemeAt_eq_schemeAt_zero_of_length_eq_zero e he j hj) ≫ e.isoZero.hom ≫ chosenLiftToLastOfIsDisjointFromCenters g t hmiss ≫
     eqToHom (t.toSequenceOfBlowups_schemeAt t.length).symm
 
+/- English proof (translation)
+Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Introduce `j hj`. Establish `hj0 : j = 0` using `by omega`. Substitute `hj0` using the available equality. Establish `hpb : IsPullback (chosenLiftToLastOfIsDisjointFromCenters g t hmiss) (𝟙 Y) (t.projectionToBase t.length) g` using `isPullback_chosenLiftToLastOfIsDisjointFromCenters g t hmiss`.
+
+Establish `hiso : IsPullback e.isoZero.hom e.isoZero.hom (𝟙 Y) (𝟙 Y)` using `IsPullback.of_horiz_isIso ⟨rfl⟩`. Establish `hcomp` using `hiso.paste_horiz hpb`. Simplify using `only [Category.id_comp] at hcomp`. Establish `hmap : mapToLastOfLengthEqZero g t hmiss e he 0 hj = e.isoZero.hom ≫ chosenLiftToLastOfIsDisjointFromCenters g t hmiss` using `by show 𝟙 (e.obj 0) ≫ e.isoZero.hom ≫ chosenLiftToLastOfIsDisjointFromCenters g t hmiss ≫ 𝟙 (t.obj t.length) = e.isoZero.hom ≫ chosenLiftToLastOfIsDisjointFromCenters g t hmiss`. Simplify using the standard rewrite rules.
+
+Establish `hs : e.toSequenceOfBlowups.projectionToBase 0 = e.isoZero.hom` using `(e.toSequenceOfBlowups_projectionToBase 0).trans e.projectionToBase_zero`. Establish `hf : t.toSequenceOfBlowups.projectionToBase t.length = t.projectionToBase t.length` using `t.toSequenceOfBlowups_projectionToBase t.length`. Rewrite using `[hmap, hs, hf]`. Conclude with `hcomp`.
+-/
 private theorem isPullback_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j ≤ e.toSequenceOfBlowups.length),
@@ -767,6 +1003,9 @@ private theorem isPullback_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶
   rw [hmap, hs, hf]
   exact hcomp
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Conclude with `absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)`.
+-/
 private theorem blowupMorphism_comp_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j < e.toSequenceOfBlowups.length),
@@ -777,6 +1016,9 @@ private theorem blowupMorphism_comp_mapToLastOfLengthEqZero {X Y : Scheme.{u}} (
   have hlen : e.toSequenceOfBlowups.length = 0 := e.toSequenceOfBlowups_length.trans he
   exact absurd hj (by rw [hlen]; exact Nat.not_lt_zero j)
 
+/- English proof (translation)
+Establish `hlen : e.toSequenceOfBlowups.length = 0` using `e.toSequenceOfBlowups_length.trans he`. Introduce `j hj`. Conclude with `absurd hj (by omega)`.
+-/
 private theorem center_eq_comap_lastCenter_of_disjoint {X Y : Scheme.{u}} (g : Y ⟶ X) (t : BlowupSequenceData X)
     (hmiss : IsDisjointFromCenters g t) (e : BlowupSequenceData Y) (he : e.length = 0) :
     ∀ (j : ℕ) (hj : j < e.toSequenceOfBlowups.length),
@@ -800,6 +1042,9 @@ private noncomputable def ofIsDisjointFromCenters {X Y : Scheme.{u}} (g : Y ⟶ 
   center_ne_top := center_ne_top_of_length_eq_zero e he
   omitted := disjoint_omitted_centers_of_disjoint_centers g t hmiss e he
 
+/- English proof (translation)
+Establish `hmiss : IsDisjointFromCenters c.lastMap n` using `disjoint_centers_lastMap_of_append φ s' s n c hmiss`. Establish `hE : (emptyBlowupSequenceData (s'.obj s'.length)).length = 0` using `emptyBlowupSequenceData_length (s'.obj s'.length)`. Establish `e₀ : SequenceOfBlowupsPullback c.lastMap (emptyBlowupSequenceData (s'.obj s'.length)).toSequenceOfBlowups n.toSequenceOfBlowups` using `ofIsDisjointFromCenters c.lastMap n hmiss (emptyBlowupSequenceData (s'.obj s'.length)) hE`. Conclude with `⟨ofConcatLengthZero φ s' (s.append n).toSequenceOfBlowups (emptyBlowupSequenceData (s'.obj s'.length)) hE (SequenceOfBlowupsPullback.concat s n s' (emptyBlowupSequenceData (s'.obj s'.length)) c e₀)⟩`.
+-/
 theorem nonempty_append_of_disjoint_centers {X X' : Scheme.{u}} (φ : X' ⟶ X) (s' : BlowupSequenceData X')
     (s : BlowupSequenceData X) (n : BlowupSequenceData (s.obj s.length))
     (c : SequenceOfBlowupsPullback φ s'.toSequenceOfBlowups s.toSequenceOfBlowups)

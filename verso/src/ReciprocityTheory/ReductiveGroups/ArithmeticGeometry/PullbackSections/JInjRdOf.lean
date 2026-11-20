@@ -15,11 +15,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 open Classical in
 
+/- English proof (translation)
+Use `show (if h : x.1 ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x.1, h⟩)) else 0) = _`. Rewrite using `[dif_pos x.2]`.
+-/
 theorem rdU_apply_dom {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r)
     (f : Rul Xo c) (k : U.Comp) (x : (U.X k).dom) : rdU U f k x.1 = toC (evR Xo c f (U.un k x)) := by
   show (if h : x.1 ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x.1, h⟩)) else 0) = _
   rw [dif_pos x.2]
 
+/- English proof (translation)
+Take `⟨k, x, t, hbor⟩` from `hU3 z`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Establish `hv : ∀ i, evR Xo c (fs i) z = wchar (ex Dw a n) t * evR Xo c (fs i) (U.un k x)` using `fun i => hF a n (fs i) (hfs i) (CAt σ) t _ z (hT k x) hz hbor`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`.
+
+Use `_ = 0 := by rw [hrel k x, mul_zero]`.
+-/
 theorem rel_of_frames {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (hU3 : ∀ y : FrPt Xo c (CAt σ), ∃ k, ∃ x : (U.X k).dom, ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (U.un k x) y)
@@ -41,6 +49,15 @@ theorem rel_of_frames {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r :
 
 end Frames
 
+/- English proof (translation)
+Introduce `m b hb`. Establish `hU : IsUnf (T.U j T.σ₀)` using `hM.unf j hj T.σ₀ T.good_σ₀`. Establish `hb'` using `hb.map' (cusp (T.Q.Xo j) T.Q.c (T.U j) a n).subtype (Submodule.ker_subtype _)`. Establish `hfs : ∀ i, (⇑(cusp (T.Q.Xo j) T.Q.c (T.U j) a n).subtype ∘ b) i ∈ sec (T.Q.Xo j) T.Q.c a n` using `fun i => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) a n (b i).2`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg`. Establish `hrel : ∀ k (x : ((T.U j T.σ₀).X k).dom), ∑ i, g i * toC (evR (T.Q.Xo j) T.Q.c ((⇑(cusp (T.Q.Xo j) T.Q.c (T.U j) a n).subtype ∘ b) i) ((T.U j T.σ₀).un k x)) = 0`. Introduce `k x`. Establish `h` using `congrFun (congrFun hg k) x.1`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`.
+
+Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[← rdU_apply_dom (T.U j T.σ₀) _ k x]`. Both sides reduce to the same expression. Establish `hall` using `rel_of_frames (T.U j T.σ₀) hU.2.2.1 (hM.unTest j hj T.σ₀ T.good_σ₀) hF _ hfs g hrel`.
+
+Set `_ : Algebra T.Q.c.F ℂ` to `T.σ₀.toAlgebra`. Establish `hc` using `indep_of_complex (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) (hM.evalWD j hj) (fun p φ y => hA p y φ) _ (fun i => (hfs i).1) hb' g (fun z hz => hall z hz)`. Introduce `i`. Conclude with `congrFun hc i`.
+-/
 theorem jInjRd_of_wt {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (hA : BCEx (T.Q.Xo j) T.Q.c T.σ₀) (hF : WtField (T.Q.Xo j) T.Q.c) :
@@ -69,6 +86,9 @@ theorem jInjRd_of_wt {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : 
   intro i
   exact congrFun hc i
 
+/- English proof (translation)
+The claim follows from `jInjRd_of_wt T hM hj a n hA (wtField_of hD)`.
+-/
 theorem jInjRd_of_bcex {D : D7} (T : Top D) (hM : LawsM T.toCore) {j : ℕ} (hj : InR D j)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (hA : BCEx (T.Q.Xo j) T.Q.c T.σ₀) (hD : BorDesc (T.Q.Xo j) T.Q.c) : JInjRd T j a n :=

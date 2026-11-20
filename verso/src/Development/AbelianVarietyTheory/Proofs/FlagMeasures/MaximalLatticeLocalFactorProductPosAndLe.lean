@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.MaxLatLam
 
+/- English proof (translation)
+Establish `h1 : q ≤ q ^ n` using `le_self_pow₀ (by linarith) (by omega)`. Establish `h2 : (-1 : ℝ) ^ n = 1 ∨ (-1 : ℝ) ^ n = -1` using `neg_one_pow_eq_or ℝ n`. Establish `h3 : (q ^ 2) ^ ((n : ℝ) / 2) = q ^ n`. Rewrite using `[← Real.rpow_natCast q 2, ← Real.rpow_mul (by linarith), ← Real.rpow_natCast q n]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine ⟨div_pos (by rcases h2 with e | e <;> rw [e] <;> linarith) (by linarith), ?_⟩`. Rewrite using `[h3, div_le_iff₀ (by linarith)]`. Apply the tactic sequence `rcases h2 with e | e <;> rw [e] <;> nlinarith`.
+-/
 theorem factor_bounds {q : ℝ} (hq : 2 ≤ q) {n : ℕ} (hn : 1 ≤ n) :
     0 < (q ^ n - (-1) ^ n) / (q + 1) ∧ (q ^ n - (-1) ^ n) / (q + 1) ≤ (q ^ 2) ^ ((n : ℝ) / 2) := by
   have h1 : q ≤ q ^ n := le_self_pow₀ (by linarith) (by omega)
@@ -22,6 +27,11 @@ theorem factor_bounds {q : ℝ} (hq : 2 ≤ q) {n : ℕ} (hn : 1 ≤ n) :
   rw [h3, div_le_iff₀ (by linarith)]
   rcases h2 with e | e <;> rw [e] <;> nlinarith
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hs hnd hn M hM`. Take `⟨hfin, hd, -, hP⟩` from `GlobalTheory.MaxLatStruct.main K V h hK hs hnd M hM`. Rewrite using `[hd, lamMax, finprod_mem_eq_finite_toFinset_prod _ hfin, finprod_mem_eq_finite_toFinset_prod _ hfin]`. Establish `hq : ∀ P ∈ hfin.toFinset, (2 : ℝ) ≤ (qIn P : ℝ)` using `fun P hp => by`. Conclude with `(hP P (hfin.mem_toFinset.1 hp)).2.1` after adjusting the coercions.
+
+Use `⟨Finset.prod_pos fun P hp => (factor_bounds (hq P hp) hn).1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_prod, ← Real.finset_prod_rpow _ _ (fun P _ => Nat.cast_nonneg _)]`. Use `Finset.prod_le_prod (fun P hp => (factor_bounds (hq P hp) hn).1.le) fun P hp => ?_` and prove the remaining obligations. Rewrite using `[(hP P (hfin.mem_toFinset.1 hp)).2.2.1, Nat.cast_pow]`. Conclude with `(factor_bounds (hq P hp) hn).2`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → 1 ≤ Module.finrank K V → ∀ M : Submodule (𝓞 K) V, IsMaxLat h M → 0 < lamMax h M ∧ lamMax h M ≤ (discN h M : ℝ) ^ ((Module.finrank K V : ℝ) / 2) := by
   intro K V _ _ _ _ _ _ _ _ h hK hs hnd hn M hM
   obtain ⟨hfin, hd, -, hP⟩ := GlobalTheory.MaxLatStruct.main K V h hK hs hnd M hM

@@ -14,36 +14,63 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselScaling
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `integration_formula_of_parts iterated_integration_formula rank_one_integration_formula b2_conjInvRaw_proof opposite_weyl_haar_exists bruhat_big_cell_factorization unipotent_weyl_properties weight_factorization`.
+-/
 theorem integration_formula_constant : Formalism.FourierDecayAlt.B2.IntConst :=
   integration_formula_of_parts iterated_integration_formula rank_one_integration_formula b2_conjInvRaw_proof opposite_weyl_haar_exists
     bruhat_big_cell_factorization unipotent_weyl_properties weight_factorization
 
+/- English proof (translation)
+The claim follows from `integral_normalisation_from_constant integration_formula_constant`.
+-/
 theorem integration_formula_normalisation_unique : Formalism.FourierDecayAlt.B2.IntNorm :=
   integral_normalisation_from_constant integration_formula_constant
 
+/- English proof (translation)
+The claim follows from `normalisation_every_setting integration_formula_normalisation_unique`.
+-/
 theorem normalisation_unique_every_setting : Formalism.FourierDecayAlt.B2.IntNormB :=
   normalisation_every_setting integration_formula_normalisation_unique
 
+/- English proof (translation)
+The claim follows from `norm_power_integrable_sharp_of_volume spherical_shell_integral matrix_norm_ge_one norm_ball_volume_sharp`.
+-/
 theorem norm_power_integrable_sharp : Formalism.FourierDecayAlt.B2.GNIntSharp :=
   norm_power_integrable_sharp_of_volume spherical_shell_integral matrix_norm_ge_one norm_ball_volume_sharp
 
+/- English proof (translation)
+The claim follows from `matrix_coefficient_integrable_of_parts matrix_coefficient_bound_by_norm norm_power_integrable_sharp`.
+-/
 theorem matrix_coefficient_integrable_all : Formalism.FourierDecayAlt.B2.CCIntAll :=
   matrix_coefficient_integrable_of_parts matrix_coefficient_bound_by_norm norm_power_integrable_sharp
 
 namespace IntegrationFormulaNormalisation
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.SettingConstruction.setting_exists_of_haar_normalisation Formalism.FourierDecayAlt.P.unitary_group_haar_exists Formalism.FourierDecayAlt.P.weyl_haar_exists Formalism.FourierDecayAlt.P.unipotent_haar_exists Formalism.FourierDecayAlt.P.integration_formul …`.
+-/
 theorem exists_both : Formalism.FourierDecayAlt.B2.RealPlaceDataExists ∧ Formalism.FourierDecayAlt.B2.RealPlaceDataNonempty :=
   Formalism.FourierDecayAlt.P.SettingConstruction.setting_exists_of_haar_normalisation Formalism.FourierDecayAlt.P.unitary_group_haar_exists Formalism.FourierDecayAlt.P.weyl_haar_exists
     Formalism.FourierDecayAlt.P.unipotent_haar_exists Formalism.FourierDecayAlt.P.integration_formula_normalisation_unique
 
 end IntegrationFormulaNormalisation
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.1`.
+-/
 theorem setting_with_prescribed_data_exists : Formalism.FourierDecayAlt.B2.RealPlaceDataExists :=
   Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.1
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.2`.
+-/
 theorem setting_nonempty : Formalism.FourierDecayAlt.B2.RealPlaceDataNonempty :=
   Formalism.FourierDecayAlt.P.IntegrationFormulaNormalisation.exists_both.2
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BesselScaling.lemmaBFromXi_of conjugation_invariance_every_setting dilation_jacobian_every_setting matrix_coefficient_integrable_all normalisation_unique_every_setting`.
+-/
 theorem lemma_b_from_xi : Formalism.FourierDecayAlt.B2.LemmaBFromXi :=
   Formalism.FourierDecayAlt.P.BesselScaling.lemmaBFromXi_of conjugation_invariance_every_setting dilation_jacobian_every_setting matrix_coefficient_integrable_all normalisation_unique_every_setting
 

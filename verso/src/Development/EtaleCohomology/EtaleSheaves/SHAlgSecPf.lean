@@ -6,6 +6,15 @@ open CategoryTheory Limits IsLocalRing
 
 namespace LateralTheory.E.SHAlgSecPf
 
+/- English proof (translation)
+Establish `hQm : Q.comap (algebraMap A R) = maximalIdeal A` using `IsLocalRing.eq_maximalIdeal hQ`. Establish `hEt : Algebra.IsEtaleAt A Q`. Establish `h` using `(Algebra.etaleLocus_eq_univ_iff_etale (R := A) (A := R)).mpr inferInstance`. Establish `: (⟨Q, inferInstance⟩ : PrimeSpectrum R) ∈ Algebra.etaleLocus A R` using `by rw [h]; trivial`. Conclude with `this`.
+
+Take `⟨g, hgQ, hstd⟩` from `Algebra.IsEtaleAt.exists_isStandardEtale (R := A) Q`. Set `Rg` to `Localization.Away g`. Establish `hdisj : Disjoint ((Submonoid.powers g : Submonoid R) : Set R) (Q : Set R)` using `(Ideal.disjoint_powers_iff_notMem_of_isPrime _).mpr hgQ`. Set `Q' : Ideal Rg` to `Q.map (algebraMap R Rg)`. Establish `hQ'p : Q'.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers g) Rg Q ‹_› hdisj`.
+
+Establish `hQ'c : Q'.comap (algebraMap R Rg) = Q` using `IsLocalization.under_map_of_isPrime_disjoint (Submonoid.powers g) Rg ‹_› hdisj`. Establish `hcomap : Q'.comap (algebraMap A Rg) = RingHom.ker (algebraMap A (ResidueField A))`. Rewrite using `[IsScalarTower.algebraMap_eq A R Rg, ← Ideal.comap_comap, hQ'c, hQm, ResidueField.algebraMap_eq, ker_residue]`. Take `⟨φ⟩` from `GlobalTheory.nonempty_algHom_of_etale_of_isSepClosed (R := A) (K := ResidueField A) Q' hcomap`. Take `⟨ψ, -⟩` from `GlobalTheory.exists_algHom_lift_of_isStandardEtale (R := A) (A := Rg) (B := A) (C := ResidueField A) (maximalIdeal A) (Algebra.ofId A (ResidueField A)) (residue_surjective) (fun b => by`.
+
+Simplify using `[Algebra.ofId_apply, ResidueField.algebraMap_eq, residue_eq_zero_iff]) φ`. Conclude with `⟨ψ.comp (IsScalarTower.toAlgHom A R Rg)⟩`.
+-/
 theorem retract_alg {A R : Type} [CommRing A] [CommRing R] [Algebra A R] [HenselianLocalRing A]
     [IsSepClosed (ResidueField A)] [Algebra.Etale A R] (Q : Ideal R) [Q.IsPrime]
     (hQ : (Q.comap (algebraMap A R)).IsMaximal) : Nonempty (R →ₐ[A] A) := by
@@ -32,6 +41,11 @@ theorem retract_alg {A R : Type} [CommRing A] [CommRing R] [Algebra A R] [Hensel
       simp [Algebra.ofId_apply, ResidueField.algebraMap_eq, residue_eq_zero_iff]) φ
   exact ⟨ψ.comp (IsScalarTower.toAlgHom A R Rg)⟩
 
+/- English proof (translation)
+Introduce `A R f hA hf hQ`. Take `⟨hH, hS⟩` from `hA`. Set `` to `f.hom.toAlgebra`. Establish `: Algebra.Etale A R` using `(RingHom.etale_algebraMap).mp hf`. Take `⟨Q, hQp, hQm⟩` from `hQ`.
+
+Take `⟨σ⟩` from `retract_alg (A := A) (R := R) Q hQm`. Use `⟨CommRingCat.ofHom σ.toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `σ.commutes a`.
+-/
 theorem SHAlgSec_of : LateralTheory.E.SHSectionPf.SHAlgSec := by
   intro A R f hA hf hQ
   obtain ⟨hH, hS⟩ := hA

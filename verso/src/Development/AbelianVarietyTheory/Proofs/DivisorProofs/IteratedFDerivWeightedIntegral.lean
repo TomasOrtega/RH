@@ -3,6 +3,9 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use extensionality with `v m`. Simplify using the standard rewrite rules.
+-/
 theorem curryLeft_complex_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (n : ℕ) (c : ℂ)
     (f : ContinuousMultilinearMap ℝ (fun _ : Fin (n + 1) => V) ℂ) :
     continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ (c • f)
@@ -10,6 +13,25 @@ theorem curryLeft_complex_smul {V : Type} [NormedAddCommGroup V] [NormedSpace �
   ext v m
   simp
 
+/- English proof (translation)
+Introduce `V _ _ _ W _ μ Φ φ hB hM`. Establish `hInt : ∀ (n : ℕ) (x : V), Integrable (fun w => φ w • iteratedFDeriv ℝ n (Φ w) x) μ`. Introduce `n x`. Take `⟨B, hBi, hBle⟩` from `hB n`. Use `hBi.mono' (hM n x) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul]`. Conclude with `hBle w x`. Establish `hDer : ∀ (n : ℕ) (x : V), HasFDerivAt (fun y => ∫ w, φ w • iteratedFDeriv ℝ n (Φ w) y ∂μ) (∫ w, φ w • fderiv ℝ (iteratedFDeriv ℝ n (Φ w)) x ∂μ) x`. Introduce `n x`. Take `⟨B, hBi, hBle⟩` from `hB (n + 1)`.
+
+Establish `hmeas : AEStronglyMeasurable (fun w => φ w • fderiv ℝ (iteratedFDeriv ℝ n (Φ w)) x) μ`. Use `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).continuous.comp_aestronglyMeasurable (hM (n + 1) x)` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, curryLeft_complex_smul, fderiv_iteratedFDeriv]`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F' := fun y w => φ w • fderiv ℝ (iteratedFDeriv ℝ n (Φ w)) y) (bound := B) (s := Set.univ) Filter.univ_mem (Filter.Eventually.of_forall fun y => hM n y) (hInt n x) hmeas (Filter.Eventually.of_forall fun w y _ => ?_) hBi (Filter.Even …` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, norm_fderiv_iteratedFDeriv]`. Conclude with `hBle w y`. Establish `hd : Differentiable ℝ (iteratedFDeriv ℝ n (Φ w))` using `((Φ w).smooth ⊤).differentiable_iteratedFDeriv (by exact_mod_cast ENat.coe_lt_top n)`. Conclude with `(hd y).hasFDerivAt.const_smul (φ w)`. Establish `key : ∀ n : ℕ, iteratedFDeriv ℝ n (fun y => ∫ w, φ w * Φ w y ∂μ) = fun x => ∫ w, φ w • iteratedFDeriv ℝ n (Φ w) x ∂μ`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use function extensionality and compare the values at `x`. Use extensionality with `m`.
+
+Rewrite using `[iteratedFDeriv_zero_apply, ContinuousMultilinearMap.integral_apply (hInt 0 x)]`. Simplify using `[iteratedFDeriv_zero_apply]`. Consider the case `succ n ih`. Use function extensionality and compare the values at `x`. Use extensionality with `m`.
+
+Rewrite using `[iteratedFDeriv_succ_apply_left, ih, (hDer n x).fderiv]`. Establish `hI' : Integrable (fun w => φ w • fderiv ℝ (iteratedFDeriv ℝ n (Φ w)) x) μ`. Take `⟨B, hBi, hBle⟩` from `hB (n + 1)`. Establish `hmeas : AEStronglyMeasurable (fun w => φ w • fderiv ℝ (iteratedFDeriv ℝ n (Φ w)) x) μ`. Use `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).continuous.comp_aestronglyMeasurable (hM (n + 1) x)` as an intermediate fact.
+
+Use `this.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, curryLeft_complex_smul, fderiv_iteratedFDeriv]`. Use `hBi.mono' hmeas (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_fderiv_iteratedFDeriv]`. Conclude with `hBle w x`.
+
+Rewrite using `[ContinuousLinearMap.integral_apply hI', ContinuousMultilinearMap.integral_apply (hI'.apply_continuousLinearMap _), ContinuousMultilinearMap.integral_apply (hInt (n + 1) x)]`. Use `congr 1`. Introduce `n x`. Rewrite using `[key n]`.
+-/
 theorem iteratedFDeriv_integral_smul_schwartz :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {W : Type} [MeasurableSpace W] (μ : Measure W) (Φ : W → SchwartzMap V ℂ) (φ : W → ℂ),

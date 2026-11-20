@@ -19,6 +19,9 @@ def interFunctor (W : Opens X) : Opens X ⥤ Opens X where
   obj B := B ⊓ W
   map i := homOfLE (inf_le_inf_right W i.le)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma interFunctor_obj (W B : Opens X) : (interFunctor W).obj B = B ⊓ W := rfl
 
 def interFunctorIso (W : Opens X) :
@@ -49,16 +52,28 @@ def toInter (W : Opens X) : 𝟭 (X.Sheaf A) ⟶ interSheaf A W where
 
 variable {A}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma interSheaf_obj_obj_obj (W : Opens X) (F : X.Sheaf A) (B : Opens X) :
     ((interSheaf A W).obj F).obj.obj (op B) = F.obj.obj (op (B ⊓ W)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma interSheaf_obj_obj_map (W : Opens X) (F : X.Sheaf A) {B B' : Opens X}
     (i : B' ⟶ B) : ((interSheaf A W).obj F).obj.map i.op =
       F.obj.map (homOfLE (inf_le_inf_right W i.le)).op := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma interSheaf_map_hom_app (W : Opens X) {F G : X.Sheaf A} (f : F ⟶ G) (B : Opens X) :
     ((interSheaf A W).map f).hom.app (op B) = f.hom.app (op (B ⊓ W)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma toInter_app_hom_app (W : Opens X) (F : X.Sheaf A) (B : Opens X) :
     ((toInter A W).app F).hom.app (op B) = F.obj.map (homOfLE inf_le_left).op := rfl
 
@@ -66,6 +81,9 @@ instance isFlasque_interSheaf (W : Opens X) (F : X.Sheaf A) [hF : F.IsFlasque] :
     ((interSheaf A W).obj F).IsFlasque where
   epi _ := hF.epi _
 
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.isIso_iff_isIso_basis (B := fun B : 𝔅 ↦ B.1) (by rwa [Subtype.range_coe]) fun B ↦ h B.1 B.2`.
+-/
 lemma isIso_toInter_app_of_isBasis {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅) (W : Opens X)
     (G : X.Sheaf A)
     (h : ∀ B ∈ 𝔅, IsIso (G.obj.map (homOfLE (inf_le_left : B ⊓ W ≤ B)).op)) :
@@ -73,6 +91,9 @@ lemma isIso_toInter_app_of_isBasis {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis
   TopCat.Sheaf.isIso_iff_isIso_basis (B := fun B : 𝔅 ↦ B.1) (by rwa [Subtype.range_coe])
     fun B ↦ h B.1 B.2
 
+/- English proof (translation)
+Use `isIso_toInter_app_of_isBasis (𝔅 := Set.univ) ?_ W _ fun B _ ↦ ?_` and prove the remaining obligations. Conclude with `Opens.isBasis_iff_nbhd.2 fun {U} _ hx ↦ ⟨U, trivial, hx, le_rfl⟩`. Establish `: IsIso ((Opens.map j).map (homOfLE (inf_le_left : B ⊓ W ≤ B)))` using `⟨homOfLE fun y hy ↦ ⟨hy, hj y⟩, Subsingleton.elim _ _, Subsingleton.elim _ _⟩`. Conclude with `inferInstanceAs (IsIso (G.obj.map ((Opens.map j).map (homOfLE (inf_le_left : B ⊓ W ≤ B))).op))`.
+-/
 lemma isIso_toInter_app_pushforward {Y : TopCat.{u}} (j : Y ⟶ X) (W : Opens X)
     (hj : ∀ y, j y ∈ W) (G : Y.Sheaf A) :
     IsIso ((toInter A W).app ((TopCat.Sheaf.pushforward A j).obj G)) := by
@@ -88,6 +109,9 @@ instance isIso_toInter_app_pushforward_inclusion' (W : Opens X)
     IsIso ((toInter A W).app ((TopCat.Sheaf.pushforward A W.inclusion').obj G)) :=
   isIso_toInter_app_pushforward W.inclusion' W (fun y ↦ y.2) G
 
+/- English proof (translation)
+Rewrite using `[← (toInter A W).naturality_assoc, IsIso.hom_inv_id, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 lemma toInter_app_comp_map_comp_inv (W : Opens X) {F G : X.Sheaf A} (f : F ⟶ G)
     [IsIso ((toInter A W).app G)] :
     (toInter A W).app F ≫ (interSheaf A W).map f ≫ inv ((toInter A W).app G) = f := by
@@ -123,12 +147,18 @@ instance (W : Opens X) : (interSheaf AddCommGrpCat.{u} W).IsRightAdjoint :=
 
 variable {S : ShortComplex (X.Sheaf AddCommGrpCat.{u})}
 
+/- English proof (translation)
+The claim follows from `((Functor.preservesFiniteLimits_tfae (interSheaf AddCommGrpCat.{u} W)).out 1 3 rfl rfl).mpr inferInstance S ⟨hS.exact, hS.mono_f⟩`.
+-/
 lemma exact_map_interSheaf (hS : S.ShortExact) (W : Opens X) :
     (S.map (interSheaf AddCommGrpCat.{u} W)).Exact ∧
       Mono (S.map (interSheaf AddCommGrpCat.{u} W)).f :=
   ((Functor.preservesFiniteLimits_tfae (interSheaf AddCommGrpCat.{u} W)).out 1 3 rfl rfl).mpr
     inferInstance S ⟨hS.exact, hS.mono_f⟩
 
+/- English proof (translation)
+Use `ShortComplex.ShortExact.mk' (exact_map_interSheaf hS W).1 (exact_map_interSheaf hS W).2 ?_` and prove the remaining obligations. Use `(TopCat.Sheaf.isLocallySurjective_iff_epi _).1 ((TopCat.Presheaf.isLocallySurjective_iff _).2 fun U t x hx ↦ ?_)` and prove the remaining obligations. Take `⟨B, hB, hxB, hBU⟩` from `Opens.isBasis_iff_nbhd.1 h𝔅 hx`. Conclude with `⟨B, hBU, hsurj (B ⊓ W) (hinf B hB W hW) _, hxB⟩`.
+-/
 lemma shortExact_map_interSheaf (hS : S.ShortExact) {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅)
     (hinf : ∀ B ∈ 𝔅, ∀ B' ∈ 𝔅, B ⊓ B' ∈ 𝔅)
     (hsurj : ∀ B ∈ 𝔅, Function.Surjective (S.g.hom.app (op B))) {W : Opens X} (hW : W ∈ 𝔅) :
@@ -139,6 +169,11 @@ lemma shortExact_map_interSheaf (hS : S.ShortExact) {𝔅 : Set (Opens X)} (h�
   obtain ⟨B, hB, hxB, hBU⟩ := Opens.isBasis_iff_nbhd.1 h𝔅 hx
   exact ⟨B, hBU, hsurj (B ⊓ W) (hinf B hB W hW) _, hxB⟩
 
+/- English proof (translation)
+Take `⟨U, hUV, ⟨t, ht⟩, hxU⟩` from `(TopCat.Presheaf.isLocallySurjective_iff _).1 ((TopCat.Sheaf.isLocallySurjective_iff_epi S.g).2 hS.epi_g) V s x hx`. Take `⟨W, hW, hxW, hWU⟩` from `Opens.isBasis_iff_nbhd.1 h𝔅 hxU`. Establish `hle : V ⊓ W ≤ U` using `inf_le_right.trans hWU`. Use `⟨W, hW, hxW, hWU.trans hUV, S.X₂.obj.map (homOfLE hle).op t, ?_⟩` and prove the remaining obligations. Use `(ConcreteCategory.congr_hom (S.g.hom.naturality (homOfLE hle).op) t).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (S.X₃.obj.map (homOfLE hle).op) ht).trans ?_` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (S.X₃.obj.map_comp (homOfLE hUV).op (homOfLE hle).op) s).symm`.
+-/
 lemma exists_isBasis_lift (hS : S.ShortExact) {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅)
     {V : Opens X} (s : S.X₃.obj.obj (op V)) {x : X} (hx : x ∈ V) :
     ∃ W ∈ 𝔅, x ∈ W ∧ W ≤ V ∧ ∃ t : S.X₂.obj.obj (op (V ⊓ W)),
@@ -157,6 +192,17 @@ variable [HasExt.{w} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})]
 
 open SheafLES
 
+/- English proof (translation)
+Use `hS.epi_g` as an intermediate fact. Set `S'` to `S.map (interSheaf AddCommGrpCat.{u} W)`. Establish `hS' : S'.Exact` using `(exact_map_interSheaf hS W).1`. Establish `: Mono S'.f` using `(exact_map_interSheaf hS W).2`. Set `T : ShortComplex (X.Sheaf AddCommGrpCat.{u})` to `ShortComplex.mk S'.f (cokernel.π S'.f) (cokernel.condition _)`.
+
+Establish `hT : T.ShortExact` using `{ exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _) }`. Set `ι : T.X₃ ⟶ S'.X₃` to `cokernel.desc S'.f S'.g S'.zero`. Establish `hm : Mono ι` using `S'.exact_iff_mono_cokernel_desc.1 hS'`. Establish `hι : T.g ≫ ι = S'.g` using `cokernel.π_desc _ _ _`. Set `η₁ : S.X₁ ⟶ T.X₁` to `(toInter AddCommGrpCat.{u} W).app S.X₁`.
+
+Set `η₂ : S.X₂ ⟶ T.X₂` to `(toInter AddCommGrpCat.{u} W).app S.X₂`. Set `η₃ : S.X₃ ⟶ S'.X₃` to `(toInter AddCommGrpCat.{u} W).app S.X₃`. Establish `h₁₂ : S.f ≫ η₂ = η₁ ≫ T.f` using `(toInter AddCommGrpCat.{u} W).naturality S.f`. Establish `h₂₃ : S.g ≫ η₃ = η₂ ≫ S'.g` using `(toInter AddCommGrpCat.{u} W).naturality S.g`. Establish `h0 : S.f ≫ η₂ ≫ T.g = 0` using `by rw [reassoc_of% h₁₂, T.zero, comp_zero]`.
+
+Set `φ : S ⟶ T` to `⟨η₁, η₂, hS.exact.desc (η₂ ≫ T.g) h0, h₁₂.symm, (hS.exact.g_desc _ h0).symm⟩`. Establish `hφ : φ.τ₃ ≫ ι = η₃`. Rewrite using `[← cancel_epi S.g, ← φ.comm₂₃_assoc, hι, h₂₃]`. Use `(δ_naturality hS hT φ 0 V _).trans ?_` and prove the remaining obligations. Use `(exact₃ hT 0 V _).2 ⟨(equivZero T.X₂ V).symm t, @map_zero_injective_of_mono _ _ _ _ _ _ _ ι hm V _ _ ?_⟩` and prove the remaining obligations.
+
+Use `(map_comp T.g ι 0 V _).symm.trans (Eq.trans ?_ (map_comp φ.τ₃ ι 0 V _))` and prove the remaining obligations. Use `(congrArg (fun g ↦ map.{w} g 0 V ((equivZero T.X₂ V).symm t)) hι).trans (Eq.trans ?_ (congrArg (fun g ↦ map.{w} g 0 V ((equivZero S.X₃ V).symm s)) hφ).symm)` and prove the remaining obligations. Use `(map_equivZero_symm S'.g V t).trans (Eq.trans ?_ (map_equivZero_symm η₃ V s).symm)` and prove the remaining obligations. Conclude with `congrArg _ ht`.
+-/
 lemma map_toInter_δ_eq_zero (hS : S.ShortExact) {V W : Opens X} (s : S.X₃.obj.obj (op V))
     (t : S.X₂.obj.obj (op (V ⊓ W)))
     (ht : S.g.hom.app (op (V ⊓ W)) t = S.X₃.obj.map (homOfLE inf_le_left).op s) :
@@ -191,6 +237,13 @@ lemma map_toInter_δ_eq_zero (hS : S.ShortExact) {V W : Opens X} (s : S.X₃.obj
   refine (map_equivZero_symm S'.g V t).trans (Eq.trans ?_ (map_equivZero_symm η₃ V s).symm)
   exact congrArg _ ht
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Take `⟨β, rfl⟩` from `δ_surjective_of_subsingleton.{w} hS 0 V (Flasque.subsingleton_H'_of_isFlasque _ 0 V) α`. Take `⟨s, rfl⟩` from `(equivZero _ V).symm.surjective β`.
+
+Take `⟨W, hW, hxW, hWV, t, ht⟩` from `exists_isBasis_lift hS h𝔅 s hx`. Conclude with `⟨W, hW, hxW, hWV, map_toInter_δ_eq_zero hS s t ht⟩`. Consider the case `succ n ih`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Take `⟨β, rfl⟩` from `δ_surjective_of_subsingleton.{w} hS (n + 1) V (Flasque.subsingleton_H'_of_isFlasque _ (n + 1) V) α`.
+
+Take `⟨W, hW, hxW, hWV, hβ⟩` from `ih (Flasque.injectiveShortComplex F).X₃ (fun q hq hqn B hB ↦ subsingleton₃.{w} hS q B (Flasque.subsingleton_H'_of_isFlasque_of_pos _ hq B) (hF (q + 1) q.succ_pos (by omega) B hB)) β`. Establish `hT` using `shortExact_map_interSheaf hS h𝔅 hinf (fun B hB ↦ sections_surjective_of_subsingleton.{w} hS B (hF 1 one_pos (by omega) B hB)) hW`. Use `⟨W, hW, hxW, hWV, ?_⟩` and prove the remaining obligations. Use `(δ_naturality hS hT ((Flasque.injectiveShortComplex F).mapNatTrans (toInter AddCommGrpCat.{u} W)) (n + 1) V β).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (δ hT (n + 1) V) hβ).trans (map_zero _)`.
+-/
 theorem exists_mem_map_toInter_eq_zero {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅)
     (hinf : ∀ B ∈ 𝔅, ∀ B' ∈ 𝔅, B ⊓ B' ∈ 𝔅) (V : Opens X) (n : ℕ)
     (F : X.Sheaf AddCommGrpCat.{u})
@@ -222,6 +275,9 @@ theorem exists_mem_map_toInter_eq_zero {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsB
       (n + 1) V β).trans ?_
     exact (congrArg (δ hT (n + 1) V) hβ).trans (map_zero _)
 
+/- English proof (translation)
+Use `(congrArg (fun g ↦ map.{w} g n V α) (toInter_app_comp_map_comp_inv W f).symm).trans ?_` and prove the remaining obligations. Use `(map_comp _ _ n V α).trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ h).trans (map_zero _)`.
+-/
 lemma map_eq_zero_of_map_toInter_eq_zero {W : Opens X} {F G : X.Sheaf AddCommGrpCat.{u}}
     (f : F ⟶ G) [IsIso ((toInter AddCommGrpCat.{u} W).app G)] {n : ℕ} {V : Opens X}
     {α : Sheaf.H'.{w} F n V} (h : map.{w} ((toInter AddCommGrpCat.{u} W).app F) n V α = 0) :
@@ -230,6 +286,9 @@ lemma map_eq_zero_of_map_toInter_eq_zero {W : Opens X} {F G : X.Sheaf AddCommGrp
   refine (map_comp _ _ n V α).trans ?_
   exact (congrArg _ h).trans (map_zero _)
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' hn`. Use `⟨{W | W ∈ 𝔅 ∧ W ≤ V ∧ map.{w} ((toInter AddCommGrpCat.{u} W).app F) (n + 1) V α = 0}, fun _ h ↦ h.1, le_antisymm (sSup_le fun _ h ↦ h.2.1) fun x hx ↦ ?_, fun _ h ↦ h.2.2⟩` and prove the remaining obligations. Take `⟨W, hW, hxW, hWV, h⟩` from `exists_mem_map_toInter_eq_zero h𝔅 hinf V n F hF α hx`. Conclude with `Opens.mem_sSup.2 ⟨W, ⟨hW, hWV, h⟩, hxW⟩`.
+-/
 theorem exists_cover_map_toInter_eq_zero {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅)
     (hinf : ∀ B ∈ 𝔅, ∀ B' ∈ 𝔅, B ⊓ B' ∈ 𝔅) (F : X.Sheaf AddCommGrpCat.{u}) (V : Opens X)
     {n : ℕ} (hn : 1 ≤ n)
@@ -243,6 +302,11 @@ theorem exists_cover_map_toInter_eq_zero {𝔅 : Set (Opens X)} (h𝔅 : Opens.I
   obtain ⟨W, hW, hxW, hWV, h⟩ := exists_mem_map_toInter_eq_zero h𝔅 hinf V n F hF α hx
   exact Opens.mem_sSup.2 ⟨W, ⟨hW, hWV, h⟩, hxW⟩
 
+/- English proof (translation)
+Take `⟨𝔘, h𝔘, hsup, h0⟩` from `exists_cover_map_toInter_eq_zero h𝔅 hinf F V hn hF α`. Take `⟨𝔙, h𝔙, hfin, hcov⟩` from `hV.elim_finite_subcover_image (b := 𝔘) (c := fun W : Opens X ↦ (W : Set X)) (fun W _ ↦ W.isOpen) fun x hx ↦ by`. Take `⟨W, hW, hxW⟩` from `Opens.mem_sSup.1 (hsup.ge hx)`. Conclude with `Set.mem_biUnion hW hxW`. Use `⟨𝔙, h𝔙.trans h𝔘, hfin, le_antisymm ((sSup_le_sSup h𝔙).trans hsup.le) fun x hx ↦ ?_, fun W hW ↦ h0 W (h𝔙 hW)⟩` and prove the remaining obligations.
+
+Take `⟨W, hW, hxW⟩` from `Set.mem_iUnion₂.1 (hcov hx)`. Conclude with `Opens.mem_sSup.2 ⟨W, hW, hxW⟩`.
+-/
 theorem exists_finite_cover_map_toInter_eq_zero {𝔅 : Set (Opens X)} (h𝔅 : Opens.IsBasis 𝔅)
     (hinf : ∀ B ∈ 𝔅, ∀ B' ∈ 𝔅, B ⊓ B' ∈ 𝔅) (F : X.Sheaf AddCommGrpCat.{u}) (V : Opens X)
     (hV : IsCompact (V : Set X)) {n : ℕ} (hn : 1 ≤ n)

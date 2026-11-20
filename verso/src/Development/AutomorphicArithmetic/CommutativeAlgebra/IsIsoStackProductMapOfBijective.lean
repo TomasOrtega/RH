@@ -30,6 +30,9 @@ private noncomputable def invFn {a b : Act} (φ : Act.Hom a b) (A : CommRingCat.
     rw [map_mul (φ.g.app A).hom, e, e, e]
     rfl))
 
+/- English proof (translation)
+Establish `ho : ∀ x : Ob a A, (φ.fn A ⋙ invFn φ A h1 h2).obj x = (𝟭 _ : Ob a A ⥤ Ob a A).obj x` using `fun x => congrArg Ob.mk ((Equiv.ofBijective _ h1).symm_apply_apply x.pt)`. Use `CategoryTheory.Functor.hext ho (fun x y f => Ob.hom_heq (ho x) (ho y) _ _ ?_)` and prove the remaining obligations. Conclude with `(Equiv.ofBijective _ h2).symm_apply_apply f.1`.
+-/
 private theorem fn_inv {a b : Act} (φ : Act.Hom a b) (A : CommRingCat.{0})
     (h1 : Function.Bijective (fun x : a.D.obj A => φ.d.app A x))
     (h2 : Function.Bijective (fun g : a.G.obj A => φ.g.app A g)) :
@@ -39,6 +42,9 @@ private theorem fn_inv {a b : Act} (φ : Act.Hom a b) (A : CommRingCat.{0})
   refine CategoryTheory.Functor.hext ho (fun x y f => Ob.hom_heq (ho x) (ho y) _ _ ?_)
   exact (Equiv.ofBijective _ h2).symm_apply_apply f.1
 
+/- English proof (translation)
+Establish `ho : ∀ x : Ob b A, (invFn φ A h1 h2 ⋙ φ.fn A).obj x = (𝟭 _ : Ob b A ⥤ Ob b A).obj x` using `fun x => congrArg Ob.mk ((Equiv.ofBijective _ h1).apply_symm_apply x.pt)`. Use `CategoryTheory.Functor.hext ho (fun x y f => Ob.hom_heq (ho x) (ho y) _ _ ?_)` and prove the remaining obligations. Conclude with `(Equiv.ofBijective _ h2).apply_symm_apply f.1`.
+-/
 private theorem inv_fn {a b : Act} (φ : Act.Hom a b) (A : CommRingCat.{0})
     (h1 : Function.Bijective (fun x : a.D.obj A => φ.d.app A x))
     (h2 : Function.Bijective (fun g : a.G.obj A => φ.g.app A g)) :
@@ -48,6 +54,9 @@ private theorem inv_fn {a b : Act} (φ : Act.Hom a b) (A : CommRingCat.{0})
   refine CategoryTheory.Functor.hext ho (fun x y f => Ob.hom_heq (ho x) (ho y) _ _ ?_)
   exact (Equiv.ofBijective _ h2).apply_symm_apply f.1
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨fun t => t ⋙ G, fun s => ?_, fun t => ?_⟩` and prove the remaining obligations. Use `show (s ⋙ F) ⋙ G = s`. Rewrite using `[Functor.assoc, h, Functor.comp_id]`. Use `show (t ⋙ G) ⋙ F = t`. Rewrite using `[Functor.assoc, h', Functor.comp_id]`.
+-/
 private theorem comp_bij {C D : Type} [SmallCategory C] [SmallCategory D] (F : C ⥤ D) (G : D ⥤ C)
     (h : F ⋙ G = 𝟭 _) (h' : G ⋙ F = 𝟭 _) (k : ℕ) :
     Function.Bijective (fun s : ComposableArrows C k => s ⋙ F) := by
@@ -57,6 +66,9 @@ private theorem comp_bij {C D : Type} [SmallCategory C] [SmallCategory D] (F : C
   · show (t ⋙ G) ⋙ F = t
     rw [Functor.assoc, h', Functor.comp_id]
 
+/- English proof (translation)
+Introduce `E a b φ h1 h2`. Apply `isIso_of_bijective_on_simplices` to reduce the goal to its premises. Introduce `k T`. Establish `hb` using `(Function.bijective_id (α := Sx E k T)).prodMap (comp_bij (C := Ob a (Scheme.Γ.obj (op T))) (D := Ob b (Scheme.Γ.obj (op T))) (φ.fn _) (invFn φ _ (h1 _) (h2 _)) (fn_inv φ _ (h1 _) (h2 _)) (inv_fn φ _ (h1 _) (h2 _)) k)`. Conclude with `hb`.
+-/
 theorem UpperTheory.isIso_stackProductMap_of_bijective :
     ∀ (E : Spc) {a b : Act} (φ : Act.Hom a b), (∀ A, Function.Bijective (fun x : a.D.obj A => φ.d.app A x)) →
         (∀ A, Function.Bijective (fun g : a.G.obj A => φ.g.app A g)) → IsIso (Sp.map E φ) := by

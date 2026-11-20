@@ -39,9 +39,17 @@ def pad (k r : ℕ) : Mb k →ₗ[ℂ] Mat k r where
     · simp only [Matrix.smul_apply, Matrix.of_apply, dif_pos h, RingHom.id_apply]
     · simp only [Matrix.smul_apply, Matrix.of_apply, dif_neg h, smul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pad_apply (a : Mb k) (i j : Fin (2 * r + k + 1)) : pad k r a i j = if h : mid k r i ∧ mid k r j then
     a ⟨i.val - r, by have := h.1; omega⟩ ⟨j.val - r, by have := h.2; omega⟩ else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, pad_apply]`. Distinguish the cases in `h : mid k r i ∧ mid k r j`. Rewrite using `[dif_pos h, emb_mid _ _ _ h.1 h.2, emb_mid _ _ _ h.1 h.2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[dif_neg h, zero_add]`. Distinguish the cases in `hi : mid k r i`. Establish `hj : ¬ mid k r j` using `fun hj => h ⟨hi, hj⟩`. Rewrite using `[emb_out_col _ _ _ hj, emb_out_col _ _ _ hj]`. Rewrite using `[emb_out_row _ _ _ hi, emb_out_row _ _ _ hi]`.
+-/
 theorem emb_eq (a : Mb k) : embWb k r a = pad k r a + embWb k r 0 := by
   ext i j
   rw [Matrix.add_apply, pad_apply]
@@ -53,6 +61,13 @@ theorem emb_eq (a : Mb k) : embWb k r a = pad k r a + embWb k r 0 := by
       rw [emb_out_col _ _ _ hj, emb_out_col _ _ _ hj]
     · rw [emb_out_row _ _ _ hi, emb_out_row _ _ _ hi]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hi : mid k r i`. Distinguish the cases in `hj : mid k r j`. Rewrite using `[emb_mid _ _ _ hi hj, Matrix.one_apply, Matrix.one_apply]`. Establish `h1` using `hi.1`.
+
+Establish `h2` using `hj.1`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[Fin.ext_iff, Fin.ext_iff]`. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[emb_out_col _ _ _ hj, Matrix.one_apply]`. Rewrite using `[emb_out_row _ _ _ hi, Matrix.one_apply]`.
+-/
 theorem emb_one : embWb k r 1 = 1 := by
   ext i j
   by_cases hi : mid k r i
@@ -67,27 +82,48 @@ theorem emb_one : embWb k r 1 = 1 := by
     · rw [emb_out_col _ _ _ hj, Matrix.one_apply]
   · rw [emb_out_row _ _ _ hi, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `i j`. Rewrite using `[← emb_wI (r := r) a, h, emb_wI]`.
+-/
 theorem emb_inj : Function.Injective (embWb k r) := by
   intro a b h
   ext i j
   rw [← emb_wI (r := r) a, h, emb_wI]
 
+/- English proof (translation)
+Rewrite using `[← emb_mul, mul_zero]`.
+-/
 theorem q_mul_q : embWb k r 0 * embWb k r 0 = embWb k r 0 := by rw [← emb_mul, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[← emb_mul, mul_zero]`.
+-/
 theorem emb_mul_q (a : Mb k) : embWb k r a * embWb k r 0 = embWb k r 0 := by rw [← emb_mul, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[← emb_mul, zero_mul]`.
+-/
 theorem q_mul_emb (a : Mb k) : embWb k r 0 * embWb k r a = embWb k r 0 := by rw [← emb_mul, zero_mul]
 
+/- English proof (translation)
+Establish `h` using `emb_mul_q (r := r) a`. Rewrite `h` using `[emb_eq a, add_mul, q_mul_q]`. Simplify using `using h`.
+-/
 theorem pad_mul_q (a : Mb k) : pad k r a * embWb k r 0 = 0 := by
   have h := emb_mul_q (r := r) a
   rw [emb_eq a, add_mul, q_mul_q] at h
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `q_mul_emb (r := r) a`. Rewrite `h` using `[emb_eq a, mul_add, q_mul_q]`. Simplify using `using h`.
+-/
 theorem q_mul_pad (a : Mb k) : embWb k r 0 * pad k r a = 0 := by
   have h := q_mul_emb (r := r) a
   rw [emb_eq a, mul_add, q_mul_q] at h
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `emb_mul (r := r) a b`. Rewrite `h` using `[emb_eq a, emb_eq b, emb_eq (a * b), mul_add, add_mul, add_mul, q_mul_q, pad_mul_q, q_mul_pad]`. Simplify using `using h`.
+-/
 theorem pad_mul (a b : Mb k) : pad k r (a * b) = pad k r a * pad k r b := by
   have h := emb_mul (r := r) a b
   rw [emb_eq a, emb_eq b, emb_eq (a * b), mul_add, add_mul, add_mul, q_mul_q, pad_mul_q, q_mul_pad] at h
@@ -103,9 +139,19 @@ def blk (k r : ℕ) : Mb k × ℂ →+* Mat k r where
   map_add' p q := by
     simp only [Prod.fst_add, Prod.snd_add, map_add, add_smul]; abel
 
+/- English proof (translation)
+The claim follows from `LinearMap.continuous_of_finiteDimensional _`.
+-/
 theorem pad_cont : Continuous (pad k r) := LinearMap.continuous_of_finiteDimensional _
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `hc : Continuous (blk k r)` using `by show Continuous fun p : Mb k × ℂ => pad k r p.1 + p.2 • embWb k r 0`. Conclude with `(pad_cont.comp continuous_fst).add (continuous_snd.smul continuous_const)`. Establish `h` using `NormedSpace.map_exp (blk k r) hc (X, 0)`. Establish `h1 : blk k r (X, 0) = pad k r X` using `by show pad k r X + (0 : ℂ) • embWb k r 0 = _`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[h1]`. Use `h.symm.trans ?_` and prove the remaining obligations. Use `show pad k r (NormedSpace.exp (X, (0 : ℂ))).1 + (NormedSpace.exp (X, (0 : ℂ))).2 • embWb k r 0 = _`. Establish `e1 : (NormedSpace.exp (X, (0 : ℂ))).1 = NormedSpace.exp X` using `Prod.fst_exp (X, (0 : ℂ))`. Establish `e2 : (NormedSpace.exp (X, (0 : ℂ))).2 = NormedSpace.exp 0` using `Prod.snd_exp (X, (0 : ℂ))`.
+
+Rewrite using `[e1, e2, NormedSpace.exp_zero, one_smul, ← emb_eq]`.
+-/
 theorem exp_pad (X : Mb k) : NormedSpace.exp (pad k r X) = embWb k r (NormedSpace.exp X) := by
   have hc : Continuous (blk k r) := by
     show Continuous fun p : Mb k × ℂ => pad k r p.1 + p.2 • embWb k r 0
@@ -121,9 +167,31 @@ theorem exp_pad (X : Mb k) : NormedSpace.exp (pad k r X) = embWb k r (NormedSpac
   have e2 : (NormedSpace.exp (X, (0 : ℂ))).2 = NormedSpace.exp 0 := Prod.snd_exp (X, (0 : ℂ))
   rw [e1, e2, NormedSpace.exp_zero, one_smul, ← emb_eq]
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.unipotent_weyl_properties k r).1`.
+-/
 theorem uwb_eq : UWb k r = embWb k r '' UH (Hb k) := (Formalism.FourierDecayAlt.P.unipotent_weyl_properties k r).1
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY`. Establish `hd` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0`. Rewrite `hd` using `[zero_smul, NormedSpace.exp_zero, one_mul]`.
+
+Establish `hm : ∀ u : ℝ, ∃ m, embWb k r m = NormedSpace.exp (u • Y)`. Introduce `u`. Establish `h` using `hY u`. Rewrite `h` using `[uwb_eq, Complex.coe_smul]`. Take `⟨m, -, hm⟩` from `h`.
+
+Conclude with `⟨m, hm⟩`. Establish `h1 : Y * embWb k r 0 = 0`. Establish `h` using `hd.mul_const (embWb k r 0)`. Use `h.unique ((hasDerivAt_const (0 : ℝ) (embWb k r 0)).congr_of_eventuallyEq (Eventually.of_forall fun u => ?_))` and prove the remaining obligations. Take `⟨m, hm⟩` from `hm u`.
+
+Conclude with `(congrArg (· * embWb k r 0) hm).symm.trans (emb_mul_q m)`. Establish `h2 : embWb k r 0 * Y = 0`. Establish `h` using `hd.const_mul (embWb k r 0)`. Use `h.unique ((hasDerivAt_const (0 : ℝ) (embWb k r 0)).congr_of_eventuallyEq (Eventually.of_forall fun u => ?_))` and prove the remaining obligations. Take `⟨m, hm⟩` from `hm u`.
+
+Conclude with `(congrArg (embWb k r 0 * ·) hm).symm.trans (q_mul_emb m)`. Establish `h3 : pad k r (Matrix.of fun i j => Y (wI k r i) (wI k r j)) = Y`. Use extensionality with `i j`. Rewrite using `[pad_apply]`. Distinguish the cases in `h : mid k r i ∧ mid k r j`.
+
+Rewrite using `[dif_pos h, Matrix.of_apply]`. Establish `a1` using `h.1.1`. Establish `a2` using `h.2.1`. Apply the tactic sequence `congr 1 <;> (apply Fin.ext; simp only [wI]; omega)`. Rewrite using `[dif_neg h]`.
+
+Distinguish the cases in `hi : mid k r i`. Establish `hj : ¬ mid k r j` using `fun hj => h ⟨hi, hj⟩`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, emb_out_col _ _ _ hj, eq_comm]`. Use `congrFun (congrFun h2 i) j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, emb_out_row _ _ _ hi, eq_comm]`. Use `⟨_, fun t => ?_, h3⟩` and prove the remaining obligations. Establish `h` using `hY t`. Rewrite `h` using `[← h3, ← map_smul, exp_pad, uwb_eq]`. Take `⟨m, hm, e⟩` from `h`.
+
+Rewrite using `[← emb_inj e]`. Conclude with `hm`. Introduce and unpack `⟨X, hX, rfl⟩ t`. Rewrite using `[← map_smul, exp_pad, uwb_eq]`. Conclude with `⟨_, hX t, rfl⟩`.
+-/
 theorem lieOf_uwb : lieOf (UWb k r) = pad k r '' lieOf (UH (Hb k)) := by
   ext Y
   constructor
@@ -175,9 +243,15 @@ abbrev Eu (m : ℕ) := EuclideanSpace ℝ (Fin m × Fin m × Bool)
 
 def rea {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : Eu m := (WithLp.equiv 2 _).symm (realifyFun X)
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem unrealify_rea {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : unrealify (rea X) = X := by
   ext i j; rfl
 
+/- English proof (translation)
+Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem rea_unrealify {m : ℕ} (x : Eu m) : rea (unrealify x) = x := by
   ext ⟨i, j, b⟩
   cases b <;> rfl
@@ -196,9 +270,17 @@ def padL (k r : ℕ) : Eu (k + 1) →ₗ[ℝ] Eu (2 * r + k + 1) where
     · simp only [PiLp.smul_apply, dif_pos h, RingHom.id_apply]
     · simp only [PiLp.smul_apply, dif_neg h, smul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem padL_apply (x : Eu (k + 1)) (p) : padL k r x p = if h : mid k r p.1 ∧ mid k r p.2.1 then
     x (⟨p.1.val - r, by have := h.1; omega⟩, ⟨p.2.1.val - r, by have := h.2; omega⟩, p.2.2) else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[pad_apply]`. Unfold `unrealify`. Rewrite using `[padL_apply, padL_apply]`. Distinguish the cases in `h : mid k r i ∧ mid k r j`.
+
+Simplify using `only [dif_pos h]`. Simplify using `only [dif_neg h]`. Both sides reduce to the same expression.
+-/
 theorem unrealify_padL (x : Eu (k + 1)) : unrealify (padL k r x) = pad k r (unrealify x) := by
   ext i j
   rw [pad_apply]
@@ -208,9 +290,21 @@ theorem unrealify_padL (x : Eu (k + 1)) : unrealify (padL k r x) = pad k r (unre
   · simp only [dif_pos h]
   · simp only [dif_neg h]; rfl
 
+/- English proof (translation)
+Rewrite using `[← rea_unrealify (padL k r (rea X)), unrealify_padL, unrealify_rea]`.
+-/
 theorem padL_rea (X : Mb k) : padL k r (rea X) = rea (pad k r X) := by
   rw [← rea_unrealify (padL k r (rea X)), unrealify_padL, unrealify_rea]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Use `congr 1`. Use `symm`. Use `Fintype.sum_of_injective (fun q : Fin (k + 1) × Fin (k + 1) × Bool => (wI k r q.1, wI k r q.2.1, q.2.2)) ?_ _ _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b, c⟩ ⟨a', b', c'⟩ h`.
+
+Simplify using `only [Prod.mk.injEq, wI, Fin.mk.injEq, add_right_inj] at h`. Conclude with `Prod.ext (Fin.ext h.1) (Prod.ext (Fin.ext h.2.1) h.2.2)`. Introduce `p hp`. Rewrite using `[padL_apply, dif_neg]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Apply `hp` to reduce the goal to its premises. Establish `a1` using `h.1`. Establish `a2` using `h.2`. Use `⟨(⟨p.1.val - r, by omega⟩, ⟨p.2.1.val - r, by omega⟩, p.2.2), ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `refine Prod.ext (Fin.ext ?_) (Prod.ext (Fin.ext ?_) rfl) <;> simp only [wI] <;> omega`. Introduce and unpack `⟨a, b, c⟩`. Rewrite using `[padL_apply, dif_pos ⟨wI_mid a, wI_mid b⟩]`. Simplify using `[wI]`.
+-/
 theorem norm_padL (x : Eu (k + 1)) : ‖padL k r x‖ = ‖x‖ := by
   rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]
   congr 1
@@ -234,6 +328,9 @@ theorem norm_padL (x : Eu (k + 1)) : ‖padL k r x‖ = ‖x‖ := by
 
 def padI (k r : ℕ) : Eu (k + 1) →ₗᵢ[ℝ] Eu (2 * r + k + 1) := ⟨padL k r, norm_padL⟩
 
+/- English proof (translation)
+Unfold `lieE`. Rewrite using `[Submodule.map_span, lieOf_uwb, Set.image_image, Set.image_image]`. Use `congr 2`. Use function extensionality and compare the values at `X`. Conclude with `(padL_rea X).symm`.
+-/
 theorem lieE_uwb : lieE (UWb k r) = (lieE (UH (Hb k))).map (padL k r) := by
   unfold lieE
   rw [Submodule.map_span, lieOf_uwb, Set.image_image, Set.image_image]
@@ -251,13 +348,24 @@ def lieIso (k r : ℕ) : lieE (UH (Hb k)) ≃ₗᵢ[ℝ] lieE (UWb k r) :=
     obtain ⟨x, hx, rfl⟩ := hy
     exact ⟨⟨x, hx⟩, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lieIso_val (x : lieE (UH (Hb k))) : (lieIso k r x : Eu _) = padL k r x := rfl
 
 def embA (k r : ℕ) (x : PI.MtM (k + 1)) : Mt k r := Matrix.of.symm (embWb k r (Matrix.of x))
 
+/- English proof (translation)
+The claim follows from `Continuous.measurableEmbedding (f := embA k r) (emb_cont (k := k) (r := r)) (emb_inj (k := k) (r := r))`.
+-/
 theorem embA_memb : MeasurableEmbedding (embA k r) :=
   Continuous.measurableEmbedding (f := embA k r) (emb_cont (k := k) (r := r)) (emb_inj (k := k) (r := r))
 
+/- English proof (translation)
+Establish `h : (Metric.ball 0 ρ : Set (lieE (UWb k r))) = lieIso k r '' Metric.ball 0 ρ`. Rewrite using `[LinearIsometryEquiv.image_ball, map_zero]`. Unfold `expSet`. Rewrite using `[h, Set.image_image, Set.image_image]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `X`. Rewrite using `[lieIso_val, unrealify_padL, exp_pad]`. Both sides reduce to the same expression.
+-/
 theorem expSet_uwb (ρ : ℝ) :
     expSet (UWb k r) (Metric.ball 0 ρ) = embA k r '' expSet (UH (Hb k)) (Metric.ball 0 ρ) := by
   have h : (Metric.ball 0 ρ : Set (lieE (UWb k r))) = lieIso k r '' Metric.ball 0 ρ := by
@@ -269,17 +377,28 @@ theorem expSet_uwb (ρ : ℝ) :
   rw [lieIso_val, unrealify_padL, exp_pad]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← (lieIso k r).measurePreserving.measure_preimage Metric.isOpen_ball.measurableSet.nullMeasurableSet, LinearIsometryEquiv.preimage_ball, map_zero]`.
+-/
 theorem vol_ball_uwb (ρ : ℝ) :
     volume (Metric.ball (0 : lieE (UWb k r)) ρ) = volume (Metric.ball (0 : lieE (UH (Hb k))) ρ) := by
   rw [← (lieIso k r).measurePreserving.measure_preimage Metric.isOpen_ball.measurableSet.nullMeasurableSet,
     LinearIsometryEquiv.preimage_ball, map_zero]
 
+/- English proof (translation)
+Unfold `HasDens at h ⊢`. Use `h.congr fun ρ => ?_` and prove the remaining obligations. Rewrite using `[embA_memb.comap_apply, expSet_uwb, vol_ball_uwb]`.
+-/
 theorem hasDens_comap {μ : Measure (Mt k r)} {c : ℝ≥0∞} (h : HasDens (UWb k r) μ c) :
     HasDens (UH (Hb k)) (μ.comap (embA k r)) c := by
   unfold HasDens at h ⊢
   refine h.congr fun ρ => ?_
   rw [embA_memb.comap_apply, expSet_uwb, vol_ball_uwb]
 
+/- English proof (translation)
+Rewrite using `[embA_memb.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem (measure_mono_null ?_ h)` and prove the remaining obligations. Introduce `x hx hx'`. Rewrite `hx'` using `[uwb_eq]`. Take `⟨m, -, hm⟩` from `hx'`.
+
+Conclude with `hx ⟨m, hm⟩`.
+-/
 theorem map_comap_embA {μ : Measure (Mt k r)} (h : μ {x | Matrix.of x ∉ UWb k r} = 0) :
     (μ.comap (embA k r)).map (embA k r) = μ := by
   rw [embA_memb.map_comap]
@@ -289,6 +408,17 @@ theorem map_comap_embA {μ : Measure (Mt k r)} (h : μ {x | Matrix.of x ∉ UWb 
   obtain ⟨m, -, hm⟩ := hx'
   exact hx ⟨m, hm⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: SigmaFinite ((μ.comap (embA k r)).map (embA k r))` using `by rw [map_comap_embA h3]; exact h1`. Conclude with `SigmaFinite.of_map _ embA_memb.measurable.aemeasurable this`. Introduce `h0`.
+
+Apply `h2` to reduce the goal to its premises. Rewrite using `[← map_comap_embA h3, h0, Measure.map_zero]`. Rewrite using `[embA_memb.comap_apply]`. Use `measure_mono_null ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ hx'`.
+
+Rewrite `hx'` using `[uwb_eq]`. Take `⟨m, hm, e⟩` from `hx'`. Apply `hx` to reduce the goal to its premises. Establish `: m = Matrix.of x` using `emb_inj e`. Conclude with `this ▸ hm`.
+
+Introduce `s hs`. Apply `embA_memb.map_injective` to reduce the goal to its premises. Establish `hs' : embWb k r s ∈ UWb k r` using `by rw [uwb_eq]; exact ⟨s, hs, rfl⟩`. Establish `hm : Measurable (PI.lmulQ s)` using `(GlobalTheory.MatHaar.lmulQ_cont s).measurable`. Establish `hm' : Measurable (lmulM (embWb k r s) : Mt k r → Mt k r)` using `(GlobalTheory.MatHaar.lmulQ_cont (embWb k r s)).measurable`.
+
+Establish `e : embA k r ∘ PI.lmulQ s = lmulM (embWb k r s) ∘ embA k r`. Use function extensionality and compare the values at `x`. Conclude with `emb_mul s (Matrix.of x)`. Use `show ((μ.comap (embA k r)).map (PI.lmulQ s)).map (embA k r) = (μ.comap (embA k r)).map (embA k r)`. Rewrite using `[Measure.map_map embA_memb.measurable hm, e, ← Measure.map_map hm' embA_memb.measurable, map_comap_embA h3, h4 _ hs']`.
+-/
 theorem isHaar_comap {μ : Measure (Mt k r)} (h : IsHaarOn (UWb k r) μ) :
     PI.IsHaarOnM (UH (Hb k)) (μ.comap (embA k r)) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -319,6 +449,11 @@ theorem isHaar_comap {μ : Measure (Mt k r)} (h : IsHaarOn (UWb k r) μ) :
     rw [Measure.map_map embA_memb.measurable hm, e, ← Measure.map_map hm' embA_memb.measurable, map_comap_embA h3,
       h4 _ hs']
 
+/- English proof (translation)
+Use `⟨isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const, by simp [UH], fun a ha b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [UH, Set.mem_ofPred_eq, mul_one] at ha hb ⊢`. Rewrite using `[conjTranspose_mul, mul_assoc, ← mul_assoc aᴴ, ha, one_mul, hb]`. Simplify using `only [UH, Set.mem_ofPred_eq, mul_one] at ha ⊢`. Rewrite using `[Matrix.inv_eq_left_inv ha, conjTranspose_conjTranspose]`.
+
+Conclude with `⟨mul_eq_one_comm.1 ha, mul_eq_one_comm.1 ha⟩`.
+-/
 theorem isMatGroup_one (j : ℕ) : PI.IsMatGroup (UH (1 : Matrix (Fin j) (Fin j) ℂ)) := by
   refine ⟨isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
       continuous_const, by simp [UH], fun a ha b hb => ?_, fun a ha => ?_⟩
@@ -328,6 +463,19 @@ theorem isMatGroup_one (j : ℕ) : PI.IsMatGroup (UH (1 : Matrix (Fin j) (Fin j)
     rw [Matrix.inv_eq_left_inv ha, conjTranspose_conjTranspose]
     exact ⟨mul_eq_one_comm.1 ha, mul_eq_one_comm.1 ha⟩
 
+/- English proof (translation)
+Establish `hG` using `isMatGroup_one j`. Establish `hc : IsCompact (GlobalTheory.MatHaar.amb (UH (1 : Matrix (Fin j) (Fin j) ℂ)))`. Use `(isCompact_closedBall (0 : PI.MtM j) 1).of_isClosed_subset (GlobalTheory.MatHaar.amb_closed hG) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : (Matrix.of x) ∈ Matrix.unitaryGroup (Fin j) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`.
+
+Simplify `hx` using `[GlobalTheory.MatHaar.amb, UH, star_eq_conjTranspose]`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `a`. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `b`.
+
+Conclude with `entry_norm_bound_of_unitary hx' a b`. Establish `: CompactSpace (GlobalTheory.MatHaar.Grp _ hG)` using `isCompact_iff_compactSpace.1 hc`. Use `set ν : Measure (GlobalTheory.MatHaar.Grp _ hG) := Measure.haarMeasure ⊤ with hν`. Establish `h1 : ν Set.univ = 1`. Use `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (GlobalTheory.MatHaar.Grp _ hG)))` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2 : (ν.map GlobalTheory.MatHaar.inc) Set.univ = 1`. Rewrite using `[GlobalTheory.MatHaar.inc_memb.map_apply, Set.preimage_univ, h1]`. Establish `: IsProbabilityMeasure (ν.map GlobalTheory.MatHaar.inc)` using `⟨h2⟩`. Use `⟨ν.map GlobalTheory.MatHaar.inc, ⟨inferInstance, IsProbabilityMeasure.ne_zero _, ?_, fun s hs => ?_⟩, h2⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.MatHaar.inc_memb.map_apply]`. Use `measure_empty (μ := ν)` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `using GlobalTheory.MatHaar.inc_mem x`. Set `g : GlobalTheory.MatHaar.Grp _ hG` to `⟨Matrix.of.symm s, hs⟩`.
+
+Establish `e : PI.lmulQ s ∘ (GlobalTheory.MatHaar.inc : GlobalTheory.MatHaar.Grp _ hG → _) = GlobalTheory.MatHaar.inc ∘ (g * ·)`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[Measure.map_map (GlobalTheory.MatHaar.lmulQ_cont s).measurable GlobalTheory.MatHaar.inc_memb.measurable, e, ← Measure.map_map GlobalTheory.MatHaar.inc_memb.measurable (continuous_const_mul g).measurable, map_mul_left_eq_self]`.
+-/
 theorem exists_prob (j : ℕ) :
     ∃ μ : Measure (PI.MtM j), PI.IsHaarOnM (UH (1 : Matrix (Fin j) (Fin j) ℂ)) μ ∧ μ Set.univ = 1 := by
   have hG := isMatGroup_one j
@@ -360,6 +508,27 @@ theorem exists_prob (j : ℕ) :
     rw [Measure.map_map (GlobalTheory.MatHaar.lmulQ_cont s).measurable GlobalTheory.MatHaar.inc_memb.measurable, e,
       ← Measure.map_map GlobalTheory.MatHaar.inc_memb.measurable (continuous_const_mul g).measurable, map_mul_left_eq_self]
 
+/- English proof (translation)
+Use `set a := T * T' with hadef`. Establish `hk' : (k : ℝ) ≠ 0` using `by positivity`. Rewrite using `[← Complex.lintegral_comp_polarCoord_symm]`. Establish `hab : Real.sqrt a ≤ Real.sqrt (a + s)` using `Real.sqrt_le_sqrt (by linarith)`. Establish `h1 : ∀ p ∈ polarCoord.target, ENNReal.ofReal p.1 • (ENNReal.ofReal (zWeight k T T' (Complex.polarCoord.symm p)) * {ζ : ℂ | |Complex.normSq ζ - a| ≤ s}.indicator 1 (Complex.polarCoord.symm p)) = (Set.Icc (Real.sqrt a) (Real.sqrt (a + s))).indicator (fun x : ℝ => ENNReal.ofReal (x …`.
+
+Introduce and unpack `⟨x, θ⟩ hp`. Establish `hx : 0 < x` using `hp.1`. Establish `hn : Complex.normSq (Complex.polarCoord.symm (x, θ)) = x ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq, Complex.norm_polarCoord_symm, sq_abs]`. Simplify using `only [Pi.one_apply, mul_one, smul_eq_mul, zWeight, hn, ← hadef]`.
+
+Distinguish the cases in `h : a ≤ x ^ 2`. Rewrite using `[if_pos h]`. Distinguish the cases in `h' : x ^ 2 ≤ a + s`. Rewrite using `[Set.indicator_of_mem, Set.indicator_of_mem, Pi.one_apply, mul_one, ← ENNReal.ofReal_mul hx.le]`. Conclude with `⟨Real.sqrt_le_iff.2 ⟨hx.le, h⟩, Real.le_sqrt_of_sq_le h'⟩`.
+
+Simplify using `only [Set.mem_ofPred_eq, hn]`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`. Rewrite using `[Set.indicator_of_notMem, Set.indicator_of_notMem, mul_zero, mul_zero]`. Introduce `hh`. Conclude with `h' ((Real.le_sqrt hx.le (by linarith)).1 hh.2)`.
+
+Simplify using `only [Set.mem_ofPred_eq, hn]`. Rewrite using `[abs_of_nonneg (by linarith)]; intro hh; exact h' (by linarith)`. Rewrite using `[if_neg h, Set.indicator_of_notMem (s := Set.Icc _ _)]`. Simplify using the standard rewrite rules. Introduce `hh`.
+
+Conclude with `h (Real.sqrt_le_iff.1 hh.1).2`. Rewrite using `[setLIntegral_congr_fun polarCoord.open_target.measurableSet h1, polarCoord_target, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_mul]`. Establish `hpos : 0 < Real.sqrt a` using `Real.sqrt_pos.2 ha`. Rewrite using `[lintegral_indicator measurableSet_Icc, Measure.restrict_restrict measurableSet_Icc, Set.inter_eq_left.2 (show Set.Icc (Real.sqrt a) (Real.sqrt (a + s)) ⊆ Set.Ioi 0 from fun x hx => lt_of_lt_of_le hpos hx.1)]`. Establish `hcont : Continuous fun x : ℝ => x * (x ^ 2 - a) ^ (k - 1)` using `by fun_prop`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hcont.integrableOn_Icc)]`. Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab, intervalIntegral.integral_eq_sub_of_hasDerivAt (f := fun x : ℝ => (x ^ 2 - a) ^ k / (2 * k)) (fun x _ => ?_) (hcont.intervalIntegrable _ _)]`. Simplify using `only [Pi.one_apply, lintegral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Real.volume_Ioo, one_mul]`. Rewrite using `[Real.sq_sqrt (by linarith), Real.sq_sqrt ha.le, sub_self, zero_pow (by omega), add_sub_cancel_left, ← ENNReal.ofReal_mul (by simp only [zero_div, sub_zero]; positivity)]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : HasDerivAt (fun x : ℝ => x ^ 2 - a) (2 * x) x`. Simplify using `using (hasDerivAt_pow 2 x).sub_const a`. Use `(h0.fun_pow k).div_const (2 * k)` as an intermediate fact.
+
+Use `this.congr_deriv ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `(ae_restrict_iff' measurableSet_Icc).2 (Eventually.of_forall fun x hx => ?_)` and prove the remaining obligations. Establish `hx0 : 0 ≤ x` using `hpos.le.trans hx.1`. Use `(Real.sqrt_le_iff.1 hx.1).2` as an intermediate fact.
+
+Conclude with `mul_nonneg hx0 (pow_nonneg (by linarith) _)`. Conclude with `(Measurable.indicator (by fun_prop) measurableSet_Icc).aemeasurable`. Conclude with `aemeasurable_const`.
+-/
 theorem annulus_int (hk : 1 ≤ k) {T T' s : ℝ} (ha : 0 < T * T') (hs : 0 ≤ s) :
     ∫⁻ ζ : ℂ, ENNReal.ofReal (zWeight k T T' ζ) *
       {ζ : ℂ | |Complex.normSq ζ - T * T'| ≤ s}.indicator 1 ζ = ENNReal.ofReal (Real.pi * s ^ k / k) := by
@@ -425,6 +594,9 @@ theorem annulus_int (hk : 1 ≤ k) {T T' s : ℝ} (ha : 0 < T * T') (hs : 0 ≤ 
 def shell (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (s : ℝ) : Set (Mt k r) :=
   {m | |Complex.normSq (herm (Hpk k r) (Matrix.of m *ᵥ z') z) - Tz k r z * Tz k r z'| ≤ s}
 
+/- English proof (translation)
+Establish `h1 : Continuous fun m : Mt k r => (Matrix.of m *ᵥ z' : Fin (2 * r + k + 1) → ℂ)` using `Continuous.matrix_mulVec (continuous_id (X := Mat k r)) continuous_const`. Establish `h2 : Continuous fun m : Mt k r => herm (Hpk k r) (Matrix.of m *ᵥ z') z` using `Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const h1)`. Conclude with `(isClosed_le ((Complex.continuous_normSq.comp h2).sub continuous_const).abs continuous_const).measurableSet`.
+-/
 theorem shell_meas (z z' : Fin (2 * r + k + 1) → ℂ) (s : ℝ) : MeasurableSet (shell k r z z' s) := by
   have h1 : Continuous fun m : Mt k r => (Matrix.of m *ᵥ z' : Fin (2 * r + k + 1) → ℂ) :=
     Continuous.matrix_mulVec (continuous_id (X := Mat k r)) continuous_const
@@ -432,6 +604,9 @@ theorem shell_meas (z z' : Fin (2 * r + k + 1) → ℂ) (s : ℝ) : MeasurableSe
     Continuous.dotProduct continuous_const (Continuous.matrix_mulVec continuous_const h1)
   exact (isClosed_le ((Complex.continuous_normSq.comp h2).sub continuous_const).abs continuous_const).measurableSet
 
+/- English proof (translation)
+Establish `hs : (volume : Measure ℂ) (Metric.sphere 0 (Real.sqrt c)) = 0` using `Measure.addHaar_sphere_of_ne_zero _ _ (Real.sqrt_pos.2 hc).ne'`. Use `ae_iff.2 (measure_mono_null ?_ hs)` and prove the remaining obligations. Introduce `ζ hζ`. Simplify using `only [ne_eq, not_not, Set.mem_ofPred_eq] at hζ`. Rewrite using `[mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem ae_ne_circle {c : ℝ} (hc : 0 < c) : ∀ᵐ ζ : ℂ, Complex.normSq ζ ≠ c := by
   have hs : (volume : Measure ℂ) (Metric.sphere 0 (Real.sqrt c)) = 0 :=
     Measure.addHaar_sphere_of_ne_zero _ _ (Real.sqrt_pos.2 hc).ne'
@@ -440,6 +615,19 @@ theorem ae_ne_circle {c : ℝ} (hc : 0 < c) : ∀ᵐ ζ : ℂ, Complex.normSq ζ
   simp only [ne_eq, not_not, Set.mem_ofPred_eq] at hζ
   rw [mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Establish `: IsProbabilityMeasure μW` using `⟨h1⟩`. Establish `: IsProbabilityMeasure μW'` using `⟨h1'⟩`. Rewrite using `[← annulus_int hk (mul_pos hT hT') hs]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Establish `h2 : ∀ᵐ p ∂(μW.prod μW'), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ UWset k r z'`.
+
+Establish `b1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `ae_iff.2 hW.2.2.1`. Establish `b2 : ∀ᵐ x ∂μW', Matrix.of x ∈ UWset k r z'` using `ae_iff.2 hW'.2.2.1`. Establish `a1` using `(Measure.quasiMeasurePreserving_fst (μ := μW) (ν := μW')).ae b1`. Establish `a2` using `(Measure.quasiMeasurePreserving_snd (μ := μW) (ν := μW')).ae b2`. Use `filter_upwards [a1, a2] with p hp1 hp2 using ⟨hp1, hp2⟩`.
+
+Use `filter_upwards [ae_ne_circle (mul_pos hT hT')] with ζ hζ`. Distinguish the cases in `h : Tz k r z * Tz k r z' < Complex.normSq ζ`. Use `congr 1`. Establish `e : ∀ᵐ p ∂(μW.prod μW'), (shell k r z z' s).indicator (1 : Mt k r → ℝ≥0∞) ((Matrix.of p.1)⁻¹ * embWb k r (μsec ζ) * Matrix.of p.2) = {ζ : ℂ | |Complex.normSq ζ - Tz k r z * Tz k r z'| ≤ s}.indicator 1 ζ` using `by filter_upwards [h2] with p hp`. Establish `e1` using `(Formalism.FourierDecayAlt.P.b2_rank_one_mem k r z z' μsec hz hz' hsec ζ h _ hp.1 _ hp.2).2`.
+
+Establish `e2 : (((Matrix.of p.1)⁻¹ * embWb k r (μsec ζ) * Matrix.of p.2 : Mat k r) : Mt k r) ∈ shell k r z z' s ↔ ζ ∈ {ζ : ℂ | |Complex.normSq ζ - Tz k r z * Tz k r z'| ≤ s}` using `by show |Complex.normSq (herm (Hpk k r) (((Matrix.of p.1)⁻¹ * embWb k r (μsec ζ) * Matrix.of p.2) *ᵥ z') z) - Tz k r z * Tz k r z'| ≤ s ↔ _`. Rewrite using `[e1]`. Both sides reduce to the same expression. Distinguish the cases in `h3 : ζ ∈ {ζ : ℂ | |Complex.normSq ζ - Tz k r z * Tz k r z'| ≤ s}`. Conclude with `(Set.indicator_of_mem (e2.2 h3) _).trans (Set.indicator_of_mem h3 (1 : ℂ → ℝ≥0∞)).symm`.
+
+Conclude with `(Set.indicator_of_notMem (fun h4 => h3 (e2.1 h4)) _).trans (Set.indicator_of_notMem h3 (1 : ℂ → ℝ≥0∞)).symm`. Use `(lintegral_congr_ae e).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const, measure_univ, mul_one]`. Establish `: zWeight k (Tz k r z) (Tz k r z') ζ = 0`. Unfold `zWeight`.
+
+Rewrite using `[if_neg]`. Conclude with `fun hle => h (lt_of_le_of_ne hle (Ne.symm hζ))`. Simplify using `only [this, ENNReal.ofReal_zero, zero_mul]`.
+-/
 theorem shell_rhs {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Mb k} {μW μW' : Measure (Mt k r)} (hk : 1 ≤ k)
     (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') (hsec : IsSection k r z z' μsec)
     (hW : IsHaarOn (UWset k r z) μW) (h1 : μW Set.univ = 1) (hW' : IsHaarOn (UWset k r z') μW')
@@ -483,12 +671,26 @@ theorem shell_rhs {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Mb k} {�
       exact fun hle => h (lt_of_le_of_ne hle (Ne.symm hζ))
     simp only [this, ENNReal.ofReal_zero, zero_mul]
 
+/- English proof (translation)
+Establish `hg' : gᴴ * H * g = H` using `hg`. Simplify using `only [herm, star_mulVec, dotProduct_mulVec, vecMul_vecMul]`. Rewrite using `[hg']`.
+-/
 theorem herm_isometry {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH H) (v u : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ u) = herm H v u := by
   have hg' : gᴴ * H * g = H := hg
   simp only [herm, star_mulVec, dotProduct_mulVec, vecMul_vecMul]
   rw [hg']
 
+/- English proof (translation)
+Establish `h : ∀ v : Fin (2 * r + k + 1) → ℂ, (Hpk k r *ᵥ v) (wI k r (Fin.last k)) = - v (wI k r (Fin.last k))`. Introduce `v`. Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single (wI k r (Fin.last k))]`. Simplify using `[Hpk, wI]`. Introduce `j _ hj`.
+
+Establish `hj' : j.val ≠ r + k` using `fun e => hj (Fin.ext (by simp [wI, e]))`. Establish `: Hpk k r (wI k r (Fin.last k)) j = 0`. Unfold `Hpk`. Rewrite using `[if_neg, if_neg, if_neg]`. Conclude with `fun e => hj e.2.2.symm`.
+
+Simplify using `only [wI, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [wI, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [herm, bvec, star_smul, Pi.star_single, star_one, smul_dotProduct, single_dotProduct, one_mul, mulVec_smul, Pi.smul_apply, dotProduct_smul, h, mulVec_single_one, Matrix.col_apply, smul_eq_mul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_last (m : Mat k r) (a b : ℝ) :
     herm (Hpk k r) (m *ᵥ ((a : ℂ) • bvec (wI k r (Fin.last k)))) ((b : ℂ) • bvec (wI k r (Fin.last k))) =
       -((a * b : ℝ) : ℂ) * m (wI k r (Fin.last k)) (wI k r (Fin.last k)) := by
@@ -512,6 +714,19 @@ theorem herm_last (m : Mat k r) (a b : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨g, hg, -⟩` from `GlobalTheory.BesselFrame.frame_exists k r z hz hT`. Take `⟨g', hg', -⟩` from `GlobalTheory.BesselFrame.frame_exists k r z' hz' hT'`. Establish `hf : IsFrameW k r z g` using `hg`. Establish `hf' : IsFrameW k r z' g'` using `hg'`. Establish `hcl` using `Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed k r`.
+
+Establish `hgm : g ∈ UWb k r` using `⟨hf.1, hf.2.1⟩`. Establish `hgm' : g' ∈ UWb k r` using `⟨hf'.1, hf'.2.1⟩`. Establish `hml : Measurable (lmulM g : Mt k r → Mt k r)` using `(GlobalTheory.MatHaar.lmulQ_cont g).measurable`. Establish `hmr : Measurable (Formalism.FourierDecayAlt.B.rmulF g'⁻¹ : Mt k r → Mt k r)`. Use `Continuous.measurable ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_id (X := Mat k r)).matrix_mul (continuous_const (y := g'⁻¹))`. Use `conv_lhs => rw [← hb.left g hgm, Measure.map_apply hml (shell_meas _ _ _), ← hb.right _ (hcl.inv_mem _ hgm'), Measure.map_apply hmr (hml (shell_meas _ _ _))]`. Use `congr 1`. Use extensionality with `m`. Use `show |Complex.normSq (herm (Hpk k r) ((g * (Matrix.of m * g'⁻¹)) *ᵥ z') z) - Tz k r z * Tz k r z'| ≤ _ ↔ _`.
+
+Establish `e1 : g'⁻¹ *ᵥ z' = ((Real.sqrt (Tz k r z') : ℝ) : ℂ) • bvec (wI k r (Fin.last k))` using `by conv_lhs => rw [← hf'.2.2]`. Rewrite using `[mulVec_mulVec, Matrix.nonsing_inv_mul _ (hcl.unit _ hgm'), one_mulVec]`. Establish `e2 : herm (Hpk k r) ((g * (Matrix.of m * g'⁻¹)) *ᵥ z') z = -((Real.sqrt (Tz k r z') * Real.sqrt (Tz k r z) : ℝ) : ℂ) * m (wI k r (Fin.last k)) (wI k r (Fin.last k))`. Apply the tactic sequence `have e3 := herm_isometry hf.1 (Matrix.of m *ᵥ (g'⁻¹ *ᵥ z')) (((Real.sqrt (Tz k r z) : ℝ) : ℂ) • bvec (wI k r (Fin.last k)))`. Rewrite `e3` using `[hf.2.2]`.
+
+Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, e3, e1, herm_last]`. Both sides reduce to the same expression. Establish `hTT` using `mul_pos hT hT'`. Rewrite using `[e2, Complex.normSq_mul, Complex.normSq_neg, Complex.normSq_ofReal, Complex.normSq_eq_norm_sq, show Real.sqrt (Tz k r z') * Real.sqrt (Tz k r z) * (Real.sqrt (Tz k r z') * Real.sqrt (Tz k r z)) = Tz k r z * Tz k r z' by`. Rewrite using `[mul_mul_mul_comm, Real.mul_self_sqrt hT.le, Real.mul_self_sqrt hT'.le, mul_comm],`.
+
+Use the proof step `← mul_sub_one, abs_mul, abs_of_pos hTT, mul_le_mul_iff_right₀ hTT]`. Both sides reduce to the same expression.
+-/
 theorem shell_lhs {z z' : Fin (2 * r + k + 1) → ℂ} {μb : Measure (Mt k r)}
     (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     (hb : Formalism.FourierDecayAlt.B.IsHaarOn (UWb k r) μb) (t : ℝ) :
@@ -551,8 +766,30 @@ theorem shell_lhs {z z' : Fin (2 * r + k + 1) → ℂ} {μb : Measure (Mt k r)}
     ← mul_sub_one, abs_mul, abs_of_pos hTT, mul_le_mul_iff_right₀ hTT]
   rfl
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun i _ => by positivity`.
+-/
 theorem volUn_pos (j : ℕ) : 0 < volUn j := Finset.prod_pos fun i _ => by positivity
 
+/- English proof (translation)
+Introduce `k r z z' μsec μb μW μW' cb hk hz hz' hT hT' hsec hcb hb hd hW h1 hW' h1'`. Establish `hbB : Formalism.FourierDecayAlt.B.IsHaarOn (UWb k r) μb` using `(GlobalTheory.HaarNotions.isHaarOn_iff (Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed k r) (Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists k r) μb).1 hb`. Establish `hWB` using `(((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW).2.2 z hz hT hk).1 hW)`. Establish `hWB'` using `(((GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μW').2.2 z' hz' hT' hk).1 hW')`. Take `⟨C, -, hC⟩` from `Formalism.FourierDecayAlt.P.rank_one_integration_formula k r z z' μsec μb μW μW' hk hz hz' hT hT' hsec hbB hWB hWB'`.
+
+It suffices to establish `hc : (C : ℝ≥0∞) = ENNReal.ofReal (cb * 2 * volUn k ^ 2 / volUn (k - 1) / (Tz k r z * Tz k r z') ^ k) by`. Rewrite using `[← hc]`. Conclude with `hC`. Take `⟨μ₀, hμ₀, hμ₀1⟩` from `exists_prob k`. Establish `hH : (Matrix.diagonal fun j : Fin (k + 1) => if j = Fin.last k then (((-1 : ℝ)) : ℂ) else 1) = Hb k`.
+
+Simplify using `[Hb]`. Establish `hv` using `volUn_pos k`. Establish `ht` using `GlobalTheory.T.haar_volume_thin_tube_unitary_product_asymptotic k (-1) hk (Or.inr rfl) (μb.comap (embA k r)) μ₀ cb (volUn k)⁻¹ hcb (inv_pos.2 hv) (by rw [hH]; exact isHaar_comap hb) (by rw [hH]; exact hasDens_comap hd) hμ₀ hμ₀1 (GlobalTheory.T.hasDensityAtIdentity_unitaryGroup_pr …`. Establish `hTT` using `mul_pos hT hT'`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast hk`.
+
+Establish `hev : ∀ᶠ t : ℝ in 𝓝[>] 0, (μb.comap (embA k r)) {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} / ENNReal.ofReal (t ^ k) = ENNReal.ofReal (C * (Real.pi * (Tz k r z * Tz k r z') ^ k / k))` using `by filter_upwards [self_mem_nhdsWithin] with t ht0`. Establish `ht0 : 0 < t` using `ht0`. Establish `e1 : (μb.comap (embA k r)) {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} = μb {m | |‖m (wI k r (Fin.last k)) (wI k r (Fin.last k))‖ ^ 2 - 1| ≤ t}` using `by conv_rhs => rw [← map_comap_embA hb.2.2.1, embA_memb.map_apply]`. Use `congr 1`. Use extensionality with `g`.
+
+Establish `: embA k r g (wI k r (Fin.last k)) (wI k r (Fin.last k)) = g (Fin.last k) (Fin.last k)` using `emb_wI (Matrix.of g) _ _`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, this]`. Establish `e2` using `hC _ (measurable_one.indicator (shell_meas z z' (Tz k r z * Tz k r z' * t)))`. Rewrite `e2` using `[lintegral_indicator_one (shell_meas _ _ _), shell_rhs hk hz hz' hT hT' hsec hW h1 hW' h1' (by positivity), shell_lhs hz hz' hT hT' hbB]`. Rewrite using `[e1, e2, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul C.coe_nonneg, ← ENNReal.ofReal_div_of_pos (by positivity)]`.
+
+Use `congr 1`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hl` using `tendsto_nhds_unique (ht.congr' hev) tendsto_const_nhds`. Rewrite `hl` using `[ENNReal.ofReal_eq_ofReal_iff (by positivity) (by positivity)]`.
+
+Rewrite using `[← ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hv1 : volUn (j + 1) = volUn j * ((2 * Real.pi) ^ (j + 1) / (j.factorial : ℝ))` using `Finset.prod_range_succ _ _`. Establish `hv0` using `volUn_pos j`.
+
+Establish `hpi` using `Real.pi_pos`. Establish `hf : (0 : ℝ) < j.factorial` using `by positivity`. Establish `hC' : (C : ℝ) = (cb / (volUn (j + 1))⁻¹ * (2 * Real.pi) ^ (j + 1 + 1) / ((j + 1).factorial : ℝ)) / (Real.pi * (Tz (j + 1) r z * Tz (j + 1) r z') ^ (j + 1) / ((j + 1 : ℕ) : ℝ))`. Rewrite using `[hl]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hC', Nat.add_sub_cancel, sq, Nat.factorial_succ]`. Use `nth_rewrite 3 [hv1]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankOne_exact : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (μb μW μW' : Measure (Mt k r)) (cb : ℝ), 1 ≤ k → inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsSection k r z z' μsec → 0 < cb → IsHaarOn (Formalism.FourierDecayAlt.B2.UWb k r) μb → HasDens (Formalism.FourierDecayAlt.B2.UWb k r) μb (ENNReal.ofReal cb) → IsHaarOn (UWset k r z) μW → μW Set.univ = 1 → IsHaarOn (UWset k r z') μW' → μW' Set.univ = 1 → ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ m, f m ∂μb = ENNReal.ofReal (cb * 2 * volUn k ^ 2 / volUn (k - 1) / (Tz k r z * Tz k r z') ^ k) * ∫⁻ ζ : ℂ, ENNReal.ofReal (Formalism.FourierDecayAlt.B2.zWeight k (Tz k r z) (Tz k r z') ζ) * ∫⁻ p : Mt k r × Mt k r, f ((Matrix.of p.1)⁻¹ * Formalism.FourierDecayAlt.B2.embWb k r (μsec ζ) * Matrix.of p.2) ∂(μW.prod μW') := by
   intro k r z z' μsec μb μW μW' cb hk hz hz' hT hT' hsec hcb hb hd hW h1 hW' h1'
   have hbB : Formalism.FourierDecayAlt.B.IsHaarOn (UWb k r) μb :=

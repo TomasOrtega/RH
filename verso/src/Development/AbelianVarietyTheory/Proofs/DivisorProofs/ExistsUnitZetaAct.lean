@@ -6,10 +6,18 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 
 namespace GlobalTheory.WpFam
 
+/- English proof (translation)
+Rewrite using `[ch, ← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ch_eq_exp_pow_val (N : ℕ) (j : ZMod N) :
     ch N j = Complex.exp (2 * Real.pi * Complex.I / N) ^ j.val := by
   rw [ch, ← Complex.exp_nat_mul]; congr 1; ring
 
+/- English proof (translation)
+Introduce `N _ g`. Establish `hζ : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / N)) N` using `Complex.isPrimitiveRoot_exp N (NeZero.ne N)`. Establish `hg : IsPrimitiveRoot (g (Complex.exp (2 * Real.pi * Complex.I / N))) N` using `hζ.map_of_injective g.injective`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hg.pow_eq_one`. Establish `hcop : i.Coprime N`.
+
+Rewrite `hg` using `[← hi]`. Conclude with `(hζ.pow_iff_coprime (NeZero.pos N) i).mp hg`. Use `⟨ZMod.unitOfCoprime i hcop, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ch_eq_exp_pow_val, ch_eq_exp_pow_val, map_pow, ← hi, ← pow_mul, ZMod.coe_unitOfCoprime, ZMod.val_mul, ZMod.val_natCast, Nat.mod_mul_mod]`. Use `conv_lhs => rw [← Nat.div_add_mod (i * j.val) N, pow_add, pow_mul, hζ.pow_eq_one, one_pow, one_mul]`.
+-/
 theorem exists_unit_zetaAct : ∀ (N : ℕ) [NeZero N] (g : ℂ ≃+* ℂ), ∃ a : (ZMod N)ˣ, ZetaAct g N a := by
   intro N _ g
   have hζ : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / N)) N :=

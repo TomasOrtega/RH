@@ -15,6 +15,15 @@ variable {G Γ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2
   [MeasurableSpace Γ] [BorelSpace Γ]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a j`. Conclude with `j.elim0`. Consider the case `succ k ih`.
+
+Introduce `a j h`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Use `Fin.cases ?_ (fun j' => ?_) j (motive := fun j => (∀ i, i ≠ j → a i = 1) → a 0 * (List.ofFn fun i => a i.succ).prod = a j) h` and prove the remaining obligations. Introduce `h`. Rewrite using `[List.prod_eq_one, mul_one]`.
+
+Introduce `x hx`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `h _ (Fin.succ_ne_zero i)`. Introduce `h`. Rewrite using `[h 0 (Fin.succ_ne_zero j').symm, one_mul]`.
+
+Conclude with `ih (fun i => a i.succ) j' fun i hi => h _ (fun e => hi (Fin.succ_injective _ e))`.
+-/
 private theorem ofFn_prod_single {M : Type} [Monoid M] :
     ∀ (k : ℕ) (a : Fin k → M) (j : Fin k), (∀ i, i ≠ j → a i = 1) → (List.ofFn a).prod = a j := by
   intro k
@@ -33,6 +42,11 @@ private theorem ofFn_prod_single {M : Type} [Monoid M] :
       rw [h 0 (Fin.succ_ne_zero j').symm, one_mul]
       exact ih (fun i => a i.succ) j' fun i hi => h _ (fun e => hi (Fin.succ_injective _ e))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `e` using `map_list_prod (Pi.evalMonoidHom (fun _ : Fin k => G) j) (List.ofFn fun i => (Pi.mulSingle i (g i) : Fin k → G))`. Simplify using `only [Pi.evalMonoidHom_apply] at e`. Rewrite using `[e, List.map_ofFn]`. Use `(ofFn_prod_single k _ j fun i hi => ?_).trans ?_` and prove the remaining obligations.
+
+Simplify using `[Pi.mulSingle_eq_of_ne hi.symm]`. Simplify using the standard rewrite rules.
+-/
 private theorem ofFn_mulSingle {k : ℕ} (g : Fin k → G) :
     (List.ofFn fun i => (Pi.mulSingle i (g i) : Fin k → G)).prod = g := by
   funext j
@@ -44,6 +58,11 @@ private theorem ofFn_mulSingle {k : ℕ} (g : Fin k → G) :
   · simp [Pi.mulSingle_eq_of_ne hi.symm]
   · simp
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro s _`. Simplify using `using continuous_const`. Consider the case `succ k ih`.
+
+Introduce `s hs`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Conclude with `((hs 0).comp (continuous_apply 0)).mul ((ih (fun i => s i.succ) fun i => hs _).comp (continuous_pi fun i => continuous_apply i.succ))`.
+-/
 private theorem continuous_ofFn_prod : ∀ (k : ℕ) (s : Fin k → G →* Γ), (∀ i, Continuous (s i)) →
     Continuous fun g : Fin k → G => (List.ofFn fun i => s i (g i)).prod := by
   intro k
@@ -56,6 +75,9 @@ private theorem continuous_ofFn_prod : ∀ (k : ℕ) (s : Fin k → G →* Γ), 
       ((ih (fun i => s i.succ) fun i => hs _).comp
         (continuous_pi fun i => continuous_apply i.succ))
 
+/- English proof (translation)
+Establish `hint : Integrable (fun g => f g • π g v) μ` using `(f.continuous.smul (π.continuous_orbit v)).integrable_of_hasCompactSupport f.hasCompactSupport.smul_right`. Rewrite using `[UnitaryRep.integrated_ccToL1_apply, ← integral_inner hint]`. Simplify using `only [inner_smul_right]`.
+-/
 private theorem inner_cc (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (π : UnitaryRep G H)
     (f : CompactlySupportedContinuousMap G ℂ) (w v : H) :
     ⟪w, π.integrated μ (UnitaryRep.ccToL1 μ f) v⟫_ℂ = ∫ g, f g * ⟪w, π g v⟫_ℂ ∂μ := by
@@ -65,6 +87,17 @@ private theorem inner_cc (μ : Measure G) [IsFiniteMeasureOnCompacts μ] (π : U
   rw [UnitaryRep.integrated_ccToL1_apply, ← integral_inner hint]
   simp only [inner_smul_right]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `s hs φ w v`. Rewrite using `[Measure.pi_of_empty (fun _ : Fin 0 => μ) (fun i => i.elim0), integral_dirac]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `s hs φ w v`. Establish `hint : ∀ i, Integrable (φ i) μ` using `fun i => (φ i).continuous.integrable_of_hasCompactSupport (φ i).hasCompactSupport`. Establish `hF : Integrable (fun g : Fin (k + 1) → G => (∏ i, φ i (g i)) * ⟪w, π (List.ofFn fun i => s i (g i)).prod v⟫_ℂ) (Measure.pi fun _ => μ)`.
+
+Use `(Integrable.fintype_prod (f := fun i => (φ i : G → ℂ)) hint).mul_bdd (c := ‖w‖ * ‖v‖) ?_ (Filter.Eventually.of_forall fun g => π.norm_inner_orbit_le w v _)` and prove the remaining obligations. Conclude with `(continuous_const.inner ((π.continuous_orbit v).comp (continuous_ofFn_prod _ s hs))).aestronglyMeasurable`. Establish `mp` using `(measurePreserving_piFinSuccAbove (fun _ : Fin (k + 1) => μ) 0).symm`. Rewrite using `[← mp.integral_comp' _]`. Use `Eq.trans ?_ (integral_prod _ (mp.integrable_comp_of_integrable hF)).symm` and prove the remaining obligations.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons, ContinuousLinearMap.mul_apply, inner_cc]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [UnitaryRep.compHom_apply]`. Rewrite using `[UnitaryRep.inner_map_right, ih (fun i => s i.succ) (fun i => hs _) (fun i => φ i.succ), ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.prod_univ_succ, List.ofFn_succ, List.prod_cons, Fin.insertNthEquiv_zero, Fin.cons_zero, Fin.cons_succ]`. Use `show _ = (φ 0 x * ∏ i, φ i.succ (g i)) * ⟪w, π (s 0 x * (List.ofFn fun i => s i.succ (g i)).prod) v⟫_ℂ`. Rewrite using `[UnitaryRep.map_mul_apply, UnitaryRep.inner_map_right π (s 0 x) w]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem inner_ofFn_prod (μ : Measure G) [SigmaFinite μ] [IsFiniteMeasureOnCompacts μ]
     (π : UnitaryRep Γ H) : ∀ (k : ℕ) (s : Fin k → G →* Γ) (hs : ∀ i, Continuous (s i))
     (φ : Fin k → CompactlySupportedContinuousMap G ℂ) (w v : H),
@@ -108,6 +141,17 @@ end General
 
 end UpperTheory.ConvolutionTheory.L1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ m D n νE _ νF _ hν s hs hposition H _ _ _ π φ β hβ`. Take `⟨hcg, -, hmul, hcont, -⟩` from `UpperTheory.ConvolutionTheory.L1.archBasic F E σ m D n`. Establish `hglue : ∀ g : Fin (m + 1) → archGroup F n, UpperTheory.ConvolutionTheory.L1.glueA D n g = (List.ofFn fun i => s i (g i)).prod`. Introduce `g`. Establish `e` using `map_list_prod (MonoidHom.mk' (UpperTheory.ConvolutionTheory.L1.glueA D n) hmul) (List.ofFn fun i => (Pi.mulSingle i (g i) : Fin (m + 1) → archGroup F n))`.
+
+Rewrite `e` using `[UpperTheory.ConvolutionTheory.L1.ofFn_mulSingle, List.map_ofFn]`. Use `e.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(hposition i (g i)).symm`. Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.ConvolutionTheory.L1.inner_ofFn_prod, UpperTheory.ConvolutionTheory.L1.inner_cc]`. Establish `hm : Continuous fun x : archGroup E n => β x * ⟪w, π x v⟫_ℂ` using `β.continuous.mul (continuous_const.inner (π.continuous_orbit v))`. Establish `e1 : ∫ x, β x * ⟪w, π x v⟫_ℂ ∂νE = ∫ x, β x * ⟪w, π x v⟫_ℂ ∂(Measure.map (UpperTheory.ConvolutionTheory.L1.glueA D n) (Measure.pi fun _ => νF))`.
+
+Rewrite using `[← hν]`. Rewrite using `[e1, integral_map hcont.aemeasurable hm.aestronglyMeasurable]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hβ, hglue g]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hglue g, hcg]`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.tensOp :
     UpperTheory.ConvolutionTheory.L1.TensOp := by
   intro F E _ _ _ _ _ σ m D n νE _ νF _ hν s hs hposition H _ _ _ π φ β hβ

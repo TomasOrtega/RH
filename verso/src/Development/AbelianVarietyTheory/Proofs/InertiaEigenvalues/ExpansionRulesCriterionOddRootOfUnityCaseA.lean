@@ -15,6 +15,17 @@ namespace GlobalTheory.ExpansionsOdd
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm hN l _ K LL hA`. Take `⟨p1, -, p3, p4, p5, -, -, -, p9, -⟩` from `hN`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Use `haveI := Formalism.MainNotions.UnusedSlot80.neZero_finrank_max_unramified K`. Use `haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`.
+
+Use `haveI : IsFractionRing ↥(OL LL) ↥LL.1 := Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := Formalism.MainNotions.N.Pv.LocalLengthBound.OLC.complete_max LL`. Establish `hLT` using `GlobalTheory.LevelClauseOdd.main D HW F Cm p4 p9 l K LL hA`. Establish `C` using `((Cm l).C K 1 LL hA.2.2).tie`. Establish `hs : ((HW l).W K 1 LL hA.2.2).s = 1` using `(HW l).W_s K 1 LL hA.2.2`.
+
+Establish `hG` using `Formalism.MainNotions.N.Pv.LocalLengthBound.gam_of_tie _ hs C`. Establish `h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hA.2.2)` using `p9 l K 1 LL hA.2.2`. Use `⟨fun hCA => ?_, Formalism.MainNotions.N.Pv.LocalLengthBound.expRules_of _ hLT.1 hG.1 hG.2, ?_⟩` and prove the remaining obligations. Establish `hring : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP ((HW l).W K 1 LL hA.2.2)` using `(((h9 _ (Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL hA.2.2))) hs hCA.2.2).2.2 (Formalism.MainNotions.UnusedSlot80.finrank_K0_eq_one_of_le_Kur hA.1)).1`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.expRing_of _ hring hCA`.
+
+Establish `hlm : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.l_mem_maxOL (D.loc l) LL`. Establish `hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris ((D.loc l).PD K) ↥LL.1` using `GlobalTheory.Per.DdREqDcris.map_Dcris_eq_DdR l (D.loc l) (D.locA l) (D.locT l) K LL`. Establish `hB : Formalism.MainNotions.RamifiedCoefficientChains.Sh.BasTool ((HW l).W K 1 LL hA.2.2)` using `Formalism.MainNotions.RamifiedCoefficientChains.Sh.basTool_of _ h9`.
+
+Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.expCrit_of _ Subtype.val_injective hlm (Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL) (p1 l K 1 LL hA.2.2) (p3 l K 1 LL hA.2.2) hLT.1 (p5 l K 1 LL hA.2.2) h9 hD hB C (p4 l K 1 LL hA.2.2) hLT.2`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm →
     ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : Loc.CaseA K LL),

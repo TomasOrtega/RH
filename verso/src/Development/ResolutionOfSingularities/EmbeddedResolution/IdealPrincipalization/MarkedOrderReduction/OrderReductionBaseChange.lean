@@ -46,6 +46,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hlen : i ≤ u.toMarkedSequenceOfBlowups.length` using `hi.trans_eq (MarkedBlowupSequenceData.toMarkedSequence_length u).symm`. Establish `h` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT u.toMarkedSequenceOfBlowups i hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_schemeAt]`. Then use the resulting hypothesis.
+-/
 private theorem isNoetherian_schemeAt_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (u : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (i : ℕ) (hi : i ≤ u.length) :
     AlgebraicGeometry.IsNoetherian (u.obj i) := by
@@ -53,6 +56,11 @@ private theorem isNoetherian_schemeAt_of_isAdmissible (T : MarkedIdealWithBounda
   have h := MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT u.toMarkedSequenceOfBlowups i hlen
   rwa [MarkedBlowupSequenceData.toMarkedSequence_schemeAt] at h
 
+/- English proof (translation)
+Use `hflat` as an intermediate fact. Use `⟨SequenceOfBlowupsPullback.ofBlowupDataOfSeq (SequenceOfBlowupsPullback.ofCentersMissImage g (BlowupSequenceData.ofSequenceOfBlowups sD) ?_ (BlowupSequenceData.ofSequenceOfBlowups sU) ?_)⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[BlowupSequenceData.ofSequenceOfBlowups_length sD, hD]`. Conclude with `absurd hi (Nat.not_lt_zero i)`.
+
+Conclude with `(BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU`.
+-/
 private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_zero {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hflat : AlgebraicGeometry.Flat g) (sD : SequenceOfBlowups X) (sU : SequenceOfBlowups Y)
     (hD : sD.length = 0) (hU : sU.length = 0) :
@@ -65,6 +73,9 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_length_eq_zero {X Y : Sche
     exact absurd hi (Nat.not_lt_zero i)
   · exact (BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU
 
+/- English proof (translation)
+Establish `h : (nonMonomialOrderReductionIter hinv T rc 0).length = 0`. Rewrite using `[nonMonomialOrderReductionIter_zero, emptyMarkedBlowupSequenceData_length]`. Conclude with `(MarkedBlowupSequenceData.toMarkedSequence_length (nonMonomialOrderReductionIter hinv T rc 0)).trans h`.
+-/
 private theorem length_nonMonomialOrderReductionIter_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups) :
     (nonMonomialOrderReductionIter hinv T rc 0).toMarkedSequenceOfBlowups.toSequenceOfBlowups.length = 0 := by
@@ -72,6 +83,9 @@ private theorem length_nonMonomialOrderReductionIter_zero (hinv : ComapIsoInvari
     rw [nonMonomialOrderReductionIter_zero, emptyMarkedBlowupSequenceData_length]
   exact (MarkedBlowupSequenceData.toMarkedSequence_length (nonMonomialOrderReductionIter hinv T rc 0)).trans h
 
+/- English proof (translation)
+Establish `he : markedDataOfSeq s J μ σ = some ((MarkedBlowupSequenceData.ofMarkedSequence σ).toMarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length) hm)`. Unfold `markedDataOfSeq`. Conclude with `dif_pos hm`. Rewrite using `[he]`. Conclude with `Option.some_ne_none _`.
+-/
 private theorem markedDataOfSeq_ne_none_of_isMarked {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (J : (s.obj s.length).IdealSheafData) (μ : ℕ)
@@ -86,6 +100,9 @@ private theorem markedDataOfSeq_ne_none_of_isMarked {k : Type u} [Field k] {X : 
   rw [he]
   exact Option.some_ne_none _
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `hflat` as an intermediate fact. Conclude with `SequenceOfBlowupsPullback.ideal_boundary_last_eq_comap_lastMap s s' c hI hE hN hN'`.
+-/
 private theorem lastIdeal_and_boundary_comap_of_flat {k k' : Type u} [Field k] [Field k'] {X Y : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k')} {g : Y ⟶ X}
     {I : X.IdealSheafData} {I' : Y.IdealSheafData} {m m' : ℕ}
@@ -104,6 +121,21 @@ private theorem lastIdeal_and_boundary_comap_of_flat {k k' : Type u} [Field k] [
   have := hflat
   exact SequenceOfBlowupsPullback.ideal_boundary_last_eq_comap_lastMap s s' c hI hE hN hN'
 
+/- English proof (translation)
+Take `⟨hlastIdeal, hsameBoundary⟩` from `lastIdeal_and_boundary_comap_of_flat s s' hmult c hbc.flat hideal hbdry (isNoetherian_schemeAt_of_isAdmissible T hT s) (isNoetherian_schemeAt_of_isAdmissible T' hT' s')`. Establish `hle : maxOrderNonMonomial T' s' ≤ maxOrderNonMonomial T s` using `maxOrderNonMonomial_le_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Establish `hnonMon : lastNonMonomialPart T' s' = (lastNonMonomialPart T s).comap c.lastMap` using `lastNonMonomialPart_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary`. Establish `hJ : (tripleAtLength T s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hskip : orderAtLeastLocus ((lastNonMonomialPart T s).comap c.lastMap) (maxOrderNonMonomial T s) = ∅ → Nonempty (SequenceOfBlowupsPullback g s'.toMarkedSequenceOfBlowups.toSequenceOfBlowups (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) s).toMarkedSequenceOfBlowups. …`.
+
+Introduce `hempty`. Establish `hL : extendByNonMonomialPart hinv T (principalizationOfDimLe T A) s = appendRecursivePrincipalization hinv T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)` using `rfl`. Rewrite using `[hL]`. Conclude with `nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary (lastNonMonomialPart T s) (maxOrderNonMonomial T s) hJ hempty`. Distinguish the cases in `hcont' : NonMonomialOrderReductionContinues T' s'`.
+
+Distinguish the cases in `heq : maxOrderNonMonomial T' s' = maxOrderNonMonomial T s`. Use `Or.inl ⟨hcont', ?_⟩` and prove the remaining obligations. Use `nonempty_sequenceOfBlowupsPullback_extendByNonMonomialPart hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary hcont hcont' heq ?_` and prove the remaining obligations. Introduce `h h'`. Use `iff_of_false ?_ ?_` and prove the remaining obligations.
+
+Conclude with `markedDataOfSeq_ne_none_of_isMarked s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) _ (isMarked_seqAtEnd_lastNonMonomialPart hG hspec hT hdim s hcont)`. Establish `hmkU` using `isMarked_seqAtEnd_lastNonMonomialPart hG hspec hT' hdim' s' hcont'`. Rewrite `hmkU` using `[hnonMon, heq]`. Conclude with `markedDataOfSeq_ne_none_of_isMarked s' ((lastNonMonomialPart T s).comap c.lastMap) (maxOrderNonMonomial T s) _ hmkU`. Use `Or.inr (hskip ?_)` and prove the remaining obligations.
+
+Conclude with `orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary (lt_of_le_of_ne hle heq)`. Use `Or.inr (hskip ?_)` and prove the remaining obligations. Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases. Conclude with `orderAtLeastLocus_comap_lastNonMonomialPart_eq_empty_of_lt hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc s s' c hlastIdeal hsameBoundary hlt`. Establish `h1 : T'.mult ≤ maxOrderNonMonomial T' s'`.
+
+Rewrite using `[hmult, heq]`. Conclude with `((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`. Establish `h2 : ¬ (orderAtLeastLocus (lastNonMonomialPart T' s') (maxOrderNonMonomial T' s')).Nonempty` using `fun hx => hcont' ((nonMonomialOrderReductionContinues_iff T' s').2 ⟨h1, hx⟩)`. Establish `h3` using `Set.not_nonempty_iff_eq_empty.mp h2`. Rewrite `h3` using `[hnonMon, heq]`.
+
+Conclude with `h3`.
+-/
 private theorem extendByNonMonomialPart_sequenceOfBlowupsPullback_cases (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -171,6 +203,17 @@ private theorem extendByNonMonomialPart_sequenceOfBlowupsPullback_cases (hG : Pr
       rw [hnonMon, heq] at h3
       exact h3
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, ∃ f' : ℕ, Nonempty (SequenceOfBlowupsPullback g (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f').toMarkedSequenceOfBlowups.toSequenceOfBlowups (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j).toMarkedSequenceOfBlowups. …`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Conclude with `⟨0, nonempty_sequenceOfBlowupsPullback_of_length_eq_zero g hbc.flat _ _ (length_nonMonomialOrderReductionIter_zero hinv T (principalizationOfDimLe T A)) (length_nonMonomialOrderReductionIter_zero hinv T' (principalizationOfDimLe T' A))⟩`.
+
+Consider the case `succ j ih`. Take `⟨f', hc⟩` from `ih`. Take `⟨c⟩` from `hc`. Distinguish the cases in `hcont : NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j)`. Break down `extendByNonMonomialPart_sequenceOfBlowupsPullback_cases hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j) (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f') c hcont wit …` into its components or cases.
+
+Use `⟨f' + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[nonMonomialOrderReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) j hcont, nonMonomialOrderReductionIter_succ_of_continues hinv T' (principalizationOfDimLe T' A) f' hcont']`. Conclude with `hcmp`. Use `⟨f', ?_⟩` and prove the remaining obligations. Rewrite using `[nonMonomialOrderReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) j hcont]`.
+
+Conclude with `hcmp`. Use `⟨f', ?_⟩` and prove the remaining obligations. Rewrite using `[nonMonomialOrderReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) j hcont]`. Conclude with `⟨c⟩`. Take `⟨f', hc⟩` from `key f`.
+
+Take `⟨c⟩` from `hc`. Use `⟨f', c, ?_⟩` and prove the remaining obligations. Conclude with `lastIdeal_and_boundary_comap_of_flat (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f) (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f') hmult c hbc.flat hideal hbdry (isNoetherian_schemeAt_of_isAdmissible T hT (nonMonomialOrderReducti …`.
+-/
 theorem nonMonomialOrderReductionIter_exists_sequenceOfBlowupsPullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -225,6 +268,9 @@ theorem nonMonomialOrderReductionIter_exists_sequenceOfBlowupsPullback (hG : Pri
     (isNoetherian_schemeAt_of_isAdmissible T hT (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f))
     (isNoetherian_schemeAt_of_isAdmissible T' hT' (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f'))
 
+/- English proof (translation)
+The claim follows from `lastIdeal_and_boundary_comap_of_flat s s' hmult c hflat hideal hbdry (isNoetherian_schemeAt_of_isAdmissible T hT s) (isNoetherian_schemeAt_of_isAdmissible T' hT' s')`.
+-/
 private theorem lastIdeal_and_boundary_comap_of_isAdmissible (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
     (hT : T.IsAdmissible) (hT' : T'.IsAdmissible) (hflat : AlgebraicGeometry.Flat g)
     (hmult : T'.mult = T.mult) (hideal : T'.ideal = T.ideal.comap g)
@@ -238,6 +284,9 @@ private theorem lastIdeal_and_boundary_comap_of_isAdmissible (T T' : MarkedIdeal
   lastIdeal_and_boundary_comap_of_flat s s' hmult c hflat hideal hbdry
     (isNoetherian_schemeAt_of_isAdmissible T hT s) (isNoetherian_schemeAt_of_isAdmissible T' hT' s')
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Substitute `hν` using the available equality. Conclude with `markedDataOfSeq_ne_none_of_isMarked s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s) (principalizationOfDimLe T A (tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) h) (isMarked_seqAtEnd_companionIdeal hG hT A s hcont)`.
+-/
 private theorem markedDataOfSeq_companionIdeal_ne_none (hG : PrincipalizationGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (A : PrincipalizationAssignment.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -251,6 +300,13 @@ private theorem markedDataOfSeq_companionIdeal_ne_none (hG : PrincipalizationGeo
     (principalizationOfDimLe T A (tripleAtLength T s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)) h)
     (isMarked_seqAtEnd_companionIdeal hG hT A s hcont)
 
+/- English proof (translation)
+Take `⟨f₁, c, hI, hB⟩` from `nonMonomialOrderReductionIter_exists_sequenceOfBlowupsPullback hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (maxOrder (nonMonomialPart T.boundary T.ideal) + 1)`. Establish `hlow : nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) = nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)` using `(nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)).symm`. Establish `hncT : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (maxOrder (nonMonomialPart T.boundary T.ideal) + 1))`. Rewrite using `[hlow]`. Conclude with `not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction hG hinv hspec hT hdim`.
+
+Establish `hncT' : ¬ NonMonomialOrderReductionContinues T' (nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f₁)`. Introduce `hc`. Conclude with `hncT (nonMonomialOrderReductionContinues_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (maxOrder (nonMonomialPart T.boundary T.ideal) + 1)) (nonMonomialOrderReductionIter hinv T' (princi …`. Establish `h1 : nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) (max f₁ (maxOrder (nonMonomialPart T'.boundary T'.ideal) + 1)) = nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f₁` using `nonMonomialOrderReductionIter_eq_of_not_continues hinv T' (principalizationOfDimLe T' A) f₁ hncT' (max f₁ (maxOrder (nonMonomialPart T'.boundary T'.ideal) + 1)) (le_max_left _ _)`. Establish `h2 : nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) (max f₁ (maxOrder (nonMonomialPart T'.boundary T'.ideal) + 1)) = nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)` using `nonMonomialOrderReductionIter_eq_of_maxOrder_lt hG hinv hspec hT' hdim' (max f₁ (maxOrder (nonMonomialPart T'.boundary T'.ideal) + 1)) (le_max_right _ _)`.
+
+Establish `hup : nonMonomialOrderReductionIter hinv T' (principalizationOfDimLe T' A) f₁ = nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)` using `h1.symm.trans h2`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← hup, ← hlow]`. Conclude with `c`.
+-/
 private theorem nonempty_sequenceOfBlowupsPullback_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -292,6 +348,23 @@ private theorem nonempty_sequenceOfBlowupsPullback_nonMonomialOrderReduction (hG
   rw [← hup, ← hlow]
   exact c
 
+/- English proof (translation)
+Establish `hflat : AlgebraicGeometry.Flat g` using `hbc.flat`. Establish `key : ∀ m : ℕ, ∃ f' : ℕ, Nonempty (SequenceOfBlowupsPullback g (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f').toMarkedSequenceOfBlowups.toSequenceOfBlowups (companionIdealReductionIter hin …`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Conclude with `⟨0, nonempty_sequenceOfBlowupsPullback_nonMonomialOrderReduction hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc⟩`. Consider the case `succ m ih`. Take `⟨f₁, hc⟩` from `ih`. Take `⟨c⟩` from `hc`. Distinguish the cases in `hcont : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m)`.
+
+Take `⟨hI, hB⟩` from `lastIdeal_and_boundary_comap_of_isAdmissible T T' g hT hT' hflat hmult hideal hbdry (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealReductionIter hinv T' (principalizationOfDimLe …`. Establish `hstepL` using `companionIdealReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hcont`. Establish `hle` using `maxOrderNonMonomialOnOrderLocus_le_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealReductionIter hinv T' (p …`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Establish `hJ` using `companionTriple_isAdmissible hG hT (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) hcont`.
+
+Establish `hempty` using `orderAtLeastLocus_comap_companionIdeal_eq_empty_of_lt hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealReductionIter hin …`. Use `⟨f₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hstepL]`. Conclude with `nonempty_sequenceOfBlowupsPullback_of_orderAtLeastLocus_empty hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealR …`. Establish `hcont1 : (1 : ℕ) ≤ maxOrderNonMonomialOnOrderLocus T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m)` using `hcont`.
+
+Establish `hcont' : CompanionIdealReductionContinues T' (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f₁)` using `by show (1 : ℕ) ≤ maxOrderNonMonomialOnOrderLocus T' (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f₁)`. Conclude with `le_trans hcont1 heq.ge`. Establish `hid'` using `companionIdeal_eq_comap_lastMap_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealReductionIter hinv T' (prin …`. Establish `hmu' : T'.mult * maxOrderNonMonomialOnOrderLocus T' (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f₁) = T.mult * maxOrderNonMonomialOnOrderLocus T (companionIdealReductionIter hinv T (princip …`. Rewrite using `[hmult, heq]`.
+
+Use `⟨f₁ + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hstepL, companionIdealReductionIter_succ_of_continues hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f₁ hcont']`. Use `nonempty_sequenceOfBlowupsPullback_extendByCompanionIdeal hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) (companionIdealReduc …` and prove the remaining obligations. Introduce `h h'`. Use `iff_of_false ?_ ?_` and prove the remaining obligations.
+
+Conclude with `markedDataOfSeq_companionIdeal_ne_none hG T hT A (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m) hcont (companionIdeal T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMon …`. Use `rfl rfl h`. Conclude with `markedDataOfSeq_companionIdeal_ne_none hG T' hT' A (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f₁) hcont' ((companionIdeal T (companionIdealReductionIter hinv T (principalizationOfDimLe T A …`. Use `⟨f₁, ?_⟩` and prove the remaining obligations. Rewrite using `[companionIdealReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) m hcont]`.
+
+Conclude with `⟨c⟩`. Take `⟨f', hn⟩` from `key f`. Take `⟨c⟩` from `hn`. Conclude with `⟨f', c, lastIdeal_and_boundary_comap_of_isAdmissible T T' g hT hT' hflat hmult hideal hbdry (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) f) (companionIdealReductionIter hinv T' (principalization …`.
+-/
 theorem companionIdealReductionIter_exists_sequenceOfBlowupsPullback (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -410,6 +483,13 @@ theorem companionIdealReductionIter_exists_sequenceOfBlowupsPullback (hG : Princ
     (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) f)
     (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f') c⟩
 
+/- English proof (translation)
+Establish `hval : ∀ l ≤ σ.toSequenceOfBlowups.length, (T.transformAt σ l).IsAdmissible`. Introduce `l hl`. Conclude with `hG.monomialInputs.level_valid T hT σ l hl`. Establish `hsub` using `MarkedSequenceOfBlowups.orderAtLeastLocus_subset_preimage_transitionMap (orderAtComapOffExceptionalLocus_of_monomialGeometryHypotheses hG.monomialInputs) T σ hval T.mult le_rfl 0 j (Nat.zero_le j) hj`. Establish `h0 : (σ.toSequenceOfBlowups.transitionMap (Nat.zero_le j)).base z ∈ orderAtLeastLocus (σ.ideal 0) T.mult` using `hsub hz`.
+
+Rewrite `h0` using `[σ.ideal_zero, hinv.coSupport_comap σ.toSequenceOfBlowups.isoZero T.ideal T.mult]`. Establish `hcomp : (σ.toSequenceOfBlowups.projectionToBase j).base z = (σ.toSequenceOfBlowups.isoZero.hom).base ((σ.toSequenceOfBlowups.transitionMap (Nat.zero_le j)).base z)`. Rewrite using `[SequenceOfBlowups.projectionToBase_def]`. Simplify using the standard rewrite rules. Rewrite using `[hcomp]`.
+
+Conclude with `h0`.
+-/
 private theorem projectionToBase_mem_orderAtLeastLocus (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (σ : T.SequenceOfBlowups)
     (j : ℕ) (hj : j ≤ σ.toSequenceOfBlowups.length) (z : ↥(σ.toSequenceOfBlowups.schemeAt j))
@@ -430,6 +510,11 @@ private theorem projectionToBase_mem_orderAtLeastLocus (hG : PrincipalizationGeo
   rw [hcomp]
   exact h0
 
+/- English proof (translation)
+Use `hflat` as an intermediate fact. Use `⟨SequenceOfBlowupsPullback.ofBlowupDataOfSeq (SequenceOfBlowupsPullback.ofCentersMissImage g (BlowupSequenceData.ofSequenceOfBlowups sD) ?_ (BlowupSequenceData.ofSequenceOfBlowups sU) ?_)⟩` and prove the remaining obligations. Introduce `i hi z hz y`. Rewrite `hi` using `[BlowupSequenceData.ofSequenceOfBlowups_length sD]`. Establish `hproj : (BlowupSequenceData.ofSequenceOfBlowups sD).projectionToBase i = sD.projectionToBase i` using `(BlowupSequenceData.toSequenceOfBlowups_projectionToBase (BlowupSequenceData.ofSequenceOfBlowups sD) i).symm.trans (BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups sD i)`.
+
+Rewrite using `[hproj]`. Conclude with `hmiss i hi z hz y`. Conclude with `(BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU`.
+-/
 private theorem nonempty_sequenceOfBlowupsPullback_of_center_not_mem_range {X Y : Scheme.{u}} (g : Y ⟶ X)
     (hflat : AlgebraicGeometry.Flat g) (sD : SequenceOfBlowups X) (sU : SequenceOfBlowups Y)
     (hU : sU.length = 0)
@@ -448,6 +533,9 @@ private theorem nonempty_sequenceOfBlowupsPullback_of_center_not_mem_range {X Y 
     exact hmiss i hi z hz y
   · exact (BlowupSequenceData.ofSequenceOfBlowups_length sU).trans hU
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Substitute `hR` using the available equality. Conclude with `hex`.
+-/
 private theorem exists_sequenceOfBlowupsPullback_congr {T T' : MarkedIdealWithBoundary.{u}} (g : T'.scheme ⟶ T.scheme)
     (S₁ S₂ : MarkedBlowupSequenceData T'.structMap T'.ideal T'.mult T'.boundary)
     (R₁ R₂ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -464,6 +552,9 @@ private theorem exists_sequenceOfBlowupsPullback_congr {T T' : MarkedIdealWithBo
   subst hR
   exact hex
 
+/- English proof (translation)
+Substitute `hJK` using the available equality. Substitute `hμν` using the available equality. Conclude with `h`.
+-/
 private theorem isLocallyMonomialTriple_tripleAtLength_congr (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (J K : (s.obj s.length).IdealSheafData) (μ ν : ℕ) (hJK : J = K) (hμν : μ = ν)
@@ -473,6 +564,9 @@ private theorem isLocallyMonomialTriple_tripleAtLength_congr (T : MarkedIdealWit
   subst hμν
   exact h
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Substitute `hν` using the available equality. Conclude with `h`.
+-/
 private theorem isPullbackBlowupSequence_monomialPrincipalization_congr (hinv : ComapIsoInvariance.{u})
     (T T' : MarkedIdealWithBoundary.{u})
     (S : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -489,6 +583,9 @@ private theorem isPullbackBlowupSequence_monomialPrincipalization_congr (hinv : 
   subst hν
   exact h
 
+/- English proof (translation)
+Establish `hdimS` using `MonomialGeometryHypotheses.krullDimSucc_schemeAt_length_le_dim hmg T hT S`. Establish `hvalS` using `MonomialGeometryHypotheses.isAdmissible_tripleAtLength hmg T hT S`. Establish `hmonUp' : MonomialCenter.IsLocallyMonomialTriple (tripleAtLength T' S' ((S.ideal S.length).comap c.lastMap) T.mult)` using `isLocallyMonomialTriple_tripleAtLength_congr T' S' (S'.ideal S'.length) ((S.ideal S.length).comap c.lastMap) T'.mult T.mult hidealLastComap hmult hmonUp`. Establish `hmain` using `hbc.monomialBody (SequenceOfBlowupsPullback.toMarkedPullbackSquare g S S' c hdimS hvalS) hmonLow (S'.boundary S'.length) hlastBoundary.symm hmonUp'`. Conclude with `isPullbackBlowupSequence_monomialPrincipalization_congr hinv T T' S S' c.lastMap (S.ideal S.length) T.mult ((S.ideal S.length).comap c.lastMap) (S'.ideal S'.length) T.mult T'.mult hidealLastComap.symm hmult.symm hmain`.
+-/
 private theorem isPullbackSequenceOfBlowups_monomial_of_pullback (hinv : ComapIsoInvariance.{u})
     (hmg : MonomialGeometryHypotheses.{u})
     (n : ℕ) (A : PrincipalizationAssignment.{u}) (T T' : MarkedIdealWithBoundary.{u}) (g : T'.scheme ⟶ T.scheme)
@@ -518,6 +615,27 @@ private theorem isPullbackSequenceOfBlowups_monomial_of_pullback (hinv : ComapIs
     T.mult ((S.ideal S.length).comap c.lastMap) (S'.ideal S'.length) T.mult T'.mult hidealLastComap.symm
     hmult.symm hmain
 
+/- English proof (translation)
+Distinguish the cases in `hemp : orderAtLeastLocus T'.ideal T'.mult = ∅`. Establish `hU : (orderReductionSeq hinv T' (principalizationOfDimLe T' A)).toSequenceOfBlowups.length = 0` using `orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T' A hemp`. Establish `hmiss : ∀ i : ℕ, i < (orderReductionSeq hinv T (principalizationOfDimLe T A)).toSequenceOfBlowups.length → ∀ z : ↥((orderReductionSeq hinv T (principalizationOfDimLe T A)).toSequenceOfBlowups.schemeAt i), z ∈ ((orderReductionSeq hinv T (principalizationOfDimLe T A)).toSequenceOfB …`. Introduce `i hi z hz y hcon`. Establish `hz' : z ∈ orderAtLeastLocus ((orderReductionSeq hinv T (principalizationOfDimLe T A)).ideal i) T.mult` using `(orderReductionSeq hinv T (principalizationOfDimLe T A)).center_order i hi hz`.
+
+Establish `hkey` using `projectionToBase_mem_orderAtLeastLocus hG hinv T hT (orderReductionSeq hinv T (principalizationOfDimLe T A)) i (le_of_lt hi) z hz'`. Rewrite `hkey` using `[← hcon]`. Establish `hordy` using `orderAt_comap_of_baseChangeCompatible hinv A n T hT g T'.base T'.structMap hbc T.ideal y`. Establish `hmem : y ∈ orderAtLeastLocus T'.ideal T'.mult`. Rewrite using `[mem_orderAtLeastLocus_iff, hideal, hmult, hordy]`.
+
+Conclude with `(mem_orderAtLeastLocus_iff T.ideal T.mult (g.base y)).1 hkey`. Rewrite `hmem` using `[hemp]`. Simplify using `only [Set.mem_empty_iff_false] at hmem`. Take `⟨cc⟩` from `nonempty_sequenceOfBlowupsPullback_of_center_not_mem_range g hbc.flat (orderReductionSeq hinv T (principalizationOfDimLe T A)).toSequenceOfBlowups (orderReductionSeq hinv T' (principalizationOfDimLe T' A)).toSequenceOfBlowups hU hmiss`. Conclude with `cc.isPullbackSequenceOfBlowups`.
+
+Establish `hT'ne : (orderAtLeastLocus T'.ideal T'.mult).Nonempty` using `Set.nonempty_iff_ne_empty.2 hemp`. Establish `hTne : (orderAtLeastLocus T.ideal T.mult).Nonempty`. Break down `Set.eq_empty_or_nonempty (orderAtLeastLocus T.ideal T.mult) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hemp` to reduce the goal to its premises.
+
+Rewrite using `[hideal, hmult]`. Conclude with `orderAtLeastLocus_comap_eq_empty_of_baseChangeCompatible hinv A n T hT g T'.base T'.structMap hbc h`. Conclude with `h`. Take `⟨f', hc⟩` from `companionIdealReductionIter_exists_sequenceOfBlowupsPullback hG hinv n A B hspec T T' g hT hT' hdim hdim' hmult hideal hbdry hbc (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + 1)`. Establish `hlowStop : ¬ CompanionIdealReductionContinues T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) + …`.
+
+Rewrite using `[← companionIdealReduction_eq hinv T (principalizationOfDimLe T A)]`. Conclude with `not_companionIdealReductionContinues_companionIdealReduction hG hinv hspec hT hdim`. Establish `hupStop : ¬ CompanionIdealReductionContinues T' (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f')`. Take `⟨c0, h1, h2⟩` from `hc`. Introduce `hcont`.
+
+Conclude with `hlowStop (companionIdealReductionContinues_of_pullback hG hinv n A T T' g hT hT' hdim hdim' hmult hideal hbdry hbc _ _ c0 h1 h2 hcont)`. Establish `hstop' : ¬ CompanionIdealReductionContinues T' (companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) (maxOrderNonMonomialOnOrderLocus T' (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' …`. Rewrite using `[← companionIdealReduction_eq hinv T' (principalizationOfDimLe T' A)]`. Conclude with `not_companionIdealReductionContinues_companionIdealReduction hG hinv hspec hT' hdim'`. Establish `hupEq : companionIdealReductionIter hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f' = companionIdealReduction hinv T' (principalizationOfDimLe T' A)`.
+
+Rewrite using `[companionIdealReduction_eq hinv T' (principalizationOfDimLe T' A)]`. Break down `le_total f' (maxOrderNonMonomialOnOrderLocus T' (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) + 1) with h | h` into its components or cases. Conclude with `(companionIdealReductionIter_eq_of_not_continues hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) f' hupStop _ h).symm`. Conclude with `companionIdealReductionIter_eq_of_not_continues hinv T' (principalizationOfDimLe T' A) (nonMonomialOrderReduction hinv T' (principalizationOfDimLe T' A)) _ hstop' f' h`. Take `⟨c, hidealLastComap, hlastBoundary⟩` from `exists_sequenceOfBlowupsPullback_congr g _ _ _ _ hupEq (companionIdealReduction_eq hinv T (principalizationOfDimLe T A)).symm hc`.
+
+Establish `hmonLow : MonomialCenter.IsLocallyMonomialTriple (tripleAtLength T (companionIdealReduction hinv T (principalizationOfDimLe T A)) ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mult)` using `isLocallyMonomialTriple_tripleAtLength_companionIdealReduction hG hinv hspec hT hdim`. Establish `hmonUp : MonomialCenter.IsLocallyMonomialTriple (tripleAtLength T' (companionIdealReduction hinv T' (principalizationOfDimLe T' A)) ((companionIdealReduction hinv T' (principalizationOfDimLe T' A)).ideal (companionIdealReduction hinv T' (principalizationOfDimLe T' A)).length) T'. …` using `isLocallyMonomialTriple_tripleAtLength_companionIdealReduction hG hinv hspec hT' hdim'`. Establish `hIP` using `isPullbackSequenceOfBlowups_monomial_of_pullback hinv hG.monomialInputs n A T T' g hT hbc (companionIdealReduction hinv T (principalizationOfDimLe T A)) (companionIdealReduction hinv T' (principalizationOfDimLe T' A)) c hmult hidealLastComap hlastBoundary hmonLow hmonUp`. Take `⟨cc⟩` from `hIP.nonempty_sequenceOfBlowupsPullback`. Rewrite using `[orderReductionSeq_eq_of_nonempty hinv T (principalizationOfDimLe T A) hTne, orderReductionSeq_eq_of_nonempty hinv T' (principalizationOfDimLe T' A) hT'ne, orderReductionData_eq_append hinv T A, orderReductionData_eq_append hinv T' A]`.
+
+Conclude with `isPullbackBlowupSequence_append_of_two_fields g (companionIdealReduction hinv T (principalizationOfDimLe T A)) (orderReductionMonomialSequence hinv T A) (companionIdealReduction hinv T' (principalizationOfDimLe T' A)) (orderReductionMonomialSequence hinv T' A) hinv c (SequenceOfB …`.
+-/
 private theorem orderReductionSeq_isPullbackBlowupSequence_of_comap (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -608,6 +726,9 @@ private theorem orderReductionSeq_isPullbackBlowupSequence_of_comap (hG : Princi
       (companionIdealReduction hinv T' (principalizationOfDimLe T' A)) (orderReductionMonomialSequence hinv T' A) hinv c
       (SequenceOfBlowupsPullback.toBlowupDataOfSeq cc)
 
+/- English proof (translation)
+The claim follows from `orderReductionSeq_isPullbackBlowupSequence_of_comap hG hinv n A B hspec T (MarkedIdealWithBoundary.mk k' Y q (T.ideal.comap g) T.mult E') g hT hT' hdim hdim' rfl rfl hE hbc`.
+-/
 theorem orderReductionSeq_isPullbackBlowupSequence_mk (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n)
@@ -624,6 +745,9 @@ theorem orderReductionSeq_isPullbackBlowupSequence_mk (hG : PrincipalizationGeom
   orderReductionSeq_isPullbackBlowupSequence_of_comap hG hinv n A B hspec T
     (MarkedIdealWithBoundary.mk k' Y q (T.ideal.comap g) T.mult E') g hT hT' hdim hdim' rfl rfl hE hbc
 
+/- English proof (translation)
+Establish `hT2 : (MarkedIdealWithBoundary.mk k' Y q (T.ideal.comap g) T.mult E').IsAdmissible` using `hT'`. Establish `hdim2 : (MarkedIdealWithBoundary.mk k' Y q (T.ideal.comap g) T.mult E').krullDimSucc ≤ n` using `hdim'`. Conclude with `orderReductionSeq_isPullbackBlowupSequence_mk hG hinv n A B hspec T hT hdim k' q g E' hE hT2 hdim2 hbc`.
+-/
 theorem orderReductionSeq_isPullbackBlowupSequence_pullbackOverField (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (n : ℕ) (A B : PrincipalizationAssignment.{u}) (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n)

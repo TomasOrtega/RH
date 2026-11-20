@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Use `⟨if up 0 then 1 else 0, fun a => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, up (k : ZMod n) = decide ((k + (if up 0 then 1 else 0)) % 2 = 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => cases h0 : up 0 <;> simp [h0]`.
+
+Consider the case `succ k ih`. Establish `e : ((k + 1 : ℕ) : ZMod n) = (k : ZMod n) + 1` using `by push_cast; rfl`. Rewrite using `[e, h, ih]`. Generalize the expression as in `(if up 0 = true then 1 else 0) = d`. Distinguish the cases in `hk : (k + d) % 2 = 1`.
+
+Establish `: ¬ (k + 1 + d) % 2 = 1` using `by omega`. Simplify using `[hk, this]`. Establish `: (k + 1 + d) % 2 = 1` using `by omega`. Simplify using `[hk, this]`. Simplify using `using key a.val`.
+-/
 theorem alternates_parity {n : ℕ} [NeZero n] {up : ZMod n → Bool} (h : Alternates up) :
     ∃ d : ℕ, ∀ a : ZMod n, up a = decide ((a.val + d) % 2 = 1) := by
   refine ⟨if up 0 then 1 else 0, fun a => ?_⟩
@@ -28,6 +35,21 @@ theorem alternates_parity {n : ℕ} [NeZero n] {up : ZMod n → Bool} (h : Alter
         simp [hk, this]
   simpa using key a.val
 
+/- English proof (translation)
+Introduce `D L C j ε n g ψ l hR hO hl hψ`. Take `⟨rfl, hg⟩` from `hO`. Take `⟨τ, rfl⟩ : ∃ τ, g = letter τ ψ` from `⟨g 0, funext hg⟩`. Use `clear hg`. Establish `hT` using `GlobalTheory.T.twistedDualSizeWord_letter_eq_pageWord L C j ε τ ψ hR`.
+
+Take `⟨hBox, hcase⟩` from `GlobalTheory.T.twistedDualPageWord_inert_prime_dichotomy L C j ε τ ψ l hR hl hψ`. Establish `hsz : ∀ a, (((recWord L j ε (letter τ ψ)).sz a : ℕ) : ℤ) = (pageWord L j ε τ ψ).sz a` using `fun a => (hT a).1`. Establish `hη : ∀ a, etaHat L < (recWord L j ε (letter τ ψ)).sz a` using `fun a => by`. Establish `h6 : ((etaHat L : ℕ) : ℤ) < (pageWord L j ε τ ψ).sz a` using `hBox.2.2.2.2.2 a`. Rewrite `h6` using `[← hsz a]`.
+
+Conclude with `h6` after adjusting the coercions. Establish `hSmall : Small (recWord L j ε (letter τ ψ))` using `⟨hBox.1, hBox.2.1, hBox.2.2.1, hBox.2.2.2.1, hBox.2.2.2.2.1, hη⟩`. Break down `hcase with ⟨halt, ⟨a, ha⟩, hthree⟩ | ⟨-, ⟨hev, halt, hbig⟩, -⟩` into its components or cases. Use `left`. Use `⟨hSmall, halt, ⟨a, fun h => ha ((hT a).2.2.2.1 h)⟩, fun i h => hthree i ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨(hT _).2.2.2.1 h.1, (hT _).2.2.2.1 h.2.1, (hT _).2.2.2.1 h.2.2⟩`. Use `right haveI : NeZero (orderOf ψ) := ⟨(orderOf_pos ψ).ne'⟩`. Take `⟨d, hd⟩` from `alternates_parity (up := (recWord L j ε (letter τ ψ)).up) halt`. Use `⟨d, hev, hd, hSmall, fun a => ?_, fun M hM a => ?_⟩` and prove the remaining obligations. Establish `hmax : max (etaHat L) ((recWord L j ε (letter τ ψ)).sz a + sHat L) = (recWord L j ε (letter τ ψ)).sz a + sHat L` using `max_eq_right (by have := hη a; omega)`.
+
+Express the relevant statement in the definitionally equal form `(if (!pos ε (letter τ ψ a)) = true then etaHat L else max (etaHat L) ((recWord L j ε (letter τ ψ)).sz a + sHat L)) = _ ∧ (if (!pos ε (letter τ ψ a)) = true then max (etaHat L) ((recWord L j ε (letter τ ψ)).sz a + sHat L) else etaHat L) = _`. Rewrite using `[hmax]`. Conclude with `⟨rfl, rfl⟩`. Establish `hM' : IsGreatest (Set.range (pageWord L j ε τ ψ).sz) (M : ℤ)`. Take `⟨⟨b, hb⟩, hub⟩` from `hM`.
+
+Use `⟨⟨b, by rw [← hsz b, hb]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[← hsz c]`. Conclude with `hub ⟨c, rfl⟩` after adjusting the coercions. Take `⟨-, h2, h3⟩` from `hbig M hM' a`.
+
+Rewrite `h2`, `h3` using `[← hsz a]`. Move the coercions through the operations in `at h2 h3`. Conclude with `⟨h2, h3⟩`.
+-/
 theorem recWord_dichotomy : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) {n : ℕ}
     (g : ZMod n → D.R.GG) (ψ : D.R.GG) (l : ℕ), Roomy L C → IsOrbit g ψ → 11 ≤ l → ψ.1.2 = -1 →
     WordsNT (recWord L j ε g) ∨ ∃ d, WordsAT l (recWord L j ε g) d := by

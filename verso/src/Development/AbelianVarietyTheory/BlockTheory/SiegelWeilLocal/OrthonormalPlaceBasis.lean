@@ -27,6 +27,9 @@ def gLie {n : ℕ} (ε : Fin n → Bool) : Submodule ℝ (Matrix (Fin n) (Fin n)
 def expU {n : ℕ} {ε : Fin n → Bool} (X : gLie ε) : Formalism.REAL.UJ ε :=
   ⟨(Matrix.isUnit_exp (X : Matrix (Fin n) (Fin n) ℂ)).unit, Formalism.REAL.f1alg_exp_inUJ ε X.1 X.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem uMat_expU {n : ℕ} {ε : Fin n → Bool} (X : gLie ε) :
     uMat (expU X) = NormedSpace.exp (X : Matrix (Fin n) (Fin n) ℂ) := rfl
 
@@ -75,6 +78,9 @@ def StepBound : Prop :=
 
 open NumberField Matrix in
 variable (B : _root_.Formalism.MainNotions.S.RowsAut) in
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨l, u, hl, hu, hy⟩ => ⟨l, u, hl.trans h, hu, hy⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.stepSpan_mono {P Q : ℕ} (h : P ≤ Q) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B P ≤ _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B Q :=
   Submodule.span_mono fun _ ⟨l, u, hl, hu, hy⟩ => ⟨l, u, hl.trans h, hu, hy⟩
@@ -82,6 +88,15 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.ste
 open NumberField Matrix in
 variable (B : _root_.Formalism.MainNotions.S.RowsAut) in
 
+/- English proof (translation)
+Establish `hd` using `h`. Unfold `_root_.GlobalTheory.Count.IsDSData at hd`. Establish `hunit : ∀ v, ‖B.w v‖ = 1 ∧ B.w v ∈ _root_.Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v)` using `fun v => by`. Establish `hv` using `(hd v).2.2.1`. Unfold `_root_.Formalism.MainNotions.S.IsLowUnit at hv`.
+
+Conclude with `hv`. Use `⟨Submodule.subset_span ⟨[], B.w, Nat.zero_le _, fun v => (hunit v).2, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hs` using `B.tens_spec`. Unfold `_root_.Formalism.MainNotions.S.AutInst.IsHilbTensor at hs`. Establish `hinner : inner ℂ (B.tens B.w) (B.tens B.w) = 1`.
+
+Rewrite using `[hs.1]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, (hunit v).1]`. Simplify using the standard rewrite rules. Establish `hsq : ‖B.tens B.w‖ ^ 2 = 1`.
+
+Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), hinner, RCLike.one_re]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hsq`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.tens_w_mem {d : InfinitePlace B.I.F → ℝ}
     (h : _root_.GlobalTheory.Count.IsDSData B d) (P : ℕ) :
     B.tens B.w ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B P ∧ ‖B.tens B.w‖ = 1 := by
@@ -103,6 +118,17 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.ten
     rw [← inner_self_eq_norm_sq (𝕜 := ℂ), hinner, RCLike.one_re]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hsq
 
+/- English proof (translation)
+Establish `hm : ∀ t : ℝ, Formalism.REAL.inG ε (!![(t : ℂ) * Complex.I])`. Introduce `t`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Apply the tactic sequence `by_cases h : ε 0 = true <;> simp [Formalism.REAL.Jm, Matrix.mul_apply, h]`. Use `⟨fun _ => ⟨!![((1 : ℝ) : ℂ) * Complex.I], hm 1⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.trace, Matrix.vecMul, dotProduct]`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨X, hX⟩ -`. Establish `h0 : (X 0 0).re = 0`. Use `congrArg Complex.re (congrFun (congrFun hX 0) 0)` as an intermediate fact. Apply the tactic sequence `by_cases h : ε 0 = true <;> simp [Formalism.REAL.Jm, Matrix.mul_apply, h] at this <;> linarith`.
+
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun _ => (X 0 0).im, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Complex.ext_iff, h0]`.
+-/
 example (ε : Fin 1 → Bool) : ∃ E : Fin 1 → gLie ε, IsONBasis E := by
   have hm : ∀ t : ℝ, Formalism.REAL.inG ε (!![(t : ℂ) * Complex.I]) := by
     intro t

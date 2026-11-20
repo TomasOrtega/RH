@@ -29,6 +29,9 @@ def wtZeroSubring {S : Scheme.{0}} {H : Over S} [GrpObj H] {X : Type} [AddCommGr
   neg_mem' := fun {a} ha Y t g h h' => by
     rw [map_neg, map_neg, ha Y t g h h', mul_neg]
 
+/- English proof (translation)
+Introduce `Y t g h h'`. Rewrite using `[charUnit_zero_val, map_one, _root_.one_mul]`. Use `(appLE_appLE _ H.hom (U := ⊤) le_top h' a).trans (Eq.trans ?_ (appLE_appLE _ H.hom (U := ⊤) le_top h a).symm)` and prove the remaining obligations. Conclude with `congrArg (fun ψ : Γ(S, ⊤) ⟶ Γ(Y.left, ⊤) => ψ.hom a) (appLE_of_eq ((Over.w _).trans (Over.w _).symm) _ _ _ _)`.
+-/
 theorem hasWt_zero_appLE_base {S : Scheme.{0}} {H : Over S} [GrpObj H] {X : Type} [AddCommGroup X]
     (i : splitTorus S X ⟶ H) (V : H.left.Opens) (a : Γ(S, ⊤)) :
     HasWt i V ((H.hom.appLE ⊤ V le_top).hom a) 0 := by
@@ -38,6 +41,17 @@ theorem hasWt_zero_appLE_base {S : Scheme.{0}} {H : Over S} [GrpObj H] {X : Type
   exact congrArg (fun ψ : Γ(S, ⊤) ⟶ Γ(Y.left, ⊤) => ψ.hom a)
     (appLE_of_eq ((Over.w _).trans (Over.w _).symm) _ _ _ _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Take `⟨p, rfl⟩` from `aeval_ratio_surjective R N a v`. Establish `e` using `congrArg (fun t => t p) (appLE_comp_aeval_ratio (φ := φ) (hi := h))`. Use `(show _ = _ from e) ▸ ?_` and prove the remaining obligations.
+
+Use `clear e`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`. Rewrite using `[MvPolynomial.eval₂Hom_C]`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`.
+
+Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `mul_mem hp (Subring.subset_closure (Or.inr ⟨j, rfl⟩))`.
+
+Introduce `hu`. Establish `: Subring.closure (Set.range ((φ ≫ PSpace.str R N).appLE ⊤ W le_top).hom ∪ Set.range (pullRatio φ W a h)) ≤ (φ.appLE (chart R N a) W h).hom.range`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨v, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `⟨_, appLE_appLE φ (PSpace.str R N) (le_top : chart R N a ≤ _) h v⟩`.
+
+Conclude with `⟨_, rfl⟩`. Conclude with `this hu`.
+-/
 theorem mem_range_appLE_chart_iff {R : Type} [CommRing R] {N : ℕ} {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N)
     (W : Y.Opens) (a : Fin (N + 1)) (h : W ≤ φ ⁻¹ᵁ chart R N a) (u : Γ(Y, W)) :
     u ∈ Set.range (φ.appLE (chart R N a) W h).hom ↔
@@ -66,6 +80,29 @@ theorem mem_range_appLE_chart_iff {R : Type} [CommRing R] {N : ℕ} {Y : Scheme.
       · exact ⟨_, rfl⟩
     exact this hu
 
+/- English proof (translation)
+Establish `hne : Nonempty {i // C.wt i = C.c₀}`. Take `⟨y⟩` from `‹Nonempty Y›`. Take `⟨a, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (C.cover.ge (Set.mem_univ y))`. Conclude with `⟨a⟩`. Take `⟨n, ⟨e₀⟩⟩` from `Finite.exists_equiv_fin {i // C.wt i = C.c₀}`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨N, rfl⟩ : ∃ N, n = N + 1 := by`. Consider the cases of `n with`. Consider the case `zero => exact (e₀ hne.some).elim0`. Consider the case `succ N => exact ⟨N, rfl⟩`. Set `e` to `e₀.symm`.
+
+Establish `hC : IsCoordFamily (fun i : Fin (N + 1) => C.W (e i)) (fun i j => C.r (e i) (e j).1)` using `{ cover := (e.iSup_comp (g := C.W)).trans C.cover self := fun i => C.r_self _ mul := fun i j k => (C.trans _ _ _).symm basicOpen_le := fun i j => (C.inter _ _).ge.trans inf_le_right }`. Take `⟨φ, hφ, hpre, hr⟩ : ∃ φ : Y ⟶ PSpace R N, φ ≫ PSpace.str R N = f ∧ ∃ hpre : ∀ i, φ ⁻¹ᵁ chart R N i = C.W (e i), ∀ i j, pullRatio φ (C.W (e i)) i (hpre i).ge j = C.r (e i) (e j).1` from `⟨hC.toHom f, hC.toHom_str f, hC.toHom_preimage f, hC.pullRatio_toHom f⟩`. Establish `haff : IsAffineHom φ` using `isAffineHom_of_forall_exists_isAffineOpen φ fun x => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((iSup_chart R N).ge (Set.mem_univ x))`. Conclude with `⟨_, hi, isAffineOpen_chart R N i, (hpre i).symm ▸ C.aff _⟩`.
+
+Establish `hq : ∀ i, C.W (e i) = φ.toImage ⁻¹ᵁ φ.imageι ⁻¹ᵁ chart R N i` using `fun i => by`. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.Hom.toImage_imageι, hpre]`. Establish `hV : ∀ i, IsAffineOpen (φ.imageι ⁻¹ᵁ chart R N i)` using `fun i => (isAffineOpen_chart R N i).preimage _`. Establish `hcov : ⨆ i, φ.imageι ⁻¹ᵁ chart R N i = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_chart, Scheme.Hom.preimage_top]`.
+
+Use `isProper_str R N` as an intermediate fact. Use `⟨φ.image, φ.imageι ≫ PSpace.str R N, φ.toImage, by rw [Scheme.Hom.toImage_imageι_assoc, hφ], inferInstance, ?_, fun a => φ.imageι ⁻¹ᵁ chart R N (e₀ a), (e₀.iSup_comp (g := fun i => φ.imageι ⁻¹ᵁ chart R N i)).trans hcov, fun a => ?_⟩` and prove the remaining obligations. Use `isAffineHom_of_forall_exists_isAffineOpen _ fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov.ge (Set.mem_univ x))`. Conclude with `⟨_, hi, hV i, hq i ▸ C.aff _⟩`.
+
+Take `⟨i, rfl⟩` from `e.surjective a`. Establish `hi : e₀ (e i) = i` using `e₀.apply_symm_apply i`. Use `beta_reduce`. Rewrite using `[hi]`. Use `⟨hV i, hq i, ?_, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (W : Y.Opens) (h : W = φ.toImage ⁻¹ᵁ φ.imageι ⁻¹ᵁ chart R N i), Function.Injective (φ.toImage.appLE _ W h.le).hom`. Introduce and unpack `_ rfl`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `φ.toImage_app_injective ⟨_, isAffineOpen_chart R N i⟩`. Conclude with `key _ (hq i)`.
+
+Establish `hs : {v | ∃ j, C.wt j = C.c₀ ∧ v = C.r (e i) j} = Set.range (pullRatio φ (C.W (e i)) i (hpre i).ge)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨e₀ ⟨j, hj⟩, (hr i _).trans (by rw [show e (e₀ ⟨j, hj⟩) = ⟨j, hj⟩ from e₀.symm_apply_apply _])⟩`.
+
+Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨_, (e j).2, hr i j⟩`. Rewrite using `[hs, ← hφ, ← mem_range_appLE_chart_iff]`. Establish `hc : ∀ v, (φ.toImage.appLE _ _ (hq i).le).hom ((φ.imageι.app (chart R N i)).hom v) = (φ.appLE (chart R N i) _ (hpre i).ge).hom v` using `fun v => by`. Rewrite using `[Scheme.Hom.app_eq_appLE, appLE_appLE]`.
+
+Conclude with `congrArg (fun ψ : _ ⟶ Γ(Y, C.W (e i)) => ψ.hom v) (appLE_of_eq φ.toImage_imageι _ _ _ _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Take `⟨v, rfl⟩` from `φ.imageι.app_surjective _ (isAffineOpen_chart R N i) w`. Conclude with `⟨v, (hc v).symm⟩`.
+
+Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨_, hc v⟩`.
+-/
 theorem Charts.exists_proper_image {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Sp R) (C : Charts Y)
     [Nonempty Y] : ∃ (B : Scheme.{0}) (p : B ⟶ Sp R) (q : Y ⟶ B), q ≫ p = f ∧ IsProper p ∧ IsAffineHom q ∧
       ∃ V : {i // C.wt i = C.c₀} → B.Opens, ⨆ a, V a = ⊤ ∧ ∀ a, IsAffineOpen (V a) ∧ ∃ h : C.W a = q ⁻¹ᵁ V a,
@@ -138,6 +175,11 @@ theorem Charts.exists_proper_image {R : Type} [CommRing R] {Y : Scheme.{0}} (f :
       · rintro ⟨v, rfl⟩
         exact ⟨_, hc v⟩
 
+/- English proof (translation)
+Introduce `K _ H _ _ _ _ _ C d c i hT`. Establish `: Nonempty H.left` using `⟨(η : 𝟙_ (Over (Sp K)) ⟶ H).left (⊥ : PrimeSpectrum K)⟩`. Take `⟨B, p, q, hq, hp, ha, V, hV, h⟩` from `C.exists_proper_image H.hom`. Use `⟨Over.mk p, Over.homMk q hq, hp, ha, V, hV, fun a => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂, h₃, h₄⟩` from `h a`.
+
+Use `⟨h₁, h₂, h₃, fun u => ⟨fun hu => (h₄ u).2 (hT.gen a u hu), fun hu => ?_⟩⟩` and prove the remaining obligations. Use `(Subring.closure_le (t := wtZeroSubring i (C.W a))).2 ?_ ((h₄ u).1 hu)` and prove the remaining obligations. Introduce and unpack `_ (⟨v, rfl⟩ | ⟨j, hj, rfl⟩)`. Conclude with `hasWt_zero_appLE_base i _ v`. Conclude with `hT.inv a j hj`.
+-/
 theorem Charts.Torus.exists_proper_quotient :
     ∀ (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] [IsCommMonObj H] [Smooth H.hom] [IsSeparated H.hom] [QuasiCompact H.hom] (C : Charts H.left) (d : ℕ) (c : Fin d → C.Cl) (i : splitTorus (Sp K) (Fin d → ℤ) ⟶ H), C.Torus c i → ∃ (B : Over (Sp K)) (q : H ⟶ B), IsProper B.hom ∧ IsAffineHom q.left ∧ ∃ V : {i // C.wt i = C.c₀} → B.left.Opens, ⨆ a, V a = ⊤ ∧ ∀ a, IsAffineOpen (V a) ∧ ∃ h : C.W a = q.left ⁻¹ᵁ V a, Function.Injective (q.left.appLE (V a) (C.W a) h.le).hom ∧ ∀ u, HasWt i (C.W a) u 0 ↔ u ∈ Set.range (q.left.appLE (V a) (C.W a) h.le).hom := by
   intro K _ H _ _ _ _ _ C d c i hT

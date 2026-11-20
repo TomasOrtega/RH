@@ -11,6 +11,11 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization.ZU.SphericalWhittakerGL2
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.exists_unit_eq_uniformizer_zpow_ord_mul F (unifUnit F ^ a)`. Take `⟨v, hv⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.exists_unit_eq_uniformizer_zpow_ord_mul F (unifUnit F ^ b)`. Rewrite `hu`, `hv` using `[ord_unifUnit_zpow]`. Use `⟨GLnLocal.integralGLHom F 2 (d2 u v), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Rewrite using `[Units.val_mul, Iwasawa.coe_torusPow]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[d2, GLnLocal.integralGLHom, Matrix.diagonal_mul, ← hu, ← hv]`.
+-/
 theorem diag_uniformizer_eq_torus_mul_integral {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (a b : ℤ) :
     ∃ k ∈ GLnLocal.integralGL F 2, (d2 (unifUnit F ^ a) (unifUnit F ^ b) : GL (Fin 2) F) =
@@ -25,6 +30,13 @@ theorem diag_uniformizer_eq_torus_mul_integral {F : Type} [Field F] [ValuativeRe
   fin_cases i <;> fin_cases j <;>
     simp [d2, GLnLocal.integralGLHom, Matrix.diagonal_mul, ← hu, ← hv]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ψ₀ hψ₀ y a b`. Take `⟨k, hk, hdg⟩` from `diag_uniformizer_eq_torus_mul_integral (F := F) a b`. Establish `hanti : Antitone (![a, b] : Fin 2 → ℤ) ↔ b ≤ a`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Simplify using `using h (show (0 : Fin 2) ≤ 1 by decide)`. Apply the tactic sequence `intro h i j hij fin_cases i <;> fin_cases j <;> simp_all`. Establish `hrho : Spherical.rhoPair (![a, b] : Fin 2 → ℤ) = a - b`. Simplify using `[Spherical.rhoPair, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdg, Spherical.sphericalWhittaker_mul_right hψ₀ _ _ hk, Spherical.sphericalWhittaker_torusPow hψ₀]`. Distinguish the cases in `h : b ≤ a`. Rewrite using `[if_pos (hanti.2 h), if_pos h, Spherical.halfModulus_eq, hrho]`. Rewrite using `[if_neg (fun h' => h (hanti.1 h')), if_neg h]`.
+-/
 theorem spherical_whittaker_GL2_uniformizer_diag : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ψ₀ : AddChar F ℂ), (∀ x ∈ 𝒪[F], ψ₀ x = 1) → ∀ (y : Fin 2 → ℂˣ) (a b : ℤ), Spherical.sphericalWhittaker ψ₀ y (d2 (unifUnit F ^ a) (unifUnit F ^ b)) = if b ≤ a then Spherical.sqrtQ F ^ (-(a - b)) * Spherical.evalAt y (Spherical.schur ![a, b]) else 0 := by
   intro F _ _ _ _ ψ₀ hψ₀ y a b
   obtain ⟨k, hk, hdg⟩ := diag_uniformizer_eq_torus_mul_integral (F := F) a b

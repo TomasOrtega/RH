@@ -40,6 +40,15 @@ section Gauss
 open scoped Classical
 open GlobalTheory.VacLn
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ τ hCM hStd hX hW f g ⟨ε, hg⟩ hg0 ⟨ε', hf⟩`. Take `⟨D, hDu⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ _ _ M.co hStd`. Take `⟨J, e, e', hJ, he, hJe, he1, he2, hy⟩` from `GlobalTheory.T.exists_darboux_complex_structure_two_involutions F E σ (Fin n) (Fin d) (Fin n × Fin d) τ _ _ M.co X.θ W.θ ε ε' hCM hX hW`. Establish `hz : ∀ (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (t : ℝ), M.co.rho ψ (realAd F t • u) 0 = 0`. Introduce `u t`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Establish `hA : ∀ u, At (evI F) u → ∀ h : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) h (D u h)` using `fun u hu h => (GlobalTheory.RealLift.actsLaws F _ h (D u h) h).1 _ (hz u) (hDu u hu h).1`. Establish `hDx : ∀ u, At (evI F) u → ∀ (h : SInf F (Fin n × Fin d)) x, D u h x = fderiv ℝ h x (coord M.co u).1 - 2 * Real.pi * Complex.I * (trPair F _ x (coord M.co u).2 : ℝ) * h x` using `fun u hu h x => (hDu u hu h).2 x`. Use `GlobalTheory.T.schwartz_complexStructure_vacuum_solution_eq_smul (trPair F _) (fun y h => GlobalTheory.T.archimedeanTracePairingBilinear_nondegenerate y h) J e e' hJ he hJe he1 he2 f g hg0 (fun y x => ?_) fun y x => ?_` and prove the remaining obligations.
+
+Take `⟨u, -, u₁, hu, -, hu₁, -, hc₁, h0, -, h1⟩` from `hy y`. Use `congrArg (fun k : SInf F _ => k x) (hg u u₁ hu hu₁ hc₁ _ _ (hA u hu g) (hA u₁ hu₁ g))` as an intermediate fact. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[hDx u hu, hDx u₁ hu₁, h0, h1]`. Then use the resulting hypothesis. Take `⟨u, u', -, hu, hu', -, hc', -, h0, h', -⟩` from `hy y`.
+
+Use `congrArg (fun k : SInf F _ => k x) (hf u u' hu hu' hc' _ _ (hA u hu f) (hA u' hu' f))` as an intermediate fact. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[hDx u hu, hDx u' hu', h0, h']`. Then use the resulting hypothesis.
+-/
 theorem gauss_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w), IsCMExt F E σ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
@@ -66,6 +75,15 @@ theorem gauss_line : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     simp only [SchwartzMap.smul_apply, smul_eq_mul] at this
     rwa [hDx u hu, hDx u' hu', h0, h'] at this
 
+/- English proof (translation)
+Take `⟨D, hDu⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ _ _ M.co hStd`. Establish `hz : ∀ (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (t : ℝ), M.co.rho ψ (realAd F t • u) 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+
+Establish `hA : ∀ u, At (evI F) u → ∀ h : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) h (D u h)` using `fun u hu h => (GlobalTheory.RealLift.actsLaws F _ h (D u h) h).1 _ (hz u) (hDu u hu h).1`. Establish `hDx : ∀ u, At (evI F) u → ∀ (h : SInf F (Fin n × Fin d)) x, D u h x = fderiv ℝ h x (coord M.co u).1 - 2 * Real.pi * Complex.I * (trPair F _ x (coord M.co u).2 : ℝ) * h x` using `fun u hu h x => (hDu u hu h).2 x`. Use `⟨D, hA, fun u hu f f₁ h => (GlobalTheory.RealLift.actsLaws F _ f f₁ (D u f)).2.2.1 _ h (hA u hu f), fun ι s u hu f => ?_⟩` and prove the remaining obligations. Establish `hs : At (evI F) (∑ i ∈ s, u i)` using `fun a ha => by`. Rewrite using `[Finset.smul_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => hu i a ha`. Set `ev : AF F →+* mixedEmbedding.mixedSpace F` to `(InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)`. Establish `hev : ∀ a, evI F a = ev a` using `fun _ => rfl`. Establish `hc : coord M.co (∑ i ∈ s, u i) = ∑ i ∈ s, coord M.co (u i)`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`.
+
+Simplify using `only [coord, hev, map_sum, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply]`. Use extensionality with `x`. Rewrite using `[hDx _ hs, hc, SchwartzMap.sum_apply, Finset.sum_congr rfl fun i _ => hDx _ (hu i) f x]`. Simplify using `only [Prod.fst_sum, Prod.snd_sum, map_sum, Finset.sum_sub_distrib, Complex.ofReal_sum, Finset.mul_sum, Finset.sum_mul]`.
+-/
 theorem exists_der {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hStd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) :
     ∃ Dr : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → (SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)),
@@ -97,6 +115,9 @@ theorem exists_der {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
 
 end Gauss
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`. Take the linear combination `(-(v.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : R)`.
+-/
 theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (v w : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) :
     schr ψ v (schr ψ w Φ) = ψ (⅟(2 : R) * (v.1 ⬝ᵥ w.2 - w.1 ⬝ᵥ v.2)) • schr ψ (v + w) Φ := by
@@ -108,6 +129,13 @@ theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hS` using `GlobalTheory.ChainFr.Model.isCartanInv_cart A`. Establish `hT` using `GlobalTheory.ChainFr.Model.isCartanInv_cart B`. Take `⟨Q₁, h1⟩` from `GlobalTheory.FockCreaDir.crea_ptF D V W A B θ ψ hψ hθ f hf.1 τ z P`. Establish `h2` using `GlobalTheory.ArchRec.DerFock.pure_deriv (P := IsThetaFunO ψ V W) (A := aPlusAll (heisO ψ V W) θ (fun τ => cplxO (A.cart τ) (B.cart τ)) A.onb B.onb) (B := annih (heisO ψ V W) θ τ (cplxO (A.cart τ) (B.cart τ)) z) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTh …`. Take `⟨Q₂, h2⟩ : ∃ Q₂, annih (heisO ψ V W) θ τ (cplxO (A.cart τ) (B.cart τ)) z (ptF ψ θ A B f P) = ptF ψ θ A B f Q₂` from `⟨_, h2⟩`.
+
+Use `⟨(1 / 2 : ℂ) • (Q₁ + Q₂), ?_⟩` and prove the remaining obligations. Establish `e : ptF ψ θ A B f ((1 / 2 : ℂ) • (Q₁ + Q₂)) = (1 / 2 : ℂ) • (ptF ψ θ A B f Q₁ + ptF ψ θ A B f Q₂)`. Unfold `ptF`. Rewrite using `[map_smul, map_add]`. Rewrite using `[e, ← h1, ← h2, crea, annih]`.
+
+Use `module`.
+-/
 theorem dRho_ptF {V W : HSp D} (A : Fr V) (B : Fr W) {θ : InfFam D} {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {f : WO V W → ℂ} (hf : IsVacF ψ θ A B f) (τ : D.what₂.Tau)
     (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) (P : PolF D W.rank V.rank) :
@@ -139,27 +167,45 @@ theorem dRho_ptF {V W : HSp D} (A : Fr V) (B : Fr W) {θ : InfFam D} {ψ : AddCh
 def toO {m k : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (u : Matrix (Fin m) (Fin k) (AE D)) : Mx D k m :=
   HMul.hMul (uᵀ) (G.map (incA D))
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hG, Matrix.mul_nonsing_inv _ hG, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem map_mul_inv {m : ℕ} {G : Matrix (Fin m) (Fin m) D.host.E} (hG : IsUnit G.det) :
     G.map (incA D) * (G⁻¹).map (incA D) = 1 ∧ (G⁻¹).map (incA D) * G.map (incA D) = 1 := by
   rw [← Matrix.map_mul, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hG, Matrix.mul_nonsing_inv _ hG,
     Matrix.map_one _ (map_zero _) (map_one _)]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptO_eq {m k : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (x : Mx D k m) :
     GlobalTheory.TripleRead.ptO G (Equiv.refl (Fin k)) x = (HMul.hMul x ((G⁻¹).map (incA D)))ᵀ := rfl
 
+/- English proof (translation)
+Rewrite using `[ptO_eq, toO, Matrix.mul_assoc, (map_mul_inv hG).1, Matrix.mul_one, transpose_transpose]`.
+-/
 theorem ptO_toO {m k : ℕ} {G : Matrix (Fin m) (Fin m) D.host.E} (hG : IsUnit G.det) (u : Matrix (Fin m) (Fin k) (AE D)) :
     GlobalTheory.TripleRead.ptO G (Equiv.refl (Fin k)) (toO G u) = u := by
   rw [ptO_eq, toO, Matrix.mul_assoc, (map_mul_inv hG).1, Matrix.mul_one, transpose_transpose]
 
+/- English proof (translation)
+Rewrite using `[ptO_eq, toO, transpose_transpose, Matrix.mul_assoc, (map_mul_inv hG).2, Matrix.mul_one]`.
+-/
 theorem toO_ptO {m k : ℕ} {G : Matrix (Fin m) (Fin m) D.host.E} (hG : IsUnit G.det) (x : Mx D k m) :
     toO G (GlobalTheory.TripleRead.ptO G (Equiv.refl (Fin k)) x) = x := by
   rw [ptO_eq, toO, transpose_transpose, Matrix.mul_assoc, (map_mul_inv hG).2, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[ptO_eq, ptO_eq, Matrix.smul_mul, transpose_smul]`.
+-/
 theorem ptO_smul {m k : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (a : AF D.host.F) (x : Mx D k m) :
     GlobalTheory.TripleRead.ptO G (Equiv.refl (Fin k)) (a • x) = a • GlobalTheory.TripleRead.ptO G (Equiv.refl (Fin k)) x := by
   rw [ptO_eq, ptO_eq, Matrix.smul_mul, transpose_smul]
 
+/- English proof (translation)
+Consider the cases of `ε`. Simplify using `[sgn, sgE]`. Use extensionality with `i j`. Simplify using `[HSpace.gram, sgE]`.
+-/
 theorem gram_sgn (ε : Bool) (M : HSp D) : (sgn ε M).gram = -(sgE (D := D) ε • M.gram) := by
   cases ε
   · simp [sgn, sgE]
@@ -168,6 +214,11 @@ theorem gram_sgn (ε : Bool) (M : HSp D) : (sgn ε M).gram = -(sgE (D := D) ε �
 variable {ψ : AddChar (AF D.host.F) ℂ} {ε : Bool} {M X : HSp D} {Xs : Spc D.host.F D.host.E M.rank}
   {Ws : Spc D.host.F D.host.E X.rank} (Mo : Model D.sp.cm.sig Xs Ws)
 
+/- English proof (translation)
+Establish `hdet : IsUnit (sgn ε M).gram.det` using `(Formalism.L2.Theta.gram_det_ne (sgn ε M)).isUnit`. Establish `hG : ((sgn ε M).gram.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = ((sgn ε M).gram.map (incA D))ᵀ`. Use extensionality with `i j`. Use `show cA D (incA D ((sgn ε M).gram i j)) = incA D ((sgn ε M).gram j i)`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]`.
+
+Set `T : Matrix (Fin M.rank) (Fin X.rank) (AE D) ≃+ Mx D X.rank M.rank` to `{ toFun := toO (sgn ε M).gram invFun := GlobalTheory.TripleRead.ptO (sgn ε M).gram (Equiv.refl (Fin X.rank)) left_inv := ptO_toO hdet right_inv := toO_ptO hdet map_add' := fun u v => by simp only [toO, transpose_add, Matrix.add_mul] }`. Take `⟨co, hco⟩` from `GlobalTheory.SquareAgree.exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (Equiv.refl _) (X.gram.map (incA D)) (incA D D.host.xi0) (map_mul_inv hdet).2 hG (JV := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D. …`. Conclude with `⟨co, fun x => (congrArg co.e (toO_ptO hdet x)).symm.trans (hco _)⟩`.
+-/
 theorem exists_co (hX : Xs.J = sgE (D := D) ε • M.gram)
     (hW : Ws.J = D.host.xi0 • (X.gramᵀ).submatrix (Equiv.refl (Fin X.rank)) (Equiv.refl (Fin X.rank))) :
     ∃ co : Darboux (symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) 1 (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F X.gramᵀ)
@@ -193,11 +244,17 @@ theorem exists_co (hX : Xs.J = sgE (D := D) ε • M.gram)
     (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul _ _) Mo.co T (fun _ => rfl)
   exact ⟨co, fun x => (congrArg co.e (toO_ptO hdet x)).symm.trans (hco _)⟩
 
+/- English proof (translation)
+Simplify using `only [Darboux.rho, schr_schr, thetaSum, map_add, Pi.smul_apply, smul_eq_mul, tsum_mul_left, co.form]`.
+-/
 theorem thetaSum_rho_rho {F : Type} [Field F] [NumberField F] {U : Type} [AddCommGroup U] [Module (AF F) U]
     {B : U → U → AF F} {κ : Type} [Fintype κ] (co : Darboux B κ) (ψ : AddChar (AF F) ℂ) (Φ : (κ → AF F) → ℂ) (x y : U) :
     thetaSum F (co.rho ψ x (co.rho ψ y Φ)) = ψ (⅟(2 : AF F) * B x y) * thetaSum F (co.rho ψ (x + y) Φ) := by
   simp only [Darboux.rho, schr_schr, thetaSum, map_add, Pi.smul_apply, smul_eq_mul, tsum_mul_left, co.form]
 
+/- English proof (translation)
+Rewrite using `[thetaSum_rho_rho, ← GlobalTheory.ThetaTransform.symplO_eq_symp hA hB, GlobalTheory.ThetaTransform.invOf_two_eq]`. Both sides reduce to the same expression.
+-/
 theorem heisO_thetaTr {S T : HSp D} {JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E}
     {JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E} {ξ : AE D} {κ : Type} [Fintype κ]
     (co : Darboux (symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) ξ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F JA)
@@ -219,10 +276,26 @@ abbrev dir (θ : InfFam D) (τ : D.what₂.Tau) (z : Matrix (Fin X.rank) (Fin M.
     Matrix (Fin M.rank) (Fin X.rank) (AE D) :=
   GlobalTheory.TripleRead.ptO (sgn ε M).gram (Equiv.refl (Fin X.rank)) (lineAt θ τ z 1)
 
+/- English proof (translation)
+Introduce `a ha` and use `by rw [← ptO_smul, (GlobalTheory.LineRealAd.lineAt_realAd_smul D θ hθ τ z).2 a ha, ptO_eq, Matrix.zero_mul, transpose_zero]`.
+-/
 theorem dir_at {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin X.rank) (Fin M.rank) ℂ) :
     At (evI D.host.F) (dir ε M X θ τ z) := fun a ha => by
   rw [← ptO_smul, (GlobalTheory.LineRealAd.lineAt_realAd_smul D θ hθ τ z).2 a ha, ptO_eq, Matrix.zero_mul, transpose_zero]
 
+/- English proof (translation)
+Take `⟨co, hco⟩` from `exists_co Mo hX hW`. Establish `hr : ∀ x, co.rho ψ x = Mo.co.rho ψ (GlobalTheory.TripleRead.ptO (sgn ε M).gram (Equiv.refl (Fin X.rank)) x)` using `fun x => by`. Simplify using `only [Darboux.rho, hco]`. Establish `hth : ∀ Φ, th ψ ε Mo Φ = GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ` using `fun Φ => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, hr]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `GlobalTheory.ThetaTransform.thetaTr_bij (S := sgn ε M) (T := X) co hψ rfl (one_smul _ _) (fun x => by`. Take `⟨y, z, h⟩` from `hM.rat ((x * (sgn ε M).gram⁻¹)ᵀ)`. Use `⟨y, z, Eq.trans ?_ h⟩` and prove the remaining obligations.
+
+Rewrite using `[hco, ptO_eq]`. Use `congr 1`. Conclude with `(congrArg transpose (Matrix.map_mul (f := incA D))).symm)`. Simplify using `only [hth]`. Use `⟨h1, GlobalTheory.ThetaTransform.thetaTr_smul co, h2, h3, fun τ z Φ hΦ Φ' hΦ' hd => ?_⟩` and prove the remaining obligations.
+
+Establish `hl` using `(GlobalTheory.LineRealAd.lineAt_realAd_smul D θ hθ τ z).1`. Establish `hH : ∀ y x, heisO ψ (sgn ε M) X y (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) x = thetaSum D.host.F (co.rho ψ x (co.rho ψ y Φ))` using `fun y x => heisO_thetaTr (S := sgn ε M) co rfl (one_smul _ _) Φ y x`. Use function extensionality and compare the values at `x`. Use `GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho co ψ inferInstance hψ.1 (lineAt θ τ z 1) Φ hΦ Φ' hΦ' (fun y => by` as an intermediate fact. Simplify using `only [hr, ptO_smul]`.
+
+Conclude with `hd y) x`. Use `Eq.trans ?_ this.deriv` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[hH, hl t]`.
+-/
 theorem th_laws (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) (hX : Xs.J = sgE (D := D) ε • M.gram)
     (hW : Ws.J = D.host.xi0 • (X.gramᵀ).submatrix (Equiv.refl (Fin X.rank)) (Equiv.refl (Fin X.rank)))
     (hM : Mo.IsGood ψ) :
@@ -261,6 +334,15 @@ theorem th_laws (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) 
   funext t
   rw [hH, hl t]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hL` using `fun t => GlobalTheory.OrientedHeis.isLineAt_lineAt hθ t (compAt θ t x)`. Set `a : AF D.host.F` to `⟨0, 1⟩`. Establish `h0` using `hx a (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F))`. Use function extensionality and compare the values at `i j`.
+
+Establish `h1 : finPart D (x i j) = 0`. Establish `h` using `GlobalTheory.LineRealAd.finPart_smul a (x i j)`. Establish `h' : a • x i j = 0` using `congrFun (congrFun h0 i) j`. Rewrite `h` using `[h', RingHom.map_zero]`. Conclude with `(one_mul _).symm.trans h.symm`.
+
+Rewrite using `[Matrix.sum_apply]`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun t' => ?_)` and prove the remaining obligations. Establish `h2 : ∀ t, finPart D (lineAt θ t (compAt θ t x) 1 i j) = 0` using `fun t => congrFun (congrFun ((hL t).2.1 1) i) j`. Rewrite using `[RingHom.map_sub, map_sum, h1, Finset.sum_eq_zero fun t _ => h2 t, sub_zero]`. Establish `h2 : ∀ t, θ t' (infPart D (lineAt θ t (compAt θ t x) 1 i j)) = (if t' = t then ((1 : ℝ) : ℂ) • compAt θ t x else 0) i j` using `fun t => congrFun (congrFun ((hL t).2.2 1 t') i) j`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_sub, map_sum, map_sum, Finset.sum_congr rfl fun t _ => h2 t, ← Matrix.sum_apply, Finset.sum_ite_eq, if_pos (Finset.mem_univ _), Complex.ofReal_one, one_smul]`. Conclude with `sub_self _`.
+-/
 theorem eq_sum_lineAt {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {x : Mx D m n} (hx : At (evI D.host.F) x) :
     x = ∑ t, lineAt θ t (compAt θ t x) 1 := by
   classical
@@ -284,6 +366,9 @@ theorem eq_sum_lineAt {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {x : Mx D 
       Finset.sum_ite_eq, if_pos (Finset.mem_univ _), Complex.ofReal_one, one_smul]
     exact sub_self _
 
+/- English proof (translation)
+Establish `hdet : IsUnit (sgn ε M).gram.det` using `(Formalism.L2.Theta.gram_det_ne (sgn ε M)).isUnit`. Establish `h : At (evI D.host.F) (toO (sgn ε M).gram u)` using `fun a ha => by`. Rewrite using `[toO, ← Matrix.smul_mul, ← transpose_smul, hu a ha, transpose_zero, Matrix.zero_mul]`. Use `conv_lhs => rw [← ptO_toO hdet u, eq_sum_lineAt hθ h, ptO_eq, Matrix.sum_mul, transpose_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => (ptO_eq _ _).symm`.
+-/
 theorem eq_sum_dir {θ : InfFam D} (hθ : IsInfFam θ) {u : Matrix (Fin M.rank) (Fin X.rank) (AE D)}
     (hu : At (evI D.host.F) u) : u = ∑ t, dir ε M X θ t (compAt θ t (toO (sgn ε M).gram u)) := by
   have hdet : IsUnit (sgn ε M).gram.det := (Formalism.L2.Theta.gram_det_ne (sgn ε M)).isUnit
@@ -292,6 +377,11 @@ theorem eq_sum_dir {θ : InfFam D} (hθ : IsInfFam θ) {u : Matrix (Fin M.rank) 
   conv_lhs => rw [← ptO_toO hdet u, eq_sum_lineAt hθ h, ptO_eq, Matrix.sum_mul, transpose_sum]
   exact Finset.sum_congr rfl fun _ _ => (ptO_eq _ _).symm
 
+/- English proof (translation)
+Consider the cases of `ε`. Simplify using `[Fr.cart, frSgn]`. Establish `e' : Formalism.REAL.Jm (fun a => xor true (A.ε t a)) = -Formalism.REAL.Jm (A.ε t)`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`.
+
+Apply the tactic sequence `subst h; cases h' : A.ε t a <;> simp [Formalism.REAL.Jm, h']`. Simplify using `[Formalism.REAL.Jm, h]`. Use `show (A.fr t)⁻¹ * Formalism.REAL.Jm (fun a => xor true (A.ε t a)) * A.fr t = _`. Rewrite using `[e', if_pos rfl, one_smul, Fr.cart, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem cart_frSgn (A : Fr M) (t : D.what₂.Tau) : (frSgn ε A).cart t = -((if ε then 1 else -1 : ℂ) • A.cart t) := by
   cases ε
   · simp [Fr.cart, frSgn]
@@ -303,6 +393,17 @@ theorem cart_frSgn (A : Fr M) (t : D.what₂.Tau) : (frSgn ε A).cart t = -((if 
     show (A.fr t)⁻¹ * Formalism.REAL.Jm (fun a => xor true (A.ε t a)) * A.fr t = _
     rw [e', if_pos rfl, one_smul, Fr.cart, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Use `choose τf h1 h2 h3 using hc`. Establish `he : ∀ w, (τ w).1 = (starRingEnd ℂ).comp (tauE D (τf w))` using `fun w => RingHom.ext (h1 w)`. Establish `hτf : ∀ w, ((starRingEnd ℂ).comp (tauE D (τf w))).comp (algebraMap D.host.F D.host.E) = w.embedding` using `fun w => he w ▸ (τ w).2`. Establish `hinj : Function.Injective τf` using `fun w1 w2 h => by`. Establish `e : w1.embedding = w2.embedding` using `by rw [← hτf w1, ← hτf w2, h]`.
+
+Rewrite using `[← InfinitePlace.mk_embedding w1, ← InfinitePlace.mk_embedding w2, e]`. Establish `hbij : Function.Bijective τf` using `(Fintype.bijective_iff_injective_and_card τf).2 ⟨hinj, (Fintype.card_of_bijective (GlobalTheory.CMTypePlaces.places_bijective D)).symm⟩`. Take `⟨w, rfl⟩` from `hbij.2 t`. Establish `hp : ∀ y, piInf (τ w) y = conj (θ (τf w) (infPart D y))` using `fun y => by`. Rewrite using `[show τ w = ⟨_, hτf w⟩ from Subtype.ext (he w)]`.
+
+Conclude with `GlobalTheory.ConjInfExp.piInf_eq θ hθ (τf w) w (hτf w) y`. Establish `hcomp : ∀ v : Matrix (Fin M.rank) (Fin X.rank) (AE D), compAt θ (τf w) (toO (sgn ε M).gram v) = (v.map (piInf (τ w)))ᴴ * gramAt D (sgn ε M) (τf w)` using `fun v => by`. Rewrite using `[toO, GlobalTheory.OrientedHeis.compAt_mul]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `only [compAt, map_apply, transpose_apply, conjTranspose_apply, hp, RCLike.star_def, Complex.conj_conj]`. Use extensionality with `i j`. Conclude with `GlobalTheory.FockCompare.comp_incA hθ (τf w) _`. Take `⟨s1, s2, -⟩` from `GlobalTheory.ChainFr.Model.isCartanInv_cart (frSgn ε A) (τf w)`. Establish `hX : Xs.θ w = -(frSgn ε A).cart (τf w)` using `by rw [cart_frSgn, neg_neg, h2]`.
+
+Establish `hW : (Ws.θ w)ᵀ = (B.cart (τf w))ᴴ` using `by rw [h3]; rfl`. Generalize the expression as in `(frSgn ε A).cart (τf w) = s at s1 s2 hX ⊢`. Establish `s3 : sᴴ * gramAt D (sgn ε M) (τf w) = gramAt D (sgn ε M) (τf w) * s` using `by conv_rhs => rw [← s2, Matrix.mul_assoc, s1, Matrix.mul_one]`. Rewrite using `[hcomp, hcomp, h, hX, hW, cplxO, conjTranspose_smul, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_neg, Matrix.smul_mul]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, s3, Complex.star_def, Complex.conj_I, neg_smul, smul_neg, neg_neg]`.
+-/
 theorem compAt_cplx {θ : InfFam D} (hθ : IsInfFam θ) (A : Fr M) (B : Fr X)
     {τ : ∀ w : InfinitePlace D.host.F, EmbOver D.host.E w}
     (hc : ∀ w, ∃ t, (∀ x, (τ w).1 x = conj (tauE D t x)) ∧ Xs.θ w = (if ε then 1 else -1 : ℂ) • A.cart t ∧
@@ -342,9 +443,15 @@ theorem compAt_cplx {θ : InfFam D} (hθ : IsInfFam θ) (A : Fr M) (B : Fr X)
   simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, s3, Complex.star_def, Complex.conj_I, neg_smul, smul_neg,
     neg_neg]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+-/
 theorem pureA_mem {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ) {g : (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ}
     (hg : g ∈ SB (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) : pureA F f g ∈ schA F κ := Submodule.subset_span ⟨f, g, hg, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun x z hz => congrArg g (funext fun i => ?_), pureA_mem f hg⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz, add_zero]`.
+-/
 theorem rest_fin {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ) {g : (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ}
     (hg : g ∈ SB (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evI F) f (fun x => g fun i => (x i).2) := by
   refine ⟨fun x z hz => congrArg g (funext fun i => ?_), pureA_mem f hg⟩
@@ -374,6 +481,9 @@ variable {Dr : Matrix (Fin M.rank) (Fin X.rank) (AE D) →
     ActsD (evI D.host.F) (Mo.heisLine ψ u) f (Dr u f))
 include hD
 
+/- English proof (translation)
+The claim follows from `(th_laws Mo hψ hθ hX hW hM).2.2.2.2 t z _ (pureA_mem f hg) _ (pureA_mem _ hg) (hD _ (dir_at hθ t z) f _ (rest_fin f hg))`.
+-/
 theorem dRho_thL {g : (Fin M.rank × Fin X.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) → ℂ} (hg : g ∈ SB _) (t : D.what₂.Tau)
     (z : Matrix (Fin X.rank) (Fin M.rank) ℂ) (f : SInf D.host.F (Fin M.rank × Fin X.rank)) :
     Formalism.IndefR.Datum.dRho (heisO ψ (sgn ε M) X) θ t z (thL Mo hψ hθ hX hW hM hg f) =
@@ -382,6 +492,27 @@ theorem dRho_thL {g : (Fin M.rank × Fin X.rank → Formalism.MainNotions.Global
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨tadd, tsm, tinj, tth, -⟩` from `th_laws Mo hψ hθ hX hW hM`. Establish `t0 : th ψ ε Mo 0 = 0` using `by simpa only [zero_smul] using tsm 0 0`. Take `⟨An, hAn⟩ : ∃ An : D.what₂.Tau → Matrix (Fin X.rank) (Fin M.rank) ℂ → (SInf D.host.F (Fin M.rank × Fin X.rank) →L[ℂ] SInf D.host.F (Fin M.rank × Fin X.rank)), ∀ t z f, An t z f = Dr (dir ε M X θ t z) f + Complex.I • Dr (dir ε M X θ t (cplxO (A.cart t) (B.cart t) z)) f` from `⟨fun t z => Dr (dir ε M X θ t z) + Complex.I • Dr (dir ε M X θ t (cplxO (A.cart t) (B.cart t) z)), fun _ _ _ => rfl⟩`. Establish `key : ∀ Ψ ∈ schA D.host.F (Fin M.rank × Fin X.rank), ∃ s : (Fin M.rank × Fin X.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) → SInf D.host.F (Fin M.rank × Fin X.rank), (∀ a y, Ψ (GlobalTheory.RealLift.ptAt a y) = s y a) ∧ ∀ t z, ∃ Ψ' ∈ schA D.host. …`. Introduce `Ψ hΨ`.
+
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Ψ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `⟨fun y => g y • f, fun a y => ?_, fun t z => ⟨_, pureA_mem (An t z f) hg, fun a y => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealLift.pureA_ptAt, mul_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[GlobalTheory.RealLift.pureA_ptAt, mul_comm, map_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `annih _ θ t _ z (thL Mo hψ hθ hX hW hM hg f) = thL Mo hψ hθ hX hW hM hg (An t z f)`. Rewrite using `[annih, dRho_thL Mo hψ hθ hX hW hM hD, dRho_thL Mo hψ hθ hX hW hM hD, hAn, map_add, map_smul]`.
+
+Consider the case `zero`. Use `⟨0, fun _ _ => rfl, fun t z => ⟨0, zero_mem _, fun a y => by rw [Pi.zero_apply y, map_zero]; rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[t0]`. Simplify `GlobalTheory.FockIndep.annih_smul hψ hθ t (cplxO (A.cart t) (B.cart t)) z 0 (GlobalTheory.OrientedHeis.theta_zero (ψ := ψ) (S := sgn ε M) (T := X))` using `only [zero_smul]`. Consider the case `add Ψ₁ Ψ₂ m1 m2 h1 h2`.
+
+Take `⟨s₁, a1, b1⟩` from `h1`. Take `⟨s₂, a2, b2⟩` from `h2`. Use `⟨s₁ + s₂, fun a y => by rw [Pi.add_apply, a1, a2]; rfl, fun t z => ?_⟩` and prove the remaining obligations. Take `⟨Ψ₁', n1, c1, d1⟩` from `b1 t z`. Take `⟨Ψ₂', n2, c2, d2⟩` from `b2 t z`.
+
+Use `⟨Ψ₁' + Ψ₂', add_mem n1 n2, fun a y => by rw [Pi.add_apply, c1, c2, Pi.add_apply, map_add]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[tadd _ m1 _ m2, tadd _ n1 _ n2, ← d1, ← d2]`. Conclude with `GlobalTheory.FockIndep.annih_add hψ hθ _ _ _ ((tth _).2 ⟨_, m1, rfl⟩) ((tth _).2 ⟨_, m2, rfl⟩)`. Consider the case `smul c Ψ₁ m1 h1`. Take `⟨s₁, a1, b1⟩` from `h1`.
+
+Use `⟨c • s₁, fun a y => by rw [Pi.smul_apply, a1]; rfl, fun t z => ?_⟩` and prove the remaining obligations. Take `⟨Ψ₁', n1, c1, d1⟩` from `b1 t z`. Use `⟨c • Ψ₁', Submodule.smul_mem _ c n1, fun a y => by rw [Pi.smul_apply, c1, Pi.smul_apply, map_smul]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[tsm, tsm, ← d1]`. Conclude with `GlobalTheory.FockIndep.annih_smul hψ hθ _ _ _ c ((tth _).2 ⟨_, m1, rfl⟩)`.
+
+Take `⟨f, f0, hf, -⟩` from `GlobalTheory.ChainFr.Model.exists_vac A B hψ hθ`. Take `⟨Ψ, hΨ, rfl⟩` from `(tth f).1 hf.1`. Take `⟨s, hs, hs'⟩` from `key Ψ hΨ`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, Ψ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `f0 ((congrArg _ (funext fun x => not_not.1 fun hx => h ⟨x, hx⟩)).trans t0)`. Establish `ex : x = GlobalTheory.RealLift.ptAt (fun i => evI D.host.F (x i)) fun i => (x i).2`. Use function extensionality and compare the values at `fun i => Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm_apply_apply _).symm rfl`. Use `⟨s fun i => (x i).2, fun h => hx (by rw [ex, hs]; exact DFunLike.congr_fun h _), fun t z => ?_⟩` and prove the remaining obligations. Take `⟨Ψ', n, c, d⟩` from `hs' t z`.
+
+Establish `h0 : Ψ' = 0` using `tinj _ n _ (zero_mem _) (by rw [← d, t0]; exact hf.2 t z)`. Rewrite using `[← hAn]`. Use `DFunLike.ext _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← c, h0]`. Both sides reduce to the same expression.
+-/
 theorem exists_vacuum (A : Fr (sgn ε M)) (B : Fr X) : ∃ g₀ : SInf D.host.F (Fin M.rank × Fin X.rank), g₀ ≠ 0 ∧
     ∀ t z, Dr (dir ε M X θ t z) g₀ + Complex.I • Dr (dir ε M X θ t (cplxO (A.cart t) (B.cart t) z)) g₀ = 0 := by
   obtain ⟨tadd, tsm, tinj, tth, -⟩ := th_laws Mo hψ hθ hX hW hM
@@ -445,6 +576,29 @@ end Main
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, -, tinj, tth, -⟩` from `th_laws Mo hψ hθ hX hW hM`. Take `⟨Dr, hD1, hD2, hD3⟩` from `exists_der Mo hStd`. Take `⟨g₀, g0, hg₀⟩` from `exists_vacuum Mo hψ hθ hX hW hM hD1 (frSgn ε A) B`. Establish `hg` using `GlobalTheory.RealLift.indicator_intPts_mem_SB (F := D.host.F) (κ := Fin M.rank × Fin X.rank)`. Take `⟨Θ, hΘ⟩ : ∃ Θ, Θ = thL Mo hψ hθ hX hW hM hg` from `⟨_, rfl⟩`.
+
+Establish `hd : ∀ t z f, Formalism.IndefR.Datum.dRho (heisO ψ (sgn ε M) X) θ t z (Θ f) = Θ (Dr (dir ε M X θ t z) f)` using `hΘ ▸ dRho_thL Mo hψ hθ hX hW hM hD1 hg`. Establish `hi : Function.Injective Θ` using `fun f f' h => by`. Establish `e` using `tinj _ (pureA_mem f hg) _ (pureA_mem f' hg) (by rw [hΘ] at h; exact h)`. Use `DFunLike.ext _ _ fun a => ?_` and prove the remaining obligations. Establish `e2` using `congrFun e (GlobalTheory.RealLift.ptAt a 0)`.
+
+Rewrite `e2` using `[GlobalTheory.RealLift.pureA_ptAt, GlobalTheory.RealLift.pureA_ptAt, Set.indicator_of_mem GlobalTheory.RealLift.zero_mem_intPts, Pi.one_apply, mul_one, mul_one]`. Then use the resulting hypothesis. Establish `hv : IsVacF ψ θ (frSgn ε A) B (Θ g₀)` using `⟨(tth _).2 ⟨_, pureA_mem g₀ hg, by rw [hΘ]; rfl⟩, fun t z => by`. Rewrite using `[annih, hd, hd, ← map_smul, ← map_add, hg₀, map_zero]⟩`. Establish `hv0 : Θ g₀ ≠ 0` using `fun h => g0 (hi (h.trans (map_zero Θ).symm))`. Set `um : FVar D X.rank M.rank → Matrix (Fin X.rank) (Fin M.rank) ℂ` to `fun k => Formalism.IndefR.Datum.unitMap ((frSgn ε A).onb k.1) (B.onb k.1) k.2.1 k.2.2`.
+
+Set `Cr : FVar D X.rank M.rank → SInf D.host.F (Fin M.rank × Fin X.rank) → SInf D.host.F (Fin M.rank × Fin X.rank)` to `fun k f => ((fockScale D k.1 : ℂ)⁻¹) • (Dr (dir ε M X θ k.1 (um k)) f - Complex.I • Dr (dir ε M X θ k.1 (cplxO ((frSgn ε A).cart k.1) (B.cart k.1) (um k))) f)`. Set `Φ : PolF D X.rank M.rank →ₗ[ℂ] SInf D.host.F (Fin M.rank × Fin X.rank)` to `(MvPolynomial.basisMonomials _ ℂ).constr ℂ fun k => (Multiset.toList (Finsupp.toMultiset k)).foldr Cr g₀`. Establish `hΦ : Θ ∘ₗ Φ = pureTensorO ψ θ (sgn ε M) X (frSgn ε A).cart B.cart (frSgn ε A).onb B.onb (Θ g₀)`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, pureTensorO, pureTensorL, Module.Basis.constr_basis, Module.Basis.constr_basis, opPow]`.
+
+Proceed by induction on `(Finsupp.toMultiset k).toList with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ← ih, aPlusAll, Formalism.IndefR.Datum.aPlus, crea, hd, hd, ← map_smul, ← map_sub, ← map_smul]`. Establish `hΦ' : ∀ P, Θ (Φ P) = ptF ψ θ (frSgn ε A) B (Θ g₀) P` using `fun P => LinearMap.congr_fun hΦ P`.
+
+Establish `hsum : ∀ u, At (evI D.host.F) u → ∀ f, Dr u f = ∑ t, Dr (dir ε M X θ t (compAt θ t (toO (sgn ε M).gram u))) f` using `fun u hu f => by`. Rewrite using `[← hD3 _ _ _ fun t => dir_at hθ t _, ← eq_sum_dir hθ hu]`. Establish `hG : Mo.IsGauss ψ τ g₀` using `⟨fun _ => 1, fun u u' hu hu' hrel f f' hf hf' => by`. Rewrite using `[hD2 u hu _ _ hf, hD2 u' hu' _ _ hf', hsum u hu, hsum u' hu', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[compAt_cplx hθ A B hc (fun w => by simpa using hrel w) t, eq_neg_of_add_eq_zero_left (hg₀ t (compAt θ t (toO (sgn ε M).gram u))), smul_neg, smul_smul, Complex.I_mul_I, neg_one_smul, neg_neg]⟩`. Establish `hP : ∀ u, At (evI D.host.F) u → ∀ f ∈ Mo.Pol ψ τ, Dr u f ∈ Mo.Pol ψ τ` using `fun u hu f hf => Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) _ (hD1 u hu f)`. Use `⟨Φ, ?_, le_antisymm ?_ (sInf_le ⟨fun f hf => ?_, ?_⟩), Θ g₀, _, hv, hv0, fun P => ⟨rest_fin _ hg, ?_⟩⟩` and prove the remaining obligations. Use `GlobalTheory.LieScalar.ptF_injective hθ hψ (frSgn ε A) B hv hv0` as an intermediate fact. Rewrite `this` using `[← hΦ, LinearMap.coe_comp]`.
+
+Conclude with `this.of_comp`. Rewrite using `[Module.Basis.constr_range, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `beta_reduce`. Proceed by induction on `(Finsupp.toMultiset k).toList with`.
+
+Consider the case `nil => exact Submodule.mem_sInf.2 fun N hN => hN.1 g₀ hG`. Consider the case `cons i l ih`. Conclude with `Submodule.smul_mem _ _ (sub_mem (hP _ (dir_at hθ _ _) _ ih) (Submodule.smul_mem _ _ (hP _ (dir_at hθ _ _) _ ih)))`. Take `⟨z, rfl⟩` from `gauss_line Mo ψ τ hCM hStd h2X h2W f g₀ hG g0 hf`. Conclude with `Submodule.smul_mem _ z ⟨1, hi ((hΦ' 1).trans (GlobalTheory.LieScalar.ptF_one _ _ _))⟩`.
+
+Introduce and unpack `u hu _ ⟨P, rfl⟩ f₁ h1`. Rewrite using `[hD2 u hu _ _ h1, hsum u hu]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `dRho_ptF (frSgn ε A) B hψ hθ hv t (compAt θ t (toO (sgn ε M).gram u)) P`. Conclude with `⟨Q, hi (by rw [← hd, hΦ', hΦ', hQ])⟩`.
+
+Rewrite using `[← hΦ', hΘ]`. Both sides reduce to the same expression.
+-/
 theorem exists_fockMap_of (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) (A : Fr M) (B : Fr X)
     {τ : ∀ w : InfinitePlace D.host.F, EmbOver D.host.E w} (hCM : IsCMExt D.host.F D.host.E D.sp.cm.sig)
     (hStd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (hX : Xs.J = sgE (D := D) ε • M.gram)
@@ -517,6 +671,9 @@ theorem exists_fockMap_of (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsI
   · rw [← hΦ', hΘ]
     rfl
 
+/- English proof (translation)
+Introduce `_ D ψ θ hψ hθ ε M X A B χS χT ω eS eT _ _ Xs Ws Mo ψ' χX χW om τ hP hR`. Take `⟨hCM, hStd, -, -, -, -, -, -, -, -, -, hcX, hcW⟩` from `hP`. Take `rfl` from `hR.psi`. Conclude with `exists_fockMap_of Mo hψ hθ A B hCM hStd hR.JX hR.JW hR.good (fun w => (hcX w).1) (fun w => (hcW w).1) hR.cart`.
+-/
 theorem exists_fockMap : GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

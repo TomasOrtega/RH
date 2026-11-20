@@ -16,6 +16,15 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.SymFrame
 open ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestriction.G.PullbackSections
 
+/- English proof (translation)
+Set `P : (Fin g → ℤ) × (Fin g → ℤ) →+ (Fin g → ℂ)` to `AddMonoidHom.mk' (fun a => perV τ a.1 a.2) fun a b => by`. Establish `e : ∀ M N : Fin g → ℤ, cv (M + N) = cv M + cv N` using `fun M N => by ext i; simp [cv]`. Simplify using `only [perV, Prod.fst_add, Prod.snd_add, e, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws. Use `periodic_const_range P (eq_top_iff.2 fun v _ => ?_) f hf (fun z a => hper z a.1 a.2) z w` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `Matrix.mulVec_surjective_iff_isUnit.2 hp.isUnit fun i => (v i).im`. Set `x : Fin g → ℝ` to `fun i => (v i).re - (τ.map Complex.re *ᵥ y) i`. Establish `e : v = ∑ i, x i • P (Pi.single i 1, 0) + ∑ i, y i • P (0, Pi.single i 1)`. Establish `c0 : cv (0 : Fin g → ℤ) = 0` using `by ext i; simp [cv]`. Establish `c1 : ∀ i : Fin g, cv (Pi.single i 1 : Fin g → ℤ) = Pi.single i 1` using `fun i => by`.
+
+Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [cv, h, Pi.single_apply]`. Use extensionality with `k`. Establish `hk` using `congrFun hy k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply] at hk`. Simplify using `only [P, AddMonoidHom.mk'_apply, perV, c0, c1, Matrix.mulVec_zero, add_zero, zero_add, Matrix.mulVec_single_one, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, Pi.single_apply]`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[x, Matrix.mulVec, dotProduct, mul_comm]`. Simplify using `[← hk, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+-/
 theorem const_of_periodic {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.map Complex.im).PosDef)
     {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f) (hper : ∀ z M N, f (z + perV τ M N) = f z) (z w : Fin g → ℂ) :
     f z = f w := by
@@ -42,6 +51,13 @@ theorem const_of_periodic {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.
   exact Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
     (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
 
+/- English proof (translation)
+Establish `h : ∀ {c : Fin g → ℂ}, Half c → ∀ M : Fin g → ℤ, ∃ n : ℤ, 2 * (c ⬝ᵥ cv M) = n` using `fun {c} hc M => by classical`. Use `⟨∑ i, if c i = 0 then 0 else M i, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct, Finset.mul_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hc i with e | e <;> simp [e, cv]`.
+
+Take `⟨m, hm⟩` from `h ha M`. Take `⟨n, hn⟩` from `h hb N`. Establish `hk : cv N ⬝ᵥ cv M = ((N ⬝ᵥ M : ℤ) : ℂ)` using `by simp [dotProduct, cv]`. Rewrite using `[autV, autV, ← Complex.exp_add, Complex.exp_eq_one_iff]`. Use `⟨m - n + N ⬝ᵥ M, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dotProduct_neg, dotProduct_add, perV, dotProduct_add, hk]`. Use `push_cast`. Rewrite using `[← hm, ← hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem autV_mul_autV {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) {a b : Fin g → ℂ} (ha : Half a) (hb : Half b)
     (M N : Fin g → ℤ) (z : Fin g → ℂ) : autV τ a b M N z * autV τ a b M N (-(z + perV τ M N)) = 1 := by
   have h : ∀ {c : Fin g → ℂ}, Half c → ∀ M : Fin g → ℤ, ∃ n : ℤ, 2 * (c ⬝ᵥ cv M) = n := fun {c} hc M => by
@@ -63,6 +79,11 @@ theorem autV_mul_autV {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) {a b : Fin g �
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
   {ν : NumOf D ℂ N} {d : AB N.toNumB g}
 
+/- English proof (translation)
+Establish `e : ∀ z, ptB ν d z ≫ (snd (TF (R` using `R) ℂ) D.P.A).left = (ν.eA (d.ex z)).left := fun z => by`. Rewrite using `[ptB, ← Over.comp_left, lift_snd]`. Establish `h` using `G.hol ((snd (TF (R := R) ℂ) D.P.A).left ⁻¹ᵁ U) (pullU _ U f).val`. Simplify using `only [← e]`. Use `⟨h.1, h.2.congr fun z _ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(vtf_val_pullU (ptB ν d z) _ U f).symm`.
+-/
 theorem hol_base (G : Geo ν d) (U : D.P.A.left.Opens) (f : Γ(D.P.A.left, U)ˣ) :
     IsOpen {z | ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ U} ∧
       DifferentiableOn ℂ (fun z => valF (ν.eA (d.ex z)).left U f.val) {z | ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ U} := by
@@ -73,6 +94,19 @@ theorem hol_base (G : Geo ν d) (U : D.P.A.left.Opens) (f : Γ(D.P.A.left, U)ˣ)
   refine ⟨h.1, h.2.congr fun z _ => ?_⟩
   exact (vtf_val_pullU (ptB ν d z) _ U f).symm
 
+/- English proof (translation)
+Introduce `z₀`. Set `j : K → D.P.L.ι` to `fun k => ν.J ((ν.eA (d.ex z₀)).left ≫ φ k)`. Take `⟨hS, hv⟩` from `hol_base G (LB.wchart D.P.L φ j) (t.s j)`. Establish `hJ : ∀ z, ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ LB.wchart D.P.L φ fun k => ν.J ((ν.eA (d.ex z)).left ≫ φ k)` using `fun z q _ => Set.mem_iInter.2 fun k => ν.good ((ν.eA (d.ex z)).left ≫ φ k) (x := q) trivial`. Establish `hk : ∀ z, ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ LB.wchart D.P.L φ j → ∀ k, ⊤ ≤ (ν.eA (d.ex (w k z))).left ⁻¹ᵁ D.P.L.U (j k)` using `fun z hz k q _ => by`.
+
+Rewrite using `[← hφ]`. Conclude with `Set.mem_iInter.1 (hz (x := q) trivial) k`. Establish `hfr : ∀ z, ⊤ ≤ (ν.eA (d.ex z)).left ⁻¹ᵁ LB.wchart D.P.L φ j → ∀ k, (d.fr (w k z) : ℂ) * ν.rg = valF ((ν.eA (d.ex z)).left ≫ φ k) _ (D.P.L.g (ν.J ((ν.eA (d.ex z)).left ≫ φ k)) (j k)).val * G.frG (j k) (w k z)` using `fun z hz k => by`. Rewrite using `[hφ, G.fr_eq]`. Conclude with `G.fr_compat _ _ _ fun q _ => ⟨ν.good _ (x := q) trivial, hk z hz k (x := q) trivial⟩`.
+
+Establish `hne : ∀ k z, (d.fr (w k z) : ℂ) * ν.rg ≠ 0` using `fun k z => mul_ne_zero (Units.ne_zero _) hr`. Establish `hev : (fun z => vF t (ν.eA (d.ex z)).left ν.J / ∏ k, ((d.fr (w k z) : ℂ) * ν.rg) ^ ε k) =ᶠ[nhds z₀] fun z => valF (ν.eA (d.ex z)).left (LB.wchart D.P.L φ j) (t.s j).val / ∏ k, G.frG (j k) (w k z) ^ ε k` using `by filter_upwards [hS.mem_nhds (hJ z₀)] with z hz`. Establish `e : vF t (ν.eA (d.ex z)).left ν.J = (∏ k, valF ((ν.eA (d.ex z)).left ≫ φ k) _ (D.P.L.g (ν.J ((ν.eA (d.ex z)).left ≫ φ k)) (j k)).val ^ ε k) * valF (ν.eA (d.ex z)).left (LB.wchart D.P.L φ j) (t.s j).val` using `vtf_isGen_val D.P.L φ ε t ht _ _ j fun q _ => ⟨hJ z (x := q) trivial, hz (x := q) trivial⟩`. Rewrite using `[e]`. Simplify using `only [hfr z hz, mul_zpow, Finset.prod_mul_distrib]`.
+
+Use `mul_div_mul_left _ _ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `left_ne_zero_of_mul (hfr z hz k ▸ hne k z)`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `h0 : ∀ k, G.frG (j k) (w k z₀) ≠ 0` using `fun k => right_ne_zero_of_mul (hfr z₀ (hJ z₀) k ▸ hne k z₀)`. Establish `h1 : ∀ k, DifferentiableAt ℂ (fun z => G.frG (j k) (w k z)) z₀` using `fun k => ((G.fr_hol (j k)).differentiableAt ((hol_base G _ 1).1.mem_nhds (hk z₀ (hJ z₀) k))).comp z₀ (hw k z₀)`.
+
+Establish `h2 : DifferentiableAt ℂ (fun z => ∏ k, G.frG (j k) (w k z) ^ ε k) z₀`. Establish `hp : ∀ s : Finset K, DifferentiableAt ℂ (fun z => ∏ k ∈ s, G.frG (j k) (w k z) ^ ε k) z₀` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.prod_insert ha]`. Conclude with `((h1 a).zpow (Or.inl (h0 a))).mul ih`. Conclude with `hp _`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hv.differentiableAt (hS.mem_nhds (hJ z₀))).mul (h2.inv (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (h0 k)))`.
+-/
 theorem differentiable_gen (G : Geo ν d) (hr : ν.rg ≠ 0) {K : Type} [Fintype K] {φ : K → (D.P.A.left ⟶ D.P.A.left)}
     {ε : K → ℤ} (t : LB.Gen (LB.LinComb D.P.L φ ε)) (ht : t.IsGen) (w : K → (Fin g → ℂ) → (Fin g → ℂ))
     (hw : ∀ k, Differentiable ℂ (w k)) (hφ : ∀ k z, (ν.eA (d.ex z)).left ≫ φ k = (ν.eA (d.ex (w k z))).left) :
@@ -121,6 +155,9 @@ theorem differentiable_gen (G : Geo ν d) (hr : ν.rg ≠ 0) {K : Type} [Fintype
   exact (hv.differentiableAt (hS.mem_nhds (hJ z₀))).mul
     (h2.inv (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (h0 k)))
 
+/- English proof (translation)
+Unfold `NumOf.rg vF valF`. Use `split_ifs with h`. Conclude with `(((Units.isUnit _).map _).map _).ne_zero`. Conclude with `(h fun q _ => Set.mem_iInter.2 fun _ => ν.good ((TF (R := R) ℂ).hom ≫ eSec D.P.A) (x := q) trivial).elim`.
+-/
 theorem rg_ne (ν : NumOf D ℂ N) : ν.rg ≠ 0 := by
   unfold NumOf.rg vF valF
   split_ifs with h
@@ -132,6 +169,19 @@ end GlobalTheory.MBLow.Cl.SymFrame
 namespace GlobalTheory.MBLow.Cl
 open SymFrame
 
+/- English proof (translation)
+Introduce and unpack `R _ _ _ _ D - - _ N ν g d ⟨G⟩`. Establish `hr` using `rg_ne ν`. Establish `h0 : d.ex 0 = 1` using `by simpa using d.ex_add 0 0`. Establish `hneg : ∀ z, d.ex (-z) = (d.ex z)⁻¹` using `fun z => eq_inv_of_mul_eq_one_left (by rw [← d.ex_add, neg_add_cancel, h0])`. Apply the tactic sequence `have hd := differentiable_gen G hr D.sym D.sym_gen ![fun z => -z, fun z => z] (fun k => by fin_cases k <;> simp <;> fun_prop) (fun k z => by fin_cases k`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ (ι[D.P.A]).left = (ν.eA (d.ex (-z))).left`. Rewrite using `[hneg, map_inv, Hom.inv_def, Over.comp_left]`. Conclude with `Category.comp_id _)`. Establish `hF : Differentiable ℂ fun z => (N.σ (d.ex z) : ℂ) * d.fr z / d.fr (-z)`. Use `hd using 2 with z` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[ν.σ_eq, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, _root_.zpow_neg]`. Use `(d.fr z).ne_zero` as an intermediate fact. Use `(d.fr (-z)).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Introduce `x`. Establish `hc` using `const_of_periodic d.pos hF (fun z M M' => by`. Establish `h1` using `d.fr_per M M' z`. Establish `h2` using `d.fr_per M M' (-(z + perV d.τ M M'))`. Establish `h3` using `autV_mul_autV d.τ d.ha d.hb M M' z`.
+
+Rewrite `h2` using `[show -(z + perV d.τ M M') + perV d.τ M M' = -z by abel]`. Rewrite using `[d.ex_add, (d.ker _).2 ⟨M, M', rfl⟩, _root_.mul_one, div_eq_div_iff (Units.ne_zero _) (Units.ne_zero _), h1, h2]`. Take the linear combination `(-(N.σ (d.ex z) : ℂ) * d.fr (z + perV d.τ M M') * d.fr (-z)) * h3) x 0`. Rewrite `hc` using `[h0, N.σ_one, neg_zero, d.fr_zero, div_eq_iff (Units.ne_zero _)]`. Use `ext`.
+
+Simplify using `using hc`.
+-/
 theorem sym_of_geo : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g : ℕ) (d : AB N.toNumB g), Nonempty (Geo ν d) → d.Sym := by
   rintro R _ _ _ _ D - - _ N ν g d ⟨G⟩
   have hr := rg_ne ν

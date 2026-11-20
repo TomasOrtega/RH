@@ -16,6 +16,31 @@ noncomputable section
 
 namespace GlobalTheory.SpreadPolAV
 
+/- English proof (translation)
+Introduce `F Ω _ _ em A I _ y`. Take `⟨R, P₀, φ₀, ftR, -, H₀, iso₀⟩` from `GlobalTheory.KeyTf.exists_polAV_finiteType_subring Ω A`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing ℤ R`. Use `P₀.smoothDim` as an intermediate fact. Establish `: Smooth P₀.A.hom` using `SmoothOfRelativeDimension.smooth P₀.g _`.
+
+Establish `: LocallyOfFinitePresentation P₀.A.hom` using `inferInstance`. Establish `hx : ∀ i, ((y i).left ≫ φ₀) ≫ P₀.A.hom = spMap (algebraMap R Ω)`. Introduce `i`. Rewrite using `[Category.assoc, H₀.1.w, ← Category.assoc, Over.w (y i)]`. Conclude with `Category.id_comp _`.
+
+Take `⟨R', y', hR', -, hy'⟩` from `GlobalTheory.Spread.exists_fg_points P₀.A.hom (fun i => (y i).left ≫ φ₀) hx ⊥ Subalgebra.fg_bot`. Establish `ftR' : Algebra.FiniteType ℤ R'` using `Algebra.FiniteType.trans ftR ((Subalgebra.fg_iff_finiteType R').1 hR')`. Take `⟨s₀, hs₀⟩` from `ftR'.out`. Use `letI : Algebra F Ω := em.toAlgebra`. Set `f₀ : R' →ₐ[ℤ] Ω` to `R'.val.restrictScalars ℤ`.
+
+Set `T : Subalgebra F Ω` to `Algebra.adjoin F (f₀ '' (s₀ : Set R'))`. Establish `hTfg : T.FG` using `⟨s₀.image f₀, by rw [Finset.coe_image]⟩`. Establish `hR'T : ∀ z ∈ R', z ∈ T`. Introduce `z hz`. Establish `h₁ : (⟨z, hz⟩ : R') ∈ Algebra.adjoin ℤ (s₀ : Set R')` using `by rw [hs₀]; trivial`.
+
+Establish `h₂ : f₀ ⟨z, hz⟩ ∈ Algebra.adjoin ℤ (f₀ '' (s₀ : Set R'))`. Rewrite using `[← AlgHom.map_adjoin]`. Conclude with `Subalgebra.mem_map.2 ⟨_, h₁, rfl⟩`. Establish `key : Algebra.adjoin ℤ (f₀ '' (s₀ : Set R')) ≤ T.restrictScalars ℤ` using `Algebra.adjoin_le (Algebra.subset_adjoin (R := F))`. Conclude with `key h₂`.
+
+Establish `hRT : ∀ r ∈ R, r ∈ T` using `fun r hr => hR'T r (R'.algebraMap_mem (⟨r, hr⟩ : R))`. Set `g : R →+* T` to `R.subtype.codRestrict T fun r => hRT r r.2`. Set `incl : R' →+* T` to `R'.val.toRingHom.codRestrict T fun z => hR'T z z.2`. Set `jT : T →+* Ω` to `T.val.toRingHom`. Establish `e₁ : spMap jT ≫ spMap g = spMap R.subtype`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e₂ : spMap jT ≫ spMap incl = spMap R'.val.toRingHom`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `e₃ : spMap incl ≫ spMap (algebraMap R R') = spMap g`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `P : PolAV (Sp T)` to `GlobalTheory.AmpleSymModel.polPull P₀ (spMap g)`. Establish `Gp : IsGrpPullback P.A P₀.A (spMap g) (pullback.fst P₀.A.hom (spMap g))` using `isGrpPullback_pullback P₀.A (spMap g)`.
+
+Establish `w : φ₀ ≫ P₀.A.hom = (A.A.hom ≫ spMap jT) ≫ spMap g`. Rewrite using `[Category.assoc, e₁]`. Conclude with `H₀.1.w`. Set `φ : A.A.left ⟶ P.A.left` to `Gp.1.lift _ _ w`. Establish `hφ : φ ≫ pullback.fst P₀.A.hom (spMap g) = φ₀` using `Gp.1.lift_fst _ _ w`.
+
+Establish `hφ' : φ ≫ P.A.hom = A.A.hom ≫ spMap jT` using `Gp.1.lift_snd _ _ w`. Establish `hu : ∀ i, (spMap incl ≫ y' i) ≫ P₀.A.hom = 𝟙 (Sp T) ≫ spMap g`. Introduce `i`. Rewrite using `[Category.assoc, (hy' i).1, e₃, Category.id_comp]`. Set `y₀ : I → (baseOver (Sp T) ⟶ P.A)` to `fun i => Over.homMk (Gp.1.lift (spMap incl ≫ y' i) (𝟙 _) (hu i)) (Gp.1.lift_snd _ _ (hu i))`.
+
+Use `⟨T, inferInstance, inferInstance, inferInstance, jT, P, φ, y₀, (Subalgebra.fg_iff_finiteType T).1 hTfg, Subtype.val_injective, RingHom.ext fun _ => rfl, Gp.cancel (H₀.congr e₁.symm hφ.symm) hφ', GlobalTheory.KeyTf.lbIso_pull_pull_of_comp A.isLB P₀.isLB hφ iso₀, fun i => ?_⟩` and prove the remaining obligations. Apply `Gp.1.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(y i).left ≫ φ ≫ pullback.fst P₀.A.hom (spMap g) = spMap jT ≫ Gp.1.lift (spMap incl ≫ y' i) (𝟙 _) (hu i) ≫ pullback.fst P₀.A.hom (spMap g)`. Rewrite using `[hφ, Gp.1.lift_fst, ← Category.assoc, e₂, (hy' i).2]`. Express the relevant statement in the definitionally equal form `(y i).left ≫ φ ≫ P.A.hom = spMap jT ≫ Gp.1.lift (spMap incl ≫ y' i) (𝟙 _) (hu i) ≫ P.A.hom`.
+
+Rewrite using `[hφ', Gp.1.lift_snd, ← Category.assoc, Over.w (y i)]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem exists_spread : ∀ (F Ω : Type) [Field F] [Field Ω] (em : F →+* Ω) (A : PolAV (Sp Ω)) (I : Type) [Finite I] (y : I → (baseOver (Sp Ω) ⟶ A.A)), ∃ (T : Type) (_ : CommRing T) (_ : IsDomain T) (_ : Algebra F T) (jT : T →+* Ω) (P : PolAV (Sp T)) (φ : A.A.left ⟶ P.A.left) (y₀ : I → (baseOver (Sp T) ⟶ P.A)), Algebra.FiniteType F T ∧ Function.Injective jT ∧ jT.comp (algebraMap F T) = em ∧ IsGrpPullback A.A P.A (spMap jT) φ ∧ LBIso A.L (P.L.pull φ) ∧ ∀ i, (y i).left ≫ φ = spMap jT ≫ (y₀ i).left := by
   classical
   intro F Ω _ _ em A I _ y

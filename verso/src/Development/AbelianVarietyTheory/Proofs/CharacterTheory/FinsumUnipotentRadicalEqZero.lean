@@ -7,6 +7,13 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Take `⟨A, H, hA, hH, hbij⟩` from `GlobalTheory.T.exists_standardUnipotentRadical_bijOn_nilradical F d a had.le`. Establish `hbot : A ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hA` using `[finrank_bot]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `htop : A ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `hA` using `[finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hH, ← hφ A hbot htop 1 (fun x hx => hx)]`.
+
+Use `finsum_mem_eq_of_bijOn _ hbij fun u _ => ?_` and prove the remaining obligations. Simplify using `only [add_sub_cancel]`.
+-/
 theorem IsPrimitive.finsum_unipotentRadical_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ)
     (φ : Module.End F (Fin d → F) → ℂ) (hφ : IsPrimitive φ) (a : ℕ) (ha : 0 < a) (had : a < d) :
     ∑ᶠ u ∈ {u : GL (Fin d) F | ∀ i j : Fin d,

@@ -31,6 +31,9 @@ def pullOne {X Y : Scheme.{0}} {L : LB X} (θ : L.Sec) (h : Y ⟶ X) :
     refine Eq.trans ?_ (gm_linComb L (fun _ : Fin 1 => h) (fun _ => ((1 : ℕ) : ℤ)) (𝟙 Y) y i j hi hj).symm
     simp
 
+/- English proof (translation)
+Establish `hi' : (𝟙 Y ≫ h) y ∈ L.U i` using `X.basicOpen_le _ hy`. Establish `hi : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun _ : Fin 1 => h) (fun _ => i)` using `Set.mem_iInter.2 fun _ => hi'`. Use `(mem_nonzeroLocus_iff_isUnit (pullOne θ h) (k := fun _ => i) hi).2 ?_` and prove the remaining obligations. Establish `e` using `(gs_res (𝟙 Y) y (LB.wchart_le L (fun _ : Fin 1 => h) (fun _ => i) 0) hi _).trans (gs_pull (𝟙 Y) h y _ hi' (θ.f i))`. Conclude with `e ▸ (LBGerm.isUnit_gs_iff _ y _ hi' _).2 hy`.
+-/
 theorem mem_nonzeroLocus_pullOne {X Y : Scheme.{0}} {L : LB X} (θ : L.Sec) (h : Y ⟶ X) (y : Y) (i : L.ι)
     (hy : h y ∈ X.basicOpen (θ.f i)) : y ∈ nonzeroLocus (pullOne θ h) := by
   have hi' : (𝟙 Y ≫ h) y ∈ L.U i := X.basicOpen_le _ hy
@@ -40,6 +43,9 @@ theorem mem_nonzeroLocus_pullOne {X Y : Scheme.{0}} {L : LB X} (θ : L.Sec) (h :
     (gs_pull (𝟙 Y) h y _ hi' (θ.f i))
   exact e ▸ (LBGerm.isUnit_gs_iff _ y _ hi' _).2 hy
 
+/- English proof (translation)
+Establish `: IsIso (snd (𝟙_ (Over S)) G)`. Rewrite using `[← leftUnitor_hom]`. Use `infer_instance`. Conclude with `inferInstanceAs (IsIso ((Over.forget S).map (snd (𝟙_ (Over S)) G)))`.
+-/
 theorem isIso_snd_left {S : Scheme.{0}} (G : Over S) : IsIso (snd (𝟙_ (Over S)) G).left := by
   have : IsIso (snd (𝟙_ (Over S)) G) := by
     rw [← leftUnitor_hom]; infer_instance
@@ -49,6 +55,17 @@ end GlobalTheory.FibreNonzero
 
 open GlobalTheory.FibreNonzero in
 
+/- English proof (translation)
+Introduce `R V _ _ _ _ I I' φ D D' A G _ _ A' G' _ _ U U' F C`. Use `isIso_snd_left G` as an intermediate fact. Use `isIso_snd_left G'` as an intermediate fact. Use `⟨fun ⟨θ, hθ⟩ => ⟨pullOne θ _, fun y => ?_⟩, fun k σ σ' h hσ y' => ?_⟩` and prove the remaining obligations. Take `⟨g, i, hg, hi⟩` from `hθ y`.
+
+Take `⟨z, rfl⟩` from `(snd (𝟙_ _) G).left.surjective g`. Use `⟨z, ?_, mem_nonzeroLocus_pullOne θ _ z i hi⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd (𝟙_ _) G), Scheme.Hom.comp_apply, hg]`. Take `⟨z, hz, hzσ⟩` from `hσ (spMap φ y')`. Rewrite `hz` using `[← Over.w (snd (𝟙_ _) G), Scheme.Hom.comp_apply]`.
+
+Take `⟨g', hg₁, hg₂⟩` from `Scheme.exists_preimage_of_isPullback C.pb.1 _ y' hz`. Take `⟨z', rfl⟩` from `(snd (𝟙_ _) G').left.surjective g'`. Use `⟨z', by rw [← Over.w (snd (𝟙_ _) G'), Scheme.Hom.comp_apply, hg₂], ?_⟩` and prove the remaining obligations. Set `r : (𝟙_ _ ⊗ G').left ⟶ (𝟙_ _ ⊗ G).left` to `(snd (𝟙_ _) G').left ≫ F ≫ inv (snd (𝟙_ _) G).left`. Establish `hr : r ≫ (snd _ G).left = 𝟙 _ ≫ (snd _ G').left ≫ F` using `by simp [r]`.
+
+Establish `hrz : r z' = z`. Apply `(snd (𝟙_ _) G).left.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hr, Category.id_comp, Scheme.Hom.comp_apply, hg₁]`. Take `⟨J, hJ⟩` from `exists_good_pt U.P.L.isLB z'`. Take `⟨J', hJ'⟩` from `exists_good_pt U'.P.L.isLB z'`.
+
+Establish `u` using `(MulPullSec.mem_nonzeroLocus_iff σ r z' hJ).1 (hrz ▸ hzσ)`. Rewrite `u` using `[h _ (𝟙 _) r hr z' J J' hJ hJ']`. Conclude with `(MulPullSec.mem_nonzeroLocus_iff σ' (𝟙 _) z' hJ').2 (isUnit_of_mul_isUnit_right u)`.
+-/
 theorem GlobalTheory.fibNZ_prod_and_baseChange : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (I : Ideal R) (I' : Ideal V) (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (A : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (A' : PolAV (Sp (FractionRing V))) (G' : Over (Spec (CommRingCat.of V))) [GrpObj G'] [IsCommMonObj G'] (U : PreU I D A G) (U' : PreU I' D' A' G') (F : G'.left ⟶ G.left) (C : Cmp φ U U' F), (ThetaNZ G U.P.L.L → ∃ σ : U.SecGT (𝟙_ _) 1, FibNZ (𝟙_ _ ⊗ G).hom σ) ∧ ∀ (k : ℕ) (σ : U.SecGT (𝟙_ _) k) (σ' : U'.SecGT (𝟙_ _) k), (∀ (Z : Scheme.{0}) (r' : Z ⟶ (𝟙_ _ ⊗ G').left) (r : Z ⟶ (𝟙_ _ ⊗ G).left), r ≫ (snd _ G).left = r' ≫ (snd _ G').left ≫ F → ∀ z J J', Good U.P.L.L z J → Good U'.P.L.L z J' → sval σ r z J = (gw C.wL (r' ≫ (snd _ G').left) z (J (r ≫ (snd _ G).left)) (J' (r' ≫ (snd _ G').left))).val ^ k * sval σ' r' z J') → FibNZ (𝟙_ _ ⊗ G).hom σ → FibNZ (𝟙_ _ ⊗ G').hom σ' := by
   intro R V _ _ _ _ I I' φ D D' A G _ _ A' G' _ _ U U' F C
   have := isIso_snd_left G

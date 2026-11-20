@@ -15,6 +15,9 @@ section Res
 variable {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [Algebra K L] [Algebra K Ω] [Algebra L Ω]
   [IsScalarTower K L Ω] {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ine_res_iff (t : G L Ω) :
     (AlgEquiv.restrictScalarsHom K t : G K Ω) ∈ Ine (F := K) A ↔ t ∈ Ine (F := L) A := Iff.rfl
 
@@ -25,6 +28,17 @@ def ineRes : Ine (F := L) A →* Ine (F := K) A :=
 variable [IsAlgClosure K Ω] [IsAlgClosure L Ω] {v : HeightOneSpectrum (𝓞 K)} {w : HeightOneSpectrum (𝓞 L)}
   {hK : IsPlaceOver A v} {hL : IsPlaceOver A w}
 
+/- English proof (translation)
+Establish `hV : IsOpen {t : Ine (F` using `L) A | ζ (aL (ineIncl hL t)) = 1} := haL.smooth hζ`. Take `⟨W, hW, hWV⟩` from `isOpen_induced_iff.1 hV`. Establish `h1W : (1 : G L Ω) ∈ W`. Establish `h1 : (1 : Ine (F` using `L) A) ∈ Subtype.val ⁻¹' W := by`. Rewrite using `[hWV]`.
+
+Simplify using the standard rewrite rules. Conclude with `h1`. Take `⟨E, hE, hEW⟩` from `(krullTopology_mem_nhds_one_iff L Ω W).1 (hW.mem_nhds h1W)`. Use `haveI := hE`. Establish `hN : IsOpen ((Subgroup.map (AlgEquiv.restrictScalarsHom K) E.fixingSubgroup : Subgroup (G K Ω)) : Set (G K Ω))` using `GlobalTheory.KLift.isOpen_map_restrictScalars _ E.fixingSubgroup_isOpen`.
+
+Use `IsSmooth.of_open (hN.preimage continuous_subtype_val) ?_ ?_` and prove the remaining obligations. Use `show ((1 : Ine (F := K) A) : G K Ω) ∈ Subgroup.map (AlgEquiv.restrictScalarsHom K) E.fixingSubgroup`. Conclude with `Subgroup.one_mem _`. Introduce `σ hσ`. Establish `hσ' : (σ : G K Ω) ∈ Subgroup.map (AlgEquiv.restrictScalarsHom K) E.fixingSubgroup` using `hσ`.
+
+Take `⟨n, hn, hnσ⟩` from `Subgroup.mem_map.1 hσ'`. Establish `hnI : n ∈ Ine (F` using `L) A := (mem_ine_res_iff (K := K) n).1 (by rw [hnσ]; exact σ.2)`. Establish `hres : ineRes (K` using `K) (⟨n, hnI⟩ : Ine (F := L) A) = σ := Subtype.ext hnσ`. Establish `ht : (⟨n, hnI⟩ : Ine (F` using `L) A) ∈ {t : Ine (F := L) A | ζ (aL (ineIncl hL t)) = 1} := by`. Rewrite using `[← hWV]`.
+
+Conclude with `hEW hn`. Rewrite using `[← hres, hθ]`. Conclude with `ht`.
+-/
 theorem isSmooth_of_ine [FiniteDimensional K L] {aL : Weil hL →* (w.adicCompletion L)ˣ} (haL : IsLocalArtin hL aL)
     {ζ : (w.adicCompletion L)ˣ →* ℂˣ} (hζ : IsSmoothChar ζ) (θ : Weil hK →* ℂˣ)
     (hθ : ∀ t : Ine (F := L) A, θ (ineIncl hK (ineRes (K := K) t)) = ζ (aL (ineIncl hL t))) : IsSmooth θ := by
@@ -53,6 +67,13 @@ theorem isSmooth_of_ine [FiniteDimensional K L] {aL : Weil hL →* (w.adicComple
     rw [← hres, hθ]
     exact ht
 
+/- English proof (translation)
+Take `⟨χ, hχ, hθχ⟩` from `haK.factor θ (isSmooth_of_ine haL hζ θ hθ)`. Use `⟨χ, hχ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `haL.surj x`. Establish `hdeg : deg g = 0`. Establish `h` using `haL.ord_eq g`.
+
+Rewrite `h` using `[hx]`. Use linear arithmetic over natural numbers and integers. Establish `hI : (g : G L Ω) ∈ Ine (F` using `L) A := deg_eq_zero_iff.1 hdeg`. Establish `hg : ineIncl hL (⟨g, hI⟩ : Ine (F` using `L) A) = g := Subtype.ext rfl`. Establish `key` using `GlobalTheory.T.localArtin_comp_norm_compat K L Ω A v w hK hL aK aL haK haL (ineIncl hK (ineRes (K := K) (⟨g, hI⟩ : Ine (F := L) A))) (ineIncl hL ⟨g, hI⟩) (fun _ => rfl)`.
+
+Rewrite using `[← hg, ← hθ, hθχ, MonoidHom.comp_apply, key]`.
+-/
 theorem exists_char_of_ine [FiniteDimensional K L] [w.asIdeal.LiesOver v.asIdeal]
     {aK : Weil hK →* (v.adicCompletion K)ˣ} (haK : IsLocalArtin hK aK)
     {aL : Weil hL →* (w.adicCompletion L)ˣ} (haL : IsLocalArtin hL aL)

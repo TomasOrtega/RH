@@ -12,6 +12,19 @@ open Classical
 namespace GlobalTheory
 open Matrix
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hQ : ∀ ε : Fin 8 → ℤ, ∑ u, ∑ v, W u v * ε u * ε v = ε ⬝ᵥ (W *ᵥ ε)`. Introduce `ε`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => by ring` and prove the remaining obligations. Establish `hA : ∀ i j, (p : ℤ) ∣ (W + W.transpose) i j`. Introduce `i j`. Establish `h1` using `h (Pi.single i 1 + Pi.single j 1)`. Establish `h2` using `h (Pi.single i 1)`.
+
+Establish `h3` using `h (Pi.single j 1)`. Rewrite `h1`, `h2`, `h3` using `[hQ]`. Establish `e : (Pi.single i 1 + Pi.single j 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ (Pi.single i 1 + Pi.single j 1)) - (Pi.single i 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ Pi.single i 1) - (Pi.single j 1 : Fin 8 → ℤ) ⬝ᵥ (W *ᵥ Pi.single j 1) = (W + W.transpose) i j`. Simplify using `[Matrix.mulVec_add, add_dotProduct, dotProduct_add, Matrix.mulVec_single_one, single_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← e]`. Conclude with `dvd_sub (dvd_sub h1 h2) h3`. Use `set A := W + W.transpose`. Establish `hB : A = (p : ℤ) • Matrix.of (fun i j => A i j / p)`. Use extensionality with `i j`.
+
+Simplify using `[Int.mul_ediv_cancel' (hA i j)]`. Establish `hdet : A.det = 1` using `hW.2`. Rewrite `hdet` using `[hB, Matrix.det_smul]`. Establish `: (p : ℤ) ∣ 1`. Rewrite using `[← hdet]`.
+
+Conclude with `Dvd.dvd.mul_right (dvd_pow_self _ (by simp)) _`. Use `Int.eq_one_of_dvd_one (by positivity) this` as an intermediate fact. Conclude with `hp.one_lt.ne' (by exact_mod_cast this)`.
+-/
 theorem exists_e8Form_value_not_dvd_prime (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W) (p : ℕ) (hp : p.Prime) :
     ∃ ε : Fin 8 → ℤ, ¬ (p : ℤ) ∣ ∑ u, ∑ v, W u v * ε u * ε v := by
   by_contra h
@@ -46,6 +59,13 @@ theorem exists_e8Form_value_not_dvd_prime (W : Matrix (Fin 8) (Fin 8) ℤ) (hW :
   have := Int.eq_one_of_dvd_one (by positivity) this
   exact hp.one_lt.ne' (by exact_mod_cast this)
 
+/- English proof (translation)
+Introduce `W hW p k hp hp2`. Take `⟨ε, hε⟩` from `exists_e8Form_value_not_dvd_prime W hW p hp`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Apply `Nat.Coprime.pow_left` to reduce the goal to its premises.
+
+Apply `Nat.Coprime.mul_right` to reduce the goal to its premises. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Break down `(Nat.dvd_prime Nat.prime_two).1 hd with h | h` into its components or cases. Conclude with `hp.one_lt.ne' h`.
+
+Conclude with `hp2 h`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Conclude with `hε (Int.natCast_dvd.2 hd)`.
+-/
 theorem exists_e8Form_value_coprime_oddPrimePow' : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (p k : ℕ), p.Prime → p ≠ 2 →
     ∃ ε : Fin 8 → ℤ, Nat.Coprime ((p ^ k) ^ 2) (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs) := by
   intro W hW p k hp hp2

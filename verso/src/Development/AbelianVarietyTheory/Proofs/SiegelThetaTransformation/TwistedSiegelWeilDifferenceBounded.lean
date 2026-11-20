@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ t : ℚ) : ℝ)| = ∏ τ : Ψ, ‖τ.1 t‖ ^ 2 := by have h2 := Algebra.norm_eq_prod_embeddings ℚ ℂ t have h3 : ∏ σ : E →+* ℂ, σ t = ∏ σ : E →ₐ[ℚ] ℂ, σ t := Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun _ => rfl have h1 : |((Algebra.norm ℚ t : ℚ) : ℝ)| = ∏ σ : E …`.
+-/
 theorem abs_norm_eq (h : IsType Ψ) (t : E) :
     |((Algebra.norm ℚ t : ℚ) : ℝ)| = ∏ τ : Ψ, ‖τ.1 t‖ ^ 2 := by
   have h2 := Algebra.norm_eq_prod_embeddings ℚ ℂ t
@@ -41,6 +44,11 @@ theorem abs_norm_eq (h : IsType Ψ) (t : E) :
   · intro a _; exact star_star a
   · intro a _; simp only [ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj]
 
+/- English proof (translation)
+Take `⟨s, hs, -, h1, h2⟩` from `hΛ.2.2`. Use `⟨s * R, Nat.mul_pos hs h.pos.2, fun x hx k a => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `(Base.mem_stdL _).1 (h1 _ (h.supp Λ hΛ x hx a)) k`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`.
+
+Conclude with `h.per Λ hΛ x _ fun a => h2 _ ((Base.mem_stdL _).2 fun k => hy k a)`.
+-/
 theorem isSB_of_adm {M R : ℕ} {φ : Fam E n N} (h : admitted M R φ) {Λ : Lt E n}
     (hΛ : Λ ∈ Vset E n M) : IsSB (φ Λ) := by
   obtain ⟨s, hs, -, h1, h2⟩ := hΛ.2.2
@@ -50,6 +58,13 @@ theorem isSB_of_adm {M R : ℕ} {φ : Fam E n N} (h : admitted M R φ) {Λ : Lt 
   · rw [Nat.cast_mul, mul_comm, mul_smul]
     exact h.per Λ hΛ x _ fun a => h2 _ ((Base.mem_stdL _).2 fun k => hy k a)
 
+/- English proof (translation)
+Use `haveI : Finite (Cls E n M) := (finite_cls_and_stab E n M h.pos.1).1`. Establish `h1 : ∀ c : Cls E n M, ∃ B : ℝ, ∀ x, ‖φ (Quot.out c).1 x‖ ≤ B` using `fun c => by`. Take `⟨S, hS, hl⟩` from `isSB_of_adm h (Quot.out c).2`. Conclude with `(ip_self_nonneg_and_bounds E _ _ S _ hS hl).2.2.2.2.1`. Use `choose b hb using h1`.
+
+Take `⟨B, hB⟩` from `(Set.finite_range b).bddAbove`. Use `⟨max B 0, le_max_right _ _, fun Λ hΛ x => ?_⟩` and prove the remaining obligations. Use `set c : Cls E n M := Quot.mk _ ⟨Λ, hΛ⟩ with hc`. Take `⟨g, hg, hm⟩` from `(Base.cls_eq_iff ⟨Λ, hΛ⟩ (Quot.out c)).1 (Quot.out_eq c).symm`. Rewrite using `[← h.equiv g hg Λ hΛ _ (Quot.out c).2 hm x]`.
+
+Conclude with `((hb c _).trans (hB ⟨c, rfl⟩)).trans (le_max_left _ _)`.
+-/
 theorem bounded_of_adm {M R : ℕ} {φ : Fam E n N} (h : admitted M R φ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ Λ ∈ Vset E n M, ∀ x, ‖φ Λ x‖ ≤ B := by
   haveI : Finite (Cls E n M) := (finite_cls_and_stab E n M h.pos.1).1
@@ -64,10 +79,18 @@ theorem bounded_of_adm {M R : ℕ} {φ : Fam E n N} (h : admitted M R φ) :
   rw [← h.equiv g hg Λ hΛ _ (Quot.out c).2 hm x]
   exact ((hb c _).trans (hB ⟨c, rfl⟩)).trans (le_max_left _ _)
 
+/- English proof (translation)
+Rewrite using `[ccT, Matrix.det_transpose]`. Conclude with `((IsCMField.complexConj E).toRingEquiv.toRingHom.map_det a).symm`.
+-/
 theorem det_ccT (a : Matrix (Fin N) (Fin N) E) : (ccT a).det = cc a.det := by
   rw [ccT, Matrix.det_transpose]
   exact ((IsCMField.complexConj E).toRingEquiv.toRingHom.map_det a).symm
 
+/- English proof (translation)
+Establish `h' : ccT d * a = 1`. Use `congrArg ccT h` as an intermediate fact. Rewrite `this` using `[Base.ccT_mul, Base.ccT_ccT, Base.ccT_one]`. Then use the resulting hypothesis. Establish `e : ccT (Matrix.fromBlocks a 0 0 d : M2 E N) = Matrix.fromBlocks (ccT a) 0 0 (ccT d)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [ccT, cc]`.
+
+Express the relevant statement in the definitionally equal form `ccT _ * _ * _ = _`. Rewrite using `[e, Matrix.J, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[h, h']`.
+-/
 theorem diag_mem_UU {a d : Matrix (Fin N) (Fin N) E} (h : ccT a * d = 1) :
     Matrix.fromBlocks a 0 0 d ∈ UU E N := by
   have h' : ccT d * a = 1 := by
@@ -79,6 +102,21 @@ theorem diag_mem_UU {a d : Matrix (Fin N) (Fin N) E} (h : ccT a * d = 1) :
   rw [e, Matrix.J, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
   simp [h, h']
 
+/- English proof (translation)
+Establish `ha' : (ccT a).det ≠ 0`. Rewrite using `[det_ccT]`. Simplify `ha` using `[cc]`. Use `set d := (ccT a)⁻¹ with hd`. Establish `had : ccT a * d = 1` using `Matrix.mul_nonsing_inv _ ha'.isUnit`.
+
+Establish `hdet : cc a.det * d.det = 1` using `by rw [← det_ccT, ← Matrix.det_mul, had, Matrix.det_one]`. Establish `hd0 : d.det ≠ 0` using `right_ne_zero_of_mul_eq_one hdet`. Use `set γ : M2 E N := Matrix.fromBlocks a 0 0 d with hγ`. Establish `hU : γ ∈ UU E N` using `diag_mem_UU had`. Take `⟨-, hZ', hIm, -⟩` from `(unitary_act_halfSpace E Ψ N γ hU).2 Z hZ`.
+
+Establish `hden : ∀ τ, (hDen Ψ γ Z τ).det = τ.1 d.det` using `fun τ => by`. Simplify using `only [hDen, hγ, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, Matrix.map_zero _ (map_zero τ.1), Matrix.zero_mul, zero_add]`. Conclude with `(τ.1.map_det d).symm`. Use `set k : ℂ := ∏ τ : Ψ, τ.1 d.det ^ n with hk`. Establish `hk0 : k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (by simpa using hd0)`.
+
+Establish `hfac : hFac Ψ γ Z (0 : CM Ψ n N) 0 = k`. Establish `h : ∀ (τ : Ψ) (k : Fin n), (0 : CM Ψ n N) τ k = 0` using `fun _ _ => rfl`. Simplify using `only [hFac, hden, h, zero_dotProduct, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one, hk]`. Use `⟨_, hZ', ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M φ hM hφ Z hZ).1 γ hU`.
+
+Establish `h2` using `(GlobalTheory.T.siegelWeilDifference_automorphy_linearity E Ψ hΨ n N hn hN M (fun Λ x => φ Λ (x * a)) hM hψ _ hZ').2.2.2.1 k`. Apply `mul_left_cancel₀ hk0` to reduce the goal to its premises. Rewrite using `[← h2, ← hfac, ← h1, hfac]`. Use `Base.classSum_congr fun Λ hΛ => ?_` and prove the remaining obligations. Establish `: weil Ψ γ (φ Λ) = (k • fun Λ x => φ Λ (x * a) : Fam E n N) Λ`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn (φ Λ) (hφ Λ hΛ)).1 γ hU rfl x]`. Simplify using `[hγ, chiH, hk]`. Simplify using `only [this]`. Rewrite using `[← hIm, abs_norm_eq hΨ, mul_left_comm, ← Finset.prod_mul_distrib, Finset.prod_eq_one, mul_one]`.
+
+Introduce `τ _`. Rewrite using `[hden, ← mul_pow, ← Complex.norm_conj (τ.1 a.det), ← Base.map_cc, ← norm_mul, ← map_mul, hdet]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_moved (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M : ℕ} (hM : 0 < M)
     {φ : Fam E n N} (hφ : ∀ Λ ∈ Vset E n M, IsSB (φ Λ)) {a : Matrix (Fin N) (Fin N) E}
     (ha : a.det ≠ 0) (hψ : ∀ Λ ∈ Vset E n M, IsSB fun x => φ Λ (x * a))
@@ -124,6 +162,9 @@ theorem exists_moved (hΨ : IsType Ψ) (hn : Even n) (hN : 4 * N < n) {M : ℕ} 
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun τ _ => (Complex.pos_iff.1 (hZ τ).det_pos).1.le`.
+-/
 theorem detIm_nonneg {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) : 0 ≤ detIm Z :=
   Finset.prod_nonneg fun τ _ => (Complex.pos_iff.1 (hZ τ).det_pos).1.le
 
@@ -133,6 +174,17 @@ namespace GlobalTheory.SW
 
 open TwistBound in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N hn hN hSW M R φ hφ`. Take `⟨B, hB0, hB⟩` from `bounded_of_adm hφ`. Take `⟨c, C₁, -, h1⟩` from `GlobalTheory.T.exists_rational_matrix_move_admissible_uniform_level E (N + 1)`. Take `⟨C₂, h2⟩` from `GlobalTheory.T.siegelWeil_difference_invariant_norm_bounded E Ψ hΨ n N hn hN hSW M (R * c)`. Use `⟨max C₁ 0 ^ ((n : ℝ) / 2) * (C₂ * B), fun 𝔛 hfg hag Z hZ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hidx, hadm⟩` from `h1 n M R φ 𝔛 hφ hfg hag`. Take `⟨-, -, -, hpos, ⟨R', hR'⟩, -⟩` from `twist_admissible E n (N + 1) M R φ 𝔛 hφ hfg hag`. Take `⟨Z', hZ', e1, e2⟩` from `exists_moved hΨ hn hN hφ.pos.1 (fun Λ hΛ => isSB_of_adm hR' hΛ) ha (fun Λ hΛ => isSB_of_adm hadm hΛ) hZ`. Establish `h3` using `h2 _ hadm B (fun Λ hΛ x => by`. Unfold `twist`.
+
+Use `split_ifs`. Conclude with `hB Λ hΛ _`. Simplify using `using hB0) Z' hZ'`. Establish `hD` using `detIm_nonneg hZ`. Use `replace h3 : ‖swd Ψ M (twist R 𝔛 φ) Z 0 0‖ * detIm Z' ^ ((n : ℝ) / 2) ≤ C₂ * B := by`.
+
+Rewrite using `[← e1]`. Conclude with `h3`. Rewrite `h3` using `[e2, Real.mul_rpow (abs_nonneg _) hD]`. Establish `h4 : gidx 𝔛 ^ ((n : ℝ) / 2) ≤ max C₁ 0 ^ ((n : ℝ) / 2) * |((Algebra.norm ℚ a.det : ℚ) : ℝ)| ^ ((n : ℝ) / 2)`. Rewrite using `[← Real.mul_rpow (le_max_right _ _) (abs_nonneg _)]`.
+
+Conclude with `Real.rpow_le_rpow hpos.le (hidx.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (abs_nonneg _))) (by positivity)`. Establish `h5 : 0 ≤ max C₁ 0 ^ ((n : ℝ) / 2)` using `Real.rpow_nonneg (le_max_right _ _) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem twist_swd_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * (N + 1) < n → SWAt Ψ n N → ∀ (M R : ℕ) (φ : Fam E n (N + 1)), admitted M R φ → ∃ C : ℝ, ∀ 𝔛 : Lt E (N + 1), 𝔛.FG → Agree (R * M) 𝔛 (stdL E (N + 1)) → ∀ Z ∈ Hn Ψ (N + 1), gidx 𝔛 ^ ((n : ℝ) / 2) * ‖swd Ψ M (twist R 𝔛 φ) Z 0 0‖ * detIm Z ^ ((n : ℝ) / 2) ≤ C := by
   intro E _ _ _ Ψ hΨ n N hn hN hSW M R φ hφ
   obtain ⟨B, hB0, hB⟩ := bounded_of_adm hφ

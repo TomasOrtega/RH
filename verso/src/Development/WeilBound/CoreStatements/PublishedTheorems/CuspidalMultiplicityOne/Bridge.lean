@@ -8,6 +8,9 @@ open NumberField Formalism.L2.Host GlobalTheory.CuspRep
 
 namespace PositivityTheory.Lit1
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π π' hu _ e`. Establish `hiso : CuspSub.Iso π π'` using `Quotient.exact (s := CuspSub.setoid E a) e`. Establish `h1 : π ∈ {π'' : CuspSub E a | π''.Iso π}` using `(CuspSub.setoid E a).iseqv.refl π`. Establish `h2 : π' ∈ {π'' : CuspSub E a | π''.Iso π}` using `(CuspSub.setoid E a).iseqv.symm hiso`. Rewrite using `[h E a ha π hu h1 h2]`.
+-/
 theorem cuspidalMultiplicityOneUnitary_of_lit (h : CuspidalMultiplicityOneLit) :
     GlobalTheory.Published.CuspidalMultiplicityOneUnitary := by
   intro E _ _ _ a ha π π' hu _ e
@@ -16,6 +19,9 @@ theorem cuspidalMultiplicityOneUnitary_of_lit (h : CuspidalMultiplicityOneLit) :
   have h2 : π' ∈ {π'' : CuspSub E a | π''.Iso π} := (CuspSub.setoid E a).iseqv.symm hiso
   rw [h E a ha π hu h1 h2]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CuspMultOne.of_unitary (cuspidalMultiplicityOneUnitary_of_lit h)`.
+-/
 theorem cuspidalMultiplicityOne_of_lit (h : CuspidalMultiplicityOneLit) : GlobalTheory.Published.CuspidalMultiplicityOne :=
   GlobalTheory.CuspMultOne.of_unitary (cuspidalMultiplicityOneUnitary_of_lit h)
 

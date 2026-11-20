@@ -15,6 +15,11 @@ open CP
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Use `measurable_of_continuousOn_compl_singleton 0 ?_` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `: Set.domRestrict ({0}ᶜ : Set (Fin (N + 1) → ℂ)) (lineOf (N` using `N)) = Projectivization.mk' ℂ ∘ (fun v : ({0}ᶜ : Set (Fin (N + 1) → ℂ)) => (⟨v.1, v.2⟩ : {v : Fin (N + 1) → ℂ // v ≠ 0})) := by`. Use function extensionality and compare the values at `v`. Conclude with `lineOf_of_ne v.2`.
+
+Rewrite using `[this]`. Conclude with `ProjTopology.continuous_mk'.comp (continuous_subtype_val.subtype_mk _)`.
+-/
 lemma measurable_lineOf : Measurable (lineOf (N := N)) := by
   refine measurable_of_continuousOn_compl_singleton 0 ?_
   rw [continuousOn_iff_continuous_domRestrict]
@@ -26,6 +31,9 @@ lemma measurable_lineOf : Measurable (lineOf (N := N)) := by
   rw [this]
   exact ProjTopology.continuous_mk'.comp (continuous_subtype_val.subtype_mk _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i j`. Simplify using `[chartVec]`. Simplify using `[chartVec]`.
+-/
 lemma insertNth_smul_chartVec (i : Fin (N + 1)) (t : ℂ) (z : Fin N → ℂ) :
     Fin.insertNth i t (t • z) = t • chartVec i z := by
   funext j
@@ -33,6 +41,23 @@ lemma insertNth_smul_chartVec (i : Fin (N + 1)) (t : ℂ) (z : Fin N → ℂ) :
   · simp [chartVec]
   · simp [chartVec]
 
+/- English proof (translation)
+Introduce `N i f hf`. Establish `hlin` using `measurable_lineOf (N := N)`. Establish `hdens : Measurable fun v : Fin (N + 1) → ℂ => ENNReal.ofReal (ambDensity v)`. Unfold `ambDensity normSq2`. Use `fun_prop`.
+
+Rewrite using `[ambMeasure, lintegral_withDensity_eq_lintegral_mul _ hdens (show Measurable fun v => f (lineOf v) from hf.comp hlin)]`. Use `set G : (Fin (N + 1) → ℂ) → ℝ≥0∞ := fun v => ENNReal.ofReal (ambDensity v) * f (lineOf v) with hGdef`. Establish `hG : Measurable G` using `hdens.mul (hf.comp hlin)`. Express the relevant statement in the definitionally equal form `∫⁻ v, G v = _`. Use `set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℂ) i`.
+
+Establish `he : ∀ t w, e.symm (t, w) = Fin.insertNth i t w` using `fun t w => rfl`. Rewrite using `[← (volume_preserving_piFinSuccAbove (fun _ : Fin (N + 1) => ℂ) i).symm.lintegral_comp_emb e.symm.measurableEmbedding, Measure.volume_eq_prod, lintegral_prod (fun p => G (e.symm p)) (hG.comp e.symm.measurable).aemeasurable]`. Use `set F : ℂ → (Fin N → ℂ) → ℝ≥0∞ := fun t z => ENNReal.ofReal (‖t‖ ^ (2 * N) * (1 / (1 + ‖t‖ ^ 2 * (1 + normSqSum z)) ^ (N + 2))) with hFdef`. Establish `hF : Measurable (Function.uncurry F)`. Simplify using `only [hFdef, normSqSum]`.
+
+Use `fun_prop`. Establish `key : ∀ t : ℂ, t ≠ 0 → ∫⁻ w, G (e.symm (t, w)) = ∫⁻ z, F t z * f (chartInv i z)`. Introduce `t ht`. Establish `hdet : LinearMap.det (t • LinearMap.id : (Fin N → ℂ) →ₗ[ℂ] (Fin N → ℂ)) = t ^ N`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, Module.finrank_fin_fun, mul_one]`.
+
+Rewrite using `[hL N (t • LinearMap.id) (by rw [hdet]; exact pow_ne_zero _ ht) (fun w => G (e.symm (t, w))) (hG.comp (e.symm.measurable.comp measurable_prodMk_left)), hdet, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, he, hGdef, hFdef, insertNth_smul_chartVec]`. Establish `hv : t • chartVec i z ≠ 0` using `smul_ne_zero ht (chartVec_ne_zero i z)`. Establish `hline : lineOf (t • chartVec i z) = chartInv i z`.
+
+Rewrite using `[lineOf_of_ne hv, chartInv, Projectivization.mk_eq_mk_iff']`. Conclude with `⟨t, rfl⟩`. Establish `hnorm : Complex.normSq (t ^ N) = ‖t‖ ^ (2 * N)`. Rewrite using `[Complex.normSq_eq_norm_sq, norm_pow, ← pow_mul, mul_comm]`. Rewrite using `[hline, ← mul_assoc, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _), hnorm, ambDensity, normSq2_smul, normSq2_chartVec]`.
+
+Both sides reduce to the same expression. Rewrite using `[lintegral_congr_ae ((Measure.ae_ne volume (0 : ℂ)).mono fun t ht => key t ht), lintegral_lintegral_swap (hF.mul (hf.comp ((measurable_chartInv i).comp measurable_snd))).aemeasurable]`. Rewrite using `[← lintegral_const_mul _ (show Measurable fun z : Fin N → ℂ => f (chartInv i z) * ENNReal.ofReal (1 / (1 + normSqSum z) ^ (N + 1)) from (hf.comp (measurable_chartInv i)).mul (by unfold normSqSum; fun_prop))]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const _ (show Measurable fun t => F t z from hF.comp measurable_prodMk_right)]`.
+
+Establish `hs : 0 < 1 + normSqSum z` using `by linarith [normSqSum_nonneg z]`. Simplify using `only [hFdef]`. Rewrite using `[hR N _ hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AmbChart.proof (hL : LinChange.Statement) (hR : Radial.Statement) : AmbChart.Statement := by
   intro N i f hf
   have hlin := measurable_lineOf (N := N)

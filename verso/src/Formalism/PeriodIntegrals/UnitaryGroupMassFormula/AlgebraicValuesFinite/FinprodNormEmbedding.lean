@@ -8,11 +8,17 @@ namespace PI.AlgValsFin.W
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Rewrite using `[ordF, neg_neg, WithZero.exp_log]`. Conclude with `(Valuation.ne_zero_iff _).mpr k.ne_zero`.
+-/
 theorem valuation_eq_exp (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) :
     v.valuation L (k : L) = WithZero.exp (-ordF v k) := by
   rw [ordF, neg_neg, WithZero.exp_log]
   exact (Valuation.ne_zero_iff _).mpr k.ne_zero
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp [WithZero.exp, WithZeroMulInt.toNNReal_pos_apply he]; done)`. Consider the case `(rw [WithZeroMulInt.toNNReal_pos_apply he WithZero.exp_ne_zero]; simp [WithZero.exp]; done)`. Consider the case `rfl`.
+-/
 theorem toNNReal_exp {e : NNReal} (he : e ≠ 0) (n : ℤ) :
     WithZeroMulInt.toNNReal he (WithZero.exp n) = e ^ n := by
   first
@@ -20,6 +26,9 @@ theorem toNNReal_exp {e : NNReal} (he : e ≠ 0) (n : ℤ) :
     | (rw [WithZeroMulInt.toNNReal_pos_apply he WithZero.exp_ne_zero]; simp [WithZero.exp]; done)
     | rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_ratCast, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`.
+-/
 theorem prod_norm_emb (x : L) : ∏ φ : L →+* ℂ, ‖φ x‖ = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   calc ∏ φ : L →+* ℂ, ‖φ x‖ = ∏ σ : L →ₐ[ℚ] ℂ, ‖σ x‖ :=
         Fintype.prod_equiv (RingHom.equivRatAlgHom L ℂ) _ _ fun _ => rfl
@@ -28,6 +37,15 @@ theorem prod_norm_emb (x : L) : ∏ φ : L →+* ℂ, ‖φ x‖ = |((Algebra.no
     _ = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
       rw [eq_ratCast, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]
 
+/- English proof (translation)
+Rewrite using `[← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Establish `hval : ∀ v : HeightOneSpectrum (𝓞 L), (FinitePlace.equivHeightOneSpectrum.symm v) (k : L) = (((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ ordF v k)⁻¹`. Introduce `v`. Establish `e1 : (FinitePlace.equivHeightOneSpectrum.symm v) (k : L) = NumberField.HeightOneSpectrum.adicAbv L v (k : L)` using `by first`. Consider the case `(show (FinitePlace.mk v) (k : L) = _`.
+
+Rewrite using `[FinitePlace.mk_apply, FinitePlace.norm_embedding])`. Consider the case `(rw [FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.mk_apply, FinitePlace.norm_embedding])`. Consider the case `(simp only [FinitePlace.equivHeightOneSpectrum, Equiv.coe_fn_symm_mk]`. Rewrite using `[← FinitePlace.mk_apply, FinitePlace.norm_embedding])`. Rewrite using `[e1, NumberField.HeightOneSpectrum.adicAbv_def, valuation_eq_exp, toNNReal_exp]`.
+
+Use `push_cast`. Rewrite using `[zpow_neg]`. Rewrite using `[finprod_congr hval]`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hT'`. Conclude with `hv (by simp [hT v hT'])`.
+-/
 theorem finprod_norm_embedding (k : Lˣ) (T : Finset (HeightOneSpectrum (𝓞 L)))
     (hT : ∀ v, v ∉ T → ordF v k = 0) :
     ∏ᶠ w : FinitePlace L, w (k : L) =
@@ -53,6 +71,9 @@ theorem finprod_norm_embedding (k : Lˣ) (T : Finset (HeightOneSpectrum (𝓞 L)
   by_contra hT'
   exact hv (by simp [hT v hT'])
 
+/- English proof (translation)
+Introduce `k T hT`. Establish `h3` using `FinitePlace.prod_eq_inv_abs_norm (K := L) k.ne_zero`. Rewrite `h3` using `[finprod_norm_embedding k T hT, Finset.prod_inv_distrib, Rat.cast_inv, Rat.cast_abs, inv_inj]`. Rewrite using `[prod_norm_emb, h3]`.
+-/
 theorem prodNorm : ProdNorm L := by
   intro k T hT
   have h3 := FinitePlace.prod_eq_inv_abs_norm (K := L) k.ne_zero

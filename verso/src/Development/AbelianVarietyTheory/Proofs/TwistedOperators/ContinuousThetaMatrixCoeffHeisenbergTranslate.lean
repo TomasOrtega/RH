@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.MatCoefCont
 
+/- English proof (translation)
+Introduce `D ψ hψ S T μ 𝓕 h𝓕 f f₀ hf hf₀`. Use `haveI hAE : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1`. Use `haveI hM : SecondCountableTopology (WO S T) := inferInstanceAs (SecondCountableTopology (Fin T.rank → Fin S.rank → AE D))`. Use `haveI : FirstCountableTopology (WO S T) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`.
+
+Take `⟨C, hC⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable hψ f hf).2.1`. Take `⟨C₀, hC₀⟩` from `(GlobalTheory.ThetaSquare.squareIntegrable hψ f₀ hf₀).2.1`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h𝓕.2.2]; exact ENNReal.one_lt_top⟩`. Establish `hsc` using `(GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.2.1`. Establish `hF : Continuous (fun p : WO S T × WO S T => f p.2 * star (ψ (symplOH S T p.2 p.1) * f₀ (p.2 + p.1)))` using `(hf.cont.comp continuous_snd).mul (((hψ.1.1.comp (hsc.comp (continuous_snd.prodMk continuous_fst))).mul (hf₀.cont.comp (continuous_snd.add continuous_fst))).star)`.
+
+Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`. Unfold `thPair heisO`. Use `continuous_of_dominated (bound := fun _ => C * C₀) (fun w => ?_) (fun w => ?_) (integrable_const _) ?_` and prove the remaining obligations. Conclude with `(hF.comp (Continuous.prodMk_right w)).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_star, norm_mul, hψ.1.2.1, one_mul]`. Conclude with `mul_le_mul (hC z) (hC₀ _) (norm_nonneg _) hC0`. Conclude with `Filter.Eventually.of_forall fun z => hF.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem continuous_thPair_heisO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ f f₀ : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f₀ → Continuous (fun w : WO S T => thPair μ 𝓕 f (heisO ψ S T w f₀)) := by
   intro D ψ hψ S T μ 𝓕 h𝓕 f f₀ hf hf₀
   haveI hAE : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1

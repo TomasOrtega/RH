@@ -22,6 +22,9 @@ noncomputable def forestLift {G : Type} [Group G] {r : ℕ} (Ed : Fin r → Fin 
 termination_by j.val
 decreasing_by all_goals (try simp_wf); exact hlt _ _ (Classical.choose_spec h)
 
+/- English proof (translation)
+Establish `hex : ∃ i, Ed i j` using `⟨i, h⟩`. Establish `hc : Classical.choose hex = i` using `huniq _ _ _ (Classical.choose_spec hex) h`. Establish `e : forestLift Ed hlt w j = forestLift Ed hlt w i * w i j`. Rewrite using `[forestLift, dif_pos hex, hc]`. Rewrite using `[e, inv_mul_cancel_left]`.
+-/
 theorem forestLift_edge {G : Type} [Group G] {r : ℕ} (Ed : Fin r → Fin r → Prop) (hlt : ∀ i j, Ed i j → i < j)
     (huniq : ∀ i i' j, Ed i j → Ed i' j → i = i') (w : Fin r → Fin r → G) {i j : Fin r} (h : Ed i j) :
     (forestLift Ed hlt w i)⁻¹ * forestLift Ed hlt w j = w i j := by
@@ -31,18 +34,39 @@ theorem forestLift_edge {G : Type} [Group G] {r : ℕ} (Ed : Fin r → Fin r →
     rw [forestLift, dif_pos hex, hc]
   rw [e, inv_mul_cancel_left]
 
+/- English proof (translation)
+Introduce `i j h`. Use `show i.val < j.val`. Unfold `symEdge at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem symEdge_lt {r : ℕ} (ρ k : ℕ) : ∀ i j : Fin r, symEdge ρ k i j → i < j := by
   intro i j h
   show i.val < j.val
   unfold symEdge at h
   omega
 
+/- English proof (translation)
+Introduce `i i' j h h'`. Apply `Fin.ext` to reduce the goal to its premises. Unfold `symEdge at h h'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem symEdge_uniq {r : ℕ} (ρ k : ℕ) : ∀ i i' j : Fin r, symEdge ρ k i j → symEdge ρ k i' j → i = i' := by
   intro i i' j h h'
   apply Fin.ext
   unfold symEdge at h h'
   omega
 
+/- English proof (translation)
+Introduce `κf _ _ hF r ρ k ψ' ψ0 h1 h0 a`. Set `_ : Field κf` to `hF.toField`. Use `Fintype.ofFinite κf` as an intermediate fact. Establish `hprim : ψ0.IsPrimitive` using `AddChar.IsPrimitive.of_ne_one h0`. Establish `hinj : Function.Injective ψ0.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive hprim`.
+
+Establish `hbij : Function.Bijective ψ0.mulShift` using `by classical`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hinj, (AddChar.card_eq).symm⟩`. Take `⟨c, hc⟩` from `hbij.2 ψ'`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hc]`. Conclude with `AddChar.mulShift_zero ψ0`. Set `w : Fin r → Fin r → κfˣ` to `fun i j => Units.mk0 c hc0 * a i j`.
+
+Use `⟨forestLift (symEdge ρ k) (symEdge_lt ρ k) w, fun u _ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, AddChar.mulShift_apply]`. Use `congr 1`. Unfold `edgeSum`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[diagGL_conj_apply]`.
+
+Establish `e` using `congrArg Units.val (forestLift_edge (symEdge ρ k) (symEdge_lt ρ k) (symEdge_uniq ρ k) w h)`. Rewrite `e` using `[Units.val_mul]`. Establish `e2 : (((forestLift (symEdge ρ k) (symEdge_lt ρ k) w i)⁻¹ : κfˣ) : κf) * ((forestLift (symEdge ρ k) (symEdge_lt ρ k) w j : κfˣ) : κf) = c * (a i j : κf)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_zero]`.
+-/
 theorem scale_conj : ∀ {κf : Type} [CommRing κf] [Finite κf], IsField κf → ∀ {r : ℕ} (ρ k : ℕ) (ψ' ψ0 : AddChar κf ℂ), ψ' ≠ 1 → ψ0 ≠ 1 → ∀ a : Fin r → Fin r → κfˣ, ∃ d : Fin r → κfˣ, ∀ u : GL (Fin r) κf, u ∈ unipSym κf r ρ k → ψ' (∑ i, ∑ j, if symEdge ρ k i j then (a i j : κf) * u.val i j else 0) = ψ0 (edgeSum (symEdge ρ k) ((diagGL d)⁻¹ * u * diagGL d)) := by
   intro κf _ _ hF r ρ k ψ' ψ0 h1 h0 a
   let _ : Field κf := hF.toField

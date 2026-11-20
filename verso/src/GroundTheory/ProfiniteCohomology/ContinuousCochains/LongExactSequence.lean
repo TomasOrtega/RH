@@ -10,11 +10,17 @@ universe u
 
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Use extensionality with `n c : 3`. Both sides reduce to the same expression.
+-/
 theorem cochainsMap_zero {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] :
     cochainsMap (0 : A ⟶ B) = 0 := by
   ext n c : 3
   rfl
 
+/- English proof (translation)
+Rewrite using `[cohomologyMap, cochainsMap_zero]`. Conclude with `HomologicalComplex.homologyMap_zero _ _ _`.
+-/
 theorem cohomologyMap_zero {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] (n : ℕ) :
     cohomologyMap (0 : A ⟶ B) n = 0 := by
   rw [cohomologyMap, cochainsMap_zero]
@@ -31,6 +37,9 @@ noncomputable def cochainsShortComplex : ShortComplex (CochainComplex (ModuleCat
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun i => { exact := by rw [ShortComplex.moduleCat_exact_iff] intro x₂ hx₂ let c : locallyConstantCochains S.X₂ i := x₂ have hexact := hS.exact.map (forget₂ (Rep.{u} k G) (ModuleCat k)) rw [ShortComplex.moduleCat_exact_iff] …`.
+-/
 theorem cochainsShortComplex_shortExact (hS : S.ShortExact) :
     (cochainsShortComplex S).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun i => {
@@ -63,27 +72,45 @@ noncomputable def δ (i j : ℕ) (hij : i + 1 = j) : cohomology S.X₃ i ⟶ coh
   (cochainsShortComplex_shortExact hS).δ i j hij
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `(cochainsShortComplex_shortExact hS).δ_comp i j hij @[reassoc (attr := simp)]`.
+-/
 theorem δ_comp (i j : ℕ) (hij : i + 1 = j) : δ hS i j hij ≫ cohomologyMap S.f j = 0 :=
   (cochainsShortComplex_shortExact hS).δ_comp i j hij
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `(cochainsShortComplex_shortExact hS).comp_δ i j hij`.
+-/
 theorem comp_δ (i j : ℕ) (hij : i + 1 = j) : cohomologyMap S.g i ≫ δ hS i j hij = 0 :=
   (cochainsShortComplex_shortExact hS).comp_δ i j hij
 
+/- English proof (translation)
+Rewrite using `[← cohomologyMap_comp, S.zero, cohomologyMap_zero]`.
+-/
 theorem cohomologyMap_f_comp_g (i : ℕ) : cohomologyMap S.f i ≫ cohomologyMap S.g i = 0 := by
   rw [← cohomologyMap_comp, S.zero, cohomologyMap_zero]
 
+/- English proof (translation)
+The claim follows from `(cochainsShortComplex_shortExact hS).homology_exact₁ i j hij`.
+-/
 theorem cohomology_exact₁ (i j : ℕ) (hij : i + 1 = j) :
     (ShortComplex.mk (δ hS i j hij) (cohomologyMap S.f j) (δ_comp hS i j hij)).Exact :=
   (cochainsShortComplex_shortExact hS).homology_exact₁ i j hij
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `(cochainsShortComplex_shortExact hS).homology_exact₂ i`.
+-/
 theorem cohomology_exact₂ (i : ℕ) :
     (ShortComplex.mk (cohomologyMap S.f i) (cohomologyMap S.g i)
       (cohomologyMap_f_comp_g i)).Exact :=
   (cochainsShortComplex_shortExact hS).homology_exact₂ i
 
+/- English proof (translation)
+The claim follows from `(cochainsShortComplex_shortExact hS).homology_exact₃ i j hij`.
+-/
 theorem cohomology_exact₃ (i j : ℕ) (hij : i + 1 = j) :
     (ShortComplex.mk (cohomologyMap S.g i) (δ hS i j hij) (comp_δ hS i j hij)).Exact :=
   (cochainsShortComplex_shortExact hS).homology_exact₃ i j hij
@@ -107,6 +134,9 @@ noncomputable def cochainsShortComplexMap (φ : S₁ ⟶ S₂) :
     change cochainsMap φ.τ₂ ≫ cochainsMap S₂.g = cochainsMap S₁.g ≫ cochainsMap φ.τ₃
     rw [← cochainsMap_comp, ← cochainsMap_comp, φ.comm₂₃]
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.HomologySequence.δ_naturality (cochainsShortComplexMap φ) (cochainsShortComplex_shortExact hS₁) (cochainsShortComplex_shortExact hS₂) i j hij`.
+-/
 theorem δ_naturality (hS₁ : S₁.ShortExact) (hS₂ : S₂.ShortExact) (φ : S₁ ⟶ S₂) (i j : ℕ)
     (hij : i + 1 = j) :
     δ hS₁ i j hij ≫ cohomologyMap φ.τ₁ j = cohomologyMap φ.τ₃ i ≫ δ hS₂ i j hij :=

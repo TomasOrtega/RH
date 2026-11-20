@@ -17,6 +17,11 @@ section General
 
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Set `E : Subrepresentation (π.comp φ : Representation ℂ G V) ≃o Subrepresentation π` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Take `⟨g, rfl⟩` from `hφ g`. Conclude with `U.apply_mem_toSubmodule g hv⟩`. Use `invFun := fun U => ⟨U.toSubmodule, fun g v hv => U.apply_mem_toSubmodule (φ g) hv⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : IsSimpleOrder (Subrepresentation π) := h`. Conclude with `E.isSimpleOrder`.
+-/
 theorem isIrreducible_comp {π : Representation ℂ G V} (φ : G →* G) (hφ : Function.Surjective φ)
     (h : π.IsIrreducible) : Representation.IsIrreducible (π.comp φ : Representation ℂ G V) := by
   let E : Subrepresentation (π.comp φ : Representation ℂ G V) ≃o Subrepresentation π :=
@@ -32,6 +37,13 @@ theorem isIrreducible_comp {π : Representation ℂ G V} (φ : G →* G) (hφ : 
 
 variable [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `e0 : (φ : G → G) = Φ` using `funext fun x => (hΦ x).symm`. Establish `hc : Continuous φ` using `e0 ▸ Φ.continuous`. Establish `ho : IsOpenMap φ` using `e0 ▸ Φ.isOpenMap`. Use `⟨fun v => (h.1 v).preimage hc, fun K hKo hKc => ?_⟩` and prove the remaining obligations. Establish `e : fixed (π.comp φ : Representation ℂ G V) K = fixed π (K.map φ)`.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv ⟨_, g, hg, rfl⟩`. Conclude with `hv ⟨g, hg⟩`. Introduce `hv g`.
+
+Conclude with `hv ⟨_, g.1, g.2, rfl⟩`. Rewrite using `[e]`. Conclude with `h.2 _ (ho _ hKo) (hKc.image hc)`.
+-/
 theorem isAdmissible_comp {π : Representation ℂ G V} (φ : G →* G) (Φ : G ≃ₜ G) (hΦ : ∀ x, Φ x = φ x)
     (h : IsAdmissible π) : IsAdmissible (π.comp φ : Representation ℂ G V) := by
   have e0 : (φ : G → G) = Φ := funext fun x => (hΦ x).symm
@@ -51,6 +63,11 @@ theorem isAdmissible_comp {π : Representation ℂ G V} (φ : G →* G) (Φ : G 
 variable [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G}
   [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Establish `h'` using `isAdmissible_comp φ Φ hΦ h`. Unfold `smoothTrace`. Use `congr 1`. Use extensionality with `v`. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations.
+
+Rewrite using `[h'.1.map_smoothOp (hf.comp_continuous Φ.continuous) (hc.comp_homeomorph Φ), h.1.map_smoothOp hf hc]`. Use `conv_rhs => rw [← hμ]`. Rewrite using `[Φ.measurableEmbedding.integral_map]`. Simplify using `[hΦ]`.
+-/
 theorem smoothTrace_comp {π : Representation ℂ G V} (φ : G →* G) (Φ : G ≃ₜ G) (hΦ : ∀ x, Φ x = φ x)
     (hμ : μ.map Φ = μ) (h : IsAdmissible π) {f : G → ℂ} (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) :
@@ -65,6 +82,11 @@ theorem smoothTrace_comp {π : Representation ℂ G V} (φ : G →* G) (Φ : G �
   rw [Φ.measurableEmbedding.integral_map]
   simp [hΦ]
 
+/- English proof (translation)
+Set `Φ : G ≃ₜ G` to `(Homeomorph.mulLeft g).trans (Homeomorph.mulRight g⁻¹)`. Set `φ : G →* G` to `(MulAut.conj g).toMonoidHom`. Establish `hΦ : ∀ x, Φ x = φ x` using `fun _ => rfl`. Establish `hμ : μ.map Φ = μ` using `((measurePreserving_mul_right μ g⁻¹).comp (measurePreserving_mul_left μ g)).map_eq`. Rewrite using `[← smoothTrace_comp φ Φ hΦ hμ h hf hc]`.
+
+Use `(h.smoothTrace_eq_of_equiv (isAdmissible_comp φ Φ hΦ h).1 (hf.comp_continuous Φ.continuous) (hc.comp_homeomorph Φ) ho hK (LinearEquiv.ofLinear (π g) (π g⁻¹) (by rw [← Module.End.mul_eq_comp, ← map_mul]; simp [Module.End.one_eq_id]) (by rw [← Module.End.mul_eq_comp, ← map_mul]; si …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π g (π x v) = π (g * x * g⁻¹) (π g v)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]`.
+-/
 theorem smoothTrace_conj [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] {π : Representation ℂ G V}
     (h : IsAdmissible π) {K : Subgroup G} (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G))
     {f : G → ℂ} (hf : IsLocallyConstant f) (hc : HasCompactSupport f) (g : G) :
@@ -86,14 +108,39 @@ end General
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion GlobalTheory.SplitFlip
 
+/- English proof (translation)
+The claim follows from `Units.ext (transpose_transpose _)`.
+-/
 theorem invTranspose_invTranspose (n : ℕ) (R : Type) [CommRing R] (g : GL (Fin n) R) :
     invTranspose n R (invTranspose n R g) = g :=
   Units.ext (transpose_transpose _)
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_invTranspose (n : ℕ) (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (invTranspose n R) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Use `borelize k`. Use `letI : MeasurableSpace (GL (Fin n) k) := Units.instMeasurableSpace`. Use `haveI : BorelSpace (GL (Fin n) k) := borel_GL`. Establish `hb : ∀ U ∈ nhds (1 : GL (Fin n) k), ∃ K : Subgroup (GL (Fin n) k), IsOpen (K : Set (GL (Fin n) k)) ∧ IsCompact (K : Set (GL (Fin n) k)) ∧ (K : Set (GL (Fin n) k)) ⊆ U`. Introduce `U hU`.
+
+Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k (Fin n) U hU`. Conclude with `⟨J, h1, isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`. Set `μ : Measure (GL (Fin n) k)` to `haarVol (KO k (Fin n))`. Use `haveI : μ.IsHaarMeasure := isHaarMeasure_haarVol isOpen_KO le_rfl`. Use `haveI : μ.IsMulRightInvariant := isMulRightInvariant_of_haar μ`.
+
+Use `GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant μ` as an intermediate fact. Establish `hinv` using `invTranspose_invTranspose n k`. Establish `hcont` using `continuous_invTranspose n k`. Set `Ψ : GL (Fin n) k ≃ₜ* GL (Fin n) k` to `{ toFun := invTranspose n k, invFun := invTranspose n k, left_inv := hinv, right_inv := hinv, map_mul' := map_mul _, continuous_toFun := hcont, continuous_invFun := hcont }`. Set `Φ : GL (Fin n) k ≃ₜ GL (Fin n) k` to `Ψ.toHomeomorph`.
+
+Establish `hΦ : ∀ x, Φ x = invTranspose n k x` using `fun _ => rfl`. Establish `hμ : μ.map Φ = μ`. Establish `: (μ.map Φ).IsHaarMeasure` using `Ψ.isHaarMeasure_map μ`. Use `@eq_haarVol _ _ _ _ _ _ _ _ _ _ _ this _ isOpen_KO le_rfl ?_` and prove the remaining obligations. Use `(Measure.map_apply (μ := μ) Φ.measurable isOpen_KO.measurableSet).trans ?_` and prove the remaining obligations.
+
+Establish `e : Φ ⁻¹' (KO k (Fin n) : Set (GL (Fin n) k)) = KO k (Fin n)`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, mem_KO_iff]`. Conclude with `⟨fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩, fun h => ⟨fun i j => h.2 j i, fun i j => h.1 j i⟩⟩`. Rewrite using `[e]`.
+
+Conclude with `haarVol_self isOpen_KO le_rfl`. Take `⟨hca, hct⟩` from `GlobalTheory.T.isAdmissible_contra_and_smoothTrace_inv _ μ hb V π ha`. Set `T : SB (GL (Fin n) k) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => smoothTrace π μ φ.1 map_add' := fun φ ψ => ha.smoothTrace_add φ.2.1 φ.2.2 ψ.2.1 ψ.2.2 isOpen_KO isCompact_KO map_smul' := fun c φ => ha.smoothTrace_smul φ.2.1 φ.2.2 isOpen_KO isCompact_KO c }`. Establish `hT` using `GlobalTheory.T.transpose_invariant_of_conj_invariant_distribution_GL k (Fin n) T fun g φ ψ h => by`. Express the relevant statement in the definitionally equal form `smoothTrace π μ ψ.1 = smoothTrace π μ φ.1`.
+
+Rewrite using `[show ψ.1 = _ from funext h]`. Conclude with `smoothTrace_conj ha isOpen_KO isCompact_KO φ.2.1 φ.2.2 g`. Use `GlobalTheory.T.nonempty_equiv_of_smoothTrace_eq_admissible _ μ hb V _ _ _ (isAdmissible_comp _ Φ hΦ ha) hca (isIrreducible_comp _ (fun g => ⟨_, hinv g⟩) hi) ((GlobalTheory.T.smoothContragredient_irreducible_and_reflexive _ hb V V π π ha ha).1 hi) fun f hf hc => ?_` and prove the remaining obligations. Establish `h1` using `hf.comp_continuous Φ.continuous`. Establish `h2` using `hc.comp_homeomorph Φ`.
+
+Establish `h3` using `smoothTrace_comp _ Φ hΦ hμ ha h1 h2`. Rewrite `h3` using `[show (f ∘ Φ) ∘ Φ = f from funext fun x => congrArg f (hinv x)]`. Rewrite using `[h3, hct f hf hc]`. Use `hT ⟨fun g => f g⁻¹, hf.comp_continuous continuous_inv, hc.comp_homeomorph (Homeomorph.inv _)⟩ ⟨f ∘ Φ, h1, h2⟩ fun x y hxy => congrArg f ?_` and prove the remaining obligations. Rewrite using `[eq_inv_iff_mul_eq_one]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(x⁻¹).valᵀ * y.val = 1`. Rewrite using `[hxy, ← transpose_mul, Units.mul_inv, transpose_one]`.
+-/
 theorem equiv_contra (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V)
     (ha : IsAdmissible π) (hi : π.IsIrreducible) :

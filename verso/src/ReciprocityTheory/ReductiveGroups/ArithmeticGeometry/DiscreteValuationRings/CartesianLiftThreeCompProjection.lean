@@ -17,31 +17,60 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {T T' : Over 
 
 def lf (F : (T ⟶ A) →₀ ℤ) : (T.left ⟶ A.left) →₀ ℤ := Finsupp.mapDomain (fun x => x.left) F
 
+/- English proof (translation)
+Unfold `lf`. Conclude with `Finsupp.mapDomain_add`.
+-/
 lemma lf_add (F G : (T ⟶ A) →₀ ℤ) : lf (F + G) = lf F + lf G := by
   unfold lf
   exact Finsupp.mapDomain_add
+/- English proof (translation)
+Unfold `lf`. Conclude with `map_neg (Finsupp.mapDomain.addMonoidHom _) F`.
+-/
 lemma lf_neg (F : (T ⟶ A) →₀ ℤ) : lf (-F) = - lf F := by
   unfold lf
   exact map_neg (Finsupp.mapDomain.addMonoidHom _) F
+/- English proof (translation)
+Unfold `lf`. Conclude with `map_sub (Finsupp.mapDomain.addMonoidHom _) F G`.
+-/
 lemma lf_sub (F G : (T ⟶ A) →₀ ℤ) : lf (F - G) = lf F - lf G := by
   unfold lf
   exact map_sub (Finsupp.mapDomain.addMonoidHom _) F G
+/- English proof (translation)
+Unfold `lf`. Conclude with `map_zsmul (Finsupp.mapDomain.addMonoidHom _) n F`.
+-/
 lemma lf_smul (n : ℤ) (F : (T ⟶ A) →₀ ℤ) : lf (n • F) = n • lf F := by
   unfold lf
   exact map_zsmul (Finsupp.mapDomain.addMonoidHom _) n F
+/- English proof (translation)
+Unfold `lf`. Conclude with `Finsupp.mapDomain_single`.
+-/
 lemma lf_single (x : T ⟶ A) (n : ℤ) : lf (Finsupp.single x n) = Finsupp.single x.left n := by
   unfold lf
   exact Finsupp.mapDomain_single
 
+/- English proof (translation)
+Unfold `lf`. Rewrite using `[← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp]`. Both sides reduce to the same expression.
+-/
 lemma lf_pull (h : T' ⟶ T) (F : (T ⟶ A) →₀ ℤ) :
     Finsupp.mapDomain (fun ψ => h.left ≫ ψ) (lf F) = lf (Finsupp.mapDomain (fun x => h ≫ x) F) := by
   unfold lf
   rw [← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma padd_eq_mul (a b : T ⟶ A) : padd A a b = a * b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma pzero_eq_one : pzero A T = 1 := rfl
 
+/- English proof (translation)
+Unfold `psum`. Proceed by induction on `(List.finRange n).filter (· ∈ I) with`. Consider the case `nil => exact MonObj.comp_one h`. Consider the case `cons k l ih`. Simplify using `only [List.foldr_cons]`.
+
+Rewrite using `[padd_eq_mul, padd_eq_mul, MonObj.comp_mul, ih]`.
+-/
 lemma comp_psum {n : ℕ} (h : T' ⟶ T) (x : Fin n → (T ⟶ A)) (I : Finset (Fin n)) :
     h ≫ psum A x I = psum A (fun k => h ≫ x k) I := by
   unfold psum
@@ -51,6 +80,9 @@ lemma comp_psum {n : ℕ} (h : T' ⟶ T) (x : Fin n → (T ⟶ A)) (I : Finset (
     simp only [List.foldr_cons]
     rw [padd_eq_mul, padd_eq_mul, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [x3]`.
+-/
 lemma cartesian_lift_three_comp_projection (x y z : T ⟶ A) : (fun k => lift x (lift y z) ≫ x3 A k) = ![x, y, z] := by
   funext k
   fin_cases k <;> simp [x3]
@@ -59,6 +91,9 @@ def lamP (u v : T ⟶ A) : (T ⟶ A) →₀ ℤ :=
   Finsupp.single (u * v) 1 - Finsupp.single u 1 - Finsupp.single v 1 + Finsupp.single 1 1
 
 open scoped Classical in
+/- English proof (translation)
+Use `first`. Consider the case `decide`. Consider the case `rfl`. Consider the case `(ext I; fin_cases I <;> simp)`.
+-/
 lemma univ_finset_powerset_fin_three : (Finset.univ : Finset (Finset (Fin 3))) =
     {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} := by
   first
@@ -66,9 +101,25 @@ lemma univ_finset_powerset_fin_three : (Finset.univ : Finset (Finset (Fin 3))) =
   | rfl
   | (ext I; fin_cases I <;> simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma fsum_eq_sum_single {X Y : Scheme} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     fsum φ ε = ∑ k, Finsupp.single (φ k) (ε k) := rfl
 
+/- English proof (translation)
+Establish `hu : (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}`. Evaluate the decidable proposition. Establish `p0 : psum A ![x, y, z] ∅ = 1` using `rfl`. Establish `p1 : psum A ![x, y, z] {0} = x`. Rewrite using `[show psum A ![x, y, z] {0} = x * 1 from rfl, _root_.mul_one]`.
+
+Establish `p2 : psum A ![x, y, z] {1} = y`. Rewrite using `[show psum A ![x, y, z] {1} = y * 1 from rfl, _root_.mul_one]`. Establish `p3 : psum A ![x, y, z] {2} = z`. Rewrite using `[show psum A ![x, y, z] {2} = z * 1 from rfl, _root_.mul_one]`. Establish `p01 : psum A ![x, y, z] {0, 1} = x * y`.
+
+Rewrite using `[show psum A ![x, y, z] {0, 1} = x * (y * 1) from rfl, _root_.mul_one]`. Establish `p02 : psum A ![x, y, z] {0, 2} = x * z`. Rewrite using `[show psum A ![x, y, z] {0, 2} = x * (z * 1) from rfl, _root_.mul_one]`. Establish `p12 : psum A ![x, y, z] {1, 2} = y * z`. Rewrite using `[show psum A ![x, y, z] {1, 2} = y * (z * 1) from rfl, _root_.mul_one]`.
+
+Establish `p012 : psum A ![x, y, z] {0, 1, 2} = x * (y * z)`. Rewrite using `[show psum A ![x, y, z] {0, 1, 2} = x * (y * (z * 1)) from rfl, _root_.mul_one]`. Rewrite using `[fsum_eq_sum_single, ← Equiv.sum_comp Equiv.ulift.symm]`. Simplify using `only [Equiv.ulift_symm_down]`. Rewrite using `[hu]`.
+
+Simplify using `(config := {decide := true}) only [Finset.sum_insert, Finset.mem_insert, Finset.mem_singleton, Finset.sum_singleton, not_false_eq_true, or_self, p0, p1, p2, p3, p01, p02, p12, p012]`. Simplify using `(config := {decide := true}) only [Finset.card_empty, Finset.card_singleton, Finset.card_insert_of_notMem, Finset.mem_insert, Finset.mem_singleton, not_false_eq_true, or_self]`. Unfold `lamP`. Simplify using `only [lf_add, lf_sub, lf_single]`. Evaluate the numerical expressions.
+
+Normalize the expressions using the abelian group laws.
+-/
 lemma fsum_theta (x y z : T ⟶ A) :
     fsum (fun I : ULift.{0} (Finset (Fin 3)) => (psum A ![x, y, z] I.down).left)
         (fun I => (-1 : ℤ) ^ (3 - I.down.card)) =
@@ -104,11 +155,19 @@ lemma fsum_theta (x y z : T ⟶ A) :
 
 variable {M : LB A.left}
 
+/- English proof (translation)
+Rewrite using `[fsum_eq_sum_single, fsum_eq_sum_single, Finsupp.mapDomain_finset_sum]`. Simplify using `only [Finsupp.mapDomain_single]`.
+-/
 private lemma mapDomain_comp_fsum {X Y Z : Scheme} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) :
     Finsupp.mapDomain (fun ψ => h ≫ ψ) (fsum φ ε) = fsum (fun k => h ≫ φ k) ε := by
   rw [fsum_eq_sum_single, fsum_eq_sum_single, Finsupp.mapDomain_finset_sum]
   simp only [Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Establish `h0` using `HasGen.of_gen (L := M) (φ := fun I : ULift.{0} (Finset (Fin 3)) => (psum A (x3 A) I.down).left) (ε := fun I => (-1 : ℤ) ^ (3 - I.down.card)) t ht`. Establish `h1` using `h0.pull (lift x (lift y z)).left`. Rewrite `h1` using `[mapDomain_comp_fsum]`. Rewrite using `[← fsum_theta]`. Use `h1 using 2` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `I`. Rewrite using `[← Over.comp_left, comp_psum, cartesian_lift_three_comp_projection]`.
+-/
 lemma hasGen_theta (t : LB.Gen (Theta A M)) (ht : t.IsGen) (x y z : T ⟶ A) :
     HasGen M (lf (lamP x (y * z) - lamP x y - lamP x z)) := by
   have h0 := HasGen.of_gen (L := M)
@@ -121,11 +180,17 @@ lemma hasGen_theta (t : LB.Gen (Theta A M)) (ht : t.IsGen) (x y z : T ⟶ A) :
   funext I
   rw [← Over.comp_left, comp_psum, cartesian_lift_three_comp_projection]
 
+/- English proof (translation)
+Unfold `lamP`. Rewrite using `[_root_.mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 lemma lambdaMap_one_eq_zero (x : T ⟶ A) : lamP x 1 = 0 := by
   unfold lamP
   rw [_root_.mul_one]
   abel
 
+/- English proof (translation)
+The claim follows from `| 0 => by simpa [lambdaMap_one_eq_zero, lf] using (HasGen.zero (L := M)) | n + 1 => by have h := (hasGen_theta t ht x (y ^ n) y).add (hasGen_lam_pow t ht x y n) rw [← lf_add] at h convert h using 2 rw [pow_succ] simp only [Nat.cast_succ, add_smul, one_smul] abel`.
+-/
 lemma hasGen_lam_pow (t : LB.Gen (Theta A M)) (ht : t.IsGen) (x y : T ⟶ A) :
     ∀ n : ℕ, HasGen M (lf (lamP x (y ^ n) - (n : ℤ) • lamP x y))
   | 0 => by simpa [lambdaMap_one_eq_zero, lf] using (HasGen.zero (L := M))
@@ -137,18 +202,30 @@ lemma hasGen_lam_pow (t : LB.Gen (Theta A M)) (ht : t.IsGen) (x y : T ⟶ A) :
     simp only [Nat.cast_succ, add_smul, one_smul]
     abel
 
+/- English proof (translation)
+Conclude with `Finsupp.mapDomain_single`.
+-/
 lemma mapDomain_single' {α β : Type} (f : α → β) (a : α) (n : ℤ) :
     Finsupp.mapDomain f (Finsupp.single a n) = Finsupp.single (f a) n := by
   exact Finsupp.mapDomain_single
 
+/- English proof (translation)
+Conclude with `Finsupp.mapDomain_add`.
+-/
 lemma mapDomain_add' {α β : Type} (f : α → β) (F G : α →₀ ℤ) :
     Finsupp.mapDomain f (F + G) = Finsupp.mapDomain f F + Finsupp.mapDomain f G := by
   exact Finsupp.mapDomain_add
 
+/- English proof (translation)
+Conclude with `map_sub (Finsupp.mapDomain.addMonoidHom f) F G`.
+-/
 lemma mapDomain_sub' {α β : Type} (f : α → β) (F G : α →₀ ℤ) :
     Finsupp.mapDomain f (F - G) = Finsupp.mapDomain f F - Finsupp.mapDomain f G := by
   exact map_sub (Finsupp.mapDomain.addMonoidHom f) F G
 
+/- English proof (translation)
+Unfold `lamP`. Establish `hs : ∀ (P Q : (T ⟶ A) →₀ ℤ), Finsupp.mapDomain (fun x => h ≫ x) (P - Q) = Finsupp.mapDomain (fun x => h ≫ x) P - Finsupp.mapDomain (fun x => h ≫ x) Q` using `fun P Q => map_sub (Finsupp.mapDomain.addMonoidHom _) P Q`. Rewrite using `[Finsupp.mapDomain_add, hs, hs, Finsupp.mapDomain_single, Finsupp.mapDomain_single, Finsupp.mapDomain_single, Finsupp.mapDomain_single, MonObj.comp_mul, MonObj.comp_one]`.
+-/
 lemma mapDomain_lamP (h : T' ⟶ T) (u v : T ⟶ A) :
     Finsupp.mapDomain (fun x => h ≫ x) (lamP u v) = lamP (h ≫ u) (h ≫ v) := by
   unfold lamP
@@ -159,10 +236,16 @@ lemma mapDomain_lamP (h : T' ⟶ T) (u v : T ⟶ A) :
     Finsupp.mapDomain_single, Finsupp.mapDomain_single, Finsupp.mapDomain_single, MonObj.comp_mul,
     MonObj.comp_one]
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.single_add]`. Evaluate the numerical expressions.
+-/
 lemma single_two {α : Type} (a : α) : Finsupp.single a (2 : ℤ) = Finsupp.single a 1 + Finsupp.single a 1 := by
   rw [← Finsupp.single_add]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.single_neg, ← Finsupp.single_sub]`. Evaluate the numerical expressions.
+-/
 lemma single_neg_two {α : Type} (a : α) : Finsupp.single a (-2 : ℤ) = -Finsupp.single a 1 - Finsupp.single a 1 := by
   rw [← Finsupp.single_neg, ← Finsupp.single_sub]
   norm_num
@@ -170,6 +253,15 @@ lemma single_neg_two {α : Type} (a : α) : Finsupp.single a (-2 : ℤ) = -Finsu
 def psiP (w : A ⟶ A) (y : T ⟶ A) : (T ⟶ A) →₀ ℤ :=
   lamP y (y ≫ w) - Finsupp.single y 1 + Finsupp.single 1 1
 
+/- English proof (translation)
+Establish `h0` using `HasGen.of_gen (L := M) u hu`. Establish `h1` using `h0.pull y.left`. Rewrite `h1` using `[mapDomain_comp_fsum]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `e1 : y.left ≫ (padd A (𝟙 _) w).left = (y * (y ≫ w)).left`.
+
+Rewrite using `[← Over.comp_left, padd_eq_mul, MonObj.comp_mul, Category.comp_id]`. Establish `e2 : y.left ≫ (𝟙 A : A ⟶ A).left = y.left`. Rewrite using `[← Over.comp_left, Category.comp_id]`. Establish `e3 : y.left ≫ w.left = (y ≫ w).left`. Rewrite using `[← Over.comp_left]`.
+
+Establish `e4 : y.left ≫ (toUnit A ≫ η[A]).left = (1 : T ⟶ A).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, CartesianMonoidalCategory.comp_toUnit]`. Both sides reduce to the same expression. Rewrite using `[fsum_eq_sum_single]`. Simplify using `only [Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, add_zero]`.
+
+Rewrite using `[e1, Category.comp_id, e3, e4]`. Unfold `psiP lamP`. Simplify using `only [lf_add, lf_sub, lf_single, Finsupp.single_neg, single_two]`. Normalize the expressions using the abelian group laws.
+-/
 lemma hasGen_psi (w : A ⟶ A)
     (u : LB.Gen (LB.LinComb M (K := Fin 4)
       ![(padd A (𝟙 _) w).left, 𝟙 A.left, w.left, (toUnit A ≫ η[A]).left] ![1, -2, -1, 2]))
@@ -194,6 +286,17 @@ lemma hasGen_psi (w : A ⟶ A)
   simp only [lf_add, lf_sub, lf_single, Finsupp.single_neg, single_two]
   abel
 
+/- English proof (translation)
+Establish `h0` using `HasGen.of_gen (L := M) u hu`. Establish `h1` using `h0.pull (lift x z).left`. Rewrite `h1` using `[mapDomain_comp_fsum]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `r0 : (lift x z).left ≫ (padd A (fst A A ≫ f) (snd A A)).left = ((x ≫ f) * z).left`.
+
+Rewrite using `[← Over.comp_left, padd_eq_mul, MonObj.comp_mul, ← Category.assoc, CartesianMonoidalCategory.lift_fst, CartesianMonoidalCategory.lift_snd]`. Establish `r1 : (lift x z).left ≫ (fst A A ≫ f).left = (x ≫ f).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, CartesianMonoidalCategory.lift_fst]`. Establish `r2 : (lift x z).left ≫ (snd A A).left = z.left`. Rewrite using `[← Over.comp_left, CartesianMonoidalCategory.lift_snd]`.
+
+Establish `r3 : (lift x z).left ≫ (padd A (fst A A) (snd A A ≫ g)).left = (x * (z ≫ g)).left`. Rewrite using `[← Over.comp_left, padd_eq_mul, MonObj.comp_mul, CartesianMonoidalCategory.lift_fst, ← Category.assoc, CartesianMonoidalCategory.lift_snd]`. Establish `r4 : (lift x z).left ≫ (fst A A).left = x.left`. Rewrite using `[← Over.comp_left, CartesianMonoidalCategory.lift_fst]`. Establish `r5 : (lift x z).left ≫ (snd A A ≫ g).left = (z ≫ g).left`.
+
+Rewrite using `[← Over.comp_left, ← Category.assoc, CartesianMonoidalCategory.lift_snd]`. Rewrite using `[fsum_eq_sum_single]`. Simplify using `only [Out.rosatiφ, Out.rosatiε, Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, add_zero]`. Rewrite using `[r0, r1, r2, r3, r4, r5]`. Unfold `lamP`.
+
+Simplify using `only [lf_add, lf_sub, lf_single, Finsupp.single_neg]`. Normalize the expressions using the abelian group laws.
+-/
 lemma hasGen_rosati (f g : A ⟶ A)
     (u : LB.Gen (LB.LinComb M (Out.rosatiφ A f g) Out.rosatiε)) (hu : u.IsGen) (x z : T ⟶ A) :
     HasGen M (lf (lamP (x ≫ f) z - lamP x (z ≫ g))) := by
@@ -223,21 +326,39 @@ lemma hasGen_rosati (f g : A ⟶ A)
   simp only [lf_add, lf_sub, lf_single, Finsupp.single_neg]
   abel
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [MonObj.comp_one] | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow' f g n]`.
+-/
 lemma comp_pow' (f : T ⟶ A) (g : A ⟶ A) : ∀ n : ℕ, f ≫ g ^ n = (f ≫ g) ^ n
   | 0 => by simp [MonObj.comp_one]
   | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow' f g n]
 
 variable {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Establish `h` using `ra.map_add 0 0`. Rewrite `h` using `[_root_.add_zero, padd_eq_mul]`. Conclude with `(_root_.mul_eq_left.mp h.symm)`.
+-/
 lemma act_zero' (ra : Out.RingAct A O) : ra.act 0 = 1 := by
   have h := ra.map_add 0 0
   rw [_root_.add_zero, padd_eq_mul] at h
   exact (_root_.mul_eq_left.mp h.symm)
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [Nat.cast_zero, act_zero', pow_zero] | n + 1 => by rw [Nat.cast_succ, ra.map_add, padd_eq_mul, act_natCast ra n, ra.map_one, pow_succ]`.
+-/
 lemma act_natCast (ra : Out.RingAct A O) : ∀ n : ℕ, ra.act (n : O) = (𝟙 A) ^ n
   | 0 => by rw [Nat.cast_zero, act_zero', pow_zero]
   | n + 1 => by rw [Nat.cast_succ, ra.map_add, padd_eq_mul, act_natCast ra n, ra.map_one, pow_succ]
 
+/- English proof (translation)
+Establish `hΨa` using `hasGen_psi (ra.act w0) uΨ huΨ (ra.act a)`. Establish `hΨ1` using `hasGen_psi (ra.act w0) uΨ huΨ (𝟙 A)`. Establish `hR` using `hasGen_rosati (ra.act a) (ra.act (star a)) uR huR (𝟙 A) (ra.act a ≫ ra.act w0)`. Establish `hP` using `hasGen_lam_pow t ht (𝟙 A) (ra.act w0) N`. Establish `hz : (ra.act a ≫ ra.act w0) ≫ ra.act (star a) = (ra.act w0) ^ N`.
+
+Rewrite using `[← ra.map_mul, ← ra.map_mul]`. Establish `h1 : star a * (w0 * a) = (N : O) * w0`. Rewrite using `[← hN]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ra.map_mul, act_natCast, comp_pow', Category.comp_id]`.
+
+Establish `key : Finsupp.single (ra.act a) 1 - (N : ℤ) • Finsupp.single (𝟙 A) 1 + ((N : ℤ) - 1) • Finsupp.single (1 : A ⟶ A) 1 = -(psiP (ra.act w0) (ra.act a)) + (lamP (𝟙 A ≫ ra.act a) (ra.act a ≫ ra.act w0) - lamP (𝟙 A) ((ra.act a ≫ ra.act w0) ≫ ra.act (star a))) + (lamP (𝟙 A) (ra.act w0 ^ …`. Rewrite using `[hz, Category.id_comp]`. Unfold `psiP`. Rewrite using `[Category.id_comp]`. Use `module`.
+
+Rewrite using `[key, lf_add, lf_add, lf_add, lf_neg, lf_smul]`. Conclude with `(((hΨa.neg).add hR).add hP).add (hΨ1.zsmul _)`.
+-/
 theorem hasGen_pullMul (ra : Out.RingAct A O) (w0 a : O) (N : ℕ) (hN : a * star a = (N : O))
     (uΨ : LB.Gen (LB.LinComb M (K := Fin 4)
       ![(padd A (𝟙 _) (ra.act w0)).left, 𝟙 A.left, (ra.act w0).left, (toUnit A ≫ η[A]).left] ![1, -2, -1, 2]))

@@ -6,23 +6,38 @@ namespace PIW.AdelClassFin
 open Formalism.MainNotions.S PI.AdelClassFin NumberField
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Simplify using `only [hhat, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem DictLat.hhat_add_right (I : AutInst) (y z z' : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hhat I y (z + z') = hhat I y z + hhat I y z' := by
   simp only [hhat, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hhat Formalism.UG.hform`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem DictLat.hhat_smul_right (I : AutInst) (y z : Fin I.n → I.E ⊗[I.F] Af I.F)
     (r : I.E ⊗[I.F] Af I.F) : hhat I y (r • z) = r * hhat I y z := by
   unfold hhat Formalism.UG.hform
   simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[hhat, Formalism.UG.hform]`.
+-/
 theorem DictLat.hhat_zero_right (I : AutInst) (y : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I y 0 = 0 := by
   simp [hhat, Formalism.UG.hform]
 
+/- English proof (translation)
+Simplify using `only [hhat, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem DictLat.hhat_add_left (I : AutInst) (y y' z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hhat I (y + y') z = hhat I y z + hhat I y' z := by
   simp only [hhat, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hhat Formalism.UG.hform`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem DictLat.hhat_smul_left (I : AutInst) (y z : Fin I.n → I.E ⊗[I.F] Af I.F)
     (r : I.E ⊗[I.F] Af I.F) :
     hhat I (r • y) z = Formalism.UG.sigR I.cm.sig (Af I.F) r * hhat I y z := by
@@ -30,9 +45,15 @@ theorem DictLat.hhat_smul_left (I : AutInst) (y z : Fin I.n → I.E ⊗[I.F] Af 
   simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[hhat, Formalism.UG.hform]`.
+-/
 theorem DictLat.hhat_zero_left (I : AutInst) (z : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I 0 z = 0 := by
   simp [hhat, Formalism.UG.hform]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem DictLat.sigR_inclE (I : AutInst) (e : I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) e) =
       Formalism.UG.inclE (F := I.F) (Af I.F) (star e) := by
@@ -40,24 +61,41 @@ theorem DictLat.sigR_inclE (I : AutInst) (e : I.E) :
     | rfl
     | simp [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.map_tmul]; rfl
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem DictLat.sigR_one_tmul (I : AutInst) (a : Af I.F) :
     Formalism.UG.sigR I.cm.sig (Af I.F) ((1 : I.E) ⊗ₜ[I.F] a) = (1 : I.E) ⊗ₜ[I.F] a := by
   simp [Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Simplify using `[hhat, iv, Formalism.UG.hform, DictLat.sigR_inclE, map_sum, map_mul, starRingEnd_apply]`.
+-/
 theorem DictLat.hhat_iv (I : AutInst) (v w : Fin I.n → I.E) :
     hhat I (iv I v) (iv I w) = Formalism.UG.inclE (F := I.F) (Af I.F) (Formalism.UG.hform (starRingEnd I.E) I.J v w) := by
   simp [hhat, iv, Formalism.UG.hform, DictLat.sigR_inclE, map_sum, map_mul, starRingEnd_apply]
 
+/- English proof (translation)
+Conclude with `Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)`.
+-/
 theorem DictLat.inclE_int (I : AutInst) {e : I.E} (he : e ∈ (algebraMap (𝓞 I.E) I.E).range) :
     Formalism.UG.inclE (F := I.F) (Af I.F) e ∈ IntAf I.F I.E := by
   exact Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ (star (algebraMap (𝓞 I.E) I.E a))` using `(NumberField.RingOfIntegers.isIntegral_coe a).map (starRingEnd I.E).toIntAlgHom`. Conclude with `⟨⟨_, hint⟩, rfl⟩`.
+-/
 theorem DictLat.star_int (I : AutInst) (a : 𝓞 I.E) :
     star (algebraMap (𝓞 I.E) I.E a) ∈ (algebraMap (𝓞 I.E) I.E).range := by
   have hint : IsIntegral ℤ (star (algebraMap (𝓞 I.E) I.E a)) :=
     (NumberField.RingOfIntegers.isIntegral_coe a).map (starRingEnd I.E).toIntAlgHom
   exact ⟨⟨_, hint⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hle : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (Formalism.UG.sigR I.cm.sig (Af I.F))` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨a, rfl⟩` from `hx show Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) (algebraMap (𝓞 I.E) I.E a)) ∈ IntAf I.F I.E`. Rewrite using `[DictLat.sigR_inclE]`.
+
+Conclude with `DictLat.inclE_int I (DictLat.star_int I a)`. Use `show Formalism.UG.sigR I.cm.sig (Af I.F) ((1 : I.E) ⊗ₜ[I.F] (y : Af I.F)) ∈ IntAf I.F I.E`. Rewrite using `[DictLat.sigR_one_tmul]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)`. Conclude with `hle hr`.
+-/
 theorem DictLat.sigR_int (I : AutInst) {r : I.E ⊗[I.F] Af I.F} (hr : r ∈ IntAf I.F I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) r ∈ IntAf I.F I.E := by
   have hle : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (Formalism.UG.sigR I.cm.sig (Af I.F)) := by
@@ -74,19 +112,31 @@ theorem DictLat.sigR_int (I : AutInst) {r : I.E ⊗[I.F] Af I.F} (hr : r ∈ Int
       exact Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)
   exact hle hr
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[iv, map_add]`.
+-/
 theorem DictLat.iv_add (I : AutInst) (v w : Fin I.n → I.E) : iv I (v + w) = iv I v + iv I w := by
   funext i
   simp [iv, map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[iv]`.
+-/
 theorem DictLat.iv_zero (I : AutInst) : iv I (0 : Fin I.n → I.E) = 0 := by
   funext i
   simp [iv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[iv, map_mul]`.
+-/
 theorem DictLat.iv_smulE (I : AutInst) (c : I.E) (v : Fin I.n → I.E) :
     iv I (c • v) = Formalism.UG.inclE (F := I.F) (Af I.F) c • iv I v := by
   funext i
   simp [iv, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show Formalism.UG.inclE (F := I.F) (Af I.F) ((a • v) i) = Formalism.UG.inclE (F := I.F) (Af I.F) ((a : 𝓞 I.E) : I.E) * Formalism.UG.inclE (F := I.F) (Af I.F) (v i)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`.
+-/
 theorem DictLat.iv_smulO (I : AutInst) (a : 𝓞 I.E) (v : Fin I.n → I.E) :
     iv I (a • v) = Formalism.UG.inclE (F := I.F) (Af I.F) ((a : 𝓞 I.E) : I.E) • iv I v := by
   funext i
@@ -94,13 +144,22 @@ theorem DictLat.iv_smulO (I : AutInst) (a : 𝓞 I.E) (v : Fin I.n → I.E) :
     Formalism.UG.inclE (F := I.F) (Af I.F) ((a : 𝓞 I.E) : I.E) * Formalism.UG.inclE (F := I.F) (Af I.F) (v i)
   rw [Pi.smul_apply, Algebra.smul_def, map_mul]
 
+/- English proof (translation)
+Conclude with `Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩`.
+-/
 theorem DictLat.iv_mem (I : AutInst) {l : Fin I.n → I.E} (hl : l ∈ I.L) : iv I l ∈ I.Lf := by
   exact Submodule.subset_span ⟨⟨l, hl⟩, rfl⟩
 
+/- English proof (translation)
+Conclude with `I.Lf.smul_mem ⟨r, hr⟩ hy`.
+-/
 theorem DictLat.Lf_smul (I : AutInst) {r : I.E ⊗[I.F] Af I.F} (hr : r ∈ IntAf I.F I.E)
     {y : Fin I.n → I.E ⊗[I.F] Af I.F} (hy : y ∈ I.Lf) : r • y ∈ I.Lf := by
   exact I.Lf.smul_mem ⟨r, hr⟩ hy
 
+/- English proof (translation)
+Use `show Submodule.span _ _ ≤ p`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨l, hl⟩, rfl⟩`. Conclude with `h l hl`.
+-/
 theorem DictLat.Lf_le (I : AutInst) (p : Submodule (IntAf I.F I.E) (Fin I.n → I.E ⊗[I.F] Af I.F))
     (h : ∀ l ∈ I.L, iv I l ∈ p) : I.Lf ≤ p := by
   show Submodule.span _ _ ≤ p
@@ -134,6 +193,11 @@ private def dualL (I : AutInst) (z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     show hhat I ((r : I.E ⊗[I.F] Af I.F) • y) z ∈ IntAf I.F I.E
     rw [DictLat.hhat_smul_left]; exact mul_mem (DictLat.sigR_int I r.2) hy
 
+/- English proof (translation)
+Introduce `I y hy z hz`. Establish `h1 : ∀ l ∈ I.L, I.Lf ≤ dualR I (iv I l)` using `fun l hl => DictLat.Lf_le I _ fun l' hl' => by show hhat I (iv I l) (iv I l') ∈ IntAf I.F I.E`. Rewrite using `[DictLat.hhat_iv]`. Conclude with `DictLat.inclE_int I ((I.L_dual l').mp hl' l hl)`. Establish `h2 : I.Lf ≤ dualL I z` using `DictLat.Lf_le I _ fun l hl => h1 l hl hz`.
+
+Conclude with `h2 hy`.
+-/
 theorem dual_hat_integral : LHatInt := by
   intro I y hy z hz
   have h1 : ∀ l ∈ I.L, I.Lf ≤ dualR I (iv I l) := fun l hl => DictLat.Lf_le I _ fun l' hl' => by
@@ -143,6 +207,11 @@ theorem dual_hat_integral : LHatInt := by
   have h2 : I.Lf ≤ dualL I z := DictLat.Lf_le I _ fun l hl => h1 l hl hz
   exact h2 hy
 
+/- English proof (translation)
+Introduce `I v hv`. Rewrite using `[I.L_dual]`. Introduce `y hy`. Apply `h I.F I.E` to reduce the goal to its premises. Rewrite using `[← DictLat.hhat_iv]`.
+
+Conclude with `dual_hat_integral I _ (DictLat.iv_mem I hy) _ hv`.
+-/
 theorem lInter_of (h : DInter) : LInter := by
   intro I v hv
   rw [I.L_dual]
@@ -187,12 +256,24 @@ private def ivSub (I : AutInst) (p : Submodule (I.E ⊗[I.F] Af I.F) (Fin I.n �
     show iv I (c • v) ∈ p
     rw [DictLat.iv_smulE]; exact p.smul_mem _ hv
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [iv, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem DictLat.iv_single (I : AutInst) (i : Fin I.n) :
     iv I (Pi.single i (1 : I.E)) = Pi.single i (1 : I.E ⊗[I.F] Af I.F) := by
   funext j
   simp only [iv, Pi.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `I y`. Establish `hL : ∀ l ∈ I.L, l ∈ ivSub I (denomSub I h)` using `fun l hl => by show ∃ m : ℕ, 0 < m ∧ (m : I.E ⊗[I.F] Af I.F) • iv I l ∈ I.Lf`. Conclude with `⟨1, one_pos, by rw [Nat.cast_one, one_smul]; exact DictLat.iv_mem I hl⟩`. Establish `htop : ivSub I (denomSub I h) = ⊤`. Rewrite using `[eq_top_iff, ← I.L_span, Submodule.span_le]`.
+
+Conclude with `fun l hl => hL l hl`. Establish `hei : ∀ i, Pi.single i (1 : I.E ⊗[I.F] Af I.F) ∈ denomSub I h`. Introduce `i`. Establish `hs : Pi.single i (1 : I.E) ∈ ivSub I (denomSub I h)`. Rewrite using `[htop]`.
+
+Conclude with `Submodule.mem_top`. Rewrite using `[← DictLat.iv_single]`. Conclude with `hs`. Establish `hyeq : y = ∑ i, y i • Pi.single i (1 : I.E ⊗[I.F] Af I.F)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hy : y ∈ denomSub I h`. Rewrite using `[hyeq]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hei i)`. Conclude with `hy`.
+-/
 theorem lDenom_of (h : DDenom) : LDenom := by
   intro I y
   have hL : ∀ l ∈ I.L, l ∈ ivSub I (denomSub I h) := fun l hl => by
@@ -235,6 +316,9 @@ private def denseSub (I : AutInst) (N : ℕ) (h : DDense) (hN : 0 < N) :
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Introduce `I N hN y hy`. Establish `hle : I.Lf ≤ denseSub I N h hN` using `DictLat.Lf_le I _ fun l hl => by show ∃ l' ∈ I.L, ∃ y' ∈ I.Lf, iv I l = iv I l' + (N : I.E ⊗[I.F] Af I.F) • y'`. Conclude with `⟨l, hl, 0, I.Lf.zero_mem, by rw [smul_zero, add_zero]⟩`. Conclude with `hle hy`.
+-/
 theorem lDense_of (h : DDense) : LDense := by
   intro I N hN y hy
   have hle : I.Lf ≤ denseSub I N h hN := DictLat.Lf_le I _ fun l hl => by
@@ -242,6 +326,17 @@ theorem lDense_of (h : DDense) : LDense := by
     exact ⟨l, hl, 0, I.Lf.zero_mem, by rw [smul_zero, add_zero]⟩
   exact hle hy
 
+/- English proof (translation)
+Introduce `I z hz`. Take `⟨m, hm, hmz⟩` from `h₂ I z`. Take `⟨l, hl, y', hy', he⟩` from `h₃ I m hm _ hmz`. Establish `hmE : (m : I.E) ≠ 0` using `Nat.cast_ne_zero.mpr hm.ne'`. Establish `hiv : iv I ((m : I.E)⁻¹ • l) = z - y'`.
+
+Rewrite using `[DictLat.iv_smulE]`. Establish `e1 : iv I l = (m : I.E ⊗[I.F] Af I.F) • (z - y')`. Rewrite using `[smul_sub, he]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, smul_smul]`.
+
+Establish `e2 : Formalism.UG.inclE (F` using `I.F) (Af I.F) (m : I.E)⁻¹ * (m : I.E ⊗[I.F] Af I.F) = 1 := by`. Rewrite using `[← map_natCast (Formalism.UG.inclE (F := I.F) (Af I.F)) m, ← map_mul, inv_mul_cancel₀ hmE, map_one]`. Rewrite using `[e2, one_smul]`. Establish `hv : (m : I.E)⁻¹ • l ∈ I.L`. Rewrite using `[I.L_dual]`.
+
+Introduce `y hy`. Apply `h₁ I.F I.E` to reduce the goal to its premises. Establish `e3 : z - y' = z + (-1 : I.E ⊗[I.F] Af I.F) • y'` using `by rw [neg_one_smul, sub_eq_add_neg]`. Rewrite using `[← DictLat.hhat_iv, hiv, e3, DictLat.hhat_add_right, DictLat.hhat_smul_right]`. Conclude with `add_mem (hz _ (DictLat.iv_mem I hy)) (mul_mem (neg_mem (one_mem _)) (h₄ I _ (DictLat.iv_mem I hy) _ hy'))`.
+
+Establish `hz' : z = iv I ((m : I.E)⁻¹ • l) + y'` using `by rw [hiv, sub_add_cancel]`. Rewrite using `[hz']`. Conclude with `I.Lf.add_mem (DictLat.iv_mem I hv) hy'`.
+-/
 theorem lHatDual_of (h₁ : DInter) (h₂ : LDenom) (h₃ : LDense) (h₄ : LHatInt) : LHatDual := by
   intro I z hz
   obtain ⟨m, hm, hmz⟩ := h₂ I z
@@ -269,6 +364,9 @@ theorem lHatDual_of (h₁ : DInter) (h₂ : LDenom) (h₃ : LDense) (h₄ : LHat
   rw [hz']
   exact I.Lf.add_mem (DictLat.iv_mem I hv) hy'
 
+/- English proof (translation)
+Conclude with `lHatDual_of h₁ (lDenom_of h₂) (lDense_of h₃) dual_hat_integral`.
+-/
 theorem lHatDual_of_D (h₁ : DInter) (h₂ : DDenom) (h₃ : DDense) : LHatDual := by
   exact lHatDual_of h₁ (lDenom_of h₂) (lDense_of h₃) dual_hat_integral
 

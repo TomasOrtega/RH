@@ -32,6 +32,11 @@ section Core
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Rewrite `hΦ` using `[GlobalTheory.WeilM.schA, Submodule.mem_span_set']`. Take `⟨n, c, s, rfl⟩` from `hΦ`. Use `choose f g hg hfg using fun i => (s i).2`. Use `⟨n, fun i => c i • f i, g, hg, Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hfg i]`.
+
+Use extensionality with `a`. Simplify using `[GlobalTheory.WeilM.pureA, mul_assoc]`.
+-/
 theorem schA_decomp {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) :
     ∃ (n : ℕ) (f : Fin n → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : Fin n → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ),
       (∀ i, g i ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) ∧ Φ = ∑ i, GlobalTheory.WeilM.pureA F (f i) (g i) := by
@@ -43,6 +48,9 @@ theorem schA_decomp {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ G
   ext a
   simp [GlobalTheory.WeilM.pureA, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite using `[List.sum_cons]`. Conclude with `ENNReal.add_ne_top.2 ⟨h a (by simp), ih fun b hb => h b (by simp [hb])⟩`.
+-/
 theorem list_sum_ne_top {l : List ENNReal} (h : ∀ a ∈ l, a ≠ ⊤) : l.sum ≠ ⊤ := by
   induction l with
   | nil => simp
@@ -52,6 +60,9 @@ theorem list_sum_ne_top {l : List ENNReal} (h : ∀ a ∈ l, a ≠ ⊤) : l.sum 
 
 variable [Invertible (2 : AdeleRing (𝓞 F) F)] {ψ : AddChar (AdeleRing (𝓞 F) F) ℂ}
 
+/- English proof (translation)
+Take `⟨n, f, g, hg, rfl⟩` from `schA_decomp hΦ`. Take `⟨f', hf'⟩` from `GlobalTheory.T.archDerivative_keeps_sums_fixed_finite_parts F κ ψ hψ n g f h`. Rewrite using `[hf']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, g i, hg i, rfl⟩`.
+-/
 theorem dS_mem (hψ : IsStdInf F ψ) (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ) : dS F ψ h Φ ∈ GlobalTheory.WeilM.schA F κ := by
   obtain ⟨n, f, g, hg, rfl⟩ := schA_decomp hΦ
@@ -59,6 +70,9 @@ theorem dS_mem (hψ : IsStdInf F ψ) (h : (κ → mixedEmbedding.mixedSpace F) �
   rw [hf']
   exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, g i, hg i, rfl⟩
 
+/- English proof (translation)
+The claim follows from `| [], _, hΦ => hΦ | h :: w, _, hΦ => by rw [word_cons] exact dS_mem hψ h (word_mem hψ w hΦ)`.
+-/
 theorem word_mem (hψ : IsStdInf F ψ) : ∀ (w : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))) {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ},
     Φ ∈ GlobalTheory.WeilM.schA F κ → word F ψ w Φ ∈ GlobalTheory.WeilM.schA F κ
   | [], _, hΦ => hΦ
@@ -66,6 +80,9 @@ theorem word_mem (hψ : IsStdInf F ψ) : ∀ (w : List ((κ → mixedEmbedding.m
     rw [word_cons]
     exact dS_mem hψ h (word_mem hψ w hΦ)
 
+/- English proof (translation)
+The claim follows from `| [], f => ⟨f, rfl⟩ | h :: w, f => by obtain ⟨f1, e1⟩ := word_sum hψ g w f obtain ⟨f2, e2⟩ := GlobalTheory.T.archDerivative_keeps_sums_fixed_finite_parts F κ ψ hψ m g f1 h exact ⟨f2, by rw [word_cons, e1, e2]⟩`.
+-/
 theorem word_sum (hψ : IsStdInf F ψ) {m : ℕ} (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     ∀ (w : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))) (f : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ), ∃ f' : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,
       word F ψ w (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) = ∑ i, GlobalTheory.WeilM.pureA F (f' i) (g i)
@@ -75,6 +92,9 @@ theorem word_sum (hψ : IsStdInf F ψ) {m : ℕ} (g : Fin m → (κ → FiniteAd
     obtain ⟨f2, e2⟩ := GlobalTheory.T.archDerivative_keeps_sums_fixed_finite_parts F κ ψ hψ m g f1 h
     exact ⟨f2, by rw [word_cons, e1, e2]⟩
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | h :: w, φ, hφ => by rw [List.map_cons, word_cons, word_cons, word_law hψ om pres M himpl μ hμ hiso p w hφ] exact GlobalTheory.T.weilRep_derivative_law_of_L2Isometric F κ ψ hψ om pres M himpl μ hμ hiso p h _ (word_mem hψ _ hφ)`.
+-/
 theorem word_law (hψ : IsStdInf F ψ) {G : Type} [Group G] (om : G →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ))
     (pres : ∀ p, ∀ φ ∈ GlobalTheory.WeilM.schA F κ, om p φ ∈ GlobalTheory.WeilM.schA F κ)
     (M : G → ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)))
@@ -89,6 +109,19 @@ theorem word_law (hψ : IsStdInf F ψ) {G : Type} [Group G] (om : G →* Module.
     rw [List.map_cons, word_cons, word_cons, word_law hψ om pres M himpl μ hμ hiso p w hφ]
     exact GlobalTheory.T.weilRep_derivative_law_of_L2Isometric F κ ψ hψ om pres M himpl μ hμ hiso p h _ (word_mem hψ _ hφ)
 
+/- English proof (translation)
+Take `⟨L, C, hL⟩` from `GlobalTheory.T.adelic_schwartz_l2_word_bound_exists F κ ψ hψ i j`. Take `⟨N, hN, m, g, yy, hg, hdual, hf⟩` from `hfin`. Take `⟨CG, hCG, hG⟩` from `GlobalTheory.T.finite_adelic_dual_basis_integral F κ m g yy hg hdual μ hμ y`. Use `set R : ℝ := ∑ h ∈ L.flatten.toFinset, (‖M p0 h‖ + 1) with hR`. Establish `hev : ∀ᶠ p in nhds p0, ∀ h ∈ L.flatten.toFinset, ‖M p h‖ ≤ R`.
+
+Use `(Filter.eventually_all_finset _).2 fun h hh => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun p => ‖M p h‖) p0` using `((hM h).norm).continuousAt`. Use `filter_upwards [hc.eventually_lt continuousAt_const (lt_add_one ‖M p0 h‖)] with p hp`. Conclude with `hp.le.trans (Finset.single_le_sum (f := fun h => ‖M p0 h‖ + 1) (fun _ _ => by positivity) hh)`. Establish `hB : ∀ w ∈ L, ∃ B : ENNReal, B ≠ ⊤ ∧ ∀ ws : List ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)), ws.length = w.length → (∀ h ∈ ws, ‖h‖ ≤ R) → l2A F μ (word F ψ ws Φ) ≤ B` using `fun w _ => GlobalTheory.T.exists_finite_l2A_bound_words F κ ψ hψ Φ hΦ μ hμ w.length R`.
+
+Use `choose! B hBtop hBle using hB`. Establish `htop : ENNReal.ofReal C * (L.map fun w => CG * B w).sum ≠ ⊤`. Use `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (list_sum_ne_top fun a ha => ?_)` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `List.mem_map.1 ha`. Conclude with `ENNReal.mul_ne_top hCG (hBtop w hw)`.
+
+Use `⟨(ENNReal.ofReal C * (L.map fun w => CG * B w).sum).toReal, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, hN] with p hp hpN`. Establish `key` using `hL (om p Φ) (pres p Φ hΦ) y`. Establish `hsum : (L.map fun w => ∫⁻ x, ‖word F ψ w (om p Φ) (GlobalTheory.WeilCont.adeleJoin F x y)‖ₑ ^ 2).sum ≤ (L.map fun w => CG * B w).sum`. Use `List.sum_le_sum fun w hw => ?_` and prove the remaining obligations.
+
+Take `⟨f, hfp⟩` from `hf p hpN`. Take `⟨f', hf'⟩` from `word_sum hψ g w f`. Establish `e1 : word F ψ w (om p Φ) = ∑ i, GlobalTheory.WeilM.pureA F (f' i) (g i)` using `by rw [hfp, hf']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[word_law hψ om pres M himpl μ hμ hiso p w hΦ, hiso p _ (word_mem hψ _ hΦ)]`.
+
+Use `_ ≤ CG * B w := by gcongr`. Use `hBle w hw _ (List.length_map _) fun h hh => ?_` and prove the remaining obligations. Take `⟨h0, h0m, rfl⟩` from `List.mem_map.1 hh`. Conclude with `hp h0 (List.mem_toFinset.2 (List.mem_flatten.2 ⟨w, hw, h0m⟩))`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal htop).1 (key.trans (by gcongr))`.
+-/
 theorem slice_l2_of (hψ : IsStdInf F ψ) {G : Type} [Group G] [TopologicalSpace G]
     (om : G →* Module.End ℂ ((κ → AdeleRing (𝓞 F) F) → ℂ))
     (pres : ∀ p, ∀ φ ∈ GlobalTheory.WeilM.schA F κ, om p φ ∈ GlobalTheory.WeilM.schA F κ)
@@ -146,6 +179,9 @@ end Core
 
 end GlobalTheory.WeilL2Words
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ _ co hco ω hω om hom Φ hΦ y p0 i j`. Establish `hI` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom`. Take `⟨M, himpl, hM⟩` from `GlobalTheory.T.transported_archHeisenbergDirections_continuous D ψ _ _ JA JB ξ κ co om hI.2`. Take `⟨μ, hμ, hiso⟩` from `GlobalTheory.T.l2A_transport_gram_transpose D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom`. Conclude with `GlobalTheory.WeilL2Words.slice_l2_of (GlobalTheory.T.isStandardArchimedeanAddChar_of_standardChar D ψ hψ) om hI.1 M himpl hM μ hμ hiso hΦ p0 (GlobalTheory.T.exists_local_finiteDim_finiteParts_weilOperators D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hA hJB κ co hco ω hω om hom Φ hΦ p0 …`.
+-/
 theorem GlobalTheory.WeilL2Words.weilTransport_archimedeanSlice_sobolev_bounds_alt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

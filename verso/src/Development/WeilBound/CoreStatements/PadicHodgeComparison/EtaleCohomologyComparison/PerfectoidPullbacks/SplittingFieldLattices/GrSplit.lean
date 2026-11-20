@@ -54,6 +54,9 @@ def nmO : NMor (dividedPowersBot O) q (Ideal.Quotient.mk ⊥) γ q (κA O I) (al
     have : a = r := by simpa [sub_eq_zero] using Ideal.Quotient.eq.1 h
     rw [← this]; rfl
 
+/- English proof (translation)
+Take `⟨⟨h0, h1⟩, V, hV, hU⟩` from `h`. Conclude with `⟨⟨h0, h1⟩, V, hV, hU⟩`.
+-/
 theorem nmO_mem (l s : ℕ) (𝒱 : Set X.Opens) (T : Thick (nlFun γ 0 X q (κA O I))) (h : TS γ q l s 𝒱 T) :
     TO q l s 𝒱 (((nmO γ q).mor 0).obj T) := by
   obtain ⟨⟨h0, h1⟩, V, hV, hU⟩ := h
@@ -74,6 +77,9 @@ abbrev HM (r : Option ℤ) (c : b.R) (j : ℕ) : Type 1 := CH.H (sq (IdF.top (sP
 
 def redM (r : Option ℤ) (c : b.R) (j : ℕ) : HO Q j →ₗ[b.R] HM Q r c j := (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).pull j
 
+/- English proof (translation)
+Simplify using `only [stdI]`. Simplify using `only [IdF.sup, IdF.span]`. Use `sup_le_sup_left ?_ _` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_span_singleton, map_pow, map_pow, pow_succ]`. Conclude with `dvd_mul_right _ _`.
+-/
 theorem stdI_le (r : Option ℤ) (c : b.R) (n : ℕ) (T : Q.FullSubcategory) : (stdI Q r (c ^ (n + 1))).S T ≤ (stdI Q r (c ^ n)).S T := by
   simp only [stdI]
   dsimp only [IdF.sup, IdF.span]

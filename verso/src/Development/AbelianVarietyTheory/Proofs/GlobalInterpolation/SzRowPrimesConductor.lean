@@ -7,6 +7,39 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `eps he he' C hC`. Establish `hC8 : 1 ≤ C.P.Cpde` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨xh, hh⟩` from `hostBounds eps C.P.Cpde he he' hC8`. Take `⟨xa, ha⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / C.P.Cpde / 5) (2 * C.Ct + 5) 1 (1 / 2) 0 le_rfl (by positivity) (by norm_num)`. Take `⟨xb, hb⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / C.P.Cpde / 30) 0 1 1 0 le_rfl (by positivity) (by norm_num)`.
+
+Take `⟨xc, hc⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 5) eps 0 222 (1 / 2) 2 (by positivity) (by linarith) (by norm_num)`. Take `⟨xd, hd⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 5) eps 0 (2 * C.P.Cpde) 1 2 (by positivity) (by linarith) (by norm_num)`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max (max (max xh xa) (max xb xc)) (max xd (max (Real.exp 1) (Real.exp C.P.Cpde))), ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L hLe hx hV`. Simplify using `only [max_le_iff] at hx`.
+
+Take `⟨⟨⟨hxh, hxa⟩, hxb, hxc⟩, hxd, hxe, hxC⟩` from `hx`. Take `⟨q1, q2, d1, -, hN, -, -, -, p1, p2⟩` from `hh L.sc D.R D.host hLe hxh hV.ranks hV.host`. Establish `ha` using `ha _ hxa`. Establish `hb` using `hb _ hxb`. Establish `hc` using `hc _ hxc`.
+
+Establish `hd` using `hd _ hxd`. Substitute `hLe` using the available equality. Establish `hx0 : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hl1 : 1 ≤ Real.log L.sc.x` using `(Real.le_log_iff_exp_le hx0).mpr hxe`. Establish `hl2 : 1 ≤ Real.log L.sc.x ^ 2` using `one_le_pow₀ hl1`.
+
+Establish `hPl : L.sc.x ^ (L.sc.eps / 5) ≤ L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2` using `le_mul_of_one_le_right (Real.rpow_pos_of_pos hx0 _).le hl2`. Simplify using `only [Real.rpow_zero, pow_zero, mul_one, one_mul, zero_mul, zero_add] at ha hb hc hd`. Establish `hq0 : (0 : ℝ) < D.host.q`. Use `D.host.qd_big.1` as an intermediate fact. Conclude with `(by omega : 0 < D.host.q)` after adjusting the coercions.
+
+Establish `hd0 : (0 : ℝ) < D.host.d`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : 0 < D.host.d)` after adjusting the coercions. Establish `hez : L.sc.eps / C.P.Cpde ≤ L.sc.ez` using `hostBounds_ez hV.host`. Establish `hx1 : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`.
+
+Establish `hZ : 0 < L.sc.x ^ (L.sc.ez / 5)` using `Real.rpow_pos_of_pos hx0 _`. Establish `ha' : L.sc.x ^ (L.sc.eps / C.P.Cpde / 5) ≤ L.sc.x ^ (L.sc.ez / 5)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`. Establish `hb' : 2 ≤ L.sc.x ^ (L.sc.ez / 30)` using `le_trans (by linarith) (Real.rpow_le_rpow_of_exponent_le hx1 (show L.sc.eps / C.P.Cpde / 30 ≤ L.sc.ez / 30 by linarith))`. Establish `hq6 : L.sc.x ^ (L.sc.ez / 6) ≤ L.sc.x ^ (L.sc.ez / 5) / 2`. Establish `e : L.sc.x ^ (L.sc.ez / 5) = L.sc.x ^ (L.sc.ez / 6) * L.sc.x ^ (L.sc.ez / 30)`.
+
+Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : 0 < L.sc.x ^ (L.sc.ez / 6)` using `Real.rpow_pos_of_pos hx0 _`. Use `mul_le_mul_of_nonneg_left hb' h6.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdl : L.sc.x ^ (L.sc.ez / 5) ≤ L.sc.x ^ (L.sc.ez / 5) * (Real.log L.sc.x / L.sc.J) ^ 2` using `le_mul_of_one_le_right hZ.le (one_le_pow₀ (hostBounds_one_le_log_div hV.host hxC))`. Establish `key : ∀ y : ℝ, 0 < y → L.sc.x ^ (L.sc.ez / 5) / 2 ≤ Real.log y → L.sc.x ^ (2 * L.Ct + 5) < y`. Introduce `y hy h`. Rewrite using `[hV.Ct_eq, Real.rpow_def_of_pos hx0, ← Real.lt_log_iff_exp_lt hy]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨⟨key _ hq0 q1, key _ hd0 (by linarith)⟩, hq6.trans q1, hV.dlog, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hn : (1 : ℝ) ≤ D.R.n`. Conclude with `D.R.ord_pos` after adjusting the coercions. Establish `hk : 2 ≤ D.R.k`.
+
+Establish `h1 : (1 : ℝ) < L.sc.x ^ (9 / 2 + 10 * L.sc.eps)` using `Real.one_lt_rpow L.sc.one_lt_alt (by positivity)`. Establish `h2 : (1 : ℝ) < D.R.k` using `lt_of_lt_of_le h1 hV.ranks.2.2.1.1`. Conclude with `h2` after adjusting the coercions. Establish `hr : 1 ≤ D.R.r`. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht : D.R.t ≤ D.host.q`. Use `D.host.qd_big.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `ht' : (D.R.t : ℝ) ≤ Real.exp (L.sc.x ^ (L.sc.eps / 5))` using `le_trans (by exact_mod_cast ht) ((Real.log_le_iff_le_exp hq0).mp q2)`.
+
+Establish `hE : (condE D : ℝ) ≤ Real.exp (2 * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2)`. Establish `hpos : (0 : ℝ) < (D.host.QS : ℝ) * D.host.q * D.host.d`. Establish `hQ : (0 : ℝ) < D.host.QS` using `by exact_mod_cast D.host.QS_pos`. Check the signs of the components of the expression. Use `(Real.log_le_iff_le_exp hpos).mp hN` as an intermediate fact.
+
+Unfold `condE`. Use `push_cast`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Unfold `Scale.b Scale.L`.
+
+Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_mul]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Scale.L`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Scale.L`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_primes_conductor : SzRow (fun C D L => (L.sc.x ^ (2 * L.Ct + 5) < (D.host.q : ℝ) ∧ L.sc.x ^ (2 * L.Ct + 5) < (D.host.d : ℝ)) ∧ (L.sc.x ^ (L.sc.ez / 6) ≤ Real.log D.host.q) ∧ (|L.logDerivativeAtOne| ≤ L.sc.x ^ L.sc.eps) ∧ ((condE D : ℝ) ^ 36 * (D.R.t : ℝ) ^ 150 ≤ L.sc.b ^ ((1 : ℝ) / 2)) ∧ (Real.log D.host.pde ≤ L.sc.L ∧ Real.log D.host.pde' ≤ L.sc.L)) := by
   intro eps he he' C hC
   have hC8 : 1 ≤ C.P.Cpde := hC.2.2.2.2.2.2.2.2.2.2.2.2.1

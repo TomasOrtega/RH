@@ -18,15 +18,36 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.SquareConv
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.CoprimeNatNotMem.natCast_not_mem_of_coprime hP hpn hp`.
+-/
 theorem natCast_not_mem {Rg : Type*} [CommRing Rg] {P : Ideal Rg} (hP : P ≠ ⊤) {p n : ℕ} (hpn : Nat.Coprime p n)
     (hp : (p : Rg) ∈ P) : (n : Rg) ∉ P :=
   _root_.GlobalTheory.CoprimeNatNotMem.natCast_not_mem_of_coprime hP hpn hp
 
+/- English proof (translation)
+The claim follows from `Nat.Coprime.mul_right (Nat.Coprime.mul_right ((Nat.coprime_primes hp Nat.prime_two).2 h2) ((Nat.coprime_primes hp hq).2 h3)) ((Nat.coprime_primes hp hd).2 h4)`.
+-/
 theorem coprime_two_q_d {p q d : ℕ} (hp : p.Prime) (hq : q.Prime) (hd : d.Prime) (h2 : p ≠ 2) (h3 : p ≠ q) (h4 : p ≠ d) :
     Nat.Coprime p (2 * q * d) :=
   Nat.Coprime.mul_right (Nat.Coprime.mul_right ((Nat.coprime_primes hp Nat.prime_two).2 h2) ((Nat.coprime_primes hp hq).2 h3))
     ((Nat.coprime_primes hp hd).2 h4)
 
+/- English proof (translation)
+Take `⟨hq, hd, -⟩` from `D.host.hyp`. Establish `hcc : D.host.ccK = ⊤` using `hS.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Take `⟨⟨P, -, -⟩, -⟩` from `hS.size`. Establish `lev : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q * D.host.d)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_condN_of_splitK D.host hpp (P.level_split p hp)`. Use `⟨hx, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E)`. Rewrite using `[hcc, Ideal.absNorm_top, mul_one]`. Rewrite using `[e1]`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hpv, hcop⟩ : ∃ p : ℕ, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∧ Nat.Coprime p (D.host.QS * D.host.q * D.host.d) := by`. Break down `G.pl.mem_S0_of_sum_eq.1 hv with rfl | hv1` into its components or cases. Use `⟨q0 D, G.pl.basePlace_over_qZero, ?_⟩` and prove the remaining obligations. Establish `hs` using `(leastSplitAuxiliaryPrimeThetaChain_spec D).2.1`. Establish `hM : Nat.Coprime (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D) (q0 D)`.
+
+Rewrite using `[Nat.Coprime, Nat.gcd_rec, hs, Nat.gcd_one_left]`. Establish `hdv : D.host.QS * D.host.q * D.host.d ∣ Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`. Conclude with `Dvd.dvd.mul_left dvd_rfl _`. Conclude with `(hM.coprime_dvd_left hdv).symm`.
+
+Break down `(S1_mem_OmF D).1 hv1 with h | h | h | h` into its components or cases. Conclude with `⟨_, h, lev _ (D.host.g_level 0) (D.host.g_prime 0)⟩`. Conclude with `⟨_, h, lev _ (D.host.g_level 1) (D.host.g_prime 1)⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.1 D.host.pde_prime⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+
+Establish `hpw : ((p : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal`. Rewrite `hpv` using `[← G.pl.under_w hv, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hpv`. Conclude with `natCast_not_mem (G.pl.w v).isPrime.ne_top hcop hpw`. Introduce `hmem`.
+
+Apply `(hS.core.lev.Q_off t w hw).1` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+-/
 theorem standing {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {large₂ : SizeData₂ D}
     (hS : HidaSetting large₂ R F) (hx : 11 ≤ D.host.splitBound) {sc : Consts} (G : GridData R.toLevCh sc) (t : T) :
@@ -67,12 +88,18 @@ theorem standing {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A 
     rw [Nat.cast_mul]
     exact Ideal.mul_mem_right _ _ hmem
 
+/- English proof (translation)
+The claim follows from `hS.size.2.1.eleven_le`.
+-/
 theorem splitBound_ge {D : D7} {large₂ : SizeData₂ D} {ε : ℝ} (_he : large₂.sc.eps = ε) (_hx : (12 : ℝ) ^ (5 / ε) ≤ large₂.sc.x)
     {Γ : Type} {_ : Group Γ} {_ : Fintype Γ} {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} {_ : Field Ks} {_ : NumberField Ks} {_ : Algebra Ks D.what₂.LL} {R : RealDat D A Ks} {F : Face D A}
     (hS : HidaSetting large₂ R F := by assumption) : 11 ≤ D.host.splitBound :=
   hS.size.2.1.eleven_le
 
+/- English proof (translation)
+Introduce `_ _ hWC _ _`. Use `⟨0, fun ε CF _ => ⟨(12:ℝ) ^ (5/ε), fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩⟩` and prove the remaining obligations. Introduce `i j t M hM Θ Θ' hΘ g g₁`. Establish `hst : SquareStanding ch.G t` using `standing hS (splitBound_ge he hx) ch.G t`. Conclude with `GlobalTheory.T.bigRoute_kernel_integrableOn_unitary_quotient hWC hS.core.lev ch.W ch.S.B ch.rm t i j (GlobalTheory.T.squareThetaTripleHypotheses_of_standing hS.core.lev ch.W t i j hst) M hM Θ Θ' hΘ g₁ g`.
+-/
 theorem bigConv : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     IntegrableOn (kerBig ch.W Θ g g₁) (M.fd _) (M.ν _) := by
   intro _ _ hWC _ _

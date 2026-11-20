@@ -12,6 +12,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Take `⟨y, g, e⟩` from `p`. Take `⟨y', g', e'⟩` from `p'`. Take `rfl : y = y'` from `hy`. Take `rfl : g = g'` from `hg`. Both sides reduce to the same expression.
+-/
 theorem qk_ext {k : ℕ} {p p' : QkPt D F k} (hy : p.y = p'.y) (hg : p.g = p'.g) : p = p' := by
   obtain ⟨y, g, e⟩ := p
   obtain ⟨y', g', e'⟩ := p'
@@ -21,6 +24,9 @@ theorem qk_ext {k : ℕ} {p p' : QkPt D F k} (hy : p.y = p'.y) (hg : p.g = p'.g)
 
 variable (hB : D.TauBimult) {k : ℕ}
 
+/- English proof (translation)
+Take `⟨h, h₁, h₂⟩` from `p.eq`. Conclude with `((isNsmul_iff_eq _ _ _).1 h₁).symm.trans ((isIota_iff_eq hB _ _).1 h₂)`.
+-/
 theorem qk_nsmul (p : QkPt D F k) : k • p.g = iota hB F p.y := by
   obtain ⟨h, h₁, h₂⟩ := p.eq
   exact ((isNsmul_iff_eq _ _ _).1 h₁).symm.trans ((isIota_iff_eq hB _ _).1 h₂)
@@ -28,10 +34,19 @@ theorem qk_nsmul (p : QkPt D F k) : k • p.g = iota hB F p.y := by
 def qkMk (y : D.X) (g : GtPtF D F) (h : k • g = iota hB F y) : QkPt D F k :=
   ⟨y, g, k • g, (isNsmul_iff_eq _ _ _).2 rfl, (isIota_iff_eq hB _ _).2 h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem qkMk_y (y : D.X) (g : GtPtF D F) (h : k • g = iota hB F y) : (qkMk hB y g h).y = y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem qkMk_g (y : D.X) (g : GtPtF D F) (h : k • g = iota hB F y) : (qkMk hB y g h).g = g := rfl
 
+/- English proof (translation)
+The claim follows from `exists_congr fun z => and_congr Iff.rfl ⟨fun ⟨_, h₁, h₂⟩ => ((isAdd_iff_eq _ _ _).1 h₂).trans (congrArg (p.g + ·) ((isIota_iff_eq hB _ _).1 h₁)), fun h => ⟨_, isIota_iota hB z, (isAdd_iff_eq _ _ _).2 h⟩⟩`.
+-/
 theorem equiv_iff (p p' : QkPt D F k) :
     QkPt.Equiv D F p p' ↔ ∃ z : D.X, p'.y = p.y + k • z ∧ p'.g = p.g + iota hB F z :=
   exists_congr fun z => and_congr Iff.rfl
@@ -39,11 +54,17 @@ theorem equiv_iff (p p' : QkPt D F k) :
       fun h => ⟨_, isIota_iota hB z, (isAdd_iff_eq _ _ _).2 h⟩⟩
 
 include hB in
+/- English proof (translation)
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Conclude with `(equiv_iff hB _ _).2 ⟨-z, by rw [hy, smul_neg, add_neg_cancel_right], by rw [hg, map_neg, add_neg_cancel_right]⟩`.
+-/
 theorem equiv_symm {p p' : QkPt D F k} (h : QkPt.Equiv D F p p') : QkPt.Equiv D F p' p := by
   obtain ⟨z, hy, hg⟩ := (equiv_iff hB _ _).1 h
   exact (equiv_iff hB _ _).2 ⟨-z, by rw [hy, smul_neg, add_neg_cancel_right], by rw [hg, map_neg, add_neg_cancel_right]⟩
 
 include hB in
+/- English proof (translation)
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Take `⟨z', hy', hg'⟩` from `(equiv_iff hB _ _).1 h'`. Conclude with `(equiv_iff hB _ _).2 ⟨z + z', by rw [hy', hy, smul_add, add_assoc], by rw [hg', hg, map_add, add_assoc]⟩`.
+-/
 theorem equiv_trans {p p' p'' : QkPt D F k} (h : QkPt.Equiv D F p p') (h' : QkPt.Equiv D F p' p'') :
     QkPt.Equiv D F p p'' := by
   obtain ⟨z, hy, hg⟩ := (equiv_iff hB _ _).1 h
@@ -51,6 +72,9 @@ theorem equiv_trans {p p' p'' : QkPt D F k} (h : QkPt.Equiv D F p p') (h' : QkPt
   exact (equiv_iff hB _ _).2 ⟨z + z', by rw [hy', hy, smul_add, add_assoc], by rw [hg', hg, map_add, add_assoc]⟩
 
 include hB in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨qk_equiv_refl hB, equiv_symm hB, equiv_trans hB⟩`.
+-/
 theorem equiv_equivalence : Equivalence (QkPt.Equiv D F (k := k)) :=
   ⟨qk_equiv_refl hB, equiv_symm hB, equiv_trans hB⟩
 
@@ -69,15 +93,29 @@ def qkNeg (p : QkPt D F k) : QkPt D F k :=
 def qkShift (p : QkPt D F k) (z : D.X) : QkPt D F k :=
   qkMk hB (p.y + k • z) (p.g + iota hB F z) (by rw [nsmul_add, qk_nsmul hB, map_add, map_nsmul])
 
+/- English proof (translation)
+The claim follows from `(equiv_iff hB _ _).2 ⟨z, rfl, rfl⟩`.
+-/
 theorem equiv_qkShift (p : QkPt D F k) (z : D.X) : QkPt.Equiv D F p (qkShift hB p z) :=
   (equiv_iff hB _ _).2 ⟨z, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨q, hy, hg, he⟩ => (qk_ext hy ((isAdd_iff_eq _ _ _).1 hg) : q = qkAdd hB p p') ▸ he, fun h => ⟨_, rfl, (isAdd_iff_eq _ _ _).2 rfl, h⟩⟩`.
+-/
 theorem qkAdd_iff (p p' p'' : QkPt D F k) : QkAdd p p' p'' ↔ QkPt.Equiv D F (qkAdd hB p p') p'' :=
   ⟨fun ⟨q, hy, hg, he⟩ => (qk_ext hy ((isAdd_iff_eq _ _ _).1 hg) : q = qkAdd hB p p') ▸ he,
     fun h => ⟨_, rfl, (isAdd_iff_eq _ _ _).2 rfl, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `(qkAdd_iff hB _ _ _).2 (qk_equiv_refl hB _)`.
+-/
 theorem qkAdd_qkAdd (p p' : QkPt D F k) : QkAdd p p' (qkAdd hB p p') := (qkAdd_iff hB _ _ _).2 (qk_equiv_refl hB _)
 
+/- English proof (translation)
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Take `⟨z', hy', hg'⟩` from `(equiv_iff hB _ _).1 h'`. Use `(equiv_iff hB _ _).2 ⟨z + z', ?_, ?_⟩` and prove the remaining obligations. Use `show q.y + q'.y = p.y + p'.y + k • (z + z')`. Rewrite using `[hy, hy', smul_add, add_add_add_comm]`.
+
+Use `show q.g + q'.g = p.g + p'.g + iota hB F (z + z')`. Rewrite using `[hg, hg', map_add, add_add_add_comm]`.
+-/
 theorem qkAdd_congr {p p' q q' : QkPt D F k} (h : QkPt.Equiv D F p q) (h' : QkPt.Equiv D F p' q') :
     QkPt.Equiv D F (qkAdd hB p p') (qkAdd hB q q') := by
   obtain ⟨z, hy, hg⟩ := (equiv_iff hB _ _).1 h
@@ -90,6 +128,9 @@ theorem qkAdd_congr {p p' q q' : QkPt D F k} (h : QkPt.Equiv D F p q) (h' : QkPt
 
 include hB in
 
+/- English proof (translation)
+Establish `a` using `(qkAdd_iff hB _ _ _).1 e`. Establish `c` using `qkAdd_congr hB h h'`. Rewrite using `[qkAdd_iff hB]`. Conclude with `⟨fun b => equiv_trans hB (equiv_symm hB a) (equiv_trans hB c b), fun b => equiv_trans hB (equiv_symm hB c) (equiv_trans hB a b)⟩`.
+-/
 theorem qkAdd_iff_of_equiv {p p' q q' r r' : QkPt D F k} (h : QkPt.Equiv D F p q) (h' : QkPt.Equiv D F p' q')
     (e : QkAdd p p' r) : QkAdd q q' r' ↔ QkPt.Equiv D F r r' := by
   have a := (qkAdd_iff hB _ _ _).1 e
@@ -106,13 +147,24 @@ def qkSmul (a : O) (p : QkPt D F k) : QkPt D F k :=
   qkMk hB (a • p.y) (gtSmul hG oa a p.g) (by
     rw [iota_smul hG oa, ← qk_nsmul hB]; exact (map_nsmul (gtSmulHom hG oa F a) k p.g).symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨q, hy, hg, he⟩ => (qk_ext hy ((gtAct_iff_eq_gtSmul hG oa _ _ _).1 hg) : q = qkSmul hB hG oa a p) ▸ he, fun h => ⟨_, rfl, gtAct_gtSmul hG oa _ _, h⟩⟩`.
+-/
 theorem qkAct_iff (a : O) (p p' : QkPt D F k) : QkAct oa a p p' ↔ QkPt.Equiv D F (qkSmul hB hG oa a p) p' :=
   ⟨fun ⟨q, hy, hg, he⟩ => (qk_ext hy ((gtAct_iff_eq_gtSmul hG oa _ _ _).1 hg) : q = qkSmul hB hG oa a p) ▸ he,
     fun h => ⟨_, rfl, gtAct_gtSmul hG oa _ _, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `(qkAct_iff hB hG oa _ _ _).2 (qk_equiv_refl hB _)`.
+-/
 theorem qkAct_qkSmul (a : O) (p : QkPt D F k) : QkAct oa a p (qkSmul hB hG oa a p) :=
   (qkAct_iff hB hG oa _ _ _).2 (qk_equiv_refl hB _)
 
+/- English proof (translation)
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Use `(equiv_iff hB _ _).2 ⟨a • z, ?_, ?_⟩` and prove the remaining obligations. Use `show a • q.y = a • p.y + k • a • z`. Rewrite using `[hy, smul_add, smul_comm a k z]`. Use `show gtSmul hG oa a q.g = gtSmul hG oa a p.g + iota hB F (a • z)`.
+
+Rewrite using `[hg, gtSmul_add, iota_smul hG oa]`.
+-/
 theorem qkSmul_congr (a : O) {p q : QkPt D F k} (h : QkPt.Equiv D F p q) :
     QkPt.Equiv D F (qkSmul hB hG oa a p) (qkSmul hB hG oa a q) := by
   obtain ⟨z, hy, hg⟩ := (equiv_iff hB _ _).1 h
@@ -124,6 +176,9 @@ theorem qkSmul_congr (a : O) {p q : QkPt D F k} (h : QkPt.Equiv D F p q) :
 
 include hB hG in
 
+/- English proof (translation)
+Establish `a₁` using `(qkAct_iff hB hG oa _ _ _).1 e`. Establish `c` using `qkSmul_congr hB hG oa a h`. Rewrite using `[qkAct_iff hB hG]`. Conclude with `⟨fun b => equiv_trans hB (equiv_symm hB a₁) (equiv_trans hB c b), fun b => equiv_trans hB (equiv_symm hB c) (equiv_trans hB a₁ b)⟩`.
+-/
 theorem qkAct_iff_of_equiv {a : O} {p q r r' : QkPt D F k} (h : QkPt.Equiv D F p q) (e : QkAct oa a p r) :
     QkAct oa a q r' ↔ QkPt.Equiv D F r r' := by
   have a₁ := (qkAct_iff hB hG oa _ _ _).1 e
@@ -142,13 +197,22 @@ variable {F' : Type} [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
 def qkExt (p : QkPt D F k) : QkPt D F' k :=
   qkMk hB p.y (gtExt D f hf p.g) (by rw [← map_nsmul, qk_nsmul hB, gtExt_iota])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => qk_ext h.1 ((eq_gtExt_iff f hf _ _).2 h.2), fun h => h ▸ ⟨rfl, (eq_gtExt_iff f hf _ _).1 rfl⟩⟩`.
+-/
 theorem qkExt_iff (p : QkPt D F k) (p' : QkPt D F' k) : QkExt f p p' ↔ p' = qkExt hB f hf p :=
   ⟨fun h => qk_ext h.1 ((eq_gtExt_iff f hf _ _).2 h.2), fun h => h ▸ ⟨rfl, (eq_gtExt_iff f hf _ _).1 rfl⟩⟩
 
 include hB hf in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (qkExt_iff hB f hf _ _).2 rfl, fun _ h => (qkExt_iff hB f hf _ _).1 h⟩`.
+-/
 theorem existsUnique_qkExt (p : QkPt D F k) : ∃! p' : QkPt D F' k, QkExt f p p' :=
   ⟨_, (qkExt_iff hB f hf _ _).2 rfl, fun _ h => (qkExt_iff hB f hf _ _).1 h⟩
 
+/- English proof (translation)
+Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Use `(equiv_iff hB _ _).2 ⟨z, hy, ?_⟩` and prove the remaining obligations. Use `show gtExt D f hf q.g = gtExt D f hf p.g + iota hB F' z`. Rewrite using `[hg, map_add, gtExt_iota]`.
+-/
 theorem qkExt_congr {p q : QkPt D F k} (h : QkPt.Equiv D F p q) :
     QkPt.Equiv D F' (qkExt hB f hf p) (qkExt hB f hf q) := by
   obtain ⟨z, hy, hg⟩ := (equiv_iff hB _ _).1 h
@@ -156,17 +220,26 @@ theorem qkExt_congr {p q : QkPt D F k} (h : QkPt.Equiv D F p q) :
   show gtExt D f hf q.g = gtExt D f hf p.g + iota hB F' z
   rw [hg, map_add, gtExt_iota]
 
+/- English proof (translation)
+The claim follows from `qk_ext rfl (map_add (gtExt D f hf) p.g q.g)`.
+-/
 theorem qkExt_qkAdd (p q : QkPt D F k) :
     qkExt hB f hf (qkAdd hB p q) = qkAdd hB (qkExt hB f hf p) (qkExt hB f hf q) :=
   qk_ext rfl (map_add (gtExt D f hf) p.g q.g)
 
 include hB hf in
+/- English proof (translation)
+Rewrite using `[(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hq]`. Conclude with `qkExt_congr hB f hf h`.
+-/
 theorem equiv_of_qkExt {p q : QkPt D F k} {p' q' : QkPt D F' k} (hp : QkExt f p p') (hq : QkExt f q q')
     (h : QkPt.Equiv D F p q) : QkPt.Equiv D F' p' q' := by
   rw [(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hq]
   exact qkExt_congr hB f hf h
 
 include hB hf in
+/- English proof (translation)
+Rewrite using `[(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hq, (qkExt_iff hB f hf _ _).1 hr, qkAdd_iff hB, ← qkExt_qkAdd]`. Conclude with `qkExt_congr hB f hf ((qkAdd_iff hB _ _ _).1 h)`.
+-/
 theorem qkAdd_of_qkExt {p q r : QkPt D F k} {p' q' r' : QkPt D F' k} (hp : QkExt f p p') (hq : QkExt f q q')
     (hr : QkExt f r r') (h : QkAdd p q r) : QkAdd p' q' r' := by
   rw [(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hq, (qkExt_iff hB f hf _ _).1 hr, qkAdd_iff hB,
@@ -175,11 +248,17 @@ theorem qkAdd_of_qkExt {p q r : QkPt D F k} {p' q' r' : QkPt D F' k} (hp : QkExt
 
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X] (hG : GlobalFnsSt) (oa : D.OAct O)
 
+/- English proof (translation)
+The claim follows from `qk_ext rfl (gtExt_gtSmul f hf hG oa a p.g)`.
+-/
 theorem qkExt_qkSmul (a : O) (p : QkPt D F k) :
     qkExt hB f hf (qkSmul hB hG oa a p) = qkSmul hB hG oa a (qkExt hB f hf p) :=
   qk_ext rfl (gtExt_gtSmul f hf hG oa a p.g)
 
 include hB hf hG in
+/- English proof (translation)
+Rewrite using `[(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hr, qkAct_iff hB hG, ← qkExt_qkSmul]`. Conclude with `qkExt_congr hB f hf ((qkAct_iff hB hG oa _ _ _).1 h)`.
+-/
 theorem qkAct_of_qkExt {a : O} {p r : QkPt D F k} {p' r' : QkPt D F' k} (hp : QkExt f p p') (hr : QkExt f r r')
     (h : QkAct oa a p r) : QkAct oa a p' r' := by
   rw [(qkExt_iff hB f hf _ _).1 hp, (qkExt_iff hB f hf _ _).1 hr, qkAct_iff hB hG, ← qkExt_qkSmul]
@@ -187,6 +266,9 @@ theorem qkAct_of_qkExt {a : O} {p r : QkPt D F k} {p' r' : QkPt D F' k} (hp : Qk
 
 end Extension
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => gt_ext, ⟨isAdd_iff_eq, isZero_iff_eq, isNsmul_iff_eq⟩, ⟨isIota_iff_eq hB, gtProj_apply, zero_b, add_b⟩, fun _ => ⟨equiv_equivalence hB, fun p p' => ⟨_, qkAdd_qkAdd hB p p'⟩, fun _ _ _ _ _ _ h h' e => qkAdd_iff_of_equiv hB h h' e⟩, fun _ _ _ _ oa => ⟨gtAct_iff_eq_gtSmu …`.
+-/
 theorem relations_are_functions (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R] (D : DegPre R)
     (hB : D.TauBimult) (F : Type) [Field F] [Algebra (FractionRing R) F] :
     letI := gtGroup D F

@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `τ φ n hφ c w`. Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = n`. Establish `h` using `hφ (MvPolynomial.mem_support_iff.mp hd)`.
+
+Rewrite using `[← h, Finsupp.weight_apply, Finsupp.sum]`. Simplify using the standard rewrite rules. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.Ydc1.eval_smul_of_isHomogeneous.{u_1} :
     ∀ {τ : Type u_1} {φ : MvPolynomial τ ℂ} {n : ℕ},
       φ.IsHomogeneous n →

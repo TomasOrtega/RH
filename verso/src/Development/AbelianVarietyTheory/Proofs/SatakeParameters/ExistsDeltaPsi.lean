@@ -24,8 +24,18 @@ section Local
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L} {σ : L →+* L} {q : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intL {x : L} : x ∈ intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hq, hc⟩` from `h`. Use `set V := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) with hV`. Establish `hc' : Nat.card (IsLocalRing.ResidueField V.valuationSubring) = q ^ 2` using `hc`. Use `haveI : Finite (IsLocalRing.ResidueField V.valuationSubring) := Nat.finite_of_card_ne_zero (by rw [hc']; positivity)`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField V.valuationSubring)`.
+
+Assume the negation of the conclusion as `hodd`. Take `⟨k, hk⟩` from `Nat.not_odd_iff_even.1 hodd`. Establish `h1 : ringChar (IsLocalRing.ResidueField V.valuationSubring) = 2`. Rewrite using `[FiniteField.even_card_iff_char_two, ← Nat.card_eq_fintype_card, hc', hk, ← two_mul, mul_pow]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : ((2 : ℕ) : IsLocalRing.ResidueField V.valuationSubring) = 0` using `(ringChar.spec _ 2).2 (by rw [h1])`. Rewrite `h3` using `[← map_natCast (IsLocalRing.residue V.valuationSubring), IsLocalRing.residue_eq_zero_iff, Valuation.mem_maximalIdeal_iff]`. Conclude with `absurd h2 (ne_of_lt h3)`.
+-/
 theorem odd_of_v_two (h : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) : Odd q := by
   obtain ⟨-, -, -, -, -, hq, hc⟩ := h
   set V := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) with hV
@@ -43,6 +53,21 @@ theorem odd_of_v_two (h : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) : Odd 
     Valuation.mem_maximalIdeal_iff] at h3
   exact absurd h2 (ne_of_lt h3)
 
+/- English proof (translation)
+Take `⟨hσσ, hσv, hϖ, hϖv, ⟨x, -, hx⟩, -⟩` from `h`. Use `set δ := σ x - x with hδ`. Establish `hσδ : σ δ = -δ` using `by rw [hδ, map_sub, hσσ, neg_sub]`. Establish `h20 : (2 : L) ≠ 0` using `fun e => by rw [e, map_zero] at h2; exact zero_ne_one h2`. Establish `hδ0 : δ ≠ 0` using `fun e => by rw [e, map_zero] at hx; exact zero_ne_one hx`.
+
+Establish `key : ∀ t, θ (2⁻¹ * (t - σ t)) = θ t` using `fun t => by`. Establish `e1 : t = 2⁻¹ * (t - σ t) + (σ (2⁻¹ * t) + 2⁻¹ * t)`. Rewrite using `[map_mul, map_inv₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `conv_rhs => rw [e1, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hθ, mul_one]`. Use `⟨δ, θ.mulShift (2 * δ)⁻¹, ⟨hx, hσδ⟩, fun a ha _ => ?_, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply]`. Conclude with `(hc _).2 (mem_intL.2 (by rw [map_inv₀, map_mul, h2, hx, mul_one, inv_one])) a ha`. Establish `h1 : ϖ⁻¹ ∉ intL L`.
+
+Rewrite using `[mem_intL, map_inv₀, hϖv]`. Evaluate the decidable proposition. Rewrite `h1` using `[← hc]`. Use `push Not at h1`. Take `⟨u, hu, hu'⟩` from `h1`.
+
+Use `⟨δ * (u - σ u), mul_mem (mem_intL.2 hx.le) (sub_mem hu (mem_intL.2 ((hσv u).trans_le hu))), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hσδ, map_sub, hσσ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hu'` using `[← key (ϖ⁻¹ * u), σ.map_mul, map_inv₀ σ, hϖ]`. Rewrite using `[AddChar.mulShift_apply]`.
+
+Use `hu' using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Rewrite using `[AddChar.mulShift_apply, ← key (2⁻¹ * t), σ.map_mul, hσδ, σ.map_mul, map_inv₀ σ, map_ofNat]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_delta_psi (h : IsUnramInv ϖ σ q) (h2 : Valued.v (2 : L) = 1) (θ : AddChar L ℂ) (hθ : ∀ z, θ (σ z) * θ z = 1)
     (hc : ∀ z, (∀ u ∈ intL L, θ (z * u) = 1) ↔ z ∈ intL L) :
     ∃ (δ : L) (ψ : AddChar L ℂ), (Valued.v δ = 1 ∧ σ δ = -δ) ∧ (∀ a ∈ intL L, σ a = a → ψ a = 1) ∧
@@ -85,6 +110,41 @@ open GlobalTheory.PlaceComp GlobalTheory.SelfDualGenus GlobalTheory.InertDoubleC
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
+/- English proof (translation)
+Establish `hur` using `unramified hc`. Take `⟨σ, ϖ, hσE, hU⟩` from `GlobalTheory.FixedPrime.exists_isUnramInv v P hin`. Take `⟨ψ, hψE, hψσ, hψO⟩` from `GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion E v P hin σ hσE hU.2.1`. Set `ψ' : LocAlg v →+* P.adicCompletion E` to `ψ`. Establish `hO : ∀ z, z ∈ ordAt E v ↔ ψ' z ∈ intL _` using `fun z => (mem_ordAt_iff v z).trans (hψO z)`.
+
+Set `π : AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* P.adicCompletion E` to `ψ'.comp ((evF E v).comp (finP _ E))`. Establish `hπ : ∀ a, π a = ψ (evF E v (finP _ E a))` using `fun a => rfl`. Establish `hev : ∀ a, evF E v (finP _ E (e * a)) = evF E v (finP _ E a)` using `fun a => by`. Rewrite using `[map_mul, map_mul, he.2.1, one_mul]`. Establish `hew : ∀ a w, w ≠ v → evF E w (finP _ E (e * a)) = 0` using `fun a w hw => by`.
+
+Rewrite using `[map_mul, map_mul, he.2.2 w hw, zero_mul]`. Use `⟨ϖ, σ, _, π, hU, ⟨fun z => ?_, fun a => ⟨fun h => ?_, fun h => ?_⟩, fun x => ?_, fun z => ?_, fun a => ?_⟩, fun V => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩ : ∃ a, finP _ E a = sgT E v (ψ.symm z)` from `Algebra.TensorProduct.map_surjective _ _ (fun b => ⟨pairA _ 0 b, rfl⟩) Function.surjective_id _`. Conclude with `⟨a, by rw [hπ, ha, evF_sgT_self, ψ.apply_symm_apply]⟩`. Use `GlobalTheory.LatVac.tensor_prod_eq_zero (F := maximalRealSubfield E) (A := Ainf (maximalRealSubfield E)) (B := Af (maximalRealSubfield E)) _ ?_ ?_` and prove the remaining obligations.
+
+Use `show infP _ E (e * a) = 0`. Rewrite using `[map_mul, he.1, zero_mul]`. Use `show finP _ E (e * a) = 0`. Use `evF_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hev]`. Conclude with `ψ.injective (h.trans ψ.map_zero.symm)`. Conclude with `hew a w hw`.
+
+Rewrite using `[hπ, ← hev, h, map_zero, map_zero, map_zero]`. Rewrite using `[hπ, evF_finP_incl]`. Conclude with `hψE x`. Rewrite using `[hπ, hπ, ← hψσ]`. Use `congr 1`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Rewrite using `[GlobalTheory.T.mem_integralFiniteAdelesTensor_iff_localOrders]`.
+
+Use `Iff.trans ⟨fun h => hev a ▸ h v, fun h w => ?_⟩ (hO _)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hev]` and apply the resulting hypothesis. Rewrite using `[hew a w hw]`.
+
+Conclude with `zero_mem _`. Take `⟨h, hfr, hon⟩` from `exists_orthonormal hc V v`. Take `⟨s1, s2, s3⟩` from `GlobalTheory.T.adelicUnitary_supportedAtFinitePlace_eq_localUnitary _ E hc V v e he`. Set `χ : P.adicCompletion E →+* LocAlg v` to `ψ.symm`. Establish `hback' : ∀ x : GL (Fin V.rank) (P.adicCompletion E), bc ψ' (bc χ x) = x` using `fun x => Units.ext (Matrix.ext fun i j => ψ.apply_symm_apply _)`.
+
+Establish `hback : ∀ x : GL (Fin V.rank) (LocAlg v), bc χ (bc ψ' x) = x` using `fun x => Units.ext (Matrix.ext fun i j => ψ.symm_apply_apply _)`. Establish `hex : ∀ g : UJ σ (1 : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion E)), ∃ k, Supp hc V e k ∧ locMat hc V v k = h * bc χ g.1 * h⁻¹` using `fun g => by`. Establish `h1` using `bc_mem_UJ_one (σ' := locConj v) χ (fun z => ψ.injective (by`. Rewrite using `[hψσ]`. Conclude with `(ψ.apply_symm_apply _).trans (congrArg σ (ψ.apply_symm_apply _).symm))) g.2`.
+
+Conclude with `s3 _ (conj_mem_UJ _ (inv_frame _ hon) h1)`. Use `choose ι hι1 hι2 using hex`. Establish `hmul : ∀ k k', Supp hc V e k → Supp hc V e k' → Supp hc V e (k * k')` using `fun k k' hk hk' => by`. Rewrite `hk`, `hk'`, the goal using `[s1]`. Use `⟨?_, fun w hw => by rw [map_mul, hk.2 w hw, hk'.2 w hw, mul_one]⟩` and prove the remaining obligations.
+
+Conclude with `((bc (infP _ E)).map_mul (HA.mat _ hc.sig V.gram k) (HA.mat _ hc.sig V.gram k')).trans (by rw [hk.1, hk'.1, mul_one])`. Use `⟨bc ψ' h, MonoidHom.mk' ι fun g g' => s2 _ _ (hι1 _) (hmul _ _ (hι1 _) (hι1 _)) ?_, ⟨?_, fun y => ?_⟩, hι1, fun g => ?_, fun x hx => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hι2, hι2, hι2, Subgroup.coe_mul, map_mul] group`. Use `congrArg (fun m => m.map ψ') hon` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero ψ') (map_one ψ')] at this`.
+
+Rewrite using `[← this]`. Use `congr 2`. Conclude with `Matrix.ext fun i j => (hψσ _).symm`. Conclude with `Matrix.ext fun i j => (hψE _).symm`. Rewrite using `[mem_lamHat_iff]`.
+
+Use `Iff.trans ⟨fun h => by simpa only [hev] using h v, fun h w => ?_⟩ ((hfr fun i => evF E v (finP _ E (y i))).trans (forall_congr' fun i => (hO _).trans ?_))` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify `h` using `only [hev]`. Simplify using `only [hew _ w hw]`.
+
+Conclude with `zero_mem _`. Rewrite using `[RingHom.map_mulVec, ← map_inv]`. Both sides reduce to the same expression. Use `congrArg (fun m => (bc ψ' m).1) (hι2 g)` as an intermediate fact. Simplify using `only [map_mul, map_inv, hback'] at this`.
+
+Conclude with `this`. Use `⟨⟨bc ψ' (h⁻¹ * locMat hc V v x * h), bc_mem_UJ_one (σ := locConj v) ψ' hψσ (conj_mem_UJ _ hon (locMat_mem hc V v x))⟩, s2 _ _ (hι1 _) hx ?_⟩ show locMat hc V v (ι _) = _` and prove the remaining obligations. Rewrite using `[hι2, hback]`. Use `group`. Establish `h1` using `(s1 _).1 (hι1 g) show IsFin hc V (ι g) ∧ Stab hc V (ι g) ↔ _`.
+
+Rewrite using `[and_iff_right h1.1, GlobalTheory.T.stabilises_completedLattice_iff_localMatrix_integral _ E hc V v h hfr _ h1.2, hι2, bc_mem_range_iff ψ' hO, show h⁻¹ * (h * bc χ g.1 * h⁻¹) * h = bc χ g.1 by group, hback']`. Both sides reduce to the same expression.
+-/
 theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))} {P : HeightOneSpectrum (𝓞 E)}
     {e : AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E} (he : IsIdemOf E v e)
@@ -224,6 +284,21 @@ def GrpChart (V : HSp D) (e : AE D) (σ : LP D P →+* LP D P) (π : AE D →+* 
   (∀ g, SuppF V e (ι g)) ∧ (∀ g, (Formalism.L2.Theta.mt V (ι g)).map π = β.1 * g.1.1 * (β⁻¹).1) ∧
     (∀ x, SuppF V e x → ∃ g, ι g = x) ∧ ∀ g, ι g ∈ KsphC V ∅ ↔ g.1 ∈ GLint (Fin V.rank) (intL (LP D P))
 
+/- English proof (translation)
+Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `haveI := GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm`. Establish `hP' : P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) = P.asIdeal` using `congrArg HeightOneSpectrum.asIdeal hP`. Establish `hfix : ∀ x : 𝓞 D.host.E, Formalism.DivisionValues.cO D.host.E x ∈ P.asIdeal ↔ x ∈ P.asIdeal` using `fun x => by conv_lhs => rw [← hP']`. Conclude with `Ideal.apply_mem_of_equiv_iff`.
+
+Establish `h2 : Valued.v (2 : LP D P) = 1`. Establish `h : ((2 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h => Formalism.MainNotions.KudlaSiegelWeil.InertConditionsOfHost.not_fixed_ram D P 2 (Or.inl rfl) h (Ideal.ext fun x => by`. Rewrite using `[Ideal.mem_comap, ← hfix x]`. Use `Eq.to_iff (congrArg (· ∈ P.asIdeal) (RingOfIntegers.ext ?_))` and prove the remaining obligations. Conclude with `(GlobalTheory.SplitIdem.star_eq_conj _ _).symm)`.
+
+Rewrite using `[← map_ofNat (algebraMap D.host.E (LP D P)) 2, GlobalTheory.Idele.valued_algebraMap, ← map_ofNat (algebraMap (𝓞 D.host.E) D.host.E) 2, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 h`. Take `⟨i1, i2, -⟩` from `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents D.sp.X').2.2.1 P e e he`. Break down `he with ⟨⟨⟨-, h3, -⟩, h4⟩, -⟩ | ⟨-, ⟨v, ε, ⟨α, rfl, a1, a2⟩, rfl⟩, hPe⟩` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `h3` using `[i2, i1]`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Use `(h4 x hx0).1 hx ?_` and prove the remaining obligations. Rewrite using `[h3, zero_mul, RingHom.map_zero]`. Conclude with `zero_mem _`.
+
+Establish `he` using `GlobalTheory.PlaceComp.isIdemOf_algebraMap (E := D.host.E) a1 a2`. Establish `hin0` using `GlobalTheory.FixedPrime.isInertAt_under P fun x hx => (hfix x).1 hx`. Establish `hin` using `GlobalTheory.InertDoubleCoset.inert_of_idem (E := D.host.E) he hPe (by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Establish `h1 : P.asIdeal ≤ P.asIdeal ^ 2` using `by conv_lhs => rw [← show _ = P.asIdeal from hin0]`. Conclude with `Ideal.map_le_iff_le_comap.2 fun x hx => hne x _ rfl hx`. Conclude with `(Ideal.pow_lt_self _ P.ne_bot P.isPrime.ne_top 2 le_rfl).not_ge h1)`. Take `⟨ϖ, σ, q, π, hU, hπ, hV⟩` from `exists_chart_cm (E := D.host.E) D.sp.cm he hin`. Use `⟨ϖ, σ, q, π, hU, h2, ⟨⟨i1, i2, he.1⟩, hπ⟩, fun V => ?_⟩` and prove the remaining obligations.
+
+Take `⟨β, ι, h1, h3, h4, h5, h6⟩` from `hV V`. Conclude with `⟨β, ι, h1, h3, h4, h5, fun g => (GlobalTheory.InertDoubleCoset.mem_KsphC_iff V _).trans (h6 g)⟩`.
+-/
 theorem exists_chart (hP : Formalism.DivisionValues.conjPl P = P) {e : AE D} (he : IsPrimeIdem P e e) :
     ∃ (ϖ : LP D P) (σ : LP D P →+* LP D P) (q : ℕ) (π : AE D →+* LP D P), IsUnramInv ϖ σ q ∧ Valued.v (2 : LP D P) = 1 ∧
       Chart e σ π ∧ ∀ V : HSp D, ∃ β ι, Frame V e σ π β ∧ GrpChart V e σ π β ι := by

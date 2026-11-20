@@ -13,6 +13,19 @@ variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hM : clsCrd D u i hi c = Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb` using `Formalism.L2.GlobalTheoryTheory.Comp.eq_glob_of_hat (tld_isLat i hi c) (K.y c).1 (fun w => K.y_lat c w)`. Rewrite `hy` using `[dual_class_lattice_eq_global K c]`. Rewrite using `[hM]`. Establish `key : Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb ≤ K.lev.Lb.comap ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • LinearMap.id)`. Unfold `Formalism.L2.GlobalTheoryTheory.Comp.dl`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h2` using `K.lev.Lb_dual z hz`. Simplify `h2` using `[Nat.cast_smul_eq_nsmul]`. Establish `hG : ∀ x ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb, ((((D.mem u).A.T : ℕ) : D.host.E) • (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E)) *ᵥ x ∈ K.lev.Lb`.
+
+Introduce `x hx`. Establish `h2` using `key hx`. Simplify using `only [Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply] at h2`. Establish `h3 : ((((D.mem u).A.T : ℕ) : D.host.E) • (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E)) *ᵥ x = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • x`. Use extensionality with `j`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Rewrite using `[h3]`. Conclude with `h2`. Establish `hy' : ((((K.y c).1)⁻¹ : GL _ _) : Matrix _ _ _) *ᵥ Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.vi D.host.F y ∈ Formalism.L2.GlobalTheoryTheory.Comp.hat D.host.F (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) K.lev.Lb)` using `hy`. Establish `h1` using `Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.hat_fwd _ hG _ hy'`.
+
+Use `show ((((K.y c).1)⁻¹ : GL _ _) : Matrix _ _ _) *ᵥ Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.vi D.host.F ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y) ∈ Formalism.L2.GlobalTheoryTheory.Comp.hat D.host.F K.lev.Lb`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `hv : Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.vi D.host.F ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y) = ((D.mem u).A.T) • Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.vi D.host.F y`. Use extensionality with `k`. Simplify using `[Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr.vi, Nat.cast_smul_eq_nsmul]`.
+
+Establish `hGm : ∀ w : Fin (D.R.N i) → TensorProduct D.host.F D.host.E (FiniteAdeleRing (𝓞 D.host.F) D.host.F), ((((D.mem u).A.T : ℕ) : D.host.E) • (1 : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E)).map (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) *ᵥ w = ((D.mem u).A.T) • w := by`. Introduce `w`. Use extensionality with `k`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, apply_ite, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_natCast, Pi.smul_apply, nsmul_eq_mul]`. Rewrite using `[hv, hGm, Matrix.mulVec_smul]`.
+-/
 theorem cls_tLd (K : ClsTied u i hi) (c : (D.mem u).C.cls i) (y : Fin (D.R.N i) → D.host.E) (hy : y ∈ Ld D u i hi c) :
     (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y ∈ clsCrd D u i hi c := by
   have hM : clsCrd D u i hi c = Formalism.UG.CS.globLat (K.y c).1 K.lev.Lb :=
@@ -61,6 +74,13 @@ theorem cls_tLd (K : ClsTied u i hi) (c : (D.mem u).C.cls i) (y : Fin (D.R.N i) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Take `⟨s, hs, h⟩` from `unr_smul A v`. Introduce `x hx`. Take `⟨r, hr, hrx⟩` from `(rlv_mem_locP _ _ _).1 hx`. Take `⟨l, hl, m, hm, ex⟩` from `Submodule.mem_sup.1 hrx`.
+
+Take `⟨y, hy, ey⟩` from `h (Ld D u i hi c) m hm`. Use `(rlv_mem_locP _ _ _).2 ⟨s * r, fun h' => (Ideal.IsPrime.mem_or_mem inferInstance h').elim hs hr, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← ex, smul_add, ey]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ hl) (cls_tLd K c y hy)`. Introduce `x hx`.
+
+Take `⟨r, hr, hrx⟩` from `(rlv_mem_locP _ _ _).1 hx`. Conclude with `(rlv_mem_locP _ _ _).2 ⟨r, hr, Submodule.mem_sup_left hrx⟩`.
+-/
 theorem lk_locP (A : AtTTied u) (K : ClsTied u i hi) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) :
     Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Lk A i hi v c) = Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (clsCrd D u i hi c) := by
   apply le_antisymm

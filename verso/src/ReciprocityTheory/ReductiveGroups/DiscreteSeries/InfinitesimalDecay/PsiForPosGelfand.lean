@@ -12,6 +12,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `| 0, a, b, f, f', h, g, hg => by simp only [S7.opPow] split_ifs · exact h g hg · rfl | k + 1, a, b, f, f', h, g, hg => by simp only [S7.opPow, Finset.sum_apply] refine Finset.sum_congr rfl fun c _ => ?_ exact hA a c _ _ (fun g' hg' => opPow_congr A hA k c b f f' h g' hg') g hg`.
+-/
 theorem opPow_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (A : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E))
     (hA : ∀ a b (f f' : Matrix (Fin n) (Fin n) ℂ → E), (∀ g, inUJ ε g → f g = f' g) →
@@ -28,6 +31,9 @@ theorem opPow_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] [No
       refine Finset.sum_congr rfl fun c _ => ?_
       exact hA a c _ _ (fun g' hg' => opPow_congr A hA k c b f f' h g' hg') g hg
 
+/- English proof (translation)
+Simplify using `only [S7.opGelfand, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => opPow_congr A hA k a a f f' h g hg`.
+-/
 theorem opGelfand_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (A : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E))
     (hA : ∀ a b (f f' : Matrix (Fin n) (Fin n) ℂ → E), (∀ g, inUJ ε g → f g = f' g) →
@@ -38,11 +44,17 @@ theorem opGelfand_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E]
   simp only [S7.opGelfand, Finset.sum_apply]
   exact Finset.sum_congr rfl fun a _ => opPow_congr A hA k a a f f' h g hg
 
+/- English proof (translation)
+Introduce `a b _ _ h _ hg` and use `icx_eabV_congr h a b hg`.
+-/
 theorem rightE_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     ∀ a b (f f' : Matrix (Fin n) (Fin n) ℂ → E), (∀ g, inUJ ε g → f g = f' g) →
       ∀ g, inUJ ε g → S7.rightE ε a b f g = S7.rightE ε a b f' g :=
   fun a b _ _ h _ hg => icx_eabV_congr h a b hg
 
+/- English proof (translation)
+Introduce `a b f f' h g hg`. Simplify using `only [S7.rightEanti, Pi.neg_apply]`. Rewrite using `[icx_eabV_congr h (Fin.rev b) (Fin.rev a) hg]`.
+-/
 theorem rightEanti_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] :
     ∀ a b (f f' : Matrix (Fin n) (Fin n) ℂ → E), (∀ g, inUJ ε g → f g = f' g) →
       ∀ g, inUJ ε g → S7.rightEanti ε a b f g = S7.rightEanti ε a b f' g := by
@@ -50,6 +62,17 @@ theorem rightEanti_congr {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E
   simp only [S7.rightEanti, Pi.neg_apply]
   rw [icx_eabV_congr h (Fin.rev b) (Fin.rev a) hg]
 
+/- English proof (translation)
+Take `⟨Ψ', h1, h2, h3, h4, -, h6, h7, h8⟩` from `S7.psiAll (n := n) ε lam h T hlam hgap hq`. Establish `hT1 : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 ≤ thrStar ε` using `le_max_left _ _`. Establish `hT2 : 16 * (n : ℝ) * (S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ thrStar ε` using `le_max_right _ _`. Establish `h8' : 8 * (n : ℝ) * S7.q0 ε < h`. Establish `: 0 ≤ (n : ℝ) * (S7.q0 ε : ℝ)` using `by positivity`.
+
+Establish `: 0 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hgap, by linarith⟩`. Establish `hP' : IsPsiFor ε lam T Ψ'` using `⟨h1, h2, h3, h4, fun μ hμ => (h6 μ hμ).2.1 h8'⟩`. Establish `heq : ∀ g ∈ UJset ε, Ψ' g = Ψ g` using `puniq_psi_eq hstd hP hP' (HW.KType.w_ne_zero T)`.
+
+Establish `heq' : ∀ g, inUJ ε g → Ψ g = Ψ' g` using `fun g hg => (heq g hg).symm`. Use `⟨fun X hX => ?_, fun k g hg => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `S7.exists_mu hlam`. Establish `hX1 : inUJ ε (NormedSpace.exp X)`. Use `S7.inUJ_kexp (1 : S7.KG ε) hX` as an intermediate fact.
+
+Establish `hk1 : S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Rewrite `this` using `[hk1, one_mul]`. Then use the resulting hypothesis. Rewrite using `[heq' _ hX1]`. Conclude with `psi_exp_isPositive T Ψ' μ hμ (h8 μ hμ) X hX`. Take `⟨e1, e2⟩` from `h7 k g hg`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[opGelfand_congr _ rightE_congr k heq' hg, e1, heq' g hg]`. Rewrite using `[opGelfand_congr _ rightEanti_congr k heq' hg, e2, heq' g hg]`.
+-/
 theorem psiFor_pos_gelfand {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} (hlam : S7.IsHCParam lam) {h : ℝ}
     (hgap : GapAtLeast ε lam h) (hth : thrStar ε < h) (hq : 1 ≤ S7.q0 ε) (hP : IsPsiFor ε lam T Ψ) :

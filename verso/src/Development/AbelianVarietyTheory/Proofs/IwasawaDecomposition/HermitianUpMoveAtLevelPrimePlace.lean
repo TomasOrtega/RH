@@ -16,6 +16,19 @@ variable {D : D7} {u : D.what₂.Word}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Set `crdL` to `((crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E))`. Establish `inj : Function.Injective crdL` using `(crdN D i hi).injective`. Establish `eCls : ∀ c' : (D.mem u).C.cls i, (D.clsLat u i c').map crdL = clsCrd D u i hi c'` using `fun _ => rfl`. Establish `eLd : ∀ c' : (D.mem u).C.cls i, (Formalism.L2.Herm.Ld D u i c').map crdL = Formalism.L2.Forms.Ld D u i hi c'` using `fun c' => dual_co D.sp.cm (D.sp.X i) (rankN D i hi) (D.clsLat u i c')`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq hP hc haveI := hq.isPrime`. Set `q' : HeightOneSpectrum (𝓞 D.host.E)` to `⟨q, hq.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hq (RingOfIntegers.not_isField D.host.E)⟩`. Apply `Submodule.map_injective_of_injective inj` to reduce the goal to its premises. Rewrite using `[localization_map₂ hi, localization_map₂ hi, lc_gmap, eCls, eCls]`. Conclude with `hoff q' hP hc`.
+
+Apply `Submodule.map_injective_of_injective inj` to reduce the goal to its premises. Rewrite using `[localization_map₂ hi, localization_map₂ hi, lc_gmap, eCls, eLd]`. Conclude with `h3`. Apply `Submodule.map_injective_of_injective inj` to reduce the goal to its premises. Rewrite using `[localization_map₂ hi, localization_map₂ hi, lc_gmap, eLd, Submodule.map_sup, eLd, Submodule.map_span, Set.image_singleton]`.
+
+Use `h4 using 4` and compare the differences between its conclusion and the goal. Simplify using `[crdL, toLd]`. Introduce `z hz`. Rewrite using `[prH_eq A P hi v _ z, prH_eq A P hi v c ⟨_, hz⟩]`. Establish `key : crdN D i hi (((D.mem u).A.T : D.host.E) • (gx i hi γ).1 (z : (D.sp.X i).V)) = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ.1.1 *ᵥ (toLd i hi _ z).1)`.
+
+Rewrite using `[map_smul, crdN_gx]`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression. Establish `hx : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (γ.1.1 *ᵥ (toLd i hi _ z).1) ∈ Formalism.L2.Forms.Ld D u i hi c` using `key ▸ (mem_Ld i hi c _).1 hz`. Establish `e : toLd i hi c ⟨_, hz⟩ = ⟨_, hx⟩` using `Subtype.ext key`.
+
+Rewrite using `[e]`. Conclude with `h5 _ hx`. Introduce `v' hv' z hz`. Rewrite using `[prH_eq A P hi v' _ z, prH_eq A P hi v' c ⟨_, hz⟩]`. Conclude with `h6 v' hv' (toLd i hi c ⟨_, hz⟩) (toLd i hi _ z) (crdN_gx i hi γ _)`.
+-/
 theorem upCl_of_crd (A : AtTTied u) (P : ∀ i hi, LvTied u A i hi) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT)
     (c : (D.mem u).C.cls i) (y : Formalism.L2.Herm.Ld D u i c)
     (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
@@ -79,6 +92,15 @@ variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `e1 : (T.lv i hi).pr v c (toLd i hi c y) = prH T.atT T.lv i v c y` using `(prH_eq T.atT T.lv hi v c y).symm`. Break down `(show (i = 0 ∨ i = D.R.m) ∨ (1 ≤ i ∧ i + 1 ≤ D.R.m) by omega) with h | ⟨h1, h2⟩` into its components or cases. Establish `hz : (D.fm u).fv i v c ((T.lv i hi).pr v c (toLd i hi c y)) = 1` using `by rw [e1]; exact hf`. Establish `H0` using `T.upN i hi h v c (toLd i hi c y) hz`. Generalize the expression as in `(T.lv i hi).pr v c (toLd i hi c y) = t at H0 e1`.
+
+Substitute `e1` using the available equality. Take `⟨γ, η, κ, hη, hy, h3, h4, h5, -⟩` from `H0`. Use `⟨γ, ⟨fun h' => ⟨κ.1, κ.2, η.1, η.2, hη, hy⟩, fun h1 h2 => absurd h (by omega)⟩, h3, h4, h5⟩` and prove the remaining obligations. Establish `hl` using `le_of_succ_m h2`. Establish `e0 : (T.lvC i h1 h2).pr v c (toLd i hi c y) = prH T.atT T.lv i v c y` using `(hC h1 h2 c (toLd i hi c y) (toLd i hi c y) rfl).trans e1`.
+
+Establish `hz : (D.fm u).fv i v c ((T.lvC i h1 h2).pr v c (toLd i hi c y)) = 1` using `by rw [e0]; exact hf`. Establish `H0` using `T.upC i h1 h2 v (chOf i c) ⟨c, rfl⟩ (toLd i hi c y) hz`. Generalize the expression as in `(T.lvC i h1 h2).pr v c (toLd i hi c y) = t at H0 e0`. Substitute `e0` using the available equality. Take `⟨hβ, γ, η, κ, hη, hy, h3, h4, h5, -⟩` from `H0`.
+
+Use `⟨γ, ⟨fun h => absurd h (by omega), fun h1' h2' => ⟨hβ, κ.1, κ.2, η.1, η.2, hη, hy⟩⟩, h3, h4, fun x hx => ?_⟩` and prove the remaining obligations. Use `h5 x hx` as an intermediate fact. Rewrite `this` using `[hC h1 h2 _ x x rfl, hC h1 h2 c ⟨_, hx⟩ ⟨_, hx⟩ rfl]`. Then use the resulting hypothesis.
+-/
 theorem crd_up (T : FormsTiedSym D u Ch chOf) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT)
     (c : (D.mem u).C.cls i) (y : Formalism.L2.Herm.Ld D u i c)
     (hf : (D.fm u).fv i v c (prH T.atT T.lv i v c y) = 1)
@@ -122,6 +144,15 @@ end GlobalTheory.Mem.Col2.HAt.UpMove
 open GlobalTheory.Mem.Col2.HAt.UpMove in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z H F hStd hCar u i v c y`. Distinguish the cases in `hi : i ≤ (I.rec7 l Z).R.m`. Use `swap`. Conclude with `⟨1, fun h => absurd h hi⟩`. Distinguish the cases in `hf : ((I.rec7 l Z).fm u).fv i v c (prH (F u).atT (F u).lv i v c y) = 1`.
+
+Use `swap`. Conclude with `⟨1, fun _ h => absurd h hf⟩`. Take `⟨γ, hAd, h3, h4, h5⟩` from `crd_up (F u) i hi v c y hf (fun h1 h2 c' z z' e => (GlobalTheory.T.middleStep_oneLevel_projection_eq_chart_projection I hOk hPins l Z H F hStd hCar u i h1 h2 v c').1 z z' e)`. Use `⟨gx i hi γ, fun _ _ => ⟨upCl_of_crd (F u).atT (F u).lv i hi v c y γ ?_ h3 h4 h5 ?_, GlobalTheory.T.adelic_relation_classes_coordinates I hOk hPins l Z H F hStd hCar u i hi v c _ γ hAd⟩⟩` and prove the remaining obligations. Introduce `q hP hc`.
+
+Use `GlobalTheory.T.adelic_conjugate_character_standard_forms I hOk hPins l Z H F hStd hCar u i hi v c _ γ.1 hAd q fun hq => ?_` and prove the remaining obligations. Break down `GlobalTheory.T.host_primes_over_level_place I hOk hPins l Z H F hStd hCar u v q hq with h | h` into its components or cases. Conclude with `hP h`. Conclude with `hc h`. Introduce `v' hv' z z' e`.
+
+Conclude with `GlobalTheory.T.levelFunctional_eq_of_classes_related_at_place I hOk hPins l Z H F hStd hCar u i hi v v' c _ γ.1 hAd hv' z z' e`.
+-/
 theorem GlobalTheory.Mem.Col2.HAt.UpMove.up_move : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u i v (c : ((I.rec7 l Z).mem u).C.cls i) (y : Formalism.L2.Herm.Ld (I.rec7 l Z) u i c), ∃ γ, i ≤ (I.rec7 l Z).R.m → ((I.rec7 l Z).fm u).fv i v c (prH (F u).atT (F u).lv i v c y) = 1 → UpCl (F u).atT (F u).lv i v c y γ ∧ AdOf H u i c (((I.rec7 l Z).fm u).up i v c (prH (F u).atT (F u).lv i v c y)) γ v := by
   intro B X I hOk hPins l Z H F hStd hCar u i v c y
   by_cases hi : i ≤ (I.rec7 l Z).R.m

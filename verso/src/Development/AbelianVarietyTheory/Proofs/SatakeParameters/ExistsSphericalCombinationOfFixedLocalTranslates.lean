@@ -19,6 +19,13 @@ variable {G : Type} [Group G]
 
 open GlobalTheory.SphLabelOps
 
+/- English proof (translation)
+Establish `hfin : (MulAction.orbit K (QuotientGroup.mk g : G ⧸ K)).Finite`. Use `(R.finite_toSet.image (fun γ => (QuotientGroup.mk γ : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨γ, ⟨hγ, e⟩, -⟩` from `hR.2 ((k : G) * g) ⟨k, k.2, 1, one_mem _, by simp⟩`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations.
+
+Use `show (QuotientGroup.mk γ : G ⧸ K) = (k : G) • (QuotientGroup.mk g : G ⧸ K)`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`. Conclude with `e`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.index_stabilizer]`.
+
+Conclude with `((Set.ncard_pos hfin).2 ⟨_, MulAction.mem_orbit_self _⟩).ne'`.
+-/
 theorem finiteIndex_stab {K : Subgroup G} {g : G} {R : Finset G} (hR : Reps K g R) :
     (MulAction.stabilizer K (QuotientGroup.mk g : G ⧸ K)).FiniteIndex := by
   have hfin : (MulAction.orbit K (QuotientGroup.mk g : G ⧸ K)).Finite := by
@@ -33,6 +40,9 @@ theorem finiteIndex_stab {K : Subgroup G} {g : G} {R : Finset G} (hR : Reps K g 
   rw [MulAction.index_stabilizer]
   exact ((Set.ncard_pos hfin).2 ⟨_, MulAction.mem_orbit_self _⟩).ne'
 
+/- English proof (translation)
+Establish `h : ((n : G) • (QuotientGroup.mk g : G ⧸ K)) = QuotientGroup.mk g` using `hn`. Rewrite `h` using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`. Use `inv_mem h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+-/
 theorem mem_of_stab {K : Subgroup G} {g : G} {n : K} (hn : n ∈ MulAction.stabilizer K (QuotientGroup.mk g : G ⧸ K)) :
     g⁻¹ * (n : G) * g ∈ K := by
   have h : ((n : G) • (QuotientGroup.mk g : G ⧸ K)) = QuotientGroup.mk g := hn
@@ -41,10 +51,38 @@ theorem mem_of_stab {K : Subgroup G} {g : G} {n : K} (hn : n ∈ MulAction.stabi
   convert this using 1
   group
 
+/- English proof (translation)
+Take `⟨γ, ⟨hγ, -⟩, -⟩` from `hR.2 g ⟨1, one_mem _, 1, one_mem _, by simp⟩`. Conclude with `Finset.card_pos.2 ⟨γ, hγ⟩`.
+-/
 theorem card_pos {K : Subgroup G} {g : G} {R : Finset G} (hR : Reps K g R) : 0 < R.card := by
   obtain ⟨γ, ⟨hγ, -⟩, -⟩ := hR.2 g ⟨1, one_mem _, 1, one_mem _, by simp⟩
   exact Finset.card_pos.2 ⟨γ, hγ⟩
 
+/- English proof (translation)
+Establish `fix : ∀ x, ∀ l ∈ K, π (x * l) u = π x u` using `fun x l hl => by`. Rewrite using `[map_mul, Module.End.mul_apply, hu l hl]`. Set `St : ι → Subgroup K` to `fun i => MulAction.stabilizer K (QuotientGroup.mk (g i) : G ⧸ K)`. Establish `hSt : (⨅ i ∈ s, St i).FiniteIndex` using `Subgroup.finiteIndex_iInf' St fun i hi => finiteIndex_stab (hR i hi)`. Set `N : Subgroup K` to `(⨅ i ∈ s, St i).normalCore`.
+
+Use `haveI : N.FiniteIndex := Subgroup.finiteIndex_normalCore _`. Use `haveI : Fintype (K ⧸ N) := Fintype.ofFinite _`. Establish `hN : ∀ i ∈ s, ∀ n ∈ N, ∀ x : G, π (x * (n : G) * g i) u = π (x * g i) u`. Introduce `i hi n hn x`. Establish `h1 : n ∈ St i` using `(iInf₂_le i hi : (⨅ i ∈ s, St i) ≤ St i) (Subgroup.normalCore_le _ hn)`.
+
+Use `fix (x * g i) _ (mem_of_stab h1)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`. Set `T : ι → M` to `fun i => ∑ q : K ⧸ N, π ((q.out : G) * g i) u`.
+
+Establish `hT : ∀ i ∈ s, ∀ k₁ ∈ K, ∑ q : K ⧸ N, π ((q.out : G) * k₁ * g i) u = T i`. Introduce `i hi k₁ hk₁`. Establish `e` using `Fintype.sum_equiv (Equiv.mulRight (QuotientGroup.mk (⟨k₁, hk₁⟩ : K) : K ⧸ N)) (fun q => π (((q * QuotientGroup.mk (⟨k₁, hk₁⟩ : K) : K ⧸ N).out : G) * g i) u) (fun q => π ((q.out : G) * g i) u) (fun q => rfl)`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Establish `hq : (q.out * ⟨k₁, hk₁⟩)⁻¹ * (q * QuotientGroup.mk (⟨k₁, hk₁⟩ : K) : K ⧸ N).out ∈ N`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Use `hN i hi _ hq ((q.out : G) * k₁)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 2`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, _root_.mul_inv_rev]`. Use `group`. Establish `hC : ∀ i ∈ s, ((R i).card : ℂ) • T i = (Fintype.card (K ⧸ N) : ℂ) • ∑ γ ∈ R i, π γ u`. Introduce `i hi`. Establish `e1 : ∑ γ ∈ R i, ∑ q : K ⧸ N, π ((q.out : G) * γ) u = ∑ γ ∈ R i, T i`.
+
+Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `(hR i hi).1 γ hγ`. Rewrite using `[← hT i hi k₁ h₁]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← fix ((q.out : G) * k₁ * g i) k₂ h₂]`.
+
+Use `congr 1`. Use `group`. Establish `e2 : ∑ γ ∈ R i, ∑ q : K ⧸ N, π ((q.out : G) * γ) u = ∑ q : K ⧸ N, ∑ γ ∈ R i, π γ u`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun q _ => (hR i hi).sum_eq (hR i hi) q.out.2 (fun x => π x u) fix`.
+
+Rewrite `e2` using `[e1, Finset.sum_const, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `e2`. Establish `hQ : (Fintype.card (K ⧸ N) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `main : (Fintype.card (K ⧸ N) : ℂ) • ∑ i ∈ s, a i • π (g i) u = ∑ i ∈ s, a i • T i`. Establish `e : ∀ q : K ⧸ N, π (q.out : G) (∑ i ∈ s, a i • π (g i) u) = ∑ i ∈ s, a i • π ((q.out : G) * g i) u`.
+
+Introduce `q`. Simplify using `only [map_sum, map_smul, map_mul, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.cast_smul_eq_nsmul ℂ, ← Finset.card_univ, ← Finset.sum_const]`. Conclude with `Finset.sum_congr rfl fun q _ => (hw _ q.out.2).symm`.
+
+Use `_ = ∑ i ∈ s, a i • T i := by`. Simplify using `only [e, T, Finset.smul_sum]`. Conclude with `Finset.sum_comm`. Use `smul_right_injective M hQ ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[main, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, ← hC i hi, smul_smul, div_mul_cancel₀ _ (Nat.cast_ne_zero.2 (card_pos (hR i hi)).ne')]`.
+-/
 theorem fixed_comb {K : Subgroup G} {ι : Type} (s : Finset ι) (g : ι → G) (R : ι → Finset G)
     (hR : ∀ i ∈ s, Reps K (g i) (R i)) (a : ι → ℂ) {M : Type} [AddCommGroup M] [Module ℂ M]
     (π : G →* Module.End ℂ M) (u : M) (hu : ∀ k ∈ K, π k u = u)
@@ -123,6 +161,15 @@ namespace GlobalTheory.SphAvg
 
 open GlobalTheory.SphLabelOps GlobalTheory.IdemSupport
 
+/- English proof (translation)
+Introduce `D V P e f h a ha`. Take `⟨K, hK⟩` from `exists_hyp V P`. Take `⟨-, ϖ, -, h1, h2⟩` from `exists_real_unif D P`. Establish `he` using `(GlobalTheory.HeckeDual.idem_of_isPrimeIdem h).1`. Establish `hd : ∀ g, ∃ d, SuppF V f g → Reps K g (rep V P d)`.
+
+Introduce `g`. Distinguish the cases in `hg : SuppF V f g`. Take `⟨d, hd, hD⟩` from `exists_divAt V he (tie_of_isPrimeIdem h) h1 h2 g`. Conclude with `⟨d, fun _ => reps_of_sphOp hK h h1 h2 hg hD (sphOp_rep (isLab_of_divAt h h1 h2 hd hg hD))⟩`. Conclude with `⟨[], fun h' => absurd h' hg⟩`.
+
+Use `choose d hd using hd`. Use `⟨∑ g ∈ a.support, Finsupp.single (d g) (a g / ((rep V P (d g)).card : ℂ)), ?_⟩` and prove the remaining obligations. Introduce `M _ _ π u hu hw`. Establish `hu' : ∀ k ∈ K, π k u = u` using `fun k hk => hu k (by rw [hK]; exact hk)`. Establish `hw' : ∀ k ∈ K, π k (∑ g ∈ a.support, a g • π (id g) u) = ∑ g ∈ a.support, a g • π (id g) u` using `fun k hk => hw k (by rw [hK]; exact hk)`.
+
+Rewrite using `[Finsupp.sum]`. Use `(fixed_comb a.support id (fun g => rep V P (d g)) (fun g hg => hd g (ha g hg)) a π u hu' hw').trans ?_` and prove the remaining obligations. Rewrite using `[opOf, ← Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by rw [add_smul]), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), LinearMap.smul_apply, LinearMap.sum_apply]`.
+-/
 theorem fixed_comb_eq_opOf : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), ∀ e f, IsPrimeIdem P e f → ∀ a : GA D V →₀ ℂ, (∀ g ∈ a.support, SuppF V f g) → ∃ c : List ℤ →₀ ℂ, ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → (∀ k ∈ hyp V P, π k (a.sum fun g z => z • π g u) = a.sum fun g z => z • π g u) → (a.sum fun g z => z • π g u) = opOf π P c u := by
   classical
   intro D V P e f h a ha

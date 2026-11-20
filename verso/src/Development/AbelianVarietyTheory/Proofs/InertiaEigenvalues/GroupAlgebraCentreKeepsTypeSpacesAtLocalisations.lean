@@ -8,6 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CenKeepsTypeLoc
 
+/- English proof (translation)
+Introduce `D M A hC i PI z F hF`. Distinguish the cases in `hz : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))`. Take `⟨L, -, hL⟩` from `hC i`. Rewrite using `[NTypes.onMt, dif_pos hz]`. Rewrite `hF`, the goal using `[A.typeV, Submodule.mem_comap]`.
+
+Establish `e : (M.loc i).real (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) ⟨z, hz⟩ F) = actSum D L z ((M.loc i).real F)` using `hL ⟨z, hz⟩ F`. Rewrite using `[e]`. Unfold `actSum Finsupp.sum`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (GlobalTheory.CenKeepsType.rt_mem_isoTyp _ _ _ _ hF)`. Rewrite using `[NTypes.onMt, dif_neg hz]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem main : ∀ (D : D7) (M : MtFam D), AVTied D M → GlobalTheory.HeightCounting.Up.CenLoc D M → OnMtPreservesTypeV D := by
   intro D M A hC i PI z F hF
   by_cases hz : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))

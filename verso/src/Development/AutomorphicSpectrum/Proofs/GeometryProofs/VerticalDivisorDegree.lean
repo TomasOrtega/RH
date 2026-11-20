@@ -36,23 +36,38 @@ def ym (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (d : K → ℕ) : Ω := �
 
 variable {y : (Σ k, J k) → Ω} {c : (k : K) → J k}
 
+/- English proof (translation)
+Simplify using `[xpow, ym, map_prod]`.
+-/
 theorem aeval_xpow (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (d : K → ℕ) :
     MvPolynomial.aeval y (xpow c d) = ym y c d := by
   simp [xpow, ym, map_prod]
 
+/- English proof (translation)
+Simplify using `[ym, pow_add, Finset.prod_mul_distrib]`.
+-/
 theorem ym_add (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (d e : K → ℕ) :
     ym y c (d + e) = ym y c d * ym y c e := by
   simp [ym, pow_add, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`.
+-/
 theorem ym_ne_zero (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (d : K → ℕ) : ym y c d ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff).1 h`. Conclude with `hc k (hW.mem_of_pow_mem _ hk)`.
+-/
 theorem xpow_notMem {W : Ideal (MRing J)} [hW : W.IsPrime] (hc : ∀ k, (MvPolynomial.X ⟨k, c k⟩ : MRing J) ∉ W)
     (d : K → ℕ) : xpow c d ∉ W := by
   intro h
   obtain ⟨k, -, hk⟩ := (Ideal.IsPrime.prod_mem_iff).1 h
   exact hc k (hW.mem_of_pow_mem _ hk)
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem mh_add {f g : MRing J} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -61,6 +76,9 @@ theorem mh_add {f g : MRing J} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsM
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Use `mh_add hf fun m hm k => hg m ?_ k` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_neg]`. Then use the resulting hypothesis.
+-/
 theorem mh_sub {f g : MRing J} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
   rw [sub_eq_add_neg]
@@ -70,16 +88,29 @@ theorem mh_sub {f g : MRing J} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsM
 def IsRep (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (s : Ω) (d : K → ℕ) (G : MRing J) : Prop :=
   IsMultiHomog G d ∧ MvPolynomial.aeval y G = s * ym y c d
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h.1 h'.1, by rw [map_mul, h.2, h'.2, ym_add]; ring⟩`.
+-/
 theorem IsRep.mul {s s' : Ω} {d d' : K → ℕ} {G G' : MRing J} (h : IsRep y c s d G) (h' : IsRep y c s' d' G') :
     IsRep y c (s * s') (d + d') (G * G') :=
   ⟨ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h.1 h'.1, by rw [map_mul, h.2, h'.2, ym_add]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mh_add (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h.1 (isMultiHomog_xpow c d')) (by rw [add_comm d d']; exact ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h'.1 (isMultiHomog_xpow c d)), by rw [map_add, map_mul, map_mul, aeva …`.
+-/
 theorem IsRep.add {s s' : Ω} {d d' : K → ℕ} {G G' : MRing J} (h : IsRep y c s d G) (h' : IsRep y c s' d' G') :
     IsRep y c (s + s') (d + d') (G * xpow c d' + G' * xpow c d) :=
   ⟨mh_add (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h.1 (isMultiHomog_xpow c d'))
       (by rw [add_comm d d']; exact ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h'.1 (isMultiHomog_xpow c d)),
     by rw [map_add, map_mul, map_mul, aeval_xpow, aeval_xpow, h.2, h'.2, ym_add]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Use `⟨1, xpow j 1, isMultiHomog_xpow _ _, ?_⟩` and prove the remaining obligations. Establish `e : ∀ c', ym y c' 1 = segCo y c'` using `fun c' => by simp [ym, segCo]`.
+
+Rewrite using `[aeval_xpow, e, e, div_mul_cancel₀ _ hc]`. Consider the case `algebraMap n => exact ⟨0, MvPolynomial.C n, isMultiHomog_C_zero n, by simp [ym]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨d, G, h⟩` from `ha`. Take `⟨d', G', h'⟩` from `hb`.
+
+Conclude with `⟨_, _, h.add h'⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨d, G, h⟩` from `ha`. Take `⟨d', G', h'⟩` from `hb`. Conclude with `⟨_, _, h.mul h'⟩`.
+-/
 theorem exists_rep (hc : segCo y c ≠ 0) {s : Ω} (hs : s ∈ chartA y c) : ∃ d G, IsRep y c s d G := by
   induction hs using Algebra.adjoin_induction with
   | mem x hx =>
@@ -97,6 +128,11 @@ theorem exists_rep (hc : segCo y c ≠ 0) {s : Ω} (hs : s ∈ chartA y c) : ∃
     obtain ⟨d', G', h'⟩ := hb
     exact ⟨_, _, h.mul h'⟩
 
+/- English proof (translation)
+Establish `h0 : G * xpow c d' - G' * xpow c d ∈ mCoordIdeal y`. Use `mem_mCoordIdeal_of_aeval_eq_zero y (d := d + d') (mh_sub (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h.1 (isMultiHomog_xpow c d')) (by rw [add_comm d d']; exact ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h'.1 (isMultiHomog_x …` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_mul, aeval_xpow, aeval_xpow, h.2, h'.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : G' * xpow c d ∈ W`.
+
+Use `W.sub_mem (W.mul_mem_right (xpow c d') hG) (hP h0)` as an intermediate fact. Simplify using `using this`. Conclude with `(hW.mem_or_mem h1).resolve_right (xpow_notMem hc d)`.
+-/
 theorem IsRep.mem_of_mem {W : Ideal (MRing J)} [hW : W.IsPrime] (hP : mCoordIdeal y ≤ W)
     (hc : ∀ k, (MvPolynomial.X ⟨k, c k⟩ : MRing J) ∉ W) {s : Ω} {d d' : K → ℕ} {G G' : MRing J}
     (h : IsRep y c s d G) (h' : IsRep y c s d' G') (hG : G ∈ W) : G' ∈ W := by
@@ -111,6 +147,15 @@ theorem IsRep.mem_of_mem {W : Ideal (MRing J)} [hW : W.IsPrime] (hP : mCoordIdea
     simpa using this
   exact (hW.mem_or_mem h1).resolve_right (xpow_notMem hc d)
 
+/- English proof (translation)
+Set `I : Ideal (chartA y c)` to `{ carrier := {s | ∃ d G, IsRep y c (s : Ω) d G ∧ G ∈ W} add_mem' := by`. Introduce and unpack `a b ⟨d, G, h, hG⟩ ⟨d', G', h', hG'⟩`. Conclude with `⟨d + d', _, h.add h', W.add_mem (W.mul_mem_right _ hG) (W.mul_mem_right _ hG')⟩`. Use the proof step `zero_mem' := ⟨0, 0, ⟨fun m hm => by simp at hm, by simp⟩, W.zero_mem⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `r a ⟨d, G, h, hG⟩`. Take `⟨e, R, hR⟩` from `exists_rep hsc r.2`. Conclude with `⟨e + d, R * G, hR.mul h, W.mul_mem_left _ hG⟩ }`. Use `⟨I, Ideal.isPrime_iff.2 ⟨fun ht => ?_, fun {a b} hab => ?_⟩, fun s => Iff.rfl⟩` and prove the remaining obligations. Establish `h1 : (1 : chartA y c) ∈ I` using `ht ▸ Submodule.mem_top`.
+
+Take `⟨d, G, h, hG⟩` from `h1`. Establish `h2 : IsRep y c ((1 : chartA y c) : Ω) 0 1` using `⟨ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, by simp [ym]⟩`. Conclude with `hW.ne_top ((Ideal.eq_top_iff_one W).2 (h.mem_of_mem hP hc h2 hG))`. Take `⟨d, G, h, hG⟩` from `hab`. Take `⟨e, A, hA⟩` from `exists_rep hsc a.2`.
+
+Take `⟨e', B, hB⟩` from `exists_rep hsc b.2`. Establish `h3 : A * B ∈ W` using `h.mem_of_mem hP hc (hA.mul hB) hG`. Break down `hW.mem_or_mem h3 with h4 | h4` into its components or cases. Conclude with `Or.inl ⟨e, A, hA, h4⟩`. Conclude with `Or.inr ⟨e', B, hB, h4⟩`.
+-/
 theorem exists_prime (hsc : segCo y c ≠ 0) {W : Ideal (MRing J)} [hW : W.IsPrime] (hP : mCoordIdeal y ≤ W)
     (hc : ∀ k, (MvPolynomial.X ⟨k, c k⟩ : MRing J) ∉ W) :
     ∃ I : Ideal (chartA y c), I.IsPrime ∧
@@ -138,10 +183,18 @@ theorem exists_prime (hsc : segCo y c ≠ 0) {W : Ideal (MRing J)} [hW : W.IsPri
     · exact Or.inl ⟨e, A, hA, h4⟩
     · exact Or.inr ⟨e', B, hB, h4⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩`.
+-/
 theorem unitAt_mul {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {q : Cpt ξ} {a b : Ω}
     (ha : unitAt ξ q a) (hb : unitAt ξ q b) : unitAt ξ q (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩
 
+/- English proof (translation)
+Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc.1 k (Finset.mem_univ k)`. Take `⟨s, hs, hu, hse⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ (segCo y) hT c (CptModel.self ξ) hc e).1 (by rw [CptModel.regAt_self hT.gen]; trivial)`. Take `⟨d, G, hG⟩` from `exists_rep hc.1 hs`. Take `⟨d', F, hF⟩` from `exists_rep hc.1 hse`. Use `⟨d' + d, F * xpow c d, G * xpow c d', ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hF.1 (isMultiHomog_xpow _ _), by rw [add_comm]; exact ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hG.1 (isMultiHomog_xpow _ _), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, aeval_xpow, hG.2]`. Conclude with `mul_ne_zero (mul_ne_zero hu.1 (ym_ne_zero hy _)) (ym_ne_zero hy _)`. Rewrite using `[map_mul, map_mul, aeval_xpow, aeval_xpow, hG.2, hF.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_frac {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hT : CoordTie ℤ ξ (segCo y))
     (hc : InChart ξ (segCo y) c (CptModel.self ξ)) (e : Ω) :
     ∃ (d : K → ℕ) (F G : MRing J), IsMultiHomog F d ∧ IsMultiHomog G d ∧ MvPolynomial.aeval y G ≠ 0 ∧
@@ -158,6 +211,9 @@ theorem exists_frac {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hT :
   · rw [map_mul, map_mul, aeval_xpow, aeval_xpow, hG.2, hF.2]
     ring
 
+/- English proof (translation)
+Rewrite using `[ym, ym, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zpow_ym (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) :
     (∏ k, y ⟨k, c k⟩ ^ a k) * ym y c (fun k => (-a k).toNat) = ym y c (fun k => (a k).toNat) := by
   rw [ym, ym, ← Finset.prod_mul_distrib]
@@ -166,6 +222,27 @@ theorem zpow_ym (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (a : K → ℤ) :
   congr 1
   omega
 
+/- English proof (translation)
+Use `choose c hc using hrel`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hc k (hP (mem_mCoordIdeal_of_aeval_eq_zero y (isMultiHomog_X' k (c k)) (by simpa using h0)))`. Establish `hsc : segCo y c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`. Take `⟨I, hI, hmem⟩` from `exists_prime hsc hP hc`. Take `⟨q, ⟨hq, hu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ _ (segCo y) hT c hsc I hI`.
+
+Establish `hpI : (p : chartA y c) ∉ I` using `fun h => by`. Take `⟨d, G, hr, hG⟩` from `(hmem _).1 h`. Establish `h2 : IsRep y c (((p : chartA y c)) : Ω) 0 (MvPolynomial.C (p : ℤ))` using `⟨isMultiHomog_C_zero _, by simp [ym]⟩`. Conclude with `hp (hr.mem_of_mem hP hc h2 hG)`. Establish `hpu : unitAt ξ q (p : Ω)` using `by simpa using (hu _).1 hpI`.
+
+Establish `hΔ1` using `hΔ q (fun hf' => hf' hpu)`. Establish `hΔ2` using `hDeg.2 q trivial c hq`. Take `⟨s, hs⟩ : ∃ s, s = (∏ k, y ⟨k, c k⟩ ^ a k) * e₀` from `⟨_, rfl⟩`. Rewrite `hΔ2` using `[smul_eq_mul, ← hs]`. Establish `hs1 : s ∈ Submodule.span (regAt ξ q) {(1 : Ω)}`.
+
+Rewrite using `[← hΔ1, hΔ2]`. Conclude with `Submodule.mem_span_singleton_self _`. Establish `h1s : (1 : Ω) ∈ Submodule.span (regAt ξ q) {s}`. Rewrite using `[← hΔ2, hΔ1]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hs1`. Take `⟨r', hr'⟩` from `Submodule.mem_span_singleton.1 h1s`. Establish `hr2 : (r : Ω) = s` using `by simpa [Subring.smul_def] using hr`. Establish `hr3 : (r' : Ω) * s = 1` using `by simpa [Subring.smul_def] using hr'`. Establish `hsu : unitAt ξ q s` using `⟨right_ne_zero_of_mul_eq_one hr3, hr2 ▸ r.2, by`.
+
+Rewrite using `[← eq_inv_of_mul_eq_one_left hr3]`. Conclude with `r'.2⟩`. Take `⟨t, ht, hut, hts⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ (segCo y) hT c q hq s).1 hsu.2.1`. Establish `hv : (⟨t, ht⟩ : chartA y c) ∉ I` using `(hu _).2 hut`. Establish `hu' : (⟨t * s, hts⟩ : chartA y c) ∉ I` using `(hu _).2 (unitAt_mul hut hsu)`.
+
+Take `⟨dv, V, hV⟩` from `exists_rep hsc ht`. Take `⟨du, U, hU⟩` from `exists_rep hsc hts`. Establish `hVW : V ∉ W` using `fun h => hv ((hmem _).2 ⟨dv, V, hV, h⟩)`. Establish `hUW : U ∉ W` using `fun h => hu' ((hmem _).2 ⟨du, U, hU, h⟩)`. Establish `hZ` using `zpow_ym hy a`.
+
+Use `⟨V * xpow c (du + fun k => (a k).toNat), U * xpow c (dv + fun k => (-a k).toNat), fun h => (hW.mem_or_mem h).elim hVW (xpow_notMem hc _), fun h => (hW.mem_or_mem h).elim hUW (xpow_notMem hc _), ?_⟩` and prove the remaining obligations. Use `mem_mCoordIdeal_of_aeval_eq_zero y (d := dv + (du + fun k => (a k).toNat) + bf) (mh_sub (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hV.1 (isMultiHomog_xpow _ _)) hf) ?_) ?_` and prove the remaining obligations. Establish `e : dv + (du + fun k => (a k).toNat) + bf = du + (dv + fun k => (-a k).toNat) + bg`. Use function extensionality and compare the values at `k`. Use `hb k` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hU.1 (isMultiHomog_xpow _ _)) hg`. Rewrite using `[map_sub, map_mul, map_mul, map_mul, map_mul, aeval_xpow, aeval_xpow, hV.2, hU.2, hfg, ym_add, ym_add, ← hZ, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unit_off {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : ℕ} {Δ : Lat ξ Ω} {a : K → ℤ} {e₀ : Ω}
     (hT : CoordTie ℤ ξ (segCo y)) (hDeg : Δ.IsDegOn Set.univ y a e₀)
     (hΔ : ∀ q, ¬ InFibre ξ p q → Δ q = Submodule.span (regAt ξ q) {1}) {f g : MRing J} {bf bg : K → ℕ}
@@ -225,6 +302,17 @@ theorem unit_off {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : ℕ
 
 end GlobalTheory.CompanionTheory.Ar.VertForm
 
+/- English proof (translation)
+Introduce `X Ω _ ξ K _ J _ y p Δ a e₀ hT _ hDeg hΔ`. Take `⟨c, hc⟩` from `hT.cover (CptModel.self ξ)`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc.1 k (Finset.mem_univ k)`. Take `⟨d, F, G, hF, hG, hG0, hFG⟩` from `GlobalTheory.CompanionTheory.Ar.VertForm.exists_frac (y := y) hT hc (e₀ * ∏ k, y ⟨k, c k⟩ ^ a k)`. Establish `hZ` using `GlobalTheory.CompanionTheory.Ar.VertForm.zpow_ym hy a`.
+
+Establish `hg0 : MvPolynomial.aeval y (G * ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow c fun k => (a k).toNat) ≠ 0`. Rewrite using `[map_mul, GlobalTheory.CompanionTheory.Ar.VertForm.aeval_xpow]`. Conclude with `mul_ne_zero hG0 (GlobalTheory.CompanionTheory.Ar.VertForm.ym_ne_zero hy _)`. Establish `hfg : MvPolynomial.aeval y (F * ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow c fun k => (-a k).toNat) = e₀ * MvPolynomial.aeval y (G * ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow c fun k => (a k).toNat)`. Rewrite using `[map_mul, map_mul, GlobalTheory.CompanionTheory.Ar.VertForm.aeval_xpow, GlobalTheory.CompanionTheory.Ar.VertForm.aeval_xpow, hFG, ← hZ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ k, (((d + fun k => (-a k).toNat) k : ℕ) : ℤ) - ((d + fun k => (a k).toNat) k : ℕ) = -a k`. Introduce `k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hFm` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hF (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_xpow c fun k => (-a k).toNat)`. Establish `hGm` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hG (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_xpow c fun k => (a k).toNat)`. Use `⟨_, _, ⟨⟨_, _, hFm, hGm, funext hb⟩, fun h => ?_, fun h => ?_, fun W hW hP hrel hp => ?_⟩, hg0, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero hDeg.1 hg0 (hfg ▸ SegreChart.aeval_eq_zero_of_mem y h)`. Conclude with `hg0 (SegreChart.aeval_eq_zero_of_mem y h)`.
+
+Conclude with `GlobalTheory.CompanionTheory.Ar.VertForm.unit_off hT hDeg hΔ hFm hGm hb hfg W hW hP hrel hp`. Rewrite using `[hfg, mul_div_cancel_right₀ _ hg0]`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.VertForm.exists_vertical : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (p : ℕ) (Δ : Lat ξ Ω) (a : K → ℤ) (e₀ : Ω), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ q : X, genPt ξ ⤳ q) → Δ.IsDegOn Set.univ y a e₀ → (∀ q, ¬ InFibre ξ p q → Δ q = Submodule.span (regAt ξ q) {1}) → ∃ f g : MRing J, IsVerticalDivisorAt (mCoordIdeal y) p (-a) f g ∧ MvPolynomial.aeval y g ≠ 0 ∧ MvPolynomial.aeval y f / MvPolynomial.aeval y g = e₀ := by
   intro X Ω _ ξ K _ J _ y p Δ a e₀ hT _ hDeg hΔ
   classical

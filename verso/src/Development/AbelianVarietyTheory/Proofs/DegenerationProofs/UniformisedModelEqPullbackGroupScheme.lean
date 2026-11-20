@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Take `⟨a, ⟨ha, ha'⟩, -⟩` from `hext G G' hG hG' e.hom he`. Take `⟨b, ⟨hb, hb'⟩, -⟩` from `hext G' G hG' hG e.inv inferInstance`. Use `⟨⟨a, b, ?_, ?_⟩, ha, ha'⟩` and prove the remaining obligations. Conclude with `(hext G G hG hG (𝟙 _) inferInstance).unique ⟨inferInstance, by rw [Functor.map_comp, ha', hb', e.hom_inv_id]⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩`. Conclude with `(hext G' G' hG' hG' (𝟙 _) inferInstance).unique ⟨inferInstance, by rw [Functor.map_comp, ha', hb', e.inv_hom_id]⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩`.
+-/
 theorem exists_iso_of_existsUnique_ext {B B' : Scheme.{0}} (j : B' ⟶ B) (G G' : Over B) [GrpObj G] [GrpObj G']
     (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hext : ∀ (G G' : Over B) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' →
@@ -30,6 +33,15 @@ theorem exists_iso_of_existsUnique_ext {B B' : Scheme.{0}} (j : B' ⟶ B) (G G' 
   · exact (hext G' G' hG' hG' (𝟙 _) inferInstance).unique
       ⟨inferInstance, by rw [Functor.map_comp, ha', hb', e.inv_hom_id]⟩ ⟨inferInstance, CategoryTheory.Functor.map_id _ _⟩
 
+/- English proof (translation)
+Introduce `hext o Ω _ _ _ _ S ρ M U₀ Q p _ y y₀ u jV yV yK hT`. Take `⟨-, -, h₁, h₂⟩` from `hT`. Use `u.U.gen_hom` as an intermediate fact. Establish `gp₁ : IsGrpPullback ((Over.pullback (jK u.V)).obj u.G) ρ.P.A (spMap u.yK) (u.U.gen.hom.left ≫ u.φ)` using `((isGrpPullback_of_iso u.U.gen).comp u.cart).congr (Category.id_comp _) rfl`. Establish `gp₂` using `((isGrpPullback_pullback ((Over.pullback Q.u₀).obj ρ.P.A) yK).comp (isGrpPullback_pullback ρ.P.A Q.u₀)).congr h₂ rfl`.
+
+Take `⟨e₁, m₁, he₁⟩` from `grpPullback_iso gp₁ gp₂`. Establish `gp₃` using `((((isGrpPullback_of_iso e₁).comp (isGrpPullback_pullback ((Over.pullback Q.u₀).obj ρ.P.A) yK)).congr (Category.id_comp _) rfl).comp Q.cart).congr h₁ rfl`. Establish `gp₄` using `(isGrpPullback_pullback ((Over.pullback yV).obj Q.G) (jK u.V)).comp (isGrpPullback_pullback Q.G yV)`. Take `⟨e₂, m₂, he₂⟩` from `grpPullback_iso gp₃ gp₄`. Take `⟨E, mE, hE⟩` from `exists_iso_of_existsUnique_ext (jK u.V) u.G ((Over.pullback yV).obj Q.G) u.semi (IsSemiAbelian.pullback _ Q.G Q.semi) (fun G G' _ _ => hext u.V (FractionRing u.V) G G') e₂ m₂`.
+
+Use `⟨E.hom.left ≫ pullback.fst Q.G.hom yV, e₁.hom.left ≫ pullback.fst ((Over.pullback Q.u₀).obj ρ.P.A).hom yK, ((isGrpPullback_of_iso E).comp (isGrpPullback_pullback Q.G yV)).congr (Category.id_comp _) rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans he₁`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (e₁.hom.left ≫ ·) (pullback.condition (f := ((Over.pullback Q.u₀).obj ρ.P.A).hom) (g := yK))).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ yK) (Over.w e₁.hom))`.
+
+Use `he₂.symm.trans ?_` and prove the remaining obligations. Establish `a : ((Over.pullback (jK u.V)).map E.hom).left ≫ pullback.fst ((Over.pullback yV).obj Q.G).hom (jK u.V) = pullback.fst u.G.hom (jK u.V) ≫ E.hom.left` using `pullback.lift_fst _ _ _`. Rewrite using `[← hE]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst Q.G.hom yV) a).trans (Category.assoc _ _ _))`.
+-/
 theorem ZHPre.exists_testMap : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (jV : u.V →+* OO p) (yV : Sp u.V ⟶ M.Z) (yK : Sp (FractionRing u.V) ⟶ U₀.toScheme), Q.TestFac y u jV yV yK → ∃ F ψ, Q.TestMap u yV yK F ψ := by
   intro hext o Ω _ _ _ _ S ρ M U₀ Q p _ y y₀ u jV yV yK hT
   obtain ⟨-, -, h₁, h₂⟩ := hT

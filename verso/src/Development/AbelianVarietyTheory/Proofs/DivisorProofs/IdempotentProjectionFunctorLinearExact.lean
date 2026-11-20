@@ -22,16 +22,25 @@ section General
 
 variable {D : Type*} [Category D] [Abelian D] {S T : ShortComplex D} (φ : S ⟶ T) (ψ : T ⟶ S)
 
+/- English proof (translation)
+Rewrite `hT`, the goal using `[ShortComplex.exact_iff_isZero_homology]`. Rewrite using `[IsZero.iff_id_eq_zero, ← ShortComplex.homologyMap_id, ← h, ShortComplex.homologyMap_comp, hT.eq_zero_of_tgt (ShortComplex.homologyMap φ), zero_comp]`.
+-/
 theorem exact_of_retract (h : φ ≫ ψ = 𝟙 S) (hT : T.Exact) : S.Exact := by
   rw [ShortComplex.exact_iff_isZero_homology] at hT ⊢
   rw [IsZero.iff_id_eq_zero, ← ShortComplex.homologyMap_id, ← h, ShortComplex.homologyMap_comp,
     hT.eq_zero_of_tgt (ShortComplex.homologyMap φ), zero_comp]
 
+/- English proof (translation)
+Establish `h1 : φ.τ₁ ≫ ψ.τ₁ = 𝟙 _` using `congrArg ShortComplex.Hom.τ₁ h`. Use `haveI : Mono φ.τ₁ := mono_of_mono_fac h1`. Conclude with `mono_of_mono_fac φ.comm₁₂.symm`.
+-/
 theorem mono_of_retract (h : φ ≫ ψ = 𝟙 S) [Mono T.f] : Mono S.f := by
   have h1 : φ.τ₁ ≫ ψ.τ₁ = 𝟙 _ := congrArg ShortComplex.Hom.τ₁ h
   haveI : Mono φ.τ₁ := mono_of_mono_fac h1
   exact mono_of_mono_fac φ.comm₁₂.symm
 
+/- English proof (translation)
+Establish `h1 : φ.τ₃ ≫ ψ.τ₃ = 𝟙 _` using `congrArg ShortComplex.Hom.τ₃ h`. Use `haveI : Epi ψ.τ₃ := epi_of_epi_fac h1`. Conclude with `epi_of_epi_fac ψ.comm₂₃`.
+-/
 theorem epi_of_retract (h : φ ≫ ψ = 𝟙 S) [Epi T.g] : Epi S.g := by
   have h1 : φ.τ₃ ≫ ψ.τ₃ = 𝟙 _ := congrArg ShortComplex.Hom.τ₃ h
   haveI : Epi ψ.τ₃ := epi_of_epi_fac h1
@@ -44,9 +53,15 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : V
 
 instance (M : AM B Λ) : Mono (partι c a M) := inferInstanceAs (Mono (kernel.ι _))
 
+/- English proof (translation)
+The claim follows from `kernel.lift_ι _ _ _`.
+-/
 theorem map_ι {M N : AM B Λ} (f : M ⟶ N) : (partF c a).map f ≫ partι c a N = partι c a M ≫ f.hom :=
   kernel.lift_ι _ _ _
 
+/- English proof (translation)
+Establish `h : partι c a M ≫ (𝟙 M.V - eA M c a) = 0` using `kernel.condition _`. Rewrite `h` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem ι_e (M : AM B Λ) : partι c a M ≫ eA M c a = partι c a M := by
   have h : partι c a M ≫ (𝟙 M.V - eA M c a) = 0 := kernel.condition _
   rw [Preadditive.comp_sub, Category.comp_id, sub_eq_zero] at h
@@ -55,16 +70,28 @@ theorem ι_e (M : AM B Λ) : partι c a M ≫ eA M c a = partι c a M := by
 def proj (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : M.V ⟶ (partF c a).obj M :=
   kernel.lift (𝟙 M.V - eA M c a) (eA M c a) (by rw [Preadditive.comp_sub, Category.comp_id, h, sub_self])
 
+/- English proof (translation)
+The claim follows from `kernel.lift_ι _ _ _`.
+-/
 theorem proj_ι (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : proj c a M h ≫ partι c a M = eA M c a :=
   kernel.lift_ι _ _ _
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (partι c a M), Category.assoc, proj_ι, ι_e, Category.id_comp]`.
+-/
 theorem ι_proj (M : AM B Λ) (h : eA M c a ≫ eA M c a = eA M c a) : partι c a M ≫ proj c a M h = 𝟙 _ := by
   rw [← cancel_mono (partι c a M), Category.assoc, proj_ι, ι_e, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (partι c a N), Category.assoc, Category.assoc, map_ι, proj_ι, ← Category.assoc, proj_ι, eA_comm]`.
+-/
 theorem proj_map {M N : AM B Λ} (f : M ⟶ N) (h : eA M c a ≫ eA M c a = eA M c a)
     (h' : eA N c a ≫ eA N c a = eA N c a) : proj c a M h ≫ (partF c a).map f = f.hom ≫ proj c a N h' := by
   rw [← cancel_mono (partι c a N), Category.assoc, Category.assoc, map_ι, proj_ι, ← Category.assoc, proj_ι, eA_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨partι c a _, partι c a _, partι c a _, (map_ι c a S.f).symm, (map_ι c a S.g).symm⟩, ⟨proj c a _ h₁, proj c a _ h₂, proj c a _ h₃, proj_map c a S.f h₁ h₂, proj_map c a S.g h₂ h₃⟩, ShortComplex.hom_ext _ _ (ι_proj c a _ h₁) (ι_proj c a _ h₂) (ι_proj c a _ h₃)⟩`.
+-/
 theorem exists_retract (S : ShortComplex (AM B Λ)) (h₁ : eA S.X₁ c a ≫ eA S.X₁ c a = eA S.X₁ c a)
     (h₂ : eA S.X₂ c a ≫ eA S.X₂ c a = eA S.X₂ c a) (h₃ : eA S.X₃ c a ≫ eA S.X₃ c a = eA S.X₃ c a) :
     ∃ (φ : S.map (partF c a) ⟶ S.map (Action.forget B.X.Modules Λ))
@@ -73,6 +100,9 @@ theorem exists_retract (S : ShortComplex (AM B Λ)) (h₁ : eA S.X₁ c a ≫ eA
     ⟨proj c a _ h₁, proj c a _ h₂, proj c a _ h₃, proj_map c a S.f h₁ h₂, proj_map c a S.g h₂ h₃⟩,
     ShortComplex.hom_ext _ _ (ι_proj c a _ h₁) (ι_proj c a _ h₂) (ι_proj c a _ h₃)⟩
 
+/- English proof (translation)
+Establish `: Epi (cokernel.π f).hom` using `inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f)))`. Rewrite using `[← cancel_epi (cokernel.π f).hom, ← Category.assoc, ← eA_comm, Category.assoc, ← eA_comm, ← Category.assoc, h]`.
+-/
 theorem idem_cokernel {M N : AM B Λ} (f : M ⟶ N) (h : eA N c a ≫ eA N c a = eA N c a) :
     eA (cokernel f) c a ≫ eA (cokernel f) c a = eA (cokernel f) c a := by
   have : Epi (cokernel.π f).hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f)))
@@ -84,6 +114,15 @@ namespace GlobalTheory.ChainParts
 
 open PartExact
 
+/- English proof (translation)
+Introduce `O _ _ _ B Λ _ n c a hidem`. Use `⟨fun M g => ?_, fun S hS h₁ h₂ h₃ => ?_, fun {M N} f hM hN => ?_, fun M hM => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [← cancel_mono (partι c a M), map_ι] first | exact (smulHom_comp _ _).symm | exact smulHom_comp _ _`. Take `⟨φ, ψ, h⟩` from `exists_retract c a S (hidem _ h₁) (hidem _ h₂) (hidem _ h₃)`. Establish `hT` using `hS.map_of_exact (Action.forget B.X.Modules Λ)`.
+
+Use `haveI := hT.mono_f`. Use `haveI := hT.epi_g`. Conclude with `{ exact := exact_of_retract φ ψ h hT.exact, mono_f := mono_of_retract φ ψ h, epi_g := epi_of_retract φ ψ h }`. Set `S : ShortComplex (AM B Λ)` to `ShortComplex.mk f (cokernel.π f) (cokernel.condition f)`. Take `⟨φ, ψ, h⟩` from `exists_retract c a S (hidem _ hM) (hidem _ hN) (idem_cokernel c a f (hidem _ hN))`.
+
+Establish `hS : S.Exact` using `ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f)`. Establish `hT` using `hS.map (Action.forget B.X.Modules Λ)`. Use `haveI : Epi (S.map (Action.forget B.X.Modules Λ)).g := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f)))`. Use `haveI := epi_of_retract φ ψ h`. Conclude with `⟨(exact_of_retract φ ψ h hT).gIsCokernel.coconePointUniqueUpToIso (colimit.isColimit _)⟩`.
+
+Conclude with `⟨partι c a M, proj c a M (hidem M hM), ι_proj c a M _⟩`.
+-/
 theorem partF_exact : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) (hidem : ∀ M : AM B Λ, IsAdd M → eA M c a ≫ eA M c a = eA M c a), (∀ (M : AM B Λ) (g : Γ(B.X, ⊤)), (partF c a).map (smulA M g) = smulHom ((partF c a).obj M) g) ∧
     (∀ S : ShortComplex (AM B Λ), S.ShortExact → IsAdd S.X₁ → IsAdd S.X₂ → IsAdd S.X₃ →
       (S.map (partF c a)).ShortExact) ∧

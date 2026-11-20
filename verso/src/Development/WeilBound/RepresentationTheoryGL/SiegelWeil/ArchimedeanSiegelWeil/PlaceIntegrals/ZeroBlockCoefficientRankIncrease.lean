@@ -34,6 +34,11 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep
 
+/- English proof (translation)
+Establish `hd : Directed (· ≤ ·) (fun S' : Finset ι => term (S ∪ S'))`. Introduce `S₁ S₂`. Use `⟨S₁ ∪ S₂, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `hmono _ _ Finset.subset_union_left (Finset.union_subset_union_right Finset.subset_union_left) y`. Conclude with `hmono _ _ Finset.subset_union_left (Finset.union_subset_union_right Finset.subset_union_right) y`.
+
+Rewrite using `[lintegral_iSup_directed (fun S' => (hm _).aemeasurable) hd, ENNReal.mul_iSup]`. Conclude with `iSup_congr fun S' => hint _ Finset.subset_union_left`.
+-/
 theorem lintegral_iSup_places {ι Ω : Type} [Countable ι] [DecidableEq ι] [MeasurableSpace Ω]
     (I : Measure Ω) (S : Finset ι) (term : Finset ι → Ω → ℝ≥0∞) (hm : ∀ S', Measurable (term S'))
     (hmono : ∀ S' S'', S ⊆ S' → S' ⊆ S'' → ∀ y, term S' y ≤ term S'' y) (A : ℝ≥0∞)
@@ -49,6 +54,9 @@ theorem lintegral_iSup_places {ι Ω : Type} [Countable ι] [DecidableEq ι] [Me
   rw [lintegral_iSup_directed (fun S' => (hm _).aemeasurable) hd, ENNReal.mul_iSup]
   exact iSup_congr fun S' => hint _ Finset.subset_union_left
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M`. Conclude with `(((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2).measurableSet`.
+-/
 theorem latV_measurable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
@@ -56,6 +64,9 @@ theorem latV_measurable {F E : Type} [Field F] [NumberField F] [Field E] [Number
   haveI := (GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M
   exact (((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2).measurableSet
 
+/- English proof (translation)
+Establish `hB : BorelSpace (Ainf F)` using `⟨rfl⟩`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) _ b lam hlam`. Conclude with `GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap F E σ hCM M n J hJ _ _ (hW n M) (hH n)`.
+-/
 theorem fam_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)) (hlam : lam.IsAddHaarMeasure) (n : ℕ) :
@@ -64,6 +75,9 @@ theorem fam_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) _ b lam hlam
   exact GlobalTheory.T.exists_fibreMeasures_archimedeanGramMap F E σ hCM M n J hJ _ _ (hW n M) (hH n)
 
+/- English proof (translation)
+Use `PI.VolStabS.secondCountable_Fv F v` as an intermediate fact. Use `PI.VolStabS.locallyCompact_Fv F v` as an intermediate fact. Establish `hBv : BorelSpace (Fv F v)` using `⟨rfl⟩`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) _ b lam hlam`. Conclude with `PI.OmFibreUniq.W.gram_map_fibre_existence σ J v n hCM hJ _ _ (hW n M) (hH n)`.
+-/
 theorem fam_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v))
@@ -75,6 +89,63 @@ theorem fam_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) _ b lam hlam
   exact PI.OmFibreUniq.W.gram_map_fibre_existence σ J v n hCM hJ _ _ (hW n M) (hH n)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn hnM h₀ h₁ hne hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F`. Use `haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`.
+
+Take `⟨hJ', he0⟩` from `GlobalTheory.T.hyperbolic_sum_nondegenerate_frame F E σ hCM M J hJ`. Establish `h₂ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b` using `fun a b => by simp`. Take `⟨m₁inf, hm₁inf⟩` from `fam_inf σ hCM (hypOne J) hJ' b laminf hinf.1 1`. Take `⟨m'inf, hm'inf⟩` from `fam_inf σ hCM J hJ b laminf hinf.1 n`. Use `choose m₁ hm₁ using fun v => fam_fin σ hCM (hypOne J) hJ' b v (lam v) (hlam v).1 1`.
+
+Use `choose m' hm' using fun v => fam_fin σ hCM J hJ b v (lam v) (hlam v).1 n`. Take `⟨⟨μ₁, hμ₁⟩, hFV⟩` from `GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ`. Take `⟨⟨𝓕₁, h𝓕₁⟩, -⟩` from `hFV μ₁ hμ₁`. Establish `hE'` using `hSW d b laminf lam hinf hlam μ₁ 𝓕₁ hμ₁ h𝓕₁ m'inf m' hm'inf hm'`. Establish `hE₁` using `GlobalTheory.T.siegelWeilFree_zero_rank_one_of_three_le F E σ hCM (M + 2) (hypOne J) hJ' (by omega) h₂ ⟨_, he0⟩ d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 m₁inf m₁ hm₁inf hm₁`.
+
+Take `⟨hfinL, hsumL⟩` from `GlobalTheory.T.zero_block_coefficient_induction_right F E σ hCM M J hJ n hn hnM h₀ h₁ h₂ d b lam hlam m m₁ m' hm hm₁ hm' hE₁.1 hE₁.2.1 hE'.1 hE'.2.1`. Use `⟨hfinL, hsumL, ?_⟩` and prove the remaining obligations. Take `⟨dA, hdA, hdAE⟩` from `GlobalTheory.T.covolume_one_euler_product_measure_exists F E σ hCM n d b laminf lam hinf hlam`. Take `⟨hsumP, S₃, hS₃⟩` from `GlobalTheory.T.hyperbolic_rank_one_global_volume F E σ hCM M J hJ (by omega) d b laminf lam hinf hlam h₂ m₁inf m₁ hm₁inf hm₁ _ hE₁`. Take `⟨S₂, hS₂⟩` from `GlobalTheory.T.euler_product_measure_covolume_one F E σ hCM M J hJ n d b laminf lam hinf hlam dA hdAE _ _ _ hE'`.
+
+Establish `hStab` using `GlobalTheory.T.lattice_stabilizer_volume_almost_all F E σ hCM M J hJ n d b`. Use `⟨S₂ ∪ S₃ ∪ (Filter.eventually_cofinite.1 hStab).toFinset, fun S hS φinf φ hφinf hφ => ?_⟩` and prove the remaining obligations. Establish `hS2 : S₂ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS3 : S₃ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS4 : ∀ v, v ∉ S → ∀ lam' : Measure (Fv F v), IsStdV v lam' → ∀ (m₀ : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (g : HA (Fv F v) σ (hypOne J)), latStab σ (hypOne J) b v g → stageInt (Fv F v) σ J b lam' m₀ ((latV b v).indicator 1) g = m₀ (latV b v)`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inr hc))`. Establish `hlatm : ∀ v, MeasurableSet (latV b v : Set (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E))` using `fun v => latV_measurable σ hCM b (n + 1) (M + 2) v`. Establish `stg` using `GlobalTheory.T.zero_block_coefficient_induction_left F E σ hCM M J hJ n hn hnM h₀ h₁ h₂`.
+
+Take `⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩` from `stg (Ainf F) hLi d b laminf hinf.1 minf m₁inf m'inf hminf hm₁inf hm'inf φinf hφinf`. Use `choose Ψ hΨm hΨ1 hΨ2 using fun v => stg (Fv F v) (hLv v) d b (lam v) (hlam v).1 (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v) (φ v) (hφ v)`. Use `choose G hGm hG1 hG2 using fun v => stg (Fv F v) (hLv v) d b (lam v) (hlam v).1 (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v) ((latV b v).indicator 1) (measurable_one.indicator (hlatm v))`. Take `⟨τ, hτ⟩ : ∃ τ : HeightOneSpectrum (𝓞 F) → ℝ, ∀ v, τ v = (m' v (hermOf (Fv F v) σ 0 h₀) (latV b v)).toReal` from `⟨_, fun _ => rfl⟩`. Take `⟨p, hp⟩ : ∃ p : HeightOneSpectrum (𝓞 F) → ℝ, ∀ v, p v = (m₁ v (hermOf (Fv F v) σ 0 h₂) (primV σ J b v)).toReal` from `⟨_, fun _ => rfl⟩`.
+
+Take `⟨Mv, hMv⟩ : ∃ Mv : HeightOneSpectrum (𝓞 F) → ℝ, ∀ v, Mv v = (m v (hermOf (Fv F v) σ 0 h₁) (latV b v)).toReal` from `⟨_, fun _ => rfl⟩`. Establish `hτ' : ∀ v, m' v (hermOf (Fv F v) σ 0 h₀) (latV b v) = ENNReal.ofReal (τ v)` using `fun v => by`. Rewrite using `[hτ, ENNReal.ofReal_toReal (hE'.1 v).ne]`. Establish `hMv' : ∀ v, m v (hermOf (Fv F v) σ 0 h₁) (latV b v) = ENNReal.ofReal (Mv v)` using `fun v => by`. Rewrite using `[hMv, ENNReal.ofReal_toReal (hfinL v).ne]`.
+
+Establish `hτ0 : ∀ v, 0 ≤ τ v` using `fun v => by rw [hτ]; exact ENNReal.toReal_nonneg`. Establish `hp0 : ∀ v, 0 ≤ p v` using `fun v => by rw [hp]; exact ENNReal.toReal_nonneg`. Establish `hM0 : ∀ v, 0 ≤ Mv v` using `fun v => by rw [hMv]; exact ENNReal.toReal_nonneg`. Establish `hsumτ : Summable fun v => |τ v - 1|` using `by simpa only [hτ] using hE'.2.1`. Establish `hsump : Summable fun v => |p v - 1|` using `by simpa only [hp] using hsumP`.
+
+Establish `hsumM : Summable fun v => |Mv v - 1|` using `by simpa only [hMv] using hsumL`. Establish `hGprim : ∀ v, v ∉ S → ∀ y ∈ primV σ J b v, G v y = ENNReal.ofReal (τ v)`. Introduce and unpack `v hv _ ⟨g, hg, rfl⟩`. Rewrite using `[hG1 v g, hS4 v hv (lam v) (hlam v) _ g hg, hτ']`. Establish `hle : ∀ v, v ∉ S → τ v * p v ≤ Mv v`.
+
+Introduce `v hv`. Establish `h1 : ENNReal.ofReal (τ v) * m₁ v (hermOf (Fv F v) σ 0 h₂) (primV σ J b v) ≤ m v (hermOf (Fv F v) σ 0 h₁) (latV b v)`. Establish `e1 : m v (hermOf (Fv F v) σ 0 h₁) (latV b v) = ∫⁻ y, G v y ∂(m₁ v (hermOf (Fv F v) σ 0 h₂))`. Rewrite using `[← hG2 v, lintegral_indicator_one (hlatm v)]`. Rewrite using `[e1]`.
+
+Use `le_trans ?_ (mul_meas_ge_le_lintegral (hGm v) (ENNReal.ofReal (τ v)))` and prove the remaining obligations. Use `gcongr`. Introduce `y hy`. Conclude with `(hGprim v hv y hy).ge`. Distinguish the cases in `hpt : m₁ v (hermOf (Fv F v) σ 0 h₂) (primV σ J b v) = ⊤`.
+
+Rewrite using `[hp, hpt]`. Simplify using `using hM0 v`. Establish `h2 : ENNReal.ofReal (τ v * p v) ≤ ENNReal.ofReal (Mv v)`. Rewrite using `[ENNReal.ofReal_mul (hτ0 v), hp, ENNReal.ofReal_toReal hpt, ← hMv']`. Conclude with `h1`.
+
+Conclude with `(ENNReal.ofReal_le_ofReal_iff (hM0 v)).1 h2`. Establish `hpure` using `hS₂ S hS2 φinf φ Ψinf Ψ G hφinf hφ hΨinf1 hΨ1 hG1`. Take `⟨Ψ', hΨ'⟩ : ∃ Ψ' : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞, (fun v => if v ∈ S then Ψ v else G v) = Ψ'` from `⟨_, rfl⟩`. Rewrite `hpure` using `[hΨ']`. Establish `hΨ'S : ∀ v, v ∈ S → Ψ' v = Ψ v` using `fun v hv => by rw [← hΨ']; simp [hv]`.
+
+Establish `hΨ'N : ∀ v, v ∉ S → Ψ' v = G v` using `fun v hv => by rw [← hΨ']; simp [hv]`. Establish `hΨ'm : ∀ v, Measurable (Ψ' v)` using `fun v => by`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hΨ'S v hv]`. Conclude with `hΨm v`.
+
+Rewrite using `[hΨ'N v hv]`. Conclude with `hGm v`. Establish `hpm : ∀ S', Measurable (purePr σ J b S' Ψinf Ψ')` using `fun S' => GlobalTheory.T.euler_product_lintegral_limit F E σ hCM M J hJ d b S' Ψinf Ψ' hΨinfm hΨ'm`. Take `⟨term, hterm⟩ : ∃ term : Finset (HeightOneSpectrum (𝓞 F)) → (Fin 1 → Fin (M + 2) → AF F ⊗[F] E) → ℝ≥0∞, ∀ S' y, term S' y = ENNReal.ofReal (∏' v : {v // v ∉ S'}, τ v.1) * purePr σ J b S' Ψinf Ψ' y` from `⟨_, fun _ _ => rfl⟩`. Establish `htm : ∀ S', Measurable (term S')` using `fun S' => by`.
+
+Establish `e : term S' = fun y => ENNReal.ofReal (∏' v : {v // v ∉ S'}, τ v.1) * purePr σ J b S' Ψinf Ψ' y`. Use function extensionality and compare the values at `(hterm S')`. Rewrite using `[e]`. Conclude with `(hpm S').const_mul _`. Establish `hmono : ∀ S' S'', S ⊆ S' → S' ⊆ S'' → ∀ y, term S' y ≤ term S'' y`.
+
+Introduce `S' S'' h1 h2 y`. Rewrite using `[hterm, hterm]`. Distinguish the cases in `hy : ∀ v, v ∉ S' → projV v (projFin y) ∈ primV σ J b v`. Establish `hy2 : ∀ v, v ∉ S'' → projV v (projFin y) ∈ primV σ J b v` using `fun v hv => hy v fun h => hv (h2 h)`. Establish `e1 : purePr σ J b S' Ψinf Ψ' y = Ψinf (projInf y) * ∏ v ∈ S', Ψ' v (projV v (projFin y))` using `Set.indicator_of_mem (s := {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S' → projV v (projFin y) ∈ primV σ J b v}) hy _`.
+
+Establish `e2 : purePr σ J b S'' Ψinf Ψ' y = Ψinf (projInf y) * ∏ v ∈ S'', Ψ' v (projV v (projFin y))` using `Set.indicator_of_mem (s := {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S'' → projV v (projFin y) ∈ primV σ J b v}) hy2 _`. Establish `e3 : ∏ v ∈ S'' \ S', Ψ' v (projV v (projFin y)) = ∏ v ∈ S'' \ S', ENNReal.ofReal (τ v)` using `Finset.prod_congr rfl fun v hv => by`. Establish `hvS' : v ∉ S'` using `(Finset.mem_sdiff.1 hv).2`. Establish `hvS : v ∉ S` using `fun h => hvS' (h1 h)`. Rewrite using `[hΨ'N v hvS, hGprim v hvS _ (hy v hvS')]`.
+
+Establish `ht` using `GlobalTheory.T.tprod_complement_split_finset _ τ S' S'' hsumτ h2`. Rewrite using `[e1, e2, ← Finset.prod_sdiff h2, e3, ht, ENNReal.ofReal_mul (Finset.prod_nonneg fun v _ => hτ0 v), ENNReal.ofReal_prod_of_nonneg fun v _ => hτ0 v]`. Conclude with `le_of_eq (by ring)`. Establish `e1 : purePr σ J b S' Ψinf Ψ' y = 0` using `Set.indicator_of_notMem (s := {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S' → projV v (projFin y) ∈ primV σ J b v}) hy _`. Rewrite using `[e1, mul_zero]`.
+
+Conclude with `bot_le`. Establish `hτtail : ∀ S' : Finset (HeightOneSpectrum (𝓞 F)), 0 ≤ ∏' v : {v // v ∉ S'}, τ v.1` using `fun S' => (GlobalTheory.T.infinite_product_multipliable {v // v ∉ S'} (fun v => τ v.1) (hsumτ.subtype _)).2.2.2 fun _ => hτ0 _`. Establish `hint : ∀ S', S ⊆ S' → ∫⁻ y, term S' y ∂(thetaMeas σ (hypOne J) μ 𝓕 (framesE σ (hypOne J) (0 : Matrix (Fin 1) (Fin 1) E))) = ((∫⁻ X, φinf X ∂(minf (hermOf (Ainf F) σ 0 h₁))) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ 0 h₁))) * ENNReal.ofReal ((∏ v ∈ S' \ S, Mv v) * ((∏' v : { …`. Introduce `S' hS'`. Repeatedly rewrite using `[hterm]`.
+
+Rewrite using `[lintegral_const_mul _ (hpm S'), hS₃ S' (hS3.trans hS') Ψinf Ψ' hΨinfm hΨ'm, ← hΨinf2]`. Establish `hprod : ∏ v ∈ S', ∫⁻ y, Ψ' v y ∂(m₁ v (hermOf (Fv F v) σ 0 h₂)) = (∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ 0 h₁))) * ENNReal.ofReal (∏ v ∈ S' \ S, Mv v)`. Rewrite using `[← Finset.prod_sdiff hS', mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v hv => by rw [hΨ'S v hv, hΨ2 v]`.
+
+Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun v _ => hM0 v]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hΨ'N v (Finset.mem_sdiff.1 hv).2, ← hG2 v, lintegral_indicator_one (hlatm v), hMv']`. Establish `hpt : ∏' v : {v // v ∉ S'}, (m₁ v.1 (hermOf (Fv F v.1) σ 0 h₂) (primV σ J b v.1)).toReal = ∏' v : {v // v ∉ S'}, p v.1` using `tprod_congr fun v => (hp v.1).symm`. Rewrite using `[hprod, hpt, ENNReal.ofReal_mul (Finset.prod_nonneg fun v _ => hM0 v), ENNReal.ofReal_mul (hτtail S')]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcond : ∀ h : HA (AF F) σ (hypOne J), (⨆ S', term (S ∪ S') (actW (AF F) σ (hypOne J) h (e0 _ M))) = ∫⁻ Y, ∫⁻ a, pureL b S φinf φ (actW (AF F) σ (hypOne J) h (consA a Y)) ∂dA ∂(thetaMeas σ J μ₁ 𝓕₁ (framesE σ J (0 : Matrix (Fin n) (Fin n) E)))`. Introduce `h`. Take `⟨Sh, hSSh, hSh⟩` from `hpure h`. Establish `hv : ∀ S', Sh ⊆ S' → term S' (actW (AF F) σ (hypOne J) h (e0 _ M)) = ∫⁻ Y, ∫⁻ a, pureL b S φinf φ (actW (AF F) σ (hypOne J) h (consA a Y)) ∂dA ∂(thetaMeas σ J μ₁ 𝓕₁ (framesE σ J (0 : Matrix (Fin n) (Fin n) E)))` using `fun S' hS' => by`.
+
+Rewrite using `[hterm, hSh S' hS']`. Use `congr 2`. Conclude with `tprod_congr fun v => hτ v.1`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun S' => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hv (S ∪ S' ∪ Sh) Finset.subset_union_right]`. Conclude with `hmono _ _ Finset.subset_union_left Finset.subset_union_left _`. Rewrite using `[← hv Sh subset_rfl]`. Use `le_iSup_of_le Sh ?_` and prove the remaining obligations. Rewrite using `[Finset.union_eq_right.2 hSSh]`.
+
+Establish `hΦm` using `GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b (n + 1) (M + 2) S φinf φ hφinf hφ`. Establish `hΨgm : Measurable fun y => ⨆ S', term (S ∪ S') y` using `Measurable.iSup fun S' => htm _`. Establish `hB` using `GlobalTheory.T.hyperbolic_plane_unfolding_integral F E σ hCM M J hJ n hn hnM μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ dA hdA _ _ hΦm hΨgm hcond`. Rewrite using `[hB, lintegral_iSup_places _ S term htm hmono _ _ hint, GlobalTheory.T.iSup_finite_product_tail_limit _ Mv τ p S hsumM hsumτ hsump hM0 hτ0 hp0 hle]`. Simplify using `only [ENNReal.coe_one, one_mul]`.
+
+Use `congr 2`. Conclude with `tprod_congr fun v => hMv v.1`.
+-/
 theorem hyp_step : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 1 ≤ n → 2 * n < M → ∀ (h₀ : ∀ a b : Fin n, σ ((0 : Matrix (Fin n) (Fin n) E) b a) = (0 : Matrix (Fin n) (Fin n) E) a b) (h₁ : ∀ a b : Fin (n + 1), σ ((0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) b a) = (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) a b), (framesE σ J (0 : Matrix (Fin n) (Fin n) E)).Nonempty → SWFree σ J (0 : Matrix (Fin n) (Fin n) E) h₀ → SWFree σ (hypOne J) (0 : Matrix (Fin (n + 1)) (Fin (n + 1)) E) h₁ := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hnM h₀ h₁ hne hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm
   classical

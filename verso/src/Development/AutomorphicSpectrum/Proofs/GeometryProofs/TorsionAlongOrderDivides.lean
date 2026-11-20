@@ -11,6 +11,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.BT.TorsionKilled
 
+/- English proof (translation)
+Introduce `R _ _ T _ Γ S G _ x N i h t`. Set `lift : (genPt R ⟶ Γ.G) → (Over.mk ((genPt R).hom ≫ x) ⟶ G)` to `fun y => Over.homMk (y.left ≫ i) (by`. Establish `w` using `Over.w y`. Simplify using `only [Over.mk_hom, Category.assoc, h.isOver]`. Rewrite using `[← Category.assoc, w]`.
+
+Use the proof step `rfl)`. Establish `lift_left : ∀ y, (lift y).left = y.left ≫ i` using `fun y => rfl`. Establish `lift_mul : ∀ y z, lift (y * z) = lift y * lift z` using `fun y z => by ext1`. Rewrite using `[h.mul (genPt R) y z (lift y) (lift z) rfl rfl]`. Both sides reduce to the same expression.
+
+Establish `lift_one : lift 1 = 1`. Establish `e : lift 1 * lift 1 = lift 1` using `by rw [← lift_mul, _root_.mul_one]`. Conclude with `mul_eq_left.mp e`. Set `L : (genPt R ⟶ Γ.G) →* (Over.mk ((genPt R).hom ≫ x) ⟶ G)` to `{ toFun := lift, map_one' := lift_one, map_mul' := lift_mul }`. Establish `hk : lift (Γ.pt t) ^ N = 1` using `(h.kernel (genPt R) (lift (Γ.pt t))).2 ⟨Γ.pt t, rfl⟩`.
+
+Establish `hL : L (Γ.pt t ^ N) = L 1`. Rewrite using `[map_pow, map_one]`. Conclude with `hk`. Establish `hy : Γ.pt t ^ N = 1` using `h.inj (genPt R) _ _ (by`. Use `congrArg (fun g : Over.mk ((genPt R).hom ≫ x) ⟶ G => g.left) hL` as an intermediate fact.
+
+Conclude with `this)`. Establish `hp : Γ.pt (t ^ N) = Γ.pt 1` using `by rw [map_pow, map_one, hy]`. Set `c : Spec (CommRingCat.of (FractionRing R))` to `IsLocalRing.closedPoint (FractionRing R)`. Conclude with `Γ.pt_inj (t ^ N) 1 c c (by rw [hp])`.
+-/
 theorem pow_eq_one : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : BT.QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] (x : Sp R ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ t : T, t ^ N = 1 := by
   intro R _ _ T _ Γ S G _ x N i h t
   let lift : (genPt R ⟶ Γ.G) → (Over.mk ((genPt R).hom ≫ x) ⟶ G) := fun y =>

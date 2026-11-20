@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.PairVac
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Break down `GlobalTheory.KFinLoc.split_or_inert F E σ B hP.base v with h | h` into its components or cases. Conclude with `Or.inr h`. Conclude with `Or.inl h`.
+-/
 theorem eventually_inert_or_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ᶠ v in Filter.cofinite, (∃ w, Formalism.UG.IsInertAt F E v w) ∨ Nonempty (E →ₐ[F] Fv F v) := by

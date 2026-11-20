@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.IdemUnder
 
+/- English proof (translation)
+Introduce `D e PP v ε he hv hsum`. Take `⟨hee, hec, -⟩` from `he.1`. Establish `hfix : e * algebraMap (AF D.host.F) (AE D) ε = e`. Rewrite using `[← hsum, mul_add, hee, hec, add_zero]`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`.
+
+Establish `hone : Φ e PP = 1` using `(GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ he).2.1`. Assume the negation of the conclusion as `hne`. Establish `hzero` using `(GlobalTheory.IdemSupport.place_comp hΦ hv).2.2 PP hne`. Establish `hcomp` using `GlobalTheory.IdemSupport.ev_mul (Φ := Φ) e (algebraMap (AF D.host.F) (AE D) ε) PP`. Rewrite `hcomp` using `[hfix, hzero, mul_zero, hone]`.
+
+Conclude with `one_ne_zero hcomp`.
+-/
 theorem under_eq_of_isIdemAt : ∀ (D : D7) (e : AE D) (PP : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F), Formalism.L2.NTheta.IsIdemAt e PP → IsPlaceIdem D v ε → e + cA D e = algebraMap (AF D.host.F) (AE D) ε → PP.under (𝓞 D.host.F) = v := by
   intro D e PP v ε he hv hsum
 

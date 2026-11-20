@@ -17,11 +17,17 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
   {K' : Type} [Field K'] (jL : D.what₂.LL →+* K') (σ' : K' →+* ℂ)
 
+/- English proof (translation)
+Take `⟨γE, -, hE⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)`. Conclude with `⟨γE, hE.symm⟩`.
+-/
 theorem exists_ratMat (V : HSp D) (γ : GQ V) : ∃ γE, Bridge.IsRatMat V γ γE := by
   obtain ⟨γE, -, hE⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 γ.2)
   exact ⟨γE, hE.symm⟩
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨e, -, hcoef, -⟩` from `hc`. Take `⟨γE, hγE⟩` from `exists_ratMat V (P.decG g)`. Use `⟨P.decK g, rho γE (e (f (P.decC g))), ?_⟩` and prove the remaining obligations. Rewrite using `[hm.1 _ _ hγE, ← hcoef]`. Both sides reduce to the same expression.
+-/
 theorem ext_val (V : HSp D) (C : Bridge.CoefDat D V) {S : CSD D.what₂.LL} {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ}
     (P : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL C.ρ J χ) {lam : D.what₂.Tau → DomWeight V.rank}
     {c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] C.W} {rho : GL (Fin V.rank) D.host.E →* Module.End D.what₂.LL (VV D.what₂.LL lam)}

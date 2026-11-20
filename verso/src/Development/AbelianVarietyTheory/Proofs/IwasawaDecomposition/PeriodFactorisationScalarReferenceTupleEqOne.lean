@@ -27,6 +27,9 @@ def ZeFact (u : D.Word) (μ : D.Tup) (c : ℂ) : Prop :=
     D.perCol u μ φ F = c * buSec D u φ (D.iota μ ((D.Qsp μ).starProjection F))) ∧
   ∃ (φ : D.Mu u) (F : D.Amb μ), F ∈ D.V0 μ ∧ D.perCol u μ φ F ≠ 0
 
+/- English proof (translation)
+Take `⟨φ, F, hF, hne⟩` from `h.2`. Establish `e1` using `h.1 φ F hF`. Establish `e2` using `h'.1 φ F hF`. Establish `hb : buSec D u φ (D.iota μ ((D.Qsp μ).starProjection F)) ≠ 0` using `fun h0 => hne (by rw [e1, h0, mul_zero])`. Conclude with `mul_right_cancel₀ hb (e1.symm.trans e2)`.
+-/
 theorem ZeFact.unique {D : Rows.Data R} {u : D.Word} {μ : D.Tup} {c c' : ℂ} (h : ZeFact D u μ c)
     (h' : ZeFact D u μ c') : c = c' := by
   obtain ⟨φ, F, hF, hne⟩ := h.2
@@ -35,6 +38,11 @@ theorem ZeFact.unique {D : Rows.Data R} {u : D.Word} {μ : D.Tup} {c c' : ℂ} (
   have hb : buSec D u φ (D.iota μ ((D.Qsp μ).starProjection F)) ≠ 0 := fun h0 => hne (by rw [e1, h0, mul_zero])
   exact mul_right_cancel₀ hb (e1.symm.trans e2)
 
+/- English proof (translation)
+Take `⟨φ, F, hF, hne⟩` from `h.2`. Establish `hq : (D.Qsp D.mu0).starProjection F ∈ D.Qsp D.mu0` using `(D.Qsp D.mu0).starProjection_apply_mem F`. Establish `e1` using `h.1 φ F hF`. Establish `e2` using `h.1 φ _ hq.1`. Rewrite `e2` using `[Submodule.starProjection_eq_self_iff.2 hq]`.
+
+Unfold `buSec at e1 e2`. Rewrite `e1`, `e2` using `[D.sec_iota _ _ hq]`. Establish `hb : D.perCol u D.mu0 φ ((D.Qsp D.mu0).starProjection F) ≠ 0` using `fun h0 => hne (by rw [e1, h0, mul_zero])`. Conclude with `(mul_eq_right₀ hb).1 e2.symm`.
+-/
 theorem ZeFact.mu0 {D : Rows.Data R} {u : D.Word} {c : ℂ} (h : ZeFact D u D.mu0 c) : c = 1 := by
   obtain ⟨φ, F, hF, hne⟩ := h.2
   have hq : (D.Qsp D.mu0).starProjection F ∈ D.Qsp D.mu0 := (D.Qsp D.mu0).starProjection_apply_mem F
@@ -51,6 +59,9 @@ open Classical in
 def zeVal (u : D.Word) (μ : D.Tup) : D.LLˣ :=
   if μ = D.mu0 then 1 else if h : ∃ z : D.LLˣ, ZeFact D u μ (D.embLL (z : D.LL)) then h.choose else 1
 
+/- English proof (translation)
+Unfold `zeVal`. Conclude with `if_pos rfl`.
+-/
 theorem periodFactorisationScalar_referenceTuple_eq_one (u : D.Word) : zeVal D u D.mu0 = 1 := by
   unfold zeVal
   exact if_pos rfl
@@ -60,6 +71,9 @@ theorem periodFactorisationScalar_referenceTuple_eq_one (u : D.Word) : zeVal D u
 
 attribute [local instance] modLL
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulLL (μ : D.Tup) (j : ℕ) (s : 𝓞 D.LL) (x : D.MtL μ j) : s • x = (s : D.LL) • x := rfl
 
 def TjLat (μ : D.Tup) (j : ℕ) : Submodule (𝓞 D.LL) (D.MtL μ j) :=
@@ -101,6 +115,9 @@ variable {R : Ranks} (Dd : Rows.Data R)
 
 attribute [local instance] modMj
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulMj (j : ℕ) (s : 𝓞 Dd.LL) (z : Dd.Mj j) : s • z = Dd.embLL (s : Dd.LL) • z := rfl
 
 def latCan (j : ℕ) : Submodule (𝓞 Dd.LL) (Dd.Mj j) where
@@ -155,9 +172,19 @@ section Lidx
 
 variable {R W W' : Type*} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R W']
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locP (p : Ideal R) [p.IsPrime] (L : Submodule R W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s ∈ p.primeCompl, s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [mem_locP, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, a, ha, hay⟩`. Take `⟨x, rfl⟩` from `hsat s y hs ⟨a, hay⟩`.
+
+Use `⟨x, ⟨s, hs, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: f (s • x) = f a` using `by rw [map_smul, hay]`. Rewrite using `[hf this]`. Conclude with `ha`. Introduce and unpack `⟨x, ⟨s, hs, hx⟩, rfl⟩`.
+
+Conclude with `⟨s, hs, s • x, hx, by rw [map_smul]⟩`.
+-/
 theorem localization_map_of_injective (p : Ideal R) [p.IsPrime] (f : W →ₗ[R] W') (hf : Function.Injective f)
     (hsat : ∀ (s : R) (y : W'), s ∈ p.primeCompl → s • y ∈ LinearMap.range f → y ∈ LinearMap.range f)
     (A : Submodule R W) : Formalism.HermitianLatticesTheory.localization₂ p (A.map f) = (Formalism.HermitianLatticesTheory.localization₂ p A).map f := by
@@ -172,6 +199,13 @@ theorem localization_map_of_injective (p : Ideal R) [p.IsPrime] (f : W →ₗ[R]
   · rintro ⟨x, ⟨s, hs, hx⟩, rfl⟩
     exact ⟨s, hs, s • x, hx, by rw [map_smul]⟩
 
+/- English proof (translation)
+Use `symm`. Use `LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ (Submodule.equivMapOfInjective f hf Z) ?_)` and prove the remaining obligations. Use extensionality with `⟨w, hw⟩`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hw`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z', hz'⟩, hz'X, he⟩`. Establish `: f z' = f z` using `congrArg Subtype.val he`. Rewrite using `[← hf this]`. Conclude with `⟨z', hz'X, rfl⟩`.
+
+Introduce and unpack `⟨z', hz'X, he⟩`. Use `⟨⟨z, hz⟩, ?_, ?_⟩` and prove the remaining obligations. Use `hf he` as an intermediate fact. Simplify `hz'X` using `[this]`. Both sides reduce to the same expression.
+-/
 theorem length_map_inj (f : W →ₗ[R] W') (hf : Function.Injective f) (X Z : Submodule R W) :
     Module.length R (↥(Z.map f) ⧸ (X.map f).comap (Z.map f).subtype) =
       Module.length R (↥Z ⧸ X.comap Z.subtype) := by
@@ -192,6 +226,9 @@ theorem length_map_inj (f : W →ₗ[R] W') (hf : Function.Injective f) (X Z : S
       simpa [this] using hz'X
     · rfl
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.lidx Formalism.HermitianLatticesTheory.locLen`. Rewrite using `[← Submodule.map_inf f hf, localization_map_of_injective p f hf hsat, localization_map_of_injective p f hf hsat, localization_map_of_injective p f hf hsat, length_map_inj f hf, length_map_inj f hf]`.
+-/
 theorem lidx_map_inj (p : Ideal R) [p.IsPrime] (f : W →ₗ[R] W') (hf : Function.Injective f)
     (hsat : ∀ (s : R) (y : W'), s ∈ p.primeCompl → s • y ∈ LinearMap.range f → y ∈ LinearMap.range f)
     (A B : Submodule R W) : Formalism.HermitianLatticesTheory.lidx p (A.map f) (B.map f) = Formalism.HermitianLatticesTheory.lidx p A B := by
@@ -214,6 +251,11 @@ def jMO (j : ℕ) : (X.MjH j).V →ₗ[𝓞 D.what₂.LL] D.what₂.Mj j where
     rw [← algebraMap_smul D.what₂.LL s x, LinearMap.map_smulₛₗ]
     rfl
 
+/- English proof (translation)
+Use `Finset.sum_induction _ (fun z => ∃ x, X.jM j x = z) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x, rfl⟩ ⟨y, rfl⟩`. Conclude with `⟨x + y, map_add _ _ _⟩`. Conclude with `⟨0, map_zero _⟩`. Introduce `v hv`.
+
+Take `⟨x, hx⟩` from `X.MjLat_sub j h1 h2 v hv`. Conclude with `⟨a v • x, by rw [LinearMap.map_smulₛₗ, hx]⟩`.
+-/
 theorem exists_jM (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (a : D.what₂.Mj j → D.what₂.LL) :
     ∃ x, X.jM j x = ∑ v ∈ (D.what₂.MjLat j).gen, D.what₂.embLL (a v) • v := by
   refine Finset.sum_induction _ (fun z => ∃ x, X.jM j x = z) ?_ ?_ ?_
@@ -224,6 +266,17 @@ theorem exists_jM (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (a : D.what₂.Mj 
     obtain ⟨x, hx⟩ := X.MjLat_sub j h1 h2 v hv
     exact ⟨a v • x, by rw [LinearMap.map_smulₛₗ, hx]⟩
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span D.what₂.LL ((X.MjH j).L : Set (X.MjH j).V)`. Rewrite using `[(X.MjH_good j).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, hc⟩` from `(X.jM_lat j h1 h2 x).1 hx`. Conclude with `⟨fun v => ((c v : 𝓞 D.what₂.LL) : D.what₂.LL), hc⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ha, hb, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[add_smul]`.
+
+Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨fun v => r * a v, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, map_mul]`.
+-/
 theorem jM_mem_rng (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (y : (X.MjH j).V) : X.jM j y ∈ rngSet D.what₂ j := by
   have hy : y ∈ Submodule.span D.what₂.LL ((X.MjH j).L : Set (X.MjH j).V) := by
     rw [(X.MjH_good j).2.2]; trivial
@@ -246,6 +299,11 @@ theorem jM_mem_rng (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (y : (X.MjH j).V)
     refine Finset.sum_congr rfl fun v _ => ?_
     rw [smul_smul, map_mul]
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨c, hc⟩` from `(X.jM_lat j h1 h2 x).1 hx`. Conclude with `⟨c, hc⟩`.
+
+Introduce and unpack `⟨c, rfl⟩`. Take `⟨x, hx⟩` from `exists_jM D X j h1 h2 (fun v => ((c v : 𝓞 D.what₂.LL) : D.what₂.LL))`. Conclude with `⟨x, (X.jM_lat j h1 h2 x).2 ⟨c, hx⟩, hx⟩`.
+-/
 theorem lat_map (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (X.MjH j).L.map (jMO D X j) = latCan D.what₂ j := by
   ext z
   constructor
@@ -256,6 +314,11 @@ theorem lat_map (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (X.MjH j).L.map (j
     obtain ⟨x, hx⟩ := exists_jM D X j h1 h2 (fun v => ((c v : 𝓞 D.what₂.LL) : D.what₂.LL))
     exact ⟨x, (X.jM_lat j h1 h2 x).2 ⟨c, hx⟩, hx⟩
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨x, hx, hxy⟩, rfl⟩`. Conclude with `⟨jM_mem_rng D X j h1 h2 y, x, hx, hxy⟩`. Introduce and unpack `⟨⟨a, ha⟩, x, hx, hxz⟩`.
+
+Take `⟨y, hy⟩` from `exists_jM D X j h1 h2 a`. Use `⟨y, ⟨x, hx, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, ← ha, hxz]`. Use `show X.jM j y = z`. Rewrite using `[hy, ← ha]`.
+-/
 theorem th_map (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (Idx.thTj X μ j).map (jMO D X j) = thCan D.what₂ μ j := by
   ext z
@@ -269,6 +332,13 @@ theorem th_map (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) 
     · show X.jM j y = z
       rw [hy, ← ha]
 
+/- English proof (translation)
+Unfold `Idx.IjIdx ijCan`. Rewrite using `[← lat_map D X j h1 h2, ← th_map D X μ j h1 h2, lidx_map_inj _ _ (Idx.jM_inj X j)]`. Introduce and unpack `s y hs ⟨a, ha⟩`. Establish `hs0 : (s : D.what₂.LL) ≠ 0`. Introduce `h0`.
+
+Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h0`. Rewrite using `[this]`. Conclude with `zero_mem _`. Use `⟨(s : D.what₂.LL)⁻¹ • a, ?_⟩` and prove the remaining obligations.
+
+Establish `ha' : X.jM j a = D.what₂.embLL (s : D.what₂.LL) • y` using `ha`. Use `show X.jM j ((s : D.what₂.LL)⁻¹ • a) = y`. Rewrite using `[LinearMap.map_smulₛₗ, ha', smul_smul, ← map_mul, inv_mul_cancel₀ hs0, map_one, one_smul]`.
+-/
 theorem ijIdx_eq_can (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (w : D.what₂.places.Pl) :
     Idx.IjIdx X μ j w = ijCan D.what₂ μ j (D.plEq w).asIdeal := by
   unfold Idx.IjIdx ijCan
@@ -287,6 +357,13 @@ theorem ijIdx_eq_can (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D
 
 end Tr
 
+/- English proof (translation)
+Distinguish the cases in `hμ : μ = Dd.mu0`. Substitute `hμ` using the available equality. Rewrite using `[periodFactorisationScalar_referenceTuple_eq_one, h.mu0]`. Simplify using the standard rewrite rules. Take `⟨z, hz'⟩` from `hc`.
+
+Establish `hc0 : c ≠ 0`. Take `⟨φ, F, hF, hne⟩` from `h.2`. Introduce `h0`. Conclude with `hne (by rw [h.1 φ F hF, h0, zero_mul])`. Establish `hz0 : z ≠ 0` using `fun h0 => hc0 (by rw [← hz', h0, map_zero])`.
+
+Establish `hex : ∃ z : Dd.LLˣ, ZeFact Dd u μ (Dd.embLL (z : Dd.LL))` using `⟨Units.mk0 z hz0, by simpa [hz'] using h⟩`. Unfold `zeVal`. Rewrite using `[if_neg hμ, dif_pos hex]`. Conclude with `hex.choose_spec.unique h`.
+-/
 theorem zeOf_eq {R : Ranks} (Dd : Rows.Data R) (u : Dd.Word) (μ : Dd.Tup) (c : ℂ)
     (h : ZeFact Dd u μ c) (hc : ∃ z : Dd.LL, Dd.embLL z = c) :
     Dd.embLL (zeVal Dd u μ : Dd.LL) = c := by
@@ -324,6 +401,9 @@ def nums0 (p : PkB B C G) (W₀ : RowsRest B C) : Nums p W₀ where
 abbrev data0 (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) : Rows.Data B.R :=
   (p.what₂ e W₀ (nums0 p W₀) (fun _ _ => 0) (fun _ _ => le_refl 0)).what₂
 
+/- English proof (translation)
+Unfold `perOf`. Rewrite using `[dif_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem periodAgainstColumnForm_referenceTuple_eq (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) (u : B.Word) (φ : W₀.Mu u)
     (F : (p.sA true C.mu0).A.T) :
     perOf p e W₀ u C.mu0 φ F = (C.mem u).P.PtilCol ((W₀.eMu u φ : (C.mem u).A.Mram) :
@@ -332,6 +412,9 @@ theorem periodAgainstColumnForm_referenceTuple_eq (p : PkB B C G) (e : PerD p) (
   rw [dif_pos rfl]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `φ ψ`. Simplify using `only [periodAgainstColumnForm_referenceTuple_eq, PeriodMap.PtilCol, PeriodMap.Ptil, map_add, Submodule.coe_add, Formalism.BasicNotions.Examples₂.NZ.col_add, LinearMap.add_apply]`. Introduce `s φ`. Simplify using `only [periodAgainstColumnForm_referenceTuple_eq, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, Submodule.coe_smul, Formalism.BasicNotions.Examples₂.NZ.col_smul, LinearMap.smul_apply]`.
+-/
 theorem perOf_linL (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) (u : B.Word) (F : (p.sA true C.mu0).A.T) :
     IsLinearMap ℂ (fun φ : W₀.Mu u => perOf p e W₀ u C.mu0 φ F) := by
   constructor
@@ -342,6 +425,9 @@ theorem perOf_linL (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) (u : B.Wor
     simp only [periodAgainstColumnForm_referenceTuple_eq, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, Submodule.coe_smul,
       Formalism.BasicNotions.Examples₂.NZ.col_smul, LinearMap.smul_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `F F'`. Simplify using `only [periodAgainstColumnForm_referenceTuple_eq, PeriodMap.PtilCol, PeriodMap.Ptil, map_add]`. Introduce `s F`. Simplify using `only [periodAgainstColumnForm_referenceTuple_eq, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul]`.
+-/
 theorem perOf_linR (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) (u : B.Word) (φ : W₀.Mu u) :
     IsLinearMap ℂ (fun F : (p.sA true C.mu0).A.T => perOf p e W₀ u C.mu0 φ F) := by
   constructor
@@ -369,6 +455,9 @@ namespace GlobalTheory.Mem.R3.Rw
 
 open NumDef in
 
+/- English proof (translation)
+Introduce `B C G _ p e W₀`. Use `⟨numsOf p e W₀, fun η hη V S N G' => ?_⟩` and prove the remaining obligations. Use `exact`. Use the proof step `{ lam := fun μ j _ _ π _ => rfl bu := fun u φ x => by kexactB (rfl : buSec (data0 p e W₀) u φ x = buSec (data0 p e W₀) u φ x) ze := fun u μ c h1 h2 h3 => (by with_unfolding_all exact ((zeOf_eq (data0 p e W₀) u μ c ⟨by kexactB h1, by kexactB h2⟩ h3) :)) idx := fun Y => ⟨fun μ j w …`.
+-/
 theorem exists_nums_numOK : ∀ (B : Base) (C : Cols B) (G : Type) [Group G] (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C),
     ∃ n : Nums p W₀, ∀ η hη V S N G', NumOK (assemble B C (p.what₂ e W₀ n η hη) V S N G') := by
   intro B C G _ p e W₀

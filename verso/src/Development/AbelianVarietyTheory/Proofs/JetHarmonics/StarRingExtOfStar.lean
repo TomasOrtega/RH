@@ -15,6 +15,9 @@ namespace GlobalTheory.PowGerm
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Break down `s with @⟨@⟨@⟨@⟨s⟩, _⟩, _⟩, _⟩` into its components or cases. Break down `t with @⟨@⟨@⟨@⟨t⟩, _⟩, _⟩, _⟩` into its components or cases. Take `rfl : s = t` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.PowGerm.starRing_ext_of_star {R : Type*} [NonUnitalNonAssocSemiring R] (s t : StarRing R)
     (h : ∀ a : R, s.toStarMul.toInvolutiveStar.toStar.star a =
       t.toStarMul.toInvolutiveStar.toStar.star a) :
@@ -27,6 +30,9 @@ theorem _root_.GlobalTheory.PowGerm.starRing_ext_of_star {R : Type*} [NonUnitalN
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.PowGerm.StarSt`. Introduce `E _ _ _ H inst h`. Conclude with `_root_.GlobalTheory.PowGerm.starRing_ext_of_star _ _ fun a => (h a).trans rfl`.
+-/
 theorem _root_.GlobalTheory.PowGerm.starSt : _root_.GlobalTheory.PowGerm.StarSt := by
   unfold _root_.GlobalTheory.PowGerm.StarSt
   intro E _ _ _ H inst h

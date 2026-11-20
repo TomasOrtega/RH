@@ -15,5 +15,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.twistBaseChange | exact GlobalTheory.twistBaseChange | (intros; apply GlobalTheory.twistBaseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedPrincipalPolarisation_sections_baseChange : DVR.TwistBaseChangeStatement := by
   first | exact @GlobalTheory.twistBaseChange | exact GlobalTheory.twistBaseChange | (intros; apply GlobalTheory.twistBaseChange <;> assumption)

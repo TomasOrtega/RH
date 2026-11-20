@@ -5,6 +5,23 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.LeviIso
 
+/- English proof (translation)
+Establish `hm : Measurable (fun (z : (∀ i, V' → X i) × (∀ w, Y w)) (v : V) => ((fun i => z.1 i (β v)), z.2 (σ v)))` using `by fun_prop`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq_generateFrom (C := fun v => Set.image2 (· ×ˢ ·) (Set.pi Set.univ '' Set.pi Set.univ fun i => {s : Set (X i) | MeasurableSet s}) {s : Set (Y (σ v)) | MeasurableSet s}) (fun v => (generateFrom_eq_prod generateFrom_pi MeasurableSpace.generateFrom_measurableSet (IsCoun …` and prove the remaining obligations. Introduce `s hs`. Use `choose t' ht' u hu hst using hs`.
+
+Use `choose t ht htt using ht'`. Establish `htm : ∀ v i, MeasurableSet (t v i)` using `fun v i => ht v i (Set.mem_univ _)`. Establish `hs' : ∀ v, s v = (Set.pi Set.univ (t v)) ×ˢ u v` using `fun v => by rw [← hst v, htt v]`. Establish `hsm : MeasurableSet (Set.pi Set.univ s)`. Use `MeasurableSet.univ_pi fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs' v]`. Conclude with `(MeasurableSet.univ_pi fun i => htm v i).prod (hu v)`. Take `⟨u', hu'⟩ : ∃ u' : ∀ w, Set (Y w), ∀ v, u' (σ v) = u v` from `⟨Equiv.piCongrLeft (fun w => Set (Y w)) σ u, fun v => Equiv.piCongrLeft_apply_apply _ _ _ _⟩`. Rewrite using `[Measure.map_apply hm hsm]`. Establish `hpre : (fun (z : (∀ i, V' → X i) × (∀ w, Y w)) (v : V) => ((fun i => z.1 i (β v)), z.2 (σ v))) ⁻¹' Set.pi Set.univ s = (Set.pi Set.univ fun i => Set.pi Set.univ fun v' => t (β.symm v') i) ×ˢ Set.pi Set.univ u'`.
+
+Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, hs', Set.mem_prod, forall_and]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[forall_comm]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[← β.forall_congr_right]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[← σ.forall_congr_right]`. Simplify using `only [hu']`. Rewrite using `[hpre, Measure.smul_apply, Measure.prod_prod]`.
+
+Simplify using `only [hs', Measure.prod_prod, Measure.pi_pi, Measure.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `h1 : ∏ i, ∏ v', m i (t (β.symm v') i) = ∏ v, ∏ i, m i (t v i)`. Rewrite using `[Finset.prod_comm]`. Conclude with `β.symm.prod_comp fun v => ∏ i, m i (t v i)`. Establish `h2 : ∏ w, ν w (u' w) = ∏ v, ν (σ v) (u v)`.
+
+Rewrite using `[← σ.prod_comp]`. Simplify using `only [hu']`. Establish `h3 : ENNReal.ofReal (∏ w, c w) = ∏ v, ENNReal.ofReal (c (σ v))`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun w _ => hc w, ← σ.prod_comp]`. Establish `h4 : ∏ i, ENNReal.ofReal (b i ^ Fintype.card V) = (∏ i, ENNReal.ofReal (b i)) ^ Fintype.card V`.
+
+Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun i _ => ENNReal.ofReal_pow (hb i) _`. Rewrite using `[h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem measurePreserving_rearrange (V V' V'' : Type) [Fintype V] [Fintype V'] [Fintype V''] (β : V ≃ V')
     (σ : V ≃ V'') (a : ℕ) (X : Fin a → Type) [∀ i, MeasurableSpace (X i)] (Y : V'' → Type)
     [∀ w, MeasurableSpace (Y w)] (m : ∀ i, Measure (X i)) [∀ i, SigmaFinite (m i)] (ν : ∀ w, Measure (Y w))

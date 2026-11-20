@@ -12,6 +12,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.ModelShift
 
+/- English proof (translation)
+Introduce `hc hd F _ _ Y M L Δ r hr t ht a ha`. Use `M.ar.isIntegral` as an intermediate fact. Set `E` to `Equiv.ofBijective _ (TwistTop.bijective_comp_algebraMap F)`. Establish `key (σ : F →+* ℂ) : (L.φ (σ.comp (algebraMap (𝓞 F) F))).chernInt Y.dim Set.univ (fun _ => 1) = (Y.inter (fun _ => Δ) : ℝ)`. Take `⟨Φ, hΦ⟩` from `TwistTop.exists_homeomorph F Y M σ`.
+
+Use `CxPts.secondCountableTopology_of_isProjOver (σ.comp (algebraMap (𝓞 F) F)) M.ar.isProjOver` as an intermediate fact. Take `⟨h₁, h₂⟩` from `GlobalTheory.chernInt_transfer _ _ _ _ M.p Y.str _ σ Y.dim M.j Φ hΦ (GlobalTheory.ModelCharts.genSmooth_model F Y M _) inferInstance _ _ (L.cInf _)`. Conclude with `h₂.symm.trans (hd.2 F Y σ Δ _ r hr _ h₁).2`. Establish `e₁ : ∑ᶠ τ, t τ * (L.φ τ).chernInt Y.dim Set.univ (fun _ => 1) = (Y.inter (fun _ => Δ) : ℝ) * ∑ σ : F →+* ℂ, t (σ.comp (algebraMap (𝓞 F) F))`. Rewrite using `[← finsum_comp_equiv E, finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[show (L.φ (E σ)).chernInt Y.dim Set.univ (fun _ => 1) = _ from key σ, mul_comm]`. Both sides reduce to the same expression. Establish `h` using `TwistTop.isSelfInter_shift hc.1 hc.2.1 _ _ _ _ M.ar L a t ht ha`. Rewrite `h` using `[e₁, ← mul_assoc]`.
+
+Conclude with `h`.
+-/
 theorem isSelfInter_shift_model : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (L : HermLB M.p) (Δ : Y.Dv) (r : (L.B.pull M.j).ι → Y.Fnˣ), Presents Δ (L.B.pull M.j) r → ∀ (t : (𝓞 F →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (a : ℝ), (haveI := M.ar.isIntegral; L.IsSelfInter a) → (haveI := M.ar.isIntegral; (L.shift t ht).IsSelfInter (a + ((Y.dim : ℝ) + 1) * (Y.inter (fun _ => Δ) : ℝ) * ∑ σ : F →+* ℂ, t (σ.comp (algebraMap (𝓞 F) F)))) := by
   intro hc hd F _ _ Y M L Δ r hr t ht a ha
   have := M.ar.isIntegral

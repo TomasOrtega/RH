@@ -15,6 +15,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocModU
 
+/- English proof (translation)
+Unfold `Place.up`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply]`.
+-/
 theorem upAdd {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (x x' : Matrix Y Y' k) :
@@ -24,6 +27,9 @@ theorem upAdd {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
   ext i j
   simp [Matrix.map_apply]
 
+/- English proof (translation)
+Unfold `Place.up`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply]`.
+-/
 theorem upZero {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) : p.up FS FT 0 = 0 := by
@@ -31,10 +37,58 @@ theorem upZero {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   ext i j
   simp [Matrix.map_apply]
 
+/- English proof (translation)
+The claim follows from `(RingHom.charZero_iff (ϕ := p.π.comp (incA D)) (RingHom.injective _)).1 inferInstance`.
+-/
 theorem charZero_of_place {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : Place D k) : CharZero k :=
   (RingHom.charZero_iff (ϕ := p.π.comp (incA D)) (RingHom.injective _)).1 inferInstance
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ`. Use `haveI : CharZero k := charZero_of_place p`. Take `⟨⟨ψk, hψk⟩, hcn, -, -, -⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hψ`. Take `⟨hcont, hne⟩` from `hcn ψk hψk`. Take `⟨hup, -, -, hsymk, hsurj⟩` from `GlobalTheory.T.heisenberg_frame_half_inverse D k p Y Y' S T FS FT ψ ψk hψk`.
+
+Take `⟨-, hec, -⟩` from `p.split`. Establish `hce : cA D p.e * p.e = 0` using `by rw [mul_comm, hec]`. Establish `hcce : cA D (cA D p.e) * cA D p.e = 0` using `by rw [GlobalTheory.DualPairCheck.cA_cA, hec]`. Establish `halfSum1 : ∀ u : WO S T, IsHalf p.e u → IsHalf (p.e + cA D p.e) u` using `fun u hu i j => by`. Rewrite using `[add_mul, hu i j, ← hu i j, ← mul_assoc, hce, zero_mul, add_zero, hu i j]`.
+
+Establish `halfSum2 : ∀ u : WO S T, IsHalf (cA D p.e) u → IsHalf (p.e + cA D p.e) u` using `fun u hu i j => by`. Rewrite using `[add_mul, hu i j, ← hu i j, ← mul_assoc, hec, zero_mul, zero_add, hu i j]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T₁ T₂ h₁ h₂ Φ₀ hΦ₀ h12`. Set `W : Submodule ℂ (Matrix Y Y' k → ℂ)` to `(LinearMap.ker (T₁ - T₂)).map (SB (Matrix Y Y' k)).subtype`.
+
+Establish `memW : ∀ Φ : SB (Matrix Y Y' k), Φ.1 ∈ W ↔ T₁ Φ = T₂ Φ`. Introduce `Φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Ψ, hΨ, hΨe⟩`. Establish `: Ψ = Φ` using `Subtype.ext hΨe`.
+
+Substitute `this` using the available equality. Simplify `hΨ` using `[sub_eq_zero]`. Introduce `h`. Conclude with `⟨Φ, by simpa [sub_eq_zero] using h, rfl⟩`. Establish `hWle : W ≤ SB (Matrix Y Y' k)`.
+
+Introduce and unpack `_ ⟨Ψ, -, rfl⟩`. Conclude with `Ψ.2`. Establish `hWeq` using `GlobalTheory.T.schwartzBruhat_matrix_translation_modulation_irreducible k Y Y' ψk hcont hne W hWle (by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ x hx`. Establish `hΦ' : T₁ Φ = T₂ Φ` using `(memW Φ).1 ⟨Φ, hΦ, rfl⟩`.
+
+Use `(memW ⟨_, hx⟩).2 ?_` and prove the remaining obligations. Rewrite using `[h₁.trans x Φ ⟨_, hx⟩ (fun t => rfl), h₂.trans x Φ ⟨_, hx⟩ (fun t => rfl), hΦ'])`. Use the proof step `(by`. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩ b hb`. Establish `hΦ' : T₁ Φ = T₂ Φ` using `(memW Φ).1 ⟨Φ, hΦ, rfl⟩`.
+
+Take `⟨y, hy, hyb⟩` from `hsurj b`. Establish `hmod : ∀ t, (⟨_, hb⟩ : SB (Matrix Y Y' k)).1 t = ψ (symplO S T (p.up FS FT t) y) * Φ.1 t`. Introduce `t`. Use `show _ = _`. Rewrite using `[hsymk t y hy, hyb t]`.
+
+Both sides reduce to the same expression. Use `(memW ⟨_, hb⟩).2 ?_` and prove the remaining obligations. Rewrite using `[h₁.modul y hy Φ _ hmod, h₂.modul y hy Φ _ hmod, hΦ'])`. Use the proof step `Φ₀.1 ((memW Φ₀).2 h12) (fun h => hΦ₀ (Subtype.ext h))`. Use `ext1 Φ`.
+
+Establish `hm : Φ.1 ∈ W` using `by rw [hWeq]; exact Φ.2`. Conclude with `(memW Φ).1 hm`. Introduce `T₁ h₁ A hA1 hA2`. Use `⟨fun Φ => hA1 _ (h₁.theta Φ), fun x Φ Φ' h => ?_, fun y hy Φ Φ' h => ?_⟩` and prove the remaining obligations. Use `show A (T₁ Φ') = heisO ψ S T (p.up FS FT x) (A (T₁ Φ))`.
+
+Rewrite using `[h₁.trans x Φ Φ' h, hA2 _ (h₁.theta Φ) _ (halfSum1 _ (hup x).1)]`. Use `show A (T₁ Φ') = heisO ψ S T y (A (T₁ Φ))`. Rewrite using `[h₁.modul y hy Φ Φ' h, hA2 _ (h₁.theta Φ) _ (halfSum2 _ hy)]`. Introduce `f₀ hf₀ hfx hfy`. Set `Z` to `GlobalTheory.PlaceModel.half S T (cA D p.e)`.
+
+Set `χ : Matrix Y Y' k → Z → ℂ` to `fun t z => ψ (symplO S T (p.up FS FT t) z.1)`. Establish `hZ : ∀ z : Z, IsHalf (cA D p.e) z.1` using `fun z => (GlobalTheory.PlaceModel.isHalf_iff S T).2 z.2`. Take `⟨Tm, htr, hmo, hvac, hspan⟩` from `GlobalTheory.T.exists_schrodinger_intertwiner_integralMatrices k Y Y' Z χ (fun a b z => by simp only [χ, upAdd, GlobalTheory.PlaceModel.symplO_add_left, AddChar.map_add_eq_mul]) (fun a z z' => by simp only [χ, AddSubgroup.coe_add, GlobalTheory.PlaceModel.symplO_add_right, AddChar …`. Take `⟨z', hz', e⟩` from `GlobalTheory.PlaceModel.half_div S T (cA D p.e) n hn z.1 z.2`. Conclude with `⟨⟨z', hz'⟩, Subtype.ext (by rw [AddSubgroup.coe_nsmul]; exact e)⟩)`.
+
+Use the proof step `(fun n hn z z' h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h' : n • z.1 = n • z'.1`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify `this` using `only [AddSubgroup.coe_nsmul]`.
+
+Rewrite using `[← GlobalTheory.PlaceModel.inv_smul_nsmul S T hn z.1, h', GlobalTheory.PlaceModel.inv_smul_nsmul S T hn])`. Use the proof step `(fun x hx => GlobalTheory.T.matrix_integral_of_addChar_trace_dual k Y Y' ψk hcont hne x fun b hb => by`. Take `⟨y, hy, hyb⟩` from `hsurj b`. Establish `key : ∀ t, χ t ⟨y, (GlobalTheory.PlaceModel.isHalf_iff S T).1 hy⟩ = ((ψk (∑ r, ∑ q, b r q * t r q) : Circle) : ℂ)`. Introduce `t`.
+
+Use `show ψ _ = _`. Rewrite using `[hsymk t y hy, hyb t]`. Use `hx ⟨y, (GlobalTheory.PlaceModel.isHalf_iff S T).1 hy⟩ (fun u hu => by` as an intermediate fact. Rewrite using `[key, hb u hu, Circle.coe_one])`. Rewrite `this` using `[key]`.
+
+Conclude with `Circle.ext (by simpa using this))`. Use the proof step `(WO S T → ℂ) (fun x => GlobalTheory.PlaceModel.heisL S T ψ (p.up FS FT x)) (fun z => GlobalTheory.PlaceModel.heisL S T ψ z.1)`. Use the proof step `(fun x x' f => by`. Rewrite using `[GlobalTheory.PlaceModel.heisL_half S T ψ hce _ ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hup x).1) _ ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hup x').1), upAdd])`. Use the proof step `(fun z z' f => by`.
+
+Rewrite using `[GlobalTheory.PlaceModel.heisL_half S T ψ hcce _ z.2 _ z'.2]`. Use the proof step `rfl)`. Use the proof step `(fun x z f => GlobalTheory.PlaceModel.heisL_comm S T ψ _ _ f)`. Use the proof step `(fun f => by`. Rewrite using `[upZero]`.
+
+Use function extensionality and compare the values at `w`. Use `show ψ (symplOH S T w 0) * f (w + 0) = f w`. Rewrite using `[symplOH, GlobalTheory.PlaceModel.symplO_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero])`. Use the proof step `(fun f => by`. Use function extensionality and compare the values at `w`.
+
+Use `show ψ (symplOH S T w 0) * f (w + 0) = f w`. Rewrite using `[symplOH, GlobalTheory.PlaceModel.symplO_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero])`. Use `f₀ (fun u hu => hfx u hu)`. Use the proof step `(fun z hz => hfy z.1 (hZ z) hz)`. Establish `hsplit` using `p.split`.
+
+Establish `hstd : IsCharAF D.host.F ψ` using `hψ.1`. Use `⟨Tm, ⟨fun Φ => ?_, fun x Φ Φ' h => htr x Φ Φ' h, fun y hy Φ Φ' h => hmo ⟨y, (GlobalTheory.PlaceModel.isHalf_iff S T).1 hy⟩ Φ Φ' h⟩, hvac⟩` and prove the remaining obligations. Establish `hs` using `hspan Φ`. Generalize the expression as in `Tm Φ = g at hs`. Proceed by induction on `hs using Submodule.span_induction with`.
+
+Consider the case `mem _ hw`. Take `⟨w, rfl⟩` from `hw`. Conclude with `GlobalTheory.FinTranslate.isTheta_heisO_fin hstd (GlobalTheory.SplitScalar.half_fin hsplit (hup w.1).1) (GlobalTheory.FinTranslate.isTheta_heisO_fin hstd (GlobalTheory.SplitScalar.half_fin (GlobalTheory.SplitScalar.isSplitIdem_conj hsplit) (hZ w.2)) hf₀)`. Consider the case `zero => exact GlobalTheory.WeilVacMove.isTheta_zero`. Consider the case `add _ _ _ _ h1 h2 => exact GlobalTheory.WeilVacMove.isTheta_add h1 h2`.
+
+Consider the case `smul c _ _ h1 => exact GlobalTheory.WeilVacMove.isTheta_smul c h1`.
+-/
 theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → (∀ T₁ T₂, p.IsModel ψ FS FT T₁ → p.IsModel ψ FS FT T₂ → ∀ Φ₀, Φ₀ ≠ 0 → T₁ Φ₀ = T₂ Φ₀ → T₁ = T₂) ∧ (∀ T₁, p.IsModel ψ FS FT T₁ → ∀ A : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), (∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (A f)) → (∀ f, IsThetaFunO ψ S T f → ∀ y : WO S T, IsHalf (p.e + cA D p.e) y → A (heisO ψ S T y f) = heisO ψ S T y (A f)) → p.IsModel ψ FS FT (A ∘ₗ T₁)) ∧ ∀ f₀, IsThetaFunO ψ S T f₀ → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) → heisO ψ S T (p.up FS FT x) f₀ = f₀) → (∀ y : WO S T, IsHalf (cA D p.e) y → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) → ψ (symplO S T (p.up FS FT x) y) = 1) → heisO ψ S T y f₀ = f₀) → ∃ T₁, p.IsModel ψ FS FT T₁ ∧ ∀ Φ : SB (Matrix Y Y' k), Φ.1 = Set.indicator {x | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => 1) → T₁ Φ = f₀ := by
   intro D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ
   haveI : CharZero k := charZero_of_place p

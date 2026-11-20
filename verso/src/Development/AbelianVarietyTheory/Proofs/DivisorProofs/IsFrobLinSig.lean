@@ -26,6 +26,11 @@ section Alg
 
 variable {A T M N : Type} [CommRing A] [CommRing T] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module T N]
 
+/- English proof (translation)
+Use `⟨eq_top_iff.2 fun n _ => ?_, fun P _ _ τ hτ => ?_⟩` and prove the remaining obligations. Proceed by induction on `n using hl.inductionOn with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul m => exact Submodule.subset_span ⟨m, rfl⟩`. Consider the case `smul t n ih => exact Submodule.smul_mem _ _ (ih trivial)`.
+
+Consider the case `add n₁ n₂ h₁ h₂ => exact add_mem (h₁ trivial) (h₂ trivial)`. Use `letI : Module A P := Module.compHom P (algebraMap A T) haveI : IsScalarTower A T P := .of_algebraMap_smul fun _ _ => rfl`. Set `τ' : M →ₗ[A] P` to `{ toFun := τ, map_add' := τ.map_add, map_smul' := hτ }`. Conclude with `⟨hl.lift τ', fun x => hl.lift_eq τ' x⟩`.
+-/
 theorem span_lift [Algebra A T] [Module A N] [IsScalarTower A T N] (l : M →ₗ[A] N) (hl : IsBaseChange T l) :
     Submodule.span T (Set.range l) = ⊤ ∧ ∀ (P : Type) [AddCommGroup P] [Module T P] (τ : M →+ P),
       (∀ (a : A) (x : M), τ (a • x) = algebraMap A T a • τ x) → ∃ g : N →ₗ[T] P, ∀ x, g (l x) = τ x := by
@@ -40,6 +45,19 @@ theorem span_lift [Algebra A T] [Module A N] [IsScalarTower A T N] (l : M →ₗ
     let τ' : M →ₗ[A] P := { toFun := τ, map_add' := τ.map_add, map_smul' := hτ }
     exact ⟨hl.lift τ', fun x => hl.lift_eq τ' x⟩
 
+/- English proof (translation)
+Establish `h0 : ι p = 0`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨fun y => by rw [hN, h0, zero_smul], fun a x => by rw [hσ, hN], eq_top_iff.2 fun y _ => ?_, fun P _ _ τ hp hτ => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ Submodule.span T (Set.range σ)` using `hsp ▸ Submodule.mem_top`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h => exact Submodule.subset_span h`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem (hy trivial) (hz trivial)`. Consider the case `smul t y _ hy`.
+
+Take `⟨a, rfl⟩` from `hι t`. Rewrite using `[← hN]`. Conclude with `Submodule.smul_mem _ _ (hy trivial)`. Establish `tors : Module.IsTorsionBySet A P (RingHom.ker ι)`. Rewrite using `[hker, Module.isTorsionBySet_span_singleton_iff]`.
+
+Conclude with `fun y => hp y`. Use `letI mB : Module (A ⧸ RingHom.ker ι) P := tors.module`. Set `e : (A ⧸ RingHom.ker ι) ≃+* T` to `RingHom.quotientKerEquivOfSurjective hι`. Use `letI mT : Module T P := Module.compHom P e.symm.toRingHom`. Establish `hm : ∀ (a : A) (y : P), ι a • y = a • y` using `fun a y => by`.
+
+Establish `: e.symm (ι a) = Ideal.Quotient.mk _ a` using `e.symm_apply_eq.2 rfl`. Express the relevant statement in the definitionally equal form `e.symm (ι a) • y = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Take `⟨g, hg⟩` from `hU P τ fun a x => by rw [hτ, hm]`.
+
+Establish `hs : ∀ (a : A) (y : N), g (a • y) = a • g y` using `fun a y => by rw [hN, g.map_smul, hm]`. Conclude with `⟨{ toFun := g, map_add' := g.map_add, map_smul' := hs }, hg⟩`.
+-/
 theorem univ_of [Module A N] (p q : ℕ) (ι : A →+* T) (hι : Function.Surjective ι)
     (hker : RingHom.ker ι = Ideal.span {(p : A)}) (hN : ∀ (a : A) (n : N), a • n = ι a • n) (σ : M →+ N)
     (hσ : ∀ (a : A) (x : M), σ (a • x) = ι (a ^ q) • σ x) (hsp : Submodule.span T (Set.range σ) = ⊤)
@@ -82,12 +100,24 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : �
 
 abbrev frι : (fibI p B).subscheme ⟶ B.X := GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out hp ≫ (fibI p B).subschemeι
 
+/- English proof (translation)
+The claim follows from `le_rfl`.
+-/
 theorem le_frι (V : B.X.Opens) : (fibI p B).subschemeι ⁻¹ᵁ V ≤ frι p hp ⁻¹ᵁ V := le_rfl
 
 def sig (F : B.X.Modules) (V : B.X.Opens) : Γ(F, V) →+ Γ((frobFun p hp).obj F, V) :=
   letI := appLEModule (frι p hp) ((Scheme.Modules.pullback (frι p hp)).obj F) (le_frι p hp V)
   (pullbackSections (frι p hp) F (le_frι p hp V)).toAddMonoidHom
 
+/- English proof (translation)
+Introduce `φ hφ`. Use `(GlobalTheory.RingChain.FrobLin.iff_univ φ hφ _).2 ?_ φ hφ` and prove the remaining obligations. Establish `hU' : IsAffineOpen ((fibI p B).subschemeι ⁻¹ᵁ U)` using `hU.preimage _`. Establish `hι` using `(fibI p B).subschemeι_app_surjective ⟨U, hU⟩`. Establish `hker : RingHom.ker ((fibI p B).subschemeι.app U).hom = Ideal.span {(p : Γ(B.X, U))}`.
+
+Rewrite using `[(fibI p B).ker_subschemeι_app ⟨U, hU⟩]`. Simplify using `[fibI, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_span]`. Establish `hg : ∀ a, ((frι p hp).appLE U _ (le_frι p hp U)).hom a = ((fibI p B).subschemeι.app U).hom (a ^ p)`. Introduce `a`. Rewrite using `[Scheme.Hom.comp_appLE, CommRingCat.comp_apply, map_pow]`.
+
+Conclude with `(GlobalTheory.SS.FrobField.absFrob_appLE _ p 1 Fact.out hp _ _ _).trans (by rw [pow_one])`. Take `⟨h₁, h₂⟩` from `(letI := appLEAlgebra (frι p hp) (le_frι p hp U)`. Use `letI := appLEModule (frι p hp) ((Scheme.Modules.pullback (frι p hp)).obj F) (le_frι p hp U)`. Use `haveI := appLE_isScalarTower (frι p hp) ((Scheme.Modules.pullback (frι p hp)).obj F) (le_frι p hp U)`. Use `span_lift _ (isBaseChange_pullbackSections (frι p hp) F hU' hU (le_frι p hp U)))`.
+
+Use `letI : Module Γ((fibI p B).subscheme, (fibI p B).subschemeι ⁻¹ᵁ U) Γ((frobFun p hp).obj F, U) := inferInstanceAs (Module Γ((fibI p B).subscheme, (fibI p B).subschemeι ⁻¹ᵁ U) Γ((Scheme.Modules.pullback (frι p hp)).obj F, (fibI p B).subschemeι ⁻¹ᵁ U))`. Use `univ_of p p ((fibI p B).subschemeι.app U).hom hι hker (fun _ _ => rfl) _ (fun a x => ?_) h₁ fun P _ _ τ hτ => h₂ P τ fun a x => (hτ a x).trans (congrArg (· • τ x) (hg a).symm)` and prove the remaining obligations. Conclude with `(pullbackSections_smul (frι p hp) F (le_frι p hp U) a x).trans (congrArg (· • _) (hg a))`.
+-/
 theorem isFrobLin_sig (F : B.X.Modules) [F.IsQuasicoherent] (U : B.X.Opens) (hU : IsAffineOpen U) :
     GlobalTheory.RingChain.IsFrobLin Γ(B.X, U) p p (sig p hp F U) := by
   intro φ hφ
@@ -112,6 +142,9 @@ theorem isFrobLin_sig (F : B.X.Modules) [F.IsQuasicoherent] (U : B.X.Opens) (hU 
     fun P _ _ τ hτ => h₂ P τ fun a x => (hτ a x).trans (congrArg (· • τ x) (hg a).symm)
   exact (pullbackSections_smul (frι p hp) F (le_frι p hp U) a x).trans (congrArg (· • _) (hg a))
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ B hp`. Use `⟨sig p hp, fun F G u V s => ?_, fun F V V' hle s => ?_, fun F _ => ⟨?_, isFrobLin_sig p hp F⟩⟩` and prove the remaining obligations. Conclude with `pullback_map_app_pullbackSections (frι p hp) u (le_frι p hp V) s`. Conclude with `(res_pullbackSections (frι p hp) F (le_frι p hp V) ((fibI p B).subschemeι.preimage_mono hle) s).trans (pullbackSections_res (frι p hp) F (le_frι p hp V') hle s).symm`. Conclude with `inferInstanceAs ((Scheme.Modules.pushforward (fibI p B).subschemeι).obj ((Scheme.Modules.pullback (frι p hp)).obj F)).IsQuasicoherent`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (hp : (p : Γ((fibI p B).subscheme, ⊤)) = 0), ∃ σ : ∀ (F : B.X.Modules) (V : B.X.Opens), Γ(F, V) →+ Γ((frobFun p hp).obj F, V), (∀ (F G : B.X.Modules) (u : F ⟶ G) (V : B.X.Opens) (s : Γ(F, V)), ((frobFun p hp).map u).app V (σ F V s) = σ G V (u.app V s)) ∧ (∀ (F : B.X.Modules) (V V' : B.X.Opens) (hle : V' ≤ V) (s : Γ(F, V)), resM ((frobFun p hp).obj F) hle (σ F V s) = σ F V' (resM F hle s)) ∧ ∀ (F : B.X.Modules) [F.IsQuasicoherent], ((frobFun p hp).obj F).IsQuasicoherent ∧ ∀ V : B.X.Opens, IsAffineOpen V → GlobalTheory.RingChain.IsFrobLin Γ(B.X, V) p p (σ F V) := by
   intro O _ _ _ p _ B hp
   refine ⟨sig p hp, fun F G u V s => ?_, fun F V V' hle s => ?_, fun F _ => ⟨?_, isFrobLin_sig p hp F⟩⟩

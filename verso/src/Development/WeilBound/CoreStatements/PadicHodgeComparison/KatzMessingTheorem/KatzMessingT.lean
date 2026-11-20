@@ -57,6 +57,9 @@ def CohModel.actQ [Algebra E F] (M : CohModel (k := k) F) {Y : Var k} (e : Corr 
     M.H Y i →ₗ[F] M.H Y i :=
   e.sum fun c a => algebraMap E F a • M.act c i
 
+/- English proof (translation)
+Unfold `CohModel.actQ Finsupp.sum`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, map_smul]`. Rewrite using `[← LinearMap.comp_apply (M.act c i), M.comm c i, LinearMap.comp_apply]`.
+-/
 theorem CohModel.actQ_frob [Algebra E F] (M : CohModel (k := k) F) {Y : Var k} (e : Corr Y →₀ E) (i : ℕ)
     (y : M.H Y i) : M.actQ e i (M.frob Y i y) = M.frob Y i (M.actQ e i y) := by
   unfold CohModel.actQ Finsupp.sum

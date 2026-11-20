@@ -14,11 +14,19 @@ namespace GlobalTheory.BCT.GlobLev
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_one_entry {R : Type} [Ring R] (f : Ad E →+* R) (i j : Fin n) :
     f ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j) = (1 : Matrix (Fin n) (Fin n) R) i j := by
   rw [Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_KGL_iff_val]`. Use `sub_mem ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hg.1 i j)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`.
+-/
 theorem sub_one_entry_mem {w : Pl E} {g : GLw n w} (hg : g ∈ GlobalTheory.LFun.KGL w n) (i j : Fin n) :
     g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j ∈ w.adicCompletionIntegers E := by
   rw [mem_KGL_iff_val] at hg
@@ -30,17 +38,45 @@ theorem sub_one_entry_mem {w : Pl E} {g : GLw n w} (hg : g ∈ GlobalTheory.LFun
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext h)`.
+-/
 theorem af_ext {a b : Af E} (h : ∀ u : Pl E, pLoc E u a = pLoc E u b) : a = b := Subtype.ext (funext h)
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicU.evalV_singleFin_self w y`.
+-/
 theorem pLoc_singleNU_self (w : Pl E) (y : w.adicCompletion E) : pLoc E w (GlobalTheory.GLTwoHecke.singleNU w y) = y :=
   GlobalTheory.AdelicU.evalV_singleFin_self w y
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicU.evalV_singleFin_ne h y`.
+-/
 theorem pLoc_singleNU_ne {u w : Pl E} (h : u ≠ w) (y : w.adicCompletion E) :
     pLoc E u (GlobalTheory.GLTwoHecke.singleNU w y) = 0 :=
   GlobalTheory.AdelicU.evalV_singleFin_ne h y
 
+/- English proof (translation)
+Establish `hKc` using `integral_conjSrc z w hK`. Establish `hfin : z ∈ finU E n` using `(Subgroup.mem_inf.1 hz).1`. Establish `hout : ∀ u : Pl E, u ≠ w → u ≠ conjSrc (conjE E) w → cLoc u z = 1`. Introduce `u huw huc`. Establish `hne : u.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))` using `fun h => (eq_or_eq_conjSrc h).elim huw huc`.
+
+Conclude with `(Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hz).2 u) hne)`. Generalize the expression as in `conjSrc (conjE E) w = c at hc hKc hout`. Use `⟨GlobalTheory.GLTwoHecke.singleNU w ((cLoc w z).val i j - (1 : Matrix (Fin n) (Fin n) _) i j) + (if c = w then 0 else GlobalTheory.GLTwoHecke.singleNU c ((cLoc c z).val i j - (1 : Matrix (Fin n) (Fin n) _) i j)), hadd _ (hw _ (sub_one_entry_mem hK i j)) _ ?_, ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `h0`.
+
+Conclude with `hc _ (sub_one_entry_mem hKc i j)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) (z : GA E n) = 1` using `hfin`. Establish `h2 : pInf E (((z : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j) = pInf E ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j)`. Rewrite using `[map_one_entry]`.
+
+Use `congrArg (fun g : GL (Fin n) (Cinf E) => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j) h1` as an intermediate fact. Simplify using `using this`. Establish `h3` using `(infEq E).symm.injective h2`. Express the relevant statement in the definitionally equal form `_ = ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j).1 + 0`. Rewrite using `[add_zero]`.
+
+Conclude with `h3`. Apply `af_ext` to reduce the goal to its premises. Introduce `u`. Express the relevant statement in the definitionally equal form `(cLoc u z).val i j = ((pLoc E u).comp (pFin E)) ((1 : Matrix (Fin n) (Fin n) (Ad E)) i j + (show Ad E from ((0 : InfiniteAdeleRing E), _)))`. Rewrite using `[map_add, map_one_entry]`.
+
+Express the relevant statement in the definitionally equal form `_ = _ + pLoc E u (GlobalTheory.GLTwoHecke.singleNU w _ + _)`. Rewrite using `[map_add]`. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality. Rewrite using `[pLoc_singleNU_self]`.
+
+Use `split_ifs with hcw`. Rewrite using `[map_zero]`. Normalize the expressions using the abelian group laws. Rewrite using `[pLoc_singleNU_ne (Ne.symm hcw)]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[pLoc_singleNU_ne huw]`. Distinguish the cases in `huc : u = c`. Substitute `huc` using the available equality. Rewrite using `[if_neg huw, pLoc_singleNU_self]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hout u huw huc] split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pLoc_singleNU_ne huc]`. Simplify using the standard rewrite rules.
+-/
 theorem entry_eq_one_add {w : Pl E} {N N' : Set (Af E)} (h0 : (0 : Af E) ∈ N')
     (hadd : ∀ a ∈ N', ∀ b ∈ N', a + b ∈ N)
     (hw : ∀ y ∈ w.adicCompletionIntegers E, GlobalTheory.GLTwoHecke.singleNU w y ∈ N')
@@ -96,6 +132,29 @@ theorem entry_eq_one_add {w : Pl E} {N N' : Set (Af E)} (h0 : (0 : Af E) ∈ N')
         · simp
         · rw [pLoc_singleNU_ne huc]; simp
 
+/- English proof (translation)
+Introduce `E _ _ _ n L hL`. Establish `h1 : (L : Set (finU E n)) ∈ 𝓝 (1 : finU E n)` using `hL.mem_nhds L.one_mem`. Rewrite `h1` using `[nhds_subtype, Filter.mem_comap]`. Take `⟨V1, hV1, hV1L⟩` from `h1`. Rewrite `hV1` using `[nhds_subtype, Filter.mem_comap]`.
+
+Take `⟨V, hV, hVV1⟩` from `hV1`. Rewrite `hV` using `[Units.isEmbedding_embedProduct.nhds_eq_comap, Filter.mem_comap]`. Take `⟨W, hW, hWV⟩` from `hV`. Set `Φ : Af E → Ad E` to `fun a => show Ad E from ((0 : InfiniteAdeleRing E), a)`. Establish `hΦ : Continuous Φ` using `continuous_const.prodMk continuous_id`.
+
+Establish `hΦ0 : Φ 0 = 0` using `rfl`. Set `ψ : (Bool × Fin n × Fin n → Af E) → Matrix (Fin n) (Fin n) (Ad E) × (Matrix (Fin n) (Fin n) (Ad E))ᵐᵒᵖ` to `fun y => (Matrix.of fun i j => (1 : Matrix (Fin n) (Fin n) (Ad E)) i j + Φ (y (false, i, j)), MulOpposite.op (Matrix.of fun i j => (1 : Matrix (Fin n) (Fin n) (Ad E)) i j + Φ (y (true, i, j))))`. Establish `hψ : Continuous ψ`. Apply the tactic sequence `refine Continuous.prodMk ?_ (MulOpposite.continuous_op.comp ?_) <;>`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_const.add (hΦ.comp (continuous_apply _))`.
+
+Establish `hψ0 : ψ 0 = Units.embedProduct _ (1 : GA E n)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[ψ, hΦ0]`. Use `MulOpposite.unop_injective ?_` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `[ψ, hΦ0]`. Establish `hS : ψ ⁻¹' W ∈ 𝓝 (0 : Bool × Fin n × Fin n → Af E)` using `hψ.continuousAt.preimage_mem_nhds (by rw [hψ0]; exact hW)`. Rewrite `hS` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hIt⟩` from `hS`.
+
+Establish `hN : (⋂ i, t i) ∈ 𝓝 (0 : Af E)` using `Filter.iInter_mem.2 ht`. Take `⟨N', hN', hadd⟩` from `exists_nhds_zero_half hN`. Establish `h0 : (0 : Af E) ∈ N'` using `mem_of_mem_nhds hN'`. Establish `hev` using `GlobalTheory.GLTwoHecke.eventually_singleNU_mem hN'`. Establish `hev2` using `(conjSrc_injective (conjE E)).tendsto_cofinite.eventually hev`.
+
+Use `filter_upwards [hev, hev2] with w hw hw2 x hxw hxK hx`. Establish `hxw' : x⁻¹ ∈ locU n w` using `inv_mem hxw`. Establish `hxK' : cLoc w x⁻¹ ∈ GlobalTheory.LFun.KGL w n` using `by rw [map_inv]; exact inv_mem hxK`. Use `choose a ha hxa using entry_eq_one_add h0 hadd hw hw2 x hxw hxK`. Use `choose b hb hxb using entry_eq_one_add h0 hadd hw hw2 x⁻¹ hxw' hxK'`.
+
+Set `y : Bool × Fin n × Fin n → Af E` to `fun p => if p.1 then b p.2.1 p.2.2 else a p.2.1 p.2.2`. Establish `hy : y ∈ ψ ⁻¹' W` using `hIt fun p _ => by`. Break down `p with ⟨_ | _, i, j⟩` into its components or cases. Conclude with `Set.mem_iInter.1 (ha i j) _`. Conclude with `Set.mem_iInter.1 (hb i j) _`.
+
+Apply `hV1L` to reduce the goal to its premises. Apply `hVV1` to reduce the goal to its premises. Apply `hWV` to reduce the goal to its premises. Establish `e : ψ y = Units.embedProduct _ ((x : GA E n))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use extensionality with `i j`. Conclude with `(hxa i j).symm`. Use `MulOpposite.unop_injective ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(hxb i j).symm`.
+
+Use `show Units.embedProduct _ (x : GA E n) ∈ W`. Rewrite using `[← e]`. Conclude with `hy`.
+-/
 theorem eventually_locU_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (L : Subgroup (finU E n)),
     IsOpen (L : Set (finU E n)) → ∀ᶠ w in cofinite, ∀ x : UA E n, x ∈ locU n w → cLoc w x ∈ GlobalTheory.LFun.KGL w n →
       ∀ h : x ∈ finU E n, (⟨x, h⟩ : finU E n) ∈ L := by

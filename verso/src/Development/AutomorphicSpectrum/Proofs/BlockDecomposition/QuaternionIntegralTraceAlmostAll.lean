@@ -8,6 +8,11 @@ open scoped TensorProduct Quaternion
 
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
+/- English proof (translation)
+Use `Filter.eventually_cofinite.2 (((HeightOneSpectrum.Support.finite (𝓞 F) x).union (HeightOneSpectrum.Support.finite (𝓞 F) x⁻¹)).subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [HeightOneSpectrum.Support, Set.mem_union, Set.mem_ofPred_eq, not_or, not_lt, map_inv₀] at hc`. Establish `h0 : 0 < v.valuation F x` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx)`. Establish `h1 : v.valuation F x = 1` using `le_antisymm hc.1 ((inv_le_one₀ h0).1 hc.2)`.
+
+Conclude with `hv ((HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans h1)`.
+-/
 theorem eventually_valued_eq_one {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠ 0) :
     ∀ᶠ v in Filter.cofinite (α := HeightOneSpectrum (𝓞 F)),
       Valued.v (algebraMap F (v.adicCompletion F) x) = 1 := by
@@ -19,6 +24,13 @@ theorem eventually_valued_eq_one {F : Type} [Field F] [NumberField F] {x : F} (h
   have h1 : v.valuation F x = 1 := le_antisymm hc.1 ((inv_le_one₀ h0).1 hc.2)
   exact hv ((HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans h1)
 
+/- English proof (translation)
+Introduce `m r c`. Establish `hm : d * m = (t * 2⁻¹) ^ 2 - 1` using `by simp only [m]; field_simp`. Establish `e : - β * (-(c * y * d * β⁻¹)) ^ 2 + d * β * (c * x * β⁻¹) ^ 2 = c ^ 2 * d`. Establish `: - β * (-(c * y * d * β⁻¹)) ^ 2 + d * β * (c * x * β⁻¹) ^ 2 = c ^ 2 * d * (x ^ 2 - d * y ^ 2) * β⁻¹` using `by field_simp; ring`. Rewrite using `[this, ← hxy]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e2 : d * r ^ 2 - c ^ 2 * d = d * m`. Simplify using `only [r, c]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `e - e2 - hm`.
+-/
 theorem norm_one_coords {K : Type*} [Field K] (h2 : (2 : K) ≠ 0) {d β x y : K} (hd : d ≠ 0) (hβ : β ≠ 0)
     (hxy : β = x ^ 2 - d * y ^ 2) (t : K) :
     let m := ((t * 2⁻¹) ^ 2 - 1) * d⁻¹
@@ -35,6 +47,13 @@ theorem norm_one_coords {K : Type*} [Field K] (h2 : (2 : K) ≠ 0) {d β x y : K
     simp only [r, c]; field_simp; ring
   linear_combination e - e2 - hm
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, hxy⟩` from `GlobalTheory.QNorm.exists_integral_sq_sub_mul_sq_of_unit F v D B h2 hD hB`. Establish `ne0 : ∀ {z : v.adicCompletion F}, Valued.v z = 1 → z ≠ 0` using `fun hz h0 => by`. Rewrite `hz` using `[h0, map_zero]`. Conclude with `zero_ne_one hz`. Establish `inv_mem : ∀ {z : v.adicCompletion F}, Valued.v z = 1 → z⁻¹ ∈ v.adicCompletionIntegers F` using `fun hz => by rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hz, inv_one]`.
+
+Establish `hDm : D ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hD]`. Establish `hi2` using `inv_mem h2`. Establish `hk` using `norm_one_coords (ne0 h2) (ne0 hD) (ne0 hB) hxy t`. Establish `h0 : t * 2⁻¹ ∈ v.adicCompletionIntegers F` using `mul_mem ht hi2`.
+
+Establish `hm : ((t * 2⁻¹) ^ 2 - 1) * D⁻¹ ∈ v.adicCompletionIntegers F` using `mul_mem (sub_mem (pow_mem h0 2) (one_mem _)) (inv_mem hD)`. Establish `hc` using `mul_mem (sub_mem hm (one_mem _)) hi2`. Conclude with `⟨_, h0, _, mul_mem (add_mem (one_mem _) hm) hi2, _, neg_mem (mul_mem (mul_mem (mul_mem hc hy) hDm) (inv_mem hB)), _, mul_mem (mul_mem hc hx) (inv_mem hB), by rw [mul_comm t, ← mul_assoc, mul_inv_cancel₀ (ne0 h2), one_mul], hk⟩`.
+-/
 theorem exists_integral_coords {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     {D B t : v.adicCompletion F} (h2 : Valued.v (2 : v.adicCompletion F) = 1) (hD : Valued.v D = 1)
     (hB : Valued.v B = 1) (ht : t ∈ v.adicCompletionIntegers F) :
@@ -59,6 +78,9 @@ theorem exists_integral_coords {F : Type} [Field F] [NumberField F] (v : HeightO
     mul_mem (mul_mem hc hx) (inv_mem hB), by rw [mul_comm t, ← mul_assoc,
       mul_inv_cancel₀ (ne0 h2), one_mul], hk⟩
 
+/- English proof (translation)
+Introduce `F _ _ d β hd hβ`. Use `filter_upwards [eventually_valued_eq_one hd, eventually_valued_eq_one hβ, eventually_valued_eq_one (two_ne_zero : (2 : F) ≠ 0)] with v hdv hβv h2v t ht`. Rewrite `h2v` using `[map_ofNat]`. Take `⟨a₀, h₀, a₁, h₁, a₂, h₂, a₃, h₃, htr, hn⟩` from `exists_integral_coords v h2v hdv hβv ht`. Conclude with `⟨⟨a₀, a₁, a₂, a₃⟩, hn, htr, h₀, h₁, h₂, h₃⟩`.
+-/
 theorem exists_integral_norm_one_trace :
     ∀ {F : Type} [Field F] [NumberField F] (d β : F), d ≠ 0 → β ≠ 0 →
       ∀ᶠ v in Filter.cofinite (α := HeightOneSpectrum (𝓞 F)), ∀ t ∈ Ov v,

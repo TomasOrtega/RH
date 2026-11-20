@@ -12,6 +12,9 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hPQ) (Ideal.Quotient.factor_surjective hPQ) (r := Ideal.Quotient.mk P f) ?_ ?_` and prove the remaining obligations. Conclude with `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hfQ`.
+-/
 theorem ringKrullDim_quot_add_one_le {K : Type*} {ι : K → Type*} {F : Type*} [Field F]
     {P Q : Ideal (MRing ι F)} [P.IsPrime] (hPQ : P ≤ Q)
     {f : MRing ι F} (hfP : f ∉ P) (hfQ : f ∈ Q) :
@@ -22,6 +25,15 @@ theorem ringKrullDim_quot_add_one_le {K : Type*} {ι : K → Type*} {F : Type*} 
   · rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]
     exact hfQ
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Establish `h' : (((⊤ : ℕ∞) + 1 : ℕ∞) : WithBot ℕ∞) ≤ (((n + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Conclude with `h` after adjusting the coercions. Rewrite `h'` using `[top_add, WithBot.coe_le_coe]`. Conclude with `absurd h' (by simp)`.
+
+Consider the case `coe m`. Establish `h' : (((m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (((n + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Simplify using `using h`. Establish `h'' : m + 1 ≤ n + 1` using `by exact_mod_cast WithBot.coe_le_coe.mp h'`. Establish `: m ≤ n` using `by omega`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem le_of_add_one_le_natCast_add_one {x : WithBot ℕ∞} {n : ℕ}
     (h : x + 1 ≤ ((n + 1 : ℕ) : WithBot ℕ∞)) : x ≤ (n : WithBot ℕ∞) := by
   induction x using WithBot.recBotCoe with
@@ -41,6 +53,11 @@ theorem le_of_add_one_le_natCast_add_one {x : WithBot ℕ∞} {n : ℕ}
       have : m ≤ n := by omega
       exact_mod_cast this
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Submodule.mem_colon_span_singleton, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(Ideal.IsPrime.mem_or_mem inferInstance h).resolve_right hs`.
+
+Introduce `h`. Conclude with `q.mul_mem_right _ h`.
+-/
 theorem colon_span_singleton_eq_of_not_mem {R : Type*} [CommRing R] {q : Ideal R} [q.IsPrime]
     {s : R} (hs : s ∉ q) : q.colon (Ideal.span {s}) = q := by
   ext x
@@ -51,6 +68,15 @@ theorem colon_span_singleton_eq_of_not_mem {R : Type*} [CommRing R] {q : Ideal R
   · intro h
     exact q.mul_mem_right _ h
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ d q b i hq hdim hd hX`. Establish `: q.IsPrime` using `hq.isPrime`. Use `⟨fun a => ?_, fun W _ hle => ?_⟩` and prove the remaining obligations. Establish `hhom : IsMultiHomog (X ⟨b, i⟩ : MRing ι F) (Pi.single b 1)` using `isWeightedHomogeneous_X F (blockWeight ι) ⟨b, i⟩`. Establish `h` using `HilbExactDivide.closed F K ι q hq.multiHomog (Pi.single b 1) (X ⟨b, i⟩) hhom a`.
+
+Establish `hcast : (a - fun k => (((Pi.single b 1 : K → ℕ) k : ℕ) : ℤ)) = a - Pi.single b 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hk]`. Rewrite `h` using `[colon_span_singleton_eq_of_not_mem hX, hcast]`. Then use the resulting hypothesis. Establish `hXW : (X ⟨b, i⟩ : MRing ι F) ∈ W` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hstep` using `ringKrullDim_quot_add_one_le (le_sup_left.trans hle) hX hXW`. Rewrite `hstep` using `[hdim]`.
+
+Establish `hn : d + Fintype.card K = (d - 1 + Fintype.card K) + 1` using `by omega`. Rewrite `hstep` using `[hn]`. Conclude with `le_of_add_one_le_natCast_add_one hstep`.
+-/
 theorem HilbertIncrement.closed : HilbertIncrement.Statement.{u} := by
   intro F _ K _ _ ι _ d q b i hq hdim hd hX
   have : q.IsPrime := hq.isPrime
@@ -73,6 +99,9 @@ theorem HilbertIncrement.closed : HilbertIncrement.Statement.{u} := by
     rw [hn] at hstep
     exact le_of_add_one_le_natCast_add_one hstep
 
+/- English proof (translation)
+Introduce `_` and use `HilbertIncrement.closed`.
+-/
 theorem HilbertIncrement.hilbertIncrement_alt_of_statement :
     _root_.GroundTheory.Heights₂.Heights.HilbertSamuel.HilbertIncrement.Statement.{u} →
       HilbertIncrement.Statement.{u} :=

@@ -26,6 +26,9 @@ def embeddingBasisOfTotallyComplex [IsTotallyComplex E] :
     Basis (Free.ChooseBasisIndex ℤ (𝓞 E)) ℝ (InfinitePlace E → ℂ) :=
   (latticeBasis E).map (mixedSpaceEquivPiOfTotallyComplex E)
 
+/- English proof (translation)
+Rewrite using `[embeddingBasisOfTotallyComplex, Basis.map_apply, latticeBasis_apply]`. Conclude with `mixedEmbedding_apply_isComplex _ _ ⟨w, IsTotallyComplex.isComplex w⟩`.
+-/
 theorem embeddingBasisOfTotallyComplex_apply [IsTotallyComplex E]
     (j : Free.ChooseBasisIndex ℤ (𝓞 E)) (w : InfinitePlace E) :
     embeddingBasisOfTotallyComplex E j w = w.embedding (integralBasis E j) := by
@@ -37,6 +40,13 @@ def piSwapEquiv : (ι → InfinitePlace E → ℂ) ≃ₗ[ℝ] (InfinitePlace E 
     map_add' := fun _ _ => rfl
     map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Set `B` to `(Pi.basis fun _ : ι => embeddingBasisOfTotallyComplex E).map (piSwapEquiv E ι)`. Establish `hB : ∀ k, B k = coordEmbed E ι (Pi.basis (fun _ : ι => integralBasis E) k)`. Introduce and unpack `⟨i, j⟩`. Use function extensionality and compare the values at `w i'`. Simplify using `only [B, Basis.map_apply, Pi.basis_apply, coordEmbed_apply]`.
+
+Use `show (Pi.single i (embeddingBasisOfTotallyComplex E j) : ι → InfinitePlace E → ℂ) i' w = _`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Simplify using `[embeddingBasisOfTotallyComplex_apply]`. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hli` using `B.linearIndependent`. Rewrite using `[show (⇑B) = fun k => coordEmbed E ι (Pi.basis (fun _ : ι => integralBasis E) k) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `hB] at hli`. Rewrite using `[finrank_eq_card_basis B, finrank_eq_card_basis (Pi.basis fun _ : ι => integralBasis E)]`.
+-/
 theorem CoordEmbedBasis.proof [IsTotallyComplex E] : CoordEmbedBasis.Statement E ι := by
   classical
   let B := (Pi.basis fun _ : ι => embeddingBasisOfTotallyComplex E).map (piSwapEquiv E ι)

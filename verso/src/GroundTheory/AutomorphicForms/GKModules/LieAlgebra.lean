@@ -14,17 +14,33 @@ variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
 
 namespace IsExpLieAlgebra
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Conclude with `exp_units_conj y x`.
+-/
 theorem exp_units_conj_real (y : 𝔸ˣ) (x : 𝔸) : exp (y * x * ↑y⁻¹ : 𝔸) = y * exp x * ↑y⁻¹ := by
   let _ : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸
   exact exp_units_conj y x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_inv_val (g : G) : (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) = ↑((g : 𝔸ˣ)⁻¹) := rfl
 
 variable (h : IsExpLieAlgebra G 𝔤)
 include h
 
+/- English proof (translation)
+The claim follows from `𝔤.closed_of_finiteDimensional`.
+-/
 theorem isClosed_lie : IsClosed (𝔤 : Set 𝔸) := 𝔤.closed_of_finiteDimensional
 
+/- English proof (translation)
+Use `set Z := ((g : 𝔸ˣ) : 𝔸) * Y * (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) with hZ`. Establish `ht : Tendsto (fun s : ℝ => s • Z) (𝓝[≠] 0) (𝓝 0)`. Establish `: Tendsto (fun s : ℝ => s • Z) (𝓝 0) (𝓝 ((0 : ℝ) • Z))` using `tendsto_id.smul_const Z`. Rewrite `this` using `[zero_smul]`. Conclude with `this.mono_left nhdsWithin_le_nhds`.
+
+Take `⟨s, hs, hs0⟩` from `((ht.eventually_mem (h.isOpen_nhd.mem_nhds h.zero_mem_nhd)).and self_mem_nhdsWithin).exists`. Establish `hG : expUnit ℝ 𝔸 (s • Z) ∈ G`. Establish `he : expUnit ℝ 𝔸 (s • Z) = (g : 𝔸ˣ) * expUnit ℝ 𝔸 (s • Y) * (g : 𝔸ˣ)⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [coe_expUnit, Units.val_mul, hZ, coe_inv_val]`.
+
+Rewrite using `[← exp_units_conj_real, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[he]`. Conclude with `G.mul_mem (G.mul_mem g.2 (h.expUnit_mem _ (𝔤.smul_mem s hY))) (G.inv_mem g.2)`. Use `𝔤.smul_mem s⁻¹ (h.mem_of_mem_nhd hs hG)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ (show s ≠ 0 from hs0), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem conj_mem (g : G) {Y : 𝔸} (hY : Y ∈ 𝔤) :
     ((g : 𝔸ˣ) : 𝔸) * Y * (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) ∈ 𝔤 := by
   set Z := ((g : 𝔸ˣ) : 𝔸) * Y * (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) with hZ
@@ -44,6 +60,15 @@ theorem conj_mem (g : G) {Y : 𝔸} (hY : Y ∈ 𝔤) :
   have := 𝔤.smul_mem s⁻¹ (h.mem_of_mem_nhd hs hG)
   rwa [smul_smul, inv_mul_cancel₀ (show s ≠ 0 from hs0), one_smul] at this
 
+/- English proof (translation)
+Set `c : ℝ → 𝔸` to `fun t => exp (t • X) * Y * exp (t • (-X))`. Establish `hc : ∀ t : ℝ, c t ∈ 𝔤`. Introduce `t`. Establish `e : c t = ((h.expG ⟨t • X, 𝔤.smul_mem t hX⟩ : 𝔸ˣ) : 𝔸) * Y * ((((h.expG ⟨t • X, 𝔤.smul_mem t hX⟩)⁻¹ : G) : 𝔸ˣ) : 𝔸)` using `by show exp (t • X) * Y * exp (t • -X) = exp (t • X) * Y * ↑((expUnit ℝ 𝔸 (t • X))⁻¹)`. Rewrite using `[coe_expUnit_inv, smul_neg]`.
+
+Rewrite using `[e]`. Conclude with `h.conj_mem _ hY`. Establish `hd : HasDerivAt c (X * Y - Y * X) 0`. Establish `h1` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)).mul_const Y).mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) (0 : ℝ))`. Simplify using `only [zero_smul, exp_zero, one_mul, mul_one, mul_neg, ← sub_eq_add_neg] at h1`.
+
+Conclude with `h1`. Establish `hlim` using `hasDerivAt_iff_tendsto_slope.1 hd`. Rewrite using `[Ring.lie_def]`. Use `h.isClosed_lie.mem_of_tendsto hlim (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`.
+
+Conclude with `𝔤.smul_mem _ (𝔤.sub_mem (hc t) (hc 0))`.
+-/
 theorem lie_mem {X Y : 𝔸} (hX : X ∈ 𝔤) (hY : Y ∈ 𝔤) : ⁅X, Y⁆ ∈ 𝔤 := by
   let c : ℝ → 𝔸 := fun t => exp (t • X) * Y * exp (t • (-X))
   have hc : ∀ t : ℝ, c t ∈ 𝔤 := by
@@ -68,8 +93,14 @@ theorem lie_mem {X Y : 𝔸} (hX : X ∈ 𝔤) (hY : Y ∈ 𝔤) : ⁅X, Y⁆ �
 def lieSubalgebra : LieSubalgebra ℝ 𝔸 :=
   { 𝔤 with lie_mem' := fun hX hY => h.lie_mem hX hY }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lieSubalgebra_toSubmodule : h.lieSubalgebra.toSubmodule = 𝔤 := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_lieSubalgebra {X : 𝔸} : X ∈ h.lieSubalgebra ↔ X ∈ 𝔤 := Iff.rfl
 
 noncomputable def Ad (g : G) : 𝔤 →ₗ[ℝ] 𝔤 where
@@ -77,12 +108,21 @@ noncomputable def Ad (g : G) : 𝔤 →ₗ[ℝ] 𝔤 where
   map_add' X Y := by ext; simp [mul_add, add_mul]
   map_smul' r X := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_Ad (g : G) (X : 𝔤) :
     ((h.Ad g X : 𝔤) : 𝔸) = ((g : 𝔸ˣ) : 𝔸) * X * (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) := rfl
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem Ad_one : h.Ad 1 = LinearMap.id := by
   ext X; simp
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using `only [coe_Ad, mul_inv_rev, Subgroup.coe_mul, Units.val_mul, LinearMap.coe_comp, Function.comp_apply]`. Simplify using `only [mul_assoc]`.
+-/
 theorem Ad_mul (g g' : G) : h.Ad (g * g') = h.Ad g ∘ₗ h.Ad g' := by
   ext X
   simp only [coe_Ad, mul_inv_rev, Subgroup.coe_mul, Units.val_mul, LinearMap.coe_comp,
@@ -91,9 +131,17 @@ theorem Ad_mul (g g' : G) : h.Ad (g * g') = h.Ad g ∘ₗ h.Ad g' := by
 
 def bracket (X Y : 𝔤) : 𝔤 := ⟨⁅(X : 𝔸), (Y : 𝔸)⁆, h.lie_mem X.2 Y.2⟩
 
+/- English proof (translation)
+The claim follows from `Ring.lie_def _ _`.
+-/
 @[simp] theorem coe_bracket (X Y : 𝔤) : ((h.bracket X Y : 𝔤) : 𝔸) = (X : 𝔸) * Y - Y * X :=
   Ring.lie_def _ _
 
+/- English proof (translation)
+Establish `hgi : (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) * ((g : 𝔸ˣ) : 𝔸) = 1`. Rewrite using `[coe_inv_val, Units.inv_mul]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [coe_Ad, coe_bracket]`. Use `set a := ((g : 𝔸ˣ) : 𝔸)`.
+
+Use `set b := (((g⁻¹ : G) : 𝔸ˣ) : 𝔸)`. Establish `e : ∀ U V : 𝔸, a * U * b * (a * V * b) = a * (U * V) * b`. Introduce `U V`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, e, mul_sub, sub_mul]`.
+-/
 theorem Ad_bracket (g : G) (X Y : 𝔤) :
     h.Ad g (h.bracket X Y) = h.bracket (h.Ad g X) (h.Ad g Y) := by
   have hgi : (((g⁻¹ : G) : 𝔸ˣ) : 𝔸) * ((g : 𝔸ˣ) : 𝔸) = 1 := by
@@ -110,13 +158,26 @@ theorem Ad_bracket (g : G) (X Y : 𝔤) :
 
 noncomputable def AdL (g : G) : 𝔤 →L[ℝ] 𝔤 := LinearMap.toContinuousLinearMap (h.Ad g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem AdL_apply (g : G) (X : 𝔤) : h.AdL g X = h.Ad g X := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [coe_expG, coe_Ad, Subgroup.coe_mul, Units.val_mul, coe_inv_val]`. Conclude with `exp_units_conj_real _ _`.
+-/
 theorem expG_Ad (g : G) (X : 𝔤) : h.expG (h.Ad g X) = g * h.expG X * g⁻¹ := by
   apply Subtype.ext; apply Units.ext
   simp only [coe_expG, coe_Ad, Subgroup.coe_mul, Units.val_mul, coe_inv_val]
   exact exp_units_conj_real _ _
 
+/- English proof (translation)
+Establish `hd : HasDerivAt (fun t : ℝ => exp (t • (X : 𝔸)) * Y * exp (t • (-(X : 𝔸)))) ((X : 𝔸) * Y - Y * X) 0`. Establish `h1` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) (X : 𝔸) (0 : ℝ)).mul_const (Y : 𝔸)).mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) (-(X : 𝔸)) (0 : ℝ))`. Simplify using `only [zero_smul, exp_zero, one_mul, mul_one, mul_neg, ← sub_eq_add_neg] at h1`. Conclude with `h1`. Establish `hval : ∀ t : ℝ, ((h.Ad (h.expG (t • X)) Y : 𝔤) : 𝔸) = exp (t • (X : 𝔸)) * Y * exp (t • (-(X : 𝔸)))`.
+
+Introduce `t`. Use `show exp (t • (X : 𝔸)) * Y * ↑((expUnit ℝ 𝔸 (t • (X : 𝔸)))⁻¹) = _`. Rewrite using `[coe_expUnit_inv, smul_neg]`. Establish `key` using `(subspaceProj 𝔤).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `e : subspaceProj 𝔤 ((X : 𝔸) * Y - Y * X) = h.bracket X Y`.
+
+Rewrite using `[← coe_bracket h X Y, subspaceProj_coe]`. Rewrite `key` using `[e]`. Use `key.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← hval t, subspaceProj_coe]`.
+-/
 theorem hasDerivAt_Ad_expG (X Y : 𝔤) :
     HasDerivAt (fun t : ℝ => h.Ad (h.expG (t • X)) Y) (h.bracket X Y) 0 := by
   have hd : HasDerivAt (fun t : ℝ => exp (t • (X : 𝔸)) * Y * exp (t • (-(X : 𝔸))))

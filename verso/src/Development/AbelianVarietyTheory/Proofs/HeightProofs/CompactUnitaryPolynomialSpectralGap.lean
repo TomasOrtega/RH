@@ -27,14 +27,31 @@ noncomputable section
 
 namespace GlobalTheory.KFourier
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `Subtype.ext (Subtype.ext (Units.ext h))`.
+-/
 theorem toMK_injective_of_gap {n : ℕ} (ε : Fin n → Bool) : Function.Injective (fun k : KG ε => toMK k) := by
   intro a b h
   exact Subtype.ext (Subtype.ext (Units.ext h))
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem integrable_real_of_continuousK {n : ℕ} {ε : Fin n → Bool} {f : KG ε → ℝ} (hf : Continuous f) :
     Integrable f (muK ε) :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+Take `⟨Y, hY, hexp, hhs⟩` from `compact_exponential_surjective n ε (toMK k) k.2`. Establish `hk : expK ε Y 1 = k`. Apply `toMK_injective_of_gap ε` to reduce the goal to its premises. Use `show toMK (expK ε Y 1) = toMK k`. Rewrite using `[toMK_expK hY, Complex.ofReal_one, one_smul, hexp]`.
+
+Take `⟨c, rfl, hc⟩` from `hcoef Y hY`. Establish `h1` using `GlobalTheory.T.poly_translation_l2_bound ε d p hp _ hY`. Rewrite `h1` using `[hk, GlobalTheory.T.compactUnitaryRightDeriv_real_linear_direction ε d p hp X c hX]`. Establish `hcont : ∀ j, Continuous (rder ε [X j] p)` using `fun j => continuous_of_mem (rder_mem_and_hasDerivAt ε d p hp (X j) (hX j)).1`. Establish `hpt : ∀ x, ‖(∑ j, (c j : ℂ) • rder ε [X j] p) x‖ ^ 2 ≤ (∑ j, c j ^ 2) * ∑ j, ‖rder ε [X j] p x‖ ^ 2`.
+
+Introduce `x`. Rewrite using `[Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun j _ => ?_))` and prove the remaining obligations. Simplify using `[norm_smul, Complex.norm_real]`.
+
+Use `_ ≤ (∑ j, |c j| ^ 2) * ∑ j, ‖rder ε [X j] p x‖ ^ 2 := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`. Use `_ = (∑ j, c j ^ 2) * ∑ j, ‖rder ε [X j] p x‖ ^ 2 := by simp [sq_abs]`. Establish `hint : ∀ j, Integrable (fun x => ‖rder ε [X j] p x‖ ^ 2) (muK ε)` using `fun j => integrable_real_of_continuousK ((hcont j).norm.pow 2)`. Establish `h2 : ∫ x, ‖(∑ j, (c j : ℂ) • rder ε [X j] p) x‖ ^ 2 ∂(muK ε) ≤ (∑ j, c j ^ 2) * ∑ j, ∫ x, ‖rder ε [X j] p x‖ ^ 2 ∂(muK ε)`. Rewrite using `[← integral_finset_sum _ fun j _ => hint j, ← integral_const_mul]`.
+
+Conclude with `integral_mono_of_nonneg (Filter.Eventually.of_forall fun x => by positivity) ((integrable_finset_sum _ fun j _ => hint j).const_mul _) (Filter.Eventually.of_forall hpt)`. Establish `hE : 0 ≤ ∑ j, ∫ x, ‖rder ε [X j] p x‖ ^ 2 ∂(muK ε)` using `Finset.sum_nonneg fun j _ => integral_nonneg fun x => by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left hhs hC` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sq_dist_right_translate_le {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X : Fin r → Mx n) (hX : ∀ j, inK ε (X j))
     (C : ℝ) (hC : 0 ≤ C)
     (hcoef : ∀ Y, inK ε Y → ∃ c : Fin r → ℝ, Y = ∑ j, (c j : ℂ) • X j ∧ ∑ j, c j ^ 2 ≤ C * Formalism.REAL.hs Y)
@@ -78,6 +95,29 @@ theorem sq_dist_right_translate_le {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X 
         have := mul_le_mul_of_nonneg_left hhs hC
         nlinarith
 
+/- English proof (translation)
+Introduce `n ε r X hX hspan`. Take `⟨C3, hC3, hcoef⟩` from `GlobalTheory.T.exists_spanning_lieAlgebra_coef_sq_bound ε X hspan`. Take `⟨C4, hC4, hker⟩` from `GlobalTheory.T.exists_compactUnitaryKernel_concentrated_near_one ε`. Use `set A : ℝ := 3 * C3 * C4 ^ 2 with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`.
+
+Use `⟨1 / (A + 1), 1 / 2, by positivity, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `i hi p hp horth`. Use `set E := ∑ j, ∫ k, ‖rder ε [X j] p k‖ ^ 2 ∂(muK ε) with hEdef`. Establish `hE : 0 ≤ E` using `Finset.sum_nonneg fun j _ => integral_nonneg fun x => by positivity`. Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`.
+
+Take `⟨κ, hκc, hκ0, hκ1, hκmem, hκb⟩` from `hker m`. Establish `hpc : Continuous p` using `continuous_of_mem hp`. Establish `horth'` using `GlobalTheory.T.orthogonal_lowerDegree_kernel_translates ε (m + 1) p (fun k => (κ k : ℂ)) hκmem horth`. Establish `h1` using `GlobalTheory.T.sqrt_integral_norm_sq_le_integral_kernel_mul_translate ε p κ hpc hκc hκ0 hκ1 horth'`. Use `set P := ∫ x, ‖p x‖ ^ 2 ∂(muK ε) with hPdef`.
+
+Establish `hP : 0 ≤ P` using `integral_nonneg fun x => by positivity`. Establish `hint : Integrable (fun k => κ k * Real.sqrt (3 * C3 * E) * Real.sqrt (Formalism.REAL.hs (toMK k - 1))) (muK ε)`. Use `integrable_real_of_continuousK ?_` and prove the remaining obligations. Use `(hκc.mul continuous_const).mul (Real.continuous_sqrt.comp ?_)` and prove the remaining obligations. Unfold `Formalism.REAL.hs`.
+
+Use `fun_prop`. Establish `h2 : ∫ k, κ k * Real.sqrt (∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε)) ∂(muK ε) ≤ ∫ k, κ k * Real.sqrt (3 * C3 * E) * Real.sqrt (Formalism.REAL.hs (toMK k - 1)) ∂(muK ε)`. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun k => mul_nonneg (hκ0 k) (Real.sqrt_nonneg _)) hint (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (hκ0 k)` and prove the remaining obligations. Rewrite using `[← Real.sqrt_mul (by positivity)]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Use `sq_dist_right_translate_le ε X hX C3 hC3 hcoef hp k` as an intermediate fact. Use polynomial arithmetic with `[show 0 ≤ Formalism.REAL.hs (toMK k - 1) from by unfold Formalism.REAL.hs; positivity]`.
+
+Establish `h3 : ∫ k, κ k * Real.sqrt (3 * C3 * E) * Real.sqrt (Formalism.REAL.hs (toMK k - 1)) ∂(muK ε) = Real.sqrt (3 * C3 * E) * ∫ k, κ k * Real.sqrt (Formalism.REAL.hs (toMK k - 1)) ∂(muK ε)`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmi : ((m : ℝ) + 1) = ((m + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite `hκb` using `[hmi]`. Use `set I : ℝ := ((m + 1 : ℕ) : ℝ) with hIdef`. Establish `hI : 1 ≤ I` using `by rw [hIdef]; exact_mod_cast Nat.succ_pos m`. Establish `hsq : Real.sqrt P ≤ Real.sqrt (3 * C3 * E) * (C4 * I ^ (-(1 / 4 : ℝ)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hq : 0 ≤ I ^ (-(1 / 4 : ℝ))` using `Real.rpow_nonneg (by linarith) _`. Establish `hPle : P ≤ 3 * C3 * E * C4 ^ 2 * (I ^ (-(1 / 4 : ℝ))) ^ 2`. Establish `h` using `pow_le_pow_left₀ (Real.sqrt_nonneg P) hsq 2`. Rewrite `h` using `[Real.sq_sqrt hP, mul_pow, Real.sq_sqrt (by positivity), mul_pow]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (I ^ (-(1 / 4 : ℝ))) ^ 2 * I ^ (1 / 2 : ℝ) = 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith), ← Real.rpow_add (by linarith)]`. Evaluate the numerical expressions. Establish `hIp : 0 ≤ I ^ (1 / 2 : ℝ)` using `Real.rpow_nonneg (by linarith) _`.
+
+Establish `key : I ^ (1 / 2 : ℝ) * P ≤ A * E`. Combine the equalities or inequalities in the displayed calculation. Establish `hA1 : 0 < A + 1` using `by linarith`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_mul_eq_mul_div, div_le_iff₀ hA1]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem spectral_gap_rder : ∀ {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X : Fin r → Mx n), (∀ j, inK ε (X j)) →
     (∀ Y, inK ε Y → ∃ c : Fin r → ℝ, Y = ∑ j, (c j : ℂ) • X j) → ∃ c α : ℝ, 0 < c ∧ 0 < α ∧
     ∀ i : ℕ, 1 ≤ i → ∀ p ∈ polyV ε i, (∀ q ∈ lowV ε i, ∫ k, q k * p k ∂(muK ε) = 0) →

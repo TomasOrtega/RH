@@ -19,11 +19,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {H : S
   {X : Type} [TopologicalSpace X] [MulAction G X] [ContinuousSMul G X]
   {p : X → G ⧸ H}
 
+/- English proof (translation)
+Establish `hc` using `σ.sec c`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Sec.inv_smul (σ : Sec H) (c : G ⧸ H) : (σ.s c)⁻¹ • c = ((1 : G) : G ⧸ H) := by
   have hc := σ.sec c
   calc (σ.s c)⁻¹ • c = (σ.s c)⁻¹ • ((σ.s c : G) : G ⧸ H) := by rw [hc]
     _ = ((1 : G) : G ⧸ H) := by rw [MulAction.Quotient.smul_mk, smul_eq_mul, inv_mul_cancel]
 
+/- English proof (translation)
+Establish `hg` using `σ.sec (g : G ⧸ H)`. Rewrite `hg` using `[QuotientGroup.eq]`. Then use the resulting hypothesis.
+-/
 theorem Sec.inv_mul_mem (σ : Sec H) (g : G) : (σ.s (g : G ⧸ H))⁻¹ * g ∈ H := by
   have hg := σ.sec (g : G ⧸ H)
   rwa [QuotientGroup.eq] at hg
@@ -34,9 +40,15 @@ def zpart (x : X) : Fib p :=
   ⟨(σ.s (p x))⁻¹ • x, by rw [hp]; exact σ.inv_smul (p x)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zpart_val (x : X) : (zpart hp σ x).1 = (σ.s (p x))⁻¹ • x := rfl
 
 include hp in
+/- English proof (translation)
+Establish `hz : p z.1 = ((1 : G) : G ⧸ H)` using `z.2`. Rewrite using `[hp, hz, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]`.
+-/
 theorem p_smul_fib (g : G) (z : Fib p) : p (g • z.1) = (g : G ⧸ H) := by
   have hz : p z.1 = ((1 : G) : G ⧸ H) := z.2
   rw [hp, hz, MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]
@@ -77,10 +89,16 @@ def triv : X × H ≃ₜ G × Fib p where
       (((σ.cont.comp (QuotientGroup.continuous_mk.comp continuous_fst)).inv).mul continuous_fst) _
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem triv_apply (q : X × H) :
     triv hp σ hpc q = (σ.s (p q.1) * q.2, fibSmul hp q.2⁻¹ (zpart hp σ q.1)) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem triv_symm_apply (r : G × Fib p) :
     (triv hp σ hpc).symm r = (r.1 • r.2.1, ⟨(σ.s (r.1 : G ⧸ H))⁻¹ * r.1, σ.inv_mul_mem r.1⟩) := rfl
 
@@ -102,11 +120,21 @@ def avg [LocallyCompactSpace (Fib p)] : SB (G × Fib p) →ₗ[ℂ] SB X :=
 def fap [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) : SB X :=
   avg hp σ hpc μH (tens α φ)
 
+/- English proof (translation)
+Simplify using `[fap, avg]`.
+-/
 theorem fap_apply [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (x : X) :
     ((fap hp σ hpc μH α φ : SB X) : X → ℂ) x = ∫ h, (α : G → ℂ) (σ.s (p x) * (h : G)) *
       (φ : Fib p → ℂ) (fibSmul hp h⁻¹ (zpart hp σ x)) ∂μH := by
   simp [fap, avg]
 
+/- English proof (translation)
+Rewrite using `[fap_apply, p_smul_fib hp g z]`. Use `set s0 := σ.s (g : G ⧸ H)`. Use `set k : H := ⟨s0⁻¹ * g, σ.inv_mul_mem g⟩`. Use `conv_lhs => rw [← integral_mul_left_eq_self _ k]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Establish `e1 : s0 * ((k * h : H) : G) = g * h`. Simplify using `[k, mul_assoc]`. Establish `e2 : fibSmul hp (k * h)⁻¹ (zpart hp σ (g • z.1)) = fibSmul hp h⁻¹ z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[k, s0, smul_smul, mul_assoc, p_smul_fib hp g z]`.
+
+Simplify using `only [e1, e2]`.
+-/
 theorem fap_smul [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (g : G) (z : Fib p) :
     ((fap hp σ hpc μH α φ : SB X) : X → ℂ) (g • z.1) =
       ∫ h, (α : G → ℂ) (g * (h : G)) * (φ : Fib p → ℂ) (fibSmul hp h⁻¹ z) ∂μH := by
@@ -122,6 +150,9 @@ theorem fap_smul [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (g 
     simp [k, s0, smul_smul, mul_assoc, p_smul_fib hp g z]
   simp only [e1, e2]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx : x = σ.s (p x) • (zpart hp σ x).1` using `by simp`. Rewrite using `[hx, hf, fap_smul]`.
+-/
 theorem eq_fap [LocallyCompactSpace (Fib p)] (α : SB G) (φ : SB (Fib p)) (f : SB X)
     (hf : ∀ (g : G) (z : Fib p), (f : X → ℂ) (g • z.1) =
       ∫ h, (α : G → ℂ) (g * (h : G)) * (φ : Fib p → ℂ) (fibSmul hp h⁻¹ z) ∂μH) :

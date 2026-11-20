@@ -23,6 +23,11 @@ namespace GlobalTheory.RowTest.SumRat
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Establish `h1 : (N : ℂ) = ((N : ℝ) : ℂ)` using `by simp`. Rewrite using `[h1, show ((n : ℂ) / 2) = (((n : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (Nat.cast_nonneg _), ← Complex.ofReal_zpow]`. Use `congr 1`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul (Nat.cast_nonneg _)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem natCast_cpow_half (N : ℕ) (n : ℤ) : (N : ℂ) ^ ((n : ℂ) / 2) = ((Real.sqrt N : ℝ) : ℂ) ^ n := by
   have h1 : (N : ℂ) = ((N : ℝ) : ℂ) := by simp
   rw [h1, show ((n : ℂ) / 2) = (((n : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (Nat.cast_nonneg _),
@@ -31,6 +36,11 @@ theorem natCast_cpow_half (N : ℕ) (n : ℤ) : (N : ℂ) ^ ((n : ℂ) / 2) = ((
   rw [Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul (Nat.cast_nonneg _)]
   congr 1; ring
 
+/- English proof (translation)
+Unfold `GridChoice.sAA`. Use `Subfield.prod_mem _ fun w hw => ?_` and prove the remaining obligations. Take `⟨n, hn, -⟩` from `aaScalar_eq_pow ch.W w (hasConductor_psiAt_AA ch.W w)`. Establish `hq : GlobalTheory.SplitWeil.resCard (Kw w) = Ideal.absNorm w.asIdeal` using `GlobalTheory.LFun.SatBoundGL.resCard_completion w`. Establish `hs : ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℝ) : ℂ) ∈ D.what₂.embLL.fieldRange`.
+
+Take `⟨y, hy⟩` from `h.sqrt w (Or.inl hw)`. Conclude with `⟨y, hy⟩`. Rewrite using `[hn, hq, natCast_cpow_half]`. Conclude with `zpow_mem hs n`.
+-/
 theorem sAA_mem (ch : Choice R) (h : ch.FieldOK) : ch.S.sAA ∈ D.what₂.embLL.fieldRange := by
   classical
   unfold GridChoice.sAA
@@ -43,11 +53,27 @@ theorem sAA_mem (ch : Choice R) (h : ch.FieldOK) : ch.S.sAA ∈ D.what₂.embLL.
   rw [hn, hq, natCast_cpow_half]
   exact zpow_mem hs n
 
+/- English proof (translation)
+Use `show MvPolynomial.coeff m ((GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP ch.G) (ch.Psi a (finG (Xp ch.G) g))).1) ∈ _`. Simplify using `[GlobalTheory.CoefModel.mapVV, MvPolynomial.coeff_map]`.
+-/
 theorem psiC_rat (ch : Choice R) (a : Fin ch.n) (g : FinPt ch.G (.top 0)) (m) :
     MvPolynomial.coeff m (psiC (ch.Psi a) g).1 ∈ Set.range D.what₂.embLL := by
   show MvPolynomial.coeff m ((GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP ch.G) (ch.Psi a (finG (Xp ch.G) g))).1) ∈ _
   simp [GlobalTheory.CoefModel.mapVV, MvPolynomial.coeff_map]
 
+/- English proof (translation)
+Establish `hR : ∀ z, z ∈ Set.range D.what₂.embLL → z ∈ D.what₂.embLL.fieldRange` using `fun z ⟨y, hy⟩ => ⟨y, hy⟩`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `h` using `hO t a`. Establish `hex : ∀ β ∈ ch.S.supp t (ch.Phi a), ∃ τ, IsCosetExpansion ch.S.toGridChoice t (ch.Phi a) β (expDepth ch.S.toGridChoice t (ch.Phi a) β) τ` using `fun β hβ => exists_cosetExpansion_expDepth hL ch.S.toGridChoice t (ch.Phi a) β (h.ex β hβ)`. Set `τf : CosFam ch.G t → PureDat ch.G t →₀ ℂ` to `fun β => if hβ : β ∈ ch.S.supp t (ch.Phi a) then (hex β hβ).choose else 0`.
+
+Establish `hτf : ∀ β (hβ : β ∈ ch.S.supp t (ch.Phi a)), IsCosetExpansion ch.S.toGridChoice t (ch.Phi a) β (expDepth ch.S.toGridChoice t (ch.Phi a) β) (τf β)` using `fun β hβ => by`. Simplify using `only [τf, dif_pos hβ]`. Conclude with `(hex β hβ).choose_spec`. Use `show ch.S.sAA * ch.S.vCore t (ch.Phi a) (psiC (ch.Psi a)) (ch.S.formC t (R.jX t x)) ∈ D.what₂.embLL.fieldRange`. Use `mul_mem (sAA_mem ch hK) ?_` and prove the remaining obligations.
+
+Rewrite using `[h.vCore_eq τf fun β hβ => (hτf β hβ).2.1]`. Use `sum_mem fun β hβ' => ?_` and prove the remaining obligations. Establish `hβ : β ∈ ch.S.supp t (ch.Phi a)` using `(Set.Finite.mem_toFinset _).1 hβ'`. Use `mul_mem (prod_mem fun w _ => SubfieldClass.ratCast_mem _ _) ?_` and prove the remaining obligations. Unfold `GridChoice.classSum`.
+
+Use `haveI := h.cls β`. Use `haveI := Fintype.ofFinite (ch.S.Classes t (ch.Phi a) β)`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `sum_mem fun c _ => mul_mem ?_ ?_` and prove the remaining obligations. Unfold `GridChoice.invGam`.
+
+Conclude with `mul_mem (prod_mem fun j _ => inv_mem (natCast_mem _ _)) (prod_mem fun i _ => inv_mem (natCast_mem _ _))`. Unfold `GridChoice.pairAt`. Simplify using `only [Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.compl₁₂_apply, smul_eq_mul]`. Use `sum_mem fun d hd => mul_mem ?_ ?_` and prove the remaining obligations. Take `⟨X, Y, e⟩` from `(hτf β hβ).coef_eq hd`.
+
+Rewrite using `[e]`. Conclude with `prod_mem fun w _ => hR _ (GlobalTheory.T.unfoldedFlipTensor_values_mem_coeffField ch large₂ F CF b hS hi hsc hK t _ h β hβ w _ _)`. Establish `hU` using `GlobalTheory.T.topRow_normalisedKernelChain_preserves_coeffs ch large₂ F hS hi hK t _ h β hβ _ (hτf β hβ) d hd c _ (psiC_rat ch a (ch.S.ptTop c 0))`. Establish `hV` using `GlobalTheory.T.lastColumn_normalizedKernelChain_coeffField ch large₂ F hS hi hK t _ h β hβ _ (hτf β hβ) d hd c _ (GlobalTheory.T.rationalForm_coordinates_coeff_mem_coefficientField ch large₂ F hS hi hK t x (ch.S.ptRow c 0))`. Conclude with `hR _ (GlobalTheory.T.branchingPairing_mem_coefficientField ch large₂ F hS hi hK t _ h (ch.S.colMap d (ch.S.ptTop c) (psiC (ch.Psi a) (ch.S.ptTop c 0))) (ch.S.rowMap d (ch.S.ptRow c) (ch.S.formC t (R.jX t x) (ch.S.ptRow c 0))) hU hV)`.
+-/
 theorem vK_mem (ch : Choice R) (large₂ : SizeData₂ D) (F : Face D A) (CF b : ℝ) (hS : HidaSetting large₂ R F) (hi : ch.Is)
     (hsc : ch.AtScale CF b) (hK : ch.FieldOK) (hO : ∀ t a, ch.S.SumOK t (ch.Phi a)) (t : T) (x : A.fam.amb.FR t)
     (a : Fin ch.n) : vK ch t x a ∈ D.what₂.embLL.fieldRange := by
@@ -92,6 +118,11 @@ end GlobalTheory.RowTest.SumRat
 
 namespace GlobalTheory.RowTest
 
+/- English proof (translation)
+Introduce and unpack `⟨CF0, h⟩`. Use `⟨CF0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `h ε CF hC`. Use `⟨x₀, fun D large₂ e hx' Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc hK t x a => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `SumRat.vK_mem ch large₂ F CF large₂.sc.b s hi hsc hK (hx D large₂ e hx' Γ Pl0 T A Ks R F s ch hi hsc) t x a`.
+
+Conclude with `⟨y, hy⟩`.
+-/
 theorem sumRatK_of_sumOKK : SumOKK → SumRatK := by
   rintro ⟨CF0, h⟩
   refine ⟨CF0, fun ε CF hC => ?_⟩

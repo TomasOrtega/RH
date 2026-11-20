@@ -19,6 +19,9 @@ namespace PositivityTheory.Rg.BcB.F.Rig
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Prw.zelevinskyPolynomialRing_of PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds PositivityTheory.RgGu.segmentRepresentation (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg PositivityTheory.RgGu.segmentRepresentation)`.
+-/
 theorem zpr : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   PositivityTheory.Prw.zelevinskyPolynomialRing_of PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds
     PositivityTheory.RgGu.segmentRepresentation
@@ -28,12 +31,18 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `h` and use `clsGL_irr ⟨_, σ.ρ, σ.smooth, σ.irred⟩ h`.
+-/
 theorem clsGL_smIrr {m : ℕ} (σ : SmIrr (GL (Fin m) k)) :
     ∀ h, clsGL σ.ρ h = Finsupp.single (IrrGL.of σ.ρ σ.smooth σ.irred) 1 :=
   fun h => clsGL_irr ⟨_, σ.ρ, σ.smooth, σ.irred⟩ h
 
 end Local
 
+/- English proof (translation)
+Take `⟨hp, ep⟩` from `multiProd_cls hΨ X.h (fun i => (X.σ i w).ρ) (fun i => (X.σ i w).smooth) (fun i => (⟨_, (X.σ i w).ρ, (X.σ i w).smooth, (X.σ i w).irred⟩ : IrrRep _).hasFiniteLength)`. Conclude with `⟨hp, ep.trans (Finset.prod_congr rfl fun i _ => congrArg Ψ (clsGL_smIrr _ _))⟩`.
+-/
 theorem cls_locProd {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : HeightOneSpectrum (𝓞 E))
     {A : Type 1} [CommRing A] {Ψ : GrothGL (w.adicCompletion E) ≃+ A} (hΨ : IsProductIso (w.adicCompletion E) Ψ)
     (X : Pre E n) :
@@ -42,6 +51,13 @@ theorem cls_locProd {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (fun i => (⟨_, (X.σ i w).ρ, (X.σ i w).smooth, (X.σ i w).irred⟩ : IrrRep _).hasFiniteLength)
   exact ⟨hp, ep.trans (Finset.prod_congr rfl fun i _ => congrArg Ψ (clsGL_smIrr _ _))⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n D D' e w he P hP`. Take `⟨-, Ψ, -, hΨ, -⟩` from `zpr (w.adicCompletion E)`. Take `⟨h1, e1⟩` from `cls_locProd w hΨ D`. Take `⟨h2, e2⟩` from `cls_locProd w hΨ D'`. Establish `hc : clsGL (locProd D.h w (D.σ · w)) h1 = clsGL (locProd D'.h w (D'.σ · w)) h2`.
+
+Apply `Ψ.injective` to reduce the goal to its premises. Rewrite using `[e1, e2]`. Conclude with `Fintype.prod_equiv e _ _ fun i => congrArg (fun x => Ψ (Finsupp.single x 1)) (he i)`. Use `isSubquotient_of_clsGL_ne h1 P.smooth P.irred ?_` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Conclude with `(clsGL_of_pos h2 P.smooth P.irred hP).ne'`.
+-/
 theorem permSub : PermSub := by
   intro E _ _ _ n D D' e w he P hP
   obtain ⟨-, Ψ, -, hΨ, -⟩ := zpr (w.adicCompletion E)
@@ -55,6 +71,9 @@ theorem permSub : PermSub := by
   rw [hc]
   exact (clsGL_of_pos h2 P.smooth P.irred hP).ne'
 
+/- English proof (translation)
+Establish `hm : m = m'` using `congrArg Sigma.fst h`. Substitute `hm` using the available equality. Take `⟨φ⟩` from `IrrGL.of_eq_of.1 h`. Establish `he : ∀ g x, φ.toLinearEquiv (σ.ρ g x) = σ'.ρ g (φ.toLinearEquiv x)` using `fun g x => Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g x`. Conclude with `⟨GlobalTheory.BaseChangeBridge.isSpherical_of_equiv φ.toLinearEquiv he hb.1, GlobalTheory.BaseChangeBridge.hasSatGL_of_equiv φ.toLinearEquiv he hb.2⟩`.
+-/
 theorem sat_of_cls {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {m m' : ℕ}
     (σ : SmIrr (GL (Fin m) (w.adicCompletion E))) (σ' : SmIrr (GL (Fin m') (w.adicCompletion E)))
     (h : IrrGL.of σ.ρ σ.smooth σ.irred = IrrGL.of σ'.ρ σ'.smooth σ'.irred) (b : Multiset ℂˣ)
@@ -68,6 +87,11 @@ theorem sat_of_cls {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (
   exact ⟨GlobalTheory.BaseChangeBridge.isSpherical_of_equiv φ.toLinearEquiv he hb.1,
     GlobalTheory.BaseChangeBridge.hasSatGL_of_equiv φ.toLinearEquiv he hb.2⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n D D' e w he B hB`. Take `⟨b, hb, hs⟩` from `hB`. Use `⟨fun j => b (e.symm j), fun j => sat_of_cls (D.σ (e.symm j) w) (D'.σ j w) ?_ _ (hb (e.symm j)), ?_⟩` and prove the remaining obligations. Establish `h` using `he (e.symm j)`. Rewrite `h` using `[e.apply_symm_apply]`.
+
+Conclude with `h`. Conclude with `(Fintype.sum_equiv e.symm _ _ fun _ => rfl).trans hs`.
+-/
 theorem permSat : PermSat := by
   intro E _ _ _ n D D' e w he B hB
   obtain ⟨b, hb, hs⟩ := hB

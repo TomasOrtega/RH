@@ -9,6 +9,13 @@ namespace PositivityTheory.Rg.Sw.AbsSt.HP
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `key : ∀ ζ ∈ K, ∀ᶠ p : X × ℂ in 𝓝 (x₀, ζ), p.1 ∈ C → p.2 ∈ U → ‖F p.1 p.2 - F x₀ p.2‖ < η`. Introduce `ζ hζ`. Establish `hc` using `hF (x₀, ζ) ⟨hx₀, hKU hζ⟩`. Establish `h1 : ∀ᶠ p : X × ℂ in 𝓝 (x₀, ζ), p ∈ C ×ˢ U → dist (F p.1 p.2) (F x₀ ζ) < η / 2` using `eventually_nhdsWithin_iff.mp (hc.eventually (Metric.ball_mem_nhds _ (half_pos hη)))`. Establish `hg : Tendsto (fun p : X × ℂ => (x₀, p.2)) (𝓝 (x₀, ζ)) (𝓝 (x₀, ζ))`.
+
+Establish `hcont : Continuous (fun p : X × ℂ => (x₀, p.2))` using `by fun_prop`. Simplify using `using hcont.tendsto (x₀, ζ)`. Establish `h2` using `hg.eventually h1`. Use `filter_upwards [h1, h2] with p hp1 hp2 hpC hpU`. Establish `a` using `hp1 ⟨hpC, hpU⟩`.
+
+Establish `b : dist (F x₀ p.2) (F x₀ ζ) < η / 2` using `hp2 ⟨hx₀, hpU⟩`. Rewrite using `[← dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Use `filter_upwards [hK.eventually_forall_of_forall_eventually (P := fun x ζ => x ∈ C → ζ ∈ U → ‖F x ζ - F x₀ ζ‖ < η) key] with x hx ζ hζ hxC hζU`. Conclude with `hx ζ hζ hxC hζU`.
+-/
 theorem eventually_unif {C : Set X} {U K : Set ℂ} {F : X → ℂ → ℂ}
     (hF : ContinuousOn (fun y : X × ℂ => F y.1 y.2) (C ×ˢ U)) (hK : IsCompact K) (hKU : K ⊆ U) {x₀ : X} (hx₀ : x₀ ∈ C)
     {η : ℝ} (hη : 0 < η) : ∀ᶠ x in 𝓝 x₀, ∀ ζ ∈ K, x ∈ C → ζ ∈ U → ‖F x ζ - F x₀ ζ‖ < η := by
@@ -33,6 +40,17 @@ theorem eventually_unif {C : Set X} {U K : Set ℂ} {F : X → ℂ → ℂ}
     (P := fun x ζ => x ∈ C → ζ ∈ U → ‖F x ζ - F x₀ ζ‖ < η) key] with x hx ζ hζ hxC hζU
   exact hx ζ hζ hxC hζU
 
+/- English proof (translation)
+Introduce `⟨x₀, z₀⟩ ⟨hx₀, hz₀⟩`. Establish `hT : TendstoLocallyUniformlyOn F (F x₀) (𝓝[C] x₀) U`. Rewrite using `[tendstoLocallyUniformlyOn_iff_forall_isCompact hU]`. Introduce `K hKU hK`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+
+Introduce `ε hε`. Use `filter_upwards [nhdsWithin_le_nhds (eventually_unif hF hK hKU hx₀ hε), self_mem_nhdsWithin] with x hx hxC ζ hζ`. Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `hx ζ hζ hxC (hKU hζ)`. Establish `hD : ∀ᶠ x in 𝓝[C] x₀, DifferentiableOn ℂ (F x) U` using `by filter_upwards [self_mem_nhdsWithin] with x hx using hd x hx`.
+
+Establish `hT'` using `hT.deriv hD hU`. Establish `hc : ContinuousAt (deriv (F x₀)) z₀` using `(((hd x₀ hx₀).deriv hU).continuousOn z₀ hz₀).continuousAt (hU.mem_nhds hz₀)`. Rewrite using `[Metric.continuousWithinAt_iff']`. Introduce `ε hε`. Take `⟨t, ht, hA⟩` from `(Metric.tendstoLocallyUniformlyOn_iff.mp hT') (ε / 2) (half_pos hε) z₀ hz₀`.
+
+Establish `hB` using `(Metric.continuousAt_iff'.mp hc) (ε / 2) (half_pos hε)`. Establish `hB' : ∀ᶠ y in 𝓝[U] z₀, y ∈ t ∧ dist (deriv (F x₀) y) (deriv (F x₀) z₀) < ε / 2` using `Filter.inter_mem ht (nhdsWithin_le_nhds hB)`. Rewrite using `[nhdsWithin_prod_eq]`. Use `filter_upwards [Filter.prod_mem_prod hA hB'] with q hq`. Establish `h1 : dist (deriv (F x₀) q.2) (deriv (F q.1) q.2) < ε / 2` using `hq.1 q.2 hq.2.1`.
+
+Establish `h2 : dist (deriv (F x₀) q.2) (deriv (F x₀) z₀) < ε / 2` using `hq.2.2`. Use `show dist (deriv (F q.1) q.2) (deriv (F x₀) z₀) < ε`. Establish `h3` using `dist_triangle (deriv (F q.1) q.2) (deriv (F x₀) q.2) (deriv (F x₀) z₀)`. Rewrite `h1` using `[dist_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem continuousOn_deriv {C : Set X} {U : Set ℂ} {F : X → ℂ → ℂ} (hU : IsOpen U)
     (hF : ContinuousOn (fun y : X × ℂ => F y.1 y.2) (C ×ˢ U)) (hd : ∀ x ∈ C, DifferentiableOn ℂ (F x) U) :
     ContinuousOn (fun y : X × ℂ => deriv (F y.1) y.2) (C ×ˢ U) := by
@@ -66,6 +84,11 @@ theorem continuousOn_deriv {C : Set X} {U : Set ℂ} {F : X → ℂ → ℂ} (hU
   rw [dist_comm] at h1
   linarith
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => simpa using h`. Consider the case `succ r ih`. Introduce `z hz`.
+
+Rewrite using `[iteratedDeriv_succ, iteratedDeriv_succ]`. Conclude with `(ih.eventuallyEq_of_mem (hU.mem_nhds hz)).deriv_eq`.
+-/
 theorem eqOn_iteratedDeriv {U : Set ℂ} (hU : IsOpen U) {f g : ℂ → ℂ} (h : EqOn f g U) :
     ∀ r : ℕ, EqOn (iteratedDeriv r f) (iteratedDeriv r g) U := by
   intro r
@@ -78,6 +101,15 @@ theorem eqOn_iteratedDeriv {U : Set ℂ} (hU : IsOpen U) {f g : ℂ → ℂ} (h 
 
 variable [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Use `set t := (toMeasurable μ Cᶜ)ᶜ with ht`. Establish `htm : MeasurableSet t` using `(measurableSet_toMeasurable μ Cᶜ).compl`. Establish `htC : t ⊆ C`. Introduce `x hx`. Assume the negation of the conclusion as `hxC`.
+
+Conclude with `hx (subset_toMeasurable μ Cᶜ hxC)`. Establish `hμ : μ.restrict t = μ`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Rewrite using `[ae_iff]`. Establish `e : {a | ¬ a ∈ t} = toMeasurable μ Cᶜ`.
+
+Use extensionality with `a`. Simplify using `[ht]`. Rewrite using `[e, measure_toMeasurable]`. Conclude with `hCn`. Establish `hh` using `hf.aestronglyMeasurable_of_subset_isCompact (μ := μ) hC htm htC`.
+
+Rewrite `hh` using `[hμ]`. Then use the resulting hypothesis.
+-/
 theorem aesm_of {μ : Measure X} {C : Set X} (hC : IsCompact C) (hCn : μ Cᶜ = 0) {f : X → ℂ}
     (hf : ContinuousOn f C) : AEStronglyMeasurable f μ := by
   set t := (toMeasurable μ Cᶜ)ᶜ with ht
@@ -97,6 +129,15 @@ theorem aesm_of {μ : Measure X} {C : Set X} (hC : IsCompact C) (hCn : μ Cᶜ =
   have hh := hf.aestronglyMeasurable_of_subset_isCompact (μ := μ) hC htm htC
   rwa [hμ] at hh
 
+/- English proof (translation)
+Establish `hcz : ∀ z ∈ U, ContinuousOn (fun x => F x z) C` using `fun z hz => hF.comp (by fun_prop : Continuous fun x : X => (x, z)).continuousOn (fun x hx => ⟨hx, hz⟩)`. Establish `hmeas : ∀ z ∈ U, AEStronglyMeasurable (fun x => F x z) μ` using `fun z hz => aesm_of hC hCn (hcz z hz)`. Establish `hae : ∀ᵐ x ∂μ, x ∈ C` using `ae_iff.mpr hCn`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU z₀ hz₀`. Establish `hsub : closedBall z₀ (ε / 2) ⊆ U` using `(closedBall_subset_ball (half_lt_self hε)).trans hball`.
+
+Establish `hD` using `continuousOn_deriv hU hF hd`. Take `⟨M, hM⟩` from `(hC.prod (isCompact_closedBall z₀ (ε / 2))).exists_bound_of_continuousOn (hD.mono (prod_mono subset_rfl hsub))`. Take `⟨M0, hM0⟩` from `(hC.prod (isCompact_closedBall z₀ (ε / 2))).exists_bound_of_continuousOn (hF.mono (prod_mono subset_rfl hsub))`. Establish `hint : Integrable (fun x => F x z₀) μ`. Use `Integrable.of_bound (hmeas z₀ hz₀) M0 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with x hx`. Conclude with `hM0 (x, z₀) ⟨hx, mem_closedBall_self (half_pos hε).le⟩`. Establish `hcd : ContinuousOn (fun x => deriv (F x) z₀) C` using `hD.comp (by fun_prop : Continuous fun x : X => (x, z₀)).continuousOn (fun x hx => ⟨hx, hz₀⟩)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun z x => F x z) (F' := fun z x => deriv (F x) z) (bound := fun _ => M) (closedBall_mem_nhds z₀ (half_pos hε)) (Filter.eventually_of_mem (hU.mem_nhds hz₀) hmeas) hint (aesm_of hC hCn hcd) (by filter_upwards [hae] wi …`. Conclude with `(((hd x hx) z (hsub hz)).differentiableAt (hU.mem_nhds (hsub hz))).hasDerivAt)`.
+
+Conclude with `key.2`.
+-/
 theorem hasDerivAt_int {μ : Measure X} [IsFiniteMeasure μ] {C : Set X} (hC : IsCompact C) (hCn : μ Cᶜ = 0)
     {U : Set ℂ} {F : X → ℂ → ℂ} (hU : IsOpen U)
     (hF : ContinuousOn (fun y : X × ℂ => F y.1 y.2) (C ×ˢ U)) (hd : ∀ x ∈ C, DifferentiableOn ℂ (F x) U)
@@ -130,6 +171,11 @@ theorem hasDerivAt_int {μ : Measure X} [IsFiniteMeasure μ] {C : Set X} (hC : I
       exact (((hd x hx) z (hsub hz)).differentiableAt (hU.mem_nhds (hsub hz))).hasDerivAt)
   exact key.2
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `F _ _ z _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `F hF hd z hz`. Establish `hEq : EqOn (deriv (fun z => ∫ x, F x z ∂μ)) (fun z => ∫ x, deriv (F x) z ∂μ) U` using `fun w hw => (hasDerivAt_int hC hCn hU hF hd hw).deriv`. Rewrite using `[iteratedDeriv_succ', eqOn_iteratedDeriv hU hEq n hz, ih (fun x => deriv (F x)) (continuousOn_deriv hU hF hd) (fun x hx => (hd x hx).deriv hU) z hz]`. Repeatedly rewrite using `[iteratedDeriv_succ']`.
+-/
 theorem main {μ : Measure X} [IsFiniteMeasure μ] {C : Set X} (hC : IsCompact C) (hCn : μ Cᶜ = 0)
     {U : Set ℂ} (hU : IsOpen U) : ∀ (r : ℕ) (F : X → ℂ → ℂ), ContinuousOn (fun y : X × ℂ => F y.1 y.2) (C ×ˢ U) →
       (∀ x ∈ C, DifferentiableOn ℂ (F x) U) →
@@ -151,6 +197,9 @@ end PositivityTheory.Rg.Sw.AbsSt.HP
 
 namespace PositivityTheory.Rg.Sw.AbsSt
 
+/- English proof (translation)
+Introduce `X _ _ _ μ _ C hC hCn U F hU hF hd`. Conclude with `⟨fun z hz => (HP.hasDerivAt_int hC hCn hU hF hd hz).differentiableAt.differentiableWithinAt, fun z hz r => HP.main hC hCn hU r F hF hd z hz⟩`.
+-/
 theorem holParam : HolParam := by
   intro X _ _ _ μ _ C hC hCn U F hU hF hd
   exact ⟨fun z hz => (HP.hasDerivAt_int hC hCn hU hF hd hz).differentiableAt.differentiableWithinAt,

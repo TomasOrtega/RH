@@ -10,6 +10,11 @@ namespace Formalism.L2.SG.Pf.Carrier.CarPinTor
 
 variable {k r : ℕ} {κ τ : ℝ}
 
+/- English proof (translation)
+Take `⟨⟨x1, x2⟩, ⟨x3, x4⟩⟩` from `x`. Use `Prod.ext (Prod.ext rfl ?_) (Prod.ext rfl ?_)` and prove the remaining obligations. Use `show (fun i j => cj k r κ τ (a * Matrix.of x2) i j) = fun i j => (cj k r κ τ a * Matrix.of (cjT k r κ τ x2)) i j`. Rewrite using `[cj_mul hκ hτ]`. Both sides reduce to the same expression.
+
+Use `show (fun i j => cj k r κ τ (g⁻¹ * a * g * Matrix.of x4) i j) = fun i j => ((cj k r κ τ g)⁻¹ * cj k r κ τ a * cj k r κ τ g * Matrix.of (cjT k r κ τ x4)) i j`. Rewrite using `[cj_mul hκ hτ, cj_mul hκ hτ, cj_mul hκ hτ, cj_inv hκ hτ]`. Both sides reduce to the same expression.
+-/
 theorem phiP_stabAct (hκ : 0 < κ) (hτ : 0 < τ) (g a : Mx k r) (x : PairSp k r) :
     phiP k r κ τ (stabAct g a x) = stabAct (cj k r κ τ g) (cj k r κ τ a) (phiP k r κ τ x) := by
   obtain ⟨⟨x1, x2⟩, ⟨x3, x4⟩⟩ := x
@@ -23,6 +28,13 @@ theorem phiP_stabAct (hκ : 0 < κ) (hτ : 0 < τ) (g a : Mx k r) (x : PairSp k 
     rw [cj_mul hκ hτ, cj_mul hκ hτ, cj_mul hκ hτ, cj_inv hκ hτ]
     rfl
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite using `[pairMeas_trD hκ hτ]`. Establish `exp_product_square_inv : (pairMeas L).map (phiP k r κ τ) = (pairMeas L).map (phiE (k` using `k) (r := r) hκ hτ) := rfl`. Rewrite using `[exp_product_square_inv, lintegral_map_equiv]`. Rewrite using `[h (fun x => f (phiE hκ hτ x)) (hf.comp (phiE hκ hτ).measurable)]`.
+
+Establish `eP : ν.map (phiP k r κ τ) = ν.map (phiE (k` using `k) (r := r) hκ hτ) := rfl`. Rewrite using `[eP, lintegral_map_equiv]`. Use `lintegral_congr (fun x => ?_)` and prove the remaining obligations. Establish `eT : μR.map (cjT k r κ τ) = μR.map (cjE (k` using `k) (r := r) hκ hτ) := rfl`. Rewrite using `[eT, lintegral_map_equiv]`.
+
+Use `lintegral_congr (fun a => ?_)` and prove the remaining obligations. Use `show f (phiP k r κ τ (stabAct g (Matrix.of a) x)) = f (stabAct (cj k r κ τ g) (Matrix.of (cjT k r κ τ a)) (phiP k r κ τ x))`. Rewrite using `[phiP_stabAct hκ hτ]`. Both sides reduce to the same expression.
+-/
 theorem isOrbQuot_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
     (hz' : inWb k r ((τ : ℂ) • L.z') ∧ 0 < Tz k r ((τ : ℂ) • L.z'))
@@ -50,6 +62,11 @@ theorem isOrbQuot_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
   rw [phiP_stabAct hκ hτ]
   rfl
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨b, rfl⟩ : ∃ b, a = cj k r κ τ b` from `⟨cjI k r κ τ a, (cj_cjI hκ hτ a).symm⟩`. Establish `hb : b ∈ RStab k r g` using `(cj_mem_RStab_iff hκ hτ g b).1 ha`. Establish `e : (cj k r κ τ g)⁻¹ * cj k r κ τ b * cj k r κ τ g = cj k r κ τ (g⁻¹ * b * g)`. Rewrite using `[cj_mul hκ hτ, cj_mul hκ hτ, cj_inv hκ hτ]`.
+
+Use `show psi k r ((τ : ℂ) • L.z) ((κ : ℂ) * L.c) (cj k r κ τ b) = psi k r ((τ : ℂ) • L.z') ((κ : ℂ) * L.c) ((cj k r κ τ g)⁻¹ * cj k r κ τ b * cj k r κ τ g)`. Rewrite using `[e, psi_cj hκ hτ L.hz.1, psi_cj hκ hτ L.hz'.1]`. Conclude with `h b hb`.
+-/
 theorem isRelStab_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁ : ENNReal)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
     (hz' : inWb k r ((τ : ℂ) • L.z') ∧ 0 < Tz k r ((τ : ℂ) • L.z'))
@@ -70,11 +87,17 @@ theorem isRelStab_trD (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁ 
   rw [e, psi_cj hκ hτ L.hz.1, psi_cj hκ hτ L.hz'.1]
   exact h b hb
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite using `[hP, lintegral_smul_measure, lintegral_smul_measure, h f hf]`.
+-/
 theorem isOrbQuot_smul {L L' : LocBessel k r} {g : Mx k r} {μR : Measure (Mt k r)} {ν : Measure (PairSp k r)}
     (h : IsOrbQuot L g μR ν) (t : ENNReal) (hP : pairMeas L' = t • pairMeas L) : IsOrbQuot L' g μR (t • ν) := by
   intro f hf
   rw [hP, lintegral_smul_measure, lintegral_smul_measure, h f hf]
 
+/- English proof (translation)
+Use `haveI : SFinite L.μN := sFinite_haarLie _ _`. Use `haveI : IsFiniteMeasure L.μW' := ⟨by rw [L.hμW'.2]; exact ENNReal.one_lt_top⟩`. Unfold `pairMeas`. Rewrite using `[hW, hW', hN, Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_left, smul_smul]`.
+-/
 theorem pairMeas_scaleN {L L' : LocBessel k r} (hW : L'.μW = L.μW) (hW' : L'.μW' = L.μW') (t : ENNReal)
     (hN : L'.μN = t • L.μN) : pairMeas L' = (t * t) • pairMeas L := by
   haveI : SFinite L.μN := sFinite_haarLie _ _

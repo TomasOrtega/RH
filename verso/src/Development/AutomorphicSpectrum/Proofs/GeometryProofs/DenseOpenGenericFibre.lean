@@ -17,6 +17,27 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.GeoModel.OpenLocus
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y Ω _ κ _ x M f y₀ hξ`. Use `set π := spMap (algebraMap (𝓞 c.F) c.F) with hπ`. Use `haveI : IsOpenImmersion Y.jQ := Y.jQ_open`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := {}`.
+
+Use `haveI hpre : IsPreimmersion π := IsPreimmersion.of_isLocalization (R := 𝓞 c.F) (S := c.F) (nonZeroDivisors (𝓞 c.F))`. Use `haveI hfst : IsPreimmersion (pullback.fst (f ≫ Y.s) π) := inferInstance`. Establish `hcond : (pullback.fst (f ≫ Y.s) π ≫ f) ≫ Y.s = pullback.snd (f ≫ Y.s) π ≫ π`. Rewrite using `[Category.assoc, pullback.condition]`. Use `set g := pullback.lift (pullback.fst (f ≫ Y.s) π ≫ f) (pullback.snd (f ≫ Y.s) π) hcond with hg`.
+
+Establish `hgf : g ≫ pullback.fst Y.s π = pullback.fst (f ≫ Y.s) π ≫ f` using `pullback.lift_fst _ _ _`. Establish `hpt : ∀ p, f (pullback.fst (f ≫ Y.s) π p) = pullback.fst Y.s π (g p)`. Introduce `p`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hgf]`. Establish `hopen : IsOpen (g ⁻¹' Set.range Y.jQ)` using `(IsOpenImmersion.isOpen_range Y.jQ).preimage g.continuous`.
+
+Use `⟨⟨g ⁻¹' Set.range Y.jQ, hopen⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hc2 : M.ξ ≫ f ≫ Y.s = (y₀ ≫ Y.jQ ≫ pullback.snd Y.s π) ≫ π`. Rewrite using `[← Category.assoc, hξ]`. Simplify using `only [Model.j, Category.assoc, pullback.condition]`. Both sides reduce to the same expression.
+
+Use `set ξ' := pullback.lift M.ξ (y₀ ≫ Y.jQ ≫ pullback.snd Y.s π) hc2 with hξ'`. Establish `hξg : ξ' ≫ g = y₀ ≫ Y.jQ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hgf, ← Category.assoc, pullback.lift_fst, hξ]`. Simplify using `only [Model.j, Category.assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.assoc]`. Use `set p0 := ξ' (IsLocalRing.closedPoint Ω) with hp0`. Establish `hp0U : p0 ∈ g ⁻¹' Set.range Y.jQ`. Use `⟨y₀ (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (fun (k : Spec (CommRingCat.of Ω) ⟶ pullback Y.s π) => k (IsLocalRing.closedPoint Ω)) hξg`. Express the relevant statement in the definitionally equal form `g (ξ' (IsLocalRing.closedPoint Ω)) = Y.jQ (y₀ (IsLocalRing.closedPoint Ω)) at h`. Conclude with `h.symm`. Establish `hp0M : pullback.fst (f ≫ Y.s) π p0 = genPt M.ξ`. Establish `h` using `congrArg (fun (k : Spec (CommRingCat.of Ω) ⟶ M.X) => k (IsLocalRing.closedPoint Ω)) (pullback.lift_fst M.ξ (y₀ ≫ Y.jQ ≫ pullback.snd Y.s π) hc2)`.
+
+Express the relevant statement in the definitionally equal form `pullback.fst (f ≫ Y.s) π (ξ' (IsLocalRing.closedPoint Ω)) = M.ξ (IsLocalRing.closedPoint Ω) at h`. Conclude with `h`. Establish `hemb` using `Scheme.Hom.isEmbedding (pullback.fst (f ≫ Y.s) π)`. Introduce `p`. Establish `hsp : p0 ⤳ p`.
+
+Rewrite using `[← hemb.isInducing.specializes_iff, hp0M]`. Conclude with `M.all _`. Conclude with `closure_mono (Set.singleton_subset_iff.2 hp0U) (specializes_iff_mem_closure.1 hsp)`. Use extensionality with `p`. Simplify using `only [Set.mem_preimage, TopologicalSpace.Opens.coe_mk]`.
+
+Rewrite using `[hpt, ← Set.mem_preimage (f := pullback.fst Y.s π), Y.ab_gen]`.
+-/
 theorem exists_dense_open : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel ℤ x) (f : M.X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c), M.ξ ≫ f = y₀ ≫ Y.j → ∃ U : (pullback (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F))).Opens, Dense (U : Set ((pullback (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F)) : Scheme.{0}))) ∧ pullback.fst (f ≫ Y.s) (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' (f ⁻¹' abLocus Y.t.G) = U := by
   intro E _ _ _ H D l Xo c Y Ω _ κ _ x M f y₀ hξ
   set π := spMap (algebraMap (𝓞 c.F) c.F) with hπ

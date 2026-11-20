@@ -13,6 +13,9 @@ variable (F E : Type*) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [Nu
 
 include F in
 
+/- English proof (translation)
+The claim follows from `IsCMField.ofCMExtension F E`.
+-/
 theorem isCMField : IsCMField E := IsCMField.ofCMExtension F E
 
 noncomputable def complexConjOver : E ≃ₐ[F] E :=
@@ -23,12 +26,20 @@ noncomputable def complexConjOver : E ≃ₐ[F] E :=
     rw [← h]
     exact IsCMField.complexConj_apply_eq_self E _
 
+/- English proof (translation)
+The claim follows from `isCMField F E complexConjOver F E x = IsCMField.complexConj E x := rfl`.
+-/
 theorem complexConjOver_apply (x : E) :
     haveI := isCMField F E
     complexConjOver F E x = IsCMField.complexConj E x := rfl
 
 variable {F E}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hsurj : Function.Surjective (Algebra.linearMap F E)` using `fun x => hall x`. Establish `h1` using `LinearMap.finrank_range_le (Algebra.linearMap F E)`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr hsurj, finrank_top, Module.finrank_self, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_not_mem_range : ∃ x : E, x ∉ Set.range (algebraMap F E) := by
   by_contra hall
   push Not at hall
@@ -38,6 +49,11 @@ theorem exists_not_mem_range : ∃ x : E, x ∉ Set.range (algebraMap F E) := by
     Algebra.IsQuadraticExtension.finrank_eq_two] at h1
   omega
 
+/- English proof (translation)
+Use `⟨Algebra.trace F E x / 2, ?_⟩` and prove the remaining obligations. Establish `h2` using `add_conj (F := F) x`. Rewrite `h2` using `[hx]`. Rewrite using `[map_div₀, ← h2, map_ofNat]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_range_of_conj_eq {x : E} (hx : conj F E x = x) :
     x ∈ Set.range (algebraMap F E) := by
   refine ⟨Algebra.trace F E x / 2, ?_⟩
@@ -49,11 +65,17 @@ theorem mem_range_of_conj_eq {x : E} (hx : conj F E x = x) :
 
 variable (F E)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨x, hx⟩` from `exists_not_mem_range (F := F) (E := E)`. Conclude with `hx (mem_range_of_conj_eq (by rw [h]; rfl))`.
+-/
 theorem conj_ne_one : conj F E ≠ 1 := by
   intro h
   obtain ⟨x, hx⟩ := exists_not_mem_range (F := F) (E := E)
   exact hx (mem_range_of_conj_eq (by rw [h]; rfl))
 
+/- English proof (translation)
+The claim follows from `isCMField F E conj F E x = IsCMField.complexConj E x := by haveI := isCMField F E have hcard : Nat.card (E ≃ₐ[F] E) = 2 := by rw [IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two] have hσ : complexConjOver F E ≠ 1 := by intro h apply IsCMField.complexConj …`.
+-/
 theorem conj_eq_complexConj (x : E) :
     haveI := isCMField F E
     conj F E x = IsCMField.complexConj E x := by
@@ -70,16 +92,25 @@ theorem conj_eq_complexConj (x : E) :
   have := huniq.unique (conj_ne_one F E) hσ
   rw [this, complexConjOver_apply]
 
+/- English proof (translation)
+Use `haveI := isCMField F E`. Rewrite using `[conj_eq_complexConj, IsCMField.complexEmbedding_complexConj]`.
+-/
 theorem embedding_conj (φ : E →+* ℂ) (x : E) : φ (conj F E x) = starRingEnd ℂ (φ x) := by
   haveI := isCMField F E
   rw [conj_eq_complexConj, IsCMField.complexEmbedding_complexConj]
 
+/- English proof (translation)
+Rewrite using `[← embedding_conj F E, conj_algebraMap]`.
+-/
 theorem embedding_algebraMap_conj (φ : E →+* ℂ) (c : F) :
     starRingEnd ℂ (φ (algebraMap F E c)) = φ (algebraMap F E c) := by
   rw [← embedding_conj F E, conj_algebraMap]
 
 variable {F E}
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[← (basisOneOf hx).sum_repr y, Fin.sum_univ_two, basisOneOf_zero, basisOneOf_one, Algebra.smul_def, Algebra.smul_def]`. Simplify using `only [map_add, map_mul, hF, hxe, map_one]`.
+-/
 theorem ringHom_ext_of_not_mem {R : Type*} [CommRing R] {x : E}
     (hx : x ∉ Set.range (algebraMap F E)) {φ ψ : E →+* R}
     (hF : ∀ c, φ (algebraMap F E c) = ψ (algebraMap F E c)) (hxe : φ x = ψ x) : φ = ψ := by
@@ -90,6 +121,15 @@ theorem ringHom_ext_of_not_mem {R : Type*} [CommRing R] {x : E}
 
 variable (F E)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_not_mem_range (F := F) (E := E)`. Establish `hF : ∀ c, φ (algebraMap F E c) = ψ (algebraMap F E c)` using `fun c => congrArg (fun f : F →+* ℂ => f c) h`. Establish `hquad : ∀ χ : E →+* ℂ, χ a * χ a - χ (algebraMap F E (Algebra.trace F E a)) * χ a + χ (algebraMap F E (Algebra.norm F a)) = 0`. Introduce `χ`. Rewrite using `[← mul_conj (F := F) a, ← add_conj (F := F) a]`.
+
+Simplify using `only [map_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφ` using `hquad φ`. Establish `hψ` using `hquad ψ`. Rewrite `hψ` using `[← hF, ← hF]`.
+
+Establish `hfac : (ψ a - φ a) * (ψ a - (φ (algebraMap F E (Algebra.trace F E a)) - φ a)) = 0`. Take the linear combination `hψ - hφ`. Break down `mul_eq_zero.1 hfac with h1 | h1` into its components or cases. Use `left`. Conclude with `(ringHom_ext_of_not_mem ha hF (sub_eq_zero.1 h1).symm).symm`.
+
+Use `right`. Use `symm`. Use `ringHom_ext_of_not_mem ha (fun c => ?_) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, embedding_algebraMap_conj, hF]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← embedding_conj F E, sub_eq_zero.1 h1, conj_apply, map_sub]`.
+-/
 theorem eq_or_eq_conjugate_of_comp_eq (φ ψ : E →+* ℂ)
     (h : φ.comp (algebraMap F E) = ψ.comp (algebraMap F E)) :
     ψ = φ ∨ ψ = ComplexEmbedding.conjugate φ := by
@@ -117,6 +157,11 @@ theorem eq_or_eq_conjugate_of_comp_eq (φ ψ : E →+* ℂ)
     · rw [ComplexEmbedding.conjugate_coe_eq, ← embedding_conj F E, sub_eq_zero.1 h1, conj_apply,
         map_sub]
 
+/- English proof (translation)
+Use `eq_or_eq_conjugate_of_comp_eq F E φ ψ ?_` and prove the remaining obligations. Break down `InfinitePlace.mk_eq_iff.1 h with h' | h'` into its components or cases. Conclude with `h'`. Rewrite using `[← h']`. Use extensionality with `c`.
+
+Simplify using `only [ComplexEmbedding.conjugate_coe_eq, RingHom.coe_comp, Function.comp_apply]`. Conclude with `(embedding_algebraMap_conj F E φ c).symm`.
+-/
 theorem eq_or_eq_conjugate_of_mk_eq (φ ψ : E →+* ℂ)
     (h : InfinitePlace.mk (φ.comp (algebraMap F E)) = InfinitePlace.mk (ψ.comp (algebraMap F E))) :
     ψ = φ ∨ ψ = ComplexEmbedding.conjugate φ := by
@@ -128,6 +173,9 @@ theorem eq_or_eq_conjugate_of_mk_eq (φ ψ : E →+* ℂ)
     simp only [ComplexEmbedding.conjugate_coe_eq, RingHom.coe_comp, Function.comp_apply]
     exact (embedding_algebraMap_conj F E φ c).symm
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `InfinitePlace.comap_surjective (k := F) (K := E) v`. Use `⟨w.embedding, ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Conclude with `hw`.
+-/
 theorem exists_embedding_over (v : InfinitePlace F) :
     ∃ φ : E →+* ℂ, InfinitePlace.mk (φ.comp (algebraMap F E)) = v := by
   obtain ⟨w, hw⟩ := InfinitePlace.comap_surjective (k := F) (K := E) v
@@ -138,6 +186,9 @@ theorem exists_embedding_over (v : InfinitePlace F) :
 omit [NumberField F] in
 variable {F} in
 
+/- English proof (translation)
+The claim follows from `IsTotallyReal.isReal v`.
+-/
 theorem isReal_place (v : InfinitePlace F) : v.IsReal := IsTotallyReal.isReal v
 
 end Datum

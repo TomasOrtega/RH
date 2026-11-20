@@ -69,6 +69,9 @@ def FrameRatAll : Prop :=
 
 end Gen
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e1 : W'.gram i j = W.hT (ι (W'.frame i)) (ι (W'.frame j))` using `(h1 _ _).symm`. Rewrite using `[e1, ← hE_repr D W]`. Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, frameMat, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_frameMat (D : D7) (W W' : HSpace D.host.E) (ι : W'.V →ₗ[D.host.E] W.V)
     (h1 : HSpace.IsIsomEmb W' W ι) :
     W'.gram = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat D W W' ι) * W.gram * frameMat D W W' ι := by

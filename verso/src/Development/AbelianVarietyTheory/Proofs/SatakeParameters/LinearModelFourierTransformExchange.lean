@@ -32,6 +32,9 @@ def flatT (n r : ℕ) : Matrix (Fin r) (Fin n) k ≃ₜ (Fin n × Fin r → k) w
   continuous_toFun := continuous_pi fun p => (continuous_apply p.1).comp (continuous_apply p.2)
   continuous_invFun := continuous_pi fun j => continuous_pi fun i => continuous_apply (i, j)
 
+/- English proof (translation)
+Simplify using `only [trace, diag, mul_apply, dotProduct, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show x j i * y i j = y i j * x j i`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_mul_eq_dotProduct {n r : ℕ} (x : Matrix (Fin r) (Fin n) k) (y : Matrix (Fin n) (Fin r) k) :
     trace (x * y) = flat n r y ⬝ᵥ flatT n r x := by
   simp only [trace, diag, mul_apply, dotProduct, Fintype.sum_prod_type]
@@ -40,6 +43,9 @@ theorem trace_mul_eq_dotProduct {n r : ℕ} (x : Matrix (Fin r) (Fin n) k) (y : 
   show x j i * y i j = y i j * x j i
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+-/
 theorem comp_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : Y ≃ₜ X) {f : X → ℂ}
     (hf : f ∈ GlobalTheory.SplitWeil.SB X) : (f ∘ e) ∈ GlobalTheory.SplitWeil.SB Y :=
   ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩
@@ -52,6 +58,9 @@ def fou (ψ : AddChar k Circle) (ν : Measure k) (n r : ℕ) (Φ : Matrix (Fin n
 
 variable [BorelSpace k] {ψ : AddChar k Circle} (ν : Measure k) [ν.IsAddHaarMeasure] {n r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[fou, integral_volM_eq_pi]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[trace_mul_eq_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem fou_eq_pi (Φ : Matrix (Fin n) (Fin r) k → ℂ) (x : Matrix (Fin r) (Fin n) k) :
     fou ψ ν n r Φ x = ∫ z, (Φ ∘ (flat n r).symm) z * (ψ (z ⬝ᵥ flatT n r x) : ℂ) ∂(Measure.pi fun _ => ν) := by
   rw [fou, integral_volM_eq_pi]
@@ -60,6 +69,11 @@ theorem fou_eq_pi (Φ : Matrix (Fin n) (Fin r) k → ℂ) (x : Matrix (Fin r) (F
   rw [trace_mul_eq_dotProduct]
   rfl
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `letI : MeasurableSpace (Matrix (Fin n) (Fin r) k) := GlobalTheory.SplitWeil.matrixMeasurableSpace`. Use `haveI : BorelSpace (Matrix (Fin n) (Fin r) k) := inferInstanceAs (BorelSpace (Fin n → Fin r → k))`. Use `haveI : (volM ν (Fin n) (Fin r)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : IsFiniteMeasureOnCompacts (volM ν (Fin n) (Fin r)) := inferInstance`.
+
+Establish `hc : Continuous fun y : Matrix (Fin n) (Fin r) k => f y * (ψ (trace (x * y)) : ℂ)` using `hf.1.continuous.mul (continuous_subtype_val.comp (hψ.comp ((continuous_const.matrix_mul continuous_id).matrix_trace)))`. Conclude with `hc.integrable_of_hasCompactSupport (μ := volM ν (Fin n) (Fin r)) hf.2.mul_right`.
+-/
 theorem integrable_fou (hψ : Continuous ψ) {f : Matrix (Fin n) (Fin r) k → ℂ}
     (hf : f ∈ SB (Matrix (Fin n) (Fin r) k)) (x : Matrix (Fin r) (Fin n) k) :
     Integrable (fun y => f y * (ψ (trace (x * y)) : ℂ)) (volM ν (Fin n) (Fin r)) := by
@@ -73,6 +87,11 @@ theorem integrable_fou (hψ : Continuous ψ) {f : Matrix (Fin n) (Fin r) k → �
       (hψ.comp ((continuous_const.matrix_mul continuous_id).matrix_trace)))
   exact hc.integrable_of_hasCompactSupport (μ := volM ν (Fin n) (Fin r)) hf.2.mul_right
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Take `⟨c, hc⟩` from `(conductor_exists k).1 ψ hψ h1`. Establish `h2` using `FourierPi.fourier_mem_SB (Measure.pi fun _ : Fin n × Fin r => ν) hc (comp_mem_SB (flat n r).symm hf)`. Establish `h3 : fou ψ ν n r f = (fun y => ∫ z, (f ∘ (flat n r).symm) z * (ψ (z ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ => ν)) ∘ flatT n r` using `funext fun x => fou_eq_pi ν f x`. Rewrite using `[h3]`.
+
+Conclude with `comp_mem_SB _ h2`.
+-/
 theorem fou_mem (hψ : Continuous ψ) (h1 : ψ ≠ 1) {f : Matrix (Fin n) (Fin r) k → ℂ}
     (hf : f ∈ SB (Matrix (Fin n) (Fin r) k)) : fou ψ ν n r f ∈ SB (Matrix (Fin r) (Fin n) k) := by
   haveI := secondCountable k
@@ -84,10 +103,28 @@ theorem fou_mem (hψ : Continuous ψ) (h1 : ψ ≠ 1) {f : Matrix (Fin n) (Fin r
   rw [h3]
   exact comp_mem_SB _ h2
 
+/- English proof (translation)
+Simplify using `[nabs, map_inv]`.
+-/
 theorem nabs_det_inv {m : ℕ} (g : GL (Fin m) k) :
     nabs k (Matrix.GeneralLinearGroup.det g⁻¹) = (nabs k (Matrix.GeneralLinearGroup.det g))⁻¹ := by
   simp [nabs, map_inv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `set F : Matrix (Fin n) (Fin r) k → ℂ := fun z => Φ z * (ψ (trace (((hk⁻¹ : GL (Fin r) k).val * x * gk.val) * z)) : ℂ) with hF`. Establish `key` using `integral_comp_mul_mul_volM ν hk gk⁻¹ F`. Establish `htr : ∀ y : Matrix (Fin n) (Fin r) k, trace ((hk⁻¹ : GL (Fin r) k).val * x * gk.val * ((gk⁻¹ : GL (Fin n) k).val * y * hk.val)) = trace (x * y)`. Introduce `y`.
+
+Establish `e : (hk⁻¹ : GL (Fin r) k).val * x * gk.val * ((gk⁻¹ : GL (Fin n) k).val * y * hk.val) = (hk⁻¹ : GL (Fin r) k).val * (x * y * hk.val)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.mul_inv, Matrix.mul_one]`. Rewrite using `[e, trace_mul_comm]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `set A : ℂ := (μ (Matrix.GeneralLinearGroup.det hk) : ℂ) * ((μ (Matrix.GeneralLinearGroup.det gk))⁻¹ : ℂˣ) * ((nabs k (Matrix.GeneralLinearGroup.det hk) ^ ((Fintype.card (Fin n) : ℝ) / 2) : ℝ) : ℂ) * ((nabs k (Matrix.GeneralLinearGroup.det gk) ^ (-(Fintype.card (Fin r) : ℝ) / 2) : …`. Establish `lhs : fou ψ ν n r (om μ hk gk Φ) x = A * ∫ y, F ((gk⁻¹ : GL (Fin n) k).val * y * hk.val) ∂(volM ν (Fin n) (Fin r))`. Rewrite using `[fou, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [om, hF, htr, hA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFint : ∫ z, F z ∂(volM ν (Fin n) (Fin r)) = fou ψ ν n r Φ ((hk⁻¹ : GL (Fin r) k).val * x * gk.val)` using `rfl`. Rewrite using `[lhs, key, hFint, nabs_det_inv]`.
+
+Simplify using `only [om, hA, MonoidHom.inv_apply, inv_inv, Complex.real_smul, Fintype.card_fin]`. Use `set a := nabs k (Matrix.GeneralLinearGroup.det gk) with ha`. Use `set b := nabs k (Matrix.GeneralLinearGroup.det hk) with hb`. Establish `ha0 : 0 < a` using `nabs_pos' _`. Establish `hb0 : 0 < b` using `nabs_pos' _`.
+
+Establish `h1 : ((b ^ ((n : ℝ) / 2) : ℝ) : ℂ) * ((b ^ (-(n : ℝ)) : ℝ) : ℂ) = ((b ^ (-(n : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, ← Real.rpow_add hb0]`. Put the polynomial expressions in normal form. Establish `h2 : ((a ^ (-(r : ℝ) / 2) : ℝ) : ℂ) * ((a⁻¹ ^ (-(r : ℝ)) : ℝ) : ℂ) = ((a ^ ((r : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[Real.inv_rpow ha0.le, ← Real.rpow_neg ha0.le, neg_neg, ← Complex.ofReal_mul, ← Real.rpow_add ha0]`.
+
+Put the polynomial expressions in normal form. Rewrite using `[Complex.ofReal_mul]`. Take the linear combination `((μ (Matrix.GeneralLinearGroup.det hk) : ℂ) * ((μ (Matrix.GeneralLinearGroup.det gk))⁻¹ : ℂˣ) * fou ψ ν n r Φ ((hk⁻¹ : GL (Fin r) k).val * x * gk.val)) * (((a ^ (-(r : ℝ) / 2) : ℝ) : ℂ) * ((a⁻¹ ^ (-(r : ℝ)) : ℝ) : ℂ) * h1 + ((b ^ (-(n : ℝ) / 2) : ℝ) : ℂ) * h2)`.
+-/
 theorem fou_om (μ : kˣ →* ℂˣ) (gk : GL (Fin n) k) (hk : GL (Fin r) k) (Φ : Matrix (Fin n) (Fin r) k → ℂ) :
     fou ψ ν n r (om μ hk gk Φ) = om μ⁻¹ gk hk (fou ψ ν n r Φ) := by
   funext x
@@ -151,6 +188,11 @@ def fouL (hψ : Continuous ψ) (h1 : ψ ≠ 1) :
     simp only [fou, Pi.smul_apply, smul_eq_mul, mul_assoc]
     exact integral_const_mul _ _
 
+/- English proof (translation)
+Introduce `G`. Take `⟨Φ₀, hΦ₀⟩` from `(FourierSurj.hat_surjective k (Fin n × Fin r) ψ hψ h1 ν hν).2 ⟨_, comp_mem_SB (flatT n r).symm G.2⟩`. Use `⟨⟨Φ₀.1 ∘ flat n r, comp_mem_SB _ Φ₀.2⟩, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Use `show fou ψ ν n r (Φ₀.1 ∘ flat n r) x = G.1 x`. Establish `h2` using `congrFun hΦ₀ (flatT n r x)`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat, Function.comp_apply, Homeomorph.symm_apply_apply] at h2`. Rewrite using `[fou_eq_pi, ← h2]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, Homeomorph.apply_symm_apply, dotProduct_comm z]`.
+-/
 theorem fouL_surjective (hψ : Continuous ψ) (h1 : ψ ≠ 1) (hν : IsSelfDual ψ ν) :
     Function.Surjective (fouL (n := n) (r := r) ν hψ h1) := by
   intro G
@@ -167,6 +209,11 @@ theorem fouL_surjective (hψ : Continuous ψ) (h1 : ψ ≠ 1) (hν : IsSelfDual 
 
 end GlobalTheory.LinearModelFourier
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n r`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Take `⟨ψ, hψ, h1, -⟩` from `(conductor_exists k).2.1`. Take `⟨ν, hν⟩` from `(selfDual_measure k ψ hψ h1).1`.
+
+Use `haveI := hν.1`. Use `⟨GlobalTheory.LinearModelFourier.fouL ν hψ h1, GlobalTheory.LinearModelFourier.fouL_surjective ν hψ h1 hν, fun μ gk hk Φ Φ' hΦ => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.LinearModelFourier.fou ψ ν n r Φ'.1 = om μ⁻¹ gk hk (GlobalTheory.LinearModelFourier.fou ψ ν n r Φ.1)`. Rewrite using `[hΦ]`. Conclude with `GlobalTheory.LinearModelFourier.fou_om ν μ gk hk Φ.1`.
+-/
 theorem GlobalTheory.linearModel_fourier : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n r : ℕ), ∃ τ : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] GlobalTheory.SplitWeil.SB (Matrix (Fin r) (Fin n) k), Function.Surjective τ ∧ ∀ (μ : kˣ →* ℂˣ) (gk : GL (Fin n) k) (hk : GL (Fin r) k) (Φ Φ' : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) k)), Φ'.1 = GlobalTheory.SplitWeil.om μ hk gk Φ.1 → (τ Φ').1 = GlobalTheory.SplitWeil.om μ⁻¹ gk hk (τ Φ).1 := by
   intro k _ _ _ _ n r
   letI : MeasurableSpace k := borel k

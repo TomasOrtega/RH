@@ -22,6 +22,9 @@ def diagOp (T : Fin k → ∀ e, M e ⟶ M (e + 1)) (d : ℕ) (j : Fin k) (e : �
 
 abbrev kerSeq (T : Fin k → ∀ e, M e ⟶ M (e + 1)) (d e : ℕ) : X.Modules := kernel (sumMap T d e)
 
+/- English proof (translation)
+Apply `biproduct.hom_ext'` to reduce the goal to its premises. Introduce `i`. Simplify using `only [diagOp, sumMap, biproduct.ι_map_assoc, biproduct.ι_desc, biproduct.ι_desc_assoc]`. Conclude with `hc j i (d + e)`.
+-/
 theorem diagOp_sumMap (T : Fin k → ∀ e, M e ⟶ M (e + 1))
     (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (d : ℕ) (j : Fin k) (e : ℕ) :
     diagOp T d j e ≫ sumMap T d (e + 1) = sumMap T d e ≫ T j (d + e + 1) := by
@@ -37,11 +40,17 @@ def kerOp (T : Fin k → ∀ e, M e ⟶ M (e + 1))
     rw [Category.assoc, diagOp_sumMap T hc, kernel.condition_assoc, zero_comp])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `kernel.lift_ι _ _ _`.
+-/
 theorem kerOp_ι (T : Fin k → ∀ e, M e ⟶ M (e + 1))
     (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (d : ℕ) (j : Fin k) (e : ℕ) :
     kerOp T hc d j e ≫ kernel.ι _ = kernel.ι _ ≫ diagOp T d j e :=
   kernel.lift_ι _ _ _
 
+/- English proof (translation)
+Apply `biproduct.hom_ext` to reduce the goal to its premises. Introduce `l`. Simplify using `only [diagOp, Category.assoc, biproduct.map_π, biproduct.map_π_assoc]`. Conclude with `biproduct.π _ l ≫= hc i j (d + e)`.
+-/
 theorem diagOp_comm (T : Fin k → ∀ e, M e ⟶ M (e + 1))
     (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (d : ℕ) (i j : Fin k) (e : ℕ) :
     diagOp T d i e ≫ diagOp T d j (e + 1) = diagOp T d j e ≫ diagOp T d i (e + 1) := by
@@ -50,6 +59,9 @@ theorem diagOp_comm (T : Fin k → ∀ e, M e ⟶ M (e + 1))
   simp only [diagOp, Category.assoc, biproduct.map_π, biproduct.map_π_assoc]
   exact biproduct.π _ l ≫= hc i j (d + e)
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (kernel.ι _)]`. Simplify using `only [Category.assoc, kerOp_ι, kerOp_ι_assoc]`. Rewrite using `[diagOp_comm T hc]`.
+-/
 theorem kerOp_comm (T : Fin k → ∀ e, M e ⟶ M (e + 1))
     (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (d : ℕ) (i j : Fin k) (e : ℕ) :
     kerOp T hc d i e ≫ kerOp T hc d j (e + 1) = kerOp T hc d j e ≫ kerOp T hc d i (e + 1) := by
@@ -60,6 +72,9 @@ theorem kerOp_comm (T : Fin k → ∀ e, M e ⟶ M (e + 1))
 def kerSC (T : Fin k → ∀ e, M e ⟶ M (e + 1)) (d e : ℕ) : ShortComplex X.Modules :=
   ShortComplex.mk (kernel.ι (sumMap T d e)) (sumMap T d e) (kernel.condition _)
 
+/- English proof (translation)
+The claim follows from `ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _) mono_f := by dsimp [kerSC]; infer_instance epi_g := by dsimp [kerSC]; infer_instance`.
+-/
 theorem kerSC_shortExact (T : Fin k → ∀ e, M e ⟶ M (e + 1)) (d e : ℕ) [Epi (sumMap T d e)] :
     (kerSC T d e).ShortExact where
   exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel _)

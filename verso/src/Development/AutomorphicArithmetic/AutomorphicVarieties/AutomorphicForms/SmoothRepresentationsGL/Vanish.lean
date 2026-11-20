@@ -8,14 +8,25 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Introduce `i hi` and use `⟨by change φ (p.val i i) = 1; rw [(h i hi).1, map_one], fun j hj => by change φ (p.val i j) = 0; rw [(h i hi).2 j hj, map_zero]⟩`.
+-/
 private theorem isY_map {R T : Type} [CommRing R] [CommRing T] {n m : ℕ} (φ : R →+* T) {p : GL (Fin n) R}
     (h : IsY m p.val) : IsY m (GeneralLinearGroup.map φ p).val := fun i hi =>
   ⟨by change φ (p.val i i) = 1; rw [(h i hi).1, map_one],
     fun j hj => by change φ (p.val i j) = 0; rw [(h i hi).2 j hj, map_zero]⟩
 
+/- English proof (translation)
+Introduce `i _` and use `⟨by simp, fun j hj => by simp [Matrix.one_apply_ne hj.ne']⟩`.
+-/
 private theorem isY_one {R : Type} [CommRing R] {n m : ℕ} : IsY m (1 : GL (Fin n) R).val := fun i _ =>
   ⟨by simp, fun j hj => by simp [Matrix.one_apply_ne hj.ne']⟩
 
+/- English proof (translation)
+Introduce `i hi`. Establish `key : ∀ j, j ≤ i → (p * q).val i j = q.val i j`. Introduce `j hj`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i, (hp i hi).1, one_mul]`. Introduce `k _ hk`.
+
+Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[(hp i hi).2 k h, zero_mul]`. Rewrite using `[(hq k (hi.trans h.le)).2 j (hj.trans_lt h), mul_zero]`. Simplify using the standard rewrite rules. Conclude with `⟨by rw [key i le_rfl, (hq i hi).1], fun j hj => by rw [key j hj.le, (hq i hi).2 j hj]⟩`.
+-/
 private theorem isY_mul {R : Type} [CommRing R] {n m : ℕ} {p q : GL (Fin n) R}
     (hp : IsY m p.val) (hq : IsY m q.val) : IsY m (p * q).val := by
   intro i hi
@@ -33,6 +44,13 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun w _ => map_one _, fun w hw => absurd hw (Finset.notMem_empty w)⟩`. Consider the case `insert v S hv ih`. Take `⟨s, h1, h2⟩` from `ih`. Use `⟨s * locGL E n v (cmp v g), fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hw` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, h1 w hw.2, one_mul]`. Conclude with `GlobalTheory.CuspRep.pLoc_locGL_of_ne hw.1 _`. Rewrite using `[map_mul]`. Break down `Finset.mem_insert.1 hw with rfl | h` into its components or cases.
+
+Rewrite using `[h1 w hv, one_mul]`. Conclude with `GlobalTheory.CuspRep.pLoc_locGL _ _`. Rewrite using `[h2 w h, show cmp w (locGL E n v (cmp v g)) = 1 from GlobalTheory.CuspRep.pLoc_locGL_of_ne (fun e : w = v => hv (e ▸ h)) _, mul_one]`.
+-/
 private theorem exists_part (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (Fin n) (Af E)) :
     ∃ s : GL (Fin n) (Af E), SuppIn S s ∧ ∀ w ∈ S, cmp w s = cmp w g := by
   classical
@@ -51,24 +69,45 @@ private theorem exists_part (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GL (F
       · rw [h2 w h, show cmp w (locGL E n v (cmp v g)) = 1 from
           GlobalTheory.CuspRep.pLoc_locGL_of_ne (fun e : w = v => hv (e ▸ h)) _, mul_one]
 
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ h`.
+-/
 private theorem af_ext {x y : Af E} (h : ∀ w, pLoc E w x = pLoc E w y) : x = y :=
   DFunLike.ext _ _ h
 
+/- English proof (translation)
+Introduce `i hi` and use `⟨af_ext fun w => by rw [map_one]; exact (h w i hi).1, fun j hj => af_ext fun w => by rw [map_zero]; exact (h w i hi).2 j hj⟩`.
+-/
 private theorem isY_af {m : ℕ} {s : GL (Fin n) (Af E)} (h : ∀ w, IsY m (cmp w s).val) : IsY m s.val := fun i hi =>
   ⟨af_ext fun w => by rw [map_one]; exact (h w i hi).1,
     fun j hj => af_ext fun w => by rw [map_zero]; exact (h w i hi).2 j hj⟩
 
+/- English proof (translation)
+Rewrite using `[finGL, GlobalTheory.CuspRep.map_cornerGL_of_hom _ _ (RingHom.id _) fun x => rfl]`. Both sides reduce to the same expression.
+-/
 private theorem pFin_finGL (k : GL (Fin n) (Af E)) : GeneralLinearGroup.map (pFin E) (finGL E n k) = k := by
   rw [finGL, GlobalTheory.CuspRep.map_cornerGL_of_hom _ _ (RingHom.id _) fun x => rfl]
   rfl
 
 variable [IsTotallyReal E]
 
+/- English proof (translation)
+Introduce `i hi` and use `⟨TR.ad_ext (by rw [map_one]; exact (h1 i hi).1) (by rw [map_one]; exact (h2 i hi).1), fun j hj => TR.ad_ext (by rw [map_zero]; exact (h1 i hi).2 j hj) (by rw [map_zero]; exact (h2 i hi).2 j hj)⟩`.
+-/
 private theorem isY_ad {m : ℕ} {g : GA E n} (h1 : IsY m (GeneralLinearGroup.map (pInf E) g).val)
     (h2 : IsY m (GeneralLinearGroup.map (pFin E) g).val) : IsY m g.val := fun i hi =>
   ⟨TR.ad_ext (by rw [map_one]; exact (h1 i hi).1) (by rw [map_one]; exact (h2 i hi).1),
     fun j hj => TR.ad_ext (by rw [map_zero]; exact (h1 i hi).2 j hj) (by rw [map_zero]; exact (h2 i hi).2 j hj)⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hg⟩` from `exists_part S (GeneralLinearGroup.map (pFin E) g)`. Establish `e : GeneralLinearGroup.map (pFin E) (infGL E n (GeneralLinearGroup.map (pInf E) g) * finGL E n s) = s`. Rewrite using `[map_mul, TR.pFin_infGL, pFin_finGL, one_mul]`. Use `⟨infGL E n (GeneralLinearGroup.map (pInf E) g) * finGL E n s, s⁻¹ * GeneralLinearGroup.map (pFin E) g, ⟨isY_ad ?_ ?_, ?_⟩, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, TR.pInf_infGL, TR.pInf_finGL, mul_one]`.
+
+Conclude with `h1`. Rewrite using `[e]`. Use `isY_af fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hg w hw]`.
+
+Conclude with `h2 w hw`. Rewrite using `[hs w hw]`. Conclude with `isY_one`. Rewrite using `[e]`. Conclude with `hs`.
+
+Rewrite using `[map_mul, map_inv, hg w hw, inv_mul_cancel]`. Rewrite using `[mul_assoc, ← map_mul, mul_inv_cancel_left, TR.infGL_mul_finGL]`.
+-/
 private theorem exists_dec (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GA E n)
     (h1 : IsY (n - 1) (GeneralLinearGroup.map (pInf E) g).val)
     (h2 : ∀ w ∈ S, IsY (n - 1) (cmp w (GeneralLinearGroup.map (pFin E) g)).val) :
@@ -91,6 +130,15 @@ private theorem exists_dec (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GA E n
 
 end
 
+/- English proof (translation)
+Introduce `hSA hI hD hWB hEM E _ _ _ n hn S B f hf hS hK h0`. Establish `hW : ∀ p, InPS S p → ∀ k, Away S k → whittaker f (p * finGL E n k) = 0` using `fun p hp => hSA E n S B (whittaker f) (hWB E n f hf).2.2 (fun w hw => ⟨(hS w hw).1, (hEM E n w (B w) f (hS w hw).2).1 hf⟩) (fun g k hk => by`. Unfold `whittaker`. Simplify using `only [← mul_assoc, hK _ k hk]) p hp.2 (h0 p hp)`. Establish `hX` using `hI E n hn f hf {g | IsY (n - 1) (GeneralLinearGroup.map (pInf E) g).val ∧ ∀ w ∈ S, IsY (n - 1) (cmp w (GeneralLinearGroup.map (pFin E) g)).val} (fun γ hγ g hg => by`.
+
+Establish `h : IsY (n - 1) (ratGL E n γ).val` using `isY_map _ hγ`. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `isY_mul (isY_map _ h) hg.1`. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `isY_mul (isY_map _ (isY_map _ h)) (hg.2 w hw))`. Use the proof step `(fun g hg => by`. Take `⟨p, k, hp, hk, rfl⟩` from `exists_dec S g hg.1 hg.2`. Conclude with `hW p hp k hk)`. Use `Continuous.ext_on (hD E n S) hf.cont continuous_const ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨γ, k, hk, rfl⟩`. Establish `h : f (finGL E n k) = 0` using `hX _ ⟨by rw [TR.pInf_finGL]; exact isY_one, fun w hw => by`. Rewrite using `[pFin_finGL, hk w hw]`. Conclude with `isY_one⟩`. Conclude with `(hf.left γ _).trans h`.
+-/
 theorem UpperTheory.V.Af.Smo.vanish :
     UpperTheory.V.Af.Smo.SphAll → UpperTheory.V.Af.Smo.InjP → UpperTheory.V.Af.Smo.DenseAway → UpperTheory.V.Af.Smo.WhBasic → UpperTheory.V.Af.Smo.EigMap → UpperTheory.V.Af.Smo.Vanish := by
   intro hSA hI hD hWB hEM E _ _ _ n hn S B f hf hS hK h0

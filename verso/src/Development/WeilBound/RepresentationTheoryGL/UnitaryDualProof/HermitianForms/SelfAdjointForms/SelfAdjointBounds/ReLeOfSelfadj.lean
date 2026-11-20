@@ -10,6 +10,11 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing P
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h1` using `hB.2 (v - u)`. Establish `h2` using `hB.1 u v`. Rewrite `h2` using `[h]`. Simplify using `only [map_sub, LinearMap.sub_apply, Complex.sub_re] at h1`. Rewrite `h1` using `[h2, h, Complex.conj_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_le_of_selfadj {V : Type} [AddCommGroup V] [Module ℂ V] {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hB : IsPsd B) (u v : V)
     (h : B u v = B u u) : (B u u).re ≤ (B v v).re := by
   have h1 := hB.2 (v - u)

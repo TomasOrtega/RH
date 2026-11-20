@@ -39,19 +39,31 @@ def red1 {A : C ⥤ CommAlgCat.{0} R} {B : C ⥤ CommAlgCat.{0} R₀} (a : BC A 
 def red2 {A : C ⥤ CommAlgCat.{0} R} {B : C ⥤ CommAlgCat.{0} R₀} (a : BC A B) (y : C2 A) : C2 B :=
   fun T T' T'' φ ψ ↦ a.α T'' (y T T' T'' φ ψ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T T' φ`. Simplify using `only [amitsur_d0_apply, red1, map_sub, a.naturality]`.
+-/
 theorem coboundary_zero_reduction {A : C ⥤ CommAlgCat.{0} R} {B : C ⥤ CommAlgCat.{0} R₀} (a : BC A B) (g : C0 A) :
     d0 B (fun T ↦ a.α T (g T)) = red1 a (d0 A g) := by
   funext T T' φ
   simp only [amitsur_d0_apply, red1, map_sub, a.naturality]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only [d1_apply, red1, red2, map_sub, map_add, a.naturality]`.
+-/
 theorem coboundary_one_reduction {A : C ⥤ CommAlgCat.{0} R} {B : C ⥤ CommAlgCat.{0} R₀} (a : BC A B) (f : C1 A) :
     d1 B (red1 a f) = red2 a (d1 A f) := by
   funext T T' T'' φ ψ
   simp only [d1_apply, red1, red2, map_sub, map_add, a.naturality]
 
+/- English proof (translation)
+The claim follows from `LinearMap.mem_ker.1 ((commAlgFunctorCocyclesOne_eq_ker A).le f.2)`.
+-/
 theorem cocycle_d1_eq_zero {A : C ⥤ CommAlgCat.{0} R} (f : Z1 A) : d1 A f.1 = 0 :=
   LinearMap.mem_ker.1 ((commAlgFunctorCocyclesOne_eq_ker A).le f.2)
 
+/- English proof (translation)
+Use `commAlgFunctorCoboundaryZero_mem_cocyclesOne A g` as an intermediate fact. Rewrite `this` using `[commAlgFunctorCocyclesOne_eq_ker]`. Conclude with `this`.
+-/
 theorem diffOne_diffZero (A : C ⥤ CommAlgCat.{0} R) (g : C0 A) : d1 A (d0 A g) = 0 := by
   have := commAlgFunctorCoboundaryZero_mem_cocyclesOne A g
   rw [commAlgFunctorCocyclesOne_eq_ker] at this
@@ -63,6 +75,13 @@ def Bd (a : BC F F₀) (b : BC F Fk) (t : R) (c : H1 F₀) (z : H2 Fk) : Prop :=
 
 variable {a : BC F F₀} {b : BC F Fk} {t : R}
 
+/- English proof (translation)
+Introduce `T T' T'' T''' φ ψ χ`. Establish `h` using `differential_one_mem_scaled_lattice F f φ ψ χ`. Rewrite `h` using `[e]`. Simplify using `only [Pi.smul_apply, map_smul] at h`. Establish `k : t • (mp F χ (y T T' T'' φ ψ) + y T T'' T''' (φ ≫ ψ) χ - y T T' T''' φ (ψ ≫ χ) - y T' T'' T''' ψ χ) = 0`.
+
+Simplify using `only [smul_sub, smul_add, h]`. Normalize the expressions using the abelian group laws. Establish `k'` using `hb.ann _ _ k`. Simplify using `only [map_sub, map_add, b.naturality] at k'`. Simplify using `only [red2]`.
+
+Take the linear combination `k'`.
+-/
 theorem reduction_mem_cocycles_of_smul (hb : ExB b t) (f : C1 F) (y : C2 F) (e : d1 F f = t • y) : red2 b y ∈ Z2 Fk := by
   intro T T' T'' T''' φ ψ χ
   have h := differential_one_mem_scaled_lattice F f φ ψ χ
@@ -76,6 +95,13 @@ theorem reduction_mem_cocycles_of_smul (hb : ExB b t) (f : C1 F) (y : C2 F) (e :
   simp only [red2]
   linear_combination k'
 
+/- English proof (translation)
+Take `⟨f₀, rfl⟩` from `H1.mk_surjective F₀ c`. Use `choose l hl using fun T T' (φ : T ⟶ T') ↦ ha.surj T' (f₀.1 T T' φ)`. Establish `e₁ : red1 a l = f₀.1` using `by funext T T' φ; exact hl T T' φ`. Establish `e₂ : ∀ T T' T'' (φ : T ⟶ T') (ψ : T' ⟶ T''), a.α T'' (d1 F l T T' T'' φ ψ) = 0`. Introduce `T T' T'' φ ψ`.
+
+Establish `h : d1 F₀ (red1 a l) = 0`. Rewrite using `[e₁]`. Conclude with `cocycle_d1_eq_zero f₀`. Rewrite `h` using `[coboundary_one_reduction]`. Conclude with `congrFun (congrFun (congrFun (congrFun (congrFun h T) T') T'') φ) ψ`.
+
+Use `choose y hy using fun T T' T'' (φ : T ⟶ T') (ψ : T' ⟶ T'') ↦ ha.ker T'' _ (e₂ T T' T'' φ ψ)`. Establish `e₃ : d1 F l = t • (y : C2 F)` using `by funext T T' T'' φ ψ; exact hy T T' T'' φ ψ`. Establish `hf : red1 a l ∈ Z1 F₀` using `e₁ ▸ f₀.2`. Conclude with `⟨_, l, y, hf, reduction_mem_cocycles_of_smul hb l y e₃, e₃, congrArg _ (Subtype.ext e₁), rfl⟩`.
+-/
 theorem bd_exists (ha : ExA a t) (hb : ExB b t) (c : H1 F₀) : ∃ z, Bd a b t c z := by
   obtain ⟨f₀, rfl⟩ := H1.mk_surjective F₀ c
   choose l hl using fun T T' (φ : T ⟶ T') ↦ ha.surj T' (f₀.1 T T' φ)
@@ -92,6 +118,19 @@ theorem bd_exists (ha : ExA a t) (hb : ExB b t) (c : H1 F₀) : ∃ z, Bd a b t 
   have hf : red1 a l ∈ Z1 F₀ := e₁ ▸ f₀.2
   exact ⟨_, l, y, hf, reduction_mem_cocycles_of_smul hb l y e₃, e₃, congrArg _ (Subtype.ext e₁), rfl⟩
 
+/- English proof (translation)
+Take `⟨f, y, hf, hy, e, rfl, rfl⟩` from `h`. Take `⟨f', y', hf', hy', e', ec, rfl⟩` from `h'`. Take `⟨g₀, hg₀⟩` from `H1.mk_eq_mk.1 ec.symm`. Use `choose g hg using fun T ↦ ha.surj T (g₀ T)`. Establish `e₁ : ∀ T T' (φ : T ⟶ T'), a.α T' ((f - f' - d0 F g) T T' φ) = 0`.
+
+Introduce `T T' φ`. Establish `h1 : d0 F₀ (fun T ↦ a.α T (g T)) = red1 a (d0 F g)` using `coboundary_zero_reduction a g`. Establish `h2 : (fun T ↦ a.α T (g T)) = g₀` using `funext hg`. Rewrite `h1` using `[h2, hg₀]`. Establish `h3` using `congrFun (congrFun (congrFun h1 T) T') φ`.
+
+Simplify using `only [Pi.sub_apply, red1] at h3`. Simplify using `only [Pi.sub_apply, map_sub]`. Take the linear combination `h3`. Use `choose w hw using fun T T' (φ : T ⟶ T') ↦ ha.ker T' _ (e₁ T T' φ)`. Establish `e₂ : f - f' - d0 F g = t • (w : C1 F)` using `by funext T T' φ; exact hw T T' φ`.
+
+Establish `e₃ : t • (y - y' - d1 F w) = 0`. Use `congrArg (d1 F) e₂` as an intermediate fact. Simplify using `only [map_sub, map_smul, diffOne_diffZero, e, e', sub_zero] at this`. Rewrite using `[smul_sub, smul_sub, this, sub_self]`. Use `H2.mk_eq_mk.2 ⟨red1 b w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coboundary_one_reduction]`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Establish `h4` using `hb.ann T'' _ (congrFun (congrFun (congrFun (congrFun (congrFun e₃ T) T') T'') φ) ψ)`. Simplify using `only [Pi.sub_apply, map_sub] at h4`. Simplify using `only [Pi.sub_apply, red2]`.
+
+Take the linear combination `-h4`.
+-/
 theorem bd_unique (ha : ExA a t) (hb : ExB b t) {c : H1 F₀} {z z' : H2 Fk} (h : Bd a b t c z)
     (h' : Bd a b t c z') : z = z' := by
   obtain ⟨f, y, hf, hy, e, rfl, rfl⟩ := h
@@ -121,6 +160,13 @@ theorem bd_unique (ha : ExA a t) (hb : ExB b t) {c : H1 F₀} {z z' : H2 Fk} (h 
   simp only [Pi.sub_apply, red2]
   linear_combination -h4
 
+/- English proof (translation)
+Take `⟨f, y, hf, hy, e, rfl, rfl⟩` from `h`. Take `⟨f', y', hf', hy', e', rfl, rfl⟩` from `h'`. Establish `k₁ : red1 a (f + f') = red1 a f + red1 a f'`. Use function extensionality and compare the values at `T T' φ`. Simplify using `[red1]`.
+
+Establish `k₂ : red2 b (y + y') = red2 b y + red2 b y'`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `[red2]`. Use `⟨f + f', y + y', k₁ ▸ add_mem hf hf', k₂ ▸ add_mem hy hy', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, e, e', smul_add]`.
+
+Rewrite using `[← map_add]`. Conclude with `congrArg _ (Subtype.ext k₁)`. Rewrite using `[← map_add]`. Conclude with `congrArg _ (Subtype.ext k₂)`.
+-/
 theorem Bd.add {c c' : H1 F₀} {z z' : H2 Fk} (h : Bd a b t c z) (h' : Bd a b t c' z') :
     Bd a b t (c + c') (z + z') := by
   obtain ⟨f, y, hf, hy, e, rfl, rfl⟩ := h
@@ -134,6 +180,17 @@ theorem Bd.add {c c' : H1 F₀} {z z' : H2 Fk} (h : Bd a b t c z) (h' : Bd a b t
   · rw [← map_add]; exact congrArg _ (Subtype.ext k₁)
   · rw [← map_add]; exact congrArg _ (Subtype.ext k₂)
 
+/- English proof (translation)
+Take `⟨f, y, hf, hy, e, rfl, e₀⟩` from `h`. Take `⟨g₀, hg₀⟩` from `H2.mk_eq_zero.1 e₀`. Use `choose g hg using fun T T' (φ : T ⟶ T') ↦ hb.surj T' (g₀ T T' φ)`. Establish `k₁ : red1 b g = g₀` using `by funext T T' φ; exact hg T T' φ`. Establish `k₂ : t • (y - d1 F g) = 0`.
+
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `hb.ker T'' _ ?_` and prove the remaining obligations. Establish `h1` using `coboundary_one_reduction b g`. Rewrite `h1` using `[k₁, hg₀]`. Establish `h2` using `congrFun (congrFun (congrFun (congrFun (congrFun h1 T) T') T'') φ) ψ`.
+
+Simplify using `only [red2] at h2`. Simplify using `only [Pi.sub_apply, map_sub]`. Take the linear combination `h2`. Establish `k₃ : d1 F (f - t • g) = 0`. Rewrite using `[map_sub, map_smul, e, ← smul_sub]`.
+
+Conclude with `k₂`. Use `⟨H1.mk F ⟨f - t • g, by rw [commAlgFunctorCocyclesOne_eq_ker]; exact k₃⟩, ?_⟩` and prove the remaining obligations. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `a.α T' (f T T' φ - t • g T T' φ) = a.α T' (f T T' φ)`.
+
+Rewrite using `[map_sub, ha.smul, sub_zero]`.
+-/
 theorem lift_of_bd (ha : ExA a t) (hb : ExB b t) {c : H1 F₀} (h : Bd a b t c 0) :
     ∃ d : H1 F, a.coef.pull1 d = c := by
   obtain ⟨f, y, hf, hy, e, rfl, e₀⟩ := h
@@ -157,6 +214,19 @@ theorem lift_of_bd (ha : ExA a t) (hb : ExB b t) {c : H1 F₀} (h : Bd a b t c 0
   change a.α T' (f T T' φ - t • g T T' φ) = a.α T' (f T T' φ)
   rw [map_sub, ha.smul, sub_zero]
 
+/- English proof (translation)
+Take `⟨f₀, rfl⟩` from `H1.mk_surjective F₀ c`. Use `choose l hl using fun T T' (φ : T ⟶ T') ↦ ha.surj T' (f₀.1 T T' φ)`. Break down `ht with rfl | ⟨u, rfl⟩` into its components or cases. Establish `inj : ∀ T x, a.α T x = 0 → x = 0` using `fun T x hx ↦ by`. Take `⟨y, rfl⟩` from `ha.ker T x hx`.
+
+Simplify using the standard rewrite rules. Establish `hl' : l ∈ Z1 F`. Rewrite using `[commAlgFunctorCocyclesOne_eq_ker]`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `inj _ _ ?_` and prove the remaining obligations.
+
+Establish `e₁ : red1 a l = f₀.1` using `by funext T T' φ; exact hl T T' φ`. Establish `h2 : d1 F₀ (red1 a l) = 0` using `by rw [e₁]; exact cocycle_d1_eq_zero f₀`. Rewrite `h2` using `[coboundary_one_reduction]`. Conclude with `congrFun (congrFun (congrFun (congrFun (congrFun h2 T) T') T'') φ) ψ`. Conclude with `⟨H1.mk F ⟨l, hl'⟩, congrArg _ (Subtype.ext (by funext T T' φ; exact hl T T' φ))⟩`.
+
+Establish `zero : ∀ T (x : F₀.obj T), x = 0` using `fun T x ↦ by`. Take `⟨x, rfl⟩` from `ha.surj T x`. Establish `: x = (u : R) • ((u⁻¹ : Rˣ) • x)` using `by simp [Units.smul_def, smul_smul]`. Rewrite using `[this]`. Conclude with `ha.smul T _`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `symm`. Use `H1.mk_eq_zero.2 ⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`.
+
+Conclude with `(zero _ _).trans (zero _ _).symm`.
+-/
 theorem lift_of_trivial (ha : ExA a t) (ht : t = 0 ∨ IsUnit t) (c : H1 F₀) :
     ∃ d : H1 F, a.coef.pull1 d = c := by
   obtain ⟨f₀, rfl⟩ := H1.mk_surjective F₀ c
@@ -209,6 +279,13 @@ def TriMap.c₀ (M : TriMap a b a' b') : CoefMap (RingHom.id R₀) F₀ G₀ := 
 
 def TriMap.ck (M : TriMap a b a' b') : CoefMap (RingHom.id K) Fk Gk := ⟨M.fn, M.αk, M.natk, M.smulk⟩
 
+/- English proof (translation)
+Take `⟨f, y, hf, hy, e, rfl, rfl⟩` from `h`. Set `f' : C1 G` to `fun T T' φ ↦ M.α T' (f _ _ (M.fn.map φ))`. Set `y' : C2 G` to `fun T T' T'' φ ψ ↦ M.α T'' (y _ _ _ (M.fn.map φ) (M.fn.map ψ))`. Establish `e₁ : red1 a' f' = (M.c₀.pullbackOneCocycle ⟨_, hf⟩).1`. Use function extensionality and compare the values at `T T' φ`.
+
+Conclude with `M.ca _ _`. Establish `e₂ : red2 b' y' = (M.ck.pullbackTwoCocycle ⟨_, hy⟩).1`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `M.cb _ _`. Use `⟨f', y', e₁ ▸ (M.c₀.pullbackOneCocycle ⟨_, hf⟩).2, e₂ ▸ (M.ck.pullbackTwoCocycle ⟨_, hy⟩).2, ?_, congrArg _ (Subtype.ext e₁), congrArg _ (Subtype.ext e₂)⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Establish `k` using `congrFun (congrFun (congrFun (congrFun (congrFun e _) _) _) (M.fn.map φ)) (M.fn.map ψ)`. Establish `k'` using `congrArg (M.α T'') k`. Simplify using `only [d1_apply, Pi.smul_apply, map_add, map_sub, M.smul, ← Functor.map_comp, M.nat] at k'`. Conclude with `k'`.
+-/
 theorem Bd.pull (M : TriMap a b a' b') {c : H1 F₀} {z : H2 Fk} (h : Bd a b t c z) :
     Bd a' b' t (M.c₀.pull1 c) (M.ck.pull2 z) := by
   obtain ⟨f, y, hf, hy, e, rfl, rfl⟩ := h
@@ -322,6 +399,9 @@ def rsR (f : Y ⟶ X) (u : Y ⟶ Sp R) : CoefMap (RingHom.id R) (OSys u (idSys Y
   naturality _ _ := rfl
   smul _ _ _ := rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem th_pull1_pairPull (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ)
     (w' : f' ≫ s' = u' ≫ spMap (RingHom.id R')) (c : HO1 s') :
@@ -330,6 +410,9 @@ theorem th_pull1_pairPull (hX : IsPullback φ s' s (spMap (algebraMap R R')))
   obtain ⟨g, rfl⟩ := H1.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem th_pull1_pairRes (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ) (c : HO1 u') :
     (th hX hY e).pull1 ((pairRes f' u').pull1 c) =
@@ -337,6 +420,9 @@ theorem th_pull1_pairRes (hX : IsPullback φ s' s (spMap (algebraMap R R')))
   obtain ⟨g, rfl⟩ := H1.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem th_pull2_pairPull (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ)
     (w' : f' ≫ s' = u' ≫ spMap (RingHom.id R')) (c : H2 (OAff s')) :
@@ -345,6 +431,9 @@ theorem th_pull2_pairPull (hX : IsPullback φ s' s (spMap (algebraMap R R')))
   obtain ⟨g, rfl⟩ := H2.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem th_pull2_pairRes (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ) (c : H2 (OAff u')) :
     (th hX hY e).pull2 ((pairRes f' u').pull2 c) =
@@ -352,6 +441,9 @@ theorem th_pull2_pairRes (hX : IsPullback φ s' s (spMap (algebraMap R R')))
   obtain ⟨g, rfl⟩ := H2.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem th_pull2_pairRes' (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ) (c : H2 (OAff u')) :
     (th hX hY e).pull2 ((pairRes f' u').pull2 c) =
@@ -359,11 +451,19 @@ theorem th_pull2_pairRes' (hX : IsPullback φ s' s (spMap (algebraMap R R')))
   obtain ⟨g, rfl⟩ := H2.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hL _ _ _ _ _ _ (hD R Z z hz P S)).1, (hL _ _ _ _ _ _ (hD R Z z hz P S)).2.1⟩`.
+-/
 theorem res_bij (hD : DescentSt) (hL : LowSt) {Z : Scheme.{0}} (z : Z ⟶ Sp R) (hz : IsSeparated z)
     {P : Type} [SemilatticeInf P] (S : Sys Z P) :
     Function.Bijective (resSys z S).pull1 ∧ Function.Bijective (resSys z S).pull2 :=
   ⟨(hL _ _ _ _ _ _ (hD R Z z hz P S)).1, (hL _ _ _ _ _ _ (hD R Z z hz P S)).2.1⟩
 
+/- English proof (translation)
+Establish `b₁ : Function.Bijective (pairRes f' u').pull2` using `(res_bij hD hL u' hu (pairSys f')).2`. Establish `b₂` using `(res_bij hD hL u' hu (pullSys hY (pairSys f))).2`. Take `⟨x, hx⟩` from `b₁.2 ((pairPull w').pull2 z)`. Establish `k : x = y` using `b₂.1 (by`. Rewrite using `[← th_pull2_pairRes' hX hY e x, hx, th_pull2_pairPull hX hY e w', h, ← th_pull2_pairRes hX hY e y, th_pull2_pairRes' hX hY e y])`.
+
+Conclude with `hx.symm.trans (congrArg _ k)`.
+-/
 theorem isPullback_second_cohomology_of_eq [X'.IsSeparated] [Y'.IsSeparated] (hD : DescentSt) (hL : LowSt) (hu : IsSeparated u')
     (hX : IsPullback φ s' s (spMap (algebraMap R R')))
     (hY : IsPullback ψ u' u (spMap (algebraMap R R'))) (e : ψ ≫ f = f' ≫ φ)
@@ -390,6 +490,9 @@ variable {X Y : Scheme.{0}} [X.IsSeparated] [Y.IsSeparated]
   {sk : Xk ⟶ Sp K} {uk : Yk ⟶ Sp K} {φ₀ : X₀ ⟶ X} {ψ₀ : Y₀ ⟶ Y} {φk : Xk ⟶ X} {ψk : Yk ⟶ Y}
   {f : Y ⟶ X} {f₀ : Y₀ ⟶ X₀} {fk : Yk ⟶ Xk}
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Simplify using `only [e]`.
+-/
 theorem appLE_sq {A B C D : Scheme.{0}} {a : B ⟶ A} {b : C ⟶ B} {c : D ⟶ A} {d : C ⟶ D} (e : b ≫ a = d ≫ c)
     {U : A.Opens} {V : B.Opens} {W : C.Opens} {T : D.Opens} (h₁ : V ≤ a ⁻¹ᵁ U) (h₂ : W ≤ b ⁻¹ᵁ V)
     (h₃ : T ≤ c ⁻¹ᵁ U) (h₄ : W ≤ d ⁻¹ᵁ T) :
@@ -434,6 +537,11 @@ def triR (f : Y ⟶ X) (hY₀ : IsPullback ψ₀ u₀ u (spMap (algebraMap R R�
   ca _ _ := rfl
   cb _ _ := rfl
 
+/- English proof (translation)
+Establish `k₁` using `B₁.pull (triP w hX₀ hY₀ e₀ w₀ hXk hYk ek wk)`. Establish `k₂` using `B₂.pull (triR f hY₀ hYk)`. Establish `e : (triP w hX₀ hY₀ e₀ w₀ hXk hYk ek wk).c₀.pull1 ((resSys s₀ (pullSys hX₀ (idSys X))).pull1 c) = (triR f hY₀ hYk).c₀.pull1 ((resSys u₀ (pullSys hY₀ (idSys Y))).pull1 d)`. Express the relevant statement in the definitionally equal form `(pcL hX₀ hY₀ e₀ w₀).pull1 _ = (rsL f hY₀).pull1 _`. Use `(th_pull1_pairPull hX₀ hY₀ e₀ w₀ c).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[show (pairPull w₀).pull1 c = (pairRes f₀ u₀).pull1 d from hc]`. Conclude with `th_pull1_pairRes hX₀ hY₀ e₀ d`. Rewrite `k₁` using `[e]`. Conclude with `bd_unique ha hb k₁ k₂`.
+-/
 theorem transfer {t : R} (w : f ≫ s = u ≫ spMap (RingHom.id R))
     (hX₀ : IsPullback φ₀ s₀ s (spMap (algebraMap R R₀))) (hY₀ : IsPullback ψ₀ u₀ u (spMap (algebraMap R R₀)))
     (e₀ : ψ₀ ≫ f = f₀ ≫ φ₀) (w₀ : f₀ ≫ s₀ = u₀ ≫ spMap (RingHom.id R₀))

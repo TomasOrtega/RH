@@ -15,11 +15,23 @@ section General
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[vecMul_vecMul, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero ρ) (map_one ρ), vecMul_one]`.
+-/
 theorem vecMul_map_inv {R S : Type} [CommRing R] [CommRing S] (ρ : R →+* S) (g : GL (Fin n) R) (x : Fin n → S) :
     (x ᵥ* (g : Matrix (Fin n) (Fin n) R).map ρ) ᵥ* ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map ρ = x := by
   rw [vecMul_vecMul, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one,
     Matrix.map_one _ (map_zero ρ) (map_one ρ), vecMul_one]
 
+/- English proof (translation)
+Set `q : 𝔸[K] →+* mixedEmbedding.mixedSpace K` to `(InfiniteAdeleRing.ringEquiv_mixedSpace K).toRingHom.comp (RingHom.fst (InfiniteAdeleRing K) 𝔸ᶠ[K])`. Set `p : 𝔸[K] →+* 𝔸ᶠ[K]` to `RingHom.snd (InfiniteAdeleRing K) 𝔸ᶠ[K]`. Set `A : (Fin n → mixedEmbedding.mixedSpace K) ≃L[ℝ] (Fin n → mixedEmbedding.mixedSpace K)` to `LinearEquiv.toContinuousLinearEquiv { toFun := fun x => x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K]).map q invFun := fun x => x ᵥ* ((h⁻¹ : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K]).map q map_add' := fun x y => add_vecMul _ _ _ map_smul' := fun r x => smul_vecMul _ _ _ left_inv := …`. Set `B : (Fin n → 𝔸ᶠ[K]) ≃ₜ (Fin n → 𝔸ᶠ[K])` to `{ toFun := fun x => x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K]).map p invFun := fun x => x ᵥ* ((h⁻¹ : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K]).map p left_inv := fun x => vecMul_map_inv p h x right_inv := fun x => by simpa using vecMul_map_inv p h⁻¹ x continuous_toFun := continu …`. Proceed by induction on `hF using Submodule.span_induction with`.
+
+Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Establish `hg' : (g ∘ B) ∈ finiteSchwartzBruhatPi K` using `⟨hg.1.comp_continuous B.continuous, hg.2.comp_homeomorph B⟩`. Use `schwartzBruhatTensorPi_mem (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ A φ) hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Establish `h1 : infPartPi (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K])) = A (infPartPi x)`. Use function extensionality and compare the values at `fun i => RingHom.map_vecMul q _ x i`. Establish `h2 : finPartPi (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K])) = B (finPartPi x)`. Use function extensionality and compare the values at `fun i => RingHom.map_vecMul p _ x i`. Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, h1, h2]`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul r G _ hG => exact Submodule.smul_mem _ r hG`.
+-/
 theorem comp_vecMul_mem (h : GL (Fin n) 𝔸[K]) {F : (Fin n → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K (Fin n)) :
     (fun x => F (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K]))) ∈ schwartzBruhatPi K (Fin n) := by
   let q : 𝔸[K] →+* mixedEmbedding.mixedSpace K :=
@@ -56,6 +68,11 @@ theorem comp_vecMul_mem (h : GL (Fin n) 𝔸[K]) {F : (Fin n → 𝔸[K]) → �
   | add G H _ _ hG hH => exact add_mem hG hH
   | smul r G _ hG => exact Submodule.smul_mem _ r hG
 
+/- English proof (translation)
+Use `set z := y ᵥ* ((h⁻¹ : GL (Fin n) 𝔸[K]) : Matrix (Fin n) (Fin n) 𝔸[K])ᵀ with hz`. Establish `hp : ∀ x : Fin n → 𝔸[K], ∑ i, x i * y i = ∑ i, (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K])) i * z i`. Introduce `x`. Express the relevant statement in the definitionally equal form `x ⬝ᵥ y = (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K])) ⬝ᵥ z`. Rewrite using `[hz, vecMul_transpose, dotProduct_mulVec, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`.
+
+Establish `hm` using `(vecMulHomeomorph h).measurableEmbedding.integral_map (μ := adeleMeasurePi K) (fun x => F x * (adelicChar K (∑ i, x i * z i) : ℂ))`. Establish `hmap : (adeleMeasurePi K).map (vecMulHomeomorph h) = _` using `map_vecMul_adeleMeasurePi h`. Rewrite `hm` using `[hmap, integral_smul_measure, ENNReal.toReal_ofReal (inv_nonneg.2 (IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det h)).2.le), Complex.real_smul]`. Simplify using `only [adelicFourierPi, hp]`. Conclude with `hm.symm`.
+-/
 theorem adelicFourierPi_comp_vecMul (h : GL (Fin n) 𝔸[K]) (F : (Fin n → 𝔸[K]) → ℂ) (y : Fin n → 𝔸[K]) :
     adelicFourierPi K (fun x => F (x ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K]))) y =
       (((IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det h) : ℝ)⁻¹ : ℝ) : ℂ) *
@@ -74,6 +91,9 @@ theorem adelicFourierPi_comp_vecMul (h : GL (Fin n) 𝔸[K]) (F : (Fin n → �
   simp only [adelicFourierPi, hp]
   exact hm.symm
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `poisson_of_mem_schwartzBruhatPi (comp_vecMul_mem h hF)`. Simplify using `only [adelicFourierPi_comp_vecMul, norm_mul] at h2 h3`. Use `⟨h1, (summable_mul_left_iff ?_).1 h2, h3.trans tsum_mul_left⟩` and prove the remaining obligations. Conclude with `norm_ne_zero_iff.2 (Complex.ofReal_ne_zero.2 (inv_ne_zero (IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det h)).2.ne'))`.
+-/
 theorem poisson_vecMul (h : GL (Fin n) 𝔸[K]) {F : (Fin n → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K (Fin n)) :
     Summable (fun ξ : Fin n → K =>
       ‖F ((fun i => algebraMap K 𝔸[K] (ξ i)) ᵥ* (h : Matrix (Fin n) (Fin n) 𝔸[K]))‖) ∧
@@ -98,10 +118,16 @@ variable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
 def toMixedRing : Cinf E ≃+* mixedEmbedding.mixedSpace E :=
   (infEq E).trans (InfiniteAdeleRing.ringEquiv_mixedSpace E)
 
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w.1)).apply_symm_apply (x w.1)`.
+-/
 theorem toMixedRing_snd (x : Cinf E) (w : {w : InfinitePlace E // w.IsComplex}) :
     (toMixedRing E x).2 w = x w.1 :=
   (InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w.1)).apply_symm_apply (x w.1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1) w.2⟩`.
+-/
 theorem isEmpty_isReal : IsEmpty {w : InfinitePlace E // w.IsReal} :=
   ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1) w.2⟩
 
@@ -111,14 +137,27 @@ def toMixed : Cinf E ≃L[ℝ] mixedEmbedding.mixedSpace E :=
       map_smul' := fun r x => Prod.ext (funext fun w => ((isEmpty_isReal E).false w).elim)
         (funext fun w => (toMixedRing_snd E _ w).trans (congrArg (r • ·) (toMixedRing_snd E x w).symm)) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMixed_apply (x : Cinf E) : toMixed E x = toMixedRing E x := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace E) ((infEq E).apply_symm_apply x.1)`.
+-/
 theorem toMixed_pInf (x : Ad E) : toMixed E (pInf E x) = homeomorphMixedSpace E x.1 :=
   congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace E) ((infEq E).apply_symm_apply x.1)
 
 def placeEquiv : {w : InfinitePlace E // w.IsComplex} ≃ InfinitePlace E :=
   Equiv.subtypeUnivEquiv IsTotallyComplex.isComplex
 
+/- English proof (translation)
+Use `isEmpty_isReal E` as an intermediate fact. Establish `: IsProbabilityMeasure (volume : Measure ({w : InfinitePlace E // w.IsReal} → ℝ))` using `⟨by rw [volume_pi, Measure.pi_univ]; simp⟩`. Establish `h` using `(volume_measurePreserving_piCongrLeft (fun _ : InfinitePlace E => ℂ) (placeEquiv E)).comp (measurePreserving_snd (μ := (volume : Measure ({w : InfinitePlace E // w.IsReal} → ℝ))))`. It suffices to establish `e : ⇑(toMixed E).symm = ⇑(MeasurableEquiv.piCongrLeft (fun _ : InfinitePlace E => ℂ) (placeEquiv E)) ∘ Prod.snd by`. Rewrite using `[e]`.
+
+Conclude with `h`. Use function extensionality and compare the values at `y w`. Take `⟨w, rfl⟩` from `(placeEquiv E).surjective w`. Simplify using `only [Function.comp_apply, MeasurableEquiv.piCongrLeft_apply_apply]`. Use `conv_rhs => rw [← (toMixed E).apply_symm_apply y]`.
+
+Conclude with `(toMixedRing_snd E _ w).symm`.
+-/
 theorem measurePreserving_toMixed_symm : MeasurePreserving (toMixed E).symm volume volume := by
   have := isEmpty_isReal E
   have : IsProbabilityMeasure (volume : Measure ({w : InfinitePlace E // w.IsReal} → ℝ)) :=
@@ -134,6 +173,9 @@ theorem measurePreserving_toMixed_symm : MeasurePreserving (toMixed E).symm volu
   conv_rhs => rw [← (toMixed E).apply_symm_apply y]
   exact (toMixedRing_snd E _ w).symm
 
+/- English proof (translation)
+Use `isEmpty_isReal E` as an intermediate fact. Rewrite using `[mixedTraceForm_apply', Finset.univ_eq_empty, Finset.sum_empty, zero_add, ← (placeEquiv E).sum_comp]`. Simplify using `only [toMixed_apply, toMixedRing_snd]`. Both sides reduce to the same expression.
+-/
 theorem mixedTraceForm_toMixed (x u : Cinf E) :
     mixedTraceForm E (toMixed E x) (toMixed E u) = ∑ w, 2 * (x w * u w).re := by
   have := isEmpty_isReal E
@@ -149,6 +191,13 @@ def toMixedPi : (Fin n → Cinf E) ≃L[ℝ] (Fin n → mixedEmbedding.mixedSpac
 def infMeasure : Measure (Fin n → Cinf E) :=
   (2 ^ (Fintype.card (InfinitePlace E) * n) : ℝ≥0∞) • volume
 
+/- English proof (translation)
+Establish `hc : InfinitePlace.nrComplexPlaces E = Fintype.card (InfinitePlace E)` using `Fintype.card_congr (placeEquiv E)`. Establish `h1 : MeasurePreserving (toMixed E).symm (selfDualMeasure E) ((2 ^ Fintype.card (InfinitePlace E) : ℝ≥0∞) • volume)`. Rewrite using `[selfDualMeasure, hc]`. Conclude with `(measurePreserving_toMixed_symm E).smul_measure _`. Use `haveI : SigmaFinite ((2 ^ Fintype.card (InfinitePlace E) : ℝ≥0∞) • (volume : Measure (Cinf E))) := by`.
+
+Establish `: (2 ^ Fintype.card (InfinitePlace E) : ℝ≥0∞) = ((2 ^ Fintype.card (InfinitePlace E) : NNReal) : ℝ≥0∞)`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `inferInstanceAs (SigmaFinite ((2 ^ Fintype.card (InfinitePlace E) : NNReal) • (volume : Measure (Cinf E))))`. Establish `h2` using `measurePreserving_pi (fun _ : Fin n => selfDualMeasure E) _ fun _ => h1`.
+
+Establish `h3 : (Measure.pi fun _ : Fin n => (2 ^ Fintype.card (InfinitePlace E) : ℝ≥0∞) • (volume : Measure (Cinf E))) = infMeasure E n`. Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Simplify using `only [infMeasure, Measure.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_mul, volume_pi_pi]`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 theorem measurePreserving_toMixedPi_symm :
     MeasurePreserving (toMixedPi E n).symm (mixedMeasurePi E) (infMeasure E n) := by
   have hc : InfinitePlace.nrComplexPlaces E = Fintype.card (InfinitePlace E) := Fintype.card_congr (placeEquiv E)
@@ -175,6 +224,11 @@ variable {E n}
 def infFourier (f : (Fin n → Cinf E) → ℂ) (u : Fin n → Cinf E) : ℂ :=
   ∫ x, f x * (𝐞 (-∑ i, ∑ w, 2 * (x i w * u i w).re) : ℂ) ∂infMeasure E n
 
+/- English proof (translation)
+Establish `h` using `adelicChar_sum_mul_eq_pi (fun i => sInf E (x i)) (fun i => sInf E (u i))`. Establish `h0 : ∀ v : Fin n → Cinf E, finPartPi (fun i => sInf E (v i)) = 0` using `fun v => rfl`. Establish `h1 : ∀ v : Fin n → Cinf E, infPartPi (fun i => sInf E (v i)) = fun i => toMixed E (v i)` using `fun v => rfl`. Simplify using `only [h0, h1, mixedPairingPi, mixedTraceForm_toMixed, Pi.zero_apply, mul_zero, Finset.sum_const_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one] at h`. Rewrite using `[← h, map_sum]`.
+
+Simplify using `only [map_mul]`.
+-/
 theorem adelicChar_sInf_sum (x u : Fin n → Cinf E) :
     (adelicChar E (sInf E (∑ i, x i * u i)) : ℂ) = (𝐞 (-∑ i, ∑ w, 2 * (x i w * u i w).re) : ℂ) := by
   have h := adelicChar_sum_mul_eq_pi (fun i => sInf E (x i)) (fun i => sInf E (u i))
@@ -188,6 +242,11 @@ theorem adelicChar_sInf_sum (x u : Fin n → Cinf E) :
 def toMixedSch (f : 𝓢(Fin n → Cinf E, ℂ)) : 𝓢(Fin n → mixedEmbedding.mixedSpace E, ℂ) :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toMixedPi E n).symm f
 
+/- English proof (translation)
+Rewrite using `[infFourier, ← (measurePreserving_toMixedPi_symm E n).integral_comp (toMixedPi E n).symm.toHomeomorph.measurableEmbedding, mixedFourierPi]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(toMixedPi E n).surjective y`. Establish `h : mixedPairingPi E (toMixedPi E n x) (toMixedPi E n u) = ∑ i, ∑ w, 2 * (x i w * u i w).re` using `Finset.sum_congr rfl fun i _ => mixedTraceForm_toMixed E (x i) (u i)`. Simplify using `only [h, toMixedSch, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, Circle.smul_def, smul_eq_mul]`.
+
+Conclude with `mul_comm _ _`.
+-/
 theorem mixedFourierPi_toMixedSch (f : 𝓢(Fin n → Cinf E, ℂ)) (u : Fin n → Cinf E) :
     mixedFourierPi E (toMixedSch f) (toMixedPi E n u) = infFourier f u := by
   rw [infFourier, ← (measurePreserving_toMixedPi_symm E n).integral_comp
@@ -208,9 +267,15 @@ def thetaFn (f : (Fin n → Cinf E) → ℂ) (J : (FractionalIdeal (𝓞 E)⁰ E
     (y : Fin n → Ad E) : ℂ :=
   f (fun i => pInf E (y i)) * (latt n J).indicator 1 ((fun i => pFin E (y i)) - η)
 
+/- English proof (translation)
+The claim follows from `funext fun i => toMixed_pInf E (y i)`.
+-/
 theorem toMixedPi_pInf (y : Fin n → Ad E) : toMixedPi E n (fun i => pInf E (y i)) = infPartPi y :=
   funext fun i => toMixed_pInf E (y i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Rewrite using `[thetaFn, schwartzBruhatTensorPi, ← toMixedPi_pInf]`. Simplify using `only [toMixedSch, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply, finiteTensor, cosetIndicator_apply, Finset.prod_boole, Finset.mem_univ, true_implies, Set.indicator_apply, latt, Pi.one_apply]`. Both sides reduce to the same expression.
+-/
 theorem thetaFn_eq (f : 𝓢(Fin n → Cinf E, ℂ)) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin n → Af E) :
     thetaFn f J η = schwartzBruhatTensorPi (toMixedSch f) (finiteTensor fun i => cosetIndicator J (η i)) := by
   funext y
@@ -220,6 +285,9 @@ theorem thetaFn_eq (f : 𝓢(Fin n → Cinf E, ℂ)) (J : (FractionalIdeal (𝓞
     true_implies, Set.indicator_apply, latt, Pi.one_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[thetaFn_eq]`. Conclude with `schwartzBruhatTensorPi_mem _ (finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J (η i))`.
+-/
 theorem thetaFn_mem (f : 𝓢(Fin n → Cinf E, ℂ)) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin n → Af E) :
     thetaFn f J η ∈ schwartzBruhatPi E (Fin n) := by
   rw [thetaFn_eq]
@@ -227,6 +295,9 @@ theorem thetaFn_mem (f : 𝓢(Fin n → Cinf E, ℂ)) (J : (FractionalIdeal (�
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `: latt n J = Set.univ.pi fun _ => (idealFiniteAdeles J : Set (Af E))`. Use extensionality with `z`. Simplify using `[latt]`. Rewrite using `[this, finiteMeasurePi, Measure.pi_pi]`. Simplify using the standard rewrite rules.
+-/
 theorem finiteMeasurePi_latt (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) :
     (finiteMeasurePi E (latt n J)).toReal = (finiteAdeleMeasure E (idealFiniteAdeles J)).toReal ^ n := by
   have : latt n J = Set.univ.pi fun _ => (idealFiniteAdeles J : Set (Af E)) := by
@@ -234,6 +305,9 @@ theorem finiteMeasurePi_latt (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) :
   rw [this, finiteMeasurePi, Measure.pi_pi]
   simp
 
+/- English proof (translation)
+Rewrite using `[thetaFn_eq, adelicFourierPi_schwartzBruhatTensorPi, schwartzBruhatTensorPi, mixedFourierPiSchwartz_apply, ← toMixedPi_pInf, mixedFourierPi_toMixedSch, finiteFourierPi_finiteTensor, finiteMeasurePi_latt, addChar_sum]`. Simplify using `only [finiteTensor, finiteFourier_cosetIndicator, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Set.indicator_apply, Finset.prod_boole, Finset.mem_univ, true_implies, latt, Pi.one_apply, SetLike.mem_coe, Set.mem_setOf_eq, Complex.ofReal_pow]`. Express the relevant statement in the definitionally equal form `_ * (_ * ((∏ i, (finiteAdelicChar E (η i * pFin E (y i)) : ℂ)) * if ∀ i, pFin E (y i) ∈ idealFiniteAdeles (traceDualIdeal E J) then 1 else 0)) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adelicFourierPi_thetaFn (f : 𝓢(Fin n → Cinf E, ℂ)) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin n → Af E)
     (y : Fin n → Ad E) :
     adelicFourierPi E (thetaFn f J η) y =

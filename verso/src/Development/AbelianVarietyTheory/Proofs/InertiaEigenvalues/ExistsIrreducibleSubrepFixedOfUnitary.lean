@@ -6,6 +6,11 @@ namespace GlobalTheory.UnitarySemisimple
 
 variable {H W : Type} [Group H] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrthogonalProjection.exists_orth_proj`. Consider the case `exact _root_.GlobalTheory.OrthogonalProjection.exists_orth_proj`. Consider the case `(apply _root_.GlobalTheory.OrthogonalProjection.exists_orth_proj <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrthogonalProjection.exists_orth_proj <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrthogonalProjection.exists_orth_proj <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrthogonalProjection.exists_orth_proj ..)`.
+-/
 theorem exists_orth_proj (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (hdef : ∀ v, B v v = 0 → v = 0)
     (M : Submodule ℂ W) [FiniteDimensional ℂ M] (v : W) :
     ∃ m ∈ M, ∀ z ∈ M, B z (v - m) = 0 := by
@@ -17,12 +22,21 @@ theorem exists_orth_proj (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (hdef : ∀ v,
   | (intros; apply @_root_.GlobalTheory.OrthogonalProjection.exists_orth_proj <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.OrthogonalProjection.exists_orth_proj ..)
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem rho_inv_rho (ρ : Representation ℂ H W) (g : H) (u : W) : ρ g⁻¹ (ρ g u) = u := by
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem rho_rho_inv (ρ : Representation ℂ H W) (g : H) (u : W) : ρ g (ρ g⁻¹ u) = u := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `z hz`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem orth_stable (ρ : Representation ℂ H W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ)
     (hinv : ∀ g u v, B (ρ g u) (ρ g v) = B u v) (Z : Subrepresentation ρ) (s : W)
     (hs : ∀ z ∈ Z.toSubmodule, B z s = 0) (g : H) : ∀ z ∈ Z.toSubmodule, B z (ρ g s) = 0 := by
@@ -31,6 +45,31 @@ theorem orth_stable (ρ : Representation ℂ H W) (B : W →ₗ⋆[ℂ] W →ₗ
     _ = B (ρ g⁻¹ z) s := hinv _ _ _
     _ = 0 := hs _ (Z.apply_mem_toSubmodule _ hz)
 
+/- English proof (translation)
+Take `⟨K, hvK, hfd, hfin⟩` from `hadm v`. Establish `ofF : ∀ u ∈ GlobalTheory.PRep.fixed ρ K, ∀ k ∈ K, ρ k u = u`. Introduce `u hu k hk`. Use `hu ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`.
+
+Establish `memF : ∀ u, (∀ k ∈ K, ρ k u = u) → u ∈ GlobalTheory.PRep.fixed ρ K`. Introduce `u hu k`. Use `show ρ (k : H) u = ((1 : ℂˣ) : ℂ) • u`. Simplify using `[hu k k.2]`. Use `haveI : FiniteDimensional ℂ (Z.toSubmodule ⊓ GlobalTheory.PRep.fixed ρ K : Submodule ℂ W) := Submodule.finiteDimensional_of_le inf_le_right`.
+
+Take `⟨m, hmM, hm⟩` from `exists_orth_proj B hdef (Z.toSubmodule ⊓ GlobalTheory.PRep.fixed ρ K) v`. Use `⟨m, hmM.1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hwK : ∀ k ∈ K, ρ k (v - m) = v - m`. Introduce `k hk`. Rewrite using `[map_sub, hvK k hk, ofF m hmM.2 k hk]`.
+
+Use `set s := (hfin z).toFinset with hs`. Establish `hmem : ∀ o ∈ s, ∃ k' : K, ρ k' z = o`. Introduce `o ho`. Simplify `ho` using `[s]`. Establish `hperm : ∀ k ∈ K, ∑ o ∈ s, ρ k o = ∑ o ∈ s, o`.
+
+Introduce `k hk`. Apply `Finset.sum_nbij' (fun o => ρ k o) (fun o => ρ k⁻¹ o)` to reduce the goal to its premises. Introduce `o ho`. Take `⟨k', rfl⟩` from `hmem o ho`. Simplify using `only [s, Set.Finite.mem_toFinset, Set.mem_range]`.
+
+Conclude with `⟨⟨k, hk⟩ * k', by simp [map_mul, Module.End.mul_apply]⟩`. Introduce `o ho`. Take `⟨k', rfl⟩` from `hmem o ho`. Simplify using `only [s, Set.Finite.mem_toFinset, Set.mem_range]`. Conclude with `⟨⟨k, hk⟩⁻¹ * k', by simp [map_mul, Module.End.mul_apply]⟩`.
+
+Introduce `o _`. Conclude with `rho_inv_rho ρ k o`. Introduce `o _`. Conclude with `rho_rho_inv ρ k o`. Introduce `o _`.
+
+Both sides reduce to the same expression. Establish `heZ : ∑ o ∈ s, o ∈ Z.toSubmodule`. Use `Submodule.sum_mem _ (fun o ho => ?_)` and prove the remaining obligations. Take `⟨k', rfl⟩` from `hmem o ho`. Conclude with `Z.apply_mem_toSubmodule _ hz`.
+
+Establish `heF : ∑ o ∈ s, o ∈ GlobalTheory.PRep.fixed ρ K`. Use `memF _ (fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[map_sum, hperm k hk]`. Establish `h0` using `hm _ ⟨heZ, heF⟩`. Establish `hterm : ∀ o ∈ s, B o (v - m) = B z (v - m)`.
+
+Introduce `o ho`. Take `⟨k', rfl⟩` from `hmem o ho`. Rewrite using `[← hinv k' z (v - m), hwK k' k'.2]`. Rewrite `h0` using `[map_sum, LinearMap.sum_apply, Finset.sum_congr rfl hterm, Finset.sum_const]`. Establish `hz1 : z ∈ s`.
+
+Simplify using `only [s, Set.Finite.mem_toFinset, Set.mem_range]`. Conclude with `⟨1, by simp⟩`. Establish `hcard : s.card ≠ 0` using `Finset.card_ne_zero.2 ⟨z, hz1⟩`. Rewrite `h0` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
+
+Conclude with `absurd (by exact_mod_cast h) hcard`. Conclude with `h`.
+-/
 theorem exists_compl_proj (ρ : Representation ℂ H W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ)
     (hdef : ∀ v, B v v = 0 → v = 0) (hinv : ∀ g u v, B (ρ g u) (ρ g v) = B u v)
     (hadm : ∀ v, ∃ K : Subgroup H, (∀ k ∈ K, ρ k v = v) ∧ FiniteDimensional ℂ (GlobalTheory.PRep.fixed ρ K) ∧
@@ -105,9 +144,15 @@ def orbSpan (ρ : Representation ℂ H W) (y : W) : Subrepresentation ρ :=
       exact ⟨g * h, by simp [map_mul]⟩
     exact hle (Submodule.mem_map_of_mem hv)⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+-/
 theorem mem_orbSpan (ρ : Representation ℂ H W) (y : W) : y ∈ (orbSpan ρ y).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact Z.apply_mem_toSubmodule g hy)`.
+-/
 theorem orbSpan_le (ρ : Representation ℂ H W) (y : W) (Z : Subrepresentation ρ)
     (hy : y ∈ Z.toSubmodule) : (orbSpan ρ y).toSubmodule ≤ Z.toSubmodule :=
   Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact Z.apply_mem_toSubmodule g hy)

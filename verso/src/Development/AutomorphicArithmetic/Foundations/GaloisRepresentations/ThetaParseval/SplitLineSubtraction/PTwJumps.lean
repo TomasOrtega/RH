@@ -13,6 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r c _ _ τ J m h1 h2`. Conclude with `(GlobalTheory.TwistAbove.twist_above l P AI hT E Ω (Dec (F := E) A) O Bw a r (tw r c) c (fun g => tw_val r c g)).2.2.2 τ J m h1 h2`.
+-/
 theorem twJumps_holds : TwJumps := by
   intro l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r c _ _ τ J m h1 h2
   exact (GlobalTheory.TwistAbove.twist_above l P AI hT E Ω (Dec (F := E) A) O Bw a r (tw r c) c

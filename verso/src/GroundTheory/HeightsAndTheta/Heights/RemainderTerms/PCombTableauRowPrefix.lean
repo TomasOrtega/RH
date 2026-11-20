@@ -6,6 +6,23 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open Finset Comb
 
+/- English proof (translation)
+Introduce `m lam T hT t`. Use `set c := T.symm t with hc`. Establish `hTc : T c = t` using `by simp [hc]`. Establish `key : ∀ p : youngCells lam, p.1.1 = c.1.1 → ((T p : ℕ) < (t : ℕ) ↔ p.1.2 < c.1.2)`. Introduce `p hp`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hlt`. Assume the negation of the conclusion as `hle'`. Establish `hle` using `not_lt.mp hle'`. Establish `h` using `hT c p hp.symm.le hle`.
+
+Rewrite `h` using `[hTc]`. Conclude with `absurd hlt (not_lt.mpr (Fin.le_def.mp h))`. Introduce `hlt`. Establish `hle : T p ≤ T c` using `hT p c hp.le hlt.le`. Establish `hne : p ≠ c`.
+
+Introduce `h`. Rewrite `hlt` using `[h]`. Conclude with `lt_irrefl _ hlt`. Establish `hne' : T p ≠ T c` using `fun h => hne (T.injective h)`. Rewrite `hle`, `hne'` using `[hTc]`.
+
+Conclude with `Fin.lt_def.mp (lt_of_le_of_ne hle hne')`. Establish `hcmem : c.1 ∈ youngCells lam` using `c.2`. Simplify using `only [youngCells, mem_filter, mem_product, mem_univ, true_and, mem_range] at hcmem`. Rewrite using `[show (univ.filter fun p : youngCells lam => p.1.1 = c.1.1 ∧ (T p : ℕ) < (t : ℕ)) = univ.filter fun p : youngCells lam => p.1.1 = c.1.1 ∧ p.1.2 < c.1.2 from filter_congr fun p _ => and_congr_right (key p)]`. Use `Eq.trans ?_ (card_range c.1.2)` and prove the remaining obligations.
+
+Use `card_bij (fun p _ => p.1.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [mem_filter, mem_univ, true_and] at hp`. Conclude with `mem_range.mpr hp.2`. Introduce `p hp q hq hpq`.
+
+Simplify using `only [mem_filter, mem_univ, true_and] at hp hq`. Conclude with `Subtype.ext (Prod.ext (hp.1.trans hq.1.symm) hpq)`. Introduce `k hk`. Rewrite `hk` using `[mem_range]`. Use `⟨⟨(c.1.1, k), ?_⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Simplify using `only [youngCells, mem_filter, mem_product, mem_univ, true_and, mem_range]`. Conclude with `⟨by omega, by omega⟩`. Simplify using `[hk]`.
+-/
 theorem CombTableauRowPrefix.proof : CombTableauRowPrefix.Statement := by
   intro m lam T hT t
   set c := T.symm t with hc

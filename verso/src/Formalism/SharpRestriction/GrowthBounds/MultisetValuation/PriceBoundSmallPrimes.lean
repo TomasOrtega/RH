@@ -28,6 +28,9 @@ def PriceBoundSmallPrimes : Prop :=
           ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ≤
           Formalism.MainNotions.G.Pr X K (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j t0
 
+/- English proof (translation)
+Introduce `D L X Y K hK1 hK2 hS hT hL u w hg _ t0 ht0 j hj`. Break down `le_or_gt (L.sc.p0 D.R.k) ((D.what₂.places.resChar w : ℕ) : ℝ) with h | h` into its components or cases. Conclude with `h1 D L X Y K hK1 hS hT hL u w hg h t0 ht0 j hj`. Conclude with `h2 D L X Y K hK2 hS hT hL u w hg h t0 ht0 j hj`.
+-/
 theorem priceBound_of_largePrimes_of_smallPrimes (C₀ : ℝ) (h1 : PriceBoundLargePrimes C₀) (h2 : PriceBoundSmallPrimes) : PriceBound C₀ := by
   intro D L X Y K hK1 hK2 hS hT hL u w hg _ t0 ht0 j hj
   rcases le_or_gt (L.sc.p0 D.R.k) ((D.what₂.places.resChar w : ℕ) : ℝ) with h | h
@@ -36,6 +39,11 @@ theorem priceBound_of_largePrimes_of_smallPrimes (C₀ : ℝ) (h1 : PriceBoundLa
 
 variable {n' k1 : ℕ}
 
+/- English proof (translation)
+Unfold `Pr`. Establish `h1 : ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), ((r : ℝ) * w j s + ∑ a ∈ Icc (k1 + 2 - r) (k1 + 1), (lamI lam0 s a : ℝ)) ≤ ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), (A + (if s ∈ TT then Bt else 0))` using `Finset.sum_le_sum fun s hs => h s (Finset.mem_filter.1 hs).2`. Apply the tactic sequence `have h2 : ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), (A + (if s ∈ TT then Bt else 0)) ≤ ∑ s : Fin n', (A + (if s ∈ TT then Bt else 0)) := Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) (fun s _ _ => by split_ifs <;> linarith)`. Establish `h3 : ∑ s : Fin n', (A + (if s ∈ TT then Bt else 0)) = n' * A + TT.card * Bt`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ne_abs (t r j : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ)
     (A Bt : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ Bt)
     (h : ∀ s : Fin n', IsOddPos s → (r : ℝ) * w j s + ∑ a ∈ Icc (k1 + 2 - r) (k1 + 1), (lamI lam0 s a : ℝ) ≤
@@ -55,6 +63,13 @@ theorem ne_abs (t r j : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 +
       Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]
   linarith
 
+/- English proof (translation)
+Unfold `Pr`. Establish `h1 : ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), (((1 : ℕ) : ℝ) * w j s + ∑ a ∈ Icc (k1 + 2 - 1) (k1 + 1), (lamI lam0 s a : ℝ)) ≤ ∑ s ∈ univ.filter (fun s : Fin n' => IsOddPos s), (if s ∈ TT then E s else A)` using `Finset.sum_le_sum fun s hs => h s (Finset.mem_filter.1 hs).2`. Rewrite `h1` using `[Finset.sum_ite]`. Establish `e1 : (univ.filter (fun s : Fin n' => IsOddPos s)).filter (fun s => s ∈ TT) = TT.filter IsOddPos`. Use extensionality with `s`.
+
+Simplify using `[and_comm]`. Rewrite `h1` using `[e1, Finset.sum_const, nsmul_eq_mul]`. Establish `h2 : (((univ.filter (fun s : Fin n' => IsOddPos s)).filter (fun s => s ∉ TT)).card : ℝ) ≤ n'`. Use `Finset.card_le_univ ((univ.filter (fun s : Fin n' => IsOddPos s)).filter (fun s => s ∉ TT))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`.
+
+Conclude with `this` after adjusting the coercions. Establish `h3` using `mul_le_mul_of_nonneg_right h2 hA`. Conclude with `add_le_add (le_trans h1 (add_le_add le_rfl h3)) le_rfl`.
+-/
 theorem price_sum_single_edge (t j : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ)
     (A : ℝ) (E : Fin n' → ℝ) (hA : 0 ≤ A)
     (h : ∀ s : Fin n', IsOddPos s → ((1 : ℕ) : ℝ) * w j s + ∑ a ∈ Icc (k1 + 2 - 1) (k1 + 1), (lamI lam0 s a : ℝ) ≤

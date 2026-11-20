@@ -13,11 +13,19 @@ def coordL (ι : Type) [Fintype ι] (N N' : ℕ) (τ : ι) (i : Fin N') (j : Fin
     ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N' => Fin N → ℂ) i).comp
       (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => Fin N' → Fin N → ℂ) τ))
 
+/- English proof (translation)
+The claim follows from `(coordL ι N N' τ i j).analyticAt c`.
+-/
 theorem analyticAt_coord {ι : Type} [Fintype ι] {N N' : ℕ} (τ : ι) (i : Fin N') (j : Fin N)
     (c : ι → Fin N' → Fin N → ℂ) :
     AnalyticAt ℂ (fun z : ι → Fin N' → Fin N → ℂ => z τ i j) c :=
   (coordL ι N N' τ i j).analyticAt c
 
+/- English proof (translation)
+Unfold `Hf`. Use `AnalyticAt.div_const ?_` and prove the remaining obligations. Use `Finset.analyticAt_fun_sum _ (fun τ _ => ?_)` and prove the remaining obligations. Use `Finset.analyticAt_fun_sum _ (fun i _ => ?_)` and prove the remaining obligations. Use `Finset.analyticAt_fun_sum _ (fun j _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(analyticAt_coord τ i j c).mul analyticAt_const`.
+-/
 theorem analyticAt_Hf_left {ι : Type} [Fintype ι] {N N' : ℕ} (A : ℝ)
     (x c : ι → Fin N' → Fin N → ℂ) :
     AnalyticAt ℂ (fun z => Hf A z x) c := by
@@ -28,6 +36,11 @@ theorem analyticAt_Hf_left {ι : Type} [Fintype ι] {N N' : ℕ} (A : ℝ)
   refine Finset.analyticAt_fun_sum _ (fun j _ => ?_)
   exact (analyticAt_coord τ i j c).mul analyticAt_const
 
+/- English proof (translation)
+Unfold `U`. Use `AnalyticAt.mul ?_ ?_` and prove the remaining obligations. Establish `hshift : AnalyticAt ℂ (fun z : ι → Fin N' → Fin N → ℂ => z + x) c` using `analyticAt_id.add analyticAt_const`. Conclude with `(hG (c + x) (Set.mem_univ _)).comp (f := fun z => z + x) hshift`. Use `AnalyticAt.cexp' ?_` and prove the remaining obligations.
+
+Conclude with `(analyticAt_const.mul (analyticAt_Hf_left A x c)).sub analyticAt_const`.
+-/
 theorem analyticAt_U {ι : Type} [Fintype ι] {N N' : ℕ} (A : ℝ)
     (x : ι → Fin N' → Fin N → ℂ) (G : (ι → Fin N' → Fin N → ℂ) → ℂ)
     (hG : AnalyticOnNhd ℂ G Set.univ) (c : ι → Fin N' → Fin N → ℂ) :
@@ -40,6 +53,15 @@ theorem analyticAt_U {ι : Type} [Fintype ι] {N N' : ℕ} (A : ℝ)
   · refine AnalyticAt.cexp' ?_
     exact (analyticAt_const.mul (analyticAt_Hf_left A x c)).sub analyticAt_const
 
+/- English proof (translation)
+Introduce `ι _ N N' d A La₁ La₂ G hG c _`. Distinguish the cases in `h0 : (La₁.addSubgroupOf La₂).index = 0`. Establish `hfun : Iop d A La₁ La₂ G = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `z`. Simplify using `[Iop, h0]`.
+
+Rewrite using `[hfun]`. Conclude with `analyticAt_const`. Establish `: Finite (La₂ ⧸ La₁.addSubgroupOf La₂)` using `(AddSubgroup.index_ne_zero_iff_finite).1 h0`. Set `_ : Fintype (La₂ ⧸ La₁.addSubgroupOf La₂)` to `Fintype.ofFinite _`. Establish `hfun : Iop d A La₁ La₂ G = fun z => ((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) * ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, al d A ((Quotient.out q : La₂) : ι → Fin N' → Fin N → ℂ) * U A ((Quotient.out q : La₂) : ι → Fin N' → Fin N → ℂ) G z`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [Iop]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Rewrite using `[hfun]`. Use `analyticAt_const.mul ?_` and prove the remaining obligations.
+
+Use `Finset.analyticAt_fun_sum _ (fun q _ => ?_)` and prove the remaining obligations. Conclude with `analyticAt_const.mul (analyticAt_U A _ G hG c)`.
+-/
 theorem iopEntire : IopEntire := by
   intro ι _ N N' d A La₁ La₂ G hG c _
   by_cases h0 : (La₁.addSubgroupOf La₂).index = 0
@@ -68,6 +90,13 @@ def blockL (n : Type) [Fintype n] (N N' : ℕ) (i : Fin N') (j : Fin N) :
     (n → Fin N' → Fin N → ℂ) →L[ℂ] (n → ℂ) :=
   ContinuousLinearMap.pi fun τ => coordL n N N' τ i j
 
+/- English proof (translation)
+Introduce `n _ θ N N' hθ c _`. Unfold `tensPow`. Use `Finset.analyticAt_fun_prod _ (fun i _ => ?_)` and prove the remaining obligations. Use `Finset.analyticAt_fun_prod _ (fun j _ => ?_)` and prove the remaining obligations. Establish `he : (fun z : n → Fin N' → Fin N → ℂ => fun τ => z τ i j) = ⇑(blockL n N N' i j)`.
+
+Use function extensionality and compare the values at `z τ`. Both sides reduce to the same expression. Establish `hb : AnalyticAt ℂ (fun z : n → Fin N' → Fin N → ℂ => fun τ => z τ i j) c`. Rewrite using `[he]`. Conclude with `(blockL n N N' i j).analyticAt c`.
+
+Conclude with `(hθ _ (Set.mem_univ _)).comp hb`.
+-/
 theorem tensEntire : TensEntire := by
   intro n _ θ N N' hθ c _
   unfold tensPow

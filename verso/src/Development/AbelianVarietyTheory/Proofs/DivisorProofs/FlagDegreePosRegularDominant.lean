@@ -10,6 +10,11 @@ namespace GlobalTheory.FlagDegSign
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Establish `h : ∀ τ, ∑ i : Fin N, permExp σ (τ, i) = N * (N - 1) / 2`. Introduce `τ`. Rewrite using `[← Formalism.DegreeFormula.PermutationPointDegree.sum_delta N]`. Conclude with `Fintype.sum_equiv (σ τ) _ _ (fun i => by simp [permExp])`.
+
+Simplify using `[h, dimFl]`.
+-/
 theorem sum_permExp (σ : ι → Equiv.Perm (Fin N)) : ∑ x, permExp σ x = dimFl ι N := by
   rw [Fintype.sum_prod_type]
   have h : ∀ τ, ∑ i : Fin N, permExp σ (τ, i) = N * (N - 1) / 2 := by
@@ -19,6 +24,11 @@ theorem sum_permExp (σ : ι → Equiv.Perm (Fin N)) : ∑ x, permExp σ x = dim
   simp [h, dimFl]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Finsupp.multinomial_eq_of_support_subset (Finset.subset_univ _), Finsupp.multinomial_eq_of_support_subset (Finset.subset_univ _)]`. Unfold `Nat.multinomial`. Rewrite using `[sum_permExp, sum_permExp, Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Conclude with `Fintype.prod_equiv (σ τ) _ _ (fun i => by simp [permExp])`.
+-/
 theorem multinomial_permExp (σ : ι → Equiv.Perm (Fin N)) :
     (permExp σ).multinomial = (permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))).multinomial := by
   rw [Finsupp.multinomial_eq_of_support_subset (Finset.subset_univ _),
@@ -29,6 +39,11 @@ theorem multinomial_permExp (σ : ι → Equiv.Perm (Fin N)) :
   refine Finset.prod_congr rfl fun τ _ => ?_
   exact Fintype.prod_equiv (σ τ) _ _ (fun i => by simp [permExp])
 
+/- English proof (translation)
+Establish `h` using `Matrix.det_projVandermonde (fun _ : Fin N => (1 : ℝ)) v`. Rewrite `h` using `[← Matrix.det_transpose, Matrix.det_apply']`. Simplify using `only [Matrix.transpose_apply, Matrix.projVandermonde_apply, one_pow, one_mul, Fin.val_rev] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem signed_sum (v : Fin N → ℝ) :
     ∑ σ : Equiv.Perm (Fin N), ((Equiv.Perm.sign σ : ℤ) : ℝ) * ∏ i, v i ^ (N - 1 - ((σ i : Fin N) : ℕ)) =
       ∏ i, ∏ j > i, (v i - v j) := by
@@ -42,6 +57,13 @@ theorem signed_sum (v : Fin N → ℝ) :
   congr 1
   omega
 
+/- English proof (translation)
+Establish `hl : linRoot lam = ∑ x : ι × Fin N, (-lam x.1 x.2) • (X x : MvPolynomial (ι × Fin N) ℝ)`. Simplify using `[linRoot, smul_eq_C_mul]`. Establish `hc : ∀ σ : ι → Equiv.Perm (Fin N), (linRoot lam ^ dimFl ι N).coeff (permExp σ) = ((permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))).multinomial : ℝ) * ((-1) ^ dimFl ι N * ∏ τ, ∏ i, lam τ i ^ (N - 1 - ((σ τ i : Fin N) : ℕ)))`. Introduce `σ`. Rewrite using `[hl, coeff_linearCombination_X_pow_of_fintype, Finsupp.sum_fintype _ _ (fun _ => rfl), if_pos (sum_permExp σ), multinomial_permExp, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finset.prod_congr rfl (fun x _ => neg_pow (lam x.1 x.2) (permExp σ x)), Finset.prod_mul_distrib, Fin …`.
+
+Simplify using `[permExp]`. Establish `hs : ((-1 : ℝ) ^ dimFl ι N) * (-1) ^ dimFl ι N = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Simplify using `only [← signed_sum]`.
+
+Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, flagDeg, degFl, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hc, Finset.prod_mul_distrib]`. Take the linear combination `(((permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))).multinomial : ℝ) * (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * ∏ τ, ∏ i, lam τ i ^ (N - 1 - ((σ τ i : Fin N) : ℕ))) * hs`.
+-/
 theorem flagDeg_eq (lam : ι → Fin N → ℝ) :
     flagDeg ι N lam = ((permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))).multinomial : ℝ) *
       ∏ τ, ∏ i, ∏ j > i, (lam τ i - lam τ j) := by
@@ -66,11 +88,17 @@ theorem flagDeg_eq (lam : ι → Fin N → ℝ) :
     (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * ∏ τ, ∏ i, lam τ i ^ (N - 1 - ((σ τ i : Fin N) : ℕ))) * hs
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[Finsupp.multinomial_eq]`. Conclude with `Nat.multinomial_pos _ _` after adjusting the coercions.
+-/
 theorem multinomial_pos :
     (0 : ℝ) < ((permExp (fun _ : ι => (1 : Equiv.Perm (Fin N)))).multinomial : ℝ) := by
   rw [Finsupp.multinomial_eq]
   exact_mod_cast Nat.multinomial_pos _ _
 
+/- English proof (translation)
+Rewrite using `[flagDeg_eq]`. Use `⟨fun h => mul_pos multinomial_pos ?_, fun h => mul_nonneg multinomial_pos.le ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Finset.prod_pos fun j hj => sub_pos.2 (h τ i j (by simpa using hj))`. Conclude with `Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun j hj => sub_nonneg.2 (h τ i j (le_of_lt (by simpa using hj)))`.
+-/
 theorem flagDeg_pos_and_nonneg (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (lam : ι → Fin N → ℝ) :
     (RegDom lam → 0 < flagDeg ι N lam) ∧ (Dom lam → 0 ≤ flagDeg ι N lam) := by
   rw [flagDeg_eq]

@@ -23,6 +23,17 @@ def intF (F : Type) [Field F] [NumberField F] : Subring (FiniteAdeleRing (𝓞 F
   zero_mem' := fun v => zero_mem _
   neg_mem' := fun {a} ha v => neg_mem (ha v)
 
+/- English proof (translation)
+Take `⟨ho, hc⟩` from `PI.IntAdCpctOpenWork.main F`. Use `haveI : CompactSpace (intF F) := isCompact_iff_compactSpace.mp hc`. Establish `hM0 : (M : F) ≠ 0` using `by exact_mod_cast hM.ne'`. Set `c : FiniteAdeleRing (𝓞 F) F` to `algebraMap F _ (M : F)⁻¹`. Establish `hcM : c * (M : FiniteAdeleRing (𝓞 F) F) = 1`.
+
+Establish `: (M : FiniteAdeleRing (𝓞 F) F) = algebraMap F _ (M : F)` using `by simp`. Rewrite using `[this, ← map_mul, inv_mul_cancel₀ hM0, map_one]`. Establish `hopen : IsOpen (((Ideal.span {(M : intF F)}).toAddSubgroup : AddSubgroup (intF F)) : Set (intF F))`. Establish `h1 : IsOpen {x : intF F | c * (x : FiniteAdeleRing (𝓞 F) F) ∈ (intF F : Set _)}` using `ho.preimage (continuous_const.mul continuous_subtype_val)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_setOf_eq, Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Establish `: c * (((a * (M : intF F) : intF F)) : FiniteAdeleRing (𝓞 F) F) = a`.
+
+Use `push_cast`. Rewrite using `[mul_comm (a : FiniteAdeleRing (𝓞 F) F), ← mul_assoc, hcM, one_mul]`. Rewrite using `[this]`. Conclude with `a.2`. Introduce `h`.
+
+Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_comm, ← mul_assoc, mul_comm (M : FiniteAdeleRing (𝓞 F) F), hcM, one_mul]`. Use `AddSubgroup.quotient_finite_of_isOpen _ hopen` as an intermediate fact. Conclude with `this`.
+-/
 theorem finite_intF_quot (M : ℕ) (hM : 0 < M) :
     Finite (intF F ⧸ Ideal.span {(M : intF F)}) := by
   obtain ⟨ho, hc⟩ := PI.IntAdCpctOpenWork.main F
@@ -70,6 +81,27 @@ def gT : 𝓞 E →+* intT F E where
   map_zero' := Subtype.ext (by simp)
   map_add' a b := Subtype.ext (by simp [TensorProduct.add_tmul])
 
+/- English proof (translation)
+Use `letI : Algebra (intF F) (intT F E) := (jT (F := F) (E := E)).toAlgebra`. Establish `hsmul : ∀ (a : intF F) (x : intT F E), a • x = jT a * x` using `fun a x => Algebra.smul_def a x`. Take `⟨t, ht⟩ : (⊤ : Submodule ℤ (𝓞 E)).FG` from `Module.Finite.fg_top`. Set `s : Set (intT F E)` to `gT '' (t : Set (𝓞 E))`. Establish `hs : s.Finite` using `t.finite_toSet.image _`.
+
+Establish `hint : ∀ x ∈ s, IsIntegral (intF F) x`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Establish `h1 : IsIntegral ℤ (gT (F` using `F) y) := IsIntegral.map (gT (F := F) (E := E)).toIntAlgHom (Algebra.IsIntegral.isIntegral y)`. Conclude with `h1.tower_top`. Establish `hfg` using `fg_adjoin_of_finite hs hint`.
+
+Establish `hg : ∀ y : 𝓞 E, gT (F` using `F) y ∈ Algebra.adjoin (intF F) s := by`. Introduce `y`. Establish `hy : y ∈ Submodule.span ℤ (t : Set (𝓞 E))` using `ht ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin ⟨x, hx, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [zsmul_eq_mul, map_mul, map_intCast]`. Conclude with `mul_mem (intCast_mem _ a) hx`.
+
+Establish `htop : ∀ x (hx : x ∈ intT F E), (⟨x, hx⟩ : intT F E) ∈ Algebra.adjoin (intF F) s`. Introduce `x hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨y, rfl⟩ | ⟨a, ha, rfl⟩` into its components or cases.
+
+Conclude with `hg y`. Conclude with `Subalgebra.algebraMap_mem _ (⟨a, ha⟩ : intF F)`. Consider the case `zero => exact zero_mem _`. Consider the case `one => exact one_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+
+Consider the case `neg x _ hx => exact neg_mem hx`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `hfin : Module.Finite (intF F) (intT F E)`. Use `⟨?_⟩` and prove the remaining obligations. Establish `: (Algebra.adjoin (intF F) s).toSubmodule = ⊤` using `eq_top_iff.2 fun x _ => htop x.1 x.2`.
+
+Rewrite `hfg` using `[this]`. Then use the resulting hypothesis. Use `set I : Ideal (intF F) := Ideal.span {(M : intF F)} with hI`. Use `haveI : Finite (intF F ⧸ I) := finite_intF_quot M hM`. Use `haveI : Finite (intT F E ⧸ I • (⊤ : Submodule (intF F) (intT F E))) := Module.finite_of_finite (intF F ⧸ I)`. Use `⟨_, this, Submodule.Quotient.mk, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(Submodule.Quotient.eq _).1 hab`. Rewrite `h` using `[hI, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨y, -, hy⟩` from `h`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, hsmul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_finite_class (M : ℕ) (hM : 0 < M) :
     ∃ (Q : Type) (_ : Finite Q) (c : intT F E → Q), ∀ a b, c a = c b →
       ∃ y : intT F E, a - b = (M : intT F E) * y := by
@@ -128,6 +160,15 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 open ReciprocityTheory.Aut
 
+/- English proof (translation)
+Use `⟨mul_mem (inv_mem ha) hb, fun i j => ?_⟩` and prove the remaining obligations. Use `choose y hy e using h`. Establish `hai : a⁻¹ ∈ Umax L n` using `inv_mem ha`. Use `⟨∑ k, ((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) i k * y k j, Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hai i k) (hy k j), ?_⟩` and prove the remaining obligations. Establish `h0 : ((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) * (a.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`.
+
+Establish `: (((a⁻¹ * a).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1` using `by simp`. Simplify using `using this`. Establish `h1 : (((a⁻¹ * b).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) - 1 = ((a⁻¹).1 : Matrix (Fin n) (Fin n) (AL L)) * ((b.1 : Matrix (Fin n) (Fin n) (AL L)) - (a.1 : Matrix (Fin n) (Fin n) (AL L)))`. Rewrite using `[mul_sub, h0]`. Both sides reduce to the same expression.
+
+Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.sub_apply, Matrix.mul_apply]`. Rewrite using `[h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, e k j]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cong_inv_mul {N : ℕ} {a b : GAf L n} (ha : a ∈ Umax L n) (hb : b ∈ Umax L n)
     (h : ∀ i j, ∃ y ∈ ALint L, (b.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (a.1 : Matrix (Fin n) (Fin n) (AL L)) i j =
       (N : AL L) * y) : Cong L n N (a⁻¹ * b) := by
@@ -151,6 +192,11 @@ theorem cong_inv_mul {N : ℕ} {a b : GAf L n} (ha : a ∈ Umax L n) (hb : b ∈
   rw [Matrix.sub_apply, e k j]
   ring
 
+/- English proof (translation)
+Use `cong_inv_mul (N := N) (b := 1) ha.1 (one_mem _) (fun i j => by` as an intermediate fact. Take `⟨y, hy, e⟩` from `ha.2 i j`. Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations. Establish `e' : (((1 : GAf L n)).1 : Matrix (Fin n) (Fin n) (AL L)) i j = (1 : Matrix (Fin n) (Fin n) (AL L)) i j` using `by simp`. Rewrite using `[e', mul_neg, ← e]`.
+
+Use the proof step `ring)`. Simplify using `using this`.
+-/
 theorem cong_inv {N : ℕ} {a : GAf L n} (ha : Cong L n N a) : Cong L n N a⁻¹ := by
   have := cong_inv_mul (N := N) (b := 1) ha.1 (one_mem _) (fun i j => by
     obtain ⟨y, hy, e⟩ := ha.2 i j
@@ -159,6 +205,11 @@ theorem cong_inv {N : ℕ} {a : GAf L n} (ha : Cong L n N a) : Cong L n N a⁻¹
     rw [e', mul_neg, ← e]; ring)
   simpa using this
 
+/- English proof (translation)
+Establish `hi` using `cong_inv ha`. Use `cong_inv_mul (N := N) hi.1 hb.1 (fun i j => by` as an intermediate fact. Take `⟨y, hy, e⟩` from `hb.2 i j`. Take `⟨y', hy', e'⟩` from `hi.2 i j`. Use `⟨y - y', sub_mem hy hy', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_sub, ← e, ← e']`. Use the proof step `ring)`. Simplify using `using this`.
+-/
 theorem cong_mul {N : ℕ} {a b : GAf L n} (ha : Cong L n N a) (hb : Cong L n N b) : Cong L n N (a * b) := by
   have hi := cong_inv ha
   have := cong_inv_mul (N := N) hi.1 hb.1 (fun i j => by
@@ -174,6 +225,17 @@ def congSub (L : Type) [Field L] [NumberField L] [IsCMField L] (n N : ℕ) : Sub
   one_mem' := ⟨one_mem _, fun i j => ⟨0, zero_mem _, by simp⟩⟩
   inv_mem' := cong_inv
 
+/- English proof (translation)
+Take `⟨Q, hQ, c, hc⟩` from `exists_finite_class (F := NumberField.maximalRealSubfield L) (E := L) N hN`. Set `cls : Umax L n → Fin n → Fin n → Q` to `fun κ i j => c ⟨(κ.1.1 : Matrix (Fin n) (Fin n) (AL L)) i j, κ.2 i j⟩`. Establish `key : ∀ a b : Umax L n, cls a = cls b → ρ a.1 y = ρ b.1 y`. Introduce `a b hab`. Establish `hcong : Cong L n N (a.1⁻¹ * b.1)` using `cong_inv_mul a.2 b.2 (fun i j => by`.
+
+Take `⟨z, hz⟩` from `hc _ _ (congrFun (congrFun hab i) j).symm`. Use `⟨z.1, z.2, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val hz)`. Establish `h1` using `hy _ hcong`. Rewrite `h1` using `[map_mul, Module.End.mul_apply]`.
+
+Establish `h2` using `congrArg (ρ a.1) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `h2.symm`. Establish `hfin : (Set.range fun κ : Umax L n => ρ κ.1 y).Finite`. Rewrite using `[← Set.finite_coe_iff]`.
+
+Use `Finite.of_injective (fun z : Set.range (fun κ : Umax L n => ρ κ.1 y) => cls z.2.choose) ?_` and prove the remaining obligations. Introduce `z w h`. Establish `h3` using `key _ _ h`. Conclude with `Subtype.ext (by rw [← z.2.choose_spec, ← w.2.choose_spec]; exact h3)`. Use `hfin.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨⟨k, hk⟩, rfl⟩`.
+-/
 theorem orbit_finite {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : GAf L n →* Module.End ℂ A) {N : ℕ} (hN : 0 < N)
     (y : A) (hy : ∀ κ, Cong L n N κ → ρ κ y = y) :
     ((fun k : GAf L n => ρ k y) '' (Umax L n : Set (GAf L n))).Finite := by
@@ -206,6 +268,25 @@ section Abs
 
 variable {G : Type} [Group G] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Use `haveI : CompleteSpace Wf := FiniteDimensional.complete ℂ Wf`. Establish `hu : Wf.starProjection x ∈ Wf` using `Wf.starProjection_apply_mem x`. Use `⟨Wf.starProjection x, hWU hu, ?_⟩` and prove the remaining obligations. Use `set z := x - Wf.starProjection x with hz`. Establish `hzW : z ∈ Wfᗮ` using `Wf.sub_starProjection_mem_orthogonal x`.
+
+Establish `hzfix : ∀ k ∈ K, ρ k z = z`. Introduce `k hk`. Rewrite using `[hz, map_sub, hx k hk, hWfix _ hu k hk]`. Introduce `y hy`. Use `set O : Set V := (fun k : G => ρ k y) '' (K : Set G) with hOdef`.
+
+Establish `hO : O.Finite` using `horb y hy`. Use `set Y : Submodule ℂ V := Submodule.span ℂ O with hY`. Use `haveI : FiniteDimensional ℂ Y := FiniteDimensional.span_of_finite ℂ hO`. Use `haveI : CompleteSpace Y := FiniteDimensional.complete ℂ Y`. Establish `hYU : Y ≤ U` using `Submodule.span_le.2 (by rintro _ ⟨k, _, rfl⟩; exact hU k y hy)`.
+
+Establish `hYst : ∀ k ∈ K, ∀ v ∈ Y, ρ k v ∈ Y`. Introduce `k hk v hv`. Establish `: Y ≤ Y.comap (ρ k)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k', hk', rfl⟩`. Use `Submodule.subset_span ⟨k * k', K.mul_mem hk hk', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, Module.End.mul_apply])`. Conclude with `this hv`. Establish `hyY : y ∈ Y` using `Submodule.subset_span ⟨1, K.one_mem, by simp⟩`. Use `set w := Y.starProjection z with hw`. Establish `hwY : w ∈ Y` using `Y.starProjection_apply_mem z`.
+
+Establish `hwfix : ∀ k ∈ K, ρ k w = w`. Introduce `k hk`. Use `symm`. Use `Y.eq_starProjection_of_mem_of_inner_eq_zero (hYst k hk w hwY) fun v hv => ?_` and prove the remaining obligations. Establish `e1 : z - ρ k w = ρ k (z - w)` using `by rw [map_sub, hzfix k hk]`.
+
+Establish `e2 : v = ρ k (ρ k⁻¹ v)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e1, e2, hunit]`. Conclude with `Y.starProjection_inner_eq_zero z _ (hYst _ (K.inv_mem hk) v hv)`. Establish `hwW : w ∈ Wf` using `hmemW w (hYU hwY) hwfix`.
+
+Establish `h1 : inner ℂ w z = 0` using `(Submodule.mem_orthogonal _ _).1 hzW w hwW`. Establish `h2 : inner ℂ (z - w) w = 0` using `Y.starProjection_inner_eq_zero z w hwY`. Establish `h3 : inner ℂ z w = 0` using `inner_eq_zero_symm.1 h1`. Establish `hw0 : w = 0`. Rewrite `h2` using `[inner_sub_left, h3, zero_sub, neg_eq_zero, inner_self_eq_zero]`.
+
+Conclude with `h2`. Establish `h4 : inner ℂ (z - w) y = 0` using `Y.starProjection_inner_eq_zero z y hyY`. Rewrite `h4` using `[hw0, sub_zero]`. Conclude with `h4`.
+-/
 theorem exists_proj (ρ : G →* Module.End ℂ V) (hunit : ∀ g x y, inner ℂ (ρ g x) (ρ g y) = inner ℂ x y)
     (K : Subgroup G) (U Wf : Submodule ℂ V) [FiniteDimensional ℂ Wf]
     (hU : ∀ g, ∀ x ∈ U, ρ g x ∈ U) (hWU : Wf ≤ U) (hWfix : ∀ w ∈ Wf, ∀ k ∈ K, ρ k w = w)
@@ -257,6 +338,39 @@ theorem exists_proj (ρ : G →* Module.End ℂ V) (hunit : ∀ g x y, inner ℂ
   rw [hw0, sub_zero] at h4
   exact h4
 
+/- English proof (translation)
+Establish `adj : ∀ g z y, inner ℂ (ρ g z) y = inner ℂ z (ρ g⁻¹ y)`. Introduce `g z y`. Establish `e2 : y = ρ g (ρ g⁻¹ y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `conv_lhs => rw [e2]`.
+
+Rewrite using `[hunit]`. Set `W : Submodule ℂ X` to `{ carrier := {f | ∀ f', inner ℂ (Φ f) (Φ' f') = 0} zero_mem' := fun f' => by simp add_mem' := fun {a b} ha hb f' => by rw [map_add, inner_add_left, ha, hb, add_zero] smul_mem' := fun c a ha f' => by rw [map_smul, inner_smul_left, ha, mul_zero] }`. Establish `hWinv : ∀ g, ∀ f ∈ W, σ g f ∈ W`. Introduce `g f hf f'`. Rewrite using `[hΦ, adj, ← hΦ']`.
+
+Conclude with `hf _`. Break down `hirr W hWinv with hW | hW` into its components or cases. Use `swap`. Use `left`. Introduce `f f'`.
+
+Establish `: f ∈ W` using `hW ▸ Submodule.mem_top`. Conclude with `this f'`. Establish `hkinv : ∀ g, ∀ f ∈ LinearMap.ker Φ', σ' g f ∈ LinearMap.ker Φ'`. Introduce `g f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[hΦ', hf, map_zero]`. Break down `hirr' _ hkinv with hk | hk` into its components or cases. Use `swap`. Use `left`. Introduce `f f'`.
+
+Establish `: f' ∈ LinearMap.ker Φ'` using `hk ▸ Submodule.mem_top`. Rewrite using `[LinearMap.mem_ker.1 this, inner_zero_right]`. Use `choose t ht using hproj`. Establish `uniq : ∀ f a b, (∀ f', inner ℂ (Φ f - Φ' a) (Φ' f') = 0) → (∀ f', inner ℂ (Φ f - Φ' b) (Φ' f') = 0) → a = b`. Introduce `f a b ha hb`.
+
+Establish `h0 : inner ℂ (Φ' (a - b)) (Φ' (a - b)) = 0`. Establish `: Φ' (a - b) = (Φ f - Φ' b) - (Φ f - Φ' a)` using `by rw [map_sub]; abel`. Establish `e : ∀ z, inner ℂ (Φ' (a - b)) (Φ' z) = 0` using `fun z => by`. Rewrite using `[this, inner_sub_left, ha, hb, sub_zero]`. Conclude with `e (a - b)`.
+
+Establish `h1 : a - b ∈ LinearMap.ker Φ'` using `inner_self_eq_zero.1 h0`. Rewrite `h1` using `[hk, Submodule.mem_bot]`. Conclude with `sub_eq_zero.1 h1`. Set `T : X →ₗ[ℂ] X'` to `{ toFun := t map_add' := fun f g => uniq (f + g) _ _ (ht _) (fun f' => by`. Establish `: Φ (f + g) - Φ' (t f + t g) = (Φ f - Φ' (t f)) + (Φ g - Φ' (t g))`.
+
+Rewrite using `[map_add, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, inner_add_left, ht, ht, add_zero])`. Use the proof step `map_smul' := fun c f => uniq (c • f) _ _ (ht _) (fun f' => by`. Establish `: Φ (c • f) - Φ' ((RingHom.id ℂ c) • t f) = c • (Φ f - Φ' (t f))`.
+
+Rewrite using `[map_smul, map_smul, RingHom.id_apply, smul_sub]`. Rewrite using `[this, inner_smul_left, ht, mul_zero]) }`. Establish `hTW : ∀ f, T f = 0 → f ∈ W`. Introduce `f h f'`. Establish `h1` using `ht f f'`.
+
+Establish `h2 : t f = 0` using `h`. Rewrite `h1` using `[h2, map_zero, sub_zero]`. Conclude with `h1`. Establish `hTeq : ∀ g f, T (σ g f) = σ' g (T f)`. Introduce `g f`.
+
+Use `uniq (σ g f) _ _ (ht _) (fun f' => ?_)` and prove the remaining obligations. Establish `h2 : Φ (σ g f) - Φ' (σ' g (T f)) = ρ g (Φ f - Φ' (t f))`. Rewrite using `[hΦ, hΦ', map_sub]`. Both sides reduce to the same expression. Rewrite using `[h2, adj, ← hΦ']`.
+
+Conclude with `ht _ _`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `f hf`. Rewrite using `[← hW]`.
+
+Conclude with `hTW f hf`. Establish `hrinv : ∀ g, ∀ f ∈ LinearMap.range T, σ' g f ∈ LinearMap.range T`. Introduce and unpack `g _ ⟨f, rfl⟩`. Conclude with `⟨σ g f, hTeq g f⟩`. Break down `hirr' _ hrinv with hr | hr` into its components or cases.
+
+Use `left`. Introduce `f f'`. Establish `: T f ∈ LinearMap.range T` using `⟨f, rfl⟩`. Rewrite `this` using `[hr, Submodule.mem_bot]`. Conclude with `hTW f this f'`.
+
+Use `right`. Conclude with `⟨LinearEquiv.ofBijective T ⟨hinj, LinearMap.range_eq_top.1 hr⟩, hTeq⟩`.
+-/
 theorem orth_or_equiv (ρ : G →* Module.End ℂ V) (hunit : ∀ g x y, inner ℂ (ρ g x) (ρ g y) = inner ℂ x y)
     {X X' : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup X'] [Module ℂ X']
     (σ : G → Module.End ℂ X) (σ' : G → Module.End ℂ X')
@@ -397,6 +511,15 @@ def rhoC {G : Type} [Group G] {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : G
 
 def sg (π : FinTyp L n) (g : GAf L n) : Module.End ℂ π.S := (rt L n g).restrict (π.stable g)
 
+/- English proof (translation)
+Establish `hinv : ∀ h, ∀ f ∈ W.map π.S.subtype, rt L n h f ∈ W.map π.S.subtype`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `⟨_, hW h f hf, rfl⟩`. Break down `π.irr _ (Submodule.map_subtype_le _ _) hinv with h | h` into its components or cases. Use `left`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: (x : GAf L n → ℂ) ∈ W.map π.S.subtype` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `Subtype.ext this`.
+
+Use `right`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `: (x : GAf L n → ℂ) ∈ W.map π.S.subtype` using `by rw [h]; exact x.2`. Take `⟨w, hw, e⟩` from `this`.
+
+Establish `: w = x` using `Subtype.ext e`. Conclude with `this ▸ hw`.
+-/
 theorem sg_irr (π : FinTyp L n) (W : Submodule ℂ π.S) (hW : ∀ g, ∀ f ∈ W, sg π g f ∈ W) : W = ⊥ ∨ W = ⊤ := by
   have hinv : ∀ h, ∀ f ∈ W.map π.S.subtype, rt L n h f ∈ W.map π.S.subtype := by
     rintro h _ ⟨f, hf, rfl⟩
@@ -416,6 +539,25 @@ theorem sg_irr (π : FinTyp L n) (W : Submodule ℂ π.S) (hW : ∀ g, ∀ f ∈
     have : w = x := Subtype.ext e
     exact this ▸ hw
 
+/- English proof (translation)
+Set `core` to `coreOf C B h1 h2 h3`. Use `letI : NormedAddCommGroup C := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ C := InnerProductSpace.ofCore core.toCore`. Set `ρC` to `rhoC ρ C h4`. Establish `hunit : ∀ g (x y : C), inner ℂ (ρC g x) (ρC g y) = inner ℂ x y` using `fun g x y => h5 g x x.2 y y.2`.
+
+Set `Ψ : π.S →ₗ[ℂ] C` to `Φ.codRestrict C (fun f => hΦC ⟨f, rfl⟩)`. Set `Ψ' : π'.S →ₗ[ℂ] C` to `Φ'.codRestrict C (fun f => hΦC' ⟨f, rfl⟩)`. Establish `hΨ : ∀ g f, Ψ (sg π g f) = ρC g (Ψ f)` using `fun g f => Subtype.ext (hΦ g f)`. Establish `hΨ' : ∀ g f, Ψ' (sg π' g f) = ρC g (Ψ' f)` using `fun g f => Subtype.ext (hΦ' g f)`. Establish `hproj : ∀ f, ∃ a, ∀ f', inner ℂ (Ψ f - Ψ' a) (Ψ' f') = 0`.
+
+Introduce `f`. Take `⟨N, hN, hf⟩` from `π.smooth f f.2`. Use `set U := LinearMap.range Ψ' with hU`. Use `set Wf : Submodule ℂ C := U ⊓ fixN ρC N with hWf`. Use `haveI := h6 N hN`.
+
+Set `ι : Wf →ₗ[ℂ] ↥(Submodule.span ℂ {x | x ∈ C ∧ ∀ κ, Cong L n N κ → ρ κ x = x})` to `(C.subtype.comp Wf.subtype).codRestrict _ (fun w => Submodule.subset_span ⟨w.1.2, fun κ hκ => by`. Use `congrArg Subtype.val (w.2.2 κ hκ)` as an intermediate fact. Conclude with `this⟩)`. Establish `hι : Function.Injective ι` using `fun a b h => by`. Establish `h'` using `congrArg Subtype.val h`.
+
+Conclude with `Subtype.ext (Subtype.ext h')`. Use `haveI : FiniteDimensional ℂ Wf := FiniteDimensional.of_injective ι hι`. Take `⟨u, ⟨a, rfl⟩, hu⟩` from `exists_proj ρC hunit (congSub L n N) U Wf (by rintro g _ ⟨a, rfl⟩; exact ⟨sg π' g a, hΨ' g a⟩) inf_le_left (fun w hw k hk => hw.2 k hk) (fun w hw hfix => ⟨hw, fun κ hκ => hfix κ hκ⟩) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨N', hN', ha⟩` from `π'.smooth a a.2`.
+
+Use `(orbit_finite ρC hN' (Ψ' a) (fun κ hκ => ?_)).subset ?_` and prove the remaining obligations. Rewrite using `[← hΨ']`. Use `congr 1`. Conclude with `Subtype.ext (ha κ hκ)`. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+
+Conclude with `⟨k, hk.1, rfl⟩)`. Use the proof step `(Ψ f) (fun k hk => by`. Rewrite using `[← hΨ]`. Use `congr 1`. Conclude with `Subtype.ext (hf k hk))`.
+
+Conclude with `⟨a, fun f' => hu _ ⟨f', rfl⟩⟩`. Break down `orth_or_equiv ρC hunit (sg π) (sg π') (sg_irr π) (sg_irr π') Ψ Ψ' hΨ hΨ' hproj with h | ⟨T, hT⟩` into its components or cases. Conclude with `h f f'`. Use `absurd ⟨T, fun h a b e => ?_⟩ hni` and prove the remaining obligations. Establish `: b = sg π h a` using `Subtype.ext e`.
+
+Rewrite using `[this, hT]`. Both sides reduce to the same expression.
+-/
 theorem orth_pair {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : GAf L n →* Module.End ℂ A) (C : Submodule ℂ A)
     (B : A → A → ℂ)
     (h1 : ∀ x ∈ C, ∀ y ∈ C, ∀ z ∈ C, ∀ c : ℂ, B x (y + c • z) = B x y + c * B x z)
@@ -498,6 +640,15 @@ def leftZ {A : Type} [AddCommGroup A] [Module ℂ A] (C : Submodule ℂ A) (B : 
 
 end Main
 
+/- English proof (translation)
+Introduce `D n A _ _ ρ C B h1 h2 h3 h4 h5 h6 π π' hni x hx y hy`. Establish `hC : ∀ π : FinTyp D.host.E n, isotIn (D` using `D) ρ C π ≤ C := fun π => iSup₂_le fun Φ h => h.2`. Establish `step1 : ∀ (Φ' : π'.S →ₗ[ℂ] A), IsEqvA ρ π' Φ' ∧ LinearMap.range Φ' ≤ C → ∀ f', B (Φ' f') x = 0`. Introduce `Φ' hΦ' f'`. Establish `hyC : Φ' f' ∈ C` using `hΦ'.2 ⟨f', rfl⟩`.
+
+Establish `hle : isotIn (D` using `D) ρ C π ≤ leftZ C B h1 (Φ' f') hyC := by`. Use `iSup₂_le fun Φ hΦ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Establish `hxC : Φ f ∈ C` using `hΦ.2 ⟨f, rfl⟩`. Use `⟨hxC, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2 _ hyC _ hxC, orth_pair ρ C B h1 h2 h3 h4 h5 h6 π π' hni Φ hΦ.1 hΦ.2 Φ' hΦ'.1 hΦ'.2 f f', map_zero]`. Conclude with `(hle hx).2`. Establish `hle : isotIn (D` using `D) ρ C π' ≤ leftZ C B h1 x (hC π hx) := by`. Use `iSup₂_le fun Φ' hΦ' => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f', rfl⟩`.
+
+Establish `hyC : Φ' f' ∈ C` using `hΦ'.2 ⟨f', rfl⟩`. Conclude with `⟨hyC, by rw [h2 _ (hC π hx) _ hyC, step1 Φ' hΦ' f', map_zero]⟩`. Conclude with `(hle hy).2`.
+-/
 theorem isotIn_orthogonal : ∀ (D : D7) (n : ℕ) (A : Type) [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A) (B : A → A → ℂ), (∀ x ∈ C, ∀ y ∈ C, ∀ z ∈ C, ∀ c : ℂ, B x (y + c • z) = B x y + c * B x z) → (∀ x ∈ C, ∀ y ∈ C, B x y = starRingEnd ℂ (B y x)) → (∀ x ∈ C, x ≠ 0 → 0 < (B x x).re) → (∀ h, ∀ x ∈ C, ρ h x ∈ C) → (∀ h, ∀ x ∈ C, ∀ y ∈ C, B (ρ h x) (ρ h y) = B x y) → (∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {x | x ∈ C ∧ ∀ κ, Cong D.host.E n N κ → ρ κ x = x})) → ∀ π π' : FinTyp D.host.E n, ¬ π.Iso π' → ∀ x ∈ isotIn (D := D) ρ C π, ∀ y ∈ isotIn (D := D) ρ C π', B x y = 0 := by
   intro D n A _ _ ρ C B h1 h2 h3 h4 h5 h6 π π' hni x hx y hy
   have hC : ∀ π : FinTyp D.host.E n, isotIn (D := D) ρ C π ≤ C := fun π => iSup₂_le fun Φ h => h.2

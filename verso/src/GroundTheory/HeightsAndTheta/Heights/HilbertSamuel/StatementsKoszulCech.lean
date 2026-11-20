@@ -88,6 +88,35 @@ def polyCochain (V : Ideal (MRingOver S ι)) (f : MRingOver S ι) : KH.CechC S �
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `set M := MRingOver S ι ⧸ V`. Establish `hres : ∀ F J : ∀ k, Finset (ι k), (∀ l, F l ⊆ J l) → KH.cellRes S M F J (LocalizedModule.mk (Ideal.Quotient.mk V f) 1) = LocalizedModule.mk (Ideal.Quotient.mk V f) 1`. Introduce `F J hFJ`. Establish `hle : KH.cellMon S F ≤ KH.cellMon S J`. Apply `Submonoid.closure_mono` to reduce the goal to its premises.
+
+Introduce and unpack `g ⟨k, j, hj, rfl⟩`. Conclude with `⟨k, j, hFJ k hj, rfl⟩`. Unfold `KH.cellRes`. Rewrite using `[dif_pos hle, ← LocalizedModule.mkLinearMap_apply, IsLocalizedModule.liftOfLE_apply, LocalizedModule.mkLinearMap_apply]`. Use function extensionality and compare the values at `J`.
+
+Take `⟨J, hJne, hJ⟩` from `J`. Rewrite using `[KH.cechD]`. Use `erw [LinearMap.pi_apply]`. Simplify using `only [LinearMap.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `k _`. Establish `hle : (J k).card - 1 ≤ 1`. Establish `: (J k).card - 1 ≤ ∑ l, ((J l).card - 1)` using `Finset.single_le_sum (f := fun l => (J l).card - 1) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Use linear arithmetic over natural numbers and integers. Establish `hpos` using `(hJne k).card_pos`.
+
+Establish `hface : ∀ x ∈ J k, ∀ y ∈ J k, ((∀ l, (Function.update J k ((J k).erase x) l).Nonempty) ∧ ∑ l, ((Function.update J k ((J k).erase x) l).card - 1) = 0) → ((∀ l, (Function.update J k ((J k).erase y) l).Nonempty) ∧ ∑ l, ((Function.update J k ((J k).erase y) l).card - 1) = 0)`. Introduce and unpack `x hx y hy ⟨h1, h2⟩`. Establish `hcard : ∀ l, (Function.update J k ((J k).erase y) l).card = (Function.update J k ((J k).erase x) l).card`. Introduce `l`. Break down `eq_or_ne l k with rfl | hl` into its components or cases.
+
+Simplify using `[Finset.card_erase_of_mem hx, Finset.card_erase_of_mem hy]`. Simplify using `[Function.update_of_ne hl]`. Use `⟨fun l => Finset.card_pos.mp ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcard]`. Conclude with `Finset.card_pos.mpr (h1 l)`.
+
+Simplify using `only [hcard]`. Conclude with `h2`. Break down `(show (J k).card = 1 ∨ (J k).card = 2 by omega) with h1 | h2` into its components or cases. Take `⟨a, hJk⟩` from `Finset.card_eq_one.mp h1`. Rewrite using `[Finset.sum_congr hJk (fun _ _ => rfl), Finset.sum_singleton]`.
+
+Use `erw [dif_neg]`. Both sides reduce to the same expression. Introduce and unpack `⟨hne, -⟩`. Use `hne k` as an intermediate fact. Simplify using `[hJk] at this`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hJk⟩ : ∃ a b, a < b ∧ J k = {a, b} := by`. Take `⟨x, y, hxy, hJk⟩` from `Finset.card_eq_two.mp h2`. Break down `lt_or_gt_of_ne hxy with h | h` into its components or cases. Conclude with `⟨x, y, h, hJk⟩`. Conclude with `⟨y, x, h, by rw [hJk, Finset.pair_comm]⟩`.
+
+Establish `ha : a ∈ J k` using `by rw [hJk]; simp`. Establish `hb : b ∈ J k` using `by rw [hJk]; simp`. Rewrite using `[Finset.sum_congr hJk (fun _ _ => rfl), Finset.sum_pair hab.ne]`. Distinguish the cases in `hP : (∀ l, (Function.update J k ((J k).erase a) l).Nonempty) ∧ ∑ l, ((Function.update J k ((J k).erase a) l).card - 1) = 0`. Use `erw [dif_pos hP, dif_pos (hface a ha b hb hP)]`.
+
+Express the relevant statement in the definitionally equal form `KH.faceSign J k a • KH.cellRes S M (Function.update J k ((J k).erase a)) J (LocalizedModule.mk (Ideal.Quotient.mk V f) 1) + KH.faceSign J k b • KH.cellRes S M (Function.update J k ((J k).erase b)) J (LocalizedModule.mk (Ideal.Quotient.mk V f) 1) = 0`. Rewrite using `[hres _ _ (fun l => by`. Break down `eq_or_ne l k with rfl | hl` into its components or cases. Simplify using `[Finset.erase_subset]`. Simplify using `[Function.update_of_ne hl]),`.
+
+Use `hres _ _ (fun l => by`. Break down `eq_or_ne l k with rfl | hl` into its components or cases. Simplify using `[Finset.erase_subset]`. Simplify using `[Function.update_of_ne hl])]`. Establish `hsa : KH.faceSign J k a = (-1) ^ (∑ l ∈ Finset.univ.filter (· < k), ((J l).card - 1))`.
+
+Unfold `KH.faceSign`. Rewrite using `[hJk]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, not_lt.mpr hab.le]`. Establish `hsb : KH.faceSign J k b = -(-1) ^ (∑ l ∈ Finset.univ.filter (· < k), ((J l).card - 1))`. Unfold `KH.faceSign`.
+
+Rewrite using `[hJk]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, hab, pow_succ, pow_add]`. Use `erw [hsa, hsb, neg_smul, add_neg_cancel]`. Establish `hP'` using `fun h => hP (hface b hb a ha h) erw [dif_neg hP, dif_neg hP']`. Simplify using the standard rewrite rules.
+-/
 theorem cechD_polyCochain (V : Ideal (MRingOver S ι)) (f : MRingOver S ι) :
     KH.cechD S ι (MRingOver S ι ⧸ V) 0 (polyCochain V f) = 0 := by
   classical
@@ -179,6 +208,9 @@ end KoszulCech
 
 open KoszulCech
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `h` using `MvPolynomial.support_monomial_subset (s := (0 : (Σ k, GlobalTheory (Fin 2) k) →₀ ℕ)) (a := (1 : ℚ)) hm`. Rewrite `h` using `[Finset.mem_singleton]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_one_projectiveLine : IsMultiHomog (1 : MRingOver ℚ (GlobalTheory (Fin 2))) (fun _ => 0) := by
   intro m hm k
   have h := MvPolynomial.support_monomial_subset (s := (0 : (Σ k, GlobalTheory (Fin 2) k) →₀ ℕ)) (a := (1 : ℚ)) hm
@@ -186,6 +218,11 @@ theorem isMultiHomog_one_projectiveLine : IsMultiHomog (1 : MRingOver ℚ (Globa
   subst h
   simp
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `h` using `MvPolynomial.support_monomial_subset (s := Finsupp.single (⟨(), j⟩ : Σ k, GlobalTheory (Fin 2) k) 1) (a := (1 : ℚ)) hm`. Rewrite `h` using `[Finset.mem_singleton]`. Substitute `h` using the available equality. Consider the cases of `k`.
+
+Simplify using `[Finsupp.single_apply]`.
+-/
 theorem isMultiHomog_X_projectiveLine (j : Fin 2) : IsMultiHomog (X ⟨(), j⟩ : MRingOver ℚ (GlobalTheory (Fin 2))) (fun _ => 1) := by
   classical
   intro m hm k
@@ -196,6 +233,11 @@ theorem isMultiHomog_X_projectiveLine (j : Fin 2) : IsMultiHomog (X ⟨(), j⟩ 
   cases k
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `J _`. Use `Submodule.subset_span ⟨Ideal.Quotient.mk ⊥ (X ⟨(), j⟩), 1, fun _ => 0, isMultiHomog_one_projectiveLine, ?_, rfl⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨X ⟨(), j⟩, ⟨fun _ => by norm_num, ?_⟩, rfl⟩` and prove the remaining obligations. Use `isMultiHomog_X_projectiveLine j using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Use `show _ ∈ (LinearMap.ker _).restrictScalars ℚ`. Rewrite using `[Submodule.restrictScalars_mem, LinearMap.mem_ker]`. Conclude with `cechD_polyCochain _ _`.
+-/
 theorem KoszulCechComplex.hyps_inhabited (j : Fin 2) :
     polyCochain (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2)))) (X ⟨(), j⟩) ∈
       KH.cechZc (GlobalTheory (Fin 2)) (KH.quotPart ℚ (⊥ : Ideal (MRingOver ℚ (GlobalTheory (Fin 2))))) 1 0 := by

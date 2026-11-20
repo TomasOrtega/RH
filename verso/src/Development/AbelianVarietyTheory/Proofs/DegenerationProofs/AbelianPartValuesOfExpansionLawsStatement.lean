@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaInValues.brUth_of_laws | exact GlobalTheory.ThetaInValues.brUth_of_laws | (intros; apply GlobalTheory.ThetaInValues.brUth_of_laws <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianPartValues_of_expansionLaws : Laws → BrUthSt := by
   first | exact @GlobalTheory.ThetaInValues.brUth_of_laws | exact GlobalTheory.ThetaInValues.brUth_of_laws | (intros; apply GlobalTheory.ThetaInValues.brUth_of_laws <;> assumption)

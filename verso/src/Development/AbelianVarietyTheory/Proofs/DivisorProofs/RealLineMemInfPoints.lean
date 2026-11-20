@@ -3,6 +3,9 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.RealLineInf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J β hβ t`. Take `⟨w, τ, Z, -, h⟩` from `hβ`. Take `⟨y, hy, -⟩` from `h t`. Rewrite using `[hy]`. Conclude with `mem_infPts.2 (projFin_embArch σ J w y)`.
+-/
 theorem realLine_mem_infPts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (β : ℝ → GAd σ J), IsRealLine σ J β → ∀ t, β t ∈ infPts σ J := by
   intro F E _ _ _ _ _ σ n J β hβ t

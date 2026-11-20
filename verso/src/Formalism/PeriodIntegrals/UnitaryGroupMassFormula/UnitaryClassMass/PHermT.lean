@@ -17,6 +17,9 @@ def tcoord {F E : Type} [Field F] [Field E] [Algebra F E] {ι : Type} (B : Modul
     (k : ι) (R : Type) [CommRing R] [Algebra F R] : E ⊗[F] R →ₗ[F] R :=
   (TensorProduct.lid F R).toLinearMap ∘ₗ TensorProduct.map (B.coord k) LinearMap.id
 
+/- English proof (translation)
+Simplify using `[tcoord]`.
+-/
 theorem tcoord_tmul {F E : Type} [Field F] [Field E] [Algebra F E] {ι : Type} (B : Module.Basis ι F E)
     (k : ι) (R : Type) [CommRing R] [Algebra F R] (x : E) (y : R) :
     tcoord B k R (x ⊗ₜ[F] y) = B.coord k x • y := by

@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Use `letI : Algebra L ℂ := φ.toAlgebra`. Use `haveI : Algebra.IsAlgebraic L Ω := IsAlgClosure.isAlgebraic`. Set `j : Ω →ₐ[L] ℂ` to `IsAlgClosed.lift`. Use `letI : Algebra Ω ℂ := (j : Ω →+* ℂ).toAlgebra`.
+
+Use `haveI : IsScalarTower (W.Lp L) Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.commutes (x : L)).symm`. Set `s : ℂ →ₐ[W.Lp L] ℂ` to `{ starRingEnd ℂ with commutes' := fun x => (mem_maximalRealSubfield_iff (x : L)).1 x.2 φ }`. Conclude with `⟨s.restrictNormal' Ω, j, fun x => s.restrictNormal_commutes Ω x⟩`.
+-/
 private theorem exists_conj (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] :
     ∃ c : G (W.Lp L) Ω, ∃ j : Ω →+* ℂ, ∀ x, j (c x) = starRingEnd ℂ (j x) := by
   obtain ⟨φ⟩ : Nonempty (L →+* ℂ) := inferInstance
@@ -15,6 +20,11 @@ private theorem exists_conj (L Ω : Type) [Field L] [NumberField L] [IsCMField L
     { starRingEnd ℂ with commutes' := fun x => (mem_maximalRealSubfield_iff (x : L)).1 x.2 φ }
   exact ⟨s.restrictNormal' Ω, j, fun x => s.restrictNormal_commutes Ω x⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `v.ne_bot (eq_bot_iff.2 fun x hx => ?_)` and prove the remaining obligations. Establish `h1` using `(h x).2 hx`. Rewrite `h1` using `[valuation_lt_one_iff']`. Establish `h2` using `h1.2.resolve_right fun h' => h' (ValuationSubring.mem_top _)`.
+
+Simplify using `using h2`.
+-/
 private theorem ne_top {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] {A : ValuationSubring Ω}
     {v : W.Plc k} (h : IsPlaceOver A v) : A ≠ ⊤ := by
   rintro rfl
@@ -24,15 +34,24 @@ private theorem ne_top {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algeb
   have h2 := h1.2.resolve_right fun h' => h' (ValuationSubring.mem_top _)
   simpa using h2
 
+/- English proof (translation)
+Simplify using `using h (q : 𝓞 k)`.
+-/
 private theorem val_nat {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] {A : ValuationSubring Ω}
     {v : W.Plc k} (h : IsPlaceOver A v) (q : ℕ) : A.valuation (q : Ω) < 1 ↔ (q : 𝓞 k) ∈ v.asIdeal := by
   simpa using h (q : 𝓞 k)
 
+/- English proof (translation)
+Establish `h` using `Ideal.finite_factors (I := Ideal.span {(q : 𝓞 k)}) (by simpa using hq)`. Simplify `h` using `[Ideal.dvd_span_singleton]`.
+-/
 private theorem fin_nat {k : Type} [Field k] [NumberField k] {q : ℕ} (hq : q ≠ 0) :
     {v : W.Plc k | (q : 𝓞 k) ∈ v.asIdeal}.Finite := by
   have h := Ideal.finite_factors (I := Ideal.span {(q : 𝓞 k)}) (by simpa using hq)
   simpa [Ideal.dvd_span_singleton] using h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.Coprime.cast (R := 𝓞 k) ((Nat.coprime_primes hp hq).2 hne)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (v.asIdeal.mul_mem_left a h1) (v.asIdeal.mul_mem_left b h2)))`.
+-/
 private theorem eq_of_mem {k : Type} [Field k] [NumberField k] {v : W.Plc k} {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (h1 : (p : 𝓞 k) ∈ v.asIdeal) (h2 : (q : 𝓞 k) ∈ v.asIdeal) : p = q := by
   by_contra hne
@@ -40,6 +59,21 @@ private theorem eq_of_mem {k : Type} [Field k] [NumberField k] {v : W.Plc k} {p 
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ add_mem (v.asIdeal.mul_mem_left a h1) (v.asIdeal.mul_mem_left b h2)))
 
+/- English proof (translation)
+Introduce `l hl L Ω _ _ _ _ _ _ hodd hunr S hS hlS hsp A₀ hA₀ v₀ B p hp hp2 hpS hpd hpv hnv hB hBs`. Establish `hq0 : ∀ q ∈ S, (q : 𝓞 (W.Lp L)) ∉ v₀.asIdeal` using `fun q hq h => hpS (eq_of_mem hp (hS q hq) hpv h ▸ hq)`. Take `⟨c, hc⟩` from `exists_conj L Ω`. Establish `hex : ∀ v : W.Plc (W.Lp L), ∃ A : ValuationSubring Ω, IsPlaceOver A v ∧ (∀ h : (l : 𝓞 (W.Lp L)) ∈ v.asIdeal, A = A₀ ⟨v, h⟩) ∧ (v = v₀ → A = B)`. Introduce `v`.
+
+Distinguish the cases in `h : (l : 𝓞 (W.Lp L)) ∈ v.asIdeal`. Conclude with `⟨A₀ ⟨v, h⟩, hA₀ ⟨v, h⟩, fun _ => rfl, fun e => absurd (e ▸ h) (hq0 l hlS)⟩`. Distinguish the cases in `e : v = v₀`. Conclude with `⟨B, e ▸ hB, fun h' => absurd h' h, fun _ => rfl⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`.
+
+Conclude with `⟨A, hA, fun h' => absurd h' h, fun e' => absurd e' e⟩`. Use `choose A hA hAl hA0 using hex`. Use `choose w hw using fun v => (places L Ω l (A v)).1 (ne_top (hA v))`. Establish `hfin : {v : W.Plc (W.Lp L) | (∃ q ∈ S, (q : 𝓞 (W.Lp L)) ∈ v.asIdeal) ∧ (l : 𝓞 (W.Lp L)) ∉ v.asIdeal}.Finite` using `(S.finite_toSet.biUnion fun q hq => fin_nat (k := W.Lp L) (hS q hq).ne_zero).subset fun v hv => by`. Take `⟨⟨q, hq, h⟩, -⟩` from `hv`.
+
+Conclude with `Set.mem_biUnion hq h`. Use `⟨{ odd := hodd, unr := fun B _ _ => hunr B, c := c, hc := hc, w := w, A := A, hw := hw, hA := hA, St := hfin.toFinset, St_l := fun u hu => (hfin.mem_toFinset.1 hu).2, v0 := v₀, v0_St := ?_, p := p, p_prime := hp, p_odd := hp2, p_ne := fun e => hpS (e ▸ hlS), p_unr := hpd, norm_v0 …` and prove the remaining obligations. Introduce `h`. Take `⟨⟨q, hq, h⟩, -⟩` from `hfin.mem_toFinset.1 h`. Conclude with `hq0 q hq h`.
+
+Introduce and unpack `v (h | h | rfl)`. Conclude with `hsp l hlS _ ((val_nat (hA v) l).2 h)`. Take `⟨⟨q, hq, h⟩, -⟩` from `hfin.mem_toFinset.1 h`. Conclude with `hsp q hq _ ((val_nat (hA v) q).2 h)`. Rewrite using `[hA0 v rfl]`.
+
+Conclude with `hBs`. Conclude with `(fin_nat hl.out.ne_zero).union ((Finset.finite_toSet _).union (Set.finite_singleton v₀))`. Introduce `A' v hv hvS q hq h`. Use `hvS ?_` and prove the remaining obligations. Distinguish the cases in `h' : (l : 𝓞 (W.Lp L)) ∈ v.asIdeal`.
+
+Conclude with `Or.inl h'`. Conclude with `Or.inr (Or.inl (hfin.mem_toFinset.2 ⟨⟨q, hq, (val_nat hv q).1 h⟩, h'⟩))`.
+-/
 theorem UpperTheory.V.Ws.Lk.mkSet :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω], l ≠ 2 → (∀ A : ValuationSubring Ω, Ine (F := W.Lp L) A ≤ (W.resP L Ω).range) → ∀ S : Finset ℕ, (∀ q ∈ S, q.Prime) → l ∈ S → (∀ q ∈ S, ∀ A : ValuationSubring Ω, A.valuation (q : Ω) < 1 → Dec (F := W.Lp L) A ≤ (W.resP L Ω).range) → ∀ A₀ : W.Vl l L → ValuationSubring Ω, (∀ v, IsPlaceOver (A₀ v) v.1) → ∀ (v₀ : W.Plc (W.Lp L)) (B : ValuationSubring Ω) (p : ℕ), p.Prime → p ≠ 2 → p ∉ S → ¬ (p : ℤ) ∣ discr L → ((p : ℕ) : 𝓞 (W.Lp L)) ∈ v₀.asIdeal → normV v₀ = p → IsPlaceOver B v₀ → Dec (F := W.Lp L) B ≤ (W.resP L Ω).range → ∃ s : W.HidaSetting l L Ω, (∀ v : W.Vl l L, s.A v = A₀ v) ∧ s.A s.v0 = B ∧ s.S.Finite ∧ (∀ q ∈ S, ¬ B.valuation (q : Ω) < 1) ∧ ∀ (A : ValuationSubring Ω) (v : W.Plc (W.Lp L)), IsPlaceOver A v → v ∉ s.S → ∀ q ∈ S, ¬ A.valuation (q : Ω) < 1 := by
   classical

@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.ChernReg
 open scoped TensorProduct ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.existsPolDat | exact GlobalTheory.existsPolDat | (intros; apply GlobalTheory.existsPolDat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_polarization_data : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (hm : ∀ k, Mets (Φ.C k) (cxSt D.what₂.LL)) (h0 : RefMets Φ), Nonempty (PolDat s Φ hm h0) := by
   first | exact @GlobalTheory.existsPolDat | exact GlobalTheory.existsPolDat | (intros; apply GlobalTheory.existsPolDat <;> assumption)

@@ -19,6 +19,15 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.LevelRows3
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h`. Establish `key : GlobalTheory.IndefiniteRowSideFullHecke.TypeCharacterLevelRows.RowsOfLevel R.toRealDat F.lv2` using `GlobalTheory.LevelRows.rowsOfLevel_of_models R.toRealDat F.lv2 h.base.models.HE h.base.models.gE`. Establish `aux : ∀ (b : Bool) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ), (∀ x : R.HE.H, R.HE.e x ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 b) ↔ ∀ g : P, R.gE (g : G) x = D.what₂.embLL ((ψ g : D.what₂.LLˣ) : D.what₂.LL) • x) → (R.toCx3 F).EEl b = typeSp3 A3 (R.toCx3 F) (R.gEx F) P ψ`. Introduce `b P ψ hx`. Use extensionality with `x`.
+
+Simplify using `only [typeSp3, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `Iff.trans (hx x) (forall_congr' fun g => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply]`. Establish `e : cj (twAt D.what₂.embLL A3.A.v0) (A3.A.v0.embedding ((ψ g : D.what₂.LLˣ) : D.what₂.LL)) = D.what₂.embLL ((ψ g : D.what₂.LLˣ) : D.what₂.LL)`.
+
+Simplify using `only [R.emb0, cj_cj]`. Establish `e' : A3.A.fam.v0.embedding ((ψ g : D.what₂.LLˣ) : D.what₂.LL) • x = Tw.mk (twAt D.what₂.embLL A3.A.v0) (D.what₂.embLL ((ψ g : D.what₂.LLˣ) : D.what₂.LL) • Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x) := by`. Rewrite using `[← e]`. Both sides reduce to the same expression. Rewrite using `[e']`.
+
+Conclude with `Iff.rfl`. Conclude with `⟨aux false _ _ (key false), aux true _ _ (key true)⟩`.
+-/
 theorem eel_eq_typeSp3 : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → (R.toCx3 F).EEl false = typeSp3 A3 (R.toCx3 F) (R.gEx F) F.P0 F.ψ0 ∧ (R.toCx3 F).EEl true = typeSp3 A3 (R.toCx3 F) (R.gEx F) F.P1 F.ψ1 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h
   have key : GlobalTheory.IndefiniteRowSideFullHecke.TypeCharacterLevelRows.RowsOfLevel R.toRealDat F.lv2 :=

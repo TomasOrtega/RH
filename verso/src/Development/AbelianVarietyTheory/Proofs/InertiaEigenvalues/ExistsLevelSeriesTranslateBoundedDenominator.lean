@@ -25,6 +25,33 @@ namespace GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP l hl s hs`. Establish `hstd : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, ← hP.2.2.1, hP.2.2.2.2.2.2.1]`. Take `⟨c, hc⟩` from `GlobalTheory.T.rationalPart_denominator_bounded_by_prime_power D V hstd l hl s`.
+
+Use `⟨c, fun z hz hOne M bad hM hbad hlb => ?_⟩` and prove the remaining obligations. Take `⟨J₁, hJ₁o, hJ₁⟩` from `GlobalTheory.T.exists_open_subgroup_hermitianLattice_eq_standard D V hstd`. Take `⟨J₂, hJ₂o, hJ₂⟩` from `GlobalTheory.T.exists_open_subgroup_fix_vacuum_translates D ψ θ V W χV χW om ΛV ΛW sW f₀ hP M hM`. Establish `hJo : IsOpen ((J₁ ⊓ J₂ : Subgroup (Bridge.Gf V)) : Set (Bridge.Gf V))` using `hJ₁o.inter hJ₂o`. Take `⟨γ, h, kJ, hsp, e⟩` from `GlobalTheory.SplitRepsOpen.exists_rep_splitOffBad D V (J₁ ⊓ J₂) bad hbad hJo (fin V (s * z))`.
+
+Take `⟨k', hk', ek⟩` from `Formalism.IndefR.TopMult.exists_lift (kJ : Bridge.Gf V)`. Take `⟨a, ha_def⟩ : ∃ a : GA D V, a = h⁻¹ * ((γ : GA D V)⁻¹ * (s * z) * k'⁻¹)` from `⟨_, rfl⟩`. Establish `hfa : finHom V a = 1`. Establish `e'` using `congrArg Subtype.val e`. Establish `ek'` using `congrArg Subtype.val ek`.
+
+Simplify using `only [MonoidHom.coe_rangeRestrict, Bridge.ratF, MonoidHom.comp_apply, Subgroup.coe_subtype, Subgroup.coe_mul] at e' ek'`. Rewrite using `[ha_def, map_mul, map_inv, map_mul, map_mul, map_inv, map_inv, ek', e']`. Use `group`. Establish `ha : a ∈ GinfC V` using `hfa`. Establish `hγa : (γ : GA D V) * a ∈ GfC V`.
+
+Establish `h1 : infHom V h = 1` using `hsp.1`. Establish `h2 : infHom V (s * z) = 1` using `mul_mem hs hz`. Establish `h3 : infHom V k' = 1` using `hk'`. Use `show infHom V ((γ : GA D V) * a) = 1`. Rewrite using `[ha_def, map_mul, map_mul, map_inv, map_mul, map_mul, map_inv, map_inv, h1, h2, h3]`.
+
+Use `group`. Establish `hs' : s * z = (γ : GA D V) * (h * a) * k'`. Rewrite using `[ha_def]`. Use `group`. Take `⟨γ', -, hγ'⟩` from `γ.2`.
+
+Establish `hrat : GlobalTheory.Member.IsRat V (γ : GA D V) γ'` using `hγ'.symm`. Establish `hkJ : (kJ : Bridge.Gf V) ∈ J₁` using `(kJ.2 : (kJ : Bridge.Gf V) ∈ J₁ ⊓ J₂).1`. Establish `hkJ' : ((kJ : Bridge.Gf V))⁻¹ ∈ J₁` using `inv_mem hkJ`. Establish `hden : DenomAt l c γ'` using `hc z hOne (γ : GA D V) h γ' kJ bad hrat hlb hsp (hJ₁ _ hkJ) (hJ₁ _ hkJ') e`. Use `⟨γ, h, a, γ', γ.2, hrat, ha, hγa, hsp, hden, fun e O f hf BW Q g => ?_⟩` and prove the remaining obligations.
+
+Establish `hω` using `hP.1.weil`. Establish `hθ : IsInfFam θ` using `hP.1.inf`. Establish `hfix : om (k', 1) f = f`. Establish `hk2 : fin V k' ∈ J₂`. Establish `ek2 : fin V k' = kJ` using `ek`.
+
+Rewrite using `[ek2]`. Conclude with `(kJ.2 : (kJ : Bridge.Gf V) ∈ J₁ ⊓ J₂).2`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, -, hy, rfl⟩` from `hx`.
+
+Conclude with `hJ₂ k' hk' hk2 y hy`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul r x _ hx`. Express the relevant statement in the definitionally equal form `om (k', 1) ((r : ℂ) • x) = (r : ℂ) • x`.
+
+Rewrite using `[map_smul, hx]`. Establish `hthf : IsThetaFunO ψ V W f` using `GlobalTheory.T.isThetaFunction_of_mem_span_vacuumTranslates D ψ θ V W χV χW om ΛV ΛW sW f₀ hP e M O f hf`. Establish `hT : ∀ P, IsThetaFunO ψ V W (stdF ψ θ V W sW BW f P)` using `fun P => GlobalTheory.Chain.InnerSteps.theta_pureTensorO hω.std hθ _ _ _ _ hthf P`. Establish `hk1 : om (k', 1) (stdF ψ θ V W sW BW f Q) = stdF ψ θ V W sW BW f Q`. Use `GlobalTheory.FiniteFock.om_pureTensorO_of_finite ψ θ V W χV χW om hθ hω (fun _ => 1) sW (fun _ => 1) BW f hT k' hk' 1 (one_mem _) 1 (by rw [one_smul]; exact hfix) Q` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this`. Establish `hp : ((s * z, g) : GA D V × GA D W) = ((γ : GA D V), 1) * ((h, g) * (a, 1)) * (k', 1)`. Rewrite using `[hs']`. Simplify using `[Prod.mk_mul_mk]`.
+
+Establish `e1 : om (s * z, g) = om ((γ : GA D V), 1) * (om (h, g) * om (a, 1)) * om (k', 1)`. Rewrite using `[hp, map_mul, map_mul, map_mul]`. Establish `hth` using `hω.om_pres ((h, g) : GA D V × GA D W) _ (hω.om_pres ((a, 1) : GA D V × GA D W) _ (hT Q))`. Use `show om (s * z, g) (stdF ψ θ V W sW BW f Q) 0 = om (h, g) (om (a, 1) (stdF ψ θ V W sW BW f Q)) 0`. Rewrite using `[e1, Module.End.mul_apply, Module.End.mul_apply, hk1, Module.End.mul_apply, hω.om_aut _ γ.2 1 (one_mem _) _ hth]`.
+-/
 theorem exists_move_denomAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ l : ℕ, l.Prime → ∀ s ∈ GfC V, ∃ c : ℕ, ∀ z ∈ GfC V, OneAt V l z → ∀ M bad : ℕ, M ≠ 0 → bad ≠ 0 → l ∣ bad → ∃ (γ h a : GA D V) (γ' : GL (Fin V.rank) D.host.E), γ ∈ GQ V ∧ GlobalTheory.Member.IsRat V γ γ' ∧ a ∈ GinfC V ∧ γ * a ∈ GfC V ∧ SplitOffBad V bad h ∧ DenomAt l c γ' ∧ ∀ (e : AE D) (O : Subring ℂ), ∀ f ∈ trSp ψ V W ΛV ΛW f₀ e M O, ∀ (BW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (Q : MvPolynomial (FVar D W.rank V.rank) ℂ) (g : GA D W), thetaKO om (s * z) g (stdF ψ θ V W sW BW f Q) = thetaKO om h g (om (a, 1) (stdF ψ θ V W sW BW f Q)) := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP l hl s hs
   have hstd : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank := by

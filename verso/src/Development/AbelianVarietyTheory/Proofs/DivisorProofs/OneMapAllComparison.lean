@@ -21,6 +21,11 @@ section Level
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory CategoryTheory.Hom.group in
+/- English proof (translation)
+Establish `e : ∀ a, Xo.univ.eta (p.1 a) = Xo.univ.eta (q.1 a)` using `fun a => by`. Rewrite using `[← sub_add_cancel (p.1 a) (q.1 a), Xo.univ.eta_add, Xo.univ.eta_ker _ (h a), one_mul]`. Establish `e1 : ∀ a, Xo.univ.etaA a = 1` using `fun a => by`. Use `Xo.univ.etaA_ker a` as an intermediate fact. Rewrite `this` using `[hA, one_smul]`. Then use the resulting hypothesis.
+
+Unfold `levR IsLevMove`. Simplify using `only [e, e1]`.
+-/
 theorem levR_congr (c : Coeff l) (hA : l.A = 1) {p q : (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
     (h : ∀ a, p.1 a - q.1 a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) {S : Type} [CommRing S] [Algebra c.F S]
     (y y' : FrPt Xo c S) : levR p y y' ↔ levR q y y' := by
@@ -34,6 +39,9 @@ theorem levR_congr (c : Coeff l) (hA : l.A = 1) {p q : (Dw.La →ₗ[𝓞 D.host
 
 variable {G : Type} [Group G] {lev lev' : G → (Dw.La →ₗ[𝓞 D.host.E] Dw.La) × (Dw.La →ₗ[𝓞 D.host.E] Dw.La)}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S _ _ g y y'`. Conclude with `propext (levR_congr c hA (h g) y y')`.
+-/
 theorem rel_congr (c : Coeff l) (hA : l.A = 1)
     (h : ∀ g a, (lev g).1 a - (lev' g).1 a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) :
     (fun {S : Type} [CommRing S] [Algebra c.F S] (g : G) (y y' : FrPt Xo c S) => levActR (Xo := Xo) (c := c) lev g y y') =
@@ -41,6 +49,9 @@ theorem rel_congr (c : Coeff l) (hA : l.A = 1)
   funext S _ _ g y y'
   exact propext (levR_congr c hA (h g) y y')
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `actLev`. Rewrite using `[rel_congr c hA h]`.
+-/
 theorem actLev_congr (c : Coeff l) (hA : l.A = 1)
     (h : ∀ g a, (lev g).1 a - (lev' g).1 a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) :
     actLev (Xo := Xo) c lev = actLev c lev' := by
@@ -48,12 +59,18 @@ theorem actLev_congr (c : Coeff l) (hA : l.A = 1)
   unfold actLev
   rw [rel_congr c hA h]
 
+/- English proof (translation)
+Unfold `ActLev`. Rewrite using `[rel_congr c hA h]`.
+-/
 theorem actLaws_congr (c : Coeff l) (hA : l.A = 1)
     (h : ∀ g a, (lev g).1 a - (lev' g).1 a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) :
     ActLev (Xo := Xo) c lev ↔ ActLev (Xo := Xo) c lev' := by
   unfold ActLev
   rw [rel_congr c hA h]
 
+/- English proof (translation)
+Establish `h1` using `(h t).1.1.2.2`. Rewrite `h1` using `[(h t).2.1]`. Conclude with `Nat.dvd_one.1 h1`.
+-/
 theorem second_level_eq_one {c : Coeff l} {n : ℕ} {Tup : Type} {dδ : Tup → DeltaDat Xo c n} (h : CovPin Xo c dδ) (t : Tup) :
     l.A = 1 := by
   have h1 := (h t).1.1.2.2
@@ -69,6 +86,17 @@ variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
 def TypeCoprime : Prop :=
   ∀ PP ∈ R.Pg, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
 
+/- English proof (translation)
+Establish `hm : ∀ (Q : HeightOneSpectrum (𝓞 D.host.E)) (p : ℕ), (p : 𝓞 D.host.E) ∈ Q.asIdeal ↔ (p : ℤ) ∈ Q.asIdeal.under ℤ` using `fun Q p => by rw [Ideal.under_def, Ideal.mem_comap, map_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `P.isPrime` as an intermediate fact. Establish `hne : P.asIdeal.under ℤ ≠ ⊥` using `Ideal.under_ne_bot ℤ P.ne_bot`.
+
+Establish `hp : (P.asIdeal.under ℤ).IsPrime` using `inferInstance`. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal (P.asIdeal.under ℤ)).principal`. Establish `ha' : P.asIdeal.under ℤ = Ideal.span {a}` using `ha`. Establish `ha0 : a ≠ 0` using `fun h0 => hne (by rw [ha', h0, Ideal.span_singleton_eq_bot])`. Establish `hpr : Prime a` using `(Ideal.span_singleton_prime ha0).1 (ha' ▸ hp)`.
+
+Establish `hmem : ((a.natAbs : ℕ) : ℤ) ∈ P.asIdeal.under ℤ`. Rewrite using `[ha', Ideal.mem_span_singleton]`. Conclude with `Int.dvd_natAbs.2 dvd_rfl`. Conclude with `⟨a.natAbs, Int.prime_iff_natAbs_prime.1 hpr, (hm _ _).2 hmem, (hm _ _).2 (h ▸ hmem)⟩`. Introduce and unpack `⟨p, hp, h1, h2⟩`.
+
+Establish `key : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), (p : 𝓞 D.host.E) ∈ Q.asIdeal → Ideal.span {(p : ℤ)} = Q.asIdeal.under ℤ` using `fun Q hQ => by`. Use `Q.isPrime` as an intermediate fact. Establish `hq : (Q.asIdeal.under ℤ).IsPrime` using `inferInstance`. Establish `hpr : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime hpr.ne_zero).2 hpr).isMaximal (by simpa using hp.ne_zero)`.
+
+Conclude with `hmax.eq_of_le hq.ne_top ((Ideal.span_singleton_le_iff_mem _).2 ((hm _ _).1 hQ))`. Rewrite using `[← key P h1, ← key P' h2]`.
+-/
 theorem under_eq_iff (P P' : HeightOneSpectrum (𝓞 D.host.E)) :
     P.asIdeal.under ℤ = P'.asIdeal.under ℤ ↔
       ∃ p : ℕ, p.Prime ∧ (p : 𝓞 D.host.E) ∈ P.asIdeal ∧ (p : 𝓞 D.host.E) ∈ P'.asIdeal := by
@@ -98,6 +126,9 @@ theorem under_eq_iff (P P' : HeightOneSpectrum (𝓞 D.host.E)) :
       exact hmax.eq_of_le hq.ne_top ((Ideal.span_singleton_le_iff_mem _).2 ((hm _ _).1 hQ))
     rw [← key P h1, ← key P' h2]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨fun t P hP P' hP' h => h1 t P hP P' hP' ((under_eq_iff P P').2 h), fun t P hP => h2 t P (Or.inr hP)⟩, fun P hP => h2 A.μ0 P (Or.inl hP)⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨fun t P hP P' hP' h => h1 t P hP P' hP' ((under_eq_iff P P').1 h), fun t P hP => hP.elim (h3 P) (h2 t P)⟩`.
+-/
 theorem placeGuard_iff : IotaEmbeddingColumns.PlaceGuard T R ↔ QGuard R ∧ TypeCoprime T R := by
   constructor
   · rintro ⟨h1, h2⟩
@@ -129,12 +160,18 @@ def PhaseRational (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc 
 
 variable {T R} in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem phRat_iff {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup)
     (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ) (ph : ℂ) :
     O.PhRat (κ i) (v₀ i (sg0 D A)) cc ph ↔ PhaseRational T R κ v₀ i hV cc ph := Iff.rfl
 
 variable {T R} in
 
+/- English proof (translation)
+Establish `e : actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c O.lev2 = actLev T.Q.c O'.lev2 := actLev_congr _ hA h`. Unfold `OMDat.EquivAt`. Rewrite using `[e]`. Conclude with `Iff.rfl`.
+-/
 theorem equivAt_congr {i : Fin D.R.m} {Tp Tp' : Type} {tup : Tp → T0} {tup' : Tp' → T0} (O : OMDat T.toCore R i Tp tup)
     (O' : OMDat T.toCore R i Tp' tup') (hA : T.Q.l.A = 1)
     (h : ∀ g a, O.lev g a - O'.lev g a ∈ T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La))
@@ -146,6 +183,9 @@ theorem equivAt_congr {i : Fin D.R.m} {Tp Tp' : Type} {tup : Tp → T0} {tup' : 
 
 variable {T R} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.2.1, h.2.2.2.1⟩, h.2.2.1, h.2.2.2.2⟩, fun h => ⟨h.1.2.1, h.1.1, h.2.1, h.1.2, h.2.2⟩⟩`.
+-/
 theorem first_iff {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toCore R i Tp tup)
     (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ) (ph : ℂ) :
     (D.what₂.embLL.toRatAlgHom.fieldRange ≤ O.c'.F ∧
@@ -153,6 +193,13 @@ theorem first_iff {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (O : OMDat T.toC
       Common κ v₀ O cc ph ∧ O.EquivAt (κ i) cc ∧ PhaseRational T R κ v₀ i hV cc ph :=
   ⟨fun h => ⟨⟨h.2.1, h.2.2.2.1⟩, h.2.2.1, h.2.2.2.2⟩, fun h => ⟨h.1.2.1, h.1.1, h.2.1, h.1.2, h.2.2⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', hle, jL, c0', lev, io, hw, dδ, U₂, dict₂, Cl, fCl, bad, Lh, La, Nc, gam, vol, ep, B, epF, xi, φ, w, thAd, Plc, hR, hT, -, -, a1, a2, hbad, hreps, hep, hB, hio, hw', hcov, hcxi, hrow⟩`. Establish `hA : T.Q.l.A = 1` using `second_level_eq_one hcov (Classical.arbitrary Tp)`. Establish `hl : ∀ g a, (lev g).1 a - ((fun g => ((lev g).1, (LinearMap.id : (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La))) g).1 a ∈ T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (T.Q.Dw ((i : ℕ) + 1)).La)` using `fun g a => by simp`. Rewrite `hrow` using `[actLev_congr T.Q.c hA hl, actLev_congr c' hA hl]`.
+
+Use `⟨{ c' := c', hle := hle, jL := jL, hV := hV, c0' := c0', lev := fun g => (lev g).1, dδ := dδ, Cl' := Cl, fCl := fCl bad := bad, Lh := Lh, La := La, Nc := Nc, gam := gam, vol := vol, ep := ep, B := B, epF := epF, io := io, hw := hw φ := φ, w := w, U₂ := U₂, dict₂ := dict₂, xi := x …` and prove the remaining obligations. Take `⟨_, _, h, -⟩` from `(hT t).reps`. Conclude with `Nat.pos_of_ne_zero h.1`. Take `⟨_, -, h⟩` from `hcxi`. Conclude with `(h t).2.1`.
+
+Introduce and unpack `⟨O, ⟨hp, hrow⟩, hB⟩`. Use `⟨O.c', O.hle, O.jL, O.c0', O.lev2, O.io, O.hw, O.dδ, O.U₂, O.dict₂, O.Cl', O.fCl, O.bad, O.Lh, O.La, O.Nc, O.gam, O.vol, O.ep, O.B, O.epF, O.xi, O.φ, O.w, O.thAd, O.Plc, hp.lift, hp.tuple, inferInstance, fun t => ?_, hp.act.1, hp.act.2, fun t => (hp.bad t).2, hp.reps, fun t => (h …` and prove the remaining obligations. Take `⟨_, _, h, -⟩` from `(hp.tuple t).reps`. Take `⟨k, -⟩` from `h.2.2.2.2.2.1 1`. Conclude with `⟨k⟩`.
+-/
 theorem rowAt_iff (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) {Tp : Type} [Nonempty Tp] (tup : Tp → T0)
     (cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ) (ph : ℂ) :
     IotaEmbeddingColumns.RowAt T R κ v₀ i hV tup cc ph ↔
@@ -182,6 +229,17 @@ theorem rowAt_iff (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc 
     obtain ⟨k, -⟩ := h.2.2.2.2.2.1 1
     exact ⟨k⟩
 
+/- English proof (translation)
+Take `⟨k, hk, -, h2⟩` from `hT`. Establish `hdet : ((k : E) ^ n) ∈ detSet L`. Use `⟨fun j => (k : 𝓞 E) • (Pi.single j 1 : Fin n → E), fun j => h2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) fun i _ => ?_), ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `using Submodule.one_le.1 le_rfl`. Simplify using `[h]`. Establish `: (Matrix.of fun i j => ((k : 𝓞 E) • (Pi.single j 1 : Fin n → E)) i) = (k : E) • (1 : Matrix (Fin n) (Fin n) E)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, Algebra.smul_def]`.
+
+Rewrite using `[this, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hc ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ cc ⊔ cb)`. Establish `h3 : (k : E) ^ n * algebraMap (𝓞 E) E b ∈ idlE cc` using `hd ▸ Submodule.mul_mem_mul (Submodule.subset_span hdet) ⟨b, hb, rfl⟩`. Take `⟨x, hx, hx'⟩` from `h3`. Establish `h4 : x = (k : 𝓞 E) ^ n * b`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `hx'`. Establish `h5 : (k : 𝓞 E) ^ n ∈ cc`. Rewrite using `[← mul_one ((k : 𝓞 E) ^ n), ← hab, mul_add]`.
+
+Conclude with `add_mem (cc.mul_mem_left _ ha) (h4 ▸ hx)`. Take `⟨u, v, huv⟩ : IsCoprime ((k : 𝓞 E) ^ n) ((bad : ℕ) : 𝓞 E)` from `(Nat.Coprime.cast hk).pow_left`. Rewrite using `[Ideal.eq_top_iff_one, ← huv]`. Conclude with `add_mem (Ideal.mem_sup_left (cc.mul_mem_left _ h5)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem prime_to_bad {E : Type} [Field E] [NumberField E] {n bad : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} {cc cb : Ideal (𝓞 E)}
     (hT : (⟨L⟩ : GenLat E n).TrivAt bad) (hc : cc ⊔ cb = ⊤)
     (hd : Submodule.span (𝓞 E) (detSet L) * idlE cb = idlE cc) : cc ⊔ Ideal.span {((bad : ℕ) : 𝓞 E)} = ⊤ := by
@@ -220,6 +278,13 @@ def ScalarExtends (i : Fin D.R.m) (t : T0) : Prop :=
     ∀ B : Ideal (𝓞 D.host.E) → c'.F, BIs R i (inC c') t bad B → ∃ B', BIs R i (inC c') t bad B' ∧ BAbs c' B'
 
 variable {T R} in
+/- English proof (translation)
+Take `⟨hp, hrow⟩` from `h`. Establish `hex : ∀ t, ∃ B', BIs R i (inC O.c') (tup t) (O.bad t) B' ∧ BAbs O.c' B'` using `fun t => by`. Take `⟨_, _, h, -⟩` from `(hp.tuple t).reps`. Conclude with `hS t O.c' O.jL hp.lift.field _ h.1 h.2.1 _ (hp.tuple t).B`. Use `choose B₀ hB h2 using hex`.
+
+Use `⟨{ O with B := B₀ }, ⟨⟨hp.lift, fun t => ⟨(hp.tuple t).reps, hB t, (hp.tuple t).xi, (hp.tuple t).phi, (hp.tuple t).half⟩, hp.act, hp.bad, hp.reps, fun t => ⟨(hp.ep t).1, fun L I a b c d e => ?_⟩, hp.io, hp.w, hp.cov, hp.cxi, hp.model₂⟩, hrow⟩, h2⟩` and prove the remaining obligations. Establish `hI : I ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `at d`. Establish `hb` using `prime_to_bad b d e`.
+
+Establish `hE : B₀ t I = O.B t I` using `(inC O.c').injective ((hB t I hI hb).trans ((hp.tuple t).B I hI hb).symm)`. Take `⟨q, hq⟩` from `(hp.ep t).2 L I a b c d e`. Conclude with `⟨q, hq.1, hq.2.1, hq.2.2.trans (congrArg (fun x => x⁻¹ * (q : O.c'.F)) hE.symm)⟩`.
+-/
 theorem exists_abs {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (hS : ∀ t, ScalarExtends T R i (tup t))
     {cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ} {ph : ℂ} (O : OMDat T.toCore R i Tp tup) (h : Common κ v₀ O cc ph) :
     ∃ O' : OMDat T.toCore R i Tp tup, Common κ v₀ O' cc ph ∧ ∀ t, BAbs O'.c' (O'.B t) := by
@@ -240,6 +305,9 @@ theorem exists_abs {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0} (hS : ∀ t, Sc
   obtain ⟨q, hq⟩ := (hp.ep t).2 L I a b c d e
   exact ⟨q, hq.1, hq.2.1, hq.2.2.trans (congrArg (fun x => x⁻¹ * (q : O.c'.F)) hE.symm)⟩
 
+/- English proof (translation)
+The claim follows from `(rowAt_iff T R κ v₀ i hV tup cc ph).trans ⟨fun ⟨O, h, _⟩ => ⟨O, h⟩, fun ⟨O, h⟩ => exists_abs κ v₀ hS O h⟩`.
+-/
 theorem rowAt_iff_common (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) {Tp : Type} [Nonempty Tp] (tup : Tp → T0)
     (hS : ∀ t, ScalarExtends T R i (tup t)) (cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ) (ph : ℂ) :
     IotaEmbeddingColumns.RowAt T R κ v₀ i hV tup cc ph ↔ ∃ O : OMDat T.toCore R i Tp tup, Common κ v₀ O cc ph :=
@@ -252,12 +320,18 @@ def LevUnique (i : Fin D.R.m) : Prop :=
 
 variable (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ)
 
+/- English proof (translation)
+The claim follows from `and_congr Iff.rfl (imp_congr Iff.rfl (exists_congr fun O' => first_iff κ v₀ O' hV _ _))`.
+-/
 theorem rowR_iff (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) :
     OneMapRowR T R κ v₀ O ph i ↔ OneMapRow0 T R κ v₀ O i ∧ (QGuard R → ∃ O' : OMDat T.toCore R i T0 id,
       Common κ v₀ O' (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i) ∧ O'.EquivAt (κ i) (T.cE ((i : ℕ) + 1) T.toCore.σ₀) ∧
         PhaseRational T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i)) :=
   and_congr Iff.rfl (imp_congr Iff.rfl (exists_congr fun O' => first_iff κ v₀ O' hV _ _))
 
+/- English proof (translation)
+The claim follows from `haveI : Nonempty T0 := ⟨A.μ0⟩ rowAt_iff T R κ v₀ i hV id cc z`.
+-/
 theorem rowAll_iff (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i)
     (cc : (T.U ((i : ℕ) + 1) T.toCore.σ₀).Comp → ℂ) (z : ℂ) :
     IotaEmbeddingColumns.RowAll T R κ v₀ i hV cc z ↔
@@ -267,23 +341,38 @@ theorem rowAll_iff (i : Fin D.R.m) (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc
 
 variable {T R κ v₀ O ph}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.lift.std, (h.2.tuple ()).half.1, fun P hP => (h.2.tuple ()).half.2.2 P (Or.inl hP)⟩`.
+-/
 theorem ties_of_pins {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) : VStd D i ∧ IotaEmbeddingColumns.HalfTie T R ∧ TypeCoprime T R :=
   ⟨h.2.lift.std, (h.2.tuple ()).half.1, fun P hP => (h.2.tuple ()).half.2.2 P (Or.inl hP)⟩
 
+/- English proof (translation)
+The claim follows from `(placeGuard_iff T R).trans (and_iff_left (ties_of_pins h).2.2)`.
+-/
 theorem guards_iff {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) : IotaEmbeddingColumns.PlaceGuard T R ↔ QGuard R :=
   (placeGuard_iff T R).trans (and_iff_left (ties_of_pins h).2.2)
 
+/- English proof (translation)
+The claim follows from `(rowAt_iff_common T R κ v₀ i hV _ (fun _ => hS) _ _).2 ⟨O i, hp.2, (ht h0).2.1⟩`.
+-/
 theorem rowBase_of {i : Fin D.R.m} (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (hp : OMPins T R κ v₀ O i)
     (ht : PhaseTie T R κ v₀ O ph i) (h0 : OneMapRow0 T R κ v₀ O i) (hS : ScalarExtends T R i A.μ0) :
     IotaEmbeddingColumns.RowBase T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i) :=
   (rowAt_iff_common T R κ v₀ i hV _ (fun _ => hS) _ _).2 ⟨O i, hp.2, (ht h0).2.1⟩
 
+/- English proof (translation)
+Take `⟨O', h', -⟩` from `((rowR_iff T R κ v₀ O ph i hV).1 h).2 ((placeGuard_iff T R).1 hg).1`. Conclude with `(rowAll_iff T R κ v₀ i hV _ _).2 (exists_abs κ v₀ hS O' h')`.
+-/
 theorem rowAll_of_rowR {i : Fin D.R.m} (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (hS : ∀ t, ScalarExtends T R i t)
     (h : OneMapRowR T R κ v₀ O ph i) (hg : IotaEmbeddingColumns.PlaceGuard T R) :
     IotaEmbeddingColumns.RowAll T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i) := by
   obtain ⟨O', h', -⟩ := ((rowR_iff T R κ v₀ O ph i hV).1 h).2 ((placeGuard_iff T R).1 hg).1
   exact (rowAll_iff T R κ v₀ i hV _ _).2 (exists_abs κ v₀ hS O' h')
 
+/- English proof (translation)
+Use `(rowR_iff T R κ v₀ O ph i hV).2 ⟨h0, fun hg => ?_⟩` and prove the remaining obligations. Take `⟨O', h', -⟩` from `(rowAll_iff T R κ v₀ i hV _ _).1 (h ((guards_iff hp).2 hg))`. Conclude with `⟨O', h', (equivAt_congr κ (O i) O' (second_level_eq_one hp.2.cov ()) (hL _ _ hp.2.lift.lev h'.1.lift.lev) _).1 (ht h0).1, (phRat_iff κ v₀ (O i) hV _ _).1 (ht h0).2.2⟩`.
+-/
 theorem rowR_of_rowAll {i : Fin D.R.m} (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (hp : OMPins T R κ v₀ O i)
     (ht : PhaseTie T R κ v₀ O ph i) (hL : LevUnique T R i) (h0 : OneMapRow0 T R κ v₀ O i)
     (h : IotaEmbeddingColumns.PlaceGuard T R → IotaEmbeddingColumns.RowAll T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i)) :
@@ -293,16 +382,27 @@ theorem rowR_of_rowAll {i : Fin D.R.m} (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ 
   exact ⟨O', h', (equivAt_congr κ (O i) O' (second_level_eq_one hp.2.cov ()) (hL _ _ hp.2.lift.lev h'.1.lift.lev) _).1 (ht h0).1,
     (phRat_iff κ v₀ (O i) hV _ _).1 (ht h0).2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, rowAll_of_rowR hV hS h⟩, fun h => rowR_of_rowAll hV hp ht hL h.1 h.2⟩`.
+-/
 theorem conclusions_iff {i : Fin D.R.m} (hV : T.V ((i : ℕ) + 1) T.toCore.σ₀ = Wc D i) (hp : OMPins T R κ v₀ O i)
     (ht : PhaseTie T R κ v₀ O ph i) (hL : LevUnique T R i) (hS : ∀ t, ScalarExtends T R i t) :
     OneMapRowR T R κ v₀ O ph i ↔ OneMapRow0 T R κ v₀ O i ∧
       (IotaEmbeddingColumns.PlaceGuard T R → IotaEmbeddingColumns.RowAll T R κ v₀ i hV (T.cE ((i : ℕ) + 1) T.toCore.σ₀) (ph i)) :=
   ⟨fun h => ⟨h.1, rowAll_of_rowR hV hS h⟩, fun h => rowR_of_rowAll hV hp ht hL h.1 h.2⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ hg i hV` and use `rowAll_of_rowR hV (hS i) (h i) hg`.
+-/
 theorem oneMapAll_of_rowR (F : Face D A) (hS : ∀ i t, ScalarExtends T R i t) (h : ∀ i, OneMapRowR T R κ v₀ O ph i) :
     IotaEmbeddingColumns.OneMapAll T R κ v₀ F ph :=
   fun _ _ _ _ hg i hV => rowAll_of_rowR hV (hS i) (h i) hg
 
+/- English proof (translation)
+Use `haveI : Nonempty T0 := ⟨A.μ0⟩`. Establish `e` using `fun i hV cc z => rowAt_iff_common T R κ v₀ i hV (id : T0 → T0) (hS i) cc z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h i ⟨cc, z, O', h'⟩`. Conclude with `(h i O'.hV ⟨cc, z, (e i O'.hV cc z).2 ⟨O', h'⟩⟩).imp fun z' hz => (e i O'.hV _ z').1 hz`.
+
+Introduce and unpack `h i hV ⟨cc, z, h'⟩`. Conclude with `(h i ⟨cc, z, (e i hV cc z).1 h'⟩).imp fun z' hz => (e i hV _ z').2 hz`.
+-/
 theorem constTie_iff (hS : ∀ i t, ScalarExtends T R i t) :
     IotaEmbeddingColumns.ConstTie T R κ v₀ ↔ ∀ i : Fin D.R.m, (∃ cc z, ∃ O' : OMDat T.toCore R i T0 id, Common κ v₀ O' cc z) →
       ∃ z, ∃ O' : OMDat T.toCore R i T0 id, Common κ v₀ O' (T.cE ((i : ℕ) + 1) T.toCore.σ₀) z := by
@@ -314,6 +414,9 @@ theorem constTie_iff (hS : ∀ i t, ScalarExtends T R i t) :
   · rintro h i hV ⟨cc, z, h'⟩
     exact (h i ⟨cc, z, (e i hV cc z).1 h'⟩).imp fun z' hz => (e i hV _ z').2 hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun i => (h i).1, oneMapAll_of_rowR F hS h, fun hg i hV _ => ⟨ph i, rowAll_of_rowR hV (hS i) (h i) hg⟩⟩, fun ⟨h0, h, hc⟩ i => rowR_of_rowAll (O i).hV (hp i) (ht i) (hL i) (h0 i) fun hg => h hT (hc hg) (fun j hV _ => rowBase_of hV (hp j) (ht j) (h0 j) (hS j _)) hN hg i …`.
+-/
 theorem statements_iff {F : Face D A} (hT : IotaEmbeddingColumns.Ties T R κ v₀ F) (hN : IotaEmbeddingColumns.BaseNonzero T R v₀)
     (hp : ∀ i, OMPins T R κ v₀ O i) (ht : ∀ i, PhaseTie T R κ v₀ O ph i) (hL : ∀ i, LevUnique T R i)
     (hS : ∀ i t, ScalarExtends T R i t) :
@@ -325,6 +428,9 @@ theorem statements_iff {F : Face D A} (hT : IotaEmbeddingColumns.Ties T R κ v�
 
 variable (T R κ v₀ O ph)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨placeGuard_iff T R, rowR_iff T R κ v₀ O ph, rowAll_iff T R κ v₀, fun _ hV => conclusions_iff hV, oneMapAll_of_rowR F, statements_iff⟩`.
+-/
 theorem oneMap_all_comparison (F : Face D A) :
     (IotaEmbeddingColumns.PlaceGuard T R ↔ QGuard R ∧ TypeCoprime T R) ∧
     (∀ i hV, OneMapRowR T R κ v₀ O ph i ↔ OneMapRow0 T R κ v₀ O i ∧ (QGuard R → ∃ O' : OMDat T.toCore R i T0 id,

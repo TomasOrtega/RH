@@ -12,6 +12,15 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW`. Take `⟨co, hco⟩` from `Tw.RatDarboux.exists_rational_darboux_of_isGood B hB X W r s r' s' hX hW`. Take `⟨-, ⟨μ, 𝓕, hμ, h𝓕⟩, -⟩` from `PositivityTheory.ThKF.unimodularity_holds F E σ hB.cm n X.J 1 (by simpa using hX.herm) (det_herm hX)`. Establish `hS` using `Tw.VacIndic.eventually_isVac_indicator B hB X W r s r' s' hX hW co hco`. Establish `hA` using `Tw.VacAny.exists_isVac_any_darboux B hB X W r s r' s' hX hW co`.
+
+Set `M₀ : Model σ X W` to `⟨co, fun _ => 0, 0, ∅⟩`. Set `ind : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `vac : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if M₀.IsVac B.ψ v (ind v) then ind v else (hA v).choose`. Use `⟨⟨co, vac, μ, 𝓕⟩, ⟨hco, fun v => ?_, ?_, hμ, h𝓕⟩⟩` and prove the remaining obligations. Use `show M₀.IsVac B.ψ v (vac v)`.
+
+Distinguish the cases in `h : M₀.IsVac B.ψ v (ind v)`. Simplify using `only [vac, if_pos h]`. Conclude with `h`. Simplify using `only [vac, if_neg h]`. Conclude with `(hA v).choose_spec`.
+
+Use `filter_upwards [hS] with v hv show vac v = ind v`. Conclude with `if_pos hv`.
+-/
 theorem modelEx : ModelEx := by
   intro F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW
   classical

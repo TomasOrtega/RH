@@ -22,6 +22,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.WeilAdm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `l hl g hg`. Take `⟨M, hMo, hM⟩` from `GlobalTheory.T.adelicPureTensor_fixed_by_open_finiteHeisenberg D.host.F ψ hψ.1.1 κ g hg`. Take `⟨M', hM'o, hM'⟩` from `GlobalTheory.T.adeleLinearEquiv_maps_open_finite_subgroup_to_open D.host.F κ B M hMo`. Take `⟨U, K, hUo, hUc, hK, hfix⟩` from `GlobalTheory.T.heisenberg_fixed_invariant_open_compact_compact_support D ψ hψ κ M' hM'o`. Take `⟨R, hRsb, hdec⟩` from `GlobalTheory.T.eq_finset_sum_pureTensor_coset_indicator D.host.F κ U K hUo hUc hK`.
+
+Take `⟨L, hL⟩` from `GlobalTheory.T.adeleLinearEquiv_restricts_realLinearEquiv_archimedean D.host.F κ B`. Take `⟨μ, hμ, C, c, hC, hc0, hcT, hpure, hslice⟩` from `GlobalTheory.T.exists_haar_adelicVectors_bounds_pureTensors_slices D.host.F κ g hg U hUo`. Establish `hpA : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ, GlobalTheory.WeilM.pureA D.host.F f g ∈ GlobalTheory.WeilM.schA D.host.F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hfixed : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ, ∀ m ∈ M', GlobalTheory.WeilM.schr ψ (finE2 D.host.F m) (O (GlobalTheory.WeilM.pureA D.host.F f g)) = O (GlobalTheory.WeilM.pureA D.host.F f g)`. Introduce `f m hm`.
+
+Take `⟨m0, hm0, hB⟩` from `hM' m hm`. Rewrite using `[← hB, ← himpl _ _ (hpA f), hM m0 hm0]`. Establish `hs : ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ) (r : κ → FiniteAdeleRing (𝓞 D.host.F) D.host.F), ∃ s : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ, ∀ z, s z = slice D.host.F (O (GlobalTheory.WeilM.pureA D.host.F f g)) r z` using `fun f r => exists_schwartz_slice _ (hpres _ (hpA f)) r`. Use `choose sl hsl using hs`. Set `A : (κ → FiniteAdeleRing (𝓞 D.host.F) D.host.F) → (SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ →ₗ[ℂ] SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ)` to `fun r => { toFun := fun f => sl f r map_add' := fun f f' => by`.
+
+Use extensionality with `z`. Rewrite using `[SchwartzMap.add_apply, hsl, hsl, hsl, show ⇑(f + f') = ⇑f + ⇑f' from funext fun _ => rfl, pureA_add, map_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun a f => by`. Use extensionality with `z`.
+
+Rewrite using `[SchwartzMap.smul_apply, hsl, hsl, show ⇑(a • f) = a • ⇑f from funext fun _ => rfl, pureA_smul, map_smul]`. Use `rfl }`. Establish `hA : ∀ r f, ⇑(A r f) = slice D.host.F (O (GlobalTheory.WeilM.pureA D.host.F f g)) r` using `fun r f => funext (hsl f r)`. Establish `hcont : ∀ r, Continuous (A r)`. Introduce `r`.
+
+Use `GlobalTheory.T.archSchwartz_L2Bounded_intertwiner_continuous D ψ hψ κ L (A r) (C / c) (ENNReal.div_ne_top hC hc0) (fun f => ?_) (fun v f f' hf => ?_)` and prove the remaining obligations. Establish `h1` using `hslice _ (hpres _ (hpA f)) (hfix _ (hfixed f)).1 r`. Rewrite `h1` using `[hunit μ hμ _ (hpA f)]`. Establish `h2` using `h1.trans (hpure f)`. Rewrite using `[hA, ← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hc0) (Or.inl hcT), mul_comm]`.
+
+Conclude with `h2`. Rewrite using `[hA, hA, hf, pureA_schrInf, himpl _ _ (hpA f), hL, slice_schr]`. Establish `hT : ∀ r ∈ R, ∃ T : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace D.host.F) ℂ, l (GlobalTheory.WeilM.pureA D.host.F f (Set.indicator {y | y - r ∈ U} fun _ => (1 : ℂ))) = T f` using `fun r hr => hl _ (hRsb r hr)`. Use `choose T hT using hT`. Use `⟨∑ r ∈ R.attach, (T r.1 r.2).comp ⟨A r.1, hcont r.1⟩, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `hΦ` using `hdec (O (GlobalTheory.WeilM.pureA D.host.F f g)) (hfix _ (hfixed f)).1 (hfix _ (hfixed f)).2`. Rewrite using `[LinearMap.comp_apply, hΦ, map_sum, ContinuousLinearMap.sum_apply, ← Finset.sum_attach R]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← hA, hT r.1 r.2]`. Both sides reduce to the same expression.
+-/
 theorem weilAdmissible_of_heisenberg_unitary (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (κ : Type) [Fintype κ]
     (B : ((κ → AF D.host.F) × (κ → AF D.host.F)) ≃ₗ[AF D.host.F] ((κ → AF D.host.F) × (κ → AF D.host.F)))
     (O : Module.End ℂ ((κ → AF D.host.F) → ℂ))
@@ -87,6 +104,11 @@ end GlobalTheory.WeilAdm
 
 namespace GlobalTheory.WeilAdm
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ _ co hco ω hω om htr p l hl`. Establish `hP` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ co hco ω hω om htr`. Establish `hU` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D ψ hψ S T χS χT hS hT hrS hrT JA JB ξ hJA hJB κ co hco ω hω om htr`. Use `weilAdmissible_of_heisenberg_unitary D ψ hψ κ (co.e.symm.trans ((actLin _ p).trans co.e)) (om p) (hP.1 p) (fun w φ hφ => ?_) (fun μ hμ φ hφ => hU μ hμ p φ hφ) l hl` and prove the remaining obligations. Establish `h` using `hP.2 p (co.e.symm w) φ hφ`.
+
+Simplify using `only [GlobalTheory.WeilM.Darboux.rho, LinearEquiv.apply_symm_apply] at h`. Conclude with `h`.
+-/
 theorem transport_adm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

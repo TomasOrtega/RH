@@ -16,6 +16,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.PstLaws
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨f, hf, hker⟩` from `Submodule.exists_le_ker_of_notMem hx`. Use `letI := Fintype.ofFinite (G ⧸ S)`. Set `F₀ : Submonoid F` to `{ carrier := {c | ∀ s ∈ S, σ s c = c} one_mem' := fun s _ => map_one _ mul_mem' := fun hb hc s hs => by rw [map_mul, hb s hs, hc s hs] }`. Set `χ : G ⧸ S → F₀ →* F` to `fun q => (σ q.out).comp F₀.subtype`.
+
+Establish `hχ : Function.Injective χ` using `fun q q' hq => by`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Use `QuotientGroup.eq.mpr (hF _ fun c hc => ?_)` and prove the remaining obligations. Establish `h1 : σ q.out c = σ q'.out c` using `DFunLike.congr_fun hq ⟨c, hc⟩`. Rewrite using `[hσ, ← h1, ← hσ, inv_mul_cancel, hσ1]`.
+
+Establish `hli` using `(linearIndependent_monoidHom F₀ F).comp χ hχ`. Establish `hcos : ∀ (y : D), (∀ s ∈ S, a s y = y) → ∀ g g' : G, (g : G ⧸ S) = g' → a g y = a g' y`. Introduce `y hy g g' hg`. Rewrite using `[← hy _ (QuotientGroup.eq.mp hg), ← ha, mul_inv_cancel_left, hy _ (QuotientGroup.eq.mp hg)]`. Establish `hzero` using `Fintype.linearIndependent_iff.mp hli (fun q => f (a q.out x)) (funext fun c => by`.
+
+Establish `hy : ∀ s ∈ S, a s ((c : F) • x) = (c : F) • x` using `fun s h => by rw [hs, c.2 s h, hS s h]`. Establish `hinv : ∑ q : G ⧸ S, a q.out ((c : F) • x) ∈ Submodule.span F {y | ∀ g, a g y = y}`. Use `Submodule.subset_span fun g => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← Equiv.sum_comp (MulAction.toPerm g) fun q : G ⧸ S => a q.out ((c : F) • x)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ha]`. Use `hcos _ hy _ _ ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq', MulAction.toPerm_apply, ← smul_eq_mul, MulAction.Quotient.mk_smul_out]`. Establish `h2` using `LinearMap.mem_ker.mp (hker hinv)`. Rewrite `h2` using `[map_sum]`.
+
+Simplify using `only [hs, map_smul, smul_eq_mul] at h2`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h2]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_comm _ _) ((1 : G) : G ⧸ S)`. Rewrite `hzero` using `[hcos x hS _ 1 (QuotientGroup.out_eq' _), hS 1 S.one_mem]`. Conclude with `hf hzero`.
+-/
 theorem mem_span_invariants {G F D : Type*} [Group G] [Field F] [AddCommGroup D] [Module F D]
     (σ : G → F →* F) (a : G → D →+ D) (hσ1 : ∀ c, σ 1 c = c) (hσ : ∀ g h c, σ (g * h) c = σ g (σ h c))
     (ha : ∀ g h y, a (g * h) y = a g (a h y)) (hs : ∀ g c y, a g (c • y) = σ g c • a g y)
@@ -63,6 +76,17 @@ def kurAct (g : GQ l) : ↥(MaximalUnramifiedExtension l) →* ↥(MaximalUnrami
   map_one' := Subtype.ext (map_one g)
   map_mul' b c := Subtype.ext (map_mul g (b : Om l) c)
 
+/- English proof (translation)
+Establish `: IsGalois ℚ_[l] (Om l)` using `{}`. Use `GlobalTheory.FrobGen.normal_fix (l := l)` as an intermediate fact. Set `U : Subgroup (GQ l)` to `S.map (GK K).subtype ⊔ (MaximalUnramifiedExtension l).fixingSubgroup`. Establish `hU : IsOpen (U : Set (GQ l))`. Use `(supExt K K').2` as an intermediate fact.
+
+Use `Subgroup.isOpen_mono (H₁ := GK (supExt K K')) (fun h hh => Subgroup.mem_sup_left ?_) (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Conclude with `⟨⟨h, GK_le (K' := supExt K K') le_sup_left hh⟩, hK' _ (GK_le (K' := supExt K K') le_sup_right hh), rfl⟩`. Establish `hgU : (g : GQ l) ∈ U`. Establish `h1` using `InfiniteGalois.fixingSubgroup_fixedField ⟨U, U.isClosed_of_isOpen hU⟩`. Express the relevant statement in the definitionally equal form `(IntermediateField.fixedField U).fixingSubgroup = U at h1`.
+
+Rewrite using `[← h1, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Rewrite `hy` using `[IntermediateField.mem_fixedField_iff]`. Establish `hyK : y ∈ MaximalUnramifiedExtension l`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (MaximalUnramifiedExtension l), IntermediateField.mem_fixedField_iff]`.
+
+Conclude with `fun h hh => hy h (Subgroup.mem_sup_right hh)`. Conclude with `congrArg Subtype.val (hg ⟨y, hyK⟩ fun s hs => Subtype.ext (hy s (Subgroup.mem_sup_left ⟨s, hs, rfl⟩)))`. Take `⟨_, ⟨s, hs, rfl⟩, i, hi, he⟩` from `Subgroup.mem_sup_of_normal_right.mp hgU`. Establish `h2 : s⁻¹ * g ∈ S` using `hI _ (by`. Rewrite using `[Subgroup.coe_mul, ← he, Subgroup.coe_inv, Subgroup.coe_subtype, inv_mul_cancel_left]`.
+
+Conclude with `hi)`. Simplify using `using S.mul_mem hs h2`.
+-/
 theorem mem_of_fix_invariants {K : FinExt l} (K' : FinExt l) (S : Subgroup ↥(GK K))
     (hI : ∀ g : ↥(GK K), (g : GQ l) ∈ (MaximalUnramifiedExtension l).fixingSubgroup → g ∈ S)
     (hK' : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → g ∈ S) (g : ↥(GK K))
@@ -92,6 +116,11 @@ theorem mem_of_fix_invariants {K : FinExt l} (K' : FinExt l) (S : Subgroup ↥(G
     rw [Subgroup.coe_mul, ← he, Subgroup.coe_inv, Subgroup.coe_subtype, inv_mul_cancel_left]; exact hi)
   simpa using S.mul_mem hs h2
 
+/- English proof (translation)
+Establish `: IsGalois ℚ_[l] (Om l)` using `{}`. Use `K'.2` as an intermediate fact. Establish `h1 : Finite (GQ l ⧸ GK K')` using `Subgroup.quotient_finite_of_isOpen _ (IntermediateField.fixingSubgroup_isOpen _)`. Establish `h2 : (GK K').FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `h3 : S.FiniteIndex` using `Subgroup.finiteIndex_of_le (H := (GK K').subgroupOf (GK K)) fun g hg => hK' g hg`.
+
+Use `infer_instance`.
+-/
 theorem finite_quotient {K : FinExt l} (K' : FinExt l) (S : Subgroup ↥(GK K))
     (hK' : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → g ∈ S) : Finite (↥(GK K) ⧸ S) := by
   have : IsGalois ℚ_[l] (Om l) := {}
@@ -114,6 +143,11 @@ def vecStab {k G M : Type*} [CommSemiring k] [Group G] [AddCommMonoid M] [Module
     conv_lhs => rw [← hg]
     rw [← End.mul_apply, ← map_mul, inv_mul_cancel, map_one, End.one_apply]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `succ n ih`. Take `⟨d, hd, h1⟩` from `ih`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : N (φ ((φ ^ n) x)) = c • φ (N ((φ ^ n) x))` using `LinearMap.congr_fun h _`. Rewrite `h2` using `[h1, map_smul, smul_smul]`. Rewrite using `[pow_succ']`. Conclude with `h2`.
+-/
 theorem exists_mul_pow_eq_smul {k M : Type*} [Field k] [AddCommGroup M] [Module k M] {N φ : End k M} {c : k}
     (hc : c ≠ 0) (h : N * φ = c • (φ * N)) (n : ℕ) (x : M) :
     ∃ d : k, d ≠ 0 ∧ N ((φ ^ n) x) = d • (φ ^ n) (N x) := by
@@ -135,6 +169,13 @@ variable (P : LocPrime l) {K LL : FinExt l} {V : Type} [AddCommGroup V] [Module 
 def IneTriv : Prop :=
   ∀ g : ↥(GK K), (g : GQ l) ∈ (MaximalUnramifiedExtension l).fixingSubgroup → actD P ρ g = 1
 
+/- English proof (translation)
+Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations. Set `S : Subgroup ↥(GK K)` to `vecStab (actD P ρ) ((toUr P ρ).symm x)`. Take `⟨K', hK'⟩` from `(mem_Dpst P ρ).mp ((toUr P ρ).symm x).2`. Establish `hK'' : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → g ∈ S` using `fun g hg => Subtype.ext (hK' g hg)`. Use `finite_quotient K' S hK''` as an intermediate fact.
+
+Set `a : ↥(GK K) → DpstUr P ρ →+ DpstUr P ρ` to `fun g => (actD P ρ g).toAddMonoidHom`. Establish `h1 : ∀ g h y, a (g * h) y = a g (a h y)` using `fun g h y => LinearMap.congr_fun (map_mul (actD P ρ) g h) ((toUr P ρ).symm y)`. Establish `h2 : ∀ (g : ↥(GK K)) (c : ↥(MaximalUnramifiedExtension l)) y, a g (c • y) = kurAct (g : GQ l) c • a g y` using `fun g c y => LinearMap.congr_fun (actD_mulD P ρ g c (kurAct (g : GQ l) c) rfl) ((toUr P ρ).symm y)`. Establish `h3 : ∀ s ∈ S, a s x = x` using `fun _ hs => hs`. Establish `h4 : ∀ g : ↥(GK K), (g : GQ l) ∈ (MaximalUnramifiedExtension l).fixingSubgroup → g ∈ S` using `fun g hg => LinearMap.congr_fun (hI g hg) ((toUr P ρ).symm x)`.
+
+Conclude with `mem_span_invariants (fun g : ↥(GK K) => kurAct (g : GQ l)) a (fun _ => rfl) (fun _ _ _ => rfl) h1 h2 x S h3 (mem_of_fix_invariants K' S h4 hK'')`.
+-/
 theorem span_invariants_eq_top (hI : IneTriv P ρ) :
     Submodule.span ↥(MaximalUnramifiedExtension l) {y : DpstUr P ρ | ∀ g, actD P ρ g ((toUr P ρ).symm y) = (toUr P ρ).symm y} = ⊤ := by
   refine eq_top_iff.mpr fun x _ => ?_
@@ -155,6 +196,13 @@ theorem span_invariants_eq_top (hI : IneTriv P ρ) :
 
 variable [FiniteDimensional ↥LL.1 V]
 
+/- English proof (translation)
+Use `LL.2` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] V` using `Module.Finite.trans ↥LL.1 V`. Take `⟨_, hdim⟩` from `(isPst_iff P ρ).mp hV`. Take `⟨s, hs, hsp, hli⟩` from `exists_linearIndependent ↥(MaximalUnramifiedExtension l) {y : DpstUr P ρ | ∀ g, actD P ρ g ((toUr P ρ).symm y) = (toUr P ρ).symm y}`. Rewrite `hsp` using `[span_invariants_eq_top P ρ hI]`.
+
+Establish `: Finite ↥s` using `hli.finite`. Use `letI : Fintype ↥s := Fintype.ofFinite _`. Set `b₀ : Basis ↥s ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)` to `Basis.mk hli (by rw [Subtype.range_coe, hsp])`. Establish `h1` using `GlobalTheory.PstSst.finrank_dst P ρ (b₀.reindex (Fintype.equivFin ↥s)) K le_rfl fun i g _ => by`. Rewrite using `[Basis.reindex_apply, Basis.mk_apply]`.
+
+Conclude with `congrArg Subtype.val (hs ((Fintype.equivFin ↥s).symm i).2 g)`. Rewrite `h1` using `[← finrank_eq_card_basis b₀, hdim, ← finrank_mul_finrank ℚ_[l] ↥LL.1 V, ← finrank_mul_finrank ℚ_[l] ↥LL.1, mul_assoc]`. Rewrite using `[IsSst, mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos h1`.
+-/
 theorem isSst_of_ineTriv (hV : IsPst P ρ) (hI : IneTriv P ρ) : IsSst P ρ := by
   have := LL.2
   have : FiniteDimensional ℚ_[l] V := Module.Finite.trans ↥LL.1 V
@@ -175,12 +223,20 @@ theorem isSst_of_ineTriv (hV : IsPst P ρ) (hI : IneTriv P ρ) : IsSst P ρ := b
 
 omit [FiniteDimensional ↥LL.1 V] in
 
+/- English proof (translation)
+The claim follows from `(Submodule.equivMapOfInjective _ (crisIncl_injective P) _).finrank_eq.symm`.
+-/
 theorem finrank_map_crisIncl :
     finrank ↥LL.1 ↥((Dcris (P.PD K) ρ).map (crisIncl P ↥LL.1 V)) = finrank ↥LL.1 ↥(Dcris (P.PD K) ρ) :=
   (Submodule.equivMapOfInjective _ (crisIncl_injective P) _).finrank_eq.symm
 
 omit [FiniteDimensional ↥LL.1 V] in
 
+/- English proof (translation)
+Establish `e : (Dcris (P.PD K) ρ).map (crisIncl P ↥LL.1 V) = Dst P ρ`. Use extensionality with `x`. Rewrite using `[← mem_Dst_and_monV_eq_zero_iff l P K LL V ρ x]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hN x (Dst_resTo_le P ρ le_rfl h)⟩⟩`. Rewrite using `[IsCrys, ← finrank_map_crisIncl, e]`.
+
+Conclude with `hV`.
+-/
 theorem isCrys_of_isSst (hV : IsSst P ρ) (hN : ∀ x ∈ Dpst P ρ, monV P ↥LL.1 V x = 0) :
     IsCrys (P.PD K) ρ := by
   have e : (Dcris (P.PD K) ρ).map (crisIncl P ↥LL.1 V) = Dst P ρ := by
@@ -190,6 +246,9 @@ theorem isCrys_of_isSst (hV : IsSst P ρ) (hN : ∀ x ∈ Dpst P ρ, monV P ↥L
   rw [IsCrys, ← finrank_map_crisIncl, e]
   exact hV
 
+/- English proof (translation)
+Establish `hk` using `mem_Dst_and_monV_eq_zero_iff l P K LL V ρ`. Use `mem_closure_mulV_of_finrank_eq l P K LL V ρ hV _ (fun y hy => ((hk y).mpr hy).1) (fun c hc y hy => (hk _).mp ⟨(mem_Dst P ρ).mpr fun g => ?_, ?_⟩) ((finrank_map_crisIncl P ρ).trans hc) x hx` and prove the remaining obligations. Rewrite using `[← End.mul_apply, stRep_mulV P ρ g c c (mem_GK.mp g.2 _ hc), End.mul_apply, (mem_Dst P ρ).mp ((hk y).mpr hy).1 g]`. Rewrite using `[← End.mul_apply, monV_mulV, End.mul_apply, ((hk y).mpr hy).2, map_zero]`.
+-/
 theorem mem_closure_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) (x : V ⊗[ℚ_[l]] Bst P)
     (hx : x ∈ Dpst P ρ) : x ∈ AddSubgroup.closure {y | ∃ (c : ↥(MaximalUnramifiedExtension l)) (s : V ⊗[ℚ_[l]] Bst P),
       s ∈ (Dcris (P.PD K) ρ).map (crisIncl P ↥LL.1 V) ∧ y = mulV P ↥LL.1 V c s} := by
@@ -201,6 +260,11 @@ theorem mem_closure_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) (x : V
       (mem_Dst P ρ).mp ((hk y).mpr hy).1 g]
   · rw [← End.mul_apply, monV_mulV, End.mul_apply, ((hk y).mpr hy).2, map_zero]
 
+/- English proof (translation)
+Establish `hk` using `mem_Dst_and_monV_eq_zero_iff l P K LL V ρ`. Use `AddSubgroup.closure_induction (p := fun y _ => monV P ↥LL.1 V y = 0) ?_ (map_zero _) ?_ ?_ (mem_closure_of_isCrys P ρ hV hc x hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, s, hs, rfl⟩`. Rewrite using `[← End.mul_apply, monV_mulV, End.mul_apply, ((hk s).mpr hs).2, map_zero]`. Introduce `y z _ _ hy hz`.
+
+Rewrite using `[map_add, hy, hz, add_zero]`. Introduce `y _ hy`. Rewrite using `[map_neg, hy, neg_zero]`.
+-/
 theorem monV_eq_zero_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) (x : V ⊗[ℚ_[l]] Bst P)
     (hx : x ∈ Dpst P ρ) : monV P ↥LL.1 V x = 0 := by
   have hk := mem_Dst_and_monV_eq_zero_iff l P K LL V ρ
@@ -211,6 +275,11 @@ theorem monV_eq_zero_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) (x : 
   · intro y z _ _ hy hz; rw [map_add, hy, hz, add_zero]
   · intro y _ hy; rw [map_neg, hy, neg_zero]
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hk` using `mem_Dst_and_monV_eq_zero_iff l P K LL V ρ`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `AddSubgroup.closure_induction (p := fun y _ => stRep P ρ g y = y) ?_ (map_zero _) ?_ ?_ (mem_closure_of_isCrys P ρ hV hc x x.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, s, hs, rfl⟩`.
+
+Rewrite using `[← End.mul_apply, stRep_mulV P ρ g c c ((IntermediateField.mem_fixingSubgroup_iff _ _).mp hg _ c.2), End.mul_apply, (mem_Dst P ρ).mp ((hk s).mpr hs).1 g]`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add, hy, hz]`. Introduce `y _ hy`. Rewrite using `[map_neg, hy]`.
+-/
 theorem ineTriv_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) : IneTriv P ρ := by
   intro g hg
   have hk := mem_Dst_and_monV_eq_zero_iff l P K LL V ρ
@@ -225,6 +294,9 @@ theorem ineTriv_of_isCrys (hV : IsPst P ρ) (hc : IsCrys (P.PD K) ρ) : IneTriv 
 
 omit [FiniteDimensional ↥LL.1 V] in
 
+/- English proof (translation)
+Set `e : DpstUr P (resTo ρ h) ≃ₗ[↥(MaximalUnramifiedExtension l)] DpstUr P ρ` to `{ toFun := fun x => toUr P ρ ⟨((toUr P _).symm x).1, (Dpst_resTo P ρ h).le ((toUr P _).symm x).2⟩ invFun := fun x => toUr P _ ⟨((toUr P ρ).symm x).1, (Dpst_resTo P ρ h).ge ((toUr P ρ).symm x).2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right …`. Rewrite using `[IsPst, IsPst, e.rank_eq]`.
+-/
 theorem isPst_resTo_iff {K' : FinExt l} (h : K.1 ≤ K'.1) : IsPst P (resTo ρ h) ↔ IsPst P ρ := by
   let e : DpstUr P (resTo ρ h) ≃ₗ[↥(MaximalUnramifiedExtension l)] DpstUr P ρ :=
     { toFun := fun x => toUr P ρ ⟨((toUr P _).symm x).1, (Dpst_resTo P ρ h).le ((toUr P _).symm x).2⟩
@@ -235,12 +307,20 @@ theorem isPst_resTo_iff {K' : FinExt l} (h : K.1 ≤ K'.1) : IsPst P (resTo ρ h
       right_inv := fun _ => rfl }
   rw [IsPst, IsPst, e.rank_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hc => ⟨LinearMap.ext fun x => Subtype.ext (monV_eq_zero_of_isCrys P ρ hV hc x x.2), ineTriv_of_isCrys P ρ hV hc⟩, fun h => isCrys_of_isSst P ρ (isSst_of_ineTriv P ρ hV h.2) fun x hx => congrArg Subtype.val (LinearMap.congr_fun h.1 ⟨x, hx⟩)⟩`.
+-/
 theorem isCrys_iff (hV : IsPst P ρ) : IsCrys (P.PD K) ρ ↔ monD P ρ = 0 ∧ IneTriv P ρ :=
   ⟨fun hc => ⟨LinearMap.ext fun x => Subtype.ext (monV_eq_zero_of_isCrys P ρ hV hc x x.2),
       ineTriv_of_isCrys P ρ hV hc⟩,
     fun h => isCrys_of_isSst P ρ (isSst_of_ineTriv P ρ hV h.2) fun x hx =>
       congrArg Subtype.val (LinearMap.congr_fun h.1 ⟨x, hx⟩)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨K', h, hc⟩`. Conclude with `LinearMap.ext fun x => Subtype.ext (monV_eq_zero_of_isCrys P (resTo ρ h) ((isPst_resTo_iff P ρ h).mpr hV) hc x ((Dpst_resTo P ρ h).ge x.2))`. Introduce `hN`. Take `⟨K', h, H⟩` from `GlobalTheory.PstSst.isSst_resTo_of_isPst l P K LL V ρ hV`.
+
+Conclude with `⟨K', h, isCrys_of_isSst P _ (H K' h le_rfl) fun x hx => congrArg Subtype.val (LinearMap.congr_fun hN ⟨x, (Dpst_resTo P ρ h).le hx⟩)⟩`.
+-/
 theorem isPotCrys_iff (hV : IsPst P ρ) :
     (∃ (K' : FinExt l) (h : K.1 ≤ K'.1), IsCrys (P.PD K') (resTo ρ h)) ↔ monD P ρ = 0 := by
   constructor
@@ -256,6 +336,13 @@ variable (ι : Om l ≃+* ℂ)
 
 omit [FiniteDimensional ↥LL.1 V] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `GlobalTheory.PstFaithful.eq_zero_of_wdMk_phiD_pow l P ι K LL V ρ (monD P ρ x) fun n => ?_` and prove the remaining obligations. Take `⟨c, hc, h1⟩` from `exists_mul_pow_eq_smul (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) (monD_phiD P ρ) n x`.
+
+Establish `h2 : wdMk P ι ρ (monD P ρ ((phiD P ρ ^ n) x)) = 0` using `LinearMap.congr_fun h (wdMk P ι ρ ((phiD P ρ ^ n) x))`. Establish `h3` using `(wdMk_smul P ι ρ c _).symm.trans ((congrArg (wdMk P ι ρ) h1).symm.trans h2)`. Conclude with `(smul_eq_zero.mp h3).resolve_left ((_root_.map_ne_zero ι).mpr fun h0 => hc (Subtype.ext h0))`. Introduce `h`. Use `wd_ext P ι ρ fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[wdN_mk, h]`. Conclude with `wdMk_zero P ι ρ`.
+-/
 theorem wdN_eq_zero_iff : wdN P ι ρ = 0 ↔ monD P ρ = 0 := by
   constructor
   · intro h
@@ -275,6 +362,11 @@ theorem wdN_eq_zero_iff : wdN P ι ρ = 0 ↔ monD P ρ = 0 := by
 
 omit [FiniteDimensional ↥LL.1 V] in
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => sub_eq_zero.mp ?_` and prove the remaining obligations. Use `GlobalTheory.PstFaithful.eq_zero_of_wdMk_phiD_pow l P ι K LL V ρ _ fun n => ?_` and prove the remaining obligations. Establish `hc : phiD P ρ ^ n * actD P ρ g = actD P ρ g * phiD P ρ ^ n` using `Commute.pow_left (phiD_actD P ρ g) n`. Establish `h1` using `wdMk_add P ι ρ ((phiD P ρ ^ n) (actD P ρ g x - x)) ((phiD P ρ ^ n) x)`. Rewrite `h1` using `[← map_add, sub_add_cancel, ← End.mul_apply, hc, End.mul_apply, h]`.
+
+Conclude with `left_eq_add.mp (h1.trans (add_comm _ _))`.
+-/
 theorem actD_eq_one_of_wdMk (g : ↥(GK K)) (h : ∀ x, wdMk P ι ρ (actD P ρ g x) = wdMk P ι ρ x) :
     actD P ρ g = 1 := by
   refine LinearMap.ext fun x => sub_eq_zero.mp ?_
@@ -297,6 +389,9 @@ include hj
 
 omit [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Take `⟨τ, rfl⟩` from `Bw.e.surjective g`. Use `⟨⟨τ, τ.2, fun x hx => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hj.valuation_lt_one_iff, map_sub, ← Bw.e_comm]`. Conclude with `GlobalTheory.FrobGen.norm_sub_lt hg _ ((hj x).mp ((A.valuation_le_one_iff x).mp hx))`.
+-/
 theorem exists_ine_of_fix (g : ↥(GK Bw.Kw)) (hg : (g : GQ l) ∈ (MaximalUnramifiedExtension l).fixingSubgroup) :
     ∃ σ : ↥(Ine (F := E) A), weilToGK Bw h (ineIncl h σ) = g := by
   obtain ⟨τ, rfl⟩ := Bw.e.surjective g
@@ -304,6 +399,9 @@ theorem exists_ine_of_fix (g : ↥(GK Bw.Kw)) (hg : (g : GQ l) ∈ (MaximalUnram
   rw [hj.valuation_lt_one_iff, map_sub, ← Bw.e_comm]
   exact GlobalTheory.FrobGen.norm_sub_lt hg _ ((hj x).mp ((A.valuation_le_one_iff x).mp hx))
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Use `weilToGK_frobUr hj (ineIncl h σ) (a := 0) (b := 0) ⟨σ.2.1, fun y hy => by simpa using σ.2.2 y hy⟩ ⟨x, hx⟩` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ine_mem_fix (σ : ↥(Ine (F := E) A)) :
     (weilToGK Bw h (ineIncl h σ) : GQ l) ∈ (MaximalUnramifiedExtension l).fixingSubgroup := by
   rw [IntermediateField.mem_fixingSubgroup_iff]
@@ -319,11 +417,17 @@ section Model
 variable {LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
   [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK Bw.Kw) V)
 
+/- English proof (translation)
+Distinguish the cases in `hV : IsPst P ρ`. Rewrite using `[lpDim_wdPst ι Bw h hj hV, GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι _ LL V ρ hV]`. Rewrite using `[wdPst_of_not_isPst ι Bw h hj hV, lpDim_trivWD]`.
+-/
 theorem lpDim_wdPst_eq : (wdPst P ι Bw h hj ρ).lpDim = finrank ↥LL.1 V := by
   by_cases hV : IsPst P ρ
   · rw [lpDim_wdPst ι Bw h hj hV, GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι _ LL V ρ hV]
   · rw [wdPst_of_not_isPst ι Bw h hj hV, lpDim_trivWD]
 
+/- English proof (translation)
+Rewrite using `[unr_wdPst ι Bw h hj hV, isCrys_iff P ρ hV, wdN_eq_zero_iff]`. Use `and_congr_right fun _ => ⟨fun H g hg => ?_, fun H σ x => ?_⟩` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `exists_ine_of_fix Bw h hj g hg`. Conclude with `actD_eq_one_of_wdMk P ρ ι _ (H σ)`. Rewrite using `[H _ (ine_mem_fix Bw h hj σ), End.one_apply]`.
+-/
 theorem unr_wdPst_iff (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).unr ↔ IsCrys (P.PD Bw.Kw) ρ := by
   rw [unr_wdPst ι Bw h hj hV, isCrys_iff P ρ hV, wdN_eq_zero_iff]
   refine and_congr_right fun _ => ⟨fun H g hg => ?_, fun H σ x => ?_⟩
@@ -331,6 +435,9 @@ theorem unr_wdPst_iff (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).unr ↔ IsCrys
     exact actD_eq_one_of_wdMk P ρ ι _ (H σ)
   · rw [H _ (ine_mem_fix Bw h hj σ), End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[mono0_wdPst ι Bw h hj hV, isPotCrys_iff P ρ hV, wdN_eq_zero_iff]`.
+-/
 theorem wdParameter_monodromy_zero_iff_potentiallyCrystalline (hV : IsPst P ρ) : (wdPst P ι Bw h hj ρ).mono0 ↔
     ∃ (K' : FinExt l) (hK : Bw.Kw.1 ≤ K'.1), IsCrys (P.PD K') (resTo ρ hK) := by
   rw [mono0_wdPst ι Bw h hj hV, isPotCrys_iff P ρ hV, wdN_eq_zero_iff]
@@ -339,17 +446,26 @@ end Model
 
 variable {a : ℕ} (r : ↥(Dec (F := E) A) →* GL (Fin a) (Om l))
 
+/- English proof (translation)
+Distinguish the cases in `hr : IsPstAt P Bw r`. Take `⟨LL', r', -, -, e⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Rewrite using `[e, lpDim_wdPst_eq, finrank_fin_fun]`. Rewrite using `[wdAt_of_not_isPstAt ι Bw h hj hr, lpDim_trivWD]`.
+-/
 theorem lpDim_wdAt : (wdAt P ι Bw h hj r).lpDim = a := by
   by_cases hr : IsPstAt P Bw r
   · obtain ⟨LL', r', -, -, e⟩ := wdAt_of_isPstAt ι Bw h hj hr
     rw [e, lpDim_wdPst_eq, finrank_fin_fun]
   · rw [wdAt_of_not_isPstAt ι Bw h hj hr, lpDim_trivWD]
 
+/- English proof (translation)
+Take `⟨LL', r', hm, hp, e⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Rewrite using `[e, unr_wdPst_iff Bw h hj P ι _ hp, hm.isCrysAt_iff P]`. Both sides reduce to the same expression.
+-/
 theorem unr_wdAt_iff (hr : IsPstAt P Bw r) : (wdAt P ι Bw h hj r).unr ↔ IsCrysAt P Bw r := by
   obtain ⟨LL', r', hm, hp, e⟩ := wdAt_of_isPstAt ι Bw h hj hr
   rw [e, unr_wdPst_iff Bw h hj P ι _ hp, hm.isCrysAt_iff P]
   rfl
 
+/- English proof (translation)
+Take `⟨LL', r', hm, hp, e⟩` from `wdAt_of_isPstAt ι Bw h hj hr`. Rewrite using `[e, wdParameter_monodromy_zero_iff_potentiallyCrystalline Bw h hj P ι _ hp, hm.isPotCrysAt_iff P]`. Both sides reduce to the same expression.
+-/
 theorem wdParameterAt_monodromy_zero_iff_potCrystalline (hr : IsPstAt P Bw r) : (wdAt P ι Bw h hj r).mono0 ↔ IsPotCrysAt P Bw r := by
   obtain ⟨LL', r', hm, hp, e⟩ := wdAt_of_isPstAt ι Bw h hj hr
   rw [e, wdParameter_monodromy_zero_iff_potentiallyCrystalline Bw h hj P ι _ hp, hm.isPotCrysAt_iff P]
@@ -357,6 +473,9 @@ theorem wdParameterAt_monodromy_zero_iff_potCrystalline (hr : IsPstAt P Bw r) : 
 
 end Place
 
+/- English proof (translation)
+Use `⟨lpDim_wdAt _ _ _ P ι _, fun hc hd => ?_⟩` and prove the remaining obligations. Establish `hp` using `hB.isPstAt T (br w hw) (resDec pl r w) (hc.comp continuous_subtype_val) ((isdRW_iff P pl br r hw).mp hd)`. Rewrite using `[isCrysW_iff P pl br r hw, isPotCrysW_iff P pl br r hw]`. Conclude with `⟨unr_wdAt_iff _ _ _ P ι _ hp, wdParameterAt_monodromy_zero_iff_potCrystalline _ _ _ P ι _ hp⟩`.
+-/
 theorem wdL_laws (hB : GlobalTheory.Published.DeRhamPotSemistable) (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (AI : LocAinf l P) (T : LocTied l P AI) (ι : Qbar l ≃+* ℂ)
     (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]

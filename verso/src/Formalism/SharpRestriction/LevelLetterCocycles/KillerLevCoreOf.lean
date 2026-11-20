@@ -25,20 +25,34 @@ variable (W : LocWach PD LL O v n)
 
 local notation "ιE" => algebraMap (LetA O n) W.EE
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply]`. Rewrite using `[← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]`.
+-/
 theorem γA_comm (g h : W.Gam) (a : LetA O n) : W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
   funext i
   simp only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply]
   rw [← AlgHom.mul_apply, ← map_mul, mul_comm, map_mul, AlgHom.mul_apply]
 
+/- English proof (translation)
+Introduce `δ hδ`. Rewrite using `[γA_comm, ha δ hδ]`.
+-/
 theorem γA_mem (g : W.Gam) {a : LetA O n} (ha : a ∈ W.AΔ) : W.γA g a ∈ W.AΔ := by
   intro δ hδ
   rw [γA_comm, ha δ hδ]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => rw [pow_succ, AlgHom.mul_apply]`. Conclude with `ih (γA_mem W g ha)`.
+-/
 theorem γA_pow_mem (g : W.Gam) (k : ℕ) {a : LetA O n} (ha : a ∈ W.AΔ) : (W.γA g ^ k) a ∈ W.AΔ := by
   induction k generalizing a with
   | zero => simpa using ha
   | succ k ih => rw [pow_succ, AlgHom.mul_apply]; exact ih (γA_mem W g ha)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgHom.mul_apply]`. Apply `ih` to reduce the goal to its premises.
+
+Introduce `δ hδ`. Rewrite using `[← W.φA_γA, ha δ hδ]`.
+-/
 theorem φA_mem {a : LetA O n} (ha : a ∈ W.AΔ) (k : ℕ) : (W.φA ^ k) a ∈ W.AΔ := by
   induction k generalizing a with
   | zero => simpa using ha
@@ -48,23 +62,38 @@ theorem φA_mem {a : LetA O n} (ha : a ∈ W.AΔ) (k : ℕ) : (W.φA ^ k) a ∈ 
     intro δ hδ
     rw [← W.φA_γA, ha δ hδ]
 
+/- English proof (translation)
+Unfold `lA`. Conclude with `Subalgebra.natCast_mem _ _`.
+-/
 theorem lA_mem : lA W ∈ W.AΔ := by
   unfold lA; exact Subalgebra.natCast_mem _ _
 
+/- English proof (translation)
+The claim follows from `φA_mem W (Subalgebra.add_mem _ hπ (lA_mem W)) s`.
+-/
 theorem ps_mem (hπ : W.π₀ ∈ W.AΔ) (s : ℕ) : ps W s ∈ W.AΔ :=
   φA_mem W (Subalgebra.add_mem _ hπ (lA_mem W)) s
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply, letE, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i := by
   funext j
   simp only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply, letE,
     Pi.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, AlgHom.mul_apply, γA_letE, ih]`.
+-/
 theorem γA_pow_letE (g : W.Gam) (k : ℕ) (i : ZMod n) : (W.γA g ^ k) (letE i : LetA O n) = letE i := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ, AlgHom.mul_apply, γA_letE, ih]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgHom.mul_apply, W.γE_ext, pow_succ, AlgHom.mul_apply]`. Conclude with `ih _`.
+-/
 theorem γE_pow_ι (g : W.Gam) (k : ℕ) (a : LetA O n) : (W.γE g ^ k) (ιE a) = ιE ((W.γA g ^ k) a) := by
   induction k generalizing a with
   | zero => simp
@@ -72,15 +101,24 @@ theorem γE_pow_ι (g : W.Gam) (k : ℕ) (a : LetA O n) : (W.γE g ^ k) (ιE a) 
     rw [pow_succ, AlgHom.mul_apply, W.γE_ext, pow_succ, AlgHom.mul_apply]
     exact ih _
 
+/- English proof (translation)
+Proceed by induction on `k generalizing f with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, Module.End.mul_apply, pow_succ, AlgHom.mul_apply]`. Conclude with `ih _`.
+-/
 theorem toLin_pow_apply (σ : W.EE →ₐ[O] W.EE) (k : ℕ) (f : W.EE) :
     (σ.toLinearMap ^ k) f = (σ ^ k) f := by
   induction k generalizing f with
   | zero => simp
   | succ k ih => rw [pow_succ, Module.End.mul_apply, pow_succ, AlgHom.mul_apply]; exact ih _
 
+/- English proof (translation)
+Simplify using `[lA, lE]`.
+-/
 theorem ι_lE (κ : ℕ) : ιE (lA W ^ κ) = lE W κ := by
   simp [lA, lE]
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem smul_eq_ι (c : O) (f : W.EE) : c • f = ιE (algebraMap O (LetA O n) c) * f := by
   rw [Algebra.smul_def, ← IsScalarTower.algebraMap_apply]
 
@@ -95,6 +133,11 @@ local notation "ιE" => algebraMap (LetA O n) W.EE
 abbrev numI (e : ℕ) (α : ℕ → ℤ) : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (α s).toNat
 abbrev denI (e : ℕ) (α : ℕ → ℤ) : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (-(α s)).toNat
 
+/- English proof (translation)
+Establish `hm : s ∈ Finset.range e` using `Finset.mem_range.2 hs`. Use `⟨∏ t ∈ (Finset.range e).erase s, P t ^ E (α t), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ hm, Function.update_self]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `t ht`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase ht)]`. Rewrite using `[← Finset.mul_prod_erase _ _ hm]`.
+-/
 theorem prod_update (P : ℕ → LetA O n) (E : ℤ → ℕ) (e : ℕ) (α : ℕ → ℤ) {s : ℕ} (hs : s < e) (x : ℤ) :
     ∃ R : LetA O n, (∏ t ∈ Finset.range e, P t ^ E (Function.update α s x t)) = P s ^ E x * R ∧
       (∏ t ∈ Finset.range e, P t ^ E (α t)) = P s ^ E (α s) * R := by
@@ -107,9 +150,17 @@ theorem prod_update (P : ℕ → LetA O n) (E : ℤ → ℕ) (e : ℕ) (α : ℕ
     rw [Function.update_of_ne (Finset.ne_of_mem_erase ht)]
   · rw [← Finset.mul_prod_erase _ _ hm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inId_iff (a : ZMod n) (e : ℕ) (α : ℕ → ℤ) (f : W.EE) :
     InId W a e α f ↔ ∃ u ∈ W.AΔ, ιE (denI W e α) * f = ιE (letE a * numI W e α * u) := Iff.rfl
 
+/- English proof (translation)
+Take `⟨u, hu, hfu⟩` from `hf`. Take `⟨u', hu', hgu⟩` from `hg`. Use `⟨u + u', Subalgebra.add_mem _ hu hu', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, hfu, hgu, ← map_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inId_add {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f g : W.EE} (hf : InId W a e α f)
     (hg : InId W a e α g) : InId W a e α (f + g) := by
   obtain ⟨u, hu, hfu⟩ := hf
@@ -117,20 +168,36 @@ theorem inId_add {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f g : W.EE} (hf : In
   refine ⟨u + u', Subalgebra.add_mem _ hu hu', ?_⟩
   rw [mul_add, hfu, hgu, ← map_add]; congr 1; ring
 
+/- English proof (translation)
+Take `⟨u, hu, hfu⟩` from `hf`. Use `⟨c * u, Subalgebra.mul_mem _ hc hu, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, hfu, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inId_mulι {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f : W.EE} (hf : InId W a e α f) {c : LetA O n}
     (hc : c ∈ W.AΔ) : InId W a e α (ιE c * f) := by
   obtain ⟨u, hu, hfu⟩ := hf
   refine ⟨c * u, Subalgebra.mul_mem _ hc hu, ?_⟩
   rw [mul_left_comm, hfu, ← map_mul]; congr 1; ring
 
+/- English proof (translation)
+Rewrite using `[smul_eq_ι]`. Conclude with `inId_mulι W hf (Subalgebra.algebraMap_mem _ c)`.
+-/
 theorem inId_smul {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f : W.EE} (hf : InId W a e α f) (c : O) :
     InId W a e α (c • f) := by
   rw [smul_eq_ι]; exact inId_mulι W hf (Subalgebra.algebraMap_mem _ c)
 
+/- English proof (translation)
+Rewrite using `[← ι_lE]`. Conclude with `inId_mulι W hf (Subalgebra.pow_mem _ (lA_mem W) κ)`.
+-/
 theorem inId_lE {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f : W.EE} (hf : InId W a e α f) (κ : ℕ) :
     InId W a e α (lE W κ * f) := by
   rw [← ι_lE]; exact inId_mulι W hf (Subalgebra.pow_mem _ (lA_mem W) κ)
 
+/- English proof (translation)
+Establish `h1` using `congrArg σE hfu`. Rewrite `h1` using `[map_mul, hι, hι, map_mul σA, map_mul σA, hE]`. Establish `hn : σA (numI W e α) = (∏ t ∈ Finset.range e, r t ^ (α t).toNat) * numI W e α`. Simplify using `only [numI, map_prod, map_pow, hσ, mul_pow, Finset.prod_mul_distrib]`. Establish `hd : σA (denI W e α) = (∏ t ∈ Finset.range e, r t ^ (-(α t)).toNat) * denI W e α`.
+
+Simplify using `only [denI, map_prod, map_pow, hσ, mul_pow, Finset.prod_mul_distrib]`. Establish `hinv : (∏ t ∈ Finset.range e, r' t ^ (-(α t)).toNat) * (∏ t ∈ Finset.range e, r t ^ (-(α t)).toNat) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun t _ => by rw [← mul_pow, mul_comm, hrr, one_pow]`. Rewrite `h1` using `[hn, hd]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h1, ← map_mul]; congr 1; ring`.
+-/
 theorem transport (σA : LetA O n →ₐ[O] LetA O n) (σE : W.EE →ₐ[O] W.EE)
     (hι : ∀ x, σE (ιE x) = ιE (σA x)) (hE : ∀ i, σA (letE i) = letE i)
     (r r' : ℕ → LetA O n) (hrr : ∀ t, r t * r' t = 1) (hσ : ∀ t, σA (ps W t) = r t * ps W t)
@@ -160,6 +227,11 @@ theorem transport (σA : LetA O n →ₐ[O] LetA O n) (σE : W.EE →ₐ[O] W.EE
 def PsStable : Prop :=
   ∀ t, ∃ r ∈ W.AΔ, ∃ r' ∈ W.AΔ, r * r' = 1 ∧ W.γA W.gam (ps W t) = r * ps W t
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, Subalgebra.one_mem _, 1, Subalgebra.one_mem _, one_mul 1, by simp⟩`. Consider the case `succ k ih`. Take `⟨r, hr, r', hr', hrr, hk⟩` from `ih`. Take `⟨q, hq, q', hq', hqq, h1⟩` from `h t`.
+
+Use `⟨(W.γA W.gam ^ k) q * r, Subalgebra.mul_mem _ (γA_pow_mem W _ k hq) hr, (W.γA W.gam ^ k) q' * r', Subalgebra.mul_mem _ (γA_pow_mem W _ k hq') hr', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, ← map_mul, hqq, map_one, one_mul, hrr]`. Rewrite using `[pow_succ, AlgHom.mul_apply, h1, map_mul, hk, mul_assoc]`.
+-/
 theorem psStable_pow (h : PsStable W) (k t : ℕ) :
     ∃ r ∈ W.AΔ, ∃ r' ∈ W.AΔ, r * r' = 1 ∧ (W.γA W.gam ^ k) (ps W t) = r * ps W t := by
   induction k with
@@ -172,6 +244,11 @@ theorem psStable_pow (h : PsStable W) (k t : ℕ) :
     · rw [mul_mul_mul_comm, ← map_mul, hqq, map_one, one_mul, hrr]
     · rw [pow_succ, AlgHom.mul_apply, h1, map_mul, hk, mul_assoc]
 
+/- English proof (translation)
+Take `⟨u, hu, hfu⟩` from `hf`. Use `choose r hr r' hr' hrr hσ using hS`. Use `⟨_, ?_, transport W (W.γA W.gam) (W.γE W.gam) (fun x => W.γE_ext _ x) (γA_letE W _) r r' hrr hσ hfu⟩` and prove the remaining obligations. Use `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ ?_ ?_) (γA_mem W _ hu)` and prove the remaining obligations. Conclude with `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr' t) _`.
+
+Conclude with `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr t) _`.
+-/
 theorem inId_γ (hS : PsStable W) {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f : W.EE} (hf : InId W a e α f) :
     InId W a e α (W.γE W.gam f) := by
   obtain ⟨u, hu, hfu⟩ := hf
@@ -181,6 +258,13 @@ theorem inId_γ (hS : PsStable W) {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} {f :
   · exact Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr' t) _
   · exact Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr t) _
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on with`. Consider the case `C c => intro f hf`. Rewrite using `[Polynomial.aeval_C]`. Conclude with `inId_smul W hf c`. Consider the case `add p q hp hq`.
+
+Introduce `f hf`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `inId_add W (hp f hf) (hq f hf)`. Consider the case `monomial k c ih`. Introduce `f hf`.
+
+Rewrite using `[pow_succ, ← mul_assoc, map_mul, Module.End.mul_apply, Polynomial.aeval_X]`. Conclude with `ih _ (inId_γ W hS hf)`.
+-/
 theorem inId_aeval (hS : PsStable W) {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} (P : Polynomial O) :
     ∀ f, InId W a e α f →
       InId W a e α (Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P f) := by
@@ -193,6 +277,9 @@ theorem inId_aeval (hS : PsStable W) {a : ZMod n} {e : ℕ} {α : ℕ → ℤ} (
     rw [pow_succ, ← mul_assoc, map_mul, Module.End.mul_apply, Polynomial.aeval_X]
     exact ih _ (inId_γ W hS hf)
 
+/- English proof (translation)
+Establish `: lE W κ * f = (((PD.p : ℕ) : O) ^ κ) • f`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[this, LinearMap.map_smul, Algebra.smul_def, map_pow, map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem aeval_lE (P : Polynomial O) (κ : ℕ) (f : W.EE) :
     Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P (lE W κ * f) =
       lE W κ * Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P f := by
@@ -224,9 +311,17 @@ def LevGrad : Prop :=
 def Cong (s : ℕ) (x y : LetA O n) : Prop :=
   ∃ κ : ℕ, ∃ h ∈ W.AΔ, lA W ^ κ * (x - y) = ps W s * h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, Subalgebra.zero_mem _, by ring⟩`.
+-/
 theorem cong_refl (s : ℕ) (x : LetA O n) : Cong W s x x :=
   ⟨0, 0, Subalgebra.zero_mem _, by ring⟩
 
+/- English proof (translation)
+Take `⟨κ1, g1, hg1, e1⟩` from `h1`. Take `⟨κ2, g2, hg2, e2⟩` from `h2`. Use `⟨κ1 + κ2, lA W ^ κ1 * x * g2 + lA W ^ κ2 * y' * g1, ?_, ?_⟩` and prove the remaining obligations. Establish `hl` using `lA_mem W`. Conclude with `Subalgebra.add_mem _ (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hl _) hx) hg2) (Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hl _) hy') hg1)`.
+
+Rewrite using `[pow_add]`. Take the linear combination `(lA W ^ κ1 * x) * e2 + (lA W ^ κ2 * y') * e1`.
+-/
 theorem cong_mul {s : ℕ} {x y x' y' : LetA O n} (hx : x ∈ W.AΔ) (hy' : y' ∈ W.AΔ)
     (h1 : Cong W s x y) (h2 : Cong W s x' y') : Cong W s (x * x') (y * y') := by
   obtain ⟨κ1, g1, hg1, e1⟩ := h1
@@ -238,12 +333,18 @@ theorem cong_mul {s : ℕ} {x y x' y' : LetA O n} (hx : x ∈ W.AΔ) (hy' : y' �
   · rw [pow_add]
     linear_combination (lA W ^ κ1 * x) * e2 + (lA W ^ κ2 * y') * e1
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact cong_refl W s 1`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `cong_mul W (Subalgebra.pow_mem _ hx k) hy ih h`.
+-/
 theorem cong_pow {s : ℕ} {x y : LetA O n} (hx : x ∈ W.AΔ) (hy : y ∈ W.AΔ) (h : Cong W s x y) (k : ℕ) :
     Cong W s (x ^ k) (y ^ k) := by
   induction k with
   | zero => exact cong_refl W s 1
   | succ k ih => rw [pow_succ, pow_succ]; exact cong_mul W (Subalgebra.pow_mem _ hx k) hy ih h
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact cong_refl W s 1`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `cong_mul W (hf a) (Subalgebra.prod_mem _ fun i _ => hg i) (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem cong_prod {s : ℕ} (S : Finset ℕ) (f g : ℕ → LetA O n) (hf : ∀ i, f i ∈ W.AΔ)
     (hg : ∀ i, g i ∈ W.AΔ) (h : ∀ i ∈ S, Cong W s (f i) (g i)) :
     Cong W s (∏ i ∈ S, f i) (∏ i ∈ S, g i) := by
@@ -254,14 +355,23 @@ theorem cong_prod {s : ℕ} (S : Finset ℕ) (f g : ℕ → LetA O n) (hf : ∀ 
     exact cong_mul W (hf a) (Subalgebra.prod_mem _ fun i _ => hg i) (h a (Finset.mem_insert_self a S))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem cong_of_eq {s : ℕ} {x y y' : LetA O n} (h : Cong W s x y) (e : y = y') : Cong W s x y' := e ▸ h
 
+/- English proof (translation)
+Apply `W.EE_inj` to reduce the goal to its premises. Use `congrArg ιE h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `(hU s).mul_left_cancel this`.
+-/
 theorem cancel_ps (hU : PsUnitE W) (s : ℕ) {x y : LetA O n} (h : ps W s * x = ps W s * y) : x = y := by
   apply W.EE_inj
   have := congrArg ιE h
   rw [map_mul, map_mul] at this
   exact (hU s).mul_left_cancel this
 
+/- English proof (translation)
+Establish `hu : (chiL W ell)⁻¹ ^ (-z).toNat * chiL W ell ^ z.toNat = (W.χΓ W.gam) ^ (z * (PD.p : ℤ) ^ ell)`. Rewrite using `[mul_comm z, zpow_mul, ← chiL]`. Use `conv_rhs => rw [← Int.toNat_sub_toNat_neg z]`. Rewrite using `[zpow_sub, zpow_natCast, zpow_natCast, inv_pow, mul_comm]`. Rewrite using `[← hu, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`.
+-/
 theorem chi_pow_eq (ell : ℕ) (z : ℤ) :
     ((((chiL W ell)⁻¹ : Oˣ) : O)) ^ (-z).toNat * ((chiL W ell : Oˣ) : O) ^ z.toNat =
       (((W.χΓ W.gam) ^ (z * (PD.p : ℤ) ^ ell) : Oˣ) : O) := by
@@ -280,6 +390,51 @@ variable (W : LocWach PD LL O v n)
 
 local notation "ιE" => algebraMap (LetA O n) W.EE
 
+/- English proof (translation)
+Take `⟨u, hu, hfu⟩` from `hf`. Establish `hfu' : ιE (denI W ell α) * f = ιE (letE a * numI W ell α * u)` using `hfu`. Use `choose r hr r' hr' hrr hσ using psStable_pow W hS (PD.p ^ ell)`. Establish `htr` using `transport W (W.γA W.gam ^ (PD.p ^ ell)) (W.γE W.gam ^ (PD.p ^ ell)) (γE_pow_ι W _ _) (γA_pow_letE W _ _) r r' hrr hσ hfu'`. Use `set c : O := (((W.χΓ W.gam) ^ (α s * (PD.p : ℤ) ^ ell) : Oˣ) : O) with hc`.
+
+Use `set cA : LetA O n := algebraMap O (LetA O n) c`. Use `set ρn := ∏ t ∈ Finset.range ell, r t ^ (α t).toNat`. Use `set ρd := ∏ t ∈ Finset.range ell, r' t ^ (-(α t)).toNat`. Use `set ΓA := W.γA W.gam ^ (PD.p ^ ell)`. Establish `haev : Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) (Polynomial.X ^ (PD.p ^ ell) - Polynomial.C c) f = (W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f`.
+
+Rewrite using `[map_sub, Polynomial.aeval_X_pow, Polynomial.aeval_C, LinearMap.sub_apply, toLin_pow_apply, Module.algebraMap_end_apply, smul_eq_ι]`. Establish `key : ιE (denI W ell α) * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f) = ιE (letE a * numI W ell α * (ρd * ρn * ΓA u - cA * u))`. Rewrite using `[mul_sub, htr, mul_left_comm (ιE (denI W ell α)) (ιE cA) f, hfu', ← map_mul, ← map_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hps` using `ps_mem W hπ`. Establish `hl` using `lA_mem W`. Establish `hGs` using `hG ell s hs`. Establish `cong_t : ∀ t, t ≠ s → Cong W s (r t) 1 ∧ Cong W s (r' t) 1`. Introduce `t hts`.
+
+Take `⟨h1, hh1, e1⟩` from `hGs.1 (ps W t) (hps t)`. Rewrite `e1` using `[hσ t]`. Take `⟨κ, x, hx, y, hy, e2⟩` from `hC s t (Ne.symm hts)`. Establish `E3 : lA W ^ κ * (r t - 1) = ps W s * (x * (r t - 1) + y * h1)`. Take the linear combination `(r t - 1) * e2 + y * e1`.
+
+Establish `hS3 : x * (r t - 1) + y * h1 ∈ W.AΔ` using `Subalgebra.add_mem _ (Subalgebra.mul_mem _ hx (Subalgebra.sub_mem _ (hr t) (Subalgebra.one_mem _))) (Subalgebra.mul_mem _ hy hh1)`. Use `⟨⟨κ, _, hS3, E3⟩, ⟨κ, -(r' t) * (x * (r t - 1) + y * h1), Subalgebra.mul_mem _ (Subalgebra.neg_mem _ (hr' t)) hS3, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `(-(r' t)) * E3 + lA W ^ κ * hrr t`. Use `set χA : LetA O n := algebraMap O (LetA O n) ((chiL W ell : Oˣ) : O)`. Use `set χiA : LetA O n := algebraMap O (LetA O n) (((chiL W ell)⁻¹ : Oˣ) : O)`.
+
+Establish `hχ : χA * χiA = 1`. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `hχm : χA ∈ W.AΔ` using `Subalgebra.algebraMap_mem _ _`. Establish `hχim : χiA ∈ W.AΔ` using `Subalgebra.algebraMap_mem _ _`. Establish `cong_s : Cong W s (r s) χA ∧ Cong W s (r' s) χiA`.
+
+Take `⟨h2, hh2, e2⟩` from `hGs.2`. Rewrite `e2` using `[hσ s]`. Establish `E4 : r s - χA = ps W s * h2` using `cancel_ps W hU s (by linear_combination e2)`. Use `⟨⟨0, h2, hh2, by rw [pow_zero, one_mul]; exact E4⟩, ⟨0, -(r' s) * χiA * h2, Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.neg_mem _ (hr' s)) hχim) hh2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`.
+
+Take the linear combination `(-(r' s) * χiA) * E4 + χiA * hrr s - r' s * hχ`. Establish `hms : s ∈ Finset.range ell` using `Finset.mem_range.2 hs`. Establish `congN : Cong W s ρn (χA ^ (α s).toNat)`. Establish `h0 : Cong W s (∏ t ∈ (Finset.range ell).erase s, r t ^ (α t).toNat) (∏ t ∈ (Finset.range ell).erase s, (1 : LetA O n) ^ (α t).toNat)` using `cong_prod W _ _ _ (fun t => Subalgebra.pow_mem _ (hr t) _) (fun t => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _) fun t ht => cong_pow W (hr t) (Subalgebra.one_mem _) (cong_t t (Finset.ne_of_mem_erase ht)).1 _`. Use `cong_mul W (Subalgebra.pow_mem _ (hr s) _) (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _) (cong_pow W (hr s) hχm cong_s.1 (α s).toNat) h0` as an intermediate fact.
+
+Establish `e` using `Finset.mul_prod_erase (Finset.range ell) (fun t => r t ^ (α t).toNat) hms`. Rewrite `this` using `[e]`. Conclude with `cong_of_eq W this (by simp)`. Establish `congD : Cong W s ρd (χiA ^ (-(α s)).toNat)`. Establish `h0 : Cong W s (∏ t ∈ (Finset.range ell).erase s, r' t ^ (-(α t)).toNat) (∏ t ∈ (Finset.range ell).erase s, (1 : LetA O n) ^ (-(α t)).toNat)` using `cong_prod W _ _ _ (fun t => Subalgebra.pow_mem _ (hr' t) _) (fun t => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _) fun t ht => cong_pow W (hr' t) (Subalgebra.one_mem _) (cong_t t (Finset.ne_of_mem_erase ht)).2 _`.
+
+Use `cong_mul W (Subalgebra.pow_mem _ (hr' s) _) (Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (Subalgebra.one_mem _) _) (cong_pow W (hr' s) hχim cong_s.2 (-(α s)).toNat) h0` as an intermediate fact. Establish `e` using `Finset.mul_prod_erase (Finset.range ell) (fun t => r' t ^ (-(α t)).toNat) hms`. Rewrite `this` using `[e]`. Conclude with `cong_of_eq W this (by simp)`. Establish `hρn : ρn ∈ W.AΔ` using `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr t) _`.
+
+Establish `hρd : ρd ∈ W.AΔ` using `Subalgebra.prod_mem _ fun t _ => Subalgebra.pow_mem _ (hr' t) _`. Establish `congU : Cong W s (ΓA u) u`. Take `⟨h, hh, e⟩` from `hGs.1 u hu`. Conclude with `⟨0, h, hh, by rw [pow_zero, one_mul]; exact e⟩`. Establish `congAll : Cong W s (ρd * ρn * ΓA u) (cA * u)`.
+
+Establish `h1` using `cong_mul W hρd (Subalgebra.pow_mem _ hχm _) congD congN`. Establish `h2` using `cong_mul W (Subalgebra.mul_mem _ hρd hρn) hu h1 congU`. Use `cong_of_eq W h2 ?_` and prove the remaining obligations. Establish `: χiA ^ (-(α s)).toNat * χA ^ (α s).toNat = cA`. Simplify using `only [χiA, χA, cA, hc, ← map_pow, ← map_mul]`.
+
+Rewrite using `[chi_pow_eq]`. Rewrite using `[this]`. Take `⟨κ, h, hh, eh⟩` from `congAll`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Rewrite using `[haev]`.
+
+Take `⟨R, hR1, hR2⟩` from `prod_update (ps W) (fun z : ℤ => z.toNat) ell α hs (α s + 1)`. Take `⟨R', hR1', hR2'⟩` from `prod_update (ps W) (fun z : ℤ => (-z).toNat) ell α hs (α s + 1)`. Break down `le_or_gt 0 (α s) with hpos | hneg` into its components or cases. Establish `t1 : (α s + 1).toNat = (α s).toNat + 1` using `by omega`. Establish `t2 : (-(α s + 1)).toNat = 0` using `by omega`.
+
+Establish `t3 : (-(α s)).toNat = 0` using `by omega`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `show ιE (denI W ell (Function.update α s (α s + 1))) * (lE W κ * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f)) = ιE (letE a * numI W ell (Function.update α s (α s + 1)) * h)`. Establish `hnum : numI W ell (Function.update α s (α s + 1)) = numI W ell α * ps W s`. Simplify using `only [numI]`.
+
+Rewrite using `[hR1, hR2, t1, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hden : denI W ell (Function.update α s (α s + 1)) = denI W ell α`. Simplify using `only [denI]`. Rewrite using `[hR1', hR2', t2, t3]`.
+
+Rewrite using `[hnum, hden, ← ι_lE, mul_left_comm, key, ← map_mul]`. Use `congr 1`. Take the linear combination `(letE a * numI W ell α) * eh`. Establish `t1 : (α s + 1).toNat = 0` using `by omega`. Establish `t0 : (α s).toNat = 0` using `by omega`.
+
+Establish `t2 : (-(α s)).toNat = (-(α s + 1)).toNat + 1` using `by omega`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `show ιE (denI W ell (Function.update α s (α s + 1))) * (lE W κ * ((W.γE W.gam ^ (PD.p ^ ell)) f - ιE cA * f)) = ιE (letE a * numI W ell (Function.update α s (α s + 1)) * h)`. Establish `hnum : numI W ell (Function.update α s (α s + 1)) = numI W ell α`. Simplify using `only [numI]`.
+
+Rewrite using `[hR1, hR2, t1, t0]`. Establish `hden : denI W ell α = ps W s * denI W ell (Function.update α s (α s + 1))`. Simplify using `only [denI]`. Rewrite using `[hR1', hR2', t2, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hnum]`. Apply `(hU s).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← map_mul, ← hden, ← ι_lE, mul_left_comm, key]`. Simplify using `only [← map_mul]`. Use `congr 1`.
+
+Take the linear combination `(letE a * numI W ell α) * eh`.
+-/
 theorem step (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable W)
     (hπ : W.π₀ ∈ W.AΔ) {a : ZMod n} {ell : ℕ} {α : ℕ → ℤ} {s : ℕ} (hs : s < ell) {f : W.EE}
     (hf : InId W a ell α f) :
@@ -415,19 +570,47 @@ variable (W : LocWach PD LL O v n)
 
 local notation "ιE" => algebraMap (LetA O n) W.EE
 
+/- English proof (translation)
+Simplify using `[lE, pow_add]`.
+-/
 theorem lE_add (κ κ' : ℕ) : lE W (κ + κ') = lE W κ * lE W κ' := by
   simp [lE, pow_add]
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply]`.
+-/
 theorem aeval_mul_apply (P Q : Polynomial O) (f : W.EE) :
     Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) (P * Q) f =
       Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P
         (Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) Q f) := by
   rw [map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Finset.mem_insert, Finset.mem_Ico]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Ico_succ (a : ℤ) (N : ℕ) :
     Finset.Ico a (a + ((N + 1 : ℕ) : ℤ)) = insert (a + N) (Finset.Ico a (a + N)) := by
   ext x; simp only [Finset.mem_insert, Finset.mem_Ico]; push_cast; omega
 
+/- English proof (translation)
+Use `set F : ℤ → Polynomial O := fun i => Polynomial.X ^ (PD.p ^ ell) - Polynomial.C (((W.χΓ W.gam) ^ (i * (PD.p : ℤ) ^ ell) : Oˣ) : O) with hF`. Use `set S : Polynomial O := ∑ k ∈ Finset.range (PD.p ^ ell), Polynomial.X ^ k`. Establish `hPPO : PPO W ell JS = (∏ i ∈ JS.erase 0, F i) * S` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hJ h0`.
+
+Take `⟨κ, hκ⟩` from `step W hU hC hG hS hπ hs hf`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Establish `hmem : α s ∈ JS.erase 0` using `Finset.mem_erase.2 ⟨h0, hJ⟩`. Establish `e : PPO W ell JS = ((∏ i ∈ (JS.erase 0).erase (α s), F i) * S) * F (α s)`. Rewrite using `[hPPO, ← Finset.mul_prod_erase _ _ hmem]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `PPγ`. Rewrite using `[e, aeval_mul_apply, ← aeval_lE]`. Conclude with `inId_aeval W hS _ _ hκ`. Introduce `h0`.
+
+Take `⟨κ, hκ⟩` from `step W hU hC hG hS hπ hs hf`. Rewrite `hκ` using `[h0, zero_add]`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Establish `e1 : W.γE W.gam f - f = Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) (Polynomial.X - 1 : Polynomial O) f`. Simplify using the standard rewrite rules.
+
+Establish `e2 : PPO W ell JS * (Polynomial.X - 1 : Polynomial O) = (∏ i ∈ JS.erase 0, F i) * F 0`. Rewrite using `[hPPO, mul_assoc, geom_sum_mul]`. Simplify using `[hF]`. Unfold `PPγ`. Rewrite using `[e1, ← aeval_mul_apply, e2, aeval_mul_apply, ← aeval_lE]`.
+
+Conclude with `inId_aeval W hS _ _ hκ`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Nat.cast_zero, add_zero, Finset.Ico_self, Finset.prod_empty, map_one, Module.End.one_apply, Function.update_eq_self]`. Simplify `hf` using `[lE]`. Consider the case `succ N ih`. Take `⟨κ, hκ⟩` from `ih`. Take `⟨κ', hκ'⟩` from `step W hU hC hG hS hπ hs hκ`.
+
+Rewrite `hκ'` using `[Function.update_self, Function.update_idem]`. Use `⟨κ' + κ, ?_⟩` and prove the remaining obligations. Establish `hnot : α s + N ∉ Finset.Ico (α s) (α s + N)` using `by simp`. Rewrite using `[Ico_succ, Finset.prod_insert hnot, aeval_mul_apply, lE_add, mul_assoc, ← aeval_lE]`. Establish `: α s + ((N + 1 : ℕ) : ℤ) = α s + N + 1` using `by push_cast; ring`.
+
+Rewrite using `[this]`. Conclude with `hκ'`.
+-/
 theorem levels (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable W)
     (hπ : W.π₀ ∈ W.AΔ) (ell : ℕ) (JS : Finset ℤ) (a : ZMod n) (α : ℕ → ℤ) (s : ℕ) (hs : s < ell)
     (f : W.EE) (hf : InId W a ell α f) :
@@ -483,6 +666,9 @@ theorem levels (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStab
       rw [this]
       exact hκ'
 
+/- English proof (translation)
+Introduce `hA ell JS`. Conclude with `⟨Formalism.MainNotions.UnusedSlot80.KV.val_PP_one W hA.2.1 hA.2.2 ell JS, fun a α s hs f hf => levels W hU hC hG hS hπ ell JS a α s hs f hf⟩`.
+-/
 theorem killerLevCore_of (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (hS : PsStable W)
     (hπ : W.π₀ ∈ W.AΔ) : KillerLevCore W := by
   intro hA ell JS

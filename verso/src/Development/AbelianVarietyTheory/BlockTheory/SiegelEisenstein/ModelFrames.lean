@@ -90,10 +90,16 @@ def FlatSplitFB (D : D7) : Prop :=
         ∃ I₀ : SB (Matrix (n ⊕ Fin 1) n' k) →ₗ[ℂ] (WO J.W₀ B.V₀ → ℂ), IsModel ψ α₀ β₀ I₀ ∧
           ∀ Φ, ∃ h : opRow χ ν (σ + 1) Φ.1 ∈ SB (Matrix (n ⊕ Fin 1) n' k), flatFB s (I Φ) = I₀ ⟨_, h⟩
 
+/- English proof (translation)
+Simplify using `only [scal, Finset.prod_range_succ, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+-/
 example {k : Type} [Field k] (γ t₁ : kˣ) (κ : ℕ → k) (i : ℕ) : (γ : k) * scal γ κ t₁ (i + 1) = κ i * scal γ κ t₁ i := by
   simp only [scal, Finset.prod_range_succ, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Simplify using `[scal, coef, Finset.prod_range_succ]`.
+-/
 example {k : Type} [Field k] (a : k) : (scal 1 (coef 1 a) 1 0, scal 1 (coef 1 a) 1 1, scal 1 (coef 1 a) 1 2,
     scal 1 (coef 1 a) 1 3) = (1, 1, a, -a) := by
   simp [scal, coef, Finset.prod_range_succ]

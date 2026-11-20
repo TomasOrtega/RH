@@ -22,6 +22,13 @@ variable {a b c : Fin dd → MvPowerSeries τ C} (ha : ∀ i, MvPowerSeries.cons
 
 include ha hb hc
 
+/- English proof (translation)
+Establish `h` using `Y.gauge.ph1`. Rewrite `h` using `[toK_eq, eval_two_points_eq_subst _ _ _ rfl, eval_two_points_eq_subst _ _ _ rfl, eval_two_points_eq_subst _ _ _ rfl, addOf_eq]`. Establish `k0` using `cc_pt (C := C) (dd := dd) (0 : Fin 3)`. Establish `k1` using `cc_pt (C := C) (dd := dd) (1 : Fin 3)`. Establish `k2` using `cc_pt (C := C) (dd := dd) (2 : Fin 3)`.
+
+Establish `hcc : MvPowerSeries.constantCoeff (hAt Y (pt C dd (0 : Fin 3)) (pt C dd (2 : Fin 3)) + hAt Y (pt C dd (1 : Fin 3)) (pt C dd (2 : Fin 3)) - hAt Y (addAt Y (pt C dd (0 : Fin 3)) (pt C dd (1 : Fin 3))) (pt C dd (2 : Fin 3))) = 0`. Rewrite using `[map_sub, map_add, cc_hAt Y k0 k2, cc_hAt Y k1 k2, cc_hAt Y (cc_addAt Y k0 k1) k2]`. Simplify using the standard rewrite rules. Establish `h' : Y.B.ph1 = FB.expS C (hAt Y (pt C dd (0 : Fin 3)) (pt C dd (2 : Fin 3)) + hAt Y (pt C dd (1 : Fin 3)) (pt C dd (2 : Fin 3)) - hAt Y (addAt Y (pt C dd (0 : Fin 3)) (pt C dd (1 : Fin 3))) (pt C dd (2 : Fin 3)))` using `h`. Establish `hP` using `constantCoeff_triple_substitution ha hb hc`.
+
+Rewrite using `[h', expS_eq _ hcc, subst_exp hP hcc, subst_sub' hP, subst_add' hP, hAt_subst Y hP k0 k2, hAt_subst Y hP k1 k2, hAt_subst Y hP (cc_addAt Y k0 k1) k2, triple_subst_first_coordinate ha hb hc, triple_subst_second_coordinate ha hb hc, triple_subst_third_coordinate ha hb hc]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Rewrite using `[addAt_subst Y hP k0 k1, triple_subst_first_coordinate ha hb hc, triple_subst_second_coordinate ha hb hc]`.
+-/
 theorem first_partial_law_at_points : MvPowerSeries.subst (P3 a b c) Y.B.ph1 =
     mvExp (hAt Y a c + hAt Y b c - hAt Y (addAt Y a b) c) := by
   have h := Y.gauge.ph1
@@ -46,6 +53,19 @@ theorem first_partial_law_at_points : MvPowerSeries.subst (P3 a b c) Y.B.ph1 =
 
 end Three
 
+/- English proof (translation)
+Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun q => hc q.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun q => by rw [hc q.2]; exact IsNilpotent.zero)`. Consider the case `exact ⟨fun q => by rw [hc q.2]; exact IsNilpotent.zero, by first`. Consider the case `exact fun d => Set.toFinite _`.
+
+Consider the case `(simp only [Set.finite_coe_iff]; intro d; exact Set.toFinite _)`. Consider the case `(simp; intro d; exact Set.toFinite _)⟩`. Establish `h1 : MvPowerSeries.subst (P2 (0 : Pt C 1 dd) (pt C dd 0)) Y.h = 0`. Rewrite using `[← eval_two_points_eq_subst (m := 2) _ _ _ rfl]`. Conclude with `Y.gauge.ax0`.
+
+Establish `h3 : hAt Y (fun _ => 0) c = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => c q.2) (MvPowerSeries.subst (P2 (0 : Pt C 1 dd) (pt C dd 0)) Y.h)`. Rewrite using `[subst_pair_substitution_comm]`. Unfold `hAt`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.zero_apply, ← MvPowerSeries.coe_substAlgHom hA, map_zero]`. Use function extensionality and compare the values at `i first`. Consider the case `simp [pt, MvPowerSeries.subst_X hA]`. Consider the case `(unfold pt; simp [MvPowerSeries.subst_X hA])`. Consider the case `rfl`.
+
+Apply the tactic sequence `all_goals first`. Consider the case `exact hA`. Consider the case `(intro i; simp [pt])`. Consider the case `(intro i; rfl)`. Consider the case `simp_all`.
+
+Consider the case `skip`. Rewrite using `[h3, h1, ← MvPowerSeries.coe_substAlgHom hA, map_zero]`.
+-/
 theorem hAt_zero_left {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerSeries.constantCoeff (c i) = 0) :
     hAt Y (fun _ => 0) c = 0 := by
   have hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2) := by
@@ -81,6 +101,19 @@ theorem hAt_zero_left {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerSe
       | skip
   rw [h3, h1, ← MvPowerSeries.coe_substAlgHom hA, map_zero]
 
+/- English proof (translation)
+Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2)` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun q => hc q.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun q => by rw [hc q.2]; exact IsNilpotent.zero)`. Consider the case `exact ⟨fun q => by rw [hc q.2]; exact IsNilpotent.zero, by first`. Consider the case `exact fun d => Set.toFinite _`.
+
+Consider the case `(simp only [Set.finite_coe_iff]; intro d; exact Set.toFinite _)`. Consider the case `(simp; intro d; exact Set.toFinite _)⟩`. Establish `h1 : MvPowerSeries.subst (P2 (pt C dd 0) (0 : Pt C 1 dd)) Y.h = 0`. Rewrite using `[← eval_two_points_eq_subst (m := 2) _ _ _ rfl]`. Conclude with `Y.gauge.ax1`.
+
+Establish `h3 : hAt Y c (fun _ => 0) = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => c q.2) (MvPowerSeries.subst (P2 (pt C dd 0) (0 : Pt C 1 dd)) Y.h)`. Rewrite using `[subst_pair_substitution_comm]`. Unfold `hAt`. Use `congr 2`. Use function extensionality and compare the values at `i first`.
+
+Consider the case `simp [pt, MvPowerSeries.subst_X hA]`. Consider the case `(unfold pt; simp [MvPowerSeries.subst_X hA])`. Consider the case `rfl`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.zero_apply, ← MvPowerSeries.coe_substAlgHom hA, map_zero]`.
+
+Apply the tactic sequence `all_goals first`. Consider the case `exact hA`. Consider the case `(intro i; simp [pt])`. Consider the case `(intro i; rfl)`. Consider the case `simp_all`.
+
+Consider the case `skip`. Rewrite using `[h3, h1, ← MvPowerSeries.coe_substAlgHom hA, map_zero]`.
+-/
 theorem hAt_zero_right {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerSeries.constantCoeff (c i) = 0) :
     hAt Y c (fun _ => 0) = 0 := by
   have hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2) := by
@@ -119,6 +152,9 @@ theorem hAt_zero_right {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerS
 def GoodPt (V : VF C) (a : Fin dd → MvPowerSeries τ C) : Prop :=
   (∀ i, MvPowerSeries.constantCoeff (a i) = 0) ∧ ∀ i, IntS V (a i)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact IntS.subst ha0 ha hf`. Consider the case `exact PartialDerivEval.intS_subst ha0 ha hf`. Consider the case `exact AltInv.intS_subst ha0 ha hf`.
+-/
 private theorem intS_subst_of_intS {σ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (ha : ∀ s, IntS V (a s)) {f : MvPowerSeries σ C}
     (hf : IntS V f) : IntS V (MvPowerSeries.subst a f) := by
@@ -127,6 +163,13 @@ private theorem intS_subst_of_intS {σ : Type} [Finite σ] {a : σ → MvPowerSe
     | exact PartialDerivEval.intS_subst ha0 ha hf
     | exact AltInv.intS_subst ha0 ha hf
 
+/- English proof (translation)
+Establish `h0 : ∀ q, MvPowerSeries.constantCoeff (P2 a b q) = 0`. Introduce `q`. Unfold `P2`. Use `split_ifs`. Conclude with `ha.1 _`.
+
+Conclude with `hb.1 _`. Establish `hI : ∀ q, IntS V (P2 a b q)`. Introduce `q`. Unfold `P2`. Use `split_ifs`.
+
+Conclude with `ha.2 _`. Conclude with `hb.2 _`. Use `⟨fun i => cc_addAt Y ha.1 hb.1 i, fun i => ?_⟩` and prove the remaining obligations. Use `show IntS V (MvPowerSeries.subst (P2 a b) (Y.B.G.F i))`. Conclude with `intS_subst_of_intS h0 hI (Y.intF i)`.
+-/
 theorem GoodPt.add {a b : Fin dd → MvPowerSeries τ C} (ha : GoodPt V a) (hb : GoodPt V b) : GoodPt V (addAt Y a b) := by
   have h0 : ∀ q, MvPowerSeries.constantCoeff (P2 a b q) = 0 := by
     intro q
@@ -144,6 +187,11 @@ theorem GoodPt.add {a b : Fin dd → MvPowerSeries τ C} (ha : GoodPt V a) (hb :
   show IntS V (MvPowerSeries.subst (P2 a b) (Y.B.G.F i))
   exact intS_subst_of_intS h0 hI (Y.intF i)
 
+/- English proof (translation)
+Use `⟨fun _ => map_zero _, fun _ => ?_⟩` and prove the remaining obligations. Unfold `IntS`. Introduce `μ`. Rewrite using `[map_zero]`. Unfold `VF.Ge`.
+
+Use `first`. Consider the case `simp`. Consider the case `exact le_top`. Consider the case `(simp [VF.v]; done)`.
+-/
 theorem GoodPt.zero : GoodPt V (fun _ : Fin dd => (0 : MvPowerSeries τ C)) := by
   refine ⟨fun _ => map_zero _, fun _ => ?_⟩
   unfold IntS
@@ -155,6 +203,9 @@ theorem GoodPt.zero : GoodPt V (fun _ : Fin dd => (0 : MvPowerSeries τ C)) := b
     | exact le_top
     | (simp [VF.v]; done)
 
+/- English proof (translation)
+Use `⟨fun i => cc_actAt Y x ha.1 i, fun i => ?_⟩` and prove the remaining obligations. Use `show IntS V (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => a q.2) (Y.B.A.act x i))`. Conclude with `intS_subst_of_intS (a := fun q : Fin 1 × Fin dd => a q.2) (fun q => ha.1 q.2) (fun q => ha.2 q.2) (Y.intAct x i)`.
+-/
 theorem GoodPt.act (x : O) {a : Fin dd → MvPowerSeries τ C} (ha : GoodPt V a) : GoodPt V (actAt Y x a) := by
   refine ⟨fun i => cc_actAt Y x ha.1 i, fun i => ?_⟩
   show IntS V (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => a q.2) (Y.B.A.act x i))
@@ -165,10 +216,20 @@ def sumL : List (Fin dd → MvPowerSeries τ C) → (Fin dd → MvPowerSeries τ
   | [] => fun _ => 0
   | a :: l => addAt Y a (sumL l)
 
+/- English proof (translation)
+The claim follows from `| [], _ => GoodPt.zero | a :: l, h => (h a List.mem_cons_self).add Y (good_sumL l fun b hb => h b (List.mem_cons_of_mem _ hb))`.
+-/
 theorem good_sumL : ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l, GoodPt V a) → GoodPt V (sumL Y l)
   | [], _ => GoodPt.zero
   | a :: l, h => (h a List.mem_cons_self).add Y (good_sumL l fun b hb => h b (List.mem_cons_of_mem _ hb))
 
+/- English proof (translation)
+Use `⟨hi, ?_⟩` and prove the remaining obligations. Substitute `he` using the available equality. Unfold `mvExp`. Establish `h1 : (MvPowerSeries.constantCoeff fun m : τ →₀ ℕ => ∑ k ∈ Finset.range (Finsupp.degree m + 1), (MvPowerSeries.coeff m) (f ^ k) / (k.factorial : C)) = 1` using `by show (∑ k ∈ Finset.range (Finsupp.degree (0 : τ →₀ ℕ) + 1), (MvPowerSeries.coeff (0 : τ →₀ ℕ)) (f ^ k) / (k.factorial : C)) = 1`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1]`. Use `first`. Consider the case `simp`. Consider the case `exact map_one _`. Consider the case `rfl`.
+
+Consider the case `(simp [VF.v]; done)`.
+-/
 theorem isIU_of_exp {U f : MvPowerSeries τ C} (hi : IntS V U) (he : U = mvExp f) : IsIU V U := by
   refine ⟨hi, ?_⟩
   subst he
@@ -185,6 +246,11 @@ theorem isIU_of_exp {U f : MvPowerSeries τ C} (hi : IntS V U) (he : U = mvExp f
     | rfl
     | (simp [VF.v]; done)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact exp_add hf hg`. Consider the case `exact Formalism.L2.FormalSeriesBounds.UnitSeriesProduct.mvExp_add' hf hg`. Consider the case `exact Formalism.IncomingBounds.mvExp_add hf hg`. Consider the case `exact Formalism.IncomingBounds.mvExp_add' hf hg`.
+
+Consider the case `exact mvExp_add hf hg`.
+-/
 private theorem mvExp_add_character_germs {σ : Type} {f g : MvPowerSeries σ C} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := by
   first
@@ -194,6 +260,9 @@ private theorem mvExp_add_character_germs {σ : Type} {f g : MvPowerSeries σ C}
     | exact Formalism.IncomingBounds.mvExp_add' hf hg
     | exact mvExp_add hf hg
 
+/- English proof (translation)
+Use extensionality with `m`. Use `show (∑ k ∈ Finset.range (Finsupp.degree m + 1), (MvPowerSeries.coeff m) ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C)) = MvPowerSeries.coeff m 1`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+-/
 private theorem mvExp_zero_eq_one {σ : Type} : mvExp (0 : MvPowerSeries σ C) = 1 := by
   ext m
   show (∑ k ∈ Finset.range (Finsupp.degree m + 1),
@@ -201,6 +270,9 @@ private theorem mvExp_zero_eq_one {σ : Type} : mvExp (0 : MvPowerSeries σ C) =
   rw [Finset.sum_range_succ']
   simp
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨1, IsIU.one, by show mvExp (hAt Y (fun _ => 0) c) * 1 = 1 rw [hAt_zero_left Y hc.1, rtj_mvExp_zero, one_mul]⟩ | a :: l, h => by have ha := h a List.mem_cons_self have hl := good_sumL Y l fun b hb => h b (List.mem_cons_of_mem _ hb) obtain ⟨U, hU, e⟩ := biadd_left hc l …`.
+-/
 theorem biadd_left {c : Fin dd → MvPowerSeries τ C} (hc : GoodPt V c) :
     ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l, GoodPt V a) →
       ∃ U : MvPowerSeries τ C, IsIU V U ∧ mvExp (hAt Y (sumL Y l) c) * U = (l.map fun a => mvExp (hAt Y a c)).prod
@@ -226,6 +298,9 @@ theorem biadd_left {c : Fin dd → MvPowerSeries τ C} (hc : GoodPt V c) :
       show mvExp (hAt Y (addAt Y a (sumL Y l)) c) * _ = _
       rw [List.map_cons, List.prod_cons, ← e, ← mul_assoc, e2, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨1, IsIU.one, by show mvExp (hAt Y c (fun _ => 0)) * 1 = 1 rw [hAt_zero_right Y hc.1, rtj_mvExp_zero, one_mul]⟩ | a :: l, h => by have ha := h a List.mem_cons_self have hl := good_sumL Y l fun b hb => h b (List.mem_cons_of_mem _ hb) obtain ⟨U, hU, e⟩ := biadd_right hc …`.
+-/
 theorem biadd_right {c : Fin dd → MvPowerSeries τ C} (hc : GoodPt V c) :
     ∀ l : List (Fin dd → MvPowerSeries τ C), (∀ a ∈ l, GoodPt V a) →
       ∃ U : MvPowerSeries τ C, IsIU V U ∧ mvExp (hAt Y c (sumL Y l)) * U = (l.map fun a => mvExp (hAt Y c a)).prod

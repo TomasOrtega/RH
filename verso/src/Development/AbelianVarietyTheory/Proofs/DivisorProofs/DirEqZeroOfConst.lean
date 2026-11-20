@@ -20,9 +20,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ConstPointCone
 
+/- English proof (translation)
+The claim follows from `map_one (Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.toMonoidHom)`.
+-/
 theorem unitOn_one {A : Type} [CommRing A] : unitOn (1 : Aˣ) = 1 :=
   map_one (Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.toMonoidHom)
 
+/- English proof (translation)
+Introduce `R _ _ _ Q m t gam hmon hli _ hs k _ _ ρ a hρ hc`. Establish `hρc : constHom ρ = ρ`. Use extensionality with `r`. Simplify using `[constHom, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[constHom, TrivSqZeroExt.algebraMap_eq_inl, hρ]`.
+
+Take `⟨B', _, π₁, π₂, w, c', h1, h2, h3, hw, hc', hrel⟩` from `hc`. Rewrite `h2`, `hc'`, `hrel` using `[hρc]`. Establish `hπ : π₁ = π₂` using `GlobalTheory.T.groupPullback_abelianScheme_dualNumber_eq k Q.P.A Q.P.g B' ρ π₁ π₂ Q.P.isAb Q.P.smoothDim h1 h2 h3`. Substitute `hπ` using the available equality. Establish `hab : IsAbelianScheme B'` using `(GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback ρ Q.P.A B' π₁ Q.P.g h1 Q.P.isAb Q.P.smoothDim).1`.
+
+Take `⟨lam, hlam⟩` from `GlobalTheory.T.pulledBackLineBundle_automorphism_eq_const B' Q.P.L π₁ hab Q.P.isLB w hw`. Take `⟨zz⟩ : Nonempty (Sp (DualNumber k))` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨J, hJ⟩ : ∃ J, Good Q.P.L zz J := by`. Take `⟨J, hJ, -⟩` from `exists_good Q.P.L Q.P.isLB zz (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Conclude with `⟨J, hJ⟩`.
+
+Establish `hW : ∀ x, gm (c' x) zz _ (w.s (fun _ => J (c' x ≫ π₁), fun _ => J (c' x ≫ π₁))) = gm (𝟙 (Sp (DualNumber k))) zz ⊤ (unitOn lam)`. Introduce `x`. Establish `hmem : π₁ (c' x zz) ∈ Q.P.L.U (J (c' x ≫ π₁))`. Use `hJ (c' x ≫ π₁)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hlam _ (c' x) zz _ hmem, (hc' x).1]`. Establish `htne` using `GlobalTheory.T.monomialBoundaryFamily_param_ne_zero Q t gam hmon hli hs`. Establish `key : ∀ y z, ∑ i, a i * (gam i y z : k) = 0`. Introduce `y z`. Take `⟨τ₀, hτ⟩` from `GlobalTheory.T.exists_unitPartOfPeriodTau_monomial Q t gam hmon hs htne y z`.
+
+Apply the tactic sequence `let e : (DualNumber k)ˣ := ⟨1 + TrivSqZeroExt.inr (∑ i, a i * (gam i y z : k)), 1 - TrivSqZeroExt.inr (∑ i, a i * (gam i y z : k)), by ext <;> simp, by ext <;> simp⟩`. Establish `h` using `hrel y z τ₀ hτ e rfl zz J hJ`. Rewrite `h` using `[hW (y + z), hW y, hW z, hW 0]`. Establish `h' : gm (𝟙 (Sp (DualNumber k))) zz ⊤ (unitOn e) = gm (𝟙 (Sp (DualNumber k))) zz ⊤ (unitOn 1)`. Rewrite using `[unitOn_one, map_one]`.
+
+Establish `hG : ∀ G : ((Sp (DualNumber k)).presheaf.stalk zz)ˣ, G * G⁻¹ * G⁻¹ * G = 1` using `fun G => by group`. Rewrite `h` using `[hG, _root_.one_mul]`. Conclude with `mul_right_cancel (h.symm.trans (_root_.one_mul _).symm)`. Establish `he` using `GlobalTheory.T.dualNumber_unit_eq_of_germ_eq k zz _ _ h'`. Use `congrArg (fun u : (DualNumber k)ˣ => TrivSqZeroExt.snd (u : DualNumber k)) he` as an intermediate fact.
+
+Simplify `this` using `[e]`. Conclude with `GlobalTheory.T.linIndep_intBilinForm_charZero_combination_eq_zero gam k a hli key`.
+-/
 theorem dir_eq_zero_of_const : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : DegPre R) (m : ℕ) (t : Fin m → R) (gam : Fin m → LinearMap.BilinForm ℤ Q.X), IsMonomial Q t gam → LinearIndependent ℤ gam → (∀ i, t i ∈ maximalIdeal R) → (∀ i y z, gam i y z = gam i z y) → ∀ (k : Type) [Field k] [CharZero k] (ρ : R →+* DualNumber k) (a : Fin m → k), (∀ r, (ρ r).snd = 0) → IsConstAlong Q t gam ρ a → a = 0 := by
   intro R _ _ _ Q m t gam hmon hli _ hs k _ _ ρ a hρ hc
   have hρc : constHom ρ = ρ := by

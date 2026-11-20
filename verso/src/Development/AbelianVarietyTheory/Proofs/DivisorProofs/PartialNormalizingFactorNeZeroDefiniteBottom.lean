@@ -22,6 +22,11 @@ open GlobalTheory.Core.Rk.IP (Pair Unram SphFun openOff integrand wcoef rcoef up
 
 namespace GlobalTheory.BottomIPData
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X h t`. Apply `GlobalTheory.LFun.dSfun_ne_zero_of_re_pos` to reduce the goal to its premises. Establish `h2` using `(GlobalTheory.FunObj.SqNum.Model.bot_ranks (D := D) i j).1`. Establish `hp : (0 : ℝ) < A'.rank` using `by rw [h.rank']; exact_mod_cast (by omega : 0 < SqNum.botSmall D i j)`.
+
+Rewrite using `[show ((A'.rank : ℂ) / 2) = (((A'.rank : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`. Check the signs of the components of the expression.
+-/
 theorem dSfun_bottom_ne_zero : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, GlobalTheory.LFun.dSfun D.host.E ((GlobalTheory.BottomIPData.sfB G t : Finset (FinPl D)) : Set (FinPl D)) (GlobalTheory.Grid.neg A).rank WW.rank ((A'.rank : ℂ) / 2) ≠ 0 := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩

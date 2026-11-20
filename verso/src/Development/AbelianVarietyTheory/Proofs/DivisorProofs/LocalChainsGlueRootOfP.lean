@@ -21,6 +21,9 @@ open GlobalTheory.ChainDesc
 
 namespace GlobalTheory.ChainDesc
 
+/- English proof (translation)
+Use `haveI := (GlobalTheory.VB.isVB_freeModule_fin (X := X) h).isQuasicoherent`. Use `GlobalTheory.T.factor_through_mono_local_lifts X F E _ u ι I V h1 h2 fun i s => ?_` and prove the remaining obligations. Take `⟨s', hs'⟩` from `h3 i ⟨s, rfl⟩`. Conclude with `⟨s', (GlobalTheory.LatGlue.coords X h (V i)).injective hs'⟩`.
+-/
 theorem exists_fac_of_latOf_le {X : Scheme.{0}} {h : ℕ} {F E : X.Modules} [F.IsQuasicoherent] [E.IsQuasicoherent]
     (u : F ⟶ freeModule X (Fin h)) (ι : E ⟶ freeModule X (Fin h)) [Mono ι] {I : Type} {V : I → X.Opens}
     (h1 : ∀ i, IsAffineOpen (V i)) (h2 : ∀ x : X, ∃ i, x ∈ V i) (h3 : ∀ i, latOf u (V i) ≤ latOf ι (V i)) :
@@ -30,6 +33,11 @@ theorem exists_fac_of_latOf_le {X : Scheme.{0}} {h : ℕ} {F E : X.Modules} [F.I
   obtain ⟨s', hs'⟩ := h3 i ⟨s, rfl⟩
   exact ⟨s', (GlobalTheory.LatGlue.coords X h (V i)).injective hs'⟩
 
+/- English proof (translation)
+Establish `key : ∀ s, crd (smulHom (freeModule B.X (Fin h)) π) W s = resG B.X le_top π • GlobalTheory.LatGlue.coords B.X h W s` using `fun s => (GlobalTheory.LatGlue.coords B.X h W).map_smul _ s`. Use extensionality with `x`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`.
+
+Conclude with `⟨_, trivial, (key s).symm⟩`. Introduce and unpack `⟨y, -, rfl⟩`. Take `⟨s, rfl⟩` from `(GlobalTheory.LatGlue.coords B.X h W).surjective y`. Conclude with `⟨s, key s⟩`.
+-/
 theorem latOf_smulHom {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : GlobalTheory.Vert.Model O} (h : ℕ)
     (π : Γ(B.X, ⊤)) (W : B.X.Opens) : latOf (smulHom (freeModule B.X (Fin h)) π) W = baseOn h π W := by
   have key : ∀ s, crd (smulHom (freeModule B.X (Fin h)) π) W s = resG B.X le_top π • GlobalTheory.LatGlue.coords B.X h W s :=
@@ -43,6 +51,13 @@ theorem latOf_smulHom {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
     obtain ⟨s, rfl⟩ := (GlobalTheory.LatGlue.coords B.X h W).surjective y
     exact ⟨s, key s⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.VB.pullback_map_smulHom]`. Take `⟨u, hu⟩` from `hπ`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hg : (p : O) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h : IsUnit (B.gen.ι.appTop (B.const (p : O)))` using `RingedSpace.isUnit_of_isUnit_germ _ _ _ fun x _ => (Scheme.mem_basicOpen_top _ _ x).1 ((Scheme.preimage_basicOpen_top B.gen.ι _).le (B.gen_le_basicOpen hg x.2))`.
+
+Establish `e : B.const (p : O) = (p : Γ(B.X, ⊤))` using `map_natCast _ _`. Rewrite `h` using `[e]`. Establish `h' : IsUnit (B.gen.ι.appTop π)`. Rewrite using `[← isUnit_pow_iff (n := p - 1) (by omega), ← map_pow, hu, map_mul]`. Conclude with `(u.isUnit.map _).mul h`.
+
+Conclude with `(isUnit_iff_isIso _).1 (h'.map (smulEnd _))`.
+-/
 theorem isIso_genRes_map_smulHom_of_root {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     {p : ℕ} [Fact p.Prime] {B : GlobalTheory.Vert.Model O} (F : B.X.Modules) {π : Γ(B.X, ⊤)} (hπ : IsRootOfP p π (p - 1)) :
     IsIso (B.genRes.map (smulHom F π)) := by
@@ -60,6 +75,11 @@ theorem isIso_genRes_map_smulHom_of_root {O : Type} [CommRing O] [IsDomain O] [I
     exact (u.isUnit.map _).mul h
   exact (isUnit_iff_isIso _).1 (h'.map (smulEnd _))
 
+/- English proof (translation)
+Use `choose v hv using hs`. Use `⟨⟨⟨v, ?_⟩, fun a b => ?_⟩, fun a b => ?_, hv⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v 1 = 𝟙 E`. Rewrite using `[← cancel_mono ι, hv, map_one, Category.id_comp]`. Conclude with `Category.comp_id _`.
+
+Express the relevant statement in the definitionally equal form `v (a * b) = v b ≫ v a`. Rewrite using `[← cancel_mono ι, hv, map_mul, Category.assoc, hv, ← Category.assoc, hv, Category.assoc]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `v (a + b) = v a + v b`. Rewrite using `[← cancel_mono ι, hv, map_add, Preadditive.add_comp, hv, hv, ← Preadditive.comp_add]`.
+-/
 theorem exists_action_of_fac {X : Scheme.{0}} {Λ : Type} [CommRing Λ] {E G : X.Modules} (ι : E ⟶ G) [Mono ι]
     (μ : Λ →+* End G) (hs : ∀ a, ∃ v : E ⟶ E, v ≫ ι = ι ≫ (μ a : G ⟶ G)) :
     ∃ ρ : Λ →* End E, (∀ a b, (ρ (a + b) : E ⟶ E) = (ρ a : E ⟶ E) + (ρ b : E ⟶ E)) ∧
@@ -75,6 +95,35 @@ theorem exists_action_of_fac {X : Scheme.{0}} {Λ : Type} [CommRing Λ] {E G : X
   · change v (a + b) = v a + v b
     rw [← cancel_mono ι, hv, map_add, Preadditive.add_comp, hv, hv, ← Preadditive.comp_add]
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D _ hπ hL`. Take `⟨h1, h2, -, hE, hF, -, hM⟩` from `hL`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.coordinates_matrix_action_free_module B.X h`. Establish `vbT` using `GlobalTheory.VB.isVB_freeModule_fin (X := B.X) h`. Use `haveI := vbT.isQuasicoherent`.
+
+Use `haveI := fun n => (hE n).1.isQuasicoherent`. Use `haveI := fun n => (hE n).2`. Establish `hρ` using `fun n (hn : n ≤ o) => exists_action_of_fac (ι n) (μ.comp M) fun a => exists_fac_of_latOf_le _ (ι n) h1 h2 fun i => by`. Introduce and unpack `_ ⟨s, rfl⟩`. Use `(hM i a).mem n _ ((hF i n hn).ge ⟨s, rfl⟩)` as an intermediate fact.
+
+Rewrite `this` using `[hF i n hn]`. Conclude with `(hμ (M a) (V i) ((ι n).app _ s)) ▸ this`. Use `choose ρ ρadd ρι using hρ`. Establish `ha` using `fun n (hn : n ≤ o) => exists_fac_of_latOf_le (smulHom (freeModule B.X (Fin h)) π) (ι n) h1 h2 fun i => by`. Rewrite using `[latOf_smulHom, ← hF i n hn]`.
+
+Conclude with `(D i).base_le n`. Use `choose a ha using ha`. Establish `hb` using `fun n (hn : n < o) => exists_fac_of_latOf_le (ι (n + 1)) (ι n) h1 h2 fun i => by`. Rewrite using `[← hF i n hn.le, ← hF i (n + 1) hn]`. Conclude with `(D i).succ_le n`.
+
+Use `choose b hb using hb`. Set `T : AM B Λ` to `⟨freeModule B.X (Fin h), (μ.comp M).toMonoidHom⟩`. Set `H : ∀ n ≤ o, AM B Λ` to `fun n hn => ⟨E n, ρ n hn⟩`. Establish `addT : IsAdd T` using `fun x y => map_add (μ.comp M) x y`. Set `A : ∀ n hn, T ⟶ H n hn` to `fun n hn => ⟨a n hn, fun c => by`.
+
+Express the relevant statement in the definitionally equal form `((μ.comp M) c : freeModule B.X (Fin h) ⟶ _) ≫ a n hn = a n hn ≫ (ρ n hn c : E n ⟶ E n)`. Rewrite using `[← cancel_mono (ι n), Category.assoc, Category.assoc, ρι, ← Category.assoc (a n hn), ha]`. Apply the tactic sequence `first | exact (smulHom_comp _ _).symm | exact smulHom_comp _ _⟩`. Set `Bm : ∀ n (hn : n < o), H (n + 1) hn ⟶ H n hn.le` to `fun n hn => ⟨b n hn, fun c => by`. Express the relevant statement in the definitionally equal form `(ρ (n + 1) hn c : E (n + 1) ⟶ _) ≫ b n hn = b n hn ≫ (ρ n hn.le c : E n ⟶ E n)`.
+
+Rewrite using `[← cancel_mono (ι n), Category.assoc, Category.assoc, ρι, ← Category.assoc (b n hn), hb, ρι]⟩`. Establish `iπ` using `isIso_genRes_map_smulHom_of_root (freeModule B.X (Fin h)) hπ`. Establish `iι : ∀ n ≤ o, IsIso (B.genRes.map (ι n))` using `fun n hn => by haveI : Mono (B.genRes.map (ι n)) := mono_pullback_map _ _ haveI : Epi (B.genRes.map (a n hn) ≫ B.genRes.map (ι n)) := by rw [← Functor.map_comp, ha]; infer_instance haveI := epi_of_epi (B.genRes.map (a n hn)) (B.genRes.map (ι n))`. Conclude with `isIso_of_mono_of_epi _`. Establish `ia : ∀ n hn, IsIso (B.genRes.map (a n hn))` using `fun n hn => by haveI := iι n hn haveI : IsIso (B.genRes.map (a n hn) ≫ B.genRes.map (ι n)) := by rw [← Functor.map_comp, ha]; infer_instance`.
+
+Conclude with `IsIso.of_isIso_comp_right _ (B.genRes.map (ι n))`. Establish `ib : ∀ n hn, IsIso (B.genRes.map (b n hn))` using `fun n hn => by haveI := iι n hn.le haveI := iι (n + 1) hn haveI : IsIso (B.genRes.map (b n hn) ≫ B.genRes.map (ι n)) := by rw [← Functor.map_comp, hb]; infer_instance`. Conclude with `IsIso.of_isIso_comp_right _ (B.genRes.map (ι n))`. Establish `act : ∀ n hn (c : Λ) (W : B.X.Opens) (s : Γ(E n, W)), crd (ι n) W ((ρ n hn c : E n ⟶ E n).app W s) = mv (RingHom.id _) (M c) (crd (ι n) W s)` using `fun n hn c W s => (congrArg (fun φ => crd φ W s) (ρι n hn c)).trans (hμ (M c) W ((ι n).app W s))`. Set `d : EPres B Λ` to `⟨h, T, T, addT, addT, vbT, vbT, smulA T π, iπ⟩`.
+
+Set `q' : ∀ n ≤ o, Σ P : EPres B Λ, E n ⟶ P.mod.V` to `fun n hn => ⟨⟨h, H n hn, T, ρadd n hn, addT, (hE n).1, vbT, A n hn, ia n hn⟩, (cokernel.π (A n hn)).hom⟩`. Set `l' : ∀ n < o, Σ P : EPres B Λ, E n ⟶ P.mod.V` to `fun n hn => ⟨⟨h, H n hn.le, H (n + 1) hn, ρadd n hn.le, ρadd (n + 1) hn, (hE n).1, (hE (n + 1)).1, Bm n hn, ib n hn⟩, (cokernel.π (Bm n hn)).hom⟩`. Take `⟨q, hq⟩ : ∃ q : ∀ n, Σ P : EPres B Λ, E n ⟶ P.mod.V, ∀ n hn, q n = q' n hn` from `⟨fun n => if hn : n ≤ o then q' n hn else ⟨d, 0⟩, fun n hn => dif_pos hn⟩`. Take `⟨l, hl⟩ : ∃ l : ∀ n, Σ P : EPres B Λ, E n ⟶ P.mod.V, ∀ n hn, l n = l' n hn` from `⟨fun n => if hn : n < o then l' n hn else ⟨d, 0⟩, fun n hn => dif_pos hn⟩`. Use `⟨fun n => (q n).1, fun n => (l n).1, fun n => (q n).2, fun n => (l n).2, fun n hn => ?_, fun n hn => ?_, fun n hn => ?_⟩` and prove the remaining obligations.
+
+Establish `k` using `GlobalTheory.T.quotient_matrix_action_coordinates O B Λ h M (H n hn) T (ι n) (A n hn) (act n hn)`. Establish `e : (fun W => latOf ((A n hn).hom ≫ ι n) W) = baseOn h π` using `funext fun W => by`. Rewrite using `[← latOf_smulHom, ← ha n hn]`. Rewrite `k` using `[e]`. Use `beta_reduce`.
+
+Rewrite using `[hq n hn]`. Conclude with `k`. Establish `k` using `GlobalTheory.T.quotient_matrix_action_coordinates O B Λ h M (H n hn.le) (H (n + 1) hn) (ι n) (Bm n hn) (act n hn.le)`. Establish `e : (fun W => latOf ((Bm n hn).hom ≫ ι n) W) = latOf (ι (n + 1))` using `funext fun W => by`. Rewrite using `[← hb n hn]`.
+
+Rewrite `k` using `[e]`. Use `beta_reduce`. Rewrite using `[hl n hn]`. Conclude with `k`. Use `beta_reduce`.
+
+Rewrite using `[hq n hn.le, hq (n + 1) hn, hl n hn]`. Use `haveI : Mono (b n hn ≫ ι n) := by rw [hb]; infer_instance`. Use `haveI : Mono (Bm n hn) := (Action.forget _ Λ).mono_of_mono_map (mono_of_mono (b n hn) (ι n))`. Use `⟨_, shortExact_cokernel_comp (A (n + 1) hn) (Bm n hn), ⟨Iso.refl _⟩, ⟨cokernelIsoOfEq ?_⟩, ⟨Iso.refl _⟩⟩` and prove the remaining obligations. Apply `Action.Hom.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `a (n + 1) hn ≫ b n hn = a n hn.le`. Rewrite using `[← cancel_mono (ι n), Category.assoc, hb, ha, ha]`.
+-/
 theorem exists_presentations_of_isLoc : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)), [CharZero O] → IsRootOfP p π (p - 1) → IsLoc M ι V D → ∃ (q l : ℕ → EPres B Λ) (tq : ∀ n, E n ⟶ (q n).mod.V) (tl : ∀ n, E n ⟶ (l n).mod.V), (∀ n ≤ o, IsQuot M (ι n) (baseOn h π) (q n).mod (tq n)) ∧ (∀ n < o, IsQuot M (ι n) (latOf (ι (n + 1))) (l n).mod (tl n)) ∧ ∀ n < o, IsExtA (q (n + 1)).mod (q n).mod (l n).mod := by
   intro O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D _ hπ hL
   obtain ⟨h1, h2, -, hE, hF, -, hM⟩ := hL

@@ -13,9 +13,19 @@ noncomputable def pa_degFlL (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) 
     rw [smul_eq_C_mul]
     exact Formalism.DegreeFormula.PPowSum.degFl_C_mul c P
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pa_degFlL_apply {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (F : RP Ψ N) :
     pa_degFlL Ψ N F = degFl F := rfl
 
+/- English proof (translation)
+Introduce `Ψ _ _ N`. Use `⟨⟨pa_degFlL Ψ N, fun F => pa_degFlL_apply F⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j τ`. Use `⟨(pa_degFlL Ψ N).comp (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), ((pderiv (τ, i) : Derivation ℝ (RP Ψ N) (RP Ψ N)) : RP Ψ N →ₗ[ℝ] RP Ψ N)), fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, pa_degFlL_apply, LinearMap.sum_apply]`.
+
+Both sides reduce to the same expression. Introduce `τ`. Use `⟨(pa_degFlL Ψ N).comp (∑ i : Fin N, ((pderiv (τ, i) : Derivation ℝ (RP Ψ N) (RP Ψ N)) : RP Ψ N →ₗ[ℝ] RP Ψ N)), fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, pa_degFlL_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+
+Introduce `d F hF hd`. Conclude with `Formalism.DegreeFormula.PPowSum.degFlHomog Ψ N d F hF hd`.
+-/
 theorem degFl_Sh_Tot_linear_and_degFl_eq_zero_off_dim : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ), (∃ Φ : RP Ψ N →ₗ[ℝ] ℝ, ∀ F, Φ F = degFl F) ∧ (∀ (j : ℕ) (τ : Ψ), ∃ Φ : RP Ψ N →ₗ[ℝ] ℝ, ∀ F, Φ F = Sh j τ F) ∧ (∀ τ : Ψ, ∃ Φ : RP Ψ N →ₗ[ℝ] ℝ, ∀ F, Φ F = Tot τ F) ∧ ∀ (d : ℕ) (F : RP Ψ N), F.IsHomogeneous d → d ≠ dimFl Ψ N → degFl F = 0 := by
   intro Ψ _ _ N
   refine ⟨⟨pa_degFlL Ψ N, fun F => pa_degFlL_apply F⟩, ?_, ?_, ?_⟩

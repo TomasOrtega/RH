@@ -25,6 +25,9 @@ def IsIdx (l : ℕ) (V : Submodule (FractionRing R) W) (L₁ L₂ : Submodule R 
     ∃ g : ↥V ≃ₗ[FractionRing R] ↥V, (∀ v : ↥V, (v : W) ∈ L₁ ↔ ((g v : ↥V) : W) ∈ L₂) ∧
       x = vK R l (LinearMap.det (g : ↥V →ₗ[FractionRing R] ↥V))
 
+/- English proof (translation)
+Establish `h` using `(IsLocalization.surj (nonZeroDivisors R) (1 : FractionRing R)).choose_spec`. Rewrite `h` using `[one_mul]`. Establish `h'` using `IsFractionRing.injective R (FractionRing R) h`. Simplify using `only [vK]`. Rewrite using `[h', sub_self]`.
+-/
 theorem vK_one (l : ℕ) : vK R l 1 = 0 := by
   have h := (IsLocalization.surj (nonZeroDivisors R) (1 : FractionRing R)).choose_spec
   rw [one_mul] at h
@@ -34,6 +37,9 @@ theorem vK_one (l : ℕ) : vK R l 1 = 0 := by
 
 omit [IsScalarTower R (FractionRing R) W] in
 
+/- English proof (translation)
+Use `⟨h, h, LinearEquiv.refl _ _, fun v => Iff.rfl, ?_⟩` and prove the remaining obligations. Simplify using `[vK_one]`.
+-/
 theorem isIdx_self (l : ℕ) (V : Submodule (FractionRing R) W) (L : Submodule R W) (h : IsLatIn V L) :
     IsIdx l V L L 0 := by
   refine ⟨h, h, LinearEquiv.refl _ _, fun v => Iff.rfl, ?_⟩
@@ -102,6 +108,17 @@ def ThetaMt (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) : Submodule 
   Submodule.span O' ((fun f => incl Y i j b O' k (Y.thP i j b k Q ψ f)) ''
     (Y.MtLat i j b k Q ψ : Set (Y.MtV i j b k Q ψ)))
 
+/- English proof (translation)
+Establish `hi : ∀ x : Y.Fm i j b, incl Y i j b O' k ((1 : X.Ok i k) ⊗ₜ[X.O i] x) = (1 : FractionRing O') ⊗ₜ[X.O i] x`. Introduce `x`. Simplify using `[incl]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Simplify using `only [Set.mem_iUnion, Y.thPsi_one, Set.image_singleton, Set.mem_singleton_iff, hi] at hy`. Take `⟨d, -, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨d, rfl⟩, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe] at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, rfl⟩` from `hx`.
+
+Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Y.thPsi_one, Set.image_singleton, Set.mem_singleton_iff, hi]`. Conclude with `⟨d, by simp, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul O' a]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem thetaPsi_one : ThetaPsi Y i j b O' k ∅ 1 = ThetaExt Y i j b O' := by
   have hi : ∀ x : Y.Fm i j b, incl Y i j b O' k ((1 : X.Ok i k) ⊗ₜ[X.O i] x) =
       (1 : FractionRing O') ⊗ₜ[X.O i] x := by
@@ -170,6 +187,11 @@ def exportAt (N0 : X.Tw → ℕ) (i : X.Tw) : Prop :=
           partBAt bkP.ex i j b k' Q (psiAt b ((ψ' ^ a).comp (X.art i Q))) (epsB j b)) ∧
         partC N0 i Q k' (ψ' ^ a) eps' ∧ partD i Q k' (ψ' ^ a) eps'
 
+/- English proof (translation)
+Introduce `hs eps' he A`. Take `⟨n, d, -, H⟩` from `h hs`. Take `⟨Q, k', ψ', epsB, h1, -, -, -, -, h2⟩` from `H eps' he A`. Take `⟨ha, hat, -, hc, hd⟩` from `h2 1 isCoprime_one_left`. Rewrite `ha`, `hat`, `hc`, `hd` using `[zpow_one]`.
+
+Conclude with `⟨Q, k', ψ', h1, ha, hat, hc, hd⟩`.
+-/
 theorem projectionDerivative_of_exportAt (N0 : X.Tw → ℕ) (i : X.Tw) (h : exportAt bkP N0 i) : ProjectionDerivativeEstimate bkP N0 i := by
   intro hs eps' he A
   obtain ⟨n, d, -, H⟩ := h hs

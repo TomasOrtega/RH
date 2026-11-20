@@ -25,6 +25,17 @@ variable {D : D7} {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [Is
   (q : GlobalTheory.FinPl.SplitPt D K) {PP : HeightOneSpectrum (𝓞 D.host.E)} (hq : Formalism.L2.NTheta.IsIdemAt q.e PP)
 include hq
 
+/- English proof (translation)
+Distinguish the cases in `hle : PP.valuation D.host.E y ≤ 1`. Take `⟨r, d, e⟩` from `PP.exists_primeCompl_mul_eq_of_integer y hle`. Establish `hd : valuation K (q.pr (incA D ((d : 𝓞 D.host.E) : D.host.E))) = 1` using `le_antisymm (LevelTest.val_le_one q _) (not_lt.1 fun h' => d.2 ((LevelTest.val_lt_one_iff q hq _).1 h'))`. Establish `hr : r ∈ PP.asIdeal`. Use `(LevelTest.val_lt_one_iff q hq r).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[show ((r : 𝓞 D.host.E) : D.host.E) = y * ((d : 𝓞 D.host.E) : D.host.E) from e.symm, map_mul, map_mul, map_mul, hd, mul_one]`. Conclude with `hy`. Establish `hdv : PP.valuation D.host.E ((d : 𝓞 D.host.E) : D.host.E) = 1` using `le_antisymm (PP.valuation_le_one _) (not_lt.1 fun h' => d.2 ((HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.E) PP _).1 h'))`. Establish `h1 : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E r) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.host.E) PP r).2 hr`. Rewrite `h1` using `[← e, map_mul]`.
+
+Rewrite `h1` using `[show algebraMap (𝓞 D.host.E) D.host.E (d : 𝓞 D.host.E) = ((d : 𝓞 D.host.E) : D.host.E) from rfl, hdv, mul_one]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hle (by simp)`.
+
+Establish `h1 : PP.valuation D.host.E y⁻¹ < 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ (not_le.1 hle)`. Establish `h2` using `GlobalTheory.SeeSaw.LevChi.val_rat_lt q hq h1`. Establish `h3 : q.pr (incA D y) * q.pr (incA D y⁻¹) = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ hy0, map_one, map_one]`. Establish `h4` using `congrArg (valuation K) h3`. Rewrite `h4` using `[map_mul, map_one]`. Establish `h5 : valuation K (q.pr (incA D y)) * valuation K (q.pr (incA D y⁻¹)) < 1` using `(mul_le_of_le_one_right' h2.le).trans_lt hy`. Conclude with `(ne_of_lt h5) h4`.
+-/
 theorem val_lt_of_pr {y : D.host.E} (hy : valuation K (q.pr (incA D y)) < 1) : PP.valuation D.host.E y < 1 := by
   by_cases hle : PP.valuation D.host.E y ≤ 1
   · obtain ⟨r, d, e⟩ := PP.exists_primeCompl_mul_eq_of_integer y hle
@@ -57,6 +68,19 @@ theorem val_lt_of_pr {y : D.host.E} (hy : valuation K (q.pr (incA D y)) < 1) : P
       (mul_le_of_le_one_right' h2.le).trans_lt hy
     exact (ne_of_lt h5) h4
 
+/- English proof (translation)
+Take `⟨y, N, r, hr, hN, e⟩` from `exists_approx_small (F := D.host.F) (toEAf D z) {PP} (γ := 1) one_ne_zero`. Establish `hN'` using `hN PP (Finset.mem_singleton_self PP)`. Establish `h1 : Valued.v (GlobalTheory.Mem.Col2.adAt D.host.F PP (toEAf D z) - algebraMap D.host.E (PP.adicCompletion D.host.E) y) < 1`. Rewrite using `[← GlobalTheory.Mem.Col2.adAt_inclE D.host.F, ← map_sub, e, add_sub_cancel_left]`. Conclude with `valued_nat_mul_lt hr hN'`.
+
+Establish `h2 : valuation K (q.pr (z - incA D y)) < 1`. Use `GlobalTheory.SeeSaw.LevChi.val_pr_lt q hq ?_` and prove the remaining obligations. Establish `e2 : toEAf D (z - incA D y) = toEAf D z - Formalism.UG.inclE (FiniteAdeleRing (𝓞 D.host.F) D.host.F) y`. Rewrite using `[RingHom.map_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2, map_sub, GlobalTheory.Mem.Col2.adAt_inclE]`. Conclude with `h1`. Establish `h3 : valuation K (q.pr (incA D (y - (c : D.host.E)))) < 1`. Establish `e3 : q.pr (incA D (y - (c : D.host.E))) = (q.pr z - q.pr (incA D (c : D.host.E))) - q.pr (z - incA D y)`. Rewrite using `[map_sub, map_sub, map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `Valuation.map_sub_lt _ hz h2`. Establish `h4` using `val_lt_of_pr q hq h3`. Use `⟨c, rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `e4 : GlobalTheory.Mem.Col2.adAt D.host.F PP (toEAf D z) - algebraMap D.host.E (PP.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E c) = (GlobalTheory.Mem.Col2.adAt D.host.F PP (toEAf D z) - algebraMap D.host.E (PP.adicCompletion D.host.E) y) + algebraMap D.host.E (PP.ad …`. Rewrite using `[map_sub, sub_add_sub_cancel]`. Rewrite using `[e4]`. Use `Valuation.map_add_lt _ h1 ?_` and prove the remaining obligations. Rewrite using `[valued_algebraMap]`.
+
+Conclude with `h4`.
+-/
 theorem hasRes_of_pr {z : AE D} (c : 𝓞 D.host.E) (hz : valuation K (q.pr z - q.pr (incA D (c : D.host.E))) < 1) :
     GlobalTheory.Mem.Col2.HasRes PP (GlobalTheory.Mem.Col2.adAt D.host.F PP (toEAf D z)) (Ideal.Quotient.mk PP.asIdeal c) := by
   obtain ⟨y, N, r, hr, hN, e⟩ := exists_approx_small (F := D.host.F) (toEAf D z) {PP} (γ := 1) one_ne_zero
@@ -96,6 +120,25 @@ namespace GlobalTheory.FamTrace.RedAt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy i v i0 h hv hM`. Establish `hstd` using `hA.tr.std.some u`. Take `⟨w, hw, ρ, hu, hres⟩` from `GlobalTheory.Mem.Col2.TC.GLev0.exists_w (F0 W u).gl hstd.gl.piG i0 v h`. Establish `hid` using `(ha.tie row col).2.idem i`. Establish `hPg : (a.pl i).1 ∈ (B.primes X).vGs` using `(hA.lev.2.1 _).1 (a.pl i).2`.
+
+Establish `hwe : w = (a.pl i).1` using `GlobalTheory.Mem.Col2.TC.GLev0.vGs_inj (X := X) hPg (GlobalTheory.Mem.Col2.TC.GLev0.mem_vGs.2 ⟨i0, hw⟩) (hu.trans (hv.symm.trans hid.2))`. Substitute `hwe` using the available equality. Establish `hn : (I.rec7 l Z).R.N 0 = (I.rec7 l Z).R.k` using `by simp [Ranks.N]`. Establish `hr` using `Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)`. Establish `key : ∀ r c : Fin ((I.rec7 l Z).R.N 0), c ≤ r → Formalism.L2.Forms.redM (I.rec7 l Z).host.F v ((F0 W u).gl.mat i0 v h 1 (Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) v) y.1)) r c = if r = c then 1 else 0 := by`.
+
+Introduce `r c hcr`. Take `⟨r', rfl⟩ : ∃ r', r = finCongr hr r'` from `⟨(finCongr hr).symm r, by simp⟩`. Take `⟨c', rfl⟩ : ∃ c', c = finCongr hr c'` from `⟨(finCongr hr).symm c, by simp⟩`. Establish `hcr' : c' ≤ r'` using `hcr`. Establish `hsm` using `(hM r' c').2 hcr'`.
+
+Establish `hinj : (finCongr hr r' = finCongr hr c') ↔ r' = c'` using `(finCongr hr).injective.eq_iff`. Establish `e1 : (a.G i).q.pr (incA (I.rec7 l Z) (((if r' = c' then 1 else 0 : 𝓞 (I.rec7 l Z).host.E)) : (I.rec7 l Z).host.E)) = (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) r' c'`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hR` using `hasRes_of_pr (a.G i).q hid.1 (z := mt ((I.rec7 l Z).sp.X 0) κ r' c') (if r' = c' then 1 else 0) (by`.
+
+Rewrite using `[e1]`. Conclude with `hsm)`. Establish `hyrc : y.1.1 (finCongr hr r') (finCongr hr c') = toEAf (I.rec7 l Z) (mt ((I.rec7 l Z).sp.X 0) κ r' c')`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+
+Rewrite `hR` using `[← hyrc]`. Take `⟨hh, e⟩` from `hres _ _ hR`. Rewrite using `[GlobalTheory.Mem.Col2.TC.GLev0.mat_one]`. Unfold `Formalism.L2.Forms.redM`. Use `(dif_pos hh).trans (e.trans ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hrc : r' = c'`. Substitute `hrc` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, map_one]`. Conclude with `map_one ρ`. Rewrite using `[if_neg hrc, if_neg (fun e => hrc (hinj.1 e)), map_zero]`.
+
+Conclude with `map_zero ρ`. Establish `hlt : ∀ x : Fin ((I.rec7 l Z).R.N 0), (x : ℕ) < (I.rec7 l Z).R.k` using `fun x => hn ▸ x.2`. Establish `hb : ∀ x : Fin ((I.rec7 l Z).R.N 0), Formalism.L2.Forms.blkOf (I.rec7 l Z).R.k (I.rec7 l Z).R.t x = x` using `fun x => if_pos (hlt x)`. Use `⟨fun x z hxz => ?_, fun x _ => ?_, fun x z hz => absurd hz (ne_of_lt z.2), fun h' => absurd h' (by simp)⟩` and prove the remaining obligations. Rewrite `hxz` using `[hb, hb]`.
+
+Rewrite using `[key x z (le_of_lt (show z < x from hxz)), if_neg (fun e => by subst e; exact lt_irrefl _ hxz)]`. Rewrite using `[key x x le_rfl, if_pos rfl]`.
+-/
 theorem inJ_red : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → ∀ (i : Fin a.n) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (i0 : Fin 2) (h : ((I.rec7 l Z).host.g i0 : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal), (a.G i).q.v = v → (∀ r c : Fin ((I.rec7 l Z).sp.X 0).rank, ((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c ∈ 𝒪[(a.G i).k] ∧ (c ≤ r → valuation (a.G i).k (((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c - (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) r c) < 1)) → Formalism.L2.Forms.InJ (I.rec7 l Z).R.k (I.rec7 l Z).R.t ((I.rec7 l Z).R.N 0) false (Formalism.L2.Forms.redM (I.rec7 l Z).host.F v ((F0 W u).gl.mat i0 v h 1 (Formalism.UG.bc (Formalism.UG.prV (E := (I.rec7 l Z).host.E) v) y.1))) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy i v i0 h hv hM
   have hstd := hA.tr.std.some u

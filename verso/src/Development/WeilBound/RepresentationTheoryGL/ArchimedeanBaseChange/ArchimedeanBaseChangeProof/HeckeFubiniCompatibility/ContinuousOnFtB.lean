@@ -35,6 +35,11 @@ def FtB (v : InfinitePlace E) (μa : Measure (G a)) (μb : Measure (G b)) (ν : 
     (m₁ : GA E a) (y : GA E b) : Mat b → (Mb v).V := fun x =>
   if hx : x ∈ GLs b then StB v μa μb ν ka kb ψ f i q ((m₁, y) * ιB v (GeneralLinearGroup.mkOfDetNeZero x hx)) else 0
 
+/- English proof (translation)
+Rewrite using `[σB, ιB, ← map_mul, ← map_mul]`. Use `congr 1`. Use `Prod.ext (by simp) (Prod.ext (funext fun w => ?_) (by simp))` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+-/
 theorem σB_ιB (v : InfinitePlace E) (t : G b) (r : RB E a b v) : σB v r * ιB v t = ιB v t * σB v r := by
   rw [σB, ιB, ← map_mul, ← map_mul]
   congr 1
@@ -43,6 +48,9 @@ theorem σB_ιB (v : InfinitePlace E) (t : G b) (r : RB E a b v) : σB v r * ιB
   · subst h; simp
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
+/- English proof (translation)
+Simplify using `only [cB]`. Use `congr 2`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne w.2]`.
+-/
 theorem cB_update_right (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (i j : Io Ma Mb κ) (q : Ix (Mb v)) (r : RB E a b v) :
     cB v ka kb ψ i ((j.1.1, Function.update j.1.2 v q), j.2) r = cB v ka kb ψ i j r := by
@@ -51,6 +59,15 @@ theorem cB_update_right (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ 
   refine Finset.prod_congr rfl fun w _ => ?_
   rw [Function.update_of_ne w.2]
 
+/- English proof (translation)
+Unfold `StB`. Use `Finset.sum_nbij' (fun j => ((j.1.1, Function.update j.1.2 v q'), j.2)) (fun j => ((j.1.1, Function.update j.1.2 v q), j.2)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _`. Simplify using the standard rewrite rules. Introduce `j _`.
+
+Simplify using the standard rewrite rules. Introduce `j hj`. Establish `h` using `(Finset.mem_filter.1 hj).2`. Simplify using `only [Function.update_idem]`. Rewrite using `[← h, Function.update_eq_self]`.
+
+Introduce `j hj`. Establish `h` using `(Finset.mem_filter.1 hj).2`. Simplify using `only [Function.update_idem]`. Rewrite using `[← h, Function.update_eq_self]`. Introduce `j _`.
+
+Simplify using `only [cB_update_right, RvB_update]`.
+-/
 theorem StB_indep (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (i : Io Ma Mb κ) (q q' : Ix (Mb v)) (p : H E a b) :
     StB v μa μb ν ka kb ψ f i q p = StB v μa μb ν ka kb ψ f i q' p := by
@@ -71,6 +88,15 @@ theorem StB_indep (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matr
     simp only [cB_update_right, RvB_update]
 
 set_option synthInstance.maxHeartbeats 200000 in
+/- English proof (translation)
+Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : IsLocallyFiniteMeasure (restB μa μb ν v) := by unfold restB; infer_instance`. Use `haveI : SecondCountableTopology (RB E a b v) := inferInstance`.
+
+Use `haveI : LocallyCompactSpace (RB E a b v) := inferInstance`. Use `haveI : FirstCountableTopology (G b × RB E a b v) := inferInstance`. Use `haveI : LocallyCompactSpace (G b × RB E a b v) := inferInstance`. Unfold `StB`. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+
+Take `⟨hc, hcs⟩` from `cB_props v hka hkb hψ i j`. Establish `e : (fun z : G b => ∫ r, cB v ka kb ψ i j r • RvB v μa μb ν ka kb ψ f j (p * ιB v z * σB v r) ∂restB μa μb ν v) = fun z => ∫ r in tsupport (cB v ka kb ψ i j), cB v ka kb ψ i j r • RvB v μa μb ν ka kb ψ f j (p * ιB v z * σB v r) ∂restB μa μb ν v`. Use function extensionality and compare the values at `fun z => (setIntegral_eq_integral_of_forall_compl_eq_zero fun r hr => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport hr, zero_smul]).symm`. Rewrite using `[e]`.
+
+Use `continuous_parametric_integral_of_continuous (f := fun z r => cB v ka kb ψ i j r • RvB v μa μb ν ka kb ψ f j (p * ιB v z * σB v r)) ?_ hcs` and prove the remaining obligations. Conclude with `(hc.comp continuous_snd).smul (continuous_RvB_comp v hf hka hkb hψ j (φ := fun q : G b × RB E a b v => p * ιB v q.1 * σB v q.2) ((continuous_const.mul ((continuous_ιB v).comp continuous_fst)).mul ((continuous_σB v).comp continuous_snd)))`.
+-/
 theorem continuous_StB (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ : Matrix κ κ (Hf E a b → ℂ)}
     {f : Io Ma Mb κ → H E a b → ℂ} (hf : ∀ i, Continuous (f i))
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))
@@ -103,6 +129,35 @@ theorem continuous_StB (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {ψ :
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μa := inferInstance`. Use `haveI : SigmaFinite μb := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite (restB μa μb ν v) := by unfold restB; infer_instance`. Use `haveI : IsFiniteMeasureOnCompacts (restB μa μb ν v) := by unfold restB; infer_instance`.
+
+Use `haveI : IsFiniteMeasureOnCompacts ((restB μa μb ν v).prod μb) := inferInstance`. Use `haveI : SecondCountableTopology (RB E a b v) := inferInstance`. Use `haveI : LocallyCompactSpace (RB E a b v) := inferInstance`. Use `haveI : FirstCountableTopology (RB E a b v × G b) := inferInstance`. Use `haveI : LocallyCompactSpace (RB E a b v × G b) := inferInstance`.
+
+Use `set K : G b → ((Mb v).V →L[ℂ] (Mb v).V) := fun t => kb v t.val with hK`. Establish `hKc : Continuous K` using `(hkb v).1`. Establish `hKs : HasCompactSupport K` using `(hkb v).2`. Establish `hfj : ∀ j P, f j P = c⁻¹ * ∫ t, ⟪ebB Mb v (j.1.2 v), K t (RvB v μa μb ν ka kb ψ f j (P * ιB v t))⟫_ℂ ∂μb`. Introduce `j P`.
+
+Establish `h` using `congrFun (congrFun hrep j) P`. Rewrite `h` using `[conv_sliceB hF D hC v ka kb ψ f hT hf j P]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[h, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Take `⟨g, hg⟩ : ∃ g : Io Ma Mb κ → RB E a b v × G b → ℂ, g = fun j q => cB v ka kb ψ i j q.1 * ⟪ebB Mb v (j.1.2 v), K q.2 (RvB v μa μb ν ka kb ψ f j (p * ιB v q.2 * σB v q.1))⟫_ℂ` from `⟨_, rfl⟩`.
+
+Establish `hRc : ∀ j, Continuous fun q : RB E a b v × G b => RvB v μa μb ν ka kb ψ f j (p * ιB v q.2 * σB v q.1)` using `fun j => continuous_RvB_comp v hf hka hkb hψ j ((continuous_const.mul ((continuous_ιB v).comp continuous_snd)).mul ((continuous_σB v).comp continuous_fst))`. Establish `hgi : ∀ j, Integrable (g j) ((restB μa μb ν v).prod μb)`. Introduce `j`. Take `⟨hc1, hcs1⟩` from `cB_props v hka hkb hψ i j`. Rewrite using `[hg]`.
+
+Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(hc1.comp continuous_fst).mul (continuous_const.inner ((hKc.comp continuous_snd).clm_apply (hRc j)))`. Use `HasCompactSupport.intro (IsCompact.prod hcs1 hKs) fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_prod, not_and_or] at hq`. Break down `hq with hq | hq` into its components or cases.
+
+Simplify using `only [image_eq_zero_of_notMem_tsupport hq, zero_mul]`. Simplify using `only [image_eq_zero_of_notMem_tsupport hq, ContinuousLinearMap.zero_apply, inner_zero_right, mul_zero]`. Establish `hI : ∀ j, ∫ r, cB v ka kb ψ i j r * f j (p * σB v r) ∂restB μa μb ν v = c⁻¹ * ∫ t, ∫ r, g j (r, t) ∂restB μa μb ν v ∂μb`. Introduce `j`. Establish `e1 : ∀ r, cB v ka kb ψ i j r * f j (p * σB v r) = c⁻¹ * ∫ t, g j (r, t) ∂μb`.
+
+Introduce `r`. Rewrite using `[hfj j, mul_left_comm, ← integral_const_mul]`. Use `congrArg (c⁻¹ * ·) (integral_congr_ae (ae_of_all _ fun t => ?_))` and prove the remaining obligations. Rewrite using `[hg]`. Use `beta_reduce`.
+
+Rewrite using `[show p * σB v r * ιB v t = p * ιB v t * σB v r by rw [mul_assoc, σB_ιB, ← mul_assoc]]`. Rewrite using `[integral_congr_ae (ae_of_all _ e1), integral_const_mul, integral_integral_swap (f := fun r t => g j (r, t)) (hgi j)]`. Establish `hWi : Integrable (fun t => K t (StB v μa μb ν ka kb ψ f i q0 (p * ιB v t))) μb`. Use `Continuous.integrable_of_hasCompactSupport (hKc.clm_apply (continuous_StB v hf hka hkb hψ i q0 p)) ?_` and prove the remaining obligations. Conclude with `HasCompactSupport.intro hKs fun t ht => by`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport ht, ContinuousLinearMap.zero_apply]`. Establish `hsum : ∀ q, ∑ j ∈ Finset.univ.filter (fun j : Io Ma Mb κ => j.1.2 v = q), ∫ r, cB v ka kb ψ i j r * f j (p * σB v r) ∂restB μa μb ν v = c⁻¹ * ⟪ebB Mb v q, ∫ t, K t (StB v μa μb ν ka kb ψ f i q0 (p * ιB v t)) ∂μb⟫_ℂ`. Introduce `q`. Simplify using `only [hI]`. Rewrite using `[← Finset.mul_sum, ← integral_finset_sum _ fun j _ => (hgi j).integral_prod_right]`.
+
+Use `congr 1`. Rewrite using `[← integral_inner hWi]`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[StB_indep v ka kb ψ f i q0 q]`.
+
+Simplify using `only [StB, map_sum, inner_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjq : j.1.2 v = q` using `(Finset.mem_filter.1 hj).2`. Take `⟨hc1, hcs1⟩` from `cB_props v hka hkb hψ i j`. Establish `hR1 : Continuous fun r : RB E a b v => RvB v μa μb ν ka kb ψ f j (p * ιB v t * σB v r)` using `continuous_RvB_comp v hf hka hkb hψ j (continuous_const.mul (continuous_σB v))`.
+
+Establish `hi1 : Integrable (fun r => cB v ka kb ψ i j r • RvB v μa μb ν ka kb ψ f j (p * ιB v t * σB v r)) (restB μa μb ν v)` using `(hc1.smul hR1).integrable_of_hasCompactSupport (HasCompactSupport.intro hcs1 fun r hr => by show cB v ka kb ψ i j r • RvB v μa μb ν ka kb ψ f j (p * ιB v t * σB v r) = 0`. Rewrite using `[image_eq_zero_of_notMem_tsupport hr, zero_smul])`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm (K t) hi1, ← integral_inner ((K t).integrable_comp hi1)]`. Use `integral_congr_ae (ae_of_all _ fun r => ?_)` and prove the remaining obligations. Rewrite using `[hg]`.
+
+Use `beta_reduce`. Simplify using `only [map_smul, inner_smul_right, hjq]`. Use `conv_lhs => rw [RvB]`. Simplify using `only [hsum, mul_smul]`. Rewrite using `[← Finset.smul_sum, OrthonormalBasis.sum_repr']`.
+-/
 theorem RvB_eq (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
     (hf : ∀ i, Continuous (f i))
@@ -195,6 +250,11 @@ theorem RvB_eq (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : 
   simp only [hsum, mul_smul]
   rw [← Finset.smul_sum, OrthonormalBasis.sum_repr']
 
+/- English proof (translation)
+Rewrite using `[FB, dif_pos hx, RvB_eq hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i q0]`. Use `congr 1`. Use `show _ = ∫ t : G b, kb v t.val (FtB v μa μb ν ka kb ψ f i q0 m₁ y (x * t.val)) ∂μb`. Use `integral_congr_ae (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Establish `hxt : x * t.val ∈ GLs b` using `GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hx (val_mem_GLs t)`.
+
+Establish `hm : GeneralLinearGroup.mkOfDetNeZero (x * t.val) hxt = GeneralLinearGroup.mkOfDetNeZero x hx * t` using `Units.ext rfl`. Simplify using `only [FtB, dif_pos hxt, hm, ιB_mul, mul_assoc]`.
+-/
 theorem FB_eq_act (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
     (hf : ∀ i, Continuous (f i))
@@ -212,6 +272,15 @@ theorem FB_eq_act (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v
     Units.ext rfl
   simp only [FtB, dif_pos hxt, hm, ιB_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hinv : ContinuousOn (fun x : Mat b => x⁻¹) (GLs b)`. Establish `e : (fun x : Mat b => x⁻¹) = fun x => (x.det)⁻¹ • x.adjugate`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`.
+
+Rewrite using `[e]`. Conclude with `((continuous_id.matrix_det).continuousOn.inv₀ fun x hx => hx).smul (continuous_id.matrix_adjugate).continuousOn`. Establish `hm : Continuous fun x : GLs b => GeneralLinearGroup.mkOfDetNeZero x.1 x.2`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun x : GLs b => ((GeneralLinearGroup.mkOfDetNeZero x.1 x.2)⁻¹ : G b).val) = fun x => x.1⁻¹`.
+
+Use function extensionality and compare the values at `fun x => Matrix.coe_units_inv _`. Rewrite using `[e]`. Conclude with `hinv.comp_continuous continuous_subtype_val fun x => x.2`. Use `show Continuous (fun x : GLs b => FtB v μa μb ν ka kb ψ f i q m₁ y x.1)`. Establish `e : (fun x : GLs b => FtB v μa μb ν ka kb ψ f i q m₁ y x.1) = fun x : GLs b => StB v μa μb ν ka kb ψ f i q ((m₁, y) * ιB v (GeneralLinearGroup.mkOfDetNeZero x.1 x.2))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [FtB, dif_pos x.2]`. Rewrite using `[e]`. Conclude with `(continuous_StB v hf hka hkb hψ i q (m₁, y)).comp hm`.
+-/
 theorem continuousOn_FtB (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ))
     (f : Io Ma Mb κ → H E a b → ℂ) (hf : ∀ i, Continuous (f i))
     (hka : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val))
@@ -238,6 +307,11 @@ theorem continuousOn_FtB (v : InfinitePlace E) (ka : Kers Ma) (kb : Kers Mb) (ψ
   rw [e]
   exact (continuous_StB v hf hka hkb hψ i q (m₁, y)).comp hm
 
+/- English proof (translation)
+Establish `hA` using `GelP.act_mem_CE_of_mult μb hkv (continuousOn_FtB (μa := μa) (μb := μb) (ν := ν) v ka kb ψ f hf hka hkb hψ i (i.1.2 v) m₁ y)`. Use `letI : NormedAddCommGroup (Mat b) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (Mat b) := Matrix.normedSpace`. Use `⟨(hA.1.const_smul c⁻¹).congr fun x hx => FB_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.2 v) m₁ y hx, ?_⟩` and prove the remaining obligations. Introduce `g hg k`.
+
+Establish `hgk : g * k.1 ∈ GLs b` using `GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs hg (GlobalTheory.CompanionTheory.WaveAll.unitary_mem_GLs k)`. Rewrite using `[FB_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.2 v) m₁ y hgk, FB_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.2 v) m₁ y hg, hA.2 g hg k, map_smul]`.
+-/
 theorem FB_mem_CE (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v : InfinitePlace E) (ka : Kers Ma)
     (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (f : Io Ma Mb κ → H E a b → ℂ) (hT : IsTestM (tens ka kb ψ))
     (hf : ∀ i, Continuous (f i))
@@ -257,6 +331,21 @@ theorem FB_mem_CE (hF : CompatFub) (D : Dom E a b) (hC : Compat D μa μb ν) (v
   rw [FB_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.2 v) m₁ y hgk,
     FB_eq_act hF D hC v ka kb ψ f hT hf hka hkb hψ hc hrep i (i.1.2 v) m₁ y hg, hA.2 g hg k, map_smul]
 
+/- English proof (translation)
+Use `set kb₂ := Function.update kb v k' with hkb₂`. Establish `hkb₂m : IsMults μb kb₂ (Function.update vb v (fun χ => zVal [(s, m)] χ * coshT g (cas χ))) T`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Simplify using `only [hkb₂, Function.update_self]`. Conclude with `GelP.isMult_of_isKer μb hg hk'`. Simplify using `only [hkb₂, Function.update_of_ne h]`. Conclude with `hkb w`. Establish `hkac : ∀ w, Continuous (fun t : G a => ka w t.val) ∧ HasCompactSupport (fun t : G a => ka w t.val)` using `fun w => ⟨mult_continuous (hka w), mult_hasCompactSupport (hka w)⟩`.
+
+Establish `hkc : ∀ {k : Kers Mb} {vk : InfinitePlace E → Inf b → ℂ}, IsMults μb k vk T → ∀ w, Continuous (fun t : G b => k w t.val) ∧ HasCompactSupport (fun t : G b => k w t.val)` using `fun h w => ⟨mult_continuous (h w), mult_hasCompactSupport (h w)⟩`. Establish `hT` using `(hTT E a b μa μb Ma Mb κ ka kb va vb T ψ hka hkb hψ).1`. Establish `hT₂` using `(hTT E a b μa μb Ma Mb κ ka kb₂ va _ T ψ hka hkb₂m hψ).1`. Establish `hFB : FB v μa μb ν ka kb₂ ψ f i m₁ y = FB v μa μb ν ka kb ψ f i m₁ y`. Use function extensionality and compare the values at `z`.
+
+Unfold `FB`. Use `split_ifs with hz`. Rewrite using `[RvB_congr v ka (fun w hw => Function.update_of_ne hw _ _)]`. Both sides reduce to the same expression. Establish `hCE` using `FB_mem_CE hF D hC v ka kb ψ f hT hf hkac (hkc hkb) hψ hc hrep (hkb v) i m₁ y`.
+
+Establish `hFc` using `continuousOn_FB v ka kb ψ f hf hkac (hkc hkb) hψ i m₁ y (μa := μa) (μb := μb) (ν := ν)`. Use `GelP.gel_eigen_of_act μb hW hk0 hk' (hkb v) hCE hFc (ebB Mb v (i.1.2 v)) hc ?_ ?_ hx` and prove the remaining obligations. Introduce `x' hx'`. Establish `h` using `along_convB hF D hC v ka kb ψ f hT hf hkac (hkc hkb) hψ i m₁ y hx'`. Rewrite `h` using `[hrep, along_eqB v m₁ y _ hx']`.
+
+Rewrite using `[along_eqB v m₁ y (f i) hx', ← h]`. Simplify using `[Pi.smul_apply]`. Introduce `x' hx'`. Establish `h` using `along_convB hF D hC v ka kb₂ ψ f hT₂ hf hkac (hkc hkb₂m) hψ i m₁ y hx'`. Rewrite `h` using `[hrep', along_eqB v m₁ y _ hx', hFB]`.
+
+Simplify using `only [hkb₂, Function.update_self] at h`. Rewrite using `[along_eqB v m₁ y (f i) hx', ← h]`. Simplify using `[Pi.smul_apply]`.
+-/
 theorem gelB (hW : WaveEx) (hF : CompatFub) (hTT : TensTest) (D : Dom E a b) (hC : Compat D μa μb ν)
     (v : InfinitePlace E) {ka : Kers Ma} {kb : Kers Mb} {va : InfinitePlace E → Inf a → ℂ}
     {vb : InfinitePlace E → Inf b → ℂ} {T : ℝ} {ψ : Matrix κ κ (Hf E a b → ℂ)} {f : Io Ma Mb κ → H E a b → ℂ}

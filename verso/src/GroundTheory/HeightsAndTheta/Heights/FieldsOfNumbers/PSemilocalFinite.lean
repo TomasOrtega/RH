@@ -14,6 +14,13 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Set `_ : Algebra A L` to `((algebraMap A' L).comp φ).toAlgebra`. Establish `hspan : ∀ x ∈ Submodule.span A' (s : Set L), x ∈ Submodule.span A (s : Set L)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span hy`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add _ _ _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a' y _ hy`. Take `⟨a, rfl⟩` from `hφ a'`. Establish `e : φ a • y = a • y` using `by rw [Algebra.smul_def, Algebra.smul_def]; rfl`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hy`. Set `f : B →ₗ[A] L` to `{ toFun := ψ map_add' := ψ.map_add map_smul' := fun a b => by rw [Algebra.smul_def, hcomm]; rfl }`. Establish `: IsNoetherian A (Submodule.span A (s : Set L))` using `isNoetherian_span_of_finite A s.finite_toSet`. Conclude with `Module.Finite.of_injective (f.codRestrict _ fun b => hspan _ (h b)) fun b c hbc => hψ (congrArg Subtype.val hbc)`.
+-/
 theorem module_finite_of_forall_mem_span {A A' B L : Type*} [CommRing A] [IsNoetherianRing A]
     [CommRing A'] [CommRing B] [Algebra A B] [CommRing L] [Algebra A' L] (φ : A →+* A')
     (hφ : Function.Surjective φ) (ψ : B →+* L) (hψ : Function.Injective ψ)
@@ -40,6 +47,13 @@ theorem module_finite_of_forall_mem_span {A A' B L : Type*} [CommRing A] [IsNoet
   exact Module.Finite.of_injective (f.codRestrict _ fun b => hspan _ (h b))
     fun b c hbc => hψ (congrArg Subtype.val hbc)
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hd' hd W hW hdW hle`. Use `hP'.isPrime` as an intermediate fact. Use `set A := degZeroLoc (contractPrime j P') {W}`. Use `set B := degZeroLoc P' (fibrePrimes j P' W)`. Use `set A' := A.map (contractFracMap j P')`.
+
+Establish `: IsNoetherianRing A` using `h3 F K (fun k => ι' (j k)) _ (isMultiProjPrime_contractPrime _ _ hP') W hW hle`. Establish `hint : Algebra.IsIntegral A B` using `h1 F K K' j ι' P' hP' n hd' hd W hW hdW hle`. Take `⟨s, -, hs⟩` from `h2 F K K' j ι' P' hP' (hd.trans hd'.symm) W hW hle`. Set `φA : A →+* A'` to `(((contractFracMap j P').comp A.val).codRestrict A' (fun a => Subalgebra.mem_map.mpr ⟨a, a.2, rfl⟩)).toRingHom`. Establish `hφA : Function.Surjective φA` using `fun a' => by`.
+
+Take `⟨a, ha, hae⟩` from `Subalgebra.mem_map.mp a'.2`. Conclude with `⟨⟨a, ha⟩, Subtype.ext hae⟩`. Use `module_finite_of_forall_mem_span φA hφA B.val.toRingHom Subtype.val_injective (fun _ _ => rfl) s fun b => ?_` and prove the remaining obligations. Conclude with `hs _ (mem_homFracDegZero_of_mem_degZeroLoc P' _ _ b.2) (IsIntegral.map_of_comp_eq φA B.val.toRingHom (RingHom.ext fun _ => rfl) (hint.isIntegral b))`.
+-/
 theorem SemilocalFinite.proof (h1 : SemilocalIntegral.Statement.{u})
     (h2 : LocalIntegralClosureFinite.Statement.{u}) (h3 : DegZeroLocNoetherian.Statement.{u}) :
     SemilocalFinite.Statement.{u} := by

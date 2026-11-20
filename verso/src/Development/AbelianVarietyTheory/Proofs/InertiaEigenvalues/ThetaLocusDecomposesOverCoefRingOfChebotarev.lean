@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.ZDecompAt
 
+/- English proof (translation)
+Introduce `hC D hG i π hπ r hr`. Take `⟨ρ, hρ⟩` from `GlobalTheory.BlockComplement.complement_at hC D hG i π hπ r hr`. Take `⟨e, he⟩` from `hρ.rho`. Conclude with `⟨ρ, e, fun g u => he g u⟩`.
+-/
 theorem zDecomp_of_cheb : GlobalTheory.TwSys.Cheb → ∀ (D : D7), GlobalTheory.BlockComplement.GaloisRepsCusp D →
     ∀ i : D.nd.Loc, ZDecomp D.nd i := by
   intro hC D hG i π hπ r hr

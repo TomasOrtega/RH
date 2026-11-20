@@ -17,6 +17,9 @@ open BwdCut BwdBetaCut BwdNP BetaI
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Rewrite using `[SpanOmPf.Xplus_eq]`. Use `show ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) • frame G a ∈ _`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem frameAct_mem_Xplus {T' : D.host.E} (G : LFlag (VS D) D.R.rS T')
     (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) (b : Fin (D.R.rS + 1)) :
     frameAct (frame G) ξ b ∈ G.fl.Xplus := by
@@ -24,6 +27,9 @@ theorem frameAct_mem_Xplus {T' : D.host.E} (G : LFlag (VS D) D.R.rS T')
   show ∑ a, ((ξ a b : 𝓞 D.host.E) : D.host.E) • frame G a ∈ _
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw v hv, map_zero, mul_zero]`.
+-/
 theorem form_zero (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) {w : (VS D).V}
     (hw : w ∈ orth (VS D) (F0.Xplus ⊔ (repF γ).fl.Xplus)) {v : (VS D).V}
     (hv : v ∈ F0.Xplus ⊔ (repF γ).fl.Xplus) (c : (D.s.atP p).Ep) :
@@ -31,6 +37,19 @@ theorem form_zero (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) {w : (VS D).
   rw [LocFacts.localForm_smul_right, ← h_eq, localForm_baseChange, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw v hv, map_zero,
     mul_zero]
 
+/- English proof (translation)
+Use `show ∀ x ∈ (locH Zd p).Xp (tLoc Zd p γ).f ⊔ (locH Zd p).Xp (tLoc Zd p γ).f', (locH Zd p).h (baseChange₂ D p w) x = 0`. Introduce `x hx`. Rewrite using `[h_eq]`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Use `clear hx`.
+
+Rewrite using `[LocFacts.localForm_add_right]`. Establish `hA : LocFacts₂ Zd.M p (baseChange₂ D p w) a = 0`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+
+Rewrite using `[tf]`. Use `form_zero Zd p γ hw (Submodule.mem_sup_left ?_) _` and prove the remaining obligations. Rewrite using `[SpanOmPf.Xplus_eq]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => exact LocFacts.localForm_zero_right Zd p _`.
+
+Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right, ha, hb, add_zero]`. Consider the case `smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]`. Use `clear ha`. Establish `hB : LocFacts₂ Zd.M p (baseChange₂ D p w) b = 0`. Proceed by induction on `hb using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[tf']`. Conclude with `form_zero Zd p γ hw (Submodule.mem_sup_right (frameAct_mem_Xplus _ _ i)) _`. Consider the case `zero => exact LocFacts.localForm_zero_right Zd p _`.
+
+Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right, ha, hb, add_zero]`. Consider the case `smul c w _ hw => rw [LocFacts.localForm_smul_right, hw, mul_zero]`. Rewrite using `[hA, hB, add_zero]`.
+-/
 theorem baseChange_mem_W0 (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) {w : (VS D).V}
     (hw : w ∈ orth (VS D) (F0.Xplus ⊔ (repF γ).fl.Xplus)) :
     baseChange₂ D p w ∈ (locH Zd p).W0 (tLoc Zd p γ).f (tLoc Zd p γ).f' := by

@@ -17,9 +17,21 @@ def pairing (W : Weight L) (n : ℕ) (s t : Fin A.n → X → ℂ) (x : X) : ℂ
   conj (s (chartIdx A x) x) * t (chartIdx A x) x *
     ((Real.exp (-(n : ℝ) * W.φ (chartIdx A x) x) : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (A.cover x)`.
+-/
 theorem mem_chartIdx (x : X) : x ∈ (A.chart (chartIdx A x)).source :=
   Classical.choose_spec (A.cover x)
 
+/- English proof (translation)
+Establish `hi` using `mem_chartIdx (A := A) x`. Use `set i := chartIdx A x`. Establish `hix : x ∈ (A.chart i).source ∩ (A.chart j).source` using `⟨hi, hx⟩`. Establish `hg` using `L.ne_zero i j x hix`. Establish `ha : (0 : ℝ) < ‖L.g i j x‖ ^ 2` using `pow_pos (norm_pos_iff.2 hg) 2`.
+
+Establish `hexp : Real.exp (-(n : ℝ) * (W.φ j x + Real.log (‖L.g i j x‖ ^ 2))) = Real.exp (-(n : ℝ) * W.φ j x) / (‖L.g i j x‖ ^ 2) ^ n`. Rewrite using `[show -(n : ℝ) * (W.φ j x + Real.log (‖L.g i j x‖ ^ 2)) = -(n : ℝ) * W.φ j x - n * Real.log (‖L.g i j x‖ ^ 2) by ring, Real.exp_sub, Real.exp_nat_mul, Real.exp_log ha]`. Establish `hc : conj (L.g i j x ^ n) * L.g i j x ^ n = (((‖L.g i j x‖ ^ 2) ^ n : ℝ) : ℂ)`. Rewrite using `[map_pow, ← mul_pow, Complex.conj_mul']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : (((‖L.g i j x‖ ^ 2) ^ n : ℝ) : ℂ) ≠ 0`. Conclude with `(pow_pos ha n).ne'` after adjusting the coercions. Rewrite using `[pairing, hs.2.1 i j x hix, ht.2.1 i j x hix, W.compat i j x hix, hexp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul, Complex.ofReal_div]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = conj (s j x) * t j x * ((Real.exp (-(n : ℝ) * W.φ j x) : ℝ) : ℂ) := by`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pairing_eq (W : Weight L) (n : ℕ) {s t : Fin A.n → X → ℂ} (hs : s ∈ L.sections n)
     (ht : t ∈ L.sections n) (j : Fin A.n) {x : X} (hx : x ∈ (A.chart j).source) :
     pairing W n s t x = conj (s j x) * t j x * ((Real.exp (-(n : ℝ) * W.φ j x) : ℝ) : ℂ) := by
@@ -51,12 +63,20 @@ theorem pairing_eq (W : Weight L) (n : ℕ) {s t : Fin A.n → X → ℂ} (hs : 
         rw [hc]
         field_simp
 
+/- English proof (translation)
+Rewrite using `[pairing, ptNormSq, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_self (W : Weight L) (n : ℕ) (s : Fin A.n → X → ℂ) (x : X) :
     pairing W n s s x = ((ptNormSq W n s x : ℝ) : ℂ) := by
   rw [pairing, ptNormSq, Complex.conj_mul']
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hy : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source` using `⟨(A.chart j).map_source hx, by simpa [(A.chart j).left_inv hx] using hx⟩`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart j).open_source`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) x` using `(hf.continuousAt (hopen.mem_nhds hy)).comp ((A.chart j).continuousAt hx)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy`.
+
+Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem continuousAt_of_chart {β : Type*} [TopologicalSpace β] {f : X → β} (j : Fin A.n)
     (hf : ContinuousOn (f ∘ (A.chart j).symm)
       ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source))
@@ -71,6 +91,13 @@ theorem continuousAt_of_chart {β : Type*} [TopologicalSpace β] {f : X → β} 
   filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x ↦ ?_` and prove the remaining obligations. Establish `hx` using `mem_chartIdx (A := A) x`. Use `set j := chartIdx A x`. Establish `h1 : ContinuousAt (s j) x` using `continuousAt_of_chart j (hs.1 j j).continuousOn hx`. Establish `h2 : ContinuousAt (t j) x` using `continuousAt_of_chart j (ht.1 j j).continuousOn hx`.
+
+Establish `h3 : ContinuousAt (W.φ j) x` using `continuousAt_of_chart j (W.smooth j j).continuousOn hx`. Establish `h : ContinuousAt (fun y ↦ conj (s j y) * t j y * ((Real.exp (-(n : ℝ) * W.φ j y) : ℝ) : ℂ)) x`. Establish `h4 : ContinuousAt (fun y ↦ ((Real.exp (-(n : ℝ) * W.φ j y) : ℝ) : ℂ)) x` using `Complex.continuous_ofReal.continuousAt.comp (Real.continuous_exp.continuousAt.comp (continuousAt_const.mul h3))`. Conclude with `((Complex.continuous_conj.continuousAt.comp h1).mul h2).mul h4`. Use `h.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy`. Conclude with `(pairing_eq W n hs ht j hy).symm`.
+-/
 theorem pairing_continuous (W : Weight L) (n : ℕ) {s t : Fin A.n → X → ℂ}
     (hs : s ∈ L.sections n) (ht : t ∈ L.sections n) : Continuous (pairing W n s t) := by
   refine continuous_iff_continuousAt.2 fun x ↦ ?_
@@ -89,12 +116,18 @@ theorem pairing_continuous (W : Weight L) (n : ℕ) {s t : Fin A.n → X → ℂ
   filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy
   exact (pairing_eq W n hs ht j hy).symm
 
+/- English proof (translation)
+Establish `h` using `Complex.continuous_re.comp (pairing_continuous W n hs hs)`. Use `h.congr fun x ↦ ?_` and prove the remaining obligations. Simplify using `[pairing_self]`.
+-/
 theorem ptNormSq_continuous (W : Weight L) (n : ℕ) {s : Fin A.n → X → ℂ}
     (hs : s ∈ L.sections n) : Continuous (ptNormSq W n s) := by
   have h := Complex.continuous_re.comp (pairing_continuous W n hs hs)
   refine h.congr fun x ↦ ?_
   simp [pairing_self]
 
+/- English proof (translation)
+Unfold `ptNormSq`. Check the signs of the components of the expression.
+-/
 theorem ptNormSq_nonneg (W : Weight L) (n : ℕ) (s : Fin A.n → X → ℂ) (x : X) :
     0 ≤ ptNormSq W n s x := by
   unfold ptNormSq
@@ -102,6 +135,19 @@ theorem ptNormSq_nonneg (W : Weight L) (n : ℕ) (s : Fin A.n → X → ℂ) (x 
 
 variable [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Use `⟨fun U hU hne h0 ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, hxU⟩` from `hne`. Establish `hx` using `mem_chartIdx (A := A) x`. Use `set j := chartIdx A x`. Use `set T := (A.chart j).target ∩ (A.chart j).symm ⁻¹' U`.
+
+Establish `hTo : IsOpen T` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hTx : A.chart j x ∈ T` using `⟨(A.chart j).map_source hx, by simpa [(A.chart j).left_inv hx] using hxU⟩`. Establish `hlin` using `dV.chart_lintegral j (U.indicator 1) (measurable_one.indicator hU.measurableSet)`. Establish `hleft : ∫⁻ x in (A.chart j).source, U.indicator 1 x ∂dV.μ = 0`. Rewrite using `[lintegral_indicator_one hU.measurableSet, Measure.restrict_apply hU.measurableSet]`.
+
+Conclude with `measure_mono_null inter_subset_left h0`. Establish `hT : ∫⁻ y in T, ENNReal.ofReal (dV.dens j y) = 0`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_mem (show (A.chart j).symm y ∈ U from hy.2), Pi.one_apply, one_mul]`.
+
+Use `_ ≤ ∫⁻ y in (A.chart j).target, U.indicator 1 ((A.chart j).symm y) * ENNReal.ofReal (dV.dens j y) := lintegral_mono_set inter_subset_left`. Use `_ = 0 := by rw [← hlin, hleft]`. Establish `hmeas : AEMeasurable (fun y ↦ ENNReal.ofReal (dV.dens j y)) (volume.restrict T)` using `(((dV.smooth j).continuousOn.mono inter_subset_left).aemeasurable hTo.measurableSet).ennreal_ofReal`. Establish `hae` using `(lintegral_eq_zero_iff' hmeas).1 hT`. Rewrite `hae` using `[Filter.EventuallyEq, ae_restrict_iff' hTo.measurableSet]`.
+
+Establish `hzero : volume T = 0`. Rewrite using `[measure_eq_zero_iff_ae_notMem]`. Use `filter_upwards [hae] with y hy hyT`. Use `hy hyT` as an intermediate fact. Simplify using `only [Pi.zero_apply, ENNReal.ofReal_eq_zero] at this`.
+
+Conclude with `absurd (dV.pos j y hyT.1) (not_lt.2 this)`. Conclude with `(hTo.measure_pos volume ⟨_, hTx⟩).ne' hzero`.
+-/
 theorem isOpenPosMeasure (dV : SmoothVolume A) : dV.μ.IsOpenPosMeasure := by
   refine ⟨fun U hU hne h0 ↦ ?_⟩
   obtain ⟨x, hxU⟩ := hne

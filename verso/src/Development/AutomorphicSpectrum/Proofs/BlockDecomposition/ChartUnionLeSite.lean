@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.ConeSite
 
+/- English proof (translation)
+Introduce `K _ X q D N m i y s hO T hT`. Take `⟨k, hQ, V, ⟨j, rfl⟩, hV⟩` from `hT`. Conclude with `⟨hQ, wch i j, GlobalTheory.T.chart_open_mem_cover_of_O1 D N i hO j, fun x hx => (hV hx).2⟩`.
+-/
 theorem wU_le_KS : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (D : E.LineData X) {N m : ℕ}
     (i : X ⟶ PSpace K N) (y : Fin m → MvPolynomial (Fin (N + 1)) K) (s : ℕ), IsTautologicalLineAt D N i → wU q i y s ≤ KS q s (𝒱D D) := by
   intro K _ X q D N m i y s hO T hT

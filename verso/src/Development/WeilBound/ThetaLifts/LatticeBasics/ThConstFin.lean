@@ -10,6 +10,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+The claim follows from `thConst_of hL hG hC hF hM hT hD h1 h2 h3 h4 TC.splitModel PositivityTheory.KCo.so_statement`.
+-/
 theorem thConst_of' (hL : LocDist) (hG : GoodNe) (hC : ConstOfGood) (hF : Factor) (hM : MatchEx) (hT : ThetaBasic) (hD : KDecay)
     (h1 : PositivityTheory.ThKEst.GrpTop) (h2 : PositivityTheory.ThKEst.EpsOf) (h3 : PositivityTheory.ThKEst.FinVolU) (h4 : PositivityTheory.ThKF.Unimod) : ThConst :=
   thConst_of hL hG hC hF hM hT hD h1 h2 h3 h4 TC.splitModel PositivityTheory.KCo.so_statement

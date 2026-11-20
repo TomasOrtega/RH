@@ -12,6 +12,17 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 
 namespace PositivityTheory.Xgn.ProperZeroNumerical
 
+/- English proof (translation)
+Establish `hcl : IsClosed (Z ∩ V)`. Take `⟨S, hfin, hScl, hSirr, hU⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible hZ`. Establish `e : Z ∩ V = ⋃ t ∈ {t ∈ S | (t ∩ V).Nonempty}, t`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq, exists_prop]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hxV⟩`. Rewrite `hx` using `[hU]`. Take `⟨t, ht, hxt⟩` from `hx`. Conclude with `⟨t, ⟨ht, x, hxt, hxV⟩, hxt⟩`.
+
+Introduce and unpack `⟨t, ⟨ht, htV⟩, hxt⟩`. Establish `hsub : t ⊆ Z` using `by rw [hU]; exact Set.subset_sUnion_of_mem ht`. Take `⟨y, hy⟩` from `QuasiSober.sober (hSirr t ht) (hScl t ht)`. Conclude with `⟨hsub hxt, hs y x (hsub hy.mem) ((hy.mem_open_set_iff hV).2 htV) (hy.specializes hxt)⟩`. Rewrite using `[e]`.
+
+Conclude with `(hfin.subset fun t ht => ht.1).isClosed_biUnion fun t ht => hScl t ht.1`. Introduce `x hx`. Assume the negation of the conclusion as `hxV`. Take `⟨z, hz, hzV, hz'⟩` from `hc V (Z ∩ V)ᶜ hV hcl.isOpen_compl (fun w hw => by`. Distinguish the cases in `h : w ∈ V`.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr fun h' => h h'.2) hne ⟨x, hx, fun h => hxV h.2⟩`. Conclude with `hz' ⟨hz, hzV⟩`.
+-/
 theorem subset_of_specializes {T : Type} [TopologicalSpace T] [TopologicalSpace.NoetherianSpace T] [QuasiSober T]
     {Z V : Set T} (hZ : IsClosed Z) (hc : IsPreconnected Z) (hV : IsOpen V) (hne : (Z ∩ V).Nonempty)
     (hs : ∀ y x : T, y ∈ Z → y ∈ V → y ⤳ x → x ∈ V) : Z ⊆ V := by
@@ -42,20 +53,37 @@ theorem subset_of_specializes {T : Type} [TopologicalSpace T] [TopologicalSpace.
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩`.
+-/
 theorem unit_mul {p : Cpt ξ} {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ p b) : unitAt ξ p (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩`.
+-/
 theorem unit_inv {p : Cpt ξ} {a : Ω} (ha : unitAt ξ p a) : unitAt ξ p a⁻¹ :=
   ⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pow_ne_zero n ha.1, pow_mem ha.2.1 n, by rw [← inv_pow]; exact pow_mem ha.2.2 n⟩`.
+-/
 theorem unit_pow {p : Cpt ξ} {a : Ω} (ha : unitAt ξ p a) (n : ℕ) : unitAt ξ p (a ^ n) :=
   ⟨pow_ne_zero n ha.1, pow_mem ha.2.1 n, by rw [← inv_pow]; exact pow_mem ha.2.2 n⟩
 
+/- English proof (translation)
+Rewrite using `[CurvePositivity.change_gen σ π e f M hf.1]`. Conclude with `unit_mul h (unit_pow (ProjectiveLinePlaces.unitAt_div he hf) M)`.
+-/
 theorem unit_change {L : Lat ξ Ω} {p : Cpt ξ} {σ π e f : Ω} {M : ℕ} (he : L.IsGenAt p e) (hf : L.IsGenAt p f)
     (h : unitAt ξ p (π / (σ / f) ^ M)) : unitAt ξ p (π / (σ / e) ^ M) := by
   rw [CurvePositivity.change_gen σ π e f M hf.1]
   exact unit_mul h (unit_pow (ProjectiveLinePlaces.unitAt_div he hf) M)
 
+/- English proof (translation)
+Take `⟨U, hp, b, -, hb⟩` from `h p (Set.mem_univ p)`. Use `⟨U, b 0, hp, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨hli, hspan⟩` from `hb q (Set.mem_univ q) hq`. Use `⟨hli.ne_zero 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hspan]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `[eq_comm]`.
+-/
 theorem exists_local_gen {L : Lat ξ Ω} (h : L.IsVB 1 ⊤) (p : Cpt ξ) :
     ∃ (U : X.Opens) (e : Ω), p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → L.IsGenAt q e := by
   obtain ⟨U, hp, b, -, hb⟩ := h p (Set.mem_univ p)
@@ -70,6 +98,35 @@ theorem exists_local_gen {L : Lat ξ Ω} (h : L.IsVB 1 ⊤) (p : Cpt ξ) :
 end PositivityTheory.Xgn.ProperZeroNumerical
 
 open PositivityTheory.Xgn.ProperZeroNumerical in
+/- English proof (translation)
+Introduce `X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hn hconn L σ hvb hnum hgen`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s`. Use `haveI : IsNoetherian X := { }`. Take `⟨M, a, hM, hreg, p₀, hp₀, -, e₀, c₀, he₀, hL₀, hσ₀, hu₀⟩` from `exists_regular_section_generator X Ω ξ O s ϖ hϖ hinj hs hg hn hconn.1 L σ hvb hgen`.
+
+Establish `hunit : ∀ (p : Cpt ξ) (o : O), unitAt ξ p (algebraMap O Ω o) ↔ o ∉ (s p.1).asIdeal` using `fun p o => (ConstReg.regular_const X Ω ξ O s hs p o).2 hg`. Use `set π : Ω := algebraMap O Ω ϖ ^ a with hπ`. Set `Good : Cpt ξ → Prop` to `fun p => ∃ e, L.IsGenAt p e ∧ unitAt ξ p (π / (σ / e) ^ M)`. Set `V : Set X` to `⋃₀ {W | IsOpen W ∧ ∀ q : Cpt ξ, q.1 ∈ W → Good q}`. Establish `hVo : IsOpen V` using `isOpen_sUnion fun W hW => hW.1`.
+
+Establish `hV : ∀ q : Cpt ξ, q.1 ∈ V ↔ Good q`. Introduce `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, hW, hq⟩`. Conclude with `hW.2 q hq`.
+
+Introduce and unpack `⟨e, he, hu⟩`. Take `⟨U, b, hqU, hb⟩` from `exists_local_gen hvb q`. Take `⟨U', hqU', hU'⟩` from `(regAt_unitAt_open X Ω ξ q _).2 (unit_change (hb q hqU) he hu)`. Conclude with `⟨(U : Set X) ∩ U', ⟨U.isOpen.inter U'.isOpen, fun r hr => ⟨b, hb r hr.1, hU' r hr.2⟩⟩, hqU, hqU'⟩`. Establish `hZ : IsClosed (zeroSet ξ (algebraMap O Ω ϖ))`.
+
+Establish `e : zeroSet ξ (algebraMap O Ω ϖ) = closure {genPt ξ} ∩ s ⁻¹' (PrimeSpectrum.zeroLocus ({ϖ} : Set O))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨specializes_iff_mem_closure.1 h1, Set.singleton_subset_iff.2 (not_not.1 fun h => h2 ((hunit ⟨x, h1⟩ ϖ).2 h))⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨specializes_iff_mem_closure.2 h1, fun h => (hunit ⟨x, specializes_iff_mem_closure.2 h1⟩ ϖ).1 h (Set.singleton_subset_iff.1 h2)⟩`. Rewrite using `[e]`. Conclude with `isClosed_closure.inter ((PrimeSpectrum.isClosed_zeroLocus _).preimage s.continuous)`. Establish `hsub : zeroSet ξ (algebraMap O Ω ϖ) ⊆ V`.
+
+Use `subset_of_specializes hZ hconn.2 hVo ⟨p₀.1, ⟨p₀.2, hp₀⟩, (hV p₀).2 ⟨e₀, ⟨he₀, hL₀⟩, ?_⟩⟩ ?_` and prove the remaining obligations. Establish `e1 : σ / e₀ = c₀` using `by rw [hσ₀, smul_eq_mul, mul_div_cancel_right₀ _ he₀]`. Rewrite using `[e1, ← inv_div]`. Conclude with `unit_inv hu₀`. Introduce and unpack `y x ⟨hy, hyn⟩ hyV hyx`.
+
+Take `⟨x', hx', hcl⟩` from `(isClosed_closure (s := ({x} : Set X))).exists_closed_singleton ⟨x, subset_closure rfl⟩`. Establish `hxx : x ⤳ x'` using `specializes_iff_mem_closure.2 hx'`. Use `hxx.mem_open hVo ?_` and prove the remaining obligations. Establish `hyx' : y ⤳ x'` using `hyx.trans hxx`. Set `q : Cpt ξ` to `⟨x', hy.trans hyx'⟩`.
+
+Take `⟨U, b, hqU, hb⟩` from `exists_local_gen hvb q`. Use `(hV q).2 ⟨b, hb q hqU, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Take `⟨e, he, hue⟩` from `(hV ⟨y, hy⟩).1 hyV`. Take `⟨Γ, i, -, hη, hz⟩` from `GlobalTheory.T.special_fibre_closed_specialization X Ω ξ O s ϖ hϖ hinj hs hg ⟨y, hy⟩ q (π / (σ / b) ^ M) hyn hyx' hcl (hreg q b (hb q hqU)) (unit_change (hb ⟨y, hy⟩ (hyx'.mem_open U.isOpen hqU)) he hue) hnu`.
+
+Establish `hq : q = ⟨centre (Γ.z i), Γ.z_spec i⟩` using `Subtype.ext hz.symm`. Establish `hηU : centre Γ.η ∈ U` using `(Γ.generic_centre_specializes i).mem_open U.isOpen (by rw [hz]; exact hqU)`. Apply `hnu` to reduce the goal to its premises. Establish `hbq` using `hb q hqU`. Rewrite `hbq`, the goal using `[hq]`.
+
+Conclude with `PositivityTheory.Xgn.degree_zero_curve_positive X Ω ξ O s _ L σ π M Γ hg hvb hM (hnum Γ) hreg (fun e' he' => unit_change he' (hb ⟨centre Γ.η, Γ.η_spec⟩ hηU) hη) i (Γ.z_spec i) b hbq`. Use `⟨M, a, hM, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : unitAt ξ p (algebraMap O Ω ϖ)`. Establish `hp : p ∈ genFibre O ξ`. Introduce `o ho`.
+
+Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ho hϖ`. Rewrite using `[map_mul, map_pow]`. Use `unit_mul ((hunit p _).2 fun h => ?_) (unit_pow hu n)` and prove the remaining obligations. Conclude with `(s p.1).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h u.isUnit)`. Use `⟨σ, 1, (hgen p hp).1, (hgen p hp).2, (one_smul _ _).symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[one_pow, one_div]`. Use `unit_inv ⟨zpow_ne_zero a hu.1, ZLat.zpow_mem_regAt hu a, ?_⟩` and prove the remaining obligations. Rewrite using `[← zpow_neg]`. Conclude with `ZLat.zpow_mem_regAt hu _`. Take `⟨e, he, hue⟩` from `(hV p).1 (hsub ⟨p.2, hu⟩)`.
+
+Use `⟨e, σ / e, he.1, he.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, div_mul_cancel₀ _ he.1]`. Rewrite using `[← inv_div]`. Conclude with `unit_inv hue`.
+-/
 theorem PositivityTheory.Xgn.normal_proper_line_order : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s] (ϖ : O), Irreducible ϖ → Function.Injective (algebraMap O Ω) → ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → IsCptGen ξ → NormalCpt ξ → _root_.IsConnected (zeroSet ξ (algebraMap O Ω ϖ)) → ∀ (L : Lat ξ Ω) (σ : Ω), L.IsVB 1 ⊤ → NumTrivMod L (algebraMap O Ω ϖ) → (∀ p ∈ genFibre O ξ, L.IsGenAt p σ) → ∃ (M : ℕ) (a : ℤ), 0 < M ∧ ∀ p : Cpt ξ, OrderAt L σ (algebraMap O Ω ϖ) M a p := by
   intro X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hn hconn L σ hvb hnum hgen
   haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s

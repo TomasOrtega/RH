@@ -35,6 +35,13 @@ variable (𝒜) in
 def isLocallyFraction (k : ℤ) : LocalPredicate fun x : ProjectiveSpectrum.top 𝒜 => Loc 𝒜 x :=
   (isFractionPrelocal 𝒜 k).sheafify
 
+/- English proof (translation)
+Use `by_contra! h`. Use `x.not_irrelevant_le fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← DirectSum.sum_support_decompose 𝒜 z]`. Use `x.1.toIdeal.sum_mem fun n hn => ?_` and prove the remaining obligations. Distinguish the cases in `hn0 : n = 0`.
+
+Substitute `hn0` using the available equality. Establish `: (DirectSum.decompose 𝒜 z 0 : A) = 0`. Rewrite using `[← GradedRing.proj_apply]`. Conclude with `(HomogeneousIdeal.mem_irrelevant_iff _ _).mp hz`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Conclude with `h _ n (SetLike.coe_mem _) (Nat.pos_of_ne_zero hn0)`.
+-/
 theorem exists_pos_deg_nmem (x : ProjectiveSpectrum 𝒜) :
     ∃ (f : A) (m : ℕ), f ∈ 𝒜 m ∧ 0 < m ∧ f ∉ x.asHomogeneousIdeal := by
   classical
@@ -51,6 +58,11 @@ theorem exists_pos_deg_nmem (x : ProjectiveSpectrum 𝒜) :
     exact zero_mem _
   · exact h _ n (SetLike.coe_mem _) (Nat.pos_of_ne_zero hn0)
 
+/- English proof (translation)
+Take `⟨f, m, hf, hm, hfx⟩` from `exists_pos_deg_nmem x`. Use `⟨m * (-k).toNat, m * (-k).toNat + k.toNat - (-k).toNat + 0, f ^ (-k).toNat, ?_, ?_, fun h => hfx (x.isPrime.mem_of_pow_mem _ h)⟩` and prove the remaining obligations. Establish `: ((-k).toNat : ℤ) ≤ m * (-k).toNat`. Conclude with `Nat.le_mul_of_pos_left _ hm` after adjusting the coercions. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Simplify `SetLike.pow_mem_graded (-k).toNat hf` using `[mul_comm]`.
+-/
 theorem exists_den (k : ℤ) (x : ProjectiveSpectrum 𝒜) :
     ∃ (i j : ℕ) (s : A), (j : ℤ) = i + k ∧ s ∈ 𝒜 i ∧ s ∉ x.asHomogeneousIdeal := by
   obtain ⟨f, m, hf, hm, hfx⟩ := exists_pos_deg_nmem x
@@ -62,10 +74,16 @@ theorem exists_den (k : ℤ) (x : ProjectiveSpectrum 𝒜) :
     omega
   · simpa [mul_comm] using SetLike.pow_mem_graded (-k).toNat hf
 
+/- English proof (translation)
+Introduce `hh` and use `(x.isPrime.mem_or_mem hh).elim h h'`.
+-/
 theorem nmem_mul {x : ProjectiveSpectrum 𝒜} {s s' : A} (h : s ∉ x.asHomogeneousIdeal)
     (h' : s' ∉ x.asHomogeneousIdeal) : s * s' ∉ x.asHomogeneousIdeal := fun hh =>
   (x.isPrime.mem_or_mem hh).elim h h'
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨i, j, s, hij, hs, hsx⟩ := exists_den k x.1 refine ⟨U ⊓ ProjectiveSpectrum.basicOpen 𝒜 s, ⟨x.2, hsx⟩, Opens.infLELeft _ _, i, j, hij, 0, s, zero_mem _, hs, fun y => y.2.2, fun y => ?_⟩ simp [Localization.mk_zero]`.
+-/
 theorem zero_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) :
     (isLocallyFraction 𝒜 k).pred (0 : ∀ x : U, Loc 𝒜 x.1) := fun x => by
   obtain ⟨i, j, s, hij, hs, hsx⟩ := exists_den k x.1
@@ -73,6 +91,9 @@ theorem zero_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) :
     zero_mem _, hs, fun y => y.2.2, fun y => ?_⟩
   simp [Localization.mk_zero]
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨Va, ma, ia, i, j, hij, r, s, hr, hs, hsn, wa⟩ := ha x obtain ⟨Vb, mb, ib, i', j', hij', r', s', hr', hs', hsn', wb⟩ := hb x have hdeg : j' + i = j + i' := by omega refine ⟨Va ⊓ Vb, ⟨ma, mb⟩, Opens.infLELeft _ _ ≫ ia, i + i', j + i', by push_cast; omega, r * s' + s * r' …`.
+-/
 theorem add_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a b : ∀ x : U, Loc 𝒜 x.1)
     (ha : (isLocallyFraction 𝒜 k).pred a) (hb : (isLocallyFraction 𝒜 k).pred b) :
     (isLocallyFraction 𝒜 k).pred (a + b) := fun x => by
@@ -92,6 +113,9 @@ theorem add_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a b : ∀ 
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨V, m, iV, i, j, hij, r, s, hr, hs, hsn, w⟩ := ha x refine ⟨V, m, iV, i, j, hij, -r, s, neg_mem hr, hs, hsn, fun y => ?_⟩ simp only [Pi.neg_apply, w y, Localization.neg_mk]`.
+-/
 theorem neg_mem' (k : ℤ) (U : Opens (ProjectiveSpectrum.top 𝒜)) (a : ∀ x : U, Loc 𝒜 x.1)
     (ha : (isLocallyFraction 𝒜 k).pred a) : (isLocallyFraction 𝒜 k).pred (-a) := fun x => by
   obtain ⟨V, m, iV, i, j, hij, r, s, hr, hs, hsn, w⟩ := ha x
@@ -130,6 +154,9 @@ instance (U : Opens (ProjectiveSpectrum.top 𝒜)) :
   Module.compHom _ (toLocFun U)
 
 open ProjectiveSpectrum in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma smul_apply' {U : Opens (ProjectiveSpectrum.top 𝒜)} (t : (Proj.structureSheaf 𝒜).obj.obj (op U))
     (f : ∀ x : U, Loc 𝒜 x.1) (x : U) : (t • f) x = (t.1 x).val * f x := rfl
 
@@ -186,28 +213,55 @@ variable {𝒜} {k : ℤ} {U V : (Proj 𝒜).Opens}
 
 def val (s : Γ(twistingSheaf 𝒜 k, U)) : ∀ x : U, Loc 𝒜 x.1 := s.1
 
+/- English proof (translation)
+The claim follows from `s.2`.
+-/
 lemma isLocallyFraction_val (s : Γ(twistingSheaf 𝒜 k, U)) :
     (isLocallyFraction 𝒜 k).pred (val s) := s.2
 
 def mkSection (f : ∀ x : U, Loc 𝒜 x.1) (hf : (isLocallyFraction 𝒜 k).pred f) :
     Γ(twistingSheaf 𝒜 k, U) := ⟨f, hf⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_mkSection (f : ∀ x : U, Loc 𝒜 x.1) (hf : (isLocallyFraction 𝒜 k).pred f) :
     val (mkSection f hf) = f := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 @[ext] lemma ext {s t : Γ(twistingSheaf 𝒜 k, U)} (h : val s = val t) : s = t := Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_add (s t : Γ(twistingSheaf 𝒜 k, U)) : val (s + t) = val s + val t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_zero : val (0 : Γ(twistingSheaf 𝒜 k, U)) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_neg (s : Γ(twistingSheaf 𝒜 k, U)) : val (-s) = -val s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma val_sub (s t : Γ(twistingSheaf 𝒜 k, U)) : val (s - t) = val s - val t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma val_smul (t : Γ(Proj 𝒜, U)) (s : Γ(twistingSheaf 𝒜 k, U)) (x : U) :
     val (t • s) x = (t.1 x).val * val s x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma val_res (h : V ≤ U) (s : Γ(twistingSheaf 𝒜 k, U)) (x : V) :
     val ((twistingSheaf 𝒜 k).presheaf.map (homOfLE h).op s) x = val s ⟨x.1, h x.2⟩ := rfl
 

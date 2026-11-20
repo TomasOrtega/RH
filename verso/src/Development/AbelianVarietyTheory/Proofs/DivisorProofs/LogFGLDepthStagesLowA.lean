@@ -18,6 +18,11 @@ noncomputable section
 
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
+/- English proof (translation)
+Simplify using `only [glue, Matrix.of_apply] at h`. Distinguish the cases in `ha : a ∈ S (lab a)`. Rewrite `h` using `[if_pos ha]`. Conclude with `Or.inr (hx _ _ _ h)`. Rewrite `h` using `[if_neg ha]`.
+
+Distinguish the cases in `hab : a = b`. Conclude with `Or.inl hab.symm`. Rewrite `h` using `[if_neg hab]`. Conclude with `absurd rfl h`.
+-/
 theorem glue_ne_zero {ι : Type} {lab : Fin d → ι} {S : ι → Finset (Fin d)}
     {x : ι → Matrix (Fin d) (Fin d) C} (hx : ∀ i a b, x i a b ≠ 0 → a ∈ S i ∧ b ∈ S i)
     {a b : Fin d} (h : glue lab S x a b ≠ 0) : b = a ∨ (a ∈ S (lab a) ∧ b ∈ S (lab a)) := by
@@ -30,6 +35,11 @@ theorem glue_ne_zero {ι : Type} {lab : Fin d → ι} {S : ι → Finset (Fin d)
     · exact Or.inl hab.symm
     · rw [if_neg hab] at h; exact absurd rfl h
 
+/- English proof (translation)
+Establish `h1 : Submodule.span C (W.mkQ '' A) ≤ Submodule.span C ((t.image W.mkQ : Finset _) : Set (M ⧸ W))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hA w hw)`. Establish `hy0 : W.mkQ y = 0` using `(Submodule.Quotient.mk_eq_zero W).2 hy`.
+
+Rewrite using `[map_add, hy0, zero_add, Finset.coe_image, Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem hz`. Establish `: Module.Finite C (Submodule.span C ((t.image W.mkQ : Finset _) : Set (M ⧸ W)))` using `Module.Finite.span_of_finite C (Finset.finite_toSet _)`. Conclude with `(Submodule.finrank_mono h1).trans ((finrank_span_finset_le_card _).trans Finset.card_image_le)`.
+-/
 theorem finrank_mod_le {M : Type} [AddCommGroup M] [Module C M] (W : Submodule C M)
     (t : Finset M) (A : Set M) (hA : ∀ w ∈ A, w ∈ W ⊔ Submodule.span C (t : Set M)) :
     Module.finrank C (Submodule.span C (W.mkQ '' A)) ≤ t.card := by
@@ -46,6 +56,21 @@ theorem finrank_mod_le {M : Type} [AddCommGroup M] [Module C M] (W : Submodule C
   exact (Submodule.finrank_mono h1).trans
     ((finrank_span_finset_le_card _).trans Finset.card_image_le)
 
+/- English proof (translation)
+Establish `key` using `fun i => GlobalTheory.T.root_trick_finset_curves_block_inverse GlobalTheory.T.root_extraction_lemma_sheaf C v p hp hv d h ty i G γ (S i) (fun a _ => hB.1 a) (fun a ha => hS i a ha ▸ hB.2.1 a) n j hn ((Fin d → C) ⧸ W i) (W i).mkQ (by`. Take `⟨t, ht, hta⟩` from `hW i`. Use `finrank_mod_le (W i) t ((fun a => G.lc p (γ a) n) '' (S i : Set (Fin d))) (by rintro _ ⟨a, ha, rfl⟩; exact hta a ha)` as an intermediate fact. Rewrite `this` using `[Set.image_image]`. Conclude with `this.trans ht)`.
+
+Use `choose x y D hDS hDj hxi hyi hxs hys hxy hLa using key`. Take `⟨hXi, hXY, hXd⟩` from `GlobalTheory.T.glued_blocks_mul_inv_integral_unit_det C v d (ZMod h) ty S x y hS hxs hys hxi hyi hxy`. Take `⟨hB', htan, hlc⟩` from `GlobalTheory.T.rebased_typical_curves_isBasis C v p hp hv d h ty G γ (glue ty S x) hB hXi hXd (by`. Introduce `a b hab`. Break down `glue_ne_zero hxs hab with rfl | ⟨-, hb⟩` into its components or cases.
+
+Both sides reduce to the same expression. Conclude with `hS _ _ hb)`. Use `⟨_, D, hB', hDj, fun a m U hU => ?_, fun a U hU => ?_, fun a ha haD => ?_⟩` and prove the remaining obligations. Rewrite using `[hlc]`. Use `U.sum_mem fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hab : glue ty S x a b = 0`. Rewrite using `[hab, zero_pow (pow_ne_zero _ hp.ne_zero), zero_smul]`. Conclude with `U.zero_mem`. Conclude with `U.smul_mem _ (hU b (glue_ne_zero hxs hab))`. Establish `hYX : glue ty S y * glue ty S x = 1` using `mul_eq_one_comm.1 hXY`.
+
+Establish `e : tangent (γ a) = ∑ b, glue ty S y a b • tangent (rebase G (glue ty S x) γ b)`. Simplify using `only [htan, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, hYX, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[e]`.
+
+Use `U.sum_mem fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : glue ty S y a b = 0`. Rewrite using `[hab, zero_smul]`. Conclude with `U.zero_mem`. Conclude with `U.smul_mem _ (hU b (glue_ne_zero hys hab))`.
+
+Use `hLa (ty a) a ha haD` as an intermediate fact. Rewrite using `[hlc]`. Simplify using `only [glue, Matrix.of_apply, if_pos ha]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 this`.
+-/
 theorem exists_stage [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime) (hv : v (p : C) = 1)
     {h : ℕ} {ty : Fin d → ZMod h} {G : LogFGL v d} {γ : Fin d → Fin d → PowerSeries C}
     (hB : IsBasis G p ty γ) (S : ZMod h → Finset (Fin d)) (hS : ∀ i a, a ∈ S i → ty a = i)
@@ -107,6 +132,9 @@ noncomputable section
 
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
+/- English proof (translation)
+Establish `: NeZero h` using `⟨h0.ne'⟩`. Establish `e : i + 1 = ((i.val + 1 : ℕ) : ZMod h)` using `by simp`. Rewrite using `[e, ZMod.val_natCast, Nat.odd_iff, Nat.mod_mod_of_dvd _ hh.two_dvd]`. Rewrite `hi` using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem odd_val_add_one {h : ℕ} (h0 : 0 < h) (hh : Even h) {i : ZMod h} (hi : Even i.val) :
     Odd (i + 1).val := by
   have : NeZero h := ⟨h0.ne'⟩
@@ -114,6 +142,9 @@ theorem odd_val_add_one {h : ℕ} (h0 : 0 < h) (hh : Even h) {i : ZMod h} (hi : 
   rw [e, ZMod.val_natCast, Nat.odd_iff, Nat.mod_mod_of_dvd _ hh.two_dvd]
   rw [Nat.even_iff] at hi; omega
 
+/- English proof (translation)
+Establish `: NeZero h` using `⟨h0.ne'⟩`. Establish `e : i + 2 = ((i.val + 2 : ℕ) : ZMod h)` using `by simp`. Rewrite using `[e, ZMod.val_natCast, Nat.even_iff, Nat.mod_mod_of_dvd _ hh.two_dvd]`. Rewrite `hi` using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem even_val_add_two {h : ℕ} (h0 : 0 < h) (hh : Even h) {i : ZMod h} (hi : Even i.val) :
     Even (i + 2).val := by
   have : NeZero h := ⟨h0.ne'⟩
@@ -130,6 +161,23 @@ def StageInv (G : LogFGL v d) (p : ℕ) {h : ℕ} (ty : Fin d → ZMod h) (j K :
       G.lc p (γ a) 2 ∈ Submodule.span C
         (Set.range fun b : {b // ty b = ty a + 2 ∧ dp a - 1 ≤ dp b} => tangent (γ b.1))
 
+/- English proof (translation)
+Take `⟨γ', D, hB', hD, -, -, hW⟩` from `exists_stage hp hv hB (fun i => Finset.univ.filter fun a => ty a = i ∧ Even i.val) (fun i a ha => (Finset.mem_filter.1 ha).2.1) (le_refl 1) j (fun _ => ⊥) (by`. Introduce `i`. Distinguish the cases in `hi : Even i.val`. Use `⟨(Finset.univ.filter fun c => ty c = i + 1).image fun c => Pi.single c (1 : C), Finset.card_image_le.trans (hj _ (odd_val_add_one h0 hh hi)), fun a ha => ?_⟩` and prove the remaining obligations. Establish `hai : ty a = i` using `(Finset.mem_filter.1 ha).2.1`.
+
+Rewrite using `[bot_sup_eq, ← Finset.univ_sum_single (G.lc p (γ a) 1)]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : ty c = i + 1`. Establish `e : (Pi.single c (G.lc p (γ a) 1 c) : Fin d → C) = G.lc p (γ a) 1 c • (Pi.single c (1 : C) : Fin d → C)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`.
+
+Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image]`. Conclude with `⟨c, by simpa using hc, rfl⟩`. Rewrite using `[(hB.2.1 a).2 1 c (by rw [hai]; simpa using hc), Pi.single_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `⟨∅, by simp, fun a ha => absurd (Finset.mem_filter.1 ha).2.2 hi⟩)`. Use `⟨γ', fun a => if Even (ty a).val ∧ a ∉ D (ty a) then 0 else -1, hB', fun a => ?_, fun a ha => ?_, fun i hi l hl => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `dsimp only; split_ifs <;> simp`. Conclude with `if_neg fun hc => (Nat.not_even_iff_odd.2 ha) hc.1`.
+
+Use `(Finset.card_le_card fun a ha => ?_).trans (hD i)` and prove the remaining obligations. Take `⟨-, rfl, hal⟩` from `Finset.mem_filter.1 ha`. Assume the negation of the conclusion as `haD`. Simplify using `only at hal`. Rewrite `hal` using `[if_pos ⟨hi, haD⟩]`.
+
+Simplify using `only [Nat.cast_zero] at hl`. Use linear arithmetic over natural numbers and integers. Establish `hc : Even (ty a).val ∧ a ∉ D (ty a)`. Assume the negation of the conclusion as `hc`. Simplify using `only [if_neg hc] at ha`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨(Submodule.mem_bot C).1 (hW a (by simpa using hc.1) hc.2), ?_⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ (GlobalTheory.T.mem_span_tangent_of_type_of_isBasis C v p d h ty G γ' hB' (ty a + 2) _ fun c hc' => (hB'.2.1 a).2 2 c (by simpa using hc'))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Use `⟨⟨b.1, b.2, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[if_pos hc]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_stageInv_zero [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime)
     (hv : v (p : C) = 1) {h : ℕ} (h0 : 0 < h) (hh : Even h) {ty : Fin d → ZMod h} {G : LogFGL v d}
     {γ : Fin d → Fin d → PowerSeries C} (hB : IsBasis G p ty γ) {j : ℕ}
@@ -181,6 +229,37 @@ theorem exists_stageInv_zero [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prim
     rw [if_pos hc]
     split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨hB, hr, ho, hc, hl⟩` from `hI`. Establish `hev : ∀ a, 0 ≤ dp a → Even (ty a).val` using `fun a ha => by`. Assume the negation of the conclusion as `hne`. Use `ho a (Nat.not_even_iff_odd.1 hne)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨γ', D, hB', hD, hlc, htan, hW⟩` from `exists_stage hp hv hB (fun i => Finset.univ.filter fun a => ty a = i ∧ dp a = K) (fun i a ha => (Finset.mem_filter.1 ha).2.1) (n := 2) (by norm_num) j (fun i => Submodule.span C (Set.range fun b : {b // ty b = i + 2 ∧ (K : ℤ) ≤ dp b} => tangent (γ b.1))) (by`. Introduce `i`. Distinguish the cases in `hi : Even i.val`. Use `⟨(Finset.univ.filter fun b => ty b = i + 2 ∧ dp b = K - 1).image fun b => tangent (γ b), Finset.card_image_le.trans (hc _ (even_val_add_two h0 hh hi) _ (by omega)), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨-, rfl, haK⟩` from `Finset.mem_filter.1 ha`.
+
+Use `Submodule.span_le.2 ?_ (hl a (by omega)).2` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨b, hb1, hb2⟩` from `b`. Distinguish the cases in `hbK : (K : ℤ) ≤ dp b`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨⟨b, hb1, hbK⟩, rfl⟩)`.
+
+Use `Submodule.mem_sup_right (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image]`. Conclude with `⟨b, by simpa using ⟨hb1, by omega⟩, rfl⟩`. Use `⟨∅, by simp, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨-, rfl, haK⟩` from `Finset.mem_filter.1 ha`.
+
+Conclude with `absurd (hev a (by omega)) hi)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hlc htan hW`. Use `set dp' : Fin d → ℤ := fun a => if dp a = K ∧ a ∉ D (ty a) then K + 1 else dp a with hdp'`. Establish `hge : ∀ a, dp a ≤ dp' a` using `fun a => by`. Apply the tactic sequence `simp only [hdp']; split_ifs with hc' <;> omega`.
+
+Establish `hspan : ∀ (t : ZMod h) (l l' : ℤ), l' ≤ l → l' ≤ K → Submodule.span C (Set.range fun b : {b // ty b = t ∧ l ≤ dp b} => tangent (γ b.1)) ≤ Submodule.span C (Set.range fun b : {b // ty b = t ∧ l' ≤ dp' b} => tangent (γ' b.1))`. Introduce `t l l' hll hl'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨b, hb1, hb2⟩, rfl⟩`. Use `htan b _ fun c hcb => Submodule.subset_span ⟨⟨c, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Use `hge c` as an intermediate fact. Break down `hcb with rfl | ⟨-, hc1, hc2⟩` into its components or cases. Conclude with `⟨hb1, by omega⟩`. Conclude with `⟨hc1.trans hb1, by omega⟩`. Use `⟨γ', dp', hB', fun a => ?_, fun a ha => ?_, fun i hi l hlK => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `hr a` as an intermediate fact. Apply the tactic sequence `simp only [hdp']; push_cast; split_ifs <;> omega`. Use `ho a ha` as an intermediate fact. Simplify using `only [hdp']; rw [if_neg (by omega), this]`. Move the coercions through the operations in `at hlK`.
+
+Distinguish the cases in `hlK' : l = K`. Use `(Finset.card_le_card fun a ha => ?_).trans (hD i)` and prove the remaining obligations. Take `⟨-, rfl, hal⟩` from `Finset.mem_filter.1 ha`. Assume the negation of the conclusion as `haD`. Simplify using `only [hdp'] at hal`.
+
+Use `split_ifs at hal with h1`. Use linear arithmetic over natural numbers and integers. Conclude with `h1 ⟨by omega, haD⟩`. Use `(Finset.card_le_card fun a ha => ?_).trans (hc i hi l (by omega))` and prove the remaining obligations. Take `⟨-, hai, hal⟩` from `Finset.mem_filter.1 ha`.
+
+Use `Finset.mem_filter.2 ⟨Finset.mem_univ _, hai, ?_⟩` and prove the remaining obligations. Simplify using `only [hdp'] at hal`. Use `split_ifs at hal with h1`. Use linear arithmetic over natural numbers and integers. Conclude with `hal`.
+
+Establish `ha0 : 0 ≤ dp a`. Simplify using `only [hdp'] at ha`. Apply the tactic sequence `split_ifs at ha with h1 <;> omega`. Use `⟨(Submodule.mem_bot C).1 (hlc a 1 ⊥ fun b hb => (Submodule.mem_bot C).2 (hl b ?_).1), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hb with rfl | ⟨-, -, hb⟩ <;> omega`.
+
+Distinguish the cases in `h1 : dp a = K ∧ a ∉ D (ty a)`. Establish `e : dp' a = K + 1` using `if_pos h1`. Conclude with `hspan _ K _ (by omega) (by omega) (hW a h1.1 h1.2)`. Establish `e : dp' a = dp a` using `if_neg h1`. Use `hr a` as an intermediate fact.
+
+Use `hlc a 2 _ fun b hb => ?_` and prove the remaining obligations. Break down `hb with rfl | ⟨haK, hb1, hb2⟩` into its components or cases. Conclude with `hspan _ _ _ (by omega) (by omega) (hl b ha0).2`. Establish `hb` using `(hl b (by omega)).2`. Rewrite using `[← hb1]`.
+
+Conclude with `hspan _ _ _ (by omega) (by omega) hb`.
+-/
 theorem exists_stageInv_succ [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime)
     (hv : v (p : C) = 1) {h : ℕ} (h0 : 0 < h) (hh : Even h) {ty : Fin d → ZMod h} {G : LogFGL v d}
     {j K : ℕ} {γ : Fin d → Fin d → PowerSeries C} {dp : Fin d → ℤ}
@@ -275,6 +354,15 @@ end GlobalTheory.DepthStages
 
 namespace GlobalTheory.DepthStages
 
+/- English proof (translation)
+Take `⟨hB, hr, ho, hc, hl⟩` from `hI`. Use `⟨hB, hr, ho, fun i hi => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hsub : (Finset.univ.filter fun a => ty a = i ∧ dp a < K) ⊆ (Finset.Icc (-1 : ℤ) (K - 1)).biUnion (fun l => Finset.univ.filter fun a => ty a = i ∧ dp a = l)`. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`.
+
+Simplify using `only [Finset.mem_biUnion, Finset.mem_Icc, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨dp a, ⟨(hr a).1, by omega⟩, ha.1, rfl⟩`. Use `(Finset.card_le_card hsub).trans ((Finset.card_biUnion_le).trans ?_)` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun _ => j) fun l hl' => hc i hi l ?_).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_Icc] at hl'`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_const, smul_eq_mul, Int.card_Icc]`. Establish `: (K - 1 + 1 - -1 : ℤ).toNat = K + 1` using `by omega`. Rewrite using `[this]`. Take `⟨h1, h2⟩` from `hl a ha`.
+
+Use `⟨h1, Submodule.span_mono ?_ h2⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `⟨⟨b.1, b.2.2⟩, rfl⟩`.
+-/
 theorem conclusion_of_stageInv {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d h : ℕ}
     {G : LogFGL v d} {p : ℕ} {ty : Fin d → ZMod h} {j K : ℕ} {γ : Fin d → Fin d → PowerSeries C}
     {dp : Fin d → ℤ} (hI : StageInv G p ty j K γ dp) :
@@ -308,6 +396,11 @@ end GlobalTheory.DepthStages
 
 namespace GlobalTheory.DepthStages
 
+/- English proof (translation)
+Introduce `C _ _ _ v p hp _ hv d h h0 hh ty G μ j K hj`. Take `⟨γ₀, hγ₀⟩` from `(GlobalTheory.T.typicalCurveEigenspace_and_basisExists.2 C v p hp hv d h h0 ty G μ).1`. Establish `key : ∃ (γ : Fin d → Fin d → PowerSeries C) (dp : Fin d → ℤ), StageInv G p ty j K γ dp`. Proceed by induction on `K with`. Consider the case `zero => exact exists_stageInv_zero hp hv h0 hh hγ₀ hj`.
+
+Consider the case `succ K ih`. Take `⟨γ, dp, hI⟩` from `ih`. Conclude with `exists_stageInv_succ hp hv h0 hh hI`. Take `⟨γ, dp, hI⟩` from `key`. Conclude with `⟨γ, dp, conclusion_of_stageInv hI⟩`.
+-/
 theorem lowA_statement : LowAStatement := by
   intro C _ _ _ v p hp _ hv d h h0 hh ty G μ j K hj
   obtain ⟨γ₀, hγ₀⟩ := (GlobalTheory.T.typicalCurveEigenspace_and_basisExists.2 C v p hp hv d h h0 ty G μ).1

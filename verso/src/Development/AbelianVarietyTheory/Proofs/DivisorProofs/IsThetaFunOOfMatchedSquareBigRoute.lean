@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.RouteSeesaw
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ _hL W B ρ t i j Θ Θ' hM d hd`. Take `⟨a, b, τ, τ', n, Φ, -, -, hF, rfl, -⟩` from `hM`. Take `⟨e, -, -, φ₁, φ₂, hφ, -⟩` from `hF`. Unfold `tensT at hd`. Take `⟨P, -, hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`.
+
+Take `⟨d', hd', hd⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Establish `hd` using `Finsupp.support_single_subset hd`. Rewrite `hd` using `[Finset.mem_singleton]`. Substitute `hd` using the available equality. Take `⟨h₁, h₂⟩` from `hφ d' hd'`.
+
+Establish `v₁` using `(ρ.vX_is i (j + 1) i.2 j.2).2.2`. Establish `v₂` using `(ρ.vT_is t (i + 1) j i.2 j.2).2.2`. Conclude with `⟨GlobalTheory.FockTheta.ptStable D _ _ W.ψ_std W.θ_is _ _ _ _ _ _ _ _ (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h₁.2 v₁), GlobalTheory.FockTheta.ptStable D _ _ W.ψ_std W.θ_is _ _ _ _ _ _ _ _ (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h₂. …`.
+-/
 theorem isThetaFunO_of_isMatched : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m)
     (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)), IsMatched B t ρ i j Θ Θ' →

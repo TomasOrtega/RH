@@ -23,13 +23,22 @@ namespace GlobalTheory.NegPair
 
 def desc (T : Finset ℚ) : List ℚ := (T.sort (· ≤ ·)).reverse
 
+/- English proof (translation)
+Simplify using `[desc]`.
+-/
 theorem mem_desc {T : Finset ℚ} {y : ℚ} : y ∈ desc T ↔ y ∈ T := by simp [desc]
 
+/- English proof (translation)
+Unfold `desc`. Rewrite using `[List.pairwise_reverse]`. Conclude with `((Finset.pairwise_sort T (· ≤ ·)).and (Finset.sort_nodup T (· ≤ ·))).imp fun h => lt_of_le_of_ne h.1 h.2`.
+-/
 theorem desc_pairwise (T : Finset ℚ) : (desc T).Pairwise (· > ·) := by
   unfold desc
   rw [List.pairwise_reverse]
   exact ((Finset.pairwise_sort T (· ≤ ·)).and (Finset.sort_nodup T (· ≤ ·))).imp fun h => lt_of_le_of_ne h.1 h.2
 
+/- English proof (translation)
+Simplify using `[desc]`.
+-/
 theorem desc_length (T : Finset ℚ) : (desc T).length = T.card := by simp [desc]
 
 def lowS (S : SPar) (c : ℚ) : Finset ℚ := (S.filter fun p => p.2 = true ∧ p.1 < c).image fun p => c - p.1
@@ -38,6 +47,11 @@ def highS (S : SPar) (c : ℚ) : Finset ℚ := (S.filter fun p => p.2 = true ∧
 
 def negS (S : SPar) (c : ℚ) : Finset ℚ := (S.filter fun p => p.2 = false).image fun p => c - p.1
 
+/- English proof (translation)
+Simplify using `only [lowS, Finset.mem_image, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, b⟩, ⟨h, rfl, h2⟩, rfl⟩`. Simplify using `only [sub_sub_cancel]`. Conclude with `⟨h, h2⟩`.
+
+Introduce and unpack `⟨h, h2⟩`. Conclude with `⟨(c - y, true), ⟨h, rfl, h2⟩, by ring⟩`.
+-/
 theorem mem_lowS {S : SPar} {c y : ℚ} : y ∈ lowS S c ↔ (c - y, true) ∈ S ∧ c - y < c := by
   simp only [lowS, Finset.mem_image, Finset.mem_filter]
   constructor
@@ -46,6 +60,11 @@ theorem mem_lowS {S : SPar} {c y : ℚ} : y ∈ lowS S c ↔ (c - y, true) ∈ S
   · rintro ⟨h, h2⟩
     exact ⟨(c - y, true), ⟨h, rfl, h2⟩, by ring⟩
 
+/- English proof (translation)
+Simplify using `only [highS, Finset.mem_image, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, b⟩, ⟨h, rfl, h2⟩, rfl⟩`. Simplify using `only [sub_sub_cancel]`. Conclude with `⟨h, h2⟩`.
+
+Introduce and unpack `⟨h, h2⟩`. Conclude with `⟨(c - y, true), ⟨h, rfl, h2⟩, by ring⟩`.
+-/
 theorem mem_highS {S : SPar} {c y : ℚ} : y ∈ highS S c ↔ (c - y, true) ∈ S ∧ c < c - y := by
   simp only [highS, Finset.mem_image, Finset.mem_filter]
   constructor
@@ -54,6 +73,11 @@ theorem mem_highS {S : SPar} {c y : ℚ} : y ∈ highS S c ↔ (c - y, true) ∈
   · rintro ⟨h, h2⟩
     exact ⟨(c - y, true), ⟨h, rfl, h2⟩, by ring⟩
 
+/- English proof (translation)
+Simplify using `only [negS, Finset.mem_image, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, b⟩, ⟨h, rfl⟩, rfl⟩`. Simplify using `using h`. Introduce `h`.
+
+Conclude with `⟨(c - y, false), ⟨h, rfl⟩, by ring⟩`.
+-/
 theorem mem_negS {S : SPar} {c y : ℚ} : y ∈ negS S c ↔ (c - y, false) ∈ S := by
   simp only [negS, Finset.mem_image, Finset.mem_filter]
   constructor
@@ -62,6 +86,13 @@ theorem mem_negS {S : SPar} {c y : ℚ} : y ∈ negS S c ↔ (c - y, false) ∈ 
   · intro h
     exact ⟨(c - y, false), ⟨h, rfl⟩, by ring⟩
 
+/- English proof (translation)
+Simplify using `only [dualPar, GlobalTheory.Chain.signed, Finset.mem_image, Finset.mem_union, List.mem_toFinset, List.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, b'⟩, hy, he⟩`. Simplify using `only [Prod.mk.injEq] at he`. Take `⟨rfl, rfl⟩` from `he`.
+
+Apply the tactic sequence `rcases hy with ⟨z, hz, he⟩ | ⟨z, hz, he⟩ <;> simp only [Prod.mk.injEq] at he <;> obtain ⟨rfl, rfl⟩ := he`. Use the proof step `left; exact ⟨rfl, by simpa using hz⟩`. Use the proof step `right; exact ⟨rfl, by simpa using hz⟩`. Introduce and unpack `(⟨rfl, h⟩ | ⟨rfl, h⟩)`. Conclude with `⟨(c - x + -c, true), Or.inl ⟨c - x, h, rfl⟩, by simp⟩`.
+
+Conclude with `⟨(c - x + -c, false), Or.inr ⟨c - x, h, rfl⟩, by simp⟩`.
+-/
 theorem mem_dualPar_signed {l₁ l₂ : List ℚ} {c x : ℚ} {b : Bool} :
     (x, b) ∈ dualPar (signed l₁ l₂ (-c)) ↔ (b = true ∧ c - x ∈ l₁) ∨ (b = false ∧ c - x ∈ l₂) := by
   simp only [dualPar, GlobalTheory.Chain.signed, Finset.mem_image, Finset.mem_union, List.mem_toFinset, List.mem_map]
@@ -76,6 +107,13 @@ theorem mem_dualPar_signed {l₁ l₂ : List ℚ} {c x : ℚ} {b : Bool} :
     · exact ⟨(c - x + -c, true), Or.inl ⟨c - x, h, rfl⟩, by simp⟩
     · exact ⟨(c - x + -c, false), Or.inr ⟨c - x, h, rfl⟩, by simp⟩
 
+/- English proof (translation)
+Use extensionality with `⟨x, b⟩`. Rewrite using `[mem_dualPar_signed]`. Simplify using `only [List.mem_append, mem_desc, mem_lowS, mem_highS, mem_negS, List.nil_append, List.not_mem_nil, false_or, sub_sub_cancel]`. Consider the cases of `b`. Simplify using the standard rewrite rules.
+
+Use `hc (x, true)` as an intermediate fact. Simplify using `only [true_and, Bool.true_eq_false, false_and, or_false]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h`. Introduce `h`.
+
+Break down `lt_or_gt_of_ne (this h) with h' | h'` into its components or cases. Conclude with `Or.inl ⟨h, h'⟩`. Conclude with `Or.inr ⟨h, h'⟩`.
+-/
 theorem recon_left (S : SPar) (c : ℚ) (hc : ∀ p ∈ S, p.1 ≠ c) :
     dualPar (signed (desc (lowS S c) ++ desc (highS S c)) ([] ++ desc (negS S c)) (-c)) = S := by
   ext ⟨x, b⟩
@@ -93,6 +131,9 @@ theorem recon_left (S : SPar) (c : ℚ) (hc : ∀ p ∈ S, p.1 ≠ c) :
       · exact Or.inl ⟨h, h'⟩
       · exact Or.inr ⟨h, h'⟩
 
+/- English proof (translation)
+Use extensionality with `⟨x, b⟩`. Rewrite using `[mem_dualPar_signed, h]`. Simplify using `only [List.mem_append, mem_desc, mem_lowS, mem_highS, mem_negS, List.nil_append, sub_sub_cancel, or_assoc]`.
+-/
 theorem recon_right (S S' : SPar) (c : ℚ) (B : List ℚ)
     (h : ∀ x b, (x, b) ∈ S' ↔ (b = true ∧ (((x, true) ∈ S ∧ x < c) ∨ c - x ∈ B ∨ (x, false) ∈ S)) ∨
       (b = false ∧ (x, true) ∈ S ∧ c < x)) :
@@ -106,21 +147,41 @@ end GlobalTheory.NegPair
 namespace GlobalTheory.NegPair
 open GlobalTheory.Grid
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Grid.isLeast_gap D).1.2.1`.
+-/
 theorem gap_big (D : D7) : 2 * GlobalTheory.Grid.bigN D ^ 3 + 2 * GlobalTheory.Grid.sLen D + 2 < GlobalTheory.Grid.gap D := (GlobalTheory.Grid.isLeast_gap D).1.2.1
 
+/- English proof (translation)
+Unfold `GlobalTheory.Grid.sLen`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sLen_ge (D : D7) : 6 ≤ GlobalTheory.Grid.sLen D := by unfold GlobalTheory.Grid.sLen; omega
 
+/- English proof (translation)
+Conclude with `gap_big D` after adjusting the coercions.
+-/
 theorem gapQ (D : D7) : 2 * (GlobalTheory.Grid.bigN D : ℚ) ^ 3 + 2 * GlobalTheory.Grid.sLen D + 2 < GlobalTheory.Grid.gap D := by exact_mod_cast gap_big D
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_sub (by have := sLen_ge D; omega)]; simp`.
+-/
 theorem sLen_sub_one (D : D7) : ((GlobalTheory.Grid.sLen D - 1 : ℕ) : ℚ) = (GlobalTheory.Grid.sLen D : ℚ) - 1 := by
   rw [Nat.cast_sub (by have := sLen_ge D; omega)]; simp
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.Grid.grid D τ).a_sub_a l l'`. Establish `h2 : (0 : ℚ) ≤ ((l' : ℚ) - l) * (GlobalTheory.Grid.grid D τ).ga` using `mul_nonneg (sub_nonneg.2 (by exact_mod_cast h)) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem a_le_a (D : D7) (τ : D.what₂.Tau) {l l' : ℕ} (h : l ≤ l') : (GlobalTheory.Grid.grid D τ).a l' ≤ (GlobalTheory.Grid.grid D τ).a l := by
   have h1 := (GlobalTheory.Grid.grid D τ).a_sub_a l l'
   have h2 : (0 : ℚ) ≤ ((l' : ℚ) - l) * (GlobalTheory.Grid.grid D τ).ga :=
     mul_nonneg (sub_nonneg.2 (by exact_mod_cast h)) (by positivity)
   linarith
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.Grid.grid D τ).a_sub_a l l'`. Establish `h3 : (1 : ℚ) ≤ (l' : ℚ) - l`. Establish `: ((l + 1 : ℕ) : ℚ) ≤ l'` using `by exact_mod_cast h`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : (GlobalTheory.Grid.gap D : ℚ) ≤ ((l' : ℚ) - l) * (GlobalTheory.Grid.grid D τ).ga`. Express the relevant statement in the definitionally equal form `(GlobalTheory.Grid.gap D : ℚ) ≤ ((l' : ℚ) - l) * (GlobalTheory.Grid.gap D : ℚ)`. Use polynomial arithmetic with `[(Nat.cast_nonneg (GlobalTheory.Grid.gap D) : (0 : ℚ) ≤ GlobalTheory.Grid.gap D)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem a_add_le (D : D7) (τ : D.what₂.Tau) {l l' : ℕ} (h : l < l') :
     (GlobalTheory.Grid.grid D τ).a l' + (GlobalTheory.Grid.gap D : ℚ) ≤ (GlobalTheory.Grid.grid D τ).a l := by
   have h1 := (GlobalTheory.Grid.grid D τ).a_sub_a l l'
@@ -132,12 +193,22 @@ theorem a_add_le (D : D7) (τ : D.what₂.Tau) {l l' : ℕ} (h : l < l') :
     nlinarith [(Nat.cast_nonneg (GlobalTheory.Grid.gap D) : (0 : ℚ) ≤ GlobalTheory.Grid.gap D)]
   linarith
 
+/- English proof (translation)
+The claim follows from `|((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ) - ((GlobalTheory.Grid.grid D τ).a l + (GlobalTheory.Grid.gap D : ℚ) / 2)| ≤ 1 := by have := GlobalTheory.Grid.grid_nearMid D τ l (Finset.mem_Icc.2 ⟨h1, h2⟩) rw [GlobalTheory.SignedHC.GridData.mid_eq _ h1] at this exact this`.
+-/
 theorem cen_near (D : D7) (τ : D.what₂.Tau) {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) :
     |((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ) - ((GlobalTheory.Grid.grid D τ).a l + (GlobalTheory.Grid.gap D : ℚ) / 2)| ≤ 1 := by
   have := GlobalTheory.Grid.grid_nearMid D τ l (Finset.mem_Icc.2 ⟨h1, h2⟩)
   rw [GlobalTheory.SignedHC.GridData.mid_eq _ h1] at this
   exact this
 
+/- English proof (translation)
+Take `⟨i', h2, hk, rfl⟩` from `GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 hy`. Establish `hv : (GlobalTheory.Grid.grid D τ).v i' ≤ (GlobalTheory.Grid.grid D τ).v 2`. Break down `eq_or_lt_of_le h2 with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `le_rfl`.
+
+Conclude with `((GlobalTheory.Grid.grid D τ).v_anti 2 i' le_rfl h hk).le`. Establish `ha` using `(GlobalTheory.Grid.grid D τ).a_m`. Establish `hv' : ((GlobalTheory.Grid.grid D τ).v i' : ℚ) ≤ (GlobalTheory.Grid.grid D τ).v 2` using `by exact_mod_cast hv`. Unfold `GlobalTheory.SignedHC.GridData.vHalf`. Express the relevant statement in the definitionally equal form `_ ≤ (GlobalTheory.Grid.grid D τ).a (GlobalTheory.Grid.grid D τ).m`.
+
+Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `_ ≤ _ + ((GlobalTheory.Grid.gap D : ℕ) : ℚ) + _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cloudHalf_lt (D : D7) (τ : D.what₂.Tau) {y : ℚ} (hy : y ∈ (GlobalTheory.Grid.grid D τ).cloudHalf) :
     y + (GlobalTheory.Grid.gap D : ℚ) + 1 ≤ (GlobalTheory.Grid.grid D τ).a D.R.m := by
   obtain ⟨i', h2, hk, rfl⟩ := GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 hy
@@ -153,12 +224,22 @@ theorem cloudHalf_lt (D : D7) (τ : D.what₂.Tau) {y : ℚ} (hy : y ∈ (Global
   change _ ≤ _ + ((GlobalTheory.Grid.gap D : ℕ) : ℚ) + _
   linarith
 
+/- English proof (translation)
+Take `⟨a', ha', rfl⟩` from `Finset.mem_image.1 h`. Establish `: (a' : ℚ) + 1 ≤ len` using `by exact_mod_cast (Finset.mem_range.1 ha')`. Establish `h0 : (0 : ℚ) ≤ a'` using `Nat.cast_nonneg a'`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+-/
 theorem mem_blockTP {c y : ℚ} {len : ℕ} (h : y ∈ TPar.block c len) : |y - c| ≤ ((len : ℚ) - 1) / 2 := by
   obtain ⟨a', ha', rfl⟩ := Finset.mem_image.1 h
   have : (a' : ℚ) + 1 ≤ len := by exact_mod_cast (Finset.mem_range.1 ha')
   have h0 : (0 : ℚ) ≤ a' := Nat.cast_nonneg a'
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Unfold `block TPar.block`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m', hm, he⟩`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hm`.
+
+Use `⟨d, by omega, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at he ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨a', ha, he⟩`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt ha`.
+
+Use `⟨d, by omega, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at he ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem block_sym {c x : ℚ} {len : ℕ} : c - x ∈ block len ↔ x ∈ TPar.block c len := by
   unfold block TPar.block
   simp
@@ -172,6 +253,19 @@ theorem block_sym {c x : ℚ} {len : ℕ} : c - x ∈ block len ↔ x ∈ TPar.b
     refine ⟨d, by omega, ?_⟩
     push_cast at he ⊢; linarith
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Establish `hm : (GlobalTheory.Grid.grid D τ).m = D.R.m` using `rfl`. Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 hp with ⟨l, hl, rfl⟩ | ⟨hc, h2⟩ | ⟨l, hl1, hl2, hb, h2⟩` into its components or cases.
+
+Rewrite `hl`, the goal using `[hm]`. Distinguish the cases in `hlj : D.R.m - i ≤ l`. Use the proof step `left; exact ⟨a_le_a D τ hlj, by simp [hlj]⟩`. Use the proof step `right; exact ⟨l, by omega, rfl, by simp [hlj]⟩`. Use `left`.
+
+Use `⟨?_, h2⟩` and prove the remaining obligations. Establish `h1` using `cloudHalf_lt D τ hc`. Establish `h3` using `a_le_a D τ (show D.R.m - i ≤ D.R.m by omega)`. Establish `: (0 : ℚ) ≤ GlobalTheory.Grid.gap D` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `left`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite `hl1`, `hl2` using `[hm]`. Establish `hb'` using `mem_blockTP hb`. Express the relevant statement in the definitionally equal form `|p.1 - ((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ)| ≤ (((GlobalTheory.Grid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 at hb'`.
+
+Rewrite `hb'` using `[sLen_sub_one]`. Establish `hc` using `cen_near D τ (by omega : 1 ≤ l) hl2`. Establish `h3` using `a_le_a D τ (show D.R.m - i + 1 ≤ l from hl1)`. Establish `h4` using `(GlobalTheory.Grid.grid D τ).a_eq_succ_add (D.R.m - i)`. Express the relevant statement in the definitionally equal form `_ = _ + ((GlobalTheory.Grid.gap D : ℕ) : ℚ) at h4`.
+
+Rewrite `hb'`, `hc` using `[abs_le]`. Combine the linear relations using `[hb'.2, hc.2]`.
+-/
 theorem loc (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ × Bool} (hp : p ∈ (GlobalTheory.Grid.grid D τ).parPi i) :
     (p.1 ≤ (GlobalTheory.Grid.grid D τ).a (D.R.m - i) ∧ p.2 = true) ∨
       ∃ l < D.R.m - i, p.1 = (GlobalTheory.Grid.grid D τ).a l ∧ p.2 = decide (Even (D.R.m - i - l)) := by
@@ -206,6 +300,13 @@ end GlobalTheory.NegPair
 namespace GlobalTheory.NegPair
 open GlobalTheory.Grid
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Establish `hb'` using `mem_blockTP hb`. Express the relevant statement in the definitionally equal form `|x - ((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ)| ≤ (((GlobalTheory.Grid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 at hb'`.
+
+Rewrite `hb'` using `[sLen_sub_one]`. Establish `hc` using `cen_near D τ (by omega : 1 ≤ l) hl2`. Establish `h3` using `a_le_a D τ hl1`. Establish `h4` using `(GlobalTheory.Grid.grid D τ).a_eq_succ_add j`. Express the relevant statement in the definitionally equal form `_ = _ + ((GlobalTheory.Grid.gap D : ℕ) : ℚ) at h4`.
+
+Rewrite `hb'`, `hc` using `[abs_le]`. Combine the linear relations using `[hb'.2, hc.2]`.
+-/
 theorem blockC'_le (D : D7) (τ : D.what₂.Tau) {j l : ℕ} {x : ℚ} (hl1 : j + 1 ≤ l) (hl2 : l ≤ D.R.m)
     (hb : x ∈ (GlobalTheory.Grid.grid D τ).blockC' l) : x ≤ (GlobalTheory.Grid.grid D τ).a j := by
   have hg := gapQ D
@@ -221,6 +322,9 @@ theorem blockC'_le (D : D7) (τ : D.what₂.Tau) {j l : ℕ} {x : ℚ} (hl1 : j 
   rw [abs_le] at hb' hc
   linarith [hb'.2, hc.2]
 
+/- English proof (translation)
+Establish `hc` using `cen_near D τ (by omega : 1 ≤ D.R.m - i) (by omega)`. Rewrite `hc` using `[abs_le]`. Use `⟨by linarith [hc.1], by linarith [hc.2], ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Grid.grid D τ).a_pred (by omega)`.
+-/
 theorem cen_bounds (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) :
     (GlobalTheory.Grid.grid D τ).a (D.R.m - i) + (GlobalTheory.Grid.gap D : ℚ) / 2 - 1 ≤ ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) ∧
     ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) ≤ (GlobalTheory.Grid.grid D τ).a (D.R.m - i) + (GlobalTheory.Grid.gap D : ℚ) / 2 + 1 ∧
@@ -230,6 +334,53 @@ theorem cen_bounds (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) :
   refine ⟨by linarith [hc.1], by linarith [hc.2], ?_⟩
   exact (GlobalTheory.Grid.grid D τ).a_pred (by omega)
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Take `⟨hcl, hcu, hj1⟩` from `cen_bounds D τ hi`. Establish `hm : (GlobalTheory.Grid.grid D τ).m = D.R.m` using `rfl`.
+
+Establish `e1 : D.R.m - (i + 1) = D.R.m - i - 1` using `by omega`. Establish `e2 : D.R.m - (i + 1) + 1 = D.R.m - i` using `by omega`. Establish `below : ∀ l, (GlobalTheory.Grid.grid D τ).a l < ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) → D.R.m - i ≤ l`. Introduce `l hl`. Assume the negation of the conclusion as `h`.
+
+Use `a_le_a D τ (show l ≤ D.R.m - i - 1 by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `above : ∀ l, ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) < (GlobalTheory.Grid.grid D τ).a l → l < D.R.m - i`. Introduce `l hl`. Assume the negation of the conclusion as `h`.
+
+Use `a_le_a D τ (show D.R.m - i ≤ l by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `lowj : ∀ y, y ≤ (GlobalTheory.Grid.grid D τ).a (D.R.m - i) → y < ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)`. Introduce `y hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `cl : ∀ y ∈ (GlobalTheory.Grid.grid D τ).cloudHalf, y ≤ (GlobalTheory.Grid.grid D τ).a (D.R.m - i)`. Introduce `y hy`. Establish `h1` using `cloudHalf_lt D τ hy`. Establish `h3` using `a_le_a D τ (show D.R.m - i ≤ D.R.m by omega)`. Establish `: (0 : ℚ) ≤ GlobalTheory.Grid.gap D` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 h with ⟨l, hl, he⟩ | ⟨hc, h2⟩ | ⟨l, hl1, hl2, hb, h2⟩` into its components or cases. Simplify using `only [Prod.mk.injEq] at he`.
+
+Take `⟨rfl, rfl⟩` from `he`. Rewrite `hl`, the goal using `[hm]`. Rewrite using `[e1]`. Distinguish the cases in `hlj : D.R.m - i ≤ l`. Use `left`.
+
+Use `⟨by simp; omega, Or.inl ⟨GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, ?_⟩), lowj _ (a_le_a D τ hlj)⟩⟩` and prove the remaining obligations. Simplify using `[hm, hlj]`. Distinguish the cases in `hl1 : l = D.R.m - i - 1`. Substitute `hl1 left` using the available equality. Use `⟨by simp, Or.inr (Or.inr (GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨_, hl, ?_⟩)))⟩` and prove the remaining obligations.
+
+Establish `: D.R.m - i - (D.R.m - i - 1) = 1` using `by omega`. Simplify using `[hm, hlj, this]`. Establish `hpar : D.R.m - i - l = (D.R.m - i - 1 - l) + 1` using `by omega`. Distinguish the cases in `hev : Even (D.R.m - i - 1 - l)`. Use `left`.
+
+Use `⟨by simp [hev], Or.inr (Or.inr (GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, ?_⟩)))⟩` and prove the remaining obligations. Simplify using `[hm, hlj, hpar, Nat.even_add_one, hev]`. Use `right`. Use `⟨by simp [hev]; omega, GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, ?_⟩), ?_⟩` and prove the remaining obligations. Simplify using `[hm, hlj, hpar, Nat.even_add_one, hev]`.
+
+Use `a_le_a D τ (show l ≤ D.R.m - i - 1 by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x, b⟩` from `(⟨x, b⟩ : ℚ × Bool)`. Simplify using `only at hc h2`. Substitute `h2` using the available equality.
+
+Use `left`. Conclude with `⟨rfl, Or.inl ⟨GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inl ⟨hc, rfl⟩)), lowj _ (cl _ hc)⟩⟩`. Simplify using `only at hb h2`. Substitute `h2` using the available equality. Rewrite `hl1` using `[hm, e2]`.
+
+Rewrite `hl2` using `[hm]`. Use `left`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hl1 with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Conclude with `Or.inr (Or.inl (block_sym.2 hb))`. Use `Or.inl ⟨GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inr ⟨l, by rw [hm]; omega, by rw [hm]; exact hl2, hb, rfl⟩)), ?_⟩` and prove the remaining obligations. Conclude with `lowj _ (blockC'_le D τ (by omega) hl2 hb)`. Introduce and unpack `(⟨rfl, (⟨h, hx⟩ | h | h)⟩ | ⟨rfl, h, hx⟩)`. Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 h with ⟨l, hl, he⟩ | ⟨hc, _⟩ | ⟨l, hl1, hl2, hb, _⟩` into its components or cases.
+
+Simplify using `only [Prod.mk.injEq] at he`. Take `⟨rfl, -⟩` from `he`. Use `below l hx` as an intermediate fact. Conclude with `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, by rw [hm] at hl ⊢; simp; omega⟩)`. Conclude with `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inl ⟨hc, rfl⟩))`.
+
+Rewrite `hl1`, `hl2` using `[hm]`. Conclude with `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inr ⟨l, by rw [hm]; omega, by rw [hm]; exact hl2, hb, rfl⟩))`. Conclude with `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inr ⟨D.R.m - i, by rw [hm]; omega, by rw [hm]; omega, block_sym.1 h, rfl⟩))`. Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 h with ⟨l, hl, he⟩ | ⟨hc, h2⟩ | ⟨l, hl1, hl2, hb, h2⟩` into its components or cases. Simplify using `only [Prod.mk.injEq] at he`.
+
+Take `⟨rfl, he⟩` from `he`. Rewrite `hl`, `he` using `[hm]`. Establish `h1 : ¬ (D.R.m - i ≤ l)` using `by intro h'; simp [h'] at he`. Establish `h2 : ¬ Even (D.R.m - i - l)` using `by intro h'; simp [h'] at he`. Use `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[hm, e1]`. Distinguish the cases in `hl1 : l = D.R.m - i - 1`. Simplify using `[hl1]`. Establish `hpar : D.R.m - i - l = (D.R.m - i - 1 - l) + 1` using `by omega`. Rewrite `h2` using `[hpar, Nat.even_add_one, not_not]`.
+
+Simplify using `[h2]`. Simplify using `at h2`. Simplify using `at h2`. Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 h with ⟨l, hl, he⟩ | ⟨hc, h2⟩ | ⟨l, hl1, hl2, hb, h2⟩` into its components or cases. Simplify using `only [Prod.mk.injEq] at he`.
+
+Take `⟨rfl, he⟩` from `he`. Rewrite `hl`, `he` using `[hm]`. Establish `hl'` using `above l hx`. Establish `h1 : ¬ (D.R.m - i ≤ l)` using `by omega`. Establish `h2 : Even (D.R.m - i - l)`.
+
+Assume the negation of the conclusion as `h'`. Simplify using `[h1, h'] at he`. Use `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inl ⟨l, hl, ?_⟩)` and prove the remaining obligations. Rewrite using `[hm, e1]`. Establish `hl1 : ¬ (D.R.m - i - 1 ≤ l)`.
+
+Introduce `h'`. Establish `: D.R.m - i - l = 1` using `by omega`. Rewrite using `[this] at h2; exact absurd h2 (by decide)`. Establish `hpar : D.R.m - i - l = (D.R.m - i - 1 - l) + 1` using `by omega`. Rewrite `h2` using `[hpar, Nat.even_add_one]`.
+
+Simplify using `[hl1, h2]`. It suffices to derive a contradiction. Use `lowj _ (cl _ hc)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hm] at hl1 hl2 exfalso; have := lowj _ (blockC'_le D τ (by omega) hl2 hb); linarith`.
+-/
 theorem mem_next (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) (x : ℚ) (b : Bool) :
     (x, b) ∈ (GlobalTheory.Grid.grid D τ).parPi (i + 1) ↔
       (b = true ∧ (((x, true) ∈ (GlobalTheory.Grid.grid D τ).parPi i ∧ x < ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)) ∨
@@ -357,6 +508,11 @@ end GlobalTheory.NegPair
 namespace GlobalTheory.NegPair
 open GlobalTheory.Grid
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use `⟨a + b - 1, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Grid.sLen Formalism.BasicNotions.Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sLen_odd (D : D7) : ∃ q : ℕ, GlobalTheory.Grid.sLen D = 2 * q + 7 := by
   obtain ⟨a, ha⟩ := D.R.k_even
   obtain ⟨b, hb⟩ := D.R.m_even
@@ -365,6 +521,15 @@ theorem sLen_odd (D : D7) : ∃ q : ℕ, GlobalTheory.Grid.sLen D = 2 * q + 7 :=
   unfold GlobalTheory.Grid.sLen Formalism.BasicNotions.Ranks.r
   omega
 
+/- English proof (translation)
+Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 hp with ⟨l, hl, rfl⟩ | ⟨hc, _⟩ | ⟨l, hl1, hl2, hb, _⟩` into its components or cases. Use `⟨(GlobalTheory.Grid.grid D τ).v 2 + (((GlobalTheory.Grid.grid D τ).m : ℤ) + 1 - l) * (GlobalTheory.Grid.grid D τ).ga, ?_⟩ dsimp only` and prove the remaining obligations. Unfold `GlobalTheory.SignedHC.GridData.a`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨i', -, -, he⟩` from `GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 hc`. Use `⟨(GlobalTheory.Grid.grid D τ).v i' - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Unfold `GlobalTheory.SignedHC.GridData.vHalf`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨q, hq⟩` from `sLen_odd D`. Take `⟨a', -, he⟩` from `Finset.mem_image.1 hb`. Use `⟨GlobalTheory.Grid.cen D τ l + q + 2 - a', ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+
+Express the relevant statement in the definitionally equal form `((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ) + (((GlobalTheory.Grid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 - a' = _`. Rewrite using `[sLen_sub_one, hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_int (D : D7) (τ : D.what₂.Tau) {i : ℕ} {p : ℚ × Bool} (hp : p ∈ (GlobalTheory.Grid.grid D τ).parPi i) :
     ∃ z : ℤ, p.1 = z + 1 / 2 := by
   rcases GlobalTheory.SignedHC.GridData.mem_parPi.1 hp with ⟨l, hl, rfl⟩ | ⟨hc, _⟩ | ⟨l, hl1, hl2, hb, _⟩
@@ -382,6 +547,11 @@ theorem half_int (D : D7) (τ : D.what₂.Tau) {i : ℕ} {p : ℚ × Bool} (hp :
     change ((GlobalTheory.Grid.cen D τ l : ℤ) : ℚ) + (((GlobalTheory.Grid.sLen D - 1 : ℕ) : ℚ) - 1) / 2 - a' = _
     rw [sLen_sub_one, hq]; push_cast; ring
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Take `⟨hcl, hcu, hj1⟩` from `cen_bounds D τ hi`. Break down `loc D τ hi hp with ⟨h1, _⟩ | ⟨l, hl, h1, h2⟩` into its components or cases.
+
+It suffices to derive a contradiction. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨l, hl, h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(a_add_le D τ hl)`.
+-/
 theorem high (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ × Bool} (hp : p ∈ (GlobalTheory.Grid.grid D τ).parPi i)
     (hc : ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) < p.1) : ∃ l < D.R.m - i, p.1 = (GlobalTheory.Grid.grid D τ).a l ∧ p.2 = decide (Even (D.R.m - i - l)) ∧
       (GlobalTheory.Grid.grid D τ).a (D.R.m - i) + (GlobalTheory.Grid.gap D : ℚ) ≤ p.1 := by
@@ -394,6 +564,11 @@ theorem high (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ �
   · refine ⟨l, hl, h1, h2, ?_⟩
     rw [h1]; exact (a_add_le D τ hl)
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Take `⟨hcl, hcu, hj1⟩` from `cen_bounds D τ hi`. Break down `loc D τ hi hp with h | ⟨l, hl, h1, h2⟩` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Use `a_add_le D τ hl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem low (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ × Bool} (hp : p ∈ (GlobalTheory.Grid.grid D τ).parPi i)
     (hc : p.1 < ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)) : p.1 ≤ (GlobalTheory.Grid.grid D τ).a (D.R.m - i) ∧ p.2 = true := by
   have hg := gapQ D
@@ -406,6 +581,11 @@ theorem low (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ ×
     have := a_add_le D τ hl
     linarith
 
+/- English proof (translation)
+Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Take `⟨hcl, hcu, hj1⟩` from `cen_bounds D τ hi`. Break down `loc D τ hi hp with ⟨h1, _⟩ | ⟨l, hl, h1, h2⟩` into its components or cases.
+
+Rewrite using `[abs_of_nonneg (by linarith)]; linarith`. Use `a_add_le D τ hl` as an intermediate fact. Rewrite using `[abs_of_nonpos (by linarith)]; linarith`.
+-/
 theorem far (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ × Bool} (hp : p ∈ (GlobalTheory.Grid.grid D τ).parPi i) :
     (GlobalTheory.Grid.gap D : ℚ) / 2 - 1 ≤ |((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) - p.1| := by
   have hg := gapQ D
@@ -417,6 +597,15 @@ theorem far (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {p : ℚ ×
   · have := a_add_le D τ hl
     rw [abs_of_nonpos (by linarith)]; linarith
 
+/- English proof (translation)
+Break down `loc D τ hi hx' with ⟨-, h⟩ | ⟨l', hl', h1', h2'⟩` into its components or cases. Simplify using `at h`. Simplify using `only at h1' h2'`. Break down `loc D τ hi hx with ⟨h1, -⟩ | ⟨l, hl, h1, h2⟩` into its components or cases. Use `a_add_le D τ hl'` as an intermediate fact.
+
+Simplify using `only at h1`. Rewrite using `[abs_sub_comm, abs_of_nonneg (by linarith)]; linarith`. Simplify using `only at h1 h2`. Establish `hne : l ≠ l'`. Introduce and unpack `rfl`.
+
+Rewrite `h2` using `[← h2']`. Conclude with `absurd h2 (by decide)`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Use `a_add_le D τ h` as an intermediate fact. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`.
+
+Use `a_add_le D τ h` as an intermediate fact. Rewrite using `[abs_sub_comm, abs_of_nonneg (by linarith)]; linarith`.
+-/
 theorem sep (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {x x' : ℚ} (hx : (x, true) ∈ (GlobalTheory.Grid.grid D τ).parPi i)
     (hx' : (x', false) ∈ (GlobalTheory.Grid.grid D τ).parPi i) : (GlobalTheory.Grid.gap D : ℚ) ≤ |x - x'| := by
   rcases loc D τ hi hx' with ⟨-, h⟩ | ⟨l', hl', h1', h2'⟩
@@ -437,6 +626,13 @@ theorem sep (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) {x x' : ℚ
       · have := a_add_le D τ h
         rw [abs_sub_comm, abs_of_nonneg (by linarith)]; linarith
 
+/- English proof (translation)
+Establish `h1` using `Finset.card_image_le (s := S.filter fun p => p.2 = true ∧ p.1 < c) (f := fun p => c - p.1)`. Establish `h2` using `Finset.card_image_le (s := S.filter fun p => p.2 = true ∧ c < p.1) (f := fun p => c - p.1)`. Establish `h3` using `Finset.card_image_le (s := S.filter fun p => p.2 = false) (f := fun p => c - p.1)`. Establish `h4 : (S.filter fun p => p.2 = true ∧ p.1 < c).card + (S.filter fun p => p.2 = true ∧ c < p.1).card + (S.filter fun p => p.2 = false).card ≤ S.card`. Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+
+Combine the equalities or inequalities in the displayed calculation. Break down `p with ⟨x, b⟩` into its components or cases. Consider the cases of `b`. Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases h : x < c <;> by_cases h' : c < x <;> simp [h, h'] <;> linarith`.
+
+Use `_ = S.card := by simp`. Unfold `lowS highS negS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_three (S : SPar) (c : ℚ) :
     (lowS S c).card + (highS S c).card + (negS S c).card ≤ S.card := by
   have h1 := Finset.card_image_le (s := S.filter fun p => p.2 = true ∧ p.1 < c) (f := fun p => c - p.1)
@@ -455,6 +651,13 @@ theorem card_three (S : SPar) (c : ℚ) :
   unfold lowS highS negS
   omega
 
+/- English proof (translation)
+Establish `hm : (GlobalTheory.Grid.grid D τ).m = D.R.m` using `rfl`. Establish `hk : (GlobalTheory.Grid.grid D τ).k = D.R.k` using `rfl`. Unfold `GlobalTheory.SignedHC.GridData.parPi GlobalTheory.SignedHC.plus`. Rewrite using `[hm]`. Use `(Finset.card_union_le _ _).trans ?_` and prove the remaining obligations.
+
+Use `(Nat.add_le_add_right (Finset.card_union_le _ _) _).trans ?_` and prove the remaining obligations. Establish `h1` using `(Finset.card_image_le (s := Finset.range (D.R.m + 1)) (f := fun l => ((GlobalTheory.Grid.grid D τ).a l, decide (D.R.m - i ≤ l ∨ Even (D.R.m - i - l))))).trans (Finset.card_range _).le`. Establish `h2` using `(Finset.card_image_le (s := (GlobalTheory.Grid.grid D τ).cloudHalf) (f := fun x => (x, true))).trans ((Finset.card_image_le (s := Finset.Icc 2 (GlobalTheory.Grid.grid D τ).k)).trans (Nat.card_Icc 2 _).le)`. Establish `h3` using `(Finset.card_image_le (s := (Finset.Icc (D.R.m - i + 1) D.R.m).biUnion (GlobalTheory.Grid.grid D τ).blockC') (f := fun x => (x, true))).trans ((Finset.card_biUnion_le).trans (Finset.sum_le_sum (g := fun _ => GlobalTheory.Grid.sLen D - 1) fun l _ => (Finset.card_image_le).trans (F …`. Rewrite `h3` using `[Finset.sum_const, Nat.card_Icc, smul_eq_mul]`.
+
+Rewrite `h2` using `[hk]`. Establish `h4 : (D.R.m + 1 - (D.R.m - i + 1)) * (GlobalTheory.Grid.sLen D - 1) ≤ i * (GlobalTheory.Grid.sLen D - 1)` using `Nat.mul_le_mul_right _ (by omega)`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_parPi (D : D7) (τ : D.what₂.Tau) (i : ℕ) :
     ((GlobalTheory.Grid.grid D τ).parPi i).card ≤ D.R.m + D.R.k + i * (GlobalTheory.Grid.sLen D - 1) := by
   have hm : (GlobalTheory.Grid.grid D τ).m = D.R.m := rfl
@@ -485,6 +688,13 @@ end GlobalTheory.NegPair
 namespace GlobalTheory.NegPair
 open GlobalTheory.Grid
 
+/- English proof (translation)
+Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Simplify using `only [Formalism.BasicNotions.TH.ofBlocks]`. Rewrite using `[List.getD_eq_getElem _ _ (by omega), List.getD_eq_getElem _ _ (by omega)]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`.
+
+Simplify using `only [Formalism.BasicNotions.TH.ofBlocks]`. Rewrite using `[List.getD_eq_getElem _ _ (by omega), List.getD_eq_getElem _ _ (by omega)]`. Use `H _ (List.getElem_mem (l := l₁) (n := (b : ℕ)) (by omega)) _ (List.getElem_mem (l := l₂) (n := (a : ℕ)) (by omega))` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[abs_sub_comm]` and apply the resulting hypothesis.
+
+Conclude with `(hab trivial).elim`.
+-/
 theorem gapGt_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} {h : ℝ} (hp : p ≤ l₁.length) (hq : q ≤ l₂.length)
     (H : ∀ y ∈ l₁, ∀ y' ∈ l₂, h < |((y - y' : ℚ) : ℝ)|) :
     Formalism.BasicNotions.TH.GapGt (Formalism.BasicNotions.TH.ofBlocks l₁ l₂ : Formalism.BasicNotions.TH.Ix p q → ℚ) h := by
@@ -500,6 +710,13 @@ theorem gapGt_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} {h : ℝ} (hp : p ≤ 
     rwa [abs_sub_comm]
   · exact (hab trivial).elim
 
+/- English proof (translation)
+Introduce and unpack `(a | a) (b | b) hab`. Conclude with `(hab trivial).elim`. Simplify using `only [Formalism.BasicNotions.TH.ofBlocks]`. Rewrite using `[List.getD_eq_getElem _ _ (by omega), List.getD_eq_getElem _ _ (by omega)]`. Conclude with `H _ (List.getElem_mem _) _ (List.getElem_mem _)`.
+
+Simplify using `only [Formalism.BasicNotions.TH.ofBlocks]`. Rewrite using `[List.getD_eq_getElem _ _ (by omega), List.getD_eq_getElem _ _ (by omega)]`. Use `H _ (List.getElem_mem (l := l₁) (n := (b : ℕ)) (by omega)) _ (List.getElem_mem (l := l₂) (n := (a : ℕ)) (by omega))` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[abs_sub_comm]` and apply the resulting hypothesis.
+
+Conclude with `(hab trivial).elim`.
+-/
 theorem gapGe_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} {h : ℝ} (hp : p ≤ l₁.length) (hq : q ≤ l₂.length)
     (H : ∀ y ∈ l₁, ∀ y' ∈ l₂, h ≤ |((y - y' : ℚ) : ℝ)|) :
     Formalism.BasicNotions.TH.GapGe (Formalism.BasicNotions.TH.ofBlocks l₁ l₂ : Formalism.BasicNotions.TH.Ix p q → ℚ) h := by
@@ -515,6 +732,11 @@ theorem gapGe_ofBlocks {p q : ℕ} {l₁ l₂ : List ℚ} {h : ℝ} (hp : p ≤ 
     rwa [abs_sub_comm]
   · exact (hab trivial).elim
 
+/- English proof (translation)
+Unfold `block at h`. Simplify using `at h`. Take `⟨a', ha, rfl⟩` from `h`. Establish `: (a' : ℚ) + 1 ≤ len` using `by exact_mod_cast ha`. Establish `h0 : (0 : ℚ) ≤ a'` using `Nat.cast_nonneg a'`.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+-/
 theorem abs_le_of_mem_block {y : ℚ} {len : ℕ} (h : y ∈ block len) : |y| ≤ ((len : ℚ) - 1) / 2 := by
   unfold block at h
   simp at h
@@ -523,6 +745,17 @@ theorem abs_le_of_mem_block {y : ℚ} {len : ℕ} (h : y ∈ block len) : |y| �
   have h0 : (0 : ℚ) ≤ a' := Nat.cast_nonneg a'
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Establish `h12 : 12 * D.R.m ≤ GlobalTheory.Grid.bigN D`. Establish `ht` using `D.R.rank_add_five_le`. Establish `hs` using `sLen_ge D`. Unfold `GlobalTheory.Grid.bigN`. Establish `: D.R.m * 12 ≤ D.R.m * (D.R.t + GlobalTheory.Grid.sLen D + 1)` using `Nat.mul_le_mul_left _ (by omega)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hq2 : (q0 : ℝ) ^ ((3 : ℝ) / 2) ≤ (q0 : ℝ) ^ 2`. Break down `Nat.eq_zero_or_pos q0 with h | h` into its components or cases. Substitute `h; rw [Nat.cast_zero, Real.zero_rpow (by norm_num)]; positivity` using the available equality. Establish `: (1 : ℝ) ≤ q0` using `by exact_mod_cast h`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hnR : (n : ℝ) ≤ GlobalTheory.Grid.bigN D` using `by exact_mod_cast hn`. Establish `hqR : (q0 : ℝ) ≤ D.R.m` using `by exact_mod_cast hq`. Establish `h12R : 12 * (D.R.m : ℝ) ≤ GlobalTheory.Grid.bigN D` using `by exact_mod_cast h12`. Establish `hq0 : (0 : ℝ) ≤ q0` using `Nat.cast_nonneg _`.
+
+Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hqq : (q0 : ℝ) ^ 2 * 144 ≤ (GlobalTheory.Grid.bigN D : ℝ) ^ 2` using `by nlinarith`. Establish `hp : (0 : ℝ) ≤ (q0 : ℝ) ^ ((3 : ℝ) / 2)` using `by positivity`. Establish `hN0 : (0 : ℝ) ≤ GlobalTheory.Grid.bigN D` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_le (D : D7) {n q0 : ℕ} (hn : n ≤ GlobalTheory.Grid.bigN D) (hq : q0 ≤ D.R.m) :
     120 * (n : ℝ) * (q0 : ℝ) ^ ((3 : ℝ) / 2) ≤ 2 * (GlobalTheory.Grid.bigN D : ℝ) ^ 3 := by
   have h12 : 12 * D.R.m ≤ GlobalTheory.Grid.bigN D := by
@@ -550,6 +783,11 @@ theorem coef_le (D : D7) {n q0 : ℕ} (hn : n ≤ GlobalTheory.Grid.bigN D) (hq 
         gcongr
     _ ≤ 2 * (GlobalTheory.Grid.bigN D : ℝ) ^ 3 := by nlinarith
 
+/- English proof (translation)
+Establish `hsub : negS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) ⊆ (Finset.range (D.R.m - i)).image fun l => ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) - (GlobalTheory.Grid.grid D τ).a l`. Introduce `y hy`. Rewrite `hy` using `[mem_negS]`. Break down `loc D τ hi hy with ⟨-, h⟩ | ⟨l, hl, h1, -⟩` into its components or cases. Simplify using `at h`.
+
+Conclude with `Finset.mem_image.2 ⟨l, Finset.mem_range.2 hl, by simp only at h1; linarith⟩`. Conclude with `(Finset.card_le_card hsub).trans (Finset.card_image_le.trans (Finset.card_range _).le)`.
+-/
 theorem card_negS (D : D7) (τ : D.what₂.Tau) {i : ℕ} (hi : i < D.R.m) :
     (negS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)).card ≤ D.R.m - i := by
   have hsub : negS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) ⊆
@@ -566,6 +804,65 @@ end GlobalTheory.NegPair
 namespace GlobalTheory.NegPair
 open GlobalTheory.Grid
 
+/- English proof (translation)
+Introduce `D i hi τ`. Establish `hg` using `gapQ D`. Establish `hs : (6 : ℚ) ≤ GlobalTheory.Grid.sLen D` using `by exact_mod_cast sLen_ge D`. Establish `hN : (0 : ℚ) ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `by positivity`. Take `⟨hcl, hcu, hj1⟩` from `cen_bounds D τ hi`.
+
+Take `⟨q, hq⟩` from `sLen_odd D`. Establish `hne : ∀ p ∈ (GlobalTheory.Grid.grid D τ).parPi i, p.1 ≠ ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)` using `fun p hp h => by`. Use `far D τ hi hp` as an intermediate fact. Rewrite `this` using `[h, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨desc (lowS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)), desc (highS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ)), [], desc (negS ((GlobalTheory.Grid.grid D τ).parPi i) ((GlobalTheory.Grid. …` and prove the remaining obligations. Use `set S := (GlobalTheory.Grid.grid D τ).parPi i with hS`. Use `set c : ℚ := ((GlobalTheory.Grid.cen D τ (D.R.m - i) : ℤ) : ℚ) with hc`. Establish `hlen : (desc (lowS S c)).length + (desc (highS S c)).length + ([] : List ℚ).length + (desc (negS S c)).length + (GlobalTheory.Grid.sLen D - 1) ≤ GlobalTheory.Grid.bigN D`. Simplify using `only [desc_length, List.length_nil, add_zero]`.
+
+Establish `h1` using `card_three S c`. Establish `h2 : S.card ≤ D.R.m + D.R.k + i * (GlobalTheory.Grid.sLen D - 1)` using `card_parPi D τ i`. Establish `h3 : i * (GlobalTheory.Grid.sLen D - 1) + (GlobalTheory.Grid.sLen D - 1) ≤ D.R.m * (GlobalTheory.Grid.sLen D - 1)`. Rewrite using `[← Nat.succ_mul]`. Conclude with `Nat.mul_le_mul_right _ hi`.
+
+Establish `h4 : D.R.m * (GlobalTheory.Grid.sLen D - 1) + D.R.m ≤ D.R.m * (D.R.t + GlobalTheory.Grid.sLen D + 1)`. Rewrite using `[← Nat.mul_succ]; exact Nat.mul_le_mul_left _ (by omega)`. Unfold `GlobalTheory.Grid.bigN`. Use linear arithmetic over natural numbers and integers. Establish `hM : ∀ M : ℕ, M ≤ GlobalTheory.Grid.bigN D → (M : ℚ) ^ 3 < (GlobalTheory.Grid.gap D : ℚ) / 2 - (GlobalTheory.Grid.sLen D : ℚ) / 2`.
+
+Introduce `M hMN`. Establish `: (M : ℚ) ^ 3 ≤ (GlobalTheory.Grid.bigN D : ℚ) ^ 3` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast hMN) 3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hplus : ∀ y ∈ desc (lowS S c) ++ desc (highS S c), (c - y, true) ∈ S`. Introduce `y hy`.
+
+Simplify using `only [List.mem_append, mem_desc, mem_lowS, mem_highS] at hy`. Apply the tactic sequence `rcases hy with ⟨h, _⟩ | ⟨h, _⟩ <;> exact h`. Establish `hminus : ∀ y ∈ [] ++ desc (negS S c), (c - y, false) ∈ S`. Introduce `y hy`. Simplify using `only [List.nil_append, mem_desc, mem_negS] at hy`.
+
+Conclude with `hy`. Establish `hent : ∀ y ∈ desc (lowS S c) ++ desc (highS S c) ++ [] ++ desc (negS S c), ∃ b, (c - y, b) ∈ S`. Introduce `y hy`. Rewrite `hy` using `[List.append_assoc]`. Break down `List.mem_append.1 hy with h | h` into its components or cases.
+
+Conclude with `⟨_, hplus y h⟩`. Conclude with `⟨_, hminus y h⟩`. Establish `hsep : ∀ y ∈ desc (lowS S c) ++ desc (highS S c), ∀ y' ∈ [] ++ desc (negS S c), (GlobalTheory.Grid.gap D : ℚ) ≤ |y - y'|`. Introduce `y hy y' hy'`. Use `sep D τ hi (hplus y hy) (hminus y' hy')` as an intermediate fact.
+
+Rewrite `this` using `[show c - y - (c - y') = y' - y by ring, abs_sub_comm]`. Then use the resulting hypothesis. Use `⟨⟨?_, ?_, desc_pairwise _, desc_pairwise _, List.Pairwise.nil, desc_pairwise _, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `sLen_ge D` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hv : (GlobalTheory.Grid.grid D τ).vHalf 2 ∈ (GlobalTheory.Grid.grid D τ).cloudHalf` using `GlobalTheory.SignedHC.GridData.mem_cloudHalf.2 ⟨2, le_rfl, (GlobalTheory.Grid.grid D τ).two_le_k, rfl⟩`.
+
+Establish `hvS : ((GlobalTheory.Grid.grid D τ).vHalf 2, true) ∈ S` using `GlobalTheory.SignedHC.GridData.mem_parPi.2 (Or.inr (Or.inl ⟨hv, rfl⟩))`. Establish `h1` using `cloudHalf_lt D τ hv`. Establish `h3` using `a_le_a D τ (show D.R.m - i ≤ D.R.m by omega)`. Establish `hmem : c - (GlobalTheory.Grid.grid D τ).vHalf 2 ∈ lowS S c` using `mem_lowS.2 ⟨by rwa [sub_sub_cancel], by`. Establish `: (0 : ℚ) ≤ GlobalTheory.Grid.gap D` using `Nat.cast_nonneg _`.
+
+Use the proof step `linarith⟩`. Use `Finset.card_pos.2 ⟨_, hmem⟩` as an intermediate fact. Simplify using `only [desc_length, List.length_nil]`. Use linear arithmetic over natural numbers and integers. Establish `nd : ∀ T, (desc T).Nodup` using `fun T => (desc_pairwise T).imp fun h => h.ne'`.
+
+Rewrite using `[List.append_nil]`. Use `List.Nodup.append (List.Nodup.append (nd _) (nd _) ?_) (nd _) ?_` and prove the remaining obligations. Introduce `y h1 h2`. Rewrite `h1` using `[mem_desc, mem_lowS]`. Rewrite `h2` using `[mem_desc, mem_highS]`.
+
+Combine the linear relations using `[h1.2, h2.2]`. Introduce `y h1 h2`. Use `hsep y h1 y (by simpa using h2)` as an intermediate fact. Rewrite `this` using `[sub_self, abs_zero]`. Establish `: (0 : ℚ) ≤ GlobalTheory.Grid.gap D` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`. Rewrite `he` using `[List.append_nil, mem_desc, mem_lowS]`. Combine the linear relations using `[he.2]`. Introduce `e he`.
+
+Break down `List.mem_append.1 he with h | h` into its components or cases. Rewrite `h` using `[mem_desc, mem_highS]`. Combine the linear relations using `[h.2]`. Rewrite `h` using `[mem_desc, mem_negS]`. Break down `lt_or_gt_of_ne (hne _ h) with h' | h'` into its components or cases.
+
+Use `(low D τ hi h h').2` as an intermediate fact. Simplify using `at this`. Simplify using `only at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`.
+
+Take `⟨b, hb⟩` from `hent e he`. Take `⟨z, hz⟩` from `half_int D τ hb`. Simplify using `only at hz`. Use `⟨GlobalTheory.Grid.cen D τ (D.R.m - i) - z - q - 4, ?_⟩` and prove the remaining obligations. Rewrite using `[sLen_sub_one, hq]`.
+
+Use `push_cast`. Rewrite `hz` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `e he`. Take `⟨b, hb⟩` from `hent e he`.
+
+Use `far D τ hi hb` as an intermediate fact. Rewrite `this` using `[← hc, sub_sub_cancel]`. Rewrite using `[sLen_sub_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `gapGt_ofBlocks (by simp) (by simp)` to reduce the goal to its premises.
+
+Introduce `y hy y' hy'`. Establish `h1` using `hsep y hy y' hy'`. Establish `h2` using `hM _ hlen`. Establish `h3 : ((((desc (lowS S c)).length + (desc (highS S c)).length + ([] : List ℚ).length + (desc (negS S c)).length + (GlobalTheory.Grid.sLen D - 1) : ℕ) : ℚ)) ^ 3 < |y - y'|` using `by linarith`. Conclude with `h3` after adjusting the coercions.
+
+Apply `gapGt_ofBlocks (by simp [block]; omega) (by simp)` to reduce the goal to its premises. Introduce `y hy y' hy'`. Establish `h2` using `hM _ hlen`. It suffices to establish `h : (GlobalTheory.Grid.gap D : ℚ) / 2 - (GlobalTheory.Grid.sLen D : ℚ) / 2 ≤ |y - y'| by`. Establish `h3 : ((((desc (lowS S c)).length + (desc (highS S c)).length + ([] : List ℚ).length + (desc (negS S c)).length + (GlobalTheory.Grid.sLen D - 1) : ℕ) : ℚ)) ^ 3 < |y - y'|` using `by linarith`.
+
+Conclude with `h3` after adjusting the coercions. Rewrite `hy'` using `[List.nil_append, mem_desc, mem_highS]`. Take `⟨l, hl, -, -, hal⟩` from `high D τ hi hy'.1 hy'.2`. Simplify using `only at hal`. Break down `List.mem_append.1 hy with h | h` into its components or cases.
+
+Break down `List.mem_append.1 h with h | h` into its components or cases. Rewrite `h` using `[mem_desc, mem_lowS]`. Use `(low D τ hi h.1 h.2).1` as an intermediate fact. Simplify using `only at this`. Rewrite using `[abs_of_nonneg (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `abs_le_of_mem_block h` as an intermediate fact. Rewrite `this` using `[sLen_sub_one]`. Rewrite `this` using `[abs_le]`. Rewrite using `[abs_of_nonneg (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[mem_desc, mem_negS]`. Use `sep D τ hi hy'.1 h` as an intermediate fact. Rewrite `this` using `[show c - y' - (c - y) = y - y' by ring]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Apply `gapGe_ofBlocks (by simp) (by simp)` to reduce the goal to its premises. Introduce `y hy y' hy'`. Establish `h1` using `hsep y hy y' hy'`. Establish `hc1` using `coef_le D (n := (desc (lowS S c)).length + (desc (highS S c)).length + ([] : List ℚ).length + (desc (negS S c)).length) (q0 := min ((desc (lowS S c)).length + (desc (highS S c)).length) (([] : List ℚ).length + (desc (negS S c)).length)) (by omega) (by`. Establish `: (negS S c).card ≤ D.R.m - i` using `card_negS D τ hi`.
+
+Simplify using `only [desc_length, List.length_nil, zero_add]`. Use the proof step `omega)`. Establish `h2 : ((GlobalTheory.Grid.bigN D : ℚ) : ℝ) ^ 3 * 2 < ((GlobalTheory.Grid.gap D : ℚ) : ℝ)`. Establish `: (GlobalTheory.Grid.bigN D : ℚ) ^ 3 * 2 < (GlobalTheory.Grid.gap D : ℚ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+
+Establish `h3 : (((GlobalTheory.Grid.gap D : ℚ)) : ℝ) ≤ |((y - y' : ℚ) : ℝ)|`. Rewrite using `[← Rat.cast_abs]`. Conclude with `h1` after adjusting the coercions. Move the coercions through the operations in `at h2 h3 hc1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem params : ∀ (D : D7) (i : ℕ), i < D.R.m → ∀ τ : D.what₂.Tau, ∃ al be ga de : List ℚ,
     Formalism.MainNotions.SchurIrreducible.DataAR (GlobalTheory.Grid.sLen D - 1) al be ga de ∧
     GlobalTheory.Grid.parP D i τ = dualPar (signed (al ++ be) (ga ++ de) (-(GlobalTheory.Grid.cen D τ (D.R.m - i) : ℚ))) ∧

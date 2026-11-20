@@ -9,6 +9,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G] {Γ : Subgroup G} [DiscreteTopology Γ] {μ : Measure G}
   [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+Rewrite using `[right_translate_toL2]`. Use `(h.mul_right g).coeFn_toL2.trans (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `(h.1.mul_right g).descend_mk (sec Γ q)` as an intermediate fact. Rewrite `this` using `[mk_sec]`. Then use the resulting hypothesis.
+-/
 theorem coeFn_right_translate {φ : G → ℂ} (h : MemL2Quotient Γ μ φ) (g : G) :
     R Γ μ g h.toL2 =ᵐ[quotMeasure Γ μ] fun q => φ (sec Γ q * g) := by
   rw [right_translate_toL2]
@@ -16,6 +19,9 @@ theorem coeFn_right_translate {φ : G → ℂ} (h : MemL2Quotient Γ μ φ) (g :
   have := (h.1.mul_right g).descend_mk (sec Γ q)
   rwa [mk_sec] at this
 
+/- English proof (translation)
+Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [coeFn_right_translate h g] with q e`. Simplify using `[e, mul_comm]`.
+-/
 theorem inner_right_translate_integral {φ : G → ℂ} (h : MemL2Quotient Γ μ φ) (g : G) (H : L2 Γ μ) :
     inner ℂ H (R Γ μ g h.toL2) = ∫ q, starRingEnd ℂ (H q) * φ (sec Γ q * g) ∂quotMeasure Γ μ := by
   rw [MeasureTheory.L2.inner_def]
@@ -23,6 +29,13 @@ theorem inner_right_translate_integral {φ : G → ℂ} (h : MemL2Quotient Γ μ
   filter_upwards [coeFn_right_translate h g] with q e
   simp [e, mul_comm]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ Γ _ μ _ _ _ c hc h0 f f' hf hf' hcf hd H t hint`. Establish `ftc : ∀ x, ∫ s in (0 : ℝ)..t, f' (x * c s) = f (x * c t) - f (x * 1)` using `fun x => by`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd x s) ((hcf.comp (continuous_const.mul hc)).intervalIntegrable _ _), h0]`. Simplify using `only [inner_right_translate_integral hf']`. Rewrite using `[MeasureTheory.intervalIntegral_integral_swap hint, ← inner_sub_right, MeasureTheory.L2.inner_def]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `e1` using `coeFn_right_translate hf 1`. Rewrite `e1` using `[map_one, ContinuousLinearMap.one_apply]`. Use `filter_upwards [coeFn_right_translate hf (c t), e1, Lp.coeFn_sub (R Γ μ (c t) hf.toL2) hf.toL2] with q a b e`. Rewrite using `[intervalIntegral.integral_const_mul, ftc, e, Pi.sub_apply, a, b]`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem inner_R_sub_eq_intervalIntegral :
     ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] (Γ : Subgroup G) [DiscreteTopology Γ] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] (c : ℝ → G), Continuous c → c 0 = 1 → ∀ {f f' : G → ℂ} (hf : MemL2Quotient Γ μ f) (hf' : MemL2Quotient Γ μ f'), Continuous f' → (∀ x t, HasDerivAt (fun s => f (x * c s)) (f' (x * c t)) t) → ∀ (H : L2 Γ μ) (t : ℝ), Integrable (Function.uncurry fun (s : ℝ) (q : GlobalTheory.AutomorphicL2Unitary.Quot Γ) => starRingEnd ℂ (H q) * f' (sec Γ q * c s)) ((volume.restrict (Set.uIoc 0 t)).prod (quotMeasure Γ μ)) → inner ℂ H (R Γ μ (c t) hf.toL2) - inner ℂ H hf.toL2 = ∫ s in (0 : ℝ)..t, inner ℂ H (R Γ μ (c s) hf'.toL2) := by
   intro G _ _ _ _ _ _ _ Γ _ μ _ _ _ c hc h0 f f' hf hf' hcf hd H t hint

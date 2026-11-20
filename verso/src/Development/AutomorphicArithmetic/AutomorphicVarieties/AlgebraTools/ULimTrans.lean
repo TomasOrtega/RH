@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.ULimK
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `R _ F hF I M _ _ a b ha hI h`. Establish `hI1 : Antitone fun j => b ⊔ I j` using `fun i j hij => sup_le_sup_left (hI hij) b`. Establish `hI2 : Antitone fun j => a ⊔ I j` using `fun i j hij => sup_le_sup_left (hI hij) a`. Establish `e1 : ∀ j, a ⊔ (b ⊔ I j) = a ⊔ I j` using `fun j => by rw [← sup_assoc, sup_eq_left.mpr h]`. Establish `e2 : ∀ j, a ⊔ (a ⊔ I j) = a ⊔ I j` using `fun j => by rw [← sup_assoc, sup_idem]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨p, rfl⟩` from `ULim.mk_surjective F (fun j => a ⊔ I j) M y`. Conclude with `⟨ULim.mk F (fun j => b ⊔ I j) M p, by rw [ULim.map_mk]; rfl⟩`. Use extensionality with `x`.
+
+Take `⟨p, rfl⟩` from `ULim.mk_surjective F (fun j => b ⊔ I j) M x`. Rewrite using `[LinearMap.mem_ker, ULim.map_mk, ULim.mk_eq_zero, ULim.mem_smul_top_iff R F hF _ M a ha hI1]`. Simplify using `only [LinearMap.id_apply, e1]`. Use `eq_bot_iff.mpr fun x hx => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `ULim.mk_surjective F (fun j => a ⊔ I j) M x`.
+
+Rewrite `hx` using `[ULim.mem_smul_top_iff R F hF _ M a ha hI2]`. Rewrite using `[Submodule.mem_bot, ULim.mk_eq_zero]`. Simplify `hx` using `only [e2]`.
+-/
 theorem UpperTheory.V.AlgebraTools.ULim.trans_ker :
     ∀ (R : Type) [CommRing R] (F : Filter ℕ), F ≤ atTop → ∀ (I : ℕ → Ideal R) (M : ℕ → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] (a b : Ideal R), a.FG → Antitone I → ∀ h : b ≤ a,
       Function.Surjective (ULim.map F (I := fun j => b ⊔ I j) (I' := fun j => a ⊔ I j) (M := M) (fun _ => sup_le_sup_right h _) fun _ => LinearMap.id) ∧

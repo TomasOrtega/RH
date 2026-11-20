@@ -13,6 +13,11 @@ namespace GlobalTheory.TwV
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hC D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J`. Take `⟨E, lam, hK⟩` from `GlobalTheory.TwV.exists_cEmbC_lam t std J`. Establish `hin` using `GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg`. Take `⟨g, hLT, curve⟩` from `hC D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (D.what₂.places.resChar w) J.cop hin.1 hin.2.1 lam`. Take `⟨Xi, muT, law⟩` from `GlobalTheory.T.exists_adelicDatum_with_laws_at_joint t std J`.
+
+Conclude with `⟨{ E := E, lam := lam, hK := hK, g := g, hLT := hLT, curve := curve, hfin := GlobalTheory.TwV.finClasses_sysS t std J, hst := GlobalTheory.TwV.finStab_site t std J, Xi := Xi, muT := muT, law := law }⟩`.
+-/
 theorem joint_at_nonempty : Lt.CurveEx → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), Nonempty (J.At std) := by
   intro hC D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J
   obtain ⟨E, lam, hK⟩ := GlobalTheory.TwV.exists_cEmbC_lam t std J

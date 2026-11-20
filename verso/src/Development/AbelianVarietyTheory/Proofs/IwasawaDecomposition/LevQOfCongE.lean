@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdT
 
+/- English proof (translation)
+Establish `m` using `GlobalTheory.TwU.MidIndep.extE_cong_mem hL j hj b P g.1 h1 (GlobalTheory.TwU.MidIndep.cong_inv P.1 _ _ (hL.cst_ok.D_pos P) g.1 h1)`. Establish `hx` using `GlobalTheory.CongLevel.extE_inX (cOf R j) g.1`. Establish `hmem : g ∈ (L.levQ j b ⟨P.1, hP⟩).H`. Rewrite using `[hL.grpQ j b ⟨P.1, hP⟩, Subgroup.mem_subgroupOf]`. Conclude with `⟨_, m.1, hx⟩`.
+
+Use `⟨hmem, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hL.chrQ j b ⟨P.1, hP⟩ ⟨g, hmem⟩ _ m.1 hx]`. Conclude with `m.2`.
+-/
 theorem levQ_of_congE {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
     {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
@@ -25,6 +30,9 @@ theorem levQ_of_congE {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr 
   rw [hL.chrQ j b ⟨P.1, hP⟩ ⟨g, hmem⟩ _ m.1 hx]
   exact m.2
 
+/- English proof (translation)
+Introduce `B X I hOk a j hj b P hP g hg`. Use `levQ_of_congE (hOk.idx_ok a) j hj b P hP g fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow]`. Conclude with `hg x hx`.
+-/
 theorem levQ_deep : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (a : I.ι) (j : ℕ), j < B.R.m → ∀ (b : (I.idx a).β j) (P : SBof I a) (hP : P.1 ∈ I.Q a) (g : Formalism.L2.Col.GLint B.fields.E (B.R.N j) P.1), CongE P.1 ((I.cst a).D P) g.1 1 → ∃ h : g ∈ ((I.idx a).levQ j b ⟨P.1, hP⟩).H, ((I.idx a).levQ j b ⟨P.1, hP⟩).lam ⟨g, h⟩ = 1 := by
   intro B X I hOk a j hj b P hP g hg
   refine levQ_of_congE (hOk.idx_ok a) j hj b P hP g fun x hx => ?_

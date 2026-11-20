@@ -17,6 +17,11 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `hd`. Establish `h0` using `congrArg (Polynomial.aeval f) hq`. Rewrite `h0` using `[map_mul, LinearMap.aeval_self_charpoly, zero_mul, map_pow, map_sub, Polynomial.aeval_X, map_one]`. Establish `hs : (f - algebraMap ℂ (Module.End ℂ V) 1).IsSemisimple` using `Module.End.isSemisimple_sub_algebraMap_iff.2 hf`. Rewrite `hs` using `[map_one]`.
+
+Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)`.
+-/
 private theorem UpperTheory.V.Z.Win.T2.eq_one_of_charpoly_dvd {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (hf : f.IsSemisimple) {n : ℕ} (hd : f.charpoly ∣ (Polynomial.X - 1) ^ n) : f = 1 := by
   obtain ⟨q, hq⟩ := hd
@@ -28,6 +33,11 @@ private theorem UpperTheory.V.Z.Win.T2.eq_one_of_charpoly_dvd {V : Type} [AddCom
   rw [map_one] at hs
   exact sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)
 
+/- English proof (translation)
+Take `⟨m, b, rfl, hb⟩` from `hz`. Establish `key : ∀ s : ↥(Ine (F` using `F) A), (∀ ζ : Ω, ζ ^ M = 1 → (s : G F Ω) ζ = ζ) → b.ρ (ineIncl h s) = 1 := by`. Introduce `s hs`. Establish `h2` using `hd (ineIncl h s)`. Rewrite `h2` using `[hx s hs, WD.charPol_mk]`.
+
+Conclude with `UpperTheory.V.Z.Win.T2.eq_one_of_charpoly_dvd _ (b.semisimple _) h2`. Take `⟨ξ, hξ, h1, h2⟩` from `UpperTheory.irreducible_weilDeligne_tame_level_eq_character F Ω w A h M hM m b hb key`. Conclude with `⟨ξ, hξ, h1, fun s hs => h2 _ (key s hs)⟩`.
+-/
 private theorem UpperTheory.V.Z.Win.T2.char_of_dvd {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (M n : ℕ) (hM : 1 ≤ M) (x z : WD h)
     (hx : ∀ s : ↥(Ine (F := F) A), (∀ ζ : Ω, ζ ^ M = 1 → (s : G F Ω) ζ = ζ) →
@@ -45,6 +55,11 @@ private theorem UpperTheory.V.Z.Win.T2.char_of_dvd {F Ω : Type} [Field F] [Numb
   obtain ⟨ξ, hξ, h1, h2⟩ := UpperTheory.irreducible_weilDeligne_tame_level_eq_character F Ω w A h M hM m b hb key
   exact ⟨ξ, hξ, h1, fun s hs => h2 _ (key s hs)⟩
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one]`. Establish `h : Valued.v (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h2 : w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).mpr hw`. Rewrite `h2` using `[← h]`.
+
+Establish `e : (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = ((M : ℕ) : w.adicCompletion F)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap F (w.adicCompletion F)) M`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.Z.Win.T2.val_lt_one {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {M : ℕ}
     (hw : (M : 𝓞 F) ∈ w.asIdeal) : valuation (w.adicCompletion F) (M : w.adicCompletion F) < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -60,6 +75,9 @@ private theorem UpperTheory.V.Z.Win.T2.val_lt_one {F : Type} [Field F] [NumberFi
     exact map_natCast (algebraMap F (w.adicCompletion F)) M
   rwa [e] at h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{IrrGL.ofChar χ hχ}, hasSupport_self (IrrGL.isCusp_ofChar χ hχ), fun y hy => by rw [Multiset.mem_singleton.1 hy] exact Or.inl rfl⟩`.
+-/
 private theorem UpperTheory.V.Z.Win.T2.good_ofChar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (χ : kˣ →* ℂˣ) (hχ : GlobalTheory.SmGL.IsSmoothChar χ) :
     UpperTheory.Zero.LLC.Good (IrrGL.ofChar χ hχ) :=

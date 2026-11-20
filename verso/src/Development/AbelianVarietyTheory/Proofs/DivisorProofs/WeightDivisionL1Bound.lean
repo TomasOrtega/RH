@@ -8,6 +8,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 
 namespace GlobalTheory.MeanTop
 
+/- English proof (translation)
+Establish `hT : (4 : ℤ) ≤ W.T` using `by have := hH.h1; omega`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `hk`.
+
+Establish `h1` using `hH.kc_pos`. Establish `h2` using `hH.kc_lt`. Establish `hg` using `((GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hH hD τ ⟨W.p - 1, by omega⟩ ⟨W.p + 0, hk⟩ (by simp; omega)).2.1 (by simp)).2`. Establish `he` using `(GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ ⟨W.p - 1, by omega⟩).2.1 (by simp; omega)`. Establish `h3` using `hH.h2.2`.
+
+Establish `hN : (0 : ℤ) ≤ 24 * (N : ℤ) * W.T` using `by positivity`. Establish `h4 : 0 ≤ W.u1 τ ⟨W.p - 1, by omega⟩ - W.u1 τ ⟨W.p + 0, hk⟩ - 3 * N`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`. Introduce `hk`. Establish `h1` using `ih (by omega)`. Establish `hg` using `(GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hH hD τ ⟨W.p + k, by omega⟩ ⟨W.p + (k + 1), hk⟩ (by simp; omega)).1 (by simp)`.
+
+Establish `hN : (0 : ℤ) ≤ (W.T : ℤ) + W.Dd + 2 + 2 * N` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Wts.divided_weight_small_block_le_neg_three_mul {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hH : W.Hyp) (hD : W.IsDiv) (τ : ι) :
     ∀ (k : ℕ) (hk : W.p + k < N), W.u1 τ ⟨W.p + k, hk⟩ ≤ -(3 * (N : ℤ)) := by
   have hT : (4 : ℤ) ≤ W.T := by have := hH.h1; omega
@@ -33,6 +44,9 @@ theorem Wts.divided_weight_small_block_le_neg_three_mul {ι : Type} [Fintype ι]
     have hN : (0 : ℤ) ≤ (W.T : ℤ) + W.Dd + 2 + 2 * N := by positivity
     linarith
 
+/- English proof (translation)
+The claim follows from `|W.u' τ i| ≤ |W.u1 τ i| := by unfold Wts.u' split_ifs with h · exact le_rfl · obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le (not_lt.mp h) have hlt : W.p + k < N := hk ▸ i.2 have hi : i = ⟨W.p + k, hlt⟩ := Fin.ext hk have h1 := W.divided_weight_small_block_le_neg_three_mul hH hD τ k h …`.
+-/
 theorem Wts.abs_u'_le {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hH : W.Hyp) (hD : W.IsDiv) (τ : ι) (i : Fin N) :
     |W.u' τ i| ≤ |W.u1 τ i| := by
   unfold Wts.u'
@@ -47,6 +61,15 @@ theorem Wts.abs_u'_le {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hH : W.
     rw [abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]
     linarith
 
+/- English proof (translation)
+Introduce `ι _ N W hH hD`. Use `⟨?_, ?_, fun τ i => W.abs_u'_le hH hD τ i⟩` and prove the remaining obligations. Establish `key : ∀ τ i, (W.T : ℝ) * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + (W.c0 + 4 * N)`. Introduce `τ i`. Establish `h1` using `(GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ i).1`.
+
+Establish `h0 : (0 : ℤ) ≤ ((W.Dd : ℤ) + 1) * |W.u1 τ i|` using `by positivity`. Establish `h2 : (W.T : ℤ) * |W.u1 τ i| ≤ |W.u τ i| + (W.c0 + 4 * N)` using `by nlinarith`. Conclude with `h2` after adjusting the coercions. Unfold `l1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.sum_add_distrib (f := fun i => |(W.u _ i : ℝ)|), Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `l1`.
+
+Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Conclude with `W.abs_u'_le hH hD τ i` after adjusting the coercions.
+-/
 theorem divided_weight_size : ∀ (ι : Type) [Fintype ι] (N : ℕ) (W : Wts ι N), W.Hyp → W.IsDiv → (W.T : ℝ) * l1 W.u1 ≤ l1 W.u + (Fintype.card ι : ℝ) * N * (W.c0 + 4 * N) ∧ l1 W.u' ≤ l1 W.u1 ∧ ∀ τ i, |W.u' τ i| ≤ |W.u1 τ i| := by
   intro ι _ N W hH hD
   refine ⟨?_, ?_, fun τ i => W.abs_u'_le hH hD τ i⟩

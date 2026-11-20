@@ -19,6 +19,9 @@ instance Datum.modQVF : Module ℚ D.VF := inferInstanceAs (Module ℚ D.VQ)
 instance Datum.modFVF : Module D.F D.VF :=
   Module.compHom D.VQ ((D.endO.val : D.endO →ₐ[ℚ] Module.End ℚ D.VQ).toRingHom.comp D.actF.toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.smul_VF (x : D.F) (v : D.VF) :
     x • v = (((D.actF x : D.endO) : Module.End ℚ D.VQ) (v : D.VQ) : D.VF) := rfl
 
@@ -78,10 +81,16 @@ def Datum.zpL (τ : D.F →+* PadicAlgCl p) : ℤ_[p] →ₐ[ℤ] Module.End (Gl
   ((algebraMap (GlobalTheory.LKTrip.FwOf τ) (Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ))).comp
     ((algebraMap ℚ_[p] (GlobalTheory.LKTrip.FwOf τ)).comp (algebraMap ℤ_[p] ℚ_[p]))).toIntAlgHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.zpL_apply (τ : D.F →+* PadicAlgCl p) (s : ℤ_[p]) :
     D.zpL τ s = algebraMap (GlobalTheory.LKTrip.FwOf τ) (Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ))
       (algebraMap ℚ_[p] (GlobalTheory.LKTrip.FwOf τ) (algebraMap ℤ_[p] ℚ_[p] s)) := rfl
 
+/- English proof (translation)
+Rewrite using `[D.zpL_apply]`. Conclude with `(Algebra.commutes _ _).symm`.
+-/
 theorem Datum.actOL_zpL (τ : D.F →+* PadicAlgCl p) (b : D.O) (s : ℤ_[p]) :
     Commute ((D.actOL τ).toIntAlgHom b) (D.zpL τ s) := by
   rw [D.zpL_apply]
@@ -94,6 +103,11 @@ def Datum.sigL (τ : D.F →+* PadicAlgCl p) :
     Matrix (Fin D.m) (Fin D.m) (𝓞 D.F ⊗[ℤ] ℤ_[p]) →+* Module.End (GlobalTheory.LKTrip.FwOf τ) (D.VL τ) :=
   (D.kapL τ).toRingHom.comp (D.splitP.some.symm : Matrix (Fin D.m) (Fin D.m) (𝓞 D.F ⊗[ℤ] ℤ_[p]) →+* D.O ⊗[ℤ] ℤ_[p])
 
+/- English proof (translation)
+Establish `h1 : Module.finrank ℚ D.VF = D.m * D.n * Module.finrank ℚ D.F` using `by haveI := D.freeLa; haveI := D.finLa show Module.finrank ℚ (ℚ ⊗[ℤ] D.La) = _`. Rewrite using `[Module.finrank_baseChange, D.rankLa]`. Use `haveI : FiniteDimensional ℚ D.VF := D.finVQ`. Use `haveI : FiniteDimensional D.F D.VF := Module.Finite.of_restrictScalars_finite ℚ D.F D.VF`. Rewrite `h1` using `[← Module.finrank_mul_finrank ℚ D.F D.VF, mul_comm]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right Module.finrank_pos h1`.
+-/
 theorem Datum.finrank_VF : Module.finrank D.F D.VF = D.m * D.n := by
   have h1 : Module.finrank ℚ D.VF = D.m * D.n * Module.finrank ℚ D.F := by
     haveI := D.freeLa; haveI := D.finLa
@@ -117,6 +131,13 @@ open Module
 variable {L U R : Type} [Field L] [AddCommGroup U] [Module L U] [Ring R] {m : ℕ}
   (σ : Matrix (Fin m) (Fin m) R →+* Module.End L U)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`.
+
+Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h'`. Conclude with `absurd (h'.1.symm.trans h'.2) h`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_single_one : (∑ j : Fin m, Matrix.single j j (1 : R)) = 1 := by
   ext a b
   rw [Matrix.sum_apply, Matrix.one_apply]
@@ -127,16 +148,25 @@ theorem sum_single_one : (∑ j : Fin m, Matrix.single j j (1 : R)) = 1 := by
     · exact absurd (h'.1.symm.trans h'.2) h
     · rfl
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Matrix.single_mul_single_same, mul_one]`.
+-/
 theorem E_mul (i j k : Fin m) :
     σ (Matrix.single i j 1) * σ (Matrix.single j k 1) = σ (Matrix.single i k 1) := by
   rw [← map_mul, Matrix.single_mul_single_same, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Matrix.single_mul_single_of_ne _ _ _ _ h, map_zero]`.
+-/
 theorem E_mul_ne (i j k l : Fin m) (h : j ≠ k) :
     σ (Matrix.single i j 1) * σ (Matrix.single k l 1) = 0 := by
   rw [← map_mul, Matrix.single_mul_single_of_ne _ _ _ _ h, map_zero]
 
 def corner (i0 : Fin m) : Submodule L U := LinearMap.range (σ (Matrix.single i0 i0 1))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨u, hu⟩ => by rw [← hu, ← Module.End.mul_apply, E_mul], fun h => ⟨w, h⟩⟩`.
+-/
 theorem mem_corner {i0 : Fin m} {w : U} : w ∈ corner σ i0 ↔ σ (Matrix.single i0 i0 1) w = w :=
   ⟨fun ⟨u, hu⟩ => by rw [← hu, ← Module.End.mul_apply, E_mul], fun h => ⟨w, h⟩⟩
 
@@ -161,6 +191,9 @@ def cornerEquiv (i0 : Fin m) : U ≃ₗ[L] (Fin m → corner σ i0) where
 
 variable {A : Type} [Ring A] (α : A →+* Module.End L U)
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite `hw`, the goal using `[mem_corner]`. Rewrite using `[← Module.End.mul_apply, ← hc, Module.End.mul_apply, hw]`.
+-/
 theorem mapsTo_corner (hc : ∀ a M, α a * σ M = σ M * α a) (i0 : Fin m) (a : A) :
     ∀ w ∈ corner σ i0, α a w ∈ corner σ i0 := by
   intro w hw

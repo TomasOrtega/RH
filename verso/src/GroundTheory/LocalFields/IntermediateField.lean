@@ -19,6 +19,9 @@ instance intermediateField_valuativeRel : ValuativeRel E :=
 variable {E} in
 
 @[simp]
+/- English proof (translation)
+Conclude with `(valuation L).vle_iff_le`.
+-/
 theorem IntermediateField.coe_vle_coe_iff (x y : E) : (x : L) ≤ᵥ (y : L) ↔ x ≤ᵥ y :=
   by exact (valuation L).vle_iff_le
 
@@ -33,6 +36,9 @@ instance intermediateField_valuativeExtension_left [ValuativeRel K] [ValuativeEx
 
 variable {E} in
 
+/- English proof (translation)
+The claim follows from `(ValuativeExtension.mapValueGroupWithZero_valuation (A := E) (B := L) x).symm`.
+-/
 theorem IntermediateField.valuation_coe (x : E) :
     valuation L (x : L) = ValuativeExtension.mapValueGroupWithZero E L (valuation E x) :=
   (ValuativeExtension.mapValueGroupWithZero_valuation (A := E) (B := L) x).symm
@@ -47,6 +53,9 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
   (E : IntermediateField K L)
 
+/- English proof (translation)
+Set `` to `nontriviallyNormedField K`. Use `completeSpace_nontriviallyNormedField K` as an intermediate fact. Use `t2Space_of_isNonarchimedeanLocalField L` as an intermediate fact. Establish `: FiniteDimensional K (Subalgebra.toSubmodule E.toSubalgebra)` using `(inferInstance : FiniteDimensional K E)`. Conclude with `(Subalgebra.toSubmodule E.toSubalgebra).closed_of_finiteDimensional`.
+-/
 theorem IntermediateField.isClosed_of_isNonarchimedeanLocalField : IsClosed (E : Set L) := by
   let := nontriviallyNormedField K
   have := completeSpace_nontriviallyNormedField K
@@ -104,12 +113,30 @@ instance intermediateField_isNonarchimedeanLocalField : IsNonarchimedeanLocalFie
     exact hb.false
   exact { hvt, hlc, hnt with }
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsNonarchimedeanLocalField E := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : ValuativeExtension E L := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra 𝒪[E] 𝒪[L] := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra 𝓀[E] 𝓀[L] := inferInstance
+/- English proof (translation)
+The claim follows from `valuation_algEquiv_apply E L σ x`.
+-/
 example (σ : L ≃ₐ[E] L) (x : L) : valuation L (σ x) = valuation L x :=
   valuation_algEquiv_apply E L σ x
+/- English proof (translation)
+The claim follows from `valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)`.
+-/
 example (F : IntermediateField K L) (h : E ≤ F) :
     letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
     ValuativeExtension E F :=

@@ -63,6 +63,27 @@ def SvReal : Prop :=
                 ∑ φ : E →+* ℂ, ‖φ (hform (starRingEnd E) J (∑ i, (c i : E) • e i) (∑ i, (c i : E) • e i))‖ ≤
                   (fun i => (c i : ℝ)) ⬝ᵥ (R *ᵥ fun i => (c i : ℝ))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hCM m d hm hd`. Take `⟨δ, hδ1, hδ⟩` from `hCod E`. Establish `hn1 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hN1 : 1 ≤ m * Module.finrank ℚ E` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Take `⟨Kc, hK⟩` from `hM _ hN1`.
+
+Use `set S : ℝ := max Kc 0 * ((d * δ : ℕ) : ℝ) with hS`. Use `⟨((⌈S ^ Module.finrank ℚ E⌉₊ : ℕ) : ℚ), fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨hherm, hdet, hfg, hspan, -, -⟩` from `id hp`. Take `⟨H, hH⟩` from `hMaj F E hCM m p.1 hherm hdet`. Take `⟨e, hlin, hemem, hegen⟩` from `hB E m p.2 hfg hspan`.
+
+Take `⟨hgd, hgb⟩` from `hD F E hCM m d δ hd hδ1 hδ p hp e hlin hemem hegen`. Take `⟨R, hRpd, hRdet, hRle⟩` from `hR F E hCM m p.1 hherm H hH e hgd`. Take `⟨c, hc0, hcR⟩` from `hK R hRpd`. Use `set x : Fin m → E := ∑ i, (c i : E) • e i with hx`. Establish `hxmem : x ∈ p.2`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul E]`. Conclude with `p.2.toAddSubgroup.zsmul_mem (hemem i) (c i)`. Establish `hx0 : x ≠ 0`. Introduce `h0`.
+
+Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h0' : ∑ i, (c i : ℚ) • e i = 0`. Rewrite using `[← h0, hx]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_smul_eq_zsmul ℚ, Int.cast_smul_eq_zsmul E]`. Conclude with `Fintype.linearIndependent_iff.1 hlin _ h0' i` after adjusting the coercions. Use `⟨x, hxmem, hx0, ?_⟩` and prove the remaining obligations. Use `set a := hform (starRingEnd E) p.1 x x with ha`. Establish `hsumle : ∑ φ : E →+* ℂ, ‖φ a‖ ≤ S`.
+
+Establish `h1` using `hRle c`. Establish `hdetR : R.det ≤ ((d * δ : ℕ) : ℝ) ^ (m * Module.finrank ℚ E)`. Rewrite using `[hRdet]`. Establish `h' : ((|(gramTr p.1 e).det| : ℚ) : ℝ) ≤ ((((d * δ : ℕ) : ℚ) ^ (m * Module.finrank ℚ E) : ℚ) : ℝ)` using `by exact_mod_cast hgb`. Rewrite `h'` using `[Rat.cast_abs, Rat.cast_pow, Rat.cast_natCast]`.
+
+Conclude with `h'`. Establish `hR0 : 0 ≤ R.det` using `hRpd.det_pos.le`. Establish `hroot : R.det ^ ((1 : ℝ) / ((m * Module.finrank ℚ E : ℕ) : ℝ)) ≤ ((d * δ : ℕ) : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_div]; exact Real.pow_rpow_inv_natCast (by positivity) (by omega)`.
+
+Establish `hroot0 : 0 ≤ R.det ^ ((1 : ℝ) / ((m * Module.finrank ℚ E : ℕ) : ℝ))` using `Real.rpow_nonneg hR0 _`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : ((|Algebra.norm ℚ a| : ℚ) : ℝ) ≤ S ^ Module.finrank ℚ E`. Establish `h2` using `congrArg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ a)`. Simplify using `only [norm_prod] at h2`.
+
+Rewrite `h2` using `[show ‖(algebraMap ℚ ℂ) (Algebra.norm ℚ a)‖ = |((Algebra.norm ℚ a : ℚ) : ℝ)| by simp]`. Rewrite using `[Rat.cast_abs, h2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : ((|Algebra.norm ℚ a| : ℚ) : ℝ) ≤ ((⌈S ^ Module.finrank ℚ E⌉₊ : ℕ) : ℝ)` using `hnorm.trans (Nat.le_ceil _)`. Conclude with `hfin` after adjusting the coercions.
+-/
 theorem partShort_of (hM : PartMink) (hMaj : SvMajE) (hCod : SvCodiff) (hB : SvBasis)
     (hD : SvGramDet) (hR : SvReal) : PartShort := by
   intro F E _ _ _ _ _ _ hCM m d hm hd

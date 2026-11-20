@@ -17,6 +17,35 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.tweyl
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
+/- English proof (translation)
+Use `choose cf hcf using _root_.PositivityTheory.SiegelWeilFormula.tweyl.exists_scalar_k d g`. Establish `hsp : ∀ y, ∀ φ ∈ schA F d.κ, d.om y φ ∈ schA F d.κ` using `fun y φ hφ => (_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).pres y φ hφ`. Establish `hinv : ∀ y (φ : d.Fn), d.om y (d.om y⁻¹ φ) = φ` using `fun y φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hSinv : ∀ φ : d.Fn, d.S g⁻¹ (d.S g φ) = φ` using `fun φ => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hSinv' : ∀ φ : d.Fn, d.S g (d.S g⁻¹ φ) = φ` using `fun φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨φz, hφz, hφz0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F d.κ`. Establish `huniq : ∀ y (c : ℂ), (∀ φ ∈ schA F d.κ, (d.S g * d.om y * d.S g⁻¹) φ = c • d.om y φ) → c = cf y` using `fun y c hc => by`.
+
+Establish `h1` using `hc _ (hsp y⁻¹ φz hφz)`. Rewrite `h1` using `[hcf y _ (hsp y⁻¹ φz hφz), hinv]`. Establish `h2` using `congrFun h1 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `(mul_right_cancel₀ hφz0 h2).symm`.
+
+Establish `hmul : ∀ y z, cf (y * z) = cf y * cf z` using `fun y z => (huniq (y * z) _ fun φ hφ => by`. Establish `hR : (d.S g * d.om (y * z) * d.S g⁻¹) φ = (d.S g * d.om y * d.S g⁻¹) ((d.S g * d.om z * d.S g⁻¹) φ)`. Simplify using `only [Module.End.mul_apply, map_mul, hSinv]`. Rewrite using `[hR, hcf z φ hφ, map_smul, hcf y _ (hsp z φ hφ), smul_smul, map_mul, Module.End.mul_apply, mul_comm]).symm`. Establish `hone : cf 1 = 1` using `(huniq 1 1 fun φ _ => by`.
+
+Simplify using `only [Module.End.mul_apply, map_one, Module.End.one_apply, hSinv', one_smul]).symm`. Set `cM : d.G →* ℂ` to `{ toFun := cf, map_one' := hone, map_mul' := hmul }`. Set `c` to `cM.toHomUnits`. Establish `hcv : ∀ p, ((c p : ℂˣ) : ℂ) = cf p` using `fun p => rfl`. Establish `hcont_cf : Continuous cf`.
+
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Establish `hφ` using `hsp p₀⁻¹ φz hφz`. Establish `hf` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).cont _ (GlobalTheory.WeilSchUnique.evalZero_mem_adelicSchwartzAdmittedForms d.κ) _ hφ`. Establish `hh` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).cont _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).adm g _ (GlobalTheory.WeilSchUnique.evalZero_mem_adelicSchwartzAdmittedForms d.κ)) _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres g⁻¹ _ hφ)`. Simplify using `only [LinearMap.proj_apply, LinearMap.comp_apply] at hf hh`.
+
+Establish `h0 : d.om p₀ (d.om p₀⁻¹ φz) 0 ≠ 0` using `by rw [hinv]; exact hφz0`. Use `(hh.continuousAt.div hf.continuousAt h0).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.continuousAt.eventually_ne h0] with p hp`. Use `show d.S g (d.om p (d.S g⁻¹ (d.om p₀⁻¹ φz))) 0 / d.om p (d.om p₀⁻¹ φz) 0 = cf p`. Establish `e` using `hcf p _ hφ`.
+
+Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hcont : Continuous c`.
+
+Use `Units.continuous_iff.2 ⟨hcont_cf, ?_⟩` and prove the remaining obligations. Establish `: (fun p => ((c p)⁻¹ : ℂˣ).val) = fun p => (cf p)⁻¹` using `funext fun p => by`. Rewrite using `[Units.val_inv_eq_inv_val, hcv]`. Rewrite using `[this]`. Conclude with `hcont_cf.inv₀ fun p => by rw [← hcv]; exact (c p).ne_zero`.
+
+Take `⟨φl, hφl, hl0⟩` from `_root_.PositivityTheory.SiegelWeilFormula.tweyl.exists_l_ne_k d hT`. Establish `hP : ∀ (p : d.G) (t : GL (Fin d.n) (AE F E)), (p.1.1 : Matrix _ _ (AE F E)) * diagCols (Fin d.n) = diagCols (Fin d.n) * t.1 → c p = 1` using `fun p t hpt => by`. Establish `K` using `_root_.PositivityTheory.SiegelWeilFormula.tweyl.hR_k d d.l d.ok.dbl.adm (fun z φ hφ => d.ok.dbl.kill z φ hφ) p t hpt`. Establish `e1` using `hcf p φl hφl`. Establish `e2` using `congrArg d.l e1`.
+
+Simplify using `only [Module.End.mul_apply, map_smul, smul_eq_mul] at e2`. Rewrite `e2` using `[d.ok.dbl.fix g _ (hsp p _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres _ _ hφl)), K _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres _ _ hφl), d.ok.dbl.fix g⁻¹ φl hφl, K φl hφl]`. Establish `hK` using `siegel_factor_ne (d.χ) (Matrix.GeneralLinearGroup.det t) (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) ((Fintype.card (Fin d.m) : ℝ) / 2)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcv, Units.val_one]`.
+
+Establish `hne` using `mul_ne_zero hK hl0`. Rewrite `hne` using `[mul_assoc]`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[one_mul]`. Simplify `e2.symm` using `only [mul_assoc]`.
+
+Take `⟨ε, hε⟩` from `_root_.PositivityTheory.SiegelWeilFormula.tweyl.signY_k d`. Establish `hc1` using `GlobalTheory.T.doubledUnitary_character_trivial_of_siegel F E σ (_root_.PositivityTheory.SiegelWeilFormula.tweyl.cm_k d) d.n d.Y.J ε hε (_root_.PositivityTheory.SiegelWeilFormula.tweyl.detY_k d) c hcont hP`. Introduce `Φ hΦ x`. Establish `e` using `hcf x _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres g Φ hΦ)`. Establish `hcf1 : cf x = 1` using `by rw [← hcv, hc1]; rfl`.
+
+Rewrite `e` using `[hcf1, one_smul]`. Simplify using `only [Module.End.mul_apply, hSinv] at e`. Conclude with `e.symm`.
+-/
 theorem comm_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TBij_k) (g : UA σ d.A.J) : ∀ Φ ∈ d.sch, ∀ x, d.om x (d.S g Φ) = d.S g (d.om x Φ) := by
   classical
   choose cf hcf using _root_.PositivityTheory.SiegelWeilFormula.tweyl.exists_scalar_k d g
@@ -93,6 +122,9 @@ theorem comm_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TBij_k) (g : UA �
   rw [hcf1, one_smul] at e
   simp only [Module.End.mul_apply, hSinv] at e
   exact e.symm
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ d Φ hΦ x g` and use `_root_.PositivityTheory.SiegelWeilFormula.tweyl.comm_k d hT g Φ hΦ x`.
+-/
 theorem tthetaComm_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TBij_k) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ), ∀ Φ ∈ d.sch, ∀ x g, d.om x (d.S g Φ) = d.S g (d.om x Φ) :=
   fun _ _ _ _ _ _ _ _ d Φ hΦ x g => _root_.PositivityTheory.SiegelWeilFormula.tweyl.comm_k d hT g Φ hΦ x

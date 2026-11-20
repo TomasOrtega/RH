@@ -21,10 +21,16 @@ def blockLat {n₁ n₂ : ℕ} (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) :
   ⟨Λ₁.La.comap (LinearMap.funLeft (𝓞 E) E (Fin.castAdd n₂)) ⊓
     Λ₂.La.comap (LinearMap.funLeft (𝓞 E) E (Fin.natAdd n₁))⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example {n₁ n₂ : ℕ} (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) (v : Fin (n₁ + n₂) → E) :
     v ∈ (blockLat Λ₁ Λ₂).La ↔
       (fun i => v (Fin.castAdd n₂ i)) ∈ Λ₁.La ∧ (fun j => v (Fin.natAdd n₁ j)) ∈ Λ₂.La := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Express the relevant statement in the definitionally equal form `((fun i => v (Fin.castAdd n₂ i)) ∈ stdLat E n₁ ∧ (fun j => v (Fin.natAdd n₁ j)) ∈ stdLat E n₂) ↔ v ∈ stdLat E (n₁ + n₂)`. Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, forall_true_left]`. Conclude with `⟨fun h i => Fin.addCases (motive := fun i => v i ∈ (1 : Submodule (𝓞 E) E)) h.1 h.2 i, fun h => ⟨fun i => h _, fun j => h _⟩⟩`.
+-/
 example (n₁ n₂ : ℕ) : (blockLat (unitLat E n₁) (unitLat E n₂)).La = (unitLat E (n₁ + n₂)).La := by
   ext v
   change ((fun i => v (Fin.castAdd n₂ i)) ∈ stdLat E n₁ ∧ (fun j => v (Fin.natAdd n₁ j)) ∈ stdLat E n₂) ↔

@@ -5,6 +5,21 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.SmallBallProd
 
+/- English proof (translation)
+Introduce `s hs0 hsr`. Break down `hs0.lt_or_eq with hs | hs` into its components or cases. Conclude with `h s hs hsr`. Substitute `hs` using the available equality. Set `S : ℕ → Set Y'` to `fun n => {y | Real.sqrt (ρ' y) ≤ r / ((n : ℝ) + 1)}`.
+
+Establish `hmeas : ∀ n, MeasurableSet (S n)` using `fun n => measurableSet_le (Real.continuous_sqrt.measurable.comp hρ') measurable_const`. Establish `hanti : Antitone S`. Introduce `m n hmn y hy`. Establish `hle : r / ((n : ℝ) + 1) ≤ r / ((m : ℝ) + 1)` using `div_le_div_of_nonneg_left hr.le (by positivity) (by exact_mod_cast Nat.add_le_add_right hmn 1)`. Conclude with `le_trans hy hle`.
+
+Establish `hInter : (⋂ n, S n) = {y | Real.sqrt (ρ' y) ≤ 0}`. Use extensionality with `y`. Simplify using `only [S, Set.mem_iInter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt (div_pos hne hr)`. Establish `hlt : r / ((n : ℝ) + 1) < Real.sqrt (ρ' y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear relations using `[hy n]`. Introduce `hy n`. Conclude with `hy.trans (div_nonneg hr.le (by positivity))`. Establish `hfin : ∃ n, μ' (S n) ≠ ⊤` using `⟨0, ne_top_of_le_ne_top hf (measure_mono fun y hy => by simpa [S] using hy)⟩`. Establish `ht` using `tendsto_measure_iInter_atTop (fun n => (hmeas n).nullMeasurableSet) hanti hfin`.
+
+Rewrite `ht` using `[hInter]`. Establish `ht2` using `ENNReal.Tendsto.const_mul ht (Or.inr hb)`. Use `ge_of_tendsto' ht2 (fun n => ?_)` and prove the remaining obligations. Establish `hpos : 0 < r / ((n : ℝ) + 1)` using `div_pos hr (by positivity)`. Establish `hsub : μ {y | Real.sqrt (ρ y) ≤ 0} ≤ μ {y | Real.sqrt (ρ y) ≤ r / ((n : ℝ) + 1)}` using `measure_mono fun y (hy : Real.sqrt (ρ y) ≤ 0) => hy.trans hpos.le`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma cmp_zero {Y Y' : Type*} [MeasurableSpace Y] [MeasurableSpace Y'] (μ : Measure Y) (μ' : Measure Y')
     (ρ : Y → ℝ) (ρ' : Y' → ℝ) (hρ' : Measurable ρ') (a b : ENNReal) (hb : b ≠ ⊤) (r : ℝ) (hr : 0 < r)
     (hf : μ' {y | Real.sqrt (ρ' y) ≤ r} ≠ ⊤)
@@ -51,6 +66,11 @@ lemma cmp_zero {Y Y' : Type*} [MeasurableSpace Y] [MeasurableSpace Y'] (μ : Mea
         gcongr
     _ ≤ b * μ' (S n) := h _ hpos (div_le_self hr.le (by linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)]))
 
+/- English proof (translation)
+Establish `key : ∀ x : ℝ, Real.sqrt x ≤ r ↔ x ≤ r ^ 2` using `fun x => by`. Use `Real.sqrt_le_sqrt_iff (x := x) (y := r ^ 2) (by positivity)` as an intermediate fact. Rewrite `this` using `[Real.sqrt_sq hr]`. Then use the resulting hypothesis. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[key, Real.sqrt_le_sqrt_iff (by linarith)]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+-/
 lemma section_eq {Y : Type*} (ρ : Y → ℝ) (c r : ℝ) (hr : 0 ≤ r) (hc : c ≤ r ^ 2) :
     {y | Real.sqrt (c + ρ y) ≤ r} = {y | Real.sqrt (ρ y) ≤ Real.sqrt (r ^ 2 - c)} := by
   have key : ∀ x : ℝ, Real.sqrt x ≤ r ↔ x ≤ r ^ 2 := fun x => by
@@ -61,6 +81,11 @@ lemma section_eq {Y : Type*} (ρ : Y → ℝ) (c r : ℝ) (hr : 0 ≤ r) (hc : c
   rw [key, Real.sqrt_le_sqrt_iff (by linarith)]
   constructor <;> intro h <;> linarith
 
+/- English proof (translation)
+Establish `key : ∀ x : ℝ, Real.sqrt x ≤ r ↔ x ≤ r ^ 2` using `fun x => by`. Use `Real.sqrt_le_sqrt_iff (x := x) (y := r ^ 2) (by positivity)` as an intermediate fact. Rewrite `this` using `[Real.sqrt_sq hr]`. Then use the resulting hypothesis. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce `hy`. Rewrite `hy` using `[key]`. Combine the linear relations using `[h0 y]`.
+-/
 lemma section_empty {Y : Type*} (ρ : Y → ℝ) (h0 : ∀ y, 0 ≤ ρ y) (c r : ℝ) (hr : 0 ≤ r) (hc : r ^ 2 < c) :
     {y | Real.sqrt (c + ρ y) ≤ r} = ∅ := by
   have key : ∀ x : ℝ, Real.sqrt x ≤ r ↔ x ≤ r ^ 2 := fun x => by
@@ -72,6 +97,13 @@ lemma section_empty {Y : Type*} (ρ : Y → ℝ) (h0 : ∀ y, 0 ≤ ρ y) (c r :
   rw [key] at hy
   linarith [h0 y]
 
+/- English proof (translation)
+Establish `hS : MeasurableSet {x : X × Y | Real.sqrt (σ x.1 + ρ x.2) ≤ r}` using `measurableSet_le (Real.continuous_sqrt.measurable.comp ((hσ.comp measurable_fst).add (hρ.comp measurable_snd))) measurable_const`. Establish `hS' : MeasurableSet {x : X × Y' | Real.sqrt (σ x.1 + ρ' x.2) ≤ r}` using `measurableSet_le (Real.continuous_sqrt.measurable.comp ((hσ.comp measurable_fst).add (hρ'.comp measurable_snd))) measurable_const`. Establish `hpt : ∀ x, a * μ {y | Real.sqrt (σ x + ρ y) ≤ r} ≤ b * μ' {y | Real.sqrt (σ x + ρ' y) ≤ r}`. Introduce `x`. Distinguish the cases in `hx : σ x ≤ r ^ 2`.
+
+Rewrite using `[section_eq ρ (σ x) r hr hx, section_eq ρ' (σ x) r hr hx]`. Use `h _ (Real.sqrt_nonneg _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hx`. Rewrite using `[section_empty ρ ρ0 (σ x) r hr hx]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Measure.prod_apply hS, Measure.prod_apply hS']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma cmp_right {X Y Y' : Type*} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Y']
     (ν : Measure X) (μ : Measure Y) (μ' : Measure Y') [SFinite μ] [SFinite μ']
     (σ : X → ℝ) (ρ : Y → ℝ) (ρ' : Y' → ℝ) (hσ : Measurable σ) (hρ : Measurable ρ) (hρ' : Measurable ρ')
@@ -105,6 +137,11 @@ lemma cmp_right {X Y Y' : Type*} [MeasurableSpace X] [MeasurableSpace Y] [Measur
     _ = b * ∫⁻ x, μ' (Prod.mk x ⁻¹' {p : X × Y' | Real.sqrt (σ p.1 + ρ' p.2) ≤ r}) ∂ν :=
         lintegral_const_mul b (measurable_measure_prodMk_left hS')
 
+/- English proof (translation)
+Establish `hS : MeasurableSet {x : X × Y | Real.sqrt (σ x.1 + ρ x.2) ≤ r}` using `measurableSet_le (Real.continuous_sqrt.measurable.comp ((hσ.comp measurable_fst).add (hρ.comp measurable_snd))) measurable_const`. Rewrite using `[← Measure.prod_swap (μ := μ) (ν := ν), Measure.map_apply measurable_swap hS]`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Prod.fst_swap, Prod.snd_swap]`.
+
+Rewrite using `[add_comm]`.
+-/
 lemma prod_swap_level {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
     (ν : Measure X) (μ : Measure Y) [SFinite ν] [SFinite μ]
     (σ : X → ℝ) (ρ : Y → ℝ) (hσ : Measurable σ) (hρ : Measurable ρ) (r : ℝ) :
@@ -119,6 +156,11 @@ lemma prod_swap_level {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
   simp only [Set.mem_preimage, Set.mem_setOf_eq, Prod.fst_swap, Prod.snd_swap]
   rw [add_comm]
 
+/- English proof (translation)
+Establish `e1` using `cmp_right ν μ μ' σ ρ ρ' hσ hρ hρ' σ0 ρ0 a b r hr h2`. Establish `e2` using `cmp_right μ' ν ν' ρ' σ σ' hρ' hσ hσ' ρ0' σ0 a' b' r hr h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prod_swap_level ν μ' σ ρ' hσ hρ' r]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ b * (b' * (μ'.prod ν') {x | Real.sqrt (ρ' x.1 + σ' x.2) ≤ r}) := by gcongr b * ?_`. Use `_ = b' * b * (ν'.prod μ') {x | Real.sqrt (σ' x.1 + ρ' x.2) ≤ r} := by`. Rewrite using `[prod_swap_level ν' μ' σ' ρ' hσ' hρ' r]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma cmp_both {X X' Y Y' : Type*} [MeasurableSpace X] [MeasurableSpace X'] [MeasurableSpace Y]
     [MeasurableSpace Y']
     (ν : Measure X) (ν' : Measure X') (μ : Measure Y) (μ' : Measure Y') [SFinite ν] [SFinite ν']
@@ -142,6 +184,9 @@ lemma cmp_both {X X' Y Y' : Type*} [MeasurableSpace X] [MeasurableSpace X'] [Mea
     _ = b' * b * (ν'.prod μ') {x | Real.sqrt (σ' x.1 + ρ' x.2) ≤ r} := by
         rw [prod_swap_level ν' μ' σ' ρ' hσ' hρ' r]; ring
 
+/- English proof (translation)
+Establish `hset : {y : EuclideanSpace ℝ (Fin d) | Real.sqrt (‖y‖ ^ 2) ≤ s} = Metric.closedBall 0 s`. Use extensionality with `y`. Simplify using `[Real.sqrt_sq (norm_nonneg _)]`. Rewrite using `[hset, Measure.addHaar_closedBall volume 0 hs, finrank_euclideanSpace_fin]`.
+-/
 lemma vol_level (d : ℕ) (s : ℝ) (hs : 0 ≤ s) :
     (volume : Measure (EuclideanSpace ℝ (Fin d))) {y | Real.sqrt (‖y‖ ^ 2) ≤ s}
       = ENNReal.ofReal (s ^ d) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) := by
@@ -150,6 +195,17 @@ lemma vol_level (d : ℕ) (s : ℝ) (hs : 0 ≤ s) :
     simp [Real.sqrt_sq (norm_nonneg _)]
   rw [hset, Measure.addHaar_closedBall volume 0 hs, finrank_euclideanSpace_fin]
 
+/- English proof (translation)
+Set `Φ : EuclideanSpace ℝ (Fin d) × EuclideanSpace ℝ (Fin e) → EuclideanSpace ℝ (Fin (d + e))` to `fun y => WithLp.toLp 2 (MeasurableEquiv.piCongrLeft (fun _ : Fin (d + e) => ℝ) finSumFinEquiv ((MeasurableEquiv.sumPiEquivProdPi (fun _ : Fin d ⊕ Fin e => ℝ)).symm (WithLp.ofLp y.1, WithLp.ofLp y.2)))`. Establish `hΦ : MeasurePreserving Φ ((volume : Measure (EuclideanSpace ℝ (Fin d))).prod (volume : Measure (EuclideanSpace ℝ (Fin e)))) volume`. Establish `h1` using `(PiLp.volume_preserving_ofLp (Fin d)).prod (PiLp.volume_preserving_ofLp (Fin e))`. Establish `h2` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin d ⊕ Fin e => ℝ)`. Establish `h3` using `volume_measurePreserving_piCongrLeft (fun _ : Fin (d + e) => ℝ) finSumFinEquiv`.
+
+Establish `h4` using `PiLp.volume_preserving_toLp (Fin (d + e))`. Conclude with `h4.comp (h3.comp (h2.comp h1))`. Establish `hnorm : ∀ y, ‖Φ y‖ ^ 2 = ‖y.1‖ ^ 2 + ‖y.2‖ ^ 2`. Introduce `y`. Establish `hL : ∀ i : Fin d, (Φ y).ofLp (finSumFinEquiv (Sum.inl i)) = y.1.ofLp i` using `fun i => by show (Equiv.piCongrLeft (fun _ : Fin (d + e) => ℝ) finSumFinEquiv ((Equiv.sumPiEquivProdPi (fun _ : Fin d ⊕ Fin e => ℝ)).symm (y.1.ofLp, y.2.ofLp))) (finSumFinEquiv (Sum.inl i)) = y.1.ofLp i`.
+
+Rewrite using `[Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression. Establish `hR : ∀ j : Fin e, (Φ y).ofLp (finSumFinEquiv (Sum.inr j)) = y.2.ofLp j` using `fun j => by show (Equiv.piCongrLeft (fun _ : Fin (d + e) => ℝ) finSumFinEquiv ((Equiv.sumPiEquivProdPi (fun _ : Fin d ⊕ Fin e => ℝ)).symm (y.1.ofLp, y.2.ofLp))) (finSumFinEquiv (Sum.inr j)) = y.2.ofLp j`. Rewrite using `[Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[PiLp.norm_sq_eq_of_L2, PiLp.norm_sq_eq_of_L2, PiLp.norm_sq_eq_of_L2, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [hL, hR]`. Establish `hT : MeasurableSet {z : EuclideanSpace ℝ (Fin (d + e)) | Real.sqrt (‖z‖ ^ 2) ≤ s}` using `measurableSet_le (Real.continuous_sqrt.measurable.comp (continuous_norm.pow 2).measurable) measurable_const`. Establish `hpre : Φ ⁻¹' {z : EuclideanSpace ℝ (Fin (d + e)) | Real.sqrt (‖z‖ ^ 2) ≤ s} = {y | Real.sqrt (‖y.1‖ ^ 2 + ‖y.2‖ ^ 2) ≤ s}`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, hnorm]`. Rewrite using `[← hpre, hΦ.measure_preimage hT.nullMeasurableSet, vol_level (d + e) s hs]`.
+-/
 lemma vol_prod_level (d e : ℕ) (s : ℝ) (hs : 0 ≤ s) :
     ((volume : Measure (EuclideanSpace ℝ (Fin d))).prod (volume : Measure (EuclideanSpace ℝ (Fin e))))
         {y | Real.sqrt (‖y.1‖ ^ 2 + ‖y.2‖ ^ 2) ≤ s}
@@ -193,6 +249,19 @@ lemma vol_prod_level (d e : ℕ) (s : ℝ) (hs : 0 ≤ s) :
     simp only [Set.mem_preimage, Set.mem_setOf_eq, hnorm]
   rw [← hpre, hΦ.measure_preimage hT.nullMeasurableSet, vol_level (d + e) s hs]
 
+/- English proof (translation)
+Set `t : ℕ → ENNReal` to `fun n => 1 + ((n + 1 : ℕ) : ENNReal)⁻¹`. Establish `ht1 : ∀ n, 1 < t n` using `fun n => ENNReal.lt_add_right ENNReal.one_ne_top (ENNReal.inv_ne_zero.2 (ENNReal.natCast_ne_top _))`. Establish `httop : ∀ n, t n ≠ ⊤` using `fun n => ENNReal.add_ne_top.2 ⟨ENNReal.one_ne_top, ENNReal.inv_ne_top.2 (by exact_mod_cast Nat.succ_ne_zero n)⟩`. Establish `htl : Filter.Tendsto t Filter.atTop (nhds 1)`. Establish `h0 : Filter.Tendsto (fun n : ℕ => ((n + 1 : ℕ) : ENNReal)⁻¹) Filter.atTop (nhds 0)` using `ENNReal.tendsto_inv_nat_nhds_zero.comp (Filter.tendsto_add_atTop_nat 1)`.
+
+Use `(tendsto_const_nhds (x := (1 : ENNReal))).add h0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `this`. Establish `hsq : ∀ c : ENNReal, c ≠ ⊤ → Filter.Tendsto (fun n => t n * t n * c) Filter.atTop (nhds c)`. Introduce `c hc`.
+
+Use `ENNReal.Tendsto.mul_const (ENNReal.Tendsto.mul htl (Or.inl one_ne_zero) htl (Or.inl one_ne_zero)) (Or.inr hc)` as an intermediate fact. Rewrite `this` using `[one_mul, one_mul]`. Conclude with `this`. Rewrite using `[tendsto_order]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `l hl`. Take `⟨n, hn⟩` from `((hsq l (ne_top_of_lt hl)).eventually (gt_mem_nhds hl)).exists`. Use `filter_upwards [h (t n) (ht1 n) (httop n)] with x hx`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Establish `: t n * t n * f x ≤ t n * t n * l` using `by gcongr`. Conclude with `absurd (hn.trans_le (hx.2.trans this)) (lt_irrefl _)`. Introduce `u hu`. Take `⟨n, hn⟩` from `((hsq L (ne_top_of_lt hu)).eventually (gt_mem_nhds hu)).exists`. Use `filter_upwards [h (t n) (ht1 n) (httop n)] with x hx`.
+
+Conclude with `hx.1.trans_lt hn`.
+-/
 lemma tendsto_of_two_sided {f : ℝ → ENNReal} {l : Filter ℝ} {L : ENNReal}
     (h : ∀ t : ENNReal, 1 < t → t ≠ ⊤ → ∀ᶠ r in l, f r ≤ t * t * L ∧ L ≤ t * t * f r) :
     Filter.Tendsto f l (nhds L) := by
@@ -226,6 +295,27 @@ lemma tendsto_of_two_sided {f : ℝ → ENNReal} {l : Filter ℝ} {L : ENNReal}
     filter_upwards [h (t n) (ht1 n) (httop n)] with x hx
     exact hx.1.trans_lt hn
 
+/- English proof (translation)
+Use `set V := (volume : Measure (EuclideanSpace ℝ (Fin d))) (Metric.ball 0 1) with hVdef`. Establish `hV0 : V ≠ 0` using `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hVt : V ≠ ⊤` using `measure_ball_lt_top.ne`. Use `set K := ENNReal.ofReal C * V with hKdef`. Establish `hK0 : K ≠ 0` using `mul_ne_zero (ENNReal.ofReal_pos.2 hC).ne' hV0`.
+
+Establish `hKt : K ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVt`. Establish `ht0 : t ≠ 0` using `(zero_lt_one.trans ht).ne'`. Establish `hup : K < t * K` using `by simpa using ENNReal.mul_lt_mul_left hK0 hKt ht`. Establish `hKK : K < K * t` using `by rw [mul_comm]; exact hup`. Establish `hlow : K / t < K` using `ENNReal.div_lt_of_lt_mul hKK`.
+
+Establish `e1` using `h.eventually (gt_mem_nhds hup)`. Establish `e2` using `h.eventually (lt_mem_nhds hlow)`. Take `⟨u, hu, hsub⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 (e1.and e2)`. Establish `hu0 : (0 : ℝ) < u` using `hu`. Establish `hX : ∀ s : ℝ, 0 < s → ENNReal.ofReal (s ^ d) ≠ 0 ∧ ENNReal.ofReal (s ^ d) ≠ ⊤` using `fun s hs => ⟨(ENNReal.ofReal_pos.2 (pow_pos hs d)).ne', ENNReal.ofReal_ne_top⟩`.
+
+Establish `hvol : ∀ s : ℝ, 0 ≤ s → (volume : Measure (EuclideanSpace ℝ (Fin d))) {y | Real.sqrt (‖y‖ ^ 2) ≤ s} = ENNReal.ofReal (s ^ d) * V` using `fun s hs => vol_level d s hs`. Establish `hm : Measurable (fun y : EuclideanSpace ℝ (Fin d) => ‖y‖ ^ 2)` using `(continuous_norm.pow 2).measurable`. Use `⟨u / 2, by positivity, ?_, ?_⟩` and prove the remaining obligations. Use `cmp_zero ν volume ρ (fun y => ‖y‖ ^ 2) hm 1 (t * ENNReal.ofReal C) (ENNReal.mul_ne_top ht' ENNReal.ofReal_ne_top) (u / 2) (by positivity) ?_ ?_` and prove the remaining obligations. Use `show (volume : Measure (EuclideanSpace ℝ (Fin d))) {y | Real.sqrt (‖y‖ ^ 2) ≤ u / 2} ≠ ⊤`.
+
+Rewrite using `[hvol _ (by positivity)]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVt`. Introduce `s hs hsu`. Establish `hs' : s ∈ Set.Ioo 0 u` using `⟨hs, by linarith⟩`. Take `⟨h1, -⟩` from `hsub hs'`.
+
+Establish `h1' : ν {x | Real.sqrt (ρ x) ≤ s} / ENNReal.ofReal (s ^ d) ≤ t * K` using `h1.le`. Use `show 1 * ν {x | Real.sqrt (ρ x) ≤ s} ≤ t * ENNReal.ofReal C * (volume : Measure (EuclideanSpace ℝ (Fin d))) {y | Real.sqrt (‖y‖ ^ 2) ≤ s}`. Rewrite using `[hvol s hs.le]`. Take `⟨hX0, hXt⟩` from `hX s hs`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[one_mul, ENNReal.div_mul_cancel hX0 hXt]`. Use `_ ≤ t * K * ENNReal.ofReal (s ^ d) := by gcongr`. Use `_ = t * ENNReal.ofReal C * (ENNReal.ofReal (s ^ d) * V) := by rw [hKdef]; ring`. Use `cmp_zero volume ν (fun y => ‖y‖ ^ 2) ρ hρ (ENNReal.ofReal C) t ht' (u / 2) (by positivity) (measure_ne_top ν _) ?_` and prove the remaining obligations. Introduce `s hs hsu`.
+
+Establish `hs' : s ∈ Set.Ioo 0 u` using `⟨hs, by linarith⟩`. Take `⟨-, h2⟩` from `hsub hs'`. Establish `h2' : K < ν {x | Real.sqrt (ρ x) ≤ s} / ENNReal.ofReal (s ^ d) * t` using `(ENNReal.div_lt_iff (Or.inl ht0) (Or.inl ht')).1 h2`. Establish `h2''` using `h2'.le`. Use `show ENNReal.ofReal C * (volume : Measure (EuclideanSpace ℝ (Fin d))) {y | Real.sqrt (‖y‖ ^ 2) ≤ s} ≤ t * ν {x | Real.sqrt (ρ x) ≤ s}`.
+
+Rewrite using `[hvol s hs.le]`. Take `⟨hX0, hXt⟩` from `hX s hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hKdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ν {x | Real.sqrt (ρ x) ≤ s} / ENNReal.ofReal (s ^ d) * t * ENNReal.ofReal (s ^ d) := by gcongr`. Use `_ = t * ν {x | Real.sqrt (ρ x) ≤ s} := by`. Rewrite using `[mul_comm _ t, mul_assoc, ENNReal.div_mul_cancel hX0 hXt]`.
+-/
 lemma two_sided_of_tendsto {X : Type*} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν]
     (ρ : X → ℝ) (hρ : Measurable ρ) (d : ℕ) (C : ℝ) (hC : 0 < C)
     (h : Filter.Tendsto (fun r : ℝ => ν {x | Real.sqrt (ρ x) ≤ r} / ENNReal.ofReal (r ^ d))
@@ -294,6 +384,17 @@ lemma two_sided_of_tendsto {X : Type*} [MeasurableSpace X] (ν : Measure X) [IsF
       _ = t * ν {x | Real.sqrt (ρ x) ≤ s} := by
           rw [mul_comm _ t, mul_assoc, ENNReal.div_mul_cancel hX0 hXt]
 
+/- English proof (translation)
+Introduce `X Y _ _ ν₁ ν₂ _ _ ρ₁ ρ₂ d₁ d₂ C₁ C₂ hρ₁ hρ₂ h0₁ h0₂ hC₁ hC₂ h₁ h₂`. Apply `tendsto_of_two_sided` to reduce the goal to its premises. Introduce `t ht ht'`. Take `⟨r₁, hr₁, u₁, l₁⟩` from `two_sided_of_tendsto ν₁ ρ₁ hρ₁ d₁ C₁ hC₁ h₁ t ht ht'`. Take `⟨r₂, hr₂, u₂, l₂⟩` from `two_sided_of_tendsto ν₂ ρ₂ hρ₂ d₂ C₂ hC₂ h₂ t ht ht'`.
+
+Establish `hm₁ : Measurable (fun y : EuclideanSpace ℝ (Fin d₁) => ‖y‖ ^ 2)` using `(continuous_norm.pow 2).measurable`. Establish `hm₂ : Measurable (fun y : EuclideanSpace ℝ (Fin d₂) => ‖y‖ ^ 2)` using `(continuous_norm.pow 2).measurable`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hr₁ hr₂)] with r hr`. Establish `hr0 : 0 ≤ r` using `hr.1.le`. Establish `hr1 : r ≤ r₁` using `hr.2.le.trans (min_le_left _ _)`.
+
+Establish `hr2 : r ≤ r₂` using `hr.2.le.trans (min_le_right _ _)`. Establish `hup` using `cmp_both ν₁ volume ν₂ volume ρ₁ (fun y => ‖y‖ ^ 2) ρ₂ (fun y => ‖y‖ ^ 2) hρ₁ hm₁ hρ₂ hm₂ h0₁ h0₂ (fun y => sq_nonneg _) 1 (t * ENNReal.ofReal C₂) 1 (t * ENNReal.ofReal C₁) r hr0 (fun s hs hsr => u₁ s hs (hsr.trans hr1)) (fun s hs hsr => u₂ s hs (hsr.trans hr2))`. Establish `hlow` using `cmp_both volume ν₁ volume ν₂ (fun y => ‖y‖ ^ 2) ρ₁ (fun y => ‖y‖ ^ 2) ρ₂ hm₁ hρ₁ hm₂ hρ₂ (fun y => sq_nonneg _) (fun y => sq_nonneg _) h0₂ (ENNReal.ofReal C₂) t (ENNReal.ofReal C₁) t r hr0 (fun s hs hsr => l₁ s hs (hsr.trans hr1)) (fun s hs hsr => l₂ s hs (hsr.trans hr2))`. Use `beta_reduce at hup hlow`. Rewrite `hup`, `hlow` using `[vol_prod_level d₁ d₂ r hr0]`.
+
+Establish `hX0 : ENNReal.ofReal (r ^ (d₁ + d₂)) ≠ 0` using `(ENNReal.ofReal_pos.2 (pow_pos hr.1 _)).ne'`. Establish `hXt : ENNReal.ofReal (r ^ (d₁ + d₂)) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Rewrite using `[ENNReal.ofReal_mul hC₁.le]`. Prove the components needed by the constructor for the conclusion. Apply `ENNReal.div_le_of_le_mul` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_div_assoc, ENNReal.le_div_iff_mul_le (Or.inl hX0) (Or.inl hXt)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tendsto_prod_smallBall : ∀ (X Y : Type) [MeasurableSpace X] [MeasurableSpace Y] (ν₁ : Measure X) (ν₂ : Measure Y) [IsFiniteMeasure ν₁] [IsFiniteMeasure ν₂] (ρ₁ : X → ℝ) (ρ₂ : Y → ℝ) (d₁ d₂ : ℕ) (C₁ C₂ : ℝ), Measurable ρ₁ → Measurable ρ₂ → (∀ x, 0 ≤ ρ₁ x) → (∀ y, 0 ≤ ρ₂ y) → 0 < C₁ → 0 < C₂ → Filter.Tendsto (fun r : ℝ => ν₁ {x | Real.sqrt (ρ₁ x) ≤ r} / ENNReal.ofReal (r ^ (d₁))) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (C₁) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (d₁))) 1))) → Filter.Tendsto (fun r : ℝ => ν₂ {x | Real.sqrt (ρ₂ x) ≤ r} / ENNReal.ofReal (r ^ (d₂))) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (C₂) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (d₂))) 1))) → Filter.Tendsto (fun r : ℝ => (ν₁.prod ν₂) {x | Real.sqrt (ρ₁ x.1 + ρ₂ x.2) ≤ r} / ENNReal.ofReal (r ^ (d₁ + d₂))) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal (C₁ * C₂) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (d₁ + d₂))) 1))) := by
   intro X Y _ _ ν₁ ν₂ _ _ ρ₁ ρ₂ d₁ d₂ C₁ C₂ hρ₁ hρ₂ h0₁ h0₂ hC₁ hC₂ h₁ h₂
   apply tendsto_of_two_sided

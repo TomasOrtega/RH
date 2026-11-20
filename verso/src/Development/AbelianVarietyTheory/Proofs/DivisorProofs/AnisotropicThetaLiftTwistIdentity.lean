@@ -13,6 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.SmoothDiff
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp c Φ Φ' hΦ' hPM c₀ hc₀ φ' hφ'`. Conclude with `⟨GlobalTheory.T.matched_pair_anisotropic_theta hK F E σ B a a' G X om om' R Rf hM hq hp c Φ Φ' hΦ' hPM c₀ hc₀ φ' hφ', GlobalTheory.T.matched_pair_anisotropic_theta_real hK F E σ B a a' G X om om' R Rf hM hq hp c Φ Φ' hΦ' hPM c₀ hc₀ φ' hφ', GlobalTheory.T.matched_pair_anisotropic_ …`.
+-/
 theorem isSmoothModerate_diff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ c : ℂ, ∀ Φ, ∀ Φ' ∈ G.M'.So B.ψ B.τ₁, PolMatch B G X R Rf Φ Φ' →

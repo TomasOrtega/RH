@@ -17,11 +17,19 @@ variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 def Rep (m : ℕ∞) (O : Set (B.Mat k r)) (φ : B.Mat k r → E) : Prop :=
   ∃ F : B.Mat k r → E, ContDiffOn ℝ (m : WithTop ℕ∞) F O ∧ ∀ x ∈ O, x ∈ B.GV k r → φ x = F x
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `h`. Conclude with `⟨F, hF.of_le (by exact_mod_cast hmm), he⟩`.
+-/
 theorem rep_mono {m m' : ℕ∞} (hmm : m ≤ m') {O : Set (B.Mat k r)} {φ : B.Mat k r → E} (h : Rep m' O φ) :
     Rep m O φ := by
   obtain ⟨F, hF, he⟩ := h
   exact ⟨F, hF.of_le (by exact_mod_cast hmm), he⟩
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `h`. Use `⟨fun x => fderiv ℝ F x (x * X), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hF.fderiv_of_isOpen (m := (m : WithTop ℕ∞)) hO (by push_cast; exact le_rfl)`. Conclude with `h1.clm_apply (mulRightRealCLM X).contDiff.contDiffOn`. Introduce `x hx hxG`.
+
+Establish `hd : DifferentiableAt ℝ F x` using `(hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)`. Conclude with `(Formalism.FourierDecayAlt.P.B5.hasDerivAt_of_ext hO hx hxG hX hd he).deriv`.
+-/
 theorem rep_RdV {m : ℕ∞} {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r → E} {X : B.Mat k r}
     (hX : B.inLie k r X) (h : Rep (m + 1) O φ) : Rep m O (RdV X φ) := by
   obtain ⟨F, hF, he⟩ := h
@@ -33,6 +41,11 @@ theorem rep_RdV {m : ℕ∞} {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k
       (hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)
     exact (Formalism.FourierDecayAlt.P.B5.hasDerivAt_of_ext hO hx hxG hX hd he).deriv
 
+/- English proof (translation)
+Proceed by induction on `w generalizing m with`. Consider the case `nil => exact rep_mono (by exact_mod_cast (by simpa using hle)) h`. Consider the case `cons X w ih`. Establish `e : B.Rw (X :: w) f = RdV X (B.Rw w f)` using `rfl`. Rewrite using `[e]`.
+
+Apply `rep_RdV hO (hw X (by simp))` to reduce the goal to its premises. Use `ih (fun Y hY => hw Y (by simp [hY])) (m + 1) (by simp at hle; omega)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem rep_Rw {O : Set (B.Mat k r)} (hO : IsOpen O) {f : B.Mat k r → E} {N : ℕ} (h : Rep (N : ℕ∞) O f)
     (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) (m : ℕ) (hle : m + w.length ≤ N) :
     Rep (m : ℕ∞) O (B.Rw w f) := by
@@ -45,6 +58,9 @@ theorem rep_Rw {O : Set (B.Mat k r)} (hO : IsOpen O) {f : B.Mat k r → E} {N : 
     have := ih (fun Y hY => hw Y (by simp [hY])) (m + 1) (by simp at hle; omega)
     exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨F, hF, he⟩` from `h`. Establish `hd : DifferentiableAt ℝ F x` using `(hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)`. Conclude with `(Formalism.FourierDecayAlt.P.B5.hasDerivAt_of_ext hO hx hxG hX hd he).differentiableAt.hasDerivAt`.
+-/
 theorem rep_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r → E} {x X : B.Mat k r}
     (hx : x ∈ O) (hxG : x ∈ B.GV k r) (hX : B.inLie k r X) (h : Rep ((1 : ℕ) : ℕ∞) O φ) :
     HasDerivAt (fun t : ℝ => φ (x * NormedSpace.exp ((t : ℂ) • X))) (RdV X φ x) 0 := by
@@ -52,6 +68,11 @@ theorem rep_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {φ : B.Mat k r →
   have hd : DifferentiableAt ℝ F x := (hF.differentiableOn (by simp)).differentiableAt (hO.mem_nhds hx)
   exact (Formalism.FourierDecayAlt.P.B5.hasDerivAt_of_ext hO hx hxG hX hd he).differentiableAt.hasDerivAt
 
+/- English proof (translation)
+Use `show deriv (fun t : ℝ => φ (x * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => ψ (x * NormedSpace.exp ((t : ℂ) • X))) 0`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hγ` using `hasDerivAt_mul_exp_smul_zero x X`. Establish `hγ0` using `Formalism.FourierDecayAlt.P.B5.curve_zero x X`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, x * NormedSpace.exp ((t : ℂ) • X) ∈ O` using `hγ.continuousAt.preimage_mem_nhds (by rw [hγ0]; exact hO.mem_nhds hx)`.
+
+Use `filter_upwards [hmem] with t ht`. Conclude with `he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hxG hX t)`.
+-/
 theorem rdV_congr {O : Set (B.Mat k r)} (hO : IsOpen O) {φ ψ : B.Mat k r → E}
     (he : ∀ y ∈ O, y ∈ B.GV k r → φ y = ψ y) {x X : B.Mat k r} (hx : x ∈ O) (hxG : x ∈ B.GV k r)
     (hX : B.inLie k r X) : RdV X φ x = RdV X ψ x := by
@@ -65,10 +86,16 @@ theorem rdV_congr {O : Set (B.Mat k r)} (hO : IsOpen O) {φ ψ : B.Mat k r → E
   filter_upwards [hmem] with t ht
   exact he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hxG hX t)
 
+/- English proof (translation)
+Simplify using `[wsEvalR, List.map_append, List.sum_append]`.
+-/
 theorem wsEvalR_append (a b : List (Polynomial ℂ × List (B.Mat k r))) (u : ℂ) (f : B.Mat k r → E)
     (x : B.Mat k r) : wsEvalR (a ++ b) u f x = wsEvalR a u f x + wsEvalR b u f x := by
   simp [wsEvalR, List.map_append, List.sum_append]
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [wsEvalR] | a :: L => by rw [List.flatMap_cons, wsEvalR_append, wsEvalR_flatMap F u f x L, List.map_cons, List.sum_cons]`.
+-/
 theorem wsEvalR_flatMap {α : Type} (F : α → List (Polynomial ℂ × List (B.Mat k r))) (u : ℂ)
     (f : B.Mat k r → E) (x : B.Mat k r) :
     ∀ L : List α, wsEvalR (L.flatMap F) u f x = (L.map fun a => wsEvalR (F a) u f x).sum
@@ -76,6 +103,9 @@ theorem wsEvalR_flatMap {α : Type} (F : α → List (Polynomial ℂ × List (B.
   | a :: L => by
     rw [List.flatMap_cons, wsEvalR_append, wsEvalR_flatMap F u f x L, List.map_cons, List.sum_cons]
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [wsEvalR] | t :: ws => by have ih := wsEvalR_map_mul p φ u f x ws simp only [wsEvalR, List.map_cons, List.sum_cons] at ih ⊢ rw [ih, smul_add, Polynomial.eval_mul, mul_smul]`.
+-/
 theorem wsEvalR_map_mul (p : Polynomial ℂ) (φ : List (B.Mat k r) → List (B.Mat k r)) (u : ℂ)
     (f : B.Mat k r → E) (x : B.Mat k r) :
     ∀ ws : List (Polynomial ℂ × List (B.Mat k r)),
@@ -86,6 +116,9 @@ theorem wsEvalR_map_mul (p : Polynomial ℂ) (φ : List (B.Mat k r) → List (B.
     simp only [wsEvalR, List.map_cons, List.sum_cons] at ih ⊢
     rw [ih, smul_add, Polynomial.eval_mul, mul_smul]
 
+/- English proof (translation)
+The claim follows from `| [], _, t, ht => by simp only [fexp, List.mem_singleton] at ht subst ht simp | gn :: gs, hL, t, ht => by have hL' : ∀ g ∈ gs, ∀ dX ∈ g.2, B.inLie k r dX.2 := fun g hg => hL g (List.mem_cons_of_mem _ hg) have ih := fexp_words gs hL' simp only [fexp, List.mem_append, List.mem_map, …`.
+-/
 theorem fexp_words : ∀ (gens : List (GenW k r)), (∀ gn ∈ gens, ∀ dX ∈ gn.2, B.inLie k r dX.2) →
     ∀ t ∈ fexp gens, t.2.length ≤ gens.length ∧ ∀ X ∈ t.2, B.inLie k r X
   | [], _, t, ht => by
@@ -110,6 +143,9 @@ theorem fexp_words : ∀ (gens : List (GenW k r)), (∀ gn ∈ gens, ∀ dX ∈ 
         · exact hL gn (by simp) dX hdX
         · exact (ih s hs).2 X hX
 
+/- English proof (translation)
+The claim follows from `| [], _ => by have e : ∀ y, wsEvalR ([] : List (Polynomial ℂ × List (B.Mat k r))) u f y = (0 : E) := fun y => by simp [wsEvalR] simp only [List.map_nil, e] exact hasDerivAt_const _ _ | t :: ws, h => by have h1 := (rep_hasDerivAt hO hx hxG hX (h t (by simp))).const_smul (t.1.eval …`.
+-/
 theorem ws_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {x X : B.Mat k r} (hx : x ∈ O)
     (hxG : x ∈ B.GV k r) (hX : B.inLie k r X) (u : ℂ) (f : B.Mat k r → E) :
     ∀ ws : List (Polynomial ℂ × List (B.Mat k r)), (∀ t ∈ ws, Rep ((1 : ℕ) : ℕ∞) O (B.Rw t.2 f)) →
@@ -133,6 +169,9 @@ theorem ws_hasDerivAt {O : Set (B.Mat k r)} (hO : IsOpen O) {x X : B.Mat k r} (h
     rw [e1, e2]
     exact h1.add h2
 
+/- English proof (translation)
+The claim follows from `| [], O, f, _, _, _, x, _, _ => by simp [fexp, wsEvalR, B.Rw] | gn :: gs, O, f, hO, hL, hf, x, hx, hxG => by have hL' : ∀ g ∈ gs, ∀ dX ∈ g.2, B.inLie k r dX.2 := fun g hg => hL g (List.mem_cons_of_mem _ hg) have hf' : Rep (gs.length : ℕ∞) O f := rep_mono (by exact_mod_cast (by si …`.
+-/
 theorem right_generator_word_evaluation (u : ℂ) : ∀ (gens : List (GenW k r)) (O : Set (B.Mat k r)) (f : B.Mat k r → E), IsOpen O →
     (∀ gn ∈ gens, ∀ dX ∈ gn.2, B.inLie k r dX.2) → Rep (gens.length : ℕ∞) O f → ∀ x ∈ O, x ∈ B.GV k r →
       (gens.map (fun gn => genOpR gn u)).foldr (fun T h => T h) f x = wsEvalR (fexp gens) u f x
@@ -173,6 +212,9 @@ theorem right_generator_word_evaluation (u : ℂ) : ∀ (gens : List (GenW k r))
 
 end FExpR
 
+/- English proof (translation)
+Introduce `k r E _ _ gens u UU f hL hf g hg hgG`. Take `⟨U, f', hU, hgU, hf', he⟩` from `hf g hg`. Conclude with `FExpR.right_generator_word_evaluation u gens U f hU hL ⟨f', hf', he⟩ g hgU hgG`.
+-/
 theorem right_exponential_evaluation : FExpEvalR := by
   intro k r E _ _ gens u UU f hL hf g hg hgG
   obtain ⟨U, f', hU, hgU, hf', he⟩ := hf g hg

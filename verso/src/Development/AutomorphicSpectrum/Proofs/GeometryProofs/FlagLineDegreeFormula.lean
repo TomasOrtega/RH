@@ -22,6 +22,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.RootHt
 open GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Unfold `HermitianBundle.gramDet gramAt`. Use `congr 1`. Use extensionality with `a b`. Conclude with `hfib σ (g a) (g b) (v a) (v b) (hl a) (hl b)`.
+-/
 theorem gram_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : Type} {J : K → Type}
     {y : (Σ k, J k) → Ω} {G : Over X} [GrpObj G] {Li : Type} [AddCommGroup Li] [Module Ω Li] {M : LieModel G ξ Li}
     (h : LieMetric M y) {L : Type} [Field L] [NumberField L] {z : Sp (𝓞 L) ⟶ X} {B : HermitianBundle.{0} L}
@@ -34,6 +37,9 @@ theorem gram_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : 
   ext a b
   exact hfib σ (g a) (g b) (v a) (v b) (hl a) (hl b)
 
+/- English proof (translation)
+The claim follows from `|Ht.lineHt A L w - F.grDeg i| ≤ C := by obtain ⟨C₀, hC₀⟩ := GlobalTheory.T.hermitian_line_metric_bound X Ω ξ K J y G Li M V r b₀ m i e₀ h A hc hall htie hm hind hsw hdeg hsm refine ⟨Real.log m + |C₀|, ?_⟩ intro L _ _ w z hw B MB hfib F hsub have hne : ∀ k, ∃ c, w ⟨k, c⟩ ≠ 0 := fu …`.
+-/
 theorem one_label (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (V : Lat ξ Li) (r : ℕ) (b₀ : Fin r → Li)
@@ -136,9 +142,15 @@ def dualLine (A : HermLine J) : HermLine J where
     refine Finset.prod_congr rfl fun k _ => ?_
     simp [_root_.zpow_neg]
 
+/- English proof (translation)
+The claim follows from `hA.inv fun z hz => (A.pos z hz).ne'`.
+-/
 theorem isSmoothHerm_dualLine {A : HermLine J} (hA : IsSmoothHerm A) : IsSmoothHerm (dualLine A) :=
   hA.inv fun z hz => (A.pos z hz).ne'
 
+/- English proof (translation)
+Unfold `Ht.lineHt Ht.ptHt`. Simplify using `only [dualLine, Pi.neg_apply, Int.cast_neg, neg_mul, Finset.sum_neg_distrib, Real.log_inv, finsum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineHt_dualLine (A : HermLine J) (L : Type) [Field L] [NumberField L]
     (w : (Σ k, J k) → L) : Ht.lineHt (dualLine A) L w = -Ht.lineHt A L w := by
   unfold Ht.lineHt Ht.ptHt
@@ -152,6 +164,11 @@ section Deg
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {K : Type} [Fintype K] {J : K → Type}
   {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Use `⟨h.1, fun p hp c hc => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hΛ p`. Establish `tg` using `Flag.tens_gen (fun _ : Unit => Λ) (fun _ => 1) p (fun _ => t) fun _ => ht`. Use `h.2 p hp c hc` as an intermediate fact. Rewrite `this` using `[tg.2]`.
+
+Rewrite using `[ht.2, ← this]`. Simplify using the standard rewrite rules.
+-/
 theorem isDegOn_of_tens_one {Λ : Lat ξ Ω} (hΛ : ∀ p, ∃ t, Λ.IsGenAt p t) {a : K → ℤ} {e₀ : Ω}
     (h : (Lat.tens (fun _ : Unit => Λ) fun _ => 1).IsDegOn Set.univ y a e₀) : Λ.IsDegOn Set.univ y a e₀ := by
   refine ⟨h.1, fun p hp c hc => ?_⟩
@@ -162,6 +179,21 @@ theorem isDegOn_of_tens_one {Λ : Lat ξ Ω} (hΛ : ∀ p, ∃ t, Λ.IsGenAt p t
   rw [ht.2, ← this]
   simp
 
+/- English proof (translation)
+Use `⟨inv_ne_zero h.1, fun p hp c hc => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hΛ p`. Establish `tg` using `Flag.tens_gen (fun _ : Unit => Λ) (fun _ => -1) p (fun _ => t) fun _ => ht`. Establish `hs` using `h.2 p hp c hc`. Rewrite `hs` using `[tg.2]`.
+
+Simplify using `only [Finset.univ_unique, Finset.prod_singleton, _root_.zpow_neg, zpow_one] at hs`. Use `set g : Ω := (∏ k, y ⟨k, c k⟩ ^ a k) • e₀ with hg`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k hk => hc.1 (Finset.prod_eq_zero (Finset.mem_univ k) hk)`. Establish `hg0 : g ≠ 0`. Rewrite using `[hg, smul_eq_mul]`.
+
+Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hy k)) h.1`. Establish `hgi : (∏ k, y ⟨k, c k⟩ ^ (-a) k) • e₀⁻¹ = g⁻¹`. Rewrite using `[hg, smul_eq_mul, smul_eq_mul, mul_inv, ← Finset.prod_inv_distrib]`. Simplify using `[_root_.zpow_neg]`. Rewrite using `[hgi, ht.2]`.
+
+Establish `h1 : t⁻¹ ∈ Submodule.span (regAt ξ p) {g}` using `hs ▸ Submodule.mem_span_singleton_self _`. Establish `h2 : g ∈ Submodule.span (regAt ξ p) {t⁻¹}` using `hs ▸ Submodule.mem_span_singleton_self _`. Take `⟨r₁, hr₁⟩` from `Submodule.mem_span_singleton.mp h1`. Take `⟨r₂, hr₂⟩` from `Submodule.mem_span_singleton.mp h2`. Establish `ht0` using `ht.1`.
+
+Establish `e₁ : (r₁ : Ω) * g = t⁻¹` using `hr₁`. Establish `e₂ : (r₂ : Ω) * t⁻¹ = g` using `hr₂`. Apply `le_antisymm` to reduce the goal to its premises. Use `(Submodule.span_singleton_le_iff_mem _ _).mpr (Submodule.mem_span_singleton.mpr ⟨r₂, ?_⟩) show (r₂ : Ω) * g⁻¹ = t` and prove the remaining obligations. Establish `hr : (r₂ : Ω) = g * t`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts. Use `(Submodule.span_singleton_le_iff_mem _ _).mpr (Submodule.mem_span_singleton.mpr ⟨r₁, ?_⟩) show (r₁ : Ω) * t = g⁻¹` and prove the remaining obligations. Establish `hr : (r₁ : Ω) = t⁻¹ * g⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isDegOn_of_tens_neg_one {Λ : Lat ξ Ω} (hΛ : ∀ p, ∃ t, Λ.IsGenAt p t) {a : K → ℤ} {e₀ : Ω}
     (h : (Lat.tens (fun _ : Unit => Λ) fun _ => -1).IsDegOn Set.univ y a e₀) :
     Λ.IsDegOn Set.univ y (-a) e₀⁻¹ := by
@@ -211,6 +243,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {𝔐 : HodgeCpt Y S y}
 
+/- English proof (translation)
+Establish `h₁` using `h (τ, Fin.castAdd D.q i)`. Establish `hi : rootIdx D (τ, Fin.castAdd D.q i) = ⟨.inl τ, i⟩` using `by simp [rootIdx]`. Establish `hs : rootSgn D (τ, Fin.castAdd D.q i) = 1` using `by simp [rootSgn]`. Unfold `Flag.rootLat at h₁`. Rewrite `h₁` using `[hs]`.
+
+Generalize the expression as in `rootIdx D (τ, Fin.castAdd D.q i) = q at h₁ hi`. Substitute `hi` using the available equality. Conclude with `isDegOn_of_tens_one (fun p => Flag.gr_gen_of_isFlagVBOn (Fl.sub _) (Set.mem_univ p) _) h₁`.
+-/
 theorem isDegOn_inl (Fl : 𝔐.Flag) {a : CMType H × Fin (D.p + D.q) → K → ℤ} {e : CMType H × Fin (D.p + D.q) → Ω}
     (h : Fl.RootLines a e) (τ : CMType H) (i : Fin D.p) :
     ((𝔐.V (.inl τ)).gr (Fl.b (.inl τ)) i).IsDegOn Set.univ y (a (τ, Fin.castAdd D.q i)) (e (τ, Fin.castAdd D.q i)) := by
@@ -223,6 +260,13 @@ theorem isDegOn_inl (Fl : 𝔐.Flag) {a : CMType H × Fin (D.p + D.q) → K → 
   subst hi
   exact isDegOn_of_tens_one (fun p => Flag.gr_gen_of_isFlagVBOn (Fl.sub _) (Set.mem_univ p) _) h₁
 
+/- English proof (translation)
+Establish `h₁` using `h (τ, Fin.natAdd D.p i)`. Establish `hi : rootIdx D (τ, Fin.natAdd D.p i) = ⟨.inr τ, i.rev⟩`. Establish `h2` using `i.2`. Simplify using `only [rootIdx, Fin.val_natAdd]`. Rewrite using `[dif_neg (by omega)]`.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `hs : rootSgn D (τ, Fin.natAdd D.p i) = -1` using `by simp [rootSgn]`.
+
+Unfold `Flag.rootLat at h₁`. Rewrite `h₁` using `[hs]`. Generalize the expression as in `rootIdx D (τ, Fin.natAdd D.p i) = q at h₁ hi`. Substitute `hi` using the available equality. Conclude with `isDegOn_of_tens_neg_one (fun p => Flag.gr_gen_of_isFlagVBOn (Fl.sub _) (Set.mem_univ p) _) h₁`.
+-/
 theorem isDegOn_inr (Fl : 𝔐.Flag) {a : CMType H × Fin (D.p + D.q) → K → ℤ} {e : CMType H × Fin (D.p + D.q) → Ω}
     (h : Fl.RootLines a e) (τ : CMType H) (i : Fin D.q) :
     ((𝔐.V (.inr τ)).gr (Fl.b (.inr τ)) i.rev).IsDegOn Set.univ y (-a (τ, Fin.natAdd D.p i)) (e (τ, Fin.natAdd D.p i))⁻¹ := by
@@ -249,6 +293,19 @@ end GlobalTheory.CompanionTheory.Ar.RootHt
 namespace GlobalTheory.CompanionTheory.Ar.RootHt
 open GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 _ Fl h x e hx hR`. Take `⟨m, hm, hsw⟩` from `GlobalTheory.T.flag_label_bases_exist E H D l Xo c Y S Ω K J y 𝔐 Fl`. Use `haveI : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth`. Establish `hc : CharZero Ω` using `by haveI : CharZero c.F := inferInstance`. Conclude with `charZero_of_injective_ringHom 𝔐.cst.injective`.
+
+Establish `hind : ∀ s, LinearIndependent Ω (Fl.b s)`. Take `⟨c', u, _, _, _, h4, _⟩` from `Fl.generic`. Conclude with `h4`. Establish `hW : ∀ τ (i : Fin D.p), _` using `fun τ i => one_label 𝔐.X Ω 𝔐.ξ K J y 𝔐.t.G 𝔐.Li 𝔐.M (𝔐.V (.inl τ)) D.p (Fl.b (.inl τ)) m i (e (τ, Fin.castAdd D.q i)) h (x (τ, Fin.castAdd D.q i)) hc 𝔐.all 𝔐.tie hm (hind _) (fun p => hsw (.inl τ) p) (isDegOn_inl Fl hR τ i) (hx _)`. Establish `hS : ∀ τ (i : Fin D.q), _` using `fun τ i => one_label 𝔐.X Ω 𝔐.ξ K J y 𝔐.t.G 𝔐.Li 𝔐.M (𝔐.V (.inr τ)) D.q (Fl.b (.inr τ)) m i.rev (e (τ, Fin.natAdd D.p i))⁻¹ h (dualLine (x (τ, Fin.natAdd D.p i))) hc 𝔐.all 𝔐.tie hm (hind _) (fun p => hsw (.inr τ) p) (isDegOn_inr Fl hR τ i) (isSmoothHerm_dualLine (hx _))`.
+
+Use `choose CW hCW using hW`. Use `choose CS hCS using hS`. Use `⟨∑ τ, ((∑ i, |CW τ i|) + ∑ i, |CS τ i|), ?_⟩` and prove the remaining obligations. Introduce `L _ _ w z hw B MB A hfib hsub`. Establish `hnn : ∀ τ, 0 ≤ (∑ i, |CW τ i|) + ∑ i, |CS τ i|` using `fun τ => add_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.sum_nonneg fun _ _ => abs_nonneg _)`.
+
+Establish `hτ : ∀ τ, (∑ i, |CW τ i|) + ∑ i, |CS τ i| ≤ ∑ τ, ((∑ i, |CW τ i|) + ∑ i, |CS τ i|)` using `fun τ => Finset.single_le_sum (f := fun τ => (∑ i, |CW τ i|) + ∑ i, |CS τ i|) (fun τ _ => hnn τ) (Finset.mem_univ τ)`. Prove the components needed by the constructor for the conclusion. Introduce `τ i`. Use `hCW τ i L w z hw B MB hfib (A.W τ) (hsub.1 τ)` as an intermediate fact. Establish `h1 : |CW τ i| ≤ ∑ i, |CW τ i|` using `Finset.single_le_sum (f := fun i => |CW τ i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`.
+
+Establish `h2 : 0 ≤ ∑ i, |CS τ i|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Conclude with `this.trans ((le_abs_self _).trans (h1.trans ((le_add_of_nonneg_right h2).trans (hτ τ))))`. Introduce `τ i`. Use `hCS τ i L w z hw B MB hfib (A.S τ) (hsub.2 τ)` as an intermediate fact. Rewrite `this` using `[lineHt_dualLine, ← abs_neg]`.
+
+Establish `e1 : -(-Ht.lineHt (x (τ, Fin.natAdd D.p i)) L w - (A.S τ).grDeg i.rev) = Ht.lineHt (x (τ, Fin.natAdd D.p i)) L w + (A.S τ).grDeg i.rev` using `by ring`. Rewrite `this` using `[e1]`. Establish `h1 : |CS τ i| ≤ ∑ i, |CS τ i|` using `Finset.single_le_sum (f := fun i => |CS τ i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2 : 0 ≤ ∑ i, |CW τ i|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Conclude with `this.trans ((le_abs_self _).trans (h1.trans ((le_add_of_nonneg_left h2).trans (hτ τ))))`.
+-/
 theorem root_height : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) [Fintype (CMType H)] (Fl : 𝔐.Flag) (h : LieMetric 𝔐.M y) (x : CMType H × Fin (D.p + D.q) → HermLine J) (e : CMType H × Fin (D.p + D.q) → Ω), (∀ r, IsSmoothHerm (x r)) → Fl.RootLines (fun r => (x r).a) e → ∃ C : ℝ, ∀ (L : Type) [Field L] [NumberField L] (w : (Σ k, J k) → L) (z : Sp (𝓞 L) ⟶ 𝔐.X), CoordsAt 𝔐.ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w → ∀ (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G z B.carrier) (A : FlagPair B (CMType H) D.p D.q), IsFibre (fun z v w c => c = h.ip z v w) z B MB → ((∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inl τ)) i.val) z MB ((A.W τ).F i)) ∧ ∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inr τ)) i.val) z MB ((A.S τ).F i)) → (∀ τ (i : Fin D.p), |Ht.lineHt (x (τ, Fin.castAdd D.q i)) L w - (A.W τ).grDeg i| ≤ C) ∧ ∀ τ (i : Fin D.q), |Ht.lineHt (x (τ, Fin.natAdd D.p i)) L w + (A.S τ).grDeg i.rev| ≤ C := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 _ Fl h x e hx hR
   obtain ⟨m, hm, hsw⟩ := GlobalTheory.T.flag_label_bases_exist E H D l Xo c Y S Ω K J y 𝔐 Fl

@@ -10,6 +10,11 @@ open CommRing Module
 
 variable {B : Type} [CommRing B]
 
+/- English proof (translation)
+Establish `⟨f⟩` using `Invertible.free_iff_linearEquiv.mp (inferInstance : Free (Localization.AtPrime p) (LocalizedModule p.primeCompl M))`. Take `⟨e, s, he⟩ : ∃ (e : M) (s : p.primeCompl), LocalizedModule.mk e s = f.symm 1` from `LocalizedModule.induction_on (β := fun y => ∃ (e : M) (s : p.primeCompl), LocalizedModule.mk e s = y) (fun e s => ⟨e, s, rfl⟩) (f.symm 1)`. Use `⟨e, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, t, ht⟩ : ∃ (a : B) (t : p.primeCompl), Localization.mk a t = f (LocalizedModule.mk x 1)` from `Localization.induction_on (f (LocalizedModule.mk x 1)) fun z => ⟨z.1, z.2, rfl⟩`. Establish `key : LocalizedModule.mk x (1 : p.primeCompl) = LocalizedModule.mk (a • e) (t * s)`.
+
+Rewrite using `[← f.symm_apply_apply (LocalizedModule.mk x 1), ← ht, ← mul_one (Localization.mk a t), ← smul_eq_mul, map_smul, ← he, LocalizedModule.mk_smul_mk]`. Take `⟨u, hu⟩` from `(LocalizedModule.mk_eq).mp key`. Use `⟨(u : B) * ((t : B) * s), u * a, ?_, ?_⟩` and prove the remaining obligations. Conclude with `p.primeCompl.mul_mem u.2 (p.primeCompl.mul_mem t.2 s.2)`. Simplify `hu` using `only [Submonoid.smul_def, Submonoid.coe_mul, OneMemClass.coe_one, one_smul, smul_smul]`.
+-/
 theorem exists_local_generator (M : Type) [AddCommGroup M] [Module B M] [Module.Invertible B M]
     (p : Ideal B) [p.IsPrime] : ∃ e : M, ∀ x : M, ∃ w a : B, w ∉ p ∧ w • x = a • e := by
   have ⟨f⟩ := Invertible.free_iff_linearEquiv.mp
@@ -28,6 +33,11 @@ theorem exists_local_generator (M : Type) [AddCommGroup M] [Module B M] [Module.
   · exact p.primeCompl.mul_mem u.2 (p.primeCompl.mul_mem t.2 s.2)
   · simpa only [Submonoid.smul_def, Submonoid.coe_mul, OneMemClass.coe_one, one_smul, smul_smul] using hu
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `⟨e⟩` using `Pic.ext_iff.mp (pow_zero c)`. Establish `⟨g⟩` using `Pic.mk_eq_one_iff.mp (Pic.mk_eq_self (M := (1 : Pic B)))`. Conclude with `⟨e ≪≫ₗ g ≪≫ₗ (PiTensorProduct.isEmptyEquiv (Fin 0)).symm⟩`.
+
+Consider the case `succ n ih`. Take `⟨ih⟩` from `ih`. Establish `⟨e1⟩` using `Pic.ext_iff.mp (pow_succ c n)`. Establish `⟨e2⟩` using `Pic.ext_iff.mp (Pic.mul_eq_tensor (c ^ n) c)`. Conclude with `⟨e1 ≪≫ₗ e2 ≪≫ₗ Pic.mk.linearEquiv B _ ≪≫ₗ TensorProduct.congr ih (PiTensorProduct.subsingletonEquiv (R := B) (s := fun _ : Fin 1 => Pic.AsModule c) 0).symm ≪≫ₗ PiTensorProduct.tmulEquiv B (Pic.AsModule c) ≪≫ₗ PiTensorProduct.reindex B _ finSumFinEquiv⟩`.
+-/
 theorem tensorPow_equiv (c : Pic B) (n : ℕ) :
     Nonempty (Pic.AsModule (c ^ n) ≃ₗ[B] ⨂[B] _ : Fin n, Pic.AsModule c) := by
   induction n with
@@ -43,6 +53,19 @@ theorem tensorPow_equiv (c : Pic B) (n : ℕ) :
       (PiTensorProduct.subsingletonEquiv (R := B) (s := fun _ : Fin 1 => Pic.AsModule c) 0).symm ≪≫ₗ
       PiTensorProduct.tmulEquiv B (Pic.AsModule c) ≪≫ₗ PiTensorProduct.reindex B _ finSumFinEquiv⟩
 
+/- English proof (translation)
+Introduce `B _ q c hc`. Take `⟨T⟩` from `tensorPow_equiv c q`. Establish `⟨e1⟩` using `Pic.ext_iff.mp hc`. Establish `⟨g⟩` using `Pic.mk_eq_one_iff.mp (Pic.mk_eq_self (M := (1 : Pic B)))`. Set `ψ : (⨂[B] _ : Fin q, Pic.AsModule c) ≃ₗ[B] B` to `T.symm ≪≫ₗ e1 ≪≫ₗ g`.
+
+Use `⟨ψ.toLinearMap.compMultilinearMap (PiTensorProduct.tprod B), fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩ : ∃ x : Fin q → Pic.AsModule c, ψ (PiTensorProduct.tprod B x) ∉ p` from `by by_contra! h`. Establish `hall : ∀ t, ψ t ∈ p` using `fun t => by`. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x => rw [map_smul, smul_eq_mul]`.
+
+Conclude with `p.mul_mem_left r (h x)`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `p.add_mem ha hb`. Conclude with `hp.ne_top ((Ideal.eq_top_iff_one p).mpr (by simpa using hall (ψ.symm 1)))`. Take `⟨e, he⟩` from `exists_local_generator (Pic.AsModule c) p`.
+
+Use `choose w a hw hwa using fun i => he (x i)`. Use `⟨e, fun hmem => ?_⟩` and prove the remaining obligations. Establish `hmem' : ψ (PiTensorProduct.tprod B fun _ => e) ∈ p` using `hmem`. Establish `h1 : ψ (PiTensorProduct.tprod B (fun i => w i • x i)) = (∏ i, w i) * ψ (PiTensorProduct.tprod B x)`. Rewrite using `[MultilinearMap.map_smul_univ, map_smul, smul_eq_mul]`.
+
+Establish `h2 : ψ (PiTensorProduct.tprod B (fun i => w i • x i)) = (∏ i, a i) * ψ (PiTensorProduct.tprod B (fun _ => e))`. Repeatedly rewrite using `[hwa]`. Rewrite using `[MultilinearMap.map_smul_univ, map_smul, smul_eq_mul]`. Establish `hin : (∏ i, w i) * ψ (PiTensorProduct.tprod B x) ∈ p`. Rewrite using `[← h1, h2]`.
+
+Conclude with `p.mul_mem_left _ hmem'`. Break down `hp.mem_or_mem hin with h | h` into its components or cases. Conclude with `(p.primeCompl.prod_mem fun i _ => hw i) h`. Conclude with `hx h`.
+-/
 theorem exists_form : ∀ (B : Type) [CommRing B] (q : ℕ) (c : CommRing.Pic B), c ^ q = 1 →
     ∃ φ : MultilinearMap B (fun _ : Fin q => CommRing.Pic.AsModule c) B,
       ∀ p : Ideal B, p.IsPrime → ∃ e : CommRing.Pic.AsModule c, φ (fun _ => e) ∉ p := by

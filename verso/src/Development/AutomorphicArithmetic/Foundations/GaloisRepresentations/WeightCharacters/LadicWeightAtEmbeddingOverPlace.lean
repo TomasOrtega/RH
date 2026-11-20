@@ -12,6 +12,31 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 
 namespace UpperTheory.Gal.Wt
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a v' τ hτ`. Take `⟨u, hu⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding E l (ι.symm.toRingHom.comp τ)`. Establish `hle : v'.asIdeal ≤ u.asIdeal` using `fun x hx => by`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`. Conclude with `(hu _).2 (hτ x hx)`.
+
+Establish `huv : v' = u` using `HeightOneSpectrum.ext (v'.isMaximal.eq_of_le u.isPrime.ne_top hle)`. Substitute `huv` using the available equality. Take `⟨j, hj, hjE⟩` from `GlobalTheory.exists_continuous_extension_adicCompletion E l (ι.symm.toRingHom.comp τ) v' hu`. Establish `hl : ((l : ℕ) : 𝓞 E) ∈ v'.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`.
+
+Establish `h1 : ‖(ι.symm.toRingHom.comp τ) ((((l : ℕ) : 𝓞 E)) : E)‖ < 1`. Establish `h0 : (ι.symm.toRingHom.comp τ) ((((l : ℕ) : 𝓞 E)) : E) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h0, PadicAlgCl.norm_extends (p := l) (l : ℚ_[l])]`. Conclude with `Padic.norm_p_lt_one`. Simplify using `using (hu (((l : ℕ) : 𝓞 E) : E)).2 h1`.
+
+Establish `hκ : ∀ (g : UA E a) (p q : Fin a), ((((Matrix.GeneralLinearGroup.map (ι.toRingHom.comp j)).comp (cLoc v')) g : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) p q = ι (j (((cLoc v' g : GL (Fin a) (v'.adicCompletion E)) : Matrix (Fin a) (Fin a) (v'.adicCompletion E)) p q))` using `fun _ _ _ => rfl`. Use `⟨(Matrix.GeneralLinearGroup.map (ι.toRingHom.comp j)).comp (cLoc v'), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨g₀, hg₀⟩`. Use extensionality with `p q`. Express the relevant statement in the definitionally equal form `ι (j (pLoc E v' (pFin E ((γ.1 : Matrix (Fin a) (Fin a) (Ad E)) p q)))) = coord τ (pInf E ((γ.1 : Matrix (Fin a) (Fin a) (Ad E)) p q))`.
+
+Establish `hg₁ : (γ.1 : GL (Fin a) (Ad E)) = ratGL E a g₀` using `hg₀.symm`. Rewrite using `[hg₁]`. Express the relevant statement in the definitionally equal form `ι (j (pLoc E v' (pFin E (algebraMap E (Ad E) ((g₀ : Matrix (Fin a) (Fin a) E) p q))))) = coord τ (pInf E (algebraMap E (Ad E) ((g₀ : Matrix (Fin a) (Fin a) E) p q)))`. Rewrite using `[coord_algebraMap]`. Establish `h` using `congrArg (fun φ : E →+* Qbar l => φ ((g₀ : Matrix (Fin a) (Fin a) E) p q)) hjE`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply] at h`. Express the relevant statement in the definitionally equal form `ι (j (algebraMap E (v'.adicCompletion E) _)) = _`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Introduce `x hx`.
+
+Establish `hx' : Matrix.GeneralLinearGroup.map (pFin E) x.1 = 1` using `hx`. Establish `h2 : cLoc v' x = Matrix.GeneralLinearGroup.map (pLoc E v') (Matrix.GeneralLinearGroup.map (pFin E) x.1)` using `by ext; rfl`. Rewrite using `[MonoidHom.comp_apply, h2, hx', map_one, map_one]`. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hinj : Function.Injective (ι.toRingHom.comp j)` using `RingHom.injective _`. Use `Units.ext (Matrix.ext fun p q => hinj ?_)` and prove the remaining obligations. Establish `h3` using `congrArg (fun m : GL (Fin a) ℂ => (m : Matrix (Fin a) (Fin a) ℂ) p q) h`. Simplify using `only [hκ] at h3`.
+
+Establish `h4 : (ι.toRingHom.comp j) (((1 : GL (Fin a) (v'.adicCompletion E)) : Matrix (Fin a) (Fin a) (v'.adicCompletion E)) p q) = ((1 : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) p q`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `h3.trans h4.symm`. Introduce `h`.
+
+Rewrite using `[MonoidHom.comp_apply, h, map_one]`. Introduce `p q`. Establish `h1 : (fun g : UA E a => ι.symm (((((Matrix.GeneralLinearGroup.map (ι.toRingHom.comp j)).comp (cLoc v')) g : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) p q)) = fun g => j (((cLoc v' g : GL (Fin a) (v'.adicCompletion E)) : Matrix (Fin a) (Fin a) (v'.adicCompletion E)) p q)`. Use function extensionality and compare the values at `fun g => by rw [hκ, RingEquiv.symm_apply_apply]`. Rewrite using `[h1]`.
+
+Conclude with `hj.comp ((Units.continuous_val.matrix_elem p q).comp (GlobalTheory.BCT.GlobLev.continuous_cLoc v'))`. Introduce `g hg p q`. Take `⟨h1, h2⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 hg`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hκ, RingEquiv.symm_apply_apply]`.
+
+Conclude with `UpperTheory.Gal.Gen.Loc.norm_map_integer_le_one l v' j hl hj _ (h1 p q)`. Rewrite using `[MonoidHom.comp_apply, ← map_inv]`. Express the relevant statement in the definitionally equal form `‖ι.symm (ι (j ((((cLoc v' g)⁻¹ : GL (Fin a) (v'.adicCompletion E)) : Matrix (Fin a) (Fin a) (v'.adicCompletion E)) p q)))‖ ≤ 1`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `UpperTheory.Gal.Gen.Loc.norm_map_integer_le_one l v' j hl hj _ (h2 p q)`.
+-/
 theorem ladic_weight_at_embedding_over_place : Kap0 := by
   intro E _ _ _ l _ ι a v' τ hτ
   obtain ⟨u, hu⟩ := GlobalTheory.LadicPlace.exists_place_of_embedding E l (ι.symm.toRingHom.comp τ)

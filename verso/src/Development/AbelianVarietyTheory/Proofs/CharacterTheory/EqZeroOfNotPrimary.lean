@@ -6,6 +6,15 @@ open Polynomial GlobalTheory.CuspGL
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Establish `: Fact (Irreducible p)` using `⟨hp⟩`. Establish `hroot : (LinearMap.charpoly (T.baseChange (AdjoinRoot p))).IsRoot (AdjoinRoot.root p)`. Rewrite using `[LinearMap.charpoly_baseChange]`. Take `⟨r, hr⟩` from `hd`. Rewrite using `[hr, Polynomial.map_mul, IsRoot, eval_mul, AdjoinRoot.algebraMap_eq, (AdjoinRoot.isRoot_root p).eq_zero, zero_mul]`.
+
+Take `⟨v, hv⟩` from `((Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).mpr hroot).exists_hasEigenvector`. Establish `h0 : aeval (T.baseChange (AdjoinRoot p)) (q.map (algebraMap F (AdjoinRoot p))) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap]`. Express the relevant statement in the definitionally equal form `aeval (Module.End.baseChangeHom F (AdjoinRoot p) V T) q = 0`. Rewrite using `[Polynomial.aeval_algHom_apply, hq, map_zero]`.
+
+Establish `h1` using `Module.End.aeval_apply_of_hasEigenvector (p := q.map (algebraMap F (AdjoinRoot p))) hv`. Rewrite `h1` using `[h0, LinearMap.zero_apply]`. Establish `hz : (q.map (algebraMap F (AdjoinRoot p))).eval (AdjoinRoot.root p) = 0`. Break down `smul_eq_zero.mp h1.symm with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h hv.2`. Rewrite `hz` using `[Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero]`. Conclude with `hz`.
+-/
 theorem irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero {F : Type} [Field F] {V : Type} [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] (T : Module.End F V) (p q : F[X]) (hp : Irreducible p)
     (hd : p ∣ LinearMap.charpoly T) (hq : aeval T q = 0) : p ∣ q := by
@@ -30,6 +39,39 @@ theorem irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero {F : Type} [Field F] {V
   rw [Polynomial.eval_map_algebraMap, AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero] at hz
   exact hz
 
+/- English proof (translation)
+Introduce `F _ _ V _ _ _ φ hcl hpr hdim g hg`. Establish `hmon : (LinearMap.charpoly g).Monic` using `LinearMap.charpoly_monic g`. Establish `hne0 : LinearMap.charpoly g ≠ 0` using `hmon.ne_zero`. Establish `hnu : ¬ IsUnit (LinearMap.charpoly g)`. Introduce `hu`.
+
+Establish `h` using `LinearMap.charpoly_natDegree g`. Rewrite `h` using `[Polynomial.natDegree_eq_zero_of_isUnit hu]`. Use linear arithmetic over natural numbers and integers. Take `⟨f, hfm, hf, hfd⟩` from `Polynomial.exists_monic_irreducible_factor _ hnu`. Take `⟨m, Q, hnd, hfac⟩` from `WfDvdMonoid.max_power_factor hne0 hf`.
+
+Establish `hm : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Rewrite `hfac` using `[h, pow_zero, one_mul]`. Conclude with `absurd (hfac ▸ hfd) hnd`. Conclude with `h`.
+
+Establish `hQ0 : Q ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfac` using `[mul_zero]`. Conclude with `hne0 hfac`. Establish `hQ : ¬ IsUnit Q`.
+
+Introduce `hu`. Establish `hQm : Q.Monic` using `(hfm.pow m).of_mul_monic_left (hfac ▸ hmon)`. Establish `h1 : Q = 1` using `hQm.eq_one_of_isUnit hu`. Conclude with `hg ⟨f, m, hfm, hf, hm, by rw [hfac, h1, mul_one]⟩`. Establish `hcop : IsCoprime (f ^ m) Q` using `((hf.coprime_iff_not_dvd).mpr hnd).pow_left`.
+
+Establish `hPQ : aeval g (f ^ m) * aeval g Q = 0`. Rewrite using `[← map_mul, ← hfac, LinearMap.aeval_self_charpoly]`. Establish `hgA : ∀ x ∈ LinearMap.ker (aeval g (f ^ m)), g x ∈ LinearMap.ker (aeval g (f ^ m))`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`.
+
+Establish `hc : aeval g (f ^ m) * g = g * aeval g (f ^ m)`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrArg (fun u : Module.End F V => u x) hc`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h, hx, map_zero]`.
+
+Use `set A := LinearMap.ker (aeval g (f ^ m)) with hAdef`. Establish `hPA : aeval (g.restrict hgA) (f ^ m) = 0`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `intertwine_aeval_apply A.subtype (g.restrict hgA) g (fun _ => rfl) (f ^ m) x`. Rewrite `h` using `[Submodule.subtype_apply, Submodule.subtype_apply]`.
+
+Rewrite using `[h, LinearMap.zero_apply, Submodule.coe_zero]`. Conclude with `LinearMap.mem_ker.mp x.2`. Establish `hQq : aeval (A.mapQ A g (fun x hx => hgA x hx)) Q = 0`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `A.mkQ_surjective y`.
+
+Establish `h` using `intertwine_aeval_apply A.mkQ g (A.mapQ A g (fun x hx => hgA x hx)) (fun _ => rfl) Q x`. Rewrite using `[← h, LinearMap.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hAdef, LinearMap.mem_ker, ← Module.End.mul_apply, hPQ, LinearMap.zero_apply]`. Establish `hcp : IsCoprime (LinearMap.charpoly (g.restrict hgA)) (LinearMap.charpoly (A.mapQ A g (fun x hx => hgA x hx)))`. Use `isCoprime_of_irreducible_dvd (fun h => (LinearMap.charpoly_monic _).ne_zero h.1) ?_` and prove the remaining obligations. Introduce `z hz hzA hzQ`.
+
+Establish `h1 : z ∣ f ^ m` using `irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero (g.restrict hgA) z (f ^ m) hz hzA hPA`. Establish `h2 : z ∣ Q` using `irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero _ z Q hz hzQ hQq`. Conclude with `hz.not_isUnit (hcop.isUnit_of_dvd' h1 h2)`. Establish `hAbot : A ≠ ⊥`. Introduce `hA`.
+
+Establish `hsup` using `Polynomial.sup_ker_aeval_eq_ker_aeval_mul_of_coprime g hcop`. Rewrite `hsup` using `[← hAdef, hA, bot_sup_eq, ← hfac, LinearMap.aeval_self_charpoly, LinearMap.ker_zero]`. Establish `hQ0' : aeval g Q = 0` using `LinearMap.ker_eq_top.mp hsup`. Conclude with `hnd (irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero g f Q hf hfd hQ0')`. Establish `hAtop : A ≠ ⊤`.
+
+Introduce `hA`. Establish `hP0 : aeval g (f ^ m) = 0` using `LinearMap.ker_eq_top.mp hA`. Take `⟨z, hz, hzQ⟩` from `WfDvdMonoid.exists_irreducible_factor hQ hQ0`. Establish `hzc : z ∣ LinearMap.charpoly g` using `hzQ.trans ⟨f ^ m, by rw [hfac, mul_comm]⟩`. Establish `h1 : z ∣ f ^ m` using `irreducible_dvd_of_dvd_charpoly_of_aeval_eq_zero g z (f ^ m) hz hzc hP0`.
+
+Conclude with `hz.not_isUnit (hcop.isUnit_of_dvd' h1 hzQ)`. Establish `hconj` using `exists_conj_eq_add_of_isCoprime F V A g hgA hcp`. Establish `hsum` using `hpr A hAbot hAtop g hgA`. Establish `hconst : ∀ h ∈ nilRad A, φ (g + h) = φ g`. Introduce `h hh`.
+
+Take `⟨e, he⟩` from `hconj h hh`. Rewrite using `[← he, hcl]`. Rewrite `hsum` using `[finsum_mem_congr rfl hconst]`. Establish `: Finite V` using `Module.finite_of_finite F`. Establish `: Finite (Module.End F V)` using `Finite.of_injective (fun u : Module.End F V => (u : V → V)) DFunLike.coe_injective`.
+
+Establish `hfin : (nilRad A).Finite` using `Set.toFinite _`. Rewrite `hsum` using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, nsmul_eq_mul]`. Establish `h0 : (0 : Module.End F V) ∈ nilRad A` using `⟨fun _ => A.zero_mem, fun _ _ => rfl⟩`. Establish `hcard : (hfin.toFinset.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr ⟨0, hfin.mem_toFinset.mpr h0⟩)`. Conclude with `(mul_eq_zero.mp hsum).resolve_left hcard`.
+-/
 theorem eq_zero_of_not_primary : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (φ : Module.End F V → ℂ), IsClassFn φ → IsPrimitive φ → 0 < Module.finrank F V →
     ∀ g : Module.End F V, (¬ ∃ (f : F[X]) (m : ℕ), f.Monic ∧ Irreducible f ∧ 0 < m ∧

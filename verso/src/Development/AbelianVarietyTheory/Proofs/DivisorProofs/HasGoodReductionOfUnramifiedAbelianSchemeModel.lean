@@ -21,20 +21,35 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} {φ : G'
 noncomputable def sq2 (w : φ ≫ G.hom = G'.hom ≫ f) : (G' ⊗ G').left ⟶ (G ⊗ G).left :=
   (lift (pushPt w (fst G' G')) (pushPt w (snd G' G'))).left
 
+/- English proof (translation)
+Rewrite using `[sq2, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem grpSchemeSquareProductMap_comp_fst (w : φ ≫ G.hom = G'.hom ≫ f) : sq2 w ≫ (fst G G).left = (fst G' G').left ≫ φ := by
   rw [sq2, ← Over.comp_left, lift_fst]; rfl
 
+/- English proof (translation)
+Rewrite using `[sq2, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem grpSchemeSquareProductMap_comp_snd (w : φ ≫ G.hom = G'.hom ≫ f) : sq2 w ≫ (snd G G).left = (snd G' G').left ≫ φ := by
   rw [sq2, ← Over.comp_left, lift_snd]; rfl
 
+/- English proof (translation)
+The claim follows from `Over.tensorObj_ext _ _ (h.1.trans (grpSchemeSquareProductMap_comp_fst w).symm) (h.2.trans (grpSchemeSquareProductMap_comp_snd w).symm)`.
+-/
 theorem grpSchemeSquareProductMap_eq_tensorHom (w : φ ≫ G.hom = G'.hom ≫ f) {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} (h : IsSquare φ φ₂) :
     φ₂ = sq2 w :=
   Over.tensorObj_ext _ _ (h.1.trans (grpSchemeSquareProductMap_comp_fst w).symm) (h.2.trans (grpSchemeSquareProductMap_comp_snd w).symm)
 
+/- English proof (translation)
+The claim follows from `CM.TripleModel.isPullback_tensor h h (grpSchemeSquareProductMap_comp_fst w) (grpSchemeSquareProductMap_comp_snd w)`.
+-/
 theorem isPullback_squareMapOfCompatibleMorphism (w : φ ≫ G.hom = G'.hom ≫ f) (h : IsPullback φ G'.hom G.hom f) :
     IsPullback (sq2 w) (G' ⊗ G').hom (G ⊗ G).hom f :=
   CM.TripleModel.isPullback_tensor h h (grpSchemeSquareProductMap_comp_fst w) (grpSchemeSquareProductMap_comp_snd w)
 
+/- English proof (translation)
+Apply `Over.tensorObj_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sq2 w₁ ≫ sq2 w₂ ≫ (fst X X).left = sq2 w ≫ sq2 w₃ ≫ (fst X X).left`. Rewrite using `[grpSchemeSquareProductMap_comp_fst, grpSchemeSquareProductMap_comp_fst, ← Category.assoc, grpSchemeSquareProductMap_comp_fst, ← Category.assoc, grpSchemeSquareProductMap_comp_fst, Category.assoc, Category.assoc, h]`. Express the relevant statement in the definitionally equal form `sq2 w₁ ≫ sq2 w₂ ≫ (snd X X).left = sq2 w ≫ sq2 w₃ ≫ (snd X X).left`. Rewrite using `[grpSchemeSquareProductMap_comp_snd, grpSchemeSquareProductMap_comp_snd, ← Category.assoc, grpSchemeSquareProductMap_comp_snd, ← Category.assoc, grpSchemeSquareProductMap_comp_snd, Category.assoc, Category.assoc, h]`.
+-/
 theorem grpSchemeSquareProductMap_comp {T V : Scheme.{0}} {t : S' ⟶ T} {u : T ⟶ V} {v : S ⟶ V} {H : Over T} {X : Over V}
     {ψ : G'.left ⟶ H.left} {α : H.left ⟶ X.left} {β : G.left ⟶ X.left}
     (w : φ ≫ G.hom = G'.hom ≫ f) (w₁ : ψ ≫ H.hom = G'.hom ≫ t) (w₂ : α ≫ X.hom = H.hom ≫ u)
@@ -51,6 +66,11 @@ end Sq2
 section Sq
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Establish `e` using `h.2 _ (fst G' G') (snd G' G') (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')) rfl rfl`. Establish `e' : (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))).left = φ₂` using `Over.tensorObj_ext _ _ (by change (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')) ≫ fst G G).left = φ₂ ≫ (fst G G).left`. Rewrite using `[lift_fst]`. Conclude with `h₁.symm)`. Use the proof step `(by change (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')) ≫ snd G G).left = φ₂ ≫ (snd G G).left`.
+
+Rewrite using `[lift_snd]`. Conclude with `h₂.symm)`. Rewrite `e` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Over.comp_left, e']`. Conclude with `e`.
+-/
 theorem mul_sq (h : IsGrpPullback G' G f φ) (φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left)
     (h₁ : φ₂ ≫ (fst G G).left = (fst G' G').left ≫ φ) (h₂ : φ₂ ≫ (snd G G).left = (snd G' G').left ≫ φ) :
     φ₂ ≫ μ[G].left = μ[G'].left ≫ φ := by
@@ -64,6 +84,9 @@ theorem mul_sq (h : IsGrpPullback G' G f φ) (φ₂ : (G' ⊗ G').left ⟶ (G �
   rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Over.comp_left, e'] at e
   exact e
 
+/- English proof (translation)
+Establish `e : (pushPt h.1.w ((𝟙 G')⁻¹)).left = ((pushPt h.1.w (𝟙 G'))⁻¹).left` using `congrArg (fun z => z.left) (map_inv (pushHom h G') (𝟙 G'))`. Rewrite `e` using `[Hom.inv_def, Hom.inv_def, Over.comp_left]`. Express the relevant statement in the definitionally equal form `(𝟙 G' ≫ ι[G']).left ≫ φ = (𝟙 G'.left ≫ φ) ≫ ι[G].left at e`. Simplify using `using e.symm`.
+-/
 theorem inv_sq (h : IsGrpPullback G' G f φ) : φ ≫ ι[G].left = ι[G'].left ≫ φ := by
   have e : (pushPt h.1.w ((𝟙 G')⁻¹)).left = ((pushPt h.1.w (𝟙 G'))⁻¹).left :=
     congrArg (fun z => z.left) (map_inv (pushHom h G') (𝟙 G'))
@@ -71,6 +94,9 @@ theorem inv_sq (h : IsGrpPullback G' G f φ) : φ ≫ ι[G].left = ι[G'].left �
   change (𝟙 G' ≫ ι[G']).left ≫ φ = (𝟙 G'.left ≫ φ) ≫ ι[G].left at e
   simpa using e.symm
 
+/- English proof (translation)
+Establish `e : (pushPt h.1.w (1 : 𝟙_ (Over S') ⟶ G')).left = (1 : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G).left` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Rewrite `e` using `[Hom.one_def, Hom.one_def, Over.comp_left]`. Express the relevant statement in the definitionally equal form `(toUnit (𝟙_ (Over S')) ≫ η[G']).left ≫ φ = _ at e`. Simplify using `only [Over.comp_left, Over.toUnit_left] at e`. Simplify using `using e.symm`.
+-/
 theorem one_sq (h : IsGrpPullback G' G f φ) : f ≫ η[G].left = η[G'].left ≫ φ := by
   have e : (pushPt h.1.w (1 : 𝟙_ (Over S') ⟶ G')).left = (1 : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G).left :=
     congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))
@@ -80,6 +106,25 @@ theorem one_sq (h : IsGrpPullback G' G f φ) : f ≫ η[G].left = η[G'].left �
   simpa using e.symm
 end Sq
 
+/- English proof (translation)
+Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax A _ _ hA G _ hG eI he X a g ha hg hcomp`. Establish `: IsMonHom eI.hom` using `he`. Take `⟨hfl, hsu⟩` from `GlobalTheory.T.flat_surjective_spMap_of_dvr_alt R K W K' hmax`. Establish `hsq` using `GlobalTheory.T.spec_fraction_field_isPullback_of_unramified_alt R K W K' hmax`. Establish `: QuasiCompact (spMap (algebraMap R W))` using `inferInstance`.
+
+Establish `: QuasiCompact (spMap (algebraMap R K))` using `inferInstance`. Establish `: IsSchemeTheoreticallyDominant (spMap (algebraMap R K))` using `schemeTheoreticallyDominant_fractionField R K`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact.
+
+Use `hG.geomConnected` as an intermediate fact. Establish `hj : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (spMap (algebraMap R W))` using `⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Establish `hXs : Smooth X.hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) hg.flip hj hG.smooth`. Establish `hXp : IsProper X.hom` using `GrpFlatDesc.isProper_of_isPullback hg`. Establish `hXc : GeometricallyConnected X.hom` using `GrpFlatDesc.geometricallyConnected_of_isPullback hg`.
+
+Establish `hX2 : Flat (X ⊗ X).hom` using `inferInstanceAs (Flat (pullback.fst X.hom X.hom ≫ X.hom))`. Establish `hρ : IsGrpPullback ((Over.pullback (spMap (algebraMap W K'))).obj G) G (spMap (algebraMap W K')) (pullback.fst G.hom (spMap (algebraMap W K')))` using `isGrpPullback_pullback G (spMap (algebraMap W K'))`. Establish `hψ : IsGrpPullback ((Over.pullback (spMap (algebraMap W K'))).obj G) A (spMap (algebraMap K K')) (eI.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')))` using `((isGrpPullback_of_iso eI).comp (isGrpPullback_pullback A (spMap (algebraMap K K')))).congr (Category.id_comp _) rfl`. Establish `hc : (eI.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) ≫ a = pullback.fst G.hom (spMap (algebraMap W K')) ≫ g`. Rewrite using `[Category.assoc]`.
+
+Conclude with `hcomp`. Take `⟨hm, hm1, hm2, hm3⟩` from `GlobalTheory.T.exists_desc_of_flat_of_schemeTheoreticallyDominant_base (spMap (algebraMap R W)) (spMap (algebraMap R K)) (spMap (algebraMap K K')) (spMap (algebraMap W K')) hsq X.hom (X ⊗ X).hom (G ⊗ G).hom (sq2 hg.w) (isPullback_squareMapOfCompatibleMorphism hg.w hg) (A ⊗ A).hom …`. Rewrite using `[← Category.assoc, mul_sq hρ _ (grpSchemeSquareProductMap_comp_fst _) (grpSchemeSquareProductMap_comp_snd _), Category.assoc, ← hc, ← Category.assoc, ← mul_sq hψ _ (grpSchemeSquareProductMap_comp_fst _) (grpSchemeSquareProductMap_comp_snd _), Category.assoc])`. Take `⟨hi, hi1, hi2, hi3⟩` from `GlobalTheory.T.exists_desc_of_flat_of_schemeTheoreticallyDominant_base (spMap (algebraMap R W)) (spMap (algebraMap R K)) (spMap (algebraMap K K')) (spMap (algebraMap W K')) hsq X.hom X.hom G.hom g hg A.hom a ha ((Over.pullback (spMap (algebraMap W K'))).obj G).hom (pullback.fst G …`. Rewrite using `[← Category.assoc, inv_sq hρ, Category.assoc, ← hc, ← Category.assoc, ← inv_sq hψ, Category.assoc])`.
+
+Take `⟨hu, hu1, hu2, hu3⟩` from `GlobalTheory.T.exists_desc_of_flat_of_schemeTheoreticallyDominant_base (spMap (algebraMap R W)) (spMap (algebraMap R K)) (spMap (algebraMap K K')) (spMap (algebraMap W K')) hsq X.hom (𝟙 (Sp R)) (𝟙 (Sp W)) (spMap (algebraMap R W)) (IsPullback.of_vert_isIso ⟨by simp⟩) (𝟙 (Sp K)) (s …`. Rewrite using `[← Category.assoc, one_sq hρ, Category.assoc, ← hc, ← Category.assoc, ← one_sq hψ, Category.assoc])`. Set `m : X ⊗ X ⟶ X` to `Over.homMk hm hm3`. Set `i : X ⟶ X` to `Over.homMk hi hi3`. Set `e₀ : 𝟙_ (Over (Sp R)) ⟶ X` to `Over.homMk hu hu3`.
+
+Take `⟨_, hμ, -, -, hcX, -⟩` from `GrpFlatDesc.grpObj_of_flat_cover (spMap (algebraMap R W)) X G g hg m i e₀ (fun φ₂ h₂ => by rw [grpSchemeSquareProductMap_eq_tensorHom hg.w h₂]; exact hm1) hi1 hu1`. Establish `hXab : IsAbelianScheme X` using `⟨hcX, hXs, hXp, hXc⟩`. Establish `hAX : IsGrpPullback A X (spMap (algebraMap R K)) a`. Use `⟨ha, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Take `rfl : x₀ = pushPt ha.w x` from `Over.OverMorphism.ext hx`.
+
+Take `rfl : y₀ = pushPt ha.w y` from `Over.OverMorphism.ext hy`. Use `GrpDense.pushPt_mul ha.w (m := μ[X]) (fun φ₂ h₂ => by rw [grpSchemeSquareProductMap_eq_tensorHom ha.w h₂, hμ]; exact hm2) x y` as an intermediate fact. Rewrite using `[Hom.mul_def, this]`. Both sides reduce to the same expression. Take `⟨e', he', -⟩` from `grpPullback_iso (isGrpPullback_pullback X (spMap (algebraMap R K))) hAX`.
+
+Conclude with `⟨X, inferInstance, hXab, e', he'⟩`.
+-/
 theorem hasGoodReduction_of_model : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'], (maximalIdeal R).map (algebraMap R W) = maximalIdeal W → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, IsMonHom e.hom → ∀ (X : Over (Sp R)) (a : A.left ⟶ X.left) (g : G.left ⟶ X.left), IsPullback a A.hom X.hom (spMap (algebraMap R K)) → IsPullback g G.hom X.hom (spMap (algebraMap R W)) → e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')) ≫ a = pullback.fst G.hom (spMap (algebraMap W K')) ≫ g → HasGoodReduction R K A := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hmax A _ _ hA G _ hG eI he X a g ha hg hcomp
   have : IsMonHom eI.hom := he

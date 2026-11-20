@@ -14,21 +14,36 @@ namespace GlobalTheory.OrbFinAf
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hy i) (hz i)`.
+-/
 theorem normStep_isIntV_add {G : HTGroup p} {v : AwayP p} {y z : Qv v ⊗[ℚ] G.C} (hy : IsIntV G v y)
     (hz : IsIntV G v z) : IsIntV G v (y + z) := by
   intro i; rw [map_add, Finsupp.add_apply]; exact add_mem (hy i) (hz i)
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[map_neg, Finsupp.neg_apply]`. Conclude with `neg_mem (hy i)`.
+-/
 theorem normStep_isIntV_neg {G : HTGroup p} {v : AwayP p} {y : Qv v ⊗[ℚ] G.C} (hy : IsIntV G v y) :
     IsIntV G v (-y) := by
   intro i; rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hy i)
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Conclude with `zero_mem _`.
+-/
 theorem normStep_isIntV_zero {G : HTGroup p} {v : AwayP p} : IsIntV G v 0 := by
   intro i; rw [map_zero, Finsupp.zero_apply]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hr (hy i)`.
+-/
 theorem normStep_isIntV_smul {G : HTGroup p} {v : AwayP p} {r : Qv v} {y : Qv v ⊗[ℚ] G.C}
     (hr : r ∈ v.1.adicCompletionIntegers ℚ) (hy : IsIntV G v y) : IsIntV G v (r • y) := by
   intro i; rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem hr (hy i)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x => rw [starT_tmul, starT_tmul, G.star_star]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+-/
 theorem normStep_star_star (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (y : R ⊗[ℚ] G.C) :
     (starT G.star R (starT G.star R y).unop).unop = y := by
   induction y using TensorProduct.induction_on with
@@ -36,10 +51,20 @@ theorem normStep_star_star (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ 
   | tmul r x => rw [starT_tmul, starT_tmul, G.star_star]
   | add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[map_mul, MulOpposite.unop_mul]`.
+-/
 theorem normStep_star_mul (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (y z : R ⊗[ℚ] G.C) :
     (starT G.star R (y * z)).unop = (starT G.star R z).unop * (starT G.star R y).unop := by
   rw [map_mul, MulOpposite.unop_mul]
 
+/- English proof (translation)
+Use `set yh := (starT G.star (Qv v) y).unop with hyh`. Use `set gh := (starT G.star (Qv v) (g : Qv v ⊗[ℚ] G.C)).unop with hgh`. Use `set cc := algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) c with hcc'`. Establish `key : gh * yh = yh * gh`. Use `congrArg (fun x => (starT G.star (Qv v) x).unop) hy` as an intermediate fact.
+
+Simplify `this` using `only [normStep_star_mul]`. Establish `hgi : gh = (↑g⁻¹ : Qv v ⊗[ℚ] G.C) * cc` using `by rw [← hg, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hcu : IsUnit cc` using `c.isUnit.map _`. Establish `hcc : ∀ x, cc * x = x * cc` using `fun x => Algebra.commutes _ _`. Establish `h1 : yh * (↑g⁻¹ : Qv v ⊗[ℚ] G.C) = ↑g⁻¹ * yh`.
+
+Apply `hcu.mul_left_injective` to reduce the goal to its premises. Use `show yh * ↑g⁻¹ * cc = ↑g⁻¹ * yh * cc`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normStep_star_comm (G : HTGroup p) (v : AwayP p) (g : (Qv v ⊗[ℚ] G.C)ˣ) (c : (Qv v)ˣ)
     (hg : (g : Qv v ⊗[ℚ] G.C) * (starT G.star (Qv v) g).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) c)
     (y : Qv v ⊗[ℚ] G.C) (hy : y * g = g * y) :
@@ -63,6 +88,31 @@ theorem normStep_star_comm (G : HTGroup p) (v : AwayP p) (g : (Qv v ⊗[ℚ] G.C
     _ = ↑g * (yh * ↑g⁻¹) * ↑g := by rw [h1]
     _ = ↑g * yh := by rw [mul_assoc, mul_assoc, Units.inv_mul, mul_one]
 
+/- English proof (translation)
+Set `A : Subring (Qv v ⊗[ℚ] G.C)` to `{ carrier := {y | y * g = g * y ∧ IsIntV G v y} mul_mem' := fun {a b} ha hb => ⟨Commute.mul_left ha.1 hb.1, hmul _ _ ha.2 hb.2⟩ one_mem' := ⟨Commute.one_left _, h1⟩ add_mem' := fun {a b} ha hb => ⟨Commute.add_left ha.1 hb.1, normStep_isIntV_add ha.2 hb.2⟩ zero_mem' := ⟨Commute.ze …`. Use `letI : CommRing A := { (inferInstance : Ring A) with mul_comm := fun a b => Subtype.ext (hcomm _ _ a.2.1 b.2.1) }`. Establish `hτmem : ∀ y ∈ A, (starT G.star (Qv v) y).unop ∈ A` using `fun y hy => ⟨normStep_star_comm G v g c hg y hy.1, hstar y hy.2⟩`. Set `τ : A →+* A` to `{ toFun := fun y => ⟨(starT G.star (Qv v) y).unop, hτmem y y.2⟩ map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by show (starT G.star (Qv v) ((a : Qv v ⊗[ℚ] G.C) * b)).unop = (starT G.star (Qv v) a).unop * (starT G.star (Qv v) b).unop`. Rewrite using `[normStep_star_mul]`.
+
+Conclude with `hcomm _ _ (hτmem b b.2).1 (hτmem a a.2).1)`. Use the proof step `map_zero' := Subtype.ext (by simp)`. Use the proof step `map_add' := fun a b => Subtype.ext (by show (starT G.star (Qv v) ((a : Qv v ⊗[ℚ] G.C) + b)).unop = (starT G.star (Qv v) a).unop + (starT G.star (Qv v) b).unop`. Rewrite using `[map_add, MulOpposite.unop_add]) }`. Establish `hτinv : ∀ a, τ (τ a) = a` using `fun a => Subtype.ext (normStep_star_star G (Qv v) a)`.
+
+Set `O` to `v.1.adicCompletionIntegers ℚ`. Set `φ : O →+* A` to `((algebraMap (Qv v) (Qv v ⊗[ℚ] G.C)).comp (algebraMap O (Qv v))).codRestrict A (fun r => ⟨Algebra.commutes _ _, by show IsIntV G v (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) (algebraMap O (Qv v) r))`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `normStep_isIntV_smul r.2 h1⟩)`. Use `letI : Algebra O A := φ.toAlgebra`.
+
+Set `cf : A →ₗ[O] (Fin (Module.finrank ℚ G.C) → O)` to `{ toFun := fun y i => ⟨(basV G v).repr (y : Qv v ⊗[ℚ] G.C) i, y.2.2 i⟩ map_add' := fun a b => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (basV G v).repr ((a : Qv v ⊗[ℚ] G.C) + b) i = (basV G v).repr a i + (basV G v).repr b i`. Rewrite using `[map_add, Finsupp.add_apply]`.
+
+Use the proof step `map_smul' := fun r a => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (basV G v).repr (algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) (algebraMap O (Qv v) r) * a) i = (r : Qv v) * (basV G v).repr a i`. Rewrite using `[← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Use `rfl }`. Establish `hinj : Function.Injective cf`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(basV G v).repr.injective` to reduce the goal to its premises.
+
+Conclude with `Finsupp.ext fun i => congrArg (fun f => ((f i : O) : Qv v)) hab`. Use `haveI : Module.Finite O A := Module.Finite.of_injective cf hinj`. Take `⟨hhen, hfin⟩` from `GlobalTheory.T.padicIntegers_henselian_finiteResidue v.1`. Use `haveI := hhen`. Use `haveI := hfin`.
+
+Set `θA : A` to `⟨θ, hθg, hθi⟩`. Establish `hθu : IsUnit (θA - τ θA)` using `IsUnit.of_mul_eq_one (a := θA - τ θA) (⟨θ', hθ'g, hθ'i⟩ : A) (Subtype.ext hθθ')`. Establish `hsg' : s⁻¹ * g = g * s⁻¹` using `Commute.inv_left hsg`. Set `sA : A` to `⟨s, congrArg Units.val hsg, hsi⟩`. Set `siA : A` to `⟨↑s⁻¹, congrArg Units.val hsg', hsii⟩`.
+
+Establish `hsu : IsUnit sA` using `IsUnit.of_mul_eq_one (a := sA) siA (Subtype.ext s.mul_inv)`. Establish `hτs : τ sA = sA` using `Subtype.ext hsfix`. Take `⟨t₀, ht₀, ht₀J⟩` from `GlobalTheory.T.exists_isUnit_mul_involution_sub_mem_jacobson O A τ hτinv θA hθu sA hsu hτs`. Use `haveI : HenselianRing A (⊥ : Ideal A).jacobson := GlobalTheory.henselianRing_of_finite O _ le_rfl`. Establish `hτJ : ∀ a ∈ (⊥ : Ideal A).jacobson, τ a ∈ (⊥ : Ideal A).jacobson`.
+
+Introduce `a ha`. Rewrite `ha`, the goal using `[Ideal.mem_jacobson_bot]`. Introduce `b`. Use `(ha (τ b)).map τ` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, hτinv, map_one]`. Then use the resulting hypothesis.
+
+Establish `h2A : IsUnit (2 : A)` using `IsUnit.of_mul_eq_one (a := (2 : A)) (⟨h, hhg, hhi⟩ : A) (Subtype.ext (by show ((2 : A) : Qv v ⊗[ℚ] G.C) * h = 1`. Rewrite using `[show ((2 : A) : Qv v ⊗[ℚ] G.C) = 2 from map_ofNat A.subtype 2]`. Conclude with `h2))`. Take `⟨t, ht, htt⟩` from `GlobalTheory.T.henselian_norm_lift A _ τ hτinv h2A hτJ sA t₀ hsu hτs ht₀ ht₀J`. Use `⟨Units.map (A.subtype : A →* Qv v ⊗[ℚ] G.C) ht.unit, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Units.ext t.2.1`. Conclude with `t.2.2`. Conclude with `((ht.unit⁻¹ : Aˣ) : A).2.2`. Conclude with `congrArg Subtype.val htt`.
+-/
 theorem normStep_exists (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : AwayP p) (g : (Qv v ⊗[ℚ] G.C)ˣ)
     (c : (Qv v)ˣ)
     (hg : (g : Qv v ⊗[ℚ] G.C) * (starT G.star (Qv v) g).unop = algebraMap (Qv v) (Qv v ⊗[ℚ] G.C) c)

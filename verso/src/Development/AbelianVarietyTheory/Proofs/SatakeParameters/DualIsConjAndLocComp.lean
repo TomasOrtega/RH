@@ -23,6 +23,13 @@ noncomputable section
 
 namespace GlobalTheory.ConjDual
 
+/- English proof (translation)
+Take `⟨B, l, -, hf, -, -⟩` from `h`. Take `⟨f, f0, hfe⟩` from `hσ`. Establish `hT' : ∀ o φ, T.symm (π'.op o φ) = π.op (conjOp o) (T.symm φ)` using `fun o φ => T.injective (by rw [hT, T.apply_symm_apply, T.apply_symm_apply])`. Use `GlobalTheory.LocDual.equiv_contra_locComp hadm E a π'.V π'.stable π'.irred w σ' σ (((GlobalTheory.UnitaryBC.cuspSub_iff π').2.1 w σ').2 h') (B.flip.compl₁₂ T.symm.toLinearMap f) (fun e => f0 ?_) ?_` and prove the remaining obligations. Use `LinearMap.ext fun v => l _ fun ψ => ?_` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun (LinearMap.congr_fun e (T ψ)) v` as an intermediate fact. Simplify using `using this`. Introduce `g φ ψ v e`. Take `rfl : ψ = π'.op (.fin (locGL E a w g)) φ` from `Subtype.ext e`. Express the relevant statement in the definitionally equal form `B (f (σ.ρ g v)) (T.symm (π'.op _ φ)) = B (f v) (T.symm φ)`.
+
+Rewrite using `[hT', hfe, CuspSub.locRep_eq, hf]`.
+-/
 theorem equiv_contra (hadm : IrreducibleAdmissibleGL) {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
     {π π' : CuspSub E a} (T : π.V ≃ₗ[ℂ] π'.V) (hT : ∀ o φ, T (π.op (conjOp o) φ) = π'.op o (T φ))
     (h : DualIsConj π) (w : HeightOneSpectrum (𝓞 E)) (σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E)))
@@ -41,6 +48,15 @@ theorem equiv_contra (hadm : IrreducibleAdmissibleGL) {E : Type} [Field E] [Numb
     change B (f (σ.ρ g v)) (T.symm (π'.op _ φ)) = B (f v) (T.symm φ)
     rw [hT', hfe, CuspSub.locRep_eq, hf]
 
+/- English proof (translation)
+Introduce `hF hadm E _ _ _ a π π' T hT h`. Use `⟨?_, fun w σ σ' h' => ⟨equiv_contra hadm T hT h w σ σ' h', fun ⟨e⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨B, l, r, hf, hc, hx⟩` from `h`. Establish `hT' : ∀ o φ, T.symm (π'.op o φ) = π.op (conjOp o) (T.symm φ)` using `fun o φ => T.injective (by rw [hT, T.apply_symm_apply, T.apply_symm_apply])`. Establish `hT'' : ∀ o φ, T.symm (π'.op (conjOp o) φ) = π.op o (T.symm φ)` using `fun o φ => by`.
+
+Rewrite using `[hT', GlobalTheory.CsdBack.conjOp_involutive o]`. Use `⟨B.flip.compl₁₂ T.symm.toLinearMap T.symm.toLinearMap, fun φ hφ => ?_, fun ψ hψ => ?_, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Use `T.symm.map_eq_zero_iff.1 (r _ fun ψ => ?_)` and prove the remaining obligations. Simplify using `using hφ (T ψ)`. Use `T.symm.map_eq_zero_iff.1 (l _ fun φ => ?_)` and prove the remaining obligations.
+
+Simplify using `using hψ (T φ)`. Express the relevant statement in the definitionally equal form `B (T.symm (π'.op _ ψ)) (T.symm (π'.op _ φ)) = B (T.symm ψ) (T.symm φ)`. Rewrite using `[hT'', hT', hf]`. Express the relevant statement in the definitionally equal form `B (T.symm (π'.op _ ψ)) (T.symm (π'.op _ φ)) = B (T.symm ψ) (T.symm φ)`. Rewrite using `[hT'', hT', hc]`.
+
+Express the relevant statement in the definitionally equal form `B (T.symm ψ) (T.symm (π'.op _ φ)) + B (T.symm (π'.op _ ψ)) (T.symm φ) = 0`. Rewrite using `[hT'', hT', add_comm, hx]`. Take `⟨σ₀, h₀, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨e₀⟩` from `equiv_contra hadm T hT h w σ₀ σ' h' h₀`. Conclude with `h₀.congr ⟨.refl _ _, fun _ _ => rfl⟩ ⟨e₀.trans e.symm⟩`.
+-/
 theorem dualIsConj_and_locComp : AutomorphicFormsFiniteGL → IrreducibleAdmissibleGL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (π π' : CuspSub E a) (T : π.V ≃ₗ[ℂ] π'.V), (∀ o φ, T (π.op (conjOp o) φ) = π'.op o (T φ)) → DualIsConj π → DualIsConj π' ∧ ∀ (w : HeightOneSpectrum (𝓞 E)) (σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))), π'.IsLocComp w σ' → (π.IsLocComp w σ ↔ Nonempty (σ.ρ.Equiv (GlobalTheory.SmGL.contra σ'.ρ))) := by
   intro hF hadm E _ _ _ a π π' T hT h
   refine ⟨?_, fun w σ σ' h' => ⟨equiv_contra hadm T hT h w σ σ' h', fun ⟨e⟩ => ?_⟩⟩

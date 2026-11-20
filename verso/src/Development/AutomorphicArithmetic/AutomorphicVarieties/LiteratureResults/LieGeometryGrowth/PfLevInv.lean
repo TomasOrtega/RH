@@ -19,6 +19,11 @@ private def levSub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a 
     fun u hu => by rw [map_smul, h.2.1 u hu],
     fun m hm => by rw [map_smul, h.2.2 m hm, smul_comm]⟩
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' S, fun x hx => ?_, hS.preimage (by fun_prop), by simpa using h1⟩` and prove the remaining obligations. Establish `e : x = g * (g⁻¹ * x)` using `by group`. Establish `hg' : ρ g v = v` using `hg`.
+
+Use `show ρ x v = v`. Rewrite using `[e, map_mul, Module.End.mul_apply, h _ hx, hg']`.
+-/
 private theorem stab_open {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (v : V) {S : Set G} (hS : IsOpen S) (h1 : (1 : G) ∈ S) (h : ∀ g ∈ S, ρ g v = v) :
     IsOpen {g | ρ g v = v} := by
@@ -30,6 +35,15 @@ private theorem stab_open {G V : Type} [Group G] [TopologicalSpace G] [IsTopolog
   show ρ x v = v
   rw [e, map_mul, Module.End.mul_apply, h _ hx, hg']
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha U hU Ξ r χ h1 hχ q α hα X j`. Establish `hφ : IsLevelFn U Ξ (cmp j (α X))` using `mem_tens.1 (span_le_tens (N := levSub U Ξ) (fun φ h => h) (hα.val X)) j`. Generalize the expression as in `cmp j (α X) = φ at hφ`. Use `⟨fun γ g => ?_, fun t g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, map_mul, chiDet_ratGL, one_mul, hφ.1]`.
+
+Establish `hz : lie E a (oneL E a) (mulChi a χ φ) = (0 : ℂ) • mulChi a χ φ`. Rewrite using `[hχ.2, hφ.2.2 _ h1, (ellFacts E a).1 ha, mul_one, ← add_smul, neg_add_cancel, zero_smul, map_zero, zero_smul]`. Rewrite using `[aInv E a _ _ hz t g, zero_mul, Complex.exp_zero, one_mul]`. Express the relevant statement in the definitionally equal form `IsOpen {k | finRep E a k (mulChi a χ φ) = mulChi a χ φ}`. Use `stab_open (finRep E a) _ (hU.inter (isOpen_ker_chiDet (a := a) χ)) ⟨U.one_mem, by simp⟩ ?_` and prove the remaining obligations.
+
+Introduce and unpack `k ⟨hk, h2⟩`. Establish `h1' : rt E a (finGL E a k) φ = φ` using `hφ.2.1 k hk`. Establish `h2' : chiDet a χ (finGL E a k) = 1` using `h2`. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (mulChi a χ φ) = _`. Rewrite using `[rt_mulChi, h1', h2']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Lit.Geo.Pf.levInv :
     UpperTheory.V.Lit.Geo.Pf.LevInv := by
   intro E _ _ _ a ha U hU Ξ r χ h1 hχ q α hα X j

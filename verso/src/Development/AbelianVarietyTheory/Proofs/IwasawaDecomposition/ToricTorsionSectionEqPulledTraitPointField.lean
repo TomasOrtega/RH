@@ -16,6 +16,9 @@ open scoped CategoryTheory.Obj
 noncomputable section
 namespace GlobalTheory.ToricOverField
 
+/- English proof (translation)
+Establish `k` using `congrArg (fun φ => φ.hom (x : U)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom w))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at k`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (y : B) = _`. Rewrite using `[h]`. Conclude with `k`.
+-/
 theorem unitOn_val_map {U B : Type} [CommRing U] [CommRing B] (w : U →+* B) (x : Uˣ) (y : Bˣ)
     (h : (y : B) = w x) : (unitOn y).val = (spMap w).appTop.hom (unitOn x).val := by
   have k := congrArg (fun φ => φ.hom (x : U)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom w))
@@ -24,6 +27,9 @@ theorem unitOn_val_map {U B : Type} [CommRing U] [CommRing B] (w : U →+* B) (x
   rw [h]
   exact k
 
+/- English proof (translation)
+Use `⟨(GlobalTheory.splitTorusPointsEquiv (Sp A) X (Over.mk (spMap f))).symm ((Units.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom.toMonoidHom).comp τ), fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UU.chV, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_point {A B X : Type} [CommRing A] [CommRing B] [AddCommGroup X] (f : A →+* B)
     (τ : Multiplicative X →* Bˣ) : ∃ z : Over.mk (spMap f) ⟶ splitTorus (Sp A) X,
       ∀ χ, GlobalTheory.UU.chV z χ = unitOn (τ (Multiplicative.ofAdd χ)) := by
@@ -32,6 +38,13 @@ theorem exists_point {A B X : Type} [CommRing A] [CommRing B] [AddCommGroup X] (
   rw [GlobalTheory.UU.chV, MulEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H W _ _ _ t' P' k s' hs R _ t g m V _ ψ tV mV Ω _ α β hβ tΩ n n' j hj hn Ω' _ σ a' ha' U _ u w hw τU τ'' h hτ z hz`. Take `⟨z', hz'⟩` from `exists_point σ τ''`. Establish `key : z'.left ≫ SplitTorus.bcMap (spMap α) P'.D.toPre.X = spMap w ≫ z.left`. Use `GlobalTheory.UU.splitTorus_left_hom_ext _ _ ?_ fun χ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, SplitTorus.bcMap_hom, ← Category.assoc, Over.w z', Category.assoc, Over.w z]`.
+
+Express the relevant statement in the definitionally equal form `spMap σ ≫ spMap α = spMap w ≫ spMap u`. Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hw]`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, GlobalTheory.UU.bcMap_charUnit, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]`. Establish `e1` using `(GlobalTheory.UU.chV_val z' χ).symm.trans (congrArg Units.val (hz' χ))`.
+
+Establish `e2` using `(GlobalTheory.UU.chV_val z χ).symm.trans (congrArg Units.val (hz χ))`. Conclude with `e1.trans ((unitOn_val_map w _ _ (hτ _)).trans (congrArg _ e2.symm))`. Rewrite using `[hs Ω Ω' β hβ a' σ tΩ n' τ'' h z' ha' hz', ← hj, Category.assoc, ← hn, Over.comp_left, Over.comp_left, Category.assoc, ← Category.assoc _ n.φ, GlobalTheory.TorusPart.pullTorus_left, Category.assoc, ← Category.assoc z'.left, key]`. Simplify using `only [Category.assoc]`.
+-/
 theorem toric_section_eq_over_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W]
     (t' : SAB H (Sp W)) (P' : PELUnif (maximalIdeal W) t') (k : ℕ)
     (s' : ∀ (A : Type) [CommRing A] (a : W →+* A) (τ : Multiplicative P'.D.toPre.X →* Aˣ), τ ^ k = 1 → (Over.mk (spMap a) ⟶ t'.G)),

@@ -3,6 +3,21 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
 
 open NumberField IsDedekindDomain IsLocalRing UpperTheory.V UpperTheory.V.Sd Formalism.L2.Host
 
+/- English proof (translation)
+Introduce `hU F _ _ w c`. Use `haveI : Fintype (ResidueField (HeightOneSpectrum.adicCompletionIntegers F w)) := Fintype.ofFinite _`. Set `sec` to `Function.surjInv (residue_surjective (R := HeightOneSpectrum.adicCompletionIntegers F w))`. Establish `hsec : ∀ r, residue _ (sec r) = r` using `Function.surjInv_eq (residue_surjective (R := HeightOneSpectrum.adicCompletionIntegers F w))`. Set `S` to `Finset.univ.image sec`.
+
+Establish `hS : Set.BijOn (residue (HeightOneSpectrum.adicCompletionIntegers F w)) (↑S) Set.univ`. Use `⟨fun _ _ => Set.mem_univ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Simplify using `only [S, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx hy`. Take `⟨r, rfl⟩` from `hx`.
+
+Take `⟨s, rfl⟩` from `hy`. Rewrite `hxy` using `[hsec, hsec]`. Rewrite using `[hxy]`. Introduce `r _`. Conclude with `⟨sec r, by simp [S], hsec r⟩`.
+
+Set `e : Fin S.card ≃ S` to `S.equivFin.symm`. Set `b : Fin S.card → GL (Fin 2) (HeightOneSpectrum.adicCompletion F w)` to `fun i => aff ((atFin w) (unif w)) ↑((e i : HeightOneSpectrum.adicCompletionIntegers F w))`. Establish `hsum : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) (HeightOneSpectrum.adicCompletion F w)) V) (x : V), ∑ u ∈ S, (ρ (aff ((atFin w) (unif w)) ↑u)) x = ∑ i, (ρ (b i)) x`. Introduce `V _ _ ρ x`. Rewrite using `[← Finset.sum_coe_sort S]`.
+
+Conclude with `(Equiv.sum_comp e (fun u : S => (ρ (aff ((atFin w) (unif w)) ↑(u : HeightOneSpectrum.adicCompletionIntegers F w))) x)).symm`. Distinguish the cases in `hc : c = 0`. Use `⟨S.card + 1, Fin.cons ((Matrix.GeneralLinearGroup.scalar (Fin 2)) ((atFin w) (unif w)) * (aff ((atFin w) (unif w)) 0)⁻¹) b, fun h => absurd hc h, ?_⟩` and prove the remaining obligations. Introduce `V _ _ ρ x hx`. Take `⟨h1, h2⟩` from `hU F w V ρ c x hx`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2 S hS, if_pos hc, Fin.sum_univ_succ, hsum, Fin.cons_zero, add_comm]`. Simplify using `only [Fin.cons_succ]`. Use `⟨S.card, b, fun _ i => ⟨(e i : HeightOneSpectrum.adicCompletionIntegers F w), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `V _ _ ρ x hx`.
+
+Take `⟨h1, h2⟩` from `hU F w V ρ c x hx`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2 S hS, if_neg hc, add_zero, hsum]`.
+-/
 theorem UpperTheory.V.Sd.Wc.hkReps :
     UpperTheory.V.Sd.UopSum → UpperTheory.V.Sd.Wc.HkReps := by
   intro hU F _ _ w c

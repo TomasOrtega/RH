@@ -12,6 +12,11 @@ section Skew
 variable {A K β : Type} [CommRing A] [Field K] [Fintype β] [DecidableEq β]
 
 omit [DecidableEq β] in
+/- English proof (translation)
+Establish `e : ∀ x, (M + vecMulVec w φ) *ᵥ x = M *ᵥ x + (φ ⬝ᵥ x) • w` using `fun x => by`. Rewrite using `[add_mulVec, vecMulVec_mulVec, op_smul_eq_smul]`. Establish `h1 : w ∈ LinearMap.range (M + vecMulVec w φ).mulVecLin` using `⟨(φ ⬝ᵥ y)⁻¹ • y, by`. Rewrite using `[mulVecLin_apply, mulVec_smul, e, hy, zero_add, smul_smul, inv_mul_cancel₀ hφ, one_smul]⟩`. Use `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne ?_ fun h => hw (h ▸ h1))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[mulVecLin_apply, eq_sub_of_add_eq (e x).symm]`. Conclude with `sub_mem ⟨x, rfl⟩ (Submodule.smul_mem _ _ h1)`.
+-/
 theorem rank_lt {M : Matrix β β K} {y w φ : β → K} (hy : M *ᵥ y = 0) (hw : w ∉ LinearMap.range M.mulVecLin) (hφ : φ ⬝ᵥ y ≠ 0) :
     M.rank < (M + vecMulVec w φ).rank := by
   have e : ∀ x, (M + vecMulVec w φ) *ᵥ x = M *ᵥ x + (φ ⬝ᵥ x) • w := fun x => by
@@ -26,6 +31,11 @@ theorem rank_lt {M : Matrix β β K} {y w φ : β → K} (hy : M *ᵥ y = 0) (hw
 variable {c : A →+* A} {r : A →+* K} {G G' M m P Q : Matrix β β A}
 
 omit [DecidableEq β] in
+/- English proof (translation)
+Establish `k : ∀ u w : β → A, (vecMulVec u (G *ᵥ c ∘ w))ᵀ * G = G * (vecMulVec w (G *ᵥ c ∘ u)).map c` using `fun u w => by`. Use extensionality with `i j`. Simplify using `only [mul_apply, transpose_apply, vecMulVec_apply, map_apply, map_mul, mulVec, dotProduct, map_sum, hc, hG, Function.comp_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Rewrite using `[transpose_sub, Matrix.sub_mul, Matrix.map_sub _ (map_sub c), Matrix.mul_sub, k, k]`. Normalize the expressions using the abelian group laws.
+-/
 theorem skew_two (hc : ∀ z, c (c z) = z) (hG : ∀ i j, c (G j i) = G i j) (u w : β → A) :
     (vecMulVec u (G *ᵥ c ∘ w) - vecMulVec w (G *ᵥ c ∘ u))ᵀ * G +
       G * (vecMulVec u (G *ᵥ c ∘ w) - vecMulVec w (G *ᵥ c ∘ u)).map c = 0 := by
@@ -38,6 +48,27 @@ theorem skew_two (hc : ∀ z, c (c z) = z) (hG : ∀ i j, c (G j i) = G i j) (u 
   rw [transpose_sub, Matrix.sub_mul, Matrix.map_sub _ (map_sub c), Matrix.mul_sub, k, k]
   abel
 
+/- English proof (translation)
+Establish `mv : ∀ (N : Matrix β β A) x, N.map r *ᵥ r ∘ x = r ∘ (N *ᵥ x)` using `fun N x => funext fun i => (r.map_mulVec N x i).symm`. Establish `mc : ∀ (N : Matrix β β A) x, N.map c *ᵥ c ∘ x = c ∘ (N *ᵥ x)` using `fun N x => funext fun i => (c.map_mulVec N x i).symm`. Take `⟨y₀, hy0, hy⟩` from `exists_mulVec_eq_zero_iff.2 h0`. Take `⟨y, rfl⟩` from `hr.comp_left y₀`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, r ((m *ᵥ y) i) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `congrArg (fun N : Matrix β β A => N.map r *ᵥ r ∘ y) inj` as an intermediate fact. Simplify using `only [Matrix.map_add _ (map_add r), Matrix.map_mul, add_mulVec, ← mulVec_mulVec, hy, mulVec_zero, Matrix.map_one _ (map_zero r) (map_one r), one_mulVec] at this`. Rewrite `this` using `[mv m, show r ∘ (m *ᵥ y) = 0 from funext h, mulVec_zero, add_zero]`.
+
+Conclude with `hy0 this.symm`. Set `w : β → A` to `c ∘ (G' *ᵥ Pi.single i 1)`. Establish `hw : G *ᵥ c ∘ w = Pi.single i 1`. Rewrite using `[show c ∘ w = G' *ᵥ Pi.single i 1 from funext fun _ => hc _, mulVec_mulVec, hG', one_mulVec]`. Establish `fin : ∀ (u : β → A) (z : β → K), (∀ a b, r (u a * (Pi.single i 1 : β → A) b - w a * (G *ᵥ c ∘ u) b) = z a * (Pi.single i 1 : β → K) b) → z ∉ LinearMap.range (M.map r).mulVecLin → ∃ S : Matrix β β A, Sᵀ * G + G * S.map c = 0 ∧ (M.map r).rank < ((M + S * m).map r).rank` using `fun u z h1 h2 => by`.
+
+Use `⟨_, skew_two hc hG u w, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_add _ (map_add r), Matrix.map_mul, hw, show (vecMulVec u (Pi.single i 1) - vecMulVec w (G *ᵥ c ∘ u)).map r = vecMulVec z (Pi.single i 1) from Matrix.ext h1, vecMulVec_mul]`. Use `rank_lt hy h2 ?_` and prove the remaining obligations. Rewrite using `[← dotProduct_mulVec, mv, single_dotProduct, one_mul]` and apply the resulting hypothesis. Establish `sg : ∀ b, r ((Pi.single i 1 : β → A) b) = (Pi.single i 1 : β → K) b` using `fun b => by`.
+
+Simplify using `[Pi.single_apply, apply_ite r]`. Break down `hcase with ⟨h1, κ, hκ⟩ | ⟨η, h1, h2⟩` into its components or cases. Use `fin (κ • w) (r (κ - c κ) • r ∘ w) (fun a b => ?_) fun h => ?_` and prove the remaining obligations. Rewrite using `[show c ∘ (κ • w) = c κ • c ∘ w from funext fun _ => map_mul c _ _, mulVec_smul, hw]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_sub, map_mul, sg, Function.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨x₀, hx⟩` from `(Submodule.smul_mem_iff _ hκ).1 h`. Take `⟨x, rfl⟩` from `hr.comp_left x₀`. Rewrite `hx` using `[mulVecLin_apply, mv]`. Establish `l` using `congrArg (fun N => y ⬝ᵥ N *ᵥ c ∘ x) lag`.
+
+Simplify using `only [add_mulVec, dotProduct_add, ← mulVec_mulVec, mc, zero_mulVec, dotProduct_zero] at l`. Rewrite `l` using `[dotProduct_mulVec y, dotProduct_mulVec y mᵀ, vecMul_transpose, vecMul_transpose]`. Establish `e : (m *ᵥ y) i = (m *ᵥ y) ⬝ᵥ G *ᵥ c ∘ (w - M *ᵥ x) - (M *ᵥ y) ⬝ᵥ G *ᵥ c ∘ (m *ᵥ x)`. Rewrite using `[show c ∘ (w - M *ᵥ x) = c ∘ w - c ∘ (M *ᵥ x) from funext fun _ => map_sub c _ _, mulVec_sub, dotProduct_sub, hw, dotProduct_single, mul_one]`. Take the linear combination `l`.
+
+Use `hi ?_` and prove the remaining obligations. Rewrite `hy` using `[mv]`. Rewrite using `[e, map_sub, r.map_dotProduct, r.map_dotProduct, hy, zero_dotProduct, ← mv G, show r ∘ c ∘ (w - M *ᵥ x) = 0 from`. Use function extensionality and compare the values at `fun a => h1 _ (by rw [Pi.sub_apply, map_sub]; exact sub_eq_zero.2 (congrFun hx a).symm), mulVec_zero,`. Use the proof step `dotProduct_zero, sub_zero]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz⟩ : ∃ z, z ∉ LinearMap.range (M.map r).mulVecLin := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `((isUnit_iff_isUnit_det _).1 (mulVec_surjective_iff_isUnit.1 h)).ne_zero h0`. Take `⟨z, rfl⟩` from `hr.comp_left z₀`.
+
+Use `fin (η • z) _ (fun a b => ?_) hz` and prove the remaining obligations. Rewrite using `[show c ∘ (η • z) = c η • c ∘ z from funext fun _ => map_mul c _ _, mulVec_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_sub, map_mul, sg, Function.comp_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step (hc : ∀ z, c (c z) = z) (hr : Function.Surjective r) (hG : ∀ i j, c (G j i) = G i j) (hG' : G * G' = 1)
     (hcase : ((∀ z, r z = 0 → r (c z) = 0) ∧ ∃ κ, r (κ - c κ) ≠ 0) ∨ ∃ η, r η = 1 ∧ r (c η) = 0)
     (lag : Mᵀ * G * m.map c + mᵀ * G * M.map c = 0) (inj : P * M + Q * m = 1) (h0 : (M.map r).det = 0) :
@@ -97,6 +128,21 @@ theorem step (hc : ∀ z, c (c z) = z) (hr : Function.Surjective r) (hG : ∀ i 
     simp only [Pi.smul_apply, smul_eq_mul, map_sub, map_mul, sg, Function.comp_apply, h1, h2]
     ring
 
+/- English proof (translation)
+Establish `l2 : ∀ S : Matrix β β A, Sᵀ * G + G * S.map c = 0 → (M + S * m)ᵀ * G * m.map c + mᵀ * G * (M + S * m).map c = 0` using `fun S hS => by`. Rewrite using `[transpose_add, transpose_mul, Matrix.map_add _ (map_add c), Matrix.map_mul]`. Take the linear combination `(norm := noncomm_ring) lag + mᵀ * hS * m.map c`. Establish `i2 : ∀ S : Matrix β β A, P * (M + S * m) + (Q - P * S) * m = 1` using `fun S => by`. Take the linear combination `(norm := noncomm_ring) inj`.
+
+Establish `ind : ∀ k : ℕ, ∃ S : Matrix β β A, Sᵀ * G + G * S.map c = 0 ∧ (((M + S * m).map r).det ≠ 0 ∨ k ≤ ((M + S * m).map r).rank)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp, .inr (Nat.zero_le _)⟩`. Consider the case `succ k ih`. Take `⟨S, h1, h2⟩` from `ih`.
+
+Distinguish the cases in `h0 : ((M + S * m).map r).det = 0`. Take `⟨S', h3, h4⟩` from `step hc hr hG hG' hcase (l2 S h1) (i2 S) h0`. Use `⟨S + S', ?_, .inr ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_add, Matrix.map_add _ (map_add c)]`. Take the linear combination `(norm := noncomm_ring) h1 + h3`.
+
+Rewrite using `[Matrix.add_mul, ← add_assoc]`. Conclude with `(h2.resolve_left (not_not.2 h0)).trans_lt h4`. Conclude with `⟨S, h1, .inl h0⟩`. Take `⟨S, h1, h2⟩` from `ind (Fintype.card β + 1)`. Establish `h3` using `h2.resolve_right (not_le.2 (Nat.lt_succ_of_le (rank_le_card_width _)))`.
+
+Use `⟨S, h1, hu _ (by rwa [r.map_det]) fun h4 => ?_⟩` and prove the remaining obligations. Rewrite `h4` using `[c.map_det, r.map_det]`. Take `⟨y, hy0, hy⟩` from `exists_mulVec_eq_zero_iff.2 h4`. Establish `l` using `congrArg (fun N : Matrix β β A => N.map r *ᵥ y) (l2 S h1)`. Establish `j` using `congrArg (fun N : Matrix β β A => (N.map c).map r *ᵥ y) (i2 S)`.
+
+Generalize the expression as in `M + S * m = t at *`. Express the relevant statement in the definitionally equal form `(t.map c).map r *ᵥ y = 0 at hy`. Simplify using `only [Matrix.map_add _ (map_add r), Matrix.map_add _ (map_add c), Matrix.map_mul, add_mulVec, ← mulVec_mulVec, hy, mulVec_zero, add_zero, zero_add, Matrix.map_zero _ (map_zero r), zero_mulVec, Matrix.map_one _ (map_zero r) (map_one r), Matrix.map_one _ (map_zero c) (map_one c), o …`. Establish `g0 : (G.map r).det ≠ 0` using `fun h => by`. Use `congrArg (fun N : Matrix β β A => (N.map r).det) hG'` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul, det_mul, h, zero_mul, Matrix.map_one _ (map_zero r) (map_one r), det_one] at this`. Conclude with `zero_ne_one this`. Rewrite `j` using `[eq_zero_of_mulVec_eq_zero g0 (eq_zero_of_mulVec_eq_zero (by rwa [transpose_map, det_transpose]) l), mulVec_zero]`. Conclude with `hy0 j.symm`.
+-/
 theorem exists_skew (hc : ∀ z, c (c z) = z) (hr : Function.Surjective r) (hG : ∀ i j, c (G j i) = G i j) (hG' : G * G' = 1)
     (hcase : ((∀ z, r z = 0 → r (c z) = 0) ∧ ∃ κ, r (κ - c κ) ≠ 0) ∨ ∃ η, r η = 1 ∧ r (c η) = 0)
     (hu : ∀ z, r z ≠ 0 → r (c z) ≠ 0 → IsUnit z)
@@ -145,6 +191,15 @@ end Skew
 
 variable {R A β : Type} [CommRing R] [CommRing A] [Algebra R A] {c : A →ₐ[R] A} [Fintype β] [DecidableEq β] {J : Matrix β β A}
 
+/- English proof (translation)
+Establish `h1 : g.1.1ᵀ * dbl J * g.1.1.map c = dbl J` using `g.2`. Establish `h2 : (fromRows x y)ᵀ * dbl J * (fromRows x y).map c = 0`. Rewrite using `[← hg, transpose_mul, mapc_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 0 := by`. Rewrite using `[h1]`. Simplify using `[diagCols, dbl, fromRows_map, mapc_one, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Establish `e : b'.map c = -1 - b.map c`. Rewrite using `[← mapc_one (c := c), ← mapc_neg, ← mapc_sub, ← hb]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `b2 : bᵀ * J = -J - J * b.map c` using `by rw [b1, e]; noncomm_ring`. Rewrite `h2` using `[transpose_fromRows, dbl, fromCols_mul_fromBlocks, fromRows_map, fromCols_mul_fromRows]`. Rewrite using `[transpose_add, transpose_mul, mapc_add, mapc_mul, mapc_sub, transpose_sub]`.
+
+Take the linear combination `(norm := noncomm_ring) (yᵀ - xᵀ) * b2 * (y.map c - x.map c) - h2`.
+-/
 theorem lag_of {b b' x y : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1) (g : UG c (dbl J))
     (hg : g.1.1 * (diagCols β : Matrix (β ⊕ β) β A) = fromRows x y) :
     (y + b * (y - x))ᵀ * J * (y - x).map c + (y - x)ᵀ * J * (y + b * (y - x)).map c = 0 := by
@@ -162,6 +217,31 @@ theorem lag_of {b b' x y : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1
   rw [transpose_add, transpose_mul, mapc_add, mapc_mul, mapc_sub, transpose_sub]
   linear_combination (norm := noncomm_ring) (yᵀ - xᵀ) * b2 * (y.map c - x.map c) - h2
 
+/- English proof (translation)
+Establish `lag` using `lag_of b1 hb g hg`. Use `set m : Matrix β β A := y - x with hmd`. Use `set t₀ := y + b * m with ht₀`. Use `set T := -(m * t') with hT`. Establish `ht' : t' * t₀ = 1` using `mul_eq_one_comm.1 ht`.
+
+Establish `sk : Tᵀ * J + J * T.map c = 0`. Establish `a1 : t'ᵀ * t₀ᵀ = 1` using `by rw [← transpose_mul, ht, transpose_one]`. Establish `a2 : t₀.map c * t'.map c = 1` using `by rw [← mapc_mul, ht, mapc_one]`. Rewrite using `[hT, transpose_neg, transpose_mul, mapc_neg, mapc_mul]`. Take the linear combination `(norm := noncomm_ring) -(t'ᵀ * lag * t'.map c) + a1 * J * m.map c * t'.map c + t'ᵀ * mᵀ * J * a2`.
+
+Establish `e0 : ε * (1 - ε) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`. Establish `e0' : (1 - ε) * ε = 0` using `by rw [mul_comm, e0]`. Establish `e1 : (1 - ε) * (1 - ε) = 1 - ε` using `by rw [sub_mul, one_mul, e0, sub_zero]`. Establish `hS : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * SS ε = 1`. Rewrite using `[SS, fromBlocks_multiply, ← fromBlocks_one]`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, e0, e0', e1, he, ← add_smul]`. Simplify using the standard rewrite rules. Establish `hSu : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A)ᵀ * fromBlocks 0 J J 0 * (SS ε : Matrix (β ⊕ β) (β ⊕ β) A).map c = fromBlocks 0 J J 0`. Rewrite using `[SS, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [mapc_smul, mapc_one, map_sub, map_one, hc, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]`.
+
+Simplify using the standard rewrite rules. Establish `hU : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 (m * t') 0 1 = 1`. Rewrite using `[fromBlocks_multiply, ← fromBlocks_one, hT]`. Simplify using the standard rewrite rules. Establish `hUu : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A)ᵀ * fromBlocks 0 J J 0 * (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A).map c = fromBlocks 0 J J 0`.
+
+Rewrite using `[fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply, mapc_one, mapc_zero]`. Simplify using `only [transpose_one, transpose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add]`. Rewrite using `[add_comm (J * _), sk]`. Establish `hTt : T * t₀ = -m` using `by rw [hT, Matrix.neg_mul, Matrix.mul_assoc, ht', Matrix.mul_one]`. Set `s` to `mkU b1 hb _ _ hS hSu`.
+
+Set `n` to `mkU b1 hb _ _ hU hUu`. Establish `hs : s.1.1 = CC b * SS ε * Ci b` using `rfl`. Establish `hn : n.1.1 = CC b * fromBlocks 1 T 0 1 * Ci b` using `rfl`. Establish `hεT : ε • T = T` using `by rw [hT, smul_neg, ← Matrix.smul_mul, hm]`. Establish `hεT' : (1 - ε) • T = 0` using `by rw [sub_smul, one_smul, hεT, sub_self]`.
+
+Establish `hL : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 T 0 1 * SS ε = fromBlocks 1 0 T 1`. Rewrite using `[SS, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, add_zero, hεT, hεT', zero_add, Matrix.add_mul, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]`. Simplify using the standard rewrite rules. Establish `hD : Ci b * (diagCols β : Matrix (β ⊕ β) β A) = (fromRows 1 0 : Matrix (β ⊕ β) β A)`.
+
+Rewrite using `[Ci, diagCols, fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Establish `hD' : CC b * (fromRows 1 0 : Matrix (β ⊕ β) β A) = (diagCols β : Matrix (β ⊕ β) β A)`. Rewrite using `[CC, diagCols, fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules.
+
+Use `⟨s, n, (s * n * s)⁻¹ * g, ⟨t₀, t', ht, ht'⟩, Subtype.ext (Units.ext s.1.mul_inv), by group, hs, hn, rfl, ?_, ?_, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[hn, Matrix.mul_assoc _ (Ci b), hD, Matrix.mul_assoc (CC b), fromBlocks_mul_fromRows]`. Simplify using `using hD'`. Establish `e : (s * n * s).1.1 = CC b * fromBlocks 1 0 T 1 * Ci b`. Express the relevant statement in the definitionally equal form `s.1.1 * n.1.1 * s.1.1 = _`.
+
+Rewrite using `[hs, hn, ← hL]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : g.1.1 * (diagCols β : Matrix (β ⊕ β) β A) = (s * n * s).1.1 * ((diagCols β : Matrix (β ⊕ β) β A) * t₀)`. Rewrite using `[e, hg, ← Matrix.mul_assoc _ (diagCols β : Matrix (β ⊕ β) β A), Matrix.mul_assoc _ (Ci b), hD, Matrix.mul_assoc (CC b), fromBlocks_mul_fromRows, CC, fromBlocks_mul_fromRows, fromRows_mul]`. Use `congr 1`.
+
+Take the linear combination `(norm := noncomm_ring) -((1 + b) * hTt) - ht₀ + hmd`. Take the linear combination `(norm := noncomm_ring) -(b * hTt) - ht₀`. Express the relevant statement in the definitionally equal form `((s * n * s)⁻¹).1.1 * g.1.1 * (diagCols β : Matrix (β ⊕ β) β A) = (diagCols β : Matrix (β ⊕ β) β A) * t₀`. Rewrite using `[Matrix.mul_assoc _ g.1.1, e2, ← Matrix.mul_assoc, show ((s * n * s)⁻¹).1.1 * (s * n * s).1.1 = 1 from (s * n * s).1.inv_mul, Matrix.one_mul]`.
+-/
 theorem exists_decomp {b b' x y t' : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1) (g : UG c (dbl J))
     (hg : g.1.1 * (diagCols β : Matrix (β ⊕ β) β A) = fromRows x y) (ht : (y + b * (y - x)) * t' = 1) {ε : A} (he : ε * ε = ε)
     (hc : c ε = ε) (hm : ε • (y - x) = y - x) :

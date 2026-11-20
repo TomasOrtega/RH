@@ -9,6 +9,9 @@ noncomputable section
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hN : absNorm I ≠ 0` using `fun h ↦ hI (absNorm_eq_zero_iff.1 h)`. Use `(Set.Finite.biUnion (Finset.finite_toSet (Finset.range (absNorm I + 1))) fun k _ ↦ Ideal.finite_setOfPred_absNorm_eq (S := 𝓞 K) k).subset fun J hJ ↦ ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Finset.coe_range, Set.mem_Iio]`. Conclude with `⟨absNorm J, Nat.lt_succ_of_le (Nat.le_of_dvd (Nat.pos_of_ne_zero hN) (absNorm_dvd_absNorm_of_le hJ)), rfl⟩`.
+-/
 theorem finite_setOf_le_of_ne_bot {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     {J : Ideal (𝓞 K) | I ≤ J}.Finite := by
   have hN : absNorm I ≠ 0 := fun h ↦ hI (absNorm_eq_zero_iff.1 h)
@@ -21,11 +24,17 @@ theorem finite_setOf_le_of_ne_bot {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
 def idealDivisors (I : Ideal (𝓞 K)) : Finset (Ideal (𝓞 K)) :=
   if hI : I = ⊥ then ∅ else (finite_setOf_le_of_ne_bot hI).toFinset
 
+/- English proof (translation)
+Rewrite using `[idealDivisors, dif_neg hI, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem mem_idealDivisors {I J : Ideal (𝓞 K)} (hI : I ≠ ⊥) : J ∈ idealDivisors I ↔ I ≤ J := by
   rw [idealDivisors, dif_neg hI, Set.Finite.mem_toFinset]
   rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `dif_pos rfl`.
+-/
 theorem idealDivisors_bot : idealDivisors (⊥ : Ideal (𝓞 K)) = ∅ :=
   dif_pos rfl
 
@@ -33,15 +42,24 @@ def divisorSum (ψ : Ideal (𝓞 K) → ℝ) (I : Ideal (𝓞 K)) : ℝ :=
   ∑ J ∈ idealDivisors I, ψ J
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[divisorSum, idealDivisors_bot, Finset.sum_empty]`.
+-/
 theorem divisorSum_bot (ψ : Ideal (𝓞 K) → ℝ) : divisorSum ψ ⊥ = 0 := by
   rw [divisorSum, idealDivisors_bot, Finset.sum_empty]
 
+/- English proof (translation)
+Establish `h : idealDivisors (⊤ : Ideal (𝓞 K)) = {⊤}`. Use extensionality with `J`. Rewrite using `[mem_idealDivisors top_ne_bot, Finset.mem_singleton, top_le_iff]`. Rewrite using `[divisorSum, h, Finset.sum_singleton]`.
+-/
 theorem divisorSum_top (ψ : Ideal (𝓞 K) → ℝ) : divisorSum ψ ⊤ = ψ ⊤ := by
   have h : idealDivisors (⊤ : Ideal (𝓞 K)) = {⊤} := by
     ext J
     rw [mem_idealDivisors top_ne_bot, Finset.mem_singleton, top_le_iff]
   rw [divisorSum, h, Finset.sum_singleton]
 
+/- English proof (translation)
+Establish `hB₂ : B₂ ⊔ I = ⊤` using `top_le_iff.1 (hIJ ▸ sup_le (le_sup_of_le_right le_rfl) (le_sup_of_le_left h₂))`. Use `le_antisymm (sup_le Ideal.mul_le_left h₁) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_sup_eq_of_le {R : Type*} [CommRing R] {I J B₁ B₂ : Ideal R} (hIJ : I ⊔ J = ⊤)
     (h₁ : I ≤ B₁) (h₂ : J ≤ B₂) : B₁ * B₂ ⊔ I = B₁ := by
   have hB₂ : B₂ ⊔ I = ⊤ := top_le_iff.1 (hIJ ▸ sup_le (le_sup_of_le_right le_rfl)
@@ -51,6 +69,11 @@ theorem mul_sup_eq_of_le {R : Type*} [CommRing R] {I J B₁ B₂ : Ideal R} (hIJ
     _ = B₁ * B₂ ⊔ B₁ * I := Ideal.mul_sup _ _ _
     _ ≤ B₁ * B₂ ⊔ I := sup_le_sup_left Ideal.mul_le_right _
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup]`. Conclude with `sup_le (sup_le Ideal.mul_le_left Ideal.mul_le_left) (sup_le Ideal.mul_le_right hD)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`.
+
+Conclude with `Ideal.mul_mono le_sup_right le_sup_left)`. Use the proof step `(Ideal.mul_mono le_sup_left le_sup_right)`.
+-/
 theorem sup_mul_sup_eq_of_le {R : Type*} [CommRing R] {I J D : Ideal R} (hIJ : I ⊔ J = ⊤)
     (hD : I * J ≤ D) : (D ⊔ I) * (D ⊔ J) = D := by
   refine le_antisymm ?_ ?_
@@ -63,6 +86,19 @@ theorem sup_mul_sup_eq_of_le {R : Type*} [CommRing R] {I J D : Ideal R} (hIJ : I
           exact Ideal.mul_mono le_sup_right le_sup_left)
           (Ideal.mul_mono le_sup_left le_sup_right)
 
+/- English proof (translation)
+Distinguish the cases in `hI : I = ⊥`. Simplify using `[hI]`. Distinguish the cases in `hJ : J = ⊥`. Simplify using `[hJ]`. Establish `hIJ0 : I * J ≠ ⊥` using `mul_ne_zero hI hJ`.
+
+Rewrite using `[divisorSum, divisorSum, divisorSum, Finset.sum_mul_sum, ← Finset.sum_product']`. Use `symm`. Use `Finset.sum_bij' (fun p _ ↦ p.1 * p.2) (fun D _ ↦ (D ⊔ I, D ⊔ J)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product, mem_idealDivisors hI, mem_idealDivisors hJ]`.
+
+Rewrite using `[mem_idealDivisors hIJ0]`. Conclude with `Ideal.mul_mono hp.1 hp.2`. Introduce `D hD`. Rewrite `hD` using `[mem_idealDivisors hIJ0]`. Rewrite using `[Finset.mem_product, mem_idealDivisors hI, mem_idealDivisors hJ]`.
+
+Conclude with `⟨le_sup_right, le_sup_right⟩`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product, mem_idealDivisors hI, mem_idealDivisors hJ]`. Establish `h2 : p.1 * p.2 ⊔ J = p.2`. Rewrite using `[mul_comm]`.
+
+Conclude with `mul_sup_eq_of_le (by rwa [sup_comm]) hp.2 hp.1`. Conclude with `Prod.ext (mul_sup_eq_of_le hIJ hp.1 hp.2) h2`. Introduce `D hD`. Rewrite `hD` using `[mem_idealDivisors hIJ0]`. Conclude with `sup_mul_sup_eq_of_le hIJ hD`.
+
+Introduce `p _`. Conclude with `(hψ p.1 p.2).symm`.
+-/
 theorem divisorSum_mul {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * B) = ψ A * ψ B)
     {I J : Ideal (𝓞 K)} (hIJ : I ⊔ J = ⊤) : divisorSum ψ (I * J) = divisorSum ψ I * divisorSum ψ J := by
   by_cases hI : I = ⊥
@@ -93,6 +129,15 @@ theorem divisorSum_mul {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * B) 
   · intro p _
     exact (hψ p.1 p.2).symm
 
+/- English proof (translation)
+Establish `hP0 : P ≠ ⊥` using `hP.ne_zero`. Establish `hPk : P ^ k ≠ ⊥` using `pow_ne_zero k hP0`. Establish `hψpow : ∀ j : ℕ, ψ (P ^ j) = ψ P ^ j` using `fun j ↦ by`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero, Ideal.one_eq_top, hψ1]`.
+
+Consider the case `succ j ih => rw [pow_succ, pow_succ, hψ, ih]`. Establish `hinj : Function.Injective fun j : ℕ ↦ P ^ j` using `pow_injective_of_not_isUnit hP.not_isUnit hP0`. Establish `hset : idealDivisors (P ^ k) = (Finset.range (k + 1)).image fun j ↦ P ^ j`. Use extensionality with `D`. Rewrite using `[mem_idealDivisors hPk, Finset.mem_image, ← Ideal.dvd_iff_le, dvd_prime_pow hP]`.
+
+Simplify using `only [associated_iff_eq, Finset.mem_range, Nat.lt_succ_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨i, hi, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`.
+
+Conclude with `⟨i, hi, rfl⟩`. Rewrite using `[divisorSum, hset, Finset.sum_image fun i _ j _ h ↦ hinj h]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ hψpow j`.
+-/
 theorem divisorSum_prime_pow {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * B) = ψ A * ψ B)
     (hψ1 : ψ ⊤ = 1) {P : Ideal (𝓞 K)} (hP : Prime P) (k : ℕ) :
     divisorSum ψ (P ^ k) = ∑ j ∈ Finset.range (k + 1), ψ P ^ j := by
@@ -116,6 +161,11 @@ theorem divisorSum_prime_pow {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A
   rw [divisorSum, hset, Finset.sum_image fun i _ j _ h ↦ hinj h]
   exact Finset.sum_congr rfl fun j _ ↦ hψpow j
 
+/- English proof (translation)
+Break down `eq_or_ne x 1 with rfl | h1` into its components or cases. Simplify using the standard rewrite rules. Establish `hlt : x < 1` using `lt_of_le_of_ne (le_of_abs_le hx) h1`. Rewrite using `[geom_sum_eq h1]`. Use `div_nonneg_of_nonpos ?_ (by linarith)` and prove the remaining obligations.
+
+Establish `: x ^ n ≤ 1` using `(le_abs_self _).trans (by rw [abs_pow]; exact pow_le_one₀ (abs_nonneg x) hx)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem geom_sum_nonneg_of_abs_le_one {x : ℝ} (hx : |x| ≤ 1) (n : ℕ) :
     0 ≤ ∑ j ∈ Finset.range n, x ^ j := by
   rcases eq_or_ne x 1 with rfl | h1
@@ -126,6 +176,15 @@ theorem geom_sum_nonneg_of_abs_le_one {x : ℝ} (hx : |x| ≤ 1) (n : ℕ) :
   have : x ^ n ≤ 1 := (le_abs_self _).trans (by rw [abs_pow]; exact pow_le_one₀ (abs_nonneg x) hx)
   linarith
 
+/- English proof (translation)
+Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_coprime with`. Consider the case `h0 => rw [Ideal.zero_eq_bot, divisorSum_bot]`. Consider the case `h1 hu`. Rewrite using `[Ideal.isUnit_iff.1 hu, divisorSum_top, hψ1]`. Conclude with `zero_le_one`.
+
+Consider the case `hpr i hp`. Rewrite using `[divisorSum_prime_pow hψ hψ1 hp]`. Conclude with `geom_sum_nonneg_of_abs_le_one (hψb _) _`. Consider the case `hcp hxy hx hy`. Name the introduced variables `x y`.
+
+Establish `hsup : x ⊔ y = ⊤`. Use `Ideal.isUnit_iff.1 (hxy ?_ ?_)` and prove the remaining obligations. Conclude with `Ideal.dvd_iff_le.2 le_sup_left`. Conclude with `Ideal.dvd_iff_le.2 le_sup_right`. Rewrite using `[divisorSum_mul hψ hsup]`.
+
+Conclude with `mul_nonneg hx hy`.
+-/
 theorem divisorSum_nonneg {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * B) = ψ A * ψ B)
     (hψ1 : ψ ⊤ = 1) (hψb : ∀ A, |ψ A| ≤ 1) (I : Ideal (𝓞 K)) : 0 ≤ divisorSum ψ I := by
   induction I using UniqueFactorizationMonoid.induction_on_coprime with
@@ -145,11 +204,17 @@ theorem divisorSum_nonneg {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * 
     rw [divisorSum_mul hψ hsup]
     exact mul_nonneg hx hy
 
+/- English proof (translation)
+The claim follows from `neg_ne_zero.2 fun h ↦ by rw [h, zero_re] at hs linarith`.
+-/
 theorem neg_ne_zero_of_one_lt_re {s : ℂ} (hs : 1 < s.re) : -s ≠ 0 :=
   neg_ne_zero.2 fun h ↦ by
     rw [h, zero_re] at hs
     linarith
 
+/- English proof (translation)
+Use `((1 : HeckeCharacter K).summable_norm_coeff_mul_cpow hs).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun J ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hJ : J = ⊥`. Simplify using `[hJ, zero_cpow (neg_ne_zero_of_one_lt_re hs)]`. Rewrite using `[HeckeCharacter.coeff_one hJ, one_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hψb J)`.
+-/
 theorem summable_norm_mul_cpow {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀ A, |ψ A| ≤ 1) {s : ℂ}
     (hs : 1 < s.re) : Summable fun J : Ideal (𝓞 K) ↦ ‖(ψ J : ℂ) * (absNorm J : ℂ) ^ (-s)‖ := by
   refine ((1 : HeckeCharacter K).summable_norm_coeff_mul_cpow hs).of_nonneg_of_le
@@ -159,6 +224,25 @@ theorem summable_norm_mul_cpow {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀ A, |ψ 
   · rw [HeckeCharacter.coeff_one hJ, one_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs]
     exact mul_le_of_le_one_left (norm_nonneg _) (hψb J)
 
+/- English proof (translation)
+Establish `hs0` using `neg_ne_zero_of_one_lt_re hs`. Use `set f : Ideal (𝓞 K) → ℂ := fun J ↦ (ψ J : ℂ) * (absNorm J : ℂ) ^ (-s) with hf_def`. Use `set g : Ideal (𝓞 K) → ℂ := fun J ↦ (1 : HeckeCharacter K).coeff J * (absNorm J : ℂ) ^ (-s) with hg_def`. Establish `hf` using `summable_norm_mul_cpow hψb hs`. Establish `hg` using `(1 : HeckeCharacter K).summable_norm_coeff_mul_cpow hs`.
+
+Establish `hζ : dedekindZeta K s = ∑' J, g J`. Rewrite using `[← HeckeCharacter.LFunction_one]`. Conclude with `((1 : HeckeCharacter K).hasSum_LFunction hs).tsum_eq.symm`. Rewrite using `[hζ, tsum_mul_tsum_of_summable_norm hf hg]`. Use `set F : Ideal (𝓞 K) × Ideal (𝓞 K) → ℂ := fun p ↦ f p.1 * g p.2 with hF_def`.
+
+Establish `hF : Summable F` using `summable_mul_of_summable_norm hf hg`. Set `e` to `Equiv.sigmaFiberEquiv (fun p : Ideal (𝓞 K) × Ideal (𝓞 K) ↦ p.1 * p.2)`. Establish `h1 : HasSum (F ∘ e) (∑' p, F p)` using `e.hasSum_iff.2 hF.hasSum`. Establish `h2` using `h1.sigma fun I ↦ ((e.summable_iff.2 hF).sigma_factor I).hasSum`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `I`. Distinguish the cases in `hI : I = ⊥`. Substitute `hI` using the available equality. Rewrite using `[divisorSum_bot, ofReal_zero, zero_mul]`. Use `symm`.
+
+Use `(tsum_congr fun q ↦ ?_).trans tsum_zero` and prove the remaining obligations. Establish `hq : q.1.1 * q.1.2 = ⊥` using `q.2`. Express the relevant statement in the definitionally equal form `f q.1.1 * g q.1.2 = 0`. Break down `Ideal.mul_eq_bot.1 hq with h | h` into its components or cases. Simplify using `[hf_def, h, zero_cpow hs0]`.
+
+Simplify using `[hg_def, h]`. Establish `hdvd : ∀ J : {J // J ∈ idealDivisors I}, J.1 ∣ I` using `fun J ↦ Ideal.dvd_iff_le.2 ((mem_idealDivisors hI).1 J.2)`. Establish `hfib : ∀ q : {p : Ideal (𝓞 K) × Ideal (𝓞 K) // p.1 * p.2 = I}, q.1.1 ∈ idealDivisors I` using `fun q ↦ by`. Rewrite using `[mem_idealDivisors hI]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hne : ∀ q : {p : Ideal (𝓞 K) × Ideal (𝓞 K) // p.1 * p.2 = I}, q.1.1 ≠ ⊥ ∧ q.1.2 ≠ ⊥` using `fun q ↦ by`. Establish `h` using `q.2`. Apply the tactic sequence `constructor <;> intro h0 <;> apply hI <;> rw [← h, h0] <;> simp`. Set `eqv : {p : Ideal (𝓞 K) × Ideal (𝓞 K) // p.1 * p.2 = I} ≃ {J // J ∈ idealDivisors I}` to `{ toFun := fun q ↦ ⟨q.1.1, hfib q⟩ invFun := fun J ↦ ⟨(J.1, (hdvd J).choose), (hdvd J).choose_spec.symm⟩ left_inv := fun q ↦ by`. Use `Subtype.ext (Prod.ext rfl ?_)` and prove the remaining obligations.
+
+Establish `h1 : I = q.1.1 * (hdvd ⟨q.1.1, hfib q⟩).choose` using `(hdvd ⟨q.1.1, hfib q⟩).choose_spec`. Conclude with `mul_left_cancel₀ (hne q).1 (h1.symm.trans q.2.symm)`. Use `right_inv := fun J ↦ rfl }`. Establish `hterm : ∀ q : {p : Ideal (𝓞 K) × Ideal (𝓞 K) // p.1 * p.2 = I}, (F ∘ e) ⟨I, q⟩ = (ψ (eqv q).1 : ℂ) * (absNorm I : ℂ) ^ (-s)` using `fun q ↦ by`. Express the relevant statement in the definitionally equal form `f q.1.1 * g q.1.2 = (ψ q.1.1 : ℂ) * (absNorm I : ℂ) ^ (-s)`.
+
+Rewrite using `[hf_def, hg_def]`. Simplify using `only`. Rewrite using `[HeckeCharacter.coeff_one (hne q).2, one_mul, mul_assoc, ← natCast_mul_natCast_cpow, ← Nat.cast_mul, ← map_mul, q.2]`. Rewrite using `[tsum_congr hterm, tsum_mul_right, Equiv.tsum_eq eqv (fun J ↦ (ψ J.1 : ℂ)), Finset.tsum_subtype (idealDivisors I) (fun J ↦ (ψ J : ℂ)), divisorSum, ofReal_sum]`.
+-/
 theorem hasSum_divisorSum {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀ A, |ψ A| ≤ 1) {s : ℂ}
     (hs : 1 < s.re) :
     HasSum (fun I : Ideal (𝓞 K) ↦ (divisorSum ψ I : ℂ) * (absNorm I : ℂ) ^ (-s))
@@ -223,6 +307,15 @@ theorem hasSum_divisorSum {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀ A, |ψ A| �
 def divisorSumCoeff (ψ : Ideal (𝓞 K) → ℝ) (n : ℕ) : ℂ :=
   ∑' I : {I : Ideal (𝓞 K) // absNorm I = n}, (divisorSum ψ I : ℂ)
 
+/- English proof (translation)
+Establish `hs0` using `neg_ne_zero_of_one_lt_re hs`. Establish `hsum` using `hasSum_divisorSum hψb hs`. Use `set h : Ideal (𝓞 K) → ℂ := fun I ↦ (divisorSum ψ I : ℂ) * (absNorm I : ℂ) ^ (-s) with hh`. Set `e` to `Equiv.sigmaFiberEquiv (fun I : Ideal (𝓞 K) ↦ absNorm I)`. Establish `h1 : HasSum (h ∘ e) _` using `e.hasSum_iff.2 hsum`.
+
+Establish `h2` using `h1.sigma fun n ↦ ((e.summable_iff.2 hsum.summable).sigma_factor n).hasSum`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Rewrite using `[LSeries.term_def]`. Use `split_ifs with hn`.
+
+Substitute `hn` using the available equality. Use `symm`. Use `(tsum_congr fun y ↦ ?_).trans tsum_zero` and prove the remaining obligations. Establish `hy : (y : Ideal (𝓞 K)) = ⊥` using `absNorm_eq_zero_iff.1 y.2`. Simplify using `[e, hh, hy]`.
+
+Rewrite using `[divisorSumCoeff, ← tsum_div_const]`. Use `tsum_congr fun y ↦ ?_` and prove the remaining obligations. Simplify using `[e, hh, y.2, cpow_neg, div_eq_mul_inv]`.
+-/
 theorem hasSum_LSeries_term_divisorSum {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀ A, |ψ A| ≤ 1) {s : ℂ}
     (hs : 1 < s.re) :
     HasSum (LSeries.term (divisorSumCoeff ψ) s)
@@ -248,11 +341,17 @@ theorem hasSum_LSeries_term_divisorSum {ψ : Ideal (𝓞 K) → ℝ} (hψb : ∀
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Rewrite using `[divisorSumCoeff, ← Complex.ofReal_tsum]`. Conclude with `Complex.zero_le_real.2 (tsum_nonneg fun I ↦ divisorSum_nonneg hψ hψ1 hψb I)`.
+-/
 theorem divisorSumCoeff_nonneg {ψ : Ideal (𝓞 K) → ℝ} (hψ : ∀ A B, ψ (A * B) = ψ A * ψ B)
     (hψ1 : ψ ⊤ = 1) (hψb : ∀ A, |ψ A| ≤ 1) (n : ℕ) : 0 ≤ divisorSumCoeff ψ n := by
   rw [divisorSumCoeff, ← Complex.ofReal_tsum]
   exact Complex.zero_le_real.2 (tsum_nonneg fun I ↦ divisorSum_nonneg hψ hψ1 hψb I)
 
+/- English proof (translation)
+Rewrite using `[divisorSumCoeff, tsum_eq_single ⟨⊤, absNorm_top⟩]`. Rewrite using `[divisorSum_top]`. Introduce `I hI`. Conclude with `absurd (Subtype.ext (absNorm_eq_one_iff.1 I.2)) hI`.
+-/
 theorem divisorSumCoeff_one (ψ : Ideal (𝓞 K) → ℝ) : divisorSumCoeff ψ 1 = ψ ⊤ := by
   rw [divisorSumCoeff, tsum_eq_single ⟨⊤, absNorm_top⟩]
   · rw [divisorSum_top]

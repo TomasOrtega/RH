@@ -14,6 +14,23 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.InertSpan
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hw _ L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s hs`. Take `⟨-, -, -, -, -, -, -, -, -, hAt, hSurj, -⟩` from `hC`. Establish `hunr : PsiUnr B.ψ v` using `(hT.base.inert v w hw).2.2`. Establish `hvac` using `hT.geo.hM'.vac v`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (Fin a' × Fin (a + a')) v`.
+
+Establish `key : ∀ x, ((ρ x s : SB _) : (Fin a' × Fin (a + a') → Fv F v) → ℂ) = schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v (κ x)) (s : (Fin a' × Fin (a + a') → Fv F v) → ℂ)` using `fun x => GlobalTheory.InertAvg.tens_inj v R hR0 (hR _ s.2).1 ((hρ x s R (hR _ s.2)).symm.trans (GlobalTheory.VacBridge.rho_acts_locCo _ _ v _ (hAt x) _ R (hR _ s.2)))`. Establish `hsurj : ∀ p : (Fin a' × Fin (a + a') → Fv F v) × (Fin a' × Fin (a + a') → Fv F v), ∃ x, GlobalTheory.LatVac.locCo G.M'.co v (κ x) = p`. Introduce `p`. Take `⟨x, hx⟩` from `hSurj (G.M'.co.e.symm (fun k => GlobalTheory.LatVac.liftV v (p.1 k), fun k => GlobalTheory.LatVac.liftV v (p.2 k))) (by`. Introduce `u hu`.
+
+Rewrite using `[← LinearEquiv.map_smul]`. Use `G.M'.co.e.symm.map_zero using 2` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `GlobalTheory.LatVac.at_liftV v (p.1 k) u hu`. Conclude with `GlobalTheory.LatVac.at_liftV v (p.2 k) u hu)`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Use extensionality with `k`. Simplify using `[GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]`. Simplify using `[GlobalTheory.LatVac.locCo, GlobalTheory.LatVac.evFin_liftV]`.
+
+Establish `hs0 : (s : (Fin a' × Fin (a + a') → Fv F v) → ℂ) ≠ 0` using `hs ▸ hvac.2.1`. Establish `hcond : ∀ x : Fv F v, (∀ y ∈ v.adicCompletionIntegers F, GlobalTheory.LatVac.psiAt B.ψ v (x * y) = 1) ↔ x ∈ v.adicCompletionIntegers F` using `hunr`. Establish `hrange : Set.range (fun p => schr (GlobalTheory.LatVac.psiAt B.ψ v) p (s : (Fin a' × Fin (a + a') → Fv F v) → ℂ)) = (SB (Fin a' × Fin (a + a') → Fv F v)).subtype '' Set.range (fun x => ρ x s)`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨p, rfl⟩`. Take `⟨x, hx⟩` from `hsurj p`. Conclude with `⟨ρ x s, ⟨x, rfl⟩, by rw [Submodule.subtype_apply, key, hx]⟩`. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨_, (key x).symm⟩`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `m -`. Establish `hm` using `GlobalTheory.SchrSpan.mem_span_schr_of_mem_SB F v (GlobalTheory.LatVac.psiAt B.ψ v) _ hcond _ s.2 hs0 _ m.2`. Rewrite `hm` using `[hrange, Submodule.span_image]`. Take `⟨n, hn, hnm⟩` from `hm`.
+
+Rewrite using `[← Subtype.ext hnm]` and apply the resulting hypothesis.
+-/
 theorem span_translates_vac : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

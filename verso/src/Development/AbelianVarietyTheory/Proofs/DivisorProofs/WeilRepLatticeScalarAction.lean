@@ -15,6 +15,11 @@ namespace GlobalTheory.FinComm.VacLaw
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `h0 : evFin F v (1 - GlobalTheory.EmbChart.atPlace v 1) = 0`. Rewrite using `[map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h` using `congrFun (hz _ h0) i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply, sub_mul, one_mul, sub_eq_zero] at h`. Rewrite `h` using `[GlobalTheory.EmbChart.atPlace_mul_right, one_mul]`.
+
+Conclude with `h`.
+-/
 theorem eq_atPlace_of_at (v : Pl F) {z : κ → AF F} (hz : At (evFin F v) z) (i : κ) :
     z i = GlobalTheory.EmbChart.atPlace v (evFin F v (z i)) := by
   have h0 : evFin F v (1 - GlobalTheory.EmbChart.atPlace v 1) = 0 := by
@@ -24,21 +29,36 @@ theorem eq_atPlace_of_at (v : Pl F) {z : κ → AF F} (hz : At (evFin F v) z) (i
   rw [GlobalTheory.EmbChart.atPlace_mul_right, one_mul] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+-/
 theorem evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EmbChart.atPlace_apply]`. Conclude with `map_zero _`.
+-/
 theorem evI_atPlace (v : Pl F) (a : Fv F v) : evI F (GlobalTheory.EmbChart.atPlace v a) = 0 := by
   rw [GlobalTheory.EmbChart.atPlace_apply]
   exact map_zero _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EmbChart.atPlace_apply]`. Conclude with `evalV_singleFin_ne h a`.
+-/
 theorem evFin_atPlace_ne {v u : Pl F} (h : u ≠ v) (a : Fv F v) : evFin F u (GlobalTheory.EmbChart.atPlace v a) = 0 := by
   rw [GlobalTheory.EmbChart.atPlace_apply]
   exact evalV_singleFin_ne h a
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_all.mpr fun i => (x i).2.2`.
+-/
 theorem eventually_int (x : κ → AF F) :
     ∀ᶠ u in cofinite, ∀ i, evFin F u (x i) ∈ u.adicCompletionIntegers F :=
   Filter.eventually_all.mpr fun i => (x i).2.2
 
+/- English proof (translation)
+Establish `h : ∀ᶠ u in cofinite, φ u (fun i => evFin F u (x i)) = 1` using `by filter_upwards [hφ, eventually_int x] with u hu hx`. Rewrite using `[hu]`. Simplify using `[indO, Set.indicator, hx]`. Conclude with `(Filter.eventually_cofinite.mp h).subset fun u hu hp => hu hp`.
+-/
 theorem finite_mulSupport (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : ∀ᶠ u in cofinite, φ u = indO u)
     (x : κ → AF F) : (Function.mulSupport fun u => φ u (fun i => evFin F u (x i))).Finite := by
   have h : ∀ᶠ u in cofinite, φ u (fun i => evFin F u (x i)) = 1 := by
@@ -47,6 +67,13 @@ theorem finite_mulSupport (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : �
     simp [indO, Set.indicator, hx]
   exact (Filter.eventually_cofinite.mp h).subset fun u hu hp => hu hp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hfin` using `finite_mulSupport φ hφ x`. Unfold `tens GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[← mul_finprod_cond_ne v hfin]`. Establish `: (∏ᶠ u, Function.update φ v (fun _ => 1) u (fun i => evFin F u (x i))) = ∏ᶠ (u) (_ : u ≠ v), φ u (fun i => evFin F u (x i))`.
+
+Establish `hfin' : (Function.mulSupport fun u => Function.update φ v (fun _ => (1 : ℂ)) u (fun i => evFin F u (x i))).Finite`. Use `hfin.subset fun u hu => ?_` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using `at hu`.
+
+Simplify `hu` using `[Function.update_of_ne e]`. Rewrite using `[← mul_finprod_cond_ne v hfin', Function.update_self, one_mul]`. Conclude with `finprod_congr fun u => finprod_congr fun hu => by rw [Function.update_of_ne hu]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_update (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : ∀ᶠ u in cofinite, φ u = indO u)
     (v : Pl F) : tens (evFin F v) (φ v) (pure f (Function.update φ v fun _ => 1)) = pure f φ := by
   funext x
@@ -66,6 +93,13 @@ theorem tens_update (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ)
   rw [this]
   ring
 
+/- English proof (translation)
+Establish `hI : (fun i => evI F ((x + z) i)) = fun i => evI F (x i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, evI_add, eq_atPlace_of_at v hz i, evI_atPlace, add_zero]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[hI]`.
+
+Use `congr 1`. Use `finprod_congr fun u => ?_` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Function.update_of_ne e]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, map_add, eq_atPlace_of_at v hz i, evFin_atPlace_ne e, add_zero]`.
+-/
 theorem pure_update_add_at (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (v : Pl F) (x z : κ → AF F)
     (hz : At (evFin F v) z) :
     pure f (Function.update φ v fun _ => 1) (x + z) = pure f (Function.update φ v fun _ => 1) x := by
@@ -89,6 +123,13 @@ namespace GlobalTheory.FinComm
 
 open GlobalTheory.FinComm.VacLaw
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ hM`. Establish `hvacO : ∀ᶠ u in cofinite, M.vac u = indO u` using `by filter_upwards [hM.std] with u hu`. Rewrite using `[hu]`. Both sides reduce to the same expression. Establish `hvacSB : ∀ u, M.vac u ∈ SB _` using `fun u => (hM.vac u).1`.
+
+Use `⟨fun v γ => ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (((hM.vac v).2.2.choose : 𝓞 E) : E)) (incM F X.J) (incM F W.J) γ γ), fun v γ hγ f => ?_⟩` and prove the remaining obligations. Establish `hact` using `((hM.vac v).2.2.choose_spec.2) γ hγ`. Establish `hpv : pure f M.vac ∈ schA F _` using `GlobalTheory.T.pure_tensor_mem_schwartz_adelic f M.vac hvacSB hvacO`. Establish `hten` using `tens_update f M.vac hvacO v`. Establish `hrest : Rest (evFin F v) (M.vac v) (pure f (Function.update M.vac v fun _ => 1))` using `⟨fun x z hz => pure_update_add_at f M.vac v x z hz, hten ▸ hpv⟩`.
+
+Establish `h` using `hact _ hrest`. Rewrite `h` using `[hten]`. Rewrite using `[h, ← hten]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+-/
 theorem vac_law : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ), M.IsGood ψ →
     ∃ c : Pl F → Matrix (Fin n) (Fin d) (AE F E) → ℂ, ∀ v, ∀ γ ∈ latAtV X W v, ∀ f : SInf F (Fin n × Fin d),

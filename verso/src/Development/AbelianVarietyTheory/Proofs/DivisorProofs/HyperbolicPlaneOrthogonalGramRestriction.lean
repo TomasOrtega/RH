@@ -16,6 +16,9 @@ open Formalism.UG (cT)
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, RingHom.coe_coe]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_entry {n r s : ℕ} (σ : E →ₐ[F] E) (M : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin r) E)
     (B : Matrix (Fin n) (Fin s) E) (i : Fin r) (j : Fin s) :
     (cT (σ : E →+* E) A * M * B) i j = hE σ M (fun k => A k i) (fun k => B k j) := by
@@ -23,6 +26,9 @@ theorem gram_entry {n r s : ℕ} (σ : E →ₐ[F] E) (M : Matrix (Fin n) (Fin n
     RingHom.coe_coe]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, cT, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, RingHom.coe_coe]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_mulVec_entry {n r : ℕ} (σ : E →ₐ[F] E) (M : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin r) E)
     (z : Fin n → E) (i : Fin r) :
     ((cT (σ : E →+* E) A * M) *ᵥ z) i = hE σ M (fun k => A k i) z := by
@@ -32,11 +38,61 @@ theorem gram_mulVec_entry {n r : ℕ} (σ : E →ₐ[F] E) (M : Matrix (Fin n) (
 
 variable [NumberField F] [NumberField E]
 
+/- English proof (translation)
+Use `GlobalTheory.TwoPlaneWitt.hE_smul_map hσ J c 1 1 u v` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hE_eq {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E)
     (u v : Fin n → E) : hE σ (c • J.map σ) u v = c * σ (form σ J u v) := by
   have := GlobalTheory.TwoPlaneWitt.hE_smul_map hσ J c 1 1 u v
   simpa using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n n₁ W W₁ H hskew hn hxx hyy hxy horth hg c₀ hc hND₁ hND r Xf Yf hW`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Use `set M := c₀ • W.J.map σ with hM`. Use `set M₁ := c₀ • W₁.J.map σ with hM₁`. Establish `hι : ∀ u v, hE σ M (H.ι *ᵥ u) (H.ι *ᵥ v) = hE σ M₁ u v` using `fun u v => by`.
+
+Rewrite using `[hM, hM₁, hE_eq hσ, hE_eq hσ, GlobalTheory.TwoPlaneWitt.form_mulVec, hg]`. Establish `hcol : ∀ (A : Matrix (Fin n₁) (Fin r) E) (i : Fin r), (fun k => (H.ι * A) k i) = H.ι *ᵥ fun k => A k i` using `fun A i => funext fun k => by simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hyx : form σ W.J H.y H.x = -1` using `by rw [GlobalTheory.UnipCocptForm.form_swap σ W.J hskew hσ, hxy, map_one]`. Establish `hxι : ∀ u, form σ W.J H.x (H.ι *ᵥ u) = 0` using `fun u => by`. Rewrite using `[GlobalTheory.UnipCocptForm.form_swap σ W.J hskew hσ, (horth u).1, map_zero, neg_zero]`.
+
+Establish `hyι : ∀ u, form σ W.J H.y (H.ι *ᵥ u) = 0` using `fun u => by`. Rewrite using `[GlobalTheory.UnipCocptForm.form_swap σ W.J hskew hσ, (horth u).2, map_zero, neg_zero]`. Set `X' : Matrix (Fin n) (Fin (r + 1)) E` to `Matrix.of fun k => Fin.cons (H.x k) (fun i => (H.ι * Xf) k i)`. Set `Y' : Matrix (Fin n) (Fin (r + 1)) E` to `Matrix.of fun k => Fin.cons (c₀⁻¹ * H.y k) (fun i => (H.ι * Yf) k i)`. Establish `cX0 : (fun k => X' k 0) = H.x` using `funext fun k => by simp [X']`.
+
+Establish `cY0 : (fun k => Y' k 0) = c₀⁻¹ • H.y` using `funext fun k => by simp [Y']`. Establish `cXs : ∀ i : Fin r, (fun k => X' k i.succ) = H.ι *ᵥ fun k => Xf k i` using `fun i => by`. Rewrite using `[← hcol]`. Use function extensionality and compare the values at `k`. Simplify using `[X']`.
+
+Establish `cYs : ∀ i : Fin r, (fun k => Y' k i.succ) = H.ι *ᵥ fun k => Yf k i` using `fun i => by`. Rewrite using `[← hcol]`. Use function extensionality and compare the values at `k`. Simplify using `[Y']`. Establish `gXX : ∀ i j, hE σ M₁ (fun k => Xf k i) (fun k => Xf k j) = 0` using `fun i j => by`.
+
+Rewrite using `[← gram_entry, hW.xx]`. Both sides reduce to the same expression. Establish `gYY : ∀ i j, hE σ M₁ (fun k => Yf k i) (fun k => Yf k j) = 0` using `fun i j => by`. Rewrite using `[← gram_entry, hW.yy]`. Both sides reduce to the same expression.
+
+Establish `gXY : ∀ i j, hE σ M₁ (fun k => Xf k i) (fun k => Yf k j) = (1 : Matrix (Fin r) (Fin r) E) i j` using `fun i j => by`. Rewrite using `[← gram_entry, hW.xy]`. Establish `sX : ∀ (s t : E) (a b : Fin n → E), hE σ M (s • a) (t • b) = σ s * t * c₀ * σ (form σ W.J a b)` using `fun s t a b => GlobalTheory.TwoPlaneWitt.hE_smul_map hσ W.J c₀ s t a b`. Use `⟨X', Y', ⟨?_, ?_, ?_, ?_⟩, fun k => by simp [X'], fun k => by simp [Y'], fun k i => ⟨by simp [X'], by simp [Y']⟩⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Rewrite using `[gram_entry]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Rewrite using `[cX0, ← one_smul E H.x, sX]`. Simplify using `[hxx]`. Rewrite using `[cX0, cXs, ← one_smul E H.x, ← one_smul E (H.ι *ᵥ _), sX]`.
+
+Simplify using `[hxι]`. Rewrite using `[cX0, cXs, ← one_smul E H.x, ← one_smul E (H.ι *ᵥ _), sX]`. Simplify using `[(horth _).1]`. Rewrite using `[cXs, cXs, hι, gXX]`. Both sides reduce to the same expression.
+
+Use extensionality with `i j`. Rewrite using `[gram_entry]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Rewrite using `[cY0, sX]`. Simplify using `[hyy]`.
+
+Rewrite using `[cY0, cYs, ← one_smul E (H.ι *ᵥ _), sX]`. Simplify using `[hyι]`. Rewrite using `[cY0, cYs, ← one_smul E (H.ι *ᵥ _), sX]`. Simplify using `[(horth _).2]`. Rewrite using `[cYs, cYs, hι, gYY]`.
+
+Both sides reduce to the same expression. Use extensionality with `i j`. Rewrite using `[gram_entry]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Rewrite using `[cX0, cY0, ← one_smul E H.x, sX]`.
+
+Simplify using `[hxy, hc]`. Rewrite using `[Matrix.one_apply_ne (Fin.succ_ne_zero j).symm, cX0, cYs, ← one_smul E H.x, ← one_smul E (H.ι *ᵥ _), sX]`. Simplify using `[hxι]`. Rewrite using `[Matrix.one_apply_ne (Fin.succ_ne_zero i), cY0, cXs, ← one_smul E (H.ι *ᵥ _), sX]`. Simplify using `[(horth _).2]`.
+
+Rewrite using `[cXs, cYs, hι, gXY]`. Simplify using `[Matrix.one_apply]`. Introduce `z h1 h2 h3`. Establish `σinj : ∀ a : E, σ a = 0 → a = 0` using `fun a ha => by rw [← hσ a, ha, map_zero]`. Establish `fxz : form σ W.J H.x z = 0`.
+
+Establish `e` using `congrFun h1 0`. Rewrite `e` using `[gram_mulVec_entry, cX0, hM, hE_eq hσ]`. Conclude with `σinj _ ((mul_eq_zero.1 e).resolve_left hc)`. Establish `fyz : form σ W.J H.y z = 0`. Establish `e` using `congrFun h2 0`.
+
+Rewrite `e` using `[gram_mulVec_entry, cY0, ← one_smul E z, sX, Pi.zero_apply, mul_one]`. Establish `hs : σ c₀⁻¹ ≠ 0` using `fun h => inv_ne_zero hc (σinj _ h)`. Break down `mul_eq_zero.1 e with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `absurd h hs`.
+
+Conclude with `absurd h hc`. Conclude with `σinj _ h`. Establish `hdet : W₁.J.det ≠ 0` using `fun h => hND₁.2 (by`. Rewrite using `[hM₁, Matrix.det_smul, show (W₁.J.map σ).det = σ W₁.J.det by exact (RingHom.map_det (σ : E →+* E) W₁.J).symm, h, map_zero, mul_zero])`. Take `⟨α, β, z₁, rfl⟩` from `GlobalTheory.UnipCocptForm.decomp σ W.J W₁.J H.x H.y H.ι hskew hσ hn hxx hyy hxy horth hg hdet z`.
+
+Establish `fzx : form σ W.J (α • H.x + β • H.y + H.ι *ᵥ z₁) H.x = -β`. Rewrite using `[GlobalTheory.UnipCocptForm.form_add, GlobalTheory.UnipCocptForm.form_add, GlobalTheory.UnipCocptForm.form_smul, GlobalTheory.UnipCocptForm.form_smul, hxx, hyx, (horth z₁).1]`. Expand and normalize the polynomial expressions, which then agree. Establish `fzy : form σ W.J (α • H.x + β • H.y + H.ι *ᵥ z₁) H.y = α`. Rewrite using `[GlobalTheory.UnipCocptForm.form_add, GlobalTheory.UnipCocptForm.form_add, GlobalTheory.UnipCocptForm.form_smul, GlobalTheory.UnipCocptForm.form_smul, hxy, hyy, (horth z₁).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hβ : β = 0`. Use `GlobalTheory.UnipCocptForm.form_swap σ W.J hskew hσ (α • H.x + β • H.y + H.ι *ᵥ z₁) H.x` as an intermediate fact. Rewrite `this` using `[fzx, fxz, map_zero, neg_zero]`. Conclude with `neg_eq_zero.1 this`.
+
+Establish `hα : α = 0`. Use `GlobalTheory.UnipCocptForm.form_swap σ W.J hskew hσ (α • H.x + β • H.y + H.ι *ᵥ z₁) H.y` as an intermediate fact. Rewrite `this` using `[fzy, fyz, map_zero, neg_zero]`. Then use the resulting hypothesis. Substitute `hα hβ` using the available equality. Simplify using `only [zero_smul, zero_add] at h1 h2 h3 ⊢`.
+
+Establish `k1 : (cT (σ : E →+* E) Xf * M₁) *ᵥ z₁ = 0` using `funext fun i => by`. Establish `e` using `congrFun h1 i.succ`. Rewrite `e` using `[gram_mulVec_entry, cXs, hι]`. Rewrite using `[gram_mulVec_entry, e]`. Both sides reduce to the same expression.
+
+Establish `k2 : (cT (σ : E →+* E) Yf * M₁) *ᵥ z₁ = 0` using `funext fun i => by`. Establish `e` using `congrFun h2 i.succ`. Rewrite `e` using `[gram_mulVec_entry, cYs, hι]`. Rewrite using `[gram_mulVec_entry, e]`. Both sides reduce to the same expression.
+
+Rewrite using `[hW.aniso z₁ k1 k2 ((hι z₁ z₁).symm.trans h3), Matrix.mulVec_zero]`.
+-/
 theorem exists_isWittFrame_cons : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

@@ -10,6 +10,23 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 
 namespace GlobalTheory.CompanionTheory.Ar.LieSpan
 
+/- English proof (translation)
+Introduce `S G _ _ R R' _ _ c x E E' _ _ _ _ M M' j hj`. Use `letI : Algebra R R' := c.toAlgebra`. Use `letI : Module R E' := Module.compHom E' c`. Use `haveI : IsScalarTower R R' E' := ⟨fun r r' e => by show (c r * r') • e = c r • (r' • e)`. Conclude with `mul_smul _ _ _⟩`.
+
+Set `h : GlobalTheory.CompanionTheory.Ar.epsAt (Spec.map (CommRingCat.ofHom c) ≫ x) ⟶ GlobalTheory.CompanionTheory.Ar.epsAt x` to `Over.homMk (Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap c))) (by show Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap c)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x = Spec.map (CommRingCat.ofHom (algebraMap R' (D …`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`. Apply the tactic sequence `ext r <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl, CommRingCat.hom_comp, CommRingCat.hom_ofHom])`. Establish `hl : h.left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap c))` using `rfl`.
+
+Establish `hpt : ∀ e, M'.pt (j e) = h ≫ M.pt e` using `fun e => Over.OverMorphism.ext (by rw [Over.comp_left, hl]; exact hj e)`. Establish `hadd : ∀ a b, j (a + b) = j a + j b`. Introduce `a b`. Apply `M'.inj` to reduce the goal to its premises. Rewrite using `[M'.add, hpt, hpt, hpt, M.add, MonObj.comp_mul]`.
+
+Establish `hsmul : ∀ (r : R) (e : E), j (r • e) = c r • j e`. Introduce `r e`. Apply `M'.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[M'.smul, hpt, hpt, Over.comp_left, Over.comp_left, M.smul, hl, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 2`. Apply the tactic sequence `ext a <;>`. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, smul_eq_mul, TrivSqZeroExt.algebraMap_eq_inl, CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Set `β : E →ₗ[R] E'` to `{ toFun := j, map_add' := hadd, map_smul' := fun r e => hsmul r e }`. Take `⟨-, -, hbc⟩` from `GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G R x E M`.
+
+Establish `hb : IsBaseChange R' β` using `hbc R' E' M' β (fun e => hj e)`. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨t, rfl⟩` from `hb.equiv.surjective y`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul s e`. Rewrite using `[hb.equiv_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e, rfl⟩)`. Consider the case `add a b ha hb'`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb'`.
+-/
 theorem span_range_pullback : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom] (R R' : Type) [CommRing R] [CommRing R'] (c : R →+* R') (x : Spec (CommRingCat.of R) ⟶ S) (E E' : Type) [AddCommGroup E] [Module R E] [AddCommGroup E'] [Module R' E'] (M : LieModel G x E) (M' : LieModel G (Spec.map (CommRingCat.ofHom c) ≫ x) E') (j : E → E'), (∀ e, (M'.pt (j e)).left = Spec.map (CommRingCat.ofHom (dualMap c)) ≫ (M.pt e).left) → Submodule.span R' (Set.range j) = ⊤ := by
   intro S G _ _ R R' _ _ c x E E' _ _ _ _ M M' j hj
   letI : Algebra R R' := c.toAlgebra

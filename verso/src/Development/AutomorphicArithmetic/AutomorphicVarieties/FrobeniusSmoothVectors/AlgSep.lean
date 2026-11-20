@@ -3,6 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `C K _ _ _ _ P _ h hN`. Rewrite using `[eq_bot_iff]`. Introduce `p hp`. Rewrite `hp` using `[Submodule.mem_iInf]`. Establish `hcomp : ∀ j : ℤ, (p : AddMonoidAlgebra K ℤ).coeff j = 0`.
+
+Introduce `j`. Use `set a := (p : AddMonoidAlgebra K ℤ).coeff j with ha`. Establish `hpj : a ∈ P j` using `(show ∀ i, (p : AddMonoidAlgebra K ℤ).coeff i ∈ P i from p.2) j`. Set `q : lauSub P` to `⟨AddMonoidAlgebra.single j a, single_mem_lauSub P hpj⟩`. Establish `hq : ∀ N : ℕ, q ∈ vertex h ^ N` using `fun N => alg_homog h N p (hp N) j`.
+
+Establish `hq' : q ∈ ⨅ i : ℕ, (vertex h) ^ i • (⊤ : Submodule (lauSub P) (lauSub P))`. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`. Simplify using `only [Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `hq i`.
+
+Take `⟨⟨r, hr⟩, hrq⟩` from `(Ideal.mem_iInf_smul_pow_eq_bot_iff (vertex h) q).1 hq'`. Establish `hrq' : r * q = q` using `hrq`. Take `⟨c, hc, hcr⟩` from `hr`. Establish `h1 : ((r * q : lauSub P) : AddMonoidAlgebra K ℤ).coeff j = (r : AddMonoidAlgebra K ℤ).coeff 0 * a`. Establish `h0` using `AddMonoidAlgebra.coeff_mul_single_add (r : AddMonoidAlgebra K ℤ) a j 0`.
+
+Rewrite `h0` using `[zero_add]`. Conclude with `h0`. Establish `h2 : ((r * q : lauSub P) : AddMonoidAlgebra K ℤ).coeff j = a`. Rewrite using `[hrq']`. Use `show (AddMonoidAlgebra.single j a).coeff j = a`.
+
+Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`. Rewrite `h1` using `[h2, ← hcr]`. Establish `hu : IsUnit (algebraMap C K (1 - c))` using `(IsLocalRing.isUnit_one_sub_self_of_mem_nonunits c hc).map _`. Establish `h3 : algebraMap C K (1 - c) * a = 0`. Rewrite using `[map_sub, map_one, sub_mul, one_mul, ← h1, sub_self]`.
+
+Conclude with `hu.mul_right_eq_zero.1 h3`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `j`. Simplify using `using hcomp j`.
+-/
 theorem UpperTheory.V.Fr.alg_sep :
     ∀ {C K : Type} [CommRing C] [IsLocalRing C] [CommRing K] [Algebra C K] {P : ℤ → Submodule C K} [SetLike.GradedMonoid P] (h : HasVertex P), IsNoetherianRing (lauSub P) → ⨅ N : ℕ, vertex h ^ N = ⊥ := by
   intro C K _ _ _ _ P _ h hN

@@ -5,6 +5,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.TopGroup
 
+/- English proof (translation)
+Introduce `G _ _ _ J hJ g`. Establish `hpre : ((J.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) = (fun x : G => g⁻¹ * x * g) ⁻¹' (J : Set G)`. Use extensionality with `x`. Simplify using `only [Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `hx`. Conclude with `⟨g⁻¹ * x * g, hx, by simp [mul_assoc]⟩`. Establish `hcont : Continuous (fun x : G => g⁻¹ * x * g)` using `by fun_prop`.
+
+Establish `h2 : IsOpen ((J.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[hpre]`. Conclude with `hJ.preimage hcont`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hJ.inter h2`.
+-/
 theorem inter_conj_isOpen :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G),
       IsOpen (J : Set G) → ∀ g : G,

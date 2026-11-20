@@ -11,6 +11,15 @@ namespace GlobalTheory.TorusHeight
 
 open scoped Matrix.Norms.L2Operator
 
+/- English proof (translation)
+Establish `e : ∀ M : Matrix (Fin n) (Fin n) ℂ, (opNorm M : ℝ) = ‖M‖` using `fun M => by`. Rewrite using `[opNorm, coe_nnnorm]`. Conclude with `(Matrix.l2_opNorm_def M).symm`. Rewrite using `[e]`. Establish `h1 : ‖(1 : Matrix (Fin n) (Fin n) ℂ)‖ ≤ 1`.
+
+Rewrite using `[← Matrix.diagonal_one, Matrix.l2_opNorm_diagonal]`. Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun _ => by simp`. Establish `hD : ‖Matrix.diagonal d‖ ≤ s`. Rewrite using `[Matrix.l2_opNorm_diagonal]`. Conclude with `(pi_norm_le_iff_of_nonneg hs).2 hd`.
+
+Establish `hD' : ‖Matrix.diagonal d'‖ ≤ s`. Rewrite using `[Matrix.l2_opNorm_diagonal]`. Conclude with `(pi_norm_le_iff_of_nonneg hs).2 hd'`. Establish `h2 : ‖X * Matrix.diagonal d * Y‖ ≤ ‖X‖ * s * ‖Y‖` using `(Matrix.l2_opNorm_mul _ _).trans (mul_le_mul_of_nonneg_right ((Matrix.l2_opNorm_mul _ _).trans (mul_le_mul_of_nonneg_left hD (norm_nonneg _))) (norm_nonneg _))`. Establish `h3 : ‖Y' * Matrix.diagonal d' * X'‖ ≤ ‖Y'‖ * s * ‖X'‖` using `(Matrix.l2_opNorm_mul _ _).trans (mul_le_mul_of_nonneg_right ((Matrix.l2_opNorm_mul _ _).trans (mul_le_mul_of_nonneg_left hD' (norm_nonneg _))) (norm_nonneg _))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem opNorm_le_of_shape {n q : ℕ} (X Y' : Matrix (Fin n) (Fin q) ℂ) (Y X' : Matrix (Fin q) (Fin n) ℂ)
     (d d' : Fin q → ℂ) {s : ℝ} (hs : 0 ≤ s) (hd : ∀ i, ‖d i‖ ≤ s) (hd' : ∀ i, ‖d' i‖ ≤ s) :
     (opNorm (1 + X * Matrix.diagonal d * Y + Y' * Matrix.diagonal d' * X') : ℝ) ≤
@@ -36,6 +45,11 @@ theorem opNorm_le_of_shape {n q : ℕ} (X Y' : Matrix (Fin n) (Fin q) ℂ) (Y X'
     _ ≤ 1 + ‖X‖ * s * ‖Y‖ + ‖Y'‖ * s * ‖X'‖ := by linarith
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hm : 0 < min 1 c` using `lt_min one_pos hc`. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ k)]`. Establish `hk : 0 ≤ t k` using `hc.le.trans (ht k)`. Use `mul_le_mul_of_nonneg_left ?_ hk` and prove the remaining obligations. Use `Finset.prod_le_prod (s := Finset.univ.erase k) (f := fun _ => min 1 c) (g := t) (fun _ _ => hm.le) (fun i _ => (min_le_right _ _).trans (ht i))` as an intermediate fact.
+
+Simplify `this` using `[Finset.prod_const, Finset.card_erase_of_mem, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem le_prod_of_forall_le {q : ℕ} {c : ℝ} (hc : 0 < c) (t : Fin q → ℝ) (ht : ∀ i, c ≤ t i) (k : Fin q) :
     t k * (min 1 c) ^ (q - 1) ≤ ∏ i, t i := by
   have hm : 0 < min 1 c := lt_min one_pos hc
@@ -46,12 +60,49 @@ theorem le_prod_of_forall_le {q : ℕ} {c : ℝ} (hc : 0 < c) (t : Fin q → ℝ
     (fun i _ => (min_le_right _ _).trans (ht i))
   simpa [Finset.prod_const, Finset.card_erase_of_mem, Finset.card_univ, Fintype.card_fin] using this
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`.
+-/
 theorem norm_ofReal_sub_one (x : ℝ) : ‖(x : ℂ) - 1‖ = |x - 1| := by
   rw [← Complex.ofReal_one, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_inv, norm_ofReal_sub_one]`.
+-/
 theorem norm_ofReal_inv_sub_one (x : ℝ) : ‖(x : ℂ)⁻¹ - 1‖ = |x⁻¹ - 1| := by
   rw [← Complex.ofReal_inv, norm_ofReal_sub_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J q Xf Yf c hc`. Establish `hm : 0 < min 1 c` using `lt_min one_pos hc`. Use `set c0 : ℝ := ((min 1 c) ^ (q - 1))⁻¹ + c⁻¹ + 1 with hc0`. Establish `hc0' : 1 ≤ c0`. Establish `: 0 ≤ ((min 1 c) ^ (q - 1))⁻¹` using `inv_nonneg.2 (pow_nonneg hm.le _)`.
+
+Establish `: 0 ≤ c⁻¹` using `inv_nonneg.2 hc.le`. Combine the linear equalities and inequalities to obtain the conclusion. Set `τ0 : ∀ w : InfinitePlace F, EmbOver E w` to `fun w => Classical.arbitrary _`. Set `K : InfinitePlace F → ℝ` to `fun w => ‖(Xf).map (τ0 w).1‖ * ‖(Formalism.UG.cT (σ : E →+* E) Yf * J).map (τ0 w).1‖ + ‖(Yf).map (τ0 w).1‖ * ‖(Formalism.UG.cT (σ : E →+* E) Xf * J).map (τ0 w).1‖`. Establish `hK : ∀ w, 0 ≤ K w` using `fun w => by positivity`.
+
+Use `⟨∏ w, (1 + K w * c0), Fintype.card (InfinitePlace F), fun t ht a ha hA => ?_⟩` and prove the remaining obligations. Use `set P := ∏ i, t i with hP'`. Establish `hP : 0 ≤ P` using `Finset.prod_nonneg fun i _ => hc.le.trans (ht i)`. Establish `hs : 0 ≤ c0 * (1 + P)` using `by positivity`. Establish `hs1 : ∀ k, |t k - 1| ≤ c0 * (1 + P)` using `fun k => by`.
+
+Establish `htk : 0 ≤ t k` using `hc.le.trans (ht k)`. Establish `h1` using `le_prod_of_forall_le hc t ht k`. Establish `hpow : 0 < (min 1 c) ^ (q - 1)` using `pow_pos hm _`. Establish `h2 : t k ≤ ((min 1 c) ^ (q - 1))⁻¹ * P`. Rewrite using `[← div_eq_inv_mul, le_div_iff₀ hpow]`.
+
+Conclude with `h1`. Establish `h3 : |t k - 1| ≤ t k + 1`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `h4 : ((min 1 c) ^ (q - 1))⁻¹ * P ≤ c0 * P`. Apply `mul_le_mul_of_nonneg_right _ hP` to reduce the goal to its premises.
+
+Establish `: 0 ≤ c⁻¹` using `inv_nonneg.2 hc.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `hs2 : ∀ k, |(t k)⁻¹ - 1| ≤ c0 * (1 + P)` using `fun k => by`. Establish `htk : 0 < t k` using `hc.trans_le (ht k)`.
+
+Establish `h1 : (t k)⁻¹ ≤ c⁻¹` using `inv_anti₀ hc (ht k)`. Establish `h0 : 0 ≤ (t k)⁻¹` using `inv_nonneg.2 htk.le`. Establish `h3 : |(t k)⁻¹ - 1| ≤ (t k)⁻¹ + 1`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `: 0 ≤ ((min 1 c) ^ (q - 1))⁻¹` using `inv_nonneg.2 (pow_nonneg hm.le _)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hfin : ∀ v, htFin F v (matHom _ σ J (proj σ J v a)) = 1` using `fun v => by`. Rewrite using `[mem_infPts_iff_forall.1 ha v, map_one]`. Conclude with `htOf_eq_one.2 ⟨by simpa using normFin_one_le (E := E) F v, by simpa using normFin_one_le (E := E) F v⟩`. Establish `hinf : ∀ w, (htInf F w (matHom _ σ J (projArch σ J w a)) : ℝ) ≤ (1 + K w * c0) * (1 + P)`.
+
+Introduce `w`. Take `⟨h1, h2⟩` from `hA w (τ0 w)`. Establish `e1 : normInf F w ((matHom _ σ J (projArch σ J w a) : GL (Fin n) (w.Completion ⊗[F] E)) : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)) = opNorm (GlobalTheory.Orb.archMat σ J (τ0 w) (projArch σ J w a))` using `normInf_eq_opNorm hcm (τ0 w) _`. Establish `e2 : normInf F w (((matHom _ σ J (projArch σ J w a))⁻¹ : GL (Fin n) (w.Completion ⊗[F] E)) : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)) = opNorm (GlobalTheory.Orb.archMat σ J (τ0 w) (projArch σ J w a⁻¹))`. Rewrite using `[← map_inv, ← map_inv]`.
+
+Conclude with `normInf_eq_opNorm hcm (τ0 w) _`. Establish `B1 : (opNorm (GlobalTheory.Orb.archMat σ J (τ0 w) (projArch σ J w a)) : ℝ) ≤ 1 + K w * (c0 * (1 + P))`. Rewrite using `[h1]`. Use `(opNorm_le_of_shape _ _ _ _ _ _ hs (fun i => ?_) (fun i => ?_)).trans le_rfl` and prove the remaining obligations. Rewrite using `[norm_ofReal_sub_one]`.
+
+Conclude with `hs1 i`. Rewrite using `[norm_ofReal_inv_sub_one]`. Conclude with `hs2 i`. Establish `B2 : (opNorm (GlobalTheory.Orb.archMat σ J (τ0 w) (projArch σ J w a⁻¹)) : ℝ) ≤ 1 + K w * (c0 * (1 + P))`. Rewrite using `[h2]`.
+
+Use `(opNorm_le_of_shape _ _ _ _ _ _ hs (fun i => ?_) (fun i => ?_)).trans le_rfl` and prove the remaining obligations. Rewrite using `[norm_ofReal_sub_one]`. Conclude with `hs2 i`. Rewrite using `[norm_ofReal_inv_sub_one, inv_inv]`. Conclude with `hs1 i`.
+
+Establish `hfin' : (1 + K w * (c0 * (1 + P))) ≤ (1 + K w * c0) * (1 + P)`. Use `hK w` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hone : (1 : ℝ) ≤ (1 + K w * c0) * (1 + P)`. Use `hK w` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [htInf, htOf, NNReal.coe_max, NNReal.coe_one]`. Rewrite using `[e1, e2]`. Conclude with `max_le hone (max_le (B1.trans hfin') (B2.trans hfin'))`. Establish `hh : (height σ J a : ℝ) = ∏ w, (htInf F w (matHom _ σ J (projArch σ J w a)) : ℝ)`.
+
+Rewrite using `[height_eq]`. Simplify using `only [hfin, finprod_one, mul_one, NNReal.coe_prod]`. Rewrite using `[hh]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem height_torus_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (q : ℕ) (Xf Yf : Matrix (Fin n) (Fin q) E) (c : ℝ), 0 < c →
     ∃ (C : ℝ) (A : ℕ), ∀ (t : Fin q → ℝ), (∀ i, c ≤ t i) → ∀ a : GAd σ J, a ∈ infPts σ J →

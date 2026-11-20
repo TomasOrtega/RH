@@ -16,6 +16,9 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.CovTop.CovSz
+/- English proof (translation)
+Use `(Formalism.MainNotions.Closed.and h h').imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨⟨C, hC, a, ha⟩, ⟨C', hC', b, hb⟩⟩` from `hh`. Conclude with `⟨C, hC, max a b, fun x hx hle ι p hp i hi Y hY => ⟨ha x hx ((le_max_left _ _).trans hle) ι p hp i hi Y hY, hb x hx ((le_max_right _ _).trans hle) ι p hp i hi Y hY⟩⟩`.
+-/
 theorem covers_and_alt
     {Q Q' : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (i : Fin (Fm.D x ι).R.m) (_Y : Cov p i) (PP : ℝ), Prop}
@@ -26,6 +29,9 @@ theorem covers_and_alt
   obtain ⟨⟨C, hC, a, ha⟩, ⟨C', hC', b, hb⟩⟩ := hh
   exact ⟨C, hC, max a b, fun x hx hle ι p hp i hi Y hY =>
     ⟨ha x hx ((le_max_left _ _).trans hle) ι p hp i hi Y hY, hb x hx ((le_max_right _ _).trans hle) ι p hp i hi Y hY⟩⟩
+/- English proof (translation)
+Use `h.imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨C, hC, a, ha⟩` from `hh`. Conclude with `⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i C hp (ha x hx hle ι p hp i) hi Y hY⟩`.
+-/
 theorem covers_of_lifts_alt
     {P : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (i : Fin (Fm.D x ι).R.m) (PP C : ℝ), Prop}
@@ -39,6 +45,9 @@ theorem covers_of_lifts_alt
   refine h.imp fun Fm CH _ hh => ?_
   obtain ⟨C, hC, a, ha⟩ := hh
   exact ⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i C hp (ha x hx hle ι p hp i) hi Y hY⟩
+/- English proof (translation)
+Use `h.imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨C, hC, a, ha⟩` from `hh`. Conclude with `⟨C, hC, a, fun x hx hle ι p hp i hi Y hY => hQ Fm x hx ι p i Y _ (ha x hx hle ι p hp i hi Y hY)⟩`.
+-/
 theorem covers_of_covers_of_imp
     {Q R : ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (i : Fin (Fm.D x ι).R.m) (_Y : Cov p i) (PP : ℝ), Prop}

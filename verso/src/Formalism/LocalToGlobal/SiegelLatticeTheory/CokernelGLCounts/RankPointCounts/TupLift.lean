@@ -15,6 +15,13 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Use `show LinearIndependent E (Fin.snoc (α := fun _ => S.V) F.fl.e F.fl.z)`. Rewrite using `[linearIndependent_finSnoc]`. Use `⟨F.fl.e_indep, fun hz => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ x ∈ Submodule.span E (Set.range F.fl.e), S.hT x F.fl.z = 0`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `F.fl.z_orth a`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => simp [map_add, hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`. Use `h0 _ hz` as an intermediate fact. Rewrite `this` using `[F.fl.z_norm]`. Conclude with `hT (neg_eq_zero.1 this)`.
+-/
 theorem frame_li {T : E} (F : LFlag S r T) (hT : T ≠ 0) : LinearIndependent E (frame F) := by
   show LinearIndependent E (Fin.snoc (α := fun _ => S.V) F.fl.e F.fl.z)
   rw [linearIndependent_finSnoc]
@@ -32,6 +39,13 @@ theorem frame_li {T : E} (F : LFlag S r T) (hT : T ≠ 0) : LinearIndependent E 
   rw [F.fl.z_norm] at this
   exact hT (neg_eq_zero.1 this)
 
+/- English proof (translation)
+Use `P.isPrime` as an intermediate fact. Establish `hA : Formalism.L2.SG.Pf.Apart Λ F₁ ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 E) (Set.range (frame F₁)))`. Use `sup_le ?_ ?_` and prove the remaining obligations. Conclude with `Formalism.L2.SG.Pf.Act.xlam_le_locP Λ g hC P hg (fun a => Formalism.L2.SG.Pf.le_locP' _ _ (Submodule.subset_span ⟨a.castSucc, Formalism.L2.SG.Pf.frame_castSucc_td F₁ a⟩))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `Formalism.L2.SG.Pf.le_locP' _ _ (Submodule.subset_span ⟨Fin.last _, (Formalism.L2.SG.Pf.frame_last_td F₁).trans hL.2.symm⟩)`. Establish `h0` using `Formalism.L2.SG.Pf.frame_mem_locP_Apart hL hC P hg b`. Establish `h1' : m (frame F₁ b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.L2.SG.Pf.Apart Λ F₁)`. Rewrite using `[← Formalism.L2.SG.Pf.NLam_Apart hm hL, Formalism.L2.SG.Pf.gmap_locP]`. Conclude with `(Formalism.L2.SG.Pf.gmap_apply_mem m _ _).2 h0`.
+
+Conclude with `Formalism.L2.SG.Pf.locP_le_locP' hA h1'`.
+-/
 theorem nlam_frame_locP {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T' : E} {F₁ : LFlag S r T'}
     (hL : IsLift Λ F₁) (hC : IsFixedConv Λ g F₁) {m : S.V ≃ₗ[E] S.V} (hm : m ∈ NLam Λ F₁)
     (P : HeightOneSpectrum (𝓞 E)) (hg : (g : 𝓞 E) ∈ P.asIdeal) (b : Fin (r + 1)) :
@@ -52,6 +66,13 @@ theorem nlam_frame_locP {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T' : E} {F₁ :
     exact (Formalism.L2.SG.Pf.gmap_apply_mem m _ _).2 h0
   exact Formalism.L2.SG.Pf.locP_le_locP' hA h1'
 
+/- English proof (translation)
+Use `P.isPrime` as an intermediate fact. Take `⟨s, hs, hsm⟩` from `nlam_frame_locP hL hC hm P hg b`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hsm`. Use `⟨s, hs, fun c => ⟨o c, ?_⟩⟩` and prove the remaining obligations. Establish `hli` using `frame_li F₁ hT`.
+
+Establish `h1 : ∑ c, ((s : E) * U c b) • frame F₁ c = (s : E) • m (frame F₁ b)`. Rewrite using `[hU b, Finset.smul_sum]`. Simplify using `only [mul_smul]`. Establish `h2 : ∑ c, ((o c : 𝓞 E) : E) • frame F₁ c = (s : E) • m (frame F₁ b)`. Rewrite using `[← Formalism.L2.SG.Pf.smul_O, ← ho]`.
+
+Simplify using `only [Formalism.L2.SG.Pf.smul_O]`. Establish `hsum : ∑ c, ((s : E) * U c b - (o c : E)) • frame F₁ c = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self]`. Conclude with `sub_eq_zero.1 ((Fintype.linearIndependent_iff.1 hli) _ hsum c)`.
+-/
 theorem coef_int {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T' : E} {F₁ : LFlag S r T'} (hT : T' ≠ 0)
     (hL : IsLift Λ F₁) (hC : IsFixedConv Λ g F₁) {m : S.V ≃ₗ[E] S.V} (hm : m ∈ NLam Λ F₁)
     {U : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hU : ∀ b, m (frame F₁ b) = ∑ c, U c b • frame F₁ c)
@@ -72,6 +93,25 @@ theorem coef_int {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T' : E} {F₁ : LFlag 
     simp only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self]
   exact sub_eq_zero.1 ((Fintype.linearIndependent_iff.1 hli) _ hsum c)
 
+/- English proof (translation)
+Introduce `P hg`. Use `P.isPrime` as an intermediate fact. Establish `key : m (frame F₁ b) - ν (frame F b) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ)`. Rewrite using `[hmF b, hνF b, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ (fun c _ => ?_)` and prove the remaining obligations.
+
+Establish `e : U' c b • frame F₁ c - U c b • frame F c = U' c b • (frame F₁ c - frame F c) + (U' c b - U c b) • frame F c`. Rewrite using `[smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+
+Take `⟨s, hs, ho⟩` from `coef_int hT hL hC hm hmF P hg b`. Take `⟨o, hoc⟩` from `ho c`. Take `⟨t, ht, htx⟩` from `h1 c P hg`. Use `⟨t * s, P.asIdeal.primeCompl.mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `eq : (t * s) • (U' c b • (frame F₁ c - frame F c)) = o • (t • (frame F₁ c - frame F c))`.
+
+Rewrite using `[Formalism.L2.SG.Pf.smul_O, Formalism.L2.SG.Pf.smul_O, Formalism.L2.SG.Pf.smul_O, smul_smul, smul_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← hoc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[eq]`. Conclude with `Submodule.smul_mem _ o htx`. Take `⟨s, hs, o, ho⟩` from `hTie P hg c b`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `eq : s • ((U' c b - U c b) • frame F c) = -(o • ((g : 𝓞 E) • frame F c))`.
+
+Rewrite using `[Formalism.L2.SG.Pf.smul_O, Formalism.L2.SG.Pf.smul_O, Formalism.L2.SG.Pf.smul_O, smul_smul, smul_smul, ← neg_smul]`. Use `congr 1`. Establish `: (s : E) * (U' c b - U c b) = -((s : E) * (U c b - U' c b))` using `by ring`. Rewrite using `[this, ho]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ o (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) (hFΛ c)))`. Establish `hinv : IsAutLam S Λ ν⁻¹` using `Formalism.L2.SG.Pf.isAutLam_inv hν`. Establish `e : ν⁻¹ (m (frame F₁ b)) - frame F b = ν⁻¹ (m (frame F₁ b) - ν (frame F b))`.
+
+Rewrite using `[map_sub]`. Simplify using `[LinearEquiv.coe_inv]`. Rewrite using `[e]`. Establish `eN : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ) = Formalism.HermitianLatticesTheory.gmap ν⁻¹ (Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ))`. Rewrite using `[← Formalism.L2.SG.Pf.gmap_locP, Formalism.L2.SG.Pf.gmap_ideal_smul, hinv.2]`.
+
+Rewrite using `[eN]`. Conclude with `(Formalism.L2.SG.Pf.gmap_apply_mem ν⁻¹ _ _).2 key`.
+-/
 theorem modG_lift {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {F₁ : LFlag S r T'}
     (hT : T' ≠ 0) (hL : IsLift Λ F₁) (hC : IsFixedConv Λ g F₁) (hFΛ : ∀ c, frame F c ∈ Λ)
     {ν m : S.V ≃ₗ[E] S.V} (hν : IsAutLam S Λ ν) (hm : m ∈ NLam Λ F₁)
@@ -126,6 +166,11 @@ theorem modG_lift {g : ℕ} {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag 
   rw [eN]
   exact (Formalism.L2.SG.Pf.gmap_apply_mem ν⁻¹ _ _).2 key
 
+/- English proof (translation)
+Establish `e : S.hT (frame F a) (ν⁻¹ (m (frame F₁ b))) = S.hT (ν (frame F a)) (m (frame F₁ b))`. Rewrite using `[← hiso (frame F a) (ν⁻¹ (m (frame F₁ b)))]`. Simplify using `[LinearEquiv.coe_inv]`. Rewrite using `[e, hνF a, hmF b]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, ZhatL, Zhat, brS, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, starRingEnd_apply]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_lift {T T' : E} (F : LFlag S r T) (F₁ : LFlag S r T') {ν m : S.V ≃ₗ[E] S.V}
     (hiso : ∀ x y, S.hT (ν x) (ν y) = S.hT x y) {U U' : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     (hνF : ∀ b, ν (frame F b) = ∑ c, U c b • frame F c) (hmF : ∀ b, m (frame F₁ b) = ∑ c, U' c b • frame F₁ c)
@@ -155,12 +200,40 @@ def NLamOnto : Prop :=
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hΛ.1, ⟨hΛ.2.1.1, hΛ.2.1.2.1, ⟨hp.1.1, rfl⟩, hp.2.2.1⟩, hp.2.2.2⟩`.
+-/
 theorem isRowLat_of_pd {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : IsRowLat D F0 Λ)
     {F₁ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} (hp : PD D Λ (lf D F0) u' F₁) :
     IsRowLat D F₁.fl Λ :=
   ⟨hΛ.1, ⟨hΛ.2.1.1, hΛ.2.1.2.1, ⟨hp.1.1, rfl⟩, hp.2.2.1⟩, hp.2.2.2⟩
 
+/- English proof (translation)
+Introduce `hpre γ w hGw Z hZ hel htup`. Establish `hΛ : IsRowLat D F0 γ.lam` using `hpre.2.2.2.2.1.1 γ.lam γ.mem`. Establish `hrel : γ.relevant` using `hpre.2.2.2.2.2 γ w hel`. Take `⟨x, hx⟩` from `hpre.2.2.2.1 γ w hel.2 hrel hel.1.1`. Establish `hex : ∃ y : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ y.1 y.2.1 y.2.2.1 y.2.2.2` using `⟨(w, x.1, x.2.1, x.2.2), hx⟩`.
+
+Establish `hz : LsDatumB.zT γ = ZhatL (lf D F0) hex.choose.2.1`. Simplify using `only [LsDatumB.zT, LsDatumB.nrep, dif_pos hex]`. Establish `hspec` using `hex.choose_spec`. Generalize the expression as in `hex.choose = y at hz hspec`. Take `⟨w₁, F₁, L₁, U₁⟩` from `y`.
+
+Take `⟨⟨p₁, e₁⟩, hadm₁, -⟩` from `hspec`. Simplify using `only at hz`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 γ.lam hΛ`. Establish `hFun` using `Formalism.L2.SG.Closed.TermFun_holds D u u' F0 γ.lam hΛ`. Take `⟨Fa, ⟨pa, ea⟩, hGa, hcell⟩` from `hel.2`.
+
+Establish `hdca` using `(hEq ⟨Fa, pa⟩ ⟨F₁, p₁⟩).1 (ea.trans e₁.symm)`. Establish `hG₁ : Gval (lf D F0) F₁ ≠ 0` using `by rw [Formalism.L2.SG.Pf.gval_rel (lf D F0) hdca]; exact hGa`. Establish `hcell₁ : IsInCell (ZhatOM (ZhatL (lf D F0) F₁)) w` using `(hFun.2.1 ⟨Fa, pa⟩ ⟨F₁, p₁⟩ hdca w).1 hcell`. Take `⟨Fg, ⟨pg, eg⟩, hgen⟩` from `hel.1.1`. Establish `hgen₁ : IsGeneric γ.lam (gS D) (lf D F0) F₁` using `(hFun.2.2.2.1 ⟨Fg, pg⟩ ⟨F₁, p₁⟩ ((hEq ⟨Fg, pg⟩ ⟨F₁, p₁⟩).1 (eg.trans e₁.symm))).1 hgen`.
+
+Establish `hAt₁ : PCount.AtMat w (ZhatL (lf D F0) F₁)` using `hcell₁`. Establish `htup' : ∀ p, PCount.tupZ M δ u u' (ZhatL (lf D F0) F₁) p = PCount.tupZ M δ u u' Z p` using `fun p => by`. Rewrite using `[← hz]`. Conclude with `congrFun htup p`. Take `⟨U, U', hU, hU', hiU, hiU', htie, hZeq⟩` from `hG w _ Z hGw hAt₁ hZ htup'`.
+
+Take `⟨ν, hν, hνF⟩` from `hO D u F0 γ.lam hΛ hpre.2.2.1.1.ne_zero U hU hiU`. Take `⟨m, hm, hmF⟩` from `hO D u' F₁.fl γ.lam (isRowLat_of_pd hΛ p₁) hpre.2.2.1.2.2.1.ne_zero U' hU' hiU'`. Establish `hm' : m ∈ NLam γ.lam F₁` using `hm`. Establish `hmF' : ∀ b, m (frame F₁ b) = ∑ c, U' c b • frame F₁ c` using `hmF`. Establish `hAut : IsAutLam (VS D) γ.lam (ν⁻¹ * m)` using `Formalism.L2.SG.Pf.isAutLam_mul (Formalism.L2.SG.Pf.isAutLam_inv hν.1) hm.1`.
+
+Set `F2` to `Formalism.L2.SG.Saturated.mapL (ν⁻¹ * m) hAut.1 F₁`. Establish `hf2 : ∀ b, frame F2 b = ν⁻¹ (m (frame F₁ b))` using `fun b => by`. Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL]`. Both sides reduce to the same expression. Establish `hdc : DCRel γ.lam (lf D F0) F₁ F2` using `⟨ν⁻¹, Formalism.L2.SG.Pf.nlamPf_inv hν, m, hm', hf2, rfl⟩`.
+
+Establish `pd2 : PD D γ.lam (lf D F0) u' F2` using `Formalism.L2.SG.Closed.TermStable_holds D u u' F0 γ.lam hΛ ⟨F₁, p₁⟩ F2 hdc`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hpre.2.2.1.2.2.1.ne_zero`. Establish `hFΛ : ∀ c, frame (lf D F0) c ∈ γ.lam`. Introduce `c`. Use `Fin.lastCases ?_ (fun a => ?_) c` and prove the remaining obligations.
+
+Rewrite using `[Formalism.L2.SG.Pf.frame_last_td]`. Conclude with `hΛ.2.1.2.2.1.1`. Rewrite using `[Formalism.L2.SG.Pf.frame_castSucc_td]`. Conclude with `PI.NRL.e_mem_lam D F0 γ.lam hΛ a`. Establish `hiso : ∀ x y, (VS D).hT (ν x) (ν y) = (VS D).hT x y` using `((Formalism.L2.SG.Pf.isAutLam_iff γ.lam ν).1 hν.1).1`.
+
+Establish `hent : ∀ a b, (VS D).hT (frame (lf D F0) a) (frame F2 b) = (U.conjTranspose * ZhatL (lf D F0) F₁ * U') a b` using `fun a b => by`. Rewrite using `[hf2 b]`. Conclude with `zhat_lift (lf D F0) F₁ hiso hνF hmF' a b`. Use `⟨F2, ⟨⟨pd2.1, pd2.2.1, ?_⟩, ?_, ?_, pd2.2.2, ?_⟩, pd2, (Quot.sound (show TermDef.Rel γ.lam (lf D F0) (PD D γ.lam (lf D F0) u') ⟨F₁, p₁⟩ ⟨F2, pd2⟩ from hdc)).symm.trans e₁⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hdc]`.
+
+Conclude with `hG₁`. Use `⟨fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[frameAct_one', hf2 b]`. Conclude with `modG_lift hT' p₁.1 p₁.2.2.1 hFΛ hν.1 hm' hνF hmF' htie (fun c => by have := hadm₁.2.2 c; rwa [frameAct_one'] at this) b`. Conclude with `(hFun.2.2.2.1 ⟨F₁, p₁⟩ ⟨F2, pd2⟩ hdc).1 hgen₁`.
+
+Establish `hZZ : ZhatL (lf D F0) F2 = U.conjTranspose * ZhatL (lf D F0) F₁ * U'`. Use function extensionality and compare the values at `a b`. Conclude with `hent a b`. Rewrite using `[hZeq]`. Conclude with `hZZ`.
+-/
 theorem repAtTup_of (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))

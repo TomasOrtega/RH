@@ -15,11 +15,17 @@ def ScaledFSTopPos.Statement : Prop :=
     (II : IntersectionSystem),
     IsIntersectionSystem II → 1 ≤ d → IsArithVar P d → 0 < II K ι P d (fun _ => scaledFSH ι)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[scaledFSH, HermLine.tensor, fsH, HermLine.ofMetrics, constLine, HermLine.ofWeight]`.
+-/
 theorem scaledFSH_a {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] :
     (scaledFSH ι).a = fun _ => 1 := by
   funext k
   simp [scaledFSH, HermLine.tensor, fsH, HermLine.ofMetrics, constLine, HermLine.ofWeight]
 
+/- English proof (translation)
+Simplify using `[scaledFSH, HermLine.tensor, fsH, HermLine.ofMetrics, constLine, HermLine.ofWeight]`.
+-/
 theorem scaledFSH_h {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (z : (Σ k, ι k) → ℂ) :
     (scaledFSH ι).h z = (∏ k, (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩)) * Real.exp 1 := by
   simp [scaledFSH, HermLine.tensor, fsH, HermLine.ofMetrics, constLine, HermLine.ofWeight]

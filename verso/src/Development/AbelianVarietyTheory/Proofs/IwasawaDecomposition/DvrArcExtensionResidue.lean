@@ -11,6 +11,17 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.LieTrait
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m F _ _ _ r hr τ`. Set `β' : KA l →+* F` to `((algebraMap T.Fr F).comp io).comp (IntermediateField.inclusion c.le).toRingHom`. Set `x : Sp F ⟶ Xo.XF c` to `spMap (algebraMap T.Fr F) ≫ z`. Establish `hx : x ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap β'`. Express the relevant statement in the definitionally equal form `(spMap (algebraMap T.Fr F) ≫ z) ≫ pullback.fst _ _ ≫ Xo.s = _`.
+
+Rewrite using `[pullback.condition, Category.assoc, reassoc_of% h₃]`. Simplify using `only [spMap, β', ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hρ : β' (baseKA l).ρ = algebraMap T.Fr F (algebraMap T.V T.Fr (b r))`. Establish `e : (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ = β r` using `Subtype.ext (by simpa [baseKA] using hr.symm)`. Establish `e₂ : io (β r) = algebraMap T.V T.Fr (b r)` using `(RingHom.congr_fun h₁ r).symm`.
+
+Simplify using `only [β', RingHom.comp_apply, e, e₂]`. Establish `hdet` using `(Y.oF.geom F x β' hx).1 τ`. Establish `hw : spMap ((algebraMap T.Fr F).comp (algebraMap T.V T.Fr)) ≫ y = x ≫ Y.jQ ≫ pullback.fst _ _`. Establish `: spMap ((algebraMap T.Fr F).comp (algebraMap T.V T.Fr)) = spMap (algebraMap T.Fr F) ≫ spMap (algebraMap T.V T.Fr)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Establish `h₄' : z ≫ Y.jQ ≫ pullback.fst _ _ = spMap (algebraMap T.V T.Fr) ≫ y` using `h₄`. Rewrite using `[this, Category.assoc, ← h₄', Category.assoc]`. Establish `key : ∀ n, LieMult Y.oF.t.act x τ n → LieMult t.act (spMap ((algebraMap T.Fr F).comp (algebraMap T.V T.Fr))) τ n`. Introduce `n hn`. Establish `h₅` using `(lieMult_iff_of_isGrpPullback Y.m.cart Y.oF.t.act Y.t.act Y.m.act x τ n).1 hn`.
+
+Rewrite `h₅` using `[← hw]`. Conclude with `(lieMult_iff_of_isGrpPullback m.cart t.act Y.t.act m.act _ τ n).2 h₅`. Use `split_ifs with hτ`. Conclude with `key _ (hdet.1 (hτ.trans hρ.symm))`. Conclude with `key _ (hdet.2 (fun e => hτ (e.trans hρ)))`.
+-/
 theorem lieMult_signature : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (F : Type) [Field F] [IsAlgClosed F] [Algebra T.Fr F] (r : O), ((β r : c.F) : ℂ) = H.rt0 → ∀ τ : 𝓞 E →+* F, LieMult t.act (spMap ((algebraMap T.Fr F).comp (algebraMap T.V T.Fr))) τ (if τ H.rt = algebraMap T.Fr F (algebraMap T.V T.Fr (b r)) then D.p else D.q) := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z h₁ h₂ h₃ h₄ t m F _ _ _ r hr τ
   let β' : KA l →+* F := ((algebraMap T.Fr F).comp io).comp (IntermediateField.inclusion c.le).toRingHom

@@ -16,6 +16,13 @@ section
 open UpperTheory.GalN.V
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
+/- English proof (translation)
+Introduce `hU Ω _ _ _ l _ c D T hT _ c' h K X B Λ ι J₀ hM φ hφ J hJ y hy hw r hr`. Establish `hD : D.Good` using `hT.2.elim (fun a => a.1.1) fun a => a.1.1`. Take `⟨wt, hwt⟩` from `Pu.arith hU.pr.litN.aut.art K X B φ y hD hφ hw`. Take `⟨ρ, -, hss, hρ, a, d, m, ρ', hd, hcp, hpure⟩` from `_root_.UpperTheory.GalN.V.end1W' hM.end1 _ wt (K.le_ker_pt φ y J₀ (hJ ▸ hy)) hwt`. Establish `hm` using `Pu.mOne c' ρ _ (chiO T.L Ω l c'.O) (cycBar T.L Ω l) (Pu.ptRed K.V B _ ρ hρ) rfl (Pu.noOm K hD hT.1) a d m ρ' (fun i => ⟨(hd i).1, (hd i).2.1⟩) hcp`.
+
+Take `⟨Z, hZ, hZ'⟩` from `Pu.levFin K.V`. Use `Pu.pureOf_w ι T.L r ρ K.kapQ _ (hZ.union (Filter.eventually_cofinite.1 (hpure hm))) (fun g => ?_) fun w hw0 => ?_` and prove the remaining obligations. Rewrite using `[Pu.ptCp K X B φ y ρ hφ hρ g, ← hr]`. Both sides reduce to the same expression. Establish `hw : w ∉ Z` using `fun k => hw0 (Or.inl k)`.
+
+Establish `hw'` using `not_not.1 fun k => hw0 (Or.inr k)`. Take `⟨b, hb⟩` from `Pu.frobEigEx ι ρ w fun A hA s hs => Pu.repKill K.V B _ ρ hρ hss s ((hZ' w hw).2 A hA s hs)`. Conclude with `Pu.frobAbs_w ι ρ w b hb (hw' b hb)`.
+-/
 theorem UpperTheory.V.Ws.pmPur_w_alt :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (Λ : W.LamObj K.r) (ι : PadicAlgCl l ≃+* ℂ) (J₀ : Ideal B.B), B.ModularAlt ι J₀ Λ → ∀ φ : B.B →ₐ[c'.O] X.B, K.IsPhi X 0 B φ → ∀ J : Ideal X.B, J = J₀.map φ → ∀ y : X.A →ₐ[c'.O] PadicAlgCl l, (∀ b ∈ J, y (algebraMap X.B X.A b) = 0) →
         T.Wts (fun i => 2 * D.wts4 i) (X.P.map (y : X.A →+* PadicAlgCl l)) →
@@ -43,6 +50,17 @@ end SlopeTestRemainingChoices
 end
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
+/- English proof (translation)
+Establish `key : ∀ x ∈ Submodule.span K' (Set.range f'), x.map e.symm ∈ Submodule.span K (Set.range f)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨g, rfl⟩` from `ha`.
+
+Use `Submodule.subset_span ⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hf]`. Consider the case `zero`. Establish `: (0 : Matrix n n K').map e.symm = 0` using `by ext i j; simp`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (a + b).map e.symm = a.map e.symm + b.map e.symm` using `by ext i j; simp`. Rewrite using `[this]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `: (s • a).map e.symm = e.symm s • a.map e.symm` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h1` using `key (y.map e) (by rw [h]; trivial)`. Establish `h2 : (y.map e).map e.symm = y` using `by ext i j; simp`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 private theorem span_of_equiv {K K' H n : Type} [CommRing K] [CommRing K'] [Fintype n] [DecidableEq n] (e : K ≃+* K')
     (f : H → Matrix n n K) (f' : H → Matrix n n K') (hf : ∀ g i j, f' g i j = e (f g i j))
     (h : Submodule.span K' (Set.range f') = ⊤) : Submodule.span K (Set.range f) = ⊤ := by
@@ -68,10 +86,26 @@ private theorem span_of_equiv {K K' H n : Type} [CommRing K] [CommRing K'] [Fint
   have h1 := key (y.map e) (by rw [h]; trivial)
   have h2 : (y.map e).map e.symm = y := by ext i j; simp
   rwa [h2] at h1
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((r g).map f).charpoly = ((r' g).map f).charpoly`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map, h]`.
+-/
 private theorem charpoly_mapRep {R R' H : Type} [CommRing R] [CommRing R'] [Group H] (f : R →+* R') (r r' : H →* M4 R)
     (h : ∀ g, (r g).charpoly = (r' g).charpoly) (g : H) : (mapRep f r g).charpoly = (mapRep f r' g).charpoly := by
   change ((r g).map f).charpoly = ((r' g).map f).charpoly
   rw [Matrix.charpoly_map, Matrix.charpoly_map, h]
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D hD ι hC hPu hA`. Take `⟨⟨𝔟, e, he⟩, -⟩` from `ambZero l`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hF`. Take `⟨𝔞, r, hch, hr, x, hx, hne⟩` from `ptOver hP D hD hF`.
+
+Take `⟨u, hu⟩` from `ptPair hP D hD 𝔞 r hr`. Break down `triV hP D hD 𝔞 r hr with h | h | ⟨h02, h20, h⟩` into its components or cases. Conclude with `hC 𝔞 hch r u hu (Or.inl h)`. Take `⟨n, hn, hxn⟩` from `diagConst D hD 𝔞 hch r hr u hu h x hx`. Conclude with `hne n hn hxn`.
+
+Take `⟨r₁, u₁, hu₁, hb, hs⟩` from `blockPart D hD 𝔞 r hr u hu h02 h20 h`. Take `⟨r₂, u₂, hu₂, hE, -⟩` from `bl hP D hD 𝔞 r₁ u₁ hu₁ hb hs`. Conclude with `hC 𝔞 hch r₂ u₂ hu₂ (Or.inr hE)`. Introduce `r hr hb hs`. Take `⟨r', hr', rfl⟩` from `eptV D hD 𝔟 e he r hr`.
+
+Take `⟨u, hu⟩` from `ptPair hP D hD 𝔟 r' hr'`. Establish `hb' : ∀ g, IsBlock (r' g)` using `fun g i j hij => Subtype.ext (e.injective ((hb g i j hij).trans (map_zero e).symm))`. Establish `hs'` using `span_of_equiv e (fun g => (mapRep 𝔟.toK r' g).submatrix ixA ixA) _ (fun _ _ _ => rfl) hs`. Take `⟨r₂, u₂, hu₂, hE, hcp⟩` from `bl hP D hD 𝔟 r' u hu hb' hs'`. Use `nePure_w D hD ι 𝔟 e he r' u hu hb' ?_` and prove the remaining obligations.
+
+Take `⟨H, M, hH, hM, h⟩` from `_root_.UpperTheory.GalN.V.pureW' (hPu 𝔟 e he r₂ u₂ hu₂ (Or.inr hE))`. Establish `hc` using `charpoly_mapRep ((e : 𝔟.K →+* PadicAlgCl l).comp 𝔟.toK) r₂ r' hcp`. Use `⟨H, M, hH, hM, fun p hp hpM A hA f σ hf hσ hF => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `h p hp hpM A hA f σ hf hσ hF`.
+
+Introduce `r hr hI`. Take `⟨r', hr', rfl⟩` from `eptV D hD 𝔟 e he r hr`. Take `⟨u, hu⟩` from `ptPair hP D hD 𝔟 r' hr'`. Conclude with `hA 𝔟 e he r' u hu (span_of_equiv e (mapRep 𝔟.toK r') _ (fun _ _ _ => rfl) hI)`.
+-/
 theorem UpperTheory.V.Ws.fin0_no_end_all_irr_of_good_con_purity_aut :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ ι : PadicAlgCl l ≃+* ℂ, Con D → _root_.UpperTheory.V.Ws.PurityAtPoints D ι → _root_.UpperTheory.V.Ws.AutmAlt D ι → D.Fin0 ∧ D.NoEnd ∧ D.AllIrr (_root_.UpperTheory.V.Aut.IsAut4Alt ι) := by
   intro hP Ω _ _ _ l _ c D hD ι hC hPu hA

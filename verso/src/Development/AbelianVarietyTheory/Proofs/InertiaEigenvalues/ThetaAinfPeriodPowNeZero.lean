@@ -12,6 +12,19 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.ThetaPer
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ n`. Take `⟨-, ε, η, hε, hφ⟩` from `hτ`. Establish `hinj : Function.Injective (WittVector.frobenius : Ainf l → Ainf l)`. Introduce `x y h`. Rewrite `h` using `[WittVector.frobenius_eq_map_frobenius]`.
+
+Conclude with `WittVector.map_injective _ (frobeniusEquiv (OCb l) l).injective h`. Establish `hpi : WittVector.frobenius (GlobalTheory.MemLoc.TiedUnif.piOne ε) = WittVector.teichmuller l ε - 1`. Rewrite using `[GlobalTheory.MemLoc.TiedUnif.piOne, map_sub, map_one, WittVector.frobenius_eq_map_frobenius]`. Express the relevant statement in the definitionally equal form `WittVector.map (frobenius (OCb l) l) (WittVector.teichmuller l ((frobeniusEquiv (OCb l) l).symm ε)) - 1 = _`. Rewrite using `[WittVector.map_teichmuller, frobenius_apply_frobeniusEquiv_symm]`.
+
+Establish `hsurj : Function.Surjective (WittVector.frobenius : Ainf l → Ainf l)`. Introduce `y`. Take `⟨x, hx⟩` from `WittVector.map_surjective _ (frobeniusEquiv (OCb l) l).surjective y`. Conclude with `⟨x, by rw [WittVector.frobenius_eq_map_frobenius]; exact hx⟩`. Take `⟨η₀, hη₀⟩` from `hsurj (η : Ainf l)`.
+
+Take `⟨η₁, hη₁⟩` from `hsurj ((η⁻¹ : (Ainf l)ˣ) : Ainf l)`. Establish `hu : η₀ * η₁ = 1` using `hinj (by rw [map_mul, map_one, hη₀, hη₁, Units.mul_inv])`. Establish `hτe : τ = η₀ * GlobalTheory.MemLoc.TiedUnif.piOne ε` using `hinj (by rw [hφ, map_mul, hη₀, hpi])`. Use `set f := (Per.θD l).comp (aDp l)`. Establish `hf0 : f η₀ ≠ 0`.
+
+Introduce `h`. Use `congrArg f hu` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Establish `hf1 : f (GlobalTheory.MemLoc.TiedUnif.piOne ε) ≠ 0` using `GlobalTheory.MemLoc.TiedUnif.theta_piOne hε`.
+
+Rewrite using `[map_pow, hτe, map_mul]`. Conclude with `pow_ne_zero _ (mul_ne_zero hf0 hf1)`.
+-/
 theorem thetaD_aDp_pow_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ →
     ∀ (n : ℕ), ((Per.θD l).comp (aDp l)) (τ ^ n) ≠ 0 := by
   intro l _ K bk τ hτ n

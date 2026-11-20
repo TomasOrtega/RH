@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VacStabNonSplit.fixesVac | exact GlobalTheory.VacStabNonSplit.fixesVac | (intros; apply GlobalTheory.VacStabNonSplit.fixesVac <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vacuum_invariant_nonsplit_place : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (v : Pl F), IsEmpty (E →ₐ[F] Fv F v) → v ∉ X.T →

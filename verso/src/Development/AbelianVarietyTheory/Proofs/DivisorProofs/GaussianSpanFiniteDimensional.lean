@@ -12,6 +12,13 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.FockVacGeom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW _`. Distinguish the cases in `h : ∃ g : SInf F (Fin n × Fin d), M.IsGauss B.ψ B.emb g ∧ g ≠ 0`. Take `⟨g, hg, hg0⟩` from `h`. Establish `hle : Submodule.span ℂ {f₀ : SInf F (Fin n × Fin d) | M.IsGauss B.ψ B.emb f₀} ≤ Submodule.span ℂ {g}`. Use `Submodule.span_le.2 fun f hf => ?_` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `GlobalTheory.RealDict.FockMap.gauss_line M B.ψ B.emb hB.cm hB.std (fun w => (hX.cartan w).1) (fun w => (hW.cartan w).1) f g hg hg0 hf`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Use `push_neg at h`. Establish `hb : Submodule.span ℂ {f₀ : SInf F (Fin n × Fin d) | M.IsGauss B.ψ B.emb f₀} = ⊥` using `Submodule.span_eq_bot.2 fun f hf => by_contra fun h0 => h0 (h f hf)`.
+
+Rewrite using `[hb]`. Use `infer_instance`.
+-/
 theorem span_finiteDimensional : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ),
     B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → M.IsGood B.ψ →

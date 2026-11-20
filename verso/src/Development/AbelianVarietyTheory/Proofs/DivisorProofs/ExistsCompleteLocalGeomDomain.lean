@@ -14,6 +14,19 @@ namespace GlobalTheory.SepRing
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap S (S ⊗[k] K))` using `Algebra.TensorProduct.includeLeft_injective (R := k) (S := k) (A := S) (B := K) (algebraMap k K).injective`. Establish `hker : RingHom.ker (algebraMap S (S ⊗[k] K)) ≤ maximalIdeal S`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite using `[hinj (hx.trans (map_zero _).symm)]`.
+
+Conclude with `zero_mem _`. Take `⟨𝔫, h𝔫max, h𝔫⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := S ⊗[k] K) (maximalIdeal S) hker`. Use `haveI := h𝔫max.isPrime`. Take `⟨S', _, e, -⟩` from `GlobalTheory.CompletionFactor.exists_ringEquiv_completion_prod S (S ⊗[k] K) (Localization.AtPrime 𝔫) 𝔫 h𝔫`. Use `haveI : IsRegularLocalRing (Localization.AtPrime 𝔫) := hreg 𝔫`.
+
+Use `haveI : IsRegularLocalRing (AdicCompletion (maximalIdeal (Localization.AtPrime 𝔫)) (Localization.AtPrime 𝔫)) := GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion _`. Use `haveI hdom : IsDomain (AdicCompletion (maximalIdeal (Localization.AtPrime 𝔫)) (Localization.AtPrime 𝔫)) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain _`. Set `f : K ⊗[k] AdicCompletion (maximalIdeal S) S ≃+* _` to `(Algebra.TensorProduct.comm k K (AdicCompletion (maximalIdeal S) S)).toRingEquiv.trans ((Algebra.TensorProduct.cancelBaseChange k S (AdicCompletion (maximalIdeal S) S) (AdicCompletion (maximalIdeal S) S) K).symm.toRingEquiv.trans e)`. Establish `hS' : Subsingleton S'`. Establish `hid : IsIdempotentElem (f.symm (0, 1))` using `by show f.symm (0,1) * f.symm (0,1) = f.symm (0,1)`.
+
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Break down `GlobalTheory.T.idempotent_tensor_eq_zero_or_one_of_isPurelyInseparable' k K (AdicCompletion (maximalIdeal S) S) (f.symm (0, 1)) hid with h | h` into its components or cases. Establish `h2` using `congrArg (fun z => (f z).2) h`. Simplify using `at h2`.
+
+Conclude with `subsingleton_of_zero_eq_one h2.symm`. Establish `h2` using `congrArg (fun z => (f z).1) h`. Simplify using `at h2`. Conclude with `Function.Injective.isDomain ((RingHom.fst _ _).comp f.toRingHom) (by`. Introduce `x y hxy`.
+
+Apply `f.injective` to reduce the goal to its premises. Conclude with `Prod.ext hxy (Subsingleton.elim _ _))`.
+-/
 theorem isDomain_tensor_of_reg (k K S : Type) [Field k] [Field K] [Algebra k K]
     [FiniteDimensional k K] [IsPurelyInseparable k K] [CommRing S] [IsLocalRing S]
     [IsNoetherianRing S] [Algebra k S]
@@ -63,6 +76,19 @@ namespace GlobalTheory.SepRing
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ hfin`. Use `haveI : Algebra.FiniteType k k' := inferInstance`. Take `⟨r, φ, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp this`. Establish `hk' : IsField k'` using `(Algebra.IsIntegral.isField_iff_isField (algebraMap k k').injective).mp (Field.toIsField k)`. Use `letI : Field k' := hk'.toField`.
+
+Set `𝔪 : Ideal (MvPolynomial (Fin r) k)` to `RingHom.ker φ.toRingHom`. Use `haveI h𝔪 : 𝔪.IsMaximal := RingHom.ker_isMaximal_of_surjective φ.toRingHom hφ`. Set `S` to `Localization.AtPrime 𝔪`. Use `haveI : IsNoetherianRing S := IsLocalization.isNoetherianRing 𝔪.primeCompl S inferInstance`. Use `⟨AdicCompletion (maximalIdeal S) S, inferInstance, inferInstance, GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion S _, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Set `C` to `AdicCompletion (maximalIdeal S) S`. Set `g : MvPolynomial (Fin r) k →ₐ[k] ResidueField C` to `IsScalarTower.toAlgHom k (MvPolynomial (Fin r) k) (ResidueField C)`. Establish `hg : ∀ a ∈ 𝔪, g a = 0`. Introduce `a ha`. Establish `h1 : algebraMap (MvPolynomial (Fin r) k) S a ∈ maximalIdeal S`.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Establish `h2 : algebraMap S C (algebraMap _ S a) ∈ maximalIdeal C`. Rewrite using `[AdicCompletion.maximalIdeal_eq_map]`. Conclude with `Ideal.mem_map_of_mem _ h1`.
+
+Use `show algebraMap _ (ResidueField C) a = 0`. Rewrite using `[IsScalarTower.algebraMap_apply (MvPolynomial (Fin r) k) C (ResidueField C), IsScalarTower.algebraMap_apply (MvPolynomial (Fin r) k) S C]`. Conclude with `(residue_eq_zero_iff _).mpr h2`. Conclude with `⟨(Ideal.Quotient.liftₐ 𝔪 g hg).comp (Ideal.quotientKerAlgEquivOfSurjective hφ).symm.toAlgHom⟩`. Introduce `K _ _ hK hpi`.
+
+Conclude with `isDomain_tensor_of_reg k K S (fun 𝔫 _ => GlobalTheory.T.isRegularLocalRing_localization_atPrime_tensor_field k K r 𝔪 𝔫)`.
+-/
 theorem exists_complete_local_geomDomain : ∀ (k k' : Type) [Field k] [CommRing k'] [IsDomain k']
     [Algebra k k'], Module.Finite k k' → ∃ (C : Type) (_ : CommRing C) (_ : IsLocalRing C)
     (_ : IsNoetherianRing C) (_ : Algebra k C), IsAdicComplete (maximalIdeal C) C ∧

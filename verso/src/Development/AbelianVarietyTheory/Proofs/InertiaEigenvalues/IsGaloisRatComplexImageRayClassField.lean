@@ -11,6 +11,19 @@ open NumberField IsDedekindDomain GlobalTheory.NT GlobalTheory.Published GlobalT
 
 namespace GlobalTheory.RayNatGalois
 
+/- English proof (translation)
+Establish `hc : ∀ a : 𝓞 K, IsCoprime (Ideal.span {RingOfIntegers.mapRingEquiv s a}) 𝔪' → IsCoprime (Ideal.span {a}) 𝔪` using `fun a H => by`. Rewrite `H`, the goal using `[Ideal.isCoprime_iff_exists]`. Take `⟨i, hi, j, hj, hij⟩` from `H`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hi`. Take `⟨c, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective c`.
+
+Take `⟨j, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective j`. Use `⟨c * a, Ideal.mem_span_singleton'.2 ⟨c, rfl⟩, j, (hmm j).1 hj, (RingOfIntegers.mapRingEquiv s).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hij, map_one]`. Use `⟨hm', fun 𝔭 hp => ?_, fun α β hr => ?_⟩` and prove the remaining obligations. Take `⟨𝔮, rfl⟩` from `(primeEquiv s).surjective 𝔭`.
+
+Rewrite using `[heckeVal_transport s hs]`. Use `(h _).2.1 𝔮 fun H => hp (Ideal.dvd_iff_le.2 fun x hx => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective x`. Express the relevant statement in the definitionally equal form `(RingOfIntegers.mapRingEquiv s).symm (RingOfIntegers.mapRingEquiv s y) ∈ 𝔮.asIdeal`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+
+Conclude with `Ideal.le_of_dvd H ((hmm y).1 hx)`. Take `⟨a, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective α`. Take `⟨b, rfl⟩` from `(RingOfIntegers.mapRingEquiv s).surjective β`. Establish `ha : a ≠ 0` using `fun h => hr.1 (by rw [h, map_zero])`. Establish `hb : b ≠ 0` using `fun h => hr.2.1 (by rw [h, map_zero])`.
+
+Rewrite using `[heckeIdeal_transport s hs χ ha, heckeIdeal_transport s hs χ hb]`. Use `(h _).2.2 a b ⟨ha, hb, hc _ hr.2.2.1, hc _ hr.2.2.2.1, (hmm _).1 ?_, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `hr.2.2.2.2.1`. Use `hr.2.2.2.2.2 (φ.comp s.symm.toRingHom)` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `0 < φ (s.symm (s a)) * φ (s.symm (s b)) at this`. Rewrite `this` using `[s.symm_apply_apply, s.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem isModulus_transport {K K' N : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Field N]
     [NumberField N] [Algebra K N] [Algebra K' N] (s : K ≃+* K')
     (hs : ∀ x, algebraMap K' N (s x) = algebraMap K N x) [IsGalois K N] [IsGalois K' N] {𝔪 : Ideal (𝓞 K)}
@@ -45,6 +58,13 @@ theorem isModulus_transport {K K' N : Type} [Field K] [NumberField K] [Field K']
       change 0 < φ (s.symm (s a)) * φ (s.symm (s b)) at this
       rwa [s.symm_apply_apply, s.symm_apply_apply] at this
 
+/- English proof (translation)
+Establish `hb : Ideal.span {(n : 𝓞 L)} ≠ ⊥` using `by simpa using hn`. Establish `hmm : ∀ x, RingOfIntegers.mapRingEquiv s x ∈ Ideal.span {(n : 𝓞 L)} ↔ x ∈ Ideal.span {(n : 𝓞 L)}` using `fun x => by`. Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton, ← map_dvd_iff (RingOfIntegers.mapRingEquiv s) (a := (n : 𝓞 L)) (b := x), map_natCast]`. Set `j : Algebra L N` to `((@algebraMap L N _ _ i).comp s.symm.toRingHom).toAlgebra`. Establish `hs : ∀ x, @algebraMap L N _ _ j (s x) = @algebraMap L N _ _ i x` using `fun x => congrArg (@algebraMap L N _ _ i) (s.symm_apply_apply x)`.
+
+Establish `hab'` using `@isAbelianGalois_transport L L N _ _ _ _ i j s hs _ hab`. Establish `hm` using `@GlobalTheory.RayMaximal.isModulus_of_isRay L _ _ N _ _ i hab _ _ h dvd_rfl hb`. Take `⟨f⟩` from `@rayClassFieldMaximalSt_holds L N N _ _ _ _ i hab _ _ j hab' _ hb h (@isModulus_transport L L N _ _ _ _ _ _ i j s hs (@IsAbelianGalois.toIsGalois _ _ _ _ i hab) (@IsAbelianGalois.toIsGalois _ _ _ _ j hab') _ _ hb hmm hm)`. Use `⟨@AlgHom.toRingHom L N N _ _ _ j i f, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`.
+
+Conclude with `@AlgHom.commutes L N N _ _ _ j i f (s x)`.
+-/
 theorem exists_extension {L N : Type} [Field L] [NumberField L] [Field N] [NumberField N] [i : Algebra L N]
     [hab : IsAbelianGalois L N] {n : ℕ} (hn : n ≠ 0) (h : IsRay N (Ideal.span {(n : 𝓞 L)})) (s : L ≃+* L) :
     ∃ f : N →+* N, ∀ x, f (algebraMap L N x) = algebraMap L N (s x) := by
@@ -65,6 +85,13 @@ theorem exists_extension {L N : Type} [Field L] [NumberField L] [Field N] [Numbe
   rw [← hs]
   exact @AlgHom.commutes L N N _ _ _ j i f (s x)
 
+/- English proof (translation)
+Use `IsGalois.of_fixedField_eq_bot K N (eq_bot_iff.2 fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Take `⟨y, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := L) x).2 fun σ => hx (σ.restrictScalars K) trivial`. Take `⟨z, rfl⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) y).2 fun s => by`. Take `⟨f, hf⟩` from `exists_extension hn h s.toRingEquiv`.
+
+Set `g : N →ₐ[K] N` to `{ f with commutes' := fun k => by`. Rewrite using `[IsScalarTower.algebraMap_apply K L N]`. Conclude with `(hf _).trans (congrArg _ (s.commutes k)) }`. Conclude with `(algebraMap L N).injective ((hf y).symm.trans (hx (AlgEquiv.ofBijective g (Algebra.IsAlgebraic.algHom_bijective g)) trivial))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `IntermediateField.algebraMap_mem _ z`.
+-/
 theorem isGalois_of_isRay_nat (K : Type) {L N : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field N]
     [NumberField N] [Algebra K L] [Algebra L N] [Algebra K N] [IsScalarTower K L N] [IsGalois K L]
     [IsAbelianGalois L N] {n : ℕ} (hn : n ≠ 0) (h : IsRay N (Ideal.span {(n : 𝓞 L)})) : IsGalois K N := by
@@ -83,6 +110,9 @@ theorem isGalois_of_isRay_nat (K : Type) {L N : Type} [Field K] [NumberField K] 
   rw [← IsScalarTower.algebraMap_apply]
   exact IntermediateField.algebraMap_mem _ z
 
+/- English proof (translation)
+Introduce `K H _ _ _ _ _ _ _ n hn h j`. Establish `: IsGalois ℚ H` using `isGalois_of_isRay_nat ℚ hn h`. Conclude with `IsGalois.of_algEquiv (AlgEquiv.ofInjectiveField j.toRatAlgHom)`.
+-/
 theorem isGalois_fieldRange : ∀ {K H : Type} [Field K] [NumberField K] [IsGalois ℚ K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] {n : ℕ}, n ≠ 0 → GlobalTheory.FieldSize.IsRay H (Ideal.span {(n : 𝓞 K)}) →
     ∀ j : H →+* ℂ, IsGalois ℚ j.toRatAlgHom.fieldRange := by

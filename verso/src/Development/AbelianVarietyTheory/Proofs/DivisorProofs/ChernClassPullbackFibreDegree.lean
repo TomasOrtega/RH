@@ -19,6 +19,9 @@ namespace GlobalTheory.PresPullCk
 
 open GlobalTheory.Vert.Model
 
+/- English proof (translation)
+Establish `: (picSymPull (g ≫ f)).toLinearMap = (picSymPull g).toLinearMap ∘ₗ (picSymPull f).toLinearMap` using `picSym_linearMap_ext fun n c => by`. Simplify using `only [AlgHom.toLinearMap_apply, LinearMap.comp_apply, map_prod, picSymPull_c1Pic, pull_comp]`. Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem picSymPull_comp {X Y W : Scheme.{0}} (g : W ⟶ Y) (f : Y ⟶ X) (y : PicSym X) :
     picSymPull (g ≫ f) y = picSymPull g (picSymPull f y) := by
   have : (picSymPull (g ≫ f)).toLinearMap = (picSymPull g).toLinearMap ∘ₗ (picSymPull f).toLinearMap :=
@@ -26,6 +29,21 @@ theorem picSymPull_comp {X Y W : Scheme.{0}} (g : W ⟶ Y) (f : Y ⟶ X) (y : Pi
       simp only [AlgHom.toLinearMap_apply, LinearMap.comp_apply, map_prod, picSymPull_c1Pic, pull_comp]
   exact LinearMap.congr_fun this y
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B B' hB hB' f hf P k Q`. Use `haveI := P.iso`. Simplify using `only [Pres.ck]`. Rewrite using `[Pres.ofHom_pull]`. Use `set φ := GenIso.ofHom P.ψ with hφ`.
+
+Establish `hE` using `P.vb.pullback f.f`. Establish `hE'` using `P.vb'.pullback f.f`. Take `⟨B₂, π, hB₂, hπ, hP⟩` from `GlobalTheory.T.normal_model_trivializing_blowup O p B' hB' 1 (fun _ => P.r) (fun _ => (Scheme.Modules.pullback f.f).obj P.E) (fun _ => (Scheme.Modules.pullback f.f).obj P.E') (fun _ => φ.pull f.comp_str) (fun _ => ⟨hE, hE'⟩)`. Take `⟨Pr⟩` from `hP 0`. Take `⟨P₂, h₂⟩` from `GlobalTheory.T.flag_pair_pullback_composite O p B B' B₂ f.f f.comp_str π.f π.comp_str (π.comp f).f (π.comp f).comp_str rfl P.E P.E' φ P.r Pr`.
+
+Establish `hrel : (π.comp f).relDim = 0`. Establish `a` using `f.relDim_add`. Establish `b` using `π.relDim_add`. Establish `c` using `(π.comp f).relDim_add`. Use linear arithmetic over natural numbers and integers.
+
+Set `M : FlagModel (φ.pull f.comp_str) P.r` to `⟨B₂, π, Pr⟩`. Set `M' : FlagModel φ P.r` to `⟨B₂, π.comp f, P₂⟩`. Establish `e₁` using `(GlobalTheory.T.ck_unique_characterization O p B' hB' _ _ (φ.pull f.comp_str) P.r k hE hE').1 M hB₂ hπ (picSymPull f.f Q)`. Establish `e₂` using `(GlobalTheory.T.ck_unique_characterization O p B hB _ _ φ P.r k P.vb P.vb').1 M' hB₂ hrel Q`. Establish `hck : ∀ y, ck (M'.toFPair p) k y = ck (M.toFPair p) k y` using `fun y => by`.
+
+Express the relevant statement in the definitionally equal form `ck (P₂.toFPair p) k y = ck (Pr.toFPair p) k y`. Simplify using `only [ck, fun i => (h₂ i).1, fun i => (h₂ i).2.1, fun i => (h₂ i).2.2]`. Establish `hpull : picSymPull (π.comp f).f Q = picSymPull π.f (picSymPull f.f Q)`. Express the relevant statement in the definitionally equal form `picSymPull (π.f ≫ f.f) Q = _`. Conclude with `picSymPull_comp π.f f.f Q`.
+
+Establish `hdeg` using `GlobalTheory.T.fibre_degree_multiplicative O B B' B₂ π f hπ hf`. Establish `hpos` using `(GlobalTheory.T.cap_degree_finite_pullback O p B' hB' B₂ π hπ).1`. Rewrite `e₂` using `[hck, hpull, e₁, hdeg]`. Establish `e₃` using `e₂`. Rewrite `e₃` using `[mul_assoc]`.
+
+Conclude with `mul_left_cancel₀ hpos.ne' e₃`.
+-/
 theorem ck_pull : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] (B B' : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X →
     GlobalTheory.IsNormalScheme B'.X → ∀ (f : GlobalTheory.Vert.Model.Hom B' B), f.relDim = 0 → ∀ (P : Pres B) (k : ℕ)

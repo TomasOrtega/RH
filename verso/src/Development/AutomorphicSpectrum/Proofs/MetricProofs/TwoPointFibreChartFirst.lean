@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
+/- English proof (translation)
+Establish `h : (fun u : Fin (d + 1) → ℂ => (Fin.tail u : Fin d → ℂ)) = ⇑(ContinuousLinearMap.pi fun i : Fin d => (ContinuousLinearMap.proj i.succ : (Fin (d + 1) → ℂ) →L[ℂ] ℂ))`. Use function extensionality and compare the values at `u i`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `ContinuousLinearMap.analyticAt _ _`.
+-/
 theorem analyticAt_finTail {d : ℕ} (u : Fin (d + 1) → ℂ) :
     AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => (Fin.tail u : Fin d → ℂ)) u := by
   have h : (fun u : Fin (d + 1) → ℂ => (Fin.tail u : Fin d → ℂ)) =
@@ -22,6 +25,9 @@ theorem analyticAt_finTail {d : ℕ} (u : Fin (d + 1) → ℂ) :
   rw [h]
   exact ContinuousLinearMap.analyticAt _ _
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Use `Finset.analyticAt_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Conclude with `analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => h _ _)`.
+-/
 theorem analyticAt_det_of_entries {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : Type} [Fintype n]
     [DecidableEq n] (A : E → Matrix n n ℂ) (x : E) (h : ∀ r s, AnalyticAt ℂ (fun u => A u r s) x) :
     AnalyticAt ℂ (fun u => (A u).det) x := by
@@ -29,6 +35,9 @@ theorem analyticAt_det_of_entries {E : Type} [NormedAddCommGroup E] [NormedSpace
   refine Finset.analyticAt_fun_sum _ fun σ _ => ?_
   exact analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => h _ _)
 
+/- English proof (translation)
+Distinguish the cases in `e : I.card = J.card`. Simplify using `only [minorIJ, dif_pos e]`. Conclude with `analyticAt_det_of_entries _ x fun r s => h _ _`. Simplify using `only [minorIJ, dif_neg e]`. Conclude with `analyticAt_const`.
+-/
 theorem analyticAt_minorIJ_of_entries {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {N : ℕ}
     (A : E → Matrix (Fin N) (Fin N) ℂ) (x : E) (h : ∀ r s, AnalyticAt ℂ (fun u => A u r s) x)
     (I J : Finset (Fin N)) : AnalyticAt ℂ (fun u => minorIJ (A u) I J) x := by
@@ -38,6 +47,13 @@ theorem analyticAt_minorIJ_of_entries {E : Type} [NormedAddCommGroup E] [NormedS
   · simp only [minorIJ, dif_neg e]
     exact analyticAt_const
 
+/- English proof (translation)
+Establish `hHt : ∀ τ'' r s, AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => H τ'' (Fin.tail u) r s) u₀` using `fun τ'' r s => (hH τ'' r s).comp (analyticAt_finTail u₀)`. Establish `h0 : AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => u 0) u₀` using `(ContinuousLinearMap.proj 0 : (Fin (d + 1) → ℂ) →L[ℂ] ℂ).analyticAt _`. Unfold `flagAt`. Distinguish the cases in `h : τ' = τ`. Simplify using `only [if_pos h, Matrix.mul_apply, Matrix.add_apply]`.
+
+Use `Finset.analyticAt_fun_sum _ fun t _ => (hHt _ _ _).mul (analyticAt_const.add ?_)` and prove the remaining obligations. Distinguish the cases in `e : cb = t ∧ ca = s`. Simplify `h0` using `only [Matrix.single_apply, if_pos e]`. Simplify `analyticAt_const` using `only [Matrix.single_apply, if_neg e]`. Simplify using `only [if_neg h]`.
+
+Conclude with `hHt _ _ _`.
+-/
 theorem analyticAt_flagAt_entry {Ψ : Type} [DecidableEq Ψ] {N d : ℕ} (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ)
     (τ : Ψ) (ca cb : Fin N) (τ' : Ψ) (u₀ : Fin (d + 1) → ℂ)
     (hH : ∀ τ'' r s, AnalyticAt ℂ (fun w => H τ'' w r s) (Fin.tail u₀)) (r s : Fin N) :
@@ -56,11 +72,17 @@ theorem analyticAt_flagAt_entry {Ψ : Type} [DecidableEq Ψ] {N d : ℕ} (H : Ψ
   · simp only [if_neg h]
     exact hHt _ _ _
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c k.1, fun k => hc k.1, rfl⟩`.
+-/
 theorem sameOrbit_basePart {K : Type} {ι : K → Type} {σ : Type} (blk : σ → Option K) {z z' : (Σ k, ι k) → ℂ}
     (h : SameOrbit z z') : SameOrbit (basePart blk z) (basePart blk z') := by
   obtain ⟨c, hc, rfl⟩ := h
   exact ⟨fun k => c k.1, fun k => hc k.1, rfl⟩
 
+/- English proof (translation)
+Introduce `h0` and use `h (by show mConeMap z (X q) = 0 rw [mConeMap, aeval_X, h0, map_zero, zero_mul])`.
+-/
 theorem coord_ne_zero_of_X_notMem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {z : (Σ k, ι k) → ℂ} {q : Σ k, ι k} (h : (X q : MRing ι) ∉ mCoordIdeal z) : z q ≠ 0 := fun h0 => h (by
   show mConeMap z (X q) = 0
@@ -69,6 +91,11 @@ theorem coord_ne_zero_of_X_notMem {K : Type} [Fintype K] {ι : K → Type} [∀ 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hp : Nonempty (Ψ × Fin N)`. Take `⟨⟨τ₀, i₀⟩⟩` from `hp`. Conclude with `⟨z₀, ⟨fun _ => 1, fun _ => one_ne_zero, by funext p; simp⟩, (hex τ₀ i₀).1, hex⟩`. Establish `hb : ∀ (k : K) p, M.blk p ≠ some k` using `fun k p => (hp ⟨p⟩).elim`. Use `⟨fun q => z₀ q / z₀ ⟨q.1, F.c ⟨q.1, hb q.1⟩⟩, ⟨fun k => z₀ ⟨k, F.c ⟨k, hb k⟩⟩, fun k => hne ⟨k, hb k⟩, ?_⟩, ?_, fun τ' i => (hp ⟨(τ', i)⟩).elim⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[mul_div_cancel₀ _ (hne ⟨q.1, hb q.1⟩)]`. Introduce and unpack `⟨k, hk⟩`. Conclude with `div_self (hne ⟨k, hb k⟩)`.
+-/
 theorem exists_normalised_exact {M : FlagModel y Ψ N j} (F : FrameData ι Ψ N M.Ω M.blk) (z₀ : (Σ k, ι k) → ℂ)
     (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (hne : ∀ k : NonPluckerBlocks M.blk, z₀ ⟨k.1, F.c k⟩ ≠ 0)
     (hex : ∀ τ' i, M.ExactAt F (τ', i) z₀ (h τ')) :
@@ -85,6 +112,29 @@ theorem exists_normalised_exact {M : FlagModel y Ψ N j} (F : FrameData ι Ψ N 
     · rintro ⟨k, hk⟩
       exact div_self (hne ⟨k, hb k⟩)
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a ca cb X q Un Gn ΦYn ΦWn l H bp hUn hD`. Take `⟨hH, hbc, hba, hbp, -, hex, -⟩` from `hD`. Establish `hbij` using `realis_bijective_of_degree_one K ι (d + 1) _ FA.S _ FA.Re FA.deg_one FA.br_empty`. Establish `hyh : IsMultiHomogIdeal (mCoordIdeal y)` using `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal y`. Establish `key : ∀ u : Fin (d + 1) → ℂ, Fin.tail u ∈ Un → ∃ z : (Σ k, ι k) → ℂ, z ∈ mcPts (mCoordIdeal y) ∧ (∀ x₀, FA.Re.π x₀ = ΦYn u → SameOrbit (FA.Re.R.lift x₀ x₀) z) ∧ SameOrbit (basePart M.blk z) (BM.Rb.lift (bp (Fin.tail u)) (bp (Fin.tail u))) ∧ (∀ τ' i, M.ExactAt (BM.F l) (τ', i) z ( …`.
+
+Introduce `u hu`. Take `⟨x₀, hx₀⟩` from `hbij.2 (ΦYn u)`. Take `⟨z₀, ho, hb, he⟩` from `hex u hu x₀ hx₀`. Establish `hgood` using `BM.good l _ (hbp _ hu).1.1`. Establish `hne : ∀ k : NonPluckerBlocks M.blk, z₀ ⟨k.1, (BM.F l).c k⟩ ≠ 0`.
+
+Introduce `k`. Take `⟨c, hc, hcz⟩` from `hb`. Establish `h1` using `congrFun hcz ⟨k, (BM.F l).c k⟩`. Establish `h2 : basePart M.blk z₀ ⟨k, (BM.F l).c k⟩ = z₀ ⟨k.1, (BM.F l).c k⟩` using `rfl`. Rewrite using `[← h2, h1]`.
+
+Conclude with `mul_ne_zero (hc k) (coord_ne_zero_of_X_notMem (hgood.1 k))`. Take `⟨z, hz, hn, hz'⟩` from `exists_normalised_exact (BM.F l) z₀ _ hne he`. Use `⟨z, ?_, ?_, ?_, hz', hn⟩` and prove the remaining obligations. Conclude with `mem_mcPts_of_sameOrbit hyh (orbit_symm (orbit_trans ho hz)) (FA.Re.R.mem x₀ x₀ (FA.Re.R.mem_U x₀))`. Introduce `x₁ hx₁`.
+
+Take `rfl` from `hbij.1 (hx₁.trans hx₀.symm)`. Conclude with `orbit_trans ho hz`. Conclude with `orbit_trans (orbit_symm (sameOrbit_basePart M.blk hz)) hb`. Use `choose! zex hz using key`. Use `⟨zex, ?_, fun u hu => ⟨(hz u hu).1, fun x₀ hx => ⟨(hz u hu).2.1 x₀ hx, (hz u hu).2.2.1, (hz u hu).2.2.2.1⟩⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨k, m⟩ u₀ hu₀`. Establish `hu₀' : (Fin.tail u₀ : Fin d → ℂ) ∈ Un` using `hu₀`. Establish `htail : Tendsto (fun u : Fin (d + 1) → ℂ => (Fin.tail u : Fin d → ℂ)) (𝓝 u₀) (𝓝 (Fin.tail u₀))` using `(analyticAt_finTail u₀).continuousAt`. Establish `hevU : ∀ᶠ u : Fin (d + 1) → ℂ in 𝓝 u₀, (Fin.tail u : Fin d → ℂ) ∈ Un` using `htail (hUn.mem_nhds hu₀')`. Establish `hgood₀` using `BM.good l _ (hbp _ hu₀').1.1`.
+
+Distinguish the cases in `hk : ∃ p, M.blk p = some k`. Take `⟨p, hp⟩` from `hk`. Establish `hval : ∀ s, RegAt M.x (mCoordIdeal (BM.Rb.lift (bp (Fin.tail u₀)) (bp (Fin.tail u₀)))) s → AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => valAt M.x s (BM.Rb.lift (bp (Fin.tail u)) (bp (Fin.tail u)))) u₀` using `fun s hs => (analyticAt_valAt_lift_family (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x s d n BM.Rb Un bp (Fin.tail u₀) hUn hu₀' hbc hba hs).comp (analyticAt_finTail u₀)`. Apply the tactic sequence `have hsum : AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => ∑ I, valAt M.x ((BM.F l).u ⟨k, m⟩ I) (BM.Rb.lift (bp (Fin.tail u)) (bp (Fin.tail u))) * minorIJ (flagAt H τ ca cb (u 0) (Fin.tail u) p.1) I (stepCols N j p.2)) u₀ := Finset.analyticAt_fun_sum _ fun I _ => (hval _ ((hgood₀.2.1 _ …`. Use `hsum.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hevU] with u hu`. Take `⟨-, -, hb, he, -⟩` from `hz u hu`. Rewrite using `[(he p.1 p.2).2 k hp m]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[valAt_eq_of_sameOrbit (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x _ _ _ (BM.Rb.mem _ _ (BM.Rb.mem_U _)) (orbit_symm hb)]`.
+
+Establish `hkb : ∀ p, M.blk p ≠ some k` using `fun p hp => hk ⟨p, hp⟩ set kb : NonPluckerBlocks M.blk := ⟨k, hkb⟩ with hkb' set b₀ := bp (Fin.tail u₀) with hb₀`. Establish `hlift : ∀ q : Σ k, baseIdx ι M.blk k, AnalyticAt ℂ (fun u : Fin (d + 1) → ℂ => BM.Rb.lift b₀ (bp (Fin.tail u)) q) u₀` using `fun q => (analyticAt_comp_of_holo_in_charts d n BM.Rb.X BM.Rb.A Un bp (Fin.tail u₀) (BM.Rb.U b₀) (fun x => BM.Rb.lift b₀ x q) hUn hu₀' hbc hba (BM.Rb.isOpen_U _) (BM.Rb.mem_U _) (BM.Rb.holo b₀ q)).comp (analyticAt_finTail u₀)`. Establish `hden : BM.Rb.lift b₀ (bp (Fin.tail u₀)) ⟨kb, (BM.F l).c kb⟩ ≠ 0` using `coord_ne_zero_of_X_notMem (hgood₀.1 kb)`. Use `((hlift ⟨kb, m⟩).div (hlift ⟨kb, (BM.F l).c kb⟩) hden).congr ?_` and prove the remaining obligations. Establish `hca : ContinuousAt bp (Fin.tail u₀)` using `hbc.continuousAt (hUn.mem_nhds hu₀')`.
+
+Use `filter_upwards [hevU, htail (hca ((BM.Rb.isOpen_U b₀).mem_nhds (BM.Rb.mem_U b₀)))] with u hu hbu`. Take `⟨-, -, hb, -, hn⟩` from `hz u hu`. Take `⟨c, hc, hcz⟩` from `orbit_trans hb (BM.Rb.compat (bp (Fin.tail u)) b₀ (bp (Fin.tail u)) ⟨BM.Rb.mem_U _, hbu⟩)`. Establish `h1 : c kb * BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, (BM.F l).c kb⟩ = 1`. Rewrite using `[← hn kb, hcz]`.
+
+Establish `h2 : zex u ⟨k, m⟩ = c kb * BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, m⟩` using `congrFun hcz ⟨kb, m⟩`. Establish `h3 : BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, (BM.F l).c kb⟩ ≠ 0` using `right_ne_zero_of_mul_eq_one h1`. Use `show BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, m⟩ / BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, (BM.F l).c kb⟩ = zex u ⟨k, m⟩`. Rewrite using `[h2, div_eq_iff h3]`. Take the linear combination `(-(BM.Rb.lift b₀ (bp (Fin.tail u)) ⟨kb, m⟩)) * h1`.
+-/
 theorem exact_points_holomorphic : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d) (τ : Ψ) (a ca cb : Fin N) (X : Type) (q : Fin 2 → X → FA.S.X) (Un : Set (Fin d → ℂ)) (Gn : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (ΦYn : (Fin (d + 1) → ℂ) → FA.S.X) (ΦWn : (Fin (d + 2) → ℂ) → X) (l : Fin BM.q) (H : Ψ → (Fin d → ℂ) → Matrix (Fin N) (Fin N) ℂ) (bp : (Fin d → ℂ) → BM.Rb.X), IsOpen Un → IsFibreData FA τ a ca cb q Un Gn ΦYn ΦWn l H bp → ∃ zex : (Fin (d + 1) → ℂ) → (Σ k, ι k) → ℂ, (∀ q', AnalyticOnNhd ℂ (fun u => zex u q') {u : Fin (d + 1) → ℂ | Fin.tail u ∈ Un}) ∧ ∀ u : Fin (d + 1) → ℂ, Fin.tail u ∈ Un → zex u ∈ mcPts (mCoordIdeal y) ∧ ∀ x₀, FA.Re.π x₀ = ΦYn u → SameOrbit (FA.Re.R.lift x₀ x₀) (zex u) ∧ SameOrbit (basePart M.blk (zex u)) (BM.Rb.lift (bp (Fin.tail u)) (bp (Fin.tail u))) ∧ ∀ τ' i, M.ExactAt (BM.F l) (τ', i) (zex u) (flagAt H τ ca cb (u 0) (Fin.tail u) τ') := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA τ a ca cb X q Un Gn ΦYn ΦWn l H bp hUn hD
   obtain ⟨hH, hbc, hba, hbp, -, hex, -⟩ := hD

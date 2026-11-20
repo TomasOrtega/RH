@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Introduce `Γ k _ _ _ _ _ _ d ρ`. Prove the components needed by the constructor for the conclusion. Introduce `hρ i j`. Conclude with `(Units.continuous_val.comp hρ).matrix_elem i j`. Introduce `h`.
+
+Establish `hval : Continuous fun g : Γ => ((ρ g : GL (Fin d) k) : Matrix (Fin d) (Fin d) k)` using `continuous_matrix h`. Rewrite using `[Units.continuous_iff]`. Use `⟨hval, ?_⟩` and prove the remaining obligations. Establish `hinv : (fun g : Γ => (((ρ g)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k)) = fun g => ((ρ g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k)`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[map_inv]`. Rewrite using `[hinv]`. Conclude with `hval.comp continuous_inv`.
+-/
 theorem UpperTheory.Gal.Int.Geo.contGL_of :
     ContGL := by
   intro Γ k _ _ _ _ _ _ d ρ

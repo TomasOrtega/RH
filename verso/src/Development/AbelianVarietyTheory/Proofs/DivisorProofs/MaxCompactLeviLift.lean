@@ -15,6 +15,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.LeviKInf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.infinite_compact_levi_lift`.
+-/
 theorem exists_kInf_isLevi_of_lift : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →

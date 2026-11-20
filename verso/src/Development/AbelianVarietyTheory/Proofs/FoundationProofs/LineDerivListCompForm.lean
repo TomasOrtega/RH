@@ -8,6 +8,15 @@ open Filter Topology
 
 namespace GlobalTheory.ProdThetaConj
 
+/- English proof (translation)
+Use `letI : Algebra R K := i.toAlgebra`. Use `letI : Algebra R ℂ := j.toAlgebra`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis R K`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis R ℂ`. Establish `hC : Cardinal.aleph0 < Cardinal.mk ℂ`.
+
+Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Establish `hct` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht Cardinal.mk_le_aleph0 hC`. Establish `hle : Cardinal.mk s ≤ Cardinal.mk t` using `le_trans (Cardinal.mk_set_le s) (hct ▸ hK)`. Take `⟨e⟩` from `(Cardinal.le_def _ _).1 hle`.
+
+Establish `hw : AlgebraicIndependent R (((↑) : t → ℂ) ∘ e)` using `ht.1.comp e e.injective`. Set `S` to `Algebra.adjoin R (Set.range ((↑) : s → K))`. Set `φ : S →ₐ[R] ℂ` to `(MvPolynomial.aeval (((↑) : t → ℂ) ∘ e)).comp hs.1.aevalEquiv.symm.toAlgHom`. Establish `hφ : Function.Injective φ` using `(algebraicIndependent_iff_injective_aeval.1 hw).comp hs.1.aevalEquiv.symm.injective`. Set `_ : Algebra S ℂ` to `φ.toRingHom.toAlgebra`.
+
+Establish `: IsScalarTower R S ℂ` using `IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`. Establish `: FaithfulSMul S ℂ` using `(faithfulSMul_iff_algebraMap_injective S ℂ).2 hφ`. Establish `: Algebra.IsAlgebraic S K` using `hs.isAlgebraic`. Set `ψ : K →ₐ[R] ℂ` to `(IsAlgClosed.lift : K →ₐ[S] ℂ).restrictScalars R`. Conclude with `⟨ψ.toRingHom, fun x => ψ.commutes x⟩`.
+-/
 theorem exists_ringHom_extend (R K : Type) [Field R] [Countable R] [Field K]
     (hK : Cardinal.mk K ≤ Cardinal.mk ℂ) (i : R →+* K) (j : R →+* ℂ) :
     ∃ s : K →+* ℂ, ∀ x, s (i x) = j x := by
@@ -40,6 +49,13 @@ section General
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
 omit [DecidableEq σ] in
+/- English proof (translation)
+Establish `h : Summable fun α : σ → ℕ => ∏ j, (1 / 2 : ℝ) ^ α j` using `by classical`. Use `summable_of_sum_le (c := ∏ _j : σ, (2 : ℝ)) (fun α => by positivity) fun u => ?_` and prove the remaining obligations. Set `n : ℕ` to `u.sup fun α => Finset.univ.sup α`. Establish `hsub : u ⊆ Fintype.piFinset fun _ : σ => Finset.range (n + 1)`. Introduce `α hα`.
+
+Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Conclude with `(Finset.le_sup (f := α) (Finset.mem_univ j)).trans (Finset.le_sup (f := fun α => Finset.univ.sup α) hα)`. Use `(Finset.sum_le_sum_of_subset_of_nonneg hsub fun _ _ _ => by positivity).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_univ_sum (fun _ : σ => Finset.range (n + 1)) (fun _ k => (1 / 2 : ℝ) ^ k)]`. Conclude with `Finset.prod_le_prod (fun _ _ => by positivity) fun _ _ => sum_geometric_two_le _`. Conclude with `h.comp_injective (i := fun α : σ →₀ ℕ => (α : σ → ℕ)) DFunLike.coe_injective`.
+-/
 theorem summable_prod_half_pow : Summable fun α : σ →₀ ℕ => ∏ j, (1 / 2 : ℝ) ^ α j := by
   have h : Summable fun α : σ → ℕ => ∏ j, (1 / 2 : ℝ) ^ α j := by
     classical
@@ -57,6 +73,23 @@ theorem summable_prod_half_pow : Summable fun α : σ →₀ ℕ => ∏ j, (1 / 
     exact Finset.prod_le_prod (fun _ _ => by positivity) fun _ _ => sum_geometric_two_le _
   exact h.comp_injective (i := fun α : σ →₀ ℕ => (α : σ → ℕ)) DFunLike.coe_injective
 
+/- English proof (translation)
+Establish `hb : ∀ R : ℝ, 0 < R → ∃ u : (σ →₀ ℕ) → ℝ, Summable u ∧ ∀ α, ∀ w ∈ Metric.ball (0 : σ → ℂ) R, ‖c α * ∏ j, w j ^ α j‖ ≤ u α`. Introduce `R hR`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : σ → ℂ) (2 * R)).exists_bound_of_continuousOn hf.continuous.continuousOn`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0 (Metric.mem_closedBall_self (by positivity)))`. Use `⟨fun α => C * ∏ j, (1 / 2 : ℝ) ^ α j, summable_prod_half_pow.mul_left C, fun α w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `norm_pderivIter_le_of_differentiable (F := f) (a := 0) (r := fun _ => 2 * R) (M := C) α (fun _ => by positivity) (fun _ _ => by positivity) hf (fun y hy => hC y (by`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (by positivity)]`. Introduce `k`. Simplify using `using (hy k).le))`. Rewrite `h1` using `[← hc, norm_mul, norm_prod, mul_div_assoc]`.
+
+Simplify using `only [Complex.norm_natCast] at h1`. Establish `h2` using `le_of_mul_le_mul_left h1 (Finset.prod_pos fun k _ => by`. Conclude with `Nat.factorial_pos _)` after adjusting the coercions. Rewrite using `[norm_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul h2 (Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun j _ => ?_) (by positivity) (by positivity)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) ((norm_le_pi_norm w j).trans (mem_ball_zero_iff.1 hw).le) _`. Use `_ = C * ∏ j, (1 / 2 : ℝ) ^ α j := by`. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc, ← Finset.prod_div_distrib]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← div_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hsum : ∀ w : σ → ℂ, Summable fun α : σ →₀ ℕ => c α * ∏ j, w j ^ α j` using `fun w => by`. Take `⟨u, hu, h⟩` from `hb (‖w‖ + 1) (by positivity)`. Conclude with `Summable.of_norm_bounded hu fun α => h α w (by simp)`. Establish `hd : DifferentiableOn ℂ (fun w : σ → ℂ => ∑' α : σ →₀ ℕ, c α * ∏ j, w j ^ α j) Set.univ`. Use `SCV.differentiableOn_tsum_of_locally_normal isOpen_univ (fun α => ?_) fun x _ => ?_` and prove the remaining obligations.
+
+Apply `Differentiable.differentiableOn fun_prop` to reduce the goal to its premises. Take `⟨u, hu, h⟩` from `hb (‖x‖ + 1) (by positivity)`. Conclude with `⟨_, Metric.isOpen_ball.mem_nhds (by simp), u, hu, h⟩`. Establish `han` using `SCV.analyticOnNhd_of_differentiableOn isOpen_univ hd 0 (Set.mem_univ _)`. Establish `hfa` using `SCV.analyticOnNhd_of_differentiable hf Set.univ 0 (Set.mem_univ _)`.
+
+Establish `heq` using `(taylor_eq_iff han hfa).1 (by`. Use extensionality with `α`. Rewrite using `[← hc']`. Conclude with `ConjSeries.coeff_taylor_of_hasSum _ han (Eventually.of_forall fun w => (hsum w).hasSum) α (Nat.lt_succ_self _))`. Conclude with `SCV.eqOn_of_eventuallyEq isOpen_univ isPreconnected_univ hd hf.differentiableOn (Set.mem_univ 0) heq (Set.mem_univ z)`.
+-/
 theorem tsum_of_entire {f : (σ → ℂ) → ℂ} (hf : Differentiable ℂ f) (c : (σ →₀ ℕ) → ℂ)
     (hc : ∀ α, (∏ j, ((α j).factorial : ℂ)) * c α = pderivIter α f 0)
     (hc' : ∀ α, c α = MvPowerSeries.coeff α (GlobalTheory.taylor f)) (z : σ → ℂ) :
@@ -115,6 +148,13 @@ end General
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3
 open scoped BigOperators
 
+/- English proof (translation)
+Set `L` to `LinearMap.toContinuousLinearMap (GaussCauchy.curry D N N')`. Establish `hc : coordV D = fun k => L (Pi.single k 1)`. Use function extensionality and compare the values at `k`. Conclude with `(GaussCauchy.curry_single D N N' k).symm`. Establish `han` using `SCV.analyticOnNhd_of_differentiable hF Set.univ 0 (Set.mem_univ _)`.
+
+Establish `h` using `tsum_of_entire (f := fun w => F (L w)) (hF.comp L.differentiable) (Formalism.MainNotions.TaylorLogMetric.taylor D F) (fun α => by`. Use `GaussCauchy.factorial_mul_taylor D N N' F hF α` as an intermediate fact. Rewrite using `[Finsupp.prod_fintype _ _ (by simp)] at this)` and apply the resulting hypothesis. Use the proof step `(fun α => by rw [ConjSeries.taylor_eq_coeff, hc, ← taylor_comp_clm L han])`. Use the proof step `(fun k => z k.1 k.2.1 k.2.2)`.
+
+Use `Eq.trans ?_ h` and prove the remaining obligations. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Rewrite using `[mono, Finsupp.prod_fintype _ _ (by simp)]`.
+-/
 theorem tsum_taylor_mono (D : D7) {N N' : ℕ} {F : VC D N N' → ℂ} (hF : Differentiable ℂ F)
     (z : VC D N N') : ∑' α, Formalism.MainNotions.TaylorLogMetric.taylor D F α * mono D α z = F z := by
   let L := LinearMap.toContinuousLinearMap (GaussCauchy.curry D N N')
@@ -132,6 +172,13 @@ theorem tsum_taylor_mono (D : D7) {N N' : ℕ} {F : VC D N N' → ℂ} (hF : Dif
   refine tsum_congr fun α => ?_
   rw [mono, Finsupp.prod_fintype _ _ (by simp)]
 
+/- English proof (translation)
+Set `R` to `IntermediateField.adjoin ℚ (S ∩ (M : Set ℂ))`. Establish `hle : R ≤ M` using `IntermediateField.adjoin_le_iff.2 Set.inter_subset_right`. Establish `: Countable R`. Establish `h1 : (S ∩ (M : Set ℂ)).Countable` using `hS.mono Set.inter_subset_left`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`.
+
+Use `(IntermediateField.cardinalMk_adjoin_le ℚ _).trans ?_` and prove the remaining obligations. Simplify using `only [sup_le_iff, le_refl, and_true]`. Conclude with `⟨Cardinal.mk_le_aleph0, Cardinal.le_aleph0_iff_set_countable.2 h1⟩`. Take `⟨s, hs⟩` from `exists_ringHom_extend R ℂ le_rfl R.val.toRingHom (ρ.comp (IntermediateField.inclusion hle)).toRingHom`. Use `⟨s, fun x hx hM => ?_⟩` and prove the remaining obligations.
+
+Use `hs ⟨x, IntermediateField.subset_adjoin ℚ _ ⟨hx, hM⟩⟩` as an intermediate fact. Simplify using `only [cj, TaylorLogMetric.liftM, dif_pos hM]`. Conclude with `this.symm`.
+-/
 theorem exists_endo_eq_cj (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) {S : Set ℂ} (hS : S.Countable) :
     ∃ s : ℂ →+* ℂ, ∀ x ∈ S, x ∈ M → cj M ρ x = s x := by
   let R := IntermediateField.adjoin ℚ (S ∩ (M : Set ℂ))
@@ -155,13 +202,22 @@ def ConjPair (D : D7) {N N' : ℕ} (s : ℂ →+* ℂ) (F F' : VC D N N' → ℂ
 
 variable {D : D7} {N N' : ℕ} {s : ℂ →+* ℂ}
 
+/- English proof (translation)
+The claim follows from `SCV.analyticOnNhd_of_differentiable h Set.univ 0 (Set.mem_univ _)`.
+-/
 theorem an0 {F : VC D N N' → ℂ} (h : Differentiable ℂ F) : AnalyticAt ℂ F 0 :=
   SCV.analyticOnNhd_of_differentiable h Set.univ 0 (Set.mem_univ _)
 
+/- English proof (translation)
+Rewrite using `[ConjSeries.taylor_eq_coeff, ConjSeries.taylor_eq_coeff, ← h.2.2, MvPowerSeries.coeff_map]`.
+-/
 theorem ConjPair.taylor_eq {F F' : VC D N N' → ℂ} (h : ConjPair D s F F') (α : Mono D N N') :
     s (Formalism.MainNotions.TaylorLogMetric.taylor D F α) = Formalism.MainNotions.TaylorLogMetric.taylor D F' α := by
   rw [ConjSeries.taylor_eq_coeff, ConjSeries.taylor_eq_coeff, ← h.2.2, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[← tsum_taylor_mono D h.2.1 z, fnConj]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations. Rewrite using `[← h.taylor_eq, ← hs, cj]`.
+-/
 theorem ConjPair.fnConj_eq {F F' : VC D N N' → ℂ} (h : ConjPair D s F F')
     {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ}
     (hs : ∀ α, cj M ρ (Formalism.MainNotions.TaylorLogMetric.taylor D F α) = s (Formalism.MainNotions.TaylorLogMetric.taylor D F α)) :
@@ -171,12 +227,18 @@ theorem ConjPair.fnConj_eq {F F' : VC D N N' → ℂ} (h : ConjPair D s F F')
   refine tsum_congr fun α => ?_
   rw [← h.taylor_eq, ← hs, cj]
 
+/- English proof (translation)
+Rewrite using `[ConjSeries.taylor_eq_coeff, ConjSeries.taylor_eq_coeff]`. Use `taylorDir_smul (coordV D) a (an0 h)` as an intermediate fact. Rewrite using `[show (fun z => a * F z) = a • F from rfl, this, MvPowerSeries.coeff_smul]`.
+-/
 theorem taylor_const_mul {F : VC D N N' → ℂ} (h : Differentiable ℂ F) (a : ℂ) (α : Mono D N N') :
     Formalism.MainNotions.TaylorLogMetric.taylor D (fun z => a * F z) α = a * Formalism.MainNotions.TaylorLogMetric.taylor D F α := by
   rw [ConjSeries.taylor_eq_coeff, ConjSeries.taylor_eq_coeff]
   have := taylorDir_smul (coordV D) a (an0 h)
   rw [show (fun z => a * F z) = a • F from rfl, this, MvPowerSeries.coeff_smul]
 
+/- English proof (translation)
+Use `⟨h.1.const_mul a, h.2.1.const_mul _, ?_⟩` and prove the remaining obligations. Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_map, ← ConjSeries.taylor_eq_coeff, ← ConjSeries.taylor_eq_coeff, taylor_const_mul h.1, taylor_const_mul h.2.1, map_mul, h.taylor_eq]`.
+-/
 theorem ConjPair.const_mul {F F' : VC D N N' → ℂ} (h : ConjPair D s F F') (a : ℂ) :
     ConjPair D s (fun z => a * F z) (fun z => s a * F' z) := by
   refine ⟨h.1.const_mul a, h.2.1.const_mul _, ?_⟩
@@ -184,6 +246,9 @@ theorem ConjPair.const_mul {F F' : VC D N N' → ℂ} (h : ConjPair D s F F') (a
   rw [MvPowerSeries.coeff_map, ← ConjSeries.taylor_eq_coeff, ← ConjSeries.taylor_eq_coeff,
     taylor_const_mul h.1, taylor_const_mul h.2.1, map_mul, h.taylor_eq]
 
+/- English proof (translation)
+Use `⟨Differentiable.fun_sum fun i _ => (h i).1, Differentiable.fun_sum fun i _ => (h i).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[taylorDir_sum _ _ fun i _ => an0 (h i).1, taylorDir_sum _ _ fun i _ => an0 (h i).2.1, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.2`.
+-/
 theorem ConjPair.sum {κ : Type*} [Fintype κ] {F F' : κ → VC D N N' → ℂ}
     (h : ∀ i, ConjPair D s (F i) (F' i)) :
     ConjPair D s (fun z => ∑ i, F i z) (fun z => ∑ i, F' i z) := by
@@ -191,6 +256,9 @@ theorem ConjPair.sum {κ : Type*} [Fintype κ] {F F' : κ → VC D N N' → ℂ}
   rw [taylorDir_sum _ _ fun i _ => an0 (h i).1, taylorDir_sum _ _ fun i _ => an0 (h i).2.1, map_sum]
   exact Finset.sum_congr rfl fun i _ => (h i).2.2
 
+/- English proof (translation)
+Establish `hp : ∀ G : κ → VC D N N' → ℂ, (∀ i, Differentiable ℂ (G i)) → Differentiable ℂ fun z => ∏ i, G i z` using `fun G hG z => (HasFDerivAt.finsetProd (u := Finset.univ) fun i _ => (hG i z).hasFDerivAt).differentiableAt`. Use `⟨hp _ fun i => (h i).1, hp _ fun i => (h i).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[taylorDir_prod _ _ fun i _ => an0 (h i).1, taylorDir_prod _ _ fun i _ => an0 (h i).2.1, map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (h i).2.2`.
+-/
 theorem ConjPair.prod {κ : Type*} [Fintype κ] {F F' : κ → VC D N N' → ℂ}
     (h : ∀ i, ConjPair D s (F i) (F' i)) :
     ConjPair D s (fun z => ∏ i, F i z) (fun z => ∏ i, F' i z) := by
@@ -201,6 +269,9 @@ theorem ConjPair.prod {κ : Type*} [Fintype κ] {F F' : κ → VC D N N' → ℂ
   rw [taylorDir_prod _ _ fun i _ => an0 (h i).1, taylorDir_prod _ _ fun i _ => an0 (h i).2.1, map_prod]
   exact Finset.prod_congr rfl fun i _ => (h i).2.2
 
+/- English proof (translation)
+Rewrite using `[lineDerivList_comp_linearMap, List.map_map]`. Establish `h1` using `lineDerivList_map_smul (fun k => ℓ (u k)) (fun _ => (1 : ℂ)) l g`. Establish `h2` using `lineDerivList_replicate l.length (1 : ℂ) g 0 (0 : ℂ)`. Simplify using `only [smul_eq_mul, mul_one, List.map_const', zero_add] at h1 h2`. Simplify using `only [map_zero, Function.comp_def, h1, h2]`.
+-/
 theorem lineDerivList_comp_form {κ : Type*} (u : κ → VC D N N') (ℓ : VC D N N' →ₗ[ℂ] ℂ) (g : ℂ → ℂ)
     (l : List κ) : lineDerivList ℂ (l.map u) (fun z => g (ℓ z)) 0 =
       (l.map fun k => ℓ (u k)).prod * iteratedDeriv l.length g 0 := by
@@ -210,6 +281,11 @@ theorem lineDerivList_comp_form {κ : Type*} (u : κ → VC D N N') (ℓ : VC D 
   simp only [smul_eq_mul, mul_one, List.map_const', zero_add] at h1 h2
   simp only [map_zero, Function.comp_def, h1, h2]
 
+/- English proof (translation)
+Establish `h1 : Differentiable ℂ fun z => g (ℓ z)` using `hg.comp (LinearMap.toContinuousLinearMap ℓ).differentiable`. Establish `h2 : Differentiable ℂ fun z => g' (ℓ' z)` using `hg'.comp (LinearMap.toContinuousLinearMap ℓ').differentiable`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use extensionality with `α`. Establish `hd : ∀ n, s (iteratedDeriv n g 0) = iteratedDeriv n g' 0` using `fun n => by`.
+
+Use `hc n` as an intermediate fact. Rewrite `this` using `[coef1, coef1, map_div₀, map_natCast]`. Conclude with `(div_left_inj' (by exact_mod_cast n.factorial_ne_zero)).1 this`. Rewrite using `[MvPowerSeries.coeff_map, coeff_taylorDir_eq_lineDerivList _ (an0 h1) (Multiset.coe_toList _), coeff_taylorDir_eq_lineDerivList _ (an0 h2) (Multiset.coe_toList _), lineDerivList_comp_form, lineDerivList_comp_form, map_mul, map_mul, map_inv₀, map_natCast, hd, map_list_prod, List.m …`. Simplify using `only [Function.comp_def, hℓ]`.
+-/
 theorem ConjPair.comp_form {g g' : ℂ → ℂ} (hg : Differentiable ℂ g) (hg' : Differentiable ℂ g')
     (hc : ∀ n, s (coef1 g n) = coef1 g' n) (ℓ ℓ' : VC D N N' →ₗ[ℂ] ℂ)
     (hℓ : ∀ k, s (ℓ (coordV D k)) = ℓ' (coordV D k)) :

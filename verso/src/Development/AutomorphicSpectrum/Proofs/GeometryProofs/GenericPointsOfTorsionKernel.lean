@@ -24,12 +24,36 @@ def toIdMk (Y : Over (Spec (CommRingCat.of R))) : Y ⟶ Over.mk (Y.hom ≫ 𝟙 
 def ofIdMk (Y : Over (Spec (CommRingCat.of R))) : Over.mk (Y.hom ≫ 𝟙 _) ⟶ Y :=
   Over.homMk (𝟙 _) (by simp)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[ofIdMk, toIdMk]`.
+-/
 theorem ofIdMk_toIdMk (Y : Over (Spec (CommRingCat.of R))) : ofIdMk Y ≫ toIdMk Y = 𝟙 _ := by
   ext
   simp [ofIdMk, toIdMk]
 
 end Identity
 
+/- English proof (translation)
+Introduce `R _ _ _ _ B _ hB N hN A _ _ j _ hp hpt`. Use `hB.smooth` as an intermediate fact. Use `hB.separated` as an intermediate fact. Use `hB.quasiCompact` as an intermediate fact. Use `hB.comm` as an intermediate fact.
+
+Use `GlobalTheory.CompanionTheory.Ar.BT.flat_mul_semiAbelian (Spec (CommRingCat.of R)) B hB N hN` as an intermediate fact. Use `GlobalTheory.CompanionTheory.Ar.BT.locallyQuasiFinite_pow_semiAbelian (Spec (CommRingCat.of R)) B hB N hN` as an intermediate fact. Establish `hm` using `mono_of_pullback hp`. Take `⟨h1, h2, h3, h4, h5⟩` from `kernel_props hp`. Use `kernel_base_etale (genPt R).hom hp (isUnit_natCast_generic hN)` as an intermediate fact.
+
+Use `haveI : IsReduced (genPt R).left := inferInstanceAs (IsReduced (Spec (CommRingCat.of (FractionRing R))))`. Establish `hred` using `GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd A.hom (genPt R).hom)`. Establish `hv : ∀ {Y : Over (Spec (CommRingCat.of R))} (g : Over.mk (Y.hom ≫ 𝟙 _) ⟶ B) (y : Y ⟶ A), y.left ≫ j.left = g.left → y ≫ j = toIdMk Y ≫ g` using `fun {Y} g y h => by`. Use `ext`. Simplify `h` using `[toIdMk]`.
+
+Use `⟨genPt R ⟶ A, inferInstance, { G := A, flat := h1, quasiFinite := h2, separated := h3, quasiCompact := h4, finPres := h5, pt := MonoidHom.id _, pt_inj := ?_, pt_onto := hpt, gen_reduced := hred }, Iso.refl _, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t u v h`. Conclude with `Over.OverMorphism.ext (eq_of_same_point A.hom _ _ (Over.w _) (Over.w _) u v h)`. Use `show IsMonHom (𝟙 A) infer_instance`. Use `{ isOver := ?_, mul := ?_, inj := ?_, kernel := ?_ }` and prove the remaining obligations.
+
+Use `show (𝟙 _ ≫ j.left) ≫ B.hom = A.hom ≫ 𝟙 _`. Simplify using `using Over.w j`. Introduce `Y y z y₀ z₀ hy hz`. Establish `hy' : y ≫ j = toIdMk Y ≫ y₀` using `hv y₀ y (by rw [hy]; simp)`. Establish `hz' : z ≫ j = toIdMk Y ≫ z₀` using `hv z₀ z (by rw [hz]; simp)`.
+
+Establish `e : (y * z) ≫ j = toIdMk Y ≫ (y₀ * z₀)`. Rewrite using `[MonObj.mul_comp, hy', hz', MonObj.comp_mul]`. Establish `e'` using `congrArg (fun w => w.left) e`. Simplify `e'.symm` using `[toIdMk]`. Introduce `Y y z h`.
+
+Rewrite using `[← cancel_mono j]`. Use `ext`. Simplify using `using h`. Introduce `Y g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h' : (toIdMk Y ≫ g) ^ N = 1`. Rewrite using `[← MonObj.comp_pow, h, MonObj.comp_one]`. Take `⟨y, hy⟩` from `lift_of_torsion hp _ h'`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun w => w.left) hy`. Simplify `e` using `[toIdMk]`. Introduce and unpack `⟨y, hy⟩`. Establish `e : y ≫ j = toIdMk Y ≫ g` using `hv g y (by rw [← hy]; simp)`. Establish `h' : (toIdMk Y ≫ g) ^ N = 1` using `by rw [← e]; exact torsion_of_comp hp y`.
+
+Establish `e2 : ofIdMk Y ≫ toIdMk Y ≫ g = g`. Rewrite using `[← Category.assoc, ofIdMk_toIdMk, Category.id_comp]`. Rewrite using `[← e2, ← MonObj.comp_pow, h', MonObj.comp_one]`.
+-/
 theorem exists_qfGroup_kernel : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B], IsSemiAbelian B → ∀ (N : ℕ), 1 ≤ N → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A] [IsCommMonObj A] (j : A ⟶ B) [IsMonHom j], IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B] → (∀ g : A.left, (A.hom g).asIdeal = ⊥ → ∃ (κ : genPt R ⟶ A) (x : Spec (CommRingCat.of (FractionRing R))), κ.left x = g) → ∃ (C : Type) (_ : CommGroup C) (Γ : QFGroup R C) (φ : Γ.G ≅ A), IsMonHom φ.hom ∧ Γ.IsTorsionAlong B (𝟙 _) N (φ.hom.left ≫ j.left) := by
   intro R _ _ _ _ B _ hB N hN A _ _ j _ hp hpt
   have := hB.smooth

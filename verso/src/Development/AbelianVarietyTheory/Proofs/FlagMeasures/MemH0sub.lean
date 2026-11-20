@@ -32,6 +32,9 @@ def FlagPairStabilizer {D : D7} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F
       show a.symm (a _) = _
       simp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_H0sub {D : D7} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (h : GV D) : h ∈ FlagPairStabilizer F F' ↔ h ∈ H0 F F' := Iff.rfl
 

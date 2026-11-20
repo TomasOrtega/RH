@@ -11,6 +11,9 @@ namespace ReciprocityTheory.PGsh.Up
 
 open ReciprocityTheory.PGsh.L2
 
+/- English proof (translation)
+The claim follows from `le_trans (by gcongr) (colength_sq_mul_le_prod C v R hv hnt n a hinj hint s h A F M M' Mτ M'τ hF hA hM' hMst hMτ hM'τ)`.
+-/
 theorem lat_conseq (C : Type) [Field C] [IsAlgClosed C] (v : Valuation C NNReal) (R : Type)
     [CommRing R] [Algebra R C] (hv : v.Integers R) (hnt : ∃ c : C, 0 < v c ∧ v c < 1)
     (n : ℕ) (a : Fin n → C) (hinj : Function.Injective a) (hint : ∀ τ, v (a τ) ≤ 1)
@@ -25,8 +28,16 @@ theorem lat_conseq (C : Type) [Field C] [IsAlgClosed C] (v : Valuation C NNReal)
   le_trans (by gcongr)
     (colength_sq_mul_le_prod C v R hv hnt n a hinj hint s h A F M M' Mτ M'τ hF hA hM' hMst hMτ hM'τ)
 
+/- English proof (translation)
+The claim follows from `permutedCokernelLowerBound_of u6 lenEx killedGen idemGen`.
+-/
 theorem lengthDegree_abelianVariety : PermutedCokernelLowerBoundStatement := permutedCokernelLowerBound_of u6 lenEx killedGen idemGen
 
+/- English proof (translation)
+Take `⟨k, c0, ⟨F0⟩, hc0⟩` from `hNw`. Establish `hL : HasLen v R (htCoker H (e w) (e (π w))) cw` using `⟨k, c0, ⟨E.trans F0⟩, hc0⟩`. Establish `h10` using `lengthDegree_abelianVariety`. Unfold `PermutedCokernelLowerBoundStatement at h10`. Establish `hU` using `h10 p g C v R O σ cp hS H m e π horth hσ hsT hPT hsL hPL w hw d hd cw hL`.
+
+Establish `hlat` using `lat_conseq C v R hS.integers hnt n a hinj hint s h A F M M' Mτ M'τ hF hA hM' hMst hMτ hM'τ cw hcw`. Establish `hlatR : (cw : ℝ) ^ 2 * (v (discr a) : ℝ) ^ h ≤ ((∏ τ, colen (M'τ τ) (Mτ τ) : NNReal) : ℝ) ^ 2 * (v (discr a) : ℝ) ^ s`. Conclude with `hlat` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem av_full (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] [Algebra ℤ_[p] R]
     (O : Type) [CommRing O] [Algebra ℤ_[p] O] (σ : O ≃ₐ[ℤ_[p]] O) (cp : R)
@@ -62,6 +73,9 @@ theorem av_full (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C] [IsAlgCl
   calc _ ≤ (cw : ℝ) ^ 2 * (v (discr a) : ℝ) ^ h := by gcongr
     _ ≤ _ := hlatR
 
+/- English proof (translation)
+Take `⟨k, c0, ⟨F0⟩, hc0⟩` from `hN`. Establish `h10` using `unramifiedCokernelLowerBound_of hU7 lenEx killedGen idemGen`. Unfold `UnramifiedCokernelLowerBoundStatement at h10`. Conclude with `h10 p g C v R O σ cp hp2 hS H U i V1 ⟨k, c0, ⟨E.trans F0⟩, hc0⟩`.
+-/
 theorem up_full (hU7 : UnramifiedCokernelLengthStatement) (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C]
     [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]
     [Algebra ℤ_[p] R] (O : Type) [CommRing O] [Algebra ℤ_[p] O] (σ : O ≃ₐ[ℤ_[p]] O) (cp : R)
@@ -74,6 +88,9 @@ theorem up_full (hU7 : UnramifiedCokernelLengthStatement) (p : ℕ) [Fact p.Prim
   unfold UnramifiedCokernelLowerBoundStatement at h10
   exact h10 p g C v R O σ cp hp2 hS H U i V1 ⟨k, c0, ⟨E.trans F0⟩, hc0⟩
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `hn : ((n : ℝ) + 1) = ((n + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[Real.rpow_neg hp0.le, hn, Real.rpow_natCast, ← inv_pow, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma prime_rpow_neg_succ_eq_inv_mul_inv_pow {p : ℕ} [Fact p.Prime] (n : ℕ) :
     (p : ℝ) ^ (-((n : ℝ) + 1)) = (p : ℝ)⁻¹ * ((p : ℝ)⁻¹) ^ n := by
   have hp0 : (0 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).pos
@@ -81,11 +98,17 @@ private lemma prime_rpow_neg_succ_eq_inv_mul_inv_pow {p : ℕ} [Fact p.Prime] (n
   rw [Real.rpow_neg hp0.le, hn, Real.rpow_natCast, ← inv_pow, pow_succ]
   ring
 
+/- English proof (translation)
+Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `h1` using `one_div_lt_one_div_of_lt one_pos hp`. Simplify using `using h1`.
+-/
 private lemma prime_inv_lt_one {p : ℕ} [Fact p.Prime] : (p : ℝ)⁻¹ < 1 := by
   have hp : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
   have h1 := one_div_lt_one_div_of_lt one_pos hp
   simpa using h1
 
+/- English proof (translation)
+Establish `e : (fun n : ℕ => (p : ℝ) ^ (-((n : ℝ) + 1))) = fun n : ℕ => (p : ℝ)⁻¹ * ((p : ℝ)⁻¹) ^ n` using `funext fun n => prime_rpow_neg_succ_eq_inv_mul_inv_pow n`. Rewrite using `[e]`. Conclude with `(summable_geometric_of_lt_one (inv_nonneg.mpr (Nat.cast_nonneg p)) prime_inv_lt_one).mul_left _`.
+-/
 private lemma summable_prime_rpow_neg_succ {p : ℕ} [Fact p.Prime] :
     Summable fun n : ℕ => (p : ℝ) ^ (-((n : ℝ) + 1)) := by
   have e : (fun n : ℕ => (p : ℝ) ^ (-((n : ℝ) + 1))) =
@@ -93,6 +116,9 @@ private lemma summable_prime_rpow_neg_succ {p : ℕ} [Fact p.Prime] :
   rw [e]
   exact (summable_geometric_of_lt_one (inv_nonneg.mpr (Nat.cast_nonneg p)) prime_inv_lt_one).mul_left _
 
+/- English proof (translation)
+Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (p : ℝ) ≠ 0` using `by linarith`. Establish `hp1 : (p : ℝ) - 1 ≠ 0` using `sub_ne_zero.mpr hp.ne'`. Rewrite using `[tsum_congr (fun n : ℕ => prime_rpow_neg_succ_eq_inv_mul_inv_pow (p := p) n), tsum_mul_left, tsum_geometric_of_lt_one (inv_nonneg.mpr (Nat.cast_nonneg p)) prime_inv_lt_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma tsum_geom_p {p : ℕ} [Fact p.Prime] :
     ∑' n : ℕ, (p : ℝ) ^ (-((n : ℝ) + 1)) = 1 / ((p : ℝ) - 1) := by
   have hp : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
@@ -102,6 +128,9 @@ lemma tsum_geom_p {p : ℕ} [Fact p.Prime] :
     tsum_geometric_of_lt_one (inv_nonneg.mpr (Nat.cast_nonneg p)) prime_inv_lt_one]
   field_simp
 
+/- English proof (translation)
+Conclude with `Summable.of_nonneg_of_le (fun n => mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg p) _) (hf0 n)) (fun n => mul_le_mul_of_nonneg_left (hfB n) (Real.rpow_nonneg (Nat.cast_nonneg p) _)) ((summable_prime_rpow_neg_succ (p := p)).mul_right B)`.
+-/
 lemma summable_geom_p {p : ℕ} [Fact p.Prime] (f : ℕ → ℝ) (hf0 : ∀ n, 0 ≤ f n) (B : ℝ)
     (hfB : ∀ n, f n ≤ B) : Summable fun n : ℕ => (p : ℝ) ^ (-((n : ℝ) + 1)) * f n := by
   exact Summable.of_nonneg_of_le
@@ -109,6 +138,17 @@ lemma summable_geom_p {p : ℕ} [Fact p.Prime] (f : ℕ → ℝ) (hf0 : ∀ n, 0
     (fun n => mul_le_mul_of_nonneg_left (hfB n) (Real.rpow_nonneg (Nat.cast_nonneg p) _))
     ((summable_prime_rpow_neg_succ (p := p)).mul_right B)
 
+/- English proof (translation)
+Establish `hsplit : ∀ n : ℕ, (p : ℝ) ^ (-((n : ℝ) + 1)) * (rG ((U.φ ^ (n + 1)) i) : ℝ) = (p : ℝ) ^ (-((n : ℝ) + 1)) * (U.r ((U.φ ^ (n + 1)) i) : ℝ) + (p : ℝ) ^ (-((n : ℝ) + 1)) * (ρ : ℝ)`. Introduce `n`. Rewrite using `[← hrB]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hs1 : Summable fun n : ℕ => (p : ℝ) ^ (-((n : ℝ) + 1)) * (U.r ((U.φ ^ (n + 1)) i) : ℝ)` using `summable_geom_p (fun n : ℕ => (U.r ((U.φ ^ (n + 1)) i) : ℝ)) (fun n => Nat.cast_nonneg _) (∑ j, (U.r j : ℝ)) (fun n => Finset.single_le_sum (f := fun j => (U.r j : ℝ)) (fun j _ => Nat.cast_nonneg _) (Finset.mem_univ _))`. Establish `hsum : ∑' n : ℕ, (p : ℝ) ^ (-((n : ℝ) + 1)) * (rG ((U.φ ^ (n + 1)) i) : ℝ) = frobSum U i + (ρ : ℝ) / ((p : ℝ) - 1)`. Rewrite using `[tsum_congr hsplit, hs1.tsum_add ((summable_prime_rpow_neg_succ (p := p)).mul_right _), tsum_mul_right, tsum_geom_p]`. Unfold `frobSum`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : (rG i : ℝ) = U.r i + ρ`. Rewrite using `[← hrB i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (r : ℝ) - rG i - ρ = U.r (U.cj i)`.
+
+Rewrite using `[← hrc, ← hrB (U.cj i)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : (rG i : ℝ) / (p - 1) - ∑' n : ℕ, (p : ℝ) ^ (-((n : ℝ) + 1)) * rG ((U.φ ^ (n + 1)) i) + ((r : ℝ) - rG i - ρ) / (p - 1) = ((U.r i : ℝ) + U.r (U.cj i)) / (p - 1) - frobSum U i`. Rewrite using `[hsum, h2, h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp]`. Conclude with `up_full hU7 p g C v R O σ cp hp2 hS H U i N E V1 hN`.
+-/
 theorem up_shift (hU7 : UnramifiedCokernelLengthStatement) (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C]
     [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C]
     [Algebra ℤ_[p] R] (O : Type) [CommRing O] [Algebra ℤ_[p] O] (σ : O ≃ₐ[ℤ_[p]] O) (cp : R)

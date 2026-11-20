@@ -18,6 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorsionThetaLocal
 
+/- English proof (translation)
+Introduce `S₀ G _ _ L c S _ _ t k x hx`. Take `⟨u, hu, -⟩` from `Geo.Tor.exists_cubN c (T := Over.mk t ⊗ G) 1 (fst (Over.mk t) G ≫ x) (snd (Over.mk t) G) k`. Take `⟨e, he⟩` from `DVR.exists_gen_of_local (V := S) L.L L.isLB (K := Fin 2) ![x.left, (1 : Over.mk t ⟶ G).left] ![-(k : ℤ), k]`. Establish `hm : (fst (Over.mk t) G ≫ x) ^ k = 1`. Rewrite using `[← MonObj.comp_pow, hx, MonObj.comp_one]`.
+
+Establish `h1 : (fst (Over.mk t) G).left ≫ (1 : Over.mk t ⟶ G).left = (1 : Over.mk t ⊗ G ⟶ G).left`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`. Establish `h2 : (fst (Over.mk t) G).left ≫ x.left = (fst (Over.mk t) G ≫ x).left` using `rfl`. Establish `h3 : translPt G x = (fst (Over.mk t) G ≫ x) * snd (Over.mk t) G` using `rfl`. Take `⟨w, hw, -⟩` from `Geo.Tor.exists_gen L.isLB (φ' := ![(snd (Over.mk t) G).left, (translPt G x).left]) (ε' := ![(k : ℤ), -(k : ℤ)]) (fun U _ h => by`.
+
+Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ]`. Use `erw [h1, h2]`. Rewrite using `[hm, h3]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L.L _ _ _ _ u (LB.pullGen L.L _ _ e (fst (Over.mk t) G).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.pullGen_isGen _ _ _ _ he _))`.
+
+Conclude with `⟨⟨x, w, hw⟩, rfl⟩`.
+-/
 theorem exists_theta_of_pow_eq_one : ∀ (S₀ : Scheme.{0}) (G : Over S₀) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (_ : CubicalStr G L) (S : Type) [CommRing S] [IsLocalRing S] (t : Spec (CommRingCat.of S) ⟶ S₀) (k : ℕ) (x : Over.mk t ⟶ G), x ^ k = 1 → ∃ θ : ThetaGrp G L.L (k : ℤ) (Over.mk t), θ.pt = x := by
   intro S₀ G _ _ L c S _ _ t k x hx
   obtain ⟨u, hu, -⟩ := Geo.Tor.exists_cubN c (T := Over.mk t ⊗ G) 1 (fst (Over.mk t) G ≫ x) (snd (Over.mk t) G) k

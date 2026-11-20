@@ -10,6 +10,9 @@ namespace PositivityTheory.KB
 
 namespace PsiBlockMatrix
 
+/- English proof (translation)
+Use extensionality with `A i j`. Establish `hs : ∀ x : Fin (q * n), (ee q n).symm x = (x.modNat, x.divNat)` using `fun _ => rfl`. Simplify using `[psi, blk, blkM, hs, blockDiagonal_apply, Matrix.one_apply]`.
+-/
 theorem psi_eq (R : Type) [CommRing R] (q n : ℕ) :
     psi R q n = (blk R q n).comp (MonoidHom.pi fun _ : Fin q => MonoidHom.id (GL (Fin n) R)) := by
   ext A i j
@@ -18,16 +21,25 @@ theorem psi_eq (R : Type) [CommRing R] (q n : ℕ) :
 
 variable {G H : Type} [Group G] [Group H]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `LinearMap.mem_range.1 hw`. Conclude with `LinearMap.mem_range.2 ⟨cmap f (k + 2) x, hC.2.1 G H f (k + 1) x⟩`.
+-/
 theorem bd_map (hC : SChain) (f : G →* H) {k : ℕ} {w : Chn G (k + 1)} (hw : IsBd w) :
     IsBd (cmap f (k + 1) w) := by
   obtain ⟨x, rfl⟩ := LinearMap.mem_range.1 hw
   exact LinearMap.mem_range.2 ⟨cmap f (k + 2) x, hC.2.1 G H f (k + 1) x⟩
 
+/- English proof (translation)
+Unfold `IsCyc at *`. Rewrite using `[hC.2.1 G H f k w, hw, map_zero]`.
+-/
 theorem cyc_map (hC : SChain) (f : G →* H) {k : ℕ} {w : Chn G (k + 1)} (hw : IsCyc w) :
     IsCyc (cmap f (k + 1) w) := by
   unfold IsCyc at *
   rw [hC.2.1 G H f k w, hw, map_zero]
 
+/- English proof (translation)
+Establish `e` using `fun f : G →* G × G => hC.2.2.1 G (G × G) H f φ (k + 1) z`. Rewrite using `[e, e, e, ← map_sub, ← map_sub]`. Conclude with `bd_map hC φ hz`.
+-/
 theorem prim_push (hC : SChain) (φ : G × G →* H) {k : ℕ} {z : Chn G (k + 1)} (hz : IsPrim z) :
     IsBd (cmap (φ.comp ((MonoidHom.id G).prod (MonoidHom.id G))) (k + 1) z -
       cmap (φ.comp (MonoidHom.inl G G)) (k + 1) z - cmap (φ.comp (MonoidHom.inr G G)) (k + 1) z) := by
@@ -37,6 +49,27 @@ theorem prim_push (hC : SChain) (φ : G × G →* H) {k : ℕ} {z : Chn G (k + 1
 
 end PsiBlockMatrix
 
+/- English proof (translation)
+Use `haveI : NeZero q := ⟨by rintro rfl; exact i.elim0⟩`. Establish `hs : ∀ x : Fin (q * n), (PsiBlockMatrix.ee q n).symm x = (x.modNat, x.divNat)` using `fun _ => rfl`. Establish `hE : ∀ (a : Fin n) (b : Fin q), (PsiBlockMatrix.ee q n (a, b)).modNat = a ∧ (PsiBlockMatrix.ee q n (a, b)).divNat = b`. Introduce `a b`. Establish `e` using `(PsiBlockMatrix.ee q n).symm_apply_apply (a, b)`.
+
+Rewrite `e` using `[hs]`. Conclude with `⟨congrArg Prod.fst e, congrArg Prod.snd e⟩`. Establish `hlt : ∀ x : Fin (q * n), (x : ℕ) < n ↔ x.divNat = 0`. Introduce `x`. Rewrite using `[Fin.ext_iff, Fin.coe_divNat, Fin.val_zero, Nat.div_eq_zero_iff]`.
+
+Establish `: 0 < n` using `Nat.pos_of_ne_zero (by rintro rfl; exact x.elim0)`. Use linear arithmetic over natural numbers and integers. Set `σ : Equiv.Perm (Fin (q * n))` to `(PsiBlockMatrix.ee q n).symm.trans ((Equiv.prodCongr (Equiv.refl _) (Equiv.swap (0 : Fin q) i)).trans (PsiBlockMatrix.ee q n))`. Establish `hσm : ∀ x, (σ x).modNat = x.modNat` using `fun x => (hE _ _).1`. Establish `hσd : ∀ x, (σ x).divNat = Equiv.swap (0 : Fin q) i x.divNat` using `fun x => (hE _ _).2`.
+
+Establish `hinj : ∀ x y : Fin (q * n), x = y ↔ x.modNat = y.modNat ∧ x.divNat = y.divNat`. Introduce `x y`. Rewrite using `[← Prod.mk.injEq, ← hs, ← hs, (PsiBlockMatrix.ee q n).symm.apply_eq_iff_eq]`. Establish `hσσ : ∀ x, σ (σ x) = x`. Introduce `x`.
+
+Rewrite using `[hinj, hσm, hσm, hσd, hσd, Equiv.swap_apply_self]`. Conclude with `⟨rfl, rfl⟩`. Set `Pm : Matrix (Fin (q * n)) (Fin (q * n)) R` to `σ.toPEquiv.toMatrix`. Establish `hPP : Pm * Pm = 1`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`.
+
+Use extensionality with `x y`. Simplify using `[Pm, Matrix.one_apply, PEquiv.toMatrix_apply, hσσ]`. Use `⟨⟨Pm, Pm, hPP, hPP⟩, MonoidHom.ext fun A => Units.ext ?_⟩` and prove the remaining obligations. Establish `hpad : ∀ X Y : Fin (q * n), padMat R (A : Matrix (Fin n) (Fin n) R) X Y = if X.divNat = 0 ∧ Y.divNat = 0 then (A : Matrix (Fin n) (Fin n) R) X.modNat Y.modNat else if X = Y then 1 else 0`. Introduce `X Y`.
+
+Establish `e1 : ∀ (Z : Fin (q * n)) (hZ : (Z : ℕ) < n), (⟨Z, hZ⟩ : Fin n) = Z.modNat` using `fun Z hZ => Fin.ext (by simp [Fin.coe_modNat, Nat.mod_eq_of_lt hZ])`. Simplify using `only [padMat, Matrix.of_apply, e1]`. Distinguish the cases in `hX : X.divNat = 0`. Distinguish the cases in `hY : Y.divNat = 0`. Rewrite using `[dif_pos ⟨(hlt X).2 hX, (hlt Y).2 hY⟩, if_pos ⟨hX, hY⟩]`.
+
+Rewrite using `[dif_neg (fun hh => hY ((hlt Y).1 hh.2)), if_neg (fun hh : X.divNat = 0 ∧ Y.divNat = 0 => hY hh.2)]`. Rewrite using `[dif_neg (fun hh => hX ((hlt X).1 hh.1)), if_neg (fun hh : X.divNat = 0 ∧ Y.divNat = 0 => hX hh.1)]`. Use extensionality with `x y`. Rewrite using `[show (((MulAut.conj (⟨Pm, Pm, hPP, hPP⟩ : GL (Fin (q * n)) R)).toMonoidHom.comp (stab R n (q * n) h)) A : Matrix _ _ R) = Pm * (stab R n (q * n) h A : Matrix _ _ R) * Pm from rfl]`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+
+Establish `hy : σ.symm y = σ y` using `by rw [Equiv.symm_apply_eq, hσσ]`. Simplify using `only [Matrix.submatrix_apply, id, hy]`. Express the relevant statement in the definitionally equal form `_ = padMat R (A : Matrix (Fin n) (Fin n) R) (σ x) (σ y)`. Simplify using `only [hpad, hσd, hσm, σ.injective.eq_iff, hinj x y]`. Simplify using `[PsiBlockMatrix.blk, PsiBlockMatrix.blkM, hs, blockDiagonal_apply, Pi.mulSingle_apply, Equiv.swap_apply_eq_iff]`.
+
+Apply the tactic sequence `by_cases h1 : x.divNat = i <;> by_cases h2 : y.divNat = i <;>`. Apply the tactic sequence `by_cases h3 : x.divNat = y.divNat <;> simp [h1, h2, h3, Matrix.one_apply]`. Apply the tactic sequence `all_goals rw [if_neg (fun e => h2 e.symm), if_neg (fun e => h2 e.2.symm)]`.
+-/
 private theorem exists_conj_blk_mulSingle_eq_stab (R : Type) [CommRing R] (q n : ℕ) (h : n ≤ q * n) (i : Fin q) :
     ∃ P : GL (Fin (q * n)) R, (PsiBlockMatrix.blk R q n).comp (MonoidHom.mulSingle (fun _ : Fin q => GL (Fin n) R) i) =
       (MulAut.conj P).toMonoidHom.comp (stab R n (q * n) h) := by
@@ -98,6 +131,23 @@ private theorem exists_conj_blk_mulSingle_eq_stab (R : Type) [CommRing R] (q n :
     by_cases h3 : x.divNat = y.divNat <;> simp [h1, h2, h3, Matrix.one_apply]
   all_goals rw [if_neg (fun e => h2 e.symm), if_neg (fun e => h2 e.2.symm)]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Establish `e : (MonoidHom.pi fun _ : Fin 1 => MonoidHom.id G) = MonoidHom.mulSingle (fun _ : Fin 1 => G) 0`. Use `MonoidHom.ext fun a => funext fun j => ?_` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero j]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_one, e, sub_self]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ q ih`. Set `φ : G × G →* (Fin (q + 2) → G)` to `MonoidHom.pi fun j => Fin.cases (motive := fun _ => G × G →* G) (MonoidHom.fst G G) (fun _ => MonoidHom.snd G G) j`.
+
+Set `ψ : (Fin (q + 1) → G) →* (Fin (q + 2) → G)` to `MonoidHom.pi fun j => Fin.cases (motive := fun _ => (Fin (q + 1) → G) →* G) 1 (fun l => Pi.evalMonoidHom (fun _ => G) l) j`. Establish `e1 : φ.comp ((MonoidHom.id G).prod (MonoidHom.id G)) = MonoidHom.pi fun _ => MonoidHom.id G`. Use `MonoidHom.ext fun a => funext fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `cases j using Fin.cases <;> simp [φ]`. Establish `e2 : φ.comp (MonoidHom.inl G G) = MonoidHom.mulSingle (fun _ : Fin (q + 2) => G) 0`.
+
+Use `MonoidHom.ext fun a => funext fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `cases j using Fin.cases <;> simp [φ, Pi.mulSingle_apply]`. Establish `e3 : φ.comp (MonoidHom.inr G G) = ψ.comp (MonoidHom.pi fun _ => MonoidHom.id G)`. Use `MonoidHom.ext fun a => funext fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `cases j using Fin.cases <;> simp [φ, ψ]`.
+
+Establish `e4 : ∀ j : Fin (q + 1), ψ.comp (MonoidHom.mulSingle (fun _ : Fin (q + 1) => G) j) = MonoidHom.mulSingle (fun _ : Fin (q + 2) => G) j.succ`. Introduce `j`. Use `MonoidHom.ext fun a => funext fun l => ?_` and prove the remaining obligations. Apply the tactic sequence `cases l using Fin.cases <;> simp [ψ, Pi.mulSingle_apply]`. Establish `hp` using `PsiBlockMatrix.prim_push hC φ hz`.
+
+Rewrite `hp` using `[e1, e2, e3, hC.2.2.1]`. Establish `hq` using `PsiBlockMatrix.bd_map hC ψ ih`. Establish `e5 : ∀ j : Fin (q + 1), cmap ψ (k + 1) (cmap (MonoidHom.mulSingle (fun _ : Fin (q + 1) => G) j) (k + 1) z) = cmap (MonoidHom.mulSingle (fun _ : Fin (q + 2) => G) j.succ) (k + 1) z` using `fun j => by`. Rewrite using `[← hC.2.2.1, e4]`. Rewrite `hq` using `[map_sub, map_sum]`.
+
+Simplify using `only [e5] at hq`. Establish `key : cmap (MonoidHom.pi fun _ : Fin (q + 2) => MonoidHom.id G) (k + 1) z - ∑ j, cmap (MonoidHom.mulSingle (fun _ : Fin (q + 2) => G) j) (k + 1) z = (cmap (MonoidHom.pi fun _ : Fin (q + 2) => MonoidHom.id G) (k + 1) z - cmap (MonoidHom.mulSingle (fun _ : Fin (q + 2) => G) 0) (k + …`. Rewrite using `[Fin.sum_univ_succ]`. Normalize the expressions using the abelian group laws. Use `show _ ∈ LinearMap.range _`.
+
+Rewrite using `[key]`. Conclude with `Submodule.add_mem _ hp hq`.
+-/
 private theorem isBd_cmap_pi_sub_sum_cmap_mulSingle_of_isPrim (hC : SChain) {G : Type} [Group G] {k : ℕ} {z : Chn G (k + 1)}
     (hz : IsPrim z) (q : ℕ) :
     IsBd (cmap (MonoidHom.pi fun _ : Fin (q + 1) => MonoidHom.id G) (k + 1) z -
@@ -154,6 +204,15 @@ private theorem isBd_cmap_pi_sub_sum_cmap_mulSingle_of_isPrim (hC : SChain) {G :
     exact Submodule.add_mem _ hp hq
 
 open PsiBlockMatrix in
+/- English proof (translation)
+Introduce `R _ d n k h z hzc hzp`. Rewrite using `[PsiBlockMatrix.psi_eq R (d + 1) n, hC.2.2.1]`. Establish `h1` using `PsiBlockMatrix.bd_map hC (PsiBlockMatrix.blk R (d + 1) n) (isBd_cmap_pi_sub_sum_cmap_mulSingle_of_isPrim hC hzp d)`. Rewrite `h1` using `[map_sub, map_sum]`. Simplify using `only [← hC.2.2.1] at h1`.
+
+Rewrite `h1` using `[hC.2.2.1 _ _ _ (MonoidHom.pi fun _ : Fin (d + 1) => MonoidHom.id (GL (Fin n) R)) (PsiBlockMatrix.blk R (d + 1) n)]`. Establish `h2 : ∀ j : Fin (d + 1), cmap ((PsiBlockMatrix.blk R (d + 1) n).comp (MonoidHom.mulSingle (fun _ : Fin (d + 1) => GL (Fin n) R) j)) (k + 1) z - cmap (stab R n ((d + 1) * n) h) (k + 1) z ∈ LinearMap.range (bd (GL (Fin ((d + 1) * n)) R) (k + 1))`. Introduce `j`. Take `⟨P, hP⟩` from `exists_conj_blk_mulSingle_eq_stab R (d + 1) n h j`. Rewrite using `[hP, hC.2.2.1]`.
+
+Conclude with `hC.2.2.2 _ P k _ (PsiBlockMatrix.cyc_map hC _ hzc)`. Establish `h3` using `Submodule.sum_mem _ (fun j (_ : j ∈ Finset.univ) => h2 j)`. Rewrite `h3` using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Establish `key : cmap (PsiBlockMatrix.blk R (d + 1) n) (k + 1) (cmap (MonoidHom.pi fun _ : Fin (d + 1) => MonoidHom.id (GL (Fin n) R)) (k + 1) z) - ((d : ℝ) + 1) • cmap (stab R n ((d + 1) * n) h) (k + 1) z = (cmap (PsiBlockMatrix.blk R (d + 1) n) (k + 1) (cmap (MonoidHom.pi fun _ : Fin (d + …`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, Nat.cast_succ]`.
+
+Normalize the expressions using the abelian group laws. Use `show _ ∈ LinearMap.range _`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ h1 h3`.
+-/
 theorem sPsi_of (hC : SChain) : SPsi := by
   intro R _ d n k h z hzc hzp
   rw [PsiBlockMatrix.psi_eq R (d + 1) n, hC.2.2.1]

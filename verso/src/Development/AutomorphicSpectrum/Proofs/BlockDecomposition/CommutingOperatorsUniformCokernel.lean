@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
+/- English proof (translation)
+The claim follows from `DirectSum.induction_on (β := A) (motive := C) m h0 hof hadd`.
+-/
 theorem grSum_induction {ι R : Type*} [CommRing R] {A : ℤ → Type*} [∀ n, AddCommGroup (A n)]
     [∀ n, Module R (A n)] {x : ι → ∀ n, A n →ₗ[R] A (n + 1)} {hx : OperatorsCommute x}
     {C : GrSum hx → Prop} (m : GrSum hx) (h0 : C 0) (hof : ∀ n a, C (GrSum.of hx n a))
@@ -35,6 +38,9 @@ def mulKer (H : TowerAx ρ res p mm) (e : ℕ) (t : ℤ) (S : Finset ι) (hS : S
     exact (mem_Ks hS).2 h
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_mulKer (H : TowerAx ρ res p mm) (e : ℕ) (t : ℤ) (S : Finset ι) (hS : S.Nonempty)
     (r : R) (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (y : T (e + 1) t S) :
     (H.mulKer e t S hS r hr y : T (e + 1) t S) = r • y := rfl
@@ -48,6 +54,9 @@ def mulTot (H : TowerAx ρ res p mm) (hc : ∀ e S, OperatorsCommute (ι := ι) 
   DirectSum.toAddMonoid fun t =>
     ((H.ops hc S).of e t).comp (H.mulKer e t S hS r hr).toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `DirectSum.toAddMonoid_of (β := fun t => T (e + 1) t S) (fun t => ((H.ops hc S).of e t).comp (H.mulKer e t S hS r hr).toAddMonoidHom) t y`.
+-/
 theorem mulTot_of (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (hS : S.Nonempty) (r : R)
     (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (t : ℤ) (y : T (e + 1) t S) :
     H.mulTot hc e S hS r hr (GrSum.of (hc (e + 1) S) t y) =
@@ -55,6 +64,11 @@ theorem mulTot_of (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (hS : S.No
   DirectSum.toAddMonoid_of (β := fun t => T (e + 1) t S)
     (fun t => ((H.ops hc S).of e t).comp (H.mulKer e t S hS r hr).toAddMonoidHom) t y
 
+/- English proof (translation)
+Proceed by induction on `m using grSum_induction with`. Consider the case `h0 => simp`. Consider the case `hof t y`. Rewrite using `[GrSum.X_smul_of, mulTot_of, mulTot_of, BiOps.X_smul_of]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r • mm j (e + 1) t S y = mm j (e + 1) t S (r • y)`. Rewrite using `[map_smul]`. Consider the case `hadd a b ha hb => rw [smul_add, map_add, map_add, smul_add, ha, hb]`.
+-/
 theorem mulTot_X_smul (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (hS : S.Nonempty) (r : R)
     (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (j : ι) (m : GrSum (hc (e + 1) S)) :
     H.mulTot hc e S hS r hr ((MvPolynomial.X j : MvPolynomial ι R) • m) =
@@ -70,6 +84,9 @@ theorem mulTot_X_smul (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (hS : 
     rw [map_smul]
   | hadd a b ha hb => rw [smul_add, map_add, map_add, smul_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_succ', mul_smul, mul_smul, mulTot_X_smul, ih]`.
+-/
 theorem mulTot_X_pow_smul (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (hS : S.Nonempty)
     (r : R) (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (j : ι) (k : ℕ)
     (m : GrSum (hc (e + 1) S)) :
@@ -80,6 +97,9 @@ theorem mulTot_X_pow_smul (H : TowerAx ρ res p mm) (e : ℕ) (S : Finset ι) (h
   | zero => simp
   | succ k ih => rw [pow_succ', pow_succ', mul_smul, mul_smul, mulTot_X_smul, ih]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_resK, coe_mulKer, coe_mulKer, map_smul]`.
+-/
 theorem mulKer_res (H : TowerAx ρ res p mm) (e : ℕ) (t : ℤ) {S S' : Finset ι} (h : S ⊆ S')
     (hS : S.Nonempty) (r : R) (hr : r ∈ Ideal.span (Set.range ρ) ^ (e + 1)) (a : T (e + 1) t S) :
     H.mulKer e t S' (hS.mono h) r hr (res (e + 1) t S S' h a) =
@@ -87,6 +107,15 @@ theorem mulKer_res (H : TowerAx ρ res p mm) (e : ℕ) (t : ℤ) {S S' : Finset 
   apply Subtype.ext
   rw [coe_resK, coe_mulKer, coe_mulKer, map_smul]
 
+/- English proof (translation)
+Establish `hS' : (insert j S).Nonempty` using `Finset.insert_nonempty j S`. Proceed by induction on `hw using Submodule.smul_induction_on' with`. Consider the case `smul r hr y _`. Take `⟨k, t', a, hk⟩` from `hyp (e + 1) S j t y hS`. Use `⟨(H.mulKer e t _ hS' r hr y).2, k, (H.ops hc S).of e t' (H.mulKer e t' S hS r hr a), ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (H.mulTot hc e (insert j S) hS' r hr) hk`. Rewrite `h1` using `[mulTot_X_pow_smul, mulTot_of, mulTot_of, mulKer_res H e t' (Finset.subset_insert j S) hS]`. Rewrite using `[resTot_of]`. Conclude with `h1`. Consider the case `add x _ y _ hx hy`.
+
+Take `⟨hx', k₁, hk₁⟩` from `hx`. Take `⟨hy', k₂, hk₂⟩` from `hy`. Use `⟨add_mem hx' hy', k₁ + k₂, ?_⟩` and prove the remaining obligations. Establish `hsum : (H.ops hc (insert j S)).of e t ⟨x + y, add_mem hx' hy'⟩ = (H.ops hc (insert j S)).of e t ⟨x, hx'⟩ + (H.ops hc (insert j S)).of e t ⟨y, hy'⟩` using `map_add ((H.ops hc (insert j S)).of e t) ⟨x, hx'⟩ ⟨y, hy'⟩`. Rewrite using `[hsum, smul_add]`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk₁`. Rewrite using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk₂`.
+-/
 theorem exists_X_pow_smul_mem_range (H : TowerAx ρ res p mm)
     (hyp : ∀ e S j t (b : T e t (insert j S)), S.Nonempty → ∃ (k : ℕ) (t' : ℤ) (a : T e t' S),
       GrSum.of (hc e (insert j S)) t' (res e t' S (insert j S) (Finset.subset_insert j S) a) =
@@ -125,6 +154,15 @@ end TowerAx
 
 end Tower
 
+/- English proof (translation)
+Introduce `ι _ R _ g ρ T _ _ res p mm hc H hyp S j b hS`. Establish `hS' : (insert j S).Nonempty` using `Finset.insert_nonempty j S`. Proceed by induction on `b using (H.ops hc (insert j S)).induction with`. Consider the case `h0 => exact ⟨0, by simp⟩`. Consider the case `hof e t a`.
+
+Establish `ha : (a : T (e + 1) t (insert j S)) ∈ Ideal.span (Set.range ρ) ^ (e + 1) • (⊤ : Submodule R (T (e + 1) t (insert j S)))`. Rewrite using `[← H.ker_eq e t _ hS']`. Conclude with `(mem_Ks hS').1 a.2`. Take `⟨_, k, hk⟩` from `H.exists_X_pow_smul_mem_range hc hyp S j hS e t a ha`. Conclude with `⟨k, hk⟩`.
+
+Consider the case `hadd x y hx hy`. Take `⟨k₁, hk₁⟩` from `hx`. Take `⟨k₂, hk₂⟩` from `hy`. Use `⟨k₁ + k₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk₁`. Rewrite using `[pow_add, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hk₂`.
+-/
 theorem tower_kernels_lift_after_X_pow : ∀ (ι : Type) [LinearOrder ι] (R : Type) [CommRing R] (g : ℕ) (ρ : Fin g → R) (T : ℕ → ℤ → Finset ι → Type) [∀ e t S, AddCommGroup (T e t S)] [∀ e t S, Module R (T e t S)] (res : ∀ e t (S S' : Finset ι), S ⊆ S' → T e t S →ₗ[R] T e t S') (p : ∀ e t S, T (e + 1) t S →ₗ[R] T e t S) (mm : ι → ∀ e t S, T e t S →ₗ[R] T e (t + 1) S) (hc : ∀ e S, OperatorsCommute (ι := ι) (R := R) (A := fun t => T e t S) fun j t => mm j e t S) (H : TowerAx ρ res p mm), (∀ e S j t (b : T e t (insert j S)), S.Nonempty → ∃ (k : ℕ) (t' : ℤ) (a : T e t' S), GrSum.of (hc e (insert j S)) t' (res e t' S (insert j S) (Finset.subset_insert j S) a) = (MvPolynomial.X j : MvPolynomial ι R) ^ k • GrSum.of (hc e (insert j S)) t b) → ∀ (S : Finset ι) (j : ι) (b : H.Tot hc (insert j S)), S.Nonempty → ∃ k : ℕ, (MvPolynomial.X j : MvPolynomial ι (MvPolynomial (Fin g) R)) ^ k • b ∈ LinearMap.range (H.resTot hc S (insert j S) (Finset.subset_insert j S)) := by
   intro ι _ R _ g ρ T _ _ res p mm hc H hyp S j b hS
   have hS' : (insert j S).Nonempty := Finset.insert_nonempty j S

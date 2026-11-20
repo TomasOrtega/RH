@@ -9,6 +9,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Establish `h` using `(P.PD (botExt l)).Fil_anti (a + k)`.
+
+Apply `h` to reduce the goal to its premises. Establish `: a + ((k + 1 : ℕ) : ℤ) = a + k + 1` using `by push_cast; ring`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem fil_add_nat_le {l : ℕ} [Fact l.Prime] (P : LocPrime l) (a : ℤ) (k : ℕ) {x : P.R.BdR}
     (hx : x ∈ (P.PD (botExt l)).Fil (a + k)) : x ∈ (P.PD (botExt l)).Fil a := by
   induction k generalizing a with
@@ -20,6 +25,43 @@ theorem fil_add_nat_le {l : ℕ} [Fact l.Prime] (P : LocPrime l) (a : ℤ) (k : 
     have : a + ((k + 1 : ℕ) : ℤ) = a + k + 1 := by push_cast; ring
     rwa [← this]
 
+/- English proof (translation)
+Introduce `l _ P AI T h d hh hd c hc hfil`. Establish `hF : IsField P.R.BdR` using `GlobalTheory.RegularRing.isField_of_tied T`. Establish `hι : Function.Injective P.ιB` using `fun a b hab => (P.PD (botExt l)).ι_inj (by rw [P.PD_ι, P.PD_ι, hab])`. Use `set PD := P.PD (botExt l) with hPD`. Establish `hdom : ∀ a b : P.R.B, a * b = 0 → a = 0 ∨ b = 0`.
+
+Introduce `a b hab`. Establish `h0 : P.ιB a * P.ιB b = 0` using `by rw [← map_mul, hab, map_zero]`. Distinguish the cases in `ha : P.ιB a = 0`. Conclude with `Or.inl (hι (by rw [ha, map_zero]))`. Use `right`.
+
+Take `⟨y, hy⟩` from `hF.mul_inv_cancel ha`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : NoZeroDivisors P.R.B := ⟨fun {a b} hab => hdom a b hab⟩`.
+
+Use `haveI : Nontrivial P.R.B := nontrivial_B P`. Assume the negation of the conclusion as `hc0`. Use `set N : P.R.B := ∏ j ∈ Finset.range h, P.φB^[j] c with hN`. Establish `hφN : c * P.φB N = N * P.φB^[h] c`. Establish `e1 : P.φB N = ∏ j ∈ Finset.range h, P.φB^[j + 1] c`.
+
+Rewrite using `[hN, map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply']`. Rewrite using `[e1, hN]`. Establish `e2` using `Finset.prod_range_succ' (fun j => P.φB^[j] c) h`.
+
+Establish `e3` using `Finset.prod_range_succ (fun j => P.φB^[j] c) h`. Simplify using `only [Function.iterate_zero, id] at e2`. Rewrite using `[mul_comm c, ← e2, e3]`. Establish `hlN : (l : P.R.B) ^ d * P.φB N = N`. Establish `: c * ((l : P.R.B) ^ d * P.φB N - N) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Break down `hdom _ _ this with h1 | h1` into its components or cases. Conclude with `absurd h1 hc0`. Conclude with `sub_eq_zero.mp h1`. Use `set x : P.R.B := N * P.tB ^ d with hx`.
+
+Establish `hφx : PD.φ x = x`. Rewrite using `[P.PD_φ, hx, map_mul, map_pow, localPrime_frobenius_periodT, Algebra.smul_def, map_natCast, mul_pow]`. Take the linear combination `(P.tB ^ d) * hlN`. Establish `hmul : ∀ (a b : ℤ) (u v : P.R.BdR), u ∈ PD.Fil a → v ∈ PD.Fil b → u * v ∈ PD.Fil (a + b)` using `fun a b u v hu hv => PD.Fil_mul a b u v hu hv`. Establish `hιN : P.ιB N ∈ PD.Fil 0`.
+
+Rewrite using `[hN, map_prod]`. Use `Finset.prod_induction _ (fun u => u ∈ PD.Fil 0) (fun u v hu hv => by simpa using hmul 0 0 u v hu hv) (by simpa using PD.one_mem) fun j hj => ?_` and prove the remaining obligations. Conclude with `hfil j (Finset.mem_range.mp hj)`. Establish `hιt : P.ιB P.tB ∈ PD.Fil 1`. Use `PD.mem_filtration_one` as an intermediate fact.
+
+Rewrite `this` using `[P.PD_ι, P.period_datum_t_eq]`. Then use the resulting hypothesis. Establish `hιtd : ∀ k : ℕ, P.ιB (P.tB ^ k) ∈ PD.Fil k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using PD.one_mem`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ, map_mul]`. Use `hmul k 1 _ _ ih hιt` as an intermediate fact. Simplify using `using this`. Establish `hιx1 : P.ιB x ∈ PD.Fil 1`.
+
+Establish `h1 : P.ιB x ∈ PD.Fil (0 + d)` using `by rw [hx, map_mul]; exact hmul 0 d _ _ hιN (hιtd d)`. Take `⟨k, hk⟩ : ∃ k : ℕ, d = k + 1` from `⟨d - 1, by omega⟩`. Apply `fil_add_nat_le P 1 k` to reduce the goal to its premises. Establish `: (1 : ℤ) + (k : ℤ) = 0 + (d : ℤ)` using `by rw [hk]; push_cast; ring`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Establish `hιx0 : P.ιB x ∈ PD.Fil 0` using `fil_add_nat_le P 0 1 (by simpa using hιx1)`. Take `⟨q, hq⟩` from `PD.fund x hφx (by rw [P.PD_ι]; exact hιx0)`. Distinguish the cases in `hq0 : q = 0`. Establish `hx0 : x = 0` using `by rw [← hq, hq0, map_zero]`. Establish `hN0 : N = 0`.
+
+Break down `hdom _ _ hx0 with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (pow_eq_zero_iff (by omega) |>.mp h1) (isUnit_tB P).ne_zero`. Rewrite `hN0` using `[hN, Finset.prod_eq_zero_iff]`. Take `⟨j, -, hj⟩` from `hN0`.
+
+Apply `hc0` to reduce the goal to its premises. Apply `(phiB_injective P).iterate j` to reduce the goal to its premises. Rewrite using `[hj, iterate_map_zero]`. Establish `hqx : P.ιB x = algebraMap ℚ_[l] P.R.BdR q` using `by rw [← hq, AlgHom.commutes]`. Establish `hinv : algebraMap ℚ_[l] P.R.BdR q⁻¹ ∈ PD.Fil 0`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_of_tower_mem _ _ PD.one_mem`. Establish `hone : algebraMap ℚ_[l] P.R.BdR q⁻¹ * P.ιB x = 1`. Rewrite using `[hqx, ← map_mul, inv_mul_cancel₀ hq0, map_one]`. Establish `h2 : P.ιB P.tB ∈ PD.Fil 2`.
+
+Use `hmul 1 (0 + 1) _ _ hιt (hmul 0 1 _ _ hinv hιx1)` as an intermediate fact. Rewrite `this` using `[hone, mul_one]`. Simplify using `using this`. Use `PD.not_mem_filtration_two` as an intermediate fact. Rewrite `this` using `[P.PD_ι, P.period_datum_t_eq]`.
+
+Conclude with `this h2`.
+-/
 theorem no_fil_zero_neg_slope : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (h d : ℕ), 0 < h → 0 < d → ∀ c : P.R.B, (l : P.R.B) ^ d * P.φB^[h] c = c →
     (∀ j < h, ev P j c ∈ Fil P 0) → c = 0 := by

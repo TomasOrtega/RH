@@ -11,6 +11,19 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use `set μ := Formalism.REAL.muG ε with hμ`. Establish `e1 : (fun z => fPhi ε F f (z * x)) = fun z => ∫ y, F (Formalism.MainNotions.S.umat (z * y)) * fGam ε f (y⁻¹ * x) ∂μ`. Use function extensionality and compare the values at `z`. Unfold `fPhi`. Rewrite using `[← integral_mul_left_eq_self (fun y => F (Formalism.MainNotions.S.umat y) * fGam ε f (y⁻¹ * (z * x))) z]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Use `congr 2`. Use `group`. Rewrite using `[e1]`.
+
+Use `set G2 : Formalism.REAL.UJ ε → Formalism.REAL.UJ ε → ℂ := fun z y => F (Formalism.MainNotions.S.umat (z * y)) * fGam ε f (y⁻¹ * x) with hG2`. Establish `hcont : Continuous (Function.uncurry G2)` using `by show Continuous fun p : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat (p.1 * p.2)) * fGam ε f (p.2⁻¹ * x)`. Conclude with `(hFc.comp continuous_mul).mul ((matrix_coefficient_continuous ε f).comp (continuous_snd.inv.mul continuous_const))`. Establish `hB : MemLp (fun y => fGam ε f (y⁻¹ * x)) 2 μ` using `hγ.comp_measurePreserving ((measurePreserving_mul_right ε x).comp (Measure.measurePreserving_inv μ))`. Establish `hA : ∀ z, MemLp (fun y => F (Formalism.MainNotions.S.umat (z * y))) 2 μ` using `fun z => hF2.comp_measurePreserving (measurePreserving_mul_left μ z)`.
+
+Establish `hint : Integrable (Function.uncurry G2) ((μ.restrict N).prod μ)`. Rewrite using `[integrable_prod_iff hcont.aestronglyMeasurable]`. Use `⟨ae_of_all _ fun z => (hA z).integrable_mul hB, ?_⟩` and prove the remaining obligations. Establish `: IsFiniteMeasure (μ.restrict N)` using `isFiniteMeasure_restrict.2 hNf`. Use `Integrable.of_bound hcont.aestronglyMeasurable.norm.integral_prod_right' ((∫ y, ‖F (Formalism.MainNotions.S.umat y)‖ ^ (2 : ℝ) ∂μ) ^ (1 / (2 : ℝ)) * (∫ y, ‖fGam ε f (y⁻¹ * x)‖ ^ (2 : ℝ) ∂μ) ^ (1 / (2 : ℝ))) (ae_of_all _ fun z => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Establish `hH` using `integral_mul_norm_le_Lp_mul_Lq (μ := μ) Real.HolderConjugate.two_two (f := fun y => F (Formalism.MainNotions.S.umat (z * y))) (g := fun y => fGam ε f (y⁻¹ * x)) (by rw [ENNReal.ofReal_ofNat]; exact hA z) (by rw [ENNReal.ofReal_ofNat]; exact hB)`. Establish `ht : ∫ y, ‖F (Formalism.MainNotions.S.umat (z * y))‖ ^ (2 : ℝ) ∂μ = ∫ y, ‖F (Formalism.MainNotions.S.umat y)‖ ^ (2 : ℝ) ∂μ` using `integral_mul_left_eq_self (fun y => ‖F (Formalism.MainNotions.S.umat y)‖ ^ (2 : ℝ)) z`. Rewrite `hH` using `[ht]`. Use `le_of_eq_of_le ?_ hH` and prove the remaining obligations.
+
+Simplify using `only [Function.uncurry_apply_pair, hG2, norm_mul]`. Rewrite using `[integral_integral_swap hint]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `integral_mul_const _ _`.
+-/
 theorem convolution_integral_fubini {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (f : L2 ε)
     (hFc : Continuous (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)))
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))
@@ -60,6 +73,29 @@ theorem convolution_integral_fubini {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (f 
   funext y
   exact integral_mul_const _ _
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨x, rfl⟩` from `exists_unitary_preimage ε hx`. Use `set f := toL2 ε F with hfdef`. Use `set μ := Formalism.REAL.muG ε with hμ`. Use `set c : ℂ := ⟪f, f⟫_ℂ / (d : ℂ) with hc`.
+
+Establish `hL : ∫ y, F (Formalism.MainNotions.S.umat y) * ⟪f, rreg ε ((Formalism.MainNotions.S.umat y)⁻¹ * Formalism.MainNotions.S.umat x) f⟫_ℂ ∂μ = fPhi ε F f x`. Unfold `fPhi fGam`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[unitary_matrix_mul, unitary_matrix_inv_alt]`.
+
+Rewrite using `[hL]`. Establish `hFc' : Continuous (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g))` using `hFc.comp_continuous (continuous_unitary_matrix ε) (fun g => unitary_matrix_mem_set ε g)`. Establish `hγ : MemLp (fGam ε f) 2 μ` using `matrix_coefficient_memLp ε hS hfK hfK`. Use `set D : Formalism.REAL.UJ ε → ℂ := fun w => fPhi ε F f w - c * F (Formalism.MainNotions.S.umat w) with hD`. Establish `hDc : Continuous D` using `(convolution_coefficient_continuous hS hF2 hfK).sub (continuous_const.mul hFc')`.
+
+Assume the negation of the conclusion as `hne`. Establish `hδ : D x ≠ 0` using `fun h0 => hne (sub_eq_zero.1 h0)`. Establish `hδp : 0 < ‖D x‖` using `norm_pos_iff.2 hδ`. Establish `hDz : Continuous fun z : Formalism.REAL.UJ ε => D (z * x)` using `hDc.comp (continuous_id.mul continuous_const)`. Establish `hev : ∀ᶠ z in 𝓝 (1 : Formalism.REAL.UJ ε), ‖D (z * x) - D x‖ < ‖D x‖ / 2`.
+
+Establish `ht` using `hDz.tendsto 1`. Simplify using `only [one_mul] at ht`. Use `(Metric.tendsto_nhds.1 ht) (‖D x‖ / 2) (by linarith)` as an intermediate fact. Simplify `this` using `[dist_eq_norm]`. Take `⟨C₀, hC₀c, hC₀n⟩` from `exists_compact_mem_nhds (1 : Formalism.REAL.UJ ε)`.
+
+Use `set N := interior ({z | ‖D (z * x) - D x‖ < ‖D x‖ / 2} ∩ C₀) with hN`. Establish `hNo : IsOpen N` using `isOpen_interior`. Establish `h1N : (1 : Formalism.REAL.UJ ε) ∈ N` using `mem_interior_iff_mem_nhds.2 (Filter.inter_mem hev hC₀n)`. Establish `hNC : N ⊆ C₀` using `interior_subset.trans Set.inter_subset_right`. Establish `hNP : ∀ z ∈ N, ‖D (z * x) - D x‖ < ‖D x‖ / 2` using `fun z hz => (interior_subset hz).1`.
+
+Establish `hNlt : μ N < ∞` using `lt_of_le_of_lt (measure_mono hNC) hC₀c.measure_lt_top`. Establish `hNf : μ N ≠ ∞` using `hNlt.ne`. Establish `hNpos : 0 < μ N` using `hNo.measure_pos μ ⟨1, h1N⟩`. Establish `hNr : 0 < (μ N).toReal` using `ENNReal.toReal_pos hNpos.ne' hNf`. Establish `hNm : MeasurableSet N` using `hNo.measurableSet`.
+
+Establish `hIphi : IntegrableOn (fun z => fPhi ε F f (z * x)) N μ` using `(((convolution_coefficient_continuous hS hF2 hfK).comp (continuous_id.mul continuous_const)).continuousOn.integrableOn_compact hC₀c).mono_set hNC`. Establish `hIF : IntegrableOn (fun z => F (Formalism.MainNotions.S.umat (z * x))) N μ` using `((hFc'.comp (continuous_id.mul continuous_const)).continuousOn.integrableOn_compact hC₀c).mono_set hNC`. Establish `hkey : ∫ z in N, fPhi ε F f (z * x) ∂μ = c * ∫ z in N, F (Formalism.MainNotions.S.umat (z * x)) ∂μ`. Rewrite using `[convolution_integral_fubini f hFc' hF2 hγ hNf x]`. Establish `e2 : (fun y => (∫ z in N, F (Formalism.MainNotions.S.umat (z * y)) ∂μ) * fGam ε f (y⁻¹ * x)) = fun y => ⟪(indicatorConstLp 2 hNm hNf (1 : ℂ) : L2 ε), rreg ε (Formalism.MainNotions.S.umat y) f⟫_ℂ * fGam ε f (y⁻¹ * x)`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[inner_indicator_right_regular ε hF2 hNm hNf y]`. Both sides reduce to the same expression. Rewrite using `[e2, schur_orthogonality_integral hKc hKs hS hfK, inner_indicator_right_regular ε hF2 hNm hNf x, hc]`. Simplify using `only [unitary_matrix_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∫ z in N, D (z * x) ∂μ = 0`. Simplify using `only [hD]`. Rewrite using `[integral_sub hIphi (hIF.const_mul c), integral_const_mul, hkey, sub_self]`. Establish `hID : IntegrableOn (fun z => D (z * x)) N μ` using `hIphi.sub (hIF.const_mul c)`.
+
+Establish `hIc : IntegrableOn (fun _ : Formalism.REAL.UJ ε => D x) N μ` using `(continuous_const.continuousOn.integrableOn_compact hC₀c).mono_set hNC`. Establish `hNr' : 0 < μ.real N` using `hNr`. Establish `hbound` using `norm_setIntegral_le_of_norm_le_const (μ := μ) (f := fun z => D (z * x) - D x) hNlt (fun z hz => (hNP z hz).le)`. Rewrite `hbound` using `[integral_sub hID hIc, hzero, setIntegral_const, zero_sub, norm_neg, norm_smul, Real.norm_of_nonneg hNr'.le]`. Use polynomial arithmetic with `[mul_pos hNr' hδp]`.
+-/
 theorem reproducing_formula_closed_invariant {K : Submodule ℂ (L2 ε)} {d : ℝ} {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hFc : ContinuousOn F (UJset ε))
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))

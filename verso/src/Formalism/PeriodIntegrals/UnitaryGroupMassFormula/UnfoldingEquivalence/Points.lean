@@ -8,15 +8,28 @@ namespace PI.UnfoldEquiv.UnitaryGroupMassFormula
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [eN, Pi.single_apply, Fin.ext_iff]`.
+-/
 private theorem eN_val_eq_single {N : ℕ} (s : Fin N) : eN k N s.1 = Pi.single s 1 := by
   funext l
   simp only [eN, Pi.single_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Simplify using `only [inX, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem inX_apply' {n c : ℕ} (v : Fin n → k) (l : Fin (n + c)) :
     inX k n c v l = if h : l.1 < n then v ⟨l.1, h⟩ else 0 := by
   simp only [inX, LinearMap.pi_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[inX_apply']`. Distinguish the cases in `h : l.1 < n`. Rewrite using `[dif_pos h]`. Simplify using `only [Pi.single_apply, Fin.ext_iff]`.
+
+Rewrite using `[dif_neg h, Pi.single_apply, if_neg]`. Introduce `e`. Rewrite `e` using `[Fin.ext_iff]`. Use `s.2` as an intermediate fact. Simplify using `only at e`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem inX_single' {n c : ℕ} (s : Fin n) :
     inX k n c (Pi.single s 1) = Pi.single ⟨s.1, by have := s.2; omega⟩ 1 := by
   funext l
@@ -31,9 +44,39 @@ private theorem inX_single' {n c : ℕ} (s : Fin n) :
     simp only at e
     omega
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_Ufl_iff' {n c i : ℕ} (v : Fin (n + c) → k) :
     v ∈ Ufl k n c i ↔ ∀ l : Fin (n + c), ¬ l.1 < n + i → v l = 0 := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩ l s hnf`. Simplify using `only [IsFree, not_and, not_or] at hnf`. Unfold `base`. Distinguish the cases in `hs : s.1 < n'`.
+
+Rewrite using `[dif_pos hs]`. Establish `e : (Pi.single s 1 : Fin (n' + (c + 1)) → k) = inX k n' (c + 1) (Pi.single ⟨s.1, hs⟩ 1)`. Rewrite using `[inX_single']`. Rewrite using `[e, h1, inX_apply']`. Use `split_ifs with hl`.
+
+Use `first`. Consider the case `rfl`. Consider the case `(rw [LinearMap.toMatrix'_apply])`. Consider the case `(rw [LinearMap.toMatrix'_apply]; congr 1; funext j'; simp [Pi.single_apply, Fin.ext_iff])`. Both sides reduce to the same expression.
+
+Rewrite using `[dif_neg hs]`. Take `⟨j, hj⟩ : ∃ j, s.1 = n' + j` from `⟨s.1 - n', by omega⟩`. Rewrite `hnf` using `[hj]`. Rewrite using `[hj, Nat.add_sub_cancel_left, ← eN_val_eq_single s, hj]`. Take `⟨hjc, hj2⟩` from `hnf (by omega)`.
+
+Simplify using `only [Nat.add_sub_cancel_left] at hjc hj2`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Establish `hc : 0 < c` using `by omega`. Establish `k2` using `congrFun (h2 hc) l`.
+
+Simplify `k2` using `[eN]`. Establish `hjlt : j < c` using `by have := s.2; omega`. Take `⟨hl1, hl2⟩` from `hj2 (by omega)`. Establish `hl : ¬ l.1 < n + j` using `by omega`. Establish `k4` using `(mem_Ufl_iff' _).1 (h3 j (by omega) hjlt) l hl`.
+
+Rewrite `k4` using `[Pi.sub_apply, sub_eq_zero]`. Rewrite using `[k4]`. Simplify using `only [eN]`. Introduce `H`. Establish `Hs : ∀ (l : Fin (n + c)) (s : ℕ) (hs : s < n' + (c + 1)), ¬ IsFree n' n c l.1 s → x (eN k (n' + (c + 1)) s) l = base xj l ⟨s, hs⟩`.
+
+Introduce `l s hs h`. Establish `k5` using `H l ⟨s, hs⟩ h`. Rewrite `k5` using `[← eN_val_eq_single]`. Conclude with `k5`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v`. Establish `e : x ∘ₗ inX k n' (c + 1) = inX k n c ∘ₗ xj`. Use extensionality with `s' l`. Simplify using `only [LinearMap.comp_apply, LinearMap.single_apply]`. Establish `hs'` using `s'.2`.
+
+Rewrite using `[inX_single', ← eN_val_eq_single, Hs l s'.1 (by omega) (by simp only [IsFree]; omega), inX_apply']`. Unfold `base`. Rewrite using `[dif_pos hs']`. Use `split_ifs with hl`. Use `first`.
+
+Consider the case `rfl`. Consider the case `(rw [LinearMap.toMatrix'_apply])`. Consider the case `(rw [LinearMap.toMatrix'_apply]; congr 1; funext j'; simp [Pi.single_apply, Fin.ext_iff])`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun e v`.
+
+Introduce `hc`. Use function extensionality and compare the values at `l`. Rewrite using `[Hs l n' (by omega) (by simp only [IsFree]; omega)]`. Simplify using `[base, eN]`. Introduce `j hj1 hjc`.
+
+Rewrite using `[mem_Ufl_iff']`. Introduce `l hl`. Establish `hnl : ¬ n' + j < n'` using `by omega`. Rewrite using `[Pi.sub_apply, Hs l (n' + j) (by omega) (by simp only [IsFree]; omega)]`. Simplify using `[base, eN, hnl]`.
+-/
 theorem Q_iff {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) → k)) :
     Q xj x ↔ ∀ (l : Fin (n + c)) (s : Fin (n' + (c + 1))), ¬ IsFree n' n c l.1 s.1 → x (Pi.single s 1) l = base xj l s := by
   constructor
@@ -105,11 +148,19 @@ theorem Q_iff {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (x : 
       rw [Pi.sub_apply, Hs l (n' + j) (by omega) (by simp only [IsFree]; omega)]
       simp [base, eN, hnl]
 
+/- English proof (translation)
+Rewrite using `[Q_iff]`. Introduce `l s h`. Rewrite using `[fillMatrix_single, dif_neg h]`.
+-/
 theorem isFillOf_fillMatrix {n' n c : ℕ} (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : FC n' (c + 1) n c → k) : Q xj (xx1 xj t) := by
   rw [Q_iff]
   intro l s h
   rw [fillMatrix_single, dif_neg h]
 
+/- English proof (translation)
+Use extensionality with `s l`. Simplify using `only [LinearMap.comp_apply, LinearMap.single_apply]`. Rewrite using `[fillMatrix_single]`. Use `split_ifs with hf`. Both sides reduce to the same expression.
+
+Conclude with `((Q_iff xj x).1 h l s hf).symm`.
+-/
 theorem fillMatrix_extractFree {n' n c : ℕ} {xj : (Fin n' → k) →ₗ[k] (Fin n → k)} {x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) → k)}
     (h : Q xj x) : xx1 xj (fe x) = x := by
   ext s l
@@ -119,6 +170,13 @@ theorem fillMatrix_extractFree {n' n c : ℕ} {xj : (Fin n' → k) →ₗ[k] (Fi
   · rfl
   · exact ((Q_iff xj x).1 h l s hf).symm
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun v => ?_, fun hc => ?_, fun j hj1 hjc => ?_⟩` and prove the remaining obligations. Use `show r (x (inX k n' (c + 1) v)) = inX k n c (g (xj v))`. Rewrite using `[h1, hg]`. Use `show r (x (eN k (n' + (c + 1)) n')) = eN k (n + c) n`.
+
+Rewrite using `[h2 hc, hr.2.1]`. Use `show r (x (eN k (n' + (c + 1)) (n' + j))) - eN k (n + c) (n + j) ∈ Ufl k n c j`. Establish `e : r (x (eN k (n' + (c + 1)) (n' + j))) - eN k (n + c) (n + j) = r (x (eN k (n' + (c + 1)) (n' + j)) - eN k (n + c) (n + j)) + (r (eN k (n + c) (n + j)) - eN k (n + c) (n + j))`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hr.1 j _ (h3 j hj1 hjc)) (hr.2.2 j)`.
+-/
 theorem Q_map {n' n c : ℕ} {r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} {g : (Fin n → k) ≃ₗ[k] (Fin n → k)}
     (hr : R1cond k n c r) (hg : ∀ x, r (inX k n c x) = inX k n c (g x)) {xj : (Fin n' → k) →ₗ[k] (Fin n → k)}
     {x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) → k)} (h : Q xj x) :

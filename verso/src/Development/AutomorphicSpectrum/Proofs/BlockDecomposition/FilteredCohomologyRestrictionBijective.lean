@@ -14,6 +14,19 @@ section Gen
 universe w w' v u v' u'
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
 
+/- English proof (translation)
+Set `τ : ∀ T, F.obj T →ₗ[R] (L ⋙ F').obj T` to `fun T => (m.τ (L.obj T)).comp (F.map (a.unit.app T)).hom`. Set `α : F ⟶ L ⋙ F'` to `{ app := fun T => ModuleCat.ofHom (τ T) naturality := fun T T' f => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `m.τ (L.obj T') ((F.map (a.unit.app T')).hom ((F.map f).hom x)) = (F'.map (L.map f)).hom (m.τ (L.obj T) ((F.map (a.unit.app T)).hom x))`. Rewrite using `[← m.nat]`.
+
+Establish `e` using `a.unit.naturality f`. Simplify using `only [Functor.id_map, Functor.comp_map] at e`. Establish `e1 : (F.map (a.unit.app T')).hom ((F.map f).hom x) = (F.map (f ≫ a.unit.app T')).hom x`. Rewrite using `[F.map_comp]`. Both sides reduce to the same expression.
+
+Establish `e2 : (F.map (m.G.map (L.map f))).hom ((F.map (a.unit.app T)).hom x) = (F.map (a.unit.app T ≫ m.G.map (L.map f))).hom x`. Rewrite using `[F.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, e]`. Use `rfl }`.
+
+Establish `hR` using `CrystallineSemistableComparison.P.adj F' L m.G a n`. Establish `hα : Function.Bijective ((CH.Mor.ofNatTrans α).pull n)`. Establish `h1` using `CrystallineSemistableComparison.P.coef_upTo α 1 (fun T => (CrystallineSemistableComparison.P.upTo_alg (α.app T).hom LinearMap.id 1 1).2.2.2.2.2 (hb T)) n`. Rewrite `h1` using `[one_pow]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg _ LinearMap.id 1 1).2.2.2.2.1 h1`.
+
+Establish `key : ∀ x, (CH.Mor.restrict F' L).pull n (m.pull n x) = (CH.Mor.ofNatTrans α).pull n x`. Introduce `x`. Establish `h1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) m (CH.Mor.restrict F' L) n x).1`. Establish `h2` using `CrystallineSemistableComparison.P.prism (CH.Mor.ofNatTrans α) (m.comp (σ'' := RingHom.id R) (CH.Mor.restrict F' L)) a.unit (fun T x => rfl) n x`. Rewrite using `[h2, h1]`.
+
+Establish `hc : (CH.Mor.restrict F' L).pull n ∘ m.pull n = (CH.Mor.ofNatTrans α).pull n` using `funext key`. Use `hR` as an intermediate fact. Conclude with `(Function.Bijective.of_comp_iff' hR _).1 (hc ▸ hα)`.
+-/
 theorem pull_bij_of_adj {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w} R} (m : CH.Mor F F' (RingHom.id R))
     (L : C ⥤ C') (a : L ⊣ m.G)
     (hb : ∀ T, Function.Bijective fun x => m.τ (L.obj T) ((F.map (a.unit.app T)).hom x)) (n : ℕ) :
@@ -51,6 +64,9 @@ theorem pull_bij_of_adj {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w} R
   have := hR
   exact (Function.Bijective.of_comp_iff' hR _).1 (hc ▸ hα)
 
+/- English proof (translation)
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `: Subsingleton (CH.Cn F n)` using `⟨fun f g => funext fun s => (h _).elim _ _⟩`. Conclude with `congrArg _ (Subtype.ext (Subsingleton.elim _ _))`.
+-/
 theorem H_subsingleton {F : C ⥤ ModuleCat.{w} R} (h : ∀ T, Subsingleton (F.obj T)) (n : ℕ) : Subsingleton (CH.H F n) := by
   refine ⟨fun x y => ?_⟩
   obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -62,6 +78,11 @@ end Gen
 
 section Quot
 
+/- English proof (translation)
+Use `⟨?_, fun {n} y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_map]`. Conclude with `hg.1`. Take `⟨a, ha, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp hy`. Rewrite using `[Quotient.dpow_apply δ hinf ha]`.
+
+Conclude with `hg.2 a ha`.
+-/
 theorem dp_lift {B C : Type} [CommRing B] [CommRing C] {J : Ideal B} (δ : DividedPowers J) {𝔟 : Ideal B}
     (hinf : δ.IsSubDPIdeal (𝔟 ⊓ J)) {J'' : Ideal C} (δ'' : DividedPowers J'') (g : B ⧸ 𝔟 →+* C)
     (hg : IsDPMorphism δ δ'' (g.comp (Ideal.Quotient.mk 𝔟))) : IsDPMorphism (Quotient.dividedPowers δ hinf) δ'' g := by
@@ -74,6 +95,9 @@ theorem dp_lift {B C : Type} [CommRing B] [CommRing C] {J : Ideal B} (δ : Divid
 variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {X : Scheme.{0}}
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
+/- English proof (translation)
+Establish `h : T.δ.IsSubDPIdeal (T.pdPow s)` using `FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal T.δ s hs`. Rewrite using `[inf_eq_left.mpr h.isSubideal]`. Conclude with `h`.
+-/
 theorem sub_inf (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) : T.δ.IsSubDPIdeal (T.pdPow s ⊓ T.J) := by
   have h : T.δ.IsSubDPIdeal (T.pdPow s) := FubiniStudyChowHeightFormula₂.Adr.Fil.fil_isSubDPIdeal T.δ s hs
   rw [inf_eq_left.mpr h.isSubideal]
@@ -101,17 +125,26 @@ def unitH (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) : T ⟶ qT T 
   mkH (T' := qT T hs) (Ideal.Quotient.mk (T.pdPow s)) (fun _ => rfl) (Quotient.isDPMorphism T.δ (sub_inf T hs))
     Ideal.le_comap_map rfl
 
+/- English proof (translation)
+Introduce `_ hx` and use `dividedPowerFiltration_map f.dp s hx`.
+-/
 theorem map_le {T T' : Thick (nlFun γ 0 X q κ)} (f : T ⟶ T') (s : ℕ) : T.pdPow s ≤ (T'.pdPow s).comap f.φ :=
   fun _ hx => dividedPowerFiltration_map f.dp s hx
 
 abbrev qRing {T T' : Thick (nlFun γ 0 X q κ)} (f : T ⟶ T') (s : ℕ) : T.B ⧸ T.pdPow s →+* T'.B ⧸ T'.pdPow s :=
   Ideal.quotientMap _ f.φ (map_le f s)
 
+/- English proof (translation)
+Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `Ideal.mem_map_of_mem (Ideal.Quotient.mk (T'.pdPow s)) (f.hle hx)`.
+-/
 theorem q_le {T T' : Thick (nlFun γ 0 X q κ)} (f : T ⟶ T') {s : ℕ} (hs : 1 ≤ s) :
     (qT T hs).J ≤ (qT T' hs).J.comap (qRing f s) := by
   refine Ideal.map_le_iff_le_comap.2 fun x hx => ?_
   exact Ideal.mem_map_of_mem (Ideal.Quotient.mk (T'.pdPow s)) (f.hle hx)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[CommRingCat.ofHom_comp, (nlFun γ 0 X q κ).Pt.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem pt_map_map {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) (c : A →+* C)
     (h : b.comp a = c) (y : (nlFun γ 0 X q κ).Pt.obj (CommRingCat.of A)) :
     (nlFun γ 0 X q κ).Pt.map (CommRingCat.ofHom b) ((nlFun γ 0 X q κ).Pt.map (CommRingCat.ofHom a) y) =
@@ -120,6 +153,9 @@ theorem pt_map_map {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A 
   rw [CommRingCat.ofHom_comp, (nlFun γ 0 X q κ).Pt.map_comp]
   rfl
 
+/- English proof (translation)
+Use `dp_lift T.δ (sub_inf T hs) _ _ ?_` and prove the remaining obligations. Establish `e : (qRing f s).comp (Ideal.Quotient.mk (T.pdPow s)) = (Ideal.Quotient.mk (T'.pdPow s)).comp f.φ` using `by ext; rfl`. Rewrite using `[e]`. Conclude with `IsDPMorphism.comp _ (Quotient.isDPMorphism T'.δ (sub_inf T' hs)) f.dp`.
+-/
 theorem qRing_dp {T T' : Thick (nlFun γ 0 X q κ)} (f : T ⟶ T') {s : ℕ} (hs : 1 ≤ s) :
     IsDPMorphism (qT T hs).δ (qT T' hs).δ (qRing f s) := by
   refine dp_lift T.δ (sub_inf T hs) _ _ ?_
@@ -140,6 +176,9 @@ def qMap {T T' : Thick (nlFun γ 0 X q κ)} (f : T ⟶ T') {s : ℕ} (hs : 1 ≤
 abbrev cRing (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (h0 : T.pdPow s = ⊥) : T.B ⧸ T.pdPow s →+* T.B :=
   Ideal.Quotient.lift _ (RingHom.id _) fun a ha => by rw [h0] at ha; exact (Ideal.mem_bot.1 ha)
 
+/- English proof (translation)
+Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `hx`.
+-/
 theorem c_le (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) (h0 : T.pdPow s = ⊥) :
     (qT T hs).J ≤ T.J.comap (cRing T h0) := by
   refine Ideal.map_le_iff_le_comap.2 fun x hx => ?_
@@ -158,15 +197,24 @@ def counitH (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) (h0 : T.pdP
     · rw [CommRingCat.ofHom_id, (nlFun γ 0 X q κ).Pt.map_id]
       rfl)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (FubiniStudyChowHeightFormula₂.Adr.Fil.fil_le_map_fil T.B T.J T.δ _ _ (qT T hs).δ _ (Quotient.isDPMorphism T.δ (sub_inf T hs)) rfl r) (FubiniStudyChowHeightFormula₂.Adr.Fil.map_fil_le T.δ (qT T hs).δ _ (Quotient.isDPMorphism T.δ (sub_inf T hs)) r)`.
+-/
 theorem pdPow_q (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) (r : ℕ) :
     (qT T hs).pdPow r = (T.pdPow r).map (Ideal.Quotient.mk (T.pdPow s)) :=
   le_antisymm (FubiniStudyChowHeightFormula₂.Adr.Fil.fil_le_map_fil T.B T.J T.δ _ _ (qT T hs).δ _
       (Quotient.isDPMorphism T.δ (sub_inf T hs)) rfl r)
     (FubiniStudyChowHeightFormula₂.Adr.Fil.map_fil_le T.δ (qT T hs).δ _ (Quotient.isDPMorphism T.δ (sub_inf T hs)) r)
 
+/- English proof (translation)
+Rewrite using `[pdPow_q, Ideal.map_quotient_self]`.
+-/
 theorem q_bot (T : Thick (nlFun γ 0 X q κ)) {s : ℕ} (hs : 1 ≤ s) : (qT T hs).pdPow s = ⊥ := by
   rw [pdPow_q, Ideal.map_quotient_self]
 
+/- English proof (translation)
+Introduce `x _`. Establish `e : pt (qT T hs) = Spec.map (CommRingCat.ofHom (redMap T s)) ≫ pt T` using `rfl`. Express the relevant statement in the definitionally equal form `(pt (qT T hs)) x ∈ V`. Rewrite using `[e]`. Conclude with `h (show (Spec.map (CommRingCat.ofHom (redMap T s))) x ∈ (⊤ : (Spec _).Opens) from trivial)`.
+-/
 theorem inU_q {V : X.Opens} {T : Thick (nlFun γ 0 X q κ)} (h : InU V T) {s : ℕ} (hs : 1 ≤ s) : InU V (qT T hs) := by
   intro x _
   have e : pt (qT T hs) = Spec.map (CommRingCat.ofHom (redMap T s)) ≫ pt T := rfl
@@ -200,6 +248,9 @@ def truncAdj {s : ℕ} (hs : 1 ≤ s) (hq : ∀ T, Q T → Q' (qT T hs)) (h : Q'
     (Ideal.Quotient.ringHom_ext (RingHom.ext fun x => rfl)))
   right_triangle_components T := ObjectProperty.hom_ext _ (hom_ext (RingHom.ext fun x => rfl))
 
+/- English proof (translation)
+Rewrite `hy` using `[pdPow_q]`. Take `⟨z, hz, e⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hy`. Establish `h1 : z - y ∈ T.pdPow s` using `Ideal.Quotient.eq.1 e`. Establish `h2` using `(T.pdPow t).sub_mem hz (T.pdPow_anti ht h1)`. Simplify using `using h2`.
+-/
 theorem mem_of_mk (T : Thick (nlFun γ 0 X q κ)) {s t : ℕ} (hs : 1 ≤ s) (ht : t ≤ s) {y : T.B}
     (hy : Ideal.Quotient.mk (T.pdPow s) y ∈ (qT T hs).pdPow t) : y ∈ T.pdPow t := by
   rw [pdPow_q] at hy
@@ -208,6 +259,13 @@ theorem mem_of_mk (T : Thick (nlFun γ 0 X q κ)) {s t : ℕ} (hs : 1 ≤ s) (ht
   have h2 := (T.pdPow t).sub_mem hz (T.pdPow_anti ht h1)
   simpa using h2
 
+/- English proof (translation)
+Break down `h with rfl | h` into its components or cases. Simplify using `using hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : Ideal.Quotient.mk (T.pdPow s) ((l : T.B) * y) ∈ (qT T hs).pdPow (min r s)`. Use `(qT T hs).pdPow_anti (min_le_left r s) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_natCast]`. Conclude with `hx`. Establish `h2` using `h _ _ (mem_of_mk T hs (min_le_right r s) h1)`. Rewrite using `[pdPow_q]`. Break down `le_total r s with hrs | hrs` into its components or cases.
+
+Rewrite `h2` using `[min_eq_left hrs]`. Conclude with `Ideal.mem_map_of_mem _ h2`. Rewrite `h2` using `[min_eq_right hrs]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 h2]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem q_tf (T : Thick (nlFun γ 0 X q κ)) {l s : ℕ} (hs : 1 ≤ s)
     (h : l = 1 ∨ ∀ (r : ℕ) (x : T.B), (l : T.B) * x ∈ T.pdPow r → x ∈ T.pdPow r) (r : ℕ) (x : (qT T hs).B)
     (hx : (l : (qT T hs).B) * x ∈ (qT T hs).pdPow r) : x ∈ (qT T hs).pdPow r := by
@@ -227,6 +285,13 @@ theorem q_tf (T : Thick (nlFun γ 0 X q κ)) {l s : ℕ} (hs : 1 ≤ s)
     rw [Ideal.Quotient.eq_zero_iff_mem.2 h2]
     exact Ideal.zero_mem _
 
+/- English proof (translation)
+Establish `ht : r'.toNat ≤ s` using `Int.toNat_le.2 hr`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₁, h₁⟩ ⟨x₂, h₂⟩ e`. Take `⟨y₁, hy₁, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h₁`. Take `⟨y₂, hy₂, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h₂`.
+
+Establish `e'` using `congrArg Subtype.val e`. Establish `e'' : Ideal.Quotient.mk (T.obj.pdPow s) y₁ - Ideal.Quotient.mk (T.obj.pdPow s) y₂ ∈ (qT T.obj hs).pdPow r'.toNat` using `Ideal.Quotient.eq.1 e'`. Rewrite `e''` using `[← map_sub]`. Conclude with `Subtype.ext (Ideal.Quotient.eq.2 (mem_of_mk T.obj hs ht e''))`. Introduce and unpack `⟨u, hu⟩`.
+
+Take `⟨v, hv, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hu`. Establish `hv' : v ∈ (qT T.obj hs).pdPow r.toNat` using `hv`. Rewrite `hv'` using `[pdPow_q]`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hv'`. Conclude with `⟨⟨Ideal.Quotient.mk _ y, Ideal.mem_map_of_mem _ hy⟩, rfl⟩`.
+-/
 theorem unit_bij {s : ℕ} (hs : 1 ≤ s) (hq : ∀ T, Q T → Q' (qT T hs)) (h : Q' ≤ Q) (h0 : ∀ T, Q' T → T.pdPow s = ⊥)
     (r r' : ℤ) (hr : r' ≤ s) (T : Q.FullSubcategory) :
     Function.Bijective fun x => ((incl h).sq (incl_fil h r) (incl_fil h r')).τ ((trunc hs hq).obj T)
@@ -248,6 +313,11 @@ theorem unit_bij {s : ℕ} (hs : 1 ≤ s) (hq : ∀ T, Q T → Q' (qT T hs)) (h 
     obtain ⟨y, hy, rfl⟩ := (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hv'
     exact ⟨⟨Ideal.Quotient.mk _ y, Ideal.mem_map_of_mem _ hy⟩, rfl⟩
 
+/- English proof (translation)
+Establish `e : (sFil Q r').S T = ⊤`. Establish `: r'.toNat = 0` using `Int.toNat_of_nonpos hr`. Express the relevant statement in the definitionally equal form `T.obj.pdPow r'.toNat = ⊤`. Rewrite using `[this, Thick.pdPow_zero]`. Establish `: Subsingleton ((sP Q).A.obj T ⧸ (sFil Q r').S T)` using `Ideal.Quotient.subsingleton_iff.2 e`.
+
+Conclude with `⟨fun a b => Subtype.ext (Subsingleton.elim (α := (sP Q).A.obj T ⧸ (sFil Q r').S T) a.1 b.1)⟩`.
+-/
 theorem sq_sub (Q : ObjectProperty (Thick (nlFun γ 0 X q κ))) (r r' : ℤ) (hr : r' ≤ 0) (T : Q.FullSubcategory) :
     Subsingleton ((sq (sFil Q r) (sFil Q r')).obj T) := by
   have e : (sFil Q r').S T = ⊤ := by
@@ -259,6 +329,13 @@ theorem sq_sub (Q : ObjectProperty (Thick (nlFun γ 0 X q κ))) (r r' : ℤ) (hr
 
 end Fun
 
+/- English proof (translation)
+Introduce `O R _ _ I γ X q κ Q₀ l s hQ 𝒱 h r r' hr j`. Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Establish `hr0 : r' ≤ 0` using `by exact_mod_cast hr`. Establish `h1` using `H_subsingleton (sq_sub (St Q₀ 𝒱) r r' hr0) j`. Establish `h2` using `H_subsingleton (sq_sub (St (γ := γ) (p := 0) (q := q) (κ := κ) (TF l 0) 𝒱) r r' hr0) j`.
+
+Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`. Establish `hq : ∀ T, St Q₀ 𝒱 T → St (TF l s) 𝒱 (qT T hs)`. Introduce and unpack `T ⟨hT, V, hV, hU⟩`. Use `⟨⟨q_bot T hs, q_tf T hs ?_⟩, V, hV, inU_q hU hs⟩` and prove the remaining obligations. Break down `hQ with ⟨-, rfl⟩ | ⟨s', -, rfl⟩` into its components or cases.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr hT.2`. Establish `h0 : ∀ T : Thick (nlFun γ 0 X q κ), St (TF l s) 𝒱 T → T.pdPow s = ⊥` using `fun T hT => hT.1.1`. Conclude with `pull_bij_of_adj ((incl h).sq (incl_fil h r) (incl_fil h r')) (trunc hs hq) (truncAdj hs hq h h0) (unit_bij hs hq h h0 r r' hr) j`.
+-/
 theorem pull_incl_bijective : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ 0 X q κ))) (l s : ℕ)
     (hQ : (Q₀ = ⊤ ∧ l = 1) ∨ ∃ s', s ≤ s' ∧ Q₀ = TF l s') (𝒱 : Set X.Opens) (h : St (TF l s) 𝒱 ≤ St Q₀ 𝒱) (r r' : ℤ) (hr : r' ≤ s) (j : ℕ),

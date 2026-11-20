@@ -17,6 +17,25 @@ namespace GlobalTheory.FlatTw
 
 open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x D V dict Z G₀ s G B hU hG hB hInt hGood`. Use `haveI : IsTotallyComplex c.F := ⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun e => CompHt.conj_comp_ne (c := c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`. Take `⟨a, 𝔞, ha, h𝔞, hint, hsum⟩` from `GlobalTheory.T.exists_ideal_rounding_realExponents_badPrimes c.F B s.lo hB s.finite_lo hInt`.
+
+Take `⟨φ, hφ, -, hlat, -⟩` from `GlobalTheory.T.exists_linearEquiv_mul_twistingSection_integral E H Dw l Xo c r U x Z G₀ s G hG`. Take `⟨hGood', hrk⟩` from `GlobalTheory.T.twistingSection_preserves_hermitianLattices_ranks E H Dw l Xo c r U x D V dict Z G₀ s G hU hG hGood`. Establish `hna : ∀ σ : c.F →+* ℂ, 0 < ‖σ a‖` using `fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 ha)`. Use `set t : (c.F →+* ℂ) → ℝ := fun σ => ‖σ a‖ * s.cInf σ with ht`. Establish `ht0 : ∀ σ, 0 < t σ` using `fun σ => mul_pos (hna σ) (s.cInf_pos σ)`.
+
+Establish `htc : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ` using `fun σ => by`. Simplify using `only [ht, RingHom.comp_apply, Complex.norm_conj]`. Rewrite using `[s.cInf_congr (CompHt.goodOf_conj σ)]`. Set `ψ : cuspOn U Z G →ₗ[c.F] cuspOn U Z (G + G₀)` to `a • φ.toLinearMap`. Establish `hψ : Function.Injective ψ` using `fun f g h => φ.injective (smul_right_injective _ ha h)`.
+
+Establish `hN : ∀ σ f, normOn U x V dict Z (G + G₀) σ (ψ f) ≤ t σ * normOn U x V dict Z G σ f`. Introduce `σ f`. Apply `le_of_eq` to reduce the goal to its premises. Establish `e : ((ψ f : cuspOn U Z (G + G₀)) : Rul Xo c) = a • ((f : Rul Xo c) * s.sig)`. Simplify using `[ψ, hφ]`.
+
+Simplify using `only [normOn]`. Rewrite using `[e, petOn_smul, petOn, petOn, GlobalTheory.T.petersson_norm_mul_twistingSection_eq_const_mul E H Dw l Xo c r U x Z G₀ s G hG f f.2.2 σ D _ _ _]`. Simplify using `only [ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : 𝔞 • (latOn U Z G).map (ψ.restrictScalars (𝓞 c.F)) ≤ latOn U Z (G + G₀)`.
+
+Rewrite using `[Submodule.smul_le]`. Introduce and unpack `b hb _ ⟨f, hf, rfl⟩`. Distinguish the cases in `hb0 : b = 0`. Rewrite using `[hb0, zero_smul]`. Conclude with `zero_mem _`.
+
+Establish `hb' : (b : c.F) ≠ 0` using `by simpa using hb0`. Use `hlat ((b : c.F) * a) (mul_ne_zero hb' ha) (hint b hb hb0) f hf _ ?_` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul c.F b]`. Simplify using `[ψ, mul_smul]`. Both sides reduce to the same expression.
+
+Establish `key` using `GlobalTheory.T.deg_add_le_deg_of_ideal_smul_le_alt c.F _ _ (normOn U x V dict Z G) (normOn U x V dict Z (G + G₀)) ψ t (latOn U Z G) (latOn U Z (G + G₀)) 𝔞 hGood.1 hGood'.1 hψ ht0 htc hN hGood.2.1 hGood'.2.1 h𝔞 hL hrk`. Establish `hlog : ∑ σ, Real.log (t σ) = ∑ σ : c.F →+* ℂ, Real.log ‖σ a‖ + ∑ σ, Real.log (s.cInf σ)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => Real.log_mul (hna σ).ne' (s.cInf_pos σ).ne'`. Establish `hdeg : s.degLo - logSum B ≤ -((∑ σ, Real.log (t σ)) / (Module.finrank ℚ c.F : ℝ)) - Real.log (Ideal.absNorm 𝔞 : ℝ) / (Module.finrank ℚ c.F : ℝ)`.
+
+Rewrite using `[hlog, add_div]`. Unfold `TwSec.degLo lineDeg logSum`. Combine the linear relations using `[hsum]`. Conclude with `le_trans (add_le_add le_rfl (mul_le_mul_of_nonneg_left hdeg (Nat.cast_nonneg _))) key`.
+-/
 theorem degOn_add_rank_mul_degLo_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (D : D7) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (Z : Comp Xo c) (G₀ : WTZ E) (s : TwSec U x Z G₀) (G : WTZ E) (B : Finset ℕ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → Even G.2 → (∀ p ∈ B, p.Prime) → IntOff B s.lo → GoodOn U x V dict Z G → degOn U x V dict Z G + (rankOn U Z G : ℝ) * (s.degLo - logSum B) ≤ degOn U x V dict Z (G + G₀) := by
   intro E _ _ _ H Dw l Xo c r U x D V dict Z G₀ s G B hU hG hB hInt hGood
   haveI : IsTotallyComplex c.F := ⟨fun v => by

@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Introduce `D T h j hj hG`. Take `⟨hL, -, -, hA⟩` from `evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c`. Use `⟨fun Z w g => ?_, fun w g h0 => ?_⟩` and prove the remaining obligations. Establish `hg` using `cutR_le T.C j w g.2`. Take `⟨g', hg', h1, h2⟩` from `exists_cusp_restrict_comp _ _ _ _ (T.Q.Xo j) T.Q.c hL hG (hA hG) D.R.r (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) (fun σ hσ => h.unf j hj σ hσ) Z (wtA w) w.n _ hg`.
+
+Establish `hm : g' ∈ cutR T.C j w`. Rewrite using `[cutR_eq T.C hj]`. Conclude with `hg'`. Conclude with `⟨⟨g', hm⟩, h1, h2⟩`. Conclude with `Subtype.ext (sec_eq_zero_of_generic_values _ _ _ _ (T.Q.Xo j) T.Q.c hL hG (hA hG) (wtA w) w.n _ (cusp_le_sec _ _ _ _ _ (cutR_le T.C j w g.2)) h0)`.
+-/
 theorem compSplit_and_genValInj : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), ∀ hG : GenFrEx (T.Q.Xo j) T.Q.c, CompSplitSt h j hG ∧ GenValInjSt h j hG := by
   intro D T h j hj hG
   obtain ⟨hL, -, -, hA⟩ := evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c

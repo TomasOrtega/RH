@@ -19,6 +19,13 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.TorsionFormCompare in
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D A₀ G G₀ _ _ _ _ ε hε hsa U₀`. Establish `hR : AdmBase R (maximalIdeal R)` using `hB.1`. Establish `he : eSec G ≫ ε.hom.left = 𝟙 _ ≫ eSec G₀`. Use `Eq.trans ?_ (Category.id_comp _).symm` and prove the remaining obligations. Conclude with `congrArg (fun f => f.left) (IsMonHom.one_hom ε.hom)`.
+
+Set `L' : RigLB G` to `⟨U₀.LG.L.pull ε.hom.left, rigPullOf ε.hom.left (𝟙 _) he U₀.LG.L U₀.LG.rig, LB.isLB_pull U₀.LG.isLB _, GlobalTheory.CubePullLawChecks.rigPullIsGen ε.hom.left (𝟙 _) he U₀.LG.L U₀.LG.rig U₀.LG.isLB U₀.LG.rigGen⟩`. Set `w : LB.Iso L'.L (U₀.LG.L.pull ε.hom.left)` to `idIso L'.L`. Establish `hw : RigAlong ε.hom U₀.LG L' w` using `⟨idIso_isGen L'.isLB, (maps_iff w _ (fun _ => eSec G₀) _ L'.rig U₀.LG.rig (𝟙 _) _ (rigPull_le _ _ he U₀.LG.L) (fun _ => rfl)).1 (idIso_maps L')⟩`. Take `⟨W, hW, hψ⟩` from `psiOnExists R (maximalIdeal R) hR D`. Take `⟨hD, hid⟩` from `exists_isIdPull R D.toPre W hW hψ`.
+
+Take `⟨bc, U, -, hb, -, hgen, hU⟩` from `exists_unif_move R (maximalIdeal R) D A₀ G₀ G ε hR hsa hε U₀ L' w hw hD`. Take `⟨-, w', hw', -⟩` from `sameUnif_of_isPullUnif R (maximalIdeal R) D A₀ G₀ G ε hD hid bc U₀ U hb hgen hU`. Conclude with `⟨U, w', hw'.1⟩`.
+-/
 theorem exists_unif_move_iso_lbIso : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A₀ : PolAV (Sp (FractionRing R))) (G G₀ : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀] [IsCommMonObj G₀] (ε : G ≅ G₀), IsMonHom ε.hom → IsSemiAbelian G₀ → ∀ U₀ : Unif (maximalIdeal R) D A₀ G₀, ∃ U : Unif (maximalIdeal R) D A₀ G, LBIso U.LG.L (U₀.LG.L.pull ε.hom.left) := by
   intro R _ _ _ hB D A₀ G G₀ _ _ _ _ ε hε hsa U₀
   have hR : AdmBase R (maximalIdeal R) := hB.1

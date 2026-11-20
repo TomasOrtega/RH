@@ -17,6 +17,17 @@ open UpperTheory.Gal.Int.Div
 
 namespace UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ N n V _ ⟨P, AI, hT, w, A, _, _, O, i1, i2, i3, Bw, _, τ, J, hj, ks, k1, k2, k3⟩`. Establish `hc : J.card = N`. Take `⟨L, r', hm, hd, τ', ht, hcnt⟩` from `id hj`. Take `⟨J', h1, h2⟩` from `hJ l P AI hT E Ω A O Bw N _ ⟨L, r', hm, hd⟩ τ L τ' ht`. Rewrite using `[← h2]`.
+
+Use `congr 1`. Use extensionality with `a`. Conclude with `(hcnt a).trans (h1.count_eq P hm ht a).symm` after adjusting the coercions. Take `⟨T⟩` from `hT`. Take `⟨Pm, k, hk, hf⟩` from `GlobalTheory.HodgeTateCochar.mem_closure_of_jumps l P AI T Bw _ τ J hj hc`.
+
+Use `⟨ℂ_[l], inferInstance, inferInstance, inferInstance, Pm.val, k, ks, (Matrix.isUnit_iff_isUnit_det _).1 Pm.isUnit, k1, k3, fun i => ?_, fun f h0 t ht => ?_⟩` and prove the remaining obligations. Use `k2 i` as an intermediate fact. Rewrite `this` using `[← hk]`. Take `⟨j, -, e⟩` from `Multiset.mem_map.1 this`. Conclude with `⟨j, e⟩`.
+
+Rewrite using `[← Matrix.coe_units_inv]`. Use `hf Bw.Kw le_rfl _ (fun g _ => ?_) t ht` and prove the remaining obligations. Use `congrArg (algebraMap (Qbar l) ℂ_[l]) (h0 g)` as an intermediate fact. Rewrite `this` using `[map_zero, MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left]`. Rewrite using `[MvPolynomial.eval_map]`.
+
+Conclude with `this`.
+-/
 theorem htCochar_of (hJ : JumpCard) : PositivityTheory.AutomorphicGaloisHodgeTate.Div.HTCochar := by
   intro E Ω _ _ _ _ _ l _ N n V _ ⟨P, AI, hT, w, A, _, _, O, i1, i2, i3, Bw, _, τ, J, hj, ks, k1, k2, k3⟩
   have hc : J.card = N := by
@@ -41,6 +52,9 @@ theorem htCochar_of (hJ : JumpCard) : PositivityTheory.AutomorphicGaloisHodgeTat
     rw [MvPolynomial.eval_map]
     exact this
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.AutomorphicGaloisHodgeTate.Div.cocharToLie_holds (htCochar_of hJ)`.
+-/
 theorem senWLac_of (hJ : JumpCard) : SenWLac := PositivityTheory.AutomorphicGaloisHodgeTate.Div.cocharToLie_holds (htCochar_of hJ)
 
 end UpperTheory.Gal.Int.Div

@@ -64,10 +64,22 @@ def oActIso {O : Type} [CommRing O] {S : Scheme.{0}} {A B : Over S} [GrpObj A] [
   mul x y := by rw [a.mul]; simp
   add x y := by rw [a.add, MonObj.mul_comp, MonObj.comp_mul]
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem pbMap_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Use `haveI := P.isAb.comm`. Use `haveI := P'.isAb.comm`. Set `U₂` to `lift (pushPt hψ.1.w (fst P'.A P'.A)) (pushPt hψ.1.w (snd P'.A P'.A))`. Establish `u₁ : U₂.left ≫ (fst P.A P.A).left = (fst P'.A P'.A).left ≫ ψ` using `TripleDescent.lift_left_fst _ _`. Establish `u₂ : U₂.left ≫ (snd P.A P.A).left = (snd P'.A P'.A).left ≫ ψ` using `TripleDescent.lift_left_snd _ _`.
+
+Establish `v₁ : (fst P'.A P'.A ≫ a').left ≫ ψ = U₂.left ≫ (fst P.A P.A ≫ a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, ← u₁, Category.assoc]`. Establish `v₂ : (snd P'.A P'.A ≫ b').left ≫ ψ = U₂.left ≫ (snd P.A P.A ≫ b).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hb, ← Category.assoc, ← u₂, Category.assoc]`. Establish `hφ : ∀ k, Out.rosatiφ P'.A a' b' k ≫ ψ = U₂.left ≫ Out.rosatiφ P.A a b k` using `fun k => by fin_cases k exacts [ArcPull.mul_push hψ U₂.left v₁ u₂.symm, v₁, u₂.symm, ArcPull.mul_push hψ U₂.left u₁.symm v₂, u₁.symm, v₂]`.
+
+Take `⟨t, ht⟩` from `RosatiDescent.exists_gen_of_rosatiAdj hr`. Take `⟨w, hw⟩` from `LBIso.symm hL`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, ht₁⟩ : ∃ t₁ : LB.Gen (LB.LinComb P.L (fun k => Out.rosatiφ P'.A a' b' k ≫ ψ) Out.rosatiε), t₁.IsGen := by`. Rewrite using `[show (fun k => Out.rosatiφ P'.A a' b' k ≫ ψ) = fun k => U₂.left ≫ Out.rosatiφ P.A a b k from funext hφ]`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ t ht _⟩`.
+
+Take `⟨a₀, ha₀⟩` from `exists_down ((isGen_iff w).1 hw) P.isLB P'.isLB t₁ ht₁`. Conclude with `fun s => ⟨⊤, trivial, _, DVR.pullGen_isGen _ _ _ a₀ ha₀ _⟩`.
+-/
 theorem rosatiAdj_pull {K K' : Type} [Field K] [Field K'] (f : K →+* K') {P : Out.PolAV (Sp K)}
     {P' : Out.PolAV (Sp K')} {ψ : P'.A.left ⟶ P.A.left} (hψ : IsGrpPullback P'.A P.A (spMap f) ψ)
     (hL : LBIso (P.L.pull ψ) P'.L) {a b : P.A ⟶ P.A} {a' b' : P'.A ⟶ P'.A} (ha : a'.left ≫ ψ = ψ ≫ a.left)
@@ -96,6 +108,21 @@ end GlobalTheory.PolPartPull
 
 namespace GlobalTheory.PolPartPull
 
+/- English proof (translation)
+Introduce `O _ c K K' _ _ f G _ i G' _ i' φ h hP`. Take `⟨T, P, e, j, hm, heq, hr⟩` from `hP`. Use `haveI := P.isAb.comm`. Use `haveI := hm`. Take `⟨P', ψ, -, hψ, hL⟩` from `GlobalTheory.exists_isPolFibre GlobalTheory.allSixLaws.1.polBaseChange f P`.
+
+Take `⟨ge, hgm, hgg⟩` from `grpPullback_iso (isGrpPullback_pullback G (spMap f)) h.1`. Take `⟨β, hβm, hβ⟩` from `grpPullback_iso (isGrpPullback_pullback P.A (spMap f)) hψ`. Use `haveI := hgm`. Use `haveI := hβm`. Establish `hgi : ∀ a, ge.hom ≫ i'.act a = (Over.pullback (spMap f)).map (i.act a) ≫ ge.hom` using `fun a => by`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, h.2 a, hgg, ← Category.assoc, hgg, pbMap_fst]`. Rewrite using `[Over.w, Over.w]`. Establish `h2 : ∀ a, i'.act a ≫ ge.inv = ge.inv ≫ (Over.pullback (spMap f)).map (i.act a)` using `fun a => by`.
+
+Rewrite using `[Iso.comp_inv_eq, Category.assoc, ← hgi, Iso.inv_hom_id_assoc]`. Set `j' : OAct O P'.A` to `oActIso β (OAct.pullback (spMap f) P.A j)`. Establish `hj : ∀ a, (j'.act a).left ≫ ψ = ψ ≫ (j.act a).left` using `fun a => by show (β.inv ≫ (Over.pullback (spMap f)).map (j.act a) ≫ β.hom).left ≫ ψ = _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hβ, pbMap_fst, ← hβ, ← Category.assoc, ← Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`. Set `T'` to `torusExtOfIso ge (torusExtPull (spMap f) G T)`.
+
+Establish `e1 : T'.q ≫ ((Over.pullback (spMap f)).mapIso e ≪≫ β).hom = ge.inv ≫ (Over.pullback (spMap f)).map (T.q ≫ e.hom) ≫ β.hom` using `by show (ge.inv ≫ (Over.pullback (spMap f)).map T.q) ≫ (Over.pullback (spMap f)).map e.hom ≫ β.hom = _`. Rewrite using `[Functor.map_comp, Category.assoc, Category.assoc]`. Use `⟨T', P', (Over.pullback (spMap f)).mapIso e ≪≫ β, j', ?_, fun a => ?_, fun a => rosatiAdj_pull f hψ hL (hj a) (hj (c a)) (hr a)⟩` and prove the remaining obligations. Use `show IsMonHom (T'.q ≫ ((Over.pullback (spMap f)).mapIso e ≪≫ β).hom)`. Rewrite using `[e1]`.
+
+Use `infer_instance`. Use `show i'.act a ≫ T'.q ≫ ((Over.pullback (spMap f)).mapIso e ≪≫ β).hom = (T'.q ≫ ((Over.pullback (spMap f)).mapIso e ≪≫ β).hom) ≫ j'.act a`. Rewrite using `[e1]`. Use `show i'.act a ≫ ge.inv ≫ (Over.pullback (spMap f)).map (T.q ≫ e.hom) ≫ β.hom = (ge.inv ≫ (Over.pullback (spMap f)).map (T.q ≫ e.hom) ≫ β.hom) ≫ β.inv ≫ (Over.pullback (spMap f)).map (j.act a) ≫ β.hom`. Rewrite using `[← Category.assoc (i'.act a), h2]`.
+
+Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[← Functor.map_comp_assoc, ← Functor.map_comp_assoc, heq a]`.
+-/
 theorem polPart_of_isActPull : ∀ (O : Type) [CommRing O] (c : O →+* O) (K K' : Type) [Field K] [Field K'] (f : K →+* K') (G : Over (Sp K)) [GrpObj G] (i : OAct O G) (G' : Over (Sp K')) [GrpObj G'] (i' : OAct O G') (φ : G'.left ⟶ G.left), IsActPull i' i (spMap f) φ → PolPart c i → PolPart c i' := by
   intro O _ c K K' _ _ f G _ i G' _ i' φ h hP
   obtain ⟨T, P, e, j, hm, heq, hr⟩ := hP

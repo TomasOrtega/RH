@@ -15,17 +15,31 @@ def blk (A : Matrix (Fin n) (Fin n) E) (c : E) : Matrix (Fin (n + 1)) (Fin (n + 
   Matrix.of fun i j => Fin.lastCases (Fin.lastCases c (fun _ => 0) j)
     (fun i' => Fin.lastCases 0 (fun j' => A i' j') j) i
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Fin.init]`.
+-/
 theorem blk_mulVec_castSucc (A : Matrix (Fin n) (Fin n) E) (c : E) (x : Fin (n + 1) → E) (i : Fin n) :
     (blk A c *ᵥ x) i.castSucc = (A *ᵥ Fin.init x) i := by
   simp [blk, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Fin.init]
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`.
+-/
 theorem blk_mulVec_last (A : Matrix (Fin n) (Fin n) E) (c : E) (x : Fin (n + 1) → E) :
     (blk A c *ᵥ x) (Fin.last n) = c * x (Fin.last n) := by
   simp [blk, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext_of_mulVec_single fun j => h _`.
+-/
 theorem blk_mulVec_ext {P Q : Matrix (Fin (n + 1)) (Fin (n + 1)) E} (h : ∀ x, P *ᵥ x = Q *ᵥ x) : P = Q :=
   Matrix.ext_of_mulVec_single fun j => h _
 
+/- English proof (translation)
+Use `blk_mulVec_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[blk_mulVec_last, blk_mulVec_last, blk_mulVec_last, mul_assoc]`.
+
+Rewrite using `[blk_mulVec_castSucc, blk_mulVec_castSucc, ← Matrix.mulVec_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Conclude with `blk_mulVec_castSucc _ _ _ _`.
+-/
 theorem blk_mul (A A' : Matrix (Fin n) (Fin n) E) (c c' : E) :
     blk A c * blk A' c' = blk (A * A') (c * c') := by
   refine blk_mulVec_ext fun x => ?_
@@ -38,6 +52,11 @@ theorem blk_mul (A A' : Matrix (Fin n) (Fin n) E) (c c' : E) :
     funext k
     exact blk_mulVec_castSucc _ _ _ _
 
+/- English proof (translation)
+Use `blk_mulVec_ext fun x => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[blk_mulVec_last, one_mul, Matrix.one_mulVec]`. Rewrite using `[blk_mulVec_castSucc, Matrix.one_mulVec, Matrix.one_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 theorem blk_one : blk (1 : Matrix (Fin n) (Fin n) E) 1 = 1 := by
   refine blk_mulVec_ext fun x => ?_
   funext i
@@ -50,6 +69,31 @@ end GlobalTheory.LocBasisSnoc
 
 open GlobalTheory.LocBasisSnoc in
 
+/- English proof (translation)
+Introduce `E _ _ N n hN t ht L L' hL p B' hp hB'`. Substitute `hN` using the available equality. Set `B : GL (Fin (n + 1)) E` to `⟨blk (B' : Matrix (Fin n) (Fin n) E) t⁻¹, blk ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) t, by rw [blk_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, inv_mul_cancel₀ ht, blk_one], by rw [blk_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_inv_cancel₀ ht, bl …`. Establish `hini : ∀ y : Fin (n + 1) → E, iniH rfl y = Fin.init y` using `fun y => rfl`. Establish `hlast : (Br.iL (rfl : n + 1 = n + 1)) = Fin.last n` using `rfl`.
+
+Use `⟨B, fun x => ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hini, hini]`. Use function extensionality and compare the values at `i`. Conclude with `blk_mulVec_castSucc _ _ _ _`. Rewrite using `[hlast] show t * (blk _ t⁻¹ *ᵥ x) (Fin.last n) = _`.
+
+Rewrite using `[blk_mulVec_last, ← mul_assoc, mul_inv_cancel₀ ht, one_mul]`. Introduce `x`. Establish `hinv : ((B⁻¹ : GL (Fin (n + 1)) E) : Matrix _ _ E) = blk ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) t` using `rfl`. Rewrite using `[hinv]`. Use `set R := (algebraMap (𝓞 E) E).range`.
+
+Establish `hR : ∀ (s : ℕ) {y : E}, y ∈ R → (s : E) * y ∈ R` using `fun s y hy => R.mul_mem (natCast_mem R s) hy`. Establish `key : ∀ s : ℕ, (∀ a, (s : E) * (blk ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) t *ᵥ x) a ∈ R) ↔ (∀ a, (s : E) * (((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ Fin.init x) a ∈ R) ∧ (s : E) * (t * x (Fin.last n)) ∈ R`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Use `h a.castSucc` as an intermediate fact. Rewrite `this` using `[blk_mulVec_castSucc]`. Then use the resulting hypothesis. Use `h (Fin.last n)` as an intermediate fact. Rewrite `this` using `[blk_mulVec_last]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨h1, h2⟩ a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Rewrite using `[blk_mulVec_last]`. Conclude with `h2`. Rewrite using `[blk_mulVec_castSucc]`.
+
+Conclude with `h1 i`. Establish `memL : ∀ s : ℕ, (s : E) • x ∈ L ↔ (s : E) • Fin.init x ∈ L' ∧ (s : E) * (t * x (Fin.last n)) ∈ R`. Introduce `s`. Rewrite using `[hL, hini, hlast, Submodule.mem_one]`. Establish `e : t * ((s : E) • x) (Fin.last n) = (s : E) * (t * x (Fin.last n))`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hnd : ∀ a b : ℕ, ¬ p ∣ a → ¬ p ∣ b → ¬ p ∣ a * b` using `fun a b ha hb h => (hp.dvd_mul.mp h).elim ha hb`. Establish `hB` using `hB' (Fin.init x)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨h1, h2⟩` from `(memL s).mp hx`. Take `⟨s', hs', h3⟩` from `hB.mp ⟨s, hs, h1⟩`. Use `⟨s * s', hnd _ _ hs hs', (key _).mpr ⟨fun a => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `hR s (h3 a)`. Rewrite using `[Nat.cast_mul, mul_comm (s : E), mul_assoc]`. Conclude with `hR s' h2`. Introduce and unpack `⟨s, hs, h⟩`.
+
+Take `⟨h1, h2⟩` from `(key s).mp h`. Take `⟨s', hs', h3⟩` from `hB.mpr ⟨s, hs, h1⟩`. Use `⟨s * s', hnd _ _ hs hs', (memL _).mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem h3 s`.
+
+Rewrite using `[Nat.cast_mul, mul_comm (s : E), mul_assoc]`. Conclude with `hR s' h2`.
+-/
 theorem GlobalTheory.isLocBasis_snoc : ∀ {E : Type} [Field E] [NumberField E] {N n : ℕ} (hN : N = n + 1) (t : E), t ≠ 0 → ∀ (L : Submodule (𝓞 E) (Fin N → E)) (L' : Submodule (𝓞 E) (Fin n → E)), (∀ x, x ∈ L ↔ iniH hN x ∈ L' ∧ t * x (Br.iL hN) ∈ (1 : Submodule (𝓞 E) E)) → ∀ (p : ℕ) (B' : GL (Fin n) E), p.Prime → IsLocBasis p (L' : Set (Fin n → E)) B' → ∃ B : GL (Fin N) E, (∀ x, iniH hN ((B : Matrix (Fin N) (Fin N) E) *ᵥ x) = (B' : Matrix (Fin n) (Fin n) E) *ᵥ iniH hN x) ∧ (∀ x, t * ((B : Matrix (Fin N) (Fin N) E) *ᵥ x) (Br.iL hN) = x (Br.iL hN)) ∧ IsLocBasis p (L : Set (Fin N → E)) B := by
   intro E _ _ N n hN t ht L L' hL p B' hp hB'
   subst hN

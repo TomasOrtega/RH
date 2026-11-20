@@ -11,6 +11,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.PZ.TiltHyps
 
+/- English proof (translation)
+Unfold `resCard`. Use `haveI := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).injective`. Establish `: 0 < Module.finrank ℚ_[l] ↥(K0 K)` using `Module.finrank_pos`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem two_le_resCard {l : ℕ} [Fact l.Prime] (K : FinExt l) : 2 ≤ resCard K := by
   unfold resCard
   haveI := K.2
@@ -22,6 +25,13 @@ theorem two_le_resCard {l : ℕ} [Fact l.Prime] (K : FinExt l) : 2 ≤ resCard K
     _ = l ^ 1 := (pow_one l).symm
     _ ≤ _ := Nat.pow_le_pow_right (Fact.out : l.Prime).pos this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hw`. Use `push_neg at hw`. Establish `e : w ^ q = (c * w + w ^ q) + (-(c * w))` using `by ring`. Establish `h1 : ‖w ^ q‖ ≤ max ‖c * w + w ^ q‖ ‖-(c * w)‖`. Use `IsUltrametricDist.norm_add_le_max (c * w + w ^ q) (-(c * w))` as an intermediate fact.
+
+Rewrite `this` using `[← e]`. Then use the resulting hypothesis. Establish `h2 : ‖-(c * w)‖ ≤ ‖w‖`. Rewrite using `[norm_neg, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg w, norm_nonneg c]`. Establish `h3 : ‖w‖ ^ 2 ≤ ‖w‖ ^ q` using `pow_le_pow_right₀ hw.le hq`.
+
+Rewrite `h1` using `[norm_pow]`. Establish `h4 : ‖w‖ ^ q ≤ ‖w‖` using `h1.trans (max_le (h.trans hw.le) h2)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_le_one_of_lt {l : ℕ} [Fact l.Prime] {c w : ℂ_[l]} {q : ℕ} (hq : 2 ≤ q) (hc : ‖c‖ ≤ 1)
     (h : ‖c * w + w ^ q‖ ≤ 1) : ‖w‖ ≤ 1 := by
   by_contra hw
@@ -40,6 +50,29 @@ theorem norm_le_one_of_lt {l : ℕ} [Fact l.Prime] {c w : ℂ_[l]} {q : ℕ} (hq
 end GlobalTheory.PZ.TiltHyps
 
 open GlobalTheory.PZ GlobalTheory.PZ.TiltHyps in
+/- English proof (translation)
+Introduce `l _ K _ χ π z h`. Take `⟨hπ, hz0, hz1, hrel, hgal⟩` from `h`. Take `⟨hF, hiff⟩` from `GlobalTheory.T.lubin_tate_endomorphism_unique l K π hπ`. Use `set q := resCard K with hqdef`. Establish `hq : 2 ≤ q` using `two_le_resCard K`.
+
+Use `set c : ℂ_[l] := (((π : ↥K.1) : Om l) : ℂ_[l]) with hcdef`. Establish `hc : ‖c‖ ≤ 1` using `(GlobalTheory.RingBasics.mem_OC _).1 (intToOC K π).2`. Establish `hrelC : ∀ n, c * (z (n + 1) : ℂ_[l]) + (z (n + 1) : ℂ_[l]) ^ q = (z n : ℂ_[l])` using `fun n => by`. Use `congrArg (algebraMap (Om l) ℂ_[l]) (hrel n)` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_pow]`.
+
+Conclude with `this`. Establish `hnorm : ∀ n, ‖(z n : ℂ_[l])‖ ≤ 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [hz0]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih => exact norm_le_one_of_lt hq hc (by rw [hrelC n]; exact ih)`. Set `v : ℕ → OC l` to `fun n => ⟨(z n : ℂ_[l]), (GlobalTheory.RingBasics.mem_OC _).2 (hnorm n)⟩`. Use `⟨hπ, hF, v, fun n => rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`.
+
+Establish `hcoef : ∀ i, ((intToOC K (PowerSeries.coeff i (ltSeries K π)) * v (n + 1) ^ i : OC l) : ℂ_[l]) = (if i = 1 then c * (z (n + 1) : ℂ_[l]) else 0) + (if i = q then (z (n + 1) : ℂ_[l]) ^ q else 0)`. Introduce `i`. Establish `e1 : ltSeries K π = PowerSeries.C π * PowerSeries.X ^ 1 + PowerSeries.X ^ q`. Rewrite using `[pow_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, map_add, PowerSeries.coeff_C_mul_X_pow, PowerSeries.coeff_X_pow]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | (exfalso; omega) | (subst_vars; simp [v, hcdef, coe_intToOC])`. Repeatedly rewrite using `[hcoef]`. Use `show HasSum _ (z n : ℂ_[l])`. Rewrite using `[← hrelC n]`.
+
+Conclude with `(hasSum_ite_eq 1 _).add (hasSum_ite_eq q _)`. Conclude with `Subtype.ext (by simp [v, hz0])`. Introduce `h1`. Apply `hz1` to reduce the goal to its premises. Establish `: (z 1 : ℂ_[l]) = ((0 : Om l) : ℂ_[l])`.
+
+Simplify `congrArg Subtype.val h1` using `[v]`. Conclude with `(algebraMap (Om l) ℂ_[l]).injective this`. Introduce `g u hu n`. Take `⟨a, ha, φ, hφ, hs⟩` from `hgal g`. Establish `hau : a = u` using `Subtype.ext (ha.trans hu.symm)`.
+
+Substitute `hau` using the available equality. Establish `hφe : φ = (lubinTateHom hπ hF hF a).toPowerSeries` using `(hiff a φ).1 hφ`. Rewrite using `[← hφe]`. Establish `hm` using `(hs n).map (algebraMap (Om l) ℂ_[l]).toAddMonoidHom (UniformSpace.Completion.continuous_coe (Om l))`. Establish `e2 : ((Per.σO (g : GQ l) (v n) : OC l) : ℂ_[l]) = (((g : GQ l) (z n) : Om l) : ℂ_[l])`.
+
+Use `(GlobalTheory.RingIface.sigO_coe l (g : GQ l) (v n)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Per.σC (g : GQ l) ((z n : Om l) : ℂ_[l]) = _`. Rewrite using `[GlobalTheory.RingBasics.σC_coe]`. Rewrite using `[e2]`. Use `hm using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Use `show (((intToOC K _ : OC l) : ℂ_[l]) * ((z n : Om l) : ℂ_[l]) ^ i) = _`. Simplify using `only [Function.comp, coe_intToOC, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, map_mul, map_pow]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.PZ.ltData_tilt_hyps : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) [Finite (IsLocalRing.ResidueField ↥(OL K))] (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l), LTData K χ π z →
     ∃ (hπ : Irreducible π) (hF : IsLubinTateSeries π (ltSeries K π)) (v : ℕ → OC l),
       (∀ n, ((v n : OC l) : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (z n)) ∧

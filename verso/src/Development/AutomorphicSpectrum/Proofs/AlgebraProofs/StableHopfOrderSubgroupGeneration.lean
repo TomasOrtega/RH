@@ -15,6 +15,55 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hq N _ _ _ _ AA hst K t ht hgen τ hτ`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Take `⟨⟨S, hS, hSst⟩, -⟩` from `GlobalTheory.T.stable_hopf_order_subgroup_translation p C v R hv hp F f hq N AA hst K t ht`. Take `⟨hord, -, hfund, hfunds, -⟩` from `GlobalTheory.T.teichmuller_character_order_generates p C v R hv hp F f hq τ hτ`. Establish `hf0 : f ≠ 0`.
+
+Introduce and unpack `rfl`. Use `Fintype.one_lt_card (α := F)` as an intermediate fact. Rewrite `this` using `[hq, pow_zero]`. Conclude with `lt_irrefl _ this`. Establish `hq1 : 1 < p ^ f` using `Nat.one_lt_pow hf0 hp1`.
+
+Establish `hper1 : τ ^ p ^ f = τ`. Establish `: p ^ f = orderOf τ + 1` using `by omega`. Rewrite using `[this, pow_succ, pow_orderOf_eq_one, one_mul]`. Establish `hper : ∀ m, τ ^ p ^ (f * m) = τ`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hper1]`. Establish `hprin : ∀ χ : MulChar F R, ∃ c : R, c ≠ 0 ∧ xIdeal S.carrier χ = Ideal.span {c}` using `fun χ => (GlobalTheory.T.character_ideal_principal_eigen p C v R hv hp F f hq S hSst χ).1`. Use `choose c0 hc0 hc0' using hprin`.
+
+Set `c : ℕ → R` to `fun n => c0 (τ ^ p ^ n)`. Establish `hcX : ∀ n, idealX AA.carrier K t (τ ^ p ^ n) = Ideal.span {c n}`. Introduce `n`. Rewrite using `[idealX, ← hS]`. Conclude with `hc0' _`.
+
+Establish `hom` using `GlobalTheory.T.fundamental_ideal_frobenius_product p C v R hv hp F f hq S hSst τ hτ c (fun n => hc0' _)`. Establish `hcper : ∀ m, c (f * m) = c 0`. Introduce `m`. Simplify using `only [c, hper m, pow_zero, pow_one]`. Set `y : ℕ → NNReal` to `fun n => v (algebraMap R C (c n))`.
+
+Establish `hy1 : ∀ n, y n ≤ 1` using `fun n => hv.map_le_one _`. Establish `hy0 : ∀ n, y n ≠ 0`. Introduce `n`. Use `(Valuation.ne_zero_iff _).2 fun h => hc0 (τ ^ p ^ n) (hv.hom_inj ?_)` and prove the remaining obligations. Simplify `h` using `[c]`.
+
+Establish `hle : ∀ n, y n ^ p ≤ y (n + 1)`. Introduce `n`. Take `⟨δ, hδ⟩` from `(hom n).2.1`. Establish `: y n ^ p = v (algebraMap R C δ) * y (n + 1)`. Simplify using `only [y]`.
+
+Rewrite using `[← map_pow, ← map_pow, hδ, map_mul, map_mul]`. Rewrite using `[this]`. Conclude with `mul_le_of_le_one_left' (hv.map_le_one _)`. Establish `hpowp : ∀ n, (τ ^ p ^ n) ^ p = τ ^ p ^ (n + 1)`. Introduce `n`.
+
+Rewrite using `[← pow_mul, ← pow_succ]`. Establish `hlt : ∀ n, y n ^ p < y (n + 1) → c (n + 1) ∈ idealD p AA.carrier K t (τ ^ p ^ (n + 1))`. Introduce `n h`. Use `GlobalTheory.T.stable_hopf_order_subgroup_quotient p C v R hv hp F f hq N AA hst K t ht hgen (τ ^ p ^ n) (hfund n) (c n) (c (n + 1)) (hcX n) (by rw [hpowp]; exact hcX (n + 1)) h` as an intermediate fact. Rewrite `this` using `[hpowp]`. Then use the resulting hypothesis.
+
+Establish `heq : ∀ n, y n ^ p = y (n + 1) → c n ∈ idealD p AA.carrier K t (τ ^ p ^ n) → c (n + 1) ∈ idealD p AA.carrier K t (τ ^ p ^ (n + 1))`. Introduce `n h hg`. Establish `h1` using `GlobalTheory.T.stable_hopf_order_subgroup_length p C v R hv hp F f hq N AA hst K t (τ ^ p ^ n) (c n) hg`. Rewrite `h1` using `[hpowp]`. Take `⟨δ, hδ⟩` from `(hom n).2.1`.
+
+Establish `hv1 : v (algebraMap R C δ) = 1`. Establish `h2 : y n ^ p = v (algebraMap R C δ) * y (n + 1)`. Simplify using `only [y]`. Rewrite using `[← map_pow, ← map_pow, hδ, map_mul, map_mul]`. Rewrite `h2` using `[h]`.
+
+Conclude with `(mul_right_cancel₀ (hy0 (n + 1)) (by rw [one_mul]; exact h2)).symm`. Establish `hu : IsUnit δ`. Use `hv.isUnit_of_one ?_ hv1` and prove the remaining obligations. Use `IsUnit.mk0 _ fun h0 => ?_` and prove the remaining obligations. Rewrite `hv1` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv1`. Rewrite `h1` using `[hδ]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 h1`. Establish `hex : ∃ n, c n ∈ idealD p AA.carrier K t (τ ^ p ^ n)`. Distinguish the cases in `h : ∃ n, y n ^ p < y (n + 1)`.
+
+Take `⟨n, hn⟩` from `h`. Conclude with `⟨n + 1, hlt n hn⟩`. Establish `hall : ∀ n, y n ^ p = y (n + 1)` using `fun n => le_antisymm (hle n) (not_lt.1 fun h' => h ⟨n, h'⟩)`. Establish `hyn : ∀ n, y n = y 0 ^ p ^ n`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [← hall n, ih, ← pow_mul, pow_succ]`. Establish `hyf : y 0 ^ p ^ f = y 0`. Rewrite using `[← hyn f]`.
+
+Use `hcper 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Simplify using `only [y, this]`. Establish `hy01 : y 0 = 1`. Use `le_antisymm (hy1 0) (not_lt.1 fun h' => ?_)` and prove the remaining obligations.
+
+Use `pow_lt_self_of_lt_one₀ (pos_iff_ne_zero.2 (hy0 0)) h' hq1` as an intermediate fact. Conclude with `absurd hyf this.ne`. Establish `hu : IsUnit (c 0)`. Use `hv.isUnit_of_one ?_ hy01` and prove the remaining obligations. Use `IsUnit.mk0 _ fun h0 => ?_` and prove the remaining obligations.
+
+Establish `: y 0 = 0` using `by simp only [y, h0, map_zero]`. Conclude with `hy0 0 this`. Establish `hX : idealX AA.carrier K t τ = ⊤`. Use `hcX 0` as an intermediate fact. Rewrite `this` using `[pow_zero, pow_one]`.
+
+Rewrite using `[this]`. Conclude with `Ideal.span_singleton_eq_top.2 hu`. Take `⟨τ', hτ', hD⟩` from `GlobalTheory.T.hopf_order_ideals_eq_top p C v R hv hp F f hq N AA hst K t ht hgen τ hX`. Take `⟨n, -, rfl⟩` from `hfunds τ' hτ'`. Conclude with `⟨n, by rw [hD]; trivial⟩`.
+
+Take `⟨n, hn⟩` from `hex`. Establish `hlater : ∀ k, c (n + k) ∈ idealD p AA.carrier K t (τ ^ p ^ (n + k))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hn`.
+
+Consider the case `succ k ih`. Break down `(hle (n + k)).lt_or_eq with h | h` into its components or cases. Conclude with `hlt _ h`. Conclude with `heq _ h ih`. Establish `hnf : n ≤ f * n` using `Nat.le_mul_of_pos_left n (Nat.pos_of_ne_zero hf0)`.
+
+Establish `hg` using `hlater (f * n - n)`. Rewrite `hg` using `[Nat.add_sub_cancel' hnf, hper n]`. Establish `hX` using `hcX (f * n)`. Rewrite `hX` using `[hper n]`. Rewrite using `[hX]`.
+
+Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hg`.
+-/
 theorem idealX_le_idealD : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (N : Type) [AddCommGroup N] [Module F N] [Fintype N] [DecidableEq N] (AA : HopfOrder (C := C) R N), FStable F AA.carrier → ∀ (K : Submodule F N) (t : N), t ∉ K → GenAF p AA.carrier K.toAddSubgroup → ∀ τ : MulChar F R, IsFund p τ → idealX AA.carrier K t τ ≤ idealD p AA.carrier K t τ := by
   intro p _ C _ _ _ v R _ _ hv hp F _ _ _ _ f hq N _ _ _ _ AA hst K t ht hgen τ hτ
   have hp1 : 1 < p := (Fact.out : p.Prime).one_lt

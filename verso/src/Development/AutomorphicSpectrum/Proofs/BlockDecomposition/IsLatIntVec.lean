@@ -49,6 +49,17 @@ def tor {m : ℕ} (c : Matrix (Fin m) (Fin m) K) (u : Fin m → K) : Ideal (𝓞
 def lastFib {m : ℕ} (C : Matrix (Fin (m + 1)) (Fin (m + 1)) K) : Submodule (𝓞 K) K :=
   (lam C).comap (LinearMap.single (𝓞 K) (fun _ : Fin (m + 1) => K) (Fin.last m))
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : intVec K m = (⊤ : Submodule (𝓞 K) (Fin m → 𝓞 K)).map (LinearMap.compLeft (Algebra.linearMap (𝓞 K) K) (Fin m))`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, Submodule.mem_top, true_and]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv choose o ho using hv`. Conclude with `⟨o, funext fun i => ho i⟩`. Introduce and unpack `⟨o, rfl⟩ i`. Conclude with `⟨o i, rfl⟩`. Rewrite using `[h]`.
+
+Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ i, v i • (Pi.single i (1 : K) : Fin m → K)`. Use extensionality with `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`.
+-/
 theorem isLat_intVec (m : ℕ) : IsLat (intVec K m) := by
   refine ⟨?_, ?_⟩
   · have h : intVec K m = (⊤ : Submodule (𝓞 K) (Fin m → 𝓞 K)).map

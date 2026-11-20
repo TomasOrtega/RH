@@ -12,6 +12,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace GlobalTheory.CompanionTheory.RedFil
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨[], by simp, rfl, by simp⟩`. Consider the case `cons q l ih`. Take `⟨l', h1, h2, h3⟩` from `ih fun p hp => hl p (List.mem_cons_of_mem _ hp)`. Establish `hq` using `hl q List.mem_cons_self`.
+
+Rewrite `hq` using `[hJ]`. Take `⟨y, hy, e⟩` from `(Ideal.mem_map_iff_of_surjective f hs).1 hq`. Use `⟨(q.1, y) :: l', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases.
+
+Use `exacts [hy, h1 p hp]`. Simplify using `[h2]`. Simplify using `only [List.map_cons, List.prod_cons, map_mul, h3, ← e]`. Rewrite using `[hf.2 y hy]`.
+-/
 theorem exists_lift {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'}
     {δ : DividedPowers J} {δ' : DividedPowers J'} {f : B →+* B'} (hf : IsDPMorphism δ δ' f)
     (hJ : J' = J.map f) (hs : Function.Surjective f) (l : List (ℕ × B')) (hl : ∀ q ∈ l, q.2 ∈ J') :
@@ -32,6 +39,9 @@ theorem exists_lift {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' :
     · simp only [List.map_cons, List.prod_cons, map_mul, h3, ← e]
       rw [hf.2 y hy]
 
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Take `⟨l', h1, h2, h3⟩` from `exists_lift hf hJ hs l hl`. Rewrite using `[h3]`. Conclude with `Ideal.mem_map_of_mem f (Ideal.subset_span ⟨l', h1, by rwa [h2], rfl⟩)`.
+-/
 theorem dividedPowerFiltration_le_map {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'}
     {δ : DividedPowers J} {δ' : DividedPowers J'} {f : B →+* B'} (hf : IsDPMorphism δ δ' f)
     (hJ : J' = J.map f) (hs : Function.Surjective f) (r : ℕ) : pdP δ' r ≤ (pdP δ r).map f := by
@@ -46,6 +56,9 @@ variable {O A R Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R] 
   {I : Ideal A} {γ : DividedPowers I} {J : Ideal R} {δ : DividedPowers J} {κ : O →+* R ⧸ J} {l n : ℕ}
   (d : RedIn δ κ γ l n) {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {s : ℕ}
 
+/- English proof (translation)
+The claim follows from `dividedPowerFiltration_le_map (redδ_dp T h n) rfl Ideal.Quotient.mk_surjective r`.
+-/
 theorem redObj_pdPow (T : Thick (nlFun γ 0 X q (κA O I))) (h : TF l s T) (r : ℕ) :
     (redObj T d h).pdPow r ≤ (T.pdPow r).map (Ideal.Quotient.mk (lnT T l n)) :=
   dividedPowerFiltration_le_map (redδ_dp T h n) rfl Ideal.Quotient.mk_surjective r
@@ -67,6 +80,9 @@ variable {O A R Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R] 
   (𝒱 : Set X.Opens) (c : Λ →+* R) (lam : Λ →+* A)
   (hc : ∀ a, d.ρ (c a) = Ideal.Quotient.mk _ (lam a))
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (redObj_pdPow d T.obj T.property.1 r hv)`. Use `Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ T.obj.pdPow (r : ℤ).toNat`. Simplify using `using hy`.
+-/
 theorem val_zero (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (v : ((redG q s d 𝒱).obj T).B)
     (hv : v ∈ ((redG q s d 𝒱).obj T).pdPow r) :
     (sqLe (a := IdF.top _) (a' := IdF.top _) (b := stdI (TS γ q l s 𝒱) none ((l : A) ^ n))
@@ -79,6 +95,17 @@ theorem val_zero (r : ℕ) (T : (TS γ q l s 𝒱).FullSubcategory) (v : ((redG 
   change y ∈ T.obj.pdPow (r : ℤ).toNat
   simpa using hy
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 y`. Set `S` to `B.pdS (nlFun δ l X q κ) c r`. Set `m` to `redMor q s d 𝒱 c lam hc none`. Set `t` to `sqLe (a := IdF.top _) (a' := IdF.top _) (b := stdI (TS γ q l s 𝒱) none ((l : A) ^ n)) (b' := stdI (TS γ q l s 𝒱) (some (r : ℤ)) ((l : A) ^ n)) (fun _ => le_rfl) (fun T => sup_le_sup_right (bot_le : (⊥ : Ideal _) ≤ _) _)`.
+
+Establish `h1 : CH.d _ j (S.inc.pullC j a) = 0`. Rewrite using `[S.inc.d_pullC]`. Conclude with `(congrArg _ ha).trans (map_zero _)`. Establish `h2 : CH.d _ j (m.pullC j (S.inc.pullC j a)) = 0`. Rewrite using `[m.d_pullC, h1, map_zero]`.
+
+Establish `h3 : CH.d _ j (t.pullC j (m.pullC j (S.inc.pullC j a))) = 0`. Rewrite using `[t.d_pullC, h2, map_zero]`. Establish `e1 : S.inc.pull j ((CH.cx _).cls a ha) = (CH.cx _).cls (S.inc.pullC j a) h1` using `CrystallineSemistableComparison.P.mapH_cls S.inc.hom j a ha h1`. Establish `e2 : m.pull j ((CH.cx _).cls (S.inc.pullC j a) h1) = (CH.cx _).cls (m.pullC j (S.inc.pullC j a)) h2` using `CrystallineSemistableComparison.P.mapH_cls m.hom j _ h1 h2`. Establish `e3 : t.pull j ((CH.cx _).cls (m.pullC j (S.inc.pullC j a)) h2) = (CH.cx _).cls (t.pullC j (m.pullC j (S.inc.pullC j a))) h3` using `CrystallineSemistableComparison.P.mapH_cls t.hom j _ h2 h3`.
+
+Establish `e4 : t.pullC j (m.pullC j (S.inc.pullC j a)) = 0`. Use function extensionality and compare the values at `σ`. Conclude with `val_zero d q s 𝒱 c lam hc r _ _ (a (((σ ⋙ t.G) ⋙ m.G) ⋙ S.inc.G)).2`. Express the relevant statement in the definitionally equal form `t.pull j (m.pull j (S.inc.pull j _)) = 0`. Rewrite using `[e1, e2, e3]`.
+
+Conclude with `((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ h3).2 (by rw [e4]; exact Submodule.zero_mem _)`.
+-/
 theorem red_kills (r j : ℕ) : ∀ x ∈ (B.pdS (nlFun δ l X q κ) c r).img j,
     toSomeP (TS γ q l s 𝒱) (r : ℤ) ((l : A) ^ n) j ((redMor q s d 𝒱 c lam hc none).pull j x) = 0 := by
   rintro _ ⟨y, rfl⟩

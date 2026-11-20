@@ -15,6 +15,19 @@ open GlobalTheory.CompanionTheory.SW.Growth
 section Abstract
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d M : ℕ}
 
+/- English proof (translation)
+Establish `hdil : ∀ (a : ℕ), 0 < a → ∀ v, μ v (dilSet b v a) < ⊤`. Introduce `a ha v`. Take `⟨e, he, -, -⟩` from `exists_exponents (F := F) a ha`. Rewrite using `[hscale v a (e v) ha (he v).1 (he v).2]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hfin v)`.
+
+Establish `hpos : ∀ v, 0 < (μ v (latV b v)).toReal`. Introduce `v`. Take `⟨n, hn, hnz⟩` from `exists_pos_mass b v (μ v) (hne v)`. Take `⟨e, he, -, -⟩` from `exists_exponents (F := F) n hn`. Establish `hz : μ v (latV b v) ≠ 0`.
+
+Introduce `h0`. Rewrite `hnz` using `[hscale v n (e v) hn (he v).1 (he v).2, h0, mul_zero]`. Conclude with `hnz rfl`. Conclude with `ENNReal.toReal_pos hz (hfin v).ne`. Take `⟨hmulL, -, hprodpos, -⟩` from `GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod _ (fun v => (μ v (latV b v)).toReal) hsum`.
+
+Use `⟨hdil, ∏' v, (μ v (latV b v)).toReal, hprodpos hpos, fun k => ⟨k + 1, Nat.lt_succ_self k, ?_⟩⟩` and prove the remaining obligations. Use `set a := k + 1 with hadef`. Establish `ha : 0 < a` using `Nat.succ_pos k`. Take `⟨e, he, hfs, hprod⟩` from `exists_exponents (F := F) a ha`. Establish `hid : ∀ v, (μ v (dilSet b v a)).toReal = (((Ideal.absNorm v.asIdeal : ℝ)) ^ e v) ^ (2 * M - 2) * (μ v (latV b v)).toReal`.
+
+Introduce `v`. Rewrite using `[hscale v a (e v) ha (he v).1 (he v).2, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity), pow_mul]`. Establish `hf2 : Function.HasFiniteMulSupport (fun v : HeightOneSpectrum (𝓞 F) => (((Ideal.absNorm v.asIdeal : ℝ)) ^ e v) ^ (2 * M - 2))` using `hfs.fun_comp (g := fun y : ℝ => y ^ (2 * M - 2)) (one_pow _)`. Establish `hmul : Multipliable (fun v : HeightOneSpectrum (𝓞 F) => (((Ideal.absNorm v.asIdeal : ℝ)) ^ e v) ^ (2 * M - 2))` using `(hasProd_prod_of_ne_finset_one (s := Set.Finite.toFinset hf2) (fun v hv =>`. Assume the negation of the conclusion as `fun h => hv ((Set.Finite.mem_toFinset hf2).2 h))).multipliable`.
+
+Rewrite using `[tprod_congr hid, hmul.tprod_mul hmulL, tprod_eq_finprod hf2, ← finprod_pow hfs, hprod, ← pow_mul, mul_comm]`.
+-/
 theorem growth_of_scale (b : Module.Basis (Fin d) F E)
     (μ : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E))
     (hscale : ∀ (v : HeightOneSpectrum (𝓞 F)) (a e : ℕ), 0 < a → Ideal.span {(a : 𝓞 F)} ≤ v.asIdeal ^ e →
@@ -62,6 +75,9 @@ theorem growth_of_scale (b : Module.Basis (Fin d) F E)
 
 end Abstract
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b lam hlam m hm hne`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.finite_volume_rank_one_product F E σ hσ M J hJ hM h₀ d b lam hlam m hm`. Establish `hscale` using `fun (v : HeightOneSpectrum (𝓞 F)) (a e : ℕ) (ha : 0 < a) h1 h2 => GlobalTheory.T.local_volume_rank_one_standard F E σ hσ M J hJ hM h₀ d b v (lam v) (hlam v) (m v) (hm v) a e ha h1 h2`. Conclude with `growth_of_scale b (fun v => m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀)) hscale hfin hsum hne`.
+-/
 theorem growth_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (h₀ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) → (∀ v, m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) ≠ 0) → (∀ a : ℕ, 0 < a → ∀ v, m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v} < ⊤) ∧ ∃ κ : ℝ, 0 < κ ∧ ∀ k : ℕ, ∃ a : ℕ, k < a ∧ κ * (a : ℝ) ^ (Module.finrank ℚ F * (2 * M - 2)) ≤ ∏' v, (m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) {X : Fin 1 → Fin M → Fv F v ⊗[F] E | (fun p i => (a : Fv F v ⊗[F] E) * X p i) ∈ latV b v}).toReal := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b lam hlam m hm hne
   obtain ⟨hfin, hsum⟩ := GlobalTheory.T.finite_volume_rank_one_product F E σ hσ M J hJ hM h₀ d b lam hlam m hm

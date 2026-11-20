@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdComp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `h0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v x = WithZero.exp m` from `⟨_, (WithZero.exp_log h0).symm⟩`. Establish `h1` using `h (m.natAbs + 1)`. Rewrite `h1` using `[hm, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_valued_le {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
     (x : P.adicCompletion E) (h : ∀ n : ℕ, Valued.v x ≤ WithZero.exp (-(n : ℤ))) : x = 0 := by
   by_contra hx
@@ -22,6 +27,11 @@ theorem eq_zero_of_valued_le {E : Type} [Field E] [NumberField E] (P : HeightOne
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hspec : ∀ (a : FiniteAdeleRing (𝓞 F) F) (k : F) (P : HeightOneSpectrum (𝓞 E)) (n : ℕ), Valued.v (a (P.under (𝓞 F)) - algebraMap F _ k) ≤ WithZero.exp (-(n : ℤ)) → Valued.v (afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)) ≤ WithZero.exp (-(n : ℤ))` using `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.2.2`. Establish `he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1`. Simplify using `only [afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Establish `h0` using `eq_zero_of_valued_le w (adAt F w (afsplitEps E v) - algebraMap E _ (algebraMap F E 1)) (fun n => by`. Rewrite using `[he]`.
+
+Conclude with `hspec _ 1 w n (by rw [h, afsplitI_self, map_one, sub_self, map_zero]; exact zero_le'))`. Rewrite `h0` using `[sub_eq_zero, map_one, map_one]`. Conclude with `h0`.
+-/
 theorem adAt_eps_of_under (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : w.under (𝓞 F) = v) : adAt F w (afsplitEps E v) = 1 := by
   have hspec : ∀ (a : FiniteAdeleRing (𝓞 F) F) (k : F) (P : HeightOneSpectrum (𝓞 E)) (n : ℕ),
@@ -37,6 +47,11 @@ theorem adAt_eps_of_under (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectru
   rw [sub_eq_zero, map_one, map_one] at h0
   exact h0
 
+/- English proof (translation)
+Establish `hspec : ∀ (a : FiniteAdeleRing (𝓞 F) F) (k : F) (P : HeightOneSpectrum (𝓞 E)) (n : ℕ), Valued.v (a (P.under (𝓞 F)) - algebraMap F _ k) ≤ WithZero.exp (-(n : ℤ)) → Valued.v (afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)) ≤ WithZero.exp (-(n : ℤ))` using `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.2.2`. Establish `he : afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1`. Simplify using `only [afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Establish `h0` using `eq_zero_of_valued_le w (adAt F w (afsplitEps E v) - algebraMap E _ (algebraMap F E 0)) (fun n => by`. Rewrite using `[he]`.
+
+Conclude with `hspec _ 0 w n (by rw [afsplitI_ne v _ h, map_zero, sub_zero, map_zero]; exact zero_le'))`. Rewrite `h0` using `[sub_eq_zero, map_zero, map_zero]`. Conclude with `h0`.
+-/
 theorem adAt_eps_of_ne (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : w.under (𝓞 F) ≠ v) : adAt F w (afsplitEps E v) = 0 := by
   have hspec : ∀ (a : FiniteAdeleRing (𝓞 F) F) (k : F) (P : HeightOneSpectrum (𝓞 E)) (n : ℕ),
@@ -52,18 +67,41 @@ theorem adAt_eps_of_ne (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (
   rw [sub_eq_zero, map_zero, map_zero] at h0
   exact h0
 
+/- English proof (translation)
+Establish `hm : adAt F w (afsplitEps E v * z) = adAt F w (afsplitEps E v) * adAt F w z`. Unfold `adAt`. Conclude with `map_mul _ _ _`. Rewrite using `[hm, adAt_eps_of_under v w h, one_mul]`.
+-/
 theorem adAt_eps_mul_of_under (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : w.under (𝓞 F) = v) (z : AfE F E) : adAt F w (afsplitEps E v * z) = adAt F w z := by
   have hm : adAt F w (afsplitEps E v * z) = adAt F w (afsplitEps E v) * adAt F w z := by
     unfold adAt; exact map_mul _ _ _
   rw [hm, adAt_eps_of_under v w h, one_mul]
 
+/- English proof (translation)
+Establish `hm : adAt F w (afsplitEps E v * z) = adAt F w (afsplitEps E v) * adAt F w z`. Unfold `adAt`. Conclude with `map_mul _ _ _`. Rewrite using `[hm, adAt_eps_of_ne v w h, zero_mul]`.
+-/
 theorem adAt_eps_mul_of_ne (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E))
     (h : w.under (𝓞 F) ≠ v) (z : AfE F E) : adAt F w (afsplitEps E v * z) = 0 := by
   have hm : adAt F w (afsplitEps E v * z) = adAt F w (afsplitEps E v) * adAt F w z := by
     unfold adAt; exact map_mul _ _ _
   rw [hm, adAt_eps_of_ne v w h, zero_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v z`. Establish `hinj : ∀ x y : E ⊗[F] v.adicCompletion F, afsplitIE v x = afsplitIE v y → x = y`. Introduce `x y hxy`. Rewrite using `[← afsplit_prV_IE v x, hxy, afsplit_prV_IE]`. Establish `hdec : afsplitIE v (prV (E` using `E) v z) = afsplitEps E v * z := afsplit_decomp v z`.
+
+Establish `hz : ∀ w : HeightOneSpectrum (𝓞 E), adAt F w (0 : AfE F E) = 0`. Introduce `w`. Unfold `adAt`. Conclude with `map_zero _`. Establish `hcomp : ∀ w : HeightOneSpectrum (𝓞 E), adAt F w (afsplitEps E v * z) = if w.under (𝓞 F) = v then adAt F w z else 0`.
+
+Introduce `w`. Use `split_ifs with hw`. Conclude with `adAt_eps_mul_of_under v w hw z`. Conclude with `adAt_eps_mul_of_ne v w hw z`. Use `⟨⟨fun h0 w hw => ?_, fun h => ?_⟩, ⟨fun hint w hw => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← adAt_eps_mul_of_under v w hw z, ← hdec, h0, map_zero, hz]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hdec, map_zero]`. Apply `GlobalTheory.Mem.Col2.PtExist.ad_ext` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[hcomp, hz]`. Use `split_ifs with hw`. Conclude with `h w hw`. Both sides reduce to the same expression. Establish `h1 : afsplitEps E v * z ∈ RInt F E`.
+
+Rewrite using `[← hdec]`. Conclude with `afsplit_IE_int v _ hint`. Rewrite using `[← adAt_eps_mul_of_under v w hw z]`. Conclude with `(mem_rInt_iff F E _).mp h1 w`. Establish `h1 : afsplitEps E v * z ∈ RInt F E`.
+
+Rewrite using `[mem_rInt_iff]`. Introduce `w`. Express the relevant statement in the definitionally equal form `Valued.v (adAt F w (afsplitEps E v * z)) ≤ 1`. Rewrite using `[hcomp]`. Use `split_ifs with hw`.
+
+Conclude with `h w hw`. Rewrite using `[map_zero]`. Conclude with `zero_le'`. Establish `h2` using `afsplit_prV_int v _ h1`. Rewrite `h2` using `[← hdec, afsplit_prV_IE]`. Then use the resulting hypothesis.
+-/
 theorem prV_zero_int_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (z : AfE F E), (prV (E := E) v z = 0 ↔ ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → adAt F w z = 0) ∧ (prV (E := E) v z ∈ intV E v ↔ ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → Valued.v (adAt F w z) ≤ 1) := by
   intro F E _ _ _ _ _ v z
   classical

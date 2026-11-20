@@ -13,14 +13,23 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
 def mulMat {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) (y : A.L) : Matrix (Fin r) (Fin r) E :=
   LinearMap.toMatrix' ((j : A.L →ₗ[E] (Fin r → E)) ∘ₗ LinearMap.mulLeft E y ∘ₗ (j.symm : (Fin r → E) →ₗ[E] A.L))
 
+/- English proof (translation)
+Simplify using `[mulMat, LinearMap.toMatrix'_mulVec]`.
+-/
 theorem mulMat_mulVec {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) (y : A.L) (v : Fin r → E) :
     A.mulMat j y *ᵥ v = j (y * j.symm v) := by
   simp [mulMat, LinearMap.toMatrix'_mulVec]
 
+/- English proof (translation)
+Simplify using `[mulMat_mulVec]`.
+-/
 theorem mulMat_mulVec_apply {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) (y z : A.L) :
     A.mulMat j y *ᵥ j z = j (y * z) := by
   simp [mulMat_mulVec]
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, mulMat_mulVec, LinearEquiv.symm_apply_apply, mul_assoc]`.
+-/
 theorem mulMat_mul {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) (y y' : A.L) :
     A.mulMat j (y * y') = A.mulMat j y * A.mulMat j y' := by
   apply Matrix.toLin'.injective
@@ -28,12 +37,26 @@ theorem mulMat_mul {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) (y y' : A.L) :
   intro v
   simp only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, mulMat_mulVec, LinearEquiv.symm_apply_apply, mul_assoc]
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[mulMat_mulVec]`.
+-/
 theorem mulMat_one {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) : A.mulMat j 1 = 1 := by
   apply Matrix.toLin'.injective
   apply LinearMap.ext
   intro v
   simp [mulMat_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use `set N := star (A.mulMat j t) * A.mulMat j t`. Establish `key : ∀ v w : Fin r → E, star v ⬝ᵥ (N *ᵥ w) = star v ⬝ᵥ w`. Introduce `v w`. Take `⟨a, rfl⟩` from `j.surjective v`.
+
+Take `⟨b, rfl⟩` from `j.surjective w`. Establish `h1 : star (j a) ⬝ᵥ (N *ᵥ j b) = star (A.mulMat j t *ᵥ j a) ⬝ᵥ (A.mulMat j t *ᵥ j b)`. Simplify using `only [N, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec, Matrix.star_eq_conjTranspose]`. Rewrite using `[h1, mulMat_mulVec_apply, mulMat_mulVec_apply, hx, hx]`. Use `congr 1`.
+
+Establish `ht : star (t : A.L) * t = 1` using `Unitary.star_mul_self_of_mem t.2`. Combine the equalities or inequalities in the displayed calculation. Establish `hw : ∀ w, N *ᵥ w = w`. Introduce `w`. Use function extensionality and compare the values at `i`.
+
+Use `key (Pi.single i 1) w` as an intermediate fact. Simplify `this` using `[single_dotProduct]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`.
+
+Simplify using `[hw]`.
+-/
 theorem mulMat_mem_unitaryGroup {r : ℕ} {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hx : A.IsIsom x j)
     (t : unitary A.L) : A.mulMat j t ∈ Matrix.unitaryGroup (Fin r) E := by
   rw [Matrix.mem_unitaryGroup_iff']
@@ -66,6 +89,9 @@ def uHom {r : ℕ} {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hx : A.IsIsom x 
   map_one' := by ext1; simp [mulMat_one]
   map_mul' t t' := by ext1; simp [mulMat_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uHom_apply {r : ℕ} {x : A.K} {j : A.L ≃ₗ[E] (Fin r → E)} (hx : A.IsIsom x j) (t : unitary A.L) :
     (A.uHom hx t : Matrix (Fin r) (Fin r) E) = A.mulMat j t := rfl
 

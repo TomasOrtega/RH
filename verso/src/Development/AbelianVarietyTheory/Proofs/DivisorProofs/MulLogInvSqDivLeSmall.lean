@@ -7,6 +7,19 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C Λ c₀ hc`. Use `set m : ℝ := min (c₀ / 2) (1 / 4) with hm`. Establish `hm0 : 0 < m` using `lt_min (by linarith) (by norm_num)`. Use `set K : ℝ := |C * Λ| + 1 with hK`. Establish `hK0 : 0 < K` using `by positivity`.
+
+Establish `hCK : C * Λ ≤ K` using `by have := le_abs_self (C * Λ); linarith`. Establish `ha : 0 < m / (4 * K)` using `by positivity`. Use `⟨min (1 / 2) ((m / (4 * K)) ^ 2), lt_min (by norm_num) (by positivity), min_le_left _ _, ?_⟩` and prove the remaining obligations. Introduce `s hs hs0`. Establish `hs1 : s ≤ 1 / 2` using `hs0.trans (min_le_left _ _)`.
+
+Establish `hs2 : s ≤ (m / (4 * K)) ^ 2` using `hs0.trans (min_le_right _ _)`. Take `⟨t, ht, rfl⟩ : ∃ t : ℝ, 0 < t ∧ s = t ^ 2` from `⟨Real.sqrt s, Real.sqrt_pos.2 hs, (Real.sq_sqrt hs.le).symm⟩`. Establish `ht2 : t ≤ m / (4 * K)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `ht3 : t * (4 * K) ≤ m` using `(le_div_iff₀ (by positivity)).1 ht2`. Establish `hlog : Real.log (((t ^ 2) ^ 2)⁻¹) = 4 * Real.log t⁻¹`. Rewrite using `[Real.log_inv, Real.log_inv, Real.log_pow, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hl1 : Real.log t⁻¹ ≤ t⁻¹`. Use `Real.log_le_sub_one_of_pos (inv_pos.2 ht)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht1 : t ≤ 1` using `by nlinarith`.
+
+Establish `hl0 : 0 ≤ Real.log t⁻¹` using `Real.log_nonneg ((one_le_inv₀ ht).2 ht1)`. Rewrite using `[hlog, div_inv_eq_mul]`. Establish `h4 : 0 < (t ^ 2) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_log_inv_sq_div_le_small :
     ∀ (C Λ c₀ : ℝ), 0 < c₀ → ∃ s₀ : ℝ, 0 < s₀ ∧ s₀ ≤ 1 / 2 ∧ ∀ s : ℝ, 0 < s → s ≤ s₀ →
       C * Λ * (Real.log ((s ^ 2)⁻¹) / (s ^ 2)⁻¹) ≤ s * min (c₀ / 2) (1 / 4) := by

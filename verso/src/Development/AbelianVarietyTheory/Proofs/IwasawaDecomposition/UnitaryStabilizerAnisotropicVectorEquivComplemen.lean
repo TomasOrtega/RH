@@ -15,9 +15,43 @@ section Abstract
 variable {A : Type} [CommRing A] (s : A →+* A) {m n : Type} [Fintype m] [DecidableEq m]
   [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add {p q : Type} (U V : Matrix p q A) : cT s (U + V) = cT s U + cT s V := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Establish `h12 : L₁ * B = 0` using `by rw [hL, Matrix.mul_assoc, hXB, Matrix.mul_zero]`. Set `mt : S → Matrix m m A` to `fun g => (((g : UJ s J) : GL m A) : Matrix m m A)`. Establish `mt_mul : ∀ g h, mt (g * h) = mt g * mt h` using `fun g h => rfl`. Establish `mt_one : mt 1 = 1` using `rfl`. Establish `hU : ∀ g, cT s (mt g) * J * mt g = J` using `fun g => (g : UJ s J).2`.
+
+Establish `hX : ∀ g, mt g * X = X` using `fun g => (hS _).1 g.2`. Establish `key : ∀ g, mt g * B = B * (L * mt g * B)`. Introduce `g`. Establish `h1 : cT s X * J * (mt g * B) = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hU, hXB]`. Establish `h2 : L₁ * (mt g * B) = 0` using `by rw [hL, Matrix.mul_assoc, h1, Matrix.mul_zero]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_assoc X, h2, Matrix.mul_zero, zero_add]`. Simplify using `only [Matrix.mul_assoc]`. Establish `φmul : ∀ g h, L * mt (g * h) * B = (L * mt g * B) * (L * mt h * B)`. Introduce `g h`. Rewrite using `[mt_mul, Matrix.mul_assoc L, Matrix.mul_assoc (mt g), key h]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `φone : L * mt 1 * B = 1` using `by rw [mt_one, Matrix.mul_one, h22]`. Set `φu : S → GL n A` to `fun g => ⟨L * mt g * B, L * mt g⁻¹ * B, by rw [← φmul, mul_inv_cancel, φone], by rw [← φmul, inv_mul_cancel, φone]⟩`. Establish `φmem : ∀ g, φu g ∈ UJ s J'`. Introduce `g`.
+
+Use `show cT s (L * mt g * B) * J' * (L * mt g * B) = J'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hBB, cT_mul s B]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT s B * (cT s (mt g) * J * mt g) * B := by`.
+
+Rewrite using `[← key, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J' := by rw [hU, hBB]`. Set `φ : S →* UJ s J'` to `MonoidHom.mk' (fun g => ⟨φu g, φmem g⟩) (fun g h => Subtype.ext (Units.ext (φmul g h)))`. Establish `ψX : ∀ k : Matrix n n A, (X * L₁ + B * k * L) * X = X`.
+
+Introduce `k`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc X, h11, Matrix.mul_assoc _ L, h21]`. Simplify using the standard rewrite rules. Establish `ψB : ∀ k : Matrix n n A, (X * L₁ + B * k * L) * B = B * k`. Introduce `k`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_assoc X, h12, Matrix.mul_assoc _ L, h22]`. Simplify using the standard rewrite rules. Establish `ψmul : ∀ k k' : Matrix n n A, k * k' = 1 → (X * L₁ + B * k * L) * (X * L₁ + B * k' * L) = 1`. Introduce `k k' hk`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ψX, Matrix.mul_assoc B k', ← Matrix.mul_assoc _ B, ψB, Matrix.mul_assoc B, ← Matrix.mul_assoc k, hk, Matrix.one_mul, hsum]`.
+
+Establish `hinj : Function.Injective φ`. Introduce `g h hgh`. Establish `h1 : L * mt g * B = L * mt h * B` using `congrArg (fun u : UJ s J' => ((u : GL n A) : Matrix n n A)) hgh`. Establish `h2 : mt g * B = mt h * B` using `by rw [key g, key h, h1]`. Establish `h3 : mt g = mt h`.
+
+Rewrite using `[← Matrix.mul_one (mt g), ← Matrix.mul_one (mt h), ← hsum, Matrix.mul_add, Matrix.mul_add]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[hX, hX, h2]`. Conclude with `Subtype.ext (Subtype.ext (Units.ext h3))`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `u`. Use `set k : Matrix n n A := ((u : GL n A) : Matrix n n A) with hk`. Establish `hku : cT s k * J' * k = J'` using `u.2`. Set `ψ : GL m A` to `⟨X * L₁ + B * k * L, X * L₁ + B * (((u : GL n A)⁻¹ : GL n A) : Matrix n n A) * L, ψmul _ _ (Units.mul_inv _), ψmul _ _ (Units.inv_mul _)⟩`. Establish `hψ : ψ ∈ UJ s J` using `by show cT s (X * L₁ + B * k * L) * J * (X * L₁ + B * k * L) = J`.
+
+Establish `gen : ∀ k₁ : Matrix n n A, cT s (X * L₁ + B * k₁ * L) * J * (X * L₁ + B * k₁ * L) = cT s L₁ * (cT s X * J * X) * L₁ + cT s L * (cT s k₁ * J' * k₁) * L`. Introduce `k₁`. Establish `: cT s (X * L₁ + B * k₁ * L) * J * (X * L₁ + B * k₁ * L) = cT s L₁ * (cT s X * J * X) * L₁ + cT s L₁ * (cT s X * J * B) * k₁ * L + (cT s L * cT s k₁ * (cT s B * J * X) * L₁ + cT s L * (cT s k₁ * (cT s B * J * B) * k₁) * L)`. Simplify using `only [cT_add, cT_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, hXB, hBX, hBB]`. Simplify using the standard rewrite rules. Establish `g1` using `gen 1`. Rewrite `g1` using `[Matrix.mul_one B, hsum, cT_one, cT_one]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one] at g1`.
+
+Rewrite using `[gen, hku, ← g1]`. Use `⟨⟨⟨ψ, hψ⟩, (hS _).2 (ψX k)⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Use `show L * (X * L₁ + B * k * L) * B = k`. Rewrite using `[Matrix.mul_assoc, ψB, ← Matrix.mul_assoc, h22, Matrix.one_mul]`. Conclude with `⟨MulEquiv.ofBijective φ ⟨hinj, hsurj⟩, fun g => key g⟩`.
+-/
 theorem exists_equiv (J : Matrix m m A) (J' : Matrix n n A) (X : Matrix m (Fin 1) A)
     (B : Matrix m n A) (L₁ : Matrix (Fin 1) m A) (L : Matrix n m A) (c : Matrix (Fin 1) (Fin 1) A)
     (hL : L₁ = c * (cT s X * J)) (h11 : L₁ * X = 1) (h21 : L * X = 0) (h22 : L * B = 1)
@@ -116,6 +150,33 @@ section Field
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Take `⟨⟨hJ, -⟩, ha, hxx, hxB, hJ', -, hdet⟩` from `h`. Use `set X : Matrix (Fin (M + 1)) (Fin 1) E := (Matrix.of x).transpose with hXdef`. Establish `ha' : algebraMap F E a ≠ 0` using `by simpa using ha`. Establish `hXB : cT (σ : E →+* E) X * J * B = 0`. Use extensionality with `i j`.
+
+Use `hxB j` as an intermediate fact. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `only [hE, Formalism.UG.hform] at this`. Simplify using `only [Matrix.mul_apply, cT, Finset.sum_mul, Matrix.zero_apply]`. Rewrite using `[Finset.sum_comm, ← this]`.
+
+Both sides reduce to the same expression. Establish `hXX : cT (σ : E →+* E) X * J * X = Matrix.of fun _ _ => algebraMap F E a`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `only [hE, Formalism.UG.hform] at hxx`.
+
+Simplify using `only [Matrix.mul_apply, cT, Finset.sum_mul, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm, ← hxx]`. Both sides reduce to the same expression. Establish `hcJ : cT (σ : E →+* E) J = J`. Use extensionality with `i j`.
+
+Conclude with `hJ i j`. Establish `hcc : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X`. Use extensionality with `i j`. Conclude with `hσ _`. Establish `hBX : cT (σ : E →+* E) B * J * X = 0`.
+
+Use `congrArg (cT (σ : E →+* E)) hXB` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, hcc, hcJ, ← Matrix.mul_assoc]`. Rewrite using `[this]`. Use extensionality with `i j`. Simplify using `[cT]`.
+
+Set `c : Matrix (Fin 1) (Fin 1) E` to `Matrix.of fun _ _ => (algebraMap F E a)⁻¹`. Use `set L₁ := c * (cT (σ : E →+* E) X * J) with hL₁`. Use `set L := J'⁻¹ * (cT (σ : E →+* E) B * J) with hL`. Establish `h11 : L₁ * X = 1`. Rewrite using `[hL₁, Matrix.mul_assoc, hXX]`.
+
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `[Matrix.mul_apply, c, ha']`. Establish `h12 : L₁ * B = 0` using `by rw [hL₁, Matrix.mul_assoc, hXB, Matrix.mul_zero]`. Establish `h21 : L * X = 0` using `by rw [hL, Matrix.mul_assoc, hBX, Matrix.mul_zero]`.
+
+Establish `h22 : L * B = 1`. Rewrite using `[hL, Matrix.mul_assoc, ← hJ']`. Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet)`. Set `Q : Matrix (Fin (M + 1)) (Fin (M + 1)) E` to `Matrix.of (Fin.cons (α := fun _ => Fin (M + 1) → E) (L₁ 0) L)`. Establish `hQP : Q * consCol x B = 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Conclude with `(congrFun (congrFun h11 0) 0).trans (by simp)`. Conclude with `(congrFun (congrFun h12 0) j).trans (by simp [Matrix.one_apply, (Fin.succ_ne_zero j).symm])`. Conclude with `(congrFun (congrFun h21 i) 0).trans (by simp [Matrix.one_apply])`.
+
+Conclude with `(congrFun (congrFun h22 i) j).trans (by simp [Matrix.one_apply])`. Establish `hPQ : consCol x B * Q = 1` using `mul_eq_one_comm.1 hQP`. Use `⟨?_, L₁, L, c, rfl, h11, h21, h22, ?_, hXB, hBX⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg Matrix.det hQP` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, h0]`. Simplify using `at this`. Rewrite using `[← hPQ]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Fin.sum_univ_succ, Finset.univ_eq_empty, Finset.sum_empty, add_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_dual (hσ : ∀ y, σ (σ y) = y) {M : ℕ} {J : Matrix (Fin (M + 1)) (Fin (M + 1)) E}
     {x : Fin 1 → Fin (M + 1) → E} {a : F} {B : Matrix (Fin (M + 1)) (Fin M) E}
     {J' : Matrix (Fin M) (Fin M) E} (h : StepData σ J x a B J') :
@@ -186,6 +247,9 @@ theorem exists_dual (hσ : ∀ y, σ (σ y) = y) {M : ℕ} {J : Matrix (Fin (M +
       Finset.sum_empty, add_zero]
     rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, sigR, inclR]`.
+-/
 theorem cT_map (R : Type) [CommRing R] [Algebra F R] {p q : Type} (U : Matrix p q E) :
     cT (sigR R σ) (U.map (inclR R)) = (cT (σ : E →+* E) U).map (inclR (F := F) R) := by
   ext i j
@@ -193,6 +257,9 @@ theorem cT_map (R : Type) [CommRing R] [Algebra F R] {p q : Type} (U : Matrix p 
 
 end Field
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨h1, h2⟩)`.
+-/
 theorem continuous_into {F E : Type} [Field F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) {T : Type} [TopologicalSpace T] (f : T → HA R σ J)
@@ -202,6 +269,29 @@ theorem continuous_into {F E : Type} [Field F] [Field E] [Algebra F E]
       Matrix (Fin M) (Fin M) (R ⊗[F] E))) : Continuous f :=
   continuous_induced_rng.2 (Units.continuous_iff.2 ⟨h1, h2⟩)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM R _ _ _ _ _ _ _ _ _ M J x a B J' h`. Establish `hσ : ∀ y, σ (σ y) = y`. Introduce `y`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨hdet, L₁, L, c, hL, h11, h21, h22, hsum, hXB, hBX⟩` from `exists_dual σ hσ h`. Establish `hBB` using `h.2.2.2.2.1`. Use `set X : Matrix (Fin (M + 1)) (Fin 1) E := (Matrix.of x).transpose with hXdef`.
+
+Use `set ι : E →+* R ⊗[F] E := inclR R with hι`. Establish `hone : ∀ k : ℕ, (1 : Matrix (Fin k) (Fin k) E).map ι = 1` using `fun k => Matrix.map_one _ (map_zero ι) (map_one ι)`. Establish `hzero : ∀ k l : ℕ, (0 : Matrix (Fin k) (Fin l) E).map ι = 0` using `fun k l => Matrix.map_zero _ (map_zero ι)`. Establish `h22' : L.map ι * B.map ι = 1` using `by rw [← Matrix.map_mul, h22, hone]`. Establish `hsum' : X.map ι * L₁.map ι + B.map ι * L.map ι = 1`.
+
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add ι), hsum, hone]`. Establish `hS : ∀ g : HA R σ J, g ∈ Hstab R σ J x ↔ ((HA.mat R σ J g : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E)) * X.map ι = X.map ι`. Introduce `g`. Use `MulAction.mem_stabilizer_iff.trans ⟨fun hg => ?_, fun hg => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Conclude with `congrFun (congrFun hg j) i`. Use function extensionality and compare the values at `j i`. Conclude with `congrFun (congrFun hg i) j`. Establish `hfor : ∀ (g : HA R σ J) (g' : HA R σ J'), FrameRelR R σ J J' B g g' → ((HA.mat R σ J' g' : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = L.map ι * ((HA.mat R σ J g : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E)) * B.map ι`. Introduce `g g' hr`.
+
+Rewrite `hr` using `[FrameRelR, ← hι]`. Rewrite using `[Matrix.mul_assoc]`. Use `erw [hr, ← Matrix.mul_assoc, h22', Matrix.one_mul]`. Establish `hback : ∀ (g : Hstab R σ J x) (g' : HA R σ J'), FrameRelR R σ J J' B (g : HA R σ J) g' → ((HA.mat R σ J g : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E)) = X.map ι * L₁.map ι + B.map ι * ((HA.mat R σ J' g' : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) …`. Introduce `g g' hr`.
+
+Rewrite `hr` using `[FrameRelR, ← hι]`. Establish `h3` using `congrArg (((HA.mat R σ J g : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E)) * ·) hsum'`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, Matrix.mul_one] at h3`. Rewrite `h3` using `[(hS g).1 g.2]`. Use `erw [hr] at h3`.
+
+Conclude with `h3.symm`. Use `⟨hdet, ?_, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `exists_equiv (sigR R σ) (JR R J) (JR R J') (X.map ι) (B.map ι) (L₁.map ι) (L.map ι) (c.map ι) (by rw [hL, Matrix.map_mul, Matrix.map_mul, cT_map]; rfl) (by rw [← Matrix.map_mul, h11, hone]) (by rw [← Matrix.map_mul, h21, hzero]) h22' hsum' (by rw [cT_map, JR, ← Matrix.map_mul, ← …`. Use `⟨e, he, fun e' he' => MulEquiv.ext fun g => Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Conclude with `(hfor _ _ (he' g)).trans (hfor _ _ (he g)).symm`.
+
+Introduce `e he`. Establish `c1 : Continuous fun g : Hstab R σ J x => ((HA.mat R σ J' (e g) : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E))`. Simplify using `only [fun g => hfor _ _ (he g)]`. Conclude with `(continuous_const.matrix_mul ((continuous_mat R σ J).comp continuous_subtype_val)).matrix_mul continuous_const`. Establish `c2 : Continuous fun g : HA R σ J' => ((HA.mat R σ J (e.symm g) : GL (Fin (M + 1)) (R ⊗[F] E)) : Matrix (Fin (M + 1)) (Fin (M + 1)) (R ⊗[F] E))`.
+
+Simplify using `only [fun g => hback _ _ (he g), MulEquiv.apply_symm_apply]`. Conclude with `continuous_const.add ((continuous_const.matrix_mul (continuous_mat R σ J')).matrix_mul continuous_const)`. Use `⟨continuous_into R σ J' _ c1 ?_, continuous_induced_rng.2 (continuous_into R σ J _ c2 ?_)⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `c1.comp continuous_inv`.
+
+Use `c2.comp (continuous_inv (G := HA R σ J'))` as an intermediate fact. Use `this.congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_inv]`. Both sides reduce to the same expression.
+-/
 theorem frameStep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R], ∀ (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x : Fin 1 → Fin (M + 1) → E) (a : F) (B : Matrix (Fin (M + 1)) (Fin M) E) (J' : Matrix (Fin M) (Fin M) E), StepData σ J x a B J' → (consCol x B).det ≠ 0 ∧ (∃! e : Hstab R σ J x ≃* HA R σ J', ∀ g : Hstab R σ J x, FrameRelR R σ J J' B (g : HA R σ J) (e g)) ∧ ∀ e : Hstab R σ J x ≃* HA R σ J', (∀ g : Hstab R σ J x, FrameRelR R σ J J' B (g : HA R σ J) (e g)) → Continuous e ∧ Continuous e.symm := by
   intro F E _ _ _ _ _ σ hCM R _ _ _ _ _ _ _ _ _ M J x a B J' h
   have hσ : ∀ y, σ (σ y) = y := by

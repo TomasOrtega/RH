@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.GenFibre
 
+/- English proof (translation)
+Take `⟨W, hW, hξ, -⟩` from `GlobalTheory.Points.exists_isAffineOpen_le ξ (GlobalTheory.Points.le_preimage_top ξ)`. Establish `hz : ξ (IsLocalRing.closedPoint V) ∈ W` using `hξ (x := IsLocalRing.closedPoint V) trivial`. Establish `hpt : ⊤ ≤ M.pt ⁻¹ᵁ W` using `M.top_le_preimage_pt ⟨_, hz⟩`. Use `GlobalTheory.Points.ext_of_valR hW (GlobalTheory.Points.le_preimage_comp (V := ⊤) (jK V) ξ hξ le_rfl) (GlobalTheory.Points.le_preimage_comp (V := ⊤) (spMap emb) M.pt hpt le_rfl) fun f => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem jK_comp_eq {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ξ : Sp V ⟶ M.Z) (emb : Ω →+* FractionRing V)
     (hemb : ∀ (W : M.Z.Opens) (f : Γ(M.Z, W)), ξ (IsLocalRing.closedPoint V) ∈ W →
@@ -31,6 +34,19 @@ theorem jK_comp_eq {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : Rat
     _ = emb (valF M.pt W f) := (hemb W f hz).symm
     _ = valR (spMap emb ≫ M.pt) W f := (GlobalTheory.Points.valR_spMap_comp emb M.pt W hpt f).symm
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ EE Zh hO V _ _ _ ξ _ _ D A U hLG emb hemb`. Establish `e₁` using `jK_comp_eq M ξ emb hemb`. Establish `hpt : Set.range M.pt ⊆ (U₀ : Set M.Z)` using `fun _ ⟨w, hw⟩ => hw ▸ M.top_le_preimage_pt hO.ne (x := w) trivial`. Set `x : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt (by rw [Scheme.Opens.range_ι]; exact hpt)`. Establish `hx : x ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `hxu : x ≫ Zh.u₀ = spMap S.R.val.toRingHom` using `Zh.u₀_gen x hx`. Set `y : Sp (FractionRing V) ⟶ U₀.toScheme` to `spMap emb ≫ x`. Establish `e₂ : (𝟙 _ ≫ jK V) ≫ ξ = y ≫ U₀.ι`. Rewrite using `[Category.id_comp, e₁, Category.assoc, hx]`. Establish `e₃ : 𝟙 _ ≫ y ≫ Zh.u₀ = spMap (emb.comp (algebraMap S.R Ω))`.
+
+Rewrite using `[Category.id_comp, Category.assoc, hxu]`. Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Use `haveI := U.gen_hom`.
+
+Use `haveI : IsMonHom U.gen.symm.hom := by show IsMonHom U.gen.inv; infer_instance`. Establish `hA` using `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback ((Over.pullback ξ).obj Zh.G) (jK V))).comp (isGrpPullback_pullback Zh.G ξ)`. Establish `hB` using `(isGrpPullback_pullback ((Over.pullback Zh.u₀).obj ρ.P.A) y).comp Zh.cart`. Take `⟨e, he, hφ⟩` from `grpPullback_iso (hA.congr e₂ rfl) hB`. Use `haveI := he`.
+
+Establish `hC` using `(isGrpPullback_of_iso e).comp ((isGrpPullback_pullback ((Over.pullback Zh.u₀).obj ρ.P.A) y).comp (isGrpPullback_pullback ρ.P.A Zh.u₀))`. Use `⟨_, hC.congr e₃ rfl, ?_⟩` and prove the remaining obligations. Establish `H1` using `U.ext`. Establish `H2` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hLG (pullback.fst ((Over.pullback ξ).obj Zh.G).hom (jK V)) rfl`. Establish `H3` using `LBIso.trans (pull_isLB A.isLB _) (pull_isLB U.LG.isLB _) (pull_isLB Zh.L.isLB _) H1 H2`.
+
+Establish `H4 : LBIso (A.L.pull (𝟙 _)) (Zh.L.L.pull (U.gen.inv.left ≫ pullback.fst ((Over.pullback ξ).obj Zh.G).hom (jK V) ≫ pullback.fst Zh.G.hom ξ))` using `GlobalTheory.GenSpread.lbIso_pull_comp U.gen.inv.left (by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]) rfl H3`. Establish `H5` using `LBIso.chartPull (chartPullUnpull A.L (𝟙 _) rfl) (chartPullId _) H4`. Establish `H6 : LBIso (Zh.L.L.pull (U.gen.inv.left ≫ pullback.fst ((Over.pullback ξ).obj Zh.G).hom (jK V) ≫ pullback.fst Zh.G.hom ξ)) (ρ.P.L.pull (e.hom.left ≫ pullback.fst ((Over.pullback Zh.u₀).obj ρ.P.A).hom y ≫ pullback.fst ρ.P.A.hom Zh.u₀))` using `GlobalTheory.GenSpread.lbIso_pull_comp (e.hom.left ≫ pullback.fst ((Over.pullback Zh.u₀).obj ρ.P.A).hom y) (a := Zh.φ) (b := pullback.fst ρ.P.A.hom Zh.u₀) (by rw [Category.assoc, hφ, Category.assoc]; rfl) (Category.assoc _ _ _).symm ⟨Zh.w, Zh.w_gen⟩`. Conclude with `LBIso.trans A.isLB (pull_isLB Zh.L.isLB _) (pull_isLB ρ.P.isLB _) H5 H6`.
+-/
 theorem genFibre : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ξ : Sp V ⟶ M.Z), (∃ w, ξ w = genericPoint M.Z) → ∀ [IsCommMonObj ((Over.pullback ξ).obj Zh.G)] (D : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (U : Unif (IsLocalRing.maximalIdeal V) D A ((Over.pullback ξ).obj Zh.G)), LBIso U.LG.L (Zh.L.L.pull (pullback.fst Zh.G.hom ξ)) → ∀ (emb : Ω →+* FractionRing V), (∀ (W : M.Z.Opens) (f : Γ(M.Z, W)), ξ (IsLocalRing.closedPoint V) ∈ W → emb (valF M.pt W f) = algebraMap V (FractionRing V) (valR ξ W f)) → ∃ φ : A.A.left ⟶ ρ.P.A.left, IsGrpPullback A.A ρ.P.A (spMap (emb.comp (algebraMap S.R Ω))) φ ∧ LBIso A.L (ρ.P.L.pull φ) := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh hO V _ _ _ ξ _ _ D A U hLG emb hemb
   have e₁ := jK_comp_eq M ξ emb hemb

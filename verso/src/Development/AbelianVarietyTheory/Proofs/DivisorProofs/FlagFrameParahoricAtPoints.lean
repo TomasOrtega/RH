@@ -4,6 +4,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open CategoryTheory.Limits
 
+/- English proof (translation)
+Introduce `ι _ N Y j φ hφ z A' hA' A hA`. Establish `e : A * (1 : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) (GlobalTheory.ProjVar.proj ℚ 0).Fn)⁻¹ = A`. Rewrite using `[show (1 : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) (GlobalTheory.ProjVar.proj ℚ 0).Fn)⁻¹ = 1 from`. Use function extensionality and compare the values at `fun _ => Matrix.inv_eq_left_inv (by simp), mul_one]`. Establish `hA0 : GlobalTheory.FlagBundle.Par 0 ((GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).O (GlobalTheory.FlagQ.toPt Y z)).toSubring A`.
+
+Establish `h2 : GlobalTheory.FlagBundle.Par 0 ((GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).O (GlobalTheory.FlagQ.toPt Y z)).toSubring (A * 1⁻¹)` using `hA`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `hm : GlobalTheory.FlagBundle.Par 0 ((GlobalTheory.FlagBundle.ratOf Y).O z).toSubring (A.map φ)` using `hA0.map (φ : (GlobalTheory.ProjVar.proj ℚ 0).Fn →+* Y.Fn) fun x hx => hφ.map_mem_O hx`. Conclude with `hA'.1.mul hm.inv`.
+-/
 theorem GlobalTheory.FlagQ.refines_sub : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Y : GlobalTheory.ProjVar.Var ℚ) (j : Y.X ⟶ GlobalTheory.FlagZ.Fl ι N) (φ : (GlobalTheory.ProjVar.proj ℚ 0).Fn →ₐ[ℚ] Y.Fn), (GlobalTheory.FlagBundle.ratOf (GlobalTheory.ProjVar.proj ℚ 0)).IsHom (GlobalTheory.FlagBundle.ratOf Y) φ (GlobalTheory.FlagQ.toPt Y) → ∀ (z : Y.X) (A' : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) Y.Fn), GlobalTheory.FlagQ.IsFrame j z A' → ∀ A ∈ (GlobalTheory.FlagQ.triv ι N).S (GlobalTheory.FlagQ.toPt Y z), GlobalTheory.FlagBundle.Par 0 ((GlobalTheory.FlagBundle.ratOf Y).O z).toSubring (A' * (A.map φ)⁻¹) := by
   intro ι _ N Y j φ hφ z A' hA' A hA
   have e : A * (1 : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) (GlobalTheory.ProjVar.proj ℚ 0).Fn)⁻¹ = A := by

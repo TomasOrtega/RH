@@ -23,12 +23,18 @@ open GlobalTheory.FinPl (SplitPt Frame)
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `p.val_prF_le_one he ⟨_, GlobalTheory.IdemRes.toEAf_mem_of_finPart ha⟩`. Rewrite `h` using `[p.prF_toEAf]`. Conclude with `h`.
+-/
 theorem pr_int (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w) {a : AE D}
     (ha : finPart D a ∈ intAE D) : p.pr a ∈ 𝒪[k] := by
   have h := p.val_prF_le_one he ⟨_, GlobalTheory.IdemRes.toEAf_mem_of_finPart ha⟩
   rw [p.prF_toEAf] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `pr_int p he (AddSubgroup.subset_closure ⟨α, hα, b, rfl⟩)`.
+-/
 theorem pr_tmul_int (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     {α : Af D.host.F} (hα : α ∈ intAf D.host.F) (b : 𝓞 D.host.E) :
     p.pr (pairA D.host.F 0 α ⊗ₜ[D.host.F] (b : D.host.E)) ∈ 𝒪[k] :=
@@ -43,6 +49,9 @@ def prInt (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formal
     rw [e] at h
     exact h
 
+/- English proof (translation)
+Establish `e : p.prF he (Formalism.L2.DIV.oToS D.host.F D.host.E z : EAf D) = p.pr (incA D (z : D.host.E))` using `p.prF_toEAf he (incA D (z : D.host.E))`. Rewrite using `[p.mem_iff_val_lt he, e, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_iff_prInt (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     (z : 𝓞 D.host.E) : z ∈ w.asIdeal ↔ prInt p he z ∈ IsLocalRing.maximalIdeal 𝒪[k] := by
   have e : p.prF he (Formalism.L2.DIV.oToS D.host.F D.host.E z : EAf D) = p.pr (incA D (z : D.host.E)) :=
@@ -51,6 +60,19 @@ theorem mem_iff_prInt (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} 
     Valuation.Integer.not_isUnit_iff_valuation_lt_one]
   rfl
 
+/- English proof (translation)
+Establish `h1 : w.valuation D.host.E x ≤ 1` using `hx.trans (by`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use the proof step `omega)`. Take `⟨a, s, has⟩` from `w.exists_primeCompl_mul_eq_of_integer x h1`. Establish `hs : w.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E s) = 1`.
+
+Rewrite using `[w.valuation_of_algebraMap, w.intValuation_eq_one_iff]`. Conclude with `s.2`. Establish `ha : a ∈ w.asIdeal ^ n`. Establish `h2` using `congrArg (w.valuation D.host.E) has`. Rewrite `h2` using `[map_mul, hs, mul_one, w.valuation_of_algebraMap]`.
+
+Rewrite using `[← w.intValuation_le_pow_iff_mem, ← h2]`. Conclude with `hx`. Establish `hu : IsUnit (prInt p he s)`. Assume the negation of the conclusion as `h`. Conclude with `s.2 ((mem_iff_prInt p he s).2 h)`.
+
+Take `⟨u, hu⟩` from `hu`. Establish `hle : Ideal.map (prInt p he) (w.asIdeal ^ n) ≤ IsLocalRing.maximalIdeal 𝒪[k] ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun z hz => Ideal.mem_comap.2 ((mem_iff_prInt p he z).1 hz)) n`. Use `⟨prInt p he a * ((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]), Ideal.mul_mem_right _ _ (hle (Ideal.mem_map_of_mem _ ha)), ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((prInt p he a : 𝒪[k]) : k) = p.pr (incA D x) * ((u : 𝒪[k]) : k)`. Rewrite using `[hu]`. Express the relevant statement in the definitionally equal form `(p.pr.comp (incA D)) (algebraMap _ _ a) = (p.pr.comp (incA D)) x * (p.pr.comp (incA D)) (algebraMap _ _ s.1)`. Rewrite using `[← map_mul, has]`. Establish `e2 : ((u : 𝒪[k]) : k) * (((u⁻¹ : 𝒪[k]ˣ) : 𝒪[k]) : k) = 1`.
+
+Rewrite using `[← Subring.coe_mul, Units.mul_inv, Subring.coe_one]`. Rewrite using `[Subring.coe_mul, e1, mul_assoc, e2, mul_one]`.
+-/
 theorem exists_mem_pow (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     {x : D.host.E} {n : ℕ} (hx : w.valuation D.host.E x ≤ WithZero.exp (-(n : ℤ))) :
     ∃ z ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ n, (z : k) = p.pr (incA D x) := by
@@ -80,11 +102,23 @@ theorem exists_mem_pow (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)}
     rw [← Subring.coe_mul, Units.mul_inv, Subring.coe_one]
   rw [Subring.coe_mul, e1, mul_assoc, e2, mul_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (α ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem tmul_eq' (α : AF D.host.F) (x : D.host.E) :
     (α ⊗ₜ[D.host.F] x : AE D) = (α ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D x := by
   change _ = (α ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, -, a, ha, x, hx, rfl⟩` from `hy`. Take `rfl : a = 1` from `ha`. Take `⟨b, hb⟩` from `(hΛ.2 x).1 hx t ht`.
+
+Use `pr_tmul_int p he hα b using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hb, tmul_eq', Finset.sum_comm]`. Simplify using `only [one_mul, map_sum, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_eq' _ (x _), map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+
+Consider the case `neg x _ hx`. Use `neg_mem hx using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem pair_int (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     {S : HSp D} {Λ : Lat S} (hΛ : IsSelfDualC S Λ) {t : Fin S.rank → D.host.E} (ht : t ∈ Λ) {P : GlobalTheory.FinPl.Pl D → Prop}
     {y : Fin S.rank → AE D} (hy : y ∈ latV S Λ P) :
@@ -108,6 +142,13 @@ theorem pair_int (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he :
     convert neg_mem hx using 1
     simp only [Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `h1` using `(hβ (Pi.single i 1)).1 fun l _ => by`. Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`.
+
+Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Use `pair_int p he hΛ ht h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_comm]`. Simplify using `only [p.pr_sec, mulVec_single_one, vecMul, dotProduct, Matrix.mul_apply, map_apply, Finset.mul_sum, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pair_col_int (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     {S : HSp D} {Λ : Lat S} (hΛ : IsSelfDualC S Λ) {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n)
     (hβ : β.IsLat Λ (Submodule.pi Set.univ fun _ => (1 : Submodule 𝒪[k] k))) {t : Fin S.rank → D.host.E} (ht : t ∈ Λ) (i : n) :
@@ -128,14 +169,23 @@ def rowVal {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) {a b : ℕ} {n
   map_add' x y := by
     simp only [vecMul, dotProduct, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Simplify using `only [vecMul, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem vecMul_const_mul {R : Type} [CommRing R] {a : ℕ} {n : Type} (x : R) (g : Fin a → R) (M : Matrix (Fin a) n R) (i : n) :
     ((fun j => x * g j) ᵥ* M) i = x * (g ᵥ* M) i := by
   simp only [vecMul, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, g.map_mul, g.map_mul, hx, hy, ht, f.map_mul, f.map_mul, mul_assoc]`.
+-/
 theorem comp_mul_three {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (g : A →+* A) {x y t x' y' t' : A}
     (hx : g x = x') (hy : g y = y') (ht : g t = t') : f x' * f y' * f t' = (f.comp g) (x * (y * t)) := by
   rw [RingHom.comp_apply, g.map_mul, g.map_mul, hx, hy, ht, f.map_mul, f.map_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← vecMul_const_mul]`. Use `congrArg (fun g => (g ᵥ* M) i) (funext fun j => ?_)` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `comp_mul_three f g hx hy (ht j)`.
+-/
 theorem rowVal_rank_one {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (g : A →+* A) {a b : ℕ} {n : Type}
     {u : Matrix (Fin a) (Fin b) A} {ε : Fin b → A} {x y x' y' : A} {t t' : Fin a → A}
     (hu : ∀ j, ∑ m, u j m * ε m = x * (y * t j)) (hx : g x = x') (hy : g y = y') (ht : ∀ j, g (t j) = t' j)
@@ -146,6 +196,9 @@ theorem rowVal_rank_one {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (
   rw [hu]
   exact comp_mul_three f g hx hy (ht j)
 
+/- English proof (translation)
+Rewrite using `[mul_comm, ← vecMul_const_mul]`. Use `congrArg (fun g => (g ᵥ* M) i) (funext fun l => ?_)` and prove the remaining obligations. Rewrite using `[← hx, ← map_pow, ← map_pow, ← map_mul, ← map_mul, hy, Matrix.mul_apply, Finset.mul_sum]`. Simplify using `only [hj, mul_left_comm]`.
+-/
 theorem rowVal_col {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (g : A →+* A) {a b ρ : ℕ} {n : Type}
     {u : Matrix (Fin a) (Fin b) A} {j : Matrix (Fin b) (Fin ρ) A} {y : Matrix (Fin a) (Fin ρ) A} (hy : y = u * j) {q : Fin ρ}
     {x x' : A} {N : ℕ} {ε : Fin b → A} (hj : ∀ m, j m q = x ^ N * ε m) (hx : g x = x') (M : Matrix (Fin a) n R) (i : n) :
@@ -157,6 +210,21 @@ theorem rowVal_col {A R : Type} [CommRing A] [CommRing R] (f : A →+* R) (g : A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∃ z ∈ J, (z : k) = rowVal (p.pr.comp (cA D)) (fun m => incA D (ε m)) (T.gram.map (fun c => p.pr (incA D c)) * β.b) i u`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨α, hα, -, c, hc, s, hs, t, ht, rfl⟩` from `hu`. Take `⟨z, hz, hz'⟩` from `hJ c hc s hs`.
+
+Establish `h1 : p.pr (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ 𝒪[k]`. Establish `h` using `pr_tmul_int p he hα 1`. Rewrite `h` using `[RingOfIntegers.coe_eq_algebraMap, map_one]`. Then use the resulting hypothesis. Use `⟨⟨_, h1⟩ * z * ⟨_, pair_col_int p he hΛ β hβ ht i⟩, J.mul_mem_right _ (J.mul_mem_left _ hz), ?_⟩` and prove the remaining obligations. Establish `e : ∀ j, (∑ m, (pairA D.host.F 0 α ⊗ₜ[D.host.F] (c * t j * ∑ l, star (s l) * S.gram l m) : AE D) * incA D (ε m)) = (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) * (incA D (c * ∑ m, (∑ l, star (s l) * S.gram l m) * ε m) * incA D (t j))` using `fun j => by`.
+
+Rewrite using `[← map_mul, Finset.mul_sum, Finset.sum_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[tmul_eq', mul_assoc, ← map_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e1 : cA D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)`. Express the relevant statement in the definitionally equal form `pairA D.host.F 0 α ⊗ₜ[D.host.F] (star (1 : D.host.E)) = _`. Rewrite using `[star_one]`. Establish `e2 : ∀ x, cA D (incA D x) = incA D (star x)` using `fun _ => rfl`. Rewrite using `[Subring.coe_mul, Subring.coe_mul, hz']`.
+
+Conclude with `rowVal_rank_one p.pr (cA D) (ε := fun m => incA D (ε m)) (u := Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (c * t i * ∑ l, star (s l) * S.gram l j)) (t := fun j => incA D (t j)) (t' := fun j => incA D (star (t j))) e e1 (e2 (c * ∑ m, (∑ l, star (s l) * S.gram l m) * ε m) …`. Consider the case `zero => exact ⟨0, zero_mem _, (map_zero _).symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨z, hz, hz'⟩` from `hx`. Take `⟨z', hy, hy'⟩` from `hy`.
+
+Use `⟨z + z', add_mem hz hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_add, hz', hy']`. Conclude with `(AddMonoidHom.map_add _ _ _).symm`. Consider the case `neg x _ hx`. Take `⟨z, hz, hz'⟩` from `hx`.
+
+Use `⟨-z, neg_mem hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_neg, hz']`. Conclude with `(AddMonoidHom.map_neg _ _).symm`.
+-/
 theorem functional_mem (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e w)
     {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {Λ : Lat T} (hΛ : IsSelfDualC T Λ) {n : Type} [Fintype n] [DecidableEq n]
     (β : Frame p T n) (hβ : β.IsLat Λ (Submodule.pi Set.univ fun _ => (1 : Submodule 𝒪[k] k)))
@@ -207,6 +275,17 @@ theorem functional_mem (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.E)}
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Establish `hw : G.pl.w v ∈ G.pl.W0`. Unfold `Places.W0`. Use `Finset.mem_image_of_mem G.pl.w hv` and compare the differences between its conclusion and the goal. Establish `hloc : G.pl.w v ∈ locPl G μ₀` using `Finset.mem_union_left _ hw`. Establish `hb` using `Good.badInt_notMem hL (G := G) (t := μ₀) hq (fun P hP => absurd (show (L.xiH μ₀).UnrAt P by rw [hL.xi_base]; exact fun x _ => rfl) ((hL.Q_ram μ₀ P).2 (Or.inl hP))) hloc`.
+
+Take `⟨c1, c2⟩` from `count_AA_AAbar _ hb`. Take `⟨n1, n2⟩` from `GlobalTheory.SecondBaseChar.st_ne (sc := sc) G.pl`. Take `⟨-, m1, m2⟩` from `GlobalTheory.SecondBaseChar.ideals_ne D`. Establish `d1 : FractionalIdeal.count D.host.E (G.pl.w v) (G.pl.stA sc) = 0`. Rewrite using `[Places.stA, FractionalIdeal.count_mul _ _ m1 (right_ne_zero_of_mul n1), FractionalIdeal.count_inv, c1, count_modulBar G hloc, neg_zero, add_zero]`.
+
+Establish `d2 : FractionalIdeal.count D.host.E (G.pl.w v) (G.pl.stAbar sc) = -(G.pl.depth sc v : ℤ)`. Rewrite using `[Places.stAbar, FractionalIdeal.count_mul _ _ m2 (right_ne_zero_of_mul n2), FractionalIdeal.count_inv, c2, count_modul, cosExp, if_pos hw, G.pl.under_w hv, zero_add]`. Establish `h1` using `GroundTheory.Global.valuation_le_of_mem_fractionalIdeal (G.pl.w v) hx`. Rewrite `h1` using `[count_stairId n1 n2, d1, d2]`. Establish `h2` using `GroundTheory.Global.valuation_le_of_mem_fractionalIdeal (G.pl.w v) (((GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1.2 (star a)).2 (by rwa [star_star]))`.
+
+Rewrite `h2` using `[c2, neg_zero, WithZero.exp_zero]`. Rewrite using `[map_mul]`. Use `(mul_le_mul' h2 h1).trans_eq ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem valuation_stair {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ G.pl.S0)
     {c : ℕ} (r : Fin c) {a x : D.host.E} (ha : a ∈ D.host.AA) (hx : x ∈ stairId (G.pl.stA sc) (G.pl.stAbar sc) c r) :
     (G.pl.w v).valuation D.host.E (star a * x) ≤ WithZero.exp (-((G.pl.depth sc v * (r.1 + 1) : ℕ) : ℤ)) := by
@@ -238,6 +317,9 @@ theorem valuation_stair {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridDat
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hG : ∀ l m, star (B.gram l m) = B.gram m l` using `fun l m => congrFun (congrFun (gram_conjTranspose B) m) l`. Simplify using `only [negSp_gram, Matrix.neg_apply, star_sum, star_mul', star_star, star_neg, hG, mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem star_pair {B : HSp D} {c : ℕ} (a : Matrix (Fin B.rank) (Fin c) D.host.E) (s : Fin B.rank → D.host.E) (q : Fin c) :
     star (∑ m, (∑ l, star (s l) * (negSp B).gram l m) * a m q) = -((aᴴ * B.gram) *ᵥ s) q := by
   have hG : ∀ l m, star (B.gram l m) = B.gram m l := fun l m => congrFun (congrFun (gram_conjTranspose B) m) l
@@ -246,6 +328,17 @@ theorem star_pair {B : HSp D} {c : ℕ} (a : Matrix (Fin B.rank) (Fin c) D.host.
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Take `⟨hc, hE, -⟩` from `hy`. Substitute `hB` using the available equality. Establish `hq1` using `q.2`. Set `r : Fin c` to `⟨q.1, by omega⟩`. Establish `hr : r.rev.1 + 1 = c - q.1` using `by rw [Fin.val_rev]; change _ - (q.1 + 1) + 1 = _; omega`.
+
+Establish `hrev : r.rev.rev ≠ r.rev` using `fun e => by`. Use `congrArg (fun t : Fin c => t.1 + 1) e` as an intermediate fact. Simplify using `only [Fin.rev_rev] at this`. Rewrite `this` using `[hr]`. Express the relevant statement in the definitionally equal form `q.1 + 1 = _ at this`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨z, hz, hz'⟩` from `functional_mem p he hΛ β hβ (S := negSp B) (fun m => d.a m r) (IsLocalRing.maximalIdeal 𝒪[k] ^ (G.pl.depth sc v * (c - q.1))) (fun a ha s hs => by`. Establish `h1` using `GlobalTheory.SecondBaseChar.coef_mem d _ _ r.rev hrev hs`. Rewrite `h1` using `[Fin.rev_rev]`. Establish `h2` using `valuation_stair hL hq G hv r.rev ha h1`.
+
+Rewrite `h2` using `[hr, ← Valuation.map_neg, ← mul_neg, ← star_pair d.a s r, ← star_mul']`. Conclude with `exists_mem_pow p he h2) ha i`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `e1 : a = (y.extX S a : Mx D _ _) ⬝ y.jX`. Rewrite using `[HypDec.extX_apply, Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one]`.
+
+Establish `e2 : ∀ m, y.jX m q = incA D (-D.host.xi0) ^ (q.1 + 1) * incA D (d.a m r)` using `fun m => by`. Rewrite using `[← (incA D).map_pow, ← (incA D).map_mul]`. Conclude with `congrArg (incA D) (congrFun (congrFun hE m) q)`. Establish `e3 : cA D (incA D (-D.host.xi0)) = incA D (star (-D.host.xi0))` using `rfl`. Conclude with `(congrArg (· * _) hz').trans (rowVal_col p.pr (cA D) e1 e2 e3 _ i)`.
+-/
 theorem functional_col {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L sc) {v : GlobalTheory.FinPl.Pl D} (hv : v ∈ G.pl.S0)
     (p : SplitPt D k) (he : Formalism.L2.NTheta.IsIdemAt p.e (G.pl.w v)) {A B B₀ S : HSp D} {c ρ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1))
     (Λ₀ : Lat A) (y : HypDec B B₀ ρ) (hy : IsAuxiliaryVectorWittDec d y) {LB : Lat B}
@@ -283,6 +376,11 @@ theorem functional_col {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData
   have e3 : cA D (incA D (-D.host.xi0)) = incA D (star (-D.host.xi0)) := rfl
   exact (congrArg (· * _) hz').trans (rowVal_col p.pr (cA D) e1 e2 e3 _ i)
 
+/- English proof (translation)
+Introduce `D hq T L μ₀ hL sc G W M _ F hF σ h h' v hv k _ _ _ _ p β ϖ _ he hβ hϖ a ha q i`. Establish `hsd : IsSelfDualC (G.V (.grid (2 * σ + 2) 0)) (G.Λ (.grid (2 * σ + 2) 0))` using `(G.sp.V_is (2 * σ + 2) 0 (by omega) h' (Nat.zero_le _)).sd`. Take `⟨z, hz, hz'⟩` from `functional_col hL hq G hv p he _ _ _ (hF.hJ (σ + 1) h) (G.sp.colLat (2 * (σ + 1) + 1) (by omega) (by omega)) hsd β hβ (a := a) ha.1 q i`. Establish `hq1` using `q.2`. Establish `e : 2 * (σ + 1) + 1 - 1 - q.1 = 2 * σ + 1 - q.1 + 1` using `by omega`.
+
+Rewrite `hz` using `[e, mul_add, mul_one, pow_add, hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton_mul]`. Take `⟨y, hy, rfl⟩` from `hz`. Use `⟨y, hϖ ▸ hy, Eq.trans ?_ hz'⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, SubmonoidClass.coe_pow, mul_comm (y : k)]`.
+-/
 theorem functional_equation_local_lattice : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k)
     (β : GlobalTheory.FinPl.Frame p (G.V (.grid (2 * σ + 2) 0)) (Fin (G.V (.grid (2 * σ + 2) 0)).rank)) (ϖ : 𝒪[k]),

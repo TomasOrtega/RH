@@ -22,14 +22,25 @@ def antisymm : LaurentRing n →ₗ[ℂ] LaurentRing n where
     refine Finset.sum_congr rfl fun σ _ => ?_
     rw [smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem antisymm_apply (p : LaurentRing n) :
     antisymm n p = ∑ σ : Equiv.Perm (Fin n), Equiv.Perm.sign σ • permAct σ p := rfl
 
+/- English proof (translation)
+Rewrite using `[permAct_mul]`. Both sides reduce to the same expression.
+-/
 theorem permAct_permAct (σ τ : Equiv.Perm (Fin n)) (p : LaurentRing n) :
     permAct σ (permAct τ p) = permAct (σ * τ) p := by
   rw [permAct_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[antisymm_apply, antisymm_apply, Finset.smul_sum]`. Simplify using `only [permAct_permAct]`. Use `Fintype.sum_equiv (Equiv.mulRight τ) _ _ fun σ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[Equiv.Perm.sign_mul, mul_comm (Equiv.Perm.sign σ), ← mul_assoc, Int.units_mul_self, one_mul]`.
+-/
 theorem antisymm_permAct (τ : Equiv.Perm (Fin n)) (p : LaurentRing n) :
     antisymm n (permAct τ p) = Equiv.Perm.sign τ • antisymm n p := by
   rw [antisymm_apply, antisymm_apply, Finset.smul_sum]
@@ -39,6 +50,11 @@ theorem antisymm_permAct (τ : Equiv.Perm (Fin n)) (p : LaurentRing n) :
   congr 1
   rw [Equiv.Perm.sign_mul, mul_comm (Equiv.Perm.sign σ), ← mul_assoc, Int.units_mul_self, one_mul]
 
+/- English proof (translation)
+Use `antisymm_permAct (Equiv.swap i j) p` as an intermediate fact. Rewrite `this` using `[h, Equiv.Perm.sign_swap hij]`. Simplify using `only [Units.neg_smul, one_smul] at this`. Use `set a := antisymm n p`. Establish `h2 : (2 : ℂ) • a = 0`.
+
+Rewrite using `[two_smul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+-/
 theorem antisymm_eq_zero_of_swap {i j : Fin n} (hij : i ≠ j) {p : LaurentRing n}
     (h : permAct (Equiv.swap i j) p = p) : antisymm n p = 0 := by
   have := antisymm_permAct (Equiv.swap i j) p
@@ -51,6 +67,9 @@ theorem antisymm_eq_zero_of_swap {i j : Fin n} (hij : i ≠ j) {p : LaurentRing 
       _ = 0 := neg_add_cancel a
   exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Rewrite using `[antisymm_apply, antisymm_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hq, mul_smul_comm]`.
+-/
 theorem antisymm_mul_of_symm {q : LaurentRing n} (hq : ∀ σ, permAct σ q = q) (p : LaurentRing n) :
     antisymm n (q * p) = q * antisymm n p := by
   rw [antisymm_apply, antisymm_apply, Finset.mul_sum]
@@ -59,10 +78,18 @@ theorem antisymm_mul_of_symm {q : LaurentRing n} (hq : ∀ σ, permAct σ q = q)
 
 def alternant (μ : Fin n → ℤ) : LaurentRing n := antisymm n (monomial μ)
 
+/- English proof (translation)
+The claim follows from `permAct_single σ μ 1`.
+-/
 theorem permAct_monomial (σ : Equiv.Perm (Fin n)) (μ : Fin n → ℤ) :
     permAct σ (monomial μ) = monomial (μ ∘ σ.symm) :=
   permAct_single σ μ 1
 
+/- English proof (translation)
+Use `antisymm_eq_zero_of_swap hij ?_` and prove the remaining obligations. Rewrite using `[permAct_monomial, Equiv.symm_swap]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`.
+
+Use `split_ifs with h1 h2`. Rewrite using `[h1, h]`. Rewrite using `[h2, h]`. Both sides reduce to the same expression.
+-/
 theorem alternant_eq_zero {μ : Fin n → ℤ} {i j : Fin n} (hij : i ≠ j) (h : μ i = μ j) :
     alternant μ = 0 := by
   refine antisymm_eq_zero_of_swap hij ?_
@@ -75,18 +102,36 @@ theorem alternant_eq_zero {μ : Fin n → ℤ} {i j : Fin n} (hij : i ≠ j) (h 
   · rw [h2, h]
   · rfl
 
+/- English proof (translation)
+Simplify using `only [monomial, single_mul_single, mul_one]`.
+-/
 theorem monomial_add (μ ν : Fin n → ℤ) : monomial (μ + ν) = monomial μ * monomial ν := by
   simp only [monomial, single_mul_single, mul_one]
 
+/- English proof (translation)
+Rewrite using `[permAct_monomial]`. Both sides reduce to the same expression.
+-/
 theorem permAct_monomial_const (c : ℤ) (σ : Equiv.Perm (Fin n)) :
     permAct σ (monomial fun _ => c) = monomial fun _ => c := by
   rw [permAct_monomial]
   rfl
 
+/- English proof (translation)
+Rewrite using `[alternant, alternant, monomial_add, mul_comm, antisymm_mul_of_symm (permAct_monomial_const c)]`.
+-/
 theorem alternant_add_const (μ : Fin n → ℤ) (c : ℤ) :
     alternant (μ + fun _ => c) = monomial (fun _ => c) * alternant μ := by
   rw [alternant, alternant, monomial_add, mul_comm, antisymm_mul_of_symm (permAct_monomial_const c)]
 
+/- English proof (translation)
+Rewrite using `[alternant, antisymm_apply, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Matrix.of_apply, monomial]`. Rewrite using `[AddMonoidAlgebra.prod_single, Finset.prod_const_one, permAct_single]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single (σ.symm x)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (by rw [h, Equiv.symm_apply_apply])`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem alternant_eq_det (μ : Fin n → ℤ) :
     alternant μ = (Matrix.of fun a b : Fin n => monomial (Pi.single a (μ b))).det := by
   rw [alternant, antisymm_apply, Matrix.det_apply]
@@ -110,6 +155,9 @@ variable (n) in
 
 def staircase : Fin n → ℤ := fun i => (n : ℤ) - 1 - i
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `only [staircase] at h`. Conclude with `Fin.ext (by omega)`.
+-/
 theorem staircase_injective : Function.Injective (staircase n) := by
   intro i j h
   simp only [staircase] at h
@@ -117,6 +165,9 @@ theorem staircase_injective : Function.Injective (staircase n) := by
 
 abbrev varL (a : Fin n) : LaurentRing n := monomial (Pi.single a 1)
 
+/- English proof (translation)
+Simplify using `only [varL, monomial, single_pow, one_pow]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, Pi.single_apply, nsmul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem monomial_single_natCast (a : Fin n) (m : ℕ) :
     monomial (Pi.single a (m : ℤ)) = varL a ^ m := by
   simp only [varL, monomial, single_pow, one_pow]
@@ -130,15 +181,24 @@ open Polynomial in
 def rootPoly (n : ℕ) : (LaurentRing n)[X] := ∏ a : Fin n, (X - C (varL a))
 
 open Polynomial in
+/- English proof (translation)
+The claim follows from `monic_prod_of_monic _ _ fun a _ => monic_X_sub_C _`.
+-/
 theorem rootPoly_monic : (rootPoly n).Monic :=
   monic_prod_of_monic _ _ fun a _ => monic_X_sub_C _
 
 open Polynomial in
+/- English proof (translation)
+Rewrite using `[rootPoly, natDegree_prod_of_monic _ _ fun a _ => monic_X_sub_C _]`. Simplify using the standard rewrite rules.
+-/
 theorem natDegree_rootPoly : (rootPoly n).natDegree = n := by
   rw [rootPoly, natDegree_prod_of_monic _ _ fun a _ => monic_X_sub_C _]
   simp
 
 open Polynomial in
+/- English proof (translation)
+Rewrite using `[rootPoly, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by simp)`.
+-/
 theorem eval_rootPoly (a : Fin n) : (rootPoly n).eval (varL a) = 0 := by
   rw [rootPoly, eval_prod]
   exact Finset.prod_eq_zero (Finset.mem_univ a) (by simp)
@@ -149,6 +209,13 @@ def remCoeff (m k : ℕ) : LaurentRing n := ((X ^ m : (LaurentRing n)[X]) %ₘ r
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `hne : rootPoly n ≠ 1`. Introduce `h`. Use `natDegree_rootPoly (n := n)` as an intermediate fact. Rewrite `this` using `[h, natDegree_one]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hdeg : ((X ^ m : (LaurentRing n)[X]) %ₘ rootPoly n).natDegree < n`. Use `natDegree_modByMonic_lt (X ^ m : (LaurentRing n)[X]) rootPoly_monic hne` as an intermediate fact. Rewrite `this` using `[natDegree_rootPoly]`. Then use the resulting hypothesis. Establish `h1 : (X ^ m : (LaurentRing n)[X]).eval (varL a) = ((X ^ m : (LaurentRing n)[X]) %ₘ rootPoly n).eval (varL a)` using `by conv_lhs => rw [← modByMonic_add_div (X ^ m : (LaurentRing n)[X]) (rootPoly n)]`. Rewrite using `[eval_add, eval_mul, eval_rootPoly, zero_mul, add_zero]`.
+
+Rewrite `h1` using `[eval_pow, eval_X, eval_eq_sum_range' hdeg, Finset.sum_range]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem pow_eq_sum_remCoeff (hn : 0 < n) (a : Fin n) (m : ℕ) :
     varL a ^ m = ∑ k : Fin n, remCoeff (n := n) m k * varL a ^ (k : ℕ) := by
   have hne : rootPoly n ≠ 1 := by
@@ -172,6 +239,11 @@ def vdm : Matrix (Fin n) (Fin n) (LaurentRing n) := Matrix.of fun a k => varL a 
 def remMat (m : Fin n → ℕ) : Matrix (Fin n) (Fin n) (LaurentRing n) :=
   Matrix.of fun k b => remCoeff (m b) k
 
+/- English proof (translation)
+Rewrite using `[alternant_eq_det, ← Matrix.det_mul]`. Use `congr 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, vdm, remMat]`.
+
+Rewrite using `[monomial_single_natCast, pow_eq_sum_remCoeff hn a (m b)]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem alternant_natCast_eq (hn : 0 < n) (m : Fin n → ℕ) :
     alternant (fun b => (m b : ℤ)) = vdm.det * (remMat m).det := by
   rw [alternant_eq_det, ← Matrix.det_mul]
@@ -183,6 +255,13 @@ theorem alternant_natCast_eq (hn : 0 < n) (m : Fin n → ℕ) :
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 open Polynomial in
+/- English proof (translation)
+Use extensionality with `k b`. Simplify using `only [remMat, Matrix.of_apply, remCoeff, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Fin.revPerm_apply]`. Establish `hlt : (X ^ (n - 1 - (b : ℕ)) : (LaurentRing n)[X]).degree < (rootPoly n).degree`. Rewrite using `[degree_X_pow, degree_eq_natDegree rootPoly_monic.ne_zero, natDegree_rootPoly]`. Conclude with `(show n - 1 - (b : ℕ) < n by omega)` after adjusting the coercions.
+
+Rewrite using `[(modByMonic_eq_self_iff rootPoly_monic).2 hlt, coeff_X_pow]`. Distinguish the cases in `h : (k : ℕ) = n - 1 - (b : ℕ)`. Rewrite using `[if_pos h, if_pos]`. Conclude with `Fin.ext (by simp [Fin.val_rev]; omega)`. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[← h']`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem remMat_staircase (hn : 0 < n) :
     remMat (fun b : Fin n => n - 1 - (b : ℕ)) = Fin.revPerm.permMatrix (LaurentRing n) := by
   ext k b
@@ -202,6 +281,9 @@ theorem remMat_staircase (hn : 0 < n) :
     simp [Fin.val_rev]
     omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [staircase]`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem staircase_eq_natCast :
     staircase n = fun b : Fin n => ((n - 1 - (b : ℕ) : ℕ) : ℤ) := by
   funext b
@@ -209,6 +291,21 @@ theorem staircase_eq_natCast :
   have := b.2
   omega
 
+/- English proof (translation)
+Break down `n.eq_zero_or_pos with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `⟨1, by rw [mul_one]; congr 1; funext i; exact i.elim0⟩`. Use `set s : LaurentRing n := ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : LaurentRing n)`. Establish `hs : s * s = 1`.
+
+Simplify using `only [s]`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Establish `hδ : alternant (staircase n) = vdm.det * s`. Rewrite using `[staircase_eq_natCast, alternant_natCast_eq hn, remMat_staircase hn, Matrix.det_permutation]`.
+
+Establish `hV : vdm.det = alternant (staircase n) * s`. Rewrite using `[hδ, mul_assoc, hs, mul_one]`. Use `set c : ℤ := ∑ i, |μ i|`. Establish `hc : ∀ i, 0 ≤ μ i + c`. Introduce `i`.
+
+Use `Finset.single_le_sum (f := fun i => |μ i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Use `neg_abs_le (μ i)` as an intermediate fact. Simplify using `only [c]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hshift : (μ + fun _ => c) = fun b => (((μ b + c).toNat : ℕ) : ℤ)`.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [Pi.add_apply]`. Rewrite using `[Int.toNat_of_nonneg (hc b)]`. Establish `h1` using `alternant_add_const μ c`. Rewrite `h1` using `[hshift, alternant_natCast_eq hn, hV]`.
+
+Use `⟨monomial (fun _ => -c) * s * (remMat fun b => (μ b + c).toNat).det, ?_⟩` and prove the remaining obligations. Establish `hinv : monomial (fun _ : Fin n => -c) * monomial (fun _ => c) = 1`. Rewrite using `[← monomial_add]`. Simplify using `only [Pi.add_def, neg_add_cancel]`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hinv, one_mul]`. Use `_ = _ := by rw [← h1]; ring`.
+-/
 theorem exists_alternant_eq_mul (μ : Fin n → ℤ) :
     ∃ q, alternant μ = alternant (staircase n) * q := by
   rcases n.eq_zero_or_pos with hn | hn
@@ -247,6 +344,13 @@ theorem exists_alternant_eq_mul (μ : Fin n → ℤ) :
         rw [← mul_assoc, hinv, one_mul]
     _ = _ := by rw [← h1]; ring
 
+/- English proof (translation)
+Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨qx, hqx⟩` from `hx`. Take `⟨qy, hqy⟩` from `hy`.
+
+Conclude with `⟨qx + qy, by rw [map_add, hqx, hqy, mul_add]⟩`. Consider the case `single μ c`. Take `⟨q, hq⟩` from `exists_alternant_eq_mul μ`. Use `⟨c • q, ?_⟩` and prove the remaining obligations. Establish `: (single μ c : LaurentRing n) = c • monomial μ`.
+
+Simplify using `[monomial, smul_single']`. Rewrite using `[this, map_smul, ← alternant, hq, mul_smul_comm]`.
+-/
 theorem exists_antisymm_eq_mul (p : LaurentRing n) :
     ∃ q, antisymm n p = alternant (staircase n) * q := by
   induction p using AddMonoidAlgebra.induction_linear with
@@ -262,6 +366,15 @@ theorem exists_antisymm_eq_mul (p : LaurentRing n) :
       simp [monomial, smul_single']
     rw [this, map_smul, ← alternant, hq, mul_smul_comm]
 
+/- English proof (translation)
+Rewrite using `[alternant, antisymm_apply, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Simplify using `only [permAct_monomial]`. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm (Fin n))]`. Rewrite using `[show (Equiv.symm (1 : Equiv.Perm (Fin n))) = 1 from rfl]`. Simplify using `[monomial, AddMonoidAlgebra.coeff_single]`.
+
+Introduce `σ _ hσ`. Rewrite using `[Units.smul_def, AddMonoidAlgebra.coeff_smul, Finsupp.smul_apply, monomial, AddMonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg, smul_zero]`. Introduce `h`. Apply `hσ` to reduce the goal to its premises. Use `Equiv.ext fun x => ?_` and prove the remaining obligations.
+
+Use `congrFun h x` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`. Use `staircase_injective this` as an intermediate fact. Rewrite `this` using `[Equiv.symm_apply_eq]`. Conclude with `this.symm`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coeff_alternant_staircase :
     (alternant (staircase n)).coeff (staircase n) = 1 := by
   rw [alternant, antisymm_apply, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]
@@ -282,6 +395,9 @@ theorem coeff_alternant_staircase :
     exact this.symm
   · simp
 
+/- English proof (translation)
+Introduce `h`. Use `coeff_alternant_staircase (n := n)` as an intermediate fact. Rewrite `this` using `[h, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]`. Conclude with `zero_ne_one this`.
+-/
 theorem alternant_staircase_ne_zero : alternant (staircase n) ≠ 0 := by
   intro h
   have := coeff_alternant_staircase (n := n)
@@ -290,41 +406,72 @@ theorem alternant_staircase_ne_zero : alternant (staircase n) ≠ 0 := by
 
 def altQuot (p : LaurentRing n) : LaurentRing n := (exists_antisymm_eq_mul p).choose
 
+/- English proof (translation)
+The claim follows from `(exists_antisymm_eq_mul p).choose_spec.symm`.
+-/
 theorem alternant_mul_altQuot (p : LaurentRing n) :
     alternant (staircase n) * altQuot p = antisymm n p :=
   (exists_antisymm_eq_mul p).choose_spec.symm
 
+/- English proof (translation)
+The claim follows from `mul_left_cancel₀ alternant_staircase_ne_zero ((alternant_mul_altQuot p).trans h.symm)`.
+-/
 theorem altQuot_eq_of_mul {p q : LaurentRing n} (h : alternant (staircase n) * q = antisymm n p) :
     altQuot p = q :=
   mul_left_cancel₀ alternant_staircase_ne_zero ((alternant_mul_altQuot p).trans h.symm)
 
+/- English proof (translation)
+The claim follows from `altQuot_eq_of_mul (by rw [mul_add, alternant_mul_altQuot, alternant_mul_altQuot, map_add])`.
+-/
 theorem altQuot_add (p q : LaurentRing n) : altQuot (p + q) = altQuot p + altQuot q :=
   altQuot_eq_of_mul (by rw [mul_add, alternant_mul_altQuot, alternant_mul_altQuot, map_add])
 
+/- English proof (translation)
+The claim follows from `altQuot_eq_of_mul (by rw [Finset.mul_sum, map_sum]; simp only [alternant_mul_altQuot])`.
+-/
 theorem altQuot_sum {ι : Type*} (s : Finset ι) (f : ι → LaurentRing n) :
     altQuot (∑ i ∈ s, f i) = ∑ i ∈ s, altQuot (f i) :=
   altQuot_eq_of_mul (by rw [Finset.mul_sum, map_sum]; simp only [alternant_mul_altQuot])
 
+/- English proof (translation)
+The claim follows from `altQuot_eq_of_mul (by rw [mul_smul_comm, alternant_mul_altQuot, map_smul])`.
+-/
 theorem altQuot_smul (c : ℂ) (p : LaurentRing n) : altQuot (c • p) = c • altQuot p :=
   altQuot_eq_of_mul (by rw [mul_smul_comm, alternant_mul_altQuot, map_smul])
 
+/- English proof (translation)
+The claim follows from `altQuot_eq_of_mul (by rw [antisymm_mul_of_symm hq, ← alternant_mul_altQuot p] ring)`.
+-/
 theorem altQuot_mul_of_symm {q : LaurentRing n} (hq : ∀ σ, permAct σ q = q) (p : LaurentRing n) :
     altQuot (q * p) = q * altQuot p :=
   altQuot_eq_of_mul (by
     rw [antisymm_mul_of_symm hq, ← alternant_mul_altQuot p]
     ring)
 
+/- English proof (translation)
+The claim follows from `altQuot_eq_of_mul (by rw [mul_zero, antisymm_eq_zero_of_swap hij h])`.
+-/
 theorem altQuot_eq_zero_of_swap {i j : Fin n} (hij : i ≠ j) {p : LaurentRing n}
     (h : permAct (Equiv.swap i j) p = p) : altQuot p = 0 :=
   altQuot_eq_of_mul (by rw [mul_zero, antisymm_eq_zero_of_swap hij h])
 
 def esymmL (n r : ℕ) : LaurentRing n := ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, monomial (lamS S)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, lamS_apply, Finset.mem_map_equiv]`.
+-/
 theorem lamS_comp_symm (σ : Equiv.Perm (Fin n)) (S : Finset (Fin n)) :
     lamS S ∘ σ.symm = lamS (S.map σ.toEmbedding) := by
   funext x
   simp only [Function.comp_apply, lamS_apply, Finset.mem_map_equiv]
 
+/- English proof (translation)
+Rewrite using `[esymmL, map_sum]`. Simplify using `only [permAct_monomial, lamS_comp_symm]`. Use `Finset.sum_nbij' (fun S => S.map σ.toEmbedding) (fun S => S.map σ.symm.toEmbedding) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `S hS`. Simplify using `only [Finset.mem_powersetCard, Finset.subset_univ, true_and, Finset.card_map] at hS ⊢`.
+
+Conclude with `hS`. Introduce `S hS`. Simplify using `only [Finset.mem_powersetCard, Finset.subset_univ, true_and, Finset.card_map] at hS ⊢`. Conclude with `hS`. Introduce `S _`.
+
+Use extensionality with `x`. Simplify using `[Finset.mem_map_equiv]`. Introduce `S _`. Use extensionality with `x`. Simplify using `[Finset.mem_map_equiv]`.
+-/
 theorem permAct_esymmL (r : ℕ) (σ : Equiv.Perm (Fin n)) : permAct σ (esymmL n r) = esymmL n r := by
   rw [esymmL, map_sum]
   simp only [permAct_monomial, lamS_comp_symm]
@@ -343,6 +490,9 @@ theorem permAct_esymmL (r : ℕ) (σ : Equiv.Perm (Fin n)) : permAct σ (esymmL 
     ext x
     simp [Finset.mem_map_equiv]
 
+/- English proof (translation)
+Rewrite using `[esymmL, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm, monomial_add]`.
+-/
 theorem esymmL_mul_monomial (r : ℕ) (l : Fin n → ℤ) :
     esymmL n r * monomial l = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r,
       monomial (l + lamS S) := by
@@ -350,6 +500,9 @@ theorem esymmL_mul_monomial (r : ℕ) (l : Fin n → ℤ) :
   refine Finset.sum_congr rfl fun S _ => ?_
   rw [add_comm, monomial_add]
 
+/- English proof (translation)
+Rewrite using `[← altQuot_mul_of_symm (permAct_esymmL r), ← mul_assoc, esymmL_mul_monomial, Finset.sum_mul, altQuot_sum]`.
+-/
 theorem esymmL_mul_altQuot (r : ℕ) (l : Fin n → ℤ) (g : LaurentRing n) :
     esymmL n r * altQuot (monomial l * g) = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r,
       altQuot (monomial (l + lamS S) * g) := by
@@ -358,10 +511,16 @@ theorem esymmL_mul_altQuot (r : ℕ) (l : Fin n → ℤ) (g : LaurentRing n) :
 
 def schur (l : Fin n → ℤ) : LaurentRing n := altQuot (monomial (l + staircase n))
 
+/- English proof (translation)
+The claim follows from `alternant_mul_altQuot _`.
+-/
 theorem alternant_mul_schur (l : Fin n → ℤ) :
     alternant (staircase n) * schur l = alternant (l + staircase n) :=
   alternant_mul_altQuot _
 
+/- English proof (translation)
+Establish `h` using `esymmL_mul_altQuot r l (monomial (staircase n))`. Simplify using `only [← monomial_add] at h`. Rewrite using `[schur, h]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[schur, add_right_comm]`.
+-/
 theorem esymmL_mul_schur (r : ℕ) (l : Fin n → ℤ) :
     esymmL n r * schur l = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, schur (l + lamS S) := by
   have h := esymmL_mul_altQuot r l (monomial (staircase n))
@@ -370,6 +529,11 @@ theorem esymmL_mul_schur (r : ℕ) (l : Fin n → ℤ) :
   refine Finset.sum_congr rfl fun S _ => ?_
   rw [schur, add_right_comm]
 
+/- English proof (translation)
+Use `mul_left_cancel₀ (alternant_staircase_ne_zero (n := n)) ?_` and prove the remaining obligations. Rewrite using `[alternant_mul_schur, mul_zero]`. Use `alternant_eq_zero (i := i) (j := j) (fun h => by rw [h] at hij; omega) ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, staircase, hμ]`. Move the coercions through the operations in `[hij]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schur_eq_zero_of_ascent {μ : Fin n → ℤ} {i j : Fin n} (hij : (j : ℕ) = i + 1)
     (hμ : μ j = μ i + 1) : schur μ = 0 := by
   refine mul_left_cancel₀ (alternant_staircase_ne_zero (n := n)) ?_
@@ -384,20 +548,34 @@ def hlFactor (n : ℕ) (t : ℂ) : LaurentRing n :=
 
 def hlR (t : ℂ) (l : Fin n → ℤ) : LaurentRing n := altQuot (monomial l * hlFactor n t)
 
+/- English proof (translation)
+The claim follows from `esymmL_mul_altQuot r l _`.
+-/
 theorem esymmL_mul_hlR (t : ℂ) (r : ℕ) (l : Fin n → ℤ) :
     esymmL n r * hlR t l = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, hlR t (l + lamS S) :=
   esymmL_mul_altQuot r l _
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, ← neg_smul, altQuot_add, altQuot_smul, neg_smul, ← sub_eq_add_neg]`.
+-/
 theorem altQuot_sub_smul (t : ℂ) (p q : LaurentRing n) :
     altQuot (p - t • q) = altQuot p - t • altQuot q := by
   rw [sub_eq_add_neg, ← neg_smul, altQuot_add, altQuot_smul, neg_smul, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[varL, permAct_monomial]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.single_apply, Equiv.symm_apply_eq]`.
+-/
 theorem permAct_varL (σ : Equiv.Perm (Fin n)) (a : Fin n) : permAct σ (varL a) = varL (σ a) := by
   rw [varL, permAct_monomial]
   congr 1
   funext x
   simp only [Function.comp_apply, Pi.single_apply, Equiv.symm_apply_eq]
 
+/- English proof (translation)
+Establish `hv : ∀ x : Fin n, ((Equiv.swap i j x : Fin n) : ℕ) = if (x : ℕ) = i then (j : ℕ) else if (x : ℕ) = j then (i : ℕ) else (x : ℕ)`. Introduce `x`. Rewrite using `[Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff]`. Rewrite using `[Fin.lt_def, hv, hv]`.
+
+Rewrite `hab` using `[Fin.lt_def]`. Establish `: ¬((a : ℕ) = i ∧ (b : ℕ) = j)` using `fun h => hne ⟨Fin.ext h.1, Fin.ext h.2⟩`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem swap_lt_swap {i j a b : Fin n} (hij : (j : ℕ) = i + 1) (hab : a < b)
     (hne : ¬(a = i ∧ b = j)) : Equiv.swap i j a < Equiv.swap i j b := by
   have hv : ∀ x : Fin n, ((Equiv.swap i j x : Fin n) : ℕ) =
@@ -410,6 +588,35 @@ theorem swap_lt_swap {i j a b : Fin n} (hij : (j : ℕ) = i + 1) (hab : a < b)
   have : ¬((a : ℕ) = i ∧ (b : ℕ) = j) := fun h => hne ⟨Fin.ext h.1, Fin.ext h.2⟩
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `set s := Equiv.swap i j with hs`. Establish `hij' : i ≠ j` using `fun h => by rw [h] at hij; omega`. Establish `hlt : i < j` using `Fin.lt_def.2 (by omega)`. Use `set P := (Finset.univ : Finset (Fin n × Fin n)).filter (fun p => p.1 < p.2) with hP`. Use `set fac : Fin n × Fin n → LaurentRing n := fun p => varL p.1 - t • varL p.2 with hfac`.
+
+Establish `hmem : (i, j) ∈ P` using `by simp [hP, hlt]`. Use `set D' := ∏ p ∈ P.erase (i, j), fac p with hD'`. Establish `hD : hlFactor n t = fac (i, j) * D'`. Rewrite using `[hD', Finset.mul_prod_erase P fac hmem]`. Both sides reduce to the same expression.
+
+Establish `hsD' : permAct s D' = D'`. Rewrite using `[hD', map_prod]`. Use `Finset.prod_nbij' (fun p => (s p.1, s p.2)) (fun p => (s p.1, s p.2)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp`, the goal using `[Finset.mem_erase]`.
+
+Take `⟨hne, hpP⟩` from `hp`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_univ, true_and] at hpP ⊢`. Establish `hne' : ¬(p.1 = i ∧ p.2 = j)` using `fun h => hne (Prod.ext h.1 h.2)`. Use `⟨fun h => ?_, swap_lt_swap hij hpP hne'⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq] at h`.
+
+Establish `h1 : p.1 = j`. Use `congrArg s h.1` as an intermediate fact. Rewrite `this` using `[hs, Equiv.swap_apply_self, Equiv.swap_apply_left]`. Then use the resulting hypothesis. Establish `h2 : p.2 = i`. Use `congrArg s h.2` as an intermediate fact.
+
+Rewrite `this` using `[hs, Equiv.swap_apply_self, Equiv.swap_apply_right]`. Then use the resulting hypothesis. Rewrite `hpP` using `[h1, h2]`. Conclude with `absurd hlt (not_lt.2 hpP.le)`. Introduce `p hp`. Rewrite `hp`, the goal using `[Finset.mem_erase]`.
+
+Take `⟨hne, hpP⟩` from `hp`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_univ, true_and] at hpP ⊢`. Establish `hne' : ¬(p.1 = i ∧ p.2 = j)` using `fun h => hne (Prod.ext h.1 h.2)`. Use `⟨fun h => ?_, swap_lt_swap hij hpP hne'⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq] at h`.
+
+Establish `h1 : p.1 = j`. Use `congrArg s h.1` as an intermediate fact. Rewrite `this` using `[hs, Equiv.swap_apply_self, Equiv.swap_apply_left]`. Then use the resulting hypothesis. Establish `h2 : p.2 = i`. Use `congrArg s h.2` as an intermediate fact.
+
+Rewrite `this` using `[hs, Equiv.swap_apply_self, Equiv.swap_apply_right]`. Then use the resulting hypothesis. Rewrite `hpP` using `[h1, h2]`. Conclude with `absurd hlt (not_lt.2 hpP.le)`. Introduce `p _`. Simplify using `[hs, Equiv.swap_apply_self]`.
+
+Introduce `p _`. Simplify using `[hs, Equiv.swap_apply_self]`. Introduce `p _`. Simplify using `only [hfac, map_sub, map_smul, permAct_varL]`. Establish `hkey : monomial (μ ∘ s) * varL j = monomial μ * varL i`.
+
+Rewrite using `[varL, varL, ← monomial_add, ← monomial_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Function.comp_apply, Pi.single_apply, hs, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs with h1 h2 h3 h4 h5 <;> simp_all`.
+
+Establish `hss : μ ∘ s ∘ s = μ`. Use function extensionality and compare the values at `x`. Simplify using `[hs, Equiv.swap_apply_self]`. Establish `hY : permAct s ((monomial μ - t • monomial (μ ∘ s)) * fac (i, j)) = (monomial μ - t • monomial (μ ∘ s)) * fac (i, j)`. Simplify using `only [hfac, map_mul, map_sub, map_smul, permAct_varL]`.
+
+Rewrite using `[permAct_monomial, permAct_monomial, show (s.symm : Equiv.Perm (Fin n)) = s from Equiv.symm_swap i j, Function.comp_assoc, hss, hs, Equiv.swap_apply_left, Equiv.swap_apply_right, ← hs]`. Simplify using `only [Algebra.smul_def]`. Take the linear combination `(1 - algebraMap ℂ (LaurentRing n) t ^ 2) * hkey`. Establish `hzero : altQuot ((monomial μ - t • monomial (μ ∘ s)) * hlFactor n t) = 0`. Rewrite using `[hD, ← mul_assoc]`.
+
+Use `altQuot_eq_zero_of_swap hij' ?_` and prove the remaining obligations. Rewrite using `[map_mul, hY, hsD']`. Rewrite `hzero` using `[sub_mul, smul_mul_assoc, altQuot_sub_smul]`. Rewrite using `[hlR, hlR]`. Conclude with `sub_eq_zero.1 hzero`.
+-/
 theorem hlR_swap (t : ℂ) {μ : Fin n → ℤ} {i j : Fin n} (hij : (j : ℕ) = i + 1)
     (hμ : μ j = μ i + 1) : hlR t μ = t • hlR t (μ ∘ Equiv.swap i j) := by
   classical

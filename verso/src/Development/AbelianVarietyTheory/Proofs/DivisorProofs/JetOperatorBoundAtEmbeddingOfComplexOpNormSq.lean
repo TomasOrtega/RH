@@ -15,6 +15,13 @@ open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry
 
 variable {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ) {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `bVVfun_int K lam i`. Establish `e1 : map σ (bVVfun K lam i) = map (Int.castRingHom ℂ) Q`. Rewrite using `[hQ, MvPolynomial.map_map]`. Use `congr 2`. Conclude with `RingHom.ext_int _ _`.
+
+Establish `e2 : σ (extNorm K lam) = extNorm ℂ lam`. Rewrite using `[pb_extNorm_eq, pb_extNorm_eq, extNormB, extNormB, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Proof.TensorMapDescent.fockB_map, Formalism.L2.DIV.map_extremal]`. Rewrite using `[pairP_apply, pairP_apply, pb_gramTw_one, pb_gramTw_one, pb_blockAct_one_tr, pb_blockAct_one_tr, fockL_apply, fockL_apply, map_mul, map_div₀, map_one, e2]`.
+
+Use `congr 1`. Rewrite using `[e1, pb_fockS_int, ← e1, GlobalTheory.Proof.TensorMapDescent.fockB_map, hQ, pb_fockS_int]`.
+-/
 theorem map_pairP_basis {n : ℕ} (lam : ι → DomWeight n) (i j : VVIdx lam) :
     σ (pairP lam (fun _ => (1 : Matrix (Fin n) (Fin n) K)) (bVVfun K lam i) (bVVfun K lam j)) =
       pairP lam (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) (map σ (bVVfun K lam i)) (map σ (bVVfun K lam j)) := by
@@ -32,6 +39,13 @@ theorem map_pairP_basis {n : ℕ} (lam : ι → DomWeight n) (i j : VVIdx lam) :
   congr 1
   rw [e1, pb_fockS_int, ← e1, GlobalTheory.Proof.TensorMapDescent.fockB_map, hQ, pb_fockS_int]
 
+/- English proof (translation)
+Establish `hx : (x : Pol K ι n) = ∑ i, (bVV K lam).repr x i • bVVfun K lam i` using `by conv_lhs => rw [← (bVV K lam).sum_repr x]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bVV_coe]`. Establish `hy : (y : Pol ℂ ι n) = ∑ i, σ ((bVV K lam).repr x i) • map σ (bVVfun K lam i)`. Rewrite using `[h]`. Use `conv_lhs => rw [hx]`.
+
+Simplify using `only [map_sum, smul_eq_C_mul, map_mul, map_C]`. Unfold `sqAt invNormSq`. Use `congr 1`. Rewrite using `[pairK_apply, hy]`. Simplify using `only [pairK_apply, bVV_coe, map_pairP_basis, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqAt_eq {n : ℕ} (lam : ι → DomWeight n) (x : Formalism.L2.DIV.VV K lam) (y : Formalism.L2.DIV.VV ℂ lam)
     (h : (y : Pol ℂ ι n) = map σ (x : Pol K ι n)) : sqAt σ lam x = invNormSq lam y := by
   have hx : (x : Pol K ι n) = ∑ i, (bVV K lam).repr x i • bVVfun K lam i := by
@@ -54,6 +68,15 @@ variable {a b : ℕ}
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Apply the tactic sequence `have h := GlobalTheory.JetDeg.subD_hom (b := b) τ (GlobalTheory.JetDeg.sharp_hom (fun τ => lastEntry (nu τ)) τ (GlobalTheory.JetDeg.VV_hom lam τ hP)) (mem_support_iff.mp hμ)`. Establish `hd : degAt (μ.comapDomain Sum.inr Sum.inr_injective.injOn) τ = Finsupp.weight (GlobalTheory.JetDeg.derW a b τ) μ`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type, degAt, Finset.sum_filter, Finset.sum_subset (Finset.subset_univ _)]`. Simplify using `[GlobalTheory.JetDeg.derW]`. Introduce `k _ hk`.
+
+Rewrite using `[Finsupp.notMem_support_iff.mp hk]`. Simplify using the standard rewrite rules. Rewrite using `[hd, h]`. Use `push_cast`. Take `⟨h0, ⟨s', hs'⟩, -⟩` from `hw τ`.
+
+Apply the tactic sequence `have e : ∀ i, (nu τ).w i = ((lam τ).natW i : ℤ) + lastEntry (nu τ) := fun i => by`. Establish `hi` using `i.2`. Establish `ha : 0 < a` using `by omega`. Rewrite using `[GlobalTheory.JetDeg.natW_cast, lastEntry, DomWeight.detShift, DomWeight.detShift, dif_pos ha, dif_pos ha, Int.toNat_of_nonneg (h0 _), hs', hs']`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[e, Finset.sum_add_distrib, mul_comm]`.
+-/
 theorem degAt_eq (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b) (hw : ∀ τ, StepWeights (lam τ) (nu τ) (lam' τ))
     (P : Pol K ι a) (hP : P ∈ Formalism.L2.DIV.VV K lam) (μ : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ)
     (hμ : μ ∈ (subD K ι a b (P * ∏ τ, frDet K a τ ^ lastEntry (nu τ))).support) (τ : ι) :
@@ -81,6 +104,11 @@ theorem degAt_eq (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b) (hw :
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Establish `hdet : ∀ τ : ι, map σ (frDet K a τ) = frDet ℂ a τ` using `fun τ => by`. Rewrite using `[GlobalTheory.JetPoint.map_frDet, frDet]`. Simplify using `only [map_X]`. Rewrite using `[GlobalTheory.GO.map_jetMap σ J J' 1 _ P fun μ hμ => by`. Rewrite using `[one_mul]`.
+
+Conclude with `hJ _ (degAt_eq lam nu lam' hw P hP μ hμ), one_smul]`. Simplify using `[jetMap, hdet]`.
+-/
 theorem map_jetMap_eq (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b) (hw : ∀ τ, StepWeights (lam τ) (nu τ) (lam' τ))
     (J : (DVar ι a b →₀ ℕ) → K) (J' : (DVar ι a b →₀ ℕ) → ℂ)
     (hJ : ∀ e, (∀ τ, ((degAt e τ : ℕ) : ℤ) = ∑ i, (nu τ).w i) → σ (J e) = J' e)
@@ -95,6 +123,11 @@ theorem map_jetMap_eq (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b) 
 
 end GlobalTheory.JetBase
 
+/- English proof (translation)
+Introduce `K _ _ _ σ ι _ a b lam nu lam' hw hK hC J J' hJ t ht x`. Establish `h` using `ht ⟨MvPolynomial.map σ (x : Pol K ι a), GlobalTheory.Proof.TensorMapDescent.map_mem_VV σ lam _ x.2⟩`. Rewrite using `[GlobalTheory.JetBase.sqAt_eq σ lam x ⟨_, GlobalTheory.Proof.TensorMapDescent.map_mem_VV σ lam _ x.2⟩ rfl]`. Use `le_of_eq_of_le (GlobalTheory.JetBase.sqAt_eq σ lam' _ _ ?_) h` and prove the remaining obligations. Rewrite using `[GlobalTheory.JetPoint.coe_jetOp _ _ _ _ _ (hC _ _ (Subtype.prop _)), GlobalTheory.JetPoint.coe_jetOp _ _ _ _ _ (hK _ _ x.2)]`.
+
+Conclude with `(GlobalTheory.JetBase.map_jetMap_eq σ lam nu lam' hw J J' hJ _ x.2).symm`.
+-/
 theorem GlobalTheory.coefOpLe_jetOp_of_opNormSqLe : ∀ (K : Type) [Field K] [CharZero K] [StarRing K] (σ : K →+* ℂ) (ι : Type) [Fintype ι] (a b : ℕ) (lam nu : ι → DomWeight a) (lam' : ι → DomWeight b), (∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.StepWeights (lam τ) (nu τ) (lam' τ)) → (JetInVV K lam lam' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) → (JetInVV ℂ lam lam' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) → ∀ (J : (DVar ι a b →₀ ℕ) → K) (J' : (DVar ι a b →₀ ℕ) → ℂ), (∀ e, (∀ τ, ((degAt e τ : ℕ) : ℤ) = ∑ i, (nu τ).w i) → σ (J e) = J' e) → ∀ t : ℝ, GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.OpNormSqLe lam lam' (jetOp lam lam' J' fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) t → CoefOpLe σ lam lam' (jetOp lam lam' J fun τ => GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.lastEntry (nu τ)) t := by
   intro K _ _ _ σ ι _ a b lam nu lam' hw hK hC J J' hJ t ht x
   have h := ht ⟨MvPolynomial.map σ (x : Pol K ι a), GlobalTheory.Proof.TensorMapDescent.map_mem_VV σ lam _ x.2⟩

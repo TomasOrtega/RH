@@ -136,6 +136,9 @@ open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) in
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => unfold _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 private lemma involution_apply_eq_tensorProductMap_restrictScalars (a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.Ev F E v) :
     _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ a =
       ((Algebra.TensorProduct.map (AlgHom.id (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)) σ).restrictScalars
@@ -150,12 +153,18 @@ open NumberField IsDedekindDomain in
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+Rewrite using `[involution_apply_eq_tensorProductMap_restrictScalars]`. Conclude with `IsIntegral.map _ ha`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.sigR_mem {a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.Ev F E v}
     (ha : a ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.OEv F E v) :
     _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ a ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.OEv F E v := by
   rw [involution_apply_eq_tensorProductMap_restrictScalars]
   exact IsIntegral.map _ ha
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, JR]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem hR_one {M : ℕ} (z y : Fin M → Ev F E v) :
     hR (Fv F v) σ (1 : Matrix (Fin M) (Fin M) E) z y = ∑ i, sigR (Fv F v) σ (z i) * y i := by
   simp only [hR, Formalism.UG.hform, JR]

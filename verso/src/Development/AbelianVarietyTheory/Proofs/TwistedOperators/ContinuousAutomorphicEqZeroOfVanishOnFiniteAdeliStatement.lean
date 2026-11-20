@@ -8,5 +8,8 @@ open scoped Pointwise TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.ConstRatio
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic | exact GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic | (intros; apply GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic <;> assumpti …`.
+-/
 theorem _root_.GlobalTheory.T.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic : ∀ (D : D7) (V : HSp D) (φ : GA D V → ℂ), (∀ τ, (gramAt D V τ).PosDef) → Continuous φ → (∀ γ ∈ GQ V, ∀ h, φ (γ * h) = φ h) → (∀ h ∈ GfC V, φ h = 0) → ∀ h, φ h = 0 := by
   first | exact @GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic | exact GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic | (intros; apply GlobalTheory.Adopt.continuous_automorphic_eq_zero_of_vanish_on_finiteAdelic <;> assumption)

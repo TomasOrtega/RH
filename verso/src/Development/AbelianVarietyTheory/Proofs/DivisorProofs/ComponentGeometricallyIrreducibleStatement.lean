@@ -11,6 +11,9 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GeomIrrComp.exists_open_irreducibleSpace_baseChange | exact GlobalTheory.GeomIrrComp.exists_open_irreducibleSpace_baseChange | (intros; apply GlobalTheory.GeomIrrComp.exists_open_irreducibleSpace_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.component_geometrically_irreducible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l), FnAlgClosed Xo c → ∀ Z : Comp Xo c,
     ∃ U : (Xo.XF c).Opens, (U : Set (Xo.XF c)) = Z ∧ ∀ (k : Type) [Field k] (f : c.F →+* k),

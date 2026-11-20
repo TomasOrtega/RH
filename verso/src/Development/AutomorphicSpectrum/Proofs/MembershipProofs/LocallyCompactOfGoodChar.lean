@@ -10,12 +10,20 @@ namespace GlobalTheory.CompanionTheory.SchrModel
 
 variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
+/- English proof (translation)
+Conclude with `h.compact.locallyCompactSpace_of_mem_nhds_of_addGroup (h.isOpen.mem_nhds O.zero_mem)`.
+-/
 theorem locallyCompact_of_goodChar [T2Space R] {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) :
     LocallyCompactSpace R := by
   exact h.compact.locallyCompactSpace_of_mem_nhds_of_addGroup (h.isOpen.mem_nhds O.zero_mem)
 
 omit [CommRing R] [IsTopologicalRing R] in
 
+/- English proof (translation)
+Use `haveI := hμ`. Establish `hφ : IsLocallyConstant (φ : (κ → R) → ℂ) ∧ HasCompactSupport (φ : (κ → R) → ℂ)` using `φ.2`. Establish `hφ' : IsLocallyConstant (φ' : (κ → R) → ℂ) ∧ HasCompactSupport (φ' : (κ → R) → ℂ)` using `φ'.2`. Establish `hcont : Continuous (fun x => (starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ' : (κ → R) → ℂ) x)` using `(Complex.continuous_conj.comp hφ.1.continuous).mul hφ'.1.continuous`. Establish `hsupp : HasCompactSupport (fun x => (starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ' : (κ → R) → ℂ) x)` using `HasCompactSupport.mul_left (f := fun x => (starRingEnd ℂ) ((φ : (κ → R) → ℂ) x)) hφ'.2`.
+
+Use `letI : MeasurableSpace (κ → R) := borel _`. Use `haveI : BorelSpace (κ → R) := ⟨rfl⟩`. Conclude with `Continuous.integrable_of_hasCompactSupport hcont hsupp`.
+-/
 theorem integrable_pair {κ : Type} (μ : @Measure (κ → R) (borel _))
     (hμ : @IsFiniteMeasureOnCompacts _ (borel _) _ μ) (φ φ' : SB (κ → R)) :
     @Integrable _ _ _ _ (borel _) (fun x => (starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ' : (κ → R) → ℂ) x) μ := by
@@ -63,6 +71,9 @@ def form {κ : Type} (μ : @Measure (κ → R) (borel _)) (hμ : @IsFiniteMeasur
 
 omit [CommRing R] [IsTopologicalRing R] in
 
+/- English proof (translation)
+Use `show (starRingEnd ℂ) (∫ x, (starRingEnd ℂ) (φ x) * φ' x ∂μ) = ∫ x, (starRingEnd ℂ) (φ' x) * φ x ∂μ`. Rewrite using `[← @integral_conj (κ → R) (borel _) μ ℂ _ _]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`.
+-/
 theorem pair_conj {κ : Type} (μ : @Measure (κ → R) (borel _)) (φ φ' : (κ → R) → ℂ) :
     (starRingEnd ℂ) (pair μ φ φ') = pair μ φ' φ := by
   show (starRingEnd ℂ) (∫ x, (starRingEnd ℂ) (φ x) * φ' x ∂μ) = ∫ x, (starRingEnd ℂ) (φ' x) * φ x ∂μ
@@ -73,6 +84,19 @@ theorem pair_conj {κ : Type} (μ : @Measure (κ → R) (borel _)) (φ φ' : (κ
 
 omit [IsTopologicalRing R] in
 
+/- English proof (translation)
+Use `haveI := hμ`. Establish `hφl : IsLocallyConstant (φ : (κ → R) → ℂ) ∧ HasCompactSupport (φ : (κ → R) → ℂ)` using `φ.2`. Establish `hcont : Continuous (φ : (κ → R) → ℂ)` using `hφl.1.continuous`. Establish `hint` using `integrable_pair μ (@Measure.IsAddHaarMeasure.toIsFiniteMeasureOnCompacts _ _ _ (borel _) μ hμ) φ φ`. Establish `hg : ∀ z : ℂ, ((starRingEnd ℂ) z * z).re = Complex.normSq z`.
+
+Introduce `z`. Rewrite using `[Complex.normSq_apply, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : (pair μ (φ : (κ → R) → ℂ) φ).re = ∫ x, ((starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ : (κ → R) → ℂ) x).re ∂μ` using `(@integral_re (κ → R) (borel _) μ ℂ _ _ hint).symm`. Rewrite using `[hre]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x, (φ : (κ → R) → ℂ) x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Apply `hφ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Assume the negation of the conclusion as `hx`. Conclude with `hc ⟨x, hx⟩`. Use `(MeasureTheory.integral_pos_iff_support_of_nonneg ?_ ?_).mpr ?_` and prove the remaining obligations. Introduce `x show (0 : ℝ) ≤ ((starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ : (κ → R) → ℂ) x).re`. Rewrite using `[hg]`.
+
+Conclude with `Complex.normSq_nonneg _`. Conclude with `hint.re`. Establish `hU : IsOpen ((φ : (κ → R) → ℂ) ⁻¹' {0}ᶜ)` using `hcont.isOpen_preimage _ isOpen_compl_singleton`. Establish `hsub : (φ : (κ → R) → ℂ) ⁻¹' {0}ᶜ ⊆ Function.support fun x => ((starRingEnd ℂ) ((φ : (κ → R) → ℂ) x) * (φ : (κ → R) → ℂ) x).re`. Introduce `x hx`.
+
+Rewrite using `[Function.mem_support, hg]`. Conclude with `(Complex.normSq_pos.mpr hx).ne'`. Conclude with `lt_of_lt_of_le (hU.measure_pos μ ⟨x0, hx0⟩) (measure_mono hsub)`.
+-/
 theorem pair_pos {κ : Type} (μ : @Measure (κ → R) (borel _))
     (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) (φ : SB (κ → R)) (hφ : φ ≠ 0) :
     0 < (pair μ (φ : (κ → R) → ℂ) φ).re := by
@@ -140,12 +164,18 @@ def sys {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) (d 
     B_pos := fun φ hφ => pair_pos μ hμ φ hφ
     B_rho := fun w φ φ' => (schr_law ψ O u d μ w w φ φ' h hμ).2.2.2 }
 
+/- English proof (translation)
+Use `show (∀ w φ, _) ∧ (∀ φ φ', _) ∧ ∀ w w', _`. Conclude with `⟨fun w φ => rfl, fun φ φ' => rfl, fun w w' => rfl⟩`.
+-/
 theorem isModel_sys {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) (d : Darboux B κ)
     (μ : @Measure (κ → R) (borel _)) (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) :
     IsModel ψ d μ (sys h d μ hμ) := by
   show (∀ w φ, _) ∧ (∀ φ φ', _) ∧ ∀ w w', _
   exact ⟨fun w φ => rfl, fun φ φ' => rfl, fun w w' => rfl⟩
 
+/- English proof (translation)
+Conclude with `⟨sys h d μ hμ, isModel_sys h d μ hμ⟩`.
+-/
 theorem exists_isModel {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) (d : Darboux B κ)
     (μ : @Measure (κ → R) (borel _)) (hμ : @Measure.IsAddHaarMeasure _ _ _ (borel _) μ) :
     ∃ S : GlobalTheory.CompanionTheory.FinHeis.Sys W (SB (κ → R)), IsModel ψ d μ S := by

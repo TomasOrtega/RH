@@ -12,14 +12,23 @@ section HeisCalc
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {N : ℕ}
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+The claim follows from `funext fun j => Matrix.one_apply_ne (mid_ne_zero j).symm`.
+-/
 theorem rowOf_one : rowOf (1 : GU σ (N + 2)) = 0 := funext fun j =>
   Matrix.one_apply_ne (mid_ne_zero j).symm
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+The claim follows from `funext fun i => Matrix.one_apply_ne (mid_ne_last i)`.
+-/
 theorem colOf_one : colOf (1 : GU σ (N + 2)) = 0 := funext fun i =>
   Matrix.one_apply_ne (mid_ne_last i)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (last_ne_zero (N := N)).symm`.
+-/
 theorem cornerOf_one : cornerOf (1 : GU σ (N + 2)) = 0 :=
   Matrix.one_apply_ne (last_ne_zero (N := N)).symm
 
@@ -30,6 +39,9 @@ variable
       cornerOf (u * u') = cornerOf u + cornerOf u' + rowOf u ⬝ᵥ colOf u')
 include h1
 
+/- English proof (translation)
+The claim follows from `funext fun i => by have a := (h1 u hu).1 i.rev have b := (h1 u' hu').1 i.rev rw [Fin.rev_rev, h] at a rw [Fin.rev_rev] at b exact σ.injective (neg_injective (a.symm.trans b))`.
+-/
 theorem colOf_eq_of_rowOf_eq {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N)
     (h : rowOf u = rowOf u') : colOf u = colOf u' := funext fun i => by
   have a := (h1 u hu).1 i.rev
@@ -38,11 +50,19 @@ theorem colOf_eq_of_rowOf_eq {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' 
   rw [Fin.rev_rev] at b
   exact σ.injective (neg_injective (a.symm.trans b))
 
+/- English proof (translation)
+Rewrite using `[colOf_eq_of_rowOf_eq h1 hu (one_mem _) (h.trans rowOf_one.symm), colOf_one]`.
+-/
 theorem colOf_eq_zero {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) (h : rowOf u = 0) : colOf u = 0 := by
   rw [colOf_eq_of_rowOf_eq h1 hu (one_mem _) (h.trans rowOf_one.symm), colOf_one]
 
 include h2
 
+/- English proof (translation)
+Take `⟨r, -, c⟩` from `h2 u⁻¹ (inv_mem hu) u hu`. Rewrite `r` using `[inv_mul_cancel, rowOf_one]`. Rewrite `c` using `[inv_mul_cancel, cornerOf_one]`. Establish `r' : rowOf u⁻¹ = -rowOf u` using `eq_neg_of_add_eq_zero_left r.symm`. Use `⟨r', ?_⟩` and prove the remaining obligations.
+
+Rewrite `c` using `[r', neg_dotProduct]`. Take the linear combination `-c`.
+-/
 theorem rowOf_inv {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) :
     rowOf u⁻¹ = -rowOf u ∧ cornerOf u⁻¹ = -cornerOf u + rowOf u ⬝ᵥ colOf u := by
   obtain ⟨r, -, c⟩ := h2 u⁻¹ (inv_mem hu) u hu
@@ -53,6 +73,11 @@ theorem rowOf_inv {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) :
   rw [r', neg_dotProduct] at c
   linear_combination -c
 
+/- English proof (translation)
+Take `⟨ri, ci⟩` from `rowOf_inv h1 h2 hu`. Take `⟨r, -, c⟩` from `h2 u⁻¹ (inv_mem hu) u' hu'`. Establish `hc` using `colOf_eq_of_rowOf_eq h1 hu hu' h`. Use `⟨by rw [r, ri, h, neg_add_cancel], ?_⟩` and prove the remaining obligations. Rewrite using `[c, ci, ri, ← hc, neg_dotProduct]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inv_mul_of_rowOf_eq {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N)
     (h : rowOf u = rowOf u') : rowOf (u⁻¹ * u') = 0 ∧ cornerOf (u⁻¹ * u') = cornerOf u' - cornerOf u := by
   obtain ⟨ri, ci⟩ := rowOf_inv h1 h2 hu
@@ -62,10 +87,16 @@ theorem inv_mul_of_rowOf_eq {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' :
   rw [c, ci, ri, ← hc, neg_dotProduct]
   ring
 
+/- English proof (translation)
+Rewrite using `[(h2 u⁻¹ (inv_mem hu) u' hu').1, (rowOf_inv h1 h2 hu).1]`.
+-/
 theorem rowOf_inv_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N) :
     rowOf (u⁻¹ * u') = -rowOf u + rowOf u' := by
   rw [(h2 u⁻¹ (inv_mem hu) u' hu').1, (rowOf_inv h1 h2 hu).1]
 
+/- English proof (translation)
+Take `⟨r, b, c⟩` from `h2 u hu z hz`. Establish `hb` using `colOf_eq_zero h1 hz h`. Use `⟨by rw [r, h, add_zero], by rw [b, hb, add_zero], by rw [c, hb, dotProduct_zero, add_zero]⟩` and prove the remaining obligations.
+-/
 theorem mul_of_rowOf_eq_zero {u z : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hz : z ∈ radQ σ N) (h : rowOf z = 0) :
     rowOf (u * z) = rowOf u ∧ colOf (u * z) = colOf u ∧ cornerOf (u * z) = cornerOf u + cornerOf z := by
   obtain ⟨r, b, c⟩ := h2 u hu z hz
@@ -78,6 +109,63 @@ end GlobalTheory.InertZeta
 
 namespace GlobalTheory.InertZeta
 
+/- English proof (translation)
+Introduce `hH hL hT L _ _ ϖ σ q N hU C D l e f hC hdet hex hinv`. Take `⟨h1, h2, h3⟩` from `hH L ϖ σ q N hU`. Establish `hσσ` using `hU.1`. Establish `hσv` using `hU.2.1`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1)` using `hU.2.2.2.1`.
+
+Establish `hϖ1 : ϖ ∈ intL L` using `by show Valued.v ϖ ≤ 1; rw [hϖ]; exact oneLePart_eq_one.mp rfl`. Establish `hσint : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => by show Valued.v (σ x) ≤ 1; rw [hσv]; exact hx`. Use `set A : Matrix (Fin N) (Fin N) L := ϖ ^ e • C with hA`. Establish `hAint : IsInt A` using `fun i j => by`. Rewrite using `[hA, Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `mul_mem (pow_mem hϖ1 _) (hC i j)`. Establish `hAdet : Valued.v A.det = WithZero.exp (-((l + N * e : ℕ) : ℤ))`. Rewrite using `[hA, Matrix.det_smul, map_mul, map_pow, map_pow, hϖ, hdet, Fintype.card_fin, ← WithZero.exp_nsmul, ← WithZero.exp_nsmul, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `iL` using `hL L ϖ σ q N hU A (l + N * e) hAint hAdet`. Establish `iT` using `hT L ϖ σ q f hU`. Use `set Λ := preLat A`. Use `set I := intV L N`.
+
+Use `set T := traceZero σ (ϖ ^ f)`. Use `set T₀ := traceZero σ 1`. Establish `memΛ : ∀ r : Fin N → L, r ∈ Λ ↔ ∀ j, ϖ ^ e * (r ᵥ* C) j ∈ intL L` using `fun r => by`. Rewrite using `[mem_preLat, hA, Matrix.vecMul_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[pow_add, ← iL, ← iT]`. Establish `ex0 : ∀ r : Λ, ∃ u : radQ σ N, rowOf (u : GU σ (N + 2)) = r ∧ Small ϖ e f C D (u : GU σ (N + 2))` using `fun r => by`. Take `⟨u, hu, h, hs⟩` from `hex r ((memΛ r).1 r.2)`. Conclude with `⟨⟨u, hu⟩, h, hs⟩`. Use `choose u₀ hu₀r hu₀s using ex0`.
+
+Establish `exz : ∀ t : T, ∃ z : radQ σ N, rowOf (z : GU σ (N + 2)) = 0 ∧ cornerOf (z : GU σ (N + 2)) = t` using `fun t => by`. Establish `ht` using `(mem_traceZero.1 t.2).2`. Take `⟨z, hz, h, hc⟩` from `h3 0 t (by`. Simplify using `only [Pi.zero_apply, zero_mul, Finset.sum_const_zero, neg_zero]`. Take the linear combination `ht)`.
+
+Conclude with `⟨⟨z, hz⟩, h, hc⟩`. Use `choose z hzr hzc using exz`. Establish `smallOut : ∀ w : radQ σ N, Small ϖ e f C D (w : GU σ (N + 2)) → Small ϖ e f C D (((QuotientGroup.mk w : RadQuot σ N).out : radQ σ N) : GU σ (N + 2))` using `fun w hw => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul ((KU σ (N + 2)).subgroupOf (radQ σ N)) w`. Rewrite using `[hk]`.
+
+Conclude with `hinv w.1 w.2 k.1.1 k.1.2 (Subgroup.mem_subgroupOf.1 k.2) hw`. Establish `smallW : ∀ (r : Λ) (t : T), Small ϖ e f C D ((u₀ r * z t : radQ σ N) : GU σ (N + 2))` using `fun r t => by`. Take `⟨hr, hb, hc⟩` from `mul_of_rowOf_eq_zero h1 h2 (u₀ r).2 (z t).2 (hzr t)`. Establish `hs` using `hu₀s r`. Use `show Small ϖ e f C D ((u₀ r : GU σ (N + 2)) * (z t : GU σ (N + 2)))`.
+
+Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `hs.1 j`. Rewrite using `[hr, hb, hc, hzc]`. Use `add_mem hs.2 (mem_traceZero.1 t.2).1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `rowW : ∀ (r : Λ) (t : T), rowOf ((u₀ r * z t : radQ σ N) : GU σ (N + 2)) = r` using `fun r t => ((mul_of_rowOf_eq_zero h1 h2 (u₀ r).2 (z t).2 (hzr t)).1).trans (hu₀r r)`. Establish `cornerW : ∀ (r : Λ) (t : T), cornerOf ((u₀ r * z t : radQ σ N) : GU σ (N + 2)) = cornerOf (u₀ r : GU σ (N + 2)) + t` using `fun r t => by`. Rewrite using `[← hzc t]`. Conclude with `(mul_of_rowOf_eq_zero h1 h2 (u₀ r).2 (z t).2 (hzr t)).2.2`.
+
+Set `Φ : (Λ ⧸ I.addSubgroupOf Λ) × (T ⧸ T₀.addSubgroupOf T) → {x : RadQuot σ N // Small ϖ e f C D (x.out : radQ σ N).1}` to `fun p => ⟨QuotientGroup.mk (u₀ p.1.out * z p.2.out), smallOut _ (smallW _ _)⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩ h`. Establish `hk` using `QuotientGroup.eq.1 (congrArg Subtype.val h)`.
+
+Rewrite `hk` using `[Subgroup.mem_subgroupOf]`. Establish `hK` using `(h1 _ ((u₀ a.out * z b.out)⁻¹ * (u₀ a'.out * z b'.out)).2).2.2.1 hk`. Establish `ha : a = a'`. Rewrite using `[← QuotientAddGroup.out_eq' a, ← QuotientAddGroup.out_eq' a', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, mem_intV]`. Introduce `j`.
+
+Use `hK.1 j` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul, Subgroup.coe_inv, rowOf_inv_mul h1 h2 (u₀ a.out * z b.out).2 (u₀ a'.out * z b'.out).2, rowW, rowW]`. Then use the resulting hypothesis. Substitute `ha` using the available equality. Establish `hb : b = b'`. Rewrite using `[← QuotientAddGroup.out_eq' b, ← QuotientAddGroup.out_eq' b', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, mem_traceZero]`.
+
+Establish `hd` using `inv_mul_of_rowOf_eq h1 h2 (u₀ a.out * z b.out).2 (u₀ a.out * z b'.out).2 ((rowW _ _).trans (rowW _ _).symm)`. Establish `hc` using `hK.2`. Rewrite `hc` using `[Subgroup.coe_mul, Subgroup.coe_inv, hd.2, cornerW, cornerW]`. Establish `t1` using `(mem_traceZero.1 b.out.2).2`. Establish `t2` using `(mem_traceZero.1 b'.out.2).2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hc using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
+
+Rewrite using `[map_add, map_neg]`. Take the linear combination `t2 - t1`. Rewrite using `[hb]`. Introduce and unpack `⟨x, hx⟩`. Establish `hrΛ : rowOf ((x.out : radQ σ N) : GU σ (N + 2)) ∈ Λ` using `(memΛ _).2 hx.1`.
+
+Establish `hρ : (-(⟨_, hrΛ⟩ : Λ) + (QuotientAddGroup.mk (⟨_, hrΛ⟩ : Λ) : Λ ⧸ I.addSubgroupOf Λ).out) ∈ I.addSubgroupOf Λ` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _).symm`. Rewrite `hρ` using `[AddSubgroup.mem_addSubgroupOf, mem_intV]`. Use `set a : Λ ⧸ I.addSubgroupOf Λ := QuotientAddGroup.mk (⟨_, hrΛ⟩ : Λ) with ha`. Use `set u : radQ σ N := x.out with hu`. Use `set ρ : Fin N → L := -rowOf (u : GU σ (N + 2)) + (a.out : Fin N → L) with hρdef`.
+
+Establish `hρ' : ∀ i, ρ i ∈ intL L` using `hρ`. Take `⟨τ, hτ, hτ1⟩` from `exists_trace_one hU`. Use `set s : L := -∑ j, ρ j * σ (ρ j.rev) with hsdef`. Establish `hs : σ s = s`. Simplify using `only [hsdef, map_neg, map_sum, map_mul, hσσ]`.
+
+Use `congr 1`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun j => by simp [mul_comm])`. Establish `hsint : s ∈ intL L` using `neg_mem (Subring.sum_mem _ fun j _ => mul_mem (hρ' j) (hσint _ (hρ' _)))`. Take `⟨k, hk, hkr, hkc⟩` from `h3 ρ (τ * s) (by rw [map_mul, hs]; linear_combination s * hτ1)`. Establish `hkK : k ∈ KU σ (N + 2)` using `(h1 k hk).2.2.2 ⟨fun j => hkr ▸ hρ' j, hkc ▸ mul_mem hτ hsint⟩`.
+
+Use `set uk : radQ σ N := u * ⟨k, hk⟩ with hukdef`. Establish `hukS : Small ϖ e f C D (uk : GU σ (N + 2))` using `hinv u.1 u.2 k hk hkK hx`. Establish `hukr : rowOf (uk : GU σ (N + 2)) = a.out`. Rewrite using `[hukdef, Subgroup.coe_mul, (h2 _ u.2 _ hk).1, hkr, hρdef, add_neg_cancel_left]`. Establish `hv` using `inv_mul_of_rowOf_eq h1 h2 (u₀ a.out).2 uk.2 ((hu₀r _).trans hukr.symm)`.
+
+Use `set v : radQ σ N := (u₀ a.out)⁻¹ * uk with hvdef`. Establish `hvr : rowOf (v : GU σ (N + 2)) = 0` using `hv.1`. Establish `hvc : cornerOf (v : GU σ (N + 2)) = cornerOf (uk : GU σ (N + 2)) - cornerOf (u₀ a.out : GU σ (N + 2))` using `hv.2`. Establish `htT : cornerOf (v : GU σ (N + 2)) ∈ T`. Rewrite using `[mem_traceZero]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcol` using `colOf_eq_of_rowOf_eq h1 (u₀ a.out).2 uk.2 ((hu₀r _).trans hukr.symm)`. Use `sub_mem hukS.2 (hu₀s a.out).2` as an intermediate fact. Rewrite `this` using `[hukr, ← hcol, hu₀r]`. Rewrite using `[hvc]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `(h1 _ v.2).2.1` as an intermediate fact. Rewrite `this` using `[hvr, zero_dotProduct]`. Take the linear combination `this`.
+
+Use `set bq : T ⧸ T₀.addSubgroupOf T := QuotientAddGroup.mk (⟨_, htT⟩ : T) with hbq`. Establish `hδ : (-(⟨_, htT⟩ : T) + bq.out) ∈ T₀.addSubgroupOf T` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _).symm`. Rewrite `hδ` using `[AddSubgroup.mem_addSubgroupOf, mem_traceZero]`. Use `⟨(a, bq), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (QuotientGroup.mk (u₀ a.out * z bq.out) : RadQuot σ N) = x`.
+
+Establish `e1 : (QuotientGroup.mk u : RadQuot σ N) = QuotientGroup.mk uk` using `QuotientGroup.eq.2 (by rw [hukdef, inv_mul_cancel_left]; exact Subgroup.mem_subgroupOf.2 hkK)`. Rewrite using `[← QuotientGroup.out_eq' x, ← hu, e1, QuotientGroup.eq, show (u₀ a.out * z bq.out)⁻¹ * uk = (z bq.out)⁻¹ * v by rw [hvdef, _root_.mul_inv_rev, mul_assoc], Subgroup.mem_subgroupOf]`. Establish `hzv` using `inv_mul_of_rowOf_eq h1 h2 (z bq.out).2 v.2 ((hzr _).trans hvr.symm)`. Use `(h1 _ ((z bq.out)⁻¹ * v).2).2.2.2 ⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, hzv.1]`.
+
+Conclude with `zero_mem _`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, hzv.2, hzc]`. Use `neg_mem hδ.1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show I.relIndex Λ * T₀.relIndex T = Nat.card ((Λ ⧸ I.addSubgroupOf Λ) × (T ⧸ T₀.addSubgroupOf T)) from (Nat.card_prod _ _).symm]`. Conclude with `(Nat.card_eq_of_bijective Φ hΦ).symm`.
+-/
 theorem count_of_heis : Heis → LatIndex → TraceIndex → Count := by
   intro hH hL hT L _ _ ϖ σ q N hU C D l e f hC hdet hex hinv
   obtain ⟨h1, h2, h3⟩ := hH L ϖ σ q N hU

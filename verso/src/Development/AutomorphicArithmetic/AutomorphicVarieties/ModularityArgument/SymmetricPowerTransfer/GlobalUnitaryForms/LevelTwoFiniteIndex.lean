@@ -249,6 +249,9 @@ end Dat
 
 end Global
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩`.
+-/
 example : SigData (K := ℚ) (-1) := ⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩
 
 end UpperTheory.V.Z.Sym.Glob

@@ -11,6 +11,11 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun T : Module.End ℂ M => T x) (hF a b c d h1 h2)`. Simplify using `only [LinearMap.sub_apply] at h`. Establish `h2' : F a b (F c d x) - F c d (F a b x) = (if b = c then F a d else 0) x - (if d = a then F c b else 0) x` using `h`. Establish `h'` using `eq_add_of_sub_eq h2'`. Rewrite using `[h']`.
+
+Apply the tactic sequence `split_ifs <;> (try simp only [LinearMap.zero_apply]) <;> abel`.
+-/
 lemma compactRelations_apply_comm {ε : Fin n → Bool} {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F) {a b c d : Fin n}
     (h1 : ε a = ε b) (h2 : ε c = ε d) (x : M) :
@@ -24,6 +29,37 @@ lemma compactRelations_apply_comm {ε : Fin n → Bool} {M : Type*} [AddCommGrou
   rw [h']
   split_ifs <;> (try simp only [LinearMap.zero_apply]) <;> abel
 
+/- English proof (translation)
+Introduce `a b hab hε`. Take `⟨hfin, hst, -, w, hwV, hw0, hwt, hwh⟩` from `hV`. Establish `hne : a ≠ b` using `ne_of_lt hab`. Establish `hba : b ≠ a` using `fun h => hne h.symm`. Take `⟨v, hv0, hvs⟩ : ∃ v : ℕ → M, v 0 = w ∧ ∀ k, v (k + 1) = F b a (v k)` from `⟨fun k => (F b a ^ k) w, by simp, fun k => by simp only [pow_succ', Module.End.mul_apply]⟩`.
+
+Establish `hmem : ∀ k, v k ∈ V`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hv0]`. Conclude with `hwV`.
+
+Consider the case `succ k ih => rw [hvs]`. Conclude with `hst b a hε.symm _ ih`. Establish `hA : ∀ k : ℕ, F a a (v k) = (((Λ a - (k : ℝ)) : ℝ) : ℂ) • v k`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [hv0, hwt a]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Establish `c` using `compactRelations_apply_comm hF (a := a) (b := a) (c := b) (d := a) rfl hε.symm (v k)`. Simplify using `only [hne, if_false, if_true, add_zero] at c`.
+
+Rewrite using `[hvs, c, ih, map_smul]`. Use `push_cast`. Use `module`. Establish `hB : ∀ k : ℕ, F b b (v k) = (((Λ b + (k : ℝ)) : ℝ) : ℂ) • v k`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => rw [hv0, hwt b]`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Establish `c` using `compactRelations_apply_comm hF (a := b) (b := b) (c := b) (d := a) rfl hε.symm (v k)`.
+
+Simplify using `only [hne, if_false, if_true, sub_zero] at c`. Rewrite using `[hvs, c, ih, map_smul]`. Use `push_cast`. Use `module`. Establish `hE : ∀ k : ℕ, F a b (v (k + 1)) = ((((k : ℝ) + 1) * (Λ a - Λ b - (k : ℝ)) : ℝ) : ℂ) • v k`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Establish `c` using `compactRelations_apply_comm hF (a := a) (b := b) (c := b) (d := a) hε hε.symm w`. Simplify using `only [if_true] at c`.
+
+Rewrite using `[hvs 0, hv0, c, hwh a b hab hε, map_zero, hwt a, hwt b]`. Use `push_cast`. Use `module`. Consider the case `succ k ih`. Establish `c` using `compactRelations_apply_comm hF (a := a) (b := b) (c := b) (d := a) hε hε.symm (v (k + 1))`.
+
+Simplify using `only [if_true] at c`. Rewrite using `[hvs (k + 1), c, ih, map_smul, ← hvs k, hA (k + 1), hB (k + 1)]`. Use `push_cast`. Use `module`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm0, hm1⟩ : ∃ m, v m ≠ 0 ∧ v (m + 1) = 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Establish `hall : ∀ k, v k ≠ 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hv0]`.
+
+Conclude with `hw0`. Consider the case `succ k ih => exact fun h => hcon ⟨k, ih, h⟩`. Establish `hinj : Function.Injective (fun k : ℕ => (((Λ a - (k : ℝ)) : ℝ) : ℂ))`. Introduce `k j h`. Establish `h1 : Λ a - (k : ℝ) = Λ a - (j : ℝ)` using `Complex.ofReal_injective h`.
+
+Establish `h2 : (k : ℝ) = (j : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `hli : LinearIndependent ℂ v` using `Module.End.eigenvectors_linearIndependent' (F a a) _ hinj v (fun k => Module.End.hasEigenvector_iff.mpr ⟨Module.End.mem_eigenspace_iff.mpr (hA k), hall k⟩)`. Establish `hli' : LinearIndependent ℂ (fun k => (⟨v k, hmem k⟩ : V))` using `LinearIndependent.of_comp V.subtype hli`. Establish `: Module.Finite ℂ V` using `hfin`.
+
+Conclude with `Module.Finite.not_linearIndependent_of_infinite _ hli'`. Establish `h` using `hE m`. Rewrite `h` using `[hm1, map_zero]`. Establish `hc : (((((m : ℝ) + 1) * (Λ a - Λ b - (m : ℝ))) : ℝ) : ℂ) = 0` using `(smul_eq_zero.mp h.symm).resolve_right hm0`. Establish `hr : ((m : ℝ) + 1) * (Λ a - Λ b - (m : ℝ)) = 0` using `Complex.ofReal_eq_zero.mp hc`.
+
+Establish `hpos : (m : ℝ) + 1 ≠ 0` using `by positivity`. Establish `hz` using `(mul_eq_zero.mp hr).resolve_left hpos`. Conclude with `⟨m, by linarith⟩`.
+-/
 theorem kIrrHW_int' (ε : Fin n → Bool) {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F) {Λ : Fin n → ℝ} {V : Submodule ℂ M}
     (hV : IsKIrrHW ε F Λ V) : ∀ a b, a < b → ε a = ε b → ∃ m : ℕ, Λ a - Λ b = m := by

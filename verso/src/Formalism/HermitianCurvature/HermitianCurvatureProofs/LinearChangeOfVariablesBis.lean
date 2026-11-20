@@ -9,15 +9,27 @@ namespace C2x7
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨WeylGroupFacts.uh_one, fun a => ⟨by simp, by simp⟩, by simp⟩`.
+-/
 lemma one_mem_UW (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWset k r z :=
   ⟨WeylGroupFacts.uh_one, fun a => ⟨by simp, by simp⟩, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem_UW z, n, hn, by simp⟩`.
+-/
 lemma N_sub_S {z : Fin (2 * r + k + 1) → ℂ} {n : B.Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, one_mem_UW z, n, hn, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, hh, 1, WeylGroupFacts.mem_n_one, by simp⟩`.
+-/
 lemma UW_sub_S {z : Fin (2 * r + k + 1) → ℂ} {h : B.Mat k r} (hh : h ∈ UWset k r z) : h ∈ Sset k r z :=
   ⟨h, hh, 1, WeylGroupFacts.mem_n_one, by simp⟩
 
+/- English proof (translation)
+Establish `hu : IsUnit g.det` using `WeylGroupFacts.isUnit_of_uh hg.1`. Use `⟨WeylGroupFacts.uh_inv hg.1, fun a => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma fix_inv {z : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ C2.FixSet k r z) :
     g⁻¹ ∈ C2.FixSet k r z := by
   have hu : IsUnit g.det := WeylGroupFacts.isUnit_of_uh hg.1
@@ -29,6 +41,13 @@ end C2x7
 
 open C2x5 C2x6 C2x7
 
+/- English proof (translation)
+Introduce `hZE hUM hTM _ k r z z' γ hstd n0 hn0 v hv h hh s' hs'`. Establish `hz` using `hstd.2.1`. Establish `hz'` using `hstd.2.2`. Take `⟨hτN, _, hτu⟩` from `hTM k r z hz v hv`. Establish `hSg` using `symmetric_group_holds k r z hz.1`.
+
+Establish `hn0S : n0 ∈ Sset k r z` using `N_sub_S hn0.1`. Establish `hτS : C2.tauM k r z v ∈ Sset k r z` using `N_sub_S hτN`. Establish `hhS : h ∈ Sset k r z` using `UW_sub_S hh`. Establish `hs1 : n0 * C2.tauM k r z v ∈ Sset k r z` using `hSg.2.1 _ hn0S _ hτS`. Establish `hs : n0 * C2.tauM k r z v * h ∈ Sset k r z` using `hSg.2.1 _ hs1 _ hhS`.
+
+Establish `hU` using `hUM k r z hz`. Establish `hu : C2.uMap k r z (n0 * C2.tauM k r z v * h) = v`. Rewrite using `[(hU.1 _ hs1).2.2 h hhS, (hU.1 _ hn0S).2.2 _ hτS, hn0.2, hτu, hU.2 h hh, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hZE k r z z' hz hz' _ hs s' hs' γ, hu]`.
+-/
 theorem zhat_section_of_parts : C2.ZhatSectionOfParts := by
   intro hZE hUM hTM _ k r z z' γ hstd n0 hn0 v hv h hh s' hs'
   have hz := hstd.2.1
@@ -46,6 +65,21 @@ theorem zhat_section_of_parts : C2.ZhatSectionOfParts := by
       Matrix.mul_one]
   rw [hZE k r z z' hz hz' _ hs s' hs' γ, hu]
 
+/- English proof (translation)
+Introduce `hW hFF hGB hC1 k r z z' hstd g₁ hg₁ g₂ hg₂ hG hZ`. Establish `hG2 : 0 < Gf k r z z' g₂`. Establish `: Gf k r z z' g₂ = Gf k r z z' g₁` using `by unfold Gf Dmin; rw [hZ]`. Rewrite using `[this]`. Conclude with `hG`.
+
+Establish `hli1` using `(hC1 k r z z' g₁ hstd ⟨hg₁, hG⟩).1`. Establish `hli2` using `(hC1 k r z z' g₂ hstd ⟨hg₂, hG2⟩).1`. Establish `hgram : ∀ i j, herm (Hpk k r) (gramVec k r z z' g₁ i) (gramVec k r z z' g₁ j) = herm (Hpk k r) (gramVec k r z z' g₂ i) (gramVec k r z z' g₂ j)`. Introduce `i j`. Establish `e : gramM k r z z' g₁ = gramM k r z z' g₂`.
+
+Rewrite using `[hGB k r z z' hstd.2.1 hstd.2.2 g₁ hg₁, hGB k r z z' hstd.2.1 hstd.2.2 g₂ hg₂, hZ]`. Conclude with `congrFun (congrFun e j) i`. Take `⟨s0, hs0, hs0x⟩` from `hW k r _ (gramVec k r z z' g₁) (gramVec k r z z' g₂) hli1 hli2 hgram`. Establish `hs0F : s0 ∈ C2.FixSet k r z` using `⟨hs0, fun a => hs0x (Sum.inl a)⟩`. Establish `hu0 : IsUnit s0.det` using `WeylGroupFacts.isUnit_of_uh hs0`.
+
+Establish `hu1 : IsUnit g₁.det` using `WeylGroupFacts.isUnit_of_uh hg₁`. Establish `hu2 : IsUnit g₂.det` using `WeylGroupFacts.isUnit_of_uh hg₂`. Use `set t := g₂⁻¹ * s0 * g₁ with ht`. Establish `htF : t ∈ C2.FixSet k r z'`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hg₂) hs0) hg₁, fun b => ?_⟩` and prove the remaining obligations.
+
+Use `hs0x (Sum.inr b)` as an intermediate fact. Simplify using `only [gramVec] at this`. Rewrite using `[ht, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu2, Matrix.one_mulVec]`. Establish `hut : IsUnit t.det` using `WeylGroupFacts.isUnit_of_uh htF.1`. Use `⟨s0⁻¹, ?_, t⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hFF k r z hstd.2.1]`. Conclude with `fix_inv hs0F`. Rewrite using `[← hFF k r z' hstd.2.2]`. Conclude with `fix_inv htF`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu0]`.
+
+Establish `e : g₂ * t = s0 * g₁`. Rewrite using `[ht, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu2, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fibreOrbitOfParts_statement : C2.FibreOrbitOfParts := by
   intro hW hFF hGB hC1 k r z z' hstd g₁ hg₁ g₂ hg₂ hG hZ
   have hG2 : 0 < Gf k r z z' g₂ := by
@@ -81,6 +115,13 @@ theorem fibreOrbitOfParts_statement : C2.FibreOrbitOfParts := by
     calc g₂ = g₂ * t * t⁻¹ := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hut, Matrix.mul_one]
       _ = s0 * g₁ * t⁻¹ := by rw [e]
 
+/- English proof (translation)
+Introduce `a φ ha`. Establish `hpos : 0 < Complex.normSq a` using `Complex.normSq_pos.mpr ha`. Use `set f : ℂ →ₗ[ℝ] ℂ := (LinearMap.mulLeft ℂ a).restrictScalars ℝ with hf`. Establish `hdet : LinearMap.det f = Complex.normSq a`. Rewrite using `[hf, LinearMap.det_restrictScalars, LinearMap.det_mulLeft, Algebra.norm_complex_apply]`.
+
+Establish `hne : LinearMap.det f ≠ 0` using `by rw [hdet]; exact hpos.ne'`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure ℂ)) hne`. Establish `hcoe : (⇑f : ℂ → ℂ) = ⇑(MeasurableEquiv.mulLeft₀ a ha)` using `by ext c; rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmap, lintegral_smul_measure, hdet, abs_of_pos (inv_pos.mpr hpos), Complex.normSq_eq_norm_sq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem linear_change_of_variables_bis : C2.LinCOV := by
   intro a φ ha
   have hpos : 0 < Complex.normSq a := Complex.normSq_pos.mpr ha

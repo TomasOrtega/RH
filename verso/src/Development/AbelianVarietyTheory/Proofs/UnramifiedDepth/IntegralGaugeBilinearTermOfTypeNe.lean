@@ -16,6 +16,9 @@ namespace GlobalTheory.RowLaw
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Use `le_trans ?_ (le_order_subst (hasSubst_of_constantCoeff_zero ha) f)` and prove the remaining obligations. Establish `h1 : (1 : ℕ∞) ≤ ⨅ i, (a i).order` using `le_iInf fun i => one_le_order_iff_constCoeff_eq_zero.2 (ha i)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coeff_subst_eq_zero_of_lt_order {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ C} {n : ℕ}
     (hf : ∀ e : σ →₀ ℕ, e.degree < n → coeff e f = 0) :
@@ -26,12 +29,28 @@ theorem coeff_subst_eq_zero_of_lt_order {σ τ : Type} [Finite σ] {a : σ → M
   calc (n : ℕ∞) = 1 * n := (one_mul _).symm
     _ ≤ _ := mul_le_mul' h1 (nat_le_order hf)
 
+/- English proof (translation)
+Rewrite using `[← coe_substAlgHom ha, map_sum]`. Simplify using `only [map_smul]`.
+-/
 theorem subst_sum_smul {σ τ ι : Type} {a : σ → MvPowerSeries τ C} (ha : HasSubst a) (s : Finset ι)
     (c : ι → C) (f : ι → MvPowerSeries σ C) :
     subst a (∑ i ∈ s, c i • f i) = ∑ i ∈ s, c i • subst a (f i) := by
   rw [← coe_substAlgHom ha, map_sum]
   simp only [map_smul]
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_of_constantCoeff_zero ha`. Use `set L : MvPowerSeries σ C := ∑ s, coeff (Finsupp.single s 1) f • (X s : MvPowerSeries σ C) with hL`. Establish `hr : ((2 : ℕ) : ℕ∞) ≤ (subst a (f - L)).order`. Apply `coeff_subst_eq_zero_of_lt_order ha` to reduce the goal to its premises. Introduce `e he`.
+
+Rewrite using `[map_sub, hL, map_sum, sub_eq_zero]`. Simplify using `only [coeff_smul, coeff_X]`. Distinguish the cases in `h0 : e.degree = 0`. Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`. Substitute `h0` using the available equality.
+
+Rewrite using `[coeff_zero_eq_constantCoeff_apply, hf]`. Use `symm`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Conclude with `(Finsupp.single_ne_zero.2 one_ne_zero).symm`.
+
+Take `⟨i, rfl⟩` from `finsupp_deg_one e (by omega)`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `s _ hsi`. Rewrite using `[if_neg, mul_zero]`.
+
+Conclude with `fun h => hsi (Finsupp.single_left_injective one_ne_zero h).symm`. Simplify using the standard rewrite rules. Establish `hz : coeff (Finsupp.single t 1) (subst a (f - L)) = 0` using `coeff_of_lt_order (lt_of_lt_of_le (by rw [Finsupp.degree_single]; exact_mod_cast one_lt_two) hr)`. Rewrite `hz` using `[subst_sub hs, map_sub, sub_eq_zero]`. Rewrite using `[hz, hL, subst_sum_smul hs, map_sum]`.
+
+Simplify using `only [coeff_smul, subst_X hs]`.
+-/
 theorem coeff_single_subst {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) (t : τ) :
     coeff (Finsupp.single t 1) (subst a f) =
@@ -66,9 +85,17 @@ theorem coeff_single_subst {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries
 
 def bexp {κ : Type} (a b : κ) : Fin 2 × κ →₀ ℕ := Finsupp.single (0, a) 1 + Finsupp.single (1, b) 1
 
+/- English proof (translation)
+Simplify using `[bexp, Finsupp.degree_single]`.
+-/
 theorem bexp_degree {κ : Type} (a b : κ) : (bexp a b).degree = 2 := by
   simp [bexp, Finsupp.degree_single]
 
+/- English proof (translation)
+Establish `h0` using `DFunLike.congr_fun h (0, a)`. Establish `h1` using `DFunLike.congr_fun h (1, b)`. Simplify using `only [bexp, Finsupp.add_apply, Finsupp.single_apply, Prod.mk.injEq] at h0 h1`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hc`.
+
+Simplify using `[Ne.symm hc] at h0`. Assume the negation of the conclusion as `hc`. Simplify using `[Ne.symm hc] at h1`.
+-/
 theorem bexp_inj {κ : Type} {a b a' b' : κ} (h : bexp a b = bexp a' b') : a = a' ∧ b = b' := by
   have h0 := DFunLike.congr_fun h (0, a)
   have h1 := DFunLike.congr_fun h (1, b)
@@ -79,6 +106,15 @@ theorem bexp_inj {κ : Type} {a b a' b' : κ} (h : bexp a b = bexp a' b') : a = 
   · by_contra hc
     simp [Ne.symm hc] at h1
 
+/- English proof (translation)
+Establish `hle : bexp a b ≤ e`. Introduce `p`. Establish `ha'` using `Finsupp.mem_support_iff.1 ha`. Establish `hb'` using `Finsupp.mem_support_iff.1 hb`. Simplify using `only [bexp, Finsupp.add_apply, Finsupp.single_apply]`.
+
+Use `split_ifs with h1 h2 h2`. Rewrite `h2` using `[← h1]`. Simplify using `at h2`. Rewrite using `[← h1]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[← h2]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hsum : bexp a b + (e - bexp a b) = e` using `add_tsub_cancel_of_le hle`. Establish `hd : (bexp a b).degree + (e - bexp a b).degree = e.degree` using `by rw [← map_add, hsum]`.
+
+Rewrite `hd` using `[bexp_degree]`. Establish `h0 : (e - bexp a b).degree = 0` using `by omega`. Rewrite `h0` using `[Finsupp.degree_eq_zero_iff]`. Rewrite `hsum` using `[h0, add_zero]`. Conclude with `hsum.symm`.
+-/
 theorem eq_bexp {κ : Type} (e : Fin 2 × κ →₀ ℕ) (he : e.degree < 3) {a b : κ}
     (ha : (0, a) ∈ e.support) (hb : (1, b) ∈ e.support) : e = bexp a b := by
   have hle : bexp a b ≤ e := by
@@ -99,12 +135,28 @@ theorem eq_bexp {κ : Type} (e : Fin 2 × κ →₀ ℕ) (he : e.degree < 3) {a 
   rw [h0, add_zero] at hsum
   exact hsum.symm
 
+/- English proof (translation)
+Rewrite using `[X_def, X_def, monomial_mul_monomial, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem X_mul_X_eq {κ : Type} (a b : κ) :
     (X (0, a) * X (1, b) : MvPowerSeries (Fin 2 × κ) C) = monomial (bexp a b) 1 := by
   rw [X_def, X_def, monomial_mul_monomial, one_mul]; rfl
 
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `hc : ∀ p : Fin 2 × κ, constantCoeff (if p.1 = 0 then a p.2 else b p.2) = 0` using `fun p => by split_ifs`. Conclude with `ha _`. Conclude with `hb _`. Establish `hs` using `hasSubst_of_constantCoeff_zero hc`. Establish `key` using `coeff_subst_eq_zero_of_lt_order hc (n := 3) (f := Y.h - ∑ p : κ × κ, coeff (bexp p.1 p.2) Y.h • (X (0, p.1) * X (1, p.2))) (by`.
+
+Introduce `e he`. Rewrite using `[map_sub, map_sum, sub_eq_zero]`. Simplify using `only [coeff_smul, X_mul_X_eq, coeff_monomial]`. Distinguish the cases in `h : ∃ x y, e = bexp x y`. Take `⟨x, y, rfl⟩` from `h`.
+
+Rewrite using `[Finset.sum_eq_single (x, y)]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`.
+
+Conclude with `hp (Prod.ext (bexp_inj h).1.symm (bexp_inj h).2.symm)`. Simplify using the standard rewrite rules. Use `push Not at h`. Rewrite using `[Finset.sum_eq_zero fun p _ => by rw [if_neg (h _ _), mul_zero]]`. Distinguish the cases in `h0 : ∀ s ∈ e.support, s.1 ≠ 0`.
+
+Conclude with `hax 0 e h0`. Distinguish the cases in `h1 : ∀ s ∈ e.support, s.1 ≠ 1`. Conclude with `hax 1 e h1`. Use `push Not at h0 h1`. Take `⟨⟨g, x⟩, hx, rfl⟩` from `h0`.
+
+Take `⟨⟨g', y⟩, hy, rfl⟩` from `h1`. Conclude with `absurd (eq_bexp e he hx hy) (h x y))`. Rewrite `key` using `[subst_sub hs, subst_sum_smul hs]`. Simplify `key` using `only [subst_mul hs, subst_X hs, hAt, if_true, one_ne_zero, if_false]`.
+-/
 theorem hAt_order (Y : RawChart C d I κ)
     (hax : ∀ (g : Fin 2) (e : Fin 2 × κ →₀ ℕ), (∀ s ∈ e.support, s.1 ≠ g) → coeff e Y.h = 0)
     {τ : Type} {a b : κ → MvPowerSeries τ C} (ha : ∀ x, constantCoeff (a x) = 0)
@@ -142,6 +194,11 @@ theorem hAt_order (Y : RawChart C d I κ)
   rw [subst_sub hs, subst_sum_smul hs] at key
   simpa only [subst_mul hs, subst_X hs, hAt, if_true, one_ne_zero, if_false] using key
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Establish `h2 : coeff m (F ^ 2) = 0`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (le_order_pow 2)` and prove the remaining obligations. Use `lt_of_lt_of_le ?_ (nsmul_le_nsmul_right hF 2)` and prove the remaining obligations.
+
+Rewrite using `[hm]`. Evaluate the decidable proposition. Use `show ∑ k ∈ Finset.range (m.degree + 1), coeff m (F ^ k) / (k.factorial : C) = _`. Rewrite using `[hm]`. Simplify using `[Finset.sum_range_succ, h2, coeff_one, hm0]`.
+-/
 theorem coeff_mvExp_two {τ : Type} {F : MvPowerSeries τ C} (hF : ((2 : ℕ) : ℕ∞) ≤ F.order) (m : τ →₀ ℕ)
     (hm : m.degree = 2) : coeff m (mvExp F) = coeff m F := by
   have hm0 : m ≠ 0 := by rintro rfl; simp at hm
@@ -155,6 +212,15 @@ theorem coeff_mvExp_two {τ : Type} {F : MvPowerSeries τ C} (hF : ((2 : ℕ) : 
   rw [hm]
   simp [Finset.sum_range_succ, h2, coeff_one, hm0]
 
+/- English proof (translation)
+Establish `h` using `V.v.map_pow a N`. Rewrite `h` using `[ha, V.v.map_one]`. Unfold `VF.Ge`. Proceed by induction on `hv : V.v a using WithTop.recTopCoe with`. Consider the case `top => exact le_top`.
+
+Consider the case `coe t`. Rewrite `h` using `[hv]`. Establish `h' : ((0 : ℝ) : WithTop ℝ) = ((N • t : ℝ) : WithTop ℝ)`. Rewrite using `[WithTop.coe_nsmul]`. Conclude with `h`.
+
+Establish `h'' : (0 : ℝ) = N • t` using `by exact_mod_cast h'`. Rewrite `h''` using `[nsmul_eq_mul]`. Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN`. Establish `: t = 0`. Break down `mul_eq_zero.1 h''.symm with h | h` into its components or cases.
+
+Conclude with `absurd h hN'`. Conclude with `h`. Rewrite using `[this]`.
+-/
 theorem ge_zero_of_pow_eq_one (V : VF C) {N : ℕ} (hN : N ≠ 0) {a : C} (ha : a ^ N = 1) : V.Ge 0 a := by
   have h := V.v.map_pow a N
   rw [ha, V.v.map_one] at h
@@ -174,6 +240,23 @@ theorem ge_zero_of_pow_eq_one (V : VF C) {N : ℕ} (hN : N ≠ 0) {a : C} (ha : 
       · exact h
     rw [this]
 
+/- English proof (translation)
+Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[Nat.cast_zero, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero hN`. Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN0`.
+
+Establish `hbi` using `ge_zero_of_pow_eq_one V hN0 hb`. Use `set η := a * b ^ n with hη`. Establish `hηN : η ^ (n + 1) = 1`. Rewrite using `[hη, mul_pow, ← pow_mul, mul_comm n, pow_mul]`. Simplify using `only [Nat.succ_eq_add_one] at ha hb`.
+
+Rewrite using `[ha, hb, one_pow, one_mul]`. Establish `hb' : b * b ^ n = 1` using `by rw [← pow_succ']; exact hb`. Establish `hη1 : η - 1 = b ^ n * (a - b)` using `by rw [hη, ← hb']; ring`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hb'`. Establish `hne : η - 1 ≠ 0`.
+
+Rewrite using `[hη1]`. Conclude with `mul_ne_zero (pow_ne_zero _ hb0) (sub_ne_zero.2 hab)`. Establish `hsum : ∑ i ∈ Finset.range (n + 1), η ^ i = 0`. Use `geom_sum_mul η (n + 1)` as an intermediate fact. Rewrite `this` using `[hηN, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right hne`. Establish `hηi` using `ge_zero_of_pow_eq_one V (Nat.succ_ne_zero n) hηN`. Establish `hS : V.Ge 0 (∑ i ∈ Finset.range (n + 1), ∑ j ∈ Finset.range i, η ^ j)` using `VF.Ge.sum fun i _ => VF.Ge.sum fun j _ => hηi.pow j`. Establish `hE : (∑ i ∈ Finset.range (n + 1), ∑ j ∈ Finset.range i, η ^ j) * (η - 1) = -((n + 1 : ℕ) : C)`. Rewrite using `[Finset.sum_mul]`.
+
+Simplify using `only [geom_sum_mul, Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules. Establish `hfin : V.Ge 0 (((n + 1 : ℕ) : C) * z)`. Use `(hS.mul_int ((hbi.pow n).mul_int hz)).neg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← mul_assoc (b ^ n), ← hη1, ← mul_assoc, hE]`. Expand and normalize the polynomial expressions, which then agree. Unfold `VF.Ge at hfin ⊢`. Rewrite `hfin` using `[V.v.map_mul]`. Simplify using `only [Nat.succ_eq_add_one] at hN`.
+
+Rewrite `hfin` using `[hN, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem ge_zero_of_sub_mul (V : VF C) {N : ℕ} (hN : V.v (N : C) = 0) {a b z : C} (ha : a ^ N = 1)
     (hb : b ^ N = 1) (hab : a ≠ b) (hz : V.Ge 0 ((a - b) * z)) : V.Ge 0 z := by
   have hN0 : N ≠ 0 := by
@@ -215,15 +298,24 @@ theorem ge_zero_of_sub_mul (V : VF C) {N : ℕ} (hN : V.v (N : C) = 0) {a b z : 
 
 variable {Y : RawChart C d I κ} {V : VF C}
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, h.lin i 0 (by simp), coeff_zero_eq_constantCoeff_apply, constantCoeff_X]`.
+-/
 theorem RLaw.constantCoeff_lg (h : RLaw Y V) (i : κ) : constantCoeff (Y.lg i) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, h.lin i 0 (by simp), coeff_zero_eq_constantCoeff_apply,
     constantCoeff_X]
 
+/- English proof (translation)
+Rewrite using `[h.lin i _ (by rw [Finsupp.degree_single]), coeff_X]`. Simplify using `only [(Finsupp.single_left_injective one_ne_zero).eq_iff]`.
+-/
 theorem RLaw.coeff_single_lg (h : RLaw Y V) (i s : κ) :
     coeff (Finsupp.single s 1) (Y.lg i) = if s = i then 1 else 0 := by
   rw [h.lin i _ (by rw [Finsupp.degree_single]), coeff_X]
   simp only [(Finsupp.single_left_injective one_ne_zero).eq_iff]
 
+/- English proof (translation)
+Use `coeff_single_subst h.exc (h.constantCoeff_lg i) s` as an intermediate fact. Rewrite `this` using `[h.lgex, coeff_X]`. Simplify using `only [h.coeff_single_lg, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, (Finsupp.single_left_injective one_ne_zero).eq_iff] at this`. Conclude with `this.symm`.
+-/
 theorem RLaw.coeff_single_ex (h : RLaw Y V) (i s : κ) :
     coeff (Finsupp.single s 1) (Y.ex i) = if s = i then 1 else 0 := by
   have := coeff_single_subst h.exc (h.constantCoeff_lg i) s
@@ -232,16 +324,27 @@ theorem RLaw.coeff_single_ex (h : RLaw Y V) (i s : κ) :
     (Finsupp.single_left_injective one_ne_zero).eq_iff] at this
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[constantCoeff_smul, Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero ha (h.constantCoeff_lg y), smul_zero]`.
+-/
 theorem RLaw.constantCoeff_lin (h : RLaw Y V) (M : Matrix κ κ C) {τ : Type} {a : κ → MvPowerSeries τ C}
     (ha : ∀ x, constantCoeff (a x) = 0) (x : κ) : constantCoeff (∑ y, M x y • subst a (Y.lg y)) = 0 := by
   rw [map_sum]
   refine Finset.sum_eq_zero fun y _ => ?_
   rw [constantCoeff_smul, Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero ha (h.constantCoeff_lg y), smul_zero]
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero (h.constantCoeff_lin M ha) (h.exc x)`.
+-/
 theorem RLaw.constantCoeff_endP (h : RLaw Y V) (M : Matrix κ κ C) {τ : Type} {a : κ → MvPowerSeries τ C}
     (ha : ∀ x, constantCoeff (a x) = 0) (x : κ) : constantCoeff (endP Y M a x) = 0 :=
   Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero (h.constantCoeff_lin M ha) (h.exc x)
 
+/- English proof (translation)
+Unfold `endP`. Rewrite using `[coeff_single_subst (h.constantCoeff_lin M ha) (h.exc x)]`. Simplify using `only [h.coeff_single_ex, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_smul, coeff_single_subst ha (h.constantCoeff_lg y)]`. Simplify using `only [h.coeff_single_lg, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem RLaw.coeff_single_endP (h : RLaw Y V) (M : Matrix κ κ C) {τ : Type} {a : κ → MvPowerSeries τ C}
     (ha : ∀ x, constantCoeff (a x) = 0) (x : κ) (t : τ) :
     coeff (Finsupp.single t 1) (endP Y M a x) = ∑ y, M x y * coeff (Finsupp.single t 1) (a y) := by
@@ -253,6 +356,11 @@ theorem RLaw.coeff_single_endP (h : RLaw Y V) (M : Matrix κ κ C) {τ : Type} {
   rw [coeff_smul, coeff_single_subst ha (h.constantCoeff_lg y)]
   simp only [h.coeff_single_lg, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[X_def, coeff_mul_monomial]`. Distinguish the cases in `hy : y = t`. Substitute `hy` using the available equality. Rewrite using `[bexp, if_pos (le_add_self), if_pos rfl, mul_one, add_tsub_cancel_right]`. Rewrite using `[if_neg hy, if_neg]`.
+
+Rewrite using `[Finsupp.single_le_iff]`. Simplify using `[bexp, Finsupp.single_apply, Ne.symm hy]`.
+-/
 theorem coeff_bexp_mul_X (f : MvPowerSeries (Fin 2 × κ) C) (s t y : κ) :
     coeff (bexp s t) (f * X (1, y)) = if y = t then coeff (Finsupp.single (0, s) 1) f else 0 := by
   rw [X_def, coeff_mul_monomial]
@@ -263,6 +371,11 @@ theorem coeff_bexp_mul_X (f : MvPowerSeries (Fin 2 × κ) C) (s t y : κ) :
     rw [Finsupp.single_le_iff]
     simp [bexp, Finsupp.single_apply, Ne.symm hy]
 
+/- English proof (translation)
+Rewrite using `[X_def, coeff_monomial_mul]`. Distinguish the cases in `hy : x = s`. Substitute `hy` using the available equality. Rewrite using `[bexp, if_pos (le_self_add), if_pos rfl, one_mul, add_tsub_cancel_left]`. Rewrite using `[if_neg hy, if_neg]`.
+
+Rewrite using `[Finsupp.single_le_iff]`. Simplify using `[bexp, Finsupp.single_apply, Ne.symm hy]`.
+-/
 theorem coeff_bexp_X_mul (f : MvPowerSeries (Fin 2 × κ) C) (s t x : κ) :
     coeff (bexp s t) (X (0, x) * f) = if x = s then coeff (Finsupp.single (1, t) 1) f else 0 := by
   rw [X_def, coeff_monomial_mul]
@@ -273,6 +386,11 @@ theorem coeff_bexp_X_mul (f : MvPowerSeries (Fin 2 × κ) C) (s t x : κ) :
     rw [Finsupp.single_le_iff]
     simp [bexp, Finsupp.single_apply, Ne.symm hy]
 
+/- English proof (translation)
+Establish `h3` using `coeff_of_lt_order (d := e) (lt_of_lt_of_le (by exact_mod_cast (by omega : e.degree < 3)) (hAt_order Y h.axes ha hb))`. Rewrite `h3` using `[map_sub, sub_eq_zero, map_sum]`. Rewrite using `[h3]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, coeff_of_lt_order (d := e), mul_zero]`.
+
+Use `lt_of_lt_of_le ?_ le_order_mul` and prove the remaining obligations. Use `lt_of_lt_of_le ?_ (add_le_add (one_le_order_iff_constCoeff_eq_zero.2 (ha _)) (one_le_order_iff_constCoeff_eq_zero.2 (hb _)))` and prove the remaining obligations. Conclude with `he` after adjusting the coercions.
+-/
 theorem two_le_order_hAt (h : RLaw Y V) {τ : Type} {a b : κ → MvPowerSeries τ C}
     (ha : ∀ x, constantCoeff (a x) = 0) (hb : ∀ x, constantCoeff (b x) = 0) (e : τ →₀ ℕ)
     (he : e.degree < 2) : coeff e (hAt Y a b) = 0 := by
@@ -287,6 +405,19 @@ theorem two_le_order_hAt (h : RLaw Y V) {τ : Type} {a b : κ → MvPowerSeries 
     (one_le_order_iff_constCoeff_eq_zero.2 (hb _)))
   exact_mod_cast he
 
+/- English proof (translation)
+Establish `hg : ∀ (j : Fin 2) x, constantCoeff (gp C κ j x) = 0` using `fun j x => constantCoeff_X _`. Establish `h0` using `hE.2.2 (bexp s t)`. Rewrite using `[coeff_mvExp_two (nat_le_order fun e he => by`. Rewrite using `[map_sub, two_le_order_hAt h (h.constantCoeff_endP M (hg 0)) (hg 1) e he, two_le_order_hAt h (hg 0) (h.constantCoeff_endP M' (hg 1)) e he, sub_zero]) _ (bexp_degree s t),`. Use the proof step `map_sub] at h0`.
+
+Establish `hlt : (((bexp s t).degree : ℕ) : ℕ∞) < ((3 : ℕ) : ℕ∞)`. Rewrite using `[bexp_degree]; exact_mod_cast (by omega : 2 < 3)`. Establish `h1` using `coeff_of_lt_order (lt_of_lt_of_le hlt (hAt_order Y h.axes (h.constantCoeff_endP M (hg 0)) (hg 1)))`. Establish `h2` using `coeff_of_lt_order (lt_of_lt_of_le hlt (hAt_order Y h.axes (hg 0) (h.constantCoeff_endP M' (hg 1))))`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero, map_sum]`.
+
+Rewrite `h0` using `[h1, h2]`. Establish `hX : ∀ (j : Fin 2) (y s : κ), coeff (Finsupp.single (j, s) 1) (gp C κ j y) = if s = y then 1 else 0`. Introduce `j y s`. Unfold `gp`. Rewrite using `[coeff_X]`.
+
+Simplify using `only [(Finsupp.single_left_injective one_ne_zero).eq_iff, Prod.mk.injEq, true_and]`. Use `h0 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `: ∀ y, coeff (bexp s t) (endP Y M (gp C κ (0 : Fin 2)) x * gp C κ 1 y) = if y = t then M x s else 0` using `fun y => by`.
+
+Rewrite using `[show gp C κ (1 : Fin 2) y = X (1, y) from rfl, coeff_bexp_mul_X, h.coeff_single_endP M (hg 0)]`. Simplify using `[hX]`. Simplify using `[this]`. Rewrite using `[Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Establish `: ∀ x, coeff (bexp s t) (gp C κ 0 x * endP Y M' (gp C κ (1 : Fin 2)) y) = if x = s then M' y t else 0` using `fun x => by`. Rewrite using `[show gp C κ (0 : Fin 2) x = X (0, x) from rfl, coeff_bexp_X_mul, h.coeff_single_endP M' (hg 1)]`. Simplify using `[hX]`. Simplify using `[this]`.
+-/
 theorem IsEnd.bilinear (h : RLaw Y V) {M M' : Matrix κ κ C} (hE : IsEnd Y V M M') (s t : κ) :
     V.Ge 0 (∑ x, coeff (bexp x t) Y.h * M x s - ∑ y, coeff (bexp s y) Y.h * M' y t) := by
   have hg : ∀ (j : Fin 2) x, constantCoeff (gp C κ j x) = 0 := fun j x => constantCoeff_X _
@@ -324,6 +455,11 @@ theorem IsEnd.bilinear (h : RLaw Y V) {M M' : Matrix κ κ C} (hE : IsEnd Y V M 
       simp [hX]
     simp [this]
 
+/- English proof (translation)
+Unfold `RawChart.sg1`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `: coeff (Finsupp.single x 1) (Y.sg v) = -∑ y, v y * coeff (bexp x y) Y.h` using `by show -∑ i, v i * coeff ((Finsupp.single x 1).mapDomain _ + _) Y.h = _`. Simplify using `only [Finsupp.mapDomain_single]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, mul_neg, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+-/
 theorem gaugeBilinearTerm_eq_neg_double_sum (Y : RawChart C d I κ) (w v : κ → C) :
     Y.sg1 w v = -∑ x, ∑ y, w x * v y * coeff (bexp x y) Y.h := by
   unfold RawChart.sg1
@@ -336,6 +472,19 @@ theorem gaugeBilinearTerm_eq_neg_double_sum (Y : RawChart C d I κ) (w v : κ �
   rw [this, mul_neg, Finset.mul_sum]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Take `⟨N, ζ, M, M', hN, hζ, hinj, -, hE, hM, hM'⟩` from `hT`. Apply `ge_zero_of_sub_mul V hN (hζ _) (hζ _) (hinj.ne hne)` to reduce the goal to its premises. Use `set w := X.u g c with hw`. Use `set v := X.u (1 - g) q with hv`. Establish `hint : V.Ge 0 (∑ s, ∑ t, w s * v t * (∑ x, coeff (bexp x t) X.h * M x s - ∑ y, coeff (bexp s y) X.h * M' y t))` using `VF.Ge.sum fun s _ => VF.Ge.sum fun t _ => ((h.uint g c s).mul_int (h.uint (1 - g) q t)).mul_int (hE.bilinear h s t)`.
+
+Establish `e1 : ∀ x, ∑ s, M x s * w s = ζ (X.ty g c) * w x` using `fun x => congrFun (hM c) x`. Establish `e2 : ∀ y, ∑ t, M' y t * v t = ζ (X.ty (1 - g) q) * v y` using `fun y => congrFun (hM' q) y`. Establish `A : ∑ s, ∑ t, w s * v t * ∑ x, coeff (bexp x t) X.h * M x s = ζ (X.ty g c) * ∑ x, ∑ y, w x * v y * coeff (bexp x y) X.h`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun x y => w x * v y * coeff (bexp x y) X.h), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← e1, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+
+Establish `B : ∑ s, ∑ t, w s * v t * ∑ y, coeff (bexp s y) X.h * M' y t = ζ (X.ty (1 - g) q) * ∑ x, ∑ y, w x * v y * coeff (bexp x y) X.h`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[show ζ (X.ty (1 - g) q) * (w s * v y * coeff (bexp s y) X.h) = (ζ (X.ty (1 - g) q) * v y) * (w s * coeff (bexp s y) X.h) by ring, ← e2, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Simplify using `only [mul_sub, Finset.sum_sub_distrib] at hint`. Rewrite `hint` using `[A, B]`.
+
+Rewrite using `[gaugeBilinearTerm_eq_neg_double_sum]`. Use `hint.neg using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ge_zero_sg1_of_ty_ne (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type)
     [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ) (h : RLaw X V) (g : Fin 2)
     (hT : HasTeich X V g) (c : I g) (q : JJ I g) (hne : X.ty g c ≠ X.ty (1 - g) q) :

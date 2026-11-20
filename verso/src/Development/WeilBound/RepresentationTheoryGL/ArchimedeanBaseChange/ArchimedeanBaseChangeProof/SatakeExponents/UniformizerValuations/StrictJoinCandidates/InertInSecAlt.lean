@@ -9,6 +9,9 @@ open scoped Classical
 
 namespace PositivityTheory.Rg.BcB.F.FX
 
+/- English proof (translation)
+Introduce `E _ _ _ S hS w hw`. Take `⟨u, ⟨huS, hu⟩, -⟩` from `hS w`. Distinguish the cases in `h : u = w`. Conclude with `h ▸ huS`. Conclude with `absurd ⟨u, h, hu⟩ hw`.
+-/
 theorem inertInSec : InertInSec := by
   intro E _ _ _ S hS w hw
   obtain ⟨u, ⟨huS, hu⟩, -⟩ := hS w

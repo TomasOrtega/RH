@@ -23,15 +23,26 @@ section Core
 
 variable {K : Type} [Field K] [CharZero K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[(rowE_eq_rowDiv K n n l j _).1]`. Conclude with `hwRaise K n n le_rfl ν l j 1 h le_rfl`.
+-/
 theorem hw_raise (ν : Fin n → ℕ) (l j : Fin n) (h : l < j) : rowE K n n l j (hw K le_rfl ν) = 0 := by
   rw [(rowE_eq_rowDiv K n n l j _).1]
   exact hwRaise K n n le_rfl ν l j 1 h le_rfl
 
+/- English proof (translation)
+Establish `h` using `(rowWeight_iff _ _).1 (hwRowWeight K n n le_rfl ν hν) s`. Simplify `h` using `[rowNu]`.
+-/
 theorem hw_weight {ν : Fin n → ℕ} (hν : Antitone ν) (s : Fin n) :
     rowE K n n s s (hw K le_rfl ν) = (ν s : K) • hw K le_rfl ν := by
   have h := (rowWeight_iff _ _).1 (hwRowWeight K n n le_rfl ν hν) s
   simpa [rowNu] using h
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.dualWeyl_le_of_highest_vector_rowOperator_stable K n μ hμ (Module.End.eigenspace (capDet (fun i j => rowE K n n i j) u) ((∏ j : Fin n, (u + ((j : ℕ) : ℤ) - (μ j : ℤ)) : ℤ) : K)) ?_ ?_ hf`. Conclude with `Module.End.mem_eigenspace_iff.1 h`. Conclude with `Module.End.mem_eigenspace_iff.2 (capDet_eigen _ u _ (fun j => (μ j : ℤ)) (hw_raise μ) (fun s => by simpa using hw_weight hμ s))`. Introduce `a b g hg`. Rewrite `hg`, the goal using `[Module.End.mem_eigenspace_iff]`.
+
+Establish `hc` using `capDet_central (fun i j => rowE K n n i j) u (fun i j k l => by`. Simplify `glRel_rowE K n n i j k l) end_two a b` using `only [eq_comm (a := l)]`. Rewrite using `[← Module.End.mul_apply, ← hc.eq, Module.End.mul_apply, hg, map_smul]`.
+-/
 theorem capDet_dualWeyl {μ : Fin n → ℕ} (hμ : Antitone μ) (u : ℤ) {f : MvPolynomial (Fin n × Fin n) K}
     (hf : f ∈ dualWeyl K n n μ) :
     capDet (fun i j => rowE K n n i j) u f = ((∏ j : Fin n, (u + ((j : ℕ) : ℤ) - (μ j : ℤ)) : ℤ) : K) • f := by
@@ -46,6 +57,11 @@ theorem capDet_dualWeyl {μ : Fin n → ℕ} (hμ : Antitone μ) (u : ℤ) {f : 
       simpa only [eq_comm (a := l)] using glRel_rowE K n n i j k l) end_two a b
     rw [← Module.End.mul_apply, ← hc.eq, Module.End.mul_apply, hg, map_smul]
 
+/- English proof (translation)
+Use `lift β to Fin n → ℕ using h.1 with b`. Establish `h2` using `h.2.2`. Establish `hb : ∀ s, b s ≤ lam s` using `fun s => by`. Establish `h3` using `(h2 s).2`. Rewrite `h3` using `[bmH_lamZ_succ]`.
+
+Simplify using `only [Function.comp] at h3`. Use linear arithmetic over natural numbers and integers. Use `⟨b, rfl, hb, bmK_antitone lam (fun s => lam s - b s) (bm_IL_of lam _ ?_)⟩` and prove the remaining obligations. Simplify `h2` using `only [Nat.cast_sub (hb _)]`.
+-/
 theorem branchingAdmissible_facts {lam : Fin n → ℕ} {d : ℕ} {β : Fin n → ℤ} (h : bmAdm lam d β) :
     ∃ b : Fin n → ℕ, β = (fun s => (b s : ℤ)) ∧ (∀ s, b s ≤ lam s) ∧ Antitone fun s => lam s - b s := by
   lift β to Fin n → ℕ using h.1 with b
@@ -58,6 +74,11 @@ theorem branchingAdmissible_facts {lam : Fin n → ℕ} {d : ℕ} {β : Fin n �
   refine ⟨b, rfl, hb, bmK_antitone lam (fun s => lam s - b s) (bm_IL_of lam _ ?_)⟩
   simpa only [Nat.cast_sub (hb _)] using h2
 
+/- English proof (translation)
+Establish `hA` using `(bm_eig lam d G (bmK_mem_alt.1 hG).1 (bmK_mem_alt.1 hG).2 β hβ hmax).1`. Use `⟨hA, fun u => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl, hb, ha⟩` from `branchingAdmissible_facts hA`. Take `⟨f, hf, e⟩` from `GlobalTheory.T.lastRow_top_component_dualWeyl_eq_monomial_mul K n lam G (bmK_mem_alt.1 hG).1 b hb hmax`. Rewrite using `[e, rCap_lead, capDet_dualWeyl ha u hf, map_smul, mul_smul_comm, bmChi]`.
+
+Simplify using `only [Nat.cast_sub (hb _)]`.
+-/
 theorem rCap_top {lam : Fin n → ℕ} {d : ℕ} (G : BP K n) (hG : G ∈ bmW K n lam d) (β : Fin n → ℤ)
     (hβ : zcomp K n β G ≠ 0) (hmax : ∀ β', zcomp K n β' G ≠ 0 → omg β' ≤ omg β) :
     bmAdm lam d β ∧ ∀ u, rCap K n n u (zcomp K n β G) = ((bmChi lam β u : ℤ) : K) • zcomp K n β G := by
@@ -68,6 +89,9 @@ theorem rCap_top {lam : Fin n → ℕ} {d : ℕ} (G : BP K n) (hG : G ∈ bmW K 
   rw [e, rCap_lead, capDet_dualWeyl ha u hf, map_smul, mul_smul_comm, bmChi]
   simp only [Nat.cast_sub (hb _)]
 
+/- English proof (translation)
+The claim follows from `bm_kill (zW n) omg (rCap K n n) (bmW K n lam (∑ s, (lam s - sg s))) (bmChi lam) (bmAdm lam (∑ s, (lam s - sg s))) (rCap_comm n n) (fun u β => zcomp_comm_rCap n β u) (fun u _ h => capelliDeterminantFirstRows_mem_bmW u h) (fun G hG β h1 h2 => rCap_top G hG β h1 h2) (bm_sep lam _) ℓ …`.
+-/
 theorem rCap_kill {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (sg i : ℤ))) (ℓ : List ℤ)
     (hℓ : ∀ u ∈ bmList lam sg, u ∈ ℓ) (G : BP K n) (hG : G ∈ bmW K n lam (∑ s, (lam s - sg s)))
     (h0 : zcomp K n (fun s => ((lam s - sg s : ℕ) : ℤ)) G = 0) : (ℓ.map (rCap K n n)).prod G = 0 :=
@@ -78,6 +102,9 @@ theorem rCap_kill {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => 
       obtain ⟨u, hu, e⟩ := bm_list_kills lam sg hI β h1 h2
       exact ⟨u, hℓ u hu, e⟩) G hG h0
 
+/- English proof (translation)
+The claim follows from `| 0, g, c, F, _, _, x => ⟨fun _ => by simp, fun h => absurd (fun k : Fin 0 => k.elim0) h⟩ | m + 1, g, c, F, h1, h2, x => by rw [List.ofFn_succ, List.prod_cons, Module.End.mul_apply, Fin.prod_univ_succ] by_cases h0 : F 0 · obtain ⟨ih1, ih2⟩ := dual_tri ψ (fun i : Fin m => g i.succ …`.
+-/
 theorem dual_tri {M : Type} [AddCommGroup M] [Module K M] (ψ : M →ₗ[K] K) : ∀ {m : ℕ} (g : Fin m → Module.End K M)
     (c : Fin m → K) (F : Fin m → Prop), (∀ k, F k → ∀ x, ψ (g k x) = c k * ψ x) →
     (∀ k, ¬ F k → (∀ j, j < k → F j) → ∀ x, ψ (g k x) = 0) → ∀ x,
@@ -96,6 +123,15 @@ theorem dual_tri {M : Type} [AddCommGroup M] [Module K M] (ψ : M →ₗ[K] K) :
       rw [ih2 fun h' => h fun k => Fin.cases h0 h' k, mul_zero]
     · exact ⟨fun h => absurd (h 0) h0, fun _ => h2 0 h0 (fun j hj => absurd hj (Fin.not_lt_zero j)) _⟩
 
+/- English proof (translation)
+Establish `key` using `fun α : Equiv.Perm (Fin n) => dual_tri ψ (fun k => bmF E u k (α k) k) (fun j => ((u + ((j : ℕ) : ℤ) - μ j : ℤ) : K)) (fun k => α k = k) (fun k hk x => by`. Simplify using `only [bmF, hk, if_true, LinearMap.sub_apply, Module.End.intCast_apply, map_sub, map_zsmul, hw, zsmul_eq_mul]`. Use `push_cast`. Use the proof step `ring)`. Use the proof step `(fun k hk hj x => by`.
+
+Establish `hlt : k < α k`. Break down `lt_trichotomy k (α k) with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h.symm hk`. Conclude with `absurd (α.injective (hj _ h)) hk`.
+
+Simplify using `[bmF, hk, hr k _ hlt]) x`. Simplify using `only [capDet, bmPi, bmM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul, id]`. Rewrite using `[Finset.sum_eq_single 1]`. Rewrite using `[(key 1).1 fun _ => rfl]`. Simplify using the standard rewrite rules.
+
+Introduce `α _ hα`. Rewrite using `[(key α).2 fun h => hα (Equiv.ext h), smul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem capDet_dual {M : Type} [AddCommGroup M] [Module K M] (E : Fin n → Fin n → Module.End K M) (u : ℤ)
     (ψ : M →ₗ[K] K) (μ : Fin n → ℤ) (hr : ∀ l j, l < j → ∀ x, ψ (E j l x) = 0)
     (hw : ∀ s x, ψ (E s s x) = ((μ s : ℤ) : K) * ψ x) (x : M) :
@@ -119,6 +155,15 @@ theorem capDet_dual {M : Type} [AddCommGroup M] [Module K M] (E : Fin n → Fin 
     rw [(key α).2 fun h => hα (Equiv.ext h), smul_zero]
   · simp
 
+/- English proof (translation)
+Unfold `initMinor`. Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Distinguish the cases in `hb : ∃ p, I p = b`. Take `⟨i, hi⟩` from `hb`. Take `⟨j, hij, hj⟩` from `h i hi`.
+
+Rewrite using `[← Matrix.det_updateRow_add_smul_self (Polynomial.C.mapMatrix _) hij Polynomial.X]`. Use `congr 1`. Use `ext1 p q`. Distinguish the cases in `hp : p = i`. Substitute `hp` using the available equality.
+
+Simplify using `[rowGen_X, hi, hj]`. Establish `e1 : I p ≠ b` using `fun h' => hp (hI (h'.trans hi.symm))`. Simplify using `[Matrix.updateRow_apply, rowGen_X, hp, e1]`. Use `congr 1 ext1 p q`. Establish `e1 : I p ≠ b` using `fun h' => hb ⟨p, h'⟩`.
+
+Simplify using `[rowGen_X, e1]`.
+-/
 theorem rowGen_initMinor {r m s : ℕ} (a b : Fin r) (I : Fin s → Fin r) (hs : s ≤ m) (hI : Function.Injective I)
     (h : ∀ p, I p = b → ∃ p', p ≠ p' ∧ I p' = a) :
     rowGen K a b (initMinor K I hs) = Polynomial.C (initMinor K I hs) := by
@@ -140,6 +185,21 @@ theorem rowGen_initMinor {r m s : ℕ} (a b : Fin r) (I : Fin s → Fin r) (hs :
     have e1 : I p ≠ b := fun h' => hb ⟨p, h'⟩
     simp [rowGen_X, e1]
 
+/- English proof (translation)
+Establish `h' : l.val < j.val` using `h`. Establish `key : rowGen K l.castSucc j.castSucc (xiB K lam sg) = Polynomial.C (xiB K lam sg)`. Unfold `xiB`. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_pow, map_pow, rowGen_initMinor, rowGen_initMinor]`. Introduce `p q e`. Use `p.2` as an intermediate fact. Use `q.2` as an intermediate fact. Use `i.2` as an intermediate fact.
+
+Simplify using `only [rowsB, Fin.ext_iff] at e ⊢`. Apply the tactic sequence `split_ifs at e <;> simp at e <;> omega`. Introduce `p e`. Use `p.2` as an intermediate fact. Use `i.2` as an intermediate fact.
+
+Use `j.2` as an intermediate fact. Establish `hp : p.val = j.val ∧ p.val < i.val`. Simplify using `only [rowsB, Fin.ext_iff] at e`. Apply the tactic sequence `split_ifs at e <;> simp at e <;> omega`. Use `⟨⟨l.val, by omega⟩, fun e' => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Fin.val e'` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [rowsB]`. Rewrite using `[if_pos (by omega)]; rfl`.
+
+Introduce `p q e`. Simplify `e` using `[rowsA, Fin.ext_iff]`. Introduce `p e`. Use `p.2` as an intermediate fact. Establish `hp : p.val = j.val` using `by simpa [rowsA, Fin.ext_iff] using e`.
+
+Use `⟨⟨l.val, by omega⟩, fun e' => ?_, rfl⟩` and prove the remaining obligations. Use `congrArg Fin.val e'` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[rE, (rowE_eq_rowDiv K _ _ _ _ _).1, rowDiv, key, Polynomial.coeff_C, if_neg one_ne_zero]`.
+-/
 theorem xi_raise (lam sg : Fin n → ℕ) (l j : Fin n) (h : l < j) : rE K n n l j (xiB K lam sg) = 0 := by
   have h' : l.val < j.val := h
   have key : rowGen K l.castSucc j.castSucc (xiB K lam sg) = Polynomial.C (xiB K lam sg) := by
@@ -171,6 +231,9 @@ theorem xi_raise (lam sg : Fin n → ℕ) (l j : Fin n) (h : l < j) : rE K n n l
       simp at this; omega
   rw [rE, (rowE_eq_rowDiv K _ _ _ _ _).1, rowDiv, key, Polynomial.coeff_C, if_neg one_ne_zero]
 
+/- English proof (translation)
+Establish `h1` using `(bm_isLow_iff _ _).1 h.2.2 _ le_rfl`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1]`. Conclude with `(bmF_lead_WH K n b f).weightedHomogeneousComponent_same`.
+-/
 theorem zcomp_lift {lam b : Fin n → ℕ} {f : MvPolynomial (Fin n × Fin n) K} {G : BP K n} (h : bmLift K n lam b f G) :
     zcomp K n (fun s => (b s : ℤ)) G = zmon K n b * emb K n f := by
   have h1 := (bm_isLow_iff _ _).1 h.2.2 _ le_rfl
@@ -178,12 +241,18 @@ theorem zcomp_lift {lam b : Fin n → ℕ} {f : MvPolynomial (Fin n × Fin n) K}
   rw [h1]
   exact (bmF_lead_WH K n b f).weightedHomogeneousComponent_same
 
+/- English proof (translation)
+Unfold `zcomp`. Rewrite using `[coeff_weightedHomogeneousComponent]`.
+-/
 theorem coeff_zcomp (β : Fin n → ℤ) (G : BP K n) (μ : Fin (n + 1) × Fin n →₀ ℕ) :
     coeff μ (zcomp K n β G) = if Finsupp.weight (zW n) μ = β then coeff μ G else 0 := by
   classical
   unfold zcomp
   rw [coeff_weightedHomogeneousComponent]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← fockBL_apply, ← fockBL_apply, ← LinearMap.sub_apply, ← map_sub]`. Use `fockB_eq_zero _ _ fun μ hμ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Rewrite `hμ` using `[coeff_sub, coeff_zcomp, if_pos (hA h0), sub_self]`. Conclude with `hμ rfl`.
+-/
 theorem fockB_zcomp (β : Fin n → ℤ) (G A : BP K n) (hA : IsWeightedHomogeneous (zW n) A β) :
     fockB G A = fockB (zcomp K n β G) A := by
   rw [← sub_eq_zero, ← fockBL_apply, ← fockBL_apply, ← LinearMap.sub_apply, ← map_sub]
@@ -192,12 +261,18 @@ theorem fockB_zcomp (β : Fin n → ℤ) (G A : BP K n) (hA : IsWeightedHomogene
   rw [coeff_sub, coeff_zcomp, if_pos (hA h0), sub_self] at hμ
   exact hμ rfl
 
+/- English proof (translation)
+Establish `h0 : zmon K n b ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => pow_ne_zero _ (X_ne_zero _)`. Conclude with `rename_injective _ (fun v w e => Prod.ext (Fin.castSucc_injective n (Prod.mk.inj e).1) (Prod.mk.inj e).2) (mul_left_cancel₀ h0 h)`.
+-/
 theorem lead_inj (b : Fin n → ℕ) {f g : MvPolynomial (Fin n × Fin n) K}
     (h : zmon K n b * emb K n f = zmon K n b * emb K n g) : f = g := by
   have h0 : zmon K n b ≠ 0 := Finset.prod_ne_zero_iff.2 fun s _ => pow_ne_zero _ (X_ne_zero _)
   exact rename_injective _ (fun v w e => Prod.ext (Fin.castSucc_injective n (Prod.mk.inj e).1) (Prod.mk.inj e).2)
     (mul_left_cancel₀ h0 h)
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Nat.cast_sub (hIL j).1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_eq {lam sg : Fin n → ℕ} (hIL : bmIL lam sg) (u : ℤ) :
     bmChi lam (fun s => ((lam s - sg s : ℕ) : ℤ)) u = ∏ j : Fin n, (u + ((j : ℕ) : ℤ) - (sg j : ℤ)) := by
   refine Finset.prod_congr rfl fun j _ => ?_
@@ -205,6 +280,9 @@ theorem chi_eq {lam sg : Fin n → ℕ} (hIL : bmIL lam sg) (u : ℤ) :
   rw [Nat.cast_sub (hIL j).1]
   ring
 
+/- English proof (translation)
+Proceed by induction on `ℓ with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, h, ih, Int.cast_mul, mul_assoc]`.
+-/
 theorem list_dual {M : Type} [AddCommGroup M] [Module K M] (C : ℤ → Module.End K M) (χ : ℤ → ℤ) (ψ : M →ₗ[K] K)
     (h : ∀ u x, ψ (C u x) = (χ u : K) * ψ x) (ℓ : List ℤ) (x : M) :
     ψ ((ℓ.map C).prod x) = (((ℓ.map χ).prod : ℤ) : K) * ψ x := by
@@ -212,6 +290,33 @@ theorem list_dual {M : Type} [AddCommGroup M] [Module K M] (C : ℤ → Module.E
   | nil => simp
   | cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, h, ih, Int.cast_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hIL` using `bm_IL_of lam sg hI`. Establish `hρ : ∀ s : Fin n, bmRho lam sg s.castSucc = sg s` using `fun s => by simp [bmRho]`. Establish `hC : ∀ u x, ψ (rCap K n n u x) = ((bmChi lam (fun s => ((lam s - sg s : ℕ) : ℤ)) u : ℤ) : K) * ψ x` using `fun u x => by`. Rewrite using `[chi_eq hIL]`. Conclude with `capDet_dual _ u ψ (fun s => (sg s : ℤ)) hr (fun s x => by rw [rE, hwt, hρ]; simp) x`.
+
+Establish `hAdm : bmAdm lam (∑ s, (lam s - sg s)) fun s => ((lam s - sg s : ℕ) : ℤ)`. Use `⟨fun s => Int.natCast_nonneg _, by simp, ?_⟩` and prove the remaining obligations. Simplify `hI` using `only [Nat.cast_sub (hIL _).1, sub_sub_cancel]`. Establish `key : ∀ (k : ℕ) (y : BP K n), y ∈ bmW K n lam (∑ s, (lam s - sg s)) → (∀ s, rE K n n s s y = (sg s : K) • y) → ∀ S : Finset (Fin n → ℤ), S.card ≤ k → (∀ β, zcomp K n β y ≠ 0 → β ∈ S) → ψ y = 0`. Introduce `k`.
+
+Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `y hy hs S hS hsub`. Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0, map_zero]`.
+
+Take `⟨μ, hμ⟩` from `ne_zero_iff.1 h0`. Establish `hne : (S.filter fun β => zcomp K n β y ≠ 0).Nonempty`. Establish `: zcomp K n (Finsupp.weight (zW n) μ) y ≠ 0` using `ne_zero_iff.2 ⟨μ, by rw [coeff_zcomp, if_pos rfl]; exact hμ⟩`. Conclude with `⟨_, Finset.mem_filter.2 ⟨hsub _ this, this⟩⟩`. Take `⟨β, hβ, hmax⟩` from `Finset.exists_max_image _ omg hne`.
+
+Take `⟨hβS, hβ⟩` from `Finset.mem_filter.1 hβ`. Establish `hmax' : ∀ β', zcomp K n β' y ≠ 0 → omg β' ≤ omg β` using `fun β' h => hmax β' (Finset.mem_filter.2 ⟨hsub _ h, h⟩)`. Distinguish the cases in `hb : β = fun s => ((lam s - sg s : ℕ) : ℤ)`. Substitute `hb` using the available equality. Take `⟨f, hf, e⟩` from `GlobalTheory.T.lastRow_top_component_dualWeyl_eq_monomial_mul K n lam y (bmK_mem_alt.1 hy).1 (fun s => lam s - sg s) (fun s => Nat.sub_le _ _) hmax'`.
+
+Simplify using `only [Nat.sub_sub_self (hIL _).1] at hf`. Establish `hfw : IsWeightedHomogeneous (rowW n n) f sg` using `(rowWeight_iff _ _).2 fun s => by`. Use `lead_inj (fun s => lam s - sg s) ?_` and prove the remaining obligations. Rewrite using `[← rE_lead, map_smul, mul_smul_comm, ← e, ← Module.End.mul_apply, ← (zcomp_comm_rE n _ s s).eq, Module.End.mul_apply, hs, map_smul]`. Take `⟨a, ha⟩ : ∃ a : K, f = a • hw K le_rfl sg` from `⟨_, GlobalTheory.DualWeyl.eq_evalAt_one_smul_extremal_of_rowWeight K n sg (bmK_antitone lam sg hIL) f hf hfw⟩`.
+
+Establish `hl` using `bmLift_xi (R := K) lam sg hIL`. Establish `hk` using `rCap_kill hI (bmList lam sg) (fun _ h => h) (y - a • xiB K lam sg) (Submodule.sub_mem _ hy (Submodule.smul_mem _ _ (bmK_liftW hl))) (by rw [map_sub, map_smul, e, zcomp_lift hl, ha, map_smul, mul_smul_comm, sub_self])`. Establish `h1` using `list_dual _ _ ψ hC (bmList lam sg) (y - a • xiB K lam sg)`. Rewrite `h1` using `[hk, map_zero, bm_list_prod lam sg hI, map_sub, map_smul, hxi, smul_zero, sub_zero]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (Int.cast_ne_zero.2 (capConst n _ _ hI).1)`.
+
+Take `⟨hA, hE⟩` from `rCap_top y hy β hβ hmax'`. Take `⟨u, hu⟩` from `bm_sep lam _ _ _ hA hAdm hb`. Establish `hcard` using `Finset.card_erase_lt_of_mem hβS`. Establish `h1` using `ih (S.erase β).card (by omega) (rCap K n n u y - ((bmChi lam β u : ℤ) : K) • y) (Submodule.sub_mem _ (capelliDeterminantFirstRows_mem_bmW u hy) (Submodule.smul_mem _ _ hy)) (fun s => by`. Rewrite using `[map_sub, map_smul, ← Module.End.mul_apply, (rE_comm_rCap n n u s s).eq, Module.End.mul_apply, hs, map_smul, smul_sub, smul_comm])`.
+
+Use the proof step `(S.erase β) le_rfl (fun β' h => by`. Rewrite `h` using `[map_sub, map_smul, ← Module.End.mul_apply, (zcomp_comm_rCap n β' u).eq, Module.End.mul_apply]`. Use `Finset.mem_erase.2 ⟨fun e => h ?_, hsub _ fun e => h ?_⟩` and prove the remaining obligations. Rewrite using `[e, hE, sub_self]`. Rewrite using `[e, map_zero, smul_zero, sub_zero])`.
+
+Rewrite `h1` using `[map_sub, map_smul, hC, smul_eq_mul, ← sub_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 fun e => hu (Int.cast_injective e).symm)`. Rewrite using `[← sum_weightedHomogeneousComponent (rowW (n + 1) n) x, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp (w := rowW (n + 1) n) x), map_sum]`. Use `Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Establish `hy` using `(rowWeight_iff ρ _).1 (weightedHomogeneousComponent_isWeightedHomogeneous (w := rowW (n + 1) n) ρ x)`.
+
+Establish `hm` using `dualWeylRowGraded K (n + 1) n lam ρ x hx`. Distinguish the cases in `hρ' : ρ = bmRho lam sg`. Substitute `hρ'` using the available equality. Use `key _ _ (bmK_mem_alt.2 ⟨hm, fun μ hμ => ?_⟩) (fun s => by rw [rE, hy, hρ]) ((weightedHomogeneousComponent (rowW (n + 1) n) (bmRho lam sg) x).support.image (Finsupp.weight (zW n))) le_rfl fun β h => ?_` and prove the remaining obligations. Rewrite using `[bm_weight_lastW, ← bm_weight_rowW, weightedHomogeneousComponent_isWeightedHomogeneous (w := rowW (n + 1) n) _ x hμ]`.
+
+Simplify using `[bmRho]`. Take `⟨μ, hμ⟩` from `ne_zero_iff.1 h`. Rewrite `hμ` using `[coeff_zcomp]`. Use `split_ifs at hμ with e`. Conclude with `Finset.mem_image.2 ⟨μ, mem_support_iff.2 hμ, e⟩`.
+
+Conclude with `absurd rfl hμ`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hρ'`. Establish `h1` using `hwt a (weightedHomogeneousComponent (rowW (n + 1) n) ρ x)`. Rewrite `h1` using `[hy, map_smul, smul_eq_mul, ← sub_eq_zero, ← sub_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 fun e => ha (Nat.cast_injective e))`.
+-/
 theorem psi_eq_zero {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (sg i : ℤ))) (ψ : BP K n →ₗ[K] K)
     (hr : ∀ l j, l < j → ∀ x, ψ (rE K n n j l x) = 0)
     (hwt : ∀ a x, ψ (rowE K (n + 1) n a a x) = (bmRho lam sg a : K) * ψ x) (hxi : ψ (xiB K lam sg) = 0)
@@ -296,6 +401,17 @@ theorem psi_eq_zero {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i =
     rw [hy, map_smul, smul_eq_mul, ← sub_eq_zero, ← sub_mul] at h1
     exact (mul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 fun e => ha (Nat.cast_injective e))
 
+/- English proof (translation)
+Establish `hIL` using `bm_IL_of lam sg hI`. Establish `hl` using `bmLift_xi (R := K) lam sg hIL`. Establish `hw1` using `bm_xi_row (R := K) lam sg hIL`. Establish `hw2 : IsWeightedHomogeneous (rowW (n + 1) n) (zmon K n (fun s => lam s - sg s) * emb K n (hw K le_rfl sg)) (bmRho lam sg)` using `fun μ hμ => by`. Rewrite `hμ` using `[← zcomp_lift hl, coeff_zcomp]`.
+
+Use `split_ifs at hμ`. Conclude with `hw1 hμ`. Conclude with `absurd rfl hμ`. Establish `h` using `psi_eq_zero hI ((fockB (hw K le_rfl sg) (hw K le_rfl sg) * (bfact fun s => lam s - sg s : K)) • fockBL.flip (xiB K lam sg) - fockB (xiB K lam sg) (xiB K lam sg) • fockBL.flip (zmon K n (fun s => lam s - sg s) * emb K n (hw K le_rfl sg))) (fun l j hlj x => by`. Establish `h1` using `xi_raise (K := K) lam sg l j hlj`.
+
+Establish `h2` using `rE_lead n l j (fun s => lam s - sg s) (hw K le_rfl sg)`. Rewrite `h2` using `[hw_raise sg l j hlj, map_zero, mul_zero]`. Simplify using `only [rE] at h1 h2`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, rE, fockB_rowE, h1, h2]`. Simplify using `[← fockBL_apply])`.
+
+Use the proof step `(fun a x => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, fockB_rowE, (rowWeight_iff _ _).1 hw1 a, (rowWeight_iff _ _).1 hw2 a]`. Simplify using `only [← fockBL_apply, map_smul, smul_eq_mul]`. Use the proof step `ring)`. Use the proof step `(by`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, smul_eq_mul]`. Rewrite using `[fockB_zcomp _ _ _ (bmF_lead_WH K n _ _), zcomp_lift hl, (GlobalTheory.T.fockPairing_lastRow_monomial_reads_coefficient K n _).2]`. Use the proof step `ring) x hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, smul_eq_mul] at h`. Take the linear combination `h`.
+-/
 theorem fock_xi {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (sg i : ℤ))) (x : BP K n)
     (hx : x ∈ dualWeyl K (n + 1) n lam) :
     fockB x (xiB K lam sg) * (fockB (hw K le_rfl sg) (hw K le_rfl sg) * (bfact fun s => lam s - sg s : K)) =
@@ -331,6 +447,9 @@ theorem fock_xi {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (s
   simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.flip_apply, fockBL_apply, smul_eq_mul] at h
   linear_combination h
 
+/- English proof (translation)
+Establish `h1` using `bmK_mem_alt.1 (glOperatorFirstRows_mem_bmW i j (bmK_liftW h))`. Use `⟨h1.1, h1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← rE_lead, ← map_sub, bm_isLow_iff]`. Introduce `β hβ`. Rewrite using `[← Module.End.mul_apply, (zcomp_comm_rE n β i j).eq, Module.End.mul_apply, (bm_isLow_iff _ _).1 h.2.2 β hβ, map_zero]`.
+-/
 theorem lift_rowE {lam b : Fin n → ℕ} {f : MvPolynomial (Fin n × Fin n) K} {G : BP K n} (h : bmLift K n lam b f G)
     (i j : Fin n) : bmLift K n lam b (rowE K n n i j f) (rE K n n i j G) := by
   have h1 := bmK_mem_alt.1 (glOperatorFirstRows_mem_bmW i j (bmK_liftW h))
@@ -339,6 +458,21 @@ theorem lift_rowE {lam b : Fin n → ℕ} {f : MvPolynomial (Fin n × Fin n) K} 
   intro β hβ
   rw [← Module.End.mul_apply, (zcomp_comm_rE n β i j).eq, Module.End.mul_apply, (bm_isLow_iff _ _).1 h.2.2 β hβ, map_zero]
 
+/- English proof (translation)
+Establish `hIL` using `bm_IL_of lam sg hI`. Set `M : Submodule K (MvPolynomial (Fin n × Fin n) K)` to `{ carrier := {f | ∃ G, bmLift K n lam (fun s => lam s - sg s) f G ∧ ∀ x ∈ dualWeyl K (n + 1) n lam, fockB x ((ℓ.map (rCap K n n)).prod G) * (fockB (hw K le_rfl sg) (hw K le_rfl sg) * (bfact fun s => lam s - sg s : K)) = (((ℓ.map (bmChi lam fun s => ((lam s - sg s : ℕ) : ℤ))).prod …`. Introduce and unpack `f f' ⟨G, hG, e⟩ ⟨G', hG', e'⟩`. Use `⟨G + G', bmLift_add hG hG', fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `e x hx`.
+
+Establish `h2` using `e' x hx`. Simplify using `only [map_add, mul_add, ← fockBL_apply] at h1 h2 ⊢`. Take the linear combination `h1 + h2`. Use the proof step `zero_mem' := ⟨0, bmG_zero _ _ _ _, fun x _ => by simp [← fockBL_apply]⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c f ⟨G, hG, e⟩`. Use `⟨c • G, bmLift_smul c hG, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `e x hx`. Simplify using `only [map_smul, mul_smul_comm, smul_eq_mul, ← fockBL_apply] at h1 ⊢`. Take the linear combination `c * h1 }`.
+
+Take `⟨G', hG', e⟩ : f ∈ M` from `GlobalTheory.T.dualWeyl_le_of_highest_vector_rowOperator_stable K n sg (bmK_antitone lam sg hIL) M ⟨_, bmLift_xi lam sg hIL, fun x hx => by`. Rewrite using `[bm_list_eigen (rCap K n n) (bmChi lam fun s => ((lam s - sg s : ℕ) : ℤ)) _ (fun u => by`. Rewrite using `[chi_eq hIL]`. Conclude with `capDet_eigen _ u _ (fun j => (sg j : ℤ)) (xi_raise lam sg) fun s => by`. Rewrite using `[rE, (rowWeight_iff _ _).1 (bm_xi_row lam sg hIL)]`.
+
+Simplify using `[bmRho]), ← fockBL_apply, map_smul, fockBL_apply,`. Use the proof step `smul_eq_mul, mul_assoc, fock_xi hI x hx, mul_assoc]⟩`. Use the proof step `(by`. Introduce and unpack `a b f ⟨G, hG, e⟩`. Use `⟨_, lift_rowE hG a b, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← rE_lead, ← Module.End.mul_apply, ← (bmK_list_comm _ _ (fun u => rE_comm_rCap n n u a b) ℓ).eq, Module.End.mul_apply, rE, ← fockB_rowE, ← fockB_rowE]`. Conclude with `e _ (rowE_mem _ _ hx)) hf`. Establish `hk` using `rCap_kill hI ℓ hℓ (G - G') (Submodule.sub_mem _ (bmK_liftW hG) (bmK_liftW hG')) (by rw [map_sub, zcomp_lift hG, zcomp_lift hG', sub_self])`. Rewrite `hk` using `[map_sub, sub_eq_zero]`. Rewrite using `[hk]`.
+
+Conclude with `e x hx`.
+-/
 theorem fock_lift {lam sg : Fin n → ℕ} (hI : Interlace (lamZ lam) (fun i => (sg i : ℤ))) (ℓ : List ℤ)
     (hℓ : ∀ u ∈ bmList lam sg, u ∈ ℓ) {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ dualWeyl K n n sg) {G : BP K n}
     (hG : bmLift K n lam (fun s => lam s - sg s) f G) (x : BP K n) (hx : x ∈ dualWeyl K (n + 1) n lam) :
@@ -393,6 +527,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke Formalism.L2.Col
 
 variable {K : Type} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Unfold `InterlacingNumerators.capelli rCap capDet bmPi bmM`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `j`. Unfold `InterlacingNumerators.fOp bmF`.
+
+Use `congr 1`. Simplify using `only [id]`. Use `split_ifs`. Rewrite using `[zsmul_one]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+-/
 theorem capelli_eq (u : ℤ) : InterlacingNumerators.capelli K n u = rCap K n (n + 1) (u + 1) := by
   unfold InterlacingNumerators.capelli rCap capDet bmPi bmM
   refine Finset.sum_congr rfl fun p _ => ?_
@@ -405,6 +546,11 @@ theorem capelli_eq (u : ℤ) : InterlacingNumerators.capelli K n u = rCap K n (n
   · rw [zsmul_one]; congr 1; ring
   · rfl
 
+/- English proof (translation)
+Unfold `InterlacingNumerators.zOp zList`. Rewrite using `[List.map_flatten, List.prod_flatten, List.map_ofFn, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, List.map_map]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `v`. Rewrite using `[capelli_eq, Function.comp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zOp_eq (lam : DomWeight (n + 1)) (sg : DomWeight n) :
     InterlacingNumerators.zOp K lam sg = ((zList lam sg).map (rCap K n (n + 1))).prod := by
   unfold InterlacingNumerators.zOp zList
@@ -418,17 +564,28 @@ theorem zOp_eq (lam : DomWeight (n + 1)) (sg : DomWeight n) :
   congr 1
   ring
 
+/- English proof (translation)
+Proceed by induction on `ℓ with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, ih, rCap_incl]`.
+-/
 theorem list_incl (ℓ : List ℤ) (G : BP K n) :
     (ℓ.map (rCap K n (n + 1))).prod (incl K n G) = incl K n ((ℓ.map (rCap K n n)).prod G) := by
   induction ℓ with
   | nil => simp
   | cons a l ih => simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, ih, rCap_incl]
 
+/- English proof (translation)
+Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (Nat.succ_pos n)]`. Both sides reduce to the same expression.
+-/
 theorem detShift_succ (lam : DomWeight (n + 1)) : lam.detShift = lam.w (Fin.last n) := by
   unfold DomWeight.detShift
   rw [dif_pos (Nat.succ_pos n)]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.branching_list_character_product n lam sg hI hE`. Take `⟨h6, G, hG, e⟩` from `GlobalTheory.T.generators_in_dual_weyl_module K n lam sg hI hE t`. Take `⟨x', hx', rfl⟩` from `GlobalTheory.T.dual_weyl_last_zero_inclusion K n lam.natW (by simp [DomWeight.natW, detShift_succ]) x hx`. Establish `h` using `fock_lift h1 _ h2 h6 hG x' hx'`. Rewrite `h` using `[h3, (GlobalTheory.T.fockPairing_lastRow_monomial_reads_coefficient K n _).1]`.
+
+Establish `hb : ((bfact fun s => lamN lam s - sg.natW s : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun s _ => Nat.factorial_ne_zero _)`. Rewrite using `[e, zOp_eq, list_incl, fockB_incl, h5, fockB_incl, funext h4]`. Use `mul_right_cancel₀ hb ?_` and prove the remaining obligations. Unfold `extremal`. Take the linear combination `h`.
+-/
 theorem fock_gen [CharZero K] {lam : DomWeight (n + 1)} {sg : DomWeight n} (hI : InterlacingNumerators.Interlace lam sg)
     (hE : InterlacingNumerators.EqualLast lam sg) (t : InterlacingNumerators.Gen lam sg) {x : MvPolynomial (Fin (n + 1) × Fin (n + 1)) K}
     (hx : x ∈ nablaSq K (n + 1) lam) :
@@ -454,6 +611,21 @@ section Tensor
 open GlobalTheory.IndefiniteRowSideFullHecke Formalism.L2.Col Formalism.L2.Col.Br GlobalTheory.BranchFormula
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hinj : ∀ τ : ι, Function.Injective (fun p : Unit × Fin n => (τ, p.2))` using `fun τ p q h => Prod.ext rfl (Prod.mk.inj h).2`. Establish `h1 : ∀ τ, rename (fun p : Unit × Fin n => (τ, p.2)) (P τ) = ∑ m ∈ (P τ).support, monomial (m.mapDomain fun p : Unit × Fin n => (τ, p.2)) (coeff m (P τ))`. Introduce `τ`. Use `conv_lhs => rw [(P τ).as_sum]`. Simplify using `only [map_sum, rename_monomial]`.
+
+Establish `h2 : ∀ τ, coeff (expOf fun _ : Unit => b τ) (P τ) = ∑ m ∈ (P τ).support, if m = expOf (fun _ : Unit => b τ) then coeff m (P τ) else 0`. Introduce `τ`. Use `conv_lhs => rw [(P τ).as_sum]`. Simplify using `only [coeff_sum, coeff_monomial]`. Simplify using `only [h1]`.
+
+Rewrite using `[Finset.prod_congr rfl fun τ _ => h2 τ, Finset.prod_univ_sum, Finset.prod_univ_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← monomial_sum_prod, coeff_monomial, Finset.prod_ite_zero]`. Establish `h3 : ∀ τ s, (∑ τ', (p τ').mapDomain fun q : Unit × Fin n => (τ', q.2)) (τ, s) = p τ ((), s)`. Introduce `τ s`.
+
+Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (hinj τ) (p τ) ((), s)`. Introduce `τ' _ h`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`.
+
+Conclude with `h (Prod.mk.inj hq).1`. Simplify using the standard rewrite rules. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h τ _`. Use extensionality with `q`. Rewrite using `[← h3 τ q.2, h]`. Both sides reduce to the same expression. Introduce `h`.
+
+Use extensionality with `q`. Rewrite using `[h3 q.1 q.2, h q.1 (Finset.mem_univ _)]`. Both sides reduce to the same expression.
+-/
 theorem coeff_prod_rename {A ι : Type} [CommRing A] [Fintype ι] {n : ℕ} (b : ι → Fin n → ℕ)
     (P : ι → MvPolynomial (Unit × Fin n) A) :
     coeff (expOf b) (∏ τ, rename (fun p : Unit × Fin n => (τ, p.2)) (P τ)) =
@@ -496,6 +668,13 @@ theorem coeff_prod_rename {A ι : Type} [CommRing A] [Fintype ι] {n : ℕ} (b :
     rw [h3 q.1 q.2, h q.1 (Finset.mem_univ _)]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp only [Formalism.GradedWeylDivisibility.blockEmb, rename_C, splitLast_C, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Establish `: splitLast K ι hN (Formalism.GradedWeylDivisibility.blockEmb K τ (X v)) = rename (fun p : Unit × Fin n => (τ, p.2)) (map (rename (R` using `K) (fun v : Unit × Fin n × Fin n => (τ, v.2))).toRingHom (splitLast K Unit hN (rename (fun v : Fin N × Fin N => (((), v) : Unit × Fin N × Fin N)) (X v)))) := by`.
+
+Take `⟨a, s⟩` from `v`. Rewrite using `[fk_blockEmb_X, rename_X]`. Break down `cases_idx hN s with rfl | ⟨s, rfl⟩` into its components or cases. Simplify using `only [splitLast_X_lastCol, map_zero]`. Break down `cases_idx hN a with rfl | ⟨a, rfl⟩` into its components or cases.
+
+Simplify using `only [splitLast_X_lastRow, map_X, rename_X]`. Simplify using `only [splitLast_X_up, map_C, rename_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]`. Rewrite using `[map_mul, map_mul, hp, this, map_mul, map_mul, map_mul, map_mul]`.
+-/
 theorem splitLast_blockEmb {K ι : Type} [Field K] {N n : ℕ} (hN : N = n + 1) (τ : ι) (f : MvPolynomial (Fin N × Fin N) K) :
     splitLast K ι hN (Formalism.GradedWeylDivisibility.blockEmb K τ f) =
       rename (fun p : Unit × Fin n => (τ, p.2))
@@ -518,6 +697,11 @@ theorem splitLast_blockEmb {K ι : Type} [Field K] {N n : ℕ} (hN : N = n + 1) 
         · simp only [splitLast_X_up, map_C, rename_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]
     rw [map_mul, map_mul, hp, this, map_mul, map_mul, map_mul, map_mul]
 
+/- English proof (translation)
+Rewrite using `[coefLast_eq_coeff, ten, ten, map_prod]`. Simplify using `only [splitLast_blockEmb]`. Rewrite using `[coeff_prod_rename]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, coefLast_eq_coeff, Formalism.GradedWeylDivisibility.blockEmb, rename_rename]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coefLast_ten {K ι : Type} [Field K] [Fintype ι] {N n : ℕ} (hN : N = n + 1) (b : ι → Fin n → ℕ)
     (f : ι → MvPolynomial (Fin N × Fin N) K) :
     coefLast hN b (ten f) = ten fun τ => rename (Prod.snd : Unit × Fin n × Fin n → Fin n × Fin n)
@@ -529,6 +713,9 @@ theorem coefLast_ten {K ι : Type} [Field K] [Fintype ι] {N n : ℕ} (hN : N = 
   rw [coeff_map, coefLast_eq_coeff, Formalism.GradedWeylDivisibility.blockEmb, rename_rename]
   rfl
 
+/- English proof (translation)
+The claim follows from `@fockSymTensor_holds K _ starRingOfComm ι _ n f g`.
+-/
 theorem fockB_ten {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) K) :
     fockB (ten f) (ten g) = ∏ τ, fockB (f τ) (g τ) :=
   @fockSymTensor_holds K _ starRingOfComm ι _ n f g
@@ -536,12 +723,22 @@ theorem fockB_ten {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (f g : ι → M
 variable {K : Type} [Field K] [CharZero K] {n : ℕ} {ι : Type} [Fintype ι]
   {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n}
 
+/- English proof (translation)
+Rewrite using `[InterlacingNumerators.piAll, Finsupp.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun τ => (GlobalTheory.T.generators_in_dual_weyl_module K n _ _ (hI τ) (hE τ) (g τ)).1, rfl⟩)`.
+-/
 theorem piAll_mem (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ))
     (t : (∀ τ, InterlacingNumerators.Gen (lam τ) (sg τ)) →₀ K) : InterlacingNumerators.piAll K lam sg t ∈ VV K sg := by
   rw [InterlacingNumerators.piAll, Finsupp.linearCombination_apply]
   exact Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _
     (Submodule.subset_span ⟨_, fun τ => (GlobalTheory.T.generators_in_dual_weyl_module K n _ _ (hI τ) (hE τ) (g τ)).1, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[InterlacingNumerators.piAll, Finsupp.range_linearCombination]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `h` using `GlobalTheory.OrbitSpan.prod_mem_span_prod (K := K) Finset.univ (fun τ => Set.range fun g => blockEmb K τ (InterlacingNumerators.piGen K (lam τ) (sg τ) g)) (fun τ => blockEmb K τ (f τ)) fun τ => by`. Establish `h1` using `Submodule.mem_map_of_mem (f := (blockEmb K τ).toLinearMap) (GlobalTheory.T.dual_weyl_spanned_by_interlacing K n _ _ (hI τ) (hE τ) (hf τ))`.
+
+Rewrite `h1` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h1`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce `y hy`. Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hy`.
+
+Use `choose g' hg' using hg`. Conclude with `⟨g', Finset.prod_congr rfl fun τ _ => hg' τ⟩`.
+-/
 theorem piAll_surj (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
     VV K sg ≤ LinearMap.range (InterlacingNumerators.piAll K lam sg) := by
   classical
@@ -559,9 +756,23 @@ theorem piAll_surj (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ
   choose g' hg' using hg
   exact ⟨g', Finset.prod_congr rfl fun τ _ => hg' τ⟩
 
+/- English proof (translation)
+Simplify `pb_extNormB_ne K (fun _ : Unit => w)` using `[extNormB]`.
+-/
 theorem fock_extremal_ne (w : DomWeight n) : fockB (extremal K n w) (extremal K n w) ≠ 0 := by
   simpa [extNormB] using pb_extNormB_ne K (fun _ : Unit => w)
 
+/- English proof (translation)
+Proceed by induction on `t using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single g c`. Establish `hm` using `piAll_mem (K := K) hI hE (Finsupp.single g 1)`.
+
+Simplify using `only [InterlacingNumerators.zPhiAll, InterlacingNumerators.piAll, Finsupp.linearCombination_single, map_smul, one_smul] at hm ⊢`. Use `congr 1`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, rfl⟩` from `hy`.
+
+Express the relevant statement in the definitionally equal form `pairB lam (ten f) _ = pairB sg (brStdP rfl lam sg (ten f) : Pol K ι n) _`. Simplify using `only [pairB_apply, brStdP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.coe_smul]`. Rewrite using `[← fockBL_apply (_ • _), map_smul, LinearMap.smul_apply, fockBL_apply, fockB_projVV sg _ hm, coefLast_ten, fockB_ten, fockB_ten, brConst, extNormB, extNormB, smul_eq_mul, ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← …`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `fock_gen (hI τ) (hE τ) (g τ) (hf τ)`.
+
+Establish `h1` using `fock_extremal_ne (K := K) (lam τ)`. Establish `h2` using `fock_extremal_ne (K := K) (sg τ)`. Unfold `coefOne at h`. Unfold `kapBr bExp`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `h`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hy, hz]`. Consider the case `smul a y _ hy => simp only [map_smul, LinearMap.smul_apply, Submodule.coe_smul, hy]`.
+-/
 theorem pair_gen (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ))
     {F : Pol K ι (n + 1)} (hF : F ∈ VV K lam) (t : (∀ τ, InterlacingNumerators.Gen (lam τ) (sg τ)) →₀ K) :
     pairB lam F (InterlacingNumerators.zPhiAll K lam sg t) =
@@ -593,6 +804,11 @@ theorem pair_gen (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ))
     | add y z _ _ hy hz => simp only [map_add, LinearMap.add_apply, Submodule.coe_add, hy, hz]
     | smul a y _ hy => simp only [map_smul, LinearMap.smul_apply, Submodule.coe_smul, hy]
 
+/- English proof (translation)
+Use `ext1 x`. Rewrite using `[← sub_eq_zero]`. Use `(pairingBNondegenerate_holds K ι n sg).1 _ fun y => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `piAll_surj hI hE y.2`. Establish `h` using `(InterlacingNumerators.exists_section (InterlacingNumerators.piAll K lam sg)).choose_spec t`.
+
+Rewrite using `[map_sub, LinearMap.sub_apply, sub_eq_zero, InterlacingNumerators.pair_branchT, pairBK_apply]`. Simplify using `only [InterlacingNumerators.branch, LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[pair_gen hI hE x.2, ← ht, h]`. Both sides reduce to the same expression.
+-/
 theorem branchT_eq (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
     InterlacingNumerators.branchT K lam sg = brStd rfl lam sg := by
   ext1 x
@@ -605,6 +821,9 @@ theorem branchT_eq (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ
   rw [pair_gen hI hE x.2, ← ht, h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[InterlacingNumerators.pTilde, branchT_eq hI hE]`. Both sides reduce to the same expression.
+-/
 theorem pTilde_eq (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) (t : ι → K) :
     InterlacingNumerators.pTilde lam sg t = brAt rfl lam sg t := by
   rw [InterlacingNumerators.pTilde, branchT_eq hI hE]
@@ -616,12 +835,20 @@ section Compare
 
 open GlobalTheory.IndefiniteRowSideFullHecke Formalism.L2.Col Formalism.L2.Col.Br GlobalTheory.BranchFormula NumberField IsDedekindDomain
 
+/- English proof (translation)
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ sg.w i - lam.w i.succ ∧ 0 ≤ lam.w i.castSucc - sg.w i ↔ _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem interlace_iff {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) :
     Br.Interlace rfl lam sg ↔ InterlacingNumerators.Interlace lam sg := by
   refine forall_congr' fun i => ?_
   change 0 ≤ sg.w i - lam.w i.succ ∧ 0 ≤ lam.w i.castSucc - sg.w i ↔ _
   omega
 
+/- English proof (translation)
+Unfold `SameShift InterlacingNumerators.EqualLast`. Rewrite using `[detShift_succ]`. Unfold `DomWeight.detShift`. Use `split_ifs with h`. Use `⟨fun e => ⟨fun i hi => ?_, by omega⟩, fun e => e.1 _ (by simp only; omega)⟩` and prove the remaining obligations.
+
+Rewrite using `[← e]`. Use `congr 1`. Conclude with `Fin.ext (by simp only; omega)`. Conclude with `⟨fun e => ⟨fun i _ => absurd i.pos h, fun _ => e.symm⟩, fun e => (e.2 (by omega)).symm⟩`.
+-/
 theorem sameShift_iff {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) :
     SameShift lam sg ↔ InterlacingNumerators.EqualLast lam sg ∧ (n = 0 → lam.w (Fin.last n) = 0) := by
   unfold SameShift InterlacingNumerators.EqualLast
@@ -636,12 +863,22 @@ theorem sameShift_iff {n : ℕ} (lam : DomWeight (n + 1)) (sg : DomWeight n) :
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[InterlacingNumerators.mem_extLat, GlobalTheory.BranchBasis.mem_sumLat]`. Conclude with `and_congr Iff.rfl (exists_congr fun c => eq_comm)`.
+-/
 theorem extLat_eq (M : Submodule (𝓞 K) (Fin n → K)) (t : K) : InterlacingNumerators.extLat M t = sumLat rfl M t := by
   ext x
   rw [InterlacingNumerators.mem_extLat, GlobalTheory.BranchBasis.mem_sumLat]
   exact and_congr Iff.rfl (exists_congr fun c => eq_comm)
 
 omit [NumberField K] in
+/- English proof (translation)
+Establish `h : IsBlock rfl (Matrix.of fun a b : Fin (n + 1) => if h : a.val < n ∧ b.val < n then (B : Matrix (Fin n) (Fin n) K) ⟨a.val, h.1⟩ ⟨b.val, h.2⟩ else if a = b then t else 0) (B : Matrix (Fin n) (Fin n) K) t`. Use `⟨fun a b => by simp [iC], fun a => ⟨?_, ?_⟩, by simp [iL]⟩` and prove the remaining obligations. Use `a.2` as an intermediate fact. Simplify using `[iC, iL, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Use `a.2` as an intermediate fact. Simplify using `[iC, iL, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ (by`. Rewrite using `[h.det]`.
+
+Conclude with `mul_ne_zero (Matrix.GeneralLinearGroup.det B).ne_zero ht), h⟩`.
+-/
 theorem exists_block (B : GL (Fin n) K) {t : K} (ht : t ≠ 0) : ∃ B' : GL (Fin (n + 1)) K,
     IsBlock rfl (B' : Matrix (Fin (n + 1)) (Fin (n + 1)) K) (B : Matrix (Fin n) (Fin n) K) t := by
   have h : IsBlock rfl (Matrix.of fun a b : Fin (n + 1) => if h : a.val < n ∧ b.val < n then
@@ -655,6 +892,15 @@ theorem exists_block (B : GL (Fin n) K) {t : K} (ht : t ≠ 0) : ∃ B' : GL (Fi
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ (by
     rw [h.det]; exact mul_ne_zero (Matrix.GeneralLinearGroup.det B).ne_zero ht), h⟩
 
+/- English proof (translation)
+Use `⟨fun h M _ => h M, fun h M x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars, Submodule.subtype_apply] at hx ⊢`. Introduce `w B hB`. Use `choose B' hB' using fun τ => exists_block (B τ) (ht τ)`. Take `⟨s, hs, h1⟩` from `hx w B' fun τ => GlobalTheory.BranchBasis.isBasisAt_block K _ n rfl w (M τ) (t τ) (B τ) _ (hB' τ) (hB τ)`.
+
+Establish `h2` using `h (fun τ => colLat (B τ)) (fun τ => GlobalTheory.DualWeyl.isLattice_colLat (B τ)) (s • x) (by`. Simplify using `only [← GlobalTheory.BranchBasis.colLat_block rfl _ _ _ (hB' _)]`. Express the relevant statement in the definitionally equal form `((s • x : VV K lam) : Pol K ι (n + 1)) ∈ delP lam _`. Rewrite using `[(GlobalTheory.TransLoc.nabDelLoc_free_leVV.2.1 K ι _ lam B').2]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Use the proof step `rfl)`. Express the relevant statement in the definitionally equal form `((P (s • x) : VV K sg) : Pol K ι n) ∈ delP sg _ at h2`. Rewrite `h2` using `[(GlobalTheory.TransLoc.nabDelLoc_free_leVV.2.1 K ι _ sg B).2]`. Take `⟨y, hy, e⟩` from `h2`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul_of_tower, ← Submodule.coe_smul_of_tower, ← LinearMap.map_smul_of_tower, ← e, LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `hy`.
+-/
 theorem lattice_guard {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n} (P : VV K lam →ₗ[K] VV K sg) {t : ι → K}
     (ht : ∀ τ, t τ ≠ 0) :
     (∀ M : ι → Submodule (𝓞 K) (Fin n → K), ∀ x ∈ delK lam fun τ => sumLat rfl (M τ) (t τ), P x ∈ delK sg M) ↔
@@ -689,9 +935,15 @@ def PTildeAt (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) : Prop :
     ∀ (t : ι → K), (∀ τ, t τ ≠ 0) →
     ∀ x : VV K lam, x ∈ delK lam (fun τ => InterlacingNumerators.extLat (M τ) (t τ)) → InterlacingNumerators.pTilde lam sg t x ∈ delK sg M
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem pTildeIntegral_iff : InterlacingNumerators.PTildeIntegral ↔ ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (n : ℕ)
     (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n), PTildeAt K lam sg := Iff.rfl
 
+/- English proof (translation)
+Simplify using `only [extLat_eq, pTilde_eq hI hE]`. Conclude with `⟨fun h M _ t ht => h M t ht, fun h M t ht => (lattice_guard _ ht).2 (fun M hM => h M hM t ht) M⟩`.
+-/
 theorem conclusion_iff {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n}
     (hI : ∀ τ, InterlacingNumerators.Interlace (lam τ) (sg τ)) (hE : ∀ τ, InterlacingNumerators.EqualLast (lam τ) (sg τ)) :
     (∀ (M' : ι → Submodule (𝓞 K) (Fin n → K)) (t : ι → K), (∀ τ, t τ ≠ 0) →
@@ -702,6 +954,9 @@ theorem conclusion_iff {lam : ι → DomWeight (n + 1)} {sg : ι → DomWeight n
   simp only [extLat_eq, pTilde_eq hI hE]
   exact ⟨fun h M _ t ht => h M t ht, fun h M t ht => (lattice_guard _ ht).2 (fun M hM => h M hM t ht) M⟩
 
+/- English proof (translation)
+Unfold `BrIntegral PTildeAt`. Simplify using `only [interlace_iff, sameShift_iff]`. Use `forall_congr' fun hI => ⟨fun h hE => (conclusion_iff hI hE).1 (h fun τ => ⟨hE τ, fun e => h0 e τ⟩), fun h hS => (conclusion_iff hI fun τ => (hS τ).1).2 (h fun τ => (hS τ).1)⟩` and prove the remaining obligations.
+-/
 theorem brIntegral_iff_at (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n)
     (h0 : n = 0 → ∀ τ, (lam τ).w (Fin.last n) = 0) : BrIntegral K rfl lam sg ↔ PTildeAt K lam sg := by
   unfold BrIntegral PTildeAt
@@ -709,12 +964,28 @@ theorem brIntegral_iff_at (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeigh
   refine forall_congr' fun hI => ⟨fun h hE => (conclusion_iff hI hE).1 (h fun τ => ⟨hE τ, fun e => h0 e τ⟩),
     fun h hS => (conclusion_iff hI fun τ => (hS τ).1).2 (h fun τ => (hS τ).1)⟩
 
+/- English proof (translation)
+Introduce `hI hS` and use `have hI' := fun τ => (interlace_iff _ _).1 (hI τ) have hE := fun τ => ((sameShift_iff _ _).1 (hS τ)).1 (conclusion_iff hI' hE).2 (h hI' hE)`.
+-/
 theorem brIntegral_of_at (lam : ι → DomWeight (n + 1)) (sg : ι → DomWeight n) (h : PTildeAt K lam sg) :
     BrIntegral K rfl lam sg := fun hI hS =>
   have hI' := fun τ => (interlace_iff _ _).1 (hI τ)
   have hE := fun τ => ((sameShift_iff _ _).1 (hS τ)).1
   (conclusion_iff hI' hE).2 (h hI' hE)
 
+/- English proof (translation)
+Introduce `hI hE`. Use `(conclusion_iff hI hE).1 fun M t ht x hx => ?_` and prove the remaining obligations. Use `set lam0 : ι → DomWeight (0 + 1) := fun _ => ⟨0, antitone_const⟩ with hl`. Establish `hn : ∀ τ, (lam0 τ).natW = (lam τ).natW` using `fun τ => by`. Use function extensionality and compare the values at `i`.
+
+Take `rfl : i = Fin.last 0` from `Subsingleton.elim (α := Fin 1) _ _`. Simplify using `[DomWeight.natW, detShift_succ]`. Establish `hV : VV K lam0 = VV K lam` using `by simp only [VV, nablaSq, hn]`. Establish `hD : delStd K lam0 = delStd K lam` using `by simp only [delStd, delSq, hn]`. Establish `hP : brStdP (K` using `K) rfl lam0 sg = brStdP rfl lam sg := by`.
+
+Establish `e1 : brConst rfl K lam0 sg = brConst rfl K lam sg` using `by simp [brConst, cBr, kapBr, xiBr, extremal, hn]`. Establish `e2 : bExp rfl lam0 sg = bExp rfl lam sg` using `by funext τ s; exact s.elim0`. Rewrite using `[brStdP, brStdP, e1, e2]`. Establish `h1` using `h (fun τ i => i.elim0) (fun τ => by simp [SameShift, DomWeight.detShift, hl]) M t ht ⟨(∏ τ, t τ ^ (-nBr (lam τ) (sg τ))) • (x : Pol K ι (0 + 1)), by rw [hV]; exact Submodule.smul_mem _ _ x.2⟩ (by`. Simplify using `only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars, Submodule.subtype_apply] at hx ⊢`.
+
+Introduce `w B hB`. Use `choose B' hB' using fun τ => exists_block (1 : GL (Fin 0) K) (ht τ)`. Establish `hb : ∀ τ, IsBasisAt w (sumLat rfl (M τ) (t τ)) (B' τ)` using `fun τ => GlobalTheory.BranchBasis.isBasisAt_block K _ 0 rfl w (M τ) (t τ) 1 _ (hB' τ) (Subsingleton.elim _ _)`. Rewrite using `[GlobalTheory.TestLat.nabIndep_and_delIndep.2 K ι _ lam0 w _ B B' hB hb, hD]`. Use `hx w B' hb using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [actP, LinearMap.smul_apply, map_smul, smul_smul]`. Use `congr 1`. Simplify using `only [detTwK, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hd : (B' τ : Matrix (Fin (0 + 1)) (Fin (0 + 1)) K) 0 0 = t τ` using `(hB' τ).2.2`.
+
+Simplify using `[detPow, detShift_succ, hl, nBr, Matrix.GeneralLinearGroup.val_det_apply, hd])`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [brAt, brStd, hP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_smul]`. Simplify using `[nBr, hl]`.
+-/
 theorem at_of_rank_one (lam : ι → DomWeight (0 + 1)) (sg : ι → DomWeight 0)
     (h : BrIntegral K rfl (fun _ : ι => (⟨0, antitone_const⟩ : DomWeight (0 + 1))) sg) : PTildeAt K lam sg := by
   intro hI hE
@@ -750,6 +1021,11 @@ theorem at_of_rank_one (lam : ι → DomWeight (0 + 1)) (sg : ι → DomWeight 0
   simp only [brAt, brStd, hP, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_smul]
   simp [nBr, hl]
 
+/- English proof (translation)
+Use `⟨⟨fun h K _ _ ι _ n lam sg => ?_, fun h K _ _ ι _ N n hN lam sg => ?_⟩, fun K _ _ ι _ n lam sg => ⟨brIntegral_of_at lam sg, brIntegral_iff_at lam sg, fun _ => interlace_iff _ _, fun _ => sameShift_iff _ _, extLat_eq, pTilde_eq⟩⟩` and prove the remaining obligations. Break down `n with _ | n` into its components or cases. Conclude with `at_of_rank_one lam sg (h K ι _ _ rfl _ sg)`. Conclude with `(brIntegral_iff_at lam sg (by omega)).1 (h K ι _ _ rfl lam sg)`. Substitute `hN` using the available equality.
+
+Conclude with `brIntegral_of_at lam sg (h K ι n lam sg)`.
+-/
 theorem compare :
     ((∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (N n : ℕ) (hN : N = n + 1)
       (lam : ι → DomWeight N) (sg : ι → DomWeight n), BrIntegral K hN lam sg) ↔ InterlacingNumerators.PTildeIntegral) ∧

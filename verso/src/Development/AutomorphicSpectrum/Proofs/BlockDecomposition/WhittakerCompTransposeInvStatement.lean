@@ -9,6 +9,9 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_comp_transposeInv : ∀ φ : G3 → ℂ, IsLeftInvariant φ → Continuous φ → ∀ g : G3,
   FourierWhittaker.whittaker (fun g : G3 => φ (ti g)) g = tr (FourierWhittaker.whittaker φ) g := by
   first | exact @GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti | exact GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti | (intros; apply GlobalTheory.CompanionTheory.UnfoldingAlt.TiWhit.whittaker_ti <;> assumption)

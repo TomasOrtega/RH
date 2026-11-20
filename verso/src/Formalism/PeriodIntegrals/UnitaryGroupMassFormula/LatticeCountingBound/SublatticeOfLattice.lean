@@ -7,6 +7,11 @@ open NumberField Matrix
 
 namespace PI.UnitaryGroupMassFormula.LCG
 
+/- English proof (translation)
+Introduce `I x u u' hu hu'`. Simplify using `only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu hu' ⊢`. Establish `h : (fun i => Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) ((u - u') i)) = (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i)) - (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u' i)) := by`. Use function extensionality and compare the values at `i`. Simplify using `[map_sub]`.
+
+Rewrite using `[h, Matrix.mulVec_sub]`. Conclude with `Submodule.sub_mem _ hu hu'`.
+-/
 theorem sublattice_of_lattice : LatSub := by
   intro I x u u' hu hu'
   simp only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu hu' ⊢
@@ -18,6 +23,15 @@ theorem sublattice_of_lattice : LatSub := by
   rw [h, Matrix.mulVec_sub]
   exact Submodule.sub_mem _ hu hu'
 
+/- English proof (translation)
+Introduce `I x y γ g hγ hK u hu`. Simplify using `only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu ⊢`. Establish `h1 : (fun i => Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (((g : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ u) i)) = I.fmat γ.2 *ᵥ (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i)) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[hγ]`.
+
+Conclude with `RingHom.map_mulVec _ _ _ i`. Establish `hK' : ∀ v, v ∈ I.Lf ↔ I.fmat (x⁻¹ * γ * y).2 *ᵥ v ∈ I.Lf` using `hK`. Establish `hk` using `(hK' (I.fmat y.2⁻¹ *ᵥ fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i))).1 hu`. Rewrite using `[h1]`. Use `hk using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Simplify using `only [Formalism.MainNotions.S.AutInst.fmat, Prod.snd_mul, Prod.snd_inv]`. Use `push_cast`. Simplify using `only [Units.val_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+
+Rewrite using `[Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)), Matrix.mul_one]`.
+-/
 theorem lattice_map_image : LatMap := by
   intro I x y γ g hγ hK u hu
   simp only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu ⊢
@@ -39,6 +53,13 @@ theorem lattice_map_image : LatMap := by
   rw [Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)),
     Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `I x h`. Assume the negation of the conclusion as `hn`. Establish `hn0 : I.n = 0` using `by omega`. Establish `hE : IsEmpty (PI.LatCountG.Sub I x)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `s`. Establish `hj` using `s.j_pos`. Apply `s.b_ind.ne_zero ⟨0, by omega⟩` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `absurd i.2 (by omega)`.
+
+Establish `h0 : PI.LatCountG.tau1 I x = 0`. Unfold `PI.LatCountG.tau1`. Rewrite using `[Real.iInf_of_isEmpty]`. Conclude with `min_eq_right (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_positive : NPos := by
   intro I x h
   by_contra hn
@@ -56,6 +77,11 @@ theorem norm_positive : NPos := by
     exact min_eq_right (by norm_num)
   linarith
 
+/- English proof (translation)
+Introduce `I`. Use `haveI : NumberField.IsTotallyReal I.F := I.cm.totReal`. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Establish `h2` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := I.F)`. Establish `h3` using `NumberField.IsTotallyReal.nrComplexPlaces_eq_zero (K := I.F)`.
+
+Use `show _ = Module.finrank ℚ I.F`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_places_bound : CardPl := by
   intro I
   haveI : NumberField.IsTotallyReal I.F := I.cm.totReal

@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.BumpPts
 
+/- English proof (translation)
+Establish `h` using `HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ (fun _ _ => trivial)`. Use `letI := (p.appLE ⊤ W (fun _ _ => trivial)).hom.toAlgebra`. Use `haveI : Algebra.FiniteType Γ(Sp k, ⊤) Γ(X, W) := h`. Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := Γ(Sp k, ⊤)) (A := Γ(X, W))`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+
+Establish `e : Set.range (constFn p W) = Set.range (algebraMap Γ(Sp k, ⊤) Γ(X, W))`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom b, ?_⟩` and prove the remaining obligations. Establish `hb : (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom b) = b`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`. Use `show (p.appLE ⊤ W (fun _ _ => trivial)).hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom b)) = _`.
+
+Rewrite using `[hb]`. Both sides reduce to the same expression. Rewrite using `[e, ← Algebra.adjoin_eq_ring_closure, hs]`. Both sides reduce to the same expression.
+-/
 theorem exists_finset_closure_eq_top {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k)
     [LocallyOfFiniteType p] {W : X.Opens} (hW : IsAffineOpen W) :
     ∃ s : Finset Γ(X, W), Subring.closure (Set.range (constFn p W) ∪ ↑s) = ⊤ := by
@@ -38,6 +47,41 @@ theorem exists_finset_closure_eq_top {k : Type} [CommRing k] {X : Scheme.{0}} (p
   rw [e, ← Algebra.adjoin_eq_ring_closure, hs]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsProper p := CommonModel.isProper_of_isProjOver hp`. Use `haveI : T2Space (CxPts p σ) := t2Space_cxPts_of_isProjOver σ hp`. Take `⟨W, hW, hyW, -⟩` from `exists_isAffineOpen_le y.1 (le_preimage_top y.1)`. Establish `hyW' : y ∈ ptsIn p σ W` using `hyW`. Take `⟨s, hs⟩` from `exists_finset_closure_eq_top p hW`.
+
+Set `φ : CxPts p σ → (s → ℂ)` to `fun z a => ev p σ W a.1 z`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS, hSO⟩ : ∃ S ∈ 𝓝 (φ y), ∀ z ∈ ptsIn p σ W, φ z ∈ S → z ∈ O := by`. Set `l` to `Filter.comap φ (𝓝 (φ y)) ⊓ 𝓟 (ptsIn p σ W)`. Establish `hφl : Tendsto φ l (𝓝 (φ y))` using `tendsto_comap.mono_left inf_le_left`. Establish `ht : Tendsto (fun z => z) l (𝓝 y)`.
+
+Use `(PtsOver.tendsto_iff_of_generators hW hyW hs).2 ⟨?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `mem_inf_of_right (mem_principal_self _)`. Conclude with `((continuous_apply (⟨f, hf⟩ : s)).tendsto _).comp hφl`. Establish `h : O ∈ l` using `ht (hO.mem_nhds hy)`. Rewrite `h` using `[mem_inf_principal]`.
+
+Take `⟨S, hS, hSO⟩` from `mem_comap.1 h`. Conclude with `⟨S, hS, fun z hz hzS => hSO hzS hz⟩`. Take `⟨F, hFS, hFc, hFd, hFr, hF1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hS`. Set `K : Set (CxPts p σ)` to `{z | z ∈ ptsIn p σ W ∧ φ z ∈ tsupport F}`. Establish `hKc : IsCompact K`.
+
+Use `isCompact_iff_ultrafilter_le_nhds.2 fun u hu => ?_` and prove the remaining obligations. Establish `hKu : K ∈ u` using `le_principal_iff.1 hu`. Establish `hWu : ∀ᶠ z in (u : Filter (CxPts p σ)), z ∈ ptsIn p σ W` using `mem_of_superset hKu fun z hz => hz.1`. Take `⟨v, -, hv⟩` from `hFc.ultrafilter_le_nhds (u.map φ) (le_principal_iff.2 (Ultrafilter.mem_map.2 (mem_of_superset hKu fun z (hz : z ∈ K) => hz.2)))`. Establish `hv' : Tendsto φ u (𝓝 v)` using `hv`.
+
+Establish `hcst : ∀ a : k, ∀ z ∈ ptsIn p σ W, ev p σ W (constFn p W a) z = ev p σ W (constFn p W a) y` using `fun a z hz => by show valR z.1 W _ = valR y.1 W _`. Rewrite using `[valR_constFn p z.1 W hz, valR_constFn p y.1 W hyW, z.2, y.2]`. Establish `hlim : ∀ f : Γ(X, W), ∃ c, Tendsto (fun z => ev p σ W f z) u (𝓝 c)`. Introduce `f`. Establish `hf : f ∈ Subring.closure (Set.range (constFn p W) ∪ ↑s)` using `hs ▸ Subring.mem_top f`.
+
+Proceed by induction on `hf using Subring.closure_induction with`. Consider the case `mem f hf`. Break down `hf with ⟨a, rfl⟩ | hf` into its components or cases. Conclude with `⟨_, tendsto_const_nhds.congr' (hWu.mono fun z hz => (hcst a z hz).symm)⟩`. Conclude with `⟨v ⟨f, hf⟩, ((continuous_apply (⟨f, hf⟩ : s)).tendsto _).comp hv'⟩`.
+
+Consider the case `zero`. Conclude with `⟨0, tendsto_const_nhds.congr' (hWu.mono fun z hz => ((ev_eq hz 0).trans (map_zero _)).symm)⟩`. Consider the case `one`. Conclude with `⟨1, tendsto_const_nhds.congr' (hWu.mono fun z hz => ((ev_eq hz 1).trans (map_one _)).symm)⟩`. Consider the case `add f g _ _ hf hg`.
+
+Take `⟨c, hc⟩` from `hf`. Take `⟨d, hd⟩` from `hg`. Conclude with `⟨c + d, (hc.add hd).congr fun z => (ev_add f g z).symm⟩`. Consider the case `neg f _ hf`. Take `⟨c, hc⟩` from `hf`.
+
+Conclude with `⟨-c, hc.neg.congr' (hWu.mono fun z hz => by show -ev p σ W f z = ev p σ W (-f) z`. Rewrite using `[ev_eq hz, ev_eq hz, map_neg])⟩`. Consider the case `mul f g _ _ hf hg`. Take `⟨c, hc⟩` from `hf`. Take `⟨d, hd⟩` from `hg`.
+
+Conclude with `⟨c * d, (hc.mul hd).congr fun z => (ev_mul f g z).symm⟩`. Use `choose c hc using hlim`. Set `ψ : Γ(X, W) →+* ℂ` to `{ toFun := c map_one' := tendsto_nhds_unique (hc 1) (tendsto_const_nhds.congr' (hWu.mono fun z hz => ((ev_eq hz 1).trans (map_one _)).symm)) map_mul' := fun f g => tendsto_nhds_unique (hc (f * g)) (((hc f).mul (hc g)).congr fun z => (ev_mul f g z).symm) map_zero' := tendsto_nhds_ …`. Establish `hψ : ∀ a, ψ (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p W a) = σ a` using `fun a => tendsto_nhds_unique (hc _) (tendsto_const_nhds.congr' (hWu.mono fun z hz => (ev_algX hz a).symm))`. Set `z' : CxPts p σ` to `ofHom hW ψ hψ`.
+
+Establish `hz'W : z' ∈ ptsIn p σ W` using `ofHom_mem hW ψ hψ`. Establish `hz'ev : ∀ f, ev p σ W f z' = c f` using `fun f => ev_ofHom hW ψ hψ f`. Establish `ht : Tendsto (fun z => z) (u : Filter (CxPts p σ)) (𝓝 z')`. Use `(PtsOver.tendsto_iff_of_generators hW hz'W hs).2 ⟨hWu, fun f _ => ?_⟩` and prove the remaining obligations. Use `hc f` as an intermediate fact.
+
+Rewrite `this` using `[← hz'ev f]`. Conclude with `this`. Establish `hφz' : φ z' = v` using `funext fun a => (hz'ev a.1).trans (tendsto_nhds_unique (hc a.1) (((continuous_apply a).tendsto _).comp hv'))`. Use `⟨z', ⟨hz'W, ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[hφz']`.
+
+Conclude with `hFc.isClosed.mem_of_tendsto hv' (mem_of_superset hKu fun z hz => hz.2)`. Establish `hKcl : IsClosed K` using `hKc.isClosed`. Set `χ : CxPts p σ → ℝ` to `(ptsIn p σ W).indicator fun z => F (φ z)`. Establish `hsupp : Function.support χ ⊆ K` using `fun z hz => by`. Rewrite `hz` using `[Function.mem_support, Set.indicator_apply_ne_zero]`.
+
+Conclude with `⟨hz.1, subset_tsupport _ hz.2⟩`. Use `⟨χ, fun z => ?_, fun z => Set.indicator_nonneg (fun w _ => (hFr ⟨_, rfl⟩).1) z, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ ptsIn p σ W`. Use `⟨W, s, inferInstance, fun a => a.1, F, Set.univ, hz, isOpen_univ, trivial, hFd.contDiffOn, ?_⟩ filter_upwards [(isOpen_ptsIn W).mem_nhds hz] with w hw` and prove the remaining obligations. Conclude with `Set.indicator_of_mem hw _`.
+
+Establish `hzK : z ∉ K` using `fun h => hz h.1`. Use `(cInfAt_const 0 z).congr ?_` and prove the remaining obligations. Use `filter_upwards [hKcl.isOpen_compl.mem_nhds hzK] with w hw`. Conclude with `Function.notMem_support.1 fun h => hw (hsupp h)`. Use `show 0 < (ptsIn p σ W).indicator (fun z => F (φ z)) y`.
+
+Rewrite using `[Set.indicator_of_mem hyW', hF1]`. Conclude with `one_pos`. Conclude with `(closure_minimal hsupp hKcl).trans fun z hz => hSO z hz.1 (hFS hz.2)`.
+-/
 theorem exists_cInf_bump (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (hp : IsProjOver p) (σ : k →+* ℂ) (y : CxPts p σ) (O : Set (CxPts p σ)) (hO : IsOpen O)
     (hy : y ∈ O) : ∃ χ : CxPts p σ → ℝ, (∀ z, CInfAt χ z) ∧ (∀ z, 0 ≤ χ z) ∧ 0 < χ y ∧

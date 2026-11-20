@@ -16,5 +16,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixDens.lintegral_part_chart | exact GlobalTheory.MixDens.lintegral_part_chart | (intros; apply GlobalTheory.MixDens.lintegral_part_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lintegral_density_chart : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) [SecondCountableTopology (CxPts p σ)] (ρ : AlgChart p σ D → CxPts p σ → ℝ), IsDens ρ → ∀ (c : AlgChart p σ D) (T : Set (CxPts p σ)), MeasurableSet T → T ⊆ c.e.source → ∀ h : CxPts p σ → ℝ≥0∞, Measurable h → ∫⁻ y in T, h y ∂part ρ = ∫⁻ v in c.e '' T, h (c.e.symm v) * ENNReal.ofReal (ρ c (c.e.symm v)) := by
   first | exact @GlobalTheory.MixDens.lintegral_part_chart | exact GlobalTheory.MixDens.lintegral_part_chart | (intros; apply GlobalTheory.MixDens.lintegral_part_chart <;> assumption)

@@ -8,6 +8,13 @@ open Ad3 Ad3.R
 
 namespace GlobalTheory.CompanionTheory.RSZeta
 
+/- English proof (translation)
+Use `⟨((measurable_w hH c s).mul mth).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) fin` and prove the remaining obligations. Establish `h1 : ‖cdet c g‖ₑ = 1`. Rewrite using `[← ofReal_norm_eq_enorm, norm_cdet]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : ‖((Dt g : ℝ) : ℂ) ^ s‖ₑ = ENNReal.ofReal (Dt g ^ s.re)`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_cpow_eq_rpow_re_of_pos (Dt_pos g)]`. Establish `h3 : ‖th Φ g‖ₑ ≤ ∑' ξ : NZ, ‖Φ (row ξ.1 g)‖ₑ` using `enorm_tsum_le_tsum_enorm`. Simplify using `only [enorm_mul, h1, h2, mul_one]`.
+
+Use `gcongr`.
+-/
 theorem integrableOn_Zg_integrand {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ}
     {Φ : (Fin 2 → 𝔸[ℚ]) → ℂ} (c : HeckeCharacter ℚ) (hH : Aut H) (s : ℂ)
     (mth : Measurable (th Φ))
@@ -24,6 +31,11 @@ theorem integrableOn_Zg_integrand {μ : Measure G2} {𝓕 : Set G2} {H : G2 → 
   simp only [enorm_mul, h1, h2, mul_one]
   gcongr
 
+/- English proof (translation)
+Establish `hD` using `Dt_ne g`. Establish `hp : ((Dt g : ℝ) : ℂ) ^ (s - 1) = ((Dt g : ℝ) : ℂ) ^ s * (((Dt g)⁻¹ : ℝ) : ℂ)`. Rewrite using `[Complex.cpow_sub _ _ hD, Complex.cpow_one, Complex.ofReal_inv, div_eq_mul_inv]`. Establish `ht : th Φ g = (((Dt g)⁻¹ : ℝ) : ℂ) * (th Φ' (inv2 g) + Φ' 0) - Φ 0`. Rewrite using `[← hth]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp, ht]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrand_theta_eq {H : G2 → ℂ} {Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ} (c : HeckeCharacter ℚ) (s : ℂ) (g : G2)
     (hth : th Φ g + Φ 0 = (((Dt g)⁻¹ : ℝ) : ℂ) * (th Φ' (inv2 g) + Φ' 0)) :
     H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s * th Φ g =
@@ -37,6 +49,21 @@ theorem integrand_theta_eq {H : G2 → ℂ} {Φ Φ' : (Fin 2 → 𝔸[ℚ]) → 
     rw [← hth]; ring
   rw [hp, ht]; ring
 
+/- English proof (translation)
+Establish `hB : MeasurableSet {g | Dt g < 1}` using `measurableSet_lt measurable_Dt measurable_const`. Establish `hC : MeasurableSet {g | Dt g ∈ Set.Ioi (1 : ℝ)}` using `measurable_Dt measurableSet_Ioi`. Use `set G : G2 → ℂ := fun g => H g * cdet c⁻¹ g * ((Dt g : ℝ) : ℂ) ^ (1 - s) * th Φ' g with hG`. Establish `mG : Measurable G` using `(measurable_w hH c⁻¹ (1 - s)).mul mth`. Establish `lG : LInv G` using `fun γ g => by`.
+
+Use `linv_w hH c⁻¹ (1 - s) γ g` as an intermediate fact. Simplify using `only [hG, lth γ g]`. Simplify using `only at this`. Rewrite using `[this]`. Establish `key` using `hT _ (mG.indicator hC) (linv_ind lG (Set.Ioi (1 : ℝ)))`.
+
+Establish `hpt : ∀ g, Set.indicator {g | Dt g ∈ Set.Ioi (1 : ℝ)} G (inv2 g) = Set.indicator {g | Dt g < 1} (fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ (s - 1) * th Φ' (inv2 g)) g`. Introduce `g`. Establish `hiff : inv2 g ∈ {g | Dt g ∈ Set.Ioi (1 : ℝ)} ↔ g ∈ {g | Dt g < 1}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Ioi, module_det_inverse_twist]`. Conclude with `one_lt_inv₀ (Dt_pos g)`.
+
+Distinguish the cases in `h : g ∈ {g | Dt g < 1}`. Rewrite using `[Set.indicator_of_mem (hiff.2 h), Set.indicator_of_mem h]`. Simplify using `only [hG, character_det_inverse_twist, inv_inv, module_cpow_det_inverse_twist, Aut.inv2 hH, neg_sub]`. Rewrite using `[Set.indicator_of_notMem (fun h' => h (hiff.1 h')), Set.indicator_of_notMem h]`. Simplify using `only [hpt] at key`.
+
+Rewrite `key` using `[setIntegral_indicator hB, setIntegral_indicator hC]`. Rewrite using `[key]`. Use `setIntegral_congr_set ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ g ∂μ, Dt g ≠ 1`. Establish `: μ ({g | Dt g ≠ 1}ᶜ) = 0`.
+
+Use `hnull using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using the standard rewrite rules. Conclude with `this`. Use `Filter.eventuallyEq_set.2 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with g hg`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Ioi]`. Conclude with `and_congr_right fun _ => ⟨fun h => h.le, fun h => lt_of_le_of_ne h (Ne.symm hg)⟩`.
+-/
 theorem setIntegral_lower_det_inverse_twist {μ : Measure G2} {𝓕 : Set G2} {H : G2 → ℂ}
     {Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ} (c : HeckeCharacter ℚ) (hH : Aut H) (s : ℂ)
     (hm : MeasurableSet 𝓕) (hnull : μ {g | Dt g = 1} = 0)
@@ -78,6 +105,19 @@ theorem setIntegral_lower_det_inverse_twist {μ : Measure G2} {𝓕 : Set G2} {H
   simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Ioi]
   exact and_congr_right fun _ => ⟨fun h => h.le, fun h => lt_of_le_of_ne h (Ne.symm hg)⟩
 
+/- English proof (translation)
+Introduce `μ 𝓕 mK 𝓓 H Φ Φ' c h1 h3 h0 hH hΦ hΦ' hth hw s hs`. Take `⟨mth, -, fin⟩` from `h3 μ 𝓕 mK 𝓓 h0 H hH Φ hΦ s.re hs`. Take `⟨mth', lth', -⟩` from `h3 μ 𝓕 mK 𝓓 h0 H hH Φ' hΦ' 2 (by norm_num)`. Take `⟨hnull, -, hT⟩` from `h1 μ 𝓕 mK 𝓓 h0`. Establish `hWi` using `integrableOn_Zg_integrand c hH s mth fin`.
+
+Establish `hA : MeasurableSet {g | 1 ≤ Dt g}` using `measurableSet_le measurable_const measurable_Dt`. Establish `hinv` using `setIntegral_lower_det_inverse_twist (Φ' := Φ') c hH s h0.meas hnull (fun F mF lF => (hT inv2 (Or.inl rfl)).2 F mF lF) mth' lth'`. Establish `hw1` using `hw (s - 1) (by simp only [Complex.sub_re, Complex.one_re]; linarith)`. Establish `hw2` using `hw s (by linarith)`. Establish `hWB : IntegrableOn (fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s * th Φ g) (𝓕 ∩ {g | Dt g < 1}) μ` using `hWi.mono_set Set.inter_subset_left`.
+
+Establish `hpt` using `fun g => integrand_theta_eq (H := H) c s g (hth g)`. Establish `hVi : IntegrableOn (fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ (s - 1) * th Φ' (inv2 g)) (𝓕 ∩ {g | Dt g < 1}) μ`. Use `(hWB.sub (hw1.const_mul (Φ' 0))).add (hw2.const_mul (Φ 0))` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.sub_apply, hpt g]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : Zg μ 𝓕 H c Φ s = Zp μ 𝓕 H c Φ s + ∫ g in 𝓕 ∩ {g | Dt g < 1}, H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s * th Φ g ∂μ`. Establish `hd : 𝓕 \ {g | 1 ≤ Dt g} = 𝓕 ∩ {g | Dt g < 1}`. Use extensionality with `g`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hd]`. Conclude with `(integral_inter_add_diff hA hWi).symm`. Establish `hB : ∫ g in 𝓕 ∩ {g | Dt g < 1}, H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s * th Φ g ∂μ = Zp μ 𝓕 H c⁻¹ Φ' (1 - s) + Φ' 0 * Jl μ 𝓕 H c (s - 1) - Φ 0 * Jl μ 𝓕 H c s`. Establish `i1 : Integrable (fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ (s - 1) * th Φ' (inv2 g) + Φ' 0 * (H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ (s - 1))) (μ.restrict (𝓕 ∩ {g | Dt g < 1}))` using `hVi.add (hw1.const_mul _)`. Simplify using `only [hpt]`.
+
+Rewrite using `[integral_sub i1 (hw2.const_mul _), integral_add hVi (hw1.const_mul _), integral_const_mul, integral_const_mul, hinv, Jl, Jl]`. Rewrite using `[hsplit, hB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Zg_decomposition : ∀ (μ : Measure G2) (𝓕 : Set G2) (mK : Measure KA) (𝓓 : Set Jd) (H : G2 → ℂ) (Φ Φ' : (Fin 2 → 𝔸[ℚ]) → ℂ) (c : HeckeCharacter ℚ),
   Ad3.R.G1a → Ad3.R.G3 → Set0 μ 𝓕 mK 𝓓 → Aut H → Φ ∈ Adele2.schwartzBruhat2 ℚ → Φ' ∈ Adele2.schwartzBruhat2 ℚ →
   (∀ g, th Φ g + Φ 0 = (((Dt g)⁻¹ : ℝ) : ℂ) * (th Φ' (inv2 g) + Φ' 0)) →

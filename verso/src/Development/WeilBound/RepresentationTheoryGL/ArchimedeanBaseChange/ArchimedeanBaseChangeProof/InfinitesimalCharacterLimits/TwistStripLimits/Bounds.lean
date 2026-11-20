@@ -10,6 +10,11 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, Multiset.card_cons, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_map_add_const (m : Multiset ℂ) (w : ℂ) :
     (m.map (· + w)).sum = m.sum + (Multiset.card m : ℂ) * w := by
   induction m using Multiset.induction_on with
@@ -19,6 +24,11 @@ theorem sum_map_add_const (m : Multiset ℂ) (w : ℂ) :
     push_cast
     ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Multiset.sum_le_card_nsmul _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `hR y (Multiset.subset_of_le hle hy)`.
+
+Use `_ = Multiset.card M * R := by rw [Multiset.card_map, nsmul_eq_mul]`.
+-/
 theorem norm_sum_le_of_le {M m : Multiset ℂ} {R : ℝ} (hle : M ≤ m) (hR : ∀ x ∈ m, ‖x‖ ≤ R) :
     ‖M.sum‖ ≤ Multiset.card M * R := by
   calc ‖M.sum‖ ≤ (M.map (fun x => ‖x‖)).sum := norm_multiset_sum_le M
@@ -29,6 +39,21 @@ theorem norm_sum_le_of_le {M m : Multiset ℂ} {R : ℝ} (hle : M ≤ m) (hR : �
         exact hR y (Multiset.subset_of_le hle hy)
     _ = Multiset.card M * R := by rw [Multiset.card_map, nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hT : 0 < Fintype.card (E →+* ℂ)` using `Fintype.card_pos`. Establish `h1 : ∀ τ, ‖((m₁ τ).map (· + w)).sum‖ ≤ n * R` using `fun τ => by`. Establish `h` using `norm_sum_le_of_le (hle τ) (hR τ)`. Rewrite `h` using `[Multiset.card_map, hcard τ]`. Then use the resulting hypothesis. Establish `h2 : ∑ τ, ((m₁ τ).map (· + w)).sum = ∑ τ, (m₁ τ).sum + ((Fintype.card (E →+* ℂ) * n : ℕ) : ℂ) * w`.
+
+Simplify using `only [sum_map_add_const, hcard, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖∑ τ, ((m₁ τ).map (· + w)).sum‖ ≤ Fintype.card (E →+* ℂ) * (n * R)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hTn : (1 : ℝ) ≤ (Fintype.card (E →+* ℂ) * n : ℕ)`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hT.ne' hn.ne')` after adjusting the coercions. Establish `hw : ((Fintype.card (E →+* ℂ) * n : ℕ) : ℝ) * ‖w‖ ≤ ((Fintype.card (E →+* ℂ) * n : ℕ) : ℝ) * R + |C|`. Establish `e : ((Fintype.card (E →+* ℂ) * n : ℕ) : ℂ) * w = ∑ τ, ((m₁ τ).map (· + w)).sum - ∑ τ, (m₁ τ).sum`. Rewrite using `[h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `congrArg norm e`. Rewrite `e2` using `[norm_mul, Complex.norm_natCast]`. Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hwb : ‖w‖ ≤ R + |C|`. Establish `hA` using `abs_nonneg C`. Establish `hB : |C| ≤ ((Fintype.card (E →+* ℂ) * n : ℕ) : ℝ) * |C|` using `le_mul_of_one_le_left hA hTn`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Use `mul_lt_mul_of_pos_left hcon (lt_of_lt_of_le one_pos hTn)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `⟨hwb, fun τ x hx => ?_⟩` and prove the remaining obligations. Establish `hxw : x + w ∈ m τ` using `Multiset.subset_of_le (hle τ) (Multiset.mem_map_of_mem _ hx)`. Establish `hb` using `hR τ (x + w) hxw`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem side_bound {n : ℕ} (hn : 0 < n) (m m₁ : (E →+* ℂ) → Multiset ℂ) (w : ℂ) (R C : ℝ)
     (hcard : ∀ τ, Multiset.card (m₁ τ) = n) (hle : ∀ τ, (m₁ τ).map (· + w) ≤ m τ) (hR : ∀ τ, ∀ x ∈ m τ, ‖x‖ ≤ R)
     (hC : ‖∑ τ, (m₁ τ).sum‖ ≤ C) : ‖w‖ ≤ R + |C| ∧ ∀ τ, ∀ x ∈ m₁ τ, ‖x‖ ≤ 2 * R + |C| := by
@@ -71,6 +96,13 @@ theorem side_bound {n : ℕ} (hn : 0 < n) (m m₁ : (E →+* ℂ) → Multiset �
     _ ≤ R + (R + |C|) := add_le_add hb hwb
     _ = 2 * R + |C| := by ring
 
+/- English proof (translation)
+Establish `key : ∀ τ, ∃ m₁ m₂, HasInfCharGL V₁ τ m₁ ∧ HasInfCharGL V₂ τ m₂ ∧ (m₁.map (· + (z₁ - (s : ℂ) / 2)) ≤ (hR τ).choose) ∧ (m₂.map (· + (z₂ + (r : ℂ) / 2)) ≤ (hR τ).choose)`. Introduce `τ`. Take `⟨m₁, m₂, h₁, h₂, he⟩` from `infInd2_holds E r s V V₁ V₂ z₁ z₂ hV hV₁ hV₂ hemb τ _ (hR τ).choose_spec.1`. Use `⟨m₁, m₂, h₁, h₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+
+Conclude with `Multiset.le_add_right _ _`. Rewrite using `[he]`. Conclude with `Multiset.le_add_left _ _`. Use `choose m₁ m₂ h₁ h₂ hl₁ hl₂ using key`. Establish `hRb : ∀ τ, ∀ x ∈ (hR τ).choose, ‖x‖ ≤ R` using `fun τ => (hR τ).choose_spec.2`.
+
+Take `⟨a₁, b₁⟩` from `side_bound hr (fun τ => (hR τ).choose) m₁ (z₁ - (s : ℂ) / 2) R C₁ (fun τ => (h₁ τ).1) hl₁ hRb (hC₁ V₁ m₁ hV₁ h₁)`. Take `⟨a₂, b₂⟩` from `side_bound hs (fun τ => (hR τ).choose) m₂ (z₂ + (r : ℂ) / 2) R C₂ (fun τ => (h₂ τ).1) hl₂ hRb (hC₂ V₂ m₂ hV₂ h₂)`. Conclude with `⟨a₁, a₂, fun τ => ⟨m₁ τ, h₁ τ, b₁ τ⟩, fun τ => ⟨m₂ τ, h₂ τ, b₂ τ⟩⟩`.
+-/
 theorem block_bound {r s : ℕ} (hr : 0 < r) (hs : 0 < s) {V : Submodule ℂ (Sm E (r + s))} {V₁ : Submodule ℂ (Sm E r)}
     {V₂ : Submodule ℂ (Sm E s)} {z₁ z₂ : ℂ} {R C₁ C₂ : ℝ} (hV : IsDiscrete V) (hV₁ : IsDiscrete V₁)
     (hV₂ : IsDiscrete V₂) (hemb : Emb V (MemInd2 (tw V₁ z₁) (tw V₂ z₂))) (hR : InfBdd R V)

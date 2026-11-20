@@ -19,6 +19,9 @@ namespace GlobalTheory.RowIndex
 
 variable {I : AutInst}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => show star (star a) ⊗ₜ b = _`. Rewrite using `[star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sig_sig (z : I.E ⊗[I.F] Af I.F) : sigR I.cm.sig (Af I.F) (sigR I.cm.sig (Af I.F) z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -27,6 +30,11 @@ theorem sig_sig (z : I.E ⊗[I.F] Af I.F) : sigR I.cm.sig (Af I.F) (sigR I.cm.si
     rw [star_star]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `hAf hform`. Simplify using `only [map_sum, map_mul, sig_sig]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h : star (I.J j i) = I.J i j` using `congrFun (congrFun I.J_herm i) j`.
+
+Establish `h2 : sigR I.cm.sig (Af I.F) (I.J.map (inclE (F` using `I.F) (Af I.F)) j i) = I.J.map (inclE (F := I.F) (Af I.F)) i j := by`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← h]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sig_hAf (x y : Fin I.n → I.E ⊗[I.F] Af I.F) : sigR I.cm.sig (Af I.F) (hAf I x y) = hAf I y x := by
   unfold hAf hform
   simp only [map_sum, map_mul, sig_sig]
@@ -44,22 +52,40 @@ def sigI (I : AutInst) : IntAf I.F I.E →+* IntAf I.F I.E :=
   ((sigR I.cm.sig (Af I.F)).comp (IntAf I.F I.E).subtype).codRestrict _ fun z =>
     (intAf_approx_inter_unit_conj I 1 le_rfl).2.2.2 z.1 z.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sigI (z : IntAf I.F I.E) : (sigI I z : I.E ⊗[I.F] Af I.F) = sigR I.cm.sig (Af I.F) z := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (sig_sig _)`.
+-/
 theorem sigI_sigI (z : IntAf I.F I.E) : sigI I (sigI I z) = z := Subtype.ext (sig_sig _)
 
 def hI (x y : I.Lf) : IntAf I.F I.E :=
   ⟨hAf I x y, (GlobalTheory.AdelicLattice.adelicLattice_selfDual I y).1 y.2 x x.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_hI (x y : I.Lf) : (hI x y : I.E ⊗[I.F] Af I.F) = hAf I x y := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (sig_hAf _ _)`.
+-/
 theorem sigI_hI (x y : I.Lf) : sigI I (hI x y) = hI y x := Subtype.ext (sig_hAf _ _)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show hAf I x (y.1 + z.1) = hAf I x y + hAf I x z`. Simplify using `only [hAf, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hI_add (x y z : I.Lf) : hI x (y + z) = hI x y + hI x z := by
   apply Subtype.ext
   show hAf I x (y.1 + z.1) = hAf I x y + hAf I x z
   simp only [hAf, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show hAf I x ((a : I.E ⊗[I.F] Af I.F) • y.1) = a * hAf I x y`. Unfold `hAf hform`. Simplify using `only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _`.
+-/
 theorem hI_smul (a : IntAf I.F I.E) (x y : I.Lf) : hI x (a • y) = a * hI x y := by
   apply Subtype.ext
   show hAf I x ((a : I.E ⊗[I.F] Af I.F) • y.1) = a * hAf I x y
@@ -67,6 +93,15 @@ theorem hI_smul (a : IntAf I.F I.E) (x y : I.Lf) : hI x (a • y) = a * hI x y :
   simp only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _
 
+/- English proof (translation)
+Use `set S : Submodule R M := RingHom.ker r • (⊤ : Submodule R M) with hS`. Establish `hle : S ≤ LinearMap.ker c` using `fun y h => by`. Use `Submodule.smul_induction_on h (fun a ha x _ => ?_) (fun x y hx hy => add_mem hx hy)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smulₛₗ, RingHom.mem_ker.1 ha, zero_smul]`. Use `⟨fun h => ?_, fun h => hle h⟩` and prove the remaining obligations.
+
+Use `haveI : NeZero p := ⟨hp⟩`. Use `haveI : Finite (M ⧸ S) := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hp)`. Establish `hb : Function.Bijective (S.liftQ c hle)`. Rewrite using `[Nat.bijective_iff_surjective_and_card]`. Use `⟨fun t => ?_, by rw [hc, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `hs t`. Conclude with `⟨S.mkQ y, rfl⟩`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Conclude with `h`.
+-/
 theorem ker_of_card {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {p N : ℕ} (hp : p ≠ 0)
     (r : R →+* ZMod p) (c : M →ₛₗ[r] (Fin N → ZMod p)) (hs : Function.Surjective c)
     (hc : Nat.card (M ⧸ (RingHom.ker r • (⊤ : Submodule R M))) = p ^ N) (y : M) :
@@ -88,6 +123,13 @@ theorem ker_of_card {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {p N
   rw [map_zero]
   exact h
 
+/- English proof (translation)
+Set `c : I.Lf →ₛₗ[r] (Fin N → ZMod p)` to `{ toFun := fun y i => r (hI (b' i) y) map_add' := fun x y => funext fun i => by rw [hI_add, map_add]; rfl map_smul' := fun a y => funext fun i => by rw [hI_smul, map_mul]; rfl }`. Establish `hs : Function.Surjective c` using `fun t => by choose s hs using ZMod.ringHom_surjective r`. Use `⟨∑ j, s (t j) • b j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use function extensionality and compare the values at `i`.
+
+Establish `: ∀ j, c (b j) i = if i = j then 1 else 0` using `fun j => hb i j`. Simplify using `[map_smulₛₗ, hs, this]`. Establish `hk` using `ker_eq_extId hp.ne_zero r hr`. Establish `hc` using `GlobalTheory.AdelicLattice.card_quot_extId I p w hp hw`. Rewrite `hc` using `[← hk]`.
+
+Use `replace hc := hc.trans (congrArg (p ^ ·) hn)`. Use `⟨⟨r, fun a _ => hr a, c, hs, fun y => ?_⟩, rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[ker_of_card hp.ne_zero r c hs hc, hk]`. Conclude with `Submodule.mem_smul_top_iff _ _ y`.
+-/
 theorem exists_frame_of_dual {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (hn : I.n = N) (hp : p.Prime)
     (hw : Ideal.absNorm w.asIdeal = p) (r : IntAf I.F I.E →+* ZMod p)
     (hr : ∀ a, r (psi I.F I.E a) = 0 ↔ a ∈ w.asIdeal) (b b' : Fin N → I.Lf)
@@ -112,6 +154,9 @@ theorem exists_frame_of_dual {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (hn 
   rw [ker_of_card hp.ne_zero r c hs hc, hk]
   exact Submodule.mem_smul_top_iff _ _ y
 
+/- English proof (translation)
+Set `st : 𝓞 I.E →+* 𝓞 I.E` to `RingOfIntegers.mapRingHom (starRingEnd I.E)`. Establish `hst : ∀ a : 𝓞 I.E, (st a : I.E) = star (a : I.E)` using `fun a => rfl`. Establish `e : sigI I (psi I.F I.E a) = psi I.F I.E (st a)` using `rfl`. Rewrite using `[RingHom.comp_apply, e, hr]`. Conclude with `hc (st a) a (by rw [hst, star_star])`.
+-/
 theorem conj_reduction {p : ℕ} {w w' : HeightOneSpectrum (𝓞 I.E)} (hc : IsConj I w w')
     (r : IntAf I.F I.E →+* ZMod p) (hr : ∀ a, r (psi I.F I.E a) = 0 ↔ a ∈ w.asIdeal) (a : 𝓞 I.E) :
     (r.comp (sigI I)) (psi I.F I.E a) = 0 ↔ a ∈ w'.asIdeal := by
@@ -121,6 +166,9 @@ theorem conj_reduction {p : ℕ} {w w' : HeightOneSpectrum (𝓞 I.E)} (hc : IsC
   rw [RingHom.comp_apply, e, hr]
   exact hc (st a) a (by rw [hst, star_star])
 
+/- English proof (translation)
+Use `haveI : RingHomSurjective fr.r := ⟨ZMod.ringHom_surjective _⟩`. Rewrite using `[← Submodule.map_span, Submodule.mem_map]`. Use `exists_congr fun s => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← fr.c_eq_zero_iff, map_sub, sub_eq_zero, eq_comm]`.
+-/
 theorem mem_span_iff {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I N p w) (S : Set I.Lf) (y : I.Lf) :
     (∃ s ∈ Submodule.span (IntAf I.F I.E) S, y - s ∈ extId I w.asIdeal • (⊤ : Submodule (IntAf I.F I.E) I.Lf)) ↔
       fr.c y ∈ Submodule.span (ZMod p) (fr.c '' S) := by
@@ -129,6 +177,11 @@ theorem mem_span_iff {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFram
   refine exists_congr fun s => and_congr_right fun _ => ?_
   rw [← fr.c_eq_zero_iff, map_sub, sub_eq_zero, eq_comm]
 
+/- English proof (translation)
+Use `⟨∑ v ∈ U, ε v • s v, sum_mem fun v hv => T.smul_mem _ (hs v hv), fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.add_sum_erase _ _ hu]`. Establish `e : y - (ε u • s u + ∑ v ∈ U.erase u, ε v • s v) = (y - s u) + (1 - ε u) • s u - ∑ v ∈ U.erase u, ε v • s v`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `sub_mem (add_mem (hs' u hu) (Submodule.smul_mem_smul (h2 u) Submodule.mem_top)) (sum_mem fun v hv => Submodule.smul_mem_smul (h3 v u (Finset.ne_of_mem_erase hv)) Submodule.mem_top)`.
+-/
 theorem glue_mod {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] (U : Finset ι) (𝔞 : ι → Ideal R)
     (ε : ι → R) (h2 : ∀ u, 1 - ε u ∈ 𝔞 u) (h3 : ∀ u v, u ≠ v → ε u ∈ 𝔞 v) (T : Submodule R M) (y : M) (s : ι → M)
     (hs : ∀ u ∈ U, s u ∈ T) (hs' : ∀ u ∈ U, y - s u ∈ 𝔞 u • (⊤ : Submodule R M)) :
@@ -142,6 +195,15 @@ theorem glue_mod {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] (U :
   exact sub_mem (add_mem (hs' u hu) (Submodule.smul_mem_smul (h2 u) Submodule.mem_top))
     (sum_mem fun v hv => Submodule.smul_mem_smul (h3 v u (Finset.ne_of_mem_erase hv)) Submodule.mem_top)
 
+/- English proof (translation)
+Establish `crt` using `GlobalTheory.RowLev.SqfCrt.mem_extId_smul_forall_iff I m hm hrad`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, z, hz, e⟩ u hu`. Use `⟨s, hs, (Submodule.mem_smul_top_iff _ _ _).2 ?_⟩` and prove the remaining obligations. Conclude with `(crt _ (y - s).2).2 ⟨z, hz, by rw [Submodule.coe_sub, e, add_sub_cancel_left]⟩ u hu`.
+
+Introduce `H`. Establish `h0 : Ideal.span {(m : 𝓞 I.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(by omega : m ≠ 0)` after adjusting the coercions. Establish `hfin : {u : HeightOneSpectrum (𝓞 I.E) | (m : 𝓞 I.E) ∈ u.asIdeal}.Finite` using `(Ideal.finite_factors h0).subset fun u hu => Ideal.dvd_span_singleton.2 hu`.
+
+Use `choose! s hs hs' using H`. Use `choose ε h1 h2 h3 h4 using GlobalTheory.RowLev.exists_prime_idempotent I`. Take `⟨t, hT, key⟩` from `glue_mod hfin.toFinset (fun u => extId I u.asIdeal) ε h2 (fun u v h => h3 u v h.symm) T y s (fun v hv => hs v (hfin.mem_toFinset.1 hv)) (fun v hv => hs' v (hfin.mem_toFinset.1 hv))`. Take `⟨z, hz, e⟩` from `(crt _ (y - t).2).1 fun u hu => (Submodule.mem_smul_top_iff _ _ _).1 (key u (hfin.mem_toFinset.2 hu))`. Establish `e' : y.1 - t.1 = (m : I.E ⊗[I.F] Af I.F) • z` using `e`.
+
+Conclude with `⟨t, hT, z, hz, sub_eq_iff_eq_add'.1 e'⟩`.
+-/
 theorem mem_mod_iff {m : ℕ} (hm : 1 ≤ m) (hrad : (Ideal.span {(m : 𝓞 I.E)}).IsRadical)
     (T : Submodule (IntAf I.F I.E) I.Lf) (y : I.Lf) :
     (∃ s ∈ T, ∃ z ∈ I.Lf, y.1 = s.1 + (m : I.E ⊗[I.F] Af I.F) • z) ↔
@@ -167,6 +229,9 @@ theorem mem_mod_iff {m : ℕ} (hm : 1 ≤ m) (hrad : (Ideal.span {(m : 𝓞 I.E)
     have e' : y.1 - t.1 = (m : I.E ⊗[I.F] Af I.F) • z := e
     exact ⟨t, hT, z, hz, sub_eq_iff_eq_add'.1 e'⟩
 
+/- English proof (translation)
+Use `hM (b j) (mulVec_mem hx (b j).2)` as an intermediate fact. Rewrite `this` using `[hb, Matrix.mulVec_single_one]`. Conclude with `(congrFun this i).symm`.
+-/
 theorem entry_eq {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I N p w) (b : Fin N → I.Lf)
     (hb : ∀ j, fr.c (b j) = Pi.single j 1) {x : I.Gf} (hx : x ∈ I.Kset) {M : Matrix (Fin N) (Fin N) (ZMod p)}
     (hM : fr.ActsAs x M) (i j : Fin N) : M i j = fr.c (latEnd hx (b j)) i := by
@@ -174,6 +239,9 @@ theorem entry_eq {N p : ℕ} {w : HeightOneSpectrum (𝓞 I.E)} (fr : PlFrame I 
   rw [hb, Matrix.mulVec_single_one] at this
   exact (congrFun this i).symm
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `GlobalTheory.Mem.RowsBundle.hAf_inv_mulVec x⁻¹ y.1 z.1` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this`.
+-/
 theorem hI_latEnd {x : I.Gf} (hx : x ∈ I.Kset) (y z : I.Lf) :
     hI (latEnd hx y) z = hI y (latEnd (x := x⁻¹) ((Ksub I).inv_mem hx) z) := by
   apply Subtype.ext
@@ -181,6 +249,13 @@ theorem hI_latEnd {x : I.Gf} (hx : x ∈ I.Kset) (y z : I.Lf) :
   rw [inv_inv] at this
   exact this
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i using WellFoundedGT.induction with`. Consider the case `ind i ih`. Introduce `hi`. Establish `key : ∀ j, j ≤ i → A i j = (1 : Matrix (Fin N) (Fin N) R) i j` using `fun j hj => by`.
+
+Rewrite using `[← h, Matrix.mul_apply, Finset.sum_eq_single i, (hB i hi).1, one_mul]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h1 | h1` into its components or cases. Rewrite using `[(hB i hi).2 l h1, zero_mul]`. Rewrite using `[(ih l h1 (hi.trans h1.le)).2 j (hj.trans_lt h1), mul_zero]`.
+
+Conclude with `fun h => absurd (Finset.mem_univ i) h`. Conclude with `⟨by rw [key i le_rfl, Matrix.one_apply_eq], fun j hj => by rw [key j hj.le, Matrix.one_apply_ne hj.ne']⟩`.
+-/
 theorem rows_unitri {R : Type} [CommRing R] {N : ℕ} (A B : Matrix (Fin N) (Fin N) R) (h : B * A = 1) (t : ℕ)
     (hB : ∀ i : Fin N, t ≤ i.1 → B i i = 1 ∧ ∀ j, j < i → B i j = 0) :
     ∀ i : Fin N, t ≤ i.1 → A i i = 1 ∧ ∀ j, j < i → A i j = 0 := by
@@ -197,6 +272,21 @@ theorem rows_unitri {R : Type} [CommRing R] {N : ℕ} (A B : Matrix (Fin N) (Fin
       · exact fun h => absurd (Finset.mem_univ i) h
     exact ⟨by rw [key i le_rfl, Matrix.one_apply_eq], fun j hj => by rw [key j hj.le, Matrix.one_apply_ne hj.ne']⟩
 
+/- English proof (translation)
+Take `⟨cj, hc, hconj, hmem⟩` from `GlobalTheory.Mem.RowsBundle.exists_conj_involution I`. Establish `hsig` using `(extId_mul_sup_natCast_conj I).2.2.2.2.2.2`. Establish `hsig' : ∀ u z, z ∈ extId I u.asIdeal → sigI I z ∈ extId I (cj u).asIdeal` using `fun u z hz => by`. Take `⟨z', h, e⟩` from `hsig u (cj u) ((hconj _ _).2 rfl) z hz`. Rewrite using `[show sigI I z = z' from Subtype.ext e.symm]` and apply the resulting hypothesis.
+
+Establish `hpr : ∀ k (v : HeightOneSpectrum (𝓞 I.E)), ((g k : ℕ) : 𝓞 I.E) ∈ v.asIdeal → (extId I v.asIdeal).IsPrime`. Introduce `k v hv`. Use `haveI : Fact (g k).Prime := ⟨hg k⟩`. Take `⟨r, hr⟩` from `exists_reduction (F := I.F) (g k) (hg k) v (hsp k v hv)`. Rewrite using `[← ker_eq_extId (hg k).ne_zero r hr]`.
+
+Conclude with `RingHom.ker_isPrime r`. Set `Pl : Fin 2 → Type` to `fun k => {v : HeightOneSpectrum (𝓞 I.E) // ((g k : ℕ) : 𝓞 I.E) ∈ v.asIdeal ∧ 1 - ε ∈ extId I v.asIdeal}`. Establish `hn : ∀ k (v v' : Pl k), v'.1 ≠ cj v.1` using `fun k v v' e => by`. Establish `a1` using `hsig' _ _ v.2.2`. Rewrite `a1` using `[← e, map_sub, map_one]`.
+
+Establish `a2` using `Ideal.add_mem _ v'.2.2 (Ideal.mul_mem_left _ ε a1)`. Rewrite `a2` using `[mul_sub, h2, mul_one, sub_zero, sub_add_cancel]`. Conclude with `(hpr k _ v'.2.1).ne_top ((Ideal.eq_top_iff_one _).2 a2)`. Establish `hcov : ∀ k (u : HeightOneSpectrum (𝓞 I.E)), ((g k : ℕ) : 𝓞 I.E) ∈ u.asIdeal → ∃ v : Pl k, u = v.1 ∨ u = cj v.1` using `fun k u hu => by`. Establish `h0 : ε * (1 - ε) ∈ extId I u.asIdeal` using `by rw [mul_sub, h1, mul_one, sub_self]; exact zero_mem _`.
+
+Break down `(hpr k u hu).mem_or_mem h0 with h | h` into its components or cases. Use `⟨⟨cj u, hmem _ _ hu, ?_⟩, Or.inr (hc u).symm⟩` and prove the remaining obligations. Establish `a1` using `hsig' _ _ (Ideal.add_mem _ (h3 k u hu) h)`. Rewrite `a1` using `[show 1 - ε - sigI I ε + ε = 1 - sigI I ε by ring, map_sub, map_one, sigI_sigI]`. Then use the resulting hypothesis. Conclude with `⟨⟨u, hu, h⟩, Or.inl rfl⟩`.
+
+Establish `hP : ∀ k, Nat.card (Pl k) = f` using `fun k => (GlobalTheory.Mem.RowsBundle.meets_iff_card cj hc _ (hmem (g k)) hf (hcard k) (fun v : Pl k => v.1) (fun v => v.2.1) Subtype.val_injective (hn k)).1 (hcov k)`. Establish `e : ∀ k, Fin f ≃ Pl k` using `fun k => haveI : Finite (Pl k) := Nat.finite_of_card_ne_zero (by rw [hP]; omega) (Finite.equivFinOfCardEq (hP k)).symm`. Use `⟨fun k v => (e k v).1, ⟨hg, hne, hrad, fun k v => ⟨(e k v).2.1, hsp k _ (e k v).2.1⟩, fun k => Subtype.val_injective.comp (e k).injective, fun k v v' h => hn k _ _ ((hconj _ _).1 h), fun k u hu => ?_⟩, fun k v => (e k v).2.2⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hcov k u hu`. Take `⟨v, rfl⟩` from `(e k).surjective v`.
+
+Conclude with `⟨v, hv.imp id (hconj _ _).2⟩`.
+-/
 theorem exists_choice_of_idem (g : Fin 2 → ℕ) (hg : ∀ k, (g k).Prime) (hne : g 0 ≠ g 1)
     (hrad : ∀ k, (Ideal.span {((g k : ℕ) : 𝓞 I.E)}).IsRadical)
     (hsp : ∀ k (v : HeightOneSpectrum (𝓞 I.E)), ((g k : ℕ) : 𝓞 I.E) ∈ v.asIdeal → Ideal.absNorm v.asIdeal = g k)

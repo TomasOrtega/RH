@@ -6,6 +6,15 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.TuranPowerSumBounds
 
+/- English proof (translation)
+Establish `hR : rr a / 8 = 2 * Real.exp ((a : ℝ) + 1)` using `by unfold rr; ring`. Establish `hm' : (m : ℝ) ≤ j` using `by exact_mod_cast hmj`. Establish `ham : (a : ℝ) * m ≤ a * j` using `mul_le_mul_of_nonneg_left hm' (Nat.cast_nonneg a)`. Establish `key : Real.exp (-((a : ℝ) * D / eps a ^ 2) - ((a : ℝ) + 1) * j) ≤ Real.exp (-((a : ℝ) * m) - a * n * D)`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : 1 / (E0 a D * (rr a / 8) ^ j) = (1 / 2) ^ j * Real.exp (-((a : ℝ) * D / eps a ^ 2) - ((a : ℝ) + 1) * j)`. Rewrite using `[hR, E0, mul_pow, Real.exp_sub, Real.exp_neg, mul_comm ((a : ℝ) + 1) (j : ℝ), Real.exp_nat_mul]`. Rewrite using `[one_div (2 : ℝ)]`. Use `first`.
+
+Consider the case `ring1`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring1)`. Consider the case `(field_simp; rw [← mul_pow]; norm_num)`. Rewrite using `[heq]`.
+
+Conclude with `(mul_le_mul_of_nonneg_left key (by positivity)).trans (mul_le_mul_of_nonneg_left hT (by positivity))`.
+-/
 theorem lb_part (a : ℕ) (D : ℝ) (m n j : ℕ) (T : ℝ) (hmj : m ≤ j)
     (hanD : (a : ℝ) * n * D ≤ a * D / eps a ^ 2 + j)
     (hT : Real.exp (-((a : ℝ) * m) - a * n * D) ≤ T) :
@@ -31,6 +40,13 @@ theorem lb_part (a : ℕ) (D : ℝ) (m n j : ℕ) (T : ℝ) (hmj : m ≤ j)
   exact (mul_le_mul_of_nonneg_left key (by positivity)).trans
     (mul_le_mul_of_nonneg_left hT (by positivity))
 
+/- English proof (translation)
+Establish `hlog` using `log_rr_pos a`. Establish `hid` using `th_log a`. Establish `hRpos : 0 < rr a` using `by linarith [rr_gt a]`. Establish `hRj : rr a ^ j = Real.exp (j * Real.log (rr a))`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hRpos]`.
+
+Rewrite using `[hRj, mul_div_assoc, ← Real.exp_sub]`. Use `mul_le_mul_of_nonneg_left ?_ hc₁.le` and prove the remaining obligations. Rewrite using `[Real.exp_le_exp]`. Establish `h1 : (j : ℝ) * Real.log (rr a) ≤ (2 * th a * K + j0 a) * Real.log (rr a)` using `mul_le_mul_of_nonneg_right hj hlog.le`. Establish `h2 : (2 * th a * K + j0 a) * Real.log (rr a) = K + j0 a * Real.log (rr a)`.
+
+Take the linear combination `K * hid`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem x_part (a : ℕ) (c₁ K : ℝ) (hc₁ : 0 < c₁) (j : ℕ) (hj : (j : ℝ) ≤ 2 * th a * K + j0 a) :
     c₁ * Real.exp (-K) ≤ c₁ * Real.exp (j0 a * Real.log (rr a)) / rr a ^ j := by
   have hlog := log_rr_pos a
@@ -49,6 +65,13 @@ theorem x_part (a : ℕ) (c₁ K : ℝ) (hc₁ : 0 < c₁) (j : ℕ) (hj : (j : 
     linear_combination K * hid
   linarith
 
+/- English proof (translation)
+Establish `hRpos : 0 < rr a` using `by linarith [rr_gt a]`. Take `⟨k, rfl⟩ : ∃ k, j = k + 2` from `⟨j - 2, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Establish `hinv : eps a ^ k = 1 / rr a ^ k`. Unfold `eps`.
+
+Rewrite using `[one_div_pow]`. Establish `hJ0 : (0 : ℝ) ≤ ((k + 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hSX : S ≤ (((k + 2 : ℕ) : ℝ) + 1) ^ 2` using `by linarith [sq_nonneg ((k + 2 : ℕ) : ℝ)]`. Establish `e : rr a ^ 2 * (((k + 2 : ℕ) : ℝ) + 1) ^ 2 / rr a ^ (k + 2) = (((k + 2 : ℕ) : ℝ) + 1) ^ 2 / rr a ^ k`. Rewrite using `[pow_add (rr a) k 2, mul_comm (rr a ^ k) (rr a ^ 2), mul_div_mul_left _ _ (pow_ne_zero 2 hRpos.ne')]`.
+
+Rewrite using `[hinv, e, one_div_mul_eq_div]`. Use `gcongr`.
+-/
 theorem far_part (a : ℕ) (S : ℝ) (j : ℕ) (hj2 : 2 ≤ j) (hS : S ≤ 1 + j) :
     eps a ^ (j - 2) * S ≤ rr a ^ 2 * ((j : ℝ) + 1) ^ 2 / rr a ^ j := by
   have hRpos : 0 < rr a := by linarith [rr_gt a]
@@ -65,6 +88,9 @@ theorem far_part (a : ℕ) (S : ℝ) (j : ℕ) (hj2 : 2 ≤ j) (hS : S ≤ 1 + j
   rw [hinv, e, one_div_mul_eq_div]
   gcongr
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [mul_div_assoc', pow_succ η j, mul_div_mul_left _ _ (pow_ne_zero j hη)]`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+-/
 private theorem pow_mul_div_pow_succ_eq_div (η X : ℝ) (hη : η ≠ 0) (j : ℕ) :
     η ^ j * (X / η ^ (j + 1)) = X / η := by
   first
@@ -72,6 +98,9 @@ private theorem pow_mul_div_pow_succ_eq_div (η X : ℝ) (hη : η ≠ 0) (j : �
   | (field_simp; done)
   | (field_simp; ring)
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [mul_div_assoc', mul_comm M (η ^ j), mul_div_mul_left _ _ (pow_ne_zero j hη)]`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+-/
 private theorem pow_mul_div_mul_pow_eq_div (η M X : ℝ) (hη : η ≠ 0) (j : ℕ) :
     η ^ j * (X / (M * η ^ j)) = X / M := by
   first
@@ -81,6 +110,33 @@ private theorem pow_mul_div_mul_pow_eq_div (η M X : ℝ) (hη : η ≠ 0) (j : 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hR16` using `rr_gt a`. Establish `hRpos : 0 < rr a` using `by linarith`. Establish `hRne : rr a ≠ 0` using `hRpos.ne'`. Establish `hηne : η ≠ 0` using `hη.ne'`. Establish `hL0 : 0 < L` using `by linarith`.
+
+Establish `hJ1 : (1 : ℝ) ≤ j` using `by exact_mod_cast hj`. Establish `hJpos : (0 : ℝ) < j` using `by linarith`. Establish `hJsq : (j : ℝ) ≤ ((j : ℝ) + 1) ^ 2` using `by linarith [sq_nonneg (j : ℝ)]`. Establish `hL2 : 1 ≤ L ^ 2` using `by linarith [mul_le_mul hL hL zero_le_one hL0.le]`. Establish `hLL3 : L ≤ L ^ 3` using `by linarith [mul_le_mul_of_nonneg_left hL2 hL0.le]`.
+
+Establish `hL3 : 1 ≤ L ^ 3` using `by linarith`. Establish `hJ1sq : (j : ℝ) + 1 ≤ ((j : ℝ) + 1) ^ 2 * L ^ 3`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hL3 (sq_nonneg ((j : ℝ) + 1)), sq_nonneg (j : ℝ)]`. Establish `hJL : (j : ℝ) * L ≤ ((j : ℝ) + 1) ^ 2 * L ^ 3` using `mul_le_mul hJsq hLL3 hL0.le (by positivity)`. Establish `hℓ2 : ℓ ^ 2 ≤ 4 * L ^ 2`.
+
+Combine the linear relations using `[mul_le_mul hℓ hℓ hℓ0 (by linarith : (0 : ℝ) ≤ 2 * L)]`. Establish `b1 : η ^ j * (CP * lam * ℓ ^ 2 * ((j : ℝ) + 1) ^ 2 / η ^ (j + 1)) ≤ 8 * CP / cZ * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3))`. Rewrite using `[pow_mul_div_pow_succ_eq_div η _ hηne j]`. Combine the equalities or inequalities in the displayed calculation. Establish `b3 : η ^ j * (CP * ((j : ℝ) + 1) * ℓ ^ 2 / (Mr * η ^ j)) ≤ 32 * CP / cS * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3))`.
+
+Rewrite using `[pow_mul_div_mul_pow_eq_div η Mr _ hηne j]`. Combine the equalities or inequalities in the displayed calculation. Establish `b4 : η ^ j * (2 * (j : ℝ) * lam / η ^ (j + 1)) ≤ 4 / cZ * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3))`. Rewrite using `[pow_mul_div_pow_succ_eq_div η _ hηne j]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hx0 : 0 ≤ CP * ℓ * η` using `by positivity`. Establish `hxK : CP * ℓ * η ≤ 2 * CP * c₂ * K`. Establish `e1 : CP * η * ℓ ≤ CP * η * (2 * L)` using `mul_le_mul_of_nonneg_left hℓ (by positivity)`. Establish `e2 : CP * (η * L) ≤ CP * (c₂ * K)` using `mul_le_mul_of_nonneg_left hηL.le hCP.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hexR : Real.exp 1 * (CP * ℓ * η) * rr a ≤ th a * K`. Combine the equalities or inequalities in the displayed calculation. Establish `hy : Real.exp 1 * (CP * ℓ * η) / (j : ℝ) ≤ 1 / rr a` using `by first`. Consider the case `(rw [div_le_div_iff₀ hJpos hRpos]; linarith)`. Consider the case `(rw [div_le_div_iff hJpos hRpos]; linarith)`.
+
+Consider the case `(rw [div_le_div_iff_of_pos hJpos hRpos]; linarith)`. Establish `b2 : η ^ j * ((CP * ℓ) ^ j / ((j - 1).factorial : ℝ)) ≤ ((j : ℝ) + 1) ^ 2 / rr a ^ j`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hy j) hJpos.le`. Consider the case `exact mul_le_mul_of_nonneg_left (pow_le_pow_left (by positivity) hy j) hJpos.le`.
+
+Consider the case `gcongr (j : ℝ) * ?_ ^ j`. Use `_ = (j : ℝ) / rr a ^ j := by rw [one_div_pow, mul_one_div]`. Use `_ ≤ ((j : ℝ) + 1) ^ 2 / rr a ^ j := by gcongr`. Establish `b5 : η ^ j * (CF * L * 25 ^ j) ≤ rr a * (((j : ℝ) + 1) ^ 2 / rr a ^ j)`. Establish `h25 : 25 * η ≤ 1 / rr a`.
+
+Use `twentyFive_mul_smallConstant a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcl : 25 * (CF * η * L) ≤ (j : ℝ)`. Establish `e1 : CF * (η * L) ≤ CF * (c₂ * K)` using `mul_le_mul_of_nonneg_left hηL.le hCF.le`. Establish `e2 : 25 * CF * c₂ * K ≤ th a * K` using `mul_le_mul_of_nonneg_right (h25c.trans hκth) hK.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul hcl (pow_le_pow_left₀ (by positivity) h25 k) (by positivity) (by positivity)`. Consider the case `exact mul_le_mul hcl (pow_le_pow_left (by positivity) h25 k) (by positivity) (by positivity)`.
+
+Use `_ = ((k + 1 : ℕ) : ℝ) / rr a ^ k := by rw [one_div_pow, mul_one_div]`. Use `_ ≤ (((k + 1 : ℕ) : ℝ) + 1) ^ 2 / rr a ^ k := by gcongr`. Use `_ = rr a * ((((k + 1 : ℕ) : ℝ) + 1) ^ 2 / rr a ^ (k + 1)) := by`. Rewrite using `[pow_succ (rr a) k, mul_div_assoc', mul_comm (rr a ^ k) (rr a), mul_div_mul_left _ _ hRne]`. Establish `hsplit : η ^ j * (CP * lam * ℓ ^ 2 * ((j : ℝ) + 1) ^ 2 / η ^ (j + 1) + (CP * ℓ) ^ j / ((j - 1).factorial : ℝ) + CP * ((j : ℝ) + 1) * ℓ ^ 2 / (Mr * η ^ j) + 2 * (j : ℝ) * lam / η ^ (j + 1) + CF * L * 25 ^ j) = η ^ j * (CP * lam * ℓ ^ 2 * ((j : ℝ) + 1) ^ 2 / η ^ (j + 1)) + η ^ j * …`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfin : 8 * CP / cZ * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3)) + ((j : ℝ) + 1) ^ 2 / rr a ^ j + 32 * CP / cS * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3)) + 4 / cZ * (((j : ℝ) + 1) ^ 2 * (lam * L ^ 3)) + rr a * (((j : ℝ) + 1) ^ 2 / rr a ^ j) = (8 * CP / cZ + 4 / cZ + 32 * CP / cS) * ((j : ℝ) + …` using `by ring`. Rewrite using `[hsplit]`. Conclude with `(add_le_add (add_le_add (add_le_add (add_le_add b1 b2) b3) b4) b5).trans_eq hfin`.
+-/
 theorem ub_terms (a : ℕ) (CP CF cZ cS c₂ κ L ℓ lam η Mr K : ℝ) (j : ℕ) (hj : 1 ≤ j)
     (hCP : 0 < CP) (hCF : 0 < CF) (hcZ : 0 < cZ) (hcS : 0 < cS) (hc₂ : 0 < c₂)
     (hL : 1 ≤ L) (hℓ0 : 0 ≤ ℓ) (hℓ : ℓ ≤ 2 * L) (hlam : 0 < lam) (hη : 0 < η) (hMr : 0 < Mr) (hK : 0 < K)

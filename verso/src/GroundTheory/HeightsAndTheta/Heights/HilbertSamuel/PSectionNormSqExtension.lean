@@ -26,6 +26,17 @@ def Uf (d : (∀ k, ι k) → K → ℕ) (G : (∀ k, ι k) → Fin N → MRing 
     ∑ p ∈ F, (fun x' => A.h x' ^ (2 * m) * ‖ev (chartMon c₀ (d c₀)) x'‖ ^ 2 / Nd p.2 x') x *
       (‖(fun _ => (0 : ℂ)) x + ev p.1 x‖ ^ 2 - ‖(fun _ => (0 : ℂ)) x‖ ^ 2)
 
+/- English proof (translation)
+Use `set H := chartMon c₀ (d c₀) with hH`. Establish `hterm : ∀ c j, (fun x' => 1 / Nd (d c) x') x * (‖ev (G c₀ j * chartMon c (d c)) x + ev (G c j * H - G c₀ j * chartMon c (d c)) x‖ ^ 2 - ‖ev (G c₀ j * chartMon c (d c)) x‖ ^ 2) = ‖ev H x‖ ^ 2 * (‖ev (G c j) x‖ ^ 2 / Nd (d c) x) - ‖ev (chartMon c (d c)) x‖ ^ 2 / Nd (d c) x * ‖ev (G …`. Introduce `c j`. Establish `e : ev (G c₀ j * chartMon c (d c)) x + ev (G c j * H - G c₀ j * chartMon c (d c)) x = ev (G c j) x * ev H x`. Simplify using `only [ev, map_mul, map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using `only [ev, map_mul, norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (∑ c, ∑ j, (fun x' => 1 / Nd (d c) x') x * (‖ev (G c₀ j * chartMon c (d c)) x + ev (G c j * H - G c₀ j * chartMon c (d c)) x‖ ^ 2 - ‖ev (G c₀ j * chartMon c (d c)) x‖ ^ 2)) = ‖ev H x‖ ^ 2 * Qf d G x - Rf d x * ∑ j, ‖ev (G c₀ j) x‖ ^ 2`.
+
+Rewrite using `[Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => hterm c j]`. Unfold `Qf Rf`. Simplify using `only [Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_comm`.
+
+Establish `e2 : (∑ p ∈ F, (fun x' => A.h x' ^ (2 * m) * ‖ev H x'‖ ^ 2 / Nd p.2 x') x * (‖(fun _ => (0 : ℂ)) x + ev p.1 x‖ ^ 2 - ‖(fun _ => (0 : ℂ)) x‖ ^ 2)) = ‖ev H x‖ ^ 2 * Ef A m F x`. Unfold `Ef`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [zero_add, norm_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `Uf`. Rewrite using `[← hH, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem decomp (d : (∀ k, ι k) → K → ℕ) (G : (∀ k, ι k) → Fin N → MRing ι) (A : HermLine ι) (m : ℕ)
     (F : Finset (MRing ι × (K → ℕ))) (c₀ : ∀ k, ι k) (x : (Σ k, ι k) → ℂ) :
     ‖ev (chartMon c₀ (d c₀)) x‖ ^ 2 * (Qf d G x + Ef A m F x) =
@@ -64,10 +75,16 @@ theorem decomp (d : (∀ k, ι k) → K → ℕ) (G : (∀ k, ι k) → Fin N �
   rw [← hH, e1, e2]
   ring
 
+/- English proof (translation)
+Use `show ((2 : ℕ∞) : WithTop ℕ∞) ≤ _`. Conclude with `WithTop.coe_le_coe.mpr le_top`.
+-/
 theorem two_le_top' : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by
   show ((2 : ℕ∞) : WithTop ℕ∞) ≤ _
   exact WithTop.coe_le_coe.mpr le_top
 
+/- English proof (translation)
+Use `show g ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker]`. Use `erw [mConeMap_homog y hg, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_of_homog {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {g : MRing ι} {δ : K → ℕ}
     (hg : IsMultiHomog g δ) (h0 : aeval y g = 0) : g ∈ mCoordIdeal y := by
   show g ∈ RingHom.ker (mConeMap y)
@@ -75,6 +92,9 @@ theorem mem_of_homog {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {g : MRing
   erw [mConeMap_homog y hg, h0]
   simp
 
+/- English proof (translation)
+Use `mem_of_homog (homog_sub (homog_mul (hG c j) (homog_chartMon c₀ (d c₀))) (homog_congr (homog_mul (hG c₀ j) (homog_chartMon c (d c))) fun k => ?_)) ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply] zify`. Combine the linear relations using `[he c k, he c₀ k]`. Rewrite using `[map_sub, map_mul, map_mul, hGy, hGy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem numer_mem {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {A : HermLine ι} {m : ℕ} {v : Fin N → Ω}
     {d e : (∀ k, ι k) → K → ℕ} {G : (∀ k, ι k) → Fin N → MRing ι}
     (he : ∀ c k, (e c k : ℤ) = d c k + m * A.a k) (hG : ∀ c j, IsMultiHomog (G c j) (e c))
@@ -88,40 +108,73 @@ theorem numer_mem {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {A : HermLine
   · rw [map_sub, map_mul, map_mul, hGy, hGy]
     ring
 
+/- English proof (translation)
+Unfold `Qf`. Conclude with `ContDiffOn.sum fun c _ => ContDiffOn.sum fun j _ => contDiffOn_term _ _`.
+-/
 theorem contDiffOn_Qf (d : (∀ k, ι k) → K → ℕ) (G : (∀ k, ι k) → Fin N → MRing ι) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Qf d G) (blockNZ ι) := by
   unfold Qf
   exact ContDiffOn.sum fun c _ => ContDiffOn.sum fun j _ => contDiffOn_term _ _
 
+/- English proof (translation)
+Unfold `Rf`. Conclude with `ContDiffOn.sum fun c _ => contDiffOn_term _ _`.
+-/
 theorem contDiffOn_Rf (d : (∀ k, ι k) → K → ℕ) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Rf (ι := ι) d) (blockNZ ι) := by
   unfold Rf
   exact ContDiffOn.sum fun c _ => contDiffOn_term _ _
 
+/- English proof (translation)
+Unfold `Ef`. Conclude with `(hsm.pow _).mul (ContDiffOn.sum fun p _ => contDiffOn_term _ _)`.
+-/
 theorem contDiffOn_Ef {A : HermLine ι} (hsm : IsSmoothHerm A) (m : ℕ) (F : Finset (MRing ι × (K → ℕ))) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Ef A m F) (blockNZ ι) := by
   unfold Ef
   exact (hsm.pow _).mul (ContDiffOn.sum fun p _ => contDiffOn_term _ _)
 
+/- English proof (translation)
+The claim follows from `(hf.contDiffAt (isOpen_blockNZ.mem_nhds hx)).of_le two_le_top'`.
+-/
 theorem contDiffAt_of_on {f : ((Σ k, ι k) → ℂ) → ℝ} (hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f (blockNZ ι))
     {x : (Σ k, ι k) → ℂ} (hx : x ∈ blockNZ ι) : ContDiffAt ℝ 2 f x :=
   (hf.contDiffAt (isOpen_blockNZ.mem_nhds hx)).of_le two_le_top'
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Function.ne_iff.mp ha`. Conclude with `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hj) 2⟩`.
+-/
 theorem sumSq_pos {M : Type} [Fintype M] {a : M → ℂ} (ha : a ≠ 0) : 0 < ∑ j, ‖a j‖ ^ 2 := by
   obtain ⟨j, hj⟩ := Function.ne_iff.mp ha
   exact Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hj) 2⟩
 
+/- English proof (translation)
+The claim follows from `ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)`.
+-/
 theorem contDiff_sumSq {M : Type} [Fintype M] {n : WithTop ℕ∞} :
     ContDiff ℝ n (fun u : M → ℂ => ∑ j, ‖u j‖ ^ 2) :=
   ContDiff.sum fun j _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ j)
 
+/- English proof (translation)
+The claim follows from `(contDiff_sumSq.contDiffAt.log (sumSq_pos ha).ne').div_const 2`.
+-/
 theorem contDiffAt_fs {M : Type} [Fintype M] {a : M → ℂ} (ha : a ≠ 0) :
     ContDiffAt ℝ 2 (fun u : M → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) a :=
   (contDiff_sumSq.contDiffAt.log (sumSq_pos ha).ne').div_const 2
 
+/- English proof (translation)
+Simplify using `[leviForm]`.
+-/
 theorem leviForm_zero_dir {J : Type} [Fintype J] (φ : (J → ℂ) → ℝ) (z : J → ℂ) : leviForm φ z 0 = 0 := by
   simp [leviForm]
 
+/- English proof (translation)
+Establish `hg : AnalyticAt ℂ (fun x' (_ : Fin 1) => f x') x` using `AnalyticAt.pi fun _ => hf`. Establish `ha : (fun (_ : Fin 1) => f x) ≠ 0` using `fun h => hf0 (congrFun h 0)`. Establish `h1` using `h₃ J (Fin 1) (fun x' (_ : Fin 1) => f x') _ x w hg (contDiffAt_fs ha)`. Establish `h2` using `h₄ (Fin 1) (fun _ => f x) (fderiv ℂ (fun x' (_ : Fin 1) => f x') x w) 1 (-(fderiv ℂ (fun x' (_ : Fin 1) => f x') x w 0 / f x)) ha one_ne_zero`. Establish `hb : (1 : ℂ) • fderiv ℂ (fun x' (_ : Fin 1) => f x') x w + (-(fderiv ℂ (fun x' (_ : Fin 1) => f x') x w 0 / f x)) • (fun (_ : Fin 1) => f x) = 0`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul, Pi.zero_apply]`. Clear the denominators using the available nonvanishing facts. Conclude with `sub_self _`.
+
+Rewrite `h2` using `[hb, one_smul, leviForm_zero_dir]`. Establish `hC : ContDiffAt ℝ 2 (fun x' => Real.log (∑ j : Fin 1, ‖(fun x' (_ : Fin 1) => f x') x' j‖ ^ 2) / 2) x` using `(contDiffAt_fs ha).comp x (hg.contDiffAt.restrict_scalars ℝ)`. Establish `h3 : (fun x' => Real.log (‖f x'‖ ^ 2)) = fun x' => 2 * (Real.log (∑ j : Fin 1, ‖(fun x' (_ : Fin 1) => f x') x' j‖ ^ 2) / 2)`. Use function extensionality and compare the values at `x'`. Simplify using `only [Finset.univ_unique, Fin.default_eq_zero, Finset.sum_singleton]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, leviForm_const_mul hC 2, h1, ← h2, mul_zero]`.
+-/
 theorem levi_log_normSq (h₃ : LeviCompHol.Statement) (h₄ : LeviFSInvariant.Statement) {J : Type} [Fintype J]
     {f : (J → ℂ) → ℂ} {x : J → ℂ} (hf : AnalyticAt ℂ f x) (hf0 : f x ≠ 0) (w : J → ℂ) :
     leviForm (fun x' => Real.log (‖f x'‖ ^ 2)) x w = 0 := by
@@ -152,6 +205,13 @@ section Graph
 variable {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {A : HermLine ι} {m : ℕ} {v : Fin N → Ω}
   {d e : (∀ k, ι k) → K → ℕ} {G : (∀ k, ι k) → Fin N → MRing ι} {F : Finset (MRing ι × (K → ℕ))}
 
+/- English proof (translation)
+Establish `hx` using `oldPart_mem hz`. Establish `hxo : basePart₂ z ∈ blockNZ ι` using `hx.1`. Establish `hhC : ContDiffAt ℝ 2 A.h (basePart₂ z)` using `contDiffAt_of_on hsm hxo`. Establish `h1 : IsFlat (fun x => ∑ c, ∑ j, (fun x' => 1 / Nd (d c) x') x * (‖ev (G c₀ j * chartMon c (d c)) x + ev (G c j * chartMon c₀ (d c₀) - G c₀ j * chartMon c (d c)) x‖ ^ 2 - ‖ev (G c₀ j * chartMon c (d c)) x‖ ^ 2)) (basePart₂ z) (basePart₂ w)`. Use `isFlat_sum _ fun c _ => isFlat_sum _ fun j _ => ?_` and prove the remaining obligations.
+
+Establish `hmem` using `numer_mem he hG hGy c₀ c j`. Conclude with `h₂ _ _ _ _ _ _ (contDiffAt_const.div (contDiff_Nd _).contDiffAt (Nd_pos _ hxo).ne') (analyticAt_eval _ _) (analyticAt_eval _ _) (hx.2 _ hmem) (fderiv_old_eq_zero hw hmem)`. Establish `h2 : IsFlat (fun x => ∑ p ∈ F, (fun x' => A.h x' ^ (2 * m) * ‖ev (chartMon c₀ (d c₀)) x'‖ ^ 2 / Nd p.2 x') x * (‖(fun _ => (0 : ℂ)) x + ev p.1 x‖ ^ 2 - ‖(fun _ => (0 : ℂ)) x‖ ^ 2)) (basePart₂ z) (basePart₂ w)`. Use `isFlat_sum _ fun p hp => ?_` and prove the remaining obligations. Conclude with `h₂ _ _ _ _ _ _ (((hhC.pow _).mul (contDiff_normSq_eval _).contDiffAt).div (contDiff_Nd _).contDiffAt (Nd_pos _ hxo).ne') analyticAt_const (analyticAt_eval _ _) (hx.2 _ (hF p hp).2) (fderiv_old_eq_zero hw (hF p hp).2)`.
+
+Conclude with `h1.add h2`.
+-/
 theorem isFlat_Uf (h₂ : LeviHolPerturb.Statement) (hsm : IsSmoothHerm A)
     (he : ∀ c k, (e c k : ℤ) = d c k + m * A.a k) (hG : ∀ c j, IsMultiHomog (G c j) (e c))
     (hGy : ∀ c j, aeval y (G c j) = v j * aeval y (chartMon c (d c)))
@@ -179,6 +239,15 @@ theorem isFlat_Uf (h₂ : LeviHolPerturb.Statement) (hsm : IsSmoothHerm A)
       analyticAt_const (analyticAt_eval _ _) (hx.2 _ (hF p hp).2) (fderiv_old_eq_zero hw (hF p hp).2)
   exact h1.add h2
 
+/- English proof (translation)
+Establish `hmem` using `cross_mem (v := v) (hG c₀ j) (hG c₀ j') j j' (by rw [hGy, hGy]; ring)`. Establish `hfun : (fun z' : (Σ k, addIdx ι N k) → ℂ => eval z' (map (Int.castRingHom ℂ) (X ⟨none, j⟩ * rename (oldEmb ι N) (G c₀ j') - X ⟨none, j'⟩ * rename (oldEmb ι N) (G c₀ j)))) = fun z' => z' ⟨none, j⟩ * ev (G c₀ j') (oldL ι N z') - z' ⟨none, j'⟩ * ev (G c₀ j) (oldL ι N z')`. Use function extensionality and compare the values at `z'`. Simplify using `only [map_sub, map_mul, map_X, eval_X, eval_rename_old]`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `hz.2 _ hmem`. Simplify using `only [map_sub, map_mul, map_X, eval_X, eval_rename_old] at h0`. Conclude with `sub_eq_zero.mp h0`. Establish `h0` using `fderiv_eq_zero_of_tangent hw hmem`.
+
+Establish `hd : ∀ j'', HasFDerivAt (fun z' : (Σ k, addIdx ι N k) → ℂ => ev (G c₀ j'') (oldL ι N z')) ((fderiv ℂ (ev (G c₀ j'')) (oldL ι N z)).comp (oldL ι N)) z` using `fun j'' => ((analyticAt_eval _ _).differentiableAt.hasFDerivAt).comp z (oldL ι N).hasFDerivAt`. Establish `hH` using `((hasFDerivAt_apply (𝕜 := ℂ) (⟨none, j⟩ : Σ k, addIdx ι N k) z).mul (hd j')).sub ((hasFDerivAt_apply (𝕜 := ℂ) (⟨none, j'⟩ : Σ k, addIdx ι N k) z).mul (hd j))`. Establish `hH' : HasFDerivAt (fun z' : (Σ k, addIdx ι N k) → ℂ => z' ⟨none, j⟩ * ev (G c₀ j') (oldL ι N z') - z' ⟨none, j'⟩ * ev (G c₀ j) (oldL ι N z')) _ z` using `hH`. Rewrite `h0` using `[hfun, hH'.fderiv]`. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, oldL_apply] at h0`.
+
+Take the linear combination `h0`.
+-/
 theorem graph_cross (hGy : ∀ c j, aeval y (G c j) = v j * aeval y (chartMon c (d c)))
     (hG : ∀ c j, IsMultiHomog (G c j) (e c)) (c₀ : ∀ k, ι k)
     {z w : (Σ k, addIdx ι N k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal (addBlock y v)))
@@ -217,6 +286,55 @@ section Levi
 variable {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {A : HermLine ι} {m : ℕ} {v : Fin N → Ω}
   {d e : (∀ k, ι k) → K → ℕ} {G : (∀ k, ι k) → Fin N → MRing ι} {F : Finset (MRing ι × (K → ℕ))}
 
+/- English proof (translation)
+Establish `hx : basePart₂ z ∈ mcPts (mCoordIdeal y)` using `oldPart_mem hz`. Establish `hxo : basePart₂ z ∈ blockNZ ι` using `hx.1`. Take `⟨c₀, hc₀⟩ : ∃ c : ∀ k, ι k, ∀ k, basePart₂ z ⟨k, c k⟩ ≠ 0` from `⟨fun k => (hxo k).choose, fun k => (hxo k).choose_spec⟩`. Establish `hyc : ∀ k, y ⟨k, c₀ k⟩ ≠ 0` using `fun k => y_ne_zero hx (hc₀ k)`. Take `⟨j₀, hj₀⟩` from `exists_G_ne hgen hyc (he c₀) (hG c₀) (hGy c₀) hx hc₀`.
+
+Establish `hgan : AnalyticAt ℂ (fun x' (j : Fin N) => ev (G c₀ j) x') (basePart₂ z)` using `AnalyticAt.pi fun j => analyticAt_eval _ _`. Establish `hgx : (fun j => ev (G c₀ j) (basePart₂ z)) ≠ 0` using `fun h => hj₀ (congrFun h j₀)`. Establish `hDg : fderiv ℂ (fun x' (j : Fin N) => ev (G c₀ j) x') (basePart₂ z) (basePart₂ w) = fun j => fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w)`. Rewrite using `[fderiv_pi fun j => (analyticAt_eval _ _).differentiableAt]`. Both sides reduce to the same expression.
+
+Establish `hcr` using `graph_cross hGy hG c₀ hz hw`. Take `⟨lam, hlam⟩ : ∃ lam : ℂ, lam = z ⟨none, j₀⟩ / ev (G c₀ j₀) (basePart₂ z)` from `⟨_, rfl⟩`. Establish `hzl : ∀ j, z ⟨none, j⟩ = lam * ev (G c₀ j) (basePart₂ z)`. Introduce `j`. Establish `h1` using `(hcr j j₀).1`.
+
+Rewrite using `[hlam]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`. Establish `hlam0 : lam ≠ 0`. Introduce `h0`.
+
+Take `⟨j1, hj1⟩` from `hz.1 none`. Conclude with `hj1 (by rw [hzl j1, h0, zero_mul])`. Take `⟨mu, hmu⟩ : ∃ mu : ℂ, mu = (w ⟨none, j₀⟩ - lam * fderiv ℂ (ev (G c₀ j₀)) (basePart₂ z) (basePart₂ w)) / ev (G c₀ j₀) (basePart₂ z)` from `⟨_, rfl⟩`. Establish `hwl : ∀ j, w ⟨none, j⟩ = lam * fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w) + mu * ev (G c₀ j) (basePart₂ z)`. Introduce `j`.
+
+Establish `h1` using `(hcr j j₀).2`. Rewrite `h1` using `[hzl j, hzl j₀]`. Rewrite using `[hmu]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`.
+
+Establish `hnewz : newL ι N z = lam • (fun j => ev (G c₀ j) (basePart₂ z))`. Use function extensionality and compare the values at `j`. Rewrite using `[newL_apply, hzl j]`. Both sides reduce to the same expression. Establish `hneww : newL ι N w = lam • (fun j => fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w)) + mu • (fun j => ev (G c₀ j) (basePart₂ z))`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[newL_apply, hwl j]`. Both sides reduce to the same expression. Establish `hnz : newL ι N z ≠ 0`. Take `⟨j1, hj1⟩` from `hz.1 none`.
+
+Conclude with `fun h => hj1 (congrFun h j1)`. Establish `hFS` using `h₄ (Fin N) (fun j => ev (G c₀ j) (basePart₂ z)) (fun j => fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w)) lam mu hgx hlam0`. Establish `L1 : leviForm (fun z' : (Σ k, addIdx ι N k) → ℂ => Real.log (∑ j, ‖z' ⟨none, j⟩‖ ^ 2) / 2) z w = leviForm (fun u : Fin N → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) (fun j => ev (G c₀ j) (basePart₂ z)) (fun j => fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w))`. Establish `h` using `h₃ _ _ (newL ι N) (fun u : Fin N → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) z w ((newL ι N).analyticAt z) (contDiffAt_fs hnz)`. Rewrite `h` using `[(newL ι N).fderiv, hnewz, hneww, hFS]`.
+
+Conclude with `h`. Establish `hSC : ContDiffAt ℝ 2 (Sf d G A m F) (basePart₂ z)` using `contDiffAt_of_on (contDiffOn_Sf hsm) hxo`. Establish `hSpos` using `Sf_pos hgen he hG hGy hFspan hxo`. Establish `hlogSC : ContDiffAt ℝ 2 (fun u => Real.log (Sf d G A m F u)) (basePart₂ z)` using `hSC.log hSpos.ne'`. Establish `L2 : leviForm (fun z' : (Σ k, addIdx ι N k) → ℂ => Real.log (Sf d G A m F (basePart₂ z')) / 2) z w = leviForm (fun u => Real.log (Sf d G A m F u)) (basePart₂ z) (basePart₂ w) / 2`.
+
+Establish `h` using `h₃ _ _ (oldL ι N) (fun u => (1 / 2 : ℝ) * Real.log (Sf d G A m F u)) z w ((oldL ι N).analyticAt z) (contDiffAt_const.mul hlogSC)`. Rewrite `h` using `[(oldL ι N).fderiv]`. Simplify using `only [oldL_apply] at h`. Rewrite `h` using `[leviForm_const_mul hlogSC]`. Establish `e : (fun z' : (Σ k, addIdx ι N k) → ℂ => Real.log (Sf d G A m F (basePart₂ z')) / 2) = fun y => (1 / 2 : ℝ) * Real.log (Sf d G A m F (basePart₂ y))`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQC : ContDiffAt ℝ 2 (Qf d G) (basePart₂ z)` using `contDiffAt_of_on (contDiffOn_Qf d G) hxo`.
+
+Establish `hEC : ContDiffAt ℝ 2 (Ef A m F) (basePart₂ z)` using `contDiffAt_of_on (contDiffOn_Ef hsm m F) hxo`. Establish `hRC : ContDiffAt ℝ 2 (Rf (ι` using `ι) d) (basePart₂ z) := contDiffAt_of_on (contDiffOn_Rf d) hxo`. Establish `hhC : ContDiffAt ℝ 2 A.h (basePart₂ z)` using `contDiffAt_of_on hsm hxo`. Establish `hQEpos` using `QE_pos hgen he hG hGy hFspan hxo`. Establish `hRpos` using `Rf_pos d hxo`.
+
+Establish `hhpos` using `A.pos _ hxo`. Establish `lQEC : ContDiffAt ℝ 2 (fun u => Real.log (Qf d G u + Ef A m F u)) (basePart₂ z)` using `(hQC.add hEC).log hQEpos.ne'`. Establish `lRC : ContDiffAt ℝ 2 (fun u => Real.log (Rf d u)) (basePart₂ z)` using `hRC.log hRpos.ne'`. Establish `lhC : ContDiffAt ℝ 2 (fun u => Real.log (A.h u)) (basePart₂ z)` using `hhC.log hhpos.ne'`. Establish `eS : (fun u => Real.log (Sf d G A m F u)) =ᶠ[𝓝 (basePart₂ z)] fun u => (Real.log (Qf d G u + Ef A m F u) - Real.log (Rf d u)) - ((2 * m : ℕ) : ℝ) * Real.log (A.h u)` using `by filter_upwards [isOpen_blockNZ.mem_nhds hxo] with u hu`.
+
+Establish `h1` using `QE_pos hgen he hG hGy hFspan hu`. Establish `h2` using `Rf_pos d hu`. Establish `h3` using `A.pos u hu`. Rewrite using `[Sf, Real.log_div h1.ne' (mul_pos h2 (pow_pos h3 _)).ne', Real.log_mul h2.ne' (pow_pos h3 _).ne', Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `LS : leviForm (fun u => Real.log (Sf d G A m F u)) (basePart₂ z) (basePart₂ w) = leviForm (fun u => Real.log (Qf d G u + Ef A m F u)) (basePart₂ z) (basePart₂ w) - leviForm (fun u => Real.log (Rf d u)) (basePart₂ z) (basePart₂ w) - ((2 * m : ℕ) : ℝ) * leviForm (fun u => Real.log …`. Rewrite using `[leviForm_congr eS, leviForm_sub (lQEC.sub lRC) (contDiffAt_const.mul lhC), leviForm_sub lQEC lRC, leviForm_const_mul lhC]`. Establish `hHx : ev (chartMon c₀ (d c₀)) (basePart₂ z) ≠ 0`. Rewrite using `[ev, eval_chartMon]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc₀ k)`.
+
+Take `⟨hUC, hU0, hUd1, hUd2, hUl⟩` from `isFlat_Uf h₂ hsm he hG hGy hF c₀ hz hw`. Establish `hsumC : ContDiffAt ℝ 2 (fun u => ∑ j, ‖ev (G c₀ j) u‖ ^ 2) (basePart₂ z)` using `ContDiffAt.sum fun j _ => (contDiff_normSq_eval _).contDiffAt`. Establish `hsumpos : 0 < ∑ j, ‖ev (G c₀ j) (basePart₂ z)‖ ^ 2` using `sumSq_pos hgx`. Establish `hP1C : ContDiffAt ℝ 2 (fun u => Rf d u * ∑ j, ‖ev (G c₀ j) u‖ ^ 2) (basePart₂ z)` using `hRC.mul hsumC`. Establish `hP1pos : 0 < Rf d (basePart₂ z) * ∑ j, ‖ev (G c₀ j) (basePart₂ z)‖ ^ 2` using `mul_pos hRpos hsumpos`.
+
+Establish `hPUpos : Rf d (basePart₂ z) * ∑ j, ‖ev (G c₀ j) (basePart₂ z)‖ ^ 2 + Uf d G A m F c₀ (basePart₂ z) ≠ 0`. Rewrite using `[hU0, add_zero]`. Conclude with `hP1pos.ne'`. Establish `lHC : ContDiffAt ℝ 2 (fun u => Real.log (‖ev (chartMon c₀ (d c₀)) u‖ ^ 2)) (basePart₂ z)` using `(contDiff_normSq_eval _).contDiffAt.log (pow_ne_zero _ (norm_ne_zero_iff.mpr hHx))`. Establish `hHopen : IsOpen {u : (Σ k, ι k) → ℂ | ev (chartMon c₀ (d c₀)) u ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval _) continuous_const`.
+
+Establish `eQE : (fun u => Real.log (Qf d G u + Ef A m F u)) =ᶠ[𝓝 (basePart₂ z)] fun u => Real.log (Rf d u * ∑ j, ‖ev (G c₀ j) u‖ ^ 2 + Uf d G A m F c₀ u) - Real.log (‖ev (chartMon c₀ (d c₀)) u‖ ^ 2)` using `by filter_upwards [isOpen_blockNZ.mem_nhds hxo, hHopen.mem_nhds hHx] with u hu hHu`. Establish `h1` using `QE_pos hgen he hG hGy hFspan hu`. Establish `h2 : (0 : ℝ) < ‖ev (chartMon c₀ (d c₀)) u‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hHu) 2`. Rewrite using `[← decomp, Real.log_mul h2.ne' h1.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `LQE : leviForm (fun u => Real.log (Qf d G u + Ef A m F u)) (basePart₂ z) (basePart₂ w) = leviForm (fun u => Real.log (Rf d u * ∑ j, ‖ev (G c₀ j) u‖ ^ 2)) (basePart₂ z) (basePart₂ w)`. Rewrite using `[leviForm_congr eQE, leviForm_sub ((hP1C.add hUC).log hPUpos) lHC, levi_log_normSq h₃ h₄ (analyticAt_eval _ _) hHx, sub_zero]`. Conclude with `h₁ _ (fun u => Rf d u * ∑ j, ‖ev (G c₀ j) u‖ ^ 2) (Uf d G A m F c₀) (basePart₂ z) (basePart₂ w) hP1C hUC hP1pos hU0 hUd1 hUd2 hUl`. Establish `hsumopen : IsOpen {u : (Σ k, ι k) → ℂ | (∑ j, ‖ev (G c₀ j) u‖ ^ 2) ≠ 0}` using `isOpen_ne_fun (continuous_finsetSum _ fun j _ => ((MvPolynomial.continuous_eval _).norm.pow 2)) continuous_const`. Establish `lGC : ContDiffAt ℝ 2 (fun u => Real.log (∑ j, ‖ev (G c₀ j) u‖ ^ 2)) (basePart₂ z)` using `hsumC.log hsumpos.ne'`.
+
+Establish `eP1 : (fun u => Real.log (Rf d u * ∑ j, ‖ev (G c₀ j) u‖ ^ 2)) =ᶠ[𝓝 (basePart₂ z)] fun u => Real.log (Rf d u) + Real.log (∑ j, ‖ev (G c₀ j) u‖ ^ 2)` using `by filter_upwards [isOpen_blockNZ.mem_nhds hxo, hsumopen.mem_nhds hsumpos.ne'] with u hu hsu`. Conclude with `Real.log_mul (Rf_pos d hu).ne' hsu`. Establish `LG : leviForm (fun u => Real.log (∑ j, ‖ev (G c₀ j) u‖ ^ 2)) (basePart₂ z) (basePart₂ w) = 2 * leviForm (fun u : Fin N → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) (fun j => ev (G c₀ j) (basePart₂ z)) (fun j => fderiv ℂ (ev (G c₀ j)) (basePart₂ z) (basePart₂ w))`. Establish `hfsC : ContDiffAt ℝ 2 (fun x' => (fun u : Fin N → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) ((fun x' (j : Fin N) => ev (G c₀ j) x') x')) (basePart₂ z)` using `(contDiffAt_fs hgx).comp _ (hgan.contDiffAt.restrict_scalars ℝ)`. Establish `e : (fun u => Real.log (∑ j, ‖ev (G c₀ j) u‖ ^ 2)) = fun x' => 2 * (fun u : Fin N → ℂ => Real.log (∑ j, ‖u j‖ ^ 2) / 2) ((fun x' (j : Fin N) => ev (G c₀ j) x') x')`.
+
+Use function extensionality and compare the values at `x'`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, leviForm_const_mul hfsC, h₃ _ _ _ _ _ _ hgan (contDiffAt_fs hgx), hDg]`. Establish `LP1` using `leviForm_congr eP1 (basePart₂ w)`.
+
+Rewrite `LP1` using `[leviForm_add lRC lGC, LG]`. Establish `hf1C : ContDiffAt ℝ 2 (fun z' : (Σ k, addIdx ι N k) → ℂ => Real.log (∑ j, ‖z' ⟨none, j⟩‖ ^ 2) / 2) z` using `(contDiffAt_fs hnz).comp z ((newL ι N).restrictScalars ℝ).contDiff.contDiffAt`. Establish `hf2C : ContDiffAt ℝ 2 (fun z' : (Σ k, addIdx ι N k) → ℂ => Real.log (Sf d G A m F (basePart₂ z')) / 2) z` using `(hlogSC.div_const 2).comp z ((oldL ι N).restrictScalars ℝ).contDiff.contDiffAt`. Rewrite using `[leviForm_sub hf1C hf2C, L1, L2, LS, LQE, LP1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_identity (h₁ : LeviLogFlat.Statement) (h₂ : LeviHolPerturb.Statement)
     (h₃ : LeviCompHol.Statement) (h₄ : LeviFSInvariant.Statement) (hsm : IsSmoothHerm A)
     (hgen : KH.GeneratesOn y (fun k => (m : ℤ) * A.a k) v)
@@ -401,6 +519,9 @@ end SectionNormSqExtension
 
 open SectionNormSqExtension in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Ω _ y A m N v hsm hconj hv hgen`. Use `choose d e G he hG hGy using exists_chartData y A m N v hv`. Take `⟨F, hF, hFspan⟩` from `exists_gens y`. Conclude with `⟨Sf d G A m F, contDiffOn_Sf hsm, fun x hx => Sf_pos hgen he hG hGy hFspan hx, fun c x hc => Sf_smul he hG (fun p hp => (hF p hp).1) hc x, fun x => Sf_conj hconj m d G F x, fun x hx => Sf_value hv he hG hGy hF hx, fun z hz w hw => levi_identity h₁ h₂ h₃ h₄ hsm hgen he hG hGy hF h …`.
+-/
 theorem SectionNormSqExtension.proof (h₁ : LeviLogFlat.Statement) (h₂ : LeviHolPerturb.Statement)
     (h₃ : LeviCompHol.Statement) (h₄ : LeviFSInvariant.Statement) : SectionNormSqExtension.Statement := by
   intro K _ _ ι _ Ω _ y A m N v hsm hconj hv hgen

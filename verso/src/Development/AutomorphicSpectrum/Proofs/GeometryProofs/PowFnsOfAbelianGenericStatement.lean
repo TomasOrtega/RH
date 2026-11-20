@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian | exact GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian | (intros; apply GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.powFns_of_abelian_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0), IsReduced X0 → IsLocallyNoetherian X0 → (∀ z : X0, (∀ z' : X0, z' ⤳ z → z' = z) → z ∈ abLocus t.G) → PowFns t := by
   first | exact @GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian | exact GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian | (intros; apply GlobalTheory.CompanionTheory.Ar.PowFn.powFns_of_generic_abelian <;> assumption)

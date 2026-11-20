@@ -18,6 +18,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 def cut (N p : ℕ) : Fin N → Bool := fun i => decide (p ≤ (i : ℕ))
 
+/- English proof (translation)
+Establish `: (Finset.univ.filter fun i => cut N p i = false) = (Finset.univ.filter fun i : Fin N => (i : ℕ) < p)`. Use extensionality with `i`. Simplify using `[cut]`. Rewrite using `[this, Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_cut_false (N p : ℕ) (h : p ≤ N) :
     (Finset.univ.filter fun i => cut N p i = false).card = p := by
   have : (Finset.univ.filter fun i => cut N p i = false) =
@@ -26,6 +29,11 @@ theorem card_cut_false (N p : ℕ) (h : p ≤ N) :
   rw [this, Fin.card_filter_val_lt]
   omega
 
+/- English proof (translation)
+Establish `h1` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (fun i => cut N p i = false)`. Rewrite `h1` using `[card_cut_false N p h, Finset.card_univ, Fintype.card_fin]`. Establish `: (Finset.univ.filter fun i => cut N p i = true) = (Finset.univ.filter fun i => ¬ cut N p i = false)`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_cut_true (N p : ℕ) (h : p ≤ N) :
     (Finset.univ.filter fun i => cut N p i = true).card = N - p := by
   have h1 := Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N)))
@@ -42,10 +50,16 @@ def signSpace (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) 
   stdSpace hstar N neg (Finset.univ.filter fun i => neg i = false).card
     (Finset.univ.filter fun i => neg i = true).card
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.stdSpace_sigOK_count E hstar N neg`.
+-/
 theorem signSpace_sigOK (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)
     (neg : Fin N → Bool) : (signSpace hstar N neg).SigOK :=
   GlobalTheory.stdSpace_sigOK_count E hstar N neg
 
+/- English proof (translation)
+The claim follows from `Prod.ext (card_cut_false N p h) (card_cut_true N p h)`.
+-/
 theorem signSpace_cut_sig (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N p : ℕ)
     (h : p ≤ N) (τ : E →+* ℂ) : (signSpace hstar N (cut N p)).sig τ = (p, N - p) :=
   Prod.ext (card_cut_false N p h) (card_cut_true N p h)
@@ -61,13 +75,24 @@ def extTo (n N : ℕ) : (Fin n → E) →ₗ[E] (Fin N → E) where
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[extTo, not_lt.2 h]`.
+-/
 theorem extTo_of_le (n N : ℕ) (x : Fin n → E) (i : Fin N) (h : n ≤ (i : ℕ)) : extTo n N x i = 0 := by
   simp [extTo, not_lt.2 h]
 
+/- English proof (translation)
+Simplify using `[extTo]`.
+-/
 theorem extTo_castLE (n N : ℕ) (hn : n ≤ N) (x : Fin n → E) (i : Fin n) :
     extTo n N x (Fin.castLE hn i) = x i := by
   simp [extTo]
 
+/- English proof (translation)
+Rewrite using `[diagForm_apply, diagForm_apply]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE hn) (Fin.castLE_injective hn).injOn (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `i _ hi`. Establish `: n ≤ (i : ℕ)`.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hi ⟨⟨i, not_le.1 hlt⟩, by simp, Fin.ext rfl⟩`. Rewrite using `[extTo_of_le n N y i this, mul_zero]`. Introduce `i _`. Rewrite using `[extTo_castLE, extTo_castLE, hneg]`.
+-/
 theorem extTo_isom (n N : ℕ) (hn : n ≤ N) (neg : Fin n → Bool) (neg' : Fin N → Bool)
     (hneg : ∀ i, neg' (Fin.castLE hn i) = neg i) (x y : Fin n → E) :
     diagForm N neg' (extTo n N x) (extTo n N y) = diagForm n neg x y := by
@@ -83,6 +108,11 @@ theorem extTo_isom (n N : ℕ) (hn : n ≤ N) (neg : Fin n → Bool) (neg' : Fin
   · intro i _
     rw [extTo_castLE, extTo_castLE, hneg]
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_left]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : ¬ (i : ℕ) = j` using `fun e => h (Fin.ext e)`.
+
+Simplify using `[h, h']`.
+-/
 theorem diag_single_single (N : ℕ) (neg : Fin N → Bool) (i j : Fin N) (a b : E) :
     diagForm N neg (Pi.single i a) (Pi.single j b) =
       if (i : ℕ) = j then star a * sgn (neg i) * b else 0 := by
@@ -92,11 +122,19 @@ theorem diag_single_single (N : ℕ) (neg : Fin N → Bool) (i j : Fin N) (a b :
   · have h' : ¬ (i : ℕ) = j := fun e => h (Fin.ext e)
     simp [h, h']
 
+/- English proof (translation)
+Rewrite using `[diagForm_single_right, extTo_of_le n N x j h]`. Simplify using the standard rewrite rules.
+-/
 theorem diag_ext_single (n N : ℕ) (neg : Fin N → Bool) (x : Fin n → E) (j : Fin N) (b : E)
     (h : n ≤ (j : ℕ)) : diagForm N neg (extTo n N x) (Pi.single j b) = 0 := by
   rw [diagForm_single_right, extTo_of_le n N x j h]
   simp
 
+/- English proof (translation)
+Use `⟨Pi.basisFun E (Fin N), (Pi.basisFun E (Fin N)).linearIndependent, (Pi.basisFun E (Fin N)).span_eq, rfl, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, Pi.basisFun_apply]`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false]`. Rewrite using `[diagForm_single]`.
+
+Simplify using `[sgn]`. Simplify using `only [if_true, LinearMap.neg_apply]`. Rewrite using `[diagForm_single]`. Apply the tactic sequence `split_ifs <;> simp [sgn]`.
+-/
 theorem ortho_sign (N : ℕ) (b : Bool) : Formalism.HermitianLatticesTheory.IsOrthoLattice
     (if b then -(diagForm (E := E) N (fun _ => b)) else diagForm (E := E) N (fun _ => b)) (stdLat N) N := by
   refine ⟨Pi.basisFun E (Fin N), (Pi.basisFun E (Fin N)).linearIndependent,
@@ -110,6 +148,13 @@ theorem ortho_sign (N : ℕ) (b : Bool) : Formalism.HermitianLatticesTheory.IsOr
     rw [diagForm_single]
     split_ifs <;> simp [sgn]
 
+/- English proof (translation)
+Establish `hyu : y * (-(σ y)) = 1` using `by rw [mul_neg, mul_comm, hy, neg_neg]`. Establish `hg : ∀ s : Fin N → Bool, Matrix.map (m` using `Fin N) (n := Fin N) (signSpace hstar N s).gram ι = Matrix.diagonal fun i : Fin N => (sgn (s i) : A) := by`. Introduce `s`. Use extensionality with `i j`. Use `(congrArg ι (stdSpace_gram_apply hstar N s _ _ i j)).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ι (if i = j then (sgn (s i) : E) else 0) = if i = j then (sgn (s i) : A) else 0`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, map_sgn]`. Apply the tactic sequence `refine ⟨diagUnit (fun i => if s i = t i then 1 else y) (fun i => if s i = t i then 1 else -(σ y)) (fun i => by split_ifs <;> simp [hyu]), ?_⟩`. Rewrite using `[hg, hg, diagUnit_val]`. Use `diag_congr σ _ _ _ fun i => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `cases hs : s i <;> cases ht : t i <;> simp [sgn, hy]`.
+-/
 theorem sign_congr {A : Type} [CommRing A] (σ : A →+* A) (ι : E →+* A) (y : A) (hy : σ y * y = -1)
     (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ) (s t : Fin N → Bool) :
     ∃ g : GL (Fin N) A, Formalism.UG.cT σ (g : Matrix (Fin N) (Fin N) A) *
@@ -137,29 +182,47 @@ variable (R : Ranks)
 
 def pY (j : ℕ) : ℕ := R.rankY j - (R.m - j) / 2
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.rankY, Ranks.r, Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rankY_zero : R.rankY 0 = R.k + 2 * R.rS + 1 := by
   obtain ⟨c, hc⟩ := R.m_even
   have := R.two_le_m
   simp only [Ranks.rankY, Ranks.r, Ranks.rS]
   omega
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Simplify using `only [pY, Ranks.rankY, Ranks.r, Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pY_zero : pY R 0 = R.k + R.rS := by
   obtain ⟨c, hc⟩ := R.m_even
   have := R.two_le_m
   simp only [pY, Ranks.rankY, Ranks.r, Ranks.rS]
   omega
 
+/- English proof (translation)
+Simplify using `[Ranks.N]`.
+-/
 theorem N_zero : R.N 0 = R.k := by simp [Ranks.N]
 
+/- English proof (translation)
+Simplify using `only [pY, Ranks.rankY, Ranks.r, Ranks.N, mul_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_le_pY (j : ℕ) (hj : j < R.m) : R.N j ≤ pY R j := by
   simp only [pY, Ranks.rankY, Ranks.r, Ranks.N, mul_add]
   omega
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.rankY, Ranks.r, Ranks.N, mul_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_top : R.N R.m = R.rankY R.m + 1 := by
   have := R.two_le_m
   simp only [Ranks.rankY, Ranks.r, Ranks.N, mul_add]
   omega
 
+/- English proof (translation)
+Use `R.m_add_three_le_k` as an intermediate fact. Simplify using `only [pY, Ranks.rankY, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sub_pY (j : ℕ) : R.rankY j - pY R j = (R.m - j) / 2 := by
   have := R.m_add_three_le_k
   simp only [pY, Ranks.rankY, Ranks.r]
@@ -171,12 +234,21 @@ def idxM (i : Fin R.rS) : Fin (R.rankY 0) := ⟨R.k + R.rS + i, by have := rankY
 
 def idxZ : Fin (R.rankY 0) := ⟨R.k + 2 * R.rS, by have := rankY_zero R; omega⟩
 
+/- English proof (translation)
+Simplify using `[cut, idxP, pY_zero]`.
+-/
 theorem cut_idxP (i : Fin R.rS) : cut _ (pY R 0) (idxP R i) = false := by
   simp [cut, idxP, pY_zero]
 
+/- English proof (translation)
+Simplify using `[cut, idxM, pY_zero]`.
+-/
 theorem cut_idxM (i : Fin R.rS) : cut _ (pY R 0) (idxM R i) = true := by
   simp [cut, idxM, pY_zero]
 
+/- English proof (translation)
+Simplify using `only [cut, idxZ, pY_zero, decide_eq_true_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cut_idxZ : cut _ (pY R 0) (idxZ R) = true := by
   simp only [cut, idxZ, pY_zero, decide_eq_true_eq]; omega
 
@@ -185,6 +257,13 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def hypVec (a b : E) (i : Fin R.rS) : Fin (R.rankY 0) → E :=
   Pi.single (idxP R i) a + Pi.single (idxM R i) b
 
+/- English proof (translation)
+Simplify using `only [hypVec, map_add, LinearMap.add_apply, diag_single_single, cut_idxP, cut_idxM]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `e1 : ¬ ((idxP R i : ℕ) = idxM R j)` using `by simp only [idxP, idxM]; omega`. Establish `e2 : ¬ ((idxM R i : ℕ) = idxP R j)` using `by simp only [idxP, idxM]; omega`.
+
+Rewrite using `[if_neg e1, if_neg e2]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sgn, sub_eq_add_neg]`. Establish `h' : (i : ℕ) ≠ j` using `fun e => h (Fin.ext e)`.
+
+Establish `e3 : ¬ ((idxP R i : ℕ) = idxP R j)` using `by simp only [idxP]; omega`. Establish `e4 : ¬ ((idxM R i : ℕ) = idxM R j)` using `by simp only [idxM]; omega`. Rewrite using `[if_neg e3, if_neg e4, if_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem hypVec_hypVec (a b c d : E) (i j : Fin R.rS) :
     diagForm _ (cut _ (pY R 0)) (hypVec R a b i) (hypVec R c d j) =
       if i = j then star a * c - star b * d else 0 := by
@@ -203,12 +282,20 @@ theorem hypVec_hypVec (a b c d : E) (i j : Fin R.rS) :
     rw [if_neg e3, if_neg e4, if_neg h]
     simp
 
+/- English proof (translation)
+Rewrite using `[hypVec, map_add, diag_ext_single, diag_ext_single, add_zero]`. Simplify using `only [idxM, N_zero]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [idxP, N_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ext_hypVec (x : Fin (R.N 0) → E) (a b : E) (i : Fin R.rS) :
     diagForm _ (cut _ (pY R 0)) (extTo (R.N 0) (R.rankY 0) x) (hypVec R a b i) = 0 := by
   rw [hypVec, map_add, diag_ext_single, diag_ext_single, add_zero]
   · simp only [idxM, N_zero]; omega
   · simp only [idxP, N_zero]; omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Rewrite using `[hypVec, map_add, diag_single_single, diag_single_single, if_neg, if_neg, add_zero]`. Simplify using `only [idxM, idxZ]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [idxP, idxZ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem z_hypVec (c a b : E) (i : Fin R.rS) :
     diagForm _ (cut _ (pY R 0)) (Pi.single (idxZ R) c) (hypVec R a b i) = 0 := by
   have hi := i.isLt
@@ -228,6 +315,9 @@ def spY (j : ℕ) : HSpace E := signSpace star_isIntegral (R.rankY j) (cut _ (pY
 
 def spW (j : ℕ) : HSpace E := signSpace star_isIntegral (R.rankY 0) (cut _ (R.k + j - 1))
 
+/- English proof (translation)
+Rewrite using `[spY, signSpace_cut_sig _ _ (pY R _) (Nat.sub_le _ _), sub_pY]`. Both sides reduce to the same expression.
+-/
 theorem spY_sig (j : ℕ) (τ : E →+* ℂ) : (spY (E := E) R j).sig τ = sigYD R j := by
   rw [spY, signSpace_cut_sig _ _ (pY R _) (Nat.sub_le _ _), sub_pY]
   rfl
@@ -323,6 +413,9 @@ end GlobalTheory.Mem.DiagSp
 open Formalism.BasicNotions NumberField IsDedekindDomain GlobalTheory.Mem
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `R F E _ _ _ _ _ _ cm T hT pz hpz vn`. Conclude with `⟨DiagSp.spacesStd R cm T hT pz hpz vn, rfl, fun j _ τ => DiagSp.spY_sig R j τ, rfl, Formalism.BasicNotions.Examples₂.star_isIntegral, fun _ => rfl⟩`.
+-/
 theorem GlobalTheory.Mem.exists_spaces : ∀ (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (T : ℕ) (hT : T.Prime) (pz : E) (hpz : star pz * pz = T) (vn : ℕ → Bool), ∃ S : Spaces R F E, S.T = T ∧ (∀ j, j ≤ R.m → ∀ τ : E →+* ℂ, (S.Y j).sig τ = sigYD R j) ∧ S.Vneg = vn ∧ ∃ hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x), ∀ j, S.X j = Formalism.BasicNotions.Examples₂.posSpace hstar (R.N j) := by
   intro R F E _ _ _ _ _ _ cm T hT pz hpz vn
   exact ⟨DiagSp.spacesStd R cm T hT pz hpz vn, rfl, fun j _ τ => DiagSp.spY_sig R j τ, rfl,

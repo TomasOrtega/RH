@@ -14,12 +14,22 @@ namespace GlobalTheory.StdUnn
 section
 variable (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map f σ (x ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`.
+-/
 private theorem realIdem_map {R S : Type} [CommRing R] [CommRing S] [Algebra F R] [Algebra F S] (f : R →ₐ[F] S)
     (σ : E →ₐ[F] E) (x : R) :
     (Algebra.TensorProduct.map f σ).toRingHom (x ⊗ₜ[F] (1 : E)) = f x ⊗ₜ[F] (1 : E) := by
   change Algebra.TensorProduct.map f σ (x ⊗ₜ[F] (1 : E)) = _
   rw [Algebra.TensorProduct.map_tmul, map_one]
 
+/- English proof (translation)
+Establish `hp : pairA F 1 0 * pairA F 1 0 = pairA F 1 0` using `Prod.ext (mul_one (1 : Ainf F)) (mul_zero (0 : Af F))`. Establish `h0 : sndA F (pairA F 1 0) = 0` using `rfl`. Establish `h1 : fstA F (pairA F 1 0) = 1` using `rfl`. Use `⟨pairA F 1 0 ⊗ₜ[F] (1 : E), ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, hp]`.
+
+Conclude with `realIdem_map F E (AlgHom.id F (AF F)) σ _`. Introduce `v`. Use `(realIdem_map F E (evFin F v) (AlgHom.id F E) _).trans ?_` and prove the remaining obligations. Rewrite using `[evFin, AlgHom.comp_apply, h0, map_zero, TensorProduct.zero_tmul]`. Introduce `w`.
+
+Use `(realIdem_map F E (evInf F w) (AlgHom.id F E) _).trans ?_` and prove the remaining obligations. Rewrite using `[evInf, AlgHom.comp_apply, h1, map_one, Algebra.TensorProduct.one_def]`. Rewrite using `[realIdem_map, h0, TensorProduct.zero_tmul]`. Rewrite using `[realIdem_map, h1, Algebra.TensorProduct.one_def]`.
+-/
 private theorem realIdem_gen (σ : E →ₐ[F] E) : ∃ e : AF F ⊗[F] E, e * e = e ∧ sigR (AF F) σ e = e ∧
     (∀ v, compFin F E v e = 0) ∧ (∀ w, compInf F E w e = 1) ∧
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom e = 0 ∧
@@ -42,6 +52,9 @@ private theorem realIdem_gen (σ : E →ₐ[F] E) : ∃ e : AF F ⊗[F] E, e * e
 
 end
 
+/- English proof (translation)
+Introduce `D` and use `realIdem_gen D.host.F D.host.E _`.
+-/
 theorem realIdem_exists : ∀ D : D7, ∃ e : AE D, e * e = e ∧ cA D e = e ∧ (∀ v, compFin D.host.F D.host.E v e = 0) ∧ (∀ w, compInf D.host.F D.host.E w e = 1) ∧ finPart D e = 0 ∧ infPart D e = 1 :=
   fun D => realIdem_gen D.host.F D.host.E _
 

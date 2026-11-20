@@ -8,20 +8,32 @@ noncomputable section
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [toW, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+-/
 lemma toW_res {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) {V W : X.Opens} (h : W ≤ V) (r : R) :
     (X.presheaf.map (homOfLE h).op).hom (toW p V r) = toW p W r := by
   simp only [toW, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
+/- English proof (translation)
+Simplify using `only [toW, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`.
+-/
 lemma app_toW {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) (f : Y ⟶ X) (W : X.Opens) (r : R) :
     (f.app W).hom (toW p W r) = toW (f ≫ p) (f ⁻¹ᵁ W) r := by
   simp only [toW, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE]
   erw [Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma toW_congr {X : Scheme.{0}} {p p' : X ⟶ Spec (CommRingCat.of R)} (h : p = p') (W : X.Opens) (r : R) :
     toW p W r = toW p' W r := by subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+-/
 lemma app_res {X Y : Scheme.{0}} (f : Y ⟶ X) {V W : X.Opens} (h : W ≤ V) (x : Γ(X, V)) :
     (Y.presheaf.map (homOfLE (f.preimage_mono h)).op).hom ((f.app V).hom x) =
       (f.app W).hom ((X.presheaf.map (homOfLE h).op).hom x) := by
@@ -30,6 +42,21 @@ lemma app_res {X Y : Scheme.{0}} (f : Y ⟶ X) {V W : X.Opens} (h : W ≤ V) (x 
 
 variable [IsDomain R]
 
+/- English proof (translation)
+Use `set π := pullback.fst p (tq J)`. Set `ι` to `{W : X.affineOpens // (W : X.Opens) ≤ V}`. Set `U : ι → X.Opens` to `fun W => W.1`. Establish `hloc : ∀ W : ι, ∃ g : Γ(X, U W), (X.presheaf.map (homOfLE W.2).op).hom x = toW p (U W) a * g`. Introduce `W`.
+
+Establish `h0 : (π.app (U W)).hom ((X.presheaf.map (homOfLE W.2).op).hom x) = 0`. Rewrite using `[← app_res, hx, map_zero]`. Establish `hm` using `Ideal.map_mono hJ ((app_fst_tq p J (U W) W.1.2).2 _ h0)`. Rewrite `hm` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨g, hg⟩` from `hm`.
+
+Conclude with `⟨g, by rw [← hg, mul_comm]⟩`. Use `choose g hg using hloc`. Establish `hcover : V ≤ iSup U`. Introduce `y hy`. Take `⟨W, hW, hyW, hWV⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hy`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨W, hW⟩, hWV⟩, hyW⟩`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 U g`. Introduce `i j`. Use `show (X.presheaf.map (homOfLE (inf_le_left : U i ⊓ U j ≤ U i)).op).hom (g i) = (X.presheaf.map (homOfLE (inf_le_right : U i ⊓ U j ≤ U j)).op).hom (g j)`. Rewrite using `[← sub_eq_zero]`.
+
+Apply `toW_mul_eq_zero p _ ha` to reduce the goal to its premises. Rewrite using `[mul_sub]`. Establish `e1` using `congrArg (X.presheaf.map (homOfLE (inf_le_left : U i ⊓ U j ≤ U i)).op).hom (hg i)`. Establish `e2` using `congrArg (X.presheaf.map (homOfLE (inf_le_right : U i ⊓ U j ≤ U j)).op).hom (hg j)`. Rewrite `e1`, `e2` using `[map_mul, toW_res, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+
+Rewrite using `[sub_eq_zero]`. Conclude with `e1.symm.trans e2`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf U V (fun i => homOfLE i.2) hcover g hcompat`. Use `⟨s, ?_⟩` and prove the remaining obligations. Apply `TopCat.Sheaf.eq_of_locally_eq' X.sheaf U V (fun i => homOfLE i.2) hcover` to reduce the goal to its premises.
+
+Introduce `i`. Use `show (X.presheaf.map (homOfLE i.2).op).hom x = (X.presheaf.map (homOfLE i.2).op).hom (toW p V a * (show Γ(X, V) from s))`. Rewrite using `[hg i, map_mul, toW_res]`. Conclude with `congrArg _ (hs i).symm`.
+-/
 theorem exists_div {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) [Flat p] {a : R} (ha : a ≠ 0)
     {J : Ideal R} (hJ : J ≤ Ideal.span {a})
     (V : X.Opens) (x : Γ(X, V)) (hx : (pullback.fst p (tq J)).app V x = 0) :
@@ -81,6 +108,13 @@ noncomputable section
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `e1 : (pullback.fst p (tq J)).app W (toW p W r) = ((pullback.snd p (tq J) ≫ tq J).appLE ⊤ (pullback.fst p (tq J) ⁻¹ᵁ W) le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Rewrite using `[toW, RingHom.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Rewrite using `[appLE_of_eq pullback.condition]`. Establish `e2 : (pullback.snd p (tq J) ≫ tq J).appLE ⊤ (pullback.fst p (tq J) ⁻¹ᵁ W) le_top = (tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) le_rfl ≫ (pullback.snd p (tq J)).appLE (tq J ⁻¹ᵁ ⊤) (pullback.fst p (tq J) ⁻¹ᵁ W) le_top` using `by erw [Scheme.Hom.appLE_comp_appLE]`.
+
+Establish `e3 : (tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) le_rfl = (Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv`. Rewrite using `[Scheme.Hom.appLE_eq_app, ← Scheme.Hom.appTop, (Iso.eq_comp_inv _).2 (Scheme.ΓSpecIso_naturality _), Category.assoc]`. Establish `eR : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+
+Establish `e4 : ((Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = 0`. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, eR]`. Use `erw [Ideal.Quotient.eq_zero_iff_mem.2 hr, map_zero]`. Rewrite using `[e1, e2, CommRingCat.comp_apply, e3]`. Use `erw [e4, map_zero]`.
+-/
 lemma app_toW_of_mem {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) (J : Ideal R) (W : X.Opens)
     {r : R} (hr : r ∈ J) : (pullback.fst p (tq J)).app W (toW p W r) = 0 := by
   have e1 : (pullback.fst p (tq J)).app W (toW p W r) =
@@ -111,6 +145,31 @@ variable [IsDomain R]
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `set π₁ := pullback.fst p (tq J₁)`. Use `set π₂ := pullback.fst p (tq J₂)`. Establish `: IsClosedImmersion (tq J₁)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `: IsClosedImmersion π₁` using `inferInstance`. Use `TopCat.Presheaf.section_ext (pullback p (tq J₂)).sheaf _ _ 0 fun z hz => ?_` and prove the remaining obligations.
+
+Establish `hemb : Topology.IsEmbedding π₁.base` using `π₁.isClosedEmbedding.isEmbedding`. Take `⟨V₀, hV₀, hV₀e⟩` from `hemb.isInducing.isOpen_iff.1 V.isOpen`. Establish `hz0 : π₁.base (ι.base z) ∈ V₀`. Establish `: ι.base z ∈ (π₁.base ⁻¹' V₀)` using `by rw [hV₀e]; exact hz`. Conclude with `this`.
+
+Take `⟨W, hW, hzW, hWV₀⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show π₁.base (ι.base z) ∈ (⟨V₀, hV₀⟩ : X.Opens) from hz0)`. Establish `hWV : π₁ ⁻¹ᵁ W ≤ V`. Introduce `u hu`. Establish `: u ∈ π₁.base ⁻¹' V₀` using `hWV₀ hu`. Rewrite `this` using `[hV₀e]`.
+
+Conclude with `this`. Take `⟨hs, hk⟩` from `app_fst_tq p J₁ W hW`. Take `⟨yt, hyt⟩` from `hs (((pullback p (tq J₁)).presheaf.map (homOfLE hWV).op).hom y)`. Establish `hay : π₁.app W (toW p W a * yt) = 0`. Rewrite using `[map_mul, hyt, app_toW, ← toW_res (π₁ ≫ p) hWV, ← map_mul, hy, map_zero]`.
+
+Establish `hm` using `Ideal.map_mono h1 (hk _ hay)`. Rewrite `hm` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hm`. Establish `hyt' : yt = toW p W (a ^ (e + 1)) * c`. Apply `sub_eq_zero.1` to reduce the goal to its premises.
+
+Apply `toW_mul_eq_zero p W ha` to reduce the goal to its premises. Rewrite using `[mul_sub, ← hc, map_pow, map_pow, pow_succ' _ (e + 1)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hW2 : π₂ ⁻¹ᵁ W ≤ ι ⁻¹ᵁ V`. Introduce `u hu`.
+
+Apply `hWV` to reduce the goal to its premises. Use `show π₁.base (ι.base u) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, hι]`. Conclude with `hu`. Establish `hW2' : π₂ ⁻¹ᵁ W ≤ ι ⁻¹ᵁ (π₁ ⁻¹ᵁ W)`.
+
+Introduce `u hu`. Use `show π₁.base (ι.base u) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, hι]`. Conclude with `hu`. Establish `hzW2 : z ∈ π₂ ⁻¹ᵁ W` using `by show π₂.base z ∈ W`.
+
+Rewrite using `[← hι, Scheme.Hom.comp_apply]`. Conclude with `hzW`. Establish `e5 : ((pullback p (tq J₂)).presheaf.map (homOfLE hW2).op).hom ((ι.app V) y) = (π₂.app W) yt`. Establish `a1 : ((pullback p (tq J₂)).presheaf.map (homOfLE hW2).op).hom ((ι.app V) y) = (ι.appLE V (π₂ ⁻¹ᵁ W) hW2) y`. Rewrite using `[Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply]`.
+
+Use `erw [Scheme.Hom.appLE_map]`. Establish `a2 : (ι.appLE V (π₂ ⁻¹ᵁ W) hW2) y = (ι.appLE (π₁ ⁻¹ᵁ W) (π₂ ⁻¹ᵁ W) hW2') (((pullback p (tq J₁)).presheaf.map (homOfLE hWV).op).hom y)`. Rewrite using `[← CommRingCat.comp_apply]`. Use `erw [Scheme.Hom.map_appLE]`. Establish `a3 : (ι.appLE (π₁ ⁻¹ᵁ W) (π₂ ⁻¹ᵁ W) hW2') ((π₁.app W) yt) = (π₂.app W) yt`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Rewrite using `[appLE_of_eq hι, Scheme.Hom.app_eq_appLE]`. Rewrite using `[a1, a2, ← hyt, a3]`. Establish `hzero : ((pullback p (tq J₂)).presheaf.map (homOfLE hW2).op).hom ((ι.app V) y) = 0`.
+
+Rewrite using `[e5, hyt', map_mul, app_toW_of_mem p J₂ W h2, zero_mul]`. Use `show (pullback p (tq J₂)).presheaf.germ _ z hz ((ι.app V) y) = (pullback p (tq J₂)).presheaf.germ _ z hz 0`. Rewrite using `[← TopCat.Presheaf.germ_res_apply _ (homOfLE hW2) z hzW2, hzero, map_zero, map_zero]`.
+-/
 theorem vanish_of_mul {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) [Flat p] {a : R} (ha : a ≠ 0)
     (e : ℕ) {J₁ J₂ : Ideal R} (h1 : J₁ ≤ Ideal.span {a ^ (e + 2)}) (h2 : a ^ (e + 1) ∈ J₂)
     (ι : pullback p (tq J₂) ⟶ pullback p (tq J₁)) (hι : ι ≫ pullback.fst p (tq J₁) = pullback.fst p (tq J₂))

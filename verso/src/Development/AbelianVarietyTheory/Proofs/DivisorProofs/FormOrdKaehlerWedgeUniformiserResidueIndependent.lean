@@ -10,6 +10,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ cK F m π y hπ hy hP hB`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Simplify using `[Place.ord] at hπ`. Establish `hπm : π ∈ F.ring` using `(F.ord_nonneg_iff hπ0).1 (by rw [hπ]; norm_num)`.
+
+Establish `hirr : Irreducible (⟨π, hπm⟩ : F.ring)`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible F.ring`. Establish `hne : (⟨π, hπm⟩ : F.ring) ≠ 0` using `fun h => hπ0 (congrArg Subtype.val h)`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hne ht`. Establish `e : π = ((u : F.ring) : K) * (t : K) ^ n`.
+
+Simplify using `using congrArg Subtype.val hu`. Establish `hu0 : ((u : F.ring) : K) ≠ 0` using `(u.isUnit.map F.ring.subtype).ne_zero`. Establish `ht0 : (t : K) ≠ 0` using `fun h => ht.ne_zero (Subtype.ext h)`. Establish `h1 : F.ord π = n`. Rewrite using `[e, F.ord_mul hu0 (pow_ne_zero _ ht0), F.ord_eq_zero u.isUnit, F.ord_pow, F.ord_irreducible ht]`.
+
+Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `rfl : n = 1 := by`. Rewrite `h1` using `[hπ]`. Conclude with `h1.symm` after adjusting the coercions. Rewrite using `[hu, pow_one]`.
+
+Conclude with `(irreducible_units_mul u).2 ht`. Use `formOrd_dForm_uniformiser_cons cK m F ⟨π, hπm⟩ (fun i => ⟨y i, hy i⟩) hirr ?_ ⟨_, hB⟩` and prove the remaining obligations. Introduce `P hP0`. Take `⟨h0, hi⟩` from `hP P hP0`. Establish `e : ((MvPolynomial.eval₂ F.const (fun i => (⟨y i, hy i⟩ : F.ring)) P : F.ring) : K) = MvPolynomial.eval₂ cK y P` using `MvPolynomial.eval₂_comp_left F.ring.subtype F.const (fun i => (⟨y i, hy i⟩ : F.ring)) P`.
+
+Use `IsUnit.of_mul_eq_one (⟨_, hi⟩ : F.ring) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((MvPolynomial.eval₂ F.const (fun i => (⟨y i, hy i⟩ : F.ring)) P : F.ring) : K) * _ = 1`. Rewrite using `[e]`. Conclude with `mul_inv_cancel₀ h0`.
+-/
 theorem formOrd_dForm_cons_of_ord_eq_one : ∀ {K : Type} [Field K] (cK : ℂ →+* K) (F : Place cK) (m : ℕ) (π : K) (y : Fin m → K),
   F.ord π = 1 → (∀ i, y i ∈ F.ring) →
   (∀ P : MvPolynomial (Fin m) ℂ, P ≠ 0 → MvPolynomial.eval₂ cK y P ≠ 0 ∧ (MvPolynomial.eval₂ cK y P)⁻¹ ∈ F.ring) →

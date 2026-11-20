@@ -9,6 +9,11 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.G6 Formalism.L2.SG.Pf.OrthogonalProjections
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭 hne`. Establish `oUW : ∀ x ∈ U, ∀ y ∈ orthK h U, h x y = 0` using `fun x hx y hy => h_UW hx hy`. Establish `oWU : ∀ x ∈ orthK h U, ∀ y ∈ U, h x y = 0` using `fun x hx y hy => h_WU hs hx hy`. Establish `hO` using `projOnto_of summand_localization riesz_hermitian_holds`. Establish `hgood : ∀ Λ, InFib h U 𝔭 M T Λ → Good hcU M T 𝔭 Λ` using `fun Λ hΛ => { iU := projection_into_holds K F V hK hF h hs hnd U (orthK h U) hcU oUW M hM 𝔭 h𝔭 Λ hΛ.1 hΛ.2.1 hΛ.2.2.1 iW := projection_into_holds K F V hK hF h hs hnd (orthK h U) U hcU.symm oWU T hT 𝔭 h𝔭 Λ hΛ.1 hΛ.2.1 hΛ.2.2.2 oU := hO K F V hK hF h hs hnd U (orthK h U) hcU oUW M …`.
+
+Take `⟨⟨⟨Λ₀, h0⟩⟩, -⟩` from `Nat.card_ne_zero.mp hne`. Conclude with `card_eq hs h𝔭 hM hT hgood h0`.
+-/
 theorem fibre_counting_holds : FibCount := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hcU M T hM hT 𝔭 h𝔭 hne
   have oUW : ∀ x ∈ U, ∀ y ∈ orthK h U, h x y = 0 := fun x hx y hy => h_UW hx hy

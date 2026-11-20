@@ -21,6 +21,25 @@ namespace LevelPeriods
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
+/- English proof (translation)
+Establish `hN0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Set `f : (Fin g → ℂ) →+ Additive (ptO Xo (Fu.u i Pm) ⟶ Xo.univ.t.G)` to `AddMonoidHom.mk' (fun z => Additive.ofMul (Fu.ex i Pm z)) fun z w => congrArg Additive.ofMul (Fu.ex_add i Pm hP z w)`. Set `e : LatMod Dw N →+ Additive (ptO Xo (Fu.u i Pm) ⟶ Xo.univ.t.G)` to `AddMonoidHom.mk' (fun q => Additive.ofMul (ev q)) fun a b => congrArg Additive.ofMul (hev.1 a b)`. Establish `hker : ∀ z, f z = 0 ↔ z ∈ Pm.range` using `fun z => Fu.ex_ker i Pm hP z`. Establish `hNN : ∀ z : Fin g → ℂ, N • ((N : ℂ)⁻¹ • z) = z` using `fun z => by`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`. Establish `hNN' : ∀ z : Fin g → ℂ, (N : ℂ)⁻¹ • (N • z) = z` using `fun z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN0, one_smul]`. Establish `hpow : ∀ q, ev q ^ N = 1` using `FullLevel.pow_eq_one Xo hev`. Establish `hex : ∀ q, ∃ a, e q = f ((N : ℂ)⁻¹ • Pm a)` using `fun q => by`.
+
+Take `⟨z, hz⟩` from `Fu.ex_onto i Pm hP (ev q)`. Establish `hz' : f z = e q` using `congrArg Additive.ofMul hz`. Establish `h0 : N • e q = 0` using `congrArg Additive.ofMul (hpow q)`. Rewrite `h0` using `[← hz', ← map_nsmul, hker]`. Take `⟨a, ha⟩` from `h0`.
+
+Conclude with `⟨a, by rw [ha, hNN', hz']⟩`. Use `choose a ha using hex`. Use `⟨a, fun q => ⟨congrArg Additive.toMul (ha q), hpow q⟩, fun n z hz u => ?_⟩` and prove the remaining obligations. Establish `hu : N • f ((N : ℂ)⁻¹ • Pm u) = 0`. Rewrite using `[← map_nsmul, hNN, hker]`.
+
+Conclude with `⟨u, rfl⟩`. Take `⟨q, hq⟩` from `FullLevel.onto_of_local Xo GlobalTheory.firstFiveLaws.1 hN hev (Fu.ex i Pm ((N : ℂ)⁻¹ • Pm u)) (congrArg Additive.toMul hu)`. Establish `hq' : e q = f ((N : ℂ)⁻¹ • Pm u)` using `congrArg Additive.ofMul hq`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hz ▸ Submodule.mem_top : q ∈ Submodule.span (𝓞 E) (Set.range z))`. Establish `hlin : ∀ (o : 𝓞 E) r, e (o • r) = f ((N : ℂ)⁻¹ • Pm (o • a r))` using `fun o r => by`.
+
+Establish `h1 : (N : ℂ)⁻¹ • Pm (o • a r) = fun k => ty k (o : E) * ((N : ℂ)⁻¹ • Pm (a r)) k`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hP.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ev r = Fu.ex i Pm ((N : ℂ)⁻¹ • Pm (a r))` using `congrArg Additive.toMul (ha r)`.
+
+Use `congrArg Additive.ofMul (?_ : ev (o • r) = Fu.ex i Pm _)` and prove the remaining obligations. Rewrite using `[h1, Fu.ex_lin i Pm hP, hev.2.1, h2]`. Establish `hsum : e q = f ((N : ℂ)⁻¹ • Pm (∑ b, cf b • a (z b)))`. Rewrite using `[← hcf, map_sum, map_sum, Finset.smul_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => hlin _ _`.
+
+Establish `h0 : f ((N : ℂ)⁻¹ • Pm (u - ∑ b, cf b • a (z b))) = 0`. Rewrite using `[map_sub, smul_sub, map_sub, ← hq', ← hsum, sub_self]`. Take `⟨v, hv⟩` from `(hker _).1 h0`. Use `⟨cf, v, ?_⟩` and prove the remaining obligations. Establish `h1 : N • v = u - ∑ b, cf b • a (z b)` using `hP.2.1 (by rw [map_nsmul, hv, hNN])`.
+
+Rewrite using `[h1, add_sub_cancel]`.
+-/
 theorem exists_periods (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ))
     (hP : IsPeriod (Fu.Di i) ty Pm) (N : ℕ) (hN : 0 < N)
     (ev : LatMod Dw N → (ptO Xo (Fu.u i Pm) ⟶ Xo.univ.t.G)) (hev : IsFullLev Xo N (Fu.u i Pm) ev) :
@@ -74,6 +93,11 @@ theorem exists_periods (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) (Pm : (Fu.Di i)
 
 end LevelPeriods
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g ty Fu i Pm y hP hy N hN ev hev`. Take `⟨x, _, _, _, _, _, _, _⟩` from `y`. Simplify using `only at hy ev hev ⊢`. Substitute `hy` using the available equality. Take `⟨a, h1, h2⟩` from `LevelPeriods.exists_periods Fu i Pm hP N hN ev hev`.
+
+Conclude with `⟨a, fun q => ⟨congrArg CommaMorphism.left (h1 q).1, (h1 q).2⟩, h2⟩`.
+-/
 theorem fullLevel_eq_exp_periods :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (i : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ)) (y : FrPt Xo c (CAt σ)), IsPeriod (Fu.Di i) ty Pm → y.x = Fu.u i Pm → ∀ (N : ℕ), 0 < N → ∀ ev : LatMod Dw N → (ptO Xo y.x ⟶ Xo.univ.t.G), IsFullLev Xo N y.x ev → ∃ a : LatMod Dw N → (Fu.Di i).La, (∀ q, (ev q).left = (Fu.ex i Pm ((N : ℂ)⁻¹ • Pm (a q))).left ∧ ev q ^ N = 1) ∧ ∀ (n : ℕ) (z : Fin n → LatMod Dw N), Submodule.span (𝓞 E) (Set.range z) = ⊤ → ∀ u : (Fu.Di i).La, ∃ (cf : Fin n → 𝓞 E) (v : (Fu.Di i).La), u = ∑ b, cf b • a (z b) + N • v := by
   intro E _ _ _ H Dw l Xo c σ g ty Fu i Pm y hP hy N hN ev hev

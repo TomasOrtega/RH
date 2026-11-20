@@ -14,6 +14,25 @@ namespace PositivityTheory.Rg.Sw.Glob
 open Classical
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι ctx w hw`. Establish `hθ` using `ctx.hθ`. Establish `hψ` using `ctx.hψ`. Establish `hl` using `ctx.hl`. Establish `hfr` using `ctx.hfr`.
+
+Establish `hω` using `ctx.hω`. Take `⟨𝓕, hcov⟩` from `ctx.hμ`. Establish `: μ.IsAddHaarMeasure` using `hcov.1`. Establish `ht : tLoc l τ ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero Real.pi_ne_zero) (lNe D ψ θ l hψ hθ hl τ)`. Establish `hmt : -tLoc l τ ≠ 0` using `neg_ne_zero.2 ht`.
+
+Take `⟨c₀, hc₀⟩` from `FTH.ww_act hω w hw`. Use `⟨1, FTH.Aw ψ V θ τ fr μ, fun Ψ x => c₀ * FTH.Aw ψ V θ τ fr μ Ψ (-x), one_ne_zero, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Establish `hW : ∀ f (hf : IsSch f), (ω w ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩).1 = tens θ τ fr (fun u => 1 * ftLoc ε (tLoc l τ) f u) (FTH.Aw ψ V θ τ fr μ Ψ)` using `fun f hf => FTH.weyl_tens hθ hψ hl hfr μ hω w hw Ψ hΨ f hf`. Establish `hWi : ∀ f (hf : IsSch f), (ω w⁻¹ ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩).1 = tens θ τ fr (fun u => (1 : ℂ)⁻¹ * ftLoc ε (-tLoc l τ) f u) (fun x => c₀ * FTH.Aw ψ V θ τ fr μ Ψ (-x))`. Introduce `f hf`.
+
+Rewrite using `[FTH.inv_eq_www w hw, map_mul]`. Use function extensionality and compare the values at `x`. Rewrite using `[Module.End.mul_apply, hc₀, congrFun (hW f hf) (-x)]`. Simplify using `only [tens, FTH.compAt_neg, Matrix.mul_neg, inv_one, one_mul]`. Establish `h` using `FTD.ftLoc_neg ε (tLoc l τ) f (fr⁻¹ * compAt θ τ x)`.
+
+Use `erw [h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : ∀ x x' : Mx D V.rank n, (∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x') → x.map (finPart D) = x'.map (finPart D) → (∀ τ', τ' ≠ τ → compAt θ τ' (-x) = compAt θ τ' (-x')) ∧ (-x).map (finPart D) = (-x').map (finPart D)`. Introduce `x x' hx hf`. Use `⟨fun τ' h => by rw [FTH.compAt_neg, FTH.compAt_neg, hx τ' h], ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hf i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, RingHom.map_neg] at this ⊢`. Rewrite using `[this]`. Use `⟨⟨fun x x' hx hf => FTH.Aw_away hθ hfr.1 ψ μ Ψ x x' hx hf, fun g hg => ?_⟩, ⟨fun x x' hx hf => ?_, fun g hg => ?_⟩, fun f hf => ⟨FTD.isSch_ftLoc ε _ ht 1 f hf, FTD.isSch_ftLoc ε _ hmt (1 : ℂ)⁻¹ f hf, hW f hf, hWi f hf⟩⟩` and prove the remaining obligations.
+
+Take `⟨f, hf, hfg⟩` from `FTD.ftLoc_surj ε (tLoc l τ) ht g hg`. Establish `e : tens θ τ fr g (FTH.Aw ψ V θ τ fr μ Ψ) = (ω w ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩).1`. Rewrite using `[hW f hf, ← hfg]`. Simplify using `only [one_mul]`. Rewrite using `[e]`.
+
+Conclude with `(ω w _).2`. Take `⟨h1, h2⟩` from `hneg x x' hx hf show c₀ * FTH.Aw ψ V θ τ fr μ Ψ (-x) = c₀ * FTH.Aw ψ V θ τ fr μ Ψ (-x')`. Rewrite using `[FTH.Aw_away hθ hfr.1 ψ μ Ψ (-x) (-x') h1 h2]`. Take `⟨f, hf, hfg⟩` from `FTD.ftLoc_surj ε (-tLoc l τ) hmt g hg`. Establish `e : tens θ τ fr g (fun x => c₀ * FTH.Aw ψ V θ τ fr μ Ψ (-x)) = (ω w⁻¹ ⟨tens θ τ fr f Ψ, hΨ.2 f hf⟩).1`.
+
+Rewrite using `[hWi f hf, ← hfg]`. Simplify using `only [inv_one, one_mul]`. Rewrite using `[e]`. Conclude with `(ω w⁻¹ _).2`.
+-/
 theorem fTfact : FTfact := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι ctx w hw
   have hθ := ctx.hθ

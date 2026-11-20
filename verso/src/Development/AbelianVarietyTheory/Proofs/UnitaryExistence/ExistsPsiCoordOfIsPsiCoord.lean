@@ -14,6 +14,11 @@ namespace GlobalTheory.PeriodFormCompare
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Establish `e : DegPre.toOpen (R` using `R) ⊤ r = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r := by`. Simplify using `[DegPre.toOpen]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (jK R).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom).hom r = _`. Rewrite using `[Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem generic_val (r : R) :
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom
       (((jK R).app ⊤).hom (DegPre.toOpen (R := R) ⊤ r)) = algebraMap R (FractionRing R) r := by
@@ -25,6 +30,11 @@ theorem generic_val (r : R) :
   rw [Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, h, e⟩`. Conclude with `⟨_, ⟨j, h, hj, rfl⟩, (congrArg _ e.symm).trans (generic_val r)⟩`. Introduce and unpack `⟨_, ⟨j, h, hj, rfl⟩, e⟩`. Use `⟨j, hj, h, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).commRingCatIsoToRingEquiv.injective ((generic_val r).trans e.symm)`.
+-/
 theorem psiCoord_iff (D : DegPre R) (χ : D.X) (r : R) :
     PsiCoord D χ r ↔ ∃ x, IsPsiCoord D χ x ∧ x.val = algebraMap R (FractionRing R) r := by
   constructor
@@ -35,12 +45,20 @@ theorem psiCoord_iff (D : DegPre R) (χ : D.X) (r : R) :
     exact (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).commRingCatIsoToRingEquiv.injective
       ((generic_val r).trans e.symm)
 
+/- English proof (translation)
+Take `⟨x, hx, e⟩` from `(psiCoord_iff D χ r).1 h`. Establish `: x = toUnitK r h0` using `Units.ext e`. Conclude with `this ▸ hx`.
+-/
 theorem isPsiCoord_toUnitK {D : DegPre R} {χ : D.X} {r : R} (h : PsiCoord D χ r) (h0 : r ≠ 0) :
     IsPsiCoord D χ (toUnitK r h0) := by
   obtain ⟨x, hx, e⟩ := (psiCoord_iff D χ r).1 h
   have : x = toUnitK r h0 := Units.ext e
   exact this ▸ hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Conclude with `(PeriodFormEdge.psiIn_iff hr ⊤).2 trivial`. Introduce `hI`. Take `⟨j, hj⟩` from `PsiCoordLocal.exists_chart_top D χ`.
+
+Establish `h` using `PsiCoordLocal.generic_le D χ j hj`. Take `⟨s, -, e⟩` from `hI j ⊤ (isAffineOpen_top _) hj h`. Take `⟨r, rfl⟩` from `PsiCoordLocal.toOpen_top_bijective.2 s`. Conclude with `⟨r, j, hj, h, e⟩`.
+-/
 theorem exists_psiCoord_iff [IsLocalRing R] (D : DegPre R) (χ : D.X) :
     (∃ r, PsiCoord D χ r) ↔ D.PsiIn χ ⊤ := by
   constructor
@@ -53,6 +71,11 @@ theorem exists_psiCoord_iff [IsLocalRing R] (D : DegPre R) (χ : D.X) :
     obtain ⟨r, rfl⟩ := PsiCoordLocal.toOpen_top_bijective.2 s
     exact ⟨r, j, hj, h, e⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `(exists_psiCoord_iff D χ).2 hI`. Take `⟨y, hy, e⟩` from `(psiCoord_iff D χ r).1 hr`. Take `⟨u, hu⟩` from `hx.unique hy`. Establish `: x.val = algebraMap R (FractionRing R) (u * r)`. Rewrite using `[hu, map_mul, ← e]`.
+
+Both sides reduce to the same expression. Conclude with `⟨u * r, (psiCoord_iff D χ _).2 ⟨x, hx, this⟩, this⟩`.
+-/
 theorem exists_psiCoord_of_isPsiCoord [IsLocalRing R] {D : DegPre R} {χ : D.X} (hI : D.PsiIn χ ⊤)
     {x : (FractionRing R)ˣ} (hx : IsPsiCoord D χ x) :
     ∃ r, PsiCoord D χ r ∧ x.val = algebraMap R (FractionRing R) r := by
@@ -63,11 +86,17 @@ theorem exists_psiCoord_of_isPsiCoord [IsLocalRing R] {D : DegPre R} {χ : D.X} 
     rw [hu, map_mul, ← e]; rfl
   exact ⟨u * r, (psiCoord_iff D χ _).2 ⟨x, hx, this⟩, this⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 0`. Substitute `h` using the available equality. Conclude with `(PsiZero.main R D.toPre).1 D.tau_bimult`. Conclude with `(PsiZero.main R D.toPre).2 χ I ⊤ le_top (D.psi_pos χ h)`.
+-/
 theorem psiIn_top {I : Ideal R} (D : DegData R I) (χ : D.toPre.X) : D.toPre.PsiIn χ ⊤ := by
   by_cases h : χ = 0
   · subst h; exact (PsiZero.main R D.toPre).1 D.tau_bimult
   · exact (PsiZero.main R D.toPre).2 χ I ⊤ le_top (D.psi_pos χ h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ordPsi_eq_psiOrd [IsLocalRing R] (D : DegData R (maximalIdeal R)) (χ : D.toPre.X) :
     ordPsi D.toPre χ = psiOrd D χ := rfl
 
@@ -75,6 +104,13 @@ section DVR
 
 variable [IsDiscreteValuationRing R]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Use `⟨n, PeriodFormEdge.iSup_pow_mem hϖ u n, ?_⟩` and prove the remaining obligations. Establish `e : toUnitK ((u : R) * ϖ ^ n) h0 = Units.map (algebraMap R (FractionRing R)).toMonoidHom u * toUnitK ϖ hϖ.ne_zero ^ n` using `by ext; simp [toUnitK]`. Establish `h1 : (ord_vw R).toFun 1 = 0` using `by simpa using (ord_vw R).map_unit 1`.
+
+Rewrite using `[e, (ord_vw R).map_mul, (ord_vw R).map_unit, zero_add]`. Use `clear e h0`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, (ord_vw R).map_mul, ih, ord_vw_uniformiser _ hϖ.maximalIdeal_eq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_ord (r : R) (h0 : r ≠ 0) : ∃ n : ℕ,
     (⨆ (k : ℕ) (_ : r ∈ maximalIdeal R ^ k), (k : ℕ∞)) = n ∧ (ord_vw R).toFun (toUnitK r h0) = n := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
@@ -91,6 +127,11 @@ theorem exists_ord (r : R) (h0 : r ≠ 0) : ∃ n : ℕ,
   | succ n ih =>
     rw [pow_succ, (ord_vw R).map_mul, ih, ord_vw_uniformiser _ hϖ.maximalIdeal_eq]; push_cast; rfl
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `(exists_psiCoord_iff D χ).2 hI`. Establish `h0` using `PsiCoordLocal.ne_zero_of_coord hr`. Take `⟨n, h1, h2⟩` from `exists_ord r h0`. Use `⟨n, ?_, (psiVal_eq _ (isPsiCoord_toUnitK hr h0)).trans h2⟩` and prove the remaining obligations. Unfold `ordPsi`.
+
+Simplify using `only [PeriodFormEdge.psiIn_iff hr]`. Conclude with `h1`.
+-/
 theorem exists_ordPsi {D : DegPre R} {χ : D.X} (hI : D.PsiIn χ ⊤) :
     ∃ n : ℕ, ordPsi D χ = n ∧ psiOrd_vw D χ = n := by
   obtain ⟨r, hr⟩ := (exists_psiCoord_iff D χ).2 hI
@@ -101,6 +142,15 @@ theorem exists_ordPsi {D : DegPre R} {χ : D.X} (hI : D.PsiIn χ ⊤) :
   simp only [PeriodFormEdge.psiIn_iff hr]
   exact h1
 
+/- English proof (translation)
+Establish `hn : ∀ r : R, (psiCoord D χ).val ≠ algebraMap R (FractionRing R) r` using `fun r e => hI ((exists_psiCoord_iff D χ).1 ⟨r, (psiCoord_iff D χ r).2 ⟨_, psiCoord_spec D χ, e⟩⟩)`. Break down `ValuationRing.isInteger_or_isInteger R (psiCoord D χ).val with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Conclude with `absurd hr.symm (hn r)`. Establish `h0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `inv_ne_zero (psiCoord D χ).ne_zero (by simpa using hr.symm)`. Establish `hm : r ∈ maximalIdeal R`. Assume the negation of the conclusion as `hu`. Take `⟨u, rfl⟩` from `notMem_maximalIdeal.1 hu`. Use `hn (u⁻¹ : Rˣ) ?_` and prove the remaining obligations.
+
+Rewrite using `[map_units_inv, hr, inv_inv]`. Establish `e : psiCoord D χ * toUnitK r h0 = 1` using `by ext; simp [toUnitK, hr]`. Establish `h1 : (ord_vw R).toFun 1 = 0` using `by simpa using (ord_vw R).map_unit 1`. Establish `h2` using `(ord_vw R).map_mul (psiCoord D χ) (toUnitK r h0)`. Establish `h3` using `ord_vw_pos h0 hm`.
+
+Rewrite `h2` using `[e, h1]`. Express the relevant statement in the definitionally equal form `(ord_vw R).toFun (psiCoord D χ) < 0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem psiOrd_vw_neg {D : DegPre R} {χ : D.X} (hI : ¬ D.PsiIn χ ⊤) : psiOrd_vw D χ < 0 := by
   have hn : ∀ r : R, (psiCoord D χ).val ≠ algebraMap R (FractionRing R) r := fun r e =>
     hI ((exists_psiCoord_iff D χ).1 ⟨r, (psiCoord_iff D χ r).2 ⟨_, psiCoord_spec D χ, e⟩⟩)
@@ -123,12 +173,20 @@ theorem psiOrd_vw_neg {D : DegPre R} {χ : D.X} (hI : ¬ D.PsiIn χ ⊤) : psiOr
     change (ord_vw R).toFun (psiCoord D χ) < 0
     omega
 
+/- English proof (translation)
+Distinguish the cases in `hI : D.PsiIn χ ⊤`. Take `⟨n, h1, h2⟩` from `exists_ordPsi hI`. Rewrite using `[h1, h2, Int.toNat_natCast]`. Rewrite using `[PeriodFormEdge.ordPsi_of_pole D χ hI, Int.toNat_eq_zero.2 (psiOrd_vw_neg hI).le]`. Both sides reduce to the same expression.
+-/
 theorem ordPsi_eq_toNat (D : DegPre R) (χ : D.X) : ordPsi D χ = ((psiOrd_vw D χ).toNat : ℕ∞) := by
   by_cases hI : D.PsiIn χ ⊤
   · obtain ⟨n, h1, h2⟩ := exists_ordPsi hI
     rw [h1, h2, Int.toNat_natCast]
   · rw [PeriodFormEdge.ordPsi_of_pole D χ hI, Int.toNat_eq_zero.2 (psiOrd_vw_neg hI).le]; rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hI`. Use `psiOrd_vw_neg hI` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Introduce `hI`. Take `⟨n, h1, h2⟩` from `exists_ordPsi hI`. Rewrite using `[h1, h2, ENat.toNat_coe]`.
+-/
 theorem ordPsi_toNat_eq_iff (D : DegPre R) (χ : D.X) :
     ((ordPsi D χ).toNat : ℤ) = psiOrd_vw D χ ↔ D.PsiIn χ ⊤ := by
   constructor
@@ -140,14 +198,23 @@ theorem ordPsi_toNat_eq_iff (D : DegPre R) (χ : D.X) :
     obtain ⟨n, h1, h2⟩ := exists_ordPsi hI
     rw [h1, h2, ENat.toNat_coe]
 
+/- English proof (translation)
+Rewrite using `[betaZ, (ordPsi_toNat_eq_iff D _).2 ha, (ordPsi_toNat_eq_iff D _).2 hb, (ordPsi_toNat_eq_iff D _).2 hab]`. Both sides reduce to the same expression.
+-/
 theorem betaZ_eq {D : DegPre R} {a b : D.X} (ha : D.PsiIn a ⊤) (hb : D.PsiIn b ⊤) (hab : D.PsiIn (a + b) ⊤) :
     betaZ D a b = periodForm_vw D a b := by
   rw [betaZ, (ordPsi_toNat_eq_iff D _).2 ha, (ordPsi_toNat_eq_iff D _).2 hb, (ordPsi_toNat_eq_iff D _).2 hab]
   rfl
 
+/- English proof (translation)
+The claim follows from `exists_ord (p : R) hp.ne_zero`.
+-/
 theorem ordNat_eq {p : ℕ} (hp : IsOverPrime R p) : ∃ e : ℕ, ordNat R p = e ∧ ramIdx hp = e :=
   exists_ord (p : R) hp.ne_zero
 
+/- English proof (translation)
+Take `⟨e, h1, h2⟩` from `ordNat_eq hp`. Rewrite using `[betaP, periodForm_vp_eq, betaZ_eq ha hb hab, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem betaP_eq {p : ℕ} (hp : IsOverPrime R p) {D : DegPre R} {a b : D.X} (ha : D.PsiIn a ⊤) (hb : D.PsiIn b ⊤)
     (hab : D.PsiIn (a + b) ⊤) : betaP D p a b = (periodForm_vp hp D a b : ℝ) := by
   obtain ⟨e, h1, h2⟩ := ordNat_eq hp
@@ -163,6 +230,11 @@ variable [IsLocalRing R] {C : Type} [NormedField C]
 def ReadsAt (v : LatticeVal R ℝ) (f : R →+* C) (p : ℕ) : Prop :=
   ∀ (r : R) (h0 : r ≠ 0), f r ≠ 0 → v.toFun (toUnitK r h0) = -Real.logb p ‖f r‖
 
+/- English proof (translation)
+Take `⟨r, hr, hf⟩` from `h`. Establish `h : ∃ r, PsiCoord D χ r` using `⟨r, hr⟩`. Establish `h0` using `PsiCoordLocal.ne_zero_of_coord h.choose_spec`. Take `⟨u, hu⟩` from `PsiCoordLocal.exists_unit_of_coord h.choose_spec hr`. Establish `hf' : f h.choose ≠ 0` using `fun e => hf (by rw [hu, map_mul, e, mul_zero])`.
+
+Rewrite using `[vPsiAt, dif_pos h, psiVal_eq v (isPsiCoord_toUnitK h.choose_spec h0), hv _ h0 hf']`.
+-/
 theorem vPsiAt_eq_psiVal {v : LatticeVal R ℝ} {f : R →+* C} {p : ℕ} (hv : ReadsAt v f p) {D : DegPre R} {χ : D.X}
     (h : ∃ r, PsiCoord D χ r ∧ f r ≠ 0) : vPsiAt D f p χ = psiVal v D χ := by
   obtain ⟨r, hr, hf⟩ := h
@@ -172,6 +244,9 @@ theorem vPsiAt_eq_psiVal {v : LatticeVal R ℝ} {f : R →+* C} {p : ℕ} (hv : 
   have hf' : f h.choose ≠ 0 := fun e => hf (by rw [hu, map_mul, e, mul_zero])
   rw [vPsiAt, dif_pos h, psiVal_eq v (isPsiCoord_toUnitK h.choose_spec h0), hv _ h0 hf']
 
+/- English proof (translation)
+Rewrite using `[betaAt, vPsiAt_eq_psiVal hv ha, vPsiAt_eq_psiVal hv hb, vPsiAt_eq_psiVal hv hab, periodForm]`.
+-/
 theorem betaAt_eq_periodForm {v : LatticeVal R ℝ} {f : R →+* C} {p : ℕ} (hv : ReadsAt v f p) {D : DegPre R}
     {a b : D.X} (ha : ∃ r, PsiCoord D a r ∧ f r ≠ 0) (hb : ∃ r, PsiCoord D b r ∧ f r ≠ 0)
     (hab : ∃ r, PsiCoord D (a + b) r ∧ f r ≠ 0) : betaAt D f p a b = periodForm v D a b := by
@@ -179,6 +254,21 @@ theorem betaAt_eq_periodForm {v : LatticeVal R ℝ} {f : R →+* C} {p : ℕ} (h
 
 omit [IsLocalRing R] in
 
+/- English proof (translation)
+Use `haveI : (RingHom.ker f).IsPrime := RingHom.ker_isPrime f`. Set `S` to `Localization.AtPrime (RingHom.ker f)`. Establish `hf : ∀ y : (RingHom.ker f).primeCompl, IsUnit (f y)` using `fun y => Ne.isUnit y.2`. Establish `hk : ∀ y : (RingHom.ker f).primeCompl, IsUnit (algebraMap R (FractionRing R) y)` using `fun y => (toUnitK y.1 (fun e => y.2 (by rw [e]; exact zero_mem _))).isUnit`. Set `g : S →+* C` to `IsLocalization.lift hf`.
+
+Set `i : S →+* FractionRing R` to `IsLocalization.lift hk`. Establish `hi : Function.Injective i`. Use `(IsLocalization.lift_injective_iff hk).2 fun x y => ⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (IsLocalization.lift (S := S) hk) e`. Rewrite using `[IsFractionRing.injective R (FractionRing R) e]`.
+
+Set `w : Additive Sˣ →+ ℝ` to `AddMonoidHom.mk' (fun u => -Real.logb p ‖g u.toMul.val‖) fun x y => by`. Rewrite using `[toMul_add, Units.val_mul, map_mul, norm_mul, Real.logb_mul (norm_ne_zero_iff.2 (x.toMul.isUnit.map g).ne_zero) (norm_ne_zero_iff.2 (y.toMul.isUnit.map g).ne_zero), neg_add]`. Set `ι : Additive Sˣ →+ Additive (FractionRing R)ˣ` to `(Units.map i.toMonoidHom).toAdditive`. Establish `hι : Function.Injective ι` using `fun x y e => Additive.toMul.injective (Units.map_injective (f := i.toMonoidHom) hi (congrArg Additive.toMul e))`. Take `⟨v, hv⟩` from `(Module.Baer.of_divisible ℝ).extension_property_addMonoidHom ι hι w`.
+
+Establish `key : ∀ (r : R) (h0 : r ≠ 0), f r ≠ 0 → v (Additive.ofMul (toUnitK r h0)) = -Real.logb p ‖f r‖`. Introduce `r h0 hr`. Establish `hu : IsUnit (algebraMap R S r)` using `IsLocalization.map_units S (⟨r, hr⟩ : (RingHom.ker f).primeCompl)`. Establish `e : Additive.ofMul (toUnitK r h0) = ι (Additive.ofMul hu.unit)`. Use `congrArg Additive.ofMul (Units.ext ?_)` and prove the remaining obligations.
+
+Conclude with `(IsLocalization.lift_eq hk r).symm`. Rewrite using `[e]`. Use `(DFunLike.congr_fun hv _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-Real.logb p ‖g (algebraMap R S r)‖ = _`. Rewrite using `[IsLocalization.lift_eq]`.
+
+Use `⟨⟨fun x => v (Additive.ofMul x), fun x y => map_add v _ _, fun u => ?_⟩, key⟩` and prove the remaining obligations. Establish `h1 : ‖f u‖ = 1`. Establish `h1 : ‖f u‖ * ‖f (u⁻¹ : Rˣ)‖ = 1` using `by rw [← norm_mul, ← map_mul]; simp`. Establish `h2` using `hle (u⁻¹ : Rˣ)`. Establish `h3` using `hle u`.
+
+Use polynomial arithmetic with `[norm_nonneg (f u), norm_nonneg (f (u⁻¹ : Rˣ))]`. Establish `e : Units.map (algebraMap R (FractionRing R)).toMonoidHom u = toUnitK u.val u.ne_zero` using `Units.ext rfl`. Rewrite using `[e, key _ _ (u.isUnit.map f).ne_zero, h1, Real.logb_one, neg_zero]`.
+-/
 theorem exists_readsAt (f : R →+* C) (hle : ∀ r, ‖f r‖ ≤ 1) (p : ℕ) : ∃ v : LatticeVal R ℝ, ReadsAt v f p := by
   haveI : (RingHom.ker f).IsPrime := RingHom.ker_isPrime f
   let S := Localization.AtPrime (RingHom.ker f)
@@ -220,6 +310,11 @@ theorem exists_readsAt (f : R →+* C) (hle : ∀ r, ‖f r‖ ≤ 1) (p : ℕ) 
 
 variable {φ : FractionRing R →+* C}
 
+/- English proof (translation)
+Establish `h` using `(exists_psiCoord_iff D χ).2 hI`. Establish `h0` using `PsiCoordLocal.ne_zero_of_coord h.choose_spec`. Rewrite using `[vPsiAt, dif_pos h, psiOrdAt_vp, psiVal_eq _ (isPsiCoord_toUnitK h.choose_spec h0)]`. Express the relevant statement in the definitionally equal form `-Real.logb p ‖φ (algebraMap R _ h.choose)‖ = Real.log ‖φ (algebraMap R _ h.choose)‖ / _ * _`. Use `(hφ.log_norm_p_neg hp).2.ne` as an intermediate fact.
+
+Simplify using `only [Real.logb]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem vPsiAt_eq_mul (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) {D : DegPre R} {χ : D.X}
     (hI : D.PsiIn χ ⊤) :
     vPsiAt D (φ.comp (algebraMap R (FractionRing R))) p χ = psiOrdAt_vp hφ hp D χ * -Real.logb p ‖(p : C)‖ := by
@@ -231,6 +326,9 @@ theorem vPsiAt_eq_mul (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) {D :
   simp only [Real.logb]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[betaAt, vPsiAt_eq_mul hφ hp ha, vPsiAt_eq_mul hφ hp hb, vPsiAt_eq_mul hφ hp hab]`. Simplify using `only [periodFormAt_vp, periodForm, psiOrdAt_vp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem betaAt_eq_mul (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) {D : DegPre R} {a b : D.X}
     (ha : D.PsiIn a ⊤) (hb : D.PsiIn b ⊤) (hab : D.PsiIn (a + b) ⊤) :
     betaAt D (φ.comp (algebraMap R (FractionRing R))) p a b =
@@ -239,9 +337,17 @@ theorem betaAt_eq_mul (hφ : IsCentred φ) {p : ℕ} (hp : IsOverPrime R p) {D :
   simp only [periodFormAt_vp, periodForm, psiOrdAt_vp]
   ring
 
+/- English proof (translation)
+Rewrite using `[hn, Real.logb_inv, neg_neg, Real.logb_self_eq_one (by exact_mod_cast hp.one_lt)]`.
+-/
 theorem neg_logb_eq_one {p : ℕ} (hp : p.Prime) (hn : ‖(p : C)‖ = (p : ℝ)⁻¹) : -Real.logb p ‖(p : C)‖ = 1 := by
   rw [hn, Real.logb_inv, neg_neg, Real.logb_self_eq_one (by exact_mod_cast hp.one_lt)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, rfl⟩`. Conclude with `⟨φ.injective.comp (IsFractionRing.injective R _), hφ.le_one, hφ.lt_one⟩`. Introduce and unpack `⟨hi, h1, h2⟩`. Use `⟨IsFractionRing.lift hi, ⟨fun r => ?_, fun r hr => ?_⟩, RingHom.ext fun r => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsFractionRing.lift_algebraMap]`. Conclude with `h1 r`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Conclude with `h2 r hr`. Conclude with `IsFractionRing.lift_algebraMap hi r`.
+-/
 theorem exists_isCentred_iff (f : R →+* C) :
     (∃ φ : FractionRing R →+* C, IsCentred φ ∧ φ.comp (algebraMap R (FractionRing R)) = f) ↔
       Function.Injective f ∧ (∀ r, ‖f r‖ ≤ 1) ∧ ∀ r ∈ maximalIdeal R, ‖f r‖ < 1 := by
@@ -256,6 +362,11 @@ theorem exists_isCentred_iff (f : R →+* C) :
 
 end At
 
+/- English proof (translation)
+Use `⟨fun R _ _ => psiCoord_iff, fun R _ _ _ D χ => ⟨rfl, (exists_psiCoord_iff _ χ).2 (psiIn_top D χ), fun x => ⟨exists_psiCoord_of_isPsiCoord (psiIn_top D χ), fun ⟨r, hr, e⟩ => ?_⟩⟩, fun R _ _ _ => ⟨fun D χ => ⟨ordPsi_eq_toNat D χ, ordPsi_toNat_eq_iff D χ⟩, fun p hp => ordNat_eq hp, …` and prove the remaining obligations. Take `⟨y, hy, e'⟩` from `(psiCoord_iff _ χ r).1 hr`. Establish `: x = y` using `Units.ext (e.trans e'.symm)`. Conclude with `this ▸ hy`. Establish `h1` using `fun χ => vPsiAt_eq_mul hφ hp (psiIn_top D χ)`.
+
+Establish `h2` using `fun a b => betaAt_eq_mul hφ hp (psiIn_top D a) (psiIn_top D b) (psiIn_top D (a + b))`. Conclude with `⟨h1, h2, fun hn => ⟨fun χ => by rw [h1, neg_logb_eq_one hp.prime hn, mul_one], fun a b => by rw [h2, neg_logb_eq_one hp.prime hn, mul_one]⟩⟩`.
+-/
 theorem main :
     (∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (χ : D.X) (r : R),
       PsiCoord D χ r ↔ ∃ x, IsPsiCoord D χ x ∧ x.val = algebraMap R (FractionRing R) r) ∧

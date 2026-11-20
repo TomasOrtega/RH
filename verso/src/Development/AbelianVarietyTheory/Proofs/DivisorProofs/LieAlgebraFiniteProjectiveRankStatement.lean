@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieProj.lie_finite_projective_rank | exact GlobalTheory.LieProj.lie_finite_projective_rank | (intros; apply GlobalTheory.LieProj.lie_finite_projective_rank <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_algebra_finite_projective_rank : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)),
     Module.Finite R X.Lie ∧ Module.Projective R X.Lie ∧ ∀ p, Module.rankAtStalk (R := R) X.Lie p = Module.finrank ℚ F := by
   first | exact @GlobalTheory.LieProj.lie_finite_projective_rank | exact GlobalTheory.LieProj.lie_finite_projective_rank | (intros; apply GlobalTheory.LieProj.lie_finite_projective_rank <;> assumption)

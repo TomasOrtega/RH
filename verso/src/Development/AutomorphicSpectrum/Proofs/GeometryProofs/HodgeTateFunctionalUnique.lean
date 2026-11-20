@@ -9,11 +9,21 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.HT
 
+/- English proof (translation)
+Simplify using `[valAt, map_sub]`.
+-/
 private lemma valAt_sub' {B : Type} [CommRing B] {X : Scheme.{0}} (y : Spec (CommRingCat.of B) ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (a b : Γ(X, U)) :
     valAt y U h (a - b) = valAt y U h a - valAt y U h b := by
   simp [valAt, map_sub]
 
+/- English proof (translation)
+Use `choose f hf using h`. Use `⟨{ toFun := f, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Rewrite using `[mul_add, ← hf, ← hf, ← hf, map_add]`.
+
+Introduce `r x`. Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← hf, map_smul, smul_eq_mul, hf x]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `e show d e = c • f e`. Rewrite using `[hf e, smul_eq_mul]`.
+-/
 private lemma exists_dual_of_dvd {R : Type} [CommRing R] [IsDomain R] {L : Type} [AddCommGroup L]
     [Module R L] (c : R) (hc : c ≠ 0) (d : Module.Dual R L) (h : ∀ e, c ∣ d e) :
     ∃ u : Module.Dual R L, d = c • u := by
@@ -31,6 +41,21 @@ private lemma exists_dual_of_dvd {R : Type} [CommRing R] [IsDomain R] {L : Type}
     show d e = c • f e
     rw [hf e, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ S G _ _ x N i hT hsm hN L _ _ M χ w w' hw`. Take `⟨s, hs, hsv⟩` from `hw`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s', hs', hsv'⟩`. Establish `hss : s' = s`.
+
+Establish `h0` using `GlobalTheory.T.section_eq_zero_of_values R T Γ ⊤ (s' - s) (fun t h => by`. Rewrite using `[valAt_sub', hs' t, hs t, sub_self])`. Conclude with `sub_eq_zero.mp h0`. Substitute `hss` using the available equality. Establish `hdvd : ∀ e, (N : R) ∣ w' e - w e`.
+
+Introduce `e`. Take `⟨v, hv1, hv2, hv3⟩` from `hsv e`. Take `⟨v', hv1', hv2', hv3'⟩` from `hsv' e`. Establish `hvv : v' = v` using `(GlobalTheory.T.existsUnique_tangent_dual_number R T Γ S G x N i hT L M e).unique ⟨hv1', hv2'⟩ ⟨hv1, hv2⟩`. Substitute `hvv` using the available equality.
+
+Rewrite `hv3'` using `[hv3]`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {(N : R)}) (w e) = Ideal.Quotient.mk (Ideal.span {(N : R)}) (w' e)`. Simplify using `using congrArg TrivSqZeroExt.snd hv3'`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Conclude with `h1.symm`.
+
+Take `⟨u, hu⟩` from `exists_dual_of_dvd (N : R) hN (w' - w) (fun e => by simpa using hdvd e)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul R, ← hu]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨u, rfl⟩`.
+
+Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, hv1, hv2, hv3⟩` from `hsv e`. Use `⟨v, hv1, hv2, ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk (Ideal.span {(N : R)}) ((N • u) e) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, ← Nat.cast_smul_eq_nsmul R, LinearMap.smul_apply, smul_eq_mul]`.
+
+Conclude with `dvd_mul_right _ _`. Rewrite using `[hv3, LinearMap.add_apply, map_add, h0, add_zero]`.
+-/
 theorem isHT_iff : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Smooth G.hom → (N : R) ≠ 0 → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ) (w w' : Module.Dual R L), Γ.IsHT i M N χ w → (Γ.IsHT i M N χ w' ↔ ∃ u : Module.Dual R L, w' = w + N • u) := by
   intro R _ _ T _ _ Γ S G _ _ x N i hT hsm hN L _ _ M χ w w' hw
   obtain ⟨s, hs, hsv⟩ := hw

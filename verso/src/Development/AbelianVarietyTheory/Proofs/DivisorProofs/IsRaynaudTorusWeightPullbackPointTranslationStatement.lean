@@ -11,5 +11,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeatTransWt.isWt_pbT_tr | exact GlobalTheory.HeatTransWt.isWt_pbT_tr | (intros; apply GlobalTheory.HeatTransWt.isWt_pbT_tr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isRaynaudTorusWeight_pullback_pointTranslation : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) (α : Q.X) (U U' : Y.H.left.Opens), U' ≤ GlobalTheory.HeatTrans.tr Y.H x ⁻¹ᵁ U → ∀ f : Γ(Y.H.left, U), IsWt Y α U f → IsWt Y α U' (pbT (GlobalTheory.HeatTrans.tr Y.H x) f U') := by
   first | exact @GlobalTheory.HeatTransWt.isWt_pbT_tr | exact GlobalTheory.HeatTransWt.isWt_pbT_tr | (intros; apply GlobalTheory.HeatTransWt.isWt_pbT_tr <;> assumption)

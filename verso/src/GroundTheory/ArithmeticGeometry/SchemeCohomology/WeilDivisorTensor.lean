@@ -10,11 +10,17 @@ universe u
 
 variable {X : Scheme.{u}} [IsIntegral X] [IsNoetherian X] [IsLocallyFactorial X]
 
+/- English proof (translation)
+Introduce `V h` and use `localBasis_bijective D U g hg V h`.
+-/
 lemma isBasisOn_localBasis (D : WeilDivisor X) (U : X.Opens) (g : (X.functionField)ˣ)
     (hg : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z) :
     IsBasisOn ((preMod X).obj (divisorSheaf D)) U (localBasis D U g hg) :=
   fun V h => localBasis_bijective D U g hg V h
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, g, hxU, hg⟩` from `WeilDivisor.exists_local_equation D x`. Establish `hg' : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z` using `fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)`. Conclude with `⟨U, hxU, localBasis D U g hg', isBasisOn_localBasis D U g hg'⟩`.
+-/
 theorem isInvertibleSheaf_divisorSheaf (D : WeilDivisor X) :
     IsInvertibleSheaf (divisorSheaf D) := by
   intro x
@@ -23,6 +29,11 @@ theorem isInvertibleSheaf_divisorSheaf (D : WeilDivisor X) :
     fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)
   exact ⟨U, hxU, localBasis D U g hg', isBasisOn_localBasis D U g hg'⟩
 
+/- English proof (translation)
+Use `⟨fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨W₁, hy₁, h₁⟩` from `hf.1 y`. Take `⟨W₂, hy₂, h₂⟩` from `hg.1 y`. Conclude with `⟨W₁ ⊓ W₂, ⟨hy₁, hy₂⟩, fun z hz => by simp only [h₁ z hz.1, h₂ z hz.2]⟩`. Simplify using `only [map_mul, Finsupp.coe_add, Pi.add_apply, WithZero.exp_add]`.
+
+Conclude with `mul_le_mul' (hf.2 y hy) (hg.2 y hy)`.
+-/
 lemma mul_mem_divisorSections_add {D E : WeilDivisor X} {V : X.Opens}
     {f g : V → X.functionField} (hf : f ∈ divisorSections D V) (hg : g ∈ divisorSections E V) :
     (fun y => f y * g y) ∈ divisorSections (D + E) V := by
@@ -62,6 +73,9 @@ noncomputable def divisorTensorHom (D E : WeilDivisor X) :
     divisorSheaf D ⊗ divisorSheaf E ⟶ divisorSheaf (D + E) :=
   tensorLift (divisorTensorMul D E)
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Z.ord_mul (Units.ne_zero g) (Units.ne_zero h)]`.
+-/
 lemma ord_mul_units (Z : PrimeDivisor X) (g h : (X.functionField)ˣ) :
     Z.ord ((g * h : (X.functionField)ˣ) : X.functionField) =
       Z.ord (g : X.functionField) + Z.ord (h : X.functionField) := by

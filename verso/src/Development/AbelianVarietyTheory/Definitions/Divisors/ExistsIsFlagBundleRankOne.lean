@@ -21,10 +21,20 @@ def IsFlagBundle {B Y : Scheme.{0}} (π : Y ⟶ B) {ι : Type} (E : ι → B.Mod
       e.hom ≫ (fl' a).ι i = (Scheme.Modules.pullback g').map ((fl a).ι i) ≫
         (Scheme.Modules.pullbackComp g' π).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr w).hom.app (E a)
 
+/- English proof (translation)
+Introduce `_ g _` and use `⟨g, ⟨Category.comp_id g, fun a => a.elim⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩`.
+-/
 theorem isFlagBundle_empty (B : Scheme.{0}) (E : Empty → B.Modules) (n : Empty → ℕ)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback (𝟙 B)).obj (E a)) (n a)) : IsFlagBundle (𝟙 B) E n fl :=
   fun _ g _ => ⟨g, ⟨Category.comp_id g, fun a => a.elim⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩
 
+/- English proof (translation)
+Introduce `T g fl'`. Use `⟨g, ⟨Category.comp_id g, fun a i => ?_⟩, fun _ ⟨w, _⟩ => (Category.comp_id _).symm.trans w⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Use `(fl a).isIso_last` as an intermediate fact.
+
+Use `(fl' a).isIso_last` as an intermediate fact. Conclude with `⟨asIso ((Scheme.Modules.pullback g).map ((fl a).ι (Fin.last 1)) ≫ (Scheme.Modules.pullbackComp g (𝟙 B)).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr (Category.comp_id g)).hom.app (E a)) ≪≫ (asIso ((fl' a).ι (Fin.last 1))).symm, by simp⟩`. Consider the case `cast i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `z : Limits.IsZero ((Scheme.Modules.pullback g).obj ((fl a).F (0 : Fin 1).castSucc))` using `isVB_zero_iff.1 (((fl a).isVB _).pullback g)`.
+
+Conclude with `⟨z.iso (isVB_zero_iff.1 ((fl' a).isVB _)), z.eq_of_src _ _⟩`.
+-/
 theorem isFlagBundle_rank_one (B : Scheme.{0}) {ι : Type} (E : ι → B.Modules)
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback (𝟙 B)).obj (E a)) 1) : IsFlagBundle (𝟙 B) E (fun _ => 1) fl := by
   intro T g fl'
@@ -43,6 +53,9 @@ theorem isFlagBundle_rank_one (B : Scheme.{0}) {ι : Type} (E : ι → B.Modules
       isVB_zero_iff.1 (((fl a).isVB _).pullback g)
     exact ⟨z.iso (isVB_zero_iff.1 ((fl' a).isVB _)), z.eq_of_src _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => .ofRankOne ((hE a).pullback _), isFlagBundle_rank_one B E _⟩`.
+-/
 theorem exists_isFlagBundle_rank_one (B : Scheme.{0}) {ι : Type} (E : ι → B.Modules) (hE : ∀ a, IsVB (E a) 1) :
     ∃ fl, IsFlagBundle (𝟙 B) E (fun _ => 1) fl :=
   ⟨fun a => .ofRankOne ((hE a).pullback _), isFlagBundle_rank_one B E _⟩
@@ -117,6 +130,9 @@ def LatAt : Prop := ∀ B : ℝ, 2 ≤ B → ∀ R : ℝ, 2 ≤ R → Y.arDeg (s
 
 def bcFl : ℝ := (1 / (Y.j : ℝ) - 1 / ((Y.N : ℝ) - Y.j)) * testI Y
 
+/- English proof (translation)
+Establish `h₁ : (Y.j : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.one_le_iff_ne_zero.1 Y.j_pos)`. Establish `h₂ : (Y.N : ℝ) - Y.j ≠ 0` using `(sub_pos.2 (Nat.cast_lt.2 Y.j_lt)).ne'`. Rewrite using `[bcFl]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bcFl_eq : bcFl Y =
     -(((Y.j : ℝ) - 1) / Y.j) * testI Y + -(((Y.N : ℝ) - Y.j - 1) / ((Y.N : ℝ) - Y.j)) * -testI Y := by
   have h₁ : (Y.j : ℝ) ≠ 0 := Nat.cast_ne_zero.2 (Nat.one_le_iff_ne_zero.1 Y.j_pos)
@@ -125,9 +141,15 @@ theorem bcFl_eq : bcFl Y =
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[bcFl, show (Y.N : ℝ) - Y.j = Y.j by rw [h]; push_cast; ring, sub_self, zero_mul]`.
+-/
 theorem bcFl_of_eq_two_mul (h : Y.N = 2 * Y.j) : bcFl Y = 0 := by
   rw [bcFl, show (Y.N : ℝ) - Y.j = Y.j by rw [h]; push_cast; ring, sub_self, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[bcFl, show (Y.N : ℝ) = 3 by rw [h]; norm_num, show (Y.j : ℝ) = 1 by rw [h']; norm_num]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (h : Y.N = 3) (h' : Y.j = 1) : bcFl Y = testI Y / 2 := by
   rw [bcFl, show (Y.N : ℝ) = 3 by rw [h]; norm_num, show (Y.j : ℝ) = 1 by rw [h']; norm_num]
   ring
@@ -136,6 +158,9 @@ def HhTest (hh : Fn Y) : Prop := hh (testF Y) = bcFl Y - testI Y
 
 def DRAt (r : ℝ) : Prop := Tendsto (sieg Y ∅) atTop (𝓝 (Y.vol * bcFl Y - 2 * r * Y.vol * testI Y))
 
+/- English proof (translation)
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HhTest.vol_mul {hh : Fn Y} (h : HhTest Y hh) (r s : ℝ) :
     Y.vol * bcFl Y - 2 * r * Y.vol * testI Y + s * (2 * Y.vol * testI Y) =
       Y.vol * (hh (testF Y) - 2 * testI Y * (r - 1 / 2 - s)) := by

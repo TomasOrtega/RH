@@ -26,6 +26,13 @@ namespace GlobalTheory.LowerBlockParam
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨T, hT, hu⟩` from `u.2`. Establish `hM` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ T).1 hT`. Establish `hκ' : κ ∈ levS s.V s.β s.L` using `hκ`. Use `show (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v (g * κ) = _ * (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v g`. Rewrite using `[← hu]`.
+
+Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul, LinearEquiv.coe_coe]`. Rewrite using `[hM.lev f κ hκ' g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_lev {c : Com D} {s : PiLocalization₂ D} (u : s.CC c) (v : SmT s.M) {κ : GA D s.V}
     (hκ : κ ∈ Lev.levG s.V s.β s.L) (g : GA D s.V) :
     PiLocalization₂.val u v (g * κ) = Lev.levChi s.V s.β s.L κ * PiLocalization₂.val u v g := by
@@ -41,12 +48,28 @@ theorem val_lev {c : Com D} {s : PiLocalization₂ D} (u : s.CC c) (v : SmT s.M)
   | add x y hx hy =>
     simp only [map_add, Pi.add_apply, hx, hy]; ring
 
+/- English proof (translation)
+Introduce `D s j v φ ι hι y`. Take `⟨ε, -, hy⟩` from `hι`. Rewrite using `[← (hy y).1]`. Conclude with `GlobalTheory.ChainOnto.LevelFacts.emb_mem_GfC s.V v _`.
+-/
 theorem chart_fin : ∀ (D : D7) (s : PiLocalization₂ D) (j : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (ι : GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v) →* GA D s.V), IsChart s j φ ι → ∀ y, ι y ∈ GfC s.V := by
   intro D s j v φ ι hι y
   obtain ⟨ε, -, hy⟩ := hι
   rw [← (hy y).1]
   exact GlobalTheory.ChainOnto.LevelFacts.emb_mem_GfC s.V v _
 
+/- English proof (translation)
+Introduce `D c w hw j hj s hs PP hPP v φ hφ ξl hξ ι hι ϖ e R d hR u`. Take `⟨T, hT, hu⟩` from `u.2`. Establish `hM` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ T).1 hT`. Set `T' : MMap s.M` to `∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) • heckeOn s.M {ι (y * GlobalTheory.ZonalCellDecomposition.mtor ϖ e)} T`. Establish `hT'v : ∀ vv h, T' vv h = ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * T vv (h * ι (y * GlobalTheory.ZonalCellDecomposition.mtor ϖ e))`.
+
+Introduce `vv h`. Simplify using `[T', heckeOn, postOn_apply, heckeLin_apply]`. Establish `h0 : T' ∈ Mult c.θ s.M ∅ (Lev.levChi s.V s.β s.L)`. Use `Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.HeckeParts.isMultMap_heckeOn hM (fun a ha => by rw [Finset.mem_singleton] at ha; subst ha; exact chart_fin D s j v φ ι hι _) (fun _ _ hk => hk.elim)`.
+
+Establish `h1` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ T').1 h0`. Establish `hIs : IsMultMap c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) T'`. Use `⟨h1.aut, h1.cusp, ?_, h1.equiv, h1.cont⟩` and prove the remaining obligations. Introduce `vv κ hκ g`. Rewrite using `[hT'v, hT'v]`.
+
+Conclude with `GlobalTheory.T.lowerBlockDoubleCosetOperator_keeps_levelCharacter D c w hw j hj s hs PP hPP v φ hφ ξl hξ ι hι ϖ e R d hR (T vv) (fun κ hκ g => hM.lev vv κ hκ g) κ hκ g`. Use `⟨⟨PiTensorProduct.lift T', (mem_multT _ _ _ _ _).2 (by` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ T').2 hIs)⟩, fun v' => ?_⟩`. Use function extensionality and compare the values at `h`.
+
+Use `show PiTensorProduct.lift T' v' h = ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v' (h * ι (y * GlobalTheory.ZonalCellDecomposition.mtor ϖ e))`. Rewrite using `[← hu]`. Proceed by induction on `v' using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul, LinearEquiv.coe_coe, hT'v, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => by ring` and prove the remaining obligations. Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply, hx, hy, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hecke_keeps : ∀ D : D7, ForStageQ D fun c w j s => ∀ PP ∈ w.Q, ∀ (v : HeightOneSpectrum (𝓞 D.host.F))
     (φ : SplitProj D v), IsProjAt φ PP → ∀ ξl, LiftsChar φ PP ξl (w.ξ PP) → ∀ ι, IsChart s j φ ι →
     ∀ (ϖ : (Fv D.host.F v)ˣ) (e : Blocks j D.R.t → ℤ) (R : Finset (GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v)))
@@ -82,6 +105,49 @@ theorem hecke_keeps : ∀ D : D7, ForStageQ D fun c w j s => ∀ PP ∈ w.Q, ∀
   | add x y hx hy =>
     simp only [map_add, Pi.add_apply, hx, hy, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Introduce `D hS c w hw j hj s hs`. Take `⟨-, -, hinj, -⟩` from `hS c w hw j hj s hs`. Establish `hdict` using `GlobalTheory.T.splitPlaceChart_parahoric_level_stabiliser_height D c w hw j hj s hs`. Establish `htype : ∀ PP ∈ w.Q, ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ ξl, LiftsChar φ PP ξl (w.ξ PP) → ∀ ι, IsChart s j φ ι → ∀ y ∈ parahoric (Fv D.host.F v) _ _, ∀ d : (Fv D.host.F v)ˣ, (d : Fv D.host.F v) = y.1.toBlocks₂₂.det → ∀ (u : s.CC c) v' g, P …`. Introduce `PP hPP v φ hφ ξl hξ ι hι y hy d hd u v' g`.
+
+Take `⟨-, -, -, -, hch⟩` from `hdict PP hPP v φ hφ`. Take `⟨-, hlev, hchi⟩` from `hch ι hι`. Rewrite using `[val_lev u v' ((hlev y).2 hy) g, hchi ξl hξ y hy d hd]`. Establish `hπ : ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (ι : GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v) →* GA D s.V) y (F : GA D s.V → ℂ), ((GlobalTheory.PRep.rightReg ℂ (GA D s.V) ℂ).comp ι) y F = fun h => F (h * ι y)`. Introduce `v ι y F`.
+
+Both sides reduce to the same expression. Use `clear hdict`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x v0 hne hQ v' PP hPP v φ hφ xx ϖ hϖ ξl hξ ι hι`. Take `⟨hty0, hcard, hT0⟩` from `hQ PP hPP v φ hφ xx ϖ hϖ ξl hξ ι hι`.
+
+Use `clear hQ`. Take `⟨g0, hg0⟩` from `Function.ne_iff.1 hne`. Establish `hunit : ∀ y ∈ parahoric (Fv D.host.F v) (Fin D.R.r) (Blocks j D.R.t), ∀ d : (Fv D.host.F v)ˣ, (d : Fv D.host.F v) = y.1.toBlocks₂₂.det → starRingEnd ℂ (((ξl d)⁻¹ : ℂˣ) : ℂ) = ((ξl d : ℂˣ) : ℂ)`. Introduce `y hy d hd`. Establish `h1` using `congrFun (hty0 y hy d hd) g0`.
+
+Rewrite `h1` using `[hπ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[htype PP hPP v φ hφ ξl hξ ι hι y hy d hd x v0 g0, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 hg0) h1`. Use `⟨?_, hcard, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy d hd`. Use function extensionality and compare the values at `h`. Rewrite using `[hπ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[htype PP hPP v φ hφ ξl hξ ι hι y hy d hd x v' h, map_mul, hunit y hy d hd]`.
+
+Introduce `S R dd hR`. Establish `e0` using `hT0 S R dd hR`. Take `⟨u', hu'⟩` from `hecke_keeps D c w hw j hj s hs PP hPP v φ hφ ξl hξ ι hι ϖ (GlobalTheory.ParHecke.indic S) R dd hR x`. Generalize the expression as in `GlobalTheory.ParHecke.genVal _ _ _ _ _ = c0 at e0 ⊢`. Establish `hcoef : ∀ y ∈ R, starRingEnd ℂ ((ξl (dd y) : ℂˣ) : ℂ) = (((ξl (dd y))⁻¹ : ℂˣ) : ℂ)`.
+
+Introduce `y hy`. Rewrite using `[← hunit y (hR.1 y hy).1 (dd y) (hR.1 y hy).2, Complex.conj_conj]`. Establish `hv0 : PiLocalization₂.val u' v0 = (starRingEnd ℂ c0) • PiLocalization₂.val x v0`. Rewrite using `[hu']`. Use function extensionality and compare the values at `h`.
+
+Use `congrArg (starRingEnd ℂ) (congrFun e0 h)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hπ] at this`. Simplify using `only [map_sum (starRingEnd ℂ), (starRingEnd ℂ).map_mul, Complex.conj_conj] at this`. Rewrite using `[Pi.smul_apply, smul_eq_mul, this]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[hunit y (hR.1 y hy).1 (dd y) (hR.1 y hy).2]`. Establish `hv0ne : v0 ≠ 0`. Introduce and unpack `rfl; exact hne (by simp [PiLocalization₂.val])`. Establish `heq : u' = (starRingEnd ℂ c0) • x`. Use `sub_eq_zero.1 (hinj _ v0 hv0ne ?_)` and prove the remaining obligations.
+
+Simplify using `only [PiLocalization₂.val, Submodule.coe_sub, Submodule.coe_smul, LinearMap.sub_apply, LinearMap.smul_apply] at hv0 ⊢`. Rewrite using `[hv0, sub_self]`. Use function extensionality and compare the values at `h`. Use `congrArg (starRingEnd ℂ) (congrFun (hu' v') h)` as an intermediate fact. Rewrite `this` using `[heq]`.
+
+Simplify using `only [PiLocalization₂.val, Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, (starRingEnd ℂ).map_mul, Complex.conj_conj, map_sum (starRingEnd ℂ)] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hπ]`. Use `this.trans (Finset.sum_congr rfl fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[hcoef y hy]`. Introduce `hj0 x v' PP hPP v φ hφ xx ϖ hϖ ξl hξ ι hι`.
+
+Substitute `hj0` using the available equality. Establish `hE : IsEmpty (Blocks 0 D.R.t)` using `⟨fun b => b.1.elim0⟩`. Establish `hd1 : ∀ y : GL (Fin D.R.r ⊕ Blocks 0 D.R.t) (Fv D.host.F v), ∀ d : (Fv D.host.F v)ˣ, (d : Fv D.host.F v) = y.1.toBlocks₂₂.det → d = 1`. Introduce `y d hd`. Use `ext`.
+
+Rewrite using `[hd, Matrix.det_isEmpty]`. Both sides reduce to the same expression. Establish `hty : (fun g => starRingEnd ℂ (PiLocalization₂.val x v' g)) ∈ GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection.typeSpace ((GlobalTheory.PRep.rightReg ℂ (GA D s.V) ℂ).comp ι) ξl`. Introduce `y hy d hd`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[hπ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[htype PP hPP v φ hφ ξl hξ ι hι y hy d hd x v' h, hd1 y d hd]`. Simplify using the standard rewrite rules. Use `⟨hty, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (0 : Multiset ℂˣ).card = _`. Simplify using the standard rewrite rules. Introduce `S R dd hR`. Establish `hS0 : S = ∅` using `Finset.eq_empty_of_isEmpty S`. Substitute `hS0` using the available equality.
+
+Establish `hfun : (fun i : Fin D.R.r ⊕ Blocks 0 D.R.t => ϖ ^ (Sum.elim (0 : Fin D.R.r → ℤ) (GlobalTheory.ParHecke.indic (∅ : Finset (Blocks 0 D.R.t))) i)) = 1`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Simplify using the standard rewrite rules. Conclude with `isEmptyElim i`.
+
+Establish `hg : (GlobalTheory.ZonalCellDecomposition.mtor ϖ (GlobalTheory.ParHecke.indic (∅ : Finset (Blocks 0 D.R.t))) : GL (Fin D.R.r ⊕ Blocks 0 D.R.t) (Fv D.host.F v)) = 1`. Unfold `GlobalTheory.ZonalCellDecomposition.mtor GlobalTheory.GLDoubling.torusElt`. Rewrite using `[hfun, map_one]`. Rewrite `hR`, the goal using `[hg]`. Take `⟨j0, ⟨hj0R, -⟩, huniq⟩` from `hR.2 1 (one_mem _)`.
+
+Establish `hRs : R = {j0}`. Use extensionality with `y`. Simplify using `only [Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hy; exact huniq y ⟨hy, by simpa using inv_mem (hR.1 y hy).1⟩`.
+
+Introduce and unpack `rfl`. Conclude with `hj0R`. Substitute `hRs` using the available equality. Rewrite using `[Finset.sum_singleton, mul_one, hty j0 (hR.1 j0 hj0R).1 (dd j0) (hR.1 j0 hj0R).2, smul_smul]`. Establish `hq : qPar c PP xx 0 = 0` using `rfl`.
+
+Simplify using `[GlobalTheory.ParHecke.genVal, hq, Multiset.esymm]`.
+-/
 theorem qOfVal : ∀ D : D7, SoftQ D → QOfVal D := by
   intro D hS c w hw j hj s hs
   obtain ⟨-, -, hinj, -⟩ := hS c w hw j hj s hs

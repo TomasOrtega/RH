@@ -19,6 +19,11 @@ def ConclRange (σ : K →+* ℂ) (Y : Set (G → ℂ)) : Prop :=
   (∀ Θ ∈ Y, ∃ ΘK : G → K, (∀ t, σ (ΘK t) = Θ t) ∧ IsAbsIrrChar ΘK) ∧
     ∃ T : GoodSet K G, (Set.range fun (s : T.S) (t : G) => σ (LinearMap.trace K (T.W s) (T.tau s t))) = Y
 
+/- English proof (translation)
+Take `⟨h1, T, rfl⟩` from `h`. Set `T' : GoodSet K G` to `{ S := {s : T.S // (fun t => σ (LinearMap.trace K (T.W s) (T.tau s t))) ∈ Y'} W := fun s => T.W s.1 tau := fun s => T.tau s.1 irr := fun s => T.irr s.1 inj := fun s s' e => Subtype.ext (T.inj e) }`. Use `⟨fun Θ hΘ => h1 Θ (hY hΘ), T', Set.ext fun Θ => ⟨?_, fun hΘ => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨s, rfl⟩`. Conclude with `s.2`.
+
+Take `⟨s, rfl⟩` from `hY hΘ`. Conclude with `⟨⟨s, hΘ⟩, rfl⟩`.
+-/
 theorem ConclRange.mono {σ : K →+* ℂ} {Y Y' : Set (G → ℂ)} (h : ConclRange σ Y) (hY : Y' ⊆ Y) : ConclRange σ Y' := by
   classical
   obtain ⟨h1, T, rfl⟩ := h
@@ -50,6 +55,11 @@ def TorusGood (ι : P → (Fbar g)ˣ →* ℂˣ) (η : P → Fin m × Bool → (
   ∃ (f : P → (ZMod g)[X]) (c : P → Fin m × Bool → (ZMod g)ˣ), (∀ v j, IsCharLabel (ι v) (η v j) (c v j)) ∧
     IsGood r g f c ∧ ∀ v, IndefiniteRowSideFullHecke.TameCharacterTorusValues.IsTypeChar (ι v) (f v) (τ v)
 
+/- English proof (translation)
+Take `⟨f, c, h1, h2, h3⟩` from `h`. Use `choose β hβ using fun v => exists_beta (hω v) (hω' v)`. Use `choose f' hf' using fun v => exists_tr (β v) _ (f v) (h2.1 v).1 rfl`. Use `choose c' hc' using fun v j => exists_unit_of_pow (y := β v (algebraMap (ZMod g) (Fbar g) (c v j))) (by rw [← map_pow, unit_pow, map_one])`. Use `⟨f', c', fun v j z => ?_, isGood_tr β hf' (fun v js => ?_) h2, fun v => isTypeChar_tr (hβ v) (h2.1 v).2.2 (hf' v) (h3 v)⟩` and prove the remaining obligations.
+
+Rewrite using `[h1 v j z, hβ v 1 one_pos _ _ (unit_pow _) (unit_pow _), hc']`. Use `split_ifs`. Conclude with `hc' v js.1`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, map_inv₀, hc']`.
+-/
 theorem FullGood.change {ω ω' : P → Fbar g →*₀ ℂ} (hω : ∀ v, Function.Injective (ω v))
     (hω' : ∀ v, Function.Injective (ω' v)) {η : P → Fin m → (ZMod g)ˣ → ℂ} {τ : P → GL (Fin r) (ZMod g) → ℂ}
     (h : FullGood ω' η τ) : FullGood ω η τ := by
@@ -65,6 +75,9 @@ theorem FullGood.change {ω ω' : P → Fbar g →*₀ ℂ} (hω : ∀ v, Functi
     · exact hc' v js.1
     · rw [Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, map_inv₀, map_inv₀, hc']
 
+/- English proof (translation)
+Take `⟨f, c, h0, ⟨h1, h2, h3, h4, h5, v, h6⟩, h7⟩` from `h`. Use `⟨fun v => f (e v), fun v => c (e v), fun v => h0 _, ⟨fun v => h1 _, fun v => h2 _, fun l hl hb v => h3 l hl hb _, fun l hl hb v => h4 l hl hb _, fun a ha hb => ?_, e.symm v, by simpa using h6⟩, fun v => h7 _⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `h5 a ha hb`. Conclude with `⟨e.symm v, by simpa using hv⟩`.
+-/
 theorem FullGood.reindex {P' : Type} (e : P' ≃ P) {ω : P → Fbar g →*₀ ℂ} {η : P → Fin m → (ZMod g)ˣ → ℂ}
     {τ : P → GL (Fin r) (ZMod g) → ℂ} (h : FullGood ω η τ) :
     FullGood (fun v => ω (e v)) (fun v => η (e v)) (fun v => τ (e v)) := by
@@ -75,6 +88,11 @@ theorem FullGood.reindex {P' : Type} (e : P' ≃ P) {ω : P → Fbar g →*₀ �
   obtain ⟨v, hv⟩ := h5 a ha hb
   exact ⟨e.symm v, by simpa using hv⟩
 
+/- English proof (translation)
+Use `choose ω' hω' he using fun v => exists_ext (hι v)`. Take `⟨f, c, h1, h2, h3⟩` from `h`. Establish `a1 : ∀ v j, IsTameLabel (ω' v) (η v j) (c v (j, true))` using `fun v j => ht v j ▸ (label_iff (he v) _ _).1 (h1 v _)`. Use `FullGood.change hω hω' ⟨f, fun v j => c v (j, true), a1, ?_, fun v => typeChar_full_of_torus H (hω' v) (he v) (h3 v)⟩` and prove the remaining obligations. Use `h2 using 3 with v js` and compare the differences between its conclusion and the goal.
+
+Take `⟨j, _ | _⟩` from `js`. Conclude with `label_unique (hω' v) (label_inv (a1 v j)) (hf v j ▸ (label_iff (he v) _ _).1 (h1 v _))`. Both sides reduce to the same expression.
+-/
 theorem TorusGood.full (H : CuspidalCharacterFormula) {ι : P → (Fbar g)ˣ →* ℂˣ} {ω : P → Fbar g →*₀ ℂ}
     (hι : ∀ v, Function.Injective (ι v))
     (hω : ∀ v, Function.Injective (ω v)) {η : P → Fin m → (ZMod g)ˣ → ℂ} {η' : P → Fin m × Bool → (ZMod g)ˣ → ℂ}

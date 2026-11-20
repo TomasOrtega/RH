@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
+/- English proof (translation)
+Establish `hk : RingHom.ker f ≤ maximalIdeal R` using `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top f)`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (f := f) hf (I := maximalIdeal R) (maximalIdeal.isMaximal R) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : (1 : R') ∈ (maximalIdeal R).map f` using `h ▸ Submodule.mem_top`. Take `⟨y, hy, hy1⟩` from `(Ideal.mem_map_iff_of_surjective f hf).1 h1`.
+
+Establish `hker : 1 - y ∈ RingHom.ker f` using `by simp [RingHom.mem_ker, hy1]`. Establish `h2` using `Ideal.add_mem _ (hk hker) hy`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `(maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Conclude with `IsLocalRing.eq_maximalIdeal h`.
+-/
 private theorem maximalIdeal_map_eq_of_surjective {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (f : R →+* R') (hf : Function.Surjective f) : (maximalIdeal R).map f = maximalIdeal R' := by
   have hk : RingHom.ker f ≤ maximalIdeal R := IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top f)
@@ -16,6 +21,11 @@ private theorem maximalIdeal_map_eq_of_surjective {R R' : Type} [CommRing R] [Is
     exact (maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h2)
   · exact IsLocalRing.eq_maximalIdeal h
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hx' : x ∈ maximalIdeal R` using `h`. Establish `: f x ∈ maximalIdeal R'`. Rewrite using `[← maximalIdeal_map_eq_of_surjective f hf]`.
+
+Conclude with `Ideal.mem_map_of_mem f hx'`. Conclude with `this hx`.
+-/
 private theorem isLocalHom_of_surjective {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (f : R →+* R') (hf : Function.Surjective f) : IsLocalHom f := by
   refine ⟨fun x hx => ?_⟩
@@ -26,10 +36,40 @@ private theorem isLocalHom_of_surjective {R R' : Type} [CommRing R] [IsLocalRing
     exact Ideal.mem_map_of_mem f hx'
   exact this hx
 
+/- English proof (translation)
+Simplify using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+-/
 private theorem smodEq_ideal_pow_smul_univ_iff_sub_mem {A : Type} [CommRing A] (I : Ideal A) (n : ℕ) (a b : A) :
     a ≡ b [SMOD (I ^ n • ⊤ : Submodule A A)] ↔ a - b ∈ I ^ n := by
   simp [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
+/- English proof (translation)
+Introduce `O _ R _ _ _ R' _ _ _ p hp hR`. Establish `hpr : Function.Surjective (p : R →+* R')` using `hp`. Use `haveI : IsLocalHom (p : R →+* R') := isLocalHom_of_surjective _ hpr`. Use `haveI := hR.noeth`. Use `haveI : IsNoetherianRing R' := isNoetherianRing_of_surjective R R' (p : R →+* R') hpr`.
+
+Use `haveI := hR.complete`. Establish `hm : maximalIdeal R' = (maximalIdeal R).map (p : R →+* R')` using `(maximalIdeal_map_eq_of_surjective _ hpr).symm`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsHausdorff (maximalIdeal R') R' := inferInstance`. Use `{ toIsHausdorff := inferInstance, toIsPrecomplete := ⟨fun f hf => ?_⟩ }` and prove the remaining obligations.
+
+Establish `hd : ∀ n, ∃ d ∈ maximalIdeal R ^ n, p d = f (n + 1) - f n`. Introduce `n`. Establish `h0` using `(smodEq_ideal_pow_smul_univ_iff_sub_mem _ _ _ _).1 (hf (Nat.le_succ n))`. Rewrite `h0` using `[hm, ← Ideal.map_pow]`. Take `⟨d, hd, hd'⟩` from `(Ideal.mem_map_iff_of_surjective _ hpr).1 (neg_mem h0)`.
+
+Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite `hd'` using `[neg_sub]`. Conclude with `hd'`. Use `choose d hdm hdp using hd`. Take `⟨y0, hy0⟩` from `hp (f 0)`.
+
+Establish `hy : ∀ n, p (y0 + ∑ k ∈ Finset.range n, d k) = f n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hy0]`. Consider the case `succ n ih`.
+
+Rewrite using `[Finset.sum_range_succ, ← add_assoc, map_add, ih, hdp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → (y0 + ∑ k ∈ Finset.range m, d k) ≡ (y0 + ∑ k ∈ Finset.range n, d k) [SMOD (maximalIdeal R ^ m • ⊤ : Submodule R R)]`. Introduce `m n hmn`. Rewrite using `[smodEq_ideal_pow_smul_univ_iff_sub_mem]`.
+
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hmn ih`. Establish `e : (y0 + ∑ k ∈ Finset.range m, d k) - (y0 + ∑ k ∈ Finset.range (n + 1), d k) = ((y0 + ∑ k ∈ Finset.range m, d k) - (y0 + ∑ k ∈ Finset.range n, d k)) - d n`. Rewrite using `[Finset.sum_range_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ ih (Ideal.pow_le_pow_right hmn (hdm n))`. Take `⟨L, hL⟩` from `(inferInstance : IsPrecomplete (maximalIdeal R) R).prec' (fun n => y0 + ∑ k ∈ Finset.range n, d k) hcauchy`. Use `⟨p L, fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smodEq_ideal_pow_smul_univ_iff_sub_mem, hm, ← Ideal.map_pow, ← hy n, ← map_sub]`. Conclude with `Ideal.mem_map_of_mem (p : R →+* R') ((smodEq_ideal_pow_smul_univ_iff_sub_mem _ _ _ _).1 (hL n))`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : algebraMap O R' x = (p : R →+* R') (algebraMap O R x)` using `(p.commutes x).symm`. Rewrite `hx` using `[e]`.
+
+Conclude with `hR.isLocalHom.map_nonunit _ (IsLocalHom.map_nonunit _ hx)`. Set `L : ResidueField R →ₗ[O] ResidueField R'` to `{ toFun := IsLocalRing.ResidueField.map (p : R →+* R') map_add' := map_add _ map_smul' := by`. Introduce `o x`. Take `⟨y, rfl⟩` from `IsLocalRing.residue_surjective x`. Simplify using `only [Algebra.smul_def, map_mul, RingHom.id_apply]`.
+
+Use `congr 1`. Rewrite using `[IsScalarTower.algebraMap_apply O R (ResidueField R), IsScalarTower.algebraMap_apply O R' (ResidueField R')]`. Express the relevant statement in the definitionally equal form `IsLocalRing.ResidueField.map _ (residue R _) = residue R' _`. Rewrite using `[IsLocalRing.ResidueField.map_residue]`. Simplify using `}`.
+
+Establish `hL : Function.Surjective L`. Introduce `z`. Take `⟨y', rfl⟩` from `IsLocalRing.residue_surjective z`. Take `⟨y, rfl⟩` from `hpr y'`. Conclude with `⟨IsLocalRing.residue R y, IsLocalRing.ResidueField.map_residue _ _⟩`.
+
+Use `haveI := hR.res_fin`. Conclude with `Module.Finite.of_surjective L hL`.
+-/
 theorem UpperTheory.V.CA.cl_quot :
     ∀ (O : Type) [CommRing O] (R : Type) [CommRing R] [Algebra O R] [IsLocalRing R] (R' : Type) [CommRing R'] [Algebra O R'] [IsLocalRing R'] (p : R →ₐ[O] R'), Function.Surjective p → IsCL O R → IsCL O R' := by
   intro O _ R _ _ _ R' _ _ _ p hp hR

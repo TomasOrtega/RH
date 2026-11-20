@@ -9,6 +9,31 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `eps he he' C hC`. Establish `hC8 : 1 ≤ C.P.Cpde` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨x1, h1⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he he'`. Take `⟨x2, h2⟩` from `hostBounds eps C.P.Cpde he he' hC8`. Take `⟨x3, h3⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 5) eps 60150 72 (1 / 2) 2 (by positivity) (by linarith) (by norm_num)`.
+
+Take `⟨x4, h4⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow 0 (eps / C.P.Cpde / 100) 2 0 (by positivity)`. Take `⟨x6, h6⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow (eps / 5) (eps / 5 + eps / 100) 1 2 (by linarith)`. Take `⟨x7, h7⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow (eps / 5) eps (2 * C.P.Cpde) 2 (by linarith)`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max (max (max x1 x2) (max x3 x4)) (max (max (Real.exp C.P.Cpde) x6) (max x7 (Real.exp 1))), ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L hse hx hV`.
+
+Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨hx1, hx2⟩, hx3, hx4⟩, ⟨hx5, hx6⟩, hx7, hx8⟩` from `hx`. Establish `hr` using `h1 L.sc D.R hse hx1 hV.ranks`. Establish `ht : (D.R.t : ℝ) ≤ L.sc.x ^ (401 : ℝ)` using `hr.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨q1, q2, d1, d2, hN, r1, r2, -, p1, p2⟩` from `h2 L.sc D.R D.host hse hx2 hV.ranks hV.host`.
+
+Establish `k3` using `h3 _ hx3`. Establish `k4` using `h4 _ hx4`. Establish `k6` using `h6 _ hx6`. Establish `k7` using `h7 _ hx7`. Substitute `hse` using the available equality.
+
+Establish `hxpos : 0 < L.sc.x` using `(Real.exp_pos 1).trans_le hx8`. Establish `hlog : 1 ≤ Real.log L.sc.x` using `(Real.le_log_iff_exp_le hxpos).mpr hx8`. Establish `hlog2 : 1 ≤ Real.log L.sc.x ^ 2` using `one_le_pow₀ hlog`. Establish `hmul : L.sc.x ^ (L.sc.eps / 5) ≤ L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2` using `le_mul_of_one_le_right (Real.rpow_nonneg hxpos.le _) hlog2`. Simplify using `only [pow_zero, mul_one, one_mul] at k6`.
+
+Establish `hx1' : 1 ≤ L.sc.x` using `L.sc.one_lt_alt.le`. Establish `hez : L.sc.eps / C.P.Cpde ≤ L.sc.ez` using `hostBounds_ez hV.host`. Establish `hez0 : 0 ≤ L.sc.ez` using `le_trans (by positivity) hez`. Establish `k40 : 2 ≤ L.sc.x ^ (L.sc.ez / 100)`. Simplify using `only [pow_zero, mul_one, Real.rpow_zero] at k4`.
+
+Conclude with `k4.trans (Real.rpow_le_rpow_of_exponent_le hx1' (by linarith))`. Establish `k5 : 2 * L.sc.x ^ (L.sc.ez / 5 - L.sc.ez / 100) ≤ L.sc.x ^ (L.sc.ez / 5)`. Establish `e : L.sc.x ^ (L.sc.ez / 5) = L.sc.x ^ (L.sc.ez / 100) * L.sc.x ^ (L.sc.ez / 5 - L.sc.ez / 100)`. Rewrite using `[← Real.rpow_add hxpos]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right k40 (Real.rpow_nonneg hxpos.le _)`. Establish `k41 : L.sc.x ^ (L.sc.ez / 6) ≤ L.sc.x ^ (L.sc.ez / 5 - L.sc.ez / 100)` using `Real.rpow_le_rpow_of_exponent_le hx1' (by linarith)`. Establish `hmz : L.sc.x ^ (L.sc.ez / 5) ≤ L.sc.x ^ (L.sc.ez / 5) * (Real.log L.sc.x / L.sc.J) ^ 2` using `le_mul_of_one_le_right (Real.rpow_nonneg hxpos.le _) (one_le_pow₀ (hostBounds_one_le_log_div hV.host hx5))`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `SizeCond szCond Scale.b Scale.L`. Establish `hA : ((D.host.QS : ℝ) * D.host.q * D.host.d) ≤ Real.exp (2 * L.sc.x ^ (L.sc.eps / 5) * Real.log L.sc.x ^ 2)` using `(Real.le_exp_log _).trans (Real.exp_le_exp.mpr hN)`. Establish `hB : (D.R.t : ℝ) ≤ Real.exp (Real.log L.sc.x * 401)`. Rewrite `ht` using `[Real.rpow_def_of_pos hxpos]`. Then use the resulting hypothesis.
+
+Rewrite using `[← Real.exp_half]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_nat_mul, Real.exp_nat_mul]`. Use `_ ≤ Real.exp (L.sc.x ^ L.sc.eps / 2) := by`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `SizeQD szTh`. Use `⟨by linarith, by linarith, by linarith, by linarith, by linarith, hV.dlog, r1, r2⟩` and prove the remaining obligations. Unfold `SizePde Scale.L`.
+
+Conclude with `⟨by linarith, by linarith⟩`.
+-/
 theorem szRow_cond_qd_pde : SzRow (fun _ _ L => SizeCond L ∧ SizeQD L ∧ SizePde L) := by
   intro eps he he' C hC
   have hC8 : 1 ≤ C.P.Cpde := hC.2.2.2.2.2.2.2.2.2.2.2.2.1

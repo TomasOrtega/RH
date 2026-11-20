@@ -39,19 +39,42 @@ def lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : AE D :=
 def liftI (x : Ainf D.host.F ⊗[D.host.F] D.host.E) : AE D :=
   LinearMap.rTensor D.host.E (inlL D.host.F) x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_tmul (a : Af D.host.F) (w : D.host.E) : lift (D := D) (a ⊗ₜ[D.host.F] w) = pairA D.host.F 0 a ⊗ₜ w := rfl
 
+/- English proof (translation)
+The claim follows from `map_add (LinearMap.rTensor D.host.E (inrL D.host.F)) y y'`.
+-/
 theorem lift_add (y y' : Af D.host.F ⊗[D.host.F] D.host.E) : lift (D := D) (y + y') = lift y + lift y' := map_add (LinearMap.rTensor D.host.E (inrL D.host.F)) y y'
 
+/- English proof (translation)
+The claim follows from `map_zero (LinearMap.rTensor D.host.E (inrL D.host.F))`.
+-/
 theorem lift_zero : lift (D := D) 0 = 0 := map_zero (LinearMap.rTensor D.host.E (inrL D.host.F))
 
+/- English proof (translation)
+The claim follows from `map_sum (LinearMap.rTensor D.host.E (inrL D.host.F)) f s`.
+-/
 theorem lift_sum {ι : Type} (s : Finset ι) (f : ι → Af D.host.F ⊗[D.host.F] D.host.E) :
     lift (D := D) (∑ i ∈ s, f i) = ∑ i ∈ s, lift (f i) := map_sum (LinearMap.rTensor D.host.E (inrL D.host.F)) f s
 
+/- English proof (translation)
+The claim follows from `map_neg (LinearMap.rTensor D.host.E (inrL D.host.F)) y`.
+-/
 theorem lift_neg (y : Af D.host.F ⊗[D.host.F] D.host.E) : lift (D := D) (-y) = -lift y := map_neg (LinearMap.rTensor D.host.E (inrL D.host.F)) y
 
+/- English proof (translation)
+The claim follows from `map_nsmul (LinearMap.rTensor D.host.E (inrL D.host.F)) k y`.
+-/
 theorem lift_nsmul (k : ℕ) (y : Af D.host.F ⊗[D.host.F] D.host.E) : lift (D := D) (k • y) = k • lift y := map_nsmul (LinearMap.rTensor D.host.E (inrL D.host.F)) k y
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [lift_zero, map_zero]`. Consider the case `tmul a w`. Rewrite using `[lift_tmul]`. Use `erw [Algebra.TensorProduct.map_tmul]`.
+
+Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [lift_add, map_add, hx, hy]`.
+-/
 theorem finPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (lift y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => rw [lift_zero, map_zero]
@@ -61,6 +84,11 @@ theorem finPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (lift 
     rfl
   | add x y hx hy => rw [lift_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [lift_zero, map_zero]`. Consider the case `tmul a w`. Rewrite using `[lift_tmul]`. Use `erw [Algebra.TensorProduct.map_tmul]`.
+
+Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add x y hx hy => rw [lift_add, map_add, hx, hy, add_zero]`.
+-/
 theorem infPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (lift y) = 0 := by
   induction y using TensorProduct.induction_on with
   | zero => rw [lift_zero, map_zero]
@@ -70,12 +98,26 @@ theorem infPart_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (lift 
     exact TensorProduct.zero_tmul _ _
   | add x y hx hy => rw [lift_add, map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftI_tmul (a : Ainf D.host.F) (w : D.host.E) : liftI (D := D) (a ⊗ₜ[D.host.F] w) = pairA D.host.F a 0 ⊗ₜ w := rfl
 
+/- English proof (translation)
+The claim follows from `map_add (LinearMap.rTensor D.host.E (inlL D.host.F)) y y'`.
+-/
 theorem liftI_add (y y' : Ainf D.host.F ⊗[D.host.F] D.host.E) : liftI (D := D) (y + y') = liftI y + liftI y' := map_add (LinearMap.rTensor D.host.E (inlL D.host.F)) y y'
 
+/- English proof (translation)
+The claim follows from `map_zero (LinearMap.rTensor D.host.E (inlL D.host.F))`.
+-/
 theorem liftI_zero : liftI (D := D) 0 = 0 := map_zero (LinearMap.rTensor D.host.E (inlL D.host.F))
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, liftI_zero, lift_zero, add_zero]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, liftI_add, lift_add]`. Use `conv_lhs => rw [hx, hy]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `tmul p w => erw [Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Rewrite using `[liftI_tmul, lift_tmul, ← TensorProduct.add_tmul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`.
+-/
 theorem eq_liftI_add_lift (x : AE D) : x = liftI (infPart D x) + lift (finPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero, liftI_zero, lift_zero, add_zero]
@@ -89,11 +131,21 @@ theorem eq_liftI_add_lift (x : AE D) : x = liftI (infPart D x) + lift (finPart D
     congr 1
     exact Prod.ext (add_zero _).symm (zero_add _).symm
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_liftI_add_lift x]`. Rewrite using `[hx, liftI_zero, zero_add]`.
+-/
 theorem eq_lift_of_infPart (x : AE D) (hx : infPart D x = 0) : x = lift (finPart D x) := by
   conv_lhs => rw [eq_liftI_add_lift x]
   rw [hx, liftI_zero, zero_add]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [lift_zero, zero_mul, zero_mul, lift_zero]`. Consider the case `add y y' hy hy' => rw [lift_add, add_mul, hy, hy', ← lift_add, add_mul]`. Consider the case `tmul a w`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [mul_zero, map_zero, mul_zero, lift_zero]`. Consider the case `add z z' hz hz' => rw [mul_add, hz, hz', map_add, mul_add, lift_add]`. Consider the case `tmul p w'`. Rewrite using `[lift_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Use `erw [Algebra.TensorProduct.map_tmul]`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, lift_tmul]`. Use `congr 1`. Conclude with `Prod.ext (zero_mul _) rfl`.
+-/
 theorem lift_mul (y : Af D.host.F ⊗[D.host.F] D.host.E) (z : AE D) : lift y * z = lift (y * finPart D z) := by
   induction y using TensorProduct.induction_on with
   | zero => rw [lift_zero, zero_mul, zero_mul, lift_zero]
@@ -109,16 +161,25 @@ theorem lift_mul (y : Af D.host.F ⊗[D.host.F] D.host.E) (z : AE D) : lift y * 
       congr 1
       exact Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Rewrite using `[mul_comm, lift_mul, mul_comm]`.
+-/
 theorem mul_lift (z : AE D) (y : Af D.host.F ⊗[D.host.F] D.host.E) : z * lift y = lift (finPart D z * y) := by
   rw [mul_comm, lift_mul, mul_comm]
 
 def liftE (y : EAf D) : AE D := lift ((Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)) y)
 
+/- English proof (translation)
+Rewrite using `[show toEAf D (lift y) = Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D (lift y)) from rfl, finPart_lift]`.
+-/
 theorem toEAf_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     toEAf D (lift y) = Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E y := by
   rw [show toEAf D (lift y) = Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D (lift y)) from rfl,
     finPart_lift]
 
+/- English proof (translation)
+Rewrite using `[liftE, toEAf_lift]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem toEAf_liftE (y : EAf D) : toEAf D (liftE y) = y := by
   rw [liftE, toEAf_lift]
   induction y using TensorProduct.induction_on with
@@ -126,50 +187,83 @@ theorem toEAf_liftE (y : EAf D) : toEAf D (liftE y) = y := by
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_coe (V : HSp D) (g : GA D V) :
     ((Lev.finE V g : GL (Fin V.rank) (Lev.EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) =
       (mt V g).map (toEAf D) := rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem mt_mul (V : HSp D) (g g' : GA D V) : mt V (g * g') = mt V g * mt V g' := by
   unfold Formalism.L2.Theta.mt
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem mt_one (V : HSp D) : mt V (1 : GA D V) = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← mt_mul, inv_mul_cancel, mt_one]`.
+-/
 theorem mt_inv_mul (V : HSp D) (g : GA D V) : mt V g⁻¹ * mt V g = 1 := by
   rw [← mt_mul, inv_mul_cancel, mt_one]
 
+/- English proof (translation)
+Rewrite using `[← mt_mul, mul_inv_cancel, mt_one]`.
+-/
 theorem mt_mul_inv (V : HSp D) (g : GA D V) : mt V g * mt V g⁻¹ = 1 := by
   rw [← mt_mul, mul_inv_cancel, mt_one]
 
 def frG (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) : GL (Fin V.rank) (EAf D) :=
   β⁻¹ * Lev.finE V g * β
 
+/- English proof (translation)
+Simplify using `only [frG, map_mul]`. Use `group`.
+-/
 theorem frG_mul (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g g' : GA D V) : frG V β (g * g') = frG V β g * frG V β g' := by
   simp only [frG, map_mul]
   group
 
+/- English proof (translation)
+Simplify using `only [frG, map_inv]`. Use `group`.
+-/
 theorem frG_inv (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) : frG V β g⁻¹ = (frG V β g)⁻¹ := by
   simp only [frG, map_inv]
   group
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem gl_cancel_left {R : Type} [CommRing R] {n m : ℕ} (A : GL (Fin n) R) (X : Matrix (Fin n) (Fin m) R) :
     (A : Matrix (Fin n) (Fin n) R) * (((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * X) = X := by
   rw [← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem gl_cancel_left' {R : Type} [CommRing R] {n m : ℕ} (A : GL (Fin n) R) (X : Matrix (Fin n) (Fin m) R) :
     (((A⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * ((A : Matrix (Fin n) (Fin n) R) * X) = X := by
   rw [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[frG, Units.val_mul, Units.val_mul, finE_coe]`.
+-/
 theorem frG_coe (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) :
     ((frG V β g : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) =
       ((β⁻¹ : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) * (mt V g).map (toEAf D) * β := by
   rw [frG, Units.val_mul, Units.val_mul, finE_coe]
 
+/- English proof (translation)
+Rewrite using `[← frG_inv, frG_coe, frG_coe]`. Unfold `frMapO actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc, gl_cancel_left]`.
+-/
 theorem frMapO_actO (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (g : GA D S)
     (h : GA D T) (t : WO S T) :
     frMapO S T βS βT (actO S T g h t) =
@@ -184,16 +278,28 @@ def adjO (S T : HSp D) (x : WO S T) : Matrix (Fin S.rank) (Fin T.rank) (AE D) :=
   HMul.hMul (HMul.hMul ((S.gram⁻¹).map (incA D)) ((x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (cA D)).transpose)
     (T.gram.map (incA D))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frMapAdj_eq (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x : WO S T) :
     frMapAdj S T βS βT x = ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) *
       (adjO S T x).map (toEAf D) * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) := rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem gramInv_mul (V : HSp D) : (V.gram⁻¹).map (incA D) * V.gram.map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem gram_mul_gramInv (V : HSp D) : V.gram.map (incA D) * (V.gram⁻¹).map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `hu : ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D)` using `g.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cT_gram (V : HSp D) (g : GA D V) :
     ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) = V.gram.map (incA D) * mt V g⁻¹ := by
   have hu : ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D) := g.2
@@ -203,6 +309,15 @@ theorem cT_gram (V : HSp D) (g : GA D V) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hS` using `cT_gram S g⁻¹`. Rewrite `hS` using `[inv_inv]`. Establish `hT` using `cT_gram T h`. Establish `h1 : (S.gram⁻¹).map (incA D) * ((mt S g⁻¹).map (cA D))ᵀ = mt S g * (S.gram⁻¹).map (incA D)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[gram_mul_gramInv, Matrix.mul_one]`. Use `_ = (S.gram⁻¹).map (incA D) * (S.gram.map (incA D) * mt S g) * (S.gram⁻¹).map (incA D) := by`. Rewrite using `[← hS]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = mt S g * (S.gram⁻¹).map (incA D) := by`.
+
+Rewrite using `[← Matrix.mul_assoc, gramInv_mul, Matrix.one_mul]`. Unfold `adjO actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[h1, hT]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem adjO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     adjO S T (actO S T g h x) = mt S g * adjO S T x * mt T h⁻¹ := by
   have hS := cT_gram S g⁻¹
@@ -228,6 +343,9 @@ theorem adjO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
         rw [h1, hT]
         simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[frMapAdj_eq, frMapAdj_eq, adjO_actO, ← frG_inv, frG_coe, frG_coe, Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc, gl_cancel_left]`.
+-/
 theorem frMapAdj_actO (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (g : GA D S)
     (h : GA D T) (x : WO S T) :
     frMapAdj S T βS βT (actO S T g h x) =
@@ -239,30 +357,53 @@ theorem frMapAdj_actO (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (F
 abbrev intM {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) (EAf D) :=
   (y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map Subtype.val
 
+/- English proof (translation)
+Introduce `i j` and use `((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) i j).2`.
+-/
 theorem isIntM_intM {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : IsIntM (intM (D := D) y) := fun i j => ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) i j).2
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem (fun k _ => mul_mem (hN i k) (hM k j))`.
+-/
 theorem isIntM_mul {a b c : ℕ} {N : Matrix (Fin c) (Fin b) (EAf D)} {M : Matrix (Fin b) (Fin a) (EAf D)}
     (hN : IsIntM N) (hM : IsIntM M) : IsIntM (N * M) := fun i j => by
   rw [Matrix.mul_apply]
   exact sum_mem (fun k _ => mul_mem (hN i k) (hM k j))
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.add_apply] exact add_mem (hN i j) (hM i j)`.
+-/
 theorem isIntM_add {a b : ℕ} {N M : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (hM : IsIntM M) : IsIntM (N + M) := fun i j => by
   rw [Matrix.add_apply]
   exact add_mem (hN i j) (hM i j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intM_eq {n : ℕ} (y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     y.map Subtype.val = y.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype := rfl
 
+/- English proof (translation)
+Use `show ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) * (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D …`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem intM_mul_inv {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : intM (D := D) y * intM y⁻¹ = 1 := by
   show ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) *
     (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) = 1
   rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Use `show (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host. …`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem intM_inv_mul {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : intM (D := D) y⁻¹ * intM y = 1 := by
   show (((y⁻¹ : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) *
     ((y : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)).map (SubringClass.subtype (Formalism.L2.Herm.intAf D.host.F D.host.E)) = 1
   rw [← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isIntM_mul h (isIntM_intM y⁻¹)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, intM_mul_inv, Matrix.mul_one]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `isIntM_mul h (isIntM_intM y)`.
+-/
 theorem isIntM_mul_right_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
     (y : GL (Fin a) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : IsIntM (N * intM y) ↔ IsIntM N := by
   constructor
@@ -272,6 +413,11 @@ theorem isIntM_mul_right_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
   · intro h
     exact isIntM_mul h (isIntM_intM y)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `isIntM_mul (isIntM_intM y⁻¹) h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, intM_inv_mul, Matrix.one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `isIntM_mul (isIntM_intM y) h`.
+-/
 theorem isIntM_mul_left_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
     (y : GL (Fin b) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : IsIntM (intM y * N) ↔ IsIntM N := by
   constructor
@@ -281,12 +427,22 @@ theorem isIntM_mul_left_iff {a b : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D))
   · intro h
     exact isIntM_mul (isIntM_intM y) h
 
+/- English proof (translation)
+Unfold `redM`. Rewrite using `[dif_pos (hN i j)]`.
+-/
 theorem redM_of_int (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (i j) :
     redM PP N i j = Formalism.L2.DIV.resS D.host.F PP ⟨N i j, hN i j⟩ := by
   unfold redM; rw [dif_pos (hN i j)]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `: (⟨(N * intM y) i j, isIntM_mul hN (isIntM_intM y) i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ∑ k, ⟨N i k, hN i k⟩ * (y : Matrix (Fin a) (Fin a) _) k j`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (N * intM y) i j = ((∑ k, ⟨N i k, hN i k⟩ * (y : Matrix (Fin a) (Fin a) _) k j : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D)`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_mul _ _ _`. Use `_ = _ := by`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN i k]; rfl`.
+-/
 theorem redM_mul_intM (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N)
     (y : GL (Fin a) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     redM PP (N * intM y) = redM PP N * (y : Matrix (Fin a) (Fin a) _).map (Formalism.L2.DIV.resS D.host.F PP) := by
@@ -310,6 +466,13 @@ theorem redM_mul_intM (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matri
         exact Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN i k]; rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `: (⟨(intM y * N) i j, isIntM_mul (isIntM_intM y) hN i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ∑ k, (y : Matrix (Fin b) (Fin b) _) i k * ⟨N k j, hN k j⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (intM y * N) i j = ((∑ k, (y : Matrix (Fin b) (Fin b) _) i k * ⟨N k j, hN k j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D)`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_mul _ _ _`. Use `_ = _ := by`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN k j]; rfl`.
+-/
 theorem redM_intM_mul (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N)
     (y : GL (Fin b) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     redM PP (intM y * N) = (y : Matrix (Fin b) (Fin b) _).map (Formalism.L2.DIV.resS D.host.F PP) * redM PP N := by
@@ -332,6 +495,11 @@ theorem redM_intM_mul (PP : Formalism.L2.DIV.Pl D.host.E) {a b : ℕ} {N : Matri
         rw [Matrix.mul_apply]
         exact Finset.sum_congr rfl fun k _ => by rw [← redM_of_int PP hN k j]; rfl
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hg`. Use `⟨y, ?_, fun PP => ?_⟩` and prove the remaining obligations. Unfold `frG`. Rewrite using `[← hy]`. Use `show ((β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β : GL (Fin V.rank) (EAf D)) : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = _`.
+
+Rewrite using `[show β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β = Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y by group]`. Both sides reduce to the same expression. Rewrite using `[← hy]`. Conclude with `Formalism.L2.DIV.redFn_frGL β PP y`.
+-/
 theorem frG_of_St (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) :
     ∃ y : GL (Fin V.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E),
       (frG V β g : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) = intM y ∧
@@ -357,18 +525,30 @@ def genL (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E) (t : Fi
 
 variable {S T ΛS ΛT}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨α, hα, fun _ h => (h trivial).elim, a, ha, s, hs, t, ht, rfl⟩`.
+-/
 theorem genL_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {a : D.host.E} (ha : a ∈ D.host.AA)
     {s : Fin S.rank → D.host.E} (hs : s ∈ ΛS) {t : Fin T.rank → D.host.E} (ht : t ∈ ΛT) :
     genL S T α a s t ∈ latAll S T ΛS ΛT :=
   AddSubgroup.subset_closure ⟨α, hα, fun _ h => (h trivial).elim, a, ha, s, hs, t, ht, rfl⟩
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_mul]; exact mul_mem (hα v) (hβ v)`.
+-/
 theorem intAf_mul {α β : Af D.host.F} (hα : α ∈ intAf D.host.F) (hβ : β ∈ intAf D.host.F) : α * β ∈ intAf D.host.F :=
   fun v => by rw [map_mul]; exact mul_mem (hα v) (hβ v)
 
+/- English proof (translation)
+Use `(D.host.AA : Submodule (𝓞 D.host.E) D.host.E).smul_mem o ha` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis.
+-/
 theorem AA_mul {a : D.host.E} (ha : a ∈ D.host.AA) (o : 𝓞 D.host.E) : (o : D.host.E) * a ∈ D.host.AA := by
   have := (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).smul_mem o ha
   rwa [Algebra.smul_def] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genL, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Use `congr 1`. Conclude with `Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show b * α = α * b; rw [mul_comm])`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genL_smul (b : Af D.host.F) (o : D.host.E) (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin T.rank → D.host.E) :
     (pairA D.host.F 0 b ⊗ₜ[D.host.F] o) • genL S T α a s t = genL S T (α * b) (o * a) s t := by
@@ -378,6 +558,11 @@ theorem genL_smul (b : Af D.host.F) (o : D.host.E) (α : Af D.host.F) (a : D.hos
   · exact Prod.ext (by show (0 : Ainf D.host.F) * 0 = 0; rw [mul_zero]) (by show b * α = α * b; rw [mul_comm])
   · ring
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, _, _, a, _, s, _, t, _, rfl⟩` from `hw`. Use `show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] _ = 0`. Conclude with `TensorProduct.zero_tmul _ _`.
+
+Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_apply, map_add, hx, hy, add_zero]`. Consider the case `neg x _ hx => rw [Matrix.neg_apply, map_neg, hx, neg_zero]`.
+-/
 theorem latAll_infPart {u : WO S T} (hu : u ∈ latAll S T ΛS ΛT) (i : Fin T.rank) (j : Fin S.rank) :
     infPart D (u i j) = 0 := by
   induction hu using AddSubgroup.closure_induction with
@@ -389,6 +574,13 @@ theorem latAll_infPart {u : WO S T} (hu : u ∈ latAll S T ΛS ΛT) (i : Fin T.r
   | add x y _ _ hx hy => rw [Matrix.add_apply, map_add, hx, hy, add_zero]
   | neg x _ hx => rw [Matrix.neg_apply, map_neg, hx, neg_zero]
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `hm` using `genL_mem (S := S) (T := T) (ΛS := ΛS) (ΛT := ΛT) (intAf_mul hα hb) (AA_mul ha o) hs ht`. Rewrite `hm` using `[← genL_smul]`.
+
+Conclude with `hm`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem lift_tmul_smul_mem {b : Af D.host.F} (hb : b ∈ intAf D.host.F) (o : 𝓞 D.host.E) {u : WO S T}
     (hu : u ∈ latAll S T ΛS ΛT) : (pairA D.host.F 0 b ⊗ₜ[D.host.F] (o : D.host.E)) • u ∈ latAll S T ΛS ΛT := by
   induction hu using AddSubgroup.closure_induction with
@@ -401,6 +593,13 @@ theorem lift_tmul_smul_mem {b : Af D.host.F} (hb : b ∈ intAf D.host.F) (o : �
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, o, rfl⟩` from `hz`. Rewrite using `[lift_tmul]`. Conclude with `lift_tmul_smul_mem hb o hu`.
+
+Consider the case `zero => rw [lift_zero, zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [lift_add, add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [lift_neg, neg_smul]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem lift_smul_mem {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) {u : WO S T}
     (hu : u ∈ latAll S T ΛS ΛT) : lift y • u ∈ latAll S T ΛS ΛT := by
   induction hy using AddSubgroup.closure_induction with
@@ -412,6 +611,9 @@ theorem lift_smul_mem {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE
   | add x y _ _ hx hy => rw [lift_add, add_smul]; exact add_mem hx hy
   | neg x _ hx => rw [lift_neg, neg_smul]; exact neg_mem hx
 
+/- English proof (translation)
+Establish `e : a • u = lift (finPart D a) • u`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, eq_lift_of_infPart (u i j) (latAll_infPart hu i j), mul_lift, lift_mul, finPart_lift]`. Rewrite using `[e]`. Conclude with `lift_smul_mem ha hu`.
+-/
 theorem smul_mem_latAll {a : AE D} (ha : finPart D a ∈ intAE D) {u : WO S T} (hu : u ∈ latAll S T ΛS ΛT) :
     a • u ∈ latAll S T ΛS ΛT := by
   have e : a • u = lift (finPart D a) • u := by
@@ -420,6 +622,9 @@ theorem smul_mem_latAll {a : AE D} (ha : finPart D a ∈ intAE D) {u : WO S T} (
       eq_lift_of_infPart (u i j) (latAll_infPart hu i j), mul_lift, lift_mul, finPart_lift]
   rw [e]; exact lift_smul_mem ha hu
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem comm_comm (y : EAf D) :
     Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) y) = y := by
   induction y using TensorProduct.induction_on with
@@ -427,6 +632,11 @@ theorem comm_comm (y : EAf D) :
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hc : ∀ x : Af D.host.F ⊗[D.host.F] D.host.E, Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[liftE, liftE, lift_mul, map_mul]`. Use `congr 2`. Conclude with `(hc (finPart D z)).symm`.
+-/
 theorem liftE_mul (y : EAf D) (z : AE D) : liftE y * z = liftE (y * toEAf D z) := by
   have hc : ∀ x : Af D.host.F ⊗[D.host.F] D.host.E, Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)
       (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E x) = x := by
@@ -439,24 +649,57 @@ theorem liftE_mul (y : EAf D) (z : AE D) : liftE y * z = liftE (y * toEAf D z) :
   congr 2
   exact (hc (finPart D z)).symm
 
+/- English proof (translation)
+Rewrite using `[mul_comm, liftE_mul, mul_comm]`.
+-/
 theorem mul_liftE (z : AE D) (y : EAf D) : z * liftE y = liftE (toEAf D z * y) := by
   rw [mul_comm, liftE_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[liftE_mul, toEAf_liftE]`.
+-/
 theorem liftE_mul_liftE (y y' : EAf D) : liftE y * liftE y' = liftE (y * y') := by
   rw [liftE_mul, toEAf_liftE]
 
+/- English proof (translation)
+Simplify using `only [liftE, map_add, lift_add]`.
+-/
 theorem liftE_add (y y' : EAf D) : liftE (D := D) (y + y') = liftE y + liftE y' := by
   simp only [liftE, map_add, lift_add]
 
+/- English proof (translation)
+Simplify using `only [liftE, map_zero, lift_zero]`.
+-/
 theorem liftE_zero : liftE (D := D) 0 = 0 := by
   simp only [liftE, map_zero, lift_zero]
 
+/- English proof (translation)
+Simplify using `only [liftE, map_neg, lift_neg]`.
+-/
 theorem liftE_neg (y : EAf D) : liftE (D := D) (-y) = -liftE y := by
   simp only [liftE, map_neg, lift_neg]
 
+/- English proof (translation)
+Simplify using `only [liftE, map_sum, lift_sum]`.
+-/
 theorem liftE_sum {ι : Type} (s : Finset ι) (f : ι → EAf D) : liftE (D := D) (∑ i ∈ s, f i) = ∑ i ∈ s, liftE (f i) := by
   simp only [liftE, map_sum, lift_sum]
 
+/- English proof (translation)
+Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Introduce `u hu`. Break down `hx with ⟨⟨x, ⟨o, rfl⟩⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Use `show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((algebraMap (𝓞 D.host.E) D.host.E o) ⊗ₜ 1)) • u ∈ _`.
+
+Conclude with `lift_tmul_smul_mem (b := 1) (fun v => by rw [map_one]; exact one_mem _) o hu`. Use `show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((1 : D.host.E) ⊗ₜ y)) • u ∈ _`. Establish `e : (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((1 : D.host.E) ⊗ₜ y)) = y ⊗ₜ[D.host.F] ((1 : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, lift_tmul]`. Conclude with `lift_tmul_smul_mem (fun v => hy v) 1 hu`. Consider the case `zero => intro u _`. Rewrite using `[liftE_zero, zero_smul]`. Conclude with `zero_mem _`.
+
+Consider the case `one`. Introduce `u hu`. Use `show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((1 : D.host.E) ⊗ₜ (1 : Af D.host.F))) • u ∈ _`. Establish `e : (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((1 : D.host.E) ⊗ₜ (1 : Af D.host.F))) = (1 : Af D.host.F) ⊗ₜ[D.host.F] ((1 : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, lift_tmul]`. Conclude with `lift_tmul_smul_mem (fun v => by rw [map_one]; exact one_mem _) 1 hu`. Consider the case `add x y _ _ hx hy => intro u hu`. Rewrite using `[liftE_add, add_smul]`.
+
+Conclude with `add_mem (hx u hu) (hy u hu)`. Consider the case `neg x _ hx => intro u hu`. Rewrite using `[liftE_neg, neg_smul]`. Conclude with `neg_mem (hx u hu)`. Consider the case `mul x y _ _ hx hy`.
+
+Introduce `u hu`. Rewrite using `[← liftE_mul_liftE, mul_smul]`. Conclude with `hx _ (hy u hu)`.
+-/
 theorem liftE_smul_mem {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
     ∀ u ∈ latAll S T ΛS ΛT, liftE z • u ∈ latAll S T ΛS ΛT := by
   induction hz using Subring.closure_induction with
@@ -489,22 +732,43 @@ theorem liftE_smul_mem {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F 
 
 abbrev sR (D : D7) : EAf D →+* EAf D := Formalism.UG.sigR D.sp.cm.sig (Af D.host.F)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `tmul a w => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem toEAf_cA (x : AE D) : toEAf D (cA D x) = sR D (toEAf D x) := by
   induction x using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero, map_zero]
   | tmul a w => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) ((sndA D.host.F (1 : AF D.host.F)) ⊗ₜ[D.host.F] w) = w ⊗ₜ[D.host.F] (1 : Af D.host.F)`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem toEAf_incA (w : D.host.E) : toEAf D (incA D w) = eToEAf D w := by
   show (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E)
     ((sndA D.host.F (1 : AF D.host.F)) ⊗ₜ[D.host.F] w) = w ⊗ₜ[D.host.F] (1 : Af D.host.F)
   rw [map_one]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sR_eTo (w : D.host.E) : sR D (eToEAf D w) = eToEAf D (star w) := rfl
 
+/- English proof (translation)
+The claim follows from `IsIntegral.map (starRingEnd D.host.E).toIntAlgHom x.isIntegral_coe`.
+-/
 theorem isIntegral_star' (x : 𝓞 D.host.E) : IsIntegral ℤ (star (x : D.host.E)) :=
   IsIntegral.map (starRingEnd D.host.E).toIntAlgHom x.isIntegral_coe
 
+/- English proof (translation)
+Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨x, ⟨o, rfl⟩⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Apply `Subring.subset_closure left` to reduce the goal to its premises. Conclude with `⟨⟨star ((algebraMap (𝓞 D.host.E) D.host.E) o), ⟨⟨_, isIntegral_star' o⟩, rfl⟩⟩, rfl⟩`.
+
+Apply `Subring.subset_closure right` to reduce the goal to its premises. Conclude with `⟨⟨y, hy⟩, by show _ = (star (1 : D.host.E)) ⊗ₜ[D.host.F] y; rw [star_one]⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`.
+
+Conclude with `one_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem sR_mem_intAf {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
     sR D z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   induction hz using Subring.closure_induction with
@@ -525,12 +789,20 @@ theorem sR_mem_intAf {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.
 def genE (c : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) : WO S T :=
   (c • Matrix.vecMulVec τ (Matrix.vecMul (fun k => sR D (σ k)) (S.gram.map (eToEAf D)))).map liftE
 
+/- English proof (translation)
+Use `show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) ((x ⊗ₜ[D.host.F] (1 : Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] α))) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, Algebra.TensorProduct.comm_tmul, lift_tmul]`.
+-/
 theorem liftE_eTo_mul (x : D.host.E) (α : Af D.host.F) :
     liftE (D := D) (eToEAf D x * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) = pairA D.host.F 0 α ⊗ₜ[D.host.F] x := by
   show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)
     ((x ⊗ₜ[D.host.F] (1 : Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] α))) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, Algebra.TensorProduct.comm_tmul, lift_tmul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genL, genE, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Matrix.of_apply, smul_eq_mul, sR_eTo]`. Rewrite using `[← liftE_eTo_mul]`. Use `congr 1`. Rewrite using `[show ∑ k, eToEAf D (star (s k)) * eToEAf D (S.gram k j) = eToEAf D (∑ k, star (s k) * S.gram k j) by`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => (map_mul _ _ _).symm]`. Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genL_eq_genE (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) :
     genL S T α a s t = genE (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) (fun i => eToEAf D (t i))
       (fun k => eToEAf D (s k)) := by
@@ -544,11 +816,19 @@ theorem genL_eq_genE (α : Af D.host.F) (a : D.host.E) (s : Fin S.rank → D.hos
   rw [map_mul, map_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [actO, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, liftE_sum, mul_liftE, liftE_mul]`.
+-/
 theorem actO_mapLiftE (g : GA D S) (h : GA D T) (W : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) :
     actO S T g h (W.map liftE) = ((mt T h).map (toEAf D) * W * (mt S g⁻¹).map (toEAf D)).map liftE := by
   ext i j
   simp only [actO, Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, liftE_sum, mul_liftE, liftE_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, Matrix.vecMul, dotProduct, smul_eq_mul]`. Establish `hl : ∀ l, (∑ k, A i k * (c * (x k * y l))) * B l j = c * (∑ k, A i k * x k) * (y l * B l j)` using `fun l => by`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Rewrite using `[Finset.sum_congr rfl fun l _ => hl l, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_vecMulVec_mul {R : Type} [CommRing R] {m n m' n' : ℕ} (A : Matrix (Fin m') (Fin m) R)
     (x : Fin m → R) (y : Fin n → R) (B : Matrix (Fin n) (Fin n') R) (c : R) :
     A * (c • Matrix.vecMulVec x y) * B = c • Matrix.vecMulVec (A *ᵥ x) (Matrix.vecMul y B) := by
@@ -561,6 +841,11 @@ theorem mul_vecMulVec_mul {R : Type} [CommRing R] {m n m' n' : ℕ} (A : Matrix 
   rw [Finset.sum_congr rfl fun l _ => hl l, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun M => Matrix.map M (toEAf D)) (cT_gram V g)`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map] at h`. Establish `e1 : (toEAf D ∘ cA D) = (sR D ∘ toEAf D)` using `funext toEAf_cA`. Establish `e2 : (toEAf D ∘ incA D) = eToEAf D` using `funext toEAf_incA`. Rewrite `h` using `[e1, e2]`.
+
+Rewrite using `[Matrix.map_map]`. Conclude with `h`.
+-/
 theorem cT_gram_E (V : HSp D) (g : GA D V) :
     (((mt V g).map (toEAf D)).map (sR D))ᵀ * V.gram.map (eToEAf D) = V.gram.map (eToEAf D) * (mt V g⁻¹).map (toEAf D) := by
   have h := congrArg (fun M => Matrix.map M (toEAf D)) (cT_gram V g)
@@ -571,6 +856,11 @@ theorem cT_gram_E (V : HSp D) (g : GA D V) :
   rw [Matrix.map_map]
   exact h
 
+/- English proof (translation)
+Unfold `genE`. Rewrite using `[actO_mapLiftE, mul_vecMulVec_mul]`. Use `congr 3`. Rewrite using `[Matrix.vecMul_vecMul, ← cT_gram_E, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem actO_genE (g : GA D S) (h : GA D T) (c : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) :
     actO S T g h (genE c τ σ) = genE c ((mt T h).map (toEAf D) *ᵥ τ) ((mt S g).map (toEAf D) *ᵥ σ) := by
   unfold genE
@@ -582,6 +872,9 @@ theorem actO_genE (g : GA D S) (h : GA D T) (c : EAf D) (τ : Fin T.rank → EAf
   rw [RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genE, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.add_apply, smul_eq_mul]`. Rewrite using `[← liftE_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genE_add_left (c : EAf D) (τ τ' : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) :
     genE c (τ + τ') σ = genE (S := S) c τ σ + genE c τ' σ := by
   ext i j
@@ -591,6 +884,9 @@ theorem genE_add_left (c : EAf D) (τ τ' : Fin T.rank → EAf D) (σ : Fin S.ra
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genE, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[liftE_mul_liftE]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genE_smul_left (c z : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) :
     genE c (z • τ) σ = liftE z • genE (S := S) c τ σ := by
   ext i j
@@ -599,10 +895,16 @@ theorem genE_smul_left (c z : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.ran
   congr 1
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[genE, Matrix.vecMulVec_apply, liftE_zero]`.
+-/
 theorem genE_zero_left (c : EAf D) (σ : Fin S.rank → EAf D) : genE (T := T) c 0 σ = 0 := by
   ext i j
   simp [genE, Matrix.vecMulVec_apply, liftE_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genE, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.add_apply, Pi.add_apply, smul_eq_mul, ← liftE_add, map_add]`. Rewrite using `[show (fun k => sR D (σ k) + sR D (σ' k)) = (fun k => sR D (σ k)) + (fun k => sR D (σ' k)) from rfl, Matrix.add_vecMul, Pi.add_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genE_add_right (c : EAf D) (τ : Fin T.rank → EAf D) (σ σ' : Fin S.rank → EAf D) :
     genE c τ (σ + σ') = genE (S := S) c τ σ + genE c τ σ' := by
   ext i j
@@ -612,6 +914,9 @@ theorem genE_add_right (c : EAf D) (τ : Fin T.rank → EAf D) (σ σ' : Fin S.r
     Matrix.add_vecMul, Pi.add_apply]
   congr 1; ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [genE, Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, liftE_mul_liftE, map_mul]`. Rewrite using `[show (fun k => sR D z * sR D (σ k)) = sR D z • (fun k => sR D (σ k)) from rfl, Matrix.smul_vecMul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genE_smul_right (c z : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) :
     genE c τ (z • σ) = liftE (sR D z) • genE (S := S) c τ σ := by
   ext i j
@@ -621,6 +926,11 @@ theorem genE_smul_right (c z : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.ra
     smul_eq_mul]
   congr 1; ring
 
+/- English proof (translation)
+Establish `hs : (fun k => sR D ((0 : Fin S.rank → EAf D) k)) = 0`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `only [genE, hs]`.
+
+Simplify using `[Matrix.vecMulVec_apply, liftE_zero]`.
+-/
 theorem genE_zero_right (c : EAf D) (τ : Fin T.rank → EAf D) : genE (S := S) c τ 0 = 0 := by
   have hs : (fun k => sR D ((0 : Fin S.rank → EAf D) k)) = 0 := by
     funext k
@@ -629,6 +939,17 @@ theorem genE_zero_right (c : EAf D) (τ : Fin T.rank → EAf D) : genE (S := S) 
   simp only [genE, hs]
   simp [Matrix.vecMulVec_apply, liftE_zero]
 
+/- English proof (translation)
+Proceed by induction on `hτ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Proceed by induction on `hσ using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨s, hs, rfl⟩` from `hy`. Establish `hm` using `genL_mem (S := S) (T := T) (ΛS := ΛS) (ΛT := ΛT) hα ha hs ht`. Rewrite `hm` using `[genL_eq_genE]`. Conclude with `hm`. Consider the case `zero => rw [genE_zero_right]`.
+
+Conclude with `zero_mem _`. Consider the case `add y y' _ _ hy hy' => rw [genE_add_right]`. Conclude with `add_mem hy hy'`. Consider the case `smul r y _ hy`. Rewrite using `[Subring.smul_def, genE_smul_right]`.
+
+Conclude with `liftE_smul_mem (sR_mem_intAf r.2) _ hy`. Consider the case `zero => rw [genE_zero_left]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx' => rw [genE_add_left]`. Conclude with `add_mem hx hx'`.
+
+Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def, genE_smul_left]`. Conclude with `liftE_smul_mem r.2 _ hx`.
+-/
 theorem genE_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {a : D.host.E} (ha : a ∈ D.host.AA)
     {τ : Fin T.rank → EAf D} (hτ : τ ∈ Formalism.L2.Herm.hatL (F := D.host.F) ΛT)
     {σ : Fin S.rank → EAf D} (hσ : σ ∈ Formalism.L2.Herm.hatL (F := D.host.F) ΛS) :
@@ -655,6 +976,13 @@ theorem genE_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {a : D.host.E}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Rewrite using `[hf]`. Establish `hv'` using `(hf v).1 hv`. Establish `e : β⁻¹ * Formalism.L2.DIV.frGL β y = Formalism.L2.DIV.intGL D.host.F D.host.E n y * β⁻¹` using `by show β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E n y * β⁻¹) = _ group`. Establish `e2 : ((β⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ (((Formalism.L2.DIV.frGL β y : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ v) = intM y *ᵥ (((β⁻¹ : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ v)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, e, Units.val_mul, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Introduce `i`. Rewrite using `[e2]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (isIntM_intM y i k) (hv' k)`.
+-/
 theorem St_mulVec_mem {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hf : Formalism.L2.DIV.IsFrame β Λ) {x : GL (Fin n) (EAf D)} (hx : x ∈ Formalism.L2.DIV.St β) {v : Fin n → EAf D}
     (hv : v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) :
@@ -674,19 +1002,37 @@ theorem St_mulVec_mem {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 
   simp only [Matrix.mulVec, dotProduct]
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (isIntM_intM y i k) (hv' k)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨t, ht, rfl⟩`.
+-/
 theorem mem_hatL_of_mem {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {t : Fin n → D.host.E} (ht : t ∈ Λ) :
     (fun i => eToEAf D (t i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ :=
   Submodule.subset_span ⟨t, ht, rfl⟩
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[_root_.mul_inv_rev, mt_mul, mt_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem actO_actO (g g' : GA D S) (h h' : GA D T) (t : WO S T) :
     actO S T g h (actO S T g' h' t) = actO S T (g * g') (h * h') t := by
   unfold actO
   rw [_root_.mul_inv_rev, mt_mul, mt_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one, mt_one, mt_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem actO_one (t : WO S T) : actO S T 1 1 t = t := by
   unfold actO; rw [inv_one, mt_one, mt_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `hmem : actO S T g h (genL S T α a s t) ∈ latAll S T ΛS ΛT`. Rewrite using `[genL_eq_genE, actO_genE]`.
+
+Use `genE_mem hα ha ?_ ?_` and prove the remaining obligations. Rewrite using `[← finE_coe]`. Conclude with `St_mulVec_mem hfT hh (mem_hatL_of_mem ht)`. Rewrite using `[← finE_coe]`. Conclude with `St_mulVec_mem hfS hg (mem_hatL_of_mem hs)`.
+
+Conclude with `hmem`. Consider the case `zero => unfold actO`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => unfold actO at *`.
+
+Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => unfold actO at *`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem actO_mem_latAll {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) {g : GA D S} {h : GA D T}
     (hg : Lev.finE S g ∈ Formalism.L2.DIV.St βS) (hh : Lev.finE T h ∈ Formalism.L2.DIV.St βT) {u : WO S T}
@@ -704,6 +1050,9 @@ theorem actO_mem_latAll {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (
   | add x y _ _ hx hy => unfold actO at *; rw [Matrix.mul_add, Matrix.add_mul]; exact add_mem hx hy
   | neg x _ hx => unfold actO at *; rw [Matrix.mul_neg, Matrix.neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Use `⟨fun ht => ?_, actO_mem_latAll hfS hfT hg hh⟩` and prove the remaining obligations. Establish `hg' : Lev.finE S g⁻¹ ∈ Formalism.L2.DIV.St βS` using `by rw [map_inv]; exact inv_mem hg`. Establish `hh' : Lev.finE T h⁻¹ ∈ Formalism.L2.DIV.St βT` using `by rw [map_inv]; exact inv_mem hh`. Use `actO_mem_latAll hfS hfT hg' hh' ht` as an intermediate fact. Rewrite `this` using `[actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one]`. Then use the resulting hypothesis.
+-/
 theorem actO_mem_latAll_iff {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) {g : GA D S} {h : GA D T}
     (hg : Lev.finE S g ∈ Formalism.L2.DIV.St βS) (hh : Lev.finE T h ∈ Formalism.L2.DIV.St βT) (t : WO S T) :
@@ -714,6 +1063,9 @@ theorem actO_mem_latAll_iff {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.ran
   have := actO_mem_latAll hfS hfT hg' hh' ht
   rwa [actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one] at this
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [actO, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isHalf_actO (e : AE D) (g : GA D S) (h : GA D T) {t : WO S T} (ht : IsHalf e t) :
     IsHalf e (actO S T g h t) := by
   intro i j
@@ -722,12 +1074,20 @@ theorem isHalf_actO (e : AE D) (g : GA D S) (h : GA D T) {t : WO S T} (ht : IsHa
   calc e * (mt T h i k * t k l * mt S g⁻¹ l j) = mt T h i k * (e * t k l) * mt S g⁻¹ l j := by ring
     _ = _ := by rw [ht k l]
 
+/- English proof (translation)
+Use `⟨fun ht => ?_, isHalf_actO e g h⟩` and prove the remaining obligations. Use `isHalf_actO e g⁻¹ h⁻¹ ht` as an intermediate fact. Rewrite `this` using `[actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one]`. Then use the resulting hypothesis.
+-/
 theorem isHalf_actO_iff (e : AE D) (g : GA D S) (h : GA D T) (t : WO S T) :
     IsHalf e (actO S T g h t) ↔ IsHalf e t := by
   refine ⟨fun ht => ?_, isHalf_actO e g h⟩
   have := isHalf_actO e g⁻¹ h⁻¹ ht
   rwa [actO_actO, inv_mul_cancel, inv_mul_cancel, actO_one] at this
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hg`. Use `⟨y, ?_, fun PP => ?_⟩` and prove the remaining obligations. Unfold `frG`. Rewrite using `[← hy]`. Use `show β⁻¹ * (β * Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y * β⁻¹) * β = _`.
+
+Use `group`. Rewrite using `[← hy]`. Conclude with `Formalism.L2.DIV.redFn_frGL β PP y`.
+-/
 theorem frG_eq_of_St (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) (hg : Lev.finE V g ∈ Formalism.L2.DIV.St β) :
     ∃ y : GL (Fin V.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E),
       frG V β g = Formalism.L2.DIV.intGL D.host.F D.host.E V.rank y ∧
@@ -740,6 +1100,9 @@ theorem frG_eq_of_St (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (g : GA D V) (hg
     group
   · rw [← hy]; exact Formalism.L2.DIV.redFn_frGL β PP y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intGL_coe {n : ℕ} (y : GL (Fin n) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     ((Formalism.L2.DIV.intGL D.host.F D.host.E n y : GL (Fin n) (EAf D)) : Matrix (Fin n) (Fin n) (EAf D)) = intM y := rfl
 
@@ -751,6 +1114,13 @@ def frameFn (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hinv : (frG S βS g)⁻¹ = Formalism.L2.DIV.intGL D.host.F D.host.E S.rank yg⁻¹` using `by rw [hyg, map_inv]`. Establish `hN : frMapO S T βS βT (actO S T g h t) = intM yh * frMapO S T βS βT t * intM yg⁻¹`. Rewrite using `[frMapO_actO, hinv, hyh]`. Both sides reduce to the same expression. Establish `hiff : (IsHalf e (actO S T g h t) ∧ IsIntM (frMapO S T βS βT (actO S T g h t))) ↔ (IsHalf e t ∧ IsIntM (frMapO S T βS βT t))`.
+
+Rewrite using `[isHalf_actO_iff, hN, isIntM_mul_right_iff, isIntM_mul_left_iff]`. Unfold `frameFn`. Distinguish the cases in `hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t)`. Rewrite using `[if_pos (hiff.2 hc), if_pos hc]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `PP`. Rewrite using `[hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yh) hc.2), redM_intM_mul PP hc.2]`. Rewrite using `[if_neg (fun h' => hc (hiff.1 h')), if_neg hc]`.
+-/
 theorem frameFn_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (e : AE D)
     (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
     {g : GA D S} {h : GA D T} {yg : GL (Fin S.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -775,6 +1145,13 @@ theorem frameFn_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf
     rw [hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yh) hc.2), redM_intM_mul PP hc.2]
   · rw [if_neg (fun h' => hc (hiff.1 h')), if_neg hc]
 
+/- English proof (translation)
+Rewrite using `[hf]`. Introduce `i`. Establish `e : (fun i => (β : Matrix (Fin n) (Fin n) (EAf D)) i j) = (β : Matrix (Fin n) (Fin n) (EAf D)) *ᵥ Pi.single j 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_single_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `zero_mem _`.
+-/
 theorem col_mem_hatL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hf : Formalism.L2.DIV.IsFrame β Λ) (j : Fin n) :
     (fun i => (β : Matrix (Fin n) (Fin n) (EAf D)) i j) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
@@ -790,6 +1167,17 @@ theorem col_mem_hatL {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s₂, hs₂, rfl⟩` from `hx`. Take `⟨b, hb⟩` from `(hΛ.2 s₂).1 hs₂ s hs`. Establish `e : (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (V.gram.map (eToEAf D) *ᵥ fun i => eToEAf D (s₂ i)) = eToEAf D (∑ i, ∑ j, star (s i) * V.gram i j * s₂ j)`.
+
+Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, sR_eTo, map_sum, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use `show (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (V.gram.map (eToEAf D) *ᵥ fun i => eToEAf D (s₂ i)) ∈ _`. Rewrite using `[e, ← hb]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, ⟨b, rfl⟩⟩, rfl⟩)`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero, dotProduct_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, dotProduct_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`.
+
+Establish `e : (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (V.gram.map (eToEAf D) *ᵥ (r • x)) = (r : EAf D) * ((fun k => sR D (eToEAf D (s k))) ⬝ᵥ (V.gram.map (eToEAf D) *ᵥ x))`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_mem r.2 hx`.
+-/
 theorem hform_int {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hΛ : IsSelfDualC V Λ)
     {s : Fin V.rank → D.host.E} (hs : s ∈ Λ) {v : Fin V.rank → EAf D} (hv : v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) :
     (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (V.gram.map (eToEAf D) *ᵥ v) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -815,6 +1203,9 @@ theorem hform_int {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.
     rw [e]
     exact mul_mem r.2 hx
 
+/- English proof (translation)
+Unfold `frMapO`. Rewrite using `[Matrix.map_map]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `toEAf_liftE _`.
+-/
 theorem frMapO_mapLiftE {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (W : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) :
     frMapO S T βS βT (W.map (liftE (D := D))) = ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * W *
@@ -825,24 +1216,43 @@ theorem frMapO_mapLiftE {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (
   ext i j
   exact toEAf_liftE _
 
+/- English proof (translation)
+Simplify using `[frMapO, Matrix.mul_add, Matrix.add_mul, Matrix.map_add]`.
+-/
 theorem frMapO_add {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (t t' : WO S T) :
     frMapO S T βS βT (t + t') = frMapO S T βS βT t + frMapO S T βS βT t' := by
   simp [frMapO, Matrix.mul_add, Matrix.add_mul, Matrix.map_add]
 
+/- English proof (translation)
+Simplify using `[frMapO]`.
+-/
 theorem frMapO_zero {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} :
     frMapO S T βS βT 0 = 0 := by
   simp [frMapO]
 
+/- English proof (translation)
+Simplify using `[frMapO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem frMapO_neg {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (t : WO S T) :
     frMapO S T βS βT (-t) = -frMapO S T βS βT t := by
   simp [frMapO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp only [zero_nsmul, frMapO_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, frMapO_add, ih]`.
+-/
 theorem frMapO_nsmul {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (k : ℕ) (t : WO S T) :
     frMapO S T βS βT (k • t) = k • frMapO S T βS βT t := by
   induction k with
   | zero => simp only [zero_nsmul, frMapO_zero]
   | succ k ih => rw [succ_nsmul, succ_nsmul, frMapO_add, ih]
 
+/- English proof (translation)
+Take `⟨b, hb, hbi⟩` from `D.host.AA.isFractional`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `⟨Ideal.absNorm (Ideal.span {b}), Nat.pos_of_ne_zero ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))`. Take `⟨o, ho⟩` from `hbi a ha`. Use `⟨c * o, ?_⟩` and prove the remaining obligations. Establish `e1 : ((Ideal.absNorm (Ideal.span {b}) : ℕ) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (c * b)`. Rewrite using `[hc, map_natCast]`.
+
+Rewrite using `[e1]`. Use `show algebraMap (𝓞 D.host.E) D.host.E (c * o) = _`. Rewrite `ho` using `[Algebra.smul_def]`. Rewrite using `[map_mul, map_mul, ho]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AA_den : ∃ n : ℕ, 0 < n ∧ ∀ a ∈ D.host.AA, ∃ o : 𝓞 D.host.E, (o : D.host.E) = (n : D.host.E) * a := by
   obtain ⟨b, hb, hbi⟩ := D.host.AA.isFractional
   have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
@@ -858,6 +1268,19 @@ theorem AA_den : ∃ n : ℕ, 0 < n ∧ ∀ a ∈ D.host.AA, ∃ o : 𝓞 D.host
     rw [Algebra.smul_def] at ho
     rw [map_mul, map_mul, ho]; ring
 
+/- English proof (translation)
+Take `⟨n, hn, hden⟩` from `AA_den (D := D)`. Use `⟨n, hn, fun u hu => ?_⟩` and prove the remaining obligations. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+
+Take `⟨o, ho⟩` from `hden a ha`. Establish `key : IsIntM (n • frMapO S T βS βT (genL S T α a s t))`. Rewrite using `[genL_eq_genE, genE, frMapO_mapLiftE, mul_vecMulVec_mul, ← smul_assoc]`. Introduce `i j`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`.
+
+Establish `hc : (n : EAf D) * (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[← mul_assoc, show (n : EAf D) * eToEAf D a = eToEAf D ((n : D.host.E) * a) by rw [map_mul, map_natCast], ← ho]`. Use `mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, ⟨o, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩))` and prove the remaining obligations. Rewrite using `[show (n • (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) : EAf D) = (n : EAf D) * (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) from nsmul_eq_mul _ _]`. Use `mul_mem hc (mul_mem ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `(hfT _).1 (mem_hatL_of_mem ht) i`. Rewrite using `[Matrix.vecMul_vecMul] show (fun k => sR D (eToEAf D (s k))) ⬝ᵥ (fun l => (S.gram.map (eToEAf D) * (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D))) l j) ∈ _`. Establish `e : (fun l => (S.gram.map (eToEAf D) * (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D))) l j) = S.gram.map (eToEAf D) *ᵥ (fun i => (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) i j)`. Use function extensionality and compare the values at `l`. Rewrite using `[Matrix.mul_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hform_int hS hs (col_mem_hatL hfS j)`. Conclude with `key`. Consider the case `zero => rw [frMapO_zero, smul_zero]`.
+
+Conclude with `fun i j => zero_mem _`. Consider the case `add x y _ _ hx hy => rw [frMapO_add, smul_add]`. Conclude with `isIntM_add hx hy`. Consider the case `neg x _ hx => rw [frMapO_neg, smul_neg]`. Conclude with `fun i j => neg_mem (hx i j)`.
+-/
 theorem frMapO_latAll_int {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hS : IsSelfDualC S ΛS) (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) :
     ∃ n : ℕ, 0 < n ∧ ∀ u ∈ latAll S T ΛS ΛT, IsIntM (n • frMapO S T βS βT u) := by
@@ -892,6 +1315,11 @@ theorem frMapO_latAll_int {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank)
   | add x y _ _ hx hy => rw [frMapO_add, smul_add]; exact isIntM_add hx hy
   | neg x _ hx => rw [frMapO_neg, smul_neg]; exact fun i j => neg_mem (hx i j)
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, ⟨α, rfl, _, _⟩, hε⟩` from `he`. Establish `: e = e * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)` using `by rw [← hε, mul_add, h1, h2, add_zero]`. Rewrite using `[this, map_mul]`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+
+Use `show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[h0, mul_zero]`.
+-/
 theorem infPart_of_splitIdem {e : AE D} (he : IsSplitIdem D e) : infPart D e = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, _, _⟩, hε⟩ := he
   have : e = e * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) := by rw [← hε, mul_add, h1, h2, add_zero]
@@ -902,11 +1330,17 @@ theorem infPart_of_splitIdem {e : AE D} (he : IsSplitIdem D e) : infPart D e = 0
     exact TensorProduct.zero_tmul _ _
   rw [h0, mul_zero]
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, _⟩` from `he`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun PP hPP => infPart_of_splitIdem (hes PP hPP).1`.
+-/
 theorem infPart_of_idemSum {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) : infPart D e = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, _⟩ := he
   rw [map_sum]
   exact Finset.sum_eq_zero fun PP hPP => infPart_of_splitIdem (hes PP hPP).1
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem comm_comm' (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E y) = y := by
   induction y using TensorProduct.induction_on with
@@ -914,6 +1348,9 @@ theorem comm_comm' (y : Af D.host.F ⊗[D.host.F] D.host.E) :
   | tmul a b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `liftE`. Use `show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F) (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (finPart D x))) = x`. Rewrite using `[comm_comm', ← eq_lift_of_infPart x hx]`.
+-/
 theorem liftE_toEAf (x : AE D) (hx : infPart D x = 0) : liftE (toEAf D x) = x := by
   unfold liftE
   show lift (Algebra.TensorProduct.comm D.host.F D.host.E (Af D.host.F)
@@ -925,6 +1362,11 @@ def liftEHom (D : D7) : EAf D →+ AE D where
   map_zero' := liftE_zero
   map_add' := liftE_add
 
+/- English proof (translation)
+Establish `e : (⟨m • z, by rw [nsmul_eq_mul]; exact mul_mem (natCast_mem _ m) hz⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = (m : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) * ⟨z, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show m • z = (m : EAf D) * z`. Conclude with `nsmul_eq_mul _ _`. Rewrite using `[e, map_mul, map_natCast]`.
+
+Establish `: ((m : Formalism.L2.DIV.kP PP)) = 0`. Rewrite using `[show ((m : Formalism.L2.DIV.kP PP)) = Ideal.Quotient.mk PP.asIdeal (m : 𝓞 D.host.E) by rw [map_natCast]]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Rewrite using `[this, zero_mul]`.
+-/
 theorem int_of_rf (PP : Formalism.L2.DIV.Pl D.host.E) {z : EAf D} (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (m : ℕ)
     (hm : ((m : 𝓞 D.host.E)) ∈ PP.asIdeal) :
     Formalism.L2.DIV.resS D.host.F PP ⟨m • z, by rw [nsmul_eq_mul]; exact mul_mem (natCast_mem _ m) hz⟩ = 0 := by
@@ -937,6 +1379,9 @@ theorem int_of_rf (PP : Formalism.L2.DIV.Pl D.host.E) {z : EAf D} (hz : z ∈ Fo
     exact Ideal.Quotient.eq_zero_iff_mem.2 hm
   rw [this, zero_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(liftE_mul_liftE c (B i j)).symm`.
+-/
 theorem liftEHom_single_smul (c : EAf D) {m n : ℕ} (B : Matrix (Fin m) (Fin n) (EAf D)) :
     (liftEHom D).mapMatrix (c • B) = liftE c • B.map (liftE (D := D)) := by
   ext i j
@@ -945,6 +1390,43 @@ theorem liftEHom_single_smul (c : EAf D) {m n : ℕ} (B : Matrix (Fin m) (Fin n)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨nA, hnA, hint⟩` from `frMapO_latAll_int (ΛT := ΛT) hS hfS hfT`. Take `⟨-, -, hP⟩` from `hPL ψ hψ S T ΛS ΛT hS hT`. Take `⟨-, -, -, hv⟩` from `hP P e he`. Establish `hpt : ∀ (i : Fin T.rank) (j : Fin S.rank), ∃ k : ℕ, 0 < k ∧ k • (e • (((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))).map (liftE (D` using `D)))) ∈ latAll S T ΛS ΛT := by`. Introduce `i j`.
+
+Use `hv e (Or.inl rfl) _ (fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, he2]`. Use `choose kf hkf0 hkf using hpt`. Establish `hk'0 : 0 < ∏ i, ∏ j, kf i j` using `Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => hkf0 i j`.
+
+Establish `hnP0 : 0 < ∏ PP ∈ P, Ideal.absNorm PP.asIdeal` using `Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact PP.ne_bot)`. Use `set k' := ∏ i, ∏ j, kf i j with hk'`. Use `set nP := ∏ PP ∈ P, Ideal.absNorm PP.asIdeal with hnPdef`. Establish `hnP : ∀ PP ∈ P, (((nP * k' : ℕ)) : 𝓞 D.host.E) ∈ PP.asIdeal` using `fun PP hPP => by`. Rewrite using `[Nat.cast_mul]`.
+
+Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Rewrite using `[hnPdef, ← Finset.mul_prod_erase P _ hPP, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Use `⟨fun t ht => ?_, nA * (nP * k'), Nat.mul_pos hnA (Nat.mul_pos hnP0 hk'0), fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Conclude with `ht (by unfold frameFn; rw [if_neg (fun h => hc h.1)])`. Establish `hM : frMapO S T βS βT (t + (nA * (nP * k')) • u) = frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)`. Rewrite using `[frMapO_add, frMapO_nsmul, mul_comm nA, mul_smul]`. Establish `hK : IsIntM ((nP * k') • (nA • frMapO S T βS βT u))` using `fun i j => nsmul_mem (hint u hu i j) _`. Establish `hhe : ∀ i j, e * (t + (nA * (nP * k')) • u) i j = e * t i j + ((nA * (nP * k')) • u) i j`.
+
+Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, mul_add, mul_smul_comm, hue i j]`. Establish `hhalf : IsHalf e (t + (nA * (nP * k')) • u) ↔ IsHalf e t`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+
+Use `h i j` as an intermediate fact. Rewrite `this` using `[hhe, Matrix.add_apply]`. Conclude with `add_right_cancel this`. Introduce `h i j`. Rewrite using `[hhe, Matrix.add_apply, h i j]`.
+
+Establish `hint' : IsIntM (frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) ↔ IsIntM (frMapO S T βS βT t)`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `sub_mem (h i j) (hK i j)` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Introduce `h`. Conclude with `isIntM_add h hK`. Establish `hred : IsIntM (frMapO S T βS βT t) → ∀ PP ∈ P, redM PP (frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) = redM PP (frMapO S T βS βT t)`. Introduce `hN PP hPP`. Use extensionality with `i j`.
+
+Rewrite using `[redM_of_int PP (isIntM_add hN hK), redM_of_int PP hN]`. Establish `e1 : (⟨(frMapO S T βS βT t + (nP * k') • (nA • frMapO S T βS βT u)) i j, isIntM_add hN hK i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ⟨frMapO S T βS βT t i j, hN i j⟩ + ⟨(nP * k') • (nA • frMapO S T βS βT u) i j, hK i j⟩` using `Subtype.ext rfl`. Rewrite using `[e1, map_add]`. Establish `e2 : Formalism.L2.DIV.resS D.host.F PP ⟨(nP * k') • (nA • frMapO S T βS βT u) i j, hK i j⟩ = 0` using `int_of_rf PP (hint u hu i j) (nP * k') (hnP PP hPP)`. Rewrite using `[e2, add_zero]`.
+
+Unfold `frameFn`. Rewrite using `[hM]`. Distinguish the cases in `hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t)`. Rewrite using `[if_pos ⟨hhalf.2 hc.1, hint'.2 hc.2⟩, if_pos hc]`. Conclude with `hG _ _ (fun PP hPP => hred hc.2 PP hPP)`.
+
+Rewrite using `[if_neg (fun h => hc ⟨hhalf.1 h.1, hint'.1 h.2⟩), if_neg hc]`. Establish `hc : IsHalf e t ∧ IsIntM (frMapO S T βS βT t)`. Assume the negation of the conclusion as `hc; exact ht (by unfold frameFn; rw [if_neg hc])`. It suffices to establish `hs : k' • t ∈ latAll S T ΛS ΛT by`. Rewrite using `[show nA * (nP * k') = (nA * nP) * k' by ring, mul_smul]; exact nsmul_mem hs _`.
+
+Establish `hinf : ∀ i j, infPart D (t i j) = 0` using `fun i j => by`. Rewrite using `[← hc.1 i j, map_mul, infPart_of_idemSum he, zero_mul]`. Establish `h1 : t = (t.map (toEAf D)).map (liftE (D` using `D)) := by ext a b; exact (liftE_toEAf _ (hinf a b)).symm`. Establish `htf : t.map (toEAf D) = (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * frMapO S T βS βT t * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))`. Unfold `frMapO`.
+
+Simplify using `only [Matrix.mul_assoc, gl_cancel_left, Units.mul_inv, Matrix.mul_one]`. Establish `hsg : ∀ (M : Matrix (Fin T.rank) (Fin S.rank) (EAf D)), (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * M * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) = ∑ i, ∑ j, M i j • ((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 …`. Introduce `M`. Establish `hs : ∀ i j, Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : EAf D)` using `fun i j => by`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`. Simplify using `only [hs, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hdec : t = ∑ i, ∑ j, liftE (frMapO S T βS βT t i j) • (e • (((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D))).map (liftE (D` using `D)))) := by`. Establish `h3 : t = e • t` using `by ext a b; simp only [Matrix.smul_apply, smul_eq_mul, hc.1 a b]`. Use `conv_lhs => rw [h3, h1, htf, hsg]`.
+
+Rewrite using `[show (∑ i, ∑ j, frMapO S T βS βT t i j • ((βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βS⁻¹ : GL (Fin S.rank) (EAf D)) : Matrix (Fin S.rank) (Fin S.rank) (EAf D)))).map (liftE (D := D)) = (liftEHom D).mapMatrix (∑ i, ∑ j, frMapO S T βS βT t …`. Simplify using `only [map_sum, liftEHom_single_smul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Rewrite using `[hdec, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.smul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `liftE_smul_mem (hc.2 i j) _ ?_` and prove the remaining obligations. Take `⟨m, hm⟩ : kf i j ∣ k'` from `dvd_trans (Finset.dvd_prod_of_mem (fun j => kf i j) (Finset.mem_univ j)) (Finset.dvd_prod_of_mem (fun i => ∏ j, kf i j) (Finset.mem_univ i))`.
+
+Rewrite using `[hm, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hkf i j) m`.
+-/
 theorem isSBHalf_frameFn (hPL : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT)
@@ -1061,20 +1543,35 @@ theorem isSBHalf_frameFn (hPL : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ}
     rw [hm, mul_comm, mul_smul]
     exact nsmul_mem (hkf i j) m
 
+/- English proof (translation)
+Unfold `hO`. Simplify using `only [Matrix.add_apply, mul_add, ← Finset.sum_add_distrib]`.
+-/
 theorem hO_add_left (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
   unfold hO; simp only [Matrix.add_apply, mul_add, ← Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hO`. Simplify using `only [Matrix.add_apply, map_add, mul_add, add_mul, ← Finset.sum_add_distrib]`.
+-/
 theorem hO_add_right (x y y' : WO S T) : hO S T x (y + y') = hO S T x y + hO S T x y' := by
   unfold hO; simp only [Matrix.add_apply, map_add, mul_add, add_mul, ← Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `symplOH symplO`. Rewrite using `[hO_add_left, mul_add, map_add, mul_add]`.
+-/
 theorem symplOH_add_left (x x' y : WO S T) :
     symplOH S T (x + x') y = symplOH S T x y + symplOH S T x' y := by
   unfold symplOH symplO; rw [hO_add_left, mul_add, map_add, mul_add]
 
+/- English proof (translation)
+Unfold `symplOH symplO`. Rewrite using `[hO_add_right, mul_add, map_add, mul_add]`.
+-/
 theorem symplOH_add_right (x y y' : WO S T) :
     symplOH S T x (y + y') = symplOH S T x y + symplOH S T x y' := by
   unfold symplOH symplO; rw [hO_add_right, mul_add, map_add, mul_add]
 
+/- English proof (translation)
+Unfold `hO`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← hx d a, ← hy c b, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hO_half_zero {e : AE D} (hec : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     hO S T x y = 0 := by
   unfold hO
@@ -1085,16 +1582,25 @@ theorem hO_half_zero {e : AE D} (hec : e * cA D e = 0) {x y : WO S T} (hx : IsHa
       = (e * cA D e) * (incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * x d a) := by ring
     _ = 0 := by rw [hec, zero_mul]
 
+/- English proof (translation)
+Unfold `symplOH symplO`. Rewrite using `[hO_half_zero hec hx hy, mul_zero, map_zero, mul_zero]`.
+-/
 theorem symplOH_half_zero {e : AE D} (hec : e * cA D e = 0) {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) :
     symplOH S T x y = 0 := by
   unfold symplOH symplO; rw [hO_half_zero hec hx hy, mul_zero, map_zero, mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Unfold `heisO`. Establish `h0 : symplOH S T w 0 = 0` using `by unfold symplOH symplO hO; simp`. Rewrite using `[add_zero, h0, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem heisO_zero (ψ : AddChar (AF D.host.F) ℂ) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   unfold heisO
   have h0 : symplOH S T w 0 = 0 := by unfold symplOH symplO hO; simp
   rw [add_zero, h0, AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Unfold `heisO`. Rewrite using `[symplOH_add_right, symplOH_add_left, hab, add_zero, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_add_of_iso (ψ : AddChar (AF D.host.F) ℂ) {a b : WO S T} (hab : symplOH S T a b = 0)
     (f : WO S T → ℂ) : heisO ψ S T (a + b) f = heisO ψ S T a (heisO ψ S T b f) := by
   funext w
@@ -1102,11 +1608,26 @@ theorem heisO_add_of_iso (ψ : AddChar (AF D.host.F) ℂ) {a b : WO S T} (hab : 
   rw [symplOH_add_right, symplOH_add_left, hab, add_zero, AddChar.map_add_eq_mul, add_assoc]
   ring
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.add_apply, mul_add, hx i j, hy i j]`.
+-/
 theorem isHalf_add {e : AE D} {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) : IsHalf e (x + y) :=
   fun i j => by rw [Matrix.add_apply, mul_add, hx i j, hy i j]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.zero_apply, mul_zero]`.
+-/
 theorem isHalf_zero (e : AE D) : IsHalf e (0 : WO S T) := fun i j => by rw [Matrix.zero_apply, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, heisO_zero]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Establish `hs : IsHalf e (∑ j ∈ s, a j)`.
+
+Establish `: ∀ t : Finset ι, (∀ j ∈ t, IsHalf e (a j)) → IsHalf e (∑ j ∈ t, a j)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro _`. Rewrite using `[Finset.sum_empty]`.
+
+Conclude with `isHalf_zero e`. Consider the case `insert k t hk iht`. Introduce `h`. Rewrite using `[Finset.sum_insert hk]`. Conclude with `isHalf_add (h k (Finset.mem_insert_self k t)) (iht fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+
+Conclude with `this s fun j hj => ha j (Finset.mem_insert_of_mem hj)`. Rewrite using `[heisO_add_of_iso ψ (symplOH_half_zero hec (ha i (Finset.mem_insert_self i s)) hs), ih (fun j hj => ha j (Finset.mem_insert_of_mem hj)) (fun j hj => hf j (Finset.mem_insert_of_mem hj)), hf i (Finset.mem_insert_self i s)]`.
+-/
 theorem heisO_fix_sum (ψ : AddChar (AF D.host.F) ℂ) {e : AE D} (hec : e * cA D e = 0) {ι : Type}
     (s : Finset ι) (a : ι → WO S T) (f : WO S T → ℂ) (ha : ∀ i ∈ s, IsHalf e (a i))
     (hf : ∀ i ∈ s, heisO ψ S T (a i) f = f) : heisO ψ S T (∑ i ∈ s, a i) f = f := by
@@ -1129,6 +1650,11 @@ theorem heisO_fix_sum (ψ : AddChar (AF D.host.F) ℂ) {e : AE D} (hec : e * cA 
       ih (fun j hj => ha j (Finset.mem_insert_of_mem hj)) (fun j hj => hf j (Finset.mem_insert_of_mem hj)),
       hf i (Finset.mem_insert_self i s)]
 
+/- English proof (translation)
+Use `(h.2 1 one_ne_zero).not.1 (fun h1 => PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1))` as an intermediate fact. Rewrite `this` using `[not_not]`. Establish `e1 : e * incA D ((((1 : 𝓞 D.host.E) : D.host.E))⁻¹) = e`. Rewrite using `[show (((1 : 𝓞 D.host.E) : D.host.E)) = 1 by simp, inv_one, map_one, mul_one]`. Rewrite `this` using `[e1]`.
+
+Conclude with `this`.
+-/
 theorem finPart_of_idemAt {e : AE D} {PP : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.L2.NTheta.IsIdemAt e PP) :
     finPart D e ∈ intAE D := by
   have := (h.2 1 one_ne_zero).not.1 (fun h1 => PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1))
@@ -1138,6 +1664,11 @@ theorem finPart_of_idemAt {e : AE D} {PP : HeightOneSpectrum (𝓞 D.host.E)} (h
   rw [e1] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, o, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, ⟨_, isIntegral_star' o⟩, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem cA_mem_intAE {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig y ∈ intAE D := by
   induction hy using AddSubgroup.closure_induction with
@@ -1148,18 +1679,37 @@ theorem cA_mem_intAE {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE 
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `tmul a w => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero, map_zero]
   | tmul a w => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, hv, hε⟩` from `he`. Use `⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hv, by rw [cA_cA, add_comm, hε]⟩` and prove the remaining obligations.
+-/
 theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hv, hε⟩ := he
   refine ⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hv, by rw [cA_cA, add_comm, hε]⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, hec⟩` from `he`. Introduce `u hu hh`. Break down `hh with hh | hh` into its components or cases. Establish `hu' : u = ∑ PP ∈ P, es PP • u`. Rewrite using `[← Finset.sum_smul]`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hh i j]`. Rewrite using `[hu']`. Use `heisO_fix_sum ψ hec P _ f₀ (fun PP _ i j => ?_) (fun PP hPP => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `hL.2 (es PP) (hes PP hPP).1 _ (smul_mem_latAll (finPart_of_idemAt (hes PP hPP)) hu) (fun i j => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, (hes PP hPP).1.1]`. Establish `hec' : cA D (∑ PP ∈ P, es PP) * cA D (cA D (∑ PP ∈ P, es PP)) = 0` using `by rw [cA_cA, mul_comm, hec]`.
+
+Establish `hu' : u = ∑ PP ∈ P, cA D (es PP) • u`. Rewrite using `[← Finset.sum_smul, ← map_sum]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hh i j]`. Rewrite using `[hu']`.
+
+Use `heisO_fix_sum ψ hec' P _ f₀ (fun PP _ i j => ?_) (fun PP hPP => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsc` using `isSplitIdem_cA (hes PP hPP).1`. Use `hL.2 (cA D (es PP)) hsc _ ?_ (fun i j => ?_)` and prove the remaining obligations.
+
+Use `smul_mem_latAll ?_ hu` and prove the remaining obligations. Rewrite using `[finPart_cA]`. Conclude with `cA_mem_intAE (finPart_of_idemAt (hes PP hPP))`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, hsc.1]`.
+-/
 theorem heisO_fix_of_latVac (ψ : AddChar (AF D.host.F) ℂ) {f₀ : WO S T → ℂ}
     (hL : IsLatVac (heisO ψ S T) (latAll S T ΛS ΛT) f₀) {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D}
     (he : IsIdemSum e P) : ∀ u ∈ latAll S T ΛS ΛT, (IsHalf e u ∨ IsHalf (cA D e) u) → heisO ψ S T u f₀ = f₀ := by
@@ -1191,8 +1741,14 @@ theorem heisO_fix_of_latVac (ψ : AddChar (AF D.host.F) ℂ) {f₀ : WO S T → 
       · simp only [Matrix.smul_apply, smul_eq_mul]
         rw [← mul_assoc, hsc.1]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => V.herm.eq _ _`.
+-/
 theorem gram_herm_E (V : HSp D) : V.gramᴴ = V.gram := Matrix.ext fun i j => V.herm.eq _ _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a b`. Rewrite using `[show sR D (a ⊗ₜ[D.host.F] b) = (star a) ⊗ₜ b from rfl, show sR D ((star a) ⊗ₜ[D.host.F] b) = (star (star a)) ⊗ₜ b from rfl, star_star]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sR_sR (z : EAf D) : sR D (sR D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
@@ -1205,12 +1761,21 @@ abbrev GE (V : HSp D) : Matrix (Fin V.rank) (Fin V.rank) (EAf D) := V.gram.map (
 
 abbrev GIE (V : HSp D) : Matrix (Fin V.rank) (Fin V.rank) (EAf D) := (V.gram⁻¹).map (eToEAf D)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem GIE_GE (V : HSp D) : GIE V * GE V = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem GE_GIE (V : HSp D) : GE V * GIE V = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, sR_eTo]`. Use `congr 1`. Use `congrFun (congrFun (gram_herm_E V) j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis.
+-/
 theorem GE_sR (V : HSp D) : (GE V).map (sR D) = (GE V)ᵀ := by
   ext i j
   simp only [Matrix.map_apply, Matrix.transpose_apply, sR_eTo]
@@ -1218,6 +1783,11 @@ theorem GE_sR (V : HSp D) : (GE V).map (sR D) = (GE V)ᵀ := by
   have := congrFun (congrFun (gram_herm_E V) j) i
   rwa [Matrix.conjTranspose_apply] at this
 
+/- English proof (translation)
+Establish `h : (V.gram⁻¹)ᴴ = V.gram⁻¹` using `by rw [Matrix.conjTranspose_nonsing_inv, gram_herm_E]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, sR_eTo]`. Use `congr 1`. Use `congrFun (congrFun h j) i` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis.
+-/
 theorem GIE_sR (V : HSp D) : (GIE V).map (sR D) = (GIE V)ᵀ := by
   have h : (V.gram⁻¹)ᴴ = V.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, gram_herm_E]
   ext i j
@@ -1226,6 +1796,9 @@ theorem GIE_sR (V : HSp D) : (GIE V).map (sR D) = (GIE V)ᵀ := by
   have := congrFun (congrFun h j) i
   rwa [Matrix.conjTranspose_apply] at this
 
+/- English proof (translation)
+Establish `e1 : (toEAf D ∘ cA D) = (sR D ∘ toEAf D)` using `funext toEAf_cA`. Establish `e2 : (toEAf D ∘ incA D) = eToEAf D` using `funext toEAf_incA`. Unfold `adjO`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map]`. Rewrite using `[e1, e2]`.
+-/
 theorem adjO_toEAf (x : WO S T) :
     (adjO S T x).map (toEAf D) = GIE S * ((x.map (toEAf D)).map (sR D))ᵀ * GE T := by
   have e1 : (toEAf D ∘ cA D) = (sR D ∘ toEAf D) := funext toEAf_cA
@@ -1234,6 +1807,9 @@ theorem adjO_toEAf (x : WO S T) :
   simp only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map]
   rw [e1, e2]
 
+/- English proof (translation)
+Rewrite using `[adjO_toEAf, Matrix.map_mul, Matrix.map_mul, GIE_sR, GE_sR, Matrix.transpose_map, Matrix.map_map]`. Establish `e : (sR D ∘ sR D) = id` using `funext sR_sR`. Rewrite using `[e, Matrix.map_id, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[GIE_GE, Matrix.mul_one, ← Matrix.mul_assoc, GIE_GE, Matrix.one_mul]`.
+-/
 theorem toEAf_adjO_adj (x : WO S T) :
     x.map (toEAf D) = GIE T * (((adjO S T x).map (toEAf D)).map (sR D))ᵀ * GE S := by
   rw [adjO_toEAf, Matrix.map_mul, Matrix.map_mul, GIE_sR, GE_sR, Matrix.transpose_map, Matrix.map_map]
@@ -1243,18 +1819,31 @@ theorem toEAf_adjO_adj (x : WO S T) :
   simp only [Matrix.mul_assoc]
   rw [GIE_GE, Matrix.mul_one, ← Matrix.mul_assoc, GIE_GE, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMulVec_transpose {R : Type} [CommRing R] {m n : ℕ} (c : R) (x : Fin m → R) (y : Fin n → R) :
     (c • Matrix.vecMulVec x y)ᵀ = c • Matrix.vecMulVec y x := by
   ext i j
   simp only [Matrix.transpose_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul]`.
+-/
 theorem map_smul_vecMulVec {m n : ℕ} (c : EAf D) (x : Fin m → EAf D) (y : Fin n → EAf D) :
     (c • Matrix.vecMulVec x y).map (sR D) = sR D c • Matrix.vecMulVec (fun i => sR D (x i)) (fun j => sR D (y j)) := by
   ext i j; simp only [Matrix.map_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hW : (genE c τ σ).map (toEAf D) = c • Matrix.vecMulVec τ (Matrix.vecMul (fun k => sR D (σ k)) (GE S))`. Unfold `genE`. Rewrite using `[Matrix.map_map]`. Use extensionality with `i j`. Conclude with `toEAf_liftE _`.
+
+Rewrite using `[frMapAdj_eq, adjO_toEAf, hW, map_smul_vecMulVec, vecMulVec_transpose, mul_vecMulVec_mul, mul_vecMulVec_mul]`. Use `congr 2`. Establish `e1 : (fun j => sR D (Matrix.vecMul (fun k => sR D (σ k)) (GE S) j)) = (GE S) *ᵥ σ`. Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_vecMul, ← Matrix.vecMul_transpose, ← GE_sR]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `sR_sR _`. Rewrite using `[e1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, GIE_GE, Matrix.mul_one]`.
+-/
 theorem frMapAdj_genE {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (c : EAf D)
     (τ : Fin T.rank → EAf D) (σ : Fin S.rank → EAf D) :
     frMapAdj S T βS βT (genE c τ σ) = sR D c • Matrix.vecMulVec
@@ -1271,33 +1860,59 @@ theorem frMapAdj_genE {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EA
     funext k; exact sR_sR _
   rw [e1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, GIE_GE, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `[adjO, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]`.
+-/
 theorem adjO_add (x y : WO S T) : adjO S T (x + y) = adjO S T x + adjO S T y := by
   simp [adjO, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]
 
+/- English proof (translation)
+Simplify using `[adjO]`.
+-/
 theorem adjO_zero : adjO S T 0 = 0 := by
   simp [adjO]
 
+/- English proof (translation)
+Simplify using `[adjO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]`.
+-/
 theorem adjO_neg (x : WO S T) : adjO S T (-x) = -adjO S T x := by
   simp [adjO, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]
 
+/- English proof (translation)
+Simplify using `[frMapAdj, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]`.
+-/
 theorem frMapAdj_add {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (x y : WO S T) :
     frMapAdj S T βS βT (x + y) = frMapAdj S T βS βT x + frMapAdj S T βS βT y := by
   simp [frMapAdj, Matrix.mul_add, Matrix.add_mul, Matrix.map_add, Matrix.transpose_add]
 
+/- English proof (translation)
+Simplify using `[frMapAdj]`.
+-/
 theorem frMapAdj_zero {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} :
     frMapAdj S T βS βT 0 = 0 := by
   simp [frMapAdj]
 
+/- English proof (translation)
+Simplify using `[frMapAdj, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]`.
+-/
 theorem frMapAdj_neg {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (x : WO S T) :
     frMapAdj S T βS βT (-x) = -frMapAdj S T βS βT x := by
   simp [frMapAdj, Matrix.map_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.transpose_neg]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp only [zero_nsmul, frMapAdj_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, frMapAdj_add, ih]`.
+-/
 theorem frMapAdj_nsmul {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (k : ℕ) (x : WO S T) :
     frMapAdj S T βS βT (k • x) = k • frMapAdj S T βS βT x := by
   induction k with
   | zero => simp only [zero_nsmul, frMapAdj_zero]
   | succ k ih => rw [succ_nsmul, succ_nsmul, frMapAdj_add, ih]
 
+/- English proof (translation)
+Establish `h1 : sR D (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) = eToEAf D (star a) * ((1 : D.host.E) ⊗ₜ[D.host.F] α)`. Rewrite using `[map_mul, sR_eTo]`. Use `congr 1`. Use `show (star (1 : D.host.E)) ⊗ₜ[D.host.F] α = _`. Rewrite using `[star_one]`.
+
+Establish `h2 : (n : EAf D) * eToEAf D (star a) = eToEAf D (star (o : D.host.E))`. Rewrite using `[ho, star_mul, star_natCast, map_mul, map_natCast, mul_comm]`. Rewrite using `[h1, nsmul_eq_mul, ← mul_assoc, h2]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨_, ⟨⟨_, isIntegral_star' o⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨α, fun v => hα v⟩, rfl⟩))`.
+-/
 theorem sR_gen_int {a : D.host.E} {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {n : ℕ} {o : 𝓞 D.host.E}
     (ho : (o : D.host.E) = (n : D.host.E) * a) :
     (n • sR D (eToEAf D a * ((1 : D.host.E) ⊗ₜ[D.host.F] α)) : EAf D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -1312,6 +1927,19 @@ theorem sR_gen_int {a : D.host.E} {α : Af D.host.F} (hα : α ∈ intAf D.host.
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨n, hn, hden⟩` from `AA_den (D := D)`. Use `⟨n, hn, fun u hu => ?_⟩` and prove the remaining obligations. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, _, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+
+Take `⟨o, ho⟩` from `hden a ha`. Establish `key : IsIntM (n • frMapAdj S T βS βT (genL S T α a s t))`. Rewrite using `[genL_eq_genE, frMapAdj_genE, ← smul_assoc]`. Introduce `i j`. Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul]`.
+
+Use `mul_mem (sR_gen_int hα ho) (mul_mem ?_ ?_)` and prove the remaining obligations. Conclude with `(hfS _).1 (mem_hatL_of_mem hs) i`. Rewrite using `[Matrix.vecMul_vecMul]`. Establish `e : (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) = GE T *ᵥ (fun i => (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) i j)`. Use function extensionality and compare the values at `l`.
+
+Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Use `show (fun k => sR D (eToEAf D (t k))) ⬝ᵥ (fun l => (GE T * (βT : Matrix (Fin T.rank) (Fin T.rank) (EAf D))) l j) ∈ _`. Rewrite using `[e]`. Conclude with `hform_int hT ht (col_mem_hatL hfT j)`.
+
+Conclude with `key`. Consider the case `zero => rw [frMapAdj_zero, smul_zero]`. Conclude with `fun i j => zero_mem _`. Consider the case `add x y _ _ hx hy => rw [frMapAdj_add, smul_add]`. Conclude with `isIntM_add hx hy`.
+
+Consider the case `neg x _ hx => rw [frMapAdj_neg, smul_neg]`. Conclude with `fun i j => neg_mem (hx i j)`.
+-/
 theorem frMapAdj_latAll_int {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hT : IsSelfDualC T ΛT) (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT) :
     ∃ n : ℕ, 0 < n ∧ ∀ u ∈ latAll S T ΛS ΛT, IsIntM (n • frMapAdj S T βS βT u) := by
@@ -1347,6 +1975,13 @@ def frameFnAdj (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.ra
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hinv : (frG T βT h)⁻¹ = Formalism.L2.DIV.intGL D.host.F D.host.E T.rank yh⁻¹` using `by rw [hyh, map_inv]`. Establish `hN : frMapAdj S T βS βT (actO S T g h x) = intM yg * frMapAdj S T βS βT x * intM yh⁻¹`. Rewrite using `[frMapAdj_actO, hinv, hyg]`. Both sides reduce to the same expression. Establish `hiff : (IsHalf e (actO S T g h x) ∧ IsIntM (frMapAdj S T βS βT (actO S T g h x))) ↔ (IsHalf e x ∧ IsIntM (frMapAdj S T βS βT x))`.
+
+Rewrite using `[isHalf_actO_iff, hN, isIntM_mul_right_iff, isIntM_mul_left_iff]`. Unfold `frameFnAdj`. Distinguish the cases in `hc : IsHalf e x ∧ IsIntM (frMapAdj S T βS βT x)`. Rewrite using `[if_pos (hiff.2 hc), if_pos hc]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `PP`. Rewrite using `[hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yg) hc.2), redM_intM_mul PP hc.2]`. Rewrite using `[if_neg (fun h' => hc (hiff.1 h')), if_neg hc]`.
+-/
 theorem frameFnAdj_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)} (e : AE D)
     (G : (∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP)) → ℂ)
     {g : GA D S} {h : GA D T} {yg : GL (Fin S.rank) ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -1371,6 +2006,9 @@ theorem frameFnAdj_actO {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (
     rw [hN, redM_mul_intM PP (isIntM_mul (isIntM_intM yg) hc.2), redM_intM_mul PP hc.2]
   · rw [if_neg (fun h' => hc (hiff.1 h')), if_neg hc]
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, _⟩` from `he`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun PP hPP => infPart_of_splitIdem (isSplitIdem_cA (hes PP hPP).1)`.
+-/
 theorem infPart_cA_idemSum {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) :
     infPart D (cA D e) = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, _⟩ := he
@@ -1379,6 +2017,45 @@ theorem infPart_cA_idemSum {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `he2' : cA D e * cA D e = cA D e` using `by rw [← map_mul, he2]`. Take `⟨nA, hnA, hint⟩` from `frMapAdj_latAll_int (ΛS := ΛS) hT hfS hfT`. Take `⟨-, -, hP⟩` from `hPL ψ hψ S T ΛS ΛT hS hT`. Take `⟨-, -, -, hv⟩` from `hP P e he`. Establish `hpt : ∀ (i : Fin S.rank) (j : Fin T.rank), ∃ k : ℕ, 0 < k ∧ k • (cA D e • ((GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S).map (liftE ( …` using `D)))) ∈ latAll S T ΛS ΛT := by`.
+
+Introduce `i j`. Use `hv (cA D e) (Or.inr rfl) _ (fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, he2']`. Use `choose kf hkf0 hkf using hpt`.
+
+Establish `hk'0 : 0 < ∏ i, ∏ j, kf i j` using `Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => hkf0 i j`. Establish `hnP0 : 0 < ∏ PP ∈ P, Ideal.absNorm PP.asIdeal` using `Finset.prod_pos fun PP _ => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact PP.ne_bot)`. Use `set k' := ∏ i, ∏ j, kf i j with hk'`. Use `set nP := ∏ PP ∈ P, Ideal.absNorm PP.asIdeal with hnPdef`. Establish `hnP : ∀ PP ∈ P, (((nP * k' : ℕ)) : 𝓞 D.host.E) ∈ PP.asIdeal` using `fun PP hPP => by`.
+
+Rewrite using `[Nat.cast_mul]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Rewrite using `[hnPdef, ← Finset.mul_prod_erase P _ hPP, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Use `⟨fun t ht => ?_, nA * (nP * k'), Nat.mul_pos hnA (Nat.mul_pos hnP0 hk'0), fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Conclude with `ht (by unfold frameFnAdj; rw [if_neg (fun h => hc h.1)])`. Establish `hM : frMapAdj S T βS βT (t + (nA * (nP * k')) • u) = frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)`. Rewrite using `[frMapAdj_add, frMapAdj_nsmul, mul_comm nA, mul_smul]`. Establish `hK : IsIntM ((nP * k') • (nA • frMapAdj S T βS βT u))` using `fun i j => nsmul_mem (hint u hu i j) _`.
+
+Establish `hhe : ∀ i j, cA D e * (t + (nA * (nP * k')) • u) i j = cA D e * t i j + ((nA * (nP * k')) • u) i j`. Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, mul_add, mul_smul_comm, hue i j]`. Establish `hhalf : IsHalf (cA D e) (t + (nA * (nP * k')) • u) ↔ IsHalf (cA D e) t`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i j`. Use `h i j` as an intermediate fact. Rewrite `this` using `[hhe, Matrix.add_apply]`. Conclude with `add_right_cancel this`. Introduce `h i j`.
+
+Rewrite using `[hhe, Matrix.add_apply, h i j]`. Establish `hint' : IsIntM (frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) ↔ IsIntM (frMapAdj S T βS βT t)`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `sub_mem (h i j) (hK i j)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.add_apply, add_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `isIntM_add h hK`. Establish `hred : IsIntM (frMapAdj S T βS βT t) → ∀ PP ∈ P, redM PP (frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) = redM PP (frMapAdj S T βS βT t)`. Introduce `hN PP hPP`.
+
+Use extensionality with `i j`. Rewrite using `[redM_of_int PP (isIntM_add hN hK), redM_of_int PP hN]`. Establish `e1 : (⟨(frMapAdj S T βS βT t + (nP * k') • (nA • frMapAdj S T βS βT u)) i j, isIntM_add hN hK i j⟩ : ↥(Formalism.L2.Herm.intAf D.host.F D.host.E)) = ⟨frMapAdj S T βS βT t i j, hN i j⟩ + ⟨(nP * k') • (nA • frMapAdj S T βS βT u) i j, hK i j⟩` using `Subtype.ext rfl`. Rewrite using `[e1, map_add]`. Establish `e2 : Formalism.L2.DIV.resS D.host.F PP ⟨(nP * k') • (nA • frMapAdj S T βS βT u) i j, hK i j⟩ = 0` using `int_of_rf PP (hint u hu i j) (nP * k') (hnP PP hPP)`.
+
+Rewrite using `[e2, add_zero]`. Unfold `frameFnAdj`. Rewrite using `[hM]`. Distinguish the cases in `hc : IsHalf (cA D e) t ∧ IsIntM (frMapAdj S T βS βT t)`. Rewrite using `[if_pos ⟨hhalf.2 hc.1, hint'.2 hc.2⟩, if_pos hc]`.
+
+Conclude with `hG _ _ (fun PP hPP => hred hc.2 PP hPP)`. Rewrite using `[if_neg (fun h => hc ⟨hhalf.1 h.1, hint'.1 h.2⟩), if_neg hc]`. Establish `hc : IsHalf (cA D e) t ∧ IsIntM (frMapAdj S T βS βT t)`. Assume the negation of the conclusion as `hc; exact ht (by unfold frameFnAdj; rw [if_neg hc])`. It suffices to establish `hs : k' • t ∈ latAll S T ΛS ΛT by`.
+
+Rewrite using `[show nA * (nP * k') = (nA * nP) * k' by ring, mul_smul]; exact nsmul_mem hs _`. Establish `hinf : ∀ i j, infPart D (t i j) = 0` using `fun i j => by`. Rewrite using `[← hc.1 i j, map_mul, infPart_cA_idemSum he, zero_mul]`. Establish `h1 : t = (t.map (toEAf D)).map (liftE (D` using `D)) := by ext a b; exact (liftE_toEAf _ (hinf a b)).symm`. Establish `hA : (adjO S T t).map (toEAf D) = (βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * frMapAdj S T βS βT t * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))`.
+
+Rewrite using `[frMapAdj_eq]`. Simplify using `only [Matrix.mul_assoc, gl_cancel_left, Units.mul_inv, Matrix.mul_one]`. Establish `hsg : ∀ (M : Matrix (Fin S.rank) (Fin T.rank) (EAf D)), GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * M * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S = ∑ i, ∑ j, sR D (M i j) • (GIE T * (((βS : Matrix (Fin S.ran …`. Introduce `M`. Establish `hs : ∀ i j, Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : EAf D)` using `fun i j => by`.
+
+Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single M]`. Simplify using `only [hs, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[show ((∑ i, ∑ j, M i j • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)))).map (sR D)) = (sR D).toAddMonoidHom.mapMatrix (∑ i, ∑ j, M i j • ((βS : Matrix (Fin S.rank) …`. Simplify using `only [map_sum, Matrix.transpose_sum, Matrix.mul_sum, Matrix.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (sR D).toAddMonoidHom.mapMatrix (M i j • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D)))) = sR D (M i j) • ((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Ma …`. Use extensionality with `a b`. Simplify using `only [AddMonoidHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]]`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Establish `hdec : t = ∑ i, ∑ j, liftE (sR D (frMapAdj S T βS βT t i j)) • (cA D e • ((GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S).map (liftE (D` using `D)))) := by`. Establish `h3 : t = cA D e • t` using `by ext a b; simp only [Matrix.smul_apply, smul_eq_mul, hc.1 a b]`. Use `conv_lhs => rw [h3, h1, toEAf_adjO_adj, hA, hsg]`. Rewrite using `[show (∑ i, ∑ j, sR D (frMapAdj S T βS βT t i j) • (GIE T * (((βS : Matrix (Fin S.rank) (Fin S.rank) (EAf D)) * Matrix.single i j (1 : EAf D) * ((βT⁻¹ : GL (Fin T.rank) (EAf D)) : Matrix (Fin T.rank) (Fin T.rank) (EAf D))).map (sR D))ᵀ * GE S)).map (liftE (D := D)) = (liftEHom D) …`. Simplify using `only [map_sum, liftEHom_single_smul, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Rewrite using `[hdec, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm]`. Use `liftE_smul_mem (sR_mem_intAf (hc.2 i j)) _ ?_` and prove the remaining obligations. Take `⟨m, hm⟩ : kf i j ∣ k'` from `dvd_trans (Finset.dvd_prod_of_mem (fun j => kf i j) (Finset.mem_univ j)) (Finset.dvd_prod_of_mem (fun i => ∏ j, kf i j) (Finset.mem_univ i))`. Rewrite using `[hm, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hkf i j) m`.
+-/
 theorem isSBHalf_frameFnAdj (hPL : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hfS : Formalism.L2.DIV.IsFrame βS ΛS) (hfT : Formalism.L2.DIV.IsFrame βT ΛT)

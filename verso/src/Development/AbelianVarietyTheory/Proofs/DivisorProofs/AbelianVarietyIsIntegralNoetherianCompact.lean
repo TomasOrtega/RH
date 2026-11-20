@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ A`. Establish `hA : IsAbelianScheme A.X` using `A.ab`. Establish `: Smooth A.X.hom` using `hA.smooth`. Establish `: IsProper A.X.hom` using `hA.proper`. Establish `: GeometricallyConnected A.X.hom` using `hA.geomConnected`.
+
+Use `⟨isIntegral_of_smooth_of_geometricallyConnected A.X.hom, LocallyOfFiniteType.isLocallyNoetherian A.X.hom, ?_⟩` and prove the remaining obligations. Conclude with `(quasiCompact_iff_compactSpace A.X.hom).mp inferInstance`.
+-/
 theorem isIntegral_isLocallyNoetherian_compactSpace :
     ∀ (K : Type) [Field K] (A : AbVar K),
       IsIntegral A.X.left ∧ IsLocallyNoetherian A.X.left ∧ CompactSpace A.X.left := by

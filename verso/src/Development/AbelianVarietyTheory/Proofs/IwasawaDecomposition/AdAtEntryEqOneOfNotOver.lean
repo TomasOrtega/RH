@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdSupport
 
+/- English proof (translation)
+Establish `hne : P.under (𝓞 F) ≠ v`. Introduce `h`. Apply `hP` to reduce the goal to its premises. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Establish `h2` using `congrArg (fun g : GL (Fin n) (E ⊗[F] (P.under (𝓞 F)).adicCompletion F) => (g : Matrix (Fin n) (Fin n) (E ⊗[F] (P.under (𝓞 F)).adicCompletion F)) r s) (hz _ hne)`. Establish `h3 : prV (E` using `E) (P.under (𝓞 F)) ((z : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s) = (1 : Matrix (Fin n) (Fin n) (E ⊗[F] (P.under (𝓞 F)).adicCompletion F)) r s := h2`. Establish `h4 : prV (E` using `E) (P.under (𝓞 F)) ((z : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s) = 0 := by`. Rewrite using `[map_sub, h3, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `h5` using `((GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff F E (P.under (𝓞 F)) _).1.1 h4) P rfl`. Rewrite `h5` using `[map_sub, sub_eq_zero]`. Rewrite using `[h5, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem adAt_entry_eq_one_of_not_over {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v : HeightOneSpectrum (𝓞 F))
     (hz : ∀ v', v' ≠ v → bc (prV (E := E) v') z = 1) (P : HeightOneSpectrum (𝓞 E)) (hP : ¬ Formalism.L2.Col.IsOver v P)

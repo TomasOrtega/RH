@@ -2,6 +2,17 @@ import Mathlib
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ e m hm he`. Establish `hme : Measurable (e : G → G)` using `e.continuous.measurable`. Use `haveI : (Measure.map e μ).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ e`. Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map e μ = c • μ` from `⟨_, Measure.isMulLeftInvariant_eq_smul _ _⟩`. Establish `hit : ∀ k : ℕ, Measure.map ((⇑e)^[k]) μ = c ^ k • μ`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ', ← Measure.map_map hme (hme.iterate k), ih, Measure.map_smul, hc, smul_smul, pow_succ]`.
+
+Establish `h1 : μ = c ^ m • μ`. Rewrite using `[← hit m, show (⇑e)^[m] = id from funext he, Measure.map_id]`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts G)` from `inferInstance`. Establish `hK0 : μ K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'`. Establish `hK1 : μ K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`.
+
+Establish `h2 : (1 : ENNReal) * μ K = ((c ^ m : NNReal) : ENNReal) * μ K`. Rewrite using `[one_mul]`. Use `conv_lhs => rw [h1]`. Both sides reduce to the same expression. Establish `h3 : c ^ m = 1`.
+
+Use `(ENNReal.mul_left_inj hK0 hK1).1 h2` as an intermediate fact. Conclude with `this.symm` after adjusting the coercions. Establish `h4 : c = 1` using `(pow_eq_one_iff_of_nonneg (zero_le) hm.ne').1 h3`. Conclude with `⟨hme, by rw [hc, h4, one_smul]⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.presOfOrder :
     ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
       [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (e : G ≃ₜ* G) (m : ℕ),

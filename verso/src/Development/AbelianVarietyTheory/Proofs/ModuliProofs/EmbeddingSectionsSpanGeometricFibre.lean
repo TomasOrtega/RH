@@ -20,6 +20,25 @@ namespace GlobalTheory.EmbSpan
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Take `⟨P', g, hg, -, hmul, hiso⟩` from `hL.polBaseChange S S' f P`. Take `⟨w, hw⟩` from `LBIso.symm hiso`. Establish `hw'` using `(isGen_iff w).1 hw`. Take `⟨h, k, hk, -, hs, hf, -⟩` from `GeomPointSections.exists_totalIso hg hmul`. Set `Φ : ∀ T : Over S', (T ⟶ P'.A) →* (Over.mk (T.hom ≫ f) ⟶ P.A)` to `fun T => MonoidHom.mk' (toBase hg.w) (hmul T)`.
+
+Establish `c' : (fst (baseOver S') P'.A).left = (baseOver S' ⊗ P'.A).hom` using `(Category.comp_id _).symm.trans (Over.w (fst (baseOver S') P'.A))`. Set `H : Over.mk ((baseOver S' ⊗ P'.A).hom ≫ f) ⟶ Over.mk f ⊗ P.A` to `Over.homMk h (by`. Establish `e` using `Over.w (fst (Over.mk f) P.A)`. Conclude with `(congrArg (h ≫ ·) e.symm).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) (hf.trans c'))))`. Establish `Hs : H ≫ snd (Over.mk f) P.A = Φ _ (snd (baseOver S') P'.A)` using `Over.OverMorphism.ext hs.symm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `θ`. Establish `sq : θ.pt.left ≫ P.A.hom = 𝟙 S' ≫ f` using `(Over.w θ.pt).trans (Category.id_comp f).symm`. Set `x' : baseOver S' ⟶ P'.A` to `Over.homMk (hg.lift _ _ sq) (hg.lift_snd _ _ _)`. Establish `ex : x'.left ≫ g = θ.pt.left` using `hg.lift_fst _ _ _`.
+
+Establish `e₀ : H ≫ fst (Over.mk f) P.A ≫ θ.pt = Φ _ (fst (baseOver S') P'.A ≫ x')` using `Over.OverMorphism.ext ((Category.assoc h _ _).symm.trans ((congrArg₂ (· ≫ ·) hf ex.symm).trans (Category.assoc _ _ _).symm))`. Establish `e₁ : H ≫ translPt P.A θ.pt = Φ _ (translPt P'.A x')`. Use `(MonObj.comp_mul H (fst (Over.mk f) P.A ≫ θ.pt) (snd (Over.mk f) P.A)).trans (Eq.trans ?_ (map_mul (Φ _) (fst (baseOver S') P'.A ≫ x') (snd (baseOver S') P'.A)).symm)` and prove the remaining obligations. Rewrite using `[e₀, Hs]`. Establish `e₂ : h ≫ (translPt P.A θ.pt).left = (translPt P'.A x').left ≫ g` using `congrArg (fun q => q.left) e₁`.
+
+Take `⟨t₁, h₁⟩` from `KerPow.HasGen.pull (L := P.L) (φ := ![(snd (Over.mk f) P.A).left, (translPt P.A θ.pt).left]) (ε := ![(n : ℤ), -n]) ⟨θ.φ, θ.isGen⟩ h (φ' := fun i => ![(snd (baseOver S') P'.A).left, (translPt P'.A x').left] i ≫ g) (fun i => by fin_cases i; exacts [hs.symm, e₂])`. Take `⟨t₂, h₂⟩` from `exists_down hw' P.isLB P'.isLB t₁ h₁`. Establish `hx : x' ^ n = 1` using `(hL.kerPow S' P' n hn _ x').1 fun _ => ⟨⊤, trivial, _, LB.isGen_genPull _ t₂ h₂ _⟩`. Set `j : Over.mk ((baseOver S').hom ≫ f) ⟶ Over.mk f` to `Over.homMk (𝟙 S') rfl`. Establish `ej : j ≫ θ.pt = Φ _ x'` using `Over.OverMorphism.ext ((Category.id_comp _).trans ex.symm)`.
+
+Establish `: j ≫ θ.pt ^ n = j ≫ 1`. Rewrite using `[MonObj.comp_pow, ej, ← map_pow, hx, map_one, MonObj.comp_one]`. Conclude with `Over.OverMorphism.ext ((Category.id_comp _).symm.trans ((congrArg (fun q => q.left) this).trans (Category.id_comp _)))`. Establish `s₁` using `VVRank.surjective_mulT P'.A n (hL.mulN S' P' n hn).2.2.1 (baseOver S')`. Establish `s₂ : Surjective h`.
+
+Establish `: Surjective (k ≫ h)` using `by rw [hk]; infer_instance`. Conclude with `Surjective.of_comp k h`. Establish `t₁ : (mulT P.A (Over.mk f) n).left ≫ (fst (Over.mk f) P.A).left = (fst (Over.mk f) P.A).left` using `congrArg (fun q => q.left) (lift_fst (fst (Over.mk f) P.A) (snd (Over.mk f) P.A ^ n))`. Establish `t₂ : (mulT P.A (Over.mk f) n).left ≫ (snd (Over.mk f) P.A).left = (snd (Over.mk f) P.A ^ n).left` using `congrArg (fun q => q.left) (lift_snd (fst (Over.mk f) P.A) (snd (Over.mk f) P.A ^ n))`. Establish `t₁' : (mulT P'.A (baseOver S') n).left ≫ (fst (baseOver S') P'.A).left = (fst (baseOver S') P'.A).left` using `congrArg (fun q => q.left) (lift_fst (fst (baseOver S') P'.A) (snd (baseOver S') P'.A ^ n))`.
+
+Establish `t₂' : (mulT P'.A (baseOver S') n).left ≫ (snd (baseOver S') P'.A).left = (snd (baseOver S') P'.A ^ n).left` using `congrArg (fun q => q.left) (lift_snd (fst (baseOver S') P'.A) (snd (baseOver S') P'.A ^ n))`. Establish `e₁ : H ≫ snd (Over.mk f) P.A ^ n = Φ _ (snd (baseOver S') P'.A ^ n)`. Rewrite using `[MonObj.comp_pow, Hs, map_pow]`. Establish `e₂ : h ≫ (snd (Over.mk f) P.A ^ n).left = (snd (baseOver S') P'.A ^ n).left ≫ g` using `congrArg (fun q => q.left) e₁`. Establish `ext₁ : ∀ {Z : Scheme.{0}} {r r' : Z ⟶ (Over.mk f ⊗ P.A).left}, r ≫ (fst (Over.mk f) P.A).left = r' ≫ (fst (Over.mk f) P.A).left → r ≫ (snd (Over.mk f) P.A).left = r' ≫ (snd (Over.mk f) P.A).left → r = r'` using `fun e e' => pullback.hom_ext e e'`.
+
+Establish `e : (mulT P'.A (baseOver S') n).left ≫ h = h ≫ (mulT P.A (Over.mk f) n).left` using `ext₁ (by rw [Category.assoc, Category.assoc, t₁, hf, t₁']) (by rw [Category.assoc, Category.assoc, t₂, ← hs, ← Category.assoc, t₂', e₂])`. Establish `: Surjective (h ≫ (mulT P.A (Over.mk f) n).left)` using `by rw [← e]; infer_instance`. Conclude with `Surjective.of_comp h _`.
+-/
 theorem pt_pow_and_surjective (hL : Laws) {S S' : Scheme.{0}} [IsLocallyNoetherian S'] (P : PolAV S) (f : S' ⟶ S)
     (n : ℕ) (hn : 1 ≤ n) : (∀ θ : ThetaGrp P.A P.L n (Over.mk f), θ.pt ^ n = 1) ∧
       Surjective (mulT P.A (Over.mk f) n).left := by
@@ -89,6 +108,13 @@ theorem pt_pow_and_surjective (hL : Laws) {S S' : Scheme.{0}} [IsLocallyNoetheri
     have : Surjective (h ≫ (mulT P.A (Over.mk f) n).left) := by rw [← e]; infer_instance
     exact Surjective.of_comp h _
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN0⟩`. Establish `hu : u ≠ 0` using `fun h => hN0 (by rw [hN, h, zero_mul])`. Take `⟨c, hc, -⟩` from `hb y (by rw [hN, pow_mul, hy, one_pow])`. Establish `h0 : (fun i => (((c i).val * u : ℕ) : ZMod N)) = 0`. Use `(hb 1 (one_pow _)).unique ?_ (by simp)` and prove the remaining obligations.
+
+Rewrite using `[← hy, ← hc, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod _ (hp i), pow_mul]`. Establish `hd : ∀ i, v ∣ (c i).val` using `fun i => by`. Use `(ZMod.natCast_eq_zero_iff _ _).1 (congrFun h0 i)` as an intermediate fact.
+
+Conclude with `Nat.dvd_of_mul_dvd_mul_right (Nat.pos_of_ne_zero hu) ((dvd_of_eq (hN.trans (mul_comm u v)).symm).trans this)`. Use `⟨fun i => (((c i).val / v : ℕ) : ZMod N), ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod _ (hp i), ← pow_mul, Nat.div_mul_cancel (hd i)]`.
+-/
 theorem exists_pow_eq {G : Type} [CommGroup G] {r N u v : ℕ} (hN : N = u * v) (hN0 : N ≠ 0) (p : Fin r → G)
     (hp : ∀ i, p i ^ N = 1) (hb : ∀ y : G, y ^ N = 1 → ∃! c : Fin r → ZMod N, ∏ i, p i ^ (c i).val = y)
     (y : G) (hy : y ^ u = 1) : ∃ a : Fin r → ZMod N, (∏ i, p i ^ (a i).val) ^ v = y := by
@@ -109,6 +135,9 @@ theorem exists_pow_eq {G : Type} [CommGroup G] {r N u v : ℕ} (hN : N = u * v) 
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [ZMod.val_natCast, ← pow_eq_pow_mod _ (hp i), ← pow_mul, Nat.div_mul_cancel (hd i)]
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Take `⟨ρ, k₁, -, k₃, k₄⟩` from `thetaGrp_acts_linearly hL.globalFns S P n (Over.mk x)`. Establish `e : (fun c => (SecM.ofSec P.A (σ c) : SecM P.A P.L n (Over.mk x))) = fun c => ρ (U c) (SecM.ofSec P.A s₁)` using `funext fun c => ((k₁ _ _ _).1 (hσ c)).symm`. Rewrite using `[e]`. Conclude with `VVRank.span_translates_eq_top P.A ((secM_invariant_eq_bot_or_univ_at_geometric_point hL.polBaseChange).2 hL.irred S P K x n (Or.inr h4) hn) ρ k₁ k₃ k₄ U (fun θ => hU _ ((pt_pow_and_surjective hL P x n (by omega)).1 θ)) _ h0`.
+-/
 theorem span_eq_top (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field K] [IsAlgClosed K]
     (x : Sp K ⟶ S) {k : ℤ} {n : ℕ} (hk : k = n) (h4 : 4 ≤ n) (hn : (n : K) ≠ 0) {I : Type} [Nonempty I]
     (U : I → ThetaGrp P.A P.L k (Over.mk x)) (hU : ∀ y : Over.mk x ⟶ P.A, y ^ n = 1 → ∃ c, (U c).pt = y)
@@ -125,6 +154,11 @@ theorem span_eq_top (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field
     ((secM_invariant_eq_bot_or_univ_at_geometric_point hL.polBaseChange).2 hL.irred S P K x n (Or.inr h4) hn) ρ k₁ k₃ k₄ U
     (fun θ => hU _ ((pt_pow_and_surjective hL P x n (by omega)).1 θ)) _ h0
 
+/- English proof (translation)
+Introduce `h0`. Establish `hnt : Nontrivial Γ((Over.mk x).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.domain_nontrivial`. Establish `hr : Module.finrank Γ((Over.mk x).left, ⊤) (SecM P.A P.L 1 (Over.mk x)) = 1 ^ P.g` using `(secM_invariant_eq_bot_or_univ_at_geometric_point hL.polBaseChange).1 hL.globalSectionsRank S P K x 1 le_rfl`. Establish `z : ∀ v : SecM P.A P.L 1 (Over.mk x), v = 0` using `fun v => by`. Take `⟨r, hr⟩` from `h (SecM.toSec P.A v)`.
+
+Establish `: v = r • (SecM.ofSec P.A th : SecM P.A P.L 1 (Over.mk x))` using `Subtype.ext (funext hr)`. Rewrite using `[this, h0, smul_zero]`. Establish `: Subsingleton (SecM P.A P.L 1 (Over.mk x))` using `⟨fun a b => (z a).trans (z b).symm⟩`. Rewrite `hr` using `[Module.finrank_zero_of_subsingleton, one_pow]`. Conclude with `zero_ne_one hr`.
+-/
 theorem ne_zero_of_isGenSec (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field K] [IsAlgClosed K]
     (x : Sp K ⟶ S) (th : LB.Sec (LPow P.A P.L 1 (Over.mk x))) (h : IsGenSec P.A P.L 1 th) :
     (SecM.ofSec P.A th : SecM P.A P.L 1 (Over.mk x)) ≠ 0 := by
@@ -141,6 +175,13 @@ theorem ne_zero_of_isGenSec (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type
   rw [Module.finrank_zero_of_subsingleton, one_pow] at hr
   exact zero_ne_one hr
 
+/- English proof (translation)
+Introduce and unpack `hL - o _ g N' J b S s t m K _ _ x σ hodd ⟨d, hd⟩ hm ⟨th, s₁, α, U, hth, -, htw, hU, hσ⟩`. Use `t.ab.comm` as an intermediate fact. Establish `hN0 : N' ≠ 0` using `hodd.pos.ne'`. Establish `hdiv : N' / m = d` using `by rw [hd, Nat.mul_div_cancel_left _ (by omega)]`. Establish `hK : ((N' ^ 2 : ℕ) : K) ≠ 0` using `VVRank.natCast_ne_zero (x ≫ s) (by`.
+
+Simplify using `using b.unit.map (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom)`. Establish `hN : N' ^ 2 = m ^ 2 * d ^ 2` using `by rw [hd, mul_pow]`. Use `span_eq_top hL t.pol x (n := m ^ 2) (Nat.cast_pow m 2).symm (by nlinarith) (fun h => hK (by rw [hN, Nat.cast_mul, h, zero_mul])) U (fun y hy => ?_) s₁ σ hσ fun h0 => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_pow_eq (G := (Over.mk x ⟶ t.A)) hN (pow_ne_zero _ hN0) (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) ≫ t.pt i) (fun i => by rw [← MonObj.comp_pow, t.torsion, MonObj.comp_one]) (fun z hz => by simpa only [linComb, List.prod_ofFn] using t.bij K x z hz) y hy`. Use `⟨a, (hU a).pt_eq.trans (Eq.trans ?_ ha)⟩` and prove the remaining obligations.
+
+Rewrite using `[hdiv, TObj.lab, VVRank.comp_linComb, linComb, List.prod_ofFn]`. Both sides reduce to the same expression. Establish `hint : IsIntegral (Over.mk x ⊗ t.A).left` using `(forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ t.A.hom t.ab.smooth t.ab.geomConnected).geometrically_isIntegral x _ _ (IsPullback.of_hasPullback x t.A.hom).flip`. Conclude with `ne_zero_of_isGenSec hL t.pol x th hth (VVRank.ofSec_eq_zero_of_twist t.A t.isLB (pt_pow_and_surjective hL t.pol x m (by omega)).2 htw h0)`.
+-/
 theorem emb_span_eq_top : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (m : ℕ) (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) σ, Odd N' → m ∣ N' → 2 ≤ m → t.Emb m (Over.mk x) σ → Submodule.span Γ((Over.mk x).left, ⊤) (Set.range fun a => (Out.SecM.ofSec t.A (σ a) : Out.SecM t.A t.L ((m : ℤ) ^ 2) (Over.mk x))) = ⊤ := by
   rintro hL - o _ g N' J b S s t m K _ _ x σ hodd ⟨d, hd⟩ hm ⟨th, s₁, α, U, hth, -, htw, hU, hσ⟩
   have := t.ab.comm

@@ -20,6 +20,11 @@ def LCMap : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ), ∃ m, IsLCMap q i m
 def LCBij : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) m, IsLCMap q i m →
   ∀ (B : Type) [CommRing B] (ζ : Prim q B), Function.Bijective (m B ζ)
 
+/- English proof (translation)
+Introduce `hA9 q _ i`. Take `⟨m, hm⟩` from `hM q i`. Take `⟨-, e0, hnat, -⟩` from `hA9 (ZMod q) (tw q i)`. Use `⟨fun B _ ζ => (AddEquiv.ofBijective (m B ζ) (hB q i m hm B ζ)).trans (e0 (Spec (CommRingCat.of B))), ?_⟩` and prove the remaining obligations. Introduce `B C _ _ f ζ φ`.
+
+Simplify using `only [AddEquiv.trans_apply, AddEquiv.ofBijective_apply]`. Rewrite using `[hnat, hm.1]`.
+-/
 theorem localConstant_H0 (hM : LCMap) (hB : LCBij) : LateralTheory.E.t_E1Cut.EtaleDegreeZeroCohomologyEquivLocallyConstantFunctions := by
   intro hA9 q _ i
   obtain ⟨m, hm⟩ := hM q i

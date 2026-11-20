@@ -17,6 +17,9 @@ open GlobalTheory.ShFam (EigFrame FlagCpt)
 open GlobalTheory.Toroidal (gen genι genStr)
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv)
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Both sides reduce to the same expression.
+-/
 theorem tv_vecAt_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {Z : Scheme.{0}} {π : Z ⟶ Y.X}
     (F : Frames Y π) {S : Type} [CommRing S] (k : F.J) (z : Sp S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) {x : Sp S ⟶ Y.X}
@@ -25,6 +28,9 @@ theorem tv_vecAt_congr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
   subst hx
   rfl
 
+/- English proof (translation)
+Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `Q'`. Simplify using `only at e`. Substitute `e` using the available equality. Take `⟨u0, hu0⟩` from `gen_unit Q.s s' Q.gen t4'`. Conclude with `⟨u0, fun _ => hu0⟩`.
+-/
 theorem exists_gen_unit {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] (Q Q' : FrPt Xo c S)
     (e : Q'.x = Q.x) : ∃ u : Sˣ, ∀ e : Q'.x = Q.x, ∀ i, (e ▸ Q'.s).f i = scal Q.x (u : S) i * Q.s.f i := by
@@ -34,6 +40,31 @@ theorem exists_gen_unit {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   obtain ⟨u0, hu0⟩ := gen_unit Q.s s' Q.gen t4'
   exact ⟨u0, fun _ => hu0⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X C _ hC K _ z z' p hp hr hr'`. Take `⟨φ, k, hk, g, hφ, hg, hc⟩` from `hr`. Take `⟨φ', k', hk', g', hφ', hg', hc'⟩` from `hr'`. Establish `e1 : p ≫ C.π ≫ genι Y = z ≫ X.π` using `carries_over C hc`. Establish `e2 : p ≫ C.π ≫ genι Y = z' ≫ X.π` using `carries_over C hc'`.
+
+Establish `hπ : z' ≫ X.π = z ≫ X.π` using `e2.symm.trans e1`. Establish `ephi : φ' = φ`. Establish `h0 : spMap φ' = spMap φ` using `by rw [← hφ', ← hφ, ← Category.assoc, hπ, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h0)`. Substitute `ephi` using the available equality.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0 : EigFrame Y φ' (z ≫ X.π), ∀ τ i, g0.v τ i = g'.v τ i := by`. Rewrite using `[← hπ]`. Conclude with `⟨g', fun _ _ => rfl⟩`. Establish `hc0 : C.Carries p g0` using `(carries_congr C hπ.symm g0 g' hg0 p).2 hc'`. Take `⟨t, ht⟩` from `hC K _ _ (z ≫ X.π) p g g0 hc hc0`.
+
+Use `letI : Algebra c.F K := φ'.toAlgebra`. Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `hxg : (p ≫ C.π) ≫ genι Y = z ≫ X.π` using `by rw [Category.assoc]; exact e1`. Establish `hr : Set.range (p ≫ C.π) ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Use `hp a` as an intermediate fact. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `this`. Use `Y.jQ_open` as an intermediate fact. Set `y` to `IsOpenImmersion.lift Y.jQ (p ≫ C.π) hr`.
+
+Establish `hy0 : y ≫ Y.jQ = p ≫ C.π` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hyj : z ≫ X.π = y ≫ Y.j`. Rewrite using `[Model.j, ← Category.assoc, hy0, ← hxg]`. Establish `hstr : genStr Y = genι Y ≫ Y.s`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hy : y ≫ pullback.snd _ _ = spMap (algebraMap c.F K)`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hy0]`. Use `show (p ≫ C.π) ≫ genStr Y = _`. Rewrite using `[hstr, ← Category.assoc, hxg, Category.assoc]`. Conclude with `hφ`.
+
+Take `⟨Q, hQ⟩` from `X.top.exists_chartFr hy hyj k hk`. Take `⟨Q', hQ'⟩` from `X.top.exists_chartFr hy (hπ.trans hyj) k' hk'`. Establish `hx : frX Q ≫ Y.j = z ≫ X.π` using `hQ.over`. Establish `hx' : frX Q' ≫ Y.j = z ≫ X.π` using `hQ'.over.trans hπ`. Establish `eQ : Q'.x = Q.x`.
+
+Rewrite using `[← GlobalTheory.FlagMod.frX_fst, ← GlobalTheory.FlagMod.frX_fst, GlobalTheory.FlagMod.xF_ext (Y := Y) (GlobalTheory.FlagMod.frX_snd Q') (GlobalTheory.FlagMod.frX_snd Q) (hx'.trans hx.symm)]`. Take `⟨u0, hu0⟩` from `exists_gen_unit Q Q' eQ`. Use `choose cf hcf1 hcf2 hcf3 using ht.2.2`. Establish `h1 : spMap (dualMap (RingHom.id K)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`.
+
+Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`. Set `T : Ix Dw → Kˣ` to `fun ix => match ix with | none => u0 | some q => t q.1 q.2`. Establish `hB : FrBor T Q Q'`. Use `GlobalTheory.FlagMod.frBor_of_frVec (X.F.inM hk rfl) hx hx' T (fun σ j i => cf σ i j) (fun σ r s hrs => hcf2 σ s r hrs) (fun σ i => hcf1 σ i) (fun σ i => ?_) hu0` and prove the remaining obligations.
+
+Rewrite using `[hQ'.frVec_eq hπ hx', hQ.frVec_eq rfl hx]`. Use `(GlobalTheory.LieMet.isComb_iff _ _ _).1 ?_` and prove the remaining obligations. Establish `h3` using `hcf3 σ i`. Simplify using `only [h1, Category.id_comp] at h3`. Rewrite `h3` using `[hg0 σ i, hg' σ i, ← tv_vecAt_congr X.F k' z' hk' hπ σ i]`.
+
+Establish `e : (fun j => g.v σ j) = fun j => (tv (X.F.vecAt k z hk rfl σ j)).left` using `funext (hg σ)`. Rewrite `h3` using `[e]`. Conclude with `h3`. Conclude with `(X.rep K Q').unique (hQ.lies.frBor hB) hQ'.lies`.
+-/
 theorem rel_unique : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : GlobalTheory.FlagMod.FlagCover Y) (C : GlobalTheory.ShFam.FlagCpt Y (RingEquiv.refl c.F)), GlobalTheory.VarFlag.FramesExist X → GlobalTheory.VarFlag.CarriesTri C → ∀ (K : Type) [Field K] (z z' : Sp K ⟶ X.YY) (p : Sp K ⟶ C.Y.X), (∀ s, p s ∈ GlobalTheory.VarFlag.Vo C) → GlobalTheory.VarFlag.Rel X.F C z p → GlobalTheory.VarFlag.Rel X.F C z' p → z = z' := by
   intro E _ _ _ H Dw l Xo c Y X C _ hC K _ z z' p hp hr hr'
   obtain ⟨φ, k, hk, g, hφ, hg, hc⟩ := hr

@@ -12,6 +12,11 @@ noncomputable def clearCol {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ
     Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ :=
   Matrix.of fun i j => if i = j then 1 else if j = 0 then -A i 0 / A 0 0 else 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_isLowerTriangular _ ?_]`. Simplify using `[clearCol]`. Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.mp hij`. Establish `hne : i ≠ j` using `ne_of_lt hij'`.
+
+Establish `hj : j ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hij'`. Simplify using `[clearCol, hne, hj]`.
+-/
 theorem det_clearCol {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) :
     (clearCol A).det = 1 := by
   rw [Matrix.det_of_isLowerTriangular _ ?_]
@@ -24,11 +29,17 @@ theorem det_clearCol {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) :
       simp at hij'
     simp [clearCol, hne, hj]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Simplify using `[clearCol, (Fin.succ_ne_zero _).symm, Fin.succ_ne_zero]`.
+-/
 theorem clearCol_mul_zero {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (j : Fin (n + 1)) :
     (clearCol A * A) 0 j = A 0 j := by
   rw [Matrix.mul_apply, Fin.sum_univ_succ]
   simp [clearCol, (Fin.succ_ne_zero _).symm, Fin.succ_ne_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Simplify using `[clearCol, Fin.succ_ne_zero, Fin.succ_inj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem clearCol_mul_succ {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (i : Fin n)
     (j : Fin (n + 1)) :
     (clearCol A * A) i.succ j = A i.succ j - A i.succ 0 / A 0 0 * A 0 j := by
@@ -40,6 +51,13 @@ end PSymplDetSchur
 
 open PSymplDetSchur in
 
+/- English proof (translation)
+Introduce `n A ha`. Establish `hdet : A.det = (clearCol A * A).det`. Rewrite using `[Matrix.det_mul, det_clearCol, one_mul]`. Rewrite using `[hdet, Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `hcol : ∀ i : Fin n, (clearCol A * A) i.succ 0 = 0`.
+
+Introduce `i`. Rewrite using `[clearCol_mul_succ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hcol, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero, clearCol_mul_zero]`.
+
+Use `congr 1`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, clearCol_mul_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem SymplDetSchur.proof : SymplDetSchur.Statement := by
   intro n A ha
   have hdet : A.det = (clearCol A * A).det := by

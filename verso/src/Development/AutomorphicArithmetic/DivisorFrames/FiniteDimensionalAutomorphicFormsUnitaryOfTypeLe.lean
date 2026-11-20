@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFi
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryClassSetFiniteStatement
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.UG Formalism.BasicNotions GlobalTheory.DefU
 
+/- English proof (translation)
+Introduce `E _ _ _ n S _ _ _ ρ K hK M hM`. Take `⟨R, hR⟩` from `GlobalTheory.T.definiteUnitary_classSet_finite E n K hK`. Set `T : M →ₗ[ℂ] (R → Module.Dual ℂ S)` to `{ toFun := fun f s => (LinearMap.proj (R := ℂ) (φ := fun _ : UA E n => ℂ) (s : UA E n)).comp f.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hT : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `f hf`. Establish `h0 : ∀ s ∈ R, ∀ v, f.1 v s = 0` using `fun s hs v => LinearMap.congr_fun (congrFun hf ⟨s, hs⟩) v`. Take `⟨h1, h2, h3⟩` from `hM f.1 f.2`. Use `Subtype.ext (LinearMap.ext fun v => funext fun g => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, x, hx, k, hk, rfl⟩` from `hR g`.
+
+Establish `e1 : f.1 v (γ * s * x * (k : UA E n)) = f.1 v (γ * s * x)` using `congrFun (h3 k hk v) (γ * s * x)`. Establish `e2 : f.1 (ρ ⟨x, hx⟩ v) s = f.1 v (s * x)` using `congrFun (h2 ⟨x, hx⟩ v) s`. Use `show f.1 v (γ * s * x * (k : UA E n)) = 0`. Rewrite using `[e1, mul_assoc γ s x, h1 v γ hγ, ← e2, h0 s hs]`. Conclude with `Module.Finite.of_injective T hT`.
+-/
 theorem UpperTheory.finiteDimensional_automorphicForms_unitary_of_type_level :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : infU E n → Module.End ℂ S)
         (K : Subgroup (finU E n)), IsOpen (K : Set (finU E n)) → ∀ M : Submodule ℂ (S →ₗ[ℂ] (UA E n → ℂ)),

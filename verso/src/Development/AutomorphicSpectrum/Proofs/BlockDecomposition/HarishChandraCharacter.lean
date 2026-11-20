@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FinGLChar
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(eq_inv_of_mul_eq_one_right ?_).symm` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, mul_assoc a x g, h, mul_inv_cancel]`. Introduce `h`.
+
+Establish `e : a = (x * g * x⁻¹)⁻¹` using `by rw [← h, inv_inv]`. Rewrite using `[e]`. Use `group`.
+-/
 theorem mul_mul_eq_iff {G : Type} [Group G] (a x g : G) :
     a * (x * g) = x ↔ a⁻¹ = x * g * x⁻¹ := by
   constructor
@@ -23,6 +28,9 @@ theorem mul_mul_eq_iff {G : Type} [Group G] (a x g : G) :
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
   {s : ℕ} (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
 
+/- English proof (translation)
+Unfold `hcFun infl`. Rewrite using `[PI.SerBridgeGLW.trace_piTensorMap]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[blkGL, dif_pos p.2]`. Both sides reduce to the same expression.
+-/
 theorem trace_infl (p : parab K b) :
     LinearMap.trace ℂ (PiTensorProduct ℂ fun c => (lam c : Type)) (infl K b lam p) =
       hcFun b (fun c => (lam c).character) p.1 := by
@@ -32,6 +40,19 @@ theorem trace_infl (p : parab K b) :
   rw [blkGL, dif_pos p.2]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `: FiniteDimensional ℂ (PiTensorProduct ℂ fun c => (lam c : Type))` using `Module.Finite.of_basis (Basis.piTensorProduct fun c => Module.finBasis ℂ (lam c))`. Set `_ : Fintype (parab K b)` to `Fintype.ofFinite _`. Establish `h1 : (hcRep K b lam).character g = LinearMap.trace ℂ _ (Representation.coind (parab K b).subtype (PI.SerBridgeGLW.inflRep K b lam) g)` using `rfl`. Establish `h` using `GlobalTheory.BadShare.trace_coind_mul_card (parab K b).subtype (PI.SerBridgeGLW.inflRep K b lam) g`.
+
+Rewrite `h` using `[← h1]`. Establish `hc : (Fintype.card (parab K b) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Unfold `indF`. Rewrite using `[Nat.card_eq_fintype_card, eq_inv_mul_iff_mul_eq₀ hc, mul_comm, h, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x * g * x⁻¹ ∈ parab K b`. Establish `key : ∀ γ : parab K b, (parab K b).subtype γ * (x * g) = x ↔ γ = (⟨_, hx⟩ : parab K b)⁻¹`. Introduce `γ`. Rewrite using `[mul_mul_eq_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `e`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show (γ : GL ι K) = (x * g * x⁻¹)⁻¹`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `rfl`. Conclude with `inv_inv _`. Simplify using `only [key]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos hx, inv_inv]`. Conclude with `trace_infl b lam _`.
+
+Rewrite using `[if_neg hx]`. Use `Finset.sum_eq_zero fun γ _ => if_neg fun e => hx ?_` and prove the remaining obligations. Rewrite using `[← (mul_mul_eq_iff _ x g).1 e]`. Conclude with `(parab K b).inv_mem γ.2`.
+-/
 theorem character_hcRep :
     (hcRep K b lam).character = indF (parab K b) (hcFun b fun c => (lam c).character) := by
   classical
@@ -72,6 +93,13 @@ def leviHom (c : Fin s) : parab K b →* GL {i // b i = c} K where
   map_one' := PI.SerBridgeGLW.levi_one' K b c
   map_mul' := PI.SerBridgeGLW.levi_mul' K b c
 
+/- English proof (translation)
+Introduce `x hx h hh`. Establish `hm : x * h * x⁻¹ ∈ parab K b` using `(parab K b).mul_mem ((parab K b).mul_mem hx hh) ((parab K b).inv_mem hx)`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[blkGL, blkGL, dif_pos hm, dif_pos hh]`. Establish `e : (⟨x * h * x⁻¹, hm⟩ : parab K b) = ⟨x, hx⟩ * ⟨h, hh⟩ * (⟨x, hx⟩ : parab K b)⁻¹` using `rfl`.
+
+Establish `e' : levi K b c ⟨x * h * x⁻¹, hm⟩ = leviHom b c ⟨x, hx⟩ * leviHom b c ⟨h, hh⟩ * (leviHom b c ⟨x, hx⟩)⁻¹`. Rewrite using `[e, ← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Use `beta_reduce`. Rewrite using `[e', mul_assoc, FDRep.char_mul_comm, mul_assoc, inv_mul_cancel, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isClassOn_hcFun :
     IsClassOn (parab K b) (hcFun b fun c => (lam c).character) := by
   intro x hx h hh
@@ -87,6 +115,9 @@ theorem isClassOn_hcFun :
   rw [e', mul_assoc, FDRep.char_mul_comm, mul_assoc, inv_mul_cancel, mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ _ s b lam`. Conclude with `⟨character_hcRep b lam, isClassOn_hcFun b lam⟩`.
+-/
 theorem hcChar : St.HCChar := by
   intro K _ _ _ ι _ _ s b lam
   exact ⟨character_hcRep b lam, isClassOn_hcFun b lam⟩

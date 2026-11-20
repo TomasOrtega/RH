@@ -14,6 +14,11 @@ namespace Formalism.FourierDecayAlt.P.BigCellDiagonalMap
 
 variable {k j ρ : ℕ}
 
+/- English proof (translation)
+Unfold `mMap muP`. Rewrite using `[Ux3.block3_mul]`. Establish `h13 : W * (Zᴴ⁻¹ * G.wMat j) = (Wᴴ⁻¹ * Z)ᴴ⁻¹ * G.wMat j`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hW, Matrix.mul_assoc]`. Establish `h31 : G.wMat j * Wᴴ⁻¹ * G.wMat j * (G.wMat j * Z) = G.wMat j * (Wᴴ⁻¹ * Z)`.
+
+Rewrite using `[Matrix.mul_assoc, Ux4.w_w_mul, Matrix.mul_assoc]`. Apply the tactic sequence `congr 1 <;> simp [h13, h31]`.
+-/
 theorem leviElement_mul_mMap (W Z : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ) (hW : IsUnit W.det) :
     muP k j ρ W * mMap k j ρ Z γ = mMap k j ρ (Wᴴ⁻¹ * Z) γ := by
   unfold mMap muP
@@ -25,6 +30,23 @@ theorem leviElement_mul_mMap (W Z : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ
     rw [Matrix.mul_assoc, Ux4.w_w_mul, Matrix.mul_assoc]
   congr 1 <;> simp [h13, h31]
 
+/- English proof (translation)
+Establish `hdet : p.det ≠ 0` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det ℂ hp]; exact one_ne_zero`. Use `⟨(Formalism.FourierDecayAlt.P.slice_membership k j ρ).2.1 p hdet, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hai`. Take `⟨x, rfl⟩` from `(eB k j ρ).surjective i`. Take `⟨y, hy⟩` from `(eB k j ρ).surjective (eI k (j + ρ) a)`.
+
+Unfold `muP`. Rewrite using `[← hy, Ux3.block3_apply]`. Simplify using `only [(eB k j ρ).apply_eq_iff_eq]`. Establish `hv` using `congrArg Fin.val hy`. Establish `ha` using `a.isLt`.
+
+Simplify using `only [eI] at hv`. Rewrite `hai` using `[← hv]`. Apply the tactic sequence `rcases x with ((x | x) | x) <;> rcases y with ((y | y) | y) <;>`. Simplify using `only [Ux3.block_index_first_val, Ux3.block_index_middle_val, Ux3.block_index_last_val] at hv hai`. Apply the tactic sequence `all_goals first`.
+
+Consider the case `(exfalso; have := x.isLt; have := y.isLt; omega)`. Consider the case `(simp [Matrix.one_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr]; done)`. Consider the case `skip`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Sum.inl.injEq]`. Break down `eq_or_lt_of_le hai with h | h` into its components or cases.
+
+Establish `: x = y` using `Fin.ext h.symm`. Substitute `this` using the available equality. Simplify using `[hp.2]`. Establish `hne : x ≠ y` using `fun e => by subst e; omega`. Rewrite using `[if_neg hne]`.
+
+Conclude with `hp.1 (show y < x from h)`. Introduce `i c hc1 hc2 hi`. Take `⟨x, rfl⟩` from `(eB k j ρ).surjective i`. Take `⟨y, rfl⟩` from `(eB k j ρ).surjective c`. Unfold `muP`.
+
+Rewrite using `[Ux3.block3_apply]`. Simplify using `only [(eB k j ρ).apply_eq_iff_eq]`. Apply the tactic sequence `rcases x with ((x | x) | x) <;> rcases y with ((y | y) | y) <;>`. Apply the tactic sequence `simp only [Ux3.block_index_first_val, Ux3.block_index_middle_val, Ux3.block_index_last_val] at hc1 hc2 hi <;>`. Use `first`.
+
+Consider the case `(simp [Matrix.one_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr]; done)`. Consider the case `(exfalso; have := x.isLt; have := y.isLt; omega)`.
+-/
 theorem leviElement_nset (p : Matrix (Fin j) (Fin j) ℂ) (hp : Formalism.DoubleCosetMeasures.IsUpUni p) : muP k j ρ p ∈ Nset k (j + ρ) := by
   have hdet : p.det ≠ 0 := by rw [Formalism.DoubleCosetMeasures.isUpUni_det ℂ hp]; exact one_ne_zero
   refine ⟨(Formalism.FourierDecayAlt.P.slice_membership k j ρ).2.1 p hdet, ?_, ?_⟩
@@ -70,17 +92,26 @@ def eW (k : ℕ) : Fin (2 * 0 + k + 1) ≃ Fin (k + 1) := finCongr (by omega)
 
 def muOf (γ : B.Mat k 0) : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ := Matrix.reindex (eW k) (eW k) γ
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Hb, Hpk, eW, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diagonal_apply, finCongr_symm, finCongr_apply, Fin.coe_cast, Fin.ext_iff, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem hb_eq (k : ℕ) : Hb k = Matrix.reindex (eW k) (eW k) (Hpk k 0) := by
   ext i j
   simp only [Hb, Hpk, eW, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diagonal_apply, finCongr_symm,
     finCongr_apply, Fin.coe_cast, Fin.ext_iff, Fin.val_last]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Establish `h : γᴴ * Hpk k 0 * γ = Hpk k 0` using `hγ`. Rewrite using `[hb_eq]`. Simplify using `only [muOf, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, h]`.
+-/
 theorem muOf_mem (γ : B.Mat k 0) (hγ : γ ∈ B.GV k 0) : (muOf γ)ᴴ * Hb k * muOf γ = Hb k := by
   have h : γᴴ * Hpk k 0 * γ = Hpk k 0 := hγ
   rw [hb_eq]
   simp only [muOf, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, h]
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `inv_mul_cancel₀ (hv a)`.
+-/
 theorem inv_diag {r : ℕ} (v : Fin r → ℂ) (hv : ∀ a, v a ≠ 0) :
     (Matrix.diagonal v)⁻¹ = Matrix.diagonal (fun a => (v a)⁻¹) := by
   apply Matrix.inv_eq_left_inv
@@ -89,6 +120,17 @@ theorem inv_diag {r : ℕ} (v : Fin r → ℂ) (hv : ∀ a, v a ≠ 0) :
   funext a
   exact inv_mul_cancel₀ (hv a)
 
+/- English proof (translation)
+Use extensionality with `i l`. Take `⟨x, rfl⟩` from `(eB k r 0).surjective i`. Take `⟨y, rfl⟩` from `(eB k r 0).surjective l`. Unfold `mMap`. Rewrite using `[Matrix.diagonal_conjTranspose, inv_diag (star d) (fun a => by simpa [Pi.star_apply] using hd a), Ux3.block3_apply]`.
+
+Establish `v1` using `@Ux3.block_index_first_val k r 0`. Establish `v2` using `@Ux3.block_index_middle_val k r 0`. Establish `v3` using `@Ux3.block_index_last_val k r 0`. Apply the tactic sequence `rcases x with ((x | x) | x) <;> rcases y with ((y | y) | y) <;>`. Simplify using `only [bigCell, v1, v2, v3, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.zero_apply]`.
+
+Use `all_goals`. Establish `hx` using `x.isLt`. Establish `hy` using `y.isLt`. Simplify using `only [Fin.ext_iff, v1, v2, v3, esI, G.wMat, Matrix.of_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Ring.inverse_eq_inv', Pi.star_apply, Fin.val_rev, Pi.inv_apply, Complex.star_def, mul_one, one_mul, mul_zero, zero_mul]`. Apply the tactic sequence `split_ifs <;> first`.
+
+Consider the case `rfl`. Consider the case `(exfalso; omega)`. Consider the case `(congr 1; ext; simp only [Fin.val_mk]; omega)`. Consider the case `(congr 2; ext; simp only [Fin.val_mk]; omega)`. Consider the case `(intro h; exfalso; omega)`.
+
+Consider the case `(simp; done)`. Consider the case `(simp only [mul_one]; congr 3; ext; simp only [Fin.val_mk]; omega)`. Consider the case `(simp only [muOf, eW, Matrix.reindex_apply, Matrix.submatrix_apply]; congr 1 <;> (ext; simp))`. Consider the case `skip`.
+-/
 theorem mMap_diag (r : ℕ) (d : Fin r → ℂ) (hd : ∀ a, d a ≠ 0) (γ : B.Mat k 0) :
     (mMap k r 0 (Matrix.diagonal d) γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) =
       bigCell k r d (muOf γ) := by
@@ -121,6 +163,11 @@ theorem mMap_diag (r : ℕ) (d : Fin r → ℂ) (hd : ∀ a, d a ≠ 0) (γ : B.
       | (simp only [muOf, eW, Matrix.reindex_apply, Matrix.submatrix_apply]; congr 1 <;> (ext; simp))
       | skip
 
+/- English proof (translation)
+Unfold `Dmin Formalism.FourierDecayAlt.S3.lead`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[Ux3.zhat_apply_low]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dmin_lead {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (l : ℕ) (hl : l ≤ r) : Dmin k r z z' g ⟨l, by omega⟩ = Formalism.FourierDecayAlt.S3.lead (Zh k r 0 g) l hl := by
   unfold Dmin Formalism.FourierDecayAlt.S3.lead
@@ -132,6 +179,19 @@ theorem dmin_lead {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (
   · simp; omega
   · simp; omega
 
+/- English proof (translation)
+Introduce `k r z z' g hg hD`. Establish `hDl : ∀ (l : ℕ) (hl : l ≤ r), Formalism.FourierDecayAlt.S3.lead (Zh k r 0 g) l hl ≠ 0` using `fun l hl => by`. Rewrite using `[← dmin_lead z z' g l hl]; exact hD ⟨l, by omega⟩ hl`. Establish `hDj : DjU k r 0 g ≠ 0`. Establish `h` using `Formalism.FourierDecayAlt.P.hat_z_minimum_degree k r 0 z z' g`.
+
+Rewrite using `[← h]; exact hD ⟨r, by omega⟩ le_rfl`. Take `⟨x, x', Z, γ, _hZ, hγ, hgeq⟩` from `Ux3.bigCell_exists (k := k) (j := r) (ρ := 0) g hg hDj`. Establish `hZh : Zh k r 0 g = Z` using `by rw [hgeq]; exact Formalism.FourierDecayAlt.P.hat_z_on_slice k r 0 x x' Z γ`. Establish `hDZ : ∀ (l : ℕ) (hl : l ≤ r), Formalism.FourierDecayAlt.S3.lead Z l hl ≠ 0` using `by rw [← hZh]; exact hDl`. Take `⟨L, U, d, hL, hU, hLDU, hlead⟩` from `Formalism.FourierDecayAlt.P.ldu_decomposition_exists ℂ r Z (fun l hl => (hDZ l hl.le).isUnit)`.
+
+Establish `hd : ∀ a, d a ≠ 0` using `fun a h0 => by`. Establish `h1` using `hlead a.val a.isLt`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `hDZ (a.val + 1) a.isLt h1`. Establish `hLh : Formalism.DoubleCosetMeasures.IsUpUni Lᴴ`.
+
+Use `⟨fun i j hij => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, hL.1 hij, star_zero]`. Rewrite using `[Matrix.conjTranspose_apply, hL.2 a, star_one]`. Establish `hLu : IsUnit L.det` using `by rw [Formalism.DoubleCosetMeasures.isLowUni_det ℂ hL]; exact isUnit_one`. Establish `hLhu : IsUnit Lᴴ.det` using `by rw [Formalism.DoubleCosetMeasures.isUpUni_det ℂ hLh]; exact isUnit_one`.
+
+Establish `hP : muP k r 0 Lᴴ ∈ Nset k (r + 0)` using `leviElement_nset _ hLh`. Establish `hPu : IsUnit (muP k r 0 Lᴴ).det` using `Ux3.gv_det hP.1`. Establish `h1 : muP k r 0 Lᴴ * mMap k r 0 Z γ = mMap k r 0 (Matrix.diagonal d) γ * muP k r 0 U`. Rewrite using `[leviElement_mul_mMap _ _ _ hLhu, Ux4.mMap_mul_muP, hLDU, Matrix.conjTranspose_conjTranspose, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hLu, Matrix.one_mul]`. Establish `key : mMap k r 0 Z γ = (muP k r 0 Lᴴ)⁻¹ * (mMap k r 0 (Matrix.diagonal d) γ * muP k r 0 U)`.
+
+Rewrite using `[← h1, Matrix.nonsing_inv_mul_cancel_left _ _ hPu]`. Use `⟨muP k r 0 Lᴴ * Rn k r 0 x, WeylGroupFacts.mem_n_mul hP (Ux3.rn_nset x), muP k r 0 U * Rn k r 0 x', WeylGroupFacts.mem_n_mul (leviElement_nset _ hU) (Ux3.rn_nset x'), d, hd, muOf γ, muOf_mem γ hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[hgeq, key, ← mMap_diag r d hd γ, Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem cellDecomp : BigCellDecomposition.CellDecomp := by
   intro k r z z' g hg hD
   have hDl : ∀ (l : ℕ) (hl : l ≤ r), Formalism.FourierDecayAlt.S3.lead (Zh k r 0 g) l hl ≠ 0 := fun l hl => by
@@ -170,11 +230,20 @@ end Formalism.FourierDecayAlt.P.BigCellDiagonalMap
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Conclude with `BigCellDiagonalMap.cellDecomp`.
+-/
 theorem big_cell_decomposition : BigCellDecomposition.CellDecomp := by
   exact BigCellDiagonalMap.cellDecomp
 
+/- English proof (translation)
+The claim follows from `jf_psiOnto_of_cellDecomp BigCellDiagonalMap.cellDecomp`.
+-/
 theorem psiOnto_true : Formalism.FourierDecayAlt.JF.PsiOnto := jf_psiOnto_of_cellDecomp BigCellDiagonalMap.cellDecomp
 
+/- English proof (translation)
+The claim follows from `jf_equivDet_of_cellDecomp BigCellDiagonalMap.cellDecomp`.
+-/
 theorem equiv_det : Formalism.FourierDecayAlt.JF.EquivDet := jf_equivDet_of_cellDecomp BigCellDiagonalMap.cellDecomp
 
 end Formalism.FourierDecayAlt.P

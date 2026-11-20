@@ -14,6 +14,13 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨js, Ψ, hΨ, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨j :: js, Ψ, hΨ, rfl⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem opClos_op (X : ActualOps k r z z' π π') (l : Fin r) (B : Submodule ℂ (RadSp k r z z' π π')) (j : Fin 6) :
     ∀ Φ ∈ OpClos X l B, X.op l j Φ ∈ OpClos X l B := by
   intro Φ hΦ
@@ -25,6 +32,9 @@ theorem opClos_op (X : ActualOps k r z z' π π') (l : Fin r) (B : Submodule ℂ
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P5.HerA.act_mem_pres M (fun a c => hM a c) u hu b`.
+-/
 theorem act_mem_of_entSub {S : Type} [Fintype S] [DecidableEq S] (C : Submodule ℂ (RadSp k r z z' π π'))
     (M : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (hM : M ∈ entSub (presAlg C)) (u : Ix S → RadSp k r z z' π π')
     (hu : ∀ b, u b ∈ C) (b : Ix S) : act M u b ∈ C := by
@@ -32,6 +42,21 @@ theorem act_mem_of_entSub {S : Type} [Fintype S] [DecidableEq S] (C : Submodule 
 
 end BTClsPf
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ l _ u hu`. Establish `hAL` using `hD.2.2.1`. Establish `hop : ∀ (j : Fin 6) (Φ : (RadSp P.k P.r z z' π π')), Φ ∈ (ClsE S P z z' π π' X L st l0 D l) → X.op l j Φ ∈ (ClsE S P z z' π π' X L st l0 D l)` using `fun j Φ hΦ => opClos_op X l _ j Φ hΦ`. Establish `hmk : ∀ i j : Fin 6, mkP (X.op l i) (X.op l j) ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)` using `fun i j => (show (∀ Φ ∈ (ClsE S P z z' π π' X L st l0 D l), (mkP (X.op l i) (X.op l j)).1 Φ ∈ (ClsE S P z z' π π' X L st l0 D l)) ∧ ∀ Φ ∈ (ClsE S P z z' π π' X L st l0 D l), (mkP (X.op l i) (X.op l j)).2.unop Φ ∈ (ClsE S P z z' π π' X L st l0 D l) from ⟨fun Φ hΦ => hop i Φ hΦ, fu …`. Establish `hmkneg : ∀ i j : Fin 6, mkP (X.op l i) (-X.op l j) ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)` using `fun i j => (show (∀ Φ ∈ (ClsE S P z z' π π' X L st l0 D l), (mkP (X.op l i) (-X.op l j)).1 Φ ∈ (ClsE S P z z' π π' X L st l0 D l)) ∧ ∀ Φ ∈ (ClsE S P z z' π π' X L st l0 D l), (mkP (X.op l i) (-X.op l j)).2.unop Φ ∈ (ClsE S P z z' π π' X L st l0 D l) from ⟨fun Φ hΦ => hop i Φ hΦ, …`.
+
+Rewrite using `[LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (hop j Φ hΦ)⟩)`. Establish `hp : L.p l ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)` using `by rw [hAL.1 l]; exact hmkneg 0 3`. Establish `hc : L.c l ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)` using `by rw [hAL.2.2.1 l]; exact hmk 1 4`. Establish `hci : L.ci l ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)` using `by rw [hAL.2.2.2.1 l]; exact hmk 2 5`.
+
+Establish `hconv : ∀ M : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')), M ∈ Formalism.FourierDecayAlt.P5.matSub (Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)).toSubalgebra (Ix S) → M ∈ Formalism.FourierDecayAlt.P5.HerA.entSub (Formalism.FourierDe …` using `fun M h => h`. Establish `hins : ∀ (a : S) (M : M2 (Pr (RadSp P.k P.r z z' π π'))), (∀ i j, M i j ∈ Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)) → ins a (lift0 M : M2 (SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')))) ∈ Formalism.FourierDecayAlt.P5.matSub (Forma …`. Introduce `a M hM`. Apply `Formalism.FourierDecayAlt.P5.ins_mem` to reduce the goal to its premises. Establish `h : ∀ (i j : Fin 2) (p q : Ix S), ((lift0 M : M2 (SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')))) i j) p q ∈ (Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)).toSubalgebra`.
+
+Introduce `i j p q`. Simplify using `only [lift0, Matrix.map_apply, io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hM i j`. Conclude with `Subalgebra.zero_mem _`.
+
+Conclude with `h`. Use `⟨fun le b => ?_, fun le b => ?_, fun a i j b => ?_⟩` and prove the remaining obligations. Use `act_mem_of_entSub _ _ (hconv _ (hins le.intersection_update_fsHerm_neg_one _ ?_)) u hu b` and prove the remaining obligations. Introduce `i j`. Use `split_ifs`.
+
+Conclude with `Formalism.FourierDecayAlt.P5.Ts_mem (T := (Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)).toSubalgebra) (site L l) le.pt hp hc hci i j`. Conclude with `star_mem (Formalism.FourierDecayAlt.P5.Ts_mem (T := (Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)).toSubalgebra) (site L l) le.pt hp hc hci i j)`. Use `act_mem_of_entSub _ _ (hconv _ (hins le.intersection_update_fsHerm_neg_one _ ?_)) u hu b` and prove the remaining obligations. Introduce `i j`. Use `split_ifs`.
+
+Conclude with `Formalism.FourierDecayAlt.P5.HerA.matrix_two_entries_mem (zero_mem _) (neg_mem (star_mem hci)) (star_mem hc) (add_mem (algebraMap_mem _ _) (star_mem hp)) i j`. Conclude with `Formalism.FourierDecayAlt.P5.HerA.matrix_two_entries_mem (zero_mem _) (neg_mem hci) hc (add_mem (algebraMap_mem _ _) hp) i j`. Conclude with `act_mem_of_entSub _ _ (hconv _ (Formalism.FourierDecayAlt.P5.eU_mem (C := (Formalism.FourierDecayAlt.P5.HerA.presAlg (ClsE S P z z' π π' X L st l0 D l)).toSubalgebra) a i j)) u hu b`.
+-/
 theorem boundary_torus_closure : BTCls := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD _ _ _ _ _ _ l _ u hu
   have hAL := hD.2.2.1

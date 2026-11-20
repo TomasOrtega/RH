@@ -15,6 +15,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 open scoped Matrix
 namespace GlobalTheory.BotRealInv
+/- English proof (translation)
+Introduce `_ _ _ _ _`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T L μ₀ hL G W _ i j A A' WW X δ t0 hX t Q P P' hB ea ed T' h g hg x => ?_⟩⟩` and prove the remaining obligations. Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Establish `hV : HSpace.gram A' = 1` using `hX.std'.1`. Establish `hVW : HSpace.gram WW = 1` using `hX.stdW.1`.
+
+Establish `hW : IsWeilDatumO W.ψ A' WW (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) ((L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2))) (X.ω' t)` using `hX.is.weil' t`. Establish `hinf` using `GlobalTheory.BotWeights.hasInf_of_chars P' _ hB.chars'.2`. Establish `hinf' : (nuH G t i j).HasInfQ (tauE D) fun τ => -((P'.W.ep' * P'.W.chV'.n τ : ℤ) : ℚ) / 2`. Use `⟨fun τ => -(P'.W.ep' * P'.W.chV'.n τ), fun τ => by push_cast; ring, fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `hinf k`.
+
+Rewrite `h1` using `[Formalism.L2.Host.HChar.inf_inv, Units.val_inv_eq_inv_val, inv_eq_iff_eq_inv, ← Finset.prod_inv_distrib]`. Rewrite using `[h1]`. Conclude with `Finset.prod_congr rfl fun τ _ => (zpow_neg _ _).symm`. Establish `hb : ∀ τ, HasInfExp D ((L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) / (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2))) τ (-((P'.W.ep' * P'.W.chV'.n τ : ℤ) : ℚ) / 2)`. Rewrite using `[succ_mul_succ_sub_one_div_succ]`.
+
+Conclude with `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (chrEq_nu G t i j hL) hinf'`. Establish `he₂ : ∀ τ, (((P'.n τ : ℕ) : ℤ) : ℚ) = -(-((P'.W.ep' * P'.W.chV'.n τ : ℤ) : ℚ) / 2 + (WW.rank : ℚ) / 2)` using `fun τ => by`. Establish `h2 : ((2 * (P'.n τ : ℤ) : ℤ) : ℚ) = ((P'.W.ep' * P'.W.chV'.n τ - (P'.d : ℤ) : ℤ) : ℚ)` using `by rw [P'.wt τ]`. Rewrite using `[← ed]`. Move the coercions through the operations in `at h2 ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `choose a ha using fun τ => GlobalTheory.SplitCharExp.exists_hasInfExp D W.θ _ A'.rank τ hθ hW.hecS hW.resS`. Use `choose e₁ he₁ using fun τ => GlobalTheory.SplitParity.exists_int_add_half D _ A'.rank τ (a τ) hW.hecS hW.resS (ha τ)`. Establish `hψ : Continuous W.ψ` using `hX.is.isVac.1.1.1`. Establish `es : X.rA'.s = fun _ => 1` using `funext fun τ => (hX.std'.2.2 τ).1`.
+
+Establish `eB : X.rA'.B = fun _ => 1` using `funext fun τ => (hX.std'.2.2 τ).2`. Establish `esW : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `eBW : X.rW.B = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).2`. Establish `hf : IsThetaFunO W.ψ A' WW (X.f' t)` using `(GlobalTheory.ConstRatio.theta_f hX.is t).2`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hX.is.idem t)`.
+
+Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ A' WW) W.θ τ (cplxO 1 1) (X.f' t)` using `fun τ => by`. Establish `h0` using `hX.is.isVac'.2.fock τ`. Rewrite `h0` using `[es, esW]`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ hθ ho.conj.infPart_eq ho.conj.conj.infPart_eq (hX.is.snd t) hX.is.isVac'.2.theta hf h0`. Establish `hBS : ∀ τ, ((fun _ => (1 : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)) τ)ᴴ * gramAt D A' τ * 1 = 1` using `fun τ => by`.
+
+Rewrite using `[GlobalTheory.RealColAct.gramAt_of_gram_one hV]`. Simplify using the standard rewrite rules. Establish `hBT : ∀ τ, ((fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) τ)ᴴ * gramAt D WW τ * 1 = 1` using `fun τ => by`. Rewrite using `[GlobalTheory.RealColAct.gramAt_of_gram_one hVW]`. Simplify using the standard rewrite rules.
+
+Establish `key` using `GlobalTheory.RealFockPos.om_pureTensorO_pos D W.ψ W.θ A' WW _ _ (X.ω' t) hW hθ (fun _ => 1) (fun _ => 1) hBS hBT a _ ha hb e₁ (fun τ => (P'.n τ : ℤ)) he₁ he₂ (X.f' t) hf hv g hg 1 (one_mem _) (GlobalTheory.BotFormula.minorF ea ed T')`. Simplify using `only [inv_one, Matrix.one_mul, Matrix.mul_one, GlobalTheory.StdUnn.CartanMove.compAt_mt_one, Matrix.det_one, one_zpow, mul_one] at key`. Establish `hc : (∏ τ, (compAt W.θ τ (Formalism.L2.Theta.mt A' g)).det ^ (P'.n τ : ℤ)) * ∏ τ, ((compAt W.θ τ (Formalism.L2.Theta.mt A' g))⁻¹).det ^ P'.n τ = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := W.θ) τ g`. Rewrite using `[Matrix.inv_eq_right_inv h1, zpow_natCast, ← mul_pow, ← Matrix.det_mul, h1, Matrix.det_one, one_pow]`. Rewrite `key` using `[substF_minorF, map_smul, smul_smul, hc, one_smul]`. Unfold `Tri.ker' thetaKO`. Rewrite using `[es, eB, esW, eBW]`.
+
+Establish `e : ((x * g, h) : Formalism.L2.Theta.GA D A' × Formalism.L2.Theta.GA D WW) = (x, h) * (g, 1)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, key]`.
+-/
 theorem ker_minor_mul_real_of_real_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
@@ -93,6 +116,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotRealInv.ker_minor_mul_real_of_real_invariant | exact _root_.GlobalTheory.BotRealInv.ker_minor_mul_real_of_real_invariant | (intros; apply _root_.GlobalTheory.BotRealInv.ker_minor_mul_real_of_real_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.minor_kernel_real_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

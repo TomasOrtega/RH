@@ -5,6 +5,9 @@ import Mathlib
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TensHead.tensor_eq_top_or_le_ker_map | exact GlobalTheory.TensHead.tensor_eq_top_or_le_ker_map | (intros; apply GlobalTheory.TensHead.tensor_eq_top_or_le_ker_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tensor_eq_top_or_le_ker_finiteLength_modules : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M₀ P₀ : Type} [AddCommGroup M₀] [Module ℂ M₀] [AddCommGroup P₀] [Module ℂ P₀]
     {M P : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] [∀ i, AddCommGroup (P i)] [∀ i, Module ℂ (P i)]
     (Op₀ : Set (Module.End ℂ M₀)) (Op : ∀ i, Set (Module.End ℂ (M i)))

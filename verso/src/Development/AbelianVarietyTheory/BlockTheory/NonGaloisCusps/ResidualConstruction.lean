@@ -132,6 +132,11 @@ def TakenAfter (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
     ∀ π ∈ N.Z i, ∃ g0 L eB e1 X0, IsInertiaCyclotomicGeneratorElement N i g0 ∧ IsChoice R.t TA repA ρA χA π g0 L eB e1 X0 ∧
       RootsIn R.t (N.O i) eB X0
 
+/- English proof (translation)
+Use `⟨fun _ _ h => h, ?_, fun x => ?_, fun x _ => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Establish `: ((fun f : N.X i → N.O i => fun x => algebraMap (N.O i) (N.O i) (f x)) '' (N.T i : Set _)) = (Subalgebra.toSubmodule (N.T i) : Set _)`. Simplify using the standard rewrite rules. Rewrite using `[this, Submodule.span_eq]`. Use extensionality with `g a b`.
+
+Both sides reduce to the same expression. Use extensionality with `g a b`. Both sides reduce to the same expression.
+-/
 theorem isEnlargement_self (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
     (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) :
     IsEnlargement N i rep ρ (N.O i) (N.T i) rep ρ (N.chi i) := by
@@ -147,6 +152,9 @@ theorem isEnlargement_self (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
 
 end Record
 
+/- English proof (translation)
+Unfold `blockPol Matrix.charpoly Matrix.charmatrix`. Use `congr 1`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Matrix.one_apply]`.
+-/
 example {A : Type} [CommRing A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) : blockPol 1 M = M.charpoly := by
   unfold blockPol Matrix.charpoly Matrix.charmatrix
   congr 1

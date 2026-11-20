@@ -14,6 +14,15 @@ open GlobalTheory.Poinc.Eq8 GlobalTheory.Poinc.Sep.Spz Classical
 
 namespace GlobalTheory.Poinc.Sep.Spz
 
+/- English proof (translation)
+Introduce `V _ _ _ hB G _ _ hG D A U F _ _ _ k z hk hz c`. Take `⟨hAdm, hChar⟩` from `hB`. Use `haveI := hChar`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hz` using `[zero_pow (by omega)]`. Conclude with `zero_ne_one hz`. Set `u : Fˣ` to `Units.mk0 z hz0`. Set `τ : Multiplicative D.toPre.X →* Fˣ` to `(zpowersHom Fˣ u).comp (AddMonoidHom.toMultiplicative c)`. Establish `hu : u ^ k = 1` using `by ext; simp [u, hz]`.
+
+Establish `hτ : τ ^ k = 1`. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Simplify using `only [τ, MonoidHom.comp_apply, zpowersHom_apply]`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu, one_zpow]`.
+
+Take `⟨q, hy, hq⟩` from `GlobalTheory.ZH.TorusPerp.exists_qkPt_tor (F := F) D.tau_bimult τ hτ`. Take `⟨f, hf⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hAdm D A G hG U F k hk`. Use `⟨f q, τ, q, fun χ => ?_, hy, hq, (hf.1 q (f q)).2 rfl⟩` and prove the remaining obligations. Simplify using `[τ, u]`.
+-/
 theorem exists_torAt : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → ∀ (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (U : Unif (maximalIdeal V) D A G) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (k : ℕ) (z : F), 1 ≤ k → z ^ k = 1 → ∀ c : D.toPre.X →+ ℤ, ∃ x : TFK (R := V) F ⟶ A.A, TorAt U F k z c x := by
   intro V _ _ _ hB G _ _ hG D A U F _ _ _ k z hk hz c
   obtain ⟨hAdm, hChar⟩ := hB

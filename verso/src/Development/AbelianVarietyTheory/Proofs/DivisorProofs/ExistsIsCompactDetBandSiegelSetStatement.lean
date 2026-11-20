@@ -7,6 +7,9 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 open scoped NumberField.AdeleRing
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegelBand.exists_isCompact_band_siegel | exact GlobalTheory.SiegelBand.exists_isCompact_band_siegel | (intros; apply GlobalTheory.SiegelBand.exists_isCompact_band_siegel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_isCompact_detBand_siegelSet : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ω : Set (GA E a)), IsCompact ω →
     ∀ t R : ℝ, 0 < t → ∃ C : Set (GA E a), IsCompact C ∧ C ⊆ band E a ∧
       ∀ b ∈ ω, ∀ (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i),

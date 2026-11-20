@@ -8,6 +8,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.GoodEtaleSection
 
+/- English proof (translation)
+Introduce `A R C _ _ _ _ _ _ _ _ _ _ ρ hρ t hker ht hint hEt hs`. Take `⟨s, hs⟩` from `hs`. Establish `ht0 : ρ t = 0` using `RingHom.mem_ker.1 (hker ▸ Ideal.mem_span_singleton_self t)`. Establish `htm : t ∈ maximalIdeal R`. Assume the negation of the conclusion as `h`.
+
+Establish `hu : IsUnit (ρ t)` using `((IsLocalRing.notMem_maximalIdeal.1 h)).map ρ`. Rewrite `hu` using `[ht0]`. Conclude with `not_isUnit_zero hu`. Take `⟨g, -, hg⟩` from `exists_integral_point A R C ρ hint s hs`. Use `choose f hf using GlobalTheory.T.exists_algHom_quotient_pow_lifting_point A R C ρ hρ t hker ht hEt g hg`.
+
+Establish `compat : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorₐ R (Ideal.pow_le_pow_right (I` using `Ideal.span {t}) hle)).comp (f n) = f m := by`. Introduce `m n hle`. Use `GlobalTheory.T.algHom_quotient_span_pow_eq_of_etaleLow A R C ρ hρ t hker ht hEt m _ _ fun c => ?_` and prove the remaining obligations. Use `set φ := Ideal.Quotient.factorₐ R (Ideal.pow_le_pow_right (I := Ideal.span {t}) hle)`. Establish `h1` using `hf n c`.
+
+Establish `h2` using `hf m c`. Rewrite `h1`, `h2`, the goal using `[Ideal.mem_span_singleton]`. Establish `h1'` using `map_dvd φ h1`. Establish `e1 : φ (Ideal.Quotient.mk (Ideal.span {t} ^ n) t) = Ideal.Quotient.mk (Ideal.span {t} ^ m) t` using `rfl`. Establish `e2 : φ (Ideal.Quotient.mk (Ideal.span {t} ^ n) (algebraMap A R (g c))) = Ideal.Quotient.mk (Ideal.span {t} ^ m) (algebraMap A R (g c))` using `rfl`.
+
+Rewrite `h1'` using `[map_sub, e1, e2]`. Use `dvd_sub h1' h2` as an intermediate fact. Simplify using `using this`. Conclude with `⟨AdicCompletion (Ideal.span {t}) R, inferInstance, inferInstance, faithfullyFlat_adicCompletion_span R t htm, ⟨AdicCompletion.liftAlgHom _ f compat⟩⟩`.
+-/
 theorem exists_faithfullyFlat_algHom : ∀ (A R C : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [CommRing R] [IsNoetherianRing R] [IsLocalRing R] [Algebra A R] [CommRing C] [Algebra R C]
     (ρ : R →+* A), ρ.comp (algebraMap A R) = RingHom.id A →

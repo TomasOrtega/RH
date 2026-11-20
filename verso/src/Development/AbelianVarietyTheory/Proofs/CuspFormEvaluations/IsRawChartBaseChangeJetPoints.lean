@@ -16,20 +16,32 @@ namespace GlobalTheory.RawChartBC
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
   unfold spMap
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_alg {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp ψ := by
   ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     (dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (dualMap ψ) := by
   ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Unfold `psTrunc`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+-/
 theorem psTrunc_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') {κ : Type} [Fintype κ] [DecidableEq κ]
     (m : ℕ) (f : MvPowerSeries κ S) :
     psTrunc m (MvPowerSeries.map ψ f) = MvPolynomial.map ψ (psTrunc m f) := by
@@ -38,6 +50,19 @@ theorem psTrunc_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') {
   refine Finset.sum_congr rfl fun e _ => ?_
   rw [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
+/- English proof (translation)
+Use `choose N hN hNu using fun k : κ => h (Pi.single k 1)`. Set `M : Matrix σ κ S` to `Matrix.of U`. Set `P : Matrix κ σ S` to `Matrix.of N`. Establish `h1 : P * M = 1`. Use extensionality with `k j`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Use `(hN k j).trans ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, eq_comm]`. Establish `h2 : M * P = 1`. Use extensionality with `ℓ ℓ'`.
+
+Establish `e : (fun i => (M * P) ℓ i) = fun i => (1 : Matrix σ σ S) ℓ i`. Use `(h (U ℓ)).unique (fun j => ?_) (fun j => ?_)` and prove the remaining obligations. Establish `: (M * P * M) ℓ j = M ℓ j` using `by rw [Matrix.mul_assoc, h1, Matrix.mul_one]`. Rewrite `this` using `[Matrix.mul_apply]`. Conclude with `this`.
+
+Establish `: ((1 : Matrix σ σ S) * M) ℓ j = M ℓ j` using `by rw [Matrix.one_mul]`. Rewrite `this` using `[Matrix.mul_apply]`. Conclude with `this`. Conclude with `congrFun e ℓ'`. Establish `h1' : P.map ψ * M.map ψ = 1` using `by rw [← Matrix.map_mul, h1]; simp`.
+
+Establish `h2' : M.map ψ * P.map ψ = 1` using `by rw [← Matrix.map_mul, h2]; simp`. Establish `key : ∀ a : σ → S', (∀ j, ∑ ℓ, a ℓ * ψ (U ℓ j) = v j) ↔ Matrix.vecMul a (M.map ψ) = v`. Introduce `a`. Rewrite using `[funext_iff]`. Both sides reduce to the same expression.
+
+Use `⟨Matrix.vecMul v (P.map ψ), (key _).2 ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.vecMul_vecMul, h1', Matrix.vecMul_one]`. Rewrite using `[← (key a).1 ha, Matrix.vecMul_vecMul, h2', Matrix.vecMul_one]`.
+-/
 theorem basis_map {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') {σ κ : Type} [Fintype σ] [Fintype κ]
     (U : σ → κ → S) (h : ∀ v : κ → S, ∃! a : σ → S, ∀ j, ∑ ℓ, a ℓ * U ℓ j = v j) (v : κ → S') :
     ∃! a : σ → S', ∀ j, ∑ ℓ, a ℓ * ψ (U ℓ j) = v j := by
@@ -90,6 +115,9 @@ def dualPtMap : overAt (spMap ψ ≫ x0) (DualNumber S') ⟶ overAt x0 (DualNumb
       spMap (algebraMap S' (DualNumber S')) ≫ spMap ψ ≫ x0
     rw [← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap, dualMap_alg])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ m) = spMap ψ ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (jetAug_comp_jetBC ψ _ m)`.
+-/
 theorem sq_aug (d m : ℕ) :
     homAt (spMap ψ ≫ x0) (jetAug : Jet S' (Fin 1 × Fin d) m →ₐ[S'] S') ≫ rjBC ψ x0 d m 1 =
       baseMap ψ x0 ≫ homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) := by
@@ -98,6 +126,9 @@ theorem sq_aug (d m : ℕ) :
   rw [spMap_spMap, spMap_spMap]
   exact congrArg spMap (jetAug_comp_jetBC ψ _ m)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ (m + 1)) = spMap (jetBC ψ _ m) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (jetTrunc_comp_jetBC ψ _ m)`.
+-/
 theorem sq_trunc (d m : ℕ) :
     homAt (spMap ψ ≫ x0) (jetTrunc : Jet S' (Fin 1 × Fin d) (m + 1) →ₐ[S'] Jet S' (Fin 1 × Fin d) m) ≫
         rjBC ψ x0 d (m + 1) 1 =
@@ -107,6 +138,9 @@ theorem sq_trunc (d m : ℕ) :
   rw [spMap_spMap, spMap_spMap]
   exact congrArg spMap (jetTrunc_comp_jetBC ψ _ m)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ m) = spMap (jetBC ψ _ m) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (jetSubstP_comp_jetBC ψ m φ)`.
+-/
 theorem sq_subst {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S) :
     homAt (spMap ψ ≫ x0) (jetSubstP m (fun i => MvPolynomial.map ψ (φ i)) :
         Jet S' (Fin n × Fin d) m →ₐ[S'] Jet S' (Fin n' × Fin d) m) ≫ rjBC ψ x0 d m n =
@@ -116,6 +150,9 @@ theorem sq_subst {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial 
   rw [spMap_spMap, spMap_spMap]
   exact congrArg spMap (jetSubstP_comp_jetBC ψ m φ)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ (0 + 1)) = spMap (dualMap ψ) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Conclude with `congrArg spMap (jetTan_comp_jetBC ψ ℓ 0)`.
+-/
 theorem sq_tan (d : ℕ) (ℓ : Fin 1 × Fin d) :
     homAt (spMap ψ ≫ x0) (jetTan ℓ : Jet S' (Fin 1 × Fin d) (0 + 1) →ₐ[S'] DualNumber S') ≫ rjBC ψ x0 d 1 1 =
       dualPtMap ψ x0 ≫ homAt x0 (jetTan ℓ : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S) := by
@@ -124,11 +161,19 @@ theorem sq_tan (d : ℕ) (ℓ : Fin 1 × Fin d) :
   rw [spMap_spMap, spMap_spMap]
   exact congrArg spMap (jetTan_comp_jetBC ψ ℓ 0)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem jetMap_congr_fun {R κ κ' : Type} [CommRing R] {m : ℕ} {f g : κ → MvPolynomial κ' R} (e : f = g)
     (hf : ∀ i, f i ∈ orig R κ') (hg : ∀ i, g i ∈ orig R κ') : jetMap (m := m) f hf = jetMap (m := m) g hg := by
   subst e
   rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ m) = spMap (jetBC ψ _ m) ≫ spMap _`. Rewrite using `[spMap_spMap, spMap_spMap]`. Establish `e` using `jetMap_comp_jetBC ψ m (fun p : Fin 1 × Fin d => (MvPolynomial.X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) (fun _ => X_mem_orig _) (fun p => by rw [MvPolynomial.map_X]; exact X_mem_orig _)`. Rewrite `e` using `[jetMap_congr_fun (show (fun p : Fin 1 × Fin d => MvPolynomial.map ψ (MvPolynomial.X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) = fun p => MvPolynomial.X (i, p.2) from funext fun p => MvPolynomial.map_X ψ _) _ (fun _ => X_mem_orig _)]`.
+
+Conclude with `congrArg spMap e`.
+-/
 theorem sq_copy (d m n : ℕ) (i : Fin n) :
     homAt (spMap ψ ≫ x0) (jetCopy d m i : Jet S' (Fin 1 × Fin d) m →ₐ[S'] Jet S' (Fin n × Fin d) m) ≫
         rjBC ψ x0 d m 1 =
@@ -144,12 +189,20 @@ theorem sq_copy (d m n : ℕ) (i : Fin n) :
     fun p => MvPolynomial.X (i, p.2) from funext fun p => MvPolynomial.map_X ψ _) _ (fun _ => X_mem_orig _)] at e
   exact congrArg spMap e
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [Hom.one_def]`. Consider the case `cons a L ih => simp only [List.map_cons, List.prod_cons, ih, Hom.mul_def, comp_lift_assoc]`.
+-/
 theorem list_prod_comp {T T' : Over Xo.X} (f : T' ⟶ T) (L : List (T ⟶ Xo.univ.t.G)) :
     (L.map (f ≫ ·)).prod = f ≫ L.prod := by
   induction L with
   | nil => simp [Hom.one_def]
   | cons a L ih => simp only [List.map_cons, List.prod_cons, ih, Hom.mul_def, comp_lift_assoc]
 
+/- English proof (translation)
+Take `⟨u, hu, hp⟩` from `h`. Use `⟨fun i => dualPtMap ψ x0 ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (dualMap ψ) ≫ (u i).left = _`. Rewrite using `[hu i, ← Category.assoc, spMap_spMap, dualMap_epsMul, ← spMap_spMap, Category.assoc]`. Establish `e : List.ofFn (fun i => dualPtMap ψ x0 ≫ u i) = (List.ofFn u).map (dualPtMap ψ x0 ≫ ·)`.
+
+Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e, list_prod_comp, Over.comp_left, hp]`. Both sides reduce to the same expression.
+-/
 theorem isCombAt_map {k : ℕ} {v : Fin k → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {cf : Fin k → S}
     {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (h : IsCombAt x0 v cf w) :
     IsCombAt (spMap ψ ≫ x0) (fun i => spMap (dualMap ψ) ≫ v i) (fun i => ψ (cf i)) (spMap (dualMap ψ) ≫ w) := by
@@ -165,6 +218,15 @@ theorem isCombAt_map {k : ℕ} {v : Fin k → (Sp (DualNumber S) ⟶ Xo.univ.t.G
 
 end Maps
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx' u uvec hX`. Take `rfl : x' = fun m => rjBC ψ x0 d m 1 ≫ x m` from `funext hx'`. Use `⟨fun m => ?_, fun m => ?_, fun m => ?_, fun m a => ?_, fun ℓ => ?_, basis_map ψ uvec hX.basis⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, sq_aug, Category.assoc, hX.zero m]`. Simplify using `[Hom.one_def]`.
+
+Rewrite using `[← Category.assoc, sq_trunc, Category.assoc, hX.trunc m]`. Simplify using `only [psTrunc_map]`. Rewrite using `[← Category.assoc, sq_subst, Category.assoc, hX.law m]`. Simplify using `only [rjpt, Hom.mul_def, comp_lift_assoc]`. Rewrite using `[← Category.assoc (homAt _ _) (rjBC _ _ _ _ _), ← Category.assoc (homAt _ _) (rjBC _ _ _ _ _), sq_copy, sq_copy, Category.assoc, Category.assoc]`.
+
+Simplify using `only [psTrunc_map]`. Rewrite using `[← Category.assoc (homAt _ _), sq_subst, Category.assoc, Category.assoc, hX.act m a]`. Establish `hv : (fun j : Fin d => (homAt (spMap ψ ≫ x0) (jetTan ((0 : Fin 1), j) : Jet S' (Fin 1 × Fin d) (0 + 1) →ₐ[S'] DualNumber S') ≫ (rjBC ψ x0 d 1 1 ≫ x 1)).left) = fun j => spMap (dualMap ψ) ≫ (homAt x0 (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S) ≫ x …`. Use function extensionality and compare the values at `j`. Rewrite using `[← Category.assoc, sq_tan, Category.assoc]`.
+
+Both sides reduce to the same expression. Use `isCombAt_map ψ x0 (hX.tan ℓ)` as an intermediate fact. Rewrite `this` using `[← hv]`. Conclude with `this`.
+-/
 theorem rIsChart_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G), (∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) → ∀ (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (uvec : Lt1 Dw → Fin d → S), RIsChart x0 u d F act uvec x → RIsChart (spMap ψ ≫ x0) (fun τ i => spMap (dualMap ψ) ≫ u τ i) d (fun i => MvPowerSeries.map ψ (F i)) (fun a i => MvPowerSeries.map ψ (act a i)) (fun ℓ j => ψ (uvec ℓ j)) x' := by
   intro E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx' u uvec hX
   obtain rfl : x' = fun m => rjBC ψ x0 d m 1 ≫ x m := funext hx'

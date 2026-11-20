@@ -10,6 +10,11 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.BaseChangeData
 
+/- English proof (translation)
+Introduce `K _ _ _ c S hS`. Establish `hB : ({w : PlK K | w.asIdeal ∣ differentIdeal ℤ (𝓞 K)}).Finite` using `Ideal.finite_factors GroundTheory.Global.differentIdeal_ne_bot`. Use `⟨(S ∪ hB.toFinset).image below, fun v hv w _ => ?_⟩` and prove the remaining obligations. Establish `hvw : v = below w` using `eq_below v w`. Establish `hw : w ∉ S ∪ hB.toFinset` using `fun h => hv (hvw ▸ Finset.mem_image_of_mem below h)`.
+
+Simplify using `only [Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.mem_ofPred_eq] at hw`. Use `⟨hS w hw.1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hw.2 ((dvd_different_iff w).2 hne)`.
+-/
 theorem enl_holds : ∀ (K : Type) [Field K] [NumberField K], Ad3.K.QuadraticBaseChangeGL3.Th.ENL K := by
   intro K _ _ _ c S hS
   classical

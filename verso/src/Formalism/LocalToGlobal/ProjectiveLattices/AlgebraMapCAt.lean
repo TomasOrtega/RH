@@ -56,22 +56,37 @@ def evalAt (f : Rules pts) {S : Type} [CommRing S] [Algebra K S] (y : pts S) : S
   if h : FromTest pts mapR y then h.choose_spec.choose (f h.choose h.choose_spec.choose_spec.choose)
   else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_add (f g : Rules pts) {S : Type} [CommRing S] [Algebra K S] (y : pts S) :
     evalAt pts mapR (f + g) y = evalAt pts mapR f y + evalAt pts mapR g y := by
   unfold evalAt; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp [Algebra.smul_def]`.
+-/
 theorem evalAt_smul (c : K) (f : Rules pts) {S : Type} [CommRing S] [Algebra K S] (y : pts S) :
     evalAt pts mapR (c • f) y = algebraMap K S c * evalAt pts mapR f y := by
   unfold evalAt; split_ifs <;> simp [Algebra.smul_def]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_zero {S : Type} [CommRing S] [Algebra K S] (y : pts S) :
     evalAt pts mapR (0 : Rules pts) y = 0 := by
   unfold evalAt; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_mul (f g : Rules pts) {S : Type} [CommRing S] [Algebra K S] (y : pts S) :
     evalAt pts mapR (f * g) y = evalAt pts mapR f y * evalAt pts mapR g y := by
   unfold evalAt; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `evalAt`. Rewrite using `[dif_pos h]`. Simplify using the standard rewrite rules.
+-/
 theorem evalAt_one {S : Type} [CommRing S] [Algebra K S] (y : pts S) (h : FromTest pts mapR y) :
     evalAt pts mapR (1 : Rules pts) y = 1 := by
   unfold evalAt; rw [dif_pos h]; simp
@@ -99,6 +114,9 @@ instance (σ : K →+* ℂ) : Algebra K (CAt σ) := σ.toAlgebra
 
 def cabs {σ : K →+* ℂ} (z : CAt σ) : ℝ := ‖(show ℂ from z)‖
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_CAt (σ : K →+* ℂ) (c : K) : (show ℂ from algebraMap K (CAt σ) c) = σ c := rfl
 
 variable {ι : Type} [Fintype ι]
@@ -110,10 +128,16 @@ def ptNorm (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e : ι → 
     (y : pts (CAt σ)) : ℝ :=
   cabs (evalAt pts mapR f y) * ∏ i, |fnorm y i|⁻¹ ^ e i
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => pow_nonneg (inv_nonneg.2 (abs_nonneg _)) _)`.
+-/
 theorem ptNorm_nonneg (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e : ι → ℕ) (f : Rules pts)
     (y : pts (CAt σ)) : 0 ≤ ptNorm pts mapR σ fnorm e f y :=
   mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun _ _ => pow_nonneg (inv_nonneg.2 (abs_nonneg _)) _)
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[evalAt_add, ← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (Finset.prod_nonneg fun _ _ => pow_nonneg (inv_nonneg.2 (abs_nonneg _)) _)`.
+-/
 theorem ptNorm_add_le (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e : ι → ℕ) (f g : Rules pts)
     (y : pts (CAt σ)) :
     ptNorm pts mapR σ fnorm e (f + g) y ≤ ptNorm pts mapR σ fnorm e f y + ptNorm pts mapR σ fnorm e g y := by
@@ -122,6 +146,9 @@ theorem ptNorm_add_le (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _)
     (Finset.prod_nonneg fun _ _ => pow_nonneg (inv_nonneg.2 (abs_nonneg _)) _)
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[evalAt_smul, ← mul_assoc]`. Use `congr 1`. Unfold `cabs`. Conclude with `norm_mul (σ a) _`.
+-/
 theorem ptNorm_smul (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e : ι → ℕ) (a : K) (f : Rules pts)
     (y : pts (CAt σ)) :
     ptNorm pts mapR σ fnorm e (a • f) y = ‖σ a‖ * ptNorm pts mapR σ fnorm e f y := by
@@ -131,6 +158,9 @@ theorem ptNorm_smul (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e 
   unfold cabs
   exact norm_mul (σ a) _
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[evalAt_zero]`. Conclude with `mul_eq_zero_of_left (norm_zero (E := ℂ)) _`.
+-/
 theorem ptNorm_zero (σ : K →+* ℂ) (fnorm : pts (CAt σ) → ι → ℝ) (e : ι → ℕ) (y : pts (CAt σ)) :
     ptNorm pts mapR σ fnorm e 0 y = 0 := by
   unfold ptNorm; rw [evalAt_zero]

@@ -16,12 +16,23 @@ section Loc
 
 variable {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R) [hp : p.IsPrime]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_localization_iff (L : Submodule R W) (x : W) :
     x ∈ localization₂ p L ↔ ∃ s, s ∉ p ∧ s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_localization_iff p L x).2 ⟨1, fun h => hp.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩`.
+-/
 theorem le_localized_self (L : Submodule R W) : L ≤ localization₂ p L := fun x hx =>
   (mem_localization_iff p L x).2 ⟨1, fun h => hp.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `(mem_localization_iff p L x).1 hx`. Take `⟨t, ht, htx⟩` from `(mem_localization_iff p N _).1 (h hsx)`. Use `(mem_localization_iff p N x).2 ⟨t * s, fun hm => ?_, by rwa [mul_smul]⟩` and prove the remaining obligations. Break down `hp.mem_or_mem hm with h1 | h1` into its components or cases.
+
+Conclude with `ht h1`. Conclude with `hs h1`.
+-/
 theorem localization_le_of_le_localization₂ {L N : Submodule R W} (h : L ≤ localization₂ p N) : localization₂ p L ≤ localization₂ p N := by
   intro x hx
   obtain ⟨s, hs, hsx⟩ := (mem_localization_iff p L x).1 hx
@@ -33,6 +44,13 @@ theorem localization_le_of_le_localization₂ {L N : Submodule R W} (h : L ≤ l
 
 end Loc
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Set `I : Ideal (𝓞 E)` to `N.comap (LinearMap.toSpanSingleton (𝓞 E) W x)`. Establish `hI : I ≠ ⊤`. Introduce `hI`. Establish `: (1 : 𝓞 E) ∈ I` using `by rw [hI]; trivial`.
+
+Apply `hx` to reduce the goal to its premises. Simplify `this` using `[I]`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Establish `hM0 : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`. Take `⟨s, hs, hsx⟩` from `h ⟨M, hM.isPrime, hM0⟩`.
+
+Conclude with `hs (hIM (by simpa [I] using hsx))`.
+-/
 theorem mem_of_forall_locP {E W : Type} [Field E] [NumberField E] [AddCommGroup W]
     [Module (𝓞 E) W] (N : Submodule (𝓞 E) W) (x : W)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), x ∈ (haveI := P.isPrime; localization₂ P.asIdeal N)) : x ∈ N := by
@@ -48,6 +66,27 @@ theorem mem_of_forall_locP {E W : Type} [Field E] [NumberField E] [AddCommGroup 
   obtain ⟨s, hs, hsx⟩ := h ⟨M, hM.isPrime, hM0⟩
   exact hs (hIM (by simpa [I] using hsx))
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T T' Λ g F F' hF hF' hA x hx`. Take `⟨ξ, hξ0, hξ1, hξ⟩` from `hA`. Use `set N : Submodule (𝓞 E) S.V := Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ F' with hN`. Apply `mem_of_forall_locP` to reduce the goal to its premises. Introduce `P`.
+
+Use `haveI := P.isPrime`. Distinguish the cases in `hg : (g : 𝓞 E) ∈ P.asIdeal`. Use `swap`. Use `(mem_localization_iff _ _ _).2 ⟨g, hg, Submodule.mem_sup_left ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem_smul (Ideal.subset_span rfl) hx.1`.
+
+Take `⟨c, -, hc1, hc⟩` from `hF.1 P`. Take `⟨c', -, hc1', hc'⟩` from `hF'.1 P`. Simplify using `only [hc1 hg, one_smul] at hc`. Simplify using `only [hc1' hg, one_smul] at hc'`. Establish `he' : ∀ b, F'.fl.e b ∈ localization₂ P.asIdeal N`.
+
+Introduce `b`. Establish `h1 : F'.fl.e b ∈ localization₂ P.asIdeal (XLam Λ F')`. Rewrite using `[hc']`. Conclude with `le_localized_self _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Conclude with `localization_le_of_le_localization₂ _ (le_sup_right.trans (le_localized_self _ _)) h1`.
+
+Establish `hf : ∀ n : ℕ, ∀ b : Fin r, b.1 = n → F.fl.e b ∈ localization₂ P.asIdeal N`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `b hb`.
+
+Establish `h1 : frame F' b.castSucc - frameAct (frame F) ξ b.castSucc ∈ localization₂ P.asIdeal N` using `localization_le_of_le_localization₂ _ (le_sup_left.trans (le_localized_self _ _)) (hξ b.castSucc P hg)`. Establish `h2 : frame F' b.castSucc = F'.fl.e b` using `by simp [frame, FlagG.fvec]`. Establish `h3 : frameAct (frame F) ξ b.castSucc ∈ localization₂ P.asIdeal N`. Use `Submodule.sub_mem _ (he' b) h1` as an intermediate fact. Rewrite `this` using `[h2]`.
+
+Simplify using `using this`. Establish `h4 : frameAct (frame F) ξ b.castSucc = F.fl.e b + ∑ a ∈ Finset.univ.erase b, ξ a.castSucc b.castSucc • F.fl.e a`. Unfold `frameAct`. Rewrite using `[Fin.sum_univ_castSucc, hξ0 (Fin.last r) b.castSucc (Fin.castSucc_lt_last b), ← Finset.add_sum_erase _ _ (Finset.mem_univ b), hξ1]`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_castSucc, RingOfIntegers.coe_eq_algebraMap, map_zero, map_one, zero_smul, add_zero, one_smul, algebraMap_smul]`.
+
+Establish `h5 : ∑ a ∈ Finset.univ.erase b, ξ a.castSucc b.castSucc • F.fl.e a ∈ localization₂ P.asIdeal N`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase ha) with hab | hab` into its components or cases. Conclude with `Submodule.smul_mem _ _ (ih a.1 (hb ▸ hab) a rfl)`. Rewrite using `[hξ0 _ _ (Fin.castSucc_lt_castSucc_iff.2 hab), zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Rewrite `h3` using `[h4]`. Simplify using `using Submodule.sub_mem _ h3 h5`. Establish `hx' : x ∈ localization₂ P.asIdeal (XLam Λ F)` using `le_localized_self _ _ hx`. Rewrite `hx'` using `[hc]`.
+
+Use `localization_le_of_le_localization₂ _ ?_ hx'` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hf _ a rfl`.
+-/
 theorem xLam_le_smul_sup_xLam :
     ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T T' : E)
       (Λ : Submodule (𝓞 E) S.V) (g : ℕ) (F : LFlag S r T) (F' : LFlag S r T'),

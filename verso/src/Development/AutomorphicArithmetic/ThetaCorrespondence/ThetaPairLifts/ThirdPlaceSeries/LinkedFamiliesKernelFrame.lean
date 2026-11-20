@@ -26,6 +26,9 @@ def ExtraDataSelfDualKernel (ex : Extra D L hT Gi Gl K Y cX) : Prop := Nonempty 
 end
 def LinkedFamiliesKernelFrame' : FamClass := fun {_} Fm =>
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.ExtraDataSelfDualKernel (Fm.ex x hx i)
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => let ⟨T⟩ := h x hx hx0 i; ⟨T.toTiedDataS⟩⟩`.
+-/
 theorem LinkedFamiliesKernelFrame'.c2s {eps : ℝ} {Fm : FamP eps} (h : _root_.Formalism.L2.LinkedFamiliesKernelFrame' Fm) : _root_.Formalism.L2.SecondChernLinkedClass Fm := by
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx hx0 i => let ⟨T⟩ := h x hx hx0 i; ⟨T.toTiedDataS⟩⟩

@@ -10,6 +10,13 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField Loc
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv⟩` from `hD.ne`. Use `((hD.sig v hv).reg (t v) (ht v hv) _ (h v hv)).2 ?_` and prove the remaining obligations. Establish `h2 : IsIntegral (Ov v) (2 : Kv v)`. Use `isIntegral_algebraMap (R := Ov v) (A := Kv v) (x := 2)` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `h1 : (τ - 2) * (τ + 2) = 0` using `by rw [← h0]; ring`. Break down `mul_eq_zero.mp h1 with h1 | h1` into its components or cases. Rewrite using `[sub_eq_zero.mp h1, map_ofNat]`. Conclude with `h2`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left h1, map_neg, map_ofNat]`. Conclude with `h2.neg`.
+-/
 private theorem aux_statement_10 {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (hD : D.Ok) (t : Dat.Par F)
     (ht : D.Cone t) (τ : F) (h : D.admitted t τ) : τ ^ 2 - 4 ≠ 0 := by
   intro h0
@@ -23,6 +30,11 @@ private theorem aux_statement_10 {F : Type} [Field F] [NumberField F] {Δ : F} (
   · rw [sub_eq_zero.mp h1, map_ofNat]; exact h2
   · rw [eq_neg_of_add_eq_zero_left h1, map_neg, map_ofNat]; exact h2.neg
 
+/- English proof (translation)
+Establish `h1 : ∑ᶠ i : {a // p a}, c * f i.1 = ∑ᶠ (a) (_ : p a), c * f a` using `finsum_subtype_eq_finsum_cond (f := fun a => c * f a) p`. Rewrite using `[h1]`. Establish `h2 : ∀ a, ∑ᶠ (_ : p a), c * f a = c • (one (p a) * f a)`. Introduce `a`. Rewrite using `[finsum_eq_if, smul_eq_mul]`.
+
+Unfold `one`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[h2]`. Rewrite using `[← smul_finsum, smul_eq_mul]`.
+-/
 private theorem sum_sub {α : Type} (p : α → Prop) (f : α → ℂ) (c : ℂ) :
     ∑ᶠ i : {a // p a}, c * f i.1 = c * ∑ᶠ a, one (p a) * f a := by
   classical
@@ -38,6 +50,21 @@ private theorem sum_sub {α : Type} (p : α → Prop) (f : α → ℂ) (c : ℂ)
   rw [← smul_finsum, smul_eq_mul]
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `F _ _ Δ D hD x₀ hx₀`. Take `⟨-, ⟨ι, hι⟩, -⟩` from `iotaEx F Δ`. Take `⟨n, x, c, hx0, hoff, hc, hsum⟩` from `fibre F Δ D hD ι hι x₀ hx₀`. Establish `hΔ : Δ ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`.
+
+Take `⟨σ⟩ : Nonempty (F →+* ℝ)` from `⟨InfinitePlace.embedding_of_isReal (hD.real.isReal w)⟩`. Establish `hneg : σ Δ < 0` using `hD.neg σ`. Introduce `h0`. Rewrite `hneg` using `[h0, map_zero]`. Conclude with `lt_irrefl _ hneg`.
+
+Use `⟨n, x, c * ∏ v ∈ D.Sg, (D.S v).cS, hx0, hoff, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_pos hc (Finset.prod_pos fun v hv => (hD.sig v hv).cS)`. Introduce `V _ _ _ ch B hB t ht classical`. Establish `hG : ∀ a, D.Good t a ↔ IsCM a ∧ D.admitted t a` using `fun a => Iff.rfl`. Establish `hex : ∀ s : {a // D.Good t a}, ∃ g : DX Δ, HasTr g s.1` using `fun s => (embEx F Δ D hD s.1).1 ((hG _).1 s.2).1`.
+
+Use `choose γ hγ using hex`. Establish `hreg : ∀ s : {a // D.Good t a}, s.1 ^ 2 - 4 ≠ 0` using `fun s => aux_statement_10 D hD t ht s.1 ((hG _).1 s.2).2`. Establish `hj : ∀ s : {a // D.Good t a}, ∃ j : (Etau F s.1)ˣ →* DX Δ, IsEmb s.1 (γ s) j` using `fun s => (embAlg F Δ s.1 hΔ (hreg s) (γ s) (hγ s)).1`. Use `choose j hjj using hj`. Rewrite using `[hsum V ch B hB t ht {a // D.Good t a} (fun s => s.1) γ j Subtype.val_injective (fun s => ⟨hreg s, hγ s, hjj s⟩) ?_]`.
+
+Establish `hterm : ∀ s : {a // D.Good t a}, ch s.1 * gqOn (ι.comp (j s)) (scalE s.1) D.UZ (fun y => D.FS t ((Quotient.out y)⁻¹ * ι (γ s) * Quotient.out y)) = (∏ v ∈ D.Sg, ((D.S v).cS : ℂ)) * (ch s.1 * ms s.1 * D.nS s.1)`. Introduce `s`. Rewrite using `[gqS F Δ D hD ι hι t ht s.1 ((hG _).1 s.2).1 (γ s) (j s) (hγ s) (hjj s)]`. Establish `h1 : one (D.admitted t s.1) = 1` using `if_pos ((hG _).1 s.2).2`. Rewrite using `[h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_congr hterm, sum_sub (fun a => D.Good t a) (fun a => ch a * ms a * D.nS a)]`. Unfold `Dat.sumS`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `g s hg hs`. Conclude with `⟨⟨s, (hG s).2 ⟨(embEx F Δ D hD s).2 g hg (aux_statement_10 D hD t ht s hs), hs⟩⟩, rfl⟩`.
+-/
 theorem split_side_identity_unitary : QuaternionStableSideTraceIdentity := by
   intro F _ _ Δ D hD x₀ hx₀
   obtain ⟨-, ⟨ι, hι⟩, -⟩ := iotaEx F Δ

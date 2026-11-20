@@ -14,20 +14,44 @@ section F
 
 variable {τ K : Type} [CommRing K]
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g 0).2.2`.
+-/
 theorem fR_symm (f g : MvPolynomial τ K) : fockR f g = fockR g f := (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g 0).2.2
+/- English proof (translation)
+The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f f' g 0).1`.
+-/
 theorem fR_add_left (f f' g : MvPolynomial τ K) : fockR (f + f') g = fockR f g + fockR f' g :=
   (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f f' g 0).1
+/- English proof (translation)
+The claim follows from `(Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g a).2.1`.
+-/
 theorem fR_smul_left (a : K) (f g : MvPolynomial τ K) : fockR (a • f) g = a * fockR f g :=
   (Formalism.L2.G.Model.TS.Top.fockRBilin τ K f 0 g a).2.1
+/- English proof (translation)
+Rewrite using `[fR_symm, fR_add_left, fR_symm g, fR_symm g']`.
+-/
 theorem fR_add_right (f g g' : MvPolynomial τ K) : fockR f (g + g') = fockR f g + fockR f g' := by
   rw [fR_symm, fR_add_left, fR_symm g, fR_symm g']
+/- English proof (translation)
+Rewrite using `[fR_symm, fR_smul_left, fR_symm g]`.
+-/
 theorem fR_smul_right (a : K) (f g : MvPolynomial τ K) : fockR f (a • g) = a * fockR f g := by
   rw [fR_symm, fR_smul_left, fR_symm g]
+/- English proof (translation)
+Use `fR_smul_left (-1 : K) f g` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fR_neg_left (f g : MvPolynomial τ K) : fockR (-f) g = -fockR f g := by
   have := fR_smul_left (-1 : K) f g
   simpa using this
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, fR_add_left, fR_neg_left, ← sub_eq_add_neg]`.
+-/
 theorem fR_sub_left (f f' g : MvPolynomial τ K) : fockR (f - f') g = fockR f g - fockR f' g := by
   rw [sub_eq_add_neg, fR_add_left, fR_neg_left, ← sub_eq_add_neg]
+/- English proof (translation)
+Rewrite using `[fR_symm, fR_sub_left, fR_symm g, fR_symm g']`.
+-/
 theorem fR_sub_right (f g g' : MvPolynomial τ K) : fockR f (g - g') = fockR f g - fockR f g' := by
   rw [fR_symm, fR_sub_left, fR_symm g, fR_symm g']
 
@@ -50,14 +74,29 @@ def cForm (K : Type) [Field K] (m : ℕ) (vec : Bool) (d : ℕ) (β s : MvPolyno
     (fun P Q Q' => by rw [map_add, add_mul, fR_add_right])
     (fun t P Q => by rw [map_smul, smul_mul_assoc, fR_smul_right, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cForm_apply (K : Type) [Field K] (m : ℕ) (vec : Bool) (d : ℕ) (β s : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K)
     (P Q : VV K m d) : cForm K m vec d β s P Q = fockR (thV K m vec d P * s) (thV K m vec d Q * β) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hR K m hm vec d P.1 ((mem_Hd_iff _).2 P.2) fun Q hQ => h ⟨Q, (mem_Hd_iff _).1 hQ⟩`.
+-/
 theorem uniqV (hR : RestRep) {K : Type} [Field K] [CharZero K] {m : ℕ} (hm : 1 ≤ m) (vec : Bool) (d : ℕ) (P : VV K m d)
     (h : ∀ Q, fockR (thV K m vec d P) (thV K m vec d Q) = 0) : P = 0 := by
   apply Subtype.ext
   exact hR K m hm vec d P.1 ((mem_Hd_iff _).2 P.2) fun Q hQ => h ⟨Q, (mem_Hd_iff _).1 hQ⟩
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (cForm K m vec d 1 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `P hP`. Apply `uniqV hR hm vec d P` to reduce the goal to its premises.
+
+Introduce `Q`. Use `congrArg (fun f => f Q) hP` as an intermediate fact. Simplify `this` using `[cForm]`. Introduce `f`. Take `⟨P, hP⟩` from `hR2 K m hm vec d f`.
+
+Use `⟨P, LinearMap.ext fun Q => ?_⟩` and prove the remaining obligations. Simplify `hP Q` using `[cForm]`. Set `e` to `LinearEquiv.ofBijective (cForm K m vec d 1 1) hb`. Use `⟨fun β s => e.symm.toLinearMap ∘ₗ cForm K m vec d β s, fun β s P Q => ?_⟩` and prove the remaining obligations. Establish `h1 : cForm K m vec d 1 1 (e.symm (cForm K m vec d β s P)) = cForm K m vec d β s P` using `e.apply_symm_apply _`.
+
+Establish `h2 : cForm K m vec d 1 1 (e.symm (cForm K m vec d β s P)) Q = cForm K m vec d β s P Q` using `by rw [h1]`. Rewrite `h2` using `[cForm_apply, cForm_apply, mul_one, mul_one]`. Conclude with `h2`.
+-/
 theorem exists_A (hR : RestRep) (hR2 : RestRep2) {K : Type} [Field K] [CharZero K] {m : ℕ} (hm : 1 ≤ m) (vec : Bool) (d : ℕ) :
     ∃ A : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K → MvPolynomial (Fin (m + 1) × Fin (m + 1)) K → Module.End K (VV K m d),
       ∀ β s P Q, fockR (thV K m vec d (A β s P)) (thV K m vec d Q) = fockR (thV K m vec d P * s) (thV K m vec d Q * β) := by

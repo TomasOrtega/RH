@@ -19,11 +19,17 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+Take `⟨p, -, -, e⟩` from `liesUnder_basePt O.Φ y`. Rewrite using `[← e]`. Conclude with `GlobalTheory.T.closed_point_below_algebraic _ _ p`.
+-/
 theorem HtTieRead.isClosed_basePt {D : D7} (O : Setup D) (y : Pt O.s) : IsClosed ({basePt O.Φ y} : Set (O.var (compPt O.s y)).X) := by
   obtain ⟨p, -, -, e⟩ := liesUnder_basePt O.Φ y
   rw [← e]
   exact GlobalTheory.T.closed_point_below_algebraic _ _ p
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.T.height_average_over_lifts _ _ _ _ (h.man (compPt O.s y)) _ _ _ g (HtTieRead.isClosed_basePt O y) (h.pts_is.conj y)]`. Simplify using `only [Real0.Pts.mean, e]`.
+-/
 theorem HtTieRead.mean_eq {D : D7} {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H)
     (y : Pt O.s) (f : (T.M (compPt O.s y)).Fun) (g : ∀ σ, Pts (O.var (compPt O.s y)) σ → ℝ)
     (e : ∀ a i, f a (h.pts.conj (compPt O.s y) y a i) = g _ ((h.man _).pt a (h.pts.conj (compPt O.s y) y a i))) :
@@ -33,6 +39,19 @@ theorem HtTieRead.mean_eq {D : D7} {O : Setup D} {A : SlopeTestRemainingChoices 
   rw [← GlobalTheory.T.height_average_over_lifts _ _ _ _ (h.man (compPt O.s y)) _ _ _ g (HtTieRead.isClosed_basePt O y) (h.pts_is.conj y)]
   simp only [Real0.Pts.mean, e]
 
+/- English proof (translation)
+Introduce `D O A T H h hM`. Use `⟨fun B y g hg => h.pts_is.ar B y g hg, fun y => ⟨fun u u' => ?_, fun a u => ?_⟩, fun y => h.mem_int_iff y, fun u y hy => ?_, fun B hB => ⟨fun y => (h.ht.hA y).trans (h.pts_is.a B hB y).symm, fun u s hu hs hd hsm y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h.ht.h0 _ y, h.ht.h0 u y, h.ht.h0 u' y]`. Simplify using `only [Setup.htWt, ← neg_add, ← Finset.sum_add_distrib, ← add_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[h.ht.h0 _ y, h.ht.h0 u y]`. Simplify using `only [Setup.htWt, smul_eq_mul, mul_neg, Finset.mul_sum, ← mul_assoc]`. Both sides reduce to the same expression. Use `(h.ht.hH u y hy).trans ((GlobalTheory.T.height_weight_root_change D O _ u _ (HtTieRead.isClosed_basePt O y)).trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (h.ht.h0 u y).symm (HtTieRead.mean_eq h y _ (O.chg _ none u) fun a i => (h.an _).ph u a _ ((h.mem_int_iff y).1 hy a i)).symm`.
+
+Establish `hu'' : A.sh u s = fun τ i => u τ i - s * O.met.dir τ i`. Rewrite using `[← h.aux.dir]`. Both sides reduce to the same expression. Establish `hc` using `hM B hB u s hu hs _ hu'' hd (compPt O.s y)`. Establish `W` using `h.mdl (FlagAr.setB O.Y B) (compPt O.s y)`.
+
+Establish `e₁` using `GlobalTheory.T.height_decomposition_closed_point _ _ _ _ _ _ _ _ hc (fun o z => by`. Consider the cases of `o with`. Consider the case `none => exact GlobalTheory.T.adelic_metric_finitely_many_places _ _ _ _ _ _ _ W.k_pos.ne' W.amp_spec z`. Consider the case `some x`. Conclude with `GlobalTheory.T.root_metric_finitely_many_places D O _ _ x z fun st hst => GlobalTheory.T.adelic_metric_finitely_many_places _ _ _ _ _ _ _ one_ne_zero (W.line_spec _ subset_rfl st hst) z) _ (HtTieRead.isClosed_basePt O y)`.
+
+Establish `e₂` using `HtTieRead.mean_eq h y ((T.F _).phS (A.sh u s) s) (fun σ z => O.met.reg _ σ (A.sh u s) (Real.exp (-((s : ℝ) ^ 2)⁻¹)) z / 2) fun a i => (h.an _).phS (A.sh u s) s (by exact_mod_cast hs) a _`. Establish `e₃` using `h.pts_is.ar B y _ (hsm (compPt O.s y))`. Establish `e₄` using `h.pts_is.L B hB y (A.sh u s)`. Establish `e₅` using `h.pts_is.a B hB y`. Use `(h.aux.ht (O.Mb B u s) y).trans (e₁.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, map_smul, smul_eq_mul]`. Use `erw [e₃, e₄, e₅, e₂]`. Simplify using `only [Fintype.sum_option, Option.elim, Setup.htWt, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem htTie_of_reads : ∀ (D : D7) (O : Setup D) (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
     O.MbIs → HtTie A H h.pts := by
   intro D O A T H h hM

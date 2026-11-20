@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Introduce `k _ Y q hq M S hS`. Use `hq.isNoetherian` as an intermediate fact. Take `⟨N, j, hj, e⟩` from `hq.isProjOver`. Set `A₀ : HermLB q` to `(ProjSpace.hermitianTwistingSheaf k N).pull j e`. Establish `hA : IsAmpleLB A₀.B` using `(isAmple_projective_O_one k N).pull_of_isClosedImmersion j`.
+
+Take `⟨n, h₁, h₂⟩` from `(tendsto_natCast_atTop_atTop.eventually ((hA.eventually_exists_finite_subset_nonzeroLocus M.isLB hS).and (hA.eventually_exists_finite_subset_nonzeroLocus (LB.isLB_triv Y) hS))).exists`. Take `⟨s, hs⟩` from `h₁ (CechPic.tens M.B (lbPow A₀.B n)) (isLB_tens M.isLB (isLB_lbPow A₀.isLB n)) (by`. Rewrite using `[cls_tens M.isLB (isLB_lbPow A₀.isLB n), cls_lbPow A₀.isLB, natCast_zsmul])`. Take `⟨u, hu⟩` from `h₂ (lbPow A₀.B n) (isLB_lbPow A₀.isLB n) (by`. Rewrite using `[cls_lbPow A₀.isLB, cls_triv, zero_add, natCast_zsmul])`.
+
+Conclude with `⟨A₀.pow n, s, u, hs, hu⟩`.
+-/
 theorem exists_tens_sec_finite_subset_nonzeroLocus : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k),
     IsAmb q → ∀ (M : HermLB q) (S : Set Y), S.Finite →
       ∃ (A : HermLB q) (s : (M.tens A).B.Sec) (u : A.B.Sec), S ⊆ nonzeroLocus s ∧ S ⊆ nonzeroLocus u := by

@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.ChainOnto.MultRapid
 
+/- English proof (translation)
+Introduce `hP D V S M θ hθ J χ F hF v`. Take `⟨ha, hc⟩` from `GlobalTheory.PairLift.LowAllPf.multT_apply_smooth_cusp θ M J χ F hF v`. Conclude with `⟨ha, hc, GlobalTheory.Grow.rapidDec_of_cuspForm hP hθ ha hc⟩`.
+-/
 theorem multT_apply_rapidDec : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (θ : InfFam D), IsInfFam θ → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ F ∈ MultT θ M J χ, ∀ v : SmT M, IsAutFunSm θ V (F v) ∧ IsCuspFun V (F v) ∧ GlobalTheory.Grow.RapidDec V (F v) := by
   intro hP D V S M θ hθ J χ F hF v
   obtain ⟨ha, hc⟩ := GlobalTheory.PairLift.LowAllPf.multT_apply_smooth_cusp θ M J χ F hF v

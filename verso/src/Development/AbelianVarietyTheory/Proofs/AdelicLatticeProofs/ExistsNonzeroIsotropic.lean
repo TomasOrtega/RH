@@ -6,6 +6,9 @@ namespace GlobalTheory.NonzeroIsotropic
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun i _ => ?_)` and prove the remaining obligations. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem quadForm_totalDegree_le {k : Type u_1} [Field k] (a : Fin 3 → Fin 3 → k) :
     (∑ i : Fin 3, ∑ j : Fin 3, C (a i j) * X i * X j : MvPolynomial (Fin 3) k).totalDegree ≤ 2 := by
   refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun i _ => ?_)
@@ -17,6 +20,19 @@ theorem quadForm_totalDegree_le {k : Type u_1} [Field k] (a : Fin 3 → Fin 3 �
           + (X j : MvPolynomial (Fin 3) k).totalDegree := by gcongr; exact totalDegree_mul _ _
     _ = 2 := by simp [totalDegree_C, totalDegree_X]
 
+/- English proof (translation)
+Introduce `k _ _ a`. Use `haveI : Fintype k := Fintype.ofFinite k`. Take `⟨p, hp⟩` from `CharP.exists k`. Use `haveI := hp`. Establish `hpp : p.Prime`.
+
+Break down `CharP.char_is_prime_or_zero k p with h | h` into its components or cases. Conclude with `h`. Substitute `h haveI : CharZero k := CharP.charP_to_charZero k` using the available equality. Conclude with `absurd (Finite.of_injective (Nat.cast : ℕ → k) Nat.cast_injective) (by`. Introduce `h`.
+
+Conclude with `not_finite ℕ)`. Use `set f : MvPolynomial (Fin 3) k := ∑ i : Fin 3, ∑ j : Fin 3, C (a i j) * X i * X j with hf`. Establish `hdeg : f.totalDegree < Fintype.card (Fin 3)`. Establish `: f.totalDegree ≤ 2` using `quadForm_totalDegree_le a`. Simplify using `only [Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hdvd` using `char_dvd_card_solutions p hdeg`. Establish `heval : ∀ x : Fin 3 → k, eval x f = ∑ i : Fin 3, ∑ j : Fin 3, a i j * x i * x j`. Introduce `x`. Simplify using `[hf]`.
+
+Set `z : { x : Fin 3 → k // eval x f = 0 }` to `⟨0, by rw [heval]; simp⟩`. Establish `hcard : 1 < Fintype.card { x : Fin 3 → k // eval x f = 0 }`. Establish `hpos : 0 < Fintype.card { x : Fin 3 → k // eval x f = 0 }` using `Fintype.card_pos_iff.mpr ⟨z⟩`. Use `Nat.le_of_dvd hpos hdvd` as an intermediate fact. Use `hpp.two_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨y, hy⟩` from `Fintype.exists_ne_of_one_lt_card hcard z`. Use `⟨y.1, fun h => hy (Subtype.ext h), ?_⟩` and prove the remaining obligations. Rewrite using `[← heval]`. Conclude with `y.2`.
+-/
 theorem exists_nonzero_isotropic :
     ∀ {k : Type u_1} [inst : Field k] [Finite k] (a : Fin (3 : ℕ) → Fin (3 : ℕ) → k),
       ∃ (x : Fin (3 : ℕ) → k), x ≠ (0 : Fin (3 : ℕ) → k) ∧

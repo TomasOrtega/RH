@@ -9,6 +9,11 @@ open scoped ComplexConjugate
 
 namespace GlobalTheory.ZeroFreeComplex
 
+/- English proof (translation)
+Distinguish the cases in `hu : IsUnit (n : ZMod d)`. Establish `hsq : χ n * χ n = 1`. Establish `h` using `congrArg (fun ψ : DirichletCharacter ℂ d => ψ n) h2`. Simplify using `only [MulChar.pow_apply' χ two_ne_zero, MulChar.one_apply hu] at h`. Simplify `h` using `[pow_two]`.
+
+Apply the tactic sequence `rcases mul_self_eq_one_iff.mp hsq with h | h <;> simp [h]`. Simplify using `[MulChar.map_nonunit χ hu]`.
+-/
 private theorem conj_apply_lemma {d : ℕ} {χ : DirichletCharacter ℂ d} (h2 : χ ^ 2 = 1)
     (n : ℕ) : conj (χ n) = χ n := by
   by_cases hu : IsUnit (n : ZMod d)
@@ -19,6 +24,13 @@ private theorem conj_apply_lemma {d : ℕ} {χ : DirichletCharacter ℂ d} (h2 :
     rcases mul_self_eq_one_iff.mp hsq with h | h <;> simp [h]
   · simp [MulChar.map_nonunit χ hu]
 
+/- English proof (translation)
+Establish `hz' : 1 < (conj z).re` using `by simpa using hz`. Rewrite using `[LFunction_eq_LSeries χ hz, LFunction_eq_LSeries χ hz']`. Unfold `LSeries`. Rewrite using `[Complex.conj_tsum]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `n`. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[LSeries.term_of_ne_zero hn, LSeries.term_of_ne_zero hn, map_div₀, conj_apply_lemma h2]`. Use `congr 1`.
+
+Rewrite using `[Complex.cpow_conj _ _ (by rw [Complex.natCast_arg]; exact Real.pi_pos.ne), Complex.conj_conj, Complex.conj_natCast]`.
+-/
 private theorem conj_LFunction_conj_of_sq_eq_one' {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d}
     (h2 : χ ^ 2 = 1) {z : ℂ} (hz : 1 < z.re) :
     conj (LFunction χ (conj z)) = LFunction χ z := by
@@ -35,6 +47,13 @@ private theorem conj_LFunction_conj_of_sq_eq_one' {d : ℕ} [NeZero d] {χ : Dir
     rw [Complex.cpow_conj _ _ (by rw [Complex.natCast_arg]; exact Real.pi_pos.ne), Complex.conj_conj,
       Complex.conj_natCast]
 
+/- English proof (translation)
+Establish `hd : Differentiable ℂ (LFunction χ)` using `differentiable_LFunction h₁`. Establish `hg : Differentiable ℂ (conj ∘ LFunction χ ∘ conj)`. Introduce `z`. Establish `h` using `(hd (conj z)).conj_conj`. Rewrite `h` using `[Complex.conj_conj]`. Then use the resulting hypothesis.
+
+Establish `heq : (conj ∘ LFunction χ ∘ conj) = LFunction χ`. Use `AnalyticOnNhd.eq_of_eventuallyEq (analyticOnNhd_univ_iff_differentiable.mpr hg) (analyticOnNhd_univ_iff_differentiable.mpr hd) (z₀ := 2) ?_` and prove the remaining obligations. Establish `hopen : IsOpen {z : ℂ | 1 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [hopen.mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)] with z hz`. Conclude with `conj_LFunction_conj_of_sq_eq_one' h2 hz`.
+
+Establish `h` using `congrFun heq (conj s)`. Simplify using `only [Function.comp_apply, Complex.conj_conj, hs, _root_.map_zero] at h`. Conclude with `h.symm`.
+-/
 theorem LFunction_conj_eq_zero {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ d} (h₁ : χ ≠ 1)
     (h2 : χ ^ 2 = 1) {s : ℂ} (hs : LFunction χ s = 0) : LFunction χ (conj s) = 0 := by
   have hd : Differentiable ℂ (LFunction χ) := differentiable_LFunction h₁
@@ -52,6 +71,13 @@ theorem LFunction_conj_eq_zero {d : ℕ} [NeZero d] {χ : DirichletCharacter ℂ
   simp only [Function.comp_apply, Complex.conj_conj, hs, _root_.map_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `hd : Differentiable ℂ (LFunction χ)` using `differentiable_LFunction h`. Establish `ha : AnalyticOnNhd ℂ (LFunction χ) Set.univ` using `analyticOnNhd_univ_iff_differentiable.mpr hd`. Establish `h2 : LFunction χ 2 ≠ 0` using `LFunction_ne_zero_of_one_le_re χ (Or.inl h) (by norm_num)`. Establish `hfin2 : analyticOrderAt (LFunction χ) 2 ≠ ⊤`. Rewrite using `[(ha 2 trivial).analyticOrderAt_eq_zero.mpr h2]`.
+
+Conclude with `ENat.zero_ne_top`. Establish `hfin : analyticOrderAt (LFunction χ) ρ ≠ ⊤` using `ha.analyticOrderAt_ne_top_of_isPreconnected isPreconnected_univ trivial trivial hfin2`. Establish `hne : analyticOrderAt (LFunction χ) ρ ≠ 0` using `(ha ρ trivial).analyticOrderAt_ne_zero.mpr hρ`. Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← Nat.cast_analyticOrderNatAt hfin, h0]`. Both sides reduce to the same expression.
+-/
 theorem one_le_order {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (h : χ ≠ 1) {ρ : ℂ}
     (hρ : LFunction χ ρ = 0) : 1 ≤ analyticOrderNatAt (LFunction χ) ρ := by
   have hd : Differentiable ℂ (LFunction χ) := differentiable_LFunction h
@@ -69,12 +95,34 @@ theorem one_le_order {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (h : �
   rw [← Nat.cast_analyticOrderNatAt hfin, h0]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Conclude with `LFunction_ne_zero_of_one_le_re χ (Or.inl h) hle hρ`.
+-/
 theorem re_lt_one {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q} (h : χ ≠ 1) {ρ : ℂ}
     (hρ : LFunction χ ρ = 0) : ρ.re < 1 := by
   by_contra hle
   push Not at hle
   exact LFunction_ne_zero_of_one_le_re χ (Or.inl h) hle hρ
 
+/- English proof (translation)
+Take `⟨C, hC, hloc⟩` from `GlobalTheory.LLocal.logDeriv_LFunction_local`. Use `⟨C, hC, fun q _ χ hχ σ t hσ hσ2 S hS => ?_⟩` and prove the remaining obligations. Establish `hdist : ‖((σ : ℂ) + t * I) - (3/2 + t * I)‖ ≤ 2/3`. Rewrite using `[show ((σ : ℂ) + t * I) - (3/2 + t * I) = ((σ - 3/2 : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+
+Establish `hre_s : ((σ : ℂ) + t * I).re = σ` using `by simp`. Establish `hLs : LFunction χ ((σ : ℂ) + t * I) ≠ 0` using `LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) (by rw [hre_s]; linarith)`. Take `⟨hfin, hbound⟩` from `hloc q χ hχ t ((σ : ℂ) + t * I) hdist hLs`. Rewrite `hbound` using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `set A := deriv (LFunction χ) ((σ : ℂ) + t * I) / LFunction χ ((σ : ℂ) + t * I) with hA`.
+
+Use `set B := ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℂ) / ((σ : ℂ) + t * I - w) with hB`. Establish `hAB : -A.re ≤ C * Real.log (q * (|t| + 2)) - B.re`. Establish `h` using `(Complex.abs_re_le_norm (A - B)).trans hbound`. Rewrite `h` using `[Complex.sub_re, abs_le]`. Combine the linear relations using `[h.1]`.
+
+Establish `hpos : ∀ w, LFunction χ w = 0 → 0 ≤ (1 / ((σ : ℂ) + t * I - w)).re`. Introduce `w hw`. Establish `hw1` using `re_lt_one hχ hw`. Establish `hz : 0 < ((σ : ℂ) + t * I - w).re` using `by simp; linarith`. Rewrite using `[one_div, Complex.inv_re]`.
+
+Conclude with `div_nonneg hz.le (Complex.normSq_nonneg _)`. Establish `hBre : B.re = ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℝ) * (1 / ((σ : ℂ) + t * I - w)).re`. Rewrite using `[hB, Complex.re_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_one_div, show ((analyticOrderNatAt (LFunction χ) w : ℕ) : ℂ) = ((analyticOrderNatAt (LFunction χ) w : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`.
+
+Establish `hSsub : S ⊆ hfin.toFinset`. Introduce `w hw`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hS w hw`. Establish `hSle : ∑ w ∈ S, (1 / ((σ : ℂ) + t * I - w)).re ≤ B.re`.
+
+Rewrite using `[hBre]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun w hw => ?_` and prove the remaining obligations. Establish `hw0` using `(hS w hw).2`. Establish `h1 : (1 : ℝ) ≤ analyticOrderNatAt (LFunction χ) w`.
+
+Conclude with `one_le_order hχ hw0` after adjusting the coercions. Establish `h2` using `hpos w hw0`. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (LFunction χ) w : ℝ) * (1 / ((σ : ℂ) + t * I - w)).re := by`. Use `Finset.sum_le_sum_of_subset_of_nonneg hSsub fun w hw _ => ?_` and prove the remaining obligations.
+
+Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (hpos w hw.2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_re_logDeriv_le : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q),
     χ ≠ 1 → ∀ (σ t : ℝ), 1 < σ → σ ≤ 2 → ∀ S : Finset ℂ,
     (∀ w ∈ S, ‖w - (3/2 + t * I)‖ ≤ 5/6 ∧ LFunction χ w = 0) →
@@ -131,17 +179,28 @@ theorem neg_re_logDeriv_le : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ
           exact mul_nonneg (Nat.cast_nonneg _) (hpos w hw.2)
   linarith
 
+/- English proof (translation)
+Rewrite using `[Complex.div_re, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_one_div (a b : ℝ) : (1 / ((a : ℂ) + b * I)).re = a / (a ^ 2 + b ^ 2) := by
   rw [Complex.div_re, Complex.normSq_apply]
   simp
   ring
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `h2 : (2 : ℝ) ≤ q * (|t| + 2)` using `by nlinarith [abs_nonneg t]`. Use `Real.log_le_log (by norm_num) h2` as an intermediate fact. Combine the linear relations using `[Real.log_two_gt_d9]`.
+-/
 theorem half_lt_log (q : ℕ) [NeZero q] (t : ℝ) : 1 / 2 < Real.log (q * (|t| + 2)) := by
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
   have h2 : (2 : ℝ) ≤ q * (|t| + 2) := by nlinarith [abs_nonneg t]
   have := Real.log_le_log (by norm_num) h2
   linarith [Real.log_two_gt_d9]
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Apply `Real.log_le_log` to reduce the goal to its premises. Simplify using `only [abs_zero, zero_add]`. Check the signs of the components of the expression. Simplify using `only [abs_zero, zero_add]`.
+
+Use polynomial arithmetic with `[abs_nonneg t]`.
+-/
 theorem log_zero_le (q : ℕ) [NeZero q] (t : ℝ) :
     Real.log (q * (|(0 : ℝ)| + 2)) ≤ Real.log (q * (|t| + 2)) := by
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
@@ -150,6 +209,11 @@ theorem log_zero_le (q : ℕ) [NeZero q] (t : ℝ) :
   · simp only [abs_zero, zero_add]
     nlinarith [abs_nonneg t]
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `ht` using `abs_nonneg t`. Rewrite using `[show (2 : ℝ) * Real.log (q * (|t| + 2)) = Real.log ((q * (|t| + 2)) ^ 2) by`. Rewrite using `[Real.log_pow]`. Use the proof step `norm_num]`.
+
+Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Rewrite using `[abs_mul, abs_two]`. Establish `h1 : (q : ℝ) ≤ q * q` using `by nlinarith`. Establish `h2 : 2 * |t| + 2 ≤ (|t| + 2) * (|t| + 2)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_two_le (q : ℕ) [NeZero q] (t : ℝ) :
     Real.log (q * (|2 * t| + 2)) ≤ 2 * Real.log (q * (|t| + 2)) := by
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)
@@ -164,12 +228,54 @@ theorem log_two_le (q : ℕ) [NeZero q] (t : ℝ) :
         mul_le_mul h1 h2 (by positivity) (by positivity)
     _ = (q * (|t| + 2)) ^ 2 := by ring
 
+/- English proof (translation)
+Establish `h1 : ‖(a : ℂ) + b * I‖ ^ 2 = a ^ 2 + b ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_add_mul_I]`. Use polynomial arithmetic with `[norm_nonneg ((a : ℂ) + b * I)]`.
+-/
 private theorem norm_ofReal_add_mul_I_le_of_sq_add_sq_le (a b r : ℝ) (hr : 0 ≤ r) (h : a ^ 2 + b ^ 2 ≤ r ^ 2) :
     ‖(a : ℂ) + b * I‖ ≤ r := by
   have h1 : ‖(a : ℂ) + b * I‖ ^ 2 = a ^ 2 + b ^ 2 := by
     rw [Complex.sq_norm, Complex.normSq_add_mul_I]
   nlinarith [norm_nonneg ((a : ℂ) + b * I)]
 
+/- English proof (translation)
+Take `⟨C1, hC1, h1⟩` from `neg_re_logDeriv_le`. Take `⟨C0, hC0, h0⟩` from `GlobalTheory.PrincipalLogDeriv.neg_re_logDeriv_le`. Use `⟨300 * (C0 + C1), by positivity, fun q _ χ δ γ hχ hρ hcase hδ hδ21 => ?_⟩` and prove the remaining obligations. Establish `hLpos : 0 < Real.log (q * (|γ| + 2))` using `by linarith [half_lt_log q γ]`. Establish `hL0` using `log_zero_le q γ`.
+
+Establish `hL2` using `log_two_le q γ`. Use `set L := Real.log (q * (|γ| + 2)) with hL_def`. Establish `hC0L : 0 < C0 * L` using `mul_pos hC0 hLpos`. Establish `hC1L : 0 < C1 * L` using `mul_pos hC1 hLpos`. Establish `hσ1 : 1 < 1 + 8 * δ` using `by linarith`.
+
+Establish `hσ2 : 1 + 8 * δ ≤ 2` using `by linarith`. Establish `hA : -(deriv (LFunction (1 : DirichletCharacter ℂ q)) ((1 + 8 * δ : ℝ) : ℂ) / LFunction (1 : DirichletCharacter ℂ q) ((1 + 8 * δ : ℝ) : ℂ)).re ≤ 1 / δ / 8 + C0 * L`. Establish `h` using `h0 q (1 + 8 * δ) 0 hσ1 hσ2`. Rewrite `h` using `[show (((1 + 8 * δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I) = ((1 + 8 * δ : ℝ) : ℂ) by simp]`. Rewrite `h` using `[show ((1 + 8 * δ : ℝ) : ℂ) - 1 = ((8 * δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I by push_cast; ring, re_one_div]`.
+
+Establish `e : 8 * δ / ((8 * δ) ^ 2 + 0 ^ 2) = 1 / δ / 8` using `by field_simp; ring`. Rewrite `h` using `[e]`. Establish `hk : C0 * Real.log (q * (|(0 : ℝ)| + 2)) ≤ C0 * L` using `mul_le_mul_of_nonneg_left hL0 hC0.le`. Simplify using `only [abs_zero, zero_add] at h hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hρ3 : ‖(((1 - δ : ℝ) : ℂ) + γ * I) - (3/2 + γ * I)‖ ≤ 5/6`. Rewrite using `[show (((1 - δ : ℝ) : ℂ) + γ * I) - (3/2 + γ * I) = ((-(1/2) - δ : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_eq_abs, abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : -(deriv (LFunction χ) (((1 + 8 * δ : ℝ) : ℂ) + γ * I) / LFunction χ (((1 + 8 * δ : ℝ) : ℂ) + γ * I)).re ≤ C1 * L - 1 / δ / 9`. Establish `h` using `h1 q χ hχ (1 + 8 * δ) γ hσ1 hσ2 {((1 - δ : ℝ) : ℂ) + γ * I} (by`.
+
+Introduce `w hw`. Rewrite `hw` using `[Finset.mem_singleton]`. Rewrite using `[hw]`. Conclude with `⟨hρ3, hρ⟩)`. Rewrite `h` using `[Finset.sum_singleton, show ((1 + 8 * δ : ℝ) : ℂ) + γ * I - (((1 - δ : ℝ) : ℂ) + γ * I) = ((9 * δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I by push_cast; ring, re_one_div]`.
+
+Establish `e : 9 * δ / ((9 * δ) ^ 2 + 0 ^ 2) = 1 / δ / 9` using `by field_simp; ring`. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hxpos : 0 < 1 / δ` using `by positivity`. Distinguish the cases in `h2 : χ ^ 2 = 1`.
+
+Establish `hγ : γ ≠ 0` using `hcase.resolve_left (not_not.mpr h2)`. Distinguish the cases in `hsmall : 2 * γ ^ 2 ≤ 81 * δ ^ 2`. Establish `hcρ : LFunction χ (conj (((1 - δ : ℝ) : ℂ) + γ * I)) = 0` using `LFunction_conj_eq_zero hχ h2 hρ`. Establish `hconj : conj (((1 - δ : ℝ) : ℂ) + γ * I) = ((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+
+Rewrite `hcρ` using `[hconj]`. Establish `hne : ((1 - δ : ℝ) : ℂ) + γ * I ≠ ((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `hγ (by linarith)`. Establish `hdisk : ∀ w ∈ ({((1 - δ : ℝ) : ℂ) + γ * I, ((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I} : Finset ℂ), ‖w - (3/2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 5/6 ∧ LFunction χ w = 0`. Introduce `w hw`. Break down `Finset.mem_insert.mp hw with hw | hw` into its components or cases. Rewrite using `[hw]`.
+
+Use `⟨?_, hρ⟩` and prove the remaining obligations. Rewrite using `[show (((1 - δ : ℝ) : ℂ) + γ * I) - (3/2 + ((0 : ℝ) : ℂ) * I) = ((-(1/2) - δ : ℝ) : ℂ) + (γ : ℂ) * I by push_cast; ring]`. Conclude with `norm_ofReal_add_mul_I_le_of_sq_add_sq_le _ _ _ (by norm_num) (by nlinarith)`. Rewrite `hw` using `[Finset.mem_singleton]`. Rewrite using `[hw]`.
+
+Use `⟨?_, hcρ⟩` and prove the remaining obligations. Rewrite using `[show (((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I) - (3/2 + ((0 : ℝ) : ℂ) * I) = ((-(1/2) - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I by push_cast; ring]`. Conclude with `norm_ofReal_add_mul_I_le_of_sq_add_sq_le _ _ _ (by norm_num) (by nlinarith)`. Establish `h` using `h1 q χ hχ (1 + 8 * δ) 0 hσ1 hσ2 _ hdisk`. Rewrite `h` using `[Finset.sum_pair hne]`.
+
+Rewrite `h` using `[show ((1 + 8 * δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I - (((1 - δ : ℝ) : ℂ) + γ * I) = ((9 * δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I by push_cast; ring, show ((1 + 8 * δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I - (((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I) = ((9 * δ : ℝ) : ℂ) + ((γ : ℝ) : ℂ) * I by push_cas …`. Simplify using `only [abs_zero, zero_add] at h`. Use `set T := 9 * δ / ((9 * δ) ^ 2 + γ ^ 2) with hT`. Establish `hlow : 2 / 27 * (1 / δ) ≤ T`. Rewrite using `[hT]`.
+
+Rewrite using `[div_mul_eq_mul_div, mul_one_div, div_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h` using `[neg_sq]`. Establish `H` using `GlobalTheory.TwoRealCharacters.neg_sum_logDeriv_nonneg q χ χ (1 + 8 * δ) h2 h2 hσ1`. Rewrite `H` using `[show χ * χ = 1 by rw [← sq]; exact h2]`.
+
+Establish `hk : C1 * Real.log (q * (|(0 : ℝ)| + 2)) ≤ C1 * L` using `mul_le_mul_of_nonneg_left hL0 hC1.le`. Simplify using `only [abs_zero, zero_add] at hk`. Establish `hb : -(deriv (LFunction χ) ((1 + 8 * δ : ℝ) : ℂ) / LFunction χ ((1 + 8 * δ : ℝ) : ℂ)).re ≤ C1 * L - 4 / 27 * (1 / δ)` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hsmall`.
+
+Establish `hC : -(deriv (LFunction (1 : DirichletCharacter ℂ q)) (((1 + 8 * δ : ℝ) : ℂ) + 2 * γ * I) / LFunction (1 : DirichletCharacter ℂ q) (((1 + 8 * δ : ℝ) : ℂ) + 2 * γ * I)).re ≤ 4 / 81 * (1 / δ) + 2 * C0 * L`. Establish `h` using `h0 q (1 + 8 * δ) (2 * γ) hσ1 hσ2`. Rewrite `h` using `[show ((1 + 8 * δ : ℝ) : ℂ) + ((2 * γ : ℝ) : ℂ) * I - 1 = ((8 * δ : ℝ) : ℂ) + ((2 * γ : ℝ) : ℂ) * I by push_cast; ring, re_one_div]`. Establish `e : 8 * δ / ((8 * δ) ^ 2 + (2 * γ) ^ 2) ≤ 4 / 81 * (1 / δ)`. Rewrite using `[div_mul_eq_mul_div, mul_one_div, div_div, div_le_div_iff₀ (by positivity) (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Move the coercions through the operations in `at h ⊢`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hL2 hC0.le]`. Establish `H` using `GlobalTheory.logDerivativeThreeFourOne.three_four_one q χ (1 + 8 * δ) γ hσ1`. Rewrite `H` using `[h2]`.
+
+Move the coercions through the operations in `at H hA hB hC`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : -(deriv (LFunction (χ ^ 2)) (((1 + 8 * δ : ℝ) : ℂ) + 2 * γ * I) / LFunction (χ ^ 2) (((1 + 8 * δ : ℝ) : ℂ) + 2 * γ * I)).re ≤ 2 * C1 * L`. Establish `h` using `h1 q (χ ^ 2) h2 (1 + 8 * δ) (2 * γ) hσ1 hσ2 ∅ (by simp)`. Rewrite `h` using `[Finset.sum_empty, sub_zero]`.
+
+Move the coercions through the operations in `at h ⊢`. Combine the linear relations using `[mul_le_mul_of_nonneg_left hL2 hC1.le]`. Establish `H` using `GlobalTheory.logDerivativeThreeFourOne.three_four_one q χ (1 + 8 * δ) γ hσ1`. Move the coercions through the operations in `at H hA hB hC`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inv_le_log : ∃ K : ℝ, 0 < K ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q)
     (δ γ : ℝ), χ ≠ 1 → LFunction χ (((1 - δ : ℝ) : ℂ) + γ * I) = 0 → (χ ^ 2 ≠ 1 ∨ γ ≠ 0) →
     0 < δ → δ ≤ 1 / 21 → 1 / δ ≤ K * Real.log (q * (|γ| + 2)) := by
@@ -287,6 +393,17 @@ theorem inv_le_log : ∃ K : ℝ, 0 < K ∧ ∀ (q : ℕ) [NeZero q] (χ : Diric
     push_cast at H hA hB hC
     linarith
 
+/- English proof (translation)
+Take `⟨K, hK, hKb⟩` from `inv_le_log`. Use `⟨min (1 / (2 * K)) (1 / 42), by positivity, fun q _ χ s hχ hs hcase => ?_⟩` and prove the remaining obligations. Establish `hL : 1 / 2 < Real.log (q * (|s.im| + 2))` using `half_lt_log q s.im`. Use `set L := Real.log (q * (|s.im| + 2)) with hL_def`. Establish `hLpos : 0 < L` using `by linarith`.
+
+Establish `hre` using `re_lt_one hχ hs`. Establish `hδ : 0 < 1 - s.re` using `by linarith`. Establish `hcL : min (1 / (2 * K)) (1 / 42) / L < 1 - s.re`. Rewrite using `[div_lt_iff₀ hLpos]`. Distinguish the cases in `hsmall : 1 - s.re ≤ 1 / 21`.
+
+Establish `hs' : LFunction χ (((1 - (1 - s.re) : ℝ) : ℂ) + s.im * I) = 0`. Rewrite using `[show (((1 - (1 - s.re) : ℝ) : ℂ) + s.im * I) = s by`. Apply the tactic sequence `apply Complex.ext <;> simp]`. Conclude with `hs`. Establish `hb` using `hKb q χ (1 - s.re) s.im hχ hs' hcase hδ hsmall`.
+
+Rewrite `hb` using `[div_le_iff₀ hδ]`. Establish `hm : min (1 / (2 * K)) (1 / 42) ≤ 1 / (2 * K)` using `min_le_left _ _`. Establish `hk : 1 / (2 * K) < (1 - s.re) * L`. Rewrite using `[div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hsmall`. Establish `hm : min (1 / (2 * K)) (1 / 42) ≤ 1 / 42` using `min_le_right _ _`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zero_free_region : ∃ c : ℝ, 0 < c ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ), χ ≠ 1 → LFunction χ s = 0 → (χ ^ 2 ≠ 1 ∨ s.im ≠ 0) → s.re < 1 - c / Real.log (q * (|s.im| + 2)) := by
   obtain ⟨K, hK, hKb⟩ := inv_le_log
   refine ⟨min (1 / (2 * K)) (1 / 42), by positivity, fun q _ χ s hχ hs hcase => ?_⟩

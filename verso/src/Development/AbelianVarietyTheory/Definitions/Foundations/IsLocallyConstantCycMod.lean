@@ -37,12 +37,18 @@ def SpLink (A : ValuationSubring Ω) (e : ℕ) (χ : ∀ r : ℕ, (ZMod (l ^ r))
   ∀ n : ℕ, ∃ r₀ : ℕ, ∀ r, r₀ ≤ r → ∀ s ∈ Ine (F := ℚ) A, cycBar ℚ Ω l s = 1 →
     Cg n (y s 1) (sp (fun x => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) (Z r) s)
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Take `⟨s, hs, -, h11, hy⟩` from `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hx s (Ine_le_Dec (F := ℚ) A hs), h11, one_mul, sub_self]`.
+-/
 theorem not_gr_of_nzAt {W : R2 Ω l} {A : ValuationSubring Ω} {y : G ℚ Ω → Fin 2 → Qbar l} (h : NzAt W A y) : ¬ Gr W A y := by
   rintro ⟨x, hx⟩
   obtain ⟨s, hs, -, h11, hy⟩ := h
   apply hy
   rw [hx s (Ine_le_Dec (F := ℚ) A hs), h11, one_mul, sub_self]
 
+/- English proof (translation)
+Take `⟨c, y, S', ⟨hW, hy, hyO, hU, hT⟩, hnz⟩` from `h`. Conclude with `⟨c, y, S', hW, hy, hyO, hU, not_gr_of_nzAt hnz, hT⟩`.
+-/
 theorem es_of_sys {W : R2 Ω l} {A : ValuationSubring Ω} (h : ∃ c y S', Sys W c y S' ∧ NzAt W A y) : ES W A := by
   obtain ⟨c, y, S', ⟨hW, hy, hyO, hU, hT⟩, hnz⟩ := h
   exact ⟨c, y, S', hW, hy, hyO, hU, not_gr_of_nzAt hnz, hT⟩
@@ -59,6 +65,13 @@ namespace IwC
 
 variable {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω →* (Qbar l)ˣ}
 
+/- English proof (translation)
+Use `set e := cycMod ℚ Ω l r s`. Establish `hsplit : ∀ x, η x * z (s * t) x = η x * z s x + (ν s : Qbar l) * (η x * z t (x * e⁻¹))`. Introduce `x`. Rewrite using `[hz.2 s hs t ht x]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmove : ∑ x, η x * z t (x * e⁻¹) = η e * sp η z t`. Rewrite using `[sp, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight e⁻¹) _ _ fun x => ?_` and prove the remaining obligations. Establish `hx : e * (x * e⁻¹) = x` using `by rw [mul_comm x, mul_inv_cancel_left]`. Simplify using `only [Equiv.coe_mulRight]`.
+
+Rewrite using `[← mul_assoc, ← map_mul, hx]`. Simplify using `only [sp, hsplit, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[hmove]`. Simplify using `only [sp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sp_mul {r : ℕ} {z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (hz : Layer c A ν r z) (η : (ZMod (l ^ r))ˣ →* Qbar l)
     {s t : G ℚ Ω} (hs : s ∈ Dec (F := ℚ) A) (ht : t ∈ Dec (F := ℚ) A) :
     sp η z (s * t) = sp η z s + (ν s : Qbar l) * η (cycMod ℚ Ω l r s) * sp η z t := by
@@ -78,6 +91,11 @@ theorem sp_mul {r : ℕ} {z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (hz : La
   simp only [sp]
   ring
 
+/- English proof (translation)
+Use `⟨⟨fun r => ⟨fun s x => mul_mem ha ((h.1.1 r).1 s x), fun s hs t ht x => ?_⟩, fun r s x => ?_⟩, fun r x => continuousOn_const.mul (h.2 r x)⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[(h.1.1 r).2 s hs t ht x]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`.
+
+Rewrite using `[h.1.2 r s x, Finset.mul_sum]`.
+-/
 theorem smul {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (h : IwSysC c A ν Z) {a : Qbar l} (ha : a ∈ c.O) :
     IwSysC c A ν fun r s x => a * Z r s x := by
   refine ⟨⟨fun r => ⟨fun s x => mul_mem ha ((h.1.1 r).1 s x), fun s hs t ht x => ?_⟩, fun r s x => ?_⟩,
@@ -88,6 +106,9 @@ theorem smul {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} (h : Iw
   · beta_reduce
     rw [h.1.2 r s x, Finset.mul_sum]
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [cycMod, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, PadicInt.zmod_cast_comp_toZModPow _ _ (Nat.le_succ r)]`.
+-/
 theorem map_cycMod_succ (r : ℕ) (s : G ℚ Ω) :
     Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))).toMonoidHom (cycMod ℚ Ω l (r + 1) s) =
       cycMod ℚ Ω l r s := by
@@ -95,6 +116,11 @@ theorem map_cycMod_succ (r : ℕ) (s : G ℚ Ω) :
   simp only [cycMod, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]
   rw [← RingHom.comp_apply, PadicInt.zmod_cast_comp_toZModPow _ _ (Nat.le_succ r)]
 
+/- English proof (translation)
+Rewrite using `[continuous_discrete_rng]`. Introduce `b`. Rewrite using `[Metric.isOpen_iff]`. Introduce `x hx`. Use `⟨(l : ℝ) ^ (-(r : ℤ)), zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx ⊢`. Rewrite using `[← hx, ← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Rewrite `hy` using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `hy.le`.
+-/
 private lemma continuous_toZModPow_foundations {l : ℕ} [Fact l.Prime] (r : ℕ) :
     Continuous (PadicInt.toZModPow (p := l) r) := by
   rw [continuous_discrete_rng]
@@ -108,6 +134,9 @@ private lemma continuous_toZModPow_foundations {l : ℕ} [Fact l.Prime] (r : ℕ
   rw [Metric.mem_ball, dist_eq_norm] at hy
   exact hy.le
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_continuous]`. Conclude with `(Units.continuous_map (continuous_toZModPow_foundations (l := l) r)).comp (continuous_cycZ ℚ Ω l)`.
+-/
 theorem isLocallyConstant_cycMod [IsAlgClosure ℚ Ω] (r : ℕ) : IsLocallyConstant (cycMod ℚ Ω l r) := by
   rw [IsLocallyConstant.iff_continuous]
   exact (Units.continuous_map (continuous_toZModPow_foundations (l := l) r)).comp (continuous_cycZ ℚ Ω l)
@@ -117,6 +146,15 @@ open Classical in
 def cobDirac (A : ValuationSubring Ω) (ν : G ℚ Ω →* (Qbar l)ˣ) (r : ℕ) (s : G ℚ Ω) (x : (ZMod (l ^ r))ˣ) : Qbar l :=
   if s ∈ Dec (F := ℚ) A then (ν s : Qbar l) * (if x = cycMod ℚ Ω l r s then 1 else 0) - (if x = 1 then 1 else 0) else 0
 
+/- English proof (translation)
+Establish `hind : ∀ r (x : (ZMod (l ^ r))ˣ), Continuous fun s : G ℚ Ω => if x = cycMod ℚ Ω l r s then (1 : Qbar l) else 0` using `fun r x => ((isLocallyConstant_cycMod r).comp fun u => if x = u then (1 : Qbar l) else 0).continuous`. Use `⟨⟨fun r => ⟨fun s x => ?_, fun s hs t ht x => ?_⟩, fun r s x => ?_⟩, fun r x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ Dec (F := ℚ) A`. Simplify using `only [cobDirac, if_pos hs]`. Apply the tactic sequence `refine sub_mem (mul_mem (hO s hs) ?_) ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _`.
+
+Simplify using `only [cobDirac, if_neg hs]`. Conclude with `zero_mem _`. Establish `hst` using `(Dec (F := ℚ) A).mul_mem hs ht`. Establish `e1 : (x * (cycMod ℚ Ω l r s)⁻¹ = cycMod ℚ Ω l r t) ↔ (x = cycMod ℚ Ω l r s * cycMod ℚ Ω l r t)`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_comm (cycMod ℚ Ω l r t)]`.
+
+Establish `e2 : (x * (cycMod ℚ Ω l r s)⁻¹ = 1) ↔ (x = cycMod ℚ Ω l r s)` using `mul_inv_eq_one`. Simplify using `only [cobDirac, if_pos hs, if_pos ht, if_pos hst, map_mul, Units.val_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hs : s ∈ Dec (F := ℚ) A`. Simplify using `only [cobDirac, if_pos hs, Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and, map_cycMod_succ, map_one, @eq_comm _ _ x]`.
+
+Simplify using `only [cobDirac, if_neg hs, Finset.sum_const_zero]`. Use `ContinuousOn.congr (f := fun s => (ν s : Qbar l) * (if x = cycMod ℚ Ω l r s then 1 else 0) - (if x = 1 then 1 else 0)) ((hc.mul (hind r x).continuousOn).sub continuousOn_const) ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : s ∈ Dec (F` using `ℚ) A := hs`. Simplify using `only [cobDirac, if_pos hs']`.
+-/
 theorem iwSysC_cobDirac [IsAlgClosure ℚ Ω] (hO : ∀ s ∈ Dec (F := ℚ) A, (ν s : Qbar l) ∈ c.O)
     (hc : ContinuousOn (fun s => (ν s : Qbar l)) (Dec (F := ℚ) A)) : IwSysC c A ν (cobDirac A ν) := by
   have hind : ∀ r (x : (ZMod (l ^ r))ˣ), Continuous fun s : G ℚ Ω => if x = cycMod ℚ Ω l r s then (1 : Qbar l) else 0 :=
@@ -143,6 +181,9 @@ theorem iwSysC_cobDirac [IsAlgClosure ℚ Ω] (hO : ∀ s ∈ Dec (F := ℚ) A, 
     have hs' : s ∈ Dec (F := ℚ) A := hs
     simp only [cobDirac, if_pos hs']
 
+/- English proof (translation)
+The claim follows from `iwSysC_cobDirac (fun _ _ => by simpa using c.O.one_mem) (by simpa using continuousOn_const)`.
+-/
 example [IsAlgClosure ℚ Ω] : IwSysC c A 1 (cobDirac A 1) :=
   iwSysC_cobDirac (fun _ _ => by simpa using c.O.one_mem) (by simpa using continuousOn_const)
 

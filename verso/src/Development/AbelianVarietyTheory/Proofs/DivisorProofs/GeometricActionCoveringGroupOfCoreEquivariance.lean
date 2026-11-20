@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ O hθ hm ht hp he i`. Establish `hact : ActLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c (O i).lev2 := (hp i).2.act.1`. Establish `hlift : ∀ g, ∃ k, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k` using `fun g => ((hp i).2.lift.lev g).imp fun _ h => h.1`. Establish `hs : GoodEmb T.Q.c (O i).s0`. Establish `e : (O i).s0 = T.toCore.σ₀` using `sOv_eq T.toCore (O i).c' (O i).hle`.
+
+Rewrite using `[e]`. Conclude with `T.toCore.good_σ₀`. Take `⟨ρC, hρ⟩` from `GlobalTheory.T.exists_level_action_cusp_form_representation T κ i (O i).lev2 ht.laws hact (fun g f hf => (hlift g).elim fun k hk => (he i (O i).s0 hs (O i).hV g k hk f hf).1)`. Use `⟨ρC, fun σ g f => ?_, fun g f hf => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`.
+
+Conclude with `GlobalTheory.T.cuspFormReading_equivariant_good_embedding T R κ v₀ O hθ hm ht i hlift (he i) ρC hρ σ hσ g f`. Conclude with `GlobalTheory.T.cuspFormReading_equivariant_not_good_embedding T R κ v₀ O hθ hm ht i hlift (he i) ρC hρ σ hσ g f`. Conclude with `GlobalTheory.T.level_action_preserves_integral_cusp_forms T κ i (O i).lev2 ht.laws hact g f (ρC g f) (hρ g f) hf`.
+-/
 theorem GlobalTheory.geoAct_of_eqAt : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), IsInfFam R.θ → R.models_HW → TieIn T R κ v₀ → (∀ i, OMPins T R κ v₀ O i) → (∀ i σ, GoodEmb T.Q.c σ → ∀ hV, EqAt T R κ (O i) σ hV (T.cE ((i : ℕ) + 1) σ)) → GeoAct T R κ v₀ := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ O hθ hm ht hp he i
   have hact : ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c (O i).lev2 := (hp i).2.act.1

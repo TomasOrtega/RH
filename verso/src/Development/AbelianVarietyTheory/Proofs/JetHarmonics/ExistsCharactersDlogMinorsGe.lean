@@ -18,6 +18,11 @@ namespace HodgeTateStep
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Simplify using `[dualScale]`.
+-/
 theorem ptMap_fst_dualScale (a : O) :
     ptMap (TrivSqZeroExt.fstHom O O O) ≫ ptMap (dualScale a) =
       ptMap (TrivSqZeroExt.fstHom O O O) := by
@@ -37,6 +42,9 @@ noncomputable def torsionEnd (a : G ⟶ G) [IsMonHom a] (N : ℕ) : torsion G N 
   KernelNoTorsion.torsionLift (torsion.ι G N ≫ a) (by
     rw [← MonObj.pow_comp, KernelNoTorsion.torsionι_pow, MonObj.one_comp])
 
+/- English proof (translation)
+The claim follows from `KernelNoTorsion.torsionLift_ι _ _`.
+-/
 theorem torsionEnd_ι (a : G ⟶ G) [IsMonHom a] (N : ℕ) :
     torsionEnd a N ≫ torsion.ι G N = torsion.ι G N ≫ a :=
   KernelNoTorsion.torsionLift_ι _ _
@@ -49,6 +57,11 @@ def HasDlog (p : ℕ) {L : Type} (e : L → LieG G)
       (unitOf (w ≫ κ) : DualNumber R) =
         TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (algebraMap O R (y l))
 
+/- English proof (translation)
+Use `⟨fun T a b c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, MonObj.comp_mul, h.1 T a b c hc, h'.1 T a b c hc]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Introduce `l R _ _ hp w hw`. Rewrite using `[MonObj.comp_mul, GmPoints.unitOf_mul, Units.val_mul, h.2 l R hp w hw, h'.2 l R hp w hw]`.
+
+Apply the tactic sequence `ext <;> simp [add_comm, Algebra.algebraMap_eq_smul_one, add_smul]`.
+-/
 theorem HasDlog.mul {p : ℕ} {L : Type} {e : L → LieG G}
     {κ κ' : torsion G (p ^ 1) ⟶ Gm (Spec (CommRingCat.of O))} {y y' : L → O}
     (h : HasDlog p e κ y) (h' : HasDlog p e κ' y') : HasDlog p e (κ * κ') (y + y') := by

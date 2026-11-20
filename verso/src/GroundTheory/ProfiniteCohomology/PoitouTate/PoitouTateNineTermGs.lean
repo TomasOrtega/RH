@@ -20,6 +20,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 
 omit [NeZero N] in
 
+/- English proof (translation)
+Introduce `p hp` and use `exists_compactDualityHypotheses_gs S ιs _ p _ (Nat.prime_of_mem_primeFactors hp) rfl (mem_of_natCast_dvd_mem S hS (Nat.dvd_of_mem_primeFactors hp)) _ _`.
+-/
 theorem gsBaseCase : ∀ p ∈ N.primeFactors, ∃ U₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),
     CompactDualityHypotheses (gsFinFamily S ιs) (p ^ N.factorization p) (gsRoots S (p ^ N.factorization p))
       (gsCompactInv S ιs (p ^ N.factorization p) (odd_or_isTotallyComplex_of_dvd hK (Nat.ordProj_dvd N p))
@@ -33,12 +36,18 @@ variable (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDis
 
 include hM in
 
+/- English proof (translation)
+The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).bijective_compactDualityMap M hM h`.
+-/
 theorem poitouTate_duality_gs {r s : ℕ} (h : r + s = 3) :
     Function.Bijective (compactDualityMap (gsFinFamily S ιs) (gsRoots S N) h (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK)) M) :=
   (gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).bijective_compactDualityMap M hM h
 
 include hM in
 
+/- English proof (translation)
+The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).sha M hM`.
+-/
 theorem poitouTate_sha_gs :
     Finite (ptSha (gsFinFamily S ιs) M 1) ∧ Finite (ptSha (gsFinFamily S ιs) (dualRep (gsRoots S N) M) 2) ∧
       Function.Bijective (ptShaPairing (gsFinFamily S ιs) (gsRoots S N) M (gsCompactInv S ιs N hK (subsingleton_cohomology_three_gsRoots S hS hK))) ∧
@@ -47,6 +56,9 @@ theorem poitouTate_sha_gs :
 
 include hM in
 
+/- English proof (translation)
+The claim follows from `(gsPoitouTateDualityHypotheses S ιs hS hK (gsBaseCase S ιs hS hK)).nineTerm M hM`.
+-/
 theorem poitouTate_nineTerm_gs :
     Function.Injective (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom ∧
     Function.Exact (ptGlobalToLocal (gsFinFamily S ιs) M 0).hom

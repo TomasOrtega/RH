@@ -23,6 +23,9 @@ def charRep (χ : Γ →* Rˣ) : Representation R Γ R where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp [mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem charRep_apply (χ : Γ →* Rˣ) (g : Γ) (x : R) :
     charRep χ g x = ((χ g : Rˣ) : R) * x := rfl
 
@@ -38,12 +41,24 @@ instance : FunLike (TDual R M) M R := inferInstanceAs (FunLike (M →ₗ[R] R) M
 
 def TDual.mk (φ : M →ₗ[R] R) : TDual R M := φ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem TDual.mk_apply (φ : M →ₗ[R] R) (m : M) : TDual.mk φ m = φ m := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem TDual.add_apply (φ ψ : TDual R M) (m : M) : (φ + ψ) m = φ m + ψ m := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem TDual.smul_apply (c : R) (φ : TDual R M) (m : M) : (c • φ) m = c * φ m := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext h`.
+-/
 @[ext] theorem TDual.ext {φ ψ : TDual R M} (h : ∀ m, φ m = ψ m) : φ = ψ := LinearMap.ext h
 
 def twDual (χ : Γ →* Rˣ) (rho : Representation R Γ M) : Representation R Γ (TDual R M) where
@@ -64,13 +79,22 @@ def twDual (χ : Γ →* Rˣ) (rho : Representation R Γ M) : Representation R �
     show _ * φ (rho (g * h)⁻¹ m) = _ * (_ * φ (rho h⁻¹ (rho g⁻¹ m)))
     rw [mul_inv_rev, map_mul rho, Module.End.mul_apply, map_mul χ, Units.val_mul, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem twDual_apply (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (φ : TDual R M)
     (m : M) : twDual χ rho g φ m = ((χ g : Rˣ) : R) * φ (rho g⁻¹ m) := rfl
 
 def evalPair : M →ₗ[R] TDual R M →ₗ[R] R := LinearMap.applyₗ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evalPair_apply (m : M) (φ : TDual R M) : evalPair m φ = φ m := rfl
 
+/- English proof (translation)
+Establish `e : rho g⁻¹ (rho g m) = m` using `by first`. Consider the case `exact Representation.inv_self_apply rho g m`. Consider the case `rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Consider the case `rw [← LinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, LinearMap.one_apply]`. Rewrite using `[evalPair_apply, twDual_apply, charRep_apply, evalPair_apply, e]`.
+-/
 theorem evalPair_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (m : M)
     (φ : TDual R M) : evalPair (rho g m) (twDual χ rho g φ) = charRep χ g (evalPair m φ) := by
   have e : rho g⁻¹ (rho g m) = m := by
@@ -88,6 +112,9 @@ variable {R : Type*} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
   {Γ : Type*} [Group Γ] {M : Type*} [AddCommGroup M] [Module R M]
   [TopologicalSpace M] [DiscreteTopology M]
 
+/- English proof (translation)
+Conclude with `Continuous.comp (show Continuous (fun p : Γ × M => rho p.1 p.2) from h) ((hφ.comp continuous_fst).prodMk continuous_snd)`.
+-/
 theorem ContAction.comp' [TopologicalSpace Γ] {D : Type*} [Group D] [TopologicalSpace D]
     {rho : Representation R Γ M} (h : ContAction rho) {φ : D →* Γ} (hφ : Continuous φ) :
     ContAction (rho.comp φ) := by
@@ -116,6 +143,9 @@ def perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, Topologi
     ∀ i, Submodule R (H1 ((twDual χ rho).comp (phi i))) :=
   fun i => ⨅ x ∈ L i, LinearMap.ker ((cupH1H1TwistedDual χ rho (phi i) (hrho i)).flip x)
 
+/- English proof (translation)
+Use `show y ∈ ⨅ x ∈ L i, LinearMap.ker ((cupH1H1TwistedDual χ rho (phi i) (hrho i)).flip x) ↔ _`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]`.
+-/
 theorem mem_perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, TopologicalSpace (D i)]
     (phi : ∀ i, D i →* Γ) (hrho : ∀ i, ContAction (rho.comp (phi i)))
     (L : ∀ i, Submodule R (H1 (rho.comp (phi i)))) (i : I) (y : H1 ((twDual χ rho).comp (phi i))) :

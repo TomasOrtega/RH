@@ -6,6 +6,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set s : Set (Fin n → ℕ) := Set.range f`. Establish `hpwo : s.IsPWO` using `Set.isPWO_of_wellQuasiOrderedLE s`. Use `set m : Set (Fin n → ℕ) := {x | Minimal (· ∈ s) x}`. Establish `hm : m.Finite` using `(setOf_minimal_antichain (· ∈ s)).finite_of_partiallyWellOrderedOn (hpwo.mono (fun x hx => hx.prop))`. Establish `hpre : ∀ x ∈ m, ∃ j, f j = x` using `fun x hx => hx.prop`.
+
+Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨∅, fun i => isEmptyElim i⟩`. Use `choose! g hg using hpre`. Use `⟨hm.toFinset.image g, fun i => ?_⟩` and prove the remaining obligations. Take `⟨x, hxi, hx⟩` from `hpwo.exists_le_minimal (Set.mem_range_self i)`.
+
+Conclude with `⟨g x, Finset.mem_image_of_mem g (hm.mem_toFinset.mpr hx), by rw [hg x hx]; exact hxi⟩`.
+-/
 theorem dickson_finite_below_every {ι : Type} (n : ℕ) (f : ι → Fin n → ℕ) :
     ∃ F : Finset ι, ∀ i, ∃ j ∈ F, f j ≤ f i := by
   classical
@@ -22,6 +29,9 @@ theorem dickson_finite_below_every {ι : Type} (n : ℕ) (f : ι → Fin n → �
   obtain ⟨x, hxi, hx⟩ := hpwo.exists_le_minimal (Set.mem_range_self i)
   exact ⟨g x, Finset.mem_image_of_mem g (hm.mem_toFinset.mpr hx), by rw [hg x hx]; exact hxi⟩
 
+/- English proof (translation)
+The claim follows from `@dickson_finite_below_every`.
+-/
 example : ∀ {ι : Type} (n : ℕ) (f : ι → Fin n → ℕ), ∃ F : Finset ι, ∀ i, ∃ j ∈ F, f j ≤ f i := @dickson_finite_below_every
 
 end GlobalTheory

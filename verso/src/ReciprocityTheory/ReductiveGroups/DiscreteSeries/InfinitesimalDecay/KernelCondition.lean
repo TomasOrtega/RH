@@ -11,6 +11,23 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `S7.compactSpace_KG ε` as an intermediate fact. Establish `: MeasureTheory.IsFiniteMeasure (S7.muK ε)` using `by unfold S7.muK; infer_instance`. Establish `: (S7.muK ε).IsOpenPosMeasure` using `by unfold S7.muK; infer_instance`. Establish `hσ : IsURepOn (UJset ε) (sigLam ε Ψ v₀)` using `sigLam_isURepOn hgap hP hv₀`. Establish `hWg : ∀ i : Fin Ws.length, ∀ X ∈ Ws.get i, inG ε X` using `fun i => hWs _ (List.get_mem Ws i)`.
+
+Take `⟨α, hα, hαF⟩` from `approx_id (S7.muK ε) (finAlg_sep_KG ε) (fun (i : Fin Ws.length) (k : S7.KG ε) => dSW (sigLam ε Ψ v₀) (Ws.get i) (sigLam ε Ψ v₀ (S7.toMK k) u)) (fun i => continuous_dSW_orbit hσ (hWg i) hu) (δ := e / (Ws.length + 1)) (by positivity)`. Take `⟨x, hxdef⟩ : ∃ x : Hlam ε Ψ v₀, x = ∫ k, α k • sigLam ε Ψ v₀ (S7.toMK k) u ∂(S7.muK ε)` from `⟨_, rfl⟩`. Establish `hK : Formalism.MainNotions.S.IsKFin ε (sigLam ε Ψ v₀) x` using `by rw [hxdef]; exact kfin_integral hσ u hα`. Take `⟨y, -, hyx⟩` from `kfin_mem_genSub hlam hgap hP hv₀ x hK`. Establish `hxs : IsSmoothVecU ε (sigLam ε Ψ v₀) x`.
+
+Establish `hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀` using `by rw [hyx]; exact x.2`. Establish `h` using `sigLam_smooth_of_genSub (Ψ := Ψ) (v₀ := v₀) hyH`. Rewrite `h` using `[show (⟨(y : L2 ε), hyH⟩ : Hlam ε Ψ v₀) = x from Subtype.ext hyx]`. Then use the resulting hypothesis. Use `⟨x, hK, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ w ∈ Ws, ‖dSW (sigLam ε Ψ v₀) w (u - x)‖ ≤ e / (Ws.length + 1)`.
+
+Introduce `w hw`. Take `⟨i, rfl⟩` from `List.get_of_mem hw`. Establish `hxs' : IsSmoothVecU ε (sigLam ε Ψ v₀) (∫ k, α k • sigLam ε Ψ v₀ (S7.toMK k) u ∂(S7.muK ε))`. Rewrite using `[← hxdef]`. Conclude with `hxs`.
+
+Rewrite using `[dSW_sub hσ (hWg i) hu hxs, hxdef]`. Use `erw [dSW_integral hσ (fun z hz => sigLam_sep z hz) (hWg i) hu α hxs']`. Rewrite using `[norm_sub_rev]`. Establish `h1 : sigLam ε Ψ v₀ (S7.toMK (1 : S7.KG ε)) u = u`. Rewrite using `[show S7.toMK (1 : S7.KG ε) = 1 from rfl, hσ.1.1]`.
+
+Both sides reduce to the same expression. Establish `h2` using `hαF i`. Use `beta_reduce at h2`. Rewrite `h2` using `[h1]`. Conclude with `h2.le`.
+
+Unfold `nuJ`. Combine the equalities or inequalities in the displayed calculation. Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hr`. Conclude with `hterm w hw`. Use `_ = (Ws.length : ℝ) * (e / (Ws.length + 1)) := by rw [List.length_map, nsmul_eq_mul]`.
+
+Use `_ < e := by`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_kfin_near {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hlam : S7.IsHCParam lam) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)

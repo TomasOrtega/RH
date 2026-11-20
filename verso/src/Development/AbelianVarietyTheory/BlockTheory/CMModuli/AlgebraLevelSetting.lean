@@ -124,6 +124,9 @@ variable {I}
 
 omit [GrpObj G] in
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ thick R I e) (Over.w i)`.
+-/
 theorem torus_w {e : ℕ} (i : splitTorus (Lv I e) X ⟶ thickObj R I e G) :
     (i.left ≫ pr I e G) ≫ G.hom = (splitTorus (Lv I e) X).hom ≫ thick R I e := by
   rw [Category.assoc, pullback.condition, ← Category.assoc]
@@ -217,6 +220,9 @@ abbrev Alg (W : S.Tower) := AlgebraLevelSetting.Alg W
 
 end HidaSetting
 
+/- English proof (translation)
+Establish `h : (7 : V) + (-2) * 3 = 1` using `by norm_num`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h with h | h` into its components or cases. Conclude with `⟨7, Or.inr rfl, by exact_mod_cast h⟩`. Conclude with `⟨3, Or.inl rfl, by exact_mod_cast isUnit_of_mul_isUnit_right h⟩`.
+-/
 theorem exists_three_or_seven (V : Type) [CommRing V] [IsLocalRing V] :
     ∃ n : ℕ, (n = 3 ∨ n = 7) ∧ IsUnit (n : V) := by
   have h : (7 : V) + (-2) * 3 = 1 := by norm_num
@@ -237,6 +243,9 @@ def SymTriv.triv {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {f
   even T x z J _ := (val_unitGen _ _ _ _ _).trans ((congrArg₂ (· * ·) (val_sym_triv _ _ _ _)
     (val_unitGen _ _ _ _ _)).trans (_root_.mul_one 1)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => SymTriv.triv _ _, fun _ _ _ _ _ _ => (val_unitGen _ _ _ _ _).trans (val_unitGen _ _ _ _ _).symm⟩`.
+-/
 example {R : Type} [CommRing R] (I : Ideal R) {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
     {X : Type} [AddCommGroup X] {i₀ : splitTorus (Lv I 0) X ⟶ thickObj R I 0 G} (F : FormalTorus I i₀) :
     F.HasSymTriv (CP.triv G) :=

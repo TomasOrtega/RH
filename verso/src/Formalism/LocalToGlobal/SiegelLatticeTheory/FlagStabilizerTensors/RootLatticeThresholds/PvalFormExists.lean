@@ -14,23 +14,40 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} {hF : FinX Y} (W : WittDat X)
   (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+The claim follows from `hI.pfst p`.
+-/
 theorem tc_pfst {u u' : D.what₂.Word} (p : D.s.Pair u u') : tc hI (D.s.pfst p) = (hI.eP u u' p).1.1 :=
   hI.pfst p
 
+/- English proof (translation)
+The claim follows from `hI.psnd p`.
+-/
 theorem tc_psnd {u u' : D.what₂.Word} (p : D.s.Pair u u') : tc hI (D.s.psnd p) = (hI.eP u u' p).1.2 :=
   hI.psnd p
 
+/- English proof (translation)
+Unfold `wRowOf FlagOfWord lamOf`. Use `(hW (W.δ u) (W.isom u) (X.Fu u) _).trans ?_` and prove the remaining obligations. Rewrite using `[tc_pfst]`.
+-/
 theorem wRowOf_eq (hW : WRowIso D) {u u' : D.what₂.Word} (p : D.s.Pair u u') :
     wRowOf W hI p = Formalism.MainNotions.S.wRow D (X.Fu u) (hI.eP u u' p).1.1.lam := by
   unfold wRowOf FlagOfWord lamOf
   refine (hW (W.δ u) (W.isom u) (X.Fu u) _).trans ?_
   rw [tc_pfst]
 
+/- English proof (translation)
+Establish `h : ∃ s : TT Y u u', s.toTerm = tc hI t` using `⟨s, hs⟩`. Conclude with `⟨⟨h.choose, h.choose_spec⟩, by unfold JtOf; rw [dif_pos h]⟩`.
+-/
 theorem jtOf_eq {u u' : D.what₂.Word} (t : D.s.Term u u') (s : TT Y u u') (hs : s.toTerm = tc hI t) :
     ∃ g : fib Y (tc hI t), JtOf hI t = amp Y g.1 := by
   have h : ∃ s : TT Y u u', s.toTerm = tc hI t := ⟨s, hs⟩
   exact ⟨⟨h.choose, h.choose_spec⟩, by unfold JtOf; rw [dif_pos h]⟩
 
+/- English proof (translation)
+Establish `h1` using `tc_pfst hI p`. Establish `h2` using `tc_psnd hI p`. Take `⟨g₁, hg₁⟩` from `jtOf_eq hI (D.s.pfst p) (hI.eP u u' p).2.choose.1 ((hI.eP u u' p).2.choose.2.trans h1.symm)`. Take `⟨g₂, hg₂⟩` from `jtOf_eq hI (D.s.psnd p) (hI.eP u u' p).2.choose_spec.choose.1 ((hI.eP u u' p).2.choose_spec.choose.2.trans h2.symm)`. Take `⟨c, U, hc, hv⟩` from `pvR_form hF hC hK hN (hI.eP u u' p) ⟨g₁.1, g₁.2.trans h1⟩ ⟨g₂.1, g₂.2.trans h2⟩`.
+
+Use `⟨c, U, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hI.pval p, wRowOf_eq W hI hW p, hg₁, hg₂]`. Conclude with `hv`.
+-/
 theorem pair_form (hW : WRowIso D) (hC : AmpCov Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF)
     (u u' : D.what₂.Word) (p : D.s.Pair u u') :
     ∃ (c : ℂ) (U : X.Vpi u' ≃ₗᵢ[ℂ] X.Vpi u'), ‖c‖ = 1 ∧
@@ -47,6 +64,9 @@ theorem pair_form (hW : WRowIso D) (hC : AmpCov Y) (hK : PairAmpConst Y) (hN : F
   rw [hI.pval p, wRowOf_eq W hI hW p, hg₁, hg₂]
   exact hv
 
+/- English proof (translation)
+Establish `H` using `fun (u u' : D.what₂.Word) (p : D.s.Pair u u') => pair_form W hI hW hC hK hN u u' p`. Use `choose c U hc hv using H`. Conclude with `⟨{ chi := fun {u u'} p => c u u' p chi_norm := fun {u u'} p => hc u u' p piB := fun {u u'} p => cl (U u u' p) piB_unit := fun {u u'} p x => (U u u' p).norm_map x }, fun {u u'} p => hv u u' p⟩`.
+-/
 theorem pvalForm_exists (hW : WRowIso D) (hC : AmpCov Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF) :
     ∃ A : AmpDat X, PvalForm W hI A := by
   have H := fun (u u' : D.what₂.Word) (p : D.s.Pair u u') => pair_form W hI hW hC hK hN u u' p

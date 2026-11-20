@@ -32,9 +32,15 @@ def LatticeLaws (D : D7) (r j : ℕ) (L : LatB D.host.E) : Prop :=
 
 def zeroLattice (D : D7) : LatB D.host.E := ⟨Fin 0 → 𝓞 D.host.E, fun a b => beK D 0 a b⟩
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (Subsingleton (Fin 0 → 𝓞 D.host.E))`.
+-/
 theorem zeroLattice_subsingleton (D : D7) : Subsingleton (zeroLattice D).Y :=
   inferInstanceAs (Subsingleton (Fin 0 → 𝓞 D.host.E))
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a a' b => ?_, fun x x' _ a b => ?_, ⟨_, inferInstance, bK D 0, beK_posDef D 0⟩, 0, finrank_copies D 0, Nat.zero_le _, by omega⟩` and prove the remaining obligations. Conclude with `(beK_apply D 0 _ _).trans ((beK_apply D 0 _ _).trans (by simp)).symm`. Conclude with `(congrArg (fun f => f b) (map_add (beK D 0) a a'))`. Conclude with `(beK_apply D 0 _ _).trans ((beK_apply D 0 _ _).trans (by simp)).symm`.
+-/
 theorem zeroLattice_laws (D : D7) (r j : ℕ) (h : j ≤ r) : LatticeLaws D r j (zeroLattice D) := by
   refine ⟨fun a b => ?_, fun a a' b => ?_, fun x x' _ a b => ?_, ⟨_, inferInstance, bK D 0, beK_posDef D 0⟩,
     0, finrank_copies D 0, Nat.zero_le _, by omega⟩
@@ -343,6 +349,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.PrescribedPoints Formalism.MainNotions.DIV.Inh Formalism.MainNotions.DIV.Inh.LocalProvisionModel in
 
+/- English proof (translation)
+Introduce `D Pt fld L hL`. Establish `hm` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : ∀ w : {j : ℕ // 1 ≤ j ∧ j < D.R.m}, 1 ≤ (D.R.sigW w.1).1 ∧ (D.R.sigW w.1).1 + 1 ≤ D.R.r`. Introduce and unpack `⟨w, h1, h2⟩`.
+
+Simplify using `only [Formalism.BasicNotions.Ranks.sigW, Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers. Use `⟨provWithPoints D {j : ℕ // 1 ≤ j ∧ j < D.R.m} (fun _ => D.R.r) (fun w => (D.R.sigW w.1).1) hr (fun _ p => mpTrivialAb D p (nonempty_coefficient_field p).some) (fun w p => Option (Pt w.1 p)) (fun w p y => y.elim (nonempty_coefficient_field p).some (fld w.1 p)) (fun w p y => y.eli …` and prove the remaining obligations. Consider the case `none => zeroLattice_laws D _ _ (by have := hr w; omega)`. Consider the case `some y => hL w.1 p y)`.
+
+Use the proof step `(fun _ _ => none) (fun _ _ => zeroLattice_subsingleton D),`. Use `fun j => if h : 1 ≤ j ∧ j < D.R.m then ⟨j, h⟩ else ⟨1, le_rfl, hm⟩, fun j h1 h2 => ?_⟩`. Use `beta_reduce`. Rewrite using `[dif_pos (And.intro h1 h2)]`. Conclude with `⟨⟨rfl, rfl⟩, fun p y => ⟨some y, rfl, LinearEquiv.refl _ _, fun a b => rfl⟩⟩`.
+-/
 theorem exists_prov_prescribed_points :
     ∀ (D : D7) (Pt : ℕ → ℕ → Type) (fld : ∀ j p, Pt j p → ModuliIntegralCharts.CF p) (L : ∀ j p, Pt j p → LatB D.host.E), (∀ j p y, (∀ a b, (L j p y).beta a b = (L j p y).beta b a) ∧ (∀ a a' b, (L j p y).beta (a + a') b = (L j p y).beta a b + (L j p y).beta a' b) ∧ (∀ (x x' : 𝓞 D.host.E), (x' : D.host.E) = D.host.conj (x : D.host.E) → ∀ a b, (L j p y).beta (x • a) b = (L j p y).beta a (x' • b)) ∧ (∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ (L j p y).Y), ∀ x : ι → ℝ, x ≠ 0 → 0 < ∑ i, ∑ k, x i * x k * (L j p y).beta (b i) (b k)) ∧ ∃ ρ : ℕ, Module.finrank ℤ (L j p y).Y = 2 * D.R.f * ρ ∧ ρ ≤ (D.R.sigW j).1 ∧ ρ + (D.R.sigW j).1 ≤ D.R.r) → ∃ (P : ModuliIntegralCharts.Prov D) (dat : ℕ → P.Dat), ∀ j, 1 ≤ j → j < D.R.m → (P.rk (dat j) = D.R.r ∧ P.jj (dat j) = (D.R.sigW j).1) ∧ ∀ p y, ∃ η : (P.loc (dat j) p).Pt (P.loc (dat j) p).YY, (P.loc (dat j) p).fld η = fld j p y ∧ ∃ e : (P.loc (dat j) p).Ylat η ≃ₗ[𝓞 D.host.E] (L j p y).Y, ∀ a b, (L j p y).beta (e a) (e b) = (P.loc (dat j) p).be η a b := by
   intro D Pt fld L hL

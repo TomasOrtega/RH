@@ -30,6 +30,9 @@ def freeLift (P : PSh) (G : Shv R) (f : ∀ U : Scheme.{0}, P.obj (op U) → Sec
     (free R).obj P ⟶ G :=
   ⟨sheafifyLift Scheme.etaleTopology (freeLiftP P G f hf) G.property⟩
 
+/- English proof (translation)
+Use `congrArg (fun φ => (φ.app (op U)).hom (ModuleCat.freeMk (ULift.up x))) (toSheafify_sheafifyLift Scheme.etaleTopology (freeLiftP P G f hf) G.property)` as an intermediate fact. Conclude with `this.trans (ModuleCat.freeDesc_apply (R := ULift.{1} R) _ _)`.
+-/
 theorem freeLift_gen (P : PSh) (G : Shv R) (f : ∀ U : Scheme.{0}, P.obj (op U) → Sec G U)
     (hf : ∀ {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)), Sec.res g (f U x) = f V (P.map g.op x))
     (U : Scheme.{0}) (x : P.obj (op U)) : ((freeLift P G f hf).hom.app (op U)).hom (freeGen R P U x) = f U x := by
@@ -37,6 +40,11 @@ theorem freeLift_gen (P : PSh) (G : Shv R) (f : ∀ U : Scheme.{0}, P.obj (op U)
     (toSheafify_sheafifyLift Scheme.etaleTopology (freeLiftP P G f hf) G.property)
   exact this.trans (ModuleCat.freeDesc_apply (R := ULift.{1} R) _ _)
 
+/- English proof (translation)
+Establish `h1 : (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x)) = ModuleCat.freeMk (ULift.up (P.map g.op x))`. Simplify using `[freeP, ModuleCat.freeMk, ModuleCat.free]`. Conclude with `Finsupp.mapDomain_single`. Establish `h2` using `congrArg (fun φ => φ.hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up x))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Unfold `freeGen`.
+
+Use `erw [← h1]`. Conclude with `h2`.
+-/
 theorem freeGen_nat (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     freeGen R P V (P.map g.op x) = Sec.res (F := (free R).obj P) g (freeGen R P U x) := by
   have h1 : (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (ULift.up x)) =
@@ -49,6 +57,9 @@ theorem freeGen_nat (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)
   erw [← h1]
   exact h2
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[freeGen_nat]`. Conclude with `congrArg (fun φ => φ.hom (freeGen R _ U x)) (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.naturality g.op)`.
+-/
 theorem ev_nat {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     ev α p s h V ((E.obj (op (SimplexCategory.mk p))).map g.op x) = Sec.res g (ev α p s h U x) := by
@@ -56,6 +67,9 @@ theorem ev_nat {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I
   rw [freeGen_nat]
   exact congrArg (fun φ => φ.hom (freeGen R _ U x)) (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.naturality g.op)
 
+/- English proof (translation)
+The claim follows from `NatTrans.naturality_apply (E.map (SimplexCategory.subinterval j l h).op) g.op x`.
+-/
 theorem sub_nat {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     Sx.sub ((E.obj (op (SimplexCategory.mk N))).map g.op x) j l h =
       (E.obj (op (SimplexCategory.mk l))).map g.op (Sx.sub x j l h) :=
@@ -69,6 +83,9 @@ variable {K : Cx R} {E : Spc} {k : ℤ}
 def comp (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w) : ((chains R).obj E).X (-(N : ℤ)) ⟶ K.X w :=
   (chainsXIso R E N).hom ≫ freeLift _ (K.X w) (F N w h) (fun g x => hF N w h g x)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem comp_cast (N N' : ℕ) (e : N' = N) (hp : -(N : ℤ) = -(N' : ℤ)) (w : ℤ) (h : -(N : ℤ) + k = w)
     (h' : -(N' : ℤ) + k = w) :
     (((chains R).obj E).XIsoOfEq hp).hom ≫ comp F hF N' w h' = comp F hF N w h := by
@@ -77,6 +94,9 @@ theorem comp_cast (N N' : ℕ) (e : N' = N) (hp : -(N : ℤ) = -(N' : ℤ)) (w :
 
 include hF in
 
+/- English proof (translation)
+Use `⟨Cochain.mk fun p q hpq => if hp : p ≤ 0 then (((chains R).obj E).XIsoOfEq (by omega : p = -(((-p).toNat : ℕ) : ℤ))).hom ≫ comp F hF (-p).toNat q (by omega) else 0, fun N w h U x => ?_⟩` and prove the remaining obligations. Unfold `ev`. Rewrite using `[Cochain.mk_v, dif_pos (by omega), comp_cast F hF N _ (by omega) _ w h, comp, Iso.inv_hom_id_assoc]`. Conclude with `freeLift_gen _ _ _ _ U x`.
+-/
 theorem exists_cochain : ∃ η : Cochain ((chains R).obj E) K k,
     ∀ (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w) (U : Scheme.{0}) (x : Sx E N U), ev η N w h U x = F N w h U x := by
   refine ⟨Cochain.mk fun p q hpq => if hp : p ≤ 0 then
@@ -91,6 +111,11 @@ end Lift
 end LateralTheory.E.FreeSheafGeneratorLifts
 
 open LateralTheory.E.FreeSheafGeneratorLifts in
+/- English proof (translation)
+Introduce `R _ I J K h hnat E n m k hk α β`. Use `exists_cochain (fun N w hw U x => ∑ p : Fin (N + 1), (m * (p : ℕ)).negOnePow • h U (-((p : ℕ) : ℤ) + n) (-((N - p : ℕ) : ℤ) + m) w (by omega) (ev α p _ rfl U (x.sub 0 p (by omega))) (ev β (N - p) _ rfl U (x.sub p (N - p) (by omega)))) ?_` and prove the remaining obligations. Introduce `N w hw V U g x`. Use `show ((K.X w).obj.map g.op).hom _ = _`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, map_zsmul, Units.smul_def, sub_nat, sub_nat, FreeSheafGeneratorLifts.ev_nat, FreeSheafGeneratorLifts.ev_nat, ← hnat]`.
+-/
 theorem LateralTheory.E.LeafHtpyAWPf.LeafHAWExists_of : LateralTheory.E.LeafHtpyAWPf.LeafHAWExists := by
   intro R _ I J K h hnat E n m k hk α β
   refine exists_cochain (fun N w hw U x => ∑ p : Fin (N + 1), (m * (p : ℕ)).negOnePow •
@@ -106,6 +131,9 @@ namespace LateralTheory.E.FreeSheafGeneratorLifts
 section
 variable {R : Type} [CommRing R] {I J K : Cx R}
 
+/- English proof (translation)
+Take `rfl : w0 = w - 1` from `by omega`. Substitute `hs ht` using the available equality. Rewrite using `[hH U s t w h a b]`. Normalize the expressions using the abelian group laws.
+-/
 theorem htpy' (μ μ' : Pair I J K) (H : HFam R I J K)
     (hH : ∀ (U : Scheme.{0}) (s t w : ℤ) (hw : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U),
     μ.mul U s t w hw a b - μ'.mul U s t w hw a b =
@@ -121,16 +149,25 @@ theorem htpy' (μ μ' : Pair I J K) (H : HFam R I J K)
   rw [hH U s t w h a b]
   abel
 
+/- English proof (translation)
+The claim follows from `bd_map (((H U s t w h).flip b).toAddMonoidHom) f p y`.
+-/
 theorem hmul_bd_left (H : HFam R I J K) {E : Spc} {U : Scheme.{0}} (s t w : ℤ) (h : s + t = w + 1)
     (f : ∀ q : ℕ, Sx E q U → Sec (I.X s) U) (p : ℕ) (y : Sx E p U) (b : Sec (J.X t) U) :
     H U s t w h (bd f p y) b = bd (fun q z => H U s t w h (f q z) b) p y :=
   bd_map (((H U s t w h).flip b).toAddMonoidHom) f p y
 
+/- English proof (translation)
+The claim follows from `bd_map ((H U s t w h a).toAddMonoidHom) f p y`.
+-/
 theorem hmul_bd_right (H : HFam R I J K) {E : Spc} {U : Scheme.{0}} (s t w : ℤ) (h : s + t = w + 1)
     (f : ∀ q : ℕ, Sx E q U → Sec (J.X t) U) (p : ℕ) (y : Sx E p U) (a : Sec (I.X s) U) :
     H U s t w h a (bd f p y) = bd (fun q z => H U s t w h a (f q z)) p y :=
   bd_map ((H U s t w h a).toAddMonoidHom) f p y
 
+/- English proof (translation)
+Substitute `hs ht hs' ht'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hmul_congr (H : HFam R I J K) (U : Scheme.{0}) {E : Spc} {n m : ℤ}
     (α : Cochain ((chains R).obj E) I n) (β : Cochain ((chains R).obj E) J m) (p q : ℕ) (y : Sx E p U) (z : Sx E q U)
     (s t w s' t' : ℤ) (h : s + t = w + 1) (h' : s' + t' = w + 1) (hs : -(p : ℤ) + n = s) (ht : -(q : ℤ) + m = t)
@@ -145,12 +182,20 @@ def Fh (H : HFam R I J K) {E : Spc} {n m : ℤ} (α : Cochain ((chains R).obj E)
 
 end
 
+/- English proof (translation)
+Use `ev_add (a - b) b p s h U x` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ev_sub' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (a b : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) : ev (a - b) p s h U x = ev a p s h U x - ev b p s h U x := by
   have := ev_add (a - b) b p s h U x
   rw [sub_add_cancel] at this
   rw [this]; abel
 
+/- English proof (translation)
+Establish `h0` using `ev_delta_bd rfl α.1 p s s' hs hs' U y`. Rewrite `h0` using `[(Cocycle.mem_iff n (n + 1) rfl α.1).1 α.2]`. Establish `hz : ev (0 : Cochain ((chains R).obj E) I (n + 1)) p s' hs' U y = 0`. Rewrite using `[ev_eq, Cochain.zero_v, Limits.comp_zero]`. Both sides reduce to the same expression.
+
+Rewrite `h0` using `[hz]`. Conclude with `eq_neg_of_add_eq_zero_left h0.symm`.
+-/
 theorem d_cocycle {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cocycle ((chains R).obj E) I n) (p : ℕ)
     (s s' : ℤ) (hs : -(p : ℤ) + n = s) (hs' : -(p : ℤ) + (n + 1) = s') (U : Scheme.{0}) (y : Sx E p U) :
     Sec.map (I.d s s') (ev α.1 p s hs U y) =
@@ -162,6 +207,11 @@ theorem d_cocycle {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : C
   rw [hz] at h0
   exact eq_neg_of_add_eq_zero_left h0.symm
 
+/- English proof (translation)
+Rewrite using `[hP, hQ]`. Establish `: K • (c' • P + c • e • Q) = (K * c') • P + (K * (c * e)) • Q`. Simplify using `only [smul_add, smul_smul]`. Rewrite using `[this, h1, h2]`. Simplify using `only [smul_sub, smul_neg, smul_smul, neg_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem recH {G : Type*} [AddCommGroup G] (X Y P P' Q Q' : G) (ε A s B K c' c e : ℤ) (hP : P' = P) (hQ : Q' = Q)
     (h1 : K * c' = -(ε * A)) (h2 : K * (c * e) = -(ε * (s * B))) :
     ε • (X - Y - -(A • P) - s • -(B • Q)) + K • (c' • P' + c • e • Q') = ε • X - ε • Y := by
@@ -172,6 +222,23 @@ theorem recH {G : Type*} [AddCommGroup G] (X Y P P' Q Q' : G) (ε A s B K c' c e
   simp only [smul_sub, smul_neg, smul_smul, neg_smul]
   abel
 
+/- English proof (translation)
+Introduce `R _ I J K μ μ' H hH E n m k hk α β γ₁ γ₂ h1 h2 c hc`. Apply `ev_ext` to reduce the goal to its premises. Introduce `N w hw U x`. Rewrite using `[ev_sub', ev_delta_bd (by omega : k - 1 + 1 = k) c N (-(N : ℤ) + (k - 1)) w rfl hw U x, hc N _ rfl U x, h1 N w hw U x, h2 N w hw U x]`. Rewrite using `[bd_congr (g := fun N' y => ∑ p : Fin (N' + 1), ((m * (p : ℕ)).negOnePow : ℤ) • Fh H α.1 β.1 U w p (N' - p) (y.sub 0 p (by omega)) (y.sub p (N' - p) (by omega))) ?_ x]`.
+
+Use `swap`. Introduce `N' y hN`. Rewrite using `[dif_pos (by omega), hc N' w _ U y]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+
+Unfold `Fh`. Rewrite using `[dif_pos (by omega)]`. Rewrite using `[bd_aw (Fh H α.1 β.1 U w) (fun p : ℕ => ((m * (p : ℤ)).negOnePow : ℤ)) (fun p : ℕ => ((m * ((p : ℤ) - 1)).negOnePow : ℤ)) (fun p => by congr 2; push_cast; ring) N x]`. Rewrite using `[secmap_sum, Finset.smul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Establish `hp` using `p.2`. Rewrite using `[Units.smul_def, secmap_zsmul, htpy' μ μ' H hH U _ _ _ w (-((p : ℕ) : ℤ) + (n + 1)) (-((N - p : ℕ) : ℤ) + (m + 1)) (by omega) (by omega) (by omega) (by omega)]`. Rewrite using `[d_cocycle α p (-((p : ℕ) : ℤ) + n) _ rfl (by omega) U, d_cocycle β (N - p) (-((N - p : ℕ) : ℤ) + m) _ rfl (by omega) U]`. Simplify using `only [map_neg, map_zsmul, LinearMap.neg_apply, LinearMap.smul_apply, Units.smul_def, hmul_bd_left, hmul_bd_right]`. Use `recH _ _ _ _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `bd_congr (fun q z hq => ?_) _` and prove the remaining obligations. Unfold `Fh`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Conclude with `hmul_congr H U α.1 β.1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Use `bd_congr (fun q z hq => ?_) _` and prove the remaining obligations.
+
+Unfold `Fh`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`. Conclude with `hmul_congr H U α.1 β.1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Substitute `hk` using the available equality. Simplify using `only [← Units.val_mul, ← Int.negOnePow_add, ← Units.val_neg, ← Int.negOnePow_succ]`.
+
+Use `congr 1`. Rewrite using `[Int.negOnePow_eq_iff]`. Conclude with `⟨-1, by ring⟩`. Substitute `hk` using the available equality. Rewrite using `[sign_nat]`.
+
+Simplify using `only [← Units.val_mul, ← Int.negOnePow_add, ← Units.val_neg, ← Int.negOnePow_succ]`. Use `congr 1`. Rewrite using `[Int.negOnePow_eq_iff]`. Conclude with `⟨(p : ℤ) - 1, by ring⟩`.
+-/
 theorem LeafHAWBounds_proved : LeafHAWBounds := by
   intro R _ I J K μ μ' H hH E n m k hk α β γ₁ γ₂ h1 h2 c hc
   apply ev_ext
@@ -215,6 +282,9 @@ theorem LeafHAWBounds_proved : LeafHAWBounds := by
     rw [Int.negOnePow_eq_iff]
     exact ⟨(p : ℤ) - 1, by ring⟩
 
+/- English proof (translation)
+Introduce `R _ I J K μ μ' ⟨h, hnat, hht⟩ E n m k hk α β γ γ' h₁ h₂`. Take `⟨η, hη⟩` from `LeafHAWExists_of R h hnat E hk α.1 β.1`. Establish `hc` using `LeafHAWBounds_proved R μ μ' h hht E hk α β γ γ' h₁ h₂ η hη`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨k - 1, by omega, η, by rw [hc]; rfl⟩`.
+-/
 theorem LeafHtpyAW_proved : LateralTheory.E.LeafTwPairUniquePf.LeafHtpyAW := by
   intro R _ I J K μ μ' ⟨h, hnat, hht⟩ E n m k hk α β γ γ' h₁ h₂
   obtain ⟨η, hη⟩ := LeafHAWExists_of R h hnat E hk α.1 β.1

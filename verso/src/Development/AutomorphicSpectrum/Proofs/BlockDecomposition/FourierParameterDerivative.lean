@@ -3,11 +3,19 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.Analysis.OscPhase
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+-/
 private lemma norm_exp_two_pi_I_mul_real (r : ℝ) :
     ‖Complex.exp (2 * Real.pi * Complex.I * (r : ℂ))‖ = 1 := by
   rw [Complex.norm_exp]
   simp
 
+/- English proof (translation)
+Establish `hnorm : ∀ r : ℝ, ‖Complex.exp (2 * Real.pi * Complex.I * (r : ℂ))‖ = 1` using `norm_exp_two_pi_I_mul_real`. Establish `hmeasE : ∀ t : ℝ, Measurable fun y => Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ))` using `fun t => by fun_prop`. Establish `hdiff : ∀ (y : X) (t : ℝ), HasDerivAt (fun t : ℝ => g y * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ))) (2 * Real.pi * Complex.I * ((M y : ℂ) * g y * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ)))) t`. Introduce `y t`. Establish `h1 : HasDerivAt (fun t : ℝ => ((t * M y : ℝ) : ℂ)) ((M y : ℝ) : ℂ) t`.
+
+Simplify using `using ((hasDerivAt_id t).mul_const (M y)).ofReal_comp`. Establish `h2` using `((h1.const_mul (2 * Real.pi * Complex.I)).cexp).const_mul (g y)`. Conclude with `h2.congr_deriv (by ring)`. Take `⟨-, hd⟩` from `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := s) (F := fun (t : ℝ) y => g y * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) : ℂ))) (F' := fun (t : ℝ) y => 2 * Real.pi * Complex.I * ((M y : ℂ) * g y * Complex.exp (2 * Real.pi * Complex.I * ((t * M y : ℝ) …`. Rewrite `hd` using `[integral_const_mul]`. Then use the resulting hypothesis.
+-/
 theorem hasDerivAt_integral_oscillating_phase
     (X : Type) [MeasurableSpace X] (μ : Measure X) (g : X → ℂ) (M : X → ℝ)
     (hM : Measurable M) (hg : Integrable g μ)

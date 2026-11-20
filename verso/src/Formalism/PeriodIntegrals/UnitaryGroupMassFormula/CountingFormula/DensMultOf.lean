@@ -25,6 +25,11 @@ def PrimeZeta2 : Prop :=
   ∀ (K : Type) [Field K] [NumberField K],
     Summable (fun p : HeightOneSpectrum (𝓞 K) => 1 / ((p.asIdeal.absNorm : ℝ) ^ 2))
 
+/- English proof (translation)
+Introduce `D δ M hA L u u' hc F0 what₂ hr ϖ hϖ Z hpos`. Take `⟨C, hC⟩` from `hG D δ M hA L u u' hc F0 what₂ hr ϖ hϖ Z hpos`. Establish `hs : Summable (fun p => ‖densP L δ ϖ (Tn u) (Tn u') Z p - 1‖)`. Use `Summable.of_norm_bounded_eventually (g := fun p : PlF D => C * (1 / ((p.asIdeal.absNorm : ℝ) ^ 2))) ?_ ?_` and prove the remaining obligations. Conclude with `(hZ _).mul_left C`.
+
+Use `filter_upwards [hC] with p hp`. Simplify `hp` using `[Real.norm_eq_abs]`. Establish `hm` using `multipliable_one_add_of_summable hs`. Simplify using `using hm`.
+-/
 theorem densMult_of (hG : DensGood) (hZ : PrimeZeta2) : DensMult := by
   intro D δ M hA L u u' hc F0 what₂ hr ϖ hϖ Z hpos
   obtain ⟨C, hC⟩ := hG D δ M hA L u u' hc F0 what₂ hr ϖ hϖ Z hpos

@@ -24,6 +24,11 @@ namespace GlobalTheory.LevQuot
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `LevelCover.sab_comp m ν rfl`. Rewrite using `[← hn]`. Use `LevUniq.map_to_univ_unique hL hL2 hL3 E H D l₀ l₁ X₀ _ _ _ _ X₁.univ _ _ n ν (isReduced_moduli X₁) hs ⟨fun a => ?_, fun a => ?_⟩ hc` and prove the remaining obligations. Rewrite using `[hn, ← Category.assoc, LevelCover.sec_pow m _ _ (hm a), Category.assoc, hc.1, Category.assoc]`. Establish `e : X₁.univ.etaA a ^ (l₁.A / l₀.A) = X₁.univ.eta 0 ^ 0`.
+
+Rewrite using `[hA, Nat.div_one, pow_zero, ← Moduli.LevelAction.map_nsmul_of_add X₁.univ.etaA_add, X₁.univ.etaA_ker]`. Rewrite using `[hn, Category.assoc, ← hc.2, e, ← Category.assoc, LevelCover.sec_pow m _ _ (hm 0), Category.assoc]`.
+-/
 theorem over_of_fix (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws3) {l₀ l₁ : Level H} {X₀ : Moduli D l₀}
     {X₁ : Moduli D l₁} {r : X₁.X ⟶ X₀.X} {ν : SABMap X₁.univ.t X₀.univ.t r} (hA : l₀.A = 1)
     (hc : LevComp X₁.univ X₀.univ r ν) {f : X₁.X ⟶ X₁.X} (m : SABMap X₁.univ.t X₁.univ.t f)
@@ -38,6 +43,21 @@ theorem over_of_fix (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws3) {l₀ l�
       rw [hA, Nat.div_one, pow_zero, ← Moduli.LevelAction.map_nsmul_of_add X₁.univ.etaA_add, X₁.univ.etaA_ker]
     rw [hn, Category.assoc, ← hc.2, e, ← Category.assoc, LevelCover.sec_pow m _ _ (hm 0), Category.assoc]
 
+/- English proof (translation)
+Set `c` to `LevelExist.minCoeff l₁`. Establish `hM' : 0 < l₁.M'` using `LevelExist.M'_pos l₁`. Establish `hz : ∀ a, a ∣ l₁.M' → zeta a ∈ c.F` using `fun a ha => by`. Rewrite using `[LevelCover.zeta_dvd hM' ha]`. Conclude with `pow_mem c.zeta_mem _`.
+
+Establish `hle : KA l₀ ≤ c.F`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `c.le (baseKA l₁).ρ.2`. Conclude with `hz _ (hd.2.2.trans (Nat.dvd_lcm_right _ _))`.
+
+Set `c₀ : Coeff l₀` to `⟨c.F, c.fin, c.conj, hz _ (Nat.lcm_dvd (hd.1.trans (Nat.dvd_lcm_left _ _)) (hd.2.2.trans (Nat.dvd_lcm_right _ _))), hle⟩`. Take `⟨r', j', ν', hj', hr', e₁, e₂, -, hF⟩` from `hN l₀ l₁ X₀ X₁ hd`. Take `rfl : j = j'` from `RingHom.ext fun x => Subtype.ext ((hj x).trans (hj' x).symm)`. Take `rfl : r = r'` from `(LevUniq.map_to_univ_unique hL hL2 hL3 E H D l₀ l₁ X₀ _ _ _ _ X₁.univ _ _ ν ν' (isReduced_moduli X₁) (hr.trans hr'.symm) hc ⟨e₁, e₂⟩).1`. Take `⟨rF, a₁, a₂, -, -, -, htr⟩` from `hF c₀ c rfl`.
+
+Take `⟨β, hβ⟩` from `LevCover.exists_spMap (y ≫ X₁.s)`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : c.F →+* k, θ.comp (IntermediateField.inclusion c.le).toRingHom = β := by`. Use `letI : Algebra (KA l₁) k := β.toAlgebra`. Use `letI : Algebra (KA l₁) c.F := (IntermediateField.inclusion c.le).toRingHom.toAlgebra`. Use `haveI := c.fin`.
+
+Use `haveI : IsScalarTower ℚ (KA l₁) c.F := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Algebra.IsAlgebraic (KA l₁) c.F := Algebra.IsAlgebraic.tower_top (K := ℚ) (KA l₁)`. Conclude with `⟨(IsAlgClosed.lift (R := KA l₁) (S := c.F) (M := k)).toRingHom, (IsAlgClosed.lift (R := KA l₁) (S := c.F) (M := k)).comp_algebraMap⟩`. Establish `w : y ≫ X₁.s = spMap θ ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[LevCover.spMap_comp'', hθ, hβ]`.
+
+Take `⟨⟨g, ρ, hg, ⟨hs, m, b₁, b₂⟩, -, hy⟩, -⟩` from `htr k (pullback.lift y (spMap θ) w) (pullback.lift y' (spMap θ) (h₂ ▸ w)) (by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, a₁, pullback.lift_fst_assoc, pullback.lift_fst_assoc, h₁]`. Rewrite using `[Category.assoc, Category.assoc, a₂, pullback.lift_snd_assoc, pullback.lift_snd_assoc])`. Rewrite `hy` using `[pullback.lift_fst, pullback.lift_fst_assoc]`.
+
+Use `⟨ρ, m, g.f l₁.A, ⟨by rw [hs, LevelCover.spMap_id', Category.comp_id], fun a => ?_, b₂⟩, hy⟩` and prove the remaining obligations. Rewrite using `[← b₁, Moduli.LevelAction.eta_congr X₁.univ (x := g.f l₁.M a) (y := a) (by rw [hM, hMb]; exact hg.2.1 a)]`.
+-/
 theorem exists_twist_of_fibre (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws3) (hN : ToroidalLevelCompatibility (H := H) (D := D))
     {l₀ l₁ : Level H} {X₀ : Moduli D l₀} {X₁ : Moduli D l₁} {r : X₁.X ⟶ X₀.X} {ν : SABMap X₁.univ.t X₀.univ.t r}
     {j : KA l₀ →+* KA l₁} (hd : l₀.Dvd l₁) (hM : l₁.M = l₀.M) (hMb : l₁.Mb = l₀.Mb)
@@ -83,6 +103,11 @@ theorem exists_twist_of_fibre (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws3
   refine ⟨ρ, m, g.f l₁.A, ⟨by rw [hs, LevelCover.spMap_id', Category.comp_id], fun a => ?_, b₂⟩, hy⟩
   rw [← b₁, Moduli.LevelAction.eta_congr X₁.univ (x := g.f l₁.M a) (y := a) (by rw [hM, hMb]; exact hg.2.1 a)]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `LevCover.datum_free D`. Take `⟨κ, _, q, hq⟩` from `LevCover.exists_finite_mod D.La l.A_pos`. Use `haveI : Nonempty D.La := ⟨0⟩`. Use `⟨κ → κ, inferInstance, fun g c => q (g (Function.invFun q c)), fun g g' h x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hq _ _ (Function.invFun_eq (f := q) ⟨x, rfl⟩)`.
+
+Take `⟨c', hc'⟩` from `hq _ _ (congrFun h (q x))`. Generalize the expression as in `Function.invFun q (q x) = y at hc hc'`. Substitute `hc` using the available equality. Simplify using `only [map_add, map_nsmul, hc', Xo.univ.etaA_add, Xo.univ.etaA_ker, _root_.mul_one]`.
+-/
 theorem exists_finite_invariant {l : Level H} (Xo : Moduli D l) :
     ∃ (κ : Type) (_ : Finite κ) (q : (D.La →ₗ[𝓞 E] D.La) → κ), ∀ g g', q g = q g' →
       ∀ x, Xo.univ.etaA (g x) = Xo.univ.etaA (g' x) := by
@@ -119,10 +144,24 @@ def twistMonoid (τ : autOver r →* Aut X₁.univ.t.G.left) : Submonoid (autOve
         fun a => (Category.comp_id _).trans (Category.id_comp _).symm,
         fun a => (Category.comp_id _).trans (Category.id_comp _).symm⟩ }
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, ← p₂, Iso.eq_inv_comp, ← Category.assoc, ← p₁, Category.assoc, Iso.hom_inv_id_assoc]`.
+-/
 theorem inv_comp_square {X P : Scheme.{0}} (a : X ≅ X) (t : P ≅ P) {b : X ⟶ X} {u : P ⟶ P} {x y : X ⟶ P}
     (p₁ : y ≫ t.hom = a.hom ≫ x) (p₂ : y ≫ u = b ≫ x) : x ≫ t.inv ≫ u = (a.inv ≫ b) ≫ x := by
   rw [Category.assoc, ← p₂, Iso.eq_inv_comp, ← Category.assoc, ← p₁, Category.assoc, Iso.hom_inv_id_assoc]
 
+/- English proof (translation)
+Take `⟨κ, _, q, hq⟩` from `exists_finite_invariant X₁`. Use `haveI := finite_fieldAut l₁`. Establish `hch : ∀ ω : twistMonoid τ, ∃ (g : D.La →ₗ[𝓞 E] D.La) (σ : KA l₁ ≃+* KA l₁), SemiTwist X₁ ω.1.1.hom (τ ω.1).hom g σ.toRingHom` using `fun ω => by`. Take `⟨g, σ, -, h⟩` from `ω.2`. Conclude with `⟨g, σ, h⟩`.
+
+Use `choose g σ hg using hch`. Use `Finite.of_injective (fun ω => (q (g ω), σ ω)) fun a b hab => ?_` and prove the remaining obligations. Establish `h₁` using `hq _ _ (congrArg Prod.fst hab)`. Establish `h₂ : σ a = σ b` using `congrArg Prod.snd hab`. Establish `e₀ : (b.1 * a.1⁻¹).1.hom = a.1.1.inv ≫ b.1.1.hom` using `rfl`.
+
+Establish `e₁ : (τ (b.1 * a.1⁻¹)).hom = (τ a.1).inv ≫ (τ b.1).hom` using `by rw [map_mul, map_inv]; rfl`. Establish `key : ∀ {x y : X₁.X ⟶ X₁.univ.t.G.left}, y ≫ (τ a.1).hom = a.1.1.hom ≫ x → y ≫ (τ b.1).hom = b.1.1.hom ≫ x → x ≫ (mu (b.1 * a.1⁻¹)).φ = (b.1 * a.1⁻¹).1.hom ≫ x`. Introduce `x y p₁ p₂`. Rewrite using `[hmu, e₀, e₁]`. Conclude with `inv_comp_square (a.1.1 : X₁.X ≅ X₁.X) (τ a.1) p₁ p₂`.
+
+Establish `hid : (b.1 * a.1⁻¹).1.hom = 𝟙 _` using `SemiTwist.eq_id (g := id) (σ := RingHom.id _) (mu (b.1 * a.1⁻¹)) ⟨by`. Rewrite using `[e₀, Category.assoc, (hg b).1, ← h₂, ← (hg a).1, LevelCover.spMap_id', Category.comp_id]`. Conclude with `Iso.inv_hom_id_assoc (a.1.1 : X₁.X ≅ X₁.X) _,`. Use `fun x => key ((hg a).2.1 x) ((hg b).2.1 x),`. Use `fun x => key ((hg a).2.2 x) (h₁ x ▸ (hg b).2.2 x)⟩ rfl fun _ => rfl`.
+
+Establish `: b.1 * a.1⁻¹ = 1` using `Subtype.ext (Iso.ext hid)`. Conclude with `Subtype.ext (mul_inv_eq_one.1 this).symm`.
+-/
 theorem finite_twistMonoid (τ : autOver r →* Aut X₁.univ.t.G.left)
     (mu : ∀ ω : autOver r, SABMap X₁.univ.t X₁.univ.t ω.1.hom) (hmu : ∀ ω, (mu ω).φ = (τ ω).hom) :
     Finite (twistMonoid τ) := by
@@ -152,6 +191,11 @@ theorem finite_twistMonoid (τ : autOver r →* Aut X₁.univ.t.G.left)
   have : b.1 * a.1⁻¹ = 1 := Subtype.ext (Iso.ext hid)
   exact Subtype.ext (mul_inv_eq_one.1 this).symm
 
+/- English proof (translation)
+Establish `hkρ : k (baseKA l₀).ρ = (baseKA l₁).ρ` using `Subtype.ext (hk _)`. Establish `hz : (baseKA l₀).ζ = 1`. Use `(baseKA l₀).ζ_prim.pow_eq_one` as an intermediate fact. Rewrite `this` using `[hA, pow_one]`. Then use the resulting hypothesis. Establish `hσ : σ.toRingHom.comp k = k` using `field_hom_ext l₀ _ _ (by rw [RingHom.comp_apply, hkρ]; exact h₁) (by rw [hz, map_one, map_one])`.
+
+Take `⟨o₁, o₂⟩` from `over_of_fix hL hL2 hL3 hA hc m h₂.2.1 (by`. Rewrite using `[Category.assoc, hr, ← Category.assoc, h₂.1, Category.assoc, LevCover.spMap_comp'', hσ])`. Establish `e : m.φ = (τ ⟨ρ, o₁⟩).hom` using `ν.cart.1.hom_ext (o₂.trans (hτ _).1.symm) (m.cart.1.w.trans (hτ ⟨ρ, o₁⟩).2.symm)`. Conclude with `⟨⟨ρ, o₁⟩, ⟨g, σ, h₁, e ▸ h₂⟩, rfl⟩`.
+-/
 theorem exists_mem_twistMonoid (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws3)
     {ν : SABMap X₁.univ.t X₀.univ.t r} {k : KA l₀ →+* KA l₁} (hA : l₀.A = 1)
     (hk : IsInc (KA l₀).val.toRingHom (KA l₁).val.toRingHom k) (hr : r ≫ X₀.s = X₁.s ≫ spMap k)
@@ -174,6 +218,21 @@ theorem exists_mem_twistMonoid (hL : Out.Laws) (hL2 : Out.Laws2) (hL3 : Out.Laws
 
 end
 
+/- English proof (translation)
+Introduce `hL hL2 hL3 E _ _ _ H D Xo hpq hN l₀ l₁ r ν k hA hM hMb hk hr hc`. Establish `hd : l₀.Dvd l₁` using `⟨hM ▸ dvd_rfl, hMb.le, hA ▸ one_dvd _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨hfin, het, hsur⟩ : IsFinite r ∧ Etale r ∧ Surjective r := by`. Take `⟨k', r', ν', hr', hk', hc', -, -, -, h⟩` from `LevelMap.exists_levelMap E H D Xo hN l₀ l₁ hd`. Take `rfl : k = k'` from `RingHom.ext fun x => Subtype.ext ((hk x).trans (hk' x).symm)`.
+
+Take `rfl : r = r'` from `(LevUniq.map_to_univ_unique hL hL2 hL3 E H D l₀ l₁ _ _ _ _ _ (Xo l₁).univ _ _ ν ν' (isReduced_moduli _) (hr.trans hr'.symm) hc hc').1`. Conclude with `h`. Take `⟨τ, hτ⟩` from `exists_liftAut ν.cart.1`. Establish `hmu : ∀ ω : autOver r, ∃ m : SABMap (Xo l₁).univ.t (Xo l₁).univ.t ω.1.hom, m.φ = (τ ω).hom` using `fun ω => by`. Take `⟨m, hm⟩` from `LevelCover.sab_cancel ν ν ω.1.hom ω.2`.
+
+Conclude with `⟨m, ν.cart.1.hom_ext (hm.trans (hτ ω).1.symm) (m.cart.1.w.trans (hτ ω).2.symm)⟩`. Use `choose mu hmu using hmu`. Set `S` to `twistMonoid τ`. Establish `hS` using `exists_mem_twistMonoid hL hL2 hL3 hA hk hr hc τ hτ`. Use `haveI : Finite S := finite_twistMonoid τ mu hmu`.
+
+Take `⟨T, hT⟩` from `exists_subgroup_of_finite S`. Use `⟨T, inferInstance, Finite.of_injective (fun t : T => (⟨t.1, (hT _).1 t.2⟩ : S)) fun a b h => Subtype.ext (congrArg (fun s : S => s.1) h), (autOver r).subtype.comp T.subtype, τ.comp T.subtype, fun t => mu t.1, Subtype.val_injective.comp Subtype.val_injective, ⟨inferInstance, fun t …` and prove the remaining obligations. Use `invariant_descends r (fun t : T => t.1.1.hom) (fun t => t.1.2) fun F _ _ y y' hy => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `LevCover.exists_spMap (y ≫ (Xo l₁).s)`. Take `⟨β', hβ'⟩` from `LevCover.exists_spMap (y' ≫ (Xo l₁).s)`.
+
+Establish `hkρ : k (baseKA l₀).ρ = (baseKA l₁).ρ` using `Subtype.ext (hk _)`. Establish `hb : β.comp k = β'.comp k` using `LevCover.spMap_inj' (by`. Rewrite using `[← LevCover.spMap_comp'', ← LevCover.spMap_comp'', ← hβ, ← hβ', Category.assoc, Category.assoc, ← hr, ← Category.assoc, hy, Category.assoc])`. Take `⟨σ, h₁, h₂⟩` from `exists_fieldAut l₁ β β' (hkρ ▸ DFunLike.congr_fun hb (baseKA l₀).ρ)`. Take `⟨ρ, m, g, h₃⟩` from `exists_semiTwist_iso hpq l₀ hA hM hMb (Xo l₁) σ h₁`.
+
+Take `⟨a, ha, ea⟩` from `hS ρ m g σ h₁ h₃`. Take `⟨ρ', m', g', h₄, h₅⟩` from `exists_twist_of_fibre hL hL2 hL3 hN hd hM hMb hk hr hc (y ≫ ρ.hom) y' (by rw [Category.assoc, ← ea, show a.1.hom ≫ r = r from a.2, hy]) (by rw [Category.assoc, h₃.1, ← Category.assoc, hβ, hβ', LevCover.spMap_comp'', h₂])`. Take `⟨b, hb', eb⟩` from `hS ρ' m' g' (RingEquiv.refl _) rfl h₄`. Use `⟨⟨b * a, (hT _).2 (S.mul_mem hb' ha)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h₅, Category.assoc, ← ea, ← eb]`.
+
+Both sides reduce to the same expression. Take `⟨g, σ, h₁, h₂⟩` from `(hT _).1 t.2`. Conclude with `⟨hmu _, (hτ _).1, h₂.2.1, g, σ, h₁, h₂.1, h₂.2.2⟩`.
+-/
 theorem exists_level_quotient : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l), 1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) → ∀ (l₀ l₁ : Level H) (r : (Xo l₁).X ⟶ (Xo l₀).X) (ν : SABMap (Xo l₁).univ.t (Xo l₀).univ.t r) (k : KA l₀ →+* KA l₁), l₀.A = 1 → l₁.M = l₀.M → l₁.Mb = l₀.Mb → IsInc (KA l₀).val.toRingHom (KA l₁).val.toRingHom k → r ≫ (Xo l₀).s = (Xo l₁).s ≫ spMap k → LevComp (Xo l₁).univ (Xo l₀).univ r ν → ∃ (Γ : Type) (_ : Group Γ) (_ : Finite Γ) (ρ : Γ →* Aut (Xo l₁).X) (τ : Γ →* Aut (Xo l₁).univ.t.G.left) (mu : ∀ g, SABMap (Xo l₁).univ.t (Xo l₁).univ.t (ρ g).hom), Function.Injective ρ ∧ (IsAffineHom r ∧ (∀ g, (ρ g).hom ≫ r = r) ∧ ∀ V : (Xo l₀).X.Opens, Function.Injective (r.app V).hom ∧ ∀ f : Γ((Xo l₁).X, r ⁻¹ᵁ V), (∀ g (h : r ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (r ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (r.app V).hom) ∧ ∀ ω, (mu ω).φ = (τ ω).hom ∧ (τ ω).hom ≫ ν.φ = ν.φ ∧ (∀ x, ((Xo l₁).univ.eta x).left ≫ (τ ω).hom = (ρ ω).hom ≫ ((Xo l₁).univ.eta x).left) ∧ ∃ (g : D.La →ₗ[𝓞 E] D.La) (σ : KA l₁ ≃+* KA l₁), σ (baseKA l₁).ρ = (baseKA l₁).ρ ∧ (ρ ω).hom ≫ (Xo l₁).s = (Xo l₁).s ≫ spMap σ.toRingHom ∧ ∀ x, ((Xo l₁).univ.etaA (g x)).left ≫ (τ ω).hom = (ρ ω).hom ≫ ((Xo l₁).univ.etaA x).left := by
   intro hL hL2 hL3 E _ _ _ H D Xo hpq hN l₀ l₁ r ν k hA hM hMb hk hr hc
   have hd : l₀.Dvd l₁ := ⟨hM ▸ dvd_rfl, hMb.le, hA ▸ one_dvd _⟩

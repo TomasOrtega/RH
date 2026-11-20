@@ -6,6 +6,15 @@ noncomputable section
 
 namespace PI.HookSteps
 
+/- English proof (translation)
+Introduce `N ν _`. Consider the cases of `N with`. Consider the case `zero => simp [hw, detX]`. Consider the case `succ n`. Simplify using `only [hw]`.
+
+Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`. Establish `hlast : ∀ μ : Fin (n + 1) → ℕ, nuNext μ (Fin.last n) = 0`. Introduce `μ`. Simplify using `[nuNext]`. Establish `hcs : ∀ s : Fin n, (ν s.castSucc + 1) - nuNext (fun i => ν i + 1) s.castSucc = ν s.castSucc - nuNext ν s.castSucc`.
+
+Introduce `s`. Establish `hs` using `s.isLt`. Simplify using `only [nuNext, Fin.val_castSucc]`. Rewrite using `[dif_pos (show (s : ℕ) + 1 < n + 1 by omega), dif_pos (show (s : ℕ) + 1 < n + 1 by omega)]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [hlast, hcs, Nat.sub_zero]`. Establish `hL : lpMinor ℚ ((Fin.last n : ℕ) + 1) (r` using `n + 1) (n := n + 1) (by simp) (by simp) = detX (n + 1) := rfl`. Rewrite using `[hL, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem highest_weight_det_mul : HwDetMul := by
   intro N ν _
   cases N with
@@ -28,6 +37,11 @@ theorem highest_weight_det_mul : HwDetMul := by
     rw [hL, pow_succ]
     ring
 
+/- English proof (translation)
+Unfold `lpMinor`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lpMinor_rename (n s : ℕ) (h1 h2 : s ≤ n) (h3 h4 : s ≤ n + 1) :
     rename (fun v : Fin n × Fin n => (Fin.castSucc v.1, Fin.castSucc v.2)) (lpMinor ℚ s h1 h2) =
       lpMinor ℚ s h3 h4 := by
@@ -38,6 +52,15 @@ theorem lpMinor_rename (n s : ℕ) (h1 h2 : s ≤ n) (h3 h4 : s ≤ n + 1) :
   simp only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X]
   rfl
 
+/- English proof (translation)
+Introduce `n ν _ hl`. Simplify using `only [hw]`. Rewrite using `[Fin.prod_univ_castSucc, map_prod]`. Establish `hlast : nuNext ν (Fin.last n) = 0` using `by simp [nuNext]`. Rewrite using `[hlast, hl, Nat.sub_zero, pow_zero, mul_one]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `hs` using `s.isLt`. Rewrite using `[map_pow, lpMinor_rename n ((s : ℕ) + 1) _ _ (by omega) (by omega)]`. Use `congr 1`. Simplify using `only [nuNext, Fin.val_castSucc]`.
+
+Rewrite using `[dif_pos (show (s : ℕ) + 1 < n + 1 by omega)]`. Distinguish the cases in `h : (s : ℕ) + 1 < n`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h]`.
+
+Establish `: (⟨s.val + 1, by omega⟩ : Fin (n + 1)) = Fin.last n` using `Fin.ext (by simp; omega)`. Rewrite using `[this, hl]`.
+-/
 theorem highest_weight_last_zero : HwLastZero := by
   intro n ν _ hl
   simp only [hw]
@@ -56,6 +79,11 @@ theorem highest_weight_last_zero : HwLastZero := by
     have : (⟨s.val + 1, by omega⟩ : Fin (n + 1)) = Fin.last n := Fin.ext (by simp; omega)
     rw [this, hl]
 
+/- English proof (translation)
+Introduce `σ τ φ hφ f g`. Unfold `fockQ`. Rewrite using `[support_rename_of_injective hφ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hφ h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain φ hφ, coeff_rename_mapDomain φ hφ]`.
+
+Use `congr 2`. Rewrite using `[Finsupp.mapDomain_support_of_injective hφ, Finset.prod_image (fun a _ b _ h => hφ h)]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_apply hφ]`.
+-/
 theorem rename_isomorphism : RenameIso := by
   intro σ τ φ hφ f g
   classical

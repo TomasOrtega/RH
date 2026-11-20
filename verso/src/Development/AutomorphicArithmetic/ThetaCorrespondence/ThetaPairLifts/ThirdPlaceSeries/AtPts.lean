@@ -21,6 +21,9 @@ namespace GlobalTheory.LiftWeightForced
 open Formalism.IndefR.IndefiniteWeightData
 variable (D : D7) (j : Fin D.R.m) (τ : D.what₂.Tau)
 end GlobalTheory.LiftWeightForced
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints.of_forall fun x _ i _ _ _ j τ => GlobalTheory.LiftWeightForced.isLamPrime_lamLdef (Fm.D x i) j τ⟩⟩`.
+-/
 theorem GlobalTheory.LiftWeightForced.atPts_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ (j : Fin (Fm.D x i).R.m) τ,
     Formalism.IndefR.Bridge.IsLamPrime (D := Fm.D x i)
       (Formalism.IndefR.Bridge.lamLdef (D := Fm.D x i) (Formalism.IndefR.Links.Vc (Fm.D x i) j).rank ((j : ℕ) + 1) τ) ((j : ℕ) + 1) τ :=

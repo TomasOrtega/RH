@@ -8,9 +8,17 @@ namespace GlobalTheory.CompanionTheory.CongruenceBasis
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 Zls.irreducible_unif.not_isUnit`.
+-/
 theorem val_unif_lt_one : valuation k (algebraMap 𝒪[k] k (Zls.unif k)) < 1 := by
   exact Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 Zls.irreducible_unif.not_isUnit
 
+/- English proof (translation)
+Set `y : 𝒪[k]` to `⟨x, hx.le⟩`. Establish `hy : ¬ IsUnit y` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 hx`. Establish `hmem : y ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `hy`. Rewrite `hmem` using `[Zls.irreducible_unif.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hmem`.
+
+Establish `hx' : x = algebraMap 𝒪[k] k c * algebraMap 𝒪[k] k (Zls.unif k)`. Rewrite using `[← map_mul, hc]`. Both sides reduce to the same expression. Rewrite using `[hx', map_mul]`. Conclude with `mul_le_of_le_one_left' c.2`.
+-/
 theorem val_le_val_unif (x : k) (hx : valuation k x < 1) :
     valuation k x ≤ valuation k (algebraMap 𝒪[k] k (Zls.unif k)) := by
   let y : 𝒪[k] := ⟨x, hx.le⟩
@@ -24,6 +32,13 @@ theorem val_le_val_unif (x : k) (hx : valuation k x < 1) :
   rw [hx', map_mul]
   exact mul_le_of_le_one_left' c.2
 
+/- English proof (translation)
+Take `⟨h, hker, rfl⟩` from `Subgroup.mem_map.1 hg`. Establish `h1` using `congrArg (fun u : GL (Fin N) (𝒪[k] ⧸ Ideal.span {Zls.unif k ^ m}) => u.1 i j) (MonoidHom.mem_ker.1 hker)`. Establish `h2 : (Ideal.Quotient.mk (Ideal.span {Zls.unif k ^ m})) ((h : Matrix (Fin N) (Fin N) 𝒪[k]) i j - (1 : Matrix (Fin N) (Fin N) 𝒪[k]) i j) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Simplify `h1` using `[Matrix.one_apply, apply_ite]`.
+
+Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h2`. Establish `h3 : ((Matrix.GeneralLinearGroup.map (n` using `Fin N) (algebraMap 𝒪[k] k) h : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j = algebraMap 𝒪[k] k c * algebraMap 𝒪[k] k (Zls.unif k) ^ m := by`. Rewrite using `[← map_pow, ← map_mul, hc, map_sub]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite using `[h3, map_mul]`. Conclude with `mul_le_of_le_one_left' c.2`.
+-/
 theorem val_sub_one_le_of_mem_Km {N m : ℕ} {g : GL (Fin N) k} (hg : g ∈ Zls.Km k N m) (i j : Fin N) :
     valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤
       valuation k (algebraMap 𝒪[k] k (Zls.unif k) ^ m) := by
@@ -46,6 +61,9 @@ theorem val_sub_one_le_of_mem_Km {N m : ℕ} {g : GL (Fin N) k} (hg : g ∈ Zls.
   rw [h3, map_mul]
   exact mul_le_of_le_one_left' c.2
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N U hU h1`. Establish `hne : algebraMap 𝒪[k] k (Zls.unif k) ≠ 0` using `(map_ne_zero_iff (algebraMap 𝒪[k] k) (IsFractionRing.injective 𝒪[k] k)).2 Zls.irreducible_unif.ne_zero`. Take `⟨m, hm, hsub⟩` from `exists_congruence_subset k N (algebraMap 𝒪[k] k (Zls.unif k)) hne val_unif_lt_one val_le_val_unif U (hU.mem_nhds h1)`. Conclude with `⟨m, hm, fun g hg => hsub fun i j => val_sub_one_le_of_mem_Km hg i j⟩`.
+-/
 theorem exists_Km_subset : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (U : Set (GL (Fin N) k)), IsOpen U →
     (1 : GL (Fin N) k) ∈ U → ∃ m : ℕ, 1 ≤ m ∧ (Zls.Km k N m : Set (GL (Fin N) k)) ⊆ U := by

@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.FrameAut
 
+/- English proof (translation)
+Introduce `E _ _ _ n π hπ w hw φ hφ h0 hfix`. Take `⟨σ, -, hloc, hiff⟩` from `GlobalTheory.DefU.exists_locComp_split E n ⟨π, hπ⟩ w hw`. Take `⟨S, hS⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred (hiff.1 ⟨φ, hφ, h0, hfix⟩)`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hw`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV w`.
+
+Establish `hp : Function.Surjective ((cLoc w).comp (locU n w).subtype)` using `fun g => ⟨e.symm g, (he _).symm.trans (e.apply_symm_apply g)⟩`. Use `⟨σ, S, hloc, hS, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SphPar.divInd_dualLab_splitLab E w n k hϖ]`. Conclude with `GlobalTheory.SplitTransfer.heckeVec_eq_of_isCompAlong hπ w (Formalism.UG.Final.GLintComm E w n) _ hp σ.ρ hloc (GlobalTheory.LFun.Tj_mem_hecke hϖ k) (fun v hv hv0 => (hS.2 v hv hv0).2.2.2 ϖ hϖ k hk) hφ fun x hx => hfix x x.2 hx`.
+-/
 theorem exists_locComp_hasSatGL_heckeVec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π →
     ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ φ ∈ π, φ ≠ 0 →
     (∀ x ∈ locU n w, cLoc w x ∈ GlobalTheory.LFun.KGL w n → RU E n x φ = φ) →

@@ -29,13 +29,25 @@ def SimpLab (φ lab : InvFun O) : Prop :=
 
 variable {bar q}
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ h` and use `h.linear`.
+-/
 theorem linOnCells_self (φ : InvFun O) : LinOnCells bar q φ φ := fun _ _ _ _ _ _ _ _ h => h.linear
 
+/- English proof (translation)
+Introduce `_ h` and use `h`.
+-/
 theorem Subordinate.refl (φ : InvFun O) : Subordinate bar q φ φ := fun _ h => h
 
+/- English proof (translation)
+Introduce `χ h` and use `h₁ χ (h₂ χ h)`.
+-/
 theorem Subordinate.trans {φ'' φ' φ : InvFun O} (h₁ : Subordinate bar q φ'' φ') (h₂ : Subordinate bar q φ' φ) :
     Subordinate bar q φ'' φ := fun χ h => h₁ χ (h₂ χ h)
 
+/- English proof (translation)
+The claim follows from `h φ (linOnCells_self φ) X hX m γ hγ`.
+-/
 theorem Subordinate.linearOn {φ' φ : InvFun O} (h : Subordinate bar q φ' φ) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Projective O X] (hX : Module.finrank O X ≤ q) {m : ℕ}
     {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar φ' γ) : φ.LinearOn γ :=
@@ -50,14 +62,23 @@ def zeroFun (O : Type) [CommRing O] : InvFun O where
   inv _ _ _ _ _ := rfl
   zero _ := rfl
 
+/- English proof (translation)
+Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Simplify using `only [InvFun.evalZ, (zeroFun O).eval_eq hr]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem zeroFun_evalZ {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     (β : LinearMap.BilinForm ℤ X) : (zeroFun O).evalZ β = 0 := by
   obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' O X
   simp only [InvFun.evalZ, (zeroFun O).eval_eq hr]
   rfl
 
+/- English proof (translation)
+The claim follows from `linOnCells_self _`.
+-/
 example : LinOnCells id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := linOnCells_self _
 
+/- English proof (translation)
+The claim follows from `Subordinate.refl _`.
+-/
 example : Subordinate id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := Subordinate.refl _
 
 end Inhab

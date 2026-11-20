@@ -14,6 +14,19 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp k _ _ t o₀ β ht φ hφ d f hf`. Use `haveI := GlobalTheory.HTGlue.isArtinianRing_tsze k d`. Establish `hsurj : Function.Surjective (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, by simp⟩`. Establish `htR : spMap (algebraMap k (TrivSqZeroExt k (Fin d → k))) ≫ t = spMap ((algebraMap k (TrivSqZeroExt k (Fin d → k))).comp β)`. Rewrite using `[ht]`.
+
+Conclude with `(GlobalTheory.Cris.spMap_comp _ _).symm`. Establish `ht₀ : t = spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ (spMap (algebraMap k (TrivSqZeroExt k (Fin d → k))) ≫ t)`. Rewrite using `[← Category.assoc, ← GlobalTheory.Cris.spMap_comp]`. Establish `: (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom.comp (algebraMap k (TrivSqZeroExt k (Fin d → k))) = RingHom.id k`. Use extensionality with `a`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `[spMap]`. Establish `h1` using `GlobalTheory.T.crystalGluedHodgeGraphFiltration_hasComplement p D R b N hN hNp k t o₀ β ht φ hφ d f hf`. Establish `h2` using `GlobalTheory.T.mem_hodgeFiltration_iff_reduction_gluedFil_htObject p D R b N hN hNp k t o₀ β ht φ hφ d f hf`.
+
+Establish `h3` using `GlobalTheory.T.crystalGluedHodgeGraphFiltration_order_stable p D R b N hN hNp k t o₀ β ht φ hφ d f hf`. Establish `h4` using `GlobalTheory.T.crystalGluedHodgeGraphFiltration_isotropic_polarisation p D R b N hN hNp k t o₀ β ht φ hφ d f hf`. Establish `h5` using `GlobalTheory.T.crystalGluedHodgeGraphFiltration_lie_condition p D R b N hN hNp k t o₀ β ht φ hφ d f hf`. Establish `key` using `GlobalTheory.T.harrisTaylor_exists_squareZero_lift_of_filtration p D R b N hNp (TrivSqZeroExt k (Fin d → k)) k (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom hsurj (GlobalTheory.FODef.sqZero k (Fin d → k)) ((algebraMap k (TrivSqZeroExt k (Fin d → k))).comp β) (spMap (algebraMap …`. Take `⟨o, m, hm⟩` from `key h1 h2 h3 h4 h5`.
+
+Use `⟨o, m, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hce⟩` from `GlobalTheory.HTGlue.exists_mem_glueFil o₀.A o₀.ab f hx`. Unfold `GlobalTheory.FODef.IsFilLiftV`. Use `⟨e, ?_, hce⟩` and prove the remaining obligations. Rewrite using `[hm]`.
+
+Conclude with `he`.
+-/
 theorem GlobalTheory.UPel.HT.exists_sqZero_lift_realising_ks : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), (∀ j, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) (f j)) → ∃ (o : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (TrivSqZeroExt k (Fin d → k))) ≫ t)) (m : GlobalTheory.UPel.HT.ObjMap o₀ o (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom)), ∀ x ∈ Fil o₀.A, GlobalTheory.FODef.IsFilLiftV m.cart x (LinearMap.pi fun j => f j x) := by
   intro p _ D R _ b N hN hNp k _ _ t o₀ β ht φ hφ d f hf
   haveI := GlobalTheory.HTGlue.isArtinianRing_tsze k d

@@ -53,6 +53,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0`. Establish `hDB : GlobalTheory.GapIn.Hyp` using `GlobalTheory.GapIn.hyp_of_uniqGap GlobalTheory.uniqGap_and_besselOfW.1`. Establish `hBp : BpJoin.ThmBpDS` using `GlobalTheory.discreteSeriesCoef_pointwiseBound`. Take `⟨Cgf, hOB⟩` from `GlobalTheory.AmpTKGapOne.oneBesselTor_of_gapHyp hDB`. Take `⟨Cf, hCf, hFrm⟩` from `GlobalTheory.FrameTurn.frameChange_of_frames 1 Cgf 2 zero_le_one (by norm_num)`.
+
+Take `⟨Cb, Cg₀, hB⟩` from `GlobalTheory.bp_forms_of_gapIn_thmBpDS hDB hBp 1`. Take `⟨Ca, hCa, hAmp⟩` from `GlobalTheory.AmpBesselGap.ampIsBessel hDB Cg cb Cu cT CT C0 1`. Use `⟨max (Ca + max (max 2 Cu) (max CT (1 / 8 + 2 * Cg)) * (Cf + max Cb 0 + Cf * max Cb 0)) (max Cb 0), fun Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hm₀⟩` from `hAmp Cn`. Take `⟨Cs₀, hCs₀⟩` from `hFrm Cn`.
+
+Take `⟨thr, hthr⟩` from `GlobalTheory.Core.Deg.elementary_size_bounds_of_size_hypotheses (max m₀ (max (128 * |max Cg₀ Cs₀|) (200 * |Cn|)))`. Use `⟨thr, fun D large₂ C' Cl hC' hCl hTies hTF => ?_⟩` and prove the remaining obligations. Introduce `hH`. Take `⟨h1000, -, hM, -, hrd, -⟩` from `hthr D large₂ C' Cl Cg cb Cu cT CT hC' hCl hH.1`. Establish `hβ2 : (2 : ℝ) ≤ max (max 2 Cu) (max CT (1 / 8 + 2 * Cg))` using `le_trans (le_max_left _ _) (le_max_left _ _)`.
+
+Establish `hStd : Bridge.StdOfHyp D large₂ C' Cl Cg cb Cu cT CT C0 1 (max Cg₀ Cs₀) (200 * |Cn|) (max (max 2 Cu) (max CT (1 / 8 + 2 * Cg)))` using `stdOfHyp_rec D large₂ C' Cl Cg cb Cu cT CT C0 1 (max Cg₀ Cs₀) (200 * |Cn|) _ (by linarith) zero_le_one hβ2 (le_trans (le_max_right _ _) (le_max_left _ _)) (by rw [mul_one]; exact le_trans (le_max_left _ _) (le_max_right _ _)) (by rw [mul_one]; exact le_trans (le_max_right _ _) (l …`. Rewrite using `[abs_of_nonneg (by positivity)]`. Conclude with `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hM)`. Establish `h47 : OnePlaceEstimates.UniformityTheoremBPrime D 1 Cn (max Cg₀ Cs₀) (200 * |Cn|) (max Cb 0)` using `OnePlaceEstimates.upper_bound_mono_constant D zero_lt_one (le_max_left _ _) ((hB (max Cg₀ Cs₀) (le_max_left _ _)).2.2 D Cn (200 * |Cn|) (mul_le_mul_of_nonneg_left (le_abs_self Cn) (by norm_num)))`. Establish `hFr : Bridge.FrameChange D 1 (max Cg₀ Cs₀) Cn Cf` using `hCs₀ (max Cg₀ Cs₀) (le_max_right _ _) D (Formalism.MainNotions.OnePlaceExpansion.frame_bound_of_bessel_torus D Cgf 2 le_rfl (hOB D))`.
+
+Conclude with `AuxiliaryNormPrimes.plancherelBoundOneParameter_of_uniformity D large₂ C' Cl Cg cb Cu cT CT C0 Cn 1 Ca 1 Cf (max Cg₀ Cs₀) (200 * |Cn|) _ (max Cb 0) _ (hm₀ D large₂ C' Cl h1000 hrd (le_trans (le_max_left _ _) hM) hTies.cdScale_tie) hFr hStd (fun _ => hTF) h47 (by linarith) (le_max …`.
+-/
 theorem ptWide_at_record_gap : ∀ Cg cb Cu cT CT C0 : ℝ, ∃ C : ℝ, ∀ Cn : ℝ, ∃ thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), thr ≤ C' → thr ≤ Cl → Ties D → Formalism.L2.SG.RowsConc.TFrameAt D → VanishingOnXAndXPlusBranching.adm1 D large₂ C' Cl Cg cb Cu cT CT C0 Cn 1 C := by
   intro Cg cb Cu cT CT C0
   have hDB : GlobalTheory.GapIn.Hyp := GlobalTheory.GapIn.hyp_of_uniqGap GlobalTheory.uniqGap_and_besselOfW.1

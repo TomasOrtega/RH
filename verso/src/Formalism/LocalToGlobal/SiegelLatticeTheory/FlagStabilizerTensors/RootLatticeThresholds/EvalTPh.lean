@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.SG.WuDecayPf.coef_integrable_of_weighted X (Formalism.L2.SG.Pf.WuDec.coefWeighted_of_gap X Formalism.L2.SG.Closed.CoefWeightedLoc_holds hG) v`. Establish `hs : Integrable (fun g => star (Formalism.L2.SG.WuDecayPf.coefV X v g)) (Formalism.REAL.muG (X.B.I.ε v))` using `Integrable.mono' h.norm ((Formalism.L2.SG.WuDecayPf.continuous_coefV X v).star).aestronglyMeasurable (Filter.Eventually.of_forall fun g => by rw [norm_star])`. Establish `h2` using `hs.const_mul ((X.dv v : ℝ) : ℂ)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Both sides reduce to the same expression.
+-/
 theorem phLoc_int_of_gap (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D)
     (v : NumberField.InfinitePlace X.B.I.F) :
     Integrable (phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)) := by

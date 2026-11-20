@@ -12,6 +12,9 @@ section Comm
 
 variable {σ τ Kf : Type} [Field Kf]
 
+/- English proof (translation)
+Unfold `oneT`. Distinguish the cases in `hq : q = 0`. Simplify using `[hq]`. Rewrite using `[support_monomial, if_neg hq, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 theorem oneT_monomial (e : Module.End Kf (MvPolynomial τ Kf)) (mo : σ →₀ ℕ) (q : MvPolynomial τ Kf) :
     oneT e (monomial mo q) = monomial mo (e q) := by
   unfold oneT
@@ -19,6 +22,9 @@ theorem oneT_monomial (e : Module.End Kf (MvPolynomial τ Kf)) (mo : σ →₀ �
   · simp [hq]
   · rw [support_monomial, if_neg hq, Finset.sum_singleton, coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Unfold `planeCoeff`. Distinguish the cases in `hq : q = 0`. Simplify using `[hq]`. Rewrite using `[support_monomial, if_neg hq, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 theorem planeCoeff_monomial (nu : τ →₀ ℕ) (mo : σ →₀ ℕ) (q : MvPolynomial τ Kf) :
     planeCoeff nu (monomial mo q) = monomial mo (q.coeff nu) := by
   unfold planeCoeff
@@ -26,10 +32,16 @@ theorem planeCoeff_monomial (nu : τ →₀ ℕ) (mo : σ →₀ ℕ) (q : MvPol
   · simp [hq]
   · rw [support_monomial, if_neg hq, Finset.sum_singleton, coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[X, monomial_mul, one_mul]`.
+-/
 theorem X_mul_monomial' {R : Type} [CommSemiring R] (v : σ) (u : σ →₀ ℕ) (a : R) :
     (X v : MvPolynomial σ R) * monomial u a = monomial (Finsupp.single v 1 + u) a := by
   rw [X, monomial_mul, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[pderiv_monomial, oneT_monomial, oneT_monomial, pderiv_monomial, ← nsmul_eq_mul', ← nsmul_eq_mul', map_nsmul]`. Consider the case `add p q hp hq => simp only [map_add, oneT_add, hp, hq]`.
+-/
 theorem oneT_pderiv (e : Module.End Kf (MvPolynomial τ Kf)) (v : σ) (G : MvPolynomial σ (MvPolynomial τ Kf)) :
     oneT e (pderiv v G) = pderiv v (oneT e G) := by
   induction G using MvPolynomial.induction_on' with
@@ -37,12 +49,18 @@ theorem oneT_pderiv (e : Module.End Kf (MvPolynomial τ Kf)) (v : σ) (G : MvPol
     rw [pderiv_monomial, oneT_monomial, oneT_monomial, pderiv_monomial, ← nsmul_eq_mul', ← nsmul_eq_mul', map_nsmul]
   | add p q hp hq => simp only [map_add, oneT_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a => rw [X_mul_monomial', oneT_monomial, oneT_monomial, X_mul_monomial']`. Consider the case `add p q hp hq => simp only [mul_add, oneT_add, hp, hq]`.
+-/
 theorem oneT_X_mul (e : Module.End Kf (MvPolynomial τ Kf)) (v : σ) (G : MvPolynomial σ (MvPolynomial τ Kf)) :
     oneT e (X v * G) = X v * oneT e G := by
   induction G using MvPolynomial.induction_on' with
   | monomial u a => rw [X_mul_monomial', oneT_monomial, oneT_monomial, X_mul_monomial']
   | add p q hp hq => simp only [mul_add, oneT_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[pderiv_monomial, planeCoeff_monomial, planeCoeff_monomial, pderiv_monomial, ← nsmul_eq_mul', ← nsmul_eq_mul', coeff_smul]`. Consider the case `add p q hp hq => simp only [map_add, planeCoeff_add, hp, hq]`.
+-/
 theorem planeCoeff_pderiv (nu : τ →₀ ℕ) (v : σ) (G : MvPolynomial σ (MvPolynomial τ Kf)) :
     planeCoeff nu (pderiv v G) = pderiv v (planeCoeff nu G) := by
   induction G using MvPolynomial.induction_on' with
@@ -51,12 +69,18 @@ theorem planeCoeff_pderiv (nu : τ →₀ ℕ) (v : σ) (G : MvPolynomial σ (Mv
       coeff_smul]
   | add p q hp hq => simp only [map_add, planeCoeff_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a => rw [X_mul_monomial', planeCoeff_monomial, planeCoeff_monomial, X_mul_monomial']`. Consider the case `add p q hp hq => simp only [mul_add, planeCoeff_add, hp, hq]`.
+-/
 theorem planeCoeff_X_mul (nu : τ →₀ ℕ) (v : σ) (G : MvPolynomial σ (MvPolynomial τ Kf)) :
     planeCoeff nu (X v * G) = X v * planeCoeff nu G := by
   induction G using MvPolynomial.induction_on' with
   | monomial u a => rw [X_mul_monomial', planeCoeff_monomial, planeCoeff_monomial, X_mul_monomial']
   | add p q hp hq => simp only [mul_add, planeCoeff_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u a => rw [oneT_monomial, oneT_monomial, oneT_monomial, Module.End.mul_apply]`. Consider the case `add p q hp hq => simp only [oneT_add, hp, hq]`.
+-/
 theorem oneT_oneT (e T : Module.End Kf (MvPolynomial τ Kf)) (G : MvPolynomial σ (MvPolynomial τ Kf)) :
     oneT e (oneT T G) = oneT (e * T) G := by
   induction G using MvPolynomial.induction_on' with
@@ -70,6 +94,9 @@ section XXgLin
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {r J : ℕ} [NeZero J] [NeZero r]
   (Dt : SignedChainData p O r J) {d : TL J Dt.nL r → ℕ} {th : ∀ j, Fin (Dt.nch j) → ℝ} {thL : ZMod J → Fin r → ℝ}
 
+/- English proof (translation)
+Use `⟨Submodule.add_mem _ hF.1 hG.1, fun rho j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations. Rewrite using `[Fdig_add]`. Conclude with `geZ_mono (mul_valS_add _ _ _ _) (geZ_min (hF.2.1 rho j i) (hG.2.1 rho j i))`. Conclude with `geZ_mono (mul_valS_add _ _ _ _) (geZ_min (hF.2.2 j mm hm) (hG.2.2 j mm hm))`.
+-/
 theorem XXg_add {F G : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)} (hF : XXg Dt d th thL F) (hG : XXg Dt d th thL G) :
     XXg Dt d th thL (F + G) := by
   refine ⟨Submodule.add_mem _ hF.1 hG.1, fun rho j i => ?_, fun j mm hm => ?_⟩
@@ -77,6 +104,9 @@ theorem XXg_add {F G : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)} (hF : XXg Dt
     exact geZ_mono (mul_valS_add _ _ _ _) (geZ_min (hF.2.1 rho j i) (hG.2.1 rho j i))
   · exact geZ_mono (mul_valS_add _ _ _ _) (geZ_min (hF.2.2 j mm hm) (hG.2.2 j mm hm))
 
+/- English proof (translation)
+Use `⟨Submodule.smul_mem _ c hF.1, fun rho j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations. Rewrite using `[Fdig_smul]`. Conclude with `geZ_mono (valS_smul_ge _ _ _ _) (hF.2.1 rho j i)`. Conclude with `geZ_mono (valS_smul_ge _ _ _ _) (hF.2.2 j mm hm)`.
+-/
 theorem XXg_smul (c : KK O) {F : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)} (hF : XXg Dt d th thL F) :
     XXg Dt d th thL (c • F) := by
   refine ⟨Submodule.smul_mem _ c hF.1, fun rho j i => ?_, fun j mm hm => ?_⟩
@@ -84,6 +114,9 @@ theorem XXg_smul (c : KK O) {F : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)} (h
     exact geZ_mono (valS_smul_ge _ _ _ _) (hF.2.1 rho j i)
   · exact geZ_mono (valS_smul_ge _ _ _ _) (hF.2.2 j mm hm)
 
+/- English proof (translation)
+Use `⟨Submodule.zero_mem _, fun rho j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations. Rewrite using `[Fdig_zero, valS_zero_eq_top]`. Conclude with `geZ_top _`. Rewrite using `[valS_zero_eq_top]`. Conclude with `geZ_top _`.
+-/
 theorem XXg_zero : XXg Dt d th thL (0 : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)) := by
   refine ⟨Submodule.zero_mem _, fun rho j i => ?_, fun j mm hm => ?_⟩
   · rw [Fdig_zero, valS_zero_eq_top]; exact geZ_top _
@@ -91,6 +124,9 @@ theorem XXg_zero : XXg Dt d th thL (0 : MvPolynomial (TL J Dt.nL r × Fin r) (KK
 
 end XXgLin
 
+/- English proof (translation)
+Use `max_le (le_trans ha ?_) (max_le (le_trans hb ?_) (le_trans hc ?_))` and prove the remaining obligations. Conclude with `add_le_add_left (le_max_left _ _) _`. Conclude with `add_le_add_left (le_trans (le_max_left _ _) (le_max_right _ _)) _`. Conclude with `add_le_add_left (le_trans (le_max_right _ _) (le_max_right _ _)) _`.
+-/
 theorem max_three_le_add {a b c a' b' c' t : ℝ} (ha : a ≤ a' + t) (hb : b ≤ b' + t) (hc : c ≤ c' + t) :
     max a (max b c) ≤ max a' (max b' c') + t := by
   refine max_le (le_trans ha ?_) (max_le (le_trans hb ?_) (le_trans hc ?_))
@@ -103,6 +139,11 @@ section Th
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (deg : Fin n' → ℕ) (Y : ℝ) (k : ℕ) (mS : ℕ)
   {J : ℕ} (nL : ZMod J → ℕ) (K : ℕ) [NeZero K]
 
+/- English proof (translation)
+Unfold `thStar`. Simplify using `only []`. Apply `max_three_le_add` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `split_ifs <;> linarith`.
+
+Apply the tactic sequence `split_ifs <;> linarith`.
+-/
 theorem thStar_le (ka ka1 : ZMod J → ℕ → Fin K → ℤ) (j : ZMod J) (u : ℕ) (t : ℝ) (ht : 0 ≤ t)
     (h1 : (ka j (u + 1) 0 : ℝ) ≤ ka1 j (u + 1) 0 + t) (h2 : (ka j (u - 1) 0 : ℝ) ≤ ka1 j (u - 1) 0 + t) :
     thStar Fr p deg Y k mS nL K ka j u ≤ thStar Fr p deg Y k mS nL K ka1 j u + t := by
@@ -115,10 +156,16 @@ theorem thStar_le (ka ka1 : ZMod J → ℕ → Fin K → ℤ) (j : ZMod J) (u : 
 
 end Th
 
+/- English proof (translation)
+Unfold `cost1`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem touch_cost_nonneg {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) (s : Fin n') (jz : ℤ) (u : ℕ) : 0 ≤ cost1 Fr s jz u := by
   unfold cost1
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `cost1`. Rewrite using `[if_pos h]`.
+-/
 theorem touch_cost_eq_one {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) (s : Fin n') (jz : ℤ) (u : ℕ) (h : touchT Fr jz u s) :
     cost1 Fr s jz u = 1 := by
   unfold cost1
@@ -142,6 +189,11 @@ variable {n' r : ℕ} [NeZero n'] [NeZero r] (Fr : Frames n' r) (p : ℕ) (deg :
 
 variable {Fr p deg Y k mS K Dt}
 
+/- English proof (translation)
+Use `⟨fun j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations. Use `hT.1 j i` as an intermediate fact. Unfold `thUp`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hT.2 j mm hm` as an intermediate fact.
+
+Unfold `thLUp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thLe_up {sc sL : ℝ} {loss : ℤ → ℕ → ℝ} {s : Fin n'} {ka : ZMod J → ℕ → Fin K → ℤ}
     {th : ∀ j, Fin (Dt.nch j) → ℝ} {thL : ZMod J → Fin r → ℝ}
     (hT : ThLe Fr p deg Y k mS K sc sL (fun jz u => loss jz u + cost1 Fr s jz u) Dt ka th thL) :
@@ -154,6 +206,11 @@ theorem thLe_up {sc sL : ℝ} {loss : ℤ → ℕ → ℝ} {s : Fin n'} {ka : ZM
     unfold thLUp
     linarith
 
+/- English proof (translation)
+Use `⟨fun j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations. Use `hT.1 j i` as an intermediate fact. Use `touch_cost_nonneg Fr s (segZ j) i.val` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hT.2 j mm hm` as an intermediate fact.
+
+Use `touch_cost_nonneg Fr s (segZ j) (Dt.nL j + (r - 1 - mm.val))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thLe_weak {sc sL : ℝ} {loss : ℤ → ℕ → ℝ} {s : Fin n'} {ka : ZMod J → ℕ → Fin K → ℤ}
     {th : ∀ j, Fin (Dt.nch j) → ℝ} {thL : ZMod J → Fin r → ℝ}
     (hT : ThLe Fr p deg Y k mS K sc sL (fun jz u => loss jz u + cost1 Fr s jz u) Dt ka th thL) :
@@ -166,6 +223,9 @@ theorem thLe_weak {sc sL : ℝ} {loss : ℤ → ℕ → ℝ} {s : Fin n'} {ka : 
     have := touch_cost_nonneg Fr s (segZ j) (Dt.nL j + (r - 1 - mm.val))
     linarith
 
+/- English proof (translation)
+Introduce `j mm hm`. Use `h j mm hm` as an intermediate fact. Use `touch_cost_nonneg Fr s (segZ j) (Dt.nL j + (r - 1 - mm.val))` as an intermediate fact. Unfold `thLUp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thLUp_pos {s : Fin n'} {thL : ZMod J → Fin r → ℝ} (h : ∀ j (mm : Fin r), mm.val + 2 ≤ r → 0 < thL j mm) :
     ∀ j (mm : Fin r), mm.val + 2 ≤ r → 0 < thLUp Fr Dt s thL j mm := by
   intro j mm hm
@@ -179,6 +239,23 @@ def TouchAt (Fr : Frames n' r) (Dt : SignedChainData p O r J) (x0 : TL J Dt.nL r
       (x0 ∈ NSet Dt.nL j (u + 1) ∨ ∃ m : Fin r, x0 = ⟨j - 1, Sum.inr m⟩) →
       touchT Fr (segZ j) u (posOf n' (posTL Fr x0))
 
+/- English proof (translation)
+Take `⟨b1, b2, b3, b4, b5, b6⟩` from `hB`. Establish `hr : 0 < r` using `NeZero.pos r`. Use `⟨fun j i => ?_, fun j i hc => ?_, fun j mm => ?_, fun j mm hx => ?_⟩` and prove the remaining obligations. Use `touch_cost_nonneg Fr (posOf n' (posTL Fr x0)) (segZ j) i.val` as an intermediate fact. Unfold `thUp`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : i.val < Dt.nL j + r`. Use `i.isLt` as an intermediate fact. Use `b5 j` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `ht : touchT Fr (segZ j) i.val (posOf n' (posTL Fr x0))`. Apply `hG j i.val hi` to reduce the goal to its premises. Break down `hc with ⟨l, hl, hmem⟩ | hw` into its components or cases. Use `left`. Rewrite `hmem` using `[b6 j i]`.
+
+Break down `hmem with hmem | ⟨l', hl', hlt⟩` into its components or cases. Conclude with `absurd hmem (by simp)`. Establish `: l = l'` using `Sum.inl.inj hl'`. Substitute `this` using the available equality. Conclude with `Or.inl ⟨l, hl, by omega⟩`.
+
+Conclude with `Or.inr hw`. Unfold `thUp`. Rewrite using `[touch_cost_eq_one Fr _ _ _ ht]`. Use `touch_cost_nonneg Fr (posOf n' (posTL Fr x0)) (segZ j) (Dt.nL j + (r - 1 - mm.val))` as an intermediate fact. Unfold `thLUp`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi : Dt.nL j + (r - 1 - mm.val) < Dt.nL j + r` using `by omega`. Establish `ht : touchT Fr (segZ j) (Dt.nL j + (r - 1 - mm.val)) (posOf n' (posTL Fr x0))`. Apply `hG j _ hi` to reduce the goal to its premises. Use `left`.
+
+Break down `hx with ⟨l, hl⟩ | ⟨m', hlt, hm'⟩` into its components or cases. Conclude with `Or.inl ⟨l, hl, by have := l.isLt; omega⟩`. Use `Or.inr ⟨m', hm', ?_⟩` and prove the remaining obligations. Establish `h1 : mm.val < m'.val` using `hlt`. Establish `h2` using `m'.isLt`.
+
+Use linear arithmetic over natural numbers and integers. Unfold `thLUp`. Rewrite using `[touch_cost_eq_one Fr _ _ _ ht]`.
+-/
 theorem thDrop_of (hB : Base Fr p Dt) {x0 : TL J Dt.nL r} (hG : TouchAt Fr Dt x0)
     (th : ∀ j, Fin (Dt.nch j) → ℝ) (thL : ZMod J → Fin r → ℝ) :
     ThDrop Dt x0 th (thUp Fr Dt (posOf n' (posTL Fr x0)) th) thL (thLUp Fr Dt (posOf n' (posTL Fr x0)) thL) := by
@@ -221,6 +298,11 @@ theorem thDrop_of (hB : Base Fr p Dt) {x0 : TL J Dt.nL r} (hG : TouchAt Fr Dt x0
     unfold thLUp
     rw [touch_cost_eq_one Fr _ _ _ ht]
 
+/- English proof (translation)
+Unfold `inN`. Use `split_ifs with h`. Rewrite using `[touch_cost_eq_one Fr _ _ _ (hG j u hu (Or.inl (NSet_mono Dt.nL j hu' h)))]`. Evaluate the numerical expressions. Use `touch_cost_nonneg Fr (posOf n' (posTL Fr x0)) (segZ j) u` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem inN_le_cost {x0 : TL J Dt.nL r} (hG : TouchAt Fr Dt x0) (j : ZMod J) (u u' : ℕ) (hu : u < Dt.nL j + r)
     (hu' : u' ≤ u + 1) : (inN Dt.nL x0 j u' : ℝ) ≤ cost1 Fr (posOf n' (posTL Fr x0)) (segZ j) u := by
   unfold inN
@@ -230,6 +312,17 @@ theorem inN_le_cost {x0 : TL J Dt.nL r} (hG : TouchAt Fr Dt x0) (j : ZMod J) (u 
   · have := touch_cost_nonneg Fr (posOf n' (posTL Fr x0)) (segZ j) u
     simpa using this
 
+/- English proof (translation)
+Establish `hr : 0 < r` using `NeZero.pos r`. Establish `key : ∀ (j : ZMod J) (u : ℕ), u < Dt.nL j + r → thStar Fr p deg Y k mS Dt.nL K ka j u ≤ thStar Fr p deg Y k mS Dt.nL K ka1 j u + cost1 Fr (posOf n' (posTL Fr x0)) (segZ j) u`. Introduce `j u hu`. Apply `thStar_le _ _ _ _ _ _ _ _ _ _ _ _ _ (touch_cost_nonneg _ _ _ _)` to reduce the goal to its premises. Establish `h1 : ((ka j (u + 1) 0 : ℤ) : ℝ) ≤ ((ka1 j (u + 1) 0 + inN Dt.nL x0 j (u + 1) : ℤ) : ℝ)`.
+
+Conclude with `hka j (u + 1)` after adjusting the coercions. Establish `h2` using `inN_le_cost hG j u (u + 1) hu le_rfl`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((ka j (u - 1) 0 : ℤ) : ℝ) ≤ ((ka1 j (u - 1) 0 + inN Dt.nL x0 j (u - 1) : ℤ) : ℝ)`.
+
+Conclude with `hka j (u - 1)` after adjusting the coercions. Establish `h2` using `inN_le_cost hG j u (u - 1) hu (by omega)`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun j i => ?_, fun j mm hm => ?_⟩` and prove the remaining obligations.
+
+Establish `hi : i.val < Dt.nL j + r`. Use `i.isLt` as an intermediate fact. Use `hB.2.2.2.2.1 j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hT.1 j i` as an intermediate fact.
+
+Use `key j i.val hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hT.2 j mm hm` as an intermediate fact. Use `key j (Dt.nL j + (r - 1 - mm.val)) (by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thLe_ka (hB : Base Fr p Dt) {x0 : TL J Dt.nL r} (hG : TouchAt Fr Dt x0) {sc sL : ℝ} {loss : ℤ → ℕ → ℝ}
     {ka ka1 : ZMod J → ℕ → Fin K → ℤ} {th : ∀ j, Fin (Dt.nch j) → ℝ} {thL : ZMod J → Fin r → ℝ}
     (hT : ThLe Fr p deg Y k mS K sc sL (fun jz u => loss jz u + cost1 Fr (posOf n' (posTL Fr x0)) jz u) Dt ka th thL)

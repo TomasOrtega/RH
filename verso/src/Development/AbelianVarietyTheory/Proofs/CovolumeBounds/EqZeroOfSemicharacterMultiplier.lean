@@ -40,23 +40,41 @@ def thetaLevelChar (a b : ι → ℝ) (N : ℕ) (τ : Matrix ι ι ℂ) : Submod
 
 variable {N M : ℕ} {τ : Matrix ι ι ℂ} {a b : ι → ℝ} {f g : (ι → ℂ) → ℂ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_thetaLevel : f ∈ thetaLevel N τ ↔ Differentiable ℂ f ∧ ∀ (n n' : ι → ℤ) (z : ι → ℂ),
     f (z + τ *ᵥ ofIntVec n + ofIntVec n') =
       eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_thetaLevelChar : f ∈ thetaLevelChar a b N τ ↔ Differentiable ℂ f ∧
     ∀ (n n' : ι → ℤ) (z : ι → ℂ), f (z + τ *ᵥ ofIntVec n + ofIntVec n') =
       eC ((N : ℂ) * (ofRealVec a ⬝ᵥ ofIntVec n' - ofRealVec b ⬝ᵥ ofIntVec n)) *
         eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 theorem eC_ne_zero (x : ℂ) : eC x ≠ 0 := Complex.exp_ne_zero _
 
+/- English proof (translation)
+Unfold `eC`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eC_nat_mul (N : ℕ) (x : ℂ) : eC (N * x) = eC x ^ N := by
   unfold eC; rw [← Complex.exp_nat_mul]; congr 1; ring
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofRealVec]`.
+-/
 theorem ofRealVec_zero : ofRealVec (0 : ι → ℝ) = 0 := by ext i; simp [ofRealVec]
 
+/- English proof (translation)
+Establish `h (n n' : ι → ℤ) (z : ι → ℂ) : autFactor a b τ n n' z ^ N = eC ((N : ℂ) * (ofRealVec a ⬝ᵥ ofIntVec n' - ofRealVec b ⬝ᵥ ofIntVec n)) * eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z))`. Rewrite using `[autFactor, mul_pow, ← eC_nat_mul, ← eC_nat_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, mem_thetaLevelChar]`.
+-/
 theorem mem_thetaLevelChar_iff_autFactor : f ∈ thetaLevelChar a b N τ ↔ Differentiable ℂ f ∧
     ∀ (n n' : ι → ℤ) (z : ι → ℂ), f (z + τ *ᵥ ofIntVec n + ofIntVec n') =
       autFactor a b τ n n' z ^ N * f z := by
@@ -66,19 +84,31 @@ theorem mem_thetaLevelChar_iff_autFactor : f ∈ thetaLevelChar a b N τ ↔ Dif
     rw [autFactor, mul_pow, ← eC_nat_mul, ← eC_nat_mul]; congr 2; ring
   simp only [h, mem_thetaLevelChar]
 
+/- English proof (translation)
+Use extensionality with `f`. Simplify using `[mem_thetaLevelChar, mem_thetaLevel, ofRealVec_zero, eC_zero]`.
+-/
 @[simp] theorem thetaLevelChar_zero (N : ℕ) (τ : Matrix ι ι ℂ) :
     thetaLevelChar 0 0 N τ = thetaLevel N τ := by
   ext f
   simp [mem_thetaLevelChar, mem_thetaLevel, ofRealVec_zero, eC_zero]
 
+/- English proof (translation)
+The claim follows from `mem_thetaLevelChar_iff_autFactor.2 ⟨differentiable_const 1, fun _ _ _ => by simp⟩`.
+-/
 theorem one_mem_thetaLevelChar : (1 : (ι → ℂ) → ℂ) ∈ thetaLevelChar a b 0 τ :=
   mem_thetaLevelChar_iff_autFactor.2 ⟨differentiable_const 1, fun _ _ _ => by simp⟩
 
+/- English proof (translation)
+Rewrite `*` using `[mem_thetaLevelChar_iff_autFactor]`. Conclude with `⟨hf.1.mul hg.1, fun n n' z => by simp only [Pi.mul_apply, hf.2, hg.2]; ring⟩`.
+-/
 theorem mul_mem_thetaLevelChar (hf : f ∈ thetaLevelChar a b N τ)
     (hg : g ∈ thetaLevelChar a b M τ) : f * g ∈ thetaLevelChar a b (N + M) τ := by
   rw [mem_thetaLevelChar_iff_autFactor] at *
   exact ⟨hf.1.mul hg.1, fun n n' z => by simp only [Pi.mul_apply, hf.2, hg.2]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact one_mem_thetaLevelChar`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `mul_mem_thetaLevelChar (hF i (Finset.mem_insert_self _ _)) (ih fun j hj => hF j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem prod_mem_thetaLevelChar {κ : Type*} (s : Finset κ) {d : κ → ℕ} {F : κ → (ι → ℂ) → ℂ}
     (hF : ∀ i ∈ s, F i ∈ thetaLevelChar a b (d i) τ) :
     ∏ i ∈ s, F i ∈ thetaLevelChar a b (∑ i ∈ s, d i) τ := by
@@ -90,11 +120,21 @@ theorem prod_mem_thetaLevelChar {κ : Type*} (s : Finset κ) {d : κ → ℕ} {F
     exact mul_mem_thetaLevelChar (hF i (Finset.mem_insert_self _ _))
       (ih fun j hj => hF j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Simplify using `using prod_mem_thetaLevelChar (Finset.range k) (d := fun _ => N) (F := fun _ => f) fun _ _ => hf`.
+-/
 theorem pow_mem_thetaLevelChar (hf : f ∈ thetaLevelChar a b N τ) (k : ℕ) :
     f ^ k ∈ thetaLevelChar a b (k * N) τ := by
   simpa using prod_mem_thetaLevelChar (Finset.range k) (d := fun _ => N) (F := fun _ => f)
     fun _ _ => hf
 
+/- English proof (translation)
+Use `⟨fun z => (HasFDerivAt.finsetProd (g := fun i z => F i (z + u i)) fun i hi => (((hF i hi).1.comp (differentiable_id.add_const (u i))) z).hasFDerivAt).differentiableAt, fun n n' z => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i ∈ s, F i (z + τ *ᵥ ofIntVec n + ofIntVec n' + u i) = eC ((d i : ℂ) * (ofRealVec a ⬝ᵥ ofIntVec n' - ofRealVec b ⬝ᵥ ofIntVec n) + -(d i : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z) - ofIntVec n ⬝ᵥ ((d i : ℂ) • u i)) * F i (z + u i)`. Introduce `i hi`. Rewrite using `[show z + τ *ᵥ ofIntVec n + ofIntVec n' + u i = z + u i + τ *ᵥ ofIntVec n + ofIntVec n' by abel, (hF i hi).2, ← eC_add, dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ x : κ → ℂ, ∏ i ∈ s, eC (x i) = eC (∑ i ∈ s, x i)` using `fun x => by`. Simplify using `only [eC, Finset.mul_sum, Complex.exp_sum]`. Simplify using `only`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_mul_distrib, h2, ← eC_add, Finset.sum_sub_distrib, ← dotProduct_sum, hu, Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul, Finset.sum_neg_distrib]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_translate_mem_thetaLevelChar {κ : Type*} (s : Finset κ) {d : κ → ℕ}
     {F : κ → (ι → ℂ) → ℂ} (hF : ∀ i ∈ s, F i ∈ thetaLevelChar a b (d i) τ) (u : κ → ι → ℂ)
     (hu : ∑ i ∈ s, (d i : ℂ) • u i = 0) :
@@ -143,6 +183,23 @@ private def coeffMap (N : ℕ) (τ : Matrix ι ι ℂ) :
       ← MeasureTheory.integral_const_mul]
     simp only [DimB.Pm, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hT`. Use `set e := Fintype.equivFin ι`. Establish `hall : ∀ m : Fin (Fintype.card ι) → ℤ, (∀ l, 0 ≤ m l ∧ m l < N) → DimB.Av (DimB.Pm (fun z => f.1 (z ∘ e)) m) 0 = 0`. Introduce `m hm`.
+
+Use `set r : Fin (Fintype.card ι) → Fin N := fun l => ⟨(m l).toNat, by have := hm l; omega⟩`. Establish `hm' : (fun l => ((r l : ℕ) : ℤ)) = m`. Use function extensionality and compare the values at `l`. Simplify using `only [r]`. Use `hm l` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `congrFun hT r` as an intermediate fact. Rewrite using `[← hm']`. Conclude with `this`. Use `set n : Fin (Fintype.card ι) → ι → ℤ := fun j => -Pi.single (e.symm j) 1 with hn`.
+
+Establish `h0` using `DimB.four_zero hN (fun z => f.1 (z ∘ e)) (f.2.1.comp (by unfold Function.comp; fun_prop)) (fun l z => ?_) (fun j => (τ *ᵥ ofIntVec (n j)) ∘ e.symm) (fun j => eC (-(N : ℂ) * (ofIntVec (n j) ⬝ᵥ (τ *ᵥ ofIntVec (n j)) / 2))) (fun j z => ?_) hall`. Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Use `congrFun h0 (v ∘ e.symm)` as an intermediate fact. Simplify `this` using `[Function.comp_assoc]`. Use `f.2.2 0 (Pi.single (e.symm l) 1) (z ∘ e)` as an intermediate fact.
+
+Rewrite `this` using `[ofIntVec_zero]`. Simplify using `only [mulVec_zero, add_zero, zero_dotProduct, zero_div, mul_zero, eC_zero, one_mul] at this`. Rewrite using `[← this]`. Use `congrArg f.1 (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[ofIntVec, Pi.single_apply, Equiv.eq_symm_apply]`.
+
+Use `f.2.2 (n j) 0 (z ∘ e)` as an intermediate fact. Rewrite `this` using `[ofIntVec_zero, add_zero]`. Establish `h2 : (z + (τ *ᵥ ofIntVec (n j)) ∘ e.symm) ∘ e = z ∘ e + τ *ᵥ ofIntVec (n j)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Establish `h3 : ofIntVec (n j) ⬝ᵥ (z ∘ e) = -z j`. Simplify using `[hn, ofIntVec, dotProduct, Pi.single_apply]`. Rewrite using `[h2, this, h3, mul_add, eC_add]`. Use `congr 2`. Unfold `eC`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem coeffMap_injective (hN : 0 < N) (τ : Matrix ι ι ℂ) :
     Function.Injective (coeffMap N τ) := by
   classical
@@ -184,10 +241,16 @@ private theorem coeffMap_injective (hN : 0 < N) (τ : Matrix ι ι ℂ) :
     unfold eC
     congr 1; ring
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective _ (coeffMap_injective hN τ)`.
+-/
 theorem finiteDimensional_thetaLevel (hN : 0 < N) (τ : Matrix ι ι ℂ) :
     FiniteDimensional ℂ (thetaLevel N τ) :=
   FiniteDimensional.of_injective _ (coeffMap_injective hN τ)
 
+/- English proof (translation)
+Use `(LinearMap.finrank_le_finrank_of_injective (coeffMap_injective hN τ)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[Module.finrank_fintype_fun_eq_card, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]`.
+-/
 theorem finrank_thetaLevel_le (hN : 0 < N) (τ : Matrix ι ι ℂ) :
     Module.finrank ℂ (thetaLevel N τ) ≤ N ^ Fintype.card ι := by
   refine (LinearMap.finrank_le_finrank_of_injective (coeffMap_injective hN τ)).trans_eq ?_
@@ -214,14 +277,27 @@ def thetaShift (a b : ι → ℝ) (N : ℕ) (τ : Matrix ι ι ℂ) :
     rw [show z + τ *ᵥ ofRealVec a + ofRealVec b - τ *ᵥ ofRealVec a = z + ofRealVec b by abel,
       add_sub_cancel_right, ← mul_assoc, ← eC_add, add_neg_cancel, eC_zero, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaShift_apply (f : (ι → ℂ) → ℂ) (z : ι → ℂ) : thetaShift a b N τ f z =
     eC (N * (ofRealVec a ⬝ᵥ (τ *ᵥ ofRealVec a) / 2 + ofRealVec a ⬝ᵥ (z + ofRealVec b))) *
       f (z + τ *ᵥ ofRealVec a + ofRealVec b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaShift_symm_apply (g : (ι → ℂ) → ℂ) (w : ι → ℂ) : (thetaShift a b N τ).symm g w =
     eC (-(N * (ofRealVec a ⬝ᵥ (τ *ᵥ ofRealVec a) / 2 + ofRealVec a ⬝ᵥ (w - τ *ᵥ ofRealVec a)))) *
       g (w - τ *ᵥ ofRealVec a - ofRealVec b) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← (thetaShift a b N τ).symm_apply_apply f]`. Generalize the expression as in `thetaShift a b N τ f = g at h`. Establish `: (thetaShift a b N τ).symm g = fun w => _` using `funext (thetaShift_symm_apply g)`.
+
+Rewrite using `[this]`. Simplify using `only [eC, dotProduct]`. Use `fun_prop`. Introduce `h`. Establish `: thetaShift a b N τ f = fun w => _` using `funext (thetaShift_apply f)`.
+
+Rewrite using `[this]`. Simplify using `only [eC, dotProduct]`. Use `fun_prop`.
+-/
 theorem differentiable_thetaShift_iff :
     Differentiable ℂ (thetaShift a b N τ f) ↔ Differentiable ℂ f := by
   constructor
@@ -238,6 +314,13 @@ theorem differentiable_thetaShift_iff :
     simp only [eC, dotProduct]
     fun_prop
 
+/- English proof (translation)
+Rewrite using `[mem_thetaLevelChar, mem_thetaLevelChar, differentiable_thetaShift_iff]`. Use `and_congr_right fun _ => forall₂_congr fun n n' => ?_` and prove the remaining obligations. Rewrite using `[← (Equiv.addRight (τ *ᵥ ofRealVec a + ofRealVec b)).forall_congr_right (q := fun z => f (z + τ *ᵥ ofIntVec n + ofIntVec n') = _ * f z)]`. Use `forall_congr' fun z => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addRight, ← add_assoc z]`.
+
+Rewrite using `[thetaShift_apply, thetaShift_apply, show z + τ *ᵥ ofIntVec n + ofIntVec n' + τ *ᵥ ofRealVec a + ofRealVec b = z + τ *ᵥ ofRealVec a + ofRealVec b + τ *ᵥ ofIntVec n + ofIntVec n' by abel, ← mul_right_inj' (eC_ne_zero (N * (ofRealVec a ⬝ᵥ (τ *ᵥ ofRealVec a) / 2 + ofRealVec a ⬝ᵥ (z …`. Use `Eq.congr_right ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc, ← eC_add]`. Use `congr 2`. Simplify using `only [ofRealVec_add, dotProduct_add, add_dotProduct, dot_mulVec_symm hτ (ofIntVec n) (ofRealVec a), dotProduct_comm (ofRealVec b) (ofIntVec n)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaShift_mem_iff (hτ : τ.IsSymm) (a' b' : ι → ℝ) :
     thetaShift a b N τ f ∈ thetaLevelChar (a' + a) (b' + b) N τ ↔
       f ∈ thetaLevelChar a' b' N τ := by
@@ -260,6 +343,11 @@ theorem thetaShift_mem_iff (hτ : τ.IsSymm) (a' b' : ι → ℝ) :
     dot_mulVec_symm hτ (ofIntVec n) (ofRealVec a), dotProduct_comm (ofRealVec b) (ofIntVec n)]
   ring
 
+/- English proof (translation)
+Use extensionality with `g`. Take `⟨f, rfl⟩` from `(thetaShift a b N τ).surjective g`. Use `thetaShift_mem_iff (a := a) (b := b) (N := N) (f := f) hτ 0 0` as an intermediate fact. Rewrite `this` using `[zero_add, zero_add, thetaLevelChar_zero]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.mem_map_equiv _ |>.trans (by simp)`.
+-/
 theorem map_thetaShift_thetaLevel (a b : ι → ℝ) (N : ℕ) (hτ : τ.IsSymm) :
     (thetaLevel N τ).map (thetaShift a b N τ).toLinearMap = thetaLevelChar a b N τ := by
   ext g
@@ -273,26 +361,43 @@ def thetaLevelEquivChar (a b : ι → ℝ) (N : ℕ) (hτ : τ.IsSymm) :
     thetaLevel N τ ≃ₗ[ℂ] thetaLevelChar a b N τ :=
   (thetaShift a b N τ).ofSubmodules _ _ (map_thetaShift_thetaLevel a b N hτ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem thetaLevelEquivChar_apply (hτ : τ.IsSymm) (f : thetaLevel N τ) :
     (thetaLevelEquivChar a b N hτ f : (ι → ℂ) → ℂ) = thetaShift a b N τ f := rfl
 
 def levelTheta (a b : ι → ℝ) (N : ℕ) (τ : Matrix ι ι ℂ) (c : ι → ℤ) (z : ι → ℂ) : ℂ :=
   theta ((fun i => (c i : ℝ) / N) + a) ((N : ℝ) • b) ((N : ℂ) • z) ((N : ℂ) • τ)
 
+/- English proof (translation)
+Simplify using `[levelTheta]`.
+-/
 theorem levelTheta_zero_zero (c : ι → ℤ) (z : ι → ℂ) :
     levelTheta 0 0 N τ c z = theta (fun i => (c i : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) := by
   simp [levelTheta]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofRealVec]`.
+-/
 theorem ofRealVec_natCast_smul (N : ℕ) (b : ι → ℝ) :
     ofRealVec ((N : ℝ) • b) = (N : ℂ) • ofRealVec b := by
   ext i; simp [ofRealVec]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofIntVec]`.
+-/
 theorem ofIntVec_natCast_smul (N : ℕ) (n : ι → ℤ) :
     ofIntVec ((N : ℤ) • n) = (N : ℂ) • ofIntVec n := by
   ext i; simp [ofIntVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `h` using `thetaCharShift_holds ι a ((N : ℝ) • b) (fun i => (c i : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) (hτ.smul _)`. Rewrite `h` using `[zero_add, ofRealVec_zero, add_zero, ofRealVec_natCast_smul]`. Rewrite using `[thetaShift_apply, levelTheta_zero_zero, levelTheta, h, smul_add, smul_add, smul_mulVec]`. Use `congr 2`.
+
+Simplify using `only [dotProduct_add, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaShift_levelTheta (hτ : τ.IsSymm) (c : ι → ℤ) :
     thetaShift a b N τ (levelTheta 0 0 N τ c) = levelTheta a b N τ c := by
   funext z
@@ -304,17 +409,29 @@ theorem thetaShift_levelTheta (hτ : τ.IsSymm) (c : ι → ℤ) :
   simp only [dotProduct_add, dotProduct_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `have h : IsSiegel τ := ⟨hτ.1, hτ.2⟩ ⟨(h.natCast_smul hN).1, (h.natCast_smul hN).2⟩`.
+-/
 theorem smul_mem_siegelH (hτ : τ ∈ SiegelH ι) (hN : 0 < N) : (N : ℂ) • τ ∈ SiegelH ι :=
   have h : IsSiegel τ := ⟨hτ.1, hτ.2⟩
   ⟨(h.natCast_smul hN).1, (h.natCast_smul hN).2⟩
 
+/- English proof (translation)
+The claim follows from `IsSiegel.differentiable_riemannTheta (Ω := τ) ⟨hτ.1, hτ.2⟩ a b`.
+-/
 theorem differentiable_theta (hτ : τ ∈ SiegelH ι) (a b : ι → ℝ) :
     Differentiable ℂ fun z => theta a b z τ :=
   IsSiegel.differentiable_riemannTheta (Ω := τ) ⟨hτ.1, hτ.2⟩ a b
 
+/- English proof (translation)
+The claim follows from `IsSiegel.riemannTheta_ne_zero (Ω := τ) ⟨hτ.1, hτ.2⟩ a b`.
+-/
 theorem theta_ne_zero (hτ : τ ∈ SiegelH ι) (a b : ι → ℝ) : (fun z => theta a b z τ) ≠ 0 :=
   IsSiegel.riemannTheta_ne_zero (Ω := τ) ⟨hτ.1, hτ.2⟩ a b
 
+/- English proof (translation)
+Introduce `h`. Use `theta_ne_zero (smul_mem_siegelH hτ hN) ((fun i => (c i : ℝ) / N) + a) ((N : ℝ) • b) (funext fun w => ?_)` and prove the remaining obligations. Use `congrFun h ((N : ℂ)⁻¹ • w)` as an intermediate fact. Rewrite `this` using `[levelTheta, smul_inv_smul₀ (by exact_mod_cast hN.ne')]`. Then use the resulting hypothesis.
+-/
 theorem levelTheta_ne_zero (hτ : τ ∈ SiegelH ι) (hN : 0 < N) (c : ι → ℤ) :
     levelTheta a b N τ c ≠ 0 := by
   intro h
@@ -323,6 +440,13 @@ theorem levelTheta_ne_zero (hτ : τ ∈ SiegelH ι) (hN : 0 < N) (c : ι → �
   have := congrFun h ((N : ℂ)⁻¹ • w)
   rwa [levelTheta, smul_inv_smul₀ (by exact_mod_cast hN.ne')] at this
 
+/- English proof (translation)
+Use `⟨(differentiable_theta (smul_mem_siegelH hτ hN) _ _).comp (differentiable_id.const_smul (N : ℂ)), fun n n' z => ?_⟩` and prove the remaining obligations. Establish `h` using `thetaQuasiPeriod_holds ι ((fun i => (c i : ℝ) / N) + a) ((N : ℝ) • b) ((N : ℂ) • z) ((N : ℂ) • τ) n ((N : ℤ) • n') (hτ.1.smul _)`. Rewrite `h` using `[ofIntVec_natCast_smul, smul_mulVec, ← smul_add, ← smul_add]`. Rewrite using `[levelTheta, h, levelTheta, autFactor, ← eC_add, ← eC_add]`. Use `congr 1`.
+
+Use `eC_eq_of_int _ _ (c ⬝ᵥ n') ?_` and prove the remaining obligations. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h1 : (N : ℂ) * (ofRealVec (fun i => (c i : ℝ) / N) ⬝ᵥ ofIntVec n') = ((c ⬝ᵥ n' : ℤ) : ℂ)`. Simplify using `only [dotProduct, ofRealVec, ofIntVec, Finset.mul_sum]`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by field_simp`. Rewrite using `[← h1]`. Simplify using `only [ofIntVec_natCast_smul, ofRealVec_natCast_smul, ofRealVec_add, smul_mulVec, add_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levelTheta_mem (hτ : τ ∈ SiegelH ι) (hN : 0 < N) (c : ι → ℤ) :
     levelTheta a b N τ c ∈ thetaLevelChar a b N τ := by
   refine ⟨(differentiable_theta (smul_mem_siegelH hτ hN) _ _).comp
@@ -343,10 +467,18 @@ theorem levelTheta_mem (hτ : τ ∈ SiegelH ι) (hN : 0 < N) (c : ι → ℤ) :
     add_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `thetaLevelChar_zero N τ ▸ levelTheta_mem hτ hN c`.
+-/
 theorem levelTheta_zero_zero_mem (hτ : τ ∈ SiegelH ι) (hN : 0 < N) (c : ι → ℤ) :
     levelTheta 0 0 N τ c ∈ thetaLevel N τ :=
   thetaLevelChar_zero N τ ▸ levelTheta_mem hτ hN c
 
+/- English proof (translation)
+Establish `h` using `thetaQuasiPeriod_holds ι (fun i => (c i : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) 0 m (hτ.smul _)`. Rewrite using `[levelTheta_zero_zero, levelTheta_zero_zero, smul_add, smul_inv_smul₀ (by exact_mod_cast hN.ne')]`. Rewrite `h` using `[autFactor, ofIntVec_zero]`. Simplify using `only [mulVec_zero, add_zero, dotProduct_zero, zero_dotProduct, sub_zero, neg_zero, zero_div, eC_zero, mul_one] at h`. Rewrite using `[h]`.
+
+Use `congr 2`. Simplify using `only [dotProduct, ofRealVec, ofIntVec]`. Use `push_cast`. Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem levelTheta_add_div (hτ : τ.IsSymm) (hN : 0 < N) (c m : ι → ℤ) (z : ι → ℂ) :
     levelTheta 0 0 N τ c (z + (N : ℂ)⁻¹ • ofIntVec m) =
       eC (((c ⬝ᵥ m : ℤ) : ℂ) / N) * levelTheta 0 0 N τ c z := by
@@ -364,6 +496,11 @@ theorem levelTheta_add_div (hτ : τ.IsSymm) (hN : 0 < N) (c m : ι → ℤ) (z 
   rw [Finset.sum_div]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h2 : (p : ℂ) = q + N * k`. Establish `h3 : (p : ℂ) / N = q / N + k` using `mul_left_cancel₀ Complex.two_pi_I_ne_zero (by rw [hk]; ring)`. Clear denominators, using `at h3` for the nonvanishing conditions.
+
+Conclude with `h3`. Establish `h4 : p = q + N * k` using `by exact_mod_cast h2`. Simplify using `[h4]`.
+-/
 theorem intCast_zmod_eq_of_eC_eq (hN : 0 < N) {p q : ℤ} (h : eC (p / N) = eC (q / N)) :
     (p : ZMod N) = q := by
   obtain ⟨k, hk⟩ := Complex.exp_eq_exp_iff_exists_int.1 h
@@ -376,6 +513,15 @@ theorem intCast_zmod_eq_of_eC_eq (hN : 0 < N) {p q : ℤ} (h : eC (p / N) = eC (
   have h4 : p = q + N * k := by exact_mod_cast h2
   simp [h4]
 
+/- English proof (translation)
+It suffices to establish `h : LinearIndependent ℂ fun k => levelTheta 0 0 N τ (r k) by`. Simplify `h.map' (thetaShift a b N τ).toLinearMap (LinearEquiv.ker _)` using `only [Function.comp_def, LinearEquiv.coe_coe, thetaShift_levelTheta hτ.1]`. Set `χ : κ → Multiplicative (ι → ℤ) →* ℂ` to `fun k => { toFun := fun m => eC (((r k ⬝ᵥ m.toAdd : ℤ) : ℂ) / N) map_one' := by simp [eC_zero] map_mul' := fun m m' => by simp [dotProduct_add, add_div, eC_add] }`. Establish `hχ : Function.Injective χ` using `fun k k' h => hr (funext fun i => by`. Use `DFunLike.congr_fun h (Multiplicative.ofAdd (Pi.single i 1))` as an intermediate fact.
+
+Simplify using `only [χ, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd, dotProduct_single, mul_one] at this`. Conclude with `intCast_zmod_eq_of_eC_eq hN this)`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative (ι → ℤ)) ℂ).comp χ hχ`. Rewrite `hli`, the goal using `[linearIndependent_iff']`. Introduce `s w hw k hk`.
+
+Assume the negation of the conclusion as `hk0`. Use `levelTheta_ne_zero (a := 0) (b := 0) hτ hN (r k) (funext fun z => ?_)` and prove the remaining obligations. Use `hli s (fun k => w k * levelTheta 0 0 N τ (r k) z) (funext fun m => ?_) k hk` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left hk0`. Use `congrFun hw (z + (N : ℂ)⁻¹ • ofIntVec m.toAdd)` as an intermediate fact.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, levelTheta_add_div hτ.1 hN, Pi.zero_apply] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Function.comp_apply, χ, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem linearIndependent_levelTheta (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     {r : κ → ι → ℤ} (hr : Function.Injective fun k i => (r k i : ZMod N)) :
     LinearIndependent ℂ fun k => levelTheta a b N τ (r k) := by
@@ -406,11 +552,19 @@ theorem linearIndependent_levelTheta (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ 
     rw [← this]
     exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+The claim follows from `have := finiteDimensional_thetaLevel hN τ (thetaLevelEquivChar a b N hτ).finiteDimensional`.
+-/
 theorem finiteDimensional_thetaLevelChar (hτ : τ.IsSymm) (hN : 0 < N) :
     FiniteDimensional ℂ (thetaLevelChar a b N τ) :=
   have := finiteDimensional_thetaLevel hN τ
   (thetaLevelEquivChar a b N hτ).finiteDimensional
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Use `finiteDimensional_thetaLevelChar (a := a) (b := b) hτ.1 hN` as an intermediate fact. Use `le_antisymm ((thetaLevelEquivChar a b N hτ.1).finrank_eq ▸ finrank_thetaLevel_le hN τ) ?_` and prove the remaining obligations. Establish `h` using `linearIndependent_levelTheta (a := a) (b := b) hτ hN (r := fun (c : ι → ZMod N) i => ((c i).val : ℤ)) (fun c c' h => by simpa using h)`. Establish `h' : LinearIndependent ℂ fun c : ι → ZMod N => (⟨_, levelTheta_mem hτ hN fun i => ((c i).val : ℤ)⟩ : thetaLevelChar a b N τ)` using `LinearIndependent.of_comp (thetaLevelChar a b N τ).subtype h`.
+
+Simplify using `using h'.fintype_card_le_finrank`.
+-/
 theorem finrank_thetaLevelChar (hτ : τ ∈ SiegelH ι) (hN : 0 < N) :
     Module.finrank ℂ (thetaLevelChar a b N τ) = N ^ Fintype.card ι := by
   classical
@@ -424,10 +578,18 @@ theorem finrank_thetaLevelChar (hτ : τ ∈ SiegelH ι) (hN : 0 < N) :
     LinearIndependent.of_comp (thetaLevelChar a b N τ).subtype h
   simpa using h'.fintype_card_le_finrank
 
+/- English proof (translation)
+The claim follows from `thetaLevelChar_zero N τ ▸ finrank_thetaLevelChar hτ hN`.
+-/
 theorem finrank_thetaLevel (hτ : τ ∈ SiegelH ι) (hN : 0 < N) :
     Module.finrank ℂ (thetaLevel N τ) = N ^ Fintype.card ι :=
   thetaLevelChar_zero N τ ▸ finrank_thetaLevelChar hτ hN
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Use `finiteDimensional_thetaLevelChar (a := a) (b := b) hτ.1 hN` as an intermediate fact. Set `e` to `Equiv.ofBijective _ hr`. Set `_ : Fintype κ` to `Fintype.ofEquiv _ e.symm`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `levelTheta_mem hτ hN _`. Rewrite using `[finrank_span_eq_card (linearIndependent_levelTheta hτ hN hr.1), finrank_thetaLevelChar hτ hN, Fintype.card_congr e]`. Simplify using the standard rewrite rules.
+-/
 theorem span_levelTheta (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     {r : κ → ι → ℤ} (hr : Function.Bijective fun k i => (r k i : ZMod N)) :
     Submodule.span ℂ (Set.range fun k => levelTheta a b N τ (r k)) = thetaLevelChar a b N τ := by
@@ -449,6 +611,9 @@ def thetaLevelCharBasis (a b : ι → ℝ) (hτ : τ ∈ SiegelH ι) (hN : 0 < N
   (Module.Basis.span (linearIndependent_levelTheta hτ hN hr.1)).map
     (LinearEquiv.ofEq _ _ (span_levelTheta hτ hN hr))
 
+/- English proof (translation)
+Simplify using `[thetaLevelCharBasis]`.
+-/
 @[simp] theorem thetaLevelCharBasis_apply (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     {r : κ → ι → ℤ} (hr : Function.Bijective fun k i => (r k i : ZMod N)) (k : κ) :
     (thetaLevelCharBasis a b hτ hN hr k : (ι → ℂ) → ℂ) = levelTheta a b N τ (r k) := by
@@ -459,6 +624,9 @@ def thetaLevelBasis (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     Module.Basis κ ℂ (thetaLevel N τ) :=
   (thetaLevelCharBasis 0 0 hτ hN hr).map (LinearEquiv.ofEq _ _ (thetaLevelChar_zero N τ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[thetaLevelBasis, levelTheta_zero_zero]`.
+-/
 @[simp] theorem thetaLevelBasis_apply (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
     {r : κ → ι → ℤ} (hr : Function.Bijective fun k i => (r k i : ZMod N)) (k : κ) :
     (thetaLevelBasis hτ hN hr k : (ι → ℂ) → ℂ) =
@@ -468,6 +636,11 @@ def thetaLevelBasis (hτ : τ ∈ SiegelH ι) (hN : 0 < N) {κ : Type*}
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Use `⟨fun c c' h => funext fun i => Fin.ext ?_, fun c => ⟨fun i => ⟨(c i).val, ZMod.val_lt _⟩, ?_⟩⟩` and prove the remaining obligations. Use `congrArg ZMod.val (congrFun h i)` as an intermediate fact. Simplify `this` using `[ZMod.val_natCast, Nat.mod_eq_of_lt (Fin.is_lt _)]`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem bijective_fin_zmod (hN : 0 < N) :
     Function.Bijective fun (c : ι → Fin N) i => ((((c i : ℕ) : ℤ)) : ZMod N) := by
   have : NeZero N := ⟨hN.ne'⟩
@@ -476,21 +649,39 @@ theorem bijective_fin_zmod (hN : 0 < N) :
     simpa [ZMod.val_natCast, Nat.mod_eq_of_lt (Fin.is_lt _)] using this
   · funext i; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [levelTheta, Nat.cast_one, one_smul, Pi.zero_apply, Int.cast_zero, zero_div]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem levelTheta_one : levelTheta a b 1 τ 0 = fun z => theta a b z τ := by
   funext z
   simp only [levelTheta, Nat.cast_one, one_smul, Pi.zero_apply, Int.cast_zero, zero_div]
   congr 1
   funext i; simp
 
+/- English proof (translation)
+The claim follows from `levelTheta_one (a := a) (b := b) (τ := τ) ▸ levelTheta_mem hτ one_pos 0`.
+-/
 theorem theta_mem_thetaLevelChar_one (hτ : τ ∈ SiegelH ι) :
     (fun z => theta a b z τ) ∈ thetaLevelChar a b 1 τ :=
   levelTheta_one (a := a) (b := b) (τ := τ) ▸ levelTheta_mem hτ one_pos 0
 
+/- English proof (translation)
+Rewrite using `[← span_levelTheta hτ one_pos (r := fun _ : Unit => 0) ⟨fun _ _ _ => rfl, fun c => ⟨(), Subsingleton.elim _ _⟩⟩, levelTheta_one, Set.range_const]`.
+-/
 theorem thetaLevelChar_one (hτ : τ ∈ SiegelH ι) :
     thetaLevelChar a b 1 τ = Submodule.span ℂ {fun z => theta a b z τ} := by
   rw [← span_levelTheta hτ one_pos (r := fun _ : Unit => 0)
     ⟨fun _ _ _ => rfl, fun c => ⟨(), Subsingleton.elim _ _⟩⟩, levelTheta_one, Set.range_const]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `Function.ne_iff.1 hf`. Establish `h1` using `h (n + m) (n' + m') z`. Rewrite using `[show z + τ *ᵥ ofIntVec (n + m) + ofIntVec (n' + m') = z + τ *ᵥ ofIntVec m + ofIntVec m' + τ *ᵥ ofIntVec n + ofIntVec n' by`. Rewrite using `[ofIntVec_add, ofIntVec_add, mulVec_add]`. Use the proof step `abel, h, h] at h1`.
+
+Establish `h2 : eC (-(N : ℂ) * (ofIntVec (n + m) ⬝ᵥ (τ *ᵥ ofIntVec (n + m)) / 2 + ofIntVec (n + m) ⬝ᵥ z)) = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ (z + τ *ᵥ ofIntVec m + ofIntVec m'))) * eC (-(N : ℂ) * (ofIntVec m ⬝ᵥ (τ *ᵥ ofIntVec m) / 2 + ofIntVec m ⬝ᵥ z))`. Rewrite using `[← eC_add]`. Use `eC_eq_of_int _ _ (N * (n ⬝ᵥ m')) ?_` and prove the remaining obligations. Establish `hnm : ((n ⬝ᵥ m' : ℤ) : ℂ) = ofIntVec n ⬝ᵥ ofIntVec m'` using `by simp [dotProduct, ofIntVec]`. Rewrite using `[Int.cast_mul, hnm]`.
+
+Simplify using `only [ofIntVec_add, mulVec_add, dotProduct_add, add_dotProduct, dot_mulVec_symm hτ (ofIntVec n) (ofIntVec m)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `mul_right_cancel₀ (mul_ne_zero (eC_ne_zero (-(N : ℂ) * (ofIntVec (n + m) ⬝ᵥ (τ *ᵥ ofIntVec (n + m)) / 2 + ofIntVec (n + m) ⬝ᵥ z))) hz) ?_` and prove the remaining obligations. Rewrite `h1`, the goal using `[h2]`.
+
+Take the linear combination `-h1`.
+-/
 theorem multiplier_add_of_ne_zero (hτ : τ.IsSymm) {χ : (ι → ℤ) → (ι → ℤ) → ℂ} (hf : f ≠ 0)
     (h : ∀ (n n' : ι → ℤ) (z : ι → ℂ), f (z + τ *ᵥ ofIntVec n + ofIntVec n') = χ n n' *
       eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z)
@@ -517,6 +708,27 @@ theorem multiplier_add_of_ne_zero (hτ : τ.IsSymm) {χ : (ι → ℤ) → (ι �
   rw [h2] at h1 ⊢
   linear_combination -h1
 
+/- English proof (translation)
+Establish `key : ∀ β : (ι → ℤ) → ℂ, (∀ n m, β (n + m) = β n * β m) → (∀ n, β n = 1 ∨ β n = -1) → ∃ p : ι → ℤ, ∀ n, β n = eC (ofRealVec (fun i => (p i : ℝ) / 2) ⬝ᵥ ofIntVec n)`. Introduce `β hβ hs`. Establish `h0 : β 0 = 1`. Use `hβ 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Break down `hs 0 with h | h` into its components or cases. Conclude with `h`. Rewrite `this` using `[h]`. Evaluate the numerical expressions using `at this`. Apply the tactic sequence `have hne : ∀ n, β n ≠ 0 := fun n => by rcases hs n with h | h <;> simp [h]`.
+
+Establish `hp : ∀ i, ∃ k : ℤ, β (Pi.single i 1) = eC ((k : ℂ) / 2)` using `fun i => by`. Break down `hs (Pi.single i 1) with h | h` into its components or cases. Conclude with `⟨0, by simp [h, eC_zero]⟩`. Conclude with `⟨-1, by simpa [h] using (eC_neg_half_int 1).symm⟩`. Use `choose p hp using hp`.
+
+Use `⟨p, fun n => ?_⟩` and prove the remaining obligations. Establish `hsingle : ∀ i (k : ℤ), β (Pi.single i k) = eC ((p i : ℂ) / 2 * k)` using `fun i k => by`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp [h0, eC_zero]`. Consider the case `succ k ih => rw [Pi.single_add, hβ, ih, hp, ← eC_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred k ih`. Use `mul_right_cancel₀ (hne (Pi.single i 1)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hβ, ← Pi.single_add, sub_add_cancel, ih, hp, ← eC_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `n using Pi.single_induction with`.
+
+Consider the case `zero => simp [h0, ofIntVec_zero, eC_zero]`. Consider the case `add n m hn hm => rw [hβ, hn, hm, ofIntVec_add, dotProduct_add, eC_add]`. Consider the case `single i k`. Rewrite using `[hsingle]`. Use `congr 1`.
+
+Simplify using `[dotProduct, ofIntVec, ofRealVec, Pi.single_apply]`. Take `⟨p, hp⟩` from `key (α 0) (fun n m => by simpa using hα 0 n 0 m) (hs 0)`. Take `⟨q, hq⟩` from `key (α · 0) (fun n m => by simpa using hα n 0 m 0) (hs · 0)`. Use `⟨p, -q, fun n n' => ?_⟩` and prove the remaining obligations. Establish `h` using `hα n 0 0 n'`.
+
+Rewrite `h` using `[add_zero, zero_add, hp, hq, ← eC_add]`. Rewrite using `[h]`. Use `congr 1`. Establish `: ofRealVec (fun i => (((-q) i : ℤ) : ℝ) / 2) = -ofRealVec (fun i => (q i : ℝ) / 2)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[ofRealVec, neg_div]`. Rewrite using `[this, neg_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_half_char_of_sign {α : (ι → ℤ) → (ι → ℤ) → ℂ}
     (hα : ∀ n n' m m', α (n + m) (n' + m') = α n n' * α m m')
     (hs : ∀ n n', α n n' = 1 ∨ α n n' = -1) :
@@ -564,6 +776,9 @@ theorem exists_half_char_of_sign {α : (ι → ℤ) → (ι → ℤ) → ℂ}
     funext i; simp [ofRealVec, neg_div]
   rw [this, neg_dotProduct]; ring
 
+/- English proof (translation)
+Rewrite using `[finrank_thetaLevel ⟨isSiegel_example.1, isSiegel_example.2⟩ (by norm_num)]`. Simplify using the standard rewrite rules.
+-/
 example : Module.finrank ℂ (thetaLevel 3 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I]) = 9 := by
   rw [finrank_thetaLevel ⟨isSiegel_example.1, isSiegel_example.2⟩ (by norm_num)]
   simp

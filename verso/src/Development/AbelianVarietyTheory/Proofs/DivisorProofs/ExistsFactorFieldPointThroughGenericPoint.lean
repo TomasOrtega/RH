@@ -6,6 +6,31 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `hI` using `M.integral`. Establish `hdom` using `M.dominant`. Establish `hsub : ∀ (K : Type) [Field K] (a b : Sp K), a = b` using `fun K _ a b => PrimeSpectrum.ext (by haveI := a.isPrime; haveI := b.isPrime; rw [Ideal.eq_bot_of_prime a.asIdeal, Ideal.eq_bot_of_prime b.asIdeal])`. Set `p : Sp L` to `IsLocalRing.closedPoint L`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y p) (U := ⊤) trivial`.
+
+Establish `hyV : Set.range y ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hsub L z p]`. Conclude with `hxV`.
+
+Take `⟨q, hq⟩` from `M.gp.denseRange.exists_mem_open V.isOpen ⟨y p, hxV⟩`. Establish `hgV : Set.range M.gp ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hsub (FractionRing R) z q]`.
+
+Conclude with `hq`. Use `haveI : Nonempty V := ⟨⟨y p, hxV⟩⟩`. Use `haveI : IsDomain Γ(M.S, V) := IsIntegral.component_integral V`. Use `set yV := IsOpenImmersion.lift hV.fromSpec y hyV with hyVdef`. Use `set gV := IsOpenImmersion.lift hV.fromSpec M.gp hgV with hgVdef`.
+
+Establish `hyf : yV ≫ hV.fromSpec = y` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hgf : gV ≫ hV.fromSpec = M.gp` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨by', hby⟩` from `Spec.map_surjective yV`. Take `⟨bg, hbg⟩` from `Spec.map_surjective gV`. Take `⟨c, hc⟩` from `Spec.map_surjective (hV.fromSpec ≫ M.π)`.
+
+Establish `hcy : by'.hom.comp c.hom = ρ`. Establish `e : Spec.map (c ≫ by') = Spec.map (CommRingCat.ofHom ρ)`. Rewrite using `[Spec.map_comp, hby, hc, ← Category.assoc, hyf, hy]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `hcg : bg.hom.comp c.hom = algebraMap R (FractionRing R)`.
+
+Establish `e : Spec.map (c ≫ bg) = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`. Rewrite using `[Spec.map_comp, hbg, hc, ← Category.assoc, hgf, M.gp_π]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `hdV : IsDominant gV` using `by haveI : IsDominant (gV ≫ hV.fromSpec) := by rw [hgf]; exact hdom`. Conclude with `IsDominant.of_comp_of_isOpenImmersion gV hV.fromSpec`.
+
+Establish `hinj : Function.Injective bg.hom`. Rewrite `hdV` using `[← hbg]`. Establish `h` using `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical bg.hom).1 hdV.denseRange`. Rewrite `h` using `[nilradical_eq_zero]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).2 (le_bot_iff.1 h)`.
+
+Set `ga : FractionRing R →+* L` to `IsFractionRing.lift hρ`. Establish `hga : ∀ r, ga (algebraMap R _ r) = ρ r` using `IsFractionRing.lift_algebraMap hρ`. Establish `key : ∀ b, by'.hom b = ga (bg.hom b)`. Introduce `b`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) (bg.hom b)`.
+
+Establish `hs0 : ρ s ≠ 0` using `(map_ne_zero_iff ρ hρ).2 (nonZeroDivisors.ne_zero s.2)`. Establish `hcs : bg.hom (c.hom s) = algebraMap R (FractionRing R) s` using `RingHom.congr_fun hcg s`. Establish `hcr : bg.hom (c.hom r) = algebraMap R (FractionRing R) r` using `RingHom.congr_fun hcg r`. Establish `h1 : c.hom s * b = c.hom r` using `hinj (by`. Rewrite using `[map_mul, hcs, hcr, ← hrs]`.
+
+Conclude with `IsLocalization.mk'_spec' (FractionRing R) r s)`. Establish `h2` using `congrArg by'.hom h1`. Establish `hys : by'.hom (c.hom s) = ρ s` using `RingHom.congr_fun hcy s`. Establish `hyr : by'.hom (c.hom r) = ρ r` using `RingHom.congr_fun hcy r`. Rewrite `h2` using `[map_mul, hys, hyr]`.
+
+Rewrite using `[← hrs, IsFractionRing.lift_mk', eq_div_iff hs0, mul_comm]`. Conclude with `h2`. Use `⟨ga, hga, ?_⟩` and prove the remaining obligations. Establish `e : by' = bg ≫ CommRingCat.ofHom ga` using `by ext b; exact key b`. Rewrite using `[← hyf, ← hby, e, Spec.map_comp, Category.assoc, hbg, hgf]`.
+-/
 theorem Modif.factor_gp (R : Type) [CommRing R] [IsDomain R] (M : Modif R) (L : Type) [Field L] (ρ : R →+* L)
     (y : Sp L ⟶ M.S) (hρ : Function.Injective ρ) (hy : y ≫ M.π = spMap ρ) :
     ∃ ga : FractionRing R →+* L, (∀ r, ga (algebraMap R _ r) = ρ r) ∧ y = spMap ga ≫ M.gp := by

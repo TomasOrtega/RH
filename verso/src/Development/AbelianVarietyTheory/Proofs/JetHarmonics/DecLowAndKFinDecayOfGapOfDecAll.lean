@@ -11,6 +11,13 @@ namespace GlobalTheory.DecTransport
 open Matrix Finset Formalism.FourierDecayAlt.ThreeDimData in
 open scoped InnerProductSpace in
 
+/- English proof (translation)
+Unfold `GlobalTheory.Count.decE`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hs : 1 ≤ Real.sqrt (q : ℝ)` using `Real.one_le_sqrt.mpr (by exact_mod_cast hq)`. Establish `key : d / Real.sqrt q - min (2 * d ^ 2) (d / Real.sqrt q) ≤ 1`.
+
+Break down `le_total (2 * d ^ 2) (d / Real.sqrt q) with hm | hm` into its components or cases. Rewrite using `[min_eq_left hm]`. Establish `: d / Real.sqrt q ≤ d` using `div_le_self hd hs`. Use polynomial arithmetic with `[sq_nonneg (d - 1 / 4)]`. Rewrite using `[min_eq_right hm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : -(h / (8 * Real.sqrt q)) * d = -(h / 8) * (d / Real.sqrt q)` using `by ring`. Rewrite using `[e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left key (by positivity : (0 : ℝ) ≤ h / 8)]`.
+-/
 lemma decE_le {q : ℕ} (hq : 1 ≤ q) {h d : ℝ} (hh : 0 ≤ h) (hd : 0 ≤ d) :
     GlobalTheory.Count.decE q h d ≤ Real.exp (h / 8) * Real.exp (-(h / (8 * Real.sqrt q)) * d) := by
   unfold GlobalTheory.Count.decE
@@ -28,12 +35,22 @@ lemma decE_le {q : ℕ} (hq : 1 ≤ q) {h d : ℝ} (hh : 0 ≤ h) (hd : 0 ≤ d)
   rw [e]
   nlinarith [mul_le_mul_of_nonneg_left key (by positivity : (0 : ℝ) ≤ h / 8)]
 
+/- English proof (translation)
+Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Conclude with `⟨Matrix.nonsing_inv_mul P hd, Matrix.mul_nonsing_inv P hd⟩`.
+-/
 private lemma inv_mul_and_mul_inv_of_isCayleyU {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hP : PI.UpqRep.IsCayleyU k r ε P) :
     P⁻¹ * P = 1 ∧ P * P⁻¹ = 1 := by
   have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP.1.1
   exact ⟨Matrix.nonsing_inv_mul P hd, Matrix.mul_nonsing_inv P hd⟩
 
+/- English proof (translation)
+Take `⟨⟨-, hPJ⟩, -⟩` from `hP`. Take `⟨⟨-, hQJ⟩, hQu⟩` from `hQ`. Establish `hQi : Q⁻¹ = Q.conjTranspose`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.mp hQu)`.
+
+Establish `hQQ : Q * Q.conjTranspose = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.mp hQu`. Use `show (P * Q⁻¹).conjTranspose * PI.UpqRep.Jm ε * (P * Q⁻¹) = PI.UpqRep.Jm ε`. Rewrite using `[hQi, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Q * (Q.conjTranspose * PI.UpqRep.Jm ε * Q) * Q.conjTranspose := by rw [hPJ, hQJ]`. Use `_ = (Q * Q.conjTranspose) * PI.UpqRep.Jm ε * (Q * Q.conjTranspose) := by simp only [Matrix.mul_assoc]`. Use `_ = PI.UpqRep.Jm ε := by rw [hQQ, Matrix.one_mul, Matrix.mul_one]`.
+-/
 private lemma conjTranspose_mem_Kset' {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {P Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : PI.UpqRep.IsCayleyU k r ε P) (hQ : PI.UpqRep.IsCayleyU k r ε Q) :
@@ -55,12 +72,40 @@ private lemma conjTranspose_mem_Kset' {k r : ℕ} {ε : Fin (2 * r + k + 1) → 
     _ = (Q * Q.conjTranspose) * PI.UpqRep.Jm ε * (Q * Q.conjTranspose) := by simp only [Matrix.mul_assoc]
     _ = PI.UpqRep.Jm ε := by rw [hQQ, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[show ((3 : ℝ) / 2) = 1 + 1 / 2 by norm_num, Real.rpow_one_add' hx (by norm_num), Real.sqrt_eq_rpow]`.
+-/
 private lemma rpow_three_div_two_eq_mul_sqrt {x : ℝ} (hx : 0 ≤ x) : x ^ ((3 : ℝ) / 2) = x * Real.sqrt x := by
   rw [show ((3 : ℝ) / 2) = 1 + 1 / 2 by norm_num, Real.rpow_one_add' hx (by norm_num), Real.sqrt_eq_rpow]
 
 open Matrix Finset GlobalTheory.Count GlobalTheory.IndefiniteRowSideFullHecke.SideNormalisedGap Formalism.FourierDecayAlt.B in
 open scoped InnerProductSpace in
 
+/- English proof (translation)
+Introduce `k r hk ε lam h H _ _ _ σ hl hσ hg h120 P hP w₁ w₂ h₁ h₂`. Establish `hh : 0 ≤ h`. Establish `: (0 : ℝ) ≤ 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPu : P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hP.2`.
+
+Establish `hPi : P⁻¹ = star P` using `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.mp hPu)`. Establish `hPP` using `inv_mul_and_mul_inv_of_isCayleyU hP`. Take `⟨P0, hP0, hDS0⟩` from `hσ`. Establish `hP0P` using `inv_mul_and_mul_inv_of_isCayleyU hP0`. Establish `hDS : PI.UpqRep.IsDS ε lam (fun g => σ (P⁻¹ * g * P))`.
+
+Establish `h0` using `GlobalTheory.CayleyChoice.isDS_conj hDS0 (conjTranspose_mem_Kset' hP hP0) (conjTranspose_mem_Kset' hP0 hP) (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hfun : (fun g => σ (P⁻¹ * g * P)) = (fun g => σ (P0⁻¹ * (P0 * P⁻¹ * g * (P * P0⁻¹)) * P0))`. Use function extensionality and compare the values at `g`. Use `congr 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP0P.1, Matrix.one_mul, Matrix.mul_one]`. Use `_ = P0⁻¹ * (P0 * P⁻¹ * g * (P * P0⁻¹)) * P0 := by simp only [Matrix.mul_assoc]`. Rewrite using `[hfun]`. Conclude with `h0`.
+
+Establish `hq : rkR ε = r + 1` using `rkR_eq hk hP`. Establish `hgap : 120 * ((2 * r + k + 1 : ℕ) : ℝ) * ((rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h`. Rewrite using `[hq]`. Establish `h1` using `GlobalTheory.GapSizeCheck.decay_range k r h h120`. Establish `e : (((r + 1 : ℕ) : ℝ)) ^ ((3 : ℝ) / 2) = ((r : ℝ) + 1) * Real.sqrt ((r : ℝ) + 1)`.
+
+Use `push_cast`. Conclude with `rpow_three_div_two_eq_mul_sqrt (by positivity)`. Rewrite using `[e]`. Conclude with `h1`. Establish `ha : 0 ≤ h / (8 * Real.sqrt (2 * ((r : ℝ) + 1)))` using `by positivity`.
+
+Establish `hab : h / (8 * Real.sqrt (2 * ((r : ℝ) + 1))) ≤ h / (8 * Real.sqrt ((r : ℝ) + 1))`. Apply `div_le_div_of_nonneg_left hh (by positivity)` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ r` using `r.cast_nonneg`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨Real.exp (h / 8) * Real.sqrt ((2 * r + k + 1 : ℕ) : ℝ) ^ (h / (8 * Real.sqrt (2 * ((r : ℝ) + 1)))) * ‖w₁‖ * ‖w₂‖, fun x hx => ?_⟩` and prove the remaining obligations. Establish `ex : P⁻¹ * (P * x * P⁻¹) * P = x`. Combine the equalities or inequalities in the displayed calculation. Establish `hgU : P * x * P⁻¹ ∈ PI.UpqRep.UJset ε` using `(GlobalTheory.UnitaryCayley.transport hP (P * x * P⁻¹)).1.mp (by rw [ex]; exact hx)`. Establish `hb : ‖⟪w₂, σ x w₁⟫_ℂ‖ ≤ decE (r + 1) h (dOp (P * x * P⁻¹)) * ‖w₁‖ * ‖w₂‖`.
+
+Establish `h0` using `(hA _ ε lam H (fun g => σ (P⁻¹ * g * P)) hl hDS h hg hgap (P * x * P⁻¹) hgU w₁ h₁ w₂ h₂).2`. Rewrite `h0` using `[hq]`. Simplify `h0` using `only [ex]`. Establish `hd : 0 ≤ dOp (P * x * P⁻¹)` using `((GlobalTheory.Dec.dFacts_holds _ ε).1 _ hgU).1`. Establish `hdecE : decE (r + 1) h (dOp (P * x * P⁻¹)) ≤ Real.exp (h / 8) * Real.exp (-(h / (8 * Real.sqrt ((r : ℝ) + 1))) * dOp (P * x * P⁻¹))`.
+
+Establish `h0` using `decE_le (q := r + 1) (by omega) hh hd`. Move the coercions through the operations in `at h0`. Conclude with `h0`. Establish `hcl : Matrix.toEuclideanCLM (n` using `Fin (2 * r + k + 1)) (𝕜 := ℂ) (P * x * P⁻¹) = LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (P * x * P⁻¹)) := by first`. Consider the case `rfl`.
+
+Consider the case `(apply ContinuousLinearMap.coe_injective; simp [Matrix.coe_toEuclideanCLM_eq_toEuclideanLin])`. Establish `hGN : gN x ≤ Real.sqrt ((2 * r + k + 1 : ℕ) : ℝ) * ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (P * x * P⁻¹))‖`. Establish `h1` using `hs_le_op x`. Establish `h2 : ‖Matrix.toEuclideanCLM (n` using `Fin (2 * r + k + 1)) (𝕜 := ℂ) x‖ = ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (P * x * P⁻¹))‖ := by`. Rewrite using `[← hcl, ← op_conj hPu x, hPi]`.
+
+Rewrite `h1` using `[h2]`. Use `show Real.sqrt (∑ i, ∑ j, Complex.normSq (x i j)) ≤ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : Real.exp (-(h / (8 * Real.sqrt ((r : ℝ) + 1))) * dOp (P * x * P⁻¹)) ≤ Real.sqrt ((2 * r + k + 1 : ℕ) : ℝ) ^ (h / (8 * Real.sqrt (2 * ((r : ℝ) + 1)))) * gN x ^ (-(h / (8 * Real.sqrt (2 * ((r : ℝ) + 1)))))` using `exp_le_rpow ha hab (by positivity) hd (gN_pos hx) hGN`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decLow_of_decGap (hA : GlobalTheory.DSId.DecGap) : Formalism.FourierDecayAlt.ThreeDimData.DecLow := by
   intro k r hk ε lam h H _ _ _ σ hl hσ hg h120 P hP w₁ w₂ h₁ h₂
   have hh : 0 ≤ h := by
@@ -151,6 +196,9 @@ theorem decLow_of_decGap (hA : GlobalTheory.DSId.DecGap) : Formalism.FourierDeca
           gN x ^ (-(h / (8 * Real.sqrt (2 * ((r : ℝ) + 1))))))) * ‖w₁‖ * ‖w₂‖ := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `decLow_of_decGap GlobalTheory.Deep.ptBound_and_farBound_and_decGap.2.2`.
+-/
 theorem decLow_holds : Formalism.FourierDecayAlt.ThreeDimData.DecLow :=
   decLow_of_decGap GlobalTheory.Deep.ptBound_and_farBound_and_decGap.2.2
 

@@ -26,6 +26,15 @@ variable (D : RealPlaceData k r Wp Wq) {m : ℕ} {F : Mat k r → (Wq →L[ℂ] 
             ‖rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) F) g‖ ≤ b p)
 include hFm hDom1 hDom2
 
+/- English proof (translation)
+Establish `base : ∀ v : List (Mat k r), (∀ X ∈ v, unitLie k r X) → v.length ≤ m → ∀ g ∈ Om k r D.z D.z', dLR [] v (JF D F) g = ∫ p, xiP D p • dLR [] v (rho D p F) g ∂D.μSS`. Introduce `v`. Proceed by induction on `v with`. Consider the case `nil => intro _ _ g _`. Both sides reduce to the same expression.
+
+Consider the case `cons X v ih`. Introduce `hv hl`. Establish `hv' : ∀ Y ∈ v, unitLie k r Y` using `fun Y hY => hv Y (List.mem_cons_of_mem _ hY)`. Conclude with `step_pair D hFm hDom1 hDom2 false (hv X List.mem_cons_self) (u := []) (v := v) (u2 := []) (v2 := X :: v) (by simp) hv' (by simp) hv (by simpa using hl) (by simp) (fun f => rfl) (ih hv' (by simp at hl; omega))`. Introduce `u`.
+
+Proceed by induction on `u with`. Consider the case `nil => intro v _ hv hl; exact base v hv (by simpa using hl)`. Consider the case `cons X u ih`. Introduce `v hu hv hl`. Establish `hu' : ∀ Y ∈ u, unitLie k r Y` using `fun Y hY => hu Y (List.mem_cons_of_mem _ hY)`.
+
+Conclude with `step_pair D hFm hDom1 hDom2 true (hu X List.mem_cons_self) (u := u) (v := v) (u2 := X :: u) (v2 := v) hu' hv hu hv hl (by simp) (fun f => rfl) (ih v hu' hv (by simp at hl; omega))`.
+-/
 lemma words_all :
     ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m →
       ∀ g ∈ Om k r D.z D.z', dLR u v (JF D F) g = ∫ p, xiP D p • dLR u v (rho D p F) g ∂D.μSS := by
@@ -49,6 +58,35 @@ lemma words_all :
     exact step_pair D hFm hDom1 hDom2 true (hu X List.mem_cons_self) (u := u) (v := v) (u2 := X :: u) (v2 := v)
       hu' hv hu hv hl (by simp) (fun f => rfl) (ih v hu' hv (by simp at hl; omega))
 
+/- English proof (translation)
+Use `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp`. Introduce `g0 hg0`. Establish `hg0G : g0 ∈ GV k r` using `hg0.1.1`. Establish `hchart0 : Formalism.FourierDecayAlt.P.Ux10.chart g0 0 = g0`. Establish `h1 : (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ) = Formalism.FourierDecayAlt.P.Ux10.co 0`.
+
+Use function extensionality and compare the values at `fun i => (Formalism.FourierDecayAlt.P.Ux10.co_zero i).symm`. Unfold `Formalism.FourierDecayAlt.P.Ux10.chart Formalism.FourierDecayAlt.P.Ux10.kap`. Rewrite using `[h1, Formalism.FourierDecayAlt.P.Ux10.Mv_co, Formalism.FourierDecayAlt.P.Ux10.prj_zero]`. Simplify using the standard rewrite rules. Establish `hcont : ContinuousAt (Formalism.FourierDecayAlt.P.Ux10.chart g0) 0` using `(Formalism.FourierDecayAlt.P.Ux10.chart_diff g0 Formalism.FourierDecayAlt.P.Ux10.zero_mem_dom).continuousAt`.
+
+Establish `hV : Formalism.FourierDecayAlt.P.Ux10.Dom k r ∩ Formalism.FourierDecayAlt.P.Ux10.chart g0 ⁻¹' Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z' ∈ 𝓝 (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ)` using `Filter.inter_mem (Formalism.FourierDecayAlt.P.Ux10.dom_open.mem_nhds Formalism.FourierDecayAlt.P.Ux10.zero_mem_dom) (hcont.preimage_mem_nhds ((isOpen_OmPlus _ _).mem_nhds (by rw [hchart0]; exact hg0.2)))`. Take `⟨δ1, hδ1, hsub⟩` from `Metric.mem_nhds_iff.1 hV`. Use `set δ := δ1 / 2 with hδ`. Establish `hδp : 0 < δ` using `by rw [hδ]; linarith`. Establish `hclb : Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ) δ ⊆ Metric.ball 0 δ1` using `Metric.closedBall_subset_ball (by rw [hδ]; linarith)`.
+
+Establish `hcl : Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ) δ ⊆ Formalism.FourierDecayAlt.P.Ux10.Dom k r` using `fun Y hY => (hsub (hclb hY)).1`. Use `set K := Formalism.FourierDecayAlt.P.Ux10.chart g0 '' Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ) δ with hKdef`. Establish `hK : IsCompact K` using `(isCompact_closedBall _ _).image_of_continuousOn ((Formalism.FourierDecayAlt.P.Ux10.chart_cd g0).continuousOn.mono hcl)`. Establish `hKOm : K ⊆ Om k r D.z D.z'`. Introduce and unpack `_ ⟨Y, hY, rfl⟩`.
+
+Conclude with `(⟨Formalism.FourierDecayAlt.P.Ux10.chart_mem hg0G (hcl hY), (hsub (hclb hY)).2⟩ : Formalism.FourierDecayAlt.P.Ux10.chart g0 Y ∈ GV k r ∩ Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z')`. Establish `hKG : K ⊆ GV k r` using `fun x hx => (show x ∈ GV k r ∩ Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z' from hKOm hx).1`. Establish `hmemK : ∀ Y ∈ Metric.ball (0 : Formalism.FourierDecayAlt.P.Ux10.J k r → ℝ) δ, Formalism.FourierDecayAlt.P.Ux10.chart g0 Y ∈ K` using `fun Y hY => ⟨Y, Metric.ball_subset_closedBall hY, rfl⟩`. Take `⟨bd, hbdI, hbd⟩` from `hDom2 K hK hKOm`. Use `set WS : Set (List (Mat k r) × List (Mat k r)) := (fun w : List (Formalism.FourierDecayAlt.P.Ux10.J k r) => (w.map Formalism.FourierDecayAlt.P.Ux10.Lt, ([] : List (Mat k r)))) '' {w | w.length ≤ m} with hWSdef`.
+
+Establish `hWS : WS.Countable` using `(Set.to_countable _).image _`. Establish `hunit : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k r), ∀ X ∈ w.map Formalism.FourierDecayAlt.P.Ux10.Lt, unitLie k r X`. Introduce `w X hX`. Take `⟨i, _, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Formalism.FourierDecayAlt.P.Ux10.Lt_unit i`.
+
+Establish `hWSl : ∀ uv ∈ WS, (∀ Y ∈ uv.1, unitLie k r Y) ∧ (∀ Y ∈ uv.2, unitLie k r Y) ∧ uv.1.length + uv.2.length ≤ m`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨hunit w, by simp, by simpa using hw⟩`. Establish `good` using `good_set D hFm hK hKG hWS hWSl bd fun uv huv g' hg' => hbd uv.1 uv.2 (hWSl uv huv).1 (hWSl uv huv).2.1 (hWSl uv huv).2.2 g' hg'`. Use `set P0 : Set (SS k r) := {p | D.inSS p ∧ ∀ uv ∈ WS, ∀ g' ∈ K, ‖dLR uv.1 uv.2 (rho D p F) g'‖ ≤ bd p} with hP0`.
+
+Establish `goodae : ∀ᵐ p ∂D.μSS, p ∈ P0` using `good`. Use `set hK' : SS k r → Mat k r → (Wq →L[ℂ] Wp) := fun p => if p ∈ P0 then rho D p F else fun _ => 0 with hK'def`. Establish `hsel : ∀ p (u' v' : List (Mat k r)), dLR u' v' (hK' p) = if p ∈ P0 then dLR u' v' (rho D p F) else fun _ => 0`. Introduce `p u' v'`. Distinguish the cases in `hp : p ∈ P0`.
+
+Simplify using `only [hK'def, if_pos hp]`. Simplify using `only [hK'def, if_neg hp, dLR_zero]`. Establish `hAL` using `int_chart_loc (xiP D) (fun p => norm_xiP D p) (continuous_xiP D).aestronglyMeasurable hK' m (fun p => by`. Distinguish the cases in `hp : p ∈ P0`. Simplify using `only [hK'def, if_pos hp]`.
+
+Conclude with `ckOn_rho D hp.1 hFm`. Simplify using `only [hK'def, if_neg hp]`. Conclude with `ckOn_zero _)`. Use `hg0G hδp hcl`. Use the proof step `(fun w hw Y hY => by`.
+
+Use `(hDom1 (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] (hunit w) (by simp) (by simpa using hw) _ (hKOm (hmemK Y hY))).congr ?_` and prove the remaining obligations. Use `filter_upwards [goodae] with p hp`. Rewrite using `[hsel, if_pos hp, dLR_rho D hp.1])`. Use the proof step `(fun p => ‖bd p‖) hbdI.norm`. Use the proof step `(fun w hw Y hY p => by`.
+
+Rewrite using `[hsel]`. Distinguish the cases in `hp : p ∈ P0`. Rewrite using `[if_pos hp]`. Conclude with `(hp.2 _ ⟨w, hw, rfl⟩ _ (hmemK Y hY)).trans (Real.le_norm_self _)`. Rewrite using `[if_neg hp, norm_zero]`.
+
+Conclude with `norm_nonneg _)`. Establish `hAL' : ContDiffOn ℝ ((m : ℕ) : WithTop ℕ∞) (fun Y => JF D F (Formalism.FourierDecayAlt.P.Ux10.chart g0 Y)) (Metric.ball 0 δ)`. Use `hAL.congr fun Y _ => ?_` and prove the remaining obligations. Use `show ∫ p, xiP D p • rho D p F _ ∂D.μSS = _`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [goodae] with p hp`. Simplify using `only [hK'def, if_pos hp]`. Take `⟨U, F', hU, hgU, hF', hUF⟩` from `ck_at_of_chart hg0G hδp hAL'`. Conclude with `⟨U, F', hU, hgU, hF', fun g hg hgl => hUF g hg hgl.1⟩`.
+-/
 lemma ck_all : Formalism.FourierDecayAlt.Q.CkLev k r 0 m (Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z') (JF D F) := by
   classical
   haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp
@@ -136,6 +174,15 @@ lemma ck_all : Formalism.FourierDecayAlt.Q.CkLev k r 0 m (Formalism.FourierDecay
 
 end
 
+/- English proof (translation)
+Introduce `hDom k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC`. Take `⟨hDom1, hDom2⟩` from `hDom k r Wp Wq D A m F hThr hCC`. Take `⟨c, hc⟩` from `hCC`. Establish `hFm : CkOn (m : ℕ∞) (GV k r) F` using `hc.1`. Establish `hW` using `words_all D hFm hDom1 hDom2`.
+
+Use `⟨ck_all D hFm hDom1 hDom2, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Take `⟨bd, hbdI, hbd⟩` from `hDom2 {g} isCompact_singleton (Set.singleton_subset_iff.2 hg)`. Establish `hb` using `hbd u v hu hv hl g (Set.mem_singleton g)`. Use `⟨hbdI.norm.mono' ((continuous_xiP D).aestronglyMeasurable.smul (hDom1 u v hu hv hl g hg)) ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hb] with p hp`.
+
+Rewrite using `[norm_smul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (norm_xiP D p)).trans (hp.trans (Real.le_norm_self _))`. Rewrite using `[hW u v hu hv hl g hg]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_inSS D] with p hp`.
+
+Rewrite using `[dLR_rho D hp]`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.bessel_words_of_domain : JWordsOfDom := by
   intro hDom k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC
   obtain ⟨hDom1, hDom2⟩ := hDom k r Wp Wq D A m F hThr hCC

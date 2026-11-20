@@ -22,13 +22,22 @@ structure IsAdicNormalPair (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) : 
   normal : IsIntegrallyClosed R
   complete : IsAdicComplete I R
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.noeth, h.normal, h.complete⟩`.
+-/
 theorem IsCompleteLocalNormal.pair {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (h : IsCompleteLocalNormal R) : IsAdicNormalPair R (IsLocalRing.maximalIdeal R) :=
   ⟨h.noeth, h.normal, h.complete⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem isCompleteLocalNormal_padicInt (p : ℕ) [Fact p.Prime] : IsCompleteLocalNormal ℤ_[p] :=
   ⟨inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem isAdicNormalPair_powerSeries (O : Type) [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] :
     IsAdicNormalPair (PowerSeries O) (Ideal.span {PowerSeries.X}) :=
@@ -100,6 +109,9 @@ abbrev cT (T : Over (base R)) (χ : D.X) : T ⟶ D.P.A := toUnit T ≫ D.c χ
 
 abbrev cK (χ : D.X) : genPt R ⟶ D.P.A := D.cT (genPt R) χ
 
+/- English proof (translation)
+Simplify using `only [cT, D.c_add, padd, ← Category.assoc, comp_lift]`.
+-/
 theorem cT_add (T : Over (base R)) (χ χ' : D.X) :
     D.cT T (χ + χ') = padd D.P.A (D.cT T χ) (D.cT T χ') := by
   simp only [cT, D.c_add, padd, ← Category.assoc, comp_lift]
@@ -184,6 +196,9 @@ structure IsDeg (I : Ideal R) : Prop where
 
   tendsto : ∀ e : ℕ, {χ | ¬ D.ψMem (I ^ e) χ}.Finite
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(Y, U)ˣ) :
     res h' (res h u) = res (h'.trans h) u := by
   ext
@@ -191,23 +206,37 @@ theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Conclude with `(res_res _ _ _).trans (res_res _ _ _).symm`.
+-/
 theorem res_ψAt {χ χ' : D.X} {i i' : D.P.L.ι} (e : χ = χ') (e' : i = i') {V V' W} (h h')
     (k : W ≤ V) (k' : W ≤ V') :
     res k (D.ψAt χ i V h) = res k' (D.ψAt χ' i' V' h') := by
   subst e e'
   exact (res_res _ _ _).trans (res_res _ _ _).symm
 
+/- English proof (translation)
+Substitute `e'` using the available equality. Conclude with `(res_res _ _ _).trans (res_res _ _ _).symm`.
+-/
 theorem res_rigAt {i i' : D.P.L.ι} (e' : i = i') {V V' W} (h h')
     (k : W ≤ V) (k' : W ≤ V') :
     res k (D.rigAt i V h) = res k' (D.rigAt i' V' h') := by
   subst e'
   exact (res_res _ _ _).trans (res_res _ _ _).symm
 
+/- English proof (translation)
+Substitute `h0 h1 h2 h3` using the available equality. Rewrite using `[mul_right_comm a]`.
+-/
 theorem quot_congr {A : Type} [CommGroup A] {a b c d a' b' c' d' : A} (h0 : a = a') (h1 : b = c')
     (h2 : c = b') (h3 : d = d') : a * b⁻¹ * c⁻¹ * d⁻¹ = a' * b'⁻¹ * c'⁻¹ * d'⁻¹ := by
   subst h0 h1 h2 h3
   rw [mul_right_comm a]
 
+/- English proof (translation)
+Introduce `j j' _ _ h`. Establish `h0 : j 0 = j' 0` using `h 0 0 (by`. Express the relevant statement in the definitionally equal form `(padd D.P.A (D.cK χ) (D.cK χ')).left = (padd D.P.A (D.cK χ') (D.cK χ)).left`. Rewrite using `[← cT_add, ← cT_add, add_comm])`. Establish `h1 : j 1 = j' 2` using `h 1 2 rfl`.
+
+Establish `h2 : j 2 = j' 1` using `h 2 1 rfl`. Establish `h3 : j 3 = j' 3` using `h 3 3 rfl`. Simplify using `only [τ, map_mul, map_inv]`. Conclude with `quot_congr (D.res_ψAt (add_comm χ χ') h0 _ _ _ _) (D.res_ψAt rfl h1 _ _ _ _) (D.res_ψAt rfl h2 _ _ _ _) (D.res_rigAt h3 _ _ _ _)`.
+-/
 theorem τ_symm (χ χ' : D.X) : LB.Gen.Corr D.P.L _ _ _ _ (D.τ χ χ') (D.τ χ' χ) := by
   intro j j' _ _ h
   have h0 : j 0 = j' 0 := h 0 0 (by
@@ -220,6 +249,9 @@ theorem τ_symm (χ χ' : D.X) : LB.Gen.Corr D.P.L _ _ _ _ (D.τ χ χ') (D.τ �
   exact quot_congr (D.res_ψAt (add_comm χ χ') h0 _ _ _ _) (D.res_ψAt rfl h1 _ _ _ _)
     (D.res_ψAt rfl h2 _ _ _ _) (D.res_rigAt h3 _ _ _ _)
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, pullU, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Express the relevant statement in the definitionally equal form `((Y.presheaf.map (homOfLE h).op ≫ f.appLE V W k).hom _) = (f.appLE U W k').hom _`. Rewrite using `[Scheme.Hom.map_appLE]`.
+-/
 theorem res_pull_res {Y Z : Scheme.{0}} (f : Z ⟶ Y) {U V : Y.Opens} (h : V ≤ U) {W : Z.Opens}
     (k : W ≤ f ⁻¹ᵁ V) (k' : W ≤ f ⁻¹ᵁ U) (u : Γ(Y, U)ˣ) :
     res k (pullU f V (res h u)) = res k' (pullU f U u) := by
@@ -228,9 +260,15 @@ theorem res_pull_res {Y Z : Scheme.{0}} (f : Z ⟶ Y) {U V : Y.Opens} (h : V ≤
   change ((Y.presheaf.map (homOfLE h).op ≫ f.appLE V W k).hom _) = (f.appLE U W k').hom _
   rw [Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_pull {Y Z Z' : Scheme.{0}} (f : Z ⟶ Y) (g : Z' ⟶ Z) (U : Y.Opens) (u : Γ(Y, U)ˣ) :
     pullU g _ (pullU f U u) = pullU (g ≫ f) U u := rfl
 
+/- English proof (translation)
+The claim follows from `res_pull_res g h k k' _`.
+-/
 theorem res_pull_res_pull {Y Z Z' : Scheme.{0}} (f : Z ⟶ Y) (g : Z' ⟶ Z) (U : Y.Opens)
     {V : Z.Opens} {W : Z'.Opens} (h : V ≤ f ⁻¹ᵁ U) (k : W ≤ g ⁻¹ᵁ V) (k' : W ≤ (g ≫ f) ⁻¹ᵁ U)
     (u : Γ(Y, U)ˣ) :
@@ -241,6 +279,11 @@ def gAt (f : (genPt R).left ⟶ D.P.A.left) (i i' : D.P.L.ι) (W : (genPt R).lef
     (h : W ≤ f ⁻¹ᵁ (D.P.L.U i ⊓ D.P.L.U i')) : Γ((genPt R).left, W)ˣ :=
   res h (pullU f _ (D.P.L.g i i'))
 
+/- English proof (translation)
+Establish `H` using `congrArg (res (le_inf (fun _ hy => Set.mem_iInter.2 fun _ => h (k hy)) (fun _ hy => Set.mem_iInter.2 fun _ => h' (k' hy)) : W ≤ _ ⊓ _)) (D.ψ_gen χ (fun _ => i) (fun _ => i'))`. Rewrite `H` using `[map_mul, res_res, res_res]`. Use `(res_res _ _ _).trans (H.trans ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Simplify using `only [LB.LinComb, Finset.univ_unique, Finset.prod_singleton, map_zpow, zpow_neg, zpow_one, map_inv]`.
+
+Conclude with `congrArg (·⁻¹) (res_res _ _ _)`. Conclude with `(res_res _ _ _).symm`.
+-/
 theorem ψAt_trans (χ : D.X) (i i' : D.P.L.ι) {V V' W} (h h') (k : W ≤ V) (k' : W ≤ V') (hW) :
     res k (D.ψAt χ i V h) = (D.gAt (D.cK χ).left i i' W hW)⁻¹ * res k' (D.ψAt χ i' V' h') := by
   have H := congrArg (res (le_inf (fun _ hy => Set.mem_iInter.2 fun _ => h (k hy))
@@ -253,6 +296,13 @@ theorem ψAt_trans (χ : D.X) (i i' : D.P.L.ι) {V V' W} (h h') (k : W ≤ V) (k
     exact congrArg (·⁻¹) (res_res _ _ _)
   · exact (res_res _ _ _).symm
 
+/- English proof (translation)
+Establish `H` using `congrArg (fun u => res (U := (toUnit (genPt R)).left ⁻¹ᵁ ((D.P.L.pull (eSec D.P.A)).U (fun _ => i) ⊓ (D.P.L.pull (eSec D.P.A)).U (fun _ => i'))) (V := W) (fun _ hy => ⟨Set.mem_iInter.2 fun _ => h (k hy), Set.mem_iInter.2 fun _ => h' (k' hy)⟩) (pullU (toUnit (genPt R)).left _ u)) …`. Simplify using `only [map_mul] at H`. Establish `a1 : W ≤ (toUnit (genPt R)).left ⁻¹ᵁ (D.P.L.pull (eSec D.P.A)).U (fun _ => i)` using `fun _ hy => Set.mem_iInter.2 fun _ => h (k hy)`. Establish `a2 : W ≤ (toUnit (genPt R)).left ⁻¹ᵁ (D.P.L.pull (eSec D.P.A)).U (fun _ => i')` using `fun _ hy => Set.mem_iInter.2 fun _ => h' (k' hy)`. Use `((res_res _ _ _).trans (res_res _ _ _)).trans ((res_pull_res _ _ _ a1 _).symm.trans (H.trans ?_))` and prove the remaining obligations.
+
+Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Establish `hg : ∀ hh, (D.P.L.pull (eSec D.P.A)).g (fun _ => i) (fun _ => i') = res (U` using `eSec D.P.A ⁻¹ᵁ (D.P.L.U i ⊓ D.P.L.U i')) hh (pullU (eSec D.P.A) _ (D.P.L.g i i')) := by`. Introduce `hh`. Simplify using `only [LB.pull, LB.LinComb, Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[hg (le_inf (inf_le_left.trans (LB.wchart_le D.P.L (K := PUnit) (fun _ => eSec D.P.A) _ PUnit.unit)) (inf_le_right.trans (LB.wchart_le D.P.L (K := PUnit) (fun _ => eSec D.P.A) _ PUnit.unit)))]`. Conclude with `res_pull_res_pull (eSec D.P.A) (toUnit (genPt R)).left (D.P.L.U i ⊓ D.P.L.U i') _ _ hW _`. Conclude with `(res_pull_res _ _ _ a2 _).trans ((res_res _ _ _).trans (res_res _ _ _)).symm`.
+-/
 theorem rigAt_trans (i i' : D.P.L.ι) {V V' W} (h h') (k : W ≤ V) (k' : W ≤ V') (hW) :
     res k (D.rigAt i V h) =
       D.gAt (pzero D.P.A (genPt R)).left i i' W hW * res k' (D.rigAt i' V' h') := by
@@ -281,10 +331,22 @@ theorem rigAt_trans (i i' : D.P.L.ι) {V V' W} (h h') (k : W ≤ V) (k' : W ≤ 
     exact res_pull_res_pull (eSec D.P.A) (toUnit (genPt R)).left (D.P.L.U i ⊓ D.P.L.U i') _ _ hW _
   · exact (res_pull_res _ _ _ a2 _).trans ((res_res _ _ _).trans (res_res _ _ _)).symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gAt_congr {f f' : (genPt R).left ⟶ D.P.A.left} (e : f = f') (i i' W h h') :
     D.gAt f i i' W h = D.gAt f' i i' W h' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `j j'`. Establish `w : ∀ k, LB.wchart D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) j ⊓ LB.wchart D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) j' ≤ laφ D.P.A (D.cK χ) (D.cK χ') k ⁻¹ᵁ (D.P.L.U (j k) ⊓ D.P.L.U (j' k))` using `fun k => le_inf (inf_le_left.trans (LB.wchart_le D.P.L _ j k)) (inf_le_right.trans (LB.wchart_le D.P.L _ j' k))`. Establish `e0 : (D.cK (χ + χ')).left = laφ D.P.A (D.cK χ) (D.cK χ') 0` using `congrArg (fun f : genPt R ⟶ D.P.A => f.left) (D.cT_add (genPt R) χ χ')`. Establish `key : ∀ {A : Type} [CommGroup A] {a b c d a' b' c' d' g0 g0' g1 g2 g3 : A}, g0 = g0' → a = g0⁻¹ * a' → b = g1⁻¹ * b' → c = g2⁻¹ * c' → d = g3 * d' → a * b⁻¹ * c⁻¹ * d⁻¹ = (g0' ^ (-1 : ℤ) * g1 ^ (1 : ℤ) * g2 ^ (1 : ℤ) * g3 ^ (-1 : ℤ)) * (a' * b'⁻¹ * c'⁻¹ * d'⁻¹)`. Introduce `A _ a b c d a' b' c' d' g0 g0' g1 g2 g3 e h0 h1 h2 h3`.
+
+Substitute `e h0 h1 h2 h3` using the available equality. Simplify using `only [zpow_neg, zpow_one, mul_inv, inv_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Establish `hg : (LB.LinComb D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) laDualε).g j j' = D.gAt _ _ _ _ (w 0) ^ (-1 : ℤ) * D.gAt _ _ _ _ (w 1) ^ (1 : ℤ) * D.gAt _ _ _ _ (w 2) ^ (1 : ℤ) * D.gAt _ _ _ _ (w 3) ^ (-1 : ℤ)` using `Fin.prod_univ_four _`. Establish `hm : ∀ {A A' : Type} [CommGroup A] [CommGroup A'] (φ : A →* A') (a b c d : A), φ (a * b⁻¹ * c⁻¹ * d⁻¹) = φ a * (φ b)⁻¹ * (φ c)⁻¹ * (φ d)⁻¹`. Introduce `A A' _ _ φ a b c d`. Simplify using `only [map_mul, map_inv]`. Establish `w0 : LB.wchart D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) j ⊓ LB.wchart D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) j' ≤ (D.cK (χ + χ')).left ⁻¹ᵁ (D.P.L.U (j 0) ⊓ D.P.L.U (j' 0))`.
+
+Rewrite using `[e0]`. Conclude with `w 0`. Use `(hm _ _ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) hg (hm _ _ _ _ _)).symm)` and prove the remaining obligations. Conclude with `key (D.gAt_congr e0 (j 0) (j' 0) _ w0 (w 0)) (D.ψAt_trans (χ + χ') (j 0) (j' 0) _ _ _ _ w0) (D.ψAt_trans χ (j 1) (j' 1) _ _ _ _ (w 1)) (D.ψAt_trans χ' (j 2) (j' 2) _ _ _ _ (w 2)) (D.rigAt_trans (j 3) (j' 3) _ _ _ _ (w 3))`.
+-/
 theorem τ_isGen (χ χ' : D.X) : (D.τ χ χ').IsGen := by
   intro j j'
   have w : ∀ k, LB.wchart D.P.L (laφ D.P.A (D.cK χ) (D.cK χ')) j ⊓
@@ -322,6 +384,9 @@ theorem τ_isGen (χ χ' : D.X) : (D.τ χ χ').IsGen := by
     (D.ψAt_trans χ (j 1) (j' 1) _ _ _ _ (w 1)) (D.ψAt_trans χ' (j 2) (j' 2) _ _ _ _ (w 2))
     (D.rigAt_trans (j 3) (j' 3) _ _ _ _ (w 3))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun χ => D.τ_isGen χ y, fun χ χ' => h.mul_left χ χ' y⟩`.
+-/
 theorem IsDeg.io_isPt {D : RawDeg R} {I : Ideal R} (h : D.IsDeg I) (y : D.X) : (D.io y).IsPt :=
   ⟨fun χ => D.τ_isGen χ y, fun χ χ' => h.mul_left χ χ' y⟩
 

@@ -12,22 +12,37 @@ section Io
 
 variable {A S : Type} [Ring A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Unfold `io`. Conclude with `map_mul _ x y`.
+-/
 lemma io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * io y := by
   unfold io
   exact map_mul _ x y
 
+/- English proof (translation)
+Unfold `io`. Conclude with `map_add _ x y`.
+-/
 lemma io_add (x y : A) : (io (x + y) : SlopeTestRemainingChoices S A) = io x + io y := by
   unfold io
   exact map_add _ x y
 
+/- English proof (translation)
+Unfold `io`. Conclude with `map_one _`.
+-/
 lemma io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by
   unfold io
   exact map_one _
 
+/- English proof (translation)
+Unfold `Commute SemiconjBy`. Rewrite using `[← io_mul, ← io_mul, h.eq]`.
+-/
 lemma io_comm {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
   unfold Commute SemiconjBy
   rw [← io_mul, ← io_mul, h.eq]
 
+/- English proof (translation)
+Unfold `io`. Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Both sides reduce to the same expression.
+-/
 lemma io_star [StarRing A] (x : A) : star (io x : SlopeTestRemainingChoices S A) = io (star x) := by
   unfold io
   rw [Matrix.scalar_apply, Matrix.scalar_apply, Matrix.star_eq_conjTranspose,
@@ -40,38 +55,70 @@ section Level
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ} (L : LevelData A r)
 
+/- English proof (translation)
+Unfold `zfns at hx`. Unfold `LevelData.fns`. Simplify using `only [Set.mem_union]`. The claim follows by propositional logic.
+-/
 lemma zsub {x : A} (hx : x ∈ zfns L) : x ∈ L.fns := by
   unfold zfns at hx
   unfold LevelData.fns
   simp only [Set.mem_union]
   tauto
 
+/- English proof (translation)
+The claim follows from `L.fns_comm x (zsub L hx) y (zsub L hy)`.
+-/
 lemma zc {x y : A} (hx : x ∈ zfns L) (hy : y ∈ zfns L) : Commute x y :=
   L.fns_comm x (zsub L hx) y (zsub L hy)
 
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mζ : L.ζ ∈ zfns L := by
   unfold zfns
   simp
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mζi : L.ζi ∈ zfns L := by
   unfold zfns
   simp
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mζb : L.ζb ∈ zfns L := by
   unfold zfns
   simp
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mζbi : L.ζbi ∈ zfns L := by
   unfold zfns
   simp
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mGG : L.GG ∈ zfns L := by
   unfold zfns
   simp
+/- English proof (translation)
+Unfold `zfns`. Simplify using the standard rewrite rules.
+-/
 lemma mGGi : L.GGi ∈ zfns L := by
   unfold zfns
   simp
 
+/- English proof (translation)
+The claim follows from `(Algebra.commute_algebraMap_left _ g).mul_left ((zc L (mζb L) hg).mul_left (zc L (mGGi L) hg))`.
+-/
 lemma l0_constant_part_commute (Y : ℂ) {g : A} (hg : g ∈ zfns L) :
     Commute (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) g :=
   (Algebra.commute_algebraMap_left _ g).mul_left ((zc L (mζb L) hg).mul_left (zc L (mGGi L) hg))
 
+/- English proof (translation)
+Establish `c` using `l0_constant_part_commute L Y (mζ L)`. Establish `h1 : L.ζi * (-L.nab) * L.ζ = -L.nab - L.ζi`. Rewrite using `[mul_neg, neg_mul, mul_assoc, L.nab_ζ, mul_add, ← mul_assoc, L.ζi_ζ, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Establish `h2 : L.ζi * (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) * L.ζ = algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)`.
+
+Rewrite using `[mul_assoc, c.eq, ← mul_assoc, L.ζi_ζ, one_mul]`. Unfold `LevelData.l0`. Rewrite using `[mul_sub, sub_mul, h1, h2]`. Normalize the expressions using the abelian group laws.
+-/
 lemma zetaInv_mul_l0_mul_zeta (Y : ℂ) : L.ζi * L.l0 Y * L.ζ = L.l0 Y - L.ζi := by
   have c := l0_constant_part_commute L Y (mζ L)
   have h1 : L.ζi * (-L.nab) * L.ζ = -L.nab - L.ζi := by
@@ -82,6 +129,11 @@ lemma zetaInv_mul_l0_mul_zeta (Y : ℂ) : L.ζi * L.l0 Y * L.ζ = L.l0 Y - L.ζi
   unfold LevelData.l0
   rw [mul_sub, sub_mul, h1, h2]; abel
 
+/- English proof (translation)
+Establish `c` using `l0_constant_part_commute L Y (mGG L)`. Establish `h : L.GG * (L.ζb * L.GGi) = L.ζb`. Rewrite using `[(zc L (mζb L) (mGGi L)).eq, ← mul_assoc, L.GG_GGi, one_mul]`. Unfold `LevelData.l0`. Rewrite using `[sub_mul, c.eq, neg_mul, L.nab_GG, mul_sub, mul_sub, h, mul_neg]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 lemma l0_mul_gg_eq_gg_mul_sub (Y : ℂ) : L.l0 Y * L.GG = L.GG * (L.l0 Y - L.ζb * L.GGi) := by
   have c := l0_constant_part_commute L Y (mGG L)
   have h : L.GG * (L.ζb * L.GGi) = L.ζb := by
@@ -89,6 +141,13 @@ lemma l0_mul_gg_eq_gg_mul_sub (Y : ℂ) : L.l0 Y * L.GG = L.GG * (L.l0 Y - L.ζb
   unfold LevelData.l0
   rw [sub_mul, c.eq, neg_mul, L.nab_GG, mul_sub, mul_sub, h, mul_neg]; abel
 
+/- English proof (translation)
+Take `⟨p, pb, c, ci, cb, cbi, ζ, ζi, ζb, ζbi, GG, GGi, nab, nabs, TT, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩` from `L`. Simplify using `only`. Substitute `h12` using the available equality. Establish `e : ζi * (ζ * ζb - algebraMap ℂ A TT) = ζb - TT • ζi`. Rewrite using `[mul_sub, ← mul_assoc, h7, one_mul, Algebra.smul_def, Algebra.commutes]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h10, mul_one]`. Use `_ = ζb * GGi - (ζb - TT • ζi) * GGi := by rw [← mul_assoc, e]`. Use `_ = TT • (ζi * GGi) := by`. Rewrite using `[sub_mul, smul_mul_assoc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 lemma zetaConj2 : L.ζb * L.GGi - L.ζi = L.TT • (L.ζi * L.GGi) := by
   obtain ⟨p, pb, c, ci, cb, cbi, ζ, ζi, ζb, ζbi, GG, GGi, nab, nabs, TT, h1, h2, h3, h4, h5, h6, h7,
     h8, h9, h10, h11, h12⟩ := L
@@ -105,6 +164,15 @@ lemma zetaConj2 : L.ζb * L.GGi - L.ζi = L.TT • (L.ζi * L.GGi) := by
 
 end Level
 
+/- English proof (translation)
+Establish `e1 : (l0 + κ * e) * (G * x) = G * (x * l0) - G * (x * z) + G * (κ * (e * x))`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : G * x * (l0 + κ * e) = G * (x * l0) + G * (κ * (x * e))`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : G * x * (-z + κ * D) = -(G * (x * z)) + G * (κ * (x * D))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[e1, e2, e3]`. Establish `h' : G * (κ * (x * e + x * D - e * x)) = 0`. Establish `t : G * (κ * (x * e + x * D - e * x)) = (G * (x * l0) + G * (κ * (x * e)) - (G * (x * l0) - G * (x * z) + G * (κ * (e * x)))) - -(-(G * (x * z)) + G * (κ * (x * D)))` using `by noncomm_ring`. Rewrite using `[t, h, sub_self]`.
+
+Establish `h'' : x * e + x * D - e * x = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc Gi, hG, one_mul, ← mul_assoc κi, hκ, one_mul]`. Use `_ = 0 := by rw [h', mul_zero, mul_zero]`. Establish `h3 : e * x = x * e + x * D` using `(sub_eq_zero.mp h'').symm`.
+
+Rewrite using `[mul_assoc, h3, mul_add, ← mul_assoc, ← mul_assoc, hx, one_mul, one_mul, add_sub_cancel_right]`.
+-/
 lemma eeConj_abs {B : Type} [Ring B] (G Gi x xi l0 z κ κi e D : B)
     (hG : Gi * G = 1) (hκ : κi * κ = 1) (hx : xi * x = 1)
     (c1 : l0 * G = G * (l0 - z)) (cxl : Commute x l0) (cxz : Commute x z) (cxκ : Commute x κ)
@@ -140,17 +208,31 @@ section Frame
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
   {r : ℕ} {L : LevelData A r} {f : FrameData S A}
 
+/- English proof (translation)
+Unfold `io`. Rewrite using `[Matrix.scalar_apply, Matrix.algebraMap_eq_diagonal]`. Both sides reduce to the same expression.
+-/
 lemma io_alg (c : ℂ) : (io (algebraMap ℂ A c) : SlopeTestRemainingChoices S A) = algebraMap ℂ (SlopeTestRemainingChoices S A) c := by
   unfold io
   rw [Matrix.scalar_apply, Matrix.algebraMap_eq_diagonal]
   rfl
 
+/- English proof (translation)
+Simplify using `[FrameData.hatT, hY]`.
+-/
 lemma hat_apply {Y : ℂ} (hY : Y ∈ f.reg) (i j : Fin 2) : f.hatT Y i j = f.F * f.TT Y i j * f.Fi := by
   simp [FrameData.hatT, hY]
 
+/- English proof (translation)
+Rewrite using `[hat_apply hY, hf.frame_τ Y hY, mul_assoc, hf.F_Fi, mul_one]`.
+-/
 lemma hat_τ (hf : IsFrame L f) {Y : ℂ} (hY : Y ∈ f.reg) : f.hatT Y 1 1 = io L.GG * f.x Y := by
   rw [hat_apply hY, hf.frame_τ Y hY, mul_assoc, hf.F_Fi, mul_one]
 
+/- English proof (translation)
+Unfold `LevelData.l0`. Establish `e : (io (-L.nab - algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) : SlopeTestRemainingChoices S A) = -io L.nab - algebraMap ℂ (SlopeTestRemainingChoices S A) (Y + 1 / 2) * (io L.ζb * io L.GGi)`. Rewrite using `[← io_alg, ← io_mul, ← io_mul]`. Simplify using `only [io, map_sub, map_neg]`. Rewrite using `[e]`.
+
+Conclude with `((hf.x_nab Ya).neg_right).sub_right ((Algebra.commute_algebraMap_right _ _).mul_right ((hf.x_fn Ya _ (mζb L)).mul_right (hf.x_fn Ya _ (mGGi L))))`.
+-/
 lemma commute_x_l0 (hf : IsFrame L f) (Ya Y : ℂ) : Commute (f.x Ya) (io (L.l0 Y)) := by
   unfold LevelData.l0
   have e : (io (-L.nab - algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) : SlopeTestRemainingChoices S A) =
@@ -160,29 +242,50 @@ lemma commute_x_l0 (hf : IsFrame L f) (Ya Y : ℂ) : Commute (f.x Ya) (io (L.l0 
   exact ((hf.x_nab Ya).neg_right).sub_right ((Algebra.commute_algebraMap_right _ _).mul_right
     ((hf.x_fn Ya _ (mζb L)).mul_right (hf.x_fn Ya _ (mGGi L))))
 
+/- English proof (translation)
+Rewrite using `[← hL.1, star_star]`.
+-/
 lemma star_ζb (hL : IsStarLevel L) : star L.ζb = L.ζ := by rw [← hL.1, star_star]
 
+/- English proof (translation)
+Rewrite using `[L.GG_def, star_sub, star_mul, hL.1, star_ζb hL, ← algebraMap_star_comm, hL.2.2]`.
+-/
 lemma star_GG (hL : IsStarLevel L) : star L.GG = L.GG := by
   rw [L.GG_def, star_sub, star_mul, hL.1, star_ζb hL, ← algebraMap_star_comm, hL.2.2]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma star_GGi (hL : IsStarLevel L) : star L.GGi = L.GGi := by
   calc star L.GGi = star L.GGi * (L.GG * L.GGi) := by rw [L.GG_GGi, mul_one]
     _ = star (L.GG * L.GGi) * L.GGi := by rw [star_mul, star_GG hL, mul_assoc]
     _ = L.GGi := by rw [L.GG_GGi, star_one, one_mul]
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[io_star, star_mul, star_mul, hL.1, star_ζb hL, star_GGi hL, ((zc L (mGGi L) (mζ L)).mul_right (zc L (mGGi L) (mζb L))).eq]`.
+-/
 lemma wt_star (hL : IsStarLevel L) : star (wt L : SlopeTestRemainingChoices S A) = wt L := by
   unfold wt
   rw [io_star, star_mul, star_mul, hL.1, star_ζb hL, star_GGi hL,
     ((zc L (mGGi L) (mζ L)).mul_right (zc L (mGGi L) (mζb L))).eq]
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[io_mul, io_mul]`. Conclude with `((hf.c_fn _ (mζ L)).mul_right (hf.c_fn _ (mζb L))).mul_right (hf.c_fn _ (mGGi L))`.
+-/
 lemma c_wt (hf : IsFrame L f) : Commute f.c (wt L) := by
   unfold wt; rw [io_mul, io_mul]
   exact ((hf.c_fn _ (mζ L)).mul_right (hf.c_fn _ (mζb L))).mul_right (hf.c_fn _ (mGGi L))
 
+/- English proof (translation)
+Unfold `FrameData.d`. Rewrite using `[star_mul, star_pow, wt_star hL, hf.c_star, ((c_wt hf).pow_right _).eq]`.
+-/
 lemma d_star (hL : IsStarLevel L) (hf : IsFrame L f) : star (f.d L) = f.d L := by
   unfold FrameData.d
   rw [star_mul, star_pow, wt_star hL, hf.c_star, ((c_wt hf).pow_right _).eq]
 
+/- English proof (translation)
+Establish `e : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = 1`. Combine the equalities or inequalities in the displayed calculation. Unfold `wti wt`. Rewrite using `[← io_mul, e, io_one]`.
+-/
 lemma wti_wt : (wti L : SlopeTestRemainingChoices S A) * wt L = 1 := by
   have e : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = 1 := by
     calc L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi)
@@ -193,6 +296,11 @@ lemma wti_wt : (wti L : SlopeTestRemainingChoices S A) * wt L = 1 := by
   unfold wti wt
   rw [← io_mul, e, io_one]
 
+/- English proof (translation)
+Establish `p : ∀ n : ℕ, (wti L : SlopeTestRemainingChoices S A) ^ n * wt L ^ n = 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ', mul_assoc, ← mul_assoc (wti L), wti_wt, one_mul, ih]`.
+
+Unfold `FrameData.di FrameData.d`. Rewrite using `[mul_assoc, ← mul_assoc (wti L ^ f.N), p, one_mul, hf.c_ci.2]`.
+-/
 lemma di_d (hf : IsFrame L f) : f.di L * f.d L = 1 := by
   have p : ∀ n : ℕ, (wti L : SlopeTestRemainingChoices S A) ^ n * wt L ^ n = 1 := by
     intro n
@@ -203,6 +311,9 @@ lemma di_d (hf : IsFrame L f) : f.di L * f.d L = 1 := by
   rw [mul_assoc, ← mul_assoc (wti L ^ f.N), p, one_mul, hf.c_ci.2]
 
 omit [StarRing A] [StarModule ℂ A] [Algebra ℂ A] [Fintype S] [DecidableEq S] in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma cancel2 {B : Type} [Ring B] {P Pi Q Qi X Y : B} (h1 : Pi * P = 1) (h2 : Q * Qi = 1)
     (h : P * X * Q = P * Y * Q) : X = Y := by
   calc X = Pi * P * X * (Q * Qi) := by rw [h1, h2, one_mul, mul_one]
@@ -211,6 +322,13 @@ lemma cancel2 {B : Type} [Ring B] {P Pi Q Qi X Y : B} (h1 : Pi * P = 1) (h2 : Q 
     _ = Pi * P * Y * (Q * Qi) := by noncomm_ring
     _ = Y := by rw [h1, h2, one_mul, mul_one]
 
+/- English proof (translation)
+Establish `h0` using `hf.module.herm Z hZ hr`. Establish `hh : ∀ i j, star (f.RR * f.TT Z i j) = f.RR * f.TT Z j i`. Introduce `i j`. Use `congrFun (congrFun h0 j) i` as an intermediate fact. Simplify `this` using `[d0, Matrix.conjTranspose_apply, Matrix.diagonal_mul]`.
+
+Establish `hF : ∀ i j, f.RR * f.TT Z i j = star f.F * (f.d L * f.hatT Z i j) * f.F`. Introduce `i j`. Rewrite using `[hat_apply hZ, hf.form]`. Combine the equalities or inequalities in the displayed calculation. Establish `sF : star f.Fi * star f.F = 1` using `by rw [← star_mul, hf.F_Fi, star_one]`.
+
+Use `cancel2 sF hf.F_Fi ?_` and prove the remaining obligations. Use `hh i j` as an intermediate fact. Rewrite `this` using `[hF i j, hF j i, star_mul, star_mul, star_star, ← mul_assoc]`. Conclude with `this`.
+-/
 lemma hat_herm (hf : IsFrame L f) {Z : ℂ} (hZ : Z ∈ f.reg) (hr : star Z = Z) (i j : Fin 2) :
     star (f.d L * f.hatT Z i j) = f.d L * f.hatT Z j i := by
   have h0 := hf.module.herm Z hZ hr
@@ -238,6 +356,13 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.Fr3
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f Y hee`. Use `⟨?_, zetaConj2 L⟩` and prove the remaining obligations. Establish `c : Commute (kapL L * f.ee Y : SlopeTestRemainingChoices S A) (io L.ζ)`. Use `Commute.mul_left ?_ (hee _ (mζ L))` and prove the remaining obligations. Conclude with `io_comm (((zc L (mζb L) (mζ L)).mul_left (zc L (mζi L) (mζ L))).mul_left (zc L (mGGi L) (mζ L)))`.
+
+Establish `i1 : (io L.ζi : SlopeTestRemainingChoices S A) * io L.ζ = 1` using `by rw [← io_mul, L.ζi_ζ, io_one]`. Establish `h1 : (io L.ζi : SlopeTestRemainingChoices S A) * io (L.l0 Y) * io L.ζ = io (L.l0 Y) - io L.ζi`. Rewrite using `[← io_mul, ← io_mul, zetaInv_mul_l0_mul_zeta]`. Simplify using `only [io, map_sub]`. Establish `h2 : (io L.ζi : SlopeTestRemainingChoices S A) * (kapL L * f.ee Y) * io L.ζ = kapL L * f.ee Y`.
+
+Rewrite using `[mul_assoc, c.eq, ← mul_assoc, i1, one_mul]`. Unfold `FrameData.l`. Rewrite using `[mul_add, add_mul, h1, h2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem zeta_conj_nabla : Formalism.FourierDecayAlt.Fr.ZetaConj := by
   intro A S _ _ _ _ _ _ r L f Y hee
   refine ⟨?_, zetaConj2 L⟩
@@ -252,6 +377,11 @@ theorem zeta_conj_nabla : Formalism.FourierDecayAlt.Fr.ZetaConj := by
   unfold FrameData.l
   rw [mul_add, add_mul, h1, h2]; abel
 
+/- English proof (translation)
+Introduce `A _ _ r L SS`. Establish `cz` using `(RuleSS.comm_fns_D L (zsub L (mζ L))).1`. Establish `czb` using `(RuleSS.comm_fns_D L (zsub L (mζbi L))).1`. Unfold `LevelData.D LevelData.Dbi`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[RuleGD.Drbi_Drb, mul_one, ← (cz.mul_left czb).eq]`. Simplify using `only [mul_assoc]`. Use `_ = L.ζ * L.ζbi * SS := by rw [RuleGD.Dr_Dri, mul_one]`.
+-/
 theorem start_ee : Formalism.FourierDecayAlt.Fr.StartEe := by
   intro A _ _ r L SS
   have cz := (RuleSS.comm_fns_D L (zsub L (mζ L))).1
@@ -263,6 +393,17 @@ theorem start_ee : Formalism.FourierDecayAlt.Fr.StartEe := by
         rw [RuleGD.Drbi_Drb, mul_one, ← (cz.mul_left czb).eq]; simp only [mul_assoc]
     _ = L.ζ * L.ζbi * SS := by rw [RuleGD.Dr_Dri, mul_one]
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f Y Ya hf hY hY1 hYa hYa1 hne`. Take `⟨H, Hl⟩` from `frame_gives_one_letter_hyps A S r L f hf`. Establish `y1` using `Formalism.YangianSpanCharacter.P.wedgeMapInLieAlgebra ℂ (SlopeTestRemainingChoices S A) f.hatT (fun Y => io L.GGi * f.xi Y) f.hatQ f.inv H Ya Y hYa hY hne.symm`. Establish `hη` using `divided_difference_l A S r L f Ya Y hne.symm`. Establish `hDD : f.DD Ya Y = f.DD Y Ya`.
+
+Unfold `FrameData.DD`. Rewrite using `[← neg_sub Y Ya, ← neg_sub (f.ee Y) (f.ee Ya), inv_neg, smul_neg, neg_smul, neg_neg]`. Unfold `eta at y1`. Rewrite `y1` using `[Hl Y hY hY1, Hl Ya hYa hYa1, hη, hat_τ hf (hf.inv_reg hYa), hDD]`. Unfold `FrameData.l at y1`.
+
+Use `eeConj_abs (io L.GG) (io L.GGi) (f.x Ya) (f.xi Ya) (io (L.l0 Y)) (io (L.ζb * L.GGi)) (kapL L) (io (L.GG * L.ζ * L.ζbi)) (f.ee Y) (f.DD Y Ya) ?_ ?_ (hf.x_xi Ya hYa).2 ?_ (commute_x_l0 hf Ya Y) ?_ ?_ ?_ (hf.ee_fn Y _ (mGG L)) y1` and prove the remaining obligations. Rewrite using `[← io_mul, L.GGi_GG, io_one]`. Unfold `kapL`. Rewrite using `[← io_mul]`. Establish `e : L.GG * L.ζ * L.ζbi * (L.ζb * L.ζi * L.GGi) = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, io_one]`. Rewrite using `[← io_mul, l0_mul_gg_eq_gg_mul_sub, io_mul]`. Simplify using `only [io, map_sub]`. Rewrite using `[io_mul]`.
+
+Conclude with `(hf.x_fn Ya _ (mζb L)).mul_right (hf.x_fn Ya _ (mGGi L))`. Unfold `kapL`. Rewrite using `[io_mul, io_mul]`. Conclude with `((hf.x_fn Ya _ (mζb L)).mul_right (hf.x_fn Ya _ (mζi L))).mul_right (hf.x_fn Ya _ (mGGi L))`. Conclude with `io_comm (((zc L (mζb L) (mGG L)).mul_left (zc L (mζi L) (mGG L))).mul_left (zc L (mGGi L) (mGG L)))`.
+-/
 theorem ee_conjugation : Formalism.FourierDecayAlt.Fr.EeConj := by
   intro A S _ _ _ _ _ _ r L f Y Ya hf hY hY1 hYa hYa1 hne
   obtain ⟨H, Hl⟩ := frame_gives_one_letter_hyps A S r L f hf
@@ -292,6 +433,13 @@ theorem ee_conjugation : Formalism.FourierDecayAlt.Fr.EeConj := by
     exact ((hf.x_fn Ya _ (mζb L)).mul_right (hf.x_fn Ya _ (mζi L))).mul_right (hf.x_fn Ya _ (mGGi L))
   · exact io_comm (((zc L (mζb L) (mGG L)).mul_left (zc L (mζi L) (mGG L))).mul_left (zc L (mGGi L) (mGG L)))
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f Y hL hf hr hY hYm`. Take `⟨H, Hl⟩` from `frame_gives_one_letter_hyps A S r L f hf`. Establish `hr' : star (Y - 1) = Y - 1` using `by rw [star_sub, hr, star_one]`. Establish `hY' : Y - 1 + 1 ∈ f.inv` using `by rwa [sub_add_cancel]`. Establish `adj` using `adjoint_l_shift_relation ℂ (SlopeTestRemainingChoices S A) f.hatT (fun Y => io L.GGi * f.xi Y) f.hatQ f.inv (f.d L) H (d_star hL hf) (Y - 1) hYm hY' (hat_herm hf (hf.inv_reg hYm) hr')`.
+
+Rewrite `adj` using `[Hl (Y - 1) hYm hY', sub_add_cancel]`. Establish `hm : mf f.hatT (fun Y => io L.GGi * f.xi Y) Y = f.m L Y`. Unfold `FrameData.m`. Rewrite using `[mul_assoc, ← adj, ← mul_assoc, di_d hf, one_mul]`. Establish `hτ : io L.GG * f.x Y * (io L.GGi * f.xi Y) = 1`.
+
+Use `(H.2.2.2.1 Y hY).1` as an intermediate fact. Rewrite `this` using `[hat_τ hf (hf.inv_reg hY)]`. Then use the resulting hypothesis. Rewrite using `[← hm]`. Unfold `mf`. Rewrite using `[← mul_assoc (io L.GG * f.x Y), hτ, one_mul, hat_apply (hf.inv_reg hY), mul_assoc, hf.Fi_F, mul_one]`.
+-/
 theorem frame_adjoint_m : Formalism.FourierDecayAlt.Fr.FrameM := by
   intro A S _ _ _ _ _ _ r L f Y hL hf hr hY hYm
   obtain ⟨H, Hl⟩ := frame_gives_one_letter_hyps A S r L f hf
@@ -310,6 +458,9 @@ theorem frame_adjoint_m : Formalism.FourierDecayAlt.Fr.FrameM := by
   unfold mf
   rw [← mul_assoc (io L.GG * f.x Y), hτ, one_mul, hat_apply (hf.inv_reg hY), mul_assoc, hf.Fi_F, mul_one]
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f b Yb hH Y hY hY1`. Take `⟨hL, hf, hfree, hre, i0, i1, im1, hq⟩` from `hH`. Establish `e` using `ee_conjugation A S r L f Y Yb hf hY.1 hY1.1 i0 i1 (by intro e; apply hY.2.1; rw [e]; ring)`. Simplify using `only [FrameData.minus]`. Rewrite using `[e]`.
+-/
 theorem minus_letter_last_entry : Formalism.FourierDecayAlt.Fr.MinusLast := by
   intro A S _ _ _ _ _ _ r L f b Yb hH Y hY hY1
   obtain ⟨hL, hf, hfree, hre, i0, i1, im1, hq⟩ := hH
@@ -317,6 +468,17 @@ theorem minus_letter_last_entry : Formalism.FourierDecayAlt.Fr.MinusLast := by
   simp only [FrameData.minus]
   rw [e]
 
+/- English proof (translation)
+Introduce `A S _ _ _ _ _ _ r L f Y hee`. Establish `a1 : L.Di * L.Ahat Y = L.ζi * L.Ar Y`. Unfold `LevelData.Di LevelData.Ahat`. Rewrite using `[mul_assoc, ← mul_assoc L.Dri, RuleGD.Dri_Dr, one_mul]`. Establish `a2 : L.Dbi * L.R0 Y = L.ζbi * L.GG * (L.l0 Y * L.Ar Y + L.Br Y)`.
+
+Unfold `LevelData.Dbi LevelData.R0`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc L.Drbi, RuleGD.Drbi_Drb, one_mul]`. Establish `k0 : L.ζbi * L.GG * (L.ζb * L.ζi * L.GGi) = L.ζi`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = L.ζbi * ((L.ζb * L.ζi) * L.GG) * L.GGi := by`. Rewrite using `[((zc L (mGG L) (mζb L)).mul_right (zc L (mGG L) (mζi L))).eq]`. Use `_ = (L.ζbi * L.ζb) * L.ζi * (L.GG * L.GGi) := by simp only [mul_assoc]`. Use `_ = L.ζi := by rw [L.ζbi_ζb, L.GG_GGi, one_mul, mul_one]`.
+
+Establish `k : (io L.ζbi : SlopeTestRemainingChoices S A) * io L.GG * kapL L = io L.ζi`. Unfold `kapL`. Rewrite using `[← io_mul, ← io_mul, k0]`. Establish `key : (io L.ζbi : SlopeTestRemainingChoices S A) * (io L.GG * f.l L Y) * io (L.Ar Y) + io L.ζbi * io L.GG * io (L.Br Y) = io L.ζbi * io L.GG * (io (L.l0 Y) * io (L.Ar Y) + io (L.Br Y)) + f.ee Y * (io L.ζi * io (L.Ar Y))`. Unfold `FrameData.l`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `ext1 i`. Use `fin_cases i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.mul_apply, a1, io_mul]`. Simplify `key` using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.mul_apply, a1, a2, io_mul, io_add]`.
+-/
 theorem new_vector_letter_plus : Formalism.FourierDecayAlt.Fr.NewLetterPlus := by
   intro A S _ _ _ _ _ _ r L f Y hee
   have a1 : L.Di * L.Ahat Y = L.ζi * L.Ar Y := by

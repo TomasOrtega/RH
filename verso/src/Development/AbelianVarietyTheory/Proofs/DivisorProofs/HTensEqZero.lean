@@ -10,6 +10,11 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.MixW.UnipHeis
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Prod.fst_add, Prod.snd_add, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Rewrite using `[show x + a.1 + b.1 = x + (a.1 + b.1) from add_assoc _ _ _]`. Use `congr 2`. Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`.
+
+Simplify using `only [dotProduct_add, add_dotProduct]`. Rewrite `h`, the goal using `[dotProduct_comm b.1 a.2]`. Take the linear combination `(1 - ⅟(2 : R)) * h - (a.2 ⬝ᵥ b.1) * h2`.
+-/
 theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a b : (κ → R) × (κ → R)) (h : a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) (φ : (κ → R) → ℂ) :
     schr ψ a (schr ψ b φ) = schr ψ (a + b) φ := by
@@ -22,6 +27,9 @@ theorem schr_schr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   rw [dotProduct_comm b.1 a.2] at h ⊢
   linear_combination (1 - ⅟(2 : R)) * h - (a.2 ⬝ᵥ b.1) * h2
 
+/- English proof (translation)
+Simplify using `only [Darboux.rho, map_add]`. Use `schr_schr ψ _ _ ?_ φ` and prove the remaining obligations. Use `dc.form w w'` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(sub_eq_zero.mp this.symm)`.
+-/
 theorem rho_rho {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCommGroup V] [Module R V]
     {Bf : V → V → R} {κ : Type} [Fintype κ] (dc : Darboux Bf κ) (ψ : AddChar R ℂ) (w w' : V) (h : Bf w w' = 0)
     (φ : (κ → R) → ℂ) : dc.rho ψ w (dc.rho ψ w' φ) = dc.rho ψ (w + w') φ := by
@@ -33,6 +41,17 @@ theorem rho_rho {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddComm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Use `set v : Fin d → AE F E := incM F JW *ᵥ fun l => cA σ (incV F x l) with hvdef`. Establish `hv : (incM F ι)ᵀ *ᵥ v = 0`. Use function extensionality and compare the values at `m`. Establish `h0` using `congrArg (inclR (F := F) (AF F)) (hor (Pi.single m 1))`.
+
+Rewrite `h0` using `[map_zero]`. Rewrite using `[Pi.zero_apply, ← h0]`. Simplify using `[hvdef, form, Matrix.mulVec, dotProduct, incM, incV, map_sum, map_mul, hc, Pi.single_apply]`. Establish `h0 : ∀ i, ∑ j, (z * (incM F ι)ᵀ) i j * ∑ l, incM F JW j l * cA σ (incV F x l) = 0`. Introduce `i`.
+
+Use `congrFun (show z *ᵥ ((incM F ι)ᵀ *ᵥ v) = 0 by rw [hv, Matrix.mulVec_zero]) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec]`. Simplify `this` using `[hvdef, Matrix.mulVec, dotProduct]`. Unfold `hTens`. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`. Use `_ = 0 := by simp [h0]`.
+-/
 theorem hTens_eq_zero {n d d₁ : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (ι : Matrix (Fin d) (Fin d₁) E) (x : Fin d → E) (hor : ∀ u, form σ JW (ι *ᵥ u) x = 0)
     (z : Matrix (Fin n) (Fin d₁) (AE F E)) (q : Fin n → AE F E) :
@@ -61,6 +80,21 @@ theorem hTens_eq_zero {n d d₁ : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Mat
         exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring
     _ = 0 := by simp [h0]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he g t hgx hgι`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hIm : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`. Simplify using `[incM]`.
+
+Establish `act : ∀ w : Matrix (Fin n) (Fin d) (AE F E), actAB (cA σ) ((1 : UA σ X.J), g) w = w * (mat g)ᵀ`. Introduce `w`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `vmv : ∀ (y : Fin n → AE F E) (v : Fin d → AE F E) (A : Matrix (Fin d) (Fin d) (AE F E)), Matrix.vecMulVec y v * Aᵀ = Matrix.vecMulVec y (A *ᵥ v)`.
+
+Introduce `y v A`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`. Use `⟨fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hΨ` using `hS.pres ((1 : UA σ X.J), g) Φ hΦ choose a ha using fun k : Fin d₁ => hgι (Pi.single k 1)`.
+
+Establish `hgi : mat g * incM F H'.ι = incM F H'.ι + Matrix.vecMulVec (incV F H'.x) a`. Use extensionality with `j k`. Use `congrFun (ha k) j` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Simplify `this` using `[Matrix.vecMulVec_apply, mul_comm]`.
+
+Establish `hw : incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ * (mat g)ᵀ = incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ + Matrix.vecMulVec (z *ᵥ a) (incV F H'.x)`. Rewrite using `[hIm, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, hgi, Matrix.transpose_add, Matrix.mul_add, Matrix.transpose_vecMulVec]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+
+Establish `h0 : symp (cA σ) (-1) (incM F X.J) (incM F W.J) (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) (Matrix.vecMulVec (z *ᵥ a) (incV F H'.x)) = 0`. Rewrite using `[symp, hIm, Matrix.one_mul, hTens_eq_zero (σ := σ) X.J W.J H'.ι H'.x (fun u => (hA.orth u).1), mul_zero, map_zero]`. Rewrite using `[hS.impl _ _ _ hΦ, act, hw, ← rho_rho M.co B.ψ _ _ h0, he.Heisenberg₂ _ _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ _ hΨ), he.inv _ ⟨z *ᵥ a, rfl⟩ _ hΨ]`. Take `⟨y, rfl⟩` from `hu`. Rewrite using `[hS.impl _ _ _ hΦ, act, vmv, hgx, show Matrix.vecMulVec y (t • incV F H'.x) = Matrix.vecMulVec (t • y) (incV F H'.x) by`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul]`. Use the proof step `ring]`. Conclude with `he.inv _ ⟨t • y, rfl⟩ _ (hS.pres _ _ hΦ)`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

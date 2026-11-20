@@ -8,6 +8,41 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.Twist
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d v π b hπ g G hG X hdet Y hY`. Use `set B : Matrix (Fin d) (Fin d) (Fv F v) := (b : Matrix (Fin d) (Fin d) (Fv F v)) with hB`. Use `set Bi : Matrix (Fin d) (Fin d) (Fv F v) := ((b⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v)) with hBi`. Establish `hBBi : B * Bi = 1` using `Units.mul_inv b`. Establish `hBiB : Bi * B = 1` using `Units.inv_mul b`.
+
+Set `φ : v.adicCompletionIntegers F →+* Fv F v` to `(v.adicCompletionIntegers F).subtype`. Establish `conj : ∀ M : Matrix (Fin d) (Fin d) (Fv F v), B * (Bi * M * B) * Bi = M`. Introduce `M`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hBBi, Matrix.one_mul, Matrix.mul_assoc, hBBi, Matrix.mul_one]`. Establish `hGφ : G.map (fun x => (x : Fv F v)) = G.map φ` using `rfl`.
+
+Rewrite `hG` using `[hGφ]`. Establish `h11 : g.toBlocks₁₁.map π = B * G.toBlocks₁₁.map φ * Bi`. Use `congrArg Matrix.toBlocks₁₁ hG` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₁₁]`. Establish `e : (G.map φ).toBlocks₁₁ = G.toBlocks₁₁.map φ` using `rfl`.
+
+Rewrite `this` using `[e]`. Rewrite using `[this, conj]`. Establish `h12 : g.toBlocks₁₂.map π = B * G.toBlocks₁₂.map φ * Bi`. Use `congrArg Matrix.toBlocks₁₂ hG` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₁₂]`.
+
+Establish `e : (G.map φ).toBlocks₁₂ = G.toBlocks₁₂.map φ` using `rfl`. Rewrite `this` using `[e]`. Rewrite using `[this, conj]`. Establish `h21 : g.toBlocks₂₁.map π = B * G.toBlocks₂₁.map φ * Bi`. Use `congrArg Matrix.toBlocks₂₁ hG` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.toBlocks_fromBlocks₂₁]`. Establish `e : (G.map φ).toBlocks₂₁ = G.toBlocks₂₁.map φ` using `rfl`. Rewrite `this` using `[e]`. Rewrite using `[this, conj]`. Establish `h22 : g.toBlocks₂₂.map π = B * G.toBlocks₂₂.map φ * Bi`.
+
+Use `congrArg Matrix.toBlocks₂₂ hG` as an intermediate fact. Rewrite `this` using `[Matrix.toBlocks_fromBlocks₂₂]`. Establish `e : (G.map φ).toBlocks₂₂ = G.toBlocks₂₂.map φ` using `rfl`. Rewrite `this` using `[e]`. Rewrite using `[this, conj]`.
+
+Establish `hYφ : Y.map π = B * X.map φ * Bi` using `hY`. Use `set c : Fv F v := π (algebraMap (AF F) (AE F E) ⅟(2 : AF F)) with hc`. Establish `hc2 : (2 : Fv F v) * c = 1`. Rewrite using `[hc, hπ, ← map_ofNat (evFin F v) 2, ← map_mul, mul_invOf_self, map_one]`. Establish `hsm : ∀ M : Matrix (Fin d) (Fin d) (AE F E), (⅟(2 : AF F) • M).map π = c • M.map π`.
+
+Introduce `M`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Algebra.smul_def, map_mul, Matrix.smul_apply, Matrix.map_apply, hc, smul_eq_mul]`. Establish `aπ : ∀ M N : Matrix (Fin d) (Fin d) (AE F E), (M + N).map π = M.map π + N.map π` using `fun M N => Matrix.map_add π (map_add π) M N`. Establish `sπ : ∀ M N : Matrix (Fin d) (Fin d) (AE F E), (M - N).map π = M.map π - N.map π` using `fun M N => Matrix.map_sub π (map_sub π) M N`.
+
+Establish `aφ : ∀ M N : Matrix (Fin d) (Fin d) (v.adicCompletionIntegers F), (M + N).map φ = M.map φ + N.map φ` using `fun M N => Matrix.map_add φ (map_add φ) M N`. Establish `sφ : ∀ M N : Matrix (Fin d) (Fin d) (v.adicCompletionIntegers F), (M - N).map φ = M.map φ - N.map φ` using `fun M N => Matrix.map_sub φ (map_sub φ) M N`. Use `set s := G.toBlocks₁₁ + G.toBlocks₁₂ + G.toBlocks₂₁ + G.toBlocks₂₂ with hs`. Use `set t := G.toBlocks₁₁ + G.toBlocks₁₂ - G.toBlocks₂₁ - G.toBlocks₂₂ with ht`. Use `set P := s + X * t with hP`.
+
+Establish `hSπ : (g.toBlocks₁₁ + g.toBlocks₁₂ + g.toBlocks₂₁ + g.toBlocks₂₂).map π = B * s.map φ * Bi`. Simplify using `only [aπ, aφ, h11, h12, h21, h22, hs, Matrix.mul_add, Matrix.add_mul]`. Establish `hTπ : (g.toBlocks₁₁ + g.toBlocks₁₂ - g.toBlocks₂₁ - g.toBlocks₂₂).map π = B * t.map φ * Bi`. Simplify using `only [aπ, sπ, aφ, sφ, h11, h12, h21, h22, ht, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]`. Establish `hK : (⅟(2 : AF F) • (g.toBlocks₁₁ + g.toBlocks₁₂ + g.toBlocks₂₁ + g.toBlocks₂₂) + Y * (⅟(2 : AF F) • (g.toBlocks₁₁ + g.toBlocks₁₂ - g.toBlocks₂₁ - g.toBlocks₂₂))).map π = c • (B * P.map φ * Bi)`.
+
+Rewrite using `[aπ, Matrix.map_mul, hsm, hsm, hSπ, hTπ, hYφ, hP, aφ s (X * t), Matrix.map_mul (f := φ) (M := t) (L := X)]`. Rewrite using `[Matrix.mul_smul, ← smul_add]`. Use `congr 1`. Establish `: B * X.map φ * Bi * (B * t.map φ * Bi) = B * (X.map φ * t.map φ) * Bi`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hBiB, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Rewrite using `[this, ← Matrix.add_mul, ← Matrix.mul_add]`. Use `⟨(2 : Fv F v) • (B * (P⁻¹).map φ * Bi), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hK, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hc2, one_smul]`.
+
+Establish `hPinv : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hBiB, Matrix.mul_one, ← Matrix.map_mul, hPinv, Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.mul_one, hBBi]`.
+
+Introduce `i j`. Establish `: Bi * ((2 : Fv F v) • (B * (P⁻¹).map φ * Bi)) * B = (2 : Fv F v) • (P⁻¹).map φ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hBiB, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[this, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Establish `e : (2 : Fv F v) * φ (P⁻¹ i j) = φ (2 * P⁻¹ i j)` using `by rw [map_mul, map_ofNat]`. Rewrite using `[e]`.
+
+Conclude with `(2 * P⁻¹ i j).2`.
+-/
 theorem halfBlockSum_inv_conj_integral : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (v : Pl F) (π : AE F E →+* Fv F v) (b : GL (Fin d) (Fv F v)),
   (∀ a : AF F, π (algebraMap (AF F) (AE F E) a) = evFin F v a) →
   ∀ (g : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) (G : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (v.adicCompletionIntegers F)),

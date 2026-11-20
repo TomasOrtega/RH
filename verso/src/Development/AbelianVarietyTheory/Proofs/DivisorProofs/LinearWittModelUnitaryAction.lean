@@ -9,6 +9,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LinearModelUnitaryI
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.KSplit
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp v t b c ι hι g hg h hh φ hφ φ₁ hφ₁ hA`. Take `⟨hex, -, -⟩` from `GlobalTheory.T.theta_action_exists hP F E σ B n d X W M χX χW om r s r' s' hp v`. Establish `oneX : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `fun u _ => by show u • (mat (1 : UA σ X.J) - 1) = 0`. Simplify using `[mat]`. Establish `oneW : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `fun u _ => by show u • (mat (1 : UA σ W.J) - 1) = 0`.
+
+Simplify using `[mat]`. Establish `hspl` using `hp.weil.isUSplitting`. Take `⟨φ', ⟨hφ', hA'⟩, -⟩` from `hex 1 oneX h hh φ hφ`. Take `⟨φ'', ⟨hφ'', hA''⟩, -⟩` from `hex g hg 1 oneW φ' hφ'`. Establish `hcomp : Acts (evFin F v) (om (g, h)) φ φ''`.
+
+Introduce `R hR`. Establish `e : om (g, h) = om (g, 1) * om (1, h)` using `by rw [← map_mul]; simp`. Establish `hR' : Rest (evFin F v) φ' R` using `⟨hR.1, by rw [← hA' R hR]; exact hspl.pres (1, h) _ hR.2⟩`. Rewrite using `[e, Module.End.mul_apply, hA' R hR, hA'' R hR']`. Establish `e1 : φ₁ = φ''` using `(hex g hg h hh φ hφ).unique ⟨hφ₁, hA⟩ ⟨hφ'', hcomp⟩`.
+
+Take `⟨κW, hW⟩` from `GlobalTheory.T.linear_model_unitary_conjugate hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι`. Take `⟨κX, hX⟩` from `GlobalTheory.T.linear_model_compact_conjugate_exists hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι`. Establish `sW` using `GlobalTheory.T.linear_model_compact_intertwines hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι κW hW h hh`. Establish `sX` using `GlobalTheory.T.linear_model_unitary_intertwines hP F E σ B n d X W M χX χW om r s r' s' hp v t b c ι hι κX hX g hg`. Rewrite using `[e1, hX g hg φ' hφ' φ'' hφ'' hA'', hW h hh φ hφ φ' hφ' hA', sW, sX]`.
+
+Use function extensionality and compare the values at `Y`. Simplify using `only [GlobalTheory.SplitFlip.omA, Pi.smul_apply, smul_eq_mul, Fintype.card_fin, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, inv_inv, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KSplit.om_linW_split : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinW B.ψ t b c ι →

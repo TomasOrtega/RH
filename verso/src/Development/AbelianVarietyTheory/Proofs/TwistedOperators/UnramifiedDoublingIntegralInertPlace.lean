@@ -32,6 +32,11 @@ namespace GlobalTheory.InertZeta
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {q n : ℕ}
 
+/- English proof (translation)
+Establish `h : cT σ (mat g) * antiJ L n * mat g = antiJ L n` using `g.2`. Establish `h1` using `congrArg (fun M => Valued.v (det M)) h`. Establish `hJ : IsInt (antiJ L n)` using `fun i j => by`. Unfold `antiJ`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using `only [det_mul, map_mul, cT, det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hσ, v_det_eq_one hJ hJ GlobalTheory.UnitarySwap.antiJ_mul_self, mul_one] at h1`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 (by rw [sq, h1])`.
+-/
 theorem v_det_mat (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) : Valued.v (mat g).det = 1 := by
   have h : cT σ (mat g) * antiJ L n * mat g = antiJ L n := g.2
   have h1 := congrArg (fun M => Valued.v (det M)) h
@@ -43,6 +48,11 @@ theorem v_det_mat (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (g : GU σ n) : Va
     v_det_eq_one hJ hJ GlobalTheory.UnitarySwap.antiJ_mul_self, mul_one] at h1
   exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 (by rw [sq, h1])
 
+/- English proof (translation)
+Establish `h` using `P.fSatake_ord_zpow hU.2.2.2.1 (k : ℤ)`. Rewrite `h` using `[zpow_natCast]`. Rewrite using `[secVal, Units.val_pow_eq_pow_val, h, map_pow, Units.val_pow_eq_pow_val, varX, mul_pow, ← Complex.cpow_nat_mul]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secVal_pow {ϖ : Lˣ} (hU : IsUnramInv (ϖ : L) σ q) (χ : Lˣ →* ℂˣ) (s : ℂ) (k : ℕ) :
     secVal q χ (s + (n : ℂ) / 2) (ϖ ^ k) = varX q n (χ ϖ) s ^ k := by
   have h := P.fSatake_ord_zpow hU.2.2.2.1 (k : ℤ)
@@ -52,6 +62,17 @@ theorem secVal_pow {ϖ : Lˣ} (hU : IsUnramInv (ϖ : L) σ q) (χ : Lˣ →* ℂ
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨U, V, C, hfr, hdet⟩` from `h`. Take `⟨k, hk, hk', hx⟩` from `hC L ϖ σ q n hU g U V C hfr`. Establish `hq : q ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`. Establish `hK : (⟨k, hk⟩ : GD σ n) ∈ KD σ n` using `⟨hk, hk'⟩`. Establish `hp : ∀ x : Fin n → L, ((GD σ n).subtype (io1 σ n g * ⟨k, hk⟩)).1 *ᵥ pairVec finSumFinEquiv x x = pairVec finSumFinEquiv ((mat g * C) *ᵥ x) ((mat g * C) *ᵥ x)` using `fun x => by`.
+
+Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv (mat g) 1 * k.1) *ᵥ _ = _`. Rewrite using `[← mulVec_mulVec, hx, blkMat_mulVec, mulVec_mulVec, one_mulVec]`. Establish `hP : io1 σ n g * ⟨k, hk⟩ ∈ PD σ n` using `mem_siegelOf.2 (keepsDiag_of_mulVec fun w hw => by`. Take `⟨x, rfl⟩` from `(mem_diagSub _).1 hw`. Rewrite using `[hp, pairVec_mem_diagSub])`.
+
+Establish `hlev : leviMat finSumFinEquiv ((GD σ n).subtype (io1 σ n g * ⟨k, hk⟩)).1 = mat g * C`. Use `Matrix.ext_of_mulVec_single fun j => funext fun i => ?_` and prove the remaining obligations. Use `congrFun ((mem_siegelOf.1 hP).mulVec_diag (Pi.single j 1)) (finSumFinEquiv (.inl i))` as an intermediate fact. Rewrite `this` using `[hp, pairVec_inl, pairVec_inl]`. Conclude with `this.symm`.
+
+Establish `h1` using `hΦ ⟨_, hP⟩ _ (inv_mem hK)`. Rewrite `h1` using `[mul_inv_cancel_right]`. Establish `h2 : Valued.v ((aD σ n ⟨_, hP⟩ * (ϖ ^ l)⁻¹ : Lˣ) : L) = 1`. Establish `hϖ : Valued.v (ϖ : L) = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Rewrite using `[Units.val_mul, val_aOf, hlev, det_mul, map_mul, map_mul, v_det_mat hU.2.1, hdet, one_mul, Units.val_inv_eq_inv_val, map_inv₀, Units.val_pow_eq_pow_val, map_pow, hϖ, ← WithZero.exp_nsmul, ← WithZero.exp_neg, ← WithZero.exp_add]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, ← inv_mul_cancel_right (aD σ n ⟨_, hP⟩) (ϖ ^ l), secVal_mul hq, secVal_unit q hχ _ h2, one_mul, secVal_pow hU]`.
+-/
 theorem section_eq (hC : Completion) {ϖ : Lˣ} (hU : IsUnramInv (ϖ : L) σ q) {χ : Lˣ →* ℂˣ} (hχ : IsUnr χ) {s : ℂ}
     {Φ : GD σ n → ℂ} (hΦ : IsSphSec σ q n χ s Φ) (g : GU σ n) {l : ℕ} (h : HasLen (mat g) l) :
     Φ (io1 σ n g) = varX q n (χ ϖ) s ^ l := by
@@ -81,6 +102,15 @@ theorem section_eq (hC : Completion) {ϖ : Lˣ} (hU : IsUnramInv (ϖ : L) σ q) 
     simp
   rw [h1, ← inv_mul_cancel_right (aD σ n ⟨_, hP⟩) (ϖ ^ l), secVal_mul hq, secVal_unit q hχ _ h2, one_mul, secVal_pow hU]
 
+/- English proof (translation)
+Establish `hq0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `h1 : ε * ((q ^ 2 : ℕ) : ℂ) ^ (-(s + 1 / 2)) = varY q ε s`. Rewrite using `[varY, Nat.cast_pow, ← Complex.natCast_cpow_natCast_mul]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (dFac q n m s)⁻¹ = ∏ j ∈ Finset.range n, (1 - (-(q : ℂ)) ^ j * varX q n ε s)`. Rewrite using `[dFac, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[etaL, inv_inv, varX, hε, show -(2 * s + n - j) = (j : ℂ) + -(2 * s + n) by ring, Complex.cpow_add _ _ hq0, Complex.cpow_natCast, neg_pow (q : ℂ), pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_eq_mul_inv, h2, stdL, h1, closedForm, GlobalTheory.LGrp.bcParam, GlobalTheory.LFun.eulerFac_add, GlobalTheory.LFun.eulerFac_add, GlobalTheory.LFun.eulerFac_map, GlobalTheory.LFun.eulerFac_map, Finset.prod_mul_distrib]`. Simplify using `only [Units.val_inv_eq_inv_val, div_eq_mul_inv, mul_comm (varY q ε s)]`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 h), Nat.even_iff.1 h]`.
+
+Simplify using `only [Multiset.replicate_zero, GlobalTheory.LFun.eulerFac_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h, Nat.odd_iff.1 h]`. Simplify using `only [Multiset.replicate_one, GlobalTheory.LFun.eulerFac_singleton, Units.val_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem closedForm_eq {q : ℕ} (hq : q ≠ 0) (n m : ℕ) (ε s : ℂ) (α : Fin (n / 2) → ℂˣ) (hε : ε = (-1) ^ m) :
     closedForm q n (varX q n ε s) (varY q ε s) α = stdL q n α ε (s + 1 / 2) / dFac q n m s := by
   have hq0 : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hq
@@ -106,6 +136,17 @@ theorem closedForm_eq {q : ℕ} (hq : q ≠ 0) (n m : ℕ) (ε s : ℂ) (α : Fi
     simp only [Multiset.replicate_one, GlobalTheory.LFun.eulerFac_singleton, Units.val_one, one_mul]
     ring
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n hU _ _ μ _ hμ χ hχ s Φ hΦ α w hw`. Establish `hq : q ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`. Establish `hq0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `hF : FracExists` using `T.matrixLengthExists_of_elementaryDivisors T.elementaryDivisors_exist_discretelyValued`. Establish `hsec : (fun g => Φ (io1 σ n g) * w g) = fun g => varX q n (χ ϖ) s ^ len (mat g) * w g` using `funext fun g => by`.
+
+Rewrite using `[section_eq T.doubledLattice_primitive_isotropic_frame_completion hU hχ hΦ g (hF L ϖ n hU.2.2.2.1 _ (det_mat_ne_zero g))]`. Establish `hint : ∀ Z, HasSum (fun x : GU σ n ⧸ KU σ n => varX q n (χ ϖ) s ^ len (mat x.out) * w x.out) Z → Integrable (fun g => Φ (io1 σ n g) * w g) μ ∧ ∫ g, Φ (io1 σ n g) * w g ∂μ = Z` using `fun Z hZ => by`. Rewrite using `[hsec]`. Use `T.integral_right_invariant_eq_sum_open_subgroup_cosets _ μ (KU σ n) (GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n hU).1 hμ _ Z (fun g k hk => ?_) hZ` and prove the remaining obligations. Establish `h1` using `hw.1 1 ⟨k, hk⟩ g`.
+
+Establish `h2` using `len_mat_mul (one_mem _) hk g`. Simplify using `only [OneMemClass.coe_one, one_mul] at h1 h2`. Rewrite using `[h1, h2]`. Use `⟨fun hD => ?_, fun hn => hint 1 (hasSum_small T.unitary_rank_le_one_integral_points hU hn (fun g => varX q n (χ ϖ) s ^ len (mat g) * w g) fun k hk => ?_)⟩` and prove the remaining obligations. Take `⟨φ, hφ, h1, -⟩` from `Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ)) fun i => (α i).ne_zero`.
+
+Establish `h2` using `hasSum_spherical hF (T.leviRadicalProductLength_of_lattice_steps T.lattice_add_vector_det_valuation T.dual_inter_eq_sum' T.blockTriangular_row_lattice_triangular_basis T.unitary_heisenberg_radical_coordinates) (T.smallRadicalCosetCount_of_heisenberg T.unitary_heisenberg_radical_c …`. Rewrite using `[varX, varY, neg_add, neg_add, Complex.cpow_add _ _ hq0, Complex.cpow_add _ _ hq0, Complex.cpow_neg_one, Complex.cpow_neg _ (n : ℂ), Complex.cpow_natCast]`. Use the proof step `field_simp) hD.1 hD.2 hφ h1`. Establish `h3` using `hint _ (T.biInvariant_replace_same_double_coset_sums _ (KU σ n) (P.isCommensurated_integral_unitary_of_unramified hU n) (fun g => varX q n (χ ϖ) s ^ len (mat g)) w φ _ (fun a b g => by simp only [len_mat_mul a.2 b.2]) hw.1 (fun g => by`. Rewrite using `[hw.2.2 _ (Final.DosetIndMem _ _ ℂ g), Final.SatakeInert L ϖ σ q n (n / 2) hU (by omega) (by omega) _ (fun i => (α i).ne_zero) _ (Final.DosetIndMem _ _ ℂ g) φ hφ, Pi.smul_apply, h1, smul_eq_mul, mul_one]) h2)`.
+
+Conclude with `⟨h3.1, h3.2, fun m hm => h3.2.trans (closedForm_eq hq n m _ s α hm)⟩`. Establish `h1` using `hw.1 1 ⟨k, hk⟩ 1`. Simplify using `only [OneMemClass.coe_one, one_mul] at h1`. Rewrite using `[len_of_mem hk, h1, hw.2.1, pow_zero, mul_one]`.
+-/
 theorem unramDoublingInert : UnramDoublingInert := by
   intro L _ _ _ ϖ σ q n hU _ _ μ _ hμ χ hχ s Φ hΦ α w hw
   have hq : q ≠ 0 := by have := hU.2.2.2.2.2.1; omega

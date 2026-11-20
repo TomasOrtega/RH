@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FieldPair.centre_of_isEtTower | exact GlobalTheory.FieldPair.centre_of_isEtTower | (intros; apply GlobalTheory.FieldPair.centre_of_isEtTower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dvrPlace_centre_on_base_of_etaleTowerOverNormalLocal : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (P : Place cL),
   IsEtTower cK R cL T ι ψ τ → P.IsPrimeOf T →

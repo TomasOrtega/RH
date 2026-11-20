@@ -14,11 +14,25 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh Reciprocit
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
+/- English proof (translation)
+The claim follows from `le_antisymm (GlobalTheory.T.normal_subgroup_le_unramified_fixing F Ω S) (GlobalTheory.T.galois_unramified_outside_cohomology F Ω S)`.
+-/
 theorem NS_eq_fixingSubgroup (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (S : Set (HeightOneSpectrum (𝓞 F))) :
     NS Ω S = (maxUnramifiedOutside F Ω S).fixingSubgroup :=
   le_antisymm (GlobalTheory.T.normal_subgroup_le_unramified_fixing F Ω S) (GlobalTheory.T.galois_unramified_outside_cohomology F Ω S)
 
+/- English proof (translation)
+Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Set `E` to `maxUnramifiedOutside F Ω S`. Set `φ : G F Ω →* Gal(E/F)` to `AlgEquiv.restrictNormalHom E`. Establish `hφs : Function.Surjective φ` using `AlgEquiv.restrictNormalHom_surjective Ω`. Establish `hker : φ.ker = NS Ω S`.
+
+Rewrite using `[NS_eq_fixingSubgroup F Ω S]`. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+
+Establish `h1` using `AlgEquiv.restrictNormal_commutes σ E (⟨x, hx⟩ : E)`. Establish `h2 : σ.restrictNormal E = 1` using `h`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Introduce `h`.
+
+Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(AlgEquiv.restrictNormal_commutes σ E x).trans (h x.1 x.2)`. Establish `hφc : Continuous φ` using `InfiniteGalois.restrictNormalHom_continuous E`.
+
+Set `q : GS Ω S ≃* Gal(E/F)` to `(QuotientGroup.quotientMulEquivOfEq hker.symm).trans (QuotientGroup.quotientKerEquivOfSurjective φ hφs)`. Establish `hq : Continuous q` using `continuous_coinduced_dom.2 hφc`. Establish `: CompactSpace (G F Ω)` using `inferInstance`. Establish `: CompactSpace (GS Ω S)` using `Quotient.compactSpace`. Conclude with `⟨{ q with continuous_toFun := hq continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }⟩`.
+-/
 theorem exists_gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (S : Set (HeightOneSpectrum (𝓞 F))) : Nonempty (GS Ω S ≃ₜ* galUnramifiedOutside F Ω S) := by
   have : IsGalois F Ω := IsAlgClosure.isGalois F Ω
@@ -50,6 +64,19 @@ theorem exists_gsEquiv (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algeb
     continuous_toFun := hq
     continuous_invFun := Continuous.continuous_symm_of_equiv_compact_to_t2 (f := q.toEquiv) hq }⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l hl r M _ _ _ _ _ S rhoS hr hS hc`. Take `⟨e0⟩` from `exists_gsEquiv F Ω (S : Set (HeightOneSpectrum (𝓞 F)))`. Set `e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≃ₜ* GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))` to `e0.symm`. Establish `hc'` using `ReciprocityTheory.Neutral.Bridge.contAction_comp e hc`. Set `rho' : Representation (ZMod (l ^ r)) (galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M` to `rhoS.comp (e : galUnramifiedOutside F Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* GS Ω (S : Set (HeightOneSpectrum (𝓞 F))))`.
+
+Take `⟨A, _, eA, he⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep _ (ZMod (l ^ r)) M rho' hc'`. Establish `hAf : Finite A.V` using `Finite.of_equiv _ eA.toEquiv`. Establish `hn : ∀ a : A.V, (l ^ r) • a = 0`. Introduce `a`. Take `⟨m, rfl⟩` from `eA.surjective a`.
+
+Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul, map_zero]`. Take `⟨e1, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 _ (ZMod (l ^ r)) M rho' A eA he`. Take `⟨e2, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 _ (ZMod (l ^ r)) M rho' A eA he`. Establish `f1` using `GlobalTheory.T.finite_H1_unramified_outside F Ω l r S hS A hAf hn`. Establish `f2` using `GlobalTheory.T.finite_H2_unramified_outside F Ω l r S hS A hAf hn`.
+
+Establish `t1` using `ReciprocityTheory.Neutral.Bridge.equivH1OfIso e rhoS rho' (fun _ _ => rfl)`. Establish `t2` using `ReciprocityTheory.Neutral.Bridge.equivH2OfIso e rhoS rho' (fun _ _ => rfl)`. Use `⟨?_, ?_, ?_, fun hl2 n hn3 => ?_⟩` and prove the remaining obligations. Conclude with `Finite.of_injective (fun x : H0 rhoS => (x : M)) Subtype.val_injective`. Establish `: Finite (H1 rho')` using `Finite.of_equiv _ e1.symm.toEquiv`.
+
+Conclude with `Finite.of_equiv _ t1.toEquiv.symm`. Establish `: Finite (H2 rho')` using `Finite.of_equiv _ e2.symm.toEquiv`. Conclude with `Finite.of_equiv _ t2.toEquiv.symm`. Take `⟨en⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcn _ (ZMod (l ^ r)) M rho' A eA he n`. Use `GlobalTheory.T.cohomological_dimension_two_unramified F Ω l r S hS hl2 A hAf hn n hn3` as an intermediate fact.
+
+Establish `: Subsingleton (Hn rho' n)` using `en.toEquiv.subsingleton`. Conclude with `(ReciprocityTheory.Neutral.Bridge.isoHn e rhoS rho' (fun _ _ => rfl) n).toEquiv.subsingleton`.
+-/
 theorem globalFiniteness : ReciprocityTheory.Gal.GlobalFiniteness := by
   intro F Ω _ _ _ _ _ l hl r M _ _ _ _ _ S rhoS hr hS hc
   obtain ⟨e0⟩ := exists_gsEquiv F Ω (S : Set (HeightOneSpectrum (𝓞 F)))

@@ -11,6 +11,11 @@ open GlobalTheory.CuspRep
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Establish `h` using `conjPl_conjSrc (cc L) v (x : L)`. Rewrite using `[← (conjSrc (cc L) v).valuation_lt_one_iff_mem (K := L), ← v.valuation_lt_one_iff_mem (K := L)]`. Establish `e : (((IsCMField.ringOfIntegersComplexConj L x : 𝓞 L) : L)) = cc L (x : L)`. Simplify using `[cc, IsCMField.coe_ringOfIntegersComplexConj]`. Use `show (conjSrc (cc L) v).valuation L (x : L) < 1 ↔ v.valuation L ((IsCMField.ringOfIntegersComplexConj L x : 𝓞 L) : L) < 1`.
+
+Rewrite using `[e, h]`.
+-/
 theorem mem_conjSrc_iff (v : HeightOneSpectrum (𝓞 L)) (x : 𝓞 L) :
     x ∈ (conjSrc (cc L) v).asIdeal ↔ IsCMField.ringOfIntegersComplexConj L x ∈ v.asIdeal := by
   have h := conjPl_conjSrc (cc L) v (x : L)

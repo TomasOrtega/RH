@@ -21,6 +21,17 @@ namespace GlobalTheory.ThKSelfOrth
 open scoped TensorProduct
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU Topology
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J`. Set `e` to `GlobalTheory.ThK.SquareIntegrability.toGAd hσ J (one_ne_zero : (1 : E) ≠ 0)`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `hes : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Set `t : UA σ J ≃ₜ GAd σ ((1 : E) • J.map σ)` to `⟨e.toEquiv, he, hes⟩`.
+
+Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (UA σ J) := t.isInducing.topologicalGroup e`. Use `haveI : SecondCountableTopology (UA σ J) := t.isInducing.secondCountableTopology`. Use `haveI : LocallyCompactSpace (UA σ J) := t.isClosedEmbedding.locallyCompactSpace`. Use `haveI : T2Space (UA σ J) := t.isEmbedding.t2Space`.
+
+Establish `hmemP : ∀ δ : ratU σ J, e δ.1 ∈ ratPts σ ((1 : E) • J.map σ)` using `fun δ => by`. Take `⟨m, hm⟩` from `Subgroup.mem_subgroupOf.1 δ.2`. Establish `h2` using `(e δ.1).2`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨m, ?_, hm⟩)` and prove the remaining obligations. Conclude with `GlobalTheory.ThK.SquareIntegrability.unitary_of_map_inclR σ n _ m _ (by rw [hm]; rfl) h2`.
+
+Set `f : ratU σ J → ratPts σ ((1 : E) • J.map σ)` to `fun δ => ⟨e δ.1, hmemP δ⟩`. Establish `hfe : IsEmbedding f`. Use `(IsEmbedding.subtypeVal.of_comp_iff).1 ?_` and prove the remaining obligations. Conclude with `t.isEmbedding.comp IsEmbedding.subtypeVal`. Use `haveI : DiscreteTopology (ratU σ J) := hfe.discreteTopology`.
+
+Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratU σ J) (Measure.haar : Measure (UA σ J))`. Conclude with `⟨Measure.haar, 𝓕, inferInstance, h𝓕⟩`.
+-/
 theorem exists_haar_fundDom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ x, σ (σ x) = x) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E),
       ∃ (μ : Measure (UA σ J)) (𝓕 : Set (UA σ J)), μ.IsHaarMeasure ∧ IsFundamentalDomain (ratU σ J) 𝓕 μ := by
@@ -59,6 +70,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨T, -, m, m', f, φ, f', φ', hi, hj, rfl, rfl, -⟩` from `h`. Use `⟨Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (hi i).1, φ i, (hi i).2.1, ?_, rfl⟩, Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, (hj j).1, φ' j, (hj j).2.1, ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun h' => hv ((hi i).2.2 v h'))`. Conclude with `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun h' => hv ((hj j).2.2 v h'))`.
+-/
 theorem polData_of_polMatch {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {R : RealMaps F a a'}
     {Rf : FinMaps F a a'} {Φ Φ'} (h : PolMatch B G X R Rf Φ Φ') : Φ ∈ PolData B G.M ∧ Φ' ∈ PolData B G.M' := by
   obtain ⟨T, -, m, m', f, φ, f', φ', hi, hj, rfl, rfl, -⟩ := h

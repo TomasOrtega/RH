@@ -24,6 +24,11 @@ open ReciprocityTheory.ChartRestriction.G.Chart GlobalTheory.ChartBaseChange Glo
 
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} {κ : Type}
 
+/- English proof (translation)
+Use `wlog hm : m ≤ m' generalizing m m'`. Conclude with `(this ψ' ψ (fun q => (h q).symm) (by omega)).symm`. Proceed by induction on `m', hm using Nat.le_induction with`. Consider the case `base => rw [jet_ext h]`. Consider the case `succ k hk ih`.
+
+Set `φ : JetR R κ k →ₐ[R] S` to `ψ.comp (Ideal.Quotient.factorₐ R (Ideal.pow_le_pow_right (by omega)))`. Establish `e : ψ' = φ.comp (jetTruncR R κ k)` using `jet_ext fun q => (h q).symm`. Rewrite using `[ih φ (fun q => rfl), e, ← spMap_comp (jetTruncR R κ k), Category.assoc, ht]`.
+-/
 private theorem jetPt_indep (x : ∀ m, sp (R₀ := R) (JetR R κ m) ⟶ G)
     (ht : ∀ m, spMap (jetTruncR R κ m) ≫ x (m + 1) = x m) {S : Type} [CommRing S] [Algebra R S]
     {m m' : ℕ} (ψ : JetR R κ m →ₐ[R] S) (ψ' : JetR R κ m' →ₐ[R] S) (h : ∀ q, ψ (zR m q) = ψ' (zR m' q)) :
@@ -38,6 +43,9 @@ private theorem jetPt_indep (x : ∀ m, sp (R₀ := R) (JetR R κ m) ⟶ G)
     have e : ψ' = φ.comp (jetTruncR R κ k) := jet_ext fun q => (h q).symm
     rw [ih φ (fun q => rfl), e, ← spMap_comp (jetTruncR R κ k), Category.assoc, ht]
 
+/- English proof (translation)
+Establish `hfg : (Ideal.span (Set.range b)).FG` using `Submodule.fg_span (Set.finite_range b)`. Take `⟨m, hm⟩` from `hfg.isNilpotent_iff_le_nilradical.2 (Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hb i))`. Conclude with `⟨m, by rw [pow_succ, hm, zero_mul, Ideal.zero_eq_bot]⟩`.
+-/
 private theorem exists_span_pow {ι' S : Type} [Finite ι'] [CommRing S] (b : ι' → S) (hb : ∀ i, IsNilpotent (b i)) :
     ∃ m : ℕ, Ideal.span (Set.range b) ^ (m + 1) = ⊥ := by
   have hfg : (Ideal.span (Set.range b)).FG := Submodule.fg_span (Set.finite_range b)
@@ -46,6 +54,9 @@ private theorem exists_span_pow {ι' S : Type} [Finite ι'] [CommRing S] (b : ι
     exact hb i))
   exact ⟨m, by rw [pow_succ, hm, zero_mul, Ideal.zero_eq_bot]⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_span_pow b hb`. Conclude with `⟨m, jetLift R _ hm b (fun q => Ideal.subset_span ⟨q, rfl⟩), fun q => jetLift_zR _ _ _ _ q⟩`.
+-/
 private theorem exists_jetHom_nil [Finite κ] {S : Type} [CommRing S] [Algebra R S] (b : κ → S)
     (hb : ∀ i, IsNilpotent (b i)) : ∃ (m : ℕ) (ψ : JetR R κ m →ₐ[R] S), ∀ q, ψ (zR m q) = b q := by
   obtain ⟨m, hm⟩ := exists_span_pow b hb
@@ -53,6 +64,9 @@ private theorem exists_jetHom_nil [Finite κ] {S : Type} [CommRing S] [Algebra R
 
 variable [GrpObj G]
 
+/- English proof (translation)
+Rewrite using `[jetAug_eq, ← spMap_comp, Category.assoc, h0, MonObj.comp_one]`.
+-/
 private theorem aug_eq_one {m : ℕ} (x : sp (R₀ := R) (JetR R κ m) ⟶ G) (h0 : spMap (jetZeroR R κ m) ≫ x = 1) :
     spMap (jetAug R κ m) ≫ x = 1 := by
   rw [jetAug_eq, ← spMap_comp, Category.assoc, h0, MonObj.comp_one]
@@ -65,6 +79,11 @@ variable [IsLocalRing R] [Smooth G.hom] {m : ℕ} (x : sp (R₀ := R) (JetR R κ
   (hJ : (RingHom.ker q) ^ (m + 1) = ⊥)
 
 include h0 hu hJ in
+/- English proof (translation)
+Take `⟨C⟩` from `exists_chart G`. Take `⟨h, hh, hqh⟩` from `exists_pt_of_aug C q hq hJ y hy`. Take `⟨ψ₀, ⟨ha, hψ₀⟩, -⟩` from `univ_all x h0 hu (fib q) (fibFst q) (fib_ker q hJ) (pt C (fibLift q (eps C) h hqh)) (by rw [spMap_pt]; exact pt_eps_self C)`. Use `⟨(fibSnd q).comp ψ₀, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, fib_cond, show fibFst q (ψ₀ (zR m j)) = 0 from (AlgHom.congr_fun ha _).trans (jetAug_zR m j), map_zero]`.
+
+Rewrite using `[← spMap_comp, Category.assoc, ← hψ₀, spMap_pt, hh]`. Both sides reduce to the same expression.
+-/
 private theorem jetPt_surj (hq : Function.Surjective q) (y : sp (R₀ := R) A ⟶ G) (hy : spMap q ≫ y = 1) :
     ∃ ψ : JetR R κ m →ₐ[R] A, (∀ j, q (ψ (zR m j)) = 0) ∧ y = spMap ψ ≫ x := by
   obtain ⟨C⟩ := exists_chart G
@@ -78,6 +97,13 @@ private theorem jetPt_surj (hq : Function.Surjective q) (y : sp (R₀ := R) A �
     rfl
 
 include h0 hu hJ in
+/- English proof (translation)
+Take `⟨C⟩` from `exists_chart G`. Take `⟨k, hk, -⟩` from `exists_pt_of_aug C (jetAug R κ m) (fun r => ⟨algebraMap _ _ r, AlgHom.commutes _ r⟩) (ker_jetAug_pow _ m) x (aug_eq_one x h0)`. Establish `hv : ∀ v : JetR R κ m →ₐ[R] A, (∀ j, q (v (zR m j)) = 0) → q.comp v = (Algebra.ofId R B).comp (jetAug R κ m)` using `fun v hv => jet_ext fun j => by rw [AlgHom.comp_apply, AlgHom.comp_apply, hv, jetAug_zR, map_zero]`. Establish `e1 : ψ.comp k = ψ'.comp k`. Apply `pt_injective C` to reduce the goal to its premises.
+
+Rewrite using `[← spMap_pt, ← spMap_pt, ← hk, e]`. Establish `e2 : fibLift q (jetAug R κ m) ψ (hv ψ hψ) = fibLift q (jetAug R κ m) ψ' (hv ψ' hψ')`. Use `(univ_all x h0 hu (fib q) (fibFst q) (fib_ker q hJ) (spMap (fibLift q (jetAug R κ m) ψ (hv ψ hψ)) ≫ x) ?_).unique ⟨rfl, rfl⟩ ⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, spMap_comp]`. Conclude with `aug_eq_one x h0`.
+
+Rewrite using `[hk, spMap_pt, spMap_pt]`. Use `congr 1`. Conclude with `AlgHom.ext fun s => Subtype.ext (Prod.ext rfl (AlgHom.congr_fun e1 s))`. Conclude with `AlgHom.ext fun s => congrArg (fibSnd q) (AlgHom.congr_fun e2 s)`.
+-/
 private theorem jetPt_inj (ψ ψ' : JetR R κ m →ₐ[R] A) (hψ : ∀ j, q (ψ (zR m j)) = 0)
     (hψ' : ∀ j, q (ψ' (zR m j)) = 0) (e : spMap ψ ≫ x = spMap ψ' ≫ x) : ψ = ψ' := by
   obtain ⟨C⟩ := exists_chart G
@@ -105,6 +131,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2 GlobalTheory.ChF
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 
+/- English proof (translation)
+Establish `hz : ∀ q : Fin n × Fin d, (Chart.zR (R` using `R) m q) ^ (m + 1) = 0 := fun q => by`. Use `Ideal.pow_mem_pow (Chart.zR_mem_ker (R := R) m q) (m + 1)` as an intermediate fact. Rewrite `this` using `[Chart.ker_jetAug_pow, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `h1 : nv (algebraMap R (Chart.JetR R (Fin n × Fin d) m)) f (fun i j => Chart.zR m (i, j)) = ∑ e : Fin n × Fin d → Fin (m + 1), algebraMap R (Chart.JetR R (Fin n × Fin d) m) (MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm fun i => (e i : ℕ)) f) * ∏ i, (Chart.zR (R` using `R) m i) ^ (e i : ℕ) := by`. Use `letI := (algebraMap R (Chart.JetR R (Fin n × Fin d) m)).toAlgebra`.
+
+Conclude with `evBasic_nEval_eq_tEval f (fun q : Fin n × Fin d => Chart.zR m q) (m + 1) hz`. Establish `h2 : nv (algebraMap R (Chart.JetR R (Fin n × Fin d) m)) f (fun i j => Chart.zR m (i, j)) = Ideal.Quotient.mk _ (∑ e : Fin n × Fin d → Fin (m + 1), MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm fun i => (e i : ℕ)) (MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm fun i => …`. Rewrite using `[h1, map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (fun i => pow_zero _), map_mul, map_prod]`.
+
+Simplify using `only [map_pow]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Use `(GlobalTheory.JetSer.jet_mk_eq_iff m _ _).2 fun e he => ?_` and prove the remaining obligations. Establish `hle : ∀ i, e i < m + 1` using `fun i => lt_of_le_of_lt (Finsupp.le_degree i e) he`.
+
+Establish `hr : MvPolynomial.coeff e (∑ e : Fin n × Fin d → Fin (m + 1), MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm fun i => (e i : ℕ)) (MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm fun i => (e i : ℕ)) f)) = MvPowerSeries.coeff e f`. Establish `he0 : (Finsupp.equivFunOnFinite.symm fun i => ((⟨e i, hle i⟩ : Fin (m + 1)) : ℕ)) = e`. Use extensionality with `i`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.coeff_sum, Finset.sum_eq_single (fun i => (⟨e i, hle i⟩ : Fin (m + 1)))]`.
+
+Rewrite using `[he0, MvPolynomial.coeff_monomial, if_pos rfl]`. Introduce `e' _ hne`. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Conclude with `Fin.ext (DFunLike.congr_fun h i)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hr, MvPowerSeries.coeff_trunc]`.
+
+Use `split_ifs with hlt`. Both sides reduce to the same expression. Distinguish the cases in `h0 : e = 0`. Rewrite using `[h0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. It suffices to derive a contradiction.
+
+Apply `hlt` to reduce the goal to its premises. Take `⟨i, -⟩` from `Finsupp.ne_iff.1 h0`. Conclude with `lt_of_le_of_ne (fun j => (hle j).le) fun h => (hle i).ne (DFunLike.congr_fun h i)`.
+-/
 private theorem psJet_eq_nv {R : Type} [CommRing R] {n d : ℕ} (m : ℕ) (f : PS R n d)
     (hf : MvPowerSeries.constantCoeff f = 0) :
     psJet m f = nv (algebraMap R (Chart.JetR R (Fin n × Fin d) m)) f (fun i j => Chart.zR m (i, j)) := by
@@ -154,6 +197,11 @@ private theorem psJet_eq_nv {R : Type} [CommRing R] {n d : ℕ} (m : ℕ) (f : P
       obtain ⟨i, -⟩ := Finsupp.ne_iff.1 h0
       exact lt_of_le_of_ne (fun j => (hle j).le) fun h => (hle i).ne (DFunLike.congr_fun h i)
 
+/- English proof (translation)
+Establish `hn : ∀ i j, IsNilpotent (Chart.zR (R` using `R) m ((i, j) : Fin n × Fin d)) := fun i j => ⟨m + 1, by`. Use `Ideal.pow_mem_pow (Chart.zR_mem_ker (R := R) m ((i, j) : Fin n × Fin d)) (m + 1)` as an intermediate fact. Rewrite using `[Chart.ker_jetAug_pow, Ideal.mem_bot] at this⟩` and apply the resulting hypothesis. Establish `h` using `(nv_calculus R _ (algebraMap R (Chart.JetR R (Fin n × Fin d) m)) n d (fun i j => Chart.zR m (i, j)) hn).2.2.2.2.1 S (φ : _ →+* S) f`. Rewrite using `[psJet_eq_nv m f hf]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[φ.comp_algebraMap]`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Conclude with `ha (i, j)`.
+-/
 private theorem map_psJet {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {n d m : ℕ}
     (φ : Chart.JetR R (Fin n × Fin d) m →ₐ[R] S) (a : Fin n → Fin d → S)
     (ha : ∀ q, φ (Chart.zR m q) = a q.1 q.2) (f : PS R n d) (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -170,6 +218,9 @@ private theorem map_psJet {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {
   funext i j
   exact ha (i, j)
 
+/- English proof (translation)
+Rewrite using `[← map_psJet φ a ha _ (hf q.2), AlgHom.comp_apply]`. Use `congr 1`. Conclude with `MvPolynomial.aeval_X _ q`.
+-/
 private theorem map_substJ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] {n d m : ℕ}
     (φ : Chart.JetR R (Fin n × Fin d) m →ₐ[R] S) (a : Fin n → Fin d → S)
     (ha : ∀ q, φ (Chart.zR m q) = a q.1 q.2) (f : Fin d → PS R n d)
@@ -179,6 +230,27 @@ private theorem map_substJ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] 
   congr 1
   exact MvPolynomial.aeval_X _ q
 
+/- English proof (translation)
+Introduce `R _ _ G _ _ hG d F x₀ hx`. Use `haveI := hG`. Set `x : ∀ m, sp (R₀` to `R) (Chart.JetR R (Fin 1 × Fin d) m) ⟶ G := x₀`. Establish `ht : ∀ m, spMap (Chart.jetTruncR R _ m) ≫ x (m + 1) = x m` using `hx.trunc`. Establish `h0 : ∀ m, spMap (Chart.jetZeroR R _ m) ≫ x m = 1` using `hx.zero`.
+
+Establish `hl : ∀ m, spMap (substJ m F.F F.const) ≫ x m = (spMap (jetPt (d` using `d) (0 : Fin 2) m) ≫ x m) * (spMap (jetPt (d := d) (1 : Fin 2) m) ≫ x m) := hx.law`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX⟩ : ∃ X : Fam G d, ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin d → S) (m : ℕ) (ψ : Chart.JetR R (Fin 1 × Fin d) m →ₐ[R] S), (∀ q, ψ (Chart.zR m q) = a q.2) → X S a = spMap ψ ≫ x m := by`. Use `⟨fun S _ _ a => if h : ∃ (m : ℕ) (ψ : Chart.JetR R (Fin 1 × Fin d) m →ₐ[R] S), ∀ q, ψ (Chart.zR m q) = a q.2 then spMap h.choose_spec.choose ≫ x h.choose else 1, ?_⟩` and prove the remaining obligations. Introduce `S _ _ a m ψ hψ`. Establish `h : ∃ (m : ℕ) (ψ : Chart.JetR R (Fin 1 × Fin d) m →ₐ[R] S), ∀ q, ψ (Chart.zR m q) = a q.2` using `⟨m, ψ, hψ⟩`.
+
+Conclude with `(dif_pos h).trans (jetPt_indep x ht _ ψ fun q => (h.choose_spec.choose_spec q).trans (hψ q).symm)`. Use `⟨X, ⟨fun S _ _ => ?_, fun S _ _ S' _ _ φ a ha => ?_, fun S _ _ a b ha hb e => ?_, fun S _ _ S' _ _ ρ σ hρ hn z hz => ?_, fun S _ _ a b ha hb => ?_⟩, fun OE _ io act hact c => ⟨act.const c, fun S _ _ a ha => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hX S 0 0 ((Algebra.ofId R S).comp (Chart.jetAug R _ 0)) (fun q => by`. Rewrite using `[AlgHom.comp_apply, Chart.jetAug_zR, map_zero]`. Use the proof step `rfl), ← Chart.spMap_comp, Category.assoc,`.
+
+Use `aug_eq_one (x 0) (h0 0), MonObj.comp_one]`. Take `⟨m, ψ, hψ⟩` from `exists_jetHom_nil (R := R) (fun q : Fin 1 × Fin d => a q.2) fun q => ha _`. Rewrite using `[hX S a m ψ hψ, hX S' (fun i => φ (a i)) m (φ.comp ψ) (fun q => congrArg φ (hψ q)), ← Category.assoc, Chart.spMap_comp]`. Take `⟨m, hm⟩` from `exists_span_pow (Sum.elim a b) (by rintro (i | i); exacts [ha i, hb i])`. Set `J` to `Ideal.span (Set.range (Sum.elim a b))`.
+
+Establish `hJa : ∀ q : Fin 1 × Fin d, a q.2 ∈ J` using `fun q => Ideal.subset_span ⟨Sum.inl q.2, rfl⟩`. Establish `hJb : ∀ q : Fin 1 × Fin d, b q.2 ∈ J` using `fun q => Ideal.subset_span ⟨Sum.inr q.2, rfl⟩`. Establish `ea` using `Chart.jetLift_zR (R := R) J hm _ hJa`. Establish `eb` using `Chart.jetLift_zR (R := R) J hm _ hJb`. Rewrite `e` using `[hX S a m _ ea, hX S b m _ eb]`.
+
+Establish `hk : RingHom.ker (Ideal.Quotient.mkₐ R J) = J` using `Ideal.mk_ker`. Use `jetPt_inj (x m) (h0 m) (fun κ' => hx.univ κ' m) (Ideal.Quotient.mkₐ R J) (by rw [hk]; exact hm) _ _ (fun q => by rw [ea]; exact Ideal.Quotient.eq_zero_iff_mem.2 (hJa q)) (fun q => by rw [eb]; exact Ideal.Quotient.eq_zero_iff_mem.2 (hJb q)) e` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `(ea (0, i)).symm.trans (this ▸ eb (0, i))`. Take `⟨m, hm⟩` from `hn`.
+
+Establish `hm' : RingHom.ker ρ ^ (m + 1) = ⊥` using `by rw [pow_succ, hm, zero_mul, Ideal.zero_eq_bot]`. Take `⟨ψ, h1, h2⟩` from `jetPt_surj (x m) (h0 m) (fun κ' => hx.univ κ' m) ρ hm' (fun s => ⟨σ s, AlgHom.congr_fun hρ s⟩) z hz`. Use `⟨fun i => ψ (Chart.zR m (0, i)), fun i => h1 _, h2.trans (hX S _ m ψ ?_).symm⟩` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Establish `hab : ∀ i j, IsNilpotent ((![a, b] : Fin 2 → Fin d → S) i j)` using `fun i j => by fin_cases i exacts [ha j, hb j]`. Take `⟨m, φ, hφ⟩` from `exists_jetHom_nil (R := R) (fun q : Fin 2 × Fin d => (![a, b] : Fin 2 → Fin d → S) q.1 q.2) fun q => hab _ _`. Take `⟨ψ, hψ, -, hψX⟩` from `(nv_calculus R S (algebraMap R S) 2 d ![a, b] hab).1`. Establish `hp : ∀ (i : Fin 2) (q : Fin 1 × Fin d), φ.comp (jetPt (d` using `d) i m) (Chart.zR m q) = (![a, b] : Fin 2 → Fin d → S) i q.2 := fun i q => (map_substJ φ _ hφ _ _ q).trans ((hψ _).symm.trans (hψX (i, q.2)))`. Rewrite using `[hX S a m _ (hp 0), hX S b m _ (hp 1), hX S _ m _ (map_substJ φ _ hφ F.F F.const), ← Chart.spMap_comp, ← Chart.spMap_comp, ← Chart.spMap_comp, Category.assoc, Category.assoc, Category.assoc, hl, MonObj.comp_mul]`.
+
+Take `⟨m, φ, hφ⟩` from `exists_jetHom_nil (R := R) (fun q : Fin 1 × Fin d => a q.2) fun q => ha _`. Establish `hφ' : ∀ q : Fin 1 × Fin d, φ (Chart.zR m q) = (![a] : Fin 1 → Fin d → S) q.1 q.2`. Introduce and unpack `⟨i, j⟩`. Rewrite using `[hφ, Subsingleton.elim i 0]`. Both sides reduce to the same expression.
+
+Establish `hc : x m ≫ io.act c = spMap (substJ m (act.act c) (act.const c)) ≫ x m` using `hact m c`. Rewrite using `[hX S a m φ hφ, hX S _ m _ (map_substJ φ _ hφ' (act.act c) (act.const c)), ← Chart.spMap_comp, Category.assoc, Category.assoc, hc]`.
+-/
 theorem nilChart_of_isChartJ : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (d : ℕ) (F : FGLaw R d) (x : ∀ m : ℕ, Geo.Tor.algOver R (Geo.Tor.JetR R (Fin 1 × Fin d) m) ⟶ G), IsChartJ G F x → ∃ X : Fam G d, NilChart G F.F X ∧ ∀ (OE : Type) [CommRing OE] (io : Out.RingAct G OE) (act : Geo.Tor.Germ.OAct OE F), ChartActs G x io act → ∀ a, Reads X X (io.act a) (act.act a) := by
   intro R _ _ G _ _ hG d F x₀ hx
   classical

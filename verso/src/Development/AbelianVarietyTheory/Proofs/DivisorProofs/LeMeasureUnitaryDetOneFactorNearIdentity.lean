@@ -24,6 +24,13 @@ section Density
 
 open scoped Matrix.Norms.Operator
 
+/- English proof (translation)
+Take `⟨c', -, -, h⟩` from `(Examples₂.CD.chart p q).exists_density' (Examples₂.CD.finDimLie p q) _ (Examples₂.CD.instBorelLie p q) _ (Examples₂.CD.instBorelU p q) (Examples₂.CD.instTopGroupU p q) m hH lam hlam`. Establish `h1` using `h (ballU p q) (fun r => (Examples₂.CD.isOpen_ballU p q r).measurableSet) (fun δ hδ => by filter_upwards [Ioo_mem_nhdsGT hδ] with r hr X hX`. Conclude with `lt_of_le_of_lt (Examples₂.CD.norm_le_sum p q X) (lt_trans hX hr.2))`. Use the proof step `(by filter_upwards [self_mem_nhdsWithin] with r hr`. Conclude with `⟨(Examples₂.CD.ballU_pos p q lam hr).ne', (Examples₂.CD.ballU_lt_top p q lam r).ne⟩)`.
+
+Establish `hcc : c' = c` using `tendsto_nhds_unique h1 ht`. Substitute `hcc` using the available equality. Conclude with `h S hm (fun δ hδ => by filter_upwards [hS δ hδ] with r hr X hX`. Conclude with `lt_of_le_of_lt (Examples₂.CD.norm_le_sum p q X) (hr hX))`. Use the proof step `(by filter_upwards [h0, hS 1 one_pos] with r hr hr1`.
+
+Conclude with `⟨hr, ne_top_of_le_ne_top (Examples₂.CD.ballU_lt_top p q lam 1).ne (measure_mono hr1)⟩)`.
+-/
 theorem tendsto_of_density {p q : ℕ} (m : Measure (UpqT p q)) (hH : m.IsHaarMeasure) (lam : Measure (lieU p q))
     (hlam : lam.IsAddHaarMeasure) (c : ℝ≥0∞)
     (ht : Tendsto (fun r : ℝ => m {g | ∃ X ∈ ballU p q r, UpqT.mat g =
@@ -54,6 +61,19 @@ theorem tendsto_of_density {p q : ℕ} (m : Measure (UpqT p q)) (hH : m.IsHaarMe
 
 end Density
 
+/- English proof (translation)
+Establish `key : ∀ X : lieU p q, (X.1ᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * X.1) a b = 0`. Introduce `X`. Establish `hX : X.1ᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * X.1 = 0` using `X.2`. Rewrite using `[hX]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Use `⟨-1, by simp, by simp, fun X => ?_⟩` and prove the remaining obligations. Use `key X` as an intermediate fact. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply] at this`. Simplify using `only [Complex.star_def]`.
+
+Take the linear combination `this`. Use `⟨1, by simp, by simp, fun X => ?_⟩` and prove the remaining obligations. Use `key X` as an intermediate fact. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply] at this`. Simplify using `only [Complex.star_def]`.
+
+Take the linear combination `-this`. Use `⟨1, by simp, by simp, fun X => ?_⟩` and prove the remaining obligations. Use `key X` as an intermediate fact. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply] at this`. Simplify using `only [Complex.star_def]`.
+
+Take the linear combination `this`. Use `⟨-1, by simp, by simp, fun X => ?_⟩` and prove the remaining obligations. Use `key X` as an intermediate fact. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply] at this`. Simplify using `only [Complex.star_def]`.
+
+Take the linear combination `-this`.
+-/
 theorem exists_sign {p q : ℕ} (a b : Fin p ⊕ Fin q) : ∃ σ : ℂ, σ * σ = 1 ∧ ‖σ‖ = 1 ∧ ∀ X : lieU p q,
     star (X.1 b a) = σ * X.1 a b := by
   have key : ∀ X : lieU p q, (X.1ᴴ * Formalism.UG.Jpq p q + Formalism.UG.Jpq p q * X.1) a b = 0 := by
@@ -84,6 +104,11 @@ theorem exists_sign {p q : ℕ} (a b : Fin p ⊕ Fin q) : ∃ σ : ℂ, σ * σ 
 
 def box {p q : ℕ} (r : Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℝ) : Set (lieU p q) := {X | ∀ a b, ‖X.1 a b‖ < r a b}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (lieU p q) := ⟨rfl⟩`. Use `IsOpen.measurableSet ?_` and prove the remaining obligations. Unfold `box`. Simplify using `only [Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_` and prove the remaining obligations.
+
+Conclude with `isOpen_lt (continuous_subtype_val.matrix_elem a b).norm continuous_const`.
+-/
 theorem measurableSet_box {p q : ℕ} (r : Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℝ) : MeasurableSet (box r) := by
   haveI : BorelSpace (lieU p q) := ⟨rfl⟩
   refine IsOpen.measurableSet ?_
@@ -92,6 +117,25 @@ theorem measurableSet_box {p q : ℕ} (r : Fin p ⊕ Fin q → Fin p ⊕ Fin q �
   refine isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_
   exact isOpen_lt (continuous_subtype_val.matrix_elem a b).norm continuous_const
 
+/- English proof (translation)
+Use `haveI : BorelSpace (lieU p q) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) := inferInstanceAs (LocallyCompactSpace ((Fin p ⊕ Fin q) → (Fin p ⊕ Fin q) → ℂ))`. Use `haveI : SecondCountableTopology (Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) := inferInstanceAs (SecondCountableTopology ((Fin p ⊕ Fin q) → (Fin p ⊕ Fin q) → ℂ))`. Use `haveI : LocallyCompactSpace (lieU p q) := (Submodule.closed_of_finiteDimensional (lieU p q)).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (lieU p q) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Take `⟨h1, h2⟩` from `h`. Establish `hm` using `AEMeasurable.of_map_ne_zero (h2 ▸ (NeZero.ne volume))`. Establish `hT : MeasurableSet (Set.univ.pi fun ab : (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q) => Metric.ball (0 : ℂ) (r ab.1 ab.2))` using `MeasurableSet.univ_pi fun _ => measurableSet_ball`. Establish `he` using `Measure.map_apply_of_aemeasurable hm hT`. Rewrite `he` using `[h2, volume_pi_pi]`.
+
+Use `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Fintype.prod_prod_type', ENNReal.ofReal_prod_of_nonneg fun _ _ => hs0 _ _, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun ab _ => (ENNReal.ofReal_pow (hs0 _ _) 2).symm`. Use `_ ≤ ∏ ab : (Fin p ⊕ Fin q) × (Fin p ⊕ Fin q), volume (Metric.ball (0 : ℂ) (r ab.1 ab.2)) := by`.
+
+Use `Finset.prod_le_prod' fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.volume_ball, ← ENNReal.ofReal_pow (hr0 _ _), ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hs _ _)`. Use `_ ≤ (lam.prod lam) (box r ×ˢ box r) := by`. Rewrite using `[he]`.
+
+Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ hxy`. Establish `hz : ∀ a b, ‖x.1 a b + Complex.I * y.1 a b‖ < r a b`. Introduce `a b`. Use `hxy (a, b) (Set.mem_univ _)` as an intermediate fact.
+
+Simplify `this` using `[Formalism.BasicNotions.entries]`. Establish `key : ∀ a b, ‖x.1 a b‖ < r a b ∧ ‖y.1 a b‖ < r a b`. Introduce `a b`. Take `⟨σ, hσ, hσ1, hX⟩` from `exists_sign a b`. Establish `h3 : ‖σ * star (x.1 b a + Complex.I * y.1 b a)‖ < r a b`.
+
+Rewrite using `[norm_mul, hσ1, one_mul, norm_star, hr a b]`. Conclude with `hz b a`. Establish `e : σ * star (x.1 b a + Complex.I * y.1 b a) = x.1 a b - Complex.I * y.1 a b`. Rewrite using `[star_add, star_mul', hX x, hX y, Complex.star_def, Complex.conj_I]`. Take the linear combination `(x.1 a b - Complex.I * y.1 a b) * hσ`.
+
+Rewrite `h3` using `[e]`. Establish `h4` using `hz a b`. Establish `h5` using `norm_add_le (x.1 a b + Complex.I * y.1 a b) (x.1 a b - Complex.I * y.1 a b)`. Establish `h6` using `norm_sub_le (x.1 a b + Complex.I * y.1 a b) (x.1 a b - Complex.I * y.1 a b)`. Rewrite `h5` using `[show x.1 a b + Complex.I * y.1 a b + (x.1 a b - Complex.I * y.1 a b) = 2 * x.1 a b by ring, norm_mul, Complex.norm_two]`.
+
+Rewrite `h6` using `[show x.1 a b + Complex.I * y.1 a b - (x.1 a b - Complex.I * y.1 a b) = 2 * (Complex.I * y.1 a b) by ring, norm_mul, norm_mul, Complex.norm_two, Complex.norm_I]`. Apply the tactic sequence `constructor <;> linarith`. Conclude with `⟨fun a b => (key a b).1, fun a b => (key a b).2⟩`. Use `_ = lam (box r) ^ 2 := by rw [Measure.prod_prod, sq]`.
+-/
 theorem le_lam_box {p q : ℕ} (lam : Measure (lieU p q)) (h : IsOmegaLeb lam)
     (r s : Fin p ⊕ Fin q → Fin p ⊕ Fin q → ℝ) (hr : ∀ a b, r a b = r b a) (hr0 : ∀ a b, 0 ≤ r a b)
     (hs0 : ∀ a b, 0 ≤ s a b) (hs : ∀ a b, s a b ^ 2 ≤ r a b ^ 2 * Real.pi) :
@@ -149,6 +193,13 @@ theorem le_lam_box {p q : ℕ} (lam : Measure (lieU p q)) (h : IsOmegaLeb lam)
         exact ⟨fun a b => (key a b).1, fun a b => (key a b).2⟩
     _ = lam (box r) ^ 2 := by rw [Measure.prod_prod, sq]
 
+/- English proof (translation)
+Use `letI := GlobalTheory.CompactDualExists.sumNormedAddCommGroup (n := n)`. Use `letI := GlobalTheory.CompactDualExists.sumNormedSpace (n := n)`. Establish `h` using `(GlobalTheory.CompactDualExists.exp_strict (n := n)).hasFDerivAt`. Establish `h2` using `h.isLittleO.def hδ`. Take `⟨r, hr, H⟩` from `Metric.eventually_nhds_iff_ball.1 h2`.
+
+Use `⟨r, hr, fun Y hY a b => ?_⟩` and prove the remaining obligations. Rewrite `hY`, the goal using `[← GlobalTheory.CompactDualExists.sum_norm_def]`. Establish `h3` using `H Y (mem_ball_zero_iff.2 hY)`. Rewrite `h3` using `[NormedSpace.exp_zero, sub_zero]`. Use `le_trans ?_ h3` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CompactDualExists.sum_norm_def]`. Conclude with `(Finset.single_le_sum (f := fun j => ‖(NormedSpace.exp Y - 1 - Y) a j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ b)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(NormedSpace.exp Y - 1 - Y) i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ a))`.
+-/
 theorem exists_exp_approx (n : Type) [Fintype n] [DecidableEq n] (δ : ℝ) (hδ : 0 < δ) :
     ∃ r : ℝ, 0 < r ∧ ∀ Y : Matrix n n ℂ, ∑ i, ∑ j, ‖Y i j‖ < r →
       ∀ a b, ‖(NormedSpace.exp Y - 1 - Y) a b‖ ≤ δ * ∑ i, ∑ j, ‖Y i j‖ := by
@@ -167,6 +218,15 @@ theorem exists_exp_approx (n : Type) [Fintype n] [DecidableEq n] (δ : ℝ) (hδ
     (Finset.mem_univ b)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(NormedSpace.exp Y - 1 - Y) i j‖)
       (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ a))
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0` using `by intro h; rw [h, norm_zero] at hc; exact zero_ne_one hc`. Establish `hmat : UpqT.mat (d * u) = dg a₀ c * UpqT.mat u` using `by rw [GlobalTheory.CartanInt.mat_mul, hd]`. Unfold `sMat`. Rewrite using `[hmat, Matrix.det_mul, det_dg]`. Simplify using `only [dg, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Function.update_apply, Pi.one_apply]`.
+
+Apply the tactic sequence `by_cases ha : a = a₀ <;> by_cases hb : b = a₀`. Simplify using `only [ha, hb, if_true]`. Use `congr 2`. Rewrite using `[mul_inv]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `: a ≠ b` using `by rintro rfl; exact hb ha`. Rewrite using `[Matrix.one_apply_ne this]`. Simplify using `[ha, hb, hc]`. Establish `: a ≠ b` using `by rintro rfl; exact ha hb`. Rewrite using `[Matrix.one_apply_ne this]`.
+
+Simplify using `[ha, hb, hc]`. Simplify using `[ha, hb]`.
+-/
 theorem norm_sMat_dg_mul {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {c : ℂ} (hc : ‖c‖ = 1) (d u : UpqT p q)
     (hd : UpqT.mat d = dg a₀ c) (a b : Fin p ⊕ Fin q) :
     ‖(sMat a₀ (d * u) - 1) a b‖ = ‖(sMat a₀ u - 1) a b‖ := by
@@ -189,12 +249,18 @@ theorem norm_sMat_dg_mul {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {c : ℂ} (hc : �
 
 def rad {ι : Type} [DecidableEq ι] (a₀ : ι) (n t : ℝ) (a b : ι) : ℝ := t * (if a = b ∧ a ≠ a₀ then n⁻¹ else 1)
 
+/- English proof (translation)
+Unfold `rad`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using `[h, Ne.symm h]`.
+-/
 theorem rad_symm {ι : Type} [DecidableEq ι] (a₀ : ι) (n t : ℝ) (a b : ι) : rad a₀ n t a b = rad a₀ n t b a := by
   unfold rad
   by_cases h : a = b
   · subst h; rfl
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Unfold `rad`. Use `split_ifs`. Conclude with `mul_le_of_le_one_right ht (inv_le_one_of_one_le₀ hn)`. Simplify using the standard rewrite rules.
+-/
 theorem rad_le {ι : Type} [DecidableEq ι] (a₀ : ι) {n t : ℝ} (hn : 1 ≤ n) (ht : 0 ≤ t) (a b : ι) :
     rad a₀ n t a b ≤ t := by
   unfold rad
@@ -202,11 +268,19 @@ theorem rad_le {ι : Type} [DecidableEq ι] (a₀ : ι) {n t : ℝ} (hn : 1 ≤ 
   · exact mul_le_of_le_one_right ht (inv_le_one_of_one_le₀ hn)
   · simp
 
+/- English proof (translation)
+Unfold `rad`. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem rad_nonneg {ι : Type} [DecidableEq ι] (a₀ : ι) {n t : ℝ} (hn : 0 ≤ n) (ht : 0 ≤ t) (a b : ι) :
     0 ≤ rad a₀ n t a b := by
   unfold rad
   split_ifs <;> positivity
 
+/- English proof (translation)
+Unfold `rad`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `h1 : ∀ a : ι, (∏ b : ι, if a = b ∧ a ≠ a₀ then n⁻¹ else 1) = if a ∈ Finset.univ.erase a₀ then n⁻¹ else 1`. Introduce `a`. Distinguish the cases in `h : a = a₀`.
+
+Simplify using `[h]`. Simplify using `[h]`. Simplify using `only [h1]`. Rewrite using `[Finset.prod_ite_mem, Finset.univ_inter, Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, ← pow_mul, ← sq, inv_pow, div_eq_mul_inv]`.
+-/
 theorem prod_rad {ι : Type} [Fintype ι] [DecidableEq ι] (a₀ : ι) (n t : ℝ) :
     ∏ a, ∏ b, rad a₀ n t a b = t ^ (Fintype.card ι ^ 2) / n ^ (Fintype.card ι - 1) := by
   unfold rad
@@ -220,6 +294,9 @@ theorem prod_rad {ι : Type} [Fintype ι] [DecidableEq ι] (a₀ : ι) (n t : �
   rw [Finset.prod_ite_mem, Finset.univ_inter, Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ _),
     Finset.card_univ, ← pow_mul, ← sq, inv_pow, div_eq_mul_inv]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_le_of_mem_box {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {n t : ℝ} (hn : n = ((p + q : ℕ) : ℝ)) (hn1 : 1 ≤ n)
     (ht : 0 ≤ t) {X : lieU p q} (hX : X ∈ box (rad a₀ n t)) : ∑ i, ∑ j, ‖X.1 i j‖ ≤ n ^ 2 * t := by
   calc ∑ i, ∑ j, ‖X.1 i j‖ ≤ ∑ _i : Fin p ⊕ Fin q, ∑ _j : Fin p ⊕ Fin q, t :=
@@ -228,6 +305,37 @@ theorem sum_le_of_mem_box {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {n t : ℝ} (hn :
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, nsmul_eq_mul]
         rw [hn]; push_cast; ring
 
+/- English proof (translation)
+Establish `hn2 : 0 < n ^ 2` using `by positivity`. Take `⟨r, hr, H⟩` from `exists_exp_approx (Fin p ⊕ Fin q) (1 / (40 * n ^ 2)) (by positivity)`. Use `⟨min (1 / 100) (r / n ^ 2), by positivity, fun ε hε hεlt X hX u hu => ?_⟩` and prove the remaining obligations. Establish `hε1 : ε < 1 / 100` using `hεlt.trans_le (min_le_left _ _)`. Establish `hεr : n ^ 2 * ε < r`.
+
+Use `hεlt.trans_le (min_le_right _ _)` as an intermediate fact. Rewrite `this` using `[lt_div_iff₀ hn2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `sum_le_of_mem_box a₀ hn hn1 (by positivity) hX`. Establish `herr : ∀ a b, ‖(UpqT.mat u - 1 - X.1) a b‖ ≤ ε / 40`.
+
+Introduce `a b`. Rewrite using `[hu]`. Use `(H X.1 (by nlinarith) a b).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hent : ∀ a b, ‖X.1 a b‖ < 9 / 10 * ε` using `fun a b => (hX a b).trans_le (rad_le a₀ hn1 (by positivity) a b)`.
+
+Establish `hent' : ∀ a b, ‖(UpqT.mat u - 1) a b‖ < ε`. Introduce `a b`. Establish `h1` using `herr a b`. Rewrite `h1` using `[Matrix.sub_apply]`. Establish `h2` using `norm_le_norm_add_norm_sub' ((UpqT.mat u - 1) a b) (X.1 a b)`.
+
+Combine the linear relations using `[hent a b]`. Establish `hrest : ‖∑ i ∈ Finset.univ.erase a₀, X.1 i i‖ ≤ 9 / 10 * ε`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hX i i).le`. Rewrite `h1` using `[rad, if_pos ⟨rfl, Finset.ne_of_mem_erase hi⟩]`. Then use the resulting hypothesis. Use `_ ≤ ∑ _i : Fin p ⊕ Fin q, 9 / 10 * ε * n⁻¹ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.erase_subset _ _) fun _ _ _ => by positivity`. Use `_ = 9 / 10 * ε := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_sum, Fintype.card_fin, nsmul_eq_mul]`.
+
+Rewrite using `[← hn]`. Clear the denominators using the available nonvanishing facts. Establish `htr : X.1.trace = X.1 a₀ a₀ + ∑ i ∈ Finset.univ.erase a₀, X.1 i i` using `(Finset.add_sum_erase Finset.univ (fun i => X.1 i i) (Finset.mem_univ a₀)).symm`. Establish `htrn : ‖X.1.trace‖ < 9 / 5 * ε`. Rewrite using `[htr]`.
+
+Use `norm_add_le (X.1 a₀ a₀) (∑ i ∈ Finset.univ.erase a₀, X.1 i i)` as an intermediate fact. Combine the linear relations using `[hent a₀ a₀]`. Establish `hdet : (UpqT.mat u).det = Complex.exp X.1.trace` using `by rw [hu]; exact GlobalTheory.DetSqrtCover.det_exp X.1`. Establish `hz1 : ‖(UpqT.mat u).det‖ = 1` using `GlobalTheory.CovTop.VolUp.OneMeasure.norm_det_mat u`. Establish `hz0 : (UpqT.mat u).det ≠ 0` using `by intro h; rw [h, norm_zero] at hz1; exact zero_ne_one hz1`.
+
+Use `⟨fun a b => ?_, X.1.trace.im, ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `hent' a b`. Unfold `sMat`. Simplify using `only [dg, Matrix.sub_apply, Matrix.mul_diagonal, Function.update_apply, Pi.one_apply] at h0 ⊢`. Distinguish the cases in `hb : b = a₀`.
+
+Rewrite using `[if_pos hb]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Substitute `hb` using the available equality. Rewrite using `[Matrix.one_apply_eq]`.
+
+Establish `h1` using `herr a a`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq] at h1`. Establish `h2` using `Complex.norm_exp_sub_one_sub_id_le (x := X.1.trace) (by linarith)`. Rewrite `h2` using `[← hdet]`. Establish `e : UpqT.mat u a a * (UpqT.mat u).det⁻¹ - 1 = ((UpqT.mat u a a - 1 - X.1 a a) - ((UpqT.mat u).det - 1 - X.1.trace) - ∑ i ∈ Finset.univ.erase a, X.1 i i) * (UpqT.mat u).det⁻¹`.
+
+Rewrite using `[htr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_inv, hz1, inv_one, mul_one]`. Establish `h3` using `norm_sub_le ((UpqT.mat u a a - 1 - X.1 a a) - ((UpqT.mat u).det - 1 - X.1.trace)) (∑ i ∈ Finset.univ.erase a, X.1 i i)`.
+
+Establish `h4` using `norm_sub_le (UpqT.mat u a a - 1 - X.1 a a) ((UpqT.mat u).det - 1 - X.1.trace)`. Establish `h5 : ‖X.1.trace‖ ^ 2 ≤ ε / 20` using `by nlinarith [norm_nonneg X.1.trace]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h0`, the goal using `[Matrix.one_apply_ne hab, sub_zero]`. Rewrite using `[norm_mul, norm_inv, hz1, inv_one, mul_one]` and apply the resulting hypothesis.
+
+Rewrite using `[if_neg hb, mul_one]` and apply the resulting hypothesis. Combine the linear relations using `[Complex.abs_im_le_norm X.1.trace]`. Rewrite `hz1` using `[hdet, Complex.norm_exp, Real.exp_eq_one_iff]`. Rewrite using `[hdet]`. Use `congr 1`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [hz1]`.
+-/
 theorem exp_box {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {n : ℝ} (hn : n = ((p + q : ℕ) : ℝ)) (hn1 : 1 ≤ n) :
     ∃ ε₀ : ℝ, 0 < ε₀ ∧ ∀ ε : ℝ, 0 < ε → ε < ε₀ → ∀ X ∈ box (rad a₀ n (9 / 10 * ε)), ∀ u : UpqT p q,
       UpqT.mat u = NormedSpace.exp (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) →
@@ -308,6 +416,13 @@ theorem exp_box {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {n : ℝ} (hn : n = ((p + q
     congr 1
     apply Complex.ext <;> simp [hz1]
 
+/- English proof (translation)
+Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hK0 : 0 ≤ K` using `le_trans (by positivity) hK`. Use `set k := N * (N - 1) / 2 with hk`. Establish `h1 : 2 * k + 1 ≤ N ^ 2`. Take `⟨M, rfl⟩` from `Nat.exists_eq_add_of_le' hN`.
+
+Establish `: 2 * k ≤ (M + 1) * (M + 1 - 1)` using `Nat.mul_div_le _ _`. Rewrite `this` using `[Nat.add_sub_cancel]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨M, hM⟩ : ∃ M, N ^ 2 = M + 1` from `⟨N ^ 2 - 1, by omega⟩`. Establish `h2 : 3 / 2 * (2 : ℝ) ^ k ≤ (3 / 2) ^ (M + 1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hM, Nat.add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem num_ge (N : ℕ) (hN : 1 ≤ N) (ε K : ℝ) (hε : 0 < ε) (hK : 3 / (4 * ε) ≤ K) :
     ε ^ (N ^ 2 - 1) / (N : ℝ) ^ (N - 1) ≤
       K * (9 / 10 * ((2 : ℝ) ^ (N * (N - 1) / 2))⁻¹ * ((3 / 2 * ε) ^ (N ^ 2) / (N : ℝ) ^ (N - 1))) := by
@@ -331,6 +446,49 @@ theorem num_ge (N : ℕ) (hN : 1 ≤ N) (ε K : ℝ) (hε : 0 < ε) (hK : 3 / (4
         field_simp; ring
     _ ≤ _ := by rw [mul_pow]; gcongr
 
+/- English proof (translation)
+Introduce `p q a₀ m hm`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc p q`. Take `⟨hH, lam, hlam, ht⟩` from `hm`. Establish `hpq : 1 ≤ p + q`. Break down `a₀ with i | i` into its components or cases.
+
+Use `i.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set n : ℝ := ((p + q : ℕ) : ℝ) with hn`.
+
+Establish `hn1 : 1 ≤ n` using `by rw [hn]; exact_mod_cast hpq`. Establish `hn2 : 0 < n ^ 2` using `by positivity`. Establish `hlow : ∀ ε : ℝ, 0 < ε → ENNReal.ofReal ((3 / 2 * ε) ^ ((p + q) ^ 2) / n ^ (p + q - 1)) ≤ lam (box (rad a₀ n (9 / 10 * ε)))`. Introduce `ε hε`. Use `le_lam_box lam hlam (rad a₀ n (9 / 10 * ε)) (rad a₀ n (3 / 2 * ε)) (rad_symm a₀ n _) (rad_nonneg a₀ (by linarith) (by positivity)) (rad_nonneg a₀ (by linarith) (by positivity)) (by` as an intermediate fact.
+
+Introduce `a b`. Unfold `rad`. Generalize the expression as in `(if a = b ∧ a ≠ a₀ then n⁻¹ else 1) = w`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (ε * w)) (sub_nonneg.2 Real.pi_gt_three.le), sq_nonneg (ε * w)])`. Rewrite `this` using `[prod_rad, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]`. Then use the resulting hypothesis.
+
+Establish `hT` using `tendsto_of_density m hH lam hlam.1 _ ht (fun ε => box (rad a₀ n (9 / 10 * ε))) (fun _ => measurableSet_box _) (fun δ hδ => by filter_upwards [Ioo_mem_nhdsGT (show 0 < δ / n ^ 2 by positivity)] with r hr X hX`. Establish `h1` using `sum_le_of_mem_box a₀ hn hn1 (by linarith [hr.1]) hX`. Establish `h2` using `hr.2`. Rewrite `h2` using `[lt_div_iff₀ hn2]`. Conclude with `h1.trans_lt (by nlinarith [mul_pos hr.1 hn2]))`.
+
+Use the proof step `(by filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : 0 < r` using `hr`. Conclude with `(lt_of_lt_of_le (ENNReal.ofReal_pos.2 (by positivity)) (hlow r hr')).ne')`. Establish `hc : ENNReal.ofReal (9 / 10 * ((2 : ℝ) ^ ((p + q) * (p + q - 1) / 2))⁻¹) < minfDensity (p + q)`. Establish `e : minfDensity (p + q) = ENNReal.ofReal (((2 : ℝ) ^ ((p + q) * (p + q - 1) / 2))⁻¹)`.
+
+Rewrite using `[ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num), ENNReal.ofReal_ofNat]`. Both sides reduce to the same expression. Rewrite using `[e, ENNReal.ofReal_lt_ofReal_iff (by positivity)]`. Conclude with `mul_lt_of_lt_one_left (by positivity) (by norm_num)`. Take `⟨r₁, hr₁, hsub⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 (hT.eventually (lt_mem_nhds hc))`.
+
+Establish `hr₁' : 0 < r₁` using `hr₁`. Take `⟨r₂, hr₂, hbox⟩` from `exp_box a₀ hn hn1`. Use `⟨min (1 / 100) (min r₁ r₂), by positivity, fun ε hε hεlt => ?_⟩` and prove the remaining obligations. Establish `hε1 : ε < 1 / 100` using `hεlt.trans_le (min_le_left _ _)`. Establish `hεr₁ : ε < r₁` using `hεlt.trans_le ((min_le_right _ _).trans (min_le_left _ _))`.
+
+Establish `hεr₂ : ε < r₂` using `hεlt.trans_le ((min_le_right _ _).trans (min_le_right _ _))`. Use `set B : Set (UpqT p q) := {g | ∃ X ∈ box (rad a₀ n (9 / 10 * ε)), UpqT.mat g = NormedSpace.exp (X : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)} with hB`. Establish `hE : ENNReal.ofReal (9 / 10 * ((2 : ℝ) ^ ((p + q) * (p + q - 1) / 2))⁻¹ * ((3 / 2 * ε) ^ ((p + q) ^ 2) / n ^ (p + q - 1))) ≤ m B`. Establish `hr : ENNReal.ofReal (9 / 10 * ((2 : ℝ) ^ ((p + q) * (p + q - 1) / 2))⁻¹) < m B / lam (box (rad a₀ n (9 / 10 * ε)))` using `hsub ⟨hε, hεr₁⟩`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`.
+
+Conclude with `(mul_le_mul_right (hlow ε hε) _).trans (ENNReal.mul_le_of_le_div hr.le)`. Use `set S : Set (UpqT p q) := {u | (∀ a b, ‖(sMat a₀ u - 1) a b‖ < ε) ∧ 0 < (UpqT.mat u).det.im} with hS`. Use `set K : ℕ := ⌊Real.pi / (4 * ε)⌋₊ with hK`. Establish `hK1 : (K : ℝ) * (4 * ε) ≤ Real.pi`. Rewrite using `[← le_div_iff₀ (by positivity)]; exact Nat.floor_le (by positivity)`.
+
+Establish `hK2 : 3 / (4 * ε) ≤ (K : ℝ)`. Establish `h1 : Real.pi / (4 * ε) < K + 1` using `Nat.lt_floor_add_one _`. Rewrite `h1` using `[div_lt_iff₀ (by positivity)]`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear relations using `[Real.pi_gt_d2]`.
+
+Use `set T : ℕ → Set (UpqT p q) := fun k => (fun u => (UpqT.mat u).det.arg) ⁻¹' Set.Ioo ((k : ℝ) * (4 * ε)) (((k : ℝ) + 1) * (4 * ε)) with hTdef`. Establish `hTm : ∀ k, MeasurableSet (T k)` using `fun k => (Complex.measurable_arg.comp (GlobalTheory.CompactDualExists.continuous_mat.matrix_det).measurable) measurableSet_Ioo`. Establish `hdisj : Set.Pairwise (↑(Finset.range K) : Set ℕ) (Function.onFun (AEDisjoint (m.restrict S)) T)`. Establish `key : ∀ i j : ℕ, i < j → Disjoint (T i) (T j)`. Introduce `i j hij`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `u h1 h2`. Establish `h3 : (i : ℝ) + 1 ≤ j` using `by exact_mod_cast hij`. Establish `h4` using `h1.2`. Establish `h5` using `h2.1`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h3 (show 0 ≤ 4 * ε by positivity)]`. Introduce `i _ j _ hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `(key i j h).aedisjoint`. Conclude with `(key j i h).symm.aedisjoint`.
+
+Establish `hsum` using `sum_measure_le_measure_univ (μ := m.restrict S) (fun k _ => (hTm k).nullMeasurableSet) hdisj`. Rewrite `hsum` using `[Measure.restrict_apply_univ]`. Establish `hk : ∀ k ∈ Finset.range K, m B ≤ m.restrict S (T k)`. Introduce `k hk`. Establish `hk' : (k : ℝ) + 1 ≤ K` using `by exact_mod_cast Finset.mem_range.1 hk`.
+
+Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `set θ : ℝ := (k : ℝ) * (4 * ε) + 2 * ε with hθ`. Establish `hc1 : ‖Complex.exp ((θ : ℂ) * Complex.I)‖ = 1` using `Complex.norm_exp_ofReal_mul_I _`. Take `⟨d, hd⟩` from `GlobalTheory.CovTop.VolUp.OneMeasure.exists_of_dg a₀ hc1`. Rewrite using `[Measure.restrict_apply (hTm k), ← measure_preimage_mul m d (T k ∩ S)]`.
+
+Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `u ⟨X, hX, hu⟩`. Take `⟨h1, t, ht1, ht2⟩` from `hbox ε hε hεr₂ X hX u hu`. Rewrite `ht1` using `[abs_lt]`. Establish `hdet : (UpqT.mat (d * u)).det = Complex.exp (((θ + t : ℝ) : ℂ) * Complex.I)`.
+
+Rewrite using `[GlobalTheory.CartanInt.mat_mul, hd, Matrix.det_mul, det_dg, ht2, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < θ + t` using `by nlinarith [mul_nonneg hk0 hε.le]`.
+
+Establish `hpi : θ + t < Real.pi`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hk' (show 0 ≤ 4 * ε by positivity)]`. Use `⟨?_, fun a b => ?_, ?_⟩` and prove the remaining obligations. Use `show (UpqT.mat (d * u)).det.arg ∈ Set.Ioo ((k : ℝ) * (4 * ε)) (((k : ℝ) + 1) * (4 * ε))`. Rewrite using `[hdet, Complex.exp_mul_I, Complex.arg_cos_add_sin_mul_I ⟨by linarith [Real.pi_pos], hpi.le⟩]`.
+
+Apply the tactic sequence `constructor <;> linarith [ht1.1, ht1.2]`. Rewrite using `[norm_sMat_dg_mul a₀ hc1 d u hd]`. Conclude with `h1 a b`. Rewrite using `[hdet, Complex.exp_ofReal_mul_I_im]`. Conclude with `Real.sin_pos_of_pos_of_lt_pi hpos hpi`.
+
+Use `le_trans ?_ ((Finset.sum_le_sum hk).trans hsum)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `le_trans ?_ (mul_le_mul_right hE _)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (num_ge (p + q) hpq ε K hε hK2)`.
+-/
 theorem le_measure_sMat_near : ∀ (p q : ℕ) (a₀ : Fin p ⊕ Fin q) (m : Measure (UpqT p q)), IsMinf m → ∃ ε₀ : ℝ, 0 < ε₀ ∧ ∀ ε : ℝ, 0 < ε → ε < ε₀ → ENNReal.ofReal (ε ^ ((p + q) ^ 2 - 1) / ((p + q : ℕ) : ℝ) ^ (p + q - 1)) ≤ m {u | (∀ a b, ‖(sMat a₀ u - 1) a b‖ < ε) ∧ 0 < (UpqT.mat u).det.im} := by
   intro p q a₀ m hm
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.UpqTopology.upq_lcsc p q

@@ -23,6 +23,45 @@ section Pieces
 open scoped Matrix NNReal ENNReal TensorProduct
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.WhitFree GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.AvgFree MeasureTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lv hlv O hOc hOo hOs n M J l a ha hal s θ hmod D Y hD hY`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, a5, -, -, a8, a9, a10⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI := a8 n M`. Use `haveI := hlv.1`. Take `⟨hKH, hW, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1`.
+
+Use `haveI := hKH`. Use `haveI := hW n M`. Establish `hinv : ∀ x : Fv F v ⊗[F] E, sigR (Fv F v) σ (sigR (Fv F v) σ x) = x`. Establish `h : ∀ e, σ (σ e) = e`. Introduce `e`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2 τ, hσ.2.2.2 τ]`. Simplify using the standard rewrite rules. Conclude with `sigR_sigR _ σ h`.
+
+Establish `hnc : ∀ i, negCol (Fv F v) l a i ∈ O`. Introduce `i`. Unfold `negCol`. Use `split_ifs`. Conclude with `O.one_mem`.
+
+Conclude with `O.neg_mem (ha i)`. Establish `hncl : negCol (Fv F v) l a l = 1` using `by simp [negCol]`. Take `⟨hY1m, hY1⟩` from `GlobalTheory.T.local_order_stable_integral_structure F E σ hσ d b v lv hlv O hOc hOo hOs n l _ hnc hncl Y hY`. Take `⟨hY2m, hY2⟩` from `GlobalTheory.T.local_scaling_measure_by_unit F E σ hσ d b v lv hlv s θ hmod n l _ hY1m`. Use `⟨_, hY2m, by rw [hY2, hY1], ?_⟩` and prove the remaining obligations.
+
+Establish `hθ : θ ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `hmod Set.univ`. Establish `hs : (fun x => (s : Fv F v ⊗[F] E) * x) '' Set.univ = Set.univ` using `Set.image_univ_of_surjective fun y => ⟨((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * y, by simp⟩`. Rewrite `h` using `[hs]`.
+
+Simplify using `only [ENNReal.coe_zero, zero_mul] at h`. Conclude with `(Measure.measure_univ_pos.2 (NeZero.ne _)).ne' h`. Establish `hmod' : ∀ Y : Set (Fv F v ⊗[F] E), GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv ((fun x => ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' Y) = (θ⁻¹ : ℝ≥0) * GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv Y`. Introduce `Y`. Establish `h` using `hmod ((fun x => ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' Y)`.
+
+Establish `h2 : (fun x => (s : Fv F v ⊗[F] E) * x) '' ((fun x => ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' Y) = Y`. Rewrite using `[Set.image_image]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h2]`. Rewrite using `[h, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ hθ]`.
+
+Simplify using the standard rewrite rules. Establish `hrc : ∀ g : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), Continuous fun X : Fin n → Fin M → Fv F v ⊗[F] E => GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X g`. Introduce `g`. Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.SW.rmul`.
+
+Conclude with `continuous_finset_sum _ fun c _ => (continuous_apply_apply c i).mul continuous_const`. Establish `hgm : ∀ Y' : Set (HermR (Fv F v) σ n), MeasurableSet Y' → MeasurableSet (gramIn (Fv F v) σ J (n` using `n) Y') := by`. Introduce `Y' hY'`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) := inferInstanceAs (BorelSpace (Fin n → Fin n → Fv F v ⊗[F] E))`.
+
+Establish `h1 : gramIn (Fv F v) σ J (n` using `n) Y' = gramR (Fv F v) σ J ⁻¹' (Subtype.val '' Y') := by`. Use extensionality with `X`. Simplify using `only [gramIn, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_image]`. Conclude with `⟨fun ⟨y, hy, e⟩ => ⟨y, hy, e.symm⟩, fun ⟨y, hy, e⟩ => ⟨y, hy, e.symm⟩⟩`. Rewrite using `[h1]`.
+
+Use `haveI : BorelSpace (HermR (Fv F v) σ n) := ⟨rfl⟩`. Establish `hbs` using `(Subtype.borelSpace (α := Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) ((HermR (Fv F v) σ n : AddSubgroup _) : Set _)).measurable_eq`. Establish `hY3 : @MeasurableSet {x // x ∈ ((HermR (Fv F v) σ n : AddSubgroup _) : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)))} Subtype.instMeasurableSpace Y'`. Rewrite using `[hbs]`. Conclude with `hY'`.
+
+Conclude with `(a10 n M J).measurable ((a9 n).isClosedEmbedding_subtypeVal.measurableEmbedding.measurableSet_image.2 hY3)`. Establish `hD2` using `hD.inter (hgm _ hY2m)`. Establish `hwe` using `GlobalTheory.T.local_order_conjugation_stable F E σ hσ d b v lv hlv O hOc hOo hOs n M l a ha hal`. Establish `hwd` using `GlobalTheory.T.local_scaling_volume_by_unit F E σ hσ d b v lv hlv s⁻¹ θ⁻¹ hmod' n M l _ hD2`. Establish `hm2 : MeasurableSet {Z | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) Z (dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) ∈ D ∩ gramIn (Fv F v) σ J (cjPre (Fv F v) σ (dMat (Fv F v) l (s : Fv F v ⊗[F] E)) (cjPre (Fv F v) σ (eMat (Fv F v) l (negCol (Fv F v) l a)) Y))}` using `(hrc _).measurable hD2`.
+
+Establish `hsub : {X | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (eMat (Fv F v) l a * dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) ∈ D} ∩ gramIn (Fv F v) σ J Y ⊆ (fun X => GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (eMat (Fv F v) l a)) ⁻¹' {Z | GlobalTheory.Compani …`. Introduce and unpack `X ⟨hXD, y, hy, hXy⟩`. Establish `h1` using `rmul_mul (Fv F v) X (eMat (Fv F v) l a) (dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E))`. Use `⟨by simp only [Set.mem_preimage]; rw [h1]; exact hXD, ?_⟩` and prove the remaining obligations. Set `z : HermR (Fv F v) σ n` to `⟨cjM (Fv F v) σ (eMat (Fv F v) l a) y, cjM_mem _ σ hinv _ _ y.2⟩`.
+
+Set `w : HermR (Fv F v) σ n` to `⟨cjM (Fv F v) σ (dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) z, cjM_mem _ σ hinv _ _ z.2⟩`. Use `⟨w, ⟨z, ⟨y, hy, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show cjM (Fv F v) σ _ (cjM (Fv F v) σ _ _) = _`. Rewrite using `[← cjM_mul, eMat_mul_negCol _ _ _ hal, cjM_one]`. Use `show cjM (Fv F v) σ _ (cjM (Fv F v) σ _ _) = _`.
+
+Rewrite using `[← cjM_mul, dMat_mul _ _ _ _ (by simp), cjM_one]`. Use `show gramR _ σ J _ = cjM (Fv F v) σ _ (cjM (Fv F v) σ _ _)`. Rewrite using `[gramR_rmul, gramR_rmul, hXy]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Rewrite using `[ENNReal.coe_inv hθ, ENNReal.inv_pow, inv_inv]`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.scale_density : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ O : Subring (Fv F v ⊗[F] E), IsCompact (O : Set (Fv F v ⊗[F] E)) → IsOpen (O : Set (Fv F v ⊗[F] E)) → (∀ x ∈ O, HeckeCharacterZeroLocus.SiegelWeilU.sigR (Fv F v) σ x ∈ O) → ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E) (l : Fin n) (a : Fin n → (Fv F v ⊗[F] E)), (∀ i, a i ∈ O) → a l = 1 → ∀ (s : (Fv F v ⊗[F] E)ˣ) (θ : ℝ≥0), (∀ Y : Set (Fv F v ⊗[F] E), (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv) ((fun x => (s : (Fv F v ⊗[F] E)) * x) '' Y) = θ * (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv) Y) → ∀ (D : Set (Fin n → Fin M → (Fv F v ⊗[F] E))) (Y : Set (HermR (Fv F v) σ n)), MeasurableSet D → MeasurableSet Y → ∃ Y' : Set (HermR (Fv F v) σ n), MeasurableSet Y' ∧ (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) Y' = ((θ : ℝ≥0∞) ^ n)⁻¹ * (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) Y ∧ (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) ({X | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (eMat (Fv F v) l a * dMat (Fv F v) l ((s⁻¹ : (Fv F v ⊗[F] E)ˣ) : (Fv F v ⊗[F] E))) ∈ D} ∩ gramIn (Fv F v) σ J Y) ≤ (θ : ℝ≥0∞) ^ M * (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (D ∩ gramIn (Fv F v) σ J Y') := by
   intro F E _ _ _ _ _ σ hσ d b v lv hlv O hOc hOo hOs n M J l a ha hal s θ hmod D Y hD hY
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
@@ -137,6 +176,53 @@ theorem GlobalTheory.CompanionTheory.AvgFree.scale_density : ∀ (F E : Type) [F
       congr 1
       rw [ENNReal.coe_inv hθ, ENNReal.inv_pow, inv_inv]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lv hlv M J n hn hM O S hOS L hLc hLo`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, a5, -, -, a8, a9, a10⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI := a8 n M`. Use `haveI := hlv.1`. Take `⟨hKH, hW, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1`.
+
+Use `haveI := hKH`. Use `haveI := hW n M`. Take `⟨hOc, hOo, hOs, hp, -⟩` from `id hOS`. Establish `hθ : ∀ p : (Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E), ∃ θ : ℝ≥0, p ∈ S → θ < 1 ∧ 0 < θ ∧ ∀ Y : Set (Fv F v ⊗[F] E), GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv ((fun x => (p.1 : Fv F v ⊗[F] E) * x) '' Y) = θ * GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv Y`. Introduce `p`.
+
+Distinguish the cases in `h : p ∈ S`. Take `⟨θ, h1, h2⟩` from `(hp p h).2.2.2.2`. Use `⟨θ, fun _ => ⟨h1, ?_, h2⟩⟩` and prove the remaining obligations. Rewrite using `[pos_iff_ne_zero]`. Introduce and unpack `rfl`.
+
+Establish `h3` using `h2 Set.univ`. Establish `hs : (fun x => (p.1 : Fv F v ⊗[F] E) * x) '' Set.univ = Set.univ` using `Set.image_univ_of_surjective fun y => ⟨((p.1⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * y, by simp⟩`. Rewrite `h3` using `[hs]`. Simplify using `only [ENNReal.coe_zero, zero_mul] at h3`. Conclude with `(Measure.measure_univ_pos.2 (NeZero.ne _)).ne' h3`.
+
+Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose θ hθ using hθ`. Establish `hG` using `fun (j : ℕ) (p : (Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E)) => (show ∃ G : Finset (Fin n × (Fin n → Fv F v ⊗[F] E)), p ∈ S → (((G.card : ℝ≥0) ≤ n * ((θ p)⁻¹) ^ (j * n)) ∧ (∀ q ∈ G, (∀ i, q.2 i ∈ O) ∧ q.2 q.1 = 1) ∧ ∀ X ∈ nearNF (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : S …`. Distinguish the cases in `h : p ∈ S`. Take `⟨G, hG⟩` from `GlobalTheory.T.local_lattice_character_integral F E σ hσ d b v lv hlv O S hOS L hLc hLo n M hn p h (θ p) (hθ p h).2.2 j`.
+
+Conclude with `⟨G, fun _ => hG⟩`. Conclude with `⟨∅, fun h' => absurd h' h⟩)`. Use `choose G hG using hG`. Establish `hpow : ∀ p ∈ S, ∀ (j : ℕ) (Y : Set (Fv F v ⊗[F] E)), GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv ((fun x => ((p.1 ^ j : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' Y) = ((θ p ^ j : ℝ≥0) : ℝ≥0∞) * GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv Y`. Introduce `p hpS j`.
+
+Proceed by induction on `j with`. Consider the case `zero => intro Y`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `Y`.
+
+Establish `h1 : (fun x => ((p.1 ^ (j + 1) : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' Y = (fun x => ((p.1 ^ j : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) * x) '' ((fun x => (p.1 : Fv F v ⊗[F] E) * x) '' Y)`. Rewrite using `[Set.image_image]`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Simplify using `[pow_succ, mul_assoc]`. Rewrite using `[h1, ih, (hθ p hpS).2.2 Y, ← mul_assoc, ← ENNReal.coe_mul, pow_succ]`.
+
+Use `⟨Σ _ : (Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E), Fin n × (Fin n → Fv F v ⊗[F] E), fun j => S.sigma fun p => G j p, fun j i => (θ i.1 ^ j) ^ M, fun j i => ((θ i.1 ^ j) ^ n)⁻¹, fun j => ∑ p ∈ S, (n : ℝ≥0) * (θ p ^ (M - 2 * n)) ^ j, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun j : ℕ => ∑ p ∈ S, (n : ℝ≥0) * (θ p ^ (M - 2 * n)) ^ j) Filter.atTop (nhds (∑ p ∈ S, (n : ℝ≥0) * 0))` using `tendsto_finset_sum _ fun p hpS => tendsto_const_nhds.mul (NNReal.tendsto_pow_atTop_nhds_zero_of_lt_one (pow_lt_one₀ zero_le' (hθ p hpS).1 (by omega)))`. Simplify using `using h1`. Introduce `j`. Rewrite using `[Finset.sum_sigma, Finset.sum_sigma]`.
+
+Establish `key : ∀ p ∈ S, (n : ℝ≥0) * ((θ p)⁻¹) ^ (j * n) * ((θ p ^ j) ^ M * ((θ p ^ j) ^ n)⁻¹) = (n : ℝ≥0) * (θ p ^ (M - 2 * n)) ^ j ∧ (n : ℝ≥0) * ((θ p)⁻¹) ^ (j * n) * (θ p ^ j) ^ M ≤ (n : ℝ≥0) * (θ p ^ (M - 2 * n)) ^ j`. Introduce `p hpS`. Establish `h0 : θ p ≠ 0` using `(hθ p hpS).2.1.ne'`. Use `set u := θ p ^ j with hu`. Establish `hu0 : u ≠ 0` using `pow_ne_zero _ h0`.
+
+Establish `hu1 : u ≤ 1` using `pow_le_one₀ zero_le' (hθ p hpS).1.le`. Establish `e1 : ((θ p)⁻¹) ^ (j * n) = (u ^ n)⁻¹`. Rewrite using `[inv_pow, pow_mul]`. Establish `e2 : (θ p ^ (M - 2 * n)) ^ j = u ^ (M - 2 * n)`. Rewrite using `[hu, ← pow_mul, ← pow_mul, mul_comm]`.
+
+Establish `e3 : u ^ M = u ^ (M - 2 * n) * u ^ n * u ^ n`. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hn0 : u ^ n ≠ 0` using `pow_ne_zero _ hu0`.
+
+Rewrite using `[e1, e2, e3]`. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts. Establish `h1 : (n : ℝ≥0) * (u ^ n)⁻¹ * (u ^ (M - 2 * n) * u ^ n * u ^ n) = (n : ℝ≥0) * u ^ (M - 2 * n) * u ^ n`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h1]`. Conclude with `mul_le_of_le_one_right zero_le' (pow_le_one₀ zero_le' hu1)`. Prove the components needed by the constructor for the conclusion. Use `Finset.sum_le_sum fun p hpS => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`.
+
+Rewrite using `[← (key p hpS).1]`. Use `gcongr`. Conclude with `(hG j p hpS).1`. Use `Finset.sum_le_sum fun p hpS => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`.
+
+Use `le_trans ?_ (key p hpS).2` and prove the remaining obligations. Use `gcongr`. Conclude with `(hG j p hpS).1`. Introduce `j Y hY`. Establish `hBm : MeasurableSet (tupIn (M` using `M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E))) := (isCompact_tupIn _ hLc).measurableSet`.
+
+Establish `hZ` using `fun i : (Σ _ : (Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E), Fin n × (Fin n → Fv F v ⊗[F] E)) => (show ∃ Z : Set (HermR (Fv F v) σ n), i ∈ (S.sigma fun p => G j p) → MeasurableSet Z ∧ GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n Z = (((θ i.1 ^ j) ^ n)⁻¹ : ℝ≥0) * GlobalTheory …`. Distinguish the cases in `h : i ∈ (S.sigma fun p => G j p)`. Establish `h1` using `Finset.mem_sigma.1 h`. Take `⟨Z, hZ1, hZ2, hZ3⟩` from `GlobalTheory.CompanionTheory.AvgFree.scale_density F E σ hσ d b v lv hlv O hOc hOo hOs n M J i.2.1 i.2.2 ((hG j i.1 h1.1).2.1 i.2 h1.2).1 ((hG j i.1 h1.1).2.1 i.2 h1.2).2 (i.1.1 ^ j) (θ i.1 ^ j) (hpow i.1 h1.1 j) _ Y hBm hY`. Use `⟨Z, fun _ => ⟨hZ1, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h0 : (θ i.1 ^ j) ^ n ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (hθ i.1 h1.1).2.1.ne')`. Rewrite using `[hZ2, ENNReal.coe_inv h0]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `using hZ3`.
+
+Conclude with `⟨∅, fun h' => absurd h' h⟩)`. Use `choose Z hZ using hZ`. Use `⟨Z, fun i hi => ⟨(hZ i hi).1, (hZ i hi).2.1⟩, ?_⟩` and prove the remaining obligations. Establish `hsub : (tupIn (M` using `M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) \ goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j) ∩ gramIn (Fv F v) σ J Y ⊆ ⋃ i ∈ (S.sigma fun p => G j p), ({X | GlobalTheory.CompanionTheory.SW.rmul (Fv F v) X (eMat (Fv F v) i.2.1 i.2.2 * …`. Introduce and unpack `X ⟨⟨hX1, hX2⟩, hX3⟩`.
+
+Establish `h1 : ∃ p ∈ S, X ∈ nearNF (M` using `M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) (p.1 : Fv F v ⊗[F] E) j := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `hX2 ⟨hX1, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, not_exists]`.
+
+Conclude with `fun p hpS => hcon p hpS`. Take `⟨p, hpS, hXp⟩` from `h1`. Take `⟨q, hq, hXq⟩` from `(hG j p hpS).2.2 X hXp`. Conclude with `Set.mem_biUnion (x := (⟨p, q⟩ : Σ _ : (Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E), Fin n × (Fin n → Fv F v ⊗[F] E))) (Finset.mem_coe.2 (Finset.mem_sigma.2 ⟨hpS, hq⟩)) ⟨hXq, hX3⟩`. Conclude with `le_trans (measure_mono hsub) (le_trans (measure_biUnion_finset_le _ _) (Finset.sum_le_sum fun i hi => (hZ i hi).2.2))`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.bad_density : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ), 0 < n → 2 * n < M → ∀ (O : Subring (Fv F v ⊗[F] E)) (S : Finset ((Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E))), IsOrdData (Fv F v) σ b lv O S → ∀ L : Submodule O (Fv F v ⊗[F] E), IsCompact (L : Set (Fv F v ⊗[F] E)) → IsOpen (L : Set (Fv F v ⊗[F] E)) → ∃ (ι : Type) (I : ℕ → Finset ι) (α β : ℕ → ι → ℝ≥0) (ρ : ℕ → ℝ≥0), Filter.Tendsto ρ Filter.atTop (nhds 0) ∧ (∀ j, ∑ i ∈ I j, α j i * β j i ≤ ρ j ∧ ∑ i ∈ I j, α j i ≤ ρ j) ∧ ∀ (j : ℕ) (Y : Set (HermR (Fv F v) σ n)), MeasurableSet Y → ∃ Z : ι → Set (HermR (Fv F v) σ n), (∀ i ∈ I j, MeasurableSet (Z i) ∧ (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) (Z i) = β j i * (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) Y) ∧ (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (((tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E))) \ (goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j)) ∩ gramIn (Fv F v) σ J Y) ≤ ∑ i ∈ I j, (α j i : ℝ≥0∞) * (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) ((tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E))) ∩ gramIn (Fv F v) σ J (Z i)) := by
   intro F E _ _ _ _ _ σ hσ d b v lv hlv M J n hn hM O S hOS L hLc hLo
   classical
@@ -294,6 +380,33 @@ theorem GlobalTheory.CompanionTheory.AvgFree.bad_density : ∀ (F E : Type) [Fie
     exact le_trans (measure_mono hsub) (le_trans (measure_biUnion_finset_le _ _)
       (Finset.sum_le_sum fun i hi => (hZ i hi).2.2))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lv hlv M J hJ n hn hM mv hmv A hAc hAo`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, -, -, -, a8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI := a8 n M`. Use `haveI := hlv.1`. Take `⟨-, hW, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1`.
+
+Use `haveI := hW n M`. Take `⟨O, S, hOS⟩` from `GlobalTheory.T.integral_order_data_exist_at_place F E σ hσ d b v lv hlv`. Take `⟨L, hLc, hLo, hAL⟩` from `GlobalTheory.T.compact_set_contained_in_lattice F E σ hσ v O hOS.1 hOS.2.1 n M A hAc`. Take `⟨ι, I, α, β, ρ, hρ, hs, hstep⟩` from `GlobalTheory.CompanionTheory.AvgFree.bad_density F E σ hσ d b v lv hlv M J n hn hM O S hOS L hLc hLo`. Establish `hcl` using `GlobalTheory.T.local_lattice_volume_order_data F E σ hσ d b v lv hlv O S hOS L hLc hLo n M`.
+
+Take `⟨hmono, hfree⟩` from `GlobalTheory.T.local_lattice_gauss_sum_estimate F E σ hσ d b v lv hlv O S hOS L hLc hLo n M`. Establish `hex` using `GlobalTheory.T.local_lattice_quadratic_integral F E σ hσ d b v lv hlv O S hOS L hLc hLo n M`. Establish `hBc : IsCompact (tupIn (M` using `M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E))) := by`. Establish `: tupIn (M` using `M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (L : Set (Fv F v ⊗[F] E)) := by`. Use extensionality with `X`.
+
+Simplify using `[tupIn]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hLc`. Establish `hj : ∀ᶠ j in Filter.atTop, ρ j < 1` using `hρ.eventually (gt_mem_nhds zero_lt_one)`. Take `⟨j₀, hj₀⟩` from `hj.exists`.
+
+Take `⟨hmass, -, -, C₀, hC₀⟩` from `GlobalTheory.T.local_fibre_measure_unramified_formula F E σ hσ d b v lv hlv M J hJ n mv hmv _ (hcl j₀).1 (hcl j₀).2 (hfree j₀)`. Take `⟨C, hC⟩` from `GlobalTheory.T.density_bound_by_recursion (HermR (Fv F v) σ n) ι (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) (fun Y => GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) ∩ gramIn (Fv F v) σ J Y)) …`. Take `⟨Z, hZ, hle⟩` from `hstep j₀ Y hY`. Use `⟨Z, hZ, ?_⟩` and prove the remaining obligations. Establish `h0 : GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (goodT (M` using `M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j₀ ∩ gramIn (Fv F v) σ J Y) ≤ C₀ * GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n Y := by`.
+
+Rewrite using `[hmass Y hY]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans (measure_mono ?_) (le_trans (measure_union_le _ _) (add_le_add h0 hle))` and prove the remaining obligations. Introduce and unpack `X ⟨hX1, hX2⟩`. Distinguish the cases in `hg : X ∈ goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j₀`.
+
+Conclude with `Or.inl ⟨hg, hX2⟩`. Conclude with `Or.inr ⟨⟨hX1, hg⟩, hX2⟩)`. Use the proof step `(lt_of_le_of_lt (hs j₀).1 hj₀) (lt_of_le_of_lt (hs j₀).2 hj₀)`. Use `⟨fun j => A ∩ goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j, fun i j hij => Set.inter_subset_inter_right _ (hmono hij), fun j => ⟨hAc.inter_right (hcl j).1.isClosed, hAo.inter (hcl j).2, Set.inter_subset_left, Set.inter_subset_right.tran …` and prove the remaining obligations. Introduce and unpack `X ⟨hXA, hXf⟩`.
+
+Take `⟨j, hj⟩` from `Set.mem_iUnion.1 (hex ⟨hAL hXA, hXf⟩)`. Conclude with `Set.mem_iUnion.2 ⟨j, hXA, hj⟩`. Simplify using `using (tendsto_const_nhds (x := C)).mul hρ`. Introduce `j Y hY`. Take `⟨Z, hZ, hle⟩` from `hstep j Y hY`.
+
+Establish `hsub : (A \ (A ∩ goodT (M` using `M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j)) ∩ gramIn (Fv F v) σ J Y ⊆ (tupIn (M := M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) \ goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j) ∩ gramIn (Fv F v) σ J Y …`. Introduce and unpack `X ⟨⟨hXA, hXn⟩, hXg⟩`. Conclude with `⟨⟨hAL hXA, fun h => hXn ⟨hXA, h⟩⟩, hXg⟩`. Use `le_trans (measure_mono hsub) (le_trans hle ?_)` and prove the remaining obligations. Establish `h1 : ∀ i ∈ I j, (α j i : ℝ≥0∞) * GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (tupIn (M` using `M) (n := n) (Fv F v) (L : Set (Fv F v ⊗[F] E)) ∩ gramIn (Fv F v) σ J (Z i)) ≤ (C : ℝ≥0∞) * ((α j i * β j i : ℝ≥0) : ℝ≥0∞) * GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n Y := by`.
+
+Introduce `i hi`. Establish `h2` using `hC (Z i) (hZ i hi).1`. Rewrite `h2` using `[(hZ i hi).2]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans (Finset.sum_le_sum h1) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, ← ENNReal.coe_finset_sum]`. Establish `h3 : ((∑ i ∈ I j, α j i * β j i : ℝ≥0) : ℝ≥0∞) ≤ (ρ j : ℝ≥0∞)` using `by exact_mod_cast (hs j).1`. Use `push_cast`. Move the coercions through the operations in `at h3`. Use `gcongr`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.exhaust_density : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (mv : (HermR (Fv F v) σ n) → Measure (Fin n → Fin M → (Fv F v ⊗[F] E))), IsGramFibFree (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) mv → ∀ A : Set (Fin n → Fin M → (Fv F v ⊗[F] E)), IsCompact A → IsOpen A → ∃ Tt : ℕ → Set (Fin n → Fin M → (Fv F v ⊗[F] E)), Monotone Tt ∧ (∀ j, IsCompact (Tt j) ∧ IsOpen (Tt j) ∧ Tt j ⊆ A ∧ Tt j ⊆ {X : (Fin n → Fin M → (Fv F v ⊗[F] E)) | LinearIndependent (Fv F v ⊗[F] E) X}) ∧ A ∩ {X : (Fin n → Fin M → (Fv F v ⊗[F] E)) | LinearIndependent (Fv F v ⊗[F] E) X} ⊆ (⋃ j, Tt j) ∧ ∃ ε : ℕ → ℝ≥0, Filter.Tendsto ε Filter.atTop (nhds 0) ∧ ∀ (j : ℕ) (Y : Set (HermR (Fv F v) σ n)), MeasurableSet Y → (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) ((A \ Tt j) ∩ gramIn (Fv F v) σ J Y) ≤ ε j * (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) Y := by
   intro F E _ _ _ _ _ σ hσ d b v lv hlv M J hJ n hn hM mv hmv A hAc hAo
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
@@ -390,6 +503,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WhitFree GlobalTheory.CompanionTheory.AvgFree
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ n hn hM d b v lv hlv mv hmv c A hAc hAo`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨-, -, -, -, -, -, -, a8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a8 n M`. Take `⟨Tt, h1, h2, h3, ε, h4, h5⟩` from `GlobalTheory.CompanionTheory.AvgFree.exhaust_density F E σ hσ d b v lv hlv M J hJ n hn hM mv hmv A hAc hAo`.
+
+Conclude with `⟨hAo.measurableSet, GlobalTheory.T.local_fibre_measure_unramified_volume F E σ hσ d b v lv hlv M J hJ n mv hmv c A hAc hAo Tt h1 h2 h3 ε h4 h5⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.avgFree_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ mv : HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E), IsGramFibFree (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) mv → ∀ (c : HermR (Fv F v) σ n) (A : Set (Fin n → Fin M → Fv F v ⊗[F] E)), IsCompact A → IsOpen A → MeasurableSet A ∧ mv c A ≠ ⊤ ∧ ∀ U : ℕ → Set (HermR (Fv F v) σ n), (∀ k, IsCompact (U k) ∧ IsOpen (U k) ∧ (0 : HermR (Fv F v) σ n) ∈ U k) → Filter.Tendsto U Filter.atTop (nhds (0 : HermR (Fv F v) σ n)).smallSets → (∀ k, MeasurableSet (A ∩ gramNear (Fv F v) σ J c (U k)) ∧ GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (A ∩ gramNear (Fv F v) σ J c (U k)) ≠ ⊤) ∧ Filter.Tendsto (fun k => (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M (A ∩ gramNear (Fv F v) σ J c (U k))).toReal / (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n (U k)).toReal) Filter.atTop (nhds (mv c A).toReal) := by
   intro F E _ _ _ _ _ σ hσ M J hJ n hn hM d b v lv hlv mv hmv c A hAc hAo
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

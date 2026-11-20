@@ -123,6 +123,9 @@ def MMeq : Prop :=
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)),
     MM D cc L L' = (ccE D cc • YYl D L L').toAddSubgroup
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem YP_eq (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) : YP D P L L' = hatY P (YYl D L L') := rfl
 

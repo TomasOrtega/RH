@@ -97,6 +97,15 @@ def SelmerInequalityThree : Prop :=
       (FS i r π dc g0 eB e₁ s Dd hD hc QS.c1) (QS.Io i) (QS.IS i) (QS.I i dc) (QS.γQ i dc) (QS.ζ i dc Dd) (QS.ζO i dc) (QS.nQ i dc)) ∧
       (TieRow i dc (rowLenS i r π dc g0 eB e₁ s Dd hD hc hT hrk) lenRow)
 
+/- English proof (translation)
+Take `⟨⟨-, -, hiLeq, -, -, hiL, -, -, hspL, -⟩, -, hevs, -, hEs, -⟩` from `Formalism.MainNotions.N.K.tensor_lattice_facts (Dd := Dd) (hT := hT) (hrk := hrk) (ε := epsU D.nd i)`. Use `haveI := Formalism.MainNotions.N.K.Topo.finite_RD (hD := hD)`. Use `haveI := Formalism.MainNotions.N.KLift.leftId_finite (i := i) (Dd := Dd) Dd.e₁`. Use `haveI := Formalism.MainNotions.N.KLift.leftId_free (i := i) (Dd := Dd) Dd.e₁`. Use `haveI := Formalism.MainNotions.N.KLift.leftId_finite (i := i) (Dd := Dd) Dd.E`.
+
+Use `haveI := Formalism.MainNotions.N.KLift.leftId_free (i := i) (Dd := Dd) Dd.E`. Use `haveI := Formalism.MainNotions.N.KLift.ideal_finite (i := i) Dd.δO`. Use `haveI := Formalism.MainNotions.N.KLift.ideal_free (i := i) Dd.δO`. Use `haveI := Formalism.MainNotions.N.KLift.latM_finite (D.nd.O i) _ (Dd.ρk 0).toRingHom`. Use `haveI := Formalism.MainNotions.N.KLift.latM_free (D.nd.O i) _ (Dd.ρk 0).toRingHom`.
+
+Establish `hL1` using `Formalism.MainNotions.N.KLift.liftCol_eve_Dd (eR := e') (hA := hLift) (hG := hG) (hC := hc) (hD := hD) (κ := Formalism.MainNotions.N.KLift.kappaL i Dd Dd.e₁) (hκ := Formalism.MainNotions.N.KLift.kappaL_inj i Dd Dd.e₁) (hκa := Formalism.MainNotions.N.KLift.kappaL_mul i Dd Dd.e₁) ( …`. Take `⟨c, hc0, m, hm⟩` from `hspL v`. Conclude with `⟨c, hc0, m, hm⟩)`. Establish `hL2` using `Formalism.MainNotions.N.KLift.liftCol_evE_Dd (eR := e') (hA := hLift) (hG := hG) (hC := hc) (hD := hD) (δO := Dd.δO) (κ := Formalism.MainNotions.N.KLift.kappaL i Dd Dd.E) (hκ := Formalism.MainNotions.N.KLift.kappaL_inj i Dd Dd.E) (hκa := Formalism.MainNotions.N.KLift.kappaL_mul i …`. Take `⟨κ, κz, u, uz, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩` from `hO`.
+
+Conclude with `⟨κ, κz, u, uz, h1, h2, fun l => hL1 l, fun l => hL2 l, h3, h4, h5, h6, h7, h8, h9, h10⟩`.
+-/
 private theorem plugOpen2_of_plugOpen3_selfGood (hLift : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i r dc e') (hG : K.SelfGood i)
     (hO : SelmerInequalityThree i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk lenRow cB) :
     SelmerInequalityTwo i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk lenRow e' cB := by
@@ -126,6 +135,9 @@ private theorem plugOpen2_of_plugOpen3_selfGood (hLift : TruncatedSeriesCounting
   obtain ⟨κ, κz, u, uz, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩ := hO
   exact ⟨κ, κz, u, uz, h1, h2, fun l => hL1 l, fun l => hL2 l, h3, h4, h5, h6, h7, h8, h9, h10⟩
 
+/- English proof (translation)
+The claim follows from `selmer_inequality_two i r ρ π dc g0 eB e₁ s Dd hD hc hT hrk lenRow e' cB hN hP u0 hcyc hK hg6 (plugOpen2_of_plugOpen3_selfGood (hLift := hLift) (hG := hG) (hO := hO))`.
+-/
 theorem selmer_inequality_three [IsNoetherian Dd.R' Dd.R']
     [∀ x', IsScalarTower Dd.T' Dd.R' (EvalSp (D.nd.O i) (Fin D.R.nV) Dd.R' x')]
     [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]

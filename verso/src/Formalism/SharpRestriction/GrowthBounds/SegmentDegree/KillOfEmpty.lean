@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Establish `h : (kill S).comp (rename f) = (rename f).comp (kill (f ⁻¹' S) : MvPolynomial σ R →ₐ[R] _)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, rename_X, kill, aeval_X]`. Distinguish the cases in `h1 : f i ∈ S`.
+
+Establish `h2 : i ∈ f ⁻¹' S` using `h1`. Rewrite using `[if_pos h1, if_pos h2, map_zero]`. Establish `h2 : i ∉ f ⁻¹' S` using `h1`. Rewrite using `[if_neg h1, if_neg h2, rename_X]`. Conclude with `AlgHom.congr_fun h P`.
+-/
 theorem kill_rename {R σ τ : Type} [CommRing R] (f : σ → τ) (S : Set τ) (P : MvPolynomial σ R) :
     kill S (rename f P) = rename f (kill (f ⁻¹' S) P) := by
   have h : (kill S).comp (rename f) = (rename f).comp (kill (f ⁻¹' S) : MvPolynomial σ R →ₐ[R] _) := by
@@ -21,6 +26,11 @@ theorem kill_rename {R σ τ : Type} [CommRing R] (f : σ → τ) (S : Set τ) (
       rw [if_neg h1, if_neg h2, rename_X]
   exact AlgHom.congr_fun h P
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `h : (kill (∅ : Set σ) : MvPolynomial σ R →ₐ[R] _) = AlgHom.id R _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[kill]`.
+
+Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem kill_of_empty {R σ : Type} [CommRing R] (S : Set σ) (hS : S = ∅) (P : MvPolynomial σ R) : kill S P = P := by
   subst hS
   have h : (kill (∅ : Set σ) : MvPolynomial σ R →ₐ[R] _) = AlgHom.id R _ := by
@@ -30,6 +40,33 @@ theorem kill_of_empty {R σ : Type} [CommRing R] (S : Set σ) (hS : S = ∅) (P 
   rw [h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hsum q₀ hq₀`. Choose the witnesses or unpack the hypotheses as in `⟨Φ, hΦmono⟩ : ∃ Φ : MvPolynomial σ R →ₗ[R] MvPolynomial σ R, ∀ (n : σ →₀ ℕ) (a : R), Φ (monomial n a) = if n.filter (· ∈ Tset) = M q₀ then monomial (n.filter (· ∉ Tset)) a else 0 := by`. Use `⟨(MvPolynomial.basisMonomials σ R).constr R (fun n : σ →₀ ℕ => if n.filter (· ∈ Tset) = M q₀ then monomial (n.filter (· ∉ Tset)) (1 : R) else 0), fun n a => ?_⟩` and prove the remaining obligations. Establish `e : monomial n a = a • (MvPolynomial.basisMonomials σ R) n`.
+
+Simplify using `only [MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, Module.Basis.constr_basis]`. Use `split_ifs`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[smul_zero]`.
+
+Establish `hkey : ∀ q, Φ (monomial (M q) (1 : R) * w (x q)) = if M q = M q₀ then w (x q) else 0`. Introduce `q`. Establish `hwsup` using `hsup q`. Rewrite `hwsup` using `[mem_supported]`. Establish `hT : ∀ n ∈ (w (x q)).support, (M q + n).filter (· ∈ Tset) = M q ∧ (M q + n).filter (· ∉ Tset) = n`.
+
+Introduce `n hn`. Establish `hnv : ∀ v, n v ≠ 0 → v ∉ Tset` using `fun v hv => hwsup ((mem_vars v).2 ⟨n, hn, Finsupp.mem_support_iff.2 hv⟩)`. Prove the components needed by the constructor for the conclusion. Use extensionality with `v`. Rewrite using `[Finsupp.filter_apply, Finsupp.add_apply]`.
+
+Distinguish the cases in `hv : v ∈ Tset`. Rewrite using `[if_pos hv]`. Establish `: n v = 0`. Assume the negation of the conclusion as `h`. Conclude with `hnv v h hv`.
+
+Rewrite using `[this, add_zero]`. Rewrite using `[if_neg hv]`. Assume the negation of the conclusion as `h`. Conclude with `hv (hM q v (Ne.symm h))`. Use extensionality with `v`.
+
+Rewrite using `[Finsupp.filter_apply, Finsupp.add_apply]`. Distinguish the cases in `hv : v ∈ Tset`. Rewrite using `[if_neg (not_not.2 hv)]`. Assume the negation of the conclusion as `h`. Conclude with `hnv v (Ne.symm h) hv`.
+
+Rewrite using `[if_pos hv]`. Establish `: M q v = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv (hM q v h)`. Rewrite using `[this, zero_add]`.
+
+Use `conv_lhs => rw [(w (x q)).as_sum]`. Rewrite using `[Finset.mul_sum, map_sum]`. Simplify using `only [monomial_mul, one_mul, hΦmono]`. Use `split_ifs with hMq`. Use `conv_rhs => rw [(w (x q)).as_sum]`.
+
+Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[(hT n hn).1, (hT n hn).2, if_pos hMq]`. Use `Finset.sum_eq_zero fun n hn => ?_` and prove the remaining obligations. Rewrite using `[(hT n hn).1, if_neg hMq]`. Establish `hxinj : Function.Injective (fun q : {q // M q = M q₀} => x q.1)`.
+
+Introduce `a b h`. Conclude with `Subtype.ext (hinj a.1 b.1 (a.2.trans b.2.symm) h)`. Establish `hfib : LinearIndependent R (w ∘ fun q : {q // M q = M q₀} => x q.1)` using `hw.comp _ hxinj`. Establish `h2 : ∑ q ∈ s, g q • (if M q = M q₀ then w (x q) else 0) = 0`. Establish `h` using `congrArg Φ hsum`.
+
+Rewrite `h` using `[map_sum, map_zero]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∑ q ∈ s.subtype (fun q => M q = M q₀), g q.1 • (w ∘ fun q : {q // M q = M q₀} => x q.1) q = 0`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Finset.sum_subtype_eq_sum_filter (f := fun q => g q • w (x q)), Finset.sum_filter]`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun q _ => ?_) h2` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `linearIndependent_iff'.1 hfib (s.subtype (fun q => M q = M q₀)) (fun q => g q.1) h3 ⟨q₀, rfl⟩ (Finset.mem_subtype.2 hq₀)`.
+-/
 theorem li_mono_words {R σ ι α : Type} [CommRing R] [IsDomain R] (Tset : Set σ) (w : α → MvPolynomial σ R)
     (hw : LinearIndependent R w) (M : ι → σ →₀ ℕ) (x : ι → α) (hM : ∀ q, ∀ v, M q v ≠ 0 → v ∈ Tset)
     (hsup : ∀ q, w (x q) ∈ supported R Tsetᶜ) (hinj : ∀ q q', M q = M q' → x q = x q' → q = q') :

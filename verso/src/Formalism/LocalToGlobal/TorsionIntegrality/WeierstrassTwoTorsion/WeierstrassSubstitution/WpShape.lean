@@ -13,6 +13,9 @@ namespace Formalism.L2.Th1.A
 
 namespace WpSh
 
+/- English proof (translation)
+Establish `e1 : z ^ 6 * (zi ^ 2 * B + (-2) * zi ^ 3 * A) ^ 2 = (z * B * (z * zi) ^ 2 - 2 * A * (z * zi) ^ 3) ^ 2` using `by ring`. Establish `e2 : z ^ 6 * (4 * (zi ^ 2 * A) ^ 3 - c2 * (zi ^ 2 * A) - c3) = 4 * A ^ 3 * (z * zi) ^ 6 - c2 * z ^ 4 * A * (z * zi) ^ 2 - c3 * z ^ 6` using `by ring`. Rewrite `e1`, `e2` using `[hz]`. Simplify using `only [one_pow, mul_one] at e1 e2`. Rewrite using `[← e1, h, e2]`.
+-/
 theorem alg_first {S : Type*} [CommRing S] (z zi A B c2 c3 : S) (hz : z * zi = 1)
     (h : (zi ^ 2 * B + (-2) * zi ^ 3 * A) ^ 2 = 4 * (zi ^ 2 * A) ^ 3 - c2 * (zi ^ 2 * A) - c3) :
     (z * B - 2 * A) ^ 2 = 4 * A ^ 3 - c2 * z ^ 4 * A - c3 * z ^ 6 := by
@@ -23,6 +26,9 @@ theorem alg_first {S : Type*} [CommRing S] (z zi A B c2 c3 : S) (hz : z * zi = 1
   simp only [one_pow, mul_one] at e1 e2
   rw [← e1, h, e2]
 
+/- English proof (translation)
+Establish `e : z ^ 2 * ((-2) * ((-3) * zi ^ 4) + B) = z ^ 2 * (6 * (zi ^ 2 + A) ^ 2 - c)` using `by rw [h]`. Establish `e' : z ^ 2 * B = 12 * A * (z * zi) ^ 2 + z ^ 2 * (6 * (A * A)) - z ^ 2 * c`. Take the linear combination `e`. Rewrite `e'` using `[hz, one_pow, mul_one]`. Conclude with `e'`.
+-/
 theorem alg_second {S : Type*} [CommRing S] (z zi A B c : S) (hz : z * zi = 1)
     (h : (-2) * ((-3) * zi ^ 4) + B = 6 * (zi ^ 2 + A) ^ 2 - c) :
     z ^ 2 * B = 12 * A + z ^ 2 * (6 * (A * A)) - z ^ 2 * c := by
@@ -34,30 +40,51 @@ theorem alg_second {S : Type*} [CommRing S] (z zi A B c : S) (hz : z * zi = 1)
 
 variable {K : Type u} [Field K]
 
+/- English proof (translation)
+Simplify using `only [uPow, HahnSeries.ofPowerSeries_X, HahnSeries.single_mul_single, mul_one]`. Rewrite using `[show (1 : ℤ) + -1 = 0 by norm_num, ← HahnSeries.C_apply, map_one]`.
+-/
 theorem z_mul_zi : (toL X : LaurentSeries K) * uPow (-1) = 1 := by
   simp only [uPow, HahnSeries.ofPowerSeries_X, HahnSeries.single_mul_single, mul_one]
   rw [show (1 : ℤ) + -1 = 0 by norm_num, ← HahnSeries.C_apply, map_one]
 
+/- English proof (translation)
+Rewrite using `[sq, ← uPow_add]`. Evaluate the numerical expressions.
+-/
 theorem uPow_neg_two : (uPow (-2) : LaurentSeries K) = uPow (-1) ^ 2 := by
   rw [sq, ← uPow_add]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[pow_succ, sq, ← uPow_add, ← uPow_add]`. Evaluate the numerical expressions.
+-/
 theorem uPow_neg_three : (uPow (-2 - 1) : LaurentSeries K) = uPow (-1) ^ 3 := by
   rw [pow_succ, sq, ← uPow_add, ← uPow_add]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[pow_succ, pow_succ, sq, ← uPow_add, ← uPow_add, ← uPow_add]`. Evaluate the numerical expressions.
+-/
 theorem uPow_neg_four : (uPow (-2 - 1 - 1) : LaurentSeries K) = uPow (-1) ^ 4 := by
   rw [pow_succ, pow_succ, sq, ← uPow_add, ← uPow_add, ← uPow_add]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[Int.cast_neg, Int.cast_ofNat, map_neg, map_ofNat]`.
+-/
 theorem C_neg_two : (HahnSeries.C (((-2 : ℤ)) : K) : LaurentSeries K) = -2 := by
   rw [Int.cast_neg, Int.cast_ofNat, map_neg, map_ofNat]
 
+/- English proof (translation)
+Rewrite using `[Int.cast_sub, Int.cast_neg, Int.cast_ofNat, Int.cast_one, map_sub, map_neg, map_ofNat, map_one]`. Evaluate the numerical expressions.
+-/
 theorem C_neg_three : (HahnSeries.C (((-2 - 1 : ℤ)) : K) : LaurentSeries K) = -3 := by
   rw [Int.cast_sub, Int.cast_neg, Int.cast_ofNat, Int.cast_one, map_sub, map_neg, map_ofNat,
     map_one]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, map_mul, map_pow, mul_add, mul_one, uPow_neg_two]`. Use `congr 1`. Establish `h` using `z_mul_zi (K := K)`. Take the linear combination `(-(toL X * uPow (-1) + 1) * toL r) * h`.
+-/
 theorem add_eq_mul (r : K⟦X⟧) :
     (uPow (-2) : LaurentSeries K) + toL r = uPow (-2) * toL (1 + X ^ 2 * r) := by
   rw [map_add, map_one, map_mul, map_pow, mul_add, mul_one, uPow_neg_two]
@@ -65,11 +92,17 @@ theorem add_eq_mul (r : K⟦X⟧) :
   have h := z_mul_zi (K := K)
   linear_combination (-(toL X * uPow (-1) + 1) * toL r) * h
 
+/- English proof (translation)
+Establish `e : (OfNat.ofNat a : K⟦X⟧) = C (OfNat.ofNat a : K)` using `(map_ofNat C a).symm`. Rewrite using `[e, coeff_C_mul]`.
+-/
 theorem coeff_ofNat_mul (a : ℕ) [a.AtLeastTwo] (f : K⟦X⟧) (n : ℕ) :
     coeff n ((OfNat.ofNat a : K⟦X⟧) * f) = (OfNat.ofNat a : K) * coeff n f := by
   have e : (OfNat.ofNat a : K⟦X⟧) = C (OfNat.ofNat a : K) := (map_ofNat C a).symm
   rw [e, coeff_C_mul]
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[coeff_succ_X_mul, coeff_derivative]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_X_mul_derivative (f : K⟦X⟧) (n : ℕ) :
     coeff n (X * derivative K f) = (n : K) * coeff n f := by
   rcases n with _ | m
@@ -78,6 +111,11 @@ theorem coeff_X_mul_derivative (f : K⟦X⟧) (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[coeff_X_pow_mul']`. Use `split_ifs with h`. Rewrite using `[coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`.
+
+Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[hf p.1 (by omega), zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem coeff_shift_zero {f : K⟦X⟧} (A : K⟦X⟧) {n m : ℕ} (hf : ∀ k < n, coeff k f = 0)
     (hm : 0 < m) : coeff n (X ^ m * (f * A)) = 0 := by
   rw [coeff_X_pow_mul']
@@ -89,23 +127,35 @@ theorem coeff_shift_zero {f : K⟦X⟧} (A : K⟦X⟧) {n m : ℕ} (hf : ∀ k <
     rw [hf p.1 (by omega), zero_mul]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[pow_two, mul_assoc, Derivation.leibniz, Derivation.leibniz, derivative_X]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivative_X_sq_mul (t : K⟦X⟧) :
     derivative K (X ^ 2 * t) = 2 * X * t + X ^ 2 * derivative K t := by
   rw [pow_two, mul_assoc, Derivation.leibniz, Derivation.leibniz, derivative_X]
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz, derivative_X]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivative_X_mul (t : K⟦X⟧) :
     derivative K (X * t) = t + X * derivative K t := by
   rw [Derivation.leibniz, derivative_X]
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_rescale, coeff_C]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+-/
 theorem rescale_C' (a c : K) : rescale a (C c) = C c := by
   ext n
   rw [coeff_rescale, coeff_C]
   split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [coeff_derivative, coeff_rescale, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivative_rescale_neg_one (r : K⟦X⟧) :
     derivative K (rescale (-1 : K) r) = -rescale (-1 : K) (derivative K r) := by
   ext n
@@ -119,6 +169,11 @@ def Cleared (g2 g3 : K) (r : K⟦X⟧) : Prop :=
   (-2 + X ^ 3 * derivative K r) ^ 2 =
     4 * (1 + X ^ 2 * r) ^ 3 - C g2 * X ^ 4 * (1 + X ^ 2 * r) - C g3 * X ^ 6
 
+/- English proof (translation)
+Establish `hd : dL (uPow (-2) * toL M : LaurentSeries K) = uPow (-1) ^ 2 * toL (derivative K M) + (-2) * uPow (-1) ^ 3 * toL M`. Rewrite using `[dL_mul, dL_toL, dL_uPow, C_neg_two, uPow_neg_two, uPow_neg_three]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hd, uPow_neg_two]`. Establish `e` using `alg_first (toL X) (uPow (-1)) (toL M) (toL (derivative K M)) (HahnSeries.C g2) (HahnSeries.C g3) z_mul_zi h`.
+
+Unfold `ClearedM`. Apply `toL_injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat, HahnSeries.ofPowerSeries_C]`. Take the linear combination `e`.
+-/
 theorem clearedM_of_ode {g2 g3 : K} {M : K⟦X⟧}
     (h : dL (uPow (-2) * toL M) ^ 2 = 4 * (uPow (-2) * toL M) ^ 3
       - HahnSeries.C g2 * (uPow (-2) * toL M) - HahnSeries.C g3) : ClearedM g2 g3 M := by
@@ -134,6 +189,11 @@ theorem clearedM_of_ode {g2 g3 : K} {M : K⟦X⟧}
   simp only [map_sub, map_mul, map_pow, map_ofNat, HahnSeries.ofPowerSeries_C]
   linear_combination e
 
+/- English proof (translation)
+Unfold `ClearedM at h`. Unfold `Cleared`. Rewrite `h` using `[map_add, Derivation.map_one_eq_zero, derivative_X_sq_mul]`. Establish `e : X * (0 + (2 * X * r + X ^ 2 * derivative K r)) - 2 * (1 + X ^ 2 * r) = -2 + X ^ 3 * derivative K r` using `by ring`. Rewrite `h` using `[e]`.
+
+Conclude with `h`.
+-/
 theorem cleared_of_clearedM {g2 g3 : K} {r : K⟦X⟧} (h : ClearedM g2 g3 (1 + X ^ 2 * r)) :
     Cleared g2 g3 r := by
   unfold ClearedM at h
@@ -144,12 +204,18 @@ theorem cleared_of_clearedM {g2 g3 : K} {r : K⟦X⟧} (h : ClearedM g2 g3 (1 + 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Rewrite `h` using `[add_eq_mul]`. Conclude with `cleared_of_clearedM (clearedM_of_ode h)`.
+-/
 theorem cleared_of_ode {g2 g3 : K} {r : K⟦X⟧}
     (h : dL (uPow (-2) + toL r) ^ 2 = 4 * (uPow (-2) + toL r) ^ 3
       - HahnSeries.C g2 * (uPow (-2) + toL r) - HahnSeries.C g3) : Cleared g2 g3 r := by
   rw [add_eq_mul] at h
   exact cleared_of_clearedM (clearedM_of_ode h)
 
+/- English proof (translation)
+Unfold `Cleared at h`. Establish `hX : (X : K⟦X⟧) ^ 2 ≠ 0` using `pow_ne_zero _ X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Take the linear combination `(-1 : K⟦X⟧) * h`.
+-/
 theorem cleared_main {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) :
     4 * (X * derivative K r) + 12 * r =
       X ^ 2 * (C g2 + C g3 * X ^ 2 + C g2 * X ^ 2 * r - 12 * r ^ 2 - 4 * X ^ 2 * r ^ 3
@@ -159,6 +225,19 @@ theorem cleared_main {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) :
   apply mul_left_cancel₀ hX
   linear_combination (-1 : K⟦X⟧) * h
 
+/- English proof (translation)
+Establish `hr'` using `cleared_main hr`. Establish `hs'` using `cleared_main hs`. Establish `key : ∀ n, coeff n (4 * (X * derivative K (r - s)) + 12 * (r - s)) = coeff n (X ^ 4 * ((r - s) * C g2) + X ^ 2 * ((r - s) * (-12 * (r + s))) + X ^ 4 * ((r - s) * (-4 * (r ^ 2 + r * s + s ^ 2))) + X ^ 3 * ((X * derivative K (r - s)) * (derivative K r + derivative K s)))`. Introduce `n`. Use `congr 1`.
+
+Rewrite using `[map_sub]`. Take the linear combination `hr' - hs'`. Establish `main : ∀ n, (∀ k < n, coeff k (r - s) = 0) → coeff n (r - s) = 0`. Introduce `n hn`. Establish `hn' : ∀ k < n, coeff k (X * derivative K (r - s)) = 0`.
+
+Introduce `k hk`. Rewrite using `[coeff_X_mul_derivative, hn k hk, mul_zero]`. Establish `t1` using `coeff_shift_zero (m := 4) (C g2) hn (by norm_num)`. Establish `t2` using `coeff_shift_zero (m := 2) (-12 * (r + s)) hn (by norm_num)`. Establish `t3` using `coeff_shift_zero (m := 4) (-4 * (r ^ 2 + r * s + s ^ 2)) hn (by norm_num)`.
+
+Establish `t4` using `coeff_shift_zero (m := 3) (derivative K r + derivative K s) hn' (by norm_num)`. Establish `e` using `key n`. Simplify using `only [map_add] at e`. Rewrite `e` using `[t1, t2, t3, t4, coeff_ofNat_mul, coeff_ofNat_mul, coeff_X_mul_derivative]`. Establish `e2 : ((4 : K) * n + 12) * coeff n (r - s) = 0` using `by linear_combination e`.
+
+Establish `h4 : ((4 : K) * n + 12) ≠ 0`. Conclude with `(show (4 * n + 12 : ℕ) ≠ 0 by omega)` after adjusting the coercions. Conclude with `(mul_eq_zero.mp e2).resolve_left h4`. Establish `all : ∀ n, coeff n (r - s) = 0`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => exact main n ih`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `n`. Rewrite using `[all n, map_zero]`.
+-/
 theorem cleared_unique [CharZero K] {g2 g3 : K} {r s : K⟦X⟧} (hr : Cleared g2 g3 r)
     (hs : Cleared g2 g3 s) : r = s := by
   have hr' := cleared_main hr
@@ -195,6 +274,23 @@ theorem cleared_unique [CharZero K] {g2 g3 : K} {r s : K⟦X⟧} (hr : Cleared g
   ext n
   rw [all n, map_zero]
 
+/- English proof (translation)
+Establish `E` using `cleared_main h`. Establish `lhs : ∀ n : ℕ, coeff n (4 * (X * derivative K r) + 12 * r) = (4 * (n : K) + 12) * coeff n r`. Introduce `n`. Rewrite using `[map_add, coeff_ofNat_mul, coeff_ofNat_mul, coeff_X_mul_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `r0 : coeff 0 r = 0`. Establish `e` using `congrArg (coeff 0) E`. Rewrite `e` using `[lhs, coeff_X_pow_mul', if_neg (by norm_num : ¬ (2 ≤ 0))]`. Establish `h12 : (4 * ((0 : ℕ) : K) + 12) ≠ 0` using `by norm_num`. Conclude with `(mul_eq_zero.mp e).resolve_left h12`.
+
+Establish `r1 : coeff 1 r = 0`. Establish `e` using `congrArg (coeff 1) E`. Rewrite `e` using `[lhs, coeff_X_pow_mul', if_neg (by norm_num : ¬ (2 ≤ 1))]`. Establish `h16 : (4 * ((1 : ℕ) : K) + 12) ≠ 0` using `by norm_num`. Conclude with `(mul_eq_zero.mp e).resolve_left h16`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : X ^ 2 ∣ r := by`. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Apply the tactic sequence `interval_cases m <;> assumption`. Establish `E2 : 4 * (X * derivative K t) + 20 * t = C g2 + X ^ 2 * (C g3 + X ^ 2 * (C g2 * t - 12 * t ^ 2 - 4 * X ^ 4 * t ^ 3 + (2 * t + X * derivative K t) ^ 2))`.
+
+Establish `hX : (X : K⟦X⟧) ^ 2 ≠ 0` using `pow_ne_zero _ X_ne_zero`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Rewrite `E` using `[derivative_X_sq_mul]`. Take the linear combination `E`. Establish `lt : ∀ n : ℕ, coeff n (4 * (X * derivative K t) + 20 * t) = (4 * (n : K) + 20) * coeff n t`.
+
+Introduce `n`. Rewrite using `[map_add, coeff_ofNat_mul, coeff_ofNat_mul, coeff_X_mul_derivative]`. Expand and normalize the polynomial expressions, which then agree. Establish `f0` using `congrArg (coeff 0) E2`. Rewrite `f0` using `[lt, map_add, coeff_C, if_pos rfl, coeff_X_pow_mul', if_neg (by norm_num : ¬ (2 ≤ 0))]`.
+
+Establish `f2` using `congrArg (coeff 2) E2`. Rewrite `f2` using `[lt, map_add, coeff_C, if_neg (by norm_num : (2 : ℕ) ≠ 0), coeff_X_pow_mul', if_pos (le_refl 2), Nat.sub_self, map_add, coeff_C, if_pos rfl, coeff_X_pow_mul', if_neg (by norm_num : ¬ (2 ≤ 0))]`. Move the coercions through the operations in `at f0 f2`. Use `⟨r0, r1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_X_pow_mul', if_pos (le_refl 2), Nat.sub_self, eq_div_iff (by norm_num)]`.
+
+Take the linear combination `f0`. Rewrite using `[coeff_X_pow_mul', if_pos (by norm_num : 2 ≤ 4), show 4 - 2 = 2 from rfl, eq_div_iff (by norm_num)]`. Take the linear combination `f2`.
+-/
 theorem cleared_low [CharZero K] {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) :
     coeff 0 r = 0 ∧ coeff 1 r = 0 ∧ coeff 2 r = g2 / 20 ∧ coeff 4 r = g3 / 28 := by
   have E := cleared_main h
@@ -238,6 +334,9 @@ theorem cleared_low [CharZero K] {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r
   · rw [coeff_X_pow_mul', if_pos (by norm_num : 2 ≤ 4), show 4 - 2 = 2 from rfl, eq_div_iff (by norm_num)]
     linear_combination f2
 
+/- English proof (translation)
+Unfold `Cleared at h ⊢`. Establish `e` using `congrArg (rescale (-1 : K)) h`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_neg, map_ofNat, map_one, rescale_X, rescale_C'] at e`. Rewrite using `[derivative_rescale_neg_one]`. Take the linear combination `e`.
+-/
 theorem cleared_neg {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) :
     Cleared g2 g3 (rescale (-1 : K) r) := by
   unfold Cleared at h ⊢
@@ -247,6 +346,9 @@ theorem cleared_neg {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) :
   rw [derivative_rescale_neg_one]
   linear_combination e
 
+/- English proof (translation)
+Establish `e` using `cleared_unique (cleared_neg h) h`. Establish `e1` using `congrArg (coeff n) e`. Rewrite `e1` using `[coeff_rescale, hn.neg_one_pow]`. Establish `e2 : (2 : K) * coeff n r = 0` using `by linear_combination (-1 : K) * e1`. Conclude with `(mul_eq_zero.mp e2).resolve_left two_ne_zero`.
+-/
 theorem cleared_odd [CharZero K] {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r) (n : ℕ)
     (hn : Odd n) : coeff n r = 0 := by
   have e := cleared_unique (cleared_neg h) h
@@ -255,6 +357,11 @@ theorem cleared_odd [CharZero K] {g2 g3 : K} {r : K⟦X⟧} (h : Cleared g2 g3 r
   have e2 : (2 : K) * coeff n r = 0 := by linear_combination (-1 : K) * e1
   exact (mul_eq_zero.mp e2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Rewrite `h` using `[map_add, dL_uPow, dL_toL]`. Rewrite `h` using `[map_add, dL_mul, dL_C, dL_uPow, dL_toL]`. Rewrite `h` using `[C_neg_two, C_neg_three, uPow_neg_four, mul_zero, add_zero, uPow_neg_two]`. Establish `e` using `alg_second (toL X) (uPow (-1)) (toL r) (toL (derivative K (derivative K r))) (HahnSeries.C c) z_mul_zi h`. Apply `toL_injective` to reduce the goal to its premises.
+
+Simplify using `only [map_sub, map_add, map_mul, map_pow, map_ofNat, HahnSeries.ofPowerSeries_C]`. Take the linear combination `e`.
+-/
 theorem second_cleared {c : K} {r : K⟦X⟧}
     (h : dL (dL (uPow (-2) + toL r)) = 6 * (uPow (-2) + toL r) ^ 2 - HahnSeries.C c) :
     X ^ 2 * derivative K (derivative K r) = 12 * r + X ^ 2 * (6 * (r * r)) - X ^ 2 * C c := by
@@ -267,6 +374,19 @@ theorem second_cleared {c : K} {r : K⟦X⟧}
   simp only [map_sub, map_add, map_mul, map_pow, map_ofNat, HahnSeries.ofPowerSeries_C]
   linear_combination e
 
+/- English proof (translation)
+Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only`. Establish `himg : ∑ i ∈ Finset.Icc 1 (q - 1), a (2 * i) * a (2 * (q - i)) = ∑ k ∈ (Finset.Icc 1 (q - 1)).image (fun i => 2 * i), a k * a (2 * q - k)`. Rewrite using `[Finset.sum_image (fun x _ y _ h => Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) h)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `i _`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[himg]`. Use `symm`.
+
+Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `k hk`. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.mp hk`. Rewrite `hi` using `[Finset.mem_Icc]`. Rewrite using `[Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `k hk hk'`. Rewrite `hk` using `[Finset.mem_range]`. Break down `Nat.even_or_odd k with ⟨j, hj⟩ | hko` into its components or cases. Distinguish the cases in `hj0 : j = 0`.
+
+Rewrite using `[show k = 0 by omega, h0, zero_mul]`. Distinguish the cases in `hjq : j = q`. Rewrite using `[show 2 * q - k = 0 by omega, h0, mul_zero]`. It suffices to derive a contradiction. Apply `hk'` to reduce the goal to its premises.
+
+Conclude with `Finset.mem_image.mpr ⟨j, Finset.mem_Icc.mpr ⟨by omega, by omega⟩, by omega⟩`. Rewrite using `[hodd k hko, zero_mul]`.
+-/
 theorem sum_even (a : ℕ → K) (h0 : a 0 = 0) (hodd : ∀ n, Odd n → a n = 0) (q : ℕ) :
     ∑ p ∈ Finset.HasAntidiagonal.antidiagonal (2 * q), a p.1 * a p.2 =
       ∑ i ∈ Finset.Icc 1 (q - 1), a (2 * i) * a (2 * (q - i)) := by
@@ -299,6 +419,11 @@ theorem sum_even (a : ℕ → K) (h0 : a 0 = 0) (hodd : ∀ n, Odd n → a n = 0
           exact Finset.mem_image.mpr ⟨j, Finset.mem_Icc.mpr ⟨by omega, by omega⟩, by omega⟩
     · rw [hodd k hko, zero_mul]
 
+/- English proof (translation)
+Establish `h2 : 2 ≤ 2 * q + 2` using `by omega`. Establish `h3 : 2 * q + 2 - 2 = 2 * q` using `by omega`. Establish `h4 : 2 * q ≠ 0` using `by omega`. Establish `e` using `congrArg (coeff (2 * q + 2)) h`. Simplify using `only [map_sub, map_add, coeff_X_pow_mul', if_pos h2, h3, coeff_ofNat_mul, coeff_derivative, coeff_C, if_neg h4, sub_zero] at e`.
+
+Rewrite `e` using `[show 2 * q + 1 + 1 = 2 * q + 2 by omega]`. Establish `hs` using `sum_even (fun n => coeff n r) h0 hodd q`. Rewrite `e` using `[coeff_ofNat_mul, coeff_ofNat_mul, coeff_mul, hs]`. Move the coercions through the operations in `at e`. Take the linear combination `(1 / 2 : K) * e`.
+-/
 theorem recursion_of [CharZero K] {c : K} {r : K⟦X⟧}
     (h : X ^ 2 * derivative K (derivative K r) = 12 * r + X ^ 2 * (6 * (r * r)) - X ^ 2 * C c)
     (h0 : coeff 0 r = 0) (hodd : ∀ n, Odd n → coeff n r = 0) (q : ℕ) (hq : 1 ≤ q) :
@@ -316,6 +441,19 @@ theorem recursion_of [CharZero K] {c : K} {r : K⟦X⟧}
   push_cast at e
   linear_combination (1 / 2 : K) * e
 
+/- English proof (translation)
+Take `⟨e0, e1, -⟩` from `hE K W`. Establish `hs : HasSubst (expSer W)` using `HasSubst.of_constantCoeff_zero' e0`. Take `⟨E, hE'⟩` from `X_dvd_iff.mpr e0`. Establish `hE0 : constantCoeff E = 1`. Rewrite `e1` using `[hE']`.
+
+Use `coeff_succ_X_mul 0 E` as an intermediate fact. Rewrite `this` using `[zero_add, e1]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ← this]`. Establish `hEi : E * E⁻¹ = 1` using `PowerSeries.mul_inv_cancel E (by rw [hE0]; exact one_ne_zero)`. Establish `hEi0 : constantCoeff E⁻¹ = 1`.
+
+Use `congrArg constantCoeff hEi` as an intermediate fact. Rewrite `this` using `[map_mul, hE0, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hinv : (toL (expSer W))⁻¹ = uPow (-1) * toL E⁻¹`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hE', map_mul]`.
+
+Use `congrArg toL hEi` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Take the linear combination `toL E * toL E⁻¹ * z_mul_zi (K := K) + this`. Take `⟨T, hT⟩ : X ∣ xS W - 1` from `X_dvd_iff.mpr (by rw [map_sub, CurveSer.xS_cc, map_one, sub_self])`. Establish `hT' : xS W = 1 + X * T` using `by linear_combination hT`.
+
+Establish `hx0 : constantCoeff ((xS W).subst (expSer W)) = 1`. Rewrite using `[hT', ← coe_substAlgHom hs, map_add, map_one, map_mul, coe_substAlgHom, subst_X hs, map_add, map_one, map_mul, e0, zero_mul, add_zero]`. Use `⟨E⁻¹ ^ 2 * (xS W).subst (expSer W) + C (W.b₂ / 12) * X ^ 2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, hEi0, hx0, map_mul, map_pow, constantCoeff_X]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[wpL, xZ, hinv, map_add, map_mul, map_mul, map_pow, map_pow, toL_C, uPow_neg_two]`. Take the linear combination `(-HahnSeries.C (W.b₂ / 12) * (toL X * uPow (-1) + 1)) * z_mul_zi (K := K)`.
+-/
 theorem wpL_eq (hE : ExpSpec.{u}) [CharZero K] (W : WeierstrassCurve K) :
     ∃ M : K⟦X⟧, constantCoeff M = 1 ∧ wpL W = uPow (-2) * toL M := by
   obtain ⟨e0, e1, -⟩ := hE K W
@@ -349,6 +487,23 @@ theorem wpL_eq (hE : ExpSpec.{u}) [CharZero K] (W : WeierstrassCurve K) :
     linear_combination
       (-HahnSeries.C (W.b₂ / 12) * (toL X * uPow (-1) + 1)) * z_mul_zi (K := K)
 
+/- English proof (translation)
+Take `⟨M, hM1, hM⟩` from `wpL_eq hE W`. Establish `hode` using `(hO K W).2.1`. Rewrite `hode` using `[hM]`. Establish `hC` using `clearedM_of_ode hode`. Choose the witnesses or unpack the hypotheses as in `⟨M1, hM1'⟩ : X ∣ M - 1 := by`.
+
+Rewrite using `[X_dvd_iff, map_sub, hM1, map_one, sub_self]`. Establish `hMe : M = 1 + X * M1`. Rewrite using `[← hM1']`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hC` using `[hMe]`.
+
+Unfold `ClearedM at hC`. Rewrite `hC` using `[map_add, Derivation.map_one_eq_zero, derivative_X_mul]`. Establish `key : X * (8 * M1 - X * (-4 * derivative K M1 - 11 * M1 ^ 2 - 2 * X * M1 * derivative K M1 + X ^ 2 * derivative K M1 ^ 2 - 4 * X * M1 ^ 3 + C (g₂ W) * X ^ 2 * (1 + X * M1) + C (g₃ W) * X ^ 4)) = 0`. Take the linear combination `(-1 : K⟦X⟧) * hC`. Establish `h8` using `(mul_eq_zero.mp key).resolve_left X_ne_zero`.
+
+Establish `hc : constantCoeff M1 = 0`. Establish `e` using `congrArg constantCoeff h8`. Rewrite `e` using `[map_sub, map_mul, map_mul, constantCoeff_X, zero_mul, sub_zero, map_ofNat, map_zero]`. Conclude with `(mul_eq_zero.mp e).resolve_left (by norm_num)`. Take `⟨M2, hM2⟩ : X ∣ M1` from `X_dvd_iff.mpr hc`.
+
+Establish `hL : wpL W = uPow (-2) + toL M2`. Rewrite using `[hM, hMe, hM2, show (1 : K⟦X⟧) + X * (X * M2) = 1 + X ^ 2 * M2 by ring, add_eq_mul]`. Establish `hR : wpReg W = M2`. Use extensionality with `n`. Rewrite using `[wpReg, coeff_mk, hL]`.
+
+Use `first`. Consider the case `simp [uPow, HahnSeries.coeff_single, show (n : ℤ) ≠ -2 by omega]`. Consider the case `simp [uPow, HahnSeries.single_coeff_of_ne, show (n : ℤ) ≠ -2 by omega]`. Consider the case `simp [uPow, show (n : ℤ) ≠ -2 by omega]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hR]`. Conclude with `hL`. Rewrite using `[hR]`. Apply `cleared_of_ode` to reduce the goal to its premises. Rewrite using `[← hL]`.
+
+Conclude with `(hO K W).2.1`.
+-/
 theorem wpL_shape (hE : ExpSpec.{u}) (hO : WpODE.{u}) [CharZero K] (W : WeierstrassCurve K) :
     wpL W = uPow (-2) + toL (wpReg W) ∧ Cleared (g₂ W) (g₃ W) (wpReg W) := by
   obtain ⟨M, hM1, hM⟩ := wpL_eq hE W
@@ -394,16 +549,25 @@ end WpSh
 
 open WpSh
 
+/- English proof (translation)
+Introduce `K _ _ g2 g3 r r' h h'`. Conclude with `cleared_unique (cleared_of_ode h) (cleared_of_ode h')`.
+-/
 theorem weierstrass_p_unique : WpUnique.{u} := by
   intro K _ _ g2 g3 r r' h h'
   exact cleared_unique (cleared_of_ode h) (cleared_of_ode h')
 
+/- English proof (translation)
+Introduce `K _ _ W`. Take `⟨h1, h2⟩` from `wpL_shape hE hO W`. Take `⟨a, _, c, d⟩` from `cleared_low h2`. Conclude with `⟨h1, a, fun n hn => cleared_odd h2 n hn, c, d⟩`.
+-/
 theorem wpShape_of (hE : ExpSpec.{u}) (hO : WpODE.{u}) : WpShape.{u} := by
   intro K _ _ W
   obtain ⟨h1, h2⟩ := wpL_shape hE hO W
   obtain ⟨a, _, c, d⟩ := cleared_low h2
   exact ⟨h1, a, fun n hn => cleared_odd h2 n hn, c, d⟩
 
+/- English proof (translation)
+Introduce `K _ _ W`. Take `⟨_, h2⟩` from `wpL_shape hE hO W`. Use `⟨?_, fun n hn => cleared_odd h2 n hn, h2⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `(cleared_low h2).1`.
+-/
 theorem wpCleared_of (hE : ExpSpec.{u}) (hO : WpODE.{u}) : WpCleared.{u} := by
   intro K _ _ W
   obtain ⟨_, h2⟩ := wpL_shape hE hO W
@@ -411,6 +575,13 @@ theorem wpCleared_of (hE : ExpSpec.{u}) (hO : WpODE.{u}) : WpCleared.{u} := by
   rw [← coeff_zero_eq_constantCoeff_apply]
   exact (cleared_low h2).1
 
+/- English proof (translation)
+Introduce `K _ _ W k hk`. Take `⟨h1, h2⟩` from `wpL_shape hE hO W`. Establish `hs` using `(hO K W).2.2`. Rewrite `hs` using `[h1]`. Establish `e` using `recursion_of (second_cleared hs) (cleared_low h2).1 (cleared_odd h2) (k - 1) (by omega)`.
+
+Establish `k1 : k - 1 - 1 = k - 2` using `by omega`. Establish `k2 : 2 * (k - 1) + 2 = 2 * k` using `by omega`. Establish `k3 : ((k - 1 : ℕ) : K) = (k : K) - 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one]`. Rewrite `e` using `[k1, k2, k3]`.
+
+Take the linear combination `e`.
+-/
 theorem wpRecursion_of (hE : ExpSpec.{u}) (hO : WpODE.{u}) : WpRecursion.{u} := by
   intro K _ _ W k hk
   obtain ⟨h1, h2⟩ := wpL_shape hE hO W

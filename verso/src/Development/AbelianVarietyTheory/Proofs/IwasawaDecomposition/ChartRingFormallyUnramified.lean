@@ -6,6 +6,17 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.GenFan
 
+/- English proof (translation)
+Introduce `k _ m e _ A _ _ φ hφ`. Take `⟨-, hmax, hfin⟩` from `hφ`. Use `haveI : IsLocalHom φ := by`. Prove the components needed by the constructor for the conclusion. Introduce `a ha`.
+
+Assume the negation of the conclusion as `hna`. Establish `h1 : a ∈ maximalIdeal A` using `(mem_maximalIdeal a).2 hna`. Establish `h2 : φ a ∈ maximalIdeal (ChartRing k m e)` using `hmax ▸ Ideal.mem_map_of_mem φ h1`. Conclude with `(mem_maximalIdeal _).1 h2 ha`. Rewrite using `[← ResidueField.map_comp_residue]`.
+
+Use `RingHom.FormallyUnramified.comp (RingHom.FormallyUnramified.of_surjective residue_surjective) ?_` and prove the remaining obligations. Establish `hfin' : (ResidueField.map φ).Finite`. Rewrite `hfin` using `[← ResidueField.map_comp_residue]`. Conclude with `RingHom.Finite.of_comp_finite hfin`. Use `haveI : CharZero k := RingHom.charZero (algebraMap k (ChartRing k m e))`.
+
+Use `haveI : CharZero (ResidueField (ChartRing k m e)) := (RingHom.charZero_iff ((residue (ChartRing k m e)).comp (algebraMap k (ChartRing k m e))).injective).1 inferInstance`. Use `haveI : CharZero (ResidueField A) := RingHom.charZero (ResidueField.map φ)`. Use `letI := (ResidueField.map φ).toAlgebra`. Use `haveI : Module.Finite (ResidueField A) (ResidueField (ChartRing k m e)) := hfin'`. Use `haveI : Algebra.IsSeparable (ResidueField A) (ResidueField (ChartRing k m e)) := inferInstance`.
+
+Conclude with `Algebra.FormallyUnramified.of_isSeparable _ _`.
+-/
 theorem formallyUnramified_residue_comp_of_isEtaleCompletion :
     ∀ (k : Type) [Field k] (m e : ℕ) [CharZero (ChartRing k m e)] {A : Type} [CommRing A] [IsLocalRing A]
       (φ : A →+* ChartRing k m e), IsEtaleCompletion φ → ((residue (ChartRing k m e)).comp φ).FormallyUnramified := by

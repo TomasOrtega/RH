@@ -15,30 +15,54 @@ def rel (A : Subalgebra C (Mat C N)) (p : Fin n → Mat C N) (i j : Fin n) : Pro
 section
 variable {A : Subalgebra C (Mat C N)} {p : Fin n → Mat C N}
 
+/- English proof (translation)
+The claim follows from `(hp.1.idem i).eq`.
+-/
 lemma idem (hp : Sys p) (i : Fin n) : p i * p i = p i := (hp.1.idem i).eq
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, idem hp i]`.
+-/
 lemma idemL (hp : Sys p) (i : Fin n) (X : Mat C N) : p i * (p i * X) = p i * X := by
   rw [← mul_assoc, idem hp i]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← h]`. Simplify using `only [mul_assoc, idemL hp i]`. Simplify `h` using `only [mul_assoc]`.
+-/
 lemma sand_left (hp : Sys p) {i j : Fin n} {x : Mat C N} (h : p i * x * p j = x) : p i * x = x := by
   conv_lhs => rw [← h]
   simp only [mul_assoc, idemL hp i]
   simpa only [mul_assoc] using h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← h]`. Rewrite using `[mul_assoc (p i * x), idem hp j, h]`.
+-/
 lemma sand_right (hp : Sys p) {i j : Fin n} {x : Mat C N} (h : p i * x * p j = x) : x * p j = x := by
   conv_lhs => rw [← h]
   rw [mul_assoc (p i * x), idem hp j, h]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `hp.2 i (by rw [← h.2.2.2.2.1, zero_mul])`.
+-/
 lemma pr_ne (hp : Sys p) {i j : Fin n} {x y : Mat C N} (h : Pr A p i j x y) : x ≠ 0 := by
   rintro rfl
   exact hp.2 i (by rw [← h.2.2.2.2.1, zero_mul])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.1, h.1, h.2.2.2.1, h.2.2.1, h.2.2.2.2.2, h.2.2.2.2.1⟩`.
+-/
 lemma pr_symm {i j : Fin n} {x y : Mat C N} (h : Pr A p i j x y) : Pr A p j i y x :=
   ⟨h.2.1, h.1, h.2.2.2.1, h.2.2.1, h.2.2.2.2.2, h.2.2.2.2.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc.1 i, hc.1 i, by rw [idem hp i, idem hp i], by rw [idem hp i, idem hp i], idem hp i, idem hp i⟩`.
+-/
 lemma pr_refl (hp : Sys p) (hc : Corner A p) (i : Fin n) : Pr A p i i (p i) (p i) :=
   ⟨hc.1 i, hc.1 i, by rw [idem hp i, idem hp i], by rw [idem hp i, idem hp i], idem hp i, idem hp i⟩
 
+/- English proof (translation)
+Use `⟨A.mul_mem h.1 h'.1, A.mul_mem h'.2.1 h.2.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, sand_left hp h.2.2.1, mul_assoc, sand_right hp h'.2.2.1]`. Rewrite using `[← mul_assoc, sand_left hp h'.2.2.2.1, mul_assoc, sand_right hp h.2.2.2.1]`. Rewrite using `[show x * x' * (y' * y) = x * (x' * y') * y by simp only [mul_assoc], h'.2.2.2.2.1, sand_right hp h.2.2.1, h.2.2.2.2.1]`. Rewrite using `[show y' * y * (x * x') = y' * (y * x) * x' by simp only [mul_assoc], h.2.2.2.2.2, sand_right hp h'.2.2.2.1, h'.2.2.2.2.2]`.
+-/
 lemma pr_trans (hp : Sys p) {i j k : Fin n} {x y x' y' : Mat C N} (h : Pr A p i j x y)
     (h' : Pr A p j k x' y') : Pr A p i k (x * x') (y' * y) := by
   refine ⟨A.mul_mem h.1 h'.1, A.mul_mem h'.2.1 h.2.1, ?_, ?_, ?_, ?_⟩
@@ -49,6 +73,21 @@ lemma pr_trans (hp : Sys p) {i j k : Fin n} {x y x' y' : Mat C N} (h : Pr A p i 
   · rw [show y' * y * (x * x') = y' * (y * x) * x' by simp only [mul_assoc], h.2.2.2.2.2,
       sand_right hp h'.2.2.2.1, h'.2.2.2.2.2]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hnil⟩ : ∃ b ∈ A, ¬ IsNilpotent (b * Y) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hY0 (hA Y hYA h)`. Establish `hwA : p j * b * p i ∈ A` using `A.mul_mem (A.mul_mem (hc.1 j) hb) (hc.1 i)`.
+
+Take `⟨c, hc1⟩` from `hc.2 (Y * b) (A.mul_mem hYA hb) i`. Take `⟨d, hd1⟩` from `hc.2 (b * Y) (A.mul_mem hb hYA) j`. Establish `hYw : Y * (p j * b * p i) = c • p i`. Rewrite using `[← hc1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hwY : (p j * b * p i) * Y = d • p j`. Rewrite using `[← hd1]`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : Y * (p j * b * p i) * Y = c • Y` using `by rw [hYw, smul_mul_assoc, hYl]`. Establish `e2 : Y * (p j * b * p i) * Y = d • Y` using `by rw [mul_assoc, hwY, mul_smul_comm, hYr]`.
+
+Establish `hcd : c = d`. Assume the negation of the conclusion as `h`. Establish `h3 : (c - d) • Y = 0` using `by rw [sub_smul, ← e1, ← e2, sub_self]`. Conclude with `hY0 ((smul_eq_zero.mp h3).resolve_left (sub_ne_zero.mpr h))`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hnil` to reduce the goal to its premises. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `h0 : Y * b * Y = 0`. Establish `: Y * b * Y = Y * (p j * b * p i) * Y`.
+
+Rewrite using `[show Y * (p j * b * p i) * Y = (Y * p j) * b * (p i * Y) by simp only [mul_assoc], hYr, hYl]`. Rewrite using `[this, e1, zero_smul]`. Rewrite using `[pow_two, show b * Y * (b * Y) = b * (Y * b * Y) by simp only [mul_assoc], h0, mul_zero]`. Use `⟨c⁻¹ • (p j * b * p i), hYA, A.smul_mem hwA _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hYl, hYr]`.
+
+Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`. Simplify using `only [mul_assoc, idem hp i, idemL hp j]`. Rewrite using `[mul_smul_comm, hYw, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[smul_mul_assoc, hwY, ← hcd, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+-/
 lemma partner (hp : Sys p) (hc : Corner A p) (hA : NoNil A) {i j : Fin n} {Y : Mat C N}
     (hYA : Y ∈ A) (hYl : p i * Y = Y) (hYr : Y * p j = Y) (hY0 : Y ≠ 0) :
     ∃ w, Pr A p i j Y w := by
@@ -92,6 +131,11 @@ lemma partner (hp : Sys p) (hc : Corner A p) (hA : NoNil A) {i j : Fin n} {Y : M
   · rw [mul_smul_comm, hYw, smul_smul, inv_mul_cancel₀ hc0, one_smul]
   · rw [smul_mul_assoc, hwY, ← hcd, smul_smul, inv_mul_cancel₀ hc0, one_smul]
 
+/- English proof (translation)
+Take `⟨c, hc1⟩` from `hc.2 (a * p j * y) (A.mul_mem (A.mul_mem ha (hc.1 j)) h.2.1) i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hy : y * p i = y` using `sand_right hp h.2.2.2.1`. Establish `h1 : p i * a * p j * y = c • p i`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma oneDim (hp : Sys p) (hc : Corner A p) {i j : Fin n} {x y : Mat C N} (h : Pr A p i j x y)
     {a : Mat C N} (ha : a ∈ A) : ∃ c : C, p i * a * p j = c • x := by
   obtain ⟨c, hc1⟩ := hc.2 (a * p j * y) (A.mul_mem (A.mul_mem ha (hc.1 j)) h.2.1) i
@@ -106,6 +150,9 @@ lemma oneDim (hp : Sys p) (hc : Corner A p) {i j : Fin n} {x y : Mat C N} (h : P
     _ = (p i * a * p j * y) * x := by simp only [mul_assoc]
     _ = c • x := by rw [h1, smul_mul_assoc, sand_left hp h.2.2.1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, pr_refl hp hc i⟩ symm := fun ⟨_, _, h⟩ => ⟨_, _, pr_symm h⟩ trans := fun ⟨_, _, h⟩ ⟨_, _, h'⟩ => ⟨_, _, pr_trans hp h h'⟩`.
+-/
 lemma rel_equiv (hp : Sys p) (hc : Corner A p) : Equivalence (rel A p) where
   refl i := ⟨_, _, pr_refl hp hc i⟩
   symm := fun ⟨_, _, h⟩ => ⟨_, _, pr_symm h⟩
@@ -114,6 +161,29 @@ lemma rel_equiv (hp : Sys p) (hc : Corner A p) : Equivalence (rel A p) where
 end
 
 open Classical in
+/- English proof (translation)
+Introduce `C _ N n A p hp hc hA`. Establish `heq` using `rel_equiv hp hc`. Set `s : Setoid (Fin n)` to `⟨rel A p, heq⟩`. Take `⟨r, hr, hreq⟩ : ∃ r : Fin n → Fin n, (∀ i, ∃ x y, Pr A p i (r i) x y) ∧ ∀ i j, rel A p i j → r i = r j` from `⟨fun i => (Quotient.mk s i).out, fun i => heq.symm (Quotient.mk_out (s := s) i), fun i j h => congrArg Quotient.out (Quotient.sound (s := s) h)⟩`. Use `choose X Y hXY using hr`.
+
+Establish `pairE : ∀ i j, rel A p i j → Pr A p i j (X i * Y j) (X j * Y i)`. Introduce `i j h`. Establish `h2` using `hXY j`. Rewrite `h2` using `[← hreq i j h]`. Conclude with `pr_trans hp (hXY i) (pr_symm h2)`.
+
+Use `⟨fun i j => if rel A p i j then X i * Y j else 0, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Distinguish the cases in `h : rel A p i j`. Simplify using `only [if_pos h]`. Conclude with `(pairE i j h).1`.
+
+Simplify using `only [if_neg h]`. Conclude with `A.zero_mem`. Introduce `i`. Simplify using `only [if_pos (heq.refl i)]`. Conclude with `(hXY i).2.2.2.2.1`.
+
+Introduce `i j`. Distinguish the cases in `h : rel A p i j`. Simplify using `only [if_pos h]`. Conclude with `(pairE i j h).2.2.1`. Simplify using `only [if_neg h, mul_zero, zero_mul]`.
+
+Introduce `i j hne`. Establish `h : rel A p i j`. Assume the negation of the conclusion as `h`. Simplify using `only [if_neg h] at hne`. Conclude with `hne rfl`.
+
+Simplify using `only [if_pos (heq.symm h)]`. Conclude with `pr_ne hp (pairE j i (heq.symm h))`. Introduce `i j k h1 h2`. Establish `hij : rel A p i j`. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [if_neg h] at h1`. Conclude with `h1 rfl`. Establish `hjk : rel A p j k`. Assume the negation of the conclusion as `h`. Simplify using `only [if_neg h] at h2`.
+
+Conclude with `h2 rfl`. Establish `hik` using `heq.trans hij hjk`. Simplify using `only [if_pos hij, if_pos hjk, if_pos hik]`. Use `⟨?_, pr_ne hp (pairE i k hik)⟩` and prove the remaining obligations. Rewrite using `[show X i * Y j * (X j * Y k) = X i * (Y j * X j) * Y k by simp only [mul_assoc], (hXY j).2.2.2.2.2, ← hreq i j hij, sand_right hp (hXY i).2.2.1]`.
+
+Introduce `a ha i j`. Distinguish the cases in `h : rel A p i j`. Simplify using `only [if_pos h]`. Conclude with `oneDim hp hc (pairE i j h) ha`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [if_neg h, smul_zero]`. Assume the negation of the conclusion as `h'`. Take `⟨w, hw⟩` from `partner (i := i) (j := j) hp hc hA (A.mul_mem (A.mul_mem (hc.1 i) ha) (hc.1 j)) (by simp only [mul_assoc, idemL hp i]) (by rw [mul_assoc _ (p j), idem hp j]) h'`. Conclude with `h ⟨_, _, hw⟩`.
+-/
 theorem MatUnits_of : MatrixUnits₂ := by
   intro C _ N n A p hp hc hA
   have heq := rel_equiv hp hc

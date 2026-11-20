@@ -10,6 +10,9 @@ namespace GlobalTheory.DenInt
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Use `GlobalTheory.HolDict.ShortVec.mem_intRing.2 fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.commutes]`. Use `Valued.toNormedField.norm_le_one_iff.2 ?_` and prove the remaining obligations. Use `HeightOneSpectrum.valuation_le_one (K := F) v (⟨c, hc⟩ : 𝓞 F)` as an intermediate fact. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v c).trans_le this`.
+-/
 theorem intRing_of_isIntegral {F : Type} [Field F] [NumberField F] {c : F} (hc : IsIntegral ℤ c) :
     algebraMap F (Af F) c ∈ GlobalTheory.HolDict.ShortVec.intRing F := by
   refine GlobalTheory.HolDict.ShortVec.mem_intRing.2 fun v => ?_
@@ -18,6 +21,15 @@ theorem intRing_of_isIntegral {F : Type} [Field F] [NumberField F] {c : F} (hc :
   have := HeightOneSpectrum.valuation_le_one (K := F) v (⟨c, hc⟩ : 𝓞 F)
   exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v c).trans_le this
 
+/- English proof (translation)
+Use `set b := Module.finBasis D.host.F D.host.E`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ D.host.F D.host.E`. Take `⟨b', hb⟩ : ∃ b' : Fin (Module.finrank D.host.F D.host.E) → D.host.E, ∀ x k, Algebra.trace D.host.F D.host.E (b' k * x) = b.repr x k` from `⟨fun k => ((Algebra.traceForm D.host.F D.host.E).toDual (traceForm_nondegenerate D.host.F D.host.E)).symm (b.coord k), fun x k => LinearMap.BilinForm.apply_toDual_symm_apply (hB := traceForm_nondegenerate D.host.F D.host.E) (b.coord k) x⟩`. Take `⟨d, hd, h⟩` from `GlobalTheory.HolDict.ShortVec.exists_common_denom (integralClosure ℤ D.host.E).toSubring b' fun k => by`. Take `⟨k, hk, r, hr⟩` from `GlobalTheory.SmoothForms.denom_exists_int (b' k)`.
+
+Conclude with `⟨k, hk, hr ▸ r.2⟩`. Use `⟨d, hd, fun x hx k => ?_⟩` and prove the remaining obligations. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) k = algebraMap D.host.F (Af D.host.F) (b.repr x k)`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord, Algebra.TensorProduct.basis_repr_tmul, b, Algebra.algebraMap_eq_smul_one]`. Establish `e2 : (d : D.host.F) * b.repr x k = Algebra.trace D.host.F D.host.E (((d : D.host.E) * b' k) * x)`.
+
+Rewrite using `[← hb, mul_assoc, ← nsmul_eq_mul d (b' k * x), map_nsmul, nsmul_eq_mul]`. Establish `hi : IsIntegral ℤ ((d : D.host.F) * b.repr x k)`. Rewrite using `[e2]`. Conclude with `Algebra.isIntegral_trace ((h k).mul hx)`. Rewrite using `[e1, ← map_natCast (algebraMap D.host.F (Af D.host.F)) d, ← map_mul]`.
+
+Conclude with `intRing_of_isIntegral hi`.
+-/
 theorem exists_den (D : D7) : ∃ d : ℕ, 0 < d ∧ ∀ x : D.host.E, IsIntegral ℤ x → ∀ k, (d : Af D.host.F) * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) k ∈ GlobalTheory.HolDict.ShortVec.intRing D.host.F := by
   set b := Module.finBasis D.host.F D.host.E
   have : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ D.host.F D.host.E

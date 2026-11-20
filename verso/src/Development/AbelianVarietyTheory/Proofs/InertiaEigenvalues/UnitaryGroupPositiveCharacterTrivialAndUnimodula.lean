@@ -15,6 +15,13 @@ variable {r : ℕ} {E : Type} [NontriviallyNormedField E] [StarRing E]
 def BddPow (g : unitaryGroup (Fin r) E) : Prop :=
   ∃ B : ℝ, ∀ n : ℕ, ∀ i j, ‖((g ^ n : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E) i j‖ ≤ B
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨b, hb, hbn⟩` from `ih`. Use `⟨b * (1 - c * s) + c, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, hb, sub_mul, mul_sub, mul_sub, one_mul, mul_one, one_mul, smul_mul_smul_comm, hP, smul_smul]`. Simplify using `only [mul_sub, mul_one, add_smul, sub_smul, mul_smul]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Use `max_le ?_ le_rfl` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_one_sub_smul [IsUltrametricDist E] (P : Matrix (Fin r) (Fin r) E) (c s : E) (hP : P * P = s • P)
     (hζ : ‖1 - c * s‖ ≤ 1) (n : ℕ) : ∃ b : E, (1 - c • P) ^ n = 1 - b • P ∧ ‖b‖ ≤ ‖c‖ := by
   induction n with
@@ -32,6 +39,11 @@ theorem pow_one_sub_smul [IsUltrametricDist E] (P : Matrix (Fin r) (Fin r) E) (c
           calc ‖b‖ * ‖1 - c * s‖ ≤ ‖b‖ * 1 := mul_le_mul_of_nonneg_left hζ (norm_nonneg _)
             _ ≤ ‖c‖ := by rw [mul_one]; exact hbn
 
+/- English proof (translation)
+Use `⟨1 + ‖c‖ * ∑ i, ∑ j, ‖P i j‖, fun n i j => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hbn⟩` from `pow_one_sub_smul P c s hP hζ n`. Establish `hP1 : ‖P i j‖ ≤ ∑ i, ∑ j, ‖P i j‖` using `(Finset.single_le_sum (f := fun j => ‖P i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖P i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`. Establish `h1 : ‖(1 : Matrix (Fin r) (Fin r) E) i j‖ ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`.
+
+Rewrite using `[SubmonoidClass.coe_pow, hg, hb, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `add_le_add h1 ((mul_le_mul_of_nonneg_right hbn (norm_nonneg _)).trans (mul_le_mul_of_nonneg_left hP1 (norm_nonneg _)))`.
+-/
 theorem bddPow_of_eq [IsUltrametricDist E] (g : unitaryGroup (Fin r) E) (P : Matrix (Fin r) (Fin r) E) (c s : E)
     (hP : P * P = s • P) (hζ : ‖1 - c * s‖ ≤ 1) (hg : (g : Matrix (Fin r) (Fin r) E) = 1 - c • P) : BddPow g := by
   refine ⟨1 + ‖c‖ * ∑ i, ∑ j, ‖P i j‖, fun n i j => ?_⟩
@@ -53,6 +65,9 @@ theorem bddPow_of_eq [IsUltrametricDist E] (g : unitaryGroup (Fin r) E) (P : Mat
 def refl (w : Fin r → E) (a : E) (ha : a ≠ 0) (hN : star w ⬝ᵥ w = a + star a) : unitaryGroup (Fin r) E :=
   ⟨1 - a⁻¹ • vecMulVec w (star w), GlobalTheory.UnitWitt.refl_mem w a ha hN⟩
 
+/- English proof (translation)
+Use `bddPow_of_eq _ (vecMulVec w (star w)) a⁻¹ (a + star a) ?_ ?_ rfl` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnitWitt.vecMulVec_self_mul, hN]`. Establish `: 1 - a⁻¹ * (a + star a) = -(star a / a)` using `by field_simp; ring`. Rewrite using `[this, norm_neg, norm_div, hstar, div_self (norm_ne_zero_iff.2 ha)]`.
+-/
 theorem bddPow_refl [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖y‖) (w : Fin r → E) (a : E) (ha : a ≠ 0)
     (hN : star w ⬝ᵥ w = a + star a) : BddPow (refl w a ha hN) := by
   refine bddPow_of_eq _ (vecMulVec w (star w)) a⁻¹ (a + star a) ?_ ?_ rfl
@@ -60,6 +75,9 @@ theorem bddPow_refl [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖
   · have : 1 - a⁻¹ * (a + star a) = -(star a / a) := by field_simp; ring
     rw [this, norm_neg, norm_div, hstar, div_self (norm_ne_zero_iff.2 ha)]
 
+/- English proof (translation)
+Use `show (1 - a⁻¹ • vecMulVec w (star w)) *ᵥ u = _`. Establish `h1 : (a⁻¹ • vecMulVec w (star w)) *ᵥ u = a⁻¹ • (vecMulVec w (star w) *ᵥ u)`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[sub_mulVec, one_mulVec, h1, GlobalTheory.UnitWitt.vecMulVec_mulVec_eq, smul_smul]`.
+-/
 theorem refl_mulVec (w : Fin r → E) (a : E) (ha : a ≠ 0) (hN : star w ⬝ᵥ w = a + star a) (u : Fin r → E) :
     ((refl w a ha hN : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ u = u - (a⁻¹ * (star w ⬝ᵥ u)) • w := by
   show (1 - a⁻¹ • vecMulVec w (star w)) *ᵥ u = _
@@ -69,9 +87,15 @@ theorem refl_mulVec (w : Fin r → E) (a : E) (ha : a ≠ 0) (hN : star w ⬝ᵥ
 
 def col (g : Matrix (Fin r) (Fin r) E) (i : Fin r) : Fin r → E := fun l => g l i
 
+/- English proof (translation)
+Use extensionality with `j`. Both sides reduce to the same expression.
+-/
 theorem col_mul (A B : Matrix (Fin r) (Fin r) E) (i : Fin r) : col (A * B) i = A *ᵥ col B i := by
   ext j; rfl
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (mem_unitaryGroup_iff'.1 g.2) i) k`. Rewrite using `[← h]`. Simplify using `[Matrix.mul_apply, dotProduct, col, Matrix.star_apply]`.
+-/
 theorem col_orth (g : unitaryGroup (Fin r) E) (i k : Fin r) :
     star (col (g : Matrix (Fin r) (Fin r) E) i) ⬝ᵥ col (g : Matrix (Fin r) (Fin r) E) k =
       (1 : Matrix (Fin r) (Fin r) E) i k := by
@@ -82,6 +106,9 @@ theorem col_orth (g : unitaryGroup (Fin r) E) (i k : Fin r) :
 def StdFrom (m : ℕ) (g : unitaryGroup (Fin r) E) : Prop :=
   ∀ i : Fin r, m ≤ (i : ℕ) → col (g : Matrix (Fin r) (Fin r) E) i = Pi.single i 1
 
+/- English proof (translation)
+Establish `h` using `col_orth g i k`. Rewrite `h` using `[hi, Matrix.one_apply_ne hik]`. Simplify `h` using `[col]`.
+-/
 theorem entry_zero_of_col (g : unitaryGroup (Fin r) E) {i k : Fin r} (hik : i ≠ k)
     (hi : col (g : Matrix (Fin r) (Fin r) E) i = Pi.single i 1) : (g : Matrix (Fin r) (Fin r) E) i k = 0 := by
   have h := col_orth g i k
@@ -93,13 +120,28 @@ end Alg
 section Gen
 variable {r : ℕ} {E : Type} [NontriviallyNormedField E] [StarRing E]
 
+/- English proof (translation)
+Apply the tactic sequence `ext j; by_cases h : j = k <;> simp [Pi.single_apply, h]`.
+-/
 theorem star_single_one (k : Fin r) : star (Pi.single k (1 : E) : Fin r → E) = Pi.single k 1 := by
   ext j; by_cases h : j = k <;> simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Use `⟨1, fun n i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [one_pow, OneMemClass.coe_one, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem bddPow_one : BddPow (1 : unitaryGroup (Fin r) E) := by
   refine ⟨1, fun n i j => ?_⟩
   rw [one_pow, OneMemClass.coe_one, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hk : (g : Matrix (Fin r) (Fin r) E) k k = 1`. Establish `hN : star (Pi.single k (1 : E)) ⬝ᵥ Pi.single k 1 = (2 : E)⁻¹ + star (2 : E)⁻¹`. Rewrite using `[star_single_one, star_inv₀, star_ofNat, dotProduct_single, Pi.single_eq_same, mul_one, ← two_mul, mul_inv_cancel₀ h2]`. Use `⟨refl (Pi.single k 1) 2⁻¹ (inv_ne_zero h2) hN, bddPow_refl hstar _ _ _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+
+Rewrite using `[MulMemClass.coe_mul, col_mul, refl_mulVec, hg i hi, star_single_one, dotProduct_single, Pi.single_apply, if_neg (ne_of_gt hi), zero_mul, mul_zero, zero_smul, sub_zero]`. Establish `h` using `congrFun (col_mul (refl (Pi.single k (1 : E)) 2⁻¹ (inv_ne_zero h2) hN : Matrix (Fin r) (Fin r) E) (g : Matrix (Fin r) (Fin r) E) k) k`. Rewrite `h` using `[refl_mulVec, star_single_one, single_dotProduct]`. Rewrite using `[MulMemClass.coe_mul]`. Express the relevant statement in the definitionally equal form `col _ k k ≠ 1`.
+
+Rewrite using `[h]`. Simplify using `only [col, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same, hk, inv_inv, one_mul, mul_one]`. Introduce `h'`. Apply `h2` to reduce the goal to its premises. Take the linear combination `-h'`.
+
+Conclude with `⟨1, bddPow_one, by simpa using hg, by simpa using hk⟩`.
+-/
 theorem exists_sign [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖y‖) (h2 : (2 : E) ≠ 0)
     (g : unitaryGroup (Fin r) E) (k : Fin r)
     (hg : ∀ i : Fin r, k < i → col (g : Matrix (Fin r) (Fin r) E) i = Pi.single i 1) :
@@ -126,6 +168,15 @@ theorem exists_sign [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖
       linear_combination -h'
   · exact ⟨1, bddPow_one, by simpa using hg, by simpa using hk⟩
 
+/- English proof (translation)
+Use `set w := col (g : Matrix (Fin r) (Fin r) E) k with hw`. Establish `hww : star w ⬝ᵥ w = 1` using `by rw [hw, col_orth, Matrix.one_apply_eq]`. Establish `hwk : w k = (g : Matrix (Fin r) (Fin r) E) k k` using `rfl`. Establish `hwi : ∀ i, k < i → w i = 0` using `fun i hi => entry_zero_of_col g (ne_of_gt hi) (hg i hi)`. Use `set v := w - Pi.single k 1 with hv`.
+
+Use `set a := 1 - w k with ha_def`. Establish `ha : a ≠ 0` using `sub_ne_zero.2 (by rw [hwk]; exact Ne.symm hk)`. Establish `hvw : star v ⬝ᵥ w = a`. Rewrite using `[hv, star_sub, sub_dotProduct, hww, star_single_one, single_dotProduct, one_mul]`. Establish `hN : star v ⬝ᵥ v = a + star a`.
+
+Rewrite using `[dotProduct_sub, hvw, star_sub, sub_dotProduct, star_single_one, single_dotProduct, dotProduct_single, Pi.single_eq_same, Pi.star_apply, ha_def, star_sub, star_one]`. Apply the tactic sequence `try simp only [Pi.sub_apply, Pi.single_eq_same, Pi.star_apply, star_sub, star_one]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨refl v a ha hN, bddPow_refl hstar _ _ _ _, fun i hi => ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hi with h | h` into its components or cases.
+
+Substitute `h` using the available equality. Rewrite using `[MulMemClass.coe_mul, col_mul, refl_mulVec, ← hw, hvw, inv_mul_cancel₀ ha, one_smul, hv, sub_sub_cancel]`. Rewrite using `[MulMemClass.coe_mul, col_mul, refl_mulVec, hg i h, dotProduct_single, mul_one]`. Establish `: v i = 0` using `by rw [hv, Pi.sub_apply, hwi i h, Pi.single_apply, if_neg (ne_of_gt h), sub_zero]`. Rewrite using `[Pi.star_apply, this, star_zero, mul_zero, zero_smul, sub_zero]`.
+-/
 theorem exists_refl [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖y‖)
     (g : unitaryGroup (Fin r) E) (k : Fin r)
     (hg : ∀ i : Fin r, k < i → col (g : Matrix (Fin r) (Fin r) E) i = Pi.single i 1)
@@ -154,6 +205,17 @@ theorem exists_refl [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖
     have : v i = 0 := by rw [hv, Pi.sub_apply, hwi i h, Pi.single_apply, if_neg (ne_of_gt h), sub_zero]
     rw [Pi.star_apply, this, star_zero, mul_zero, zero_smul, sub_zero]
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∀ g : unitaryGroup (Fin r) E, StdFrom m g → φ g = 1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `g hg`.
+
+Establish `: g = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `j i`. Use `congrFun (hg i (Nat.zero_le _)) j` as an intermediate fact. Simplify `this` using `[col, Matrix.one_apply, Pi.single_apply]`.
+
+Rewrite using `[this, map_one]`. Consider the case `succ m ih`. Introduce `g hg`. Distinguish the cases in `hm : m < r`. Set `k : Fin r` to `⟨m, hm⟩`.
+
+Establish `hg' : ∀ i : Fin r, k < i → col (g : Matrix (Fin r) (Fin r) E) i = Pi.single i 1` using `fun i hi => hg i (Fin.lt_def.1 hi)`. Take `⟨D, hD, hDg, hDk⟩` from `exists_sign hstar h2 g k hg'`. Take `⟨R, hR, hRg⟩` from `exists_refl hstar (D * g) k hDg hDk`. Establish `h1 : φ (R * (D * g)) = 1` using `ih _ fun i hi => hRg i (Fin.le_def.2 hi)`. Rewrite `h1` using `[map_mul, map_mul, hφ R hR, hφ D hD, one_mul, one_mul]`.
+
+Conclude with `h1`. Conclude with `ih g fun i hi => absurd i.isLt (by omega)`. Conclude with `key r g fun i hi => absurd i.isLt (by omega)`.
+-/
 theorem hom_eq_one_of_bddPow [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖y‖) (h2 : (2 : E) ≠ 0)
     {M : Type} [Monoid M] (φ : unitaryGroup (Fin r) E →* M) (hφ : ∀ g, BddPow g → φ g = 1)
     (g : unitaryGroup (Fin r) E) : φ g = 1 := by
@@ -186,6 +248,11 @@ end Gen
 
 section Top
 
+/- English proof (translation)
+Establish `le1 : ∀ z : ℝ, (∀ n : ℕ, z ^ n ≤ C) → z ≤ 1`. Introduce `z h`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨n, hn⟩` from `((tendsto_pow_atTop_atTop_of_one_lt hlt).eventually_gt_atTop C).exists`.
+
+Conclude with `absurd (h n) (not_le.2 hn)`. Establish `hx1` using `le1 x hxn`. Establish `hy1` using `le1 y hyn`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem real_eq_one {x y C : ℝ} (hx : 0 < x) (hy : 0 < y) (hxy : x * y = 1) (hxn : ∀ n : ℕ, x ^ n ≤ C)
     (hyn : ∀ n : ℕ, y ^ n ≤ C) : x = 1 := by
   have le1 : ∀ z : ℝ, (∀ n : ℕ, z ^ n ≤ C) → z ≤ 1 := by
@@ -200,6 +267,11 @@ theorem real_eq_one {x y C : ℝ} (hx : 0 < x) (hy : 0 < y) (hxy : x * y = 1) (h
 
 variable {E : Type} [NontriviallyNormedField E] [StarRing E]
 
+/- English proof (translation)
+Use `haveI : CharZero F := hU.charZero`. Introduce `h`. Apply `(two_ne_zero : (2 : F) ≠ 0)` to reduce the goal to its premises. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[map_ofNat, map_zero]`.
+
+Conclude with `h`.
+-/
 theorem two_ne_zero_of_unram {F : Type} [NontriviallyNormedField F] [NormedAlgebra F E] [hU : Unram F E] :
     (2 : E) ≠ 0 := by
   haveI : CharZero F := hU.charZero
@@ -208,6 +280,11 @@ theorem two_ne_zero_of_unram {F : Type} [NontriviallyNormedField F] [NormedAlgeb
   apply (algebraMap F E).injective
   rw [map_ofNat, map_zero]; exact h
 
+/- English proof (translation)
+Establish `hc : IsCompact {A : Matrix (Fin r) (Fin r) E | ∀ i j, ‖A i j‖ ≤ B}`. Establish `h : IsCompact (Set.pi Set.univ fun _ : Fin r => Set.pi Set.univ fun _ : Fin r => Metric.closedBall (0 : E) B)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `e : {A : Matrix (Fin r) (Fin r) E | ∀ i j, ‖A i j‖ ≤ B} = (Set.pi Set.univ fun _ : Fin r => Set.pi Set.univ fun _ : Fin r => Metric.closedBall (0 : E) B)`. Use extensionality with `A`. Conclude with `⟨fun H i _ j _ => mem_closedBall_zero_iff.2 (H i j), fun H i j => mem_closedBall_zero_iff.1 (H i trivial j trivial)⟩`.
+
+Rewrite using `[e]`. Conclude with `h`. Conclude with `(isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal.isCompact_preimage hc`.
+-/
 theorem isCompact_bdd (r : ℕ) [ContinuousStar E] [ProperSpace E] (B : ℝ) :
     IsCompact {h : unitaryGroup (Fin r) E | ∀ i j, ‖(h : Matrix (Fin r) (Fin r) E) i j‖ ≤ B} := by
   have hc : IsCompact {A : Matrix (Fin r) (Fin r) E | ∀ i j, ‖A i j‖ ≤ B} := by
@@ -222,6 +299,11 @@ theorem isCompact_bdd (r : ℕ) [ContinuousStar E] [ProperSpace E] (B : ℝ) :
     rw [e]; exact h
   exact (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal.isCompact_preimage hc
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hg`. Use `⟨B, fun n i j => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_pow]`. Express the relevant statement in the definitionally equal form `‖(star ((g ^ n : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E)) i j‖ ≤ B`. Rewrite using `[Matrix.star_apply, hstar]`.
+
+Conclude with `hB n j i`.
+-/
 theorem bddPow_inv {r : ℕ} (hstar : ∀ y : E, ‖star y‖ = ‖y‖) {g : unitaryGroup (Fin r) E} (hg : BddPow g) :
     BddPow g⁻¹ := by
   obtain ⟨B, hB⟩ := hg
@@ -233,6 +315,13 @@ theorem bddPow_inv {r : ℕ} (hstar : ∀ y : E, ‖star y‖ = ‖y‖) {g : un
 
 variable {F : Type} [NontriviallyNormedField F] [NormedAlgebra F E]
 
+/- English proof (translation)
+Use `haveI := hU.ultraE`. Use `haveI := hU.lcE`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : NormedStarGroup E := ⟨fun y => (hU.norm_star y).le⟩`. Use `hom_eq_one_of_bddPow hU.norm_star (two_ne_zero_of_unram (F := F)) ch (fun g hg => ?_) g` and prove the remaining obligations.
+
+Take `⟨B, hB⟩` from `hg`. Take `⟨B', hB'⟩` from `bddPow_inv hU.norm_star ⟨B, hB⟩`. Take `⟨T, hT⟩` from `(isCompact_bdd r (max B B')).exists_bound_of_continuousOn hc.continuousOn`. Establish `hxy : ch g * ch g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Use `real_eq_one (hpos g) (hpos g⁻¹) hxy (C := T) (fun n => ?_) (fun n => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← map_pow]`. Conclude with `(le_abs_self _).trans ((Real.norm_eq_abs _) ▸ hT _ fun i j => (hB n i j).trans (le_max_left _ _))`. Rewrite using `[← map_pow]`. Conclude with `(le_abs_self _).trans ((Real.norm_eq_abs _) ▸ hT _ fun i j => (hB' n i j).trans (le_max_right _ _))`.
+-/
 theorem char_eq_one [hU : Unram F E] (r : ℕ) (ch : unitaryGroup (Fin r) E →* ℝ) (hc : Continuous ch)
     (hpos : ∀ g, 0 < ch g) (g : unitaryGroup (Fin r) E) : ch g = 1 := by
   haveI := hU.ultraE
@@ -250,6 +339,31 @@ theorem char_eq_one [hU : Unram F E] (r : ℕ) (ch : unitaryGroup (Fin r) E →*
   · rw [← map_pow]
     exact (le_abs_self _).trans ((Real.norm_eq_abs _) ▸ hT _ fun i j => (hB' n i j).trans (le_max_right _ _))
 
+/- English proof (translation)
+Use `letI := M.mU`. Use `haveI := M.bU`. Use `haveI := M.haarU`. Use `haveI := hU.ultraE`. Use `haveI := hU.lcE`.
+
+Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : NormedStarGroup E := ⟨fun y => (hU.norm_star y).le⟩`. Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) E) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin r) (Fin r) E) := inferInstanceAs (LocallyCompactSpace (Fin r → Fin r → E))`. Use `haveI : LocallyCompactSpace (unitaryGroup (Fin r) E) := (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (unitaryGroup (Fin r) E) := (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Establish `hmap : ∀ g, Measure.map (· * g) M.μU = (Measure.modularCharacter g) • M.μU` using `fun g => by`. Express the relevant statement in the definitionally equal form `_ = Measure.modularCharacterFun g • _`. Rewrite using `[Measure.modularCharacterFun_eq_haarScalarFactor M.μU g]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ _`.
+
+Establish `hK : MeasurableSet (uO r E : Set (unitaryGroup (Fin r) E))` using `(MeasExist.isOpen_uO r E).measurableSet`. Establish `hbound : ∀ C : ℝ, 0 ≤ C → ∀ h : unitaryGroup (Fin r) E, (∀ i j, ‖((h⁻¹ : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E) i j‖ ≤ C) → (Measure.modularCharacter h : ENNReal) ≤ M.μU {x | ∀ i j, ‖(x : Matrix (Fin r) (Fin r) E) i j‖ ≤ C}`. Introduce `C hC h hh`. Establish `e1 : (Measure.map (· * h) M.μU) (uO r E) = (Measure.modularCharacter h • M.μU) (uO r E)`. Rewrite using `[hmap h]`.
+
+Rewrite `e1` using `[Measure.map_apply (measurable_mul_const h) hK, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, M.volU, mul_one]`. Rewrite using `[← e1]`. Apply `measure_mono` to reduce the goal to its premises. Introduce `x hx i j`. Establish `hx' : (x : Matrix (Fin r) (Fin r) E) = ((x * h : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E) * ((h⁻¹ : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E)`.
+
+Rewrite using `[← MulMemClass.coe_mul, mul_inv_cancel_right]`. Rewrite using `[hx', Matrix.mul_apply]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hone : ∀ g : unitaryGroup (Fin r) E, Measure.modularCharacter g = 1`. Use `hom_eq_one_of_bddPow hU.norm_star (two_ne_zero_of_unram (F := F)) (Measure.modularCharacter (G := unitaryGroup (Fin r) E)) (fun g hg => ?_)` and prove the remaining obligations. Take `⟨B, hB⟩` from `hg`. Take `⟨B', hB'⟩` from `bddPow_inv hU.norm_star ⟨B, hB⟩`.
+
+Use `set C := max (max B B') 0 with hC`. Establish `hfin : M.μU {x | ∀ i j, ‖(x : Matrix (Fin r) (Fin r) E) i j‖ ≤ C} ≠ ⊤` using `((isCompact_bdd r C).measure_lt_top).ne`. Use `set T := (M.μU {x | ∀ i j, ‖(x : Matrix (Fin r) (Fin r) E) i j‖ ≤ C}).toNNReal`. Establish `key : ∀ h : unitaryGroup (Fin r) E, (∀ i j, ‖((h⁻¹ : unitaryGroup (Fin r) E) : Matrix (Fin r) (Fin r) E) i j‖ ≤ C) → (Measure.modularCharacter h : ℝ) ≤ T`. Introduce `h hh`.
+
+Establish `h1` using `ENNReal.toNNReal_mono hfin (hbound C (le_max_right _ _) h hh)`. Rewrite `h1` using `[ENNReal.toNNReal_coe]`. Conclude with `h1` after adjusting the coercions. Establish `hxy : (Measure.modularCharacter g : ℝ) * (Measure.modularCharacter g⁻¹ : ℝ) = 1`. Rewrite using `[← NNReal.coe_mul, ← map_mul, mul_inv_cancel, map_one, NNReal.coe_one]`.
+
+Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[NNReal.coe_one]`. Use `real_eq_one (Measure.modularCharacterFun_pos g) (Measure.modularCharacterFun_pos g⁻¹) hxy (C := T) (fun n => ?_) (fun n => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Measure.modularCharacter g : NNReal) : ℝ) ^ n ≤ T`. Rewrite using `[← NNReal.coe_pow, ← map_pow]`.
+
+Use `key _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `(hB' n i j).trans ((le_max_right _ _).trans (le_max_left _ _))`. Express the relevant statement in the definitionally equal form `((Measure.modularCharacter g⁻¹ : NNReal) : ℝ) ^ n ≤ T`. Rewrite using `[← NNReal.coe_pow, ← map_pow]`.
+
+Use `key _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[inv_pow, inv_inv]`. Conclude with `(hB n i j).trans ((le_max_left _ _).trans (le_max_left _ _))`. Conclude with `⟨fun g => by rw [hmap g, hone g, one_smul]⟩`.
+-/
 theorem isMulRightInvariant [hU : Unram F E] (r : ℕ) (M : Meas r F E) :
     letI := M.mU; M.μU.IsMulRightInvariant := by
   letI := M.mU
@@ -329,6 +443,9 @@ theorem isMulRightInvariant [hU : Unram F E] (r : ℕ) (M : Meas r F E) :
 
 end Top
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ r`. Conclude with `⟨fun ch hc hpos g => char_eq_one (F := F) r ch hc hpos g, fun M => isMulRightInvariant r M⟩`.
+-/
 theorem posChar_trivial_and_unimodular : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ),
     (∀ ch : Matrix.unitaryGroup (Fin r) E →* ℝ, Continuous ch → (∀ g, 0 < ch g) → ∀ g, ch g = 1) ∧

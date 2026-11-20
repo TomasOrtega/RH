@@ -32,6 +32,9 @@ def ofElt (x : k) : LogNorms k := ⟨fun s => Real.log ‖s x‖, fun _ ι => Re
 def ext {k' : Type} [Field k'] (f : k →+* k') (N : LogNorms k) : LogNorms k' :=
   ⟨fun s => N.inf (s.comp f), fun p ι => N.fin p (ι.comp f)⟩
 
+/- English proof (translation)
+Establish `h : (Module.finrank ℚ k : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Simplify using `[deg, finSum, Embeddings.card]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem deg_const (t : ℝ) : deg (⟨fun _ => t, fun _ _ => 0⟩ : LogNorms k) = -t := by
   have h : (Module.finrank ℚ k : ℝ) ≠ 0 := by exact_mod_cast Module.finrank_pos.ne'
   simp [deg, finSum, Embeddings.card]

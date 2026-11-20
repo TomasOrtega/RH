@@ -8,6 +8,19 @@ namespace GlobalTheory.CompanionTheory.Mass.MeanV.Den
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h1 : IsOpen {s : Fv F v | Valued.v s < 1}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hy' : Valued.v (y - x) < 1` using `by simpa using hy`. Establish `h` using `Valuation.map_add_lt Valued.v hy' hx`. Simplify using `using h`. Establish `h2 : Tendsto (fun m : ℕ => a ^ m) atTop (𝓝 0)` using `Valued.tendsto_zero_pow_of_v_lt_one ha`. Establish `hUo : ∀ m : ℕ, IsOpen {s : Fv F v | Valued.v (a ^ m * s) < 1}` using `fun m => (continuous_const.mul continuous_id).isOpen_preimage _ h1`.
+
+Establish `hcover : ∀ s : Fv F v, ∃ m : ℕ, Valued.v (a ^ m * s) < 1`. Introduce `s`. Establish `h0 : Tendsto (fun m : ℕ => a ^ m * s) atTop (𝓝 0)`. Simplify using `using h2.mul_const s`. Establish `hn : {y : Fv F v | Valued.v y < 1} ∈ 𝓝 (0 : Fv F v)` using `h1.mem_nhds (by simp)`.
+
+Conclude with `(h0.eventually hn).exists`. Establish `hmono : Monotone fun m : ℕ => {s : Fv F v | Valued.v (a ^ m * s) < 1}`. Introduce `m m' hmm' s hs`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hmm'`. Use `show Valued.v (a ^ (m + d) * s) < 1`.
+
+Rewrite using `[show a ^ (m + d) * s = a ^ d * (a ^ m * s) by ring, Valuation.map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `by gcongr first`. Consider the case `exact pow_le_one₀ zero_le ha.le`. Consider the case `exact pow_le_one₀ zero_le' ha.le`.
+
+Use `_ = Valued.v (a ^ m * s) := one_mul _`. Use `_ < 1 := hs`. Take `⟨m, hm⟩` from `hK.elim_directed_cover (fun m : ℕ => {s : Fv F v | Valued.v (a ^ m * s) < 1}) hUo (fun s _ => Set.mem_iUnion.mpr (hcover s)) hmono.directed_le`. Conclude with `⟨m, fun s hs => le_of_lt (hm hs)⟩`.
+-/
 theorem exists_pow_mul_le_one (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v)
     (ha : Valued.v a < 1) (K : Set (Fv F v)) (hK : IsCompact K) :
     ∃ m : ℕ, ∀ s ∈ K, Valued.v (a ^ m * s) ≤ 1 := by
@@ -45,6 +58,9 @@ by
     (fun s _ => Set.mem_iUnion.mpr (hcover s)) hmono.directed_le
   exact ⟨m, fun s hs => le_of_lt (hm hs)⟩
 
+/- English proof (translation)
+Use `⟨Ideal.absNorm v.asIdeal, Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h), ?_⟩` and prove the remaining obligations. Establish `hm : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) ∈ v.asIdeal` using `Ideal.absNorm_mem _`. Establish `h : (((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) : F) = ((Ideal.absNorm v.asIdeal : ℕ) : F)` using `by simp`. Rewrite using `[← h]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hm`.
+-/
 theorem exists_nat_lt_one (v : HeightOneSpectrum (𝓞 F)) :
     ∃ p : ℕ, 0 < p ∧ v.valuation F (p : F) < 1 := by
   refine ⟨Ideal.absNorm v.asIdeal, Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h), ?_⟩
@@ -53,6 +69,9 @@ theorem exists_nat_lt_one (v : HeightOneSpectrum (𝓞 F)) :
   rw [← h]
   exact (HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hm
 
+/- English proof (translation)
+Establish `h : ((n : 𝓞 F) : F) = (n : F)` using `by simp`. Rewrite using `[← h]`. Conclude with `HeightOneSpectrum.valuation_le_one v _`.
+-/
 theorem val_nat_le_one (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) : v.valuation F (n : F) ≤ 1 := by
   have h : ((n : 𝓞 F) : F) = (n : F) := by simp
   rw [← h]
@@ -60,6 +79,23 @@ theorem val_nat_le_one (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) : v.valuation 
 
 end GlobalTheory.CompanionTheory.Mass.MeanV.Den
 
+/- English proof (translation)
+Introduce `F _ _ T K hK`. Establish `h3 : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : F), Valued.v (algebraMap F (Fv F v) x) = v.valuation F x`. Introduce `v x`. Use `show Valued.v ((x : v.adicCompletion F)) = v.valuation F x`. Use `first`.
+
+Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' x`. Consider the case `exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := v) x`. Establish `h4 : ∀ x : F, (∀ v : HeightOneSpectrum (𝓞 F), v.valuation F x ≤ 1) → ∃ y : 𝓞 F, (y : F) = x`. Introduce `x hx`.
+
+Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) (x := x) (h := hx)`. Conclude with `⟨y, hy⟩`. Establish `hpl : ∀ (v : HeightOneSpectrum (𝓞 F)) (n k : ℕ), v.valuation F ((n : F) ^ k) ≤ 1`. Introduce `v n k`. Rewrite using `[← Nat.cast_pow]`.
+
+Conclude with `Den.val_nat_le_one v _`. Use `choose p hp0 hp1 using fun v : HeightOneSpectrum (𝓞 F) => Den.exists_nat_lt_one v`. Establish `hm : ∀ v ∈ T, ∃ m : ℕ, ∀ s ∈ K v, Valued.v (algebraMap F (Fv F v) (p v : F) ^ m * s) ≤ 1` using `fun v hv => Den.exists_pow_mul_le_one v _ (by rw [h3]; exact hp1 v) (K v) (hK v hv)`. Use `choose! m hm using hm`. Use `⟨∏ v ∈ T, p v ^ m v, Finset.prod_pos fun v _ => pow_pos (hp0 v) _, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx hxK`. Apply `h4` to reduce the goal to its premises. Introduce `w`. Use `push_cast`. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `hw : w ∈ T`. Rewrite using `[← Finset.mul_prod_erase T (fun v => (p v : F) ^ m v) hw, map_mul, map_prod]`. Establish `hrest : ∏ v ∈ T.erase w, w.valuation F ((p v : F) ^ m v) ≤ 1` using `Finset.prod_le_one' fun v _ => hpl w (p v) (m v)`. Establish `hmain : w.valuation F ((p w : F) ^ m w) * w.valuation F x ≤ 1`. Establish `h` using `hm w hw _ (hxK w hw)`.
+
+Rewrite `h` using `[← map_pow, ← map_mul, h3, map_mul]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation. Establish `hxw : w.valuation F x ≤ 1`. Establish `h : Valued.v (algebraMap F (Fv F w) x) ≤ 1` using `hx w hw`.
+
+Rewrite `h` using `[h3]`. Then use the resulting hypothesis. Establish `hN : w.valuation F (∏ v ∈ T, (p v : F) ^ m v) ≤ 1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_le_one' fun v _ => hpl w (p v) (m v)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.CompanionTheory.Mass.MeanV.exists_common_denominator :
     ∀ (F : Type) [Field F] [NumberField F] (T : Finset (HeightOneSpectrum (𝓞 F))) (K : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)), (∀ v ∈ T, IsCompact (K v)) → ∃ N : ℕ, 0 < N ∧ ∀ x ∈ IntOut T, (∀ v ∈ T, algebraMap F (Fv F v) x ∈ K v) → ∃ y : 𝓞 F, (y : F) = (N : F) * x := by
   intro F _ _ T K hK

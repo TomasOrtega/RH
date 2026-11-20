@@ -8,5 +8,8 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PointDenom.exists_denom_le_height_pow | exact GlobalTheory.PointDenom.exists_denom_le_height_pow | (intros; apply GlobalTheory.PointDenom.exists_denom_le_height_pow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finitePart_denominator_le_height_pow : ∀ (D : D7) (V : HSp D), ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V, ∃ d : ℕ, 0 < d ∧ (d : ℝ) ≤ C * height V g ^ A ∧ ∀ i j, (d : Lev.EAf D) * (Lev.finE V g).1 i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   first | exact @GlobalTheory.PointDenom.exists_denom_le_height_pow | exact GlobalTheory.PointDenom.exists_denom_le_height_pow | (intros; apply GlobalTheory.PointDenom.exists_denom_le_height_pow <;> assumption)

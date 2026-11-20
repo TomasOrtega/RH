@@ -11,6 +11,35 @@ namespace PositivityTheory.ThKF0
 open PositivityTheory.Mix.Adapt
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hB hX hW hM hH hH' hM₁`. Take `⟨Q, h⟩` from `frOK_herm hB hH hX`. Take `⟨Q', h'⟩` from `frOK_skew hB hH' hW`. Set `w : Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] Matrix (Fin n₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E)` to `{ toFun := fun z => incM F Q * z * (incM F Q')ᵀ map_add' := fun z z' => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c z => by rw [Matrix.mul_smul, Matrix.smul_mul]; rfl }`. Establish `hw : ∀ z, w z = incM F Q * z * (incM F Q')ᵀ` using `fun _ => rfl`.
+
+Establish `hc` using `cA_cA (σ := σ) hB`. Establish `hi : ∀ z, w (incM F H.ι * z * (incM F H'.ι)ᵀ) = Matrix.fromBlocks z 0 0 0` using `fun z => by`. Rewrite using `[hw, w_mul, h.qi, h'.qi]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.mul_apply, Matrix.one_apply]`. Establish `hπ : ∀ v, ∀ γ ∈ latAtV X W v, (w γ).submatrix .inl .inl ∈ latAtV X₁ W₁ v` using `fun v γ hγ => lat_map (X₁ := X₁) (W₁ := W₁) h.low h'.low hγ`.
+
+Establish `qv : ∀ z, incM F Q *ᵥ (incM F H.ι *ᵥ z) = Sum.elim z 0` using `fun z => by`. Apply the tactic sequence `rw [Matrix.mulVec_mulVec, h.qi]; ext (i | i) <;> simp`. Establish `qv' : ∀ z, incM F Q' *ᵥ (incM F H'.ι *ᵥ z) = Sum.elim z 0` using `fun z => by`. Apply the tactic sequence `rw [Matrix.mulVec_mulVec, h'.qi]; ext (i | i) <;> simp`. Set `G : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) E` to `(frame H')ᵀ * W.J * (frame H').map σ`.
+
+Establish `hG : incM F G = Matrix.fromBlocks (incM F W₁.J) 0 0 !![0, 1; -1, 0]`. Use `h'.gram` as an intermediate fact. Rewrite `this` using `[Int.cast_neg, Int.cast_one]`. Rewrite using `[← this, incM_mul, incM_mul]`. Both sides reduce to the same expression.
+
+Establish `hGh : ∀ i j, cA σ (incM F G j i) = -1 * incM F G i j` using `fun i j => by`. Use `inc_herm (F := F) (η := -1) (J := G) (gram_herm σ (conj_conj hB) (fun i j => by simp [hW.skew]) _) i j` as an intermediate fact. Rewrite `this` using `[Int.cast_neg, Int.cast_one]`. Then use the resulting hypothesis. Take `⟨A0, a0, e0⟩` from `h.msk 0 1 0`. Take `⟨A1, a1, e1⟩` from `h.msk 1 0 0`.
+
+Take `⟨C0, c0, f0⟩` from `h'.msk 1 1 1`. Take `⟨C1, c1, f1⟩` from `h'.msk 0 1 0`. Apply the tactic sequence `obtain ⟨Ma, e, h1, h2⟩ := exists_model hB hX hW hM hM₁ (κ := (Fin d₁ ⊕ Fin 2) ⊕ Fin n₁) (by simp [hH.rank, hH'.rank]; ring) (fun z => Sum.elim (w z (.inr 1)) (fun i => ((w z).submatrix .inl id) i (.inr 1))) (fun z => Sum.elim (DL (cA σ) (incM F G) (w z)) (DR (cA σ) (incM F X₁.J) …`. Establish `g` using `h.gram`. Rewrite `g` using `[Int.cast_one]`.
+
+Establish `g'` using `h'.gram`. Rewrite `g'` using `[Int.cast_neg, Int.cast_one, ← hG]`. Rewrite using `[hTens_fr _ _ h.pq h'.pq, g, g', splitL _ hc _ hGh, sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim, map_add]`. Use `conv_lhs => rw [hG, splitR _ hc (fun i j => by simpa using h.herm₁ i j), ← hG]`. Simplify using `only [← hw]`.
+
+Rewrite using `[show ∀ z, ((w z).submatrix Sum.inl id).submatrix id Sum.inl = (w z).submatrix .inl .inl from fun _ => rfl, show ∀ z, ((w z).submatrix Sum.inl id).submatrix id Sum.inl = (w z).submatrix .inl .inl from fun _ => rfl]`. Use the proof step `ring)`. Use the proof step `(fun x => by`. Simplify using `only [hw, w_inc]`. Generalize the expression as in `Q * x * Q'ᵀ = y`.
+
+Apply the tactic sequence `refine ⟨⟨Sum.elim (y (.inr 1)) (fun i => (y.submatrix .inl id) i (.inr 1)), by ext (k | k) <;> rfl⟩, ⟨Sum.elim (DL σ G y) (DR σ X₁.J (y.submatrix .inl id)), ?_⟩, y.submatrix .inl .inl, rfl⟩`. Use extensionality with `(k | k)`. Conclude with `congrFun (DL_inc G y) k`. Conclude with `congrFun (DR_inc X₁.J (y.submatrix .inl id)) k)`. Use the proof step `H.ι H'.ι (isoB H H') (fun z => by`.
+
+Simplify using `only [hi]`. Apply the tactic sequence `exact ⟨by ext ((k | k) | k) <;> simp, by ext; simp⟩)`. Use the proof step `(by`. Introduce and unpack `u (⟨y, rfl⟩ | ⟨y, rfl⟩)`. Simplify using `only [hw, w_vec, h.qx]`.
+
+Apply the tactic sequence `exact ⟨by ext (k | k) <;> simp [Matrix.vecMulVec_apply], by ext; simp [Matrix.vecMulVec_apply]⟩`. Simplify using `only [hw, w_vec, h'.qx, qv]`. Apply the tactic sequence `exact ⟨by ext (k | k) <;> simp [Matrix.vecMulVec_apply], by ext; simp [Matrix.vecMulVec_apply]⟩)`. Use the proof step `(fun v γ hγ => ⟨hπ v γ hγ, _, add_mem (lat_map a0 c0 hγ) (lat_map a1 c1 hγ), by`. Simplify using `only [map_add]`.
+
+Simplify using `only [hw, w_msk e0 f0, w_msk e1 f1]`. Generalize the expression as in `incM F Q * γ * (incM F Q')ᵀ = y`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext ((k | k) | k) <;> simp [mask]`. Use `ext`.
+
+Simplify using `[mask]`. Use extensionality with `(k | k)`. Simplify using `only [Sum.elim_inl, DL]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Break down `l with l | l` into its components or cases. Simplify using `[mask]`. Apply the tactic sequence `fin_cases l <;> simp [mask]`. Simplify using `[DR, mask]⟩)`. Conclude with `⟨Ma, e, h1, h2⟩`.
+-/
 theorem adapted_plane_model_evaluation_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁)
     (H' : Plane E d d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

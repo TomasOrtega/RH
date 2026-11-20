@@ -14,6 +14,17 @@ section Glue
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Unfold `Tends VF.MM at *`. Introduce `w`. Distinguish the cases in `ha0 : a = 0`. Use `⟨0, fun n _ => ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`.
+
+Use `show (w : WithTop ℝ) ≤ V.v (0 - a ^ V.l ^ n)`. Rewrite using `[ha0, zero_pow (pow_pos V.l_prime.pos n).ne', sub_zero, AddValuation.map_zero]`. Conclude with `le_top`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp ((AddValuation.ne_top_iff V.v).mpr ha0)`. Establish `hr0 : 0 < r`.
+
+Rewrite `ha` using `[← hr]`. Conclude with `WithTop.coe_pos.mp ha`. Use `⟨⌈w / r⌉₊, fun n hn => ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`. Use `show (w : WithTop ℝ) ≤ V.v (0 - a ^ V.l ^ n)`.
+
+Rewrite using `[zero_sub, AddValuation.map_neg, AddValuation.map_pow, ← hr, ← WithTop.coe_nsmul, WithTop.coe_le_coe, nsmul_eq_mul]`. Establish `h1 : (n : ℝ) ≤ ((V.l ^ n : ℕ) : ℝ)` using `by first`. Consider the case `exact_mod_cast (Nat.lt_pow_self V.l_prime.one_lt n).le`. Consider the case `exact_mod_cast (Nat.lt_pow_self V.l_prime.one_lt).le`. Establish `h2 : w / r ≤ n` using `le_trans (Nat.le_ceil _) (by exact_mod_cast hn)`.
+
+Conclude with `(div_mul_cancel₀ w hr0.ne').ge.trans (mul_le_mul_of_nonneg_right (h2.trans h1) hr0.le)`.
+-/
 theorem tends_pow_zero {a : C} (ha : V.MM a) : Tends V (fun n => a ^ V.l ^ n) 0 := by
   unfold Tends VF.MM at *
   intro w
@@ -41,6 +52,21 @@ theorem tends_pow_zero {a : C} (ha : V.MM a) : Tends V (fun n => a ^ V.l ^ n) 0 
 
 variable [CharZero C] {O : Type} [CommRing O] {n d : ℕ}
 
+/- English proof (translation)
+Establish `hint : ∀ y, V.Ge 0 (χ y)` using `fun y => eig_int (K.ρ y) (K.ρ_int y) w hw (χ y) (hχ y)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, w i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hw (funext hc)`. Establish `hT : Tends V (fun m => χ K.ε ^ V.l ^ m * w i) (w i)`. Establish `h1 : Tends V (fun m => Matrix.mulVec (K.ρ (K.ε ^ V.l ^ m)) w i) (Matrix.mulVec K.P w i)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Tends.sum _ fun j _ => Tends.mul ?_ (tends_const _)` and prove the remaining obligations.
+
+Conclude with `RowTiePProj.tends_of_nat fun N => K.P_lim N i j`. Establish `e : (fun m => Matrix.mulVec (K.ρ (K.ε ^ V.l ^ m)) w i) = fun m => χ K.ε ^ V.l ^ m * w i`. Use function extensionality and compare the values at `m`. Rewrite using `[hχ, map_pow]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[e, hP]`. Conclude with `h1`. Establish `hunit : ¬ V.MM (χ K.ε)`. Introduce `hm`. Establish `h0` using `(tends_pow_zero hm).mul (tends_const (V := V) (w i))`.
+
+Rewrite `h0` using `[zero_mul]`. Conclude with `hi (hT.unique h0)`. Introduce `z hz`. Take `⟨y, hy⟩` from `K.ε_ann z hz`. Establish `h1` using `congrArg (fun t => V.v (χ t)) hy`.
+
+Simplify using `only [map_mul, map_natCast, AddValuation.map_mul, V.v_l] at h1`. Unfold `VF.MM at hunit ⊢`. Use `push_neg at hunit`. Establish `he0 : V.v (χ K.ε) = 0` using `le_antisymm hunit (hint K.ε)`. Rewrite `h1` using `[he0, zero_add]`.
+
+Rewrite using `[h1]`. Use `hint y` as an intermediate fact. Unfold `VF.Ge at this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chi_kill (K : KeyData C V O n d) (w : Fin n → C) (hw : w ≠ 0) (hP : Matrix.mulVec K.P w = w)
     (χ : O →+* C) (hχ : ∀ x, Matrix.mulVec (K.ρ x) w = χ x • w) :
     (∀ y, V.Ge 0 (χ y)) ∧ ∀ z, (∀ a, V.MM (K.em a z)) → V.MM (χ z) := by
@@ -83,6 +109,15 @@ end Glue
 
 section Top
 
+/- English proof (translation)
+Establish `hv : ∀ v : Fin n → C, Matrix.mulVec (Polynomial.aeval (K.ρ x) (∏ c : ZMod d, (Polynomial.X - Polynomial.C (K.em c x))) * K.P) v = 0`. Introduce `v`. Take `⟨m, w, χ, hPv, hw⟩` from `hE C V hac hcpl O n d K v`. Rewrite using `[← Matrix.mulVec_mulVec, hPv, Matrix.mulVec_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : w j = 0`. Rewrite using `[h0, Matrix.mulVec_zero]`. Take `⟨hPw, hχ⟩` from `hw j`. Take `⟨hint, hkill⟩` from `chi_kill K (w j) h0 hPw (χ j) hχ`. Take `⟨c, hc⟩` from `hR C V O n d K (χ j) hint hkill`.
+
+Establish `heq` using `hD C V O n d K (χ j) c hint hc`. Rewrite using `[aeval_mulVec _ _ _ (hχ x), Polynomial.eval_prod]`. Establish `: ∏ c' : ZMod d, Polynomial.eval (χ j x) (Polynomial.X - Polynomial.C (K.em c' x)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ c) (by rw [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, heq, sub_self])`. Rewrite using `[this, zero_smul]`. Use extensionality with `i j`.
+
+Use `congrFun (hv (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem keyLA_of (hE : KeyEigSt) (hR : KeyResSt) (hD : KeyDeltaSt) (C : Type) [Field C] [CharZero C] (V : VF C)
     (hac : IsAlgClosed C)
     (hcpl : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n))
@@ -109,6 +144,9 @@ theorem keyLA_of (hE : KeyEigSt) (hR : KeyResSt) (hD : KeyDeltaSt) (C : Type) [F
   have := congrFun (hv (Pi.single j 1)) i
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I _ p g ε hε hε1 hεx e he x`. Set `K : KeyData C V O dd d` to `{ ρ := linHom Y ρ_int := fun x i j => Y.intAct x i _ P := linM e em := fun a => p.em g a em_int := fun a x => p.em_int g a x em_frob := fun a x => p.em_frob g a x ε := ε ε_idem := hε ε_one := hε1 ε_ann := hεx P_lim := fun N i j => he N i _ }`. Conclude with `keyLA_of hE hR hD C V Y.algClosed Y.cpl O dd d K x`.
+-/
 theorem key_of (hE : KeyEigSt) (hR : KeyResSt) (hD : KeyDeltaSt) : KeySt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g ε hε hε1 hεx e he x
   let K : KeyData C V O dd d :=

@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.TwInputs.HeckePinRead
 
+/- English proof (translation)
+Establish `hκ : a.κ (x : AE D) = ((Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P k) : Neutral.B1.Ideles D.host.E) : AdeleRing (𝓞 D.host.E) D.host.E)`. Rewrite using `[hx]`. Conclude with `ha.loc P e he k`. Establish `hsym : a.sym x = a.art (Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P k))`. Rewrite using `[Recip.sym, MonoidHom.comp_apply]`.
+
+Use `congr 1`. Conclude with `Units.ext hκ`. Take `⟨y, hy, hyσ⟩` from `(ha.artin.frob P B hB _).mpr ⟨σ, hσ, rfl⟩`. Establish `hu : Valued.v (((Formalism.L2.Host.atFin P k * y⁻¹ : (P.adicCompletion D.host.E)ˣ)) : P.adicCompletion D.host.E) = 1`. Establish `hy' : Valued.v ((y : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) = WithZero.exp (-1 : ℤ)` using `hy`.
+
+Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hk, hy']`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero`. Take `⟨τ, hτ, hτu⟩` from `(ha.artin.ine P B hB _).mp ⟨_, hu, rfl⟩`. Establish `hs : a.sym x = GlobalTheory.HeckeGal.toAb D.host.E Ω (τ * σ⁻¹)`. Rewrite using `[hsym, show Formalism.L2.Host.atFin P k = (Formalism.L2.Host.atFin P k * y⁻¹) * y by group, map_mul, map_mul, hyσ, ← hτu, map_mul]`.
+
+Rewrite using `[a.pull_eq hφ hs, map_mul, hine τ hτ, map_inv, one_mul]`.
+-/
 theorem pull_locE {D : D7} {Ω : Type} [Field Ω] [Algebra D.host.E Ω] {A : Type} [CommGroup A] (a : Recip D Ω) (ha : a.Good)
     (φ : G D.host.E Ω →* A) (hφ : IsOpen (φ.ker : Set (G D.host.E Ω))) (P : Pl D.host.E) (e : AE D)
     (he : Formalism.L2.JoinChr.IsPlIdem D e P) (k : D.host.Eˣ)
@@ -40,6 +49,9 @@ theorem pull_locE {D : D7} {Ω : Type} [Field Ω] [Algebra D.host.E Ω] {A : Typ
       ← hτu, map_mul]
   rw [a.pull_eq hφ hs, map_mul, hine τ hτ, map_inv, one_mul]
 
+/- English proof (translation)
+Establish `e : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker = (D.ntw.delta i).ker`. Use extensionality with `g`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `D.ntw.delta_open i`.
+-/
 theorem isOpen_ker_psiAt (D : D7) (i : D.ntw.Tw) (b : Bool) :
     IsOpen ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker : Set (G D.host.E D.nd.Om)) := by
   have e : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker = (D.ntw.delta i).ker := by
@@ -48,6 +60,15 @@ theorem isOpen_ker_psiAt (D : D7) (i : D.ntw.Tw) (b : Bool) :
   rw [e]
   exact D.ntw.delta_open i
 
+/- English proof (translation)
+Rewrite using `[hρ.delta i j b]`. Establish `hopen` using `isOpen_ker_psiAt D i b`. Establish `: Finite (G D.host.E D.nd.Om ⧸ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `hfi : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `hn : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`.
+
+Establish `hpow : Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ⁻¹ ^ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.pow_index_mem _ σ⁻¹)`. Establish `hine : ∀ τ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 P), Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) τ = 1 := by`. Introduce `τ hτ`.
+
+Establish `h : D.ntw.delta i τ = 1`. Assume the negation of the conclusion as `hne`. Conclude with `hP (D.ntw.primes_subset_exceptional i ((D.ntw.delta_ram i P _ (D.nd.plOm.2 P)).1 ⟨τ, hτ, hne⟩))`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, h]`. Establish `hpull` using `pull_locE ρ.rc hρ.rc _ hopen P e he (Formalism.L2.Host.unif P) (Formalism.L2.Host.unif_spec P) _ (Formalism.L2.JoinChr.locU_val hee _) _ (D.nd.plOm.2 P) hine σ hσ`.
+
+Express the relevant statement in the definitionally equal form `((charOf ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)) _ : Circle) : ℂ) = _`. Rewrite using `[charOf, MonoidHom.comp_apply, MonoidHom.comp_apply, hpull, unitPart_of_pow hn]`. Simplify using the standard rewrite rules. Rewrite using `[← map_pow, ← map_inv, ← map_pow, map_pow (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)), hpow, map_one]`.
+-/
 theorem chi_locU_unif {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (P : PlE D.host)
     (hP : P ∉ D.ntw.S0 i) {e : AE D} (he : Formalism.L2.JoinChr.IsPlIdem D e P) (hee : e * e = e) (σ : G D.host.E D.nd.Om)
     (hσ : IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) σ) :
@@ -80,6 +101,9 @@ theorem chi_locU_unif {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw)
 def frobU (D : D7) (P : PlE D.host) : G D.host.E D.nd.Om :=
   (GlobalTheory.TripleGal.exists_mem_Dec_isFrob D P (D.nd.plOm.1 P) (D.nd.plOm.2 P)).choose
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TripleGal.exists_mem_Dec_isFrob D P (D.nd.plOm.1 P) (D.nd.plOm.2 P)).choose_spec.2`.
+-/
 theorem frobU_spec (D : D7) (P : PlE D.host) : IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) (frobU D P) :=
   (GlobalTheory.TripleGal.exists_mem_Dec_isFrob D P (D.nd.plOm.1 P) (D.nd.plOm.2 P)).choose_spec.2
 
@@ -88,6 +112,13 @@ def uD (D : D7) : ∀ i : D.ntw.Tw, Bool → PlE D.host → (D.ntw.O i)ˣ := fun
 
 variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
 
+/- English proof (translation)
+Introduce `i j b k P hk α z hα hz`. Take `⟨-, -, hsp, hP⟩` from `hk`. Establish `hdQ : Bridge.SplitOff P (((ρ.B i j b).de.Q : Finset _) : Set (Pl D.host.E))` using `GlobalTheory.SplitOffS0.main hρ i _ (fun P' hP' => by`. Rewrite `hP'` using `[hρ.delta i j b]`. Conclude with `D.ntw.primes_subset_exceptional i (mem_half.1 hP').1) P hsp hP`.
+
+Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P hdQ.1`. Establish `hee : e * e = e` using `he.1.1`. Establish `h1` using `(hpin.delta i j b).2 P e (GlobalTheory.HeckeDetChar.isPlIdem he) (Formalism.L2.Host.unif P) _ (Formalism.L2.JoinChr.locU_val hee (Formalism.L2.Host.unif P))`. Establish `h2` using `chi_locU_unif hρ i j b P hP (GlobalTheory.HeckeDetChar.isPlIdem he) hee (frobU D P) (frobU_spec D P)`. Rewrite using `[GlobalTheory.HeckeDetChar.chi_detAt (hpin.delta i j b) (hρ.base i j b).de.unram (hρ.base i j b).de.split hdQ hα hz, show (((Rl.C.delAt (D.ntw.l i)).val P : ℂˣ) : ℂ) = (((ρ.B i j b).de.chi (Formalism.L2.JoinChr.locU hee (Formalism.L2.Host.unif P)) : Circle) : ℂ) from h1.symm, h2, …`.
+
+Both sides reduce to the same expression.
+-/
 theorem isDeltaInv_uD {D : D7} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]
     [Algebra Ks D.what₂.LL] {Rl : RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ : Setup D.ntw} (hρ : ρ.Good)
     (hpin : RealPin Rl cG ρ) : IsDeltaInv ρ (uD D) := by

@@ -41,10 +41,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
       rw [norm_inv]
       exact (one_lt_inv₀ (norm_pos_iff.2 h0)).2 h1 }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem modTop : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
+/- English proof (translation)
+The claim follows from `haveI := modTop (E := E) v IsModuleTopology.isTopologicalRing (Fv F v) _`.
+-/
 theorem topRing : IsTopologicalRing (Fv F v ⊗[F] E) :=
   haveI := modTop (E := E) v
   IsModuleTopology.isTopologicalRing (Fv F v) _
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Fv F v)`. Conclude with `⟨e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology, e.isEmbedding.t2Space⟩`.
+-/
 theorem lcs : LocallyCompactSpace (Fv F v ⊗[F] E) ∧ SecondCountableTopology (Fv F v ⊗[F] E) ∧
     T2Space (Fv F v ⊗[F] E) := by
   haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v
@@ -53,6 +62,11 @@ theorem lcs : LocallyCompactSpace (Fv F v ⊗[F] E) ∧ SecondCountableTopology 
 
 variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Use `haveI := modTop (E := E) v`. Use `haveI := topRing (E := E) v`. Establish `h1 : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR (Fv F v) σ`. Unfold `qR hR Formalism.UG.hform`.
+
+Use `continuous_const.mul (h1.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_q : Continuous fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => qR (Fv F v) σ J (X 0) := by
   haveI := modTop (E := E) v
   haveI := topRing (E := E) v
@@ -63,6 +77,11 @@ theorem continuous_q : Continuous fun X : Fin 1 → Fin M → Fv F v ⊗[F] E =>
   refine continuous_const.mul (h1.comp ?_)
   fun_prop
 
+/- English proof (translation)
+Establish `h : ∀ z : Fv F v ⊗[F] E, sigR (Fv F v) σ (c • z) = c • sigR (Fv F v) σ z` using `fun z => (Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ).toLinearMap.map_smul c z`. Establish `h2 : hR (Fv F v) σ J ((c • X) 0) ((c • X) 0) = c ^ 2 • hR (Fv F v) σ J (X 0) (X 0)`. Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, h, Finset.smul_sum, smul_mul_assoc, mul_smul_comm, smul_smul, sq]`. Unfold `qR`. Rewrite using `[h2, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem q_smul (c : Fv F v) (X : Fin 1 → Fin M → Fv F v ⊗[F] E) :
     qR (Fv F v) σ J ((c • X) 0) = c ^ 2 * qR (Fv F v) σ J (X 0) := by
   have h : ∀ z : Fv F v ⊗[F] E, sigR (Fv F v) σ (c • z) = c • sigR (Fv F v) σ z := fun z =>
@@ -74,6 +93,17 @@ theorem q_smul (c : Fv F v) (X : Fin 1 → Fin M → Fv F v ⊗[F] E) :
   rw [h2, map_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `haveI := modTop (E := E) v`. Use `haveI := topRing (E := E) v`. Take `⟨hc, ho⟩` from `GlobalTheory.T.integralClosure_completedCMAlgebra_compact_open F E σ hσ v`. Take `⟨n, x, hx⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Set `f : (Fin n → Fv F v ⊗[F] E) →ₗ[Fv F v ⊗[F] E] (Fin M → Fv F v ⊗[F] E)` to `Fintype.linearCombination _ x`.
+
+Establish `hf : Function.Surjective f`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, eq_top_iff, ← hsp, Submodule.span_le, ← hx]`. Conclude with `Submodule.span_subset_span _ _ _`. Establish `hfo : IsOpenMap f` using `IsModuleTopology.isOpenMap_of_surjective (φ := f.restrictScalars (Fv F v)) hf`. Establish `hfc : Continuous f` using `IsModuleTopology.continuous_of_linearMap (f.restrictScalars (Fv F v))`.
+
+Establish `himg : (L : Set (Fin M → Fv F v ⊗[F] E)) = f '' Set.pi Set.univ fun _ => (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.maxOrder F E v : Set (Fv F v ⊗[F] E))`. Use extensionality with `y`. Rewrite using `[← hx, SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+
+Conclude with `⟨fun i => c i, fun i _ => (c i).2, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨fun i => ⟨c i, hc i trivial⟩, rfl⟩`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.latTup v L = Set.pi Set.univ fun _ : Fin 1 => (L : Set (Fin M → Fv F v ⊗[F] E))`. Use extensionality with `X`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.latTup, Fin.forall_fin_one]`. Rewrite using `[e, himg]`. Conclude with `⟨isCompact_univ_pi fun _ => (isCompact_univ_pi fun _ => hc).image hfc, isOpen_set_pi Set.finite_univ fun _ _ => hfo _ (isOpen_set_pi Set.finite_univ fun _ _ => ho)⟩`.
+-/
 theorem lattice_compact_open (hσ : IsCMExt F E σ)
     (L : Submodule (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.maxOrder F E v) (Fin M → Fv F v ⊗[F] E)) (hfg : L.FG)
     (hsp : Submodule.span (Fv F v ⊗[F] E) (L : Set (Fin M → Fv F v ⊗[F] E)) = ⊤) :
@@ -108,6 +138,15 @@ theorem lattice_compact_open (hσ : IsCMExt F E σ)
   exact ⟨isCompact_univ_pi fun _ => (isCompact_univ_pi fun _ => hc).image hfc,
     isOpen_set_pi Set.finite_univ fun _ _ => hfo _ (isOpen_set_pi Set.finite_univ fun _ _ => ho)⟩
 
+/- English proof (translation)
+Use `haveI := modTop (E := E) v`. Use `haveI := topRing (E := E) v`. Take `⟨h1, h2, h3⟩` from `lcs (E := E) v`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `letI := nontrivNormed v`.
+
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Establish `hq` using `continuous_q v σ J`. Establish `hnull : μ {X | qR (Fv F v) σ J (X 0) = 0} = 0`. Take `⟨y, hy⟩` from `GlobalTheory.T.hermitian_form_finite_zeros_on_line_cmExt F E σ hσ M hM J hJ (Fv F v)`.
+
+Conclude with `GlobalTheory.T.measure_eq_zero_of_finite_inter_lines' (Fv F v) _ μ _ (isClosed_eq hq continuous_const).measurableSet (fun _ => y) fun x => hy (x 0)`. Use `⟨hnull, ?_⟩` and prove the remaining obligations. Use `haveI : CharZero (Fv F v) := charZero_of_injective_ringHom (algebraMap F (Fv F v)).injective`. Take `⟨U, s, hs⟩` from `GlobalTheory.T.exists_compact_open_units_subgroup_continuous_sqrt (Fv F v) two_ne_zero`. Use `⟨GlobalTheory.QuadFibre.fibOf μ ν (fun X => qR (Fv F v) σ J (X 0)) U s, fun b => ?_, fun φ hφ => ?_, fun φ h1 h2 _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.inter_univ]`. Conclude with `GlobalTheory.T.averagedFibreMeasure_compl_fibre_eq_zero (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs b`. Rewrite using `[Measure.restrict_univ]`. Conclude with `GlobalTheory.T.haar_disintegration_averagedFibreMeasures (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs (GlobalTheory.T.map_smul_addHaar_of_norm_eq_one (Fv F v) _ μ) hnull φ hφ`. Conclude with `GlobalTheory.T.integrable_continuousOn_averagedFibreIntegral (Fv F v) _ μ ν _ hq (q_smul v σ J) U s hs φ h1 h2`.
+-/
 theorem null_and_exists (hσ : IsCMExt F E σ) (hM : 1 ≤ M) (hJ : IsHermND σ J)
     (μ : Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)) (hμ : μ.IsAddHaarMeasure)
     (ν : Measure (Fv F v)) (hν : ν.IsAddHaarMeasure) :
@@ -142,6 +181,13 @@ section Dict
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨h, rfl⟩ | ⟨h, rfl⟩)`. Conclude with `⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inl h), by rw [if_pos (GlobalTheory.T.isField_adicCompletion_tensor_of_inert F E h2 v h)]; simp⟩`. Conclude with `⟨(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).2 (Or.inr h), by rw [if_neg (GlobalTheory.T.not_isField_adicCompletion_tensor_of_split F E h2 v h)]; simp⟩`.
+
+Introduce and unpack `⟨h, hη⟩`. Break down `(GlobalTheory.T.quadratic_unramified_iff_isPrime_map_or_ncard_primesOver_two F E h2 v).1 h with h | h` into its components or cases. Rewrite `hη` using `[if_pos (GlobalTheory.T.isField_adicCompletion_tensor_of_inert F E h2 v h)]`. Conclude with `Or.inl ⟨h, by exact_mod_cast hη⟩`. Rewrite `hη` using `[if_neg (GlobalTheory.T.not_isField_adicCompletion_tensor_of_split F E h2 v h)]`.
+
+Conclude with `Or.inr ⟨h, by exact_mod_cast hη⟩`.
+-/
 theorem isEtaAt_iff (h2 : Module.finrank F E = 2) (η : ℤ) :
     GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.IsEtaAt F E v η ↔
       GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.UnramifiedPlace F E v ∧ (η : ℝ) = GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta F E v := by
@@ -157,35 +203,56 @@ theorem isEtaAt_iff (h2 : Module.finrank F E = 2) (η : ℤ) :
     · rw [if_neg (GlobalTheory.T.not_isField_adicCompletion_tensor_of_split F E h2 v h)] at hη
       exact Or.inr ⟨h, by exact_mod_cast hη⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta`. Use `split_ifs`. Conclude with `⟨-1, by simp⟩`. Conclude with `⟨1, by simp⟩`.
+-/
 theorem exists_eta : ∃ η : ℤ, (η : ℝ) = GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta F E v := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta
   split_ifs
   · exact ⟨-1, by simp⟩
   · exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.resCard`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem resCard_eq : GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard F v = (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.resCard F v : ℝ) := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.resCard
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem maxOrder_eq :
     GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.maxOrder F E v = (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.maxOrder F E v).toSubring := rfl
 
 variable {F E}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isSelfDualLattice_iff (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (L : Submodule (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.maxOrder F E v) (Fin M → Fv F v ⊗[F] E)) :
     GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.IsSelfDualLattice σ J v L ↔ GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.IsSelfDualLattice σ J v L :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[resCard_eq, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex, ← Real.rpow_intCast]`. Simplify using the standard rewrite rules.
+-/
 theorem vol_eq (c : ℤ) (M : ℕ) : (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard F v ^ c) ^ (-(M : ℝ)) =
     GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex F v c ^ (-(M : ℤ)) := by
   rw [resCard_eq, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex, ← Real.rpow_intCast]
   simp
 
+/- English proof (translation)
+Rewrite using `[resCard_eq, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex]`.
+-/
 theorem volInt_eq (c : ℤ) : (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard F v ^ c) ^ (-(1 / 2 : ℝ)) =
     GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex F v c ^ (-(1 / 2 : ℝ)) := by
   rw [resCard_eq, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex]
 
+/- English proof (translation)
+Rewrite using `[resCard_eq, ← hη, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.densityValue, GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex]`. Simplify using the standard rewrite rules.
+-/
 theorem dens_eq (c : ℤ) (M : ℕ) (η : ℤ) (hη : (η : ℝ) = GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta F E v) :
     (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard F v ^ c) ^ ((1 / 2 : ℝ) - (M : ℝ)) *
       (1 - GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.eta F E v ^ M * (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.resCard F v ^ M)⁻¹) =
@@ -196,6 +263,9 @@ theorem dens_eq (c : ℤ) (M : ℕ) (η : ℤ) (hη : (η : ℝ) = GlobalTheory.
 
 end Dict
 
+/- English proof (translation)
+Use `measure_congr ?_` and prove the remaining obligations. Use `filter_upwards [h] with X hX`. Establish `: q X = b` using `hX.1`. Conclude with `propext ⟨fun h => h.2, fun h => ⟨this, h⟩⟩`.
+-/
 theorem fib_inter {V K : Type} [MeasurableSpace V] (m : Measure V) (q : V → K) (b : K)
     (h : m (q ⁻¹' {id b} ∩ Set.univ)ᶜ = 0) (P : V → Prop) :
     m {X | q X = b ∧ P X} = m {X | P X} := by
@@ -204,6 +274,25 @@ theorem fib_inter {V K : Type} [MeasurableSpace V] (m : Measure V) (q : V → K)
   have : q X = b := hX.1
   exact propext ⟨fun h => h.2, fun h => ⟨this, h⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h F E _ _ _ _ _ σ hσ M J hM hJ v η hη ψ hψ`. Take `⟨hu, hη'⟩` from `(isEtaAt_iff F E v hσ.2.2.1 η).1 hη`. Use `⟨GlobalTheory.T.additive_char_conductor_exists F v ψ hψ.1 hψ.2.1 hψ.2.2, fun c hc L hL μ hμ ν hν => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `h F E σ hσ M hM J hJ v hu ψ hψ c hc L hL μ hμ ν hν`.
+
+Rewrite `a1` using `[vol_eq]`. Rewrite `a2` using `[volInt_eq]`. Use `⟨a1, a2, fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨hnull, fib0, hfib0⟩` from `null_and_exists v σ J hσ hM hJ μ hμ.1 ν hν.1`. Use `haveI := modTop (E := E) v`.
+
+Use `haveI := topRing (E := E) v`. Take `⟨h1, h2, h3⟩` from `lcs (E := E) v`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`.
+
+Establish `hq` using `continuous_q v σ J`. Establish `key : ∀ fib, IsFibreFamily μ (fun X => qR (Fv F v) σ J (X 0)) id Set.univ ν {c | c ≠ 0} fib → fib β (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.latTup v L) = ENNReal.ofReal (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.densityValue (GlobalTheory.In …`. Introduce `fib hfib`. Take `⟨b1, b2⟩` from `a3 fib hfib β hβ`. Rewrite `b1` using `[dens_eq v c M η hη', fib_inter _ _ _ (hfib.1 β)]`.
+
+Conclude with `⟨b1, b2⟩`. Use `⟨fun U B fib hU hB hfib => key fib (GlobalTheory.T.isFibreFamily_univ_of_null_cone' (Fv F v) _ μ ν _ hq hnull U B fib hU hB hfib), fun g hg t ht => ?_⟩` and prove the remaining obligations. Take `⟨hLc, hLo⟩` from `lattice_compact_open v σ hσ L hL.1 hL.2.1`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `ht` using `[zero_sub, Valuation.map_neg, hβ]`. Conclude with `lt_irrefl _ ht`. Use `haveI := hν.1`. Establish `hpos : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.densityValue (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.dualIndex F v c) (GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.resCard F v) η M`. Rewrite using `[← dens_eq v c M η hη']`.
+
+Use `GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.one_lt_resCard F v` as an intermediate fact. Conclude with `mul_nonneg (by positivity) (GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.density_factor_pos F E v M hM).le`. Rewrite using `[GlobalTheory.T.contDensity_eq_fibre_measure_of_compact_open (Fv F v) _ μ ν _ hq fib0 hfib0 _ hLc hLo g hg t ht0, (key fib0 hfib0).2 t ht, (key fib0 hfib0).1, ENNReal.toReal_ofReal hpos]`. Introduce `h F E _ _ _ _ _ σ hσ M hM J hJ v hu ψ hψ c hc L hL μ hμ ν hν`. Take `⟨η, hη⟩` from `exists_eta F E v`.
+
+Take `⟨a1, a2, a3⟩` from `(h F E σ hσ M J hM hJ v η ((isEtaAt_iff F E v hσ.2.2.1 η).2 ⟨hu, hη⟩) ψ hψ).2 c hc L hL μ hμ ν hν`. Rewrite using `[vol_eq, volInt_eq]`. Use `⟨a1, a2, fun fib hfib β hβ => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2⟩` from `(a3 β hβ).1 Set.univ _ fib (Set.subset_univ _) subset_rfl hfib`. Rewrite using `[dens_eq v c M η hη, fib_inter _ _ _ (hfib.1 β)]`.
+
+Conclude with `⟨b1, b2⟩`.
+-/
 theorem localDensity_iff :
     GlobalTheory.IndefiniteRowSideFullHecke.SelfDualUnramifiedPlaces.LocalDensity ↔ GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.SelfDualLatticeDensity := by
   constructor

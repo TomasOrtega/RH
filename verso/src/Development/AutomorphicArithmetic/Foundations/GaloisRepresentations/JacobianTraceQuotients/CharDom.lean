@@ -7,6 +7,27 @@ open scoped Classical
 
 namespace UpperTheory.Gal.Join
 
+/- English proof (translation)
+Set `ρ : (T →* ℂˣ) → (M →* ℂ)` to `fun μ => (Units.coeHom ℂ).comp (μ.comp M.subtype)`. Establish `hρm : ∀ μ (m : M), ρ μ m = (μ m : ℂ)` using `fun _ _ => rfl`. Establish `hρinj : Function.Injective ρ`. Introduce `μ ν hμν`. Establish `hM' : ∀ m ∈ M, μ m = ν m`.
+
+Introduce `m hm`. Apply `Units.ext` to reduce the goal to its premises. Use `DFunLike.congr_fun hμν ⟨m, hm⟩` as an intermediate fact. Rewrite `this` using `[hρm, hρm]`. Conclude with `this`.
+
+Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Take `⟨s, hs, hst⟩` from `hM t`. Establish `e : t = s⁻¹ * (s * t)` using `by rw [inv_mul_cancel_left]`. Rewrite using `[e, map_mul μ, map_mul ν, map_inv μ, map_inv ν, hM' s hs, hM' _ hst]`. Establish `hli : LinearIndependent ℂ (fun μ : T →* ℂˣ => ((ρ μ : M →* ℂ) : M → ℂ))` using `(linearIndependent_monoidHom M ℂ).comp ρ hρinj`.
+
+Introduce `μ hμ`. Assume the negation of the conclusion as `hμ'`. Set `S` to `(E + E').toFinset`. Set `g : (T →* ℂˣ) → ℂ` to `fun ν => (c * E.count ν - c' * E'.count ν) * (ν t₀ : ℂ)`. Establish `conv : ∀ F : Multiset (T →* ℂˣ), F.toFinset ⊆ S → ∀ t : T, (F.map fun ν => (ν (t₀ * t) : ℂ)).sum = ∑ ν ∈ S, (F.count ν : ℂ) * ((ν t₀ : ℂ) * (ν t : ℂ))`.
+
+Introduce `F hF t`. Rewrite using `[Finset.sum_multiset_map_count, Finset.sum_subset hF]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `ν _`. Rewrite using `[nsmul_eq_mul, map_mul, Units.val_mul]`.
+
+Introduce `ν _ hν`. Rewrite using `[Multiset.count_eq_zero.mpr (by simpa using hν)]`. Simplify using the standard rewrite rules. Establish `hsum : ∑ ν ∈ S, g ν • ((ρ ν : M →* ℂ) : M → ℂ) = 0`. Use function extensionality and compare the values at `m`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Establish `h1` using `h m m.2`. Rewrite `h1` using `[conv E (fun x hx => Multiset.mem_toFinset.mpr (Multiset.mem_add.mpr (Or.inl (Multiset.mem_toFinset.mp hx)))) m, conv E' (fun x hx => Multiset.mem_toFinset.mpr (Multiset.mem_add.mpr (Or.inr (Multiset.mem_toFinset.mp hx)))) m, Finset.mul_sum, Finset.mul_sum, ← sub_eq_zero, ← Finse …`. Rewrite using `[← h1]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `ν _`. Rewrite using `[hρm]`. Simplify using `only [g]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `linearIndependent_iff'.mp hli S g hsum μ (Multiset.mem_toFinset.mpr (Multiset.mem_add.mpr (Or.inl hμ)))`.
+
+Simplify using `only [g, Multiset.count_eq_zero.mpr hμ', Nat.cast_zero, mul_zero, sub_zero] at h0`. Break down `mul_eq_zero.mp h0 with h2 | h2` into its components or cases. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `hc h3`. Conclude with `(Multiset.count_pos.mpr hμ).ne' (by exact_mod_cast h3)`.
+
+Conclude with `(μ t₀).ne_zero h2`.
+-/
 private theorem indep {T : Type} [CommGroup T] (M : Submonoid T) (hM : ∀ t : T, ∃ s ∈ M, s * t ∈ M) (t₀ : T)
     (E E' : Multiset (T →* ℂˣ)) (c c' : ℂ) (hc : c ≠ 0)
     (h : ∀ t ∈ M, c * (E.map fun μ => (μ (t₀ * t) : ℂ)).sum = c' * (E'.map fun μ => (μ (t₀ * t) : ℂ)).sum) :
@@ -79,6 +100,21 @@ private def domM (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     intro i j _
     simp
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨1, (domM k 0).one_mem, ?_⟩` and prove the remaining obligations. Use `show Dom _`. Introduce `i`.
+
+Conclude with `i.elim0`. Take `⟨p, -, hp⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n × Fin n)) (fun p => valuation k ((t p.1 / t p.2 : kˣ) : k)) ⟨(⟨0, hn⟩, ⟨0, hn⟩), Finset.mem_univ _⟩`. Establish `hx1 : 1 ≤ valuation k ((t p.1 / t p.2 : kˣ) : k)`. Use `hp (⟨0, hn⟩, ⟨0, hn⟩) (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hxt : ∀ i j, valuation k (t i : k) ≤ valuation k ((t p.1 / t p.2 : kˣ) : k) * valuation k (t j : k)`. Introduce `i j`. Use `hp (i, j) (Finset.mem_univ _)` as an intermediate fact. Establish `e : (t i : k) = ((t i / t j : kˣ) : k) * (t j : k)` using `by simp`. Rewrite using `[e, map_mul]`.
+
+Use `gcongr`. Use `⟨fun i => (t p.1 / t p.2) ^ (i : ℕ), ?_, ?_⟩` and prove the remaining obligations. Use `show Dom _`. Introduce `i j hij`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow]`.
+
+Conclude with `pow_le_pow_right₀ hx1 (le_of_lt hij)`. Use `show Dom _`. Introduce `i j hij`. Simplify using `only [Pi.mul_apply, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Establish `hij' : (i : ℕ) + 1 ≤ j` using `hij`.
+
+Establish `hpw` using `pow_le_pow_right₀ hx1 hij'`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hxt i j`. Use `_ = valuation k ((t p.1 / t p.2 : kˣ) : k) ^ ((i : ℕ) + 1) * valuation k (t j : k) := by`. Rewrite using `[pow_succ, mul_assoc]`.
+
+Use `_ ≤ valuation k ((t p.1 / t p.2 : kˣ) : k) ^ (j : ℕ) * valuation k (t j : k) := by gcongr`.
+-/
 private theorem dom_translate (t : Fin n → kˣ) : ∃ s ∈ domM k n, s * t ∈ domM k n := by
   rcases Nat.eq_zero_or_pos n with hn | hn
   · subst hn
@@ -118,6 +154,11 @@ private theorem dom_translate (t : Fin n → kˣ) : ∃ s ∈ domM k n, s * t �
         _ ≤ valuation k ((t p.1 / t p.2 : kˣ) : k) ^ (j : ℕ) * valuation k (t j : k) := by
             gcongr
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n t₀ E E' c c' hc h`. Establish `hind` using `indep (domM k n) (fun t => dom_translate t) t₀ E E' c c' hc h`. Use `⟨hind, fun hE => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Take `⟨μ, hμ⟩` from `Multiset.exists_mem_of_ne_zero hE`. Use `indep (domM k n) (fun t => dom_translate t) t₀ E 0 1 0 one_ne_zero (fun t ht => by rw [one_mul, hne t ht]; simp) μ hμ` as an intermediate fact. Simplify using `at this`.
+-/
 theorem charDom : CharDom := by
   intro k _ _ _ _ n t₀ E E' c c' hc h
   have hind := indep (domM k n) (fun t => dom_translate t) t₀ E E' c c' hc h

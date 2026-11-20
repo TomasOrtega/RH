@@ -4,18 +4,35 @@ open scoped Real ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Complex.im_sum]`.
+-/
 theorem theta_translate_imag_part {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (z : Fin g → ℂ) :
     (fun i => ((z + per τ x) i).im) =
       (fun i => (z i).im) + (fun i => x (Sum.inl i)) ᵥ* (τ.map Complex.im) := by
   ext i
   simp [per, Matrix.vecMul, dotProduct, Complex.im_sum]
 
+/- English proof (translation)
+Simplify using `[thetaExp, Matrix.vecMul, dotProduct, Complex.im_sum]`.
+-/
 theorem thetaMetric_thetaExp_im {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (z : Fin g → ℂ) :
     (thetaExp τ x z).im =
       -(((fun i => x (Sum.inl i)) ᵥ* (τ.map Complex.im)) ⬝ᵥ fun i => x (Sum.inl i)) / 2 -
         (fun i => x (Sum.inl i)) ⬝ᵥ fun i => (z i).im := by
   simp [thetaExp, Matrix.vecMul, dotProduct, Complex.im_sum]
 
+/- English proof (translation)
+Introduce `g E _ _ B τ hτ x P hP`. Establish `hS` using `hτ.2.2 P.1 hP.1`. Establish `hU : IsUnit ((τ P.1).map Complex.im).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hS.2.isUnit`. Establish `hYiY` using `Matrix.nonsing_inv_mul _ hU`. Establish `hYYi` using `Matrix.mul_nonsing_inv _ hU`.
+
+Establish `hYt : ((τ P.1).map Complex.im)ᵀ = (τ P.1).map Complex.im`. Simplify `hS.2.1.eq` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Establish `h2 : (transl τ x P).2 = P.2 + per (τ P.1) x` using `rfl`. Rewrite using `[h2, theta_translate_imag_part, Complex.norm_exp]`. Establish `hre : (2 * π * Complex.I * thetaExp (τ P.1) x P.2).re = -2 * π * (thetaExp (τ P.1) x P.2).im`.
+
+Simplify using `[Complex.mul_re]`. Rewrite using `[hre, thetaMetric_thetaExp_im, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Use `set Y : Matrix (Fin g) (Fin g) ℝ := (τ P.1).map Complex.im with hYdef`. Use `set y : Fin g → ℝ := fun i => (P.2 i).im with hy`.
+
+Use `set p : Fin g → ℝ := fun i => x (Sum.inl i) with hp`. Establish `k1 : Y⁻¹ *ᵥ (p ᵥ* Y) = p`. Rewrite using `[← Matrix.mulVec_transpose, hYt, Matrix.mulVec_mulVec, hYiY, Matrix.one_mulVec]`. Establish `k2 : (p ᵥ* Y) ⬝ᵥ (Y⁻¹ *ᵥ y) = p ⬝ᵥ y`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hYYi, Matrix.vecMul_one]`.
+
+Rewrite using `[Matrix.mulVec_add, k1, add_dotProduct, dotProduct_add, dotProduct_add, k2, dotProduct_comm y p]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaMetric_transl_invariant : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (x : Fl g), ∀ P ∈ cov B g, Real.exp (-2 * π * ((fun i => ((transl τ x P).2 i).im) ⬝ᵥ ((((τ P.1).map Complex.im)⁻¹) *ᵥ fun i => ((transl τ x P).2 i).im))) * ‖Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) x P.2)‖ ^ 2 = Real.exp (-2 * π * ((fun i => (P.2 i).im) ⬝ᵥ ((((τ P.1).map Complex.im)⁻¹) *ᵥ fun i => (P.2 i).im))) := by
   intro g E _ _ B τ hτ x P hP
   have hS := hτ.2.2 P.1 hP.1

@@ -13,32 +13,60 @@ namespace GlobalTheory.LevCong
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `v`. Simplify using `only [map_one]`. Conclude with `one_mem _`.
+-/
 theorem one_mem_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := by
   intro v
   simp only [map_one]
   exact one_mem _
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, one_mem_intAf, x, hx, rfl⟩`.
+-/
 theorem toAf_mem_hatV {k : ℕ} {L : Lt D.host.E k} {x : Fin k → D.host.E} (hx : x ∈ L) :
     toAf (D := D) x ∈ hatV L :=
   AddSubgroup.subset_closure ⟨1, one_mem_intAf, x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩`.
+-/
 theorem hatV_mono {k : ℕ} {L L' : Lt D.host.E k} (h : L ≤ L') : hatV (D := D) L ≤ hatV L' :=
   AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[toAf, TensorProduct.tmul_add]`.
+-/
 theorem toAf_add {k : ℕ} (x y : Fin k → D.host.E) : toAf (D := D) (x + y) = toAf x + toAf y := by
   funext i; simp [toAf, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[toAf, TensorProduct.tmul_sub]`.
+-/
 theorem toAf_sub {k : ℕ} (x y : Fin k → D.host.E) : toAf (D := D) (x - y) = toAf x - toAf y := by
   funext i; simp [toAf, TensorProduct.tmul_sub]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[toAf]`.
+-/
 theorem toAf_zero {k : ℕ} : toAf (D := D) (0 : Fin k → D.host.E) = 0 := by
   funext i; simp [toAf]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[toAf, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`.
+-/
 theorem toAf_smul {k : ℕ} (c : 𝓞 D.host.E) (x : Fin k → D.host.E) :
     toAf (D := D) (c • x) = ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) • toAf x := by
   funext i
   simp [toAf, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, c • x, h x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem smul_mem_hatV {k : ℕ} (c : 𝓞 D.host.E) {L L' : Lt D.host.E k} (h : ∀ x ∈ L, c • x ∈ L')
     {u : Fin k → AfE D} (hu : u ∈ hatV L) :
     ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) • u ∈ hatV L' := by
@@ -55,18 +83,30 @@ theorem smul_mem_hatV {k : ℕ} (c : 𝓞 D.host.E) {L L' : Lt D.host.E k} (h : 
 section
 variable {r : ℕ} (m : Matrix (Fin r) (Fin r) (AfE D))
 
+/- English proof (translation)
+Rewrite using `[toAf_add, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fadd (x y : Fin r → D.host.E) : m *ᵥ toAf (D := D) (x + y) - toAf (x + y) =
     (m *ᵥ toAf x - toAf x) + (m *ᵥ toAf y - toAf y) := by
   rw [toAf_add, Matrix.mulVec_add]; abel
 
+/- English proof (translation)
+Rewrite using `[toAf_smul, Matrix.mulVec_smul, smul_sub]`.
+-/
 theorem fsmul (c : 𝓞 D.host.E) (x : Fin r → D.host.E) : m *ᵥ toAf (D := D) (c • x) - toAf (c • x) =
     ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) • (m *ᵥ toAf x - toAf x) := by
   rw [toAf_smul, Matrix.mulVec_smul, smul_sub]
 
+/- English proof (translation)
+Simplify using `only [Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem sum_one_smul (β : Fin r → Fin r → D.host.E) (i : Fin r) :
     ∑ j, (1 : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) j i • β j = β i := by
   simp only [Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[← sum_one_smul β i, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sub_smul]`.
+-/
 theorem sum_sub_one (β : Fin r → Fin r → D.host.E) (κ' : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) (i : Fin r) :
     ∑ j, (κ' j i - (1 : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) j i) • β j = ∑ j, κ' j i • β j - β i := by
   rw [← sum_one_smul β i, ← Finset.sum_sub_distrib]
@@ -74,6 +114,13 @@ theorem sum_sub_one (β : Fin r → Fin r → D.host.E) (κ' : Matrix (Fin r) (F
   rw [sub_smul]
 end
 
+/- English proof (translation)
+Introduce `t ht`. Use `Submodule.smul_induction_on ht ?_ ?_` and prove the remaining obligations. Introduce `p hp y hy`. Establish `h1 : m *ᵥ toAf (D` using `D) y ∈ hatV Λ := (hmov _).2 ⟨_, toAf_mem_hatV hy, rfl⟩`. Rewrite using `[fsmul]`.
+
+Rewrite using `[smul_sub]`. Use `sub_mem (smul_mem_hatV p (fun x hx => Submodule.smul_mem_smul (h𝔪I hp) hx) h1) ?_` and prove the remaining obligations. Rewrite using `[← toAf_smul]`. Conclude with `toAf_mem_hatV (Submodule.smul_mem_smul (h𝔪I hp) hy)`. Introduce `x y hx hy`.
+
+Rewrite using `[fadd]`. Conclude with `add_mem hx hy`.
+-/
 theorem mem_of_smul {r : ℕ} (Λ : Lt D.host.E r) (𝔪 I : Ideal (𝓞 D.host.E)) (h𝔪I : 𝔪 ≤ I)
     (m : Matrix (Fin r) (Fin r) (AfE D)) (hmov : IsMov m Λ Λ) :
     ∀ t ∈ 𝔪 • Λ, m *ᵥ toAf (D := D) t - toAf t ∈ hatV (I • Λ) := by
@@ -87,6 +134,13 @@ theorem mem_of_smul {r : ℕ} (Λ : Lt D.host.E r) (𝔪 I : Ideal (𝓞 D.host.
     rw [← toAf_smul]; exact toAf_mem_hatV (Submodule.smul_mem_smul (h𝔪I hp) hy)
   · intro x y hx hy; rw [fadd]; exact add_mem hx hy
 
+/- English proof (translation)
+Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Establish `e : m *ᵥ toAf (D` using `D) (β i) - toAf (β i) = (m *ᵥ toAf (β i) - toAf (∑ j, κ' j i • β j)) + toAf (∑ j, (κ' j i - (1 : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) j i) • β j) := by`.
+
+Rewrite using `[sum_sub_one, toAf_sub, sub_add_sub_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (hatV_mono (Submodule.smul_mono_left h𝔪I) (hfr i)) (toAf_mem_hatV (sum_mem fun j _ => Submodule.smul_mem_smul (hκ j i) (hβ j)))`. Consider the case `zero => rw [toAf_zero, Matrix.mulVec_zero, sub_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [fadd]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[fsmul]`. Conclude with `smul_mem_hatV c (fun y hy => Submodule.smul_mem _ c hy) hx`.
+-/
 theorem mem_of_span {r : ℕ} (Λ : Lt D.host.E r) (β : Fin r → Fin r → D.host.E) (𝔪 I : Ideal (𝓞 D.host.E))
     (hβ : ∀ i, β i ∈ Λ) (h𝔪I : 𝔪 ≤ I) (m : Matrix (Fin r) (Fin r) (AfE D))
     (κ' : Matrix (Fin r) (Fin r) (𝓞 D.host.E))
@@ -108,6 +162,9 @@ theorem mem_of_span {r : ℕ} (Λ : Lt D.host.E r) (β : Fin r → Fin r → D.h
   | smul c x _ hx =>
     rw [fsmul]; exact smul_mem_hatV c (fun y hy => Submodule.smul_mem _ c hy) hx
 
+/- English proof (translation)
+Introduce `D r Λ β 𝔪 I hβ hspan h𝔪I m κ' hκ hmov hfr x hx`. Take `⟨s, hs', t, ht', rfl⟩` from `Submodule.mem_sup.1 (hspan hx)`. Rewrite using `[fadd]`. Conclude with `add_mem (mem_of_span Λ β 𝔪 I hβ h𝔪I m κ' hκ hfr s hs') (mem_of_smul Λ 𝔪 I h𝔪I m hmov t ht')`.
+-/
 theorem cong_of_frame : ∀ (D : D7) {r : ℕ} (Λ : Lt D.host.E r) (β : Fin r → Fin r → D.host.E) (𝔪 I : Ideal (𝓞 D.host.E)), (∀ i, β i ∈ Λ) → Λ ≤ Submodule.span (𝓞 D.host.E) (Set.range β) ⊔ 𝔪 • Λ → 𝔪 ≤ I → ∀ (m : Matrix (Fin r) (Fin r) (AfE D)) (κ' : Matrix (Fin r) (Fin r) (𝓞 D.host.E)), (∀ i j, κ' i j - (1 : Matrix (Fin r) (Fin r) (𝓞 D.host.E)) i j ∈ I) → IsMov m Λ Λ → (∀ i, m *ᵥ toAf (β i) - toAf (∑ j, κ' j i • β j) ∈ hatV (𝔪 • Λ)) → ∀ x ∈ Λ, m *ᵥ toAf x - toAf x ∈ hatV (I • Λ) := by
   intro D r Λ β 𝔪 I hβ hspan h𝔪I m κ' hκ hmov hfr x hx
   obtain ⟨s, hs', t, ht', rfl⟩ := Submodule.mem_sup.1 (hspan hx)

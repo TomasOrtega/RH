@@ -10,6 +10,15 @@ open Filter Topology TopologicalSpace CategoryTheory GlobalTheory.AnPer GlobalTh
 
 namespace GlobalTheory.AnPer
 
+/- English proof (translation)
+Introduce `I I' _ _ g g' W W' C _ J ρ₁ ρ₂ ψ M hψ h`. Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `@tail σ τ _ s ih`. Take `⟨n, h1, h2, h3⟩` from `s`.
+
+Use `Relation.ReflTransGen.tail ih ⟨fun b ↦ ∑ a, σ (algebraMap ℂ (Hol W') (M b a)) * n a, fun b ↦ J.sum_mem fun a _ ↦ J.mul_mem_left _ (h1 a), fun b c ↦ ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun a _ ↦ Finset.sum_eq_zero fun a' _ ↦ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[h3 (ψ f)]`. Use `congr 1`. Repeatedly rewrite using `[hψ, map_sum, Algebra.smul_def, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ ↦ Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Close.comap_linear : ∀ {I I' : Type} [Fintype I] [Fintype I'] {g g' : ℕ} {W : Opens (Tot I g)} {W' : Opens (Tot I' g')} {C : Type} [CommRing C] (J : Ideal C) (ρ₁ ρ₂ : Hol W' →+* C) (ψ : Hol W →+* Hol W') (M : Fin g → Fin g' → ℂ), (∀ a f, dw a (ψ f) = ∑ b, M b a • ψ (dw b f)) → Close J ρ₁ ρ₂ → Close J (ρ₁.comp ψ) (ρ₂.comp ψ) := by
   intro I I' _ _ g g' W W' C _ J ρ₁ ρ₂ ψ M hψ h
   induction h with

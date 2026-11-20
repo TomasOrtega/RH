@@ -12,6 +12,21 @@ noncomputable section
 
 namespace GlobalTheory.MidIrr
 
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ N l n h V _ _ π hπ hfl W _ _ Q hQ Y _ _ η f hf`. Use `set e := tripPlace h with he`. Establish `hL : HasFiniteLength (jacU e π)` using `(GlobalTheory.JacquetBlocks.hasFiniteLength_twist_iff (jacU e π) (deltaHalf k _)⁻¹).1 ((hBZ k).2.1 _ _ _ e V π hπ hfl)`. Establish `hsm : IsSmooth ((jacU e π).comp (midHom k l n N))` using `isSmooth_comp (isSmooth_jacU e hπ) _ (continuous_mulSingle (A := fun j : Fin 3 => GL (Fin (tripSizes l n N j)) k) 1)`. Take `⟨S, p, hp⟩` from `hQ`.
+
+Set `F : S.toRepresentation.IntertwiningMap η` to `f.comp p`. Establish `hF : F ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Use extensionality with `w`.
+
+Take `⟨x, rfl⟩` from `hp w`. Conclude with `congrArg (fun G : S.toRepresentation.IntertwiningMap η => G x) h0`. Take `⟨R, hRi, hRle⟩` from `GlobalTheory.T.subquotient_semisimple_restriction _ _ (midHom k l n N) _ (jacU e π) hL (fun Z _ _ τ hτ hi => GlobalTheory.T.cuspidal_block_levi_semisimple hBZ k l n N Z τ (hτ.isSmooth (isSmooth_jacU e hπ)) hi) S Y η F hF`. Set `T : Subrepresentation S.toRepresentation` to `⟨R.toSubmodule.comap F.toLinearMap, fun g x hx => by show F (S.toRepresentation g x) ∈ R.toSubmodule`. Rewrite using `[F.isIntertwining]`.
+
+Conclude with `R.apply_mem_toSubmodule g hx⟩`. Set `q : T.toRepresentation.IntertwiningMap R.toRepresentation` to `⟨(F.toLinearMap.restrict (p := T.toSubmodule) (q := R.toSubmodule) fun x hx => hx), fun g => by`. Use extensionality with `x`. Conclude with `F.isIntertwining _ _ g x⟩`. Establish `hq : Function.Surjective q`.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨x, hx⟩` from `hRle hy`. Conclude with `⟨⟨x, show F x ∈ R.toSubmodule from hx ▸ hy⟩, Subtype.ext hx⟩`. Establish `h1 : IsSubquotient R.toRepresentation S.toRepresentation` using `⟨T, q, hq⟩`. Establish `h2 : IsSubquotient S.toRepresentation ((jacU e π).comp (midHom k l n N))` using `IsSubquotient.of_injective ⟨S.toSubmodule.subtype, fun g => rfl⟩ Subtype.val_injective`.
+
+Establish `h3` using `h1.trans h2`. Use `⟨⟨R.toSubmodule, R.toRepresentation, h3.isSmooth hsm, hRi⟩, h3, ⟨R.toSubmodule.subtype, fun g => rfl⟩, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hsub : Subsingleton R.toSubmodule` using `⟨fun a b => by`. Establish `ha` using `congrArg (fun G : R.toRepresentation.IntertwiningMap η => G a) h0`. Establish `hb` using `congrArg (fun G : R.toRepresentation.IntertwiningMap η => G b) h0`.
+
+Conclude with `Subtype.ext ((ha.trans hb.symm : (a : Y) = b))⟩`. Use `haveI : IsSimpleOrder (Subrepresentation R.toRepresentation) := hRi`. Apply `(bot_ne_top : (⊥ : Subrepresentation R.toRepresentation) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem exists_smIrr_subquotient_map : GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N l n : ℕ) (h : l + n ≤ N)
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → HasFiniteLength π →

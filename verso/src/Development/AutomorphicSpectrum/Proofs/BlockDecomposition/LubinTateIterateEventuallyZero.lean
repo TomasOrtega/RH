@@ -7,10 +7,20 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LTPer.Nonv
 
+/- English proof (translation)
+Simplify using `only [ltIter, Function.iterate_succ_apply']`.
+-/
 theorem ltIter_succ_eq {B : Type} [CommRing B] (ϖ : B) (q n : ℕ) (x : B) :
     ltIter ϖ q (n + 1) x = ϖ * ltIter ϖ q n x + ltIter ϖ q n x ^ q := by
   simp only [ltIter, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `: q ≠ 0` using `by omega`. Simplify using `[this]`. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc`.
+
+Establish `hlt : ‖c ^ q‖ < ‖a * c‖`. Take `⟨r, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Rewrite using `[norm_pow, norm_mul, pow_succ]`. Simplify using `only [Nat.add_sub_cancel] at h`. Conclude with `mul_lt_mul_of_pos_right h hcpos`.
+
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt hlt), max_eq_left hlt.le, norm_mul]`.
+-/
 theorem norm_step_eq {C : Type} [NormedField C] [IsUltrametricDist C] (a c : C) (q : ℕ) (hq : 2 ≤ q)
     (h : ‖c‖ ^ (q - 1) < ‖a‖) : ‖a * c + c ^ q‖ = ‖a‖ * ‖c‖ := by
   by_cases hc : c = 0
@@ -25,6 +35,9 @@ theorem norm_step_eq {C : Type} [NormedField C] [IsUltrametricDist C] (a c : C) 
       exact mul_lt_mul_of_pos_right h hcpos
     rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (ne_of_gt hlt), max_eq_left hlt.le, norm_mul]
 
+/- English proof (translation)
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans ?_` and prove the remaining obligations. Take `⟨r, rfl⟩ : ∃ r, q = r + 1` from `⟨q - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[norm_mul, norm_pow, pow_succ, max_mul_of_nonneg _ _ (norm_nonneg c)]`.
+-/
 theorem norm_step_le {C : Type} [NormedField C] [IsUltrametricDist C] (a c : C) (q : ℕ) (hq : 2 ≤ q) :
     ‖a * c + c ^ q‖ ≤ max ‖a‖ (‖c‖ ^ (q - 1)) * ‖c‖ := by
   refine (IsUltrametricDist.norm_add_le_max _ _).trans ?_
@@ -32,6 +45,19 @@ theorem norm_step_le {C : Type} [NormedField C] [IsUltrametricDist C] (a c : C) 
   simp only [Nat.add_sub_cancel]
   rw [norm_mul, norm_pow, pow_succ, max_mul_of_nonneg _ _ (norm_nonneg c)]
 
+/- English proof (translation)
+Establish `hapos : 0 < ‖a‖` using `norm_pos_iff.mpr ha0`. Use `set ρ := max ‖a‖ (‖c 0‖ ^ (q - 1)) with hρ`. Establish `hρ1 : ρ < 1` using `max_lt ha (pow_lt_one₀ (norm_nonneg _) h0 (by omega))`. Establish `hρ0 : 0 ≤ ρ` using `hapos.le.trans (le_max_left _ _)`. Establish `hdec : ∀ n, ‖c n‖ ≤ ρ ^ n * ‖c 0‖`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hle : ‖c n‖ ≤ ‖c 0‖` using `ih.trans (mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ hρ0 hρ1.le))`.
+
+Establish `hm : max ‖a‖ (‖c n‖ ^ (q - 1)) ≤ ρ` using `max_le_max le_rfl (pow_le_pow_left₀ (norm_nonneg _) hle _)`. Rewrite using `[hc n]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hapos hρ1`. Establish `hcn : ‖c n‖ < ‖a‖` using `((hdec n).trans (mul_le_of_le_one_right (pow_nonneg hρ0 n) h0.le)).trans_lt hn`.
+
+Establish `hsmall : ∀ x : C, ‖x‖ ≤ ‖c n‖ → ‖x‖ ^ (q - 1) < ‖a‖`. Introduce `x hx`. Establish `hx1 : ‖x‖ ≤ 1` using `hx.trans (hcn.trans ha).le`. Conclude with `((pow_le_of_le_one (norm_nonneg _) hx1 (by omega)).trans hx).trans_lt hcn`. Use `⟨n, fun j => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `hle : ‖c (n + j)‖ ≤ ‖c n‖`. Rewrite using `[ih]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ hapos.le ha.le)`. Rewrite using `[← add_assoc, hc (n + j), norm_step_eq a _ q hq (hsmall _ hle), ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm_geometric {C : Type} [NormedField C] [IsUltrametricDist C] (a : C) (q : ℕ) (hq : 2 ≤ q)
     (ha0 : a ≠ 0) (ha : ‖a‖ < 1) (c : ℕ → C) (hc : ∀ n, c (n + 1) = a * c n + c n ^ q)
     (h0 : ‖c 0‖ < 1) : ∃ n, ∀ j, ‖c (n + j)‖ = ‖a‖ ^ j * ‖c n‖ := by
@@ -71,6 +97,9 @@ theorem exists_norm_geometric {C : Type} [NormedField C] [IsUltrametricDist C] (
 
 variable {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using hQ`. Consider the case `succ n ih`. Rewrite using `[ltIter_succ_eq]`. Conclude with `S.add_mem (S.mul_mem hE.mem ih) (S.pow_mem ih q)`.
+-/
 theorem ltIter_mem (hE : PerEnv S F ϖ) (q : ℕ) {Q : B} (hQ : Q ∈ S) (n : ℕ) : ltIter ϖ q n Q ∈ S := by
   induction n with
   | zero => simpa [ltIter] using hQ
@@ -78,6 +107,19 @@ theorem ltIter_mem (hE : PerEnv S F ϖ) (q : ℕ) {Q : B} (hQ : Q ∈ S) (n : �
     rw [ltIter_succ_eq]
     exact S.add_mem (S.mul_mem hE.mem ih) (S.pow_mem ih q)
 
+/- English proof (translation)
+Establish `hanti : Antitone F` using `antitone_nat_of_succ_le hE.anti`. Establish `hD : ∀ j, ltIter ϖ q (n + j) Q - ϖ ^ j * ltIter ϖ q n Q ∈ F (m + 1)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+
+Consider the case `succ j ih`. Establish `hym : ltIter ϖ q (n + j) Q ∈ F m`. Establish `h1` using `(F m).add_mem (hE.anti m ih) ((F m).mul_mem_left (ϖ ^ j) hy)`. Simplify using `using h1`. Establish `hsq : ltIter ϖ q (n + j) Q * ltIter ϖ q (n + j) Q ∈ F (m + 1)` using `hanti (by omega : m + 1 ≤ m + m) (hE.mul_le m m (Ideal.mul_mem_mul hym hym))`.
+
+Take `⟨r, rfl⟩ : ∃ r, q = r + 2` from `⟨q - 2, by omega⟩`. Establish `he : ltIter ϖ (r + 2) (n + (j + 1)) Q - ϖ ^ (j + 1) * ltIter ϖ (r + 2) n Q = ϖ * (ltIter ϖ (r + 2) (n + j) Q - ϖ ^ j * ltIter ϖ (r + 2) n Q) + ltIter ϖ (r + 2) (n + j) Q ^ r * (ltIter ϖ (r + 2) (n + j) Q * ltIter ϖ (r + 2) (n + j) Q)`. Rewrite using `[← add_assoc, ltIter_succ_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
+
+Conclude with `(F (m + 1)).add_mem ((F (m + 1)).mul_mem_left _ ih) ((F (m + 1)).mul_mem_left _ hsq)`. Take `⟨c, hc⟩` from `hT (m + 1)`. Use `hE.closed (m + 1) _ (ltIter_mem hE q hQ n) fun M => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `hc (M + c)`. Take `⟨s, hs, hd⟩` from `hN (n + N) (by omega)`.
+
+Use `⟨ϖ ^ n * s, S.mul_mem (S.pow_mem hE.mem n) hs, ?_⟩` and prove the remaining obligations. Establish `h1 : ϖ ^ c * ϖ' ^ c = 1` using `by rw [← mul_pow, hϖ, one_pow]`. Establish `h2 : ϖ ^ n * ϖ' ^ n = 1` using `by rw [← mul_pow, hϖ, one_pow]`. Establish `h3 : ϖ ^ N * ϖ' ^ N = 1` using `by rw [← mul_pow, hϖ, one_pow]`. Establish `he : ltIter ϖ q n Q - ϖ ^ M * (ϖ ^ n * s) = ϖ ^ n * ϖ' ^ c * (ϖ ^ c * (ϖ' ^ (n + N) * ltIter ϖ q (n + N) Q - 0) - ϖ ^ (M + c) * s) - ϖ' ^ N * (ltIter ϖ q (n + N) Q - ϖ ^ N * ltIter ϖ q n Q)`.
+
+Take the linear combination `(-ltIter ϖ q n Q) * h3 + (ϖ ^ M * ϖ ^ n * s - ϖ' ^ N * ltIter ϖ q (n + N) Q * (ϖ ^ n * ϖ' ^ n)) * h1 - ϖ' ^ N * ltIter ϖ q (n + N) Q * h2`. Rewrite using `[he]`. Conclude with `(F (m + 1)).sub_mem ((F (m + 1)).mul_mem_left _ hd) ((F (m + 1)).mul_mem_left _ (hD N))`.
+-/
 theorem ltIter_mem_succ (hE : PerEnv S F ϖ) (ϖ' : B) (hϖ : ϖ * ϖ' = 1) (q : ℕ) (hq : 2 ≤ q) {Q : B} (hQ : Q ∈ S)
     (hT : Tends S F ϖ (fun n => ϖ' ^ n * ltIter ϖ q n Q) 0) (n m : ℕ) (hm : 1 ≤ m)
     (hy : ltIter ϖ q n Q ∈ F m) : ltIter ϖ q n Q ∈ F (m + 1) := by
@@ -119,6 +161,23 @@ theorem ltIter_mem_succ (hE : PerEnv S F ϖ) (ϖ' : B) (hϖ : ϖ * ϖ' = 1) (q :
 
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Establish `haa : θ ϖ * θ ϖ' = 1` using `by rw [← map_mul, hϖ, map_one]`. Establish `ha0 : θ ϖ ≠ 0` using `left_ne_zero_of_mul_eq_one haa`. Establish `hapos : 0 < ‖θ ϖ‖` using `norm_pos_iff.mpr ha0`. Establish `hnn : ‖θ ϖ‖ * ‖θ ϖ'‖ = 1` using `by rw [← norm_mul, haa, norm_one]`. Establish `hpos' : 0 < ‖θ ϖ'‖`.
+
+Use `right_ne_zero_of_mul_eq_one haa` as an intermediate fact. Conclude with `norm_pos_iff.mpr this`. Establish `h0 : ‖θ (ltIter ϖ q 0 Q)‖ < 1`. Take `⟨M, hM, s, hs, hd⟩` from `hQM`. Establish `e : θ Q ^ M = θ ϖ * θ s`.
+
+Use `(hθ _).mpr hd` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, pow_one] at this`. Conclude with `sub_eq_zero.mp this`. Assume the negation of the conclusion as `hcon`. Establish `h1 : (1 : ℝ) ≤ ‖θ Q‖` using `by simpa [ltIter] using hcon`.
+
+Establish `h2 : (1 : ℝ) ≤ ‖θ Q‖ ^ M` using `one_le_pow₀ h1`. Establish `h3 : ‖θ Q‖ ^ M = ‖θ ϖ‖ * ‖θ s‖` using `by rw [← norm_pow, e, norm_mul]`. Establish `h4 : ‖θ ϖ‖ * ‖θ s‖ < 1` using `(mul_le_of_le_one_right hapos.le (hS s hs)).trans_lt ha`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn⟩` from `exists_norm_geometric (θ ϖ) q hq ha0 ha (fun n => θ (ltIter ϖ q n Q)) (fun n => by simp only [ltIter_succ_eq, map_add, map_mul, map_pow]) h0`.
+
+Use `⟨n, (hθ _).mp ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hcpos : 0 < ‖θ (ltIter ϖ q n Q)‖` using `norm_pos_iff.mpr hne`. Take `⟨c, hc⟩` from `hT 1`. Establish `hK : 0 < ‖θ ϖ‖ ^ c * ‖θ ϖ'‖ ^ n * ‖θ (ltIter ϖ q n Q)‖` using `by positivity`.
+
+Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one hK ha`. Take `⟨N, hN⟩` from `hc m`. Take `⟨s, hs, hd⟩` from `hN (n + N) (by omega)`. Establish `e` using `(hθ _).mpr hd`. Simplify using `only [map_sub, map_mul, map_pow, map_zero, sub_zero] at e`.
+
+Establish `e2 : ‖θ ϖ‖ ^ c * (‖θ ϖ'‖ ^ (n + N) * ‖θ (ltIter ϖ q (n + N) Q)‖) = ‖θ ϖ‖ ^ m * ‖θ s‖`. Use `congrArg norm (sub_eq_zero.mp e)` as an intermediate fact. Simplify `this` using `only [norm_mul, norm_pow]`. Establish `hNN : ‖θ ϖ‖ ^ N * ‖θ ϖ'‖ ^ N = 1` using `by rw [← mul_pow, hnn, one_pow]`. Establish `e3 : ‖θ ϖ‖ ^ c * ‖θ ϖ'‖ ^ n * ‖θ (ltIter ϖ q n Q)‖ = ‖θ ϖ‖ ^ m * ‖θ s‖`.
+
+Rewrite using `[← e2, hn N, pow_add]`. Take the linear combination `(-(‖θ ϖ‖ ^ c * ‖θ ϖ'‖ ^ n * ‖θ (ltIter ϖ q n Q)‖)) * hNN`. Establish `h5 : ‖θ ϖ‖ ^ m * ‖θ s‖ ≤ ‖θ ϖ‖ ^ m` using `mul_le_of_le_one_right (pow_nonneg hapos.le m) (hS s hs)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_ltIter_mem_one (ϖ' : B) (hϖ : ϖ * ϖ' = 1) (θ : B →+* C) (hθ : ∀ x, θ x = 0 ↔ x ∈ F 1)
     (hS : ∀ s ∈ S, ‖θ s‖ ≤ 1) (ha : ‖θ ϖ‖ < 1) (q : ℕ) (hq : 2 ≤ q) (Q : B) (hQ : Q ∈ S)
     (hQM : ∃ M : ℕ, 0 < M ∧ Near S ϖ (F 1) 1 (Q ^ M))
@@ -172,6 +231,13 @@ namespace GlobalTheory.CompanionTheory.LTPer
 
 open GlobalTheory.CompanionTheory.LTPer.Nonv in
 
+/- English proof (translation)
+Introduce `B _ S F ϖ C _ _ hE ϖ' hϖ θ hθ hS ha q hq Q hQ hQM hT`. Take `⟨n, hn⟩` from `exists_ltIter_mem_one ϖ' hϖ θ hθ hS ha q hq Q hQ hQM hT`. Use `⟨n, hE.sep _ fun k => ?_⟩` and prove the remaining obligations. Establish `hall : ∀ m, 1 ≤ m → ltIter ϖ q n Q ∈ F m`. Introduce `m hm`.
+
+Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => exact hn`. Consider the case `succ m hm ih => exact ltIter_mem_succ hE ϖ' hϖ q hq hQ hT n m hm ih`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[hE.top]`.
+
+Conclude with `Submodule.mem_top`. Conclude with `hall k hk`.
+-/
 theorem exists_ltIter_eq_zero_of_tends : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {C : Type} [NormedField C] [IsUltrametricDist C], PerEnv S F ϖ → ∀ (ϖ' : B), ϖ * ϖ' = 1 →
     ∀ (θ : B →+* C), (∀ x, θ x = 0 ↔ x ∈ F 1) → (∀ s ∈ S, ‖θ s‖ ≤ 1) → ‖θ ϖ‖ < 1 → ∀ (q : ℕ), 2 ≤ q →
     ∀ Q ∈ S, (∃ M : ℕ, 0 < M ∧ Near S ϖ (F 1) 1 (Q ^ M)) →

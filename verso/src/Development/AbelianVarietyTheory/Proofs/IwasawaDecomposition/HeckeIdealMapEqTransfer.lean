@@ -11,6 +11,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.FrobTransfer
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1` using `h (σ ^ n • x)`. Rewrite `h1`, `ih`, the goal using `[← Ideal.Quotient.eq]`.
+
+Rewrite using `[pow_succ', mul_smul, h1, map_pow, ih, ← map_pow, ← pow_mul, pow_succ]`.
+-/
 theorem pow_smul_sub_mem {G S : Type} [Group G] [CommRing S] [MulSemiringAction G S] {P : Ideal S} {σ : G} {q : ℕ}
     (h : ∀ x, σ • x - x ^ q ∈ P) (n : ℕ) (x : S) : σ ^ n • x - x ^ q ^ n ∈ P := by
   induction n with
@@ -22,6 +27,17 @@ theorem pow_smul_sub_mem {G S : Type} [Group G] [CommRing S] [MulSemiringAction 
 
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `: Finite (𝓞 L ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Establish `: P.IsMaximal` using `hP.isMaximal hne`. Set `` to `Ideal.Quotient.field P`. Set `` to `Fintype.ofFinite (𝓞 L ⧸ P)`.
+
+Establish `hc : Fintype.card (𝓞 L ⧸ P) = Ideal.absNorm 𝔭.asIdeal ^ P.inertiaDeg (𝓞 K)`. Rewrite using `[Ideal.absNorm_pow_inertiaDeg, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Establish `hq : 1 < Ideal.absNorm 𝔭.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm 𝔭`. Establish `hf` using `Ideal.inertiaDeg_pos P (𝓞 K)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `orderOf_le_of_pow_eq_one hf (hu _ ⟨P, hP, hPo, fun x => ?_⟩)` and prove the remaining obligations. Establish `h1` using `pow_smul_sub_mem h (P.inertiaDeg (𝓞 K)) x`. Rewrite `h1`, the goal using `[← Ideal.Quotient.eq]`. Rewrite using `[h1, map_pow, ← hc, FiniteField.pow_card]`. Establish `ho : 0 < orderOf σ` using `orderOf_pos σ`.
+
+Establish `hlt : 1 < Ideal.absNorm 𝔭.asIdeal ^ orderOf σ` using `Nat.one_lt_pow ho.ne' hq`. Establish `h2` using `(FiniteField.forall_pow_eq_one_iff (𝓞 L ⧸ P) (Ideal.absNorm 𝔭.asIdeal ^ orderOf σ - 1)).1 fun u => by`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (u : 𝓞 L ⧸ P)`. Establish `h1` using `pow_smul_sub_mem h (orderOf σ) x`. Rewrite `h1` using `[pow_orderOf_eq_one, one_smul, ← Ideal.Quotient.eq, map_pow, hx]`.
+
+Establish `h3 : u ^ Ideal.absNorm 𝔭.asIdeal ^ orderOf σ = u` using `Units.ext (by rw [Units.val_pow_eq_pow_val, ← h1])`. Rewrite using `[pow_sub u hlt.le, h3, pow_one, mul_inv_cancel]`. Establish `h4` using `Nat.le_of_dvd (by omega) h2`. Rewrite `h4` using `[hc]`. Conclude with `(Nat.pow_le_pow_iff_right hq).1 (by omega)`.
+-/
 theorem orderOf_eq_inertiaDeg {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn L 𝔭) {P : Ideal (𝓞 L)} [hP : P.IsPrime]
     [hPo : P.LiesOver 𝔭.asIdeal] {σ : L ≃ₐ[K] L} (h : ∀ x : 𝓞 L, σ • x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ P) :
     orderOf σ = P.inertiaDeg (𝓞 K) := by
@@ -53,11 +69,19 @@ theorem orderOf_eq_inertiaDeg {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn 
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Establish `h1 : P.inertia (L ≃ₐ[K] L) = ⊥` using `(Subgroup.eq_bot_iff_forall _).2 fun τ hτ => hu τ ⟨P, hP, hPo, hτ⟩`. Rewrite using `[h1, Subgroup.card_bot]`.
+-/
 theorem card_inertia {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn L 𝔭) (P : Ideal (𝓞 L)) [hP : P.IsPrime]
     [hPo : P.LiesOver 𝔭.asIdeal] : Nat.card (P.inertia (L ≃ₐ[K] L)) = 1 := by
   have h1 : P.inertia (L ≃ₐ[K] L) = ⊥ := (Subgroup.eq_bot_iff_forall _).2 fun τ hτ => hu τ ⟨P, hP, hPo, hτ⟩
   rw [h1, Subgroup.card_bot]
 
+/- English proof (translation)
+Use `𝔭.isMaximal` as an intermediate fact. Establish `: Finite (𝓞 K ⧸ 𝔭.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ 𝔭.ne_bot`. Establish `hF : IsArithFrobAt (𝓞 K) σ P`. Unfold `IsArithFrobAt AlgHom.IsArithFrobAt`. Rewrite using `[← hPo.over, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`.
+
+Conclude with `h`. Use `Subgroup.eq_of_le_of_card_ge (Subgroup.zpowers_le.2 hF.mem_stabilizer) ?_` and prove the remaining obligations. Rewrite using `[Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := L ≃ₐ[K] L) 𝔭.asIdeal P, card_inertia hu, one_mul, Nat.card_zpowers, orderOf_eq_inertiaDeg hu h]`.
+-/
 theorem stabilizer_eq [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn L 𝔭) {P : Ideal (𝓞 L)}
     [hP : P.IsPrime] [hPo : P.LiesOver 𝔭.asIdeal] {σ : L ≃ₐ[K] L}
     (h : ∀ x : 𝓞 L, σ • x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ P) :
@@ -72,6 +96,9 @@ theorem stabilizer_eq [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : U
   rw [Ideal.card_stabilizer_eq_card_inertia_mul_finrank (G := L ≃ₐ[K] L) 𝔭.asIdeal P, card_inertia hu, one_mul,
     Nat.card_zpowers, orderOf_eq_inertiaDeg hu h]
 
+/- English proof (translation)
+Use `𝔭.isMaximal` as an intermediate fact. Establish `: Finite (𝓞 K ⧸ 𝔭.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ 𝔭.ne_bot`. Rewrite using `[Ideal.map_algebraMap_eq_finsetProd_pow 𝔭.ne_bot, ← Finset.prod_set_coe]`. Use `Finset.prod_congr rfl fun ⟨P, hP, hPo⟩ _ => ?_` and prove the remaining obligations. Rewrite using `[← Ideal.ramificationIdxIn_eq_ramificationIdx 𝔭.asIdeal P (L ≃ₐ[K] L), ← Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) 𝔭.asIdeal P, card_inertia hu, pow_one]`.
+-/
 theorem map_eq_prod [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn L 𝔭) :
     𝔭.asIdeal.map (algebraMap (𝓞 K) (𝓞 L)) = ∏ P : 𝔭.asIdeal.primesOver (𝓞 L), P.1 := by
   have := 𝔭.isMaximal
@@ -81,6 +108,9 @@ theorem map_eq_prod [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : Unr
   rw [← Ideal.ramificationIdxIn_eq_ramificationIdx 𝔭.asIdeal P (L ≃ₐ[K] L),
     ← Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) 𝔭.asIdeal P, card_inertia hu, pow_one]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using GlobalTheory.NT.Model.heckeIdeal_top L χ`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, GlobalTheory.NT.Model.heckeIdeal_mul L χ (hf a) (Finset.prod_ne_zero_iff.2 fun i _ => hf i), ih]`.
+-/
 theorem heckeIdeal_prod {ι : Type} (χ : (L ≃ₐ[K] L) →* ℂˣ) (s : Finset ι) (f : ι → Ideal (𝓞 K))
     (hf : ∀ i, f i ≠ 0) : heckeIdeal L χ (∏ i ∈ s, f i) = ∏ i ∈ s, heckeIdeal L χ (f i) := by
   classical
@@ -93,11 +123,17 @@ theorem heckeIdeal_prod {ι : Type} (χ : (L ≃ₐ[K] L) →* ℂˣ) (s : Finse
 variable {N : Type} [Field N] [NumberField N] [Algebra L N] [Algebra K N] [IsScalarTower K L N]
 
 omit [NumberField K] [NumberField L] [NumberField N] in
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (g.restrictNormal_commutes L x)`.
+-/
 theorem algebraMap_restrict_smul [Normal K L] (g : N ≃ₐ[K] N) (x : 𝓞 L) :
     algebraMap (𝓞 L) (𝓞 N) (AlgEquiv.restrictNormalHom L g • x) = g • algebraMap (𝓞 L) (𝓞 N) x :=
   RingOfIntegers.ext (g.restrictNormal_commutes L x)
 
 omit [NumberField K] [NumberField L] [NumberField N] in
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Ideal.mem_under, Ideal.mem_inv_pointwise_smul_iff, Ideal.mem_inv_pointwise_smul_iff, Ideal.mem_under, algebraMap_restrict_smul]`.
+-/
 theorem under_inv_smul [Normal K L] (g : N ≃ₐ[K] N) (Q : Ideal (𝓞 N)) :
     (g⁻¹ • Q).under (𝓞 L) = (AlgEquiv.restrictNormalHom L g)⁻¹ • Q.under (𝓞 L) := by
   ext x
@@ -106,6 +142,9 @@ theorem under_inv_smul [Normal K L] (g : N ≃ₐ[K] N) (Q : Ideal (𝓞 N)) :
 
 omit [NumberField K] [NumberField L] [NumberField N] in
 
+/- English proof (translation)
+Use `⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => ?_, rfl⟩` and prove the remaining obligations. Use `g.restrictNormal_commutes L x` as an intermediate fact. Rewrite `this` using `[show g.restrictNormal L = 1 from hg]`. Conclude with `this.symm`.
+-/
 theorem exists_restrictScalars [Normal K L] (g : N ≃ₐ[K] N) (hg : AlgEquiv.restrictNormalHom L g = 1) :
     ∃ τ : N ≃ₐ[L] N, τ.restrictScalars K = g := by
   refine ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => ?_, rfl⟩
@@ -115,6 +154,9 @@ theorem exists_restrictScalars [Normal K L] (g : N ≃ₐ[K] N) (hg : AlgEquiv.r
 
 omit [NumberField K] [NumberField L] [NumberField N] in
 
+/- English proof (translation)
+Introduce and unpack `τ ⟨Q, hQ, hQo, hτ⟩`. Use `hu (τ.restrictScalars K) ⟨Q, hQ, Ideal.LiesOver.trans Q P.asIdeal 𝔭.asIdeal, hτ⟩` as an intermediate fact. Conclude with `AlgEquiv.ext fun x => DFunLike.congr_fun this x`.
+-/
 theorem unramIn_top {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn N 𝔭) (P : HeightOneSpectrum (𝓞 L))
     [P.asIdeal.LiesOver 𝔭.asIdeal] : UnramIn N P := by
   rintro τ ⟨Q, hQ, hQo, hτ⟩
@@ -123,6 +165,9 @@ theorem unramIn_top {𝔭 : HeightOneSpectrum (𝓞 K)} (hu : UnramIn N 𝔭) (P
 
 omit [NumberField K] [NumberField L] [NumberField N] in
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `Nat.dvd_right_iff_eq.1 fun n => ?_` and prove the remaining obligations. Rewrite using `[← MulAction.pow_smul_eq_iff_minimalPeriod_dvd, orderOf_dvd_iff_pow_eq_one, MulAction.Quotient.smul_mk, QuotientGroup.eq, MonoidHom.mem_ker, smul_eq_mul, map_mul, map_inv, map_mul, inv_mul_eq_one, mul_eq_right, map_pow]`.
+-/
 theorem minimalPeriod_eq [Normal K L] (σ : N ≃ₐ[K] N)
     (c : (N ≃ₐ[K] N) ⧸ (AlgEquiv.restrictNormalHom (F := K) (K₁ := N) L).ker) :
     Function.minimalPeriod (σ • ·) c = orderOf (AlgEquiv.restrictNormalHom L σ) := by
@@ -132,6 +177,11 @@ theorem minimalPeriod_eq [Normal K L] (σ : N ≃ₐ[K] N)
     QuotientGroup.eq, MonoidHom.mem_ker, smul_eq_mul, map_mul, map_inv, map_mul, inv_mul_eq_one, mul_eq_right,
     map_pow]
 
+/- English proof (translation)
+Set `P : HeightOneSpectrum (𝓞 L)` to `⟨(t⁻¹ • Q).under (𝓞 L), inferInstance, Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot _⟩`. Establish `: P.asIdeal.LiesOver 𝔭.asIdeal` using `inferInstanceAs (((t⁻¹ • Q).under (𝓞 L)).LiesOver 𝔭.asIdeal)`. Use `P.isPrime` as an intermediate fact. Express the relevant statement in the definitionally equal form `heckeIdeal N χ P.asIdeal = _`. Rewrite using `[GlobalTheory.NT.Model.heckeIdeal_prime]`.
+
+Use `heckeVal_of_unramIn N χ (unramIn_top hu P) ⟨t⁻¹ • Q, inferInstance, ⟨rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.absNorm_pow_inertiaDeg 𝔭.asIdeal P.asIdeal, ← Ideal.inertiaDegIn_eq_inertiaDeg 𝔭.asIdeal P.asIdeal (L ≃ₐ[K] L), Ideal.inertiaDegIn_eq_inertiaDeg 𝔭.asIdeal (Q.under (𝓞 L)) (L ≃ₐ[K] L), Ideal.mem_inv_pointwise_smul_iff, show τ • x = τ.restrictScalars K • x from rfl, hτ, sm …`. Conclude with `pow_smul_sub_mem h _ _`.
+-/
 theorem heckeIdeal_under [IsGalois K L] [IsGalois K N] [IsGalois L N] {𝔭 : HeightOneSpectrum (𝓞 K)}
     (hu : UnramIn N 𝔭) {Q : Ideal (𝓞 N)} [Q.IsPrime] [Q.LiesOver 𝔭.asIdeal] {σ : N ≃ₐ[K] N}
     (h : ∀ x : 𝓞 N, σ • x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ Q) (χ : (N ≃ₐ[L] N) →* ℂˣ) (t : N ≃ₐ[K] N)
@@ -151,6 +201,25 @@ theorem heckeIdeal_under [IsGalois K L] [IsGalois K N] [IsGalois L N] {𝔭 : He
     mul_inv_cancel_left, mul_smul]
   exact pow_smul_sub_mem h _ _
 
+/- English proof (translation)
+Introduce `K L N _ _ _ _ _ _ _ _ _ _ _ _ _ 𝔭 hu σ ⟨Q, hQ, hQo, h⟩ χ φ hφ`. Establish `huL : UnramIn L 𝔭` using `GlobalTheory.RayMaximal.unramIn_of_tower hu`. Set `r` to `AlgEquiv.restrictNormalHom (F := K) (K₁ := N) L`. Establish `hL : ∀ x : 𝓞 L, r σ • x - x ^ Ideal.absNorm 𝔭.asIdeal ∈ Q.under (𝓞 L)` using `fun x => by`. Rewrite using `[Ideal.mem_under, map_sub, map_pow, algebraMap_restrict_smul]`.
+
+Conclude with `h _`. Establish `hst` using `stabilizer_eq huL hL`. Establish `hord` using `orderOf_eq_inertiaDeg huL hL`. Set `` to `Fintype.ofFinite (Quotient (MulAction.orbitRel (Subgroup.zpowers σ) ((N ≃ₐ[K] N) ⧸ r.ker)))`. Set `e : Quotient (MulAction.orbitRel (Subgroup.zpowers σ) ((N ≃ₐ[K] N) ⧸ r.ker)) → 𝔭.asIdeal.primesOver (𝓞 L)` to `fun q => ⟨(q.out.out⁻¹ • Q).under (𝓞 L), inferInstance, inferInstance⟩`.
+
+Establish `key : ∀ s t : N ≃ₐ[K] N, (s⁻¹ • Q).under (𝓞 L) = (t⁻¹ • Q).under (𝓞 L) ↔ MulAction.orbitRel (Subgroup.zpowers σ) ((N ≃ₐ[K] N) ⧸ r.ker) (s : (N ≃ₐ[K] N) ⧸ r.ker) t` using `fun s t => by`. Rewrite using `[under_inv_smul, under_inv_smul, inv_smul_eq_iff, ← mul_smul, eq_comm, ← MulAction.mem_stabilizer_iff, ← hst, MulAction.orbitRel_apply, MulAction.mem_orbit_iff, Subgroup.mem_zpowers_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨⟨σ ^ k, k, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((σ ^ k * t : N ≃ₐ[K] N) : (N ≃ₐ[K] N) ⧸ r.ker) = s`. Rewrite using `[QuotientGroup.eq, MonoidHom.mem_ker, map_mul, map_inv, map_mul, map_zpow, hk, inv_mul_cancel_right, inv_mul_cancel]`. Introduce and unpack `⟨⟨_, k, rfl⟩, hk⟩`. Express the relevant statement in the definitionally equal form `((σ ^ k * t : N ≃ₐ[K] N) : (N ≃ₐ[K] N) ⧸ r.ker) = s at hk`. Rewrite `hk` using `[QuotientGroup.eq, MonoidHom.mem_ker, map_mul, map_inv, map_mul, map_zpow, inv_mul_eq_one]`.
+
+Conclude with `⟨k, by rw [← hk, mul_inv_cancel_right]⟩`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce `q q' hq`. Use `(key _ _).1 (congrArg Subtype.val hq)` as an intermediate fact.
+
+Rewrite `this` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `Quotient.out_equiv_out.1 this`. Introduce and unpack `⟨P, hP, hPo⟩`. Take `⟨γ, hγ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup 𝔭.asIdeal (Q.under (𝓞 L)) P (L ≃ₐ[K] L)`. Take `⟨g, hg⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) N γ⁻¹`.
+
+Use `⟨Quotient.mk _ (g : (N ≃ₐ[K] N) ⧸ r.ker), Subtype.ext ?_⟩` and prove the remaining obligations. Use `((key _ g).2 ?_).trans (by rw [under_inv_smul, hg, inv_inv, hγ])` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq']`. Conclude with `Quotient.mk_out _`. Rewrite using `[map_eq_prod huL, heckeIdeal_prod χ _ _ fun P => ?_, MonoidHom.transfer_eq_prod_quotient_orbitRel_zpowers_quot, Units.coe_prod]`.
+
+Use `(Fintype.prod_bijective e he _ _ fun q => ?_).symm` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_restrictScalars (L := L) _ (QuotientGroup.out_conj_pow_minimalPeriod_mem r.ker σ q.out)`. Rewrite using `[heckeIdeal_under hu h χ q.out.out τ (by rw [hτ, minimalPeriod_eq, hord]), ← hφ τ (hτ ▸ QuotientGroup.out_conj_pow_minimalPeriod_mem r.ker σ q.out)]`. Conclude with `congrArg (fun x => ((φ x : ℂˣ) : ℂ)) (Subtype.ext hτ.symm)`. Use `P.2.2` as an intermediate fact.
+
+Conclude with `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot _`.
+-/
 theorem heckeIdeal_map_eq_transfer : ∀ (K L N : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field N] [NumberField N] [Algebra K L] [Algebra L N] [Algebra K N] [IsScalarTower K L N] [IsGalois K L] [IsGalois K N] [IsAbelianGalois L N] (𝔭 : HeightOneSpectrum (𝓞 K)), GlobalTheory.NT.UnramIn N 𝔭 → ∀ σ : N ≃ₐ[K] N, GlobalTheory.NT.IsFrob N 𝔭 σ → ∀ (χ : (N ≃ₐ[L] N) →* ℂˣ) (φ : (AlgEquiv.restrictNormalHom (F := K) (K₁ := N) L).ker →* ℂˣ), (∀ (τ : N ≃ₐ[L] N) (h : τ.restrictScalars K ∈ (AlgEquiv.restrictNormalHom (F := K) (K₁ := N) L).ker), φ ⟨τ.restrictScalars K, h⟩ = χ τ) → GlobalTheory.NT.heckeIdeal N χ (𝔭.asIdeal.map (algebraMap (𝓞 K) (𝓞 L))) = ((MonoidHom.transfer φ σ : ℂˣ) : ℂ) := by
   intro K L N _ _ _ _ _ _ _ _ _ _ _ _ _ 𝔭 hu σ ⟨Q, hQ, hQo, h⟩ χ φ hφ
   classical

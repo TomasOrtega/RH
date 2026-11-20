@@ -13,12 +13,20 @@ section CoefLeLemmas
 
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {σ : Type}
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_sum, map_sum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR (fun a ha => h a ha m)`.
+-/
 theorem coefLe_sum {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ) {R : ℝ} (hR : 0 ≤ R)
     (h : ∀ a ∈ s, CoefLe ι R (f a)) : CoefLe ι R (∑ a ∈ s, f a) := by
   intro m
   rw [MvPolynomial.coeff_sum, map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR (fun a ha => h a ha m)
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_mul, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hR hS) ?_` and prove the remaining obligations. Introduce `x _`. Rewrite using `[map_mul, norm_mul]`.
+
+Conclude with `mul_le_mul (hp _) (hq _) (norm_nonneg _) hR`.
+-/
 theorem coefLe_mul {R S : ℝ} (hR : 0 ≤ R) (hS : 0 ≤ S) {p q : MvPolynomial σ ℂ}
     (hp : CoefLe ι R p) (hq : CoefLe ι S q) : CoefLe ι (R * S) (p * q) := by
   classical
@@ -29,12 +37,18 @@ theorem coefLe_mul {R S : ℝ} (hR : 0 ≤ R) (hS : 0 ≤ S) {p q : MvPolynomial
   rw [map_mul, norm_mul]
   exact mul_le_mul (hp _) (hq _) (norm_nonneg _) hR
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coefLe_one : CoefLe ι 1 (1 : MvPolynomial σ ℂ) := by
   classical
   intro m
   rw [MvPolynomial.coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using coefLe_one ι`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `coefLe_mul ι (pow_nonneg hR _) hR ih hp`.
+-/
 theorem coefLe_pow {R : ℝ} (hR : 0 ≤ R) {p : MvPolynomial σ ℂ} (hp : CoefLe ι R p) (k : ℕ) :
     CoefLe ι (R ^ k) (p ^ k) := by
   induction k with
@@ -43,6 +57,9 @@ theorem coefLe_pow {R : ℝ} (hR : 0 ≤ R) {p : MvPolynomial σ ℂ} (hp : Coef
     rw [pow_succ, pow_succ]
     exact coefLe_mul ι (pow_nonneg hR _) hR ih hp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using coefLe_one ι`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `coefLe_mul ι (hr a) (Finset.prod_nonneg fun b _ => hr b) (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem coefLe_prod {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ) (r : α → ℝ)
     (hr : ∀ a, 0 ≤ r a) (h : ∀ a ∈ s, CoefLe ι (r a) (f a)) :
     CoefLe ι (∏ a ∈ s, r a) (∏ a ∈ s, f a) := by
@@ -54,6 +71,9 @@ theorem coefLe_prod {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ)
     exact coefLe_mul ι (hr a) (Finset.prod_nonneg fun b _ => hr b) (h a (Finset.mem_insert_self a s))
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X']`. Use `split_ifs`. Simplify using `using hc`. Simplify using `using zero_le_one.trans hR`.
+-/
 theorem coefLe_C_mul_X {c : ℂ} {R : ℝ} (hR : 1 ≤ R) (hc : ‖ι.symm c‖ ≤ R) (v : σ) :
     CoefLe ι R (MvPolynomial.C c * MvPolynomial.X v) := by
   classical
@@ -65,17 +85,32 @@ theorem coefLe_C_mul_X {c : ℂ} {R : ℝ} (hR : 1 ≤ R) (hc : ‖ι.symm c‖ 
 
 end CoefLeLemmas
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qh58.norm_det_le ι M R hR h`.
+-/
 theorem norm_det_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (R : ℝ)
     (hR : 1 ≤ R) (h : ∀ i j, ‖ι.symm (M i j)‖ ≤ R) : ‖ι.symm M.det‖ ≤ R ^ n :=
   _root_.UpperTheory.Reformulated.B.Qh58.norm_det_le ι M R hR h
 
 def sz {a : ℕ} (lam : DomWeight a) : ℕ := ∑ k, (lam.w k).natAbs
 
+/- English proof (translation)
+Unfold `sz`. Simplify using `only [DomWeight.dual, Int.natAbs_neg]`. Conclude with `Equiv.sum_comp Fin.revPerm (fun k => (lam.w k).natAbs)`.
+-/
 theorem sz_dual {a : ℕ} (lam : DomWeight a) : sz lam.dual = sz lam := by
   unfold sz
   simp only [DomWeight.dual, Int.natAbs_neg]
   exact Equiv.sum_comp Fin.revPerm (fun k => (lam.w k).natAbs)
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `zero => simp`. Consider the case `succ n`. Establish `hd : lam.detShift = lam.w (Fin.last n)`. Simplify using `[DomWeight.detShift, Fin.last]`.
+
+Establish `hl : lam.natW (Fin.last n) = 0`. Simplify using `[DomWeight.natW, hd]`. Establish `hi : ∀ i : Fin n, lam.natW i.castSucc ≤ (lam.w i.castSucc).natAbs + (lam.w (Fin.last n)).natAbs`. Introduce `i`. Simplify using `only [DomWeight.natW, hd]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1 : ∑ i : Fin n, lam.natW i.castSucc ≤ (∑ i : Fin n, (lam.w i.castSucc).natAbs) + n * (lam.w (Fin.last n)).natAbs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fin.sum_univ_castSucc, hl, hd]`. Unfold `sz`.
+
+Rewrite using `[Fin.sum_univ_castSucc]`. Generalize the expression as in `(∑ i : Fin n, (lam.w i.castSucc).natAbs) = t at h1 ⊢`. Generalize the expression as in `(lam.w (Fin.last n)).natAbs = e at h1 ⊢`. Generalize the expression as in `(∑ i : Fin n, lam.natW i.castSucc) = u at h1 ⊢`. Use polynomial arithmetic with `[Nat.zero_le (n * t), Nat.zero_le (n * e)]`.
+-/
 theorem one_le {a : ℕ} (lam : DomWeight a) :
     ∑ i, lam.natW i + a * lam.detShift.natAbs ≤ a * (2 * sz lam) := by
   cases a with
@@ -109,13 +144,28 @@ noncomputable def emb : InfinitePlace E ⊕ InfinitePlace E → (E →+* ℂ)
   | .inl v => v.embedding
   | .inr v => ComplexEmbedding.conjugate v.embedding
 
+/- English proof (translation)
+The claim follows from `InfinitePlace.mk_embedding v`.
+-/
 theorem mk_emb_inl (v : InfinitePlace E) : InfinitePlace.mk (emb (.inl v)) = v :=
   InfinitePlace.mk_embedding v
 
+/- English proof (translation)
+Simplify using `only [emb]`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+-/
 theorem mk_emb_inr (v : InfinitePlace E) : InfinitePlace.mk (emb (.inr v)) = v := by
   simp only [emb]
   rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
+/- English proof (translation)
+Introduce and unpack `(v | v) (w | w) h`. Use `congrArg InfinitePlace.mk h` as an intermediate fact. Rewrite `this` using `[mk_emb_inl, mk_emb_inl]`. Rewrite using `[this]`. It suffices to derive a contradiction.
+
+Use `congrArg InfinitePlace.mk h` as an intermediate fact. Rewrite `this` using `[mk_emb_inl, mk_emb_inr]`. Substitute `this` using the available equality. Conclude with `conjugate_ne v.embedding h.symm`. It suffices to derive a contradiction.
+
+Use `congrArg InfinitePlace.mk h` as an intermediate fact. Rewrite `this` using `[mk_emb_inr, mk_emb_inl]`. Substitute `this` using the available equality. Conclude with `conjugate_ne v.embedding h`. Use `congrArg InfinitePlace.mk h` as an intermediate fact.
+
+Rewrite `this` using `[mk_emb_inr, mk_emb_inr]`. Rewrite using `[this]`.
+-/
 theorem emb_injective : Function.Injective (emb (E := E)) := by
   rintro (v | v) (w | w) h
   · have := congrArg InfinitePlace.mk h
@@ -137,6 +187,15 @@ theorem emb_injective : Function.Injective (emb (E := E)) := by
 
 def wI {T : Type} [DecidableEq T] (I : Finset T) (n : ℕ) : T × Fin n × Fin n → ℕ := fun v => if v.1 ∈ I then 1 else 0
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat at hx`. Rewrite using `[← MvPolynomial.mem_weightedHomogeneousSubmodule]`. Use `(Submodule.span_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Use `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).2 ?_` and prove the remaining obligations.
+
+Use `MvPolynomial.IsWeightedHomogeneous.prod _ _ _ fun τ _ => ?_` and prove the remaining obligations. Introduce `d hd`. Take `⟨m, rfl, hm⟩` from `MvPolynomial.coeff_rename_ne_zero _ _ _ hd`. Establish `hw : Finsupp.weight (Formalism.GradedWeylDivisibility.colW n n) m = (lam τ).natW` using `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mp (hF τ).1 hm`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_mul])]`.
+
+Distinguish the cases in `hτ : τ ∈ I`. Rewrite using `[if_pos hτ, ← hw, Finsupp.weight_apply]`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, Formalism.GradedWeylDivisibility.colW, smul_eq_mul, wI, if_pos hτ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Pi.single_apply]`. Simplify using `[wI, hτ, Finsupp.sum]`.
+-/
 theorem homog_of_mem {T : Type} [Fintype T] [DecidableEq T] (I : Finset T) (n : ℕ) (lam : T → DomWeight n)
     (x : MvPolynomial (T × Fin n × Fin n) ℂ) (hx : x ∈ Formalism.L2.DIV.VV ℂ lam) :
     MvPolynomial.IsWeightedHomogeneous (wI I n) x (∑ τ, if τ ∈ I then ∑ i, (lam τ).natW i else 0) := by
@@ -159,6 +218,15 @@ theorem homog_of_mem {T : Type} [Fintype T] [DecidableEq T] (I : Finset T) (n : 
     simp [Pi.single_apply]
   · simp [wI, hτ, Finsupp.sum]
 
+/- English proof (translation)
+Establish `hR0 : 0 ≤ R` using `zero_le_one.trans hR`. Use `set y : T × Fin n × Fin n → MvPolynomial (T × Fin n × Fin n) ℂ := fun v => ∑ b : Fin n, MvPolynomial.C (A v.1 v.2.1 b) * MvPolynomial.X (v.1, (b, v.2.2)) with hydef`. Apply the tactic sequence `have hr : ∀ τ, (if τ ∈ I then R else 1) = R ^ (if τ ∈ I then 1 else 0) := fun τ => by split_ifs <;> simp`. Establish `hy : ∀ v, CoefLe ι (R ^ wI I n v) (y v)` using `fun v => coefLe_sum ι _ _ (pow_nonneg hR0 _) fun b _ => coefLe_C_mul_X ι (one_le_pow₀ hR) ((hA _ _ _).trans_eq (hr _)) _`. Establish `e : Formalism.GradedWeylDivisibility.blockAct ℂ A x = ∑ m ∈ x.support, MvPolynomial.C (MvPolynomial.coeff m x) * (m.prod fun v e => y v ^ e)` using `by conv_lhs => rw [x.as_sum]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_monomial]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `coefLe_sum ι _ _ (pow_nonneg hR0 _) fun m hm k => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, norm_mul]`. Establish `hdeg : Finsupp.weight (wI I n) m = D` using `hx (MvPolynomial.mem_support_iff.1 hm)`. Establish `h` using `coefLe_prod ι m.support (fun v => y v ^ m v) (fun v => (R ^ wI I n v) ^ m v) (fun _ => by positivity) (fun v _ => coefLe_pow ι (pow_nonneg hR0 _) (hy v) (m v))`. Establish `e2 : ∏ v ∈ m.support, (R ^ wI I n v) ^ m v = R ^ D`.
+
+Rewrite using `[← hdeg, Finsupp.weight_apply, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [← pow_mul, smul_eq_mul, mul_comm]`. Rewrite `h` using `[e2]`. Conclude with `(mul_le_mul (h1 m) (h k) (norm_nonneg _) zero_le_one).trans_eq (one_mul _)`.
+-/
 theorem block_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {T : Type} [DecidableEq T] (I : Finset T) {n : ℕ}
     (A : T → Matrix (Fin n) (Fin n) ℂ) (R : ℝ) (hR : 1 ≤ R) (hA : ∀ τ i j, ‖ι.symm (A τ i j)‖ ≤ if τ ∈ I then R else 1)
     (D : ℕ) (x : MvPolynomial (T × Fin n × Fin n) ℂ) (hx : MvPolynomial.IsWeightedHomogeneous (wI I n) x D)
@@ -188,6 +256,13 @@ theorem block_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {T : Type} [De
   rw [e2] at h
   exact (mul_le_mul (h1 m) (h k) (norm_nonneg _) zero_le_one).trans_eq (one_mul _)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.DIV.detTw_eq, map_prod, norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Establish `hR' : 1 ≤ if τ ∈ I then R else 1` using `by split_ifs; exacts [hR, le_rfl]`. Establish `h1` using `norm_det_le ι ((A τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) _ hR' fun i j => (h τ i j).1`. Establish `h2` using `norm_det_le ι (((A τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) _ hR' fun i j => (h τ i j).2`.
+
+Establish `hinv : (((A τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det = (((A τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ).det)⁻¹`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Apply the tactic sequence `have e : R ^ (if τ ∈ I then n * (lam τ).detShift.natAbs else 0) = ((if τ ∈ I then R else 1) ^ n) ^ (lam τ).detShift.natAbs := by split_ifs <;> simp [pow_mul]`. Rewrite using `[e]`.
+
+Take `⟨k, hk | hk⟩` from `Int.eq_nat_or_neg (lam τ).detShift`. Rewrite using `[hk, zpow_natCast, map_pow, norm_pow, Int.natAbs_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 k`. Rewrite using `[hk, zpow_neg, zpow_natCast, ← inv_pow, ← hinv, map_pow, norm_pow, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h2 k`.
+-/
 theorem det_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {T : Type} [Fintype T] [DecidableEq T] (I : Finset T) {n : ℕ}
     (lam : T → DomWeight n) (A : T → GL (Fin n) ℂ) (R : ℝ) (hR : 1 ≤ R)
     (h : ∀ τ i j, (‖ι.symm (((A τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j)‖ ≤ if τ ∈ I then R else 1) ∧
@@ -212,6 +287,13 @@ theorem det_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {T : Type} [Fint
   · rw [hk, zpow_neg, zpow_natCast, ← inv_pow, ← hinv, map_pow, norm_pow, Int.natAbs_neg, Int.natAbs_natCast]
     exact pow_le_pow_left₀ (norm_nonneg _) h2 k
 
+/- English proof (translation)
+Introduce `m`. Establish `hb` using `block_le ι I (fun τ => Matrix.transpose ((A τ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ)) R hR (fun τ i j => by simpa [Matrix.transpose_apply] using (hA τ j i).1) _ x.1 (homog_of_mem I a W x.1 x.2) hx m`. Establish `hd` using `det_le ι I W A R hR hA`. Establish `hcoe : (Formalism.L2.DIV.rhoK (K` using `ℂ) W A x).1 = Formalism.L2.DIV.detTwK W A • Formalism.L2.DIV.trAct A x.1 := rfl`. Rewrite using `[hcoe, MvPolynomial.coeff_smul, smul_eq_mul, map_mul, norm_mul]`.
+
+Establish `hR0 : (0 : ℝ) ≤ R` using `by linarith`. Use `(mul_le_mul hd hb (norm_nonneg _) (pow_nonneg hR0 _)).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_add]`. Use `pow_le_pow_right₀ hR ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum, ← Finset.sum_ite_mem_eq I]`.
+
+Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[add_comm]`. Conclude with `one_le (W v)`. Simplify using the standard rewrite rules.
+-/
 theorem rho_le {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (W : Wt E a) [DecidableEq (InfinitePlace E)]
     (I : Finset (InfinitePlace E)) (A : InfinitePlace E → GL (Fin a) ℂ) (R : ℝ) (hR : 1 ≤ R)
     (hA : ∀ τ i j, (‖ι.symm (((A τ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) i j)‖ ≤ if τ ∈ I then R else 1) ∧

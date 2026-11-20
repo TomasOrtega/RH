@@ -12,6 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT.UnitProd
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩ symm := by rintro x y ⟨g, rfl⟩ exact ⟨g⁻¹, by rw [map_inv]; group⟩ trans := by rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩ exact ⟨g * h, by rw [map_mul]; group⟩`.
+-/
 private theorem equivalence_twisted_conj {G : Type} [Group G] (θ : G →* G) :
     Equivalence (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) where
   refl x := ⟨1, by simp⟩
@@ -22,6 +25,9 @@ private theorem equivalence_twisted_conj {G : Type} [Group G] (θ : G →* G) :
     rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩
     exact ⟨g * h, by rw [map_mul]; group⟩
 
+/- English proof (translation)
+Unfold `TwCl.rep`. Establish `h` using `Quot.eqvGen_exact (Quot.out_eq (Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) x))`. Rewrite `h` using `[Equivalence.eqvGen_iff (equivalence_twisted_conj θ)]`. Conclude with `(equivalence_twisted_conj θ).symm h`.
+-/
 theorem rep_mk {G : Type} [Group G] (θ : G →* G) (x : G) :
     ∃ g, TwCl.rep (θ := θ) (Quot.mk _ x) = g⁻¹ * x * θ g := by
   unfold TwCl.rep
@@ -29,6 +35,9 @@ theorem rep_mk {G : Type} [Group G] (θ : G →* G) (x : G) :
   rw [Equivalence.eqvGen_iff (equivalence_twisted_conj θ)] at h
   exact (equivalence_twisted_conj θ).symm h
 
+/- English proof (translation)
+Unfold `TwCl.rep`. Conclude with `Quot.out_eq c`.
+-/
 theorem mk_rep {G : Type} [Group G] {θ : G →* G} (c : TwCl θ) : (Quot.mk _ c.rep : TwCl θ) = c := by
   unfold TwCl.rep
   exact Quot.out_eq c
@@ -52,6 +61,9 @@ noncomputable def clsEquiv {G G' : Type} [Group G] [Group G'] (θ : G →* G) (�
     · simp [hg]
     · simp [hg']
 
+/- English proof (translation)
+Establish `e : (x * k)⁻¹ * δ * θ (x * k) = k⁻¹ * (x⁻¹ * δ * θ x) * θ k`. Rewrite using `[map_mul]`. Use `group`. Rewrite using `[e, K.mul_mem_cancel_right (hK k hk), K.mul_mem_cancel_left (K.inv_mem hk)]`.
+-/
 theorem ind_conj {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀ k ∈ K, θ k ∈ K) (δ x k : G) (hk : k ∈ K) :
     (x * k)⁻¹ * δ * θ (x * k) ∈ K ↔ x⁻¹ * δ * θ x ∈ K := by
 
@@ -59,6 +71,11 @@ theorem ind_conj {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀
     rw [map_mul]; group
   rw [e, K.mul_mem_cancel_right (hK k hk), K.mul_mem_cancel_left (K.inv_mem hk)]
 
+/- English proof (translation)
+Establish `htop : rStab (fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * δ * θ (x * k))) = ⊤`. Use extensionality with `k`. Simplify using `only [Subgroup.mem_top, iff_true]`. Rewrite using `[GlobalTheory.TwOrbConj.mem_rStab]`. Introduce `y`.
+
+Simplify using `only [Subgroup.coe_mul, ← mul_assoc]`. Rewrite using `[Set.indicator_apply, Set.indicator_apply]`. Simplify using `only [SetLike.mem_coe, ind_conj θ K hK δ (x * y) k k.2, Pi.one_apply]`. Rewrite using `[htop, Subgroup.index_top]`. Conclude with `one_ne_zero`.
+-/
 theorem index_ne {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀ k ∈ K, θ k ∈ K) (δ x : G) :
     (rStab fun k : K => (K : Set G).indicator (1 : G → ℂ) ((x * k)⁻¹ * δ * θ (x * k))).index ≠ 0 := by
 
@@ -73,6 +90,27 @@ theorem index_ne {G : Type} [Group G] (θ : G →* G) (K : Subgroup G) (hK : ∀
   rw [htop, Subgroup.index_top]
   exact one_ne_zero
 
+/- English proof (translation)
+Unfold `clSum`. Simplify using `only [Pi.one_apply, one_mul]`. Establish `hKK : ∀ k ∈ K.prod K', (θ.prodMap θ') k ∈ K.prod K'` using `fun k hk => Subgroup.mem_prod.mpr ⟨hK _ (Subgroup.mem_prod.mp hk).1, hK' _ (Subgroup.mem_prod.mp hk).2⟩`. Establish `hind : (((K.prod K' : Subgroup _) : Set (G × G')).indicator (1 : G × G' → ℂ)) = fun y => (K : Set G).indicator 1 y.1 * (K' : Set G').indicator 1 y.2`. Use function extensionality and compare the values at `y`.
+
+Apply the tactic sequence `by_cases h1 : y.1 ∈ K <;> by_cases h2 : y.2 ∈ K' <;>`. Simplify using `[Subgroup.mem_prod, h1, h2]`. Establish `hfin : ∀ {H : Type} [Group H] (φ : H →* H) (L : Subgroup H) (hL : ∀ k ∈ L, φ k ∈ L) (T : Set H) (hT : ∀ y ∈ T, {q : DoubleCoset.Quotient (twCent φ y : Set H) (L : Set H) | (Quotient.out q)⁻¹ * y * φ (Quotient.out q) ∈ L}.Finite) (y : H), y ∈ T → {q : DoubleCoset.Quotient (twCent …`. Introduce `H _ φ L hL T hT y hy`. Use `(hT y hy).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `q ⟨k, hk, hne⟩`. Assume the negation of the conclusion as `hq`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Set.indicator_apply, if_neg]`. Rewrite using `[SetLike.mem_coe, ind_conj φ L hL _ _ k hk]`.
+
+Conclude with `hq`. Establish `hprod : ∀ p : TwCl θ × TwCl θ', (if (clsEquiv θ θ' p).rep ∈ {y : G × G' | y.1 ∈ S ∧ y.2 ∈ S'} then twOrb (θ.prodMap θ') (K.prod K') (clsEquiv θ θ' p).rep (((K.prod K' : Subgroup _) : Set _).indicator 1) else 0) = (if p.1.rep ∈ S then twOrb θ K p.1.rep ((K : Set G).indicator 1) el …`. Introduce `p`. Take `⟨g, hg⟩` from `rep_mk (θ.prodMap θ') (p.1.rep, p.2.rep)`. Establish `e : (clsEquiv θ θ' p).rep = g⁻¹ * (p.1.rep, p.2.rep) * (θ.prodMap θ') g` using `hg`.
+
+Establish `hmem : g⁻¹ * (p.1.rep, p.2.rep) * (θ.prodMap θ') g ∈ {y : G × G' | y.1 ∈ S ∧ y.2 ∈ S'} ↔ p.1.rep ∈ S ∧ p.2.rep ∈ S'` using `by show g.1⁻¹ * p.1.rep * θ g.1 ∈ S ∧ g.2⁻¹ * p.2.rep * θ' g.2 ∈ S' ↔ _`. Rewrite using `[hS, hS']`. Rewrite using `[e, GlobalTheory.TwOrbConj.twOrb_twConj (G × G') (θ.prodMap θ') (K.prod K') (p.1.rep, p.2.rep) g _ (fun x => index_ne (θ.prodMap θ') (K.prod K') hKK _ x)]`. Apply the tactic sequence `by_cases h1 : p.1.rep ∈ S <;> by_cases h2 : p.2.rep ∈ S'`. Simplify using `only [hmem, h1, h2, and_self, if_true]`.
+
+Rewrite using `[hind]`. Conclude with `GlobalTheory.T.twistedOrbitalIntegral_productGroup G G' θ θ' K K' _ _ _ _ (fun x => index_ne θ K hK _ x) (fun x => index_ne θ' K' hK' _ x) (hfin θ K hK S hd _ h1) (hfin θ' K' hK' S' hd' _ h2)`. Rewrite using `[if_neg fun h => h2 (hmem.mp h).2, if_neg h2, mul_zero]`. Rewrite using `[if_neg fun h => h1 (hmem.mp h).1, if_neg h1, zero_mul]`. Rewrite using `[if_neg fun h => h1 (hmem.mp h).1, if_neg h1, zero_mul]`.
+
+Establish `hs1 : (Function.support fun c : TwCl θ => if c.rep ∈ S then twOrb θ K c.rep ((K : Set G).indicator 1) else 0).Finite`. Use `hf.subset fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hc` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `¬ c.rep ∈ S at h`.
+
+Simplify using `[h]`. Establish `hs2 : (Function.support fun c : TwCl θ' => if c.rep ∈ S' then twOrb θ' K' c.rep ((K' : Set G').indicator 1) else 0).Finite`. Use `hf'.subset fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hc` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `¬ c.rep ∈ S' at h`. Simplify using `[h]`. Rewrite using `[← finsum_comp_equiv (clsEquiv θ θ')]`. Use `(finsum_congr hprod).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_curry _ ((hs1.prod hs2).subset fun p hp => ⟨left_ne_zero_of_mul hp, right_ne_zero_of_mul hp⟩), finsum_mul]`.
+
+Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[mul_finsum]`.
+-/
 theorem clSum_prod {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [Group G']
     [TopologicalSpace G'] [IsTopologicalGroup G'] [T2Space G'] (θ : G →* G) (θ' : G' →* G') (K : Subgroup G)
     (K' : Subgroup G') (S : Set G) (S' : Set G') (hK : ∀ k ∈ K, θ k ∈ K) (hK' : ∀ k ∈ K', θ' k ∈ K')
@@ -151,11 +189,21 @@ theorem clSum_prod {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
   refine finsum_congr fun c => ?_
   rw [mul_finsum]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.BCT.ThBasic.nrmL_twist hE, Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj' _ _`.
+-/
 theorem charpoly_nrmL_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (hE : Unr E) (n : ℕ) (w : Pl E)
     (g y : GLw n w) : (nrmL n w (g⁻¹ * y * thL n w g)).val.charpoly = (nrmL n w y).val.charpoly := by
   rw [GlobalTheory.BCT.ThBasic.nrmL_twist hE, Units.val_mul, Units.val_mul, Matrix.coe_units_inv]
   exact Matrix.charpoly_units_conj' _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ hE a b w hw Q₁ Q₂ h₁ h₂`. Unfold `stTw2 stTw`. Establish `hL : ∀ m : ℕ, IsLevel (thL m w) (GlobalTheory.LFun.KGL w m) (GlobalTheory.LFun.KGL w m)`. Introduce `m`. Unfold `IsLevel`.
+
+Conclude with `⟨(GlobalTheory.BCT.ThBasic.twist_basic E hE m w).2.2.2.2.1, le_rfl, fun k hk => GlobalTheory.BCT.ThBasic.thL_mem_KGL hE m w k hk⟩`. Establish `hS : ∀ (m : ℕ) (Q : (w.adicCompletion E)[X]) (g y : GLw m w), g⁻¹ * y * thL m w g ∈ {y : GLw m w | (nrmL m w y).val.charpoly = Q} ↔ y ∈ {y : GLw m w | (nrmL m w y).val.charpoly = Q}`. Introduce `m Q g y`. Use `show _ = Q ↔ _ = Q`. Rewrite using `[charpoly_nrmL_conj hE]`.
+
+Establish `hd : ∀ (m : ℕ) (Q : (w.adicCompletion E)[X]), Q.Separable → ∀ y ∈ {y : GLw m w | (nrmL m w y).val.charpoly = Q}, {q : DoubleCoset.Quotient (twCent (thL m w) y : Set (GLw m w)) (GlobalTheory.LFun.KGL w m : Set (GLw m w)) | (Quotient.out q)⁻¹ * y * thL m w (Quotient.out q) ∈ Global …`. Introduce `m Q hQ y hy`. Establish `hy' : (nrmL m w y).val.charpoly = Q` using `hy`. Conclude with `(GlobalTheory.T.regularTwistedOrbit_local_finiteness E hE m w y (hy' ▸ hQ) _ (hL m)).2 _ (GlobalTheory.BCT.ThBasic.twist_basic E hE m w).2.2.2.2.2.1`. Conclude with `clSum_prod (thL a w) (thL b w) _ _ _ _ (GlobalTheory.BCT.ThBasic.thL_mem_KGL hE a w) (GlobalTheory.BCT.ThBasic.thL_mem_KGL hE b w) (hS a Q₁) (hS b Q₂) (GlobalTheory.BCT.ClsFin.classes_finite E hE a w Q₁ h₁).1 (GlobalTheory.BCT.ClsFin.classes_finite E hE b w Q₂ h₂).1 (hd a Q₁ h₁) …`.
+-/
 theorem stTw2_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (a b : ℕ) (w : Pl E), ¬ IsSplitAt w → ∀ Q₁ Q₂ : (w.adicCompletion E)[X], Q₁.Separable → Q₂.Separable → stTw2 a b w Q₁ Q₂ ((((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) : Subgroup _) : Set _).indicator 1) = stTw a w Q₁ ((GlobalTheory.LFun.KGL w a : Set (GLw a w)).indicator 1) * stTw b w Q₂ ((GlobalTheory.LFun.KGL w b : Set (GLw b w)).indicator 1) := by
   intro E _ _ _ hE a b w hw Q₁ Q₂ h₁ h₂
   unfold stTw2 stTw

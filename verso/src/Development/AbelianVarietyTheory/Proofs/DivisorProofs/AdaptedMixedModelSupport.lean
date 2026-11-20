@@ -15,6 +15,23 @@ open scoped Classical
 
 namespace GlobalTheory.ThKExpandXAdm
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev hB hXW g hg`. Establish `hψ : IsStd B.ψ` using `hB.std`. Establish `hSumm` using `GlobalTheory.T.adapted_mixed_model_evaluation hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev hB hXW`. Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n₁ × Fin d₁)`. Establish `hl₁` using `GlobalTheory.ConeMeasV.comp_ev_mem_adm hM₁ hM₂ hev hl₀`.
+
+Establish `hterm : ∀ w : Fin d₁ → E, ∃ T : SInf F (Fin n × Fin d₁) →L[ℂ] ℂ, ∀ f : SInf F (Fin n × Fin d₁), thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (pureA F f g))) = T f`. Introduce `w`. Take `⟨T, hT⟩` from `GlobalTheory.ConeMeasV.comp_schr_mem_adm hψ (M₁.co.e (Matrix.vecMulVec (incV F H.y) (incV F w))) hl₁ g hg`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Establish `hA : pureA F (f : (Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) → ℂ) g ∈ schA F (Fin n × Fin d₁)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+
+Establish `h1` using `GlobalTheory.ConeMeasV.schr_mem_schA hψ (M₁.co.e (Matrix.vecMulVec (incV F H.y) (incV F w))) hA`. Establish `h2` using `hev.maps _ h1`. Rewrite using `[← hT f]`. Conclude with `(hl₀eq _ h2).symm`. Use `choose T hT using hterm`.
+
+Establish `hsum : ∀ f : SInf F (Fin n × Fin d₁), Summable fun w : Fin d₁ → E => T w f`. Introduce `f`. Establish `hA : pureA F (f : (Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) → ℂ) g ∈ schA F (Fin n × Fin d₁)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Use `hSumm _ hA` as an intermediate fact. Simplify `this` using `only [hT]`.
+
+Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Take `⟨en, hen⟩` from `exists_surjective_nat (Fin d₁ → E)`. Set `S : ℕ → Finset (Fin d₁ → E)` to `fun N => (Finset.range N).image en`. Establish `hS : Tendsto S atTop atTop`. Use `Filter.tendsto_atTop_finset_of_monotone (fun a b hab => ?_) (fun w => ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.image_subset_image (Finset.range_subset_range.2 hab)`. Take `⟨k, rfl⟩` from `hen w`. Conclude with `⟨k + 1, Finset.mem_image_of_mem _ (Finset.mem_range.2 (Nat.lt_succ_self k))⟩`. Use `haveI : BarrelledSpace ℂ (SInf F (Fin n × Fin d₁)) := GlobalTheory.schwartzMap_barrelledSpace _`. Establish `hlim : Tendsto (fun N f => (∑ w ∈ S N, T w) f) atTop (𝓝 fun f : SInf F (Fin n × Fin d₁) => ∑' w, T w f)`.
+
+Rewrite using `[tendsto_pi_nhds]`. Introduce `f`. Simplify using `only [ContinuousLinearMap.sum_apply]`. Conclude with `(hsum f).hasSum.comp hS`. Use `⟨continuousLinearMapOfTendsto (fun N => ∑ w ∈ S N, T w) hlim, fun f => ?_⟩` and prove the remaining obligations.
+
+Use `show _ = linearMapOfTendsto _ _ hlim f`. Rewrite using `[linearMapOfTendsto_apply]`. Simplify using `only [hT]`.
+-/
 theorem adm : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁), M₁.IsGood B.ψ →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ W₁), H.IsAdapted σ B X X₁ j₀ j₁ → M₂.IsGood B.ψ →

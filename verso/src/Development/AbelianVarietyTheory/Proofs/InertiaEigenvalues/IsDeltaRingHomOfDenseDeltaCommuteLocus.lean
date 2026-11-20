@@ -7,6 +7,19 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ Q _ C _ D DC J JC h hl hJ hH hd x`. Establish `hlC : (l : C) ∈ JC`. Use `hJ (Ideal.mem_map_of_mem h hl)` as an intermediate fact. Simplify using `using this`. Establish `hpow : ∀ m : ℕ, (J ^ m).map h ≤ JC ^ m` using `fun m => by`.
+
+Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hJ m`. Rewrite using `[← sub_eq_zero]`. Apply `hH.haus` to reduce the goal to its premises. Introduce `n`.
+
+Take `⟨a, ha, hxa⟩` from `hd x (n + 1)`. Establish `ha'` using `(mem_δLocus).1 ha`. Use `set y := x - a with hy`. Establish `hxy : x = a + y` using `by rw [hy]; ring`. Establish `h1 : D.δ (a + y) - D.δ a ∈ J ^ n` using `GlobalTheory.T.delta_add_sub_mem_pow_of_mem_pow_succ l Q D J hl n a y hxa`.
+
+Establish `h1' : h (D.δ x) - h (D.δ a) ∈ JC ^ n`. Rewrite using `[hxy, ← map_sub]`. Conclude with `hpow n (Ideal.mem_map_of_mem h h1)`. Establish `hyC : h y ∈ JC ^ (n + 1)` using `hpow (n + 1) (Ideal.mem_map_of_mem h hxa)`. Establish `h2 : DC.δ (h a + h y) - DC.δ (h a) ∈ JC ^ n` using `GlobalTheory.T.delta_add_sub_mem_pow_of_mem_pow_succ l C DC JC hlC n (h a) (h y) hyC`.
+
+Establish `h2' : DC.δ (h x) - DC.δ (h a) ∈ JC ^ n` using `by rw [hxy, map_add]; exact h2`. Establish `key : h (D.δ x) - DC.δ (h x) ∈ JC ^ n`. Use `(JC ^ n).sub_mem h1' h2'` as an intermediate fact. Rewrite `this` using `[ha']`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `key`.
+-/
 theorem isδMap_of_dense_δLocus : ∀ (l : ℕ) [Fact l.Prime] (Q : Type) [CommRing Q] (C : Type) [CommRing C] (D : Delta l Q) (DC : Delta l C) (J : Ideal Q) (JC : Ideal C) (h : Q →+* C), (l : Q) ∈ J → J.map h ≤ JC → IsHausdorff JC C → (∀ (x : Q) (n : ℕ), ∃ a ∈ δLocus D DC h, x - a ∈ J ^ n) → IsδMap D DC h := by
   intro l _ Q _ C _ D DC J JC h hl hJ hH hd x
   have hlC : (l : C) ∈ JC := by

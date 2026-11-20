@@ -3,12 +3,20 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PartsSign
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap k Ω).injective`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`.
+-/
 private theorem exists_primitiveRoot_of_isAlgClosure' (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : ℕ) [NeZero N] : ∃ ζ : Ω, IsPrimitiveRoot ζ N := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap k Ω).injective
   exact HasEnoughRootsOfUnity.exists_primitiveRoot Ω N
 
+/- English proof (translation)
+Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne N] at hζ`. Establish `ht : Units.mk0 ζ h0 ∈ rootsOfUnity N Ω`. Rewrite using `[mem_rootsOfUnity]`.
+
+Use `ext`. Simplify using `using hζ`. Take `⟨ξ, hξ⟩` from `exists_primitiveRoot_of_isAlgClosure' k Ω N`. Use `modularCyclotomicCharacter.spec Ω hξ.card_rootsOfUnity (MulSemiringAction.toRingAut (G k Ω) Ω σ) ht` as an intermediate fact. Conclude with `this`.
+-/
 private theorem cls_apply_root_of_unity_eq_pow (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : ℕ) [NeZero N] (σ : G k Ω) (ζ : Ω) (hζ : ζ ^ N = 1) :
     σ ζ = ζ ^ ((cls k Ω N σ : (ZMod N)ˣ) : ZMod N).val := by
@@ -24,6 +32,11 @@ private theorem cls_apply_root_of_unity_eq_pow (k Ω : Type) [Field k] [NumberFi
     (MulSemiringAction.toRingAut (G k Ω) Ω σ) ht
   exact this
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_of_isAlgClosure' k Ω N`. Use `ext1`. Use `(modularCyclotomicCharacter.unique Ω hζ.card_rootsOfUnity (MulSemiringAction.toRingAut (G k Ω) Ω σ) (c := (u : ZMod N)) ?_).symm` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht` using `[mem_rootsOfUnity]`.
+
+Establish `ht' : (t : Ω) ^ N = 1` using `by rw [← Units.val_pow_eq_pow_val, ht, Units.val_one]`. Conclude with `h t ht'`.
+-/
 private theorem cls_eq_of_forall_root_of_unity_apply_eq_pow (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : ℕ) [NeZero N] (σ : G k Ω) (u : (ZMod N)ˣ)
     (h : ∀ ζ : Ω, ζ ^ N = 1 → σ ζ = ζ ^ (u : ZMod N).val) : cls k Ω N σ = u := by
@@ -36,11 +49,19 @@ private theorem cls_eq_of_forall_root_of_unity_apply_eq_pow (k Ω : Type) [Field
   have ht' : (t : Ω) ^ N = 1 := by rw [← Units.val_pow_eq_pow_val, ht, Units.val_one]
   exact h t ht'
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.mod_add_div b N, pow_add, pow_mul, hζ, one_pow, mul_one]`.
+-/
 private theorem root_of_unity_pow_natCast_zmod_val {Ω : Type} [Field Ω] (N : ℕ) [NeZero N] (ζ : Ω) (hζ : ζ ^ N = 1)
     (b : ℕ) : ζ ^ ((b : ZMod N)).val = ζ ^ b := by
   rw [ZMod.val_natCast]
   conv_rhs => rw [← Nat.mod_add_div b N, pow_add, pow_mul, hζ, one_pow, mul_one]
 
+/- English proof (translation)
+Apply `cls_eq_of_forall_root_of_unity_apply_eq_pow` to reduce the goal to its premises. Introduce `ξ hξ`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hξ`. Establish `h1` using `root_of_unity_pow_natCast_zmod_val N _ hξ 1`. Rewrite `h1` using `[Nat.cast_one, pow_one]`.
+
+Rewrite using `[map_pow, hσ, Units.val_one, h1]`.
+-/
 private theorem cls_eq_one_of_fixes_primitiveRoot (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : ℕ) [NeZero N] (σ : G k Ω) (ζ : Ω) (hζ : IsPrimitiveRoot ζ N)
     (hσ : σ ζ = ζ) : cls k Ω N σ = 1 := by
@@ -51,6 +72,39 @@ private theorem cls_eq_one_of_fixes_primitiveRoot (k Ω : Type) [Field k] [Numbe
   rw [Nat.cast_one, pow_one] at h1
   rw [map_pow, hσ, Units.val_one, h1]
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ _ _ N _`. Use `⟨?_, ?_, fun σ u h => cls_eq_of_forall_root_of_unity_apply_eq_pow k Ω N σ u h, ?_, ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_of_isAlgClosure' k Ω N haveI : Algebra.IsAlgebraic k Ω := IsAlgClosure.isAlgebraic`. Establish `hi : IsIntegral k ζ` using `(Algebra.IsAlgebraic.isAlgebraic ζ).isIntegral`. Use `haveI : FiniteDimensional k (IntermediateField.adjoin k {ζ}) := IntermediateField.adjoin.finiteDimensional hi`.
+
+Use `Subgroup.isOpen_mono ?_ (IntermediateField.fixingSubgroup_isOpen (IntermediateField.adjoin k {ζ}))` and prove the remaining obligations. Introduce `σ hσ`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `cls_eq_one_of_fixes_primitiveRoot k Ω N σ ζ hζ ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ ζ (IntermediateField.mem_adjoin_simple_self k ζ))`. Introduce `M _ hMN ext1 σ`.
+
+Use `symm`. Apply `cls_eq_of_forall_root_of_unity_apply_eq_pow` to reduce the goal to its premises. Introduce `ζ hζ`. Rewrite using `[MonoidHom.comp_apply, ZMod.unitsMap_val, ZMod.cast_eq_val, root_of_unity_pow_natCast_zmod_val M ζ hζ]`. Take `⟨d, hd⟩` from `hMN`.
+
+Conclude with `cls_apply_root_of_unity_eq_pow k Ω N σ ζ (by rw [hd, pow_mul, hζ, one_pow])`. Introduce `σ hσ`. Take `⟨j, hj⟩` from `hσ`. Apply `cls_eq_of_forall_root_of_unity_apply_eq_pow` to reduce the goal to its premises. Introduce `ζ hζ`.
+
+Establish `hN1 : 1 ≤ N` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne N)`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[NeZero.ne N] at hζ`. Establish `hval : ((-1 : (ZMod N)ˣ) : ZMod N) = ((N - 1 : ℕ) : ZMod N)`.
+
+Rewrite using `[Units.val_neg, Units.val_one, Nat.cast_sub hN1, ZMod.natCast_self, Nat.cast_one, zero_sub]`. Rewrite using `[hval, root_of_unity_pow_natCast_zmod_val N ζ hζ, pow_sub₀ ζ h0 hN1, hζ, pow_one, one_mul]`. Apply `j.injective` to reduce the goal to its premises. Establish `hjζ` using `hj ζ`. Simplify using `only [AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv] at hjζ`.
+
+Rewrite using `[hjζ, map_inv₀]`. Establish `hz : (j ζ) ^ N = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hn : ‖j ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hz (NeZero.ne N)`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+
+Introduce `A hA σ hσ`. Rewrite using `[MonoidHom.mem_ker]`. Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_of_isAlgClosure' k Ω N`. Apply `cls_eq_one_of_fixes_primitiveRoot k Ω N σ ζ hζ` to reduce the goal to its premises. Establish `hin : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation (σ x - x) < 1` using `hσ.2`.
+
+Assume the negation of the conclusion as `hne`. Establish `h0 : ζ ≠ 0` using `hζ.ne_zero (NeZero.ne N)`. Use `set ξ := σ ζ * ζ⁻¹ with hξdef`. Establish `hξN : ξ ^ N = 1`. Rewrite using `[hξdef, mul_pow, inv_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul, inv_one]`.
+
+Establish `hξ1 : ξ ≠ 1`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[hξdef, mul_inv_eq_one₀ h0]`. Conclude with `h`.
+
+Establish `hv1 : ∀ x : Ω, x ^ N = 1 → A.valuation x = 1`. Introduce `x hx`. Establish `hp : A.valuation x ^ N = 1` using `by rw [← map_pow, hx, map_one]`. Conclude with `(pow_eq_one_iff.1 hp).resolve_right (NeZero.ne N)`. Establish `hsum : ∑ i ∈ Finset.range N, ξ ^ i = 0`.
+
+Establish `hg` using `geom_sum_mul ξ N`. Rewrite `hg` using `[hξN, sub_self]`. Conclude with `(mul_eq_zero.1 hg).resolve_right (sub_ne_zero.2 hξ1)`. Establish `hNeq : (N : Ω) = (1 - ξ) * ∑ i ∈ Finset.range N, ∑ j ∈ Finset.range i, ξ ^ j`. Rewrite using `[Finset.mul_sum]`.
+
+Repeatedly rewrite using `[mul_neg_geom_sum]`. Rewrite using `[Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules. Establish `hξA : ξ ∈ A` using `(A.valuation_le_one_iff ξ).1 (hv1 ξ hξN).le`. Establish `hSA : (∑ i ∈ Finset.range N, ∑ j ∈ Finset.range i, ξ ^ j) ∈ A` using `sum_mem fun i _ => sum_mem fun j _ => pow_mem hξA j`.
+
+Establish `hS : A.valuation (∑ i ∈ Finset.range N, ∑ j ∈ Finset.range i, ξ ^ j) ≤ 1` using `(A.valuation_le_one_iff _).2 hSA`. Establish `hdiff : σ ζ - ζ = -(ζ * (1 - ξ))`. Rewrite using `[hξdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlt : A.valuation (1 - ξ) < 1`. Use `hin ζ (hv1 ζ hζ.pow_eq_one).le` as an intermediate fact. Rewrite `this` using `[hdiff, Valuation.map_neg, map_mul, hv1 ζ hζ.pow_eq_one, one_mul]`. Conclude with `this`. Apply `hA` to reduce the goal to its premises.
+
+Rewrite using `[hNeq, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hS) hlt`.
+-/
 theorem UpperTheory.V.Chr.clsFacts :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (N : ℕ) [NeZero N],
           IsOpen ((cls k Ω N).ker : Set (G k Ω)) ∧ (∀ (M : ℕ) [NeZero M] (h : M ∣ N), (ZMod.unitsMap h).comp (cls k Ω N) = cls k Ω M) ∧

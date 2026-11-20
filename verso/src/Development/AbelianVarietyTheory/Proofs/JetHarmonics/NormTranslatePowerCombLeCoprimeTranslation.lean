@@ -9,6 +9,15 @@ open scoped ComplexConjugate BigOperators Topology
 
 namespace GlobalTheory.MomOne.TranslNorm
 
+/- English proof (translation)
+Take `⟨u, v, h⟩` from `h`. Establish `hs : Real.sqrt d ≠ 0`. Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd`. Conclude with `(Real.sqrt_pos.mpr this).ne'`. Establish `him` using `congrArg Complex.im h`.
+
+Establish `hre` using `congrArg Complex.re h`. Simplify using `[wK] at him hre`. Establish `hv : v = 0`. Break down `him with h | h` into its components or cases. Conclude with `h`.
+
+Apply the tactic sequence `exfalso first | exact hs h | omega`. Substitute `hv` using the available equality. Establish `h2 : (s : ℝ) = 2 * u`. Simplify using `at hre`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3 : (s : ℤ) = 2 * u` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem even_of_inOK_half {d : ℕ} (hd : 0 < d) {s : ℕ} (h : InOK d ((s : ℂ) / 2)) : 2 ∣ s := by
   obtain ⟨u, v, h⟩ := h
   have hs : Real.sqrt d ≠ 0 := by
@@ -29,15 +38,26 @@ theorem even_of_inOK_half {d : ℕ} (hd : 0 < d) {s : ℕ} (h : InOK d ((s : ℂ
   have h3 : (s : ℤ) = 2 * u := by exact_mod_cast h2
   omega
 
+/- English proof (translation)
+Take `⟨u, v, rfl⟩` from `hx`. Take `⟨u', v', rfl⟩` from `hy`. Conclude with `⟨u + u', v + v', by push_cast; ring⟩`.
+-/
 theorem inOK_add {d : ℕ} {x y : ℂ} (hx : InOK d x) (hy : InOK d y) : InOK d (x + y) := by
   obtain ⟨u, v, rfl⟩ := hx
   obtain ⟨u', v', rfl⟩ := hy
   exact ⟨u + u', v + v', by push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨u, v, rfl⟩` from `hx`. Conclude with `⟨k * u, k * v, by push_cast; ring⟩`.
+-/
 theorem inOK_int_mul {d : ℕ} (k : ℤ) {x : ℂ} (hx : InOK d x) : InOK d ((k : ℂ) * x) := by
   obtain ⟨u, v, rfl⟩ := hx
   exact ⟨k * u, k * v, by push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hsq, hx⟩` from `hx`. Take `⟨r, hr, hrq, hy⟩` from `hy`. Use `⟨s * r, Nat.mul_pos hs hr, Nat.Coprime.mul_left hsq hrq, ?_⟩` and prove the remaining obligations. Use `inOK_add (inOK_int_mul (r : ℤ) hx) (inOK_int_mul (s : ℤ) hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem primeTo_add {d q : ℕ} {x y : ℂ} (hx : PrimeTo d q x) (hy : PrimeTo d q y) :
     PrimeTo d q (x + y) := by
   obtain ⟨s, hs, hsq, hx⟩ := hx
@@ -48,6 +68,33 @@ theorem primeTo_add {d q : ℕ} {x y : ℂ} (hx : PrimeTo d q x) (hy : PrimeTo d
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `d q hq M ω θ hd hd16 hsp hL hM hθ a m c s t B hs ht hB`. Establish `law0` using `GlobalTheory.T.translate_coprime_order_not_increase_theta_comb_norm d q M ω θ hd hd16 hsp hL hM hθ a m`. Distinguish the cases in `hhalf : InOK d (t - 1 / 2)`. Use `swap`. Conclude with `law0 c s t B hs ht hhalf hB`.
+
+Establish `hd0 : 0 < d` using `hd.pos`. Take `⟨hUU, -, hdiff, -⟩` from `GlobalTheory.T.cmLattice_heisenberg_relations_one_variable d hd0`. Take `⟨hlaws, hconst, -⟩` from `GlobalTheory.MomOne.TaylorRead.hat_laws q M.ι (C ω * logS) hM.2.1`. Establish `hcm : ∀ (r : ℂ) (F : ℂ → ℂ), Differentiable ℂ F → hat M.ι (C ω * logS) (fun z => r * F z) = C (M.ι r) * hat M.ι (C ω * logS) F`. Introduce `r F hF`.
+
+Rewrite using `[← hconst r]`. Conclude with `(hlaws (fun _ => r) F analyticAt_const (hF.analyticAt 0)).2.1`. Establish `hτ : PrimeTo d q (t / 2)`. Take `⟨n, hn, hnq, hnt⟩` from `ht`. Establish `h2 : 2 ∣ n`.
+
+Apply `even_of_inOK_half hd0` to reduce the goal to its premises. Use `inOK_add hnt (inOK_int_mul (-(n : ℤ)) hhalf)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨n * n, Nat.mul_pos hn hn, Nat.Coprime.mul_left hnq hnq, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h2`. Use `inOK_int_mul (k : ℤ) hnt` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `hk' : (n : ℂ) = 2 * k` using `by exact_mod_cast hk`.
+
+Use `push_cast`. Rewrite using `[hk']`. Expand and normalize the polynomial expressions, which then agree. Establish `hτ' : ¬ InOK d (t / 2 - 1 / 2)`. Introduce `h`.
+
+Establish `h1 : InOK d 1` using `⟨1, 0, by simp⟩`. Establish `h2 : 2 ∣ 1`. Apply `even_of_inOK_half hd0` to reduce the goal to its premises. Use `inOK_add (inOK_add (inOK_int_mul 2 h) h1) (inOK_int_mul (-1) hhalf)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Establish `hdouble : ∀ F : ℂ → ℂ, U1 d (t / 2) (U1 d (t / 2) F) = U1 d t F`. Introduce `F`.
+
+Rewrite using `[hUU]`. Establish `him : (h1 d (t / 2) (t / 2)).im = 0`. Rewrite using `[h1, Complex.mul_conj, ← Complex.ofReal_mul, Complex.ofReal_im]`. Use function extensionality and compare the values at `z`. Rewrite using `[him, add_halves]`.
+
+Simplify using the standard rewrite rules. Use `set r : Fin m → ℂ := fun j => Complex.exp (-(Real.pi : ℂ) * Complex.I * (((h1 d (t / 2) (s j)).im : ℝ) : ℂ)) with hr`. Establish `hstep : ∀ j, U1 d (t / 2) (U1 d (s j) θ) = fun z => r j * U1 d (t / 2 + s j) θ z` using `fun j => hUU _ _ _`. Establish `hD : ∀ j, Differentiable ℂ (U1 d (t / 2 + s j) θ)` using `fun j => (hdiff _ _ hθ.1).1`. Establish `h1` using `law0 c s (t / 2) B hs hτ hτ' hB`.
+
+Establish `h2 : Bd B (∑ j, C (c j * M.ι (r j) ^ a) * hat M.ι (C ω * logS) (U1 d (t / 2 + s j) θ) ^ a)`. Use `h1 using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[hstep j, hcm _ _ (hD j), mul_pow, map_mul, map_pow, mul_assoc]`. Establish `h3` using `law0 _ _ (t / 2) B (fun j => primeTo_add hτ (hs j)) hτ hτ' h2`. Use `h3 using 2 with j` and compare the differences between its conclusion and the goal.
+
+Establish `: U1 d t (U1 d (s j) θ) = fun z => r j * U1 d (t / 2) (U1 d (t / 2 + s j) θ) z`. Rewrite using `[← hdouble, hstep j]`. Use function extensionality and compare the values at `z`. Simplify using `only [U1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, hcm _ _ (hdiff _ _ (hD j)).1, mul_pow, map_mul, map_pow, mul_assoc]`.
+-/
 theorem norm_law : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]) (θ : ℂ → ℂ), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → IsTh d θ → ∀ (a m : ℕ) (c : Fin m → ℂ_[q]) (s : Fin m → ℂ) (t : ℂ) (B : ℝ), (∀ j, PrimeTo d q (s j)) → PrimeTo d q t → Bd B (∑ j, C (c j) * hat M.ι (C ω * logS) (U1 d (s j) θ) ^ a) → Bd B (∑ j, C (c j) * hat M.ι (C ω * logS) (U1 d t (U1 d (s j) θ)) ^ a) := by
   intro d q hq M ω θ hd hd16 hsp hL hM hθ a m c s t B hs ht hB
   have law0 := GlobalTheory.T.translate_coprime_order_not_increase_theta_comb_norm d q M ω θ hd hd16 hsp hL hM hθ a m

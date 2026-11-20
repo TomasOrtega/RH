@@ -16,6 +16,13 @@ namespace GlobalTheory.LocM.FrameBase
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Use `t.semi.comm` as an intermediate fact. Use `⟨TanMod.TanSp x t.G, inferInstance, inferInstance, fun m => m.pt.left, TanMod.TanSp.act x t.act, fun m n h => TanMod.TanSp.ext (Over.OverMorphism.ext h), fun w => ⟨fun h => ?_, ?_⟩, fun n b a w => ⟨?_, ?_⟩, fun a m => rfl, fun s m => rfl⟩` and prove the remaining obligations. Conclude with `⟨TanMod.TanSp.mk (Over.homMk w h.1) (TanMod.smT_zero_of x _ h.2), rfl⟩`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `⟨Over.w m.pt, TanMod.unit_of_smT_zero x _ m.tan⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => (a i • b i).pt` using `funext fun i => Over.OverMorphism.ext (hu i)`. Substitute `this` using the available equality. Rewrite using `[List.prod_ofFn, ← TanMod.TanSp.pt_sum]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨fun i => (a i • b i).pt, fun i => rfl, by rw [List.prod_ofFn, ← TanMod.TanSp.pt_sum]⟩`.
+-/
 theorem exists_tangent_module {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x : Sp S ⟶ X) :
     ∃ (N : Type) (_ : AddCommGroup N) (_ : Module S N) (v : N → (Sp (DualNumber S) ⟶ t.G.left))
       (ρ : 𝓞 E →+* Module.End S N), Function.Injective v ∧ (∀ w, IsTanAtG t x w ↔ w ∈ Set.range v) ∧
@@ -36,6 +43,21 @@ theorem exists_tangent_module {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRin
   · rintro rfl
     exact ⟨fun i => (a i • b i).pt, fun i => rfl, by rw [List.prod_ofFn, ← TanMod.TanSp.pt_sum]⟩
 
+/- English proof (translation)
+Set `_ : Algebra c.F S` to `f.toAlgebra`. Take `⟨N, _, _, v, ρ, hinj, htan, hcomb, hρ, hsm⟩` from `exists_tangent_module t x`. Use `choose b hb using fun τ i => (htan (u τ i)).1 (ht τ i)`. Take `rfl : u = fun τ i => v (b τ i)` from `by funext τ i; exact (hb τ i).symm`. Set `M : (E →+* ℂ) → Submodule S N` to `fun τ => ⨅ a : 𝓞 E, Module.End.eigenspace (ρ a) (f (embK c τ a))`.
+
+Establish `hM : ∀ τ n, n ∈ M τ ↔ ∀ a, ρ a n = f (embK c τ a) • n`. Introduce `τ n`. Simplify using `only [M, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Establish `hE : ∀ τ n, (∀ a : 𝓞 E, v n ≫ (t.act.act a).left = spMap (epsMul (f (embK c τ a))) ≫ v n) ↔ n ∈ M τ`. Introduce `τ n`.
+
+Rewrite using `[hM]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← hρ, ← hsm, hinj.eq_iff]`. Establish `hs : ∀ n : N, ∃! f : (E →+* ℂ) → N, (∀ τ, f τ ∈ M τ) ∧ ∑ τ, f τ = n`. Introduce `n`.
+
+Simplify using `only [hM]`. Conclude with `GlobalTheory.Frames.existsUnique_eigen_sum E H l c S N ρ n`. Establish `hmain` using `GlobalTheory.Frames.basis_iff_of_split (fun τ => Dw.mult τ) M hs b (fun τ i => (hE τ _).1 (he τ i)) g e`. Establish `hT : ∀ n, IsTanAtG t x (v n)` using `fun n => (htan _).2 ⟨n, rfl⟩`. Establish `hC : ∀ (k : ℕ) (b : Fin k → N) (a : Fin k → S) (n : N), IsCombAtG t x (fun i => v (b i)) a (v n) ↔ n = ∑ i, a i • b i`.
+
+Introduce `k b a n`. Rewrite using `[hcomb, hinj.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Take `⟨n, rfl⟩` from `(htan w).1 hw`.
+
+Establish `h1` using `hmain.1 (fun τ n hn => by`. Establish `h2` using `h τ (v n) (hT n) ((hE τ n).2 hn)`. Simplify `h2) n` using `only [hC]`. Simplify `h1` using `only [hC]`. Introduce `h τ w hw hew`.
+
+Take `⟨n, rfl⟩` from `(htan w).1 hw`. Establish `h1` using `hmain.2 (fun n => by`. Establish `h2` using `h (v n) (hT n)`. Simplify `h2) τ n ((hE τ n).1 hew)` using `only [hC]`. Simplify `h1` using `only [hC]`.
+-/
 theorem eigBasis_iff {Dw : Datum H} {l : Level H} (c : Coeff l) {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S]
     (f : c.F →+* S) (x : Sp S ⟶ X) (u : Vecs Dw t S) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (ht : ∀ τ i, IsTanAtG t x (u τ i))
@@ -81,6 +103,25 @@ theorem eigBasis_iff {Dw : Datum H} {l : Level H} (c : Coeff l) {X : Scheme.{0}}
       simpa only [hC] using h2) τ n ((hE τ n).1 hew)
     simpa only [hC] using h1
 
+/- English proof (translation)
+Set `up : ∀ w : Sp (DualNumber S) ⟶ t.G.left, w ≫ t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x → (epsR S ⟶ G')` to `fun w h => Over.homMk (hp.1.lift w _ h) (hp.1.lift_snd _ _ _)`. Establish `hup : ∀ w h, (up w h).left ≫ φ = w` using `fun w h => hp.1.lift_fst _ _ _`. Establish `inj : ∀ {T : Over (Sp S)} {u v : T ⟶ G'}, u.left ≫ φ = v.left ≫ φ → u = v` using `fun h => Over.OverMorphism.ext (hp.1.hom_ext h ((Over.w _).trans (Over.w _).symm))`. Establish `one : ∀ T : Over (Sp S), (1 : T ⟶ G').left ≫ φ = (1 : Over.mk (T.hom ≫ x) ⟶ t.G).left` using `fun T => congrArg (fun q => q.left) (map_one (pushHom hp T))`. Establish `e : η[G'].left ≫ φ = (1 : Over.mk x ⟶ t.G).left`.
+
+Establish `e₁ : (1 : 𝟙_ (Over (Sp S)) ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite using `[← e₁, one]`. Conclude with `congrArg (· ≫ (η[t.G]).left) (Category.id_comp x)`. Establish `zs : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Establish `e : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`.
+
+Use extensionality with `s`. Simplify using the standard rewrite rules. Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`. Simplify using the standard rewrite rules.
+
+Establish `tan : ∀ w : epsR S ⟶ G', IsTangent w ↔ IsTanAtG t x (w.left ≫ φ)` using `fun w => by`. Use `⟨fun h => ⟨Over.w (pushPt hp.1.w w), ?_⟩, fun h => hp.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q ≫ φ) h).trans e)`. Conclude with `(Category.assoc _ _ _).trans (h.2.trans e.symm)`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Over.w w, Over.w η[G']]`. Conclude with `zs`. Establish `pr : ∀ {n} (u : Fin n → (epsR S ⟶ G')), (List.ofFn u).prod.left ≫ φ = (List.ofFn fun i => (pushPt hp.1.w (u i) : tEpsG x ⟶ t.G)).prod.left` using `fun u => congrArg (fun q => q.left) ((map_list_prod (pushHom hp (epsR S)) _).trans (by rw [List.map_ofFn]; rfl))`. Establish `comb : ∀ {n} (c : Fin n → S) (v : Fin n → (epsR S ⟶ G')) w, IsLieComb c v w ↔ IsCombAtG t x (fun i => (v i).left ≫ φ) c (w.left ≫ φ)` using `fun c v w => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨fun i => pushPt hp.1.w (u i), fun i => (congrArg (· ≫ φ) (hu i)).trans (Category.assoc _ _ _), (pr u).symm⟩`. Introduce and unpack `⟨u, hu, hw⟩`. Use `⟨fun i => up (u i).left (Over.w _), fun i => hp.1.hom_ext ?_ ?_, inj (hw.symm.trans (Eq.trans ?_ (pr _).symm))⟩` and prove the remaining obligations. Conclude with `(hup _ _).trans ((hu i).trans (Category.assoc _ _ _).symm)`.
+
+Use `(Over.w (up (u i).left (Over.w _))).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (spMap (epsScaleR (c i)) ≫ ·) (Over.w (v i))).symm` and prove the remaining obligations. Conclude with `(GlobalTheory.Frames.spMap_epsScaleR_comp (c i)).symm`. Establish `: u = fun i => (pushPt hp.1.w (up (u i).left (Over.w _)) : tEpsG x ⟶ t.G)`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hup (u i).left (Over.w _)).symm`.
+
+Conclude with `congrArg (fun q : _ → (tEpsG x ⟶ t.G) => (List.ofFn q).prod.left) this`. Use `⟨fun w hw => ⟨up w hw.1, hup _ _⟩, fun n v => ⟨fun hB => ⟨fun i => (tan _).1 (hB.1 i), fun w hw => ?_⟩, fun hB => ⟨fun i => (tan _).2 (hB.1 i), fun w hw => ?_⟩⟩⟩` and prove the remaining obligations. Establish `h` using `hB.2 (up w hw.1) ((tan _).2 (by rw [hup]; exact hw))`. Simplify using `only [comb, hup] at h`. Conclude with `h`.
+
+Establish `h` using `hB.2 _ ((tan _).1 hw)`. Simplify using `only [comb]`. Conclude with `h`.
+-/
 theorem lieBasis_iff {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x : Sp S ⟶ X) (G' : Over (Sp S)) [GrpObj G']
     (φ : G'.left ⟶ t.G.left) (hp : IsGrpPullback G' t.G x φ) :
     (∀ w : (Sp (DualNumber S) ⟶ t.G.left), IsTanAtG t x w → ∃ v : epsR S ⟶ G', v.left ≫ φ = w) ∧
@@ -138,6 +179,17 @@ theorem lieBasis_iff {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] (x :
     simp only [comb]
     exact h
 
+/- English proof (translation)
+Use `t.semi.comm` as an intermediate fact. Use `t.semi.smooth` as an intermediate fact. Establish `h₁` using `isGrpPullback_pullback t.G x`. Establish `h₂` using `isGrpPullback_pullback ((Over.pullback x).obj t.G) (spMap φ)`. Establish `h₃` using `h₂.comp h₁`.
+
+Establish `: IsCommMonObj ((Over.pullback x).obj t.G)` using `Functor.isCommMonObj_obj`. Establish `: IsCommMonObj ((Over.pullback (spMap φ)).obj ((Over.pullback x).obj t.G))` using `Functor.isCommMonObj_obj`. Take `⟨a₁, b₁⟩` from `lieBasis_iff t x _ _ h₁`. Take `⟨-, b₃⟩` from `lieBasis_iff t _ _ _ h₃`. Use `choose u hu using fun i => a₁ (v i) (hv i)`.
+
+Establish `hb : IsLieBasis u` using `(b₁ n u).2 ⟨fun i => by rw [hu]; exact hv i, by rw [funext hu]; exact hv'⟩`. Establish `hs : Smooth ((Over.pullback x).obj t.G).hom` using `inferInstanceAs (Smooth (pullback.snd t.G.hom x))`. Take `⟨u', hb', hu'⟩` from `GlobalTheory.exists_isLieBasis_baseChange S T φ _ _ _ h₂ hs n u hb`. Establish `e : Chart.dualMapR φ = dualMap φ`. Apply the tactic sequence `ext a <;> rfl`.
+
+Establish `key` using `(b₃ n u').1 hb'`. Establish `e' : ∀ i, (u' i).left ≫ pullback.fst ((Over.pullback x).obj t.G).hom (spMap φ) ≫ pullback.fst t.G.hom x = spMap (dualMap φ) ≫ v i` using `fun i => by`. Rewrite using `[← Category.assoc, hu', e, Category.assoc, hu]`. Use `⟨fun i => e' i ▸ key.1 i, ?_⟩` and prove the remaining obligations. Rewrite using `[← funext e']`.
+
+Conclude with `key.2`.
+-/
 theorem tanBasis_baseChange {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
     (x : Sp S ⟶ X) (n : ℕ) (v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)) (hv : ∀ i, IsTanAtG t x (v i))
     (hv' : ∀ w, IsTanAtG t x w → ∃! a : Fin n → S, IsCombAtG t x v a w) :
@@ -169,6 +221,9 @@ theorem tanBasis_baseChange {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRin
   rw [← funext e']
   exact key.2
 
+/- English proof (translation)
+Rewrite using `[TanMod.spMap_comp', TanMod.spMap_comp']`. Use `congr 1`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem spMap_dualMap_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     spMap (dualMap ψ) ≫ spMap (epsMul a) = spMap (epsMul (ψ a)) ≫ spMap (dualMap ψ) := by
   rw [TanMod.spMap_comp', TanMod.spMap_comp']
@@ -176,6 +231,13 @@ theorem spMap_dualMap_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+
   refine RingHom.ext fun z => ?_
   ext <;> simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c X t R R' _ _ f x φ u h`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (Dw.mult τ))).symm`. Establish `h1` using `(eigBasis_iff c t f x u _ e (fun τ i => (h.1 τ i).1) (fun τ i => (h.1 τ i).2)).1 h.2`. Take `⟨h2, h3⟩` from `tanBasis_baseChange t φ x _ _ (fun j => (h.1 (e j).1 (e j).2).1) h1`. Establish `ht : ∀ τ i, IsTanAtG t (spMap φ ≫ x) (u.bc φ τ i)` using `fun τ i => by`.
+
+Use `h2 (e.symm ⟨τ, i⟩)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`. Establish `he : ∀ τ i (a : 𝓞 E), u.bc φ τ i ≫ (t.act.act a).left = spMap (epsMul ((φ.comp f) (embK c τ a))) ≫ u.bc φ τ i` using `fun τ i a => by`. Rewrite using `[Vecs.bc, Category.assoc, (h.1 τ i).2 a, ← Category.assoc, spMap_dualMap_epsMul, Category.assoc, RingHom.comp_apply]`.
+
+Conclude with `⟨fun τ i => ⟨ht τ i, he τ i⟩, (eigBasis_iff c t (φ.comp f) _ (u.bc φ) _ e ht he).2 h3⟩`.
+-/
 theorem frameBase : GlobalTheory.LocM.Cht.FrameBaseSt := by
   intro E _ _ _ H Dw l c X t R R' _ _ f x φ u h
   let e := (Fintype.equivFin (Σ τ : E →+* ℂ, Fin (Dw.mult τ))).symm

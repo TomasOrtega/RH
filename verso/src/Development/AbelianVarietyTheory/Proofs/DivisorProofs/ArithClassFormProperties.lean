@@ -17,6 +17,11 @@ namespace GlobalTheory.VertForm
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Set `S : Finset (HermLB p)` to `Finset.univ.biUnion fun j => (v j).support`. Use `⟨S.card, fun m => (S.equivFin.symm m : HermLB p), fun j m => v j (S.equivFin.symm m), fun j => ?_⟩` and prove the remaining obligations. Establish `hsub : (v j).support ⊆ S` using `Finset.subset_biUnion_of_mem (fun j => (v j).support) (Finset.mem_univ j)`. Establish `e1` using `Equiv.sum_comp S.equivFin.symm (fun s : S => v j s • cl (s : HermLB p))`. Establish `e2` using `Finset.sum_coe_sort S (fun s => v j s • cl s)`.
+
+Use `Eq.trans ?_ (e1.trans e2).symm` and prove the remaining obligations. Use `conv_lhs => rw [← Finsupp.sum_single (v j)]`. Rewrite using `[Finsupp.sum_of_support_subset _ hsub _ (fun _ _ => Finsupp.single_zero _)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[cl, Finsupp.smul_single]`.
+-/
 theorem exists_finite_family {D : ℕ} (v : Fin (D + 1) → Cl p) :
     ∃ (N : ℕ) (e : Fin N → HermLB p) (b : Fin (D + 1) → Fin N → ℝ), ∀ j, v j = ∑ m, b j m • cl (e m) := by
   classical
@@ -31,6 +36,19 @@ theorem exists_finite_family {D : ℕ} (v : Fin (D + 1) → Cl p) :
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [cl, Finsupp.smul_single]
 
+/- English proof (translation)
+Introduce `v j`. Take `⟨N, e, b, hv⟩` from `exists_finite_family v`. Set `F' : κ ⊕ Fin N → HermLB p` to `Sum.elim F e`. Take `⟨Φ, hΦ⟩` from `((hE k X p D hX).2 (κ ⊕ Fin N) F').1`. Set `G : Option (κ ⊕ Fin N) → HermLB p` to `fun o => o.elim B F'`.
+
+Set `A : Option (κ ⊕ Fin N) → κ ⊕ Fin N → ℤ` to `fun o => o.elim (Sum.elim m 0) fun c => Pi.single c 1`. Establish `hA : ∀ o, (comb F' (A o)).Isometric (G o)`. Introduce and unpack `(_ | c)`. Use `HermLB.Isometric.trans (HermLB.icls_eq_iff.1 ?_) hB` and prove the remaining obligations. Simplify using `[A, F', ArInt.icls_comb, Fintype.sum_sum_type]`.
+
+Conclude with `ArInt.isometric_comb_single F' c`. Establish `hG` using `(((Published.arIso_holds k X p D hX).2 _ F' Φ hΦ).2.2 _ G A hA)`. Set `a : Fin (D + 1) → Option (κ ⊕ Fin N) → ℝ` to `fun i o => if i = j then o.elim 1 (Sum.elim (fun c => -(m c : ℝ)) 0) else o.elim 0 (Sum.elim 0 (b i))`. Establish `h1` using `hnum _ G _ hG a`. Establish `h2 : (fun i => ∑ o, a i o • cl (G o)) = Function.update v j (cl B - ∑ c, (m c : ℝ) • cl (F c))`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[a, G, F', Fintype.sum_option, Fintype.sum_sum_type, sub_eq_add_neg, Finset.sum_neg_distrib, neg_smul]`. Simplify using `[a, G, F', hi, Fintype.sum_option, Fintype.sum_sum_type, hv i]`.
+
+Rewrite using `[← h2, ← h1]`. Establish `h3 : aeval (fun o => lin fun c => (A o c : ℝ)) (lin (a j)) = 0`. Rewrite using `[ArInt.aeval_lin]`. Establish `: (fun c : κ ⊕ Fin N => ∑ o, a j o * (A o c : ℝ)) = 0`. Use function extensionality and compare the values at `c`.
+
+Apply the tactic sequence `rcases c with c | c <;> simp [a, A, Fintype.sum_option, Fintype.sum_sum_type, Pi.single_apply]`. Rewrite using `[this]`. Simplify using `[lin]`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, Finset.prod_eq_zero (Finset.mem_univ j) h3, map_zero]`.
+-/
 theorem sub_sum_mem_rad_of_isometric (hE : GlobalTheory.Published.ArExists) {D : ℕ} [IsIntegral X] (hX : IsArithVar p D)
     {num : Form (Cl p) D} (hnum : IsArForm D num) {κ : Type} [Fintype κ] (F : κ → HermLB p) (m : κ → ℤ)
     (B : HermLB p) (hB : (comb F m).Isometric B) :
@@ -67,6 +85,11 @@ theorem sub_sum_mem_rad_of_isometric (hE : GlobalTheory.Published.ArExists) {D :
     simp [lin]
   rw [LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_prod, Finset.prod_eq_zero (Finset.mem_univ j) h3, map_zero]
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX num hnum`. Establish `hE` using `hC.arExists`. Use `⟨fun L M => ?_, fun L => ?_, fun L M h => ?_, fun ι _ L n => sub_sum_mem_rad_of_isometric hE hX hnum L n _ (HermLB.Isometric.refl _)⟩` and prove the remaining obligations. Use `sub_sum_mem_rad_of_isometric hE hX hnum ![L, M] 1 (L.tens M) (HermLB.icls_eq_iff.1 (by simp [ArInt.icls_comb, HermLB.icls_tens, Fin.sum_univ_two]))` as an intermediate fact. Simplify `this` using `[Fin.sum_univ_two]`.
+
+Use `sub_sum_mem_rad_of_isometric hE hX hnum (fun _ : Unit => L) (-1) L.dual (HermLB.icls_eq_iff.1 (by simp [ArInt.icls_comb, HermLB.icls_dual]))` as an intermediate fact. Simplify using `using this`. Use `sub_sum_mem_rad_of_isometric hE hX hnum (fun _ : Unit => M) 1 L (HermLB.Isometric.trans (HermLB.icls_eq_iff.1 (by simp [ArInt.icls_comb])) h.symm)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem arForm_rad_rules : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ num : Form (Cl p) D, IsArForm D num →
     (∀ L M : HermLB p, cl (L.tens M) - (cl L + cl M) ∈ rad num) ∧ (∀ L : HermLB p, cl L.dual + cl L ∈ rad num) ∧

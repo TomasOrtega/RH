@@ -23,6 +23,9 @@ def DualTopBasisChange.Statement : Prop :=
 def dualBasisStandardNeg : Module.Basis (Fin 1) ℤ (dualLattice (HermLattice.standard ℚ 1)) :=
   (dualBasisStandard.map (LinearEquiv.neg ℤ)).reindex (Equiv.ofUnique Unit (Fin 1))
 
+/- English proof (translation)
+Use `⟨dualEmbMatrix_standard_bijective, DualEmbBijective.proof ℚ 1 _ _ _, le_rfl, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun h 0`. Simplify using `[dualBasisStandardNeg, dualBasisStandard_apply, oneDual] at h0`. Evaluate the numerical expressions using `at h0`.
+-/
 example : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix dualBasisStandard)) ∧
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix dualBasisStandardNeg)) ∧ 1 ≤ 1 ∧
     (dualBasisStandardNeg 0 : Fin 1 → ℚ) ≠ (dualBasisStandard () : Fin 1 → ℚ) := by

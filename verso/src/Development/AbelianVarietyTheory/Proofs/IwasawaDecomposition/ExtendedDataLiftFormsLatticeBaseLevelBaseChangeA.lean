@@ -27,6 +27,13 @@ namespace GlobalTheory.Mem.R3.LiftForms
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (StepW.and (StepW.of_all fun _ _ _ _ _ _ _ hp => hp) (StepW.and (StepW.and (GlobalTheory.T.goodForms_lift_baseLevel_extension_span h1 h2 h3 h4 h5 h6 h7) (GlobalTheory.T.extendedData_lift_baseLattice_eq_span_images h1 h2 h3 h4 h5 h6 h7)) (GlobalTheory.T.reading_coordin …` and prove the remaining obligations. Introduce and unpack `K B' f' T' w' - - ⟨-, ⟨H1, H2⟩, H3⟩ B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`. Establish `hW` using `H1 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`. Establish `hM` using `H2 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`.
+
+Establish `hJ` using `H3 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' e j j' hj φ hφ`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `congrArg (fun P : Pre => P.R.m) hE.1`. Establish `hn : z.R.nW j = z'.R.nW j'` using `GlobalTheory.Mem.R3.LiftForms.nat_eq_of_heq hm e.nW j j' hj`. Take `⟨G, hGb, hGid⟩` from `GlobalTheory.Mem.R3.LiftForms.exists_mat φ hn _ _ hW`. Use `⟨G, hGb, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.Mem.R3.LiftForms.lat_coords φ hn _ _ ((Module.finBasis _ _).linearIndependent.map' _ (Submodule.ker_subtype _)) G hGid _ (fun x hx => GlobalTheory.Mem.R3.LiftForms.mem_span_basis _ ((z.R.FW j).Mj_sub_Wgood _ _ _ hx)) _ hM`. Introduce `y`. Conclude with `HEq.trans (GlobalTheory.Mem.R3.LiftForms.liftWeight_complexPoint_eq_twist z'.R z'.F j' _) (HEq.trans (hJ _ _ (hGid y)) (GlobalTheory.Mem.R3.LiftForms.liftWeight_complexPoint_eq_twist z.R z.F j y).symm)`.
+-/
 theorem extendedData_liftFormsLattice_baseLevel_baseChange : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

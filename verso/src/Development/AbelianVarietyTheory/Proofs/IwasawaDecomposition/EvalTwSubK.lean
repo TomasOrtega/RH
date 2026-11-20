@@ -14,6 +14,9 @@ def twSubK {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ} (t : ι �
       C (t k.1 ((M : Matrix (Fin n) (Fin n) E) k.2.1 j)) * X (k.1, j, k.2.2)) P
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.IntegralityCompare.twSubK, _root_.GlobalTheory.IntegralityCompare.twSub, map_mul, map_C, map_bind₁]`. Simplify using `[map_prod, map_zpow₀]`.
+-/
 theorem _root_.GlobalTheory.IntegralityCompare.map_twSubK {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ}
     (t : ι → E →+* K) (M : GL (Fin n) E) (s : ι → ℤ) (P : MvPolynomial (ι × Fin n × Fin n) K)
     (φ : K →+* ℂ) :
@@ -23,12 +26,18 @@ theorem _root_.GlobalTheory.IntegralityCompare.map_twSubK {E K ι : Type} [Field
   simp [map_prod, map_zpow₀]
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[← aeval_eq_eval, ← aeval_eq_eval, aeval_bind₁]`.
+-/
 private lemma eval_bind_eq_eval_comp {K σ τ : Type} [CommRing K] (f : σ → MvPolynomial τ K)
     (x : τ → K) (P : MvPolynomial σ K) :
     eval x (bind₁ f P) = eval (fun i => eval x (f i)) P := by
   rw [← aeval_eq_eval, ← aeval_eq_eval, aeval_bind₁]
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.IntegralityCompare.twSubK, map_mul, eval_C, eval_bind_eq_eval_comp]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_apply, eval_sum]`.
+-/
 theorem _root_.GlobalTheory.IntegralityCompare.eval_twSubK {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ}
     (t : ι → E →+* K) (M : GL (Fin n) E) (s : ι → ℤ) (P : MvPolynomial (ι × Fin n × Fin n) K)
     (x : ι → Matrix (Fin n) (Fin n) K) :

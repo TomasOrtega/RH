@@ -34,6 +34,9 @@ open scoped InnerProductSpace
 noncomputable section
 namespace GlobalTheory.KFinDecomp
 
+/- English proof (translation)
+Introduce `D θ hθ hPr N U f f' hf hf'`. Take `⟨⟨a1, a2, a3⟩, a4⟩` from `hf`. Take `⟨⟨b1, b2, b3⟩, b4⟩` from `hf'`. Use `⟨⟨GlobalTheory.Mem.AutSpace.isAutFunSm_add a1 b1, GlobalTheory.MultMem.isCuspFun_add a1.toIsAutFun b1.toIsAutFun a2 b2, fun τ => GlobalTheory.CuspGKForms.isTypeAt_add hPr hθ a1 b1 (a3 τ) (b3 τ)⟩, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, a4 k hk hkf g, b4 k hk hkf g]`.
+-/
 theorem cls_add : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (f f' : GA D N.V → ℂ), f ∈ Cls θ N U → f' ∈ Cls θ N U → f + f' ∈ Cls θ N U := by
   intro D θ hθ hPr N U f f' hf hf'
   obtain ⟨⟨a1, a2, a3⟩, a4⟩ := hf

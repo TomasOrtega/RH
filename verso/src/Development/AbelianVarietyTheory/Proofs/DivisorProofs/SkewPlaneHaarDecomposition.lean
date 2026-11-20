@@ -24,6 +24,19 @@ open GlobalTheory.ThK.SquareIntegrability
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hx : mat m *ᵥ incV F H.x = t.1 • incV F H.x` using `hm.1`. Establish `hι : mat m * incM F H.ι = incM F H.ι * mat h₁` using `hm.2.2`. Establish `hmi : mat m⁻¹ * mat m = 1` using `GlobalTheory.ThK.FlagPar.mat_inv_mul m`. Establish `hhi : mat h₁ * mat h₁⁻¹ = 1`. Rewrite using `[← GlobalTheory.ThK.FlagPar.mat_mul, mul_inv_cancel, GlobalTheory.ThK.FlagPar.mat_one]`.
+
+Establish `hxi : mat m⁻¹ *ᵥ incV F H.x = (t⁻¹).1 • incV F H.x`. Combine the equalities or inequalities in the displayed calculation. Establish `hιi : mat m⁻¹ * incM F H.ι = incM F H.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ u : UA σ W.J, (mat u *ᵥ incV F H.x = incV F H.x ∧ ∀ z, ∃ a : AE F E, mat u *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + a • incV F H.x) → (mat (m * u * m⁻¹) *ᵥ incV F H.x = incV F H.x ∧ ∀ z, ∃ a : AE F E, mat (m * u * m⁻¹) *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + a • incV F H …`.
+
+Introduce and unpack `u ⟨h1, h2⟩`. Establish `e : mat (m * u * m⁻¹) = mat m * mat u * mat m⁻¹` using `rfl`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hxi, Matrix.mulVec_smul, h1, Matrix.mulVec_smul, hx, smul_smul, Units.inv_mul, one_smul]`. Take `⟨a, ha⟩` from `h2 (mat h₁⁻¹ *ᵥ z)`.
+
+Use `⟨a * t.1, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹), hιi, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, hx, Matrix.mulVec_mulVec, hι, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, hhi, Matrix.one_mulVec, smul_smul]`. Proceed by induction on `hv using Subgroup.closure_induction with`. Consider the case `mem u hu => exact Subgroup.subset_closure (key u hu)`. Consider the case `one => simp`.
+
+Consider the case `mul a b _ _ ha hb`. Establish `: m * (a * b) * m⁻¹ = (m * a * m⁻¹) * (m * b * m⁻¹)` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem ha hb`. Consider the case `inv a _ ha`.
+
+Establish `: m * a⁻¹ * m⁻¹ = (m * a * m⁻¹)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `inv_mem ha`.
+-/
 theorem conj_mem_unip_of_isLevi {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {t : (AE F E)ˣ}
     {h₁ : UA σ W₁.J} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H t h₁ m) {v : UA σ W.J} (hv : v ∈ unip σ W H) :
     m * v * m⁻¹ ∈ unip σ W H := by
@@ -65,6 +78,11 @@ theorem conj_mem_unip_of_isLevi {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n
     have : m * a⁻¹ * m⁻¹ = (m * a * m⁻¹)⁻¹ := by group
     rw [this]; exact inv_mem ha
 
+/- English proof (translation)
+Take `⟨hx, hy, hι⟩` from `hL`. Take `⟨hx', hy', hι'⟩` from `hL'`. Establish `hm : ∀ (A B : UA σ W.J), mat (A * B) = mat A * mat B` using `fun _ _ => rfl`. Establish `hm₁ : ∀ (A B : UA σ W₁.J), mat (A * B) = mat A * mat B` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm, ← Matrix.mulVec_mulVec, hx', Matrix.mulVec_smul, hx, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[hm, ← Matrix.mulVec_mulVec, hy', Matrix.mulVec_smul, hy, smul_smul, _root_.mul_inv_rev, Units.val_mul, map_mul]`. Rewrite using `[hm, hm₁, Matrix.mul_assoc, hι', ← Matrix.mul_assoc, hι, Matrix.mul_assoc]`.
+-/
 theorem isLevi_mul_gen {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁}
     {l l' : (AE F E)ˣ} {g₀ g₀' : UA σ W₁.J} {h h' : UA σ W.J} (hL : IsLevi (W₁ := W₁) H l g₀ h)
     (hL' : IsLevi (W₁ := W₁) H l' g₀' h') : IsLevi (W₁ := W₁) H (l * l') (g₀ * g₀') (h * h') := by
@@ -82,6 +100,35 @@ end GlobalTheory.InducedLeft
 namespace GlobalTheory.InducedLeft
 open GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.CuspTransfer
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hMc hML hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc d ψs a Ψ hInd hcusp`. Establish `hdet : W₁.J.det ≠ 0`. Introduce `h0`. Apply `hND₁.2` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, show (W₁.J.map σ).det = σ W₁.J.det from (RingHom.map_det (σ : E →+* E) _).symm, h0, map_zero, mul_zero]`.
+
+Establish `hHP : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, horth, hgram⟩`. Take `⟨hmul, hcomm⟩` from `GlobalTheory.LeviPlaneHom.levi_section_hom F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hML`. Use `set T := toGAd hσ W.J hc₀ with hT`. Use `set T₁ := toGAd hσ W₁.J hc₀ with hT₁`. Establish `hU : ∀ v : UA σ W.J, v ∈ unip σ W H → T v ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' {0}` using `fun v hv => by`.
+
+Use `(GlobalTheory.ThK.GLTwo.IsHypPlane.mem_unip_iff hσ hHP hsk hdet hc₀ hW' (Nat.succ_pos r) hx0 v).1 hv` as an intermediate fact. Simplify using `using this`. Establish `hU' : ∀ u ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' {0}, T.symm u ∈ unip σ W H` using `fun u hu => by`. Use `(GlobalTheory.ThK.GLTwo.IsHypPlane.mem_unip_iff hσ hHP hsk hdet hc₀ hW' (Nat.succ_pos r) hx0 _).2 ?_` and prove the remaining obligations. Establish `h2 : toGAd hσ W.J hc₀ (T.symm u) = u` using `T.apply_symm_apply u`.
+
+Rewrite using `[h2]`. Simplify using `using hu`. Establish `hemb : ∀ y, emb hσ W W₁ hc₀ M y = T (M (T₁.symm y))` using `fun _ => rfl`. Use `⟨fun u hu g => ?_, fun γ hγr hγl g => ?_⟩` and prove the remaining obligations. Take `⟨u₀, hu₀, t, m, y, k, hk, hm, rfl⟩` from `hInd.1 g`.
+
+Take `⟨v, hv, w, hw, rfl⟩` from `(GlobalTheory.T.skew_plane_unipotent_decomposition F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hMc hML hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' u).1 hu`. Take `⟨v₀, rfl⟩` from `T.surjective u₀`. Take `⟨w', rfl⟩` from `T₁.surjective w`. Take `⟨y', rfl⟩` from `T₁.surjective y`. Establish `hv₀ : v₀ ∈ unip σ W H` using `by simpa using hU' _ hu₀`.
+
+Establish `hnew : v * (M w' * v₀ * (M w')⁻¹) ∈ unip σ W H` using `mul_mem hv (conj_mem_unip_of_isLevi (hML w') hv₀)`. Establish `e : T v * T (M (T₁.symm (T₁ w'))) * (T v₀ * T m * emb hσ W W₁ hc₀ M (T₁ y') * k) = T (v * (M w' * v₀ * (M w')⁻¹)) * T m * emb hσ W W₁ hc₀ M (T₁ w' * T₁ y') * k`. Establish `e1 : v * M w' * v₀ * m * M y' = v * (M w' * v₀ * (M w')⁻¹) * m * (M w' * M y')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hemb, hemb, ← map_mul T₁]`.
+
+Simplify using `only [MulEquiv.symm_apply_apply, hmul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, mul_assoc]`. Use `_ = T (v * (M w' * v₀ * (M w')⁻¹) * m * (M w' * M y')) * k := by rw [e1]`. Use `_ = _ := by simp only [map_mul, map_inv, mul_assoc]`.
+
+Rewrite using `[e, hInd.2 _ (hU _ hnew) t m (T₁ w' * T₁ y') k hk hm, hInd.2 _ hu₀ t m (T₁ y') k hk hm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hcusp i).1.leftN (T₁ w') hw (T₁ y')]`. Take `⟨u₀, hu₀, t, m, y, k, hk, hm, rfl⟩` from `hInd.1 g`.
+
+Take `⟨s', mₛ, h₁, hms, hh₁l, rfl⟩` from `GlobalTheory.T.hyperbolic_plane_orthogonal_split F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hML r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' γ hγl`. Apply the tactic sequence `obtain ⟨⟨s, rfl⟩, hh₁r⟩ := GlobalTheory.T.hyperbolic_plane_complement_isometry F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hND₁ hND M hML _ hγr _ mₛ h₁ hms rfl`. Take `⟨v₀, rfl⟩` from `T.surjective u₀`. Take `⟨y', rfl⟩` from `T₁.surjective y`. Establish `hv₀ : v₀ ∈ unip σ W H` using `by simpa using hU' _ hu₀`.
+
+Establish `hnew : mₛ * M h₁ * v₀ * (mₛ * M h₁)⁻¹ ∈ unip σ W H`. Use `conj_mem_unip_of_isLevi hms (conj_mem_unip_of_isLevi (hML h₁) hv₀)` as an intermediate fact. Establish `e0 : mₛ * M h₁ * v₀ * (mₛ * M h₁)⁻¹ = mₛ * (M h₁ * v₀ * (M h₁)⁻¹) * mₛ⁻¹` using `by group`. Rewrite using `[e0]`. Conclude with `this`.
+
+Establish `hml` using `isLevi_mul_gen hms hm`. Rewrite `hml` using `[mul_one]`. Establish `e : T mₛ * T (M h₁) * (T v₀ * T m * emb hσ W W₁ hc₀ M (T₁ y') * k) = T (mₛ * M h₁ * v₀ * (mₛ * M h₁)⁻¹) * T (mₛ * m) * emb hσ W W₁ hc₀ M (T₁ h₁ * T₁ y') * k`. Establish `e1 : mₛ * M h₁ * v₀ * m * M y' = mₛ * M h₁ * v₀ * (mₛ * M h₁)⁻¹ * (mₛ * m) * (M h₁ * M y')`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hemb, hemb, ← map_mul T₁]`. Simplify using `only [MulEquiv.symm_apply_apply, hmul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, mul_assoc]`. Use `_ = T (mₛ * M h₁ * v₀ * (mₛ * M h₁)⁻¹ * (mₛ * m) * (M h₁ * M y')) * k := by rw [e1]`.
+
+Use `_ = _ := by simp only [map_mul, map_inv, mul_assoc]`. Establish `hrat : T₁ h₁ ∈ ratPts σ (c₀ • W₁.J.map σ)` using `(GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ W₁.J hc₀ h₁).2 hh₁r`. Rewrite using `[e, hInd.2 _ (hU _ hnew) _ _ (T₁ h₁ * T₁ y') k hk hml, hInd.2 _ hu₀ t m (T₁ y') k hk hm, map_mul, hχ s, one_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(hcusp i).1.leftM (T₁ h₁) hrat hh₁l (T₁ y')]`.
+-/
 theorem left_invariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

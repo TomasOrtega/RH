@@ -8,6 +8,21 @@ open GroundTheory.Automorphic GroundTheory.Global GroundTheory.Global.IdeleGroup
 
 namespace GlobalTheory.HCF
 
+/- English proof (translation)
+Introduce `E _ _ a`. Take `⟨W0, hW, hWB, t, ht, h⟩` from `exists_siegelSet (K := E) a`. Take `⟨B₁, B₂, hB₁, hB₁₂, hB⟩` from `exists_pos_bounds hW (f := fun b => (ideleModule E (AdelicGLn.det E a b) : ℝ)) (continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))) (fun b _ => (ideleModule E (AdelicGLn.det E a b)).2)`. Use `set d := Module.finrank ℚ E with hd`. Establish `hd0 : 0 < d` using `Module.finrank_pos`.
+
+Establish `hB₂ : 0 < B₂` using `hB₁.trans_le hB₁₂`. Use `set X₁ : ℝ := min 1 B₂⁻¹ with hX₁def`. Use `set X₂ : ℝ := max 1 (2 / B₁) with hX₂def`. Establish `hX₁ : 0 < X₁` using `lt_min one_pos (inv_pos.2 hB₂)`. Use `⟨W0, hW, hWB, t, X₁, X₂, ht, hX₁, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `h g`. Take `⟨b, hbW, _, ⟨r, hr, hrat, rfl⟩, k, hk, hgeq⟩` from `hγ`. Establish `hgmod : (ideleModule E (AdelicGLn.det E a g) : ℝ) = absDetA g` using `(adeleAbs_units _).symm`. Establish `hmod` using `congrArg (fun x => (ideleModule E (AdelicGLn.det E a x) : ℝ)) hgeq`. Rewrite `hmod` using `[det_mul_mul, ideleModule_det_diagUnits_posIdele r hr, mem_normOneGL.1 (maxCompact_le_normOneGL hk), mul_one, map_mul, map_mul, Positive.val_mul, mem_normOneGL.1 (rationalGL_le_normOneGL ⟨γ, rfl⟩), one_mul, hgmod]`.
+
+Use `set X : ℝ := ∏ i, r i with hX`. Establish `hXpos : 0 < X` using `Finset.prod_pos fun i _ => hr i`. Establish `hb` using `hB b hbW`. Take `⟨h1, h2⟩` from `hg`. Establish `hXd1 : X ^ d ≤ 2 / B₁`.
+
+Rewrite using `[le_div_iff₀ hB₁]`. Combine the equalities or inequalities in the displayed calculation. Establish `hXd2 : B₂⁻¹ ≤ X ^ d`. Rewrite using `[inv_le_iff_one_le_mul₀' hB₂]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hratGL : ratGL E a γ = AdelicGLn.diagonal E a γ` using `rfl`. Use `⟨γ, b, hbW, r, hr, hrat, ?_, ?_, k, hk, by rw [hratGL]; exact hgeq⟩` and prove the remaining obligations. Break down `le_or_gt 1 X with h | h` into its components or cases. Conclude with `(min_le_left _ _).trans h`. Conclude with `(min_le_right _ _).trans (hXd2.trans (pow_le_of_le_one hXpos.le h.le hd0.ne'))`.
+
+Break down `le_or_gt X 1 with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `(le_self_pow₀ h.le hd0.ne').trans (hXd1.trans (le_max_right _ _))`.
+-/
 theorem exists_siegel_band : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ), ∃ Ω : Set (GA E a), IsCompact Ω ∧ Ω ⊆ ((adelicBorel : Subgroup (GA E a)) : Set (GA E a)) ∧ ∃ t c₁ c₂ : ℝ, 0 < t ∧ 0 < c₁ ∧ ∀ g ∈ band E a, ∃ γ : GL (Fin a) E, ∃ b ∈ Ω, ∃ (r : Fin a → ℝ) (hr : ∀ i, 0 < r i), (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) ∧ c₁ ≤ ∏ i, r i ∧ ∏ i, r i ≤ c₂ ∧ ∃ k ∈ (maxCompact : Subgroup (GA E a)), ratGL E a γ * g = b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * k := by
   intro E _ _ a
   obtain ⟨W0, hW, hWB, t, ht, h⟩ := exists_siegelSet (K := E) a

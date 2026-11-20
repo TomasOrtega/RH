@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.HomFixTransport
 
+/- English proof (translation)
+Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res _ y _ hy _)).trans ?_)))` and prove the remaining obligations. Establish `a` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2`. Establish `b` using `gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2`. Use `show gm (𝟙 X) y _ (L.g p.1 q.1) * (gm (𝟙 X) y _ (L.g p.2 q.2))⁻¹ * gm (𝟙 X) y _ (L.g q.1 q.2) = gm (𝟙 X) y _ (L.g p.1 p.2)`.
+
+Rewrite using `[mul_right_comm, a, ← b, mul_inv_cancel_right]`.
+-/
 theorem lbIso_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
   refine ⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
   refine (gm_res _ y _ hy _).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·)
@@ -24,6 +29,9 @@ theorem lbIso_self {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L L := by
     gm (𝟙 X) y _ (L.g p.1 p.2)
   rw [mul_right_comm, a, ← b, mul_inv_cancel_right]
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullLinComb L F (fun _ : PUnit => G) (fun _ => G ≫ F) (fun _ => 1) (𝟙 Z) fun _ => (Category.id_comp _).symm) (chartPullLinComb L F' (fun _ : PUnit => G') (fun _ => G ≫ F) (fun _ => 1) (𝟙 Z) fun _ => by rw [Category.id_comp, h]) (lbIso_self (pull_isLB hL (G ≫ …`.
+-/
 theorem lbIso_pull_pull {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : Y ⟶ X) (G : Z ⟶ Y) (F' : Y' ⟶ X)
     (G' : Z ⟶ Y') (h : G ≫ F = G' ≫ F') : LBIso ((L.pull F).pull G) ((L.pull F').pull G') :=
   LBIso.chartPull
@@ -33,9 +41,15 @@ theorem lbIso_pull_pull {X Y Y' Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (F : Y 
       fun _ => by rw [Category.id_comp, h])
     (lbIso_self (pull_isLB hL (G ≫ F)))
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullPull L h h rfl) (chartPullPull M h h rfl) H`.
+-/
 theorem lbIso_pull {X Y : Scheme.{0}} {L M : LB X} (H : LBIso L M) (h : Y ⟶ X) : LBIso (L.pull h) (M.pull h) :=
   LBIso.chartPull (chartPullPull L h h rfl) (chartPullPull M h h rfl) H
 
+/- English proof (translation)
+The claim follows from `LBIso.trans hP' hQ hQ' (LBIso.trans hP' hP hQ e₁ H) e₂`.
+-/
 theorem lbIso_congr {X : Scheme.{0}} {P P' Q Q' : LB X} (hP : P.IsLB) (hP' : P'.IsLB) (hQ : Q.IsLB) (hQ' : Q'.IsLB)
     (e₁ : LBIso P' P) (H : LBIso P Q) (e₂ : LBIso Q Q') : LBIso P' Q' :=
   LBIso.trans hP' hQ hQ' (LBIso.trans hP' hP hQ e₁ H) e₂
@@ -96,6 +110,13 @@ end GlobalTheory.HomFixTransport
 
 open GlobalTheory.HomFixTransport in
 
+/- English proof (translation)
+Introduce `Rg _ A B _ _ L M f hL hM hyp U hU`. Establish `hr : Set.range U.ι = Set.range (spMap (algebraMap Rg (Localization.Away f)))`. Rewrite using `[Scheme.Opens.range_ι, hU]`. Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).symm`. Use `haveI : IsOpenImmersion (spMap (algebraMap Rg (Localization.Away f))) := inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap Rg (Localization.Away f)))))`.
+
+Set `e` to `IsOpenImmersion.isoOfRangeEq U.ι (spMap (algebraMap Rg (Localization.Away f))) hr`. Establish `he : e.hom ≫ spMap (algebraMap Rg (Localization.Away f)) = U.ι` using `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`. Take `⟨R, h₁, h₂, h₃⟩` from `hyp _ _ _ _ (isGrpPullback_pullback A (spMap (algebraMap Rg (Localization.Away f)))) (isGrpPullback_pullback B (spMap (algebraMap Rg (Localization.Away f))))`. Use `⟨_, inferInstance, _, inferInstance, _, _, ((isGrpPullback_pullback _ e.hom).comp (isGrpPullback_pullback A _)).congr he rfl, ((isGrpPullback_pullback _ e.hom).comp (isGrpPullback_pullback B _)).congr he rfl, transport e hL hM _ _ R, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show QuasiCompact (R.π ≫ e.inv)`.
+
+Use `infer_instance`. Use `show IsSeparated (R.π ≫ e.inv)`. Use `infer_instance`. Use `show LocallyOfFiniteType (R.π ≫ e.inv)`. Use `infer_instance`.
+-/
 theorem GlobalTheory.HomFixTransport.homFixRep_basicOpen : ∀ (Rg : Type) [CommRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [GrpObj B] (L : LB A.left) (M : LB B.left) (f : Rg), L.IsLB → M.IsLB → (∀ (Af Bf : Over (Sp (Localization.Away f))) [GrpObj Af] [GrpObj Bf] (φA : Af.left ⟶ A.left) (φB : Bf.left ⟶ B.left), IsGrpPullback Af A (spMap (algebraMap Rg (Localization.Away f))) φA → IsGrpPullback Bf B (spMap (algebraMap Rg (Localization.Away f))) φB → ∃ R : HomFixRep Af Bf (L.pull φA) (M.pull φB), QuasiCompact R.π ∧ IsSeparated R.π ∧ LocallyOfFiniteType R.π) → ∀ U : (Sp Rg).Opens, U = PrimeSpectrum.basicOpen f → ∃ (AU : Over U.toScheme) (_ : GrpObj AU) (BU : Over U.toScheme) (_ : GrpObj BU) (φA : AU.left ⟶ A.left) (φB : BU.left ⟶ B.left), IsGrpPullback AU A U.ι φA ∧ IsGrpPullback BU B U.ι φB ∧ ∃ R : HomFixRep AU BU (L.pull φA) (M.pull φB), QuasiCompact R.π ∧ IsSeparated R.π ∧ LocallyOfFiniteType R.π := by
   intro Rg _ A B _ _ L M f hL hM hyp U hU
   have hr : Set.range U.ι = Set.range (spMap (algebraMap Rg (Localization.Away f))) := by

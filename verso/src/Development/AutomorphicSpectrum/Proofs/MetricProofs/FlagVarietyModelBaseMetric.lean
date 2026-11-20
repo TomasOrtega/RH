@@ -7,6 +7,9 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Conclude with `@PositivityTheory.Xgp.t_c_fl_model`.
+-/
 theorem flagModel_over_point : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N → ∃ (M : FlagModel (yFl Ψ N) Ψ N N) (BM : BaseMetric M 0), (∀ p, BM.hom p = yLineFl Ψ N p) ∧ (∀ p, fsHerm (FlIdx Ψ N) (M.dy p) = yLineFl Ψ N p) ∧ bdry BM.s = ∅ := by
   exact @PositivityTheory.Xgp.t_c_fl_model
 

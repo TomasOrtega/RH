@@ -10,6 +10,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K κ _ _ _ _ R π hR hc hsurj hinj`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).mpr Subtype.val_injective`. Use `haveI : IsFractionRing R K := IsFractionRing.of_field R K (fun z => by`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hR.frac z`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z = a / b`. Rewrite using `[eq_div_iff hb0, e])`. Set `φ : K →+* κ` to `IsFractionRing.lift hinj`. Establish `hφ : ∀ r : R, φ (algebraMap R K r) = π r` using `fun r => IsFractionRing.lift_algebraMap hinj r`. Establish `hφc : ∀ a : ℂ, φ (algebraMap ℂ K a) = algebraMap ℂ κ a`.
+
+Introduce `a`. Use `hφ ⟨algebraMap ℂ K a, hR.const_mem a⟩` as an intermediate fact. Rewrite using `[← hc a (hR.const_mem a)]`. Conclude with `this`. Set `ψ : K →ₐ[ℂ] κ` to `{ φ with commutes' := hφc }`.
+
+Establish `hbij : Function.Bijective ψ`. Use `⟨ψ.toRingHom.injective, fun f => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, e⟩` from `hsurj f`. Establish `hb' : (b : K) ≠ 0`. Introduce `h`.
+
+Apply `hb` to reduce the goal to its premises. Establish `: b = 0` using `Subtype.ext h`. Rewrite using `[this, map_zero]`. Use `⟨(a : K) / b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ((a : K) / b) = f`.
+
+Rewrite using `[map_div₀]`. Establish `ha` using `hφ a`. Establish `hb2` using `hφ b`. Express the relevant statement in the definitionally equal form `φ (a : K) = π a at ha`. Express the relevant statement in the definitionally equal form `φ (b : K) = π b at hb2`.
+
+Rewrite using `[ha, hb2, div_eq_iff hb, e]`. Use `⟨AlgEquiv.ofBijective ψ hbij, fun r => ?_⟩` and prove the remaining obligations. Conclude with `hφ r`.
+-/
 theorem locModel_fracField_algEquiv : ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ]
   (R : Subring K) (π : R →+* κ), IsLocModel (algebraMap ℂ K) R →
   (∀ a (h : algebraMap ℂ K a ∈ R), π ⟨algebraMap ℂ K a, h⟩ = algebraMap ℂ κ a) →

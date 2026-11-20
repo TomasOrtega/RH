@@ -9,6 +9,9 @@ namespace GlobalTheory.FlatCM.PlaceShiftModel
 
 open NumberField IsDedekindDomain GlobalTheory.CompHt GlobalTheory.HTLat
 
+/- English proof (translation)
+Establish `hl : LinearIndependent C g.row` using `LinearIndependent.of_comp (Fintype.linearCombination C b) h.1`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl)).ne_zero`.
+-/
 theorem det_ne_zero {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddCommGroup U] [Module C U] [Module O U]
     [IsScalarTower O C U] {n : ℕ} {La : Submodule O U} {b : Fin n → U} {g : Matrix (Fin n) (Fin n) C}
     (h : IsLatBasis C La fun i => ∑ j, g i j • b j) : g.det ≠ 0 := by
@@ -18,14 +21,33 @@ theorem det_ne_zero {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddComm
 
 variable {E : Type} [Field E] [NumberField E] {ℓ : ℕ} [Fact ℓ.Prime]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_embO (PadicComplexInt.integers ℓ) τ a]`. Conclude with `(GlobalTheory.PadicComplexHost.mem_iff_norm _ _).1 (Subtype.prop _)`.
+-/
 theorem norm_le_one (τ : E →+* ℂ_[ℓ]) (a : 𝓞 E) : ‖τ (a : E)‖ ≤ 1 := by
   rw [← algebraMap_embO (PadicComplexInt.integers ℓ) τ a]
   exact (GlobalTheory.PadicComplexHost.mem_iff_norm _ _).1 (Subtype.prop _)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[ℓ] ℂ_[ℓ]), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_ell : ‖(ℓ : ℂ_[ℓ])‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[ℓ] ℂ_[ℓ]), norm_algebraMap']
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Set `I : Ideal (𝓞 E)` to `{ carrier := {a | ‖τ (a : E)‖ < 1} add_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `‖τ ((a + b : 𝓞 E) : E)‖ < 1`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_add, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`.
+
+Use the proof step `smul_mem' := fun c a ha => by`. Express the relevant statement in the definitionally equal form `‖τ ((c * a : 𝓞 E) : E)‖ < 1`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (norm_le_one τ c) (norm_nonneg _) ha }`. Use `⟨⟨I, ⟨fun h => ?_, fun {a b} h => ?_⟩, fun h => ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations.
+
+Establish `: ‖τ ((1 : 𝓞 E) : E)‖ < 1` using `(Ideal.eq_top_iff_one I).1 h`. Simplify using `at this`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`. Establish `ha : ‖τ (a : E)‖ = 1` using `le_antisymm (norm_le_one τ a) (not_lt.1 hn.1)`.
+
+Establish `hb : ‖τ (b : E)‖ = 1` using `le_antisymm (norm_le_one τ b) (not_lt.1 hn.2)`. Establish `h' : ‖τ ((a * b : 𝓞 E) : E)‖ < 1` using `h`. Rewrite `h'` using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, norm_mul]`. Rewrite `ha`, `hb` using `[RingOfIntegers.coe_eq_algebraMap]`. Rewrite `h'` using `[ha, hb]`.
+
+Simplify using `at h'`. Establish `: (ℓ : 𝓞 E) ∈ I`. Express the relevant statement in the definitionally equal form `‖τ ((ℓ : 𝓞 E) : E)‖ < 1`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast]`. Conclude with `norm_ell`.
+
+Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : ℓ.Prime).ne_zero (by exact_mod_cast this)`.
+-/
 theorem exists_place (τ : E →+* ℂ_[ℓ]) :
     ∃ w : HeightOneSpectrum (𝓞 E), ∀ a : 𝓞 E, a ∈ w.asIdeal ↔ ‖τ (a : E)‖ < 1 := by
   let I : Ideal (𝓞 E) :=
@@ -58,6 +80,11 @@ theorem exists_place (τ : E →+* ℂ_[ℓ]) :
     rw [h, Ideal.mem_bot] at this
     exact (Fact.out : ℓ.Prime).ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Establish `: Nonempty (E →+* ℂ_[ℓ])` using `Fintype.card_pos_iff.1 (by`. Rewrite using `[NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos)`. Take `⟨τ⟩` from `this`. Take `⟨w, hw⟩` from `exists_place τ`.
+
+Conclude with `⟨w, τ, hw⟩`.
+-/
 theorem exists_place_emb (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact ℓ.Prime] :
     ∃ (w : HeightOneSpectrum (𝓞 E)) (τ : E →+* ℂ_[ℓ]), ∀ a : 𝓞 E, a ∈ w.asIdeal ↔ ‖τ (a : E)‖ < 1 := by
   have : Nonempty (E →+* ℂ_[ℓ]) := Fintype.card_pos_iff.1 (by
@@ -66,6 +93,9 @@ theorem exists_place_emb (E : Type) [Field E] [NumberField E] (ℓ : ℕ) [Fact 
   obtain ⟨w, hw⟩ := exists_place τ
   exact ⟨w, τ, hw⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH ℓ _ τ`. Take `⟨w, hw⟩` from `exists_place τ`. Take `⟨κ₁, κ₂, hκ⟩` from `h E H hH ℓ w`. Conclude with `⟨κ₁, κ₂, hκ τ hw⟩`.
+-/
 theorem pointShiftSt_of_placeShiftSt (h : PlaceShiftSt) : PointShiftSt := by
   intro E _ _ _ H hH ℓ _ τ
   obtain ⟨w, hw⟩ := exists_place τ

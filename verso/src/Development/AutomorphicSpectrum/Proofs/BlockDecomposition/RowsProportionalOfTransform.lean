@@ -22,6 +22,9 @@ namespace GlobalTheory.CompanionTheory.ZUnf.LowerRows
 
 variable {R : Type} [CommRing R] {n ρ p : ℕ}
 
+/- English proof (translation)
+Simplify using `only [bl]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem lr_bl_mul (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : Matrix (Fin ρ) (Fin p) R)
     (c c' : Matrix (Fin p) (Fin ρ) R) (d d' : Matrix (Fin p) (Fin p) R) :
     bl hn a b c d * bl hn a' b' c' d' =
@@ -29,6 +32,9 @@ theorem lr_bl_mul (hn : ρ + p = n) (a a' : Matrix (Fin ρ) (Fin ρ) R) (b b' : 
   simp only [bl]
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun M => M.submatrix (finSumFinEquiv.trans (finCongr hn)) (finSumFinEquiv.trans (finCongr hn))) h`. Simplify using `only [bl, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2`. Conclude with `Matrix.fromBlocks_inj.1 h2`.
+-/
 theorem lr_bl_inj (hn : ρ + p = n) {a a' : Matrix (Fin ρ) (Fin ρ) R} {b b' : Matrix (Fin ρ) (Fin p) R}
     {c c' : Matrix (Fin p) (Fin ρ) R} {d d' : Matrix (Fin p) (Fin p) R}
     (h : bl hn a b c d = bl hn a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -37,6 +43,9 @@ theorem lr_bl_inj (hn : ρ + p = n) {a a' : Matrix (Fin ρ) (Fin ρ) R} {b b' : 
   simp only [bl, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] at h2
   exact Matrix.fromBlocks_inj.1 h2
 
+/- English proof (translation)
+Set `M` to `T.submatrix (finSumFinEquiv.trans (finCongr hn)) (finSumFinEquiv.trans (finCongr hn))`. Use `⟨M.toBlocks₁₁, M.toBlocks₁₂, M.toBlocks₂₁, M.toBlocks₂₂, ?_⟩` and prove the remaining obligations. Simplify using `only [bl, Matrix.fromBlocks_toBlocks, M, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`.
+-/
 theorem lr_exists_bl (hn : ρ + p = n) (T : Matrix (Fin n) (Fin n) R) :
     ∃ (T₁₁ : Matrix (Fin ρ) (Fin ρ) R) (T₁₂ : Matrix (Fin ρ) (Fin p) R)
       (T₂₁ : Matrix (Fin p) (Fin ρ) R) (T₂₂ : Matrix (Fin p) (Fin p) R),
@@ -46,6 +55,13 @@ theorem lr_exists_bl (hn : ρ + p = n) (T : Matrix (Fin n) (Fin n) R) :
   simp only [bl, Matrix.fromBlocks_toBlocks, M, Matrix.submatrix_submatrix, Equiv.self_comp_symm,
     Matrix.submatrix_id_id]
 
+/- English proof (translation)
+Establish `hF : IsUnit (Matrix.fromBlocks a b c d).det`. Establish `h` using `hy`. Simplify using `only [blk4] at h`. Rewrite `h` using `[Matrix.det_submatrix_equiv_self]`. Then use the resulting hypothesis. Establish `hRF : Matrix.fromCols (0 : Matrix (Fin m) (Fin p) R) X * Matrix.fromBlocks a b c d = 0`.
+
+Use extensionality with `i (j | j)`. Simplify `congrFun (congrFun hc i) j` using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify `congrFun (congrFun hd i) j` using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Establish `hR : Matrix.fromCols (0 : Matrix (Fin m) (Fin p) R) X = 0`. Establish `h` using `congrArg (· * (Matrix.fromBlocks a b c d)⁻¹) hRF`.
+
+Simplify `h` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hF]`. Use extensionality with `i j`. Simplify using `using congrFun (congrFun hR i) (Sum.inr j)`.
+-/
 theorem lr_eq_zero {m : ℕ} (a b c d : Matrix (Fin p) (Fin p) R) (hy : IsUnit (blk4 a b c d).det)
     (X : Matrix (Fin m) (Fin p) R) (hc : X * c = 0) (hd : X * d = 0) : X = 0 := by
   have hF : IsUnit (Matrix.fromBlocks a b c d).det := by
@@ -68,6 +84,21 @@ namespace GlobalTheory.CompanionTheory.ZUnf
 
 open GlobalTheory.CompanionTheory.ZUnf.LowerRows in
 
+/- English proof (translation)
+Introduce `K _ σ _ n ρ p hn a b c d a₂ b₂ c₂ d₂ ζ ζ₂ η η₂ T h₁ h₂`. Take `⟨T₁₁, T₁₂, T₂₁, T₂₂, rfl⟩` from `lr_exists_bl hn T`. Simplify using `only [rowC, rowD, lr_bl_mul] at h₁ h₂`. Take `⟨e₁, e₂, e₃, e₄⟩` from `lr_bl_inj hn h₁`. Take `⟨f₁, f₂, f₃, f₄⟩` from `lr_bl_inj hn h₂`.
+
+Establish `hT₁₁ : T₁₁ = 1`. Simplify using `using e₁.symm`. Establish `hT₂₁ : T₂₁ = 0`. Simplify using `using e₃.symm`. Substitute `hT₁₁ hT₂₁` using the available equality.
+
+Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_neg, zero_add, add_zero, neg_zero] at e₂ e₄ f₁ f₂ f₃ f₄`. Use `⟨⟨T₂₂, e₄, f₄⟩, ?_⟩` and prove the remaining obligations. Introduce `hy ha hb hc hd`. Substitute `ha hb hc hd` using the available equality. Establish `hT₂₂ : T₂₂ = 1`.
+
+Establish `h0 : T₂₂ - 1 = 0`. Use `lr_eq_zero a₂ b₂ c₂ d₂ hy (T₂₂ - 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, ← e₄, sub_self]`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, ← f₄, sub_self]`. Conclude with `sub_eq_zero.1 h0`.
+
+Substitute `hT₂₂` using the available equality. Establish `hη : η₂ = η`. Establish `h` using `neg_injective (by simpa using f₃ : -cT σ η₂ = -cT σ η)`. Use extensionality with `i j`. Use `congrFun (congrFun h j) i` as an intermediate fact.
+
+Conclude with `σ.injective (by simpa [cT] using this)`. Substitute `hη` using the available equality. Establish `hT₁₂ : T₁₂ = 0`. Use `lr_eq_zero a₂ b₂ c₂ d₂ hy T₁₂ ?_ ?_` and prove the remaining obligations. Simplify using `using e₂`.
+
+Simplify using `using f₂`. Substitute `hT₁₂` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using f₁`.
+-/
 theorem lowerRows_determine : ∀ {K : Type} [Field K] (σ : K →+* K), (∀ x, σ (σ x) = x) → ∀ {n ρ p : ℕ} (hn : ρ + p = n) (a b c d a₂ b₂ c₂ d₂ : Matrix (Fin p) (Fin p) K) (ζ ζ₂ : Matrix (Fin ρ) (Fin ρ) K)
       (η η₂ : Matrix (Fin ρ) (Fin p) K) (T : Matrix (Fin n) (Fin n) K),
     rowC hn η₂ a₂ c₂ = T * rowC hn η a c → rowD hn σ ζ₂ η₂ b₂ d₂ = T * rowD hn σ ζ η b d →

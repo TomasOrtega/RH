@@ -11,6 +11,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 
 namespace FlagFrameOfFullFlag
 
+/- English proof (translation)
+Establish `hj : (j : ℕ) ≤ N` using `Nat.lt_succ_iff.mp j.isLt`. Establish `himg : b '' {q | (q : ℕ) < j} = Set.range (b ∘ Fin.castLE hj)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`.
+
+Conclude with `⟨⟨q, hq⟩, rfl⟩`. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨Fin.castLE hj p, p.isLt, rfl⟩`. Use `symm`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hq' : q.succ ≤ j`. Rewrite using `[Fin.le_iff_val_le_val, Fin.val_succ]`. Conclude with `hq`.
+
+Conclude with `mono hq' (hmem q)`. Rewrite using `[himg, finrank_span_eq_card (hb.comp _ (Fin.castLE_injective hj)), Fintype.card_fin, dim]`.
+-/
 theorem flag_eq_span {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
     [FiniteDimensional Ω E] {N : ℕ} (Vs : Fin (N + 1) → Submodule Ω E) (mono : Monotone Vs)
     (dim : ∀ i, Module.finrank Ω (Vs i) = (i : ℕ)) (b : Fin N → E) (hb : LinearIndependent Ω b)
@@ -34,6 +43,11 @@ theorem flag_eq_span {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Modul
     exact mono hq' (hmem q)
   · rw [himg, finrank_span_eq_card (hb.comp _ (Fin.castLE_injective hj)), Fintype.card_fin, dim]
 
+/- English proof (translation)
+Use `choose n hn using hJ`. Establish `hspan : Ideal.span (Set.range f) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← hsum]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`. Rewrite using `[eq_top_iff, ← Ideal.span_pow_eq_top _ hspan (∑ l, n l), Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨l, rfl⟩, rfl⟩`. Establish `hle : n l ≤ ∑ l, n l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Use `show f l ^ (∑ l, n l) ∈ J`. Rewrite using `[← Nat.add_sub_cancel' hle, pow_add]`. Conclude with `J.mul_mem_right _ (hn l)`.
+-/
 theorem ideal_eq_top {R : Type*} [CommRing R] {k : ℕ} (f c : Fin k → R)
     (hsum : ∑ l, c l * f l = 1) (J : Ideal R) (hJ : ∀ l, ∃ n : ℕ, f l ^ n ∈ J) : J = ⊤ := by
   choose n hn using hJ
@@ -47,6 +61,15 @@ theorem ideal_eq_top {R : Type*} [CommRing R] {k : ℕ} (f c : Fin k → R)
   rw [← Nat.add_sub_cancel' hle, pow_add]
   exact J.mul_mem_right _ (hn l)
 
+/- English proof (translation)
+Set `J : Ideal S` to `{ carrier := {r | (r : Ω) * a ∈ S} add_mem' := fun {r t} hr ht => by`. Simplify using `only [Set.mem_ofPred_eq, Subalgebra.coe_add, add_mul] at hr ht ⊢`. Conclude with `add_mem hr ht`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun r t ht => by`.
+
+Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, Subalgebra.coe_mul, mul_assoc] at ht ⊢`. Conclude with `mul_mem r.2 ht }`. Establish `hJ : J = ⊤`. Use `ideal_eq_top (fun l => (⟨f l, hf l⟩ : S)) (fun l => ⟨c l, hc l⟩) ?_ J ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using hsum`. Introduce `l`. Take `⟨n, hn⟩` from `ha l`. Conclude with `⟨n, by simpa [J] using hn⟩`. Establish `h1 : (1 : S) ∈ J` using `hJ ▸ Submodule.mem_top`.
+
+Simplify `h1` using `[J]`.
+-/
 theorem mem_of_pow_mul_mem {F Ω : Type*} [CommRing F] [Field Ω] [Algebra F Ω] (S : Subalgebra F Ω)
     {k : ℕ} (f c : Fin k → Ω) (hf : ∀ l, f l ∈ S) (hc : ∀ l, c l ∈ S) (hsum : ∑ l, c l * f l = 1)
     (a : Ω) (ha : ∀ l, ∃ n : ℕ, f l ^ n * a ∈ S) : a ∈ S := by
@@ -73,6 +96,71 @@ end FlagFrameOfFullFlag
 
 open FlagFrameOfFullFlag in
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ ι _ x e hV N E _ _ B fl`. Establish `hx : ∀ k, ∃ i, x ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hV.1.2.2 k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations.
+
+Use `show _ ∈ RingHom.ker _`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap, h0]`. Use `choose s0 hs0 using hx`. Establish `hseg : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mseg x s0 ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hs0 k`.
+
+Take `⟨k0, f0, c0, -, -, hsum0, hfr0⟩` from `fl.frame s0 hseg`. Establish `hk : 0 < k0`. Break down `Nat.eq_zero_or_pos k0 with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hsum0`.
+
+Conclude with `h`. Take `⟨b0, hb0li, hb0sp, -, hb0tri⟩` from `hfr0 ⟨0, hk⟩`. Use `choose u0 hu0 using hb0tri`. Establish `: FiniteDimensional Ω E` using `Module.Finite.of_basis (Module.Basis.mk hb0li hb0sp.ge)`. Establish `tri_mem : ∀ (b : Fin N → E) (u : Fin N → Ω), (∀ q, b q - u q • fl.gen q ∈ fl.Vs q.castSucc) → ∀ q, b q ∈ fl.Vs q.succ`.
+
+Introduce `b u h q`. Establish `h1 : fl.Vs q.castSucc ≤ fl.Vs q.succ` using `fl.mono (Fin.castSucc_le_succ q)`. Establish `h2` using `add_mem (h1 (h q)) (Submodule.smul_mem _ (u q) (fl.gen_mem q))`. Simplify using `using h2`. Establish `hVb0` using `flag_eq_span fl.Vs fl.mono fl.dim b0 hb0li (tri_mem b0 _ fun q => (hu0 q).2)`.
+
+Establish `hgen_sp : ∀ n : ℕ, ∀ q : Fin N, (q : ℕ) = n → b0 q ∈ Submodule.span Ω (Set.range fl.gen)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `q hq`.
+
+Establish `h1 : b0 q - (u0 q * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x s0 (fl.deg q)) • fl.gen q ∈ Submodule.span Ω (Set.range fl.gen)`. Establish `h` using `(hu0 q).2`. Rewrite `h` using `[hVb0 q.castSucc]`. Use `Submodule.span_le.mpr ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+
+Simplify using `only [Set.mem_ofPred_eq, Fin.val_castSucc] at hp`. Conclude with `ih p (by omega) p rfl`. Establish `h2` using `add_mem h1 (Submodule.smul_mem _ (u0 q * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x s0 (fl.deg q)) (Submodule.subset_span (⟨q, rfl⟩ : fl.gen q ∈ Set.range fl.gen)))`. Simplify using `using h2`. Establish `hgen_top : ⊤ ≤ Submodule.span Ω (Set.range fl.gen)`.
+
+Rewrite using `[← hb0sp, Submodule.span_le]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hgen_sp q q rfl`. Establish `hfin : Module.finrank Ω E = N`. Rewrite using `[← finrank_top Ω E, ← fl.top, fl.dim, Fin.val_last]`.
+
+Establish `hgen_li : LinearIndependent Ω fl.gen` using `linearIndependent_of_top_le_span_of_card_eq_finrank hgen_top (by simp [hfin])`. Set `w` to `Module.Basis.mk hgen_li hgen_top`. Establish `hw : ⇑w = fl.gen` using `Module.Basis.coe_mk _ _`. Establish `hVw : ∀ j, fl.Vs j = Submodule.span Ω (w '' {q | (q : ℕ) < j})`. Introduce `j`.
+
+Rewrite using `[hw]`. Conclude with `flag_eq_span fl.Vs fl.mono fl.dim fl.gen hgen_li fl.gen_mem j`. Establish `hmemV : ∀ (j : Fin (N + 1)) (v : E), v ∈ fl.Vs j ↔ ∀ q : Fin N, (j : ℕ) ≤ q → w.repr v q = 0`. Introduce `j v`. Rewrite using `[hVw j, Module.Basis.mem_span_image]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Assume the negation of the conclusion as `hne`. Establish `h'` using `h (Finset.mem_coe.mpr (Finsupp.mem_support_iff.mpr hne))`. Simplify using `only [Set.mem_ofPred_eq] at h'`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h q hq`. Simplify using `only [Set.mem_ofPred_eq]`. Assume the negation of the conclusion as `hlt`. Conclude with `(Finsupp.mem_support_iff.mp (Finset.mem_coe.mp hq)) (h q (by omega))`.
+
+Establish `hgw : ∀ q, w.repr (fl.gen q) = Finsupp.single q 1`. Introduce `q`. Rewrite using `[← hw]`. Conclude with `w.repr_self q`. Establish `repr_tri : ∀ (b : Fin N → E) (u M : Fin N → Ω), (∀ q, b q - (u q * M q) • fl.gen q ∈ fl.Vs q.castSucc) → ∀ q, w.repr (b q) q = u q * M q ∧ ∀ j, q < j → w.repr (b q) j = 0`.
+
+Introduce `b u M h q`. Establish `h1` using `(hmemV q.castSucc _).mp (h q) q (by simp)`. Rewrite `h1` using `[map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, hgw, Finsupp.single_eq_same, smul_eq_mul, mul_one, sub_eq_zero]`. Use `⟨h1, fun j hj => (hmemV q.succ _).mp (tri_mem b (fun q => u q * M q) h q) j ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.val_succ]`.
+
+Conclude with `hj`. Use `⟨w, ⟨fun c hc i => ?_⟩⟩` and prove the remaining obligations. Take `⟨k, f, cc, hf, hcc, hsum, hfr⟩` from `fl.frame c hc`. Establish `hM0 : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_ne_zero_iff.mp hc k (Finset.mem_univ k)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hvj, rfl⟩`. Use `⟨w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i), ?_, (div_mul_cancel₀ _ hM0).symm⟩` and prove the remaining obligations.
+
+Use `mem_of_pow_mul_mem _ f cc hf hcc hsum _ fun l => ?_` and prove the remaining obligations. Take `⟨b, hbli, hbsp, hcrit, htri⟩` from `hfr l`. Use `choose u hu using htri`. Take `⟨a, ha, hva⟩` from `(hcrit v).mp ⟨0, by simpa using hv⟩`. Establish `hvV : v ∈ fl.Vs i.succ` using `(hmemV _ v).mpr fun q hq => hvj q (by`.
+
+Rewrite `hq` using `[Fin.val_succ]`. Conclude with `hq)`. Set `β` to `Module.Basis.mk hbli hbsp.ge`. Establish `hβ : ⇑β = b` using `Module.Basis.coe_mk _ _`. Establish `hVβ` using `flag_eq_span fl.Vs fl.mono fl.dim b hbli (tri_mem b _ fun q => (hu q).2) i.succ`.
+
+Establish `haβ : ⇑(β.repr v) = a`. Establish `hsumβ : (∑ q, a q • b q) = ∑ q, a q • β q` using `by rw [hβ]`. Rewrite using `[hva, hsumβ]`. Conclude with `β.repr_sum_self a`. Establish `ha0 : ∀ q, i < q → a q = 0`.
+
+Introduce `q hq`. Rewrite `hvV` using `[hVβ, ← hβ, Module.Basis.mem_span_image]`. Assume the negation of the conclusion as `hne`. Establish `h'` using `hvV (Finset.mem_coe.mpr (Finsupp.mem_support_iff.mpr (by rw [haβ]; exact hne)))`. Simplify using `only [Set.mem_ofPred_eq, Fin.val_succ] at h'`.
+
+Use `Fin.lt_def.mp hq` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `htri'` using `repr_tri b u (fun q => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg q)) fun q => (hu q).2`. Establish `hy : w.repr v i = a i * (u i * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i))`. Rewrite using `[hva, map_sum, Finsupp.finsetSum_apply, Finset.sum_eq_single i]`.
+
+Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, (htri' i).1]`. Introduce `q _ hqi`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Break down `lt_or_gt_of_ne hqi with h | h` into its components or cases. Rewrite using `[(htri' q).2 i h, mul_zero]`.
+
+Rewrite using `[ha0 q h, zero_mul]`. Simplify using the standard rewrite rules. Take `⟨n1, hn1⟩` from `ha i`. Take `⟨n2, hn2⟩` from `(hu i).1.2.1`. Use `⟨n1 + n2, ?_⟩` and prove the remaining obligations.
+
+Establish `heq : f l ^ (n1 + n2) * (w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i)) = (f l ^ n1 * a i) * (f l ^ n2 * u i)`. Rewrite using `[hy, ← mul_assoc, mul_div_cancel_right₀ _ hM0, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `mul_mem hn1 hn2`.
+
+Introduce and unpack `⟨r, hr, rfl⟩`. Set `R` to `chartRing F (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mseg x) c`. Set `J : Ideal R` to `{ carrier := {t | ∃ v ∈ B.lat c, (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = (t : Ω) * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i)} add_mem' := by`. Introduce and unpack `t1 t2 ⟨v1, h1, z1, e1⟩ ⟨v2, h2, z2, e2⟩`. Use `⟨v1 + v2, add_mem h1 h2, fun j hj => by simp [z1 j hj, z2 j hj], ?_⟩` and prove the remaining obligations.
+
+Simplify using `[e1, e2, add_mul]`. Use the proof step `zero_mem' := ⟨0, zero_mem _, fun j _ => by simp, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `t1 t2 ⟨v2, h2, z2, e2⟩`. Use `⟨(t1 : Ω) • v2, B.stable c _ t1.2 v2 h2, fun j hj => by simp [z2 j hj], ?_⟩` and prove the remaining obligations.
+
+Simplify using `[e2, mul_assoc] }`. Establish `hJ : J = ⊤`. Use `ideal_eq_top (fun l => (⟨f l, hf l⟩ : R)) (fun l => ⟨cc l, hcc l⟩) ?_ J ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hsum`.
+
+Introduce `l`. Take `⟨b, hbli, hbsp, hcrit, htri⟩` from `hfr l`. Use `choose u hu using htri`. Establish `htri'` using `repr_tri b u (fun q => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg q)) fun q => (hu q).2`. Apply the tactic sequence `obtain ⟨n, hn⟩ := (hcrit (b i)).mpr ⟨fun q => if q = i then 1 else 0, fun q => ⟨0, by by_cases h : q = i <;> simp [h]⟩, by simp⟩`.
+
+Take `⟨m, hm⟩` from `(hu i).1.2.2`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Use `show ∃ v ∈ B.lat c, (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = (((⟨f l, hf l⟩ : R) ^ (n + m) : R) : Ω) * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon x c (fl.deg i)`. Use `⟨(f l ^ m * (u i)⁻¹) • (f l ^ n • b i), B.stable c _ hm _ hn, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[(htri' i).2 j hj]`.
+
+Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, (htri' i).1, SubmonoidClass.coe_pow]`. Establish `hu0` using `(hu i).1.1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hrJ : (⟨r, hr⟩ : R) ∈ J` using `hJ ▸ Submodule.mem_top`.
+
+Take `⟨v, hv, hz, hvi⟩` from `hrJ`. Conclude with `⟨v, hv, hz, hvi⟩`.
+-/
 theorem FlagFrameOfFullFlag.proof : FlagFrameOfFullFlag.Statement := by
   intro F _ Ω _ _ K _ ι _ x e hV N E _ _ B fl
 

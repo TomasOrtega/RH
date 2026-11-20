@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.R3.Rw.CopyRead
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨h8, h9, h10, h11, h12⟩`.
+-/
 private theorem pin_of {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt} {hX : B.fields.Ok}
     {Wt : Set B.places.Pl} {z₀ : Dat (w.st Z₀) w.I hX T Wt} {q : RowPk w z₀} {o : q.Over} {m : Moved o} {s : Side0 o}
     (r : ReadPk m s) (Y : Read m.z.R.toRealDat m.z.F.lv2 s.p0) (e : r.Y = Y)
@@ -21,6 +24,9 @@ private theorem pin_of {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T
   subst e
   exact ⟨h8, h9, h10, h11, h12⟩
 
+/- English proof (translation)
+Establish `k` using `read_of_fits B f T w Z₀ hX Wt z₀ q o hF m s`. Take `⟨Y, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩` from `k`. Establish `k2` using `GoodSideLattices.read_of_good hF m s hs Y h9 h10`. Take `⟨Z⟩` from `k2`. Conclude with `⟨⟨Y, Z, h1, h2, h3, h4, h5, h6, h7⟩, pin_of _ Y rfl h8 h9 h10 h11 h12⟩`.
+-/
 private theorem read_pinned {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt} {hX : B.fields.Ok}
     {Wt : Set B.places.Pl} {z₀ : Dat (w.st Z₀) w.I hX T Wt} {q : RowPk w z₀} {o : q.Over} (hF : o.Fits) (m : Moved o) (s : Side0 o)
     (hs : GoodSideLattices.Good m s) : ∃ r : ReadPk m s, r.Pin := by
@@ -32,6 +38,9 @@ private theorem read_pinned {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `K B f T w P x N hG hGA hCen m hc hco _ s hRR hj _`. Establish `hF : RowPk.Over.Fits (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over)` using `⟨x.fits.div, hG, hGA, hCen⟩`. Establish `k` using `read_pinned hF m s (good_copy x N m hc hco s hRR hj)`. Conclude with `k.imp fun r hp => ⟨hp, repOf_heq x.coh x.r x.pin hco r hp⟩`.
+-/
 theorem read_copyN : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (N : NStage B w.C (P.q.W x.o.η x.o.hη)), GrpTrue N f → GrpAt (w.st (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))) w.I → (∀ eR, StdIso (w.st (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))) w.px eR → CenIs P.q.p N eR) → ∀ (m : Moved (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over)), m.Copy → m.Coh → ∀ (sg : SameGrp (B := B) (C := w.C) x.o.Z (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))) (s : Side0 (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over)), s.RR = x.s.RR → HEq s.jEE x.s.jEE → (∀ μ (c : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (w.D (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))).nd))) (c0 : Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (w.D x.o.Z).nd))), (∀ g, (c0 : MonoidAlgebra ℂ (G0g (w.D x.o.Z).nd)).coeff g = (c : MonoidAlgebra ℂ (G0g (w.D (RowPk.Over.Z (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over))).nd)).coeff (sg.iso g)) → s.cen μ c = x.s.cen μ c0) → ∃ r : ReadPk m s, r.Pin ∧ HEq (repOf r.Y) (repOf x.r.Y)  := by
   intro K B f T w P x N hG hGA hCen m hc hco _ s hRR hj _
   have hF : RowPk.Over.Fits (⟨x.o.η, x.o.hη, x.o.V, x.o.S, N, x.o.G⟩ : P.q.Over) := ⟨x.fits.div, hG, hGA, hCen⟩

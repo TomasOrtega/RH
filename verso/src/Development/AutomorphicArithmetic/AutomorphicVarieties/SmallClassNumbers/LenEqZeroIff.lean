@@ -6,9 +6,15 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.Gal
 
 namespace UpperTheory.V.SmallClassNumbers
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem QO_eq (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] :
     QO l O = (O ⊗[ℤ_[l]] (ℚ_[l] ⧸ ZlSub l)) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | exact (Submodule.one_eq_range).symm | (ext x; simp [ZlSub, Submodule.mem_one])`.
+-/
 theorem ZlSub_eq (l : ℕ) [Fact l.Prime] : ZlSub l = (1 : Submodule ℤ_[l] ℚ_[l]) := by
   first | rfl | exact (Submodule.one_eq_range).symm | (ext x; simp [ZlSub, Submodule.mem_one])
 
@@ -24,12 +30,26 @@ def Vanish : Prop :=
       z g = chi Ω l c e g • m - m) →
     ∃ m, ∀ g, z g = chi Ω l c e g • m - m
 
+/- English proof (translation)
+Establish `h : (((chiO ℚ Ω l c.O ^ (-(e : ℤ))) g : c.Oˣ) : c.O) = chi Ω l c e g`. Rewrite using `[MonoidHom.zpow_apply, chiO, MonoidHom.comp_apply, ← map_zpow]`. Both sides reduce to the same expression. Rewrite using `[scalRep_apply, h]`.
+-/
 theorem act (g : Ω ≃ₐ[ℚ] Ω) (m : QO l c.O) : twist₂ l (chiO ℚ Ω l c.O ^ (-(e : ℤ))) g m = chi Ω l c e g • m := by
   have h : (((chiO ℚ Ω l c.O ^ (-(e : ℤ))) g : c.Oˣ) : c.O) = chi Ω l c e g := by
     rw [MonoidHom.zpow_apply, chiO, MonoidHom.comp_apply, ← map_zpow]
     rfl
   rw [scalRep_apply, h]
 
+/- English proof (translation)
+Rewrite using `[len, Module.length_eq_zero_iff, Submodule.subsingleton_iff_eq_bot, Submodule.eq_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H z hz hc hD hI`. Establish `hZ : (fun u : (⊤ : Subgroup (G ℚ Ω)) => z u.1) ∈ Z1U (twist₂ l (chiO ℚ Ω l c.O ^ (-(e : ℤ)))) ⊤`. Rewrite using `[mem_Z1_iff_cocycle]`.
+
+Conclude with `⟨hz.comp continuous_subtype_val, fun g h => (hc g.1 h.1).trans (congrArg (z g.1 + ·) (act Ω l c e g.1 _).symm)⟩`. Establish `h0` using `H (Submodule.Quotient.mk ⟨_, hZ⟩) (mk_mem_locSel.2 (by`. Introduce and unpack `D (⟨A, hA, rfl⟩ | ⟨A, rfl⟩)`. Take `⟨m, hm⟩` from `hD A hA`. Conclude with `⟨m, fun u hu => (hm u.1 hu).trans (congrArg (· - m) (act Ω l c e u.1 m).symm)⟩`.
+
+Take `⟨m, hm⟩` from `hI A`. Conclude with `⟨m, fun u hu => (hm u.1 hu.1 hu.2).trans (congrArg (· - m) (act Ω l c e u.1 m).symm)⟩))`. Take `⟨m, hm⟩` from `(mk_eq_mk _ ⊤ ⟨_, hZ⟩ 0).1 h0`. Conclude with `⟨m, fun g => by`. Use `hm ⟨g, trivial⟩` as an intermediate fact.
+
+Rewrite `this` using `[act]`. Simplify using `using this⟩`. Introduce `H x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hz` using `(mem_Z1_iff_cocycle _ _).1 z.2`.
+
+Establish `hl` using `mk_mem_locSel.1 hx`. Take `⟨m, hm⟩` from `H (fun g => z.1 ⟨g, trivial⟩) (hz.1.comp (continuous_id.subtype_mk _)) (fun g h => (hz.2 ⟨g, trivial⟩ ⟨h, trivial⟩).trans (congrArg (z.1 ⟨g, trivial⟩ + ·) (act Ω l c e g _))) (fun A hA => (hl _ (Or.inl ⟨A, hA, rfl⟩)).imp fun m hm g hg => (hm ⟨g, trivial⟩ hg).trans (congrArg (· - …`. Use `(mk_eq_mk _ ⊤ z 0).2 ⟨m, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[act]`. Simplify using `using hm u.1`.
+-/
 theorem len_eq_zero_iff : len Ω l c e = 0 ↔ Vanish Ω l c e := by
   rw [len, Module.length_eq_zero_iff, Submodule.subsingleton_iff_eq_bot, Submodule.eq_bot_iff]
   constructor
@@ -67,6 +87,13 @@ def Large : Prop :=
     ∀ (c : ∀ l : Nat.Primes, Coef l) (l : Nat.Primes), 5 ≤ (l : ℕ) → ¬ (l : ℕ) - 1 ∣ 2 * e → eO l (c l).O = 1 →
       C * ((e : ℝ) + 1) ^ A < Real.log (l : ℕ) → Vanish Ω l (c l) e
 
+/- English proof (translation)
+Take `⟨C, A, h⟩` from `h`. Use `⟨C, A, fun Ω _ _ _ e he hev c l h5 hg h1 hlt => (len_eq_zero_iff Ω l (c l) e).1 ?_⟩` and prove the remaining obligations. Take `⟨ha, hb⟩` from `h Ω e he hev c {l} (fun l' hl' => by rw [Finset.mem_singleton.1 hl']; exact ⟨h5, hg⟩)`. Rewrite `hb` using `[Finset.sum_singleton, h1]`. Establish `hf` using `ha l (Finset.mem_singleton_self _)`.
+
+Assume the negation of the conclusion as `h0`. Establish `h2 : 1 ≤ (len Ω l (c l) e).toNat` using `Nat.one_le_iff_ne_zero.2 fun h' => by`. Break down `ENat.toNat_eq_zero.1 h' with h' | h'` into its components or cases. Conclude with `h0 h'`. Conclude with `hf h'`.
+
+Establish `h3 : (1 : ℝ) ≤ (len Ω l (c l) e).toNat` using `by exact_mod_cast h2`. Establish `h4` using `Real.log_natCast_nonneg (l : ℕ)`. Simplify using `only [ENat.toNat_one, Nat.cast_one, div_one] at hb`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem large_of (h : Bound) : Large := by
   obtain ⟨C, A, h⟩ := h
   refine ⟨C, A, fun Ω _ _ _ e he hev c l h5 hg h1 hlt => (len_eq_zero_iff Ω l (c l) e).1 ?_⟩
@@ -83,6 +110,9 @@ theorem large_of (h : Bound) : Large := by
   simp only [ENat.toNat_one, Nat.cast_one, div_one] at hb
   nlinarith
 
+/- English proof (translation)
+Set `e` to `Algebra.botEquivOfInjective (R := ℤ_[l]) (A := PadicAlgCl l) (by`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l]))`. Conclude with `⟨⟨⊥, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e.symm, Module.Finite.equiv e.symm.toLinearEquiv⟩, rfl⟩`.
+-/
 theorem exists_coef (l : ℕ) [Fact l.Prime] : ∃ c : Coef l, c.O = ⊥ := by
   let e := Algebra.botEquivOfInjective (R := ℤ_[l]) (A := PadicAlgCl l) (by
     rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]

@@ -13,26 +13,43 @@ section SlopeTestRemainingChoices
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Rewrite using `[Formalism.REAL.kSpan, Submodule.mem_sInf]`. Conclude with `fun S hS => hS.1`.
+-/
 private theorem kSpan_self (F : Fin n → Fin n → Module.End ℂ V) (y : V) :
     y ∈ Formalism.REAL.kSpan (fun _ => true) F y := by
   rw [Formalism.REAL.kSpan, Submodule.mem_sInf]
   exact fun S hS => hS.1
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[Formalism.REAL.kSpan, Submodule.mem_sInf]`. Conclude with `fun S hS => hS.2 a b rfl z (hz S hS)`.
+-/
 private theorem kSpan_stb (F : Fin n → Fin n → Module.End ℂ V) (y : V) (a b : Fin n) {z : V}
     (hz : z ∈ Formalism.REAL.kSpan (fun _ => true) F y) : F a b z ∈ Formalism.REAL.kSpan (fun _ => true) F y := by
   rw [Formalism.REAL.kSpan, Submodule.mem_sInf] at hz ⊢
   exact fun S hS => hS.2 a b rfl z (hz S hS)
 
+/- English proof (translation)
+The claim follows from `sInf_le ⟨hy, fun a b _ x hx => hQ a b x hx⟩`.
+-/
 private theorem kSpan_le (F : Fin n → Fin n → Module.End ℂ V) {y : V} {Q : Submodule ℂ V}
     (hy : y ∈ Q) (hQ : Stb F Q) : Formalism.REAL.kSpan (fun _ => true) F y ≤ Q :=
   sInf_le ⟨hy, fun a b _ x hx => hQ a b x hx⟩
 
+/- English proof (translation)
+The claim follows from `le_iSup₂_of_le (f := fun (y : V) (_ : y ∈ S ∧ ∃ μ ∈ T, KHighest (fun _ => true) F μ y) => Formalism.REAL.kSpan (fun _ => true) F y) y ⟨hy, μ, hμ, h⟩ le_rfl`.
+-/
 private theorem le_isoPart (F : Fin n → Fin n → Module.End ℂ V) {T : Set (Wt n)} {S : Submodule ℂ V}
     {y : V} {μ : Wt n} (hy : y ∈ S) (hμ : μ ∈ T) (h : KHighest (fun _ => true) F μ y) :
     Formalism.REAL.kSpan (fun _ => true) F y ≤ Formalism.REAL.isoPart (fun _ => true) F T S :=
   le_iSup₂_of_le (f := fun (y : V) (_ : y ∈ S ∧ ∃ μ ∈ T, KHighest (fun _ => true) F μ y) =>
     Formalism.REAL.kSpan (fun _ => true) F y) y ⟨hy, μ, hμ, h⟩ le_rfl
 
+/- English proof (translation)
+Establish `hle : Formalism.REAL.isoPart (fun _ => true) F T S ≤ Q.comap f`. Unfold `Formalism.REAL.isoPart`. Use `iSup₂_le fun y hy => ?_` and prove the remaining obligations. Take `⟨hyS, μ, hμ, hk⟩` from `hy`. Conclude with `fun w hw => h y hyS μ hμ hk w hw`.
+
+Conclude with `fun z hz => hle hz`.
+-/
 private theorem isoPart_map (F : Fin n → Fin n → Module.End ℂ V) (T : Set (Wt n)) (S : Submodule ℂ V)
     (f : Module.End ℂ V) (Q : Submodule ℂ V)
     (h : ∀ y, y ∈ S → ∀ μ ∈ T, KHighest (fun _ => true) F μ y →
@@ -45,11 +62,19 @@ private theorem isoPart_map (F : Fin n → Fin n → Module.End ℂ V) (T : Set 
     exact fun w hw => h y hyS μ hμ hk w hw
   exact fun z hz => hle hz
 
+/- English proof (translation)
+Introduce `a b` and use `isoPart_map F T S (F a b) _ fun y hy μ hμ hk z hz => le_isoPart F hy hμ hk (kSpan_stb F y a b hz)`.
+-/
 private theorem isoPart_stb (F : Fin n → Fin n → Module.End ℂ V) (T : Set (Wt n)) (S : Submodule ℂ V) :
     Stb F (Formalism.REAL.isoPart (fun _ => true) F T S) := fun a b =>
   isoPart_map F T S (F a b) _ fun y hy μ hμ hk z hz =>
     le_isoPart F hy hμ hk (kSpan_stb F y a b hz)
 
+/- English proof (translation)
+Establish `hc : ∀ a b x, B (F a b x) = F a b (B x)` using `fun a b x => LinearMap.congr_fun (hB.1 a b) x`. Use `isoPart_map F T S B _ fun y hy μ hμ hk z hz => ?_` and prove the remaining obligations. Establish `hkB : KHighest (fun _ => true) F μ (B y)` using `⟨fun a => by rw [← hc, hk.1 a, map_smul], fun a b hab he => by rw [← hc, hk.2 a b hab he, map_zero]⟩`. Establish `hle : Formalism.REAL.kSpan (fun _ => true) F y ≤ (Formalism.REAL.kSpan (fun _ => true) F (B y)).comap B` using `kSpan_le F (kSpan_self F (B y)) fun a b x hx => by`. Rewrite using `[Submodule.mem_comap, hc]`.
+
+Conclude with `kSpan_stb F (B y) a b hx`. Conclude with `le_isoPart F (hB.2 y hy) hμ hkB (hle hz)`.
+-/
 private theorem isoPart_cm (F : Fin n → Fin n → Module.End ℂ V) (T : Set (Wt n)) (S : Submodule ℂ V)
     (B : Module.End ℂ V) (hB : Cm F S B) :
     ∀ x ∈ Formalism.REAL.isoPart (fun _ => true) F T S, B x ∈ Formalism.REAL.isoPart (fun _ => true) F T S := by
@@ -63,6 +88,11 @@ private theorem isoPart_cm (F : Fin n → Fin n → Module.End ℂ V) (T : Set (
       exact kSpan_stb F (B y) a b hx
   exact le_isoPart F (hB.2 y hy) hμ hkB (hle hz)
 
+/- English proof (translation)
+Establish `hv' : v = -u`. Rewrite using `[← sub_eq_zero, sub_neg_eq_add, add_comm]`. Conclude with `h`. Establish `hv1 : v ∈ S₁` using `hv' ▸ S₁.neg_mem hu`. Establish `h0 : v = 0` using `(Submodule.disjoint_def.mp hd) v hv1 hv`.
+
+Use `⟨?_, h0⟩` and prove the remaining obligations. Rewrite `h` using `[h0, add_zero]`. Conclude with `h`.
+-/
 private theorem parts_zero {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S₂) {u v : V} (hu : u ∈ S₁)
     (hv : v ∈ S₂) (h : u + v = 0) : u = 0 ∧ v = 0 := by
   have hv' : v = -u := by
@@ -74,6 +104,11 @@ private theorem parts_zero {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S�
   rw [h0, add_zero] at h
   exact h
 
+/- English proof (translation)
+Establish `key : ∀ a, F a a y₁ = ↑(μ a) • y₁ ∧ F a a y₂ = ↑(μ a) • y₂`. Introduce `a`. Establish `e` using `h a`. Rewrite `e` using `[map_add, smul_add]`. Establish `hz` using `parts_zero hd (S₁.sub_mem (s1 a a y₁ h₁) (S₁.smul_mem _ h₁)) (S₂.sub_mem (s2 a a y₂ h₂) (S₂.smul_mem _ h₂)) (by rw [sub_add_sub_comm, e, sub_self])`.
+
+Conclude with `⟨sub_eq_zero.mp hz.1, sub_eq_zero.mp hz.2⟩`. Conclude with `⟨fun a => (key a).1, fun a => (key a).2⟩`.
+-/
 private theorem wt_comp (F : Fin n → Fin n → Module.End ℂ V) {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S₂)
     (s1 : Stb F S₁) (s2 : Stb F S₂) {μ : Wt n} {y₁ y₂ : V} (h₁ : y₁ ∈ S₁) (h₂ : y₂ ∈ S₂)
     (h : IsWeight F μ (y₁ + y₂)) : IsWeight F μ y₁ ∧ IsWeight F μ y₂ := by
@@ -87,6 +122,11 @@ private theorem wt_comp (F : Fin n → Fin n → Module.End ℂ V) {S₁ S₂ : 
   exact ⟨fun a => (key a).1, fun a => (key a).2⟩
 
 set_option maxHeartbeats 200000 in
+/- English proof (translation)
+Take `⟨w1, w2⟩` from `wt_comp F hd s1 s2 h₁ h₂ h.1`. Use `⟨⟨w1, fun a b hab e => ?_⟩, ⟨w2, fun a b hab e => ?_⟩⟩` and prove the remaining obligations. Establish `h0` using `h.2 a b hab e`. Rewrite `h0` using `[map_add]`. Conclude with `(parts_zero hd (s1 a b _ h₁) (s2 a b _ h₂) h0).1`.
+
+Establish `h0` using `h.2 a b hab e`. Rewrite `h0` using `[map_add]`. Conclude with `(parts_zero hd (s1 a b _ h₁) (s2 a b _ h₂) h0).2`.
+-/
 private theorem hw_comp (F : Fin n → Fin n → Module.End ℂ V) {S₁ S₂ : Submodule ℂ V} (hd : Disjoint S₁ S₂)
     (s1 : Stb F S₁) (s2 : Stb F S₂) {μ : Wt n} {y₁ y₂ : V} (h₁ : y₁ ∈ S₁) (h₂ : y₂ ∈ S₂)
     (h : KHighest (fun _ => true) F μ (y₁ + y₂)) :
@@ -102,6 +142,29 @@ private theorem hw_comp (F : Fin n → Fin n → Module.End ℂ V) {S₁ S₂ : 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `n V _ _ F hF S hS hst hne`. Establish `hK` using `Formalism.REAL.glRel_kRel (fun _ : Fin n => true) F hF.gl`. Establish `hU : Formalism.REAL.KUnit (fun _ : Fin n => true) F` using `fun a b _ x y => hF.unit a b x y`. Establish `hSt : Formalism.REAL.KStable (fun _ : Fin n => true) F S` using `fun a b _ x hx => hst a b x hx`. Take `⟨x, hxS, hx0, ν, hxk⟩` from `Formalism.REAL.kHiExist V n _ F S hS hK hU hSt hne`.
+
+Take `⟨horth, hsup⟩` from `Formalism.REAL.kIsoSplit V n _ F S {ν} hS hK hU hSt`. Use `set S₁ := Formalism.REAL.isoPart (fun _ : Fin n => true) F {ν} S with hS₁`. Use `set S₂ := Formalism.REAL.isoPart (fun _ : Fin n => true) F {ν}ᶜ S with hS₂`. Establish `hd : Disjoint S₁ S₂`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `v h1 h2`. Establish `h0` using `horth v h1 v h2`. Rewrite `h0` using `[inner_self_eq_zero]`. Then use the resulting hypothesis. Establish `h1S : S₁ ≤ S` using `hsup ▸ le_sup_left`. Establish `h2S : S₂ ≤ S` using `hsup ▸ le_sup_right`.
+
+Establish `hst1 : Stb F S₁` using `isoPart_stb F _ S`. Establish `hst2 : Stb F S₂` using `isoPart_stb F _ S`. Establish `hx1 : x ∈ S₁` using `le_isoPart (T := {ν}) F hxS (Set.mem_singleton ν) hxk (kSpan_self F x)`. Use `⟨ν, S₁, S₂, ?_, ?_, hsup, hd, hst1, hst2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Rewrite `hx1` using `[h]`. Conclude with `hx0 ((Submodule.mem_bot ℂ).mp hx1)`. Introduce `h`. Establish `hm : x ∈ hw F ν ⊓ S₁` using `Submodule.mem_inf.mpr ⟨hxk, hx1⟩`. Rewrite `hm` using `[h]`.
+
+Conclude with `hx0 ((Submodule.mem_bot ℂ).mp hm)`. Introduce `B hB`. Conclude with `⟨⟨hB.1, isoPart_cm F _ S B hB⟩, ⟨hB.1, isoPart_cm F _ S B hB⟩⟩`. Introduce `μ hμ`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `y hy`. Take `⟨hyk, hy1⟩` from `Submodule.mem_inf.mp hy`. Establish `hy2 : y ∈ S₂` using `le_isoPart (T := {ν}ᶜ) F (h1S hy1) (show μ ∈ ({ν}ᶜ : Set (Wt n)) from hμ) hyk (kSpan_self F y)`. Conclude with `(Submodule.mem_bot ℂ).mpr (Submodule.disjoint_def.mp hd y hy1 hy2)`. Introduce `μ`.
+
+Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨hyw, hyS⟩` from `Submodule.mem_inf.mp hy`. Rewrite `hyS` using `[← hsup]`.
+
+Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `Submodule.mem_sup.mp hyS`. Take `⟨w1, w2⟩` from `wt_comp F hd hst1 hst2 h₁ h₂ hyw`. Conclude with `Submodule.add_mem_sup (Submodule.mem_inf.mpr ⟨w1, h₁⟩) (Submodule.mem_inf.mpr ⟨w2, h₂⟩)`. Conclude with `sup_le (inf_le_inf_left _ h1S) (inf_le_inf_left _ h2S)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `y hy`. Take `⟨hyk, hyS⟩` from `Submodule.mem_inf.mp hy`. Rewrite `hyS` using `[← hsup]`. Take `⟨y₁, h₁, y₂, h₂, rfl⟩` from `Submodule.mem_sup.mp hyS`. Take `⟨k1, k2⟩` from `hw_comp F hd hst1 hst2 h₁ h₂ hyk`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.mem_inf.mpr ⟨k1, h₁⟩) (Submodule.mem_inf.mpr ⟨k2, h₂⟩)`. Conclude with `sup_le (inf_le_inf_left _ h1S) (inf_le_inf_left _ h2S)`.
+-/
 theorem UpperTheory.RealTr.isoSplit :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → S ≠ ⊥ → ∃ (ν : Wt n) (S₁ S₂ : Submodule ℂ V), S₁ ≠ ⊥ ∧ hw F ν ⊓ S₁ ≠ ⊥ ∧ S₁ ⊔ S₂ = S ∧ Disjoint S₁ S₂ ∧ Stb F S₁ ∧ Stb F S₂ ∧
       (∀ B, Cm F S B → Cm F S₁ B ∧ Cm F S₂ B) ∧ (∀ μ, μ ≠ ν → hw F μ ⊓ S₁ = ⊥) ∧

@@ -4,6 +4,13 @@ open Complex
 
 namespace GlobalTheory.CharFormDeriv
 
+/- English proof (translation)
+Proceed by induction on `n generalizing c with`. Consider the case `zero => funext y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[iteratedDeriv_succ']`.
+
+Establish `hd : deriv (fun y : ℝ => c * Complex.exp (a * y)) = fun y : ℝ => (c * a) * Complex.exp (a * y)`. Use function extensionality and compare the values at `y`. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y`. Simplify using `using (hasDerivAt_id y).ofReal_comp`. Establish `h : HasDerivAt (fun y : ℝ => c * Complex.exp (a * y)) (c * (Complex.exp (a * y) * (a * 1))) y` using `((h1.const_mul a).cexp).const_mul c`.
+
+Rewrite using `[h.deriv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd, ih]`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iteratedDeriv_const_mul_cexp (a c : ℂ) (n : ℕ) :
     iteratedDeriv n (fun y : ℝ => c * Complex.exp (a * y)) =
       fun y : ℝ => c * a ^ n * Complex.exp (a * y) := by
@@ -22,6 +29,11 @@ theorem iteratedDeriv_const_mul_cexp (a c : ℂ) (n : ℕ) :
       rw [h.deriv]; ring
     rw [hd, ih]; funext y; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y`. Simplify using `using (hasDerivAt_id y).ofReal_comp`. Establish `h : HasDerivAt (fun y : ℝ => c * Complex.exp (a * y) + d * y + e) (c * (Complex.exp (a * y) * (a * 1)) + d * 1) y` using `((((h1.const_mul a).cexp).const_mul c).add (h1.const_mul d)).add_const e`. Rewrite using `[h.deriv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_affine_cexp (a c d e : ℂ) :
     deriv (fun y : ℝ => c * Complex.exp (a * y) + d * y + e) =
       fun y : ℝ => c * a * Complex.exp (a * y) + d := by
@@ -33,6 +45,9 @@ theorem deriv_affine_cexp (a c d e : ℂ) :
     ((((h1.const_mul a).cexp).const_mul c).add (h1.const_mul d)).add_const e
   rw [h.deriv]; ring
 
+/- English proof (translation)
+Break down `le_or_gt |z| 1 with hz | hz` into its components or cases. Establish `hn : ‖(z : ℂ) * I‖ = |z|` using `by simp`. Use `Complex.norm_exp_sub_one_le (x := (z : ℂ) * I) (by rw [hn]; exact hz)` as an intermediate fact. Rewrite `this` using `[hn]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_cexp_mul_I_sub_one_le (z : ℝ) : ‖Complex.exp (z * I) - 1‖ ≤ 2 * |z| := by
   rcases le_or_gt |z| 1 with hz | hz
   · have hn : ‖(z : ℂ) * I‖ = |z| := by simp
@@ -42,6 +57,11 @@ theorem norm_cexp_mul_I_sub_one_le (z : ℝ) : ‖Complex.exp (z * I) - 1‖ ≤
       _ = 2 := by rw [Complex.norm_exp_ofReal_mul_I]; norm_num
       _ ≤ 2 * |z| := by linarith
 
+/- English proof (translation)
+Establish `hn : ‖(z : ℂ) * I‖ = |z|` using `by simp`. Break down `le_or_gt |z| 1 with hz | hz` into its components or cases. Use `Complex.norm_exp_sub_one_sub_id_le (x := (z : ℂ) * I) (by rw [hn]; exact hz)` as an intermediate fact. Rewrite `this` using `[hn, sq_abs]`. Use polynomial arithmetic with `[sq_nonneg z]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: |z| ^ 2 = z ^ 2` using `sq_abs z`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_cexp_mul_I_sub_one_sub_le (z : ℝ) :
     ‖Complex.exp (z * I) - 1 - z * I‖ ≤ 3 * z ^ 2 := by
   have hn : ‖(z : ℂ) * I‖ = |z| := by simp
@@ -63,6 +83,9 @@ namespace GlobalTheory.CharFormDeriv
 noncomputable def rem (t : ℝ) (y : ℝ) : ℂ :=
   (t : ℂ)⁻¹ * Complex.exp ((I * t) * y) + (-I) * y + (-(t : ℂ)⁻¹)
 
+/- English proof (translation)
+Establish `ht : (t : ℂ) ≠ 0` using `by exact_mod_cast ht0`. Simplify using `only [rem]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+-/
 theorem rem_eq {t : ℝ} (ht0 : t ≠ 0) (y : ℝ) :
     rem t y = (t : ℂ)⁻¹ * (Complex.exp (((t * y : ℝ) : ℂ) * I) - 1 - ((t * y : ℝ) : ℂ) * I) := by
   have ht : (t : ℂ) ≠ 0 := by exact_mod_cast ht0
@@ -71,6 +94,27 @@ theorem rem_eq {t : ℝ} (ht0 : t ≠ 0) (y : ℝ) :
   field_simp
   ring_nf
 
+/- English proof (translation)
+Establish `ht : (t : ℂ) ≠ 0` using `by exact_mod_cast ht0`. Establish `habs : 0 < |t|` using `abs_pos.mpr ht0`. Establish `hy : 0 ≤ |y|` using `abs_nonneg y`. Establish `hexp : (I * t) * (y : ℂ) = ((t * y : ℝ) : ℂ) * I` using `by push_cast; ring`. Establish `hnexp : ‖Complex.exp ((I * t) * (y : ℂ))‖ = 1`.
+
+Rewrite using `[hexp, Complex.norm_exp_ofReal_mul_I]`. Establish `hy1 : y ^ 2 ≤ (1 + |y|) ^ 2`. Rewrite using `[← sq_abs y]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hy2 : |y| ≤ (1 + |y|) ^ 2` using `by nlinarith`.
+
+Establish `hrem : rem t = fun y : ℝ => (t : ℂ)⁻¹ * Complex.exp ((I * t) * y) + (-I) * y + (-(t : ℂ)⁻¹)` using `rfl`. Establish `hd1 : deriv (rem t) = fun y : ℝ => (t : ℂ)⁻¹ * (I * t) * Complex.exp ((I * t) * y) + (-I)`. Rewrite using `[hrem, deriv_affine_cexp]`. Use `match i with`. Consider the case `0`.
+
+Rewrite using `[iteratedDeriv_zero, rem_eq ht0, norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs]`. Establish `h3` using `norm_cexp_mul_I_sub_one_sub_le (t * y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← sq_abs t]`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ 3 * |t| * (1 + |y|) ^ 2 := by gcongr`. Consider the case `1`. Rewrite using `[iteratedDeriv_one, hd1]`. Simplify using `only`. Establish `e : (t : ℂ)⁻¹ * (I * t) * Complex.exp ((I * t) * y) + (-I) = I * (Complex.exp (((t * y : ℝ) : ℂ) * I) - 1)`.
+
+Rewrite using `[hexp]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, Complex.norm_I, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_left hy2 habs.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Consider the case `m + 2`. Establish `hd1' : deriv (rem t) = fun y : ℝ => ((t : ℂ)⁻¹ * (I * t)) * Complex.exp ((I * t) * y) + 0 * y + (-I)`. Rewrite using `[hd1]`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Establish `hd2 : deriv (deriv (rem t)) = fun y : ℝ => ((t : ℂ)⁻¹ * (I * t) * (I * t)) * Complex.exp ((I * t) * y)`. Rewrite using `[hd1', deriv_affine_cexp]`. Use function extensionality and compare the values at `y`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[iteratedDeriv_succ', iteratedDeriv_succ', hd2, iteratedDeriv_const_mul_cexp]`. Simplify using `only`. Rewrite using `[norm_mul, hnexp, mul_one]`. Simplify using `only [norm_mul, norm_pow, norm_inv, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, one_mul]`.
+
+Establish `hp : |t| ^ m ≤ 1` using `pow_le_one₀ habs.le ht1`. Combine the equalities or inequalities in the displayed calculation. Establish `: 1 ≤ (1 + |y|) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_iteratedDeriv_rem_le {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (y : ℝ) :
     ‖iteratedDeriv i (rem t) y‖ ≤ 3 * |t| * (1 + |y|) ^ 2 := by
   have ht : (t : ℂ) ≠ 0 := by exact_mod_cast ht0
@@ -128,10 +172,18 @@ end GlobalTheory.CharFormDeriv
 
 namespace GlobalTheory.CharFormDeriv
 
+/- English proof (translation)
+Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Unfold `rem`. Use `fun_prop`.
+-/
 theorem contDiff_rem (t : ℝ) : ContDiff ℝ (⊤ : ℕ∞) (rem t) := by
   have ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ)) := Complex.ofRealCLM.contDiff
   unfold rem; fun_prop
 
+/- English proof (translation)
+Establish `h` using `L.iteratedFDeriv_comp_right (contDiff_rem t) x (i := i) (by exact_mod_cast le_top)`. Establish `e : (fun x => rem t (L x)) = rem t ∘ ⇑L` using `rfl`. Rewrite using `[e, h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`.
+
+Simplify using the standard rewrite rules. Use `_ ≤ 3 * |t| * (1 + |L x|) ^ 2 * ‖L‖ ^ i := by gcongr; exact norm_iteratedDeriv_rem_le ht0 ht1 i (L x)`. Use `_ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by gcongr; rw [← Real.norm_eq_abs]; exact L.le_opNorm x`.
+-/
 theorem norm_iteratedFDeriv_rem_comp_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1) (i : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ i (fun x => rem t (L x)) x‖ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
@@ -147,6 +199,13 @@ theorem norm_iteratedFDeriv_rem_comp_le {V : Type} [NormedAddCommGroup V] [Norme
     _ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i := by
         gcongr; rw [← Real.norm_eq_abs]; exact L.le_opNorm x
 
+/- English proof (translation)
+Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (1 : ℂ) * Complex.exp ((I * t) * (y : ℂ)))` using `by fun_prop`. Establish `e : (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) = (fun y : ℝ => (1 : ℂ) * Complex.exp ((I * t) * (y : ℂ))) ∘ ⇑L`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Use `⟨by rw [e]; exact hc.comp L.contDiff, fun n => ⟨0, (|t| * ‖L‖) ^ n, fun x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, L.iteratedFDeriv_comp_right hc x (i := n) (by exact_mod_cast le_top), pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_const_mul_cexp]`. Establish `hexp : (I * t) * ((L x : ℝ) : ℂ) = ((t * L x : ℝ) : ℂ) * I` using `by push_cast; ring`.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[norm_mul, hexp, Complex.norm_exp_ofReal_mul_I, norm_mul, norm_pow, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs]`. Simplify using `[mul_pow]`.
+-/
 theorem hasTemperateGrowth_char {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (t : ℝ) :
     Function.HasTemperateGrowth (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) := by
@@ -173,6 +232,21 @@ end GlobalTheory.CharFormDeriv
 
 namespace GlobalTheory.CharFormDeriv
 
+/- English proof (translation)
+Use `set S := 2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f with hS`. Establish `hS0 : 0 ≤ S` using `mul_nonneg (by positivity) (apply_nonneg _ _)`. Establish `hL0 : 0 ≤ ‖L‖` using `norm_nonneg L`. Use `SchwartzMap.seminorm_le_bound ℂ k n u (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hu' : (⇑u) = fun x => rem t (L x) * f x` using `funext hu`.
+
+Rewrite using `[hu']`. Establish `hmul` using `norm_iteratedFDeriv_mul_le (N := ((⊤ : ℕ∞) : WithTop ℕ∞)) ((contDiff_rem t).comp L.contDiff) (f.smooth ⊤) x (n := n) (by exact_mod_cast le_top)`. Establish `hx0 : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `hterm : ∀ i ∈ Finset.range (n + 1), ‖x‖ ^ k * ((n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ * ‖iteratedFDeriv ℝ (n - i) f x‖) ≤ (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) * S))`. Introduce `i hi`.
+
+Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `h1 : ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ ≤ 3 * |t| * (1 + ‖L‖ * ‖x‖) ^ 2 * ‖L‖ ^ i` using `norm_iteratedFDeriv_rem_comp_le L ht0 ht1 i x`. Establish `h2 : (1 + ‖x‖) ^ (k + 2) * ‖iteratedFDeriv ℝ (n - i) f x‖ ≤ S` using `SchwartzMap.one_add_le_sup_seminorm_apply (m := (k + 2, n)) le_rfl (Nat.sub_le n i) f x`. Establish `h3 : (1 + ‖L‖ * ‖x‖) ^ 2 ≤ (1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2`. Rewrite using `[← mul_pow]`.
+
+Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : ‖L‖ ^ i ≤ (1 + ‖L‖) ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k` using `by gcongr; linarith`.
+
+Establish `hA : ‖iteratedFDeriv ℝ i (rem t ∘ ⇑L) x‖ ≤ 3 * |t| * ((1 + ‖L‖) ^ 2 * (1 + ‖x‖) ^ 2) * (1 + ‖L‖) ^ n` using `h1.trans (by gcongr)`. Establish `hc0 : (0 : ℝ) ≤ n.choose i` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hfun : (fun x => rem t (L x) * f x) = fun y => (rem t ∘ ⇑L) y * f y` using `rfl`. Rewrite using `[hfun]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (|t| * (3 * (1 + ‖L‖) ^ (n + 2) * S)) := Finset.sum_le_sum hterm`. Use `_ = |t| * (3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) * S) := by`. Rewrite using `[← Finset.sum_mul]`.
+
+Establish `: (∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ)) = 2 ^ n`. Conclude with `Nat.sum_range_choose n` after adjusting the coercions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seminorm_rem_mul_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℝ) (f u : SchwartzMap V ℂ) {t : ℝ} (ht0 : t ≠ 0) (ht1 : |t| ≤ 1)
     (hu : ∀ x, u x = rem t (L x) * f x) (k n : ℕ) :
@@ -238,6 +312,21 @@ end GlobalTheory.CharFormDeriv
 
 namespace GlobalTheory.CharFormDeriv
 
+/- English proof (translation)
+Introduce `V _ _ _ T hT L f g hg`. Set `ft : ℝ → SchwartzMap V ℂ` to `fun t => SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp ((I * t) * (L x : ℂ))) f`. Establish `hft : ∀ t x, ft t x = Complex.exp ((I * t) * (L x : ℂ)) * f x` using `fun t x => by`. Simplify using `only [ft, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_char L t), smul_eq_mul]`. Establish `hTft : ∀ t : ℝ, T (ft t) = T f` using `fun t => hT (t • L) f (ft t) (fun x => by`.
+
+Rewrite using `[hft, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul, mul_assoc])`. Set `u : ℝ → SchwartzMap V ℂ` to `fun t => (t : ℂ)⁻¹ • (ft t - f) - I • g`. Establish `hu : ∀ t : ℝ, ∀ x, u t x = rem t (L x) * f x` using `fun t x => by`. Simplify using `only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hft, hg, rem, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTu : ∀ t : ℝ, T (u t) = -I * T g` using `fun t => by`. Simplify using `only [u, map_sub, map_smul, hTft, sub_self, smul_zero, smul_eq_mul, zero_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Filter.Tendsto u (nhdsWithin 0 {0}ᶜ) (nhds 0)`. Rewrite using `[(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds u 0]`.
+
+Introduce and unpack `⟨k, n⟩ ε hε`. Use `set K := 3 * 2 ^ n * (1 + ‖L‖) ^ (n + 2) * (2 ^ (k + 2) * ((Finset.Iic (k + 2, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f) with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg (by positivity) (mul_nonneg (by positivity) (apply_nonneg _ _))`. Establish `hδ : 0 < min 1 (ε / (K + 1))` using `lt_min one_pos (div_pos hε (by linarith))`. Use `filter_upwards [nhdsWithin_le_nhds (Metric.ball_mem_nhds (0 : ℝ) hδ), self_mem_nhdsWithin] with t ht ht0`.
+
+Rewrite `ht` using `[Metric.mem_ball, Real.dist_eq, sub_zero]`. Establish `ht0' : t ≠ 0` using `ht0`. Establish `ht1 : |t| ≤ 1` using `(lt_of_lt_of_le ht (min_le_left _ _)).le`. Establish `htε : |t| < ε / (K + 1)` using `lt_of_lt_of_le ht (min_le_right _ _)`. Rewrite using `[sub_zero]`.
+
+Use `show SchwartzMap.seminorm ℂ k n (u t) < ε`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont : Filter.Tendsto (fun t => T (u t)) (nhdsWithin 0 {0}ᶜ) (nhds (T 0))` using `(T.continuous.tendsto 0).comp hlim`. Establish `hconst : Filter.Tendsto (fun t => T (u t)) (nhdsWithin (0 : ℝ) {0}ᶜ) (nhds (-I * T g))`. Simplify using `only [hTu]`.
+
+Conclude with `tendsto_const_nhds`. Establish `heq` using `tendsto_nhds_unique hconst hcont`. Rewrite `heq` using `[map_zero, neg_mul, neg_eq_zero]`. Conclude with `(mul_eq_zero.mp heq).resolve_left Complex.I_ne_zero`.
+-/
 theorem charForm_kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ),
     (∀ (L : V →L[ℝ] ℝ) (f f' : SchwartzMap V ℂ),

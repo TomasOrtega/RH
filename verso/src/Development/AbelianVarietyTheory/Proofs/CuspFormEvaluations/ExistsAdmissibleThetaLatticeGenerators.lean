@@ -31,6 +31,13 @@ noncomputable def scaledFamily {D : D7} {B : WeightFamilies.Prov D} {P : ModuliI
   ⟨N, fun k => (S.sW : B.KO) • w0 k, 0, fun k => k.elim0, 0, fun k => k.elim0, fun k => k.elim0,
     fun k => k.elim0, 0, fun k => k.elim0, 0, 0, fun _ => m⟩
 
+/- English proof (translation)
+Take `⟨hsm, -, hmean⟩` from `GlobalTheory.LogSupMultiple.log_supN_bounds D B j wL`. Establish `hspan'` using `GlobalTheory.ScaledGenerators.span_scaled X wL S.sW w0 hspan`. Use `⟨hspan', ?_, hN, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Apply `hM` to reduce the goal to its premises.
+
+Rewrite using `[← hspan']`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Introduce `σ k`. Conclude with `hsm σ (S.sW : B.KO) (w0 k) a b (by linarith) (hs σ) (hw k σ) hb ha`. Use `show (∑ _σ : B.KO →+* ℂ, (a + b)) / (Fintype.card (B.KO →+* ℂ) : ℝ) ≤ G * wL.size`.
+
+Rewrite using `[hmean]`. Conclude with `hG`.
+-/
 theorem tiedW_scaledFamily {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j)
     (S : Scal B) {N : ℕ} (w0 : Fin N → B.Cusp j wL) (a b G Prw : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hs : ∀ σ : B.KO →+* ℂ, Real.log ‖σ (S.sW : B.KO)‖ ≤ a)
@@ -51,6 +58,15 @@ theorem tiedW_scaledFamily {D : D7} {B : WeightFamilies.Prov D} {P : ModuliInteg
     rw [hmean]
     exact hG
 
+/- English proof (translation)
+Establish `hR : (N : ℝ) ≤ 2 * ((a : ℝ) ^ m * ((d : ℝ) * (b : ℝ) ^ m))` using `by exact_mod_cast hN`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN0`. Establish `hA : (a : ℝ) ^ m ≠ 0`. Introduce `h0`. Rewrite `hR` using `[h0, zero_mul, mul_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (d : ℝ) ≠ 0`. Introduce `h0`. Rewrite `hR` using `[h0, zero_mul, mul_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hB : (b : ℝ) ^ m ≠ 0`. Introduce `h0`. Rewrite `hR` using `[h0, mul_zero, mul_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.log_mul two_ne_zero (mul_ne_zero hA (mul_ne_zero hD hB)), Real.log_mul hA (mul_ne_zero hD hB), Real.log_mul hD hB, Real.log_pow, Real.log_pow]`. Use `_ = Real.log 2 + (m : ℝ) * (Real.log a + Real.log b) + Real.log d := by ring`.
+-/
 theorem log_le_of_le_two_mul_pow {N a b d m : ℕ} (hN0 : 0 < N) (hN : N ≤ 2 * (a ^ m * (d * b ^ m))) :
     Real.log N ≤ Real.log 2 + (m : ℝ) * (Real.log a + Real.log b) + Real.log d := by
   have hR : (N : ℝ) ≤ 2 * ((a : ℝ) ^ m * ((d : ℝ) * (b : ℝ) ^ m)) := by exact_mod_cast hN
@@ -73,6 +89,9 @@ theorem log_le_of_le_two_mul_pow {N a b d m : ℕ} (hN0 : 0 < N) (hN : N ≤ 2 *
         Real.log_mul hD hB, Real.log_pow, Real.log_pow]
     _ = Real.log 2 + (m : ℝ) * (Real.log a + Real.log b) + Real.log d := by ring
 
+/- English proof (translation)
+Take `⟨jb, hjb, hq⟩` from `hc`. Use `⟨jb, hjb, fun q => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hfe⟩` from `hq q`. Use `⟨f, hf, fun p y => ?_⟩` and prove the remaining obligations. Rewrite using `[huv, hfe, map_one, one_mul]`.
+-/
 private theorem containsTh_of_eq_smul {D : D7} {T : Top D} (j : ℕ) {n N : ℕ}
     (P₁ : MvPolynomial (LtN (T.Q.Dw j) n) T.Q.c.F) (s : T.Q.c.F) (u v : Fin N → T.R j)
     (huv : ∀ k p y, v k p y = algebraMap T.Q.c.F _ s * u k p y)
@@ -86,6 +105,33 @@ private theorem containsTh_of_eq_smul {D : D7} {T : Top D} (j : ℕ) {n N : ℕ}
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hOr hP`. Establish `hC` using `GlobalTheory.T.harmonic_germ_value_chart_independent`. Establish `hGam : GamAt T.toCore` using `GlobalTheory.RunIn.gamAt_of_lawsCore D T.toCore h.toLawsCore`. Take `⟨hrows, -⟩` from `GlobalTheory.pageRows_of_pageAt D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp hP.page hP.ck`. Take `⟨hL, -, hr6, hlam, -, -⟩` from `GlobalTheory.page_two_le_L_and_signs D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp hrows`.
+
+Take `⟨hw4, -⟩` from `GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hj.1 hP.hyp`. Take `⟨hDF, hnk, hrn, hlast⟩` from `hw4 wL (by simp)`. Establish `hrowsL` using `GlobalTheory.pageRows_of_le D large₂ j ka wL (by linarith) hDF hnk hrows`. Establish `hS` using `GlobalTheory.RunIn.sW_eq_sOf (recB h.toLawsCore) hinj EX p ka wL wF Tn`. Establish `hsOf` using `GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D (recB h.toLawsCore) hinj EX j wL`.
+
+Establish `hsupp : EtaleWeightGaps.PageSupp D large₂ (recB h.toLawsCore) C2 A2 nW (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) wL` using `⟨hP.p13, fun σ => by rw [hS]; exact (hsOf.2 σ).2.2.1, hP.frd, hP.r8, hP.df⟩`. Take `⟨hC1, hA1, hCc, hAc, hCR, h12⟩` from `hP.tie`. Establish `htie : TieC (⟨0, 2, 0, 2, 0, 2, 0, 4, 7⟩ : KAdm) H 1 4 0 11 C2 A2 7` using `⟨hC1, hA1, hCc, hAc, hCR, rfl, rfl, h12, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`. Take `⟨-, -, -, hfrr⟩` from `GlobalTheory.T.thetaRunParameters_at_typePrimes_product D _ _ j (recPJ h j hj) _ 1 4 0 11 (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp htie hP.page hsupp`. Take `⟨N, w0, P₁, hharm, hblk, hcont, hspan, hNle, hsup⟩` from `GlobalTheory.T.exists_short_thetaFamily_with_block_polynomial_rules hC D T h hGam large₂ j hj wL hrowsL hL hrn hlast hfrr`.
+
+Establish `hO : OPO large₂ (recB h.toLawsCore)`. Take `⟨-, hSet, -⟩` from `hP.hyp`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hO, -⟩` from `hSet`. Conclude with `hO`. Establish `hN0 : 0 < N`.
+
+Take `⟨jb, -, -⟩` from `hcont`. Conclude with `Fin.pos (jb 0)`. Take `⟨N', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN0.ne'`. Establish `hn0 : 0 < wL.n` using `by omega`. Establish `hsize : (1 : ℝ) ≤ wL.size`.
+
+Establish `h1` using `GlobalTheory.RunIn.frn_le_size_sub_one wL`. Establish `h2 : (0 : ℝ) ≤ ((D.R.f * D.R.r * wL.n : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : (recPJ h j hj).WWc (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn).sW wL ≤ (recB h.toLawsCore).Mlat j wL`. Rewrite using `[hS]`.
+
+Conclude with `GlobalTheory.T.scaledThetaLattice_le_supLattice_every_weight D T h j hj hinj EX hOr wL`. Establish `hNlog` using `GlobalTheory.RunIn.log_two_mul_count_le_mul_size D (recB h.toLawsCore) large₂ j wL (N' + 1) (38 * large₂.sc.L + PO D large₂) hL hn0 hrowsL hO le_rfl hNle`. Establish `ha : 0 ≤ lamStar D * wL.size` using `mul_nonneg hlam (by linarith)`. Establish `hs : ∀ σ : (recB h.toLawsCore).KO →+* ℂ, Real.log ‖σ ((scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn).sW : (recB h.toLawsCore).KO)‖ ≤ lamStar D * wL.size` using `fun σ => by`. Rewrite using `[hS]`.
+
+Conclude with `(hsOf.2 σ).2.2.2`. Establish `hGc` using `(GlobalTheory.RunIn.sup_bounds_le_Gc D (recB h.toLawsCore) large₂ j wL D.host.pde hL hn0).2.2`. Establish `hpde : 0 ≤ Real.log (D.host.pde : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hfin : 0 ≤ Real.log (Module.finrank ℚ (recB h.toLawsCore).KO : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hdisc : 0 ≤ Real.log |((NumberField.discr (recB h.toLawsCore).KO : ℤ) : ℝ)| / Module.finrank ℚ (recB h.toLawsCore).KO` using `div_nonneg (by rw [Real.log_abs]; exact Real.log_intCast_nonneg _) (Nat.cast_nonneg _)`.
+
+Establish `hZ : 0 ≤ Zb D large₂`. Unfold `Zb`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (by linarith)`. Establish `hGg : WeightAlgebra.Gc large₂ (recB h.toLawsCore) (1009 * Zb D large₂) D.host.pde ≤ gcR large₂ (recB h.toLawsCore)`. Unfold `gcR`.
+
+Conclude with `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `hT` using `tiedW_scaledFamily (recPJ h j hj) ka wL wF (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) w0 (lamStar D * wL.size) _ (gcR large₂ (recB h.toLawsCore)) (38 * large₂.sc.L + PO D large₂) ha (add_nonneg (add_nonneg (add_nonneg (add_nonneg (mul_nonneg (mul_nonneg (by norm_num) hZ) …`. Use `⟨scaledFamily (recPJ h j hj) ka wL wF (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) w0 _, hT, Nat.succ_pos N', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Real.log ((N' + 1 : ℕ) : ℝ) ≤ nbR large₂ wL`. Establish `hl` using `log_le_of_le_two_mul_pow (Nat.succ_pos N') hNle`.
+
+Unfold `nbR`. Move the coercions through the operations in `at hl ⊢`. Combine the linear relations using `[hO.1]`. Conclude with `GlobalTheory.T.scaledThetaLattice_generators_noCommonZero hC D T h EX j hj (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 _ _ hP.hyp (by rw [hS]; exact hsOf.1) _ hT`. Conclude with `GlobalTheory.T.lower_bound_at_frames_family_with_scaled_thetaRules hC D T h EX j hj _ 1 4 0 11 (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp htie hP.page hsupp P₁ hharm hblk N' _ (containsTh_of_eq_smul j P₁ _ _ _ (fun k q y => …`.
+
+Simplify using `only [scaledFamily]`. Apply the tactic sequence `try rw [Submodule.coe_smul_of_tower]`. Apply the tactic sequence `try rw [Submodule.coe_smul]`. Apply the tactic sequence `try rw [SetLike.val_smul]`. Simplify using `only [Pi.smul_apply]`.
+
+Conclude with `Algebra.smul_def _ _) hcont) (p14R wL) (le_max_right _ _)`.
+-/
 theorem exists_genOK : ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), GlobalTheory.PtTie.Oriented T EX → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → ∃ G : GlobalFamilyData (recPJ h j hj) ka wL wF, GenOK h j hj large₂ G (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) (cc D large₂ C2 A2 7 wL) := by
   intro D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hOr hP
   have hC := GlobalTheory.T.harmonic_germ_value_chart_independent

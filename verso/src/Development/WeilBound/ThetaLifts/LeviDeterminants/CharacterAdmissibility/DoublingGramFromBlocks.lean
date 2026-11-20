@@ -29,11 +29,17 @@ abbrev dd2 {a b : Type} (A : Matrix a b E) : Matrix (a ⊕ a) (b ⊕ b) E := fro
 variable {J : Matrix β β E} {J₁ : Matrix β₁ β₁ E} {H : Matrix μ μ E} {ι : Matrix β β₁ E} {Z : Matrix β μ E}
   {π : Matrix β₁ β E} {ρ : Matrix μ β E}
 
+/- English proof (translation)
+Simplify using `only [dbl, fromBlocks_transpose, fromBlocks_map, Matrix.map_zero _ (map_zero c), fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem doubling_gram_fromBlocks {a b : Type} (A : Matrix β a E) (B : Matrix β b E) :
     (dd2 A)ᵀ * dbl J * (dd2 B).map c = fromBlocks (Aᵀ * J * B.map c) 0 0 (-(Aᵀ * J * B.map c)) := by
   simp only [dbl, fromBlocks_transpose, fromBlocks_map, Matrix.map_zero _ (map_zero c), fromBlocks_multiply]
   simp
 
+/- English proof (translation)
+Simplify using `[fromBlocks_multiply, fromBlocks_add, h.one] pi := by simp [fromBlocks_multiply, h.pi] pz := by simp [fromBlocks_multiply, h.pz] ri := by simp [fromBlocks_multiply, h.ri] rz := by simp [fromBlocks_multiply, h.rz] gii := by rw [doubling_gram_fromBlocks, h.gii]; rfl giz := by rw [d …`.
+-/
 theorem Fr.dbl (h : Fr c J J₁ H ι Z π ρ) : Fr c (dbl J) (dbl J₁) (dbl H) (dd2 ι) (dd2 Z) (dd2 π) (dd2 ρ) where
   one := by simp [fromBlocks_multiply, fromBlocks_add, h.one]
   pi := by simp [fromBlocks_multiply, h.pi]
@@ -45,6 +51,9 @@ theorem Fr.dbl (h : Fr c J J₁ H ι Z π ρ) : Fr c (dbl J) (dbl J₁) (dbl H) 
   gzi := by rw [doubling_gram_fromBlocks, h.gzi]; simp
   gzz := by rw [doubling_gram_fromBlocks, h.gzz]; rfl
 
+/- English proof (translation)
+Establish `e : ∀ {a b a' b' : Type} [Fintype a] [Fintype b] [Fintype a'] [Fintype b'] (A : Matrix β a E) (x : Matrix a b E) (B : Matrix b β E) (A' : Matrix β a' E) (x' : Matrix a' b' E) (B' : Matrix b' β E), A * x * B * (A' * x' * B') = A * x * (B * A') * x' * B'` using `fun A x B A' x' B' => by simp only [Matrix.mul_assoc]`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e, e, e, e, h.pi, h.pz, h.ri, h.rz]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem Fr.mul (h : Fr c J J₁ H ι Z π ρ) (g g' : Matrix β₁ β₁ E) (k k' : Matrix μ μ E) :
     (ι * g * π + Z * k * ρ) * (ι * g' * π + Z * k' * ρ) = ι * (g * g') * π + Z * (k * k') * ρ := by
   have e : ∀ {a b a' b' : Type} [Fintype a] [Fintype b] [Fintype a'] [Fintype b'] (A : Matrix β a E) (x : Matrix a b E)
@@ -53,6 +62,9 @@ theorem Fr.mul (h : Fr c J J₁ H ι Z π ρ) (g g' : Matrix β₁ β₁ E) (k k
   rw [Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e, e, e, e, h.pi, h.pz, h.ri, h.rz]
   simp [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e : ∀ {a a' : Type} [Fintype a] [Fintype a'] (A : Matrix β a E) (x : Matrix a a E) (B : Matrix a β E) (A' : Matrix β a' E) (x' : Matrix a' a' E) (B' : Matrix a' β E), (A * x * B)ᵀ * J * (A' * x' * B').map c = Bᵀ * (xᵀ * (Aᵀ * J * A'.map c) * x'.map c) * B'.map c` using `fun A x B A' x' B' => by simp only [transpose_mul, map_mul', Matrix.mul_assoc]`. Rewrite using `[Matrix.map_add _ (map_add c), transpose_add, Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, e, e, e, e, h.gii, h.giz, h.gzi, h.gzz]`. Simplify using the standard rewrite rules.
+-/
 theorem Fr.gram (h : Fr c J J₁ H ι Z π ρ) (g : Matrix β₁ β₁ E) (k : Matrix μ μ E) :
     (ι * g * π + Z * k * ρ)ᵀ * J * (ι * g * π + Z * k * ρ).map c =
       πᵀ * (gᵀ * J₁ * g.map c) * π.map c + ρᵀ * (kᵀ * H * k.map c) * ρ.map c := by
@@ -78,16 +90,25 @@ def Fr.emb (h : Fr c J J₁ H ι Z π ρ) : UG c J₁ × UG c H →* UG c J wher
     rw [Matrix.mul_one, Matrix.mul_one, h.one]))
   map_mul' p q := Subtype.ext (Units.ext (h.mul _ _ _ _).symm)
 
+/- English proof (translation)
+Use `show (ι * p.1.1.1 * π + Z * p.2.1.1 * ρ) * ι = _`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, h.pi, Matrix.mul_assoc (Z * _), h.ri]`. Simplify using the standard rewrite rules.
+-/
 theorem Fr.emb_i (h : Fr c J J₁ H ι Z π ρ) (p : UG c J₁ × UG c H) : (h.emb p).1.1 * ι = ι * p.1.1.1 := by
   show (ι * p.1.1.1 * π + Z * p.2.1.1 * ρ) * ι = _
   rw [Matrix.add_mul, Matrix.mul_assoc, h.pi, Matrix.mul_assoc (Z * _), h.ri]
   simp
 
+/- English proof (translation)
+Use `show (ι * p.1.1.1 * π + Z * p.2.1.1 * ρ) * Z = _`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, h.pz, Matrix.mul_assoc (Z * _), h.rz]`. Simplify using the standard rewrite rules.
+-/
 theorem Fr.embeddingAtLocalFactor (h : Fr c J J₁ H ι Z π ρ) (p : UG c J₁ × UG c H) : (h.emb p).1.1 * Z = Z * p.2.1.1 := by
   show (ι * p.1.1.1 * π + Z * p.2.1.1 * ρ) * Z = _
   rw [Matrix.add_mul, Matrix.mul_assoc, h.pz, Matrix.mul_assoc (Z * _), h.rz]
   simp
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)).matrix_mul continuous_const).add (continuous_const (y := Z * (1 : Matrix μ μ E) * ρ))`. Conclude with `((continuous_const.matrix_mul (Units.continuous_coe_inv.comp continuous_subtype_val)).matrix_mul continuous_const).add (continuous_const (y := Z * (1 : Matrix μ μ E) * ρ))`.
+-/
 theorem Fr.continuous_emb [TopologicalSpace E] [IsTopologicalRing E] (h : Fr c J J₁ H ι Z π ρ) :
     Continuous fun g : UG c J₁ => h.emb (g, 1) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -98,9 +119,21 @@ theorem Fr.continuous_emb [TopologicalSpace E] [IsTopologicalRing E] (h : Fr c J
 
 abbrev hyp (ν : Type) [DecidableEq ν] (η : ℤˣ) : Matrix (ν ⊕ ν) (ν ⊕ ν) E := fromBlocks 0 1 (((η : ℤ) : E) • 1) 0
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem eta_sq (η : ℤˣ) : ((η : ℤ) : E) * ((η : ℤ) : E) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
 
+/- English proof (translation)
+Use `set a : E := ((η : ℤ) : E) with ha`. Establish `h2 : a * a = 1` using `eta_sq η`. Establish `hca : (a • (1 : Matrix ν ν E)).map c = a • 1`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [h, ha, Matrix.one_apply]`. Establish `hm1 : (-1 : Matrix ν ν E).map c = -1` using `by rw [Matrix.map_neg _ (map_neg c), map_one']`.
+
+Establish `hz : (0 : Matrix ν ν E).map c = 0` using `Matrix.map_zero _ (map_zero c)`. Set `g : Matrix ((ν ⊕ ν) ⊕ (ν ⊕ ν)) ((ν ⊕ ν) ⊕ (ν ⊕ ν)) E` to `fromBlocks (fromBlocks 1 0 0 1) (fromBlocks 0 0 0 (-1)) (fromBlocks 0 0 (-1) 0) (fromBlocks 0 (a • 1) 1 0)`. Set `g' : Matrix ((ν ⊕ ν) ⊕ (ν ⊕ ν)) ((ν ⊕ ν) ⊕ (ν ⊕ ν)) E` to `fromBlocks (fromBlocks 1 0 0 1) (fromBlocks 0 0 (a • 1) 0) (fromBlocks 1 0 0 0) (fromBlocks 0 1 (a • 1) 0)`. Use `⟨⟨⟨g, g', ?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [g, g', fromBlocks_multiply, fromBlocks_add, ← fromBlocks_one, ← fromBlocks_zero]`.
+
+Simplify using `[smul_smul, h2]`. Simplify using `only [g, g', fromBlocks_multiply, fromBlocks_add, ← fromBlocks_one, ← fromBlocks_zero]`. Simplify using `[smul_smul, h2]`. Use `show gᵀ * _ * g.map c = _`. Simplify using `only [g, hyp, ← ha, dbl, fromBlocks_transpose, fromBlocks_map, map_one', hm1, hz, hca, fromBlocks_neg, ← fromBlocks_zero, fromBlocks_multiply, fromBlocks_add]`.
+
+Simplify using `[smul_smul, h2]`. Use `show g * diagCols (E := E) (ν ⊕ ν) = _`. Simplify using `only [g, diagCols, fromBlocks_mul_fromRows, Matrix.mul_one, fromBlocks_add, fromBlocks_multiply]`. Apply the tactic sequence `ext ((i | i) | (i | i)) (j | j) <;> simp`.
+-/
 theorem exists_gamma0 (η : ℤˣ) : ∃ γ : UG c (dbl (hyp ν η : Matrix _ _ E)), γ.1.1 * (diagCols (ν ⊕ ν) : Matrix _ _ E) =
     dd2 (fromRows (1 : Matrix ν ν E) (0 : Matrix ν ν E)) * (fromBlocks 1 0 0 (((η : ℤ) : E) • 1) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) := by
   set a : E := ((η : ℤ) : E) with ha
@@ -126,6 +159,15 @@ theorem exists_gamma0 (η : ℤˣ) : ∃ γ : UG c (dbl (hyp ν η : Matrix _ _ 
     simp only [g, diagCols, fromBlocks_mul_fromRows, Matrix.mul_one, fromBlocks_add, fromBlocks_multiply]
     ext ((i | i) | (i | i)) (j | j) <;> simp
 
+/- English proof (translation)
+Take `⟨γ₀, hγ⟩` from `exists_gamma0 (c := c) (ν := ν) η`. Use `set s₀ : Matrix (ν ⊕ ν) (ν ⊕ ν) E := fromBlocks 1 0 0 (((η : ℤ) : E) • 1)`. Establish `hs : s₀ * s₀ = 1` using `by simp [s₀, fromBlocks_multiply, smul_smul, eta_sq]`. Use `set Z := fromCols X Y`. Use `⟨h.dbl.emb (1, γ₀), fromRows π (s₀ * ρ), fromCols ι (Z * s₀), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[fromRows_mul_fromCols, ← Matrix.mul_assoc π, Matrix.mul_assoc s₀, Matrix.mul_assoc s₀, ← Matrix.mul_assoc ρ, h.pi, h.pz, h.ri, h.rz, Matrix.one_mul, hs]`. Simplify using the standard rewrite rules. Rewrite using `[fromCols_mul_fromRows, Matrix.mul_assoc, ← Matrix.mul_assoc s₀, hs, Matrix.one_mul, h.one]`. Establish `e : (diagCols β : Matrix _ _ E) = dd2 ι * (diagCols (E` using `E) β₁ * π) + dd2 Z * (diagCols (E := E) (ν ⊕ ν) * ρ) := by`. Simplify using `only [diagCols, fromRows_mul, fromBlocks_mul_fromRows, Matrix.one_mul, Matrix.zero_mul, add_zero, zero_add]`.
+
+Rewrite using `[← h.one]`. Apply the tactic sequence `ext (i | i) j <;> rfl`. Establish `e2 : dd2 Z * dd2 (fromRows (1 : Matrix ν ν E) (0 : Matrix ν ν E)) = dd2 X`. Rewrite using `[fromBlocks_multiply]`. Simplify using `[Z, fromCols_mul_fromRows]`.
+
+Rewrite using `[e, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc _ (dd2 Z), Fr.emb_i, Fr.embeddingAtLocalFactor, fromCols_mul_fromRows, Matrix.mul_assoc (dd2 Z), ← Matrix.mul_assoc γ₀.1.1, hγ, ← e2]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+-/
 theorem Fr.exists_gamma {η : ℤˣ} {X Y : Matrix β ν E} {ρ : Matrix (ν ⊕ ν) β E}
     (h : Fr c J J₁ (hyp ν η) ι (fromCols X Y) π ρ) :
     ∃ (γ : UG c (GlobalTheory.WeilM.dbl J)) (s : Matrix (β₁ ⊕ (ν ⊕ ν)) β E) (s' : Matrix β (β₁ ⊕ (ν ⊕ ν)) E), s * s' = 1 ∧ s' * s = 1 ∧

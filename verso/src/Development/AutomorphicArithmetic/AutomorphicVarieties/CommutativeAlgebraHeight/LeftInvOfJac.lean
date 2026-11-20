@@ -10,6 +10,19 @@ import Mathlib.Algebra.MvPolynomial.Nilpotent
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Set `w : E ⊗[A] K` to `∑ i, z i ⊗ₜ s i`. Establish `hw : ∀ y : E ⊗[A] K, y * w ∈ Module.jacobson E (E ⊗[A] K)`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [add_mul]`. Conclude with `add_mem ha hb`. Consider the case `tmul e a`. Rewrite using `[Finset.mul_sum]`. Use `Submodule.sum_mem _ fun i _ => Ring.jacobson_smul_top_le E _ ?_` and prove the remaining obligations.
+
+Establish `: (e ⊗ₜ[A] a) * (z i ⊗ₜ[A] s i) = (e * z i) • ((1 : E) ⊗ₜ[A] (a * s i))`. Simplify using `[smul_tmul']`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul (Ideal.mul_mem_left _ _ (hz i)) Submodule.mem_top`. Set `f : E ⊗[A] K →ₗ[E] E ⊗[A] K` to `{ toFun := fun y => y * (1 + w) map_add' := fun a b => add_mul _ _ _ map_smul' := fun e y => smul_mul_assoc e y _ }`.
+
+Establish `htop : LinearMap.range f = ⊤`. Break down `eq_top_or_exists_le_coatom (LinearMap.range f) with h | ⟨N, hN, hle⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Use `hN.1 (eq_top_iff.2 fun y _ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : y * (1 + w) ∈ N` using `hle ⟨y, rfl⟩`. Establish `h2 : y * w ∈ N` using `(sInf_le hN : Module.jacobson E (E ⊗[A] K) ≤ N) (hw y)`. Use `N.sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[mul_add, mul_one, add_sub_cancel_right]`. Then use the resulting hypothesis. Take `⟨v, hv⟩ : (1 : E ⊗[A] K) ∈ LinearMap.range f` from `htop ▸ Submodule.mem_top`.
+
+Use `⟨Algebra.TensorProduct.comm A E K v, ?_⟩` and prove the remaining obligations. Establish `hv' : v * (1 + w) = 1` using `hv`. Establish `h` using `congrArg (Algebra.TensorProduct.comm A E K) hv'`. Rewrite `h` using `[map_mul, map_one]`. Simplify `h` using `[w, map_sum]`.
+-/
 private theorem left_inv_of_jac {A E K : Type} [CommRing A] [Ring E] [Algebra A E] [CommRing K] [Algebra A K]
     [Module.Finite A K] {m : ℕ} (s : Fin m → K) (z : Fin m → E) (hz : ∀ i, z i ∈ Ring.jacobson E) :
     ∃ v : K ⊗[A] E, v * (1 + ∑ i, s i ⊗ₜ z i) = 1 := by
@@ -46,6 +59,17 @@ private theorem left_inv_of_jac {A E K : Type} [CommRing A] [Ring E] [Algebra A 
   rw [map_mul, map_one] at h
   simpa [w, map_sum] using h
 
+/- English proof (translation)
+Use `UpperTheory.V.CA.d_kills_poly D x Set.univ (by simp) fun m h _ => ?_` and prove the remaining obligations. Use `set P := D.D (MvPolynomial (Fin m) k) (1 + Det.gen h * (1 ⊗ₜ x)) with hP`. Establish `key : ∀ (K : Type) [CommRing K] [Algebra k K] (φ : MvPolynomial (Fin m) k →ₐ[k] K), φ P = D.D K (1 + ∑ i, φ (MvPolynomial.X i) ⊗ₜ (h i * x))`. Introduce `K _ _ φ`. Rewrite using `[hP, ← D.nat]`.
+
+Use `congr 1`. Simplify using `[Det.gen, map_sum, Finset.sum_mul]`. Establish `hu : IsUnit P`. Assume the negation of the conclusion as `hnu`. Take `⟨M, hM, hPM⟩` from `exists_max_ideal_of_mem_nonunits hnu`.
+
+Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite k (MvPolynomial (Fin m) k ⧸ M) := finite_of_finite_type_of_isJacobsonRing _ _`. Take `⟨v, hv⟩` from `left_inv_of_jac (A := k) (fun i => Ideal.Quotient.mkₐ k M (MvPolynomial.X i)) (fun i => h i * x) (fun i => Ideal.mul_mem_left _ _ hx)`. Establish `h1` using `congrArg (D.D _) hv`. Rewrite `h1` using `[map_mul, map_one, ← key, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.2 hPM, mul_zero]`.
+
+Conclude with `zero_ne_one h1`. Take `⟨c, -, hc⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.1 hu`. Establish `h0` using `key k (MvPolynomial.aeval fun _ => 0)`. Rewrite `h0`, the goal using `[hc]`. Simplify using `at h0`.
+
+Simplify using `[h0]`.
+-/
 private theorem kills_of_jac {n : ℕ} {k R : Type} [Field k] [Ring R] [Algebra k R] (D : Det n k R) (x : R)
     (hx : x ∈ Ring.jacobson R) : D.Kills x := by
   refine UpperTheory.V.CA.d_kills_poly D x Set.univ (by simp) fun m h _ => ?_
@@ -72,6 +96,21 @@ private theorem kills_of_jac {n : ℕ} {k R : Type} [Field k] [Ring R] [Algebra 
   simp at h0
   simp [h0]
 
+/- English proof (translation)
+Introduce `n A E _ _ _ _ D hCH x`. Rewrite using `[(UpperTheory.V.CA.d_ker _ _).1]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[← Ideal.jacobson_bot, Ideal.mem_jacobson_iff]`.
+
+Introduce `y`. Establish `h0` using `hx (ResidueField A) (1 ⊗ₜ (1 ⊗ₜ y))`. Rewrite `h0` using `[(UpperTheory.V.CA.d_bc D (ResidueField A)).1]`. Establish `h1 : algebraMap A (ResidueField A) (D.val (y * x + 1)) = 1`. Use `D.nat A (ResidueField A) (Algebra.ofId A _) (1 ⊗ₜ (y * x + 1))` as an intermediate fact.
+
+Use `this.symm.trans (Eq.trans (congrArg _ ?_) h0)` and prove the remaining obligations. Simplify using `[Det.cancel_tmul, tmul_add, add_comm, Algebra.TensorProduct.one_def]`. Establish `h2 : IsUnit (y * x + 1)` using `((UpperTheory.V.CA.d_unit D hCH).1 _).2 ((residue_ne_zero_iff_isUnit _).1 fun h0 => one_ne_zero (h1.symm.trans h0))`. Take `⟨u, hu⟩` from `h2`. Use `⟨(↑u⁻¹ : E), ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (↑u⁻¹ : E) * (y * x + 1) = 1` using `by rw [← hu, Units.inv_mul]`. Rewrite using `[Ideal.mem_bot, sub_eq_zero, ← h3, mul_add, mul_one, mul_assoc]`. Introduce `hx`. Use `kills_of_jac _ _ ?_` and prove the remaining obligations. Set `f : E →+* ResidueField A ⊗[A] E` to `(Algebra.TensorProduct.includeRight : E →ₐ[A] ResidueField A ⊗[A] E).toRingHom`.
+
+Use `haveI : RingHomSurjective f := ⟨fun t => by`. Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`. Take `⟨a, rfl⟩` from `ha`.
+
+Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `tmul c e`. Take `⟨a, rfl⟩` from `residue_surjective c`. Use `⟨a • e, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(1 : ResidueField A) ⊗ₜ[A] (a • e) = _`. Rewrite using `[← smul_tmul, ← Algebra.algebraMap_eq_smul_one]`. Use the proof step `rfl⟩`. Conclude with `Ring.le_comap_jacobson f hx`.
+-/
 theorem UpperTheory.V.CA.d_rad :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [IsLocalRing A] [Ring E] [Algebra A E] (D : Det n A E), D.IsCH → ∀ x : E, (1 : ResidueField A) ⊗ₜ[A] x ∈ (D.baseChange (ResidueField A)).ker ↔ x ∈ Ring.jacobson E := by
   intro n A E _ _ _ _ D hCH x

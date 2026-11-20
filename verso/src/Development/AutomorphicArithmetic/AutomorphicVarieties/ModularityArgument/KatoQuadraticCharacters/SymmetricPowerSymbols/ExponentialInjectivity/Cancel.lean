@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m hm τ τ' s s' hτ hτ' u v P Q R hP hQ hR f h1 hf`. Take `⟨-, -, -, htr, -⟩` from `admB Ω ε X`. Take `⟨g, -, hg⟩` from `(mvEx Ω ε X m hm τ' s' hτ' _ _ _ hQ).1 R hR`. Establish `hc` using `mvComp Ω ε X m hm τ τ' s s' hτ hτ' u v P Q R hP hQ hR 1 g h1 hg`. Rewrite `hc` using `[map_one, one_pow, one_mul]`.
+
+Establish `hfg` using `((mvEx Ω ε X m hm (τ.trans τ') (s' * s) (htr τ s τ' s' hτ hτ') u v P hP).2.2.2 R hR g f hc).1 hf`. Conclude with `((mvEx Ω ε X m hm τ' s' hτ' _ _ _ hQ).2.2.2 R hR g f hg).2 hfg`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.PC.cancel :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (m : ℕ), 0 < m → ∀ (τ τ' : X.K ≃+* X.K) (s s' : Ω ≃ₐ[ℚ] Ω), admitted X τ s → admitted X τ' s' →
         ∀ (u v : X.K) (P Q R : Pt X m), IsPt X m u v P → IsPt X m (τ u) (τ v) Q → IsPt X m (τ' (τ u)) (τ' (τ v)) R →

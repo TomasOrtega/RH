@@ -18,6 +18,9 @@ namespace GlobalTheory.IwStabCoord
 
 open Matrix GlobalTheory.ThK.UnipDom
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[GlobalTheory.IwEmb.frame, GlobalTheory.LeviElem.cols2, mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_mulVec_expand {A : Type} [CommRing A] {b : ℕ} (x y : Fin (b + 2) → A) (ι : Matrix (Fin (b + 2)) (Fin b) A)
     (w : Fin b ⊕ Fin 2 → A) :
     GlobalTheory.IwEmb.frame x y ι *ᵥ w = ι *ᵥ (fun i => w (Sum.inl i)) + w (Sum.inr 0) • x + w (Sum.inr 1) • y := by
@@ -27,6 +30,35 @@ theorem frame_mulVec_expand {A : Type} [CommRing A] {b : ℕ} (x y : Fin (b + 2)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp`. Take `rfl` from `hH.rank`. Take `⟨α, hα⟩` from `hp`. Establish `hs : ∀ z : E, σ (σ z) = z` using `GlobalTheory.ThK.UnipDom.Inverse.sigma_sigma hB.cm`. Establish `hL : Submodule.span E ((reS X Y).L : Set (Fin (n₁ + 2) → E)) = ⊤` using `hX.lat.span_eq_top`.
+
+Use `choose a b c hdec using fun j : Fin (n₁ + 2) => GlobalTheory.IterBochner.exists_decomp B H (reS X Y) X₁ hH hL (Pi.single j 1)`. Use `set P : Matrix (Fin (n₁ + 2)) (Fin n₁ ⊕ Fin 2) E := GlobalTheory.IwEmb.frame H.x H.y H.ι with hP`. Use `set R : Matrix (Fin n₁ ⊕ Fin 2) (Fin (n₁ + 2)) E := Matrix.of fun k i => Sum.elim (fun t => c i t) (fun t => ![a i, b i] t) k with hR`. Establish `hPR : P * R = 1`. Use extensionality with `i i'`.
+
+Establish `e` using `congrFun (hdec i') i`. Rewrite using `[Matrix.one_apply]`. Rewrite `e` using `[Pi.single_apply]`. Rewrite using `[e]`. Simplify using `only [hP, hR, GlobalTheory.IwEmb.frame, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, GlobalTheory.LeviElem.cols2, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head …`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hRP : R * P = 1` using `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv.symm).1 hPR`. Use `set f : E →+* AE F E := inclR (F := F) (E := E) (AF F) with hf`. Establish `hPf : P.map f = GlobalTheory.IwEmb.frame (incV F H.x) (incV F H.y) (incM F H.ι)`. Use extensionality with `i (k | k)`.
+
+Both sides reduce to the same expression. Apply the tactic sequence `fin_cases k <;> rfl`. Establish `hQP' : R.map f * GlobalTheory.IwEmb.frame (incV F H.x) (incV F H.y) (incM F H.ι) = 1`. Rewrite using `[← hPf, ← Matrix.map_mul, hRP, Matrix.map_one _ (map_zero f) (map_one f)]`. Use `set Q := R.map f with hQ`.
+
+Establish `hFQ` using `GlobalTheory.IwEmb.frame_mul_Q hQP'`. Establish `hrec : ∀ v, GlobalTheory.IwEmb.frame (incV F H.x) (incV F H.y) (incM F H.ι) *ᵥ (Q *ᵥ v) = v` using `fun v => by`. Rewrite using `[mulVec_mulVec, hFQ, one_mulVec]`. Establish `hfyx : form σ X.J H.y H.x = 1`. Establish `e : form σ X.J H.y H.x = σ (form σ X.J H.x H.y)`.
+
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hX.herm k l, hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Use `hH.xy` as an intermediate fact. Express the relevant statement in the definitionally equal form `form σ X.J H.x H.y = 1 at this`. Rewrite using `[this, map_one]`. Establish `hιx : ∀ z, fA σ X.J (incM F H.ι *ᵥ z) (incV F H.x) = 0` using `fun z => GlobalTheory.UnipChart.fA_iota_left (H := H) H.x (fun u => (hH.orth u).1) z`.
+
+Establish `hxx : fA σ X.J (incV F H.x) (incV F H.x) = 0`. Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.fA_incV]`. Use `hH.xx` as an intermediate fact. Express the relevant statement in the definitionally equal form `form σ X.J H.x H.x = 0 at this`. Rewrite using `[this, map_zero]`.
+
+Establish `hyx : fA σ X.J (incV F H.y) (incV F H.x) = 1`. Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.fA_incV, hfyx, map_one]`. Establish `hcoord : ∀ v, fA σ X.J v (incV F H.x) = (Q *ᵥ v) (Sum.inr 1)`. Introduce `v`. Establish `hv : v = GlobalTheory.IwEmb.frame (incV F H.x) (incV F H.y) (incM F H.ι) *ᵥ (Q *ᵥ v)` using `(hrec v).symm`.
+
+Use `conv_lhs => rw [hv, frame_mulVec_expand]`. Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.fA_add_left, GlobalTheory.ThK.UnipDom.Inverse.fA_add_left, GlobalTheory.ThK.UnipDom.Inverse.fA_smul_left, GlobalTheory.ThK.UnipDom.Inverse.fA_smul_left, hιx, hxx, hyx]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨GlobalTheory.IwEmb.gam Q (incM F H.ι) (mat p), fun z => ⟨(Q *ᵥ (mat p *ᵥ (incM F H.ι *ᵥ z))) (Sum.inr 0), ?_⟩⟩` and prove the remaining obligations. Use `set w := Q *ᵥ (mat p *ᵥ (incM F H.ι *ᵥ z)) with hw`.
+
+Establish `hw1 : w (Sum.inr 1) = 0`. Rewrite using `[hw, ← hcoord]`. Establish `h1 : fA σ X.J (mat p *ᵥ (incM F H.ι *ᵥ z)) (mat p *ᵥ incV F H.x) = 0`. Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.fA_mulVec, hιx]`. Rewrite `h1` using `[hα, GlobalTheory.ThK.UnipDom.MatEq.fA_smul_right]`.
+
+Establish `hu : IsUnit (cA σ (α : AE F E))` using `(α.isUnit).map (cA σ)`. Conclude with `(hu.mul_right_eq_zero).1 h1`. Establish `hwι : (fun i => w (Sum.inl i)) = GlobalTheory.IwEmb.gam Q (incM F H.ι) (mat p) *ᵥ z`. Use function extensionality and compare the values at `i`. Simplify using `only [hw, GlobalTheory.IwEmb.gam, mulVec_mulVec]`.
+
+Rewrite using `[← Matrix.mul_assoc]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, hrec]`. Use `_ = _ := by rw [frame_mulVec_expand, hw1, hwι, zero_smul, add_zero]`.
+-/
 theorem stab_iota : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B (reS X Y) X₁ i₀ i₁ → ∀ p ∈ GlobalTheory.IwLine.lineStab σ X.J H.x, ∃ G : Matrix (Fin n₁) (Fin n₁) (AE F E), ∀ z : Fin n₁ → AE F E, ∃ a : AE F E, mat p *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ (G *ᵥ z) + a • incV F H.x := by
   intro F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp
   obtain rfl := hH.rank

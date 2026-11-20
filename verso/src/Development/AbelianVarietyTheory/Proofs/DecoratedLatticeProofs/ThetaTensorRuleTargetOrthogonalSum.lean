@@ -21,43 +21,71 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+-/
 theorem heisO_zero' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO, hO]
 
+/- English proof (translation)
+Rewrite using `[d.resT_symm_apply, d.resS_symm_apply, d.pA_eq, d.pB_eq]`. Simplify using `only [dagger, adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₂ (gA_mul_giA A), cancel₂ (gA_mul_giA B), Matrix.one_mul]`.
+-/
 theorem dagger_resT_symm {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (u : WO S A) (v : WO S B) :
     dagger S T ((d.resT S).symm (u, v)) = (d.resS S).symm (dagger S A u, dagger S B v) := by
   rw [d.resT_symm_apply, d.resS_symm_apply, d.pA_eq, d.pB_eq]
   simp only [dagger, adj_add, adj_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, cancel₂ (gA_mul_giA A),
     cancel₂ (gA_mul_giA B), Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h` using `dagger_resT_symm d S (dagger A S u) (dagger B S v)`. Rewrite `h` using `[dagger_dagger, dagger_dagger]`. Rewrite using `[← h, dagger_dagger]`.
+-/
 theorem dagger_resS_symm {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (u : WO A S) (v : WO B S) :
     dagger T S ((d.resS S).symm (u, v)) = (d.resT S).symm (dagger A S u, dagger B S v) := by
   have h := dagger_resT_symm d S (dagger A S u) (dagger B S v)
   rw [dagger_dagger, dagger_dagger] at h
   rw [← h, dagger_dagger]
 
+/- English proof (translation)
+Establish `h` using `dagger_resS_symm d S (d.resS S y).1 (d.resS S y).2`. Rewrite `h` using `[Prod.mk.eta, AddEquiv.symm_apply_apply]`. Rewrite using `[h, AddEquiv.apply_symm_apply]`.
+-/
 theorem resT_dagger {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (y : WO T S) :
     d.resT S (dagger T S y) = (dagger A S (d.resS S y).1, dagger B S (d.resS S y).2) := by
   have h := dagger_resS_symm d S (d.resS S y).1 (d.resS S y).2
   rw [Prod.mk.eta, AddEquiv.symm_apply_apply] at h
   rw [h, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `h` using `dagger_resT_symm d S (d.resT S x).1 (d.resT S x).2`. Rewrite `h` using `[Prod.mk.eta, AddEquiv.symm_apply_apply]`. Rewrite using `[h, AddEquiv.apply_symm_apply]`.
+-/
 theorem resS_dagger {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (x : WO S T) :
     d.resS S (dagger S T x) = (dagger S A (d.resT S x).1, dagger S B (d.resT S x).2) := by
   have h := dagger_resT_symm d S (d.resT S x).1 (d.resT S x).2
   rw [Prod.mk.eta, AddEquiv.symm_apply_apply] at h
   rw [h, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, OrthDec.boxT, OrthDec.boxS, resT_dagger, map_mul]`.
+-/
 theorem cj_boxT {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (fA : WO S A → ℂ) (fB : WO S B → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) (d.boxT S fA fB) = d.boxS S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger A S) fA) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger B S) fB) := by
   funext y
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, OrthDec.boxT, OrthDec.boxS, resT_dagger, map_mul]
 
+/- English proof (translation)
+The claim follows from `cjEnd_cj (daggerEquiv S T) (om (g, h)) f`.
+-/
 theorem conjAdjoint_cj {S T : HSp D} (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjAdjoint om (h, g) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) (om (g, h) f) :=
   cjEnd_cj (daggerEquiv S T) (om (g, h)) f
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (h x hx)`. Consider the case `zero`. Establish `e0 : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e (0 : X → ℂ) = 0` using `by funext y; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite using `[e0]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e (x + y) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e x + GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e y` using `by funext z; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite using `[e1]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e (c • x) = starRingEnd ℂ c • GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e x` using `by funext z; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem cj_mem_span {X Y : Type} (e : Y → X) {s : Set (X → ℂ)} {s' : Set (Y → ℂ)} (h : ∀ g ∈ s, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e g ∈ s')
     {g : X → ℂ} (hg : g ∈ Submodule.span ℂ s) : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e g ∈ Submodule.span ℂ s' := by
   induction hg using Submodule.span_induction with
@@ -72,6 +100,27 @@ theorem cj_mem_span {X Y : Type} (e : Y → X) {s : Set (X → ℂ)} {s' : Set (
     have e1 : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e (c • x) = starRingEnd ℂ c • GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj e x := by funext z; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
     rw [e1]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce `D ψ hψ T A B d S`. Establish `thd : ∀ (S T : HSp D) (f : WO S T → ℂ), IsThetaFunO ψ T S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f) ↔ IsThetaFunO ψ S T f` using `fun S T => (GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ S T).2.2.1`. Establish `src` using `GlobalTheory.T.thetaTensorRule_orthogonalSum_source D ψ hψ T A B d S`. Establish `cc : ∀ f : WO S T → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger S T) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f) = f` using `fun f => cj_cj _ _ (dagger_dagger S T) f`. Use `{ box_theta := fun fA fB hA hB => d.isThetaFunO_boxT hA hB box_zero := fun fA fB => d.boxT_zero S fA fB heis_box := fun fA fB => ⟨fun u => ?_, fun v => ?_⟩ slice_theta := fun f hf => ⟨fun v => ?_, fun u => ?_⟩ dense := fun f hf => ?_ om_box := ?_ om_slice := ?_ }` and prove the remaining obligations.
+
+Rewrite using `[d.heisO_boxT, AddEquiv.apply_symm_apply, heisO_zero']`. Rewrite using `[d.heisO_boxT, AddEquiv.apply_symm_apply, heisO_zero']`. Establish `h1` using `(src.slice_theta (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f) ((thd S T f).2 hf)).1 (dagger S B v)`. Rewrite using `[← thd S A]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `u`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_resS_symm, dagger_dagger]`. Establish `h1` using `(src.slice_theta (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f) ((thd S T f).2 hf)).2 (dagger S A u)`. Rewrite using `[← thd S B]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_resS_symm, dagger_dagger]`. Introduce `ε hε`. Take `⟨g, hg, hgε⟩` from `src.dense _ ((thd S T f).2 hf) ε hε`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger S T) g, cj_mem_span _ ?_ hg, fun x => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f1, f2, h1, h2, rfl⟩`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger S A) f1, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger S B) f2, (thd A S f1).2 h1, (thd B S f2).2 h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, resS_dagger, map_mul]`. Establish `h` using `hgε (dagger S T x)`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_dagger] at h ⊢`. Rewrite using `[← Complex.norm_conj, map_sub, Complex.conj_conj]`. Conclude with `h`. Introduce `χS χA χB omT omA omB hT hA hB g a b fA fB hfA hfB`. Establish `key` using `src.om_box χA χB χS (conjAdjoint omT) (conjAdjoint omA) (conjAdjoint omB) (GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair D ψ S T χS (χA * χB) omT hT) (GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair D ψ S A χS χA omA hA) (GlobalTheory.T.conj_weil_datum_via_a …`.
+
+Rewrite `key` using `[conjAdjoint_cj, conjAdjoint_cj, ← cj_boxT, ← cj_boxT, conjAdjoint_cj]`. Use `congrArg (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger S T)) key` as an intermediate fact. Rewrite `this` using `[cc, cc]`. Then use the resulting hypothesis. Introduce `χS χA χB omT omA omB hT hA hB g a b f hf v`. Establish `key` using `src.om_slice χA χB χS (conjAdjoint omT) (conjAdjoint omA) (conjAdjoint omB) (GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair D ψ S T χS (χA * χB) omT hT) (GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair D ψ S A χS χA omA hA) (GlobalTheory.T.conj_weil_datum_via …`.
+
+Establish `e1 : (fun u'' => conjAdjoint omB (b, g) (fun v'' => GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f ((d.resS S).symm (u'', v''))) (dagger S B v)) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger A S) (fun u' => omB (g, b …`. Use function extensionality and compare the values at `u''`. Establish `hfun : (fun v'' => GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f ((d.resS S).symm (u'', v''))) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger B S) (fun v' => f ((d.resT S).symm (dagger A S u'', v')))`. Use function extensionality and compare the values at `v''`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_resS_symm]`.
+
+Rewrite using `[hfun, conjAdjoint_cj]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_dagger]`. Take `⟨k1, k2⟩` from `key`. Rewrite `k1`, `k2` using `[e1]`. Use `⟨(thd S A _).1 k1, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `k2 (dagger S A u)`. Rewrite `h` using `[conjAdjoint_cj, conjAdjoint_cj]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, dagger_resS_symm, dagger_dagger] at h`. Conclude with `(starRingEnd ℂ).injective h`.
+-/
 theorem tensorTarget : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (T A B : HSp D) (d : OrthDec T A B) (S : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.TensorTarget ψ d S := by
   intro D ψ hψ T A B d S

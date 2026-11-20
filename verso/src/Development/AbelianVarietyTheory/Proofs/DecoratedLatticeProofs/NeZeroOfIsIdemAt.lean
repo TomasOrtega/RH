@@ -21,6 +21,11 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨α, rfl, h3, h4⟩` from `hε`. Establish `: α = singleV D.host.F v 1` using `af_ext _ fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h3, evalV_singleV_same]`.
+
+Rewrite using `[h4 w hw, evalV_singleV_ne _ v _ hw]`. Substitute `this` using the available equality. Conclude with `⟨he.1, he.2.1, h⟩`.
+-/
 theorem splitAt_of {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} {ε : AF D.host.F} (he : IsSplitIdem D e)
     (hε : IsPlaceIdem D v ε) (h : e + cA D e = algebraMap (AF D.host.F) (AE D) ε) : SplitAt D v e := by
   obtain ⟨α, rfl, h3, h4⟩ := hε
@@ -31,6 +36,9 @@ theorem splitAt_of {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} {ε : AF D
   subst this
   exact ⟨he.1, he.2.1, h⟩
 
+/- English proof (translation)
+Take `⟨Q, hQ, hQv⟩` from `GlobalTheory.IdemPrime.exists_isIdemAt D v e hv`. Establish `hPQ : Q = P` using `GlobalTheory.PlaceVec.isIdemAt_inj hQ hP`. Substitute `hPQ` using the available equality. Conclude with `HeightOneSpectrum.ext hQv.symm`.
+-/
 theorem eq_under {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : Formalism.L2.NTheta.IsIdemAt e P) (hv : SplitAt D v e) : v = P.under (𝓞 D.host.F) := by
   obtain ⟨Q, hQ, hQv⟩ := GlobalTheory.IdemPrime.exists_isIdemAt D v e hv
@@ -38,11 +46,29 @@ theorem eq_under {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} {P : HeightO
   subst hPQ
   exact HeightOneSpectrum.ext hQv.symm
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Conclude with `((hP.2 x hx0).1 hx) (by rw [zero_mul, map_zero]; exact zero_mem _)`.
+-/
 theorem ne_zero_of_isIdemAt {e : AE D} {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : Formalism.L2.NTheta.IsIdemAt e P) : e ≠ 0 := by
   rintro rfl
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
   exact ((hP.2 x hx0).1 hx) (by rw [zero_mul, map_zero]; exact zero_mem _)
 
+/- English proof (translation)
+Introduce `D c hc f e he hf`. Establish `key : ∀ PP, f PP = PP.1.under (𝓞 D.host.F)`. Introduce `PP`. Take `⟨ε, hε, hsum⟩` from `hf PP`. Conclude with `eq_under (he PP) (splitAt_of (he PP).1 hε hsum)`.
+
+Use `⟨fun PP PP' hPP => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite `hPP` using `[key, key]`. Take `⟨E', ⟨es, hes, hsum⟩, h0⟩` from `hc.split`. Establish `h0'` using `h0`. Rewrite `h0'` using `[hsum, map_sum, Finset.sum_mul_sum, ← Finset.sum_product']`.
+
+Establish `hz : ∀ x ∈ c.Pg ×ˢ c.Pg, es x.1 * cA D (es x.2) = 0` using `GlobalTheory.PlaceVec.idem_eq_zero_of_sum (A := AE D) GlobalTheory.PlaceVec.natCast_mul_eq_zero (fun x : Formalism.L2.DIV.Pl D.host.E × Formalism.L2.DIV.Pl D.host.E => es x.1 * cA D (es x.2)) (c.Pg ×ˢ c.Pg) (fun i hi => by`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hi`. Rewrite using `[mul_mul_mul_comm, ← map_mul, (hes _ h1).1.1, (hes _ h2).1.1]) h0'`. Establish `ha` using `hes PP.1 PP.2`. Establish `hb` using `hes PP'.1 PP'.2`.
+
+Establish `hab : es PP.1 * cA D (es PP'.1) = 0` using `hz (PP.1, PP'.1) (Finset.mem_product.2 ⟨PP.2, PP'.2⟩)`. Take `⟨va, hva⟩` from `(GlobalTheory.IdemModTwo.isSplitIdem_iff _).1 ha.1`. Take `⟨vb, hvb⟩` from `(GlobalTheory.IdemModTwo.isSplitIdem_iff _).1 hb.1`. Establish `e1` using `eq_under ha hva`. Establish `e2` using `eq_under hb hvb`.
+
+Break down `GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero ha.1 hb.1 with h | h` into its components or cases. Conclude with `Subtype.ext (GlobalTheory.PlaceVec.isIdemAt_inj ha (h ▸ hb))`. It suffices to derive a contradiction. Use `ne_zero_of_isIdemAt ha ?_` and prove the remaining obligations. Establish `hv : va = vb` using `by rw [e1, e2, hPP]`.
+
+Substitute `hv` using the available equality. Establish `q1 : es PP.1 * (es PP.1 + cA D (es PP.1)) = es PP.1` using `by rw [mul_add, hva.1, hva.2.1, add_zero]`. Rewrite `q1` using `[hva.2.2, ← hvb.2.2, mul_add, h, hab, add_zero]`. Conclude with `q1.symm`. Simplify using `only [GlobalTheory.ChainOnto.Com.S, Finset.mem_image, Set.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨PP, hPP, rfl⟩`. Conclude with `⟨⟨PP, hPP⟩, key _⟩`. Introduce and unpack `⟨PP, rfl⟩`. Conclude with `⟨PP.1, PP.2, (key PP).symm⟩`.
+-/
 theorem places : ∀ (D : D7) (c : GlobalTheory.ChainOnto.Com D), c.Is → ∀ (f : c.Pg → GlobalTheory.FinPl.Pl D) (e : c.Pg → AE D),
     (∀ PP, Formalism.L2.NTheta.IsIdemAt (e PP) PP.1) →
     (∀ PP, ∃ ε, IsPlaceIdem D (f PP) ε ∧ e PP + cA D (e PP) = algebraMap (AF D.host.F) (AE D) ε) →

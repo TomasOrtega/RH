@@ -12,6 +12,9 @@ variable (A K L : Type) [CommRing A] [Field K] [Algebra A K] [Field L] [Algebra 
 private abbrev Idx : Type := {E : IntermediateField K L // FiniteDimensional K E}
 
 omit [Algebra A K] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b => by haveI := a.2 haveI := b.2 exact ⟨⟨a.1 ⊔ b.1, inferInstance⟩, le_sup_left (a := a.1), le_sup_right (b := b.1)⟩⟩`.
+-/
 private theorem idx_directed : IsDirected (Idx K L) (· ≤ ·) :=
   ⟨fun a b => by
     haveI := a.2
@@ -37,6 +40,15 @@ private noncomputable def ringC : Cocone (ringD A K L) where
   ι := { app := fun E => CommRingCat.ofHom (toL A K L E.1).toRingHom
          naturality := fun _ _ _ => by ext; rfl }
 
+/- English proof (translation)
+Use `haveI := idx_directed K L`. Use `haveI : Nonempty (Idx K L) := ⟨⟨⊥, inferInstance⟩⟩`. Use `haveI : IsFiltered (Idx K L) := inferInstance`. Use `haveI : ReflectsColimitsOfShape (Idx K L) (forget CommRingCat) := reflectsColimitsOfShape_of_reflectsIsomorphisms`. Use `⟨isColimitOfReflects (forget CommRingCat) ?_⟩` and prove the remaining obligations.
+
+Use `Types.FilteredColimit.isColimitOf _ _ ?_ ?_` and prove the remaining obligations. Introduce `x`. Establish `hx : IsIntegral K (x.1 : L)` using `Algebra.IsIntegral.isIntegral _`. Set `E : Idx K L` to `⟨IntermediateField.adjoin K {x.1}, IntermediateField.adjoin.finiteDimensional hx⟩`. Establish `hm : x.1 ∈ E.1` using `IntermediateField.mem_adjoin_simple_self K x.1`.
+
+Establish `hi : IsIntegral A (⟨x.1, hm⟩ : E.1)` using `(isIntegral_algHom_iff (E.1.val.restrictScalars A) E.1.val.toRingHom.injective).1 x.2`. Conclude with `⟨E, ⟨⟨x.1, hm⟩, hi⟩, rfl⟩`. Introduce `a b xa xb h haveI := a.2 haveI := b.2`. Use `⟨⟨a.1 ⊔ b.1, inferInstance⟩, homOfLE (le_sup_left (a := a.1)), homOfLE (le_sup_right (b := b.1)), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun z : integralClosure A L => (z : L)) h`.
+-/
 private theorem ringC_isColimit [Algebra.IsAlgebraic K L] : Nonempty (IsColimit (ringC A K L)) := by
   haveI := idx_directed K L
   haveI : Nonempty (Idx K L) := ⟨⟨⊥, inferInstance⟩⟩
@@ -62,6 +74,13 @@ private theorem ringC_isColimit [Algebra.IsAlgebraic K L] : Nonempty (IsColimit 
     exact congrArg (fun z : integralClosure A L => (z : L)) h
 
 omit [Algebra A K] [IsScalarTower A K L] [Field K] [Algebra K L] in
+/- English proof (translation)
+Introduce `p hp hdeg`. Establish `hd : (p.map (algebraMap (integralClosure A L) L)).degree ≠ 0`. Rewrite using `[hp.degree_map]`. Conclude with `(Polynomial.natDegree_pos_iff_degree_pos.mp hdeg).ne'`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root _ hd`.
+
+Establish `hint : IsIntegral (integralClosure A L) a` using `⟨p, hp, by rw [← Polynomial.eval_map]; exact ha⟩`. Establish `hA : IsIntegral A a` using `isIntegral_trans a hint`. Use `⟨⟨a, hA⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (integralClosure A L) L (Polynomial.eval ⟨a, hA⟩ p) = 0`. Rewrite using `[← Polynomial.eval₂_at_apply, ← Polynomial.eval_map]`.
+
+Conclude with `ha`. Conclude with `Subtype.ext h2`.
+-/
 private theorem aic [IsAlgClosed L] : AIC (integralClosure A L) := by
   intro p hp hdeg
   have hd : (p.map (algebraMap (integralClosure A L) L)).degree ≠ 0 := by
@@ -78,11 +97,17 @@ private theorem aic [IsAlgClosed L] : AIC (integralClosure A L) := by
 
 end
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem spMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Functor.map_comp, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, spMap_comp, e]`.
+-/
 private theorem pull_of_comp (q : ℕ) (m i : ℤ) {R S T : Type} [CommRing R] [CommRing S] [CommRing T]
     (f : R →+* S) (g : S →+* T) (h : R →+* T) (e : g.comp f = h) (x : Ht q (sp R) m i) :
     pull _ (spMap g) _ m (pull _ (spMap f) _ m x) = pull _ (spMap h) _ m x := by
@@ -91,6 +116,15 @@ private theorem pull_of_comp (q : ℕ) (m i : ℤ) {R S T : Type} [CommRing R] [
 end UpperTheory.PullbackAlongInclusion
 
 open UpperTheory.PullbackAlongInclusion in
+/- English proof (translation)
+Introduce `h q _ A K _ _ _ _ _ hq m i hm x`. Take `⟨-, -, -, -, -, -, -, -, -, -, hB1, -, -, -, hB5, -⟩` from `h`. Set `L` to `AlgebraicClosure K`. Use `haveI : IsDirected (Idx K L) (· ≤ ·) := idx_directed K L`. Use `haveI : Nonempty (Idx K L) := ⟨⟨⊥, inferInstance⟩⟩`.
+
+Use `haveI : IsFiltered (Idx K L) := isFiltered_of_directed_le_nonempty _`. Take `⟨hc⟩` from `ringC_isColimit A K L`. Set `j0 : Idx K L` to `⟨⊥, inferInstance⟩`. Establish `hqE : ∀ E : IntermediateField K L, IsUnit ((q : integralClosure A E))` using `fun E => by`. Simplify using `using hq.map (algebraMap A (integralClosure A E))`.
+
+Establish `hqL : IsUnit ((q : integralClosure A L))`. Simplify using `using hq.map (algebraMap A (integralClosure A L))`. Establish `e1` using `pull_of_comp q m i (algebraMap A (integralClosure A j0.1)) (toL A K L j0.1).toRingHom (algebraMap A (integralClosure A L)) (toL A K L j0.1).comp_algebraMap x`. Use `haveI := hB5 q (integralClosure A L) (aic A L) hqL m i hm`. Establish `hzero : pull _ (spMap ((ringC A K L).ι.app j0).hom) _ m (pull _ (spMap (algebraMap A (integralClosure A j0.1))) _ m x) = 0` using `e1.trans (Subsingleton.elim _ _)`.
+
+Take `⟨k, f, hk⟩` from `(hB1 q (ringD A K L) (ringC A K L) hc m i).2 j0 _ (hqE _) hzero`. Use `⟨k.1, inferInstance, inferInstance, inferInstance, inferInstance, k.2, ?_⟩` and prove the remaining obligations. Establish `e2` using `pull_of_comp q m i (algebraMap A (integralClosure A j0.1)) (incl A K L (leOfHom f)).toRingHom (algebraMap A (integralClosure A k.1)) (incl A K L (leOfHom f)).comp_algebraMap x`. Conclude with `e2.symm.trans hk`.
+-/
 theorem UpperTheory.exists_finite_ext_pullback_integralClosure_eq_zero :
     Hyps → ∀ (q : ℕ) [NeZero q] (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K]
         [IsFractionRing A K], IsUnit (q : A) → ∀ (m i : ℤ), 0 < m → ∀ x : Ht q (sp A) m i,

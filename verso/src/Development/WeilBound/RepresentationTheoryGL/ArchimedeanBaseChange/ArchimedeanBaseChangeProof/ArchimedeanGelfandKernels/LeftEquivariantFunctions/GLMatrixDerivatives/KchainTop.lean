@@ -11,6 +11,9 @@ namespace PositivityTheory.RgBcC.LfSt.Kchain
 
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.LfSt
 
+/- English proof (translation)
+The claim follows from `kChain_of KcInv.kcSmooth KcInv.coneGL (KcHalf1.halfOne_of hH hF (fun n => KcHalf2.isOpen_cone (n := n) hH) KbDer.derOne) (KcHalf2.halfTwo_of hH hF KbFr.frComm KbDer2.derTwo (KcDual.dualSum hH))`.
+-/
 theorem kChain (hH : HbFacts) (hF : FrameDer) : KChain :=
   kChain_of KcInv.kcSmooth KcInv.coneGL
     (KcHalf1.halfOne_of hH hF (fun n => KcHalf2.isOpen_cone (n := n) hH) KbDer.derOne)

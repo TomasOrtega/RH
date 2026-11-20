@@ -6,6 +6,29 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TensHead
 
+/- English proof (translation)
+Introduce `M₀ V _ _ _ _ Op₀ B Rel₀ K₀ hlen hmax hK hKs N' hrel hN'st hN'max x hx y`. Set `act : Module.End ℂ M₀ → Module.End ℂ ((M₀ ⊗[ℂ] V) ⧸ N')` to `fun g => if hs : N' ≤ N'.comap (TensorProduct.map g LinearMap.id) then N'.mapQ N' (TensorProduct.map g LinearMap.id) hs else 0`. Set `bAct : Module.End ℂ V → Module.End ℂ ((M₀ ⊗[ℂ] V) ⧸ N')` to `fun h => if hs : N' ≤ N'.comap (TensorProduct.map LinearMap.id h) then N'.mapQ N' (TensorProduct.map LinearMap.id h) hs else 0`. Establish `hsg : ∀ g ∈ Op₀, N' ≤ N'.comap (TensorProduct.map g LinearMap.id)`. Introduce `g hg z hz`.
+
+Conclude with `hN'st _ (Or.inl ⟨g, hg, rfl⟩) z hz`. Establish `hsh : ∀ h ∈ B, N' ≤ N'.comap (TensorProduct.map LinearMap.id h)`. Introduce `h hh z hz`. Conclude with `hN'st _ (Or.inr ⟨h, hh, rfl⟩) z hz`. Establish `hactg : ∀ g ∈ Op₀, ∀ z, act g (N'.mkQ z) = N'.mkQ (TensorProduct.map g LinearMap.id z)`.
+
+Introduce `g hg z`. Simplify using `only [act, dif_pos (hsg g hg), Submodule.mapQ_apply, Submodule.mkQ_apply]`. Establish `hbacth : ∀ h ∈ B, ∀ z, bAct h (N'.mkQ z) = N'.mkQ (TensorProduct.map LinearMap.id h z)`. Introduce `h hh z`. Simplify using `only [bAct, dif_pos (hsh h hh), Submodule.mapQ_apply, Submodule.mkQ_apply]`.
+
+Set `φ : M₀ →ₗ[ℂ] (M₀ ⊗[ℂ] V) ⧸ N'` to `N'.mkQ ∘ₗ (TensorProduct.mk ℂ M₀ V).flip y`. Establish `hφ : ∀ x, φ x = N'.mkQ (x ⊗ₜ[ℂ] y)` using `fun x => rfl`. Establish `key` using `GlobalTheory.T.le_ker_of_local_finite_length_to_simple Op₀ Rel₀ K₀ φ act (bAct '' B) hlen hmax hK hKs (by`. Introduce `z hz`. Rewrite using `[LinearMap.mem_ker, hφ, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hrel z hz y)`. Use the proof step `(by`. Introduce `g hg`. Use extensionality with `z`. Simplify using `only [LinearMap.comp_apply, hφ, hactg g hg, TensorProduct.map_tmul, LinearMap.id_apply])`.
+
+Use the proof step `(by`. Introduce and unpack `g hg b ⟨h, hh, rfl⟩`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `u v`.
+
+Simplify using `only [LinearMap.comp_apply, Module.End.mul_apply, hactg g hg, hbacth h hh, TensorProduct.map_tmul, LinearMap.id_apply])`. Use the proof step `(by`. Introduce `U hU`. Establish `hP : Stab (tensOps Op₀ B) (U.comap N'.mkQ)`. Introduce and unpack `f (⟨g, hg, rfl⟩ | ⟨h, hh, rfl⟩) z hz`.
+
+Rewrite `hz`, the goal using `[Submodule.mem_comap]`. Rewrite using `[← hactg g hg]`. Conclude with `hU _ (Or.inl ⟨g, hg, rfl⟩) _ hz`. Rewrite `hz`, the goal using `[Submodule.mem_comap]`. Rewrite using `[← hbacth h hh]`.
+
+Conclude with `hU _ (Or.inr ⟨h, hh, rfl⟩) _ hz`. Establish `hle : N' ≤ U.comap N'.mkQ`. Introduce `z hz`. Rewrite using `[Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero N').2 hz]`. Conclude with `U.zero_mem`.
+
+Establish `hsurj : Function.Surjective N'.mkQ` using `Submodule.mkQ_surjective N'`. Break down `hN'max _ hP hle with h1 | h1` into its components or cases. Use `left`. Rewrite using `[← Submodule.map_comap_eq_of_surjective hsurj U, h1, Submodule.mkQ_map_self]`. Use `right`.
+
+Rewrite using `[← Submodule.map_comap_eq_of_surjective hsurj U, h1, Submodule.map_top, LinearMap.range_eq_top.2 hsurj])`. Use `key hx` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, hφ, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`.
+-/
 theorem tens_maxStab_contains_left_ker : ∀ {M₀ V : Type} [AddCommGroup M₀] [Module ℂ M₀] [AddCommGroup V] [Module ℂ V]
     (Op₀ : Set (Module.End ℂ M₀)) (B : Set (Module.End ℂ V)) (Rel₀ K₀ : Submodule ℂ M₀),
     (∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ M₀), StrictMono N →

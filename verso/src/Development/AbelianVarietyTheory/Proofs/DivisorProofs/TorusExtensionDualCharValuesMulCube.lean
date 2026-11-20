@@ -13,6 +13,9 @@ open GlobalTheory.MBLow.Cl Matrix
 noncomputable section
 namespace GlobalTheory.DualMult
 
+/- English proof (translation)
+Establish `hl : IsLocalHom (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).hom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Conclude with `Spec_closedPoint (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`.
+-/
 theorem redE_closedPoint :
     (redE ℂ) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint (DualNumber ℂ) := by
   have hl : IsLocalHom (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).hom :=
@@ -21,6 +24,9 @@ theorem redE_closedPoint :
 
 variable {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Introduce `ψ`. Establish `h` using `hJ (redE ℂ ≫ ψ) (x := IsLocalRing.closedPoint ℂ) trivial`. Express the relevant statement in the definitionally equal form `ψ ((redE ℂ) (IsLocalRing.closedPoint ℂ)) ∈ L.U (J (redE ℂ ≫ ψ)) at h`. Rewrite `h` using `[redE_closedPoint]`. Then use the resulting hypothesis.
+-/
 theorem good_dual (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) :
     Good L (IsLocalRing.closedPoint (DualNumber ℂ) : Sp (DualNumber ℂ)) (fun ψ => J (redE ℂ ≫ ψ)) := by
   intro ψ
@@ -28,6 +34,9 @@ theorem good_dual (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹�
   change ψ ((redE ℂ) (IsLocalRing.closedPoint ℂ)) ∈ L.U (J (redE ℂ ≫ ψ)) at h
   rwa [redE_closedPoint] at h
 
+/- English proof (translation)
+Establish `hm` using `(good_dual J hJ).mem φ (𝟙 _)`. Unfold `vE val`. Conclude with `(GlobalTheory.ZH.ThetaData.valR_eq_gs _ _ hm _).trans (congrArg _ (gs_unit _ _ _ hm _))`.
+-/
 theorem vE_eq_val (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) {K : Type} [Fintype K]
     {φ : K → (Sp (DualNumber ℂ) ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) :
     vE t (𝟙 _) J = (stalkClosedPointIso (CommRingCat.of (DualNumber ℂ))).hom.hom
@@ -41,6 +50,11 @@ end GlobalTheory.DualMult
 namespace GlobalTheory.DualMult
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
 
+/- English proof (translation)
+Establish `hJ` using `good_dual (L := D.P.L) ν.J ν.good`. Establish `e` using `val_corr hJ (gm.mult χ χ') (𝟙 _)`. Use `replace e := (val_mul hJ _ _ _).symm.trans (e.trans (val_mul hJ _ _ _))`. Use `(congrArg₂ (· * ·) (vE_eq_val ν.J ν.good _) (vE_eq_val ν.J ν.good _)).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vE_eq_val ν.J ν.good _) (vE_eq_val ν.J ν.good _)).symm)` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, ← Units.val_mul, ← Units.val_mul]`.
+
+Conclude with `congrArg (fun u => (stalkClosedPointIso (CommRingCat.of (DualNumber ℂ))).hom.hom (Units.val u)) e`.
+-/
 theorem mult_vE (ν : NumOf D ℂ N) (gm : GtPt D (TE R ℂ)) (χ χ' : D.X) :
     vE (gm.s (χ + χ')) (𝟙 _) ν.J *
         vE (DegPre.cubAtT D (TE R ℂ) (DegPre.cT D (TE R ℂ) χ) (DegPre.cT D (TE R ℂ) χ') gm.b) (𝟙 _) ν.J =

@@ -10,6 +10,13 @@ open scoped MatrixOrder ComplexOrder
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Take `⟨R, hR, hRR, hu⟩ : ∃ R : Matrix ι ι ℂ, R.PosSemidef ∧ R * R = A ∧ ∀ T : Matrix ι ι ℂ, T.PosSemidef → T * T = A → R = T` from `⟨CFC.sqrt A, (CFC.sqrt_nonneg A).posSemidef, CFC.sqrt_mul_sqrt_self A hA.nonneg, fun T hT e => CFC.sqrt_unique e hT.nonneg⟩`. Establish `a1 : R * (R * (S * A * S)) = 1`. Rewrite using `[← Matrix.mul_assoc, hRR, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h, h1]`. Establish `a2 : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R (Matrix.isUnit_det_of_right_inverse a1)`. Establish `a3 : R⁻¹ * R⁻¹ = S * A * S`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `a4 : R = S * R⁻¹ * S`. Use `hu _ ?_ ?_` and prove the remaining obligations. Use `hR.inv.conjTranspose_mul_mul_same S` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨R, hR, hRR, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem root {S A : Matrix ι ι ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hA : A.PosSemidef)
     (h : A * S * A = S) : ∃ R : Matrix ι ι ℂ, R.PosSemidef ∧ R * R = A ∧ R * S * R = S := by
   obtain ⟨R, hR, hRR, hu⟩ : ∃ R : Matrix ι ι ℂ, R.PosSemidef ∧ R * R = A ∧
@@ -35,6 +42,17 @@ theorem root {S A : Matrix ι ι ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hA : A.P
     _ = S * (R⁻¹ * (S * S) * R) := by simp only [Matrix.mul_assoc]
     _ = S := by rw [h1, Matrix.mul_one, a2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hS : ∀ X : Matrix ι ι ℂ, S * (S * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `b1 : (S * Uᴴ * S) * U = 1`. Rewrite using `[Matrix.mul_assoc S, Matrix.mul_assoc S, hU, h1]`. Establish `b2 : U * S * Uᴴ = S`.
+
+Use `congrArg (· * S) (mul_eq_one_comm.1 b1)` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, h1, Matrix.mul_one, Matrix.one_mul]`. Take `⟨P, hP, hPP, hPS⟩` from `root h1 h2 (Matrix.posSemidef_conjTranspose_mul_self U) (by`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Q, hQ, hQQ, hQS⟩` from `root h1 h2 hP hPS`.
+
+Establish `hP' : ∀ X : Matrix ι ι ℂ, P * (S * (P * X)) = S * X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPS]`. Establish `c0 : (U * (S * P * S))ᴴ = S * P * S * Uᴴ`. Simplify using `only [Matrix.conjTranspose_mul, h2, hP.isHermitian.eq, Matrix.mul_assoc]`. Establish `c1 : (U * (S * P * S))ᴴ * S * (U * (S * P * S)) = S`.
+
+Rewrite using `[c0]`. Combine the equalities or inequalities in the displayed calculation. Establish `c2 : (U * (S * P * S))ᴴ * (U * (S * P * S)) = 1`. Rewrite using `[c0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨U * (S * P * S), Q, c1, ?_, by rw [hQ.isHermitian.eq, hQS], ?_, ?_⟩` and prove the remaining obligations. Generalize the expression as in `U * (S * P * S) = K at c1 c2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc S, Matrix.mul_assoc S, hQS, h1]`. Rewrite using `[Matrix.mul_assoc _ Q, hQQ, Matrix.mul_assoc, Matrix.mul_assoc S, Matrix.mul_assoc S, hPS, h1, Matrix.mul_one]`.
+-/
 theorem polar_inv {S U : Matrix ι ι ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hU : Uᴴ * S * U = S) :
     ∃ K Q : Matrix ι ι ℂ, Kᴴ * S * K = S ∧ S * K = K * S ∧ Qᴴ * S * Q = S ∧ S * Q * S * Q = 1 ∧
       U = K * Q * Q := by
@@ -69,12 +87,21 @@ theorem polar_inv {S U : Matrix ι ι ℂ} (h1 : S * S = 1) (h2 : Sᴴ = S) (hU 
   · rw [Matrix.mul_assoc S, Matrix.mul_assoc S, hQS, h1]
   · rw [Matrix.mul_assoc _ Q, hQQ, Matrix.mul_assoc, Matrix.mul_assoc S, Matrix.mul_assoc S, hPS, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+-/
 theorem jm_mul_self (R S : ℕ) : Jm R S * Jm R S = 1 := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem jm_conjTranspose (R S : ℕ) : (Jm R S)ᴴ = Jm R S := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+The claim follows from `polar_inv (jm_mul_self R S) (jm_conjTranspose R S) hu`.
+-/
 theorem polar (R S : ℕ) (u : Mat R S) (hu : uᴴ * Jm R S * u = Jm R S) :
     ∃ k q : Mat R S, kᴴ * Jm R S * k = Jm R S ∧
       Jm R S * k = k * Jm R S ∧ qᴴ * Jm R S * q = Jm R S ∧ Jm R S * q * Jm R S * q = 1 ∧ u = k * q * q :=

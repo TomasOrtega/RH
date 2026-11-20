@@ -5,6 +5,33 @@ open NumberField TensorProduct Matrix GlobalTheory.CompanionTheory.Ar GlobalTheo
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.PhiBaseChange
 
+/- English proof (translation)
+Introduce `E L Ψ _ _ _ _ _ V _ _ _ _ A lab r k m h v q bL T hv hq hfam hT e V' _ _ j hjs hji ρ' hρ' heig hb hhb`. Take `⟨hvI, hvind, hvrel⟩` from `hv`. Establish `hsum : ∀ a : Fin r → 𝓞 E, ∑ i, ρ' (a i) (j (v i)) = j (∑ i, A.ρ (a i) (v i))`. Introduce `a`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hρ' _ _`. Establish `hspan : oSpan ρ' (fun i => j (v i)) = (oSpan A.ρ v).map j`. Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.oSpan`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, i, rfl⟩`. Conclude with `⟨A.ρ a (v i), ⟨a, i, rfl⟩, (hρ' a (v i)).symm⟩`. Introduce and unpack `⟨y, ⟨a, i, rfl⟩, rfl⟩`.
+
+Conclude with `⟨a, i, (hρ' a (v i)).symm⟩`. Establish `hrel : (oSpan ρ' (fun i => j (v i))).relIndex (A.I.map j) = (oSpan A.ρ v).relIndex A.I`. Rewrite using `[hspan]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hji`. Establish `hOF : IsOFamily ρ' (A.I.map j) (fun i => j (v i))`.
+
+Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.IsOFamily`. Use `⟨fun i => AddSubgroup.mem_map_of_mem j (hvI i), fun a ha => hvind a (hji ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← hsum a]`. Conclude with `ha`. Rewrite using `[hrel]`.
+
+Conclude with `hvrel`. Establish `hqe : ∀ τ c, j (q τ c) ∈ eigSp ρ' (e.comp (A.σ (lab τ)))`. Introduce `τ c`. Establish `hx0` using `(hq τ).2 c`. Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.LinPt.eig at hx0`.
+
+Rewrite `hx0` using `[Submodule.mem_inf, Submodule.restrictScalars_mem]`. Establish `hx` using `hx0.2`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Introduce `a`. Rewrite using `[hρ', RingHom.comp_apply, ← hjs, ← map_sub, hx a, map_zero]`.
+
+Establish `happ : ∀ τ i, Fin.append (fun a => eigComp ρ' (e.comp (A.σ (lab τ))) (j (v a))) (fun c => j (q τ c)) i = ∑ j', (T τ).map e j' (Fin.cast h i) • j (bL τ j')`. Introduce `τ i`. Establish `hfi` using `hfam τ i`. Establish `hap : Fin.append (fun a => eigComp ρ' (e.comp (A.σ (lab τ))) (j (v a))) (fun c => j (q τ c)) i = j (A.fam (lab τ) v (q τ) i)`. Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.LinPt.fam`.
+
+Use `Fin.addCases (fun a => ?_) (fun c => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, heig]`. Simplify using `only [Fin.append_right]`. Rewrite using `[hap, hfi, map_sum]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hjs, Matrix.map_apply]`. Establish `hdet : ∀ τ, ((T τ).map e).det = e (T τ).det`. Introduce `τ`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Establish `hg : ∀ τ, (Matrix.of fun c c' => hb (j (q τ c)) (j (q τ c'))).det.re = A.gramDet e (q τ)`. Introduce `τ`. Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.LinPt.gramDet`. Use `congr 2`. Use extensionality with `c c'`.
+
+Conclude with `hhb τ c c'`. Unfold `GlobalTheory.CompanionTheory.Ar.Cusp.PhiNormSq`. Use `⟨r, k, h, fun i => j (v i), fun τ c => j (q τ c), fun τ => (T τ).map e, hOF, hqe, happ, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`. Rewrite using `[hdet τ]`.
+
+Conclude with `(map_ne_zero e).mpr (hT τ)`. Rewrite using `[hrel]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hdet τ, hg τ]`.
+-/
 theorem phiNormSq_baseChange : ∀ (E L Ψ : Type) [Field E] [NumberField E] [Field L] [NumberField L] [Fintype Ψ] (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (A : LinPt E L Ψ V) (lab : Ψ → Ψ ⊕ Ψ) (r k m : ℕ) (h : r + k = m) (v : Fin r → V) (q : Ψ → Fin k → A.Λ) (bL : Ψ → Fin m → V) (T : Ψ → Matrix (Fin m) (Fin m) L), IsOFamily A.ρ A.I v → (∀ τ, A.IsAdapted (lab τ) v (q τ) ∧ ∀ i, (q τ i : V) ∈ A.eig (lab τ)) → (∀ τ i, A.fam (lab τ) v (q τ) i = ∑ j, T τ j (Fin.cast h i) • bL τ j) → (∀ τ, (T τ).det ≠ 0) → ∀ (e : L →+* ℂ) (V' : Type) [AddCommGroup V'] [Module ℂ V'] (j : V →+ V'), (∀ (c : L) x, j (c • x) = e c • j x) → Function.Injective j → ∀ (ρ' : 𝓞 E →+* Module.End ℂ V'), (∀ a x, ρ' a (j x) = j (A.ρ a x)) → (∀ τ a, eigComp ρ' (e.comp (A.σ (lab τ))) (j (v a)) = j (eigComp A.ρ (A.σ (lab τ)) (v a))) → ∀ hb : V' → V' → ℂ, (∀ τ c c', hb (j (q τ c)) (j (q τ c')) = (A.Bq.metric.form e).inner ((1 : GroundTheory.Heights₂.Heights.ComplexAt e) ⊗ₜ[𝓞 L] A.f (q τ c)) ((1 : GroundTheory.Heights₂.Heights.ComplexAt e) ⊗ₜ[𝓞 L] A.f (q τ c'))) → PhiNormSq ρ' hb (A.I.map j) (4 * Real.pi)⁻¹ (fun τ => e.comp (A.σ (lab τ))) (fun τ i => j (bL τ i)) ((((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) * ∏ τ, (4 * Real.pi)⁻¹ ^ r * A.gramDet e (q τ) / ‖e (T τ).det‖ ^ 2) := by
   intro E L Ψ _ _ _ _ _ V _ _ _ _ A lab r k m h v q bL T hv hq hfam hT e V' _ _ j hjs hji ρ' hρ' heig hb hhb
   classical

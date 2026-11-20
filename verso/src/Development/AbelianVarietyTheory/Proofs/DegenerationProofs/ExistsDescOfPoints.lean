@@ -21,6 +21,19 @@ open GlobalTheory.LN
 noncomputable section
 namespace GlobalTheory.ArcDataDescent
 
+/- English proof (translation)
+Use `letI := gam.toAlgebra`. Establish `f₁ : Flat (spMap gam)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField K) gam`. Establish `f₂ : Surjective (spMap gam)` using `⟨fun y => ⟨(default : PrimeSpectrum L), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩`.
+
+Establish `: Flat π` using `MorphismProperty.of_isPullback h.flip f₁`. Establish `: Surjective π` using `MorphismProperty.of_isPullback h.flip f₂`. Establish `: QuasiCompact π` using `MorphismProperty.of_isPullback h.flip inferInstance`. Establish `gr : GeometricallyReduced (π ≫ p)` using `ReducedSubgroup.geometricallyReduced_of_perfectField _`. Establish `hp : IsPullback (pullback.fst π π) (pullback.snd π π ≫ p') (π ≫ p) (spMap gam)` using `(IsPullback.of_hasPullback π π).paste_vert h`.
+
+Establish `: IsReduced (pullback π π)` using `GeometricallyReduced.geometrically_isReduced _ _ _ hp`. Establish `e : pullback.fst π π ≫ φ = pullback.snd π π ≫ φ`. Use `ext_of_fromSpecResidueField_eq _ _ z Set.univ dense_univ (fun x _ => ?_) ?_` and prove the remaining obligations. Set `k` to `(pullback π π).residueField x`. Set `F` to `AlgebraicClosure k`.
+
+Establish `: Epi (spMap (algebraMap k F))`. Establish `f₁ : Flat (spMap (algebraMap k F))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField k) _`. Establish `f₂ : Surjective (spMap (algebraMap k F))` using `⟨fun y => ⟨(default : PrimeSpectrum F), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`. Set `j : Sp k ⟶ pullback π π` to `(pullback π π).fromSpecResidueField x`. Use `show j ≫ _ = j ≫ _`. Rewrite using `[← cancel_epi (spMap (algebraMap k F))]`. Simplify `H F (spMap (algebraMap k F) ≫ j ≫ pullback.fst π π) (spMap (algebraMap k F) ≫ j ≫ pullback.snd π π) (by simp only [Category.assoc, pullback.condition])` using `only [Category.assoc]`.
+
+Rewrite using `[Category.assoc, Category.assoc, hs, pullback.condition_assoc]`. Conclude with `⟨EffectiveEpi.desc π φ (fun g₁ g₂ hg => by`. Rewrite using `[← pullback.lift_fst g₁ g₂ hg, Category.assoc, e, ← Category.assoc, pullback.lift_snd]), EffectiveEpi.fac _ _ _⟩`.
+-/
 theorem exists_desc_of_points {K L : Type} [Field K] [CharZero K] [Field L] (gam : K →+* L) {X X' Z S : Scheme.{0}}
     {p : X ⟶ Sp K} {p' : X' ⟶ Sp L} {π : X' ⟶ X} (h : IsPullback π p' p (spMap gam)) [IsReduced X'] (z : Z ⟶ S)
     [IsSeparated z] (φ : X' ⟶ Z) (s : X ⟶ S) (hs : φ ≫ z = π ≫ s)
@@ -58,6 +71,9 @@ theorem exists_desc_of_points {K L : Type} [Field K] [CharZero K] [Field L] (gam
   exact ⟨EffectiveEpi.desc π φ (fun g₁ g₂ hg => by
     rw [← pullback.lift_fst g₁ g₂ hg, Category.assoc, e, ← Category.assoc, pullback.lift_snd]), EffectiveEpi.fac _ _ _⟩
 
+/- English proof (translation)
+Use `SS.SectionTranslation.schDom_spec_map g hg` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant π` using `IsSchemeTheoreticallyDominant.of_isPullback h.flip`. Conclude with `SS.SectionTranslation.ext_of_schDom z hz π H`.
+-/
 theorem ext_of_injective {R V : Type} [CommRing R] [IsDomain R] [CommRing V] {g : R →+* V} (hg : Function.Injective g)
     {X X' Z S : Scheme.{0}} {p : X ⟶ Sp R} {p' : X' ⟶ Sp V} {π : X' ⟶ X} (h : IsPullback π p' p (spMap g)) [Flat p]
     (z : Z ⟶ S) [IsSeparated z] {a b : X ⟶ Z} (hz : a ≫ z = b ≫ z) (H : π ≫ a = π ≫ b) : a = b := by
@@ -79,10 +95,18 @@ def chartQuot {X Y : Scheme.{0}} (A B : LB X) (h : Y ⟶ X) :
     exact congrArg₂ (fun u v => u * v⁻¹) (gm_pull_g B h (𝟙 Y) y _ _ (mem_pull.2 a.1) (mem_pull.2 b.1))
       (gm_pull_g A h (𝟙 Y) y _ _ (mem_pull.2 a.2) (mem_pull.2 b.2))
 
+/- English proof (translation)
+The claim follows from `h.chartPull (Geo.Tor.chartPullPull M r r rfl) (chartPullSame L (fun _ => ψ) (fun _ => φ) _ r fun _ => e)`.
+-/
 theorem lbIso_pull {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {φ : Y ⟶ X} (h : LBIso M (L.pull φ)) (r : Z ⟶ Y)
     {ψ : Z ⟶ X} (e : ψ = r ≫ φ) : LBIso (M.pull r) (L.pull ψ) :=
   h.chartPull (Geo.Tor.chartPullPull M r r rfl) (chartPullSame L (fun _ => ψ) (fun _ => φ) _ r fun _ => e)
 
+/- English proof (translation)
+Establish `h : LBIso (L.pull φ) (L.pull φ)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : LBIso L L := by`. Use `⟨⟨fun p => L.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res (𝟙 X) y _ hy _).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div L L (𝟙 X) y p q hy) (gm_res (𝟙 X) y _ hy _))).trans ?_` and prove the remaining obligations.
+
+Establish `e` using `(gm_cocycle hL (𝟙 X) y hy.1.1 hy.2.1 hy.2.2).trans (gm_cocycle hL (𝟙 X) y hy.1.1 hy.1.2 hy.2.2).symm`. Conclude with `(mul_right_comm _ _ _).trans (mul_inv_eq_of_eq_mul e)`. Conclude with `LBIso.chartPull (Geo.Tor.chartPullPull L φ φ rfl) (Geo.Tor.chartPullPull L φ φ rfl) ⟨i, hi⟩`. Conclude with `lbIso_pull h r e`.
+-/
 theorem lbIso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (φ : Y ⟶ X) (r : Z ⟶ Y)
     {ψ : Z ⟶ X} (e : ψ = r ≫ φ) : LBIso ((L.pull φ).pull r) (L.pull ψ) := by
   have h : LBIso (L.pull φ) (L.pull φ) := by
@@ -95,6 +119,11 @@ theorem lbIso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (φ : Y �
     exact LBIso.chartPull (Geo.Tor.chartPullPull L φ φ rfl) (Geo.Tor.chartPullPull L φ φ rfl) ⟨i, hi⟩
   exact lbIso_pull h r e
 
+/- English proof (translation)
+Take `⟨A', gA, pA, -, mA, tA⟩` from `hP _ _ f P`. Conclude with `⟨A', gA, ⟨pA, fun T x y x₀ y₀ hx hy => by`. Establish `e₁ : x₀ = Out.toBase pA.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = Out.toBase pA.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[e₁, e₂, ← mA]`.
+
+Use the proof step `rfl⟩, LBIso.symm tA⟩`.
+-/
 theorem exists_polPull (hP : PolBaseChangeSt) {S S' : Scheme.{0}} (f : S' ⟶ S) (P : PolAV S) :
     ∃ (P' : PolAV S') (g : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f g ∧ LBIso P'.L (P.L.pull g) := by
   obtain ⟨A', gA, pA, -, mA, tA⟩ := hP _ _ f P
@@ -105,6 +134,29 @@ theorem exists_polPull (hP : PolBaseChangeSt) {S S' : Scheme.{0}} (f : S' ⟶ S)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Set `gam : FractionRing R →+* FractionRing V` to `IsFractionRing.lift (g := (algebraMap V (FractionRing V)).comp g) ((IsFractionRing.injective V _).comp hg)`. Establish `hgam : ∀ r, gam (algebraMap R _ r) = algebraMap V _ (g r)` using `fun r => IsFractionRing.lift_algebraMap _ r`. Establish `sq : spMap gam ≫ jK R = jK V ≫ spMap g` using `(spMap_comp _ gam).symm.trans ((congrArg spMap (RingHom.ext hgam)).trans (spMap_comp g _))`. Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact.
+
+Use `P'.isAb.smooth` as an intermediate fact. Use `P₀.isAb.proper` as an intermediate fact. Set `AK` to `(Over.pullback (jK R)).obj P.A`. Set `AL` to `(Over.pullback (jK V)).obj P'.A`. Establish `gK : IsGrpPullback AK P.A (jK R) (pullback.fst P.A.hom (jK R))` using `isGrpPullback_pullback P.A (jK R)`.
+
+Establish `gL : IsGrpPullback AL P'.A (jK V) (pullback.fst P'.A.hom (jK V))` using `isGrpPullback_pullback P'.A (jK V)`. Establish `gL' : IsGrpPullback AL P.A (spMap gam ≫ jK R) (pullback.fst P'.A.hom (jK V) ≫ Φ)` using `(gL.comp gp).congr sq.symm rfl`. Take `⟨π, hπ₁, hπ₂⟩ : ∃ π : AL.left ⟶ AK.left, π ≫ pullback.fst P.A.hom (jK R) = pullback.fst P'.A.hom (jK V) ≫ Φ ∧ π ≫ AK.hom = AL.hom ≫ spMap gam` from `⟨gK.1.lift _ (AL.hom ≫ spMap gam) (gL'.1.w.trans (Category.assoc _ _ _).symm), gK.1.lift_fst _ _ _, gK.1.lift_snd _ _ _⟩`. Establish `gπ : IsGrpPullback AL AK (spMap gam) π` using `gK.cancel (gL'.congr rfl hπ₁.symm) hπ₂`. Establish `sL : Smooth AL.hom` using `MorphismProperty.of_isPullback gL.1 inferInstance`.
+
+Establish `: GeometricallyReduced AL.hom` using `geometricallyReduced_of_smooth _`. Establish `: IsReduced AL.left` using `GeometricallyReduced.isReduced_of_flat_of_isLocallyNoetherian AL.hom`. Establish `bs : (pullback.fst P'.A.hom (jK V) ≫ φ') ≫ P₀.A.hom = π ≫ AK.hom ≫ jK R ≫ spMap f`. Rewrite using `[Category.assoc, gp'.1.w, ← Category.assoc, gL.1.w, reassoc_of% hπ₂, reassoc_of% sq, spMap_comp, Category.assoc]`. Take `⟨ψ, hψ⟩` from `exists_desc_of_points gam gπ.1 P₀.A.hom (pullback.fst P'.A.hom (jK V) ≫ φ') _ bs (fun F _ _ x₁ x₂ hx => by`.
+
+Take `⟨j₁, e₁⟩` from `Spec.map_surjective (x₁ ≫ AL.hom)`. Take `⟨j₂, e₂⟩` from `Spec.map_surjective (x₂ ≫ AL.hom)`. Establish `k : ∀ (x : Sp F ⟶ AL.left) (j : CommRingCat.of (FractionRing V) ⟶ CommRingCat.of F), Spec.map j = x ≫ AL.hom → (x ≫ pullback.fst P'.A.hom (jK V)) ≫ P'.A.hom = spMap (j.hom.comp (algebraMap V (FractionRing V)))` using `fun x j e => by`. Rewrite using `[Category.assoc, gL.1.w, ← Category.assoc, ← e, spMap_comp]`. Both sides reduce to the same expression.
+
+Simplify `H F _ _ (j₁.hom.injective.comp (IsFractionRing.injective V _)) (j₂.hom.injective.comp (IsFractionRing.injective V _)) _ _ (k x₁ j₁ e₁) (k x₂ j₂ e₂) (by rw [Category.assoc, Category.assoc, ← hπ₁, reassoc_of% hx]))` using `only [Category.assoc]`. Establish `f₁ : Flat (spMap gam)` using `inferInstance`. Establish `f₂ : Surjective (spMap gam)` using `⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩`. Establish `: Flat π` using `MorphismProperty.of_isPullback gπ.1.flip f₁`. Establish `: Surjective π` using `MorphismProperty.of_isPullback gπ.1.flip f₂`.
+
+Establish `: Epi π` using `Flat.epi_of_flat_of_surjective _`. Establish `gψ : IsGrpPullback AK P₀.A (jK R ≫ spMap f) ψ` using `isGrpPullback_of_fpqc _ _ _ _ (spMap gam) P₀.A AK AL π ψ f₁ f₂ inferInstance gπ ((gL.comp gp').congr (by rw [reassoc_of% sq, spMap_comp]) hψ.symm) (by rw [← cancel_epi π, ← Category.assoc, hψ, bs])`. Establish `ab : IsAbelianScheme AK` using `⟨by have := P.isAb.comm; infer_instance, MorphismProperty.of_isPullback gK.1 inferInstance, MorphismProperty.of_isPullback gK.1 inferInstance, MorphismProperty.of_isPullback gK.1 P.isAb.geomConnected⟩`. Establish `lK` using `pull_isLB P.isLB (pullback.fst P.A.hom (jK R))`. Establish `l₀` using `pull_isLB P₀.isLB ψ`.
+
+Establish `wK : LBIso (P.L.pull (pullback.fst P.A.hom (jK R))) (P₀.L.pull ψ)`. Use `FieldTriv.exists_gen_of_field_extension _ _ gam AK ab _ π AL.hom gπ.1 _ (LB.isLB_div l₀ lK) ?_` and prove the remaining obligations. Establish `u : LBIso ((P.L.pull (pullback.fst P.A.hom (jK R))).pull π) ((P₀.L.pull ψ).pull π)` using `LBIso.trans (pull_isLB lK _) (pull_isLB P.isLB _) (pull_isLB l₀ _) (lbIso_pull_pull P.isLB _ π rfl) (LBIso.trans (pull_isLB P.isLB _) (pull_isLB P'.isLB _) (pull_isLB l₀ _) (LBIso.symm (lbIso_pull w (pullback.fst P'.A.hom (jK V)) hπ₁)) (LBIso.trans (pull_isLB P'.isLB _) (pull_isL …`. Take `⟨t, ht⟩` from `u`. Conclude with `gen_chartPull (chartQuot _ _ π) t ht`.
+
+Take `⟨P₁, g₁, gp₁, w₁⟩` from `exists_polPull hL.polBaseChange (spMap f) P₀`. Take `⟨e, me, he⟩` from `grpPullback_iso gψ ((isGrpPullback_pullback P₁.A (jK R)).comp gp₁)`. Take `⟨Ψ, mΨ, hΨ, wΨ⟩` from `polAV_iso_extends_of_isIntegrallyClosed hL h2 R P₁ P e me (LBIso.trans lK l₀ (pull_isLB P₁.isLB _) wK (LBIso.symm (lbIso_pull w₁ _ (he.symm.trans (Category.assoc _ _ _).symm)))) hH`. Establish `hΨ' : pullback.fst P.A.hom (jK R) ≫ Ψ.hom.left = e.hom.left ≫ pullback.fst P₁.A.hom (jK R)`. Rewrite using `[← hΨ]`.
+
+Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `gφ : IsGrpPullback P.A P₀.A (spMap f) (Ψ.hom.left ≫ g₁)` using `((isGrpPullback_of_iso Ψ).comp gp₁).congr (Category.id_comp _) rfl`. Use `⟨Ψ.hom.left ≫ g₁, gφ, ?_, LBIso.trans P.isLB (pull_isLB P₁.isLB _) (pull_isLB P₀.isLB _) wΨ (lbIso_pull w₁ _ rfl)⟩` and prove the remaining obligations. Use `ext_of_injective (IsFractionRing.injective V (FractionRing V)) gL.1 P₀.A.hom ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, gφ.1.w, ← Category.assoc, gp.1.w, gp'.1.w, spMap_comp, Category.assoc]`.
+
+Rewrite using `[← hψ, ← he, ← reassoc_of% hπ₁, reassoc_of% hΨ']`.
+-/
 theorem exists_desc_pol (hL : Laws) (h2 : Laws2) (hH : HomExtSt) {O' R V : Type} [CommRing O'] [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] [CharZero R] [CommRing V] [IsDomain V] (f : O' →+* R)
     {g : R →+* V} (hg : Function.Injective g) (P₀ : PolAV (Sp O')) (P : PolAV (Sp R)) (P' : PolAV (Sp V))
@@ -190,6 +242,9 @@ section Values
 
 variable {F F' : Type} [Field F] [Field F'] {B B₀ : Scheme.{0}} {M : LB B} {M₀ : LB B₀} {K : Type} [Fintype K] {ε : K → ℤ}
 
+/- English proof (translation)
+Establish `m : spMap σ z ∈ LB.wchart M pt j` using `Set.mem_iInter.2 h`. Establish `m' : z ∈ LB.wchart M (fun k => spMap σ ≫ pt k) j` using `Set.mem_iInter.2 h`. Use `Eq.trans ((toStk z).injective ?_) (ArcExt.valF_ext σ (𝟙 _) (LB.wchart M pt j) ((top_le_iff_mem (𝟙 _) _ (spMap σ z)).2 m) (t.s j).val)` and prove the remaining obligations. Use `(toStk_valF (𝟙 _) (LB.wchart M (fun k => spMap σ ≫ pt k) j) z m' _).trans (Eq.trans ?_ (toStk_valF (spMap σ ≫ 𝟙 _) (LB.wchart M pt j) z m _).symm)` and prove the remaining obligations. Rewrite using `[gm_pullGen M pt ε t (spMap σ) (𝟙 _) z j m', Category.id_comp, Category.comp_id]`.
+-/
 theorem valF_pullGen (σ : F →+* F') {pt : K → (Sp F ⟶ B)} (t : LB.Gen (LB.LinComb M pt ε)) (j : K → M.ι) (z : Sp F')
     (h : ∀ k, pt k (spMap σ z) ∈ M.U (j k)) :
     valF (𝟙 (Sp F')) _ ((LB.pullGen M pt ε t (spMap σ)).s j).val = σ (valF (𝟙 (Sp F)) _ (t.s j).val) := by
@@ -201,6 +256,13 @@ theorem valF_pullGen (σ : F →+* F') {pt : K → (Sp F ⟶ B)} (t : LB.Gen (LB
     (toStk_valF (spMap σ ≫ 𝟙 _) (LB.wchart M pt j) z m _).symm)
   rw [gm_pullGen M pt ε t (spMap σ) (𝟙 _) z j m', Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Use `ArcExt.epi_spMap σ` as an intermediate fact. Establish `z : Sp F'` using `(default : PrimeSpectrum F')`. Establish `e₁ : (∀ k, (spMap σ ≫ pt k) ≫ φ = spMap σ ≫ pt₀ k) ↔ ∀ k, pt k ≫ φ = pt₀ k` using `forall_congr' fun k => by rw [Category.assoc, cancel_epi]`. Use `(and_congr_left fun _ => e₁).trans (and_congr_right fun hp => forall_congr' fun j => forall_congr' fun j₀ => ?_)` and prove the remaining obligations. Establish `e₂ : ∀ k, ⊤ ≤ (spMap σ ≫ pt k) ⁻¹ᵁ (LB.div (M₀.pull φ) M).U (fun _ => j₀ k, j k) ↔ ⊤ ≤ pt k ⁻¹ᵁ (LB.div (M₀.pull φ) M).U (fun _ => j₀ k, j k)` using `fun k => (top_le_iff_mem _ _ z).trans (top_le_iff_mem (pt k) _ (spMap σ z)).symm`.
+
+Use `(imp_congr_left (forall_congr' e₂)).trans (imp_congr_right fun h => ?_)` and prove the remaining obligations. Establish `h'` using `fun k => (top_le_iff_mem (pt k) _ (spMap σ z)).1 (h k)`. Rewrite using `[valF_pullGen σ t j z fun k => (h' k).2, valF_pullGen σ t₀ j₀ z fun k => by`. Rewrite using `[← hp k]`. Conclude with `mem_pull.1 (h' k).1, ← σ.injective.eq_iff, map_mul, map_mul, map_prod]`.
+
+Use `Eq.congr rfl (congrArg₂ (· * ·) (congrArg _ (Finset.prod_congr rfl fun k _ => ?_)) rfl)` and prove the remaining obligations. Rewrite using `[map_zpow₀, ArcExt.valF_ext σ (pt k) _ (h k)]`.
+-/
 theorem genRel_pull_iff (σ : F →+* F') {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt : K → (Sp F ⟶ B)}
     {pt₀ : K → (Sp F ⟶ B₀)} (t : LB.Gen (LB.LinComb M pt ε)) (t₀ : LB.Gen (LB.LinComb M₀ pt₀ ε)) (x : F) :
     GenRel w (LB.pullGen M pt ε t (spMap σ)) (LB.pullGen M₀ pt₀ ε t₀ (spMap σ)) (σ x) ↔ GenRel w t t₀ x := by
@@ -219,6 +281,9 @@ theorem genRel_pull_iff (σ : F →+* F') {φ : B ⟶ B₀} (w : LB.Iso M (M₀.
   refine Eq.congr rfl (congrArg₂ (· * ·) (congrArg _ (Finset.prod_congr rfl fun k _ => ?_)) rfl)
   rw [map_zpow₀, ArcExt.valF_ext σ (pt k) _ (h k)]
 
+/- English proof (translation)
+Substitute `hp hp₀` using the available equality. Rewrite using `[TorusExt.gen_ext_val hM g g' h, TorusExt.gen_ext_val hM₀ g₀ g₀' h₀]`.
+-/
 theorem genRel_congr (hM : M.IsLB) (hM₀ : M₀.IsLB) {φ : B ⟶ B₀} (w : LB.Iso M (M₀.pull φ)) {pt pt' : K → (Sp F ⟶ B)}
     {pt₀ pt₀' : K → (Sp F ⟶ B₀)} (hp : pt = pt') (hp₀ : pt₀ = pt₀') {t : LB.Gen (LB.LinComb M pt ε)}
     {t' : LB.Gen (LB.LinComb M pt' ε)} {t₀ : LB.Gen (LB.LinComb M₀ pt₀ ε)} {t₀' : LB.Gen (LB.LinComb M₀ pt₀' ε)}
@@ -231,6 +296,11 @@ theorem genRel_congr (hM : M.IsLB) (hM₀ : M₀.IsLB) {φ : B ⟶ B₀} (w : LB
 
 end Values
 
+/- English proof (translation)
+Use `letI := i.toAlgebra`. Use `letI := j.toAlgebra`. Establish `: Nontrivial (TensorProduct K F L)` using `inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (TensorProduct K F L)`. Use `letI := Ideal.Quotient.field m`.
+
+Set `q : TensorProduct K F L →+* AlgebraicClosure (TensorProduct K F L ⧸ m)` to `(algebraMap (TensorProduct K F L ⧸ m) _).comp (Ideal.Quotient.mk m)`. Use `⟨AlgebraicClosure (TensorProduct K F L ⧸ m), inferInstance, inferInstance, q.comp Algebra.TensorProduct.includeLeftRingHom, q.comp Algebra.TensorProduct.includeRight.toRingHom, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc]`. Conclude with `congrArg q.comp Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap`.
+-/
 theorem exists_common_field {K F L : Type} [Field K] [Field F] [Field L] (i : K →+* F) (j : K →+* L) :
     ∃ (F' : Type) (_ : Field F') (_ : IsAlgClosed F') (σ : F →+* F') (τ : L →+* F'), σ.comp i = τ.comp j := by
   letI := i.toAlgebra
@@ -248,6 +318,13 @@ theorem exists_common_field {K F L : Type} [Field K] [Field F] [Field L] (i : K 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' : Type} [Field F] [Algebra (FractionRing R) F]
   [Field F'] [Algebra (FractionRing R) F']
 
+/- English proof (translation)
+Establish `hj : spMap σ ≫ jFK (R` using `R) F = jFK (R := R) F' := (spMap_comp _ _).symm.trans (congrArg spMap hσ)`. Set `r : TF (R` to `R) F' ⟶ TF (R := R) F := Over.homMk (spMap σ) (by show spMap σ ≫ jFK (R := R) F ≫ jK R = jFK (R := R) F' ≫ jK R`. Rewrite using `[← Category.assoc, hj])`. Establish `hb : p'.g.b = r ≫ p.g.b` using `Over.OverMorphism.ext h.2.1`. Establish `hc : ∀ x : 𝟙_ (Over (Sp R)) ⟶ D.P.A, toUnit (TF (R` using `R) F') ≫ x = r ≫ toUnit _ ≫ x := fun x => by`.
+
+Rewrite using `[← Category.assoc, toUnit_unique (r ≫ toUnit _) (toUnit _)]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use `show (toUnit _ ≫ D.c χ * p'.g.b).left = (r ≫ (toUnit _ ≫ D.c χ * p.g.b)).left`. Rewrite using `[MonObj.comp_mul, hb, hc]`.
+
+Conclude with `congrArg (fun q => q.left) (hc _)`. Conclude with `h.2.1`. Conclude with `congrArg (fun q => q.left) (hc _)`.
+-/
 theorem gtφ_ext {σ : F →+* F'} (hσ : σ.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') {k : ℕ}
     {p : QkPt D F k} {p' : QkPt D F' k} (h : QkExt σ p p') (χ : D.X) :
     DegPre.gtφ D F' p'.g.b χ = fun i => spMap σ ≫ DegPre.gtφ D F p.g.b χ i := by

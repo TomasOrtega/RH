@@ -9,18 +9,43 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 
 namespace GlobalTheory.FlagPoly
 
+/- English proof (translation)
+Unfold `pSum`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (τ, i)).pow k`.
+-/
 theorem pSum_isHomogeneous' {ι : Type} {N : ℕ} (τ : ι) (k : ℕ) :
     (pSum τ k : Pol ι N).IsHomogeneous k := by
   unfold pSum
   refine IsHomogeneous.sum _ _ _ fun i _ => ?_
   simpa using (isHomogeneous_X ℝ (τ, i)).pow k
 
+/- English proof (translation)
+Unfold `pLow`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (τ, i)).pow k`.
+-/
 theorem pLow_isHomogeneous' {ι : Type} {N : ℕ} (j : ℕ) (τ : ι) (k : ℕ) :
     (pLow j τ k : Pol ι N).IsHomogeneous k := by
   unfold pLow
   refine IsHomogeneous.sum _ _ _ fun i _ => ?_
   simpa using (isHomogeneous_X ℝ (τ, i)).pow k
 
+/- English proof (translation)
+Take `⟨σ⟩` from `‹Nonempty ι›`. Take `⟨Q, hQ, hQ1⟩` from `GlobalTheory.T.exists_class_degree_one ι N j σ hj hjN`. Establish `hd : 1 ≤ dimFl ι N`. Establish `h1 : 1 ≤ Fintype.card ι` using `Fintype.card_pos`. Establish `h2 : 1 ≤ N * (N - 1) / 2`.
+
+Establish `: 2 * 1 ≤ N * (N - 1)` using `Nat.mul_le_mul (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Unfold `dimFl`. Conclude with `Nat.mul_pos h1 h2`. Establish `hF2 : (pSum σ 2 * Q).IsHomogeneous (dimFl ι N + 1)`.
+
+Use `(pSum_isHomogeneous' (N := N) σ 2).mul hQ` as an intermediate fact. Rewrite `this` using `[show 2 + (dimFl ι N - 1) = dimFl ι N + 1 by omega]`. Then use the resulting hypothesis. Establish `hF1 : (pSum σ 1 * (pLow j σ 1 * Q)).IsHomogeneous (dimFl ι N + 1)`. Use `(pSum_isHomogeneous' (N := N) σ 1).mul ((pLow_isHomogeneous' (N := N) j σ 1).mul hQ)` as an intermediate fact. Rewrite `this` using `[show 1 + (1 + (dimFl ι N - 1)) = dimFl ι N + 1 by omega]`. Then use the resulting hypothesis.
+
+Establish `s2 : ∑ τ, shF j τ (pSum σ 2 * Q) = 2`. Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q σ σ (by norm_num)).1, if_pos rfl]`. Evaluate the numerical expressions using `[hQ1]`. Introduce `τ _ hτ`.
+
+Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q τ σ (by norm_num)).1, if_neg hτ]`. Simplify using the standard rewrite rules. Establish `t2 : ∑ τ, totF τ (pSum σ 2 * Q) = 0`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 2 Q τ σ (by norm_num)).2, if_neg (by simp)]`.
+
+Establish `t1 : ∑ τ, totF τ (pSum σ 1 * (pLow j σ 1 * Q)) = N`. Rewrite using `[Finset.sum_eq_single σ]`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 1 _ σ σ le_rfl).2, if_pos ⟨rfl, rfl⟩, hQ1, mul_one]`. Introduce `τ _ hτ`. Rewrite using `[(GlobalTheory.T.shift_functional_power_sum ι N j 1 _ τ σ le_rfl).2, if_neg (fun h => hτ h.1)]`.
+
+Simplify using the standard rewrite rules. Take `⟨L2, hL2⟩` from `h _ hF2`. Take `⟨L1, hL1⟩` from `h _ hF1`. Rewrite `hL2` using `[s2, t2]`. Rewrite `hL1` using `[t1]`.
+
+Use `set s := ∑ τ, shF j τ (pSum σ 1 * (pLow j σ 1 * Q))`. Establish `ha : Filter.Tendsto a Filter.atTop (nhds (L2 / 2))` using `(hL2.div_const 2).congr fun B => by ring`. Establish `hN : (N : ℝ) ≠ 0` using `by exact_mod_cast (by omega : N ≠ 0)`. Use `⟨_, (L1 - L2 / 2 * s) / N, ha, ?_⟩` and prove the remaining obligations. Use `((hL1.sub (ha.mul_const s)).div_const (N : ℝ)).congr fun B => ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefficients_converge (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) [Nonempty ι] (j : ℕ)
     (a b : ℕ → ℝ) (hj : 1 ≤ j) (hjN : j < N)
     (h : ∀ F : Pol ι N, F.IsHomogeneous (dimFl ι N + 1) → ∃ L : ℝ,

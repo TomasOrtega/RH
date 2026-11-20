@@ -5,18 +5,30 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.E.ChernCocycleFaceDegeneracyIdentities
 
+/- English proof (translation)
+Rewrite using `[op_comp, E.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem pull_pull {E : Spc} {U : Scheme.{0}} {a b c : ℕ} (f : SimplexCategory.mk a ⟶ SimplexCategory.mk b)
     (g : SimplexCategory.mk b ⟶ SimplexCategory.mk c) (x : Sx E c U) :
     (E.map f.op).app (op U) ((E.map g.op).app (op U) x) = (E.map (f ≫ g).op).app (op U) x := by
   rw [op_comp, E.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[h]`.
+-/
 theorem pull_congr {E : Spc} {U : Scheme.{0}} {a b : ℕ} {f g : SimplexCategory.mk a ⟶ SimplexCategory.mk b}
     (h : f = g) (x : Sx E b U) : (E.map f.op).app (op U) x = (E.map g.op).app (op U) x := by rw [h]
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f0s0 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 0).sub 0 1 (by omega) = x.sub 1 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Establish `h` using `L.naturality f.op`. Establish `h2` using `NatTrans.congr_app h (op U)`. Use `first`. Consider the case `exact (by simpa only [NatTrans.comp_app, ConcreteCategory.comp_apply] using ConcreteCategory.congr_hom h2 y)`. Consider the case `exact (by simpa only [NatTrans.comp_app, types_comp_apply] using congr_fun h2 y)`.
+-/
 theorem L_nat {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} {m n : ℕ} (f : SimplexCategory.mk m ⟶ SimplexCategory.mk n)
     (y : Sx E n U) : (L.app (op (SimplexCategory.mk m))).app (op U) ((E.map f.op).app (op U) y) =
       ((ofCat (glCat 1)).map f.op).app (op U) ((L.app (op (SimplexCategory.mk n))).app (op U) y) := by
@@ -26,6 +38,11 @@ theorem L_nat {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} {m n : ℕ}
   | exact (by simpa only [NatTrans.comp_app, ConcreteCategory.comp_apply] using ConcreteCategory.congr_hom h2 y)
   | exact (by simpa only [NatTrans.comp_app, types_comp_apply] using congr_fun h2 y)
 
+/- English proof (translation)
+Unfold `lineUnit Sx.face Sx.sub SimplicialObject.δ`. Rewrite using `[L_nat, L_nat, L_nat]`. Generalize the expression as in `(L.app (op (SimplexCategory.mk 2))).app (op U) y = z`. Set `z' : ComposableArrows (SingleObj (GL (Fin 1) Γ(U, ⊤))) 2` to `z`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (z'.map' 0 2) = Matrix.GeneralLinearGroup.det (z'.map' 0 1) * Matrix.GeneralLinearGroup.det (z'.map' 1 2)`.
+
+Rewrite using `[z'.map'_comp 0 1 2, SingleObj.comp_as_mul, map_mul, mul_comm]`.
+-/
 theorem line_mul {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} (y : Sx E 2 U) :
     lineUnit L (y.face 1) = lineUnit L (y.sub 0 1 (by omega)) * lineUnit L (y.sub 1 1 (by omega)) := by
   unfold lineUnit Sx.face Sx.sub SimplicialObject.δ
@@ -35,34 +52,62 @@ theorem line_mul {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} (y : Sx 
   change Matrix.GeneralLinearGroup.det (z'.map' 0 2) = Matrix.GeneralLinearGroup.det (z'.map' 0 1) * Matrix.GeneralLinearGroup.det (z'.map' 1 2)
   rw [z'.map'_comp 0 1 2, SingleObj.comp_as_mul, map_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f0s1 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 0).sub 1 1 (by omega) = x.sub 2 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f1s1 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 1).sub 1 1 (by omega) = x.sub 2 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull, pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f1s0 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 1).sub 0 1 (by omega) = (x.face 3).face 1 := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull, pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f2s0 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 2).sub 0 1 (by omega) = x.sub 0 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull, pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f2s1 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 2).sub 1 1 (by omega) = (x.face 0).face 1 := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull, pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f3s0 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 3).sub 0 1 (by omega) = x.sub 0 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Unfold `Sx.face Sx.sub SimplicialObject.δ`. Apply the tactic sequence `rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x`.
+-/
 theorem f3s1 {E : Spc} {U : Scheme.{0}} (x : Sx E 3 U) : (x.face 3).sub 1 1 (by omega) = x.sub 1 1 (by omega) := by
   unfold Sx.face Sx.sub SimplicialObject.δ
   rw [pull_pull]; exact pull_congr (by first | decide | (ext i; fin_cases i <;> rfl)) x
 
+/- English proof (translation)
+Establish `hd` using `(LateralTheory.E.ChernClassEvaluation.evDelta_pf (ZMod q) (I := res _ (tw q 1)) (n := 2) (m := 3) (by norm_num) α V).2 2 (-1) 0 (by norm_num) (by norm_num) x`. Use `hd.trans ?_` and prove the remaining obligations. Establish `h0 : ev α 3 (-1) (by norm_num) V x = 0` using `LateralTheory.EtaleFoundations.FirstChernUniqueness.sec_sub (LateralTheory.EtaleFoundations.FirstChernUniqueness.res_zero_neg q (-1) (by norm_num)) V _ _`. Establish `v0` using `hC.2.2 V (x.face 0) b c (by rw [f0s0]; exact hb) (by rw [f0s1]; exact hc)`. Establish `v1` using `hC.2.2 V (x.face 1) (a * b) c (by rw [f1s0, line_mul, f3s0, f3s1, mul_pow, ha, hb]) (by rw [f1s1]; exact hc)`.
+
+Establish `v2` using `hC.2.2 V (x.face 2) a (b * c) (by rw [f2s0]; exact ha) (by rw [f2s1, line_mul, f0s0, f0s1, mul_pow, hb, hc])`. Establish `v3` using `hC.2.2 V (x.face 3) a b (by rw [f3s0]; exact ha) (by rw [f3s1]; exact hb)`. Rewrite using `[Fin.sum_univ_four]`. Use `erw [h0, v0, v1, v2, v3]`. Rewrite using `[mul_assoc]`.
+
+Simplify using `only [Sec.map, map_zero, zero_add]`. Use `smul_zero (Int.negOnePow 3) using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
+-/
 theorem local_zero (q : ℕ) [NeZero q] {E : Spc} (L : E ⟶ ofCat (glCat 1))
     (α : Cochain ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2) (hC : LateralTheory.EtaleFoundations.IsEtaleKummerChernClassCochainOfLineBundle q L α) {V : Scheme.{0}}
     (x : Sx E 3 V) (a b c : (Γ(V, ⊤))ˣ) (ha : a ^ q = lineUnit L (x.sub 0 1 (by omega)))
@@ -87,6 +132,11 @@ theorem local_zero (q : ℕ) [NeZero q] {E : Spc} (L : E ⟶ ofCat (glCat 1))
 
 open LateralTheory.EtaleFoundations.FirstChernUniqueness in
 
+/- English proof (translation)
+Introduce `q _ E L hi α hC U x`. Apply `LateralTheory.E.ChernClassRootLocalization.sec_sep` to reduce the goal to its premises. Use `loc_imp (loc_and (root_line hr q L hi U (x.sub 0 1 (by omega))) (loc_and (root_line hr q L hi U (x.sub 1 1 (by omega))) (root_line hr q L hi U (x.sub 2 1 (by omega))))) fun V g hv => ?_` and prove the remaining obligations. Take `⟨⟨a, ha⟩, ⟨b, hb⟩, ⟨c, hc⟩⟩` from `hv`. Rewrite `ha`, `hb`, `hc` using `[← sub_res]`.
+
+Rewrite using `[← LateralTheory.E.ChernClassRootLocalization.ev_res, local_zero q L α hC (x.res g) a b c ha hb hc]`. Simplify using `[Sec.res]`.
+-/
 theorem etale_kummer_chern_cochain_coboundary_vanishes_on_tetrahedra_of_root_localization (hr : LateralTheory.E.ChernClassRootLocalization.LeafRootLoc) : LateralTheory.E.ChernClassExistence.EtaleKummerChernCochainCoboundaryVanishesOnTetrahedra := by
   intro q _ E L hi α hC U x
   apply LateralTheory.E.ChernClassRootLocalization.sec_sep

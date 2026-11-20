@@ -15,6 +15,11 @@ section Hecke
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := F) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+
+Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`.
+-/
 private theorem isOpen_ker_kills {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) :
     IsOpen (φ.ker : Set (G F Ω)) := by
   have hfin : {ζ : Ω | ζ ^ M = 1}.Finite := by
@@ -28,6 +33,11 @@ private theorem isOpen_ker_kills {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qba
   · simp only [Set.mem_iInter] at hs
     exact hφ s fun ζ hζ => hs ζ hζ
 
+/- English proof (translation)
+Establish `ho` using `isOpen_ker_kills hM hφ`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `hfi : Finite (G F Ω ⧸ φ.ker)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `hpos : 0 < φ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Take `⟨χ, ⟨h1, h2⟩, -⟩` from `exists_unique_hchar_of_finite_order ha ι φ (continuous_of_isOpen_ker' φ ho) hpos (MonoidHom.ext fun s => by`.
+
+Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `φ.ker.pow_index_mem s)`. Conclude with `⟨χ, isAlgPos_zero_of_orderDvd hpos h1, h2⟩`.
+-/
 private theorem exists_hchar_fin {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ)
     {M : ℕ} (hM : 1 ≤ M) {φ : G F Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) :
     ∃ χ : HChar F, IsAlgPos χ 0 ∧ IsLAdicOf art ι χ 0 φ := by
@@ -41,17 +51,28 @@ private theorem exists_hchar_fin {art : Ideles F →* Gab F Ω} (ha : IsGlobalAr
       exact φ.ker.pow_index_mem s)
   exact ⟨χ, isAlgPos_zero_of_orderDvd hpos h1, h2⟩
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+-/
 private theorem isAlgPos_mul {χ χ' : HChar F} {n n' : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
     IsAlgPos (χ * χ') (n + n') := fun k hk => by
   have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl
   rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
+/- English proof (translation)
+Introduce `k hk` and use `by have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`.
+-/
 private theorem isAlgPos_inv {χ : HChar F} {n : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
   have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
   rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
   exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ m)` using `fun m => by`. Establish `h` using `GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F m`. Take `⟨μ, hμ, hL⟩` from `ha.exists_isLAdicOf ι h`. Establish `e : μ = cycBar F Ω l ^ m` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow ha hμ hL`. Conclude with `⟨_, _, h, e ▸ hL⟩`.
+
+Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg j`. Simplify using `using key m`. Take `⟨χ, n, h1, h2⟩` from `key m`. Conclude with `⟨_, _, isAlgPos_inv h1, by simpa using h2.inv⟩`.
+-/
 private theorem exists_hchar_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ) (j : ℤ) :
     ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ j) := by
   have key : ∀ m : ℕ, ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (cycBar F Ω l ^ m) := fun m => by
@@ -64,6 +85,11 @@ private theorem exists_hchar_cyc {art : Ideles F →* Gab F Ω} (ha : IsGlobalAr
   · obtain ⟨χ, n, h1, h2⟩ := key m
     exact ⟨_, _, isAlgPos_inv h1, by simpa using h2.inv⟩
 
+/- English proof (translation)
+Take `⟨M, φ, hM, hφ, rfl⟩` from `hθ`. Take `⟨χ, h1, h2⟩` from `exists_hchar_fin ha ι hM hφ`. Take `⟨χ', n, h3, h4⟩` from `exists_hchar_cyc ha ι (wt + j)`. Use `⟨_, _, isAlgPos_mul h1 h3, ?_⟩` and prove the remaining obligations. Establish `e : cycBar F Ω l ^ wt * φ * cycBar F Ω l ^ j = φ * cycBar F Ω l ^ (wt + j)`.
+
+Rewrite using `[zpow_add, mul_comm _ φ, mul_assoc]`. Conclude with `e ▸ h2.mul h4`.
+-/
 private theorem exists_hchar {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) (ι : Qbar l ≃+* ℂ) {wt : ℤ}
     {θ : G F Ω →* (Qbar l)ˣ} (hθ : IsCycWt l wt θ) (j : ℤ) :
     ∃ (χ : HChar F) (n : (F →+* ℂ) → ℤ), IsAlgPos χ n ∧ IsLAdicOf art ι χ n (θ * cycBar F Ω l ^ j) := by
@@ -77,6 +103,27 @@ private theorem exists_hchar {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin 
 
 end Hecke
 
+/- English proof (translation)
+Use `set N : Matrix (Fin n) (Fin n) ℂ := (M : Matrix (Fin n) (Fin n) k).map f with hN`. Use `set Q : Matrix (Fin n) (Fin n) ℂ := (P : Matrix (Fin n) (Fin n) k).map f with hQ`. Establish `hdet : ∀ U : GL (Fin n) k, ((U : Matrix (Fin n) (Fin n) k).map f).det ≠ 0` using `fun U => by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero f).2 (Matrix.GeneralLinearGroup.det U).ne_zero`.
+
+Establish `h' : Nᵀ * Q * N = f t • Q`. Use `congrArg (fun Z : Matrix (Fin n) (Fin n) k => Z.map f) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`. Rewrite using `[this]`. Use extensionality with `i j`.
+
+Simplify using `[hQ]`. Rewrite `hB` using `[← Matrix.charpoly_map, ← hN]`. Establish `hc : B.card = n`. Use `congrArg natDegree hB` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, natDegree_multiset_prod_X_sub_C_eq_card]`.
+
+Simplify using `using this.symm`. Establish `ev : ∀ x : ℂ, (x • (1 : Matrix (Fin n) (Fin n) ℂ) - N).det = (B.map fun b => x - b).prod` using `fun x => by`. Use `congrArg (eval x) hB` as an intermediate fact. Rewrite `this` using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`. Simplify `this` using `[Matrix.smul_one_eq_diagonal]`.
+
+Establish `e0 : N.det = B.prod`. Use `ev 0` as an intermediate fact. Simplify using `only [zero_smul, zero_sub, Matrix.det_neg, Fintype.card_fin] at this`. Rewrite `this` using `[Multiset.prod_map_neg, hc]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (by simp)) this`.
+
+Establish `hb : ∀ b ∈ B, b ≠ 0` using `fun b hb h0 => hdet M (e0.trans (Multiset.prod_eq_zero (h0 ▸ hb)))`. Establish `key : ∀ x : ℂ, x ≠ 0 → ((B.map fun b => f t * b⁻¹).map fun b => x - b).prod = (B.map fun b => x - b).prod`. Introduce `x hx`. Establish `e1 : Nᵀ * Q * (x • (1 : Matrix (Fin n) (Fin n) ℂ) - N) = (-x) • (((f t / x) • (1 : Matrix (Fin n) (Fin n) ℂ) - N)ᵀ * Q)`. Rewrite using `[mul_sub, h', Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one, sub_mul, smul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_one, one_mul, neg_mul, mul_div_cancel₀ _ hx, neg_smul, neg_smul]`.
+
+Normalize the expressions using the abelian group laws. Establish `e2` using `congrArg Matrix.det e1`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_smul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, ev, ev, e0, Fintype.card_fin]`. Establish `e3 : B.prod * ((B.map fun b => f t * b⁻¹).map fun b => x - b).prod = (-x) ^ n * (B.map fun b => f t / x - b).prod`. Rewrite using `[← hc, ← Multiset.prod_replicate, ← Multiset.map_const', ← Multiset.prod_map_mul, Multiset.map_map]`.
+
+Use `conv_lhs => rw [← Multiset.map_id' B, Multiset.map_map, ← Multiset.prod_map_mul]`. Use `congrArg _ (Multiset.map_congr rfl fun b h => ?_)` and prove the remaining obligations. Use `hb b h` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `mul_left_cancel₀ (mul_ne_zero (e0 ▸ hdet M) (hdet P)) ?_` and prove the remaining obligations. Rewrite using `[← hQ]`. Take the linear combination `Q.det * e3 - e2`. Establish `hp : ((B.map fun b => f t * b⁻¹).map fun b => X - C b).prod = (B.map fun b => X - C b).prod`.
+
+Use `eq_of_infinite_eval_eq _ _ ((Set.finite_singleton (0 : ℂ)).infinite_compl.mono fun x hx => ?_)` and prove the remaining obligations. Use `key x hx` as an intermediate fact. Simplify `this` using `[eval_multiset_prod, Multiset.map_map]`. Use `congrArg roots hp` as an intermediate fact. Rewrite `this` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis.
+-/
 private theorem roots_stable {k : Type} [Field k] {n : ℕ} (f : k →+* ℂ) (M P : GL (Fin n) k) (t : kˣ)
     (h : (M : Matrix (Fin n) (Fin n) k)ᵀ * (P : Matrix (Fin n) (Fin n) k) * (M : Matrix (Fin n) (Fin n) k) =
       (t : k) • (P : Matrix (Fin n) (Fin n) k)) (B : Multiset ℂ)
@@ -137,6 +184,23 @@ private theorem roots_stable {k : Type} [Field k] {n : ℕ} (f : k →+* ℂ) (M
   have := congrArg roots hp
   rwa [roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C] at this
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`. Take `⟨P, hP⟩` from `hr`. Establish `h1` using `roots_stable ι.toRingHom _ P _ (hP σ⁻¹) _ ((hB A hA).2 σ hσ)`. Establish `h2` using `hχ.frob_unr ha (Or.inl hw) hu hA hσ`.
+
+Establish `h3 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : Qbar l)`. Rewrite using `[cycBar, MonoidHom.comp_apply, Units.coe_map, cycZ_of_isFrob hw hA hσ]`. Simplify using the standard rewrite rules. Establish `hq : (0 : ℝ) < normV w`. Establish `: 1 < Ideal.absNorm w.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm w`.
+
+Establish `h : 0 < normV w` using `zero_lt_one.trans this`. Conclude with `h` after adjusting the coercions. Use `set c : ℂ := (((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hq _).ne'`. Establish `hcc : c * c = (normV w : ℂ) ^ ((n : ℤ) - 1)`.
+
+Rewrite using `[hc, ← Complex.ofReal_mul, ← Real.rpow_add hq, add_halves, show ((n : ℝ) - 1) = (((n : ℤ) - 1 : ℤ) : ℝ) by push_cast; rfl, Real.rpow_intCast]`. Simplify using the standard rewrite rules. Establish `h4 : ι ((θ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = c * c * (χ.val w : ℂˣ)`. Establish `h5` using `congrArg ι h2`. Rewrite `h5` using `[MonoidHom.mul_apply, MonoidHom.zpow_apply, Units.val_mul, Units.val_zpow_eq_zpow_val, h3, map_mul, map_zpow₀, map_natCast, map_inv₀, ι.apply_symm_apply, ← hcc]`.
+
+Rewrite using `[map_inv, Units.val_inv_eq_inv_val, map_inv₀]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, h5, inv_mul_cancel₀ (Units.ne_zero _)]`. Use `Multiset.map_injective (f := fun α : ℂˣ => c * (α : ℂ)) (fun x y e => Units.ext (mul_left_cancel₀ hc0 e)) ?_` and prove the remaining obligations. Establish `h6 : algSat n (normV w) B = B.map fun α : ℂˣ => c * (α : ℂ)`.
+
+Express the relevant statement in the definitionally equal form `Multiset.map _ (B.bind fun a : ℂˣ => ({(a : ℂ)} : Multiset ℂ)) = _`. Rewrite using `[Multiset.bind_singleton, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h1` using `[h6]`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
+
+Simplify using `only [Multiset.map_map]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c * _ = ι _ * (c * _)⁻¹`. Rewrite using `[h4]`. Simplify using `only [Function.comp_apply, Units.val_mul, Units.val_inv_eq_inv_val]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem sat_stable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} {θ : G F Ω →* (Qbar l)ˣ}
     (hr : DualTw r θ) {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) {χ : HChar F} {a : (F →+* ℂ) → ℤ}
@@ -183,6 +247,9 @@ private theorem sat_stable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   simp only [Function.comp_apply, Units.val_mul, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `h`. Use `InvT.hasSatGL_invT e (fun g x => ?_) hB` and prove the remaining obligations. Rewrite using `[TR.CuspSub.locRep_eq, TR.CuspSub.locRep_eq, he, InvT.locGL_invT]`.
+-/
 private theorem hasSat_invT {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ} {π π' : TR.CuspSub F a}
     (h : IsInvTOf π π') {w : HeightOneSpectrum (𝓞 F)} {B : Multiset ℂˣ} (hB : π.HasSat w B) :
     π'.HasSat w (B.map (·⁻¹)) := by
@@ -190,11 +257,17 @@ private theorem hasSat_invT {F : Type} [Field F] [NumberField F] [IsTotallyReal 
   refine InvT.hasSatGL_invT e (fun g x => ?_) hB
   rw [TR.CuspSub.locRep_eq, TR.CuspSub.locRep_eq, he, InvT.locGL_invT]
 
+/- English proof (translation)
+Introduce `F _ _ _ a π` and use `let ⟨π', h, _⟩ := UpperTheory.exists_contragredient_cuspSub F a π ⟨π', h⟩`.
+-/
 private theorem exDual : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (π : TR.CuspSub F a),
     ∃ π' : TR.CuspSub F a, IsInvTOf π π' := fun F _ _ _ a π =>
   let ⟨π', h, _⟩ := UpperTheory.exists_contragredient_cuspSub F a π
   ⟨π', h⟩
 
+/- English proof (translation)
+Use `⟨π.toTwist χ, (TR.dchi χ).toLinearMap, fun z u hu => ?_, fun k φ => ?_, fun k φ => ?_, fun X φ => ?_⟩` and prove the remaining obligations. Establish `e : u = TR.expU z` using `Units.ext (funext hu)`. Rewrite using `[e]`. Conclude with `TR.chiInf_expU χ z`. Apply the tactic sequence `all_goals simp [TR.CuspSub.op_toTwist, TR.opMul, TR.opAdd]`.
+-/
 private theorem isTwistOf_twist {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ} (π : TR.CuspSub F a)
     (χ : HChar F) : IsTwistOf π χ (π.twist χ) := by
   refine ⟨π.toTwist χ, (TR.dchi χ).toLinearMap, fun z u hu => ?_, fun k φ => ?_, fun k φ => ?_, fun X φ => ?_⟩
@@ -203,6 +276,13 @@ private theorem isTwistOf_twist {F : Type} [Field F] [NumberField F] [IsTotallyR
     exact TR.chiInf_expU χ z
   all_goals simp [TR.CuspSub.op_toTwist, TR.opMul, TR.opAdd]
 
+/- English proof (translation)
+Introduce `H n hn wt l _ Ω _ _ _ ι r π θ hθ hr hπ`. Take `⟨art, ha⟩` from `H.litN.aut.art ℚ Ω`. Take `⟨χ, a, h1, h2⟩` from `exists_hchar ha ι hθ ((n : ℤ) - 1)`. Use `⟨χ, ?_, art, a, ha, h1, h2⟩` and prove the remaining obligations. Take `⟨π₁, h₁⟩` from `exDual ℚ n π`.
+
+Take `⟨B, hl, hr', hf, hc, hX⟩` from `H.gkR ℚ n π`. Use `isSelfDualBy_of_iso B hl hr' hf hc hX h₁ (isTwistOf_twist π₁ χ) (H.smoR ℚ n hn _ _ ?_)` and prove the remaining obligations. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 ℚ)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+
+Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 ℚ) in Filter.cofinite, ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Use `filter_upwards [hπ.2, hl, (GlobalTheory.Mem.UnrAe.unr_ae_and_level ℚ χ).1] with w ⟨S, hS, hE⟩ hw hu`. Conclude with `⟨S, hS, sat_stable hr ha h2 hw hu hE ▸ (hasSat_invT h₁ hS).twist hu⟩`.
+-/
 theorem UpperTheory.V.Af.selfDualQ :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.SelfDualQ := by
   intro H n hn wt l _ Ω _ _ _ ι r π θ hθ hr hπ

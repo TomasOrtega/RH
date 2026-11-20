@@ -12,9 +12,15 @@ section Gen
 
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+The claim follows from `Units.ext (by show ((1 : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ = 1; simp)`.
+-/
 theorem trGL_one (n : ℕ) : trGL (1 : GL (Fin (n + 1)) k) = 1 :=
   Units.ext (by show ((1 : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ = 1; simp)
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← trGL_mul, mul_inv_cancel, trGL_one]`.
+-/
 theorem trGL_inv {n : ℕ} (g : GL (Fin (n + 1)) k) : trGL g⁻¹ = (trGL g)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← trGL_mul, mul_inv_cancel, trGL_one]
 
@@ -37,9 +43,15 @@ variable {k}
 
 def colVec {n : ℕ} (c : Fin n → k) : Fin (n + 1) → k := fun i => Fin.lastCases 0 c i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unip_val {n : ℕ} (w : Multiplicative (Fin n → k)) :
     ((unip k n w : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1 + colMat k n w.toAdd := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [vecMul, dotProduct, colMat, Fin.sum_univ_castSucc]`. Consider the case `cast j => simp [vecMul, dotProduct, colMat, Fin.castSucc_ne_last, Pi.single_apply]`.
+-/
 theorem vecMul_colMat {n : ℕ} (r : Fin (n + 1) → k) (w : Fin n → k) :
     vecMul r (colMat k n w) = Pi.single (Fin.last n) (∑ i : Fin n, r (Fin.castSucc i) * w i) := by
   funext j
@@ -47,6 +59,11 @@ theorem vecMul_colMat {n : ℕ} (r : Fin (n + 1) → k) (w : Fin n → k) :
   | last => simp [vecMul, dotProduct, colMat, Fin.sum_univ_castSucc]
   | cast j => simp [vecMul, dotProduct, colMat, Fin.castSucc_ne_last, Pi.single_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, colMat, Pi.smul_apply, smul_eq_mul, colVec]`. Rewrite using `[Finset.sum_eq_single (Fin.last n)]`. Simplify using `[mul_comm]`. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules.
+-/
 theorem colMat_mulVec {n : ℕ} (c : Fin n → k) (r : Fin (n + 1) → k) :
     colMat k n c *ᵥ r = r (Fin.last n) • colVec c := by
   funext i
@@ -57,17 +74,28 @@ theorem colMat_mulVec {n : ℕ} (c : Fin n → k) (r : Fin (n + 1) → k) :
     simp [hj]
   · simp
 
+/- English proof (translation)
+Rewrite using `[unip_val, vecMul_add, vecMul_one, vecMul_colMat]`.
+-/
 theorem vecMul_unip {n : ℕ} (r : Fin (n + 1) → k) (w : Multiplicative (Fin n → k)) :
     vecMul r ((unip k n w : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) =
       r + Pi.single (Fin.last n) (∑ i : Fin n, r (Fin.castSucc i) * w.toAdd i) := by
   rw [unip_val, vecMul_add, vecMul_one, vecMul_colMat]
 
+/- English proof (translation)
+Use `show vecMul r ((unip k n c : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ = _`. Rewrite using `[vecMul_transpose, unip_val, add_mulVec, one_mulVec, colMat_mulVec]`.
+-/
 theorem vecMul_trGL_unip {n : ℕ} (r : Fin (n + 1) → k) (c : Multiplicative (Fin n → k)) :
     vecMul r ((trGL (unip k n c) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) =
       r + r (Fin.last n) • colVec c.toAdd := by
   show vecMul r ((unip k n c : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ = _
   rw [vecMul_transpose, unip_val, add_mulVec, one_mulVec, colMat_mulVec]
 
+/- English proof (translation)
+Introduce `h`. Establish `e : vecMul (vecMul (eLast k n) (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) ((g⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = eLast k n`. Rewrite using `[vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Rewrite `e` using `[h, zero_vecMul]`. Use `congrFun e (Fin.last n)` as an intermediate fact.
+
+Simplify using `[eLast] at this`.
+-/
 theorem vecMul_eLast_ne_zero {n : ℕ} (g : GL (Fin (n + 1)) k) :
     vecMul (eLast k n) (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ≠ 0 := by
   intro h
@@ -78,6 +106,23 @@ theorem vecMul_eLast_ne_zero {n : ℕ} (g : GL (Fin (n + 1)) k) :
   have := congrFun e (Fin.last n)
   simp [eLast] at this
 
+/- English proof (translation)
+Establish `hu : ∀ w, unip k n w ∈ H` using `fun w => hP (MirU_le_Mir k n ⟨w, rfl⟩)`. Establish `ht : ∀ c, trGL (unip k n c) ∈ H` using `fun c => hPT (by show trGL (trGL (unip k n c)) ∈ Mir k n`. Rewrite using `[trGL_trGL]`. Conclude with `MirU_le_Mir k n ⟨c, rfl⟩)`. Use `set r' : Fin n → k := fun i => r (Fin.castSucc i) with hr'`.
+
+Use `set t : k := r (Fin.last n) with ht'`. Distinguish the cases in `h0 : r' = 0`. Establish `htne : t ≠ 0`. Introduce `htz`. Apply `hr` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact htz`. Consider the case `cast j => exact congrFun h0 j`. Set `i0 : Fin n` to `⟨0, hn⟩`.
+
+Use `⟨trGL (unip k n (Multiplicative.ofAdd (Pi.single i0 1))) * unip k n (Multiplicative.ofAdd (Pi.single i0 (t - 1))) * trGL (unip k n (Multiplicative.ofAdd (Pi.single i0 (-t⁻¹)))), mul_mem (mul_mem (ht _) (hu _)) (ht _), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, ← vecMul_vecMul, ← vecMul_vecMul, vecMul_trGL_unip, vecMul_unip, vecMul_trGL_unip]`. Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`.
+
+Apply the tactic sequence `simp [eLast, colVec, Pi.single_apply, Finset.sum_ite_eq', Fin.castSucc_ne_last] <;> rfl`. Consider the case `cast j`. Establish `hj : r (Fin.castSucc j) = 0` using `congrFun h0 j`. Simplify using `[eLast, colVec, Fin.castSucc_ne_last, Pi.single_apply, hj, Finset.sum_ite_eq', htne]`. Apply the tactic sequence `split_ifs <;> simp [htne]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, r' i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h0 (funext hc)`. Use `⟨trGL (unip k n (Multiplicative.ofAdd r')) * unip k n (Multiplicative.ofAdd (Pi.single i ((t - 1) / r' i))), mul_mem (ht _) (hu _), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, ← vecMul_vecMul, vecMul_trGL_unip, vecMul_unip]`. Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using `[eLast, colVec, Pi.single_apply, Fin.castSucc_ne_last, Finset.sum_ite_eq', hi]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the case `cast j`. Simplify using `[eLast, colVec, Pi.single_apply, Fin.castSucc_ne_last, hr']`.
+-/
 theorem exists_row {n : ℕ} (hn : 0 < n) (H : Subgroup (GL (Fin (n + 1)) k)) (hP : Mir k n ≤ H) (hPT : MirT k n ≤ H)
     (r : Fin (n + 1) → k) (hr : r ≠ 0) :
     ∃ h ∈ H, vecMul (eLast k n) ((h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = r := by
@@ -128,6 +173,11 @@ theorem exists_row {n : ℕ} (hn : 0 < n) (H : Subgroup (GL (Fin (n + 1)) k)) (h
     | cast j =>
       simp [eLast, colVec, Pi.single_apply, Fin.castSucc_ne_last, hr']
 
+/- English proof (translation)
+Use `set H := Subgroup.closure ((Mir k n : Set (GL (Fin (n + 1)) k)) ∪ MirT k n)`. Establish `hP : Mir k n ≤ H` using `fun g hg => Subgroup.subset_closure (Or.inl hg)`. Establish `hPT : MirT k n ≤ H` using `fun g hg => Subgroup.subset_closure (Or.inr hg)`. Rewrite using `[eq_top_iff]`. Introduce `g _`.
+
+Take `⟨h, hH, hr⟩` from `exists_row hn H hP hPT _ (vecMul_eLast_ne_zero g)`. Establish `hgh : g * h⁻¹ ∈ Mir k n` using `by show vecMul (eLast k n) ((g * h⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = eLast k n`. Rewrite using `[Units.val_mul, ← vecMul_vecMul, ← hr, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Use `mul_mem (hP hgh) hH` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem closure_mir_mirT {n : ℕ} (hn : 0 < n) :
     Subgroup.closure ((Mir k n : Set (GL (Fin (n + 1)) k)) ∪ MirT k n) = ⊤ := by
   set H := Subgroup.closure ((Mir k n : Set (GL (Fin (n + 1)) k)) ∪ MirT k n)
@@ -158,8 +208,16 @@ def TrInv {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) : Prop :=
 def conjHomeo {m : ℕ} (g : GL (Fin m) k) : GL (Fin m) k ≃ₜ GL (Fin m) k :=
   (Homeomorph.mulLeft g).trans (Homeomorph.mulRight g⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjHomeo_apply {m : ℕ} (g x : GL (Fin m) k) : conjHomeo g x = g * x * g⁻¹ := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h φ`. Conclude with `h φ _ fun x => rfl`. Introduce `h φ ψ hψ`. Establish `e : ψ = pull (conjHomeo g) φ` using `Subtype.ext (funext fun x => hψ x)`.
+
+Rewrite using `[e]`. Conclude with `h φ`.
+-/
 theorem conjInv_iff {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) (g : GL (Fin m) k) :
     ConjInv T g ↔ ∀ φ, T (pull (conjHomeo g) φ) = T φ := by
   constructor
@@ -198,6 +256,13 @@ def conjInvSubgroup {m : ℕ} (T : SB (GL (Fin m) k) →ₗ[ℂ] ℂ) : Subgroup
     rw [e] at this
     exact this.symm
 
+/- English proof (translation)
+Establish `hg'` using `(conjInv_iff T g⁻¹).1 hg`. Rewrite using `[conjInv_iff]`. Introduce `φ`. Establish `hpull : ∀ χ : SB (GL (Fin (n + 1)) k), T (pull trHomeo χ) = T χ` using `fun χ => hT χ (pull trHomeo χ) fun x y hy => by`. Establish `: y = trGL x` using `Units.ext hy`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `e : pull trHomeo (pull (conjHomeo (trGL g)) φ) = pull (conjHomeo g⁻¹) (pull trHomeo φ)`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show φ.1 (trGL g * trGL x * (trGL g)⁻¹) = φ.1 (trGL (g⁻¹ * x * g⁻¹⁻¹))`.
+
+Rewrite using `[trGL_mul, trGL_mul, inv_inv, ← trGL_inv, mul_assoc]`. Rewrite using `[← hpull (pull (conjHomeo (trGL g)) φ), e, hg', hpull]`.
+-/
 theorem conjInv_trGL {n : ℕ} (T : SB (GL (Fin (n + 1)) k) →ₗ[ℂ] ℂ) (hT : TrInv T) (g : GL (Fin (n + 1)) k)
     (hg : ConjInv T g⁻¹) : ConjInv T (trGL g) := by
   have hg' := (conjInv_iff T g⁻¹).1 hg
@@ -223,6 +288,11 @@ def MirTransposeInv (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [
 def LeviTransposeInv (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : Prop :=
   ∀ (n : ℕ), 0 < n → ∀ T : SB (GL (Fin (n + 1)) k) →ₗ[ℂ] ℂ, (∀ g : GL (Fin n) k, ConjInv T (glEmb k n g)) → TrInv T
 
+/- English proof (translation)
+Introduce `φ ψ hψ`. Establish `comm : ∀ a b : GL (Fin (0 + 1)) k, a * b = b * a` using `fun a b => Units.ext (by`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Matrix.mul_apply, mul_comm])`. Establish `hc : ∀ x : GL (Fin (0 + 1)) k, g * x * g⁻¹ = x` using `fun x => by`. Rewrite using `[comm g x, mul_inv_cancel_right]`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => by rw [hψ x, hc x])`.
+-/
 theorem conjInv_one_by_one (T : SB (GL (Fin (0 + 1)) k) →ₗ[ℂ] ℂ) (g : GL (Fin (0 + 1)) k) : ConjInv T g := by
   intro φ ψ hψ
   have comm : ∀ a b : GL (Fin (0 + 1)) k, a * b = b * a := fun a b =>
@@ -236,6 +306,13 @@ theorem conjInv_one_by_one (T : SB (GL (Fin (0 + 1)) k) →ₗ[ℂ] ℂ) (g : GL
   congr 1
   exact Subtype.ext (funext fun x => by rw [hψ x, hc x])
 
+/- English proof (translation)
+Unfold `MirTransposeInv at hB`. Unfold `TheoremA`. Introduce `n T hP g`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `conjInv_one_by_one T g`.
+
+Establish `hT` using `hB n hn T hP`. Establish `hle : Subgroup.closure ((Mir k n : Set (GL (Fin (n + 1)) k)) ∪ MirT k n) ≤ conjInvSubgroup T`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `x (hx | hx)`. Conclude with `hP x hx`.
+
+Establish `hx' : (trGL x)⁻¹ ∈ Mir k n` using `inv_mem hx`. Use `conjInv_trGL T hT (trGL x) (hP _ hx')` as an intermediate fact. Rewrite `this` using `[trGL_trGL]`. Then use the resulting hypothesis. Rewrite `hle` using `[closure_mir_mirT hn]`. Conclude with `hle (Subgroup.mem_top g)`.
+-/
 theorem theoremA_of_transpose (hB : MirTransposeInv k) : TheoremA k := by
   unfold MirTransposeInv at hB
   unfold TheoremA
@@ -253,6 +330,9 @@ theorem theoremA_of_transpose (hB : MirTransposeInv k) : TheoremA k := by
   rw [closure_mir_mirT hn] at hle
   exact hle (Subgroup.mem_top g)
 
+/- English proof (translation)
+Unfold `LeviTransposeInv at hB`. Use `theoremA_of_transpose ?_` and prove the remaining obligations. Unfold `MirTransposeInv`. Introduce `n hn T hP`. Conclude with `hB n hn T fun g => hP _ (glEmb_mem_Mir k n g)`.
+-/
 theorem theoremA_of_levi_transpose (hB : LeviTransposeInv k) : TheoremA k := by
   unfold LeviTransposeInv at hB
   refine theoremA_of_transpose ?_

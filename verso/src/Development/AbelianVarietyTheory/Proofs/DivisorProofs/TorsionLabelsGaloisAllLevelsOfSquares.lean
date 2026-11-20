@@ -20,6 +20,9 @@ namespace GlobalTheory.Mum.GalSquares
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.TorusExt.exists_nsmul_eq (F := Kb R) GlobalTheory.firstFiveLaws.1.mulN (Or.inl hR.1.1) (n := l) (by omega) p.g`. Use `⟨GlobalTheory.TorusExt.qkMk D.tau_bimult p.y g ?_, rfl, hg⟩` and prove the remaining obligations. Rewrite using `[hN, mul_nsmul', hg]`. Conclude with `GlobalTheory.TorusExt.qk_nsmul D.tau_bimult p`.
+-/
 theorem exists_div {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Base R) (D : DegData R (maximalIdeal R))
     {k : ℕ} (l N : ℕ) (hl : 1 ≤ l) (hN : N = k * l) (p : QkPt D.toPre (Kb R) k) :
     ∃ q : QkPt D.toPre (Kb R) N, q.y = p.y ∧ l • q.g = p.g := by
@@ -29,6 +32,11 @@ theorem exists_div {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (hR : Ba
   rw [hN, mul_nsmul', hg]
   exact GlobalTheory.TorusExt.qk_nsmul D.tau_bimult p
 
+/- English proof (translation)
+Establish `hσ : σ.toRingHom.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F'` using `RingHom.ext σ.commutes`. Use `⟨GlobalTheory.TorusExt.qkExt hB σ.toRingHom hσ q, (GlobalTheory.TorusExt.qkExt_iff hB _ hσ _ _).2 rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.TorusExt.qkExt_iff hB _ hσ _ _).1 hp]`. Conclude with `hy`. Rewrite using `[(GlobalTheory.TorusExt.qkExt_iff hB _ hσ _ _).1 hp] show l • GlobalTheory.TorusExt.gtExt D σ.toRingHom hσ q.g = GlobalTheory.TorusExt.gtExt D σ.toRingHom hσ p.g`.
+
+Rewrite using `[← map_nsmul, hg]`.
+-/
 theorem qkExt_nsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.TauBimult) {F F' : Type} [Field F]
     [Field F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F'] (σ : F →ₐ[FractionRing R] F') {k N : ℕ}
     (l : ℕ) {p : QkPt D F k} {p' : QkPt D F' k} {q : QkPt D F N} (hp : QkExt σ.toRingHom p p') (hy : q.y = p.y)
@@ -41,6 +49,11 @@ theorem qkExt_nsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.
     show l • GlobalTheory.TorusExt.gtExt D σ.toRingHom hσ q.g = GlobalTheory.TorusExt.gtExt D σ.toRingHom hσ p.g
     rw [← map_nsmul, hg]
 
+/- English proof (translation)
+Set `s : TFK (R` to `R) (Kb R) ⟶ TFK (R := R) (Kb R) := Over.homMk (spMap σ.toRingHom) (by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (RingHom.ext σ.commutes))`. Establish `hy : y = s ≫ x` using `Over.OverMorphism.ext h`. Establish `hp : ∀ m : ℕ, s ≫ x ^ m = (s ≫ x) ^ m` using `fun m => by`.
+
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`. Rewrite using `[hy, ← hp]`. Both sides reduce to the same expression.
+-/
 theorem pow_left_of_comp {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Sp (FractionRing R))}
     (σ : Kb R →ₐ[FractionRing R] Kb R) (x y : TFK (R := R) (Kb R) ⟶ A.A) (h : y.left = spMap σ.toRingHom ≫ x.left)
     (l : ℕ) : (y ^ l).left = spMap σ.toRingHom ≫ (x ^ l).left := by
@@ -56,12 +69,30 @@ theorem pow_left_of_comp {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Sp (Fr
   rw [hy, ← hp]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem compPow {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (ρ : T' ⟶ T) (x : T ⟶ A) (m : ℕ) :
     (ρ ≫ x) ^ m = ρ ≫ x ^ m := by
   induction m with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ m ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, _, em, hW, -, -, hG', ⟨ga, hga, hcart, -⟩, hc, hind⟩` from `hO`. Use `hW.1` as an intermediate fact. Use `haveI : CharZero W := hW.2.2`. Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Establish `hB` using `D.tau_bimult`.
+
+Establish `hB'` using `D'.tau_bimult`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hN1 : 1 ≤ N` using `hN ▸ Nat.mul_pos hk hl`. Establish `hem : em.toRingHom.comp (algebraMap (FractionRing R) (Kb R)) = algebraMap (FractionRing R) (Kb W)` using `RingHom.ext em.commutes`.
+
+Establish `hsq : spMap em.toRingHom ≫ jFK (R` using `R) (Kb R) = (TFK (R := W) (Kb W)).hom ≫ spMap ga := by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hem]`. Use `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => ?_))` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hga r]`.
+
+Conclude with `hc r`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv hcart (TFK (R := W) (Kb W)) _ hsq`. Set `s : Over.mk (spMap em.toRingHom ≫ jFK (R` to `R) (Kb R)) ⟶ TFK (R := R) (Kb R) := Over.homMk (spMap em.toRingHom) rfl`. Establish `hcomp : ∀ {m : ℕ} (r : QkPt D.toPre (Kb R) m), 1 ≤ m → QkToAkU U'.toUnifPre (Kb W) m (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qkExt hB em.toRingHom hem r)) (e.symm (s ≫ lab m r))`. Introduce `m r hm`.
+
+Use `hind m hm r _ _ _ ((GlobalTheory.TorusExt.qkExt_iff hB _ hem _ _).2 rfl) rfl ((GlobalTheory.ArcPull.eq_pullQk_iff hD hG hc hB hB' _ _).1 rfl).2 ?_` and prove the remaining obligations. Rewrite using `[← he, e.apply_symm_apply]`. Both sides reduce to the same expression. Establish `h₁` using `hcomp p hk`. Establish `h₂` using `(GlobalTheory.LevelCompat.qkToAkU_level hL W (maximalIdeal W) hW' D' A' G' hG' U' (Kb W) k l N hk hl hN (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qkExt hB em.toRingHom hem p)) (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qkExt hB e …`.
+
+Rewrite using `[(GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 hg, map_nsmul, map_nsmul])) (hcomp q hN1)`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL W (maximalIdeal W) hW' D' A' G' hG' U' (Kb W) k hk`. Establish `hx` using `((hf _ _).1 h₁).trans ((hf _ _).1 h₂).symm`. Establish `hs : s ≫ lab k p = s ≫ lab N q ^ l`. Use `congrArg e hx` as an intermediate fact.
+
+Rewrite `this` using `[e.apply_symm_apply, map_pow, e.apply_symm_apply]`. Rewrite using `[this, compPow]`. Establish `: Epi (spMap em.toRingHom)` using `Flat.epi_of_flat_of_surjective _`. Conclude with `(cancel_epi (spMap em.toRingHom)).1 (congrArg (fun z => z.left) hs)`.
+-/
 theorem lab_level {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R))
     (A : PolAV (Sp (FractionRing R))) (lab : Labels D.toPre A) (hO : OneTrait D.toPre A lab) (k l N : ℕ) (hk : 1 ≤ k)
     (hl : 1 ≤ l) (hN : N = k * l) (p : QkPt D.toPre (Kb R) k) (q : QkPt D.toPre (Kb R) N) (hy : q.y = p.y)
@@ -118,6 +149,13 @@ end GlobalTheory.Mum.GalSquares
 
 open GlobalTheory.Mum.GalSquares in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR n hn _ _ D A lab hO ⟨i₀, H⟩ σ j p p' hpp'`. Use `letI := GlobalTheory.TorusExt.gtGroup D.toPre (Kb R)`. Establish `hi : i₀ ≤ max i₀ j` using `le_max_left _ _`. Establish `hj : j ≤ max i₀ j` using `le_max_right _ _`. Establish `hN : (n ^ max i₀ j) ^ 2 = n ^ j * n ^ (2 * max i₀ j - j)`.
+
+Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hl : 1 ≤ n ^ (2 * max i₀ j - j)` using `Nat.one_le_pow _ _ hn.pos`. Establish `hk : 1 ≤ n ^ j` using `Nat.one_le_pow _ _ hn.pos`.
+
+Take `⟨q, hqy, hqg⟩` from `exists_div hR D _ _ hl hN p`. Take `⟨q', hq', hq'y, hq'g⟩` from `qkExt_nsmul D.toPre D.tau_bimult σ _ hpp' hqy hqg`. Establish `e₁` using `lab_level D A lab hO _ _ _ hk hl hN p q hqy ((GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).2 hqg.symm)`. Establish `e₂` using `lab_level D A lab hO _ _ _ hk hl hN p' q' hq'y ((GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).2 hq'g.symm)`. Rewrite using `[e₂, pow_left_of_comp σ _ _ (H _ hi σ q q' hq'), ← e₁]`.
+-/
 theorem GlobalTheory.Mum.galEqN_of_squares : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ n : ℕ, n.Prime →
     Odd n → IsUnit (n : R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R)))
     (lab : Labels D.toPre A), OneTrait D.toPre A lab → (∃ i₀ : ℕ, ∀ i : ℕ, i₀ ≤ i →

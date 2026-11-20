@@ -21,5 +21,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ReLatPf.reLatLaw_holds | exact GlobalTheory.ReLatPf.reLatLaw_holds | (intros; apply GlobalTheory.ReLatPf.reLatLaw_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.selfDualLattice_changeOfLattice_laws : ∀ D : D7, ReLatLaw D := by
   first | exact @GlobalTheory.ReLatPf.reLatLaw_holds | exact GlobalTheory.ReLatPf.reLatLaw_holds | (intros; apply GlobalTheory.ReLatPf.reLatLaw_holds <;> assumption)

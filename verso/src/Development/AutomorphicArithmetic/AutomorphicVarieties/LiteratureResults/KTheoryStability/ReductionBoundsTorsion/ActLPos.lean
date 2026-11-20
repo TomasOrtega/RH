@@ -102,16 +102,28 @@ def actM (g : Gp L N) : HS L N →ₗ[ℝ] HS L N where
 
 def actL (g : Gp L N) : HS L N →L[ℝ] HS L N := LinearMap.toContinuousLinearMap (actM g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_actL (g : Gp L N) (h : HS L N) (w : InfinitePlace L) :
     mat (actL g h) w =
       (((g w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)ᴴ * mat h w * ((g w)⁻¹ : GL (Fin N) ℂ) := rfl
 
+/- English proof (translation)
+The claim follows from `HS_ext fun w => by simp [mat_actL]`.
+-/
 theorem actL_one (h : HS L N) : actL 1 h = h := HS_ext fun w => by simp [mat_actL]
 
+/- English proof (translation)
+The claim follows from `HS_ext fun w => by simp [mat_actL, Matrix.mul_assoc]`.
+-/
 theorem actL_mul (g k : Gp L N) (h : HS L N) : actL (g * k) h = actL g (actL k h) :=
   HS_ext fun w => by simp [mat_actL, Matrix.mul_assoc]
 
 open ComplexOrder in
+/- English proof (translation)
+Introduce `w` and use `by rw [mat_actL] exact (hh w).conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (Units.isUnit _))`.
+-/
 theorem actL_pos (g : Gp L N) {h : HS L N} (hh : h ∈ Pos L N) : actL g h ∈ Pos L N := fun w => by
   rw [mat_actL]
   exact (hh w).conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (Units.isUnit _))

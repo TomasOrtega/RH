@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ThetaInte
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 open GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowUnfLast.stepUnfold | exact GlobalTheory.RowUnfLast.stepUnfold | (intros; apply GlobalTheory.RowUnfLast.stepUnfold <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unfolding_of_cuspidal_lifts : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → SumOKK → StepUnfold := by
   first | exact @GlobalTheory.RowUnfLast.stepUnfold | exact GlobalTheory.RowUnfLast.stepUnfold | (intros; apply GlobalTheory.RowUnfLast.stepUnfold <;> assumption)

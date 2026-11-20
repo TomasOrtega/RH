@@ -17,6 +17,9 @@ def CD.Inf (D : CD E n) (m : (E →+* ℂ) → Multiset ℂ) : Prop := ∀ τ, �
 
 def CD.Reg (D : CD E n) : Prop := ∀ τ, ∃ lam : DomWeight n, ∑ i, (D.P i).infChar τ = infOfWeight lam
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example : (CD.nil E).Inf fun _ => 0 := fun _ => rfl
 
 def mW (l : InfinitePlace E → DomWeight n) : (E →+* ℂ) → Multiset ℂ :=
@@ -30,6 +33,9 @@ inductive U1 : Ex (Fin (a + 1) × Fin (b + 1)) → Prop
   | step (c : ℂ) (p : Fin (a + 1) × Fin (b + 1)) : U1 (.add .one (.smul c (dEx p)))
   | mul {x y} : U1 x → U1 y → U1 (.mul x y)
 
+/- English proof (translation)
+The claim follows from `| 0 => .one | k + 1 => .mul (h.pow k) h`.
+-/
 theorem U1.pow {x : Ex (Fin (a + 1) × Fin (b + 1))} (h : U1 x) : ∀ k, U1 (x.pow k)
   | 0 => .one
   | k + 1 => .mul (h.pow k) h

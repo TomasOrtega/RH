@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.MixZ
 
+/- English proof (translation)
+Introduce `k _ X q σ D B φ ε Z hZ hc`. Establish `hchart : ∀ (c : GlobalTheory.AlgChart q σ D) (ρ : GlobalTheory.CxPts q σ → ENNReal), GlobalTheory.ChartGlue.chartMeas c.e ρ Z = 0`. Introduce `c ρ`. Unfold `GlobalTheory.ChartGlue.chartMeas`. Distinguish the cases in `hf : AEMeasurable c.e.symm ((volume.restrict c.e.target).withDensity (ρ ∘ c.e.symm))`.
+
+Rewrite using `[Measure.map_apply_of_aemeasurable hf hZ]`. Use `withDensity_absolutelyContinuous _ _ ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply' c.e.open_target.measurableSet, Set.inter_comm]`. Conclude with `hc c`. Simplify using `[Measure.map_of_not_aemeasurable hf]`.
+
+Establish `hle : ∀ ρ : GlobalTheory.AlgChart q σ D → GlobalTheory.CxPts q σ → ENNReal, GlobalTheory.ChartGlue.glueMeas (fun c : GlobalTheory.AlgChart q σ D => c.e) ρ ≤ (GlobalTheory.ChartGlue.glueMeas (fun c : GlobalTheory.AlgChart q σ D => c.e) ρ).restrict Zᶜ`. Introduce `ρ`. Unfold `GlobalTheory.ChartGlue.glueMeas`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ y ∂(GlobalTheory.ChartGlue.chartMeas c.e (ρ c)), y ∈ Zᶜ`.
+
+Rewrite using `[ae_iff]`. Simplify using `using hchart c (ρ c)`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae]`. Conclude with `Measure.restrict_mono subset_rfl (le_iSup (fun c : GlobalTheory.AlgChart q σ D => GlobalTheory.ChartGlue.chartMeas c.e (ρ c)) c)`. Establish `h3 : φ.chernPart D ε Z ≤ (φ.chernPart D ε).restrict Zᶜ Z` using `Measure.le_iff'.mp (hle fun c y => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ y)) Z`.
+
+Rewrite `h3` using `[Measure.restrict_apply hZ, Set.inter_compl_self, measure_empty]`. Conclude with `nonpos_iff_eq_zero.mp h3`.
+-/
 theorem chernPart_null_of_chart_null : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {B : LB X} (φ : GlobalTheory.Weight q σ B)
     (ε : ℤˣ) (Z : Set (GlobalTheory.CxPts q σ)), MeasurableSet Z →
     (∀ c : GlobalTheory.AlgChart q σ D, volume (c.e.target ∩ c.e.symm ⁻¹' Z) = 0) → φ.chernPart D ε Z = 0 := by

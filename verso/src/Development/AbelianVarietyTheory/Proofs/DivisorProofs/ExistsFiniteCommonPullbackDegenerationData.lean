@@ -19,6 +19,17 @@ namespace GlobalTheory.FieldDesc
 open GlobalTheory.ArcPull GlobalTheory.ArcQ
 open GlobalTheory.PsiEvenPull (proj)
 
+/- English proof (translation)
+Establish `sc : spMap j ≫ spMap i = spMap (j.comp i)` using `(spMap_comp i j).symm`. Establish `gp : IsGrpPullback D''.P.A D.P.A (spMap (j.comp i)) (proj q ≫ proj p)` using `((pull_grp q).comp (pull_grp p)).congr sc rfl`. Establish `g₁` using `(isGen_iff _).1 p.w_gen`. Establish `g₂` using `(isGen_iff _).1 q.w_gen`. Take `⟨w, T⟩` from `Geo.Tor.exists_comp D'.P.isLB p.w q.w g₁ g₂ D.P.isLB D''.P.isLB`.
+
+Establish `hr` using `T.pmaps_comp D'.P.isLB (fun _ => q.he) (FieldPull.pmaps_rig p) (FieldPull.pmaps_rig q)`. Rewrite `hr` using `[sc]`. Establish `hc : ∀ x, (D''.c x).left ≫ proj q ≫ proj p = spMap (j.comp i) ≫ (D.c ((q.xe.trans p.xe) x)).left` using `fun x => (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ proj p) (q.c_pr x)).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (p.c_pr _)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) sc)))))`. Establish `sj : jK R'' ≫ spMap j = genMap hj ≫ jK R'` using `(Category.id_comp _).symm.trans (fracMap_sq hj)`. Establish `hg : (genMap hj ≫ p.g) ≫ p.W.ι = jK R'' ≫ specOf (j.comp i)`.
+
+Rewrite using `[Category.assoc, p.g_comm, ← Category.assoc, ← sj, Category.assoc]`. Conclude with `congrArg (jK R'' ≫ ·) sc`. Conclude with `GlobalTheory.PullDegCompGen.exists_isPullDeg_of_valW D D'' p.psiW (genMap hj ≫ p.g) hg gp w (T.pgen_comp D'.P.isLB g₁ g₂) hr (q.xe.trans p.xe) hc (fun x z J J'' hJ hJ'' => by`. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB z`. Establish `v₁` using `PsiEvenPull.psi_pull p (q.xe x) (genMap hj) z hJ hJ'`.
+
+Establish `v₂` using `psi_val q _ _ (fracMap_sq hj) hJ' hJ'' x`. Establish `hx : D''.xK x ≫ proj q = genMap hj ≫ D'.xK (q.xe x)` using `by show (jK R'' ≫ (D''.c x).left) ≫ proj q = genMap hj ≫ jK R' ≫ (D'.c (q.xe x)).left`. Rewrite using `[Category.assoc, q.c_pr, ← Category.assoc, ← Category.assoc, ← sj]`. Establish `t : om w z J J'' (D''.xK x) = om p.w z J J' (D''.xK x ≫ proj q) * om q.w z J' J'' (D''.xK x)` using `(congrArg (fun u => Geo.Tor.gw w (D''.xK x) z (J u) (J'' (D''.xK x))) (Category.assoc (D''.xK x) (proj q) (proj p)).symm).trans (T _ _ z _ _ _ (hJ ((D''.xK x ≫ proj q) ≫ proj p)) (hJ' (D''.xK x ≫ proj q)) (hJ'' _))`. Express the relevant statement in the definitionally equal form `_ = (om p.w z J J' (genMap hj ≫ D'.xK (q.xe x)))⁻¹ * val (D'.psi (q.xe x)) (genMap hj) z J' at v₁`.
+
+Rewrite `v₁` using `[v₂, Category.id_comp, ← hx, ← _root_.mul_assoc, ← mul_inv, ← t]`. Conclude with `v₁)`.
+-/
 theorem exists_comp_proj {R R' R'' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
     [CommRing R''] [IsDomain R''] {i : R →+* R'} {j : R' →+* R''} (hj : Function.Injective j)
     {D : DegPre R} {D' : DegPre R'} {D'' : DegPre R''} (p : IsPullDeg i D D') (q : IsPullDeg j D' D'') :
@@ -54,6 +65,27 @@ theorem exists_comp_proj {R R' R'' : Type} [CommRing R] [IsDomain R] [CommRing R
       rw [v₂, Category.id_comp, ← hx, ← _root_.mul_assoc, ← mul_inv, ← t] at v₁
       exact v₁)
 
+/- English proof (translation)
+Introduce `K L _ _ _ β E₁ E₂ E' h₁ h₂`. Use `haveI := h₁.e_hom`. Use `haveI := h₂.e_hom`. Take `⟨K', _, io, Ω, _, j, l, φ, hfin, hl, hφ, hcomp⟩` from `GlobalTheory.T.isomorphism_mon_hom_descends_finite_extension K L β E₁.P.A E₂.P.A E₁.P.isAb E₂.P.isAb (h₁.e.symm ≪≫ h₂.e) (by dsimp; infer_instance)`. Establish `hP` using `GlobalTheory.polBaseChange_holds`.
+
+Take `⟨E₃, h₃, -, -⟩` from `GlobalTheory.DegPull.exists_isPullDeg hP K K' io E₁ ⊤ (FieldPull.nonempty_psiOn_field E₁) trivial`. Take `⟨E₄, h₄, -, -⟩` from `GlobalTheory.DegPull.exists_isPullDeg hP K K' io E₂ ⊤ (FieldPull.nonempty_psiOn_field E₂) trivial`. Take `⟨E'', h', -, -⟩` from `GlobalTheory.DegPull.exists_isPullDeg hP L Ω j E' ⊤ (FieldPull.nonempty_psiOn_field E') trivial`. Choose the witnesses or unpack the hypotheses as in `⟨c₁, pc₁⟩ : ∃ c : IsPullDeg (l.comp io) E₁ E'', proj c = proj h' ≫ proj h₁ := by`. Rewrite using `[hl]`.
+
+Conclude with `exists_comp_proj j.injective h₁ h'`. Choose the witnesses or unpack the hypotheses as in `⟨c₂, pc₂⟩ : ∃ c : IsPullDeg (l.comp io) E₂ E'', proj c = proj h' ≫ proj h₂ := by`. Rewrite using `[hl]`. Conclude with `exists_comp_proj j.injective h₂ h'`. Take `⟨g₃, pg₃⟩` from `FieldPull.exists_isPullDeg_cancel K K' Ω io l E₁ E₃ E'' h₃ c₁`.
+
+Take `⟨g₄, pg₄⟩` from `FieldPull.exists_isPullDeg_cancel K K' Ω io l E₂ E₄ E'' h₄ c₂`. Establish `w₁ : proj h' ≫ E'.P.A.hom = E''.P.A.hom ≫ spMap j` using `(pull_grp h').1.w`. Establish `w₃ : proj g₃ ≫ E₃.P.A.hom = E''.P.A.hom ≫ spMap l` using `(pull_grp g₃).1.w`. Establish `w₄ : proj g₄ ≫ E₄.P.A.hom = E''.P.A.hom ≫ spMap l` using `(pull_grp g₄).1.w`. Establish `key : proj g₃ ≫ h₃.e.hom.left ≫ φ.hom.left = proj g₄ ≫ h₄.e.hom.left`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `hcomp E''.P.A.left (proj h' ≫ h₁.e.hom.left) (proj g₃ ≫ h₃.e.hom.left) E''.P.A.hom (by simp only [Category.assoc]; exact (pc₁.symm.trans pg₃.symm)) (by rw [Category.assoc]; exact (congrArg (proj h' ≫ ·) (Over.w h₁.e.hom)).trans w₁) (by rw [Category.assoc]; exact (congrArg (proj g …` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Rewrite using `[← this]`. Establish `e₁ : h₁.e.hom.left ≫ (h₁.e.symm ≪≫ h₂.e).hom.left = h₂.e.hom.left`.
+
+Rewrite using `[Iso.trans_hom, Iso.symm_hom, Over.comp_left, ← Category.assoc, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.id_comp]`. Rewrite using `[reassoc_of% e₁]`. Conclude with `(pg₄.trans pc₂).symm`. Simplify using `only [Category.assoc]`. Establish `a` using `Over.w φ.hom`.
+
+Establish `b` using `Over.w h₃.e.hom`. Establish `c` using `Over.w h₄.e.hom`. Use `erw [a, b, w₃, c, w₄]`. Set `Ψ : E₃.P.A ≅ E₄.P.A` to `h₃.e ≪≫ φ ≪≫ h₄.e.symm`. Use `haveI := h₃.e_hom`.
+
+Use `haveI := h₄.e_hom`. Use `haveI := hφ`. Establish `hΨ : IsMonHom Ψ.hom` using `by dsimp [Ψ]; infer_instance`. Establish `cΨ : g₃.e.hom.left ≫ pullback.fst E₃.P.A.hom (specOf l) ≫ Ψ.hom.left = g₄.e.hom.left ≫ pullback.fst E₄.P.A.hom (specOf l)`. Establish `k2 : (proj g₃ ≫ h₃.e.hom.left ≫ φ.hom.left) ≫ h₄.e.inv.left = proj g₄`.
+
+Rewrite using `[key, Category.assoc, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.comp_id]`. Use `Eq.trans ?_ k2` and prove the remaining obligations. Simplify using `only [Ψ, Iso.trans_hom, Iso.symm_hom, Over.comp_left, Category.assoc]`. Take `⟨q⟩` from `GlobalTheory.T.nonempty_pullDeg_id_of_common_fieldExtension K' Ω l E₄ E₃ E'' g₄ g₃ Ψ hΨ cΨ`. Establish `hh` using `nonempty_isPullDeg_comp_of_injective K K' K' io (RingHom.id K') E₂ E₄ E₃ (fun _ _ h => h) ⟨h₄⟩ ⟨q⟩`.
+
+Rewrite `hh` using `[RingHom.id_comp]`. Conclude with `⟨K', inferInstance, io, E₃, hfin, ⟨h₃⟩, hh⟩`.
+-/
 theorem exists_finite_common_pull : ∀ (K L : Type) [Field K] [CharZero K] [Field L] (β : K →+* L) (E₁ E₂ : DegPre K) (E' : DegPre L), IsPullDeg β E₁ E' → IsPullDeg β E₂ E' → ∃ (K' : Type) (_ : Field K') (io : K →+* K') (E₃ : DegPre K'), io.Finite ∧ Nonempty (IsPullDeg io E₁ E₃) ∧ Nonempty (IsPullDeg io E₂ E₃) := by
   intro K L _ _ _ β E₁ E₂ E' h₁ h₂
   haveI := h₁.e_hom

@@ -27,17 +27,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show ((1 : (AE D)ˣ) : AE D) = _`. Rewrite using `[map_one, Units.val_one]`. Simplify using the standard rewrite rules.
+-/
 theorem isDetRoot_one (V : HSp D) : IsDetRoot V (1 : GA D V) (1 : (AE D)ˣ) := by
   show ((1 : (AE D)ˣ) : AE D) = _
   rw [map_one, Units.val_one]
   simp
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [GlobalTheory.AdelicLatMove.mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+-/
 theorem suppPl_one (ε : AF D.host.F) (V : HSp D) : SuppPl ε V (1 : GA D V) := fun i j => by
   rw [GlobalTheory.AdelicLatMove.mt_one, sub_self, Matrix.zero_apply, mul_zero]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [GlobalTheory.AdelicLatMove.mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+-/
 theorem suppAt_one (e : AE D) (V : HSp D) : Formalism.L2.Theta.SuppAt e V (1 : GA D V) := fun i j => by
   rw [GlobalTheory.AdelicLatMove.mt_one, sub_self, Matrix.zero_apply, mul_zero]
 
+/- English proof (translation)
+Take `⟨η, hη⟩` from `hη`. Establish `hψ` using `hW.std`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨om₀, h0, hv, -⟩` from `GlobalTheory.T.exists_weilDatum_powers_unramifiedEtaTilde D ψ hψ S T θ hθ ΛS ΛT hS hT η hη`. Take `⟨om₁, h1, htw⟩` from `GlobalTheory.T.exists_weilDatum_twist_heckeCharacters D ψ hψ S T _ _ ((η ^ S.rank)⁻¹ * χS) ((η ^ T.rank)⁻¹ * 1) om₀ h0 (GlobalTheory.VacInert.hecke_quot hW.hecS h0.hecS) (GlobalTheory.VacInert.hecke_quot hW.hecT h0.hecT) (GlobalTheory.VacInert.resEta_quot hW.resS h0.resS) (Global …`.
+
+Rewrite `h1` using `[mul_inv_cancel_left, mul_inv_cancel_left]`. Take `⟨x, hx, xi, -, x1, x2⟩` from `GlobalTheory.VacInert.exists_unit_root hε S g hg`. Establish `hlat : ∀ u, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v) ↔ actO S T g 1 u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v)` using `fun u => by`. Rewrite using `[GlobalTheory.VecInvInert.mem_place_iff hε.1, GlobalTheory.VecInvInert.mem_place_iff hε.1, ← hst, ← GlobalTheory.FinWeilO.actO_smul, (GlobalTheory.VecInvInert.act_injective g 1).eq_iff]`. Establish `hfix : ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun w => w = v), heisO ψ S T u f = f` using `fun u hu => by`.
+
+Take `⟨a, ha, ha2⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hε`. Establish `e1 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, ha2, GlobalTheory.VecInvInert.idem_smul_eq hε.1 hu]`. Establish `e2` using `hvac.1 (a • u) (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a ha u (GlobalTheory.PlaceModel.latO_le_top _ hu))`. Rewrite `e2` using `[e1]`. Then use the resulting hypothesis.
+
+Rewrite using `[GlobalTheory.T.weilDatum_unique_on_thetaFunctions D ψ hψ S T χS 1 om om₁ hW h1 _ f hf, htw g 1 x 1 hx (isDetRoot_one T), LinearMap.smul_apply, hv v ε hε g 1 hg (suppPl_one ε T) hlat f hf hfix]`. Simplify using `[hη.2.1 x xi x1 x2]`.
+-/
 theorem inert_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {χS : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS 1 om)
@@ -73,6 +91,11 @@ theorem inert_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodul
     hv v ε hε g 1 hg (suppPl_one ε T) hlat f hf hfix]
   simp [hη.2.1 x xi x1 x2]
 
+/- English proof (translation)
+Establish `hlat` using `mem_latO_iff frS frT (h := (1 : GA D T)) hg.2 (Stab.one T βT).2`. Distinguish the cases in `hsp : ∃ e', IsSplitIdem D e' ∧ e' + cA D e' = algebraMap (AF D.host.F) (AE D) ε`. Take `⟨e', he', hb⟩` from `hsp`. Use `GlobalTheory.T.splitPlace_weilRep_latticeVacuum_character D ψ S T ΛS ΛT χS 1 om hW hS hT e' he' g 1 (fun i j => by rw [hb]; exact sg i j) (suppAt_one e' T) hlat _ _ (isDetAt_detAt e' he'.1 S g) (isDetAt_detAt e' he'.1 T 1) f hf hvac` as an intermediate fact. Rewrite using `[this, splitFacO, map_one, map_one, MonoidHom.one_apply, inv_one, one_mul, Circle.coe_one, one_smul]`.
+
+Conclude with `inert_one hW hS hT hη ⟨hε, hsp⟩ g sg hlat f hf hvac`.
+-/
 theorem local_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {χS : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS 1 om)
@@ -90,6 +113,17 @@ theorem local_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodul
     rw [this, splitFacO, map_one, map_one, MonoidHom.one_apply, inv_one, one_mul, Circle.coe_one, one_smul]
   · exact inert_one hW hS hT hη ⟨hε, hsp⟩ g sg hlat f hf hvac
 
+/- English proof (translation)
+Set `H : Subgroup (GA D S × GA D T)` to `{ carrier := {p | om (p.1, 1) f = f} one_mem' := by`. Express the relevant statement in the definitionally equal form `om ((1 : GA D S), (1 : GA D T)) f = f`. Rewrite using `[Prod.mk_one_one, map_one, Module.End.one_apply]`. Use the proof step `mul_mem' := fun {p q} hp hq => by`. Express the relevant statement in the definitionally equal form `om ((p * q).1, (1 : GA D T)) f = f`.
+
+Establish `e : ((p * q).1, (1 : GA D T)) = (p.1, (1 : GA D T)) * (q.1, 1)` using `Prod.ext rfl (mul_one 1).symm`. Establish `hq' : om (q.1, 1) f = f` using `hq`. Establish `hp' : om (p.1, 1) f = f` using `hp`. Rewrite using `[e, map_mul, Module.End.mul_apply, hq', hp']`. Use the proof step `inv_mem' := fun {p} hp => by`.
+
+Express the relevant statement in the definitionally equal form `om (p⁻¹.1, (1 : GA D T)) f = f`. Establish `hp' : om (p.1, 1) f = f` using `hp`. Establish `e : (p⁻¹.1, (1 : GA D T)) = (p.1, (1 : GA D T))⁻¹` using `Prod.ext rfl inv_one.symm`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcl : IsClosed (H : Set (GA D S × GA D T))`. Establish `: (H : Set (GA D S × GA D T)) = ⋂ w, {p | om (p.1, 1) f w = f w}`. Use extensionality with `p`. Rewrite using `[Set.mem_iInter]`. Conclude with `funext_iff`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun w => isClosed_eq ((hW.om_cont f hf w).comp (continuous_fst.prodMk continuous_const)) continuous_const`. Conclude with `GlobalTheory.T.mem_closedSubgroup_of_localStabilizerPairs D S T βS βT H hcl (fun v ε hε g' h' hg' _ sg' _ => local_one hW hS hT hη frS frT hε g' hg' sg' f hf hvac) g 1 hg (Stab.one T βT)`.
+-/
 theorem vac_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {χS : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS 1 om)
@@ -148,6 +182,19 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
 open Classical in
 
+/- English proof (translation)
+Introduce `D ψ θ A H χA om sA sH hθ hη hW cA' cH hrk β Z hPl βH f₀ f hfrH hv hthf κ hκ`. Take `⟨hf, e, he, hΘ⟩` from `hv`. Establish `dA` using `frameLat_isSelfDualC A`. Establish `dH` using `frameLat_isSelfDualC H`. Establish `hlev : Formalism.IndefR.Lev.finE A κ ∈ Formalism.L2.DIV.lev D.sp.cm A.gram β (prinDat A Z)` using `hκ.2`.
+
+Establish `sg : Formalism.IndefR.Lev.finE A κ ∈ Formalism.L2.DIV.St β` using `Formalism.L2.DIV.parLev_St hlev.1`. Establish `sh : Formalism.IndefR.Lev.finE H 1 ∈ Formalism.L2.DIV.St βH` using `by rw [map_one]; exact Subgroup.one_mem _`. Establish `h1 : om (κ, 1) f₀ = (1 : ℂ) • f₀`. Rewrite using `[one_smul]`. Conclude with `GlobalTheory.SmallFix.vac_one hW dA dH hη hPl.frame hfrH f₀ hf.2.theta hf.2.lat κ ⟨hκ.1, sg⟩`.
+
+Establish `hoG` using `GlobalTheory.T.levelPlacesDatum_mul_right_source_level D A.rank H.rank (prinDat A Z) (fun _ => 1) (fun PP => Formalism.L2.DIV.redFn β PP (Formalism.IndefR.Lev.finE A κ)) (fun PP hP => Formalism.L2.DIV.parLev_g hlev.1 hP) hlev.2`. Establish `h2` using `GlobalTheory.T.weilRep_theta_datum_half_eq_smul D ψ A H χA 1 om hW e _ f₀ _ f (GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D ψ hW.std A H (frameLat A) (frameLat H) dA dH e (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPart_idemSum he) …`. Take `⟨i1, i2⟩` from `GlobalTheory.T.frameMatrix_movedHom_integral_reductions D A H β βH κ 1 sg sh x`. Establish `i0 : Formalism.IndefR.Datum.IsHalf e (actO A H κ⁻¹ 1⁻¹ x) ↔ Formalism.IndefR.Datum.IsHalf e x` using `⟨fun H' => GlobalTheory.AdelicLatMove.actO_actO_inv A H κ 1 x ▸ GlobalTheory.SplitHecke.isHalf_actO κ 1 H', fun H' => GlobalTheory.SplitHecke.isHalf_actO _ _ H'⟩`. Distinguish the cases in `hx : Formalism.IndefR.Datum.IsHalf e x ∧ Formalism.IndefR.Datum.IsIntM (frMapO A H β βH x)`.
+
+Use `beta_reduce`. Rewrite using `[if_pos hx, if_pos ⟨i0.2 hx.1, i1.2 hx.2⟩, funext (i2 hx.2), GlobalTheory.ChainOnto.StepLevLaw.omegaQ_empty, GlobalTheory.ChainOnto.StepLevLaw.omegaQ_empty, mul_one, mul_one]`. Simplify using `only [map_one, Formalism.L2.DIV.redFn_one, inv_one, Units.val_one, Matrix.one_mul]`. Rewrite using `[hoG]`. Use `congr 1`.
+
+Rewrite using `[show (prinDat A Z).s = 0 from rfl, Finset.range_zero]`. Simplify using `only [Finset.prod_empty, Finset.prod_const_one, MonoidHom.one_apply, inv_one, mul_one]`. Conclude with `(congrArg Units.val (show (prinDat A Z).P.chi _ = 1 from rfl)).trans Units.val_one`. Use `beta_reduce`. Rewrite using `[if_neg hx, if_neg fun H' => hx ⟨i0.1 H'.1, i1.1 H'.2⟩, mul_zero])`.
+
+Rewrite using `[h2, mul_one, one_smul]`.
+-/
 theorem prin_fixes_stepVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A H : HSp D) (χA : (AE D)ˣ →* Circle) (om : WRep A H) (sA : RealMat A) (sH : RealMat H), IsInfFam θ → (∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) → IsWeilDatumO ψ A H χA 1 om → (∀ τ, IsCartanInv (gramAt D A τ) (sA τ)) → (∀ τ, IsCartanInv (gramAt D H τ) (sH τ)) → A.rank ≤ H.rank → ∀ (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)), Places A β Z → ∀ (βH : GL (Fin H.rank) (Formalism.IndefR.Lev.EAf D)) (f₀ f : WO A H → ℂ), Formalism.L2.DIV.IsFrame βH (frameLat H) → IsStepVecOf ψ θ A H sA sH (frameLat A) (frameLat H) β βH (prinDat A Z) (fun _ => 1) ∅ (fun _ => 1) f₀ f → IsThetaFunO ψ A H f → ∀ κ ∈ prin A β Z, om (κ, 1) f = f := by
   intro D ψ θ A H χA om sA sH hθ hη hW cA' cH hrk β Z hPl βH f₀ f hfrH hv hthf κ hκ
   obtain ⟨hf, e, he, hΘ⟩ := hv

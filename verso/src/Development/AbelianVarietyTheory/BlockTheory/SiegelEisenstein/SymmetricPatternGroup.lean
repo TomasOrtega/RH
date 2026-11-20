@@ -10,6 +10,11 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData
 section Pattern
 variable {F : Type*} [Field F] [Finite F] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `e : g * h = (g - 1) * (h - 1) + g + h - 1` using `by noncomm_ring`. Establish `z : ((g - 1) * (h - 1)) r s = 0`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : A r l`.
+
+Simplify using `[hh l s (hp l h1)]`. Simplify using `[hg r l h1]`. Rewrite using `[e]`. Simplify using `[z]`.
+-/
 theorem mul_apply_of_no_path {A : ι → ι → Prop} {g h : Matrix ι ι F}
     (hg : ∀ r s, ¬ A r s → g r s = (1 : Matrix ι ι F) r s) (hh : ∀ r s, ¬ A r s → h r s = (1 : Matrix ι ι F) r s)
     (hi : ∀ r, ¬ A r r) {r s : ι} (hp : ∀ l, A r l → ¬ A l s) :
@@ -39,6 +44,9 @@ def patGrp (A : ι → ι → Prop) (hi : ∀ r, ¬ A r r) (ht : ∀ r l s, A r 
         rw [inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel h0, pow_orderOf_eq_one]
       rw [e]; exact M.pow_mem hg _ }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_patGrp {A : ι → ι → Prop} {hi ht} {g : GL ι F} :
     g ∈ patGrp F A hi ht ↔ ∀ r s, ¬ A r s → g.val r s = (1 : Matrix ι ι F) r s := Iff.rfl
 
@@ -62,9 +70,15 @@ def epsU : Subgroup (GL (Fin κ ⊕ Fin (2 * ρ + 1)) F) :=
 
 def SymFree (r s : Fin κ ⊕ Fin (2 * ρ + 1)) : Prop := symmetricBlockIndex κ ρ r < symmetricBlockIndex κ ρ s ∨ EpsLt κ ρ r s
 
+/- English proof (translation)
+Apply the tactic sequence `rcases r with i | i <;> simp [SymFree, EpsLt]`.
+-/
 theorem symFree_irrefl (r : Fin κ ⊕ Fin (2 * ρ + 1)) : ¬ SymFree κ ρ r r := by
   rcases r with i | i <;> simp [SymFree, EpsLt]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases r with i | i <;> rcases l with l | l <;> rcases s with j | j <;>`. Apply the tactic sequence `simp only [SymFree, EpsLt, symmetricBlockIndex, Sum.elim_inl, Sum.elim_inr, or_false, lt_irrefl, false_or] <;> omega`.
+-/
 theorem symFree_trans (r l s : Fin κ ⊕ Fin (2 * ρ + 1)) : SymFree κ ρ r l → SymFree κ ρ l s → SymFree κ ρ r s := by
   rcases r with i | i <;> rcases l with l | l <;> rcases s with j | j <;>
     simp only [SymFree, EpsLt, symmetricBlockIndex, Sum.elim_inl, Sum.elim_inr, or_false, lt_irrefl, false_or] <;> omega
@@ -74,6 +88,21 @@ def symGrp : Subgroup (GL (Fin κ ⊕ Fin (2 * ρ + 1)) F) :=
 
 variable {F κ ρ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg'` using `mem_patGrp.1 hg`. Establish `ht : g.val.toBlocks₁₁.BlockTriangular id` using `fun i j hij => by`. Establish `: ¬ i < j` using `not_lt.2 (le_of_lt hij)`.
+
+Establish `hne : i ≠ j` using `ne_of_gt hij`. Simplify `hg' (.inl i) (.inl j) (by simpa [SymFree, EpsLt, symmetricBlockIndex] using hij.le)` using `[toBlocks₁₁, Matrix.one_apply, hne]`. Establish `hd : (fromBlocks g.val.toBlocks₁₁ 0 0 1 : Matrix (Fin κ ⊕ Fin (2 * ρ + 1)) _ F).det ≠ 0`. Rewrite using `[det_fromBlocks_zero₂₁, det_of_upperTriangular ht, det_one, mul_one]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations.
+
+Use `hg' (.inl i) (.inl i) (symFree_irrefl κ ρ _)` as an intermediate fact. Simplify using `only [toBlocks₁₁, of_apply, this]`. Simplify using the standard rewrite rules. Set `u : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd`. Establish `uv : u.val = fromBlocks g.val.toBlocks₁₁ 0 0 1` using `rfl`.
+
+Establish `hu : u ∈ epsU F κ ρ` using `mem_patGrp.2 <| by`. Introduce and unpack `(i | i) (j | j) h`. Rewrite using `[uv]; exact hg' _ _ (by simpa [SymFree, symmetricBlockIndex] using h)`. Simplify using `[uv]`. Simplify using `[uv]`.
+
+Simplify using `[uv, Matrix.one_apply]`. Establish `hu' : u⁻¹ ∈ symGrp F κ ρ` using `mem_patGrp.2 fun r s h => mem_patGrp.1 (inv_mem hu) r s fun h' => h (Or.inr h')`. Use `⟨g * u⁻¹, mem_patGrp.2 fun r s h => ?_, u, hu, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h2 : EpsLt κ ρ r s`. Apply the tactic sequence `rcases r with i | i <;> rcases s with j | j <;> try exact h2.elim`.
+
+Rewrite using `[← u.mul_inv, Units.val_mul, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `(l | l) -`. Both sides reduce to the same expression. Rewrite using `[mem_patGrp.1 (inv_mem hu) (.inr l) (.inl j) (by simp [EpsLt])]; simp`.
+
+Conclude with `mem_patGrp.1 (mul_mem hg hu') r s fun h' => h'.elim h h2`. Introduce and unpack `⟨n, hn, u, hu, rfl⟩`. Conclude with `mul_mem (mem_patGrp.2 fun r s h => mem_patGrp.1 hn r s fun h' => h (Or.inl h')) (mem_patGrp.2 fun r s h => mem_patGrp.1 hu r s fun h' => h (Or.inr h'))`.
+-/
 theorem mem_symGrp_iff {g : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F} :
     g ∈ symGrp F κ ρ ↔ ∃ n ∈ radN F κ ρ, ∃ u ∈ epsU F κ ρ, g = n * u := by
   constructor
@@ -117,6 +146,11 @@ def sumB (g : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F) : F :=
 def sumEps (g : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F) : F :=
   ∑ i : Fin κ, ∑ j : Fin κ, if j.val = i.val + 1 then g.val (.inl i) (.inl j) else 0
 
+/- English proof (translation)
+Simplify using `only [sumB, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Establish `hne : i ≠ j` using `by rintro rfl; omega`. Rewrite using `[Units.val_mul, mul_apply_of_no_path (mem_patGrp.1 hg) (mem_patGrp.1 hh) (symFree_irrefl κ ρ)]`.
+
+Simplify using `[hne]`. Apply the tactic sequence `rintro (l | l) <;>`. Apply the tactic sequence `simp only [SymFree, EpsLt, symmetricBlockIndex, Sum.elim_inl, Sum.elim_inr, or_false] <;> omega`. Simplify using the standard rewrite rules.
+-/
 theorem sumB_mul {g h : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F} (hg : g ∈ symGrp F κ ρ) (hh : h ∈ symGrp F κ ρ) :
     sumB (g * h) = sumB g + sumB h := by
   simp only [sumB, ← Finset.sum_add_distrib]
@@ -129,6 +163,11 @@ theorem sumB_mul {g h : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F} (hg : g ∈ symGrp F
         simp only [SymFree, EpsLt, symmetricBlockIndex, Sum.elim_inl, Sum.elim_inr, or_false] <;> omega
   · simp
 
+/- English proof (translation)
+Simplify using `only [sumEps, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Establish `hne : i ≠ j` using `by rintro rfl; omega`. Rewrite using `[Units.val_mul, mul_apply_of_no_path (mem_patGrp.1 hg) (mem_patGrp.1 hh) (symFree_irrefl κ ρ)]`.
+
+Simplify using `[hne]`. Apply the tactic sequence `rintro (l | l) <;>`. Apply the tactic sequence `simp only [SymFree, EpsLt, symmetricBlockIndex, Sum.elim_inl, Sum.elim_inr, or_false, lt_irrefl, false_or] <;> omega`. Simplify using the standard rewrite rules.
+-/
 theorem sumEps_mul {g h : GL (Fin κ ⊕ Fin (2 * ρ + 1)) F} (hg : g ∈ symGrp F κ ρ) (hh : h ∈ symGrp F κ ρ) :
     sumEps (g * h) = sumEps g + sumEps h := by
   simp only [sumEps, ← Finset.sum_add_distrib]
@@ -153,6 +192,11 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 
 def IsUnif (ϖ : kˣ) : Prop := ∀ x : k, valuation k x < 1 ↔ valuation k x ≤ valuation k (ϖ : k)
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (p : k) ≠ 0` using `fun h => hp.ne_zero (Subtype.ext h)`. Establish `h1 : valuation k (p : k) < 1` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 hp.not_isUnit`. Use `⟨Units.mk0 _ h0, fun x => ⟨fun hx => ?_, fun hx => lt_of_le_of_lt hx h1⟩⟩` and prove the remaining obligations. Establish `hm : (⟨x, hx.le⟩ : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 hx`.
+
+Rewrite `hm` using `[hp.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hm`. Establish `: x = (a : k) * p` using `(congrArg Subtype.val ha).symm`. Rewrite using `[this, map_mul]`. Conclude with `mul_le_of_le_one_left' a.2`.
+-/
 theorem exists_isUnif : ∃ ϖ : kˣ, IsUnif ϖ := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
   have h0 : (p : k) ≠ 0 := fun h => hp.ne_zero (Subtype.ext h)
@@ -166,6 +210,11 @@ theorem exists_isUnif : ∃ ϖ : kˣ, IsUnif ϖ := by
   rw [this, map_mul]
   exact mul_le_of_le_one_left' a.2
 
+/- English proof (translation)
+Establish `h1` using `(hϖ _).1 ((residue_eq_iff_lt a b).1 h)`. Establish `h0 : 0 < valuation k (ϖ : k)` using `by simp [zero_lt_iff]`. Establish `h2 : ψ (((a : k) - b) / ϖ) = 1` using `(hψ _).2 (by`. Rewrite using `[map_div₀, Units.val_one, map_one]`. Conclude with `(div_le_one₀ h0).2 h1) _ le_rfl`.
+
+Rewrite using `[show (a : k) / ϖ = ((a : k) - b) / ϖ + b / ϖ by ring, AddChar.map_add_eq_mul, h2, one_mul]`.
+-/
 theorem psi_congr {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : IsUnif ϖ) {a b : 𝒪[k]}
     (h : IsLocalRing.residue 𝒪[k] a = IsLocalRing.residue 𝒪[k] b) : ψ ((a : k) / ϖ) = ψ ((b : k) / ϖ) := by
   have h1 := (hϖ _).1 ((residue_eq_iff_lt a b).1 h)
@@ -183,6 +232,9 @@ def psiZero {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : 
     rw [← AddChar.map_add_eq_mul, ← add_div, ← Subring.coe_add]
     exact psi_congr hψ hϖ (by simp only [map_add, Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k]))])
 
+/- English proof (translation)
+The claim follows from `psi_congr hψ hϖ (Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k])) _)`.
+-/
 theorem psiZero_residue {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : IsUnif ϖ) (u : 𝒪[k]) :
     psiZero hψ hϖ (IsLocalRing.residue 𝒪[k] u) = ψ ((u : k) / ϖ) :=
   psi_congr hψ hϖ (Function.surjInv_eq (IsLocalRing.residue_surjective (R := 𝒪[k])) _)
@@ -199,9 +251,15 @@ def symChain {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ :
 def fCoset (ϖ : kˣ) (κ τ s : ℕ) : Set (XIx (Fin κ) (Fin τ) (s + 1) → k) :=
   {y | (ϖ : k) • y - Pi.single (.inl (.inr 0)) 1 ∈ box (XIx (Fin κ) (Fin τ) (s + 1)) ϖ}
 
+/- English proof (translation)
+Simplify using `[fCoset, smul_smul]`.
+-/
 example (ϖ : kˣ) (κ τ s : ℕ) : (ϖ : k)⁻¹ • Pi.single (.inl (.inr 0)) (1 : k) ∈ fCoset ϖ κ τ s := by
   simp [fCoset, smul_smul]
 
+/- English proof (translation)
+Introduce `h` and use `by have := (hϖ _).2 (mem_box.1 h (.inl (.inr 0))) simp at this`.
+-/
 example {ϖ : kˣ} (hϖ : IsUnif ϖ) (κ τ s : ℕ) : (fun _ => (0 : k)) ∉ fCoset ϖ κ τ s := fun h => by
   have := (hϖ _).2 (mem_box.1 h (.inl (.inr 0)))
   simp at this

@@ -9,6 +9,13 @@ namespace GlobalTheory.SphCyclic
 
 variable {L : Type} [Field L] [NumberField L] {P : HeightOneSpectrum (𝓞 L)}
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective L P (WithZero.exp (-1 : ℤ))`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Conclude with `WithZero.exp_ne_zero (hπ.symm.trans (map_zero _))`. Use `set m := WithZero.log (Valued.v (x : P.adicCompletion L)) with hm`.
+
+Establish `hx : Valued.v (x : P.adicCompletion L) = WithZero.exp m` using `(WithZero.exp_log (by simp)).symm`. Establish `h1 : nrm π = (qP P : ℝ)⁻¹` using `(h (Units.mk0 π hπ0)).2 hπ`. Establish `h2` using `(h (x * (Units.mk0 π hπ0) ^ m)).1 (by show Valued.v ((x * (Units.mk0 π hπ0) ^ m : (P.adicCompletion L)ˣ) : P.adicCompletion L) = 1`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_mk0, hπ, hx, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Use the proof step `simp)`.
+
+Rewrite `h2` using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_mk0, h1, _root_.inv_zpow]`. Conclude with `eq_of_div_eq_one h2`.
+-/
 theorem nrm_eq {nrm : AbsoluteValue (P.adicCompletion L) ℝ} (h : IsNrm P nrm) (x : (P.adicCompletion L)ˣ) :
     nrm x = (qP P : ℝ) ^ (WithZero.log (Valued.v (x : P.adicCompletion L))) := by
   obtain ⟨π, hπ⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective L P (WithZero.exp (-1 : ℤ))
@@ -26,6 +33,19 @@ theorem nrm_eq {nrm : AbsoluteValue (P.adicCompletion L) ℝ} (h : IsNrm P nrm) 
   rw [Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_mk0, h1, _root_.inv_zpow] at h2
   exact eq_of_div_eq_one h2
 
+/- English proof (translation)
+Introduce `L _ _ P nrm hn ν hν r t j _`. Use `letI := GlobalTheory.LocalData.complRel P`. Use `haveI := GlobalTheory.LocalData.isLocalField P`. Use `haveI : (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (P.adicCompletion L)) (Valued.v : Valuation (P.adicCompletion L) (WithZero (Multiplicative ℤ)))`.
+
+Establish `hK : GlobalTheory.SplitWeil.KO (P.adicCompletion L) (Fin (j * t)) = GLint (OP P) (j * t)`. Use extensionality with `g`. Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Simplify using `only [he.le_one_iff_le_one, Valuation.mem_integer_iff]`. Conclude with `Iff.rfl`.
+
+Take `⟨V, _, _, ρ, h1, h2, v, h3, h4, φ, κ, h5, h6, h7, h8, h9, h10⟩` from `@exists_rep_eqBlocks (P.adicCompletion L) _ _ _ _ j t (instMeasGL _) (instBorelGL _) (fun a => ν (a + 1)) (fun a => (hν _).unitary) (fun a x hx => (hν _).unr x (he.eq_one_iff_eq_one.1 hx)) (GL (Fin r) (P.adicCompletion L)) _ _`. Rewrite `h4`, `h6`, `h9`, `h10` using `[hK]`. Use `⟨V, inferInstance, inferInstance, ρ, h1, h2, v, h3, fun k₁ _ => h4 k₁, φ, κ, fun b hb k hk => ?_, h8.toIsMulLeftInvariant, h9, h10⟩` and prove the remaining obligations. Establish `hd : ∀ x, b.val x x ≠ 0`. Use `b.det_ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[det_of_upperTriangular hb]`. Conclude with `fun x => Finset.prod_ne_zero_iff.1 this x (Finset.mem_univ _)`. Establish `h11` using `h5 b (fun x => Units.mk0 _ (hd x)) (fun x y h => hb h) (fun _ => rfl) 1`. Rewrite `h11` using `[mul_one, h7, mul_one]`. Rewrite using `[h6 b k hk, h11]`.
+
+Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `h12 : GlobalTheory.SplitWeil.nabs (P.adicCompletion L) (Units.mk0 _ (hd x)) = nrm (b.val x x)` using `(GlobalTheory.LGrp.BorelCompletion.nabs_completion P _).trans (nrm_eq hn (Units.mk0 _ (hd x))).symm`. Rewrite using `[h12, satC, chi0, dif_neg (hd x), mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add (nrm.pos (hd x))]`. Use `congr 3`. Establish `: ((x : ℕ) : ℝ) = (((x : ℕ) % t : ℕ) : ℝ) + (((x : ℕ) / t : ℕ) : ℝ) * t`.
+
+Conclude with `(Nat.mod_add_div' (x : ℕ) t).symm` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_isUnrM : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (nrm : AbsoluteValue (P.adicCompletion L) ℝ), IsNrm P nrm → ∀ (ν : ℕ → (P.adicCompletion L)ˣ →* ℂˣ), (∀ i, IsNu P (ν i)) → ∀ r t j : ℕ, 1 ≤ t → ∃ (V : Type) (_ : NormedAddCommGroup V) (_ : InnerProductSpace ℂ V) (ρ : GL (Fin r) (P.adicCompletion L) × GL (Fin (j * t)) (P.adicCompletion L) →* (V ≃ₗᵢ[ℂ] V)), IsUnrM (OP P) nrm r (j * t) (satC nrm ν t (j * t)) ρ := by
   intro L _ _ P nrm hn ν hν r t j _
   letI := GlobalTheory.LocalData.complRel P

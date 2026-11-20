@@ -6,6 +6,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Introduce `N _ ψ hψ`. Take `⟨h1, h2, h3⟩` from `h N ψ hψ`. Conclude with `⟨h1, le_trans h2 (mul_le_mul_of_nonneg_right hC (Real.log_nonneg hY)), fun y hy => h3 y ⟨hy.1, le_trans hy.2 hX⟩⟩`.
+-/
 private theorem boxAll_mono {Q C C' τ Y X X' : ℝ} {f : ℕ → ℂ} {M : ℕ} (hC : C ≤ C') (hY : 1 ≤ Y) (hX : X' ≤ X)
     (h : BoxAll Q C τ Y X f M) : BoxAll Q C' τ Y X' f M := by
   intro N _ ψ hψ
@@ -13,6 +16,9 @@ private theorem boxAll_mono {Q C C' τ Y X X' : ℝ} {f : ℕ → ℂ} {M : ℕ}
   exact ⟨h1, le_trans h2 (mul_le_mul_of_nonneg_right hC (Real.log_nonneg hY)),
     fun y hy => h3 y ⟨hy.1, le_trans hy.2 hX⟩⟩
 
+/- English proof (translation)
+Use `⟨P.filter p, Finset.filter_subset _ _, ?_, fun q hq => (Finset.mem_filter.1 hq).2⟩` and prove the remaining obligations. Establish `h1` using `h (P.filter fun q => ¬ p q) (Finset.filter_subset _ _) (fun q hq => (Finset.mem_filter.1 hq).2)`. Establish `h2 : ((P.filter p).card : ℝ) + ((P.filter fun q => ¬ p q).card : ℝ) = P.card`. Conclude with `Finset.card_filter_add_card_filter_not (s := P) p` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem share_of_bad {P : Finset ℕ} {η : ℝ} (p : ℕ → Prop)
     (h : ∀ B ⊆ P, (∀ q ∈ B, ¬ p q) → (B.card : ℝ) ≤ η * P.card) :
     ∃ G ⊆ P, (1 - η) * P.card ≤ G.card ∧ ∀ q ∈ G, p q := by
@@ -23,6 +29,15 @@ private theorem share_of_bad {P : Finset ℕ} {η : ℝ} (p : ℕ → Prop)
     exact_mod_cast Finset.card_filter_add_card_filter_not (s := P) p
   linarith
 
+/- English proof (translation)
+Take `⟨C1, hC1, h1⟩` from `stage1`. Take `⟨C2, hC2, h2⟩` from `stage2`. Use `⟨max C1 C2, lt_max_of_lt_left hC1, fun ε τ K η N₀ hε hε52 hτ hK hη hN₀ => ?_⟩` and prove the remaining obligations. Take `⟨Y1, hY1⟩` from `h1 ε τ K η N₀ hε hε52 hτ hK hη hN₀`. Take `⟨Y2, hY2⟩` from `h2 ε τ K η N₀ hε hε52 hτ hK hη hN₀`.
+
+Use `⟨max (max Y1 Y2) 1, fun Y hY X z' hX hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `hYa : Y ≥ Y1` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hY`. Establish `hYb : Y ≥ Y2` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hY`. Establish `hYo : 1 ≤ Y` using `le_trans (le_max_right _ _) hY`. Take `⟨hne1, hb1⟩` from `hY1 Y hYa`.
+
+Take `⟨G₁, hG₁s, hG₁c, hG₁⟩` from `share_of_bad (fun q => GoodQ N₀ C1 τ Y (Y ^ K) (Y ^ (ε / 5)) q) hb1`. Establish `hS` using `hY2 Y hYb z' hz1 hz2`. Use `⟨G₁, hG₁s, hne1.card_pos, hG₁c, fun q hq => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ξ`. Conclude with `boxAll_mono (le_max_left _ _) hYo hX (hG₁ q hq ξ)`.
+
+Take `⟨hne2, hb2⟩` from `hS q (hG₁s hq)`. Take `⟨G₂, hG₂s, hG₂c, hG₂⟩` from `share_of_bad (fun d => GoodD N₀ C2 τ Y (Y ^ K) (Y ^ (ε / 5)) z' q d) hb2`. Conclude with `⟨G₂, hG₂s, hne2.card_pos, hG₂c, fun d hd ξ a ha => boxAll_mono (le_max_right _ _) hYo hX (hG₂ d hd ξ a ha)⟩`.
+-/
 theorem pair_share :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,
       ∀ X z' : ℝ, X ≤ Y ^ K → Y ^ (ε / 5) * Real.log Y ^ 2 ≤ z' → z' ≤ K ^ 2 * (Y ^ (ε / 5) * Real.log Y ^ 2) →

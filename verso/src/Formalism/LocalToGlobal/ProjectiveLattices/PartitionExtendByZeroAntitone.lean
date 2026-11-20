@@ -52,9 +52,17 @@ end Par
 
 def ext0 {p : ℕ} (f : Fin p → ℕ) (i : ℕ) : ℕ := if h : i < p then f ⟨i, h⟩ else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold ext0; split_ifs <;> rfl`.
+-/
 theorem matrixExtendByZero_add {p : ℕ} (f g : Fin p → ℕ) (i : ℕ) : ext0 (fun k => f k + g k) i = ext0 f i + ext0 g i := by
   unfold ext0; split_ifs <;> rfl
 
+/- English proof (translation)
+Introduce `i k hik`. Unfold `ext0`. Distinguish the cases in `hk : k < p`. Rewrite using `[dif_pos hk, dif_pos (lt_of_le_of_lt hik hk)]`. Conclude with `hf hik`.
+
+Rewrite using `[dif_neg hk]`. Conclude with `Nat.zero_le _`.
+-/
 theorem partitionExtendByZero_antitone {p : ℕ} {f : Fin p → ℕ} (hf : Antitone f) : Antitone (ext0 f) := by
   intro i k hik
   unfold ext0
@@ -68,6 +76,11 @@ def wtA {j : ℕ} (w : WeightFamilies.Wt D j) (x : (D.host.E →+* ℂ) × ℕ) 
   ∑ t : D.what₂.Tau, ((if x.1 = DV.tauEmb D t then ext0 (w.aP t) x.2 else 0) +
     if x.1 = conjEmb (DV.tauEmb D t) then ext0 (w.aM t) x.2 else 0)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [wtA, Pi.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h1 : ext0 ((WeightAlgebra.wadd w w').aP t) x.2 = ext0 (w.aP t) x.2 + ext0 (w'.aP t) x.2` using `matrixExtendByZero_add _ _ _`. Establish `h2 : ext0 ((WeightAlgebra.wadd w w').aM t) x.2 = ext0 (w.aM t) x.2 + ext0 (w'.aM t) x.2` using `matrixExtendByZero_add _ _ _`.
+
+Rewrite using `[h1, h2]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem wtA_wadd {j : ℕ} (w w' : WeightFamilies.Wt D j) : wtA (WeightAlgebra.wadd w w') = wtA w + wtA w' := by
   funext x
   simp only [wtA, Pi.add_apply, ← Finset.sum_add_distrib]
@@ -77,8 +90,16 @@ theorem wtA_wadd {j : ℕ} (w w' : WeightFamilies.Wt D j) : wtA (WeightAlgebra.w
   rw [h1, h2]
   split_ifs <;> omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem n_wadd {j : ℕ} (w w' : WeightFamilies.Wt D j) : (WeightAlgebra.wadd w w').n = w.n + w'.n := rfl
 
+/- English proof (translation)
+Use `⟨fun τ i k hik => ?_, w.n_even⟩` and prove the remaining obligations. Simplify using `only [wtA]`. Use `Finset.sum_le_sum fun t _ => add_le_add ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aPlus_antitone t) hik`.
+
+Conclude with `le_rfl`. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aM_anti t) hik`. Conclude with `le_rfl`.
+-/
 theorem dom_wtA {j : ℕ} (w : WeightFamilies.Wt D j) : Dom (wtA w) w.n := by
   refine ⟨fun τ i k hik => ?_, w.n_even⟩
   simp only [wtA]

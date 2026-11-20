@@ -10,5 +10,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf GlobalTheory.Unf.FB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint | exact GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint | (intros; apply GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_mem_orb_rat_eq_x0 : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ), ∃ x ∈ orb B, (rat x : Mx D B.V.rank (σ + 1)) = x0 B := by
   first | exact @GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint | exact GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint | (intros; apply GlobalTheory.Unf.FB.exists_rationalOrbit_point_eq_besselBasePoint <;> assumption)

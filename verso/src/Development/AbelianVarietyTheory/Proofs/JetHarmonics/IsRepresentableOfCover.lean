@@ -13,6 +13,9 @@ variable {X Y Z : Scheme.{0}}
 def pb (a : Y ⟶ X) (U : X.Opens) (W : Y.Opens) (h : W ≤ a ⁻¹ᵁ U) : Γ(X, U)ˣ →* Γ(Y, W)ˣ :=
   Units.map (a.appLE U W h).hom
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `((a.appLE U V h ≫ b.appLE V W h').hom) (x : Γ(X, U)) = _`. Rewrite using `[Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+-/
 lemma pb_pb (b : Z ⟶ Y) (a : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W : Z.Opens}
     (h : V ≤ a ⁻¹ᵁ U) (h' : W ≤ b ⁻¹ᵁ V) (x : Γ(X, U)ˣ) :
     pb b V W h' (pb a U V h x) = pb (b ≫ a) U W (h'.trans (b.preimage_mono h)) x := by
@@ -21,15 +24,27 @@ lemma pb_pb (b : Z ⟶ Y) (a : Y ⟶ X) {U : X.Opens} {V : Y.Opens} {W : Z.Opens
   rw [Scheme.Hom.appLE_comp_appLE]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 lemma pb_congr {a b : Y ⟶ X} (e : a = b) {U : X.Opens} {W : Y.Opens} (h : W ≤ a ⁻¹ᵁ U)
     (h' : W ≤ b ⁻¹ᵁ U) (x : Γ(X, U)ˣ) : pb a U W h x = pb b U W h' x := by
   subst e; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_pullU (a : Y ⟶ X) {U : X.Opens} {W : Y.Opens} (h : W ≤ a ⁻¹ᵁ U) (x : Γ(X, U)ˣ) :
     res h (pullU a U x) = pb a U W h x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_eq_pb {U W : X.Opens} (h : W ≤ U) (x : Γ(X, U)ˣ) : res h x = pb (𝟙 X) U W h x := rfl
 
+/- English proof (translation)
+Rewrite using `[← res_eq_pb (le_refl U)]`. Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 _)).hom _ = _`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 lemma pb_id {U : X.Opens} (h : U ≤ (𝟙 X) ⁻¹ᵁ U) (x : Γ(X, U)ˣ) : pb (𝟙 X) U U h x = x := by
   rw [← res_eq_pb (le_refl U)]
   ext
@@ -37,18 +52,32 @@ lemma pb_id {U : X.Opens} (h : U ≤ (𝟙 X) ⁻¹ᵁ U) (x : Γ(X, U)ˣ) : pb 
   rw [CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `(pb_pb (𝟙 Y) a h h' x).trans (pb_congr (Category.id_comp a) _ _ _)`.
+-/
 lemma res_pb (a : Y ⟶ X) {U : X.Opens} {V W : Y.Opens}
     (h : V ≤ a ⁻¹ᵁ U) (h' : W ≤ V) (x : Γ(X, U)ˣ) :
     res h' (pb a U V h x) = pb a U W (le_trans h' h) x :=
   (pb_pb (𝟙 Y) a h h' x).trans (pb_congr (Category.id_comp a) _ _ _)
 
+/- English proof (translation)
+The claim follows from `(pb_pb a (𝟙 X) h h' x).trans (pb_congr (Category.comp_id a) _ _ _)`.
+-/
 lemma pb_res (a : Y ⟶ X) {U V : X.Opens} {W : Y.Opens}
     (h : V ≤ U) (h' : W ≤ a ⁻¹ᵁ V) (x : Γ(X, U)ˣ) :
     pb a V W h' (res h x) = pb a U W (h'.trans (a.preimage_mono h)) x :=
   (pb_pb a (𝟙 X) h h' x).trans (pb_congr (Category.comp_id a) _ _ _)
 
+/- English proof (translation)
+The claim follows from `pb_id h x`.
+-/
 lemma res_self {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)ˣ) : res h x = x := pb_id h x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `a.isIso_app U hU` as an intermediate fact. Establish `e : a.appLE U (a ⁻¹ᵁ U) le_rfl = a.app U` using `(a.app_eq_appLE).symm`. Establish `h2 : pb a U (a ⁻¹ᵁ U) le_rfl = (Units.mapEquiv (asIso (a.app U)).commRingCatIsoToRingEquiv.toMulEquiv).toMonoidHom`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `(a.appLE U (a ⁻¹ᵁ U) le_rfl).hom _ = _`. Rewrite using `[e]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(Units.mapEquiv _).bijective`.
+-/
 lemma pb_bijective (a : Y ⟶ X) [IsOpenImmersion a] {U : X.Opens} (hU : U ≤ a.opensRange)
     {W : Y.Opens} (h : W = a ⁻¹ᵁ U) : Function.Bijective (pb a U W h.le) := by
   subst h
@@ -62,6 +91,9 @@ lemma pb_bijective (a : Y ⟶ X) [IsOpenImmersion a] {U : X.Opens} (hU : U ≤ a
   rw [h2]
   exact (Units.mapEquiv _).bijective
 
+/- English proof (translation)
+Use `ext`. Conclude with `X.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc _ _ fun i => congrArg Units.val (h i)`.
+-/
 lemma unit_ext_opens {J : Type*} {V : X.Opens} (W : J → X.Opens) (hW : ∀ i, W i ≤ V)
     (hc : V ≤ iSup W) {u v : Γ(X, V)ˣ}
     (h : ∀ i, res (hW i) u = res (hW i) v) : u = v := by
@@ -69,6 +101,11 @@ lemma unit_ext_opens {J : Type*} {V : X.Opens} (W : J → X.Opens) (hW : ∀ i, 
   exact X.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc _ _
     fun i => congrArg Units.val (h i)
 
+/- English proof (translation)
+Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => (u i).val) (fun i j => congrArg Units.val (hh i j))`. Take `⟨s', hs', -⟩` from `X.sheaf.existsUnique_gluing' W V (fun i => homOfLE (hW i)) hc (fun i => ((u i)⁻¹).val) (fun i j => congrArg Units.val (show res (inf_le_left : W i ⊓ W j ≤ W i) (u i)⁻¹ = res inf_le_right (u j)⁻¹ by`. Rewrite using `[map_inv, map_inv, hh]))`. Establish `e : (show Γ(X, V) from s) * (show Γ(X, V) from s') = 1`. Apply `X.sheaf.eq_of_locally_eq' W V (fun i => homOfLE (hW i)) hc` to reduce the goal to its premises.
+
+Introduce `i`. Use `show (X.presheaf.map (homOfLE (hW i)).op).hom _ = (X.presheaf.map (homOfLE (hW i)).op).hom _`. Rewrite using `[map_mul, map_one]`. Conclude with `(congrArg₂ (· * ·) (hs i) (hs' i)).trans (u i).mul_inv`. Conclude with `⟨⟨s, s', e, (mul_comm _ _).trans e⟩, fun i => Units.ext (hs i)⟩`.
+-/
 lemma unit_glue_opens {J : Type*} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ V)
     (hc : V ≤ iSup W) (u : ∀ i, Γ(X, W i)ˣ)
     (hh : ∀ i j, res (inf_le_left : W i ⊓ W j ≤ W i) (u i) = res inf_le_right (u j)) :
@@ -92,16 +129,25 @@ section Cover
 
 variable {J : Type*} {T : J → Scheme.{0}} (a : ∀ i, T i ⟶ X) [∀ i, IsOpenImmersion (a i)]
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨i, y, rfl⟩ := hc x exact Opens.mem_iSup.2 ⟨i, hx, y, rfl⟩`.
+-/
 lemma le_iSup_range (hc : ∀ x : X, ∃ i y, a i y = x) (V : X.Opens) :
     V ≤ ⨆ i, V ⊓ (a i).opensRange := fun x hx => by
   obtain ⟨i, y, rfl⟩ := hc x
   exact Opens.mem_iSup.2 ⟨i, hx, y, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Conclude with `⟨fun h => ⟨h, y, rfl⟩, fun h => h.1⟩`.
+-/
 lemma preimage_inf_range (i : J) (V : X.Opens) :
     a i ⁻¹ᵁ V = a i ⁻¹ᵁ (V ⊓ (a i).opensRange) := by
   ext y
   exact ⟨fun h => ⟨h, y, rfl⟩, fun h => h.1⟩
 
+/- English proof (translation)
+Use `unit_ext_opens _ (fun i => inf_le_left) (le_iSup_range a hc V) fun i => ?_` and prove the remaining obligations. Apply `(pb_bijective (a i) inf_le_right (preimage_inf_range a i V)).1` to reduce the goal to its premises. Rewrite using `[pb_res, pb_res]`. Conclude with `h i`.
+-/
 lemma unit_ext_cover (hc : ∀ x : X, ∃ i y, a i y = x) {V : X.Opens} {u v : Γ(X, V)ˣ}
     (h : ∀ i, pb (a i) V _ le_rfl u = pb (a i) V _ le_rfl v) : u = v := by
   refine unit_ext_opens _ (fun i => inf_le_left) (le_iSup_range a hc V) fun i => ?_
@@ -109,6 +155,17 @@ lemma unit_ext_cover (hc : ∀ x : X, ∃ i y, a i y = x) {V : X.Opens} {u v : �
   rw [pb_res, pb_res]
   exact h i
 
+/- English proof (translation)
+Use `choose w hw using fun i => (pb_bijective (a i) inf_le_right (preimage_inf_range a i V)).2 (u i)`. Take `⟨s, hs⟩` from `unit_glue_opens V _ (fun i => inf_le_left) (le_iSup_range a hc V) w (by`. Introduce `i j`. Use `set W := V ⊓ (a i).opensRange ⊓ (V ⊓ (a j).opensRange) with hW`. Establish `hi : Set.range W.ι ⊆ Set.range (a i)`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun x hx => hx.1.2`. Establish `hj : Set.range W.ι ⊆ Set.range (a j)`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun x hx => hx.2.2`.
+
+Establish `ei` using `IsOpenImmersion.lift_fac (a i) W.ι hi`. Establish `ej` using `IsOpenImmersion.lift_fac (a j) W.ι hj`. Establish `hT : (⊤ : W.toScheme.Opens) = W.ι ⁻¹ᵁ W` using `by simp`. Establish `hV : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ V` using `hT.le.trans (W.ι.preimage_mono (inf_le_left.trans inf_le_left))`. Apply `(pb_bijective W.ι (U := W) (by simp) hT).1` to reduce the goal to its premises.
+
+Use `h i j W _ _ (ei.trans ej.symm) (by rw [← Scheme.Hom.comp_preimage, ei]; exact hV) (by rw [← Scheme.Hom.comp_preimage, ej]; exact hV)` as an intermediate fact. Rewrite `this` using `[← hw, ← hw, pb_pb, pb_pb]`. Rewrite using `[pb_res, pb_res]`. Conclude with `(pb_congr ei.symm _ _ _).trans (this.trans (pb_congr ej _ _ _)))`. Use `⟨s, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw, ← hs, pb_res]`.
+-/
 lemma unit_glue_cover (hc : ∀ x : X, ∃ i y, a i y = x) (V : X.Opens)
     (u : ∀ i, Γ(T i, a i ⁻¹ᵁ V)ˣ)
     (h : ∀ i j (S : Scheme.{0}) (b : S ⟶ T i) (c : S ⟶ T j), b ≫ a i = c ≫ a j →
@@ -140,6 +197,25 @@ lemma unit_glue_cover (hc : ∀ x : X, ∃ i y, a i y = x) (V : X.Opens)
 
 end Cover
 
+/- English proof (translation)
+Set `A` to `MonoidAlgebra ℤ (Multiplicative (FreeAbelianGroup K))`. Set `ε : K → Aˣ` to `fun k => (MonoidAlgebra.of ℤ (Multiplicative (FreeAbelianGroup K))).toHomUnits (Multiplicative.ofAdd (FreeAbelianGroup.of k))`. Establish `hext : ∀ (R : Type) [CommRing R] (φ ψ : A →+* R), (∀ k, φ (ε k) = ψ (ε k)) → φ = ψ`. Introduce `R _ φ ψ h`. Establish `: (φ.toMonoidHom.comp (MonoidAlgebra.of ℤ _)).toHomUnits = (ψ.toMonoidHom.comp (MonoidAlgebra.of ℤ _)).toHomUnits`.
+
+Apply `MonoidHom.toAdditiveRight.injective` to reduce the goal to its premises. Apply `FreeAbelianGroup.lift.symm.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Conclude with `congrArg Additive.ofMul (Units.ext (h k))`. Apply `MonoidAlgebra.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `b`. Conclude with `(eq_intCast (φ.comp MonoidAlgebra.singleOneRingHom) b).trans (eq_intCast (ψ.comp MonoidAlgebra.singleOneRingHom) b).symm`. Introduce `g`. Conclude with `congrArg (fun f => (f g : R)) this`. Establish `hex : ∀ (R : Type) [CommRing R] (u : K → Rˣ), ∃ φ : A →+* R, ∀ k, φ (ε k) = u k`.
+
+Introduce `R _ u`. Use `⟨(MonoidAlgebra.lift ℤ R _ ((Units.coeHom R).comp (MonoidHom.toAdditiveRight.symm (FreeAbelianGroup.lift fun k => Additive.ofMul (u k))))).toRingHom, fun k => ?_⟩` and prove the remaining obligations. Simplify using `[ε, A]`. Set `i` to `Scheme.ΓSpecIso (CommRingCat.of A)`. Use `⟨Spec (.of A), fun k => Units.map i.inv.hom (ε k), fun Z u => ?_⟩` and prove the remaining obligations.
+
+Establish `hpb : ∀ (c : Z ⟶ Spec (.of A)) k, (pb c ⊤ ⊤ le_rfl (Units.map i.inv.hom (ε k))).val = (i.inv ≫ c.appTop).hom (ε k)`. Introduce `c k`. Establish `e : c.appLE ⊤ ⊤ le_rfl = c.appTop` using `(c.app_eq_appLE (U := ⊤)).symm`. Express the relevant statement in the definitionally equal form `(c.appLE ⊤ ⊤ le_rfl).hom _ = _`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Take `⟨φ, hφ⟩` from `hex _ u`. Use `existsUnique_of_exists_of_unique ⟨Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), fun k => ?_⟩ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hpb, ← hφ]`.
+
+Establish `: i.inv ≫ (Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop = CommRingCat.ofHom φ`. Simplify using `[i, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `c c' h h'`.
+
+Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi i.inv]`. Use `ext1`. Apply `hext` to reduce the goal to its premises. Introduce `k`.
+
+Rewrite using `[← hpb, ← hpb, h, h']`.
+-/
 theorem exists_universal_units (K : Type) :
     ∃ (T : Scheme.{0}) (e : K → Γ(T, ⊤)ˣ), ∀ (Z : Scheme.{0}) (u : K → Γ(Z, ⊤)ˣ),
       ∃! c : Z ⟶ T, ∀ k, pb c ⊤ ⊤ le_rfl (e k) = u k := by
@@ -188,6 +264,23 @@ theorem exists_universal_units (K : Type) :
     intro k
     rw [← hpb, ← hpb, h, h']
 
+/- English proof (translation)
+Set `G : Sheaf Scheme.zariskiTopology.{0} Type` to `⟨F, (isSheaf_iff_isSheaf_of_type _ _).2 hF⟩`. Set `f : ∀ i, yoneda.obj (T i) ⟶ G.1` to `fun i => yonedaEquiv.symm (y i)`. Establish `hp : ∀ i (Z : Scheme.{0}) (c : Z ⟶ T i), p.app _ (F.map c.op (y i)) = c ≫ π i ≫ (W i).ι`. Introduce `i Z c`. Rewrite using `[← hπ]`.
+
+Conclude with `ConcreteCategory.congr_hom (p.naturality c.op) (y i)`. Establish `hf : ∀ i, IsOpenImmersion.presheaf (f i)`. Introduce `i`. Establish `: IsPullback (f i) (yoneda.map (π i)) p (yoneda.map (W i).ι)`. Apply `IsPullback.of_forall_isPullback_app` to reduce the goal to its premises.
+
+Introduce and unpack `⟨Z⟩`. Rewrite using `[Types.isPullback_iff]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Conclude with `(hp i Z c).trans (Category.assoc _ _ _).symm`.
+
+Introduce and unpack `c c' ⟨h1, -⟩`. Conclude with `(h i Z (F.map (Quiver.Hom.op c) (y i)) (c ≫ π i) ((hp i Z c).trans (Category.assoc _ _ _).symm)).unique rfl h1.symm`. Introduce `x b hb`. Take `⟨c, hc, -⟩` from `h i Z x b hb`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `c ≫ π i = b`. Rewrite using `[← cancel_mono (W i).ι, Category.assoc, ← hp, hc]`. Conclude with `hb`. Conclude with `(MorphismProperty.relative_isStableUnderBaseChange @IsOpenImmersion).of_isPullback this.flip (MorphismProperty.relative_map (inferInstanceAs (IsOpenImmersion (W i).ι)))`. Establish `: Presheaf.IsLocallySurjective Scheme.zariskiTopology (Sigma.desc f)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `Z x`. Set `q : Z ⟶ X` to `p.app _ x`. Set `𝒰` to `Z.openCoverOfIsOpenCover (fun i => q ⁻¹ᵁ W i) (by`. Rewrite using `[IsOpenCover, ← Scheme.Hom.preimage_iSup, hW]`.
+
+Use the proof step `rfl)`. Use `GrothendieckTopology.superset_covering _ ?_ 𝒰.mem_grothendieckTopology` and prove the remaining obligations. Rewrite using `[Sieve.ofArrows, Sieve.generate_le_iff]`. Introduce and unpack `- - ⟨i⟩`. Take `⟨c, hc, -⟩` from `h i _ (F.map (q ⁻¹ᵁ W i).ι.op x) (q ∣_ W i) (by`.
+
+Rewrite using `[morphismRestrict_ι]`. Conclude with `ConcreteCategory.congr_hom (p.naturality (q ⁻¹ᵁ W i).ι.op) x)`. Use `⟨(Sigma.ι (fun i => yoneda.obj (T i)) i).app _ c, ?_⟩` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (NatTrans.congr_app (Sigma.ι_desc f i) _) c).trans hc`. Conclude with `Scheme.LocalRepresentability.isRepresentable hf`.
+-/
 theorem isRepresentable_of_cover (F : Scheme.{0}ᵒᵖ ⥤ Type)
     (hF : Presieve.IsSheaf Scheme.zariskiTopology F) (p : F ⟶ yoneda.obj X)
     {J : Type} (W : J → X.Opens) (hW : iSup W = ⊤) (T : J → Scheme.{0})

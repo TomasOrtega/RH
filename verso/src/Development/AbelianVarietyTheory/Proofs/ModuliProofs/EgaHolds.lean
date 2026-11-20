@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.extension_of_abelian_schemes GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1`.
+-/
 theorem LN.ega_holds : GlobalTheory.LN.Ega :=
   GlobalTheory.T.extension_of_abelian_schemes GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1
 

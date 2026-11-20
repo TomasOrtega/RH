@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvAdm.indicator_sub_mem_scaledInt_mem_SB | exact GlobalTheory.EvAdm.indicator_sub_mem_scaledInt_mem_SB | (intros; apply GlobalTheory.EvAdm.indicator_sub_mem_scaledInt_mem_SB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.scaled_integral_indicator_schwartz_bruhat : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F)
     (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →
     Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ a} (fun _ => (1 : ℂ)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by

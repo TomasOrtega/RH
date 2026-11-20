@@ -15,6 +15,11 @@ section Charts
 
 variable {X X' Y Y' Y'' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => h ≫ φ k` from `funext hφ`. Take `⟨J, hJ, -⟩` from `exists_good L hL z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `e` using `(val_corr hJ H r).trans (val_pull hJ t h r)`. Rewrite `e` using `[val_of t (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `m₀` using `hJ.mem (fun k => h ≫ φ k) r`.
+
+Establish `m₁ : r z ∈ LB.wchart L (fun k => h ≫ φ k) p` using `Set.mem_iInter.2 hp`. Establish `a` using `gen_trans ht' r z m₁ m₀`. Establish `b` using `gen_trans ht (r ≫ h) z (j := p) (j' := fun k => J (r ≫ h ≫ φ k)) (Set.mem_iInter.2 hp) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 m₀ k)`. Use `a.trans (Eq.trans (congrArg₂ (· * ·) ?_ e) b.symm)` and prove the remaining obligations. Simplify using `only [trF, Category.assoc]`.
+-/
 theorem gm_of_corr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} {h : Y' ⟶ Y}
     (hφ : ∀ k, φ' k = h ≫ φ k) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε)} (ht : t.IsGen)
     (ht' : t'.IsGen) (H : LB.Gen.Corr L φ' ε (fun k => h ≫ φ k) ε t' (LB.pullGen L φ ε t h)) {Z : Scheme.{0}}
@@ -32,6 +37,11 @@ theorem gm_of_corr (hL : L.IsLB) {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)}
   refine a.trans (Eq.trans (congrArg₂ (· * ·) ?_ e) b.symm)
   simp only [trF, Category.assoc]
 
+/- English proof (translation)
+Unfold `GenThrough`. Use `(and_congr_left' (forall_congr' fun k => by rw [Category.id_comp, hφ])).trans (and_congr_right fun hc => ?_)` and prove the remaining obligations. Use `forall₅_congr fun Z r z p q => forall_congr' fun hp => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, gm_of_corr hL hφ ht ht' H r z p fun k => ?_]`. Establish `e : φ' k (r z) = F (ψ k (r z))` using `congrArg (fun g => g (r z)) ((hφ k).trans (hc k).symm)`.
+
+Rewrite using `[e]`. Conclude with `hp k`.
+-/
 theorem genThrough_iff (hL : L.IsLB) (w : LB.Iso L' (L.pull F)) {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)}
     {ψ : K → (Y' ⟶ X')} {ε : K → ℤ} {h : Y' ⟶ Y}
     (hφ : ∀ k, φ' k = h ≫ φ k) {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε)} (ht : t.IsGen)
@@ -50,6 +60,9 @@ end Charts
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'} {D : DegPre R}
   {D' : DegPre R'}
 
+/- English proof (translation)
+The claim follows from `and_congr Iff.rfl (forall_congr' fun x => ⟨fun ⟨hψ, hm⟩ => ⟨hψ, (maps_iff hD.w _ _ _ (g'.s x) (g.s (hD.xe x)) (𝟙 _) _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).1 hm⟩, fun ⟨hψ, hm⟩ => ⟨hψ, (maps_iff hD.w _ _ _ (g'.s x) (g.s (hD.xe x)) (𝟙 _) _ (GeneratorPullback …`.
+-/
 theorem isPullGtF_iff_genThrough (hD : IsPullDeg φ D D') {F : Type} [Field F] [Algebra (FractionRing R) F]
     [Algebra (FractionRing R') F] (g : GtPtF D F) (g' : GtPtF D' F) :
     IsPullGtF φ hD F g g' ↔ g'.b.left ≫ prOf hD = g.b.left ∧
@@ -60,6 +73,13 @@ theorem isPullGtF_iff_genThrough (hD : IsPullDeg φ D D') {F : Type} [Field F] [
       fun ⟨hψ, hm⟩ => ⟨hψ, (maps_iff hD.w _ _ _ (g'.s x) (g.s (hD.xe x)) (𝟙 _) _
         (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).2 hm⟩⟩)
 
+/- English proof (translation)
+Establish `b : q.g.b = extMap f hf ≫ p.g.b` using `Over.OverMorphism.ext h.2.1`. Establish `a₁ : (cP D _ χ * q.g.b).left = spMap f ≫ (cP D _ χ * p.g.b).left`. Rewrite using `[b, ← comp_cP D (extMap f hf), ← MonObj.comp_mul]`. Both sides reduce to the same expression. Establish `a₂ : (cP D (TF (R` using `R) F') χ).left = spMap f ≫ (cP D (TF (R := R) F) χ).left := by`.
+
+Rewrite using `[← comp_cP D (extMap f hf)]`. Both sides reduce to the same expression. Establish `a₃ : (1 : TF (R` using `R) F' ⟶ D.P.A).left = spMap f ≫ (1 : TF (R := R) F ⟶ D.P.A).left := by`. Rewrite using `[← MonObj.comp_one (extMap f hf)]`. Both sides reduce to the same expression.
+
+Use `fin_cases i`. Use `exacts [a₁, a₂, h.2.1, a₃]`.
+-/
 theorem gtφ_of_qkExt {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F']
     {f : F →+* F'} (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') {k : ℕ}
     {p : QkPt D F k} {q : QkPt D F' k} (h : QkExt f p q) (χ : D.X) (i : Fin 4) :
@@ -74,6 +94,9 @@ theorem gtφ_of_qkExt {F F' : Type} [Field F] [Algebra (FractionRing R) F] [Fiel
   fin_cases i
   exacts [a₁, a₂, h.2.1, a₃]
 
+/- English proof (translation)
+Rewrite using `[isPullGtF_iff_genThrough, hD.xe.eq_symm_apply, h.1, h.2.1]`. Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (forall_congr' fun x => genThrough_iff D.P.isLB hD.w (gtφ_of_qkExt (RingHom.comp_id _) h _) (p.g.isGen _) (q₀.g.isGen _) (h.2.2 _) _))`.
+-/
 theorem direct_iff (hD : IsPullDeg φ D D') [Algebra (FractionRing R) (FractionRing R')] {k : ℕ}
     {p : QkPt D (FractionRing R) k} {q₀ : QkPt D (FractionRing R') k}
     (h : QkExt (algebraMap (FractionRing R) (FractionRing R')) p q₀) (q : QkPt D' (FractionRing R') k) :
@@ -85,6 +108,13 @@ theorem direct_iff (hD : IsPullDeg φ D D') [Algebra (FractionRing R) (FractionR
   exact and_congr Iff.rfl (and_congr Iff.rfl (forall_congr' fun x =>
     genThrough_iff D.P.isLB hD.w (gtφ_of_qkExt (RingHom.comp_id _) h _) (p.g.isGen _) (q₀.g.isGen _) (h.2.2 _) _))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hK, q₀, e₀, h⟩`. Establish `hg : Function.Injective g` using `fun a b e => IsFractionRing.injective A (FractionRing A) ((algebraMap (FractionRing A) (FractionRing A')).injective (by rw [hK, hK, e]))`. Establish `hf : GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.fracMap g hg = algebraMap (FractionRing A) (FractionRing A')` using `IsLocalization.ringHom_ext (nonZeroDivisors A) (RingHom.ext fun r => (GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.fracMap_algebraMap hg r).trans (hK r).symm)`. Use `⟨hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Conclude with `(direct_iff pd e₀ q).1 h`. Introduce and unpack `⟨hg, h⟩`. Use `letI : Algebra (FractionRing A) (FractionRing A') := (GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.fracMap g hg).toAlgebra`. Take `⟨q₀, e₀, -⟩` from `existsUnique_qkExt (F' := FractionRing A') hB (algebraMap (FractionRing A) (FractionRing A')) (RingHom.comp_id _) p`.
+
+Conclude with `⟨_, GlobalTheory.IndefiniteRowSideFullHecke.SectionsThroughEpsilonPoints.fracMap_algebraMap hg, q₀, e₀, (direct_iff pd e₀ q).2 h⟩`.
+-/
 theorem isPullQk_iff (A A' : Type) [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A'] (g : A →+* A')
     (D₀ : Out.DegPre A) (D₁ : Out.DegPre A') (pd : Out.IsPullDeg g D₀ D₁) (hB : D₀.TauBimult) (k : ℕ)
     (p : Out.QkPt D₀ (FractionRing A) k) (q : Out.QkPt D₁ (FractionRing A') k) :

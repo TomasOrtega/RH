@@ -16,12 +16,18 @@ section cCsec
 
 variable {k j ρ : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `h1` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_one (k := k) (r := r)`. Establish `h` using `hf.2 [] [] (by simp) (by simp) (by simp) 1 h1`. Establish `hpos` using `gN_pos h1`. Conclude with `le_trans (mul_nonneg (Real.rpow_nonneg hpos.le _) (norm_nonneg _)) h`.
+-/
 theorem cC_c_nonneg {r : ℕ} {A : ℝ} {m : ℕ} {f : B.Mat k r → E} {c : ℝ} (hf : B.CCle A m f c) : 0 ≤ c := by
   have h1 := Formalism.QuantumDeterminants.WeylGroupFacts.uh_one (k := k) (r := r)
   have h := hf.2 [] [] (by simp) (by simp) (by simp) 1 h1
   have hpos := gN_pos h1
   exact le_trans (mul_nonneg (Real.rpow_nonneg hpos.le _) (norm_nonneg _)) h
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hff⟩` from `hf g₀ hg₀`. Use `⟨U, fun g => φ g • f' g, hU, hgU, ?_, fun g hg hgv => by simp only [hff g hg hgv]⟩` and prove the remaining obligations. Conclude with `((hφ.of_le (WithTop.coe_le_coe.2 le_top)).contDiffOn).smul hf'`.
+-/
 theorem cC_smul_ck {r : ℕ} {m : ℕ∞} {φ : B.Mat k r → ℂ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ)
     {f : B.Mat k r → E} (hf : B.CkOn m (B.GV k r) f) : B.CkOn m (B.GV k r) (fun g => φ g • f g) := by
   intro g₀ hg₀
@@ -29,6 +35,13 @@ theorem cC_smul_ck {r : ℕ} {m : ℕ∞} {φ : B.Mat k r → ℂ} (hφ : ContDi
   refine ⟨U, fun g => φ g • f' g, hU, hgU, ?_, fun g hg hgv => by simp only [hff g hg hgv]⟩
   exact ((hφ.of_le (WithTop.coe_le_coe.2 le_top)).contDiffOn).smul hf'
 
+/- English proof (translation)
+Establish `h` using `cC_smul_ck hφ hf`. Establish `hmono : B.CkOn ((Q + w.length : ℕ) : ℕ∞) (B.GV k r) (fun g => φ g • f g)`. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hff⟩` from `h g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (by exact_mod_cast hQ), hff⟩`.
+
+Establish `hR : B.Rw w (fun g => φ g • f g) = Dw (wL [] ++ wR w) (fun g => φ g • f g)`. Rewrite using `[← dLR_eq]`. Both sides reduce to the same expression. Rewrite using `[hR]`. Apply `CkOn_Dw` to reduce the goal to its premises.
+
+Introduce `x hx`. Simplify using `only [wL, wR, List.map_nil, List.nil_append, List.mem_map] at hx`. Take `⟨X, hX, rfl⟩` from `hx`. Conclude with `hw X hX`. Simplify `hmono` using `[wL, wR]`.
+-/
 theorem cC_Psi_ck {r : ℕ} {Q mm : ℕ} {φ : B.Mat k r → ℂ} (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ)
     {f : B.Mat k r → E} (hf : B.CkOn (mm : ℕ∞) (B.GV k r) f) {w : List (B.Mat k r)} (hw : ∀ X ∈ w, B.inLie k r X)
     (hQ : Q + w.length ≤ mm) : B.CkOn (Q : ℕ∞) (B.GV k r) (B.Rw w (fun g => φ g • f g)) := by
@@ -48,6 +61,23 @@ theorem cC_Psi_ck {r : ℕ} {Q mm : ℕ} {φ : B.Mat k r → ℂ} (hφ : ContDif
     exact hw X hX
   · simpa [wL, wR] using hmono
 
+/- English proof (translation)
+Establish `hu0 : ∀ X ∈ u, costP k j ρ X = 0` using `fun X hX => by simp [costP, (hu X hX).1]`. Establish `hv0 : ∀ X ∈ v, costP k j ρ X = 0` using `fun X hX => by simp [costP, (hv X hX).1]`. Establish `hle : ∀ X, costP k j ρ X ≤ j` using `fun X => by`. Unfold `costP`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Establish `hA : ((u₁ ++ v₁).map (costP k j ρ)).sum ≤ j * o`. Rewrite using `[List.map_append, List.sum_append]`. Establish `h1 : (u₁.map (costP k j ρ)).sum = 0`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hu0 X (hu₁.subset hX)`. Establish `h2 : (v₁.map (costP k j ρ)).sum ≤ ((v ++ w.map nrm).map (costP k j ρ)).sum` using `(hv₁.map _).sum_le_sum (fun _ _ => Nat.zero_le _)`. Establish `h3 : ((v ++ w.map nrm).map (costP k j ρ)).sum ≤ j * w.length`. Rewrite using `[List.map_append, List.sum_append]`.
+
+Establish `h0 : (v.map (costP k j ρ)).sum = 0`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hv0 X hX`.
+
+Rewrite using `[h0, zero_add, List.map_map]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : j * w.length ≤ j * o` using `Nat.mul_le_mul_left _ hwo`. Use linear arithmetic over natural numbers and integers. Establish `hL : (u₁ ++ v₁).length ≤ Q + o`.
+
+Use `hu₁.length_le` as an intermediate fact. Use `hv₁.length_le` as an intermediate fact. Simplify using `only [List.length_append, List.length_map] at *`. Use linear arithmetic over natural numbers and integers. Establish `key : ((u₁ ++ v₁).map (fun X => costP k j ρ X + d)).sum ≤ j * o + d * (Q + o)`.
+
+Rewrite using `[List.sum_map_add]`. Establish `hd : ((u₁ ++ v₁).map (fun _ => d)).sum = (u₁ ++ v₁).length * d` using `by simp`. Rewrite using `[hd]`. Establish `: (u₁ ++ v₁).length * d ≤ d * (Q + o)`. Rewrite using `[mul_comm]`.
+
+Conclude with `Nat.mul_le_mul_left _ hL`. Use linear arithmetic over natural numbers and integers. Conclude with `key` after adjusting the coercions.
+-/
 theorem cC_cost {Q o d : ℕ} {u v u₁ v₁ w : List (B.Mat k (j + ρ))} (hu : unitP k j ρ u) (hv : unitP k j ρ v)
     (hl : u.length + v.length ≤ Q) (hwo : w.length ≤ o) (hu₁ : u₁.Sublist u) (hv₁ : v₁.Sublist (v ++ w.map nrm)) :
     ((((u₁ ++ v₁).map (fun X => costP k j ρ X + d)).sum : ℕ) : ℝ) ≤ (j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) := by
@@ -93,6 +123,41 @@ theorem cC_cost {Q o d : ℕ} {u v u₁ v₁ w : List (B.Mat k (j + ρ))} (hu : 
     omega
   exact_mod_cast key
 
+/- English proof (translation)
+Establish `h1` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_one (k := k) (r := j + ρ)`. Establish `hCφ : 0 ≤ Cφ`. Establish `h` using `hWB [] [] (by simp) (by simp) (by simp) 1 h1`. Establish `hX` using `Real.rpow_pos_of_pos (gN_pos h1) ((0 : ℝ) + ((([] ++ [] : List (B.Mat k (j + ρ))).map (fun X => costP k j ρ X + d)).sum : ℕ))`. Assume the negation of the conclusion as `hneg`.
+
+Use `push_neg at hneg`. Use `mul_neg_of_neg_of_pos hneg hX` as an intermediate fact. Combine the linear relations using `[norm_nonneg (B.dLR [] [] φ 1)]`. Establish `hw'lie : ∀ X ∈ w.map nrm, B.unitLie k (j + ρ) X`. Introduce `X hX`.
+
+Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `nrm_unit (hw Y hY)`. Take `⟨a, ha⟩ : ∃ a : B.Mat k (j + ρ) → (E →L[ℂ] E), a = fun g => φ g • ContinuousLinearMap.id ℂ E` from `⟨_, rfl⟩`. Establish `ha_smooth : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) a`. Rewrite using `[ha]`.
+
+Conclude with `hφ.smul contDiff_const`. Establish `hφU : ∀ n : ℕ∞, B.CkOn n Set.univ φ` using `fun n g₀ _ => ⟨Set.univ, φ, isOpen_univ, trivial, hφ.contDiffOn.of_le (WithTop.coe_le_coe.2 le_top), fun _ _ _ => rfl⟩`. Use `⟨|((w.map nz).prod : ℝ)| * 2 ^ (Q + o) * Cφ, mul_nonneg (by positivity) hCφ, fun f c hf u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `hc : 0 ≤ c` using `cC_c_nonneg hf`. Establish `hgN` using `gN_ge_one hg`.
+
+Establish `hgN0` using `gN_pos hg`. Establish `hG : B.CkOn ((u.length + v.length : ℕ) : ℕ∞) (B.GV k (j + ρ)) (B.Rw (w.map nrm) (fun g => φ g • f g))` using `cC_Psi_ck hφ hf.1 (fun X hX => (hw'lie X hX).1) (by simp only [List.length_map]; omega)`. Take `⟨V, G', hVo, hgV, hG'c, hG'eq⟩` from `hG g hg`. Establish `hGV : B.CkOn ((u.length + v.length : ℕ) : ℕ∞) V (B.Rw (w.map nrm) (fun g => φ g • f g))` using `fun g₀ hg₀ => ⟨V, G', hVo, hg₀, hG'c, hG'eq⟩`. Establish `hscale` using `cA_Dw_clm (E' := E) ((((w.map nz).prod : ℝ) : ℂ) • ContinuousLinearMap.id ℂ E) hVo (wL u ++ wR v) (fun x hx => ((cB_wP hu hv) x hx).1.1) (by simpa [wL, wR] using hGV) g hg hgV`.
+
+Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply] at hscale`. Establish `hsplit : Dw (wL u ++ wR (v ++ w.map nrm)) (fun g => φ g • f g) = Dw (wL u ++ wR v) (B.Rw (w.map nrm) (fun g => φ g • f g))`. Rewrite using `[show wR (v ++ w.map nrm) = wR v ++ wR (w.map nrm) from List.map_append, ← List.append_assoc, Dw_append, Dw_wR]`. Establish `hF : (fun g => φ g • f g) = ap a f`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[ap, ha]`. Establish `hW'lie : ∀ x ∈ wL u ++ wR (v ++ w.map nrm), B.inLie k (j + ρ) x.2`. Introduce `x hx`. Simplify using `only [wL, wR, List.map_append, List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases.
+
+Conclude with `(hu X hX).1.1`. Conclude with `(hv X hX).1.1`. Conclude with `(hw'lie X (List.mem_map.2 hX)).1`. Establish `hlen : (wL u ++ wR (v ++ w.map nrm)).length = u.length + v.length + w.length`. Simplify using `[wL, wR]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hPr : Pr ∅ Set.univ ((wL u ++ wR (v ++ w.map nrm)).length : ℕ∞) a f`. Use `⟨fun g₀ _ => ⟨Set.univ, a, isOpen_univ, trivial, ha_smooth.contDiffOn.of_le (WithTop.coe_le_coe.2 le_top), fun _ _ _ => rfl⟩, fun g₀ hg₀ => ?_, fun g _ hg => absurd hg (Set.notMem_empty g)⟩` and prove the remaining obligations. Take `⟨U, f', hU, hgU, hf', hff⟩` from `hf.1 g₀ hg₀`. Use `⟨U, f', hU, hgU, hf'.of_le ?_, hff⟩` and prove the remaining obligations.
+
+Rewrite using `[hlen]`. Conclude with `(by omega : u.length + v.length + w.length ≤ mm₀)` after adjusting the coercions. Establish `hbound : ∀ w₁ w₂ : List (Bool × B.Mat k (j + ρ)), w₁.Sublist (wL u ++ wR (v ++ w.map nrm)) → w₂.Sublist (wL u ++ wR (v ++ w.map nrm)) → w₁.length + w₂.length = (wL u ++ wR (v ++ w.map nrm)).length → ‖Dw w₁ a g‖ * ‖Dw w₂ f g‖ ≤ Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ …`. Introduce `w₁ w₂ hw₁ hw₂ _`. Take `⟨u₁, v₁, hu₁, hv₁, rfl⟩` from `sub_LR hw₁`.
+
+Take `⟨u₂, v₂, hu₂, hv₂, rfl⟩` from `sub_LR hw₂`. Establish `hunit : ∀ X ∈ v ++ w.map nrm, B.unitLie k (j + ρ) X`. Introduce `X hX`. Break down `List.mem_append.1 hX with hX | hX` into its components or cases. Conclude with `cB_unitLie hv X hX`.
+
+Conclude with `hw'lie X hX`. Establish `hA : ‖Dw (wL u₁ ++ wR v₁) a g‖ ≤ Cφ * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ))`. Establish `hDa` using `cA_Dw_clm (E := ℂ) (E' := E →L[ℂ] E) (ContinuousLinearMap.smulRight (ContinuousLinearMap.id ℂ ℂ) (ContinuousLinearMap.id ℂ E)) isOpen_univ (wL u₁ ++ wR v₁) (fun x hx => hW'lie x (hw₁.subset hx)) (hφU _) g hg trivial`. Simplify using `only [ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.id_apply] at hDa`. Rewrite using `[ha, hDa, norm_smul, ← dLR_eq]`.
+
+Establish `hWB1` using `hWB u₁ v₁ (fun X hX => cB_unitLie hu X (hu₁.subset hX)) (fun X hX => hunit X (hv₁.subset hX)) (by have := hu₁.length_le; have := hv₁.length_le; simp only [List.length_append, List.length_map] at *; omega) g hg`. Establish `hcost` using `cC_cost hu hv hl hwo hu₁ hv₁ (d := d)`. Establish `hexp : B.gN g ^ ((0 : ℝ) + ((((u₁ ++ v₁).map (fun X => costP k j ρ X + d)).sum : ℕ) : ℝ)) ≤ B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ))` using `Real.rpow_le_rpow_of_exponent_le hgN (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`.
+
+Conclude with `hWB1`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hexp hCφ`. Establish `hB : ‖Dw (wL u₂ ++ wR v₂) f g‖ ≤ c * B.gN g ^ (-A₀)`. Rewrite using `[← dLR_eq]`. Establish `h2` using `hf.2 u₂ v₂ (fun X hX => cB_unitLie hu X (hu₂.subset hX)) (fun X hX => hunit X (hv₂.subset hX)) (by have := hu₂.length_le; have := hv₂.length_le; simp only [List.length_append, List.length_map] at *; omega) g hg`.
+
+Rewrite using `[Real.rpow_neg hgN0.le, ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos hgN0 _), mul_comm]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_eq_add_neg, Real.rpow_add hgN0 ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ)) (-A₀)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hleib` using `leib_bound isOpen_empty (fun g _ => Or.inr trivial) g hg (Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) - A₀)) (wL u ++ wR (v ++ w.map nrm)) a f hW'lie hPr hbound`. Establish `hM : 0 ≤ Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) - A₀)` using `mul_nonneg (mul_nonneg hCφ hc) (Real.rpow_nonneg hgN0.le _)`. Establish `hpow : (2 : ℝ) ^ (wL u ++ wR (v ++ w.map nrm)).length ≤ 2 ^ (Q + o)` using `pow_le_pow_right₀ (by norm_num) (by rw [hlen]; omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Rw_scale, dLR_eq, hscale, norm_smul, Complex.norm_real, Real.norm_eq_abs, ← hF, hsplit]`.
+
+Use `_ ≤ |((w.map nz).prod : ℝ)| * (2 ^ (wL u ++ wR (v ++ w.map nrm)).length * (Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) - A₀))) := mul_le_mul_of_nonneg_left hleib (abs_nonneg _)`. Use `_ ≤ |((w.map nz).prod : ℝ)| * (2 ^ (Q + o) * (Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) - A₀))) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hpow hM) (abs_nonneg _)`. Use `_ = |((w.map nz).prod : ℝ)| * 2 ^ (Q + o) * Cφ * c * B.gN g ^ ((j : ℝ) * o + d * ((Q + o : ℕ) : ℝ) - A₀) := by ring`.
+-/
 theorem cC_bound {d Q o mm₀ : ℕ} {A₀ : ℝ} {φ : B.Mat k (j + ρ) → ℂ}
     (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) {Cφ : ℝ}
     (hWB : WB (fun X => costP k j ρ X + d) φ (Q + o) Cφ 0) {w : List (B.Mat k (j + ρ))}

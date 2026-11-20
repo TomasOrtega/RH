@@ -4,6 +4,9 @@ namespace GlobalTheory.PiIsotypic
 
 open Representation
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Use `haveI := h`. Conclude with `bot_ne_top (α := Subrepresentation ρ) (Subrepresentation.ext (Submodule.eq_bot_of_subsingleton (p := (⊤ : Submodule K V))).symm)`.
+-/
 theorem nontrivial_of_isIrreducible {K G V : Type} [Field K] [Group G] [AddCommGroup V]
     [Module K V] (ρ : Representation K G V) (h : ρ.IsIrreducible) : Nontrivial V := by
   by_contra hV
@@ -12,6 +15,19 @@ theorem nontrivial_of_isIrreducible {K G V : Type} [Field K] [Group G] [AddCommG
   exact bot_ne_top (α := Subrepresentation ρ)
     (Subrepresentation.ext (Submodule.eq_bot_of_subsingleton (p := (⊤ : Submodule K V))).symm)
 
+/- English proof (translation)
+Establish `hex : ∃ m : ℕ, ∃ S : Subrepresentation ρ, S.toSubmodule ≠ ⊥ ∧ Module.finrank K S.toSubmodule = m` using `⟨_, ⟨⊤, fun _ _ _ => Submodule.mem_top⟩, top_ne_bot, rfl⟩`. Take `⟨S, hS, hm⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ T : Subrepresentation ρ, T.toSubmodule ≠ ⊥ → Module.finrank K S.toSubmodule ≤ Module.finrank K T.toSubmodule`. Introduce `T hT`. Rewrite using `[hm]`.
+
+Conclude with `Nat.find_min' hex ⟨T, hT, rfl⟩`. Establish `: Nontrivial S.toSubmodule` using `Submodule.nontrivial_iff_ne_bot.mpr hS`. Use `⟨S, ?_⟩` and prove the remaining obligations. Establish `: Nontrivial (Subrepresentation S.toRepresentation)` using `⟨⊥, ⊤, fun h => by`. Establish `h' : (⊥ : Submodule K S.toSubmodule) = ⊤` using `congrArg Subrepresentation.toSubmodule h`.
+
+Conclude with `bot_ne_top h'⟩`. Use `⟨fun T => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hT : T.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hT)`. Use `right`.
+
+Set `T' : Subrepresentation ρ` to `⟨T.toSubmodule.map S.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`. Conclude with `⟨S.toRepresentation g v, T.apply_mem_toSubmodule g hv, rfl⟩⟩`. Establish `hT' : T'.toSubmodule ≠ ⊥`. Introduce `h`.
+
+Apply `hT` to reduce the goal to its premises. Establish `h2 : T.toSubmodule.map S.toSubmodule.subtype = ⊥` using `h`. Rewrite `h2` using `[← Submodule.map_bot S.toSubmodule.subtype, (Submodule.map_injective_of_injective S.toSubmodule.injective_subtype).eq_iff]`. Then use the resulting hypothesis. Establish `h1` using `hmin T' hT'`. Establish `h2 : Module.finrank K T'.toSubmodule = Module.finrank K T.toSubmodule` using `Submodule.finrank_map_subtype_eq _ _`.
+
+Establish `h3 : T.toSubmodule = ⊤` using `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) (h2 ▸ h1))`. Conclude with `Subrepresentation.toSubmodule_injective h3`.
+-/
 theorem exists_irreducible_subrep {K G V : Type} [Field K] [Group G] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [Nontrivial V] (ρ : Representation K G V) :
     ∃ S : Subrepresentation ρ, S.toRepresentation.IsIrreducible := by
@@ -70,6 +86,9 @@ def subrepOrderIso {K G V V' : Type} [Field K] [Group G] [AddCommGroup V] [Modul
       a.toSubmodule ≤ b.toSubmodule
     exact Submodule.map_le_map_iff_of_injective e.injective _ _
 
+/- English proof (translation)
+Use `haveI := h`. Conclude with `(subrepOrderIso σ τ e he).symm.isSimpleOrder`.
+-/
 theorem isIrreducible_of_linearEquiv {K G V V' : Type} [Field K] [Group G] [AddCommGroup V]
     [Module K V] [AddCommGroup V'] [Module K V'] (σ : Representation K G V)
     (τ : Representation K G V') (e : V ≃ₗ[K] V') (he : ∀ g v, τ g (e v) = e (σ g v))
@@ -83,6 +102,29 @@ namespace GlobalTheory.PiIsotypic
 
 open Representation
 
+/- English proof (translation)
+Introduce `ι _ _ G _ _ W _ _ _ ρ hρ i`. Use `haveI : Nontrivial W := nontrivial_of_isIrreducible ρ hρ`. Set `ρi : Representation ℂ (G i) W` to `ρ.comp (MonoidHom.mulSingle G i)`. Take `⟨S, hS⟩` from `exists_irreducible_subrep ρi`. Set `n` to `Module.finrank ℂ S.toSubmodule`.
+
+Set `e : S.toSubmodule ≃ₗ[ℂ] (Fin n → ℂ)` to `LinearEquiv.ofFinrankEq _ _ (by simp [n])`. Set `τ : Representation ℂ (G i) (Fin n → ℂ)` to `{ toFun := fun g => e.toLinearMap ∘ₗ S.toRepresentation g ∘ₗ e.symm.toLinearMap map_one' := by ext; simp map_mul' := by intro a b; ext; simp }`. Establish `hτe : ∀ g v, τ g (e v) = e (S.toRepresentation g v)`. Introduce `g v`. Simplify using `[τ]`.
+
+Establish `hτ : τ.IsIrreducible` using `isIrreducible_of_linearEquiv S.toRepresentation τ e hτe hS`. Set `φ0 : (Fin n → ℂ) →ₗ[ℂ] W` to `S.toSubmodule.subtype ∘ₗ e.symm.toLinearMap`. Establish `hφ0 : ∀ g z, φ0 (τ g z) = ρ (Pi.mulSingle i g) (φ0 z)`. Introduce `g z`. Simplify using `[φ0, τ]`.
+
+Both sides reduce to the same expression. Establish `hinj : Function.Injective φ0` using `Subtype.val_injective.comp e.symm.injective`. Use `⟨n, τ, hτ, ⟨φ0, hinj, hφ0⟩, ?_⟩` and prove the remaining obligations. Use `set T : Set W := {y | ∃ φ : (Fin n → ℂ) →ₗ[ℂ] W, (∀ g z, φ (τ g z) = ρ (Pi.mulSingle i g) (φ z)) ∧ y ∈ LinearMap.range φ} with hTdef`. Establish `hstab : ∀ g y, y ∈ T → ρ g y ∈ T`.
+
+Introduce and unpack `g y ⟨φ, hφ, hy⟩`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hy`. Set `g' : ∀ j, G j` to `g * Pi.mulSingle i (g i)⁻¹`. Establish `hcomm : ∀ h : G i, g' * Pi.mulSingle i h = Pi.mulSingle i h * g'`. Introduce `h`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[g']`. Simplify using `[g', Pi.mulSingle_eq_of_ne hj]`.
+
+Establish `hg : g = g' * Pi.mulSingle i (g i)`. Simplify using `only [g', mul_assoc, ← Pi.mulSingle_mul, inv_mul_cancel, Pi.mulSingle_one, mul_one]`. Use `⟨ρ g' ∘ₗ φ, ?_, LinearMap.mem_range.2 ⟨τ (g i) z, ?_⟩⟩` and prove the remaining obligations. Introduce `h z'`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[hφ, ← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hφ, ← Module.End.mul_apply, ← map_mul, ← hg]`. Set `U : Subrepresentation ρ` to `⟨Submodule.span ℂ T, fun g v hv => by`. Establish `hle : Submodule.span ℂ T ≤ (Submodule.span ℂ T).comap (ρ g)` using `Submodule.span_le.2 (fun y hy => Submodule.subset_span (hstab g y hy))`.
+
+Conclude with `hle hv⟩`. Use `haveI := hρ`. Break down `eq_bot_or_eq_top U with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hspan : Submodule.span ℂ T = ⊥` using `congrArg Subrepresentation.toSubmodule h`.
+
+Use `haveI : Nontrivial (Fin n → ℂ) := nontrivial_of_isIrreducible τ hτ`. Take `⟨z, hz⟩` from `exists_ne (0 : Fin n → ℂ)`. Establish `hmem : φ0 z ∈ Submodule.span ℂ T` using `Submodule.subset_span ⟨φ0, hφ0, LinearMap.mem_range.2 ⟨z, rfl⟩⟩`. Rewrite `hmem` using `[hspan, Submodule.mem_bot]`. Conclude with `hz (hinj (by rw [hmem, map_zero]))`.
+
+Conclude with `congrArg Subrepresentation.toSubmodule h`.
+-/
 theorem isotypic_factor_of_isIrreducible_pi : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (G : ι → Type) [∀ i, Group (G i)] [∀ i, Finite (G i)] (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (∀ i, G i) W), ρ.IsIrreducible → ∀ i, ∃ (n : ℕ) (τ : Representation ℂ (G i) (Fin n → ℂ)), τ.IsIrreducible ∧ (∃ φ : (Fin n → ℂ) →ₗ[ℂ] W, Function.Injective φ ∧ ∀ g z, φ (τ g z) = ρ (Pi.mulSingle i g) (φ z)) ∧ Submodule.span ℂ {y | ∃ φ : (Fin n → ℂ) →ₗ[ℂ] W, (∀ g z, φ (τ g z) = ρ (Pi.mulSingle i g) (φ z)) ∧ y ∈ LinearMap.range φ} = ⊤ := by
   intro ι _ _ G _ _ W _ _ _ ρ hρ i
   classical

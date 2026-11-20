@@ -5,6 +5,19 @@ open Pointwise
 
 namespace GlobalTheory.GaloisLift
 
+/- English proof (translation)
+Establish `hdec' : σ • A = A` using `hdec`. Introduce `x hx`. Take `⟨s, t, hs, ht, hs1, e⟩` from `exists_den E A hx`. Establish `hcs` using `hcong s hs`. Establish `hct` using `hcong t ht`.
+
+Establish `hvt : A.valuation t ≤ 1` using `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A ht)`. Establish `hσs : A.valuation (σ s) = 1`. Use `le_antisymm ((A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (hs.map ((σ : Ω ≃ₐ[E] Ω).toAlgHom.restrictScalars ℤ)))) ?_` and prove the remaining obligations. Establish `h3 : ¬ (σ • A).valuation (σ s) < 1`. Rewrite using `[smul_valuation_lt_one_iff]`.
+
+Establish `: (σ⁻¹ : Ω ≃ₐ[E] Ω) (σ s) = s` using `by show (σ⁻¹ * σ) s = s`. Simplify using the standard rewrite rules. Rewrite using `[this, hs1]`. Conclude with `lt_irrefl 1`. Rewrite `h3` using `[hdec']`.
+
+Conclude with `not_lt.mp h3`. Establish `he' : σ s * σ x = σ t` using `by rw [← map_mul, e]`. Establish `key : s ^ q * σ s * (σ x - x ^ q) = s ^ q * (σ t - t ^ q) + t ^ q * (s ^ q - σ s)`. Rewrite using `[← he', ← e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv : A.valuation (s ^ q * σ s * (σ x - x ^ q)) < 1`. Rewrite using `[key]`. Apply `Valuation.map_add_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_mul, Valuation.map_pow, hs1, one_pow, one_mul]`. Conclude with `hct`.
+
+Rewrite using `[Valuation.map_mul, Valuation.map_sub_swap]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hv` using `[Valuation.map_mul, Valuation.map_mul, Valuation.map_pow, hs1, hσs, one_pow, one_mul, one_mul]`. Conclude with `hv`.
+-/
 theorem cong_pow_of_cong_pow_int (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) {σ : G E Ω} (hdec : σ ∈ Dec (F := E) A) {q : ℕ}
     (hcong : ∀ b : Ω, IsIntegral ℤ b → A.valuation (σ b - b ^ q) < 1) :
@@ -43,6 +56,27 @@ theorem cong_pow_of_cong_pow_int (E Ω : Type) [Field E] [NumberField E] [Field 
     one_mul] at hv
   exact hv
 
+/- English proof (translation)
+Use `haveI : NumberField K := NumberField.of_module_finite E K`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) K⟩`. Use `letI : TopologicalSpace (IntCl K Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl K Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl K Ω`.
+
+Use `haveI := isInvariant_intCl K Ω`. Use `set Q := primeBelow (F := K) A with hQ`. Use `set P := Q.under (𝓞 K) with hP`. Use `haveI : Q.LiesOver P := ⟨rfl⟩`. Establish `hint : ∀ (g : G E Ω) (b : IntCl K Ω), IsIntegral (𝓞 K) (g (b : Ω))` using `fun g b => ((isIntegral_int_of_isIntegral b.2).map (g.toAlgHom.restrictScalars ℤ)).tower_top`.
+
+Set `e : IntCl K Ω ≃+* IntCl K Ω` to `{ toFun := fun b => ⟨σ₀ b, hint σ₀ b⟩ invFun := fun b => ⟨σ₀⁻¹ b, hint σ₀⁻¹ b⟩ left_inv := fun b => Subtype.ext (by simp) right_inv := fun b => Subtype.ext (mul_inv_apply (b : Ω)) map_mul' := fun a b => Subtype.ext (by simp) map_add' := fun a b => Subtype.ext (by simp) }`. Establish `he : ∀ b : IntCl K Ω, ((e b : IntCl K Ω) : Ω) = σ₀ b` using `fun _ => rfl`. Establish `hQe : Q = Q.map (e : IntCl K Ω →+* IntCl K Ω)`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `b`.
+
+Rewrite using `[Ideal.mem_comap]`. Use `show A.valuation (b : Ω) < 1 ↔ A.valuation (σ₀⁻¹ (b : Ω)) < 1`. Conclude with `(valuation_apply_lt_one_iff ((Dec (F := E) A).inv_mem hσ₀) _).symm`. Set `ψ₀ : (IntCl K Ω ⧸ Q) ≃+* (IntCl K Ω ⧸ Q)` to `Ideal.quotientEquiv Q Q e hQe`. Establish `hψ₀ : ∀ b, ψ₀ (Ideal.Quotient.mk Q b) = Ideal.Quotient.mk Q (e b)` using `fun _ => rfl`.
+
+Establish `hlin : ∀ x : 𝓞 K ⧸ P, ψ₀ (algebraMap (𝓞 K ⧸ P) (IntCl K Ω ⧸ Q) x) = algebraMap (𝓞 K ⧸ P) (IntCl K Ω ⧸ Q) x`. Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.algebraMap_mk_of_liesOver, hψ₀, Ideal.Quotient.eq]`. Establish `hz : ((algebraMap (𝓞 K) (IntCl K Ω) a : IntCl K Ω) : Ω) ∈ K` using `((a : K)).2`.
+
+Use `hK _ hz (valuation_le_one_intCl A _)` as an intermediate fact. Conclude with `this`. Set `ψ : (IntCl K Ω ⧸ Q) ≃ₐ[𝓞 K ⧸ P] (IntCl K Ω ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := ψ₀) hlin`. Take `⟨⟨ρ₀, hρ₀Q⟩, hρ₀⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := Ω ≃ₐ[K] Ω) P Q ψ`. Establish `hρ₀Q' : ρ₀ • Q = Q` using `hρ₀Q`.
+
+Establish `hcong : ∀ b : IntCl K Ω, A.valuation (ρ₀ (b : Ω) - σ₀ b) < 1`. Introduce `b`. Establish `h1 : Ideal.Quotient.mk Q (ρ₀ • b) = Ideal.Quotient.mk Q (e b)` using `DFunLike.congr_fun hρ₀ (Ideal.Quotient.mk Q b)`. Establish `h2 : ρ₀ • b - e b ∈ Q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, h1, sub_self]`.
+
+Conclude with `h2`. Establish `hdec : ρ₀ • A = A`. Use `eq_of_valuation_lt_one_iff K fun b hb => ?_` and prove the remaining obligations. Set `b' : IntCl K Ω` to `⟨b, hb.tower_top⟩`. Express the relevant statement in the definitionally equal form `b' ∈ primeBelow (F := K) (ρ₀ • A) ↔ b' ∈ Q`.
+
+Rewrite using `[primeBelow_smul, hρ₀Q']`. Use `⟨ρ₀.restrictScalars E, fun z hz => ρ₀.commutes ⟨z, hz⟩, ?_, fun b hb => hcong ⟨b, hb.tower_top⟩⟩` and prove the remaining obligations. Use `show (ρ₀.restrictScalars E) • A = A`. Use `conv_rhs => rw [← hdec]`. Use extensionality with `x`.
+
+Simplify using `only [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+-/
 theorem lift_resAut_of_fixes (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (K : IntermediateField E Ω) [FiniteDimensional E K]
     (σ₀ : G E Ω) (hσ₀ : σ₀ ∈ Dec (F := E) A)
@@ -108,6 +142,23 @@ theorem lift_resAut_of_fixes (E Ω : Type) [Field E] [NumberField E] [Field Ω] 
   simp only [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]
   rfl
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h K _ d hd j hdK`. Take `⟨φ, hφ⟩` from `exists_isFrob h`. Establish `hφ1 : ActsAs A (normV w) φ 1 0` using `actsAs_one_iff.mpr hφ`. Establish `hpow : ∀ n : ℕ, ActsAs A (normV w) (φ ^ n) n 0`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨(Dec (F := E) A).one_mem, fun x _ => by simp⟩`. Consider the case `succ n ih => simpa [pow_succ] using ih.mul hφ1`. Establish `hφj` using `hpow j`. Use `set σ₀ : G E Ω := d⁻¹ * φ ^ j with hσ₀def`.
+
+Establish `hσ₀ : σ₀ ∈ Dec (F` using `E) A := (Dec (F := E) A).mul_mem ((Dec (F := E) A).inv_mem hd) hφj.1`. Establish `hK : ∀ z ∈ K, A.valuation z ≤ 1 → A.valuation (σ₀ z - z) < 1`. Introduce `z hz hz1`. Rewrite using `[← valuation_apply_lt_one_iff hd, map_sub]`. Establish `e1 : d (σ₀ z) = (φ ^ j) z`.
+
+Rewrite using `[hσ₀def, AlgEquiv.mul_apply, mul_inv_apply]`. Rewrite using `[e1]`. Establish `h1` using `hφj.2 z hz1`. Simplify using `only [pow_zero, pow_one] at h1`. Conclude with `cong_trans h1 (cong_symm (hdK z hz hz1))`.
+
+Take `⟨ρ, hρK, hρA, hρc⟩` from `lift_resAut_of_fixes E Ω A K σ₀ hσ₀ hK`. Use `set τ : G E Ω := σ₀⁻¹ * ρ with hτdef`. Establish `hτ : τ ∈ Dec (F` using `E) A := (Dec (F := E) A).mul_mem ((Dec (F := E) A).inv_mem hσ₀) hρA`. Establish `hτc : ∀ b : Ω, IsIntegral ℤ b → A.valuation (τ b - b ^ 1) < 1`. Introduce `b hb`.
+
+Rewrite using `[pow_one, ← valuation_apply_lt_one_iff hσ₀, map_sub]`. Establish `e3 : σ₀ (τ b) = ρ b` using `mul_inv_apply (ρ b)`. Rewrite using `[e3]`. Conclude with `hρc b hb`. Establish `hτI : ActsAs A (normV w) τ 0 0` using `⟨hτ, fun x hx => by simpa using cong_pow_of_cong_pow_int E Ω A hτ hτc x hx⟩`.
+
+Use `⟨ρ, hρK, ?_⟩` and prove the remaining obligations. Establish `e2 : d * ρ = φ ^ j * τ`. Rewrite using `[hτdef, hσ₀def]`. Use `group`. Rewrite using `[e2]`.
+
+Simplify using `using hφj.mul hτI`.
+-/
 theorem exists_fixing_actsAs : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (_h : IsPlaceOver A w)
     (K : IntermediateField E Ω) [FiniteDimensional E K], ∀ d ∈ Dec (F := E) A, ∀ j : ℕ,

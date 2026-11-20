@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExponentAndT
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevForms.levDatum_forms | exact GlobalTheory.LevForms.levDatum_forms | (intros; apply GlobalTheory.LevForms.levDatum_forms <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.places_over_real_subfield_split : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb)
     (A : SideA D cf jE) (S : RatDat D.ntw) (In : RatIn D S)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (b0 b1 : Big D)

@@ -6,5 +6,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.AmpleRigid
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AmpleCube.cubeSt | exact GlobalTheory.AmpleCube.cubeSt | (intros; apply GlobalTheory.AmpleCube.cubeSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ample_rigid_cube : GlobalTheory.AmpleRigid.CubeSt := by
   first | exact @GlobalTheory.AmpleCube.cubeSt | exact GlobalTheory.AmpleCube.cubeSt | (intros; apply GlobalTheory.AmpleCube.cubeSt <;> assumption)

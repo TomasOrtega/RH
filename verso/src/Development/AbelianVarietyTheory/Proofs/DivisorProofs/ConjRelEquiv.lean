@@ -32,6 +32,9 @@ def congSet (w : Pl E) (n k : ℕ) : Set (GLw n w) :=
   {g | g ∈ GlobalTheory.LFun.KGL w n ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤
     WithZero.exp (-(k : ℤ))}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩ symm := by rintro x y ⟨u, hu⟩ refine ⟨u⁻¹, ?_⟩ have h1 : ((u : B.A) * ((u⁻¹ : B.Aˣ) : B.A)) * (B.σ (u : B.A) * B.σ ((u⁻¹ : B.Aˣ) : B.A)) = 1 := by rw [← map_mul, Units.mul_inv, map_one, one_mul] rw [hu] calc (x.1 : B.A) = x.1 * (((u : B.A) * ((u⁻¹ : B.Aˣ) : B.A)) * ( …`.
+-/
 theorem clRel_equiv {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) :
     Equivalence (fun x y : {x : B.Aˣ // B.σ (x : B.A) = x} =>
       ∃ u : B.Aˣ, (y.1 : B.A) = x.1 * (u * B.σ (u : B.A))) where
@@ -49,6 +52,9 @@ theorem clRel_equiv {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.
     rintro x y z ⟨u, hu⟩ ⟨v, hv⟩
     exact ⟨u * v, by rw [hv, hu, Units.val_mul, map_mul]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩ symm := by rintro x y ⟨g, rfl⟩ exact ⟨g⁻¹, by simp [mul_assoc]⟩ trans := by rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩ exact ⟨g * h, by simp [mul_assoc]⟩`.
+-/
 theorem conjRel_equiv (G : Type) [Group G] :
     Equivalence (fun x y : G => ∃ g, y = g⁻¹ * x * (MonoidHom.id G) g) where
   refl x := ⟨1, by simp⟩
@@ -59,6 +65,11 @@ theorem conjRel_equiv (G : Type) [Group G] :
     rintro x y z ⟨g, rfl⟩ ⟨h, rfl⟩
     exact ⟨g * h, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support f).Finite`. Conclude with `map_finsum (Rat.castHom ℂ) h`. Establish `h' : ¬ (Function.support fun a => (f a : ℂ)).Finite`. Simplify `h` using `[Function.support]`. Rewrite using `[finsum_of_infinite_support h, finsum_of_infinite_support h']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cast_finsum {α : Type*} (f : α → ℚ) : ((∑ᶠ a, f a : ℚ) : ℂ) = ∑ᶠ a, (f a : ℂ) := by
   by_cases h : (Function.support f).Finite
   · exact map_finsum (Rat.castHom ℂ) h

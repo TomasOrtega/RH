@@ -21,6 +21,9 @@ def Acyc {I : Type*} (S : ∀ n, Set (Fin n → I)) : Prop :=
 def nerve {I F : Type*} (X : Set F) (A : I → Set F) (n : ℕ) : Set (Fin n → I) :=
   {t | ∃ x ∈ X, ∀ j, x ∈ A (t j)}
 
+/- English proof (translation)
+Introduce `n t ht j`. Take `⟨x, hx, hA⟩` from `ht`. Conclude with `⟨x, hx, fun i => hA (j.succAbove i)⟩`.
+-/
 theorem nerve_faceClosed {I F : Type*} (X : Set F) (A : I → Set F) : FaceClosed (nerve X A) := by
   intro n t ht j
   obtain ⟨x, hx, hA⟩ := ht

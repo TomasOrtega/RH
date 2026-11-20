@@ -16,6 +16,9 @@ namespace GlobalTheory.AltLattice
 
 variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.alternating_form_lattice_integrality hV L hLadd hLsmul P halt hadd hsmul hx hx' hP`.
+-/
 theorem exists_bilin_ext (hV : Module.finrank F V = 2) (L : Set V)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
     (P : V → V → F)
@@ -26,6 +29,9 @@ theorem exists_bilin_ext (hV : Module.finrank F V = 2) (L : Set V)
     ∃ B : LinearMap.BilinForm F V, (∀ z, B z z = 0) ∧ ∀ z ∈ L, ∀ w ∈ L, P z w = B z w :=
   GlobalTheory.T.alternating_form_lattice_integrality hV L hLadd hLsmul P halt hadd hsmul hx hx' hP
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lattice_form_ideal_generates_dual_vector hV B hB L hL0 hLadd hLsmul J hJ hval hspan hv`.
+-/
 theorem fracIdeal_pairing (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm F V)
     (hB : ∀ z, B z z = 0) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
@@ -35,6 +41,9 @@ theorem fracIdeal_pairing (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm
     ∃ K : FractionalIdeal (𝓞 F)⁰ F, K ≠ 0 ∧ ∀ t, t ∈ K ↔ ∃ z ∈ L, t = B z v :=
   GlobalTheory.T.lattice_form_ideal_generates_dual_vector hV B hB L hL0 hLadd hLsmul J hJ hval hspan hv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lattice_form_ideal_dual_vector_integral hV B hB L hL0 hLadd hLsmul J hJ hval hspan hv`.
+-/
 theorem fracIdeal_line (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm F V)
     (hB : ∀ z, B z z = 0) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
@@ -44,12 +53,18 @@ theorem fracIdeal_line (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm F 
     ∃ I : FractionalIdeal (𝓞 F)⁰ F, I ≠ 0 ∧ ∀ a : F, a ∈ I ↔ a • v ∈ L :=
   GlobalTheory.T.lattice_form_ideal_dual_vector_integral hV B hB L hL0 hLadd hLsmul J hJ hval hspan hv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lattice_vector_pairing_one_ideal_multiple B L hL0 hLadd hLsmul K hK hKL`.
+-/
 theorem exists_section (B : LinearMap.BilinForm F V) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
     {v : V} (K : FractionalIdeal (𝓞 F)⁰ F) (hK : K ≠ 0) (hKL : ∀ t, t ∈ K ↔ ∃ z ∈ L, t = B z v) :
     ∃ w : V, B w v = 1 ∧ ∀ t ∈ K, t • w ∈ L :=
   GlobalTheory.T.lattice_vector_pairing_one_ideal_multiple B L hL0 hLadd hLsmul K hK hKL
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lattice_form_ideal_pair_of_vectors hV B hB L hL0 hLadd hLsmul J hval hspan hv I K hI hK hw hwL`.
+-/
 theorem decomp_of_section (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm F V)
     (hB : ∀ z, B z z = 0) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
@@ -60,10 +75,24 @@ theorem decomp_of_section (hV : Module.finrank F V = 2) (B : LinearMap.BilinForm
     (∀ x, x ∈ L ↔ ∃ a ∈ I, ∃ t ∈ K, x = a • v + t • w) ∧ I * K = J :=
   GlobalTheory.T.lattice_form_ideal_pair_of_vectors hV B hB L hL0 hLadd hLsmul J hval hspan hv I K hI hK hw hwL
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fractional_ideal_coprime_element_exists Y N hY hN hN1`.
+-/
 theorem exists_mem_coprime (Y N : FractionalIdeal (𝓞 F)⁰ F) (hY : Y ≠ 0) (hN : N ≠ 0) (hN1 : N ≤ 1) :
     ∃ β ∈ Y, FractionalIdeal.spanSingleton (𝓞 F)⁰ β * Y⁻¹ + N = 1 :=
   GlobalTheory.T.fractional_ideal_coprime_element_exists Y N hY hN hN1
 
+/- English proof (translation)
+Establish `hCA : C * A⁻¹ ≠ 0` using `mul_ne_zero hC (inv_ne_zero hA)`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα, hα0⟩ : ∃ α ∈ C * A⁻¹, α ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hCA` to reduce the goal to its premises.
+
+Use extensionality with `t`. Rewrite using `[FractionalIdeal.mem_zero_iff]`. Conclude with `⟨h t, fun ht => ht ▸ Submodule.zero_mem ((C * A⁻¹ : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)⟩`. Use `set N := FractionalIdeal.spanSingleton (𝓞 F)⁰ α * A * C⁻¹ with hNdef`. Establish `hsα : FractionalIdeal.spanSingleton (𝓞 F)⁰ α ≤ C * A⁻¹` using `FractionalIdeal.spanSingleton_le_iff_mem.2 hα`.
+
+Establish `hN1 : N ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_assoc C, inv_mul_cancel₀ hA, _root_.mul_one, mul_inv_cancel₀ hC]`. Establish `hN0 : N ≠ 0` using `mul_ne_zero (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hα0) hA) (inv_ne_zero hC)`. Take `⟨β, -, hβN⟩` from `exists_mem_coprime (C * B⁻¹) N (mul_ne_zero hC (inv_ne_zero hB)) hN0 hN1`.
+
+Use `⟨α, β, ?_⟩` and prove the remaining obligations. Establish `e1 : N * C = FractionalIdeal.spanSingleton (𝓞 F)⁰ α * A`. Rewrite using `[hNdef, _root_.mul_assoc _ C⁻¹, inv_mul_cancel₀ hC, _root_.mul_one]`. Establish `e2 : FractionalIdeal.spanSingleton (𝓞 F)⁰ β * (C * B⁻¹)⁻¹ * C = FractionalIdeal.spanSingleton (𝓞 F)⁰ β * B`. Rewrite using `[mul_inv, inv_inv, _root_.mul_assoc, _root_.mul_assoc, mul_comm B C, ← _root_.mul_assoc C⁻¹, inv_mul_cancel₀ hC, _root_.one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, e1, e2, add_comm]`. Use `_ = C := by rw [hβN, _root_.one_mul]`.
+-/
 theorem exists_comb_eq (A B C : FractionalIdeal (𝓞 F)⁰ F) (hA : A ≠ 0) (hB : B ≠ 0) (hC : C ≠ 0) :
     ∃ α β : F, FractionalIdeal.spanSingleton (𝓞 F)⁰ α * A + FractionalIdeal.spanSingleton (𝓞 F)⁰ β * B = C := by
   have hCA : C * A⁻¹ ≠ 0 := mul_ne_zero hC (inv_ne_zero hA)
@@ -96,6 +125,15 @@ theorem exists_comb_eq (A B C : FractionalIdeal (𝓞 F)⁰ F) (hA : A ≠ 0) (h
         rw [add_mul, e1, e2, add_comm]
     _ = C := by rw [hβN, _root_.one_mul]
 
+/- English proof (translation)
+Establish `hvw : B v w = -1`. Use `hB (v + w)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, hB, hw] at this`. Take the linear combination `this`. Establish `hval : ∀ a s : F, B (a • v + s • w) (α • v + β • w) = α * s + β * (-a)`.
+
+Introduce `a s`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hB, hw, hvw]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ ↔ t ∈ ((FractionalIdeal.spanSingleton (𝓞 F)⁰ α * K + FractionalIdeal.spanSingleton (𝓞 F)⁰ β * I : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)`. Rewrite using `[FractionalIdeal.coe_add, Submodule.add_eq_sup, Submodule.mem_sup]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨a, ha, s, hs, rfl⟩` from `(hL z).1 hz`. Rewrite using `[hval]`. Conclude with `⟨α * s, FractionalIdeal.mem_singleton_mul.2 ⟨s, hs, rfl⟩, β * (-a), FractionalIdeal.mem_singleton_mul.2 ⟨-a, Submodule.neg_mem (I : Submodule (𝓞 F) F) ha, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨p, hp, q, hq, rfl⟩`. Take `⟨s, hs, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hp`. Take `⟨b, hb, rfl⟩` from `FractionalIdeal.mem_singleton_mul.1 hq`. Conclude with `⟨(-b) • v + s • w, (hL _).2 ⟨-b, Submodule.neg_mem (I : Submodule (𝓞 F) F) hb, s, hs, rfl⟩, by rw [hval, neg_neg]⟩`.
+-/
 theorem pairing_change (B : LinearMap.BilinForm F V) (hB : ∀ z, B z z = 0) (L : Set V) {v w : V}
     (hw : B w v = 1) (I K : FractionalIdeal (𝓞 F)⁰ F)
     (hL : ∀ x, x ∈ L ↔ ∃ a ∈ I, ∃ t ∈ K, x = a • v + t • w) (α β t : F) :
@@ -130,6 +168,37 @@ namespace GlobalTheory.AltLattice
 
 variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Establish `hJ : M * 𝔟 ≠ 0` using `mul_ne_zero hM h𝔟`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, x', hx', hP⟩ : ∃ x ∈ L, ∃ x' ∈ L, P x x' ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hJ` to reduce the goal to its premises.
+
+Use extensionality with `t`. Rewrite using `[FractionalIdeal.mem_zero_iff]`. Use `⟨fun ht => ?_, fun ht => ?_⟩` and prove the remaining obligations. Use `swap`. Substitute `ht` using the available equality.
+
+Conclude with `Submodule.zero_mem ((M * 𝔟 : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)`. Establish `h1` using `hspan t ht`. Establish `hs : {t | ∃ x ∈ L, ∃ x' ∈ L, t = P x x'} ⊆ ({0} : Set F)`. Introduce and unpack `_ ⟨z, hz, w, hw, rfl⟩`. Conclude with `h z hz w hw`.
+
+Establish `h2` using `Submodule.span_mono (R := 𝓞 F) hs h1`. Rewrite `h2` using `[Submodule.span_singleton_eq_bot.2 rfl, Submodule.mem_bot]`. Conclude with `h2`. Take `⟨B, hB, hPB⟩` from `exists_bilin_ext hV L hLadd hLsmul P halt hadd hsmul hx hx' hP`. Establish `hvalB : ∀ z ∈ L, ∀ w ∈ L, B z w ∈ M * 𝔟` using `fun z hz w hw => hPB z hz w hw ▸ hval z hz w hw`.
+
+Establish `hsetB : {t | ∃ x ∈ L, ∃ x' ∈ L, t = P x x'} = {t | ∃ z ∈ L, ∃ w ∈ L, t = B z w}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, w, hw, rfl⟩`. Conclude with `⟨z, hz, w, hw, hPB z hz w hw⟩`.
+
+Introduce and unpack `⟨z, hz, w, hw, rfl⟩`. Conclude with `⟨z, hz, w, hw, (hPB z hz w hw).symm⟩`. Establish `hspanB : ∀ t ∈ M * 𝔟, t ∈ Submodule.span (𝓞 F) {t | ∃ z ∈ L, ∃ w ∈ L, t = B z w}` using `fun t ht => hsetB ▸ hspan t ht`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hP` to reduce the goal to its premises. Rewrite using `[hPB 0 hx x' hx']`. Simplify using the standard rewrite rules. Establish `hvw : ∀ v w : V, B w v = 1 → B v w = -1` using `fun v w h => by`. Use `hB (v + w)` as an intermediate fact.
+
+Simplify using `only [map_add, LinearMap.add_apply, hB, h] at this`. Take the linear combination `this`. Take `⟨K₀, hK₀, hK₀L⟩` from `fracIdeal_pairing hV B hB L hL0 hLadd hLsmul _ hJ hvalB hspanB hx0`. Take `⟨I₀, hI₀, hI₀L⟩` from `fracIdeal_line hV B hB L hL0 hLadd hLsmul _ hJ hvalB hspanB hx0`. Take `⟨w₀, hw₀, hw₀L⟩` from `exists_section B L hL0 hLadd hLsmul K₀ hK₀ hK₀L`.
+
+Take `⟨hL₀, -⟩` from `decomp_of_section hV B hB L hL0 hLadd hLsmul _ hvalB hspanB hx0 I₀ K₀ hI₀L hK₀L hw₀ hw₀L`. Take `⟨α, β, hαβ⟩` from `exists_comb_eq K₀ I₀ 𝔟 hK₀ hI₀ h𝔟`. Use `set v := α • x + β • w₀ with hvdef`. Establish `hv : v ≠ 0`. Introduce `h0`.
+
+Establish `h1 : B w₀ v = α`. Simplify using `[hvdef, hB, hw₀]`. Establish `h2 : B x v = -β`. Simplify using `[hvdef, hB, hvw x w₀ hw₀]`. Rewrite `h1`, `h2` using `[h0]`.
+
+Simplify using `only [map_zero] at h1 h2`. Establish `hα : α = 0` using `h1.symm`. Establish `hβ : β = 0` using `by linear_combination h2`. Apply `h𝔟` to reduce the goal to its premises. Rewrite using `[← hαβ, hα, hβ]`.
+
+Simplify using the standard rewrite rules. Take `⟨K, hK, hKL⟩` from `fracIdeal_pairing hV B hB L hL0 hLadd hLsmul _ hJ hvalB hspanB hv`. Take `⟨I, hI, hIL⟩` from `fracIdeal_line hV B hB L hL0 hLadd hLsmul _ hJ hvalB hspanB hv`. Take `⟨w, hw, hwL⟩` from `exists_section B L hL0 hLadd hLsmul K hK hKL`. Take `⟨hL, hIK⟩` from `decomp_of_section hV B hB L hL0 hLadd hLsmul _ hvalB hspanB hv I K hIL hKL hw hwL`.
+
+Establish `hK𝔟 : K = 𝔟`. Use extensionality with `t`. Rewrite using `[hKL t, pairing_change B hB L hw₀ I₀ K₀ hL₀ α β t, hαβ]`. Establish `hIM : I = M`. Rewrite `hIK` using `[hK𝔟]`.
+
+Conclude with `mul_right_cancel₀ h𝔟 hIK`. Substitute `hK𝔟 hIM` using the available equality. Use `⟨v, w, hL, ?_⟩` and prove the remaining obligations. Introduce `m hm b hb m' hm' b' hb'`. Rewrite using `[hPB _ ((hL _).2 ⟨m, hm, b, hb, rfl⟩) _ ((hL _).2 ⟨m', hm', b', hb', rfl⟩)]`.
+
+Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hB, hw, hvw v w hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_sympl_basis (hV : Module.finrank F V = 2) (L : Set V) (hL0 : (0 : V) ∈ L)
     (hLadd : ∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) (hLsmul : ∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L)
     (M 𝔟 : FractionalIdeal (𝓞 F)⁰ F) (hM : M ≠ 0) (h𝔟 : 𝔟 ≠ 0) (P : V → V → F)
@@ -212,6 +281,9 @@ end GlobalTheory.AltLattice
 
 namespace GlobalTheory.AltLattice
 
+/- English proof (translation)
+Simplify using `only [dualLat, Units.val_mul, Units.val_inv_eq_inv_val]`. Rewrite using `[FractionalIdeal.dual_eq_mul_inv ℤ ℚ, FractionalIdeal.dual_eq_mul_inv ℤ ℚ (𝔞 : FractionalIdeal (𝓞 F)⁰ F), mul_inv, inv_inv]`. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+-/
 theorem dualLat_mul_inv {F : Type} [Field F] [NumberField F] (𝔞 𝔟 : FracId F) :
     dualLat (𝔞 * 𝔟⁻¹) = dualLat 𝔞 * (𝔟 : FractionalIdeal (𝓞 F)⁰ F) := by
   simp only [dualLat, Units.val_mul, Units.val_inv_eq_inv_val]
@@ -219,6 +291,13 @@ theorem dualLat_mul_inv {F : Type} [Field F] [NumberField F] (𝔞 𝔟 : FracId
     mul_inv, inv_inv]
   exact (_root_.mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ c y _ 𝔞 𝔟 P halt hadd hsmul hval hspan`. Establish `hsm : ∀ (a : FR E) (x : E), a • x = (a : E) * x` using `fun _ _ => rfl`. Establish `hV : Module.finrank (FR E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hM : dualLat 𝔞 ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (Units.ne_zero 𝔞)`. Rewrite `hval`, `hspan` using `[dualLat_mul_inv]`.
+
+Take `⟨ω₁, ω₂, h1, h2⟩` from `exists_sympl_basis (F := FR E) (V := E) hV (lattice c y) (latticeSub c y).zero_mem (fun x hx x' hx' => (latticeSub c y).add_mem hx hx') (fun a x hx => by rw [hsm]; exact mul_mem_lattice (algebraMap_mem_orderC c a) hx) (dualLat 𝔞) 𝔟 hM (Units.ne_zero 𝔟) P halt hadd (fun a x hx x' …`. Use `⟨ω₁, ω₂, fun x => ?_, fun m hm β hβ m' hm' β' hβ' => ?_⟩` and prove the remaining obligations. Establish `h` using `h1 x`. Simplify using `only [hsm] at h`. Conclude with `h`.
+
+Establish `h` using `h2 m hm β hβ m' hm' β' hβ'`. Simplify using `only [hsm] at h`. Conclude with `h`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
     ∀ (𝔞 𝔟 : FracId (FR E)) (P : E → E → FR E),
     (∀ x ∈ lattice c y, ∀ x' ∈ lattice c y, P x x' = -P x' x) →

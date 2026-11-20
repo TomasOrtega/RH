@@ -43,6 +43,9 @@ def IsListed {T : Type} [CommRing T] {x x' : Sp T ⟶ Xo.X} (Ψ : Gx x ⟶ Gx x'
   ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (χ : T →+* Ω) (x₁ x₁' : Sp Ω ⟶ Xo.X) (Ψ₁ : Gx x₁ ⟶ Gx x₁'),
     IsFib χ Ψ Ψ₁ → ∃ e : Fin n ≃ transKer Xo.univ.t.G Ψ₁, ∀ j, (e j).1.left = spMap χ ≫ (σ j).left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pullback.lift (pullback.fst (Over.mk x₁).hom Xo.univ.t.G.hom ≫ spMap χ) (pullback.snd (Over.mk x₁).hom Xo.univ.t.G.hom) (by show pullback.fst (Over.mk x₁).hom Xo.univ.t.G.hom ≫ spMap χ ≫ x = pullback.snd (Over.mk x₁).hom Xo.univ.t.G.hom ≫ Xo.univ.t.G.hom rw [← hx] exact pullback …`.
+-/
 theorem exists_isCan {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) {x : Sp T ⟶ Xo.X} {x₁ : Sp Ω ⟶ Xo.X}
     (hx : x₁ = spMap χ ≫ x) : ∃ pm : Gx x₁ ⟶ Gx x, IsCan χ pm :=
   ⟨pullback.lift (pullback.fst (Over.mk x₁).hom Xo.univ.t.G.hom ≫ spMap χ)
@@ -53,6 +56,13 @@ theorem exists_isCan {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) 
         rw [← hx]
         exact pullback.condition), hx, pullback.lift_snd _ _ _, pullback.lift_fst _ _ _⟩
 
+/- English proof (translation)
+Take `⟨pm, hp⟩` from `exists_isCan χ hx`. Take `⟨pm', hp'⟩` from `exists_isCan χ hx'`. Set `Ψ₁ : Gx x₁ ⟶ Gx x₁'` to `pullback.lift (f := (Over.mk x₁').hom) (g := Xo.univ.t.G.hom) (fst (Over.mk x₁) Xo.univ.t.G).left (pm ≫ Ψ ≫ (snd (Over.mk x') Xo.univ.t.G).left) (by`. Simplify using `only [Category.assoc]`. Rewrite using `[GlobalTheory.HeckeFrCompare.snd_hom, reassoc_of% hΨ, reassoc_of% hp.2.2, ← hx']`.
+
+Use the proof step `rfl)`. Establish `a : Ψ₁ ≫ (fst (Over.mk x₁') Xo.univ.t.G).left = (fst (Over.mk x₁) Xo.univ.t.G).left` using `pullback.lift_fst _ _ _`. Establish `b : Ψ₁ ≫ (snd (Over.mk x₁') Xo.univ.t.G).left = pm ≫ Ψ ≫ (snd (Over.mk x') Xo.univ.t.G).left` using `pullback.lift_snd _ _ _`. Use `⟨Ψ₁, pm, pm', hp, hp', GlobalTheory.HeckeFrCompare.gx_ext ?_ ?_, a⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hp'.2.2, hΨ, hp.2.2, reassoc_of% a]`.
+
+Rewrite using `[Category.assoc, Category.assoc, hp'.2.1, b]`.
+-/
 theorem exists_isFib {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) {x x' : Sp T ⟶ Xo.X}
     {x₁ x₁' : Sp Ω ⟶ Xo.X} (hx : x₁ = spMap χ ≫ x) (hx' : x₁' = spMap χ ≫ x') (Ψ : Gx x ⟶ Gx x')
     (hΨ : Ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left) :
@@ -74,6 +84,9 @@ theorem exists_isFib {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) 
 @[reducible] def fieldCAt {K : Type} [Field K] (σ : K →+* ℂ) : Field (CAt σ) :=
   { (inferInstance : CommRing (CAt σ)), (inferInstanceAs (Field ℂ) : Field (CAt σ)) with }
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsAlgClosed ℂ)`.
+-/
 theorem algClosedCAt {K : Type} [Field K] (σ : K →+* ℂ) : @IsAlgClosed (CAt σ) (fieldCAt σ) :=
   inferInstanceAs (IsAlgClosed ℂ)
 
@@ -101,13 +114,22 @@ structure QMatch (X X' : Data E r) (N : ℕ) (a : GL (Fin r) E) : Prop where
 
 variable {X X' : Data E r} {N : ℕ} {a : GL (Fin r) E}
 
+/- English proof (translation)
+Rewrite using `[h.psi]`. Conclude with `τ.2`.
+-/
 theorem QMatch.mem (h : QMatch X X' N a) (τ : X'.Ψ) : τ.1 ∈ X.Ψ := by rw [h.psi]; exact τ.2
 
+/- English proof (translation)
+Rewrite using `[hermC_of_herm (ε := 1) (fun u v => by rw [h.iso, one_mul]), map_one, one_mul]`.
+-/
 theorem QMatch.hermC_eq (h : QMatch X X' N a) (τ : E →+* ℂ) (u v : Fin r → ℂ) :
     hermC τ X'.Gm ((a : Matrix (Fin r) (Fin r) E).map τ *ᵥ u) ((a : Matrix (Fin r) (Fin r) E).map τ *ᵥ v) =
       hermC τ X.Gm u v := by
   rw [hermC_of_herm (ε := 1) (fun u v => by rw [h.iso, one_mul]), map_one, one_mul]
 
+/- English proof (translation)
+Unfold `dmin`. Use `congr 1`. Use extensionality with `p q`. Conclude with `h.hermC_eq τ.1 (col (mat x ⟨τ.1, h.mem τ⟩) p) (col (mat x ⟨τ.1, h.mem τ⟩) q)`.
+-/
 theorem QMatch.dmin_eq (h : QMatch X X' N a) (x : Frame X.Ψ r) (τ : X'.Ψ) (i : Fin (r + 1)) :
     dmin X'.Gm (lact a (castFr h.psi x)) τ i = dmin X.Gm x ⟨τ.1, h.mem τ⟩ i := by
   unfold dmin
@@ -115,6 +137,9 @@ theorem QMatch.dmin_eq (h : QMatch X X' N a) (x : Frame X.Ψ r) (τ : X'.Ψ) (i 
   ext p q
   exact h.hermC_eq τ.1 (col (mat x ⟨τ.1, h.mem τ⟩) p) (col (mat x ⟨τ.1, h.mem τ⟩) q)
 
+/- English proof (translation)
+Introduce `τ` and use `by refine ⟨?_, fun i => by rw [h.dmin_eq, ← h.p0]; exact (hx _).2 i⟩ have e : mat (lact a (castFr h.psi x)) τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩ := rfl rw [e, Matrix.det_mul] refine mul_ne_zero ?_ (hx _).1 rw [← RingHom.mapMatrix_apply, ← RingHom.map_ …`.
+-/
 theorem QMatch.mem_dom (h : QMatch X X' N a) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     lact a (castFr h.psi x) ∈ X'.dom := fun τ => by
   refine ⟨?_, fun i => by rw [h.dmin_eq, ← h.p0]; exact (hx _).2 i⟩

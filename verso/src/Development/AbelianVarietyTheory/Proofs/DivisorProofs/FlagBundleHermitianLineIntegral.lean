@@ -19,6 +19,9 @@ open scoped ComplexOrder ContDiff
 
 def ratio (M : Fin 2 → Fin 2 → ℂ) : ℝ := ‖M 0 1‖ ^ 2 / ((M 1 1).re * (M 0 0).re)
 
+/- English proof (translation)
+Establish `a : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun N : Fin 2 → Fin 2 → ℂ => N i j)` using `fun i j => (contDiff_apply ℝ ℂ j).comp (contDiff_apply ℝ (Fin 2 → ℂ) i)`. Establish `re : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun N : Fin 2 → Fin 2 → ℂ => (N i j).re)` using `fun i j => Complex.reCLM.contDiff.comp (a i j)`. Conclude with `((contDiff_norm_sq ℝ).comp (a 0 1)).contDiffAt.div ((re 1 1).mul (re 0 0)).contDiffAt hM`.
+-/
 theorem contDiffAt_ratio {M : Fin 2 → Fin 2 → ℂ} (hM : (M 1 1).re * (M 0 0).re ≠ 0) :
     ContDiffAt ℝ ∞ ratio M := by
   have a : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun N : Fin 2 → Fin 2 → ℂ => N i j) := fun i j =>
@@ -30,6 +33,21 @@ theorem contDiffAt_ratio {M : Fin 2 → Fin 2 → ℂ} (hM : (M 1 1).re * (M 0 0
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Establish `hy : y ∈ ptsIn p σ (U₁ ⊓ U₂)` using `mem_ptsIn_inf.2 ⟨hy₁, hy₂⟩`. Use `set u₁ := Twist.resM _ (inf_le_left : U₁ ⊓ U₂ ≤ U₁) t₁`. Use `set u₂ := Twist.resM _ (inf_le_right : U₁ ⊓ U₂ ≤ U₂) t₂`. Use `set s₁ := l.app _ u₁`. Use `set s₂ := l'.app _ u₂`.
+
+Establish `e₁ : m.form s₁ s₁ y = m.form (l.app U₁ t₁) (l.app U₁ t₁) y`. Simplify using `only [s₁, u₁]`. Rewrite using `[Twist.app_resM, m.form_resM _ _ _ hy]`. Establish `e₂ : m.form s₂ s₂ y = m.form (l'.app U₂ t₂) (l'.app U₂ t₂) y`. Simplify using `only [s₂, u₂]`.
+
+Rewrite using `[Twist.app_resM, m.form_resM _ _ _ hy]`. Establish `q₁ : 0 < (m.form s₁ s₁ y).re` using `by rw [e₁]; exact hp₁`. Establish `q₂ : 0 < (m.form s₂ s₂ y).re` using `by rw [e₂]; exact hp₂`. Establish `hG` using `H.gram ![s₂, s₁] hy`. Establish `c₁ : ContinuousAt (fun z => (m.form s₁ s₁ z).re) y` using `Complex.continuous_re.continuousAt.comp (hG 1 1).continuousAt`.
+
+Establish `c₂ : ContinuousAt (fun z => (m.form s₂ s₂ z).re) y` using `Complex.continuous_re.continuousAt.comp (hG 0 0).continuousAt`. Establish `key : v =ᶠ[𝓝 y] fun z => ratio (fun a b => m.gram ![s₂, s₁] z a b)` using `by filter_upwards [(isOpen_ptsIn _).mem_nhds hy, c₁.eventually (lt_mem_nhds q₁), c₂.eventually (lt_mem_nhds q₂)] with z hz h₁ h₂`. Establish `e` using `hv _ u₁ u₂ z hz`. Use `show v z = ‖m.form s₂ s₁ z‖ ^ 2 / ((m.form s₁ s₁ z).re * (m.form s₂ s₂ z).re)`. Rewrite using `[e, mul_assoc, mul_div_cancel_right₀ _ (mul_pos h₁ h₂).ne']`.
+
+Establish `hT : IsOpen {M : Fin 2 → Fin 2 → ℂ | (M 1 1).re * (M 0 0).re ≠ 0}` using `isOpen_ne_fun (((Complex.continuous_re.comp ((continuous_apply 1).comp (continuous_apply 1))).mul (Complex.continuous_re.comp ((continuous_apply 0).comp (continuous_apply 0))))) continuous_const`. Establish `hmem : m.gram ![s₂, s₁] y ∈ {M : Fin 2 → Fin 2 → ℂ | (M 1 1).re * (M 0 0).re ≠ 0}` using `by show (m.form s₁ s₁ y).re * (m.form s₂ s₂ y).re ≠ 0`. Conclude with `(mul_pos q₁ q₂).ne'`. Use `⟨(hG.comp (Ψ := ratio) hT hmem fun M hM => contDiffAt_ratio hM).congr key, ?_⟩` and prove the remaining obligations. Establish `e` using `hv _ u₁ u₂ y hy`.
+
+Establish `cs` using `CurveDens.normSq_form_le m s₂ s₁ y`. Establish `hn : 0 ≤ ‖m.form s₂ s₁ y‖ ^ 2` using `sq_nonneg _`. Express the relevant statement in the definitionally equal form `‖m.form s₂ s₁ y‖ ^ 2 = v y * (m.form s₁ s₁ y).re * (m.form s₂ s₂ y).re at e`. Establish `hpp` using `mul_pos q₁ q₂`. Prove the components needed by the constructor for the conclusion.
+
+Assume the negation of the conclusion as `hneg push_neg at hneg`. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion as `hbig push_neg at hbig`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem vInfAt_of_isCosSq {V L L' : X.Modules} {r : ℕ} {m : Met p σ V r} (H : m.IsCInf)
     {l : L ⟶ V} {l' : L' ⟶ V} {v : CxPts p σ → ℝ} (hv : CurveDens.IsCosSq m l l' v)
     {U₁ U₂ : X.Opens} (t₁ : Γ(L, U₁)) (t₂ : Γ(L', U₂)) {y : CxPts p σ}
@@ -79,6 +97,11 @@ theorem vInfAt_of_isCosSq {V L L' : X.Modules} {r : ℕ} {m : Met p σ V r} (H :
     push_neg at hbig
     nlinarith
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d _ hY π w E h H flB fl _ _ σ v hv`. Establish `Hm : ((h.pull π w).met σ).IsCInf` using `H.pull π w σ`. Establish `loc : ∀ y, VInfAt v y ∧ 0 ≤ v y ∧ v y ≤ 1` using `fun y => by`. Take `⟨U₁, t₁, hy₁, hp₁⟩` from `CosSqMeas.exists_sec_form_pos ((h.pull π w).met σ) (fl.ι 1) (fl.isVB 1) (fl.isSubbundle 1) y`. Take `⟨U₂, t₂, hy₂, hp₂⟩` from `CosSqMeas.exists_sec_form_pos ((h.pull π w).met σ) ((Scheme.Modules.pullback π).map (flB.ι 1)) ((flB.isVB 1).pullback π) (SubPull.isSubbundle_pullback B Y π _ E (flB.ι 1) 1 (flB.isVB 1) (flB.isSubbundle 1)) y`.
+
+Conclude with `vInfAt_of_isCosSq Hm hv t₁ t₂ hy₁ hy₂ hp₁ hp₂`. Use `⟨fun y => (loc y).2, continuous_iff_continuousAt.2 fun y => (loc y).1.continuousAt, ?_⟩` and prove the remaining obligations. Conclude with `hY.smoothOn (G := fun z (_ _ : Unit) => (v z : ℂ)) (fun y _ _ _ => (loc y).1.comp_contDiff Complex.ofRealCLM.contDiff) () ()`.
+-/
 theorem cosSq_smooth : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

@@ -35,21 +35,38 @@ noncomputable section
 
 namespace GlobalTheory.StageRam
 
+/- English proof (translation)
+Rewrite using `[SubgroupClass.coe_pow, MonoidHom.pow_apply]`.
+-/
 private theorem pow_apply' {E : Type} [Field E] [NumberField E] (χ : HChar E) (a : ℕ) (x) : (χ ^ a).1 x = χ.1 x ^ a := by
   rw [SubgroupClass.coe_pow, MonoidHom.pow_apply]
 
+/- English proof (translation)
+The claim follows from `pow_apply' χ a _`.
+-/
 private theorem loc_pow {E : Type} [Field E] [NumberField E] (χ : HChar E) (a : ℕ) (v x) :
     (χ ^ a).loc v x = χ.loc v x ^ a :=
   pow_apply' χ a _
 
+/- English proof (translation)
+The claim follows from `pow_apply' χ a _`.
+-/
 private theorem locK_pow {E : Type} [Field E] [NumberField E] (χ : HChar E) (a : ℕ) (v x) :
     (χ ^ a).locK v x = χ.locK v x ^ a :=
   pow_apply' χ a _
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [loc_pow, h x hx, one_pow]`.
+-/
 private theorem unrAt_pow {E : Type} [Field E] [NumberField E] {χ : HChar E} {v} (h : χ.UnrAt v) (a : ℕ) :
     (χ ^ a).UnrAt v :=
   fun x hx => by rw [loc_pow, h x hx, one_pow]
 
+/- English proof (translation)
+Use `⟨⟨?_, fun x => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Establish `: ((c ^ a : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => c x ^ a`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `h.1.1.pow a`. Establish `h1` using `h.1.2 x`. Simplify using `only [MonoidHom.pow_apply, h1, one_pow]`. Rewrite using `[MonoidHom.pow_apply, locK_pow, Units.val_pow_eq_pow_val, ← h.2 P e he k x hx]`. Conclude with `map_pow Circle.coeHom _ _`.
+-/
 private theorem chrEq_pow {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host.E} (h : ChrEq c χ) (a : ℕ) :
     ChrEq (c ^ a) (χ ^ a) := by
   refine ⟨⟨?_, fun x => ?_⟩, fun P e he k x hx => ?_⟩
@@ -62,6 +79,13 @@ private theorem chrEq_pow {D : D7} {c : (AE D)ˣ →* Circle} {χ : HChar D.host
   · rw [MonoidHom.pow_apply, locK_pow, Units.val_pow_eq_pow_val, ← h.2 P e he k x hx]
     exact map_pow Circle.coeHom _ _
 
+/- English proof (translation)
+Introduce `h`. Use `h.2 ⟨GlobalTheory.EmbChart.idem τ, GlobalTheory.EmbChart.isSplitIdem_idem τ, ?_⟩` and prove the remaining obligations. Establish `he : ε = GlobalTheory.EmbChart.atPlace v 1`. Take `⟨α, rfl, h1, h0⟩` from `hε`. Rewrite using `[GlobalTheory.EmbChart.atPlace_apply]`.
+
+Use `congr 1`. Use `FiniteAdeleRing.ext _ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F u α = evalV D.host.F u (GlobalTheory.AdelicU.singleFin v 1)`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, h1]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne e, h0 u e]`. Rewrite using `[he, GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]`. Both sides reduce to the same expression.
+-/
 private theorem not_nonSplitAt_of_emb {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
     (hε : IsPlaceIdem D v ε) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : ¬ GlobalTheory.WeilParts.NonSplitAt D v ε := by
   intro h
@@ -77,10 +101,18 @@ private theorem not_nonSplitAt_of_emb {D : D7} {v : HeightOneSpectrum (𝓞 D.ho
     · rw [GlobalTheory.AdelicU.evalV_singleFin_ne e, h0 u e]
   rw [he, GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel]; rfl
 
+/- English proof (translation)
+Introduce `x hx _` and use `h x hx`.
+-/
 private theorem levelLe_one_of_unrAt {L : Type} [Field L] [NumberField L] {χ : HChar L} {w : HeightOneSpectrum (𝓞 L)}
     (h : χ.UnrAt w) : χ.LevelLe w 1 :=
   fun x hx _ => h x hx
 
+/- English proof (translation)
+Establish `: Finite (𝓞 E ⧸ P.asIdeal)` using `Nat.finite_of_card_ne_zero (h ▸ hℓ.ne_zero)`. Use `letI := Fintype.ofFinite (𝓞 E ⧸ P.asIdeal)`. Establish `h0 : ((Fintype.card (𝓞 E ⧸ P.asIdeal) : ℕ) : 𝓞 E ⧸ P.asIdeal) = 0` using `Nat.cast_card_eq_zero _`. Rewrite `h0` using `[← Nat.card_eq_fintype_card, h]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+
+Conclude with `h0`.
+-/
 private theorem natCast_mem_of_card {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {ℓ : ℕ}
     (hℓ : ℓ.Prime) (h : Nat.card (𝓞 E ⧸ P.asIdeal) = ℓ) : (ℓ : 𝓞 E) ∈ P.asIdeal := by
   have : Finite (𝓞 E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (h ▸ hℓ.ne_zero)
@@ -92,6 +124,39 @@ private theorem natCast_mem_of_card {E : Type} [Field E] [NumberField E] {P : He
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j p q A A' WW X _ t v e he`. Establish `hm1 : 1 ≤ D.R.m - (i : ℕ)` using `by omega`. Establish `hm2 : D.R.m - (i : ℕ) ≤ D.R.m` using `by omega`. Establish `hα : ChrEq (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) (alphaH Lc t i j)` using `GlobalTheory.TwistChr.chrEq_mul (GlobalTheory.TwistChr.chrEq_mul (hL.mu0 j) (hL.xi t)) (chrEq_pow hL.eta _)`.
+
+Establish `hβ : ChrEq (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2)) (betaH G i j)` using `GlobalTheory.TwistChr.chrEq_mul (G.ch.chi_eq _ hm1 hm2) (chrEq_pow hL.eta _)`. Establish `hν : ChrEq (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2) / (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2))) (nuH G t i j)`. Rewrite using `[mul_div_mul_right_eq_div]`. Conclude with `chrEq_nu G t i j hL`. Establish `hmu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.under (𝓞 D.host.F) ∉ S1 D → (Lc.C.mu0 j).UnrAt P` using `fun P hP => (Lc.C.isMu0 j).unr _ fun k hk => hP (by`.
+
+Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (P.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ P.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`. Use `(S1_mem_OmF D).2 ?_` and prove the remaining obligations. Use `fin_cases k`.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h))`. Establish `hxi : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (∀ PP ∈ Lc.Q t, PP.under (𝓞 D.host.F) ≠ P.under (𝓞 D.host.F)) → (Lc.xiH t).UnrAt P` using `fun P hP => by`. Assume the negation of the conclusion as `hc`. Break down `(hL.Q_ram t P).1 hc with h | ⟨PP', h, hc'⟩` into its components or cases.
+
+Conclude with `hP P h rfl`. Conclude with `hP PP' h (GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc')`. Establish `hchi : ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.under (𝓞 D.host.F) ∉ G.pl.S0 → (G.ch.chiH (D.R.m - i)).UnrAt P` using `fun P hP => G.ch.unr _ hm1 hm2 P hP`. Establish `heta : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (Lc.C.eta ^ (rankV D i j % 2)).UnrAt P` using `fun P => unrAt_pow (Lc.C.isEta.unr P) _`. Distinguish the cases in `hS : v ∈ G.pl.S0 ∨ ∃ PP ∈ Lc.Q t, PP.under (𝓞 D.host.F) = v`.
+
+Use `right`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hwv⟩ : ∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v := by`. Break down `hS with h | ⟨PP, hP, hPv⟩` into its components or cases. Conclude with `⟨G.pl.w v, Finset.mem_union_left _ (Finset.mem_image_of_mem _ h), G.pl.under_w h⟩`. Conclude with `⟨PP, Finset.mem_union_right _ hP, hPv⟩`.
+
+Establish `hns : ¬ GlobalTheory.WeilParts.NonSplitAt D v e`. Take `⟨τ⟩` from `GlobalTheory.LocPlSplit.locPl_split hL t w hw`. Rewrite `τ` using `[hwv]`. Conclude with `not_nonSplitAt_of_emb he τ`. Use `⟨hns, fun hu => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ P : HeightOneSpectrum (𝓞 D.host.E), P.under (𝓞 D.host.F) = v → (nuH G t i j).UnrAt P` using `fun P hP => (GlobalTheory.LFun.unrAt_iff_of_chrEq hν P).1 (GlobalTheory.UnrOverPlace.unrAt_of_unramAt D _ v e he hu P hP)`. Distinguish the cases in `h0 : v = G.pl.v0`. Substitute `h0` using the available equality. Conclude with `GlobalTheory.RowTest.squareNuHeckeCharacter_not_unramified_at_chosenPlace hL G t i j (key _ (G.pl.under_w (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl))))`. Distinguish the cases in `h1 : v ∈ S1 D`.
+
+Establish `hv : v ∈ G.pl.S0` using `G.pl.mem_S0_of_sum_eq.2 (Or.inr h1)`. Establish `hwv'` using `G.pl.under_w hv`. Apply `(G.ch.lev1 _ hm1 hm2 (G.pl.w v) (by rw [hwv']; exact h1)).2` to reduce the goal to its premises. Establish `ee : G.ch.chiH (D.R.m - i) = Lc.C.mu0 j * Lc.xiH t / nuH G t i j`. Rewrite using `[nuH, div_div_cancel]`.
+
+Rewrite using `[ee, div_eq_mul_inv]`. Conclude with `HChar.LevelLe.mul (HChar.LevelLe.mul ((Lc.C.isMu0 j).tame _) (hL.xi_tame t _)) (HChar.LevelLe.inv (levelLe_one_of_unrAt (key _ hwv')))`. Take `⟨PP, hP, hPv⟩` from `hS.resolve_left fun h => (G.pl.mem_S0_of_sum_eq.1 h).elim h0 h1`. Apply `(hL.Q_ram t PP).2 (Or.inl hP)` to reduce the goal to its premises. Establish `ee : Lc.xiH t = nuH G t i j * G.ch.chiH (D.R.m - i) / Lc.C.mu0 j`.
+
+Rewrite using `[nuH, div_mul_cancel, mul_div_cancel_left]`. Rewrite using `[ee, div_eq_mul_inv]`. Conclude with `((key PP hPv).mul (hchi PP (by rw [hPv]; exact fun h => (G.pl.mem_S0_of_sum_eq.1 h).elim h0 h1))).mul (hmu PP (by rw [hPv]; exact h1)).inv`. Distinguish the cases in `h0 : v = G.pl.v0`. Substitute `h0` using the available equality.
+
+Conclude with `GlobalTheory.DifferentAtBasePlace.not_dvd_different G`. Distinguish the cases in `h1 : v ∈ S1 D`. Conclude with `GlobalTheory.DiffSOne.not_dvd_differentIdeal large₂ hR v h1`. Take `⟨PP, hP, hPv⟩` from `hS.resolve_left fun h => (G.pl.mem_S0_of_sum_eq.1 h).elim h0 h1`. Take `⟨⟨ℓ, hℓ, hcard, hℓ2, -⟩, -⟩` from `hL.Q_pl t PP hP`.
+
+Establish `hℓP : ((ℓ : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `natCast_mem_of_card hℓ hcard`. Establish `hle : v.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ PP.asIdeal`. Rewrite using `[← hPv]`. Conclude with `Ideal.map_comap_le`. Use `GlobalTheory.SplitUnram.not_dvd_different hℓ v ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hPv] show algebraMap _ (𝓞 D.host.E) _ ∈ PP.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hℓP`. Introduce `hv2`. Establish `h'` using `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) hv2`.
+
+Rewrite `h'` using `[Ideal.map_pow, map_natCast]`. Conclude with `hℓ2 (Ideal.pow_right_mono hle 2 h')`. Use `left push_neg at hS`. Take `⟨hS0, hQ⟩` from `hS`. Establish `hS1 : v ∉ S1 D` using `fun h => hS0 (G.pl.mem_S0_of_sum_eq.2 (Or.inr h))`.
+
+Use `⟨GlobalTheory.T.isUnramifiedAtPlaceIdempotent_of_heckeChar_unramified_above D _ _ hα v e he fun P hP => ?_, GlobalTheory.T.isUnramifiedAtPlaceIdempotent_of_heckeChar_unramified_above D _ _ hβ v e he fun P hP => ?_⟩` and prove the remaining obligations. Conclude with `((hmu P (by rw [hP]; exact hS1)).mul (hxi P fun PP hPP h => hQ PP hPP (h.trans hP))).mul (heta P)`. Conclude with `(hchi P (by rw [hP]; exact hS0)).mul (heta P)`.
+-/
 theorem _root_.GlobalTheory.T.towerStage_finitePlaces_unramified_or_split : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → (GlobalTheory.WeilParts.UnramAt e (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) ∧ GlobalTheory.WeilParts.UnramAt e (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2))) ∨ (¬ GlobalTheory.WeilParts.NonSplitAt D v e ∧ ¬ GlobalTheory.WeilParts.UnramAt e (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2) / (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2))) ∧ ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F)) := by
   refine ⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩
   intro W i j p q A A' WW X _ t v e he

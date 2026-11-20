@@ -19,6 +19,21 @@ namespace LocInB
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Set `Φ : (VS D).V →ₗ[D.host.E] (Fin r → D.host.E)` to `LinearMap.pi fun a => (VS D).hT (F0.e a)`. Establish `hsurj : LinearMap.range Φ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `(LinearMap.range Φ).exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 hne)`. Use `set k : Fin r → D.host.E := fun a => f (Pi.single a 1) with hk`.
+
+Establish `hfx : ∀ x : Fin r → D.host.E, f x = ∑ a, x a * k a`. Introduce `x`. Use `conv_lhs => rw [show x = ∑ a, x a • Pi.single a (1 : D.host.E) by`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`.
+
+Simplify using `[map_sum, map_smul, hk]`. Establish `hzero : ∀ y, ∑ a, (VS D).hT (F0.e a) y * k a = 0`. Introduce `y`. Use `hle (LinearMap.mem_range_self Φ y)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, hfx]`.
+
+Simplify `this` using `[Φ]`. Establish `hu : (∑ a, star (k a) • F0.e a) = 0`. Apply `(VS D).nondeg.1` to reduce the goal to its premises. Introduce `y`. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+
+Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Rewrite using `[← hzero y]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Establish `hk0 : ∀ a, k a = 0` using `fun a => by`. Use `Fintype.linearIndependent_iff.1 F0.e_indep (fun a => star (k a)) hu a` as an intermediate fact.
+
+Simplify using `using this`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hfx]`.
+
+Simplify using `[hk0]`. Use `choose y hy using fun c : Fin r => (LinearMap.range_eq_top.1 hsurj) (Pi.single c 1)`. Use `⟨y, fun a c => ?_⟩` and prove the remaining obligations. Use `congrFun (hy c) a` as an intermediate fact. Simplify `this` using `[Φ, Pi.single_apply]`.
+-/
 theorem exists_dual {r : ℕ} {T : D.host.E} (F0 : FlagG (VS D) r T) :
     ∃ y : Fin r → (VS D).V, ∀ a c, (VS D).hT (F0.e a) (y c) = if a = c then 1 else 0 := by
   let Φ : (VS D).V →ₗ[D.host.E] (Fin r → D.host.E) := LinearMap.pi fun a => (VS D).hT (F0.e a)
@@ -56,9 +71,15 @@ theorem exists_dual {r : ℕ} {T : D.host.E} (F0 : FlagG (VS D) r T) :
   have := congrFun (hy c) a
   simpa [Φ, Pi.single_apply] using this
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_castSucc {r : ℕ} {T : D.host.E} (F0 : FlagG (VS D) r T) (a : Fin r) : F0.fvec a.castSucc = F0.e a := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `only [fvec_castSucc]`. Both sides reduce to the same expression.
+-/
 theorem xsp_eq {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) :
     Xsp (lf D F0) = Submodule.span D.host.E (Set.range fun a : Fin D.R.rS => F0.fvec a.castSucc) := by
   simp only [fvec_castSucc]
@@ -66,6 +87,27 @@ theorem xsp_eq {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) :
 
 variable (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_dual F0`. Use `set b := (VS D).frame with hb`. Use `set kk : Fin (nV D) → Fin D.R.rS → D.host.E := fun j c => (VS D).hT (F0.e c) (b j) with hkk`. Use `set π : Fin (nV D) → (VS D).V := fun j => b j - ∑ c, kk j c • y c with hπ`. Establish `hπo : ∀ j, π j ∈ orth (VS D) (Xsp (lf D F0))`.
+
+Introduce `j`. Establish `key : ∀ a, (VS D).hT (F0.e a) (π j) = 0`. Introduce `a`. Simplify using `only [hπ, map_sub, map_sum, map_smul, smul_eq_mul, hy, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, hkk, sub_self]`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D.host.E (Set.range F0.e) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨a, rfl⟩ := hz`. Conclude with `key a`.
+
+Consider the case `zero => simp`. Consider the case `add z w _ _ hz hw => rw [map_add, LinearMap.add_apply, hz, hw, add_zero]`. Consider the case `smul c z _ hz => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hz, smul_zero]`. Establish `hdec : ∀ j, n (b j) - b j = (n (π j) - π j) + ∑ c, kk j c • (n (y c) - y c)`. Introduce `j`.
+
+Establish `e1 : b j = π j + ∑ c, kk j c • y c` using `by simp [hπ]`. Use `conv_lhs => rw [e1]`. Simplify using `only [map_add, map_sum, map_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `hκ : ∀ c : Fin D.R.rS, ∑ j, v j * (D.s.atP p).ιE (kk j c) = 0`.
+
+Introduce `c`. Establish `hmem : s c.castSucc • baseChange₂ D p (F0.fvec c.castSucc) ∈ (locH Zd p).X (fun a => s a • baseChange₂ D p (F0.fvec a))` using `Submodule.subset_span ⟨c, rfl⟩`. Establish `h1 : (locH Zd p).h v (s c.castSucc • baseChange₂ D p (F0.e c)) = 0`. Rewrite using `[← fvec_castSucc]`. Conclude with `hv _ hmem`.
+
+Establish `h2 : (locH Zd p).h v (baseChange₂ D p (F0.e c)) = 0` using `h_zero_of_smul Zd p (hs _) h1`. Establish `h3 : (locH Zd p).h v (baseChange₂ D p (F0.e c)) = ∑ j, v j * (D.s.atP p).ιE (kk j c)` using `by conv_lhs => rw [vp_eq_sum p v]`. Rewrite using `[h_sum_left (locH Zd p)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hermitian_base_change_smul]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `h2`. Establish `hev : betaP p n v - v = ∑ j, v j • baseChange₂ D p (n (b j) - b j)` using `by conv_lhs => rw [vp_eq_sum p v]`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, betaP_bc, map_sub, smul_sub]`. Establish `hsplit : ∑ j, v j • baseChange₂ D p (n (b j) - b j) = ∑ j, v j • baseChange₂ D p (n (π j) - π j) + ∑ c, (∑ j, v j * (D.s.atP p).ιE (kk j c)) • baseChange₂ D p (n (y c) - y c)`. Simplify using `only [hdec, map_add, baseChangeAt_sum, smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Use `congr 1`.
+
+Conclude with `Finset.sum_comm`. Rewrite using `[hev, hsplit]`. Simplify using `only [hκ, zero_smul, Finset.sum_const_zero, add_zero]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `bcP_mem_X Zd p F0.fvec s hs (by rw [← xsp_eq]; exact hn _ (hπo j))`.
+-/
 theorem locX_move {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hn : ∀ x ∈ orth (VS D) (Xsp (lf D F0)), n x - x ∈ Xsp (lf D F0))
     (s : Fin (D.R.rS + 1) → (D.s.atP p).Ep) (hs : ∀ a, IsUnit (s a)) (v : Vp D p)
@@ -126,6 +168,9 @@ theorem locX_move {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (n : (VS D).V ≃�
   refine Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_
   exact bcP_mem_X Zd p F0.fvec s hs (by rw [← xsp_eq]; exact hn _ (hπo j))
 
+/- English proof (translation)
+Take `⟨_, _, _, he, hz⟩` from `hn`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simpa [FlagG.fvec] using hz`. Consider the case `cast b => simpa [FlagG.fvec] using he b`.
+-/
 theorem fvec_fix {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ unipotentFrameFixers F0) (a : Fin (D.R.rS + 1)) : n (F0.fvec a) = F0.fvec a := by
   obtain ⟨_, _, _, he, hz⟩ := hn
@@ -133,6 +178,9 @@ theorem fvec_fix {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {n : (VS D).V ≃�
   | last => simpa [FlagG.fvec] using hz
   | cast b => simpa [FlagG.fvec] using he b
 
+/- English proof (translation)
+Take `⟨he, hz⟩` from `hm`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa [frame, FlagG.fvec] using hz`. Consider the case `cast a => simpa [frame, FlagG.fvec] using he a`.
+-/
 theorem frame_moves {T' : D.host.E} {F' F'' : LFlag (VS D) D.R.rS T'} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hm : Moves n F' F'') (b : Fin (D.R.rS + 1)) : n (frame F' b) = frame F'' b := by
   obtain ⟨he, hz⟩ := hm
@@ -140,6 +188,15 @@ theorem frame_moves {T' : D.host.E} {F' F'' : LFlag (VS D) D.R.rS T'} {n : (VS D
   | last => simpa [frame, FlagG.fvec] using hz
   | cast a => simpa [frame, FlagG.fvec] using he a
 
+/- English proof (translation)
+Establish `key : ∀ y : (VS D).V, (betaP p n).symm (baseChange₂ D p y) = baseChange₂ D p (n.symm y)` using `fun y => betaL_bc p (n.symm : (VS D).V →ₗ[D.host.E] (VS D).V) y`. Use `set e : Vp D p ≃ₗ[(Zd.M p).L.O] Vp D p := (betaP p n).symm.restrictScalars (Zd.M p).L.O with he`. Establish `himg : baseChange₂ D p '' ((Formalism.HermitianLatticesTheory.gmap n.symm Λ : Submodule (𝓞 D.host.E) (VS D).V) : Set (VS D).V) = e '' (baseChange₂ D p '' (Λ : Set (VS D).V))`. Use extensionality with `w`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.map_coe, Set.mem_image, SetLike.mem_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨baseChange₂ D p z, ⟨z, hz, rfl⟩, key z⟩`. Introduce and unpack `⟨v, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨n.symm z, ⟨z, hz, rfl⟩, (key z).symm⟩`.
+
+Use `show x ∈ lattice₂ D Zd.M p Λ ↔ e x ∈ lattice₂ D Zd.M p (Formalism.HermitianLatticesTheory.gmap n.symm Λ)`. Simplify using `only [Formalism.L2.SG.TermLoc.lattice₂]`. Rewrite using `[himg, ← LinearEquiv.coe_toLinearMap, Submodule.span_image, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `h' : y = x` using `e.injective (by simpa using hyx)`. Rewrite using `[← h']` and apply the resulting hypothesis.
+-/
 theorem localLattice_translate (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (x : Vp D p) :
     x ∈ lattice₂ D Zd.M p Λ ↔ (betaP p n).symm x ∈ lattice₂ D Zd.M p (Formalism.HermitianLatticesTheory.gmap n.symm Λ) := by
   have key : ∀ y : (VS D).V, (betaP p n).symm (baseChange₂ D p y) = baseChange₂ D p (n.symm y) := fun y =>
@@ -214,6 +271,11 @@ def GenXi : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hrows γ Z hC F' hP p`. Establish `hE` using `hP.1`. Establish `hR` using `hrows.1 γ.lam γ.mem`. Establish `hPD : PD D γ.lam (lf D F0) u' F'` using `⟨hE.1.1, hE.1.2.1, hE.2.2.2.1⟩`. Establish `hloc` using `(Formalism.L2.SG.Pf.frameGenLoc_holds D Zd F0 γ.lam F' hR hPD (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) hE.1.2.2).1 hE.2.2.1 p`.
+
+Conclude with `h hrows γ F' p hE.2.1 hE.1.1 hloc`.
+-/
 theorem genPart_of (h : GenXi Zd u u' F0 what₂) : GenPart Zd u u' F0 what₂ := by
   intro hrows γ Z hC F' hP p
   have hE := hP.1
@@ -223,6 +285,13 @@ theorem genPart_of (h : GenXi Zd u u' F0 what₂) : GenPart Zd u u' F0 what₂ :
     hE.2.2.1 p
   exact h hrows γ F' p hE.2.1 hE.1.1 hloc
 
+/- English proof (translation)
+Introduce `hrows γ Z hC F' hP p ψ hI hz`. Take `⟨hL', hι⟩` from `h2 hrows γ Z hC F' hP p ψ hI hz`. Use `⟨h1 hrows γ Z hC F' hP p, ?_, fun x y hx hy => ?_, hL', hz, hι⟩` and prove the remaining obligations. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `hw`. Conclude with `⟨w, hw, rfl⟩`. Establish `hxy : x = y` using `Subtype.ext (hx.trans hy.symm)`.
+
+Substitute `hxy` using the available equality. Both sides reduce to the same expression.
+-/
 theorem locPart_of (h1 : GenPart Zd u u' F0 what₂) (h2 : LprPart Zd u u' F0 what₂) : LocPart Zd u u' F0 what₂ := by
   intro hrows γ Z hC F' hP p ψ hI hz
   obtain ⟨hL', hι⟩ := h2 hrows γ Z hC F' hP p ψ hI hz
@@ -237,6 +306,15 @@ theorem locPart_of (h1 : GenPart Zd u u' F0 what₂) (h2 : LprPart Zd u u' F0 wh
     subst hxy
     rfl
 
+/- English proof (translation)
+Introduce `hrows γ Z hC F'₂ φ φ' hS F' hP n hn hm p`. Establish `hT2` using `hS.2.1 p`. Establish `hφ` using `hS.2.2 p`. Rewrite `hT2` using `[hφ]`. Rewrite using `[hφ]`.
+
+Establish `hiso : ∀ v w, (locH Zd p).h (betaP p n v) (betaP p n w) = (locH Zd p).h v w` using `betaP_iso Zd p n (fun x y => hn.1 x y)`. Establish `ht : (tLoc Zd p γ).f = fun a => sF Zd p a • baseChange₂ D p (F0.fvec a)` using `rfl`. Establish `hf : ∀ a, betaP p n ((tLoc Zd p γ).f a) = (tLoc Zd p γ).f a`. Introduce `a`. Rewrite using `[ht]`.
+
+Simplify using `only`. Rewrite using `[map_smul, betaP_bc, fvec_fix hn a]`. Establish `hf' : ∀ b, betaP p n (locF' Zd p F'₂ b) = locF' Zd p F' b`. Introduce `b`. Simplify using `only [locF']`.
+
+Rewrite using `[map_smul, betaP_bc, frame_moves hm b]`. Establish `hX : ∀ v ∈ (locH Zd p).perp ((locH Zd p).X (tLoc Zd p γ).f), betaP p n v - v ∈ (locH Zd p).X (tLoc Zd p γ).f`. Rewrite using `[ht]`. Conclude with `locX_move Zd p F0 n hn.2.2.1 (sF Zd p) (isUnit_sF Zd p)`. Conclude with `LocInA.locSet_back (locH Zd p) (betaP p n) hiso (tLoc Zd p γ) hf hf' hX (localLattice_translate Zd p n γ.lam) (φ' p) hT2.2.2.2.1 hT2.2.2.2.2.2 (fun ψ hI hz => h hrows γ Z hC F' hP p ψ hI hz)`.
+-/
 theorem locIn_of (h : LocPart Zd u u' F0 what₂) : LocIn Zd u u' F0 what₂ := by
   intro hrows γ Z hC F'₂ φ φ' hS F' hP n hn hm p
   have hT2 := hS.2.1 p
@@ -263,12 +341,21 @@ theorem locIn_of (h : LocPart Zd u u' F0 what₂) : LocIn Zd u u' F0 what₂ := 
     (localLattice_translate Zd p n γ.lam) (φ' p) hT2.2.2.2.1 hT2.2.2.2.2.2
     (fun ψ hI hz => h hrows γ Z hC F' hP p ψ hI hz)
 
+/- English proof (translation)
+The claim follows from `locIn_of Zd (locPart_of Zd h1 h2)`.
+-/
 theorem locIn_of' (h1 : GenPart Zd u u' F0 what₂) (h2 : LprPart Zd u u' F0 what₂) : LocIn Zd u u' F0 what₂ :=
   locIn_of Zd (locPart_of Zd h1 h2)
 
+/- English proof (translation)
+The claim follows from `locIn_of' Zd (genPart_of Zd h1) h2`.
+-/
 theorem locIn_of_xi (h1 : GenXi Zd u u' F0 what₂) (h2 : LprPart Zd u u' F0 what₂) : LocIn Zd u u' F0 what₂ :=
   locIn_of' Zd (genPart_of Zd h1) h2
 
+/- English proof (translation)
+The claim follows from `fwdC_of Zd hrows (n_move_holds D) h2 (locIn_of_xi Zd h3 h4)`.
+-/
 theorem fwdC_of_loc (hrows : IsRowReps D F0 what₂) (h2 : OmPart Zd u u' F0 what₂) (h3 : GenXi Zd u u' F0 what₂)
     (h4 : LprPart Zd u u' F0 what₂) : FwdC Zd u u' F0 what₂ :=
   fwdC_of Zd hrows (n_move_holds D) h2 (locIn_of_xi Zd h3 h4)

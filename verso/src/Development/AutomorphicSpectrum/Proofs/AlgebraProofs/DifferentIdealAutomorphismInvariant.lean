@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.UnitarySelfGeneration.map_mem_differentIdeal_iff`.
+-/
 theorem mem_differentIdeal_ringEquiv_iff :
     ∀ (E : Type) [Field E] [NumberField E] (s : 𝓞 E ≃+* 𝓞 E) (d : 𝓞 E),
       s d ∈ differentIdeal ℤ (𝓞 E) ↔ d ∈ differentIdeal ℤ (𝓞 E) :=

@@ -25,6 +25,17 @@ def ofNat (α : ∀ T, F.obj T →+* F'.obj T)
   naturality := nat
   smul := sm
 
+/- English proof (translation)
+Set `e : ∀ T, F.obj T ≃+* F'.obj T` to `fun T ↦ RingEquiv.ofBijective (α T) (hb T)`. Set `β : ∀ T, F'.obj T →+* F.obj T` to `fun T ↦ (e T).symm.toRingHom`. Establish `hβα : ∀ T b, β T (α T b) = b` using `fun T b ↦ (e T).symm_apply_apply b`. Establish `hαβ : ∀ T b, α T (β T b) = b` using `fun T b ↦ (e T).apply_symm_apply b`. Establish `natβ : ∀ {T T' : C} (a : T ⟶ T') (b : F'.obj T), β T' (mp F' a b) = mp F a (β T b)` using `fun a b ↦ by`.
+
+Apply `(hb _).1` to reduce the goal to its premises. Rewrite using `[hαβ, nat, hαβ]`. Establish `smβ : ∀ T (r : R) (b : F'.obj T), β T (r • b) = r • β T b` using `fun T r b ↦ by`. Apply `(hb T).1` to reduce the goal to its premises. Rewrite using `[hαβ, sm, hαβ]`.
+
+Establish `h1 : ∀ c, (ofNat β natβ smβ).pull2 ((ofNat α nat sm).pull2 c) = c` using `fun c ↦ by`. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Use `conv_rhs => rw [← CoefMap.pullCohomologyTwo_id c]`. Conclude with `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ { app := fun T ↦ 𝟙 T, naturality := fun _ _ f ↦ by dsimp [ofNat, CoefMap.comp, CoefMap.id]; simp } (fun T b ↦ by`. Conclude with `(mp_id F T b).trans (hβα T b).symm) c`.
+
+Establish `h2 : ∀ c, (ofNat α nat sm).pull2 ((ofNat β natβ smβ).pull2 c) = c` using `fun c ↦ by`. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Use `conv_rhs => rw [← CoefMap.pullCohomologyTwo_id c]`. Conclude with `CoefMap.pullCohomologyTwo_eq_of_natTrans _ _ { app := fun T ↦ 𝟙 T, naturality := fun _ _ f ↦ by dsimp [ofNat, CoefMap.comp, CoefMap.id]; simp } (fun T b ↦ by`. Conclude with `(mp_id F' T b).trans (hαβ T b).symm) c`.
+
+Conclude with `⟨fun x y hxy ↦ by rw [← h1 x, hxy, h1], fun y ↦ ⟨_, h2 y⟩⟩`.
+-/
 theorem ofNat_pull2_bijective (α : ∀ T, F.obj T →+* F'.obj T)
     (nat : ∀ {T T' : C} (a : T ⟶ T') (b : F.obj T), α T' (mp F a b) = mp F' a (α T b))
     (sm : ∀ T (r : R) (b : F.obj T), α T (r • b) = r • α T b) (hb : ∀ T, Function.Bijective (α T)) :
@@ -54,6 +65,9 @@ end Nat
 variable {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁]
   {X₀ X₁ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s₁ : X₁ ⟶ Sp R₁} {pr : X₁ ⟶ X₀}
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsAffineHom) hp.flip inferInstance`.
+-/
 theorem isAffineHom_of_isPullback (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) : IsAffineHom pr :=
   MorphismProperty.of_isPullback (P := @IsAffineHom) hp.flip inferInstance
 
@@ -72,6 +86,9 @@ def secP (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) (U : X₀
     Sec s₀ U.1 →+* Sec s₁ (pr ⁻¹ᵁ U.1) :=
   GlobalTheory.CechDR.secPull s₀ s₁ (pairOf hp U)
 
+/- English proof (translation)
+The claim follows from `semiHom_secPull hp.w (pairOf hp U) r b`.
+-/
 theorem pullbackSection_smul₂ (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) (U : X₀.affineOpens) (r : R₀)
     (b : Sec s₀ U.1) : secP hp U (r • b) = algebraMap R₀ R₁ r • secP hp U b :=
   semiHom_secPull hp.w (pairOf hp U) r b
@@ -91,10 +108,16 @@ def beta (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) (U : X₀
         exact (Algebra.algebraMap_eq_smul_one _).symm }
     (fun _ _ ↦ Commute.all _ _)).toRingHom
 
+/- English proof (translation)
+Simplify using `[beta]`.
+-/
 theorem beta_tmul (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) (U : X₀.affineOpens) (r : R₁)
     (b : Sec s₀ U.1) : beta hp U (r ⊗ₜ b) = algebraMap R₁ _ r * secP hp U b := by
   simp [beta]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, beta_tmul, beta_tmul, map_mul, _root_.mul_assoc, Algebra.smul_def]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+-/
 theorem beta_smul (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) (U : X₀.affineOpens) (r : R₁)
     (x : R₁ ⊗[R₀] Sec s₀ U.1) : beta hp U (r • x) = r • beta hp U x := by
   induction x using TensorProduct.induction_on with
@@ -103,6 +126,15 @@ theorem beta_smul (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) 
     rw [TensorProduct.smul_tmul', smul_eq_mul, beta_tmul, beta_tmul, map_mul, _root_.mul_assoc, Algebra.smul_def]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Use `revert x`. Express the relevant statement in the definitionally equal form `∀ x : R₁ ⊗[R₀] Sec s₀ U.unop.1, _`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+
+Conclude with `(map_zero _).symm`. Consider the case `tmul r b`. Establish `hn` using `(pairPull hp.w).naturality (homOfLE (show pairOf hp V.unop ≤ pairOf hp U.unop from Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨fun _ hx ↦ (Subtype.coe_le_coe.2 (leOfHom a.unop) : V.unop.1 ≤ U.unop.1) hx, leOfHom a.unop⟩))).op b`. Express the relevant statement in the definitionally equal form `beta hp V.unop (r ⊗ₜ mp (OAff s₀) a b) = mp (preF hp ⋙ OAff s₁) a (beta hp U.unop (r ⊗ₜ b))`. Rewrite using `[beta_tmul, beta_tmul]`.
+
+Use `erw [map_mul]`. Use `congr 1`. Apply the tactic sequence `all_goals first | exact ((Sec.res s₁ _).commutes r).symm | exact hn`. Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+
+Conclude with `(map_add _ _ _).symm`.
+-/
 theorem beta_nat (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) {U V : AffOp X₀} (a : U ⟶ V)
     (x : (ext R₁ (OAff s₀)).obj U) :
     beta hp V.unop (mp (ext R₁ (OAff s₀)) a x) = mp (preF hp ⋙ OAff s₁) a (beta hp U.unop x) := by
@@ -134,6 +166,9 @@ variable {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁]
   {X₀ X₁ Y₀ Y₁ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s₁ : X₁ ⟶ Sp R₁} {pr : X₁ ⟶ X₀}
   {t₀ : Y₀ ⟶ Sp R₀} {t₁ : Y₁ ⟶ Sp R₁} {pr' : Y₁ ⟶ Y₀} {f₀ : Y₀ ⟶ X₀} {f₁ : Y₁ ⟶ X₁}
 
+/- English proof (translation)
+Use `congrArg (fun g : Y₁ ⟶ X₀ ↦ g.base y) hf` as an intermediate fact. Simplify using `using this`.
+-/
 theorem comp_base_eq (hf : f₁ ≫ pr = pr' ≫ f₀) (y : Y₁) : pr.base (f₁.base y) = f₀.base (pr'.base y) := by
   have := congrArg (fun g : Y₁ ⟶ X₀ ↦ g.base y) hf
   simpa using this
@@ -181,6 +216,9 @@ variable {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁]
   {X₀ X₁ Y₀ Y₁ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s₁ : X₁ ⟶ Sp R₁} {pr : X₁ ⟶ X₀}
   {t₀ : Y₀ ⟶ Sp R₀} {t₁ : Y₁ ⟶ Sp R₁} {pr' : Y₁ ⟶ Y₀} {f₀ : Y₀ ⟶ X₀} {f₁ : Y₁ ⟶ X₁}
 
+/- English proof (translation)
+Take `⟨W₀, rfl⟩` from `hW U`. Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (x := pr.base x) (U := W₀) hx`. Conclude with `⟨Opposite.op ⟨V, hV⟩, hxV, fun y hy ↦ hVW hy⟩`.
+-/
 theorem preF_cover (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     (hW : ∀ W : X₁.Opens, ∃ W₀ : X₀.Opens, pr ⁻¹ᵁ W₀ = W) (x : X₁) (U : X₁.Opens) (hx : x ∈ U) :
     ∃ t : AffOp X₀, x ∈ ((preF hp).obj t).unop.1 ∧ ((preF hp).obj t).unop.1 ≤ U := by
@@ -188,6 +226,9 @@ theorem preF_cover (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
   obtain ⟨V, hV, hxV, hVW⟩ := exists_isAffineOpen_mem_and_subset (x := pr.base x) (U := W₀) hx
   exact ⟨Opposite.op ⟨V, hV⟩, hxV, fun y hy ↦ hVW hy⟩
 
+/- English proof (translation)
+Take `⟨W₀, rfl⟩` from `hW U`. Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (x := pr.base x) (U := W₀ ⊓ t₁.unop.1 ⊓ t₂.unop.1) ⟨⟨hx, h₁⟩, h₂⟩`. Conclude with `⟨Opposite.op ⟨V, hV⟩, ⟨(homOfLE (show (⟨V, hV⟩ : X₀.affineOpens) ≤ t₁.unop from fun y hy ↦ (hVW hy).1.2)).op⟩, ⟨(homOfLE (show (⟨V, hV⟩ : X₀.affineOpens) ≤ t₂.unop from fun y hy ↦ (hVW hy).2)).op⟩, hxV, fun y hy ↦ (hVW hy).1.1⟩`.
+-/
 theorem preF_dir (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     (hW : ∀ W : X₁.Opens, ∃ W₀ : X₀.Opens, pr ⁻¹ᵁ W₀ = W) (t₁ t₂ : AffOp X₀) (x : X₁) (U : X₁.Opens)
     (hx : x ∈ U) (h₁ : x ∈ ((preF hp).obj t₁).unop.1) (h₂ : x ∈ ((preF hp).obj t₂).unop.1) :
@@ -201,6 +242,9 @@ theorem preF_dir (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     ⟨(homOfLE (show (⟨V, hV⟩ : X₀.affineOpens) ≤ t₂.unop from fun y hy ↦ (hVW hy).2)).op⟩,
     hxV, fun y hy ↦ (hVW hy).1.1⟩
 
+/- English proof (translation)
+Take `⟨W₀, rfl⟩` from `hW U`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := f₀.base (pr'.base x)) (U := (⊤ : X₀.Opens)) trivial`. Take `⟨V', hV', hxV', hV'W⟩` from `exists_isAffineOpen_mem_and_subset (x := pr'.base x) (U := W₀ ⊓ f₀ ⁻¹ᵁ V) ⟨hx, hxV⟩`. Conclude with `⟨Opposite.op ⟨(⟨V', hV'⟩, ⟨V, hV⟩), fun z hz ↦ (hV'W hz).2⟩, hxV', fun z hz ↦ (hV'W hz).1⟩`.
+-/
 theorem preFP_cover (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     (hp' : IsPullback pr' t₁ t₀ (spMap (algebraMap R₀ R₁))) (hf : f₁ ≫ pr = pr' ≫ f₀)
     (hW : ∀ W : Y₁.Opens, ∃ W₀ : Y₀.Opens, pr' ⁻¹ᵁ W₀ = W) (x : Y₁) (U : Y₁.Opens) (hx : x ∈ U) :
@@ -213,6 +257,11 @@ theorem preFP_cover (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))
     (U := W₀ ⊓ f₀ ⁻¹ᵁ V) ⟨hx, hxV⟩
   exact ⟨Opposite.op ⟨(⟨V', hV'⟩, ⟨V, hV⟩), fun z hz ↦ (hV'W hz).2⟩, hxV', fun z hz ↦ (hV'W hz).1⟩
 
+/- English proof (translation)
+Take `⟨W₀, rfl⟩` from `hW U`. Establish `g₁ : f₀.base (pr'.base x) ∈ a₁.unop.1.2.1` using `a₁.unop.2 h₁`. Establish `g₂ : f₀.base (pr'.base x) ∈ a₂.unop.1.2.1` using `a₂.unop.2 h₂`. Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (x := f₀.base (pr'.base x)) (U := a₁.unop.1.2.1 ⊓ a₂.unop.1.2.1) ⟨g₁, g₂⟩`. Take `⟨V', hV', hxV', hV'W⟩` from `exists_isAffineOpen_mem_and_subset (x := pr'.base x) (U := W₀ ⊓ a₁.unop.1.1.1 ⊓ a₂.unop.1.1.1 ⊓ f₀ ⁻¹ᵁ V) ⟨⟨⟨hx, h₁⟩, h₂⟩, hxV⟩`.
+
+Set `a₃ : Pair f₀` to `⟨(⟨V', hV'⟩, ⟨V, hV⟩), fun z hz ↦ (hV'W hz).2⟩`. Use `⟨Opposite.op a₃, ⟨(homOfLE (show a₃ ≤ a₁.unop from Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨fun z hz ↦ (hV'W hz).1.1.2, fun z hz ↦ (hVW hz).1⟩))).op⟩, ⟨(homOfLE (show a₃ ≤ a₂.unop from Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨fun z hz ↦ (hV'W hz).1.2, fun z hz ↦ (hVW hz).2⟩))).op⟩, hxV', …` and prove the remaining obligations.
+-/
 theorem preFP_directed (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁)))
     (hp' : IsPullback pr' t₁ t₀ (spMap (algebraMap R₀ R₁))) (hf : f₁ ≫ pr = pr' ≫ f₀)
     (hW : ∀ W : Y₁.Opens, ∃ W₀ : Y₀.Opens, pr' ⁻¹ᵁ W₀ = W) (a₁ a₂ : (Pair f₀)ᵒᵖ) (x : Y₁) (U : Y₁.Opens)

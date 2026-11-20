@@ -7,6 +7,27 @@ open Filter Topology
 
 namespace GlobalTheory.Cong
 
+/- English proof (translation)
+Introduce `l _ Γ J _ x hx θ L hL hθL hC`. Establish `hLc : IsComplete (L : Set (PadicAlgCl l))` using `by haveI : FiniteDimensional ℚ_[l] (Subalgebra.toSubmodule L.toSubalgebra) := hL`. Conclude with `Submodule.complete_of_finiteDimensional (Subalgebra.toSubmodule L.toSubalgebra)`. Establish `hnb : ∀ g : Γ, (comap x (𝓝 g)).NeBot`. Introduce `g`.
+
+Use `comap_neBot_iff.2 fun t ht => ?_` and prove the remaining obligations. Take `⟨_, hyt, j, rfl⟩` from `mem_closure_iff_nhds.1 (hx g) t ht`. Conclude with `⟨j, hyt⟩`. Establish `hex : ∀ g : Γ, ∃ t : PadicAlgCl l, Tendsto θ (comap x (𝓝 g)) (𝓝 t)`. Introduce `g`.
+
+Use `haveI : (comap x (𝓝 g)).NeBot := hnb g`. Establish `hcau : Cauchy (map θ (comap x (𝓝 g)))`. Rewrite using `[Metric.cauchy_iff]`. Use `⟨inferInstance, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hVc⟩` from `hC (ε / 2) (by positivity) g`.
+
+Use `⟨θ '' (x ⁻¹' V), image_mem_map (preimage_mem_comap hV), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩ _ ⟨j, hj, rfl⟩`. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_le_of_lt (hVc i j hi hj) (by linarith)`. Establish `hle : map θ (comap x (𝓝 g)) ≤ 𝓟 (L : Set (PadicAlgCl l))` using `le_principal_iff.2 (mem_map.2 (univ_mem' fun j => hθL j))`.
+
+Take `⟨t, -, ht⟩` from `hLc _ hcau hle`. Conclude with `⟨t, ht⟩`. Use `choose T hT using hex`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨V, hV, hVc⟩` from `hC (ε / 2) (by positivity) g`. Use `filter_upwards [interior_mem_nhds.2 hV] with g' hg'`. Establish `hV' : V ∈ 𝓝 g'` using `mem_interior_iff_mem_nhds.1 hg'`.
+
+Use `haveI : (comap x (𝓝 g')).NeBot := hnb g'`. Use `haveI : (comap x (𝓝 g)).NeBot := hnb g`. Establish `hlim : Tendsto (fun p : J × J => dist (θ p.1) (θ p.2)) (comap x (𝓝 g') ×ˢ comap x (𝓝 g)) (𝓝 (dist (T g') (T g)))` using `((hT g').comp tendsto_fst).dist ((hT g).comp tendsto_snd)`. Establish `hev : ∀ᶠ p : J × J in comap x (𝓝 g') ×ˢ comap x (𝓝 g), dist (θ p.1) (θ p.2) ≤ ε / 2` using `by filter_upwards [prod_mem_prod (preimage_mem_comap hV') (preimage_mem_comap hV)] with p hp`. Rewrite using `[dist_eq_norm]`.
+
+Conclude with `hVc p.1 p.2 hp.1 hp.2`. Use `le_of_tendsto hlim hev` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j haveI : (comap x (𝓝 (x j))).NeBot := hnb (x j)`. Use `tendsto_nhds_unique (hT (x j)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨V, hV, hVc⟩` from `hC (ε / 2) (by positivity) (x j)`. Use `filter_upwards [preimage_mem_comap hV] with i hi`. Rewrite using `[dist_eq_norm]`.
+
+Conclude with `lt_of_le_of_lt (hVc i j hi (mem_of_mem_nhds hV)) (by linarith)`.
+-/
 theorem extend_of_locallyCauchy : ∀ (l : ℕ) [Fact l.Prime] (Γ J : Type) [TopologicalSpace Γ] (x : J → Γ), DenseRange x → ∀ (θ : J → PadicAlgCl l) (L : IntermediateField ℚ_[l] (PadicAlgCl l)), FiniteDimensional ℚ_[l] L → (∀ j, θ j ∈ L) → (∀ ε : ℝ, 0 < ε → ∀ g : Γ, ∃ V ∈ nhds g, ∀ i j, x i ∈ V → x j ∈ V → ‖θ i - θ j‖ ≤ ε) → ∃ T : Γ → PadicAlgCl l, Continuous T ∧ ∀ j, T (x j) = θ j := by
   intro l _ Γ J _ x hx θ L hL hθL hC
   have hLc : IsComplete (L : Set (PadicAlgCl l)) := by

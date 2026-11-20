@@ -9,6 +9,23 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas IsCompatChart)
 open ReciprocityTheory.AnForm.A (coordDiv)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChartData RegCharts)
 
+/- English proof (translation)
+Introduce `X _ D A R j k`. Use `set Ω : Set (Fin D → ℂ) := (R.ψ j).target ∩ (R.ψ j).symm ⁻¹' (bdDom R j ∩ bdDom R k) with hΩdef`. Establish `hΩ : IsOpen Ω` using `(R.ψ j).isOpen_inter_preimage_symm ((isOpen_bdDom R j).inter (isOpen_bdDom R k))`. Use `set F : (Fin D → ℂ) → ℂ := fun z => ∏ i ∈ R.S k, R.ψ k ((R.ψ j).symm z) i with hFdef`. Establish `hF : AnalyticOnNhd ℂ F Ω`.
+
+Introduce `z hz`. Establish `ht : AnalyticAt ℂ (R.ψ k ∘ (R.ψ j).symm) z` using `ReciprocityTheory.AnForm.M.SimpleNormalCrossingSliceCharts.compat_trans A (R.compat j) (R.compat k) hz.1 hz.2.2.1`. Conclude with `Finset.analyticAt_fun_prod (f := fun i z => R.ψ k ((R.ψ j).symm z) i) _ fun i _ => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) i).analyticAt _ |>.comp ht`. Establish `hvan : ∀ z ∈ Ω, z ∈ coordDiv (R.S j) → F z = 0`. Introduce `z hz hzS`.
+
+Take `⟨hzt, ⟨_, hzW⟩, ⟨hyk, hykW⟩⟩` from `hz`. Establish `hjz : R.ψ j ((R.ψ j).symm z) = z` using `(R.ψ j).right_inv hzt`. Rewrite `hzW` using `[Set.mem_preimage, hjz]`. Establish `hnot : (R.ψ j).symm z ∉ R.Yo` using `fun h => ((R.mem_Yo_iff j z hzW).1 h) hzS`. Establish `hk : R.ψ k ((R.ψ j).symm z) ∈ coordDiv (R.S k)`.
+
+Assume the negation of the conclusion as `hc`. Apply `hnot` to reduce the goal to its premises. Use `(R.mem_Yo_iff k _ hykW).2 hc` as an intermediate fact. Rewrite `this` using `[(R.ψ k).left_inv hyk]`. Then use the resulting hypothesis. Take `⟨i, hi, h0⟩` from `hk`.
+
+Conclude with `Finset.prod_eq_zero hi h0`. Take `⟨G, hG, hFG⟩` from `hdiv D Ω F (R.S j) hΩ hF hvan`. Establish `hmem : ∀ y ∈ bdDom R j ∩ bdDom R k, R.ψ j y ∈ Ω` using `fun y hy => ⟨(R.ψ j).map_source hy.1.1, by show (R.ψ j).symm (R.ψ j y) ∈ bdDom R j ∩ bdDom R k`. Rewrite using `[(R.ψ j).left_inv hy.1.1]`. Conclude with `hy⟩`.
+
+Use `⟨fun y => G (R.ψ j y), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m w hw`. Establish `hx : (A.chart m).symm w ∈ bdDom R j ∩ bdDom R k` using `hw.2`. Establish `hc : AnalyticAt ℂ (R.ψ j ∘ (A.chart m).symm) w` using `((R.compat j) m).1 w ⟨hw.1, hx.1.1⟩`. Conclude with `(hG _ (hmem _ hx)).comp (f := R.ψ j ∘ (A.chart m).symm) hc`.
+
+Conclude with `hG.continuousOn.comp ((R.ψ j).continuousOn.mono fun y hy => hy.1.1) hmem`. Introduce `y hy`. Establish `h` using `hFG _ (hmem y hy)`. Simplify using `only [hFdef, (R.ψ j).left_inv hy.1.1] at h`. Simplify using `only [bdEq]`.
+
+Rewrite using `[h, mul_comm]`.
+-/
 theorem BdDivides.proof (hdiv : CoordDivDivisible.Statement) : BdDivides.Statement := by
   intro X _ D A R j k
   set Ω : Set (Fin D → ℂ) := (R.ψ j).target ∩ (R.ψ j).symm ⁻¹' (bdDom R j ∩ bdDom R k) with hΩdef

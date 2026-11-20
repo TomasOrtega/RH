@@ -8,6 +8,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.GeoActCompare
 
+/- English proof (translation)
+Set `e : M ≃ₗ[R] (Fin r → R)` to `φ.extendScalarsOfSurjective hs`. Set `t : GL (Fin r) R ≃* ((Fin r → R) ≃ₗ[R] (Fin r → R))` to `Matrix.GeneralLinearGroup.toLin.trans (LinearMap.GeneralLinearGroup.generalLinearEquiv R (Fin r → R))`. Establish `ht : ∀ g v, t g v = g.1.mulVec v` using `fun g v => rfl`. Set `c : ((Fin r → R) ≃ₗ[R] (Fin r → R)) ≃* (M ≃ₗ[A] M)` to `{ toFun := fun f => (e ≪≫ₗ f ≪≫ₗ e.symm).restrictScalars A invFun := fun f => e.symm ≪≫ₗ f.extendScalarsOfSurjective hs ≪≫ₗ e left_inv := fun f => by ext1 v show e (e.symm (f (e (e.symm v)))) = f v`. Simplify using the standard rewrite rules.
+
+Use `right_inv := fun f => by ext1 v show e.symm (e (f (e.symm (e v)))) = f v`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun f g => by ext1 v show e.symm (f (g (e v))) = e.symm (f (e (e.symm (g (e v)))))`. Simplify using `}`. Use `⟨t.trans c, fun g q => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `show e (e.symm (t g (e q))) = _`. Rewrite using `[e.apply_symm_apply, ht]`. Both sides reduce to the same expression. Establish `h : (((t.trans c) g).extendScalarsOfSurjective hs : M →ₗ[R] M) = (e.symm : (Fin r → R) →ₗ[R] M) ∘ₗ Matrix.toLin' g.1 ∘ₗ (e.symm.symm : M →ₗ[R] (Fin r → R))` using `by ext1 v`. Both sides reduce to the same expression.
+
+Use `ext1`. Rewrite using `[LinearEquiv.coe_det, h, LinearMap.det_conj, LinearMap.det_toLin']`. Both sides reduce to the same expression.
+-/
 theorem exists_glEquiv_of_surjective {A R M : Type} [CommRing A] [CommRing R] [Algebra A R] [AddCommGroup M]
     [Module A M] [Module R M] [IsScalarTower A R M] (hs : Function.Surjective (algebraMap A R)) {r : ℕ}
     (φ : M ≃ₗ[A] (Fin r → R)) :
@@ -44,6 +53,9 @@ theorem exists_glEquiv_of_surjective {A R M : Type} [CommRing A] [CommRing R] [A
     rw [LinearEquiv.coe_det, h, LinearMap.det_conj, LinearMap.det_toLin']
     rfl
 
+/- English proof (translation)
+Set `m : Matrix (Fin r) (Fin r) R ≃+* ∀ i, Matrix (Fin r) (Fin r) (k i)` to `c.mapMatrix.trans Matrix.piRingEquiv`. Use `⟨MulEquiv.piUnits.symm.trans (Units.mapEquiv m.toMulEquiv).symm, fun g i a b => ?_⟩` and prove the remaining obligations. Use `show m (m.symm (fun j => (g j).1)) i a b = _`. Rewrite using `[m.apply_symm_apply]`.
+-/
 theorem exists_glEquiv_pi {R ι : Type} [CommRing R] {k : ι → Type} [∀ i, CommRing (k i)] (c : R ≃+* ∀ i, k i)
     (r : ℕ) :
     ∃ θ : (∀ i, GL (Fin r) (k i)) ≃* GL (Fin r) R, ∀ g i a b, c ((θ g).1 a b) i = (g i).1 a b := by
@@ -53,6 +65,19 @@ theorem exists_glEquiv_pi {R ι : Type} [CommRing R] {k : ι → Type} [∀ i, C
   show m (m.symm (fun j => (g j).1)) i a b = _
   rw [m.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Pg hP hle r φ`. Take `⟨θ, h1, h2⟩` from `exists_glEquiv_of_surjective (A := 𝓞 E) (R := 𝓞 E ⧸ l.Mb) (M := LaMod Dw l) Ideal.Quotient.mk_surjective φ`. Take `⟨η, h3⟩` from `exists_glEquiv_pi (crt hP hle) r`. Establish `h4 : ∀ (g : Formalism.L2.DIV.G0 Pg r) (w : ↥Pg), (η g).1.map (Ideal.Quotient.factor (hle w)) = (g w).1` using `fun g w => Matrix.ext fun a b => h3 g w a b`. Use `⟨η.trans θ, fun g Y => ?_, fun g w => ?_⟩` and prove the remaining obligations.
+
+Establish `h5 : ∀ q, φ ((η.trans θ) g q) = (η g).1.mulVec (φ q)` using `fun q => h1 (η g) q`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Establish `: Y = (η g).1`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `φ.surjective v`. Conclude with `((h q).symm.trans (h5 q))`. Rewrite using `[this]`. Conclude with `h4 g w`.
+
+Introduce `h q`. Establish `: Y = (η g).1`. Use `Matrix.ext fun a b => (crt hP hle).injective (funext fun w => ?_)` and prove the remaining obligations. Rewrite using `[h3 g w a b, ← h w]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `h5 q`. Establish `h6 : LevelLiftConditions.levDet Dw l ((η.trans θ) g) = Matrix.GeneralLinearGroup.det (η g)` using `h2 (η g)`. Use `(congrArg _ h6).trans (Units.ext ?_)` and prove the remaining obligations. Use `show Ideal.Quotient.factor (hle w) (η g).1.det = (g w).1.det`.
+
+Rewrite using `[RingHom.map_det, ← h4 g w]`. Both sides reduce to the same expression.
+-/
 theorem exists_levGrp_equiv_pi : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Pg : Finset (Formalism.L2.DIV.Pl E)), l.Mb = ∏ w ∈ Pg, w.asIdeal → ∀ (hle : ∀ w : ↥Pg, l.Mb ≤ w.1.asIdeal) (r : ℕ) (φ : LaMod Dw l ≃ₗ[𝓞 E] (Fin r → 𝓞 E ⧸ l.Mb)), ∃ ψ : Formalism.L2.DIV.G0 Pg r ≃* LevelLiftConditions.LevGrp Dw l, (∀ (g : Formalism.L2.DIV.G0 Pg r) (Y : Matrix (Fin r) (Fin r) (𝓞 E ⧸ l.Mb)), (∀ q, φ (ψ g q) = Y.mulVec (φ q)) ↔ ∀ w : ↥Pg, Y.map (Ideal.Quotient.factor (hle w)) = (g w).1) ∧ ∀ (g : Formalism.L2.DIV.G0 Pg r) (w : ↥Pg), Units.map (Ideal.Quotient.factor (hle w)).toMonoidHom (LevelLiftConditions.levDet Dw l (ψ g)) = Matrix.GeneralLinearGroup.det (g w) := by
   intro E _ _ _ H Dw l Pg hP hle r φ
   obtain ⟨θ, h1, h2⟩ := exists_glEquiv_of_surjective (A := 𝓞 E) (R := 𝓞 E ⧸ l.Mb) (M := LaMod Dw l)

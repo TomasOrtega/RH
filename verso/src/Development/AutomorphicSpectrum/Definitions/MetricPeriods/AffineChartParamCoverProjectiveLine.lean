@@ -36,13 +36,22 @@ def sysLog : AnSys 1 Unit where
   reg _ := projectiveLine_isRegFamily
   c2 _ := projectiveLine_isRegFamilyC2
 
+/- English proof (translation)
+The claim follows from `projectiveLine_fubiniStudy_mass_one`.
+-/
 theorem sysLog_degNum (w : Fin 1 → Unit) : sysLog.degNum w = 1 := projectiveLine_fubiniStudy_mass_one
 
+/- English proof (translation)
+Simplify using `[AnSys.degPoly, formPoly, sysLog_degNum]`.
+-/
 theorem sysLog_degPoly : sysLog.degPoly = MvPolynomial.X () := by
   simp [AnSys.degPoly, formPoly, sysLog_degNum]
 
 def flagTh (p : Unit × Fin 2) : LocPot (OnePoint ℂ) := if p.2 = 0 then fsPot else LocPot.ofFun fun _ => 0
 
+/- English proof (translation)
+Introduce `x j y hy w`. Use `projLine_isPlurisubharmonic x j y ⟨hy.1, hy.2.1⟩ w` as an intermediate fact. Use `show 0 ≤ levi (fun z => fsPot.φ x ((p1.chart j).symm z) + 0) y w`. Simplify using `only [add_zero]`. Conclude with `this`.
+-/
 theorem psh_fs_zero : IsPsh p1 (fsPot + LocPot.ofFun fun _ => 0) := by
   intro x j y hy w
   have := projLine_isPlurisubharmonic x j y ⟨hy.1, hy.2.1⟩ w
@@ -50,6 +59,9 @@ theorem psh_fs_zero : IsPsh p1 (fsPot + LocPot.ofFun fun _ => 0) := by
   simp only [add_zero]
   exact this
 
+/- English proof (translation)
+Unfold `flagTh`. Use `split_ifs`. Conclude with `⟨projLine_isSmoothPotential, fun _ => contDiffOn_const, fun x j y hy w => psh_fs_zero x j y ⟨hy.1, hy.2.1⟩ w, fun _ _ => by simp⟩`. Use `⟨isPotential_ofFun _ _ fun _ => contDiffOn_const, fun _ => contDiffOn_const, fun x j y _ w => ?_, fun _ _ => by simp⟩ show 0 ≤ levi (fun _ => (0 : ℝ) + 0) y w` and prove the remaining obligations. Simplify using `[levi]`.
+-/
 theorem sing_flag (p : Unit × Fin 2) : IsSingWeight p1 fsPot projectiveLinePairSection (flagTh p) (fun _ => 0) 0 := by
   unfold flagTh
   split_ifs
@@ -60,6 +72,17 @@ theorem sing_flag (p : Unit × Fin 2) : IsSingWeight p1 fsPot projectiveLinePair
     show 0 ≤ levi (fun _ => (0 : ℝ) + 0) y w
     simp [levi]
 
+/- English proof (translation)
+Establish `h` using `(isRegFamilyInhabit p1 fsPot fsPot projectiveLinePairSection projLine_isSmoothPotential GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular.projLine_fubiniStudy_isPosPot logNormSec_nonpos).1`. Unfold `flagTh`. Use `split_ifs`. Conclude with `h`. Use `⟨h.1, h.2.1, fun t ht ht0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, b, c, d, -, f⟩` from `h.2.2 t ht ht0`. Use `⟨a, b, c, d, ?_, f⟩` and prove the remaining obligations. Establish `hε : 0 ≤ epsT 1 t`. Establish `h1 : Real.exp 1 ≤ Real.log (1 / t)` using `ell_ge ht ht0`. Establish `h2 : 0 ≤ Real.log (Real.log (1 / t))` using `Real.log_nonneg (by linarith [one_le_exp_one])`.
+
+Unfold `epsT`. Rewrite using `[one_mul]`. Conclude with `div_nonneg h2 (by linarith [Real.exp_pos 1])`. Introduce `x j y hy w`. Establish `hyD : y ∈ (p1.chart j).target ∩ (p1.chart j).symm ⁻¹' fsPot.U x` using `⟨hy.1, hy.2.2⟩`.
+
+Establish `hc : ContDiffAt ℝ 2 (fsPot.φ x ∘ (p1.chart j).symm) y` using `((projLine_isSmoothPotential.1 x j).contDiffAt (((p1.chart j).isOpen_inter_preimage_symm (fsPot.isOpen_U x)).mem_nhds hyD)).of_le two_le_inf`. Use `show 0 ≤ levi (fun z => (0 : ℝ) + 0 + epsT 1 t * fsPot.φ x ((p1.chart j).symm z)) y w`. Rewrite using `[levi_add_smul (f := fun _ => (0 : ℝ) + 0) (g := fun z => fsPot.φ x ((p1.chart j).symm z)) (epsT 1 t) contDiffAt_const hc w]`. Establish `h0 : levi (fun _ : Fin 1 → ℂ => (0 : ℝ) + 0) y w = 0` using `by simp [levi]`. Rewrite using `[h0, zero_add]`.
+
+Conclude with `mul_nonneg hε (projLine_isPlurisubharmonic x j y hyD w)`.
+-/
 theorem reg_flag (p : Unit × Fin 2) :
     IsRegFamily p1 fsPot fsPot projectiveLinePairSection (flagTh p) (fun _ => 0) (fun _ _ => 0) 1 (Real.exp (-Real.exp 1)) := by
   have h := (isRegFamilyInhabit p1 fsPot fsPot projectiveLinePairSection projLine_isSmoothPotential
@@ -97,6 +120,9 @@ def sysFlag : AnSys 1 (Unit × Fin 2) :=
 
 def frame (_ : Unit) (y : OnePoint ℂ) : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; crd0 y, 1]
 
+/- English proof (translation)
+Use `haveI : IsEmpty {a : Fin 2 // (a : ℕ) < 0} := ⟨fun a => by have := a.2; omega⟩`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem det_head_zero (hd : Fin 2 → ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) : (gramHead hd 0 g).det = 1 := by
   haveI : IsEmpty {a : Fin 2 // (a : ℕ) < 0} := ⟨fun a => by have := a.2; omega⟩
   exact Matrix.det_isEmpty
@@ -105,22 +131,40 @@ instance uniqueHead : Unique {a : Fin 2 // (a : ℕ) < 1} where
   default := ⟨0, by decide⟩
   uniq a := Subtype.ext (Fin.ext (by have := a.2; simp; omega))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_unique]`. Both sides reduce to the same expression.
+-/
 theorem det_head_one (hd : Fin 2 → ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) : (gramHead hd 1 g).det = gramOf hd g 0 0 := by
   rw [Matrix.det_unique]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (p := fun a : Fin 2 => (a : ℕ) < 2) fun a => a.2) _`.
+-/
 theorem det_head_two (hd : Fin 2 → ℝ) (g : Matrix (Fin 2) (Fin 2) ℂ) : (gramHead hd 2 g).det = (gramOf hd g).det :=
   Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (p := fun a : Fin 2 => (a : ℕ) < 2) fun a => a.2) _
 
+/- English proof (translation)
+Simplify using `[gramOf, frame, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, ← Complex.conj_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_frame_zero (hd : Fin 2 → ℝ) (y : OnePoint ℂ) :
     gramOf hd (frame () y) 0 0 = ((hd 0 + hd 1 * ‖crd0 y‖ ^ 2 : ℝ) : ℂ) := by
   simp [gramOf, frame, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, ← Complex.conj_mul']
   ring
 
+/- English proof (translation)
+Simplify using `[frame, Matrix.det_fin_two]`.
+-/
 theorem det_frame (y : OnePoint ℂ) : (frame () y).det = 1 := by simp [frame, Matrix.det_fin_two]
 
+/- English proof (translation)
+Simplify using `[gramOf, det_frame]`.
+-/
 theorem det_gram_frame (hd : Fin 2 → ℝ) (y : OnePoint ℂ) : (gramOf hd (frame () y)).det = hd 0 * hd 1 := by
   simp [gramOf, det_frame]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `holoOn_const _ 1`. Conclude with `holoOn_const _ 0`. Conclude with `holoOn_mono holomorphicOn_finiteCoord hV`. Conclude with `holoOn_const _ 1`.
+-/
 theorem holo_frame {V : Set (OnePoint ℂ)} (hV : V ⊆ Set.range ((↑) : ℂ → OnePoint ℂ)) (τ : Unit) (a b : Fin 2) :
     p1.HoloOn V fun y => frame τ y a b := by
   fin_cases a <;> fin_cases b
@@ -129,6 +173,13 @@ theorem holo_frame {V : Set (OnePoint ℂ)} (hV : V ⊆ Set.range ((↑) : ℂ �
   · exact holoOn_mono holomorphicOn_finiteCoord hV
   · exact holoOn_const _ 1
 
+/- English proof (translation)
+Introduce `k hk v hv`. Use `fin_cases k`. Establish `h` using `hv () (i := 1) (j := 0) (by decide)`. Establish `e : frame () ((0 : ℂ) : OnePoint ℂ) = 1`. Apply the tactic sequence `ext a b; fin_cases a <;> fin_cases b <;> simp [frame]`.
+
+Rewrite `h` using `[e, inv_one, one_mul, Matrix.of_apply]`. Establish `e2 : (fun z : Fin 1 → ℂ => frame () ((p1.chart ((fun i => i) ⟨0, by decide⟩ : Fin p1.n)).symm z) 1 0) = ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0 := rfl`. Rewrite `h` using `[e2, ContinuousLinearMap.fderiv]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Conclude with `h`. Conclude with `absurd rfl hk`.
+-/
 theorem immersion_frame : IsFlagImmersionAt p1 frame ((0 : ℂ) : OnePoint ℂ) := by
   intro k hk v hv
   fin_cases k
@@ -144,9 +195,24 @@ theorem immersion_frame : IsFlagImmersionAt p1 frame ((0 : ℂ) : OnePoint ℂ) 
     exact h
   · exact absurd rfl hk
 
+/- English proof (translation)
+The claim follows from `if_pos rfl`.
+-/
 theorem flagTh_zero : flagTh ((), 0) = fsPot := if_pos rfl
+/- English proof (translation)
+The claim follows from `if_neg (by decide)`.
+-/
 theorem flagTh_one : flagTh ((), 1) = LocPot.ofFun fun _ => 0 := if_neg (by decide)
 
+/- English proof (translation)
+Use `⟨OnePoint.isOpen_range_coe, ⟨z, rfl⟩, holo_frame subset_rfl, fun τ y _ => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_frame]`. Conclude with `isUnit_one`. Use `(inFlagDomain_one 2).2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `haveI : IsEmpty {a : Fin 2 // (a : ℕ) < 2 - 2} := ⟨fun a => by have := a.2; omega⟩`. Use extensionality with `i`. Conclude with `isEmptyElim i`. Introduce and unpack `⟨⟨⟩, i⟩`. Use `⟨fun _ => 0, holoOn_const _ 0, fun y _ => ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Use `show (flagTh ((), 0)).φ z y + 0 = gramLog (sigForm 2 2) 1 (frame () y) - gramLog (sigForm 2 2) 0 (frame () y) + 0`. Rewrite using `[flagTh_zero, fsPot_φ_coe, gramLog, gramLog, det_head_zero, det_head_one, gram_frame_zero, Complex.norm_real]`. Establish `: (0 : ℝ) ≤ 1 + ‖crd0 y‖ ^ 2` using `by positivity`. Simplify using `[sigForm]`.
+
+Use `show (flagTh ((), 1)).φ z y + 0 = gramLog (sigForm 2 2) 2 (frame () y) - gramLog (sigForm 2 2) 0 (frame () y) + 0`. Rewrite using `[flagTh_one, gramLog, gramLog, det_head_zero, det_head_two, det_gram_frame]`. Simplify using `[sigForm, LocPot.ofFun]`.
+-/
 theorem chart_flag (z : ℂ) :
     IsPeriodChart p1 2 sysFlag.potH (z : OnePoint ℂ) (Set.range ((↑) : ℂ → OnePoint ℂ)) frame := by
   refine ⟨OnePoint.isOpen_range_coe, ⟨z, rfl⟩, holo_frame subset_rfl, fun τ y _ => ⟨?_, ?_⟩, ?_⟩
@@ -166,6 +232,9 @@ theorem chart_flag (z : ℂ) :
       rw [flagTh_one, gramLog, gramLog, det_head_zero, det_head_two, det_gram_frame]
       simp [sigForm, LocPot.ofFun]
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, ((0 : ℂ) : OnePoint ℂ), fun h => ?_, _, _, chart_flag 0, immersion_frame⟩` and prove the remaining obligations. Establish `hx' : x ≠ OnePoint.infty` using `fun h => hx ((mem_boundary_projectiveLine x).2 h)`. Take `⟨z, rfl⟩` from `OnePoint.ne_infty_iff_exists.1 hx'`. Conclude with `⟨_, _, chart_flag z⟩`. Conclude with `OnePoint.coe_ne_infty 0 ((mem_boundary_projectiveLine _).1 h)`.
+-/
 theorem sysFlag_uniformised : IsUniformised sysFlag.A sysFlag.open' 2 sysFlag.potH := by
   refine ⟨fun x hx => ?_, ((0 : ℂ) : OnePoint ℂ), fun h => ?_, _, _, chart_flag 0, immersion_frame⟩
   · have hx' : x ≠ OnePoint.infty := fun h => hx ((mem_boundary_projectiveLine x).2 h)
@@ -173,6 +242,9 @@ theorem sysFlag_uniformised : IsUniformised sysFlag.A sysFlag.open' 2 sysFlag.po
     exact ⟨_, _, chart_flag z⟩
   · exact OnePoint.coe_ne_infty 0 ((mem_boundary_projectiveLine _).1 h)
 
+/- English proof (translation)
+Use `show mInt p1 (fun _ => flagTh ((), 0)) _ = 1`. Rewrite using `[flagTh_zero]`. Conclude with `projectiveLine_fubiniStudy_mass_one`.
+-/
 theorem sysFlag_degNum_zero : sysFlag.degNum (fun _ => ((), 0)) = 1 := by
   show mInt p1 (fun _ => flagTh ((), 0)) _ = 1
   rw [flagTh_zero]; exact projectiveLine_fubiniStudy_mass_one
@@ -182,6 +254,19 @@ def disc : Set (OnePoint ℂ) := ((↑) : ℂ → OnePoint ℂ) '' Metric.ball 0
 def discPot (p : Unit × Fin 2) : LocPot (OnePoint ℂ) :=
   LocPot.ofFun fun y => if p.2 = 0 then -(1 / 2) * Real.log (1 - ‖crd0 y‖ ^ 2) else 0
 
+/- English proof (translation)
+Use `⟨OnePoint.isOpen_image_coe.2 Metric.isOpen_ball, hx, holo_frame (Set.image_subset_range _ _), fun τ y hy => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_frame]`. Conclude with `isUnit_one`. Take `⟨z, hz, rfl⟩` from `hy`. Establish `hz' : ‖z‖ < 1` using `by simpa using hz`.
+
+Establish `hp : 0 < 1 - ‖z‖ ^ 2` using `by nlinarith [norm_nonneg z]`. Use `show (-gramHead (sigForm 2 1) 1 (frame () (z : OnePoint ℂ))).PosDef`. Establish `e : -gramHead (sigForm 2 1) 1 (frame () (z : OnePoint ℂ)) = Matrix.diagonal fun _ => ((1 - ‖z‖ ^ 2 : ℝ) : ℂ)`. Use extensionality with `a b`. Take `rfl : a = default` from `Subsingleton.elim _ _`.
+
+Take `rfl : b = default` from `Subsingleton.elim _ _`. Use `show -gramOf (sigForm 2 1) (frame () (z : OnePoint ℂ)) 0 0 = _`. Rewrite using `[gram_frame_zero]`. Simplify using `[sigForm, neg_add_eq_sub]`. Rewrite using `[e, Matrix.posDef_diagonal_iff]`.
+
+Introduce `_`. Conclude with `hp` after adjusting the coercions. Introduce and unpack `⟨⟨⟩, i⟩`. Use `⟨fun _ => 0, holoOn_const _ 0, fun y _ => ?_⟩` and prove the remaining obligations. Use `fin_cases i`.
+
+Use `show -(1 / 2) * Real.log (1 - ‖crd0 y‖ ^ 2) = gramLog (sigForm 2 1) 2 (frame () y) - gramLog (sigForm 2 1) 1 (frame () y) + 0`. Rewrite using `[gramLog, gramLog, det_head_two, det_head_one, gram_frame_zero, det_gram_frame, Complex.norm_real, Real.norm_eq_abs, Real.log_abs, ← Real.log_neg_eq_log (1 - _)]`. Simplify using `[sigForm, neg_add_eq_sub]`. Use `show (0 : ℝ) = gramLog (sigForm 2 1) 2 (frame () y) - gramLog (sigForm 2 1) 1 (frame () y) + gramLog (sigForm 2 1) 1 (frame () y) + 0`. Rewrite using `[gramLog, det_head_two, det_gram_frame]`.
+
+Simplify using `[sigForm]`.
+-/
 theorem chart_disc {x : OnePoint ℂ} (hx : x ∈ disc) : IsPeriodChart p1 1 discPot x disc frame := by
   refine ⟨OnePoint.isOpen_image_coe.2 Metric.isOpen_ball, hx, holo_frame (Set.image_subset_range _ _),
     fun τ y hy => ⟨?_, ?_⟩, ?_⟩
@@ -214,16 +299,31 @@ theorem chart_disc {x : OnePoint ℂ} (hx : x ∈ disc) : IsPeriodChart p1 1 dis
       rw [gramLog, det_head_two, det_gram_frame]
       simp [sigForm]
 
+/- English proof (translation)
+Establish `h0 : ((0 : ℂ) : OnePoint ℂ) ∈ disc` using `⟨0, by simp, rfl⟩`. Conclude with `⟨fun x hx => ⟨_, _, chart_disc hx⟩, _, h0, _, _, chart_disc h0, immersion_frame⟩`.
+-/
 theorem disc_uniformised : IsUniformised p1 disc 1 discPot := by
   have h0 : ((0 : ℂ) : OnePoint ℂ) ∈ disc := ⟨0, by simp, rfl⟩
   exact ⟨fun x hx => ⟨_, _, chart_disc hx⟩, _, h0, _, _, chart_disc h0, immersion_frame⟩
 
+/- English proof (translation)
+Introduce `h`. Use `h (0 : Fin 2) ⟨0, rfl⟩ 1 fun τ a b _ => by simp [Matrix.mul_apply]` as an intermediate fact. Conclude with `one_ne_zero (congrFun this 0)`.
+-/
 theorem not_immersion_const : ¬ IsFlagImmersionAt p1 (fun (_ : Unit) _ => (1 : Matrix (Fin 2) (Fin 2) ℂ))
     ((0 : ℂ) : OnePoint ℂ) := by
   intro h
   have := h (0 : Fin 2) ⟨0, rfl⟩ 1 fun τ a b _ => by simp [Matrix.mul_apply]
   exact one_ne_zero (congrFun this 0)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun _ => ⟨isOpen_univ, projectiveLineChartAtZero.continuousOn_symm, projectiveLineChartAtZero.symm.injOn, fun j => p1.holo (0 : Fin 2) j⟩, fun n => ⟨by by_cases hn : n = 0 <;> simp [hn], Set.subset_univ _⟩, fun n n' h => ?_, fun j => ?_⟩`. Distinguish the cases in `hn : n = 0`. Establish `hn' : n' ≠ 0` using `fun e => h (hn.trans e.symm)`. Simplify using `[hn']`. Simplify using `[hn]`.
+
+Establish `hsub : (⋃ n : ℕ, projectiveLineChartAtZero.symm '' (if n = 0 then Set.univ else ∅ : Set (Fin 1 → ℂ)))ᶜ ⊆ (Set.range ((↑) : ℂ → OnePoint ℂ))ᶜ`. Use `Set.compl_subset_compl.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `Set.mem_iUnion.2 ⟨0, fun _ => z, by simp, rfl⟩`. Use `measure_mono_null (t := {0}) ?_ (measure_singleton _)` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨-, hw⟩`. Establish `hw'` using `hsub hw`. Use `fin_cases j`. Conclude with `absurd ⟨w 0, rfl⟩ hw'`. Establish `: w 0 = 0`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hw' (projLineChart1_symm_mem_range.2 hc)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `this`.
+-/
 theorem affine_chart_param_cover_projective_line : IsParamCover p1 (fun _ => Set.univ) (fun n => if n = 0 then Set.univ else ∅)
     (fun _ => projectiveLineChartAtZero.symm) := by
   refine ⟨fun _ => ⟨isOpen_univ, projectiveLineChartAtZero.continuousOn_symm, projectiveLineChartAtZero.symm.injOn, fun j => p1.holo (0 : Fin 2) j⟩,
@@ -249,6 +349,9 @@ theorem affine_chart_param_cover_projective_line : IsParamCover p1 (fun _ => Set
       fin_cases i
       exact this
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨Set.univ, isOpen_univ, trivial, fun _ => 0, holoOn_const _ 0, fun _ _ => by simp⟩`.
+-/
 theorem samePot_refl (U : Set (OnePoint ℂ)) (P : LocPot (OnePoint ℂ)) : SamePot p1 U P P :=
   fun _ _ => ⟨Set.univ, isOpen_univ, trivial, fun _ => 0, holoOn_const _ 0, fun _ _ => by simp⟩
 

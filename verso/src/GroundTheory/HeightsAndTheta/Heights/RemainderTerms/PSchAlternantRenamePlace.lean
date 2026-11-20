@@ -9,6 +9,9 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `alternant`. Rewrite using `[AlgHom.map_det, ← Matrix.det_submatrix_equiv_self e (Matrix.of fun p p' : κ => (X p : MvPolynomial κ ℚ) ^ (v ∘ e.symm) p')]`. Use `congr 1`. Use extensionality with `i i'`. Simplify using `[Matrix.map_apply, Matrix.submatrix_apply]`.
+-/
 theorem rename_alternant_equiv {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (e : ι ≃ κ) (v : ι → ℕ) :
     rename e (alternant v) = alternant (v ∘ e.symm) := by
@@ -30,6 +33,11 @@ def smallBlockEquiv (r a : ℕ) (c : SmallBlock) : Fin r ⊕ Fin a ≃ Fin (r + 
     cases c <;> simp only [smallBlockOf] <;> split_ifs with h <;>
       apply Fin.ext <;> simp [smallBlockPlace, yIndex, zIndex] <;> omega
 
+/- English proof (translation)
+Introduce `r a c v`. Establish `hg : smallBlockPlace r a c = (fun p : Fin (r + a) => ((0 : Fin 1), p)) ∘ smallBlockEquiv r a c`. Use function extensionality and compare the values at `x`. Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Establish `hs : (smallBlockEquiv r a c).symm = smallBlockOf r a c` using `rfl`.
+
+Rewrite using `[hg, ← rename_rename]`. Use `congr 1`. Rewrite using `[rename_alternant_equiv, hs]`.
+-/
 theorem SchAlternantRenamePlace.proof : SchAlternantRenamePlace.Statement := by
   intro r a c v
   have hg : smallBlockPlace r a c =

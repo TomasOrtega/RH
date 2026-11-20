@@ -27,11 +27,17 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
 
 def eKs : S.Ks ≃+* T0.Q.c.F := (YS.fi (NX.idxOf D 1)).eK
 
+/- English proof (translation)
+The claim follows from `(YS.fi _).eK_LL a`.
+-/
 theorem eKs_LL (a : S.Ks) : algebraMap T0.Q.c.F D.what₂.LL (eKs YS a) = algebraMap S.Ks D.what₂.LL a := (YS.fi _).eK_LL a
 
 def sideK (i : D.ntw.Tw) (b : Bool) : T0.Q.c.F →+* FractionRing (D.ntw.O i) :=
   (NX.ιK S i b).comp (eKs YS).symm.toRingHom
 
+/- English proof (translation)
+The claim follows from `congrArg (NX.ιK S i b) ((eKs YS).symm_apply_apply a)`.
+-/
 theorem sideK_eKs (i : D.ntw.Tw) (b : Bool) (a : S.Ks) : sideK YS i b (eKs YS a) = NX.ιK S i b a :=
   congrArg (NX.ιK S i b) ((eKs YS).symm_apply_apply a)
 
@@ -44,10 +50,16 @@ def cuspOf (j : Fin D.R.m) : NX.FmK S ((j : ℕ) + 1) ≃+ Cu T0 κ j :=
       map_add' := fun x y => Subtype.ext ((YS.fi j).e.map_add _ _) }
     (fw.e j).symm.toAddEquiv
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((fw.e j).apply_symm_apply _)`.
+-/
 theorem e_cuspOf (j : Fin D.R.m) (x : NX.FmK S ((j : ℕ) + 1)) :
     (fw.e j (cuspOf YS fw j x) : Fin (Rl.nW j) → D.what₂.LL) = (YS.fi j).e (Subtype.val x) :=
   congrArg Subtype.val ((fw.e j).apply_symm_apply _)
 
+/- English proof (translation)
+Use `(fw.e j).injective (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[e_cuspOf, (fw.e j).map_smul, Submodule.coe_smul, e_cuspOf, ← algebraMap_smul D.what₂.LL (eKs YS a), eKs_LL, ← (YS.fi j).e.map_smul, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem cuspOf_smul (j : Fin D.R.m) (a : S.Ks) (x : NX.FmK S ((j : ℕ) + 1)) :
     cuspOf YS fw j (a • x) = eKs YS a • cuspOf YS fw j x := by
   refine (fw.e j).injective (Subtype.ext ?_)
@@ -55,10 +67,16 @@ theorem cuspOf_smul (j : Fin D.R.m) (a : S.Ks) (x : NX.FmK S ((j : ℕ) + 1)) :
     ← (YS.fi j).e.map_smul, algebraMap_smul]
   rfl
 
+/- English proof (translation)
+The claim follows from `cusp_le_sec _ _ _ _ _ (cuspOf YS fw j x).2`.
+-/
 theorem cuspOf_mem_sec (j : Fin D.R.m) (x : NX.FmK S ((j : ℕ) + 1)) :
     (cuspOf YS fw j x : T0.R ((j : ℕ) + 1)) ∈ sec (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c (wtA (κ j)) (κ j).n :=
   cusp_le_sec _ _ _ _ _ (cuspOf YS fw j x).2
 
+/- English proof (translation)
+Establish `h` using `hev j (sg0 D A3.A) (base_embedding_good T0 Rl.toRealDat fw.alg_eq fw.laws.pins.2.2.1) hV (cuspOf YS fw j x)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (Rl.HW j _).e ((Rl.FW j).j _ (fw.e j (cuspOf YS fw j x) : Fin (Rl.nW j) → D.what₂.LL)) (v₀ j _)`. Rewrite using `[e_cuspOf]`. Both sides reduce to the same expression.
+-/
 theorem evW_eq_phiC (j : Fin D.R.m) (hV : T0.V ((j : ℕ) + 1) (res T0 (sg0 D A3.A)) = Wc D j)
     (hev : fw.Evaluates) (x : NX.FmK S ((j : ℕ) + 1)) :
     GlobalTheory.SeriesTie.evW YS v₀ j (Subtype.val x) = phiC T0 hV (wtA (κ j)) (cuspOf YS fw j x : T0.R ((j : ℕ) + 1)) := by
@@ -68,6 +86,9 @@ theorem evW_eq_phiC (j : Fin D.R.m) (hV : T0.V ((j : ℕ) + 1) (res T0 (sg0 D A3
   rw [e_cuspOf]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SeriesTie.realRd_tmul, evW_eq_phiC YS fw j hV hev]`.
+-/
 theorem realRd_eq_phiC {ρ : GlobalTheory.SeriesTie.Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (ν : ℂ)
     (hV : T0.V ((j : ℕ) + 1) (res T0 (sg0 D A3.A)) = Wc D j) (hev : fw.Evaluates) (a : NX.KB S i b)
     (x : NX.FmK S ((j : ℕ) + 1)) :
@@ -78,10 +99,16 @@ theorem realRd_eq_phiC {ρ : GlobalTheory.SeriesTie.Setup D.ntw} (hρ : ρ.Good)
 
 def charAt (P : PlE D.host) : ℕ := ringChar (𝓞 D.host.E ⧸ P.asIdeal)
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+-/
 theorem charAt_mem (P : PlE D.host) : (charAt P : 𝓞 D.host.E) ∈ P.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
 
+/- English proof (translation)
+Use `P.isPrime` as an intermediate fact. Establish `: Finite (𝓞 D.host.E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Conclude with `(CharP.char_is_prime_or_zero (𝓞 D.host.E ⧸ P.asIdeal) _).resolve_right (CharP.char_ne_zero_of_finite (𝓞 D.host.E ⧸ P.asIdeal) _)`.
+-/
 theorem charAt_prime (P : PlE D.host) : (charAt P).Prime := by
   have := P.isPrime
   have : Finite (𝓞 D.host.E ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot
@@ -102,8 +129,16 @@ abbrev Pts (j : ℕ) : Type := PtC (T0.Q.Xo j) T0.Q.c (embC YS iC b)
 
 def kurAt : Subfield (FractionRing (D.ntw.O i)) := (kurC (embC YS iC b)).comap iC
 
+/- English proof (translation)
+The claim follows from `mem_kurC (embC YS iC b) a`.
+-/
 theorem sideK_mem_kurAt (a : T0.Q.c.F) : sideK YS i b a ∈ kurAt YS iC b := mem_kurC (embC YS iC b) a
 
+/- English proof (translation)
+Establish `key : ∀ x y : S.Ks, algebraMap S.Ks D.what₂.LL y = star (algebraMap S.Ks D.what₂.LL x) → embC YS iC false (eKs YS x) = embC YS iC true (eKs YS y)` using `fun x y hxy => by`. Express the relevant statement in the definitionally equal form `iC (sideK YS i false _) = iC (sideK YS i true _)`. Rewrite using `[sideK_eKs, sideK_eKs]`. Conclude with `congrArg (fun z => iC (IsFractionRing.map (K := FractionRing (D.ntw.O0 i)) (D.ntw.O_inj i) z)) (D.ntw.restX_coefficientEmbedding_conj i (S.kKs x) (S.kKs y) (by rw [S.kKs_spec, S.kKs_spec, hxy]))`. Establish `: (embC YS iC true).fieldRange = (embC YS iC false).fieldRange`.
+
+Apply the tactic sequence `refine le_antisymm ?_ ?_ <;> rintro _ ⟨a, rfl⟩ <;> obtain ⟨x, rfl⟩ := (eKs YS).surjective a <;> obtain ⟨y, hy⟩ := h x`. Conclude with `⟨_, key y x (by rw [hy, star_star])⟩`. Conclude with `⟨_, (key x y hy).symm⟩`. Rewrite using `[kurAt, kurAt, kurC_congr _ this]`.
+-/
 theorem kurAt_eq (h : ∀ x : S.Ks, ∃ y : S.Ks, algebraMap S.Ks D.what₂.LL y = star (algebraMap S.Ks D.what₂.LL x)) :
     kurAt YS iC true = kurAt YS iC false := by
   have key : ∀ x y : S.Ks, algebraMap S.Ks D.what₂.LL y = star (algebraMap S.Ks D.what₂.LL x) →
@@ -135,9 +170,19 @@ def valAt (j : Fin D.R.m) (z : FrC YS iC b ((j : ℕ) + 1)) : NX.Fm S i ((j : �
 
 variable {iC b}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAt_tmul (j : Fin D.R.m) (z : FrC YS iC b ((j : ℕ) + 1)) (a : NX.KB S i b) (x : NX.FmK S ((j : ℕ) + 1)) :
     valAt YS fw j z (a ⊗ₜ[S.Ks] x : NX.KB S i b ⊗[S.Ks] _) = iC a * valC z (cuspOf YS fw j x : T0.R ((j : ℕ) + 1)) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ (a : NX.KB S i b) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)), valAt YS fw j z (a • x) = iC a * valAt YS fw j z x` using `fun a x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero]`. Conclude with `(map_zero _).trans ((congrArg _ (map_zero _)).trans (mul_zero _)).symm`. Consider the case `add x y hx hy`.
+
+Rewrite using `[smul_add]`. Conclude with `(map_add _ _ _).trans (by rw [hx, hy, ← mul_add]; exact congrArg _ (map_add _ _ _).symm)`. Consider the case `tmul a' f`. Rewrite using `[TensorProduct.smul_tmul', valAt_tmul, valAt_tmul, ← mul_assoc]`. Conclude with `congrArg (· * _) (map_mul iC a a')`.
+
+Conclude with `key a x`.
+-/
 theorem valAt_smul (j : Fin D.R.m) (z : FrC YS iC b ((j : ℕ) + 1)) (a : FractionRing (D.ntw.O i))
     (x : NX.Fm S i ((j : ℕ) + 1) b) : valAt YS fw j z (a • x) = iC a * valAt YS fw j z x := by
   have key : ∀ (a : NX.KB S i b) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)),
@@ -155,6 +200,11 @@ theorem valAt_smul (j : Fin D.R.m) (z : FrC YS iC b ((j : ℕ) + 1)) (a : Fracti
 def wtChar (κj : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) {j : ℕ} {φ : T0.Q.c.F →+* ℂ_[D.ntw.l i]} (t : Ix (T0.Q.Dw j) → (PAt φ)ˣ) :
     ℂ_[D.ntw.l i] := toCp φ (wchar (ex (T0.Q.Dw j) κj n) t)
 
+/- English proof (translation)
+Establish `hL` using `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp _ _ _ _ (T0.Q.Xo ((j : ℕ) + 1)) T0.Q.c).1`. Establish `key : ∀ x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1), valAt YS fw j z' x = wtChar (wtA (κ j)) (κ j).n t * valAt YS fw j z x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans ((congrArg _ (map_zero _)).trans (mul_zero _)).symm`. Consider the case `add x y hx hy => exact (map_add _ _ _).trans (by rw [hx, hy, ← mul_add]; exact congrArg _ (map_add _ _ _).symm)`.
+
+Consider the case `tmul a f`. Rewrite using `[valAt_tmul, valAt_tmul, valC, hL.wt _ _ _ (cuspOf_mem_sec YS fw j f) _ t z z' (hL.test _ _) (hL.test _ _) h, map_mul, mul_left_comm]`. Both sides reduce to the same expression. Conclude with `key x`.
+-/
 theorem valAt_frBor (j : Fin D.R.m) {z z' : FrC YS iC b ((j : ℕ) + 1)} {t : Ix (T0.Q.Dw ((j : ℕ) + 1)) → (PAt (embC YS iC b))ˣ}
     (h : FrBor t z z') (x : NX.Fm S i ((j : ℕ) + 1) b) :
     valAt YS fw j z' x = wtChar (wtA (κ j)) (κ j).n t * valAt YS fw j z x := by
@@ -175,9 +225,17 @@ variable (S) in
 def ratForms (j : ℕ) (b : Bool) (L : Subfield (FractionRing (D.ntw.O i))) : AddSubgroup (NX.Fm S i j b) :=
   AddSubgroup.closure {x | ∃ a ∈ L, ∃ f : NX.FmK S j, x = (show NX.KB S i b from a) ⊗ₜ[S.Ks] f}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha, f, rfl⟩`.
+-/
 theorem tmul_mem_ratForms {j : ℕ} {L : Subfield (FractionRing (D.ntw.O i))} {a : NX.KB S i b} (ha : a ∈ L) (f : NX.FmK S j) :
     (a ⊗ₜ[S.Ks] f : NX.KB S i b ⊗[S.Ks] _) ∈ ratForms S j b L := AddSubgroup.subset_closure ⟨a, ha, f, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a', ha', f, rfl⟩` from `hx`. Conclude with `tmul_mem_ratForms (L.mul_mem ha ha') f`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_mem_ratForms {j : ℕ} {L : Subfield (FractionRing (D.ntw.O i))} {a : FractionRing (D.ntw.O i)} (ha : a ∈ L)
     {x : NX.Fm S i j b} (hx : x ∈ ratForms S j b L) : a • x ∈ ratForms S j b L := by
   induction hx using AddSubgroup.closure_induction with
@@ -188,6 +246,13 @@ theorem smul_mem_ratForms {j : ℕ} {L : Subfield (FractionRing (D.ntw.O i))} {a
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `key : ∀ x : NX.KB S i b ⊗[S.Ks] NX.FmK S j, x ∈ Submodule.span (FractionRing (D.ntw.O i)) (ratForms S j b L : Set (NX.Fm S i j b))` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+
+Consider the case `tmul a f`. Establish `h` using `Submodule.smul_mem _ (show FractionRing (D.ntw.O i) from a) (Submodule.subset_span (R := FractionRing (D.ntw.O i)) (tmul_mem_ratForms (b := b) L.one_mem f))`. Establish `e : (a • ((1 : NX.KB S i b) ⊗ₜ[S.Ks] f) : NX.KB S i b ⊗[S.Ks] NX.FmK S j) = a ⊗ₜ[S.Ks] f`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Conclude with `e ▸ h`.
+
+Conclude with `key x`.
+-/
 theorem span_ratForms (j : ℕ) (L : Subfield (FractionRing (D.ntw.O i))) :
     Submodule.span (FractionRing (D.ntw.O i)) (ratForms S j b L : Set (NX.Fm S i j b)) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -204,6 +269,11 @@ theorem span_ratForms (j : ℕ) (L : Subfield (FractionRing (D.ntw.O i))) :
       exact e ▸ h
   exact key x
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `key : ∀ x : NX.KB S i b ⊗[S.Ks] NX.FmK S j, x ∈ ratForms S j b (⊤ : Subfield (FractionRing (D.ntw.O i)))` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+
+Consider the case `tmul a f => exact tmul_mem_ratForms (Subfield.mem_top _) f`. Conclude with `key x`.
+-/
 theorem ratForms_top (j : ℕ) : ratForms S j b (⊤ : Subfield (FractionRing (D.ntw.O i))) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
   have key : ∀ x : NX.KB S i b ⊗[S.Ks] NX.FmK S j, x ∈ ratForms S j b (⊤ : Subfield (FractionRing (D.ntw.O i))) := fun x => by

@@ -10,6 +10,11 @@ open scoped ENNReal
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 namespace OSAux
 
+/- English proof (translation)
+Unfold `fS`. Rewrite using `[Real.rpow_sum_of_pos (by norm_num), ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity), ← Finset.prod_mul_distrib]`. Apply `Finset.prod_le_prod'` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1` using `de_scl τ hτ.1 hτ.2 x l`. Establish `h2` using `de_ge_one x l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by linarith) (by norm_num), Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2), div_inv_eq_mul, mul_comm]`.
+-/
 lemma fS_scl {p m : ℕ} (s : Fin (p + 2) → ℝ) (hs0 : ∀ l, 0 ≤ s l) (τ : ℝ) (hτ : τ ∈ Icc (1 : ℝ) 2)
     (x : Xp (p + 1) m) : fS s (scl τ x) ≤ ENNReal.ofReal (2 ^ ∑ l, s l) * fS s x := by
   unfold fS
@@ -27,6 +32,9 @@ lemma fS_scl {p m : ℕ} (s : Fin (p + 2) → ℝ) (hs0 : ∀ l, 0 ≤ s l) (τ 
         rw [Real.div_rpow (by linarith) (by norm_num), Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2),
           div_inv_eq_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `fS`. Simplify using `only [de_rot]`.
+-/
 lemma fS_rot {p m : ℕ} (s : Fin (p + 2) → ℝ) (t : ℝ) (x : Xp (p + 1) m) : fS s (rot t x) = fS s x := by
   unfold fS
   simp only [de_rot]
@@ -34,6 +42,35 @@ lemma fS_rot {p m : ℕ} (s : Fin (p + 2) → ℝ) (t : ℝ) (x : Xp (p + 1) m) 
 end OSAux
 
 open OSAux in
+/- English proof (translation)
+Introduce `p m δ γ e hδ0 hδ1 hγ0 hγ hepos hsum`. Use `set s : Fin (p + 2) → ℝ := fun l => s0N (p + 1) m l - e l with hs`. Establish `hS0 : 0 ≤ ∑ i : Fin (p + 1), e i.succ` using `Finset.sum_nonneg (fun i _ => (hepos _).le)`. Establish `hs0 : ∀ l, 0 ≤ s l`. Introduce `l`.
+
+Establish `hle : e l ≤ 1`. Use `Fin.cases ?_ (fun i => ?_) l` and prove the remaining obligations. Combine the linear relations using `[hepos 0]`. Establish `: e i.succ ≤ ∑ i : Fin (p + 1), e i.succ` using `Finset.single_le_sum (f := fun i : Fin (p + 1) => e i.succ) (fun j _ => (hepos _).le) (Finset.mem_univ i)`. Combine the linear relations using `[hepos 0]`.
+
+Establish `h1 : 1 ≤ s0N (p + 1) m l`. Unfold `s0N`. Use `split_ifs`. Evaluate the numerical expressions. Establish `: (0:ℝ) ≤ m` using `Nat.cast_nonneg m`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Cr, hCr0, hrot⟩` from `rot_weight hS hδ0 hδ1`. Take `⟨C2, hC20, hscl⟩` from `scl_weight hS hδ0 hδ1 hγ0 hγ`.
+
+Take `⟨C3, hC3⟩` from `tail_bound hT hC1 hK hL (m := m) e hγ0 (by linarith) hepos hsum`. Use `set Ks : ℝ := 2 ^ ∑ l, s l with hKs`. Establish `hKs0 : 0 ≤ Ks` using `by positivity`. Use `⟨Cr * Ks * C2 * max C3 0, ?_⟩` and prove the remaining obligations. Introduce `η η' ζ c₀ hη`.
+
+Use `set w0 : Xp (p + 1) m → ℝ≥0∞ := fun x => ENNReal.ofReal ((1 + |2 * (linF η η' ζ x).im + c₀|) ^ (-δ)) with hw0d`. Use `set w1 : Xp (p + 1) m → ℝ≥0∞ := fun x => ENNReal.ofReal ((1 + ‖linF η η' ζ x‖) ^ (-δ / 4)) with hw1d`. Establish `hw0 : Measurable w0` using `ENNReal.measurable_ofReal.comp ((by fun_prop : Measurable (fun r : ℂ => (1 + |2 * r.im + c₀|) ^ (-δ))).comp (cont_linF η η' ζ).measurable)`. Establish `hw1 : Measurable w1` using `ENNReal.measurable_ofReal.comp ((by fun_prop : Measurable (fun r : ℂ => (1 + ‖r‖) ^ (-δ / 4))).comp (cont_linF η η' ζ).measurable)`. Establish `hf` using `meas_fS (p := p) (m := m) s`.
+
+Establish `hN : (‖η' 0‖₊ : ℝ≥0∞) ^ (-γ) = ENNReal.ofReal (‖η' 0‖ ^ (-γ))`. Establish `e0 : ENNReal.ofReal ‖η' 0‖ = (‖η' 0‖₊ : ℝ≥0∞)`. Rewrite using `[← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`. Rewrite using `[← e0, ENNReal.ofReal_rpow_of_pos (norm_pos_iff.mpr hη)]`. Establish `stepA : OSInt p m s δ η η' ζ c₀ ≤ ENNReal.ofReal (Cr * (1 + |c₀|) ^ (-δ / 4)) * ∫⁻ x, fS s x * w1 x`.
+
+Establish `hA` using `avg (μ := volume) rot rot_meas (fun t _ => rot_mp t) hf hw0 1 (fun t _ x => by rw [one_mul, fS_rot])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Use `lintegral_mono (fun x => ?_)` and prove the remaining obligations. Use `gcongr`.
+
+Simplify using `only [hw0d, linF_rot]`. Conclude with `hrot _ _`. Use `_ = ENNReal.ofReal (Cr * (1 + |c₀|) ^ (-δ / 4)) * ∫⁻ x, fS s x * w1 x := by`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr (fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hw1d, ENNReal.ofReal_mul (mul_nonneg hCr0.le (by positivity))]`. Expand and normalize the polynomial expressions, which then agree. Establish `stepB : ∫⁻ x, fS s x * w1 x ≤ ENNReal.ofReal Ks * (ENNReal.ofReal C2 * ENNReal.ofReal (‖η' 0‖ ^ (-γ)) * ∫⁻ x : Xp (p + 1) m, fS s x * (‖x.2.1 0‖₊ : ℝ≥0∞) ^ (-γ))`. Establish `hB` using `avg (μ := volume) scl scl_meas (fun τ hτ => scl_mp τ (by linarith [hτ.1])) hf hw1 (ENNReal.ofReal Ks) (fun τ hτ x => fS_scl s hs0 τ hτ x)`. Use `hB.trans ?_` and prove the remaining obligations.
+
+Use `gcongr`. Rewrite using `[← lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top)]`. Use `lintegral_mono (fun x => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `hscl η η' ζ x`.
+
+Use `_ = _ := by rw [hN]; ring`. Establish `hC3' : ∫⁻ x : Xp (p + 1) m, fS s x * (‖x.2.1 0‖₊ : ℝ≥0∞) ^ (-γ) ≤ ENNReal.ofReal (max C3 0)` using `hC3.trans (ENNReal.ofReal_le_ofReal (le_max_left _ _))`. Combine the equalities or inequalities in the displayed calculation. Use `stepA.trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `stepB.trans (by gcongr)`. Use `_ = ENNReal.ofReal (Cr * Ks * C2 * max C3 0 * ‖η' 0‖ ^ (-γ) * (1 + |c₀|) ^ (-δ / 4)) := by`. Establish `h1 : 0 ≤ (1 + |c₀|) ^ (-δ / 4)` using `by positivity`. Establish `h2 : 0 ≤ ‖η' 0‖ ^ (-γ)` using `by positivity`. Establish `h3 : 0 ≤ max C3 0` using `le_max_right _ _`.
+
+Rewrite using `[ENNReal.ofReal_mul (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hCr0.le hKs0) hC20.le) h3) h2), ENNReal.ofReal_mul (mul_nonneg (mul_nonneg (mul_nonneg hCr0.le hKs0) hC20.le) h3), ENNReal.ofReal_mul (mul_nonneg (mul_nonneg hCr0.le hKs0) hC20.le), ENNReal.ofReal_mul (mul_nonneg …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem oscillatoryBound' (hT : TailFin) (hC1 : C1) (hS : SUB) (hK : KER) (hL : SLOW) : OS := by
   intro p m δ γ e hδ0 hδ1 hγ0 hγ hepos hsum
   set s : Fin (p + 2) → ℝ := fun l => s0N (p + 1) m l - e l with hs

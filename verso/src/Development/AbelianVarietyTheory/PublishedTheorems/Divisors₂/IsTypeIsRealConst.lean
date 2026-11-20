@@ -42,6 +42,11 @@ def pull (L : V n →L[ℂ] V m) : Alt m →ₐ[ℂ] Alt n :=
   ExteriorAlgebra.map (Matrix.toLin' (fromBlocks (of fun b a => L (coordVec b) a) 0 0
     (of fun b a => conj (L (coordVec b) a))))
 
+/- English proof (translation)
+Use `Subalgebra.mem_center_iff.2 fun b => ?_` and prove the remaining obligations. Proceed by induction on `b using ExteriorAlgebra.induction with`. Consider the case `algebraMap r => exact Algebra.commutes _ _`. Consider the case `ι x`. Rewrite using `[← mul_assoc, eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap x u), neg_mul, mul_assoc, eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap x w), mul_neg, neg_neg, mul_assoc]`.
+
+Consider the case `mul a b ha hb => rw [mul_assoc, hb, ← mul_assoc, ha, mul_assoc]`. Consider the case `add a b ha hb => rw [add_mul, mul_add, ha, hb]`.
+-/
 theorem ι_mul_ι_mem_center (u w : Fin n ⊕ Fin n → ℂ) :
     ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w ∈ Subalgebra.center ℂ (Alt n) := by
   refine Subalgebra.mem_center_iff.2 fun b => ?_
@@ -71,31 +76,53 @@ def dbarAt (α : V n → Alt n) (v : V n) : Alt n := ∑ a, dzb a * coefwise (fu
 def chernAt {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (v : V n) (j : ℕ) : Ev n :=
   kappa ^ j • MvPolynomial.aeval sym (chernPoly G v j)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> refine (ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_)) <;> rintro (b | b) <;>`. Simplify using `[LinearMap.funLeft_apply, Pi.single_apply]`.
+-/
 theorem swap_dz (a : Fin n) : swap (dz a) = dzb a ∧ swap (dzb a) = dz a := by
   constructor <;> refine (ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_)) <;> rintro (b | b) <;>
     simp [LinearMap.funLeft_apply, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [dz, dzb, ← map_smul, ← map_sum]`. Apply the tactic sequence `constructor <;> refine (ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_)) <;> rintro (b | b) <;>`. Simplify using `[Pi.single_apply, Finset.sum_apply]`.
+-/
 theorem pull_dz (L : V n →L[ℂ] V m) (a : Fin m) : pull L (dz a) = ∑ b, L (coordVec b) a • dz b ∧
     pull L (dzb a) = ∑ b, conj (L (coordVec b) a) • dzb b := by
   simp only [dz, dzb, ← map_smul, ← map_sum]
   constructor <;> refine (ExteriorAlgebra.map_apply_ι _ _).trans (congrArg _ (funext ?_)) <;> rintro (b | b) <;>
     simp [Pi.single_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[bas, ExteriorAlgebra.basis_apply_ofCard _ (Finset.card_singleton _), ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply]`. Simplify using `[Set.powersetCard.ofFinEmbEquiv, Set.powersetCard.ofCard]`.
+-/
 theorem bas_singleton (i : Fin n ⊕ Fin n) :
     bas n {finSumFinEquiv i} = ExteriorAlgebra.ι ℂ (Pi.single i 1) := by
   rw [bas, ExteriorAlgebra.basis_apply_ofCard _ (Finset.card_singleton _), ExteriorAlgebra.ιMulti_family,
     ExteriorAlgebra.ιMulti_apply]
   simp [Set.powersetCard.ofFinEmbEquiv, Set.powersetCard.ofCard]
 
+/- English proof (translation)
+Rewrite using `[bas, ExteriorAlgebra.basis_apply_ofCard _ Finset.card_empty, ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_zero_apply]`.
+-/
 theorem bas_empty : bas n ∅ = 1 := by
   rw [bas, ExteriorAlgebra.basis_apply_ofCard _ Finset.card_empty, ExteriorAlgebra.ιMulti_family,
     ExteriorAlgebra.ιMulti_zero_apply]
 
+/- English proof (translation)
+Use `ExteriorAlgebra.basis_mul_of_disjoint ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) (Set.powersetCard.ofCard (s := S) rfl) (Set.powersetCard.ofCard (s := T) rfl) h` as an intermediate fact. Conclude with `⟨_, this.trans (by congr 2; ext; simp [Set.powersetCard.disjUnion])⟩`.
+-/
 theorem bas_mul {S T : Finset (Fin (n + n))} (h : Disjoint S T) : ∃ ε : ℤˣ, bas n S * bas n T = ε • bas n (S ∪ T) := by
   have := ExteriorAlgebra.basis_mul_of_disjoint ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv)
     (Set.powersetCard.ofCard (s := S) rfl) (Set.powersetCard.ofCard (s := T) rfl) h
   exact ⟨_, this.trans (by congr 2; ext; simp [Set.powersetCard.disjUnion])⟩
 
+/- English proof (translation)
+Establish `key (s : Finset (Fin n)) : ∃ c : ℂ, c ≠ 0 ∧ ((∏ a ∈ s, (Complex.I / 2) • sym (a, a) : Ev n) : Alt n) = c • bas n (Finset.univ.filter fun i => (finSumFinEquiv.symm i).elim id id ∈ s)`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp [bas_empty]⟩`. Consider the case `insert a s ha ih`. Take `⟨c, hc, e⟩` from `ih`.
+
+Take `⟨ε, h₁⟩` from `bas_mul (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr a)}) (Finset.disjoint_singleton.2 (finSumFinEquiv.injective.ne Sum.inl_ne_inr))`. Take `⟨ε', h₂⟩` from `bas_mul (S := {finSumFinEquiv (.inl a)} ∪ {finSumFinEquiv (.inr a)}) (T := Finset.univ.filter fun i => (finSumFinEquiv.symm i).elim id id ∈ s) (by simp [ha, -finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right])`. Use `⟨Complex.I / 2 * c * ((ε : ℤ) * (ε' : ℤ)), by simp [hc], ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha, Subalgebra.coe_mul, e, Subalgebra.coe_smul, show (sym (a, a) : Alt n) = dz a * dzb a from rfl, dz, dzb, ← bas_singleton, ← bas_singleton, h₁, smul_mul_smul_comm, smul_mul_assoc, h₂, Units.smul_def, Units.smul_def, ← Int.cast_smul_eq_zsmul ℂ, ← Int.cast_smu …`. Use `congr 2`.
+
+Use extensionality with `i`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> simp [-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]`. Simplify `key Finset.univ` using `[vol]`.
+-/
 theorem vol_eq (n : ℕ) : ∃ c : ℂ, c ≠ 0 ∧ (vol n : Alt n) = c • bas n Finset.univ := by
   have key (s : Finset (Fin n)) : ∃ c : ℂ, c ≠ 0 ∧ ((∏ a ∈ s, (Complex.I / 2) • sym (a, a) : Ev n) : Alt n) =
       c • bas n (Finset.univ.filter fun i => (finSumFinEquiv.symm i).elim id id ∈ s) := by
@@ -117,10 +144,18 @@ theorem vol_eq (n : ℕ) : ∃ c : ℂ, c ≠ 0 ∧ (vol n : Alt n) = c • bas 
       obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> simp [-finSumFinEquiv_apply_left, -finSumFinEquiv_apply_right]
   simpa [vol] using key Finset.univ
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `vol_eq n`. Conclude with `div_self (by simpa [e] using hc)`.
+-/
 theorem dens_vol (n : ℕ) : dens (vol n : Alt n) = 1 := by
   obtain ⟨c, hc, e⟩ := vol_eq n
   exact div_self (by simpa [e] using hc)
 
+/- English proof (translation)
+Use `⟨fun S hS => ?_, fun S => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : ∅ = S := by`. Assume the negation of the conclusion as `h`. Simplify using `[Algebra.algebraMap_eq_smul_one, ← bas_empty, h, -Complex.coe_smul] at hS`. Simplify using the standard rewrite rules.
+
+Rewrite using `[AlgHom.commutes]`. Apply the tactic sequence `by_cases h : ∅ = S <;>`. Simplify using `[Algebra.algebraMap_eq_smul_one, ← bas_empty, Finsupp.single_apply, h, -Complex.coe_smul]`.
+-/
 theorem isType_isReal_const (t : ℝ) : IsType 0 0 (algebraMap ℂ (Alt n) t) ∧ IsReal (algebraMap ℂ (Alt n) t) := by
   refine ⟨fun S hS => ?_, fun S => ?_⟩
   · obtain rfl : ∅ = S := by
@@ -131,6 +166,9 @@ theorem isType_isReal_const (t : ℝ) : IsType 0 0 (algebraMap ℂ (Alt n) t) �
     by_cases h : ∅ = S <;>
       simp [Algebra.algebraMap_eq_smul_one, ← bas_empty, Finsupp.single_apply, h, -Complex.coe_smul]
 
+/- English proof (translation)
+Introduce `S` and use `by obtain ⟨ε, h⟩ := bas_mul (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr a)}) (Finset.disjoint_singleton.2 (finSumFinEquiv.injective.ne Sum.inl_ne_inr)) rw [map_smul, map_mul, (swap_dz a).1, (swap_dz a).2, dz, dzb, eq_neg_of_add_eq_zero_right (ExteriorAlgebra.ι_ad …`.
+-/
 theorem isReal_I_smul_sym (a : Fin n) : IsReal (Complex.I • (dz a * dzb a)) := fun S => by
   obtain ⟨ε, h⟩ := bas_mul (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr a)})
     (Finset.disjoint_singleton.2 (finSumFinEquiv.injective.ne Sum.inl_ne_inr))
@@ -140,11 +178,23 @@ theorem isReal_I_smul_sym (a : Fin n) : IsReal (Complex.I • (dz a * dzb a)) :=
   simp only [map_smul, map_neg, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.neg_apply, Finsupp.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[coefwise, Finset.sum_eq_single S (fun S' _ h => by simp [Finsupp.single_apply, h.symm, hT]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem coefwise_smul {T : (V n → ℂ) → ℂ} (hT : T (fun _ => 0) = 0) (u : V n → ℂ) (S : Finset (Fin (n + n))) :
     coefwise T (fun x => u x • bas n S) = T u • bas n S := by
   rw [coefwise, Finset.sum_eq_single S (fun S' _ h => by simp [Finsupp.single_apply, h.symm, hT]) (by simp)]
   simp
 
+/- English proof (translation)
+Establish `h₁ (x : V n) (S) : (bas n).repr (dbarAt (fun x => algebraMap ℂ (Alt n) (u x)) x) S = ∑ b, if S = {finSumFinEquiv (.inr b)} then dbar (fun x => (u x : ℂ)) x (coordVec b) else 0`. Simplify using `only [dbarAt, Algebra.algebraMap_eq_smul_one, ← bas_empty]`. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_smul (by simp), bas_empty, mul_smul_comm, mul_one, dzb, ← bas_singleton]`.
+
+Simplify using `[Finsupp.single_apply, eq_comm]`. Establish `h₂ (a : Fin n) : coefwise (fun f => del f v (coordVec a)) (dbarAt fun x => algebraMap ℂ (Alt n) (u x)) = ∑ b, leviForm u v (coordVec a) (coordVec b) • dzb b`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Simplify using `only [coefwise, h₁, map_sum, map_smul, Module.Basis.repr_self, Finsupp.finset_sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, dzb, ← bas_singleton]`. Distinguish the cases in `h : ∃ b, S = {finSumFinEquiv (.inr b)}`.
+
+Take `⟨b, rfl⟩` from `h`. Simplify using `only [Finset.singleton_inj, EmbeddingLike.apply_eq_iff_eq, Sum.inr.injEq, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, leviForm]`. Conclude with `(ddbar_eq_del_dbar (contDiffAt_ofReal_comp hu) _ _).symm`. Use `push_neg at h`. Simplify using `[h, fun b => (h b).symm, -finSumFinEquiv_apply_right]`.
+
+Simplify using `only [delAt, h₂, ofValues, ddc, Finset.mul_sum, Finset.smul_sum, mul_smul_comm, smul_smul, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym]`.
+-/
 theorem delAt_dbarAt_fun {u : V n → ℝ} {v : V n} (hu : ContDiffAt ℝ 2 u v) :
     kappa • delAt (dbarAt fun x => algebraMap ℂ (Alt n) (u x)) v = ofValues (ddc u v) := by
   have h₁ (x : V n) (S) : (bas n).repr (dbarAt (fun x => algebraMap ℂ (Alt n) (u x)) x) S =
@@ -256,10 +306,16 @@ def part [MeasurableSpace M] (α : A.Fld) (ε : ℤˣ) : Measure M :=
 
 def integral [MeasurableSpace M] (α : A.Fld) : ℝ := (A.part α 1).real univ - (A.part α (-1)).real univ
 
+/- English proof (translation)
+Rewrite using `[loc, dif_pos (x.ch.map_source x.2)]`. Conclude with `congrArg α (Subtype.ext (Prod.ext rfl (x.ch.left_inv x.2)))`.
+-/
 theorem loc_crd (α : A.Fld) (x : A.Pt) : A.loc α x.1.1 x.crd = α x := by
   rw [loc, dif_pos (x.ch.map_source x.2)]
   exact congrArg α (Subtype.ext (Prod.ext rfl (x.ch.left_inv x.2)))
 
+/- English proof (translation)
+Use `⟨fun i S => ?_, fun x x' h => by rw [fn, fn, AlgHom.commutes, h]⟩` and prove the remaining obligations. Use `(((hu i).mono fun v hv => ⟨hv, trivial⟩).mul (contDiffOn_const (c := (bas n).repr 1 S))).congr fun v hv => ?_` and prove the remaining obligations. Simplify using `[loc, hv, fn, Algebra.algebraMap_eq_smul_one, -Complex.coe_smul]`.
+-/
 theorem isForm_fn {u : M → ℝ} (hu : A.SmoothOn univ fun y => u y) : A.IsForm (A.fn u) := by
   refine ⟨fun i S => ?_, fun x x' h => by rw [fn, fn, AlgHom.commutes, h]⟩
   refine (((hu i).mono fun v hv => ⟨hv, trivial⟩).mul (contDiffOn_const (c := (bas n).repr 1 S))).congr fun v hv => ?_
@@ -318,6 +374,9 @@ def IsSplit (T : HermSeq A r s) : Prop :=
   ∀ a, ∃ t : M → Matrix (Fin r) (Fin s) ℂ, (∀ i j, A.HolOn (T.U a) fun y => t y i j) ∧
     ∀ y ∈ T.U a, chg (fromBlocks 1 (t y) 0 1) (T.mid a y) = fromBlocks (T.sub a y) 0 0 (T.quot a y)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.g, T.holo, fun a b y ha hb => ⟨T.tri a b y ⟨ha, hb⟩, fun a' h => T.g_mul a' a b y ⟨⟨h, ha⟩, hb⟩, fun b' h => T.g_mul a b b' y ⟨⟨ha, hb⟩, h⟩, T.trans a b y ⟨ha, hb⟩⟩⟩`.
+-/
 theorem isPull_self (T : HermSeq A r s) : T.IsPull T id :=
   ⟨T.g, T.holo, fun a b y ha hb => ⟨T.tri a b y ⟨ha, hb⟩, fun a' h => T.g_mul a' a b y ⟨⟨h, ha⟩, hb⟩,
     fun b' h => T.g_mul a b b' y ⟨⟨ha, hb⟩, h⟩, T.trans a b y ⟨ha, hb⟩⟩⟩
@@ -354,15 +413,24 @@ structure IsRegVar (p : X ⟶ Sp k) (D : ℕ) : Prop extends IsArithVar p D wher
 
   regular : ∀ x, IsRegularLocalRing (X.presheaf.stalk x)
 
+/- English proof (translation)
+Use `⟨h, fun x => ?_⟩` and prove the remaining obligations. Use `ExtendRig.isRegularRing_stalk isRegularRing_of_smooth ℤ p x` as an intermediate fact. Conclude with `.of_isRegularRing_of_isLocalRing _`.
+-/
 theorem IsRegVar.of_smooth {p : X ⟶ Sp ℤ} [Smooth p] (h : IsArithVar p D) : IsRegVar p D := by
   refine ⟨h, fun x => ?_⟩
   have := ExtendRig.isRegularRing_stalk isRegularRing_of_smooth ℤ p x
   exact .of_isRegularRing_of_isLocalRing _
 
+/- English proof (translation)
+The claim follows from `have : Smooth (PSpace.str ℤ N) := SmoothOfRelativeDimension.smooth N _ .of_smooth (ProjSpace.isArithVar_int N)`.
+-/
 theorem isRegVar_proj (N : ℕ) : IsRegVar (PSpace.str ℤ N) N :=
   have : Smooth (PSpace.str ℤ N) := SmoothOfRelativeDimension.smooth N _
   .of_smooth (ProjSpace.isArithVar_int N)
 
+/- English proof (translation)
+The claim follows from `.of_smooth ArithBase.isArithVar_int`.
+-/
 theorem isRegVar_int : IsRegVar (𝟙 (Sp ℤ)) 0 := .of_smooth ArithBase.isArithVar_int
 
 namespace IsRegVar
@@ -387,12 +455,18 @@ def IsArForm (q : ℕ) (η : h.Fld) : Prop :=
 
 def integral (η : h.Fld) : ℝ := ∑ᶠ σ, (h.atlas σ).integral (η σ)
 
+/- English proof (translation)
+Introduce `c v hv` and use `by have := (H _ hv.2 i j).contDiffAt_chart c (c.e.map_target hv.1) erw [c.e.right_inv hv.1] at this exact this.contDiffWithinAt`.
+-/
 theorem smoothOn {σ : k →+* ℂ} {m : Type} {U : Set (CxPts p σ)} {G : CxPts p σ → Matrix m m ℂ}
     (H : ∀ y ∈ U, MInfAt G y) (i j : m) : (h.atlas σ).SmoothOn U fun y => G y i j := fun c v hv => by
   have := (H _ hv.2 i j).contDiffAt_chart c (c.e.map_target hv.1)
   erw [c.e.right_inv hv.1] at this
   exact this.contDiffWithinAt
 
+/- English proof (translation)
+Use `⟨fun σ => ⟨HolAtlas.isForm_fn _ (h.smoothOn (G := fun y (_ _ : Unit) => (u σ y : ℂ)) (fun y _ _ _ => (vInfAt_iff_cInfAt.2 (hu σ y)).comp_contDiff Complex.ofRealCLM.contDiff) () ()), fun _ => isType_isReal_const _⟩, fun σ σ' x x' e _ => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_smul]`. Use `(AlgHom.commutes _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun t : ℝ => algebraMap ℂ _ t) (hc σ σ' PUnit.unit _ _ e mem_ptsIn_top)`.
+-/
 theorem isArForm_fn {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (hu : ∀ σ y, CInfAt (u σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) :
     h.IsArForm 0 fun σ => (h.atlas σ).fn (u σ) := by
@@ -431,6 +505,9 @@ def lineSeq : HermSeq ((isRegVar_proj 1).atlas (Int.castRingHom ℂ)) 1 1 :=
   (isRegVar_proj 1).seq (ShortComplex.Splitting.ofHasBinaryBiproduct _ _).shortExact
     (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).cInf ProjSpace.hermSum.cInf (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).dual.cInf _
 
+/- English proof (translation)
+Introduce `_` and use `⟨0, fun _ _ _ => differentiableOn_const (0 : ℂ), fun _ _ => by simp only [HermSeq.ofGram, Pi.zero_apply, fromBlocks_one, chg_one, subGram, quotGram] ext (i | i) (j | j) <;> simp [toBlocks₁₁, toBlocks₂₂, toBlocks₂₁, one_apply, mul_apply]⟩`.
+-/
 theorem isSplit_ofGram_one (n r s : ℕ) : (HermSeq.ofGram (n := n) (r := r) (s := s) (fun _ => 1)
     ⟨isOpen_univ, fun _ _ => contDiffOn_const, fun _ _ => PosDef.one⟩).IsSplit := fun _ =>
   ⟨0, fun _ _ _ => differentiableOn_const (0 : ℂ), fun _ _ => by

@@ -19,6 +19,9 @@ open Limits
 
 namespace GlobalTheory.StepLine
 
+/- English proof (translation)
+Introduce `x` and use `by have : Nonempty X := ⟨x⟩ have := hu.mono obtain ⟨s, hs⟩ := hu.isVB_cokernel obtain ⟨h, -⟩ := VBExt.isVB_and_cls_det_of_shortExact X (.mk u (cokernel.π _) (cokernel.condition _)) a s { exact := ShortComplex.exact_cokernel _ } h₀ hs obtain rfl : s = 1 := by have := h.rank_unique …`.
+-/
 theorem isVB_cokernel_of_succ {X : Scheme.{0}} {A₀ A₁ : X.Modules} {u : A₀ ⟶ A₁} {a : ℕ}
     (hu : IsSubbundle u) (h₀ : IsVB A₀ a) (h₁ : IsVB A₁ (a + 1)) : IsVB (cokernel u) 1 := fun x => by
   have : Nonempty X := ⟨x⟩
@@ -32,6 +35,9 @@ theorem isVB_cokernel_of_succ {X : Scheme.{0}} {A₀ A₁ : X.Modules} {u : A₀
 abbrev seq {X : Scheme.{0}} {A₀ A₁ : X.Modules} (u : A₀ ⟶ A₁) : ShortComplex X.Modules :=
   .mk u (cokernel.π u) (cokernel.condition u)
 
+/- English proof (translation)
+The claim follows from `have := hu.mono { exact := ShortComplex.exact_cokernel _ }`.
+-/
 theorem seq_shortExact {X : Scheme.{0}} {A₀ A₁ : X.Modules} {u : A₀ ⟶ A₁} (hu : IsSubbundle u) :
     (seq u).ShortExact :=
   have := hu.mono
@@ -50,6 +56,9 @@ variable {k : Type} [CommRing k] {Y Y₁ : Scheme.{0}} {p : Y ⟶ Sp k} {q₁ : 
   (e₀ : (Scheme.Modules.pullback ρ).obj A₀ ≅ fl.F l.castSucc)
   (e₁ : (Scheme.Modules.pullback ρ).obj A₁ ≅ fl.F l.succ)
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (fl.ι l.succ), Category.assoc, Category.assoc, he₁, fl.step_ι, he₀, Functor.map_comp, Category.assoc]`.
+-/
 theorem map_comp_e₁ (he₁ : e₁.hom ≫ fl.ι l.succ = (Scheme.Modules.pullback ρ).map v ≫ ψ.hom)
     (he₀ : e₀.hom ≫ fl.ι l.castSucc = (Scheme.Modules.pullback ρ).map (u ≫ v) ≫ ψ.hom) :
     (Scheme.Modules.pullback ρ).map u ≫ e₁.hom = e₀.hom ≫ fl.step l := by
@@ -63,6 +72,11 @@ def grIso (sq : (Scheme.Modules.pullback ρ).map u ≫ e₁.hom = e₀.hom ≫ f
   PreservesCokernel.iso (Scheme.Modules.pullback ρ) u ≪≫ cokernel.mapIso _ _ e₀ e₁ sq
 
 variable {ρ ψ fl l u v e₀ e₁} in
+/- English proof (translation)
+Establish `e` using `Limits.π_comp_cokernelComparison u (Scheme.Modules.pullback ρ)`. Rewrite `e` using `[← Limits.PreservesCokernel.iso_inv]`. Establish `e'` using `congrArg (· ≫ (Limits.PreservesCokernel.iso (Scheme.Modules.pullback ρ) u).hom) e`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id] at e'`. Express the relevant statement in the definitionally equal form `_ ≫ (PreservesCokernel.iso (Scheme.Modules.pullback ρ) u).hom ≫ (cokernel.mapIso _ _ e₀ e₁ sq).hom = e₁.hom ≫ cokernel.π (fl.step l)`.
+
+Rewrite using `[← Category.assoc, ← e']`. Simplify using `[cokernel.mapIso]`.
+-/
 theorem map_π_grIso (sq : (Scheme.Modules.pullback ρ).map u ≫ e₁.hom = e₀.hom ≫ fl.step l) :
     (Scheme.Modules.pullback ρ).map (cokernel.π u) ≫ (grIso sq).hom = e₁.hom ≫ fl.π l := by
   have e := Limits.π_comp_cokernelComparison u (Scheme.Modules.pullback ρ)
@@ -120,6 +134,11 @@ variable {k : Type} [CommRing k] {Y Y₁ : Scheme.{0}} {p : Y ⟶ Sp k} {q₁ : 
   (sq : (Scheme.Modules.pullback ρ).map u ≫ e₁.hom = e₀.hom ≫ fl.step l)
   (a : AdaptedChart (seq u) l 1)
 
+/- English proof (translation)
+Use `hA₁.isQuasicoherent` as an intermediate fact. Use `hA₀.isQuasicoherent` as an intermediate fact. Break down `j with j | j` into its components or cases. Express the relevant statement in the definitionally equal form `(fl.step l).app _ (e₀.hom.app _ _) = e₁.hom.app _ (pullbackSections ρ _ le_rfl (u.app a.U (a.e j)))`. Rewrite using `[← QCoh.pullback_map_app_pullbackSections]`.
+
+Conclude with `(congr(($(sq)).app _ _)).symm`. Both sides reduce to the same expression.
+-/
 theorem pullChart_frame (j : Fin l ⊕ Fin 1) :
     (pullChart hA₀ hQ sq a).frame j =
       have := hA₁.isQuasicoherent
@@ -132,6 +151,11 @@ theorem pullChart_frame (j : Fin l ⊕ Fin 1) :
     exact (congr(($(sq)).app _ _)).symm
   · rfl
 
+/- English proof (translation)
+Use `hQ.isQuasicoherent` as an intermediate fact. Establish `e : (pullChart hA₀ hQ sq a).quot.e = ((a.quot.pull hQ ρ).map (grIso sq)).e`. Use function extensionality and compare the values at `j`. Use `Eq.trans ?_ (congrArg ((grIso sq).hom.app _) (QCoh.pullback_map_app_pullbackSections ρ (cokernel.π u) le_rfl (a.t j)))` and prove the remaining obligations. Conclude with `(congr(($(map_π_grIso sq)).app _ _)).symm`.
+
+Establish `key : ∀ {F : Y.Modules} {U : Y.Opens} {e e' : Fin 1 → Γ(F, U)} (he : IsFrame e) (he' : IsFrame e'), e = e' → (⟨U, e, he⟩ : Chart F 1) = ⟨U, e', he'⟩`. Introduce and unpack `F U e e' he he' rfl`. Both sides reduce to the same expression. Conclude with `key _ _ e`.
+-/
 theorem pullChart_quot :
     (pullChart hA₀ hQ sq a).quot = (a.quot.pull hQ ρ).map (grIso sq) := by
   have := hQ.isQuasicoherent
@@ -165,6 +189,13 @@ variable {k : Type} [CommRing k] {Y Y₁ : Scheme.{0}} {p : Y ⟶ Sp k} {q₁ : 
   {ψ : (Scheme.Modules.pullback ρ).obj G ≅ E} (g : VMetric q₁ G n) (h' : VMetric p E n)
   (wρ : ρ ≫ q₁ = p)
 
+/- English proof (translation)
+Use `g.isVB.isQuasicoherent` as an intermediate fact. Use `hA₁.isQuasicoherent` as an intermediate fact. Establish `hz' : PtsOver.map ρ wρ _ z ∈ ptsIn q₁ τ a.U` using `hz`. Use extensionality with `j m`. Express the relevant statement in the definitionally equal form `((h'.met τ).restrict (fl.isSubbundle l.succ) (fl.isVB l.succ)).form _ _ z = ((g.met τ).restrict hv hA₁).form _ _ _`.
+
+Use `(Met.form_restrict _ _ _ _ _ hz).trans (Eq.trans ?_ (Met.form_restrict _ _ _ _ _ hz').symm)` and prove the remaining obligations. Establish `e (j) : (fl.ι l.succ).app (ρ ⁻¹ᵁ a.U) ((pullChart hA₀ hQ sq a).frame j) = ψ.hom.app _ (pullbackSections ρ G le_rfl (v.app a.U (a.frame j)))`. Rewrite using `[pullChart_frame hA₀ hA₁ hQ sq a j, ← QCoh.pullback_map_app_pullbackSections]`. Conclude with `congr(($(he₁)).app _ _)`. Rewrite using `[e j, e m, hψ τ _ _ _ z hz]`.
+
+Conclude with `(g.met τ).form_pull ρ wρ _ _ le_rfl hz`.
+-/
 theorem gram_pullChart (hψ : (g.pull ρ wρ).IsIsometry h' ψ) (hv : IsSubbundle v)
     (he₁ : e₁.hom ≫ fl.ι l.succ = (Scheme.Modules.pullback ρ).map v ≫ ψ.hom) {τ : k →+* ℂ}
     {z : CxPts p τ} (hz : z ∈ ptsIn p τ (ρ ⁻¹ᵁ a.U)) :
@@ -202,6 +233,13 @@ variable {k : Type} [CommRing k] {Y Y₁ : Scheme.{0}} {p : Y ⟶ Sp k} {q₁ : 
   {ψ : (Scheme.Modules.pullback ρ).obj G ≅ E} (g : VMetric q₁ G n) (h' : VMetric p E n)
   (wρ : ρ ≫ q₁ = p)
 
+/- English proof (translation)
+Use `VMetric.ext (funext fun τ => Met.ext_of_exists fun z => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted (seq_shortExact hu) hA₀ hQ (PtsOver.map ρ wρ _ z)`. Establish `ha' : z ∈ ptsIn p τ (ρ ⁻¹ᵁ a.U)` using `ha`. Use `⟨(pullChart hA₀ hQ sq a).quot, ha', ?_⟩` and prove the remaining obligations. Use `(((h'.stepMet fl l).met τ).quot_G (VMetric.stepSeq_shortExact fl l) (fl.isVB l.castSucc) (fl.isVB_gr l) (pullChart hA₀ hQ sq a) ha').trans ?_` and prove the remaining obligations.
+
+Rewrite using `[gram_pullChart hA₀ hA₁ hQ sq a g h' wρ hψ hv he₁ ha', pullChart_quot hA₀ hQ sq a]`. Use `set M := ((g.restrict hv hA₁).quot (seq_shortExact hu) hA₀ hQ).met τ with hM`. Express the relevant statement in the definitionally equal form `_ = ((M.pull ρ wρ).map (grIso sq)).G ((a.quot.pull M.isVB ρ).map (grIso sq)) z`. Establish `h₁` using `(M.pull ρ wρ).map_G (grIso sq) (a.quot.pull M.isVB ρ) ha'`. Establish `h₂` using `M.pull_G ρ wρ a.quot ha`.
+
+Establish `h₃` using `((g.restrict hv hA₁).met τ).quot_G (seq_shortExact hu) hA₀ hQ a ha`. Rewrite using `[h₁, h₂]`. Conclude with `h₃.symm`.
+-/
 theorem grMet_eq (hψ : (g.pull ρ wρ).IsIsometry h' ψ) (hu : IsSubbundle u) (hv : IsSubbundle v)
     (he₁ : e₁.hom ≫ fl.ι l.succ = (Scheme.Modules.pullback ρ).map v ≫ ψ.hom) :
     h'.grMet fl l = ((((g.restrict hv hA₁).quot (seq_shortExact hu) hA₀ hQ).pull ρ wρ).map
@@ -229,6 +267,9 @@ namespace GlobalTheory.StepLine
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Introduce `σ V s s' y hy`. Both sides reduce to the same expression.
+-/
 theorem isIsometry_pull_congr {X Y : Scheme.{0}} {q : Y ⟶ Sp k} {t : X ⟶ Sp k} {E : Y.Modules}
     {r : ℕ} (h : VMetric q E r) {f f' : X ⟶ Y} (e : f = f') (hf : f ≫ q = t) (hf' : f' ≫ q = t) :
     (h.pull f hf).IsIsometry (h.pull f' hf') ((Scheme.Modules.pullbackCongr e).app E) := by
@@ -236,6 +277,9 @@ theorem isIsometry_pull_congr {X Y : Scheme.{0}} {q : Y ⟶ Sp k} {t : X ⟶ Sp 
   intro σ V s s' y hy
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem det_congr {X : Scheme.{0}} {p : X ⟶ Sp k} {F : X.Modules} {r : ℕ} {h₁ h₂ : VMetric p F r}
     (H₁ : h₁.IsCInf) (H₂ : h₂.IsCInf) (e : h₁ = h₂) : VMetric.det H₁ = VMetric.det H₂ := by
   subst e
@@ -243,6 +287,13 @@ theorem det_congr {X : Scheme.{0}} {p : X ⟶ Sp k} {F : X.Modules} {r : ℕ} {h
 
 end GlobalTheory.StepLine
 
+/- English proof (translation)
+Introduce `k _ B Y Y₁ q p q₁ π σ ρ w wσ wρ wq E n h H fl l A₀ A₁ u v hu hv hA₀ hA₁ ⟨e₁, he₁⟩ ⟨e₀, he₀⟩`. Set `ψ` to `(Scheme.Modules.pullbackComp ρ σ).app E ≪≫ (Scheme.Modules.pullbackCongr wσ).app E`. Establish `he₁' : e₁.hom ≫ fl.ι l.succ = (Scheme.Modules.pullback ρ).map v ≫ ψ.hom` using `he₁`. Establish `he₀' : e₀.hom ≫ fl.ι l.castSucc = (Scheme.Modules.pullback ρ).map (u ≫ v) ≫ ψ.hom` using `he₀`. Establish `e : (ρ ≫ σ) ≫ q = p` using `by rw [Category.assoc, wq, wρ]`.
+
+Apply the tactic sequence `have hψ : ((h.pull σ wq).pull ρ wρ).IsIsometry (h.pull π w) ψ := IsometryPullback.isIsometry_trans ((VMetric.isIsometry_pull_id_comp k B q E n h).2 Y₁ Y q₁ p σ ρ wq wρ e) (StepLine.isIsometry_pull_congr h wσ e w)`. Establish `sq` using `StepLine.map_comp_e₁ ρ ψ fl l u v e₀ e₁ he₁' he₀'`. Establish `hQ` using `StepLine.isVB_cokernel_of_succ hu hA₀ hA₁`. Establish `HQ` using `(((H.pull σ wq).restrict hv hA₁).quot (StepLine.seq_shortExact hu) hA₀ hQ)`. Use `⟨VMetric.det HQ, ?_⟩` and prove the remaining obligations.
+
+Establish `eq` using `StepLine.grMet_eq hA₀ hA₁ hQ sq (h.pull σ wq) (h.pull π w) wρ hψ hu hv he₁'`. Use `(VMetric.isometric_det_pull HQ ρ wρ).symm.trans ((VMetric.isometric_det_map (HQ.pull ρ wρ) (StepLine.grIso sq)).trans ?_)` and prove the remaining obligations. Rewrite using `[VMetric.grLB, StepLine.det_congr _ ((H.pull π w).grMet fl l) eq.symm]`. Conclude with `HermLB.Isometric.refl _`.
+-/
 theorem GlobalTheory.StepLine.isometric_grLB_of_steps_pull : ∀ (k : Type) [CommRing k] (B Y Y₁ : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (q₁ : Y₁ ⟶ Sp k)
     (π : Y ⟶ B) (σ : Y₁ ⟶ B) (ρ : Y ⟶ Y₁) (w : π ≫ q = p) (wσ : ρ ≫ σ = π) (wρ : ρ ≫ q₁ = p) (wq : σ ≫ q = q₁)
     (E : B.Modules) (n : ℕ) (h : VMetric q E n) (H : h.IsCInf) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n)

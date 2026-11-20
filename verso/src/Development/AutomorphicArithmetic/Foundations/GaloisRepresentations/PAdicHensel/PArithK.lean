@@ -4,10 +4,30 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Conjuga
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1 UpperTheory.Gal.Int.Geo GlobalTheory.CongL
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ConjugateSqrtNeg.conj_sqrt_neg d x hd hx`.
+-/
 private lemma conj_sqrt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (d : ℕ) (x : E)
     (hd : 0 < d) (hx : x ^ 2 = -(d : E)) : IsCMField.complexConj E x = -x :=
   _root_.UpperTheory.Reformulated.B.ConjugateSqrtNeg.conj_sqrt_neg d x hd hx
 
+/- English proof (translation)
+Establish `hcx` using `conj_sqrt_neg d x hd hx`. Establish `hdiscE : ((tr : E) ^ 2 - 4 * (nm : E)) = (f : E) ^ 2 * (-(d : E))`. Use `congrArg (algebraMap ℚ E) hdisc` as an intermediate fact. Simplify using `using this`. Take `⟨w, hw⟩ : ∃ w : E, w = ((tr : E) + (f : E) * x) / 2` from `⟨_, rfl⟩`.
+
+Take `⟨v, hv⟩ : ∃ v : E, v = ((tr : E) - (f : E) * x) / 2` from `⟨_, rfl⟩`. Establish `hcw : IsCMField.complexConj E w = v`. Simplify using `only [hw, hv, map_div₀, map_add, map_mul, map_intCast, map_ratCast, hcx, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : w + v = (tr : E)`.
+
+Rewrite using `[hw, hv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : w * v = (nm : E)`. Establish `h : w * v = ((tr : E) ^ 2 - (f : E) ^ 2 * x ^ 2) / 4`. Rewrite using `[hw, hv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, hx]`. Take the linear combination `(1 / 4 : E) * hdiscE`. Establish `hroot : w ^ 2 - (tr : E) * w + (nm : E) = 0`. Rewrite using `[← hsum, ← hprod]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral ℤ w`. Use `⟨Polynomial.X ^ 2 + (Polynomial.C (-tr) * Polynomial.X + Polynomial.C nm), ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.monic_X_pow_add ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (Polynomial.degree_linear_le) (by norm_num)`.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast, Int.cast_neg]`. Take the linear combination `hroot`. Take `⟨ω, hω⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 E)).mp hint`. Establish `hω' : (ω : E) = w` using `hω`.
+
+Establish `hbω : ((bar ω : 𝓞 E) : E) = v` using `by rw [hbar, hω', hcw]`. Use `⟨ω, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [map_add, map_intCast, hω', hbω, hsum]`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Simplify using `only [map_mul, map_intCast, hω', hbω, hprod]`. Rewrite using `[hω', hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma omega_at {E : Type} [Field E] [NumberField E] [IsCMField E] (bar : 𝓞 E ≃+* 𝓞 E)
     (hbar : ∀ a : 𝓞 E, ((bar a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) (d : ℕ) (x : E)
     (hd : 0 < d) (hx : x ^ 2 = -(d : E)) (tr nm : ℤ) (f : ℚ)
@@ -50,6 +70,27 @@ private lemma omega_at {E : Type} [Field E] [NumberField E] [IsCMField E] (bar :
     simp only [map_mul, map_intCast, hω', hbω, hprod]
   · rw [hω', hw]; ring
 
+/- English proof (translation)
+Introduce `hBar hQuad hC hUnit _ _ hIdem hReal hPos hDelta hPerf E _ _ _ d hd x hx τ₀ Q hQ`. Take `⟨M, hMdef⟩ : ∃ M : ℕ, M = ∏ q ∈ Q, q` from `⟨_, rfl⟩`. Establish `hprime : ∀ q ∈ Q, q.Prime` using `fun q hq => (hQ q hq).1.out`. Establish `hM : 0 < M`. Rewrite using `[hMdef]`.
+
+Conclude with `Finset.prod_pos fun q hq => (hprime q hq).pos`. Establish `hmem : ∀ q : ℕ, q.Prime → q ∣ M → q ∈ Q`. Introduce `q hq hqM`. Rewrite `hqM` using `[hMdef]`. Take `⟨a, ha, hqa⟩` from `(Prime.dvd_finset_prod_iff hq.prime _).1 hqM`.
+
+Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq (hprime a ha)).1 hqa]` and apply the resulting hypothesis. Take `⟨bar, hbar⟩` from `hBar E`. Take `⟨tr, nm, f, hneg, hdisc, hsplit⟩` from `hQuad d hd`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `h0 : ((tr ^ 2 - 4 * nm : ℤ) : ℚ) = 0` using `by rw [hdisc]; ring`. Establish `h1 : tr ^ 2 - 4 * nm = 0` using `by exact_mod_cast h0`. Use linear arithmetic over natural numbers and integers. Take `⟨ω, htr, hnm, hωx⟩` from `omega_at bar hbar d x hd hx tr nm f hdisc`. Take `⟨c, hc1, hc2, hc3, b, hb⟩` from `hC E τ₀ M hM`.
+
+Establish `hbb : ∀ y, bar (bar y) = y`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((bar (bar y) : 𝓞 E) : E) = (y : E)`. Rewrite using `[hbar, hbar, IsCMField.complexConj_apply_apply]`.
+
+Establish `hsp : ∀ q ∈ Q, ¬ (q : ℤ) ∣ tr ^ 2 - 4 * nm ∧ ∃ r : ℤ, (q : ℤ) ∣ r ^ 2 - tr * r + nm`. Introduce `q hq`. Take `⟨hF, hs⟩` from `hQ q hq`. Conclude with `hsplit q hs`. Take `⟨ε, hε⟩` from `hIdem E bar ω tr nm hbb htr hnm M hM (fun q hq hqM => hsp q (hmem q hq hqM))`.
+
+Take `⟨t, ht1, ht2⟩` from `hReal E bar hbar M hM ε hε`. Take `⟨t', ht1', ht2', ht3'⟩` from `hPos E M hM t ht1 ht2`. Establish `hcop : IsCoprime (tr ^ 2 - 4 * nm) (M : ℤ)`. Rewrite using `[hMdef, Nat.cast_prod]`. Use `IsCoprime.prod_right fun q hq => ?_` and prove the remaining obligations.
+
+Conclude with `((Nat.prime_iff_prime_int.1 (hprime q hq)).coprime_iff_not_dvd.2 (hsp q hq).1).symm`. Take `⟨δ, hδ1, hδ2, hδ3⟩` from `hDelta E bar hbar ω tr nm htr hnm hneg M hcop t' ht1' ht2' ht3' τ₀`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc2`.
+
+Set `A : Arith E` to `{ bar := bar, bar_eq := hbar, ω := ω, tr := tr, nm := nm, tr_eq := htr, nm_eq := hnm, disc_neg := hneg, τ₀ := τ₀, c := c, c_real := Subtype.ext ((hbar c).trans hc1), c_neg := hc2, c_pos := hc3, δ := δ, δ_im := hδ1, δ_int := hδ2.1, δ_sign := hδ3 }`. Use `⟨A, rfl, ⟨f, hf0, hωx⟩, fun q _ hq => hsplit q hq, fun q hq => ⟨hsp q hq, ?_⟩⟩` and prove the remaining obligations. Establish `hdvd : q ∣ M`. Rewrite using `[hMdef]`. Conclude with `Finset.dvd_prod_of_mem _ hq`.
+
+Conclude with `hPerf E A M hδ2 (hUnit E M c b hc0 hb) q hdvd`.
+-/
 theorem UpperTheory.Gal.G1.pArithK :
     BarEx → QuadEx → CEx → UnitMod → CodiffGen → CodiffUnit → IdemEx → RealGen → PosGen → DeltaEx → PerfOf → ArithK := by
   intro hBar hQuad hC hUnit _ _ hIdem hReal hPos hDelta hPerf E _ _ _ d hd x hx τ₀ Q hQ

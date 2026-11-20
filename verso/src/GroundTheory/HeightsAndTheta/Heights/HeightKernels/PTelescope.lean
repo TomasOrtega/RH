@@ -11,6 +11,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 
 namespace TelescopingSum
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j' => ?_) j` and prove the remaining obligations. Simplify using `[Equiv.swap_apply_right]`. Simplify using `only [Function.comp_apply, Fin.snoc_castSucc]`. Distinguish the cases in `h : (j' : ℕ) = k`.
+
+Establish `hj : Fin.castSucc j' = ⟨k, hk⟩` using `Fin.ext (by simp [h])`. Rewrite using `[hj, Equiv.swap_apply_left]`. Use `j'.isLt` as an intermediate fact. Simplify using `only [Fin.val_last]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+
+Establish `h1 : Fin.castSucc j' ≠ ⟨k, hk⟩` using `fun e => h (by simpa using congrArg Fin.val e)`. Establish `h2 : Fin.castSucc j' ≠ Fin.last D` using `Fin.castSucc_ne_last j'`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Simplify using `only [Fin.val_castSucc]`. Break down `hm with rfl | rfl` into its components or cases.
+
+Both sides reduce to the same expression. Distinguish the cases in `h3 : (j' : ℕ) < k`. Rewrite using `[if_pos h3, if_pos (by omega)]`. Rewrite using `[if_neg h3, if_neg (by omega)]`.
+-/
 theorem comp_swap {α : Type*} (D k : ℕ) (hk : k < D + 1) (X Y : α) (m : ℕ) (hm : m = k ∨ m = k + 1) :
     (fun j : Fin (D + 1) => if (j : ℕ) < m then X else Y) ∘ Equiv.swap ⟨k, hk⟩ (Fin.last D) =
       Fin.snoc (fun j : Fin D => if (j : ℕ) < k then X else Y) (if k < m then X else Y) := by
@@ -36,6 +45,21 @@ theorem comp_swap {α : Type*} (D k : ℕ) (hk : k < D + 1) (X Y : α) (m : ℕ)
 
 end TelescopingSum
 
+/- English proof (translation)
+Introduce `K _ ι _ I hI P D A u hu hP hA hus`. Use `set W := HermLine.ofWeight u hu with hWdef`. Establish `hW : IsSmoothHerm W`. Establish `: W.h = fun z => Real.exp (-u z)` using `rfl`. Unfold `IsSmoothHerm`.
+
+Rewrite using `[this]`. Conclude with `Real.contDiff_exp.comp_contDiffOn hus.neg`. Establish `hA' : IsSmoothHerm (A.tensor W)`. Unfold `IsSmoothHerm at hA hW ⊢`. Conclude with `hA.mul hW`.
+
+Take `⟨T, hT⟩ : ∃ T : ℕ → ℝ, ∀ m, T m = I P (D + 1) (fun j : Fin (D + 1) => if (j : ℕ) < m then A.tensor W else A)` from `⟨_, fun _ => rfl⟩`. Apply the tactic sequence `have hsm : ∀ (m : ℕ) (j : Fin (D + 1)), IsSmoothHerm (if (j : ℕ) < m then A.tensor W else A) := fun m j => by split_ifs <;> assumption`. Establish `hstep : ∀ k ∈ Finset.range (D + 1), T (k + 1) - T k = -ptsIntegral P (pot fun j : Fin D => if (j : ℕ) < k then A.tensor W else A) u`. Introduce `k hk`. Establish `hk' : k < D + 1` using `Finset.mem_range.mp hk`.
+
+Apply the tactic sequence `have hL : ∀ j : Fin D, IsSmoothHerm (if (j : ℕ) < k then A.tensor W else A) := fun j => by split_ifs <;> assumption`. Establish `e1 : T (k + 1) = I P (D + 1) (Fin.snoc (fun j : Fin D => if (j : ℕ) < k then A.tensor W else A) (A.tensor W))`. Rewrite using `[hT, ← hI.1 P (D + 1) _ (Equiv.swap ⟨k, hk'⟩ (Fin.last D)) hP (hsm (k + 1)), TelescopingSum.comp_swap D k hk' _ _ (k + 1) (Or.inr rfl), if_pos (Nat.lt_succ_self k)]`. Establish `e0 : T k = I P (D + 1) (Fin.snoc (fun j : Fin D => if (j : ℕ) < k then A.tensor W else A) A)`. Rewrite using `[hT, ← hI.1 P (D + 1) _ (Equiv.swap ⟨k, hk'⟩ (Fin.last D)) hP (hsm k), TelescopingSum.comp_swap D k hk' _ _ k (Or.inl rfl), if_neg (lt_irrefl k)]`.
+
+Establish `hmc` using `metricChange K ι I hI P D (fun j : Fin D => if (j : ℕ) < k then A.tensor W else A) A u hu hP hL hA hus`. Rewrite using `[e1, e0, hmc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : T 0 = I P (D + 1) (fun _ => A)`. Rewrite using `[hT]`.
+
+Simplify using the standard rewrite rules. Establish `hD : T (D + 1) = I P (D + 1) (fun _ => A.tensor W)`. Rewrite using `[hT]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[if_pos j.isLt]`. Rewrite using `[← h0, ← hD, ← Finset.sum_range_sub, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl hstep`.
+-/
 theorem Telescope.proof : TelescopeStatement := by
   intro K _ ι _ I hI P D A u hu hP hA hus
   set W := HermLine.ofWeight u hu with hWdef

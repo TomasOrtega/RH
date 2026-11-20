@@ -14,34 +14,55 @@ open Asm
 
 variable {TT : ℝ}
 
+/- English proof (translation)
+The claim follows from `(isOpen_lt continuous_const Complex.continuous_normSq).mem_nhds h`.
+-/
 theorem ev_ann {ζ : ℂ} (h : TT < Complex.normSq ζ) : ∀ᶠ w in nhds ζ, TT < Complex.normSq w :=
   (isOpen_lt continuous_const Complex.continuous_normSq).mem_nhds h
 
+/- English proof (translation)
+The claim follows from `Filter.EventuallyEq.fderiv_eq ((ev_ann hζ).mono h)`.
+-/
 theorem fderiv_congr {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {f g : ℂ → V}
     (h : ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = g ζ) {ζ : ℂ} (hζ : TT < Complex.normSq ζ) :
     fderiv ℝ f ζ = fderiv ℝ g ζ :=
   Filter.EventuallyEq.fderiv_eq ((ev_ann hζ).mono h)
 
+/- English proof (translation)
+Simplify using `only [NF.dZ, fderiv_congr h hζ]`.
+-/
 theorem dZ_congr {f g : ℂ → ℂ} (h : ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = g ζ) {ζ : ℂ}
     (hζ : TT < Complex.normSq ζ) : NF.dZ f ζ = NF.dZ g ζ := by
   simp only [NF.dZ, fderiv_congr h hζ]
 
+/- English proof (translation)
+Simplify using `only [NF.dZb, fderiv_congr h hζ]`.
+-/
 theorem dZb_congr {f g : ℂ → ℂ} (h : ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = g ζ) {ζ : ℂ}
     (hζ : TT < Complex.normSq ζ) : NF.dZb f ζ = NF.dZb g ζ := by
   simp only [NF.dZb, fderiv_congr h hζ]
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => f w + g w) (fderiv ℝ f ζ + fderiv ℝ g ζ) ζ` using `hf.hasFDerivAt.add hg.hasFDerivAt`. Simplify using `only [NF.dZ, h.fderiv, add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_add {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) (hg : DifferentiableAt ℝ g ζ) :
     NF.dZ (fun w => f w + g w) ζ = NF.dZ f ζ + NF.dZ g ζ := by
   have h : HasFDerivAt (fun w => f w + g w) (fderiv ℝ f ζ + fderiv ℝ g ζ) ζ := hf.hasFDerivAt.add hg.hasFDerivAt
   simp only [NF.dZ, h.fderiv, add_apply]
   ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => f w + g w) (fderiv ℝ f ζ + fderiv ℝ g ζ) ζ` using `hf.hasFDerivAt.add hg.hasFDerivAt`. Simplify using `only [NF.dZb, h.fderiv, add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_add {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) (hg : DifferentiableAt ℝ g ζ) :
     NF.dZb (fun w => f w + g w) ζ = NF.dZb f ζ + NF.dZb g ζ := by
   have h : HasFDerivAt (fun w => f w + g w) (fderiv ℝ f ζ + fderiv ℝ g ζ) ζ := hf.hasFDerivAt.add hg.hasFDerivAt
   simp only [NF.dZb, h.fderiv, add_apply]
   ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => f w * g w) (f ζ • fderiv ℝ g ζ + g ζ • fderiv ℝ f ζ) ζ` using `hf.hasFDerivAt.mul hg.hasFDerivAt`. Simplify using `only [NF.dZ, h.fderiv, add_apply, smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_mul {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) (hg : DifferentiableAt ℝ g ζ) :
     NF.dZ (fun w => f w * g w) ζ = f ζ * NF.dZ g ζ + g ζ * NF.dZ f ζ := by
   have h : HasFDerivAt (fun w => f w * g w) (f ζ • fderiv ℝ g ζ + g ζ • fderiv ℝ f ζ) ζ :=
@@ -49,6 +70,9 @@ theorem dZ_mul {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) (
   simp only [NF.dZ, h.fderiv, add_apply, smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => f w * g w) (f ζ • fderiv ℝ g ζ + g ζ • fderiv ℝ f ζ) ζ` using `hf.hasFDerivAt.mul hg.hasFDerivAt`. Simplify using `only [NF.dZb, h.fderiv, add_apply, smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_mul {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) (hg : DifferentiableAt ℝ g ζ) :
     NF.dZb (fun w => f w * g w) ζ = f ζ * NF.dZb g ζ + g ζ * NF.dZb f ζ := by
   have h : HasFDerivAt (fun w => f w * g w) (f ζ • fderiv ℝ g ζ + g ζ • fderiv ℝ f ζ) ζ :=
@@ -56,32 +80,53 @@ theorem dZb_mul {f g : ℂ → ℂ} {ζ : ℂ} (hf : DifferentiableAt ℝ f ζ) 
   simp only [NF.dZb, h.fderiv, add_apply, smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun _ : ℂ => c) (0 : ℂ →L[ℝ] ℂ) ζ` using `hasFDerivAt_const c ζ`. Simplify using `[NF.dZ, h.fderiv]`.
+-/
 theorem dZ_const (c ζ : ℂ) : NF.dZ (fun _ => c) ζ = 0 := by
   have h : HasFDerivAt (fun _ : ℂ => c) (0 : ℂ →L[ℝ] ℂ) ζ := hasFDerivAt_const c ζ
   simp [NF.dZ, h.fderiv]
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun _ : ℂ => c) (0 : ℂ →L[ℝ] ℂ) ζ` using `hasFDerivAt_const c ζ`. Simplify using `[NF.dZb, h.fderiv]`.
+-/
 theorem dZb_const (c ζ : ℂ) : NF.dZb (fun _ => c) ζ = 0 := by
   have h : HasFDerivAt (fun _ : ℂ => c) (0 : ℂ →L[ℝ] ℂ) ζ := hasFDerivAt_const c ζ
   simp [NF.dZb, h.fderiv]
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (id : ℂ → ℂ) (ContinuousLinearMap.id ℝ ℂ) ζ` using `hasFDerivAt_id ζ`. Simplify using `only [NF.dZ, h.fderiv, ContinuousLinearMap.id_apply, Complex.I_mul_I]`. Evaluate the numerical expressions.
+-/
 theorem dZ_id (ζ : ℂ) : NF.dZ id ζ = 1 := by
   have h : HasFDerivAt (id : ℂ → ℂ) (ContinuousLinearMap.id ℝ ℂ) ζ := hasFDerivAt_id ζ
   simp only [NF.dZ, h.fderiv, ContinuousLinearMap.id_apply, Complex.I_mul_I]
   norm_num
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (id : ℂ → ℂ) (ContinuousLinearMap.id ℝ ℂ) ζ` using `hasFDerivAt_id ζ`. Simplify using `only [NF.dZb, h.fderiv, ContinuousLinearMap.id_apply, Complex.I_mul_I]`. Evaluate the numerical expressions.
+-/
 theorem dZb_id (ζ : ℂ) : NF.dZb id ζ = 0 := by
   have h : HasFDerivAt (id : ℂ → ℂ) (ContinuousLinearMap.id ℝ ℂ) ζ := hasFDerivAt_id ζ
   simp only [NF.dZb, h.fderiv, ContinuousLinearMap.id_apply, Complex.I_mul_I]
   norm_num
 
+/- English proof (translation)
+The claim follows from `(Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt`.
+-/
 theorem conj_hasFDerivAt (ζ : ℂ) : HasFDerivAt (fun w : ℂ => conj w) (Complex.conjCLE : ℂ →L[ℝ] ℂ) ζ :=
   (Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt
 
+/- English proof (translation)
+Simplify using `only [NF.dZ, (conj_hasFDerivAt ζ).fderiv, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I, mul_neg, Complex.I_mul_I]`. Evaluate the numerical expressions.
+-/
 theorem dZ_conj (ζ : ℂ) : NF.dZ (fun w : ℂ => conj w) ζ = 0 := by
   simp only [NF.dZ, (conj_hasFDerivAt ζ).fderiv, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one,
     Complex.conj_I, mul_neg, Complex.I_mul_I]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [NF.dZb, (conj_hasFDerivAt ζ).fderiv, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I, mul_neg, Complex.I_mul_I]`. Evaluate the numerical expressions.
+-/
 theorem dZb_conj (ζ : ℂ) : NF.dZb (fun w : ℂ => conj w) ζ = 1 := by
   simp only [NF.dZb, (conj_hasFDerivAt ζ).fderiv, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one,
     Complex.conj_I, mul_neg, Complex.I_mul_I]
@@ -93,49 +138,82 @@ structure DPS (TT : ℝ) (f : ℂ → ℂ) : Prop where
   dz : PS TT (NF.dZ f)
   dzb : PS TT (NF.dZb f)
 
+/- English proof (translation)
+Introduce `ζ hζ` and use `(hf.diff ζ hζ).congr_of_eventuallyEq ((ev_ann hζ).mono h) ps := PS.congr hf.ps h dz := PS.congr hf.dz fun _ hζ => dZ_congr h hζ dzb := PS.congr hf.dzb fun _ hζ => dZb_congr h hζ`.
+-/
 theorem DPS.congr {f g : ℂ → ℂ} (hf : DPS TT f) (h : ∀ ζ : ℂ, TT < Complex.normSq ζ → g ζ = f ζ) : DPS TT g where
   diff := fun ζ hζ => (hf.diff ζ hζ).congr_of_eventuallyEq ((ev_ann hζ).mono h)
   ps := PS.congr hf.ps h
   dz := PS.congr hf.dz fun _ hζ => dZ_congr h hζ
   dzb := PS.congr hf.dzb fun _ hζ => dZb_congr h hζ
 
+/- English proof (translation)
+Introduce `_ _` and use `differentiableAt_const c ps := PS.const TT c dz := PS.congr (PS.const TT 0) fun ζ _ => dZ_const c ζ dzb := PS.congr (PS.const TT 0) fun ζ _ => dZb_const c ζ`.
+-/
 theorem DPS.const (TT : ℝ) (c : ℂ) : DPS TT (fun _ => c) where
   diff := fun _ _ => differentiableAt_const c
   ps := PS.const TT c
   dz := PS.congr (PS.const TT 0) fun ζ _ => dZ_const c ζ
   dzb := PS.congr (PS.const TT 0) fun ζ _ => dZb_const c ζ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, MvPolynomial.X 0, fun ζ _ => by simp⟩`.
+-/
 theorem PS.id (TT : ℝ) : PS TT id := ⟨0, MvPolynomial.X 0, fun ζ _ => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, MvPolynomial.X 1, fun ζ _ => by simp⟩`.
+-/
 theorem PS.conj (TT : ℝ) : PS TT (fun ζ => conj ζ) := ⟨0, MvPolynomial.X 1, fun ζ _ => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, MvPolynomial.X 2, fun ζ _ => by simp⟩`.
+-/
 theorem PS.sig (TT : ℝ) : PS TT (sig TT) := ⟨0, MvPolynomial.X 2, fun ζ _ => by simp⟩
 
+/- English proof (translation)
+Simplify using `only [gg, ne_eq, Complex.ofReal_eq_zero]`. Conclude with `(sub_pos.2 h).ne'`.
+-/
 theorem gg_ne {ζ : ℂ} (h : TT < Complex.normSq ζ) : gg TT ζ ≠ 0 := by
   simp only [gg, ne_eq, Complex.ofReal_eq_zero]
   exact (sub_pos.2 h).ne'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, fun ζ hζ => by rw [pow_one, mul_inv_cancel₀ (gg_ne hζ), map_one]⟩`.
+-/
 theorem PS.ggi (TT : ℝ) : PS TT (fun ζ => (gg TT ζ)⁻¹) :=
   ⟨1, 1, fun ζ hζ => by rw [pow_one, mul_inv_cancel₀ (gg_ne hζ), map_one]⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `differentiableAt_id ps := PS.id TT dz := PS.congr (PS.const TT 1) fun ζ _ => dZ_id ζ dzb := PS.congr (PS.const TT 0) fun ζ _ => dZb_id ζ`.
+-/
 theorem DPS.id (TT : ℝ) : DPS TT id where
   diff := fun _ _ => differentiableAt_id
   ps := PS.id TT
   dz := PS.congr (PS.const TT 1) fun ζ _ => dZ_id ζ
   dzb := PS.congr (PS.const TT 0) fun ζ _ => dZb_id ζ
 
+/- English proof (translation)
+Introduce `ζ _` and use `(conj_hasFDerivAt ζ).differentiableAt ps := PS.conj TT dz := PS.congr (PS.const TT 0) fun ζ _ => dZ_conj ζ dzb := PS.congr (PS.const TT 1) fun ζ _ => dZb_conj ζ`.
+-/
 theorem DPS.conj (TT : ℝ) : DPS TT (fun ζ => conj ζ) where
   diff := fun ζ _ => (conj_hasFDerivAt ζ).differentiableAt
   ps := PS.conj TT
   dz := PS.congr (PS.const TT 0) fun ζ _ => dZ_conj ζ
   dzb := PS.congr (PS.const TT 1) fun ζ _ => dZb_conj ζ
 
+/- English proof (translation)
+Introduce `ζ hζ` and use `(hf.diff ζ hζ).add (hg.diff ζ hζ) ps := PS.add hf.ps hg.ps dz := PS.congr (PS.add hf.dz hg.dz) fun ζ hζ => dZ_add (hf.diff ζ hζ) (hg.diff ζ hζ) dzb := PS.congr (PS.add hf.dzb hg.dzb) fun ζ hζ => dZb_add (hf.diff ζ hζ) (hg.diff ζ hζ)`.
+-/
 theorem DPS.add {f g : ℂ → ℂ} (hf : DPS TT f) (hg : DPS TT g) : DPS TT (fun ζ => f ζ + g ζ) where
   diff := fun ζ hζ => (hf.diff ζ hζ).add (hg.diff ζ hζ)
   ps := PS.add hf.ps hg.ps
   dz := PS.congr (PS.add hf.dz hg.dz) fun ζ hζ => dZ_add (hf.diff ζ hζ) (hg.diff ζ hζ)
   dzb := PS.congr (PS.add hf.dzb hg.dzb) fun ζ hζ => dZb_add (hf.diff ζ hζ) (hg.diff ζ hζ)
 
+/- English proof (translation)
+Introduce `ζ hζ` and use `(hf.diff ζ hζ).mul (hg.diff ζ hζ) ps := PS.mul hf.ps hg.ps dz := PS.congr (PS.add (PS.mul hf.ps hg.dz) (PS.mul hg.ps hf.dz)) fun ζ hζ => dZ_mul (hf.diff ζ hζ) (hg.diff ζ hζ) dzb := PS.congr (PS.add (PS.mul hf.ps hg.dzb) (PS.mul hg.ps hf.dzb)) fun ζ hζ => dZb_mul (hf.diff ζ hζ) (h …`.
+-/
 theorem DPS.mul {f g : ℂ → ℂ} (hf : DPS TT f) (hg : DPS TT g) : DPS TT (fun ζ => f ζ * g ζ) where
   diff := fun ζ hζ => (hf.diff ζ hζ).mul (hg.diff ζ hζ)
   ps := PS.mul hf.ps hg.ps
@@ -143,21 +221,33 @@ theorem DPS.mul {f g : ℂ → ℂ} (hf : DPS TT f) (hg : DPS TT g) : DPS TT (fu
   dzb := PS.congr (PS.add (PS.mul hf.ps hg.dzb) (PS.mul hg.ps hf.dzb))
     fun ζ hζ => dZb_mul (hf.diff ζ hζ) (hg.diff ζ hζ)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact (DPS.const TT 1).congr fun ζ _ => pow_zero _`. Consider the case `succ m ih => exact (ih.mul hf).congr fun ζ _ => pow_succ _ _`.
+-/
 theorem DPS.pow {f : ℂ → ℂ} (hf : DPS TT f) (m : ℕ) : DPS TT (fun ζ => f ζ ^ m) := by
   induction m with
   | zero => exact (DPS.const TT 1).congr fun ζ _ => pow_zero _
   | succ m ih => exact (ih.mul hf).congr fun ζ _ => pow_succ _ _
 
+/- English proof (translation)
+Simplify using `only [gg, id, Complex.mul_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gg_eq (TT : ℝ) (ζ : ℂ) : gg TT ζ = id ζ * conj ζ + (-(TT : ℂ)) := by
   simp only [gg, id, Complex.mul_conj]
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : gg TT = fun w => id w * conj w + (-(TT : ℂ))` using `funext (gg_eq TT)`. Rewrite using `[h]`. Conclude with `(differentiableAt_id.mul (conj_hasFDerivAt ζ).differentiableAt).add (differentiableAt_const _)`.
+-/
 theorem gg_diff (TT : ℝ) (ζ : ℂ) : DifferentiableAt ℝ (gg TT) ζ := by
   have h : gg TT = fun w => id w * conj w + (-(TT : ℂ)) := funext (gg_eq TT)
   rw [h]
   exact (differentiableAt_id.mul (conj_hasFDerivAt ζ).differentiableAt).add (differentiableAt_const _)
 
+/- English proof (translation)
+Establish `h : gg TT = fun w => id w * conj w + (-(TT : ℂ))` using `funext (gg_eq TT)`. Rewrite using `[h, dZ_add (f := fun w => id w * conj w) (g := fun _ => -(TT : ℂ)) (differentiableAt_id.mul (conj_hasFDerivAt ζ).differentiableAt) (differentiableAt_const _), dZ_mul (f := id) (g := fun w => conj w) differentiableAt_id (conj_hasFDerivAt ζ).differentiableAt, dZ_const, dZ_id, dZ_co …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_gg (TT : ℝ) (ζ : ℂ) : NF.dZ (gg TT) ζ = conj ζ := by
   have h : gg TT = fun w => id w * conj w + (-(TT : ℂ)) := funext (gg_eq TT)
   rw [h, dZ_add (f := fun w => id w * conj w) (g := fun _ => -(TT : ℂ))
@@ -166,6 +256,9 @@ theorem dZ_gg (TT : ℝ) (ζ : ℂ) : NF.dZ (gg TT) ζ = conj ζ := by
     dZ_const, dZ_id, dZ_conj]
   ring
 
+/- English proof (translation)
+Establish `h : gg TT = fun w => id w * conj w + (-(TT : ℂ))` using `funext (gg_eq TT)`. Rewrite using `[h, dZb_add (f := fun w => id w * conj w) (g := fun _ => -(TT : ℂ)) (differentiableAt_id.mul (conj_hasFDerivAt ζ).differentiableAt) (differentiableAt_const _), dZb_mul (f := id) (g := fun w => conj w) differentiableAt_id (conj_hasFDerivAt ζ).differentiableAt, dZb_const, dZb_id, d …`. Simplify using the standard rewrite rules.
+-/
 theorem dZb_gg (TT : ℝ) (ζ : ℂ) : NF.dZb (gg TT) ζ = ζ := by
   have h : gg TT = fun w => id w * conj w + (-(TT : ℂ)) := funext (gg_eq TT)
   rw [h, dZb_add (f := fun w => id w * conj w) (g := fun _ => -(TT : ℂ))
@@ -174,6 +267,9 @@ theorem dZb_gg (TT : ℝ) (ζ : ℂ) : NF.dZb (gg TT) ζ = ζ := by
     dZb_const, dZb_id, dZb_conj]
   simp
 
+/- English proof (translation)
+Establish `h : (fun w : ℂ => Complex.normSq w) = fun w => Complex.reCLM w * Complex.reCLM w + Complex.imCLM w * Complex.imCLM w`. Use function extensionality and compare the values at `w`. Simplify using `[Complex.normSq_apply]`. Rewrite using `[h]`. Conclude with `(Complex.reCLM.differentiableAt.mul Complex.reCLM.differentiableAt).add (Complex.imCLM.differentiableAt.mul Complex.imCLM.differentiableAt)`.
+-/
 theorem normSq_diff (ζ : ℂ) : DifferentiableAt ℝ (fun w : ℂ => Complex.normSq w) ζ := by
   have h : (fun w : ℂ => Complex.normSq w) =
       fun w => Complex.reCLM w * Complex.reCLM w + Complex.imCLM w * Complex.imCLM w := by
@@ -183,11 +279,19 @@ theorem normSq_diff (ζ : ℂ) : DifferentiableAt ℝ (fun w : ℂ => Complex.no
   exact (Complex.reCLM.differentiableAt.mul Complex.reCLM.differentiableAt).add
     (Complex.imCLM.differentiableAt.mul Complex.imCLM.differentiableAt)
 
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℝ (fun w : ℂ => Real.sqrt (Complex.normSq w - TT)) ζ` using `((normSq_diff ζ).sub_const TT).sqrt (sub_pos.2 h).ne'`. Conclude with `Complex.ofRealCLM.differentiableAt.comp ζ h1`.
+-/
 theorem sig_diff {ζ : ℂ} (h : TT < Complex.normSq ζ) : DifferentiableAt ℝ (sig TT) ζ := by
   have h1 : DifferentiableAt ℝ (fun w : ℂ => Real.sqrt (Complex.normSq w - TT)) ζ :=
     ((normSq_diff ζ).sub_const TT).sqrt (sub_pos.2 h).ne'
   exact Complex.ofRealCLM.differentiableAt.comp ζ h1
 
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℝ (fun w : ℂ => (Complex.normSq w - TT)⁻¹) ζ` using `((normSq_diff ζ).sub_const TT).inv (sub_pos.2 h).ne'`. Establish `h2 : (fun w => (gg TT w)⁻¹) = fun w => Complex.ofRealCLM ((Complex.normSq w - TT)⁻¹)`. Use function extensionality and compare the values at `w`. Simplify using `[gg]`. Rewrite using `[h2]`.
+
+Conclude with `Complex.ofRealCLM.differentiableAt.comp ζ h1`.
+-/
 theorem ggi_diff {ζ : ℂ} (h : TT < Complex.normSq ζ) : DifferentiableAt ℝ (fun w => (gg TT w)⁻¹) ζ := by
   have h1 : DifferentiableAt ℝ (fun w : ℂ => (Complex.normSq w - TT)⁻¹) ζ :=
     ((normSq_diff ζ).sub_const TT).inv (sub_pos.2 h).ne'
@@ -197,13 +301,24 @@ theorem ggi_diff {ζ : ℂ} (h : TT < Complex.normSq ζ) : DifferentiableAt ℝ 
   rw [h2]
   exact Complex.ofRealCLM.differentiableAt.comp ζ h1
 
+/- English proof (translation)
+Simplify using `only [sig, gg, ← Complex.ofReal_mul]`. Rewrite using `[Real.mul_self_sqrt (sub_pos.2 h).le]`.
+-/
 theorem sig_sq {ζ : ℂ} (h : TT < Complex.normSq ζ) : sig TT ζ * sig TT ζ = gg TT ζ := by
   simp only [sig, gg, ← Complex.ofReal_mul]
   rw [Real.mul_self_sqrt (sub_pos.2 h).le]
 
+/- English proof (translation)
+Introduce `h0` and use `gg_ne h (by rw [← sig_sq h, h0, mul_zero])`.
+-/
 theorem sig_ne {ζ : ℂ} (h : TT < Complex.normSq ζ) : sig TT ζ ≠ 0 := fun h0 =>
   gg_ne h (by rw [← sig_sq h, h0, mul_zero])
 
+/- English proof (translation)
+Establish `h1 : NF.dZ (fun w => sig TT w * sig TT w) ζ = conj ζ`. Rewrite using `[dZ_congr (fun w hw => sig_sq hw) h, dZ_gg]`. Rewrite `h1` using `[dZ_mul (sig_diff h) (sig_diff h)]`. Establish `hs` using `sig_ne h`. Rewrite using `[← sig_sq h, ← h1]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_sig {ζ : ℂ} (h : TT < Complex.normSq ζ) :
     NF.dZ (sig TT) ζ = (1 / 2 : ℂ) * (conj ζ * (sig TT ζ * (gg TT ζ)⁻¹)) := by
   have h1 : NF.dZ (fun w => sig TT w * sig TT w) ζ = conj ζ := by
@@ -214,6 +329,11 @@ theorem dZ_sig {ζ : ℂ} (h : TT < Complex.normSq ζ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h1 : NF.dZb (fun w => sig TT w * sig TT w) ζ = ζ`. Rewrite using `[dZb_congr (fun w hw => sig_sq hw) h, dZb_gg]`. Rewrite `h1` using `[dZb_mul (sig_diff h) (sig_diff h)]`. Establish `hs` using `sig_ne h`. Rewrite using `[← sig_sq h]`.
+
+Use `nth_rewrite 2 [← h1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_sig {ζ : ℂ} (h : TT < Complex.normSq ζ) :
     NF.dZb (sig TT) ζ = (1 / 2 : ℂ) * (ζ * (sig TT ζ * (gg TT ζ)⁻¹)) := by
   have h1 : NF.dZb (fun w => sig TT w * sig TT w) ζ = ζ := by
@@ -225,6 +345,11 @@ theorem dZb_sig {ζ : ℂ} (h : TT < Complex.normSq ζ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h1 : NF.dZ (fun w => gg TT w * (gg TT w)⁻¹) ζ = 0`. Rewrite using `[dZ_congr (fun w hw => mul_inv_cancel₀ (gg_ne hw)) h, dZ_const]`. Rewrite `h1` using `[dZ_mul (gg_diff TT ζ) (ggi_diff h), dZ_gg]`. Establish `hs` using `gg_ne h`. Establish `h2 : NF.dZ (fun w => (gg TT w)⁻¹) ζ = -((gg TT ζ)⁻¹ * ((gg TT ζ)⁻¹ * conj ζ))`.
+
+Rewrite using `[eq_neg_iff_add_eq_zero, ← mul_zero (gg TT ζ)⁻¹, ← h1, mul_add, inv_mul_cancel_left₀ hs]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_ggi {ζ : ℂ} (h : TT < Complex.normSq ζ) :
     NF.dZ (fun w => (gg TT w)⁻¹) ζ = (-1 : ℂ) * (conj ζ * ((gg TT ζ)⁻¹ * (gg TT ζ)⁻¹)) := by
   have h1 : NF.dZ (fun w => gg TT w * (gg TT w)⁻¹) ζ = 0 := by
@@ -236,6 +361,11 @@ theorem dZ_ggi {ζ : ℂ} (h : TT < Complex.normSq ζ) :
   rw [h2]
   ring
 
+/- English proof (translation)
+Establish `h1 : NF.dZb (fun w => gg TT w * (gg TT w)⁻¹) ζ = 0`. Rewrite using `[dZb_congr (fun w hw => mul_inv_cancel₀ (gg_ne hw)) h, dZb_const]`. Rewrite `h1` using `[dZb_mul (gg_diff TT ζ) (ggi_diff h), dZb_gg]`. Establish `hs` using `gg_ne h`. Establish `h2 : NF.dZb (fun w => (gg TT w)⁻¹) ζ = -((gg TT ζ)⁻¹ * ((gg TT ζ)⁻¹ * ζ))`.
+
+Rewrite using `[eq_neg_iff_add_eq_zero, ← mul_zero (gg TT ζ)⁻¹, ← h1, mul_add, inv_mul_cancel_left₀ hs]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_ggi {ζ : ℂ} (h : TT < Complex.normSq ζ) :
     NF.dZb (fun w => (gg TT w)⁻¹) ζ = (-1 : ℂ) * (ζ * ((gg TT ζ)⁻¹ * (gg TT ζ)⁻¹)) := by
   have h1 : NF.dZb (fun w => gg TT w * (gg TT w)⁻¹) ζ = 0 := by
@@ -247,6 +377,9 @@ theorem dZb_ggi {ζ : ℂ} (h : TT < Complex.normSq ζ) :
   rw [h2]
   ring
 
+/- English proof (translation)
+Introduce `_ hζ` and use `sig_diff hζ ps := PS.sig TT dz := PS.congr (PS.mul (PS.const TT (1 / 2)) (PS.mul (PS.conj TT) (PS.mul (PS.sig TT) (PS.ggi TT)))) fun _ hζ => dZ_sig hζ dzb := PS.congr (PS.mul (PS.const TT (1 / 2)) (PS.mul (PS.id TT) (PS.mul (PS.sig TT) (PS.ggi TT)))) fun _ hζ => dZb_sig hζ`.
+-/
 theorem DPS.sig (TT : ℝ) : DPS TT (sig TT) where
   diff := fun _ hζ => sig_diff hζ
   ps := PS.sig TT
@@ -255,6 +388,9 @@ theorem DPS.sig (TT : ℝ) : DPS TT (sig TT) where
   dzb := PS.congr (PS.mul (PS.const TT (1 / 2)) (PS.mul (PS.id TT) (PS.mul (PS.sig TT) (PS.ggi TT))))
     fun _ hζ => dZb_sig hζ
 
+/- English proof (translation)
+Introduce `_ hζ` and use `ggi_diff hζ ps := PS.ggi TT dz := PS.congr (PS.mul (PS.const TT (-1)) (PS.mul (PS.conj TT) (PS.mul (PS.ggi TT) (PS.ggi TT)))) fun _ hζ => dZ_ggi hζ dzb := PS.congr (PS.mul (PS.const TT (-1)) (PS.mul (PS.id TT) (PS.mul (PS.ggi TT) (PS.ggi TT)))) fun _ hζ => dZb_ggi hζ`.
+-/
 theorem DPS.ggi (TT : ℝ) : DPS TT (fun ζ => (gg TT ζ)⁻¹) where
   diff := fun _ hζ => ggi_diff hζ
   ps := PS.ggi TT
@@ -263,12 +399,18 @@ theorem DPS.ggi (TT : ℝ) : DPS TT (fun ζ => (gg TT ζ)⁻¹) where
   dzb := PS.congr (PS.mul (PS.const TT (-1)) (PS.mul (PS.id TT) (PS.mul (PS.ggi TT) (PS.ggi TT))))
     fun _ hζ => dZb_ggi hζ
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `DPS.id TT`. Conclude with `DPS.conj TT`. Conclude with `DPS.sig TT`.
+-/
 theorem DPS.coord (TT : ℝ) (i : Fin 3) : DPS TT (fun ζ => (![ζ, conj ζ, PR.sig TT ζ] : Fin 3 → ℂ) i) := by
   fin_cases i
   · exact DPS.id TT
   · exact DPS.conj TT
   · exact DPS.sig TT
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact (DPS.const TT a).congr fun ζ _ => MvPolynomial.eval_C a`. Consider the case `add p q hp hq => exact (hp.add hq).congr fun ζ _ => map_add _ p q`. Consider the case `mul_X p i hp => exact (hp.mul (DPS.coord TT i)).congr fun ζ _ => by rw [map_mul, MvPolynomial.eval_X]`.
+-/
 theorem DPS.eval (TT : ℝ) (p : MvPolynomial (Fin 3) ℂ) :
     DPS TT (fun ζ => MvPolynomial.eval ![ζ, conj ζ, PR.sig TT ζ] p) := by
   induction p using MvPolynomial.induction_on with
@@ -276,11 +418,17 @@ theorem DPS.eval (TT : ℝ) (p : MvPolynomial (Fin 3) ℂ) :
   | add p q hp hq => exact (hp.add hq).congr fun ζ _ => map_add _ p q
   | mul_X p i hp => exact (hp.mul (DPS.coord TT i)).congr fun ζ _ => by rw [map_mul, MvPolynomial.eval_X]
 
+/- English proof (translation)
+Take `⟨m, p, hp⟩` from `hf`. Use `(((DPS.ggi TT).pow m).mul (DPS.eval TT p)).congr fun ζ hζ => ?_` and prove the remaining obligations. Rewrite using `[← hp ζ hζ, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ (gg_ne hζ), one_pow, one_mul]`.
+-/
 theorem DPS.of_PS {f : ℂ → ℂ} (hf : PS TT f) : DPS TT f := by
   obtain ⟨m, p, hp⟩ := hf
   refine (((DPS.ggi TT).pow m).mul (DPS.eval TT p)).congr fun ζ hζ => ?_
   rw [← hp ζ hζ, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ (gg_ne hζ), one_pow, one_mul]
 
+/- English proof (translation)
+Use `⟨Fintype.card ι, fun j => a ((Fintype.equivFin ι).symm j), fun j => v ((Fintype.equivFin ι).symm j), fun j => ha _, fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[hf ζ hζ]`. Conclude with `((Fintype.equivFin ι).symm.sum_comp (fun i => a i ζ • v i)).symm`.
+-/
 theorem PSV.of_fintype {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype ι] (a : ι → ℂ → ℂ) (v : ι → V)
     (ha : ∀ i, PS TT (a i)) {f : ℂ → V} (hf : ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = ∑ i, a i ζ • v i) :
     PSV TT f := by
@@ -289,6 +437,11 @@ theorem PSV.of_fintype {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} 
   rw [hf ζ hζ]
   exact ((Fintype.equivFin ι).symm.sum_comp (fun i => a i ζ • v i)).symm
 
+/- English proof (translation)
+Take `⟨n, a, v, ha, hf⟩` from `hf`. Take `⟨n', a', v', ha', hg⟩` from `hg`. Use `PSV.of_fintype (ι := Fin n ⊕ Fin n') (Sum.elim a a') (Sum.elim v v') ?_ fun ζ hζ => ?_` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `ha i`.
+
+Conclude with `ha' i`. Rewrite using `[hf ζ hζ, hg ζ hζ, Fintype.sum_sum_type]`. Both sides reduce to the same expression.
+-/
 theorem PSV.add {V : Type*} [AddCommGroup V] [Module ℂ V] {f g : ℂ → V} (hf : PSV TT f) (hg : PSV TT g) :
     PSV TT (fun ζ => f ζ + g ζ) := by
   obtain ⟨n, a, v, ha, hf⟩ := hf
@@ -300,6 +453,9 @@ theorem PSV.add {V : Type*} [AddCommGroup V] [Module ℂ V] {f g : ℂ → V} (h
   · rw [hf ζ hζ, hg ζ hζ, Fintype.sum_sum_type]
     rfl
 
+/- English proof (translation)
+Take `⟨n, b, v, hb, hf⟩` from `hf`. Use `⟨n, fun i ζ => a ζ * b i ζ, v, fun i => PS.mul ha (hb i), fun ζ hζ => ?_⟩` and prove the remaining obligations. Use `show a ζ • f ζ = ∑ i, (a ζ * b i ζ) • v i`. Rewrite using `[hf ζ hζ, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_smul _ _ _`.
+-/
 theorem PSV.smul {V : Type*} [AddCommGroup V] [Module ℂ V] {a : ℂ → ℂ} {f : ℂ → V} (ha : PS TT a) (hf : PSV TT f) :
     PSV TT (fun ζ => a ζ • f ζ) := by
   obtain ⟨n, b, v, hb, hf⟩ := hf
@@ -308,6 +464,9 @@ theorem PSV.smul {V : Type*} [AddCommGroup V] [Module ℂ V] {a : ℂ → ℂ} {
   rw [hf ζ hζ, Finset.smul_sum]
   exact Finset.sum_congr rfl fun i _ => smul_smul _ _ _
 
+/- English proof (translation)
+Take `⟨n, b, v, hb, hf⟩` from `hf`. Use `⟨n, b, fun i => L (v i), hb, fun ζ hζ => ?_⟩` and prove the remaining obligations. Use `show L (f ζ) = ∑ i, b i ζ • L (v i)`. Rewrite using `[hf ζ hζ, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`.
+-/
 theorem PSV.map {V V' : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (L : V →ₗ[ℂ] V')
     {f : ℂ → V} (hf : PSV TT f) : PSV TT (fun ζ => L (f ζ)) := by
   obtain ⟨n, b, v, hb, hf⟩ := hf
@@ -316,9 +475,15 @@ theorem PSV.map {V V' : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup V']
   rw [hf ζ hζ, map_sum]
   exact Finset.sum_congr rfl fun i _ => map_smul _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ _ => 1, fun _ => v, fun _ => PS.const TT 1, fun ζ _ => by simp⟩`.
+-/
 theorem PSV.const {V : Type*} [AddCommGroup V] [Module ℂ V] (TT : ℝ) (v : V) : PSV TT (fun _ => v) :=
   ⟨1, fun _ _ => 1, fun _ => v, fun _ => PS.const TT 1, fun ζ _ => by simp⟩
 
+/- English proof (translation)
+Establish `hd : HasFDerivAt (fun w => ∑ i, a i w • v i) (∑ i, (fderiv ℝ (a i) ζ).smulRight (v i)) ζ` using `HasFDerivAt.fun_sum fun i _ => ((DPS.of_PS (ha i)).diff ζ hζ).hasFDerivAt.smul_const (v i)`. Rewrite using `[fderiv_congr hf hζ, hd.fderiv]`.
+-/
 theorem fderiv_sum {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {n : ℕ} (a : Fin n → ℂ → ℂ) (v : Fin n → V)
     (ha : ∀ i, PS TT (a i)) {f : ℂ → V} (hf : ∀ ζ : ℂ, TT < Complex.normSq ζ → f ζ = ∑ i, a i ζ • v i) {ζ : ℂ}
     (hζ : TT < Complex.normSq ζ) : fderiv ℝ f ζ = ∑ i, (fderiv ℝ (a i) ζ).smulRight (v i) := by
@@ -326,6 +491,11 @@ theorem fderiv_sum {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {n : �
     HasFDerivAt.fun_sum fun i _ => ((DPS.of_PS (ha i)).diff ζ hζ).hasFDerivAt.smul_const (v i)
   rw [fderiv_congr hf hζ, hd.fderiv]
 
+/- English proof (translation)
+Take `⟨n, a, v, ha, hf⟩` from `hf`. Use `⟨n, fun i => NF.dZ (a i), v, fun i => (DPS.of_PS (ha i)).dz, fun ζ hζ => ?_⟩` and prove the remaining obligations. Simplify using `only [CP.dZV, NF.dZ, fderiv_sum a v ha hf hζ, sum_apply, ContinuousLinearMap.smulRight_apply]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← sub_smul, smul_smul]`.
+-/
 theorem PSV.dZV {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : ℂ → V} (hf : PSV TT f) :
     PSV TT (CP.dZV f) := by
   obtain ⟨n, a, v, ha, hf⟩ := hf
@@ -336,6 +506,11 @@ theorem PSV.dZV {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : ℂ 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_smul, ← sub_smul, smul_smul]
 
+/- English proof (translation)
+Take `⟨n, a, v, ha, hf⟩` from `hf`. Use `⟨n, fun i => NF.dZb (a i), v, fun i => (DPS.of_PS (ha i)).dzb, fun ζ hζ => ?_⟩` and prove the remaining obligations. Simplify using `only [CP.dZbV, NF.dZb, fderiv_sum a v ha hf hζ, sum_apply, ContinuousLinearMap.smulRight_apply]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ← add_smul, smul_smul]`.
+-/
 theorem PSV.dZbV {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : ℂ → V} (hf : PSV TT f) :
     PSV TT (CP.dZbV f) := by
   obtain ⟨n, a, v, ha, hf⟩ := hf
@@ -349,6 +524,9 @@ theorem PSV.dZbV {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : ℂ
 end PSC
 
 open Asm in
+/- English proof (translation)
+Introduce `TT _`. Use `⟨PS.const TT, PSC.PS.id TT, PSC.PS.conj TT, PSC.PS.sig TT, PSC.PS.ggi TT, fun f g hf hg => ⟨PS.add hf hg, PS.mul hf hg⟩, fun f hf => ⟨(PSC.DPS.of_PS hf).dz, (PSC.DPS.of_PS hf).dzb⟩, ?_⟩` and prove the remaining obligations. Introduce `V V' _ _ _ _`. Conclude with `⟨fun f g hf hg => PSC.PSV.add hf hg, fun a f ha hf => PSC.PSV.smul ha hf, fun L f hf => PSC.PSV.map L hf, fun f hf => ⟨PSC.PSV.dZV hf, PSC.PSV.dZbV hf⟩, fun v => PSC.PSV.const TT v⟩`.
+-/
 theorem polynomial_shift_calculation : PSCalc := by
   intro TT _
   refine ⟨PS.const TT, PSC.PS.id TT, PSC.PS.conj TT, PSC.PS.sig TT, PSC.PS.ggi TT,

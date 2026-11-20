@@ -18,6 +18,11 @@ section general
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_3 h_4; revert Ω h_1 R h_3 h_4 A hR b hb; exact @_root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral)`. Consider the case `exact @_root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral`. Consider the case `exact _root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral`. Consider the case `(apply _root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralInValuationSubring.mem_valuationSubring_of_isIntegral ..)`.
+-/
 theorem mem_of_isIntegral {R : Type} [CommRing R] [Algebra R Ω] (A : ValuationSubring Ω)
     (hR : ∀ r : R, algebraMap R Ω r ∈ A) {b : Ω} (hb : IsIntegral R b) : b ∈ A := by
   first
@@ -31,6 +36,11 @@ theorem mem_of_isIntegral {R : Type} [CommRing R] [Algebra R Ω] (A : ValuationS
 
 variable (S : Type) [CommRing S] [IsDomain S] [IsDedekindDomain S] [Algebra S Ω] [IsFractionRing S Ω]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_3 h_4 h_5 h_6 h_7; revert Ω h_1 S h_3 h_4 h_5 h_6 h_7 A hS x hx; exact @_root_.GlobalTheory.ClosingLemma.main)`. Consider the case `exact @_root_.GlobalTheory.ClosingLemma.main`. Consider the case `exact _root_.GlobalTheory.ClosingLemma.main`. Consider the case `(apply _root_.GlobalTheory.ClosingLemma.main <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.ClosingLemma.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.ClosingLemma.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosingLemma.main ..)`.
+-/
 theorem exists_den (A : ValuationSubring Ω) (hS : ∀ s : S, algebraMap S Ω s ∈ A) {x : Ω} (hx : x ∈ A) :
     ∃ s t : S, A.valuation (algebraMap S Ω s) = 1 ∧ algebraMap S Ω s * x = algebraMap S Ω t := by
   first
@@ -42,6 +52,13 @@ theorem exists_den (A : ValuationSubring Ω) (hS : ∀ s : S, algebraMap S Ω s 
   | (intros; apply @_root_.GlobalTheory.ClosingLemma.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ClosingLemma.main ..)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨s, t, hs1, e⟩` from `exists_den S A hS hx`. Establish `hs0 : algebraMap S Ω s ≠ 0`. Introduce `h0`. Rewrite `hs1` using `[h0, Valuation.map_zero]`.
+
+Conclude with `zero_ne_one hs1`. Establish `hs1' : A'.valuation (algebraMap S Ω s) = 1`. Use `le_antisymm ((A'.valuation_le_one_iff _).mpr (hS' s)) ?_` and prove the remaining obligations. Rewrite using `[← not_lt, ← h s, hs1]`. Conclude with `lt_irrefl 1`.
+
+Establish `hxt : x = algebraMap S Ω t * (algebraMap S Ω s)⁻¹` using `by rw [← e]; field_simp`. Rewrite using `[← A'.valuation_le_one_iff, hxt, Valuation.map_mul, map_inv₀, hs1', inv_one, _root_.mul_one, A'.valuation_le_one_iff]`. Conclude with `hS' t`.
+-/
 theorem le_of_valuation_lt_one_iff {A A' : ValuationSubring Ω} (hS : ∀ s : S, algebraMap S Ω s ∈ A)
     (hS' : ∀ s : S, algebraMap S Ω s ∈ A')
     (h : ∀ s : S, A.valuation (algebraMap S Ω s) < 1 ↔ A'.valuation (algebraMap S Ω s) < 1) :
@@ -64,6 +81,9 @@ theorem le_of_valuation_lt_one_iff {A A' : ValuationSubring Ω} (hS : ∀ s : S,
 def primeBelow (A : ValuationSubring Ω) (hS : ∀ s : S, algebraMap S Ω s ∈ A) : Ideal S :=
   (IsLocalRing.maximalIdeal A).comap ((algebraMap S Ω).codRestrict A hS)
 
+/- English proof (translation)
+The claim follows from `A.valuation_lt_one_iff _`.
+-/
 theorem mem_primeBelow {A : ValuationSubring Ω} (hS : ∀ s : S, algebraMap S Ω s ∈ A) (s : S) :
     s ∈ primeBelow S A hS ↔ A.valuation (algebraMap S Ω s) < 1 :=
   A.valuation_lt_one_iff _
@@ -77,6 +97,9 @@ end general
 
 section galois
 
+/- English proof (translation)
+Rewrite using `[← ValuationSubring.mem_nonunits_iff, ← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, map_inv₀, map_eq_zero_iff _ (g⁻¹ : Ω ≃ₐ[K] Ω).injective]`.
+-/
 theorem smul_valuation_lt_one_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (g : Ω ≃ₐ[K] Ω)
     (A : ValuationSubring Ω) (y : Ω) :
     (g • A).valuation y < 1 ↔ A.valuation ((g⁻¹ : Ω ≃ₐ[K] Ω) y) < 1 := by
@@ -85,6 +108,25 @@ theorem smul_valuation_lt_one_iff {K Ω : Type} [Field K] [Field Ω] [Algebra K 
     ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, map_inv₀,
     map_eq_zero_iff _ (g⁻¹ : Ω ≃ₐ[K] Ω).injective]
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ Ω _ _ _ _ V V' hV hV'`. Use `letI : Algebra R Ω := ((algebraMap K Ω).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K Ω := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI hc : SMulCommClass (Ω ≃ₐ[K] Ω) R Ω := ⟨fun g r x => by`. Rewrite using `[← IsScalarTower.algebraMap_smul K r x, ← IsScalarTower.algebraMap_smul K r (g • x)]`.
+
+Conclude with `map_smul g _ _⟩`. Use `haveI : IsDedekindDomain (integralClosure R Ω) := integralClosure.isDedekindDomain R K Ω`. Use `haveI : IsFractionRing (integralClosure R Ω) Ω := integralClosure.isFractionRing_of_finite_extension K Ω`. Use `haveI : Algebra.IsInvariant R (integralClosure R Ω) (Ω ≃ₐ[K] Ω) := by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `b hb`. Take `⟨k, hk⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := K) (b : Ω)).2 fun g => congrArg Subtype.val (hb g)`. Establish `hint : IsIntegral R k`. Establish `h2 : IsIntegral R (algebraMap K Ω k)` using `hk ▸ b.2`. Conclude with `(isIntegral_algebraMap_iff (algebraMap K Ω).injective).1 h2`.
+
+Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨v, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← hv, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression. Establish `key : ∀ W : ValuationSubring Ω, IsAbove R K W.toSubring → ∀ k : K, (W.valuation (algebraMap K Ω k) < 1 ↔ k⁻¹ ∉ (algebraMap R K).range ∨ k = 0)`.
+
+Introduce `W hW k`. Rewrite using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, ← map_inv₀, map_eq_zero_iff _ (algebraMap K Ω).injective, ← hW]`. Conclude with `or_comm`. Establish `hR : ∀ W : ValuationSubring Ω, IsAbove R K W.toSubring → ∀ r : R, algebraMap R Ω r ∈ W`. Introduce `W hW r`.
+
+Establish `: algebraMap R K r ∈ W.toSubring.comap (algebraMap K Ω)` using `by rw [hW]; exact ⟨r, rfl⟩`. Conclude with `this`. Establish `hS : ∀ W : ValuationSubring Ω, IsAbove R K W.toSubring → ∀ s : integralClosure R Ω, algebraMap (integralClosure R Ω) Ω s ∈ W` using `fun W hW s => mem_of_isIntegral W (hR W hW) s.2`. Establish `hunder : (primeBelow (integralClosure R Ω) V (hS V hV)).under R = (primeBelow (integralClosure R Ω) V' (hS V' hV')).under R`. Use extensionality with `r`.
+
+Rewrite using `[Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, mem_primeBelow, mem_primeBelow]`. Conclude with `(key V hV (algebraMap R K r)).trans (key V' hV' (algebraMap R K r)).symm`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (A := R) (B := integralClosure R Ω) (G := Ω ≃ₐ[K] Ω) _ _ hunder`. Establish `hgS : ∀ s : integralClosure R Ω, algebraMap (integralClosure R Ω) Ω s ∈ g • V`. Introduce `s`.
+
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `hS V hV (g⁻¹ • s)`. Establish `hmem : ∀ s : integralClosure R Ω, (g • V).valuation (algebraMap (integralClosure R Ω) Ω s) < 1 ↔ V'.valuation (algebraMap (integralClosure R Ω) Ω s) < 1`. Introduce `s`. Rewrite using `[smul_valuation_lt_one_iff, ← mem_primeBelow (integralClosure R Ω) (hS V' hV'), hg, Ideal.mem_pointwise_smul_iff_inv_smul_mem, mem_primeBelow]`.
+
+Both sides reduce to the same expression. Conclude with `⟨g, le_antisymm (le_of_valuation_lt_one_iff (integralClosure R Ω) hgS (hS V' hV') hmem) (le_of_valuation_lt_one_iff (integralClosure R Ω) (hS V' hV') hgS fun s => (hmem s).symm)⟩`.
+-/
 theorem exists_smul_eq_of_isAbove : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] (Ω : Type) [Field Ω] [Algebra K Ω] [IsGalois K Ω]
     [FiniteDimensional K Ω] (V V' : ValuationSubring Ω), IsAbove R K V.toSubring →

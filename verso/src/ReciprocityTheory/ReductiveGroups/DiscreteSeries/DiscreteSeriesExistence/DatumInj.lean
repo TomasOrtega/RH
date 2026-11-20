@@ -17,6 +17,11 @@ def dinj_jLin (hP : IsPsiFor ε lam T Ψ) (v₀ : T.V) : T.V →ₗ[ℂ] L2 ε w
 section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `hF.continuousOn.continuousAt (hU.mem_nhds hg₀U)`. Use `hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hfF g₀ hg₀U hg₀)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin (UJset ε) (hU.mem_nhds hg₀U)] with g hg`.
+
+Conclude with `hfF g hg.2 hg.1`.
+-/
 theorem dinj_continuousOn_of_smoothOnGV {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : S7.SmoothOnGV ε f) : ContinuousOn f (UJset ε) := by
   intro g₀ hg₀
@@ -28,10 +33,36 @@ theorem dinj_continuousOn_of_smoothOnGV {E : Type*} [NormedAddCommGroup E] [Norm
 
 end
 
+/- English proof (translation)
+Use `show inUJ ε 1`. Simplify using `[inUJ]`.
+-/
 theorem dinj_one_mem_UJset : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε := by
   show inUJ ε 1
   simp [inUJ]
 
+/- English proof (translation)
+Establish `hmem : ∀ g : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat g ∈ UJset ε` using `fun g => g.2`. Establish `hum : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hΨu : Continuous (fun g : Formalism.REAL.UJ ε => Ψ (Formalism.MainNotions.S.umat g))` using `(dinj_continuousOn_of_smoothOnGV hP.2.2.1).comp_continuous hum hmem`. Establish `hfc : ∀ v, Continuous (fun g : Formalism.REAL.UJ ε => jfun Ψ v₀ v (Formalism.MainNotions.S.umat g))`. Introduce `v`.
+
+Simplify using `only [jfun]`. Conclude with `continuous_const.inner (hΨu.clm_apply continuous_const)`. Establish `hML : ∀ v, MemLp (fun g : Formalism.REAL.UJ ε => jfun Ψ v₀ v (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)`. Introduce `v`. Establish `hH : (Formalism.REAL.muG ε).IsHaarMeasure` using `by unfold Formalism.REAL.muG; infer_instance`.
+
+Establish `h0` using `hP.2.2.2.2 (Formalism.REAL.muG ε) hH`. Establish `h2` using `((innerSL ℂ v₀).comp (ContinuousLinearMap.apply ℂ T.V v)).comp_memLp' h0`. Use `MemLp.ae_eq (Filter.Eventually.of_forall fun g => ?_) h2` and prove the remaining obligations. Apply the tactic sequence `simp [jfun] <;> rfl`. Use `haveI : (Formalism.REAL.muG ε).IsOpenPosMeasure := by unfold Formalism.REAL.muG; infer_instance`.
+
+Establish `hz : ∀ v, uniformisationL2 ε Ψ v₀ v = 0 ↔ ∀ g : Formalism.REAL.UJ ε, jfun Ψ v₀ v (Formalism.MainNotions.S.umat g) = 0`. Introduce `v`. Establish `hm` using `hML v`. Establish `e1 : uniformisationL2 ε Ψ v₀ v = hm.toLp _`. Unfold `uniformisationL2 toL2`.
+
+Conclude with `dif_pos hm`. Rewrite using `[e1, Lp.eq_zero_iff_ae_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Establish `h5` using `((hfc v).ae_eq_iff_eq (Formalism.REAL.muG ε) continuous_zero).mp (hm.coeFn_toLp.symm.trans h)`.
+
+Conclude with `congrFun h5 g`. Introduce `h`. Conclude with `hm.coeFn_toLp.trans (Filter.Eventually.of_forall fun g => h g)`. Establish `hstab : ∀ (k : S7.KG ε) (v : T.V), (∀ g : Formalism.REAL.UJ ε, jfun Ψ v₀ v (Formalism.MainNotions.S.umat g) = 0) → ∀ g : Formalism.REAL.UJ ε, jfun Ψ v₀ (T.op k v) (Formalism.MainNotions.S.umat g) = 0`. Introduce `k v hv g`.
+
+Establish `hk` using `hP.1 1 k (Formalism.MainNotions.S.umat g) (hmem g)`. Establish `ht1 : S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Establish `ho1 : T.op 1 = 1` using `by simp [S7.KType.op]`. Rewrite `hk` using `[ht1, ho1, one_mul, one_mul]`. Set `y : Formalism.REAL.UJ ε` to `(k : S7.UJ ε)`.
+
+Establish `hy : Formalism.MainNotions.S.umat (g * y) = Formalism.MainNotions.S.umat g * S7.toMK k` using `rfl`. Establish `h3` using `hv (g * y)`. Rewrite `h3` using `[hy]`. Simplify using `only [jfun] at h3 ⊢`. Rewrite `h3` using `[hk]`.
+
+Simplify using `using h3`. Establish `hne : uniformisationL2 ε Ψ v₀ v₀ ≠ 0`. Introduce `h0`. Establish `h6 : jfun Ψ v₀ v₀ 1 = 0` using `(hz v₀).1 h0 1`. Simplify using `only [jfun, hP.2.1, ContinuousLinearMap.one_apply] at h6`.
+
+Conclude with `hv₀ (inner_self_eq_zero.mp h6)`. Establish `hker : ∀ v, v ∈ LinearMap.ker (dinj_jLin hP v₀) ↔ ∀ g : Formalism.REAL.UJ ε, jfun Ψ v₀ v (Formalism.MainNotions.S.umat g) = 0` using `fun v => LinearMap.mem_ker.trans (hz v)`. Break down `T.irred (LinearMap.ker (dinj_jLin hP v₀)) (fun k v hv => (hker _).2 (hstab k v ((hker v).1 hv))) with h | h` into its components or cases. Conclude with `LinearMap.ker_eq_bot.1 h`. It suffices to derive a contradiction.
+
+Establish `hv : v₀ ∈ LinearMap.ker (dinj_jLin hP v₀)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Conclude with `hne (LinearMap.mem_ker.1 hv)`.
+-/
 theorem uniformisationL2_injective (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     Function.Injective (uniformisationL2 ε Ψ v₀) := by
   have hmem : ∀ g : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat g ∈ UJset ε := fun g => g.2

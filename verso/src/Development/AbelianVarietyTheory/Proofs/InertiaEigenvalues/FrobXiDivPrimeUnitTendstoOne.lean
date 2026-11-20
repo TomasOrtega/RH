@@ -17,27 +17,45 @@ namespace GlobalTheory.MemLoc.PhiXiUnit
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CrisMaps.phiA_extends l).alg x`.
+-/
 theorem phiA_alg (x : Per.Ainf l) :
     phiA l (algebraMap (Per.Ainf l) (Per.Acris l) x) =
       algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l x) :=
   (GlobalTheory.CrisMaps.phiA_extends l).alg x
 
+/- English proof (translation)
+Rewrite using `[← map_pow]`. Conclude with `GlobalTheory.RingIface.phiA_teich l x`.
+-/
 theorem φA_tm (x : Per.Fl l) : Per.φA l (Per.tm x) = Per.tm x ^ l := by
   rw [← map_pow]
   exact GlobalTheory.RingIface.phiA_teich l x
 
+/- English proof (translation)
+Rewrite using `[φA_tm, ← map_pow, ← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]`.
+-/
 theorem φA_tm_root (e : Per.Fl l) :
     Per.φA l (Per.tm ((frobeniusEquiv (Per.Fl l) l).symm e)) = Per.tm e := by
   rw [φA_tm, ← map_pow, ← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[xi, map_sum]`. Simplify using `only [map_pow, φA_tm_root]`.
+-/
 theorem φA_xi (e : Per.Fl l) :
     Per.φA l (xi e) = ∑ i ∈ Finset.range l, Per.tm e ^ i := by
   rw [xi, map_sum]
   simp only [map_pow, φA_tm_root]
 
+/- English proof (translation)
+Rewrite using `[φA_xi, mu, map_sub, map_one, φA_tm, mul_comm, geom_sum_mul]`.
+-/
 theorem φA_mu (e : Per.Fl l) : Per.φA l (mu e) = mu e * Per.φA l (xi e) := by
   rw [φA_xi, mu, map_sub, map_one, φA_tm, mul_comm, geom_sum_mul]
 
+/- English proof (translation)
+Use `⟨∑ i ∈ Finset.range l, ∑ j ∈ Finset.range i, Per.tm e ^ j, ?_⟩` and prove the remaining obligations. Establish `h : (l : Per.Ainf l) = ∑ i ∈ Finset.range l, (1 : Per.Ainf l)` using `by simp`. Rewrite using `[φA_xi, mu, Finset.mul_sum, h, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, geom_sum_mul]`.
+-/
 theorem φA_xi_sub (e : Per.Fl l) :
     ∃ s : Per.Ainf l, Per.φA l (xi e) - (l : Per.Ainf l) = mu e * s := by
   refine ⟨∑ i ∈ Finset.range l, ∑ j ∈ Finset.range i, Per.tm e ^ j, ?_⟩
@@ -46,6 +64,9 @@ theorem φA_xi_sub (e : Per.Fl l) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [mul_comm, geom_sum_mul]
 
+/- English proof (translation)
+Establish `he` using `GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C`. Establish `hU : IsUnit (algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε)))` using `GlobalTheory.MemLoc.TFil.isUnit_mu he`. Apply `GlobalTheory.MemLoc.AwayT.acris_injective C` to reduce the goal to its premises. Apply `hU.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, h]`.
+-/
 theorem cancel_mu (C : Core l) (x y : Per.Acris l)
     (h : algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε) * x =
       algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε) * y) : x = y := by
@@ -57,6 +78,11 @@ theorem cancel_mu (C : Core l) (x y : Per.Acris l)
   apply hU.mul_left_cancel
   rw [← map_mul, ← map_mul, h]
 
+/- English proof (translation)
+Establish `he` using `GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C`. Take `⟨t, ρ, ht, hρ, htρ⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l C.ε he.1`. Establish `h1 : t = C.t` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε C.t he.1 C.t_log).1 t ht`. Establish `hφt` using `GlobalTheory.T.acrisFrobenius_fontaine_t_eq_mul l C`. Rewrite `hφt` using `[← h1, htρ, map_mul, phiA_alg, φA_mu, map_mul, mul_assoc, mul_left_comm (l : Per.Acris l)]`.
+
+Establish `h2` using `cancel_mu C _ _ hφt`. Establish `hφρ : IsUnit (phiA l ρ)` using `hρ.map _`. Use `⟨ρ * ↑hφρ.unit⁻¹, hρ.mul (Units.isUnit _), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← h2, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+-/
 theorem exists_unit (C : Core l) : ∃ u : Per.Acris l, IsUnit u ∧
     (l : Per.Acris l) * u = algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l (xi C.ε)) := by
   have he := GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C
@@ -69,6 +95,21 @@ theorem exists_unit (C : Core l) : ∃ u : Per.Acris l, IsUnit u ∧
   refine ⟨ρ * ↑hφρ.unit⁻¹, hρ.mul (Units.isUnit _), ?_⟩
   rw [← mul_assoc, ← h2, mul_assoc, IsUnit.mul_val_inv, mul_one]
 
+/- English proof (translation)
+Use `set a := algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε) with ha_def`. Establish `ha : phiA l a = a * ((l : Per.Acris l) * u)`. Rewrite using `[ha_def, phiA_alg, φA_mu, map_mul, hu]`. Establish `hdvd : ∀ m : ℕ, (l : Per.Acris l) ^ m ∣ (phiA l ^ m) a`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[RingHom.coe_pow, Function.iterate_succ_apply, ha, ← RingHom.coe_pow, map_mul, map_mul, map_natCast, pow_succ]`. Take `⟨c, hc⟩` from `ih`.
+
+Rewrite using `[hc]`. Conclude with `⟨c * (phiA l ^ m) u, by ring⟩`. Take `⟨s, hs⟩` from `φA_xi_sub C.ε`. Establish `hls : (l : Per.Acris l) * u - l = a * algebraMap (Per.Ainf l) (Per.Acris l) s`. Rewrite using `[hu, ← map_natCast (algebraMap (Per.Ainf l) (Per.Acris l)) l, ← map_sub, hs, map_mul]`.
+
+Establish `key : ∀ m : ℕ, (l : Per.Acris l) * ((phiA l ^ m) u - 1) = (phiA l ^ m) a * (phiA l ^ m) (algebraMap (Per.Ainf l) (Per.Acris l) s)`. Introduce `m`. Rewrite using `[← map_mul, ← hls, map_sub, map_mul, map_natCast, mul_sub, mul_one]`. Establish `tf` using `(GlobalTheory.MemLoc.acris_basic l).2.1`. Introduce `r`.
+
+Use `⟨r + 1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[← RingHom.coe_pow]`. Take `⟨c, hc⟩` from `hdvd (k + 1)`. Establish `h3 : (phiA l ^ (k + 1)) u - 1 = (l : Per.Acris l) ^ k * (c * (phiA l ^ (k + 1)) (algebraMap (Per.Ainf l) (Per.Acris l) s))`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `tf` to reduce the goal to its premises. Rewrite using `[mul_sub, key, hc, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (phiA l ^ (k + 1)) u - 1 ∈ Ideal.span {(l : Per.Acris l)} ^ k`.
+
+Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, h3]`. Conclude with `dvd_mul_right _ _`. Conclude with `Ideal.pow_le_pow_right (by omega) h4`.
+-/
 theorem iterate_sub_one (C : Core l) (u : Per.Acris l)
     (hu : (l : Per.Acris l) * u = algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l (xi C.ε))) :
     ∀ r : ℕ, ∃ M : ℕ, ∀ m ≥ M, (⇑(phiA l))^[m] u - 1 ∈ Ideal.span {(l : Per.Acris l)} ^ r := by
@@ -111,6 +152,9 @@ theorem iterate_sub_one (C : Core l) (u : Per.Acris l)
 
 end GlobalTheory.MemLoc.PhiXiUnit
 
+/- English proof (translation)
+Introduce `l _ C`. Take `⟨u, hu, hlu⟩` from `GlobalTheory.MemLoc.PhiXiUnit.exists_unit C`. Conclude with `⟨u, hu, hlu, GlobalTheory.MemLoc.PhiXiUnit.iterate_sub_one C u hlu⟩`.
+-/
 theorem GlobalTheory.MemLoc.phi_xi_unit_tendsto : ∀ (l : ℕ) [Fact l.Prime] (C : GlobalTheory.MemLoc.Core l),
     ∃ u : Per.Acris l, IsUnit u ∧
       (l : Per.Acris l) * u = algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l (GlobalTheory.MemLoc.xi C.ε)) ∧

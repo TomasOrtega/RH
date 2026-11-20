@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompactRepField
 
+/- English proof (translation)
+Set `m : Γ →* Matrix (Fin a) (Fin a) ↥K` to `{ toFun := fun g => Matrix.of fun i j => ⟨_, h g i j⟩ map_one' := by`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, map_one, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use the proof step `map_mul' := fun g g' => by`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply] }`. Conclude with `⟨m.toHomUnits, fun g i j => rfl⟩`.
+-/
 theorem exists_hom_of_entries_mem {F E Γ : Type} [Field F] [Field E] [Algebra F E] [Group Γ]
     {a : ℕ} (r : Γ →* GL (Fin a) E) (K : IntermediateField F E)
     (h : ∀ g i j, (r g : Matrix (Fin a) (Fin a) E) i j ∈ K) :
@@ -26,6 +31,11 @@ theorem exists_hom_of_entries_mem {F E Γ : Type} [Field F] [Field E] [Algebra F
         simp [Matrix.mul_apply] }
   exact ⟨m.toHomUnits, fun g i j => rfl⟩
 
+/- English proof (translation)
+Introduce `D l _ a ρ hρ L₀`. Take `⟨L, hL, h⟩` from `exists_finExt_entries_mem l (G D.host.E D.nd.Om) a ρ hρ L₀`. Take `⟨ρ₁, h₁⟩` from `exists_hom_of_entries_mem ρ L.1 h`. Use `⟨L, hL, ρ₁, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+
+Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `(hρ.matrix_elem i j).congr fun g => (h₁ g i j).symm`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `h₁ g i j`.
+-/
 theorem exists_continuous_model :
     ∀ (D : D7) (l : ℕ) [Fact l.Prime] (a : ℕ) (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)), Continuous (fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) → ∀ L₀ : FinExt l, ∃ (LL' : FinExt l) (_ : L₀.1 ≤ LL'.1) (ρ₁ : G D.host.E D.nd.Om →* GL (Fin a) ↥LL'.1), Continuous (fun g => ((ρ₁ g : GL (Fin a) ↥LL'.1) : Matrix (Fin a) (Fin a) ↥LL'.1)) ∧ mapRep (algebraMap ↥LL'.1 (Qbar l)) ρ₁ = ρ := by
   intro D l _ a ρ hρ L₀

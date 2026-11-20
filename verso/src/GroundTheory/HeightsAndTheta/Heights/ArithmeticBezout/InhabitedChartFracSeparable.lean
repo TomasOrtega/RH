@@ -15,10 +15,16 @@ noncomputable section
 
 namespace ChartFracSeparableInhabited
 
+/- English proof (translation)
+The claim follows from `ChartLocDomain.proof (IncIdealBelow.proof ChowFormMultiHomog.full) ChartIncDomain.proof (ChartKernel.proof IncidenceGeneric.full ChartIncDomain.proof)`.
+-/
 theorem chartLocDomain : ChartLocDomain.Statement :=
   ChartLocDomain.proof (IncIdealBelow.proof ChowFormMultiHomog.full) ChartIncDomain.proof
     (ChartKernel.proof IncidenceGeneric.full ChartIncDomain.proof)
 
+/- English proof (translation)
+Take `⟨hdom, hinj, -⟩` from `chartLocDomain F 2 1 ⊥ D2 (coeffX1 F) p isProjPrime_line isChowForm_line (linearFormX1_ne_zero F)`. Conclude with `⟨hdom, hinj⟩`.
+-/
 theorem line_domain (F : Type) [Field F] (p : Ideal (MvPolynomial (Fin 1 × Fin 2) F)) [p.IsPrime] :
     IsDomain (ChartLoc (⊥ : Ideal (MvPolynomial (Fin 2) F)) (coeffX1 F) 1 p) ∧
       Function.Injective (algebraMap (Localization.AtPrime p)
@@ -48,6 +54,9 @@ end ChartFracSeparableInhabited
 
 open ChartFracSeparableInhabited in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, linearFormX1_ne_zero F, line_domain F p⟩`.
+-/
 theorem ChartFracSeparable.hypotheses_inhabited_full (F : Type) [Field F] [PerfectField F]
     (p : Ideal (MvPolynomial (Fin 1 × Fin 2) F)) [p.IsPrime] :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) F)) ∧
@@ -61,6 +70,9 @@ theorem ChartFracSeparable.hypotheses_inhabited_full (F : Type) [Field F] [Perfe
 set_option synthInstance.maxHeartbeats 400000 in
 open ChartFracSeparableInhabited in
 
+/- English proof (translation)
+Set `_` to `FractionRing.liftAlgebra (Localization.AtPrime p) (FractionRing (ChartLoc (⊥ : Ideal (MvPolynomial (Fin 2) F)) (coeffX1 F) 1 p))`. Establish `hs : Algebra.IsSeparable (FractionRing (Localization.AtPrime p)) (FractionRing (ChartLoc (⊥ : Ideal (MvPolynomial (Fin 2) F)) (coeffX1 F) 1 p))` using `@h F _ _ 2 1 ⊥ D2 (coeffX1 F) p _ _ _ _ _ OreLocalization.instAlgebra Localization.isLocalization _ Localization.isLocalization _ _ (FractionRing.isScalarTower_liftAlgebra _ _) _ isProjPrime_line isChowForm_line (linearFormX1_ne_zero F)`. Conclude with `hs`.
+-/
 theorem ChartFracSeparable.applies_line (h : ChartFracSeparable.Statement) (F : Type) [Field F] [PerfectField F]
     (p : Ideal (MvPolynomial (Fin 1 × Fin 2) F)) [p.IsPrime] :
     letI := FractionRing.liftAlgebra (Localization.AtPrime p)
@@ -76,6 +88,9 @@ theorem ChartFracSeparable.applies_line (h : ChartFracSeparable.Statement) (F : 
       isChowForm_line (linearFormX1_ne_zero F)
   exact hs
 
+/- English proof (translation)
+The claim follows from `ChartFracSeparable.hypotheses_inhabited_full (ZMod 2) ⊥`.
+-/
 theorem ChartFracSeparable.hypotheses_inhabited_zmod2_full :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) (ZMod 2))) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) (ZMod 2))) (1 + 1)

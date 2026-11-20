@@ -41,6 +41,11 @@ def rowRaw (M : Model F E) {n : ℕ} (ZZ : M.Mat n) (j : Fin n) :
     ((ZZ.Z.map M.R.subtype)⁻¹.mulVecLin.restrictScalars M.R) ∘ₗ
     (LinearMap.compLeft (Algebra.linearMap M.R E) (Fin n))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only [rowRaw, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Establish `h1 : (LinearMap.compLeft (Algebra.linearMap M.R E) (Fin n)) (ZZ.Z.mulVecLin x) = (ZZ.Z.map M.R.subtype).mulVec (fun j => (x j : E))`. Use function extensionality and compare the values at `i`. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Matrix.mulVecLin_apply, Algebra.linearMap_apply]`.
+
+Conclude with `RingHom.map_mulVec M.R.subtype ZZ.Z x i`. Rewrite using `[h1]`. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ZZ.unit, Matrix.one_mulVec, LinearMap.proj_apply]`. Conclude with `⟨x j, rfl⟩`.
+-/
 lemma rowRaw_range (M : Model F E) {n : ℕ} (ZZ : M.Mat n) (j : Fin n) :
     LinearMap.range ZZ.Z.mulVecLin ≤ LinearMap.ker (rowRaw M ZZ j) := by
   rintro _ ⟨x, rfl⟩

@@ -26,6 +26,13 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨k, x, Pm, hPm, hxy, hv⟩` from `hT y`. Take `⟨Pm', hPm', -, hx', hd', -⟩` from `hun k x`. Establish `hP : Pm' = Pm`. Use extensionality with `a j`. Rewrite using `[hPm', hPm]`.
+
+Substitute `hP` using the available equality. Use `⟨k, x, ?_⟩` and prove the remaining obligations. Establish `hxx : y.x = (un k x).x` using `hxy.symm.trans hx'.symm`. Use `(GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (un k x) y y).2.1 hxx fun τ i => ?_` and prove the remaining obligations. Take `⟨cf, h1, h2, h3⟩` from `hv (un k x).u hd' τ i`.
+
+Conclude with `⟨cf, h1, h2, by rw [← hxx]; exact h3⟩`.
+-/
 theorem cover_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : ∀ k x, FrameOK e F M k x (un k x))
@@ -43,6 +50,17 @@ theorem cover_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
   obtain ⟨cf, h1, h2, h3⟩ := hv (un k x).u hd' τ i
   exact ⟨cf, h1, h2, by rw [← hxx]; exact h3⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, hx, hu, -⟩`. Take `⟨Pm, hPm, -, hxP, hd, -⟩` from `hun.1 k x`. Take `⟨Pm', hPm', -, hxP', hd', -⟩` from `hun.1 k' x'`. Use `hB k k' x x' Pm Pm' (un k x).u (un k' x').u hPm hPm' (hxP.symm.trans (hx.symm.trans hxP')) hd hd' fun τ i => ?_` and prove the remaining obligations.
+
+Take `⟨cf, hcf, htri, hcomb⟩` from `hu τ i`. Use `⟨cf, by rw [hcf]; exact Units.isUnit _, htri, ?_⟩` and prove the remaining obligations. Rewrite `hcomb` using `[hxP]`. Conclude with `hcomb`. Introduce and unpack `⟨γ, hγ, b, hb, heq⟩`.
+
+Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 heq`. Establish `h3 : x'.1 = rmul (lact γ x.1) b` using `eq_of_heq h2`. Establish `hxg : lact γ x.1 ∈ (M.X k').dom` using `(hM.domStab k' x.1 x.2).2 γ hγ`. Take `⟨t1, ht1, -⟩` from `hun.2.2.1 k' γ hγ x hxg`. Establish `hxb : rmul (⟨lact γ x.1, hxg⟩ : (M.X k').dom).1 b ∈ (M.X k').dom`.
+
+Establish `hx2` using `x'.2`. Rewrite `hx2` using `[h3]`. Conclude with `hx2`. Take `⟨t2, ht2, -⟩` from `hun.2.1 k' ⟨lact γ x.1, hxg⟩ b hb hxb`. Establish `hx' : (⟨rmul (lact γ x.1) b, hxb⟩ : (M.X k').dom) = x'` using `Subtype.ext h3.symm`.
+
+Rewrite `ht2` using `[hx']`. Conclude with `⟨t2 * t1, (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) _ _ _).2.2.1 t1 t2 ht1 ht2⟩`.
+-/
 theorem fibre_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : FramesOK e F M un)
@@ -74,10 +92,20 @@ theorem fibre_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
     rw [hx'] at ht2
     exact ⟨t2 * t1, (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) _ _ _).2.2.1 t1 t2 ht1 ht2⟩
 
+/- English proof (translation)
+Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos h]`.
+-/
 theorem rdU_of_mem (U : Formalism.L2.PjFree.Unf Xo c σ r) (f : Rul Xo c) (k : U.Comp) {x : Frame (U.X k).Ψ r}
     (h : x ∈ (U.X k).dom) : rdU U f k x = toC (evR Xo c f (U.un k ⟨x, h⟩)) := by
   simp only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos h]
 
+/- English proof (translation)
+Introduce `a n hd f hf k`. Use `⟨hun.2.2.2 a n hd f hf k, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Establish `hxb : rmul x b ∈ ((unfOf e F M un).X k).dom` using `(hM.domStab k x hx).1 b hb`. Take `⟨t, ht, hw⟩` from `hun.2.1 k ⟨x, hx⟩ b hb hxb`. Use `(rdU_of_mem _ f k hxb).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[rdU_of_mem _ f k hx, ← hw a n hd]`. Conclude with `congrArg toC (hW a n f hf t _ _ ht)`. Establish `hxg : lact γ x ∈ ((unfOf e F M un).X k).dom` using `(hM.domStab k x hx).2 γ hγ`. Take `⟨t, ht, hw⟩` from `hun.2.2.1 k γ hγ ⟨x, hx⟩ hxg`. Use `(rdU_of_mem _ f k hxg).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[rdU_of_mem _ f k hx, show ((unfOf e F M un).X k).χ (laU (unfOf e F M un) a n k) γ = 1 from hM.chi k _ γ, ← hw a n hd]`. Conclude with `congrArg toC (hW a n f hf t _ _ ht)`.
+-/
 theorem readSec_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : FramesOK e F M un) (hM : ModelBase M)
@@ -101,6 +129,9 @@ theorem readSec_unfOf {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult
 
 end
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c σ g e F r M un hσ hM hN hun`. Establish `hred : _root_.IsReduced (CAt σ)` using `inferInstanceAs (_root_.IsReduced ℂ)`. Conclude with `⟨hM.rank, hM.type, cover_unfOf e F M un hun.1 (GlobalTheory.CoverFrame.coverTri E H Dw l Xo c σ g e F r M hσ hM hN), fibre_unfOf e F M un hun hM (GlobalTheory.FibreFlag.fibTri E H Dw l Xo c σ g e F r M hσ hM hN), readSec_unfOf e F M un hun hM ((GlobalTheory.T.framedModuli_algebra …`.
+-/
 theorem isUnf_built : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)), GoodEmb c σ → ModelBase M → NegXi M → FramesOK e F M un → IsUnf (unfOf e F M un) := by
   intro hS E _ _ _ H Dw l Xo c σ g e F r M un hσ hM hN hun
   have hred : _root_.IsReduced (CAt σ) := inferInstanceAs (_root_.IsReduced ℂ)

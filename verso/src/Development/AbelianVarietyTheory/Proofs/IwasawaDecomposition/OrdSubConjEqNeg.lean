@@ -19,6 +19,11 @@ section General
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `⟨FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit (IsUnit.of_mul_eq_one B h)), ?_⟩` and prove the remaining obligations. Establish `hA : A ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h` using `[Submodule.bot_mul]`. Establish `: (1 : L) ∈ (⊥ : Submodule (𝓞 L) L)` using `h ▸ Submodule.one_le.1 le_rfl`.
+
+Conclude with `one_ne_zero ((Submodule.mem_bot _).1 this)`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff A).1 hA`. Conclude with `⟨Units.mk0 x hx0, hx⟩`.
+-/
 theorem frac_of_mul_eq_one {A B : Submodule (𝓞 L) L} (h : A * B = 1) :
     IsFractional (𝓞 L)⁰ A ∧ ∃ k : Lˣ, (k : L) ∈ A := by
   refine ⟨FractionalIdeal.isFractional_of_fg (Submodule.fg_of_isUnit (IsUnit.of_mul_eq_one B h)), ?_⟩
@@ -30,6 +35,9 @@ theorem frac_of_mul_eq_one {A B : Submodule (𝓞 L) L} (h : A * B = 1) :
   obtain ⟨x, hx, hx0⟩ := (Submodule.ne_bot_iff A).1 hA
   exact ⟨Units.mk0 x hx0, hx⟩
 
+/- English proof (translation)
+Establish `ha : w.valuation L (a : L) ≠ 0` using `by simp`. Establish `hb : w.valuation L (b : L) ≠ 0` using `by simp`. Unfold `ordF`. Rewrite using `[neg_le_neg_iff, WithZero.log_le_log hb ha]`.
+-/
 theorem ordF_le_iff (w : HeightOneSpectrum (𝓞 L)) (a b : Lˣ) :
     ordF w a ≤ ordF w b ↔ w.valuation L (b : L) ≤ w.valuation L (a : L) := by
   have ha : w.valuation L (a : L) ≠ 0 := by simp
@@ -37,6 +45,11 @@ theorem ordF_le_iff (w : HeightOneSpectrum (𝓞 L)) (a b : Lˣ) :
   unfold ordF
   rw [neg_le_neg_iff, WithZero.log_le_log hb ha]
 
+/- English proof (translation)
+Take `⟨⟨a, ha, e⟩, hl⟩` from `isLeast_ordSub h k0 hk0 w`. Use `⟨a, ha, e, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Establish `h1` using `hl ⟨Units.mk0 x h0, hx, rfl⟩`.
+
+Rewrite `h1` using `[← e, ordF_le_iff]`. Conclude with `h1`.
+-/
 theorem exists_gen {A : Submodule (𝓞 L) L} (h : IsFractional (𝓞 L)⁰ A) (k0 : Lˣ) (hk0 : (k0 : L) ∈ A)
     (w : HeightOneSpectrum (𝓞 L)) :
     ∃ a : Lˣ, (a : L) ∈ A ∧ ordF w a = ordSub w A ∧ ∀ x ∈ A, w.valuation L x ≤ w.valuation L (a : L) := by
@@ -48,6 +61,11 @@ theorem exists_gen {A : Submodule (𝓞 L) L} (h : IsFractional (𝓞 L)⁰ A) (
     rw [← e, ordF_le_iff] at h1
     exact h1
 
+/- English proof (translation)
+Take `⟨a, ha, ea, hla⟩` from `exists_gen hA a0 ha0 w`. Take `⟨b, hb, eb, hlb⟩` from `exists_gen hB b0 hb0 w`. Rewrite using `[← ea, ← eb, ← ordF_mul']`. Use `IsLeast.csInf_eq ⟨⟨a * b, Submodule.mul_mem_mul ha hb, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨k, hk, rfl⟩`.
+
+Rewrite using `[ordF_le_iff]`. Use `Submodule.mul_induction_on (C := fun x => w.valuation L x ≤ w.valuation L ((a * b : Lˣ) : L)) hk (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, map_mul]`. Conclude with `mul_le_mul' (hla x hx) (hlb y hy)`. Conclude with `Valuation.map_add_le _ hx hy`.
+-/
 theorem ordSub_mul {A B : Submodule (𝓞 L) L} (hA : IsFractional (𝓞 L)⁰ A) (a0 : Lˣ) (ha0 : (a0 : L) ∈ A)
     (hB : IsFractional (𝓞 L)⁰ B) (b0 : Lˣ) (hb0 : (b0 : L) ∈ B) (w : HeightOneSpectrum (𝓞 L)) :
     ordSub w (A * B) = ordSub w A + ordSub w B := by
@@ -63,17 +81,28 @@ theorem ordSub_mul {A B : Submodule (𝓞 L) L} (hA : IsFractional (𝓞 L)⁰ A
     exact mul_le_mul' (hla x hx) (hlb y hy)
   · exact Valuation.map_add_le _ hx hy
 
+/- English proof (translation)
+Establish `h` using `ordSub_span_singleton w (1 : Lˣ)`. Rewrite `h` using `[Units.val_one, ← Submodule.one_eq_span]`. Rewrite using `[h]`. Simplify using `[ordF]`.
+-/
 theorem ordSub_one (w : HeightOneSpectrum (𝓞 L)) : ordSub w (1 : Submodule (𝓞 L) L) = 0 := by
   have h := ordSub_span_singleton w (1 : Lˣ)
   rw [Units.val_one, ← Submodule.one_eq_span] at h
   rw [h]
   simp [ordF]
 
+/- English proof (translation)
+Unfold `ordF`. Rewrite using `[e, h]`.
+-/
 theorem ordF_conj {c : L ≃+* L} {w w' : HeightOneSpectrum (𝓞 L)} (h : ConjPl c w w') (k k' : Lˣ)
     (e : (k' : L) = c k) : ordF w' k' = ordF w k := by
   unfold ordF
   rw [e, h]
 
+/- English proof (translation)
+Unfold `ordSub`. Use `congr 1`. Use extensionality with `n`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Establish `h0 : c.symm k ≠ 0` using `by simp`. Use `⟨Units.mk0 _ h0, (hB _).2 (by simpa using hk), (ordF_conj h _ _ (by simp)).symm⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `h0 : c k ≠ 0` using `by simp`. Conclude with `⟨Units.mk0 _ h0, (hB _).1 hk, ordF_conj h _ _ rfl⟩`.
+-/
 theorem ordSub_conj {c : L ≃+* L} {w w' : HeightOneSpectrum (𝓞 L)} (h : ConjPl c w w') {A B : Submodule (𝓞 L) L}
     (hB : ∀ x, x ∈ B ↔ c x ∈ A) : ordSub w' A = ordSub w B := by
   unfold ordSub
@@ -87,6 +116,9 @@ theorem ordSub_conj {c : L ≃+* L} {w w' : HeightOneSpectrum (𝓞 L)} (h : Con
     have h0 : c k ≠ 0 := by simp
     exact ⟨Units.mk0 _ h0, (hB _).1 hk, ordF_conj h _ _ rfl⟩
 
+/- English proof (translation)
+Take `⟨fA, a, ha⟩` from `frac_of_mul_eq_one h1`. Take `⟨fB, b, hb⟩` from `frac_of_mul_eq_one ((mul_comm B A).trans h1)`. Establish `h2` using `ordSub_mul fA a ha fB b hb w`. Rewrite `h2` using `[h1, ordSub_one, ← ordSub_conj h hB]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordSub_conj_eq_neg {c : L ≃+* L} {w w' : HeightOneSpectrum (𝓞 L)} (h : ConjPl c w w')
     {A B : Submodule (𝓞 L) L} (hB : ∀ x, x ∈ B ↔ c x ∈ A) (h1 : A * B = 1) : ordSub w' A = -ordSub w A := by
   obtain ⟨fA, a, ha⟩ := frac_of_mul_eq_one h1
@@ -97,6 +129,11 @@ theorem ordSub_conj_eq_neg {c : L ≃+* L} {w w' : HeightOneSpectrum (𝓞 L)} (
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F L]
 
+/- English proof (translation)
+Establish `h` using `ht.1 v (unif v)`. Rewrite `h` using `[HChar.resFin, MonoidHom.finset_prod_apply]`. Rewrite using `[← h]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Establish `hP' : P.under (𝓞 F) = v` using `by simpa [aboveF] using hP`.
+
+Rewrite using `[MonoidHom.comp_apply, GlobalTheory.HeckeProduct.locK_unr χ (hu P), hr, hP', ordF_unif_self, zpow_one]`.
+-/
 theorem prod_val_above (χ : HChar L) (hu : ∀ v, χ.UnrAt v) (ht : χ.TrivOn F)
     (hr : ∀ (P : HeightOneSpectrum (𝓞 L)) (k : Fˣ), ordF P (upF F k) = ordF (P.under (𝓞 F)) k)
     (v : HeightOneSpectrum (𝓞 F)) : ∏ P ∈ aboveF (L := L) F v, χ.val P = 1 := by
@@ -107,6 +144,13 @@ theorem prod_val_above (χ : HChar L) (hu : ∀ v, χ.UnrAt v) (ht : χ.TrivOn F
   have hP' : P.under (𝓞 F) = v := by simpa [aboveF] using hP
   rw [MonoidHom.comp_apply, GlobalTheory.HeckeProduct.locK_unr χ (hu P), hr, hP', ordF_unif_self, zpow_one]
 
+/- English proof (translation)
+Establish `hm : ∀ (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 L)), P ∈ aboveF (L` using `L) F v ↔ P.under (𝓞 F) = v := fun v P => by simp [aboveF]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := (hf.toFinset.image fun w => w.under (𝓞 F)).biUnion (aboveF (L := L) F)), Finset.prod_biUnion]`. Use `Finset.prod_eq_one fun v hv' => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hv'`. Rewrite using `[Finset.prod_congr rfl (fun P hP => by rw [hn w P ((hm _ _).1 hP)]), Finset.prod_zpow, hv, one_zpow]`.
+
+Introduce `v _ v' _ hne`. Use `Finset.disjoint_left.2 fun P h1 h2 => hne (((hm _ _).1 h1).symm.trans ((hm _ _).1 h2))` and prove the remaining obligations. Introduce `w hw`. Establish `: n w ≠ 0` using `fun h0 => hw (by simp [h0])`. Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe]`.
+
+Conclude with `⟨_, Finset.mem_image.2 ⟨w, hf.mem_toFinset.2 this, rfl⟩, (hm _ _).2 rfl⟩`.
+-/
 theorem finprod_val_eq_one (χ : HChar L) (hv : ∀ v, ∏ P ∈ aboveF (L := L) F v, χ.val P = 1)
     (n : HeightOneSpectrum (𝓞 L) → ℤ) (hf : {w | n w ≠ 0}.Finite)
     (hn : ∀ w w', w'.under (𝓞 F) = w.under (𝓞 F) → n w' = n w) : ∏ᶠ w, χ.val w ^ n w = 1 := by
@@ -125,12 +169,20 @@ theorem finprod_val_eq_one (χ : HChar L) (hv : ∀ v, ∏ P ∈ aboveF (L := L)
     simp only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe]
     exact ⟨_, Finset.mem_image.2 ⟨w, hf.mem_toFinset.2 this, rfl⟩, (hm _ _).2 rfl⟩
 
+/- English proof (translation)
+Simplify using `only [zpow_add]`. Conclude with `finprod_mul_distrib (hn.subset fun w hw h0 => hw (by simp [h0])) (hm.subset fun w hw h0 => hw (by simp [h0]))`.
+-/
 theorem finprod_val_add (χ : HChar L) (n m : HeightOneSpectrum (𝓞 L) → ℤ) (hn : {w | n w ≠ 0}.Finite)
     (hm : {w | m w ≠ 0}.Finite) :
     ∏ᶠ w, χ.val w ^ (n w + m w) = (∏ᶠ w, χ.val w ^ n w) * ∏ᶠ w, χ.val w ^ m w := by
   simp only [zpow_add]
   exact finprod_mul_distrib (hn.subset fun w hw h0 => hw (by simp [h0])) (hm.subset fun w hw h0 => hw (by simp [h0]))
 
+/- English proof (translation)
+Establish `hd : {w | n w - m w ≠ 0}.Finite` using `(hn.union hm).subset fun w hw => by`. Assume the negation of the conclusion as `h0`. Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at h0`. Conclude with `hw (by rw [h0.1, h0.2, sub_self])`. Establish `h1` using `finprod_val_add χ _ m hd hm`.
+
+Rewrite `h1` using `[finprod_val_eq_one χ hv _ hd h, one_mul]`. Simplify using `using h1`.
+-/
 theorem finprod_val_congr (χ : HChar L) (hv : ∀ v, ∏ P ∈ aboveF (L := L) F v, χ.val P = 1)
     (n m : HeightOneSpectrum (𝓞 L) → ℤ) (hn : {w | n w ≠ 0}.Finite) (hm : {w | m w ≠ 0}.Finite)
     (h : ∀ w w', w'.under (𝓞 F) = w.under (𝓞 F) → n w' - m w' = n w - m w) :
@@ -143,18 +195,29 @@ theorem finprod_val_congr (χ : HChar L) (hv : ∀ v, ∏ P ∈ aboveF (L := L) 
   rw [finprod_val_eq_one χ hv _ hd h, one_mul] at h1
   simpa using h1
 
+/- English proof (translation)
+The claim follows from `hn.subset fun w hw h0 => hw (by simp [h0])`.
+-/
 theorem finite_toNat {n : HeightOneSpectrum (𝓞 L) → ℤ} (hn : {w | n w ≠ 0}.Finite) :
     {w | ((n w).toNat : ℤ) ≠ 0}.Finite :=
   hn.subset fun w hw h0 => hw (by simp [h0])
 
 end General
 
+/- English proof (translation)
+Establish `hc : starRingEnd ℂ a ≠ 0` using `by simpa using ha`. Rewrite using `[zpow_ofNat, div_pow, ← Complex.mul_conj', div_eq_iff (mul_ne_zero ha hc)]`. Take the linear combination `(-a) * h`.
+-/
 theorem phase_sq_eq {a u : ℂ} (ha : a ≠ 0) (h : u * starRingEnd ℂ a = a) :
     (a / ((‖a‖ : ℝ) : ℂ)) ^ (2 : ℤ) = u := by
   have hc : starRingEnd ℂ a ≠ 0 := by simpa using ha
   rw [zpow_ofNat, div_pow, ← Complex.mul_conj', div_eq_iff (mul_ne_zero ha hc)]
   linear_combination (-a) * h
 
+/- English proof (translation)
+Distinguish the cases in `h : 1 + z = 0`. Take `⟨a, ha⟩` from `hne`. Use `⟨Units.mk0 (a - c a) (sub_ne_zero.2 ha.symm), ?_⟩` and prove the remaining obligations. Establish `hz1 : z = -1` using `by linear_combination h`. Rewrite using `[Units.val_mk0, map_sub, hc, hz1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨Units.mk0 (1 + z) h, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_add, map_one]`. Take the linear combination `hz`.
+-/
 theorem exists_mul_conj_eq {L : Type} [Field L] (c : L →+* L) (hc : ∀ x, c (c x) = x) (hne : ∃ a, c a ≠ a)
     (z : L) (hz : z * c z = 1) : ∃ k : Lˣ, z * c (k : L) = k := by
   by_cases h : 1 + z = 0
@@ -167,6 +230,33 @@ theorem exists_mul_conj_eq {L : Type} [Field L] (c : L →+* L) (hc : ∀ x, c (
     rw [Units.val_mk0, map_add, map_one]
     linear_combination hz
 
+/- English proof (translation)
+Introduce `D χ hχ`. Take `⟨c, hc, hcm, hr, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Establish `hv` using `prod_val_above χ hχ.unr hχ.triv hr`. Establish `hpl` using `fun w w' => (under_eq_iff_conjPl c hcm.rank hcm.ne w w').1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `A B ⟨A', hA', hA⟩ ⟨B', hB', hB⟩`. Take `⟨fA, a, ha⟩` from `frac_of_mul_eq_one hA`. Take `⟨fB, b, hb⟩` from `frac_of_mul_eq_one hB`. Establish `nA` using `ordSub_finite fA a ha`. Establish `nB` using `ordSub_finite fB b hb`.
+
+Establish `nAB : {w | ordSub w A + ordSub w B ≠ 0}.Finite` using `(nA.union nB).subset fun w hw => by`. Assume the negation of the conclusion as `h0`. Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at h0`. Conclude with `hw (by rw [h0.1, h0.2, add_zero])`. Unfold `chiId`.
+
+Rewrite using `[← Units.val_mul]`. Use `congr 1`. Simplify using `only [← zpow_natCast, ordSub_mul fA a ha fB b hb]`. Rewrite using `[← finprod_val_add χ _ _ (finite_toNat nA) (finite_toNat nB)]`. Use `finprod_val_congr χ hv _ _ (finite_toNat nAB) ((nA.union nB).subset fun w hw => ?_) fun w w' h => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h0`. Simplify using `only [Set.mem_union, not_or, Set.mem_setOf_eq, not_not] at h0`. Conclude with `hw (by simp [h0.1, h0.2])`. Break down `hpl w w' h with rfl | h` into its components or cases. Both sides reduce to the same expression.
+
+Rewrite using `[ordSub_conj_eq_neg h (fun x => (hA' x).trans (by rw [← hc]; rfl)) hA, ordSub_conj_eq_neg h (fun x => (hB' x).trans (by rw [← hc]; rfl)) hB]`. Use linear arithmetic over natural numbers and integers. Use `letI := D.host.cmStar`. Introduce `z`. Establish `hcmf : IsCMField D.host.E` using `D.host.isCMField_hostE`.
+
+Establish `hcc : ∀ x, IsCMField.complexConj D.host.E x = D.host.conj x` using `fun x => bridge_star_holds D.R D.host x`. Establish `hinv : ∀ x, c (c x) = x` using `fun x => by`. Rewrite using `[hc, hc, ← hcc, ← hcc, IsCMField.complexConj_apply_apply]`. Establish `hz : (z : D.host.E) * c (z : D.host.E) = 1`. Rewrite using `[hc, ← bridge_star_holds D.R D.host]`.
+
+Conclude with `z.2.2`. Take `⟨k, hk⟩` from `exists_mul_conj_eq (c : D.host.E →+* D.host.E) hinv (by by_contra hn; push Not at hn; exact hcm.ne (AlgEquiv.ext hn)) z hz`. Establish `hk' : (z : D.host.E) * c (k : D.host.E) = k` using `hk`. Establish `z0 : (z : D.host.E) ≠ 0` using `left_ne_zero_of_mul_eq_one hz`. Establish `k0 : c (k : D.host.E) ≠ 0` using `by simp`.
+
+Establish `hu : Units.mk0 _ z0 * Units.mk0 _ k0 = k` using `Units.ext hk'`. Establish `e1` using `chiId_span_singleton χ (Units.mk0 _ z0)`. Rewrite `e1` using `[Units.val_mk0]`. Establish `e2 : ∏ᶠ w, χ.val w ^ (ordF w (Units.mk0 _ z0)).toNat = ∏ᶠ w, χ.val w ^ ordF w k`. Simplify using `only [← zpow_natCast]`.
+
+Use `finprod_val_congr χ hv _ _ (finite_toNat (ordF_finite _)) (ordF_finite _) fun w w' h => ?_` and prove the remaining obligations. Break down `hpl w w' h with rfl | h` into its components or cases. Both sides reduce to the same expression. Establish `a1` using `ordF_mul' w (Units.mk0 _ z0) (Units.mk0 _ k0)`. Establish `a2` using `ordF_mul' w' (Units.mk0 _ z0) (Units.mk0 _ k0)`.
+
+Establish `a3` using `ordF_conj h k (Units.mk0 _ k0) rfl`. Establish `a4` using `ordF_conj h (Units.mk0 _ k0) k (hinv _).symm`. Rewrite `a1`, `a2` using `[hu]`. Use linear arithmetic over natural numbers and integers. Establish `e3` using `GlobalTheory.HeckeProduct.productRule χ ∅ (fun v _ => hχ.unr v) k`.
+
+Simplify using `only [Finset.prod_empty, mul_one, Finset.notMem_empty, not_false_eq_true, finprod_true] at e3`. Rewrite `e3` using `[mul_comm, mul_eq_one_iff_eq_inv]`. Rewrite using `[e1, e2, e3, Units.val_inv_eq_inv_val, hχ.inf k, ← Finset.prod_inv_distrib]`. Use `(Fintype.prod_equiv D.eTau _ _ fun τ => ?_).symm` and prove the remaining obligations. Use `congr 1`.
+
+Use `(phase_sq_eq ((map_ne_zero _).2 k.ne_zero) ?_).symm` and prove the remaining obligations. Establish `hcj : embPsi D.host (D.eTau τ) (D.host.conj (k : D.host.E)) = starRingEnd ℂ (embPsi D.host (D.eTau τ) (k : D.host.E))` using `Formalism.HC.HostAx.conjE_apply _ _ _`. Rewrite using `[← hcj, ← hc]`. Conclude with `(map_mul (embPsi D.host (D.eTau τ)) _ _).symm.trans (congrArg _ hk')`.
+-/
 theorem isChi_chiId : ∀ (D : D7) (χ : HChar D.host.E), IsChiPsi D.host χ → Formalism.MainNotions.TaylorLogMetric.IsChi D (chiId χ) := by
   intro D χ hχ
   obtain ⟨c, hc, hcm, hr, -⟩ := GlobalTheory.Mem.HostCM.host_cm D.R D.host

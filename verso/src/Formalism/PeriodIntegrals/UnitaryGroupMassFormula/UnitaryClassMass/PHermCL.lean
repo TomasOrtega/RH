@@ -29,6 +29,15 @@ def LatClose : Prop :=
           algebraMap F E (D' : F) * (y : E)) →
       locS S (gmap (linOf b γ) L0) = locS S (gmap (linOf b g) L0)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg`. Take `⟨δ, hδ, hTδ⟩` from `hT F E`. Take `⟨D, hD, hDcl⟩` from `hL F E σ V M J b L0 hσσ hH hdet hL0 g hg`. Use `⟨δ * D, mul_ne_zero hδ hD, fun D' hD' γ hγ t hcong => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hD'`.
+
+Use `hDcl (D * k) (dvd_mul_right D k) γ hγ (Sw F E t) ?_ ?_` and prove the remaining obligations. Introduce and unpack `r ⟨a, -, rfl⟩`. Express the relevant statement in the definitionally equal form `σ (algebraMap F E (a : F)) = algebraMap F E (a : F)`. Conclude with `σ.commutes _`. Introduce `i j`.
+
+Take `⟨s, hs, he⟩` from `hcong i j`. Take `⟨r, hr, y, hry⟩` from `hTδ t (((g : Matrix (Fin M) (Fin M) E) i j) - (γ : Matrix (Fin M) (Fin M) E) i j) (δ * D * k) ⟨s, hs, by rw [map_sub]; exact he⟩`. Use `⟨r, hr, y, ?_⟩` and prove the remaining obligations. Establish `hδF : (δ : F) ≠ 0` using `by simpa using hδ`. Establish `hδE : algebraMap F E (δ : F) ≠ 0` using `(map_ne_zero_iff _ (algebraMap F E).injective).2 hδF`.
+
+Apply `mul_left_cancel₀ hδE` to reduce the goal to its premises. Establish `e1 : ((δ * D * k : 𝓞 F) : F) = (δ : F) * ((D * k : 𝓞 F) : F)` using `by push_cast; ring`. Rewrite `hry` using `[e1, map_mul]`. Take the linear combination `hry`.
+-/
 theorem closeLoc_of (hT : TensLoc) (hL : LatClose) : CloseLoc := by
   intro F E _ _ _ _ _ σ V _ _ _ _ _ M J b L0 hσσ hH hdet hL0 g hg
   obtain ⟨δ, hδ, hTδ⟩ := hT F E
@@ -51,6 +60,9 @@ theorem closeLoc_of (hT : TensLoc) (hL : LatClose) : CloseLoc := by
     rw [e1, map_mul] at hry
     linear_combination hry
 
+/- English proof (translation)
+The claim follows from `hermApprox_of hL (closeLoc_of hT hC) hW hB hG`.
+-/
 theorem hermitian_approximation_of_parts (hL : LocSw) (hT : TensLoc) (hC : LatClose) (hW : WPlace) (hB : BcU) (hG : GramOK) :
     HermApprox := hermApprox_of hL (closeLoc_of hT hC) hW hB hG
 

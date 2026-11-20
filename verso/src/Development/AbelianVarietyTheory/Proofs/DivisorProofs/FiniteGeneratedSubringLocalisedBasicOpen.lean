@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `z hz`. Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem g hg => exact hG g hg`. Consider the case `zero => exact ⟨0, 0, C.zero_mem, by simp⟩`. Consider the case `one => exact ⟨0, 1, C.one_mem, by simp⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨k, w, hw, e⟩` from `ha`. Take `⟨l, v, hv, e'⟩` from `hb`. Use `⟨k + l, u ^ l * w + u ^ k * v, C.add_mem (C.mul_mem (C.pow_mem hu _) hw) (C.mul_mem (C.pow_mem hu _) hv), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, e, e']`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `neg a _ ha`. Take `⟨k, w, hw, e⟩` from `ha`. Conclude with `⟨k, -w, C.neg_mem hw, by rw [map_neg, e]; ring⟩`. Consider the case `mul a b _ _ ha hb`.
+
+Take `⟨k, w, hw, e⟩` from `ha`. Take `⟨l, v, hv, e'⟩` from `hb`. Use `⟨k + l, w * v, C.mul_mem hw hv, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem closure_pow_lift {L L' : Type*} [CommRing L] [CommRing L'] (ρ : L →+* L') (C : Subring L) (u : L)
     (hu : u ∈ C) (G : Set L') (hG : ∀ g ∈ G, ∃ k : ℕ, ∃ w ∈ C, ρ w = ρ u ^ k * g) :
     ∀ z ∈ Subring.closure G, ∃ k : ℕ, ∃ w ∈ C, ρ w = ρ u ^ k * z := by
@@ -34,6 +43,11 @@ theorem closure_pow_lift {L L' : Type*} [CommRing L] [CommRing L'] (ρ : L →+*
     rw [map_mul, e, e']
     ring
 
+/- English proof (translation)
+Substitute `hU'` using the available equality. Use `letI := (S.presheaf.map (homOfLE (S.basicOpen_le g)).op).hom.toAlgebra`. Use `isLocalization_basicOpen_of_qcqs hc hq g` as an intermediate fact. Take `⟨⟨y, ⟨_, k, rfl⟩⟩, hy⟩` from `IsLocalization.surj (Submonoid.powers g) a`. Use `⟨k, y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, mul_comm]`. Simplify `hy.symm` using `[RingHom.algebraMap_toAlgebra]`.
+-/
 theorem exists_pow_mul_res {S : Scheme.{0}} {U : S.Opens} (hc : IsCompact (U : Set S))
     (hq : IsQuasiSeparated (U : Set S)) (g : Γ(S, U)) (U' : S.Opens) (hle : U' ≤ U) (hU' : U' = S.basicOpen g)
     (a : Γ(S, U')) : ∃ (k : ℕ) (b : Γ(S, U)), (S.presheaf.map (homOfLE hle).op).hom b =
@@ -46,6 +60,9 @@ theorem exists_pow_mul_res {S : Scheme.{0}} {U : S.Opens} (hc : IsCompact (U : S
   rw [← map_pow, mul_comm]
   simpa [RingHom.algebraMap_toAlgebra] using hy.symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: homOfLE h = 𝟙 A` using `Subsingleton.elim _ _`. Simplify `Function.bijective_id` using `[this]`.
+-/
 theorem presheaf_map_bijective_of_eq {X : Scheme.{0}} {A B : X.Opens} (h : B ≤ A) (e : A = B) :
     Function.Bijective (X.presheaf.map (homOfLE h).op).hom := by
   subst e
@@ -56,6 +73,29 @@ end GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `S K _ gp _ r V t W hW f x hx`. Use `haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Set `p : Sp K` to `(IsLocalRing.closedPoint K : PrimeSpectrum K)`. Establish `pre : ∀ U U' : S.Opens, (gp.base p ∈ U ↔ gp.base p ∈ U') → gp ⁻¹ᵁ U = gp ⁻¹ᵁ U'`. Introduce `U U' h`.
+
+Use extensionality with `q`. Rewrite using `[Subsingleton.elim q p]`. Conclude with `h`. Establish `bij : ∀ {U U' : S.Opens} (h : U' ≤ U), (gp.base p ∈ U ↔ gp.base p ∈ U') → Function.Bijective (resK gp h)` using `fun h e => presheaf_map_bijective_of_eq _ (pre _ _ e)`. Distinguish the cases in `hs : gp.base p ∈ S.basicOpen f`.
+
+Use `swap`. Establish `e : gp ⁻¹ᵁ S.basicOpen f = ⊥`. Use extensionality with `q`. Rewrite using `[Subsingleton.elim q p]`. Conclude with `⟨fun h => (hs h).elim, fun h => by simp at h⟩`.
+
+Use `haveI : Subsingleton Γ(Sp K, gp ⁻¹ᵁ S.basicOpen f) := by rw [e]; infer_instance`. Conclude with `⟨0, 0, Subring.zero_mem _, Subsingleton.elim _ _⟩`. Establish `hsW : gp.base p ∈ W` using `S.basicOpen_le f hs`. Use `haveI : IsNoetherianRing Γ(S, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Establish `hNW : TopologicalSpace.NoetherianSpace (W : Set S)` using `noetherianSpace_of_isAffineOpen W hW`.
+
+Establish `hcpt : ∀ T ⊆ (W : Set S), IsCompact T` using `(TopologicalSpace.noetherianSpace_set_iff _).mp hNW`. Establish `hle : ∀ i, S.basicOpen f ⊓ V i ≤ W ⊓ V i` using `fun i => inf_le_inf_right _ (S.basicOpen_le f)`. Rewrite `hx` using `[mem_finFam]`. Establish `step : ∀ i, ∃ k : ℕ, ∃ w ∈ Subring.closure (Set.range (gp.app (W ⊓ V i)).hom ∪ resK gp (inf_le_right : W ⊓ V i ≤ V i) '' (t i : Set _)), resK gp (hle i) w = resK gp (hle i) (resK gp (inf_le_left : W ⊓ V i ≤ W) ((gp.app W).hom f)) ^ k * resK gp (inf_le_left : S.basicOpen f ⊓ V i ≤ …`. Introduce `i`.
+
+Use `closure_pow_lift _ _ _ ?_ _ ?_ _ (hx i)` and prove the remaining obligations. Rewrite using `[resK_app]`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨c, hc, rfl⟩)`. Establish `hU' : S.basicOpen f ⊓ V i = S.basicOpen ((S.presheaf.map (homOfLE (inf_le_left : W ⊓ V i ≤ W)).op).hom f)`.
+
+Rewrite using `[Scheme.basicOpen_res]`. Conclude with `le_antisymm (le_inf (le_inf (inf_le_left.trans (S.basicOpen_le f)) inf_le_right) inf_le_left) (le_inf inf_le_right (inf_le_left.trans inf_le_right))`. Establish `hWi : (↑(W ⊓ V i) : Set S) ⊆ W` using `fun z hz => hz.1`. Take `⟨k, b, e⟩` from `exists_pow_mul_res (hcpt _ hWi) (fun A B hA _ _ hB _ _ => hcpt _ ((Set.inter_subset_left.trans hA).trans hWi)) _ _ (hle i) hU' a`. Use `⟨k, (gp.app (W ⊓ V i)).hom b, Subring.subset_closure (Or.inl ⟨_, rfl⟩), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[resK_app, resK_app, resK_app, e, map_mul, map_pow, ← CommRingCat.comp_apply]`. Use `⟨0, resK gp (inf_le_right : W ⊓ V i ≤ V i) c, Subring.subset_closure (Or.inr ⟨c, hc, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, _root_.one_mul, resK_resK]`. Use `choose k w hw e using step`. Set `N` to `Finset.univ.sup k`.
+
+Take `⟨y, hy⟩` from `(bij (S.basicOpen_le f) ⟨fun _ => hs, fun _ => hsW⟩).2 (resK gp (S.basicOpen_le f) ((gp.app W).hom f) ^ N * x)`. Use `⟨N, y, ?_, hy⟩` and prove the remaining obligations. Rewrite using `[mem_finFam]`. Introduce `i`. Establish `hki : k i ≤ N` using `Finset.le_sup (Finset.mem_univ i)`.
+
+Establish `hmem : resK gp (inf_le_left : W ⊓ V i ≤ W) ((gp.app W).hom f) ^ (N - k i) * w i ∈ Subring.closure (Set.range (gp.app (W ⊓ V i)).hom ∪ resK gp (inf_le_right : W ⊓ V i ≤ V i) '' (t i : Set _))`. Use `Subring.mul_mem _ (Subring.pow_mem _ ?_ _) (hw i)` and prove the remaining obligations. Rewrite using `[resK_app]`. Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`. Establish `inj` using `(bij (hle i) (by simp [hs, hsW])).1`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, e i, ← _root_.mul_assoc, ← pow_add, Nat.sub_add_cancel hki, resK_resK, resK_resK, ← resK_resK gp (S.basicOpen_le f) (inf_le_left : S.basicOpen f ⊓ V i ≤ S.basicOpen f), hy, map_mul, map_pow, resK_resK]`.
+-/
 theorem finFam_basicOpen_loc : ∀ {S : Scheme.{0}} {K : Type} [Field K] (gp : Sp K ⟶ S) [IsLocallyNoetherian S] {r : ℕ} (V : Fin r → S.Opens)
     (t : ∀ i, Finset Γ(Sp K, gp ⁻¹ᵁ V i)) (W : S.Opens), IsAffineOpen W → ∀ (f : Γ(S, W))
     (x : Γ(Sp K, gp ⁻¹ᵁ S.basicOpen f)), x ∈ finFam gp V t (S.basicOpen f) →

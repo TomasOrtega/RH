@@ -10,6 +10,9 @@ private def ddBaseCompRingHom (X : Type) [CommRing X] (g : ℕ) : DD X g →+* X
   map_add' _ _ := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show c * (P i a * Z a b * Q b j) = (c * (P i a * Q b j)) * Z a b by ring, h, hα, hα]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sandwich_map_smul {R X : Type} [CommRing R] [CommRing X] {n : ℕ} (α : R → X) (φ : R →+ X)
     (c : R) (P Z Q : Matrix (Fin n) (Fin n) R) (h : ∀ i j u, φ (u * Z i j) = α u * φ (Z i j))
     (hα : ∀ u v, α (u * v) = α u * α v) :
@@ -21,6 +24,9 @@ private theorem sandwich_map_smul {R X : Type} [CommRing R] [CommRing X] {n : �
   rw [show c * (P i a * Z a b * Q b j) = (c * (P i a * Q b j)) * Z a b by ring, h, hα, hα]
   ring
 
+/- English proof (translation)
+Establish `h1 : (1 + DD.epM fun j => (k.κ j g).map (algebraMap x.A x.A)).map (ddBaseCompRingHom x.A k.g) = 1`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `add_eq_left.2 (Matrix.ext fun _ _ => rfl)`. Rewrite using `[Kap.ρ1, Matrix.map_mul, h1, one_mul]`. Conclude with `Matrix.ext fun _ _ => rfl`.
+-/
 private theorem rho1_map_ddBaseCompRingHom_eq_mat {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (g : F.G₀) :
     (k.ρ1 x.A g).map (ddBaseCompRingHom x.A k.g) = mat x.ρ g := by
   have h1 : (1 + DD.epM fun j => (k.κ j g).map (algebraMap x.A x.A)).map (ddBaseCompRingHom x.A k.g) = 1 := by
@@ -29,6 +35,9 @@ private theorem rho1_map_ddBaseCompRingHom_eq_mat {l : ℕ} [Fact l.Prime] {F : 
   rw [Kap.ρ1, Matrix.map_mul, h1, one_mul]
   exact Matrix.ext fun _ _ => rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(x.redD k.g m).mapMatrix (k.ρ1 x.A g) = _`. Rewrite using `[Kap.ρ1, Kap.ρ1, map_mul, map_add, map_one]`. Use `congrArg₂ (· * ·) (congrArg (1 + ·) (Matrix.ext fun i j => ?_)) (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [DD.epM]`. Conclude with `(x.redD k.g m).commutes _`.
+-/
 private theorem rho1_map_algebraMap_am_eq_rho1 {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (m : ℕ) (g : F.G₀) :
     (k.ρ1 x.A g).map (fun y => (⟨algebraMap x.A (x.Am m) y.a, fun j => algebraMap x.A (x.Am m) (y.ep j),
       fun j => algebraMap x.A (x.Am m) (y.ep' j), algebraMap x.A (x.Am m) y.eta⟩ : DD (x.Am m) k.g)) =
@@ -39,6 +48,15 @@ private theorem rho1_map_algebraMap_am_eq_rho1 {l : ℕ} [Fact l.Prime] {F : GFr
   · ext <;> simp [DD.epM]
   · exact (x.redD k.g m).commutes _
 
+/- English proof (translation)
+Establish `key : ∀ φ : DD x.A k.g →+ x.A, (∀ i j u, φ (u * Z i j) = u.a * φ (Z i j)) → ∀ i j, φ (Z i j) = 0`. Introduce `φ hφ`. Establish `: Z.map φ = 0`. Use `h4 _ fun g hg => ?_` and prove the remaining obligations. Establish `e` using `sandwich_map_smul (ddBaseCompRingHom x.A k.g) φ (epsD k x.A g) (k.ρ1 x.A g) Z (k.ρ1 x.A g⁻¹) hφ (map_mul _)`.
+
+Rewrite `e` using `[hZ g hg, rho1_map_ddBaseCompRingHom_eq_mat, rho1_map_ddBaseCompRingHom_eq_mat]`. Use `conv_rhs => rw [e]`. Rewrite using `[smul_mul_assoc, mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Both sides reduce to the same expression. Conclude with `fun i j => congrFun (congrFun this i) j`.
+
+Establish `h' : ∀ t i j, (Z i j).ep' t = 0` using `fun t => key ⟨⟨fun y => y.ep' t, rfl⟩, fun _ _ => rfl⟩ fun i j u => by show (u * Z i j).ep' t = u.a * (Z i j).ep' t`. Simplify using `[ha]`. Establish `h'' : ∀ i j, (Z i j).eta = 0` using `key ⟨⟨fun y => y.eta, rfl⟩, fun _ _ => rfl⟩ fun i j u => by show (u * Z i j).eta = u.a * (Z i j).eta`. Simplify using `[ha, he, h']`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [ha, he, h', h'']`.
+-/
 private theorem site_vector_first {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (D : Subgroup F.G₀)
     (h4 : x.N4 D) (Z : Matrix (Fin n) (Fin n) (DD x.A k.g)) (ha : ∀ i j, (Z i j).a = 0) (he : ∀ i j, (Z i j).ep = 0)
     (hZ : ∀ g ∈ D, epsD k x.A g • (k.ρ1 x.A g * Z * k.ρ1 x.A g⁻¹) = Z) : Z = 0 := by
@@ -63,6 +81,17 @@ private theorem site_vector_first {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : �
   refine Matrix.ext fun i j => ?_
   ext <;> simp [ha, he, h', h'']
 
+/- English proof (translation)
+Introduce `l _ F n x k D h4`. Take `⟨C, hC⟩` from `UpperTheory.V.Pa.fixBd l F n x k _ false false false true false false true false D (fun s => algebraMap ℤ_[l] x.A (F.ε (s : F.G₀) : ℤ_[l])) (fun s => k.ρ1 x.A s) (fun s => k.ρ1 x.A (s : F.G₀)⁻¹) false rfl`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Establish `h` using `hC m`. Rewrite `h` using `[(Submodule.eq_bot_iff (_ ⊓ _ ⊓ _)).2 ?_, finrank_bot, mul_zero, zero_add]`.
+
+Use `le_of_eq_of_le ?_ h` and prove the remaining obligations. Use `congr 1`. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq, rho1_map_algebraMap_am_eq_rho1, Subtype.forall, epsD, algebraMap_smul, Bool.false_eq_true, false_imp_iff, true_and]`. Both sides reduce to the same expression.
+
+Introduce and unpack `Z ⟨⟨h1, -⟩, h2⟩`. Use `site_vector_first k D h4 Z (fun i j => ?_) (fun i j => ?_) fun g hg => ?_` and prove the remaining obligations. Distinguish the cases in `e : ((i : ℕ) < x.a) ↔ ((j : ℕ) < x.a)`. Conclude with `((h1 i j).1 e).1 rfl`. Conclude with `((h1 i j).2 e).1 rfl`.
+
+Distinguish the cases in `e : ((i : ℕ) < x.a) ↔ ((j : ℕ) < x.a)`. Conclude with `((h1 i j).1 e).2.1 rfl`. Conclude with `((h1 i j).2 e).2.1 rfl`. Establish `e` using `(Submodule.mem_iInf _).1 h2 ⟨g, hg⟩`. Rewrite using `[epsD, algebraMap_smul, mul_assoc, ← sub_eq_zero]`.
+
+Conclude with `e`.
+-/
 theorem UpperTheory.V.Pa.h0v0 :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (D : Subgroup F.G₀), x.N4 D → ∃ C : ℕ, ∀ (m : ℕ), {Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g) | Y ∈ k.EpsilonEtaTensorDual (x.Am m) ∧ ∀ g ∈ D, epsD k (x.Am m) g • (k.ρ1 (x.Am m) g * Y * k.ρ1 (x.Am m) g⁻¹) = Y}.ncard ≤ Nat.card x.K ^ C := by
   intro l _ F n x k D h4

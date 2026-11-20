@@ -15,6 +15,31 @@ noncomputable section
 
 namespace GlobalTheory.CompHS
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z M K _ _ z ho Q hz zw hw`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`.
+
+Establish `hwU : ⊤ ≤ (zw ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `le_preimage_of_dualNumber (TrivSqZeroExt.fstHom K K K).toRingHom _ _ (by rw [← Category.assoc, hw]; exact hU)`. Establish `hF : ⊤ ≤ (zw ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `hwU`. Establish `hr : Set.range (zw ≫ toFlag M) ⊆ Set.range X.inc`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `(opensRange_inc X).ge (hF (Set.mem_univ s))`.
+
+Take `⟨w, hwi⟩ : ∃ w, w ≫ X.inc = zw ≫ toFlag M` from `⟨_, IsOpenImmersion.lift_fac X.inc _ hr⟩`. Establish `hred : spMap (GlobalTheory.FlagTan.red c K).toRingHom ≫ w = X.pt Q`. Rewrite using `[← cancel_mono X.inc, Category.assoc, hwi, X.pt_inc, ← hz, ← Category.assoc]`. Conclude with `congrArg (· ≫ toFlag M) hw`. Establish `hnil : IsNilpotent (RingHom.ker (GlobalTheory.FlagTan.red c K).toRingHom)` using `⟨2, by`.
+
+Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff, pow_two]`. Use `Ideal.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Establish `ha' : a.fst = 0` using `ha`. Establish `hb' : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot]`.
+
+Apply the tactic sequence `ext <;> simp [ha', hb']⟩`. Establish `hs : w ≫ pullback.snd _ _ ≫ pullback.snd _ _ = spMap (algebraMap c.F (DualNumber K))`. Take `⟨φ, hφ⟩ : ∃ φ : c.F →+* DualNumber K, spMap φ = w ≫ pullback.snd _ _ ≫ pullback.snd _ _` from `⟨(Spec.preimage (w ≫ pullback.snd _ _ ≫ pullback.snd _ _)).hom, by`. Rewrite using `[spMap, CommRingCat.ofHom_hom, Spec.map_preimage]⟩`. Establish `h1 : spMap ((GlobalTheory.FlagTan.red c K).toRingHom.comp φ) = spMap (algebraMap c.F K)` using `by show Spec.map (CommRingCat.ofHom φ ≫ CommRingCat.ofHom (GlobalTheory.FlagTan.red c K).toRingHom) = _`.
+
+Rewrite using `[Spec.map_comp]`. Express the relevant statement in the definitionally equal form `spMap (GlobalTheory.FlagTan.red c K).toRingHom ≫ spMap φ = _`. Rewrite using `[hφ, ← Category.assoc, hred, ← Category.assoc, X.pt_snd, frX_snd]`. Establish `h2 : (GlobalTheory.FlagTan.red c K).toRingHom.comp φ = algebraMap c.F K` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`.
+
+Use `haveI : Algebra.IsSeparable ℚ c.F := inferInstance`. Use `haveI : Algebra.FormallyUnramified ℚ c.F := Algebra.FormallyUnramified.of_isSeparable ℚ c.F`. Use `haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)`. Use `haveI : Algebra.FormallyUnramified ℤ c.F := Algebra.FormallyUnramified.comp ℤ ℚ c.F`. Establish `h3` using `Algebra.FormallyUnramified.ext' (R := ℤ) (A := c.F) (B := DualNumber K) (GlobalTheory.FlagTan.red c K).toRingHom hnil φ.toIntAlgHom (algebraMap c.F (DualNumber K)).toIntAlgHom (fun x => by show (GlobalTheory.FlagTan.red c K).toRingHom (φ x) = (GlobalTheory.FlagTan.red c K).toRing …`.
+
+Conclude with `(RingHom.congr_fun h2 x).trans ((GlobalTheory.FlagTan.red c K).commutes x).symm)`. Rewrite using `[← hφ]`. Conclude with `congrArg spMap (congrArg AlgHom.toRingHom h3)`. Take `⟨P', hP'⟩` from `((X.points (S := DualNumber K)).1 w).1 hs`. Take `⟨P'', hP''⟩` from `GlobalTheory.FlagMod.exists_frMap (GlobalTheory.FlagTan.red c K) P'`.
+
+Establish `e1 : X.pt P'' = X.pt Q` using `by rw [← X.pt_frMap hP'', hP', hred]`. Take `⟨t, ht⟩` from `((X.points (S := K)).2 P'' Q).1 e1`. Take `⟨g, hgl, hgd, hc⟩` from `(GlobalTheory.Frames.frBor_iff_frChg P'' Q t).1 ht`. Establish `hdet : ∀ τ, IsUnit ((g τ).map (GlobalTheory.FlagTan.cst c K)).det` using `fun τ => by`. Establish `h0 : IsUnit (g τ).det`.
+
+Rewrite using `[Matrix.det_of_lowerTriangular (g τ) fun i j hij => hgl τ i j hij]`. Conclude with `IsUnit.prod_univ_iff.2 fun i => by rw [hgd]; exact Units.isUnit _`. Use `h0.map (GlobalTheory.FlagTan.cst c K).toRingHom` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨w', hW, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ P' (fun τ => (g τ).map (GlobalTheory.FlagTan.cst c K)) (Units.map (GlobalTheory.FlagTan.cst c K).toRingHom.toMonoidHom (t none)) hdet`.
+
+Establish `hdefQ : IsDef Q w'`. Use `(GlobalTheory.FlagTan.frMap_iff_frChg hW hP'').2 ?_` and prove the remaining obligations. Use `hc using 2 with τ` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression. Establish `hB : FrBor (fun i => Units.map (GlobalTheory.FlagTan.cst c K).toRingHom.toMonoidHom (t i)) P' w'` using `(GlobalTheory.Frames.frBor_iff_frChg P' w' _).2 ⟨fun τ => (g τ).map (GlobalTheory.FlagTan.cst c K), fun τ i j hij => by simp [hgl τ i j hij], fun τ i => by simp [hgd], hW⟩`. Use `⟨w', hdefQ, ?_⟩` and prove the remaining obligations. Rewrite using `[← X.ptY_frBor hB, ← X.pt_inc, hP', hwi]`.
+-/
 theorem exists_isDef_lift_dualNumber : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {Q : FrPt Xo c K} (hz : z ≫ toFlag M = X.ptY Q) (zw : Sp (DualNumber K) ⟶ M.X) (hw : spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ zw = z), ∃ w : FrPt Xo c (DualNumber K), IsDef Q w ∧ zw ≫ toFlag M = X.ptY w := by
   intro E _ _ _ H Dw l Xo c Y X Z M K _ _ z ho Q hz zw hw
   have hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z := fun s _ => by

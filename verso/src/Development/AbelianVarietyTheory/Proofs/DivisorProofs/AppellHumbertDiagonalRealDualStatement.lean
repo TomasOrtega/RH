@@ -8,6 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RiemFormKer.smul_mem_lattice | exact GlobalTheory.RiemFormKer.smul_mem_lattice | (intros; apply GlobalTheory.RiemFormKer.smul_mem_lattice <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.appell_humbert_diagonal_real_dual : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

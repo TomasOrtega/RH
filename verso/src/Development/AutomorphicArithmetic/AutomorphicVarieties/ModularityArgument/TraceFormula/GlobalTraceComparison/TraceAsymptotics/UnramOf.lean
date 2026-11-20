@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter Topology
 open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ n S π K' hlev w hw hK`. Take `⟨φ, hφ, h0, hfix⟩` from `hlev`. Use `⟨φ, hφ, h0, fun x hx hk => hfix w hw x hx ?_⟩` and prove the remaining obligations. Establish `hmem : cLoc w x ∈ UL n w`. Distinguish the cases in `hs : IsSplitAt w`.
+
+Unfold `UL`. Rewrite using `[if_pos hs]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `GlobalTheory.LocInj.cLoc_mem_UL hs x`. Use `⟨⟨cLoc w x, hmem⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[hK]`. Conclude with `Subgroup.mem_subgroupOf.2 hk`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.unramOf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.UnramOf := by
   intro E _ _ _ n S π K' hlev w hw hK

@@ -11,11 +11,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.DiscSpec.ResidualModel
 
+/- English proof (translation)
+Introduce `E _ _ _ N hN`. Take `⟨h1, h2, h3, h4, h5⟩` from `H E N hN`. Conclude with `⟨h1, h2, h3, h4, fun V hV a d π hn e w => ⟨(h5 V hV a d π hn e).exLoc w, (h5 V hV a d π hn e).loc w⟩⟩`.
+-/
 theorem of_discreteSpectrumGL (H : GlobalTheory.Published.DiscreteSpectrumGL) : GlobalTheory.Published.DiscreteSpectrumResidual := by
   intro E _ _ _ N hN
   obtain ⟨h1, h2, h3, h4, h5⟩ := H E N hN
   exact ⟨h1, h2, h3, h4, fun V hV a d π hn e w => ⟨(h5 V hV a d π hn e).exLoc w, (h5 V hV a d π hn e).loc w⟩⟩
 
+/- English proof (translation)
+Use `⟨fun H => ⟨of_discreteSpectrumGL H, fun E _ _ _ N hN V hV a d π hn e => ((H E N hN).2.2.2.2 V hV a d π hn e).inf⟩, fun ⟨H, H'⟩ E _ _ _ N hN => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `H E N hN`. Conclude with `⟨h1, h2, h3, h4, fun V hV a d π hn e => ⟨fun w => (h5 V hV a d π hn e w).1, fun w => (h5 V hV a d π hn e w).2, H' E N hN V hV a d π hn e⟩⟩`.
+-/
 theorem discreteSpectrumGL_iff : GlobalTheory.Published.DiscreteSpectrumGL ↔ GlobalTheory.Published.DiscreteSpectrumResidual ∧
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), 1 ≤ N →
       ∀ V : Submodule ℂ (Sm E N), IsDiscrete V → ∀ (a d : ℕ) (π : CuspSub E a), IsNormalised π → IsSpehOf V π d →
@@ -26,6 +32,9 @@ theorem discreteSpectrumGL_iff : GlobalTheory.Published.DiscreteSpectrumGL ↔ G
   exact ⟨h1, h2, h3, h4, fun V hV a d π hn e => ⟨fun w => (h5 V hV a d π hn e w).1, fun w => (h5 V hV a d π hn e w).2,
     H' E N hN V hV a d π hn e⟩⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.DiscSpec.Model.discreteSpectrum_one (E := E)`. Conclude with `⟨h1, h2, h3, h4, fun V hV a d π hn e w => ⟨(h5 V hV a d π hn e).exLoc w, (h5 V hV a d π hn e).loc w⟩⟩`.
+-/
 theorem residual_one (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] :
     (∀ V : Submodule ℂ (Sm E 1), IsDiscrete V →
       ∃ (a d : ℕ) (π : CuspSub E a), π.IsUnitary ∧ IsNormalised π ∧ IsSpehOf V π d) ∧
@@ -42,6 +51,11 @@ theorem residual_one (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] :
   obtain ⟨h1, h2, h3, h4, h5⟩ := GlobalTheory.DiscSpec.Model.discreteSpectrum_one (E := E)
   exact ⟨h1, h2, h3, h4, fun V hV a d π hn e w => ⟨(h5 V hV a d π hn e).exLoc w, (h5 V hV a d π hn e).loc w⟩⟩
 
+/- English proof (translation)
+Use `h.mul_eq` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Break down `a with _ | a` into its components or cases. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Break down `d with _ | d` into its components or cases. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem degrees_pos {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N a d : ℕ} (hN : 1 ≤ N)
     {V : Submodule ℂ (Sm E N)} {π : CuspSub E a} (h : IsSpehOf V π d) : 1 ≤ a ∧ 1 ≤ d := by
   have := h.mul_eq
@@ -53,6 +67,9 @@ theorem degrees_pos {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N
     · simp at this; omega
     · omega
 
+/- English proof (translation)
+The claim follows from `((H E a ha).2.1 a 1 π (one_mul a) hn).exists`.
+-/
 theorem isDiscrete_of_isNormalised (H : GlobalTheory.Published.DiscreteSpectrumResidual) {E : Type} [Field E] [NumberField E]
     [IsTotallyComplex E] {a : ℕ} (ha : 1 ≤ a) (π : CuspSub E a) (hn : IsNormalised π) :
     ∃ V : Submodule ℂ (Sm E a), IsDiscrete V ∧ IsSpehOf V π 1 :=

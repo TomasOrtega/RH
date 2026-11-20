@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
+/- English proof (translation)
+The claim follows from `descSpanSt_of (HaP.haSpanSt_of HaP.satRetr HaP.rowInvUp)`.
+-/
 theorem descent_span : DescSpanSt Xo c :=
   descSpanSt_of (HaP.haSpanSt_of HaP.satRetr HaP.rowInvUp)
 

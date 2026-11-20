@@ -21,21 +21,33 @@ variable {K : Type} {ι : K → Type} (p : ℕ)
 
 abbrev red : MRing ι →+* MRingOver (ZMod p) ι := MvPolynomial.map (Int.castRingHom (ZMod p))
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.map_surjective _ (fun x => ZMod.intCast_surjective x)`.
+-/
 theorem red_surjective : Function.Surjective (red (ι := ι) p) :=
   MvPolynomial.map_surjective _ (fun x => ZMod.intCast_surjective x)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `using hp`.
+-/
 theorem ker_red_le {J : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ J) :
     RingHom.ker (red (ι := ι) p) ≤ J := by
   rw [MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton, Ideal.span_le,
     Set.singleton_subset_iff]
   simpa using hp
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective _ (red_surjective p), sup_eq_left.mpr]`. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `ker_red_le p hp`.
+-/
 theorem mem_map_red_iff {J : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ J) (g : MRing ι) :
     red p g ∈ J.map (red p) ↔ g ∈ J := by
   rw [← Ideal.mem_comap, Ideal.comap_map_of_surjective _ (red_surjective p), sup_eq_left.mpr]
   rw [← RingHom.ker_eq_comap_bot]
   exact ker_red_le p hp
 
+/- English proof (translation)
+Establish `e : J = RingHom.ker ((Ideal.Quotient.mk (J.map (red p))).comp (red p))`. Use extensionality with `g`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, mem_map_red_iff p hp]`. Conclude with `(ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq e).trans (RingHom.quotientKerEquivOfSurjective (Ideal.Quotient.mk_surjective.comp (red_surjective p))))).symm`.
+-/
 theorem ringKrullDim_red {J : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ J) :
     ringKrullDim (MRingOver (ZMod p) ι ⧸ J.map (red p)) = ringKrullDim (MRing ι ⧸ J) := by
   have e : J = RingHom.ker ((Ideal.Quotient.mk (J.map (red p))).comp (red p)) := by
@@ -50,6 +62,9 @@ section Homog
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {R S : Type} [CommRing R] [CommRing S]
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_map, coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_weightedHomogeneousComponent (f : R →+* S) (w : (Σ k, ι k) → K → ℕ) (b : K → ℕ)
     (g : MRingOver R ι) :
     weightedHomogeneousComponent w b (MvPolynomial.map f g) =
@@ -59,6 +74,9 @@ theorem map_weightedHomogeneousComponent (f : R →+* S) (w : (Σ k, ι k) → K
   rw [coeff_weightedHomogeneousComponent, coeff_map, coeff_map, coeff_weightedHomogeneousComponent]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `hV`. Use `⟨MvPolynomial.map f '' T, ?_, by rw [Ideal.map_span]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨a, ha⟩` from `hT g hg`. Conclude with `⟨a, fun m hm => ha m (support_map_subset _ _ hm)⟩`.
+-/
 theorem isMultiHomogIdeal_map (f : R →+* S) {V : Ideal (MRingOver R ι)} (hV : IsMultiHomogIdeal V) :
     IsMultiHomogIdeal (V.map (MvPolynomial.map f)) := by
   obtain ⟨T, hT, rfl⟩ := hV
@@ -67,6 +85,9 @@ theorem isMultiHomogIdeal_map (f : R →+* S) {V : Ideal (MRingOver R ι)} (hV :
   obtain ⟨a, ha⟩ := hT g hg
   exact ⟨a, fun m hm => ha m (support_map_subset _ _ hm)⟩
 
+/- English proof (translation)
+Establish `hW'` using `(Bridge.isMultiHomogIdeal_iff (R := S) W).mpr hW`. Use `(Bridge.isMultiHomogIdeal_iff (R := R) _).mp fun g hg b => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, ← map_weightedHomogeneousComponent]`. Conclude with `hW' _ hg b`.
+-/
 theorem isMultiHomogIdeal_comap (f : R →+* S) {W : Ideal (MRingOver S ι)} (hW : IsMultiHomogIdeal W) :
     IsMultiHomogIdeal (W.comap (MvPolynomial.map f)) := by
   classical
@@ -81,6 +102,23 @@ section Nef
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `W' hW' hle`. Take `⟨⟨hW'p, hW'h, hW'r⟩, hW'd⟩` from `hW'`. Use `set W := W'.comap (red ℓ) with hWdef`. Establish `hmap : W.map (red ℓ) = W'` using `Ideal.map_comap_of_surjective _ (red_surjective ℓ) W'`. Establish `hpW : ((ℓ : ℕ) : MRing ι) ∈ W`.
+
+Establish `h0 : ((ℓ : ℕ) : MRingOver (ZMod ℓ) ι) = 0`. Rewrite using `[← map_natCast (C : ZMod ℓ →+* MRingOver (ZMod ℓ) ι), ZMod.natCast_self, map_zero]`. Rewrite using `[hWdef, Ideal.mem_comap, map_natCast, h0]`. Conclude with `W'.zero_mem`. Establish `hWm : IsMultiProjPrime W`.
+
+Use `⟨Ideal.comap_isPrime _ W', isMultiHomogIdeal_comap _ hW'h, fun k => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hW'r k`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[hWdef, Ideal.mem_comap, map_X]`. Conclude with `hi`.
+
+Establish `hPW : P ≤ W` using `Ideal.map_le_iff_le_comap.mp hle`. Establish `hdim : ringKrullDim (MRing ι ⧸ W) = ((1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← ringKrullDim_red ℓ hpW, hmap, hW'd]`. Establish `hchar : charOf W ≠ 0`. Introduce `h0`.
+
+Establish `hg : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) = 0` using `Int.natAbs_eq_zero.mp h0`. Establish `hmem : ((ℓ : ℕ) : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hpW`. Rewrite `hmem` using `[← Submodule.IsPrincipal.span_singleton_generator (W.comap (C : ℤ →+* MRing ι)), hg, Ideal.mem_span_singleton, zero_dvd_iff]`.
+
+Conclude with `(Fact.out : ℓ.Prime).ne_zero (by exact_mod_cast hmem)`. Establish `hWp : IsProjVarF (W.map (MvPolynomial.map (Int.castRingHom (ZMod ℓ)))) 1` using `by show IsProjVarF (W.map (red ℓ)) 1`. Rewrite using `[hmap]`. Conclude with `⟨⟨hW'p, hW'h, hW'r⟩, hW'd⟩`. Establish `h` using `hN W hWm hPW hchar hdim`.
+
+Rewrite `h` using `[hGeo ℓ I hI W 1 _ hWm hpW hWp]`. Express the relevant statement in the definitionally equal form `0 ≤ I (W.map (red ℓ)) 1 (fun _ => α) at h`. Rewrite `h` using `[hmap]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem nefOnF_map_red (ℓ : ℕ) [Fact ℓ.Prime] (hGeo : GeoNumStatement ι) {I : IFamily (ZMod ℓ) ι}
     (hI : IsFieldIntersection I) {P : Ideal (MRing ι)} {α : K → ℤ} (hN : NefOnFibres P α) :
     KH.NefOnF I (P.map (red ℓ)) α := by
@@ -130,6 +168,11 @@ end NefAmpleFibreAlt
 
 open NefAmpleFibreAlt in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Ω _ y D α b a ℓ hP hN hb ha hℓ`. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Take `⟨I, hI, -⟩` from `hR4 (ZMod ℓ) K ι`. Establish `e : ((b : ℤ) • α + fun _ => (a : ℤ)) = (b • α + fun _ => (a : ℤ))`. Rewrite using `[natCast_zsmul]`.
+
+Rewrite using `[e]`. Conclude with `hK (ZMod ℓ) K ι I (fibreIdeal ℓ y) α b a hI (isMultiHomogIdeal_map _ hP.2.1.2.1) (nefOnF_map_red ℓ (hGeo K ι) hI hN) hb ha`.
+-/
 theorem NefAmpleFibre.proof (hK : KleimanScheme.Statement)
     (hGeo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], GeoNumStatement ι)
     (hR4 : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],

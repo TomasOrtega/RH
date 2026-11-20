@@ -11,6 +11,13 @@ namespace GlobalTheory.CompactRepField
 
 open Polynomial IntermediateField
 
+/- English proof (translation)
+Establish `hint : ∀ z : PadicAlgCl l, IsIntegral ℚ_[l] z` using `fun z => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Establish `hfin : ({x' | IsConjRoot ℚ_[l] x x' ∧ x ≠ x'} : Set (PadicAlgCl l)).Finite`. Use `((minpoly ℚ_[l] x).rootSet_finite (PadicAlgCl l)).subset fun x' hx' => ?_` and prove the remaining obligations. Conclude with `(isConjRoot_iff_mem_minpoly_rootSet (hint x)).1 hx'.1`. Establish `hop : IsOpen (⋂ x' ∈ ({x' | IsConjRoot ℚ_[l] x x' ∧ x ≠ x'} : Set (PadicAlgCl l)), {y : PadicAlgCl l | ‖x - y‖ < ‖x - x'‖})` using `hfin.isOpen_biInter fun x' _ => isOpen_lt (by fun_prop) continuous_const`.
+
+Take `⟨y, hy⟩` from `(GlobalTheory.denseRange_of_isAlgClosed_padicAlgCl l Ω j).exists_mem_open hop ⟨x, by`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, sub_self, norm_zero, norm_pos_iff, sub_ne_zero]`. Conclude with `fun x' h => h.2⟩`. Use `⟨y, IsKrasner.krasner (minpoly.irreducible (hint x)).separable (IsAlgClosed.splits _) (hint _) fun x' h1 h2 => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq] at hy`.
+
+Conclude with `hy x' ⟨h1, h2⟩`.
+-/
 theorem exists_mem_adjoin_simple (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (j : Ω →+* PadicAlgCl l) (x : PadicAlgCl l) : ∃ y : Ω, x ∈ ℚ_[l]⟮j y⟯ := by
   have hint : ∀ z : PadicAlgCl l, IsIntegral ℚ_[l] z := fun z =>
@@ -30,6 +37,13 @@ theorem exists_mem_adjoin_simple (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω]
   simp only [Set.mem_iInter, Set.mem_ofPred_eq] at hy
   exact hy x' ⟨h1, h2⟩
 
+/- English proof (translation)
+Use `haveI halg : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ`. Use `haveI : Countable (AlgebraicClosure ℚ) := by`. Establish `h : {x : AlgebraicClosure ℚ | IsAlgebraic ℚ x}.Countable` using `Algebraic.countable ℚ _`. Conclude with `Set.countable_univ_iff.1 (h.mono fun x _ => halg.isAlgebraic x)`. Set `j : AlgebraicClosure ℚ →+* PadicAlgCl l` to `(IsAlgClosed.lift (R := ℚ) (S := AlgebraicClosure ℚ) (M := PadicAlgCl l)).toRingHom`.
+
+Use `⟨Finset (AlgebraicClosure ℚ), inferInstance, fun S => IntermediateField.adjoin ℚ_[l] (j '' (S : Set _)), fun S => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `haveI : Finite (j '' (S : Set (AlgebraicClosure ℚ))) := (S.finite_toSet.image j).to_subtype`. Conclude with `IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Use `choose y hy using exists_mem_adjoin_simple l (AlgebraicClosure ℚ) j`. Use `⟨(hs.image y).toFinset, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `IntermediateField.adjoin.mono _ _ _ ?_ (hy x)` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff]`. Conclude with `⟨y x, by simpa using ⟨x, hx, rfl⟩, rfl⟩`.
+-/
 theorem exists_countable_family (l : ℕ) [Fact l.Prime] :
     ∃ (ι : Type) (_ : Countable ι) (K : ι → IntermediateField ℚ_[l] (PadicAlgCl l)),
       (∀ i, FiniteDimensional ℚ_[l] (K i)) ∧
@@ -69,6 +83,19 @@ def entrySubgroup {F E G : Type} [Field F] [Field E] [Algebra F E] [Group G] {a 
       sum_mem fun k _ => mul_mem (hh i k).2 (hg k j).2⟩
   inv_mem' := fun {g} hg i j => ⟨(hg i j).2, by rw [inv_inv]; exact (hg i j).1⟩
 
+/- English proof (translation)
+Take `⟨ι, _, K, hK, hcov⟩` from `exists_countable_family l`. Establish `hKcl : ∀ m, IsClosed (K m : Set (PadicAlgCl l))` using `fun m => haveI : FiniteDimensional ℚ_[l] (K m).toSubalgebra.toSubmodule := hK m Submodule.closed_of_finiteDimensional (K m).toSubalgebra.toSubmodule`. Establish `hcl : ∀ m, IsClosed (entrySubgroup r (K m) : Set G)` using `fun m => by`. Establish `: (entrySubgroup r (K m) : Set G) = ⋂ i, ⋂ j, ((fun g => (r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j) ⁻¹' (K m) ∩ (fun g => (r g⁻¹ : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j) ⁻¹' (K m))`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => ((hKcl m).preimage (hr i j)).inter ((hKcl m).preimage ((hr i j).comp continuous_inv))`. Establish `hun : ⋃ m, (entrySubgroup r (K m) : Set G) = Set.univ`.
+
+Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hcov (Set.range (fun p : Fin n × Fin n => (r g : Matrix (Fin n) (Fin n) (PadicAlgCl l)) p.1 p.2) ∪ Set.range (fun p : Fin n × Fin n => (r g⁻¹ : Matrix (Fin n) (Fin n) (PadicAlgCl l)) p.1 p.2)) ((Set.finite_range _).union (Set.finite_range _))`. Conclude with `Set.mem_iUnion.2 ⟨m, fun i j => ⟨hm (Or.inl ⟨(i, j), rfl⟩), hm (Or.inr ⟨(i, j), rfl⟩)⟩⟩`. Take `⟨m, x, hx⟩` from `nonempty_interior_of_iUnion_of_closed hcl hun`. Establish `hop : IsOpen (entrySubgroup r (K m) : Set G)` using `Subgroup.isOpen_of_mem_nhds _ (mem_interior_iff_mem_nhds.1 hx)`.
+
+Use `haveI : Finite (G ⧸ entrySubgroup r (K m)) := Subgroup.quotient_finite_of_isOpen _ hop`. Set `s : Set (PadicAlgCl l)` to `Set.range fun p : (G ⧸ entrySubgroup r (K m)) × Fin n × Fin n => (r p.1.out : Matrix (Fin n) (Fin n) (PadicAlgCl l)) p.2.1 p.2.2`. Use `haveI : Finite s := (Set.finite_range _).to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] s) := IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Use `haveI := hK m`.
+
+Use `⟨IntermediateField.adjoin ℚ_[l] s ⊔ K m, inferInstance, fun g i j => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (entrySubgroup r (K m)) g`. Establish `hg : g = (g : G ⧸ entrySubgroup r (K m)).out * (h : G)⁻¹`. Rewrite using `[hh, mul_inv_cancel_right]`. Rewrite using `[hg, map_mul, Units.val_mul, Matrix.mul_apply]`.
+
+Use `sum_mem fun k _ => mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `(le_sup_left : IntermediateField.adjoin ℚ_[l] s ≤ _) (IntermediateField.subset_adjoin _ _ ⟨(g, i, k), rfl⟩)`. Conclude with `(le_sup_right : K m ≤ _) (h.2 k j).2`.
+-/
 theorem exists_finiteDimensional_entries_mem (l : ℕ) [Fact l.Prime] (G : Type) [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] (n : ℕ)
     (r : G →* Matrix.GeneralLinearGroup (Fin n) (PadicAlgCl l))
@@ -118,6 +145,9 @@ theorem exists_finiteDimensional_entries_mem (l : ℕ) [Fact l.Prime] (G : Type)
       (IntermediateField.subset_adjoin _ _ ⟨(g, i, k), rfl⟩)
   · exact (le_sup_right : K m ≤ _) (h.2 k j).2
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ _ _ a r hr L₀`. Take `⟨K, hK, h⟩` from `exists_finiteDimensional_entries_mem l G a r fun i j => hr.matrix_elem i j`. Use `haveI := L₀.2`. Conclude with `⟨⟨L₀.1 ⊔ K, inferInstance⟩, le_sup_left, fun g i j => (le_sup_right : K ≤ L₀.1 ⊔ K) (h g i j)⟩`.
+-/
 theorem exists_finExt_entries_mem :
     ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] (a : ℕ) (r : G →* Matrix.GeneralLinearGroup (Fin a) (Om l)), Continuous (fun g => ((r g : Matrix.GeneralLinearGroup (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) → ∀ L₀ : FinExt l, ∃ L : FinExt l, L₀.1 ≤ L.1 ∧ ∀ g i j, ((r g : Matrix.GeneralLinearGroup (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1 := by
   intro l _ G _ _ _ _ _ a r hr L₀

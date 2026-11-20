@@ -20,6 +20,11 @@ namespace GlobalTheory.EtaForm.ScalarWeight
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Use `haveI : Finite (LatMod Dw k) := by haveI := Dw.fin haveI : Module.Finite ℤ (LatMod Dw k) := Module.Finite.trans (𝓞 E) _`. Use `Module.finite_of_fg_torsion (M := LatMod Dw k) fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Use `⟨⟨(k : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hk.ne')⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(k : ℤ) • Submodule.mkQ (Ideal.span {(k : 𝓞 E)} • ⊤ : Submodule (𝓞 E) Dw.La) x = 0`.
+
+Rewrite using `[natCast_zsmul, ← map_nsmul]`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Conclude with `Finite.of_injective (fun g : LevGrp Dw k => (g : LatMod Dw k → LatMod Dw k)) DFunLike.coe_injective`.
+-/
 theorem finite_aut (Dw : Datum H) {k : ℕ} (hk : 0 < k) : Finite (LevGrp Dw k) := by
   haveI : Finite (LatMod Dw k) := by
     haveI := Dw.fin
@@ -34,6 +39,11 @@ theorem finite_aut (Dw : Datum H) {k : ℕ} (hk : 0 < k) : Finite (LevGrp Dw k) 
     exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
   exact Finite.of_injective (fun g : LevGrp Dw k => (g : LatMod Dw k → LatMod Dw k)) DFunLike.coe_injective
 
+/- English proof (translation)
+Use `haveI := finite_aut Dw hk`. Use `haveI := Fintype.ofFinite (LevGrp Dw k)`. Unfold `etaExpr`. Rewrite using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, Nat.card_eq_fintype_card, pow_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem etaExpr_scale {S : Type} [CommRing S] {k : ℕ} (hk : 0 < k) {J : Type} [Fintype J] {n : ℕ} (cf : J → ℤ)
     (x : J → Fin n → LatMod Dw k) (w : LatMod Dw k → S) (t : S) :
     etaExpr k cf x (fun q => t * w q) = t ^ (n * Nat.card (LevGrp Dw k)) * etaExpr k cf x w := by
@@ -50,6 +60,9 @@ theorem etaExpr_scale {S : Type} [CommRing S] {k : ℕ} (hk : 0 < k) {J : Type} 
 
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨g, hg2, hg1, hg⟩` from `(GlobalTheory.Frames.frBor_iff_frChg y y' t).1 h`. Establish `hc` using `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c S T φ y y' z z' g _ hg hz).1 hz'`. Conclude with `(GlobalTheory.Frames.frBor_iff_frChg z z' _).2 ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩`.
+-/
 theorem frBor_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T} (h : FrBor t y y')
     (hz : FrMap φ y z) (hz' : FrMap φ y' z') : FrBor (fun i => Units.map (φ : S →* T) (t i)) z z' := by
@@ -58,12 +71,20 @@ theorem frBor_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] 
   exact (GlobalTheory.Frames.frBor_iff_frChg z z' _).2
     ⟨fun τ => (g τ).map φ, fun τ i j hij => by simp [hg2 τ i j hij], fun τ i => by simp [hg1], hc⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨ev, hev, fun _ => rfl⟩`.
+-/
 theorem exists_level_of_eq {k : ℕ} {S : Type} [CommRing S] {x₀ x₁ : Sp S ⟶ Xo.X} (h : x₁ = x₀)
     {ev : LatMod Dw k → (ptO Xo x₀ ⟶ Xo.univ.t.G)} (hev : IsFullLev Xo k x₀ ev) :
     ∃ ev' : LatMod Dw k → (ptO Xo x₁ ⟶ Xo.univ.t.G), IsFullLev Xo k x₁ ev' ∧ ∀ q, (ev' q).left = (ev q).left := by
   subst h
   exact ⟨ev, hev, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨S', _, _, φ, z, ev, w, hφ, hz, hev, hw, hv⟩` from `hv`. Take `⟨z', hz'⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c S S' φ y'`. Establish `hb` using `frBor_baseChange φ h hz hz'`. Take `⟨ev', hev', he⟩` from `exists_level_of_eq hb.1 hev`. Use `⟨S', _, _, φ, z', ev', fun q => φ (t none) * w q, hφ, hz', hev', fun q => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.nullValue_existsUnique_natural_linear hL E H Dw l Xo c (R ^ 2) hR.pow).2.2 S' z z' _ hb (ev q) (ev' q) (he q) (w q) (hw q)`. Rewrite using `[etaExpr_scale (pow_pos hR.pos _), map_mul, map_pow, hv]`.
+-/
 theorem etaValAt_frBor (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} {cf : J → ℤ}
     {x : J → Fin n → LatMod Dw (R ^ 4)} {S : Type} [CommRing S] [Algebra c.F S] {t : Ix Dw → Sˣ}
     {y y' : FrPt Xo c S} (h : FrBor t y y') {v : S} (hv : EtaValAt Xo c R cf x y v) :
@@ -80,6 +101,11 @@ end GlobalTheory.EtaForm.ScalarWeight
 
 namespace GlobalTheory.EtaForm
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H Dw l Xo c R hR J _ n cf x`. Take `⟨hex, hnat⟩` from `GlobalTheory.EtaForm.etaValAt_existsUnique_natural hL E H Dw l Xo c R hR J n cf x`. Use `⟨⟨fun p y => (hex p.R y).exists.choose, fun p y => (hex p.R y).exists.choose_spec, fun f hf => ?_⟩, fun f hf => ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p y`. Conclude with `(hex p.R y).unique (hf p y) (hex p.R y).exists.choose_spec`.
+
+Conclude with `(hnat p.R q.R φ y z h _ _ (hf p y) (hf q z)).symm`. Rewrite using `[(hex p.R y').unique (hf p y') (ScalarWeight.etaValAt_frBor hL hR h (hf p y))]`. Use `congr 1`. Simplify using `[wchar, ex, Fintype.prod_option]`.
+-/
 theorem isEtaRule_existsUnique_mem_sec : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : ℕ), Odd R → ∀ (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (x : J → Fin n → LatMod Dw (R ^ 4)), (∃! f, IsEtaRule Xo c R cf x f) ∧ ∀ f, IsEtaRule Xo c R cf x f → f ∈ sec Xo c 0 (n * Nat.card (LevGrp Dw (R ^ 4))) := by
   intro hL E _ _ _ H Dw l Xo c R hR J _ n cf x
   obtain ⟨hex, hnat⟩ := GlobalTheory.EtaForm.etaValAt_existsUnique_natural hL E H Dw l Xo c R hR J n cf x

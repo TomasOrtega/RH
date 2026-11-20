@@ -9,9 +9,15 @@ namespace PI.EF
 
 open Complex Filter Topology Set DirichletCharacter
 
+/- English proof (translation)
+The claim follows from `isCompact_Icc.reProdIm isCompact_Icc`.
+-/
 lemma isCompact_rect (x₀ x₁ y₀ y₁ : ℝ) : IsCompact (rect x₀ x₁ y₀ y₁) :=
   isCompact_Icc.reProdIm isCompact_Icc
 
+/- English proof (translation)
+Simplify using `only [rect, Complex.mem_reProdIm, Set.mem_Icc]`.
+-/
 lemma mem_rect {x₀ x₁ y₀ y₁ : ℝ} {s : ℂ} :
     s ∈ rect x₀ x₁ y₀ y₁ ↔ (x₀ ≤ s.re ∧ s.re ≤ x₁) ∧ (y₀ ≤ s.im ∧ s.im ≤ y₁) := by
   simp only [rect, Complex.mem_reProdIm, Set.mem_Icc]
@@ -21,16 +27,27 @@ variable {N : ℕ} [NeZero N]
 def Lent (χ : DirichletCharacter ℂ N) : ℂ → ℂ :=
   open Classical in if χ = 1 then LFunctionTrivChar₁ N else LFunction χ
 
+/- English proof (translation)
+Unfold `Lent`. Use `split_ifs with h`. Conclude with `differentiable_LFunctionTrivChar₁ N`. Conclude with `differentiable_LFunction h`.
+-/
 lemma differentiable_Lent (χ : DirichletCharacter ℂ N) : Differentiable ℂ (Lent χ) := by
   unfold Lent
   split_ifs with h
   · exact differentiable_LFunctionTrivChar₁ N
   · exact differentiable_LFunction h
 
+/- English proof (translation)
+Unfold `Lent`. Rewrite using `[if_neg h]`.
+-/
 lemma Lent_of_ne {χ : DirichletCharacter ℂ N} (h : χ ≠ 1) : Lent χ = LFunction χ := by
   unfold Lent
   rw [if_neg h]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Unfold `Lent`. Rewrite using `[if_pos rfl]`. Use `first`. Consider the case `(rw [LFunctionTrivChar₁, Function.update_of_ne hs]; rfl)`.
+
+Consider the case `(simp [LFunctionTrivChar₁, Function.update_of_ne hs])`. Consider the case `(simp [LFunctionTrivChar₁, hs])`.
+-/
 lemma Lent_one_apply {χ : DirichletCharacter ℂ N} (h : χ = 1) {s : ℂ} (hs : s ≠ 1) :
     Lent χ s = (s - 1) * LFunction χ s := by
   subst h
@@ -41,6 +58,11 @@ lemma Lent_one_apply {χ : DirichletCharacter ℂ N} (h : χ = 1) {s : ℂ} (hs 
     | (simp [LFunctionTrivChar₁, Function.update_of_ne hs])
     | (simp [LFunctionTrivChar₁, hs])
 
+/- English proof (translation)
+Establish `h2 : (2 : ℂ) ≠ 1` using `by norm_num`. Establish `hL : LFunction χ 2 ≠ 0` using `LFunction_ne_zero_of_one_le_re χ (Or.inr h2) (by norm_num)`. Distinguish the cases in `h : χ = 1`. Rewrite using `[Lent_one_apply h h2]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr h2) hL`.
+
+Rewrite using `[Lent_of_ne h]`. Conclude with `hL`.
+-/
 lemma Lent_two_ne_zero (χ : DirichletCharacter ℂ N) : Lent χ 2 ≠ 0 := by
   have h2 : (2 : ℂ) ≠ 1 := by norm_num
   have hL : LFunction χ 2 ≠ 0 := LFunction_ne_zero_of_one_le_re χ (Or.inr h2) (by norm_num)
@@ -50,6 +72,11 @@ lemma Lent_two_ne_zero (χ : DirichletCharacter ℂ N) : Lent χ 2 ≠ 0 := by
   · rw [Lent_of_ne h]
     exact hL
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 1`. Unfold `Lent`. Rewrite using `[if_pos h]`. Conclude with `LFunctionTrivChar₁_apply_one_ne_zero N`. Rewrite using `[Lent_of_ne h]`.
+
+Conclude with `LFunction_ne_zero_of_one_le_re χ (Or.inl h) (by simp)`.
+-/
 lemma Lent_one_ne_zero (χ : DirichletCharacter ℂ N) : Lent χ 1 ≠ 0 := by
   by_cases h : χ = 1
   · unfold Lent
@@ -58,6 +85,9 @@ lemma Lent_one_ne_zero (χ : DirichletCharacter ℂ N) : Lent χ 1 ≠ 0 := by
   · rw [Lent_of_ne h]
     exact LFunction_ne_zero_of_one_le_re χ (Or.inl h) (by simp)
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 1`. Rewrite using `[Lent_one_apply h hs, mul_eq_zero]`. Simplify using `[sub_eq_zero, hs]`. Rewrite using `[Lent_of_ne h]`.
+-/
 lemma Lent_eq_zero_iff (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) :
     Lent χ s = 0 ↔ LFunction χ s = 0 := by
   by_cases h : χ = 1
@@ -65,12 +95,22 @@ lemma Lent_eq_zero_iff (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) 
     simp [sub_eq_zero, hs]
   · rw [Lent_of_ne h]
 
+/- English proof (translation)
+Use `filter_upwards [isOpen_ne.mem_nhds hs] with z hz`. Rewrite using `[Lent_one_apply h hz]`. Both sides reduce to the same expression.
+-/
 lemma Lent_eventuallyEq {χ : DirichletCharacter ℂ N} (h : χ = 1) {s : ℂ} (hs : s ≠ 1) :
     Lent χ =ᶠ[𝓝 s] (fun z => z - 1) * LFunction χ := by
   filter_upwards [isOpen_ne.mem_nhds hs] with z hz
   rw [Lent_one_apply h hz]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 1`. Establish `hL : AnalyticAt ℂ (LFunction χ) s`. Apply `DifferentiableOn.analyticAt (s := {z | z ≠ 1})` to reduce the goal to its premises. Introduce `z hz`. Conclude with `(differentiableAt_LFunction χ z (Or.inl hz)).differentiableWithinAt`.
+
+Conclude with `isOpen_ne.mem_nhds hs`. Establish `h1 : AnalyticAt ℂ (fun z : ℂ => z - 1) s` using `analyticAt_id.sub analyticAt_const`. Establish `h0 : analyticOrderAt (fun z : ℂ => z - 1) s = 0` using `h1.analyticOrderAt_eq_zero.mpr (sub_ne_zero.mpr hs)`. Unfold `analyticOrderNatAt`. Rewrite using `[analyticOrderAt_congr (Lent_eventuallyEq h hs), analyticOrderAt_mul h1 hL, h0, zero_add]`.
+
+Rewrite using `[Lent_of_ne h]`.
+-/
 lemma order_Lent (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) :
     analyticOrderNatAt (Lent χ) s = analyticOrderNatAt (LFunction χ) s := by
   by_cases h : χ = 1
@@ -86,6 +126,15 @@ lemma order_Lent (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) :
     rw [analyticOrderAt_congr (Lent_eventuallyEq h hs), analyticOrderAt_mul h1 hL, h0, zero_add]
   · rw [Lent_of_ne h]
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 1`. Establish `hd : DifferentiableAt ℂ (LFunction χ) s` using `differentiableAt_LFunction χ s (Or.inl hs)`. Establish `he` using `Lent_eventuallyEq h hs`. Establish `h1 : logDeriv (Lent χ) s = logDeriv (fun z => (z - 1) * LFunction χ z) s`. Unfold `logDeriv`.
+
+Simplify using `only [Pi.div_apply]`. Rewrite using `[he.deriv_eq, he.eq_of_nhds]`. Both sides reduce to the same expression. Establish `h2 : logDeriv (fun z : ℂ => z - 1) s = 1 / (s - 1)`. Simplify using `[logDeriv_apply]`.
+
+Establish `hdz : DifferentiableAt ℂ (fun z : ℂ => z - 1) s` using `differentiableAt_id.sub_const (1 : ℂ)`. Rewrite using `[h1, logDeriv_mul (f := fun z : ℂ => z - 1) (g := LFunction χ) s (sub_ne_zero.mpr hs) h0 hdz hd, h2]`. Simplify using `only [del1, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Lent_of_ne h]`.
+
+Simplify using `[del1, h]`.
+-/
 lemma logDeriv_Lent (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) (h0 : LFunction χ s ≠ 0) :
     logDeriv (LFunction χ) s = logDeriv (Lent χ) s - del1 χ / (s - 1) := by
   by_cases h : χ = 1
@@ -106,6 +155,11 @@ lemma logDeriv_Lent (χ : DirichletCharacter ℂ N) {s : ℂ} (hs : s ≠ 1) (h0
   · rw [Lent_of_ne h]
     simp [del1, h]
 
+/- English proof (translation)
+Introduce `N _ χ hχ T`. Establish `h` using `finite_zeros_of_compact (differentiable_Lent χ) (Lent_two_ne_zero χ) (isCompact_rect 0 1 (-T) T)`. Use `h.subset ?_` and prove the remaining obligations. Introduce `ρ hρ`. Take `⟨hre0, hre1, him, hL⟩` from `hρ`.
+
+Establish `h1 : ρ ≠ 1` using `fun e => by rw [e] at hre1; simp at hre1`. Use `⟨mem_rect.mpr ⟨⟨hre0.le, hre1.le⟩, ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Combine the linear relations using `[neg_abs_le ρ.im]`. Combine the linear relations using `[le_abs_self ρ.im]`. Conclude with `(Lent_eq_zero_iff χ h1).mpr hL`.
+-/
 theorem zerosFinite : ZerosFinite := by
   intro N _ χ hχ T
   have h := finite_zeros_of_compact (differentiable_Lent χ) (Lent_two_ne_zero χ)
@@ -119,6 +173,33 @@ theorem zerosFinite : ZerosFinite := by
   · linarith [le_abs_self ρ.im]
   · exact (Lent_eq_zero_iff χ h1).mpr hL
 
+/- English proof (translation)
+Introduce `N _ χ hχ x₁ T' hx₁ hT' hNO`. Establish `hSfin : (ZerosBelow χ T').Finite` using `zerosFinite N χ hχ T'`. Take `⟨E0, hE0⟩ : ∃ E0 : Finset ℂ, E0 = if χ.Even ∧ χ ≠ 1 then {0} else ∅` from `⟨_, rfl⟩`. Establish `hE0mem : ∀ ρ, ρ ∈ E0 ↔ ρ = 0 ∧ χ.Even ∧ χ ≠ 1`. Introduce `ρ`.
+
+Rewrite using `[hE0]`. Distinguish the cases in `he : χ.Even ∧ χ ≠ 1`. Rewrite using `[if_pos he, Finset.mem_singleton]`. Conclude with `⟨fun h => ⟨h, he⟩, fun h => h.1⟩`. Rewrite using `[if_neg he]`.
+
+Simplify using `only [Finset.notMem_empty, false_iff]`. Conclude with `fun h => he h.2`. Establish `hre1 : ∀ ρ ∈ ZerosBelow χ T', ρ ≠ 1`. Introduce `ρ hρ e`. Establish `h` using `hρ.2.1`.
+
+Rewrite `h` using `[e]`. Simplify using `at h`. Establish `hZ0 : ∀ ρ ∈ hSfin.toFinset ∪ E0, Lent χ ρ = 0`. Introduce `ρ hρ`. Break down `Finset.mem_union.mp hρ with h | h` into its components or cases.
+
+Establish `h'` using `hSfin.mem_toFinset.mp h`. Conclude with `(Lent_eq_zero_iff χ (hre1 ρ h')).mpr h'.2.2.2`. Take `⟨rfl, he, h1⟩` from `(hE0mem ρ).mp h`. Conclude with `(Lent_eq_zero_iff χ zero_ne_one).mpr (mult_zero_of_even hχ he h1).1`. Establish `hK : ∀ s ∈ rect (-1 / 2) x₁ (-T') T', Lent χ s = 0 → s ∈ hSfin.toFinset ∪ E0`.
+
+Introduce `s hs hz`. Establish `hs1 : s ≠ 1` using `fun e => Lent_one_ne_zero χ (e ▸ hz)`. Establish `hL : LFunction χ s = 0` using `(Lent_eq_zero_iff χ hs1).mp hz`. Take `⟨⟨hsre0, hsre1⟩, him0, him1⟩` from `mem_rect.mp hs`. Break down `zeroLocus N χ hχ s (by linarith) hs1 hL with h | h | h` into its components or cases.
+
+Apply `Finset.mem_union_left` to reduce the goal to its premises. Rewrite using `[hSfin.mem_toFinset]`. Use `⟨h.1, h.2, ?_, hL⟩` and prove the remaining obligations. Establish `hle : |s.im| ≤ T'` using `abs_le.mpr ⟨him0, him1⟩`. Conclude with `lt_of_le_of_ne hle (hNO s h.1 h.2 hL)`.
+
+Conclude with `Finset.mem_union_right _ ((hE0mem s).mpr h)`. It suffices to derive a contradiction. Rewrite `hsre0` using `[h.1]`. Evaluate the numerical expressions using `at hsre0`. Establish `hf : AnalyticOnNhd ℂ (Lent χ) (rect (-1 / 2) x₁ (-T') T')` using `fun x _ => (differentiable_Lent χ).analyticAt x`.
+
+Establish `hfin : ∀ ρ ∈ rect (-1 / 2) x₁ (-T') T', analyticOrderAt (Lent χ) ρ ≠ ⊤` using `fun ρ _ => order_ne_top_of_entire (differentiable_Lent χ) (Lent_two_ne_zero χ) ρ`. Take `⟨H, hH, hHeq⟩` from `exists_regular_part hf (hSfin.toFinset ∪ E0) hZ0 hK hfin`. Use `⟨H, hH.differentiableOn, ?_⟩` and prove the remaining obligations. Introduce `s hs hL0 hs1`. Establish `hLe : Lent χ s ≠ 0` using `fun e => hL0 ((Lent_eq_zero_iff χ hs1).mp e)`.
+
+Establish `hdisj : Disjoint hSfin.toFinset E0`. Rewrite using `[Finset.disjoint_left]`. Introduce `ρ h1 h2`. Establish `h1'` using `(hSfin.mem_toFinset.mp h1).1`. Rewrite `h1'` using `[((hE0mem ρ).mp h2).1]`.
+
+Simplify using `at h1'`. Establish `hS : ∑ ρ ∈ hSfin.toFinset, (analyticOrderNatAt (Lent χ) ρ : ℂ) / (s - ρ) = ∑ ρ ∈ hSfin.toFinset, (mult χ ρ : ℂ) / (s - ρ)`. Use `Finset.sum_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[order_Lent χ (hre1 ρ (hSfin.mem_toFinset.mp hρ))]`. Establish `hE : ∑ ρ ∈ E0, (analyticOrderNatAt (Lent χ) ρ : ℂ) / (s - ρ) = eps0 χ / s`.
+
+Rewrite using `[hE0]`. Distinguish the cases in `he : χ.Even ∧ χ ≠ 1`. Rewrite using `[if_pos he, Finset.sum_singleton, order_Lent χ zero_ne_one, (mult_zero_of_even hχ he.1 he.2).2]`. Simplify using `only [eps0, if_pos he]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg he]`. Simplify using `only [eps0, if_neg he]`. Simplify using the standard rewrite rules. Rewrite using `[logDeriv_Lent χ hs1 hL0, hHeq s hs hLe, Finset.sum_union hdisj, finsum_mem_eq_finite_toFinset_sum _ hSfin, hS, hE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem regularPart : RegularPart := by
   intro N _ χ hχ x₁ T' hx₁ hT' hNO
   classical

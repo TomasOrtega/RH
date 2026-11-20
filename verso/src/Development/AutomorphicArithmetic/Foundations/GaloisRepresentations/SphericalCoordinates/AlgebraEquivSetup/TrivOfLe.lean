@@ -19,15 +19,24 @@ namespace UpperTheory.Gal.W2.Seed
 def TyLev.kerK {X M : Type} [Group X] [Group M] (T : TyLev X M) : Subgroup X :=
   ((T.ψ.comp ((T.L.pr.comp T.K.subtype).codRestrict T.J fun k => T.fact.2 k k.2)).ker).map T.K.subtype
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨y, hy, e⟩ => e ▸ ⟨y.2, hy⟩, fun ⟨hk, h⟩ => ⟨⟨k, hk⟩, h, rfl⟩⟩`.
+-/
 theorem TyLev.mem_kerK {X M : Type} [Group X] [Group M] (T : TyLev X M) (k : X) :
     k ∈ T.kerK ↔ ∃ hk : k ∈ T.K, T.ψ ⟨T.L.pr k, T.fact.2 k hk⟩ = 1 :=
   ⟨fun ⟨y, hy, e⟩ => e ▸ ⟨y.2, hy⟩, fun ⟨hk, h⟩ => ⟨⟨k, hk⟩, h, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k hk => ((T.mem_kerK k).1 (h hk)).1, fun k hk _ => ((T.mem_kerK k).1 (h hk)).2⟩`.
+-/
 theorem TyLev.triv_of_le {X M : Type} [Group X] [Group M] (T : TyLev X M) {K : Subgroup X} (h : K ≤ T.kerK) : T.Triv K :=
   ⟨fun k hk => ((T.mem_kerK k).1 (h hk)).1, fun k hk _ => ((T.mem_kerK k).1 (h hk)).2⟩
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g => Subtype.ext (Prod.ext (Units.ext (F.th_mat g)) (F.th_sim g))`.
+-/
 theorem th_eq (F : Frame S) : F.th = CertificateRingHomMap.th :=
   MonoidHom.ext fun g => Subtype.ext (Prod.ext (Units.ext (F.th_mat g)) (F.th_sim g))
 

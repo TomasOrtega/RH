@@ -15,6 +15,17 @@ section Abstract
 
 variable {R : Type} [CommRing R] {a b : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ v ∈ Submodule.span R ((fun i => Cᵀ i) '' I), ∃ c : Fin b → R, (∀ i, i ∉ I → c i = 0) ∧ v = C *ᵥ c`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v h`. Take `⟨i, hi, rfl⟩` from `h`.
+
+Use `⟨Pi.single i 1, fun i' hi' => Pi.single_eq_of_ne (by rintro rfl; exact hi' hi) _, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_single_one]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨d, hd, rfl⟩` from `hy`. Conclude with `⟨c + d, fun i hi => by simp [hc i hi, hd i hi], by rw [mulVec_add]⟩`. Consider the case `smul t x _ hx`. Take `⟨c, hc, rfl⟩` from `hx`.
+
+Conclude with `⟨t • c, fun i hi => by simp [hc i hi], by rw [mulVec_smul]⟩`. Take `⟨c, hc, rfl⟩` from `key w hw`. Establish `e : L *ᵥ (C *ᵥ c) = c` using `by rw [mulVec_mulVec, hLC, one_mulVec]`. Rewrite `h0` using `[e]`. Establish `: c = 0` using `funext fun i => by`.
+
+Distinguish the cases in `hi : i ∈ I`. Conclude with `h0 i hi`. Conclude with `hc i hi`. Rewrite using `[this, mulVec_zero]`.
+-/
 theorem eq_zero_of_mem_span_cols {L : Matrix (Fin b) (Fin a) R} {C : Matrix (Fin a) (Fin b) R} (hLC : L * C = 1)
     {I : Set (Fin b)} {w : Fin a → R} (hw : w ∈ Submodule.span R ((fun i => Cᵀ i) '' I))
     (h0 : ∀ i ∈ I, (L *ᵥ w) i = 0) : w = 0 := by
@@ -44,6 +55,9 @@ theorem eq_zero_of_mem_span_cols {L : Matrix (Fin b) (Fin a) R} {C : Matrix (Fin
     · exact hc i hi
   rw [this, mulVec_zero]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHC, hHG, Formalism.UG.cT_mul, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem mul_eq_of_conj (s : R →+* R) {G H A : Matrix (Fin a) (Fin a) R} {C : Matrix (Fin a) (Fin b) R}
     {B : Matrix (Fin b) (Fin b) R} (hHG : H * G = 1) (hU : cT s H * A * H = A) (hHC : H * C = C * B) :
     cT s C * A * G = cT s B * (cT s C * A) := by
@@ -52,6 +66,9 @@ theorem mul_eq_of_conj (s : R →+* R) {G H A : Matrix (Fin a) (Fin a) R} {C : M
     _ = cT s B * (cT s C * A) := by
       rw [hHC, hHG, Formalism.UG.cT_mul, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hB : B = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGD, hB, Matrix.mul_one]`.
+-/
 theorem mul_eq_self_of_pair (s : R →+* R) {G A : Matrix (Fin a) (Fin a) R} {C D : Matrix (Fin a) (Fin b) R}
     {B : Matrix (Fin b) (Fin b) R} (hU : cT s G * A * G = A) (hCD : cT s C * A * D = 1) (hGC : G * C = C)
     (hGD : G * D = D * B) : G * D = D := by
@@ -69,13 +86,22 @@ section Frame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+-/
 theorem mat_inv_mul (g : GAd σ J) : (matHom _ σ J g⁻¹).1 * (matHom _ σ J g).1 = 1 := by
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem adMat_mul_eq_one {a b : ℕ} {L : Matrix (Fin a) (Fin b) E} {C : Matrix (Fin b) (Fin a) E} (h : L * C = 1) :
     adMat F L * adMat F C = 1 := by
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `c1 : cT (sigR (AF F) σ) (adMat F (initCols C k)) = adMat F (cT (σ : E →+* E) (initCols C k))` using `rfl`. Rewrite using `[c1, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem cT_initCols_mul (C : Matrix (Fin n) (Fin r) E) (k : Fin r) :
     cT (sigR (AF F) σ) (adMat F (initCols C k)) * adMat F J =
       (adMat F (cT (σ : E →+* E) C * J)).submatrix (Fin.castLE k.2) id := by
@@ -83,6 +109,19 @@ theorem cT_initCols_mul (C : Matrix (Fin n) (Fin r) E) (k : Fin r) :
   rw [c1, ← Matrix.map_mul]
   rfl
 
+/- English proof (translation)
+Establish `hκj : j < κ`. Take `⟨k, hk, hjk⟩` from `hj`. Assume the negation of the conclusion as `hc`. Conclude with `hκ ⟨k, hk, (not_lt.1 hc).trans hjk⟩`. Establish `h1` using `(Subgroup.mem_iInf.1 hu.1 j).2 _ (Submodule.subset_span ⟨j, rfl, rfl⟩)`.
+
+Establish `hLC : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1` using `adMat_mul_eq_one (yx h hJ hW)`. Use `sub_eq_zero.1 (eq_zero_of_mem_span_cols hLC h1 ?_)` and prove the remaining obligations. Introduce and unpack `i ⟨k, hk, hik, hkj⟩`. Establish `hkT : k ∈ T`. Break down `Finset.mem_insert.1 hk with rfl | hk'` into its components or cases.
+
+Conclude with `absurd (hkj.trans hκj) (lt_irrefl _)`. Conclude with `hk'`. Establish `hl'` using `inv_mem hl`. Simplify using `only [levi, Subgroup.mem_iInf] at hl'`. Take `⟨B, -, e⟩` from `(Subgroup.mem_inf.1 (hl' k hkT)).2`.
+
+Establish `h2` using `mul_eq_of_conj (A := adMat F J) (sigR (AF F) σ) (mat_inv_mul g) (g⁻¹).2 e`. Rewrite `h2` using `[cT_initCols_mul]`. Use `set L := (adMat F (cT (σ : E →+* E) Y * J)).submatrix (Fin.castLE k.2) id with hL`. Establish `h3 : L *ᵥ (adMat F X)ᵀ j = 0`. Use function extensionality and compare the values at `p`.
+
+Establish `hp : Fin.castLE k.2 p ≠ j` using `fun hc => by`. Establish `h4 : (Fin.castLE k.2 p).val ≤ k.val` using `Nat.le_of_lt_succ p.2`. Establish `h5 : k.val < j.val` using `hkj`. Rewrite `h4` using `[hc]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(congrFun (congrFun hLC (Fin.castLE k.2 p)) j).trans (Matrix.one_apply_ne hp)`. Establish `h4 : L *ᵥ ((matHom _ σ J g).1 *ᵥ (adMat F X)ᵀ j - (adMat F X)ᵀ j) = 0`. Rewrite using `[mulVec_sub, mulVec_mulVec, h2, ← mulVec_mulVec, h3, mulVec_zero, sub_zero]`. Conclude with `congrFun h4 ⟨i.val, Nat.lt_succ_of_le hik⟩`.
+-/
 theorem exists_height_lower_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)} {κ : Fin r}
     (hκ : κ ∉ upTo T) {g : GAd σ J} (hl : g ∈ levi σ J X Y T) (hu : g ∈ unip σ J X (insert κ T)) {j : Fin r}
     (hj : j ∈ upTo T) : (matHom _ σ J g).1 *ᵥ (adMat F X)ᵀ j = (adMat F X)ᵀ j := by
@@ -116,6 +155,11 @@ theorem exists_height_lower_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW 
     rw [mulVec_sub, mulVec_mulVec, h2, ← mulVec_mulVec, h3, mulVec_zero, sub_zero]
   exact congrFun h4 ⟨i.val, Nat.lt_succ_of_le hik⟩
 
+/- English proof (translation)
+Take `⟨k, hkT, hik⟩` from `hi`. Simplify using `only [levi, Subgroup.mem_iInf] at hl`. Take `⟨B, -, e⟩` from `(Subgroup.mem_inf.1 (hl k hkT)).2`. Establish `hGC : (matHom _ σ J g).1 * adMat F (initCols X k) = adMat F (initCols X k)` using `Matrix.ext_col fun p => exists_height_lower_bound h hJ hW hκ (by simpa only [levi, Subgroup.mem_iInf] using hl) hu ⟨k, hkT, Nat.le_of_lt_succ p.2⟩`. Establish `hCD : cT (sigR (AF F) σ) (adMat F (initCols X k)) * adMat F J * adMat F (initCols Y k) = 1`.
+
+Rewrite using `[cT_initCols_mul]`. Establish `h1 : adMat F (cT (σ : E →+* E) X * J) * adMat F Y = 1` using `adMat_mul_eq_one hW.xy`. Conclude with `Matrix.ext fun p q => (congrFun (congrFun h1 (Fin.castLE k.2 p)) (Fin.castLE k.2 q)).trans (by simp [Matrix.one_apply])`. Establish `h2` using `mul_eq_self_of_pair (A := adMat F J) (sigR (AF F) σ) g.2 hCD hGC e`. Conclude with `congrArg (fun M => Mᵀ ⟨i.val, Nat.lt_succ_of_le hik⟩) h2`.
+-/
 theorem fix_y (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {T : Finset (Fin r)} {κ : Fin r}
     (hκ : κ ∉ upTo T) {g : GAd σ J} (hl : g ∈ levi σ J X Y T) (hu : g ∈ unip σ J X (insert κ T)) {i : Fin r}
     (hi : i ∈ upTo T) : (matHom _ σ J g).1 *ᵥ (adMat F Y)ᵀ i = (adMat F Y)ᵀ i := by
@@ -132,6 +176,11 @@ theorem fix_y (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X
   have h2 := mul_eq_self_of_pair (A := adMat F J) (sigR (AF F) σ) g.2 hCD hGC e
   exact congrArg (fun M => Mᵀ ⟨i.val, Nat.lt_succ_of_le hik⟩) h2
 
+/- English proof (translation)
+Introduce and unpack `g ⟨hl, hu⟩`. Establish `key : colSpan F X (upTo T) ⊔ colSpan F Y (upTo T) ≤ LinearMap.eqLocus (matHom _ σ J g).1.mulVecLin LinearMap.id`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `exists_height_lower_bound h hJ hW hκ hl hu hj`.
+
+Introduce and unpack `_ ⟨j, hj, rfl⟩`. Conclude with `fix_y h hJ hW hκ hl hu hj`. Conclude with `fun y hy => key hy`.
+-/
 theorem levi_inf_unip_le_uPart_general (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
     (T : Finset (Fin r)) {κ : Fin r} (hκ : κ ∉ upTo T) :
     levi σ J X Y T ⊓ unip σ J X (insert κ T) ≤ uPart σ J X Y T := by
@@ -146,6 +195,9 @@ theorem levi_inf_unip_le_uPart_general (h : IsCMExt F E σ) (hJ : IsHermND σ J)
 
 end Frame
 
+/- English proof (translation)
+Introduce `D V m X Y hW T κ hκ`. Take `⟨h, hJ'⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm`. Conclude with `levi_inf_unip_le_uPart_general h (hJ' V) hW T hκ`.
+-/
 theorem levi_inf_unip_le_uPart : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (κ : Fin m), κ ∉ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T → levi D.sp.cm.sig V.gram X Y T ⊓ unip D.sp.cm.sig V.gram X (insert κ T) ≤ uPart D.sp.cm.sig V.gram X Y T := by
   intro D V m X Y hW T κ hκ
   obtain ⟨h, hJ'⟩ := GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm

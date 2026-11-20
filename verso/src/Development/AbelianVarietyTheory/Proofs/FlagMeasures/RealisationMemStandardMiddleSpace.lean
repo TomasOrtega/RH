@@ -13,16 +13,45 @@ open GlobalTheory.DegVol.RealMat
 
 variable {k r j : ℕ}
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Simplify using `only [Hpk, esI, eI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private lemma Hpk_esI_apply' (a : Fin r) (i : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r a) i = if i = eI k r a then 1 else 0 := by
   have ha := a.isLt
   simp only [Hpk, esI, eI, Fin.ext_iff, Fin.val_mk]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Simplify using `[herm, bvec, dotProduct, Matrix.mulVec, Pi.single_apply, Hpk_esI_apply']`.
+-/
 theorem herm_esI (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) u (bvec (esI k r a)) = u (eI k r a) := by
   simp [herm, bvec, dotProduct, Matrix.mulVec, Pi.single_apply, Hpk_esI_apply']
 
+/- English proof (translation)
+Establish `hdet : IsUnit g.det` using `GlobalTheory.DegVol.RealMat.isUnit_det hg`. Establish `hinj : Function.Injective (Matrix.mulVecLin g⁻¹)`. Introduce `x y hxy`. Establish `h` using `congrArg (fun v => g *ᵥ v) hxy`. Simplify `h` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet]`.
+
+Establish `hli : ∀ f : {a : Fin r // a.val < j} → Fin (2 * r + k + 1), Function.Injective f → LinearIndependent ℂ (fun a => bvec (f a))`. Introduce `f hf`. Establish `h` using `(Pi.basisFun ℂ (Fin (2 * r + k + 1))).linearIndependent.comp f hf`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Simplify using `[bvec, Function.comp]`. Establish `hI1 : Function.Injective fun a : {a : Fin r // a.val < j} => eI k r a.1`. Introduce `a a' h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [eI, Fin.val_mk] at h'`.
+
+Conclude with `Subtype.ext (Fin.ext h')`. Establish `hI2 : Function.Injective fun a : {a : Fin r // a.val < j} => esI k r a.1`. Introduce `a a' h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [esI, Fin.val_mk] at h'`.
+
+Use `a.1.isLt` as an intermediate fact. Use `a'.1.isLt` as an intermediate fact. Conclude with `Subtype.ext (Fin.ext (by omega))`. Establish `hl1 : LinearIndependent ℂ (fun a : {a : Fin r // a.val < j} => bvec (eI k r a.1))` using `hli _ hI1`. Establish `hl2 : LinearIndependent ℂ (fun a : {a : Fin r // a.val < j} => bvec (esI k r a.1))` using `hli _ hI2`.
+
+Establish `hle : (XJ k r j).map (Matrix.mulVecLin g⁻¹) ≤ XstJ k r j`. Unfold `XJ`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Matrix.mulVecLin_apply]`.
+
+Conclude with `(hX a.1 a.2).1`. Establish `hrank : Module.finrank ℂ ((XJ k r j).map (Matrix.mulVecLin g⁻¹)) = Module.finrank ℂ (XstJ k r j)`. Rewrite using `[← (Submodule.equivMapOfInjective _ hinj (XJ k r j)).finrank_eq]`. Unfold `XJ XstJ`. Rewrite using `[finrank_span_eq_card hl1, finrank_span_eq_card hl2]`.
+
+Establish `heq : (XJ k r j).map (Matrix.mulVecLin g⁻¹) = XstJ k r j` using `Submodule.eq_of_le_of_finrank_eq hle hrank`. Establish `hmem : bvec (esI k r b) ∈ (XJ k r j).map (Matrix.mulVecLin g⁻¹)`. Rewrite using `[heq]`. Unfold `XstJ`. Conclude with `Submodule.subset_span ⟨⟨b, hb⟩, rfl⟩`.
+
+Take `⟨x, hx, hxe⟩` from `Submodule.mem_map.1 hmem`. Establish `hzero : ∀ x ∈ XJ k r j, herm (Hpk k r) u (g⁻¹ *ᵥ x) = 0`. Introduce `x hx`. Unfold `XJ at hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `hu a.1 a.2`. Consider the case `zero => simp [herm]`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => rw [Matrix.mulVec_add, GlobalTheory.DegVol.RealMat.herm_add_right, h₁, h₂, add_zero]`.
+
+Consider the case `smul c y _ h => rw [Matrix.mulVec_smul, GlobalTheory.DegVol.RealMat.herm_smul_right, h, mul_zero]`. Rewrite using `[← herm_esI u b, ← hxe, Matrix.mulVecLin_apply]`. Conclude with `hzero x hx`.
+-/
 theorem coord_eq_zero {g : Mat k r} (hg : g ∈ UH (Hpk k r))
     (hX : ∀ a : Fin r, a.val < j → g⁻¹ *ᵥ bvec (eI k r a) ∈ XstJ k r j ∧ g *ᵥ bvec (eI k r a) ∈ XstJ k r j)
     {u : Fin (2 * r + k + 1) → ℂ} (hu : ∀ a : Fin r, a.val < j → herm (Hpk k r) u (g⁻¹ *ᵥ bvec (eI k r a)) = 0)
@@ -86,6 +115,31 @@ theorem coord_eq_zero {g : Mat k r} (hg : g ∈ UH (Hpk k r))
   rw [← herm_esI u b, ← hxe, Matrix.mulVecLin_apply]
   exact hzero x hx
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF w hw`. Unfold `IsFrameOf at hF`. Take `⟨hR, -, -, -, ⟨c, hN⟩, he, hist, -, -⟩` from `hF`. Unfold `IsReal at hR`. Take `⟨-, -, hiso, -⟩` from `hR`.
+
+Unfold `IsNormal0 at hN`. Take `⟨hgG, -, -, -, -, hX, -, -⟩` from `hN`. Unfold `GlobalTheory.DegCnt.NF.Wn at hw`. Rewrite `hw` using `[GlobalTheory.DegCnt.NFGeom.mem_perp']`. Establish `hBe : ∀ a : Fin r, H.B w (N.F.e a.castSucc) = 0`.
+
+Introduce `a`. Establish `h1 : N.F.e a.castSucc ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist` using `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨a, a.isLt, rfl⟩))`. Rewrite using `[← H.herm (N.F.e a.castSucc) w, hw _ h1, star_zero]`. Establish `hBe' : ∀ a : Fin r, H.B w (N.F'.e a.castSucc) = 0`. Introduce `a`.
+
+Establish `h1 : N.F'.e a.castSucc ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist` using `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.subset_span ⟨a, a.isLt, rfl⟩))`. Rewrite using `[← H.herm (N.F'.e a.castSucc) w, hw _ h1, star_zero]`. Establish `hBist : ∀ b : Fin r, N.j ≤ b.val → H.B w (N.ist b) = 0`. Introduce `b hb`. Establish `h1 : N.ist b ∈ N.F.X ⊔ N.F'.X ⊔ N.Ist` using `Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+
+Rewrite using `[← H.herm (N.ist b) w, hw _ h1, star_zero]`. Establish `hρ' : ∀ n : ℕ, ((ρ ^ n : ℝ) : ℂ) ≠ 0` using `fun n => Complex.ofReal_ne_zero.2 (pow_pos hρ n).ne'`. Establish `hes : ∀ a : Fin r, Φ w (esI k r a) = 0`. Introduce `a`. Establish `h1` using `hiso w (N.F.e a.castSucc)`.
+
+Rewrite `h1` using `[(he a).1, GlobalTheory.DegVol.RealMat.herm_smul_right, GlobalTheory.DegVol.RealMat.herm_eI, hBe a, map_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (star_ne_zero.2 (hρ' _))`. Establish `hhi : ∀ b : Fin r, N.j ≤ b.val → Φ w (eI k r b) = 0`. Introduce `b hb`. Establish `h1` using `hiso w (N.ist b)`.
+
+Rewrite `h1` using `[hist b hb, GlobalTheory.DegVol.RealMat.herm_smul_right, herm_esI, hBist b hb, map_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (star_ne_zero.2 (Complex.ofReal_ne_zero.2 (inv_ne_zero (pow_pos hρ _).ne')))`. Establish `hlo : ∀ b : Fin r, b.val < N.j → Φ w (eI k r b) = 0`. Establish `hdet : IsUnit g.det` using `GlobalTheory.DegVol.RealMat.isUnit_det hgG`. Introduce `b hb`.
+
+Use `coord_eq_zero (j := N.j) hgG hX (fun a _ => ?_) b hb` and prove the remaining obligations. Establish `h3 : Φ (N.F'.e a.castSucc) = ((ρ ^ (r - a.val) : ℝ) : ℂ) • (g⁻¹ *ᵥ bvec (eI k r a))`. Rewrite using `[← Matrix.mulVec_smul, ← (he a).2, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Establish `h2 : g⁻¹ *ᵥ bvec (eI k r a) = (((ρ ^ (r - a.val) : ℝ) : ℂ))⁻¹ • Φ (N.F'.e a.castSucc)`. Rewrite using `[h3, inv_smul_smul₀ (hρ' _)]`.
+
+Rewrite using `[h2, GlobalTheory.DegVol.RealMat.herm_smul_right, hiso, hBe' a, map_zero, mul_zero]`. Unfold `inWb`. Introduce `i hi`. Break down `hi with hi | hi` into its components or cases. Establish `hb : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`.
+
+Rewrite using `[← hb]`. Distinguish the cases in `hj : i.val < N.j`. Conclude with `hlo ⟨i.val, hi⟩ hj`. Conclude with `hhi ⟨i.val, hi⟩ (not_lt.1 hj)`. Establish `hlt : 2 * r + k - i.val < r`.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hb : esI k r ⟨2 * r + k - i.val, hlt⟩ = i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [esI, Fin.val_mk]`.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hb]`. Conclude with `hes _`.
+-/
 theorem inWb_of_mem_Wn : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V) (r : ℕ) (N : NF H r) (k : ℕ) (σ : K →+* ℂ) (ρ : ℝ) (β : Fin r → ℕ) (Φ : V → Fin (2 * r + k + 1) → ℂ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r), 0 < ρ → IsFrameOf N k σ ρ β Φ z z' g → ∀ w ∈ N.Wn, inWb k r (Φ w) := by
   intro K V _ _ _ _ _ _ _ _ H r N k σ ρ β Φ z z' g hρ hF w hw
   unfold IsFrameOf at hF

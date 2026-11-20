@@ -19,6 +19,9 @@ namespace GlobalTheory.Core.Rk.BasicId
 
 open Filter Set GlobalTheory.Eis
 
+/- English proof (translation)
+The claim follows from `measurable_of_tendsto_metrizable' (atTop : Filter (Finset I)) (f := fun s x => ∑ i ∈ s, F i x) (fun s => Finset.measurable_sum s fun i _ => hF i) (tendsto_pi_nhds.2 fun x => (hs x).hasSum)`.
+-/
 theorem measurable_tsum_of_summable' {X I : Type} [MeasurableSpace X] [Countable I]
     (F : I → X → ℂ) (hF : ∀ i, Measurable (F i)) (hs : ∀ x, Summable fun i => F i x) :
     Measurable fun x => ∑' i, F i x :=
@@ -26,6 +29,9 @@ theorem measurable_tsum_of_summable' {X I : Type} [MeasurableSpace X] [Countable
     (f := fun s x => ∑ i ∈ s, F i x) (fun s => Finset.measurable_sum s fun i _ => hF i)
     (tendsto_pi_nhds.2 fun x => (hs x).hasSum)
 
+/- English proof (translation)
+Take `⟨γ, e⟩` from `mk_eq_iff.1 (Quotient.out_eq (mk ((siegel V).subgroupOf (GQ (dblSp V))) x))`. Establish `e'` using `congrArg (fun z : GQ (dblSp V) => (z : GA D (dblSp V))) e`. Simplify using `only [Subgroup.coe_mul] at e'`. Rewrite using `[← e', mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul]`. Conclude with `inv_mem (Subgroup.mem_subgroupOf.1 γ.2)`.
+-/
 theorem out_mul_inv_mem {D : D7} (V : HSp D) (x : GQ (dblSp V)) :
     (((mk ((siegel V).subgroupOf (GQ (dblSp V))) x).out : GQ (dblSp V)) : GA D (dblSp V)) *
       ((x : GA D (dblSp V)))⁻¹ ∈ siegel V := by
@@ -35,6 +41,43 @@ theorem out_mul_inv_mem {D : D7} (V : HSp D) (x : GQ (dblSp V)) :
   rw [← e', mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul]
   exact inv_mem (Subgroup.mem_subgroupOf.1 γ.2)
 
+/- English proof (translation)
+Introduce `D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂ hcusp`. Use `haveI := hm`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Establish `hL : LeftInv (siegelQ V) φ` using `leftInv_of_mem hμ hφ`. Establish `hφc : Continuous φ` using `hφ.2.1`.
+
+Establish `hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D V (frameLat V) a (GlobalTheory.Core.Rk.AbsConv.isSelfDualC_frameLat V) ha`. Establish `hS : SphConv V a` using `GlobalTheory.Eis.sphConv D V a hI`. Establish `hσ : (V.rank : ℝ) / 2 < ((s.re : ℂ)).re` using `by simpa using hs`. Establish `hconvS : ∀ g, EisConv V (sph V a (s.re : ℂ)) g` using `fun g => (((sphConv_iff hI).1 hS).1 _ hσ).2 g`. Establish `h2 : ∀ g, sph V a (s.re : ℂ) g = (((hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2) : ℝ) : ℂ)` using `fun g => by`.
+
+Rewrite using `[Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hr0 : ∀ g, 0 ≤ (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` using `fun g => Real.rpow_nonneg (NNReal.coe_nonneg _) _`. Establish `hn : ∀ g, ‖sph V a (s.re : ℂ) g‖ = (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` using `fun g => by`.
+
+Rewrite using `[h2, Complex.norm_real, Real.norm_of_nonneg (hr0 g)]`. Take `⟨C, hC⟩ : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C * (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` from `by haveI := t2Space_adeleRing' (F := D.host.F)`. Conclude with `hI.exists_norm_le continuous_absE (isCompact_Khat V a) hφ`. Establish `hsum : ∀ y, Summable fun q : SiegelCosets V => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * y)` using `fun y => Summable.of_norm (((hconvS y).of_norm_le (C := max C 0) fun g => (hC g).trans (by rw [hn]; exact mul_le_mul_of_nonneg_right (le_max_left _ _) (hr0 g))) : EisConv V φ y)`. Use `set P : Set (SiegelCosets V) := {q | ∃ δ ∈ GQ V, ((q.out : GQ (dblSp V)) : GA D (dblSp V)) * (io V (δ, 1))⁻¹ ∈ siegel V} with hP`.
+
+Set `e0 : GQ V → P` to `fun δ => ⟨mk _ ⟨io V ((δ : GA D V), 1), io_mem_GQ V δ.2 (one_mem _)⟩, ⟨δ, δ.2, out_mul_inv_mem V ⟨io V ((δ : GA D V), 1), io_mem_GQ V δ.2 (one_mem _)⟩⟩⟩`. Establish `hbij : Function.Bijective e0`. Use `⟨fun δ δ' h => injective_mk_io (congrArg Subtype.val h), fun q => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, hq⟩` from `q.2`. Use `⟨⟨δ, hδ⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `hm' : (q.1.out : GQ (dblSp V)) * (⟨io V (δ, 1), io_mem_GQ V hδ (one_mem _)⟩ : GQ (dblSp V))⁻¹ ∈ (siegel V).subgroupOf (GQ (dblSp V))` using `Subgroup.mem_subgroupOf.2 (by simpa using hq)`. Conclude with `(mk_eq_iff.2 ⟨⟨_, hm'⟩, by simp⟩).trans q.1.out_eq`. Establish `hterm : ∀ (δ : GQ V) y, φ ((((e0 δ).1.out : GQ (dblSp V)) : GA D (dblSp V)) * y) = φ (io V ((δ : GA D V), 1) * y)` using `fun δ y => term_mk hL y ⟨io V ((δ : GA D V), 1), io_mem_GQ V δ.2 (one_mem _)⟩`. Take `⟨Eo, hEo⟩ : ∃ Eo : GA D (dblSp V) → ℂ, Eo = fun y => ∑' δ : GQ V, φ (io V (δ, 1) * y)` from `⟨_, rfl⟩`. Take `⟨En, hEn⟩ : ∃ En : GA D (dblSp V) → ℂ, En = fun y => ∑' q : {q : GlobalTheory.Eis.SiegelCosets V // ¬ ∃ δ ∈ GQ V, ((q.out : GQ (dblSp V)) : GA D (dblSp V)) * (io V (δ, 1))⁻¹ ∈ siegel V}, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y)` from `⟨_, rfl⟩`.
+
+Establish `hEoP : ∀ y, Eo y = ∑' q : P, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y)` using `fun y => by`. Rewrite using `[hEo, ← (Equiv.ofBijective e0 hbij).tsum_eq]`. Conclude with `tsum_congr fun δ => (hterm δ y).symm`. Establish `hsumO : ∀ y, Summable fun δ : GQ V => φ (io V ((δ : GA D V), 1) * y)` using `fun y => by`. Use `((Equiv.ofBijective e0 hbij).summable_iff (f := fun q : P => φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y))).2 ((hsum y).subtype P)` as an intermediate fact.
+
+Conclude with `this.congr fun δ => hterm δ y`. Establish `hsplit : ∀ y, eis V φ y = Eo y + En y` using `fun y => by`. Rewrite using `[hEoP, hEn]`. Conclude with `((hsum y).tsum_subtype_add_tsum_subtype_compl P).symm`. Establish `hEoInv : ∀ γ ∈ (GQ V).prod (GQ V), ∀ y, Eo (io V γ * y) = Eo y`.
+
+Introduce and unpack `⟨γ₁, γ₂⟩ ⟨h1, h2⟩ y`. Set `e : GQ V ≃ GQ V` to `(Equiv.mulLeft (⟨γ₂, h2⟩ : GQ V)⁻¹).trans (Equiv.mulRight ⟨γ₁, h1⟩)`. Rewrite using `[hEo]`. Use `show ∑' δ : GQ V, φ (io V ((δ : GA D V), 1) * (io V (γ₁, γ₂) * y)) = ∑' δ : GQ V, φ (io V ((δ : GA D V), 1) * y)`. Rewrite using `[← e.tsum_eq (fun δ : GQ V => φ (io V ((δ : GA D V), 1) * y))]`.
+
+Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Establish `hd : io V ((δ : GA D V), 1) * (io V (γ₁, γ₂) * y) = io V (γ₂, γ₂) * (io V (((e δ : GQ V) : GA D V), 1) * y)`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul]`. Use `congr 2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[e, mul_assoc]`. Simplify using the standard rewrite rules. Rewrite using `[hd, hL _ ⟨(io_mem_siegel V).2 rfl, io_mem_GQ V h2 h2⟩]`. Establish `hi : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ Eo f₁ f₂)` using `fun γ hγ g => by`. Simplify using `only [dblIntegrand, map_mul (io V), hEoInv γ hγ, Prod.fst_mul, Prod.snd_mul, h₁.1 _ hγ.1, h₂.1 _ hγ.2, map_mul (detA V), map_mul μ, apply_detA hμ hγ.2, one_mul]`.
+
+Establish `hEom : Measurable Eo`. Rewrite using `[hEo]`. Conclude with `measurable_tsum_of_summable' (fun δ : GQ V => fun y => φ (io V ((δ : GA D V), 1) * y)) (fun δ => (hφc.comp (continuous_const.mul continuous_id)).measurable) hsumO`. Establish `hDm : Measurable (dblIntegrand V μ Eo f₁ f₂)`. Establish `e : dblIntegrand V μ Eo f₁ f₂ = fun g => Eo (io V g) * dblIntegrand V μ (fun _ => 1) f₁ f₂ g`.
+
+Use function extensionality and compare the values at `fun g => by simp only [dblIntegrand]; ring`. Rewrite using `[e]`. Conclude with `(hEom.comp (continuous_io V).measurable).mul (continuous_dblIntegrand hμ continuous_const h₁.continuous h₂.continuous).measurable`. Establish `h𝓕` using `isFundamentalDomain_stdDom (GQ V) m`. Establish `habs` using `GlobalTheory.Core.Rk.AbsConv.absConv_unfolded D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂`.
+
+Establish `hfin` using `habs.1 _ h𝓕`. Establish `hmeasq : ∀ q : SiegelCosets V, AEMeasurable (fun x => ‖dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ x‖ₑ) ((m.prod m).restrict (stdDom (GQ V) ×ˢ stdDom (GQ V)))` using `fun q => (continuous_dblIntegrand hμ (hφc.comp (continuous_const.mul continuous_id)) h₁.continuous h₂.continuous).measurable.enorm.aemeasurable`. Establish `hpt : ∀ x, ‖dblIntegrand V μ Eo f₁ f₂ x‖ₑ ≤ ∑' q : SiegelCosets V, ‖dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ x‖ₑ` using `fun x => by`. Simplify using `only [GlobalTheory.Core.Rk.AbsConv.enorm_dblIntegrand]`. Rewrite using `[ENNReal.tsum_mul_right]`.
+
+Use `gcongr ?_ * _`. Rewrite using `[hEoP]`. Conclude with `enorm_tsum_le_tsum_enorm.trans (ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective _)`. Establish `hOn : IntegrableOn (dblIntegrand V μ Eo f₁ f₂) (stdDom (GQ V) ×ˢ stdDom (GQ V)) (m.prod m)`. Use `⟨hDm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫⁻ x in stdDom (GQ V) ×ˢ stdDom (GQ V), ‖dblIntegrand V μ Eo f₁ f₂ x‖ₑ ∂m.prod m < ⊤`. Combine the equalities or inequalities in the displayed calculation. Establish `hEoC : DblConv V μ m Eo f₁ f₂` using `(dblConv_iff hi hDm h𝓕).2 hOn`. Establish `hQ : ∀ q, dblIntegrandQ V μ (eis V φ) f₁ f₂ q = dblIntegrandQ V μ Eo f₁ f₂ q + dblIntegrandQ V μ En f₁ f₂ q` using `fun q => by simp only [dblIntegrandQ, dblIntegrand, hsplit]; ring`. Establish `hEnI : Integrable (dblIntegrandQ V μ En f₁ f₂) ((autMeasure V m).prod (autMeasure V m))` using `(habs.2.2.sub hEoC.2).congr (Eventually.of_forall fun q => by simp only [Pi.sub_apply, hQ]; ring)`.
+
+Establish `h6` using `GlobalTheory.T.doubling_integral_negligible_orbits_eq_zero_cuspForm D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂ hcusp`. Establish `h7` using `GlobalTheory.T.doubling_open_orbit_unfolds_to_adelic_integral D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂`. Rewrite `h6` using `[← hEn]`. Rewrite `h7` using `[← hEo]`. Use `⟨habs.2, h7.1, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫ q, dblIntegrandQ V μ (eis V φ) f₁ f₂ q ∂(autMeasure V m).prod (autMeasure V m) = _`. Rewrite using `[integral_congr_ae (Eventually.of_forall hQ), integral_add hEoC.2 hEnI, h7.2, h6, add_zero]`.
+-/
 theorem basicIdentity_unfold : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → ∀ (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → ∀ φ ∈ degPS V a μ s, GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (s.re : ℂ))) → ∀ m : Measure (GA D V), m.IsHaarMeasure → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → IsCuspFun V f₁ → GlobalTheory.Eis.BasicIdentity V μ m φ f₁ f₂ := by
   intro D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂ hcusp
   haveI := hm

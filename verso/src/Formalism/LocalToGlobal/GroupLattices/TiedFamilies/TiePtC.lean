@@ -26,6 +26,9 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `hypT_of (hL u) _ (I u w hg) (levTieOf_fr (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg)) (levTieOf_spl (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg)) (isHyperbolicAt_rec_of_placeIdentification D u w hg (I u w hg))`.
+-/
 theorem hypT_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     HypT ((hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).g u w hg) :=

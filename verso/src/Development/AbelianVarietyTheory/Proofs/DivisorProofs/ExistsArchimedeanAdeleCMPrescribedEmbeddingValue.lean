@@ -12,6 +12,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def adAt (w : InfinitePlace F) (c : w.Completion) : AF F :=
   LinearMap.inl F (Ainf F) (Af F) (Pi.single w c)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `infEmb τ (evInf F v (adAt v c) ⊗ₜ[F] x) = _`. Establish `: evInf F v (adAt v c) = c`. Express the relevant statement in the definitionally equal form `(Pi.single v c : Ainf F) v = c`. Conclude with `Pi.single_eq_same v c`. Rewrite using `[this, infEmb_tmul]`.
+-/
 theorem piInf_adAt_same (v : InfinitePlace F) (τ : EmbOver E v) (c : v.Completion) (x : E) :
     piInf τ (adAt v c ⊗ₜ[F] x) = InfinitePlace.Completion.extensionEmbedding v c * τ.1 x := by
   change infEmb τ (evInf F v (adAt v c) ⊗ₜ[F] x) = _
@@ -20,6 +23,9 @@ theorem piInf_adAt_same (v : InfinitePlace F) (τ : EmbOver E v) (c : v.Completi
     exact Pi.single_eq_same v c
   rw [this, infEmb_tmul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `infEmb τ (evInf F v (adAt w c) ⊗ₜ[F] x) = _`. Establish `: evInf F v (adAt w c) = 0`. Express the relevant statement in the definitionally equal form `(Pi.single w c : Ainf F) v = 0`. Conclude with `Pi.single_eq_of_ne h c`. Rewrite using `[this, TensorProduct.zero_tmul, map_zero]`.
+-/
 theorem piInf_adAt_ne {v w : InfinitePlace F} (h : v ≠ w) (τ : EmbOver E v) (c : w.Completion) (x : E) :
     piInf τ (adAt w c ⊗ₜ[F] x) = 0 := by
   change infEmb τ (evInf F v (adAt w c) ⊗ₜ[F] x) = _
@@ -28,12 +34,20 @@ theorem piInf_adAt_ne {v w : InfinitePlace F} (h : v ≠ w) (τ : EmbOver E v) (
     exact Pi.single_eq_of_ne h c
   rw [this, TensorProduct.zero_tmul, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, ← InfinitePlace.Completion.ringEquivRealOfIsReal_apply, RingEquiv.apply_symm_apply]`.
+-/
 theorem ext_symm_real {w : InfinitePlace F} (hw : w.IsReal) (t : ℝ) :
     InfinitePlace.Completion.extensionEmbedding w ((InfinitePlace.Completion.ringEquivRealOfIsReal hw).symm t) =
       (t : ℂ) := by
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw,
     ← InfinitePlace.Completion.ringEquivRealOfIsReal_apply, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Establish `: u * adAt w c = 0`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (adAt w c).1 = 0`.
+
+Rewrite using `[hu1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * (adAt w c).2 = 0`. Conclude with `mul_eq_zero_of_right _ rfl`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+-/
 theorem smul_adAt_tmul (u : AF F) (hu : evI F u = 0) (w : InfinitePlace F) (c : w.Completion) (x : E) :
     u • (adAt w c ⊗ₜ[F] x : AE F E) = 0 := by
   have hu1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)
@@ -46,6 +60,19 @@ theorem smul_adAt_tmul (u : AF F) (hu : evI F u = 0) (w : InfinitePlace F) (c : 
       exact mul_eq_zero_of_right _ rfl
   rw [this, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h τ z`. Use `haveI : IsTotallyReal F := h.1`. Use `haveI : IsTotallyComplex E := h.2.1`. Establish `hξ : ∀ w, ∃ ξ : E, ((τ w).1 ξ).im ≠ 0` using `fun w => by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `IsTotallyComplex.complexEmbedding_not_isReal (τ w).1 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => Complex.conj_eq_iff_im.2 (hc x)))`. Use `choose ξ hξ using hξ`. Set `s : InfinitePlace F → ℝ` to `fun w => (z w).im / ((τ w).1 (ξ w)).im`. Set `r : InfinitePlace F → ℝ` to `fun w => (z w).re - s w * ((τ w).1 (ξ w)).re`.
+
+Set `cR : ∀ w : InfinitePlace F, ℝ → w.Completion` to `fun w t => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm t`. Use `⟨∑ w, (adAt w (cR w (r w)) ⊗ₜ[F] (1 : E) + adAt w (cR w (s w)) ⊗ₜ[F] ξ w), ?_, fun v => ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_add, smul_adAt_tmul u hu, smul_adAt_tmul u hu, add_zero]`. Rewrite using `[map_sum, Finset.sum_eq_single v]`. Rewrite using `[map_add, piInf_adAt_same, piInf_adAt_same]`. Simplify using `only [cR, ext_symm_real, map_one, mul_one]`. Establish `h0` using `hξ v`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, zero_mul, sub_zero, r]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, zero_add, zero_mul, add_zero, s]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce `w _ hw`. Rewrite using `[map_add, piInf_adAt_ne (Ne.symm hw), piInf_adAt_ne (Ne.symm hw), add_zero]`. Introduce `hv`. Conclude with `absurd (Finset.mem_univ v) hv`.
+-/
 theorem exists_at_inf_values : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → ℂ),
     ∃ a : AE F E, At (evI F) a ∧ ∀ w, piInf (τ w) a = z w := by

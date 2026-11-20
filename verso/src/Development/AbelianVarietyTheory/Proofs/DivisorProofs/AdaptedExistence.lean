@@ -20,6 +20,15 @@ namespace GlobalTheory.BigOn.Exp.Adapt
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `letI : Algebra A ℂ := (f.comp (algebraMap A (FractionRing A))).toAlgebra`. Use `haveI : Algebra.IsIntegral A B := Algebra.IsIntegral.of_finite A B`. Use `haveI : Algebra.IsAlgebraic A B := inferInstance`. Use `haveI : Algebra.IsAlgebraic B (FractionRing B) := IsLocalization.isAlgebraic _ (nonZeroDivisors B)`. Use `haveI : Algebra.IsAlgebraic A (FractionRing B) := Algebra.IsAlgebraic.trans A B (FractionRing B)`.
+
+Establish `hA : Function.Injective (algebraMap A (FractionRing B))`. Rewrite using `[IsScalarTower.algebraMap_eq A B (FractionRing B)]`. Conclude with `(IsFractionRing.injective B (FractionRing B)).comp hinj`. Establish `hC : Function.Injective (algebraMap A ℂ)` using `f.injective.comp (IsFractionRing.injective A (FractionRing A))`. Use `haveI : Module.IsTorsionFree A (FractionRing B) := Module.IsTorsionFree.of_smul_eq_zero fun r m h => by`.
+
+Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp (fun h => hA (h.trans (map_zero _).symm)) id`. Use `haveI : Module.IsTorsionFree A ℂ := Module.IsTorsionFree.of_smul_eq_zero fun r m h => by`. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Conclude with `h.imp (fun h => hC (h.trans (map_zero _).symm)) id`.
+
+Set `g` to `IsAlgClosed.lift (M := ℂ) (R := A) (S := FractionRing B)`. Use `⟨g.toRingHom, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `g.commutes a`. Rewrite `h` using `[IsScalarTower.algebraMap_apply A B (FractionRing B)]`. Conclude with `h`.
+-/
 theorem exists_ext_frac {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B]
     (hinj : Function.Injective (algebraMap A B)) [Module.Finite A B] (f : FractionRing A →+* ℂ) :
     ∃ g : FractionRing B →+* ℂ, ∀ a : A, g (algebraMap B _ (algebraMap A B a)) = f (algebraMap A _ a) := by
@@ -47,6 +56,13 @@ theorem exists_ext_frac {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsD
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hv : ∀ x, ∃ σ, a.pull ψ x = ψ σ`. Introduce `x`. Unfold `Recip.pull GlobalTheory.SeriesTie.descend`. Use `split_ifs with hc`. Take `⟨σ, hσ⟩` from `QuotientGroup.mk'_surjective _ (a.sym x)`.
+
+Use `⟨σ, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, ← hσ]`. Both sides reduce to the same expression. Conclude with `⟨1, by simp⟩`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations.
+
+Take `⟨σ, hσ⟩` from `hv x`. Simplify using `only [GlobalTheory.SeriesTie.charOf, MonoidHom.comp_apply, hσ]`. Rewrite using `[show Units.map f.toMonoidHom (ψ σ) = Units.map f'.toMonoidHom (ψ σ) from Units.ext (h σ)]`.
+-/
 theorem charOf_congr {Ω : Type} [Field Ω] [Algebra D.host.E Ω] (a : Recip D Ω) {R : Type} [CommRing R]
     (f f' : R →+* ℂ) (ψ : G D.host.E Ω →* Rˣ) (h : ∀ σ, f (ψ σ : Rˣ) = f' (ψ σ : Rˣ)) :
     GlobalTheory.SeriesTie.charOf a f ψ = GlobalTheory.SeriesTie.charOf a f' ψ := by
@@ -73,14 +89,31 @@ def withTau (ρ : Setup D.ntw) (t : D.ntw.Tw) (s : Bool) (τ : ℂ ≃+* ℂ) : 
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withTau_e (ρ : Setup D.ntw) (t : D.ntw.Tw) (s : Bool) (τ : ℂ ≃+* ℂ) (i : D.ntw.Tw) (b : Bool) :
     (withTau ρ t s τ).e i b = if i = t ∧ b = s then τ.toRingHom.comp (ρ.e i b) else ρ.e i b := rfl
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withTau_ek (ρ : Setup D.ntw) (t : D.ntw.Tw) (s : Bool) (τ : ℂ ≃+* ℂ) (i : D.ntw.Tw) (b : Bool) (k : ℕ) :
     (withTau ρ t s τ).ek i b k = if i = t ∧ b = s then τ.toRingHom.comp (ρ.ek i b k) else ρ.ek i b k := rfl
 
+/- English proof (translation)
+Use `⟨hρ.rc, hρ.ch, hρ.bad_ne, hρ.goodSetup_bad_mem_badPlaces, hρ.goodSetup_badPlaces_conj, hρ.goodSetup_placesOverTwo_subset, hρ.goodSetup_count_eq_zero_off_badPlaces, ?_, ?_, hρ.base, hρ.latS, hρ.latT, hρ.Pg, ?_, hρ.weil, hρ.classes⟩` and prove the remaining obligations. Introduce `i b x`. Rewrite using `[withTau_e]`. Use `split_ifs with h`. Use `show τ (ρ.e i b _) = _`.
+
+Rewrite using `[hρ.e_LL0]`. Conclude with `hfix x`. Conclude with `hρ.e_LL0 i b x`. Introduce `i b k x show (withTau ρ t s τ).ek i b k _ = (withTau ρ t s τ).e i b _`. Rewrite using `[withTau_e, withTau_ek]`.
+
+Use `split_ifs with h`. Conclude with `congrArg τ (hρ.ek_e i b k x)`. Conclude with `hρ.ek_e i b k x`. Introduce `i j b show (ρ.B i j b).de = twistOf ρ.rc (((withTau ρ t s τ).eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) (ρ.ch i) (D.ntw.pD i) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i))`. Rewrite using `[hρ.delta i j b]`.
+
+Unfold `twistOf`. Establish `: GlobalTheory.SeriesTie.charOf ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)) = GlobalTheory.SeriesTie.charOf ρ.rc (((withTau ρ t s τ).eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) (Formal …`. Use `charOf_congr _ _ _ _ fun σ => ?_` and prove the remaining obligations. Use `show ρ.e i b _ = (withTau ρ t s τ).e i b _`. Rewrite using `[withTau_e]`.
+
+Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Conclude with `(hδ σ).symm`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem withTau_good {ρ : Setup D.ntw} (hρ : ρ.Good) (t : D.ntw.Tw) (s : Bool) (τ : ℂ ≃+* ℂ)
     (hfix : ∀ y, τ (embLL0 D y) = embLL0 D y)
     (hδ : ∀ σ, τ (ρ.eO t s (algebraMap (D.ntw.O0 t) (D.ntw.O t)
@@ -119,6 +152,13 @@ theorem withTau_good {ρ : Setup D.ntw} (hρ : ρ.Good) (t : D.ntw.Tw) (s : Bool
       · rfl
     rw [this]
 
+/- English proof (translation)
+Take `⟨⟨y', z⟩, hz⟩` from `IsLocalization.surj (nonZeroDivisors (D.ntw.O0 (c.twI w))) ((if c.sd w then D.ntw.emb0 (c.twI w) else D.ntw.emb0b (c.twI w)) y)`. Establish `hz0 : (z : D.ntw.O0 (c.twI w)) ≠ 0` using `nonZeroDivisors.coe_ne_zero z`. Establish `e1 : ∀ x : D.ntw.O (c.twI w), ρ.ek (c.twI w) (c.sd w) (c.k' w) (algebraMap _ (FractionRing _) (algebraMap (D.ntw.O (c.twI w)) (D.ntw.Ok (c.twI w) (c.k' w)) x)) = ρ.e (c.twI w) (c.sd w) (algebraMap _ _ x)` using `hρ.ek_e (c.twI w) (c.sd w) (c.k' w)`. Establish `h1` using `congrArg g (hc.embedding_baseField_condition w y y' z hz0 hz)`. Rewrite `h1` using `[map_mul, hg, hg, e1, e1]`.
+
+Establish `h2 : sideEmb D.ntw (c.twI w) (c.sd w) y * algebraMap (D.ntw.O (c.twI w)) (FractionRing (D.ntw.O (c.twI w))) (algebraMap (D.ntw.O0 (c.twI w)) (D.ntw.O (c.twI w)) z) = algebraMap _ _ (algebraMap (D.ntw.O0 (c.twI w)) (D.ntw.O (c.twI w)) y')`. Use `congrArg (IsFractionRing.map (A := D.ntw.O0 (c.twI w)) (B := D.ntw.O (c.twI w)) (K := FractionRing (D.ntw.O0 (c.twI w))) (L := FractionRing (D.ntw.O (c.twI w))) (D.ntw.O_inj (c.twI w))) hz` as an intermediate fact. Simplify using `only [map_mul, IsFractionRing.map, IsLocalization.map_eq] at this`. Conclude with `this`. Establish `h3` using `congrArg (ρ.e (c.twI w) (c.sd w)) h2`.
+
+Rewrite `h3` using `[map_mul, hρ.e_LL0]`. Establish `hne : ρ.e (c.twI w) (c.sd w) (algebraMap _ (FractionRing (D.ntw.O (c.twI w))) (algebraMap (D.ntw.O0 (c.twI w)) (D.ntw.O (c.twI w)) z)) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 ((map_ne_zero_iff _ (D.ntw.O_inj (c.twI w))).2 hz0))`. Conclude with `mul_right_cancel₀ hne (h1.trans h3.symm)`.
+-/
 theorem ext_onSmallField {c : NChoice D} (hc : NChTie D c) (w : D.what₂.places.Pl) {ρ : Setup D.ntw} (hρ : ρ.Good)
     (g : FractionRing (c.Oe w) →+* ℂ)
     (hg : ∀ a : D.ntw.Ok (c.twI w) (c.k' w), g (algebraMap (c.Oe w) _ (algebraMap _ (c.Oe w) a)) =
@@ -149,6 +189,9 @@ theorem ext_onSmallField {c : NChoice D} (hc : NChTie D c) (w : D.what₂.places
 
 section Point
 
+/- English proof (translation)
+The claim follows from `{ psi := h.psi, inf := h.inf, cartT := h.cartT, onbS := h.onbS, onbT := h.onbT, latS := h.latS, latT := h.latT, frS := h.frS, frT := h.frT, vac := h.vac, Pg := h.Pg, grp := h.grp, mu0 := h.mu0, eta := h.eta, delta := h.delta, deltaPl := h.deltaPl, ap := h.ap, am := h.am }`.
+-/
 theorem realPin_withTau {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     {Rl : RealDat3 D A3 Ks} {cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ : Setup D.ntw} (h : RealPin Rl cG ρ)
@@ -160,6 +203,15 @@ theorem realPin_withTau {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Use `haveI : Module.Finite (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) (ex.nch.Oe w) := ex.nch.Oe_fin w`. Take `⟨g, hg⟩` from `exists_ext_frac (ex.nch.Oe_inj w) (ρ.ek (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w))`. Use `haveI : Countable D.what₂.LL := Countable.of_equiv _ (Module.finBasis ℚ D.what₂.LL).equivFun.symm.toEquiv`. Take `⟨τ, hτ⟩` from `GlobalTheory.CompRat.exists_ringEquiv_complex_comp_eq D.what₂.LL (g.comp (ex.nch.embW w)) D.what₂.embLL`. Establish `hfix : ∀ y : D.LL0, τ (embLL0 D y) = embLL0 D y` using `fun y => by`.
+
+Establish `h` using `ext_onSmallField ex.nch_tie w hρ g hg y`. Establish `h2 : τ (g (ex.nch.embW w (y : D.what₂.LL))) = D.what₂.embLL y` using `hτ _`. Rewrite `h2` using `[h]`. Conclude with `h2`. Establish `hχ : (p.R.C.delAt (D.ntw.l (ex.nch.twI w))).ValuesIn 0 (embLL0 D)`.
+
+Establish `hv` using `hm.2.2.small.val`. Unfold `CharFrame.delAt`. Use `split_ifs`. Use `exacts [hv.del', hv.del]`. Establish `hδ` using `GlobalTheory.T.ringAut_fixing_smallField_fixes_delta_values ρ hρ (ex.nch.twI w) j (ex.nch.sd w) _ (hpin.delta _ j _) hχ τ hfix`.
+
+Use `⟨withTau ρ (ex.nch.twI w) (ex.nch.sd w) τ, withTau_good hρ _ _ τ hfix hδ, ⟨rfl, rfl, rfl, rfl, rfl⟩, realPin_withTau hpin _ _ τ, τ.toRingHom.comp g, fun x => hτ x, fun a => ?_⟩` and prove the remaining obligations. Use `show τ (g _) = (withTau ρ (ex.nch.twI w) (ex.nch.sd w) τ).ek (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) _`. Rewrite using `[withTau_ek, if_pos ⟨rfl, rfl⟩]`. Conclude with `congrArg τ (hg a)`.
+-/
 theorem adapt_at (p : PtAt ex Csz) (w : D.what₂.places.Pl) (j : Fin D.R.m) (hm : More p) (ρ : Setup D.ntw) (hρ : ρ.Good)
     (hpin : RealPin p.R p.cG ρ) : ∃ ρ' : Setup D.ntw, ρ'.Good ∧ SameBut ρ ρ' ∧ Adapted p w ρ' := by
   haveI : Module.Finite (D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) (ex.nch.Oe w) := ex.nch.Oe_fin w
@@ -189,6 +241,9 @@ end GlobalTheory.BigOn.Exp.Adapt
 
 open GlobalTheory.BigOn.Exp.Adapt in
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ hm w _ j => adapt_at p w j hm⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.BigOn.Exp.adaptEx : AdaptEx := by
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
     fun Fm CH _ _ => ⟨0, fun x hx _ i p _ hm w _ j => adapt_at p w j hm⟩⟩⟩

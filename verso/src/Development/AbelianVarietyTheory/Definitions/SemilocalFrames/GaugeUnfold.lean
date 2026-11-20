@@ -48,8 +48,14 @@ def GaugeUnfold : Prop :=
       ENNReal.ofReal (∏ v, c v) * (∫⁻ g in fund, gaussSum I (sgn I.E s) g ∂(I.muA μf)) / μf I.Kset =
         gaugeVol I' c' μf' * ENNReal.ofReal (2 ^ (I.n * I.f) * ∏ v, gaussDens (I.ε v) (sgn ℝ s))
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem gauss_pos {n : ℕ} (y : Fin n → ℂ) : 0 < gauss y := Real.exp_pos _
 
+/- English proof (translation)
+Simplify using `[qEps]`.
+-/
 example : qEps (fun _ : Fin 1 => true) (fun _ => 1) = 1 := by simp [qEps]
 
 end GlobalTheory.GaussMean

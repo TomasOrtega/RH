@@ -18,12 +18,22 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => mul_mem (y.val i j).2 (hx j)`.
+-/
 theorem intGL_mulVec_mem (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) (x : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
     (hx : ∀ i, x i ∈ Formalism.L2.Herm.intAf F E) (i : Fin n) :
     (intGL F E n y).val.mulVec x i ∈ Formalism.L2.Herm.intAf F E := by
   simp only [Matrix.mulVec, dotProduct]
   exact Subring.sum_mem _ fun j _ => mul_mem (y.val i j).2 (hx j)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hk`. Establish `e : k * β = β * intGL F E n y`. Rewrite using `[← hy]`. Express the relevant statement in the definitionally equal form `β * intGL F E n y * β⁻¹ * β = _`. Rewrite using `[inv_mul_cancel_right]`.
+
+Introduce `x`. Rewrite using `[hβ x, e, mul_inv_rev, ← map_inv, Units.val_mul, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Conclude with `intGL_mulVec_mem y⁻¹ _`. Introduce `h`.
+
+Establish `h2` using `intGL_mulVec_mem y _ h`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_mul_of_mem_St (β k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Submodule (𝓞 E) (Fin n → E))
     (hβ : IsFrame β Λ) (hk : k ∈ St β) : IsFrame (k * β) Λ := by
   obtain ⟨y, hy⟩ := hk
@@ -42,6 +52,13 @@ theorem isFrame_mul_of_mem_St (β k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af 
 
 end General
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT βS βT _ _ hS hT g h hg hh u`. Establish `hS'` using `isFrame_mul_of_mem_St βS _ ΛS hS hg`. Establish `hT'` using `isFrame_mul_of_mem_St βT _ ΛT hT hh`. Establish `eS : (finE S g * βS).val = (Formalism.L2.Theta.mt S g).map (toEAf D) * βS.val` using `rfl`. Establish `eT : (finE T h * βT).val = (Formalism.L2.Theta.mt T h).map (toEAf D) * βT.val` using `rfl`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `GlobalTheory.AdelicLatMove.actO_mem_latO S T g h ΛS ΛS ΛT ΛT βS _ βT _ hS hS' hT hT' eS eT u`. Introduce `hu`. Establish `h1` using `GlobalTheory.AdelicLatMove.actO_mem_latO S T g⁻¹ h⁻¹ ΛS ΛS ΛT ΛT _ βS _ βT hS' hS hT' hT (GlobalTheory.AdelicLatMove.frame_inv S g _ _ eS) (GlobalTheory.AdelicLatMove.frame_inv T h _ _ eT) _ hu`. Establish `h2` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u`.
+
+Rewrite `h2` using `[inv_inv, inv_inv]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem mem_latO_iff_actO_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → IsFrame βS ΛS → IsFrame βT ΛT → ∀ (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ u, u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) ↔ actO S T g h u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) := by
   intro D S T ΛS ΛT βS βT _ _ hS hT g h hg hh u
   have hS' := isFrame_mul_of_mem_St βS _ ΛS hS hg

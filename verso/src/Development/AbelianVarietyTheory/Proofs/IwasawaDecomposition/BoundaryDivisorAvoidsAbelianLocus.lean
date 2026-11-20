@@ -6,6 +6,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y BY n hB z hz`. Rewrite `hz` using `[Scheme.IdealSheafData.support_comap]`. Establish `hz' : genι Y (Y.jQ z) ∈ (BY.idealSheaf ^ n).support` using `hz`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite `hz'` using `[pow_zero, Scheme.IdealSheafData.one_eq_top, Scheme.IdealSheafData.support_top]`.
+
+Conclude with `hz'`. Rewrite `hz'` using `[Scheme.IdealSheafData.support_pow _ _ hn.ne']`. Use `hB _ hz' ?_` and prove the remaining obligations. Establish `h : Y.jQ z ∈ pullback.fst Y.s (spMap (RingHom.id c.F)) ⁻¹' abLocus Y.t.G` using `Y.ab_gen ▸ Set.mem_range_self _`. Conclude with `h`.
+-/
 theorem jQ_not_mem_support_comap_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (BY : GlobalTheory.EffCartierData Y.X) (n : ℕ),
     (∀ x ∈ BY.idealSheaf.support, x ∉ abLocus Y.t.G) → ∀ z, Y.jQ z ∉ ((BY.idealSheaf ^ n).comap (genι Y)).support := by

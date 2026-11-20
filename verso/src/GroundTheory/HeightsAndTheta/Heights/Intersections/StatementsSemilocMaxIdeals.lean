@@ -13,6 +13,9 @@ section Objects
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Unfold `semiLocRing locRing`. Use `Subring.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, w, a, hw, hwW, hu, hwa, rfl⟩`. Conclude with `⟨u, w, a, hw, hwW W hW, hu, hwa, rfl⟩`.
+-/
 theorem semiLocRing_le_locRing (P : Ideal (MRing ι)) {𝒲 : Set (Ideal (MRing ι))} {W : Ideal (MRing ι)}
     (hW : W ∈ 𝒲) : semiLocRing P 𝒲 ≤ locRing P W := by
   unfold semiLocRing locRing
@@ -24,6 +27,9 @@ def semiToLoc (P : Ideal (MRing ι)) (𝒲 : Set (Ideal (MRing ι))) (W : Ideal 
     semiLocRing P 𝒲 →+* locRing P W :=
   Subring.inclusion (semiLocRing_le_locRing P hW)
 
+/- English proof (translation)
+Simplify using `[semiToLoc]`.
+-/
 theorem semiToLoc_coe (P : Ideal (MRing ι)) (𝒲 : Set (Ideal (MRing ι))) (W : Ideal (MRing ι)) (hW : W ∈ 𝒲)
     (b : semiLocRing P 𝒲) : ((semiToLoc P 𝒲 W hW b : locRing P W) : FractionRing (MRing ι ⧸ P)) = b := by
   simp [semiToLoc]

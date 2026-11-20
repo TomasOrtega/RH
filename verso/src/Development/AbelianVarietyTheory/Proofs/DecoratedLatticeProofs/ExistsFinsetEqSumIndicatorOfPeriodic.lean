@@ -5,6 +5,21 @@ open scoped Topology
 
 namespace GlobalTheory.RootEx
 
+/- English proof (translation)
+Take `⟨s0, -, hcov⟩` from `hcs.elim_nhds_subcover (fun a => {x | x - a ∈ V}) (fun a _ => (hV.preimage (continuous_id.sub continuous_const)).mem_nhds (by simp [V.zero_mem]))`. Use `⟨(s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, fun t => ?_⟩` and prove the remaining obligations. Establish `hmk : ∀ a : X, t - a ∈ V → (a : X ⧸ V) = (t : X ⧸ V)` using `fun a h => by`. Rewrite using `[QuotientAddGroup.eq]`. Simplify `h` using `[sub_eq_neg_add]`.
+
+Establish `huniq : ∀ a ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, ∀ b ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, t - a ∈ V → t - b ∈ V → a = b`. Introduce `a ha b hb hta htb`. Take `⟨qa, -, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨qb, -, rfl⟩` from `Finset.mem_image.1 hb`. Establish `h1` using `hmk _ hta`.
+
+Establish `h2` using `hmk _ htb`. Rewrite `h1`, `h2` using `[QuotientAddGroup.out_eq']`. Rewrite using `[h1, h2]`. Distinguish the cases in `h : ∃ a ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, t - a ∈ V`. Take `⟨a, ha, hta⟩` from `h`.
+
+Rewrite using `[Finset.sum_eq_single a (fun b hb hba => by`. Rewrite using `[Set.indicator_of_notMem (fun htb => hba (huniq b hb a ha htb hta)), mul_zero])`. Use the proof step `(fun h' => absurd ha h'), Set.indicator_of_mem hta, mul_one]`. Use `hper a (t - a) hta` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Use `push_neg at h`. Rewrite using `[Finset.sum_eq_zero (fun b hb => by rw [Set.indicator_of_notMem (h b hb), mul_zero])]`. Assume the negation of the conclusion as `hne`. Establish `ht : t ∈ tsupport Φ` using `subset_tsupport _ hne`. Take `⟨a0, ha0, hta0⟩` from `Set.mem_iUnion₂.1 (hcov ht)`.
+
+Establish `hT : (a0 : X ⧸ V) ∈ s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))` using `Finset.mem_image_of_mem _ ha0`. Use `h (Quotient.out (a0 : X ⧸ V)) (Finset.mem_image_of_mem _ hT) ?_` and prove the remaining obligations. Establish `h1 : ((Quotient.out (a0 : X ⧸ V) : X) : X ⧸ V) = (t : X ⧸ V)`. Rewrite using `[QuotientAddGroup.out_eq']`. Conclude with `hmk a0 hta0`.
+
+Rewrite `h1` using `[QuotientAddGroup.eq]`. Simplify `h1` using `[sub_eq_neg_add]`.
+-/
 theorem exists_finset_eq_sum_indicator_of_periodic {X : Type*} [AddCommGroup X] [TopologicalSpace X]
     [IsTopologicalAddGroup X] {Φ : X → ℂ} (hcs : IsCompact (tsupport Φ)) (V : AddSubgroup X)
     (hV : IsOpen (V : Set X)) (hper : ∀ x, ∀ y ∈ V, Φ (x + y) = Φ x) :

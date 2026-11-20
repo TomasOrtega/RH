@@ -15,6 +15,9 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `w : (pullback.fst (pullback.snd g j) u ≫ pullback.fst g j) ≫ g = (pullback.snd (pullback.snd g j) u ≫ j') ≫ s`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition_assoc, sq, Category.assoc]`. Use `⟨pullback.lift (pb.lift _ _ w) _ (pb.lift_snd _ _ w), ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (pullback.fst g j), Category.assoc, hκ, pullback.lift_fst_assoc, pb.lift_fst]`.
+-/
 theorem exists_comp_eq_fst {S S' U U' X X' : Scheme.{0}} {g : X ⟶ S} {g' : X' ⟶ S'} {s : S' ⟶ S} {β : X' ⟶ X}
     (pb : IsPullback β g' g s) {j : U ⟶ S} [Mono j] {j' : U' ⟶ S'} {u : U' ⟶ U} (sq : u ≫ j = j' ≫ s)
     (κ : pullback g' j' ⟶ pullback g j) (hκ : κ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ β) :
@@ -24,6 +27,9 @@ theorem exists_comp_eq_fst {S S' U U' X X' : Scheme.{0}} {g : X ⟶ S} {g' : X' 
   refine ⟨pullback.lift (pb.lift _ _ w) _ (pb.lift_snd _ _ w), ?_⟩
   rw [← cancel_mono (pullback.fst g j), Category.assoc, hκ, pullback.lift_fst_assoc, pb.lift_fst]
 
+/- English proof (translation)
+Establish `hA` using `pull_isLB hM a`. Establish `hP` using `pull_isLB hN p`. Establish `e₁ : LBIso (L'.pull (c ≫ p')) (M.pull (q ≫ a))` using `GlobalTheory.GenSpread.lbIso_pull_comp c rfl (by rw [← Category.assoc, hc]) h₁`. Establish `e₂ : LBIso (L'.pull (c ≫ p')) (N.pull (q ≫ p))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso h₂ _ (by rw [Category.assoc, ← hκ, ← hc, Category.assoc])`. Conclude with `LBIso.trans (pull_isLB hA _) (pull_isLB hM _) (pull_isLB hP _) (GlobalTheory.GenSpread.lbIso_pull_pull hM q rfl).symm (LBIso.trans (pull_isLB hM _) (pull_isLB hL' _) (pull_isLB hP _) e₁.symm (LBIso.trans (pull_isLB hL' _) (pull_isLB hN _) (pull_isLB hP _) e₂ (GlobalTheory.GenSpre …`.
+-/
 theorem lbIso_pull_pull_of_third {Q Y X Z Z' B : Scheme.{0}} {c : Q ⟶ Y} {κ : Y ⟶ X} {q : Q ⟶ X} (hc : c ≫ κ = q)
     {p : X ⟶ Z} {p' : Y ⟶ Z'} {β : Z' ⟶ Z} (hκ : κ ≫ p = p' ≫ β) {a : X ⟶ B} {M : LB B} {N : LB Z} {L' : LB Z'}
     (hM : M.IsLB) (hN : N.IsLB) (hL' : L'.IsLB) (h₁ : LBIso (L'.pull p') (M.pull (κ ≫ a))) (h₂ : LBIso L' (N.pull β)) :
@@ -40,6 +46,9 @@ theorem lbIso_pull_pull_of_third {Q Y X Z Z' B : Scheme.{0}} {c : Q ⟶ Y} {κ :
       (LBIso.trans (pull_isLB hL' _) (pull_isLB hN _) (pull_isLB hP _) e₂
         (GlobalTheory.GenSpread.lbIso_pull_pull hN q rfl)))
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((algebraMap R' (FractionRing R')).comp ρ)` using `fun a b h => hρ (IsFractionRing.injective R' (FractionRing R') h)`. Conclude with `⟨IsFractionRing.lift (K := FractionRing R) hinj, RingHom.ext fun r => IsFractionRing.lift_algebraMap (K := FractionRing R) hinj r⟩`.
+-/
 theorem exists_fractionRing_map {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R')
     (hρ : Function.Injective ρ) : ∃ g : FractionRing R →+* FractionRing R',
       g.comp (algebraMap R (FractionRing R)) = (algebraMap R' (FractionRing R')).comp ρ := by
@@ -48,6 +57,11 @@ theorem exists_fractionRing_map {R R' : Type} [CommRing R] [IsDomain R] [CommRin
   exact ⟨IsFractionRing.lift (K := FractionRing R) hinj,
     RingHom.ext fun r => IsFractionRing.lift_algebraMap (K := FractionRing R) hinj r⟩
 
+/- English proof (translation)
+Introduce `R _ _ _ _ R' _ _ _ ρ hρ G' _ _ G _ _ β _ _ pb A gen κ hgen hκ L' hL' h₁ P h₂`. Take `⟨gam, hgam⟩` from `exists_fractionRing_map ρ hρ.2.1`. Establish `sq : spMap gam ≫ jK R = jK R' ≫ spMap ρ` using `(spMap_comp _ gam).symm.trans ((congrArg spMap hgam).trans (spMap_comp ρ _))`. Establish `hX : IsAbelianScheme ((Over.pullback (jK R)).obj G)` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback A.isAb (isGrpPullback_of_iso gen)`. Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`.
+
+Take `⟨c, hc⟩` from `exists_comp_eq_fst pb.1 sq κ hκ`. Conclude with `GlobalTheory.PolIsoDescent.lbIso_descend GlobalTheory.globalFns_holds (spMap gam) _ hX (pull_isLB A.isLB _) (pull_isLB P.L.isLB _) (lbIso_pull_pull_of_third hc hκ A.isLB P.L.isLB hL' h₁ h₂)`.
+-/
 theorem lbIso_generic_descend : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G' → IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A) (κ : pullback G'.hom (jK R') ⟶ pullback G.hom (jK R)), IsMonHom gen.hom → κ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ β → ∀ (L' : LB G'.left), L'.IsLB → LBIso (L'.pull (pullback.fst G'.hom (jK R'))) (A.L.pull (κ ≫ gen.hom.left)) → ∀ P : GlobalTheory.UU.CP G, LBIso L' (P.L.L.pull β) → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) := by
   intro R _ _ _ _ R' _ _ _ ρ hρ G' _ _ G _ _ β _ _ pb A gen κ hgen hκ L' hL' h₁ P h₂
   obtain ⟨gam, hgam⟩ := exists_fractionRing_map ρ hρ.2.1

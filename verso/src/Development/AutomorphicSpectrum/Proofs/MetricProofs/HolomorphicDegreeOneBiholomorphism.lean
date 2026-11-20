@@ -7,6 +7,37 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.Cj
 
+/- English proof (translation)
+Introduce `e X Y _ _ _ _ _ A B h hh hd`. Take `⟨-, -, -, -, hfib, hdet⟩` from `hd`. Establish `hex : ∀ x, ∃ y, h ⁻¹' {x} = {y}` using `fun x => Set.ncard_eq_one.1 (hfib x (by simp))`. Establish `hinj : Function.Injective h`. Introduce `a b hab`.
+
+Take `⟨c, hc⟩` from `hex (h a)`. Establish `ha : a ∈ h ⁻¹' {h a}` using `rfl`. Establish `hb : b ∈ h ⁻¹' {h a}` using `hab.symm`. Rewrite `ha`, `hb` using `[hc]`. Conclude with `ha.trans hb.symm`.
+
+Establish `hsurj : Function.Surjective h`. Introduce `x`. Take `⟨c, hc⟩` from `hex x`. Establish `hcx : c ∈ h ⁻¹' {x}` using `by rw [hc]; rfl`. Conclude with `⟨c, hcx⟩`.
+
+Set `E : Y ≃ X` to `Equiv.ofBijective h ⟨hinj, hsurj⟩`. Establish `hEc : Continuous E` using `hh.1`. Take `⟨g, hgE⟩ : ∃ g : X → Y, g = E.symm` from `⟨_, rfl⟩`. Establish `hgc : Continuous g`. Rewrite using `[hgE]`.
+
+Conclude with `hEc.homeoOfEquivCompactToT2.symm.continuous`. Establish `hgh : ∀ y, g (h y) = y` using `fun y => by rw [hgE]; exact E.symm_apply_apply y`. Establish `hhg : ∀ x, h (g x) = x` using `fun x => by rw [hgE]; exact E.apply_symm_apply x`. Use `⟨g, hgh, hhg, hgc, fun j k w hw => ?_⟩` and prove the remaining obligations. Take `⟨hwt, hws⟩` from `hw`.
+
+Establish `hys : g ((A.chart j).symm w) ∈ (B.chart k).source` using `hws`. Take `⟨v, hv⟩ : ∃ v, v = B.chart k (g ((A.chart j).symm w))` from `⟨_, rfl⟩`. Establish `hvt : v ∈ (B.chart k).target` using `hv ▸ (B.chart k).map_source hys`. Establish `hsv : (B.chart k).symm v = g ((A.chart j).symm w)`. Rewrite using `[hv]`.
+
+Conclude with `(B.chart k).left_inv hys`. Establish `hhv : h ((B.chart k).symm v) ∈ (A.chart j).source`. Rewrite using `[hsv, hhg]`. Conclude with `(A.chart j).map_target hwt`. Take `⟨T, hT⟩ : ∃ T : (Fin e → ℂ) → Fin e → ℂ, T = A.chart j ∘ h ∘ (B.chart k).symm` from `⟨_, rfl⟩`.
+
+Establish `hTa : AnalyticAt ℂ T v`. Rewrite using `[hT]`. Conclude with `hh.2 k j v ⟨hvt, hhv⟩`. Establish `hTv : T v = w`. Rewrite using `[hT]`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hsv, hhg]`. Conclude with `(A.chart j).right_inv hwt`. Establish `hdet' : (fderiv ℂ T v).det ≠ 0`. Rewrite using `[hT]; exact hdet k j v hvt (by simp) hhv`.
+
+Establish `hCe` using `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero (fderiv ℂ T v) hdet'`. Take `⟨Ce, hCedef⟩ : ∃ Ce, Ce = (fderiv ℂ T v).toContinuousLinearEquivOfDetNeZero hdet'` from `⟨_, rfl⟩`. Rewrite `hCe` using `[← hCedef]`. Establish `hstrict : HasStrictFDerivAt T (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) v`. Rewrite using `[hCe]`.
+
+Conclude with `hTa.hasStrictFDerivAt`. Use `set F := hstrict.toOpenPartialHomeomorph T with hF`. Establish `hFc : (F : (Fin e → ℂ) → (Fin e → ℂ)) = T` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hus : v ∈ F.source` using `hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hsym : AnalyticAt ℂ F.symm w`.
+
+Establish `h1 : AnalyticAt ℂ F.symm (F v)` using `F.analyticAt_symm' (i := Ce) hus (by rw [hFc]; exact hTa) (by rw [hFc, hCe])`. Rewrite `h1` using `[hFc, hTv]`. Then use the resulting hypothesis. Establish `hc2 : ContinuousAt (g ∘ (A.chart j).symm) w` using `hgc.continuousAt.comp ((A.chart j).continuousAt_symm hwt)`. Establish `hc : ContinuousAt (B.chart k ∘ g ∘ (A.chart j).symm) w` using `ContinuousAt.comp (g := B.chart k) ((B.chart k).continuousAt hys) hc2`. Establish `hus' : F.source ∈ nhds ((B.chart k ∘ g ∘ (A.chart j).symm) w)`.
+
+Establish `: (B.chart k ∘ g ∘ (A.chart j).symm) w = v` using `hv.symm`. Rewrite using `[this]`. Conclude with `F.open_source.mem_nhds hus`. Use `hsym.congr ?_` and prove the remaining obligations. Use `filter_upwards [hc.preimage_mem_nhds hus', hc2.preimage_mem_nhds ((B.chart k).open_source.mem_nhds hys), (A.chart j).open_target.mem_nhds hwt] with w' h1 h2 h3`.
+
+Establish `h2' : g ((A.chart j).symm w') ∈ (B.chart k).source` using `h2`. Establish `e1 : T ((B.chart k ∘ g ∘ (A.chart j).symm) w') = w'`. Rewrite using `[hT]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(B.chart k).left_inv h2', hhg]`.
+
+Conclude with `(A.chart j).right_inv h3`. Establish `e2` using `F.left_inv h1`. Rewrite `e2` using `[hFc, e1]`. Conclude with `e2`.
+-/
 theorem exists_holoMap_inverse_of_degree_one : ∀ {e : ℕ} {X Y : Type} [TopologicalSpace X] [T2Space X]
     [TopologicalSpace Y] [CompactSpace Y] [T2Space Y] (A : FinHolAtlas e X) (B : FinHolAtlas e Y)
     (h : Y → X), HoloMap B A h → IsDegreeOff A B h 1 ∅ →

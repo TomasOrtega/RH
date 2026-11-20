@@ -14,6 +14,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt | exact GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt | (intros; apply GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt <;> …`.
+-/
 theorem _root_.GlobalTheory.T.exists_admitted_form_eq_adelicThetaDistribution : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ l ∈ (GlobalTheory.WeilM.adeleClass F).adm κ, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, l Φ = GlobalTheory.WeilM.thetaSum F Φ := by
   first | exact @GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt | exact GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt | (intros; apply GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt <;> assumption)

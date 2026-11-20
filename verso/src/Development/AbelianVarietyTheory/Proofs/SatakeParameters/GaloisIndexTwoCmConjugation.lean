@@ -4,6 +4,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.L2.Col Forma
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra E K := φ.toAlgebra`. Use `haveI : IsScalarTower ℚ E K := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `⟨AlgHom.restrictNormal' ψ.toRatAlgHom E, fun x => ?_⟩` and prove the remaining obligations. Use `AlgHom.restrictNormal_commutes ψ.toRatAlgHom E x` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem exists_algEquiv_comp_of_normal_rat {E K : Type} [Field E] [Field K] [CharZero E] [CharZero K]
     [Normal ℚ E] (φ ψ : E →+* K) : ∃ g : E ≃ₐ[ℚ] E, ∀ x, ψ x = φ (g x) := by
   letI : Algebra E K := φ.toAlgebra
@@ -12,6 +15,27 @@ theorem exists_algEquiv_comp_of_normal_rat {E K : Type} [Field E] [Field K] [Cha
   have := AlgHom.restrictNormal_commutes ψ.toRatAlgHom E x
   exact this.symm
 
+/- English proof (translation)
+Introduce `X hX hG`. Establish `hpos : 0 < Fintype.card X.Tau`. Rewrite using `[hX.card_Tau]`. Conclude with `Module.finrank_pos`. Take `⟨τ₀⟩` from `Fintype.card_pos_iff.1 hpos`.
+
+Set `L : IntermediateField ℚ X.E` to `X.Kq.toIntermediateField (fun q => by`. Introduce `τ τ'`. Use the proof step `simp)`. Establish `hL : Module.finrank ℚ L = 2` using `hX.quad`. Set `H : Subgroup (X.E ≃ₐ[ℚ] X.E)` to `L.fixingSubgroup`.
+
+Establish `hH : ∀ g, g ∈ H ↔ ∀ x ∈ X.Kq, g x = x` using `fun g => IntermediateField.mem_fixingSubgroup_iff L g`. Establish `hidx : H.index = 2`. Rewrite using `[← hL]`. Conclude with `(IntermediateField.finrank_eq_fixingSubgroup_index X.E L).symm`. Establish `hcardG : Nat.card (X.E ≃ₐ[ℚ] X.E) = Fintype.card X.Tau * 2`.
+
+Rewrite using `[IsGalois.card_aut_eq_finrank, hX.card_Tau, ← hX.rankE, Module.finrank_mul_finrank]`. Establish `hcardH : Nat.card X.Tau = Nat.card H`. Use `H.card_mul_index` as an intermediate fact. Rewrite `this` using `[hidx, hcardG]`. Rewrite using `[Nat.card_eq_fintype_card]`.
+
+Use linear arithmetic over natural numbers and integers. Use `choose g hg using fun τ => exists_algEquiv_comp_of_normal_rat (X.emb τ₀) (X.emb τ)`. Establish `hgH : ∀ τ, g τ ∈ H` using `fun τ => (hH _).2 fun x hx => by`. Apply `(X.emb τ₀).injective` to reduce the goal to its premises. Rewrite using `[← hg]`.
+
+Conclude with `hx τ τ₀`. Set `δ : X.Tau → H` to `fun τ => ⟨g τ, hgH τ⟩`. Establish `hδ : Function.Injective δ`. Introduce `τ τ' h`. Establish `h' : g τ = g τ'` using `congrArg Subtype.val h`.
+
+Apply `hX.emb_inj` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[hg, hg τ', h']`. Establish `hbij : Function.Bijective δ` using `(Nat.bijective_iff_injective_and_card δ).2 ⟨hδ, hcardH⟩`. Set `e : X.Tau ≃ H` to `Equiv.ofBijective δ hbij`.
+
+Establish `hγ : ∀ (h : H) (x : X.E), X.emb (e.symm h) x = X.emb τ₀ (h.1 x)`. Introduce `h x`. Establish `: g (e.symm h) = h.1` using `congrArg Subtype.val (e.apply_symm_apply h)`. Rewrite using `[hg, this]`. Set `c : X.E ≃ₐ[ℚ] X.E` to `AlgEquiv.ofRingEquiv (f := (starRingAut : RingAut X.E)) (fun q => by simp)`.
+
+Establish `hc : ∀ x, c x = star x` using `fun x => rfl`. Use `⟨τ₀, H, e.symm, c, hidx, fun g hg => (hH g).1 hg, hγ, hc, fun hcH => ?_⟩` and prove the remaining obligations. Apply `hX.emb_ne (e.symm ⟨c, hcH⟩) τ₀` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[hγ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cmType_equiv_fixingSubgroup : ∀ (X : Formalism.L2.Col.Fields), X.Core → IsGalois ℚ X.E → ∃ (τ₀ : X.Tau) (H : Subgroup (X.E ≃ₐ[ℚ] X.E)) (γ : H ≃ X.Tau) (c : X.E ≃ₐ[ℚ] X.E), H.index = 2 ∧ (∀ g ∈ H, ∀ x ∈ X.Kq, g x = x) ∧ (∀ (h : H) (x : X.E), X.emb (γ h) x = X.emb τ₀ (h.1 x)) ∧ (∀ x, c x = star x) ∧ c ∉ H := by
   intro X hX hG
   classical

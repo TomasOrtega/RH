@@ -10,6 +10,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver
 
+/- English proof (translation)
+Establish `hbI : b ∈ I.map (algebraMap A B)`. Rewrite using `[hI]`. Conclude with `Ideal.mem_span_singleton_self b`. Take `⟨⟨f, s⟩, hf⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers t) B).mp hbI`. Use `⟨f, f.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Apply `hb` to reduce the goal to its premises. Rewrite `hf` using `[h0, map_zero]`. Conclude with `((IsLocalization.map_units B s).mul_left_eq_zero).mp hf`. Introduce `g hg`.
+
+Establish `hg' : algebraMap A B g ∈ Ideal.span {b}`. Rewrite using `[← hI]`. Conclude with `Ideal.mem_map_of_mem _ hg`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hg'`. Take `⟨⟨a, u⟩, hu⟩` from `IsLocalization.surj (Submonoid.powers t) c`.
+
+Establish `key : algebraMap A B ((u : A) * (s : A) * g) = algebraMap A B (a * (f : A))`. Rewrite using `[map_mul, map_mul, map_mul, ← hc, ← hu, ← hf]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers t) B).mp key`. Take `⟨l, hl⟩` from `(Submonoid.mem_powers_iff _ _).mp e.2`.
+
+Take `⟨j, hj⟩` from `(Submonoid.mem_powers_iff _ _).mp u.2`. Take `⟨k, hk⟩` from `(Submonoid.mem_powers_iff _ _).mp s.2`. Rewrite `he` using `[← hl, ← hj, ← hk]`. Use `⟨l + j + k, Ideal.mem_span_singleton'.mpr ⟨t ^ l * a, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_add, pow_add]`.
+
+Take the linear combination `-he`.
+-/
 theorem exists_gen_of_map_eq_span {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (t : A)
     [IsLocalization.Away t B] (I : Ideal A) (b : B) (hb : b ≠ 0)
     (hI : I.map (algebraMap A B) = Ideal.span {b}) :
@@ -41,6 +54,23 @@ theorem exists_gen_of_map_eq_span {A B : Type} [CommRing A] [CommRing B] [Algebr
     rw [pow_add, pow_add]
     linear_combination -he
 
+/- English proof (translation)
+Introduce `X _ Z U q hC`. Take `⟨V, h, hxV, hh, hZV⟩` from `hC`. Establish `hxU : U.2.fromSpec q ∈ (U.1 : X.Opens)`. Establish `hr : U.2.fromSpec q ∈ Set.range U.2.fromSpec` using `⟨q, rfl⟩`. Rewrite `hr` using `[U.2.range_fromSpec]`.
+
+Conclude with `hr`. Take `⟨f, g, hfg, hxf⟩` from `exists_basicOpen_le_affine_inter U.2 V.2 (U.2.fromSpec q) ⟨hxU, hxV⟩`. Establish `hWU : X.basicOpen f ≤ U.1` using `X.basicOpen_le f`. Establish `hWV : X.basicOpen f ≤ V.1`. Rewrite using `[hfg]`.
+
+Conclude with `X.basicOpen_le g`. Use `haveI : Nonempty (X.basicOpen f) := ⟨⟨_, hxf⟩⟩`. Use `haveI : Nonempty (V.1 : X.Opens) := ⟨⟨_, hxV⟩⟩`. Use `haveI : IsDomain Γ(X, V.1) := IsIntegral.component_integral V.1`. Establish `hZW : Z.ideal (X.affineBasicOpen f) = Ideal.span {(X.presheaf.map (homOfLE hWV).op).hom h}`.
+
+Establish `hmap` using `Z.map_ideal (U := X.affineBasicOpen f) (V := V) hWV`. Rewrite `hmap` using `[hZV, Ideal.map_span, Set.image_singleton]`. Use `first`. Consider the case `exact hmap.symm`. Consider the case `(rw [← hmap]; rfl)`.
+
+Consider the case `(convert hmap.symm using 3)`. Use `letI : Algebra Γ(X, U.1) Γ(X, X.basicOpen f) := (X.presheaf.map (homOfLE hWU).op).hom.toAlgebra`. Use `haveI : IsLocalization.Away f Γ(X, X.basicOpen f) := U.2.isLocalization_basicOpen f`. Establish `hb : (X.presheaf.map (homOfLE hWV).op).hom h ≠ 0`. Introduce `h0`.
+
+Apply `nonZeroDivisors.ne_zero hh` to reduce the goal to its premises. Apply `map_injective_of_isIntegral X (homOfLE hWV)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h0`. Establish `hI : (Z.ideal U).map (algebraMap Γ(X, U.1) Γ(X, X.basicOpen f)) = Ideal.span {(X.presheaf.map (homOfLE hWV).op).hom h}`.
+
+Rewrite using `[← hZW]`. Use `first`. Consider the case `exact Z.map_ideal (U := X.affineBasicOpen f) (V := U) hWU`. Consider the case `exact Z.map_ideal_basicOpen U f`. Take `⟨f0, hf0, hf0ne, hgen⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver.exists_gen_of_map_eq_span f (Z.ideal U) _ hb hI`.
+
+Use `⟨f, f0, ?_, hf0, hf0ne, hgen⟩` and prove the remaining obligations. Establish `hq : q ∈ PrimeSpectrum.basicOpen f` using `Eq.mp (congrArg (q ∈ ·) (U.2.fromSpec_preimage_basicOpen f)) hxf`. Conclude with `(PrimeSpectrum.mem_basicOpen f q).mp hq`.
+-/
 theorem locPrincipal_of_cartAt : ∀ {X : Scheme.{0}} [IsIntegral X] (Z : X.IdealSheafData)
     (U : X.affineOpens) (q : PrimeSpectrum Γ(X, U.1)), CartAt Z (U.2.fromSpec q) →
     LocPrincipal (Z.ideal U) q.asIdeal := by

@@ -16,6 +16,11 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
+/- English proof (translation)
+Rewrite using `[Geo.mConeMap, aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _)]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod]`. Establish `hX : ∏ p : Coord n, (X p.1 : MvPolynomial ι Ω) ^ d p = monomial (Finsupp.equivFunOnFinite.symm (Finsupp.weight (coordDeg n) d)) 1`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+
+Use `show ∏ i, (X k : MvPolynomial ι Ω) ^ d ⟨k, i⟩ = _`. Use `show _ = (X k : MvPolynomial ι Ω) ^ (Finsupp.weight (coordDeg n) d k)`. Rewrite using `[Finset.prod_pow_eq_pow_sum, weight_coordDeg_apply]`. Rewrite using `[hX, MvPolynomial.algebraMap_apply, ← mul_assoc, ← map_mul, C_mul_monomial, mul_one]`.
+-/
 theorem mConeMap_monomial {Ω : Type*} [Field Ω] (y : Coord n → Ω) (d : Coord n →₀ ℕ) (c : ℤ) :
     Geo.mConeMap (ι := blockIdx n) y (monomial d c) =
       monomial (Finsupp.equivFunOnFinite.symm (Finsupp.weight (coordDeg n) d))
@@ -33,6 +38,9 @@ theorem mConeMap_monomial {Ω : Type*} [Field Ω] (y : Coord n → Ω) (d : Coor
     rw [Finset.prod_pow_eq_pow_sum, weight_coordDeg_apply]
   rw [hX, MvPolynomial.algebraMap_apply, ← mul_assoc, ← map_mul, C_mul_monomial, mul_one]
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun d hd ↦ ?_` and prove the remaining obligations. Rewrite using `[mConeMap_monomial, hg (mem_support_iff.mp hd)]`.
+-/
 theorem mConeMap_of_isWeightedHomogeneous {Ω : Type*} [Field Ω] (y : Coord n → Ω)
     {g : MvPolynomial (Coord n) ℤ} {m : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g m) :
     Geo.mConeMap (ι := blockIdx n) y g =
@@ -44,6 +52,9 @@ theorem mConeMap_of_isWeightedHomogeneous {Ω : Type*} [Field Ω] (y : Coord n �
   refine Finset.sum_congr rfl fun d hd ↦ ?_
   rw [mConeMap_monomial, hg (mem_support_iff.mp hd)]
 
+/- English proof (translation)
+Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker, mConeMap_of_isWeightedHomogeneous y hg, monomial_eq_zero]`.
+-/
 theorem mem_mCoordIdeal_iff_of_isWeightedHomogeneous {Ω : Type*} [Field Ω] (y : Coord n → Ω)
     {g : MvPolynomial (Coord n) ℤ} {m : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g m) :
     g ∈ Geo.mCoordIdeal (ι := blockIdx n) y ↔ aeval y g = 0 := by
@@ -54,6 +65,9 @@ def compDegs (f : MvPolynomial (Coord n) ℤ) : Finset (ι → ℕ) :=
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Rewrite using `[compDegs, ← finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f), sum_weightedHomogeneousComponent]`.
+-/
 theorem sum_compDegs (f : MvPolynomial (Coord n) ℤ) :
     ∑ m ∈ compDegs f, weightedHomogeneousComponent (coordDeg n) m f = f := by
   rw [compDegs, ← finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f),
@@ -61,6 +75,11 @@ theorem sum_compDegs (f : MvPolynomial (Coord n) ℤ) :
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `key : ∀ g : MvPolynomial (Coord n) ℤ, eval (fun _ ↦ (1 : Ω)) (Geo.mConeMap (ι` using `blockIdx n) y g) = aeval y g := by`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [Geo.mConeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`.
+
+Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, hp, map_mul]`. Simplify using `[Geo.mConeMap]`. Rewrite `*` using `[← key, Geo.mCoordIdeal, RingHom.mem_ker]`. Rewrite using `[hf, map_zero]`.
+-/
 theorem aeval_eq_zero_of_mem_mCoordIdeal {Ω : Type*} [Field Ω] (y : Coord n → Ω)
     {f : MvPolynomial (Coord n) ℤ} (hf : f ∈ Geo.mCoordIdeal (ι := blockIdx n) y) :
     aeval y f = 0 := by
@@ -76,6 +95,15 @@ theorem aeval_eq_zero_of_mem_mCoordIdeal {Ω : Type*} [Field Ω] (y : Coord n �
   rw [← key, Geo.mCoordIdeal, RingHom.mem_ker] at *
   rw [hf, map_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf m₀`. Distinguish the cases in `h0 : weightedHomogeneousComponent (coordDeg n) m₀ f = 0`. Rewrite using `[h0, map_zero]`. Establish `hm₀ : m₀ ∈ compDegs f` using `(Set.Finite.mem_toFinset _).mpr h0`.
+
+Establish `hk` using `congrArg (coeff (Finsupp.equivFunOnFinite.symm m₀)) (show Geo.mConeMap (ι := blockIdx n) y f = 0 from hf)`. Rewrite `hk` using `[← sum_compDegs f, map_sum, coeff_sum, coeff_zero, Finset.sum_eq_single m₀]`. Rewrite `hk` using `[mConeMap_of_isWeightedHomogeneous y (weightedHomogeneousComponent_isWeightedHomogeneous m₀ f), coeff_monomial, if_pos rfl]`. Then use the resulting hypothesis. Introduce `m _ hm`. Rewrite using `[mConeMap_of_isWeightedHomogeneous y (weightedHomogeneousComponent_isWeightedHomogeneous m f), coeff_monomial, if_neg]`.
+
+Conclude with `fun h ↦ hm (Finsupp.equivFunOnFinite.symm.injective h)`. Conclude with `fun h ↦ absurd hm₀ h`. Introduce `h`. Rewrite using `[← sum_compDegs f]`. Use `Ideal.sum_mem _ fun m _ ↦ ?_` and prove the remaining obligations.
+
+Conclude with `(mem_mCoordIdeal_iff_of_isWeightedHomogeneous y (weightedHomogeneousComponent_isWeightedHomogeneous m f)).mpr (h m)`.
+-/
 theorem mem_mCoordIdeal_iff {Ω : Type*} [Field Ω] (y : Coord n → Ω)
     (f : MvPolynomial (Coord n) ℤ) :
     f ∈ Geo.mCoordIdeal (ι := blockIdx n) y ↔
@@ -105,16 +133,27 @@ theorem mem_mCoordIdeal_iff {Ω : Type*} [Field Ω] (y : Coord n → Ω)
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Rewrite using `[aeval_def, algebraMap_int_eq]`. Both sides reduce to the same expression.
+-/
 theorem aeval_flatCone {F : Type*} [CommRing F] (x : Cone n F) (f : MvPolynomial (Coord n) ℤ) :
     aeval (flatCone x) f = evalCone x f := by
   rw [aeval_def, algebraMap_int_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[orbitIdeal, mem_mCoordIdeal_iff_of_isWeightedHomogeneous _ hg, aeval_flatCone]`.
+-/
 theorem mem_orbitIdeal_iff_of_isWeightedHomogeneous (x : Cone n (AlgebraicClosure ℚ))
     {g : MvPolynomial (Coord n) ℤ} {m : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g m) :
     g ∈ orbitIdeal x ↔ evalCone x g = 0 := by
   rw [orbitIdeal, mem_mCoordIdeal_iff_of_isWeightedHomogeneous _ hg, aeval_flatCone]
 
+/- English proof (translation)
+Use `and_congr Iff.rfl ⟨fun h f hf ↦ ?_, fun h f hf ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[orbitIdeal, mem_mCoordIdeal_iff]`. Introduce `m`. Rewrite using `[aeval_flatCone]`. Conclude with `h _ (P.homogeneous f hf m)`.
+
+Rewrite using `[← aeval_flatCone]`. Conclude with `aeval_eq_zero_of_mem_mCoordIdeal _ (h hf)`.
+-/
 theorem mem_points_iff_le_orbitIdeal (P : ArithVariety n) (x : Cone n (AlgebraicClosure ℚ)) :
     x ∈ P.points (AlgebraicClosure ℚ) ↔ BlockNonzero x ∧ P.ideal ≤ orbitIdeal x := by
   refine and_congr Iff.rfl ⟨fun h f hf ↦ ?_, fun h f hf ↦ ?_⟩
@@ -125,6 +164,13 @@ theorem mem_points_iff_le_orbitIdeal (P : ArithVariety n) (x : Cone n (Algebraic
   · rw [← aeval_flatCone]
     exact aeval_eq_zero_of_mem_mCoordIdeal _ (h hf)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h f ⟨a, ha⟩ hfP`. Assume the negation of the conclusion as `hne`. Establish `ha'` using `(geoMultiHomog_iff f a).mp ha`. Use `hfP (h a f ha' fun z hz ↦ ?_)` and prove the remaining obligations.
+
+Use `(mem_orbitIdeal_iff_of_isWeightedHomogeneous z ha').mp ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hz'`. Conclude with `hne ⟨_, ⟨z, hz, rfl⟩, hz'⟩`. Introduce `h m f hf hvan`. Assume the negation of the conclusion as `hfP`.
+
+Take `⟨W, ⟨z, hz, rfl⟩, hfW⟩` from `h f ⟨m, (geoMultiHomog_iff f m).mpr hf⟩ hfP`. Conclude with `hfW ((mem_orbitIdeal_iff_of_isWeightedHomogeneous z hf).mpr (hvan z hz))`.
+-/
 theorem zariskiDense_iff_orbitIdeal (P : ArithVariety n) (S : Set (Cone n (AlgebraicClosure ℚ))) :
     P.ZariskiDense S ↔ Geo.IsZariskiDense (ι := blockIdx n) P.ideal (orbitIdeal '' S) := by
   constructor
@@ -145,12 +191,18 @@ def ArithVariety.genericPt (P : ArithVariety n) : Coord n → P.FunField :=
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Rewrite using `[aeval_def, algebraMap_int_eq]`.
+-/
 theorem aeval_eq_eval₂_int {Ω : Type*} [Field Ω] (y : Coord n → Ω) (f : MvPolynomial (Coord n) ℤ) :
     aeval y f = eval₂ (Int.castRingHom Ω) y f := by
   rw [aeval_def, algebraMap_int_eq]
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `: eval₂Hom (Int.castRingHom P.FunField) P.genericPt = P.mkF` using `MvPolynomial.ringHom_ext (fun a ↦ DFunLike.congr_fun (RingHom.ext_int ((eval₂Hom (Int.castRingHom P.FunField) P.genericPt).comp C) (P.mkF.comp C)) a) (fun p ↦ eval₂_X _ _ _)`. Conclude with `DFunLike.congr_fun this f`.
+-/
 theorem ArithVariety.eval₂_genericPt (P : ArithVariety n) (f : MvPolynomial (Coord n) ℤ) :
     eval₂ (Int.castRingHom P.FunField) P.genericPt f = P.mkF f := by
   have : eval₂Hom (Int.castRingHom P.FunField) P.genericPt = P.mkF :=
@@ -163,11 +215,19 @@ theorem ArithVariety.eval₂_genericPt (P : ArithVariety n) (f : MvPolynomial (C
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Rewrite using `[P.eval₂_genericPt, P.mkF_eq_zero_iff]`.
+-/
 theorem ArithVariety.eval₂_genericPt_eq_zero_iff (P : ArithVariety n)
     (f : MvPolynomial (Coord n) ℤ) :
     eval₂ (Int.castRingHom P.FunField) P.genericPt f = 0 ↔ f ∈ P.ideal := by
   rw [P.eval₂_genericPt, P.mkF_eq_zero_iff]
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[mem_mCoordIdeal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← sum_compDegs f]`.
+
+Conclude with `Ideal.sum_mem _ fun m _ ↦ (P.eval₂_genericPt_eq_zero_iff _).mp (by rw [← aeval_eq_eval₂_int]; exact h m)`. Introduce `hf m`. Rewrite using `[aeval_eq_eval₂_int]`. Conclude with `(P.eval₂_genericPt_eq_zero_iff _).mpr (P.homogeneous f hf m)`.
+-/
 theorem ArithVariety.mCoordIdeal_genericPt (P : ArithVariety n) :
     Geo.mCoordIdeal (ι := blockIdx n) P.genericPt = P.ideal := by
   ext f
@@ -184,17 +244,29 @@ theorem ArithVariety.mCoordIdeal_genericPt (P : ArithVariety n) :
 namespace HermLine
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofGeo_deg (B : Geo.HermLine (blockIdx n)) (hB : Geo.IsSmoothHerm B) :
     (ofGeo B hB).deg = B.a := rfl
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofGeo_metric (B : Geo.HermLine (blockIdx n)) (hB : Geo.IsSmoothHerm B) (z : Cone n ℂ) :
     (ofGeo B hB).metric z = B.h (flatCone z) := rfl
 
+/- English proof (translation)
+The claim follows from `toGeo_h_of_blockNonzero A (w := flatCone z) hz`.
+-/
 theorem ofGeo_toGeo_metric (A : HermLine n) {z : Cone n ℂ} (hz : BlockNonzero z) :
     (ofGeo A.toGeo A.isSmoothHerm_toGeo).metric z = A.metric z :=
   toGeo_h_of_blockNonzero A (w := flatCone z) hz
 
+/- English proof (translation)
+Rewrite using `[toGeo_h_of_blockNonzero A (w := flatCone z) hz, toGeo_h_of_blockNonzero A' (w := flatCone z) hz]`. Conclude with `Real.log_div (A.metric_pos z hz).ne' (A'.metric_pos z hz).ne'`.
+-/
 theorem log_div_toGeo_h (A A' : HermLine n) {z : Cone n ℂ} (hz : BlockNonzero z) :
     Real.log (A.toGeo.h (flatCone z) / A'.toGeo.h (flatCone z)) =
       Real.log (A.metric z) - Real.log (A'.metric z) := by
@@ -204,6 +276,11 @@ theorem log_div_toGeo_h (A A' : HermLine n) {z : Cone n ℂ} (hz : BlockNonzero 
 
 end HermLine
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Rewrite using `[← HermLine.log_div_toGeo_h A A' hz.1]`. Conclude with `h _ ((P.mem_mcPts_iff _).mpr hz)`. Introduce `h w hw`.
+
+Establish `hz` using `(P.mem_mcPts_iff w).mp hw`. Use `h _ hz` as an intermediate fact. Rewrite `this` using `[← HermLine.log_div_toGeo_h A A' hz.1]`. Then use the resulting hypothesis.
+-/
 theorem metricBound_iff (P : ArithVariety n) (A A' : HermLine n) (c : ℝ) :
     (∀ z ∈ Geo.mcPts (ι := blockIdx n) P.ideal,
         |Real.log (A.toGeo.h z / A'.toGeo.h z)| ≤ c) ↔
@@ -219,6 +296,9 @@ theorem metricBound_iff (P : ArithVariety n) (A A' : HermLine n) (c : ℝ) :
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Unfold `height`. Rewrite using `[hdeg]`. Use `congr 2`. Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hm _ (blockNonzero_sigma hx σ)]`.
+-/
 theorem height_congr_metric {A A' : HermLine n} (hdeg : A.deg = A'.deg)
     (hm : ∀ z : Cone n ℂ, BlockNonzero z → A.metric z = A'.metric z)
     {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero x) : height A x = height A' x := by
@@ -234,6 +314,13 @@ variable {K : Type*} [Fintype K] {κ : K → Type*} [∀ k, Fintype (κ k)]
 
 omit [∀ k, Fintype (κ k)] in
 
+/- English proof (translation)
+Unfold `Geo.ptsIntegral Geo.ptsIntegralAt`. Use `split_ifs with hΨ`. Use `congr 1`. Use function extensionality and compare the values at `y`. Use `finsum_congr fun w ↦ finsum_congr fun _ ↦ ?_` and prove the remaining obligations.
+
+Unfold `Geo.sheetDensity`. Use `split_ifs with hγ`. Establish `hs` using `hγ.choose_spec`. Unfold `Geo.IsSheet at hs`. Use `congr 1`.
+
+Conclude with `hg _ hs.2.self_of_nhds.2.1`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem ptsIntegral_congr (P : Ideal (Geo.MRing κ)) {e : ℕ} (φ : Fin e → ((Σ k, κ k) → ℂ) → ℝ)
     {g g' : ((Σ k, κ k) → ℂ) → ℝ} (hg : ∀ z ∈ Geo.mcPts P, g z = g' z) :
     Geo.ptsIntegral P φ g = Geo.ptsIntegral P φ g' := by
@@ -253,6 +340,9 @@ theorem ptsIntegral_congr (P : Ideal (Geo.MRing κ)) {e : ℕ} (φ : Fin e → (
 
 omit [∀ k, Fintype (κ k)] in
 
+/- English proof (translation)
+Unfold `Geo.arInt`. Conclude with `ptsIntegral_congr P _ fun z hz ↦ by rw [Geo.logNorm, Geo.logNorm, hh z hz]`.
+-/
 theorem arInt_congr (P : Ideal (Geo.MRing κ)) (s : Geo.MRing κ) {e : ℕ}
     (L : Fin e → Geo.HermLine κ) {A A' : Geo.HermLine κ}
     (hh : ∀ z ∈ Geo.mcPts P, A.h z = A'.h z) : Geo.arInt P s A L = Geo.arInt P s A' L := by
@@ -261,6 +351,9 @@ theorem arInt_congr (P : Ideal (Geo.MRing κ)) (s : Geo.MRing κ) {e : ℕ}
 
 omit [∀ k, Fintype (κ k)] in
 
+/- English proof (translation)
+Unfold `Geo.recR`. Rewrite using `[arInt_congr P s L hh]`.
+-/
 theorem recR_congr (I : Ideal (Geo.MRing κ) → (m : ℕ) → (Fin m → Geo.HermLine κ) → ℝ)
     (P : Ideal (Geo.MRing κ)) {e : ℕ} (L : Fin e → Geo.HermLine κ) (s : Geo.MRing κ)
     {A A' : Geo.HermLine κ} (hh : ∀ z ∈ Geo.mcPts P, A.h z = A'.h z) :
@@ -270,6 +363,25 @@ theorem recR_congr (I : Ideal (Geo.MRing κ) → (m : ℕ) → (Fin m → Geo.He
 
 end Curves
 
+/- English proof (translation)
+Take `⟨-, hAdd, hR⟩` from `hII`. Establish `hW' : Geo.IsArithVar (ι` using `blockIdx n) W (0 + 1) := hW`. Establish `hprime : W.IsPrime` using `hW.2.1.1`. Establish `hrel : ∀ k, ∃ i, (X ⟨k, i⟩ : MvPolynomial (Coord n) ℤ) ∉ W` using `hW.2.1.2.2`. Set `c : (k : ι) → Fin (n k + 1)` to `fun k ↦ (hrel k).choose`.
+
+Establish `hc : ∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ W` using `fun k ↦ (hrel k).choose_spec`. Establish `hmon : ∀ d : ι → ℕ, chartMonomial c d ∉ W`. Introduce `d h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Conclude with `hc k (hprime.mem_of_pow_mem _ hk)`.
+
+Establish `hsnoc : ∀ C : Geo.HermLine (blockIdx n), (Fin.snoc (Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) C : Fin 1 → _) = ![C]`. Introduce `C`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+
+Establish `hL : ∀ j : Fin 0, Geo.IsSmoothHerm ((Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) j)` using `fun j ↦ j.elim0`. Establish `key : ∀ (C C' : Geo.HermLine (blockIdx n)) (d : ι → ℕ), Geo.IsSmoothHerm C → Geo.IsSmoothHerm C' → (∀ k, C.a k = d k) → (∀ k, C'.a k = d k) → (∀ z ∈ Geo.mcPts W, C.h z = C'.h z) → II W 1 ![C] = II W 1 ![C']`. Introduce `C C' d hC hC' hd hd' hCC`. Establish `hs` using `(geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d)`. Establish `h1` using `hR W 0 Fin.elim0 C (chartMonomial c d) d hW' hL hC hd hs (hmon d)`.
+
+Establish `h2` using `hR W 0 Fin.elim0 C' (chartMonomial c d) d hW' hL hC' hd' hs (hmon d)`. Rewrite `h1`, `h2` using `[hsnoc]`. Rewrite using `[h1, h2, recR_congr II W Fin.elim0 (chartMonomial c d) hCC]`. Set `m : ι → ℕ` to `fun k ↦ (B.a k).natAbs`. Set `S : Geo.HermLine (blockIdx n)` to `(HermLine.standardPow (n := n) m).toGeo`.
+
+Establish `hS : Geo.IsSmoothHerm S` using `HermLine.isSmoothHerm_toGeo _`. Establish `hSa : ∀ k, S.a k = m k` using `fun k ↦ rfl`. Establish `hBS : Geo.IsSmoothHerm (B.tensor S)` using `ContDiffOn.mul hB hS`. Establish `hBS' : Geo.IsSmoothHerm (B'.tensor S)` using `ContDiffOn.mul hB' hS`. Establish `hsum` using `key (B.tensor S) (B'.tensor S) (fun k ↦ (B.a k + m k).toNat) hBS hBS' (fun k ↦ by show B.a k + S.a k = _`.
+
+Rewrite using `[hSa]`. Simplify using `only [m]`. Use the proof step `omega)`. Use the proof step `(fun k ↦ by show B'.a k + S.a k = _`. Rewrite using `[hSa, ← ha]`.
+
+Simplify using `only [m]`. Use the proof step `omega)`. Use the proof step `(fun z hz ↦ by show B.h z * S.h z = B'.h z * S.h z`. Rewrite using `[hh z hz])`. Establish `hadd` using `hAdd W 0 Fin.elim0 B S hW' hL hB hS`.
+
+Establish `hadd'` using `hAdd W 0 Fin.elim0 B' S hW' hL hB' hS`. Rewrite `hadd`, `hadd'` using `[hsnoc, hsnoc, hsnoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inter_congr_of_curve
     (II : Ideal (MvPolynomial (Coord n) ℤ) → (m : ℕ) → (Fin m → Geo.HermLine (blockIdx n)) → ℝ)
     (hII : Geo.IsIntersectionFamily II) {W : Ideal (MvPolynomial (Coord n) ℤ)}
@@ -328,6 +440,9 @@ theorem inter_congr_of_curve
   rw [hsnoc, hsnoc, hsnoc] at hadd hadd'
   linarith
 
+/- English proof (translation)
+The claim follows from `HeightAsIntersection.proof h₁ h₂ h₃ ι n II hII A x hx`.
+-/
 theorem height_eq_intersectionHeight [Nonempty ι] (h₁ : OrbitCurve.Statement) (h₂ : OrbitDegree.Statement)
     (h₃ : HeightRecR.Statement)
     (II : Ideal (MvPolynomial (Coord n) ℤ) → (m : ℕ) → (Fin m → Geo.HermLine (blockIdx n)) → ℝ)
@@ -335,6 +450,9 @@ theorem height_eq_intersectionHeight [Nonempty ι] (h₁ : OrbitCurve.Statement)
     (hx : BlockNonzero x) : height A x = IndefiniteRowSideFullHecke.HeightsSet.height II A.toGeo (orbitIdeal x) :=
   HeightAsIntersection.proof h₁ h₂ h₃ ι n II hII A x hx
 
+/- English proof (translation)
+Rewrite using `[height_eq_intersectionHeight h₁ h₂ h₃ II hII _ hx]`. Unfold `IndefiniteRowSideFullHecke.HeightsSet.height`. Rewrite using `[inter_congr_of_curve II hII (h₁ ι n x hx) hB (HermLine.isSmoothHerm_toGeo _) rfl fun z hz ↦ (HermLine.toGeo_ofGeo_h B hB ((blockNonzero_unflatCone_iff z).mpr hz.1)).symm]`.
+-/
 theorem intersectionHeight_eq_height [Nonempty ι] (h₁ : OrbitCurve.Statement) (h₂ : OrbitDegree.Statement)
     (h₃ : HeightRecR.Statement)
     (II : Ideal (MvPolynomial (Coord n) ℤ) → (m : ℕ) → (Fin m → Geo.HermLine (blockIdx n)) → ℝ)
@@ -350,6 +468,9 @@ section Sections
 
 variable {Ω : Type*} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[← hy]`. Conclude with `mem_mCoordIdeal_iff_of_isWeightedHomogeneous y hg`.
+-/
 theorem ArithVariety.mem_iff_aeval_eq_zero (P : ArithVariety n) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) {g : MvPolynomial (Coord n) ℤ}
     {m : ι → ℕ} (hg : IsWeightedHomogeneous (coordDeg n) g m) :
@@ -359,6 +480,9 @@ theorem ArithVariety.mem_iff_aeval_eq_zero (P : ArithVariety n) {y : Coord n →
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `aeval_eq_zero_of_mem_mCoordIdeal y (by rw [hy]; exact hf)`.
+-/
 theorem ArithVariety.aeval_eq_zero_of_mem (P : ArithVariety n) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) {f : MvPolynomial (Coord n) ℤ}
     (hf : f ∈ P.ideal) : aeval y f = 0 :=
@@ -366,6 +490,9 @@ theorem ArithVariety.aeval_eq_zero_of_mem (P : ArithVariety n) {y : Coord n → 
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `fun h ↦ hc k (by simpa [evalCone] using hz.2 _ h)`.
+-/
 theorem ArithVariety.X_notMem_of_mem_points (P : ArithVariety n) {F : Type*} [CommRing F]
     {z : Cone n F} (hz : z ∈ P.points F) {c : (k : ι) → Fin (n k + 1)} (hc : ∀ k, z k (c k) ≠ 0)
     (k : ι) : (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ P.ideal :=
@@ -373,6 +500,9 @@ theorem ArithVariety.X_notMem_of_mem_points (P : ArithVariety n) {F : Type*} [Co
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k hk ↦ hx.1 k (funext fun i ↦ (map_eq_zero_iff τ τ.injective).mp (congrFun hk i)), fun f hf ↦ by rw [evalCone_map, hx.2 f hf, map_zero]⟩`.
+-/
 theorem ArithVariety.mem_points_map (P : ArithVariety n) (τ : AlgebraicClosure ℚ →+* ℂ)
     {x : Cone n (AlgebraicClosure ℚ)} (hx : x ∈ P.points (AlgebraicClosure ℚ)) :
     (fun k i ↦ τ (x k i)) ∈ P.points ℂ :=
@@ -394,15 +524,24 @@ omit [Fintype ι] [DecidableEq ι] in
 def valueAt (s : IntegralSection P a) (y : Coord n → Ω) : Ω :=
   aeval y s.num / aeval y s.den
 
+/- English proof (translation)
+The claim follows from `fun h ↦ s.den_not_mem ((P.mem_iff_aeval_eq_zero hy s.den_isHomogeneous).mpr h)`.
+-/
 theorem aeval_den_ne_zero (s : IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) : aeval y s.den ≠ 0 :=
   fun h ↦ s.den_not_mem ((P.mem_iff_aeval_eq_zero hy s.den_isHomogeneous).mpr h)
 
+/- English proof (translation)
+The claim follows from `s.value_mem_chartLat y (fun _ hf ↦ P.aeval_eq_zero_of_mem hy hf) (s.aeval_den_ne_zero hy)`.
+-/
 theorem valueAt_mem_chartLat (s : IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) :
     s.valueAt y ∈ Geo.chartLat (ι := blockIdx n) y a 1 :=
   s.value_mem_chartLat y (fun _ hf ↦ P.aeval_eq_zero_of_mem hy hf) (s.aeval_den_ne_zero hy)
 
+/- English proof (translation)
+Establish `h` using `P.aeval_eq_zero_of_mem hy hce.2`. Rewrite `h` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Rewrite using `[valueAt, div_mul_eq_mul_div, eq_div_iff (s.aeval_den_ne_zero hy), ← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_chartForm (s : IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) {c : (k : ι) → Fin (n k + 1)}
     {d : ι → ℕ} {e : MvPolynomial (Coord n) ℤ} (hce : IsChartForm P a s.num s.den c d e) :
@@ -412,6 +551,13 @@ theorem aeval_chartForm (s : IntegralSection P a) {y : Coord n → Ω}
   rw [valueAt, div_mul_eq_mul_div, eq_div_iff (s.aeval_den_ne_zero hy), ← h]
   ring
 
+/- English proof (translation)
+Take `⟨δ, he, hδ⟩` from `hce.1`. Establish `hdeg : dh + δ = dg + d`. Use function extensionality and compare the values at `k`. Establish `h1` using `hd k`. Establish `h2` using `hδ k`.
+
+Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hg.mul (isWeightedHomogeneous_chartMonomial c d)`. Establish `h2` using `hh.mul he`. Rewrite `h2` using `[hdeg]`.
+
+Establish `hhom : IsWeightedHomogeneous (coordDeg n) (g * chartMonomial c d - h * e) (dg + d)` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.sub_mem _ ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h1) ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h2))`. Rewrite using `[P.mem_iff_aeval_eq_zero hy hhom, map_sub, map_mul, map_mul, hgh, s.aeval_chartForm hy hce]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sub_mem_of_chartForm (s : IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) {dg dh : ι → ℕ}
     {g h : MvPolynomial (Coord n) ℤ} (hg : IsWeightedHomogeneous (coordDeg n) g dg)
@@ -438,6 +584,9 @@ theorem sub_mem_of_chartForm (s : IntegralSection P a) {y : Coord n → Ω}
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use `hz.2 _ hq` as an intermediate fact. Simplify using `only [evalCone, eval₂_sub, eval₂_mul] at this ⊢`. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem evalCone_rel {F : Type*} [CommRing F] {z : Cone n F} (hz : z ∈ P.points F)
     {g h m e : MvPolynomial (Coord n) ℤ} (hq : g * m - h * e ∈ P.ideal) :
     evalCone z g * evalCone z m = evalCone z h * evalCone z e := by
@@ -445,6 +594,17 @@ theorem evalCone_rel {F : Type*} [CommRing F] {z : Cone n F} (hz : z ∈ P.point
   simp only [evalCone, eval₂_sub, eval₂_mul] at this ⊢
   exact sub_eq_zero.mp this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hb z hz c d e hce hc`. Take `⟨δ, he, hδ⟩` from `hce.1`. Establish `hmon : evalCone z (chartMonomial c d) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`. Establish `hbd` using `hb δ d e (chartMonomial c d) (flatCone z) ((geoMultiHomog_iff e δ).mpr he) ((geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d)) (fun k ↦ by rw [HermLine.toGeo_a]; have := hδ k; omega) (s.aeval_chartForm hy hce) ((P.mem_mcPts_iff _).mpr hz)`. Rewrite `hbd` using `[eval_map_flatCone, eval_map_flatCone, HermLine.toGeo_h_of_blockNonzero A (w := flatCone z) hz.1]`. Rewrite using `[div_le_iff₀ (mul_pos (norm_pos_iff.mpr hmon) (A.metric_pos z hz.1))]`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `hs dg dh g h w hg hh hd hgh hw`. Establish `hz : unflatCone w ∈ P.points ℂ` using `(P.mem_mcPts_iff w).mp hw`. Take `⟨c, hc⟩` from `exists_chart hz.1`. Take `⟨d, e, hce⟩` from `s.regular c (P.X_notMem_of_mem_points hz hc)`. Establish `hrel` using `evalCone_rel hz (s.sub_mem_of_chartForm hy ((geoMultiHomog_iff g dg).mp hg) ((geoMultiHomog_iff h dh).mp hh) hd hgh hce)`.
+
+Establish `hmon : evalCone (unflatCone w) (chartMonomial c d) ≠ 0`. Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`. Establish `hsup` using `hs (unflatCone w) hz c d e hce hc`. Rewrite using `[show eval w (map (Int.castRingHom ℂ) g) = evalCone (unflatCone w) g from eval_map_flatCone (unflatCone w) g, show eval w (map (Int.castRingHom ℂ) h) = evalCone (unflatCone w) h from eval_map_flatCone (unflatCone w) h, HermLine.toGeo_h_of_blockNonzero A hz.1]`.
+
+Rewrite `hsup` using `[div_le_iff₀ (mul_pos (norm_pos_iff.mpr hmon) (A.metric_pos _ hz.1))]`. Establish `hkey : ‖evalCone (unflatCone w) g‖ * ‖evalCone (unflatCone w) (chartMonomial c d)‖ ≤ (Real.exp C * ‖evalCone (unflatCone w) h‖ * A.metric (unflatCone w)) * ‖evalCone (unflatCone w) (chartMonomial c d)‖`. Rewrite using `[← norm_mul, hrel, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right hkey (norm_pos_iff.mpr hmon)`.
+-/
 theorem isSectionBounded_iff_supNormLE (A : HermLine n) (s : IntegralSection P A.deg)
     {y : Coord n → Ω} (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) (C : ℝ) :
     IndefiniteRowSideFullHecke.HeightsSet.IsSectionBounded (ι := blockIdx n) P.ideal y A.toGeo (s.valueAt y)
@@ -491,6 +651,13 @@ theorem isSectionBounded_iff_supNormLE (A : HermLine n) (s : IntegralSection P A
         _ = _ := by ring
     exact le_of_mul_le_mul_right hkey (norm_pos_iff.mpr hmon)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hz` using `P.mem_points_map τ hx`. Take `⟨j, dg, dh, g, h, hg, hh, hd, hgh, hg0, -⟩` from `h (flatCone fun k i ↦ τ (x k i)) ((P.mem_mcPts_iff _).mpr hz)`. Rewrite `hg0` using `[eval_map_flatCone]`. Take `⟨c, hc⟩` from `exists_chart hx.1`.
+
+Take `⟨d, e, hce⟩` from `(s j).regular c (P.X_notMem_of_mem_points hx hc)`. Use `⟨j, c, d, e, hce, hc, fun he0 ↦ ?_⟩` and prove the remaining obligations. Establish `hrel` using `evalCone_rel hz ((s j).sub_mem_of_chartForm hy ((geoMultiHomog_iff g dg).mp hg) ((geoMultiHomog_iff h dh).mp hh) hd hgh hce)`. Rewrite `hrel` using `[evalCone_map τ x e, he0, map_zero, mul_zero]`. Establish `hmon : evalCone (fun k i ↦ τ (x k i)) (chartMonomial c d) ≠ 0`.
+
+Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ ((map_ne_zero τ).mpr (hc k))`. Conclude with `hg0 ((mul_eq_zero.mp hrel).resolve_right hmon)`.
+-/
 theorem nonzeroAt_of_noCommonZero {J : ℕ} (s : Fin J → IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) (τ : AlgebraicClosure ℚ →+* ℂ)
     (h : IndefiniteRowSideFullHecke.HeightsSet.NoCommonZero (ι := blockIdx n) P.ideal y a fun j ↦ (s j).valueAt y) :
@@ -511,6 +678,11 @@ theorem nonzeroAt_of_noCommonZero {J : ℕ} (s : Fin J → IntegralSection P a) 
     exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ ((map_ne_zero τ).mpr (hc k))
   exact hg0 ((mul_eq_zero.mp hrel).resolve_right hmon)
 
+/- English proof (translation)
+Take `⟨c, d, e, hce, hc, he⟩` from `hxs`. Take `⟨δ, hδe, hδ⟩` from `hce.1`. Use `⟨δ, d, e, chartMonomial c d, (geoMultiHomog_iff e δ).mpr hδe, (geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d), fun k ↦ by have := hδ k; omega, s.aeval_chartForm hy hce, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_map_flatCone, evalCone_map]`. Conclude with `(map_ne_zero τ).mpr he`.
+
+Rewrite using `[eval_map_flatCone, evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ ((map_ne_zero τ).mpr (hc k))`.
+-/
 theorem exists_multihomog_witness_of_nonzeroAt (s : IntegralSection P a) {y : Coord n → Ω}
     (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) (τ : AlgebraicClosure ℚ →+* ℂ)
     {x : Cone n (AlgebraicClosure ℚ)} (hxs : s.NonzeroAt x) :
@@ -533,18 +705,29 @@ end IntegralSection
 
 end Sections
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `hC ι n W hW`. Conclude with `⟨x, (mem_points_iff_le_orbitIdeal P x).mpr ⟨hx, hPW⟩, rfl⟩`.
+-/
 theorem exists_point_of_curve (hC : CurveIsOrbit.Statement) (P : ArithVariety n)
     {W : Ideal (MvPolynomial (Coord n) ℤ)} (hW : Geo.IsArithVar (ι := blockIdx n) W 1)
     (hPW : P.ideal ≤ W) : ∃ x ∈ P.points (AlgebraicClosure ℚ), W = orbitIdeal x := by
   obtain ⟨x, hx, rfl⟩ := hC ι n W hW
   exact ⟨x, (mem_points_iff_le_orbitIdeal P x).mpr ⟨hx, hPW⟩, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁ ι n x hx.1, ((mem_points_iff_le_orbitIdeal P x).mp hx).2⟩`.
+-/
 theorem orbitIdeal_curve_of_mem_points [Nonempty ι] (h₁ : OrbitCurve.Statement)
     (P : ArithVariety n) {x : Cone n (AlgebraicClosure ℚ)}
     (hx : x ∈ P.points (AlgebraicClosure ℚ)) :
     Geo.IsArithVar (ι := blockIdx n) (orbitIdeal x) 1 ∧ P.ideal ≤ orbitIdeal x :=
   ⟨h₁ ι n x hx.1, ((mem_points_iff_le_orbitIdeal P x).mp hx).2⟩
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hz` using `(P.mem_mcPts_iff w).mp hw`. Take `⟨j, c, d, e, hce, hc, he⟩` from `hS ι n P a (Fin J) s h _ hz`. Take `⟨δ, hδe, hδ⟩` from `hce.1`. Use `⟨j, δ, d, e, chartMonomial c d, (geoMultiHomog_iff e δ).mpr hδe, (geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d), fun k ↦ by have := hδ k; omega, (s j).aeval_chartForm hy hce, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show eval w (map (Int.castRingHom ℂ) e) = evalCone (unflatCone w) e from eval_map_flatCone (unflatCone w) e]`. Conclude with `he`. Rewrite using `[show eval w (map (Int.castRingHom ℂ) (chartMonomial c d)) = evalCone (unflatCone w) (chartMonomial c d) from eval_map_flatCone (unflatCone w) (chartMonomial c d), evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`.
+-/
 theorem IntegralSection.noCommonZero_of_nonzeroAt (hS : NoCommonZeroComplex.Statement)
     {P : ArithVariety n} {a : ι → ℤ} {J : ℕ} (s : Fin J → IntegralSection P a)
     {Ω : Type*} [Field Ω] {y : Coord n → Ω} (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal)
@@ -565,6 +748,9 @@ theorem IntegralSection.noCommonZero_of_nonzeroAt (hS : NoCommonZeroComplex.Stat
       eval_map_flatCone (unflatCone w) (chartMonomial c d), evalCone_chartMonomial]
     exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IntegralSection.nonzeroAt_of_noCommonZero s hy algClosureEmbedding, IntegralSection.noCommonZero_of_nonzeroAt hS s hy⟩`.
+-/
 theorem IntegralSection.noCommonZero_iff (hS : NoCommonZeroComplex.Statement)
     {P : ArithVariety n} {a : ι → ℤ} {J : ℕ} (s : Fin J → IntegralSection P a)
     {Ω : Type*} [Field Ω] {y : Coord n → Ω} (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) :
@@ -573,9 +759,15 @@ theorem IntegralSection.noCommonZero_iff (hS : NoCommonZeroComplex.Statement)
   ⟨IntegralSection.nonzeroAt_of_noCommonZero s hy algClosureEmbedding,
     IntegralSection.noCommonZero_of_nonzeroAt hS s hy⟩
 
+/- English proof (translation)
+The claim follows from `(ArithVariety.whole _).mCoordIdeal_genericPt`.
+-/
 example : Geo.mCoordIdeal (ι := blockIdx (fun _ : Unit ↦ 1)) (ArithVariety.whole _).genericPt = ⊥ :=
   (ArithVariety.whole _).mCoordIdeal_genericPt
 
+/- English proof (translation)
+Use `⟨rfl, HermLine.ofGeo_toGeo_metric _ fun _ h ↦ ?_⟩` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`.
+-/
 example : (HermLine.ofGeo (HermLine.standard (fun _ : Unit ↦ 1)).toGeo
       (HermLine.isSmoothHerm_toGeo _)).deg = (fun _ ↦ 1) ∧
     (HermLine.ofGeo (HermLine.standard (fun _ : Unit ↦ 1)).toGeo
@@ -585,6 +777,9 @@ example : (HermLine.ofGeo (HermLine.standard (fun _ : Unit ↦ 1)).toGeo
   have := congrFun h 0
   simp at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IntegralSection.valueAt_mem_chartLat _ (ArithVariety.whole _).mCoordIdeal_genericPt, (IntegralSection.isSectionBounded_iff_supNormLE _ _ (ArithVariety.whole _).mCoordIdeal_genericPt 0).mpr (chartSection_supNormLE _ _)⟩`.
+-/
 example : (IntegralSection.chartSection (ArithVariety.whole (fun _ : Unit ↦ 1)) (fun _ ↦ 0)).valueAt
       (ArithVariety.whole _).genericPt ∈
       Geo.chartLat (ι := blockIdx (fun _ : Unit ↦ 1)) (ArithVariety.whole _).genericPt

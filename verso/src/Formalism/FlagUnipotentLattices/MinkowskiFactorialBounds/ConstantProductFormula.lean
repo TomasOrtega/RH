@@ -4,20 +4,36 @@ open Finset Formalism.HermitianLatticeCounting.LocalIntegralStructure
 
 namespace Formalism.HermitianLatticeCounting.P
 
+/- English proof (translation)
+Unfold `volU`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i _`. Check the signs of the components of the expression.
+-/
 lemma volU_pos_minkowski_factorial_bounds (j : ℕ) : 0 < volU j := by
   unfold volU; apply prod_pos; intro i _; positivity
 
+/- English proof (translation)
+Unfold `volU`. Rewrite using `[Finset.prod_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+-/
 lemma volU_succ' (j : ℕ) : volU (j + 1) = volU j * ((2 * Real.pi) ^ (j + 1) / (j.factorial : ℝ)) := by
   unfold volU
   rw [Finset.prod_Icc_succ_top (by omega)]
   simp
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[volU_succ']`. Use `volU_pos_minkowski_factorial_bounds j` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem volume_ratio_increment : Formalism.HermitianLatticeCounting.LocalIntegralStructure.VolStep := by
   intro j
   rw [volU_succ']
   have := volU_pos_minkowski_factorial_bounds j
   field_simp
 
+/- English proof (translation)
+Introduce `k p`. Proceed by induction on `p with`. Consider the case `zero => simp [(volU_pos_minkowski_factorial_bounds k).ne']`. Consider the case `succ p ih`. Rewrite using `[← add_assoc, volU_succ', Finset.prod_Ico_succ_top (by omega)]`.
+
+Establish `e : (p + 1) * k + (p + 1) * (p + 1 + 1) / 2 = (p * k + p * (p + 1) / 2) + (k + p + 1)`. Establish `h1 : (p + 1) * (p + 1 + 1) = p * (p + 1) + 2 * (p + 1)` using `by ring`. Rewrite using `[h1, Nat.add_mul_div_left _ _ (by norm_num)]; ring`. Rewrite using `[e, pow_add _ (p * k + p * (p + 1) / 2), ← ih]`. Use `volU_pos_minkowski_factorial_bounds k` as an intermediate fact.
+
+Establish `h3 : ((k + p).factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem volume_ratio_formula : Formalism.HermitianLatticeCounting.LocalIntegralStructure.VolRatio := by
   intro k p
   induction p with
@@ -32,6 +48,21 @@ theorem volume_ratio_formula : Formalism.HermitianLatticeCounting.LocalIntegralS
     have h3 : ((k + p).factorial : ℝ) ≠ 0 := by positivity
     field_simp
 
+/- English proof (translation)
+Introduce `j r T T' g v n0 κ dimpi Vd VV hT hT' hg hv hVV hn`. Establish `hR` using `volume_ratio_formula (j + 1) (2 * r + 1)`. Establish `hS` using `volume_ratio_increment j`. Establish `p0` using `volU_pos_minkowski_factorial_bounds j`. Establish `p1` using `volU_pos_minkowski_factorial_bounds (j + 1)`.
+
+Establish `p2` using `volU_pos_minkowski_factorial_bounds (j + 1 + (2 * r + 1))`. Establish `hsplit : ∏ i ∈ range (j + 1 + (2 * r + 1)), (i.factorial : ℝ) = (∏ i ∈ range (j + 1), (i.factorial : ℝ)) * ∏ i ∈ Ico (j + 1) (j + 1 + (2 * r + 1)), (i.factorial : ℝ)`. Rewrite using `[Finset.range_eq_Ico, Finset.range_eq_Ico, Finset.prod_Ico_consecutive _ (by omega) (by omega)]`. Use `set F1 := ∏ i ∈ range (j + 1), (i.factorial : ℝ) with hF1`. Use `set F2 := ∏ i ∈ Ico (j + 1) (j + 1 + (2 * r + 1)), (i.factorial : ℝ) with hF2`.
+
+Establish `hF1p : 0 < F1` using `prod_pos (fun i _ => by positivity)`. Establish `hF2p : 0 < F2` using `prod_pos (fun i _ => by positivity)`. Rewrite using `[hsplit]`. Establish `hpi` using `Real.pi_pos`. Establish `L : n0 * (T * T') ^ j * (dimpi * (Vd / F1) * volU (j + 1 + (2 * r + 1)) * volU j / (VV / (F1 * F2) * volU (j + 1) ^ 2 * (2 * v) ^ (2 * r * (j + 1)))) = (n0 * (volU j / volU (j + 1))) * (volU (j + 1 + (2 * r + 1)) / volU (j + 1) * F2) * (T * T') ^ j * dimpi * (Vd / VV) / (2 * v) ^ …`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hn' : n0 * ((j.factorial : ℝ) / (2 * Real.pi) ^ (j + 1)) = κ / (g ^ (2 * r + 2) * T * (2 * v)) ^ (j + 1)` using `by rw [← hn, mul_div_assoc]`. Rewrite using `[L, hR, hS, hn']`. Establish `e2 : (T * T') ^ j = (T * T') ^ (j + 1) / (T * T')` using `by rw [pow_succ]; field_simp`. Establish `e3 : (2 * Real.pi) ^ ((2 * r + 1) * (j + 1)) = ((2 * Real.pi) ^ (2 * r + 1)) ^ (j + 1)` using `by rw [pow_mul]`.
+
+Establish `e4 : (2 * v) ^ (2 * r * (j + 1)) = ((2 * v) ^ (2 * r)) ^ (j + 1)` using `by rw [pow_mul]`. Establish `e5 : (T' / g ^ (2 * r + 2) * (Real.pi / v) ^ (2 * r + 1)) = (T * T') * (2 * Real.pi) ^ (2 * r + 1) / ((g ^ (2 * r + 2) * T * (2 * v)) * (2 * v) ^ (2 * r))`. Rewrite using `[div_pow, mul_pow 2 Real.pi, mul_pow 2 v (2 * r)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[pow_add (2 * Real.pi) ((2 * r + 1) * (j + 1)), e2, e3, e4, e5, div_pow, mul_pow (T * T'), mul_pow (g ^ (2 * r + 2) * T * (2 * v))]`. Establish `hX : (g ^ (2 * r + 2) * T * (2 * v)) ^ (j + 1) ≠ 0` using `by positivity`. Establish `hZ : ((2 * v) ^ (2 * r)) ^ (j + 1) ≠ 0` using `by positivity`. Generalize the expression as in `(g ^ (2 * r + 2) * T * (2 * v)) ^ (j + 1) = X at hX ⊢`. Generalize the expression as in `((2 * v) ^ (2 * r)) ^ (j + 1) = Z0 at hZ ⊢`.
+
+Generalize the expression as in `((2 * Real.pi) ^ (2 * r + 1)) ^ (j + 1) = Y`. Generalize the expression as in `(T * T') ^ (j + 1) = Q`. Generalize the expression as in `(2 * Real.pi) ^ ((2 * r + 1) * (2 * r + 1 + 1) / 2) = S`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem constant_product_formula : Formalism.HermitianLatticeCounting.LocalIntegralStructure.ConstProduct := by
   intro j r T T' g v n0 κ dimpi Vd VV hT hT' hg hv hVV hn
   have hR := volume_ratio_formula (j + 1) (2 * r + 1)
@@ -77,6 +108,17 @@ theorem constant_product_formula : Formalism.HermitianLatticeCounting.LocalInteg
   generalize (2 * Real.pi) ^ ((2 * r + 1) * (2 * r + 1 + 1) / 2) = S
   field_simp
 
+/- English proof (translation)
+Introduce `k r T' g v rd Vd VV Tc hT' hg hv hrd hVd hVV hTc h`. Establish `hpi` using `Real.pi_pos`. Establish `hρ : 0 < rd ^ (((2 * r + 1 : ℕ) : ℝ) / 2)` using `Real.rpow_pos_of_pos hrd _`. Generalize the expression as in `rd ^ (((2 * r + 1 : ℕ) : ℝ) / 2) = ρ at h hρ ⊢`. Establish `hka : 0 < Real.pi / v` using `by positivity`.
+
+Generalize the expression as in `Real.pi / v = ka at h hka ⊢`. Generalize the expression as in `(2 * r + 2) * (2 * r + 1) / 2 = N at h ⊢`. Rewrite `h` using `[pow_add, pow_add, pow_mul, mul_comm k, pow_mul]`. Rewrite using `[mul_pow, div_pow, inv_pow, div_pow, div_pow]`. Establish `h1 : 0 < (g ^ (2 * r + 2)) ^ k` using `by positivity`.
+
+Establish `h2 : 0 < (ka ^ (2 * r + 1)) ^ k` using `by positivity`. Establish `h3 : 0 < Tc ^ k` using `by positivity`. Establish `h4 : 0 < T' ^ k` using `by positivity`. Establish `h5 : 0 < g ^ N` using `by positivity`. Establish `h6 : 0 < ka ^ N` using `by positivity`.
+
+Generalize the expression as in `(g ^ (2 * r + 2)) ^ k = A at h h1 ⊢`. Generalize the expression as in `(ka ^ (2 * r + 1)) ^ k = B at h h2 ⊢`. Generalize the expression as in `Tc ^ k = C at h h3 ⊢`. Generalize the expression as in `T' ^ k = D at h4 ⊢`. Generalize the expression as in `g ^ N = E at h h5 ⊢`.
+
+Generalize the expression as in `ka ^ N = F at h h6 ⊢`. Clear denominators, using `at h ⊢` for the nonvanishing conditions. Take the linear combination `h`.
+-/
 theorem critical_threshold_form : Formalism.HermitianLatticeCounting.LocalIntegralStructure.TcritForm := by
   intro k r T' g v rd Vd VV Tc hT' hg hv hrd hVd hVV hTc h
   have hpi := Real.pi_pos

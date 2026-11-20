@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFi
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DefiniteUnitaryClassSetFiniteStatement
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.UG Formalism.BasicNotions GlobalTheory.DefU
 
+/- English proof (translation)
+Establish `h1` using `(Subgroup.mem_inf.1 hx).2`. Rewrite `h1` using `[Subgroup.mem_iInf]`. Establish `h2` using `h1 σ`. Rewrite `h2` using `[Subgroup.mem_iInf]`. Conclude with `h2 h`.
+-/
 private theorem cEmb_of_mem_embU {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {τ σ : E →+* ℂ}
     (h : InfinitePlace.mk σ ≠ InfinitePlace.mk τ) {x : UA E n} (hx : x ∈ embU n τ) : cEmb σ x = 1 := by
   have h1 := (Subgroup.mem_inf.1 hx).2
@@ -12,6 +15,17 @@ private theorem cEmb_of_mem_embU {E : Type} [Field E] [NumberField E] [IsCMField
   rw [Subgroup.mem_iInf] at h2
   exact h2 h
 
+/- English proof (translation)
+Introduce `E _ _ _ n ι _ emb hinj lam π f hf0 hf heq τ`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, f (GlobalTheory.CoefIrred.tenMul lam e) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hf0 ((GlobalTheory.T.dualWeylModule_tensor_coefficient_universal ι n lam (UA E n → ℂ) 0).unique (y₁ := f) (y₂ := 0) (fun u => hc u) (fun u => rfl))`.
+
+Use `⟨isIrreducible_sqRep n (lam τ), f ∘ₗ (GlobalTheory.CoefIrred.tenMul lam).toLinearMap e τ, fun h0 => he ?_, fun a => hf _, fun x a => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (e τ)` as an intermediate fact. Simplify `this` using `[MultilinearMap.toLinearMap]`. Establish `hx : x.1 ∈ infU E n` using `embU_le_infU _ x.2`. Establish `h2` using `heq x.1 hx (GlobalTheory.CoefIrred.tenMul lam (Function.update e τ a))`.
+
+Establish `h3 : Formalism.L2.DIV.rhoK lam (fun σ => cEmb (emb σ) x.1) (GlobalTheory.CoefIrred.tenMul lam (Function.update e τ a)) = GlobalTheory.CoefIrred.tenMul lam (Function.update e τ (GlobalTheory.Branching.sqRep ℂ n (lam τ) (cEmb (emb τ) x.1) a))`. Rewrite using `[rhoK_tenMul]`. Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Establish `h4 : cEmb (emb σ) x.1 = 1` using `cEmb_of_mem_embU (fun h5 => h (hinj h5)) x.2`. Simplify using `only [Function.update_of_ne h, h4, map_one, Module.End.one_apply]`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2`.
+-/
 theorem UpperTheory.hasWeightAt_of_ne_zero_intertwining :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ι : Type) [Fintype ι] (emb : ι → (E →+* ℂ)), Function.Injective (fun τ => InfinitePlace.mk (emb τ)) →
         ∀ (lam : ι → DomWeight n) (π : Submodule ℂ (UA E n → ℂ)) (f : Formalism.L2.DIV.VV ℂ lam →ₗ[ℂ] (UA E n → ℂ)), f ≠ 0 → (∀ v, f v ∈ π) →

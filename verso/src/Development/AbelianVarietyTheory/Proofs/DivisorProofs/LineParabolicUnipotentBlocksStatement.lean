@@ -11,6 +11,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 open GlobalTheory.LineFrame
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineFrame.unipRad_frame_blocks | exact GlobalTheory.LineFrame.unipRad_frame_blocks | (intros; apply GlobalTheory.LineFrame.unipRad_frame_blocks <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.line_parabolic_unipotent_blocks : ∀ (k : Type) [Field k] (N m : ℕ) (hr : N = m + 2) (h2 : 2 ≤ N) (n : GL (Fin N) k),
     n ∈ unipRad k (linePlace h2) →
       ∃ (X : Matrix (Fin 1) (Fin m ⊕ Fin 1) k) (Y : Matrix (Fin m) (Fin 1) k),

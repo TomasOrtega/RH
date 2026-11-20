@@ -15,6 +15,19 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Introduce `hIn Ψ _ _ _ N hN`. Take `⟨M, BM, hhom, hdy, hbd⟩` from `GlobalTheory.T.flag_variety_model_base_metric Ψ N hN`. Establish `hA` using `GlobalTheory.T.flag_variety_arithmetic Ψ N hN`. Establish `hpos : 0 < antisymDegree Ψ N`. Establish `h1 : 0 < Fintype.card Ψ` using `Fintype.card_pos`.
+
+Establish `h2 : 0 < N.choose 2` using `Nat.choose_pos hN`. Conclude with `Nat.mul_pos h1 h2`. Take `⟨d, hd1⟩ : ∃ d, d + 1 = antisymDegree Ψ N` from `⟨antisymDegree Ψ N - 1, Nat.sub_add_cancel hpos⟩`. Establish `hAr : IsArithVar (mCoordIdeal (yFl Ψ N)) (d + 2)`. Establish `hd2 : d + 2 = antisymDegree Ψ N + 1` using `by omega`.
+
+Rewrite using `[hd2]`. Conclude with `hA`. Establish `h0 : (N - N).choose 2 = 0` using `Nat.choose_eq_zero_of_lt (by omega)`. Establish `hdeg : d + 1 = 0 + Fintype.card Ψ * (N.choose 2 + (N - N).choose 2)`. Rewrite using `[h0, add_zero, zero_add]`.
+
+Conclude with `hd1`. Establish `hhom' : ∀ p : Ψ × Fin N, BM.hom p = fsHerm (FlIdx Ψ N) (M.dy p)` using `fun p => (hhom p).trans (hdy p).symm`. Take `⟨FA, hFAline⟩` from `GlobalTheory.T.flag_analytic_data_fubini_study _ _ _ _ Ψ N N M 0 d BM hAr hdeg hbd hhom'`. Take `⟨Cv, CR, hCv, hCRref, hCRline⟩` from `GlobalTheory.T.flag_cover_degree_one_realisation _ _ _ _ Ψ N N M 0 d BM FA`. Establish `hunif` using `GlobalTheory.T.flag_analytic_data_uniformised _ _ _ _ Ψ N N M 0 d BM FA (by simp) hd1`.
+
+Use `⟨d, FA.S.comap some, CR.Re, hd1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CR.deg_eq, hCv]`. Introduce `p`. Rewrite using `[hCRref, FA.ref_some, hdy]`. Introduce `p t`.
+
+Rewrite using `[hCRline, hFAline, hdy]`. Conclude with `⟨FlagSys.mk le_rfl hd1 hunif (fun τ a b hab hor => (GlobalTheory.T.flag_cover_realisation_pullback hIn _ _ _ _ Ψ N N M 0 d BM FA _ _ _ _ M Cv CR hAr τ a b hab hor).some)⟩`.
+-/
 theorem flagVarieties_flagSys : Inputs → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N →
     ∃ (d : ℕ) (S : AnSys (d + 1) (Ψ × Fin N)) (Re : Realis S (PFl Ψ N)), d + 1 = antisymDegree Ψ N ∧
       Re.deg = 1 ∧ (∀ p, Re.ref p = yLineFl Ψ N p) ∧ (∀ p t, Re.line p t = yLineFl Ψ N p) ∧

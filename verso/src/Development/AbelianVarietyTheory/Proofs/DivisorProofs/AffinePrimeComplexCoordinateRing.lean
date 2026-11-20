@@ -23,6 +23,9 @@ section Param
 
 variable {Y : Scheme.{0}} {W : Y.Opens}
 
+/- English proof (translation)
+Establish `h : hW.primeIdealOf x ∈ hW.fromSpec ⁻¹ᵁ Y.basicOpen a ↔ (x : Y) ∈ Y.basicOpen a`. Rewrite using `[← hW.fromSpec_primeIdealOf x]`. Both sides reduce to the same expression. Rewrite using `[← h, hW.fromSpec_preimage_basicOpen]`. Conclude with `not_not.symm`.
+-/
 theorem mem_primeIdealOf_iff (hW : IsAffineOpen W) (x : W) (a : Γ(Y, W)) :
     a ∈ (hW.primeIdealOf x).asIdeal ↔ (x : Y) ∉ Y.basicOpen a := by
   have h : hW.primeIdealOf x ∈ hW.fromSpec ⁻¹ᵁ Y.basicOpen a ↔ (x : Y) ∈ Y.basicOpen a := by
@@ -31,6 +34,9 @@ theorem mem_primeIdealOf_iff (hW : IsAffineOpen W) (x : W) (a : Γ(Y, W)) :
   rw [← h, hW.fromSpec_preimage_basicOpen]
   exact not_not.symm
 
+/- English proof (translation)
+Use `forall₂_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mem_primeIdealOf_iff]`. Use `((le_preimage_iff x _).symm.trans ((le_preimage_basicOpen_iff x hx a).trans isUnit_iff_ne_zero)).not.trans not_not` and prove the remaining obligations.
+-/
 theorem le_primeIdealOf_iff (hW : IsAffineOpen W) (P : Ideal Γ(Y, W)) (x : Sp ℂ ⟶ Y)
     (hx : ⊤ ≤ x ⁻¹ᵁ W) :
     P ≤ (hW.primeIdealOf ⟨_, (le_preimage_iff x W).1 hx⟩).asIdeal ↔ ∀ a ∈ P, valR x W a = 0 := by
@@ -42,19 +48,35 @@ theorem le_primeIdealOf_iff (hW : IsAffineOpen W) (P : Ideal Γ(Y, W)) (x : Sp �
 def ptOfHom (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) : Sp ℂ ⟶ Y :=
   Spec.map (CommRingCat.ofHom φ) ≫ hW.fromSpec
 
+/- English proof (translation)
+The claim follows from `le_preimage_specMap_fromSpec hW (CommRingCat.ofHom φ)`.
+-/
 theorem ptOfHom_mem (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) : ⊤ ≤ ptOfHom hW φ ⁻¹ᵁ W :=
   le_preimage_specMap_fromSpec hW (CommRingCat.ofHom φ)
 
+/- English proof (translation)
+The claim follows from `(valR_eq _ _ (ptOfHom_mem hW φ) a).trans (congrArg (fun ψ : Γ(Y, W) ⟶ CommRingCat.of ℂ => ψ.hom a) (valMap_specMap_fromSpec hW (CommRingCat.ofHom φ) (ptOfHom_mem hW φ)))`.
+-/
 theorem valR_ptOfHom (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ) (a : Γ(Y, W)) :
     valR (ptOfHom hW φ) W a = φ a :=
   (valR_eq _ _ (ptOfHom_mem hW φ) a).trans
     (congrArg (fun ψ : Γ(Y, W) ⟶ CommRingCat.of ℂ => ψ.hom a)
       (valMap_specMap_fromSpec hW (CommRingCat.ofHom φ) (ptOfHom_mem hW φ)))
 
+/- English proof (translation)
+The claim follows from `(CxPts.ofHom (p := q) (σ := RingHom.id ℂ) hW φ h).2.trans (Spec.map_id _)`.
+-/
 theorem ptOfHom_comp (q : Y ⟶ Sp ℂ) (hW : IsAffineOpen W) (φ : Γ(Y, W) →+* ℂ)
     (h : ∀ a, φ (algX q W a) = a) : ptOfHom hW φ ≫ q = 𝟙 _ :=
   (CxPts.ofHom (p := q) (σ := RingHom.id ℂ) hW φ h).2.trans (Spec.map_id _)
 
+/- English proof (translation)
+Take `⟨g, hgU, hg⟩` from `hW.exists_basicOpen_le (V := U) ⟨_, (le_preimage_iff _ U).1 hv⟩ ((le_preimage_iff _ W).1 (hs v))`. Establish `hg0 : valR (s v) W g ≠ 0` using `((le_preimage_basicOpen_iff _ (hs v) g).1 ((le_preimage_iff _ _).2 hg)).ne_zero`. Use `hW.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g ((Y.presheaf.map (homOfLE hgU).op).hom f)`. Use `((hd a).div ((hd g).pow n) (pow_ne_zero n hg0)).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(hd g).continuousAt.eventually_ne hg0] with w hw`. Establish `hy : ⊤ ≤ s w ⁻¹ᵁ Y.basicOpen g` using `(le_preimage_basicOpen_iff _ (hs w) g).2 (isUnit_iff_ne_zero.2 hw)`. Establish `h1` using `congrArg (valR (s w) (Y.basicOpen g)) ha`. Rewrite `h1` using `[GlobalTheory.Points.valR_mul _ _ hy, GlobalTheory.Points.valR_pow _ _ hy, GlobalTheory.Points.valR_res _ hgU hy]`. Establish `h2 : ∀ t : Γ(Y, W), valR (s w) (Y.basicOpen g) (algebraMap Γ(Y, W) Γ(Y, Y.basicOpen g) t) = valR (s w) W t` using `fun t => GlobalTheory.Points.valR_res _ (Y.basicOpen_le g) hy t`.
+
+Rewrite `h1` using `[h2, h2]`. Conclude with `((eq_div_iff (pow_ne_zero n hw)).2 h1).symm`.
+-/
 theorem analyticAt_valR_of_affine {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (hW : IsAffineOpen W) {s : E → (Sp ℂ ⟶ Y)} {v : E} (hs : ∀ w, ⊤ ≤ s w ⁻¹ᵁ W)
     (hd : ∀ a : Γ(Y, W), AnalyticAt ℂ (fun w => valR (s w) W a) v) {U : Y.Opens} (f : Γ(Y, U))
@@ -78,6 +100,23 @@ theorem analyticAt_valR_of_affine {E : Type*} [NormedAddCommGroup E] [NormedSpac
 
 end Param
 
+/- English proof (translation)
+Introduce `k _ X p σ T W hW P hT`. Use `letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) := (algX (Limits.pullback.snd p (spMap σ)) W).toAlgebra`. Set `H` to `PtsOver.baseChangeHomeomorph (IsPullback.of_hasPullback p (spMap σ))`. Set `j : ((Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) →ₐ[ℂ] ℂ) → Pts (Limits.pullback.snd p (spMap σ))` to `fun φ => ⟨ptOfHom hW ((φ : _ →+* ℂ).comp (Ideal.Quotient.mk P)), ptOfHom_comp _ hW _ fun a => φ.commutes a⟩`. Establish `hjm : ∀ φ, ⊤ ≤ (j φ).1 ⁻¹ᵁ W` using `fun φ => ptOfHom_mem hW _`.
+
+Establish `hjv : ∀ φ a, valR (j φ).1 W a = φ (Ideal.Quotient.mk P a)` using `fun φ a => valR_ptOfHom hW _ a`. Establish `hpt : ∀ z, pt p σ (H z) = z.1` using `fun z => Limits.pullback.hom_ext (Limits.pullback.lift_fst _ _ _) ((Limits.pullback.lift_snd _ _ _).trans z.2.symm)`. Establish `hc : Continuous j`. Use `continuous_induced_rng.2 (continuous_iff_continuousAt.2 fun φ => tendsto_of_isAffineOpen hW (hjm φ) (Eventually.of_forall hjm) fun a => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hjv]`.
+
+Conclude with `(AffinePoints.continuous_eval _).continuousAt`. Establish `he : Topology.IsEmbedding j`. Use `⟨isInducing_of_tendsto hc fun φ l hl => AffinePoints.tendsto_nhds_iff.2 fun b => ?_, fun φ ψ h => AlgHom.ext fun b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `h` using `(GlobalTheory.Points.tendsto_iff.1 (tendsto_subtype_rng.1 hl) W (hjm φ)).2 a`.
+
+Simplify using `only [hjv] at h`. Conclude with `h`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[← hjv, ← hjv, h]`. Use `⟨H ∘ j, H.isEmbedding.comp he, Set.ext fun y => ⟨?_, ?_⟩, fun d U f e hE v hv => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨φ, rfl⟩`. Express the relevant statement in the definitionally equal form `pt p σ (H (j φ)) (IsLocalRing.closedPoint ℂ) ∈ T ∩ (W : Set _)`. Rewrite using `[hpt]`. Use `⟨(hT ⟨_, (le_preimage_iff _ W).1 (hjm φ)⟩).2 ((le_primeIdealOf_iff hW P _ (hjm φ)).2 fun a ha => ?_), (le_preimage_iff _ W).1 (hjm φ)⟩` and prove the remaining obligations. Rewrite using `[hjv, Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`.
+
+Take `⟨z, rfl⟩` from `H.surjective y`. Introduce `hz`. Express the relevant statement in the definitionally equal form `pt p σ (H z) (IsLocalRing.closedPoint ℂ) ∈ T ∩ (W : Set _) at hz`. Rewrite `hz` using `[hpt]`. Establish `hm : ⊤ ≤ z.1 ⁻¹ᵁ W` using `(le_preimage_iff _ W).2 hz.2`.
+
+Establish `h0` using `(le_primeIdealOf_iff hW P _ hm).1 ((hT ⟨_, hz.2⟩).1 hz.1)`. Set `ψ : Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) →ₐ[ℂ] ℂ` to `{ (valMap z.1 W hm).hom with commutes' := fun a => (valR_eq _ _ hm _).symm.trans (valR_constFn_of_section _ z.1 z.2 W hm a) }`. Use `⟨Ideal.Quotient.liftₐ P ψ fun a ha => (valR_eq _ _ hm a).symm.trans (h0 a ha), congrArg H (Subtype.ext (ext_of_valR hW (hjm _) hm fun a => ?_))⟩` and prove the remaining obligations. Rewrite using `[hjv, valR_eq _ _ hm]`. Both sides reduce to the same expression.
+
+Establish `h` using `analyticAt_valR_of_affine hW (s := fun w => (j (e.symm w)).1) (v := v) (fun w => hjm _) (fun a => by simp only [hjv]; exact hE.analyticOnNhd _ v hv.1) ((Limits.pullback.fst p (spMap σ)).app U f) hv.2`. Use `h.congr (Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.Points.valR_comp _ _ U f).symm`.
+-/
 theorem exists_param : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})) (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens) (hW : IsAffineOpen W) (P : Ideal Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W)), (∀ x : W, (x : (Limits.pullback p (spMap σ) : Scheme.{0})) ∈ T ↔ P ≤ (hW.primeIdealOf x).asIdeal) → letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (Limits.pullback.snd p (spMap σ)) W).toAlgebra; ∃ ι : ((Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) →ₐ[ℂ] ℂ) → CxPts p σ, Topology.IsEmbedding ι ∧ Set.range ι = GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))) ∧ ∀ (d' : ℕ) (U : X.Opens) (f : Γ(X, U)) (e : OpenPartialHomeomorph ((Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) ⧸ P) →ₐ[ℂ] ℂ) (Fin d' → ℂ)), GlobalTheory.AffinePoints.IsAlgebraicChart e → AnalyticOnNhd ℂ (GlobalTheory.CxPts.ev p σ U f ∘ ι ∘ e.symm) (e.target ∩ e.symm ⁻¹' (ι ⁻¹' GlobalTheory.CxPts.ptsIn p σ U)) := by
   intro k _ X p σ T W hW P hT
   letI : Algebra ℂ Γ((Limits.pullback p (spMap σ) : Scheme.{0}), W) :=

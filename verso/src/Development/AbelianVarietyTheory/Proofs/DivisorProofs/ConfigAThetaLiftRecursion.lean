@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.IndLine
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Take `⟨s, hle, hne, heq⟩` from `GlobalTheory.T.config_a_matched_realization hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Use `⟨s, ?_, heq⟩` and prove the remaining obligations. Distinguish the cases in `h0 : twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p) = ⊥`. Rewrite using `[h0]`.
+
+Conclude with `bot_le`. Establish `hK : KStabL B G.M om R.p G₁.W H' ((lowPartInf B G₁.M R₁.p).map s)`. Introduce `k hk k₁ hk₁ hL f hf f₁ hf₁ hpf`. Take `⟨y, hy, hye⟩` from `hpf`. Take `⟨g, hg, rfl⟩` from `hy`.
+
+Establish `hgP : g ∈ G₁.M.Pol B.ψ B.emb` using `fockDeg_le_pol G₁.M B.ψ B.emb _ hg`. Establish `hyl : R₁.p g ∈ lowPartInf B G₁.M R₁.p` using `⟨g, hg, rfl⟩`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G₁.V G₁.W G₁.M om₁ X.β (X.β / X.α) hM₁.triple.base hM₁.triple.geo.hM hM₁.triple.weil k₁ hk₁`. Establish `h1` using `heq k₁ hk₁ k hk hL g hgP (A g) (hA g) hyl f hf f₁ hf₁ hye`. Conclude with `⟨R₁.p (A g), GlobalTheory.T.matched_real_map_archimedean_action F E σ B b a' G₁ X om₁ om₁' R₁ Rf₁ hM₁ k₁ hk₁ g hgP (A g) (hA g) hyl, h1⟩`.
+
+Break down `(GlobalTheory.T.config_a_theta_local_factor hKP F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁).2.2 _ hle hK with h | h` into its components or cases. Conclude with `absurd h (hne h0)`. Conclude with `h.symm.le`.
+-/
 theorem twPart_le_map_lowPart : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin.PrimCmp
 
+/- English proof (translation)
+Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, map_multiset_sum, Multiset.map_map]`. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun s _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, map_multiset_prod]`.
+-/
 theorem esymm_map_hom {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') (M : Multiset R) (j : ℕ) :
     (M.map i).esymm j = i (M.esymm j) := by
   unfold Multiset.esymm
@@ -17,6 +20,11 @@ theorem esymm_map_hom {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') 
   refine congrArg Multiset.sum (Multiset.map_congr rfl fun s _ => ?_)
   simp only [Function.comp, map_multiset_prod]
 
+/- English proof (translation)
+Unfold `symTup`. Rewrite using `[map_pow]`. Use `congr 1`. Establish `hm : Finset.univ.val.map (fun b => i (c b)) = (Finset.univ.val.map c).map i`. Rewrite using `[Multiset.map_map]`.
+
+Both sides reduce to the same expression. Rewrite using `[hm, esymm_map_hom]`.
+-/
 theorem symTup_map {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') {N : ℕ} (c : Fin N → R) (j : Fin N) :
     i (symTup c j) = symTup (fun b => i (c b)) j := by
   unfold symTup
@@ -26,6 +34,11 @@ theorem symTup_map {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') {N 
     rw [Multiset.map_map]; rfl
   rw [hm, esymm_map_hom]
 
+/- English proof (translation)
+Establish `: (M.map fun b => t * f b) = (M.map f).map (fun x => t * x)` using `by rw [Multiset.map_map]; rfl`. Rewrite using `[this]`. Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, ← Multiset.sum_map_mul_left]`. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun s hs => ?_)` and prove the remaining obligations.
+
+Establish `hc` using `(Multiset.mem_powersetCard.1 hs).2`. Simplify using `only [Function.comp]`. Rewrite using `[Multiset.prod_map_mul]`. Simplify using `[hc]`.
+-/
 theorem esymm_map_mul {R : Type} [CommRing R] {A : Type} (t : R) (M : Multiset A) (f : A → R) (j : ℕ) :
     (M.map fun b => t * f b).esymm j = t ^ j * (M.map f).esymm j := by
   have : (M.map fun b => t * f b) = (M.map f).map (fun x => t * x) := by rw [Multiset.map_map]; rfl
@@ -38,12 +51,20 @@ theorem esymm_map_mul {R : Type} [CommRing R] {A : Type} (t : R) (M : Multiset A
   rw [Multiset.prod_map_mul]
   simp [hc]
 
+/- English proof (translation)
+Unfold `symTup`. Establish `h` using `esymm_map_mul t (Finset.univ.val) c ((j : ℕ) + 1)`. Rewrite using `[h, mul_pow, ← pow_mul, Nat.mul_div_cancel' (Nat.dvd_factorial (Nat.succ_pos _) j.2)]`.
+-/
 theorem symTup_mul {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (t : R) (j : Fin N) :
     symTup (fun b => t * c b) j = t ^ N.factorial * symTup c j := by
   unfold symTup
   have h := esymm_map_mul t (Finset.univ.val) c ((j : ℕ) + 1)
   rw [h, mul_pow, ← pow_mul, Nat.mul_div_cancel' (Nat.dvd_factorial (Nat.succ_pos _) j.2)]
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `hx`. Set `φ : V →+* W` to `i.codRestrict W.toSubring hW`. Establish `hφ : (algebraMap W K).comp φ = i` using `by ext v; rfl`. Establish `hint : IsIntegral W x` using `⟨p.map φ, hm.map φ, by rw [Polynomial.eval₂_map, hφ]; exact hp⟩`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+
+Conclude with `y.2`.
+-/
 theorem mem_of_isIntegralElem {V K : Type} [CommRing V] [Field K] (i : V →+* K) (W : ValuationSubring K)
     (hW : ∀ v, i v ∈ W) {x : K} (hx : i.IsIntegralElem x) : x ∈ W := by
   obtain ⟨p, hm, hp⟩ := hx
@@ -53,12 +74,20 @@ theorem mem_of_isIntegralElem {V K : Type} [CommRing V] [Field K] (i : V →+* K
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint
   exact y.2
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← W.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Conclude with `(pow_le_one_iff (by omega)).1 h`.
+-/
 theorem mem_of_pow_mem {K : Type} [Field K] (W : ValuationSubring K) {w : K} {k : ℕ} (hk : 1 ≤ k)
     (h : w ^ k ∈ W) : w ∈ W := by
   rw [← W.valuation_le_one_iff] at h ⊢
   rw [map_pow] at h
   exact (pow_le_one_iff (by omega)).1 h
 
+/- English proof (translation)
+Use `letI : Algebra V K := (io.comp (algebraMap V (FractionRing V))).toAlgebra`. Establish `hic : IsIntegrallyClosedIn (integralClosure V K).toSubring K` using `inferInstanceAs (IsIntegrallyClosedIn (integralClosure V K) K)`. Establish `h1 : io z ∈ (integralClosure V K).toSubring`. Assume the negation of the conclusion as `hn`. Take `⟨W, hW, hzW⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn hn`.
+
+Conclude with `hzW (h W (fun v => hW ((integralClosure V K).algebraMap_mem v)))`. Set `f : FractionRing V →ₐ[V] K` to `{ io with commutes' := fun _ => rfl }`. Establish `h2 : IsIntegral V z` using `(isIntegral_algHom_iff f (f : FractionRing V →+* K).injective).1 h1`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h2`.
+-/
 theorem mem_range_of_forall {V K : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed V] [Field K]
     (io : FractionRing V →+* K) (z : FractionRing V)
     (h : ∀ W : ValuationSubring K, (∀ v, io (algebraMap V (FractionRing V) v) ∈ W) → io z ∈ W) :
@@ -78,6 +107,29 @@ end GlobalTheory.UMin.PrimCmp
 
 namespace GlobalTheory.UMin.PrimCmp
 
+/- English proof (translation)
+Establish `hcW : ∀ b, c b / a ∈ W` using `fun b => mem_of_isIntegralElem _ W hW (hP.1 b)`. Take `⟨b₀, hb0, hb0i⟩` from `hP.2`. Establish `hb0W : (c b₀ / a)⁻¹ ∈ W` using `mem_of_isIntegralElem _ W hW hb0i`. Set `y : Fin N → W` to `fun b => ⟨c b / a, hcW b⟩`. Establish `hu : IsUnit (y b₀)` using `(Units.mkOfMulEqOne (y b₀) ⟨_, hb0W⟩ (Subtype.ext (show c b₀ / a * (c b₀ / a)⁻¹ = 1 from mul_inv_cancel₀ hb0))).isUnit`.
+
+Set `z : Fin N → W` to `fun b => y b * ↑hu.unit⁻¹`. Establish `hz : z b₀ = 1` using `by simp [z]`. Take `⟨k, hk1, hkN, hku⟩` from `GlobalTheory.exists_isUnit_esymm_of_eq_one W (Fin N) z b₀ hz`. Establish `hyz : ∀ b, y b = y b₀ * z b`. Introduce `b`.
+
+Simplify using `only [z]`. Rewrite using `[mul_left_comm, IsUnit.mul_val_inv, _root_.mul_one]`. Establish `hesy : IsUnit ((Finset.univ.val.map y).esymm k)`. Establish `hm : Finset.univ.val.map y = Finset.univ.val.map (fun b => y b₀ * z b)` using `Multiset.map_congr rfl fun b _ => hyz b`. Rewrite using `[hm, esymm_map_mul]`.
+
+Conclude with `(hu.pow k).mul hku`. Establish `hkN' : k ≤ N` using `by simpa using hkN`. Set `j₁ : Fin N` to `⟨k - 1, by omega⟩`. Establish `hsy : IsUnit (symTup y j₁)`. Unfold `symTup`.
+
+Establish `: (j₁ : ℕ) + 1 = k` using `by simp only [j₁]; omega`. Rewrite using `[this]`. Conclude with `hesy.pow _`. Establish `hcoe : ∀ j, ((symTup y j : W) : K) = io (e j) / a ^ N.factorial`. Introduce `j`.
+
+Establish `h1` using `symTup_map W.subtype y j`. Rewrite `h1` using `[ValuationSubring.coe_subtype]`. Rewrite using `[h1]`. Establish `h2 : (fun b => ((y b : W) : K)) = fun b => a⁻¹ * c b`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[y, div_eq_inv_mul]`. Rewrite using `[h2, symTup_mul, he, inv_pow, inv_mul_eq_div]`. Establish `ht : io (e j₀) / a ^ N.factorial ∈ W` using `hcoe j₀ ▸ (symTup y j₀).2`. Take `⟨v, hv⟩` from `hq j₁`. Establish `hr : io (e j₁ / e j₀) ∈ W` using `by rw [← hv]; exact hW v`.
+
+Establish `hio0 : io (e j₀) ≠ 0` using `(map_ne_zero io).2 he0`. Establish `hsplit : symTup y j₁ = ⟨_, hr⟩ * ⟨_, ht⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hcoe]`. Use `show _ = io (e j₁ / e j₀) * (io (e j₀) / a ^ N.factorial)`.
+
+Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts. Rewrite `hsy` using `[hsplit]`. Establish `htu` using `isUnit_of_mul_isUnit_right hsy`. Use `⟨ht, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ((↑htu.unit⁻¹ : W) : K) * (io (e j₀) / a ^ N.factorial) = 1`. Use `congrArg Subtype.val (IsUnit.val_inv_mul htu)` as an intermediate fact. Rewrite `this` using `[MulMemClass.coe_mul, OneMemClass.coe_one]`. Conclude with `this`. Rewrite using `[← eq_inv_of_mul_eq_one_left h3]`.
+
+Conclude with `(↑htu.unit⁻¹ : W).2`.
+-/
 theorem key {V K : Type} [CommRing V] [IsDomain V] [Field K] (io : FractionRing V →+* K) (N : ℕ) (c : Fin N → K) (a : K)
     (ha : a ≠ 0) (hP : Prim (io.comp (algebraMap V (FractionRing V))) (fun b => c b / a)) (e : Fin N → FractionRing V)
     (he : ∀ j, io (e j) = symTup c j) (j₀ : Fin N) (he0 : e j₀ ≠ 0)
@@ -136,6 +188,23 @@ theorem key {V K : Type} [CommRing V] [IsDomain V] [Field K] (io : FractionRing 
 
 end GlobalTheory.UMin.PrimCmp
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ io N N' k J c c' a e th ha hk hP hP' he hth1 hth2 j₀ he0 hq`. Use `⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.UMin.PrimCmp.mem_range_of_forall io` to reduce the goal to its premises. Introduce `W hW`. Take `⟨-, hti⟩` from `GlobalTheory.UMin.PrimCmp.key io N c a ha hP e he j₀ he0 hq W hW`.
+
+Take `⟨x, hx⟩` from `hth2 b`. Establish `hw : io (th b) / a ∈ W`. Use `GlobalTheory.UMin.PrimCmp.mem_of_pow_mem W hk ?_` and prove the remaining obligations. Rewrite using `[div_pow, ← hx, ← div_pow]`. Conclude with `pow_mem (GlobalTheory.UMin.PrimCmp.mem_of_isIntegralElem _ W hW (hP'.1 x)) k`.
+
+Establish `hio0 : io (e j₀) ≠ 0` using `(map_ne_zero io).2 he0`. Establish `heq : io (th b ^ N.factorial / e j₀) = (io (th b) / a) ^ N.factorial * (io (e j₀) / a ^ N.factorial)⁻¹`. Rewrite using `[map_div₀, map_pow, div_pow, inv_div]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`.
+
+Conclude with `mul_mem (pow_mem hw _) hti`. Take `⟨x₀, hx0, hx0i⟩` from `hP'.2`. Take `⟨b₁, hb1⟩` from `hth1 x₀`. Establish `hk0 : k ≠ 0` using `by omega`. Establish `hth0 : io (th b₁) ≠ 0`.
+
+Introduce `h0`. Apply `hx0` to reduce the goal to its premises. Establish `h2 : c' x₀ ^ k = 0` using `by rw [hb1, h0, zero_pow hk0]`. Simplify using `[pow_eq_zero_iff hk0 |>.1 h2]`. Use `⟨b₁, fun h => hth0 (by rw [h, map_zero]), ?_⟩` and prove the remaining obligations.
+
+Apply `GlobalTheory.UMin.PrimCmp.mem_range_of_forall io` to reduce the goal to its premises. Introduce `W hW`. Take `⟨ht, -⟩` from `GlobalTheory.UMin.PrimCmp.key io N c a ha hP e he j₀ he0 hq W hW`. Establish `hwi : (io (th b₁) / a)⁻¹ ∈ W`. Use `GlobalTheory.UMin.PrimCmp.mem_of_pow_mem W hk ?_` and prove the remaining obligations.
+
+Rewrite using `[inv_pow, div_pow, ← hb1, ← div_pow, ← inv_pow]`. Conclude with `pow_mem (GlobalTheory.UMin.PrimCmp.mem_of_isIntegralElem _ W hW hx0i) k`. Establish `heq : io (e j₀ / th b₁ ^ N.factorial) = (io (e j₀) / a ^ N.factorial) * ((io (th b₁) / a)⁻¹) ^ N.factorial`. Rewrite using `[map_div₀, map_pow, inv_div, div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[heq]`. Conclude with `mul_mem ht (pow_mem hwi _)`.
+-/
 theorem GlobalTheory.UMin.prim_symTup_cmp : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsIntegrallyClosed V] [Field K] (io : FractionRing V →+* K) (N N' k : ℕ) (J : Type) (c : Fin N → K) (c' : Fin N' → K) (a : K) (e : Fin N → FractionRing V) (th : J → FractionRing V), a ≠ 0 → 1 ≤ k → Prim (io.comp (algebraMap V (FractionRing V))) (fun b => c b / a) → Prim (io.comp (algebraMap V (FractionRing V))) (fun b => c' b / a) → (∀ j, io (e j) = symTup c j) → (∀ x, ∃ b, c' x ^ k = io (th b) ^ k) → (∀ b, ∃ x, c' x ^ k = io (th b) ^ k) → ∀ j₀, e j₀ ≠ 0 → (∀ j, e j / e j₀ ∈ Set.range (algebraMap V (FractionRing V))) → (∀ b, th b ^ N.factorial / e j₀ ∈ Set.range (algebraMap V (FractionRing V))) ∧ ∃ b, th b ≠ 0 ∧ e j₀ / th b ^ N.factorial ∈ Set.range (algebraMap V (FractionRing V)) := by
   intro V K _ _ _ _ io N N' k J c c' a e th ha hk hP hP' he hth1 hth2 j₀ he0 hq
   refine ⟨fun b => ?_, ?_⟩

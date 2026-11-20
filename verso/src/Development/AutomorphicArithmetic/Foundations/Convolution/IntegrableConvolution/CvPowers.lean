@@ -11,22 +11,36 @@ section
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `h` using `cvBasic G μ a b b ha.1 ha.2 hb.1 hb.2 hb.1 hb.2`. Conclude with `⟨h.1, h.2.1⟩`.
+-/
 private theorem cvP_test {a b : G → ℂ} (ha : Continuous a ∧ HasCompactSupport a)
     (hb : Continuous b ∧ HasCompactSupport b) : Continuous (cv μ a b) ∧ HasCompactSupport (cv μ a b) := by
   have h := cvBasic G μ a b b ha.1 ha.2 hb.1 hb.2 hb.1 hb.2
   exact ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+The claim follows from `(cvBasic G μ a b c ha.1 ha.2 hb.1 hb.2 hc.1 hc.2).2.2.2.1`.
+-/
 private theorem cvP_assoc {a b c : G → ℂ} (ha : Continuous a ∧ HasCompactSupport a)
     (hb : Continuous b ∧ HasCompactSupport b) (hc : Continuous c ∧ HasCompactSupport c) :
     cv μ (cv μ a b) c = cv μ a (cv μ b c) :=
   (cvBasic G μ a b c ha.1 ha.2 hb.1 hb.2 hc.1 hc.2).2.2.2.1
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ha`. Consider the case `succ k ih => exact cvP_test μ ha ih`.
+-/
 private theorem cvP_pow_test {a : G → ℂ} (ha : Continuous a ∧ HasCompactSupport a) (k : ℕ) :
     Continuous (cvPow μ a k) ∧ HasCompactSupport (cvPow μ a k) := by
   induction k with
   | zero => exact ha
   | succ k ih => exact cvP_test μ ha ih
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rw [Nat.zero_add]`. Both sides reduce to the same expression. Consider the case `succ j ih`. Express the relevant statement in the definitionally equal form `cv μ (cv μ a (cvPow μ a j)) (cvPow μ a k) = _`.
+
+Rewrite using `[cvP_assoc μ ha (cvP_pow_test μ ha j) (cvP_pow_test μ ha k), ih, show j + 1 + k + 1 = (j + k + 1) + 1 by omega]`. Both sides reduce to the same expression.
+-/
 private theorem cvP_add {a : G → ℂ} (ha : Continuous a ∧ HasCompactSupport a) (j k : ℕ) :
     cv μ (cvPow μ a j) (cvPow μ a k) = cvPow μ a (j + k + 1) := by
   induction j with
@@ -37,6 +51,11 @@ private theorem cvP_add {a : G → ℂ} (ha : Continuous a ∧ HasCompactSupport
       show j + 1 + k + 1 = (j + k + 1) + 1 by omega]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp only [Nat.zero_mul, Nat.zero_add]`. Both sides reduce to the same expression. Consider the case `succ m ih`. Express the relevant statement in the definitionally equal form `cv μ (cvPow μ a k) (cvPow μ (cvPow μ a k) m) = _`.
+
+Rewrite using `[ih, cvP_add μ ha]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cvP_pow_pow {a : G → ℂ} (ha : Continuous a ∧ HasCompactSupport a) (k m : ℕ) :
     cvPow μ (cvPow μ a k) m = cvPow μ a (m * k + m + k) := by
   induction m with
@@ -47,6 +66,13 @@ private theorem cvP_pow_pow {a : G → ℂ} (ha : Continuous a ∧ HasCompactSup
     congr 1
     ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Establish `h1 : Fin.tail (Function.update (fun _ : Fin (m + 1 + 1) => b) (Fin.last (m + 1)) (cv μ b ψ)) = Function.update (fun _ => b) (Fin.last m) (cv μ b ψ)`. Rewrite using `[← Fin.succ_last, Fin.tail_update_succ]`.
+
+Both sides reduce to the same expression. Establish `h0 : Function.update (fun _ : Fin (m + 1 + 1) => b) (Fin.last (m + 1)) (cv μ b ψ) 0 = b`. Rewrite using `[Function.update_of_ne]`. Conclude with `(Fin.last_pos).ne`. Rewrite using `[cvAll, h1, h0, ih, ← cvP_assoc μ hb (cvP_pow_test μ hb m) hψ]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem cvP_update {b ψ : G → ℂ} (hb : Continuous b ∧ HasCompactSupport b)
     (hψ : Continuous ψ ∧ HasCompactSupport ψ) (m : ℕ) :
     cvAll μ m (Function.update (fun _ => b) (Fin.last m) (cv μ b ψ)) = cv μ (cvPow μ b m) ψ := by
@@ -68,6 +94,13 @@ end
 end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ m a ψ ha ha' hψ hψ' k`. Establish `h1 : cvPow μ (cvPow μ a k) m = cvPow μ (cvPow μ a m) k`. Rewrite using `[cvP_pow_pow μ ⟨ha, ha'⟩, cvP_pow_pow μ ⟨ha, ha'⟩]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cvP_update μ (cvP_pow_test μ ⟨ha, ha'⟩ k) ⟨hψ, hψ'⟩, h1]`. Introduce `φ φ' _ _`. Use function extensionality and compare the values at `g`. Simplify using `only [cv]`.
+
+Rewrite using `[← integral_fintype_prod_eq_prod (fun i y => φ i y * φ' i (y⁻¹ * g i))]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.cvPowers :
     UpperTheory.ConvolutionTheory.L1.CvPowers := by
   intro G _ _ _ _ _ _ _ _ μ _ m a ψ ha ha' hψ hψ' k

@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMNormSum.sum_norm_eq | exact GlobalTheory.CMNormSum.sum_norm_eq | (intros; apply GlobalTheory.CMNormSum.sum_norm_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_sum_norm_sum_equal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (w : InfinitePlace F) (k k' : ℕ) (z : Fin k → w.Completion ⊗[F] E) (z' : Fin k' → w.Completion ⊗[F] E),
     ∑ i, sigR w.Completion σ (z i) * z i = ∑ i, sigR w.Completion σ (z' i) * z' i →

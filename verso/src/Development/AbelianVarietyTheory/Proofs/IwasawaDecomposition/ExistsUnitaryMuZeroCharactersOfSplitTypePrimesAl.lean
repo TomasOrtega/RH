@@ -13,6 +13,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.Mem.MuZero
 
+/- English proof (translation)
+Establish `hc : Nat.card (𝓞 L ⧸ w.asIdeal) = p`. Rewrite using `[← hw, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 L ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (hc ▸ hp.ne_zero)`. Set `_ : Fintype (𝓞 L ⧸ w.asIdeal)` to `Fintype.ofFinite _`. Set `ρ : ZMod p ≃+* (𝓞 L ⧸ w.asIdeal)` to `ZMod.ringEquivOfPrime _ hp (by rw [← Nat.card_eq_fintype_card, hc])`.
+
+Use `⟨ω.comp (Units.map (ρ.symm : (𝓞 L ⧸ w.asIdeal) →* ZMod p)), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+
+Use `⟨Units.map (ρ : ZMod p →* (𝓞 L ⧸ w.asIdeal)) (ZMod.unitOfCoprime a ha), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[MonoidHom.comp_apply]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_residue_char {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) {p : ℕ} (hp : p.Prime)
     (hw : Ideal.absNorm w.asIdeal = p) (ω : (ZMod p)ˣ →* ℂˣ) :
     ∃ θ : (𝓞 L ⧸ w.asIdeal)ˣ →* ℂˣ, θ (-1) = ω (-1) ∧ ∀ (a : ℕ) (ha : a.Coprime p),
@@ -37,6 +46,13 @@ theorem exists_residue_char {L : Type} [Field L] [NumberField L] (w : HeightOneS
 
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply the tactic sequence `have hg : H.g k ≠ H.g k' := by fin_cases k <;> fin_cases k'`. Conclude with `absurd rfl hne`. Conclude with `H.g_ne`. Conclude with `H.g_ne.symm`.
+
+Conclude with `absurd rfl hne`. Establish `hc : IsCoprime ((H.g k : ℕ) : 𝓞 H.E) ((H.g k' : ℕ) : 𝓞 H.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (H.g_prime k) (H.g_prime k')).2 hg)`. Take `⟨s, t, hst⟩` from `hc`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hst]`.
+
+Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h) (w.asIdeal.mul_mem_left _ h')`.
+-/
 theorem eq_of_overP {k k' : Fin 2} {w : HeightOneSpectrum (𝓞 H.E)} (h : OverP H (H.g k) w)
     (h' : OverP H (H.g k') w) : k = k' := by
   by_contra hne
@@ -55,6 +71,33 @@ theorem eq_of_overP {k k' : Fin 2} {w : HeightOneSpectrum (𝓞 H.E)} (h : OverP
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H P W e j hs hint hev`. Use `choose z hz using hint`. Establish `hmu : UpperTheory.MU (embPsi H) z` using `hev.mu hz`. Use `haveI := H.galois`. Use `haveI : IsGalois H.K H.E := IsGalois.tower_top_of_isGalois ℚ H.K H.E`.
+
+Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hce : c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`. Establish `hsp` using `fun k => GlobalTheory.T.completelySplitPrime_host_place_properties R H (H.g k) (H.g_prime k) (hs k)`. Establish `hθ : ∀ w : HeightOneSpectrum (𝓞 H.E), ∃ θ : (𝓞 H.E ⧸ w.asIdeal)ˣ →* ℂˣ, θ (-1) = 1 ∧ ∀ k, P.Div k w → ∀ (a : ℕ) (ha : a.Coprime (H.g k)), ∃ b : (𝓞 H.E ⧸ w.asIdeal)ˣ, (b : 𝓞 H.E ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal (a : 𝓞 H.E) ∧ θ b = (W.om k (ZMod.unitOfCoprime a ha) ^ (2 * …`. Introduce `w`.
+
+Distinguish the cases in `h : ∃ k, P.Div k w`. Take `⟨k, hk⟩` from `h`. Take `⟨θ, h1, h2⟩` from `exists_residue_char w (H.g_prime k) (hsp k w (P.overP hk)).1 ((W.om k ^ (2 * (j + 1)))⁻¹)`. Use `⟨θ, ?_, fun k' hk' => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, MonoidHom.inv_apply, MonoidHom.pow_apply, pow_mul, ← map_pow, neg_one_sq, map_one, one_pow, inv_one]`.
+
+Take `rfl` from `eq_of_overP (P.overP hk) (P.overP hk')`. Conclude with `h2`. Conclude with `⟨1, rfl, fun k hk => absurd ⟨k, hk⟩ h⟩`. Use `choose θ hθ1 hθ2 using hθ`. Set `S : Finset (HeightOneSpectrum (𝓞 H.E))` to `Finset.univ.biUnion fun k => aboveF (L := H.E) H.K (P.pb k)`.
+
+Establish `hS : ∀ w, w ∈ S ↔ ∃ k, P.Div k w` using `fun w => by`. Simplify using `only [S, Finset.mem_biUnion, Finset.mem_univ, true_and, aboveF, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`. Both sides reduce to the same expression. Establish `hmem : ∀ k w, w ∈ aboveF (L` using `H.E) H.K (P.pb k) ↔ P.Div k w := fun k w => by`. Simplify using `only [aboveF, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+
+Both sides reduce to the same expression. Establish `hres : ∀ (k : Fin 2) (ζ : (𝓞 H.E)ˣ), (∃ m : ℕ, 0 < m ∧ ((ζ : 𝓞 H.E) : H.E) ^ m = 1) → ∏ w ∈ aboveF (L` using `H.E) H.K (P.pb k), θ w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) = 1 := fun k ζ hζ => UpperTheory.prod_residue_char_norm_one_unit_eq_one H.K H.E (H.g k) (H.g_prime k) (P.pb k) _ (fun w => hmem k w) (fun w hw => ⟨(hsp k w (P.overP ((hmem k w).1 hw))).1, (hsp k w (P.o …`. Establish `hdisj : (↑(Finset.univ : Finset (Fin 2)) : Set (Fin 2)).PairwiseDisjoint (fun k => aboveF (L` using `H.E) H.K (P.pb k)) := by`. Introduce `k _ k' _ hkk'`. Use `Finset.disjoint_left.2 fun w hw hw' => hkk' ?_` and prove the remaining obligations.
+
+Conclude with `eq_of_overP (P.overP ((hmem k w).1 hw)) (P.overP ((hmem k' w).1 hw'))`. Take `⟨χ, hu, ht, hi, htame, hunr, hloc, -⟩` from `GlobalTheory.T.exists_heckeChar_trivOn_realSubfield_infinityType H.F H.E c (R.Psi) (embPsi H) hcm z S θ (by`. Introduce `w hw w' hcj hw'`. Take `⟨k, hk⟩` from `(hS w).1 hw`. Take `⟨k', hk'⟩` from `(hS w').1 hw'`.
+
+Rewrite `hcj` using `[hce]`. Take `⟨ho, hiff⟩` from `(hsp k w (P.overP hk)).2.2.2 (P.pb k) (P.pb_over k) w' hcj`. Take `rfl` from `eq_of_overP ho (P.overP hk')`. Conclude with `hiff.1 hk hk')`. Use the proof step `(by`.
+
+Introduce `ζ hζ`. Establish `hinf : ∏ i, embPsi H i ((ζ : 𝓞 H.E) : H.E) ^ (-z i) = 1` using `hmu.neg _ hζ`. Establish `hfin : ∏ w ∈ S, θ w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) = 1`. Rewrite using `[Finset.prod_biUnion hdisj]`. Conclude with `Finset.prod_eq_one fun k _ => hres k ζ hζ`.
+
+Rewrite using `[hinf, one_mul, ← Units.coe_prod]`. Conclude with `(congrArg Units.val hfin).trans Units.val_one)`. Use `⟨χ, hu, ht, ⟨_, fun τ => ?_, hi⟩, fun v hv => hunr v ?_ ?_, htame, fun k w hw a ha x hx => ?_⟩` and prove the remaining obligations. Use `show _ = 2 * -e τ`. Rewrite using `[hz τ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Take `⟨k, hk⟩` from `(hS v).1 h`. Conclude with `hv k (P.overP hk)`.
+
+Introduce `w hw hcj`. Take `⟨k, hk⟩` from `(hS w).1 hw`. Rewrite `hcj` using `[hce]`. Conclude with `hv k ((hsp k w (P.overP hk)).2.2.2 (P.pb k) (P.pb_over k) v hcj).1`. Take `⟨b, hb, hb'⟩` from `hθ2 w k hw a ha`.
+
+Rewrite using `[← hb']`. Conclude with `hloc w ((hS w).2 ⟨k, hw⟩) x (a : 𝓞 H.E) b (by rw [hx]; simp) hb`.
+-/
 theorem exists_unitary_mu_zero_characters_of_split_type_primes : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (P : PiBar H) (W : Omg H) (e : R.Psi → ℚ) (j : ℕ), (∀ k, SplitsC H.E (H.g k)) → (∀ τ, ∃ z : ℤ, e τ = z) → UpperTheory.MUQ (embPsi H) e → Mu0Exists P W e j := by
   intro R H P W e j hs hint hev
   choose z hz using hint

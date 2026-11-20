@@ -14,6 +14,15 @@ namespace GlobalTheory.UnitaryBC
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cT (conjAd E) (infGL E n y).val * 1 * (infGL E n y).val = 1`. Establish `h1 : (infGL E n y).val.map (pInf E) = y.val` using `congrArg Units.val (pInf_infGL y)`. Establish `h2 : (infGL E n y).val.map (pFin E) = 1` using `congrArg Units.val (pFin_infGL y)`. Establish `h3 : (cT (conjAd E) (infGL E n y).val).map (pInf E) = y.valᴴ` using `by ext1 i j`. Rewrite using `[Matrix.conjTranspose_apply, ← h1]`.
+
+Conclude with `(infEq E).symm_apply_apply _`. Establish `h4 : (cT (conjAd E) (infGL E n y).val).map (pFin E) = 1` using `by ext1 i j`. Express the relevant statement in the definitionally equal form `conjFin (IsCMField.complexConj E).toRingEquiv (((infGL E n y).val.map (pFin E)) j i) = _`. Rewrite using `[h2]`. Simplify using `only [Matrix.one_apply, eq_comm (a := j)]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `h5` using `congrArg₂ (· * ·) h3 h1`. Establish `h6` using `congrArg₂ (· * ·) h4 h2`. Simplify using `only [← Matrix.map_mul, hy, mul_one] at h5 h6`. Rewrite using `[mul_one]`.
+
+Use `ext1 i j`. Apply the tactic sequence `refine ad_ext ((congrFun₂ h5 i j).trans ?_) ((congrFun₂ h6 i j).trans ?_) <;>`. Apply the tactic sequence `simp only [Matrix.one_apply] split_ifs <;> simp`.
+-/
 theorem infGL_mem_UA {n : ℕ} (y : GL (Fin n) (Cinf E)) (hy : y.valᴴ * y.val = 1) : infGL E n y ∈ UA E n := by
   change cT (conjAd E) (infGL E n y).val * 1 * (infGL E n y).val = 1
   have h1 : (infGL E n y).val.map (pInf E) = y.val := congrArg Units.val (pInf_infGL y)
@@ -37,6 +46,21 @@ theorem infGL_mem_UA {n : ℕ} (y : GL (Fin n) (Cinf E)) (hy : y.valᴴ * y.val 
   · simp only [Matrix.one_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Set `z' : ℂ` to `if (InfinitePlace.mk τ).embedding = τ then z else starRingEnd ℂ z`. Establish `hz' : star z' * z' = 1`. Establish `h : ‖z'‖ = 1`. Simplify using `only [z']`. Apply the tactic sequence `split_ifs <;> simp [hz]`.
+
+Rewrite using `[mul_comm]`. Express the relevant statement in the definitionally equal form `z' * starRingEnd ℂ z' = 1`. Rewrite using `[Complex.mul_conj', h]`. Simplify using the standard rewrite rules. Set `c : Cinf E` to `Function.update 1 (InfinitePlace.mk τ) z'`.
+
+Establish `hc : star c * c = 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = InfinitePlace.mk τ`. Substitute `h` using the available equality. Simplify `hz'` using `[c]`.
+
+Simplify using `[c, h]`. Set `y : GL (Fin 1) (Cinf E)` to `GeneralLinearGroup.scalar (Fin 1) ⟨c, star c, by rw [mul_comm, hc], hc⟩`. Establish `hy : y.val 0 0 = c` using `by simp [y]`. Establish `hU : infGL E 1 y ∈ UA E 1` using `infGL_mem_UA y (by ext1 i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`.
+
+Simplify using `[Matrix.mul_apply, hy, hc])`. Establish `he : ∀ τ' : E →+* ℂ, cEmb τ' ⟨_, hU⟩ 0 0 = coord τ' c` using `fun τ' => by`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (coord τ') (GeneralLinearGroup.map (pInf E) (infGL E 1 y)) 0 0 = _`. Rewrite using `[pInf_infGL, ← hy]`. Both sides reduce to the same expression.
+
+Use `⟨⟨_, hU⟩, ⟨pFin_infGL y, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun τ' => Subgroup.mem_iInf.2 fun h => MonoidHom.mem_ker.2 ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `(he τ').trans ?_` and prove the remaining obligations.
+
+Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp [c, h]`. Rewrite using `[he]`. Unfold `coord`. Apply the tactic sequence `split_ifs with h <;> simp [c, z', h]`.
+-/
 theorem exists_embU_one (τ : E →+* ℂ) (z : ℂ) (hz : ‖z‖ = 1) : ∃ x ∈ embU 1 τ, cEmb τ x 0 0 = z := by
   classical
   let z' : ℂ := if (InfinitePlace.mk τ).embedding = τ then z else starRingEnd ℂ z
@@ -76,6 +100,13 @@ theorem exists_embU_one (τ : E →+* ℂ) (z : ℂ) (hz : ‖z‖ = 1) : ∃ x 
     unfold coord
     split_ifs with h <;> simp [c, z', h]
 
+/- English proof (translation)
+Take `⟨-, f, h0, h1, h2⟩` from `h`. Take `⟨v, hv⟩` from `DFunLike.ne_iff.1 h0`. Assume the negation of the conclusion as `hl`. Establish `hl' : (lam.w 0 : ℂ) ≠ 0` using `by exact_mod_cast hl`. Take `⟨x, hx, e⟩` from `exists_embU_one τ _ (Complex.norm_exp_ofReal_mul_I (Real.pi / lam.w 0))`.
+
+Establish `h3` using `h2 ⟨x, hx⟩ v`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (h1 v)`. Establish `h4 : RU E 1 x (f v) = f v` using `by rw [← hc]; rfl`. Rewrite `h3` using `[GlobalTheory.Branching.RankTwo.small_act, map_smul]`. Express the relevant statement in the definitionally equal form `(cEmb τ x 0 0) ^ lam.w 0 • f v = RU E 1 x (f v) at h3`.
+
+Rewrite `h3` using `[e, h4, ← Complex.exp_int_mul, show (lam.w 0 : ℂ) * (((Real.pi / lam.w 0 : ℝ) : ℂ) * Complex.I) = Real.pi * Complex.I by push_cast; field_simp, Complex.exp_pi_mul_I]`. Establish `h5 : (2 : ℂ) • f v = 0` using `by linear_combination (norm := module) -h3`. Conclude with `hv ((smul_eq_zero.1 h5).resolve_left two_ne_zero)`.
+-/
 theorem weight_eq_zero_of_const (τ : E →+* ℂ) (lam : DomWeight 1)
     (h : HasWeightAt (Submodule.span ℂ {(fun _ => 1 : UA E 1 → ℂ)}) τ lam) : lam.w 0 = 0 := by
   obtain ⟨-, f, h0, h1, h2⟩ := h
@@ -93,6 +124,11 @@ theorem weight_eq_zero_of_const (τ : E →+* ℂ) (lam : DomWeight 1)
   have h5 : (2 : ℂ) • f v = 0 := by linear_combination (norm := module) -h3
   exact hv ((smul_eq_zero.1 h5).resolve_left two_ne_zero)
 
+/- English proof (translation)
+Use `⟨GlobalTheory.Parabolic.isIrreducible_of_equiv φ ((CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun W _ => eq_bot_or_eq_top W⟩), (LinearMap.toSpanSingleton ℂ _ fun _ => 1).comp φ.symm.toLinearMap, fun h => ?_, fun v => Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _ …` and prove the remaining obligations. Use `congrFun (LinearMap.congr_fun h (φ 1)) 1` as an intermediate fact. Simplify using `at this`. Establish `: φ.symm (σ (p x) v) = φ.symm v` using `LinearMap.congr_fun (φ.symm.isIntertwining' (p x)) v`. Use function extensionality and compare the values at `g`.
+
+Express the relevant statement in the definitionally equal form `φ.symm (σ (p x) v) • (1 : ℂ) = φ.symm v • (1 : ℂ)`. Rewrite using `[this]`.
+-/
 theorem isCompAlong_const {n : ℕ} (Gv : Subgroup (UA E n)) {H W : Type} [Group H] [AddCommGroup W] [Module ℂ W]
     (p : Gv →* H) {σ : Representation ℂ H W} (φ : (Representation.trivial ℂ H ℂ).Equiv σ) :
     IsCompAlong (Submodule.span ℂ {(fun _ => 1 : UA E n → ℂ)}) Gv p σ := by
@@ -107,6 +143,11 @@ theorem isCompAlong_const {n : ℕ} (Gv : Subgroup (UA E n)) {H W : Type} [Group
     change φ.symm (σ (p x) v) • (1 : ℂ) = φ.symm v • (1 : ℂ)
     rw [this]
 
+/- English proof (translation)
+Set `lam : DomWeight 1` to `⟨0, antitone_const⟩`. Establish `h0 : GlobalTheory.Branching.RankTwo.one' lam ≠ 0` using `fun h => one_ne_zero (congrArg Subtype.val h)`. Use `isCompAlong_const _ _ (.mk (LinearEquiv.ofBijective (LinearMap.toSpanSingleton ℂ _ (GlobalTheory.Branching.RankTwo.one' lam)) ⟨smul_left_injective ℂ h0, fun f => ⟨_, (GlobalTheory.Branching.RankTwo.eq_smul_one lam f).symm⟩⟩) fun g => ?_)` and prove the remaining obligations. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.Branching.RankTwo.small_act lam g _).symm` and prove the remaining obligations.
+
+Simplify using `[lam]`.
+-/
 theorem hasWeightAt_const (τ : E →+* ℂ) :
     HasWeightAt (Submodule.span ℂ {(fun _ => 1 : UA E 1 → ℂ)}) τ ⟨0, antitone_const⟩ := by
   let lam : DomWeight 1 := ⟨0, antitone_const⟩
@@ -121,6 +162,9 @@ theorem hasWeightAt_const (τ : E →+* ℂ) :
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 omit [IsCMField E] in
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocGL.nonempty_equiv_multiProd_one (SmIrr.triv _).smooth _ fun a i => Fin.ext (by rw [GlobalTheory.SmGL.stdBlocks_val, Subsingleton.elim a 0]; simp)`.
+-/
 theorem nonempty_equiv_locProd_triv {n : ℕ} (h : ∑ _ : Fin 1, n = n) (w : HeightOneSpectrum (𝓞 E)) :
     Nonempty ((Representation.trivial ℂ (GL (Fin n) (w.adicCompletion E)) ℂ).Equiv
       (locProd h w fun _ => SmIrr.triv _)) :=

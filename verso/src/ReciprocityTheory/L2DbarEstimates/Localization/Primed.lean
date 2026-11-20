@@ -8,6 +8,15 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hpt : ∀ x, a x ≤ F x ^ (1 / 2 : ℝ) * G x ^ (1 / 2 : ℝ)`. Introduce `x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+
+Use `_ ≤ (F x * G x) ^ (1 / 2 : ℝ) := ENNReal.rpow_le_rpow (h x) (by norm_num)`. Use `_ = F x ^ (1 / 2 : ℝ) * G x ^ (1 / 2 : ℝ) := ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)`. Establish `hH` using `ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two (hF.pow_const (1 / 2 : ℝ)) (hG.pow_const (1 / 2 : ℝ))`. Establish `hsq : ∀ y : ℝ≥0∞, (y ^ (1 / 2 : ℝ)) ^ (2 : ℝ) = y`. Introduce `y`.
+
+Rewrite using `[← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Simplify using `only [hsq, Pi.mul_apply] at hH`. Establish `hle : ∫⁻ x, a x ∂μ ≤ (∫⁻ x, F x ∂μ) ^ (1 / 2 : ℝ) * (∫⁻ x, G x ∂μ) ^ (1 / 2 : ℝ)` using `(lintegral_mono hpt).trans hH`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast (n := 2), ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem primed_lintegral_sq_le {α : Type*} [MeasurableSpace α] (μ : Measure α)
     (a F G : α → ℝ≥0∞) (hF : AEMeasurable F μ) (hG : AEMeasurable G μ)
     (h : ∀ x, a x ^ 2 ≤ F x * G x) :
@@ -32,6 +41,9 @@ theorem primed_lintegral_sq_le {α : Type*} [MeasurableSpace α] (μ : Measure �
         ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]
       norm_num
 
+/- English proof (translation)
+Distinguish the cases in `hm : AEStronglyMeasurable f μ`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hf) hm]`. Conclude with `ENNReal.ofReal_toReal_le`. Rewrite using `[integral_non_aestronglyMeasurable hm]`. Simplify using the standard rewrite rules.
+-/
 theorem primed_ofReal_integral_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (f : α → ℝ)
     (hf : ∀ x, 0 ≤ f x) : ENNReal.ofReal (∫ x, f x ∂μ) ≤ ∫⁻ x, ENNReal.ofReal (f x) ∂μ := by
   by_cases hm : AEStronglyMeasurable f μ
@@ -40,6 +52,9 @@ theorem primed_ofReal_integral_le {α : Type*} [MeasurableSpace α] (μ : Measur
   · rw [integral_non_aestronglyMeasurable hm]
     simp
 
+/- English proof (translation)
+Establish `: ⟪dbarF n z F0 x, g x⟫_ℂ = starRingEnd ℂ (dbarDot n z F0 x (fun j => g x j))`. Simplify using `[dbarF, dbarDot, PiLp.inner_apply, map_sum, mul_comm]`. Rewrite using `[this, Complex.norm_conj]`.
+-/
 theorem primed_inner_norm (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n) (F0 : M → ℂ)
     (g : M → V n) (x : M) :
     ‖⟪dbarF n z F0 x, g x⟫_ℂ‖ = ‖dbarDot n z F0 x (fun j => g x j)‖ := by
@@ -47,6 +62,37 @@ theorem primed_inner_norm (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → 
     simp [dbarF, dbarDot, PiLp.inner_apply, map_sum, mul_comm]
   rw [this, Complex.norm_conj]
 
+/- English proof (translation)
+Introduce `z hz ph ph' ψ F0 h ε hph hlev hph' hψ hF0 hh hdom hε hpp hlevi hA g hg`. Establish `cR : ∀ f : M → ℝ, SmoothR n z f → Continuous f` using `fun f hf => by`. Conclude with `(Complex.continuous_re.comp (Smooth.continuous n z hz _ hf)).congr fun x => by simp`. Establish `cph'` using `cR ph' hph'`. Establish `cψ` using `cR ψ hψ`.
+
+Establish `cg : ∀ j, Continuous fun x => g x j` using `fun j => Ck.continuous n z hz 2 _ (hg j).1`. Establish `cLevi : ∀ q : M → ℝ, SmoothR n z q → Continuous fun x => (Levi n z q x (fun j => g x j)).re`. Introduce `q hq`. Use `Complex.continuous_re.comp ?_` and prove the remaining obligations. Unfold `Levi`.
+
+Use `continuous_finsetSum _ fun j _ => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `((Smooth.continuous n z hz _ (Smooth.d n z j _ (Smooth.db n z k _ hq))).mul (cg j)).mul (Complex.continuous_conj.comp (cg k))`. Establish `cdS : Continuous fun x => dSqR n z ψ x`. Unfold `dSqR`. Conclude with `continuous_finsetSum _ fun j _ => ((Smooth.continuous n z hz _ (Smooth.d n z j _ hψ)).norm.pow 2)`.
+
+Establish `hnorm : ∀ x, ‖g x‖ ^ 2 = ∑ j, ‖g x j‖ ^ 2` using `fun x => EuclideanSpace.norm_sq_eq (g x)`. Establish `cgn : Continuous fun x => ‖g x‖ ^ 2`. Repeatedly rewrite using `[hnorm]`. Conclude with `continuous_finsetSum _ fun j _ => (cg j).norm.pow 2`. Establish `hKc : IsCompact (⋃ j, tsupport (fun x => g x j))` using `isCompact_iUnion fun j => (hg j).2`.
+
+Establish `hgK : ∀ x, x ∉ (⋃ j, tsupport (fun x => g x j)) → g x = 0`. Introduce `x hx`. Simplify using `only [mem_iUnion, not_exists] at hx`. Use extensionality with `j`. Conclude with `image_eq_zero_of_notMem_tsupport (f := fun x => g x j) (hx j)`.
+
+Use `set Q : M → ℝ := fun x => ((Levi n z ph' x (fun j => g x j)).re - (1 + 1 / ε) * dSqR n z ψ x * ‖g x‖ ^ 2) * Real.exp (-ph' x) with hQ`. Establish `cQ : Continuous Q` using `((cLevi ph' hph').sub ((continuous_const.mul cdS).mul cgn)).mul (Real.continuous_exp.comp cph'.neg)`. Establish `sQ : HasCompactSupport Q` using `HasCompactSupport.intro hKc fun x hx => by`. Simplify using `[hQ, hgK x hx, Levi]`. Establish `iQ : Integrable Q (vol n z)` using `integrable_of_continuous_real n z hz Q cQ sQ`.
+
+Establish `hL0 : ∀ x, 0 ≤ (Levi n z ph x (fun j => g x j)).re` using `fun x => hlev x _`. Establish `hLQ : ∀ x, (Levi n z ph x (fun j => g x j)).re * Real.exp (-ph' x) ≤ Q x`. Introduce `x`. Establish `h1` using `hlevi x (fun j => g x j)`. Use `beta_reduce at h1`.
+
+Rewrite `h1` using `[← hnorm x]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Real.exp_pos _).le`. Establish `hQ0 : ∀ x, 0 ≤ Q x` using `fun x => (mul_nonneg (hL0 x) (Real.exp_pos _).le).trans (hLQ x)`. Establish `hap` using `hAP z hz ph' ψ ε g (SmoothR.ckR n z 2 ph' hph') (SmoothR.ckR n z 1 ψ hψ) hε hg`. Use `set Gf : M → ℝ≥0∞ := fun x => ENNReal.ofReal ((Levi n z ph x (fun j => g x j)).re * Real.exp (-ph' x)) with hGf`.
+
+Use `set Ff : M → ℝ≥0∞ := fun x => h x * ENNReal.ofReal (Real.exp (2 * ψ x - ph' x)) with hFf`. Establish `hG : ∫⁻ x, Gf x ∂vol n z ≤ ENNReal.ofReal (1 + ε) * wint n z (tstar n z (w1 ph' ψ) (w2 ph' ψ) g) (w1 ph' ψ) + n2 n z (sbar n z g) ph'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by linarith)]; exact ENNReal.ofReal_add_le`. Use `_ ≤ _ := by gcongr`.
+
+Conclude with `primed_ofReal_integral_le _ _ fun x => mul_nonneg (sq_nonneg _) (Real.exp_pos _).le`. Conclude with `primed_ofReal_integral_le _ _ fun x => mul_nonneg (by unfold sq2; positivity) (Real.exp_pos _).le`. Establish `hF : ∫⁻ x, Ff x ∂vol n z ≤ ∫⁻ x, h x * ENNReal.ofReal (Real.exp (-ph x)) ∂vol n z` using `lintegral_mono fun x => by`. Simplify using `only [hFf]`. Use `gcongr`.
+
+Combine the linear relations using `[hpp x]`. Establish `mF : AEMeasurable Ff (vol n z)` using `(hh.mul (ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp ((continuous_const.mul cψ).sub cph')).measurable)).aemeasurable`. Establish `mG : AEMeasurable Gf (vol n z)` using `(ENNReal.continuous_ofReal.comp ((cLevi ph hph).mul (Real.continuous_exp.comp cph'.neg))).measurable.aemeasurable`. Use `set I : M → ℂ := fun x => ⟪dbarF n z F0 x, g x⟫_ℂ * (Real.exp (-w2 ph' ψ x) : ℂ) with hI`. Establish `hpt : ∀ x, ‖I x‖ₑ ^ 2 ≤ Ff x * Gf x`.
+
+Introduce `x`. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Simplify using `only [hI, hFf, hGf]`. Rewrite using `[norm_mul, primed_inner_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), mul_pow]`. Establish `he : Real.exp (-w2 ph' ψ x) ^ 2 = Real.exp (2 * ψ x - ph' x) * Real.exp (-ph' x)`.
+
+Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Simplify using `only [w2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, ENNReal.ofReal_mul (sq_nonneg _), ENNReal.ofReal_mul (Real.exp_pos _).le, ENNReal.ofReal_mul (hL0 x)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show ENNReal.ofReal (‖∫ x, I x ∂vol n z‖ ^ 2) ≤ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`. Use `_ ≤ (∫⁻ x, ‖I x‖ₑ ∂vol n z) ^ 2 := by gcongr; exact enorm_integral_le_lintegral_enorm _`.
+
+Use `_ ≤ (∫⁻ x, Ff x ∂vol n z) * ∫⁻ x, Gf x ∂vol n z := primed_lintegral_sq_le _ _ _ _ mF mG hpt`. Use `_ ≤ _ := mul_le_mul' hF hG`.
+-/
 theorem primedIneq (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (hAP : APStatement n M) : PrimedIneqStatement n M := by
   intro z hz ph ph' ψ F0 h ε hph hlev hph' hψ hF0 hh hdom hε hpp hlevi hA g hg

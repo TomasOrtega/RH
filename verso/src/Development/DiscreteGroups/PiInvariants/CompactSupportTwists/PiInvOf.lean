@@ -18,6 +18,9 @@ namespace DiscreteGroups.T1.G
 
 attribute [local instance] borelH
 
+/- English proof (translation)
+Use `haveI := hr`. Establish `hνμ : X.ν ≪ X.μ` using `Measure.absolutelyContinuous_of_le (Measure.restrict_le_self : X.μ.restrict X.F ≤ X.μ)`. Use `⟨((aesm_of_inv X hinv hf.1).comp_measurePreserving (measurePreserving_mul_right X.μ z)).mono_ac hνμ, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, lint_rt X hr (g := fun y => ‖f y‖ₑ ^ (2 : ℝ≥0∞).toReal) (fun γ y => by simp only [hinv γ y]) z, ← eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Conclude with `hf.2`.
+-/
 theorem memLp_rt (X : PositivityTheory.Rg.BcB.E1.Ctx) (hr : X.μ.IsMulRightInvariant) {f : X.G → ℂ}
     (hinv : ∀ γ : X.Γ, ∀ y, f ((γ : X.G) * y) = f y) (hf : MemLp f 2 X.ν) (z : X.G) :
     MemLp (fun x => f (x * z)) 2 X.ν := by
@@ -29,6 +32,39 @@ theorem memLp_rt (X : PositivityTheory.Rg.BcB.E1.Ctx) (hr : X.μ.IsMulRightInvar
     ← eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]
   exact hf.2
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn D π hθ ι _ Φ T hΦ hT`. Set `X` to `PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds D`. Establish `hr : X.μ.IsMulRightInvariant` using `D.haar.2.1`. Establish `hdet : ∀ g : GA E n, IsUnit (g : Matrix (Fin n) (Fin n) (Ad E)).det` using `fun g => by`. Simplify using the standard rewrite rules.
+
+Establish `hldet : ∀ (γ : ratH E n 0) (y : H E n 0), ldet ((γ : H E n 0) * y) = ldet y`. Introduce `γ y`. Take `⟨⟨γ₁, γ₂⟩, hγ⟩` from `γ.2`. Establish `h1 : (γ : H E n 0).1 = ratGL E n γ₁` using `by rw [← hγ]; rfl`. Establish `hb` using `PositivityTheory.Rg.BcB.D1.logAbsBasic E`.
+
+Establish `hd : ((ratGL E n γ₁ : GA E n) : Matrix (Fin n) (Fin n) (Ad E)).det = algebraMap E (Ad E) (γ₁ : Matrix (Fin n) (Fin n) E).det`. Simplify using `[ratGL, RingHom.map_det]`. Establish `hne : (γ₁ : Matrix (Fin n) (Fin n) E).det ≠ 0`. Simplify using `using (Matrix.GeneralLinearGroup.det γ₁).ne_zero`. Simplify using `only [ldet, Prod.fst_mul, h1]`.
+
+Rewrite using `[Units.val_mul, Matrix.det_mul, hb.2.1 _ _ (hdet _) (hdet _), hd, hb.2.2 _ hne, zero_add]`. Establish `hpsi0 : True` using `trivial`. Establish `hpsi : ∀ ψ ∈ π.V, ∀ (γ : ratH E n 0) (y : H E n 0), ψ.1 ((γ : H E n 0) * y).1 = ψ.1 y.1`. Introduce `ψ hψ γ y`. Take `⟨⟨γ₁, γ₂⟩, hγ⟩` from `γ.2`.
+
+Establish `h1 : (γ : H E n 0).1 = ratGL E n γ₁` using `by rw [← hγ]; rfl`. Rewrite using `[Prod.fst_mul, h1]`. Conclude with `(π.cusp ψ hψ).1.left γ₁ y.1`. Establish `key : ∀ g : Hs (ι` using `ι) D, IsPiVec D π g → T g ∈ piSp D π ι := by`. Introduce `g hg`.
+
+Use `choose ψ hψ u hu hu' hgu using hg`. Use `set Ft : ι → H E n 0 → ℂ := fun j x => (ψ j).1 x.1 * u j (ldet x) with hFt`. Establish `hinv : ∀ j, ∀ γ : ratH E n 0, ∀ y : H E n 0, Ft j ((γ : H E n 0) * y) = Ft j y` using `fun j γ y => by show (ψ j).1 ((γ : H E n 0) * y).1 * u j (ldet ((γ : H E n 0) * y)) = (ψ j).1 y.1 * u j (ldet y)`. Rewrite using `[hpsi _ (hψ j) γ y, hldet γ y]`. Establish `hmem : ∀ j, MemLp (Ft j) 2 X.ν` using `fun j => (Lp.memLp (g j)).ae_eq (hgu j)`.
+
+Rewrite using `[← Submodule.orthogonal_orthogonal (piSp D π ι), Submodule.mem_orthogonal]`. Introduce `h hh`. Establish `hz : ∀ i j (z : H E n 0), ∫ x, starRingEnd ℂ ((h i : H E n 0 → ℂ) x) * Ft j (x * z) ∂D.ν = 0`. Introduce `i j z`. Establish `hw` using `memLp_rt X hr (hinv j) (hmem j) z`.
+
+Set `w : Lp ℂ 2 D.ν` to `hw.toLp _`. Set `v : Hs (ι` to `ι) D := WithLp.toLp 2 (Pi.single i w)`. Establish `hvl : ∀ l, v l = (Pi.single i w : ι → Lp ℂ 2 D.ν) l` using `fun l => rfl`. Establish `hv : v ∈ piSp D π ι`. Use `hC E n hn D π hθ ι (fun l => if l = i then ψ j else 0) (fun l => if l = i then u j else 0) z v ?_ ?_` and prove the remaining obligations.
+
+Introduce `l split_ifs`. Conclude with `⟨hψ j, hu j, hu' j⟩`. Conclude with `⟨Submodule.zero_mem _, continuous_zero, HasCompactSupport.zero⟩`. Introduce `l`. Rewrite using `[hvl]`.
+
+Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality. Rewrite using `[Pi.single_eq_same]`. Use `filter_upwards [hw.coeFn_toLp] with x hx`. Simplify using `only [if_pos rfl]`.
+
+Conclude with `(show (w : H E n 0 → ℂ) x = Ft j (x * z) from hx)`. Rewrite using `[Pi.single_eq_of_ne hl] filter_upwards [Lp.coeFn_zero (E := ℂ) (p := 2) (μ := D.ν)] with x hx`. Rewrite using `[hx]`. Simplify using `only [if_neg hl, Submodule.coe_zero, ZeroMemClass.coe_zero, Pi.zero_apply, zero_mul]`. Establish `h0 : ⟪h, v⟫_ℂ = 0` using `Submodule.inner_left_of_mem_orthogonal hv hh`.
+
+Rewrite `h0` using `[PiLp.inner_apply, Finset.sum_eq_single i (fun l _ hl => by rw [hvl, Pi.single_eq_of_ne hl, inner_zero_right]) (fun hi => absurd (Finset.mem_univ i) hi), hvl, Pi.single_eq_same, MeasureTheory.L2.inner_def]`. Rewrite using `[← h0]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hw.coeFn_toLp] with x hx`. Rewrite using `[show (w : H E n 0 → ℂ) x = Ft j (x * z) from hx, RCLike.inner_apply, mul_comm]`.
+
+Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.L2.inner_def]`. Establish `hP` using `fun j => pair_zero X hr PositivityTheory.Rg.BcB.E1.kerBasic PositivityTheory.Rg.BcB.E1.kernel_rows_columns_square_integrable (hΦ i j) (hinv j) (hmem j) (Lp.memLp (h i)) (hz i j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hT g i] with x hx`. Rewrite using `[hx, RCLike.inner_apply, mul_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `integral_congr_ae ((hgu j).mono fun y hy => by simp only [hy, hFt])`. Use `_ = ∑ j, ∫ x, starRingEnd ℂ ((h i : H E n 0 → ℂ) x) * ∫ y, kerH (Φ i j) x y * Ft j y ∂D.ν ∂D.ν := integral_finset_sum _ fun j _ => (hP j).1`. Use `_ = 0 := Finset.sum_eq_zero fun j _ => (hP j).2`. Introduce `f hf`. Establish `hle : Submodule.span ℂ {f | IsPiVec D π f} ≤ (piSp D π ι).comap (T : Hs (ι` using `ι) D →ₗ[ℂ] Hs (ι := ι) D) := Submodule.span_le.2 fun g hg => key g hg`.
+
+Establish `hcl : IsClosed (((piSp D π ι).comap (T : Hs (ι` using `ι) D →ₗ[ℂ] Hs (ι := ι) D)) : Set (Hs (ι := ι) D)) := (show IsClosed (piSp D π ι : Set (Hs (ι := ι) D)) from Submodule.isClosed_topologicalClosure _).preimage T.continuous`. Conclude with `Submodule.topologicalClosure_minimal _ hle hcl hf`.
+-/
 theorem piInv_of (hC : PiClosureInv) : PiInv := by
   intro E _ _ _ n hn D π hθ ι _ Φ T hΦ hT
   classical

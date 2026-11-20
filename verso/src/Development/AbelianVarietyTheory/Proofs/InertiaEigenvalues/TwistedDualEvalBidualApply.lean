@@ -18,6 +18,13 @@ variable {R : Type*} [CommRing R] {G : Type*} [Group G] [TopologicalSpace G]
   {P : Type*} [AddCommGroup P] [Module R P] [TopologicalSpace P]
   [IsTopologicalAddGroup P] [ContinuousConstSMul R P]
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Rewrite using `[eq_neg_iff_add_eq_zero]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (cupCocycleZ1Z1 rho' rho rhoP b.flip hb' hbe' h y x + cupCocycleZ1Z1 rho rho' rhoP b hb hbe h' x y) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => -b (x.1 g) (y.1 g), (hb.comp (x.2.1.prodMk y.2.1)).neg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨g, k⟩` from `p`. Express the relevant statement in the definitionally equal form `_ = b (rho g (x.1 k)) (y.1 g) + b (x.1 g) (rho' g (y.1 k))`. Simplify using `only [d1_apply, map_neg, ← hbe, x.2.2 g k, y.2.2 g k, map_add, LinearMap.add_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cupH11_anticomm (rho : Representation R G M) (rho' : Representation R G M')
     (rhoP : Representation R G P) (b : M →ₗ[R] M' →ₗ[R] P)
     (hb : Continuous fun p : M × M' => b p.1 p.2)
@@ -39,6 +46,11 @@ theorem cupH11_anticomm (rho : Representation R G M) (rho' : Representation R G 
   simp only [d1_apply, map_neg, ← hbe, x.2.2 g k, y.2.2 g k, map_add, LinearMap.add_apply]
   abel
 
+/- English proof (translation)
+Establish `he' : ∀ g m, u.symm.toLinearMap (rho' g m) = rho g (u.symm.toLinearMap m)` using `fun g m => by`. Apply `u.injective` to reduce the goal to its premises. Use `he g (u.symm m)` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this ⊢`. Conclude with `this.symm`.
+
+Use `Function.bijective_iff_has_inverse.2 ⟨mapH1 rho' rho u.symm.toLinearMap hu' he', fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => u.symm_apply_apply _))`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => u.apply_symm_apply _))`.
+-/
 theorem mapH1_bijective (rho : Representation R G M) (rho' : Representation R G M')
     (u : M ≃ₗ[R] M') (hu : Continuous u.toLinearMap) (hu' : Continuous u.symm.toLinearMap)
     (he : ∀ g m, u.toLinearMap (rho g m) = rho' g (u.toLinearMap m)) :
@@ -61,14 +73,23 @@ section Dual
 
 variable {R : Type*} [CommRing R] {Γ : Type*} [Group Γ] {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+The claim follows from `Finite.of_injective _ (DFunLike.coe_injective (F := TDual R M))`.
+-/
 theorem finite_TDual [Finite R] [Finite M] : Finite (TDual R M) :=
   Finite.of_injective _ (DFunLike.coe_injective (F := TDual R M))
 
 def evalBidual : M →ₗ[R] TDual R (TDual R M) := evalPair
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem twistedDual_evalBidual_apply (m : M) (φ : TDual R M) :
     (evalBidual m : TDual R (TDual R M)) φ = φ m := rfl
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [twistedDual_evalBidual_apply, twDual_apply, inv_inv, map_inv]`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem evalBidual_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (m : M) :
     evalBidual (rho g m) = twDual χ (twDual χ rho) g (evalBidual m) := by
   ext φ
@@ -77,6 +98,9 @@ theorem evalBidual_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : �
 
 variable [TopologicalSpace R] [DiscreteTopology R] [TopologicalSpace M] [DiscreteTopology M]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun (p : Γ × TDual R M) (m : M) => twDual χ rho p.1 p.2 m` using `continuous_pi fun m => hχ.comp (continuous_fst.prodMk ((continuous_of_discreteTopology (f := fun q : TDual R M × M => q.1 q.2)).comp (continuous_snd.prodMk (h.comp (continuous_fst.inv.prodMk continuous_const)))))`. Conclude with `(IsLocallyConstant.desc _ (fun (φ : TDual R M) (m : M) => φ m) ((IsLocallyConstant.iff_continuous _).2 h1) DFunLike.coe_injective).continuous`.
+-/
 theorem contAction_twDual [TopologicalSpace Γ] [ContinuousInv Γ] [Finite M] {χ : Γ →* Rˣ}
     {rho : Representation R Γ M} (hχ : ContAction (charRep χ)) (h : ContAction rho) :
     ContAction (twDual χ rho) := by
@@ -92,6 +116,9 @@ variable {D : Type*} [Group D] [TopologicalSpace D]
 def evalH1 (χ : D →* Rˣ) (rho : Representation R D M) : H1 rho →ₗ[R] H1 (twDual χ (twDual χ rho)) :=
   mapH1 rho _ evalBidual continuous_of_discreteTopology (evalBidual_equiv χ rho)
 
+/- English proof (translation)
+Establish `e` using `cupH11_anticomm ((twDual χ rho).comp φ) (rho.comp φ) ((charRep χ).comp φ) evalPair.flip continuous_of_discreteTopology (fun g y x => evalPair_equiv χ rho (φ g) x y) continuous_of_discreteTopology (fun g x y => evalPair_equiv χ rho (φ g) x y) h' h y (resH1 rho φ hφ x)`. Use `Eq.trans ?_ e` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Both sides reduce to the same expression.
+-/
 theorem cup11_res_evalH1 [TopologicalSpace Γ] (χ : Γ →* Rˣ) (rho : Representation R Γ M)
     (φ : D →* Γ) (hφ : Continuous φ) (h : ContAction (rho.comp φ))
     (h' : ContAction ((twDual χ rho).comp φ)) (x : H1 rho) (y : H1 ((twDual χ rho).comp φ)) :
@@ -108,6 +135,9 @@ theorem cup11_res_evalH1 [TopologicalSpace Γ] (χ : Γ →* Rˣ) (rho : Represe
 
 end Dual
 
+/- English proof (translation)
+The claim follows from `mapH1_bijective rho _ (LinearEquiv.ofBijective (evalBidual (R := ZMod n) (M := M)) (GlobalTheory.TateTop.eval_bijective (n := n) (M := M))) continuous_of_discreteTopology continuous_of_discreteTopology (evalBidual_equiv χ rho)`.
+-/
 theorem evalH1_bijective {n : ℕ} [NeZero n] {Γ : Type*} [Group Γ] [TopologicalSpace Γ] {M : Type}
     [AddCommGroup M] [Module (ZMod n) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
     (χ : Γ →* (ZMod n)ˣ) (rho : Representation (ZMod n) Γ M) :
@@ -130,10 +160,16 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M}
 
 omit [TopologicalSpace M] [DiscreteTopology M] in
+/- English proof (translation)
+The claim follows from `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩ finite_TDual`.
+-/
 theorem finite_TDual_pow : Finite (TDual (ZMod (l ^ r)) M) :=
   haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
   finite_TDual
 
+/- English proof (translation)
+Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[h.mem_range_localization_H1_iff, (evalH1_bijective μ ρ).2.forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations. Simplify using `only [cup11_res_evalH1 μ ρ _ _ (hρ.comp' (continuous_locFam S Av _)), map_neg, Finset.sum_neg_distrib, neg_eq_zero]`.
+-/
 theorem mem_range_loc1_twDual_iff (hρ : ContAction ρ) {hρ' : ContAction (twDual μ ρ)}
     (h : NineTermExact S Av μ j (twDual μ ρ) hρ')
     (y : ∀ v : S, H1 ((twDual μ ρ).comp (locFam S Av v))) :
@@ -150,6 +186,9 @@ end Global
 
 open GlobalTheory.Published GlobalTheory.Published.PoitouTate in
 
+/- English proof (translation)
+Take `⟨inv, hinv, h⟩` from `h F Ω l r hr ζ hζ`. Use `⟨inv, hinv, fun S hS Av hA μ hμ M _ _ _ _ _ ρ hρ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(h S hS Av hA μ hμ M ρ hρ).1.mem_range_localization_H1_iff`. Use `finite_TDual_pow (l := l) (r := r) (M := M)` as an intermediate fact. Conclude with `mem_range_loc1_twDual_iff hρ (h S hS Av hA μ hμ _ (twDual μ ρ) (contAction_twDual (contAction_charRep hμ) hρ)).1`.
+-/
 theorem exact_annihilators (h : PoitouTateTotallyComplex)
     (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (hr : 0 < r) (ζ : Ω)

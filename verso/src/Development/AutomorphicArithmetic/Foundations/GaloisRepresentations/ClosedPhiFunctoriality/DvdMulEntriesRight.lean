@@ -6,20 +6,34 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem map_smul_ringHom {S T : Type} [CommRing S] [CommRing T] (f : S →+* T) {d : ℕ} (c : S)
     (M : Matrix (Fin d) (Fin d) S) : (c • M).map f = f c • M.map f := by
   ext i j; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun k _ => Dvd.dvd.mul_left (h k j) _`.
+-/
 private theorem dvd_mul_entries_left {T : Type} [CommRing T] {a b e : ℕ} (c : T) (A : Matrix (Fin a) (Fin b) T)
     (B : Matrix (Fin b) (Fin e) T) (h : ∀ i j, c ∣ B i j) (i : Fin a) (j : Fin e) : c ∣ (A * B) i j := by
   rw [Matrix.mul_apply]
   exact Finset.dvd_sum fun k _ => Dvd.dvd.mul_left (h k j) _
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun k _ => Dvd.dvd.mul_right (h i k) _`.
+-/
 private theorem dvd_mul_entries_right {T : Type} [CommRing T] {a b e : ℕ} (c : T) (A : Matrix (Fin a) (Fin b) T)
     (B : Matrix (Fin b) (Fin e) T) (h : ∀ i j, c ∣ A i j) (i : Fin a) (j : Fin e) : c ∣ (A * B) i j := by
   rw [Matrix.mul_apply]
   exact Finset.dvd_sum fun k _ => Dvd.dvd.mul_right (h i k) _
 
+/- English proof (translation)
+Establish `e : R.map f * A₁.map f - A.map f * (R.map f).map φ = (R * A₁ - A * R.map ψ).map f`. Establish `e' : (R.map f).map φ = (R.map ψ).map f`. Use extensionality with `i j`. Simplify using `[hf]`. Rewrite using `[e']`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum]`. Rewrite using `[e, Matrix.map_apply]`. Conclude with `map_dvd f (h i j)`.
+-/
 private theorem map_intertwine {S T : Type} [CommRing S] [CommRing T] (f : S →+* T) (ψ : S →+* S) (φ : T →+* T)
     (hf : ∀ s, φ (f s) = f (ψ s)) {d d' : ℕ} (c : S) (A : Matrix (Fin d) (Fin d) S) (A₁ : Matrix (Fin d') (Fin d') S)
     (R : Matrix (Fin d) (Fin d') S) (h : ∀ i j, c ∣ (R * A₁ - A * R.map ψ) i j) (i : Fin d) (j : Fin d') :
@@ -33,6 +47,29 @@ private theorem map_intertwine {S T : Type} [CommRing S] [CommRing T] (f : S →
   rw [e, Matrix.map_apply]
   exact map_dvd f (h i j)
 
+/- English proof (translation)
+Introduce `hZ hR l _ K bk N M`. Take `⟨n, hn⟩` from `hZ l K bk (3 * N) M`. Use `⟨n, ?_⟩` and prove the remaining obligations. Introduce `k d d' A A₁ A₁' Q Q' Q₁ Q₁' R hA hS hS₁ hRel`. Take `⟨-, -, ⟨v, hv⟩, hφι, -⟩` from `GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk`.
+
+Establish `hv' : fA bk bk.E = (l : Per.Acris l) * v` using `hv`. Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ w₀ : (Per.Acris l)ˣ, f0 bk bk.E = (l : Per.Acris l) * w₀ := by`. Take `⟨w, hw⟩` from `bk.coeff_zero`. Establish `hc : PowerSeries.constantCoeff bk.E = (l : Wq l bk.a) * w`. Rewrite using `[← hw]`.
+
+Simplify using the standard rewrite rules. Use `⟨(Units.map (PowerSeries.C (R := Wq l bk.a)).toMonoidHom w).map (fA bk).toMonoidHom, ?_⟩` and prove the remaining obligations. Simplify using `[f0, hc]`. Establish `hφA : ∀ s, phiA l (fA bk s) = fA bk (frobS l bk.a s)` using `fun s => by`. Simplify using `only [fA, RingHom.comp_apply, hφι, bk.ev_frob]`.
+
+Establish `hφ0 : ∀ s, phiA l (f0 bk s) = f0 bk (frobS l bk.a s)` using `fun s => by`. Rewrite using `[show f0 bk s = fA bk (PowerSeries.C (PowerSeries.constantCoeff s)) from rfl, hφA, frobS_C, show f0 bk (frobS l bk.a s) = fA bk (PowerSeries.C (PowerSeries.constantCoeff (frobS l bk.a s))) from rfl, constantCoeff_frobS_apply]`. Establish `hdiff : ∀ s, uC bk ∣ fA bk s - f0 bk s` using `fun s => by`. Take `⟨t, ht⟩` from `(PowerSeries.X_dvd_iff (φ := s - PowerSeries.C (PowerSeries.constantCoeff s))).2 (by simp)`. Establish `e : fA bk s - f0 bk s = uC bk ^ l * fA bk t`.
+
+Rewrite using `[show f0 bk s = fA bk (PowerSeries.C (PowerSeries.constantCoeff s)) from rfl, ← map_sub, ht, map_mul]`. Use `congr 1`. Simplify using `[fA, uC, frobS_X]`. Rewrite using `[e]`. Conclude with `Dvd.dvd.mul_right (dvd_pow_self _ (Fact.out : l.Prime).ne_zero) _`.
+
+Establish `hlc : ∀ f : bk.S →+* Per.Acris l, f ((l : bk.S) ^ n) = (l : Per.Acris l) ^ n` using `fun f => by`. Rewrite using `[map_pow, map_natCast]`. Establish `h1 : A₁.map (f0 bk) * A₁'.map (f0 bk) = ((l : Per.Acris l) * w₀) ^ (2 * N) • (1 : Matrix (Fin d') (Fin d') (Per.Acris l))`. Rewrite using `[← hw₀, ← Matrix.map_mul, hA, map_smul_ringHom, map_pow, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : ((l : Per.Acris l) * v) ^ N • (Q * A.map (f0 bk)) = ((l : Per.Acris l) * w₀) ^ N • (A.map (fA bk) * Q.map (phiA l))`.
+
+Rewrite using `[← hv', ← hw₀]`. Conclude with `hS.frob`. Establish `h3 : ((l : Per.Acris l) * v) ^ N • (Q₁ * A₁.map (f0 bk)) = ((l : Per.Acris l) * w₀) ^ N • (A₁.map (fA bk) * Q₁.map (phiA l))`. Rewrite using `[← hv', ← hw₀]`. Conclude with `hS₁.frob`.
+
+Establish `h4 : ∀ i j, (l : Per.Acris l) ^ n ∣ (R.map (fA bk) * A₁.map (fA bk) - A.map (fA bk) * (R.map (fA bk)).map (phiA l)) i j` using `fun i j => by`. Rewrite using `[← hlc (fA bk)]`. Conclude with `map_intertwine (fA bk) (frobS l bk.a) (phiA l) hφA _ A A₁ R hRel i j`. Establish `h5 : ∀ i j, (l : Per.Acris l) ^ n ∣ (R.map (f0 bk) * A₁.map (f0 bk) - A.map (f0 bk) * (R.map (f0 bk)).map (phiA l)) i j` using `fun i j => by`. Rewrite using `[← hlc (f0 bk)]`.
+
+Conclude with `map_intertwine (f0 bk) (frobS l bk.a) (phiA l) hφ0 _ A A₁ R hRel i j`. Take `⟨F, F', hF⟩` from `hR (Per.Acris l) (phiA l) (l : Per.Acris l) ((l : Per.Acris l) ^ n) v w₀ N d d' (A.map (fA bk)) (A.map (f0 bk)) Q (A₁.map (fA bk)) (A₁.map (f0 bk)) (A₁'.map (f0 bk)) Q₁ (R.map (fA bk)) (R.map (f0 bk)) h1 h2 h3 h4 h5`. Use `hn d d' _ F F' ?_ hF` and prove the remaining obligations. Introduce `i j`. Establish `hD : R.map (fA bk) * Q₁ - Q * R.map (f0 bk) = R.map (fA bk) * (Q₁ - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d') (Fin d') (Per.Acris l))) + (l : Per.Acris l) ^ k • (R.map (fA bk) - R.map (f0 bk)) - (Q - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) * R.map ( …`.
+
+Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[hD, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply]`. Use `dvd_sub (dvd_add (dvd_mul_entries_left _ _ _ hS₁.mod i j) ?_) (dvd_mul_entries_right _ _ _ hS.mod i j)` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+
+Conclude with `Dvd.dvd.mul_left (hdiff _) _`.
+-/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.linkQ_holds :
     ZeroAp → LinkRec → LinkQ := by
   intro hZ hR l _ K bk N M

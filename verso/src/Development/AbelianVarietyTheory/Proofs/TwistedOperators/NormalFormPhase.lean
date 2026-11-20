@@ -21,6 +21,9 @@ open GlobalTheory.RowEx
 
 namespace GlobalTheory.RowEx
 
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs _ => ?_⟩⟩` and prove the remaining obligations. Use `haveI := hS.fin`. Conclude with `GlobalTheory.PhaseField.phases_core hS.core.lev ch.S.toGridChoice (GlobalTheory.RowClaim.Test.pde_ne_q hS) hIs.guard`.
+-/
 theorem nfPhase_of_sumOKK : SumOKK → NFPhase := by
   intro _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs _ => ?_⟩⟩

@@ -11,6 +11,29 @@ noncomputable section
 namespace GlobalTheory.ThetaIntegralLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
+/- English proof (translation)
+Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d)` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hw).pres`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, fun x => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`.
+
+Establish `e : ∀ h', M.I om 0 h' = 0` using `fun h' => by simpa using I_smul M om 0 0 h'`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[e]`. Consider the case `add Φ Ψ hΦ hΨ ihΦ ihΨ`. Take `⟨Φ₁, m₁, p₁, q₁⟩` from `ihΦ`. Take `⟨Ψ₁, m₂, p₂, q₂⟩` from `ihΨ`.
+
+Use `⟨Φ₁ + Ψ₁, Submodule.add_mem _ m₁ m₂, fun x => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify `(p₁ x).fun_add (p₂ x)` using `only [map_add, Pi.add_apply]`. Simplify `(q₁ h).fun_add (q₂ h)` using `only [I_add M om hpres hconv hΦ hΨ, I_add M om hpres hconv m₁ m₂]`. Consider the case `smul c Φ hΦ ih`. Take `⟨Φ₁, m₁, p₁, q₁⟩` from `ih`.
+
+Use `⟨c • Φ₁, Submodule.smul_mem _ c m₁, fun x => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify `(p₁ x).const_mul c` using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Simplify `(q₁ h).const_mul c` using `only [I_smul]`. Consider the case `mem Φ hΦ`. Take `⟨f, φ, hφ, rfl⟩` from `hΦ`.
+
+Take `⟨c, c', h0, hlim, hacts⟩` from `_root_.GlobalTheory.WeilArchSmooth.exists_weilRep_archimedean_smooth_orbit hP M ψ χY χW om hcm hψ hw γ hγ f`. Establish `hmem : ∀ u : SInf F (Fin n × Fin d), pureA F u φ ∈ schA F (Fin n × Fin d)` using `fun u => Submodule.subset_span ⟨u, φ, hφ, rfl⟩`. Establish `hR : Rest (evI F) (⇑f) (fun x : Fin n × Fin d → AF F => φ fun i => (x i).2)`. Use `⟨fun x z hz => congrArg φ (funext fun i => ?_), hmem f⟩` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`.
+
+Rewrite using `[snd_eq_zero_of_at z hz i, add_zero]`. Establish `hc : ∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (pureA F f φ) = pureA F (c t) φ` using `fun t => hacts t _ hR`. Use `⟨pureA F c' φ, hmem c', fun x => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `ev : Continuous fun s : SInf F (Fin n × Fin d) => s (fun j => evI F (x j))` using `(continuous_eval_const (F := BoundedContinuousFunction (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ) (fun j => evI F (x j))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ).continuous`. Establish `h2 : HasDerivAt (fun t : ℝ => c t (fun j => evI F (x j)) * φ fun i => (x i).2) (c' (fun j => evI F (x j)) * φ fun i => (x i).2) 0`.
+
+Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `(((ev.tendsto c').comp hlim).mul_const _).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module, h0]`. Simplify using `only [Function.comp_apply, SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hc]`. Conclude with `h2`. Set `L : SInf F (Fin n × Fin d) →ₗ[ℝ] ℂ` to `{ toFun := fun u => M.I om (pureA F u φ) h map_add' := fun u u' => by`. Establish `e : pureA F ⇑(u + u') φ = pureA F u φ + pureA F u' φ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[pureA, add_mul]`. Rewrite using `[e, I_add M om hpres hconv (hmem u) (hmem u')]`. Use the proof step `map_smul' := fun s u => by`. Establish `e : pureA F ⇑(s • u) φ = (s : ℂ) • pureA F u φ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[pureA, mul_assoc, Complex.real_smul]`. Rewrite using `[e, I_smul, RingHom.id_apply, Complex.real_smul] }`. Establish `hL : Continuous L` using `hcont φ hφ h`. Establish `hcurve : (fun t : ℝ => M.I om (pureA F f φ) (h * γ (Multiplicative.ofAdd t))) = fun t => L (c t)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← I_om_one, hc]`. Both sides reduce to the same expression. Rewrite using `[hcurve, hasDerivAt_iff_tendsto_slope]`. Use `((hL.tendsto c').comp hlim).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, slope_def_module, h0, sub_zero, map_smul, map_sub]`.
+-/
 theorem thetaIntegral_line_hasDerivAt (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (χY χW : Chr F E) (om : Rep σ Y W)
     (hcm : IsCMExt F E σ) (hψ : IsStd ψ) (hw : M.IsWeil ψ χY χW om) (hconv : ∀ Φ ∈ schA F (Fin n × Fin d), M.Conv om Φ)
     (hcont : ∀ φ ∈ SB (Fin n × Fin d → Af F), ∀ h, Continuous fun f : SInf F (Fin n × Fin d) => M.I om (pureA F f φ) h)

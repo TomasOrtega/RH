@@ -25,6 +25,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
   (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Unfold `stabT at hg ⊢`. Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`. Unfold `haMap ratTup at *`. Use function extensionality and compare the values at `b i`. Establish `hb` using `congrFun (congrFun hg b) i`.
+
+Simplify using `only [HSMul.hSMul, SMul.smul] at hb ⊢`. Simplify using `only [actTup] at hb`. Establish `hv : (fun j => inclR R' (X0 b j)) = fun j => tensMap (E` using `E) φ (inclR R (X0 b j)) := by`. Use function extensionality and compare the values at `j`. Rewrite using `[tensMap_inclR]`.
+
+Use `show ((Formalism.UG.bc (tensMap (E := E) φ) (HA.mat R σ J g) : GL (Fin n) (R' ⊗[F] E)) : Matrix (Fin n) (Fin n) (R' ⊗[F] E)).mulVec (fun j => inclR R' (X0 b j)) i = inclR R' (X0 b i)`. Rewrite using `[hv, ← tensMap_inclR (E := E) φ (X0 b i), ← hb, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem haMap_mem_stabT {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (φ : R →ₐ[F] R') {a : ℕ} (X0 : Fin a → Fin n → E) (g : HA R σ J) (hg : g ∈ stabT R σ J X0) :
     haMap σ J φ g ∈ stabT R' σ J X0 := by
@@ -70,12 +77,24 @@ def LocRedH : Prop :=
       ρ.ker ≤ (unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1) ∧
       Nat.card (((unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1)).map ρ) = ukC D.R.k (gOf p)
 
+/- English proof (translation)
+Unfold `gOf`. Use `split_ifs`. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`.
+-/
 theorem gOf_prime' (X : HidaSetting D) (p : TypX X) : (gOf p).Prime := by
   unfold gOf
   split_ifs
   · exact D.host.g_prime 0
   · exact D.host.g_prime 1
 
+/- English proof (translation)
+Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime' X p⟩`. Use `haveI : NeZero (gOf p) := ⟨(gOf_prime' X p).ne_zero⟩`. Establish `hidx : (((unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1)).map ρ).index = lIdxH X hb u p` using `Subgroup.index_map_eq _ hs hk`. Establish `hmul` using `Subgroup.card_mul_index (((unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1)).map ρ)`. Establish `hpos : 0 < Nat.card (((unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1)).map ρ)` using `Nat.card_pos`.
+
+Rewrite `hmul` using `[hidx, hc]`. Rewrite `hpos` using `[hc]`. Establish `hgl : Nat.card (GL (Fin D.R.k) (ZMod (gOf p))) = glkC D.R.k (gOf p)`. Unfold `glkC`. Use `first`.
+
+Consider the case `rfl`. Consider the case `(rw [Matrix.card_GL_field, ZMod.card]; done)`. Consider the case `done`. Rewrite `hmul` using `[hgl]`. Rewrite using `[eq_div_iff (by exact_mod_cast hpos.ne'), ← hmul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lIdxH_eq_of_red (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (ρ : KvH X u p.1 →* GL (Fin D.R.k) (ZMod (gOf p))) (hs : Function.Surjective ρ)
     (hk : ρ.ker ≤ (unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1))
@@ -101,6 +120,11 @@ theorem lIdxH_eq_of_red (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D X hb hK u hM hL`. Rewrite using `[h1 X hb hK u hM hL]`. Use `push_cast`. Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Take `⟨ρ, hs, hk, hc⟩` from `h2 X hb hK u hM hL p`.
+
+Conclude with `lIdxH_eq_of_red X hb u p ρ hs hk hc`.
+-/
 theorem idxCountStep_of (h1 : IdxProdH) (h2 : LocRedH) : IdxCountStep := by
   intro D X hb hK u hM hL
   rw [h1 X hb hK u hM hL]

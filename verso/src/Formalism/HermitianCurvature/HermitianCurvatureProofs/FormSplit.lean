@@ -16,6 +16,17 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Use `set f : Cf r l.castSucc → ℂ := fun c' => ((∏ j, ‖c' j‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, pairAt μ (x a) (y a) (glue l.castSucc c c') with hf`. Establish `hmp` using `coordinate_split_measurePreserving (r := r) l`. Establish `hform : form μ l.castSucc x y c = ∫ c', f c'` using `rfl`. Establish `h1 : ∫ c', f c' = ∫ p : ℂ × Cf r l.succ, f ((coordinateSplit (r` using `r) l).symm p) := by`. Rewrite using `[← hmp.integral_comp' (fun p => f ((coordinateSplit (r := r) l).symm p))]`.
+
+Simplify using `only [MeasurableEquiv.symm_apply_apply]`. Establish `hval : ∀ p : ℂ × Cf r l.succ, f ((coordinateSplit (r` using `r) l).symm p) = ((‖p.1‖ ^ (-2 : ℤ) : ℝ) : ℂ) * (((∏ j, ‖p.2 j‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, pairAt μ (x a) (y a) (glue l.succ (Function.update c l p.1) p.2)) := by`. Introduce `p`. Establish `hw` using `weight_coordinate_split (r := r) l ((coordinateSplit (r := r) l).symm p)`. Establish `hg` using `glue_coordinate_split (r := r) l c ((coordinateSplit (r := r) l).symm p)`.
+
+Simplify using `only [MeasurableEquiv.apply_symm_apply] at hw hg`. Simplify using `only [hf]`. Rewrite using `[hw, hg, Complex.ofReal_mul, mul_assoc]`. Establish `hF : Integrable (fun p : ℂ × Cf r l.succ => f ((coordinateSplit (r` using `r) l).symm p)) (volume.prod volume) := by`. Use `(hmp.symm.integrable_comp_emb (coordinateSplit (r := r) l).symm.measurableEmbedding (g := f)).mpr hint` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[hform, h1, show (volume : Measure (ℂ × Cf r l.succ)) = volume.prod volume from rfl, integral_prod _ hF]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [hval]`. Rewrite using `[integral_const_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem form_split (μ : Measure (Mt k r)) (l : Fin r) (x y : Ix S → RadSp k r z z' π π') (c : Fin r → ℂ)
     (hint : Integrable (fun c' : Cf r l.castSucc =>
       ((∏ j, ‖c' j‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ a, pairAt μ (x a) (y a) (glue l.castSucc c c'))) :

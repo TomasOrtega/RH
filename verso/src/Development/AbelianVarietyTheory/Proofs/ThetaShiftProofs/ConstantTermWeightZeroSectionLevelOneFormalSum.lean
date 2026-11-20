@@ -14,6 +14,11 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.ArcPts.WeightZero
 
+/- English proof (translation)
+Establish `h₀ : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ LB.wchart L φ j` using `h`. Establish `h₁ : ⊤ ≤ (𝟙 (Sp A')) ⁻¹ᵁ LB.wchart L (fun k => spMap f ≫ φ k) j` using `fun z _ => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h (show spMap f z ∈ (⊤ : (Sp A).Opens) from trivial)) k`. Apply `toStkA_injective` to reduce the goal to its premises. Use `(toStkA_valR _ _ _ h₁ _).trans ((congrArg Units.val (gm_pullGen' L φ ε t (spMap f) (𝟙 _) _ j)).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (FormalValue.valR_spMap f _ _ h₀ _))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (toStkA_valR _ _ _ (FormalValue.top_le_comp h₀ (spMap f)) _).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.comp_id]`.
+-/
 theorem valR_pullGen_spMap {A A' : Type} [CommRing A] [CommRing A'] [IsLocalRing A'] {Z : Scheme.{0}} (L : LB Z)
     {K : Type} [Fintype K] (φ : K → (Sp A ⟶ Z)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (f : A →+* A')
     (j : K → L.ι) (h : ⊤ ≤ LB.wchart L φ j) :
@@ -28,6 +33,9 @@ theorem valR_pullGen_spMap {A A' : Type} [CommRing A] [CommRing A'] [IsLocalRing
   refine Eq.trans ?_ (toStkA_valR _ _ _ (FormalValue.top_le_comp h₀ (spMap f)) _).symm
   rw [Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Establish `e` using `g.s_zero jt PEmpty.elim (fun a b hab => h.2.2 (.inr (.inr a)) (.inr (.inr b)) hab) (fun a => a.elim) (fun _ a => a.elim)`. Establish `ht : ⊤ ≤ (𝟙 (Sp S)) ⁻¹ᵁ (LB.wchart D.toPre.P.L (FormalValue.coordφ g 0) jt ⊓ LB.wchart D.toPre.P.L (K` using `PEmpty) PEmpty.elim PEmpty.elim) := fun z hz => ⟨h.2.1 hz, Set.mem_iInter.2 fun k => k.elim⟩`. Use `(Points.valR_res (𝟙 (Sp S)) inf_le_left ht _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun q => valR (𝟙 (Sp S)) _ (Units.val q)) (e.trans (map_one _))).trans ?_` and prove the remaining obligations. Conclude with `Points.valR_one _ _ ht`.
+-/
 theorem coordVal_zero {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData R I} {S : Type} [CommRing S]
     {s : Sp S ⟶ Sp R} (g : Out.GtPt D.toPre (Over.mk s)) {jM : D.toPre.P.L.ι} {jf jt : Fin 4 → D.toPre.P.L.ι}
     (h : FormalValue.CohCharts g 0 jM jf jt) : FormalValue.coordVal g 0 jt = 1 := by
@@ -46,15 +54,24 @@ variable [Algebra (FractionRing ℂ) ℂ] {Y : Model Xo c β} {b : O →+* ℂ} 
   {W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ} {Λ : GtAn a}
   (Ξ : ConstPts W Λ)
 
+/- English proof (translation)
+The claim follows from `((Ξ.g_rel v 0).1 2).trans (congrArg (spMap (PowerSeries.C (R := ℂ)) ≫ ·) (Λ.ex0_b v))`.
+-/
 theorem basePt_comp (v : Λ.A.V) :
     FormalValue.basePt (Ξ.g v) ≫ W.φ = spMap (PowerSeries.C (R := ℂ)) ≫ (Λ.u.ex v.2).left :=
   ((Ξ.g_rel v 0).1 2).trans (congrArg (spMap (PowerSeries.C (R := ℂ)) ≫ ·) (Λ.ex0_b v))
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext (W.spec.1.1.hom_ext ?_ ?_)` and prove the remaining obligations. Conclude with `(basePt_comp Ξ v).trans (h ▸ (basePt_comp Ξ v').symm)`. Conclude with `(Over.w (Ξ.g v).b).trans (Over.w (Ξ.g v').b).symm`.
+-/
 theorem b_eq {v v' : Λ.A.V} (h : v.2 = v'.2) : (Ξ.g v).b = (Ξ.g v').b := by
   refine Over.OverMorphism.ext (W.spec.1.1.hom_ext ?_ ?_)
   · exact (basePt_comp Ξ v).trans (h ▸ (basePt_comp Ξ v').symm)
   · exact (Over.w (Ξ.g v).b).trans (Over.w (Ξ.g v').b).symm
 
+/- English proof (translation)
+Take `⟨jM, hM⟩` from `exists_chart W.P.D.toPre.P.isLB (FormalValue.basePt (Ξ.g v) (cpt ℂ⟦X⟧))`. Establish `h₀` using `FrameValue.le_chartAt a.D₀.P.isLB (Λ.u.ex v.2).left`. Use `⟨jM, _, (top_le_iff_cpt _ _).2 ⟨mem_pull.2 ?_, hM⟩, h₀⟩` and prove the remaining obligations. Conclude with `(congrArg (fun q => q (cpt ℂ⟦X⟧) ∈ a.D₀.P.L.U _) (basePt_comp Ξ v)).mpr (FormalValue.top_le_comp h₀ _ trivial)`.
+-/
 theorem exists_base_charts (v : Λ.A.V) : ∃ (jM : W.P.D.toPre.P.L.ι) (j₀ : a.D₀.P.L.ι),
     ⊤ ≤ FormalValue.basePt (Ξ.g v) ⁻¹ᵁ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀, jM) ∧
     ⊤ ≤ (Λ.u.ex v.2).left ⁻¹ᵁ a.D₀.P.L.U j₀ := by
@@ -65,6 +82,11 @@ theorem exists_base_charts (v : Λ.A.V) : ∃ (jM : W.P.D.toPre.P.L.ι) (j₀ : 
 
 omit Ξ in
 
+/- English proof (translation)
+Use `⟨fun k => FrameValue.chartAt a.D₀.P.isLB ((show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ≫ Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 (0, z)).b (Λ.ε x) k), FrameValue.frameProd Λ.u Out.DegPre.gtε ![Λ.A.ct x + z, Λ.A.ct x, z, 0] fun k => FrameValue.chartAt a.D₀.P.isLB ((show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ≫ Out.DegPre …` and prove the remaining obligations. Establish `hb : (Λ.ex0 (0, z)).b = (Λ.ex0 (l, z)).b` using `Over.OverMorphism.ext ((Λ.ex0_b (0, z)).trans (Λ.ex0_b (l, z)).symm)`. Rewrite using `[hb]`. Use `⟨FrameValue.le_wchart_chartAt a.D₀.P.isLB _ (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)), ?_⟩` and prove the remaining obligations. Establish `key : ∀ p q r : ℂ, p / q = r → r ≠ 0 → p = r * q` using `fun p q r h hr => (div_eq_iff (by rintro rfl; exact hr (h.symm.trans (div_zero p)))).1 h`.
+
+Conclude with `key _ _ _ (Λ.arcDict_expZero_section (l, z) x) (AnArc.e_ne_zero _)`.
+-/
 theorem coordinate_complexConstantPoint_eq_char_mul (z : Fin Λ.A.gB → ℂ) (x : Λ.A.X) : ∃ (j₀ : Fin 4 → a.D₀.P.L.ι) (k : ℂ), ∀ l : Λ.A.X →+ ℂ,
     ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 (l, z)).b (Λ.ε x)) j₀ ∧
       valR (𝟙 (Sp ℂ)) (LB.wchart a.D₀.P.L (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 (l, z)).b (Λ.ε x)) j₀)
@@ -81,6 +103,13 @@ theorem coordinate_complexConstantPoint_eq_char_mul (z : Fin Λ.A.gB → ℂ) (x
     (div_eq_iff (by rintro rfl; exact hr (h.symm.trans (div_zero p)))).1 h
   exact key _ _ _ (Λ.arcDict_expZero_section (l, z) x) (AnArc.e_ne_zero _)
 
+/- English proof (translation)
+Take `⟨j₀, k, hk⟩` from `coordinate_complexConstantPoint_eq_char_mul (Λ := Λ) z x`. Set `P : (selfR ⟶ W.P.D.toPre.P.A) → ℂ⟦X⟧` to `fun p => ∏ i, valR (A := ℂ⟦X⟧) (Out.DegPre.gtφT W.P.D.toPre selfR p (W.e (Λ.ε x)) i) _ ((show (Γ(W.P.D.toPre.P.A.left, (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀ i, jt i)))ˣ from W.w.s (fun _ => j₀ i, jt i)) ^ (-Out.DegPre.gtε i)).val`. Establish `key : ∀ l : Λ.A.X →+ ℂ, FormalValue.coordVal (Ξ.g (l, z)) (W.e (Λ.ε x)) jt = P (Ξ.g (0, z)).b * PowerSeries.C (eTwoPi (l x) * k)`. Introduce `l`. Establish `hb : (Ξ.g (0, z)).b = (Ξ.g (l, z)).b` using `b_eq Ξ rfl`.
+
+Establish `h' : ⊤ ≤ LB.wchart W.P.D.toPre.P.L (Out.DegPre.gtφT W.P.D.toPre selfR (Ξ.g (l, z)).b (W.e (Λ.ε x))) jt` using `hb ▸ h`. Take `⟨r₁, r₂⟩` from `Ξ.g_rel (l, z) (Λ.ε x)`. Rewrite using `[hb, ← (hk l).2]`. Use `(r₂ jt j₀ fun i y hy => ⟨mem_pull.2 ?_, Set.mem_iInter.1 (h' hy) i⟩).trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun q => q y ∈ a.D₀.P.L.U (j₀ i)) (r₁ i)).mpr (Set.mem_iInter.1 ((hk l).1 (show spMap (PowerSeries.C (R := ℂ)) y ∈ (⊤ : (Sp ℂ).Opens) from trivial)) i)`.
+
+Conclude with `valR_pullGen_spMap (A := ℂ) a.D₀.P.L _ _ ((Λ.ex0 (l, z)).s (Λ.ε x)) _ j₀ (hk l).1`. Rewrite using `[key, key]`. Simplify using `only [AddMonoidHom.zero_apply, AnArc.e_zero, _root_.one_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coordVal_eq (z : Fin Λ.A.gB → ℂ) (x : Λ.A.X) (jt : Fin 4 → W.P.D.toPre.P.L.ι)
     (h : ⊤ ≤ LB.wchart W.P.D.toPre.P.L (FormalValue.coordφ (Ξ.g (0, z)) (W.e (Λ.ε x))) jt) (l : Λ.A.X →+ ℂ) :
     FormalValue.coordVal (Ξ.g (l, z)) (W.e (Λ.ε x)) jt =
@@ -109,6 +138,11 @@ theorem coordVal_eq (z : Fin Λ.A.gB → ℂ) (x : Λ.A.X) (jt : Fin 4 → W.P.D
 variable {th : a.D₀.P.L.Sec} {σ : Out.H0 W.P.U.LG.L 1} {fam : ∀ x, W.P.D.toPre.SecB 1 x}
   {θ : (Fin Λ.A.gB → ℂ) → ℂ}
 
+/- English proof (translation)
+Establish `e₁ : W.P.D.toPre.famφB 0 1 = 𝟙 _`. Establish `: (𝟙 W.P.D.toPre.P.A) * DVR.cP W.P.D.toPre W.P.D.toPre.P.A 0 = 𝟙 _` using `by rw [cPoint_zero, _root_.mul_one]`. Conclude with `congrArg Over.Hom.left this`. Take `rfl : jf 1 = jM` from `hc.2.2 (.inr (.inl 1)) (.inl PUnit.unit) ((congrArg (FormalValue.basePt (Ξ.g v) ≫ ·) e₁).trans (Category.comp_id _))`. Establish `hV : ⊤ ≤ FormalValue.basePt (Ξ.g v) ⁻¹ᵁ (LB.wchart W.P.D.toPre.P.L (W.P.D.toPre.famφB 0) jf ⊓ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀, jf 1) ⊓ W.φ ⁻¹ᵁ a.D₀.P.L.U j₀)` using `fun y hy => ⟨⟨hc.1 hy, hj hy⟩, mem_pull.1 (hj hy).1⟩`.
+
+Establish `e` using `congrArg (valR (FormalValue.basePt (Ξ.g v)) _) (h.2.2 jf j₀ _ (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right (fun i i' hi => hc.2.2 (.inr (.inl i)) (.inr (.inl i')) (congrArg (FormalValue.basePt (Ξ.g v) ≫ ·) hi)))`. Rewrite `e` using `[Points.valR_appLE _ _ _ hV, Points.valR_mul _ _ hV, basePt_comp, FormalValue.valR_spMap _ _ _ h₀]`. Use `(congrArg₂ (· * ·) (Points.valR_res _ _ hV _) (Points.valR_res _ _ hV _)).symm.trans (e.symm.trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (hθ j₀ v.2 h₀)`.
+-/
 theorem famVal_zero (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ) (v : Λ.A.V) {jM : W.P.D.toPre.P.L.ι}
     {j₀ : a.D₀.P.L.ι} {jf jt : Fin 4 → W.P.D.toPre.P.L.ι} (hc : FormalValue.CohCharts (Ξ.g v) 0 jM jf jt)
     (hj : ⊤ ≤ FormalValue.basePt (Ξ.g v) ⁻¹ᵁ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀, jM))
@@ -130,6 +164,9 @@ theorem famVal_zero (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ) (v : Λ.A
   refine (congrArg₂ (· * ·) (Points.valR_res _ _ hV _) (Points.valR_res _ _ hV _)).symm.trans (e.symm.trans ?_)
   exact congrArg _ (hθ j₀ v.2 h₀)
 
+/- English proof (translation)
+Simplify using `only [FormalValue.CohCharts, FormalValue.basePt, FormalValue.coordφ] at h ⊢`. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem cohCharts_congr {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData R I} {S : Type} [CommRing S]
     {s : Sp S ⟶ Sp R} {g g' : Out.GtPt D.toPre (Over.mk s)} (e : g.b = g'.b) {α : D.toPre.X} {jM : D.toPre.P.L.ι}
     {jf jt : Fin 4 → D.toPre.P.L.ι} (h : FormalValue.CohCharts g α jM jf jt) : FormalValue.CohCharts g' α jM jf jt := by
@@ -137,6 +174,27 @@ theorem cohCharts_congr {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : 
   rw [← e]
   exact h
 
+/- English proof (translation)
+Establish `hJ : (Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) = Ideal.span {PowerSeries.X}`. Rewrite using `[Algebra.algebraMap_self, Ideal.map_id]`. Use `haveI : IsAdicComplete ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) ℂ⟦X⟧ := by`. Rewrite using `[hJ]`. Use `infer_instance`.
+
+Use `haveI := isLocalRing_quotient_pow (ne_top_of_isHausdorff ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧))) e`. Take `⟨F, hF⟩` from `FormalValue.map_secVal_eq W.P.U.toUnifPre (h.2.1 e)`. Set `ι₀ : Λ.A.X ≃ W.P.D.toPre.X` to `(Λ.ε.trans W.e).toEquiv`. Take `⟨jM, j₀, hj, h₀⟩` from `exists_base_charts Ξ (0, z)`. Establish `hM : ⊤ ≤ FormalValue.basePt (Ξ.g (0, z)) ⁻¹ᵁ W.P.D.toPre.P.L.U jM` using `fun y hy => (hj hy).2`.
+
+Use `choose jf jt hc using FormalValue.exists_cohCharts (Ξ.g (0, z)) jM hM`. Establish `hfr : PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * PowerSeries.C (Λ.u.fr j₀ z) = (1 : ℂ⟦X⟧)`. Rewrite using `[← map_mul, inv_mul_cancel₀ (Λ.u.fr_ne j₀ z h₀), map_one]`. Take `⟨w, hw⟩ : ∃ w, w = valR (FormalValue.basePt (Ξ.g (0, z))) _ (W.w.s (fun _ => j₀, jM)).val` from `⟨_, rfl⟩`. Set `B : W.P.D.toPre.X → ℂ⟦X⟧` to `fun α => PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * w * (FormalValue.famVal (Ξ.g (0, z)) (fam α) (jf α) * FormalValue.coordVal (Ξ.g (0, z)) α (jt α))`.
+
+Use `⟨insert 0 (F.map ι₀.symm.toEmbedding), fun x => B (ι₀ x), Finset.mem_insert_self _ _, ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `: ι₀ 0 = 0` using `map_zero (Λ.ε.trans W.e)`. Establish `e₀` using `famVal_zero Ξ h hθ (0, z) (hc 0) hj h₀`. Rewrite `e₀` using `[← hw, map_mul]`. Simplify using `only [this, B]`.
+
+Rewrite using `[coordVal_zero _ (hc 0), _root_.mul_one, _root_.mul_assoc, e₀, mul_left_comm, hfr, _root_.mul_one]`. Establish `hb : (Ξ.g (0, z)).b = (Ξ.g (l, z)).b` using `b_eq Ξ rfl`. Establish `hb' : FormalValue.basePt (Ξ.g (0, z)) = FormalValue.basePt (Ξ.g (l, z))` using `congrArg Over.Hom.left hb`. Take `⟨jL, hL⟩` from `exists_chart W.P.U.LG.isLB ((show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.x (l, z)).left) (cpt ℂ⟦X⟧))`. Use `replace hL := (top_le_iff_cpt _ _).2 hL`.
+
+Rewrite `hj`, `hM`, `hw` using `[hb']`. Establish `e₁` using `Ξ.τ_eq (l, z) jL jM j₀ hL hj`. Establish `e₂` using `hf (l, z) jL hL`. Establish `e₃` using `(hF _ _ _ (Ξ.g (l, z)) _ (Ξ.x_fm (l, z)) _ (Ideal.Quotient.mk _) Ideal.mk_ker.ge).2 ((insert 0 (F.map ι₀.symm.toEmbedding)).map ι₀.toEmbedding) jL jM jf jt (fun α hα => Finset.mem_map.2 ⟨ι₀.symm α, Finset.mem_insert_of_mem (Finset.mem_map_of_mem _ hα), ι₀.apply_symm_apply α⟩) hL …`. Use `replace e₁ := (congrArg (· * _) hw).trans e₁`.
+
+Generalize the expression as in `FormalValue.tau W.P.U.toUnifPre ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) (Ξ.x (l, z)).left jL jM = t at e₁ e₃`. Generalize the expression as in `FormalValue.secVal W.P.U.toUnifPre σ (Ξ.x (l, z)).left jL = s at e₂ e₃`. Rewrite `e₂`, `e₃` using `[pow_one]`. Use `⟨PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * w * t⁻¹.val * s, ?_, ?_⟩` and prove the remaining obligations. Establish `e₄ : PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * w * t⁻¹.val * Ξ.τ (l, z) jL = 1`.
+
+Use `t.inv_mul` as an intermediate fact. Take the linear combination `(PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * t⁻¹.val) * e₁ + (PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * PowerSeries.C (Λ.u.fr j₀ z)) * this + hfr`. Rewrite using `[map_mul, e₂, mul_left_comm, ← map_mul, e₄, map_one, _root_.mul_one]`. Establish `e₅` using `Ideal.mul_mem_left _ (PowerSeries.C (Λ.u.fr j₀ z)⁻¹ * w * t⁻¹.val) (Ideal.Quotient.eq.1 e₃)`. Rewrite `e₅` using `[hJ, Ideal.span_singleton_pow, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`.
+
+Establish `e₆` using `e₅ e (Nat.lt_succ_self e)`. Rewrite `e₆` using `[mul_sub, map_sub, sub_eq_zero]`. Use `e₆.trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc _ t⁻¹.val, Units.inv_mul_cancel_left, Finset.sum_map, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Establish `a₁ : FormalValue.famVal (Ξ.g (l, z)) (fam (ι₀ x)) (jf (ι₀ x)) = FormalValue.famVal (Ξ.g (0, z)) (fam (ι₀ x)) (jf (ι₀ x))` using `congrArg (fun q => valR q _ _) hb'.symm`. Establish `a₂ : FormalValue.coordVal (Ξ.g (l, z)) (ι₀ x) (jt (ι₀ x)) = PowerSeries.C (eTwoPi (l x)) * FormalValue.coordVal (Ξ.g (0, z)) (ι₀ x) (jt (ι₀ x))` using `coordVal_eq Ξ z x _ (hc (ι₀ x)).2.1 l`. Use `(congrArg (_ * ·) (congrArg₂ (· * ·) a₁ a₂)).trans ?_` and prove the remaining obligations. Simplify using `only [B]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_expansion (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ) {f : Λ.A.V → ℂ⸨X⸩} (hf : Ξ.Vals σ f)
     (z : Fin Λ.A.gB → ℂ) (e : ℕ) : ∃ (F : Finset Λ.A.X) (B : Λ.A.X → ℂ⟦X⟧), 0 ∈ F ∧ B 0 = PowerSeries.C (θ z) ∧
       ∀ l : Λ.A.X →+ ℂ, ∃ p : ℂ⟦X⟧, f (l, z) = algebraMap ℂ⟦X⟧ ℂ⸨X⸩ p ∧
@@ -202,6 +260,13 @@ theorem exists_expansion (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ) {f :
     simp only [B]
     ring
 
+/- English proof (translation)
+Take `⟨F, B, hF, hB, hl⟩` from `exists_expansion Ξ h hθ hf z n.natAbs`. Use `⟨F, fun x => if n < 0 then 0 else PowerSeries.coeff n.natAbs (B x), hF, ?_, fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [hB, PowerSeries.coeff_C, Int.natAbs_eq_zero] split_ifs with h₁ h₂`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `all_goals rfl`.
+
+Take `⟨p, hp, hc⟩` from `hl l`. Rewrite using `[hp, LaurentSeries.coe_algebraMap, PowerSeries.coeff_coe]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[hc, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by rw [PowerSeries.coeff_C_mul, mul_comm]`.
+-/
 theorem exists_coeff_expansion (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ) {f : Λ.A.V → ℂ⸨X⸩} (hf : Ξ.Vals σ f)
     (z : Fin Λ.A.gB → ℂ) (n : ℤ) : ∃ (F : Finset Λ.A.X) (b : Λ.A.X → ℂ), 0 ∈ F ∧ b 0 = (if n = 0 then θ z else 0) ∧
       ∀ l : Λ.A.X →+ ℂ, (f (l, z)).coeff n = ∑ x ∈ F, b x * eTwoPi (l x) := by
@@ -218,6 +283,9 @@ theorem exists_coeff_expansion (h : ThetaHyp W th σ fam) (hθ : Λ.u.IsFn th θ
     · rw [hc, map_sum]
       exact Finset.sum_congr rfl fun x _ => by rw [PowerSeries.coeff_C_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `h₁ h₂ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ th σ fam θ h _ hθ`. Take `⟨f, hc, hf, -⟩` from `GlobalTheory.ConstSpan.main h₁ h₂ E H D l Xo c O β Y b a χ W Λ Ξ 1 σ`. Establish `e : f = fun v => Λ.A.FSum 1 0 θ v` using `funext (eq_FSum Λ.A hc θ (exists_coeff_expansion Ξ h hθ hf))`. Conclude with `e ▸ hf`.
+-/
 theorem vals_FSum : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) (th : a.D₀.P.L.Sec) (σ : Out.H0 W.P.U.LG.L 1) (fam : ∀ x, W.P.D.toPre.SecB 1 x) (θ : (Fin Λ.A.gB → ℂ) → ℂ), ThetaHyp W th σ fam → θ ∈ Λ.A.Theta 1 0 → Λ.u.IsFn th θ → Ξ.Vals σ (fun v => Λ.A.FSum 1 0 θ v) := by
   intro h₁ h₂ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ th σ fam θ h _ hθ
   obtain ⟨f, hc, hf, -⟩ := GlobalTheory.ConstSpan.main h₁ h₂ E H D l Xo c O β Y b a χ W Λ Ξ 1 σ

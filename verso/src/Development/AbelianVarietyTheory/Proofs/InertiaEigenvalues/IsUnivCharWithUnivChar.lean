@@ -60,14 +60,23 @@ def famCoord (Q : Finset (PlE D.host)) (P : PlE D.host) : GE N →* Multiplicati
 def famDel (Q : Finset (PlE D.host)) : GE N →* Multiplicative (DelQM D.host (X.l i) Q M) :=
   delAll X i M fun P : ↥Q => famCoord H S d Q P.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem famDel_apply (Q : Finset (PlE D.host)) (σ : GE N) (P : ↥Q) :
     Multiplicative.toAdd (famDel H S d Q σ) P = Multiplicative.toAdd (famCoord H S d Q P.1 σ) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h P hP => Multiplicative.toAdd.injective (congrFun (congrArg Multiplicative.toAdd h) ⟨P, hP⟩), fun h => Multiplicative.toAdd.injective (funext fun P => congrArg Multiplicative.toAdd (h P.1 P.2))⟩`.
+-/
 theorem famDel_eq_one_iff (Q : Finset (PlE D.host)) (σ : GE N) :
     famDel H S d Q σ = 1 ↔ ∀ P ∈ Q, famCoord H S d Q P σ = 1 :=
   ⟨fun h P hP => Multiplicative.toAdd.injective (congrFun (congrArg Multiplicative.toAdd h) ⟨P, hP⟩),
     fun h => Multiplicative.toAdd.injective (funext fun P => congrArg Multiplicative.toAdd (h P.1 P.2))⟩
 
+/- English proof (translation)
+Use `if_pos ?_` and prove the remaining obligations. Introduce and unpack `v (rfl | hv)`. Conclude with `hP`. Conclude with `hQ P hP v hv`.
+-/
 theorem famCoord_of_closed {Q : Finset (PlE D.host)} (hQ : ConjCl (D := D) Q) {P : PlE D.host} (hP : P ∈ Q) :
     famCoord H S d Q P = setChar H S d (GalChar.pair D.host P) := by
   refine if_pos ?_
@@ -75,11 +84,17 @@ theorem famCoord_of_closed {Q : Finset (PlE D.host)} (hQ : ConjCl (D := D) Q) {P
   · exact hP
   · exact hQ P hP v hv
 
+/- English proof (translation)
+Unfold `famCoord`. Rewrite using `[GalChar.pair_eq h]`.
+-/
 theorem famCoord_conj (Q : Finset (PlE D.host)) {P P' : PlE D.host} (h : IsConjPl D.host P P') :
     famCoord H S d Q P' = famCoord H S d Q P := by
   unfold famCoord
   rw [GalChar.pair_eq h]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ v, v ∈ GalChar.pair D.host P ∧ admitted H S v`. Conclude with `Or.inl ⟨h.choose, h.choose_spec.1, h.choose_spec.2, dif_pos h⟩`. Conclude with `Or.inr ⟨fun v hv ha => h ⟨v, hv, ha⟩, dif_neg h⟩`.
+-/
 theorem setChar_pair (P : PlE D.host) :
     (∃ v, Over P v ∧ admitted H S v ∧ setChar H S d (GalChar.pair D.host P) = d v) ∨
     ((∀ v, Over P v → ¬ admitted H S v) ∧ setChar H S d (GalChar.pair D.host P) = 1) := by
@@ -89,6 +104,13 @@ theorem setChar_pair (P : PlE D.host) :
 
 variable {H S d}
 
+/- English proof (translation)
+Establish `triv : ∀ c : GE N →* Multiplicative (ZMod (X.l i ^ M)), c = 1 → IsOpen (c.ker : Set (GE N)) ∧ AntiHom X.cc c ∧ TrivAbove c (X.l i) ∧ (∀ v, v ∉ Q → ∀ A : ValuationSubring N.Om, IsPlaceOver A v → ∀ σ ∈ Ine (F` using `D.host.E) A, c σ = 1) := by`. Introduce and unpack `_ rfl`. Conclude with `⟨by rw [MonoidHom.ker_one]; exact isOpen_univ, fun _ _ _ => inv_one.symm, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl⟩`. Distinguish the cases in `hs : GalChar.pair D.host P ⊆ ↑Q`. Establish `e : famCoord H S d Q P = setChar H S d (GalChar.pair D.host P)` using `if_pos hs`.
+
+Break down `setChar_pair H S d P with ⟨v, hv, ha, e'⟩ | ⟨-, e'⟩` into its components or cases. Take `⟨h1, h2, h3, h4, -⟩` from `h.2.2.2 v ha.1 ha.2.1 ha.2.2`. Rewrite using `[e, e']`. Conclude with `⟨h1, h2, h3, fun w hw => h4 w fun ho => hw (hs (over_trans hv ho))⟩`. Conclude with `triv _ (e.trans e')`.
+
+Conclude with `triv _ (if_neg hs)`.
+-/
 theorem famCoord_laws (h : AdmFam X i M H S d) (Q : Finset (PlE D.host)) (P : PlE D.host) :
     IsOpen ((famCoord H S d Q P).ker : Set (GE N)) ∧ AntiHom X.cc (famCoord H S d Q P) ∧
     TrivAbove (famCoord H S d Q P) (X.l i) ∧
@@ -140,6 +162,9 @@ def withFam (Y : NExp D.R D.host D.what₂ D.LL0 N X) (h : ∀ i M, AdmFam X i M
 
 end Record
 
+/- English proof (translation)
+Introduce `hK hY` and use `GalChar.delUTie_of_exists Y hY hK`.
+-/
 theorem delUTie_of_isUnivChar (Y : NExp D.R D.host D.what₂ D.LL0 N X) : K1 X → IsUnivChar Y → DelUTie Y :=
   fun hK hY => GalChar.delUTie_of_exists Y hY hK
 

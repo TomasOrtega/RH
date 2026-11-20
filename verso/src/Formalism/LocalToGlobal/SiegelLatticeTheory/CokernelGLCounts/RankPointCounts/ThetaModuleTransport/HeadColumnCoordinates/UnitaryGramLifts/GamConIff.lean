@@ -10,15 +10,26 @@ section ScaleA6
 
 variable {E : Type} [CommRing E] {O : Subring E} {cj : E →+* E} {qi : E} {r : ℕ} {T T' α : E}
 
+/- English proof (translation)
+Rewrite using `[scPhi_coe, vecMul_scC_inl]`.
+-/
 theorem phi_inl (h : ScHyp O cj qi T T' α) (Y : Ix r → O) (b : Fin (r + 1)) :
     ((scPhi h Y (Sum.inl b) : O) : E) = (Y (Sum.inl b) : E) := by
   rw [scPhi_coe, vecMul_scC_inl]
 
+/- English proof (translation)
+Rewrite using `[scPhi_coe, vecMul_scC_inr]`.
+-/
 theorem phi_inr (h : ScHyp O cj qi T T' α) (Y : Ix r → O) (b : Fin (r + 1)) :
     ((scPhi h Y (Sum.inr b) : O) : E) = (Y (Sum.inr b) : E) * cj (if b = Fin.last r then α else 1) +
       (if b = Fin.last r then (Y (Sum.inl (Fin.last r)) : E) * cj ((α - 1) * qi) else 0) := by
   rw [scPhi_coe, vecMul_scC_inr]
 
+/- English proof (translation)
+Rewrite using `[phi_inl, phi_inr]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using `only [if_true, map_mul, map_sub, map_one, h.qic]`. Take the linear combination `((Y (Sum.inl (Fin.last r)) : E) * (cj α - 1)) * hq`.
+
+Simplify using `[hb]`.
+-/
 theorem phi_comb (h : ScHyp O cj qi T T' α) (q : E) (hq : q * qi = 1) (Y : Ix r → O) (b : Fin (r + 1)) :
     ((scPhi h Y (Sum.inl b) : O) : E) + q * (scPhi h Y (Sum.inr b) : O) =
       cj (if b = Fin.last r then α else 1) * ((Y (Sum.inl b) : E) + q * Y (Sum.inr b)) := by
@@ -31,6 +42,11 @@ theorem phi_comb (h : ScHyp O cj qi T T' α) (q : E) (hq : q * qi = 1) (Y : Ix r
 
 def psiD (α : E) (cj : E →+* E) (x : E × E) : E × E := (cj α * x.1, cj α * x.2)
 
+/- English proof (translation)
+Introduce `x y hxy`. Simplify using `only [psiD, Prod.mk.injEq] at hxy`. Take `⟨h1, h2⟩` from `hxy`. Establish `u : ∀ a b : E, cj α * a = cj α * b → a = b` using `fun a b hab => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Prod.ext (u _ _ h1) (u _ _ h2)`.
+-/
 theorem psiD_inj (h : ScHyp O cj qi T T' α) : Function.Injective (psiD α cj) := by
   intro x y hxy
   simp only [psiD, Prod.mk.injEq] at hxy
@@ -48,6 +64,9 @@ def scTr (h : ScHyp O cj qi T T' α) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
       DDg O cj qi (Zh * dlast r α) T T' × DDg O cj qi (Zh * dlast r α) T T' × (E × E) × (E × E) :=
   fun p => (scBar h Zh p.1, scBar h Zh p.2.1, p.2.2.1, psiD α cj p.2.2.2)
 
+/- English proof (translation)
+Introduce `p p' hp`. Simplify using `only [scTr, Prod.mk.injEq] at hp`. Take `⟨h1, h2, h3, h4⟩` from `hp`. Conclude with `Prod.ext ((scBar h Zh).injective h1) (Prod.ext ((scBar h Zh).injective h2) (Prod.ext h3 (psiD_inj h h4)))`.
+-/
 theorem scTr_inj (h : ScHyp O cj qi T T' α) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     Function.Injective (scTr h Zh) := by
   intro p p' hp
@@ -56,6 +75,9 @@ theorem scTr_inj (h : ScHyp O cj qi T T' α) (Zh : Matrix (Fin (r + 1)) (Fin (r 
   exact Prod.ext ((scBar h Zh).injective h1)
     (Prod.ext ((scBar h Zh).injective h2) (Prod.ext h3 (psiD_inj h h4)))
 
+/- English proof (translation)
+Rewrite using `[funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Subtype.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 private theorem coe_sub_eq_mul_iff_sub_eq_smul (hqO : q ∈ O) (Y Y' Y'' : Ix r → O) :
     (∀ i, (Y i : E) - Y' i = q * Y'' i) ↔ Y - Y' = (⟨q, hqO⟩ : O) • Y'' := by
   rw [funext_iff]
@@ -63,6 +85,13 @@ private theorem coe_sub_eq_mul_iff_sub_eq_smul (hqO : q ∈ O) (Y Y' Y'' : Ix r 
   rw [Subtype.ext_iff]
   simp
 
+/- English proof (translation)
+Establish `hne : ∀ a : Fin r, a.castSucc ≠ Fin.last r` using `fun a => (Fin.castSucc_lt_last a).ne`. Use `and_congr ?_ (and_congr ?_ ?_)` and prove the remaining obligations. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[phi_inl, hy]`. Introduce `hy`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← phi_inl h, hy]`.
+
+Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[phi_inl, phi_inr, if_neg (hne a), if_neg (hne a), map_one, mul_one, add_zero]`. Rewrite using `[coe_sub_eq_mul_iff_sub_eq_smul q hqO, coe_sub_eq_mul_iff_sub_eq_smul q hqO, ← map_sub, ← map_smul, (scPhi h).injective.eq_iff]`.
+-/
 theorem gamCon_iff (h : ScHyp O cj qi T T' α) (hqO : q ∈ O) (Y Y' Y'' : Ix r → O) :
     ((∀ a : Fin r, Y (Sum.inl a.castSucc) = 0) ∧
       (∀ a : Fin r, (Y' (Sum.inl a.castSucc) : E) + q * Y' (Sum.inr a.castSucc) = 0) ∧

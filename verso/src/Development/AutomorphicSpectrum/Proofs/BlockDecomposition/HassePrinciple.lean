@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.MassHasse
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ _ _ _ _ _ hmi _ β hβ hne`. Assume the negation of the conclusion as `hS`. Establish `hnot : ∀ x : Fin 2 → E, hE σ J x x ≠ algebraMap F E β` using `fun x hx => hS ⟨fun _ => x, by`. Use function extensionality and compare the values at `a c`. Simplify `hx⟩` using `[gramE]`.
+
+Take `⟨τ, c, hc0, hc, hw⟩` from `Plane.exists_place hCM J hJ β hβ hnot`. Take `⟨Φ, hΦ, hΦσ⟩` from `Plane.exists_hom hCM τ`. Establish `hscal : algebraMap F (Ainf F) β ⊗ₜ[F] (1 : E) = inclR (Ainf F) (algebraMap F E β)`. Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hempty : (gramR (Ainf F) σ J ⁻¹' {(hermScal (Ainf F) σ (algebraMap F (Ainf F) β)).1} ∩ {X | IsUnit (gramR (Ainf F) σ J X).det}) = ∅`.
+
+Use extensionality with `Y`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hY _`. Establish `h00 : hR (Ainf F) σ J (Y 0) (Y 0) = inclR (Ainf F) (algebraMap F E β)` using `(congrFun (congrFun hY 0) 0).trans hscal`. Establish `h1` using `congrArg Φ h00`.
+
+Rewrite `h1` using `[hΦ, hc]`. Set `w : Fin 2 → ℂ` to `fun i => Φ (Y 0 i)`. Establish `key : Φ (hR (Ainf F) σ J (Y 0) (Y 0)) = star w ⬝ᵥ (J.map τ *ᵥ w)`. Simplify using `only [hR, hform, JR, map_sum, map_mul, hΦσ, Matrix.map_apply, hΦ, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, w, mul_assoc]`. Establish `h2` using `hw w`.
+
+Rewrite `h2` using `[← key, h1, Complex.ofReal_re]`. Conclude with `absurd (mul_self_pos.2 hc0) (not_lt.2 h2)`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `hmi.1 (hermScal (Ainf F) σ (algebraMap F (Ainf F) β))`. Rewrite `h1` using `[hempty, Set.compl_empty]`.
+
+Conclude with `Measure.measure_univ_eq_zero.1 h1`.
+-/
 theorem hasse : Hasse := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hCM hJ _ _ _ _ _ hmi _ β hβ hne
   by_contra hS

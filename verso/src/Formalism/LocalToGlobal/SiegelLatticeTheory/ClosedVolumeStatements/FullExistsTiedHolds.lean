@@ -20,19 +20,40 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 
 namespace Formalism.L2.SG.Closed
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.FinLeviPf.finLeviC_holds`.
+-/
 theorem FinLeviC_holds : Formalism.L2.SG.Pf.FinLeviC := Formalism.L2.SG.Pf.FinLeviPf.finLeviC_holds
 
+/- English proof (translation)
+The claim follows from `FoldOKC_holds FinLeviC_holds`.
+-/
 theorem FoldOKC_outright : FoldOKC := FoldOKC_holds FinLeviC_holds
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.ooLintSumC_holds_slab Formalism.L2.SG.Pf.SlabMajPt.pointwise_majorant_by_columns Formalism.L2.SG.Pf.SlabCount.countC_holds`.
+-/
 theorem OOLintSumC_holds : Formalism.L2.SG.Pf.OOLintSumC :=
   Formalism.L2.SG.Pf.ooLintSumC_holds_slab Formalism.L2.SG.Pf.SlabMajPt.pointwise_majorant_by_columns Formalism.L2.SG.Pf.SlabCount.countC_holds
 
+/- English proof (translation)
+The claim follows from `OOIntAllC_holds OOLintSumC_holds`.
+-/
 theorem OOIntAllC_outright : OOIntAllC := OOIntAllC_holds OOLintSumC_holds
 
+/- English proof (translation)
+The claim follows from `AbsConvC_holds OOLintSumC_holds`.
+-/
 theorem AbsConvC_outright : AbsConvC := AbsConvC_holds OOLintSumC_holds
 
+/- English proof (translation)
+The claim follows from `IdCellOffC_holds Formalism.L2.SG.Pf.idOffConjC_holds Formalism.L2.SG.Pf.idOffLiftC_holds`.
+-/
 theorem IdCellOffC_outright : IdCellOffC := IdCellOffC_holds Formalism.L2.SG.Pf.idOffConjC_holds Formalism.L2.SG.Pf.idOffLiftC_holds
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.FixedDecomposition.kppOffC_of_steps0 FoldOKC_outright FundExistsC_holds OOIntAllC_outright LemmaVC_holds (Formalism.L2.SG.FixedDecomposition.covariantRepZero_of_lemmaV AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds ChiTrivialC_ …`.
+-/
 theorem KppOffC_holds : Formalism.L2.SG.RowsConc.KppOffC :=
   Formalism.L2.SG.FixedDecomposition.kppOffC_of_steps0 FoldOKC_outright FundExistsC_holds OOIntAllC_outright LemmaVC_holds
     (Formalism.L2.SG.FixedDecomposition.covariantRepZero_of_lemmaV AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds
@@ -40,6 +61,9 @@ theorem KppOffC_holds : Formalism.L2.SG.RowsConc.KppOffC :=
       Formalism.L2.SG.TermOp.Vanish.rational_cocompact_holds)
     schurNFC
 
+/- English proof (translation)
+Establish `hF` using `FundExistsC_holds D X Y u u'`. Establish `hO : ∀ w, Formalism.L2.SG.WuDecay.FoldOK X w Y.hK` using `fun w => FoldOKC_outright D X Y w (level_subgroup_properties X) hWX`. Establish `hI` using `OOIntAllC_outright D X Y u u' (hO u) (hO u') hF`. Conclude with `Formalism.L2.SG.NormCut.normExpSatC'_of_PD (fun D => Formalism.L2.SG.Pf.positive_definite_isomorphism D) D X Y u u' hI hA (OOFundIndepC_holds D X Y u u' hF hI) hAbs`.
+-/
 theorem NormExpSat_of_decay {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hWX : Formalism.L2.SG.WuDecay.WuDecay X)
     (Y : Full X) (u u' : D.what₂.Word)
     (hA : AmpWellDef (X.Fu u) (X.Fu u') (Y.cs u) (Y.cs u'))
@@ -52,6 +76,11 @@ theorem NormExpSat_of_decay {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSettin
   exact Formalism.L2.SG.NormCut.normExpSatC'_of_PD (fun D => Formalism.L2.SG.Pf.positive_definite_isomorphism D) D X Y u u' hI hA
     (OOFundIndepC_holds D X Y u u' hF hI) hAbs
 
+/- English proof (translation)
+Introduce `D _ p`. Take `⟨μ, h1, h2, h3⟩` from `local_haar_real_real _ _ _ _ (D.s.atP p) (Formalism.L2.SG.Pf.LocCP.reduced p)`. Use `⟨μ, h1, h2, ?_⟩` and prove the remaining obligations. Establish `hR : Formalism.L2.SG.Pf.LocCP.RR p = PI.LocHaarRR.RR (D.s.atP p)`. Unfold `Formalism.L2.SG.Pf.LocCP.RR PI.LocHaarRR.RR`.
+
+Apply the tactic sequence `cases (D.s.atP p).split <;> rfl`. Rewrite using `[hR]`. Conclude with `h3`.
+-/
 theorem LocHaarC_holds : Formalism.L2.SG.Pf.LocCP.LocHaarC := by
   intro D _ p
   obtain ⟨μ, h1, h2, h3⟩ := local_haar_real_real _ _ _ _ (D.s.atP p) (Formalism.L2.SG.Pf.LocCP.reduced p)
@@ -62,16 +91,28 @@ theorem LocHaarC_holds : Formalism.L2.SG.Pf.LocCP.LocHaarC := by
   rw [hR]
   exact h3
 
+/- English proof (translation)
+Introduce `D hT p i hi` and use `prime_quotient_unit _ _ _ _ (D.s.atP p) D.host.g D.host.g_prime D.host.g_ne i hi (Formalism.L2.SG.Pf.HostUnramP.hostUnramG D hT p i hi)`.
+-/
 theorem PinHostC_holds : Formalism.L2.SG.Pf.LocCP.PinHostC :=
   fun D hT p i hi => prime_quotient_unit _ _ _ _ (D.s.atP p) D.host.g D.host.g_prime D.host.g_ne i hi
     (Formalism.L2.SG.Pf.HostUnramP.hostUnramG D hT p i hi)
 
+/- English proof (translation)
+Introduce `D _ p` and use `local_dual_generation _ _ _ _ (D.s.atP p)`.
+-/
 theorem LocDualGenC_holds : Formalism.L2.SG.Pf.LocCP.LocDualGenC := fun D _ p => local_dual_generation _ _ _ _ (D.s.atP p)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.FullLocalDualAgreement.locCTied_of' (Formalism.L2.SG.Pf.FullLocalDualAgreement.locDualC_of' LocDualGenC_holds PinHostC_holds) LocHaarC_holds`.
+-/
 theorem LocCTied_holds : Formalism.L2.SG.Pf.FullLocalDualAgreement.LocalDualAgreement :=
   Formalism.L2.SG.Pf.FullLocalDualAgreement.locCTied_of' (Formalism.L2.SG.Pf.FullLocalDualAgreement.locDualC_of' LocDualGenC_holds PinHostC_holds)
     LocHaarC_holds
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.fullExists_tied TRExistsC_holds Formalism.L2.SG.Pf.lattice_steps_hold LocCTied_holds D X (level_subgroup_is_group X) hT`.
+-/
 theorem FullExistsTied_holds (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (hT : Formalism.L2.SG.Pf.LocCP.LocTied D) : Nonempty (Full X) :=
   Formalism.L2.SG.Pf.fullExists_tied TRExistsC_holds Formalism.L2.SG.Pf.lattice_steps_hold LocCTied_holds D X

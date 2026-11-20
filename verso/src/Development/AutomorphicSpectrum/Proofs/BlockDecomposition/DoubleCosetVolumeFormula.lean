@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.KmVolume
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite `hA` using `[MonoidHom.mem_ker]`. Establish `h` using `congrArg (fun u : GL (Fin N) (𝒪[k] ⧸ Ideal.span {Zls.unif k ^ m}) => u.val i j) hA`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, Units.val_one] at h`. Rewrite using `[← Ideal.Quotient.eq]`. Rewrite using `[h]`.
+
+Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+-/
 theorem entries_of_mem_ker {N m : ℕ} {A : GL (Fin N) 𝒪[k]}
     (hA : A ∈ (Matrix.GeneralLinearGroup.map (n := Fin N)
       (Ideal.Quotient.mk (Ideal.span {Zls.unif k ^ m}))).ker) (i j : Fin N) :
@@ -26,6 +31,23 @@ theorem entries_of_mem_ker {N m : ℕ} {A : GL (Fin N) 𝒪[k]}
     simp
   · simp [Matrix.one_apply_ne e]
 
+/- English proof (translation)
+Use `set J : Ideal 𝒪[k] := Ideal.span {Zls.unif k ^ m} with hJ`. Establish `hmap : B.map (Ideal.Quotient.mk J) = 1`. Use extensionality with `i j`. Use `Ideal.Quotient.eq.2 (hB i j)` as an intermediate fact. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[this]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+
+Establish `hdet : Ideal.Quotient.mk J B.det = 1`. Use `RingHom.map_det (Ideal.Quotient.mk J) B` as an intermediate fact. Rewrite using `[this]`. Use `show (B.map (Ideal.Quotient.mk J)).det = 1`. Rewrite using `[hmap, Matrix.det_one]`.
+
+Establish `hmem : B.det - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq, hdet, map_one]`. Establish `hJm : J ≤ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[hJ, Ideal.span_singleton_le_iff_mem]`. Establish `: Zls.unif k ∈ IsLocalRing.maximalIdeal 𝒪[k]`.
+
+Rewrite using `[Zls.irreducible_unif.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.pow_mem_of_mem _ this m (by omega)`. Establish `hunit : IsUnit B.det`. Assume the negation of the conclusion as `hn`.
+
+Establish `h1 : B.det ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `h2` using `hJm hmem`. Establish `h3 : (1 : 𝒪[k]) ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Use `Ideal.sub_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal _).ne_top h3`. Set `G : GL (Fin N) 𝒪[k]` to `Matrix.GeneralLinearGroup.mk'' B hunit`. Use `⟨Matrix.GeneralLinearGroup.map (n := Fin N) (algebraMap 𝒪[k] k) G, ?_, ?_⟩` and prove the remaining obligations. Use `⟨G, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hmap i) j`. Simplify `h` using `[G, Matrix.GeneralLinearGroup.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_mem_Km {N m : ℕ} (hm : 1 ≤ m) (B : Matrix (Fin N) (Fin N) 𝒪[k])
     (hB : ∀ i j, B i j - (1 : Matrix (Fin N) (Fin N) 𝒪[k]) i j ∈ Ideal.span {Zls.unif k ^ m}) :
     ∃ b ∈ Zls.Km k N m, (b : Matrix (Fin N) (Fin N) k) = B.map (algebraMap 𝒪[k] k) := by
@@ -70,6 +92,9 @@ theorem exists_mem_Km {N m : ℕ} (hm : 1 ≤ m) (B : Matrix (Fin N) (Fin N) �
     simpa [G, Matrix.GeneralLinearGroup.map_apply] using h
   · rfl
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `hp`. Take `⟨A, hA, rfl⟩` from `hb`. Use `⟨P * A * P⁻¹, ?_, by simp⟩` and prove the remaining obligations. Conclude with `(MonoidHom.normal_ker _).conj_mem A hA P`.
+-/
 theorem conj_mem_Km {N m : ℕ} {p b : GL (Fin N) k} (hp : p ∈ KO k (Fin N)) (hb : b ∈ Zls.Km k N m) :
     p * b * p⁻¹ ∈ Zls.Km k N m := by
   obtain ⟨P, rfl⟩ := hp
@@ -77,12 +102,24 @@ theorem conj_mem_Km {N m : ℕ} {p b : GL (Fin N) k} (hp : p ∈ KO k (Fin N)) (
   refine ⟨P * A * P⁻¹, ?_, by simp⟩
   exact (MonoidHom.normal_ker _).conj_mem A hA P
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Zls.diagPow, Zls.unifU, Matrix.diagonal_apply]`.
+-/
 theorem diagPow_val (N : ℕ) (lam : Fin N → ℤ) :
     ((Zls.diagPow k N lam : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) =
       Matrix.diagonal (fun i => (algebraMap 𝒪[k] k (Zls.unif k)) ^ lam i) := by
   ext i j
   simp [Zls.diagPow, Zls.unifU, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Take `⟨s0, hcard, hs0⟩` from `GlobalTheory.CompanionTheory.KmCover.double_coset_cover 𝒪[k] k N (Zls.unif k) m Zls.irreducible_unif hm lam hlam`. Set `f : Matrix (Fin N) (Fin N) k → GL (Fin N) k` to `fun M => if h : ∃ c : GL (Fin N) k, c.val = M then h.choose else 1`. Use `⟨s0.image f, Finset.card_image_le.trans hcard, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨A1, hA1, rfl⟩ y ⟨A2, hA2, rfl⟩`. Take `⟨M, hM, B, hB, e⟩` from `hs0 A1.val A2.val (entries_of_mem_ker hA1) (entries_of_mem_ker hA2)`.
+
+Take `⟨b, hb, hbv⟩` from `exists_mem_Km hm B hB`. Use `set X : GL (Fin N) k := Matrix.GeneralLinearGroup.map (n := Fin N) (algebraMap 𝒪[k] k) A1 * Zls.diagPow k N lam * Matrix.GeneralLinearGroup.map (n := Fin N) (algebraMap 𝒪[k] k) A2 with hX`. Establish `hXv : X.val = M * b.val`. Rewrite using `[hbv, ← e, hX, Units.val_mul, Units.val_mul, diagPow_val]`. Both sides reduce to the same expression.
+
+Establish `hex : ∃ c : GL (Fin N) k, c.val = M`. Use `⟨X * b⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hXv, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `⟨f M, Finset.mem_image_of_mem f hM, b, hb, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Establish `hf : (f M).val = M`. Simplify using `only [f, dif_pos hex]`. Conclude with `hex.choose_spec`. Rewrite using `[Units.val_mul (f M) b, hf]`. Conclude with `hXv`.
+-/
 theorem exists_cover (N m : ℕ) (hm : 1 ≤ m) (lam : Fin N → ℤ) (hlam : Antitone lam) :
     ∃ s : Finset (GL (Fin N) k),
       s.card ≤ Nat.card 𝓀[k] ^
@@ -114,6 +151,17 @@ theorem exists_cover (N m : ℕ) (hm : 1 ≤ m) (lam : Fin N → ℤ) (hlam : An
   rw [Units.val_mul (f M) b, hf]
   exact hXv
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N _ _ μ hμ m hm p1 p2 hp1 hp2 g`. Take `⟨hanti, hgap⟩` from `GlobalTheory.CompanionTheory.LamGap.lamOf_antitone_gap_sum N g`. Take `⟨s, hcard, hcov⟩` from `exists_cover (k := k) N m hm (Zls.lamOf g) hanti`. Rewrite `hcard` using `[hgap]`. Use `set U : Set (AdGL k N) := (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' (Zls.Km k N m : Set (GL (Fin N) k)) with hU`.
+
+Set `T : GL (Fin N) k → Set (AdGL k N)` to `fun c => (fun q => (QuotientGroup.mk (p1 * c * p2) : AdGL k N)⁻¹ * q) ⁻¹' U`. Establish `hsub : (QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {h | ∃ x ∈ Zls.Km k N m, ∃ y ∈ Zls.Km k N m, h = p1 * x * Zls.diagPow k N (Zls.lamOf g) * y * p2} ⊆ ⋃ c ∈ s, T c`. Introduce and unpack `_ ⟨h, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Take `⟨c, hc, b, hb, e⟩` from `hcov x hx y hy`. Use `Set.mem_biUnion hc ?_` and prove the remaining obligations.
+
+Use `⟨p2⁻¹ * b * p2, ?_, ?_⟩` and prove the remaining obligations. Use `conj_mem_Km (inv_mem hp2) hb` as an intermediate fact. Simplify using `using this`. Establish `e2 : p1 * x * Zls.diagPow k N (Zls.lamOf g) * y * p2 = p1 * (c * b) * p2`. Rewrite using `[← e]`.
+
+Use `group`. Rewrite using `[e2]`. Use `show (QuotientGroup.mk (p2⁻¹ * b * p2) : AdGL k N) = (QuotientGroup.mk (p1 * c * p2) : AdGL k N)⁻¹ * QuotientGroup.mk (p1 * (c * b) * p2)`. Rewrite using `[← QuotientGroup.mk_inv, ← QuotientGroup.mk_mul]`. Use `congr 1`.
+
+Use `group`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hcard` after adjusting the coercions.
+-/
 theorem measure_translated_doubleCoset_le : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)] (μ : MeasureTheory.Measure (AdGL k N)), μ.IsHaarMeasure → ∀ m : ℕ, 1 ≤ m → ∀ (p1 p2 : GL (Fin N) k), p1 ∈ KO k (Fin N) → p2 ∈ KO k (Fin N) → ∀ g : Fin (N - 1) → ℕ, μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' {h | ∃ x ∈ Zls.Km k N m, ∃ y ∈ Zls.Km k N m, h = p1 * x * Zls.diagPow k N (Zls.lamOf g) * y * p2}) ≤ (Nat.card 𝓀[k] : ENNReal) ^ (∑ j : Fin (N - 1), g j * (((j : ℕ) + 1) * (N - ((j : ℕ) + 1)))) * μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' (Zls.Km k N m : Set (GL (Fin N) k))) := by
   intro k _ _ _ _ N _ _ μ hμ m hm p1 p2 hp1 hp2 g
   classical

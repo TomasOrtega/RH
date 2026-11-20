@@ -4,6 +4,13 @@ open MeasureTheory
 
 namespace PositivityTheory.Rg.BcB.E2.P
 
+/- English proof (translation)
+Introduce `hK hE hN hI X ι _ Φ T hΦ hT`. Establish `hΨ : ∀ i j, Tst ((fun i j => adj (Φ j i)) i j : X.G → ℂ)` using `fun i j => (hK X (Φ j i) (hΦ j i)).2.2.2.1`. Take `⟨k', hc, hv⟩` from `hE X ι (fun i j => adj (Φ j i)) hΨ`. Take `⟨C, Ω, hC, hΩ, hb⟩` from `hN X ι (fun i j => adj (Φ j i)) hΨ`. Use `⟨fun i x => k' x i, ⟨hc, ?_, ?_, ⟨C, Ω, hC, hΩ, fun i x => hb x i _ (hv x i)⟩⟩⟩` and prove the remaining obligations.
+
+Introduce `i γ hγ x`. Use `PiLp.ext fun l => Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [hv (γ * x) i l, hv x i l] with z h1 h2`. Rewrite using `[h1, h2]`. Conclude with `((hK X _ (hΨ l i)).2.2.1 γ hγ z x).2`.
+
+Introduce `u i filter_upwards [hT u i] with x hx`. Rewrite using `[hx]`. Conclude with `((hI X ι Φ x i (k' x i) u hΦ).2 (hv x i)).symm`.
+-/
 theorem rowsex : KerBasic → VecEx → VecNorm → VecInner → RowsEx := by
   intro hK hE hN hI X ι _ Φ T hΦ hT
   have hΨ : ∀ i j, Tst ((fun i j => adj (Φ j i)) i j : X.G → ℂ) := fun i j => (hK X (Φ j i) (hΦ j i)).2.2.2.1

@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory.RealEmbeddingLemmaSecond
 
+/- English proof (translation)
+Introduce `d1 m n M N`. Use extensionality with `i j`. Simplify using `[d1, Matrix.map_apply, Matrix.sub_apply]`.
+-/
 theorem main :
     (let d1 : {m n : Type} → Matrix m n ℝ → Matrix m n ℂ :=
         @(fun {m n : Type} (M : Matrix m n ℝ) ↦ Matrix.map M fun (t : ℝ) ↦ (↑t : ℂ));

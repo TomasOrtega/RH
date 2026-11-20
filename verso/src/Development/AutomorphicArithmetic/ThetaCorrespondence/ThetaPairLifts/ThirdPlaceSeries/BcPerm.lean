@@ -12,6 +12,17 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 open GlobalTheory.BCPerm
 noncomputable section
 namespace UpperTheory.GalS
+/- English proof (translation)
+Introduce `D ht h2 h5 i x P0 PI Pa0 Pa hx hx' hB0 hB`. Establish `hG : GalIsoN D.nd D.naut i`. Introduce `P Pb hPb`. Take `⟨ρ, hc, hss, hw, -⟩` from `isoRep D ht (_root_.UpperTheory.GalS.weak' h2) i P Pb hPb`. Conclude with `⟨ρ, hc, hss, hw⟩`.
+
+Establish `hC : GlobalTheory.RowTie.ChebSplit D.nd`. Introduce `S`. Rewrite using `[dense_iff_closure_eq]`. Conclude with `h5.2.2.1 (S : Set (PlE D.host)) S.finite_toSet`. Establish `hAN : GlobalTheory.RowCopy.IsobaricDiscreteSelfDualStrongMultiplicityOne D.nd D.naut` using `h5.2.1`.
+
+Establish `hS` using `splitBC_of_galIso D.R D.host D.what₂ D.nd D.naut i hG hC hAN`. Establish `hd0 : (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde) ≠ 0` using `by split_ifs exacts [D.host.pde'_prime.ne_zero, D.host.pde_prime.ne_zero]`. Establish `hfin : (placesOver D.host.E (D.nd.l i) ∪ (D.nd.S i : Set (PlE D.host)) ∪ (D.nd.Q i : Set (PlE D.host)) ∪ placesOver D.host.E (D.host.g 0) ∪ placesOver D.host.E (D.host.g 1) ∪ placesOver D.host.E (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde)).Finite`. Use `(((((GlobalTheory.RowTie.placesOver_finite_of_ne_zero _ _ (D.nd.lPrime i).out.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet).union (GlobalTheory.RowTie.placesOver_finite_of_ne_zero _ _ (D.host.g_prime 0).ne_zero)).union (GlobalTheory.RowTie.placesOver_fini …` and prove the remaining obligations. Establish `hev : ∀ᶠ v in Filter.cofinite, IsSplitPl D.host v → D.naut.locV i P0 v = D.naut.locV i PI v`.
+
+Rewrite using `[Filter.eventually_cofinite]`. Use `hfin.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hn`. Take `⟨⟨⟨⟨⟨hl, hSv⟩, hQv⟩, hg0⟩, hg1⟩, hdv⟩` from `hn`.
+
+Use `hv fun hsp => GlobalTheory.RowTie.locV_eq_of_pt D.nd D.naut i hx hx' ⟨hsp, hl, hSv, hQv⟩ ?_ hdv` and prove the remaining obligations. Introduce `k`. Use `fin_cases k`. Use `exacts [hg0, hg1]`. Conclude with `hS P0 PI hev Pa0 Pa hB0 hB`.
+-/
 theorem bcPerm_alt : _root_.GlobalTheory.BCPerm.mainTheorem := by
   intro D ht h2 h5 i x P0 PI Pa0 Pa hx hx' hB0 hB
   have hG : GalIsoN D.nd D.naut i := by

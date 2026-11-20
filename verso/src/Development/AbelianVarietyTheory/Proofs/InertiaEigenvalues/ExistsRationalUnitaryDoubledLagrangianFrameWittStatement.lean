@@ -8,5 +8,8 @@ open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism
 open GlobalTheory.RawLift GlobalTheory.SWLagTerms
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame | exact GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame | (intros; apply GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_rational_unitary_doubledLagrangianFrame_witt : ∀ (D : D7) (W : HSp D) (Y : Lag W), ∃ γ : GA D (GlobalTheory.Doubling.dblSp W), γ ∈ GQ (GlobalTheory.Doubling.dblSp W) ∧ ∃ (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E), Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D) ∧ IsLagFrame W Y (frameOf W g₀) := by
   first | exact @GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame | exact GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame | (intros; apply GlobalTheory.SWLagTerms.exists_rat_unitary_lagFrame <;> assumption)

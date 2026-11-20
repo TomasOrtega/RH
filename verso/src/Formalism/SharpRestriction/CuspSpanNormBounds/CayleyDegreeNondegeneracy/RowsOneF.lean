@@ -9,6 +9,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hm2 : 2 ≤ m` using `by linarith`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hk0 : 0 ≤ k` using `by linarith`. Establish `hr1 : r + 1 = m / 2` using `by linarith`. Establish `e : (r + 1) * (12 * (c * r ^ 2) + B * m ^ 2 / 2 + B * m ^ 4 + 12 * (r + 1) ^ 2) + 1 = 6 * m * (c * r ^ 2) + (B * m ^ 3) / 4 + (B * m ^ 5) / 2 + (m / 2) * (12 * (m / 2) ^ 2) + 1` using `by rw [hr1]; ring`.
+
+Establish `p1 : 6 * m * (c * r ^ 2) ≤ 2 * (c * k * m ^ 2)`. Establish `a : r ^ 2 ≤ m ^ 2 / 4` using `by nlinarith`. Establish `b : c * r ^ 2 ≤ c * (m ^ 2 / 4)` using `mul_le_mul_of_nonneg_left a hc`. Establish `d : 6 * m * (c * r ^ 2) ≤ 6 * m * (c * (m ^ 2 / 4))` using `mul_le_mul_of_nonneg_left b (by linarith)`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hc (sq_nonneg m)) (by linarith : 0 ≤ k - m)]`.
+
+Establish `m35 : m ^ 3 ≤ m ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `p2 : B * m ^ 3 ≤ k` using `le_trans (mul_le_mul_of_nonneg_left m35 hB) ha`. Establish `p4 : (m / 2) * (12 * (m / 2) ^ 2) ≤ (3 / 2) * (k * m ^ 2)`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg m) (by linarith : 0 ≤ k - m)]`. Establish `p5 : (1 : ℝ) ≤ (1 / 2) * (k * m ^ 2)` using `by nlinarith`.
+
+Establish `hm4 : 4 ≤ m ^ 2` using `by nlinarith`. Establish `p6 : k ≤ (1 / 4) * (k * m ^ 2)` using `by nlinarith [mul_nonneg hk0 (sub_nonneg.2 hm4)]`. Establish `hU : 0 ≤ c * k * m ^ 2` using `by positivity`. Rewrite using `[e]`. Establish `t : (9 * c + 3) * k * m ^ 2 = 9 * (c * k * m ^ 2) + 3 * (k * m ^ 2)` using `by ring`.
+
+Rewrite using `[t]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem decay_length_sufficient {m k r c B : ℝ} (hm : m = 2 * r + 2) (hr : 0 ≤ r) (hk : m + 3 ≤ k) (hc : 0 ≤ c) (hB : 0 ≤ B)
     (ha : B * m ^ 5 ≤ k) :
     (r + 1) * (12 * (c * r ^ 2) + B * m ^ 2 / 2 + B * m ^ 4 + 12 * (r + 1) ^ 2) + 1 ≤ (9 * c + 3) * k * m ^ 2 := by
@@ -36,6 +47,9 @@ theorem decay_length_sufficient {m k r c B : ℝ} (hm : m = 2 * r + 2) (hr : 0 �
   rw [t]
   linarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_trans (le_max_left _ _) (le_max_left _ _), le_trans (le_max_right _ _) (le_max_left _ _), le_trans (le_max_left _ _) (le_max_right _ _), le_trans (le_max_right _ _) (le_max_right _ _)⟩`.
+-/
 theorem le_max_four (a b c d : ℝ) : a ≤ max (max a b) (max c d) ∧ b ≤ max (max a b) (max c d) ∧
     c ≤ max (max a b) (max c d) ∧ d ≤ max (max a b) (max c d) :=
   ⟨le_trans (le_max_left _ _) (le_max_left _ _), le_trans (le_max_right _ _) (le_max_left _ _),
@@ -45,6 +59,11 @@ section Mono
 
 variable {D : D7} {large₂ : SizeData₂ D} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Establish `h1 : c' ≤ c` using `by linarith [le_abs_self c']`. Establish `h2 : 2 ≤ c + c'` using `by linarith [neg_abs_le c']`. Establish `mono` using `rows_HHZ_mono large₂ hrd h1 h2 Z`. Establish `o` using `rows_one_le_HHZ' D large₂ c' Z`. Establish `hc : 0 ≤ c` using `by linarith [abs_nonneg c']`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem height_pow_mono_constant (large₂ : SizeData₂ D) (hrd : 0 < D.host.rdE) {c' c : ℝ} (h : |c'| + 2 ≤ c) (Z : GramM D) :
     HHZ D large₂.sc.b c' Z ^ (c' * (D.R.rS : ℝ) ^ 2) ≤ HHZ D large₂.sc.b c Z ^ (c * (D.R.rS : ℝ) ^ 2) := by
   have h1 : c' ≤ c := by linarith [le_abs_self c']
@@ -56,6 +75,11 @@ theorem height_pow_mono_constant (large₂ : SizeData₂ D) (hrd : 0 < D.host.rd
         Real.rpow_le_rpow_of_exponent_le o (by gcongr)
     _ ≤ HHZ D large₂.sc.b c Z ^ (c * (D.R.rS : ℝ) ^ 2) := Real.rpow_le_rpow (by linarith) mono (by positivity)
 
+/- English proof (translation)
+Introduce `hH F0 he hz what₂ hrows Z hZ`. Establish `h0` using `h hH F0 he hz what₂ hrows Z hZ`. Unfold `MeanLe at h0 ⊢`. Establish `hB : HHZ D large₂.sc.b c' Z ^ (c' * (D.R.rS : ℝ) ^ 2) * ∏ τ, nV D (Tu D u) (Tu D u') Z τ ≤ HHZ D large₂.sc.b c Z ^ (c * (D.R.rS : ℝ) ^ 2) * ∏ τ, nV D (Tu D u) (Tu D u') Z τ`. Use `mul_le_mul_of_nonneg_right (height_pow_mono_constant large₂ (d_rdE_pos hH.1) h1 Z) ?_` and prove the remaining obligations.
+
+Use `Finset.prod_nonneg fun τ _ => ?_` and prove the remaining obligations. Unfold `nV`. Conclude with `D.R.k_even.pow_nonneg _`. Conclude with `h0.trans (mul_le_mul' le_rfl (ENNReal.ofReal_le_ofReal hB))`.
+-/
 theorem switch_bound_mono_constant {C' Cl Cg cb Cu cT CT C0 A c' c : ℝ} (h1 : |c'| + 2 ≤ c)
     (h : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c') : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c := by
   intro hH F0 he hz what₂ hrows Z hZ
@@ -69,6 +93,13 @@ theorem switch_bound_mono_constant {C' Cl Cg cb Cu cT CT C0 A c' c : ℝ} (h1 : 
     exact D.R.k_even.pow_nonneg _
   exact h0.trans (mul_le_mul' le_rfl (ENNReal.ofReal_le_ofReal hB))
 
+/- English proof (translation)
+Introduce `hH F0 he hz Λ hΛ F' hF' hgen hR Z hZ`. Use `(h hH F0 he hz Λ hΛ F' hF' hgen hR Z hZ).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hrd` using `d_rdE_pos hH.1`. Establish `k1 : c' ≤ c` using `by linarith [le_abs_self c']`. Establish `k2 : 2 ≤ c + c'` using `by linarith [neg_abs_le c']`.
+
+Establish `hc : 0 ≤ c` using `by linarith [abs_nonneg c']`. Establish `ma` using `rows_HHZ_mono large₂ hrd k1 k2 (ZhatL (lf D F0) F')`. Establish `mb` using `rows_HHZ_mono large₂ hrd k1 k2 Z`. Establish `oa` using `rows_one_le_HHZ' D large₂ c' (ZhatL (lf D F0) F')`. Establish `ob` using `rows_one_le_HHZ' D large₂ c' Z`.
+
+Establish `o : 1 ≤ HHZ D large₂.sc.b c' (ZhatL (lf D F0) F') * HHZ D large₂.sc.b c' Z` using `one_le_mul_of_one_le_of_one_le oa ob`. Establish `hp : c' ^ D.R.f ≤ c ^ D.R.f` using `(le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) (by linarith) _)`. Use `mul_le_mul hp ?_ (Real.rpow_nonneg (by linarith) _) (pow_nonneg hc _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem partner_count_bound_mono_constant {C' Cl Cg cb Cu cT CT C0 A c' c : ℝ} (h1 : |c'| + 2 ≤ c)
     (h : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c') : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c := by
   intro hH F0 he hz Λ hΛ F' hF' hgen hR Z hZ
@@ -102,11 +133,49 @@ def FamilyAmplitudeBounds : Prop :=
   ∀ Cg cb Cu cT CT C0 A Cpr : ℝ, ∃ C C2 Ch : ℝ, 0 ≤ Ch ∧ 0 ≤ C ∧ ∀ δ > 0, OwnEv Fm fun C' Cl x i =>
     VanishingOnXAndXPlus.AmplitudeBoundsConjunction (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cpr C C2 Ch δ
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A Cpr`. Take `⟨C, C2, Ch, h1, _, h3⟩` from `h Cg cb Cu cT CT C0 A Cpr`. Conclude with `⟨C, C2, Ch, h1, h3⟩`.
+-/
 theorem amplitude_bounds_of_family_amplitude_bounds (h : FamilyAmplitudeBounds Fm C1) : rows_AmpF Fm C1 := by
   intro Cg cb Cu cT CT C0 A Cpr
   obtain ⟨C, C2, Ch, h1, _, h3⟩ := h Cg cb Cu cT CT C0 A Cpr
   exact ⟨C, C2, Ch, h1, h3⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨_, _, _, _, _, _, _, h10a, _, _, _, h14, _, _, _, _, hall⟩` from `hAdm`. Take `⟨_, _, _, _, _, _, _, h4, h6, h7, h8, _, h10b, _, _, h20, h21, _, h27, hVol⟩` from `hall Cg cb Cu cT CT C0 A`. Take `⟨c3, LocalHeightDeterminant⟩` from `h20 3`. Take `⟨cH, x27, H27⟩` from `h27`.
+
+Take `⟨cV, xV, HV⟩` from `hVol`. Take `⟨cS, x4, H4⟩` from `h4`. Take `⟨c4, x21, H21⟩` from `h21`. Take `⟨c, hcdef⟩ : ∃ c : ℝ, c = max (max c3 1) (max (max (|cH| + 2) (|cV| + 2)) (max (|cS| + 2) (|c4| + 2)))` from `⟨_, rfl⟩`. Establish `k1 : c3 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_left _ _) (le_max_left _ _)`.
+
+Establish `k2 : 1 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `k3 : |cH| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).1 (le_max_right _ _)`. Establish `k4 : |cV| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.1 (le_max_right _ _)`. Establish `k5 : |cS| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.2.1 (le_max_right _ _)`. Establish `k6 : |c4| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.2.2 (le_max_right _ _)`.
+
+Take `⟨x20, H20x⟩` from `LocalHeightDeterminant c k1`. Take `⟨Ca, C2, Ch, hCh, hCa, HA⟩` from `hAmp Cg cb Cu cT CT C0 A (9 * c + 3)`. Take `⟨xA, HAx⟩` from `HA (1 / 4) (by norm_num)`. Take `⟨x6, H6⟩` from `h6 (1 / 2) (by norm_num)`. Take `⟨x7, H7⟩` from `h7`.
+
+Take `⟨x8, H8⟩` from `h8`. Take `⟨x10, H10⟩` from `h10b`. Take `⟨xk, _, Hk⟩` from `ev_kLow Fm |C2|`. Take `⟨xc, _, Hc⟩` from `ev_k Fm ((max Ca 1) ^ 3)`. Use `⟨max (max (4 * Real.sqrt A) (2 * Real.sqrt (2 * C0) * c)) (max (Fm.CGam + C2) (4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1))), fun C hC => ?_⟩` and prove the remaining obligations.
+
+Use `ownEv_intro Fm (max (max (max (max x20 x27) (max xV xA)) (max (max x6 x8) (max x10 xk))) (max (max x4 x21) (max x7 xc))) fun x hx _ i hx1 u u' hH => ?_` and prove the remaining obligations. Establish `hM1 : max (max x20 x27) (max xV xA) ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hM2 : max (max x6 x8) (max x10 xk) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hM3 : max (max x4 x21) (max x7 xc) ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `g20 : x20 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM1`.
+
+Establish `g27 : x27 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM1`. Establish `gV : xV ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM1`. Establish `gA : xA ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM1`. Establish `g6 : x6 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM2`. Establish `g8 : x8 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM2`.
+
+Establish `g10 : x10 ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM2`. Establish `gk : xk ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM2`. Establish `g4 : x4 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM3`. Establish `g21 : x21 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM3`. Establish `g7 : x7 ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM3`.
+
+Establish `gc : xc ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM3`. Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `q1 : 4 * Real.sqrt A ≤ C` using `le_trans (le_max_four _ _ _ _).1 hC`. Establish `q2 : 2 * Real.sqrt (2 * C0) * c ≤ C` using `le_trans (le_max_four _ _ _ _).2.1 hC`. Establish `q3 : Fm.CGam + C2 ≤ C` using `le_trans (le_max_four _ _ _ _).2.2.1 hC`.
+
+Establish `q4 : 4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1) ≤ C` using `le_trans (le_max_four _ _ _ _).2.2.2 hC`. Establish `hCsq : 4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1) ≤ C ^ 2`. Establish `h0 : 0 ≤ 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1)`. Use `le_max_right (Ch - c) 0` as an intermediate fact. Check the signs of the components of the expression.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hr0 : (0 : ℝ) ≤ (Fm.D x i).R.rS` using `by positivity`. Establish `hm2 : (2 : ℝ) ≤ (Fm.D x i).R.m` using `by rw [rows_m_cast]; linarith`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f` using `by exact_mod_cast rows_f_pos (Fm.D x i)`. Establish `hL1` using `d_one_le_L (Fm.D x i) (Fm.L x i)`.
+
+Establish `hkm : ((Fm.D x i).R.m : ℝ) + 3 ≤ (Fm.D x i).R.k` using `by exact_mod_cast (Fm.D x i).R.m_add_three_le_k`. Establish `ha5 : |C2| * ((Fm.D x i).R.m : ℝ) ^ 5 ≤ (Fm.D x i).R.k`. Use `le_trans ?_ (Hk x gk i)` and prove the remaining obligations. Establish `e2 : ((Fm.D x i).R.m : ℝ) ^ 5 ≤ ((Fm.D x i).R.m : ℝ) ^ 5 * (Fm.D x i).R.f * (Fm.L x i).sc.L`. Establish `h5 : 0 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ) - 1), mul_nonneg (mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ))) (by linarith : 0 ≤ (Fm.L x i).sc.L - 1)]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = 12 * (c * ((Fm.D x i).R.rS : ℝ) ^ 2) + |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 + 12 * (((Fm.D x i).R.rS : ℝ) + 1) ^ 2` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a` using `by rw [hadef]; positivity`. Establish `hqb` using `decay_length_sufficient (m := (Fm.D x i).R.m) (k := (Fm.D x i).R.k) (r := (Fm.D x i).R.rS) (c := c) (B := |C2|) (rows_m_cast _) hr0 hkm hc0 (abs_nonneg _) ha5`.
+
+Establish `hqb' : (((Fm.D x i).R.rS : ℝ) + 1) * a + 1 ≤ (9 * c + 3) * (Fm.D x i).R.k * ((Fm.D x i).R.m : ℝ) ^ 2`. Rewrite using `[hadef]`. Conclude with `hqb`. Establish `hra0 : 0 ≤ (((Fm.D x i).R.rS : ℝ) + 1) * a` using `by positivity`. Establish `hyp : rows_Hyps (Y x hx1 i u u') (sC' Fm) (sCl Fm) Cg cb Cu cT CT C0 A c (9 * c + 3) Ca C2 Ch (1 / 2) (1 / 4) ⌈(((Fm.D x i).R.rS : ℝ) + 1) * a⌉₊` using `{ hH := hH hC3 := H20x x g20 i u u' hHH := rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x g27 i u u') hV := rows_stVol_mono _ (by linarith [le_abs_self cV]) (by linarith [neg_abs_le cV]) (HV x gV i hx1 u u') hDEC := (HAx x gA i).2.2.2.2.2.2.2 h …`.
+
+Use `corank_one_bound_of_injective_terms _ hyp (switch_bound_mono_constant k5 (H4 x g4 i u u')) (partner_count_bound_mono_constant k6 (H21 x g21 i u u')) (hTI x hx1 i u u') (hBL x i u u') (H7 x g7 i) le_rfl (by norm_num) le_rfl hCa (Hc x gc i) ?_ q1 q2 (by rw [Fm.CGam_eq]; exact q3) h …` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1` using `Nat.le_ceil ((((Fm.D x i).R.rS : ℝ) + 1) * a)`. Establish `h2 : C2 * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 ≤ |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2`. Use `le_abs_self C2` as an intermediate fact.
+
+Use `gcongr`. Establish `h3 : |C2 * ((Fm.D x i).R.m : ℝ) ^ 4| = |C2| * ((Fm.D x i).R.m : ℝ) ^ 4`. Rewrite using `[abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ) ^ 4)]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations.
+
+Rewrite using `[hadef, h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring`. Use `_ ≤ _ := h1`.
+-/
 theorem rows_OneF_of (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hAmp : FamilyAmplitudeBounds Fm C1) (hT : rows_TiesF Fm C1 X Y)
     (hTI : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairTermInjective (X x hx i) (Y x hx i u u'))
     (hBL : ∀ x (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairBetaLattice (Fm.D x i) u u') :

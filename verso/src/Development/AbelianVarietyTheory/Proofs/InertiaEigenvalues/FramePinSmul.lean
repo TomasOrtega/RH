@@ -32,6 +32,37 @@ variable {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDa
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨hEq, ⟨-, hBC, hAct, hcE, hph, z, hz, hrow⟩, -⟩` from `hE`. Take `⟨ze, hzL, ⟨m, hm, hze⟩, hrow⟩` from `hrow ()`. Establish `hze0 : ze ≠ 0` using `fun h => by`. Rewrite `hze` using `[h, zero_pow hm.ne']`. Conclude with `zero_ne_one hze`.
+
+Establish `hph0 : ph ≠ 0` using `fun h => by simp [h] at hph`. Establish `h0 : ∀ k, c0 k ≠ 0` using `fun k h => by simpa [h] using hS.1 k`. Establish `hE0' : ∀ k, cE k ≠ 0` using `fun k h => by simpa [h] using hcE k`. Establish `hl : ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`. Establish `hlift : ∀ g, ∃ k, LiftW R i g k` using `fun g => (hP.lift.lev g).imp fun _ h => h.1`.
+
+Establish `hinvW : ∀ U ∈ R.Wall i (sg0 D A), ∀ γ ∈ GQ (Wc D i), ∀ g, U v₀ (γ * g) = U v₀ g` using `fun U hU => (GlobalTheory.mult_value_left_cont_level R.θ _ _ _ U hU v₀).1`. Establish `hinv : ∀ f ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n, ∀ γ ∈ GQ (Wc D i), ∀ g, O.phi cE f (γ * g) = O.phi cE f g`. Introduce `f hf γ hγ g`. Take `⟨U, hU, e⟩` from `hW f hf`. Conclude with `mul_left_cancel₀ hl (by rw [← e, ← e, hinvW U hU γ hγ])`.
+
+Use `⟨z, ze, hz, hzL, ⟨m, hm, hze⟩, hlift z, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hbase : ∀ y, R.thF i A.μ0 (jVx R i A.μ0 y) v₀ ∈ shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k`. Introduce `y`. Take `⟨hh, J', hrep, hPl, hth, hpl⟩` from `(hP.tuple ()).reps`. Take `⟨x, hx⟩` from `hPl y`.
+
+Take `⟨⟨f', hf', hcl⟩, hid⟩` from `hrow x ((hpl x).2 ⟨y, hx⟩)`. Establish `hs` using `hS.2.2 () hh J' hrep _ x hx f' hf'.1 hcl`. Establish `hq` using `hid f' hf'.1 hcl`. Establish `hth' : ∀ q : AutQ (Wc D i), O.thAd () x q = R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out` using `fun q => congrFun (hth _ x hx) q`. Establish `hf'' : f' ∈ cusp (C.Q.Xo ((i : ℕ) + 1)) O.c' (unfBC O.hle (C.U ((i : ℕ) + 1))) (wtA κ) (Vc D i).rank` using `hf'`.
+
+Establish `hb` using `hBC (wtA κ) (Vc D i).rank f' hf''`. Take `⟨n, as, fs, hfs, hbc⟩` from `hb`. Establish `hbc'` using `hAct _ _ z n as fs f' hf'.1 (fun j => (hfs j).1) hbc`. Establish `hfs' : ∀ j, fs j ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n` using `fun j => by rw [hn]; exact hfs j`. Establish `r1` using `rdU_unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') hbc`.
+
+Establish `r2` using `rdU_unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') hbc'`. Establish `e1 : R.thF i A.μ0 (jVx R i A.μ0 y) v₀ = ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) • O.phi c0 (fs j)`. Use function extensionality and compare the values at `g`. Use `hs g` as an intermediate fact. Rewrite `this` using `[one_mul, r1]`.
+
+Rewrite using `[this]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, phi_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hmemL : R.thF i A.μ0 (jVx R i A.μ0 y) v₀ ∈ liftSub (LiftW R i) (ratio O cE c0)`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (phi_mem_liftSub O h0 hEq hE0 (hfs' j))`. Use `⟨hmemL, fun g => ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ q : AutQ (Wc D i), ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out = ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (q.out * k)`. Introduce `q`. Establish `h3 : ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out = ze * cE (O.dict q.out).1 * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * (O.mu q.out * rdU (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) (actLev O.c' O.lev2 z f') (O.dict q.out).1 (O.dict q.out).2)` using `(congrArg (ph * ·) (hth' q)).symm.trans (hq q)`.
+
+Rewrite using `[h3, r2]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `(hEq z k hk (fs j) (hfs' j)).2 q.out`. Rewrite `h2` using `[← chiC_coe, phi_apply]`.
+
+Take the linear combination `(ze * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * h2`. Establish `e3 : ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ g = ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (g * k)`. Use `eq_of_out (fun g => ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ g) (fun g => ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (g * k)) (fun γ hγ g => congrArg (ph * ·) (hinvW _ (hmem i A.μ0 _) γ hγ g)) (fun γ hγ g => ?_) e …` and prove the remaining obligations. Use `congrArg (ze * chiC R i z * ·) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc γ, hinv _ (hfs' j) γ hγ]`.
+
+Conclude with `shift_eq (pE := fun j => O.phi cE (fs j)) hph0 e1 (fun j h => phi_ratio O h0 (fs j) h) (hmemL.1 z k hk g) e3`. Set `ev : MMap (R.MW i (sg0 D A)) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `{ toFun := fun U => U v₀, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hall : ∀ y, R.thF i A.μ0 y v₀ ∈ shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k` using `GlobalTheory.SecLift.span_of_pres (R.B.L i A.μ0).pres (R.HV i A.μ0).e (hHV i A.μ0).1 (hHV i A.μ0).2.1 (jVx R i A.μ0) (hjV i A.μ0) ((shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k).comap (ev ∘ₗ R.thF i A.μ0)) hbase`. Establish `hWall : R.Wall i (sg0 D A) ≤ (shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k).comap ev`. Rewrite using `[← hsp]`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, y, rfl⟩`. Take `⟨k', hk', e⟩` from `exists_liftW_act R i (hlift g)`. Establish `h1` using `shiftSub_translate (liftW_mul R i) hz hk (hall y) hk'`. Rewrite `h1` using `[← funext (e (R.thF i A.μ0 y v₀))]`.
+
+Conclude with `h1`. Introduce `f hf h`. Take `⟨U, hU, e⟩` from `hW f hf`. Establish `h1 : U v₀ h = ze * chiC R i z / ph * ratio O cE c0 h * U v₀ (h * k)` using `(hWall hU).2 h`. Rewrite `h1` using `[e, e, phi_ratio O h0 f h]`.
+
+Establish `hr : ratio O cE c0 h ≠ 0` using `div_ne_zero (hE0' _) (h0 _)`. Use `mul_left_cancel₀ (mul_ne_zero hl hr) ?_` and prove the remaining obligations. Take the linear combination `h1`.
+-/
 theorem shift_central (hP : O.Pins κ v₀ ι x₀) (hn : κ.n = (Vc D i).rank) (hHV : R.models_HV) (hjV : R.models_jV)
     (hmem : R.thP_thF_mem) (hsp : GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.SpanAt R i A.μ0) {ph : ℂ} (hE : O.OneMapOf κ v₀ cE ph)
     (hE0 : O.EquivAt κ c0) (hS : GlobalTheory.AdTh.SerOf O κ v₀ c0 1)
@@ -129,6 +160,9 @@ theorem shift_central (hP : O.Pins κ v₀ ι x₀) (hn : κ.n = (Vc D i).rank) 
   refine mul_left_cancel₀ (mul_ne_zero hl hr) ?_
   linear_combination h1
 
+/- English proof (translation)
+Rewrite using `[phi_apply, phi_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_smul (s : ℂ) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (f : C.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     O.phi (s • cc) f h = s * O.phi cc f h := by
   rw [phi_apply, phi_apply, Pi.smul_apply, smul_eq_mul]
@@ -136,6 +170,15 @@ theorem phi_smul (s : ℂ) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (f : C
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hn : ‖ze‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hze hm.ne'`. Establish `h0 : ze ≠ 0` using `fun e => by simp [e] at hn`. Take `⟨hE, ⟨h1, h2, h3, h4, h5, z, hz, h6⟩, h7⟩` from `h`. Use `⟨fun g k hk f hf => ⟨(hE g k hk f hf).1, fun x => ?_⟩, ⟨h1, h2, h3, fun k => ?_, h5, z, hz, fun t => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[phi_smul, phi_smul, (hE g k hk f hf).2 x, mul_left_comm]`.
+
+Use `h4 k show ‖ze⁻¹ * c0 k‖ = 1` as an intermediate fact. Rewrite using `[norm_mul, norm_inv, hn, inv_one, one_mul]`. Conclude with `this`. Take `⟨y, hy, ⟨n, hn0, hyn⟩, h8⟩` from `h6 t`. Use `⟨y * ze, mul_mem hy hL, ⟨n * m, Nat.mul_pos hn0 hm, ?_⟩, fun x hx => ⟨(h8 x hx).1, fun f hf hc q => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, pow_mul, hyn, one_pow, mul_comm n, pow_mul, hze, one_pow, one_mul]`. Use `((h8 x hx).2 f hf hc q).trans ?_` and prove the remaining obligations. Establish `e : ∀ a : ℂ, y * a = y * ze * (ze⁻¹ * a)` using `fun a => by field_simp`. Conclude with `congrArg (fun u => u * _ * _) (e _)`. Take `⟨n, a, f, hf⟩` from `h7 x`.
+
+Take `⟨y, hy⟩` from `hL`. Establish `hy' : D.what₂.embLL y = ze` using `hy`. Use `⟨n, fun k => a k * y, f, fun g => (hf g).trans (Finset.sum_congr rfl fun k _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[phi_smul, map_mul, hy']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem oneMapOf_smul {ph ze : ℂ} (h : O.OneMapOf κ v₀ c0 ph) (hL : ze ∈ D.what₂.embLL.toRatAlgHom.fieldRange)
     {m : ℕ} (hm : 0 < m) (hze : ze ^ m = 1) : O.OneMapOf κ v₀ (ze⁻¹ • c0) ph := by
   have hn : ‖ze‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hze hm.ne'
@@ -167,12 +210,20 @@ section Frame
 variable {T : CoreJ D} [iA : Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
 
 omit iA in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hL.toLawsM, h, hL.muVal, hL.muConj, hL.intAll, hL.modelW, hL.familyUniformisationBasePointOrthogonal, hL.kfHalf, hL.adPin⟩`.
+-/
 theorem lawsJ_setCE (hL : LawsJ T) {c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ}
     (h : ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → CUnit (c' j σ)) : LawsJ (setCE T c') :=
   ⟨hL.toLawsM, h, hL.muVal, hL.muConj, hL.intAll, hL.modelW, hL.familyUniformisationBasePointOrthogonal, hL.kfHalf, hL.adPin⟩
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h0 : s ≠ 0` using `fun e => by simp [e] at hs`. Take `⟨ph, b, h1, h2, h3⟩` from `h`. Use `⟨ph / s, b, by rw [norm_div, h1, hs, div_one], h2, fun g γ hγ hf hx Wt Y X z hz => ?_⟩` and prove the remaining obligations. Use `(h3 g γ hγ hf hx Wt Y X z hz).trans ?_` and prove the remaining obligations. Establish `e1 : ∀ k (a : ℂ), ph * (c' ((i : ℕ) + 1) σ k * a) = ph / s * (c'' ((i : ℕ) + 1) σ k * a)` using `fun k a => by`.
+
+Rewrite using `[e, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Conclude with `congrArg (· * _) (e1 _ _)`.
+-/
 theorem framePin_smul {c' c'' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ} {i : Fin D.R.m} {σ : T.Q.c.F →+* ℂ}
     {hV : T.V ((i : ℕ) + 1) σ = Wc D i} {s : ℂ} (hs : ‖s‖ = 1) (e : c'' ((i : ℕ) + 1) σ = s • c' ((i : ℕ) + 1) σ)
     (h : @GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin D G _ _ Pl0 T0 A (setCE T c') iA R i σ hV) :
@@ -188,6 +239,21 @@ theorem framePin_smul {c' c'' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨κ, v₀, fw, bar, O, pins, rho, eqa, ct, phase⟩` from `B`. Simplify using `only at hJ ⊢`. Establish `ht : TieIn T R κ v₀` using `⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩`. Establish `hio : IoExt R` using `GlobalTheory.IoExtremal.ioExt D G Pl0 T0 A _ R hC.lev hC.fam hC.models hC.thP`. Take `⟨cc, hcc, u, hu, hE0, hS, -⟩` from `GlobalTheory.AdTh.exists_ccIs_equivAt_serOf_oneMapRow_ofFive GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R F κ v₀ hC ht hio i _ _ (O i) (pins i).2`.
+
+Establish `h1 : (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) (u • cc) 1` using `GlobalTheory.OneMapPhaseOne.oneMapOf_one_of_serOf D G Pl0 T0 A T R F κ v₀ hC.grp hC.thP ht O i (pins i) (u • cc) hS (GlobalTheory.ClassSumRule.exists_cusp_isThClsD_ofFive GlobalTheory.ChartFree.chartIndep D G Pl0 T0 A T R F κ v₀ hC ht i _ _ (O i) (pins i).2 ()) hE0`. Establish `hrow` using `phase i hU ⟨_, _, h1⟩`. Establish `hσ : res T (sg0 D A) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T fw.alg_eq fw.laws.pins.2.2.1]`. Establish `hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i` using `(O i).hV`.
+
+Establish `hg` using `base_embedding_good T R fw.alg_eq fw.laws.pins.2.2.1`. Establish `hV₁ : T.V ((i : ℕ) + 1) (res T (sg0 D A)) = Wc D i` using `fw.laws.spaceW _ (inR i) _ hg`. Establish `hev : ∀ f ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n, ∃ y : (R.HW i (sg0 D A)).H, (R.HW i (sg0 D A)).e y (v₀ i (sg0 D A)) = phiC T hV (wtA (κ i)) f` using `fun f hf => ⟨_, (baseEmbedding_reading_eval_adelicFunction fw hV₁ (hJ i _ hg hV₁) ⟨f, hf⟩).trans (phiC_congr hσ hV₁ hV _ _)⟩`. Establish `hn : (κ i).n = (Vc D i).rank` using `(fw.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm`. Establish `hphi : ∀ f h, phiC T hV (wtA (κ i)) f h = (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (O i).phi (T.cE ((i : ℕ) + 1) (O i).s0) f h` using `fun f h => phiC_apply hV _ f h`.
+
+Take `⟨z, ze, hz, hzL, ⟨m, hm, hze⟩, ⟨k, hk⟩, hs⟩` from `shift_central (O i) (pins i).2 hn hC.models.HV hC.models.jV hC.thP.thF_mem (GlobalTheory.ThetaSpanObj.spanAtObj R hP hsz hC.lev hC.fam hC.models hC.thP i A.μ0) hrow hE0 hS fun f hf => by`. Take `⟨y, hy⟩` from `hev f hf`. Conclude with `⟨_, (hC.models.HW i _).2.1.le (LinearMap.mem_range_self _ y), fun h => (congrFun hy h).trans (hphi f h)⟩`. Establish `hzn : ‖ze‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hze hm.ne'`. Establish `h0 : ze ≠ 0` using `fun e => by simp [e] at hzn`.
+
+Use `⟨ze⁻¹ • u • cc, z, hz, oneMapOf_smul (O i) h1 hzL hm hze, fun c'' hc'' hV' => ?_, fun f hf h => ?_⟩` and prove the remaining obligations. Take `⟨c', hc', hL'⟩` from `exists_withConst fw.laws ((i : ℕ) + 1) T.σ₀ cc hcc.1`. Establish `hx0 : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.σ₀)` using `hσ ▸ fw.x0 i (sg0 D A) hg`. Establish `hpin` using `@GlobalTheory.FrameConst.framePin_of_ccIs D G _ _ Pl0 T0 A (withConst T c') iA R i T.σ₀ hV rfl hL' hC.models.inf (pins i).2.lift.std hx0 (by subst hc'; exact hcc)`. Use `framePin_smul (c' := c') (s := ze⁻¹ * u) (by rw [norm_mul, norm_inv, hzn, hu, inv_one, one_mul]) ?_ hpin` and prove the remaining obligations.
+
+Rewrite using `[hc'', hc']`. Conclude with `funext fun _ => (mul_assoc _ _ _).symm`. Establish `h2` using `hs k hk f hf h`. Establish `h3` using `(hrow.1 z k hk f hf).2 h`. Rewrite `h3` using `[← chiC_coe]`.
+
+Rewrite using `[phi_smul, h2, h3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_shift (hP : GlobalTheory.Published.CuspRapidDecay) (hsz : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) {F : Face D A} (hC : GlobalTheory.Core5 R F)
     (B : GeoHalf T R fun _ => 1) (hU : R.LUnif) (hJ : JEvExists T R B.κ B.v₀) (i : Fin D.R.m) :
     ∃ (c1 : (T.U ((i : ℕ) + 1) T.σ₀).Comp → ℂ) (z : G), z ∈ Subgroup.center G ∧

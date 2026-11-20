@@ -21,11 +21,25 @@ def lineCoef : Option (Ψ × Fin N) → Option (Ψ × Fin N) → ℤ
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `none => exact M.A_smooth`. Consider the case `some r => exact M.x_smooth 1 r`.
+-/
 theorem line_smooth (M : RootModel Ψ N) (o : Option (Ψ × Fin N)) : IsSmoothHerm (M.line 1 o) := by
   cases o with
   | none => exact M.A_smooth
   | some r => exact M.x_smooth 1 r
 
+/- English proof (translation)
+Establish `hdeg : (∑ j, Finsupp.single (w j) (1 : ℕ)).degree = dimFl Ψ N`. Rewrite using `[map_sum]`. Simplify using `[Finsupp.degree_single]`. Establish `hms : Finsupp.toMultiset (∑ j, Finsupp.single (w j) (1 : ℕ)) = Multiset.map w Finset.univ.val`. Rewrite using `[Finsupp.toMultiset_sum]`.
+
+Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[Finset.sum_eq_multiset_sum]`. Establish `e : (fun i => ({w i} : Multiset (Option (Ψ × Fin N)))) = (fun p => {p}) ∘ w` using `rfl`. Rewrite using `[e, ← Multiset.map_map, Multiset.sum_map_singleton]`. Take `⟨ρ, hρ⟩` from `GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.exists_perm_toList w`.
+
+Establish `hML : monoLines (M.line 1) (∑ j, Finsupp.single (w j) (1 : ℕ)) (dimFl Ψ N) = (fun i => M.line 1 (w i)) ∘ ρ`. Use function extensionality and compare the values at `k`. Establish `hk : (k : ℕ) < (Multiset.map w Finset.univ.val).toList.length`. Use `k.2` as an intermediate fact. Simplify using `[Multiset.length_toList]`.
+
+Unfold `monoLines`. Rewrite using `[hms, dif_pos hk, hρ k hk]`. Both sides reduce to the same expression. Unfold `RootModel.geoMono`. Rewrite using `[if_pos hdeg, hML]`.
+
+Use `congr 1`. Use `(ptsIntegral_one_eq_mInt hI.resExists resBridge R M.arith (L := (fun i => M.line 1 (w i)) ∘ ρ) (fun j => line_smooth M _)).trans ?_` and prove the remaining obligations. Conclude with `mIntSymm R.A (fun j => potOf R (M.line 1 (w j))) ρ _`.
+-/
 theorem geoMono_word (hI : PB.Inputs) (M : RootModel Ψ N) {J : Ideal (MRing M.ι)}
     (R : AnLogRes M.P J (dimFl Ψ N)) (w : Fin (dimFl Ψ N) → Option (Ψ × Fin N)) :
     M.geoMono (∑ j, Finsupp.single (w j) 1) =
@@ -60,6 +74,13 @@ theorem geoMono_word (hI : PB.Inputs) (M : RootModel Ψ N) {J : Ideal (MRing M.�
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Establish `h1 : (∑ o, C (a o) * X o : RPA Ψ N) ^ dimFl Ψ N = ∑ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), (∏ j, a (w j)) • monomial (∑ j, Finsupp.single (w j) 1) (1 : ℝ)`. Establish `h0 : (∑ o, C (a o) * X o : RPA Ψ N) ^ dimFl Ψ N = ∏ _j : Fin (dimFl Ψ N), ∑ o, C (a o) * X o` using `by simp`. Rewrite using `[h0, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, monomial_sum_one, smul_eq_C_mul, map_prod]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Use `congr 1`.
+
+Establish `: (monomial (∑ j, Finsupp.single (w j) 1) (1 : ℝ) : RPA Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ (∑ j, Finsupp.single (w j) 1)`. Rewrite using `[coe_basisMonomials]`. Rewrite using `[this, RootModel.geoFun, Module.Basis.constr_basis]`.
+-/
 theorem geoFun_pow (M : RootModel Ψ N) (a : Option (Ψ × Fin N) → ℝ) :
     M.geoFun ((∑ o, C (a o) * X o) ^ dimFl Ψ N) =
       ∑ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N),
@@ -85,12 +106,26 @@ theorem geoFun_pow (M : RootModel Ψ N) (a : Option (Ψ × Fin N) → ℝ) :
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Simplify using `only [linA, toA, linRoot, map_neg, map_sum, map_mul, rename_C, rename_X, Fintype.sum_option, Option.elim, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[add_comm]`.
+-/
 theorem linA_eq (lam : Wt Ψ N) (s : ℝ) :
     linA lam s = ∑ o : Option (Ψ × Fin N), C (o.elim s fun r => -lam r.1 r.2) * X o := by
   simp only [linA, toA, linRoot, map_neg, map_sum, map_mul, rename_C, rename_X, Fintype.sum_option,
     Option.elim, neg_mul, Finset.sum_neg_distrib]
   rw [add_comm]
 
+/- English proof (translation)
+Take `⟨τ, i⟩` from `r`. Simplify using `only`. Establish `hY : ∀ l : Fin N, (R.Re.ref (some (τ, l))).a k = -∑ m ∈ Finset.Iic l, M.xdeg (τ, m) k` using `fun l => by`. Rewrite using `[R.fund_deg τ l]`. Simplify using `[Finset.sum_apply]`.
+
+Use `split_ifs with h`. Establish `hI : Finset.Iic i = insert i (Finset.Iic (⟨(i : ℕ) - 1, lt_of_le_of_lt (Nat.sub_le _ _) i.isLt⟩ : Fin N))`. Use extensionality with `l`. Simplify using `only [Finset.mem_Iic, Finset.mem_insert, Fin.le_def, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hn : i ∉ Finset.Iic (⟨(i : ℕ) - 1, lt_of_le_of_lt (Nat.sub_le _ _) i.isLt⟩ : Fin N)`. Simplify using `only [Finset.mem_Iic, Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hY]`. Rewrite using `[hI, Finset.sum_insert hn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : Finset.Iic i = {i}`. Use extensionality with `l`. Simplify using `only [Finset.mem_Iic, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [hY]`. Rewrite using `[hI, Finset.sum_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xdeg_eq {M : RootModel Ψ N} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))} {n : ℕ} (R : RealTie M S n)
     (r : Ψ × Fin N) (k : M.K) :
     M.xdeg r k = (if h : 0 < (r.2 : ℕ) then
@@ -120,6 +155,13 @@ theorem xdeg_eq {M : RootModel Ψ N} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × F
     rw [hI, Finset.sum_singleton]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[PB.combLine_a, Fintype.sum_option]`. Consider the cases of `o with`. Consider the case `none`. Simplify using `only [lineCoef, one_mul, zero_mul, Finset.sum_const_zero, add_zero, R.ref_none.1]`.
+
+Both sides reduce to the same expression. Consider the case `some r`. Simplify using `only [lineCoef, zero_mul, zero_add]`. Rewrite using `[Cmp.sum_rootCoef_mul r fun p => (R.Re.ref (some p)).a k]`. Use `show (M.x 1 r).a k = _`.
+
+Rewrite using `[M.x_deg, xdeg_eq R r k]`.
+-/
 theorem line_deg {M : RootModel Ψ N} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))} {n : ℕ} (R : RealTie M S n)
     (o : Option (Ψ × Fin N)) : (M.line 1 o).a = (PB.combLine R.Re.ref (lineCoef o)).a := by
   funext k
@@ -136,6 +178,11 @@ theorem line_deg {M : RootModel Ψ N} {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × 
 
 omit [DecidableEq Ψ] in
 
+/- English proof (translation)
+Establish `h1 : ∀ j, M.coef lam s (w j) = ((w j).elim s fun r => -lam r.1 r.2) * ((M.kA : ℝ)⁻¹) ^ (Finsupp.single (w j) (1 : ℕ)) none` using `fun j => by`. Consider the cases of `h : w j with`. Consider the case `none => simp [RootModel.coef, div_eq_mul_inv]`. Consider the case `some r => simp [RootModel.coef]`. Simplify using `only [h1, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finsupp.finset_sum_apply]`.
+
+Rewrite using `[inv_pow, div_eq_mul_inv]`.
+-/
 theorem prod_coef (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (w : Fin (dimFl Ψ N) → Option (Ψ × Fin N)) :
     ∏ j, M.coef lam s (w j) =
       (∏ j, (w j).elim s fun r => -lam r.1 r.2) / (M.kA : ℝ) ^ (∑ j, Finsupp.single (w j) (1 : ℕ)) none := by
@@ -148,6 +195,11 @@ theorem prod_coef (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (w : Fin (dimFl
   simp only [h1, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finsupp.finset_sum_apply]
   rw [inv_pow, div_eq_mul_inv]
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_option]`. Consider the cases of `a with`. Consider the case `none => simp [lineCoef, RootModel.coef, PB.gapS]`. Consider the case `some p`. Simplify using `only [lineCoef, RootModel.coef, PB.gapS, Option.elim, Int.cast_zero, mul_zero, zero_add]`.
+
+Conclude with `Cmp.sum_neg_mul_rootCoef (fun x : Ψ × Fin N => lam x.1 x.2) p`.
+-/
 theorem sum_coef_lineCoef (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (a : Option (Ψ × Fin N)) :
     ∑ o, M.coef lam s o * (lineCoef o a : ℝ) = PB.gapS (fun x => lam x.1 x.2) (s / M.kA) a := by
   rw [Fintype.sum_option]
@@ -159,6 +211,19 @@ theorem sum_coef_lineCoef (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) (a : Op
 
 end RealGeo
 
+/- English proof (translation)
+Introduce `hI _ _ Ψ _ _ N M S n R lam s`. Establish `hδ : (M.δ : ℝ) = n * R.Re.deg` using `by exact_mod_cast R.δ_eq`. Establish `hδ0 : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Establish `hn0 : (n : ℝ) ≠ 0` using `fun h => hδ0 (by rw [hδ, h, zero_mul])`. Establish `hd0 : (R.Re.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 R.Re.deg_pos.ne'`.
+
+Establish `hk0 : (M.kA : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.kA_pos.ne'`. Establish `hT : ∀ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), M.geoMono (∑ j, Finsupp.single (w j) 1) = (∑ v : Fin (dimFl Ψ N) → Option (Ψ × Fin N), (∏ i, (RealGeo.lineCoef (w i) (v i) : ℝ)) * (R.Re.deg * S.degNum v)) / ((M.δ : ℝ) * (M.kA : ℝ) ^ (∑ j, Finsupp.single (w j) (1 : ℕ)) none)`. Introduce `w`. Rewrite using `[RealGeo.geoMono_word hI M R.Re.R w, ← Cmp.mInt_combLine_eq R.Re fun j => RealGeo.lineCoef (w j)]`. Use `congr 1`.
+
+Conclude with `Cmp.mInt_potOf_eq_of_deg R.Re.R (fun j => RealGeo.line_smooth M _) (fun j => Cmp.isSmoothHerm_combLine R.Re.ref_smooth _) fun j => RealGeo.line_deg R _`. Establish `heval : eval (PB.gapS (fun x => lam x.1 x.2) (s / M.kA)) S.degPoly = ∑ v, S.degNum v * ∏ j, PB.gapS (fun x => lam x.1 x.2) (s / M.kA) (v j)`. Simplify using `[PB.AnSys.degPoly, PB.formPoly]`. Establish `hg : ∀ v : Fin (dimFl Ψ N) → Option (Ψ × Fin N), ∏ j, PB.gapS (fun x => lam x.1 x.2) (s / M.kA) (v j) = ∑ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), (∏ j, M.coef lam s (w j)) * ∏ j, (RealGeo.lineCoef (w j) (v j) : ℝ)`. Introduce `v`.
+
+Repeatedly rewrite using `[← RealGeo.sum_coef_lineCoef]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Conclude with `Finset.sum_congr rfl fun w _ => Finset.prod_mul_distrib`. Rewrite using `[RealGeo.linA_eq, RealGeo.geoFun_pow, heval, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hT, RealGeo.prod_coef, Finset.sum_div, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hδ]`. Establish `hp : (M.kA : ℝ) ^ (∑ j, Finsupp.single (w j) (1 : ℕ)) none ≠ 0` using `pow_ne_zero _ hk0`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ = ∑ v : Fin (dimFl Ψ N) → Option (Ψ × Fin N), ∑ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N), S.degNum v * ((∏ j, M.coef lam s (w j)) * ∏ j, (RealGeo.lineCoef (w j) (v j) : ℝ)) := Finset.sum_comm`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hg, Finset.mul_sum]`.
+-/
 theorem geoFun_linA_pow_of_realTie : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M : RootModel Ψ N)
     (S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))) (n : ℕ) (R : RealTie M S n) (lam : Wt Ψ N) (s : ℝ),

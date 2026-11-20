@@ -10,6 +10,11 @@ namespace Formalism.GradedWeylDivisibility
 
 open Formalism.REAL (fockF)
 
+/- English proof (translation)
+Unfold `rowAct`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using `[Matrix.diagonal_apply_eq]`.
+
+Introduce `b _ hb`. Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hb)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma ldiag_rowAct_diag_eq {r n : ℕ} (t : Fin r → ℂ) :
     rowAct ℂ (n := n) (Matrix.diagonal t) = aeval fun v : Fin r × Fin n => C (t v.1) * X v := by
   unfold rowAct
@@ -22,6 +27,11 @@ lemma ldiag_rowAct_diag_eq {r n : ℕ} (t : Fin r → ℂ) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h1 : (u.prod fun v k => t v.1 ^ k) = ∏ v : Fin r × Fin n, t v.1 ^ u v`. Conclude with `Finsupp.prod_fintype _ _ (fun _ => pow_zero _)`. Rewrite using `[h1]`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `try dsimp only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, rowDeg]`.
+-/
 lemma ldiag_prod_rowDeg {r n : ℕ} (t : Fin r → ℂ) (u : Fin r × Fin n →₀ ℕ) :
     (u.prod fun v k => t v.1 ^ k) = ∏ a : Fin r, t a ^ rowDeg u a := by
   have h1 : (u.prod fun v k => t v.1 ^ k) = ∏ v : Fin r × Fin n, t v.1 ^ u v := by
@@ -32,6 +42,9 @@ lemma ldiag_prod_rowDeg {r n : ℕ} (t : Fin r → ℂ) (u : Fin r × Fin n →�
   try dsimp only
   rw [Finset.prod_pow_eq_pow_sum, rowDeg]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.monomial_eq, ← ldiag_prod_rowDeg, MvPolynomial.algebraMap_eq, MvPolynomial.C_mul]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ldiag_aeval_monomial {r n : ℕ} (t : Fin r → ℂ) (u : Fin r × Fin n →₀ ℕ) (c : ℂ) :
     aeval (fun v : Fin r × Fin n => C (t v.1) * X v) (monomial u c) =
       monomial u (c * ∏ a : Fin r, t a ^ rowDeg u a) := by
@@ -40,6 +53,11 @@ lemma ldiag_aeval_monomial {r n : ℕ} (t : Fin r → ℂ) (u : Fin r × Fin n �
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]
   ring
 
+/- English proof (translation)
+Rewrite using `[ldiag_rowAct_diag_eq]`. Proceed by induction on `f using MvPolynomial.induction_on'`. Use `next u c =>`. Rewrite using `[ldiag_aeval_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[zero_mul]`. Use `next p q hp hq =>`. Rewrite using `[map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, add_mul]`.
+-/
 lemma ldiag_coeff_rowAct_diag {r n : ℕ} (t : Fin r → ℂ) (f : MvPolynomial (Fin r × Fin n) ℂ)
     (m : Fin r × Fin n →₀ ℕ) :
     coeff m (rowAct ℂ (Matrix.diagonal t) f) = coeff m f * ∏ a : Fin r, t a ^ rowDeg m a := by
@@ -54,6 +72,9 @@ lemma ldiag_coeff_rowAct_diag {r n : ℕ} (t : Fin r → ℂ) (f : MvPolynomial 
   next p q hp hq =>
     rw [map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, add_mul]
 
+/- English proof (translation)
+Establish `hs : ∀ x : ℂ, star x = (starRingEnd ℂ) x` using `fun _ => rfl`. Apply `Complex.ext` to reduce the goal to its premises. Use `all_goals`. Simplify using `only [hs, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.natCast_re, Complex.natCast_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ldiag_term (z : ℂ) (w : ℝ) (N : ℕ) :
     z * (w : ℂ) * star (z * (w : ℂ)) * (N : ℂ) = ((Complex.normSq z * w ^ 2 * N : ℝ) : ℂ) := by
   have hs : ∀ x : ℂ, star x = (starRingEnd ℂ) x := fun _ => rfl
@@ -64,6 +85,9 @@ lemma ldiag_term (z : ℂ) (w : ℝ) (N : ℕ) :
       Complex.normSq_apply]
     ring
 
+/- English proof (translation)
+Establish `hs : ∀ x : ℂ, star x = (starRingEnd ℂ) x` using `fun _ => rfl`. Apply `Complex.ext` to reduce the goal to its premises. Use `all_goals`. Simplify using `only [hs, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.natCast_re, Complex.natCast_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ldiag_term0 (z : ℂ) (N : ℕ) :
     z * star z * (N : ℂ) = ((Complex.normSq z * N : ℝ) : ℂ) := by
   have hs : ∀ x : ℂ, star x = (starRingEnd ℂ) x := fun _ => rfl
@@ -74,6 +98,9 @@ lemma ldiag_term0 (z : ℂ) (N : ℕ) :
       Complex.normSq_apply]
     ring
 
+/- English proof (translation)
+Establish `h1 : p * p ≤ q * q` using `mul_self_le_mul_self hp hpq`. Establish `h2 : 0 ≤ c * N` using `mul_nonneg hc hN`. Establish `h3` using `mul_le_mul_of_nonneg_right h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_sq_mul_le_sq_mul_mul_of_le {c N p q : ℝ} (hc : 0 ≤ c) (hN : 0 ≤ N) (hp : 0 ≤ p)
     (hpq : p ≤ q) : c * p ^ 2 * N ≤ q ^ 2 * (c * N) := by
   have h1 : p * p ≤ q * q := mul_self_le_mul_self hp hpq
@@ -83,6 +110,17 @@ private theorem mul_sq_mul_le_sq_mul_mul_of_le {c N p q : ℝ} (hc : 0 ≤ c) (h
     _ ≤ (q * q) * (c * N) := h3
     _ = q ^ 2 * (c * N) := by ring
 
+/- English proof (translation)
+Unfold `DomPow at h`. Unfold `FockDiagBound`. Introduce `r n t lam ht0 ht f hdom hsum`. Establish `hcoeff : ∀ m, coeff m (rowAct ℂ (Matrix.diagonal fun a => (t a : ℂ)) f) = coeff m f * ((∏ a : Fin r, t a ^ rowDeg m a : ℝ) : ℂ)`. Introduce `m`.
+
+Simplify using `only [ldiag_coeff_rowAct_diag, Complex.ofReal_prod, Complex.ofReal_pow]`. Establish `hsupp : (rowAct ℂ (Matrix.diagonal fun a => (t a : ℂ)) f).support ⊆ f.support`. Introduce `m hm`. Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `h0`.
+
+Conclude with `hm (by rw [hcoeff, h0, zero_mul])`. Establish `hq : ∏ a : Fin r, t a ^ (2 * lam a) = (∏ a : Fin r, t a ^ lam a) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, Nat.mul_comm]`.
+
+Rewrite using `[Formalism.REAL.fischerInner_eq_sum_of_subset _ _ _ hsupp, Formalism.REAL.fischerInner_eq_sum_of_subset f f f.support (Finset.Subset.refl _)]`. Simplify using `only [hcoeff, ldiag_term]`. Simplify using `only [ldiag_term0, Complex.re_sum, Complex.ofReal_re]`. Rewrite using `[hq, Finset.mul_sum]`. Use `Finset.sum_le_sum fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hP0 : 0 ≤ ∏ a : Fin r, t a ^ rowDeg m a` using `Finset.prod_nonneg fun a _ => pow_nonneg (ht0 a) _`. Establish `hPle` using `h r t (rowDeg m) lam ht0 ht (hdom m hm) (hsum m hm)`. Conclude with `mul_sq_mul_le_sq_mul_mul_of_le (Complex.normSq_nonneg _) (Nat.cast_nonneg _) hP0 hPle`.
+-/
 theorem fockDiagBound_of (h : DomPow) : FockDiagBound := by
   unfold DomPow at h
   unfold FockDiagBound

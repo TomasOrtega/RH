@@ -9,6 +9,11 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hx hϖ`. Establish `hs : Ideal.span {x} = maximalIdeal V ^ k`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Conclude with `Ideal.span_singleton_eq_span_singleton.mpr hk`.
+
+Use `h k` as an intermediate fact. Rewrite `this` using `[← hs, sup_idem]`. Conclude with `Ideal.mem_span_singleton.mp this`.
+-/
 theorem dvd_of_forall_mem_span_sup_pow {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {x y : V} (hx : x ≠ 0) (h : ∀ e, y ∈ Ideal.span {x} ⊔ maximalIdeal V ^ e) : x ∣ y := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V
@@ -20,6 +25,29 @@ theorem dvd_of_forall_mem_span_sup_pow {V : Type} [CommRing V] [IsDomain V] [IsD
   rw [← hs, sup_idem] at this
   exact Ideal.mem_span_singleton.mp this
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ g b hg hb hV n`. Use `haveI : IsNoetherianRing O := Algebra.EssFiniteType.isNoetherianRing ℤ O`. Use `set m := maximalIdeal O with hm`. Set `R` to `AdicCompletion m O`. Set `ι : O →+* R` to `algebraMap O R`.
+
+Use `haveI : IsNoetherianRing R := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion O m`. Take `⟨hdom, hic⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed O`. Establish `fg : m.FG` using `m.fg_of_isNoetherianRing`. Use `haveI : Module.Flat O R := AdicCompletion.flat_of_isNoetherian m`. Use `haveI : IsLocalHom (algebraMap O R) := AdicCompletion.algebraMap_isLocalHom_of_fg fg`.
+
+Use `haveI : Module.FaithfullyFlat O R := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `hinj : Function.Injective ι` using `FaithfulSMul.algebraMap_injective O R`. Use `haveI : CharZero R := charZero_of_injective_ringHom hinj`. Establish `hmR : maximalIdeal R = m.map ι` using `AdicCompletion.maximalIdeal_eq_map`. Establish `hc : IsAdicComplete (m.map ι) R` using `AdicCompletion.isAdicComplete_self m fg`.
+
+Take `⟨F, hF⟩` from `IsPrecomplete.prec hc.toIsPrecomplete (f := fun k => ι (b k)) (by`. Introduce `k l hkl`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← map_sub, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ (hb k l hkl))`. Establish `hF' : ∀ k, ι (b k) - F ∈ maximalIdeal R ^ k`.
+
+Introduce `k`. Use `hF k` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← hmR]`. Then use the resulting hypothesis. Establish `hgR : ι g ≠ 0` using `fun h => hg (hinj (by rw [h, map_zero]))`. Establish `hdvd : ι g ∣ F`.
+
+Use `GlobalTheory.T.dvd_of_forall_complete_dvr_dominating R F (ι g) hgR ?_` and prove the remaining obligations. Introduce `V _ _ _ hVc ρ' hρ' _`. Set `ρ : O →+* V` to `ρ'.comp ι`. Establish `hρ : Function.Injective ρ` using `hρ'.comp hinj`. Use `haveI : IsLocalHom ρ := inferInstance`.
+
+Use `haveI : CharZero V := charZero_of_injective_ringHom hρ`. Establish `hgV : ρ' (ι g) ≠ 0` using `fun h => hgR (hρ' (by rw [h, map_zero]))`. Use `dvd_of_forall_mem_span_sup_pow hgV fun e => ?_` and prove the remaining obligations. Establish `h1 : ρ (b e) ∈ Ideal.span {ρ g} ⊔ maximalIdeal V ^ e` using `hV V hVc ρ hρ inferInstance e`. Establish `hmap : ∀ x ∈ maximalIdeal R, ρ' x ∈ maximalIdeal V`.
+
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hx (isUnit_of_map_unit ρ' x h)`. Establish `h2 : ρ' (ι (b e) - F) ∈ maximalIdeal V ^ e`. Establish `hle : (maximalIdeal R ^ e).map ρ' ≤ maximalIdeal V ^ e`.
+
+Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hmap) e`. Conclude with `hle (Ideal.mem_map_of_mem _ (hF' e))`. Establish `: ρ' F = ρ (b e) - ρ' (ι (b e) - F)`. Simplify using `[ρ, map_sub]`.
+
+Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ h1 (Ideal.mem_sup_right h2)`. Establish `hmem : ι (b n) ∈ (Ideal.span {g} ⊔ m ^ n).map ι`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton, Ideal.map_pow, ← hmR]`. Establish `h3 : F ∈ Ideal.span {ι g}` using `Ideal.mem_span_singleton.mpr hdvd`.
+
+Establish `: ι (b n) = F + (ι (b n) - F)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left h3) (Ideal.mem_sup_right (hF' n))`. Rewrite `hmem` using `[← Ideal.mem_comap, Ideal.comap_map_eq_self_of_faithfullyFlat]`. Then use the resulting hypothesis.
+-/
 theorem mem_span_sup_pow_of_forall_complete_dvr : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [IsIntegrallyClosed O] [CharZero O] [Algebra.EssFiniteType ℤ O] (g : O) (b : ℕ → O), g ≠ 0 → (∀ m n, m ≤ n → b m - b n ∈ maximalIdeal O ^ m) → (∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ ρ : O →+* V, Function.Injective ρ → IsLocalHom ρ → ∀ e, ρ (b e) ∈ Ideal.span {ρ g} ⊔ maximalIdeal V ^ e) → ∀ n, b n ∈ Ideal.span {g} ⊔ maximalIdeal O ^ n := by
   intro O _ _ _ _ _ _ g b hg hb hV n
   haveI : IsNoetherianRing O := Algebra.EssFiniteType.isNoetherianRing ℤ O

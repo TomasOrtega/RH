@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.PtTie
 
+/- English proof (translation)
+Establish `hs : τ D.host.sqrtMinusD = σ D.host.sqrtMinusD`. Rewrite using `[← hp.2.1]`. Conclude with `hτ.trans hσ.symm`. Establish `hx' : x ∈ IntermediateField.adjoin ℚ {D.host.sqrtMinusD}` using `hx`. Proceed by induction on `hx' using IntermediateField.adjoin_induction with`.
+
+Consider the case `mem y hy => rw [Set.mem_singleton_iff.1 hy]`. Conclude with `hs`. Consider the case `algebraMap q => simp`. Consider the case `add a b ha hb iha ihb => rw [map_add, map_add, iha ha, ihb hb]`. Consider the case `inv a ha iha => rw [map_inv₀, map_inv₀, iha ha]`.
+
+Consider the case `mul a b ha hb iha ihb => rw [map_mul, map_mul, iha ha, ihb hb]`.
+-/
 theorem emb_eq_of_inPsi {D : D7} {Q : Par D} (hp : Q.PinHost) {τ σ : D.host.E →+* ℂ} (hτ : InPsi Q.H τ)
     (hσ : InPsi Q.H σ) {x : D.host.E} (hx : x ∈ D.host.K) : τ x = σ x := by
   have hs : τ D.host.sqrtMinusD = σ D.host.sqrtMinusD := by
@@ -23,6 +30,15 @@ theorem emb_eq_of_inPsi {D : D7} {Q : Par D} (hp : Q.PinHost) {τ σ : D.host.E 
   | inv a ha iha => rw [map_inv₀, map_inv₀, iha ha]
   | mul a b ha hb iha ihb => rw [map_mul, map_mul, iha ha, ihb hb]
 
+/- English proof (translation)
+Take `⟨hp, hq, -⟩` from `hQ.2.2.2 j hj`. Establish `hsw : ∀ τ : D.host.E →+* ℂ, ∑ i : Fin ((Q.Dw j).mult τ), wtA w (τ, (i : ℕ)) = ∑ t : D.what₂.Tau, ((if τ = DV.tauEmb D t then ∑ i : Fin ((Q.Dw j).mult τ), ext0 (w.aP t) (i : ℕ) else 0) + if τ = ComplexEmbedding.conjugate (DV.tauEmb D t) then ∑ i : Fin ((Q.Dw j).mult τ), ext0 (w.aM …`. Introduce `τ`. Simplify using `only [GlobalTheory.WeightExponents.wtA_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hs : ∀ {p m : ℕ} (f : Fin p → ℕ), m = p → ∑ i : Fin m, ext0 f i = ∑ i, f i`. Introduce and unpack `p m f rfl`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by simp [ext0, i.isLt]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => by rw [hsw τ, ← Finset.prod_pow_eq_pow_sum], Finset.prod_comm]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [pow_add, pow_ite, pow_zero]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.prod_ite_eq']`.
+
+Simplify using `only [Finset.mem_univ, if_true]`. Establish `ht` using `hQ.1.2.2.2 t`. Establish `hc : ¬ ComplexEmbedding.conjugate (DV.tauEmb D t) (Q.H.rt : D.host.E) = Q.H.rt0` using `GlobalTheory.WeightExponents.not_inPsi_conj hQ.1 t`. Rewrite using `[hs _ (by rw [Datum.mult, if_pos ht, hp]), hs _ (by rw [Datum.mult, if_neg hc, hq])]`.
+-/
 theorem prod_pow_wtA {D : D7} {Q : Par D} (hQ : Q.Pins) {j : ℕ} (hj : InR D j) (w : WeightFamilies.Wt D j)
     {M : Type} [CommMonoid M] (F : (D.host.E →+* ℂ) → M) :
     ∏ τ : D.host.E →+* ℂ, F τ ^ (∑ i : Fin ((Q.Dw j).mult τ), wtA w (τ, (i : ℕ))) =
@@ -53,6 +69,9 @@ theorem prod_pow_wtA {D : D7} {Q : Par D} (hQ : Q.Pins) {j : ℕ} (hj : InR D j)
     GlobalTheory.WeightExponents.not_inPsi_conj hQ.1 t
   rw [hs _ (by rw [Datum.mult, if_pos ht, hp]), hs _ (by rw [Datum.mult, if_neg hc, hq])]
 
+/- English proof (translation)
+Establish `h1 : ((piBarO EX i : 𝓞 D.host.E) : D.host.E) = ((barE D (EX.piG i) : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[barE_eq_conj]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `IsCMField.complexEmbedding_complexConj D.host.E τ _`.
+-/
 theorem emb_piBarO {D : D7} (EX : ErrX D) (i : Fin 2) (τ : D.host.E →+* ℂ) :
     τ ((piBarO EX i : 𝓞 D.host.E) : D.host.E) = starRingEnd ℂ (τ ((EX.piG i : 𝓞 D.host.E) : D.host.E)) := by
   have h1 : ((piBarO EX i : 𝓞 D.host.E) : D.host.E) = ((barE D (EX.piG i) : 𝓞 D.host.E) : D.host.E) := by
@@ -60,6 +79,11 @@ theorem emb_piBarO {D : D7} (EX : ErrX D) (i : Fin 2) (τ : D.host.E →+* ℂ) 
   rw [h1]
   exact IsCMField.complexEmbedding_complexConj D.host.E τ _
 
+/- English proof (translation)
+Establish `h1 : ∀ t i, embK Q.c (DV.tauEmb D t) (EX.piG i) = embK Q.c τ (EX.piG i)` using `fun t i => Subtype.ext (emb_eq_of_inPsi hQ.1 (hQ.1.2.2.2 t) hτ (EX.piG_K i))`. Establish `h2 : ∀ t i, embK Q.c (ComplexEmbedding.conjugate (DV.tauEmb D t)) (EX.piG i) = embK Q.c τ (piBarO EX i)` using `fun t i => Subtype.ext (by`. Rewrite using `[embK_coe, embK_coe, emb_piBarO, ← emb_eq_of_inPsi hQ.1 (hQ.1.2.2.2 t) hτ (EX.piG_K i)]`. Use the proof step `simp)`. Unfold `nrm Dplus Dminus`.
+
+Rewrite using `[prod_pow_wtA hQ hj w fun σ => embK Q.c σ (EX.piG 0 * EX.piG 1)]`. Simplify using `only [map_mul, h1, h2]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_pow_eq_pow_sum, Fin.prod_univ_two, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nrm_eq_prod {D : D7} {Q : Par D} (hQ : Q.Pins) {j : ℕ} (hj : InR D j) (EX : ErrX D) (w : WeightFamilies.Wt D j)
     {τ : D.host.E →+* ℂ} (hτ : InPsi Q.H τ) :
     nrm (Q.Dw j) Q.c (wtA w) (EX.piG 0 * EX.piG 1) =
@@ -77,6 +101,9 @@ theorem nrm_eq_prod {D : D7} {Q : Par D} (hQ : Q.Pins) {j : ℕ} (hj : InR D j) 
     mul_pow, mul_pow]
   ring
 
+/- English proof (translation)
+Unfold `nnW`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_prod, map_mul, map_pow]`.
+-/
 theorem map_nnW {D : D7} (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) {j : ℕ}
     (w : WeightFamilies.Wt D j) :
     ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) = ∏ i : Fin 2, ((iE D hinj B (EX.piG i) : 𝓞 B.KO) : B.KO) ^ Dplus w *
@@ -84,6 +111,11 @@ theorem map_nnW {D : D7} (B : WeightFamilies.Prov D) (hinj : Function.Injective 
   unfold nnW
   simp only [RingOfIntegers.coe_eq_algebraMap, map_prod, map_mul, map_pow]
 
+/- English proof (translation)
+Introduce `D T h j hj hinj EX w`. Take `⟨τ, hτ, hE⟩` from `exists_inPsi_iE_eq_embK D T h hinj`. Rewrite using `[nrm_eq_prod h.pins hj EX w hτ]`. Use `Eq.trans ?_ (map_nnW (recB h.toLawsCore) hinj EX w).symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hE, ← hE]`.
+-/
 theorem nrm_eq_nnW : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j), nrm (T.Q.Dw j) T.Q.c (wtA w) (EX.piG 0 * EX.piG 1) = ((nnW (recB h.toLawsCore) hinj EX w : 𝓞 T.Q.c.F) : T.Q.c.F) := by
   intro D T h j hj hinj EX w
   obtain ⟨τ, hτ, hE⟩ := exists_inPsi_iE_eq_embK D T h hinj

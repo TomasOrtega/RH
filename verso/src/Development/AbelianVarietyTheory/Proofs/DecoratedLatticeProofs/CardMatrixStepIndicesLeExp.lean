@@ -11,6 +11,29 @@ namespace GlobalTheory.Core.Ht2.IndexCountS
 
 open Formalism.L2.Col.Loc Formalism.L2.Col.LocE GlobalTheory.RowTypeInv GlobalTheory.SymLevelDatum GlobalTheory.IndexCount
 
+/- English proof (translation)
+Use `⟨1, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H j hj`. Take `⟨hvG, -, -, hprod, -⟩` from `BadPrimesS.bad_primes_sharp CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H`. Take `⟨⟨-, -, -, -, -, -, hX, -, -, hPr, -, -, hg, -⟩, -, -, -, -, hsh, hI, -⟩` from `H`. Establish `hq : ∀ P : HeightOneSpectrum (𝓞 X.E), Formalism.L2.Col.qOf P ≠ 0` using `fun P h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Establish `hgg : 0 < Pr.g 0 * Pr.g 1` using `Nat.mul_pos (hPr.g_prime 0).pos (hPr.g_prime 1).pos`. Establish `h1 : Fintype.card (I.β j) ≤ (Pr.g 0 * Pr.g 1) ^ (N.R.f * N.Nm ^ 2)`. Break down `j with _ | i` into its components or cases. Take `⟨b, hb⟩` from `hI.zero_uniq`. Conclude with `(Fintype.card_le_one_iff.2 fun a a' => (hb a).trans (hb a').symm).trans (Nat.one_le_pow _ _ hgg)`.
+
+Use `set n := N.R.N (i + 1) + cOf N.R (i + 1) with hn haveI : ∀ P : rowSG Pr sel mu, Finite (𝓞 X.E ⧸ P.1.asIdeal) := fun P => finite_res P.1`. Set `φ : I.β (i + 1) → ∀ P : rowSG Pr sel mu, Fin n × Fin n → 𝓞 X.E ⧸ P.1.asIdeal` to `fun b P => resMat P.1 (Formalism.L2.Col.qOf P.1) (scE (N.R.N (i + 1)) fun i => i + 1) (I.h (i + 1) b P)`. Establish `hφ : Function.Injective φ`. Introduce `b b' hbb`. Use `hI.inj i (by omega) b b' fun P => ?_` and prove the remaining obligations.
+
+Establish `hP` using `hvG P.1 P.2`. Establish `s1` using `hI.stabG _ b P hP`. Establish `s2` using `hI.stabG _ b' P hP`. Unfold `lamYat at s1 s2`. Rewrite `s1`, `s2` using `[if_pos hP]`.
+
+Use `⟨1, Subgroup.one_mem _, (I.h (i + 1) b P)⁻¹ * I.h (i + 1) b' P, ?_, by group⟩` and prove the remaining obligations. Unfold `Jat`. Rewrite using `[if_pos hP, hsh, if_pos rfl]`. Conclude with `mem_JGsym_of_cong _ _ (hq _) _ _ _ _ _ _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ s1) s2) (cong_of_resMat_eq _ _ (hq _) (GlobalTheory.TypePrimeUnif.intAt_div_qOf X Pr hX.ok hPr P.1 hP) s1 s2 (congrFun hbb P))`. Establish `h2` using `Nat.card_le_card_of_injective φ hφ`.
+
+Establish `h3 : ∀ P : rowSG Pr sel mu, Nat.card (Fin n × Fin n → 𝓞 X.E ⧸ P.1.asIdeal) = Formalism.L2.Col.qOf P.1 ^ (n * n)` using `fun P => by`. Rewrite using `[Nat.card_fun, Nat.card_prod, Nat.card_fin]`. Both sides reduce to the same expression. Rewrite `h2` using `[Nat.card_eq_fintype_card, Nat.card_pi, Finset.prod_congr rfl fun P _ => h3 P, Finset.prod_pow, hprod, ← pow_mul]`. Use `h2.trans (Nat.pow_le_pow_right hgg (Nat.mul_le_mul_left _ ?_))` and prove the remaining obligations.
+
+Establish `h4 : n ≤ N.Nm`. Rewrite using `[hn]`. Unfold `NumDatum.Nm Ranks.N cOf`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (show i + 1 ≤ N.R.m by omega)`. Rewrite using `[hd]`.
+
+Establish `: i + 1 + d - 1 - (i + 1) ≤ d` using `by omega`. Use polynomial arithmetic with `[Nat.zero_le (d * N.R.t)]`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul h4 h4`. Rewrite `h1` using `[hg 0, hg 1]`.
+
+Establish `g0 : (1 : ℝ) ≤ N.g 0` using `by rw [← hg 0]; exact_mod_cast (hPr.g_prime 0).one_le`. Establish `g1 : (1 : ℝ) ≤ N.g 1` using `by rw [← hg 1]; exact_mod_cast (hPr.g_prime 1).one_le`. Establish `hT : (1 : ℝ) ≤ Pr.T u` using `by exact_mod_cast (hPr.T_prime u).one_le`. Establish `gg : (1 : ℝ) ≤ (N.g 0 : ℝ) * N.g 1` using `one_le_mul_of_one_le_of_one_le g0 g1`. Establish `ggT : (N.g 0 : ℝ) * N.g 1 ≤ (N.g 0 : ℝ) * N.g 1 * Pr.T u` using `le_mul_of_one_le_right (by linarith) hT`.
+
+Establish `he : N.R.f * N.Nm ^ 2 ≤ N.R.f * (N.R.m ^ 2 * N.Nm ^ 2)` using `Nat.mul_le_mul_left _ (Nat.le_mul_of_pos_left _ (Nat.pow_pos (by omega)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_log (show 0 < (N.g 0 : ℝ) * N.g 1 * Pr.T u by linarith), ← Real.exp_nat_mul, Real.exp_eq_exp]`. Unfold `errUnit`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_index_le_sharp : ∃ C : ℝ, 0 ≤ C ∧ ∀ (CY : ℝ) (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ j, j + 2 ≤ N.R.m → (Fintype.card (I.β j) : ℝ) ≤ Real.exp (C * errUnit N (Pr.T u)) := by
   classical
   refine ⟨1, by norm_num, ?_⟩

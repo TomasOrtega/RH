@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.RedCup
 
 universe w w' w'' u v u' v' u'' v''
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A.obj _)`. Rewrite using `[Fin.sum_univ_two, map_one, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem one_cyc {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R) :
     (CH.cx (CH.modF A)).d 0 (fun s => (1 : A.obj (s.obj (Fin.last 0)))) = 0 := by
   funext s
@@ -15,6 +18,11 @@ theorem one_cyc {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤
   rw [Fin.sum_univ_two, map_one, map_one]
   simp
 
+/- English proof (translation)
+Establish `e : m.hom.f 0 (fun s : ComposableArrows C 0 => (1 : A.obj (s.obj (Fin.last 0)))) = m'.hom.f 0 (fun s : ComposableArrows C' 0 => (1 : A'.obj (s.obj (Fin.last 0))))`. Use function extensionality and compare the values at `fun s => h (s.obj (Fin.last 0))`. Establish `c : (CH.cx E).d 0 (m.hom.f 0 (fun s : ComposableArrows C 0 => (1 : A.obj (s.obj (Fin.last 0))))) = 0`. Rewrite using `[m.hom.comm, one_cyc, map_zero]`. Establish `c' : (CH.cx E).d 0 (m'.hom.f 0 (fun s : ComposableArrows C' 0 => (1 : A'.obj (s.obj (Fin.last 0))))) = 0`.
+
+Rewrite using `[m'.hom.comm, one_cyc, map_zero]`. Unfold `CH.Mor.pull CH.oneH`. Use `(CrystallineSemistableComparison.P.mapH_cls m.hom 0 _ _ c).trans (Eq.trans ?_ (CrystallineSemistableComparison.P.mapH_cls m'.hom 0 _ _ c').symm)` and prove the remaining obligations. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext e)`.
+-/
 theorem pull_oneH_eq {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {C : Type u} [Category.{v} C]
     {C' : Type u'} [Category.{v'} C'] {C'' : Type u''} [Category.{v''} C'']
     {σ : R →+* R''} {σ' : R' →+* R''} (A : C ⥤ CommAlgCat.{w} R) (A' : C' ⥤ CommAlgCat.{w'} R')
@@ -32,6 +40,9 @@ theorem pull_oneH_eq {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
   refine (CrystallineSemistableComparison.P.mapH_cls m.hom 0 _ _ c).trans (Eq.trans ?_ (CrystallineSemistableComparison.P.mapH_cls m'.hom 0 _ _ c').symm)
   exact congrArg Submodule.Quotient.mk (Subtype.ext e)
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l n) x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l n) y`. Use `Subtype.ext ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem redMor_mul {O A R Λ : Type} [CommRing O] [CommRing A] [CommRing R] [CommRing Λ] [Algebra O A] {I : Ideal A} {γ : DividedPowers I}
     {J : Ideal R} {δ : DividedPowers J} {κ : O →+* R ⧸ J} {l n : ℕ} (d : RedIn δ κ γ l n) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (s : ℕ) (𝒱 : Set X.Opens) (c : Λ →+* R) (lam : Λ →+* A)
@@ -44,6 +55,9 @@ theorem redMor_mul {O A R Λ : Type} [CommRing O] [CommRing A] [CommRing R] [Com
   refine Subtype.ext ?_
   rfl
 
+/- English proof (translation)
+Use `⟨fun {i j k} h x y => ?_, ?_⟩` and prove the remaining obligations. Conclude with `CrystallineSemistableComparison.P.cup_pull (CH.mulP (B.OA (nlFun δ l X q κ) c)) (sqP (stdI (TS γ q l s 𝒱) r ((l : A) ^ n))) (redMor q s d 𝒱 c lam hc r).G (redMor q s d 𝒱 c lam hc r).τ (redMor q s d 𝒱 c lam hc r).τ (redMor q s d 𝒱 c lam hc r).τ (redMor q s d 𝒱 c lam hc r).nat (red …`. Conclude with `pull_oneH_eq _ _ (redMor q s d 𝒱 c lam hc r) (toSq (IdF.top _) (stdI (TS γ q l s 𝒱) r ((l : A) ^ n)) fun _ => rfl) fun T => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor (ln_le q s 𝒱 r T) 1 = 1`. Conclude with `map_one _)`.
+-/
 theorem redMor_cup_one {O A R Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R] [CommRing Λ] {I : Ideal A} {γ : DividedPowers I}
     {J : Ideal R} {δ : DividedPowers J} {κ : O →+* R ⧸ J} {l n : ℕ} (d : RedIn δ κ γ l n) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (s : ℕ) (𝒱 : Set X.Opens) (c : Λ →+* R) (lam : Λ →+* A)

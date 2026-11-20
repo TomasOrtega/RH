@@ -40,11 +40,17 @@ open GlobalTheory.GalCut GlobalTheory.Cong UpperTheory.Gal.UnramifiedFromSplitti
 
 namespace UpperTheory.Gal.NearKilling
 
+/- English proof (translation)
+The claim follows from `stepLift UpperTheory.ConvolutionTheory.cbcc noSelfTwist_holds (polBC PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity PositivityTheory.S2.CuspBdd.cuspForms …`.
+-/
 theorem stepLift_holds : StepLift :=
   stepLift UpperTheory.ConvolutionTheory.cbcc noSelfTwist_holds
     (polBC PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity
       (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity PositivityTheory.S2.CuspBdd.cuspFormsBoundedGL)) weakRes
 
+/- English proof (translation)
+The claim follows from `allLift stepLift_holds satSplit_holds`.
+-/
 theorem allLift_holds : AllLift := allLift stepLift_holds satSplit_holds
 
 end UpperTheory.Gal.NearKilling

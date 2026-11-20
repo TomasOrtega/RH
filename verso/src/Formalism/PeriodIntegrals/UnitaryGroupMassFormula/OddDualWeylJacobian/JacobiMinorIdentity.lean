@@ -7,6 +7,11 @@ noncomputable section
 
 namespace PI.OddDualWeyl.Jac
 
+/- English proof (translation)
+Establish `hX : (fromBlocks (1 : Matrix m m R) 0 B.toBlocks₂₁ B.toBlocks₂₂) * A = fromBlocks A.toBlocks₁₁ A.toBlocks₁₂ 0 (d • (1 : Matrix n n R))`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun h i) j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> first`. Consider the case `(simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂]; done)`.
+
+Consider the case `(simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂] at hij ⊢; exact hij)`. Establish `hdet` using `congrArg Matrix.det hX`. Simplify using `only [det_mul, det_fromBlocks_zero₁₂, det_fromBlocks_zero₂₁, det_one, det_smul, one_mul, mul_one] at hdet`. Take the linear combination `hdet`.
+-/
 theorem block {R : Type*} [CommRing R] {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m]
     [DecidableEq n] (A B : Matrix (m ⊕ n) (m ⊕ n) R) (d : R)
     (h : B * A = d • (1 : Matrix (m ⊕ n) (m ⊕ n) R)) :
@@ -26,6 +31,9 @@ theorem block {R : Type*} [CommRing R] {m n : Type*} [Fintype m] [Fintype n] [De
     mul_one] at hdet
   linear_combination hdet
 
+/- English proof (translation)
+Establish `h1 : A.submatrix eI eJ = (A.submatrix eI eI).submatrix id (eJ.trans eI.symm)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Rewrite using `[det_permute', det_submatrix_equiv_self]`.
+-/
 theorem det_sub {R : Type*} [CommRing R] {k : ℕ} {ι : Type*} [Fintype ι] [DecidableEq ι]
     (eI eJ : ι ≃ Fin k) (A : Matrix (Fin k) (Fin k) R) :
     (A.submatrix eI eJ).det = ((Equiv.Perm.sign (eJ.trans eI.symm) : ℤ) : R) * A.det := by
@@ -35,15 +43,24 @@ theorem det_sub {R : Type*} [CommRing R] {k : ℕ} {ι : Type*} [Fintype ι] [De
   rw [h1]
   rw [det_permute', det_submatrix_equiv_self]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or u with rfl | rfl <;> simp`.
+-/
 theorem sign_sq {R : Type*} [CommRing R] (u : ℤˣ) : ((u : ℤ) : R) * ((u : ℤ) : R) = 1 := by
   rcases Int.units_eq_one_or u with rfl | rfl <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem mapMatrix_eval_generic_eq {R : Type*} [CommRing R] {k : ℕ} (A : Matrix (Fin k) (Fin k) R) :
     (MvPolynomial.eval₂Hom (Int.castRingHom R) fun p : Fin k × Fin k => A p.1 p.2).mapMatrix
       (Matrix.of fun i j => (X (i, j) : MvPolynomial (Fin k × Fin k) ℤ)) = A := by
   ext i j
   simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg (MvPolynomial.eval₂Hom (Int.castRingHom ℤ) fun p : Fin k × Fin k => (1 : Matrix (Fin k) (Fin k) ℤ) p.1 p.2) h`. Rewrite `h1` using `[RingHom.map_det, mapMatrix_eval_generic_eq (1 : Matrix (Fin k) (Fin k) ℤ), det_one, map_zero]`. Conclude with `one_ne_zero h1`.
+-/
 private theorem det_generic_int_ne_zero (k : ℕ) :
     (Matrix.of fun i j => (X (i, j) : MvPolynomial (Fin k × Fin k) ℤ)).det ≠ 0 := by
   intro h
@@ -53,6 +70,13 @@ private theorem det_generic_int_ne_zero (k : ℕ) :
   rw [RingHom.map_det, mapMatrix_eval_generic_eq (1 : Matrix (Fin k) (Fin k) ℤ), det_one, map_zero] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Establish `hBA : (adjugate A).submatrix eJ eI * A.submatrix eI eJ = A.det • (1 : Matrix (m ⊕ n) (m ⊕ n) R)`. Rewrite using `[submatrix_mul_equiv, adjugate_mul]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Establish `key` using `block (A.submatrix eI eJ) ((adjugate A).submatrix eJ eI) A.det hBA`.
+
+Rewrite `key` using `[det_sub]`. Establish `hs2` using `sign_sq (R := R) (Equiv.Perm.sign (eJ.trans eI.symm))`. Establish `hpow : A.det ^ Fintype.card n = A.det * A.det ^ (Fintype.card n - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Fintype.card_pos (α := n))]`. Establish `h2 : A.det * (((adjugate A).submatrix eJ eI).toBlocks₂₂.det * ((Equiv.Perm.sign (eJ.trans eI.symm) : ℤ) : R)) = A.det * (A.det ^ (Fintype.card n - 1) * (A.submatrix eI eJ).toBlocks₁₁.det)`.
+
+Take the linear combination `key + (A.submatrix eI eJ).toBlocks₁₁.det * hpow`. Establish `h3` using `mul_left_cancel₀ hA h2`. Take the linear combination `((Equiv.Perm.sign (eJ.trans eI.symm) : ℤ) : R) * h3 - ((adjugate A).submatrix eJ eI).toBlocks₂₂.det * hs2`.
+-/
 private theorem det_toBlocks22_adjugate_submatrix_of_det_ne_zero {R : Type*} [CommRing R] [IsDomain R]
     {k : ℕ} {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] [Nonempty n]
     (eI eJ : m ⊕ n ≃ Fin k) (A : Matrix (Fin k) (Fin k) R) (hA : A.det ≠ 0) :
@@ -77,6 +101,13 @@ private theorem det_toBlocks22_adjugate_submatrix_of_det_ne_zero {R : Type*} [Co
   linear_combination ((Equiv.Perm.sign (eJ.trans eI.symm) : ℤ) : R) * h3 -
     ((adjugate A).submatrix eJ eI).toBlocks₂₂.det * hs2
 
+/- English proof (translation)
+Take `⟨G, hG0, φ, hφG⟩ : ∃ G : Matrix (Fin k) (Fin k) (MvPolynomial (Fin k × Fin k) ℤ), G.det ≠ 0 ∧ ∃ φ : MvPolynomial (Fin k × Fin k) ℤ →+* R, φ.mapMatrix G = A` from `⟨_, det_generic_int_ne_zero k, _, mapMatrix_eval_generic_eq A⟩`. Establish `hcore` using `det_toBlocks22_adjugate_submatrix_of_det_ne_zero eI eJ G hG0`. Establish `hadj : φ.mapMatrix (adjugate G) = adjugate A`. Rewrite using `[RingHom.map_adjugate, hφG]`. Establish `e1 : φ.mapMatrix (((adjugate G).submatrix eJ eI).toBlocks₂₂) = ((adjugate A).submatrix eJ eI).toBlocks₂₂`.
+
+Use extensionality with `i j`. Conclude with `congrFun (congrFun hadj (eJ (Sum.inr i))) (eI (Sum.inr j))`. Establish `e2 : φ.mapMatrix ((G.submatrix eI eJ).toBlocks₁₁) = (A.submatrix eI eJ).toBlocks₁₁`. Use extensionality with `i j`. Conclude with `congrFun (congrFun hφG (eI (Sum.inl i))) (eJ (Sum.inl j))`.
+
+Establish `h` using `congrArg φ hcore`. Simplify using `only [map_mul, map_pow, map_intCast, RingHom.map_det, hφG, e1, e2] at h`. Conclude with `h`.
+-/
 theorem jacobi {R : Type*} [CommRing R] {k : ℕ} {m n : Type*} [Fintype m] [Fintype n]
     [DecidableEq m] [DecidableEq n] [Nonempty n] (eI eJ : m ⊕ n ≃ Fin k)
     (A : Matrix (Fin k) (Fin k) R) :
@@ -128,6 +159,9 @@ def eL (k s : ℕ) (hs : s + 1 ≤ k) : Fin (k - 1 - s) ⊕ Fin (s + 1) ≃ Fin 
       have := x.isLt; have := y.isLt
       simp [Fin.val_rev] at h1; omega)
 
+/- English proof (translation)
+Rewrite using `[PI.OddDualWeyl.dualSub, PI.OddDualWeyl.pMinor, AlgHom.map_det]`. Conclude with `congrArg Matrix.det (Matrix.ext fun p q => by simp [PI.OddDualWeyl.dualM])`.
+-/
 theorem dualSub_pMinor (R : Type*) [CommRing R] {k : ℕ} (σ : Equiv.Perm (Fin k)) (s : ℕ)
     (hs : s ≤ k) :
     dualSub R k (pMinor R σ s hs) =
@@ -136,6 +170,9 @@ theorem dualSub_pMinor (R : Type*) [CommRing R] {k : ℕ} (σ : Equiv.Perm (Fin 
   rw [PI.OddDualWeyl.dualSub, PI.OddDualWeyl.pMinor, AlgHom.map_det]
   exact congrArg Matrix.det (Matrix.ext fun p q => by simp [PI.OddDualWeyl.dualM])
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or u with rfl | rfl <;> simp`.
+-/
 theorem sign_pm (R : Type*) [CommRing R] (u : ℤˣ) :
     ((u : ℤ) : R) = 1 ∨ ((u : ℤ) : R) = -1 := by
   rcases Int.units_eq_one_or u with rfl | rfl <;> simp
@@ -145,6 +182,11 @@ end PI.OddDualWeyl.Jac
 namespace PI.OddDualWeyl
 
 open Jac in
+/- English proof (translation)
+Unfold `JacRev`. Introduce `R _ k s hs`. Use `⟨((Equiv.Perm.sign ((PI.OddDualWeyl.Jac.eR k s hs).trans (PI.OddDualWeyl.Jac.eR k s hs).symm) : ℤ) : R), PI.OddDualWeyl.Jac.sign_pm R _, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_intCast, Fintype.card_fin, Nat.add_sub_cancel, pMinor]`.
+
+Apply the tactic sequence `all_goals rfl`.
+-/
 theorem jacobiMinorReverse : JacRev := by
   unfold JacRev
   intro R _ k s hs

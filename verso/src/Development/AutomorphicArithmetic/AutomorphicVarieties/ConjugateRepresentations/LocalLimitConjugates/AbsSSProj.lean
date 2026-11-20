@@ -5,6 +5,15 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Use `letI core : InnerProductSpace.Core ℂ F := { inner := fun x y => B x y conj_inner_symm := fun x y => by show (starRingEnd ℂ) (B y x) = B x y`. Rewrite using `[hB.herm]`. Simplify using the standard rewrite rules. Use `re_inner_nonneg := fun x => hB.nonneg x (hF x.2)`. Use `add_left := fun x y z => by show B (x + y : F) z = B x z + B y z`.
+
+Simplify using the standard rewrite rules. Use `smul_left := fun x y r => by show B (r • x : F) y = (starRingEnd ℂ) r * B x y`. Simplify using the standard rewrite rules. Use `definite := fun x hx => Subtype.ext (hB.definite x (hF x.2) hx) }`. Use `letI : NormedAddCommGroup F := InnerProductSpace.Core.toNormedAddCommGroup (cd := core)`.
+
+Use `letI : InnerProductSpace ℂ F := InnerProductSpace.ofCore (𝕜 := ℂ) (F := F) inferInstance`. Set `K' : Submodule ℂ F` to `K.comap F.subtype`. Use `haveI : CompleteSpace K' := FiniteDimensional.complete ℂ K'`. Take `⟨y, hy, z, hz, hyz⟩` from `K'.exists_add_mem_mem_orthogonal ⟨v, hv⟩`. Use `⟨y, hy, z, z.2, congrArg Subtype.val hyz, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `(Submodule.mem_orthogonal K' z).1 hz ⟨x, hK hx⟩ hx` as an intermediate fact. Conclude with `this`.
+-/
 private theorem exists_orthogonal_decomposition_of_isPos {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ)
     (M : Submodule ℂ W) (hB : IsPos B M) (F K : Submodule ℂ W) (hF : F ≤ M) (hK : K ≤ F)
     [FiniteDimensional ℂ F] (v : W) (hv : v ∈ F) :
@@ -31,6 +40,11 @@ private theorem exists_orthogonal_decomposition_of_isPos {W : Type} [AddCommGrou
   have := (Submodule.mem_orthogonal K' z).1 hz ⟨x, hK hx⟩ hx
   exact this
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hUc.elim_finite_subcover (fun u : U => (fun g => (u : G)⁻¹ * g) ⁻¹' (V : Set G)) (fun u => hVo.preimage (continuous_const.mul continuous_id)) (fun g hg => Set.mem_iUnion.2 ⟨⟨g, hg⟩, by simp [V.one_mem]⟩)`. Apply `((t : Set U).toFinite.image (fun u : U => ρ (u : G) n)).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨u, hu, hgu⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+
+Establish `hg' : g = (u : G) * ((u : G)⁻¹ * g)` using `by group`. Use `show ρ (u : G) n = ρ g n`. Rewrite using `[hg', map_mul, Module.End.mul_apply, hVn _ hgu]`.
+-/
 private theorem orbit_of_compact_finite_of_open_stabilizer {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (n : W) (U V : Subgroup G)
     (hUc : IsCompact (U : Set G)) (hVo : IsOpen (V : Set G)) (hVn : ∀ u ∈ V, ρ u n = n) :
@@ -46,6 +60,41 @@ private theorem orbit_of_compact_finite_of_open_stabilizer {G W : Type} [Group G
   show ρ (u : G) n = ρ g n
   rw [hg', map_mul, Module.End.mul_apply, hVn _ hgu]
 
+/- English proof (translation)
+Introduce `G W _ _ _ _ _ ρ M B hB hM hc hsm hfd N hNM hN`. Establish `hρ : ∀ (g h : G) (x : W), ρ g (ρ h x) = ρ (g * h) x`. Introduce `g h x`. Rewrite using `[map_mul, Module.End.mul_apply]`. Set `N' : Submodule ℂ W` to `{ carrier := {w | w ∈ M ∧ ∀ n ∈ N, B n w = 0} add_mem' := fun {a b} ha hb => ⟨M.add_mem ha.1 hb.1, fun n hn => by simp [ha.2 n hn, hb.2 n hn]⟩ zero_mem' := ⟨M.zero_mem, fun n _ => by simp⟩ smul_mem' := fun r w hw => ⟨M.smul_mem r hw.1, fun n hn => by simp [hw.2 n hn]⟩ }`.
+
+Establish `memN' : ∀ w, w ∈ N' ↔ w ∈ M ∧ ∀ n ∈ N, B n w = 0` using `fun w => Iff.rfl`. Use `⟨N', fun w hw => ((memN' w).1 hw).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g w hw`. Rewrite `hw`, the goal using `[memN']`. Use `⟨hM g w hw.1, fun n hn => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hcg⟩` from `hc g`. Establish `hn' : ρ g⁻¹ n ∈ N` using `hN _ _ hn`. Establish `h1 : ρ g (ρ g⁻¹ n) = n` using `by rw [hρ, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← h1, hcg _ (hNM hn') _ hw.1, hw.2 _ hn', mul_zero]`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Take `⟨hxN, hxN'⟩` from `Submodule.mem_inf.1 hx`. Rewrite `hxN'` using `[memN']`. Conclude with `(Submodule.mem_bot ℂ).2 (hB.definite x (hNM hxN) (hxN'.2 x hxN))`. Use `le_antisymm (sup_le hNM fun w hw => ((memN' w).1 hw).1) ?_` and prove the remaining obligations.
+
+Introduce `v hv`. Take `⟨U, hUo, hUc, hUv⟩` from `hsm v hv`. Use `haveI := hfd U hUo`. Establish `hFM : Submodule.span ℂ {x | x ∈ M ∧ ∀ u ∈ U, ρ u x = x} ≤ M` using `Submodule.span_le.2 fun x hx => hx.1`. Establish `hFfix : ∀ x ∈ Submodule.span ℂ {x | x ∈ M ∧ ∀ u ∈ U, ρ u x = x}, ∀ u ∈ U, ρ u x = x`.
+
+Introduce `x hx u hu`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hy.2 u hu`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`.
+
+Consider the case `smul r y _ hy => simp [hy]`. Establish `hvF : v ∈ Submodule.span ℂ {x | x ∈ M ∧ ∀ u ∈ U, ρ u x = x}` using `Submodule.subset_span ⟨hv, hUv⟩`. Take `⟨a, haK, b, hbF, hvab, hb⟩` from `exists_orthogonal_decomposition_of_isPos B M hB _ (N ⊓ Submodule.span ℂ {x | x ∈ M ∧ ∀ u ∈ U, ρ u x = x}) hFM inf_le_right v hvF`. Rewrite using `[hvab]`. Use `Submodule.add_mem_sup (Submodule.mem_inf.1 haK).1 ((memN' b).2 ⟨hFM hbF, fun n hn => ?_⟩)` and prove the remaining obligations.
+
+Establish `hinv : ∀ u ∈ U, ∀ x ∈ M, B (ρ u x) b = B x b`. Introduce `u hu x hx`. Take `⟨c, hcu⟩` from `hc u`. Establish `h1` using `hcu x hx b (hFM hbF)`. Rewrite `h1` using `[hFfix b hbF u hu]`.
+
+Distinguish the cases in `hb0 : b = 0`. Simplify using `[hb0]`. Establish `h2` using `hcu b (hFM hbF) b (hFM hbF)`. Rewrite `h2` using `[hFfix b hbF u hu]`. Establish `hbb : B b b ≠ 0` using `fun h => hb0 (hB.definite b (hFM hbF) h)`.
+
+Establish `hc1 : c = 1`. Establish `h3 : (c - 1) * B b b = 0` using `by rw [sub_mul, ← h2]; ring`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hbb`.
+
+Rewrite using `[h1, hc1, one_mul]`. Take `⟨V, hVo, -, hVn⟩` from `hsm n (hNM hn)`. Establish `hfin` using `orbit_of_compact_finite_of_open_stabilizer ρ n U V hUc hVo hVn`. Establish `hmemS : ∀ x, x ∈ hfin.toFinset ↔ ∃ g ∈ U, ρ g n = x`. Introduce `x`.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hSN : ∀ x ∈ hfin.toFinset, x ∈ N ∧ B x b = B n b`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `(hmemS x).1 hx`.
+
+Conclude with `⟨hN g n hn, hinv g hg n (hNM hn)⟩`. Establish `hsN : (∑ x ∈ hfin.toFinset, x) ∈ N` using `Submodule.sum_mem _ fun x hx => (hSN x hx).1`. Establish `hsfix : ∀ u ∈ U, ρ u (∑ x ∈ hfin.toFinset, x) = ∑ x ∈ hfin.toFinset, x`. Introduce `u hu`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_nbij' (fun x => ρ u x) (fun x => ρ u⁻¹ x) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `(hmemS x).1 hx`. Conclude with `(hmemS _).2 ⟨u * g, U.mul_mem hu hg, (hρ u g n).symm⟩`. Introduce `x hx`.
+
+Take `⟨g, hg, rfl⟩` from `(hmemS x).1 hx`. Conclude with `(hmemS _).2 ⟨u⁻¹ * g, U.mul_mem (U.inv_mem hu) hg, (hρ u⁻¹ g n).symm⟩`. Introduce `x _`. Rewrite using `[hρ, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `x _`.
+
+Rewrite using `[hρ, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hsF : (∑ x ∈ hfin.toFinset, x) ∈ Submodule.span ℂ {x | x ∈ M ∧ ∀ u ∈ U, ρ u x = x}` using `Submodule.subset_span ⟨hNM hsN, hsfix⟩`. Establish `hzero` using `hb _ (Submodule.mem_inf.2 ⟨hsN, hsF⟩)`. Rewrite `hzero` using `[map_sum, LinearMap.sum_apply, Finset.sum_congr rfl fun x hx => (hSN x hx).2, Finset.sum_const, nsmul_eq_mul]`. Establish `hcard : (hfin.toFinset.card : ℂ) ≠ 0`.
+
+Establish `: n ∈ hfin.toFinset` using `(hmemS n).2 ⟨1, U.one_mem, by simp⟩`. Conclude with `(Finset.card_pos.2 ⟨n, this⟩).ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 hzero).resolve_left hcard`.
+-/
 theorem UpperTheory.V.Cj.H.absSS :
     UpperTheory.V.Cj.H.AbsSS := by
   intro G W _ _ _ _ _ ρ M B hB hM hc hsm hfd N hNM hN

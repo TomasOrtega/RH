@@ -7,6 +7,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CatCoh
 
+/- English proof (translation)
+Introduce `R _ C _ C' _ F G hsep hglue hvan c`. Take `⟨y, rfl⟩` from `H1.mk_surjective _ c`. Establish `hb : ∀ T : C, ∃ b : ∀ t, (T ⟶ G.obj t) → F.obj (G.obj t), ∀ t t' (u : T ⟶ G.obj t) (a : t ⟶ t'), b t' (u ≫ G.map a) - mp F (G.map a) (b t u) = y.1 t t' a` using `fun T ↦ hvan T (fun t t' _ a ↦ y.1 t t' a) fun t t' t'' _ a a' ↦ Z1.comp y a a'`. Use `choose b hb using hb`. Establish `hx : ∀ T T' (φ : T ⟶ T'), ∃ x : F.obj T', ∀ t u, mp F u x = b T t (φ ≫ u) - b T' t u`.
+
+Introduce `T T' φ`. Use `hglue T' _ fun t t' u a ↦ ?_` and prove the remaining obligations. Establish `k1` using `hb T t t' (φ ≫ u) a`. Establish `k2` using `hb T' t t' u a`. Rewrite `k1` using `[Category.assoc]`.
+
+Rewrite using `[map_sub]`. Take the linear combination `k1 - k2`. Use `choose x hx using hx`. Establish `hxc : x ∈ Z1 F` using `fun T T' T'' φ ψ ↦ sub_eq_zero.1 (hsep T'' _ fun t u ↦ by`. Establish `k1` using `hx T T'' (φ ≫ ψ) t u`.
+
+Establish `k2` using `hx T T' φ t (ψ ≫ u)`. Establish `k3` using `hx T' T'' ψ t u`. Rewrite `k2` using `[mp_comp]`. Simplify using `only [map_sub, map_add, Category.assoc] at k1 k2 ⊢`. Take the linear combination `k1 - k2 - k3)`.
+
+Use `⟨H1.mk F ⟨x, hxc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Use `⟨fun t ↦ -b (G.obj t) t (𝟙 _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t t' a`. Establish `k1` using `hx _ _ (G.map a) t' (𝟙 _)`.
+
+Establish `k2` using `hb (G.obj t) t t' (𝟙 _) a`. Rewrite `k1` using `[mp_id, Category.comp_id]`. Rewrite `k2` using `[Category.id_comp]`. Use `show -b _ t' (𝟙 _) - mp F (G.map a) (-b _ t (𝟙 _)) = x _ _ (G.map a) - (show F.obj (G.obj t') from y.1 t t' a)`. Rewrite using `[map_neg]`.
+
+Take the linear combination `-k1 - k2`.
+-/
 theorem pull1_restrict_surjective_of_comma : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), (∀ (T : C) (x : F.obj T), (∀ t (u : T ⟶ G.obj t), mp F u x = 0) → x = 0) → (∀ (T : C) (s : ∀ t, (T ⟶ G.obj t) → F.obj (G.obj t)), (∀ t t' (u : T ⟶ G.obj t) (a : t ⟶ t'), s t' (u ≫ G.map a) = mp F (G.map a) (s t u)) → ∃ x : F.obj T, ∀ t u, mp F u x = s t u) → (∀ (T : C) (y : ∀ t t', (T ⟶ G.obj t) → (t ⟶ t') → F.obj (G.obj t')), (∀ t t' t'' (u : T ⟶ G.obj t) (a : t ⟶ t') (b : t' ⟶ t''), y t t'' u (a ≫ b) = mp F (G.map b) (y t t' u a) + y t' t'' (u ≫ G.map a) b) → ∃ g : ∀ t, (T ⟶ G.obj t) → F.obj (G.obj t), ∀ t t' (u : T ⟶ G.obj t) (a : t ⟶ t'), g t' (u ≫ G.map a) - mp F (G.map a) (g t u) = y t t' u a) → Function.Surjective (CoefMap.restrict F G).pull1 := by
   intro R _ C _ C' _ F G hsep hglue hvan c
   obtain ⟨y, rfl⟩ := H1.mk_surjective _ c

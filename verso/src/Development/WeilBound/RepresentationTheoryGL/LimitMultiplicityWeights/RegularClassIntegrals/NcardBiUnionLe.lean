@@ -11,6 +11,9 @@ noncomputable section
 
 namespace MainStatements.WeightKernel.Dec.DBase
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j I hj ih`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert hj]`. Use `(Set.ncard_union_le _ _).trans (Nat.add_le_add_left (ih fun i hi => h i (Finset.mem_insert_of_mem hi)) _)` and prove the remaining obligations.
+-/
 theorem ncard_biUnion_le' {α ι : Type*} (I : Finset ι) (S : ι → Set α) (h : ∀ i ∈ I, (S i).Finite) :
     (⋃ i ∈ I, S i).ncard ≤ ∑ i ∈ I, (S i).ncard := by
   classical
@@ -25,6 +28,39 @@ end MainStatements.WeightKernel.Dec.DBase
 namespace MainStatements.WeightKernel.Dec
 open DBase
 
+/- English proof (translation)
+Introduce `D V r X Y hW c hc`. Take `⟨V₀, hV₀c, hV₀n⟩` from `exists_compact_mem_nhds (1 : GA D V)`. Establish `hC₀ : IsCompact (V₀⁻¹ * V₀)` using `hV₀c.inv.mul hV₀c`. Take `⟨A, B₀, hAB⟩` from `GlobalTheory.T.finite_lattice_points_in_siegel_set_bound D V r X Y hW c hc _ hC₀`. Use `⟨A, fun Γ hΓ f hf hfs C W hC hW' => ?_⟩` and prove the remaining obligations.
+
+Use `set K : Set (GA D V) := C⁻¹ * tsupport f * W⁻¹ with hK`. Establish `hKc : IsCompact K` using `(hC.inv.mul hfs.isCompact).mul hW'.inv`. Establish `hint : interior V₀ ∈ nhds (1 : GA D V)` using `interior_mem_nhds.2 hV₀n`. Take `⟨I, hI⟩` from `hKc.elim_finite_subcover (fun g : K => (g : GA D V) • interior V₀) (fun g => isOpen_interior.smul _) (fun g hg => Set.mem_iUnion.2 ⟨⟨g, hg⟩, ⟨1, mem_of_mem_nhds hint, by simp⟩⟩)`. Take `⟨M, hM⟩` from `hf.bounded_above_of_compact_support hfs`.
+
+Use `⟨max M 0 * I.card * max B₀ 0, fun t ht a ha x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨hfin₀, hcnt₀⟩` from `hAB t ht a ha`. Use `set S₀ := {δ : GF V | a⁻¹ * rat V δ * a ∈ V₀⁻¹ * V₀}`. Use `set S : K → Set (GF V) := fun g => {δ : GF V | a⁻¹ * rat V δ * a ∈ (g : GA D V) • V₀}`. Establish `hS : ∀ g, (S g).Finite ∧ (S g).ncard ≤ S₀.ncard`.
+
+Introduce `g`. Break down `(S g).eq_empty_or_nonempty with h | ⟨δ₀, hδ₀⟩` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hmap : ∀ δ ∈ S g, δ₀⁻¹ * δ ∈ S₀`.
+
+Introduce `δ hδ`. Take `⟨u, hu, hu'⟩` from `hδ`. Take `⟨u₀, hu₀, hu₀'⟩` from `hδ₀`. Use `⟨u₀⁻¹, Set.inv_mem_inv.2 hu₀, u, hu, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul] at hu' hu₀'`.
+
+Establish `e : a⁻¹ * rat V (δ₀⁻¹ * δ) * a = (a⁻¹ * rat V δ₀ * a)⁻¹ * (a⁻¹ * rat V δ * a)`. Simplify using `[map_mul, map_inv, mul_assoc]`. Rewrite using `[e, ← hu', ← hu₀']`. Use `group`. Establish `hinj : Set.InjOn (fun δ => δ₀⁻¹ * δ) (S g)` using `fun _ _ _ _ h => mul_left_cancel h`.
+
+Establish `hf1 : (S g).Finite` using `Set.Finite.of_finite_image (hfin₀.subset (by`. Introduce and unpack `_ ⟨δ, hδ, rfl⟩`. Conclude with `hmap δ hδ)) hinj`. Conclude with `⟨hf1, Set.ncard_le_ncard_of_injOn _ hmap hinj hfin₀⟩`. Use `set T := {δ : GF V | a⁻¹ * rat V δ * a ∈ K}`.
+
+Establish `hTsub : T ⊆ ⋃ g ∈ I, S g`. Introduce `δ hδ`. Take `⟨g, hg, hmem⟩` from `Set.mem_iUnion₂.1 (hI hδ)`. Conclude with `Set.mem_iUnion₂.2 ⟨g, hg, Set.smul_set_mono interior_subset hmem⟩`. Establish `hUfin : (⋃ g ∈ I, S g).Finite` using `Set.Finite.biUnion I.finite_toSet fun g _ => (hS g).1`.
+
+Establish `hTfin : T.Finite` using `hUfin.subset hTsub`. Establish `hTcnt : (T.ncard : ℝ) ≤ I.card * max B₀ 0 * (∏ i, max (t i) 1) ^ A`. Establish `h1 : T.ncard ≤ I.card * S₀.ncard`. Use `(Set.ncard_le_ncard hTsub hUfin).trans ((ncard_biUnion_le' I S fun g _ => (hS g).1).trans ?_)` and prove the remaining obligations. Simplify using `using Finset.sum_le_sum (s := I) fun g _ => (hS g).2`.
+
+Establish `hP : 0 ≤ (∏ i, max (t i) 1) ^ A` using `pow_nonneg (Finset.prod_nonneg fun i _ => le_trans zero_le_one (le_max_right _ _)) A`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hcnt₀.trans (by gcongr; exact le_max_left _ _)`. Use `_ = _ := by ring`. Use `set g : Γ → ℂ := fun ν => f (x * a⁻¹ * ν * (a * y)) with hg`.
+
+Establish `hsupp : ∀ ν : Γ, g ν ≠ 0 → ∃ δ ∈ T, rat V δ = ν`. Introduce `ν hν`. Take `⟨δ, hδ⟩ : (ν : GA D V) ∈ (ratEmb D.sp.cm.sig V.gram).range` from `(range_ratEmb D.sp.cm.sig V.gram).symm ▸ hΓ ν.2`. Use `⟨δ, ?_, hδ⟩` and prove the remaining obligations. Establish `hs : x * a⁻¹ * ν * (a * y) ∈ tsupport f` using `subset_tsupport _ hν`.
+
+Use `show a⁻¹ * rat V δ * a ∈ K`. Use `⟨x⁻¹ * (x * a⁻¹ * ν * (a * y)), ⟨x⁻¹, Set.inv_mem_inv.2 hx, _, hs, rfl⟩, y⁻¹, Set.inv_mem_inv.2 hy, ?_⟩` and prove the remaining obligations. Use `show _ = _`. Rewrite using `[show rat V δ = ν from hδ]`. Use `group`.
+
+Establish `hsf : (Function.support g).Finite`. Use `(hTfin.image (rat V)).preimage (Subtype.val_injective.injOn) |>.subset ?_` and prove the remaining obligations. Introduce `ν hν`. Take `⟨δ, hδ, e⟩` from `hsupp ν hν`. Conclude with `⟨δ, hδ, e⟩`.
+
+Establish `hcard : (hsf.toFinset.card : ℝ) ≤ T.ncard`. Establish `: (Function.support g).ncard ≤ T.ncard`. Establish `h2 : (Function.support g).ncard ≤ (rat V '' T).ncard` using `Set.ncard_le_ncard_of_injOn Subtype.val (fun ν hν => by`. Take `⟨δ, hδ, e⟩` from `hsupp ν hν`. Conclude with `⟨δ, hδ, e⟩) Subtype.val_injective.injOn (hTfin.image _)`.
+
+Conclude with `h2.trans (Set.ncard_image_le hTfin)`. Rewrite `this` using `[Set.ncard_eq_toFinset_card _ hsf]`. Conclude with `this` after adjusting the coercions. Use `show ‖∑' ν : Γ, g ν‖ ≤ _`. Rewrite using `[tsum_eq_sum (s := hsf.toFinset) (fun ν hν => by simpa using hν)]`.
+
+Establish `hP : 0 ≤ (∏ i, max (t i) 1) ^ A` using `pow_nonneg (Finset.prod_nonneg fun i _ => le_trans zero_le_one (le_max_right _ _)) A`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem base : Base := by
   intro D V r X Y hW c hc
   obtain ⟨V₀, hV₀c, hV₀n⟩ := exists_compact_mem_nhds (1 : GA D V)

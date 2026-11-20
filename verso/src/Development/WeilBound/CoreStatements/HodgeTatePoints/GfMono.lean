@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 
 namespace PositivityTheory.HtPt.Gf
 
+/- English proof (translation)
+Introduce `o _ Ω _ _ K _ J _ y ϖ ϖ' N b ⟨c, hc⟩ ⟨g, h1, h2⟩`. Use `⟨g, fun s hs => ?_, fun s t hs ht => ?_⟩` and prove the remaining obligations. Take `⟨hg, h, hh, r, hr, e⟩` from `h1 s hs`. Use `⟨hg, h, hh, algebraMap o Ω c * r, mul_mem (Subalgebra.algebraMap_mem _ c) hr, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hc, map_mul, mul_assoc]`.
+
+Take `⟨m, U, Z, hU, hZ, hU0, hUd, hm, e⟩` from `h2 s t hs ht`. Use `⟨m, U, algebraMap o Ω c • Z, hU, fun i j => ?_, hU0, hUd, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ c) (hZ i j)`. Rewrite using `[e, hc, map_mul, mul_smul]`.
+-/
 theorem trivflag_mono : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ϖ ϖ' : o) (N : ℕ) (b : Fin N → K → ℤ), ϖ' ∣ ϖ → Num.TrivFlagMod o ϖ y N b → Num.TrivFlagMod o ϖ' y N b := by
   intro o _ Ω _ _ K _ J _ y ϖ ϖ' N b ⟨c, hc⟩ ⟨g, h1, h2⟩
   refine ⟨g, fun s hs => ?_, fun s t hs ht => ?_⟩

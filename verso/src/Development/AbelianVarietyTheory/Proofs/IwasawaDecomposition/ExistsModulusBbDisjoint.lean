@@ -5,6 +5,11 @@ import Formalism.SharpRestriction.InertJacobiLevels.HostFam
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Establish `hv : padicValNat l (g ^ e - 1) ≠ 0`. Introduce `h0`. Establish `h2` using `h.2`. Rewrite `h2` using `[h0, mul_zero, pow_zero]`. Use `Nat.one_le_pow e g hg` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3 : g ^ e - 1 ∣ ∏ i ∈ Finset.range r, (g ^ (i + 1) - 1)`. Use `Finset.dvd_prod_of_mem (fun i => g ^ (i + 1) - 1) (Finset.mem_range.2 (show e - 1 < r by omega))` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel h1]`. Then use the resulting hypothesis. Conclude with `((dvd_pow_self l hv).trans pow_padicValNat_dvd).trans h3`.
+-/
 theorem exc_dvd_prod_range {g e l r : ℕ} (hg : 1 ≤ g) (h1 : 1 ≤ e) (hr : e ≤ r) (h : Formalism.CyclotomicNorms.Exc g e l) :
     l ∣ ∏ i ∈ Finset.range r, (g ^ (i + 1) - 1) := by
   have hv : padicValNat l (g ^ e - 1) ≠ 0 := by
@@ -18,6 +23,19 @@ theorem exc_dvd_prod_range {g e l r : ℕ} (hg : 1 ≤ g) (h1 : 1 ≤ e) (hr : e
     rwa [Nat.sub_add_cancel h1] at this
   exact ((dvd_pow_self l hv).trans pow_padicValNat_dvd).trans h3
 
+/- English proof (translation)
+Introduce and unpack `⟨-, hlt⟩`. Establish `: Fact l.Prime` using `⟨hl⟩`. Use `set x : ℕ := M * (2 + M * c) with hx`. Establish `hgx : g = x + 1` using `by rw [hg, hx]; ring`. Use `set S : ℕ := ∑ i ∈ Finset.range e, (x + 1) ^ i with hS`.
+
+Establish `hgeo : S * x + 1 = g ^ e` using `by rw [hgx]; exact geom_sum_mul_add x e`. Establish `hSe : S * (2 + M * c) ≡ 2 * e [MOD M]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Rewrite using `[hS, hx]`. Use `push_cast`.
+
+Simplify using `[mul_comm]`. Establish `hnd : ¬ l ^ k ∣ S * (2 + M * c)`. Introduce `hd`. Use `Nat.le_of_dvd (by omega) ((hSe.dvd_iff hM).1 hd)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hS0 : S * (2 + M * c) ≠ 0` using `by rintro h; exact hnd (h ▸ dvd_zero _)`. Establish `hvS : padicValNat l (S * (2 + M * c)) ≤ k`. Assume the negation of the conclusion as `hc`. Conclude with `hnd ((pow_dvd_pow l (by omega)).trans pow_padicValNat_dvd)`. Establish `hval : padicValNat l (g ^ e - 1) = padicValNat l (S * (2 + M * c)) + padicValNat l M`.
+
+Establish `: S * x = S * (2 + M * c) * M` using `by rw [hx]; ring`. Rewrite using `[← hgeo, Nat.add_sub_cancel, this, padicValNat.mul hS0 hM0.ne']`. Establish `hle : l ^ (4 * padicValNat l (g ^ e - 1)) ≤ M ^ 8`. Establish `a1 : l ^ padicValNat l M ≤ M` using `Nat.le_of_dvd hM0 pow_padicValNat_dvd`. Establish `a2 : l ^ k ≤ M` using `Nat.le_of_dvd hM0 hM`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hge : g ≤ g ^ e` using `Nat.le_self_pow (by omega) g`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_exc_of_cong_sq {M l g e c k : ℕ} (hl : l.Prime) (hM : l ^ k ∣ M) (hM0 : 0 < M)
     (hg : g = 1 + 2 * M + M ^ 2 * c) (hbig : M ^ 8 ≤ g) (h1 : 1 ≤ e) (hk : 2 * e < l ^ k) :
     ¬ Formalism.CyclotomicNorms.Exc g e l := by
@@ -54,6 +72,21 @@ theorem not_exc_of_cong_sq {M l g e c k : ℕ} (hl : l.Prime) (hM : l ^ k ∣ M)
   have hge : g ≤ g ^ e := Nat.le_self_pow (by omega) g
   omega
 
+/- English proof (translation)
+Introduce `r g0 m hg0 hm`. Use `set P : ℕ := g0 * ∏ i ∈ Finset.range r, (g0 ^ (i + 1) - 1) with hP`. Establish `hP0 : 0 < P`. Use `Nat.mul_pos hg0.pos (Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Conclude with `Nat.sub_pos_of_lt (Nat.one_lt_pow (Nat.succ_ne_zero i) hg0.one_lt)`.
+
+Use `set M : ℕ := (m * P) ^ (2 * r + 1) with hM`. Establish `hmP : 0 < m * P` using `Nat.mul_pos (Nat.pos_of_ne_zero hm) hP0`. Establish `hM0 : 0 < M` using `pow_pos hmP _`. Establish `hmM : m ∣ M` using `(Dvd.intro P rfl).trans (dvd_pow_self _ (by omega))`. Use `⟨M, M ^ 8 + 1 + 2 * M + P, hM0.ne', hmM, fun g1 _ hgt hmod => ?_⟩` and prove the remaining obligations.
+
+Establish `hmod' : 1 + 2 * M ≡ g1 [MOD M ^ 2]`. Use `Nat.ModEq.trans ?_ hmod.symm` and prove the remaining obligations. Establish `: (1 + M) ^ 2 = 1 + 2 * M + M ^ 2` using `by ring`. Rewrite using `[this]`. Conclude with `(Nat.add_modEq_right).symm`.
+
+Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' (show 1 + 2 * M ≤ g1 by omega)).1 hmod'`. Establish `hg1 : g1 = 1 + 2 * M + M ^ 2 * c` using `by omega`. Establish `hbig : M ^ 8 ≤ g1` using `by omega`. Rewrite using `[Set.disjoint_left]`. Introduce `l hl0 hl1`.
+
+Establish `hlP : l.Prime ∧ l ∣ P`. Break down `hl0 with h | ⟨e, h1, h9, h⟩` into its components or cases. Rewrite using `[Set.mem_singleton_iff.1 h]`. Conclude with `⟨hg0, Dvd.intro _ rfl⟩`. Conclude with `⟨h.1, (exc_dvd_prod_range hg0.pos h1 h9 h).trans (Dvd.intro_left _ rfl)⟩`.
+
+Break down `hl1 with h | ⟨e, h1, h9, h⟩` into its components or cases. Use `Nat.le_of_dvd hP0 hlP.2` as an intermediate fact. Rewrite `this` using `[Set.mem_singleton_iff.1 h]`. Use linear arithmetic over natural numbers and integers. Establish `hk : 2 * r + 1 < l ^ (2 * r + 1)` using `Nat.lt_pow_self hlP.1.one_lt`.
+
+Conclude with `not_exc_of_cong_sq hlP.1 (pow_dvd_pow_of_dvd (hlP.2.trans (Dvd.intro_left _ rfl)) (2 * r + 1)) hM0 hg1 hbig h1 (by omega) h`.
+-/
 theorem exists_modulus_bb_disjoint : ∀ (r g0 m : ℕ), g0.Prime → m ≠ 0 → ∃ M N : ℕ, M ≠ 0 ∧ m ∣ M ∧
     ∀ g1 : ℕ, g1.Prime → N < g1 → g1 ≡ (1 + M) ^ 2 [MOD M ^ 2] →
       Disjoint (Formalism.CyclotomicNorms.BB r g0) (Formalism.CyclotomicNorms.BB r g1) := by

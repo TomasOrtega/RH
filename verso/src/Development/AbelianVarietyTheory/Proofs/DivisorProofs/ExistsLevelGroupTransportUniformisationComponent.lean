@@ -18,6 +18,33 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA GlobalThe
 
 namespace GlobalTheory.ShareOn
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p hp r h hr i v`. Take `⟨ψ, hex⟩` from `GlobalTheory.T.exists_levelChange_transporters_all_components p hp r h hr i v`. Establish `uniq` using `GlobalTheory.T.unique_up_to_target_group p hp r h hr i v ψ`. Establish `one` using `GlobalTheory.T.identity_transports_component_to_itself p hp r h hr i v ψ`. Establish `comp` using `GlobalTheory.T.isLevelComponentTransport_comp p hp r h hr i v ψ`.
+
+Establish `gam` using `GlobalTheory.T.isTransport_identity_of_mem_componentGroup p hp r h hr i v ψ`. Take `⟨lmul, linj⟩` from `GlobalTheory.T.levelAction_mul_and_faithful_finiteGroup p hp r h hr i`. Establish `c8` using `GlobalTheory.T.levelComponentTransport_reads_cuspForms_const_mul p hp r h hr i v ψ`. Use `choose act tr htr using fun (g : p.P.Gp) k => hex (r.lev i g⁻¹) k`. Establish `lev1 : r.lev i 1 = 1`.
+
+Establish `e` using `lmul 1 1`. Rewrite `e` using `[mul_one]`. Conclude with `(mul_eq_left.1 e.symm)`. Establish `levinv : ∀ g, r.lev i g⁻¹ = (r.lev i g)⁻¹` using `fun g => eq_inv_of_mul_eq_one_left (by rw [← lmul, inv_mul_cancel, lev1])`. Establish `levmul : ∀ g g', r.lev i (g * g')⁻¹ = r.lev i g'⁻¹ * r.lev i g⁻¹` using `fun g g' => by`.
+
+Rewrite using `[mul_inv_rev, lmul]`. Establish `hco : ∀ g g' k, IsTransp p r i v ψ (r.lev i (g * g')⁻¹) k (act g (act g' k)) (tr g (act g' k) * tr g' k)` using `fun g g' k => by`. Rewrite using `[levmul]`. Conclude with `comp _ _ _ _ _ _ _ (htr g' k) (htr g (act g' k))`. Use `⟨act, tr, fun k => ?_, fun g g' k => ?_, fun g k => (htr g k).1, fun g k γ => ?_, fun g g' k => ?_, fun g k hk hΓ => ?_, ⟨fun g k => (c8 _ _ _ _ (htr g k)).choose, fun F g k x hx h2 => (c8 _ _ _ _ (htr g k)).choose_spec F x hx h2⟩, fun Lf hLf => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `htr 1 k`. Rewrite `e` using `[inv_one, lev1]`. Conclude with `(uniq _ _ _ _ _ _ e (one k)).1`. Conclude with `(uniq _ _ _ _ _ _ (htr (g * g') k) (hco g g' k)).1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hγ`. Establish `e1` using `comp _ _ _ _ _ _ _ (gam k γ hγ) (htr g k)`. Rewrite `e1` using `[one_mul]`. Use `(uniq _ _ _ _ _ _ e1 (htr g k)).2` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Introduce `hγ`. Take `⟨k'', b, hb⟩` from `hex (r.lev i g⁻¹)⁻¹ (act g k)`. Establish `e1` using `comp _ _ _ _ _ _ _ (htr g k) hb`. Rewrite `e1` using `[mul_inv_cancel]`. Take `⟨hk'', hb1⟩` from `uniq _ _ _ _ _ _ e1 (one k)`.
+
+Rewrite `hb`, `hb1` using `[hk'']`. Establish `e2` using `comp _ _ _ _ _ _ _ (gam _ _ hγ) hb`. Establish `e3` using `comp _ _ _ _ _ _ _ (htr g k) e2`. Rewrite `e3` using `[one_mul, mul_inv_cancel]`. Establish `hb2` using `(uniq _ _ _ _ _ _ e3 (one k)).2`.
+
+Rewrite `hb1`, `hb2` using `[inv_one, mul_one]`. Establish `key : γ = (b * tr g k)⁻¹ * (b * (tr g k * γ * (tr g k)⁻¹) * tr g k)` using `by group`. Rewrite using `[key]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hb1) hb2`. Conclude with `(uniq _ _ _ _ _ _ (htr (g * g') k) (hco g g' k)).2`.
+
+Establish `e1` using `gam k (tr g k) hΓ`. Establish `e2` using `htr g k`. Rewrite `e2` using `[hk]`. Establish `e3` using `IsTransp.eq_of_eq e2 e1`. Establish `: g⁻¹ = 1` using `linj _ e3`.
+
+Simplify using `using this`. Establish `keyg : ∀ g, (r.lev i g⁻¹).symm = r.lev i g ^ (1 : ℤ)` using `fun g => by`. Rewrite using `[zpow_one, levinv]`. Both sides reduce to the same expression. Take `rfl : Lf = fun k => lattice₂ D ((uAt r v i).X k).Λ` from `funext hLf`.
+
+Use `⟨ψ, fun k g hk => ⟨1, fun w => ?_⟩⟩` and prove the remaining obligations. Use `beta_reduce at w ⊢`. Establish `e2` using `htr g k`. Rewrite `e2` using `[hk]`. Take `⟨-, -, hm⟩` from `e2`.
+
+Take `⟨hw, e⟩` from `hm w`. Use `⟨hw, e.trans (congrArg (ψ k) (congrFun (congrArg DFunLike.coe (keyg g)) _))⟩` and prove the remaining obligations.
+-/
 theorem exists_transport : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), More p → ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → ∀ (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)), ∃ (act : p.P.Gp → (uAt r v i).Comp → (uAt r v i).Comp) (tr : p.P.Gp → (uAt r v i).Comp → GL (Fin D.R.r) D.host.E),
     (∀ k, act 1 k = k) ∧ (∀ g g' k, act (g * g') k = act g (act g' k)) ∧
     (∀ g k, GlobalTheory.LevelCusp.IsMatch ((uAt r v i).X k) ((uAt r v i).X (act g k)) (tr g k)) ∧

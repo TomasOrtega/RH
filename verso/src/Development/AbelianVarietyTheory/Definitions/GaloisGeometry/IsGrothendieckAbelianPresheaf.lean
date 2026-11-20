@@ -16,6 +16,9 @@ variable {A : Type u₁} [Category.{v₁} A] [Abelian A] [HasExt.{w} A] [EnoughI
 
 attribute [local instance] Ext.subsingleton_of_injective
 
+/- English proof (translation)
+Set `I : InjectivePresentation F` to `Classical.arbitrary _`. Use `I.injective` as an intermediate fact. Use `I.mono` as an intermediate fact. Establish `hS : (ShortComplex.mk _ _ (cokernel.condition I.f)).ShortExact` using `{ exact := ShortComplex.exact_cokernel I.f }`. Conclude with `⟨_, _, _, _, _, hS, I.injective, fun x => Ext.covariant_sequence_exact₁ _ hS x (Subsingleton.elim _ _) rfl⟩`.
+-/
 theorem exists_shift {Z : A} (F : A) (n : ℕ) :
     ∃ (I Q : A) (i : F ⟶ I) (q : I ⟶ Q) (h : i ≫ q = 0) (hS : (ShortComplex.mk i q h).ShortExact), Injective I ∧
       ∀ x : Ext.{w} Z F (n + 1), ∃ y : Ext.{w} Z Q n, y.comp hS.extClass rfl = x := by
@@ -25,6 +28,15 @@ theorem exists_shift {Z : A} (F : A) (n : ℕ) :
   have hS : (ShortComplex.mk _ _ (cokernel.condition I.f)).ShortExact := { exact := ShortComplex.exact_cokernel I.f }
   exact ⟨_, _, _, _, _, hS, I.injective, fun x => Ext.covariant_sequence_exact₁ _ hS x (Subsingleton.elim _ _) rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `n generalizing Y with`. Consider the case `zero`. Take `⟨I, Q, i, q, h, hS, -, hx⟩` from `exists_shift.{w} (Z := P) Y 0`. Take `⟨y, rfl⟩` from `hx x`. Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective P Q).surjective y`.
+
+Use `hS.epi_g` as an intermediate fact. Use `⟨pullback g q, pullback.fst g q, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Ext.mk₀_comp_mk₀_assoc, pullback.condition, ← Ext.mk₀_comp_mk₀_assoc]`. Use `erw [hS.comp_extClass]`. Conclude with `Ext.comp_zero _ _ _ _ _`.
+
+Consider the case `succ n hn`. Take `⟨I, Q, i, q, h, hS, -, hx⟩` from `exists_shift.{w} (Z := P) Y (n + 1)`. Take `⟨y, rfl⟩` from `hx x`. Take `⟨P', p, hp, h0⟩` from `hn y`. Use `⟨P', p, hp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ext.comp_assoc (Ext.mk₀ p) y hS.extClass (zero_add _) rfl (by omega), h0]`. Conclude with `Ext.zero_comp _ _ _ _ _`.
+-/
 theorem exists_epi_comp_eq_zero (n : ℕ) {P Y : A} (x : Ext.{w} P Y (n + 1)) :
     ∃ (P' : A) (p : P' ⟶ P), Epi p ∧ (Ext.mk₀ p).comp x (zero_add _) = 0 := by
   induction n generalizing Y with
@@ -45,6 +57,17 @@ theorem exists_epi_comp_eq_zero (n : ℕ) {P Y : A} (x : Ext.{w} P Y (n + 1)) :
     rw [← Ext.comp_assoc (Ext.mk₀ p) y hS.extClass (zero_add _) rfl (by omega), h0]
     exact Ext.zero_comp _ _ _ _ _
 
+/- English proof (translation)
+Proceed by induction on `n generalizing P with`. Consider the case `zero`. Take `⟨P', p, hp, h0⟩` from `exists_epi_comp_eq_zero 0 x`. Take `⟨Q, q, hq, -, hz⟩` from `h p hp hP`. Establish `hS : (ShortComplex.mk _ _ (kernel.condition (q ≫ p))).ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`.
+
+Take `⟨y, rfl⟩` from `Ext.contravariant_sequence_exact₃ hS Y x (by`. Express the relevant statement in the definitionally equal form `(Ext.mk₀ (q ≫ p)).comp x (zero_add _) = 0`. Rewrite using `[← Ext.mk₀_comp_mk₀_assoc, h0]`. Conclude with `Ext.comp_zero _ _ _ _ _) (n₀ := 0) rfl`. Take `⟨z, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`.
+
+Take `⟨z', rfl⟩` from `hz z`. Rewrite using `[← Ext.mk₀_comp_mk₀, ← Ext.comp_assoc_of_third_deg_zero]`. Use `erw [hS.extClass_comp]`. Conclude with `Ext.zero_comp _ _ _ _ _`. Consider the case `succ n hn`.
+
+Take `⟨P', p, hp, h0⟩` from `exists_epi_comp_eq_zero (n + 1) x`. Take `⟨Q, q, hq, hK, -⟩` from `h p hp hP`. Establish `hS : (ShortComplex.mk _ _ (kernel.condition (q ≫ p))).ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`. Take `⟨y, rfl⟩` from `Ext.contravariant_sequence_exact₃ hS Y x (by`. Express the relevant statement in the definitionally equal form `(Ext.mk₀ (q ≫ p)).comp x (zero_add _) = 0`.
+
+Rewrite using `[← Ext.mk₀_comp_mk₀_assoc, h0]; exact Ext.comp_zero _ _ _ _ _) (n₀ := n + 1) (by omega)`. Rewrite using `[hn hK y]`. Conclude with `Ext.comp_zero _ _ _ _ _`.
+-/
 theorem ext_eq_zero_of_class (Y : A) (Pr : A → Prop)
     (h : ∀ {P P' : A} (p : P' ⟶ P), Epi p → Pr P → ∃ (Q : A) (q : Q ⟶ P'), Epi q ∧ Pr (kernel (q ≫ p)) ∧
       ∀ z : kernel (q ≫ p) ⟶ Y, ∃ z' : Q ⟶ Y, kernel.ι (q ≫ p) ≫ z' = z)
@@ -80,9 +103,23 @@ def extMap {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z) (F : A) (n : ℕ) : Ext.{w} Z 
   ((Ext.mk₀ a).precomp (Φ.obj F) (zero_add n)).comp (Φ.mapExtAddHom.{w, w'} Z F n)
 
 omit [EnoughInjectives A] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extMap_apply {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z) (F : A) (n : ℕ) (x : Ext.{w} Z F n) :
     extMap.{w, w'} Φ a F n x = (Ext.mk₀ a).comp (x.mapExactFunctor Φ) (zero_add n) := rfl
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Rewrite using `[← Function.Bijective.of_comp_iff _ (Ext.mk₀_bijective Z F)]`. Use `(Ext.mk₀_bijective Z' (Φ.obj F)).comp (ha F) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+
+Simplify using `[extMap_apply, Ext.mapExactFunctor_mk₀]`. Consider the case `succ n hn`. Take `⟨I, Q, i, q, h, hS, hinj, hx⟩` from `exists_shift.{w} (Z := Z) F n`. Conclude with `AddMonoidHom.bijective_of_surjective_of_bijective_of_right_exact _ _ _ _ (extMap.{w, w'} Φ a I n) (extMap.{w, w'} Φ a Q n) (extMap.{w, w'} Φ a F (n + 1)) (by`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `((Ext.mk₀ a).comp (x.mapExactFunctor Φ) (zero_add n)).comp (Ext.mk₀ (Φ.map q)) (add_zero n) = (Ext.mk₀ a).comp ((x.comp (Ext.mk₀ q) (add_zero n)).mapExactFunctor Φ) (zero_add n)`. Rewrite using `[Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀, Ext.comp_assoc_of_third_deg_zero])`. Use the proof step `(by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `((Ext.mk₀ a).comp (x.mapExactFunctor Φ) (zero_add n)).comp (hS.map_of_exact Φ).extClass rfl = (Ext.mk₀ a).comp ((x.comp hS.extClass rfl).mapExactFunctor Φ) (zero_add (n + 1))`.
+
+Rewrite using `[Ext.mapExactFunctor_comp, Ext.mapExactFunctor_extClass]`. Conclude with `Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega))`. Use the proof step `((ShortComplex.ab_exact_iff_function_exact _).mp (Ext.covariant_sequence_exact₃' Z hS n (n + 1) rfl))`. Use the proof step `((ShortComplex.ab_exact_iff_function_exact _).mp (Ext.covariant_sequence_exact₃' Z' (hS.map_of_exact Φ) n (n + 1) rfl))`. Use the proof step `(hn _).surjective (hn _) hx`.
+
+Use the proof step `(fun y₁ ↦ Ext.covariant_sequence_exact₁ _ (hS.map_of_exact Φ) y₁ (hI I hinj _ _) rfl)`.
+-/
 theorem extMap_bijective {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z)
     (ha : ∀ F : A, Function.Bijective fun g : Z ⟶ F => a ≫ Φ.map g)
     (hI : ∀ (I : A), Injective I → ∀ (n : ℕ) (x : Ext.{w'} Z' (Φ.obj I) (n + 1)), x = 0)
@@ -115,6 +152,13 @@ theorem extMap_bijective {Z : A} {Z' : B} (a : Z' ⟶ Φ.obj Z)
       (hn _).surjective (hn _) hx
       (fun y₁ ↦ Ext.covariant_sequence_exact₁ _ (hS.map_of_exact Φ) y₁ (hI I hinj _ _) rfl)
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective Z F).surjective x`. Simplify using `[Ext.mapExactFunctor_mk₀]`. Consider the case `succ n hn`.
+
+Take `⟨I, Q, i, q, h, hS, -, hx⟩` from `exists_shift.{w} (Z := Z) F n`. Take `⟨y, rfl⟩` from `hx x`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, hnat⟩ : ∃ e : Ext.{w} Q F 1, y.comp hS.extClass rfl = y.comp e rfl ∧ (e.mapExactFunctor.{w, w'} Φ).comp (Ext.mk₀ (τ.app F)) (add_zero 1) = (Ext.mk₀ (τ.app Q)).comp (e.mapExactFunctor.{w, w'} Ψ) (zero_add 1) := by`. Use `⟨hS.extClass, rfl, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hS.map_of_exact Φ).extClass_naturality (hS.map_of_exact Ψ) ((ShortComplex.mk i q h).mapNatTrans τ)`.
+
+Rewrite `h1` using `[← Ext.mapExactFunctor_extClass, ← Ext.mapExactFunctor_extClass]`. Conclude with `h1`. Rewrite using `[he, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_comp, Ext.comp_assoc_of_third_deg_zero, hnat, ← Ext.comp_assoc _ _ _ (zero_add n) rfl (by omega), ← hn y, Ext.comp_assoc_of_second_deg_zero]`.
+-/
 theorem mapExactFunctor_natTrans (Ψ : A ⥤ B) [Ψ.Additive] [PreservesFiniteLimits Ψ] [PreservesFiniteColimits Ψ]
     (τ : Φ ⟶ Ψ) (n : ℕ) {Z F : A} (x : Ext.{w} Z F n) :
     (x.mapExactFunctor.{w, w'} Φ).comp (Ext.mk₀ (τ.app F)) (add_zero n) =
@@ -150,6 +194,9 @@ instance isGrothendieckAbelian_presheaf (R : Type 1) [CommRing R] :
   hasSeparator := inferInstance
   ab5OfSize := ⟨fun _ _ _ => inferInstance⟩
 
+/- English proof (translation)
+Establish `: EssentiallySmall.{1} C` using `inferInstance`. Conclude with `Sheaf.isGrothendieckAbelian_of_essentiallySmall _ (ModuleCat.{1} R)`.
+-/
 theorem isGrothendieckAbelian_sheaf (R : Type 1) [CommRing R] :
     IsGrothendieckAbelian.{1} (Sheaf J (ModuleCat.{1} R)) := by
   have : EssentiallySmall.{1} C := inferInstance
@@ -161,9 +208,23 @@ variable {R S : Type 1} [CommRing R] [CommRing S] (f : R →+* S)
 
 def PointwiseProjective (P : Cᵒᵖ ⥤ ModuleCat.{1} R) : Prop := ∀ U, Projective (P.obj U)
 
+/- English proof (translation)
+Introduce `U` and use `inferInstanceAs (Projective (ModuleCat.of R (T.obj U →₀ R)))`.
+-/
 theorem pointwiseProjective_free (T : Cᵒᵖ ⥤ Type 1) : PointwiseProjective (T ⋙ ModuleCat.free R) := fun U =>
   inferInstanceAs (Projective (ModuleCat.of R (T.obj U →₀ R)))
 
+/- English proof (translation)
+Use `ext_eq_zero_of_class.{1} _ PointwiseProjective ?_ n hP x` and prove the remaining obligations. Introduce `P P' p hp hP`. Set `adj` to `(ModuleCat.adj R).whiskerRight Cᵒᵖ`. Set `q` to `adj.counit.app P'`. Establish `hq : Epi q` using `adj.counit_epi_of_R_faithful P'`.
+
+Establish `hS : (ShortComplex.mk _ _ (kernel.condition (q ≫ p))).ShortExact` using `{ exact := ShortComplex.exact_kernel _ }`. Establish `hsplit (U : Cᵒᵖ) : IsSplitMono ((kernel.ι (q ≫ p)).app U)`. Establish `hU` using `hS.map_of_exact ((evaluation Cᵒᵖ (ModuleCat.{1} R)).obj U)`. Establish `: Projective ((ShortComplex.mk _ _ (kernel.condition (q ≫ p))).map ((evaluation Cᵒᵖ (ModuleCat.{1} R)).obj U)).X₃` using `hP U`. Conclude with `⟨⟨hU.splittingOfProjective.splitMono_f⟩⟩`.
+
+Use `⟨_, q, hq, fun U => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `hsplit U` as an intermediate fact. Conclude with `@Retract.projective _ _ _ _ ⟨(kernel.ι (q ≫ p)).app U, retraction _, IsSplitMono.id _⟩ (pointwiseProjective_free (R := R) (P' ⋙ forget _) U)`. Set `adj'` to `(ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} f).whiskerRight Cᵒᵖ`. Set `ι'` to `((Functor.whiskeringRight Cᵒᵖ _ _).obj (ModuleCat.extendScalars.{1, 1, 1} f)).map (kernel.ι (q ≫ p))`.
+
+Establish `(U : Cᵒᵖ) : Mono (ι'.app U)`. Use `hsplit U` as an intermediate fact. Conclude with `inferInstanceAs (Mono ((ModuleCat.extendScalars.{1, 1, 1} f).map ((kernel.ι (q ≫ p)).app U)))`. Establish `: Mono ι'` using `NatTrans.mono_of_mono_app _`. Use `⟨adj'.homEquiv _ I (Injective.factorThru ((adj'.homEquiv _ I).symm z) ι'), ?_⟩` and prove the remaining obligations.
+
+Use `(adj'.homEquiv_naturality_left _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Injective.comp_factorThru]`. Conclude with `Equiv.apply_symm_apply _ _`.
+-/
 theorem presheaf_ext_eq_zero (I : Cᵒᵖ ⥤ ModuleCat.{1} S) [Injective I] (n : ℕ) {P : Cᵒᵖ ⥤ ModuleCat.{1} R}
     (hP : PointwiseProjective P) (x : Ext.{1} P (I ⋙ ModuleCat.restrictScalars.{1} f) (n + 1)) : x = 0 := by
   refine ext_eq_zero_of_class.{1} _ PointwiseProjective ?_ n hP x
@@ -196,6 +257,21 @@ theorem presheaf_ext_eq_zero (I : Cᵒᵖ ⥤ ModuleCat.{1} S) [Injective I] (n 
 def Limp (F : Sheaf J (ModuleCat.{1} R)) : Prop :=
   ∀ (n : ℕ) (P : Cᵒᵖ ⥤ ModuleCat.{1} R), PointwiseProjective P → ∀ x : Ext.{1} P F.obj (n + 1), x = 0
 
+/- English proof (translation)
+Set `T'` to `T.map (sheafToPresheaf J _)`. Use `hT.mono_f` as an intermediate fact. Establish `hex : T'.Exact` using `hT.exact.map_of_mono_of_preservesKernel _ inferInstance inferInstance`. Establish `hm : Mono T'.f` using `inferInstanceAs (Mono ((sheafToPresheaf J _).map T.f))`. Set `m : cokernel T'.f ⟶ T'.X₃` to `cokernel.desc _ T'.g T'.zero`.
+
+Establish `hmm : Mono m` using `hex.mono_cokernelDesc`. Establish `hS : (ShortComplex.mk _ _ (cokernel.condition T'.f)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Set `adj` to `(ModuleCat.adj R).whiskerRight Cᵒᵖ`. Set `U` to `(Functor.whiskeringRight Cᵒᵖ _ _).obj (forget (ModuleCat.{1} R))`. Take `⟨l, hl⟩` from `Ext.covariant_sequence_exact₃ _ hS (Ext.mk₀ (adj.counit.app (cokernel T'.f))) rfl (h 0 _ (pointwiseProjective_free _) _)`.
+
+Take `⟨l, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective l`. Rewrite `hl` using `[Ext.mk₀_comp_mk₀]`. Establish `hl' : l ≫ cokernel.π T'.f = adj.counit.app (cokernel T'.f)` using `(Ext.mk₀_bijective _ _).injective hl`. Set `l' : U.obj (cokernel T'.f) ⟶ U.obj T'.X₂` to `adj.homEquiv _ _ l`. Establish `hl'' : l' ≫ U.map (cokernel.π T'.f) = 𝟙 _`.
+
+Use `(adj.homEquiv_naturality_right _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hl']`. Conclude with `adj.right_triangle_components _`. Establish `hg : cokernel.π T'.f ≫ m = T'.g` using `cokernel.π_desc _ _ _`. Use `hT.epi_g` as an intermediate fact.
+
+Establish `hls : Presheaf.IsLocallySurjective J T'.g` using `(Sheaf.isLocallySurjective_iff_epi' (ModuleCat.{1} R) T.g).2 inferInstance`. Establish `hls' : Presheaf.IsLocallySurjective J m` using `Presheaf.isLocallySurjective_of_isLocallySurjective_fac J hg`. Establish `hW : J.W (U.map m)`. Rewrite using `[J.W_iff_isLocallyBijective]`. Use `⟨Presheaf.isLocallyInjective_of_injective J _ fun X => ?_, (Presheaf.isLocallySurjective_iff_whisker_forget J m).1 hls'⟩` and prove the remaining obligations.
+
+Conclude with `(ModuleCat.mono_iff_injective (m.app X)).1 inferInstance`. Establish `s₂ : Presheaf.IsSheaf J (U.obj T'.X₂)` using `((sheafCompose J (forget (ModuleCat.{1} R))).obj T.X₂).property`. Establish `s₃ : Presheaf.IsSheaf J (U.obj T'.X₃)` using `((sheafCompose J (forget (ModuleCat.{1} R))).obj T.X₃).property`. Take `⟨σ, hσ⟩` from `(hW _ s₂).surjective l'`. Establish `hid : σ ≫ U.map T'.g = 𝟙 _`.
+
+Apply `(hW _ s₃).injective` to reduce the goal to its premises. Simplify using `only at hσ ⊢`. Rewrite using `[← Category.assoc, hσ, ← hg, Functor.map_comp, ← Category.assoc, hl'', Category.id_comp, Category.comp_id]`. Establish `: Epi (U.map T'.g)` using `epi_of_epi_fac hid`. Conclude with `U.epi_of_epi_map this`.
+-/
 theorem Limp.epi {T : ShortComplex (Sheaf J (ModuleCat.{1} R))} (hT : T.ShortExact) (h : Limp J T.X₁) :
     Epi T.g.hom := by
   let T' := T.map (sheafToPresheaf J _)
@@ -241,9 +317,25 @@ theorem Limp.epi {T : ShortComplex (Sheaf J (ModuleCat.{1} R))} (hT : T.ShortExa
 abbrev freeSheaf (R : Type 1) [CommRing R] : (Cᵒᵖ ⥤ Type 1) ⥤ Sheaf J (ModuleCat.{1} R) :=
   (Functor.whiskeringRight _ _ _).obj (ModuleCat.free R) ⋙ presheafToSheaf _ _
 
+/- English proof (translation)
+The claim follows from `(sheafificationAdjunction J (ModuleCat.{1} R)).map_injective I inferInstance`.
+-/
 theorem injective_obj (I : Sheaf J (ModuleCat.{1} R)) [Injective I] : Injective I.obj :=
   (sheafificationAdjunction J (ModuleCat.{1} R)).map_injective I inferInstance
 
+/- English proof (translation)
+Proceed by induction on `n generalizing F with`. Consider the case `zero`. Take `⟨I, Q, i, q, hz, hS, hI, hx⟩` from `exists_shift.{1} (Z := (presheafToSheaf J _).obj P) F 0`. Take `⟨y, rfl⟩` from `hx x`. Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`.
+
+Establish `hepi` using `Limp.epi J hS h`. Use `hS.mono_f` as an intermediate fact. Establish `hS' : ((ShortComplex.mk i q hz).map (sheafToPresheaf J _)).ShortExact` using `{ exact := hS.exact.map_of_mono_of_preservesKernel _ inferInstance inferInstance mono_f := inferInstanceAs (Mono ((sheafToPresheaf J _).map (ShortComplex.mk i q hz).f)) epi_g := hepi }`. Set `adj` to `sheafificationAdjunction J (ModuleCat.{1} R)`. Take `⟨l, hl⟩` from `Ext.covariant_sequence_exact₃ _ hS' (Ext.mk₀ (adj.homEquiv P Q g)) rfl (h 0 _ hP _)`.
+
+Take `⟨l, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective l`. Rewrite `hl` using `[Ext.mk₀_comp_mk₀]`. Establish `hl' : l ≫ (sheafToPresheaf J _).map q = adj.homEquiv P Q g` using `(Ext.mk₀_bijective _ _).injective hl`. Establish `hg : g = (adj.homEquiv P I).symm l ≫ q` using `((adj.homEquiv_naturality_right_symm (X := P) (Y := I) l q).symm.trans ((congrArg (adj.homEquiv P Q).symm hl').trans (Equiv.symm_apply_apply _ _))).symm`. Rewrite using `[hg, ← Ext.mk₀_comp_mk₀_assoc]`.
+
+Use `erw [hS.comp_extClass]`. Conclude with `Ext.comp_zero _ _ _ _ _`. Consider the case `succ n hn`. Take `⟨I, Q, i, q, hz, hS, hI, hx⟩` from `exists_shift.{1} (Z := (presheafToSheaf J _).obj P) F (n + 1)`. Take `⟨y, rfl⟩` from `hx x`.
+
+Establish `hepi` using `Limp.epi J hS h`. Use `hS.mono_f` as an intermediate fact. Establish `hS' : ((ShortComplex.mk i q hz).map (sheafToPresheaf J _)).ShortExact` using `{ exact := hS.exact.map_of_mono_of_preservesKernel _ inferInstance inferInstance mono_f := inferInstanceAs (Mono ((sheafToPresheaf J _).map (ShortComplex.mk i q hz).f)) epi_g := hepi }`. Establish `hQ : Limp J Q` using `fun k P' hP' z => by`. Take `⟨l, hl⟩` from `Ext.covariant_sequence_exact₃ _ hS' z rfl (h _ _ hP' _)`.
+
+Establish `: Injective ((ShortComplex.mk i q hz).map (sheafToPresheaf J _)).X₂` using `injective_obj J I`. Rewrite using `[← hl, Subsingleton.elim l 0]`. Conclude with `Ext.zero_comp _ _ _ _ _`. Rewrite using `[hn hQ y]`. Conclude with `Ext.zero_comp _ _ _ _ _`.
+-/
 theorem Limp.ext_eq_zero (n : ℕ) {P : Cᵒᵖ ⥤ ModuleCat.{1} R} (hP : PointwiseProjective P)
     {F : Sheaf J (ModuleCat.{1} R)} (h : Limp J F)
     (x : Ext.{1} ((presheafToSheaf J _).obj P) F (n + 1)) : x = 0 := by
@@ -300,6 +392,9 @@ instance : PreservesFiniteColimits (res J f) := by
     (Functor.rightUnitor _).symm ≪≫ Functor.isoWhiskerLeft _ (sheafificationNatIso J _)
   exact preservesFiniteColimits_of_natIso j.symm
 
+/- English proof (translation)
+Use `injective_obj J I` as an intermediate fact. Conclude with `Limp.ext_eq_zero J n hP (fun k P' hP' z => presheaf_ext_eq_zero f I.obj k hP' z) x`.
+-/
 theorem ext_res_eq_zero (I : Sheaf J (ModuleCat.{1} S)) (hI : Injective I) (n : ℕ) {P : Cᵒᵖ ⥤ ModuleCat.{1} R}
     (hP : PointwiseProjective P) (x : Ext.{1} ((presheafToSheaf J _).obj P) ((res J f).obj I) (n + 1)) : x = 0 := by
   have := injective_obj J I
@@ -309,6 +404,9 @@ def freeEquiv (T : Cᵒᵖ ⥤ Type 1) (F : Sheaf J (ModuleCat.{1} R)) :
     ((freeSheaf J R).obj T ⟶ F) ≃ (T ⟶ F.obj ⋙ forget _) :=
   ((sheafificationAdjunction J _).homEquiv _ F).trans (((ModuleCat.adj R).whiskerRight Cᵒᵖ).homEquiv T F.obj)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem freeEquiv_comp (T : Cᵒᵖ ⥤ Type 1) {F G : Sheaf J (ModuleCat.{1} R)} (g : (freeSheaf J R).obj T ⟶ F)
     (u : F ⟶ G) : freeEquiv J T G (g ≫ u) = freeEquiv J T F g ≫ Functor.whiskerRight u.hom (forget _) := rfl
 
@@ -316,6 +414,9 @@ def resEquiv (T : Cᵒᵖ ⥤ Type 1) (G : Sheaf J (ModuleCat.{1} S)) :
     ((freeSheaf J S).obj T ⟶ G) ≃ ((freeSheaf J R).obj T ⟶ (res J f).obj G) :=
   (freeEquiv J T G).trans (freeEquiv J T ((res J f).obj G)).symm
 
+/- English proof (translation)
+The claim follows from `(freeEquiv J T ((res J f).obj G)).apply_symm_apply _`.
+-/
 theorem freeEquiv_resEquiv (T : Cᵒᵖ ⥤ Type 1) (G : Sheaf J (ModuleCat.{1} S)) (g : (freeSheaf J S).obj T ⟶ G) :
     freeEquiv J T ((res J f).obj G) (resEquiv J f T G g) = freeEquiv J T G g :=
   (freeEquiv J T ((res J f).obj G)).apply_symm_apply _
@@ -323,6 +424,9 @@ theorem freeEquiv_resEquiv (T : Cᵒᵖ ⥤ Type 1) (G : Sheaf J (ModuleCat.{1} 
 def freeUnit (T : Cᵒᵖ ⥤ Type 1) : (freeSheaf J R).obj T ⟶ (res J f).obj ((freeSheaf J S).obj T) :=
   resEquiv J f T _ (𝟙 _)
 
+/- English proof (translation)
+Apply `(freeEquiv J T _).injective` to reduce the goal to its premises. Rewrite using `[freeEquiv_comp, freeUnit, freeEquiv_resEquiv, freeEquiv_resEquiv]`. Conclude with `(freeEquiv_comp J T (𝟙 _) g).symm.trans (congrArg _ (Category.id_comp g))`.
+-/
 theorem freeUnit_comp (T : Cᵒᵖ ⥤ Type 1) {G : Sheaf J (ModuleCat.{1} S)} (g : (freeSheaf J S).obj T ⟶ G) :
     freeUnit J f T ≫ (res J f).map g = resEquiv J f T G g := by
   apply (freeEquiv J T _).injective
@@ -340,6 +444,9 @@ def cmp (T : Cᵒᵖ ⥤ Type 1) (G : Sheaf J (ModuleCat.{1} S)) (n : ℕ) :
         exact (resEquiv J f T F).bijective)
       (fun I hI k x => ext_res_eq_zero J f I hI k (pointwiseProjective_free T) x) n G)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_apply (T : Cᵒᵖ ⥤ Type 1) (G : Sheaf J (ModuleCat.{1} S)) (n : ℕ) (y : Ext.{1} ((freeSheaf J S).obj T) G n) :
     cmp J f T G n y = (Ext.mk₀ (freeUnit J f T)).comp (y.mapExactFunctor (res J f)) (zero_add n) := rfl
 
@@ -349,22 +456,34 @@ def change (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) :
     Ext.{1} ((freeSheaf J R).obj T) F n →+ Ext.{1} ((freeSheaf J S).obj T) G n :=
   (cmp J f T G n).symm.toAddMonoidHom.comp ((Ext.mk₀ u).postcomp _ (add_zero n))
 
+/- English proof (translation)
+The claim follows from `(cmp J f T G n).apply_symm_apply _`.
+-/
 theorem cmp_change (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
     cmp J f T G n (change J f u T n x) = x.comp (Ext.mk₀ u) (add_zero n) :=
   (cmp J f T G n).apply_symm_apply _
 
+/- English proof (translation)
+Apply `(cmp J f T G 0).injective` to reduce the goal to its premises. Rewrite using `[cmp_change, cmp_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀, freeUnit_comp, Equiv.apply_symm_apply]`.
+-/
 theorem change_mk₀ (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (g : (freeSheaf J R).obj T ⟶ F) :
     change J f u T 0 (Ext.mk₀ g) = Ext.mk₀ ((resEquiv J f T G).symm (g ≫ u)) := by
   apply (cmp J f T G 0).injective
   rw [cmp_change, cmp_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀, freeUnit_comp,
     Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Apply `(cmp J f T G n).injective` to reduce the goal to its premises. Rewrite using `[cmp_change, cmp_change, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]`.
+-/
 theorem change_postcomp_left (v : F ⟶ F') (u : F' ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ)
     (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
     change J f u T n (x.comp (Ext.mk₀ v) (add_zero n)) = change J f (v ≫ u) T n x := by
   apply (cmp J f T G n).injective
   rw [cmp_change, cmp_change, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]
 
+/- English proof (translation)
+Apply `(cmp J f T G' n).injective` to reduce the goal to its premises. Rewrite using `[cmp_change, cmp_apply, Ext.mapExactFunctor_comp, Ext.mapExactFunctor_mk₀, ← Ext.comp_assoc_of_third_deg_zero, ← cmp_apply, cmp_change, Ext.comp_assoc_of_third_deg_zero, Ext.mk₀_comp_mk₀]`.
+-/
 theorem change_postcomp_right (u : F ⟶ (res J f).obj G) (v : G ⟶ G') (T : Cᵒᵖ ⥤ Type 1) (n : ℕ)
     (x : Ext.{1} ((freeSheaf J R).obj T) F n) :
     (change J f u T n x).comp (Ext.mk₀ v) (add_zero n) = change J f (u ≫ (res J f).map v) T n x := by
@@ -373,6 +492,9 @@ theorem change_postcomp_right (u : F ⟶ (res J f).obj G) (v : G ⟶ G') (T : C�
     ← Ext.comp_assoc_of_third_deg_zero, ← cmp_apply, cmp_change, Ext.comp_assoc_of_third_deg_zero,
     Ext.mk₀_comp_mk₀]
 
+/- English proof (translation)
+Rewrite using `[Ext.smul_eq_comp_mk₀, Ext.smul_eq_comp_mk₀, change_postcomp_left, change_postcomp_right]`. Establish `h : (res J f).map (f r • 𝟙 G) = r • 𝟙 _` using `rfl`. Rewrite using `[h, Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]`.
+-/
 theorem change_smul (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : ℕ) (r : R)
     (x : Ext.{1} ((freeSheaf J R).obj T) F n) : change J f u T n (r • x) = f r • change J f u T n x := by
   rw [Ext.smul_eq_comp_mk₀, Ext.smul_eq_comp_mk₀, change_postcomp_left, change_postcomp_right]

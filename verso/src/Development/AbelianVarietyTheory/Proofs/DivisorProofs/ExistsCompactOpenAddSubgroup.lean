@@ -10,6 +10,9 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V]
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
 
+/- English proof (translation)
+Take `⟨C, hC, hC0⟩` from `exists_compact_mem_nhds (0 : V)`. Take `⟨K, hK⟩` from `NonarchimedeanAddGroup.is_nonarchimedean C hC0`. Conclude with `⟨K, hC.of_isClosed_subset K.isClosed hK⟩`.
+-/
 theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_compact_openAddSubgroup [NonarchimedeanAddGroup V]
     [LocallyCompactSpace V] :
     ∃ K : OpenAddSubgroup V, IsCompact (K : Set V) := by
@@ -20,6 +23,11 @@ theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_compact_openAddSubgroup [Nonar
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.WeilM.SB, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq]`. Use `⟨?_, HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (K : Set V)`. Conclude with `⟨K, K.isOpen, hx, fun y hy => by simp [Set.indicator_of_mem hy, Set.indicator_of_mem hx]⟩`.
+
+Conclude with `⟨(K : Set V)ᶜ, K.isClosed.isOpen_compl, hx, fun y hy => by`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`.
+-/
 theorem _root_.GlobalTheory.WeilM.HaarUniq.indicator_mem [IsTopologicalAddGroup V] [T2Space V]
     (K : OpenAddSubgroup V) (hK : IsCompact (K : Set V)) :
     Set.indicator (K : Set V) (fun _ => (1 : ℂ)) ∈ _root_.GlobalTheory.WeilM.SB V := by
@@ -35,6 +43,21 @@ theorem _root_.GlobalTheory.WeilM.HaarUniq.indicator_mem [IsTopologicalAddGroup 
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
 
+/- English proof (translation)
+Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ`. Simplify `hφ` using `[_root_.GlobalTheory.WeilM.SB]`. Take `⟨hlc, hcs⟩` from `hφ'`. Establish `hnhds : ∀ x : V, (fun w => x + w) ⁻¹' {y | φ y = φ x} ∈ 𝓝 (0 : V)`. Introduce `x`.
+
+Use `(continuous_const_add x).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `(hlc.isOpen_fiber (φ x)).mem_nhds rfl`. Use `choose W hW using fun x => NonarchimedeanAddGroup.is_nonarchimedean _ (hnhds x)`. Establish `hval : ∀ i y, y - i ∈ W i → φ y = φ i`.
+
+Introduce `i y hy`. Use `hW i hy` as an intermediate fact. Simplify using `using this`. Take `⟨t, ht⟩` from `hcs.isCompact.elim_finite_subcover (fun i => (fun y => y - i) ⁻¹' (W i)) (fun i => (W i).isOpen.preimage (continuous_sub_right i)) (fun y _ => Set.mem_iUnion.2 ⟨y, by simpa using (W y).zero_mem⟩)`. Use `⟨t.inf W, fun k hk x => ?_⟩` and prove the remaining obligations.
+
+Establish `hkW : ∀ i ∈ t, k ∈ W i` using `fun i hi => (Finset.inf_le hi : t.inf W ≤ W i) hk`. Distinguish the cases in `hx : x ∈ tsupport φ`. Take `⟨i, hi, hxi⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Establish `hxi' : x - i ∈ W i` using `hxi`. Establish `hxk : x + k - i ∈ W i`.
+
+Use `(W i).add_mem hxi' (hkW i hi)` as an intermediate fact. Rewrite `this` using `[sub_add_eq_add_sub]`. Then use the resulting hypothesis. Rewrite using `[hval i _ hxk, hval i _ hxi']`. Distinguish the cases in `hxk : x + k ∈ tsupport φ`. Take `⟨i, hi, hxi⟩` from `Set.mem_iUnion₂.1 (ht hxk)`.
+
+Establish `hxi' : x + k - i ∈ W i` using `hxi`. Establish `hx' : x - i ∈ W i`. Use `(W i).sub_mem hxi' (hkW i hi)` as an intermediate fact. Rewrite `this` using `[sub_right_comm, add_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[hval i _ hxi', hval i _ hx']`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxk]`.
+-/
 theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_invariant [NonarchimedeanAddGroup V] {φ : V → ℂ}
     (hφ : φ ∈ _root_.GlobalTheory.WeilM.SB V) :
     ∃ K : OpenAddSubgroup V, ∀ k ∈ K, ∀ x, φ (x + k) = φ x := by
@@ -75,6 +98,17 @@ theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_invariant [NonarchimedeanAddGr
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (fun p : V => (fun y => -p + y) ⁻¹' (K : Set V)) (fun p => K.isOpen.preimage (continuous_const_add (-p))) (fun y _ => Set.mem_iUnion.2 ⟨y, by simpa using K.zero_mem⟩)`. Use `⟨t.image (QuotientAddGroup.mk : V → V ⧸ K.toAddSubgroup), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hmem : ∀ q : V ⧸ K.toAddSubgroup, (x + -q.out ∈ (K : Set V)) ↔ q = (QuotientAddGroup.mk x : V ⧸ K.toAddSubgroup)`. Introduce `q`.
+
+Use `conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[QuotientAddGroup.eq, add_comm]`. Simplify using the standard rewrite rules. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Set.indicator_apply, hmem, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+
+Use `split_ifs with hS`. Establish `h` using `QuotientAddGroup.out_eq' (QuotientAddGroup.mk x : V ⧸ K.toAddSubgroup)`. Rewrite `h` using `[QuotientAddGroup.eq]`. Use `hinv _ h ((QuotientAddGroup.mk x : V ⧸ K.toAddSubgroup).out)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`.
+
+Conclude with `this`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hx`. Apply `hS` to reduce the goal to its premises. Take `⟨p, hp, hxp⟩` from `Set.mem_iUnion₂.1 (ht hx)`.
+
+Use `Finset.mem_image.2 ⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq]`. Simplify using `using hxp`.
+-/
 theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_decomp [IsTopologicalAddGroup V] (K : OpenAddSubgroup V)
     {φ : V → ℂ} (hc : HasCompactSupport φ) (hinv : ∀ k ∈ K, ∀ x, φ (x + k) = φ x) :
     ∃ S : Finset (V ⧸ K.toAddSubgroup),
@@ -110,6 +144,15 @@ theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_decomp [IsTopologicalAddGroup 
 
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
+/- English proof (translation)
+Take `⟨S, hS⟩` from `_root_.GlobalTheory.WeilM.HaarUniq.exists_decomp H hc hinv`. Establish `hmemH` using `_root_.GlobalTheory.WeilM.HaarUniq.indicator_mem H hH`. Establish `hint : Integrable (Set.indicator (H : Set V) (fun _ => (1 : ℂ))) μ` using `(integrable_indicator_iff H.isOpen.measurableSet).2 (integrableOn_const hH.measure_lt_top.ne)`. Use `⟨∑ q ∈ S, φ q.out, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hm _ hmemH]`. Use `_ = _ := by rw [Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hS]`. Use `_ = ∑ q ∈ S, φ q.out * (μ.real (H : Set V) : ℂ) := by`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, integral_add_right_eq_self (fun x => Set.indicator (H : Set V) (fun _ => (1 : ℂ)) x), integral_indicator_const _ H.isOpen.measurableSet]`. Simplify using the standard rewrite rules. Introduce `q _`. Conclude with `(hint.comp_add_right _).const_mul _`. Use `_ = _ := by rw [Finset.sum_mul]`.
+-/
 private theorem exists_coeff_form_and_integral [IsTopologicalAddGroup V] [T2Space V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]
     (m : (V → ℂ) →ₗ[ℂ] ℂ)
@@ -149,6 +192,23 @@ private theorem exists_coeff_form_and_integral [IsTopologicalAddGroup V] [T2Spac
 open MeasureTheory Filter Topology in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] in
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ _ _ μ _ m hm`. Take `⟨K₀, hK₀⟩` from `_root_.GlobalTheory.WeilM.HaarUniq.exists_compact_openAddSubgroup (V := V)`. Establish `hpos : ∀ H : OpenAddSubgroup V, IsCompact (H : Set V) → μ.real (H : Set V) ≠ 0`. Introduce `H hH`. Rewrite using `[measureReal_def, ENNReal.toReal_ne_zero]`.
+
+Conclude with `⟨(H.isOpen.measure_pos μ ⟨0, H.zero_mem⟩).ne', hH.measure_lt_top.ne⟩`. Use `⟨m (Set.indicator (K₀ : Set V) (fun _ => (1 : ℂ))) / (μ.real (K₀ : Set V) : ℂ), fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ`. Simplify `hφ` using `[_root_.GlobalTheory.WeilM.SB]`. Take `⟨K₁, hK₁⟩` from `_root_.GlobalTheory.WeilM.HaarUniq.exists_invariant hφ`.
+
+Use `set H : OpenAddSubgroup V := K₀ ⊓ K₁`. Establish `hH : IsCompact (H : Set V)`. Use `hK₀.of_isClosed_subset H.isClosed ?_` and prove the remaining obligations. Rewrite using `[OpenAddSubgroup.coe_inf]`. Conclude with `Set.inter_subset_left`.
+
+Establish `hHK₁ : ∀ k ∈ H, k ∈ K₁` using `fun k hk => by`. Establish `: k ∈ (H : Set V)` using `hk`. Rewrite `this` using `[OpenAddSubgroup.coe_inf]`. Conclude with `this.2`. Establish `hHK₀ : ∀ k ∈ H, k ∈ K₀` using `fun k hk => by`.
+
+Establish `: k ∈ (H : Set V)` using `hk`. Rewrite `this` using `[OpenAddSubgroup.coe_inf]`. Conclude with `this.1`. Take `⟨A, hA₁, hA₂⟩` from `exists_coeff_form_and_integral μ m hm H hH hφ'.2 (fun k hk x => hK₁ k (hHK₁ k hk) x)`. Take `⟨B, hB₁, hB₂⟩` from `exists_coeff_form_and_integral μ m hm H hH (φ := Set.indicator (K₀ : Set V) (fun _ => (1 : ℂ))) (HasCompactSupport.intro hK₀ fun x hx => Set.indicator_of_notMem hx _) (fun k hk x => by`.
+
+Apply the tactic sequence `by_cases hx : x ∈ K₀ <;>`. Simplify using `[Set.indicator_apply, hx, add_mem_cancel_right (hHK₀ k hk)])`. Rewrite `hB₂` using `[integral_indicator_const _ K₀.isOpen.measurableSet, Complex.real_smul, mul_one]`. Establish `hH0 : (μ.real (H : Set V) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hpos H hH)`. Establish `hK0 : (μ.real (K₀ : Set V) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hpos K₀ hK₀)`.
+
+Rewrite using `[hA₁, hA₂, hB₁, hB₂]`. Establish `hB0 : B ≠ 0`. Introduce and unpack `rfl`. Apply `hK0` to reduce the goal to its premises. Rewrite using `[hB₂, zero_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.GlobalTheory.WeilM.HaarUniq.exists_eq_mul_integral : ∀ (V : Type) [AddCommGroup V]
     [TopologicalSpace V] [NonarchimedeanAddGroup V]
     [LocallyCompactSpace V] [T2Space V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)

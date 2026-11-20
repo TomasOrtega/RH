@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Take `⟨L', _, _, hfin, ⟨τ⟩⟩` from `GlobalTheory.T.exists_torus_extension_finite S t.G t.semi L z`. Establish `: CharZero L'` using `charZero_of_injective_algebraMap (algebraMap L L').injective`. Establish `: NumberField L'` using `NumberField.of_module_finite L L'`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.proved_CubePullSt (spMap (algebraMap L L') ≫ z) t`. Take `⟨tB, e, he, ha, hp⟩` from `GlobalTheory.T.torus_extension_abelian_quotient E H L' ⟨(Over.pullback (spMap (algebraMap L L') ≫ z)).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩ τ`.
+
+Conclude with `⟨L', _, inferInstance, algebraMap L L', ⟨⟨_, m, τ, tB, e, he, ha, hp⟩⟩⟩`.
+-/
 theorem abPart_exists (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S)
     (L : Type) [Field L] [NumberField L] (z : Sp L ⟶ S) :
     ∃ (L' : Type) (_ : Field L') (_ : NumberField L') (e : L →+* L'), Nonempty (AbPart t (spMap e ≫ z)) := by

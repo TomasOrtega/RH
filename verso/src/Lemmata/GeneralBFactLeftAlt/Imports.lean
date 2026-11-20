@@ -25,6 +25,11 @@ import Formalism.TameInertiaTowers.CentralOrderTwo.ConjEqInvOfPowEqOne
 
 namespace Bl.general_b_fact_left_alt
 
+/- English proof (translation)
+Introduce `E _ _ _ S Λ hΛ v`. Establish `hv : v ∈ Submodule.span E (Λ : Set S.V)`. Rewrite using `[hΛ.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy, z, rfl⟩` from `(IsLocalization.mem_span_iff (R := NumberField.RingOfIntegers E) (M := nonZeroDivisors (NumberField.RingOfIntegers E)) (S := E)).mp hv`.
+
+Rewrite `hy` using `[Submodule.span_eq]`. Use `⟨z, nonZeroDivisors.coe_ne_zero z, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul E (z : NumberField.RingOfIntegers E), smul_smul, IsLocalization.mk'_spec', map_one, one_smul]`. Conclude with `hy`.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [inst_1 : NumberField.{0} E] [inst_2 : StarRing.{0} E] {S : Formalism.BasicNotions.HSpace E}
   (Λ : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} E) S.V),

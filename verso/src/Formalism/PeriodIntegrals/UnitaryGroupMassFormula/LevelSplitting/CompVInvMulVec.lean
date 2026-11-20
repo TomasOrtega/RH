@@ -11,9 +11,17 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   PI.LevelKSplit.W.Glob
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ K).equivFun.injective.countable`.
+-/
 theorem countable_nf (K : Type) [Field K] [NumberField K] : Countable K :=
   (Module.finBasis ℚ K).equivFun.injective.countable
 
+/- English proof (translation)
+Introduce `F _ _`. Use `haveI : Countable F := countable_nf F`. Use `haveI : Countable (𝓞 F) := (IsFractionRing.injective (𝓞 F) F).countable`. Establish `hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F)))`. Introduce `I`.
+
+Take `⟨s, hs⟩` from `IsNoetherian.noetherian I`. Conclude with `⟨s, hs⟩`. Use `haveI : Countable (Ideal (𝓞 F)) := hs.countable`. Establish `hinj : Function.Injective (fun P : HeightOneSpectrum (𝓞 F) => P.asIdeal)` using `fun P Q h => HeightOneSpectrum.ext h`. Conclude with `hinj.countable`.
+-/
 theorem places_countable : PlacesCountable := by
   intro F _ _
   haveI : Countable F := countable_nf F
@@ -27,6 +35,11 @@ theorem places_countable : PlacesCountable := by
     fun P Q h => HeightOneSpectrum.ext h
   exact hinj.countable
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hG y hy`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 private theorem mulVec_mem_span_of_mulVec_generators_mem {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) B) (G : Set (Fin n → B))
     (hG : ∀ y ∈ G, A.mulVec y ∈ Submodule.span O G) :
@@ -38,6 +51,13 @@ private theorem mulVec_mem_span_of_mulVec_generators_mem {O B : Type} [CommRing 
   | add a b _ _ ha hb => rw [Matrix.mulVec_add]; exact Submodule.add_mem _ ha hb
   | smul c a _ ha => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `hyS : y ∈ Submodule.span O G` using `Submodule.subset_span hy`. Use `⟨(h y).1 hyS, ?_⟩` and prove the remaining obligations. Rewrite using `[h (C.mulVec y), hAC y]`.
+
+Conclude with `hyS`. Introduce `h x`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => mulVec_mem_span_of_mulVec_generators_mem A G (fun y hy => (h y hy).1) x hx`. Introduce `hx`.
+
+Establish `hC` using `mulVec_mem_span_of_mulVec_generators_mem C G (fun y hy => (h y hy).2) _ hx`. Rewrite `hC` using `[hCA x]`. Then use the resulting hypothesis.
+-/
 theorem stab_iff {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
     (A C : Matrix (Fin n) (Fin n) B) (hCA : ∀ x, C.mulVec (A.mulVec x) = x)
     (hAC : ∀ x, A.mulVec (C.mulVec x) = x) (G : Set (Fin n → B)) :
@@ -56,6 +76,9 @@ theorem stab_iff {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
       have hC := mulVec_mem_span_of_mulVec_generators_mem C G (fun y hy => (h y hy).2) _ hx
       rwa [hCA x] at hC
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, map_inv, map_inv, Units.inv_mul, Matrix.one_mulVec]`.
+-/
 theorem compV_inv_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : HeightOneSpectrum (𝓞 F))
     (g : HA (Af F) σ J) (x : Fin n → Fv F v ⊗[F] E) :
@@ -65,6 +88,9 @@ theorem compV_inv_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
         Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) x) = x := by
   rw [Matrix.mulVec_mulVec, map_inv, map_inv, Units.inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, map_inv, map_inv, Units.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem compV_mulVec_inv {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : HeightOneSpectrum (𝓞 F))
     (g : HA (Af F) σ J) (x : Fin n → Fv F v ⊗[F] E) :
@@ -74,6 +100,17 @@ theorem compV_mulVec_inv {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
         Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) x) = x := by
   rw [Matrix.mulVec_mulVec, map_inv, map_inv, Units.mul_inv, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ M J _ Λ`. Use `haveI : Countable (HeightOneSpectrum (𝓞 F)) := places_countable F`. Use `haveI : Countable E := countable_nf E`. Unfold `Kf`. Rewrite using `[Subgroup.coe_iInf]`.
+
+Use `MeasurableSet.iInter fun v => ?_` and prove the remaining obligations. Set `Mf : HA (Af F) σ J → Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)` to `fun g => ((compV v (incAf σ J g) : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))`. Set `G : Set (Fin M → Fv F v ⊗[F] E)` to `ratV (F := F) (Fv F v) '' Λ`. Establish `hG : G.Countable` using `(Set.to_countable Λ).image _`. Establish `hset : ((Subgroup.comap ((compV v).comp (incAf σ J)) (Kloc v Λ) : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J)) = ⋂ y ∈ G, ((fun g => (Mf g).mulVec y) ⁻¹' (latLoc (E` using `E) v Λ : Set _) ∩ (fun g => (Mf g⁻¹).mulVec y) ⁻¹' (latLoc (E := E) v Λ : Set _)) := by`.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe]`. Express the relevant statement in the definitionally equal form `(∀ x, x ∈ latLoc (E := E) v Λ ↔ (Mf g).mulVec x ∈ latLoc (E := E) v Λ) ↔ _`. Conclude with `stab_iff (Mf g) (Mf g⁻¹) (compV_inv_mulVec v g) (compV_mulVec_inv v g) G`. Rewrite using `[hset]`.
+
+Use `MeasurableSet.biInter hG fun y _ => ?_` and prove the remaining obligations. Use `letI : MeasurableSpace (Fin M → Fv F v ⊗[F] E) := borel _`. Use `haveI : BorelSpace (Fin M → Fv F v ⊗[F] E) := ⟨rfl⟩`. Establish `hc : Continuous (fun g => (Mf g).mulVec y)` using `(h2 F E σ M J v).matrix_mulVec continuous_const`. Use `MeasurableSet.inter (hc.measurable (h3 F E M v Λ)) ?_` and prove the remaining obligations.
+
+Establish `hc' : Continuous (fun g => (Mf g⁻¹).mulVec y)` using `((h2 F E σ M J v).comp continuous_inv).matrix_mulVec continuous_const`. Conclude with `hc'.measurable (h3 F E M v Λ)`.
+-/
 theorem measKf_of (h2 : ContPlace) (h3 : LatBorel) : MeasKfAll := by
   intro F E _ _ _ _ _ σ _ M J _ Λ
   haveI : Countable (HeightOneSpectrum (𝓞 F)) := places_countable F

@@ -14,10 +14,20 @@ variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 def mapPt {n : ℕ} (p : Pt R n d) : Pt k n d := fun i => MvPowerSeries.map (algebraMap R k) (p i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mapPt, pt, MvPowerSeries.map_X]`.
+-/
 theorem mapPt_pt {n : ℕ} (j : Fin n) : mapPt k (pt R d j) = pt k d j := by
   funext i
   simp [mapPt, pt, MvPowerSeries.map_X]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hs : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => ![a] p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by`. Break down `p with ⟨j, l⟩` into its components or cases. Use `fin_cases j`. Conclude with `ha l)`.
+
+Simplify using `only [mapPt, comp1, ev]`. Rewrite using `[MvPowerSeries.map_subst hs]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Break down `p with ⟨j, l⟩` into its components or cases.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem mapPt_comp1 {n : ℕ} (φ : Pt R 1 d) (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) :
     mapPt k (comp1 φ a) = comp1 (mapPt k φ) (mapPt k a) := by
   funext i
@@ -32,6 +42,13 @@ theorem mapPt_comp1 {n : ℕ} (φ : Pt R 1 d) (a : Pt R n d) (ha : ∀ i, consta
   fin_cases j
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hs : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => ![u, v] p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by`. Break down `p with ⟨j, l⟩` into its components or cases. Use `fin_cases j`. Conclude with `hu l`.
+
+Conclude with `hv l)`. Simplify using `only [mapPt, addOf, ev]`. Rewrite using `[MvPowerSeries.map_subst hs]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Break down `p with ⟨j, l⟩` into its components or cases. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem mapPt_addOf {n : ℕ} (F : Fin d → PS R 2 d) (u v : Pt R n d) (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) :
     mapPt k (addOf F u v) = addOf (fun i => MvPowerSeries.map (algebraMap R k) (F i)) (mapPt k u) (mapPt k v) := by

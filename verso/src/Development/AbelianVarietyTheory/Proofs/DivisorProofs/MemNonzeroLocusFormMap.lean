@@ -21,9 +21,21 @@ section
 
 attribute [local instance low] specializationOrder
 
+/- English proof (translation)
+The claim follows from `Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := S))`.
+-/
 theorem dim_eq_krullDim : topologicalKrullDim S = Order.krullDim S :=
   Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := S))
 
+/- English proof (translation)
+Establish `key : ∀ a : S, Order.height (f a) ≤ Order.height a` using `fun a => by`. Use `Order.height_le_iff'.2 fun p hp => ?_` and prove the remaining obligations. Proceed by induction on `p using RelSeries.inductionOn' generalizing a with`. Consider the case `singleton x => simp`. Consider the case `snoc p x hx ih`.
+
+Simplify using `only [RelSeries.last_snoc] at hp`. Substitute `hp` using the available equality. Establish `hx' : p.last < f a` using `hx`. Take `⟨a', ha, e⟩` from `hf.specializingMap (show f a ⤳ p.last from hx'.le)`. Establish `hlt : a' < a` using `lt_of_le_of_ne ha fun h => hx'.ne (by rw [← e, h])`.
+
+Use `grw [RelSeries.snoc_length, Nat.cast_add, Nat.cast_one, ih a' e.symm]`. Conclude with `Order.height_add_one_le hlt`. Rewrite using `[dim_eq_krullDim, dim_eq_krullDim, Order.krullDim_eq_iSup_height, Order.krullDim_eq_iSup_height]`. Use `iSup_le fun b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hs b`.
+
+Conclude with `le_iSup_of_le a (WithBot.coe_le_coe.2 (key a))`.
+-/
 theorem dim_le_of_isClosedMap (hf : IsClosedMap f) (hs : Function.Surjective f) :
     topologicalKrullDim T ≤ topologicalKrullDim S := by
   have key : ∀ a : S, Order.height (f a) ≤ Order.height a := fun a => by
@@ -43,6 +55,9 @@ theorem dim_le_of_isClosedMap (hf : IsClosedMap f) (hs : Function.Surjective f) 
   obtain ⟨a, rfl⟩ := hs b
   exact le_iSup_of_le a (WithBot.coe_le_coe.2 (key a))
 
+/- English proof (translation)
+Rewrite using `[dim_eq_krullDim, dim_eq_krullDim]`. Use `Order.krullDim_le_of_strictMono f fun a b h => lt_of_le_of_ne (Specializes.map h.le hf) fun e => ?_` and prove the remaining obligations. Conclude with `h.ne' ((hd (f b)).eq_of_specializes h.le rfl e)`.
+-/
 theorem dim_le_of_isDiscrete (hf : Continuous f) (hd : ∀ y, _root_.IsDiscrete (f ⁻¹' {y})) :
     topologicalKrullDim S ≤ topologicalKrullDim T := by
   rw [dim_eq_krullDim, dim_eq_krullDim]
@@ -51,6 +66,11 @@ theorem dim_le_of_isDiscrete (hf : Continuous f) (hd : ∀ y, _root_.IsDiscrete 
 
 end
 
+/- English proof (translation)
+Use `hC.isClosedEmbedding_subtypeVal.quasiSober` as an intermediate fact. Use `(hf C hC).isClosedEmbedding_subtypeVal.quasiSober` as an intermediate fact. Use `dim_le_of_isClosedMap (f := Set.imageFactorization f C) (fun A hA => ?_) Set.imageFactorization_surjective` and prove the remaining obligations. Use `(hf _ (hC.isClosedMap_subtype_val A hA)).preimage (continuous_subtype_val (p := (· ∈ f '' C)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `⟨y, hy⟩`. Simplify using `[Set.imageFactorization, Subtype.ext_iff]`.
+-/
 theorem dim_image_le (hf : IsClosedMap f) {C : Set S} (hC : IsClosed C) :
     topologicalKrullDim (f '' C) ≤ topologicalKrullDim C := by
   have := hC.isClosedEmbedding_subtypeVal.quasiSober
@@ -61,6 +81,11 @@ theorem dim_image_le (hf : IsClosedMap f) {C : Set S} (hC : IsClosed C) :
   ext ⟨y, hy⟩
   simp [Set.imageFactorization, Subtype.ext_iff]
 
+/- English proof (translation)
+Use `hC.isClosedEmbedding_subtypeVal.quasiSober` as an intermediate fact. Use `(hf C hC).isClosedEmbedding_subtypeVal.quasiSober` as an intermediate fact. Use `(dim_image_le hf hC).antisymm (dim_le_of_isDiscrete (f := Set.imageFactorization f C) ((hc.comp continuous_subtype_val).subtype_mk _) fun y => ?_)` and prove the remaining obligations. Use `(hd y.1).preimage (f := (Subtype.val : C → S)) continuous_subtype_val.continuousOn Subtype.val_injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `⟨x, hx⟩`. Simplify using `[Set.imageFactorization, Subtype.ext_iff]`.
+-/
 theorem dim_image_eq (hc : Continuous f) (hf : IsClosedMap f) (hd : ∀ y, _root_.IsDiscrete (f ⁻¹' {y})) {C : Set S}
     (hC : IsClosed C) : topologicalKrullDim (f '' C) = topologicalKrullDim C := by
   have := hC.isClosedEmbedding_subtypeVal.quasiSober
@@ -79,6 +104,21 @@ section Nef
 
 variable {k : Type} [Field k] {X Y : Scheme.{0}} [Algebra k Γ(X, ⊤)] {H H' L M : LB X}
 
+/- English proof (translation)
+Use `letI := algebraΓAlong k (redι Z)`. Use `isIntegral_red hi` as an intermediate fact. Establish `: IsProper (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Rewrite using `[← comp_strHom (appTop_algebraMap_along k (redι Z))]`. Use `infer_instance`.
+
+Establish `hH'` using `hH.pull_of_isClosedImmersion (redι Z)`. Establish `hproj` using `hH'.isProjOver (strHom k _)`. Use `isNoetherian_of_isProjOver hproj` as an intermediate fact. Establish `hr : ∀ r, ((lbPow M r).pull (redι Z)).IsLB` using `fun r => LB.isLB_pull (isLB_lbPow hM r) _`. Break down `hd.eq_or_lt with hd' | hd'` into its components or cases.
+
+Establish `hZ : IsCompleteCurve k Z` using `(isCompleteCurve_iff (algebraMap_eq_strHom k X)).2 ⟨hi, hd'⟩`. Establish `hpos` using `hp hZ`. Use `set c := chi k (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) with hc`. Set `r` to `c.natAbs + 1`. Use `⟨r, by omega, lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := k) ?_⟩` and prove the remaining obligations.
+
+Establish `hN` using `isLB_dual (isLB_lbPow hM r)`. Establish `h₁` using `interNumRed_one_eq (k := k) hN Z`. Rewrite `h₁` using `[hZ.interNumRed_dual hH (isLB_lbPow hM r), hZ.interNumRed_lbPow hH hM, interNum_one k _ (LB.isLB_pull hN _)]`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq (structureModule _) (Twist.isLB_lbZPow (LB.isLB_pull hN (redι Z)) (-1)) (hr r) (by rw [cls_lbZPow (LB.isLB_pull hN _), cls_pull hN, cls_pull (isLB_lbPow hM r), cls_dual (isLB_lbPow hM r), map_neg, neg_one_zsmul, neg_neg])`. Use `Twist.isQuasicoherent_twist (F := structureModule _) (hr r)` as an intermediate fact.
+
+Establish `h₂` using `chi_eq_hdim_zero_sub_hdim_one k fun n hn => hH'.subsingleton_coh_of_dim_lt (twist (structureModule _) ((lbPow M r).pull (redι Z))) (n := n) (by rw [topologicalKrullDim_red, hd']; exact_mod_cast hn)`. Establish `h₃` using `(chi_congr k i).trans h₂`. Use `erw [h₃, ← hc] at h₁`. Rewrite using `[lineBundleGlobalSectionsDim_def]`. Establish `: (r : ℤ) ≤ r * interNumRed k Z ![M]` using `le_mul_of_one_le_right (Nat.cast_nonneg r) hpos`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h0 : suppDim (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) ≤ 0`. Rewrite using `[suppDim_structureModule, topologicalKrullDim_red]`. Conclude with `(ENat.WithBot.lt_add_one_iff (m := 0)).1 (by simpa using hd')`. Use `⟨1, le_rfl, lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := k) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lineBundleGlobalSectionsDim_def, hdim_twist_of_suppDim_le_zero k h0 (hr 1), ← hdim_twist_of_suppDim_le_zero k h0 (LB.isLB_triv _)]`. Conclude with `(lineBundleGlobalSectionsDim_pos_iff (finite_coh_zero_twist_of_isProjOver (algebraMap_eq_strHom k _) hproj (LB.isLB_triv _))).2 (isGenerated_triv _).hasNonzeroSec`.
+-/
 theorem exists_hasNonzeroSec [IsProper (strHom k X)] (hH : IsAmpleLB H) (hM : M.IsLB) {Z : Closeds X}
     (hi : IsIrreducible (Z : Set X)) (hd : topologicalKrullDim (Z : Set X) ≤ 1)
     (hp : IsCompleteCurve k Z → 0 < interNumRed k Z ![M]) :
@@ -122,6 +162,25 @@ theorem exists_hasNonzeroSec [IsProper (strHom k X)] (hH : IsAmpleLB H) (hM : M.
     exact (lineBundleGlobalSectionsDim_pos_iff (finite_coh_zero_twist_of_isProjOver (algebraMap_eq_strHom k _) hproj (LB.isLB_triv _))).2
       (isGenerated_triv _).hasNonzeroSec
 
+/- English proof (translation)
+Establish `hL` using `LB.isLB_pull h.isLB g`. Establish `hA` using `LB.isLB_pull hH.isLB g`. Use `⟨hL, fun C hC => ?_⟩` and prove the remaining obligations. Set `Z : Closeds X` to `Closeds.closure (g '' C)`. Establish `hZ : (Z : Set X) = g '' C` using `(hg _ C.isClosed).closure_eq`.
+
+Establish `hi : IsIrreducible (Z : Set X)` using `hZ ▸ hC.1.image g g.continuous.continuousOn`. Establish `hd : topologicalKrullDim (Z : Set X) ≤ 1` using `hZ ▸ (dim_image_le hg C.isClosed).trans hC.2.le`. Take `⟨φ, hφ⟩ : ∃ φ, φ ≫ redι Z = redι C ≫ g` from `⟨IsClosedImmersion.lift (redι Z) (redι C ≫ g) (by`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.map_vanishingIdeal]), IsClosedImmersion.lift_fac _ _ _⟩`. Establish `hs : Function.Surjective φ` using `fun z => by`.
+
+Take `⟨y, hy, e⟩` from `hZ.le ((range_redι Z).le ⟨z, rfl⟩)`. Take `⟨y, rfl⟩` from `(range_redι C).ge hy`. Conclude with `⟨y, (redι Z).isClosedEmbedding.injective ((congrArg (fun q => q y) hφ).trans e)⟩`. Establish `key : ∀ m : ℕ, 0 ≤ m * interNumRed E C ![L.pull g] + interNumRed E C ![H.pull g]` using `fun m => by`. Establish `hm` using `isLB_lbPow h.isLB m`.
+
+Establish `hT` using `isLB_tens hm hH.isLB`. Take `⟨r, hr, s, hs0⟩` from `exists_hasNonzeroSec (k := k) hH hT hi hd fun hZ' => by`. Rewrite using `[hZ'.interNumRed_of_cls_eq_add hH hT hm hH.isLB rfl, hZ'.interNumRed_lbPow hH h.isLB]`. Conclude with `add_pos_of_nonneg_of_pos (mul_nonneg (Nat.cast_nonneg m) (h.2 Z hZ')) (hH.interNumRed_pos hZ')`. Set `` to `algebraΓAlong E (redι C)`.
+
+Use `hC.isProper_strHom` as an intermediate fact. Use `isIntegral_red hC.1` as an intermediate fact. Use `isIntegral_red hi` as an intermediate fact. Establish `hr'` using `isLB_lbPow hT r`. Take `⟨x, hx⟩` from `hs (genericPoint _)`.
+
+Establish `hx' : x ∈ nonzeroLocus (secPull s φ)` using `(nonzeroLocus_secPull s φ).ge (by`. Express the relevant statement in the definitionally equal form `φ x ∈ nonzeroLocus s`. Rewrite using `[hx]`. Conclude with `(sec_ne_zero_iff s).1 hs0)`. Establish `h0` using `(interNum_one_nonneg_of_sec (k := E) (hH'.pull_of_isClosedImmersion (redι C)) ((topologicalKrullDim_red C).trans hC.2) (LB.isLB_pull (LB.isLB_pull hr' _) φ) (secPull s φ) ((sec_ne_zero_iff _).1 (sec_ne_zero_of_mem hx'))).1`.
+
+Establish `hT'` using `isLB_tens (isLB_lbPow hL m) hA`. Establish `h1 : interNumRed E C ![lbPow (tens (lbPow (L.pull g) m) (H.pull g)) r] = interNum E (structureModule _) ![((lbPow (tens (lbPow L m) H) r).pull (redι Z)).pull φ]`. Rewrite using `[interNumRed_one_eq (isLB_lbPow hT' r)]`. Use `interNum_congr_cls E _ (isLB_vecOne (LB.isLB_pull (isLB_lbPow hT' r) _)) (isLB_vecOne (LB.isLB_pull (LB.isLB_pull hr' _) φ)) fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+
+Express the relevant statement in the definitionally equal form `pull (redι C) (cls _ (isLB_lbPow hT' r)) = pull φ (pull (redι Z) (cls _ hr'))`. Rewrite using `[← pull_comp, hφ, pull_comp, cls_lbPow_tens_lbPow hL hA, cls_lbPow_tens_lbPow h.isLB hH.isLB, cls_pull h.isLB, cls_pull hH.isLB, map_nsmul (pull g), map_add (pull g), map_nsmul (pull g)]`. Rewrite `h0` using `[← h1, hC.interNumRed_lbPow hH' hT', hC.interNumRed_of_cls_eq_add hH' hT' (isLB_lbPow hL m) hA rfl, hC.interNumRed_lbPow hH' hL]`. Conclude with `nonneg_of_mul_nonneg_right h0 (Nat.cast_pos.2 hr)`. Use `by_contra! hneg`.
+
+Use `key ((interNumRed E C ![H.pull g]).natAbs + 1)` as an intermediate fact. Establish `h2` using `le_abs_self (interNumRed E C ![H.pull g])`. Establish `h3` using `abs_nonneg (interNumRed E C ![H.pull g])`. Move the coercions through the operations in `at this`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem isNef_pull {E : Type} [Field E] [Algebra E Γ(Y, ⊤)] [IsProper (strHom k X)] (h : IsNef k L)
     (hH : IsAmpleLB H) {H' : LB Y} (hH' : IsAmpleLB H') (g : Y ⟶ X) (hg : IsClosedMap g) : IsNef E (L.pull g) := by
   have hL := LB.isLB_pull h.isLB g
@@ -185,16 +244,25 @@ variable {k E : Type} [Field k] [Field E] [Algebra k E] [FiniteDimensional k E] 
 
 include H
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback H.flip ((IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance))`.
+-/
 theorem isFinite_proj : IsFinite π :=
   MorphismProperty.of_isPullback H.flip ((IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance))
 
 omit [FiniteDimensional k E] in
 
+/- English proof (translation)
+The claim follows from `have : Surjective (spMap (algebraMap k E)) := ⟨Function.surjective_to_subsingleton _⟩ have : Surjective π := MorphismProperty.of_isPullback H.flip this π.surjective`.
+-/
 theorem surjective_proj : Function.Surjective π :=
   have : Surjective (spMap (algebraMap k E)) := ⟨Function.surjective_to_subsingleton _⟩
   have : Surjective π := MorphismProperty.of_isPullback H.flip this
   π.surjective
 
+/- English proof (translation)
+The claim follows from `have := isFinite_proj H le_antisymm (dim_le_of_isDiscrete π.continuous π.isDiscrete_preimage_singleton) (dim_le_of_isClosedMap π.isClosedMap (surjective_proj H))`.
+-/
 theorem dim_eq : topologicalKrullDim X' = topologicalKrullDim X :=
   have := isFinite_proj H
   le_antisymm (dim_le_of_isDiscrete π.continuous π.isDiscrete_preimage_singleton)
@@ -202,10 +270,18 @@ theorem dim_eq : topologicalKrullDim X' = topologicalKrullDim X :=
 
 omit [FiniteDimensional k E] in
 
+/- English proof (translation)
+Take `⟨N, i, hi, e⟩` from `ProjSpace.isProjOver_pullback_snd (algebraMap k E) hf`. Conclude with `⟨N, H.isoPullback.hom ≫ i, inferInstance, by rw [Category.assoc, e, H.isoPullback_hom_snd]⟩`.
+-/
 theorem isProjOver_of_isPullback (hf : IsProjOver f) : IsProjOver f' := by
   obtain ⟨N, i, hi, e⟩ := ProjSpace.isProjOver_pullback_snd (algebraMap k E) hf
   exact ⟨N, H.isoPullback.hom ≫ i, inferInstance, by rw [Category.assoc, e, H.isoPullback_hom_snd]⟩
 
+/- English proof (translation)
+Set `` to `algebraΓOfHom f`. Set `` to `algebraΓOfHom f'`. Introduce `h`. Use `isFinite_proj H` as an intermediate fact. Take `⟨hp, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf`.
+
+Establish `: IsProper (strHom k X)` using `by rwa [strHom_eq (f := f) fun _ => rfl]`. Conclude with `isNef_pull h hA (hA.pull_of_isAffineHom π) π π.isClosedMap`.
+-/
 theorem isNef_baseChange (hf : IsProjOver f) {L : LB X} :
     letI := algebraΓOfHom f
     letI := algebraΓOfHom f'
@@ -218,6 +294,11 @@ theorem isNef_baseChange (hf : IsProjOver f) {L : LB X} :
   have : IsProper (strHom k X) := by rwa [strHom_eq (f := f) fun _ => rfl]
   exact isNef_pull h hA (hA.pull_of_isAffineHom π) π π.isClosedMap
 
+/- English proof (translation)
+Set `` to `algebraΓOfHom f`. Set `` to `algebraΓOfHom f'`. Introduce `h`. Use `((isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf).1` as an intermediate fact. Take `⟨D, hD, c, hc, hm⟩` from `h.3`.
+
+Establish `hL` using `LB.isLB_pull h.1 π`. Use `(isBig_iff (f := f') (fun _ => rfl) (isProjOver_of_isPullback H hf) ((dim_eq H).trans hD)).2 ⟨hL, c, hc, hm.mono fun m hm => hm.trans_eq (congrArg _ ?_)⟩` and prove the remaining obligations. Rewrite using `[lineBundleGlobalSectionsDim_congr_picardClass (isLB_lbPow hL m) (LB.isLB_pull (isLB_lbPow h.1 m) π) (by rw [cls_lbPow hL, cls_pull h.1, cls_pull (isLB_lbPow h.1 m), cls_lbPow h.1, map_nsmul])]`. Conclude with `(FieldChangeInter.hdim_pull H (isLB_lbPow h.1 m) 0).symm`.
+-/
 theorem isBig_baseChange (hf : IsProjOver f) {L : LB X} :
     letI := algebraΓOfHom f
     letI := algebraΓOfHom f'
@@ -246,12 +327,20 @@ namespace LinSys
 
 variable {k : Type} [Field k] {S : LinSys k} (E : Type) [Field E] [Algebra k E]
 
+/- English proof (translation)
+Use `baseHom_ptOver (S := S) ⟨x ≫ S.bcFst E, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, (S.isPullback_baseChange E).w, ← Category.assoc, (S.baseChange E).comp_str, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem baseHom_comp_bcFst {K : Type} [Field K] (x : Sp K ⟶ (S.baseChange E).Y) :
     S.baseHom (x ≫ S.bcFst E) = ((S.baseChange E).baseHom x).comp (algebraMap k E) := by
   refine baseHom_ptOver (S := S) ⟨x ≫ S.bcFst E, ?_⟩
   rw [Category.assoc, (S.isPullback_baseChange E).w, ← Category.assoc, (S.baseChange E).comp_str, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `S.exists_coords_baseChange E (resPt y)`. Establish `e` using `Twist.eval₂Hom_unit_mul (S.baseHom (resPt y ≫ S.bcFst E)) (Units.mk0 c hc) (S.coords (resPt y ≫ S.bcFst E)) (mem_polyGrading_natCast.2 hg)`. Use `conv_lhs => rw [← ptOf_resPt y]`. Use `conv_rhs => rw [← ptOf_resPt y, ← ptOf_comp]`. Rewrite using `[← powVal_ne_zero_iff, ← powVal_ne_zero_iff, S.powVal_form]`.
+
+Use `erw [(S.baseChange E).powVal_form (resPt y) (hg.map (algebraMap k E)), h, eval₂_map]`. Rewrite using `[← baseHom_comp_bcFst]`. Conclude with `not_congr ((Eq.congr_left e).trans (Units.mul_right_eq_zero (Units.mk0 c hc ^ (d : ℤ))))`.
+-/
 theorem mem_nonzeroLocus_form_map {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg : g.IsHomogeneous d)
     (y : (S.baseChange E).Y) : y ∈ nonzeroLocus ((S.baseChange E).form (hg.map (algebraMap k E))) ↔
       S.bcFst E y ∈ nonzeroLocus (S.form hg) := by
@@ -265,6 +354,9 @@ theorem mem_nonzeroLocus_form_map {d : ℕ} {g : MvPolynomial (Fin S.N) k} (hg :
   rw [← baseHom_comp_bcFst]
   exact not_congr ((Eq.congr_left e).trans (Units.mul_right_eq_zero (Units.mk0 c hc ^ (d : ℤ))))
 
+/- English proof (translation)
+Introduce `C hC hi hd hb hc` and use `by have := isFinite_proj (S.isPullback_baseChange E) have hm := (S.bcFst E).isClosedMap refine h (S.bcFst E '' C) (hm C hC) (hi.image _ (S.bcFst E).continuous.continuousOn) ((dim_image_eq (S.bcFst E).continuous hm (S.bcFst E).isDiscrete_preimage_singleton hC).trans hd) (Set.disjo …`.
+-/
 theorem NoContract.baseChange [FiniteDimensional k E] {bd : Set S.Y} (h : S.NoContract bd) :
     (S.baseChange E).NoContract (S.bcFst E ⁻¹' bd) := fun C hC hi hd hb hc => by
   have := isFinite_proj (S.isPullback_baseChange E)
@@ -276,6 +368,13 @@ theorem NoContract.baseChange [FiniteDimensional k E] {bd : Set S.Y} (h : S.NoCo
   rw [← mem_nonzeroLocus_form_map, ← mem_nonzeroLocus_form_map]
   exact hc y hy y' hy' d _ _
 
+/- English proof (translation)
+Take `⟨⟨z, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K Y).symm.surjective w`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h`. Choose the witnesses or unpack the hypotheses as in `rfl : z = y := by`. Use `congrArg ptOf h` as an intermediate fact. Rewrite `this` using `[ptOf_resPt, ← Category.assoc, ptOf_comp]`.
+
+Conclude with `(Scheme.fromSpecResidueField_apply _ _).symm.trans this`. Establish `h' : Spec.map (φ ≫ CommRingCat.ofHom K.subtype) = Spec.map (𝟙 _)`. Rewrite using `[← cancel_mono (Y.fromSpecResidueField z), Spec.map_comp, Spec.map_id, Category.assoc, Category.id_comp]`. Conclude with `h`. Use `eq_top_iff.2 fun r _ => ?_` and prove the remaining obligations.
+
+Use `ConcreteCategory.congr_hom (Spec.map_injective h') r` as an intermediate fact. Conclude with `(show ((φ r : K) : Y.residueField z) = r from this) ▸ (φ r).2`.
+-/
 theorem eq_top_of_factor {Y : Scheme.{0}} {y : Y} (K : Subfield (Y.residueField y)) (w : Sp K ⟶ Y)
     (h : spMap K.subtype ≫ w = resPt y) : K = ⊤ := by
   obtain ⟨⟨z, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField K Y).symm.surjective w
@@ -291,6 +390,21 @@ theorem eq_top_of_factor {Y : Scheme.{0}} {y : Y} (K : Subfield (Y.residueField 
   have := ConcreteCategory.congr_hom (Spec.map_injective h') r
   exact (show ((φ r : K) : Y.residueField z) = r from this) ▸ (φ r).2
 
+/- English proof (translation)
+Take `⟨η, hη, hr⟩` from `h`. Use `⟨genericPoint _, genericPoint_spec _, ?_⟩` and prove the remaining obligations. Use `set η' := genericPoint (S.baseChange E).Y`. Choose the witnesses or unpack the hypotheses as in `rfl : S.bcFst E η' = η := by`. Use `(genericPoint_spec (S.baseChange E).Y).image (S.bcFst E).continuous` as an intermediate fact.
+
+Rewrite `this` using `[Set.image_univ, (surjective_proj (S.isPullback_baseChange E)).range_eq, closure_univ]`. Conclude with `this.eq hη`. Set `τ` to `((S.bcFst E).residueFieldMap η').hom`. Establish `hτ : spMap τ ≫ resPt (S.bcFst E η') = resPt η' ≫ S.bcFst E` using `Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField _ _`. Use `set K := (S.baseChange E).ratioField (resPt η')`.
+
+Establish `hE : ∀ a, (S.baseChange E).baseHom (resPt η') a ∈ K` using `fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Establish `hb : τ.comp (S.baseHom (resPt (S.bcFst E η'))) = ((S.baseChange E).baseHom (resPt η')).comp (algebraMap k E)`. Rewrite using `[← baseHom_comp_bcFst, ← hτ]`. Use `(baseHom_ptOver (S := S) ⟨spMap τ ≫ resPt (S.bcFst E η'), ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, S.comp_str, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hK : ∀ a, τ a ∈ K` using `fun a => by`. Take `⟨c, hc, e⟩` from `S.exists_coords_baseChange E (resPt η')`. Use `(show S.ratioField (resPt (S.bcFst E η')) ≤ K.comap τ from Subfield.closure_le.2 ?_) (hr.ge trivial)` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨i, j, rfl⟩)`.
+
+Conclude with `Subfield.mem_comap.2 (Set.mem_of_eq_of_mem (RingHom.congr_fun hb a) (hE _))`. Use `Subfield.subset_closure (Or.inr ⟨i, j, ?_⟩)` and prove the remaining obligations. Rewrite using `[e, ← hτ, coords_spMap_comp, map_div₀]`. Conclude with `(mul_div_mul_left _ _ hc).symm`. Use `eq_top_of_factor K ((S.isPullback_baseChange E).lift (spMap (τ.codRestrict K hK) ≫ resPt (S.bcFst E η')) (spMap (((S.baseChange E).baseHom (resPt η')).codRestrict K hE)) ?_) ((S.isPullback_baseChange E).hom_ext ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, S.comp_str, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => Subtype.ext (RingHom.congr_fun hb a)))`. Rewrite using `[Category.assoc, IsPullback.lift_fst, ← Category.assoc, ← Spec.map_comp, ← hτ]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, IsPullback.lift_snd, (S.baseChange E).comp_str, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Birational.baseChange [IrreducibleSpace (S.baseChange E).Y] (h : S.Birational) :
     (S.baseChange E).Birational := by
   obtain ⟨η, hη, hr⟩ := h
@@ -331,6 +445,11 @@ theorem Birational.baseChange [IrreducibleSpace (S.baseChange E).Y] (h : S.Birat
 
 end LinSys
 
+/- English proof (translation)
+Use `hv.isIntegral` as an intermediate fact. Use `(hv.baseChange E).isIntegral` as an intermediate fact. Establish `hl : nonzeroLocus (T.baseChange E).th = T.bcFst E ⁻¹ᵁ nonzeroLocus T.th` using `nonzeroLocus_chartSec _ T.th fun z _ _ => exists_chart (isLB_lbPow (LB.isLB_pull T.isLB _) _) z`. Use `⟨h.birational.baseChange E, h.noContract.baseChange E, h.one_le, ?_, fun y hy hy' => h.th_vanish _ hy (hl.le hy')⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `surjective_proj (T.isPullback_baseChange E) (genericPoint T.Y)`.
+
+Conclude with `sec_ne_zero_of_mem (x := y) (hl.ge (show T.bcFst E y ∈ _ from hy ▸ (sec_ne_zero_iff _).1 h.th_ne))`.
+-/
 theorem Tuple.IsBirationalOffBoundary.baseChange {F : Type} [Field F] [NumberField F] {T : Tuple F}
     (h : T.IsBirationalOffBoundary) (hv : T.IsVariety) (E : Type) [Field E] [NumberField E] [Algebra F E] :
     (T.baseChange E).IsBirationalOffBoundary := by
@@ -349,14 +468,23 @@ namespace GlobalTheory.HilbertSamuel.Geo
 
 variable {F : Type} [Field F] [NumberField F] (G : Geo F) (E : Type) [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `PosBaseChange.isNef_baseChange (G.isPullback_fst E) G.geom.alg.variety.proj h`.
+-/
 theorem isNef_baseChange (h : IsNef F G.LA) : IsNef E (G.baseChange E).LA :=
   PosBaseChange.isNef_baseChange (G.isPullback_fst E) G.geom.alg.variety.proj h
 
+/- English proof (translation)
+The claim follows from `PosBaseChange.isBig_baseChange (G.isPullback_fst E) G.geom.alg.variety.proj h`.
+-/
 theorem isBig_baseChange (h : IsBig F G.LA) : IsBig E (G.baseChange E).LA :=
   PosBaseChange.isBig_baseChange (G.isPullback_fst E) G.geom.alg.variety.proj h
 
 variable {G} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.bir.baseChange G.geom.alg.variety E, G.isNef_baseChange E h.nef, G.isBig_baseChange E h.big⟩`.
+-/
 theorem Positivity.baseChange (h : G.Positivity) : (G.baseChange E).Positivity :=
   ⟨h.bir.baseChange G.geom.alg.variety E, G.isNef_baseChange E h.nef, G.isBig_baseChange E h.big⟩
 

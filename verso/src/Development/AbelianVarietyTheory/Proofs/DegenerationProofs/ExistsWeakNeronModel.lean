@@ -16,12 +16,21 @@ noncomputable section
 namespace GlobalTheory.SS.WeakNeronEx
 open GlobalTheory.AbLaw ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+-/
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (e : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
+/- English proof (translation)
+Use `(IsLocalization.iff_of_le_of_exists_dvd (M := Submonoid.powers π) (S := K) (nonZeroDivisors V) (powers_le_nonZeroDivisors_of_noZeroDivisors hπ.ne_zero) ?_).mpr inferInstance` and prove the remaining obligations. Introduce `a ha`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero ha) hπ`. Conclude with `⟨π ^ n, ⟨n, rfl⟩, hn.dvd⟩`.
+-/
 theorem away_of_irreducible (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (K : Type) [Field K] [Algebra V K] [IsFractionRing V K]
     {π : V} (hπ : Irreducible π) : IsLocalization.Away π K := by
@@ -39,11 +48,21 @@ variable {X : Scheme.{0}} {L : Type} [Field L] (a : Sp L ⟶ X)
 def ev (W : X.Opens) (h : ⊤ ≤ a ⁻¹ᵁ W) : Γ(X, W) →+* L :=
   (Scheme.ΓSpecIso (CommRingCat.of L)).hom.hom.comp (a.appLE W ⊤ h).hom
 
+/- English proof (translation)
+Use `congrArg (fun q => q.hom f) (Scheme.Hom.map_appLE a h' (homOfLE e).op)` as an intermediate fact. Conclude with `congrArg (Scheme.ΓSpecIso (CommRingCat.of L)).hom.hom this`.
+-/
 theorem ev_rs {W W' : X.Opens} (e : W' ≤ W) (h : ⊤ ≤ a ⁻¹ᵁ W) (h' : ⊤ ≤ a ⁻¹ᵁ W') (f : Γ(X, W)) :
     ev a W' h' (rs X e f) = ev a W h f := by
   have := congrArg (fun q => q.hom f) (Scheme.Hom.map_appLE a h' (homOfLE e).op)
   exact congrArg (Scheme.ΓSpecIso (CommRingCat.of L)).hom.hom this
 
+/- English proof (translation)
+Establish `e` using `Scheme.basicOpen_appLE a ⊤ W h f`. Rewrite `e` using `[top_inf_eq]`. Rewrite using `[← e, ← isUnit_iff_ne_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Establish `: IsUnit ((a.appLE W ⊤ h).hom f)`. Use `hu.map (Scheme.ΓSpecIso (CommRingCat.of L)).inv.hom` as an intermediate fact. Simplify `this` using `[ev]`. Conclude with `(Scheme.basicOpen_of_isUnit _ this).ge`. Introduce `hu`.
+
+Establish `: IsUnit ((a.appLE W ⊤ h).hom f)` using `RingedSpace.isUnit_of_isUnit_germ (Sp L).toRingedSpace ⊤ _ fun x hx => (Scheme.mem_basicOpen _ _ x hx).1 (hu hx)`. Conclude with `this.map (Scheme.ΓSpecIso (CommRingCat.of L)).hom.hom`.
+-/
 theorem ev_ne_zero {W : X.Opens} (h : ⊤ ≤ a ⁻¹ᵁ W) (f : Γ(X, W)) :
     ev a W h f ≠ 0 ↔ ⊤ ≤ a ⁻¹ᵁ X.basicOpen f := by
   have e := Scheme.basicOpen_appLE a ⊤ W h f
@@ -61,6 +80,9 @@ theorem ev_ne_zero {W : X.Opens} (h : ⊤ ≤ a ⁻¹ᵁ W) (f : Γ(X, W)) :
         (Scheme.mem_basicOpen _ _ x hx).1 (hu hx)
     exact this.map (Scheme.ΓSpecIso (CommRingCat.of L)).hom.hom
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec a hW (isAffineOpen_top _) h`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Establish `: spMap (ev a W h) = Spec.map (Scheme.ΓSpecIso (CommRingCat.of L)).hom ≫ Spec.map (a.appLE W ⊤ h)` using `Spec.map_comp (a.appLE W ⊤ h) _`. Rewrite using `[this, Category.assoc, e, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem spMap_ev {W : X.Opens} (hW : IsAffineOpen W) (h : ⊤ ≤ a ⁻¹ᵁ W) :
     spMap (ev a W h) ≫ hW.fromSpec = a := by
   have e := IsAffineOpen.SpecMap_appLE_fromSpec a hW (isAffineOpen_top _) h
@@ -71,6 +93,9 @@ theorem spMap_ev {W : X.Opens} (hW : IsAffineOpen W) (h : ⊤ ≤ a ⁻¹ᵁ W) 
     Category.id_comp]
 end Ev
 
+/- English proof (translation)
+Establish `e` using `IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hW (le_top : W ≤ f ⁻¹ᵁ ⊤)`. Rewrite `e` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem fromSpec_hom {X : Scheme.{0}} {K : Type} [CommRing K] (f : X ⟶ Sp K) {W : X.Opens} (hW : IsAffineOpen W) :
     hW.fromSpec ≫ f = spMap (cst f W) := by
   have e := IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hW (le_top : W ≤ f ⁻¹ᵁ ⊤)
@@ -78,6 +103,13 @@ theorem fromSpec_hom {X : Scheme.{0}} {K : Type} [CommRing K] (f : X ⟶ Sp K) {
   rw [← e]
   rfl
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Finite.exists_max (fun j => ValuationRing.valuation V L (c j))`. Use `⟨i, fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : c i = 0`. Use `hi j` as an intermediate fact. Simplify using `only [h0, map_zero, le_zero_iff, Valuation.zero_iff] at this`.
+
+Conclude with `⟨0, by simp [this]⟩`. Establish `: c j / c i ∈ (ValuationRing.valuation V L).integer`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ (hi j) zero_le'`. Take `⟨t, ht⟩` from `(ValuationRing.mem_integer_iff V L _).1 this`.
+
+Conclude with `⟨t, by rw [ht, div_mul_cancel₀ _ h0]⟩`.
+-/
 theorem exists_min {V L : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field L] [Algebra V L]
     [IsFractionRing V L] {I : Type} [Finite I] [Nonempty I] (c : I → L) :
     ∃ i, ∀ j, ∃ t : V, c j = algebraMap V L t * c i := by
@@ -93,6 +125,17 @@ theorem exists_min {V L : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Fie
     obtain ⟨t, ht⟩ := (ValuationRing.mem_integer_iff V L _).1 this
     exact ⟨t, by rw [ht, div_mul_cancel₀ _ h0]⟩
 
+/- English proof (translation)
+Establish `hpt : ∀ W : X.Opens, a (IsLocalRing.closedPoint L) ∈ W → ⊤ ≤ a ⁻¹ᵁ W` using `fun W hW y _ => by`. Establish `: y = IsLocalRing.closedPoint L` using `Subsingleton.elim (α := PrimeSpectrum L) _ _`. Substitute `this` using the available equality. Conclude with `hW`. Establish `hx : a (IsLocalRing.closedPoint L) ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hc]; trivial`.
+
+Take `⟨i₀, h₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h₀`. Establish `hU : ⊤ ≤ a ⁻¹ᵁ H.U k` using `hpt _ (X.basicOpen_le _ hk)`. Establish `hne : ev a _ hU ((s i₀).f k) ≠ 0` using `(ev_ne_zero a hU _).2 (hpt _ hk)`. Take `⟨i, hi⟩` from `exists_min (V := V) (fun j => ev a _ hU ((s j).f k))`.
+
+Establish `hne' : ev a _ hU ((s i).f k) ≠ 0`. Introduce `h`. Take `⟨t, ht⟩` from `hi i₀`. Conclude with `hne (by simpa [h] using ht)`. Establish `hD : ⊤ ≤ a ⁻¹ᵁ nonzeroLocus (s i)` using `hpt _ (TopologicalSpace.Opens.mem_iSup.2 ⟨k, (ev_ne_zero a hU _).1 hne' (x := IsLocalRing.closedPoint L) trivial⟩)`.
+
+Establish `hI : ⊤ ≤ a ⁻¹ᵁ (nonzeroLocus (s i) ⊓ H.U k)` using `fun y hy => ⟨hD hy, hU hy⟩`. Use `⟨i, hD, fun j => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hi j`. Establish `e` using `congrArg (ev a _ hI) (hr i j k)`. Rewrite `e` using `[map_mul, ev_rs a _ hU, ev_rs a _ hU, ev_rs a _ hD, ht]`.
+
+Conclude with `⟨t, mul_right_cancel₀ hne' e⟩`.
+-/
 theorem exists_chart {X : Scheme.{0}} {H : LB X} {m : ℕ} (s : Fin (m + 1) → LB.Sec H)
     (hc : ⨆ i, nonzeroLocus (s i) = ⊤) (r : ∀ i, Fin (m + 1) → Γ(X, nonzeroLocus (s i)))
     (hr : ∀ i j k, rs X (inf_le_right : nonzeroLocus (s i) ⊓ H.U k ≤ H.U k) ((s j).f k) =
@@ -130,6 +173,11 @@ variable (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Fie
 
 include K in
 
+/- English proof (translation)
+Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, Submodule.eq_bot_iff]`. Introduce and unpack `x ⟨c, hc⟩`. Establish `hu : IsUnit (algebraMap R D c)`. Rewrite using `[IsScalarTower.algebraMap_apply R K D]`. Conclude with `(IsLocalization.map_units K c).map _`.
+
+Establish `: algebraMap R D c * (x : D) = 0`. Rewrite using `[← Algebra.smul_def]`. Conclude with `congrArg Subtype.val hc`. Conclude with `Subtype.ext (hu.mul_right_eq_zero.1 this)`.
+-/
 theorem flat_sub (B : Subalgebra R D) : Module.Flat R B := by
   rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, Submodule.eq_bot_iff]
   rintro x ⟨c, hc⟩
@@ -146,6 +194,13 @@ def gen (B : Subalgebra R D) : TensorProduct R K B →ₐ[K] D :=
 
 omit [IsDomain R] [IsDiscreteValuationRing R] in
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `letI : Algebra B (TensorProduct R K B) := Algebra.TensorProduct.rightAlgebra`. Establish `hl : IsLocalization (Algebra.algebraMapSubmonoid B (nonZeroDivisors R)) (TensorProduct R K B)` using `IsLocalization.tensorRight K (nonZeroDivisors R)`. Take `⟨⟨b, c⟩, e⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid B (nonZeroDivisors R)) x`.
+
+Establish `e'` using `congrArg (gen R K B) e`. Rewrite `e'` using `[map_mul, hx, zero_mul]`. Establish `hb : b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: gen R K B (algebraMap B _ b) = (b : D)` using `by show gen R K B (1 ⊗ₜ b) = _`.
+
+Simplify using `[gen]`. Rewrite using `[← this, ← e']`. Both sides reduce to the same expression. Rewrite `e` using `[hb, map_zero]`. Conclude with `(IsLocalization.map_units (TensorProduct R K B) c).mul_left_eq_zero.1 e`.
+-/
 theorem gen_injective (B : Subalgebra R D) : Function.Injective (gen R K B) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -166,6 +221,9 @@ theorem gen_injective (B : Subalgebra R D) : Function.Injective (gen R K B) := b
 
 omit [IsDomain R] [IsDiscreteValuationRing R] [IsFractionRing R K] in
 
+/- English proof (translation)
+Introduce `d`. Take `⟨p, rfl⟩` from `h d`. Use `⟨MvPolynomial.aeval (fun i => (1 : K) ⊗ₜ (⟨r i, Algebra.subset_adjoin ⟨i, rfl⟩⟩ : Algebra.adjoin R (Set.range r))) p, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Simplify using `[gen, MvPolynomial.aeval_def]`.
+-/
 theorem gen_surjective {I : Type} (r : I → D)
     (h : Function.Surjective (MvPolynomial.eval₂Hom (algebraMap K D) r)) :
     Function.Surjective (gen R K (Algebra.adjoin R (Set.range r))) := by
@@ -176,6 +234,11 @@ theorem gen_surjective {I : Type} (r : I → D)
   rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval]
   simp [gen, MvPolynomial.aeval_def]
 
+/- English proof (translation)
+Use `away_of_irreducible R K hπ` as an intermediate fact. Establish `h₁ : Algebra.Smooth R K` using `Algebra.Smooth.of_isLocalization_Away π`. Establish `h₂ : Algebra.Smooth R (TensorProduct R K B)` using `Algebra.Smooth.comp R K _`. Use `letI : Algebra B (TensorProduct R K B) := Algebra.TensorProduct.rightAlgebra`. Establish `hl : IsLocalization (Algebra.algebraMapSubmonoid B (Submonoid.powers π)) (TensorProduct R K B)` using `IsLocalization.tensorRight K (Submonoid.powers π)`.
+
+Rewrite `hl` using `[Algebra.algebraMapSubmonoid_powers]`. Use `haveI : IsScalarTower R B (TensorProduct R K B) := Algebra.TensorProduct.right_isScalarTower`. Conclude with `Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (algebraMap R B π)) (TensorProduct R K B) (Localization.Away (algebraMap R B π))).restrictScalars R)`.
+-/
 theorem smooth_away {π : R} (hπ : Irreducible π) (B : Type) [CommRing B] [Algebra R B]
     [Algebra.Smooth K (TensorProduct R K B)] : Algebra.Smooth R (Localization.Away (algebraMap R B π)) := by
   have := away_of_irreducible R K hπ
@@ -190,6 +253,23 @@ theorem smooth_away {π : R} (hπ : Irreducible π) (B : Type) [CommRing B] [Alg
     (TensorProduct R K B) (Localization.Away (algebraMap R B π))).restrictScalars R)
 end Alg
 
+/- English proof (translation)
+Take `⟨H, -, m, s, hc, hs⟩` from `hf`. Use `choose haff r hr hsurj using hs`. Use `letI : ∀ i, Algebra K Γ(X, nonzeroLocus (s i)) := fun i => (cst f _).toAlgebra`. Use `letI : ∀ i, Algebra R Γ(X, nonzeroLocus (s i)) := fun i => ((cst f _).comp (algebraMap R K)).toAlgebra`. Use `haveI : ∀ i, IsScalarTower R K Γ(X, nonzeroLocus (s i)) := fun i => IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Set `e : ∀ i, TensorProduct R K (Algebra.adjoin R (Set.range (r i))) ≃ₐ[K] Γ(X, nonzeroLocus (s i))` to `fun i => AlgEquiv.ofBijective (gen R K _) ⟨gen_injective R K _, gen_surjective R K _ (hsurj i)⟩`. Use `⟨m + 1, fun i => Algebra.adjoin R (Set.range (r i)), inferInstance, inferInstance, fun i => spMap (e i).symm.toAlgHom.toRingHom ≫ (haff i).fromSpec, fun i => ⟨?_, flat_sub R K _, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Algebra.FiniteType.adjoin_of_finite (Set.finite_range _)`. Use `haveI : IsIso (spMap (e i).symm.toAlgHom.toRingHom) := inferInstanceAs (IsIso (Spec.map (e i).symm.toRingEquiv.toCommRingCatIso.hom)) infer_instance`. Rewrite using `[Category.assoc, fromSpec_hom, sp_comp]`.
+
+Conclude with `congrArg spMap ((e i).symm.toAlgHom.comp_algebraMap)`. Introduce `V L _ _ _ _ _ _ _ a ha`. Take `⟨i, h, hi⟩` from `exists_chart s hc r hr (V := V) a`. Establish `h₁` using `spMap_ev a (haff i) h`. Establish `h₂ : (ev a _ h).comp (algebraMap R _) = (algebraMap V L).comp (algebraMap R V)`.
+
+Apply `sp_inj` to reduce the goal to its premises. Establish `h₀ : a ≫ f = spMap ((ev a _ h).comp (cst f _))`. Rewrite using `[← sp_comp, ← fromSpec_hom f (haff i), reassoc_of% h₁]`. Rewrite using `[← ha, reassoc_of% h₀, sp_comp]`. Both sides reduce to the same expression.
+
+Use `letI : Algebra R L := ((algebraMap V L).comp (algebraMap R V)).toAlgebra`. Use `haveI : IsScalarTower R V L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `φ : Γ(X, nonzeroLocus (s i)) →ₐ[R] L` to `⟨ev a _ h, fun c => congrArg (fun q => q c) h₂⟩`. Establish `hle : Algebra.adjoin R (Set.range (r i)) ≤ (IsScalarTower.toAlgHom R V L).range.comap φ`. Rewrite using `[Algebra.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hi j`. Set `κ` to `AlgEquiv.ofInjective (IsScalarTower.toAlgHom R V L) (IsFractionRing.injective V L)`. Use `⟨i, κ.symm.toAlgHom.comp ((φ.comp (Subalgebra.val _)).codRestrict _ fun x => hle x.2), (ev a _ h).comp (e i).toAlgHom.toRingHom, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, sp_comp]`.
+
+Use `Eq.trans ?_ h₁` and prove the remaining obligations. Use `congr 2`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `h₃ : ∀ y, algebraMap V L (κ.symm y) = y` using `fun y => congrArg Subtype.val (κ.apply_symm_apply y)`.
+
+Use `Eq.trans ?_ (h₃ _).symm` and prove the remaining obligations. Establish `h₄ : gen R K (Algebra.adjoin R (Set.range (r i))) (1 ⊗ₜ x) = x.1` using `by simp [gen]`. Conclude with `congrArg (ev a _ h) h₄`.
+-/
 theorem exists_affine (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {X : Scheme.{0}} (f : X ⟶ Sp K) (hf : IsProjBy f) :
     ∃ (m : ℕ) (B : Fin m → Type) (_ : ∀ i, CommRing (B i)) (_ : ∀ i, Algebra R (B i))
@@ -246,11 +326,45 @@ theorem exists_affine (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuatio
       have h₄ : gen R K (Algebra.adjoin R (Set.range (r i))) (1 ⊗ₜ x) = x.1 := by simp [gen]
       exact congrArg (ev a _ h) h₄
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint y).map b.continuous).mem_open g.isOpenEmbedding.isOpen_range h`.
+-/
 theorem range_subset {V : Type} [CommRing V] [IsLocalRing V] {Y Z : Scheme.{0}} (b : Sp V ⟶ Y) (g : Z ⟶ Y)
     [IsOpenImmersion g] (h : b (IsLocalRing.closedPoint V) ∈ Set.range g) : Set.range b ⊆ Set.range g := by
   rintro _ ⟨y, rfl⟩
   exact ((IsLocalRing.specializes_closedPoint y).map b.continuous).mem_open g.isOpenEmbedding.isOpen_range h
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ hperf A hsm hpr hproj`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨m, B, _, _, u, hB, hpt⟩` from `exists_affine R K A.hom hproj`. Establish `hs : ∀ i, Algebra.Smooth R (Localization.Away (algebraMap R (B i) π))` using `fun i => by`. Take `⟨-, -, h₃, h₄⟩` from `hB i`.
+
+Establish `h₅ : Smooth (spMap (algebraMap K (TensorProduct R K (B i))))` using `by rw [← h₄]; infer_instance`. Rewrite `h₅` using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Use `haveI := RingHom.smooth_algebraMap.mp h₅`. Conclude with `smooth_away R K hπ (B i)`. Establish `h₁` using `fun i => by haveI := (hB i).1 haveI := (hB i).2.1`.
+
+Conclude with `GlobalTheory.T.smooth_flat_algebra_finite_cover_decomp R K π hπ hperf (B i) (hs i)`. Use `choose n C instR instA φ hC hlift using h₁`. Establish `h₂` using `fun i k => GlobalTheory.T.exists_scheme_model_of_affine_smooth_chart R K A hsm inferInstance inferInstance (C i k) (hC i k).1 (spMap (Algebra.TensorProduct.map (AlgHom.id K K) (φ i k)).toRingHom ≫ u i) (by haveI := (hC i k).2; haveI := (hB i).2.2.1; infer_instance) (by`. Rewrite using `[Category.assoc, (hB i).2.2.2, sp_comp]`. Conclude with `congrArg spMap (AlgHom.comp_algebraMap (Algebra.TensorProduct.map (AlgHom.id K K) (φ i k))))`.
+
+Use `choose M g hg₁ hg₂ hg₃ hg₄ using h₂`. Use `choose p N q hN hcov using fun i k => GlobalTheory.T.exists_cover_model_irreducible_specialFibre R K A (M i k)`. Set `e` to `Fintype.equivFin (Σ (i : Fin m) (k : Fin (n i)), Fin (p i k))`. Use `⟨_, fun t => N (e.symm t).1 (e.symm t).2.1 (e.symm t).2.2, fun t => (hN _ _ _).1, ?_⟩` and prove the remaining obligations. Introduce `V L _ _ _ _ _ _ _ hmax a ha`.
+
+It suffices to establish `h : ∃ i k l, ∃ b : Sp V ⟶ (N i k l).Y.left, b ≫ (N i k l).Y.hom = spMap (algebraMap R V) ∧ spMap (algebraMap V L) ≫ b = a ≫ (N i k l).j by`. Take `⟨i, k, l, h⟩` from `h`. Use `⟨e ⟨i, k, l⟩, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e.symm_apply_apply]`.
+
+Conclude with `h`. Establish `hunr : Unr π V`. Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, ← hmax, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Take `⟨i, b, ψ, hψ, hb⟩` from `hpt V L a ha`.
+
+Take `⟨k, c, hc⟩` from `hlift i V b hunr`. Establish `hb₀ : (spMap c.toRingHom ≫ g i k) ≫ (M i k).Y.hom = spMap (algebraMap R V)`. Rewrite using `[Category.assoc, hg₂, sp_comp]`. Conclude with `congrArg spMap (AlgHom.comp_algebraMap c)`. Establish `hgen : spMap (algebraMap V L) ≫ spMap c.toRingHom ≫ g i k = a ≫ (M i k).j`.
+
+Use `letI : Algebra R L := ((algebraMap V L).comp (algebraMap R V)).toAlgebra`. Use `haveI : IsScalarTower R V L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `ψ₀ : TensorProduct R K (B i) →ₐ[R] L` to `⟨ψ, fun x => by`. Use `hb (algebraMap R _ x)` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`.
+
+Use `Eq.trans (congrArg ψ ?_) this` and prove the remaining obligations. Conclude with `((Algebra.TensorProduct.includeRight : B i →ₐ[R] TensorProduct R K (B i)).commutes x).symm⟩`. Set `ψ' : TensorProduct R K (C i k) →ₐ[R] L` to `Algebra.TensorProduct.lift (ψ₀.comp Algebra.TensorProduct.includeLeft) ((IsScalarTower.toAlgHom R V L).comp c) fun _ _ => Commute.all _ _`. Establish `e₁ : ψ'.toRingHom.comp (Algebra.TensorProduct.map (AlgHom.id K K) (φ i k)).toRingHom = ψ`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y`. Establish `h₅ : c (φ i k y) = b y` using `congrArg (fun q => q y) hc`.
+
+Use `show ψ' (x ⊗ₜ φ i k y) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Use `show ψ (x ⊗ₜ 1) * algebraMap V L (c (φ i k y)) = _`. Rewrite using `[h₅, ← hb, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Establish `e₂ : ψ'.toRingHom.comp (Algebra.TensorProduct.includeRight : C i k →ₐ[R] TensorProduct R K (C i k)).toRingHom = (algebraMap V L).comp c.toRingHom`.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `show ψ' (1 ⊗ₜ x) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, _root_.one_mul]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, sp_comp, ← e₂, ← sp_comp, Category.assoc, hg₃, ← Category.assoc, ← Category.assoc, sp_comp, e₁, hψ]`.
+
+Establish `hsp : (spMap c.toRingHom ≫ g i k) (IsLocalRing.closedPoint V) ∈ (M i k).sp` using `by show (M i k).Y.hom ((spMap c.toRingHom ≫ g i k) _) = _`. Rewrite using `[← Scheme.Hom.comp_apply, hb₀]`. Use `haveI : IsLocalHom (algebraMap R V) := by`. Apply `((IsLocalRing.local_hom_TFAE (algebraMap R V)).out 0 2).2` to reduce the goal to its premises. Conclude with `hmax.le`.
+
+Conclude with `IsLocalRing.comap_closedPoint (algebraMap R V)`. Take `⟨l, hl⟩` from `hcov i k _ hsp`. Take `⟨-, hq, hj⟩` from `hN i k l`. Establish `hfac` using `IsOpenImmersion.lift_fac (q i k l).left _ (range_subset _ _ hl)`. Use `⟨i, k, l, IsOpenImmersion.lift (q i k l).left _ (range_subset _ _ hl), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.w (q i k l), ← Category.assoc, hfac, hb₀]`. Rewrite using `[← cancel_mono (q i k l).left, Category.assoc, hfac, Category.assoc, hj, hgen]`.
+-/
 theorem exists_weakNeron : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K], PerfectField (IsLocalRing.ResidueField R) → ∀ (A : Over (Sp K)), Smooth A.hom → IsProper A.hom → GlobalTheory.AbLaw.IsProjBy A.hom → ∃ (n : ℕ) (M : Fin n → Model R A), (∀ i, (M i).Irr) ∧ WeakNeron M := by
   intro R K _ _ _ _ _ _ hperf A hsm hpr hproj
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R

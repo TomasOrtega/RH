@@ -4,6 +4,17 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 
 namespace GlobalTheory.RankFibreKer
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d Φ hΦ s hs hsl huniq`. Take `⟨⟨hlc, hcs⟩, hrank⟩` from `hΦ`. Establish `hclosed : IsClosed (Function.support Φ)`. Conclude with `(hlc.isClopen_fiber (0 : ℂ)).compl.isClosed`. Establish `hts : tsupport Φ = Function.support Φ` using `hclosed.closure_eq`.
+
+Establish `hsub : tsupport Φ ⊆ {Y | Y.rank = a}`. Introduce `Y hY`. Rewrite `hY` using `[hts]`. Assume the negation of the conclusion as `h`. Conclude with `hY (hrank Y h)`.
+
+Use `⟨s '' tsupport Φ, hcs.isCompact.image_of_continuousOn (hs.mono hsub), ?_⟩` and prove the remaining obligations. Introduce `g Z hZ hne`. Establish `hY : g.val * Z ∈ tsupport Φ` using `subset_tsupport _ hne`. Establish `hr : (g.val * Z).rank = a` using `hsub hY`. Establish `h1 : ((s (g.val * Z))⁻¹ * g).val * Z ∈ slice k a d`.
+
+Rewrite using `[Units.val_mul, Matrix.mul_assoc]`. Conclude with `hsl _ hr`. Establish `h2` using `huniq Z _ hZ h1`. Establish `: g = s (g.val * Z)`. Rewrite `h2` using `[inv_mul_eq_one]`.
+
+Conclude with `h2.symm`. Conclude with `⟨g.val * Z, hY, this.symm⟩`.
+-/
 theorem exists_isCompact_of_slice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ) (Φ : Matrix (Fin a) (Fin d) k → ℂ), Φ ∈ fullRankSB k a d →
     ∀ (s : Matrix (Fin a) (Fin d) k → GL (Fin a) k), ContinuousOn s {Y | Y.rank = a} →
     (∀ Y : Matrix (Fin a) (Fin d) k, Y.rank = a → ((s Y)⁻¹).val * Y ∈ slice k a d) →

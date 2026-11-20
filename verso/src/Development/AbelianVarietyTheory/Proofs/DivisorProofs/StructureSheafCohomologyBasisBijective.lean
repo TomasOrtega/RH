@@ -11,6 +11,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Establish `hsp : Ideal.span B = ⊤`. Rewrite using `[← T.2.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Take `⟨f, hf, hxf⟩` from `hB x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hf⟩, hxf⟩`.
+
+Take `⟨F, hFB, hF⟩` from `(Ideal.span_eq_top_iff_finite B).1 hsp`. Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, fun i ↦ hFB (F.equivFin.symm i).2⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hF]`. Conclude with `Ideal.span_mono fun x hx ↦ ⟨F.equivFin ⟨x, hx⟩, by simp⟩`.
+-/
 theorem exists_fin_span_of_cover {X : Scheme.{0}} (T : X.affineOpens) (B : Set Γ(X, T.1))
     (hB : ∀ x ∈ T.1, ∃ f ∈ B, x ∈ X.basicOpen f) :
     ∃ (n : ℕ) (b : Fin n → Γ(X, T.1)), Ideal.span (Set.range b) = ⊤ ∧ ∀ i, b i ∈ B := by
@@ -24,6 +29,9 @@ theorem exists_fin_span_of_cover {X : Scheme.{0}} (T : X.affineOpens) (B : Set �
   rw [eq_top_iff, ← hF]
   exact Ideal.span_mono fun x hx ↦ ⟨F.equivFin ⟨x, hx⟩, by simp⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsUnit (X.presheaf.map (homOfLE (show S.unop.1 ≤ T.unop.1 from leOfHom u.unop)).op (show Γ(X, T.unop.1) from f)) at hu`. Establish `h1` using `Scheme.basicOpen_of_isUnit X hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`. Rewrite using `[← h1]`. Conclude with `inf_le_right`.
+-/
 theorem le_basicOpen_of_isUnit_mp {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R)
     {T S : AffOp X} (u : T ⟶ S) (f : (OAff s).obj T) (hu : IsUnit (mp (OAff s) u f)) :
     S.unop.1 ≤ X.basicOpen (show Γ(X, T.unop.1) from f) := by
@@ -33,6 +41,27 @@ theorem le_basicOpen_of_isUnit_mp {R : Type} [CommRing R] {X : Scheme.{0}} (s : 
   rw [Scheme.basicOpen_res] at h1
   rw [← h1]; exact inf_le_right
 
+/- English proof (translation)
+Introduce `R _ X s P _ G hG h1 h2`. Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s`. Establish `hcov : ∀ T : AffOp X, ∃ (n : ℕ) (b : Fin n → (OAff s).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X) (u : T ⟶ S), IsUnit (mp (OAff s) u (b i)) → ∃ (t : Pᵒᵖ) (v : T ⟶ hG.functor.op.obj t) (w : hG.functor.op.obj t ⟶ S), v ≫ w = u`. Introduce `T`. Take `⟨n, b, hb, hbB⟩` from `exists_fin_span_of_cover T.unop {f | ∃ a, X.basicOpen f ≤ (G a).1 ∧ (G a).1 ≤ T.unop.1} (fun x hx ↦ by`.
+
+Take `⟨a, hxa, haT⟩` from `h1 T.unop x hx`. Take `⟨f, hf, hxf⟩` from `T.unop.2.exists_basicOpen_le (V := (G a).1) ⟨x, hxa⟩ hx`. Conclude with `⟨f, ⟨a, hf, haT⟩, hxf⟩)`. Use `⟨n, b, hb, fun i S u hu ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, hfa, haT⟩` from `hbB i`.
+
+Establish `hS` using `le_basicOpen_of_isUnit_mp s u (b i) hu`. Conclude with `⟨Opposite.op a, (homOfLE (show G a ≤ T.unop from haT)).op, (homOfLE (show S.unop ≤ G a from hS.trans hfa)).op, Quiver.Hom.unop_inj (Subsingleton.elim _ _)⟩`. Establish `hdir : ∀ (t₁ t₂ : Pᵒᵖ) (S : AffOp X), (hG.functor.op.obj t₁ ⟶ S) → (hG.functor.op.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (OAff s).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X) (u : S ⟶ S'), IsUnit (mp (OAff s) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ …`. Introduce `t₁ t₂ S a₁ a₂`. Establish `hS₁ : S.unop.1 ≤ (G t₁.unop).1` using `leOfHom a₁.unop`.
+
+Establish `hS₂ : S.unop.1 ≤ (G t₂.unop).1` using `leOfHom a₂.unop`. Take `⟨n, b, hb, hbB⟩` from `exists_fin_span_of_cover S.unop {f | ∃ c, c ≤ t₁.unop ∧ c ≤ t₂.unop ∧ X.basicOpen f ≤ (G c).1} (fun x hx ↦ by`. Take `⟨c, hc₁, hc₂, hxc⟩` from `h2 t₁.unop t₂.unop x (hS₁ hx) (hS₂ hx)`. Take `⟨f, hf, hxf⟩` from `S.unop.2.exists_basicOpen_le (V := (G c).1) ⟨x, hxc⟩ hx`. Conclude with `⟨f, ⟨c, hc₁, hc₂, hf⟩, hxf⟩)`.
+
+Use `⟨n, b, hb, fun i S' u hu ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, hc₁, hc₂, hfc⟩` from `hbB i`. Establish `hS` using `le_basicOpen_of_isUnit_mp s u (b i) hu`. Conclude with `⟨Opposite.op c, ⟨(homOfLE hc₁).op⟩, ⟨(homOfLE hc₂).op⟩, ⟨(homOfLE (show S'.unop ≤ G c from hS.trans hfc)).op⟩⟩`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s) hG.functor.op H hcov`.
+
+Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) hG.functor.op H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s) hG.functor.op H hcov hdir`. Establish `hv2` using `GlobalTheory.T.twoCocycle_coboundary_of_basisFunctor (OAff s) hG.functor.op H hcov hdir`. Use `⟨⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩, ⟨GlobalTheory.T.comma_descent_injective _ _ hs hg hv, GlobalTheory.T.comma_descent_restriction_equiv _ _ hs hg hv hv2⟩ …` and prove the remaining obligations. Introduce `h0 g hg0`.
+
+Establish `hcomp : ∀ ⦃t t' : Pᵒᵖ⦄ (a : t ⟶ t'), g t' = mp (OAff s) (hG.functor.op.map a) (g t)`. Introduce `t t' a`. Establish `e : d0 (hG.functor.op ⋙ OAff s) g t t' a = 0` using `by rw [hg0]; rfl`. Rewrite `e` using `[amitsur_d0_apply]`. Conclude with `sub_eq_zero.1 e`.
+
+Take `⟨g1, hg1c, hg1e⟩` from `_root_.GlobalTheory.compat_family_extend (OAff s) hG.functor.op hs hg g hcomp`. Establish `hd : d0 (OAff s) g1 = 0`. Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply, hg1c φ, sub_self]`. Both sides reduce to the same expression.
+
+Take `⟨r, hr, huniq⟩` from `h0 g1 hd`. Use `⟨r, fun t ↦ ?_, fun r' hr' ↦ huniq r' fun T ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hg1e t]`. Conclude with `hr _`. Use `sub_eq_zero.1 (hs T _ fun t u ↦ ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_sub, ← hg1c u, hg1e t, hr' t, AlgHom.commutes]`. Conclude with `sub_self _`.
+-/
 theorem cohO_basis_bijective : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (P : Type) [Preorder P] (G : P → X.affineOpens) (hG : Monotone G), (∀ (U : X.affineOpens) (x : X), x ∈ U.1 → ∃ a, x ∈ (G a).1 ∧ (G a).1 ≤ U.1) → (∀ (a b : P) (x : X), x ∈ (G a).1 → x ∈ (G b).1 → ∃ c, c ≤ a ∧ c ≤ b ∧ x ∈ (G c).1) → Function.Bijective (CoefMap.restrict (OAff s) hG.functor.op).pull1 ∧ Function.Bijective (CoefMap.restrict (OAff s) hG.functor.op).pull2 ∧ (CohomZeroIsConstants (OAff s) → CohomZeroIsConstants (hG.functor.op ⋙ OAff s)) := by
   intro R _ X s P _ G hG h1 h2
   have H := _root_.GlobalTheory.CechDR.hasLoc_OAff s

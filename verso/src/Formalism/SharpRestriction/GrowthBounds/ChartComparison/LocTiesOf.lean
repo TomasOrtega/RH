@@ -33,6 +33,9 @@ structure LocTiesR (Fo : FormsIn M (i + 1) hi) (Lc : LocIn X u w hg Lv i Fo.Ch) 
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+The claim follows from `H.frRat sameU := H.sameU hypT := H.hypT bad_p := H.bad_p std := H.std pos_emb := fun v s x => locJ_pos_emb hi (Lc.t β) Lc.B K v s x wt := StepIn.wt_of (M := M) Gt w hg Lv ht hF i hi (stepInOf hi Fo Lc (Gt.gat_pos u w hg)) rfl β psi := H.psi chiRat := H.chiRat chRat := H.chRat`.
+-/
 theorem locTies_of {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D} (K : CmpTied D X T Gt c)
     (ht : Fl.t = D.R.t) (hF : FillTie Gt u w hg Fl) {Fo : FormsIn M (i + 1) hi} {Lc : LocIn X u w hg Lv i Fo.Ch} {β : Fo.Ch}
     (H : LocTiesR hi Fo Lc (c.embW u w hg) β) : LocTies hi Fo Lc (Gt.gat_pos u w hg) (c.embW u w hg) β where
@@ -47,11 +50,17 @@ theorem locTies_of {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c 
   chiRat := H.chiRat
   chRat := H.chRat
 
+/- English proof (translation)
+The claim follows from `core_of hi (locTies_of hi K ht hF H)`.
+-/
 theorem core_of_R {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D} (K : CmpTied D X T Gt c)
     (ht : Fl.t = D.R.t) (hF : FillTie Gt u w hg Fl) {Fo : FormsIn M (i + 1) hi} {Lc : LocIn X u w hg Lv i Fo.Ch} {β : Fo.Ch}
     (H : LocTiesR hi Fo Lc (c.embW u w hg) β) : (stepInOf hi Fo Lc (Gt.gat_pos u w hg)).Core (c.embW u w hg) β :=
   core_of hi (locTies_of hi K ht hF H)
 
+/- English proof (translation)
+Introduce `v a` and use `locJ_iw_F hi (Lc.t β) Lc.B v a`.
+-/
 theorem iwF_of (Fo : FormsIn M (i + 1) hi) (Lc : LocIn X u w hg Lv i Fo.Ch)
     (pos : (Σ v : Fin (Fl.Pj (i + 1)).nV, Fin ((Fl.Pj (i + 1)).n' v)) ≃ D.what₂.Tau) (β : Fo.Ch) :
     (stepInOf hi Fo Lc pos).IwF β :=

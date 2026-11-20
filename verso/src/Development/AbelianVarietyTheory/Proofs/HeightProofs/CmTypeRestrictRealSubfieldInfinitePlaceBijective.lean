@@ -11,6 +11,21 @@ namespace GlobalTheory.CMTypePlaces
 
 open NumberField
 
+/- English proof (translation)
+Take `⟨hb, hm⟩` from `Formalism.BasicNotions.factEmb D.R D.host`. Establish `hsq` using `D.host.sqd_sq`. Establish `hd0 : (0 : ℝ) ≤ D.host.d` using `Nat.cast_nonneg _`. Establish `hmem : ∀ τ : D.what₂.Tau, tauE D τ (D.host.sqd) = Complex.I * (Real.sqrt D.host.d : ℂ)` using `fun τ => (hm _).2 (D.eTau τ).2`. Establish `hdpos : 0 < D.host.d` using `lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.2`.
+
+Establish `hs : (Real.sqrt D.host.d : ℂ) ≠ 0`. Establish `: Real.sqrt D.host.d ≠ 0` using `(Real.sqrt_pos.2 (by exact_mod_cast hdpos)).ne'`. Conclude with `this` after adjusting the coercions. Establish `hconj : (starRingEnd ℂ) (Complex.I * (Real.sqrt D.host.d : ℂ)) = -(Complex.I * (Real.sqrt D.host.d : ℂ))`. Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]`.
+
+Establish `hsurj : ∀ φ : D.host.E →+* ℂ, φ (D.host.sqd) = Complex.I * (Real.sqrt D.host.d : ℂ) → ∃ τ, tauE D τ = φ`. Introduce `φ hφ`. Take `⟨g, rfl⟩` from `hb.2 φ`. Use `⟨D.eTau.symm ⟨g, (hm g).1 hφ⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [tauE, Equiv.apply_symm_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `τ τ' h`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `D.eTau.injective (Subtype.ext (hb.1 h))`. It suffices to derive a contradiction.
+
+Establish `h1` using `congrArg (fun φ : D.host.E →+* ℂ => φ (D.host.sqd)) h`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq] at h1`. Rewrite `h1` using `[hmem, hmem, hconj]`. Establish `h2 : Complex.I * (Real.sqrt D.host.d : ℂ) = 0` using `by linear_combination (-1 / 2 : ℂ) * h1`. Conclude with `mul_ne_zero Complex.I_ne_zero hs h2`.
+
+Introduce `w`. Establish `h1 : (w.embedding (D.host.sqd)) ^ 2 = (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2`. Rewrite using `[← map_pow, hsq, map_neg, map_natCast, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt hd0]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases.
+
+Take `⟨τ, hτ⟩` from `hsurj _ h`. Conclude with `⟨τ, by simp only [hτ, InfinitePlace.mk_embedding]⟩`. Take `⟨τ, hτ⟩` from `hsurj (ComplexEmbedding.conjugate w.embedding) (by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h, map_neg, hconj, neg_neg])`. Conclude with `⟨τ, by simp only [hτ, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]⟩`.
+-/
 theorem mk_tauE_bijective (D : D7) :
     Function.Bijective fun τ : D.what₂.Tau => InfinitePlace.mk (tauE D τ) := by
   obtain ⟨hb, hm⟩ := Formalism.BasicNotions.factEmb D.R D.host
@@ -54,6 +69,9 @@ theorem mk_tauE_bijective (D : D7) :
         rw [ComplexEmbedding.conjugate_coe_eq, h, map_neg, hconj, neg_neg])
       exact ⟨τ, by simp only [hτ, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]⟩
 
+/- English proof (translation)
+Introduce `D`. Use `haveI := D.host.isCMField_hostE`. Conclude with `(IsCMField.equivInfinitePlace D.host.E).bijective.comp (mk_tauE_bijective D)`.
+-/
 theorem places_bijective : ∀ D : D7, Function.Bijective fun τ : D.what₂.Tau => NumberField.InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)) := by
   intro D
   haveI := D.host.isCMField_hostE

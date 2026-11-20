@@ -19,6 +19,11 @@ open scoped Matrix
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`.
+
+Rewrite using `[h, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Conclude with `mul_zero _`.
+-/
 theorem at_liftV {κ : Type} (y : κ → mixedEmbedding.mixedSpace F) : At (evI F) (liftV y) := by
   intro u hu
   have h : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu
@@ -29,6 +34,13 @@ theorem at_liftV {κ : Type} (y : κ → mixedEmbedding.mixedSpace F) : At (evI 
   · change u.2 * 0 = 0
     exact mul_zero _
 
+/- English proof (translation)
+Establish `hab : ∀ u : AF F, evI F u = 0 → u • dc.e w = 0` using `fun u hu => by`. Rewrite using `[← map_smul, hw u hu, map_zero]`. Establish `ha : At (evI F) (dc.e w).1` using `fun u hu => congrArg Prod.fst (hab u hu)`. Establish `hb : At (evI F) (dc.e w).2` using `fun u hu => congrArg Prod.snd (hab u hu)`. Use function extensionality and compare the values at `x`.
+
+Establish `ht : At (evI F) (x ⬝ᵥ (dc.e w).2 + ⅟(2 : AF F) * (dc.e w).1 ⬝ᵥ (dc.e w).2)` using `fun u hu => by`. Establish `h : ∀ y : κ → AF F, u * (y ⬝ᵥ (dc.e w).2) = 0` using `fun y => by`. Rewrite using `[← smul_eq_mul, ← dotProduct_smul, hb u hu, dotProduct_zero]`. Rewrite using `[smul_eq_mul, mul_add, h, mul_left_comm, h, mul_zero, add_zero]`. Establish `hloc : (fun i => evI F ((x + (dc.e w).1) i)) = locV x + locV (dc.e w).1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, locV, evI_eq_evIHom, map_add]`. Simplify using `only [Darboux.rho, schr, tens]`. Rewrite using `[hψ.2.2 _ ht, trace_evI_heis, hr x _ ha, hloc, schrF]`. Conclude with `(mul_assoc _ _ _).symm`.
+-/
 theorem rho_tens (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {W' : Type} [AddCommGroup W'] [Module (AF F) W']
     {Bf : W' → W' → AF F} {κ : Type} [Fintype κ] (dc : Darboux Bf κ) (w : W') (hw : At (evI F) w)
     (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ) (r : (κ → AF F) → ℂ)
@@ -51,6 +63,11 @@ theorem rho_tens (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {W' : Type} [AddComm
   rw [hψ.2.2 _ ht, trace_evI_heis, hr x _ ha, hloc, schrF]
   exact (mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hz : At (evI F) (liftV (y - locV x₀))` using `at_liftV _`. Establish `hx` using `congrFun h (x₀ + liftV (y - locV x₀))`. Simplify using `only [tens] at hx`. Establish `hl : (fun i => evI F ((x₀ + liftV (y - locV x₀)) i)) = y`.
+
+Express the relevant statement in the definitionally equal form `locV (x₀ + liftV (y - locV x₀)) = y`. Rewrite using `[Coord.loc_add, Coord.loc_lift]`. Normalize the expressions using the abelian group laws. Rewrite `hx` using `[hl, hr _ _ hz]`. Conclude with `mul_right_cancel₀ h0 hx`.
+-/
 theorem tens_inj {κ : Type} (r : (κ → AF F) → ℂ) (hr : ∀ x z, At (evI F) z → r (x + z) = r x)
     (x₀ : κ → AF F) (h0 : r x₀ ≠ 0) (φ₁ φ₂ : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (h : tens (evI F) φ₁ r = tens (evI F) φ₂ r) : φ₁ = φ₂ := by
@@ -72,12 +89,18 @@ def wv (M : Model σ X W)
     Matrix (Fin n) (Fin d) (AE F E) :=
   M.co.e.symm (liftV v.1, liftV v.2)
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[wv, ← map_smul, Prod.smul_mk, at_liftV v.1 u hu, at_liftV v.2 u hu, Prod.mk_zero_zero, map_zero]`.
+-/
 theorem at_wv (M : Model σ X W)
     (v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) :
     At (evI F) (wv M v) := by
   intro u hu
   rw [wv, ← map_smul, Prod.smul_mk, at_liftV v.1 u hu, at_liftV v.2 u hu, Prod.mk_zero_zero, map_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[← Matrix.smul_mul, hw u hu, Matrix.zero_mul]`.
+-/
 theorem at_mul {w : Matrix (Fin n) (Fin d) (AE F E)} (hw : At (evI F) w) (m : Matrix (Fin d) (Fin d) (AE F E)) :
     At (evI F) (w * m) := by
   intro u hu
@@ -102,6 +125,23 @@ open scoped Matrix
 
 open GlobalTheory.ArchUniq.Coord in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hψ hW γ hγ T hT`. Use `⟨fun t => amap M (mat (γ (Multiplicative.ofAdd t)))ᵀ, fun v => ?_, fun t v f f₁ hf => ?_⟩` and prove the remaining obligations. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _ haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin …`. Establish `hm : Continuous fun t : ℝ => (mat (γ (Multiplicative.ofAdd t)))ᵀ` using `((Units.continuous_val.comp continuous_subtype_val).comp (hγ.1.comp continuous_ofAdd)).matrix_transpose`. Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`.
+
+Establish `hev : Continuous (evI F)`. Express the relevant statement in the definitionally equal form `Continuous fun a : AF F => InfiniteAdeleRing.ringEquiv_mixedSpace F a.1`. Use `Continuous.comp ?_ continuous_fst` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`. Establish `hl : Continuous (locV : (Fin n × Fin d → AF F) → _)` using `continuous_pi fun i => hev.comp (continuous_apply i)`. Use `show Continuous fun t => (locV (M.co.e (wv M v * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).1, locV (M.co.e (wv M v * (mat (γ (Multiplicative.ofAdd t)))ᵀ)).2)`. Conclude with `((hl.comp continuous_fst).prodMk (hl.comp continuous_snd)).comp (he.comp (continuous_const.matrix_mul hm))`.
+
+Take `⟨r₀, hr₀, hinj⟩` from `GlobalTheory.T.exists_admissible_finiteFactor_archimedeanSchwartz (F := F) (Fin n × Fin d)`. Establish `hrr` using `(hr₀ 0).1`. Distinguish the cases in `hz : ∀ x, r₀ x = 0`. Establish `h0 : ∀ g : SInf F (Fin n × Fin d), g = 0` using `fun g => hinj g 0 (by funext x; simp [tens, hz])`. Rewrite using `[h0 (T t f₁), h0 (T t f)]`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[schrF]`. Simplify using `only [not_forall] at hz`. Take `⟨x₀, hx₀⟩` from `hz`. Establish `hs` using `hW.isUSplitting`.
+
+Establish `hc : (locV (M.co.e (wv M v)).1, locV (M.co.e (wv M v)).2) = v` using `coordI_lift M v`. Establish `e1 : tens (evI F) ⇑f₁ r₀ = M.co.rho ψ (wv M v) (tens (evI F) ⇑f r₀)`. Rewrite using `[rho_tens ψ hψ M.co _ (at_wv M v) _ _ hrr, hc, ← hf]`. Establish `e2 : om (1, γ (Multiplicative.ofAdd t)) (M.co.rho ψ (wv M v) (tens (evI F) ⇑f r₀)) = M.co.rho ψ (wv M v * (mat (γ (Multiplicative.ofAdd t)))ᵀ) (om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) ⇑f r₀))`. Rewrite using `[hs.impl (1, γ (Multiplicative.ofAdd t)) (wv M v) _ (hr₀ f).2]`.
+
+Use `congr 2`. Simplify using `only [actAB, mat, OneMemClass.coe_one, Units.val_one, Matrix.one_mul]`. Establish `e3` using `hT t f r₀ (hr₀ f)`. Establish `e4` using `hT t f₁ r₀ (hr₀ f₁)`. Apply `tens_inj r₀ hrr x₀ hx₀` to reduce the goal to its premises.
+
+Rewrite using `[← e4, e1, e2, e3, rho_tens ψ hψ M.co _ (at_mul (at_wv M v) _) _ _ hrr]`. Both sides reduce to the same expression.
+-/
 theorem schr_equiv : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     IsStd ψ → M.IsWeil ψ χX χW om → ∀ γ ∈ Lines σ W, ∀ T : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),

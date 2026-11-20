@@ -20,6 +20,23 @@ section State
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
   (x : St P)
 end State
+/- English proof (translation)
+Introduce `_ hL`. Establish `s1 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (evLgG_of_evLg GlobalTheory.Mem.R3.OkVals.large_coefficientField_contains_twist_values)`. Use `s1.trans (Step.of_all ?_)` and prove the remaining obligations. Introduce `K B f T _ _ _ hOk w _ P x l ch tp _ hpsi _ _ side v hv hok`. Establish `hV : ValsIn w.I` using `(hOk w.px w.I P.hX w.ok w.C_eq w.xi_range).1`.
+
+Use `clear hOk s1`. Establish `hψ : IsPsi ((Dof x).ntw.l (ch.twI v)) (ch.Q v) (tp.psi v)`. Establish `h` using `tp.psi_is v hv`. Rewrite `h` using `[← ch.twI_l v]`. Conclude with `h`.
+
+Establish `he : tp.psi v = T.psi v` using `congrFun hpsi v`. Establish `ht` using `xi_mu x ch hv he`. Establish `hr` using `fun PP => ram_mul x.m.z.R.C (ch.twI v) hψ PP`. Rewrite `hr` using `[← ht]`. Use `⟨fun PP hP => ?_, fun j ι hι => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, h1, -, h2⟩` from `(T.psi_tw v).2.2.2 PP fun hu => (hψ.ram PP).1 (he ▸ hu :) hP`. Conclude with `splitK_of_prime (D := Dof x) PP h1 fun hd => h2 (Or.inl hd)`. Rewrite using `[tupT_muTw x hv]`. Use `isTupOf x.m.z.lev.is l.b.ser.ex.good l.b.ser.ex.pin _ j _ hψ ht (fun PP hP => ?_) _ ?_ rfl` and prove the remaining obligations. Establish `hs : IsSplitPl (Dof x).host PP`.
+
+Break down `(hr PP).1 ((x.m.z.lev.is.Q_ram _ PP).2 (Or.inl hP)) with h | h` into its components or cases. Take `⟨q, -, hq, e⟩` from `isDelta_delAt x.m.z.R.C (ch.twI v)`. Establish `h'` using `(hq PP).1 h`. Apply the tactic sequence `refine l.a.elem.split PP (e.imp (fun e => ?_) fun e => ?_) <;> subst e <;> exact h'`. Conclude with `hψ.split PP h`.
+
+Use `(l.b.ser.ch _ PP hs).2 ?_` and prove the remaining obligations. Take `⟨u, -, e⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 ((x.m.z.lev.Q _).le hP)`. Conclude with `l.sel.ge ⟨u, e⟩`. Use `chrEq_twVia side.psi hv hok l.b.ser.ex.good (fun PP h1 h2 => ?_) ι hι` and prove the remaining obligations. Establish `hval : ValLL0 (Dof x) x.m.z.R.C` using `by rw [x.m.z.lev.C]; exact l.a.val`.
+
+Take `⟨y, hy⟩` from `val_delAt hval _ PP h2`. Establish `hx` using `x.m.z.lev.xiH (x.m.z.R.mu ((Dof x).plEq v))`. Take `⟨z, hz⟩` from `hV.1 _ PP (hx ▸ not_not.1 fun hu => ((hr PP).1 hu).elim h2 h1 :)`. Establish `hz' : (Dof x).what₂.embLL z = (((x.m.z.R.C.delAt ((Dof x).ntw.l (ch.twI v)) * tp.psi v).val PP : ℂˣ) : ℂ)` using `hz.trans (congrArg (fun χ : HChar (Dof x).host.E => ((χ.val PP : ℂˣ) : ℂ)) (hx.symm.trans ht))`. Use `⟨y⁻¹ * (show (Dof x).what₂.LL from z), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_inv₀, hy]`. Use `(congrArg _ hz').trans ?_` and prove the remaining obligations. Rewrite using `[HChar.val_mul, Units.val_mul, inv_mul_cancel_left₀ (Units.ne_zero _)]`.
+-/
 theorem local_tuple_at_state : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayer → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → ∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) (GlobalTheory.PlaceRead.chr ch v) →
   IntegralHeckeForms.ClsQ (D := Dof x) (ch.Q v) ∧ ∀ (j : Fin (Dof x).R.m) (ι : GlobalTheory.PlaceRead.KE ch v →+* ℂ), (∀ y, ι (ch.embW v y) = (Dof x).what₂.embLL y) →
     GlobalTheory.ConjTwist.IsTupOf x.m.z.R.toRealDat (l.b.ser.ex.ρ.B (ch.twI v) j (ch.sd v)) (GlobalTheory.PlaceRead.twVia l.b.ser.ex.ρ ι) (x.r.Y.tupT ((Dof x).what₂.muTw v)) := by
@@ -72,6 +89,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlaceRead.TupAt.local_tuple_at_state | exact _root_.GlobalTheory.PlaceRead.TupAt.local_tuple_at_state | (intros; apply _root_.GlobalTheory.PlaceRead.TupAt.local_tuple_at_state <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_tuple_at_state : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayer → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → ∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) (GlobalTheory.PlaceRead.chr ch v) →
   IntegralHeckeForms.ClsQ (D := Dof x) (ch.Q v) ∧ ∀ (j : Fin (Dof x).R.m) (ι : GlobalTheory.PlaceRead.KE ch v →+* ℂ), (∀ y, ι (ch.embW v y) = (Dof x).what₂.embLL y) →
     GlobalTheory.ConjTwist.IsTupOf x.m.z.R.toRealDat (l.b.ser.ex.ρ.B (ch.twI v) j (ch.sd v)) (GlobalTheory.PlaceRead.twVia l.b.ser.ex.ρ ι) (x.r.Y.tupT ((Dof x).what₂.muTw v)) := by

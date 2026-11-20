@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.KZ
 
+/- English proof (translation)
+Take `⟨hs0, hsd⟩` from `hs`. Take `⟨ht0, htd⟩` from `ht`. Rewrite `hs0`, `ht0` using `[Subgroup.mem_inf]`. Use `Subgroup.mem_inf.2 ⟨?_, Subgroup.mul_mem _ hs0.2 (Subgroup.inv_mem _ ht0.2)⟩` and prove the remaining obligations. Establish `hsN` using `CongruenceSubgroup.Gamma0_mem.1 hs0.1`.
+
+Establish `htN` using `CongruenceSubgroup.Gamma0_mem.1 ht0.1`. Establish `ds` using `s.det_coe`. Establish `dt` using `t.det_coe`. Rewrite `ds`, `dt` using `[Matrix.det_fin_two]`. Establish `ds' : ((s 0 0 * s 1 1 - s 0 1 * s 1 0 : ℤ) : ZMod N) = 1` using `by rw [ds]; simp`.
+
+Establish `dt' : ((t 0 0 * t 1 1 - t 0 1 * t 1 0 : ℤ) : ZMod N) = 1` using `by rw [dt]; simp`. Move the coercions through the operations in `at ds' dt'`. Simplify using `only [en] at hsd htd`. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Mat …`.
+
+Use `push_cast`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `ds' + (s 0 0 : ZMod N) * (htd - hsd) + (s 0 1 : ZMod N) * hsN - (s 0 1 : ZMod N) * htN`. Take the linear combination `dt' + (t 0 0 : ZMod N) * (hsd - htd) + (t 0 1 : ZMod N) * htN - (t 0 1 : ZMod N) * hsN`. Take the linear combination `(t 1 1 : ZMod N) * hsN - (s 1 1 : ZMod N) * htN`.
+-/
 theorem mul_inv_mem_Gam_of_isDiam {N l d : ℕ} {s t : SL(2, ℤ)} (hs : IsDiam N l d s) (ht : IsDiam N l d t) :
     s * t⁻¹ ∈ Gam N l := by
   obtain ⟨hs0, hsd⟩ := hs
@@ -36,6 +45,9 @@ theorem mul_inv_mem_Gam_of_isDiam {N l d : ℕ} {s t : SL(2, ℤ)} (hs : IsDiam 
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2 γ hγ`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+-/
 theorem Tower.act_eq_of_mem_B (X : Tower Ω ε) {N l w : ℕ} [Fact l.Prime] {b : X.Fn l} (hb : b ∈ X.B N l w)
     {γ : SL(2, ℤ)} (hγ : γ ∈ Gam N l) : X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b = b := by
   induction hb using Submodule.span_induction with
@@ -44,6 +56,9 @@ theorem Tower.act_eq_of_mem_B (X : Tower Ω ε) {N l w : ℕ} [Fact l.Prime] {b 
   | add x y _ _ hx hy => rw [map_add, hx, hy]
   | smul c x _ hx => rw [map_smul, hx]
 
+/- English proof (translation)
+Establish `ht : IsDiam N l d (sgD N l d)` using `Classical.epsilon_spec ⟨s, hs⟩`. Establish `hγ` using `mul_inv_mem_Gam_of_isDiam hs ht`. Establish `e : s = (s * (sgD N l d)⁻¹) * sgD N l d` using `by group`. Establish `hpos : ∀ g : SL(2, ℤ), 0 < (g : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun g => by rw [g.det_coe]; exact one_pos`. Rewrite using `[e, Matrix.SpecialLinearGroup.coe_mul, ← Tower.act_act Ω ε X l _ _ (hpos _) (hpos _) b, X.act_eq_of_mem_B hb hγ]`.
+-/
 theorem Tower.act_isDiam_eq (X : Tower Ω ε) {N l w d : ℕ} [Fact l.Prime] {b : X.Fn l} (hb : b ∈ X.B N l w)
     {s : SL(2, ℤ)} (hs : IsDiam N l d s) :
     X.act l (s : Matrix (Fin 2) (Fin 2) ℤ) b = X.act l (sgD N l d : Matrix (Fin 2) (Fin 2) ℤ) b := by
@@ -54,6 +69,9 @@ theorem Tower.act_isDiam_eq (X : Tower Ω ε) {N l w d : ℕ} [Fact l.Prime] {b 
   rw [e, Matrix.SpecialLinearGroup.coe_mul, ← Tower.act_act Ω ε X l _ _ (hpos _) (hpos _) b,
     X.act_eq_of_mem_B hb hγ]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X A N l _ n w d b hb s hs φ`. Rewrite using `[X.act_isDiam_eq hb hs]`.
+-/
 theorem isThB_act_isDiam_iff : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime] (n w d : ℕ) (b : X.Fn l), b ∈ X.B N l w →
     ∀ s : SL(2, ℤ), IsDiam N l d s → ∀ φ : HahnSeries ℚ Ω,

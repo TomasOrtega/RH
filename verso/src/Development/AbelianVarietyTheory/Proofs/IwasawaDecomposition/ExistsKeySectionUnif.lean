@@ -35,6 +35,13 @@ open scoped Matrix TensorProduct
 
 namespace GlobalTheory.KeyFourth
 
+/- English proof (translation)
+Use `haveI : Nontrivial A := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `not_subsingleton (ℂ ⊗[K] A) inferInstance`. Set `res : (ℂ ⊗[K] A →ₐ[ℂ] ℂ) → (A →ₐ[K] ℂ)` to `fun χ => (χ.restrictScalars K).comp Algebra.TensorProduct.includeRight`.
+
+Set `u' : (ℂ ⊗[K] A)ˣ` to `Units.map (algebraMap ℂ (ℂ ⊗[K] A) : ℂ →* _) (Units.mk0 C hC) * Units.map ((Algebra.TensorProduct.includeRight : A →ₐ[K] ℂ ⊗[K] A) : A →* _) u`. Establish `hu' : (u' : ℂ ⊗[K] A) = C ⊗ₜ[K] (u : A)`. Simplify using `[u', Algebra.TensorProduct.algebraMap_apply]`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_pow_eq_unit_of_continuous_complex_root (ℂ ⊗[K] A) n u' (fun χ => ρ (res χ)) hn (fun m V s hV hs => hρ m V (fun p => res (s p)) hV fun a => hs _) (fun χ => by`. Rewrite using `[hu, hu']`.
+
+Establish `: C ⊗ₜ[K] (u : A) = C • ((1 : ℂ) ⊗ₜ[K] (u : A))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul]`. Use the proof step `rfl)`. Conclude with `GlobalTheory.T.exists_base_field_multiple_of_nth_root_complexification K A n w C u hn hC u.ne_zero (hw.trans hu')`.
+-/
 theorem exists_eq_smul_pow {K : Type} [Field K] [Algebra K ℂ] {A : Type} [CommRing A] [Algebra K A]
     [Algebra.Smooth K A] [IsDomain (ℂ ⊗[K] A)] {n : ℕ} (hn : 0 < n) (u : Aˣ) {C : ℂ} (hC : C ≠ 0)
     (ρ : (A →ₐ[K] ℂ) → ℂ)
@@ -63,6 +70,17 @@ theorem exists_eq_smul_pow {K : Type} [Field K] [Algebra K ℂ] {A : Type} [Comm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨hL, -, -, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨f, hf, hfb⟩` from `GlobalTheory.T.exists_integer_exponent_section_of_chart_regular E H Dw l Xo c h (keyEx Dw) b fun C => (hb C).1`. Take `⟨f', hf', hfb'⟩` from `GlobalTheory.T.exists_integer_exponent_section_of_chart_regular E H Dw l Xo c h (-keyEx Dw) (fun Z => (b Z)⁻¹) fun C => by`. Use `(hb C).2` as an intermediate fact. Rewrite `this` using `[mul_inv, ← Units.val_inv_eq_inv_val]`.
+
+Simplify `this` using `only [kch, Pi.neg_apply, zpow_neg, Finset.prod_inv_distrib]`. Establish `h0 : GlobalTheory.AllWt.secZ Xo c 0 = sec Xo c 0 0`. Rewrite using `[← GlobalTheory.AllWt.secZ_nat]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `cases i <;> rfl`. Establish `hm` using `GlobalTheory.AllWt.mul_mem_secZ hf hf'`. Rewrite `hm` using `[add_neg_cancel, h0]`. Establish `h1` using `GlobalTheory.AllWt.one_mem_secZ (Xo := Xo) (c := c)`. Rewrite `h1` using `[h0]`.
+
+Establish `hff : f * f' = 1`. Use `sub_eq_zero.1 (sec_eq_zero_of_generic_values E H Dw l Xo c hL h (hA h) 0 0 _ (sub_mem hm h1) fun Z => ?_)` and prove the remaining obligations. Establish `e₁ : evC h Z (f * f') = evC h Z f * evC h Z f'` using `by simp only [evC, evR, evalAt_mul]`. Establish `e₂ : evC h Z (1 : Rul Xo c) = 1` using `evalAt_one _ _ _ (hL.test _ _)`. Establish `e₃` using `(evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (genFr h Z)).map_sub (f * f') 1`.
+
+Use `e₃.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evC h Z (f * f') - evC h Z 1 = 0`. Rewrite using `[e₁, e₂, hfb, hfb', mul_inv_cancel₀ (hb0 Z), sub_self]`. Conclude with `⟨⟨⟨f, f', hff, (mul_comm _ _).trans hff⟩, hf⟩⟩`.
+-/
 theorem keySec_of_generic (h : GenFrEx Xo c) (b : ∀ Z : Comp Xo c, Om Z) (hb0 : ∀ Z, b Z ≠ 0)
     (hb : ∀ C : FChart h, ((kch C.t : (Om C.Z)ˣ) : Om C.Z) * b C.Z ∈ C.R ∧
       (((kch C.t : (Om C.Z)ˣ) : Om C.Z) * b C.Z)⁻¹ ∈ C.R) : Nonempty (KeySec Xo c) := by
@@ -92,6 +110,13 @@ theorem keySec_of_generic (h : GenFrEx Xo c) (b : ∀ Z : Comp Xo c, Om Z) (hb0 
     rw [e₁, e₂, hfb, hfb', mul_inv_cancel₀ (hb0 Z), sub_self]
   exact ⟨⟨⟨f, f', hff, (mul_comm _ _).trans hff⟩, hf⟩⟩
 
+/- English proof (translation)
+Establish `hc : ∀ Z : Comp Xo c, CharZero (Om Z)` using `fun Z => charZero_of_injective_algebraMap (algebraMap c.F (Om Z)).injective`. Use `choose Ψ hΨ using fun Z : Comp Xo c => GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E H Dw l Xo c g e (Om Z) (genFr h Z) hpq`. Use `⟨fun Z => κ (Om Z) (Ψ Z).key, fun C => ?_⟩` and prove the remaining obligations. Use `haveI := C.sm`. Use `haveI : IsIntegrallyClosed C.R := isIntegrallyClosed_of_smooth c.F C.R`.
+
+Use `haveI : IsNoetherianRing C.R := Algebra.FiniteType.isNoetherianRing c.F C.R`. Use `haveI : CharZero C.R := charZero_of_injective_algebraMap (algebraMap c.F C.R).injective`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E H Dw l Xo c g e C.R C.y hpq`. Take `⟨Φ', hΦ'⟩` from `GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E H Dw l Xo c g e (Om C.Z) C.yg hpq`. Take `⟨u, hu⟩` from `h₃ C.R Φ.key`.
+
+Use `⟨Φ, u, hΦ, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.theta_key_rule_triangular_frame_change_fourth_power κ h₁ h₂ E H Dw l Xo c g e (Om C.Z) C.t _ _ (Ψ C.Z) Φ' C.bor (hΨ _) hΦ']`. Conclude with `(hu (Om C.Z) _ _ (GlobalTheory.T.universal_triple_fibres_base_change_key_data E H Dw l Xo c g e _ _ C.R.val C.y C.yg Φ Φ' C.gen hΦ hΦ')).symm`.
+-/
 theorem exists_chart_units {κ : GlobalTheory.KeyCl.Rule} (h₁ : GlobalTheory.KeyCl.Homog (fun _ => 1) κ) (h₂ : GlobalTheory.KeyCl.Funct κ)
     (h₃ : GlobalTheory.KeyCl.FamUnit κ) {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (hpq : 1 ≤ Dw.p + Dw.q)
     (h : GenFrEx Xo c) : ∃ v : ∀ Z : Comp Xo c, (Om Z)ˣ, ∀ C : FChart h,
@@ -112,6 +137,15 @@ theorem exists_chart_units {κ : GlobalTheory.KeyCl.Rule} (h₁ : GlobalTheory.K
   rw [← GlobalTheory.T.theta_key_rule_triangular_frame_change_fourth_power κ h₁ h₂ E H Dw l Xo c g e (Om C.Z) C.t _ _ (Ψ C.Z) Φ' C.bor (hΨ _) hΦ']
   exact (hu (Om C.Z) _ _ (GlobalTheory.T.universal_triple_fibres_base_change_key_data E H Dw l Xo c g e _ _ C.R.val C.y C.yg Φ Φ' C.gen hΦ hΦ')).symm
 
+/- English proof (translation)
+Take `⟨k, x, t, ht, rfl⟩ : ∃ (k : Fin F.n) (x : (M.X k).dom) (t : Ix Dw → (CAt σ)ˣ), FrBor t (un k x) y ∧ v = Formalism.L2.PjFree.toC ((kch t : (CAt σ)ˣ) : CAt σ)` from `hv`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ : FibKey Xo ℂ (un k x).x, Tied (S` from `ℂ) e (un k x).s (un k x).u Ψ := @GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E _ _ _ H Dw l Xo c g e ℂ _ _ σ.toAlgebra (un k x) hpq`. Establish `e₁ : κ ℂ Φ.key = kch (S` using `ℂ) t ^ 4 * κ ℂ Ψ.key := @GlobalTheory.T.theta_key_rule_triangular_frame_change_fourth_power κ h₁ h₂ E _ _ _ H Dw l Xo c g e ℂ _ _ σ.toAlgebra t (un k x) y Ψ Φ ht hΨ hΦ`. Take `⟨a, ha, hy⟩` from `hun k x`. Establish `hb : (T k).co.symm x.1 ∈ (T k).co ⁻¹' (M.X k).dom` using `by show (T k).co ((T k).co.symm x.1) ∈ (M.X k).dom`.
+
+Rewrite using `[(T k).co.apply_symm_apply]`. Conclude with `x.2`. Establish `d1` using `((T k).norm _ hb).1.ne_zero`. Rewrite `ha` using `[hNk]`. Establish `a0 : a ≠ 0` using `fun h0 => mul_ne_zero hN d1 (by rw [← ha, h0]; simp)`.
+
+Establish `e₂` using `GlobalTheory.T.theta_key_rule_value_at_theta_point κ h₁ h₃ E H Dw l Xo c σ g e F r M k (T k) _ hb a (un k x) Ψ a0 hy hΨ`. Establish `e₃ : N ^ 4 * (κ ℂ Ψ.key : ℂ) = ((2 * Real.pi * Complex.I) ^ g) ^ 4`. Use `mul_right_cancel₀ (pow_ne_zero 4 d1) ?_` and prove the remaining obligations. Rewrite `e₂` using `[show a ^ 8 = (a ^ 2) ^ 4 by ring, ha]`. Take the linear combination `e₂`.
+
+Establish `hπ : ((2 * Real.pi * Complex.I : ℂ) ^ g) ^ 4 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ Complex.two_pi_I_ne_zero)`. Establish `e₄ : (κ ℂ Φ.key : ℂ) = Formalism.L2.PjFree.toC ((kch t : (CAt σ)ˣ) : CAt σ) ^ 4 * (κ ℂ Ψ.key : ℂ)`. Rewrite using `[e₁]`. Both sides reduce to the same expression. Rewrite using `[e₄, div_pow, mul_left_comm, div_mul_eq_mul_div, e₃, div_self hπ, mul_one]`.
+-/
 theorem rule_eq_of_rootVal {κ : GlobalTheory.KeyCl.Rule} (h₁ : GlobalTheory.KeyCl.Homog (fun _ => 1) κ) (h₂ : GlobalTheory.KeyCl.Funct κ)
     (h₃ : GlobalTheory.KeyCl.ThetaOne κ) {σ : c.F →+* ℂ} {g : ℕ} {e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)}
     {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom)
@@ -148,6 +182,35 @@ theorem rule_eq_of_rootVal {κ : GlobalTheory.KeyCl.Rule} (h₁ : GlobalTheory.K
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ N U hσ hU _ _ hF hN _`. Take `⟨hr, -, -, -, -, g, e, F, -⟩` from `hU`. Establish `hpq : 1 ≤ Dw.p + Dw.q` using `by omega`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`.
+
+Take `⟨ξ₀, hcc, hne, him⟩` from `GlobalTheory.IsUnfEx.exists_xi H`. Establish `hcc' : cc (-ξ₀) = -(-ξ₀)`. Unfold `cc at hcc ⊢`. Rewrite using `[map_neg, hcc]`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ₀) hcc' (neg_ne_zero.2 hne) (Dw.p + Dw.q) rfl`.
+
+Take `⟨M, hM, hξ, hMG⟩` from `GlobalTheory.ModelsExist.exists_modelsOf GlobalTheory.QNorm.hasseNormSt E H Dw l Xo _ _ _ F _ ξ₀ Gm φ hcc him hφ`. Establish `T : ∀ k, ThetaData e F M k` using `fun k => (GlobalTheory.T.nonempty_thetaData_flagDomainModels E H Dw l Xo c σ g e F _ M hσ hM hξ k).some`. Use `choose un hun using fun k => GlobalTheory.T.exists_normalisedFramedPoint_on_each_component hT E H Dw l Xo c σ g e F _ M k (T k)`. Establish `hok : FramesOK e F M un` using `⟨fun k => GlobalTheory.T.normalised_points_satisfy_single_frame hT E H Dw l Xo c σ g e F _ M k (T k) (un k) hσ hM hξ (hun k), fun k => GlobalTheory.T.normalisedFramedPoint_triangularFrame_weightRule hT E H Dw l Xo c σ g e F _ M un k (T k) hσ hM hξ (hun k), fun k => GlobalTheory.T …`. Establish `hU₀` using `isUnf_built hB E H Dw l Xo c σ g e F _ M un hσ hM hξ hok`.
+
+Establish `hC : (normConst (fun j => Formalism.L2.PjFree.relab c σ (e j).1) ξ₀ : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Use `(Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))).ne'` and prove the remaining obligations. Establish `: Formalism.L2.PjFree.relab c σ (e j).1 ξ₀ ≠ 0` using `(map_ne_zero _).2 hne`. Check the signs of the components of the expression.
+
+Take `⟨κ, k₁, k₂, -, k₃, -, k₄, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Take `⟨hL, -, h, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨v, hv⟩` from `exists_chart_units k₁ k₂ k₄ e hpq h`. Establish `hroot : ∀ C : FChart h, ∃ (a : c.F) (b : C.R), a ≠ 0 ∧ ((kch C.t ^ 4 * v C.Z : (Om C.Z)ˣ) : Om C.Z) = a • (b : Om C.Z) ^ 4`. Introduce `C`.
+
+Take `⟨Φ, u, hΦ, hu, huv⟩` from `hv C`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `haveI := C.sm`. Use `haveI := GlobalTheory.GeomConn.isDomain_tensor C.R.val Subtype.val_injective (hF C.Z) ℂ`. Use `choose z hz using fun ψ : C.R →ₐ[c.F] CAt σ => hL.bc _ _ ψ C.y`.
+
+Establish `hex : ∀ ψ, ∃ w, RootVal (unfOf e F M un) (z ψ) w` using `fun ψ => by`. Take `⟨k, x, t, ht⟩` from `hU₀.2.2.1 (z ψ)`. Conclude with `⟨_, k, x, t, ht, rfl⟩`. Use `choose ρ hρ using hex`. Take `⟨a, b, ha, hab⟩` from `exists_eq_smul_pow (K := c.F) (A := C.R) (n := 4) (by norm_num) u (pow_ne_zero 4 (div_ne_zero hC (pow_ne_zero g Complex.two_pi_I_ne_zero))) ρ (fun m V s hV hs => GlobalTheory.T.continuousOn_keySection_complexValue E H Dw l Xo c σ g e F _ M T un hσ hM hξ hun hok C.R C.y m V s (fun …`.
+
+Take `⟨Ψ, hΨ⟩ : ∃ Ψ : FibKey Xo ℂ (z ψ).x, Tied (S` from `ℂ) e (z ψ).s (z ψ).u Ψ := @GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E _ _ _ H Dw l Xo c g e ℂ _ _ σ.toAlgebra (z ψ) hpq`. Conclude with `(rule_eq_of_rootVal k₁ k₂ k₃ T hun hpq hC (fun k => by rw [(hMG k).2]) (hρ ψ) Ψ hΨ).trans (congrArg _ (hu ℂ _ _ (@GlobalTheory.T.universal_triple_fibres_base_change_key_data E _ _ _ H Dw l Xo c g e _ ℂ _ _ _ _ σ.toAlgebra ψ C.y (z ψ) Φ Ψ (hz ψ) hΦ hΨ))))`. Conclude with `⟨a, b, ha, by rw [← huv, hab]; rfl⟩`. Establish `hgen : ∀ Z : Comp Xo c, ∃ (a : c.F) (b : Om Z), a ≠ 0 ∧ (v Z : Om Z) = a • b ^ 4`. Introduce `Z`.
+
+Take `⟨C, ψ, z, t, h1, h2⟩` from `hA h (Om Z) (genFr h Z)`. Take `rfl` from `GlobalTheory.Reg.SecGlue.chart_comp Z C ψ z t h1 h2`. Take `⟨a, b, ha, hab⟩` from `hroot C`. Use `⟨a, b / ((kch C.t : (Om C.Z)ˣ) : Om C.Z), ha, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, ← smul_div_assoc, ← hab, Units.val_mul, Units.val_pow_eq_pow_val, mul_div_cancel_left₀ _ (pow_ne_zero 4 (kch C.t).ne_zero)]`.
+
+Use `choose a b ha hab using hgen`. Establish `hb0 : ∀ Z, b Z ≠ 0` using `fun Z h0 => (v Z).ne_zero (by rw [hab, h0]; simp)`. Use `keySec_of_generic h b hb0 fun C => ?_` and prove the remaining obligations. Take `⟨-, u, -, -, huv⟩` from `hv C`. Use `haveI := C.sm`.
+
+Use `haveI : IsIntegrallyClosed C.R := isIntegrallyClosed_of_smooth c.F C.R`. Use `haveI := GlobalTheory.SupGeneric.isFractionRing_chart C`. Establish `hint : ∀ (x : Om C.Z) (y : C.R), x ^ 4 = y → x ∈ C.R` using `fun x y hxy => by`. Establish `hi : IsIntegral C.R (x ^ 4)` using `hxy ▸ isIntegral_algebraMap (R := C.R) (x := y)`. Take `⟨w, hw⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (by norm_num : 0 < 4) hi`.
+
+Conclude with `hw ▸ w.2`. Establish `hc : ∀ (x : c.F) (y : C.R), ((algebraMap c.F C.R x * y : C.R) : Om C.Z) = x • (y : Om C.Z)` using `fun x y => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `e₁ : (((kch C.t : (Om C.Z)ˣ) : Om C.Z) * b C.Z) ^ 4 = (a C.Z)⁻¹ • ((u : C.R) : Om C.Z)`.
+
+Rewrite using `[huv, Units.val_mul, Units.val_pow_eq_pow_val, hab, mul_smul_comm, smul_smul, inv_mul_cancel₀ (ha _), one_smul, mul_pow]`. Use `⟨hint _ _ (e₁.trans (hc _ _).symm), hint _ (algebraMap c.F C.R (a C.Z) * ((u⁻¹ : (C.R)ˣ) : C.R)) ?_⟩` and prove the remaining obligations. Rewrite using `[inv_pow, e₁, hc]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, inv_mul_cancel₀ (ha _), one_smul, ← Subalgebra.coe_mul, Units.mul_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nonempty_keySec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (∀ k, (U.X k).dom.Nonempty) → (∀ k la γ, (U.X k).χ la γ = 1) → FnAlgClosed Xo c → 2 ≤ N → 2 < Module.finrank ℚ E / 2 → Nonempty (KeySec Xo c) := by
   intro E _ _ _ H Dw l Xo c σ N U hσ hU _ _ hF hN _
   obtain ⟨hr, -, -, -, -, g, e, F, -⟩ := hU

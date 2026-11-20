@@ -44,6 +44,9 @@ def LimWPhi : Prop :=
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → Apart w v' → ∀ B, (CG.mk π).HasSat w B →
         GlobalTheory.RoadU.SphAt .phi π ι r w B)
 
+/- English proof (translation)
+Introduce `i hi` and use `absurd hi (by omega)`.
+-/
 example : GapJ 1 0 := fun i hi => absurd hi (by omega)
 
 end GlobalTheory.CongL

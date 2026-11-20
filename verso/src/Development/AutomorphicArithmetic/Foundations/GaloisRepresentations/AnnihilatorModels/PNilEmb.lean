@@ -11,12 +11,18 @@ namespace UpperTheory.Gal.crystallineComparison
 section Comm
 variable {L M N : Type} [Field L] [AddCommGroup M] [Module L M] [AddCommGroup N] [Module L N]
 
+/- English proof (translation)
+Proceed by induction on `n generalizing y with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+-/
 private theorem pow_comm (φ : M →ₗ[L] N) (A : End L M) (A' : End L N) (h : ∀ y, φ (A y) = A' (φ y)) (n : ℕ) (y : M) :
     φ ((A ^ n) y) = (A' ^ n) (φ y) := by
   induction n generalizing y with
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk66.aeval_comm φ A A' h Q y`.
+-/
 private theorem aeval_comm (φ : M →ₗ[L] N) (A : End L M) (A' : End L N) (h : ∀ y, φ (A y) = A' (φ y)) (Q : Polynomial L) (y : M) :
     φ (Polynomial.aeval A Q y) = Polynomial.aeval A' Q (φ y) :=
   _root_.UpperTheory.Reformulated.B.Qk66.aeval_comm φ A A' h Q y
@@ -31,9 +37,17 @@ variable {F G B : Type} [Field F] [Group G] [AddCommGroup B] [Module F B] (σ : 
 private def ext1 (B : Type) [AddCommGroup B] [Module F B] (f : V →ₗ[L] W) : V ⊗[F] B →ₗ[L] W ⊗[F] B :=
   AlgebraTensorModule.map f (LinearMap.id : B →ₗ[F] B)
 
+/- English proof (translation)
+Simplify using `[ext1]`.
+-/
 private theorem scalar_extension_tmul (f : V →ₗ[L] W) (v : V) (b : B) : ext1 (F := F) B f (v ⊗ₜ b) = f v ⊗ₜ b := by
   simp [ext1]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_Dinv]`. Introduce `g`. Establish `key : ∀ y : V ⊗[F] B, AlgebraTensorModule.map (ρ' g) (σ g) (ext1 B f y) = ext1 B f (AlgebraTensorModule.map (ρ g) (σ g) y)`. Introduce `y`. Proceed by induction on `y with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v b => simp [scalar_extension_tmul, h g v]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[key, hx]`.
+-/
 private theorem typeCharacterExtension_mem_range_coefficientRing {ρ : Representation L G V} {ρ' : Representation L G W} {f : V →ₗ[L] W} (h : Inter ρ ρ' f)
     {x : V ⊗[F] B} (hx : x ∈ Dinv σ ρ) : ext1 B f x ∈ Dinv σ ρ' := by
   rw [mem_Dinv] at hx ⊢
@@ -47,6 +61,9 @@ private theorem typeCharacterExtension_mem_range_coefficientRing {ρ : Represent
     | add a b ha hb => simp only [map_add, ha, hb]
   rw [key, hx]
 
+/- English proof (translation)
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [scalar_extension_tmul, onPer]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private theorem scalar_extension_period_action (f : V →ₗ[L] W) (y : V ⊗[F] B) :
     ext1 B f (onPer ψ L V y) = onPer ψ L W (ext1 B f y) := by
   induction y with
@@ -54,6 +71,9 @@ private theorem scalar_extension_period_action (f : V →ₗ[L] W) (y : V ⊗[F]
   | tmul v b => simp [scalar_extension_tmul, onPer]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul v c`. Rewrite using `[scalar_extension_tmul, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, LinearMap.map_smul_of_tower]`. Consider the case `add a c ha hc => simp only [map_add, Finsupp.add_apply, ha, hc]`.
+-/
 private theorem scalar_extension_basis_coord {κ : Type} [DecidableEq κ] (b : Basis κ F B) (f : V →ₗ[L] W) (y : V ⊗[F] B) (k : κ) :
     TensorProduct.equivFinsuppOfBasisRight b (ext1 B f y) k = f (TensorProduct.equivFinsuppOfBasisRight b y k) := by
   induction y with
@@ -65,6 +85,13 @@ private theorem scalar_extension_basis_coord {κ : Type} [DecidableEq κ] (b : B
 
 end
 
+/- English proof (translation)
+Introduce `F G B _ _ _ _ σ ψ L _ _ V _ _ _ _ ρ I _ W _ _ _ _ ρ' f hI hinj Q hQ`. Consider the cases of `nonempty_fintype I`. Use `choose N hN using hQ`. Use `⟨∑ i, N i, fun x hx => ?_⟩` and prove the remaining obligations. Use `set A := Polynomial.aeval (onPer ψ L V) Q with hA`.
+
+Establish `hzero : ∀ i, ext1 B (f i) ((A ^ ∑ i, N i) x) = 0`. Introduce `i`. Establish `hle : N i ≤ ∑ i, N i` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Rewrite using `[pow_comm (ext1 B (f i)) A (Polynomial.aeval (onPer ψ L (W i)) Q) (aeval_comm _ _ _ (scalar_extension_period_action ψ (f i)) Q), ← Nat.sub_add_cancel hle, pow_add, Module.End.mul_apply, hN i _ (typeCharacterExtension_mem_range_coefficientRing σ (hI i) hx), map_zero]`. Apply `(TensorProduct.equivFinsuppOfBasisRight (Basis.ofVectorSpace F B)).injective` to reduce the goal to its premises.
+
+Use extensionality with `k`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `hinj _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← scalar_extension_basis_coord, hzero i, map_zero, Finsupp.zero_apply]`.
+-/
 theorem nilEmb_of : NilEmb := by
   intro F G B _ _ _ _ σ ψ L _ _ V _ _ _ _ ρ I _ W _ _ _ _ ρ' f hI hinj Q hQ
   classical

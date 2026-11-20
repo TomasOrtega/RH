@@ -27,6 +27,61 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 section G
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 end G
+/- English proof (translation)
+Introduce `l _ ι π s hc hr`. Use `host_isCMField D.host` as an intermediate fact. Establish `ha : 2 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (C.e _ π).1`. Establish `hmk : CG.mk π₀ = (C.e _ π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`.
+
+Establish `h1` using `(C.csd _ π).1 hc`. Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow D.host.E s`. Use `set ν := GlobalTheory.HeckeGal.Model.absPow D.host.E s`.
+
+Establish `inf₁ : ∀ τ, (CG.mk (π₀.twist ν)).infChar τ = (D.naut.infG π τ).map (· + (s : ℂ))` using `fun τ => by`. Establish `h1` using `(ParLaws.hasInfChar_infChar (CG.mk π₀) τ).twist ν`. Rewrite `h1` using `[(GlobalTheory.T.heckeChar_exponent_of_infinityType _ ν).2.1 s hν τ]`. Rewrite using `[C.inf, CGu.infChar, ← hmk]`. Conclude with `h1.infChar_eq`.
+
+Establish `hreg : (CG.mk (π₀.twist ν)).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Take `⟨h1, h2⟩` from `hr τ`. Rewrite using `[inf₁]`. Use `⟨h1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`.
+
+Conclude with `h2 y hy`. Take `⟨ψp, hP⟩` from `isPolarized_twist hc₀ hν`. Take `⟨r, wt, HT, H⟩` from `hG _ D.nd.Om l ι _ (by omega) _ ψp hreg hP`. Establish `hloc : ∀ (w : PlE D.host) (u : ℝ), T.e w (D.naut.lpTw (D.naut.locG π w) u) = (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk π₀) (D.nd.plOm.2 w)).lpTw u` using `fun w u => by`. Rewrite using `[T.tw, C.loc, hmk]`.
+
+Both sides reduce to the same expression. Establish `haway : ∀ (w : PlE D.host) (hl : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal), UpperTheory.GalS.Aw (wdOf (D.nd.plOm.2 w) hl ι r) (T.e w (D.naut.lpTw (D.naut.locG π w) (s + (1 - (D.R.r : ℝ)) / 2)))` using `fun w hl => by`. Establish `e` using `_root_.GlobalTheory.HodgeOfTrue.locParT_twist_absPow_eq_lpTw hL hF (CG.mk π₀) hν (D.nd.plOm.2 w)`. Establish `k` using `H.aw_locPar hL hF hl (D.nd.plOm.2 w)`. Rewrite `k` using `[show _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk (π₀.twist ν)) (D.nd.plOm.2 w) = _ from e, WD.lpTw_add, ← hloc]`.
+
+Conclude with `k`. Establish `hv : s + (1 - (D.R.r : ℝ)) / 2 + (wt : ℝ) / 2 = 0`. Establish `hm : ∀ τ, π₀.HasInfChar τ ((CG.mk π₀).infChar τ)` using `fun τ => ParLaws.hasInfChar_infChar (CG.mk π₀) τ`. Establish `hw` using `_root_.GlobalTheory.TempSatGal.weight_eq_alt_alt (by omega) H (fun τ => (CG.mk π₀).infChar τ) s (fun τ => (hm τ).1) (fun τ => by rw [inf₁, C.inf, CGu.infChar, ← hmk]) (fun τ => GlobalTheory.CsdTwistGal.infChar_conj_of_isCsd _ _ π₀ hc₀ τ _ _ (hm τ) (hm _))`. Rewrite using `[hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `htemp : ∀ w : PlE D.host, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal → D.naut.unr (D.naut.locG π w) → ∀ α ∈ D.naut.frobEig (D.naut.locG π w), ‖α‖ ≤ ((normV w : ℕ) : ℝ) ^ (((D.R.r : ℝ) + 3) / 2)` using `fun w hl hu α hα => by`. Take `⟨-, hU, hS⟩` from `_root_.GlobalTheory.HeightCounting.Blocks.readsCusp_alt hF C`. Take `⟨B, hB, e⟩` from `hS _ π w (by omega) hu`. Rewrite `hα` using `[e]`.
+
+Take `⟨b, hb, rfl⟩` from `Multiset.mem_map.1 hα`. Establish `k : UpperTheory.GalN.OpenB (Formalism.ConjugateSelfDual.normV w) (b : ℂ)` using `PositivityTheory.JacquetShalikaLocal.jacquetShalikaBound D.host.E _ _ (hU _ π (by omega)) w B hB b hb`. Rewrite using `[Units.val_inv_eq_inv_val]`. Establish `hq` using `UpperTheory.GalN.one_lt_q (H := D.host) w`. Use `(k.inv hq).2.le.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hq.le) ?_)` and prove the remaining obligations.
+
+Establish `: (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨r, ⟨Units.continuous_val.comp H.cont, H.ss, haway, htemp⟩, fun w hw O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Establish `hpar : T.e w (D.naut.locG π w) = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk π₀) (D.nd.plOm.2 w)`. Rewrite using `[C.loc, hmk]`.
+
+Both sides reduce to the same expression. Establish `hab` using `H.above (D.loc l) (D.locA l) ⟨D.locT l⟩ w _ (D.nd.plOm.2 w) O Bw hj`. Establish `hN : UpperTheory.GalS.Nc D.nd D.naut (D.naut.locG π w) → _root_.UpperTheory.GalS.NiceAlt (π₀.twist ν) (D.nd.plOm.2 w)` using `fun k => by`. Use `_root_.UpperTheory.GalS.nice_of_loc_par hL hF _ (UpperTheory.GalS.NcW.tw ?_ _)` and prove the remaining obligations. Establish `e` using `_root_.GlobalTheory.HodgeOfTrue.locParT_twist_absPow_eq_lpTw hL hF (CG.mk π₀) hν (D.nd.plOm.2 w)`.
+
+Rewrite using `[show _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk (π₀.twist ν)) (D.nd.plOm.2 w) = _ from e, ← hpar]`. Conclude with `(UpperTheory.GalS.ncW_of_nc T k).tw _`. Use `⟨fun k => ⟨hab.deRham (hN k), fun τ L τ' hτ => ⟨HT τ, ?_, hab.jumps (hN k) τ L τ' hτ⟩⟩, fun hu => ?_, fun hm => ?_⟩` and prove the remaining obligations. Rewrite using `[H.weights, inf₁, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨σ₀, hσ₀, -⟩` from `LocEx.exists_isLocComp hF _ _ (π₀.twist ν) w`. Use `hab.crys σ₀ hσ₀ ((_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)) (ParLaws.toRep σ₀)).1 ?_)` and prove the remaining obligations. Rewrite using `[← _root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL hσ₀ (D.nd.plOm.2 w)]`.
+
+Establish `e` using `_root_.GlobalTheory.HodgeOfTrue.locParT_twist_absPow_eq_lpTw hL hF (CG.mk π₀) hν (D.nd.plOm.2 w)`. Rewrite using `[show _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk (π₀.twist ν)) (D.nd.plOm.2 w) = _ from e, WD.unr_tw, ← hpar]`. Conclude with `(T.unr w _).1 hu`. Establish `hm' : UpperTheory.GalS.NcW (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.mk π₀) (D.nd.plOm.2 w))`. Rewrite using `[← hpar]`.
+
+Conclude with `UpperTheory.GalS.ncW_of_nc T hm`. Establish `hgood : UpperTheory.Zero.LLC.Good (⟨D.R.r, ParLaws.toCl ((CG.mk π₀).loc w)⟩ : IrrGL (w.adicCompletion D.host.E))`. Rewrite using `[hmk]`. Conclude with `_root_.UpperTheory.One.M.New.cgGood sw C _ π w`. Establish `hs2 : 2 * s = ((D.R.r : ℤ) - 1 - wt : ℤ)`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ ξ : HChar D.host.E, (∀ τ, ∃ n : ℤ, expo ξ τ = (s : ℂ) + n) → (CG.mk (π₀.twist ξ)).IsRegAlg ∧ ∀ τ, ∃ n : ℤ, expo (ξ⁻¹ * ν) τ = n` using `fun ξ hξ => by`. Use `⟨(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hr τ`.
+
+Take `⟨n, hn⟩` from `hξ τ`. Establish `e` using `((ParLaws.hasInfChar_infChar (CG.mk π₀) τ).twist ξ).infChar_eq`. Establish `e' : (CG.mk (π₀.twist ξ)).infChar τ = (D.naut.infG π τ).map (· + expo ξ τ)`. Rewrite using `[C.inf, CGu.infChar, ← hmk]`. Conclude with `e`.
+
+Rewrite using `[e']`. Use `⟨h1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨m, hm2⟩` from `h2 y hy`. Use `⟨m + n, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hn]`. Use `push_cast`. Take the linear combination `hm2`. Take `⟨n, hn⟩` from `hξ τ`. Use `⟨-n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[expo_mul, expo_inv, hn, (GlobalTheory.T.heckeChar_exponent_of_infinityType _ ν).2.1 s hν τ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ S : Set (HeightOneSpectrum (𝓞 D.host.E)), S.Finite → Dense {g : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om | ∃ w ∉ S, ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) g} := fun S hS => Dense.mono (by rintro g ⟨w, h1, -, h2⟩; exact ⟨w, h1, h2⟩) (GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 GlobalTheory.Published.chebotarevDegreeOne') S hS)`. Take `⟨ξh, x1, x2, x3, x4⟩` from `exists_halfChar D`.
+
+Establish `hone : ∀ v, (1 : HChar D.host.E).UnrAt v` using `fun v x _ => rfl`. Establish `cone : (CG.ofChar (1 : HChar D.host.E)).IsCsd` using `isCsd_ofChar_of_res _ _ (Or.inl ⟨fun v k => by`. Simplify using `only [HChar.resFin, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl,`. Use `fun v k => by`.
+
+Simplify using `only [HChar.resInf, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl⟩)`. Break down `Int.even_or_odd' ((D.R.r : ℤ) - 1 - wt) with ⟨k, hk | hk⟩` into its components or cases. Establish `hsk : (s : ℂ) = k`. Rewrite `hs2` using `[hk]`.
+
+Move the coercions through the operations in `at hs2`. Establish `: s = k` using `by linarith`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨k1, k2⟩` from `key 1 fun τ => ⟨-k, by rw [CG.expo_one, hsk]; push_cast; ring⟩`.
+
+Conclude with `_root_.GlobalTheory.HodgeOfTrue.isPotCrysAt_of_mono0' hL hF hG hB hGL hD ha hc₀ hν (fun v => hone v) cone (by rwa [inv_one]) k1 k2 H (D.locT l) hw (D.nd.plOm.2 w) Bw hj hm' hgood`. Establish `hsk : (s : ℂ) = k + 1 / 2`. Rewrite `hs2` using `[hk]`. Move the coercions through the operations in `at hs2`. Establish `: s = k + 1 / 2` using `by linarith`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨k1, k2⟩` from `key ξh fun τ => by`. Take `⟨n, hn⟩` from `x4 τ`. Conclude with `⟨n - k, by rw [hn, hsk]; push_cast; ring⟩`.
+
+Conclude with `_root_.GlobalTheory.HodgeOfTrue.isPotCrysAt_of_mono0' hL hF hG hB hGL hD ha hc₀ hν x1 x2 x3 k1 k2 H (D.locT l) hw (D.nd.plOm.2 w) Bw hj hm' hgood`.
+-/
 theorem galHodge0_of_cgTrue (sw : _root_.UpperTheory.One.M.TrivialCondition) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : _root_.UpperTheory.GalS.CuspUAlt) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hGL : _root_.UpperTheory.GalS.CarUAlt)
     {D : D7} {T : WDTie D.nd D.naut} (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T) : UpperTheory.GalS.GalHodge0 D T := by

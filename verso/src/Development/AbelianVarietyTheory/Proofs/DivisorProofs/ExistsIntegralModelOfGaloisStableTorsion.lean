@@ -12,6 +12,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationDerivWeier
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 
+/- English proof (translation)
+Introduce `L β u V N hβ hβim hu12 hN hNodd F ι _ T hg2 hg3 huF hst hT hcard`. Establish `hΔ` using `latticeCurve_Δ_ne_zero L`. Establish `hu : u ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu12` using `[map_zero, zero_pow (by norm_num)]`.
+
+Conclude with `hΔ ((Valuation.zero_iff _).mp hu12.symm)`. Establish `hj : (latticeCurve L).j ∈ V`. Establish `hi : _root_.IsIntegral V (latticeCurve L).j` using `(GlobalTheory.T.isIntegral_j_of_nonreal_multiplier L β hβ hβim).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Take `⟨r, s, t, hint⟩` from `GlobalTheory.T.exists_variableChange_intV_of_j_mem (latticeCurve L) V (Units.mk0 u hu) hj hu12`. Establish `htm` using `fun i => GlobalTheory.T.torsion_weierstrass_coords_mem_of_intV L β u V N hβ hβim hu12 hN hNodd hu r s t hint (T i) (hT i).1 (hT i).2`. Establish `hud` using `fun i => GlobalTheory.T.valuation_derivWeierstrassP_oddTorsion L β u V N hβ hβim hu12 hN hNodd (T i) (hT i).1 (hT i).2`. Establish `havg` using `GlobalTheory.T.weierstrassCoeffs_integral_average_change_of_variables V (-L.g₂ / 4) (-L.g₃ / 4) r s t (Units.mk0 u hu) ι (fun i => L.weierstrassP (T i)) (fun i => L.derivWeierstrassP (T i) / 2) hint hcard (fun i => (htm i).1) (fun i => (htm i).2) (fun i => by show V.valuation (2 …`.
+
+Rewrite using `[mul_div_cancel₀ _ two_ne_zero]`. Conclude with `hud i)`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.galoisStable_lattice_points_symmetric_mem F L ι T hg2 hg3 hst (fun i => (hT i).1)`. Establish `hnF : ((Fintype.card ι : ℕ) : ℂ) ∈ F` using `natCast_mem F _`. Use `⟨⟨Units.mk0 u hu, (∑ i, L.weierstrassP (T i)) / Fintype.card ι, (∑ i, (3 * L.weierstrassP (T i) ^ 2 + -L.g₂ / 4) / (2 * (L.derivWeierstrassP (T i) / 2))) / Fintype.card ι, (∑ i, L.derivWeierstrassP (T i) / 2) / Fintype.card ι⟩, huF, div_mem h1 hnF, div_mem h3 hnF, div_mem h2 hnF, …` and prove the remaining obligations.
+
+Establish `hv : V.valuation u ^ 12 ≠ 0`. Rewrite using `[hu12]`. Conclude with `(Valuation.ne_zero_iff _).mpr hΔ`. Rewrite using `[variableChange_Δ, map_mul, map_pow, Units.val_inv_eq_inv_val, Units.val_mk0, map_inv₀, map_one, ← hu12, inv_pow, inv_mul_cancel₀ hv]`.
+-/
 theorem GlobalTheory.CMModel.modelAt_of_stable_torsion : ∀ (L : PeriodPair) (β u : ℂ) (V : ValuationSubring ℂ) (N : ℕ), MulStable L β → β.im ≠ 0 → V.valuation u ^ 12 = V.valuation (latticeCurve L).Δ → V.valuation (N : ℂ) = 1 → Odd N → ∀ (F : IntermediateField ℚ ℂ) (ι : Type) [Fintype ι] (T : ι → ℂ), L.g₂ ∈ F → L.g₃ ∈ F → u ∈ F → Stable L F T → (∀ i, T i ∉ L.lattice ∧ (N : ℂ) * T i ∈ L.lattice) → V.valuation (Fintype.card ι : ℂ) = 1 → ModelAt V F (latticeCurve L) 1 := by
   intro L β u V N hβ hβim hu12 hN hNodd F ι _ T hg2 hg3 huF hst hT hcard
   have hΔ := latticeCurve_Δ_ne_zero L

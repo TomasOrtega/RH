@@ -16,6 +16,25 @@ noncomputable section
 
 namespace GlobalTheory.GenFracChart
 
+/- English proof (translation)
+Use `set V := barComp TF.Y Z`. Use `set W : (X₀ TF.Y Z).Opens := V.ι ⁻¹ᵁ U.1 with hWdef`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hWU : V.ι ''ᵁ W = U.1`. Rewrite using `[hWdef, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+
+Conclude with `inf_eq_right.2 hUV`. Establish `hW : IsAffineOpen W`. Rewrite using `[← V.ι.isAffineOpen_iff_of_isOpenImmersion, hWU]`. Conclude with `hU`. Establish `hch : LogKS.chart U = hU.fromSpec` using `rfl`.
+
+Establish `hcomp : ∀ {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (x : A), (f ≫ g) x = g (f x)` using `fun _ _ _ => rfl`. Establish `hη : genericPoint (X₀ TF.Y Z) ∈ W`. Take `⟨p⟩ : Nonempty (Sp (X₀ TF.Y Z).functionField)` from `inferInstance`. Establish `h1 : (spMap ρ ≫ LogKS.chart U) p ∈ U.1`. Rewrite using `[hcomp, hch]`.
+
+Use `show _ ∈ (U.1 : Set TF.Y.X)`. Rewrite using `[← hU.range_fromSpec]`. Conclude with `Set.mem_range_self _`. Rewrite `h1` using `[hρ, hcomp]`. Conclude with `GlobalTheory.Cartier.gen_mem (x := GlobalTheory.LogKSDiv.genPt TF Z p) h1`.
+
+Use `set σ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField := ((X₀ TF.Y Z).presheaf.germ W _ hη).hom.comp (V.ι.appLE U.1 W le_rfl).hom with hσ`. Establish `key : spMap ρ ≫ hU.fromSpec = spMap σ ≫ hU.fromSpec`. Rewrite using `[← hch, hρ, GlobalTheory.LogKSDiv.genPt, ← hW.fromSpecStalk_eq_fromSpecStalk hη, IsAffineOpen.fromSpecStalk, Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec V.ι hU hW le_rfl, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hρe : ρ = σ`.
+
+Use `Spec.map_injective ((cancel_mono hU.fromSpec).1 key)` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Substitute `hρe` using the available equality. Use `haveI : Nonempty W := ⟨⟨_, hη⟩⟩`. Establish `hle : U.1 ≤ V.ι.opensRange` using `by rw [Scheme.Opens.opensRange_ι]; exact hUV`.
+
+Use `haveI : IsIso (V.ι.app U.1) := Scheme.Hom.isIso_app V.ι U.1 hle`. Establish `hFr : IsFractionRing Γ(X₀ TF.Y Z, W) (X₀ TF.Y Z).functionField` using `functionField_isFractionRing_of_isAffineOpen _ W hW`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `letI := σ.toAlgebra`. Conclude with `IsFractionRing.of_ringEquiv_left (asIso (V.ι.app U.1)).commRingCatIsoToRingEquiv (fun x => by show σ x = _`.
+
+Simplify using `only [σ, RingHom.comp_apply, Scheme.Hom.app_eq_appLE]`. Use the proof step `rfl)`. Introduce `a`. Rewrite using `[← GlobalTheory.Cartier.fnOf_comp_algX (s₀ TF.Y Z) W hη]`. Simplify using `only [σ, RingHom.comp_apply]`.
+
+Use `congr 1`. Use `show ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ TF.Y.s.appLE ⊤ U.1 (fun _ _ => trivial) ≫ V.ι.appLE U.1 W le_rfl).hom a = _`. Establish `e` using `Scheme.Hom.appLE_comp_appLE V.ι TF.Y.s ⊤ U.1 W (fun _ _ => trivial) le_rfl`. Use `erw [e]`. Both sides reduce to the same expression.
+-/
 theorem isFractionRing_and_const (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
     (TF : TorFlag Xo c) (Z : Comp Xo c) [IsIntegral (X₀ TF.Y Z)] (U : TF.Y.X.affineOpens)

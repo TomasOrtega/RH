@@ -10,10 +10,16 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat 
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+Introduce `_ _ Y u _ s₁ s₂ _ _ _ _ hr` and use `Formalism.L2.SG.Pf.iotaDict_fwd Y s₁ s₂ (lam_eq Y u hr) (lam'_eq Y u hr) (congrArg (fun r => r.2.2) hr)`.
+-/
 theorem liftIotaEqC_holds : LiftIotaEqC :=
   fun _ _ Y u _ s₁ s₂ _ _ _ _ hr =>
     Formalism.L2.SG.Pf.iotaDict_fwd Y s₁ s₂ (lam_eq Y u hr) (lam'_eq Y u hr) (congrArg (fun r => r.2.2) hr)
 
+/- English proof (translation)
+The claim follows from `stepClassG_of_liftIota liftIotaEqC_holds`.
+-/
 theorem stepClassG_holds : StepClassG := stepClassG_of_liftIota liftIotaEqC_holds
 
 end Formalism.L2.SG.Pf

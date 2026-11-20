@@ -22,6 +22,9 @@ variable [TopologicalSpace G] {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e :
   {ρ : GR n → PX m n →ₗ[ℂ] PX m n} {Pp Γ : Subgroup G} {ι : GR n →* G} {s₀ : ℂ} {Ht : G → ℝ≥0}
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
+/- English proof (translation)
+Unfold `Top`. Establish `: ∀ k : KR n, (∫ x, F (g * ι ((k : GR n) * a * nb x * b)) * ψ x) = 0` using `fun k => hG.Λsing F hF hinv hl ψ hψ nb hnb g ((k : GR n) * a) b`. Simplify using `only [this, mul_zero, integral_zero]`.
+-/
 theorem top_sing [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n} {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : IsSingTest ψ)
     (hnb : ∀ x, mR (nb x) = nU (herm x)) (F : G → ℂ) (hF : Continuous F) (hinv : ∀ γ ∈ Γ, ∀ g, F (γ * g) = F g)
@@ -31,6 +34,11 @@ theorem top_sing [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hG : GlobData �
     hG.Λsing F hF hinv hl ψ hψ nb hnb g ((k : GR n) * a) b
   simp only [this, mul_zero, integral_zero]
 
+/- English proof (translation)
+Take `⟨x0, y, S, r, hr, hg, hsp⟩` from `hG.split g`. Use `⟨y, S, r, hr, fun z w => ?_⟩` and prove the remaining obligations. Establish `h1` using `hsp (y * w)`. Establish `e1 : g * ι w = x0 * ι (y * w)` using `by rw [hg, map_mul, mul_assoc]`. Rewrite using `[e1]`.
+
+Simplify using `only [hz]`. Rewrite using `[h1.1, h1.2 1, hL.vac, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hz_split (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (g : G) :
     ∃ (y : GR n) (K : ℂ) (r : ℝ), 0 < r ∧ ∀ (z : ℂ) (w : GR n), hz Ht sec s₀ z (g * ι w) =
       K * ((r : ℂ) ^ (z - s₀)) * (((hLoc (y * w) : ℝ) : ℂ) ^ (z - s₀) * F0 p q e (y * w)) := by
@@ -43,6 +51,13 @@ theorem hz_split (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G P
   rw [h1.1, h1.2 1, hL.vac, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_nonneg _)]
   ring
 
+/- English proof (translation)
+Take `⟨y, K, r, hr, hsp⟩` from `hz_split hL hG g`. Establish `e1 : ∀ (k : KR n) x, hz Ht sec s₀ z (g * ι ((k : GR n) * a * nb x * b)) * ψ x = (K * (r : ℂ) ^ (z - s₀)) * ((((hLoc (y * (k : GR n) * a * nb x * b) : ℝ) : ℂ) ^ (z - s₀) * F0 p q e (y * (k : GR n) * a * nb x * b)) * ψ x)`. Introduce `k x`. Rewrite using `[hsp]`. Simplify using `only [mul_assoc]`.
+
+Establish `e2 : hz Ht sec s₀ z g = K * (r : ℂ) ^ (z - s₀) * (((hLoc y : ℝ) : ℂ) ^ (z - s₀) * F0 p q e y)`. Use `hsp z 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one, mul_one]`. Then use the resulting hypothesis. Unfold `Top`. Repeatedly rewrite using `[e1, MeasureTheory.integral_const_mul]`.
+
+Establish `e3 : ∀ k : KR n, (F0 p q e (k : GR n))⁻¹ * (K * (r : ℂ) ^ (z - s₀) * ∫ x, (((hLoc (y * (k : GR n) * a * nb x * b) : ℝ) : ℂ) ^ (z - s₀) * F0 p q e (y * (k : GR n) * a * nb x * b)) * ψ x) = (K * (r : ℂ) ^ (z - s₀)) * ((F0 p q e (k : GR n))⁻¹ * ∫ x, (((hLoc (y * (k : GR n) * a * nb …` using `fun k => by ring`. Repeatedly rewrite using `[e3, MeasureTheory.integral_const_mul, hceig, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem top_hz [MeasurableSpace (KR n)] (μ : Measure (KR n)) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n}
     {ψ : (Fin n → Fin n → ℝ) → ℂ} {cz : ℂ → ℂ}

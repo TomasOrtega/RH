@@ -12,6 +12,13 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Global GroundTheory.
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.L1 Formalism.BasicNotions GlobalTheory.PRep GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets
 open scoped Classical
 
+/- English proof (translation)
+Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range A) fun x hx => ?_` and prove the remaining obligations. Establish `hAx : A x = x`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, (hA x l).2, sub_eq_zero]`.
+
+Establish `e : (fun g => ((J : Set G).indicator (1 : G → ℂ)) g * l (ρ g x)) = (J : Set G).indicator fun _ => l x`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ (J : Set G)`. Establish `hgx : ρ g x = x` using `hx g hg`. Simplify using `[Set.indicator_of_mem hg, hgx]`.
+
+Simplify using `[Set.indicator_of_notMem hg]`. Rewrite using `[e, integral_indicator hJ]`. Simplify using `[Measure.real, h1]`. Conclude with `⟨x, hAx⟩`.
+-/
 private theorem fd_fixed {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     (m : Measure G) (ρ : Representation ℂ G V) (J : Subgroup G) (hJ : MeasurableSet (J : Set G))
     (h1 : m (J : Set G) = 1) (A : V →ₗ[ℂ] V) (hA : IsIntegralOp m ρ ((J : Set G).indicator 1) A)
@@ -32,10 +39,34 @@ private theorem fd_fixed {G V : Type} [Group G] [MeasurableSpace G] [AddCommGrou
     simp [Measure.real, h1]
   exact ⟨x, hAx⟩
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+-/
 private theorem under_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext w.2.over.symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn m hm μ _ θ hθ D s hs hsl νE _ νF _ b a aE aF hAS q w₀ hq T V hV hVθ hR hne _ _ mm hmm τ hocc ν hν`. Take `⟨y, hy, hY⟩` from `(UpperTheory.ConvolutionTheory.L1.twistY F E σ hσ m n hm hn μ θ hθ D s hs hsl νE νF b a aE aF hAS q w₀ hq T V hV hVθ hR).1 hne`. Establish `hJ : T.J w₀.1 = GLnLocal.iwahori (w₀.1.adicCompletion E) n` using `T.at_q w₀`. Establish `hcoI : CO (GLnLocal.iwahori (w₀.1.adicCompletion E) n)` using `hJ ▸ T.co w₀.1`. Use `haveI := hmm w₀.1`.
+
+Establish `h0 : mm w₀.1 (GLnLocal.iwahori (w₀.1.adicCompletion E) n : Set (Gw n w₀.1)) ≠ 0` using `hcoI.2.measure_ne_zero _ ⟨1, one_mem _⟩`. Establish `hT : mm w₀.1 (GLnLocal.iwahori (w₀.1.adicCompletion E) n : Set (Gw n w₀.1)) ≠ ⊤` using `hcoI.1.measure_lt_top.ne`. Choose the witnesses or unpack the hypotheses as in `⟨m₀, hm₀, hm₀1⟩ : ∃ m₀ : Measure (Gw n w₀.1), m₀.IsHaarMeasure ∧ m₀ (GLnLocal.iwahori (w₀.1.adicCompletion E) n : Set (Gw n w₀.1)) = 1 := by`. Use `⟨(mm w₀.1 (GLnLocal.iwahori (w₀.1.adicCompletion E) n : Set (Gw n w₀.1)))⁻¹ • mm w₀.1, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 hT) (ENNReal.inv_ne_top.2 h0), ?_⟩` and prove the remaining obligations. Simplify using `[ENNReal.inv_mul_cancel h0 hT]`.
+
+Use `haveI := hm₀`. Establish `hmm' : ∀ u, (Function.update mm w₀.1 m₀ u).IsHaarMeasure`. Introduce `u`. Distinguish the cases in `h : u = w₀.1`. Substitute `h` using the available equality.
+
+Simplify using `using hm₀`. Simplify `hmm u` using `[Function.update_of_ne h]`. Take `⟨c, hc, hmain⟩` from `UpperTheory.ConvolutionTheory.C.termE F E σ hσ m n hm hn μ θ hθ D s hs hsl νE νF b a aE aF hAS (Function.update mm w₀.1 m₀) hmm' q w₀ hq T V hV hVθ hR (τ w₀.1) (fun v => τ (T.mk' v).1) (hocc _) (fun v _ => hocc _) y hy`. Establish `hYZ : T.Y μ V (fun i => OComponent μ (s i) (hs i) νF a) y ≤ T.Z μ V (fun i => OComponent μ (s i) (hs i) νF a) y`. Unfold `Ty.Y Ty.Z Ty.typed`.
+
+Conclude with `inf_le_inf_left _ (le_iInf₂ fun w _ => iInf_le _ w)`. Establish `hZne : T.Z μ V (fun i => OComponent μ (s i) (hs i) νF a) y ≠ ⊥` using `fun h => hY (le_bot_iff.1 (h ▸ hYZ))`. Establish `hfix : V ⊓ fixL μ w₀.1 (GLnLocal.iwahori (w₀.1.adicCompletion E) n) ≠ ⊥`. Introduce `h`. Use `hY (le_bot_iff.1 (h ▸ le_inf ?_ ?_))` and prove the remaining obligations.
+
+Conclude with `inf_le_left.trans inf_le_left`. Establish `heig` using `(UpperTheory.ConvolutionTheory.L1.eigBasic E n μ w₀.1 (T.J w₀.1) (T.χ w₀.1) (T.co _) (T.chr _)).2.1`. Establish `hχ : T.χ w₀.1 = 1` using `T.triv q hq w₀`. Rewrite using `[← hJ, ← heig, ← hχ]`. Conclude with `inf_le_right.trans (iInf_le _ w₀.1)`.
+
+Take `⟨hfx, -, -, s₀, -, A, hA, hfin, -⟩` from `UpperTheory.ConvolutionTheory.T.unitTrace E n μ V hV w₀.1 m₀ hm₀ (τ w₀.1) _ (hocc _) hcoI hfix`. Establish `fd` using `fd_fixed m₀ (τ w₀.1).ρ _ hcoI.2.measurableSet hm₀1 A hA hfin`. Take `⟨Z, hZ0, hcard, hZ⟩` from `UpperTheory.ConvolutionTheory.C.iwPow E n w₀.1 m₀ hm₀1 (τ w₀.1) ν hν fd`. Use `⟨y ^ (m + 1), c, Z, pow_pos hy _, hc hZne, ?_, hZ0, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `hfx (Submodule.finrank_eq_zero.1 (by simpa using hcard.symm))`. Introduce `L ψ hF l 𝔢 hS sv hsv j`. Use `hmain L ψ hF ν l 𝔢 hν hS j _ sv ?_ ?_` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Conclude with `hZ j`.
+
+Introduce `v hv`. Establish `hne' : (T.mk' v).1 ≠ w₀.1`. Introduce `h`. Establish `hvq : v = q` using `by rw [← under_eq (T.mk' v), h, under_eq w₀]`. Conclude with `T.q_not (hvq ▸ (Finset.mem_filter.1 hv).1)`.
+
+Rewrite using `[Function.update_of_ne hne']`. Conclude with `hsv v hv`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.termE :
     UpperTheory.ConvolutionTheory.T.TermE := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn m hm μ _ θ hθ D s hs hsl νE _ νF _ b a aE aF hAS q w₀ hq T V hV hVθ hR hne _ _ mm hmm

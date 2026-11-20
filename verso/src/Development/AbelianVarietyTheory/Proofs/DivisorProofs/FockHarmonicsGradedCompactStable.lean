@@ -16,11 +16,17 @@ variable {σ : Type}
 def DegZero (K : Module.End ℂ (MvPolynomial σ ℂ)) : Prop :=
   ∀ (d : ℕ) (P : MvPolynomial σ ℂ), P ∈ homog σ d → K P ∈ homog σ d
 
+/- English proof (translation)
+The claim follows from `homogeneousComponent_of_mem (homogeneousComponent_mem e P)`.
+-/
 theorem hc_hc (d e : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent d (homogeneousComponent e P) =
       if d = e then homogeneousComponent e P else 0 :=
   homogeneousComponent_of_mem (homogeneousComponent_mem e P)
 
+/- English proof (translation)
+Rewrite using `[← sum_homogeneousComponent P]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem (hK e _ (homogeneousComponent_mem e P)), hc_hc]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem DegZero.comm {K : Module.End ℂ (MvPolynomial σ ℂ)} (hK : DegZero K) (d : ℕ)
     (P : MvPolynomial σ ℂ) : homogeneousComponent d (K P) = K (homogeneousComponent d P) := by
   rw [← sum_homogeneousComponent P]
@@ -29,6 +35,15 @@ theorem DegZero.comm {K : Module.End ℂ (MvPolynomial σ ℂ)} (hK : DegZero K)
   rw [homogeneousComponent_of_mem (hK e _ (homogeneousComponent_mem e P)), hc_hc]
   split_ifs <;> simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h d`. Establish `hfin : (Function.support fun e : ℕ => homogeneousComponent e (A (homogeneousComponent (e + 2) P))) ⊆ ((Finset.range (P.totalDegree + 1) ∪ {d} : Finset ℕ) : Set ℕ)`. Introduce `e he`. Assume the negation of the conclusion as `hne`.
+
+Apply `he` to reduce the goal to its premises. Establish `: P.totalDegree < e + 2`. Simplify using `only [Finset.coe_union, Finset.coe_range, Set.mem_union, Set.mem_Iio, not_or] at hne`. Use linear arithmetic over natural numbers and integers. Simplify using `[homogeneousComponent_eq_zero _ _ this]`.
+
+Rewrite `h` using `[minusPart, finsum_eq_sum_of_support_subset _ hfin]`. Establish `h2` using `congrArg (homogeneousComponent d) h`. Rewrite `h2` using `[map_sum, map_zero]`. Simplify using `only [hc_hc] at h2`. Rewrite `h2` using `[Finset.sum_ite_eq]`.
+
+Simplify using `using h2`. Introduce `h`. Rewrite using `[minusPart]`. Simplify using `[h]`.
+-/
 theorem minusPart_eq_zero_iff (A : Module.End ℂ (MvPolynomial σ ℂ)) (P : MvPolynomial σ ℂ) :
     minusPart A P = 0 ↔
       ∀ d, homogeneousComponent d (A (homogeneousComponent (d + 2) P)) = 0 := by
@@ -59,16 +74,27 @@ def lowKer {ι : Type} (A : ι → Module.End ℂ (MvPolynomial σ ℂ)) (c : ι
   ⨅ Z, ⨅ (_ : c Z), ⨅ d : ℕ,
     LinearMap.ker (homogeneousComponent d ∘ₗ A Z ∘ₗ homogeneousComponent (d + 2))
 
+/- English proof (translation)
+Simplify using `[lowKer, Submodule.mem_iInf]`.
+-/
 theorem mem_lowKer {ι : Type} {A : ι → Module.End ℂ (MvPolynomial σ ℂ)} {c : ι → Prop}
     {P : MvPolynomial σ ℂ} : P ∈ lowKer A c ↔
       ∀ Z, c Z → ∀ d, homogeneousComponent d (A Z (homogeneousComponent (d + 2) P)) = 0 := by
   simp [lowKer, Submodule.mem_iInf]
 
+/- English proof (translation)
+Use extensionality with `P`. Simplify using `only [SetLike.mem_coe, mem_lowKer, Set.mem_setOf_eq, minusPart_eq_zero_iff]`.
+-/
 theorem coe_lowKer {ι : Type} (A : ι → Module.End ℂ (MvPolynomial σ ℂ)) (c : ι → Prop) :
     (lowKer A c : Set (MvPolynomial σ ℂ)) = {P | ∀ Z, c Z → minusPart (A Z) P = 0} := by
   ext P
   simp only [SetLike.mem_coe, mem_lowKer, Set.mem_setOf_eq, minusPart_eq_zero_iff]
 
+/- English proof (translation)
+Rewrite `hP`, the goal using `[mem_lowKer]`. Introduce `Z hZ d`. Rewrite using `[hc_hc]`. Use `split_ifs with h`. Rewrite using `[← h]`.
+
+Conclude with `hP Z hZ d`. Simplify using the standard rewrite rules.
+-/
 theorem hc_mem_lowKer {ι : Type} {A : ι → Module.End ℂ (MvPolynomial σ ℂ)} {c : ι → Prop}
     {P : MvPolynomial σ ℂ} (hP : P ∈ lowKer A c) (e : ℕ) :
     homogeneousComponent e P ∈ lowKer A c := by
@@ -79,6 +105,11 @@ theorem hc_mem_lowKer {ι : Type} {A : ι → Module.End ℂ (MvPolynomial σ �
   · rw [← h]; exact hP Z hZ d
   · simp
 
+/- English proof (translation)
+Rewrite `hP`, the goal using `[mem_lowKer]`. Introduce `Z hZ d`. Rewrite using `[hK.comm, ← Module.End.mul_apply (A Z) K]`. Break down `hc Z hZ with h | ⟨Z', hZ', h⟩` into its components or cases. Rewrite using `[h, Module.End.mul_apply, hK.comm, hP Z hZ d, map_zero]`.
+
+Rewrite using `[← sub_add_cancel (A Z * K) (K * A Z), ← h, LinearMap.add_apply, map_add, hP Z' hZ' d, Module.End.mul_apply, hK.comm, hP Z hZ d, map_zero, add_zero]`.
+-/
 theorem map_mem_lowKer {ι : Type} {A : ι → Module.End ℂ (MvPolynomial σ ℂ)} {c : ι → Prop}
     {K : Module.End ℂ (MvPolynomial σ ℂ)} (hK : DegZero K)
     (hc : ∀ Z, c Z → A Z * K = K * A Z ∨ ∃ Z', c Z' ∧ A Z' = A Z * K - K * A Z)
@@ -91,6 +122,9 @@ theorem map_mem_lowKer {ι : Type} {A : ι → Module.End ℂ (MvPolynomial σ �
   · rw [← sub_add_cancel (A Z * K) (K * A Z), ← h, LinearMap.add_apply, map_add, hP Z' hZ' d,
       Module.End.mul_apply, hK.comm, hP Z hZ d, map_zero, add_zero]
 
+/- English proof (translation)
+Break down `d with _ | d` into its components or cases. Rewrite using `[totalDegree_eq_zero_iff_eq_C.1 ((totalDegree_zero_iff_isHomogeneous _).2 hP), pderiv_C, mul_zero]`. Conclude with `Submodule.zero_mem _`. Use `(isHomogeneous_X ℂ u).mul (IsHomogeneous.pderiv (i := v) hP)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel, add_comm]`. Then use the resulting hypothesis.
+-/
 theorem X_mul_pderiv_mem (u v : σ) {d : ℕ} {P : MvPolynomial σ ℂ} (hP : P ∈ homog σ d) :
     X u * pderiv v P ∈ homog σ d := by
   rcases d with _ | d
@@ -100,6 +134,9 @@ theorem X_mul_pderiv_mem (u v : σ) {d : ℕ} {P : MvPolynomial σ ℂ} (hP : P 
   · have := (isHomogeneous_X ℂ u).mul (IsHomogeneous.pderiv (i := v) hP)
     rwa [Nat.add_sub_cancel, add_comm] at this
 
+/- English proof (translation)
+Use `IsHomogeneous.pderiv (i := v) ((isHomogeneous_X ℂ u).mul hP)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem pderiv_X_mul_mem (u v : σ) {d : ℕ} {P : MvPolynomial σ ℂ} (hP : P ∈ homog σ d) :
     pderiv v (X u * P) ∈ homog σ d := by
   have := IsHomogeneous.pderiv (i := v) ((isHomogeneous_X ℂ u).mul hP)
@@ -109,6 +146,11 @@ end General
 
 variable {p q r s : ℕ}
 
+/- English proof (translation)
+Introduce `d P hP`. Rewrite using `[omE, LinearMap.add_apply]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[raiB, lowB, ← h] split_ifs`. Conclude with `X_mul_pderiv_mem l l' hP`.
+
+Conclude with `Submodule.neg_mem _ (pderiv_X_mul_mem l' l hP)`. Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ hP`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem degZero_omE {l l' : Ln p q r s} (h : linePos l = linePos l') : DegZero (omE l l') := by
   intro d P hP
   rw [omE, LinearMap.add_apply]
@@ -121,6 +163,11 @@ theorem degZero_omE {l l' : Ln p q r s} (h : linePos l = linePos l') : DegZero (
     · exact Submodule.smul_mem _ _ hP
     · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `d P hP`. Rewrite using `[omAct_apply, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun l' _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hl : linePos l = linePos l'`. Conclude with `Submodule.smul_mem _ _ (degZero_omE hl d P hP)`. Rewrite using `[h l l' hl, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem degZero_omAct {M : Matrix (Ln p q r s) (Ln p q r s) ℂ}
     (h : ∀ l l', linePos l ≠ linePos l' → M l l' = 0) : DegZero (omAct p q r s M) := by
   intro d P hP
@@ -132,6 +179,11 @@ theorem degZero_omAct {M : Matrix (Ln p q r s) (Ln p q r s) ℂ}
   · exact Submodule.smul_mem _ _ (degZero_omE hl d P hP)
   · rw [h l l' hl, zero_smul]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `degZero_omAct ?_` and prove the remaining obligations. Introduce and unpack `⟨a, c⟩ ⟨b, e⟩ h`. Use `show Y a b * (1 : Mat r s) c e = 0`. Distinguish the cases in `hce : c = e`. Substitute `hce` using the available equality.
+
+Rewrite using `[hY a b, zero_mul]`. Use `revert h`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;>`. Simplify using `[linePos, sameBlock]`. Rewrite using `[Matrix.one_apply_ne hce, mul_zero]`.
+-/
 theorem degZero_fockAct1 {Y : Mat p q} (hY : IsKC Y) : DegZero (fockAct1 p q r s Y) := by
   refine degZero_omAct ?_
   rintro ⟨a, c⟩ ⟨b, e⟩ h
@@ -144,6 +196,11 @@ theorem degZero_fockAct1 {Y : Mat p q} (hY : IsKC Y) : DegZero (fockAct1 p q r s
       simp [linePos, sameBlock]
   · rw [Matrix.one_apply_ne hce, mul_zero]
 
+/- English proof (translation)
+Use `degZero_omAct ?_` and prove the remaining obligations. Introduce and unpack `⟨a, c⟩ ⟨b, e⟩ h`. Use `show (1 : Mat p q) a b * Y c e = 0`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[hY c e, mul_zero]`. Use `revert h`. Apply the tactic sequence `rcases a with a | a <;> rcases e with e | e <;> rcases c with c | c <;>`. Simplify using `[linePos, sameBlock]`. Rewrite using `[Matrix.one_apply_ne hab, zero_mul]`.
+-/
 theorem degZero_fockAct2 {Y : Mat r s} (hY : IsKC Y) : DegZero (fockAct2 p q r s Y) := by
   refine degZero_omAct ?_
   rintro ⟨a, c⟩ ⟨b, e⟩ h
@@ -156,6 +213,15 @@ theorem degZero_fockAct2 {Y : Mat r s} (hY : IsKC Y) : DegZero (fockAct2 p q r s
       simp [linePos, sameBlock]
   · rw [Matrix.one_apply_ne hab, zero_mul]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1 : (Z * Y) a b = 0`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : sameBlock a c`.
+
+Rewrite using `[hZ a c hc, zero_mul]`. Rewrite using `[hY c b, mul_zero] revert hab hc`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp [sameBlock]`. Establish `h2 : (Y * Z) a b = 0`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : sameBlock a c`. Rewrite using `[hZ c b, mul_zero] revert hab hc`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> simp [sameBlock]`. Rewrite using `[hY a c hc, zero_mul]`.
+
+Rewrite using `[Matrix.sub_apply, h1, h2, sub_zero]`.
+-/
 theorem isPC_bracket {Y Z : Mat p q} (hY : IsKC Y) (hZ : IsPC Z) : IsPC (Z * Y - Y * Z) := by
   intro a b hab
   have h1 : (Z * Y) a b = 0 := by
@@ -182,10 +248,19 @@ def sub1 (p q r s : ℕ) : Submodule ℂ (Pol p q r s) :=
 def sub2 (p q r s : ℕ) : Submodule ℂ (Pol p q r s) :=
   lowKer (fun Z : Mat p q => fockAct1 p q r s Z) IsPC
 
+/- English proof (translation)
+The claim follows from `coe_lowKer _ _`.
+-/
 theorem coe_fockHarmonicsFirstMemberSubspace : (sub1 p q r s : Set (Pol p q r s)) = harm1 p q r s := coe_lowKer _ _
 
+/- English proof (translation)
+The claim follows from `coe_lowKer _ _`.
+-/
 theorem coe_fockHarmonicsSecondMemberSubmodule : (sub2 p q r s : Set (Pol p q r s)) = harm2 p q r s := coe_lowKer _ _
 
+/- English proof (translation)
+Take `⟨-, -, h2, h3⟩` from `GlobalTheory.T.fockOperators_lie_representation_commute p q r s`. Conclude with `⟨fun Y hY _ hw => map_mem_lowKer (degZero_fockAct1 hY) (fun Z _ => Or.inl (h3 Y Z).symm) hw, fun Y hY _ hw => map_mem_lowKer (degZero_fockAct2 hY) (fun Z hZ => Or.inr ⟨_, isPC_bracket hY hZ, h2 Z Y⟩) hw⟩`.
+-/
 theorem fockHarmonicsFirstMember_kStable : KStable (fockAct1 p q r s) (sub1 p q r s) ∧
     KStable (fockAct2 p q r s) (sub1 p q r s) := by
   obtain ⟨-, -, h2, h3⟩ := GlobalTheory.T.fockOperators_lie_representation_commute p q r s
@@ -194,6 +269,9 @@ theorem fockHarmonicsFirstMember_kStable : KStable (fockAct1 p q r s) (sub1 p q 
     fun Y hY _ hw => map_mem_lowKer (degZero_fockAct2 hY)
       (fun Z hZ => Or.inr ⟨_, isPC_bracket hY hZ, h2 Z Y⟩) hw⟩
 
+/- English proof (translation)
+Take `⟨-, h1, -, h3⟩` from `GlobalTheory.T.fockOperators_lie_representation_commute p q r s`. Conclude with `⟨fun Y hY _ hw => map_mem_lowKer (degZero_fockAct1 hY) (fun Z hZ => Or.inr ⟨_, isPC_bracket hY hZ, h1 Z Y⟩) hw, fun Y hY _ hw => map_mem_lowKer (degZero_fockAct2 hY) (fun Z _ => Or.inl (h3 Z Y)) hw⟩`.
+-/
 theorem fockHarmonicsSecondMember_kStable : KStable (fockAct1 p q r s) (sub2 p q r s) ∧
     KStable (fockAct2 p q r s) (sub2 p q r s) := by
   obtain ⟨-, h1, -, h3⟩ := GlobalTheory.T.fockOperators_lie_representation_commute p q r s
@@ -208,6 +286,11 @@ namespace GlobalTheory.FockAlg
 
 open HarmStable
 
+/- English proof (translation)
+Introduce `p q r s S hS`. Break down `hS with rfl | rfl | rfl` into its components or cases. Rewrite using `[← coe_fockHarmonicsFirstMemberSubspace, Submodule.span_eq]`. Conclude with `⟨rfl, fockHarmonicsFirstMember_kStable.1, fockHarmonicsFirstMember_kStable.2, fun P hP d => hc_mem_lowKer hP d⟩`. Rewrite using `[← coe_fockHarmonicsSecondMemberSubmodule, Submodule.span_eq]`.
+
+Conclude with `⟨rfl, fockHarmonicsSecondMember_kStable.1, fockHarmonicsSecondMember_kStable.2, fun P hP d => hc_mem_lowKer hP d⟩`. Rewrite using `[jointHarm, ← coe_fockHarmonicsFirstMemberSubspace, ← coe_fockHarmonicsSecondMemberSubmodule, ← Submodule.coe_inf, Submodule.span_eq]`. Conclude with `⟨rfl, fun Y hY w hw => ⟨fockHarmonicsSecondMember_kStable.1 Y hY w hw.1, fockHarmonicsFirstMember_kStable.1 Y hY w hw.2⟩, fun Y hY w hw => ⟨fockHarmonicsSecondMember_kStable.2 Y hY w hw.1, fockHarmonicsFirstMember_kStable.2 Y hY w hw.2⟩, fun P hP d => ⟨hc_mem_lowKer hP.1 d, hc_me …`.
+-/
 theorem harm_graded_stable : ∀ (p q r s : ℕ) (S : Set (Pol p q r s)),
     (S = harm1 p q r s ∨ S = harm2 p q r s ∨ S = jointHarm p q r s) →
     (Submodule.span ℂ S : Set (Pol p q r s)) = S ∧

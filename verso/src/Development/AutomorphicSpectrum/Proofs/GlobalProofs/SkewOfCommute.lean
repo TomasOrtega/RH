@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.KStable
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `h : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Establish `h1 : Xᴴ * Jm ε = -(X * Jm ε)`. Rewrite using `[hc]`. Conclude with `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem skew_of_commute {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hc : X * Jm ε = Jm ε * X) :
     Xᴴ = -X := by
   have h : Xᴴ * Jm ε + Jm ε * X = 0 := hX
@@ -23,6 +26,13 @@ theorem skew_of_commute {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) 
     _ = -(X * (Jm ε * Jm ε)) := by rw [h1, Matrix.neg_mul, Matrix.mul_assoc]
     _ = -X := by rw [Formalism.REAL.Jm_mul_self, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hs` using `skew_of_commute hX hc`. Establish `hJ : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_right_inv (Formalism.REAL.Jm_mul_self ε)`. Establish `hu : IsUnit (Jm ε)` using `IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hs]`.
+
+Establish `hneg : star t • -X = -(t • X)` using `by simp`. Establish `hcm : Commute (t • X) (-(t • X))` using `(Commute.refl _).neg_right`. Rewrite using `[hneg, ← Matrix.exp_add_of_commute _ _ hcm]`. Simplify using the standard rewrite rules. Establish `h1 : Jm ε * (t • X) * (Jm ε)⁻¹ = t • X`.
+
+Rewrite using `[hJ, Matrix.mul_smul, Matrix.smul_mul, ← hc, Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`. Establish `h2` using `Matrix.exp_conj (Jm ε) (t • X) hu`. Rewrite `h2` using `[h1, hJ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_mem_Kset {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hc : X * Jm ε = Jm ε * X) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Kset ε := by
   have hs := skew_of_commute hX hc

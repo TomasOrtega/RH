@@ -27,10 +27,16 @@ def cutN (N : Y.Modules) (T : Y.Opens) : Y.Modules :=
 
 def cutNEquiv (N : Y.Modules) (T S : Y.Opens) : Γ(cutN N T, S) ≃+ Γ(N, cutO T S) := AddEquiv.refl _
 
+/- English proof (translation)
+The claim follows from `congrArg (· • cutNEquiv N T S s) congr($(T.ι.app_appIso_inv S) a)`.
+-/
 theorem cutNEquiv_smul (N : Y.Modules) (T S : Y.Opens) (a : Γ(Y, S)) (s : Γ(cutN N T, S)) :
     cutNEquiv N T S (a • s) = resG Y (cutO_le T S) a • cutNEquiv N T S s :=
   congrArg (· • cutNEquiv N T S s) congr($(T.ι.app_appIso_inv S) a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cutNEquiv_res (N : Y.Modules) (T : Y.Opens) {S S' : Y.Opens} (h : S' ≤ S)
     (s : Γ(cutN N T, S)) :
     cutNEquiv N T S' (resM (cutN N T) h s) = resM N (cutO_mono T h) (cutNEquiv N T S s) := rfl
@@ -48,9 +54,15 @@ def toCutN (l : Γ(homMod P N, T)) : P ⟶ cutN N T :=
       change homApp l _ (resM P _ (resM P h s)) = resM N (cutO_mono T h) (homApp l _ (resM P _ s))
       rw [← homApp_resM, resM_resM, resM_resM])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCutN_app (l : Γ(homMod P N, T)) (S : Y.Opens) (s : Γ(P, S)) :
     cutNEquiv N T S ((toCutN l).app S s) = homApp l (cutO_le' T S) (resM P (cutO_le T S) s) := rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun S hS s => by have := congrArg (resM N (le_cutO hS le_rfl)) ((toCutN_app l S s).symm.trans (h ▸ toCutN_app l' S s)) rwa [← homApp_resM, ← homApp_resM, resM_resM, resM_self] at this`.
+-/
 theorem toCutN_injective {l l' : Γ(homMod P N, T)} (h : toCutN l = toCutN l') : l = l' :=
   hom_ext fun S hS s => by
     have := congrArg (resM N (le_cutO hS le_rfl))
@@ -67,11 +79,17 @@ def ofCutN (φ : P ⟶ cutN N T) : Γ(homMod P N, T) :=
       change resM N _ (cutNEquiv N T S' (φ.app S' (resM P h' s))) = resM N h' (resM N _ _)
       rw [app_resM, cutNEquiv_res, resM_resM, resM_resM]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homApp_ofCutN (φ : P ⟶ cutN N T) {S : Y.Opens} (h : S ≤ T) (s : Γ(P, S)) :
     homApp (ofCutN φ) h s = resM N (le_cutO h le_rfl) (cutNEquiv N T S (φ.app S s)) := rfl
 
 variable (f : Y ⟶ X) {F : X.Modules} {V : X.Opens}
 
+/- English proof (translation)
+Use `toCutN_injective (pull_ext f fun W s => (cutNEquiv N T _).injective ?_)` and prove the remaining obligations. Establish `e' : cutO T (f ⁻¹ᵁ W) ≤ f ⁻¹ᵁ (W ⊓ V)` using `le_inf (cutO_le T (f ⁻¹ᵁ W)) ((cutO_le' T (f ⁻¹ᵁ W)).trans e)`. Establish `: resM _ (cutO_le T (f ⁻¹ᵁ W)) (pullbackSections f F (le_refl (f ⁻¹ᵁ W)) s) = pullbackSections f F e' (resM F inf_le_left s)` using `(QCoh.res_pullbackSections f F _ _ _).trans (QCoh.pullbackSections_res f F e' _ _).symm`. Rewrite using `[toCutN_app, toCutN_app, this]`. Conclude with `h _ inf_le_right _ _ _ _`.
+-/
 theorem hom_pull_ext (e : T ≤ f ⁻¹ᵁ V)
     {l l' : Γ(homMod ((Scheme.Modules.pullback f).obj F) N, T)}
     (h : ∀ (W : X.Opens) (_ : W ≤ V) (S : Y.Opens) (hS : S ≤ T) (e' : S ≤ f ⁻¹ᵁ W) (s : Γ(F, W)),
@@ -92,10 +110,16 @@ namespace GlobalTheory.HomPull
 
 variable {X Y : Scheme.{0}} (ρ : Y ⟶ X) (F : X.Modules) (N : Y.Modules)
 
+/- English proof (translation)
+The claim follows from `congr($(ρ.naturality (homOfLE h).op) a)`.
+-/
 theorem app_resG {W W' : X.Opens} (h : W' ≤ W) (a : Γ(X, W)) :
     ρ.app W' (resG X h a) = resG Y (ρ.preimage_mono h) (ρ.app W a) :=
   congr($(ρ.naturality (homOfLE h).op) a)
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+-/
 theorem appLE_self (W : X.Opens) (a : Γ(X, W)) : ρ.appLE W (ρ ⁻¹ᵁ W) le_rfl a = ρ.app W a :=
   by rw [Scheme.Hom.app_eq_appLE]
 
@@ -115,6 +139,9 @@ def fwdSec {V : X.Opens} (φ : Γ(homMod ((Scheme.Modules.pullback ρ).obj F) N,
       rw [← homApp_resM, QCoh.pullbackSections_res]
       exact congrArg _ (QCoh.res_pullbackSections ρ F _ _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homApp_fwdSec {V : X.Opens} (φ : Γ(homMod ((Scheme.Modules.pullback ρ).obj F) N, ρ ⁻¹ᵁ V))
     {V' : X.Opens} (h : V' ≤ V) (s : Γ(F, V')) :
     homApp (fwdSec ρ φ) h s = homApp φ (ρ.preimage_mono h) (pullbackSections ρ F le_rfl s) := rfl
@@ -132,6 +159,9 @@ def fwdHom : (Scheme.Modules.pushforward ρ).obj (homMod ((Scheme.Modules.pullba
           (app_resG ρ h a).symm })
     fun _ _ => hom_ext fun _ _ _ => rfl
 
+/- English proof (translation)
+Introduce `φ φ' e` and use `hom_pull_ext ρ le_rfl fun W hW S hS e' s => by have := congrArg (resM N e') (congr(homApp $e hW s)) rw [homApp_fwdSec, homApp_fwdSec, ← homApp_resM, ← homApp_resM] at this exact (congrArg (homApp φ hS) (QCoh.res_pullbackSections ρ F le_rfl e' s)).symm.trans (this.trans (congrArg …`.
+-/
 theorem fwdSec_injective (V : X.Opens) :
     Function.Injective (fwdSec ρ (F := F) (N := N) (V := V)) := fun φ φ' e =>
   hom_pull_ext ρ le_rfl fun W hW S hS e' s => by
@@ -154,15 +184,24 @@ def pushVal {V W : X.Opens} (ψ : Γ(homMod F ((Scheme.Modules.pushforward ρ).o
 
 variable {F N}
 
+/- English proof (translation)
+The claim follows from `map_add (homApp ψ h) s t`.
+-/
 theorem pushVal_add {V W : X.Opens} (ψ : Γ(homMod F ((Scheme.Modules.pushforward ρ).obj N), V))
     (h : W ≤ V) (s t : Γ(F, W)) : pushVal ρ ψ h (s + t) = pushVal ρ ψ h s + pushVal ρ ψ h t :=
   map_add (homApp ψ h) s t
 
+/- English proof (translation)
+The claim follows from `map_smul (homApp ψ h) a s`.
+-/
 theorem pushVal_smul {V W : X.Opens} (ψ : Γ(homMod F ((Scheme.Modules.pushforward ρ).obj N), V))
     (h : W ≤ V) (a : Γ(X, W)) (s : Γ(F, W)) :
     pushVal ρ ψ h (a • s) = ρ.app W a • pushVal ρ ψ h s :=
   map_smul (homApp ψ h) a s
 
+/- English proof (translation)
+The claim follows from `homApp_resM ψ h h' s`.
+-/
 theorem pushVal_res {V W T : X.Opens} (ψ : Γ(homMod F ((Scheme.Modules.pushforward ρ).obj N), V))
     (h : W ≤ V) (h' : T ≤ W) (s : Γ(F, W)) :
     pushVal ρ ψ (h'.trans h) (resM F h' s) = resM N (ρ.preimage_mono h') (pushVal ρ ψ h s) :=
@@ -186,6 +225,9 @@ def backPush {V : X.Opens} (ψ : Γ(homMod F ((Scheme.Modules.pushforward ρ).ob
       rw [resM_resM (F := F), resM_resM (F := N),
         ← resM_resM (F := F) inf_le_left (inf_le_inf_right V h), pushVal_res, resM_resM (F := N)])
 
+/- English proof (translation)
+Introduce `ψ` and use `⟨ofCutN (adj ρ (backPush ρ ψ)), hom_ext fun W h s => by rw [homApp_fwdSec, homApp_ofCutN, adj_app] change resM N _ (resM N (cutO_mono _ le_rfl) (resM N (cutO_le_inf ρ V W) (pushVal ρ ψ inf_le_right (resM F inf_le_left s)))) = pushVal ρ ψ h s rw [resM_resM (F := N), resM_resM (F : …`.
+-/
 theorem fwdSec_surjective (V : X.Opens) :
     Function.Surjective (fwdSec ρ (F := F) (N := N) (V := V)) := fun ψ =>
   ⟨ofCutN (adj ρ (backPush ρ ψ)), hom_ext fun W h s => by
@@ -211,6 +253,9 @@ def pushHomIso : (Scheme.Modules.pushforward ρ).obj (homMod ((Scheme.Modules.pu
     homMod F ((Scheme.Modules.pushforward ρ).obj N) :=
   asIso (fwdHom ρ F N)
 
+/- English proof (translation)
+Introduce `_ _ ρ W N` and use `⟨pushHomIso ρ W N⟩`.
+-/
 theorem nonempty_pushforward_homMod_iso : ∀ (X Y : Scheme.{0}) (ρ : Y ⟶ X) (W : X.Modules) (N : Y.Modules), Nonempty ((Scheme.Modules.pushforward ρ).obj (homMod ((Scheme.Modules.pullback ρ).obj W) N) ≅ homMod W ((Scheme.Modules.pushforward ρ).obj N)) :=
   fun _ _ ρ W N => ⟨pushHomIso ρ W N⟩
 

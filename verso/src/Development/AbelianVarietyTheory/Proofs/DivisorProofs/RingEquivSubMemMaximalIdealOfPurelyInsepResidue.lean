@@ -12,6 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ResFix
 
+/- English proof (translation)
+Introduce `A R R' _ _ _ _ _ b θ _ q _ σ hins hfix r`. Take `⟨n, a, ha⟩` from `hins (residue R r)`. Establish `h1 : r ^ q ^ n - b a ∈ maximalIdeal R`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow, ha, sub_self]`. Establish `h2 : θ r ^ q ^ n - θ (b a) ∈ maximalIdeal R'`.
+
+Use `map_nonunit θ _ h1` as an intermediate fact. Simplify `this` using `[map_sub, map_pow]`. Establish `h3 : σ (θ r) ^ q ^ n - θ (b a) ∈ maximalIdeal R'`. Use `map_nonunit (σ : R' →+* R') _ h2` as an intermediate fact. Simplify `this` using `[map_sub, map_pow, hfix a]`.
+
+Use `haveI : ExpChar (ResidueField R') q := expChar_of_injective_ringHom (ResidueField.map θ).injective q`. Establish `e2 : residue R' (θ r) ^ q ^ n = residue R' (θ (b a))`. Rewrite using `[← map_pow, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h2`. Establish `e3 : residue R' (σ (θ r)) ^ q ^ n = residue R' (θ (b a))`.
+
+Rewrite using `[← map_pow, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h3`. Establish `e4 : (residue R' (σ (θ r)) - residue R' (θ r)) ^ q ^ n = 0`. Rewrite using `[sub_pow_expChar_pow, e2, e3, sub_self]`. Rewrite using `[← residue_eq_zero_iff, map_sub]`.
+
+Conclude with `pow_eq_zero_iff (pow_ne_zero _ (expChar_pos (ResidueField R') q).ne') |>.mp e4`.
+-/
 theorem sigma_fix_mod_max : ∀ (A R R' : Type) [CommRing A] [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (b : A →+* R) (θ : R →+* R') [IsLocalHom θ] (q : ℕ) [ExpChar (ResidueField R) q] (σ : R' ≃+* R'), (∀ x : ResidueField R, ∃ n : ℕ, ∃ a : A, x ^ q ^ n = residue R (b a)) → (∀ a, σ (θ (b a)) = θ (b a)) → ∀ r, σ (θ r) - θ r ∈ maximalIdeal R' := by
   intro A R R' _ _ _ _ _ b θ _ q _ σ hins hfix r
   obtain ⟨n, a, ha⟩ := hins (residue R r)

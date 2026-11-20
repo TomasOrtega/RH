@@ -10,6 +10,21 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P T j G G' hG hG' m hm`. Take `⟨hG1, hG2⟩` from `hG`. Take `⟨hG1', hG2'⟩` from `hG'`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `t₀ ht₀ γ₀ hγ₀`.
+
+Take `⟨U, f, hU, hmem, hf, hfe⟩` from `hG1 t₀ ht₀ γ₀ hγ₀`. Take `⟨U', f', hU', hmem', hf', hfe'⟩` from `hG1' t₀ ht₀ γ₀ hγ₀`. Use `⟨U ∩ U', fun p => f p + f' p, hU.inter hU', ⟨hmem, hmem'⟩, (hf.mono Set.inter_subset_left).add (hf'.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `p hp hpG`. Simplify using `only [hfe p hp.1 hpG, hfe' p hp.2 hpG]`.
+
+Introduce `K hK hK0`. Take `⟨C, hC, ε, hε, hCε⟩` from `hG2 K hK hK0`. Take `⟨C', hC', ε', hε', hCε'⟩` from `hG2' K hK hK0`. Use `⟨C ∪ C', hC.union hC', min ε ε', lt_min hε hε', ?_⟩` and prove the remaining obligations. Introduce `t ht γ hne`.
+
+Distinguish the cases in `h0 : G t γ = 0`. Establish `h1 : G' t γ ≠ 0`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Simplify using `[h0, h1]`.
+
+Take `⟨hγ, hb⟩` from `hCε' t ht γ h1`. Conclude with `⟨Or.inr hγ, fun hg => (min_le_right _ _).trans (hb hg)⟩`. Take `⟨hγ, hb⟩` from `hCε t ht γ h0`. Conclude with `⟨Or.inl hγ, fun hg => (min_le_left _ _).trans (hb hg)⟩`. Introduce `t₀ ht₀ γ₀ hγ₀`.
+
+Take `⟨U, f, hU, hmem, hf, hfe⟩` from `hG1 t₀ ht₀ γ₀ hγ₀`. Establish `hO : IsOpen {p : ℂ × B.Mat P.k (P.r - (j + 1)) | p.1 ≠ 0}` using `isOpen_ne_fun continuous_fst continuous_const`. Use `⟨U ∩ {p | p.1 ≠ 0}, fun p => m p.1 • f p, hU.inter hO, ⟨hmem, ht₀⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hm' : ContDiffOn ℝ ∞ (fun p : ℂ × B.Mat P.k (P.r - (j + 1)) => m p.1) (U ∩ {p | p.1 ≠ 0})` using `hm.comp contDiffOn_fst (fun p hp => hp.2)`. Conclude with `hm'.smul (hf.mono Set.inter_subset_left)`.
+
+Introduce `p hp hpG`. Simplify using `only [hfe p hp.1 hpG]`. Introduce `K hK hK0`. Take `⟨C, hC, ε, hε, hCε⟩` from `hG2 K hK hK0`. Conclude with `⟨C, hC, ε, hε, fun t ht γ hne => hCε t ht γ (right_ne_zero_of_smul hne)⟩`.
+-/
 theorem family_algebraic : FamAlg := by
   intro Wp Wq _ _ _ _ _ _ P T j G G' hG hG' m hm
   obtain ⟨hG1, hG2⟩ := hG

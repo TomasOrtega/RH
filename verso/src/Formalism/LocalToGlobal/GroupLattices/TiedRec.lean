@@ -18,6 +18,9 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Unfold `GatIs`. Rewrite using `[hL u]`. Conclude with `⟨(X u w hg).W, (X u w hg).Qq, (X u w hg).O, (X u w hg).Kf, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, _, (X u w hg).ι, (X u w hg).σ, (X u w hg).j, (X u w hg).w, (X u w hg).h …`.
+-/
 theorem gatIs_recG (H : LevelData (recG D sc Ce Lc X hd)) (hL : ∀ u, H u = Lc u)
     (hH : ∀ u w h, Cmp.HypAtP (X u w h).I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : GatIs (recG D sc Ce Lc X hd) H u w hg := by

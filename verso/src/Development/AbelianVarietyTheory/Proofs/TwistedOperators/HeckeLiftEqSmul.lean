@@ -23,6 +23,17 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.ThetaTrace GlobalTheo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ p y z C hk`. Use `letI := fieldCAt σ`. Use `haveI := algClosedCAt σ`. Take `⟨ψ, ψp, hiso, hL, htr⟩` from `hk`. Take `⟨β, s₁, n, cr, hβ, hs, hr, hv⟩` from `isThetaTrace_iff.1 htr`.
+
+Take `⟨β₀, hβ₀, hc₀⟩` from `hs.exists_isRigIso`. Establish `hK` using `transKer_of_isHkIsog hiso`. Establish `hΨ : ∀ a, rpt a ≫ conj y.x z.x ψ = rpt (ψp a)` using `fun a => (sends_conj_iff ψ _ _).2 (hiso.2.2.1 a)`. Use `⟨ψ, ψp, n, cr, fun i j a => bv Xo.univ.t.PP β β₀ i j a, hiso, hL, hK ▸ hr, fun i j a _ _ => bv_ne i j a, fun i j i' j' a hi hj => ?_, fun i j hi hj => ?_, fun g e he i j => ?_, fun a i jm hi hj => ?_⟩` and prove the remaining obligations. Establish `mi` using `(mem_iff _ _).2 hi`.
+
+Establish `mj` using `(mem_iff _ _).2 hj`. Conclude with `bv_trans hβ.2.1 hβ₀.2.1 a (ψp a) (hΨ a) mi.1 mi.2 mj.1 mj.2`. Establish `h1 : rpt (1 : Over.mk y.x ⟶ Xo.univ.t.G) ≫ conj y.x z.x ψ = rpt (1 : Over.mk z.x ⟶ Xo.univ.t.G)`. Conclude with `(hΨ 1).trans (congrArg (fun q => rpt q) (map_one ψp))`. Conclude with `bv_rig hβ hβ₀ h1 i j ((mem_iff _ _).2 hi) ((mem_iff _ _).2 hj)`.
+
+Establish `hfun : (fun w => rpt (e w)) = fun w => fibPt Xo.univ.t.G (e w) ≫ (swap y.x).inv`. Use function extensionality and compare the values at `fun w => (Iso.eq_comp_inv _).2 (fibPt_swap (e w))`. Establish `hh : IsHolTo Set.univ (fun w => rpt (e w))`. Rewrite using `[hfun]`. Conclude with `(GlobalTheory.HolFibre.isHolTo_fibPt_and_comp _ Xo.univ.t.G y.x g e he).2 _ (swap y.x).inv`.
+
+Conclude with `bv_hol hβ.2.1 hβ₀.2.1 ψp hΨ e hh i j`. Conclude with `bv_values hβ.2.1 hβ₀.2.1 hc₀ cr (fun m => hr.1 m) hv a (ψp a) (hΨ a) i jm ((mem_iff _ _).2 hi) (fun m => (mem_iff _ _).2 (hj m))`.
+-/
 theorem hkPtC_values_lie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (p : ℕ) (y z : FrPt Xo c (CAt σ)) (C : Subgroup (Over.mk y.x ⟶ Xo.univ.t.G)),
   HkPtC p y C z →
   ∃ (ψ : pullback Xo.univ.t.G.hom y.x ⟶ pullback Xo.univ.t.G.hom z.x)

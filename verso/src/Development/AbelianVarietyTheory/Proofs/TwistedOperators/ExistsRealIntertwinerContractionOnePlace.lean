@@ -16,6 +16,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} [DecidableEq D.what₂.Tau]
 
+/- English proof (translation)
+Unfold `actT`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h]`. Simplify using `[Function.update, h]`.
+-/
 theorem actT_tprod (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : ∀ ρ, M.H ρ) :
     actT M τ g (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ (M.rep τ g (v τ))) := by
   unfold actT
@@ -28,6 +33,11 @@ theorem actT_tprod (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.ran
   · rw [Function.update_of_ne h]
     simp [Function.update, h]
 
+/- English proof (translation)
+Unfold `ellT`. Simplify using `only [PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun ρ hρ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Both sides reduce to the same expression.
+-/
 theorem ellT_left (M : DSModel V S) (τ : D.what₂.Tau) (w z : ∀ ρ, M.H ρ) (u : M.H τ) :
     ellT M (Function.update w τ u) (PiTensorProduct.tprod ℂ z) =
       ⟪u, z τ⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, z ρ⟫_ℂ := by
@@ -39,6 +49,11 @@ theorem ellT_left (M : DSModel V S) (τ : D.what₂.Tau) (w z : ∀ ρ, M.H ρ) 
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]
   rfl
 
+/- English proof (translation)
+Unfold `ellT`. Simplify using `only [PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun ρ hρ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Both sides reduce to the same expression.
+-/
 theorem ellT_right (M : DSModel V S) (τ : D.what₂.Tau) (w z : ∀ ρ, M.H ρ) (u : M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ (Function.update z τ u)) =
       ⟪w τ, u⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, z ρ⟫_ℂ := by
@@ -50,6 +65,11 @@ theorem ellT_right (M : DSModel V S) (τ : D.what₂.Tau) (w z : ∀ ρ, M.H ρ)
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]
   rfl
 
+/- English proof (translation)
+Unfold `inclT`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Both sides reduce to the same expression.
+-/
 theorem inclT_update (M : DSModel V S) (τ : D.what₂.Tau) (v : M.Vec) (y : M.sm τ) :
     inclT M (PiTensorProduct.tprod ℂ (Function.update v τ y)) =
       PiTensorProduct.tprod ℂ (Function.update (fun ρ => (v ρ : M.H ρ)) τ (y : M.H τ)) := by
@@ -63,6 +83,27 @@ theorem inclT_update (M : DSModel V S) (τ : D.what₂.Tau) (v : M.Vec) (y : M.s
   · rw [Function.update_of_ne h, Function.update_of_ne h]
     rfl
 
+/- English proof (translation)
+Establish `hadd : ∀ (z : ∀ ρ, M.H ρ) (i : D.what₂.Tau) (x y : M.H i), (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i (x + y) ρ⟫_ℂ) • Function.update z i (x + y) τ = (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i x ρ⟫_ℂ) • Function.update z i x τ + (∏ ρ ∈ Finset.univ.erase τ, ⟪ …`. Introduce `z i x y`. Distinguish the cases in `h : i = τ`. Substitute `h` using the available equality. Establish `e : ∀ a : M.H i, ∏ ρ ∈ Finset.univ.erase i, ⟪w ρ, Function.update z i a ρ⟫_ℂ = ∏ ρ ∈ Finset.univ.erase i, ⟪w ρ, z ρ⟫_ℂ` using `fun a => Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`.
+
+Simplify using `only [e, Function.update_self, smul_add]`. Establish `hi : i ∈ Finset.univ.erase τ` using `Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩`. Establish `e : ∀ a : M.H i, ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i a ρ⟫_ℂ = ⟪w i, a⟫_ℂ * ∏ ρ ∈ (Finset.univ.erase τ).erase i, ⟪w ρ, z ρ⟫_ℂ` using `fun a => by`. Rewrite using `[← Finset.mul_prod_erase _ _ hi, Function.update_self]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Simplify using `only [e, Function.update_of_ne (Ne.symm h), inner_add_right, add_mul, add_smul]`. Establish `hsmul : ∀ (z : ∀ ρ, M.H ρ) (i : D.what₂.Tau) (a : ℂ) (x : M.H i), (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i (a • x) ρ⟫_ℂ) • Function.update z i (a • x) τ = a • ((∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i x ρ⟫_ℂ) • Function.update z i x τ)`. Introduce `z i a x`. Distinguish the cases in `h : i = τ`.
+
+Substitute `h` using the available equality. Establish `e : ∀ b : M.H i, ∏ ρ ∈ Finset.univ.erase i, ⟪w ρ, Function.update z i b ρ⟫_ℂ = ∏ ρ ∈ Finset.univ.erase i, ⟪w ρ, z ρ⟫_ℂ` using `fun b => Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Simplify using `only [e, Function.update_self]`. Conclude with `smul_comm _ _ _`. Establish `hi : i ∈ Finset.univ.erase τ` using `Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩`.
+
+Establish `e : ∀ b : M.H i, ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z i b ρ⟫_ℂ = ⟪w i, b⟫_ℂ * ∏ ρ ∈ (Finset.univ.erase τ).erase i, ⟪w ρ, z ρ⟫_ℂ` using `fun b => by`. Rewrite using `[← Finset.mul_prod_erase _ _ hi, Function.update_self]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Simplify using `only [e, Function.update_of_ne (Ne.symm h), inner_smul_right, mul_assoc, mul_smul]`.
+
+Set `m : MultilinearMap ℂ (fun ρ => M.H ρ) (M.H τ)` to `{ toFun := fun z => (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, z ρ⟫_ℂ) • z τ map_update_add' := fun z i x y => by convert hadd z i x y map_update_smul' := fun z i a x => by convert hsmul z i a x }`. Use `⟨PiTensorProduct.lift m, fun u x => ?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `key : (innerₛₗ ℂ u).comp (PiTensorProduct.lift m) = ellT M (Function.update w τ u)`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+
+Introduce `z`. Use `show ⟪u, PiTensorProduct.lift m (PiTensorProduct.tprod ℂ z)⟫_ℂ = ellT M (Function.update w τ u) (PiTensorProduct.tprod ℂ z)`. Rewrite using `[PiTensorProduct.lift.tprod, ellT_left]`. Use `show ⟪u, (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, z ρ⟫_ℂ) • z τ⟫_ℂ = _`. Rewrite using `[inner_smul_right, mul_comm]`.
+
+Conclude with `LinearMap.congr_fun key x`. Establish `key : (PiTensorProduct.lift m).comp (actT M τ g) = (M.rep τ g : M.H τ →ₗ[ℂ] M.H τ).comp (PiTensorProduct.lift m)`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `z`.
+
+Use `show PiTensorProduct.lift m (actT M τ g (PiTensorProduct.tprod ℂ z)) = M.rep τ g (PiTensorProduct.lift m (PiTensorProduct.tprod ℂ z))`. Rewrite using `[actT_tprod, PiTensorProduct.lift.tprod, PiTensorProduct.lift.tprod]`. Use `show (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update z τ (M.rep τ g (z τ)) ρ⟫_ℂ) • Function.update z τ (M.rep τ g (z τ)) τ = M.rep τ g ((∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, z ρ⟫_ℂ) • z τ)`. Rewrite using `[Function.update_self, map_smul]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Conclude with `LinearMap.congr_fun key x`.
+-/
 theorem exists_ctr (M : DSModel V S) (τ : D.what₂.Tau) (w : ∀ ρ, M.H ρ) :
     ∃ c : (⨂[ℂ] ρ, M.H ρ) →ₗ[ℂ] M.H τ, (∀ u x, ⟪u, c x⟫_ℂ = ellT M (Function.update w τ u) x) ∧
       ∀ g x, c (actT M τ g x) = M.rep τ g (c x) := by
@@ -133,6 +174,15 @@ theorem exists_ctr (M : DSModel V S) (τ : D.what₂.Tau) (w : ∀ ρ, M.H ρ) :
     exact LinearMap.congr_fun key x
 
 omit [DecidableEq D.what₂.Tau] in
+/- English proof (translation)
+Take `⟨hku, hkJ⟩` from `hk`. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Establish `hFi : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, M.fr τ * ((M.fr τ)⁻¹ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Establish `hFh : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * X) = X` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `hkk : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, kᴴ * (k * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').mp hku, Matrix.one_mul]`. Establish `hJk : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, Formalism.REAL.Jm (M.ε τ) * (k * X) = k * (Formalism.REAL.Jm (M.ε τ) * X)` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← hkJ, Matrix.mul_assoc]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ * _ * _ = _`. Rewrite using `[← M.fr_gram τ, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hFh, hFi, hJk, hkk]`.
+
+Unfold `DSModel.rep`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hFi, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+-/
 theorem conj_compact (M : DSModel V S) (τ : D.what₂.Tau) {k : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hk : k ∈ Formalism.REAL.Kset (M.ε τ)) : (M.fr τ)⁻¹ * k * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) ∧
       M.rep τ ((M.fr τ)⁻¹ * k * M.fr τ) = M.σ τ k := by
@@ -159,12 +209,18 @@ theorem conj_compact (M : DSModel V S) (τ : D.what₂.Tau) {k : Matrix (Fin V.r
     rw [hFi, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]
 
 omit [DecidableEq D.what₂.Tau] in
+/- English proof (translation)
+Unfold `elt`. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_one hθ V τ`.
+-/
 theorem elt_unit {θ : InfFam D} (hθ : IsInfFam θ) (M : DSModel V S) (τ : D.what₂.Tau) : elt θ M τ 1 = 1 := by
   unfold elt
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)
   rw [Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]
   exact GlobalTheory.PointAtPlaceHom.atTau_one hθ V τ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem one_compact {n : ℕ} (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε := ⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩
 
 end GlobalTheory.Chain.RealLine.Semi
@@ -173,6 +229,33 @@ namespace GlobalTheory.Chain.RealLine.Semi
 
 open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators
 
+/- English proof (translation)
+Introduce `D V W S S' M M' θ ψ ω f τ aS aT It _ hθ hC hL hI v w`. Take `⟨c, hc, hcg⟩` from `exists_ctr M τ w`. Break down `hI with ⟨_, hbdd, hK, hX, hK', hX'⟩` into its components or cases. Establish `hlin : ∀ (d : ℂ) (Q : PolF D W.rank V.rank), ptOf ψ θ M M' f (d • Q) = d • ptOf ψ θ M M' f Q` using `fun d Q => by`. Unfold `ptOf`.
+
+Conclude with `LinearMap.map_smul _ d Q`. Set `T : M'.sm τ →ₗ[ℂ] SmT M'` to `(PiTensorProduct.tprod ℂ).toLinearMap v τ`. Set `A : PolF D W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ` to `(It.compr₂ (c ∘ₗ inclT M)).compl₂ T`. Establish `hA : ∀ φ y, A φ y = c (inclT M (It φ (PiTensorProduct.tprod ℂ (Function.update v τ y))))` using `fun _ _ => rfl`. Use `⟨A, ⟨?_, ?_, ?_, ?_, ?_⟩, fun φ y u => by rw [hA, hc]⟩` and prove the remaining obligations.
+
+Introduce `φ u`. Take `⟨c0, hc0⟩` from `hbdd φ (Function.update w τ u)`. Use `⟨c0 * ∏ ρ ∈ Finset.univ.erase τ, ‖(v ρ : M'.H ρ)‖, fun y => ?_⟩` and prove the remaining obligations. Establish `hy` using `hc0 (Function.update v τ y)`. Establish `e : ∏ ρ ∈ Finset.univ.erase τ, ‖((Function.update v τ y ρ : M'.sm ρ) : M'.H ρ)‖ = ∏ ρ ∈ Finset.univ.erase τ, ‖(v ρ : M'.H ρ)‖` using `Finset.prod_congr rfl fun ρ hρ => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`.
+
+Rewrite `hy` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), Function.update_self, e]`. Rewrite using `[hA, hc]`. Use `hy.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `h hh φ`.
+
+Take `⟨x, y, -, -, hcf⟩` from `hC`. Establish `hg` using `conj_compact M τ hh`. Establish `h1` using `hcf h hh 1 (one_compact _) φ`. Rewrite `h1` using `[elt_unit hθ M' τ]`. Use `⟨(GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.signBlockDeterminant (M.ε τ) true h ^ x true * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.signBlockDeterminant (M.ε τ) false h ^ x false * (GlobalTheory.IndefiniteRowSideFullHecke.RaisingLowe …` and prove the remaining obligations.
+
+Establish `hpt` using `(hlin _ _).trans h1.symm`. Rewrite using `[hA, hA, hK τ _ hg.1 φ _ hpt, hcg, hg.2]`. Introduce `k hk φ`. Take `⟨x, y, -, -, hcf⟩` from `hC`. Establish `hg` using `conj_compact M' τ hk`.
+
+Establish `h1` using `hcf 1 (one_compact _) k hk φ`. Rewrite `h1` using `[elt_unit hθ M τ]`. Use `⟨(GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.signBlockDeterminant (M.ε τ) true 1 ^ x true * GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.signBlockDeterminant (M.ε τ) false 1 ^ x false * (GlobalTheory.IndefiniteRowSideFullHecke.RaisingLowe …` and prove the remaining obligations. Establish `hpt` using `(hlin _ _).trans h1.symm`. Establish `hincl : inclT M' (PiTensorProduct.tprod ℂ (Function.update v τ y₂)) = actT M' τ ((M'.fr τ)⁻¹ * k * M'.fr τ) (inclT M' (PiTensorProduct.tprod ℂ (Function.update v τ y₁)))`.
+
+Rewrite using `[inclT_update, inclT_update, actT_tprod, Function.update_idem, Function.update_self, hg.2, ← hy]`. Rewrite using `[hA, hA, hK' τ _ hg.1 φ _ _ _ hpt hincl]`. Introduce `X hXm φ y u`. Establish `e : srcOp M M' τ aT X φ = GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockS τ (M.ε τ) (M'.ε τ) ((M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) φ - ((aT : ℂ) * X.trace) • φ`. Simplify using `[srcOp, sub_eq_add_neg]`.
+
+Establish `hder : ∀ z, HasDerivAt (fun t : ℝ => ω (oneP θ V τ X t, 1) (ptOf ψ θ M M' f φ) z) (ptOf ψ θ M M' f (srcOp M M' τ aT X φ) z) 0` using `fun z => by`. Rewrite using `[e]`. Conclude with `hL.1 X hXm φ z`. Establish `h2` using `hX τ X hXm φ _ hder (PiTensorProduct.tprod ℂ (Function.update v τ y)) (Function.update w τ u)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[hA, ← hcg, hc]`. Rewrite using `[hA, hc]`. Introduce `Y hY φ y y' hy`. Establish `e : tgtOp M M' τ aS Y φ = GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (M.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) φ + ((aS : ℂ) * Y.trace) • φ`.
+
+Simplify using `[tgtOp]`. Establish `hder : ∀ z, HasDerivAt (fun t : ℝ => ω (1, oneP θ W τ Y t) (ptOf ψ θ M M' f φ) z) (ptOf ψ θ M M' f (tgtOp M M' τ aS Y φ) z) 0` using `fun z => by`. Rewrite using `[e]`. Conclude with `hL.2 Y hY φ z`. Establish `hD : DerT M' τ Y (PiTensorProduct.tprod ℂ (Function.update v τ y)) (PiTensorProduct.tprod ℂ (Function.update v τ y'))`.
+
+Unfold `DerT`. Introduce `w'`. Rewrite using `[inclT_update, inclT_update, ellT_right]`. Establish `e2 : ∀ t : ℝ, ellT M' w' (actT M' τ (NormedSpace.exp (t • Y)) (PiTensorProduct.tprod ℂ (Function.update (fun ρ => (v ρ : M'.H ρ)) τ (y : M'.H τ)))) = ⟪w' τ, M'.rep τ (NormedSpace.exp (t • Y)) y⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w' ρ, (v ρ : M'.H ρ)⟫_ℂ` using `fun t => by rw [actT_tprod, Function.update_idem, Function.update_self, ellT_right]`. Simplify using `only [e2]`.
+
+Establish `h3` using `((((innerSL ℂ (w' τ)).restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) hy).mul_const (∏ ρ ∈ Finset.univ.erase τ, ⟪w' ρ, (v ρ : M'.H ρ)⟫_ℂ)`. Simplify `h3` using `[Function.comp_def]`. Establish `h4` using `hX' τ Y hY φ _ _ _ hder hD`. Establish `h5` using `congrArg (fun z => c (inclT M z)) h4`. Simplify `h5` using `[hA]`.
+-/
 theorem exists_semiW : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (f : WO V W → ℂ) (τ : D.what₂.Tau) (aS aT : ℚ) (It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M) [DecidableEq D.what₂.Tau], IsInfFam θ → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.CompactFock ψ θ M M' ω f τ aS aT → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.LieFock ψ θ M M' ω f τ aS aT → IsItW θ M M' ω (ptOf ψ θ M M' f) It → ∀ (v : M'.Vec) (w : ∀ ρ, M.H ρ), ∃ A : PolF D W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ, SemiW M M' τ aS aT A ∧ ∀ φ y u, ⟪u, A φ y⟫_ℂ = ellT M (Function.update w τ u) (inclT M (It φ (PiTensorProduct.tprod ℂ (Function.update v τ y)))) := by
   intro D V W S S' M M' θ ψ ω f τ aS aT It _ hθ hC hL hI v w
   obtain ⟨c, hc, hcg⟩ := exists_ctr M τ w

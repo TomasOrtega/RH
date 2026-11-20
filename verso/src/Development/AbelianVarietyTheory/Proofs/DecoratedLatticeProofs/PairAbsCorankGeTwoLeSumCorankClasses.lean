@@ -10,6 +10,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `τ Rw I H H₁ _ _ _ _ _ X k B hA hk hS`. Establish `hG : 0 ≤ X.Gam1` using `hA.2.2.le`. Establish `hv : Summable (fun t => ‖X.vec t‖)` using `hA.2.1`. Establish `hcov : X.big X.nzSet ⊆ (⋃ s ∈ Finset.Icc 2 k, Formalism.L2.SG.LoopsCut.bigS X s) ∪ (∅ : Set (τ × τ))`. Introduce `p hp`.
+
+Use `left`. Conclude with `Set.mem_iUnion₂.2 ⟨X.s0 p.1 p.2, Finset.mem_Icc.2 ⟨hp.2, hk p hp⟩, ⟨hp.1, rfl⟩⟩`. Establish `hc` using `Formalism.L2.SG.LoopsCut.ampSum_cover X hv (Finset.Icc 2 k) (Formalism.L2.SG.LoopsCut.bigS X) ∅ (X.big X.nzSet) hcov`. Establish `h0 : Formalism.L2.SG.RowsOther.ampSum X (∅ : Set (τ × τ)) = 0`. Unfold `Formalism.L2.SG.RowsOther.ampSum`.
+
+Simplify using the standard rewrite rules. Rewrite `hc` using `[h0, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pairAbs_big_le_sum_classes : ∀ (τ Rw I H H₁ : Type) [Fintype I] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ Rw I H H₁) (k : ℕ) (B : ℕ → ℝ), X.AbsConv → (∀ p ∈ X.big X.nzSet, X.s0 p.1 p.2 ≤ k) → (∀ s, 2 ≤ s → s ≤ k → Formalism.L2.SG.LoopsCut.ClassLe X (Formalism.L2.SG.LoopsCut.bigS X s) (B s)) → X.pairAbs (X.big X.nzSet) ≤ ∑ s ∈ Finset.Icc 2 k, B s := by
   intro τ Rw I H H₁ _ _ _ _ _ X k B hA hk hS
   have hG : 0 ≤ X.Gam1 := hA.2.2.le

@@ -9,6 +9,25 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Set `g : E → U` to `fun x => ⟨z x, hz x⟩`. Establish `hgc : Continuous g` using `hl.continuous.subtype_mk _`. Establish `hgl : IsLocalHomeomorph g` using `IsLocalHomeomorph.of_comp (g := Subtype.val) (by simpa [Function.comp_def, g] using hl) hU.isOpenEmbedding_subtypeVal.isLocalHomeomorph hgc`. Establish `hgp : IsProperMap g`. Use `isProperMap_iff_isCompact_preimage.2 ⟨hgc, fun K hK => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hp (Subtype.val '' K) (hK.image continuous_subtype_val) (by rintro _ ⟨y, -, rfl⟩; exact y.2)`. Establish `h2 : g ⁻¹' K = z ⁻¹' (Subtype.val '' K)`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Conclude with `⟨g x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `: y = g x` using `Subtype.ext hyx`. Rewrite using `[← this]`.
+
+Conclude with `hy`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hfib : ∀ y (hy : y ∈ U), (z ⁻¹' {y}).Finite`. Introduce `y hy`.
+
+Establish `h2 : z ⁻¹' {y} = g ⁻¹' {⟨y, hy⟩}`. Use extensionality with `x`. Simplify using `[g, Subtype.ext_iff]`. Rewrite using `[h2]`. Use `(hgp.isCompact_preimage isCompact_singleton).finite ?_` and prove the remaining obligations.
+
+Use `(hgl.isLocalHomeomorphOn.mono (Set.subset_univ _)).isDiscrete_of_image ?_` and prove the remaining obligations. Use `(Set.subsingleton_singleton.anti (Set.image_preimage_subset _ _)).isDiscrete` and prove the remaining obligations. Use `⟨?_, fun y => ?_⟩` and prove the remaining obligations. Use `IsCoveringMapOn.of_isCoveringMap_subtype hU hz ?_` and prove the remaining obligations. Use `isCoveringMap_iff_isCoveringMapOn_univ.2 ?_` and prove the remaining obligations.
+
+Use `hgp.isClosedMap.isCoveringMapOn_of_isLocalHomeomorphOn (fun x _ => ?_) hgl.isLocalHomeomorphOn` and prove the remaining obligations. Establish `h2 : g ⁻¹' {x} = z ⁻¹' {(x : V n)}`. Use extensionality with `x'`. Simplify using `[g, Subtype.ext_iff]`. Rewrite using `[h2]`.
+
+Conclude with `hfib x x.2`. Distinguish the cases in `hy : y ∈ U`. Conclude with `hfib y hy`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Introduce `h`. Conclude with `hy (h ▸ hz x)`.
+-/
 theorem isCoveringMapOn_of_proper {n : ℕ} {E : Type*} [TopologicalSpace E] [T2Space E] (z : E → V n)
     (U : Set (V n)) (hU : IsOpen U) (hz : ∀ x, z x ∈ U) (hl : IsLocalHomeomorph z)
     (hp : ∀ K : Set (V n), IsCompact K → K ⊆ U → IsCompact (z ⁻¹' K)) :
@@ -57,6 +76,9 @@ section atlas
 variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
+/- English proof (translation)
+Establish `h` using `A.g_add 0 0 i j y hi hj`. Rewrite `h` using `[add_zero]`. Establish `hne` using `A.g_ne 0 i j y hi hj`. Conclude with `mul_left_cancel₀ hne ((h.symm).trans (mul_one _).symm)`.
+-/
 theorem transition_zero_eq_one (A : WeightedAtlas n Y ι La) (i j : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) : A.g 0 i j y = 1 := by
   have h := A.g_add 0 0 i j y hi hj
@@ -64,6 +86,9 @@ theorem transition_zero_eq_one (A : WeightedAtlas n Y ι La) (i j : ι) (y : Y)
   have hne := A.g_ne 0 i j y hi hj
   exact mul_left_cancel₀ hne ((h.symm).trans (mul_one _).symm)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul, pow_zero, transition_zero_eq_one A i j y hi hj]`. Consider the case `succ k ih => rw [succ_nsmul, A.g_add _ _ i j y hi hj, ih, pow_succ]`.
+-/
 theorem transition_nsmul_eq_pow (A : WeightedAtlas n Y ι La) (la : La) (m : ℕ) (i j : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
     A.g (m • la) i j y = A.g la i j y ^ m := by
@@ -71,18 +96,29 @@ theorem transition_nsmul_eq_pow (A : WeightedAtlas n Y ι La) (la : La) (m : ℕ
   | zero => rw [zero_nsmul, pow_zero, transition_zero_eq_one A i j y hi hj]
   | succ k ih => rw [succ_nsmul, A.g_add _ _ i j y hi hj, ih, pow_succ]
 
+/- English proof (translation)
+Establish `h` using `A.ph_add 0 0 i y hi`. Rewrite `h` using `[add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_zero_eq_zero (A : WeightedAtlas n Y ι La) (i : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) : A.ph 0 i y = 0 := by
   have h := A.ph_add 0 0 i y hi
   rw [add_zero] at h
   linarith
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul, weight_zero_eq_zero A i y hi]`. Simplify using the standard rewrite rules. Consider the case `succ k ih => rw [succ_nsmul, A.ph_add _ _ i y hi, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weight_nsmul_eq_mul (A : WeightedAtlas n Y ι La) (la : La) (m : ℕ) (i : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) : A.ph (m • la) i y = m * A.ph la i y := by
   induction m with
   | zero => rw [zero_nsmul, weight_zero_eq_zero A i y hi]; simp
   | succ k ih => rw [succ_nsmul, A.ph_add _ _ i y hi, ih]; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[hF.2 i j y (Set.mem_univ y) hi hj, hw.2 i j y (Set.mem_univ y) hi hj, transition_nsmul_eq_pow A la m i j y hi hj, mul_pow]`. Conclude with `mul_div_mul_left _ _ (pow_ne_zero _ (A.g_ne la i j y hi hj))`.
+-/
 theorem ratio_pow_chart_independent (A : WeightedAtlas n Y ι La) (la : La) (m : ℕ) (F w0 : ι → Y → ℂ)
     (hF : A.IsSec (m • la) F) (hw : A.IsSec la w0) (i j : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
@@ -91,6 +127,9 @@ theorem ratio_pow_chart_independent (A : WeightedAtlas n Y ι La) (la : La) (m :
     transition_nsmul_eq_pow A la m i j y hi hj, mul_pow]
   exact mul_div_mul_left _ _ (pow_ne_zero _ (A.g_ne la i j y hi hj))
 
+/- English proof (translation)
+Rewrite using `[hw.2 i j y (Set.mem_univ y) hi hj]`. Conclude with `mul_ne_zero (A.g_ne la i j y hi hj) h`.
+-/
 theorem ne_zero_of_overlap_ne_zero (A : WeightedAtlas n Y ι La) (la : La) (w0 : ι → Y → ℂ)
     (hw : A.IsSec la w0) (i j : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) (h : w0 j y ≠ 0) :
@@ -98,6 +137,9 @@ theorem ne_zero_of_overlap_ne_zero (A : WeightedAtlas n Y ι La) (la : La) (w0 :
   rw [hw.2 i j y (Set.mem_univ y) hi hj]
   exact mul_ne_zero (A.g_ne la i j y hi hj) h
 
+/- English proof (translation)
+Simplify using `only [zLoc, zmap, (A.chart i).left_inv hi]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `ratio_pow_chart_independent A la 1 (s k) w0 (by rw [one_nsmul]; exact hs k) hw i (A.pick y) y hi (A.mem_pick y)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem localCoordinates_eq_zmap (A : WeightedAtlas n Y ι La) (la : La) (w0 : ι → Y → ℂ)
     (s : Fin n → ι → Y → ℂ) (hw : A.IsSec la w0) (hs : ∀ k, A.IsSec la (s k)) (i : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) :
@@ -111,6 +153,13 @@ theorem localCoordinates_eq_zmap (A : WeightedAtlas n Y ι La) (la : La) (w0 : �
 
 end atlas
 
+/- English proof (translation)
+Introduce `e he`. Set `f` to `hS.isOpenEmbedding_subtypeVal.toOpenPartialHomeomorph (Subtype.val : S → M)`. Establish `hc : IsChart n z (f.symm.trans e)`. Introduce `x hx`. Simplify using `only [OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.symm_source, Set.mem_inter_iff, Set.mem_preimage, f, Topology.IsOpenEmbedding.toOpenPartialHomeomorph_target] at hx`.
+
+Take `⟨⟨x', rfl⟩, hx2⟩` from `hx`. Simplify using `only [OpenPartialHomeomorph.coe_trans, Function.comp_apply, f, hS.isOpenEmbedding_subtypeVal.toOpenPartialHomeomorph_left_inv] at hx2 ⊢`. Conclude with `he hx2`. Establish `h2` using `hu _ hc`. Establish `ht : (f.symm.trans e).target = e.target`.
+
+Simplify using `[f]`. Rewrite `h2` using `[ht]`. Use `h2.congr (fun v hv => ?_)` and prove the remaining obligations. Simplify using `[f, OpenPartialHomeomorph.trans_symm_eq_symm_trans_symm]`.
+-/
 theorem holo_restrict_open {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n) (u : M → ℂ)
     (hu : Holo n z u) (S : Set M) (hS : IsOpen S) [Nonempty S] :
     Holo n (fun x : S => z x) (fun x : S => u x) := by
@@ -131,6 +180,13 @@ theorem holo_restrict_open {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M →
   refine h2.congr (fun v hv => ?_)
   simp [f, OpenPartialHomeomorph.trans_symm_eq_symm_trans_symm]
 
+/- English proof (translation)
+Set `E : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (D : V n →ₗ[ℂ] V n) hD).toContinuousLinearEquiv`. Establish `hE : ∀ x, E x = D x`. Introduce `x`. Both sides reduce to the same expression. Establish `h1 : (fun x => x - a) =O[𝓝 a] (fun x => D (x - a))`.
+
+Simplify `E.isBigO_sub_rev (𝓝 a) a` using `[hE]`. Establish `h3 : (fun x => D (x - a) - (q x - q a)) =o[𝓝 a] (fun x => D (x - a))`. Use `(hq.isLittleO.trans_isBigO h1).neg_left` as an intermediate fact. Use `this.congr_left (fun x => ?_)` and prove the remaining obligations. Normalize the expressions using the abelian group laws.
+
+Establish `h4` using `h3.right_isBigO_sub`. Use `h1.trans (h4.congr_right (fun x => ?_))` and prove the remaining obligations. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_isBigO_of_det_ne_zero {n : ℕ} {q : V n → V n} {D : V n →L[ℂ] V n} {a : V n}
     (hq : HasFDerivAt q D a) (hD : LinearMap.det (D : V n →ₗ[ℂ] V n) ≠ 0) :
     (fun x => x - a) =O[𝓝 a] (fun x => q x - q a) := by
@@ -154,6 +210,13 @@ section atlas
 variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
+/- English proof (translation)
+Establish `hT : (A.chart i).target ∈ 𝓝 (A.chart i y)` using `(A.chart i).open_target.mem_nhds ((A.chart i).map_source hi)`. Establish `hd : ∀ F : ι → Y → ℂ, A.IsSec la F → DifferentiableAt ℂ (fun v => F i ((A.chart i).symm v)) (A.chart i y)`. Introduce `F hF`. Use `hF.1 i` as an intermediate fact. Simplify using `only [Set.preimage_univ, Set.inter_univ] at this`.
+
+Conclude with `(this.differentiableAt hT)`. Rewrite using `[differentiableAt_euclidean]`. Introduce `k`. Simplify using `only [zLoc, PiLp.toLp_apply, div_eq_mul_inv]`. Use `(hd (s k) (hs k)).mul ((hd w0 hw).inv ?_)` and prove the remaining obligations.
+
+Simplify `h0` using `[(A.chart i).left_inv hi]`.
+-/
 theorem differentiableAt_localCoordinates (A : WeightedAtlas n Y ι La) (la : La) (w0 : ι → Y → ℂ)
     (s : Fin n → ι → Y → ℂ) (hw : A.IsSec la w0) (hs : ∀ k, A.IsSec la (s k)) (i : ι) (y : Y)
     (hi : y ∈ (A.chart i).source) (h0 : w0 i y ≠ 0) :

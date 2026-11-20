@@ -24,6 +24,9 @@ namespace A1
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hx, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hy, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T ((W.N T).add_mem hx hy)]`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+-/
 theorem cmpD_add' {x y : W.DD T} (hx : x ∈ W.N T) (hy : y ∈ W.N T) :
     cmpD W T (x + y) = cmpD W T x + cmpD W T y := by
   rw [Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hx, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hy,
@@ -31,6 +34,11 @@ theorem cmpD_add' {x y : W.DD T} (hx : x ∈ W.N T) (hy : y ∈ W.N T) :
   rw [← map_add]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (W.N T).zero_mem]`. Conclude with `map_zero (W.cmp T)`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, cmpD_add' W T (hy a (Finset.mem_insert_self a s)) (Submodule.sum_mem _ fun k hk => hy k (Finset.mem_insert_of_mem hk)), ih fun k hk => hy k (Finset.mem_insert_of_mem hk)]`.
+-/
 theorem cmpD_sum' {ι : Type} (s : Finset ι) (y : ι → W.DD T) (hy : ∀ k ∈ s, y k ∈ W.N T) :
     cmpD W T (∑ k ∈ s, y k) = ∑ k ∈ s, cmpD W T (y k) := by
   classical
@@ -45,6 +53,9 @@ theorem cmpD_sum' {ι : Type} (s : Finset ι) (y : ι → W.DD T) (hy : ∀ k �
         (Submodule.sum_mem _ fun k hk => hy k (Finset.mem_insert_of_mem hk)),
       ih fun k hk => hy k (Finset.mem_insert_of_mem hk)]
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hw, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T ((W.N T).smul_mem a hw)]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_smul_letter W T i a w hw hwi`.
+-/
 theorem cmpD_smul_letter' (i : ZMod n) (a : LetA O n) {w : W.DD T} (hw : w ∈ W.N T)
     (hwi : (letE i : LetA O n) • w = w) :
     cmpD W T (a • w) = algebraMap O LL (PowerSeries.constantCoeff (a i)) • cmpD W T w := by
@@ -53,6 +64,29 @@ theorem cmpD_smul_letter' (i : ZMod n) (a : LetA O n) {w : W.DD T} (hw : w ∈ W
 
 end A1
 
+/- English proof (translation)
+Establish `hbas` using `arcBasic W F hB`. Simplify using `only at hbas`. Take `⟨hOK, -, -, -, hσ⟩` from `hbas`. Establish `hl : 5 ≤ PD.p` using `by have := hB.1; omega`. Establish `hsur : Formalism.MainNotions.LiftingTheory.Sur W F` using `hB.2.1.2.1`.
+
+Establish `hthick : ∀ s < (arcOf b w S η up size).len c, ((arcOf b w S η up size).ty (c - (s : ZMod n))).thick`. Introduce `s _`. Apply the tactic sequence `by_cases h : up (c - (s : ZMod n)) = true <;> simp [arcOf, h, Formalism.MainNotions.LocalTheoryWindows.LT.thick]`. Use `⟨rr + (arcOf b w S η up size).σ PD.p, by push_cast; linarith, ?_⟩` and prove the remaining obligations. Consider the cases of `hup : up c`.
+
+Establish `hdn : ∀ s < (arcOf b w S η up size).len c, (arcOf b w S η up size).ty (c - (s : ZMod n)) = Formalism.MainNotions.LocalTheoryWindows.LT.down (size (c - (s : ZMod n)))`. Introduce `s hs`. Establish `h1 : up (c - (s : ZMod n)) = false` using `(hone s hs).trans hup`. Simplify using `[arcOf, h1]`. Establish `hnn : nnDen W (arcOf b w S η up size) c = 1`.
+
+Unfold `nnDen prodTy`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[hdn s (Finset.mem_range.1 hs)]`. Simplify using the standard rewrite rules.
+
+Establish `hcut' : c - (((arcOf b w S η up size).len c : ℕ) : ZMod n) ∈ (arcOf b w S η up size).cuts` using `(hOK.2.2.1 c hc).2.2.1`. Take `⟨d₁, b₁, sol₁, hb₁⟩` from `hHF hcase hl _ hOK T₁ hW₁ (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n))`. Take `⟨x₁, hx₁, hx₁eq⟩` from `hArcL hcase T₁ T₂ F hsur _ rr ((arcOf b w S η up size).len c) (hkill _ hcut') (bb k₀) (hbb.1.1 k₀)`. Take `⟨a, ⟨-, hxa⟩, -⟩` from `hb₁.1.2 x₁ hx₁`. Establish `hb₁N : ∀ m, b₁ m ∈ W.N T₁` using `fun m => (hb₁.1.1 m).1.1`.
+
+Establish `hb₁l : ∀ m, (letE (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) : LetA O n) • b₁ m = b₁ m` using `fun m => Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T₁ _ (hb₁.1.1 m).2`. Establish `hcmp : cmpD W T₁ x₁ = ∑ m, algebraMap O LL (PowerSeries.constantCoeff (a m (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)))) • cmpD W T₁ (b₁ m)`. Rewrite using `[hxa, A1.cmpD_sum' W T₁ _ _ (fun m _ => (W.N T₁).smul_mem _ (hb₁N m))]`. Conclude with `Finset.sum_congr rfl fun m _ => A1.cmpD_smul_letter' W T₁ _ (a m) (hb₁N m) (hb₁l m)`. Establish `e1 : dvO W T₁ ((arcOf b w S η up size).len c) b₁ (fun m => PowerSeries.constantCoeff (a m (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)))) = ((φVB PD (LL` using `LL) (V := T₁.V)) ^ ((arcOf b w S η up size).len c)) (cmpD W T₁ x₁) := by`.
+
+Rewrite using `[hcmp, map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression. Establish `e2 : dv W T₂ ((arcOf b w S η up size).len c) bb (Pi.single k₀ 1) = ((φVB PD (LL` using `LL) (V := T₂.V)) ^ ((arcOf b w S η up size).len c)) (cmpD W T₂ (bb k₀)) := by`. Unfold `dv`.
+
+Rewrite using `[Finset.sum_eq_single k₀ (fun m _ hm => by simp [hm]) (by simp)]`. Simplify using the standard rewrite rules. Establish `hpr : Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B F.f (dvO W T₁ ((arcOf b w S η up size).len c) b₁ (fun m => PowerSeries.constantCoeff (a m (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n))))) = ((PD.p : LL) ^ rr) • dv W T₂ ((arcOf b w S η up size).len c) bb …`. Rewrite using `[e1, e2, hx₁eq]`. Use `liftsAt_thin_letter_type W _ F c bb sol k₀ hOK hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hW₁ hW₂ hbb ∅ (by simp) b₁ sol₁ hb₁ _ rr (by simp) hpr f ?_ ?_ ?_` and prove the remaining obligations.
+
+Establish `h` using `hf.1`. Rewrite `h` using `[hnn]`. Rewrite using `[Finset.prod_empty]`. Conclude with `h`. Introduce `s hs bs hbs`.
+
+Take `⟨κ, x, hx⟩` from `hf.2 s hs bs hbs`. Rewrite `hx` using `[hnn]`. Conclude with `⟨κ, x, by rw [Finset.prod_empty]; exact hx⟩`. Introduce `s hs _ bs hbs`. Rewrite `hbs` using `[hdn s hs]`.
+
+Simplify using `at hbs`. Use `liftsAt_thick_letter_type W _ F c bb sol k₀ hOK hc hthick hcase hl hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hNN hW₁ hW₂ hsur rr hkill hbb hk₀ f hf.1 ?_` and prove the remaining obligations. Introduce `s hs bs hbs`. Establish `h1 : up (c - (s : ZMod n)) = true` using `(hone s hs).trans hup`. Simplify using `[arcOf, h1] at hbs`.
+-/
 theorem arc_single_type_bound [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

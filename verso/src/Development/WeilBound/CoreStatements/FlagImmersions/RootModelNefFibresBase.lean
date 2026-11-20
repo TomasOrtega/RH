@@ -15,6 +15,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSett
 
 namespace RootFieldNumerics
 
+/- English proof (translation)
+Rewrite using `[geoNum]`. Use `split_ifs`. Conclude with `Int.natCast_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem geoNum_zero_nonneg' {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     (a : Fin 0 → K → ℤ) : 0 ≤ geoNum 0 W a := by
   rw [geoNum]
@@ -22,6 +25,11 @@ theorem geoNum_zero_nonneg' {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   · exact Int.natCast_nonneg _
   · exact le_rfl
 
+/- English proof (translation)
+Rewrite using `[geoNum]`. Use `split_ifs`. Use `Finset.sum_nonneg fun k _ => mul_nonneg (ha k) ?_` and prove the remaining obligations. Use `finsum_nonneg fun V => finsum_nonneg fun _ => ?_` and prove the remaining obligations. Conclude with `mul_nonneg (Int.natCast_nonneg _) (geoNum_zero_nonneg' _ _)`.
+
+Conclude with `le_rfl`.
+-/
 theorem geoNum_one_nonneg' {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (W : Ideal (MRing ι))
     (a : K → ℤ) (ha : ∀ k, 0 ≤ a k) : 0 ≤ geoNum 1 W (fun _ => a) := by
   rw [geoNum]
@@ -33,6 +41,11 @@ theorem geoNum_one_nonneg' {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fint
 
 end RootFieldNumerics
 
+/- English proof (translation)
+Introduce `Ψ _ N M hA p _ W _`. Unfold `GlobalTheory.CompanionTheory.Ar.Top.RootModel.curveDeg`. Use `Finset.sum_nonneg fun j _ => ?_` and prove the remaining obligations. Break down `j with _ | r` into its components or cases. Establish `hk : (0:ℝ) < M.kA` using `by exact_mod_cast M.kA_pos`.
+
+Establish `hg` using `RootFieldNumerics.geoNum_one_nonneg' W M.A.a hA`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Top.RootModel.coef, GlobalTheory.CompanionTheory.Ar.Top.RootModel.line]`. Conclude with `mul_nonneg (by positivity) (by exact_mod_cast hg)`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Top.RootModel.coef]`.
+-/
 theorem RootFieldNumerics.root_model_nef_fibres_base : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : RootModel Ψ N), (∀ k, 0 ≤ M.A.a k) → M.NefFib 0 1 := by
   intro Ψ _ N M hA p _ W _
   unfold GlobalTheory.CompanionTheory.Ar.Top.RootModel.curveDeg

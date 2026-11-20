@@ -20,6 +20,13 @@ open GlobalTheory.CompanionTheory.HermPoisson (ofHermE)
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨-, hψn, -, -⟩` from `hψ`. Establish `hnorm : ∀ y : Sp W n, ‖pairH ψ (ofHermE (gramOf W y.1)).1 x‖ = 1` using `fun y => hψn _`. Establish `key : ∀ (h : GA D W) (y : Sp W n), pch ψ x.1 (ip W (mm (mt W h⁻¹) (rat y.1)) (mm (mt W h⁻¹) (rat y.1))) * Ψ (mm (mt W h⁻¹) (rat y.1)) = pairH ψ (ofHermE (gramOf W y.1)).1 x * Ψ (mm (mt W h⁻¹) (rat y.1))`. Introduce `h y`. Rewrite using `[ip_inv]`.
+
+Conclude with `congrArg (· * Ψ (mm (mt W h⁻¹) (rat y.1))) (pch_rat ψ x (gramOf W y.1))`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `h`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Conclude with `key h y`. Use `_ = _ := exch hvol hΨ hC (fun y : Sp W n => pairH ψ (ofHermE (gramOf W y.1)).1 x) hnorm`.
+-/
 theorem thS_eq (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) {W : HSp D} {n : ℕ} {m : Measure (GA D W)}
     {𝓕 : Set (GA D W)} {Ψ : Mx D W.rank n → ℂ} (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
     (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) (x : hermA D n) :
@@ -44,6 +51,35 @@ theorem thS_eq (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) {W 
         exact key h y
     _ = _ := exch hvol hΨ hC (fun y : Sp W n => pairH ψ (ofHermE (gramOf W y.1)).1 x) hnorm
 
+/- English proof (translation)
+Introduce `hLB D n W ψ hψ θ hθ m 𝓕 hm h𝓕 lam 𝓖 hl Ψ hΨ`. Take `⟨C, hC⟩` from `hLB D θ hθ W n Ψ hΨ`. Establish `hvol : m 𝓕 < ⊤` using `GlobalTheory.Cmp.RallisRange.vol_lt_top W hm h𝓕`. Establish `hΨc : Continuous Ψ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ Ψ hΨ).1`. Establish `hth` using `fun x => thS_eq ψ hψ hvol hΨc hC x`.
+
+Establish `hsum` using `summable_co hvol hΨc hC`. Establish `hpn : ∀ (S x : hermA D n), ‖pairH ψ S x‖ = 1` using `fun S x => hψ.2.1 _`. Use `⟨hvol.ne, ?_, fun β => ?_⟩` and prove the remaining obligations. Use `(continuous_tsum (f := fun (y : Sp W n) (x : hermA D n) => pairH ψ (ofHermE (gramOf W y.1)).1 x * co W m 𝓕 Ψ y.1) (fun y => (continuous_pairH hψ _).mul continuous_const) hsum (fun y x => by rw [norm_mul, hpn, one_mul])).congr fun x => (hth x).symm` and prove the remaining obligations. Take `⟨i1, -, i3, -, -, -⟩` from `lattice_Mx D n n`.
+
+Establish `: IsTopologicalAddGroup (Mx D n n)` using `i1`. Establish `: SecondCountableTopology (Mx D n n)` using `i3`. Establish `: BorelSpace (Mx D n n)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (hermA D n)` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Establish `: BorelSpace (hermA D n)` using `Subtype.borelSpace _`.
+
+Establish `hcoef : ∫ x in 𝓖, thS W m 𝓕 (fun X => pch ψ x.1 (ip W X X) * Ψ X) * conj (pch ψ x.1 (rat β.1)) ∂lam = ∑' y : Sp W n, if gramOf W y.1 = β then co W m 𝓕 Ψ y.1 else 0`. Establish `e1 : ∀ x : hermA D n, thS W m 𝓕 (fun X => pch ψ x.1 (ip W X X) * Ψ X) * conj (pch ψ x.1 (rat β.1)) = ∑' y : Sp W n, co W m 𝓕 Ψ y.1 * (pairH ψ (ofHermE (gramOf W y.1)).1 x * (pairH ψ (ofHermE β).1 x)⁻¹)` using `fun x => by`. Rewrite using `[hth x, pch_rat ψ x β, conj_eq_inv (hpn _ _), ← tsum_mul_right]`. Conclude with `tsum_congr fun y => by ring`. Rewrite using `[integral_congr_ae (ae_of_all _ e1), integral_tsum]`.
+
+Use `tsum_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Use `split_ifs with h`. Rewrite using `[h]`. Establish `e3 : ∀ x, pairH ψ (ofHermE β).1 x * (pairH ψ (ofHermE β).1 x)⁻¹ = 1` using `fun x => mul_inv_cancel₀ (pairH_ne_zero hψ _ _)`.
+
+Simplify using `only [e3, integral_const, measureReal_def, Measure.restrict_apply_univ, hl.2.2]`. Simplify using the standard rewrite rules. Rewrite using `[setIntegral_pairH hψ hl h, mul_zero]`. Introduce `y`. Conclude with `(continuous_const.mul ((continuous_pairH hψ _).mul ((continuous_pairH hψ _).inv₀ (pairH_ne_zero hψ _)))).aestronglyMeasurable`.
+
+Establish `e2 : ∀ y : Sp W n, ∫⁻ x in 𝓖, ‖co W m 𝓕 Ψ y.1 * (pairH ψ (ofHermE (gramOf W y.1)).1 x * (pairH ψ (ofHermE β).1 x)⁻¹)‖ₑ ∂lam = ‖co W m 𝓕 Ψ y.1‖ₑ` using `fun y => by`. Establish `e4 : ∀ x, ‖co W m 𝓕 Ψ y.1 * (pairH ψ (ofHermE (gramOf W y.1)).1 x * (pairH ψ (ofHermE β).1 x)⁻¹)‖ₑ = ‖co W m 𝓕 Ψ y.1‖ₑ` using `fun x => by`. Establish `h5 : ‖co W m 𝓕 Ψ y.1 * (pairH ψ (ofHermE (gramOf W y.1)).1 x * (pairH ψ (ofHermE β).1 x)⁻¹)‖ = ‖co W m 𝓕 Ψ y.1‖`. Rewrite using `[norm_mul, norm_mul, norm_inv, hpn, hpn]`. Simplify using the standard rewrite rules.
+
+Conclude with `(ofReal_norm _).symm.trans ((congrArg ENNReal.ofReal h5).trans (ofReal_norm _))`. Simplify using `only [e4, setLIntegral_const, hl.2.2, mul_one]`. Simplify using `only [e2]`. Conclude with `tsum_co_ne_top hvol hΨc hC`. Use `⟨fun hno => ?_, fun x₀ hr hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcoef]`. Conclude with `(tsum_congr fun y => if_neg fun h => hno ⟨y.1, y.2, congrArg Subtype.val h⟩).trans tsum_zero`. Rewrite using `[hcoef]`. Take `⟨-, -, -, hB, hTG, -, hcount⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Establish `: MeasurableConstSMul (GQ W) (GA D W)` using `⟨fun γ => measurable_const_mul (γ : GA D W)⟩`.
+
+Establish `: SMulInvariantMeasure (GQ W) (GA D W) m` using `⟨fun γ s _ => measure_preimage_mul m (γ : GA D W) s⟩`. Take `⟨e, he⟩` from `orbit_equiv W x₀ hr`. Set `T` to `{y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank ∧ gramQ W y = gramQ W x₀}`. Set `s : Set (Sp W n)` to `{y | gramOf W y.1 = β}`. Set `q : s ≃ T` to `{ toFun := fun y => ⟨y.1.1, y.1.2, (congrArg Subtype.val y.2 : gramQ W y.1.1 = β.1).trans hg.symm⟩ invFun := fun t => ⟨⟨t.1, t.2.1⟩, Subtype.ext (t.2.2.trans hg)⟩ left_inv := fun y => rfl right_inv := fun t => rfl }`.
+
+Establish `hpt : ∀ (γ : GQ W) (h : GA D W), Ψ (mm (mt W h⁻¹) (rat (e γ).1)) = Ψ (mm (mt W (γ⁻¹ • h)⁻¹) (rat x₀))` using `fun γ h => by`. Rewrite using `[he]`. Use `show Ψ (mm (mt W h⁻¹) (mm (mt W γ) (rat x₀))) = Ψ (mm (mt W (((γ : GA D W))⁻¹ * h)⁻¹) (rat x₀))`. Rewrite using `[mul_inv_rev, inv_inv, mt_mul]`. Conclude with `congrArg Ψ (Matrix.mul_assoc _ _ _).symm`.
+
+Establish `hint : Integrable (fun h : GA D W => Ψ (mm (mt W h⁻¹) (rat x₀))) m`. Use `⟨(cont_term hΨc x₀).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, h𝓕.lintegral_eq_tsum']`. Set `g : T → ℝ≥0∞` to `fun t => ∫⁻ h in 𝓕, ‖Ψ (mm (mt W h⁻¹) (rat t.1))‖ₑ ∂m`. Establish `hinj : Function.Injective fun t : T => (⟨t.1, t.2.1⟩ : Sp W n)` using `fun t t' h => Subtype.ext (by simpa using congrArg Subtype.val h)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Set.indicator_apply, s, Set.mem_ofPred_eq]`. Use `_ = ∑' y : s, co W m 𝓕 Ψ y.1.1 := (tsum_subtype s _).symm`. Use `_ = ∑' t : T, co W m 𝓕 Ψ t.1 := q.tsum_eq (fun t => co W m 𝓕 Ψ t.1)`.
+
+Use `_ = ∑' γ : GQ W, co W m 𝓕 Ψ (e γ).1 := (e.tsum_eq (fun t => co W m 𝓕 Ψ t.1)).symm`. Use `_ = ∑' γ : GQ W, ∫ h in 𝓕, Ψ (mm (mt W (γ⁻¹ • h)⁻¹) (rat x₀)) ∂m := tsum_congr fun γ => integral_congr_ae (ae_of_all _ fun h => hpt γ h)`. Use `_ = orb W m Ψ x₀ := (h𝓕.integral_eq_tsum' _ hint).symm`.
+-/
 theorem _root_.PositivityTheory.Rg.Rsw.L.thCoef : LatBound → ThCoef := by
   classical
   intro hLB D n W ψ hψ θ hθ m 𝓕 hm h𝓕 lam 𝓖 hl Ψ hΨ

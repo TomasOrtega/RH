@@ -18,9 +18,15 @@ def genMap (G : GenFibre v P') : MRing ι ⧸ imageZ v P' →+* G.Φ :=
   Ideal.Quotient.lift _ (aeval G.x : MRing ι →ₐ[ℤ] G.Φ).toRingHom
     (fun a ha => by rw [← G.ker_x] at ha; exact RingHom.mem_ker.mp ha)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genMap_mk (G : GenFibre v P') (f : MRing ι) :
     genMap G (Ideal.Quotient.mk _ f) = aeval G.x f := rfl
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[genMap_mk]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← G.ker_x]`. Conclude with `RingHom.mem_ker.mpr ha`.
+-/
 theorem genMap_injective (G : GenFibre v P') : Function.Injective (genMap G) := by
   refine (injective_iff_map_eq_zero _).2 fun a ha => ?_
   obtain ⟨f, rfl⟩ := Ideal.Quotient.mk_surjective a
@@ -28,6 +34,9 @@ theorem genMap_injective (G : GenFibre v P') : Function.Injective (genMap G) := 
   rw [Ideal.Quotient.eq_zero_iff_mem, ← G.ker_x]
   exact RingHom.mem_ker.mpr ha
 
+/- English proof (translation)
+Use `letI := (genMap G).toAlgebra`. Use `haveI : FaithfulSMul (MRing ι ⧸ imageZ v P') G.Φ := (faithfulSMul_iff_algebraMap_injective _ _).mpr (genMap_injective G)`. Use `IsFractionRing.of_field _ _ fun z => ?_` and prove the remaining obligations. Take `⟨f, g, -, rfl⟩` from `G.gen z`. Conclude with `⟨Ideal.Quotient.mk _ f, Ideal.Quotient.mk _ g, rfl⟩`.
+-/
 theorem isFractionRing_genMap (G : GenFibre v P') :
     @IsFractionRing (MRing ι ⧸ imageZ v P') _ G.Φ _ (genMap G).toAlgebra := by
   letI := (genMap G).toAlgebra
@@ -42,6 +51,9 @@ def quotIncl (W : Ideal (MRing ι')) [W.IsPrime] (hW : imageZ v W = imageZ v P')
   (algebraMap (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W))).comp
     (Ideal.quotientMap W (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom hW.symm.le)
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W))).comp (Ideal.quotientMap_injective' (H := hW.symm.le) hW.le)`.
+-/
 theorem quotIncl_injective (W : Ideal (MRing ι')) [W.IsPrime] (hW : imageZ v W = imageZ v P') :
     Function.Injective (quotIncl W hW) :=
   (IsFractionRing.injective (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W))).comp
@@ -53,6 +65,11 @@ def genAlg (G : GenFibre v P') (W : Ideal (MRing ι')) [W.IsPrime] (hW : imageZ 
   haveI := isFractionRing_genMap G
   IsFractionRing.lift (quotIncl_injective W hW)
 
+/- English proof (translation)
+Use `letI := (genMap G).toAlgebra`. Use `haveI := isFractionRing_genMap G`. Establish `hx : G.x p = algebraMap (MRing ι ⧸ imageZ v P') G.Φ (Ideal.Quotient.mk _ (X p))` using `by show G.x p = genMap G (Ideal.Quotient.mk _ (X p))`. Rewrite using `[genMap_mk, aeval_X]`. Rewrite using `[hx]`.
+
+Conclude with `(IsFractionRing.lift_algebraMap (quotIncl_injective W hW) _).trans (by`. Simplify using `[quotIncl, Ideal.quotientMap_mk])`.
+-/
 theorem genAlg_alt (G : GenFibre v P') (W : Ideal (MRing ι')) [W.IsPrime] (hW : imageZ v W = imageZ v P')
     (p : Σ k, ι k) :
     genAlg G W hW (G.x p) =
@@ -69,6 +86,11 @@ theorem genAlg_alt (G : GenFibre v P') (W : Ideal (MRing ι')) [W.IsPrime] (hW :
 def xW (W : Ideal (MRing ι')) [W.IsPrime] (q : Σ k', ι' k') : FractionRing (MRing ι' ⧸ W) :=
   algebraMap (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W)) (Ideal.Quotient.mk W (X q))
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, eq_intCast (algebraMap ℤ (FractionRing (MRing ι' ⧸ W))) a]`. Conclude with `(eq_intCast (((algebraMap (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W))).comp (Ideal.Quotient.mk W)).comp C) a).symm`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp => rw [map_mul, map_mul, map_mul, hp, aeval_X, xW]`.
+-/
 theorem aeval_xW (W : Ideal (MRing ι')) [W.IsPrime] (f : MRing ι') :
     aeval (R := ℤ) (xW W) f =
       algebraMap (MRing ι' ⧸ W) (FractionRing (MRing ι' ⧸ W)) (Ideal.Quotient.mk W f) := by
@@ -80,6 +102,9 @@ theorem aeval_xW (W : Ideal (MRing ι')) [W.IsPrime] (f : MRing ι') :
   | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]
   | mul_X p n hp => rw [map_mul, map_mul, map_mul, hp, aeval_X, xW]
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, aeval_xW, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem ker_aeval_xW (W : Ideal (MRing ι')) [W.IsPrime] :
     RingHom.ker (aeval (R := ℤ) (xW W)) = W := by
   ext f
@@ -102,6 +127,11 @@ def genFibreOf (G : GenFibre v P') (W : Ideal (MRing ι')) [W.IsPrime] (hW : ima
     rw [RingHom.ext_int (algebraMap ℤ (FractionRing (MRing ι' ⧸ W))) (Int.castRingHom _)]
   compat p := (genAlg_alt G W hW p).symm
 
+/- English proof (translation)
+Establish `e : (baseSubst κ G).comp (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom = (C : G.Φ →+* MRingOver G.Φ (fibreIdx ι' κ)).comp (aeval G.x : MRing ι →ₐ[ℤ] G.Φ).toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => ?_)` and prove the remaining obligations. Conclude with `RingHom.congr_fun (RingHom.ext_int (((baseSubst κ G).comp (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom).comp C) (((C : G.Φ →+* MRingOver G.Φ (fibreIdx ι' κ)).comp (aeval G.x : MRing ι →ₐ[ℤ] G.Φ).toRingHom).comp C)) a`. Establish `h1 : (v p).1 ∈ Set.range κ` using `⟨p.1, (hκv.2.2.1 p).symm⟩`. Establish `h2 : v p ∈ Set.range v` using `⟨p, rfl⟩`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, aeval_X]`. Rewrite using `[baseSubst, eval₂Hom_X', dif_pos h1, dif_pos h2, hκv.2.1 h2.choose_spec]`. Conclude with `RingHom.congr_fun e f`.
+-/
 theorem baseSubst_rename (hκv : IsBlockMap κ v) (G : GenFibre v P') (f : MRing ι) :
     baseSubst κ G (rename v f) = C (aeval G.x f) := by
   have e : (baseSubst κ G).comp (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom =
@@ -117,6 +147,15 @@ theorem baseSubst_rename (hκv : IsBlockMap κ v) (G : GenFibre v P') (f : MRing
       rw [baseSubst, eval₂Hom_X', dif_pos h1, dif_pos h2, hκv.2.1 h2.choose_spec]
   exact RingHom.congr_fun e f
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a`. Take `⟨f, b, hb, rfl⟩` from `G.gen a`. Use `⟨b, rename v f, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[baseSubst_rename hκv, ← C_mul, mul_div_cancel₀ _ hb]`.
+
+Consider the case `add p q hp hq`. Take `⟨b₁, F₁, h₁, e₁⟩` from `hp`. Take `⟨b₂, F₂, h₂, e₂⟩` from `hq`. Use `⟨b₁ * b₂, rename v b₂ * F₁ + rename v b₁ * F₂, by rw [map_mul]; exact mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, baseSubst_rename hκv, ← e₁, ← e₂]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p n hp`. Take `⟨b, F, h, e⟩` from `hp`. Use `⟨b, F * X ⟨n.1.1, n.2⟩, h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← e, mul_assoc]`.
+
+Use `congr 2`. Rewrite using `[baseSubst, eval₂Hom_X', dif_neg n.1.2]`.
+-/
 theorem exists_clear (hκv : IsBlockMap κ v) (G : GenFibre v P') (g : MRingOver G.Φ (fibreIdx ι' κ)) :
     ∃ (b : MRing ι) (F : MRing ι'), aeval G.x b ≠ 0 ∧ C (aeval G.x b) * g = baseSubst κ G F := by
   induction g using MvPolynomial.induction_on with
@@ -137,6 +176,13 @@ theorem exists_clear (hκv : IsBlockMap κ v) (G : GenFibre v P') (g : MRingOver
     congr 2
     rw [baseSubst, eval₂Hom_X', dif_neg n.1.2]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Take `⟨c, hc, F, e⟩` from `hclear g`. Establish `hF : F ∈ W`. Rewrite using `[← hφ, RingHom.mem_ker, ← hcomp, ← e, map_mul, RingHom.mem_ker.mp hg, mul_zero]`.
+
+Establish `hg' : g = C c⁻¹ * β F`. Rewrite using `[← e, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hc, C_1, one_mul]`. Rewrite using `[hg']`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hF)`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `F hF`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hcomp, ← RingHom.mem_ker, hφ]`. Conclude with `hF`.
+-/
 theorem ker_eq_map {σ τ Φ Φ' : Type} [Field Φ] [Field Φ'] [Algebra Φ Φ']
     (β : MvPolynomial τ ℤ →+* MvPolynomial σ Φ) (y : σ → Φ') (φ : MvPolynomial τ ℤ →+* Φ')
     (W : Ideal (MvPolynomial τ ℤ)) (hφ : RingHom.ker φ = W) (hcomp : ∀ F, aeval y (β F) = φ F)
@@ -158,6 +204,13 @@ theorem ker_eq_map {σ τ Φ Φ' : Type} [Field Φ] [Field Φ'] [Algebra Φ Φ']
 
 variable {W : Ideal (MRing ι')} [W.IsPrime] (hW : imageZ v W = imageZ v P')
 
+/- English proof (translation)
+Use `letI := (genAlg G W hW).toAlgebra`. Establish `e : (aeval (fun q : Σ k : FibreBlock κ, ι' k.1 => xW W ⟨q.1.1, q.2⟩) : MRingOver G.Φ (fibreIdx ι' κ) →ₐ[G.Φ] FractionRing (MRing ι' ⧸ W)).toRingHom.comp (baseSubst κ G) = (aeval (R` using `ℤ) (xW W)).toRingHom := by`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun q => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, baseSubst, eval₂Hom_C, eq_intCast (algebraMap ℤ (MRingOver G.Φ (fibreIdx ι' κ))) a, eq_intCast (C : ℤ →+* MRing ι') a, map_intCast, map_intCast]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`.
+
+Rewrite using `[baseSubst, eval₂Hom_X']`. Distinguish the cases in `h : q.1 ∈ Set.range κ`. Establish `h' : q ∈ Set.range v` using `hκv.2.2.2 q h`. Rewrite using `[dif_pos h, dif_pos h', aeval_C, RingHom.algebraMap_toAlgebra, genAlg_alt, h'.choose_spec]`. Both sides reduce to the same expression.
+
+Rewrite using `[dif_neg h, aeval_X]`. Conclude with `RingHom.congr_fun e f`.
+-/
 theorem aeval_baseSubst (hκv : IsBlockMap κ v) (G : GenFibre v P') (f : MRing ι') :
     letI := (genAlg G W hW).toAlgebra
     aeval (fun q : Σ k : FibreBlock κ, ι' k.1 => xW W ⟨q.1.1, q.2⟩) (baseSubst κ G f) =
@@ -179,6 +232,9 @@ theorem aeval_baseSubst (hκv : IsBlockMap κ v) (G : GenFibre v P') (f : MRing 
       · rw [dif_neg h, aeval_X]
   exact RingHom.congr_fun e f
 
+/- English proof (translation)
+Use `letI := (genAlg G W hW).toAlgebra`. Conclude with `ker_eq_map (baseSubst κ G) (fun q : Σ k : FibreBlock κ, ι' k.1 => xW W ⟨q.1.1, q.2⟩) (aeval (R := ℤ) (xW W)).toRingHom W (ker_aeval_xW W) (aeval_baseSubst hW hκv G) (fun g => let ⟨_, F, hb, e⟩ := exists_clear hκv G g; ⟨_, hb, F, e⟩)`.
+-/
 theorem fibreIdeal_genFibreOf (hκv : IsBlockMap κ v) (G : GenFibre v P') :
     fibreIdeal κ (genFibreOf G W hW) = fibreOf κ G W := by
   letI := (genAlg G W hW).toAlgebra
@@ -188,6 +244,9 @@ theorem fibreIdeal_genFibreOf (hκv : IsBlockMap κ v) (G : GenFibre v P') :
 
 end PFHoriz
 
+/- English proof (translation)
+Introduce `I r hPF K _ ι _ K' _ ι' _ κ v P' W d G J L L' N hκv hW hWP hP hJ hL hLL hN`. Use `haveI : W.IsPrime := hW.2.1.1`. Establish `h` using `hPF K ι K' ι' κ v W d (PFHoriz.genFibreOf G W hWP) J L L' N hκv hW (by rw [hWP]; exact hP) hJ hL hLL hN`. Rewrite `h` using `[PFHoriz.fibreIdeal_genFibreOf hWP hκv G, hWP]`. Conclude with `h`.
+-/
 theorem PFHoriz.proof : PFHoriz.Statement := by
   intro I r hPF K _ ι _ K' _ ι' _ κ v P' W d G J L L' N hκv hW hWP hP hJ hL hLL hN
   haveI : W.IsPrime := hW.2.1.1

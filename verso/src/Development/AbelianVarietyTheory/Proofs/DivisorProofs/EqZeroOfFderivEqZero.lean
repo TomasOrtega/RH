@@ -17,6 +17,11 @@ namespace GlobalTheory.UnifTangent
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Use `(AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x h).symm.trans (Eq.trans ?_ (AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x' h'))` and prove the remaining obligations. Use `congr 2`. Use `ext1`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Use `e f` as an intermediate fact.
+
+Rewrite `this` using `[valAt', valAt', dif_pos h, dif_pos h']`. Conclude with `this`.
+-/
 theorem eq_of_values {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {x x' : Sp ℂ ⟶ X} (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ x' ⁻¹ᵁ U) (e : ∀ f, valAt' x U f = valAt' x' U f) : x = x' := by
   refine (AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x h).symm.trans
@@ -28,6 +33,13 @@ theorem eq_of_values {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {x x' 
   rw [valAt', valAt', dif_pos h, dif_pos h'] at this
   exact this
 
+/- English proof (translation)
+Set `τ : A ⟶ A` to `(toUnit A ≫ u.ex z) * 𝟙 A`. Establish `hτ : ∀ v, u.ex v ≫ τ = u.ex (z + v)` using `fun v => by`. Rewrite using `[u.ex_add, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp]`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (τ.left ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Over.comp_left, hτ, add_zero]`.
+
+Conclude with `h`. Establish `e : (fun v => valAt' (u.ex v).left (τ.left ⁻¹ᵁ U) ((τ.left.app U).hom f)) = fun v => valAt' (u.ex (z + v)).left U f` using `funext fun v => by`. Rewrite using `[valAt'_comp, ← Over.comp_left, hτ]`. Use `hw _ ((τ.left.app U).hom f) h0` as an intermediate fact. Rewrite `this` using `[e, fderiv_comp_add_left (f := fun z => valAt' (u.ex z).left U f), add_zero]`.
+
+Conclude with `this`.
+-/
 theorem fderiv_eq_zero_of_origin {w : Fin g → ℂ}
     (hw : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U →
       fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0)
@@ -46,6 +58,17 @@ theorem fderiv_eq_zero_of_origin {w : Fin g → ℂ}
   rw [e, fderiv_comp_add_left (f := fun z => valAt' (u.ex z).left U f), add_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := A.left) (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hx`. Use `haveI := u.discrete`. Take `⟨O, hO, hOe⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({0} : Set u.Λ))`. Establish `hO0 : (0 : Fin g → ℂ) ∈ O`.
+
+Establish `: (0 : u.Λ) ∈ Subtype.val ⁻¹' O` using `hOe ▸ rfl`. Conclude with `this`. Establish `hc : Continuous fun t : ℂ => t • w` using `by fun_prop`. Take `⟨ε, hε, hB⟩` from `Metric.isOpen_iff.1 ((((u.hol U 0).1).inter hO).preimage hc) 0 (by simpa only [Set.mem_preimage, zero_smul] using ⟨h0, hO0⟩)`. Establish `ht : ((ε / 2 : ℝ) : ℂ) ∈ Metric.ball (0 : ℂ) ε`.
+
+Rewrite using `[mem_ball_zero_iff, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : ∀ f, ∀ t ∈ Metric.ball (0 : ℂ) ε, HasDerivAt (fun t : ℂ => valAt' (u.ex (t • w)).left U f) 0 t`. Introduce `f t ht`. Establish `h1` using `((u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds (hB ht).1)).hasFDerivAt`.
+
+Establish `h2` using `h1.comp_hasDerivAt t ((hasDerivAt_id t).smul_const w)`. Rewrite `h2` using `[one_smul, fderiv_eq_zero_of_origin u hw _ U f (hB ht).1]`. Conclude with `h2`. Establish `he : u.ex (((ε / 2 : ℝ) : ℂ) • w) = u.ex ((0 : ℂ) • w)`. Use `Over.OverMorphism.ext (eq_of_values hU (hB ht).1 (hB (Metric.mem_ball_self hε)).1 fun f => ?_)` and prove the remaining obligations.
+
+Conclude with `Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball (0 : ℂ) ε).isPreconnected (fun t ht => (hd f t ht).differentiableAt.differentiableWithinAt) (fun t ht => (hd f t ht).deriv) ht (Metric.mem_ball_self hε)`. Rewrite `he` using `[zero_smul, (u.ker 0).2 (zero_mem _), u.ker]`. Establish `h3 : (⟨_, he⟩ : u.Λ) ∈ ({0} : Set u.Λ)` using `hOe ▸ (hB ht).2`. Conclude with `(smul_eq_zero.1 (congrArg Subtype.val h3)).resolve_left (Complex.ofReal_ne_zero.2 (by positivity))`.
+-/
 theorem eq_zero_of_fderiv_eq_zero (w : Fin g → ℂ)
     (hw : ∀ (U : A.left.Opens) (f : Γ(A.left, U)), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U →
       fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0) : w = 0 := by
@@ -78,12 +101,18 @@ theorem eq_zero_of_fderiv_eq_zero (w : Fin g → ℂ)
   have h3 : (⟨_, he⟩ : u.Λ) ∈ ({0} : Set u.Λ) := hOe ▸ (hB ht).2
   exact (smul_eq_zero.1 (congrArg Subtype.val h3)).resolve_left (Complex.ofReal_ne_zero.2 (by positivity))
 
+/- English proof (translation)
+The claim follows from `TangentOrigin.tangent_bijection_of_values valAt'_rules A L g u (exists_coord_adapted (HolChart.exists_holomorphic_chart valAt'_rules existsUnique_point_of_ringHom exists_holomorphic_section_of_etale) A L g u hs (eq_zero_of_fderiv_eq_zero u))`.
+-/
 theorem tangent_bijection (hs : SmoothOfRelativeDimension g A.hom) :
     (∀ v : epsR ℂ ⟶ A, IsTangent v → ∃! w, u.IsDiff w v) ∧ ∀ w, ∃! v : epsR ℂ ⟶ A, IsTangent v ∧ u.IsDiff w v :=
   TangentOrigin.tangent_bijection_of_values valAt'_rules A L g u
     (exists_coord_adapted (HolChart.exists_holomorphic_chart valAt'_rules existsUnique_point_of_ringHom
       exists_holomorphic_section_of_etale) A L g u hs (eq_zero_of_fderiv_eq_zero u))
 
+/- English proof (translation)
+Introduce `_ P _ d` and use `tangent_bijection d.u ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback d.isPull.1 P.smoothDim)`.
+-/
 theorem riemannData_tangent : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d : P.RiemannData y),
     (∀ v : epsR ℂ ⟶ d.B, IsTangent v → ∃! w, d.u.IsDiff w v) ∧
       (∀ w, ∃! v : epsR ℂ ⟶ d.B, IsTangent v ∧ d.u.IsDiff w v) := fun _ P _ d =>

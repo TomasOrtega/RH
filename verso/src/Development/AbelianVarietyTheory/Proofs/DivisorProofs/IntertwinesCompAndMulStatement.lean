@@ -13,5 +13,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.intertwines_rules | exact GlobalTheory.GroupBplus.Aff.intertwines_rules | (intros; apply GlobalTheory.GroupBplus.Aff.intertwines_rules <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.intertwines_comp_and_mul : ∀ (p : ℕ) (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (GG : PDivGroup p R) (θ : TorsionMap A GG), θ.Intertwines (𝟙 A) (𝟙 GG) ∧ (∀ (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f'] (g g' : GG ⟶ GG), θ.Intertwines f g → θ.Intertwines f' g' → θ.Intertwines (f ≫ f') (g ≫ g')) ∧ ∀ (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f'] (g g' : GG ⟶ GG), θ.Intertwines f g → θ.Intertwines f' g' → θ.Intertwines (f * f') (g + g') := by
   first | exact @GlobalTheory.GroupBplus.Aff.intertwines_rules | exact GlobalTheory.GroupBplus.Aff.intertwines_rules | (intros; apply GlobalTheory.GroupBplus.Aff.intertwines_rules <;> assumption)

@@ -77,6 +77,9 @@ def SemiPull : Prop :=
   ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D E : ℕ), IsArithVar p D → IsArithVar q E →
     ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (L : HermLB p), L.SemiPos D → (L.pull π hπ).SemiPos E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shiftA_H (P : Pair p) (u : ℝ) (a b : ℤ) : (shiftA P u).H a b = P.H a b := rfl
 
 end GlobalTheory.HSNef

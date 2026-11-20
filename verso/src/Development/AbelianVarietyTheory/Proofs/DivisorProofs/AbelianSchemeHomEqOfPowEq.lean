@@ -15,6 +15,11 @@ namespace GlobalTheory.HomTorsionFree
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Establish `hc` using `hB.comm`. Take `⟨hf, hfl⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA S B hB d hd`. Use `⟨hfl, GlobalTheory.AbLaw.MulN.surjective_of_geomFibres _ fun K _ _ t => ?_⟩` and prove the remaining obligations. Establish `hfin : IsFinite ((Over.pullback t).map (mulA B d)).left` using `MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t _) hf`. Rewrite `hfin`, the goal using `[GlobalTheory.MulFiniteFlat.pullback_map_mulA]`.
+
+Establish `hab` using `TLinPf.isAb_pullback t B hB`. Use `hab.comm` as an intermediate fact. Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ hab _ (GlobalTheory.AbLaw.MulN.isMonHom_mulA _ d) hfin).2`.
+-/
 theorem flat_surjective_mulA (S : Scheme.{0}) (B : Over S) [GrpObj B] (hB : IsAbelianScheme B)
     (d : ℕ) (hd : 1 ≤ d) : Flat (mulA B d).left ∧ Surjective (mulA B d).left := by
   have hc := hB.comm
@@ -29,6 +34,9 @@ theorem flat_surjective_mulA (S : Scheme.{0}) (B : Over S) [GrpObj B] (hB : IsAb
     GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _
     hab _ (GlobalTheory.AbLaw.MulN.isMonHom_mulA _ d) hfin).2
 
+/- English proof (translation)
+Introduce `S A B _ _ _ _ _ hB d hd _ x y hx hy hxy`. Take `⟨hfl, hsu⟩` from `flat_surjective_mulA S B hB d hd`. Apply `GlobalTheory.DivisibleHom.cancel_of_flat_surjective (mulA B d)` to reduce the goal to its premises. Rewrite using `[GlobalTheory.DivisibleHom.mulA_comp, GlobalTheory.DivisibleHom.mulA_comp, hxy]`.
+-/
 theorem eq_of_pow_eq : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B], IsAbelianScheme A → IsAbelianScheme B → ∀ (d : ℕ), 0 < d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → ∀ (x y : B ⟶ A), IsMonHom x → IsMonHom y → x ^ d = y ^ d → x = y := by
   intro S A B _ _ _ _ _ hB d hd _ x y hx hy hxy
   obtain ⟨hfl, hsu⟩ := flat_surjective_mulA S B hB d hd

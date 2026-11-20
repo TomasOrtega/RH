@@ -15,12 +15,18 @@ section Lin
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (v : InfinitePlace K)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i = k <;> simp [cpt, hi]`.
+-/
 theorem cpt_single {n : ℕ} (k : Fin n) : cpt v.embedding (Pi.single k (1 : K)) = Pi.single k 1 := by
   funext i
   by_cases hi : i = k <;> simp [cpt, hi]
 
 variable {E : Type} [AddCommGroup E] [Module ℂ E]
 
+/- English proof (translation)
+Rewrite using `[← lin_basis f, ← lin_basis g]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← cpt_single v i, h]`.
+-/
 theorem ext_cpt {n : ℕ} {f g : (Fin n → ℂ) →ₗ[ℂ] E}
     (h : ∀ x : Fin n → K, f (cpt v.embedding x) = g (cpt v.embedding x)) : f = g := by
   rw [← lin_basis f, ← lin_basis g]
@@ -57,6 +63,11 @@ def MetricTie (X : CxData F.amb) : Prop :=
 variable (X : CxData F.amb) {fc : DefSub F.amb → DefFace F.base} (cr : Crd F.amb fc) (b : Bool)
   (P : Subgroup G) (ψ : P →* Kˣ)
 
+/- English proof (translation)
+Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact hf x hx`. Consider the case `zero => exact inner_zero_left _`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]`.
+
+Consider the case `smul a x _ hx => rw [inner_smul_left, hx, mul_zero]`.
+-/
 theorem orth_span {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] {S : Set A} {f : A}
     (hf : ∀ p ∈ S, ⟪p, f⟫_ℂ = 0) : ∀ p ∈ Submodule.span ℂ S, ⟪p, f⟫_ℂ = 0 := by
   intro p hp
@@ -78,6 +89,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs))
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
+/- English proof (translation)
+Introduce `t` and use `⟨(A.fam.R t).toF_injective _ _, rfl⟩`.
+-/
 theorem isCoord_base (Zs : DefSub A.fam.amb) : IsCoord (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false Zs P0 ψ0 :=
   fun t => ⟨(A.fam.R t).toF_injective _ _, rfl⟩
 
@@ -129,6 +143,11 @@ include hF
 
 end Onto
 
+/- English proof (translation)
+Introduce `i k`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h : ¬ ∃ y, (0 : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) y = Pi.single k 1`. Introduce and unpack `⟨y, hy⟩`. Simplify using `using congrFun hy k`.
+
+Simplify using `only [relMat, Matrix.of_apply, LinearMap.id_apply, solve, dif_neg h, map_zero, Pi.zero_apply]`.
+-/
 example {K : Type} [Field K] (σ : K →+* ℂ) :
     IsRat σ (relMat (0 : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) LinearMap.id) := by
   intro i k

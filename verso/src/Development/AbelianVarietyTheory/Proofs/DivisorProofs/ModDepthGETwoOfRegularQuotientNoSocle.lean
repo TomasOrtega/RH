@@ -4,6 +4,19 @@ open IsLocalRing TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S _ _ _ M _ _ _ _ x hxm hreg hsoc`. Choose the witnesses or unpack the hypotheses as in `⟨y, hym, hyreg⟩ : ∃ y ∈ maximalIdeal S, IsSMulRegular (QuotSMulTop x M) y := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hfin` using `associatedPrimes.finite S (QuotSMulTop x M)`.
+
+Establish `hsub : (maximalIdeal S : Set S) ⊆ ⋃ p ∈ associatedPrimes S (QuotSMulTop x M), (p : Set S)`. Introduce `y hy`. Rewrite using `[biUnion_associatedPrimes_eq_compl_regular]`. Conclude with `hno y hy`. Take `⟨p, hp, hmp⟩` from `(Ideal.subset_union_prime (s := hfin.toFinset) (f := id) ⊥ ⊥ (fun p hp _ _ => (hfin.mem_toFinset.mp hp).isPrime)).mp (by simpa using hsub)`.
+
+Rewrite `hp` using `[hfin.mem_toFinset]`. Establish `hpm : p = maximalIdeal S` using `(le_antisymm (le_maximalIdeal (hp.isPrime.ne_top)) hmp)`. Rewrite `hp` using `[hpm]`. Take `⟨-, w, hw⟩` from `isAssociatedPrime_iff.mp hp`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`.
+
+Establish `hu : ∀ a ∈ maximalIdeal S, a • u ∈ x • (⊤ : Submodule S M)`. Introduce `a ha`. Rewrite `ha` using `[hw, Submodule.mem_colon_singleton, Submodule.mem_bot, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `ha`. Apply `(maximalIdeal.isMaximal S).ne_top` to reduce the goal to its premises.
+
+Rewrite using `[hw, Ideal.eq_top_iff_one, Submodule.mem_colon_singleton, Submodule.mem_bot, one_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hsoc u hu`. Use `⟨[x, y], rfl, (fun r hr => by` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption), ?_⟩`.
+
+Rewrite using `[IsLocalRing.isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal (fun r hr => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hr`. Apply the tactic sequence `rcases hr with rfl | rfl <;> assumption),`. Use the proof step `RingTheory.Sequence.isWeaklyRegular_cons_iff, RingTheory.Sequence.isWeaklyRegular_cons_iff]`. Conclude with `⟨hreg, hyreg, RingTheory.Sequence.IsWeaklyRegular.nil _ _⟩`.
+-/
 theorem modDepthGE_two_of_isSMulRegular_of_quotSMulTop :
     ∀ (S : Type) [CommRing S] [IsLocalRing S] [IsNoetherianRing S] (M : Type) [AddCommGroup M]
       [Module S M] [Module.Finite S M] [Nontrivial M] (x : S), x ∈ maximalIdeal S →

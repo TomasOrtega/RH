@@ -10,6 +10,15 @@ namespace PositivityTheory.ThKEst.W
 section Rank
 variable {k : Type} [Field k] {n d : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hr : LinearMap.range Y.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun]`.
+
+Conclude with `h`. Establish `hsurj : Function.Surjective Y.mulVecLin` using `LinearMap.range_eq_top.mp hr`. Use `choose c hc using fun j : Fin n => hsurj (Pi.single j 1)`. Use `⟨Matrix.of fun a j => c j a, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Establish `h3` using `congrFun (hc j) i`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct] at h3`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[h3, Pi.single_apply]`.
+
+Introduce and unpack `⟨C, hC⟩`. Apply `le_antisymm (Matrix.rank_le_height Y)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_iff_right (Y : Matrix (Fin n) (Fin d) k) : Y.rank = n ↔ ∃ C : Matrix (Fin d) (Fin n) k, Y * C = 1 := by
   constructor
   · intro h
@@ -32,6 +41,11 @@ theorem rank_iff_right (Y : Matrix (Fin n) (Fin d) k) : Y.rank = n ↔ ∃ C : M
       _ = (Y * C).rank := by rw [hC]
       _ ≤ Y.rank := Matrix.rank_mul_le_left Y C
 
+/- English proof (translation)
+Rewrite using `[rank_iff_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC⟩`. Conclude with `⟨C, by rw [hC, det_one]; exact one_ne_zero⟩`. Introduce and unpack `⟨C, hC⟩`.
+
+Use `⟨C * (Y * C)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hC)]`.
+-/
 theorem rank_iff_det (Y : Matrix (Fin n) (Fin d) k) : Y.rank = n ↔ ∃ C : Matrix (Fin d) (Fin n) k, (Y * C).det ≠ 0 := by
   rw [rank_iff_right]
   constructor
@@ -41,6 +55,9 @@ theorem rank_iff_det (Y : Matrix (Fin n) (Fin d) k) : Y.rank = n ↔ ∃ C : Mat
     refine ⟨C * (Y * C)⁻¹, ?_⟩
     rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hC)]
 
+/- English proof (translation)
+Apply `le_antisymm (Matrix.rank_le_height Y)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_of_mul (A : Matrix (Fin n) (Fin n) k) (Y : Matrix (Fin n) (Fin d) k) (B : Matrix (Fin d) (Fin d) k)
     (h : (A * Y * B).rank = n) : Y.rank = n := by
   apply le_antisymm (Matrix.rank_le_height Y)
@@ -48,10 +65,24 @@ theorem rank_of_mul (A : Matrix (Fin n) (Fin n) k) (Y : Matrix (Fin n) (Fin d) k
     _ ≤ (A * Y).rank := Matrix.rank_mul_le_left _ _
     _ ≤ Y.rank := Matrix.rank_mul_le_right _ _
 
+/- English proof (translation)
+Apply `rank_of_mul (-1) Y 1` to reduce the goal to its premises. Simplify using `using h`.
+-/
 theorem rank_neg_full {Y : Matrix (Fin n) (Fin d) k} (h : (-Y).rank = n) : Y.rank = n := by
   apply rank_of_mul (-1) Y 1
   simpa using h
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← Matrix.rank_transpose]`. Establish `hinj : Function.Injective ((x.map t)ᵀ.mulVecLin)`. Rewrite using `[← LinearMap.ker_eq_bot, ← Submodule.finrank_eq_zero]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker ((x.map t)ᵀ.mulVecLin)`. Rewrite `h1` using `[Module.finrank_fin_fun]`.
+
+Establish `h2 : Module.finrank k (LinearMap.range ((x.map t)ᵀ.mulVecLin)) = n` using `h`. Use linear arithmetic over natural numbers and integers. Establish `hinj2 : Function.Injective (xᵀ.mulVecLin)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`.
+
+Establish `h3 : (x.map t)ᵀ.mulVecLin (⇑t ∘ c) = 0`. Use function extensionality and compare the values at `j`. Establish `h4` using `congrFun hc j`. Simplify using `only [Matrix.mulVecLin_apply, Pi.zero_apply] at h4 ⊢`. Rewrite using `[← Matrix.transpose_map, ← RingHom.map_mulVec, h4, map_zero]`.
+
+Establish `h5` using `hinj (h3.trans (map_zero _).symm)`. Use function extensionality and compare the values at `i`. Establish `h6` using `congrFun h5 i`. Conclude with `(map_eq_zero t).mp h6`. Use `show Module.finrank E (LinearMap.range xᵀ.mulVecLin) = n`.
+
+Rewrite using `[LinearMap.finrank_range_of_inj hinj2, Module.finrank_fin_fun]`.
+-/
 theorem rank_of_map {E : Type} [Field E] (t : E →+* k) (x : Matrix (Fin n) (Fin d) E) (h : (x.map t).rank = n) :
     x.rank = n := by
   rw [← Matrix.rank_transpose] at h ⊢
@@ -76,6 +107,11 @@ theorem rank_of_map {E : Type} [Field E] (t : E →+* k) (x : Matrix (Fin n) (Fi
   show Module.finrank E (LinearMap.range xᵀ.mulVecLin) = n
   rw [LinearMap.finrank_range_of_inj hinj2, Module.finrank_fin_fun]
 
+/- English proof (translation)
+Establish `hset : {Y : Matrix (Fin n) (Fin d) k | Y.rank = n} = ⋃ C : Matrix (Fin d) (Fin n) k, {Y | (Y * C).det ≠ 0}`. Use extensionality with `Y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, rank_iff_det]`. Rewrite using `[hset]`. Use `isOpen_iUnion fun C => ?_` and prove the remaining obligations.
+
+Conclude with `isOpen_compl_singleton.preimage (Continuous.matrix_det (continuous_id.matrix_mul continuous_const))`.
+-/
 theorem isOpen_rank [TopologicalSpace k] [IsTopologicalRing k] [T1Space k] :
     IsOpen {Y : Matrix (Fin n) (Fin d) k | Y.rank = n} := by
   have hset : {Y : Matrix (Fin n) (Fin d) k | Y.rank = n} =
@@ -91,6 +127,19 @@ end Rank
 section Cut
 variable {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] {n d : ℕ}
 
+/- English proof (translation)
+Establish `hM : IsCompact {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ O}`. Use `isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin d => hO` as an intermediate fact. Simplify using `only [Set.pi, Set.mem_univ, true_imp_iff, Set.mem_setOf_eq] at this`. Conclude with `this`. Establish `h1 : ∀ᶠ a in 𝓝 (0 : k), ∀ Y ∈ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ O}, a • Y ∈ V` using `hM.eventually_forall_of_forall_eventually fun Y _ => (continuous_smul (M := k) (X := Matrix (Fin n) (Fin d) k)).continuousAt.preimage_mem_nhds (by simpa using hV)`.
+
+Take `⟨a, ha0, ha⟩` from `hne _ h1`. Set `K` to `(fun Y : Matrix (Fin n) (Fin d) k => (b / a) • Y) '' {Y | ∀ i j, Y i j ∈ O}`. Establish `hK : IsCompact K` using `hM.image (continuous_const_smul _)`. Set `Λ : AddSubgroup (Matrix (Fin n) (Fin d) k)` to `{ carrier := {Y | ∀ U ∈ K, ψ (trace (Y * Uᵀ)) = 1} add_mem' := fun h h' U hU => by rw [Matrix.add_mul, trace_add, AddChar.map_add_eq_mul, h U hU, h' U hU, one_mul] zero_mem' := fun U _ => by simp neg_mem' := fun h U hU => by rw [Matrix.neg_mul, trace_neg, AddChar.map_neg_eq_inv, …`. Establish `h2 : ∀ᶠ Y in 𝓝 (0 : Matrix (Fin n) (Fin d) k), ∀ U ∈ K, ψ (trace (Y * Uᵀ)) = 1` using `hK.eventually_forall_of_forall_eventually fun U _ => by`.
+
+Establish `hc : Continuous fun z : Matrix (Fin n) (Fin d) k × Matrix (Fin n) (Fin d) k => trace (z.1 * z.2ᵀ)` using `(continuous_fst.matrix_mul continuous_snd.matrix_transpose).matrix_trace`. Simplify using `using (hψ.comp_continuous hc).eventually_eq (0, U)`. Use `⟨K, ⟨Λ, Λ.isOpen_of_mem_nhds h2⟩, fun _ => Iff.rfl, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `: ∀ i j, (a⁻¹ • Y) i j ∈ O` using `fun i j => by`. Assume the negation of the conclusion as `hn`.
+
+Establish `h3` using `(O.mem_or_inv_mem _).resolve_left hn`. Establish `hy : Y i j ≠ 0` using `fun h => hn (by simp [h])`. Establish `h4` using `hY _ ⟨Matrix.single i j ((a⁻¹ • Y) i j)⁻¹, fun i' j' => by`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`.
+
+Conclude with `h3`. Conclude with `zero_mem _, rfl⟩`. Apply `hb` to reduce the goal to its premises. Rewrite using `[← h4]`. Use `congr 1`.
+
+Simplify using `only [transpose_smul, Matrix.mul_smul, transpose_single, trace_smul, trace_mul_single, smul_eq_mul, Matrix.smul_apply, op_smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `ha _ this` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ ha0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_dual (O : ValuationSubring k) (hO : IsCompact (O : Set k)) (hne : ∀ U ∈ 𝓝 (0 : k), ∃ a ≠ 0, a ∈ U)
     (ψ : AddChar k ℂ) (hψ : IsLocallyConstant ψ) {b : k} (hb : ψ b ≠ 1) {V : Set (Matrix (Fin n) (Fin d) k)}
     (hV : V ∈ 𝓝 0) : ∃ (K : Set (Matrix (Fin n) (Fin d) k)) (Λ : OpenAddSubgroup (Matrix (Fin n) (Fin d) k)),
@@ -134,6 +183,21 @@ theorem exists_dual (O : ValuationSubring k) (hO : IsCompact (O : Set k)) (hne :
   have := ha _ this
   rwa [smul_smul, mul_inv_cancel₀ ha0, one_smul] at this
 
+/- English proof (translation)
+Establish `hS : IsCompact {Y | f Y ≠ 0}` using `hf.2.isCompact.of_isClosed_subset (hf.1.isClopen_fiber 0).isOpen.isClosed_compl (subset_tsupport _)`. Take `⟨V, hV, hVS⟩` from `compact_open_separated_add_right (hS.image (f := fun Y => Y + Y) (by fun_prop)) (isOpen_rank (k := k) (n := n) (d := d)) (by`. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Take `⟨C, hC⟩` from `(rank_iff_right Y).1 (by by_contra h; exact hY (h0 Y h))`. Use `(rank_iff_right _).2 ⟨(2⁻¹ : k) • C, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_smul, Matrix.add_mul, hC, ← two_smul k, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul])`. Take `⟨K, Λ, hΛ, hΛV⟩` from `exists_dual O hO hne ψ hψ hb hV`. Set `Q` to `Matrix (Fin n) (Fin d) k ⧸ Λ.toAddSubgroup`. Use `haveI : DiscreteTopology Q := QuotientAddGroup.discreteTopology Λ.isOpen`. Set `p : Matrix (Fin n) (Fin d) k → Q` to `QuotientAddGroup.mk`.
+
+Establish `hp : Continuous p` using `QuotientAddGroup.continuous_mk`. Establish `hT : (p '' {Y | f Y ≠ 0}).Finite` using `(hS.image hp).finite_of_discrete`. Set `T` to `hT.toFinset`. Set `q : Fin T.card → Q` to `fun i => (T.equivFin.symm i).1`. Use `⟨T.card, fun i Y => if p Y = q i then f Y else 0, ?_, fun i => ⟨⟨?_, ?_⟩, fun Y hY => by simp [hY], ?_⟩⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply, T.equivFin.symm.sum_comp (fun s => if p Y = s.1 then f Y else 0), Finset.sum_coe_sort T (fun s => if p Y = s then f Y else 0), Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `h'`.
+
+Conclude with `h (hT.mem_toFinset.2 ⟨Y, h', rfl⟩)`. Conclude with `(((IsLocallyConstant.iff_continuous p).2 hp).prodMk hf.1).comp fun z => if z.1 = q i then z.2 else 0`. Conclude with `HasCompactSupport.intro hS fun Y hY => by simp [not_not.1 hY]`. Take `⟨Y₀, hY₀, e⟩` from `hT.mem_toFinset.1 (T.equivFin.symm i).2`. Use `⟨Y₀, fun Z hZ => ?_⟩` and prove the remaining obligations.
+
+Establish `: Z - (Y₀ + Y₀) ∉ Λ` using `fun h => hZ (hVS ⟨Y₀ + Y₀, ⟨Y₀, hY₀, rfl⟩, _, hΛV h, add_sub_cancel _ _⟩)`. Rewrite `this` using `[hΛ]`. Use `push Not at this`. Take `⟨U, hU, h⟩` from `this`. Use `⟨U, fun Y hY => ?_, h⟩` and prove the remaining obligations.
+
+Establish `h1 : p Y₀ = p Y`. Assume the negation of the conclusion as `h'`. Conclude with `hY (if_neg fun h'' => h' (e.trans h''.symm))`. Establish `h2` using `(hΛ _).1 (QuotientAddGroup.eq.1 h1) U hU`. Rewrite using `[show Y = Y₀ + (-Y₀ + Y) by abel, Matrix.add_mul, trace_add, AddChar.map_add_eq_mul, h2, mul_one]`.
+-/
 theorem exists_cut [CharZero k] (O : ValuationSubring k) (hO : IsCompact (O : Set k))
     (hne : ∀ U ∈ 𝓝 (0 : k), ∃ a ≠ 0, a ∈ U) (ψ : AddChar k ℂ) (hψ : IsLocallyConstant ψ) {b : k} (hb : ψ b ≠ 1)
     {f : Matrix (Fin n) (Fin d) k → ℂ} (hf : f ∈ SB _) (h0 : ∀ Y, Y.rank ≠ n → f Y = 0) :

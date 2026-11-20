@@ -12,6 +12,17 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.PerUInt
 
+/- English proof (translation)
+Apply the tactic sequence `have entry : ∀ i j, 1 + |h i j| ≤ 1 + ‖h‖ := by`. Introduce `i j`. Establish `h1 : ‖h i j‖ ≤ ‖h i‖` using `norm_le_pi_norm (h i) j`. Establish `h2 : ‖h i‖ ≤ ‖h‖` using `norm_le_pi_norm h i`. Establish `h3 : |h i j| ≤ ‖h‖` using `by simpa [Real.norm_eq_abs] using h1.trans h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : 1 ≤ 1 + ‖h‖` using `by linarith [norm_nonneg h]`. Apply the tactic sequence `have sq : ∀ i j, (1 + |h i j|) ^ 2 ≤ (1 + ‖h‖) ^ 2 := fun i j => pow_le_pow_left₀ (by positivity) (entry i j) 2`. Establish `hP : (1 + |h 0 0|) ^ 2 * (1 + |h 1 0|) ^ 2 * ((1 + |h 0 1|) ^ 2 * (1 + |h 1 1|) ^ 2) ≤ (1 + ‖h‖) ^ N`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `a` using `sq 0 0`. Establish `b` using `sq 1 0`. Establish `c` using `sq 0 1`. Establish `d` using `sq 1 1`. Use `gcongr`.
+
+Use `_ = (1 + ‖h‖) ^ 8 := by ring`. Use `_ ≤ (1 + ‖h‖) ^ N := pow_le_pow_right₀ ht hN`. Establish `hphi : phi (h 0 0) * phi (h 1 0) * (phi (h 0 1) * phi (h 1 1)) = ((1 + |h 0 0|) ^ 2 * (1 + |h 1 0|) ^ 2 * ((1 + |h 0 1|) ^ 2 * (1 + |h 1 1|) ^ 2))⁻¹`. Simplify using `only [phi, mul_inv]`. Rewrite using `[hphi, one_div]`.
+
+Conclude with `inv_anti₀ (by positivity) hP`.
+-/
 theorem inv_pow_le_phi_prod (h : Ad3.LR.M22) (N : ℕ) (hN : 8 ≤ N) :
     1 / (1 + ‖h‖) ^ N ≤ phi (h 0 0) * phi (h 1 0) * (phi (h 0 1) * phi (h 1 1)) := by
   have entry : ∀ i j, 1 + |h i j| ≤ 1 + ‖h‖ := by
@@ -40,6 +51,15 @@ theorem inv_pow_le_phi_prod (h : Ad3.LR.M22) (N : ℕ) (hN : 8 ≤ N) :
   rw [hphi, one_div]
   exact inv_anti₀ (by positivity) hP
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < 2` using `by norm_num`. Establish `hw : 0 < (c / 2) ^ ((1 : ℝ) / 2) / (Y * c)` using `by positivity`. Establish `hlog : Real.log ((c / 2) ^ ((1 : ℝ) / 2) / (Y * c)) = (Real.log c - Real.log 2) / 2 - (Real.log Y + Real.log c)`. Rewrite using `[Real.log_div (by positivity) (by positivity), Real.log_rpow (by positivity), Real.log_div hc.ne' h2.ne', Real.log_mul hY.ne' hc.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Real.rpow_def_of_pos hY, Real.rpow_def_of_pos (mul_pos hY hc), Real.rpow_def_of_pos hw, Real.rpow_def_of_pos h2, Real.rpow_def_of_pos hY, Real.rpow_def_of_pos hc, hlog, Real.log_mul hY.ne' hc.ne']`. Establish `e : ∀ a b c' : ℝ, Real.exp a * E * Real.exp b * Real.exp c' = Real.exp (a + b + c') * E`. Introduce `a b c'`. Rewrite using `[Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e' : ∀ a b c' : ℝ, Real.exp a * (Real.exp b * E * Real.exp c') = Real.exp (a + b + c') * E`. Introduce `a b c'`. Rewrite using `[Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, e']`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernel_exponents (k : ℕ) (σ Y c E : ℝ) (hY : 0 < Y) (hc : 0 < c) :
     (Y ^ ((2 * (k : ℝ) - 1) / 2) * E) * (Y * c) ^ (-(3 : ℝ) / 2) *
         ((c / 2) ^ ((1 : ℝ) / 2) / (Y * c)) ^ (σ - 1) =
@@ -68,6 +88,19 @@ theorem kernel_exponents (k : ℕ) (σ Y c E : ℝ) (hY : 0 < Y) (hc : 0 < c) :
   congr 2
   ring
 
+/- English proof (translation)
+Take `⟨e0, e1⟩` from `GlobalTheory.CompanionTheory.PrimalInt.inv_row h hD.ne'`. Establish `hdet : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det = ((Matrix.of h).det)⁻¹`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hone : Ad3.LR.C.d2 1 = 1`. Simplify using `[Ad3.LR.C.d2, Matrix.one_fin_two]`.
+
+Establish `hW` using `GlobalTheory.CompanionTheory.AbsWm.norm_Wm k (Matrix.of h)⁻¹ 1 (by`. Rewrite using `[one_mul, hdet]`. Conclude with `inv_pos.2 hD)`. Rewrite `hW` using `[hone, one_mul, one_mul]`. Establish `hNR : Complex.normSq (GlobalTheory.CompanionTheory.WmFE.jj (Matrix.of h)⁻¹) = (h 0 0 ^ 2 + h 1 0 ^ 2) / (Matrix.of h).det ^ 2`.
+
+Establish `: Complex.normSq (GlobalTheory.CompanionTheory.WmFE.jj (Matrix.of h)⁻¹) = ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 0 ^ 2 + ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 1 ^ 2`. Simplify using `[GlobalTheory.CompanionTheory.WmFE.jj, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, e0, e1]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hW, hNR, hdet]`. Generalize the expression as in `(Matrix.of h).det = D at hD`. Generalize the expression as in `h 0 0 ^ 2 + h 1 0 ^ 2 = c at hc`. Establish `hY : D⁻¹ = D / c * (c / D ^ 2)`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hE : 2 * Real.pi * D⁻¹ / (c / D ^ 2) = 2 * Real.pi * (D / c)`. Clear the denominators using the available nonvanishing facts. Establish `hYp : 0 < D / c` using `by positivity`. Establish `hNp : 0 < c / D ^ 2` using `by positivity`.
+
+Rewrite using `[hE]`. Use `congr 1`. Rewrite using `[hY, Real.mul_rpow hYp.le hNp.le, mul_assoc, ← Real.rpow_add hNp]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_Wm_inv (k : ℕ) (h : Ad3.LR.M22) (hD : 0 < (Matrix.of h).det)
     (hc : 0 < h 0 0 ^ 2 + h 1 0 ^ 2) :
     ‖Ad3.LR.Wm k (Matrix.of h)⁻¹‖ =
@@ -106,6 +139,31 @@ theorem norm_Wm_inv (k : ℕ) (h : Ad3.LR.M22) (hD : 0 < (Matrix.of h).det)
   rw [hY, Real.mul_rpow hYp.le hNp.le, mul_assoc, ← Real.rpow_add hNp]
   simp
 
+/- English proof (translation)
+Introduce `k _ σ _ h1 N hN`. Use `⟨2 ^ ((1 - σ) / 2), fun h hd => ?_⟩` and prove the remaining obligations. Establish `hC : (0 : ℝ) ≤ 2 ^ ((1 - σ) / 2)` using `by positivity`. Establish `hΦ : 0 ≤ phi (h 0 0) * phi (h 1 0) * (phi (h 0 1) * phi (h 1 1))` using `mul_nonneg (mul_nonneg (phi_nonneg _) (phi_nonneg _)) (mul_nonneg (phi_nonneg _) (phi_nonneg _))`. Establish `hc0 : 0 ≤ h 0 0 ^ 2 + h 1 0 ^ 2` using `by positivity`.
+
+Break down `lt_or_gt_of_ne hd with hneg | hD` into its components or cases. Establish `hdet : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det = ((Matrix.of h).det)⁻¹`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hW : Ad3.LR.Wm k (Matrix.of h)⁻¹ = 0`. Establish `: ¬ 0 < ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det`.
+
+Rewrite using `[hdet]`. Conclude with `not_lt.2 (inv_lt_zero.2 hneg).le`. Unfold `Ad3.LR.Wm`. Conclude with `if_neg this`. Rewrite using `[hW]`.
+
+Simplify using `only [norm_zero, zero_mul, zero_div]`. Conclude with `mul_nonneg hC (mul_nonneg (mul_nonneg (gk_nonneg _ _ _) (Real.rpow_nonneg hc0 _)) hΦ)`. Establish `hc : 0 < h 0 0 ^ 2 + h 1 0 ^ 2`. Break down `hc0.lt_or_eq with hp | hz` into its components or cases. Conclude with `hp`.
+
+It suffices to derive a contradiction. Establish `ha : h 0 0 = 0` using `by nlinarith [sq_nonneg (h 0 0), sq_nonneg (h 1 0)]`. Establish `hb : h 1 0 = 0` using `by nlinarith [sq_nonneg (h 0 0), sq_nonneg (h 1 0)]`. Apply `hd` to reduce the goal to its premises. Simplify using `[Matrix.det_fin_two, ha, hb]`.
+
+Take `⟨e0, e1⟩` from `GlobalTheory.CompanionTheory.PrimalInt.inv_row h hd`. Establish `b0 : |((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 0| ≤ ‖Ad3.LR.B.eta h‖`. Simplify `norm_le_pi_norm (Ad3.LR.B.eta h) 0` using `[Ad3.LR.B.eta]`. Establish `b1 : |((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ) 1 1| ≤ ‖Ad3.LR.B.eta h‖`. Simplify `norm_le_pi_norm (Ad3.LR.B.eta h) 1` using `[Ad3.LR.B.eta]`.
+
+Rewrite `b0` using `[e0, abs_div, abs_neg, abs_of_pos hD, div_le_iff₀ hD]`. Rewrite `b1` using `[e1, abs_div, abs_of_pos hD, div_le_iff₀ hD]`. Establish `hw : ((h 0 0 ^ 2 + h 1 0 ^ 2) / 2) ^ ((1 : ℝ) / 2) / (Matrix.of h).det ≤ ‖Ad3.LR.B.eta h‖`. Rewrite using `[div_le_iff₀ hD, ← Real.sqrt_eq_rpow]`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `s0 : h 1 0 ^ 2 ≤ (‖Ad3.LR.B.eta h‖ * (Matrix.of h).det) ^ 2`. Rewrite using `[← sq_abs (h 1 0)]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) b0 2`. Establish `s1 : h 0 0 ^ 2 ≤ (‖Ad3.LR.B.eta h‖ * (Matrix.of h).det) ^ 2`. Rewrite using `[← sq_abs (h 0 0)]`.
+
+Conclude with `pow_le_pow_left₀ (abs_nonneg _) b1 2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwpos : 0 < ((h 0 0 ^ 2 + h 1 0 ^ 2) / 2) ^ ((1 : ℝ) / 2) / (Matrix.of h).det`. Check the signs of the components of the expression. Establish `hE : ‖Ad3.LR.B.eta h‖ ^ (σ - 1) ≤ (((h 0 0 ^ 2 + h 1 0 ^ 2) / 2) ^ ((1 : ℝ) / 2) / (Matrix.of h).det) ^ (σ - 1)` using `Real.rpow_le_rpow_of_nonpos hwpos hw (by linarith)`.
+
+Establish `hdec` using `inv_pow_le_phi_prod h N hN`. Establish `hYp : 0 < (Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2)` using `div_pos hD hc`. Establish `hDY : (Matrix.of h).det = (Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2) * (h 0 0 ^ 2 + h 1 0 ^ 2)`. Clear the denominators using the available nonvanishing facts. Establish `hker` using `kernel_exponents k σ ((Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2)) (h 0 0 ^ 2 + h 1 0 ^ 2) (Real.exp (-(2 * Real.pi * ((Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2))))) hYp hc`.
+
+Rewrite `hker` using `[← hDY]`. Establish `hgk : gk k σ ((Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2)) = ((Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2)) ^ ((k : ℝ) - 1 - σ) * Real.exp (-(2 * Real.pi * ((Matrix.of h).det / (h 0 0 ^ 2 + h 1 0 ^ 2))))`. Simplify using `[gk, hYp]`. Rewrite using `[abs_of_pos hD]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul (mul_le_mul_of_nonneg_left hE (by positivity)) hdec (by positivity) (by positivity)` and prove the remaining obligations. Use `_ = _ := by`. Rewrite using `[norm_Wm_inv k h hD hc, hker, hgk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwise_gamma_bound : ∀ (k : ℕ), 3 ≤ k → ∀ σ : ℝ, 0 < σ → σ < 1 → ∀ N : ℕ, 8 ≤ N →
     ∃ C : ℝ, ∀ h : Ad3.LR.M22, (Matrix.of h).det ≠ 0 →
     ‖Ad3.LR.Wm k (Matrix.of h)⁻¹‖ * |(Matrix.of h).det| ^ (-(3 : ℝ) / 2) * ‖Ad3.LR.B.eta h‖ ^ (σ - 1) / (1 + ‖h‖) ^ N ≤

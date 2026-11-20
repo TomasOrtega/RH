@@ -15,6 +15,15 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ => exact hφ`. Consider the case `zero => exact ⟨0, zero_mem _, funext fun y => by simp [coefFn]⟩`. Consider the case `add φ ψ _ _ h1 h2`. Take `⟨F1, m1, rfl⟩` from `h1`.
+
+Take `⟨F2, m2, rfl⟩` from `h2`. Conclude with `⟨F1 + F2, add_mem m1 m2, funext fun y => by simp [coefFn, mul_add]⟩`. Consider the case `smul a φ _ h1`. Take `⟨F1, m1, rfl⟩` from `h1`. Take `⟨t, ht⟩` from `a.2`.
+
+Use `⟨t • F1, Submodule.smul_mem _ _ m1, funext fun y => ?_⟩` and prove the remaining obligations. Establish `e1 : ((t • F1 : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau n) = MvPolynomial.C (t : D.what₂.LL) * (F1 : Pol D.what₂.LL D.what₂.Tau n)`. Rewrite using `[← MvPolynomial.smul_eq_C_mul]`. Both sides reduce to the same expression. Establish `e2 : D.what₂.embLL (t : D.what₂.LL) = (a : ℂ)`.
+
+Rewrite using `[← ht]`. Both sides reduce to the same expression. Use `show (a : ℂ) * coefFn _ _ (F1 : Pol D.what₂.LL D.what₂.Tau n) y = _`. Rewrite using `[e1, coefFn, coefFn, map_mul, MvPolynomial.eval₂Hom_C, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_of_mem_coefLatFn {D : D7} {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
     (M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (φ : GLR D n → ℂ)
     (hφ : φ ∈ coefLatFn D.what₂.embLL (labLL D) (intLL D) lam M) :
@@ -41,6 +50,19 @@ private theorem exists_of_mem_coefLatFn {D : D7} {n : ℕ} (lam : D.what₂.Tau 
     rw [e1, coefFn, coefFn, map_mul, MvPolynomial.eval₂Hom_C, e2]
     ring
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H ι hι u hu gramR c0R c0L _ κ hκ hF h P`. Establish `hB` using `Z.good.base (c.twI w) j (c.sd w)`. Establish `hBo` using `GlobalTheory.BigOn.Exp.TwConj.baseOf_of_realPin X.char.lev Z.good Z.pin (c.twI w) j (c.sd w)`. Establish `hval : ∀ v, X.R.ioP j (PiTensorProduct.tprod ℂ u) v ∈ harm (Wc D j).rank (baseOf Z c w j).w (baseOf Z c w j).F.BS` using `fun v => by`. Establish `h1` using `LinearMap.mem_range_self (X.R.ioP j (PiTensorProduct.tprod ℂ u)) v`.
+
+Rewrite `h1` using `[(UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace D X X0 Y S YS Z c w j H ι hι u hu).2]`. Conclude with `h1`. Establish `hM : (baseOf Z c w j).latAt h = Bridge.hLat (Vc D j) h` using `GlobalTheory.LatAtHLat.latAt_eq_hLat _ _ _ _ (GlobalTheory.LatFull.baseFrame_one_eq _ _ _ (Z.good.latS _ j _)) _`. Establish `hlam : (baseOf Z c w j).w.lam = lamV D j` using `hBo.lam`. Unfold `Base.coefLat`.
+
+Rewrite using `[mem_harmLat, hlam, hM]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hPh, hPF⟩`. Take `⟨F, hF0, hFe⟩` from `exists_of_mem_coefLatFn _ _ _ hPF`. Use `⟨F, hF0, ?_⟩` and prove the remaining obligations.
+
+Establish `hm : ∀ τ, (baseOf Z c w j).w.p τ + (baseOf Z c w j).w.q τ ≤ (Wc D j).rank` using `fun τ => by`. Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (Formalism.BasicNotions.TH.tauE D τ)`. Rewrite `h2` using `[← h1]`. Conclude with `h2.le`.
+
+Establish `hinj` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function _ _ _ _ (baseOf Z c w j).F.BS hB.wt hm`. Conclude with `(eq_inv_smul_iff₀ hκ).2 (IsScaleAt.ioP_eq (Rl := X.R) (B := baseOf Z c w j) (c0 := c0L j) hF hinj hPh (hval _) hFe).symm`. Introduce and unpack `⟨F, hF0, rfl⟩`. Use `⟨Submodule.smul_mem _ _ (hval _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hF F, inv_smul_smul₀ hκ]`.
+
+Conclude with `Submodule.subset_span ⟨F, hF0, rfl⟩`.
+-/
 theorem _root_.UpperTheory.KN.scaled_fock_form_coefficients_integral :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
       ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

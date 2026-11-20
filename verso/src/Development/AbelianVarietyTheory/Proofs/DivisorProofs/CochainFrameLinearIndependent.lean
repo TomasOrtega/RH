@@ -27,16 +27,28 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 def fibPush (y : specO k (DualNumber k) ⟶ (Over.pullback x).obj t.G) : overAt x (DualNumber k) ⟶ t.G :=
   pushPt (isGrpPullback_pullback t.G x).1.w y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibPush_left (y : specO k (DualNumber k) ⟶ (Over.pullback x).obj t.G) :
     (fibPush t x y).left = y.left ≫ pullback.fst t.G.hom x := rfl
 
+/- English proof (translation)
+The claim follows from `map_mul (pushHom (isGrpPullback_pullback t.G x) (specO k (DualNumber k))) y y'`.
+-/
 theorem fibPush_mul (y y' : specO k (DualNumber k) ⟶ (Over.pullback x).obj t.G) :
     fibPush t x (y * y') = fibPush t x y * fibPush t x y' :=
   map_mul (pushHom (isGrpPullback_pullback t.G x) (specO k (DualNumber k))) y y'
 
+/- English proof (translation)
+The claim follows from `map_one (pushHom (isGrpPullback_pullback t.G x) (specO k (DualNumber k)))`.
+-/
 theorem fibPush_one : fibPush t x (1 : specO k (DualNumber k) ⟶ (Over.pullback x).obj t.G) = 1 :=
   map_one (pushHom (isGrpPullback_pullback t.G x) (specO k (DualNumber k)))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by rw [smT_left, fibPush_left, fibPush_left, Over.comp_left, Category.assoc] rfl)`.
+-/
 theorem smT_fibPush (a : k) (y : specO k (DualNumber k) ⟶ (Over.pullback x).obj t.G) :
     smT x a (fibPush t x y) = fibPush t x (ptMap (dualScale a) ≫ y) :=
   Over.OverMorphism.ext (by
@@ -52,12 +64,18 @@ variable {R : Type} [CommRing R]
 def lieOne (G : Over (Spec (CommRingCat.of R))) [GrpObj G] : LieG G :=
   ⟨1, by rw [MonObj.comp_one, Hom.one_def]⟩
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).2.1 (lieOne _) (lieOne _)`. Establish `e : lieAdd _ (lieOne (torus R r)) (lieOne _) = lieOne _` using `Subtype.ext (mul_one _)`. Rewrite `h` using `[e]`. Simplify using `using h.symm`.
+-/
 theorem lieCoord_lieOne (r : ℕ) : lieCoord (lieOne (torus R r)) = 0 := by
   have h := (GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).2.1 (lieOne _) (lieOne _)
   have e : lieAdd _ (lieOne (torus R r)) (lieOne _) = lieOne _ := Subtype.ext (mul_one _)
   rw [e] at h
   simpa using h.symm
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).1.1 (by rw [(GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).2.2, zero_smul, lieCoord_lieOne])`.
+-/
 theorem lieScale_zero_eq {r : ℕ} (e : LieG (torus R r)) : lieScale _ 0 e = lieOne _ :=
   (GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).1.1 (by
     rw [(GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul R r).2.2, zero_smul, lieCoord_lieOne])
@@ -69,6 +87,9 @@ section CochFrame
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X)
   {k : Type} [CommRing k] (x : Sp k ⟶ X) {r : ℕ} (u : torus k r ⟶ (Over.pullback x).obj t.G) [IsMonHom u]
 
+/- English proof (translation)
+Rewrite using `[smT_fibPush, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `fibPush t x ((lieScale _ 0 e).1 ≫ u) = 1`. Rewrite using `[lieScale_zero_eq]`. Express the relevant statement in the definitionally equal form `fibPush t x (1 ≫ u) = 1`. Rewrite using `[MonObj.one_comp, fibPush_one]`.
+-/
 theorem fibPush_tan (e : LieG (torus k r)) : smT x 0 (fibPush t x (e.1 ≫ u)) = 1 := by
   rw [smT_fibPush, ← Category.assoc]
   change fibPush t x ((lieScale _ 0 e).1 ≫ u) = 1
@@ -78,22 +99,36 @@ theorem fibPush_tan (e : LieG (torus k r)) : smT x 0 (fibPush t x (e.1 ≫ u)) =
 
 def cochMap (e : LieG (torus k r)) : TanM x t.G := mkT (fibPush t x (e.1 ≫ u)) (fibPush_tan t x u e)
 
+/- English proof (translation)
+Use `show (e.1 ≫ u).left ≫ _ = _`. Rewrite using `[Over.comp_left, Category.assoc]`.
+-/
 theorem cochMap_left (e : LieG (torus k r)) :
     (tv (cochMap t x u e)).left = e.1.left ≫ u.left ≫ pullback.fst t.G.hom x := by
   show (e.1 ≫ u).left ≫ _ = _
   rw [Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `tanM_ext (by show fibPush t x ((e.1 * f.1) ≫ u) = fibPush t x (e.1 ≫ u) * fibPush t x (f.1 ≫ u) rw [MonObj.mul_comp, fibPush_mul])`.
+-/
 theorem cochMap_add (e f : LieG (torus k r)) :
     cochMap t x u (lieAdd _ e f) = cochMap t x u e + cochMap t x u f :=
   tanM_ext (by
     show fibPush t x ((e.1 * f.1) ≫ u) = fibPush t x (e.1 ≫ u) * fibPush t x (f.1 ≫ u)
     rw [MonObj.mul_comp, fibPush_mul])
 
+/- English proof (translation)
+The claim follows from `tanM_ext (by show fibPush t x ((ptMap (dualScale a) ≫ e.1) ≫ u) = smT x a (fibPush t x (e.1 ≫ u)) rw [smT_fibPush, Category.assoc])`.
+-/
 theorem cochMap_smul (a : k) (e : LieG (torus k r)) : cochMap t x u (lieScale _ a e) = a • cochMap t x u e :=
   tanM_ext (by
     show fibPush t x ((ptMap (dualScale a) ≫ e.1) ≫ u) = smT x a (fibPush t x (e.1 ≫ u))
     rw [smT_fibPush, Category.assoc])
 
+/- English proof (translation)
+Introduce `e f h`. Establish `h1` using `congrArg (fun v => (tv v).left) h`. Simplify using `only [cochMap_left] at h1`. Establish `h2 : e.1.left ≫ u.left = f.1.left ≫ u.left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify `h1` using `only [Category.assoc]`. Establish `w : u.left ≫ pullback.snd t.G.hom x = (torus k r).hom` using `Over.w u`. Rewrite using `[Category.assoc, Category.assoc, w, Over.w e.1, Over.w f.1]`. Conclude with `Subtype.ext (Over.OverMorphism.ext ((cancel_mono u.left).1 h2))`.
+-/
 theorem cochMap_injective [Mono u.left] : Function.Injective (cochMap t x u) := by
   intro e f h
   have h1 := congrArg (fun v => (tv v).left) h
@@ -107,6 +142,17 @@ theorem cochMap_injective [Mono u.left] : Function.Injective (cochMap t x u) := 
 
 end CochFrame
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t k _ x r ε h`. Take `⟨u, hu, hci, he⟩` from `h`. Use `haveI := hu`. Use `haveI : Mono u.left := inferInstance`. Take `⟨hb, hadd, hsm⟩` from `GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul k r`.
+
+Set `g` to `(Equiv.ofBijective _ hb).symm`. Establish `hg : ∀ c, lieCoord (g c) = c` using `fun c => (Equiv.ofBijective _ hb).apply_symm_apply c`. Establish `gadd : ∀ c d, g (c + d) = lieAdd _ (g c) (g d)` using `fun c d => hb.1 (by`. Rewrite using `[hadd, hg, hg, hg])`. Establish `gsm : ∀ (a : k) c, g (a • c) = lieScale _ a (g c)` using `fun a c => hb.1 (by`.
+
+Rewrite using `[hsm, hg, hg])`. Set `L : (Fin r → k) →ₗ[k] TanM x t.G` to `{ toFun := fun c => cochMap t x u (g c) map_add' := fun c d => by rw [gadd, cochMap_add] map_smul' := fun a c => by simp only [RingHom.id_apply]; rw [gsm, cochMap_smul] }`. Establish `hL : Function.Injective L` using `(cochMap_injective t x u).comp (Equiv.ofBijective _ hb).symm.injective`. Establish `hε : ε = L ∘ (Pi.basisFun k (Fin r))` using `funext fun i => by`. Take `⟨e, he1, he2⟩` from `he i`.
+
+Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[he2]`. Use `show _ = (tv (cochMap t x u (g (Pi.basisFun k (Fin r) i)))).left`. Rewrite using `[cochMap_left, Pi.basisFun_apply, ← he1]`. Simplify using `[g]`.
+
+Rewrite using `[hε]`. Conclude with `(Pi.basisFun k (Fin r)).linearIndependent.map' L (LinearMap.ker_eq_bot.2 hL)`.
+-/
 theorem isCochFrame_linearIndependent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] (x : Sp k ⟶ X) (r : ℕ) (ε : Fin r → TanM x t.G), IsCochFrame t x ε → LinearIndependent k ε := by
   intro E _ _ _ H X t k _ x r ε h
   obtain ⟨u, hu, hci, he⟩ := h

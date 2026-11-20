@@ -9,6 +9,25 @@ import Mathlib.RingTheory.IntegralDomain
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
+/- English proof (translation)
+Introduce `N`. Take `⟨p, hpge, hp⟩` from `Nat.exists_infinite_primes (N + 3)`. Take `⟨q, hq, -, hqp⟩` from `Nat.exists_prime_gt_modEq_one 0 hp.ne_zero`. Use `haveI := Fact.mk hq`. Establish `hpdvd : p ∣ q - 1` using `(Nat.modEq_iff_dvd' hq.one_le).mp hqp.symm`.
+
+Use `haveI : IsAbelianGalois ℚ (CyclotomicField q ℚ) := IsCyclotomicExtension.isAbelianGalois {q} ℚ (CyclotomicField q ℚ)`. Establish `hcardG : Nat.card Gal(CyclotomicField q ℚ/ℚ) = q - 1`. Rewrite using `[IsGalois.card_aut_eq_finrank, IsCyclotomicExtension.Rat.finrank q (CyclotomicField q ℚ), Nat.totient_prime hq]`. Use `haveI : IsCyclic Gal(CyclotomicField q ℚ/ℚ) := isCyclic_of_surjective (IsCyclotomicExtension.autEquivPow (CyclotomicField q ℚ) (Polynomial.cyclotomic.irreducible_rat hq.pos)).symm (MulEquiv.surjective _)`. Take `⟨g, hg⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := Gal(CyclotomicField q ℚ/ℚ))`.
+
+Establish `hH : Nat.card (Subgroup.zpowers (g ^ p)) = (q - 1) / p`. Rewrite using `[Nat.card_zpowers, orderOf_pow_of_dvd hp.ne_zero (by rw [hg, hcardG]; exact hpdvd), hg, hcardG]`. Establish `hfin : Module.finrank ℚ (IntermediateField.fixedField (Subgroup.zpowers (g ^ p))) = p`. Establish `h1` using `Module.finrank_mul_finrank ℚ (IntermediateField.fixedField (Subgroup.zpowers (g ^ p))) (CyclotomicField q ℚ)`. Rewrite `h1` using `[IntermediateField.finrank_fixedField_eq_card, hH, IsCyclotomicExtension.Rat.finrank q (CyclotomicField q ℚ), Nat.totient_prime hq]`.
+
+Take `⟨m, hm⟩` from `hpdvd`. Establish `hq2` using `hq.two_le`. Establish `hmpos : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Rewrite `h1` using `[hm, Nat.mul_div_cancel_left m hp.pos]`. Conclude with `Nat.eq_of_mul_eq_mul_right hmpos h1`. Use `haveI : IsAbelianGalois ℚ (IntermediateField.fixedField (Subgroup.zpowers (g ^ p))) := IsAbelianGalois.tower_bot ℚ _ (CyclotomicField q ℚ)`.
+
+Use `⟨IntermediateField.fixedField (Subgroup.zpowers (g ^ p)), inferInstance, inferInstance, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[NumberField.isTotallyReal_iff]`. Establish `hodd` using `InfinitePlace.nrRealPlaces_pos_of_odd_finrank (K := IntermediateField.fixedField (Subgroup.zpowers (g ^ p))) (by rw [hfin]; exact hp.odd_of_ne_two (by omega))`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w : InfinitePlace (IntermediateField.fixedField (Subgroup.zpowers (g ^ p))), w.IsReal := by`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `: IsEmpty {w : InfinitePlace (IntermediateField.fixedField (Subgroup.zpowers (g ^ p))) // w.IsReal}` using `⟨fun w => hne w.1 w.2⟩`. Simplify using `[InfinitePlace.nrRealPlaces] at hodd`. Introduce `w`. Take `⟨σ, hσ⟩` from `InfinitePlace.exists_smul_eq_of_comap_eq (k := ℚ) (w := w0) (w' := w) (Subsingleton.elim _ _)`.
+
+Rewrite using `[← hσ]`. Conclude with `InfinitePlace.isReal_smul_iff.mpr hw0`. Rewrite using `[hfin]`. Conclude with `hp`. Rewrite using `[hfin]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.solvable_cyclic_subextension_over_rat :
     UpperTheory.V.Af.Sol.CycQ := by
   intro N

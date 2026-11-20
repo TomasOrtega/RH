@@ -17,6 +17,11 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 section RatFunc
 
+/- English proof (translation)
+Use `set S : Finset ℝ := ((Q.roots.toFinset).filter (· ≠ 0)).image (‖·‖)`. Distinguish the cases in `hS : S.Nonempty`. Use `⟨S.min' hS, ?_, fun x hx hxε hQx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyeq⟩` from `Finset.mem_image.1 (S.min'_mem hS)`. Rewrite using `[← hyeq]`.
+
+Conclude with `norm_pos_iff.2 (Finset.mem_filter.1 hy).2`. Establish `hmem : ‖x‖ ∈ S` using `Finset.mem_image.2 ⟨x, Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ((mem_roots hQ).2 hQx), hx⟩, rfl⟩`. Conclude with `absurd (S.min'_le _ hmem) (not_le.2 hxε)`. Use `⟨1, one_pos, fun x hx _ hQx => hS ⟨‖x‖, Finset.mem_image.2 ⟨x, Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ((mem_roots hQ).2 hQx), hx⟩, rfl⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_eval_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
     ∃ ε > 0, ∀ x : ℂ, x ≠ 0 → ‖x‖ < ε → Q.eval x ≠ 0 := by
   classical
@@ -32,10 +37,16 @@ theorem exists_eval_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
   · refine ⟨1, one_pos, fun x hx _ hQx => hS ⟨‖x‖, Finset.mem_image.2 ⟨x, Finset.mem_filter.2
       ⟨Multiset.mem_toFinset.2 ((mem_roots hQ).2 hQx), hx⟩, rfl⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `exists_eval_ne_zero R.denom_ne_zero`.
+-/
 theorem exists_eval_denom_ne_zero (R : RatFunc ℂ) :
     ∃ ε > 0, ∀ x : ℂ, x ≠ 0 → ‖x‖ < ε → R.denom.eval x ≠ 0 :=
   exists_eval_ne_zero R.denom_ne_zero
 
+/- English proof (translation)
+Take `⟨ε₁, hε₁, h₁⟩` from `exists_eval_denom_ne_zero R₁`. Take `⟨ε₂, hε₂, h₂⟩` from `exists_eval_denom_ne_zero R₂`. Use `⟨min ε₁ ε₂, lt_min hε₁ hε₂, fun x hx hxε => ?_⟩` and prove the remaining obligations. Conclude with `RatFunc.eval_mul (f := RingHom.id ℂ) (a := x) (h₁ x hx (hxε.trans_le (min_le_left _ _))) (h₂ x hx (hxε.trans_le (min_le_right _ _)))`.
+-/
 theorem exists_eval_mul (R₁ R₂ : RatFunc ℂ) :
     ∃ ε > 0, ∀ x : ℂ, x ≠ 0 → ‖x‖ < ε →
       (R₁ * R₂).eval (RingHom.id ℂ) x = R₁.eval (RingHom.id ℂ) x * R₂.eval (RingHom.id ℂ) x := by
@@ -47,10 +58,18 @@ theorem exists_eval_mul (R₁ R₂ : RatFunc ℂ) :
 
 end RatFunc
 
+/- English proof (translation)
+Rewrite using `[qs, qs, qs, neg_add, Complex.cpow_add _ _ (Nat.cast_ne_zero.2 LocalField.residueCard_ne_zero)]`.
+-/
 theorem qs_add (a b : ℂ) : qs F (a + b) = qs F a * qs F b := by
   rw [qs, qs, qs, neg_add, Complex.cpow_add _ _
     (Nat.cast_ne_zero.2 LocalField.residueCard_ne_zero)]
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < LocalField.residueCard F`. Conclude with `LocalField.one_lt_residueCard (K := F)` after adjusting the coercions. Use `⟨(LocalField.residueCard F : ℝ) ^ (-S), Real.rpow_pos_of_pos (by linarith) _, fun x hx hxε => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hre⟩` from `exists_qs_eq (F := F) hx`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations.
+
+Rewrite using `[hre]`. Establish `h1 : Real.logb (LocalField.residueCard F) ‖x‖ < Real.logb (LocalField.residueCard F) ((LocalField.residueCard F : ℝ) ^ (-S))` using `Real.logb_lt_logb hq (norm_pos_iff.2 hx) hxε`. Rewrite `h1` using `[Real.logb_rpow (by linarith) hq.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_qs_of_small (S : ℝ) : ∃ ε > 0, ∀ x : ℂ, x ≠ 0 → ‖x‖ < ε →
     ∃ s : ℂ, S < s.re ∧ qs F s = x := by
   have hq : (1 : ℝ) < LocalField.residueCard F := by
@@ -83,9 +102,27 @@ def zetaIdeal (π : Representation ℂ (GL (Fin n) F) V) (μ : Measure (GL (Fin 
 
 variable {π : Representation ℂ (GL (Fin n) F) V}
 
+/- English proof (translation)
+Simplify using `[Complex.add_re, Complex.sub_re]`.
+-/
 theorem re_shift (s : ℂ) : (s + ((n : ℂ) - 1) / 2).re = s.re + ((n : ℝ) - 1) / 2 := by
   simp [Complex.add_re, Complex.sub_re]
 
+/- English proof (translation)
+Take `⟨s₀, D, hD0, hcore⟩` from `exists_zeta_core hπ μ`. Use `set c : ℂ := qs F (((n : ℂ) - 1) / 2) with hcdef`. Establish `hc : c ≠ 0` using `qs_ne_zero _`. Use `set D' : ℂ[X] := D.comp (C c * X) with hD'def`. Establish `hD'0 : D'.eval 0 = 1` using `by simp [D', hD0]`.
+
+Establish `hD'ne : D' ≠ 0` using `fun h => by rw [h, eval_zero] at hD'0; exact zero_ne_one hD'0`. Take `⟨ε, hε, hεD⟩` from `exists_eval_ne_zero hD'ne`. Take `⟨s₁, hs₁⟩` from `exists_re_of_norm_qs_lt (F := F) hε`. Establish `hre : ∀ s : ℂ, max (s₀ - ((n : ℝ) - 1) / 2) s₁ < s.re → s₀ < (s + ((n : ℂ) - 1) / 2).re` using `fun s hs => by`. Use `(le_max_left _ _).trans_lt hs` as an intermediate fact.
+
+Rewrite using `[re_shift]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDs : ∀ s : ℂ, max (s₀ - ((n : ℝ) - 1) / 2) s₁ < s.re → D'.eval (qs F s) ≠ 0` using `fun s hs => hεD _ (qs_ne_zero s) (hs₁ s ((le_max_right _ _).trans_lt hs))`. Use `⟨max (s₀ - ((n : ℝ) - 1) / 2) s₁, D', hD'0, hDs, fun Φ hΦ v ℓ hℓ => ?_⟩` and prove the remaining obligations. Take `⟨hint, N, P, hP⟩` from `hcore Φ hΦ v ℓ hℓ`.
+
+Use `⟨fun s hs => hint _ (hre s hs), N, C (c ^ N)⁻¹ * P.comp (C c * X), fun s hs => ?_⟩` and prove the remaining obligations. Establish `hx : qs F s ≠ 0` using `qs_ne_zero s`. Establish `hDx` using `hDs s hs`. Establish `hQ : (X ^ N * D').eval (qs F s) ≠ 0`. Rewrite using `[eval_mul, eval_pow, eval_X]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hx) hDx`. Rewrite using `[eval_div_algebraMap _ _ hQ]`. Establish `h1` using `hP _ (hre s hs)`. Rewrite `h1` using `[qs_add, ← hcdef]`. Establish `hDx' : D.eval (qs F s * c) ≠ 0`.
+
+Rewrite using `[mul_comm]`. Rewrite `hDx` using `[hD'def, eval_comp, eval_mul, eval_C, eval_X]`. Conclude with `hDx`. Establish `h2` using `eq_div_of_mul_eq hDx' ((mul_comm _ _).trans h1)`. Rewrite using `[zetaIntegral, h2]`.
+
+Simplify using `only [D', eval_mul, eval_comp, eval_C, eval_X, eval_pow]`. Rewrite using `[mul_comm c (qs F s), mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_zeta_rat [π.IsIrreducible] (hπ : IsAdmissible π) (μ : Measure (GL (Fin n) F))
     [μ.IsHaarMeasure] :
     ∃ s₀ : ℝ, ∃ D : ℂ[X], D.eval 0 = 1 ∧ (∀ s : ℂ, s₀ < s.re → D.eval (qs F s) ≠ 0) ∧
@@ -134,6 +171,9 @@ theorem exists_zeta_rat [π.IsIrreducible] (hπ : IsAdmissible π) (μ : Measure
   rw [mul_comm c (qs F s), mul_pow]
   field_simp
 
+/- English proof (translation)
+Take `⟨s₀, _, _, _, h⟩` from `exists_zeta_rat hπ μ`. Conclude with `⟨s₀, fun Φ hΦ v ℓ hℓ => (h Φ hΦ v ℓ hℓ).1⟩`.
+-/
 theorem exists_integrable_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     ∃ s₀ : ℝ, ∀ Φ : Matrix (Fin n) (Fin n) F → ℂ, IsSchwartzBruhat Φ → ∀ (v : V) (ℓ : Module.Dual ℂ V),
@@ -143,6 +183,9 @@ theorem exists_integrable_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π
   obtain ⟨s₀, _, _, _, h⟩ := exists_zeta_rat hπ μ
   exact ⟨s₀, fun Φ hΦ v ℓ hℓ => (h Φ hΦ v ℓ hℓ).1⟩
 
+/- English proof (translation)
+Take `⟨s₀, _, _, _, h⟩` from `exists_zeta_rat hπ μ`. Use `⟨s₀, fun Φ hΦ v ℓ hℓ => ?_⟩` and prove the remaining obligations. Take `⟨-, N, P, hP⟩` from `h Φ hΦ v ℓ hℓ`. Conclude with `⟨_, hP⟩`.
+-/
 theorem exists_ratFunc_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     ∃ s₀ : ℝ, ∀ Φ : Matrix (Fin n) (Fin n) F → ℂ, IsSchwartzBruhat Φ → ∀ (v : V) (ℓ : Module.Dual ℂ V),
@@ -153,6 +196,9 @@ theorem exists_ratFunc_zetaIntegral [π.IsIrreducible] (hπ : IsAdmissible π)
   obtain ⟨-, N, P, hP⟩ := h Φ hΦ v ℓ hℓ
   exact ⟨_, hP⟩
 
+/- English proof (translation)
+Rewrite using `[zetaIntegral, zetaIntegral, ← integral_const_mul, ← integral_mul_left_eq_self (μ := μ) _ a]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [matrixCoeff, dual_apply_apply, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, one_mul, detPow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zetaIntegral_translate (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] (a : GL (Fin n) F)
     (Φ : Matrix (Fin n) (Fin n) F → ℂ) (v : V) (ℓ : Module.Dual ℂ V) (s : ℂ) :
     zetaIntegral μ (fun Y => Φ (((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Y))
@@ -165,6 +211,9 @@ theorem zetaIntegral_translate (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] 
     ← Units.val_mul, inv_mul_cancel, one_mul, detPow_mul]
   ring
 
+/- English proof (translation)
+Take `⟨Φ, v, ℓ, hΦ, hℓ, s₀, hZ⟩` from `hR`. Take `⟨s₁, hs₁⟩` from `hR'`. Use `⟨fun Y => Φ (((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Y), v, Representation.dual π a ℓ, hΦ.comp_mul_left a⁻¹, smooth_apply_mem _ hℓ a, max s₀ s₁, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[zetaIntegral_translate, hZ s ((le_max_left _ _).trans_lt hs), hs₁ s ((le_max_right _ _).trans_lt hs)]`.
+-/
 theorem mem_zetaSet_of_translate (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] {R R' : RatFunc ℂ}
     (hR : R ∈ zetaSet π μ) (a : GL (Fin n) F)
     (hR' : ∃ s₁ : ℝ, ∀ s : ℂ, s₁ < s.re → R'.eval (RingHom.id ℂ) (qs F s) =
@@ -180,6 +229,9 @@ theorem mem_zetaSet_of_translate (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
+/- English proof (translation)
+Rewrite using `[ordDet, Cartan.coe_diagPow, det_diagonal, Finset.prod_eq_single (0 : Fin n)]`. Simplify using `[LocalField.ord_uniformizer (irreducible_uniformizer F)]`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem ordDet_diagPow_single [NeZero n] :
     ordDet (Cartan.diagPow F n (Pi.single 0 1)) = 1 := by
   rw [ordDet, Cartan.coe_diagPow, det_diagonal, Finset.prod_eq_single (0 : Fin n)]
@@ -188,6 +240,17 @@ theorem ordDet_diagPow_single [NeZero n] :
     simp [hb]
   · simp
 
+/- English proof (translation)
+Use `set c : ℂ := qs F (((n : ℂ) - 1) / 2) with hcdef`. Establish `hc : c ≠ 0` using `qs_ne_zero _`. Use `Submodule.span_induction (p := fun R _ => RatFunc.X * R ∈ zetaIdeal π μ) ?_ ?_ ?_ ?_ hR` and prove the remaining obligations. Introduce `R hR set a := Cartan.diagPow F n (Pi.single 0 1)`. Establish `hmem : RatFunc.C c * RatFunc.X * R ∈ zetaSet π μ`.
+
+Use `mem_zetaSet_of_translate μ hR a ?_` and prove the remaining obligations. Take `⟨ε, hε, hεR⟩` from `exists_eval_mul (RatFunc.C c * RatFunc.X) R`. Take `⟨s₁, hs₁⟩` from `exists_re_of_norm_qs_lt (F := F) hε`. Use `⟨s₁, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hεR _ (qs_ne_zero s) (hs₁ s hs), detPow_eq_qs_zpow, ordDet_diagPow_single, zpow_one, qs_add, ← hcdef, RatFunc.eval_mul (f := RingHom.id ℂ) (a := qs F s) (by simp) (by simp), RatFunc.eval_C, RatFunc.eval_X]`.
+
+Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `: RatFunc.X * R = c⁻¹ • (RatFunc.C c * RatFunc.X * R)`. Rewrite using `[Algebra.smul_def, RatFunc.algebraMap_eq_C, ← mul_assoc, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc, map_one, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`.
+
+Introduce `c' x _ hx`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem X_mul_mem_zetaIdeal [NeZero n] (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     {R : RatFunc ℂ} (hR : R ∈ zetaIdeal π μ) : RatFunc.X * R ∈ zetaIdeal π μ := by
   set c : ℂ := qs F (((n : ℂ) - 1) / 2) with hcdef
@@ -218,6 +281,23 @@ theorem X_mul_mem_zetaIdeal [NeZero n] (μ : Measure (GL (Fin n) F)) [μ.IsHaarM
     rw [mul_smul_comm]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use `set c : ℂ := qs F (((n : ℂ) - 1) / 2) with hcdef`. Establish `hc : c ≠ 0` using `qs_ne_zero _`. Use `Submodule.span_induction (p := fun R _ => RatFunc.X⁻¹ * R ∈ zetaIdeal π μ) ?_ ?_ ?_ ?_ hR` and prove the remaining obligations. Introduce `R hR set a := Cartan.diagPow F n (Pi.single 0 1)`. Establish `hXinv : ∀ x : ℂ, x ≠ 0 → (RatFunc.X⁻¹ : RatFunc ℂ).eval (RingHom.id ℂ) x = x⁻¹`.
+
+Introduce `x hx`. Use `eval_div_algebraMap 1 X (x := x) (by simpa using hx)` as an intermediate fact. Rewrite `this` using `[map_one, RatFunc.algebraMap_X, one_div]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Establish `hmem : RatFunc.C c⁻¹ * RatFunc.X⁻¹ * R ∈ zetaSet π μ`. Use `mem_zetaSet_of_translate μ hR a⁻¹ ?_` and prove the remaining obligations. Take `⟨ε, hε, hεR⟩` from `exists_eval_mul (RatFunc.C c⁻¹ * RatFunc.X⁻¹) R`. Take `⟨ε', hε', hεR'⟩` from `exists_eval_mul (RatFunc.C c⁻¹) (RatFunc.X⁻¹ : RatFunc ℂ)`. Take `⟨s₁, hs₁⟩` from `exists_re_of_norm_qs_lt (F := F) (lt_min hε hε')`.
+
+Use `⟨s₁, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hsm` using `hs₁ s hs`. Establish `hinv : ordDet a⁻¹ = -1`. Establish `h1` using `ordDet_mul a⁻¹ a`. Rewrite `h1` using `[inv_mul_cancel, ordDet_diagPow_single]`.
+
+Establish `h0 : ordDet (1 : GL (Fin n) F) = 0` using `by simp [ordDet, LocalField.ord_one]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hεR _ (qs_ne_zero s) (hsm.trans_le (min_le_left _ _)), hεR' _ (qs_ne_zero s) (hsm.trans_le (min_le_right _ _)), RatFunc.eval_C, hXinv _ (qs_ne_zero s), detPow_eq_qs_zpow, hinv, qs_add, ← hcdef]`. Simplify using `only [RingHom.id_apply, _root_.zpow_neg, zpow_one, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: RatFunc.X⁻¹ * R = c • (RatFunc.C c⁻¹ * RatFunc.X⁻¹ * R)`. Rewrite using `[Algebra.smul_def, RatFunc.algebraMap_eq_C, ← mul_assoc, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hc, map_one, one_mul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`. Introduce `c' x _ hx`. Rewrite using `[mul_smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem X_inv_mul_mem_zetaIdeal [NeZero n] (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     {R : RatFunc ℂ} (hR : R ∈ zetaIdeal π μ) : RatFunc.X⁻¹ * R ∈ zetaIdeal π μ := by
   set c : ℂ := qs F (((n : ℂ) - 1) / 2) with hcdef
@@ -261,6 +341,11 @@ theorem X_inv_mul_mem_zetaIdeal [NeZero n] (μ : Measure (GL (Fin n) F)) [μ.IsH
     rw [mul_smul_comm]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨s₀, D, hD0, -, h⟩` from `exists_zeta_rat hπ μ`. Use `⟨D, hD0, fun R hR => ?_⟩` and prove the remaining obligations. Take `⟨Φ, v, ℓ, hΦ, hℓ, s₁, hZ⟩` from `hR`. Take `⟨-, N, P, hP⟩` from `h Φ hΦ v ℓ hℓ`. Use `⟨N, P, ?_⟩` and prove the remaining obligations.
+
+Take `⟨ε, hε, hεs⟩` from `exists_qs_of_small (F := F) (max s₀ s₁)`. Use `eq_of_eval_eq hε fun x hx hxε => ?_` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `hεs x hx hxε`. Rewrite using `[← hZ s ((le_max_right _ _).trans_lt hs), hP s ((le_max_left _ _).trans_lt hs)]`.
+-/
 theorem exists_zetaSet_eq [π.IsIrreducible] (hπ : IsAdmissible π) (μ : Measure (GL (Fin n) F))
     [μ.IsHaarMeasure] :
     ∃ D : ℂ[X], D.eval 0 = 1 ∧ ∀ R ∈ zetaSet π μ, ∃ (N : ℕ) (P : ℂ[X]),
@@ -275,6 +360,17 @@ theorem exists_zetaSet_eq [π.IsIrreducible] (hπ : IsAdmissible π) (μ : Measu
   obtain ⟨s, hs, rfl⟩ := hεs x hx hxε
   rw [← hZ s ((le_max_right _ _).trans_lt hs), hP s ((le_max_left _ _).trans_lt hs)]
 
+/- English proof (translation)
+Take `⟨D, hD0, hD⟩` from `exists_zetaSet_eq hπ μ`. Establish `hDne : algebraMap ℂ[X] (RatFunc ℂ) D ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective ℂ[X] (RatFunc ℂ))]`. Introduce `h`. Rewrite `hD0` using `[h, eval_zero]`.
+
+Conclude with `zero_ne_one hD0`. Use `⟨D, hD0, fun R hR => ?_⟩` and prove the remaining obligations. Use `Submodule.span_induction (p := fun R _ => algebraMap ℂ[X] (RatFunc ℂ) D * R ∈ laurentSubalgebra) ?_ ?_ ?_ ?_ hR` and prove the remaining obligations. Introduce `R hR`. Take `⟨N, P, rfl⟩` from `hD R hR`.
+
+Use `mem_laurentSubalgebra_iff.2 ⟨P, N, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, RatFunc.algebraMap_X]`. Establish `hX : (RatFunc.X : RatFunc ℂ) ≠ 0` using `RatFunc.X_ne_zero`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Rewrite using `[mul_smul_comm]`.
+
+Conclude with `Subalgebra.smul_mem _ hx c`.
+-/
 theorem exists_denominator_zetaIdeal [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     ∃ D : ℂ[X], D.eval 0 = 1 ∧
@@ -302,6 +398,31 @@ theorem exists_denominator_zetaIdeal [π.IsIrreducible] (hπ : IsAdmissible π)
     rw [mul_smul_comm]
     exact Subalgebra.smul_mem _ hx c
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨m, -, hm⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((hπ v).mem_nhds (one_mem (stabilizerOf π v)))`. Use `set K := congruenceSubgroup F n m with hKdef`. Establish `hKc : IsCompact (K : Set (GL (Fin n) F))` using `isCompact_congruenceSubgroup F n m`. Establish `hKo : IsOpen (K : Set (GL (Fin n) F))` using `isOpen_congruenceSubgroup F n m`.
+
+Establish `hvK : v ∈ fixedVectors π K` using `fun k hk => hm hk`. Choose the witnesses or unpack the hypotheses as in `⟨f0, hf0⟩ : ∃ f0 : Module.Dual ℂ (fixedVectors π K), f0 ⟨v, hvK⟩ = 1 := by`. Establish `hne : (⟨v, hvK⟩ : fixedVectors π K) ≠ 0` using `fun h => hv (congrArg Subtype.val h)`. Establish `hnot : ¬ ∀ g : Module.Dual ℂ (fixedVectors π K), g ⟨v, hvK⟩ = 0` using `fun h => hne ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h)`. Take `⟨g, hg⟩` from `not_forall.1 hnot`.
+
+Conclude with `⟨(g ⟨v, hvK⟩)⁻¹ • g, by simp [hg]⟩`. Use `set ℓ : Module.Dual ℂ V := f0 ∘ₗ fixedProj π hπ hKc hKo with hℓdef`. Establish `hℓK : ∀ k ∈ K, ∀ x, ℓ (π k x) = ℓ x` using `fun k hk x => by`. Simplify using `only [ℓ, LinearMap.coe_comp, Function.comp_apply, fixedProj_apply_act hπ hKc hKo hk]`. Establish `hℓ : ℓ ∈ smoothVectors (Representation.dual π)` using `mem_smoothVectors_of_mem_fixedVectors hKo (mem_fixedVectors_dual.2 hℓK)`.
+
+Establish `hℓv : ℓ v = 1`. Establish `: fixedProj π hπ hKc hKo v = ⟨v, hvK⟩` using `Subtype.ext (fixedProj_apply_of_mem hπ hKc hKo hvK)`. Simplify using `only [ℓ, LinearMap.coe_comp, Function.comp_apply, this, hf0]`. Use `set S : Set (Matrix (Fin n) (Fin n) F) := Units.val '' (K : Set (GL (Fin n) F)) with hSdef`. Establish `hSo : IsOpen S` using `(Measures.isOpenEmbedding_val F n).isOpenMap _ hKo`.
+
+Establish `hSc : IsCompact S` using `hKc.image Units.continuous_val`. Use `set Φ : Matrix (Fin n) (Fin n) F → ℂ := S.indicator 1 with hΦdef`. Establish `hΦ : IsSchwartzBruhat Φ`. Use `⟨?_, HasCompactSupport.intro hSc fun X hX => Set.indicator_of_notMem hX _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`.
+
+Introduce `X`. Distinguish the cases in `hX : X ∈ S`. Conclude with `⟨S, hSo, hX, fun Y hY => by simp [Φ, Set.indicator_of_mem hY, Set.indicator_of_mem hX]⟩`. Conclude with `⟨Sᶜ, hSc.isClosed.isOpen_compl, hX, fun Y hY => by`. Simplify using `[Φ, Set.indicator_of_notMem hY, Set.indicator_of_notMem hX]⟩`.
+
+Establish `hΦg : ∀ g : GL (Fin n) F, Φ (g : Matrix (Fin n) (Fin n) F) = (K : Set (GL (Fin n) F)).indicator 1 g` using `fun g => by`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[Set.indicator_of_mem hg, hΦdef, Set.indicator_of_mem (Set.mem_image_of_mem _ hg)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hg, hΦdef, Set.indicator_of_notMem]`.
+
+Introduce and unpack `⟨g', hg', hgg'⟩`. Conclude with `hg (Units.val_injective hgg' ▸ hg')`. Establish `hZ : ∀ s, zetaIntegral μ Φ (matrixCoeff π v ℓ) s = (μ.real (K : Set (GL (Fin n) F)) : ℂ)`. Introduce `s`. Rewrite using `[zetaIntegral]`.
+
+Establish `hfun : (fun g : GL (Fin n) F => Φ (g : Matrix (Fin n) (Fin n) F) * matrixCoeff π v ℓ g * detPow g (s + ((n : ℂ) - 1) / 2)) = (K : Set (GL (Fin n) F)).indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[hΦg g]`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem hg, matrixCoeff, hvK g hg, hℓv, detPow_of_mem_integralGL (congruenceSubgroup_le F n m hg)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem hg]`. Simplify using the standard rewrite rules. Rewrite using `[hfun, integral_indicator_const _ hKo.measurableSet]`. Simplify using the standard rewrite rules.
+
+Establish `hmem : RatFunc.C (μ.real (K : Set (GL (Fin n) F)) : ℂ) ∈ zetaSet π μ` using `⟨Φ, v, ℓ, hΦ, hℓ, 0, fun s _ => by rw [hZ, RatFunc.eval_C]; rfl⟩`. Establish `hpos : (μ.real (K : Set (GL (Fin n) F)) : ℂ) ≠ 0`. Establish `: 0 < μ.real (K : Set (GL (Fin n) F))` using `ENNReal.toReal_pos (hKo.measure_ne_zero μ ⟨1, K.one_mem⟩) hKc.measure_lt_top.ne`. Conclude with `this.ne'` after adjusting the coercions. Establish `h1 : (1 : RatFunc ℂ) = ((μ.real (K : Set (GL (Fin n) F)) : ℂ))⁻¹ • RatFunc.C (μ.real (K : Set (GL (Fin n) F)) : ℂ)`.
+
+Rewrite using `[Algebra.smul_def, RatFunc.algebraMap_eq_C, ← map_mul, inv_mul_cancel₀ hpos, map_one]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem one_mem_zetaIdeal (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] (hπ : IsSmooth π)
     [Nontrivial V] : (1 : RatFunc ℂ) ∈ zetaIdeal π μ := by
   classical
@@ -376,6 +497,11 @@ theorem one_mem_zetaIdeal (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] (hπ 
   rw [h1]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `: Nontrivial V` using `⟨⟨v, 0, hv⟩⟩`. Take `⟨D, hD0, hD⟩` from `exists_denominator_zetaIdeal hπ μ`. Use `existsUnique_eq_laurent_div _ (fun R hR => X_mul_mem_zetaIdeal μ hR) (fun R hR => X_inv_mul_mem_zetaIdeal μ hR) (one_mem_zetaIdeal μ hπ.1) ⟨D, ?_, hD⟩` and prove the remaining obligations. Introduce `h`.
+
+Rewrite `hD0` using `[h, eval_zero]`. Conclude with `zero_ne_one hD0`.
+-/
 theorem existsUnique_zetaIdeal_eq [NeZero n] [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     ∃! P : ℂ[X], P.eval 0 = 1 ∧ ∀ R : RatFunc ℂ, R ∈ zetaIdeal π μ ↔
@@ -390,6 +516,13 @@ theorem existsUnique_zetaIdeal_eq [NeZero n] [π.IsIrreducible] (hπ : IsAdmissi
   exact zero_ne_one hD0
 
 omit [BorelSpace (GL (Fin n) F)] in
+/- English proof (translation)
+Use `Submodule.span_le.2 fun R hR => ?_` and prove the remaining obligations. Take `⟨Φ, v, ℓ, hΦ, hℓ, s₀, hZ⟩` from `hR`. Establish `hc' : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc`. Establish `hmem : RatFunc.C ((c : ℝ) : ℂ) * R ∈ zetaSet π (c • μ)`. Take `⟨ε, hε, hεR⟩` from `exists_eval_mul (RatFunc.C ((c : ℝ) : ℂ)) R`.
+
+Take `⟨s₁, hs₁⟩` from `exists_re_of_norm_qs_lt (F := F) hε`. Use `⟨Φ, v, ℓ, hΦ, hℓ, max s₀ s₁, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hεR _ (qs_ne_zero s) (hs₁ s ((le_max_right _ _).trans_lt hs)), RatFunc.eval_C, ← hZ s ((le_max_left _ _).trans_lt hs), zetaIntegral, zetaIntegral, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Both sides reduce to the same expression. Establish `h : R = ((c : ℝ) : ℂ)⁻¹ • (RatFunc.C ((c : ℝ) : ℂ) * R)`.
+
+Rewrite using `[Algebra.smul_def, RatFunc.algebraMap_eq_C, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hc', map_one, one_mul]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem zetaIdeal_le_smul (μ : Measure (GL (Fin n) F)) {c : NNReal} (hc : c ≠ 0) :
     zetaIdeal π μ ≤ zetaIdeal π (c • μ) := by
   refine Submodule.span_le.2 fun R hR => ?_
@@ -409,6 +542,9 @@ theorem zetaIdeal_le_smul (μ : Measure (GL (Fin n) F)) {c : NNReal} (hc : c ≠
   rw [h]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Establish `key : ∀ (μ ν : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] [ν.IsHaarMeasure], zetaIdeal π μ ≤ zetaIdeal π ν`. Introduce `μ ν _ _`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul ν μ]`. Conclude with `zetaIdeal_le_smul μ (Measure.haarScalarFactor_pos_of_isHaarMeasure ν μ).ne'`. Conclude with `le_antisymm (key μ ν) (key ν μ)`.
+-/
 theorem zetaIdeal_eq_of_isHaarMeasure (μ ν : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     [ν.IsHaarMeasure] : zetaIdeal π μ = zetaIdeal π ν := by
   have key : ∀ (μ ν : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] [ν.IsHaarMeasure],
@@ -431,6 +567,11 @@ variable (π) in
 def LFunction (s : ℂ) : ℂ :=
   ((LPolynomial π).eval (qs F s))⁻¹
 
+/- English proof (translation)
+Establish `h` using `(existsUnique_zetaIdeal_eq hπ (Measure.haar : Measure (GL (Fin n) F))).exists`. Rewrite using `[LPolynomial, dif_pos h]`. Take `⟨h0, hiff⟩` from `h.choose_spec`. Use `⟨h0, fun R => ?_⟩` and prove the remaining obligations. Rewrite using `[zetaIdeal_eq_of_isHaarMeasure μ Measure.haar]`.
+
+Conclude with `hiff R`.
+-/
 theorem LPolynomial_spec [NeZero n] [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
     (LPolynomial π).eval 0 = 1 ∧ ∀ R : RatFunc ℂ, R ∈ zetaIdeal π μ ↔

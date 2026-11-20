@@ -9,6 +9,17 @@ open GlobalTheory.Poinc
 
 namespace GlobalTheory.ZariskiConn
 
+/- English proof (translation)
+Introduce `Y Z π _ _ _ _ hN U hU hiso z`. Take `⟨V, hV, hzV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := z) trivial`. Establish `hS` using `GlobalTheory.T.bijective_sections_preimage_affine_proper_birational Y Z π hN U hU hiso V hV`. Use `haveI : IsAffine (V : Scheme) := hV`. Establish `hC` using `GlobalTheory.T.zariskiConnectedness_isPreconnected_fibre_affine (V : Scheme) (π ⁻¹ᵁ V) (π ∣_ V) hS ⟨z, hzV⟩`.
+
+Establish `key : π.base ⁻¹' {z} = (π ⁻¹ᵁ V).ι.base '' ((π ∣_ V).base ⁻¹' {⟨z, hzV⟩})`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : π.base y = z` using `hy`.
+
+Establish `hyV : y ∈ π ⁻¹ᵁ V` using `by show π.base y ∈ V`. Rewrite using `[hy']`. Conclude with `hzV`. Use `⟨⟨y, hyV⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show (π ∣_ V).base ⟨y, hyV⟩ = ⟨z, hzV⟩`.
+
+Conclude with `Subtype.ext ((morphismRestrict_base_coe π V ⟨y, hyV⟩).trans hy')`. Introduce and unpack `⟨w, hw, rfl⟩`. Establish `hw' : (π ∣_ V).base w = ⟨z, hzV⟩` using `hw`. Conclude with `(morphismRestrict_base_coe π V w).symm.trans (congrArg Subtype.val hw')`. Rewrite using `[key]`.
+
+Conclude with `hC.image _ (π ⁻¹ᵁ V).ι.base.hom.continuous.continuousOn`.
+-/
 theorem fibre_preconnected : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsProper π] [IsIntegral Y] [IsIntegral Z] [IsLocallyNoetherian Z], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → ∀ U : Z.Opens, (U : Set Z).Nonempty → IsIso (π ∣_ U) → ∀ z : Z, _root_.IsPreconnected (π.base ⁻¹' {z}) := by
   intro Y Z π _ _ _ _ hN U hU hiso z
   obtain ⟨V, hV, hzV, -⟩ := exists_isAffineOpen_mem_and_subset (U := ⊤) (x := z) trivial

@@ -17,6 +17,27 @@ namespace GlobalTheory.ThK.SqIntMaxCptGen
 
 open GlobalTheory.ThK.SqIntMaxCpt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B hB n W hskew hcartan c hc hσc`. Establish `h` using `hB.cm`. Establish `hcj : ∀ (τ : E →+* ℂ) x, star (τ x) = τ (σ x)` using `fun τ x => (h.2.2.2 τ x).symm`. Establish `key : ∀ w : InfinitePlace F, ∃ (ε : Fin n → Bool) (Q : GL (Fin n) ℂ), Q.1ᴴ * (c • W.J.map σ).map (B.emb w).1 * Q.1 = Matrix.diagonal (fun i => if ε i then 1 else -1) ∧ ∀ k : Matrix (Fin n) (Fin n) ℂ, kᴴ * (c • W.J.map σ).map (B.emb w).1 * k = (c • W.J.map σ).map (B.emb w).1 → ((Q …` using `fun w => by`. Establish `hre : ((B.emb w).1 c).re = 0`.
+
+Use `congrArg Complex.re (hcj (B.emb w).1 c)` as an intermediate fact. Rewrite `this` using `[hσc, map_neg]`. Simplify using `only [Complex.star_def, Complex.conj_re, Complex.neg_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : ((B.emb w).1 c).im ≠ 0` using `fun e => (map_ne_zero (B.emb w).1).2 hc (Complex.ext hre e)`.
+
+Use `exists_frame (s := -((B.emb w).1 c).im) ?_ (hcartan w) (neg_ne_zero.2 him) ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hcj, hskew]`. Use extensionality with `i j`. Establish `e : (B.emb w).1 c = ((B.emb w).1 c).im * Complex.I` using `by conv_lhs => rw [← Complex.re_add_im ((B.emb w).1 c), hre]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, star_mul', hcj]`. Use `conv_lhs => rw [e]`. Simplify using `[mul_assoc]`. Use `choose ε Q hQ hk using key`.
+
+Set `e` to `fun w : InfinitePlace F => RingEquiv.ofBijective _ (infEmb_bijective h (B.emb w))`. Set `b` to `fun w : InfinitePlace F => Formalism.UG.bc (e w).symm.toRingHom (Q w)`. Establish `h1 : ∀ w, (b w).1.map (infEmb (B.emb w)) = (Q w).1` using `fun w => Matrix.ext fun i j => (e w).apply_symm_apply _`. Establish `h1' : ∀ w, ((b w)⁻¹).1.map (infEmb (B.emb w)) = ((Q w)⁻¹).1` using `fun w => Matrix.ext fun i j => (e w).apply_symm_apply _`. Establish `h2 : ∀ w, (JR w.Completion (c • W.J.map σ)).map (infEmb (B.emb w)) = (c • W.J.map σ).map (B.emb w).1` using `fun w => by`.
+
+Use extensionality with `r s`. Simplify using `[JR, inclR]`. Use `⟨majCpt σ _ b, isMaxCpt_majCpt h fun w => ⟨ε w, Matrix.map_injective (e w).injective ?_⟩, fun k hkK => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.map _ (infEmb (B.emb w)) = Matrix.map _ (infEmb (B.emb w))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Frames.map_cT_sigR h, h1, h2, hQ, Matrix.diagonal_map (map_zero _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨hk1, hk2⟩` from `mem_majCpt.1 hkK`. Establish `hm : mat ((toGAd hσ W.J hc).symm k) = (matHom _ σ _ k).1` using `rfl`.
+
+Use `⟨fun u hu => Matrix.ext fun i j => at_evI_of_compFin (fun v => ?_) u hu, fun w => ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => (matHom _ σ _ g).1 i j) (mem_infPts_iff_forall.1 hk1 v)` as an intermediate fact. Rewrite using `[hm, Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, apply_ite (compFin F E v)]`.
+
+Establish `e1 : (mat ((toGAd hσ W.J hc).symm k)).map (piInf (B.emb w)) = (matHom _ σ _ (projArch σ _ w k)).1.map (infEmb (B.emb w))` using `rfl`. Rewrite using `[e1]`. Use `hk w _ ?_ ?_` and prove the remaining obligations. Establish `: Formalism.UG.cT (sigR _ σ) (matHom _ σ _ (projArch σ _ w k)).1 * JR w.Completion (c • W.J.map σ) * (matHom _ σ _ (projArch σ _ w k)).1 = JR w.Completion (c • W.J.map σ)` using `(projArch σ _ w k).2`. Use `congrArg (fun A => A.map (infEmb (B.emb w))) this` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.map_mul, Frames.map_cT_sigR h, h2]`. Establish `: Formalism.UG.cT (sigR _ σ) ((b w)⁻¹ * matHom _ σ _ (projArch σ _ w k) * b w).1 * 1 * ((b w)⁻¹ * matHom _ σ _ (projArch σ _ w k) * b w).1 = 1` using `mem_stabArch.1 (hk2 w)`. Use `congrArg (fun A => A.map (infEmb (B.emb w))) this` as an intermediate fact. Simplify `this` using `only [Matrix.mul_one, Matrix.map_mul, Frames.map_cT_sigR h, Units.val_mul, h1, h1', Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem exists_isMaxCpt_le_kInf_of_cartan : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ → ∀ (n : ℕ) (Y : Spc F E n), (∀ i j, σ (Y.J j i) = -Y.J i j) →
       (∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) → ∀ (c : E) (hc : c ≠ 0), σ c = -c →

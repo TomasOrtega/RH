@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ArchSch
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchSch.LagUniq.lag_uniq | exact GlobalTheory.ArchSch.LagUniq.lag_uniq | (intros; apply GlobalTheory.ArchSch.LagUniq.lag_uniq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.aux_statement_2 : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y] (β : LinearMap.BilinForm ℝ Y),
     β.Nondegenerate → ∀ Λ : Submodule ℝ (Y × Y), (∀ l ∈ Λ, ∀ l' ∈ Λ, β l.1 l'.2 = β l'.1 l.2) →
     (∀ v : Y × Y, (∀ l ∈ Λ, β v.1 l.2 = β l.1 v.2) → v ∈ Λ) → ∀ ℓ ℓ' : SchwartzMap Y ℂ →L[ℂ] ℂ,

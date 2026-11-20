@@ -11,6 +11,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.RealMult.Obj
 
+/- English proof (translation)
+Use `letI : Algebra R R' := σ.toAlgebra`. Take `⟨-, PH, PB, -, -⟩` from `P`. Establish `hφ : IsGrpPullback X'.A X.A (spMap (algebraMap R R')) φ` using `hX.grp`. Take `⟨-, hF⟩` from `PB R X.A _ X.ab X.dim R' X'.A φ hφ`. Establish `hL` using `(PH R' X'.A _ X'.ab X'.dim).1`.
+
+Establish `hc : (Chart.dualMapR σ).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp σ`. Apply the tactic sequence `ext r <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `w : (spMap (Chart.dualMapR σ) ≫ v.hom.left) ≫ X.A.hom = (epsR R').hom ≫ spMap σ`. Rewrite using `[Category.assoc, Over.w v.hom]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _ ≫ spMap _`.
+
+Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp, hc]`. Set `u : epsR R' ⟶ X'.A` to `Over.homMk (hφ.1.lift _ _ w) (hφ.1.lift_snd _ _ w)`. Establish `hu : u.left ≫ φ = spMap (Chart.dualMapR σ) ≫ v.hom.left` using `hφ.1.lift_fst _ _ w`. Establish `e : (GlobalTheory.Published.AbelianDeRham.bcMor hφ).Corr x x'` using `hx`. Establish `hiu : IsLieImage x' u` using `IsLieImage.baseChange (hφ := hφ) hF hL e hu hv`.
+
+Establish `: u = v'.hom` using `(hL.1 x').unique hiu hv'`. Unfold `Obj.LieCorr`. Rewrite using `[← this]`. Conclude with `hu`.
+-/
 theorem lieCorr_of_isLieImage (P : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left} (hX : X'.IsPullBy X (spMap σ) φ)

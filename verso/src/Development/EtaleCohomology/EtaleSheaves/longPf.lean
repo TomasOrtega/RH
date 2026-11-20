@@ -8,6 +8,11 @@ open LateralTheory.E.CxDescPf
 
 def LES : Prop := ∀ (R : Type) [CommRing R] (I : Cx R), (∀ n, Injective (I.X n)) → ∃ d : ∀ (S : ShortComplex (Cx R)), S.ShortExact → ∀ n : ℤ, CohomologyClass S.X₁ I n →+ CohomologyClass S.X₃ I (n + 1), (∀ (S : ShortComplex (Cx R)) (hS : S.ShortExact) n, Function.Exact (cpull S.g I n) (cpull S.f I n) ∧ Function.Exact (cpull S.f I n) (d S hS n) ∧ Function.Exact (d S hS n) (cpull S.g I (n + 1))) ∧ ∀ (S S' : ShortComplex (Cx R)) (hS : S.ShortExact) (hS' : S'.ShortExact) (φ : S ⟶ S') n x, cpull φ.τ₃ I (n + 1) (d S' hS' n x) = d S hS n (cpull φ.τ₁ I n x)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `: γ x = 0` using `hd (by rw [s3, hx, map_zero, map_zero])`. Take `⟨y, rfl⟩` from `(h3 x).1 this`. Establish `: β' (b y) = 0` using `by rw [← s2]; exact hx`.
+
+Take `⟨z', hz'⟩` from `(h2' (b y)).1 this`. Take `⟨z, rfl⟩` from `ha z'`. Establish `: α z = y` using `hb (by rw [s1, hz'])`. Rewrite using `[← this]`. Conclude with `h2.apply_apply_eq_zero z`.
+-/
 theorem four_inj {A B C D A' B' C' D' : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D]
     [AddCommGroup A'] [AddCommGroup B'] [AddCommGroup C'] [AddCommGroup D']
     (α : A →+ B) (β : B →+ C) (γ : C →+ D) (α' : A' →+ B') (β' : B' →+ C') (γ' : C' →+ D')
@@ -25,6 +30,11 @@ theorem four_inj {A B C D A' B' C' D' : Type*} [AddCommGroup A] [AddCommGroup B]
   have : α z = y := hb (by rw [s1, hz'])
   rw [← this]; exact h2.apply_apply_eq_zero z
 
+/- English proof (translation)
+Introduce `x'`. Take `⟨y, hy⟩` from `hd (γ' x')`. Establish `: δ y = 0` using `he (by rw [s4, hy, map_zero, h3'.apply_apply_eq_zero])`. Take `⟨w, rfl⟩` from `(h3 y).1 this`. Establish `: γ' (x' - c w) = 0` using `by rw [map_sub, ← s3, hy, sub_self]`.
+
+Take `⟨u', hu'⟩` from `(h2' _).1 this`. Take `⟨u, rfl⟩` from `hb u'`. Conclude with `⟨w + β u, by rw [map_add, s2, hu', add_sub_cancel]⟩`.
+-/
 theorem four_surj {B C D E B' C' D' E' : Type*} [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E]
     [AddCommGroup B'] [AddCommGroup C'] [AddCommGroup D'] [AddCommGroup E']
     (β : B →+ C) (γ : C →+ D) (δ : D →+ E) (β' : B' →+ C') (γ' : C' →+ D') (δ' : D' →+ E')
@@ -41,6 +51,9 @@ theorem four_surj {B C D E B' C' D' E' : Type*} [AddCommGroup B] [AddCommGroup C
   obtain ⟨u, rfl⟩ := hb u'
   exact ⟨w + β u, by rw [map_add, s2, hu', add_sub_cancel]⟩
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only [cpull, cpre_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+-/
 theorem cpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : ℤ) (x) :
     cpull (f ≫ g) I n x = cpull f I n (cpull g I n x) := by
   obtain ⟨b, rfl⟩ := CohomologyClass.mk_surjective x
@@ -49,6 +62,9 @@ theorem cpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L �
   ext1
   simp [zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
+/- English proof (translation)
+Rewrite using `[← cpull_comp, ← cpull_comp, w]`.
+-/
 theorem cpull_sq {R : Type} [CommRing R] {A B C D : Cx R} (f : A ⟶ B) (g : B ⟶ D) (f' : A ⟶ C) (g' : C ⟶ D)
     (w : f ≫ g = f' ≫ g') (I : Cx R) (n : ℤ) (x) :
     cpull f I n (cpull g I n x) = cpull f' I n (cpull g' I n x) := by
@@ -60,6 +76,21 @@ def Ses : Prop := ∀ (R : Type) [CommRing R] (N : ℕ), ∃ (i : ∀ K : Cx R, 
   ∀ {K L : Cx R} (g : K ⟶ L), i K ≫ trm g (N + 1) = trm g N ≫ i L ∧
     p K ≫ (CochainComplex.singleFunctor (Shv R) (-((N + 1 : ℕ) : ℤ))).map (g.f (-((N + 1 : ℕ) : ℤ))) = trm g (N + 1) ≫ p L
 
+/- English proof (translation)
+Introduce `R _ I _ hI K L _ _ g m N h3 h1`. Take `⟨d, hex, hnat⟩` from `hLES R I hI`. Take `⟨i, p, w, hse, hn⟩` from `hSes R N`. Set `MainNotions` to `ShortComplex.mk (i K) (p K) (w K)`. Set `SL` to `ShortComplex.mk (i L) (p L) (w L)`.
+
+Set `φ : MainNotions ⟶ SL` to `ShortComplex.Hom.mk (trm g N) (trm g (N + 1)) ((CochainComplex.singleFunctor (Shv R) (-((N + 1 : ℕ) : ℤ))).map (g.f (-((N + 1 : ℕ) : ℤ)))) (hn g).1.symm (hn g).2.symm`. Establish `sf : ∀ j x, cpull φ.τ₁ I j (cpull SL.f I j x) = cpull MainNotions.f I j (cpull φ.τ₂ I j x)` using `fun j x => cpull_sq _ _ _ _ φ.comm₁₂ I j x`. Establish `sg : ∀ j x, cpull φ.τ₂ I j (cpull SL.g I j x) = cpull MainNotions.g I j (cpull φ.τ₃ I j x)` using `fun j x => cpull_sq _ _ _ _ φ.comm₂₃ I j x`. Establish `inj : ∀ n : ℤ, n + 1 ≤ m → Function.Injective (cpull φ.τ₂ I (n + 1))`. Introduce `n hn`.
+
+Use `four_inj (d SL (hse L) n) (cpull SL.g I (n + 1)) (cpull SL.f I (n + 1)) (d MainNotions (hse K) n) (cpull MainNotions.g I (n + 1)) (cpull MainNotions.f I (n + 1)) (cpull φ.τ₁ I n) (cpull φ.τ₃ I (n + 1)) (cpull φ.τ₂ I (n + 1)) (cpull φ.τ₁ I (n + 1)) (hex SL (hse L) n).2.2 (hex Main …` and prove the remaining obligations. Break down `lt_or_eq_of_le hn with h | h` into its components or cases. Conclude with `(h3.1 _ h).1`. Rewrite using `[h]`. Conclude with `h3.2`.
+
+Break down `lt_or_eq_of_le hn with h | h` into its components or cases. Conclude with `(h1.1 _ h).1`. Rewrite using `[h]`. Conclude with `h1.2`. Establish `surj : ∀ j : ℤ, j < m → Function.Surjective (cpull φ.τ₂ I j)`.
+
+Introduce `j hj`. Use `four_surj (cpull SL.g I j) (cpull SL.f I j) (d SL (hse L) j) (cpull MainNotions.g I j) (cpull MainNotions.f I j) (d MainNotions (hse K) j) (cpull φ.τ₃ I j) (cpull φ.τ₂ I j) (cpull φ.τ₁ I j) (cpull φ.τ₃ I (j + 1)) (hex MainNotions (hse K) j).1 (hex SL (hse L) j).2.1 (hex MainNotio …` and prove the remaining obligations. Break down `lt_or_eq_of_le (show j + 1 ≤ m by omega) with h | h` into its components or cases. Conclude with `(h3.1 _ h).1`. Rewrite using `[h]`.
+
+Conclude with `h3.2`. Establish `inj' : ∀ j : ℤ, j ≤ m → Function.Injective (cpull φ.τ₂ I j)`. Introduce `j hj`. Use `inj (j - 1) (by omega)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `⟨fun j hj => ⟨inj' j hj.le, surj j hj⟩, inj' m le_rfl⟩`.
+-/
 theorem long_of (hLES : LES) (hSes : Ses) : LateralTheory.E.CxDescPf.long := by
   intro R _ I _ hI K L _ _ g m N h3 h1
   obtain ⟨d, hex, hnat⟩ := hLES R I hI

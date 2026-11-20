@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Lit1.SWUS
 
+/- English proof (translation)
+Introduce `hL hW D n V a1 a2 a3 ψ hψ χ hχ hη θ hθ μ 𝓕 hμ ω hω H hH l hl s hs ν hν Φ hΦ`. Establish `hn : 0 < n` using `by omega`. Establish `hS` using `GlobalTheory.StdUnn.SiegelSection.fock_mem_degenerate D n V ψ hψ χ hχ hη θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ`. Establish `e : ∀ z, sect ω H Φ z = stdSec H (fun g : G D n => (ω g Φ).1 0) (s0 V n) z` using `fun z => funext fun g => mul_comm _ _`. Use `⟨fun g => GlobalTheory.T.integrable_standardPair_theta_weilRange hW D n V hn a3 θ hθ ω ν hν Φ g, fun z hz => ⟨?_, fun g => ?_⟩, hL D n V a1 a2 a3 ψ hψ χ hχ hη θ hθ μ 𝓕 hμ ω hω H hH l hl s hs ν hν Φ hΦ⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.StdUnn.LeftInvSect.leftInv_sect D n (GlobalTheory.StdUnn.Iwasawa.exists_mul D n) V ψ χ θ μ ω hχ hω H hH Φ z`. Rewrite using `[e]`. Conclude with `GlobalTheory.StdUnn.PolesModel.cosetConv_stdSec hH hS hz g`.
+-/
 theorem siegelWeilUnitarySchrodinger_of_lit :
     GlobalTheory.Published.SiegelWeilUnitarySchrodingerLit → GlobalTheory.Published.WeilThetaConvergence →
       GlobalTheory.Published.SiegelWeilUnitarySchrodinger := by

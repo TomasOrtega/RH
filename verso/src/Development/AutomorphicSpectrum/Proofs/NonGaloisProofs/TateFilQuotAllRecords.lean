@@ -9,6 +9,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 
 namespace GlobalTheory.CompanionTheory.TateFilQuotRow
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TateFilQuot.tate_fil_quot`.
+-/
 theorem adm5_all : ∀ D : D7, LocalSituation.adm5 D := GlobalTheory.TateFilQuot.tate_fil_quot
 
 end GlobalTheory.CompanionTheory.TateFilQuotRow

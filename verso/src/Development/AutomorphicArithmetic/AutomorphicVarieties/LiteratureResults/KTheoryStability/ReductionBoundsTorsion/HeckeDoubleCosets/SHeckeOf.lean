@@ -6,6 +6,9 @@ namespace PositivityTheory.KB
 
 open AffineStabilizerVanishing
 
+/- English proof (translation)
+The claim follows from `assemble _hCh _hEv _hSt _hFin _hAff (pKey (pTransfer pCobSub pEvDC)) pHeckeFormal (pHeckeKer (pTransfer pCobSub pEvDC) pEvDC) pIndex pStabK`.
+-/
 theorem sHecke_of (_hCh : SChain) (_hEv : SEv) (_hSep : SSep) (_hSt : SStab) (_hFin : SFin) (_hAff : SAff) :
     SHecke :=
   assemble _hCh _hEv _hSt _hFin _hAff (pKey (pTransfer pCobSub pEvDC)) pHeckeFormal

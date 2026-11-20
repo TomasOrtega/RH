@@ -19,6 +19,11 @@ def IsRep (y : (Σ k, ι k) → Ω) (a : K → ℤ) (n : ℕ) (s : Ω) (g h : MR
   ∃ dg dh : K → ℕ, IsMultiHomog g dg ∧ IsMultiHomog h dh ∧ (∀ k, (dg k : ℤ) = dh k + n * a k) ∧
     aeval y g = s * aeval y h
 
+/- English proof (translation)
+Introduce `h0`. Apply `hp` to reduce the goal to its premises. Establish `hX : (X p : MRing ι) ∈ mCoordIdeal y` using `by show X p ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`.
+
+Simplify using `using hz.2 _ hX`.
+-/
 theorem y_ne_zero {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y))
     {p : Σ k, ι k} (hp : z p ≠ 0) : y p ≠ 0 := by
   intro h0
@@ -29,6 +34,13 @@ theorem y_ne_zero {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z �
     simp [mConeMap, h0]
   simpa using hz.2 _ hX
 
+/- English proof (translation)
+Take `⟨dg, dh, hg, hh, hd, hy⟩` from `hr`. Take `⟨dg', dh', hg', hh', hd', hy'⟩` from `hr'`. Establish `hF : IsMultiHomog (g * h' - g' * h) (dg + dh')` using `homog_sub (homog_mul hg hh') (homog_congr (homog_mul hg' hh) fun k => by`. Simplify using `only [Pi.add_apply]`. Use `zify`.
+
+Take the linear combination `hd' k - hd k)`. Establish `hFy : aeval y (g * h' - g' * h) = 0`. Rewrite using `[map_sub, map_mul, map_mul, hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Use `vanish hz hF hFy` as an intermediate fact.
+
+Simplify using `only [map_sub, map_mul, sub_eq_zero] at this`. Conclude with `this`.
+-/
 theorem cross {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s : Ω} {g h g' h' : MRing ι}
     (hr : IsRep y a n s g h) (hr' : IsRep y a n s g' h') {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) :
@@ -48,6 +60,11 @@ theorem cross {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s : Ω} {g h 
   simp only [map_sub, map_mul, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Use `choose c hc using hz.1`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => y_ne_zero hz (hc k)`. Take `⟨N, δ, G, hG, hdeg, hGv⟩` from `exists_chartForm y c hyc (fun k => (n : ℤ) * a k) (hs c hyc)`. Use `⟨(G, chartMon c N), ⟨δ, N, hG, homog_chartMon c N, fun k => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `hdeg k`.
+
+Rewrite using `[aeval_chartMon]`. Conclude with `hGv`. Rewrite using `[eval_chartMon]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`.
+-/
 theorem exists_rep_at {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s : Ω} (hs : s ∈ chartLat y a n)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) :
     ∃ gh : MRing ι × MRing ι, IsRep y a n s gh.1 gh.2 ∧ eval z (map (Int.castRingHom ℂ) gh.2) ≠ 0 := by
@@ -61,6 +78,9 @@ theorem exists_rep_at {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s : �
   · rw [eval_chartMon]
     exact Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (Complex.ofReal_ne_zero.mpr (A.pos z hz.1).ne')`.
+-/
 theorem metric_ne {A : HermLine ι} {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) (n : ℕ) :
     (A.h z : ℂ) ^ n ≠ 0 :=
   pow_ne_zero _ (Complex.ofReal_ne_zero.mpr (A.pos z hz.1).ne')
@@ -72,6 +92,11 @@ def val (y : (Σ k, ι k) → Ω) (A : HermLine ι) (n : ℕ) (s : Ω) (z : (Σ 
       (eval z (map (Int.castRingHom ℂ) (exists_rep_at hsz.1 hsz.2).choose.2) * (A.h z : ℂ) ^ n)
   else 0
 
+/- English proof (translation)
+Establish `H` using `(exists_rep_at hs hz).choose_spec`. Rewrite using `[val, dif_pos ⟨hs, hz⟩]`. Establish `hc` using `cross hr H.1 hz`. Establish `h1` using `H.2`. Establish `h2` using `metric_ne (A := A) hz n`.
+
+Rewrite using `[eq_comm, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff (mul_ne_zero h1 h2)]`. Take the linear combination `(-(A.h z : ℂ) ^ n) * hc`.
+-/
 theorem val_spec {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : Ω} (hs : s ∈ chartLat y A.a n)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) {g h : MRing ι} (hr : IsRep y A.a n s g h) :
     eval z (map (Int.castRingHom ℂ) g) =
@@ -84,6 +109,9 @@ theorem val_spec {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : Ω} 
   rw [eq_comm, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff (mul_ne_zero h1 h2)]
   linear_combination (-(A.h z : ℂ) ^ n) * hc
 
+/- English proof (translation)
+Rewrite using `[eq_div_iff (mul_ne_zero hh (metric_ne hz n)), val_spec hs hz hr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_eq {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : Ω} (hs : s ∈ chartLat y A.a n)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) {g h : MRing ι} (hr : IsRep y A.a n s g h)
     (hh : eval z (map (Int.castRingHom ℂ) h) ≠ 0) :
@@ -92,6 +120,11 @@ theorem val_eq {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : Ω} (h
   rw [eq_div_iff (mul_ne_zero hh (metric_ne hz n)), val_spec hs hz hr]
   ring
 
+/- English proof (translation)
+Take `⟨dg₁, dh₁, hg₁, hh₁, hd₁, hy₁⟩` from `r₁`. Take `⟨dg₂, dh₂, hg₂, hh₂, hd₂, hy₂⟩` from `r₂`. Use `⟨dg₁ + dh₂, dh₁ + dh₂, homog_add (homog_mul hg₁ hh₂) (homog_congr (homog_mul hg₂ hh₁) fun k => ?_), homog_mul hh₁ hh₂, fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply] zify`. Take the linear combination `hd₂ k - hd₁ k`.
+
+Simplify using `only [Pi.add_apply]`. Use `push_cast`. Take the linear combination `hd₁ k`. Rewrite using `[map_add, map_mul, map_mul, map_mul, hy₁, hy₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rep_add {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s t : Ω} {g₁ h₁ g₂ h₂ : MRing ι}
     (r₁ : IsRep y a n s g₁ h₁) (r₂ : IsRep y a n t g₂ h₂) :
     IsRep y a n (s + t) (g₁ * h₂ + g₂ * h₁) (h₁ * h₂) := by
@@ -108,6 +141,11 @@ theorem rep_add {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s t : Ω} {
   · rw [map_add, map_mul, map_mul, map_mul, hy₁, hy₂]
     ring
 
+/- English proof (translation)
+Take `⟨dg₁, dh₁, hg₁, hh₁, hd₁, hy₁⟩` from `r₁`. Take `⟨dg₂, dh₂, hg₂, hh₂, hd₂, hy₂⟩` from `r₂`. Use `⟨dg₁ + dg₂, dh₁ + dh₂, homog_mul hg₁ hg₂, homog_mul hh₁ hh₂, fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Use `push_cast`.
+
+Take the linear combination `hd₁ k + hd₂ k`. Rewrite using `[map_mul, map_mul, hy₁, hy₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rep_mul {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n m : ℕ} {s t : Ω} {g₁ h₁ g₂ h₂ : MRing ι}
     (r₁ : IsRep y a n s g₁ h₁) (r₂ : IsRep y a m t g₂ h₂) :
     IsRep y a (n + m) (s * t) (g₁ * g₂) (h₁ * h₂) := by
@@ -134,6 +172,11 @@ def w (y : (Σ k, ι k) → Ω) (A : HermLine ι) (n : ℕ) : chartLat y A.a n �
       field_simp
     · simp [val, hz]
 
+/- English proof (translation)
+Introduce `z₀ hz₀`. Take `⟨⟨g, h⟩, r, hne⟩` from `exists_rep_at hs hz₀`. Establish `hcont : ∀ f : MRing ι, Continuous fun z : (Σ k, ι k) → ℂ => eval z (map (Int.castRingHom ℂ) f)` using `fun f => MvPolynomial.continuous_eval _`. Establish `hAc : ContinuousWithinAt (fun z => (A.h z : ℂ) ^ n) (mcPts (mCoordIdeal y)) z₀` using `(Complex.continuous_ofReal.continuousAt.comp_continuousWithinAt ((hA z₀ hz₀.1).mono fun z hz => hz.1)).pow n`. Establish `hF : ContinuousWithinAt (fun z => eval z (map (Int.castRingHom ℂ) g) / (eval z (map (Int.castRingHom ℂ) h) * (A.h z : ℂ) ^ n)) (mcPts (mCoordIdeal y)) z₀` using `(hcont g).continuousWithinAt.div ((hcont h).continuousWithinAt.mul hAc) (mul_ne_zero hne (metric_ne hz₀ n))`.
+
+Use `hF.congr_of_eventuallyEq ?_ (val_eq hs hz₀ r hne)` and prove the remaining obligations. Establish `hopen : {z | eval z (map (Int.castRingHom ℂ) h) ≠ 0} ∈ nhds z₀` using `(isOpen_ne_fun (hcont h) continuous_const).mem_nhds hne`. Use `filter_upwards [nhdsWithin_le_nhds hopen, self_mem_nhdsWithin] with z hz hz'`. Conclude with `val_eq hs hz' r hz`.
+-/
 theorem val_continuousOn {y : (Σ k, ι k) → Ω} {A : HermLine ι}
     (hA : ContinuousOn A.h {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) {n : ℕ} {s : Ω} (hs : s ∈ chartLat y A.a n) :
     ContinuousOn (val y A n s) (mcPts (mCoordIdeal y)) := by
@@ -154,6 +197,13 @@ theorem val_continuousOn {y : (Σ k, ι k) → Ω} {A : HermLine ι}
   filter_upwards [nhdsWithin_le_nhds hopen, self_mem_nhdsWithin] with z hz hz'
   exact val_eq hs hz' r hz
 
+/- English proof (translation)
+Establish `hT : 0 < A.h z` using `A.pos z hz.1`. Establish `hnT : ‖(A.h z : ℂ) ^ n‖ = A.h z ^ n`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg hT.le]`. Establish `hb : IsBoundedAt y A n ‖val y A n s z‖ s z`. Introduce `dg dh g h hg hh hd hy`.
+
+Rewrite using `[val_spec hs hz ⟨dg, dh, hg, hh, hd, hy⟩, norm_mul, norm_mul, hnT]`. Use `le_antisymm (secNormAt_le (norm_nonneg _) hb) ?_` and prove the remaining obligations. Rewrite using `[secNormAt]`. Use `le_csInf ⟨_, norm_nonneg _, hb⟩ ?_` and prove the remaining obligations. Introduce and unpack `c ⟨-, hc⟩`.
+
+Take `⟨⟨g, h⟩, ⟨dg, dh, hg, hh, hd, hy⟩, hne⟩` from `exists_rep_at hs hz`. Use `hc dg dh g h hg hh hd hy` as an intermediate fact. Rewrite `this` using `[val_spec hs hz ⟨dg, dh, hg, hh, hd, hy⟩, norm_mul, norm_mul, hnT, mul_assoc, mul_assoc]`. Conclude with `le_of_mul_le_mul_right this (mul_pos (norm_pos_iff.mpr hne) (pow_pos hT n))`.
+-/
 theorem secNormAt_eq {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : Ω} (hs : s ∈ chartLat y A.a n)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) : secNormAt y A n s z = ‖val y A n s z‖ := by
   have hT : 0 < A.h z := A.pos z hz.1
@@ -171,6 +221,11 @@ theorem secNormAt_eq {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n : ℕ} {s : 
   rw [val_spec hs hz ⟨dg, dh, hg, hh, hd, hy⟩, norm_mul, norm_mul, hnT, mul_assoc, mul_assoc] at this
   exact le_of_mul_le_mul_right this (mul_pos (norm_pos_iff.mpr hne) (pow_pos hT n))
 
+/- English proof (translation)
+Take `⟨⟨g₁, h₁⟩, r₁, n₁⟩` from `exists_rep_at hs hz`. Take `⟨⟨g₂, h₂⟩, r₂, n₂⟩` from `exists_rep_at ht hz`. Establish `r` using `rep_mul r₁ r₂`. Rewrite `r` using `[← he]`. Rewrite using `[val_eq hst hz r (by simpa using mul_ne_zero n₁ n₂), val_eq hs hz r₁ n₁, val_eq ht hz r₂ n₂]`.
+
+Simplify using `only [map_mul]`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_mul {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n m : ℕ} {s t st : Ω} (hs : s ∈ chartLat y A.a n)
     (ht : t ∈ chartLat y A.a m) (hst : st ∈ chartLat y A.a (n + m)) (he : st = s * t)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) :
@@ -184,6 +239,9 @@ theorem val_mul {y : (Σ k, ι k) → Ω} {A : HermLine ι} {n m : ℕ} {s t st 
   rw [pow_add]
   ring
 
+/- English proof (translation)
+Use `⟨fun k => (hrel k).choose, fun k h0 => (hrel k).choose_spec ?_⟩` and prove the remaining obligations. Use `show X _ ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`.
+-/
 theorem exists_chart {y : (Σ k, ι k) → Ω} (hrel : IsRelevant (mCoordIdeal y)) :
     ∃ c : ∀ k, ι k, ∀ k, y ⟨k, c k⟩ ≠ 0 := by
   refine ⟨fun k => (hrel k).choose, fun k h0 => (hrel k).choose_spec ?_⟩
@@ -191,6 +249,17 @@ theorem exists_chart {y : (Σ k, ι k) → Ω} (hrel : IsRelevant (mCoordIdeal y
   rw [RingHom.mem_ker]
   simp [mConeMap, h0]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_chart hrel`. Use `choose N δ G hG hdeg hGv using fun i => exists_chartForm y c hc (fun k => (n : ℤ) * a k) (hs i c hc)`. Establish `hN : ∀ i k, N i k ≤ ∑ j, N j k` using `fun i k => Finset.single_le_sum (f := fun j => N j k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Use `set L : K → ℕ := fun k => ∑ j, N j k + ((n : ℤ) * a k).natAbs with hL`. Use `⟨fun k => ((L k : ℤ) + n * a k).toNat, L, chartMon c L, fun i => G i * chartMon c (L - N i), homog_chartMon c L, fun i => homog_congr (homog_mul (hG i) (homog_chartMon c _)) fun k => ?_, fun k => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hdeg i k`. Establish `h2` using `hN i k`. Simplify using `only [Pi.add_apply, Pi.sub_apply, hL]`. Generalize the expression as in `(n : ℤ) * a k = q at *`. Generalize the expression as in `∑ j, N j k = S at *`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [hL]`. Generalize the expression as in `(n : ℤ) * a k = q`. Generalize the expression as in `∑ j, N j k = S`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[aeval_chartMon]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[map_mul, hGv i, aeval_chartMon, aeval_chartMon, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_add, Pi.sub_apply]`. Use `congr 1`. Establish `h2` using `hN i k`. Simplify using `only [hL]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem common_denom {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n r : ℕ} (hrel : IsRelevant (mCoordIdeal y))
     (s : Fin r → Ω) (hs : ∀ i, s i ∈ chartLat y a n) :
     ∃ (e e' : K → ℕ) (h : MRing ι) (g : Fin r → MRing ι),
@@ -229,6 +298,11 @@ end SectionPointValue
 
 open SectionPointValue in
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y A hrel hA`. Use `⟨fun n => w y A n, fun n s => val_continuousOn hA s.2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n s dg dh g h z hg hh hd hy hz`. Conclude with `val_spec s.2 hz ⟨dg, dh, hg, hh, hd, hy⟩`. Introduce `n s z hz`.
+
+Conclude with `secNormAt_eq s.2 hz`. Introduce `n k s t st he z hz`. Conclude with `val_mul s.2 t.2 st.2 he hz`. Introduce `n r s`. Conclude with `common_denom hrel (fun i => s i) fun i => (s i).2`.
+-/
 theorem SectionPointValue.proof : SectionPointValue.Statement := by
   intro K _ ι _ Ω _ y A hrel hA
   refine ⟨fun n => w y A n, fun n s => val_continuousOn hA s.2, ?_, ?_, ?_, ?_⟩

@@ -23,6 +23,9 @@ def SchF : Submodule ℂ ((Fin d → k) → V) where
   zero_mem' := ⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩
   smul_mem' := fun c f hf => ⟨hf.1.comp (fun v => c • v), hf.2.comp_left (smul_zero c)⟩
 
+/- English proof (translation)
+Conclude with `Continuous.matrix_mulVec continuous_const continuous_id`.
+-/
 theorem continuous_mulVec (g : GL (Fin d) k) :
     Continuous fun y : Fin d → k => (g : Matrix (Fin d) (Fin d) k).mulVec y := by
   exact Continuous.matrix_mulVec continuous_const continuous_id
@@ -50,11 +53,20 @@ def actF (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) : SchF k d
   map_add' f f' := Subtype.ext (funext fun y => map_add (X g) _ _)
   map_smul' c f := Subtype.ext (funext fun y => map_smul (X g) c _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shiftF_apply (x y : Fin d → k) (f : SchF k d V) : (shiftF x f).1 y = f.1 (y + x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actF_apply (X : Representation ℂ (GL (Fin d) k) V) (g : GL (Fin d) k) (f : SchF k d V) (y : Fin d → k) :
     (actF X g f).1 y = X g (f.1 (((g⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y)) := rfl
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem size_eq (m : ℕ) : (m + 1) + (m + 1) = ((m + 1) + m) + 1 := by omega
 
 def Rm (ψ : AddChar k Circle) {m : ℕ} (π₁ π₂ : GRep k (m + 1)) : MRep k (m + 1) :=

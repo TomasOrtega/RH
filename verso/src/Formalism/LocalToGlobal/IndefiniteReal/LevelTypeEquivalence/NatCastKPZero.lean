@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Unfold `lamAf Formalism.L2.Herm.hatL Formalism.UG.latS`. Rewrite using `[Set.image_eq_range]`. Both sides reduce to the same expression.
+-/
 theorem lamAf_eq_hatL (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) :
     (lamAf (F := D.host.F) Λ : Set (Fin V.rank → D.host.E ⊗[D.host.F] Formalism.MainNotions.S.Af D.host.F)) =
       (Formalism.L2.Herm.hatL (F := D.host.F) Λ : Set (Fin V.rank → D.host.E ⊗[D.host.F] Formalism.L2.Herm.Af D.host.F)) := by
@@ -19,6 +22,21 @@ theorem lamAf_eq_hatL (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
   rw [Set.image_eq_range]
   rfl
 
+/- English proof (translation)
+Establish `hsub : ∀ z ∈ Submodule.span (𝓞 D.host.E) (Formalism.BasicNotions.dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram Λ), z ∈ Formalism.BasicNotions.dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram Λ`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact hz`. Consider the case `zero`.
+
+Introduce `y _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.UG.hform]`. Consider the case `add a b _ _ ha hb`. Introduce `y hy`.
+
+Take `⟨u, hu⟩` from `ha y hy`. Take `⟨w, hw⟩` from `hb y hy`. Use `⟨u + w, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib] at hu hw ⊢`. Rewrite using `[map_add, hu, hw]`.
+
+Consider the case `smul c a _ ha`. Introduce `y hy`. Take `⟨u, hu⟩` from `ha y hy`. Use `⟨c * u, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram y (c • a) = algebraMap (𝓞 D.host.E) D.host.E c * Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram y a`.
+
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, hu]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hx` using `[← h]`. Conclude with `hsub x hx y hy`. Introduce `hx`.
+
+Rewrite using `[← h]`. Conclude with `Submodule.subset_span hx`.
+-/
 theorem dual_of_dualL {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (h : Formalism.L2.Herm.dualL D.sp.cm V Λ = Λ) (x : Fin V.rank → D.host.E) : x ∈ Λ ↔
       ∀ y ∈ Λ, Formalism.UG.hform (starRingEnd D.host.E) V.gram y x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -103,12 +121,20 @@ section Core
 
 variable {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
 
+/- English proof (translation)
+Rewrite using `[lamAf_eq_hatL]`. Conclude with `hF v`.
+-/
 theorem frame_mem (hF : Formalism.L2.DIV.IsFrame β Λ) (v : Fin V.rank → Lev.EAf D) :
     v ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)) ↔
       ∀ i, ((β⁻¹).val *ᵥ v) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   rw [lamAf_eq_hatL]
   exact hF v
 
+/- English proof (translation)
+Rewrite using `[frame_mem hF]`. Introduce `i`. Establish `e : ((β⁻¹).val *ᵥ (fun i => β.val i j)) i = ((β⁻¹).val * β.val) i j` using `rfl`. Rewrite using `[e, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem col_mem (hF : Formalism.L2.DIV.IsFrame β Λ) (j : Fin V.rank) :
     (fun i => β.val i j) ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)) := by
   rw [frame_mem hF]
@@ -119,6 +145,11 @@ theorem col_mem (hF : Formalism.L2.DIV.IsFrame β Λ) (j : Fin V.rank) :
   · exact Subring.one_mem _
   · exact Subring.zero_mem _
 
+/- English proof (translation)
+Establish `h` using `(frame_mem hF _).mp (hx _ (col_mem hF j)) i`. Establish `e : ((β⁻¹).val * x.val * β.val) i j = ((β⁻¹).val *ᵥ (x.val *ᵥ (fun i => β.val i j))) i`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem conj_int (hF : Formalism.L2.DIV.IsFrame β Λ) (x : GL (Fin V.rank) (Lev.EAf D))
     (hx : ∀ v, v ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)) →
       x.val *ᵥ v ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D))) (i j : Fin V.rank) :
@@ -139,6 +170,9 @@ def Stabs (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (g : GL (Fi
   ∀ v, v ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)) →
     g.val *ᵥ v ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D))
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc β.val (β⁻¹).val, Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc g.val (g⁻¹).val, Units.mul_inv, Matrix.one_mul, Units.inv_mul]`.
+-/
 theorem conj_mul (β g : GL (Fin V.rank) (Lev.EAf D)) :
     ((β⁻¹).val * g.val * β.val) * ((β⁻¹).val * (g⁻¹).val * β.val) = 1 := by
   simp only [Matrix.mul_assoc]
@@ -149,10 +183,16 @@ def yMat (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D))
     Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E) :=
   Matrix.of fun i j => ⟨((β⁻¹).val * g.val * β.val) i j, conj_int hF g hg i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem yMat_map (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (hg : Stabs Λ g) :
     (yMat hF g hg).map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype = (β⁻¹).val * g.val * β.val := by
   ext i j; rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun M : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E) => M.map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype` using `Matrix.map_injective Subtype.val_injective`. Apply `hinj` to reduce the goal to its premises. Establish `e : (yMat hF g hg * yMat hF g⁻¹ hgi).map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype = (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)).map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype`. Rewrite using `[Matrix.map_mul, yMat_map, yMat_map, conj_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `e`.
+-/
 theorem yMat_mul (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (hg : Stabs Λ g)
     (hgi : Stabs Λ g⁻¹) : yMat hF g hg * yMat hF g⁻¹ hgi = 1 := by
   have hinj : Function.Injective fun M : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E) =>
@@ -164,6 +204,9 @@ theorem yMat_mul (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev
     rw [Matrix.map_mul, yMat_map, yMat_map, conj_mul, Matrix.map_one _ (map_zero _) (map_one _)]
   exact e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem yMat_congr (hF : Formalism.L2.DIV.IsFrame β Λ) {g g' : GL (Fin V.rank) (Lev.EAf D)} (h : g = g') (hg : Stabs Λ g)
     (hg' : Stabs Λ g') : yMat hF g hg = yMat hF g' hg' := by
   subst h; rfl
@@ -178,6 +221,11 @@ def yOf (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) 
       rw [e] at h
       exact h⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show β.val * ((yMat hF g hg).map (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) * (β⁻¹).val = g.val`. Rewrite using `[yMat_map]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc β.val (β⁻¹).val, Units.mul_inv, Matrix.one_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem frGL_yOf (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (hg : Stabs Λ g) (hgi : Stabs Λ g⁻¹) :
     Formalism.L2.DIV.frGL β (yOf hF g hg hgi) = g := by
   apply Units.ext
@@ -187,6 +235,11 @@ theorem frGL_yOf (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev
   rw [← Matrix.mul_assoc β.val (β⁻¹).val, Units.mul_inv, Matrix.one_mul]
   simp
 
+/- English proof (translation)
+Establish `e1 : ((β⁻¹).val * g.val * β.val) i j = ((β⁻¹).val *ᵥ (g.val *ᵥ (fun i => β.val i j))) i`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `e2 : g.val *ᵥ (fun i => β.val i j) = (fun i => β.val i j) + (M : Lev.EAf D) • z`. Rewrite using `[← hgz, Matrix.sub_mulVec, Matrix.one_mulVec, add_sub_cancel]`.
+
+Establish `e3 : ((β⁻¹).val *ᵥ (fun i => β.val i j)) i = (1 : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) i j` using `by show ((β⁻¹).val * β.val) i j = _`. Rewrite using `[Units.inv_mul]`. Rewrite using `[e1, e2, Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, e3, smul_eq_mul]`.
+-/
 theorem conj_entry (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (M : ℕ) (j : Fin V.rank)
     (z : Fin V.rank → Lev.EAf D) (hgz : (g.val - 1) *ᵥ (fun i => β.val i j) = (M : Lev.EAf D) • z) (i : Fin V.rank) :
     ((β⁻¹).val * g.val * β.val) i j =
@@ -200,6 +253,11 @@ theorem conj_entry (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (L
     rw [Units.inv_mul]
   rw [e1, e2, Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, e3, smul_eq_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `have ht := conj_entry hF g M j z hgz i`. Use `ht.trans ?_` and prove the remaining obligations. Rewrite using `[Subring.coe_add, Subring.coe_mul, Subring.coe_natCast]`. Use `congr 1`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem ent_eq (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (hg : Stabs Λ g) (hgi : Stabs Λ g⁻¹)
     (M : ℕ) (j : Fin V.rank) (z : Fin V.rank → Lev.EAf D)
     (hgz : (g.val - 1) *ᵥ (fun i => β.val i j) = (M : Lev.EAf D) • z) (i : Fin V.rank)
@@ -216,17 +274,30 @@ theorem ent_eq (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.E
   · rfl
   · rfl
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal) M]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hP`.
+-/
 theorem natCast_kP_eq_zero_of_mem (PP : Formalism.L2.DIV.Pl D.host.E) (M : ℕ) (hP : ((M : 𝓞 D.host.E)) ∈ PP.asIdeal) :
     (M : Formalism.L2.DIV.kP PP) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk PP.asIdeal) M]
   exact Ideal.Quotient.eq_zero_iff_mem.mpr hP
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, map_nsmul, ← Nat.cast_smul_eq_nsmul (Formalism.L2.DIV.kP PP), natCast_kP_eq_zero_of_mem PP M hP, zero_smul, add_zero]`.
+-/
 theorem map_res_one (PP : Formalism.L2.DIV.Pl D.host.E) (M : ℕ) (hP : ((M : 𝓞 D.host.E)) ∈ PP.asIdeal)
     (S : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) :
     (RingHom.mapMatrix (Formalism.L2.DIV.resS D.host.F PP)) (1 + M • S) = 1 := by
   rw [map_add, map_one, map_nsmul, ← Nat.cast_smul_eq_nsmul (Formalism.L2.DIV.kP PP), natCast_kP_eq_zero_of_mem PP M hP, zero_smul,
     add_zero]
 
+/- English proof (translation)
+Use `choose z hz hgz using hM`. Establish `hs : ∀ i j, ((β⁻¹).val *ᵥ z j) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => (frame_mem hF (z j)).mp (hz j) i`. Set `S : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)` to `Matrix.of fun i j => ⟨_, hs i j⟩`. Establish `hY : (yOf hF g hg hgi).val = 1 + M • S`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]`. Conclude with `ent_eq hF g hg hgi M j (z j) (hgz j) i (hs i j)`. Establish `e1 : Formalism.L2.DIV.redFn β PP g = Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) (yOf hF g hg hgi)` using `by conv_lhs => rw [← frGL_yOf hF g hg hgi]`. Conclude with `Formalism.L2.DIV.redFn_frGL β PP _`. Rewrite using `[e1]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Establish `e2 : ((Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) (yOf hF g hg hgi) : GL (Fin V.rank) (Formalism.L2.DIV.kP PP)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.DIV.kP PP)) = (RingHom.mapMatrix (Formalism.L2.DIV.resS D.host.F PP)) (yOf hF g hg hgi).val` using `rfl`. Rewrite using `[e2, hY, map_res_one PP M hP S, Units.val_one]`.
+-/
 theorem redFn_yOf (hF : Formalism.L2.DIV.IsFrame β Λ) (g : GL (Fin V.rank) (Lev.EAf D)) (hg : Stabs Λ g) (hgi : Stabs Λ g⁻¹)
     (M : ℕ) (hM : ∀ j, ∃ z ∈ (lamAf (F := D.host.F) Λ : Set (Fin V.rank → Lev.EAf D)),
       (g.val - 1) *ᵥ (fun i => β.val i j) = (M : Lev.EAf D) • z) (PP : Formalism.L2.DIV.Pl D.host.E)

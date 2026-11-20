@@ -21,6 +21,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Pub.CxTwist
 
+/- English proof (translation)
+Use `⟨hγ.1, hγ.2.mono fun y' hy' => ⟨hy'.1, ⟨hS _ hy'.2.1, fun f hf => ?_⟩, hy'.2.2⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot.1 hf]`. Simplify using the standard rewrite rules.
+-/
 theorem isSheet_bot_of_isSetSheet {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     {S : Set ((Σ k, ι k) → ℂ)} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     (hS : ∀ z ∈ S, ∀ k, ∃ j, z ⟨k, j⟩ ≠ 0) {y : Fin e → ℂ} {w : ((k : K) → ι k) → ℂ}
@@ -29,6 +32,9 @@ theorem isSheet_bot_of_isSetSheet {K : Type} [Fintype K] {ι : K → Type} [∀ 
   rw [Ideal.mem_bot.1 hf]
   simp
 
+/- English proof (translation)
+The claim follows from `|setSheetDensity S Ψ (pot L) g y w| ≤ 3 ^ e * setSheetDensity S Ψ (pot N) g' y w := by intro K _ ι _ e L hL classical choose T hTs hTp hLTp using fun j => GroundTheory.Heights₂.Heights.Inter.SemiPosTwist.proof GroundTheory.Heights₂.Heights.Inter.TorusInvLevi.proof K ι (L j) (hL j …`.
+-/
 theorem exists_dominating_twist : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (e : ℕ) (L : Fin e → HermLine ι),
     (∀ j, IsSmoothHerm (L j)) →
     ∃ N : Fin e → HermLine ι, (∀ j, IsSmoothHerm (N j)) ∧

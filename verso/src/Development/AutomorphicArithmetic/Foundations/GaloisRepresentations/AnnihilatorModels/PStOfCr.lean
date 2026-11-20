@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `U _ m₁ m₂ hts _ ρ`. Establish `hm : m₂ = m₁`. Use `Module.ext' _ _ fun a u => ?_` and prove the remaining obligations. Establish `h` using `hts.smul_assoc a (1 : ℚ_[l]) u`. Rewrite `h` using `[smul_eq_mul, mul_one, @one_smul ℚ_[l] U _ m₁.toDistribMulAction.toMulAction]`.
+
+Conclude with `h.symm`. Substitute `hm` using the available equality. Take `⟨hfin, hb⟩` from `GlobalTheory.CrysSst.finrank_Dst_le P AI T ρ`. Rewrite using `[dinv_σSt]`. Conclude with `⟨hfin, by rw [mul_comm]; exact hb⟩`.
+-/
 private theorem boundQ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) :
     Bound (σSt P K) ℚ_[l] (finrank ℚ_[l] ↥(K0 K)) := by
   intro U _ m₁ m₂ hts _ ρ
@@ -18,6 +23,11 @@ private theorem boundQ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
   rw [dinv_σSt]
   exact ⟨hfin, by rw [mul_comm]; exact hb⟩
 
+/- English proof (translation)
+Proceed by induction on `f generalizing b with`. Consider the case `zero => simp [ψCr, ψSt]`. Consider the case `succ f ih`. Simplify using `only [ψCr, ψSt, pow_succ', Module.End.mul_apply] at ih ⊢`. Rewrite using `[← ih]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem pow_C {l : ℕ} [Fact l.Prime] (P : LocPrime l) (f : ℕ) (b : P.R.B) :
     (Polynomial.C ((ψCr P f) b) : Bst P) = (ψSt P f) (Polynomial.C b) := by
   induction f generalizing b with
@@ -27,6 +37,9 @@ private theorem pow_C {l : ℕ} [Fact l.Prime] (P : LocPrime l) (f : ℕ) (b : P
     rw [← ih]
     simp
 
+/- English proof (translation)
+Introduce `hP _ l _ P AI hT K V _ _ _ ρ hA`. Take `⟨T⟩` from `hT`. Establish `hB` using `boundQ P AI T K`. Establish `key : ∀ f : ℕ, _` using `fun f => hP ℚ_[l] ↥(GK K) P.R.B (Bst P) (σCr P K) (ψCr P f) (σSt P K) (ψSt P f) (Polynomial.CAlgHom : P.R.B →ₐ[ℚ_[l]] Bst P).toLinearMap Polynomial.C_injective (fun g b => (actSt_C P (g : GQ l) b).symm) (fun b => pow_C P f b) ℚ_[l] _ hB V ρ hA`. Conclude with `⟨(key 0).1, fun f q n T' h => (key f).2 q n T' h⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.stOfCr_of :
     AnnPer → BoundSt → StOfCr := by
   intro hP _ l _ P AI hT K V _ _ _ ρ hA

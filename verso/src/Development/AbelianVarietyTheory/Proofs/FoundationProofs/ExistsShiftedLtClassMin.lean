@@ -13,6 +13,9 @@ section Class
 
 variable {X : Type*} [AddCommGroup X]
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨w, _, h⟩ => ⟨w, by rw [h]; abel⟩, fun ⟨w, h⟩ => ⟨w, trivial, by rw [h]; abel⟩⟩`.
+-/
 theorem mk_eq_mk_iff (N : ℤ) (a b : X) :
     (Submodule.Quotient.mk b : QuotSMulTop N X) = Submodule.Quotient.mk a ↔ ∃ w, b = a + N • w := by
   rw [Submodule.Quotient.eq, Submodule.mem_smul_pointwise_iff_exists]
@@ -23,6 +26,9 @@ def classMin (Q : QuadraticMap ℤ X ℝ) (N : ℤ) (z : QuotSMulTop N X) : ℝ 
 
 variable {Q : QuadraticMap ℤ X ℝ} {N : ℤ}
 
+/- English proof (translation)
+Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN`. Rewrite using `[QuadraticMap.map_smul, map_zsmul, zsmul_eq_mul, zsmul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem shifted_zsmul (hN : N ≠ 0) (ν : X →+ ℝ) (μ : X) :
     Q (N • μ) / N + ν (N • μ) = N * (Q μ + ν μ) := by
   have hN' : (N : ℝ) ≠ 0 := by exact_mod_cast hN
@@ -30,11 +36,19 @@ theorem shifted_zsmul (hN : N ≠ 0) (ν : X →+ ℝ) (μ : X) :
   push_cast
   field_simp
 
+/- English proof (translation)
+Rewrite using `[shifted_zsmul hN.ne']`. Conclude with `mul_nonneg (by exact_mod_cast hN.le) (h μ)`.
+-/
 theorem shifted_zsmul_nonneg (hN : 0 < N) {ν : X →+ ℝ} (h : ∀ μ, 0 ≤ Q μ + ν μ) (μ : X) :
     0 ≤ Q (N • μ) / N + ν (N • μ) := by
   rw [shifted_zsmul hN.ne']
   exact mul_nonneg (by exact_mod_cast hN.le) (h μ)
 
+/- English proof (translation)
+Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Establish `e1 : Q (e + N • μ) / N + ν (e + N • μ) = Q e / N + ν e + (polar Q e μ + (N - 1) * Q μ + N * (Q μ / N + ν μ))`. Rewrite using `[map_add_zsmul, map_add, map_zsmul, zsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h` using `[polar_self, two_smul, abs_le]`. Establish `h1` using `mul_pos (sub_pos.2 hN) hμ`. Establish `h2` using `mul_nonneg hN0.le hF`. Rewrite using `[e1]`. Use polynomial arithmetic with `[h.1]`.
+-/
 theorem shifted_lt_add_zsmul {c : ℝ} (hc : 0 ≤ c) (hN : 1 + 2 * c < N) {ν : X →+ ℝ} {e μ : X}
     (hμ : 0 < Q μ) (hF : 0 ≤ Q μ / N + ν μ) (h : |polar Q e μ| ≤ c * polar Q μ μ) :
     Q e / N + ν e < Q (e + N • μ) / N + ν (e + N • μ) := by
@@ -50,6 +64,11 @@ theorem shifted_lt_add_zsmul {c : ℝ} (hc : 0 ≤ c) (hN : 1 + 2 * c < N) {ν :
   rw [e1]
   nlinarith [h.1]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `hν (AddMonoidHom.toIntLinearMap_injective (e.ext fun i => ?_))` and prove the remaining obligations. Establish `h2` using `(h i).2`. Rewrite `h2` using `[map_neg]`.
+
+Simplify using `using le_antisymm (by linarith) (h i).1`.
+-/
 theorem exists_basis_neg {ι : Type*} (e : Basis ι ℤ X) {ν : X →+ ℝ} (hν : ν ≠ 0) :
     ∃ i, ν (e i) < 0 ∨ ν (-e i) < 0 := by
   by_contra h
@@ -59,6 +78,9 @@ theorem exists_basis_neg {ι : Type*} (e : Basis ι ℤ X) {ν : X →+ ℝ} (h�
   rw [map_neg] at h2
   simpa using le_antisymm (by linarith) (h i).1
 
+/- English proof (translation)
+The claim follows from `eq_realExt Q _ (realExtension_one_tmul Q)`.
+-/
 theorem realExtension_eq_realExt (Q : QuadraticMap ℤ X ℝ) : realExtension Q = realExt Q :=
   eq_realExt Q _ (realExtension_one_tmul Q)
 
@@ -69,6 +91,21 @@ section Main
 variable {X : Type*} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
   {Q : QuadraticMap ℤ X ℝ} {N : ℤ} {d : ℕ}
 
+/- English proof (translation)
+Establish `hP` using `posDef_of_posDef_realExt hQ`. Establish `hc : (0 : ℝ) ≤ d * (2 : ℝ) ^ ((d : ℝ) / 2)` using `by positivity`. Rewrite `hN` using `[mul_assoc]`. Establish `hN1 : (1 : ℝ) < N` using `by linarith`. Establish `hN2 : 2 ≤ N`.
+
+Establish `: (1 : ℤ) < N` using `by exact_mod_cast hN1`. Use linear arithmetic over natural numbers and integers. Establish `hN0 : (0 : ℝ) < N` using `by linarith`. It suffices to establish `H : ∃ α : X, (∀ w, w ≠ 0 → Q α / N + ν α < Q (α + N • w) / N + ν (α + N • w)) ∧ ∀ w, Q α / N + ν α < Q (α + N • w) / N by`. Take `⟨α, h1, h2⟩` from `H`.
+
+Use `⟨α, ?_, h1, h2⟩` and prove the remaining obligations. Introduce and unpack `w rfl`. Establish `h3` using `h2 (-w)`. Rewrite `h3` using `[smul_neg, add_neg_cancel, map_zero, zero_div]`. Conclude with `h3.not_ge (shifted_zsmul_nonneg (by omega) h w)`.
+
+Take `⟨a, ha⟩` from `exists_global_min (realExtension_eq_realExt Q ▸ hQ) ν hN0`. Distinguish the cases in `hX : ∃ u, a = N • u`. Take `⟨u, rfl⟩` from `hX`. Establish `hF : ∀ x, 0 ≤ Q x / N + ν x` using `fun x => (shifted_zsmul_nonneg (by omega) h u).trans (ha x)`. Take `⟨e, he, -⟩` from `exists_reduced_basis_pairing_coord hd Q hQ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hvp⟩ : ∃ v, ν v < 0 ∧ ∀ μ, |polar Q v μ| ≤ d * (2 : ℝ) ^ ((d : ℝ) / 2) * polar Q μ μ := by`. Take `⟨i, hi | hi⟩` from `exists_basis_neg e hν`. Conclude with `⟨_, hi, he i⟩`. Conclude with `⟨_, hi, fun μ => by rw [polar_neg_left, abs_neg]; exact he i μ⟩`. Use `⟨v, fun w hw => shifted_lt_add_zsmul hc hN (hP w hw) (hF w) (hvp w), fun w => ?_⟩` and prove the remaining obligations.
+
+Use `(add_lt_of_neg_right _ hv).trans_le (div_le_div_of_nonneg_right ?_ hN0.le)` and prove the remaining obligations. Break down `eq_or_ne w 0 with rfl | hw` into its components or cases. Simplify using the standard rewrite rules. Conclude with `(lt_add_smul_of_abs_polar_le Q hc (by linarith) (hP w hw) (hvp w)).1.le`. Use `⟨a, fun w => lt_of_global_min hP ν hN2 ha, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `h0` using `ha 0`. Rewrite `h0` using `[map_zero, map_zero, zero_div, add_zero]`. Use `h0.trans_lt (div_pos (hP _ fun hw => hX ⟨-w, ?_⟩) hN0)` and prove the remaining obligations. Rewrite using `[smul_neg, eq_neg_iff_add_eq_zero, hw]`.
+-/
 theorem exists_shifted_lt (hd : finrank ℤ X = d) (hQ : (realExt Q).PosDef)
     (hN : 1 + 2 * d * (2 : ℝ) ^ ((d : ℝ) / 2) < N) {ν : X →+ ℝ} (hν : ν ≠ 0)
     (h : ∀ μ, 0 ≤ Q μ + ν μ) :
@@ -112,6 +149,9 @@ theorem exists_shifted_lt (hd : finrank ℤ X = d) (hQ : (realExt Q).PosDef)
     refine h0.trans_lt (div_pos (hP _ fun hw => hX ⟨-w, ?_⟩) hN0)
     rw [smul_neg, eq_neg_iff_add_eq_zero, hw]
 
+/- English proof (translation)
+Use `exists_shifted_lt rfl hQ (lt_of_le_of_lt ?_ hN) hν h` and prove the remaining obligations. Use `pairing_const_mono hg` as an intermediate fact. Rewrite using `[mul_assoc, mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_shifted_lt_of_le {g : ℕ} (hg : finrank ℤ X ≤ g) (hQ : (realExt Q).PosDef)
     (hN : 1 + 2 * g * (2 : ℝ) ^ ((g : ℝ) / 2) < N) {ν : X →+ ℝ} (hν : ν ≠ 0)
     (h : ∀ μ, 0 ≤ Q μ + ν μ) :
@@ -129,6 +169,11 @@ section Matrix
 
 open ReciprocityTheory.ReducedBases (SameClass IsMinInClass IsUniqueMinInClass)
 
+/- English proof (translation)
+Use `⟨Matrix.diagonal fun _ => 2, (Int.castAddHom ℝ).comp (Pi.evalAddMonoidHom (fun _ => ℤ) 0), Matrix.PosDef.diagonal fun _ => two_pos, fun h => ?_, fun μ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using DFunLike.congr_fun h 1`. Establish `h1 : 0 ≤ μ 0 ^ 2 + μ 0` using `by nlinarith [Int.le_self_sq (-μ 0)]`. Establish `h2 : (0 : ℝ) ≤ (μ 0 : ℝ) ^ 2 + μ 0` using `by exact_mod_cast h1`. Simplify using `[ReciprocityTheory.ReducedBases.Q, ReciprocityTheory.ReducedBases.polar, ReciprocityTheory.ReducedBases.toReal, dotProduct, Matrix.mulVec]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `rpow_half_sq 1`. Establish `h2 : (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) < 3 / 2` using `lt_of_pow_lt_pow_left₀ 2 (by norm_num) (by rw [h1]; norm_num)`. Move the coercions through the operations in `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example : ∃ (A : Matrix (Fin 1) (Fin 1) ℝ) (ν : (Fin 1 → ℤ) →+ ℝ), A.PosDef ∧ ν ≠ 0 ∧
     (∀ μ, 0 ≤ ReciprocityTheory.ReducedBases.Q A μ + ν μ) ∧
     1 + 2 * (1 : ℕ) * (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) < (4 : ℤ) := by

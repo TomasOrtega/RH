@@ -26,6 +26,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal
 
+/- English proof (translation)
+Distinguish the cases in `hl : v ∈ placesOver D.host.E (D.ntw.l i)`. Conclude with `⟨GlobalTheory.T.noDecompositionInvariants_aboveL_of_noHodgeJump D bkP i s hJ v hl, GlobalTheory.T.noInv_tateDual_of_hodge_of_noJump D bkP i s hT (GlobalTheory.T.hodge_of_attached D bkP i s hA) hJ v hl⟩`. Distinguish the cases in `hS : v ∈ Spl (X := D.ntw) i`. Break down `hS.1 with hg | hp` into its components or cases. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hg`.
+
+Conclude with `GlobalTheory.T.noInv_at_type_primes D i s h2 k (fun e => hl (e ▸ hk)) v hk`. Conclude with `GlobalTheory.T.noDecompositionInvariants_auxiliaryPrime D i s (GlobalTheory.T.unramified_of_attached D bkP i s hA) v (Finset.mem_coe.1 hp)`. Take `⟨ι, hι⟩` from `GlobalTheory.T.pure_of_attached D bkP i s hA`. Conclude with `GlobalTheory.T.noInv_away_of_pure D i s ι hι v hl hS`.
+-/
 theorem noInv_all_places (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i)
     (hT : ∃ AI, Nonempty (LocTied (D.ntw.l i) (D.loc (D.ntw.l i)) AI)) (h2 : ValuationStabilityAtRing D.ntw i s)
     (hA : TripleAtt D.naut bkP i s) (hJ : NoJump bkP i s) (v : HeightOneSpectrum (𝓞 D.host.E)) :
@@ -40,6 +45,11 @@ theorem noInv_all_places (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw)
   · obtain ⟨ι, hι⟩ := GlobalTheory.T.pure_of_attached D bkP i s hA
     exact GlobalTheory.T.noInv_away_of_pure D i s ι hι v hl hS
 
+/- English proof (translation)
+Introduce `D bkP hF hT h2 hA`. Establish `hJ : ∀ i, D.ntw.NonzeroIndexPlace i → ∀ s, NoJump bkP i s` using `fun i hi s => by`. Take `⟨ι, J, h, h'⟩` from `GlobalTheory.T.jumps_good_of_attached D bkP i s (hA i hi s)`. Conclude with `GlobalTheory.T.noHodgeJump_of_goodJumpMultiset D bkP i s ι J (GlobalTheory.T.hodge_of_attached D bkP i s (hA i hi s)) h h'`. Use `⟨fun i hi s => ?_, fun i hi s => ?_, fun i hi => ⟨trivial, fun s => ⟨?_, hJ i hi s⟩⟩⟩` and prove the remaining obligations.
+
+Take `⟨ι, J, h, h'⟩` from `GlobalTheory.T.jumps_good_of_attached D bkP i s (hA i hi s)`. Conclude with `GlobalTheory.T.isotypicValuationAtRing_of_unrRho_hodgeL_noInv_negCount D bkP i s (GlobalTheory.T.unramified_of_attached D bkP i s (hA i hi s)) (GlobalTheory.T.hodge_of_attached D bkP i s (hA i hi s)) (noInv_all_places D bkP i s (hT i hi) (h2 i hi s) (hA i hi s) (hJ i hi s)) (Glob …`. Conclude with `GlobalTheory.T.characterTwistExists_of_unrRho_of_hkFrob D i s (GlobalTheory.T.unramified_of_attached D bkP i s (hA i hi s)) (GlobalTheory.T.hkFrob_of_attached D bkP i s (hA i hi s))`. Conclude with `GlobalTheory.T.selfDual_lattice_of_conjDualCharpoly D i s (h2 i hi s) (GlobalTheory.T.conjDualCharpoly_of_splitFrobenius_dense D hF i s (GlobalTheory.T.frobDual_of_attached D bkP i s (hA i hi s)))`.
+-/
 theorem galois_hypotheses_of_attached : ∀ (D : D7) (bkP : BlochKatoReduction.BK D), GlobalTheory.TypeLeaf.FrobDense D → (∀ i, D.ntw.NonzeroIndexPlace i → (∃ AI, Nonempty (LocTied (D.ntw.l i) (D.loc (D.ntw.l i)) AI))) → BlochKatoReduction.adm2 D → (∀ i, D.ntw.NonzeroIndexPlace i → ∀ s, TripleAtt D.naut bkP i s) → BlochKatoReduction.adm1 bkP ∧ BlochKatoReduction.adm8 D ∧ ∀ i, D.ntw.NonzeroIndexPlace i → True ∧ ∀ s : D.ntw.Sig i, SelfDual i s ∧ NoJump bkP i s := by
   intro D bkP hF hT h2 hA
   have hJ : ∀ i, D.ntw.NonzeroIndexPlace i → ∀ s, NoJump bkP i s := fun i hi s => by

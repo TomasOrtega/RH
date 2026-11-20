@@ -7,6 +7,9 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY.LeviLarge
 
+/- English proof (translation)
+The claim follows from `((A.smooth_ph la i).contDiffAt ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hy))).of_le (WithTop.coe_le_coe.2 le_top)`.
+-/
 theorem contDiffAt_ph {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
     (A : WeightedAtlas n Y ι La) (la : La) (i : ι) {y : Y} (hy : y ∈ (A.chart i).source) :
@@ -14,6 +17,9 @@ theorem contDiffAt_ph {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [Sec
   ((A.smooth_ph la i).contDiffAt
     ((A.chart i).open_target.mem_nhds ((A.chart i).map_source hy))).of_le (WithTop.coe_le_coe.2 le_top)
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | k + 1 => by have e : A.ph (G + (k + 1) • H) i =ᶠ[𝓝 y] fun x => A.ph (G + k • H) i x + A.ph H i x := by filter_upwards [(A.chart i).open_source.mem_nhds hy] with x hx rw [succ_nsmul, ← add_assoc, A.ph_add _ _ i x hx] rw [leviAt_congr A i _ _ y hy e ξ, leviAt_add A …`.
+-/
 theorem leviAt_ph_nsmul {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
     (A : WeightedAtlas n Y ι La) (G H : La) (i : ι) {y : Y} (hy : y ∈ (A.chart i).source)
@@ -29,6 +35,15 @@ theorem leviAt_ph_nsmul {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [S
       leviAt_ph_nsmul A G H i hy ξ k]
     push_cast; ring
 
+/- English proof (translation)
+Establish `hS0 : 0 ≤ ∑ j, ‖ξ j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hS : ∀ j k, ‖ξ j‖ * ‖ξ k‖ ≤ 2 * ∑ j, ‖ξ j‖ ^ 2`. Introduce `j k`. Establish `h1 : ‖ξ j‖ ^ 2 ≤ ∑ j, ‖ξ j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖ξ j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ j)`. Establish `h2 : ‖ξ k‖ ^ 2 ≤ ∑ j, ‖ξ j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖ξ j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖ξ j‖ - ‖ξ k‖), norm_nonneg (ξ j), norm_nonneg (ξ k)]`. Establish `hnorm : ‖leviV n g u ξ‖ ≤ ∑ j, ∑ k, ‖wd n j (wdb n k g) u‖ * (2 * ∑ j, ‖ξ j‖ ^ 2)`. Unfold `leviV`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hS j k) (norm_nonneg _)`. Establish `h3 : ∑ j, ∑ k, ‖wd n j (wdb n k g) u‖ * (2 * ∑ j, ‖ξ j‖ ^ 2) = (∑ j, ∑ k, ‖wd n j (wdb n k g) u‖) * (2 * ∑ j, ‖ξ j‖ ^ 2)`. Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[Finset.sum_mul]`. Establish `h4` using `Complex.abs_re_le_norm (leviV n g u ξ)`.
+
+Establish `h5` using `neg_abs_le (leviV n g u ξ).re`. Establish `h6` using `mul_le_mul_of_nonneg_right hFu (by positivity : (0:ℝ) ≤ 2 * ∑ j, ‖ξ j‖ ^ 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_leviV_lower {n : ℕ} (g : V n → ℂ) (u : V n) (B : ℝ)
     (hFu : ∑ j, ∑ k, ‖wd n j (wdb n k g) u‖ ≤ B) (ξ : Fin n → ℂ) :
     -(2 * B) * ∑ j, ‖ξ j‖ ^ 2 ≤ (leviV n g u ξ).re := by
@@ -54,6 +69,17 @@ theorem re_leviV_lower {n : ℕ} (g : V n → ℂ) (u : V n) (B : ℝ)
   have h6 := mul_le_mul_of_nonneg_right hFu (by positivity : (0:ℝ) ≤ 2 * ∑ j, ‖ξ j‖ ^ 2)
   linarith
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A H G hH i K t hK hKU`. Establish `hU : IsOpen (A.chart i).target` using `(A.chart i).open_target`. Establish `hsm : ∀ la : La, ContDiffOn ℝ ∞ (fun v => ((A.ph la i ((A.chart i).symm v) : ℝ) : ℂ)) (A.chart i).target` using `fun la => Complex.ofRealCLM.contDiff.comp_contDiffOn (A.smooth_ph la i)`. Take `⟨c, hc, hcK⟩` from `levi_pos_compact hU (hsm H) hK hKU (fun u hu ζ hζ => by`. Establish `hyu` using `(A.chart i).map_target (hKU hu)`.
+
+Establish `hne : ζ.ofLp ≠ 0` using `by simpa using hζ`. Use `hH i _ hyu ζ.ofLp hne` as an intermediate fact. Simplify `this)` using `[WeightedAtlas.leviAt, (A.chart i).right_inv (hKU hu)]`. Establish `hF : ContinuousOn (fun u => ∑ j, ∑ k, ‖wd n j (wdb n k (fun v => ((A.ph G i ((A.chart i).symm v) : ℝ) : ℂ))) u‖) K` using `continuousOn_finsetSum _ fun j _ => continuousOn_finsetSum _ fun k _ => ((continuousOn_wd_wdb hU (hsm G) j k).mono hKU).norm`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn hF`.
+
+Use `⟨⌈(t + 2 * B) / c⌉₊, fun k hk v hv ξ => ?_⟩` and prove the remaining obligations. Establish `hy` using `(A.chart i).map_target (hKU hv)`. Rewrite using `[leviAt_ph_nsmul A G H i hy ξ k]`. Simplify using `only [WeightedAtlas.leviAt, (A.chart i).right_inv (hKU hv)]`. Establish `hFu` using `(le_abs_self _).trans ((Real.norm_eq_abs _).symm ▸ hB v hv)`.
+
+Establish `hG` using `re_leviV_lower _ v B hFu ξ`. Establish `hc'` using `hcK v hv (WithLp.toLp 2 ξ)`. Rewrite `hc'` using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [PiLp.toLp_apply, WithLp.ofLp_toLp] at hc'`. Establish `hk' : (t + 2 * B) / c ≤ k` using `(Nat.le_ceil _).trans (by exact_mod_cast hk)`.
+
+Establish `hkc : t + 2 * B ≤ k * c` using `by rwa [div_le_iff₀ hc] at hk'`. Establish `hS0 : 0 ≤ ∑ j, ‖ξ j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `h1` using `mul_le_mul_of_nonneg_left hc' (Nat.cast_nonneg (α := ℝ) k)`. Establish `h2` using `mul_le_mul_of_nonneg_right hkc hS0`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem curv_large : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ H G : La, (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∀ (i : ι) (K : Set (V n)) (t : ℝ), IsCompact K → K ⊆ (A.chart i).target → ∃ k0 : ℕ, ∀ k ≥ k0, ∀ v ∈ K, ∀ ξ : Fin n → ℂ, t * ∑ j, ‖ξ j‖ ^ 2 ≤ A.leviAt i (A.ph (G + k • H) i) ((A.chart i).symm v) ξ := by
   intro n Y _ _ _ _ _ ι La _ A H G hH i K t hK hKU
   have hU : IsOpen (A.chart i).target := (A.chart i).open_target

@@ -18,15 +18,28 @@ open GlobalTheory.AdelicU Formalism.UG
 
 namespace GlobalTheory.IsoColReal
 
+/- English proof (translation)
+Simplify using `[compInf, incA, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem compInf_incA {D : D7} (w : InfinitePlace D.host.F) (x : D.host.E) :
     compInf D.host.F D.host.E w (incA D x) = inclR (F := D.host.F) w.Completion x := by
   simp [compInf, incA, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem sigR_inclR_real {D : D7} (w : InfinitePlace D.host.F) (x : D.host.E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion D.sp.cm.sig (inclR (F := D.host.F) w.Completion x) = inclR (F := D.host.F) w.Completion (star x) := by
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
   rfl
 
+/- English proof (translation)
+Introduce `D T T₀ r d w`. Establish `hm : Matrix.map d.jX (compInf D.host.F D.host.E w) = d.e.map (inclR (F` using `D.host.F) w.Completion) := by`. Use extensionality with `i j`. Simplify using `[HypDec.jX, rat, compInf_incA]`. Establish `hc : Formalism.UG.cT (sigR w.Completion D.sp.cm.sig) (d.e.map (inclR (F` using `D.host.F) w.Completion)) = (d.eᴴ).map (inclR (F := D.host.F) w.Completion) := by`.
+
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, sigR_inclR_real]`. Establish `hJ : JR w.Completion T.gram = T.gram.map (inclR (F` using `D.host.F) w.Completion) := rfl`. Rewrite using `[hm, hc, hJ]`. Establish `h0` using `congrArg (fun M => M.map (inclR (F := D.host.F) w.Completion)) d.ee`.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_zero, map_zero] at h0`. Conclude with `h0`.
+-/
 theorem isotropic_at_real : ∀ {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (w : InfinitePlace D.host.F), (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion D.sp.cm.sig) (Matrix.map d.jX (compInf D.host.F D.host.E w)) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR w.Completion T.gram : Matrix (Fin r) (Fin T.rank) (TensorProduct D.host.F w.Completion D.host.E)) * Matrix.map d.jX (compInf D.host.F D.host.E w) = 0 := by
   intro D T T₀ r d w
   have hm : Matrix.map d.jX (compInf D.host.F D.host.E w) = d.e.map (inclR (F := D.host.F) w.Completion) := by

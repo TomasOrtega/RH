@@ -9,6 +9,9 @@ open DoubleCoset (doubleCoset)
 
 namespace GlobalTheory.CompanionTheory.SmoothBridge
 
+/- English proof (translation)
+Introduce `v`. Establish `h` using `(hρ v).preimage hψ`. Conclude with `h`.
+-/
 theorem isSmooth_comp {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (ψ : H →* G) (hψ : Continuous ψ) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (hρ : GlobalTheory.PRep.IsSmooth ρ) : GroundTheory.Automorphic.IsSmooth (ρ.comp ψ) := by
   intro v
   have h := (hρ v).preimage hψ

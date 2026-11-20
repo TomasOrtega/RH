@@ -13,6 +13,11 @@ variable {g : ℕ}
 
 def cx {m n : Type} (M : Matrix m n ℝ) : Matrix m n ℂ := M.map (fun t : ℝ => (t : ℂ))
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RealEmbeddingLemmaFirst.main`. Consider the case `exact _root_.GlobalTheory.RealEmbeddingLemmaFirst.main`. Consider the case `(apply _root_.GlobalTheory.RealEmbeddingLemmaFirst.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RealEmbeddingLemmaFirst.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RealEmbeddingLemmaFirst.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RealEmbeddingLemmaFirst.main ..)`.
+-/
 theorem cx_mul {m n k : Type} [Fintype n] (M : Matrix m n ℝ) (N : Matrix n k ℝ) :
     cx (M * N) = cx M * cx N := by
   first
@@ -23,6 +28,11 @@ theorem cx_mul {m n k : Type} [Fintype n] (M : Matrix m n ℝ) (N : Matrix n k �
   | (intros; apply @_root_.GlobalTheory.RealEmbeddingLemmaFirst.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RealEmbeddingLemmaFirst.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MapOfRealAdd.map_ofReal_add`. Consider the case `exact _root_.GlobalTheory.MapOfRealAdd.map_ofReal_add`. Consider the case `(apply _root_.GlobalTheory.MapOfRealAdd.map_ofReal_add <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MapOfRealAdd.map_ofReal_add <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MapOfRealAdd.map_ofReal_add <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MapOfRealAdd.map_ofReal_add ..)`.
+-/
 theorem cx_add {m n : Type} (M N : Matrix m n ℝ) : cx (M + N) = cx M + cx N := by
   first
   | exact @_root_.GlobalTheory.MapOfRealAdd.map_ofReal_add
@@ -32,6 +42,11 @@ theorem cx_add {m n : Type} (M N : Matrix m n ℝ) : cx (M + N) = cx M + cx N :=
   | (intros; apply @_root_.GlobalTheory.MapOfRealAdd.map_ofReal_add <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.MapOfRealAdd.map_ofReal_add ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RealEmbeddingLemmaSecond.main`. Consider the case `exact _root_.GlobalTheory.RealEmbeddingLemmaSecond.main`. Consider the case `(apply _root_.GlobalTheory.RealEmbeddingLemmaSecond.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RealEmbeddingLemmaSecond.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RealEmbeddingLemmaSecond.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RealEmbeddingLemmaSecond.main ..)`.
+-/
 theorem cx_sub {m n : Type} (M N : Matrix m n ℝ) : cx (M - N) = cx M - cx N := by
   first
   | exact @_root_.GlobalTheory.RealEmbeddingLemmaSecond.main
@@ -41,6 +56,11 @@ theorem cx_sub {m n : Type} (M N : Matrix m n ℝ) : cx (M - N) = cx M - cx N :=
   | (intros; apply @_root_.GlobalTheory.RealEmbeddingLemmaSecond.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RealEmbeddingLemmaSecond.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MapOfRealOne.map_ofReal_one`. Consider the case `exact _root_.GlobalTheory.MapOfRealOne.map_ofReal_one`. Consider the case `(apply _root_.GlobalTheory.MapOfRealOne.map_ofReal_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MapOfRealOne.map_ofReal_one <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MapOfRealOne.map_ofReal_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MapOfRealOne.map_ofReal_one ..)`.
+-/
 theorem cx_one {m : Type} [DecidableEq m] : cx (1 : Matrix m m ℝ) = 1 := by
   first
   | exact @_root_.GlobalTheory.MapOfRealOne.map_ofReal_one
@@ -50,21 +70,41 @@ theorem cx_one {m : Type} [DecidableEq m] : cx (1 : Matrix m m ℝ) = 1 := by
   | (intros; apply @_root_.GlobalTheory.MapOfRealOne.map_ofReal_one <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.MapOfRealOne.map_ofReal_one ..)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cx]`.
+-/
 theorem cx_zero {m n : Type} : cx (0 : Matrix m n ℝ) = 0 := by
   ext i j; simp [cx]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cx]`.
+-/
 theorem cx_transpose {m n : Type} (M : Matrix m n ℝ) : cx Mᵀ = (cx M)ᵀ := by
   ext i j; simp [cx]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cx]`.
+-/
 theorem cx_conjTranspose {m n : Type} (M : Matrix m n ℝ) : (cx M)ᴴ = cx Mᵀ := by
   ext i j; simp [cx]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem den_eq (γ : Sp g) (τ : Matrix (Fin g) (Fin g) ℂ) :
     den γ τ = cx γ.mat.toBlocks₂₁ * τ + cx γ.mat.toBlocks₂₂ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem moeb_eq (γ : Sp g) (τ : Matrix (Fin g) (Fin g) ℂ) :
     moeb γ τ = (cx γ.mat.toBlocks₁₁ * τ + cx γ.mat.toBlocks₁₂) * (den γ τ)⁻¹ := rfl
 
+/- English proof (translation)
+Establish `h : γ.mat ∈ symplecticGroup (Fin g) ℝ` using `γ.2`. Rewrite `h` using `[← fromBlocks_toBlocks γ.mat]`. Take `⟨h1, h2, h3⟩` from `SymplecticGroup.fromBlocks_mem_iff.1 h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, h1]`.
+
+Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, h2]`. Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, ← cx_sub, h3, cx_one]`.
+-/
 theorem rels (γ : Sp g) :
     (cx γ.mat.toBlocks₁₁)ᵀ * cx γ.mat.toBlocks₂₁ = (cx γ.mat.toBlocks₂₁)ᵀ * cx γ.mat.toBlocks₁₁ ∧
     (cx γ.mat.toBlocks₁₂)ᵀ * cx γ.mat.toBlocks₂₂ = (cx γ.mat.toBlocks₂₂)ᵀ * cx γ.mat.toBlocks₁₂ ∧
@@ -80,6 +120,11 @@ theorem rels (γ : Sp g) :
 section Skew
 variable {A B C D : Matrix (Fin g) (Fin g) ℂ}
 
+/- English proof (translation)
+Establish `h3' : Dᵀ * A - Bᵀ * C = 1`. Use `congrArg Matrix.transpose h3` as an intermediate fact. Simplify `this` using `[transpose_sub, transpose_mul]`. Establish `e : (Y * Cᵀ + Dᵀ) * (A * Z + B) - (Y * Aᵀ + Bᵀ) * (C * Z + D) = Y * (Cᵀ * A - Aᵀ * C) * Z - Y * (Aᵀ * D - Cᵀ * B) + (Dᵀ * A - Bᵀ * C) * Z + (Dᵀ * B - Bᵀ * D)` using `by noncomm_ring`. Rewrite using `[e, h1, h2, h3, h3']`.
+
+Use `noncomm_ring`.
+-/
 theorem skew (h1 : Aᵀ * C = Cᵀ * A) (h2 : Bᵀ * D = Dᵀ * B) (h3 : Aᵀ * D - Cᵀ * B = 1)
     (Y Z : Matrix (Fin g) (Fin g) ℂ) :
     (Y * Cᵀ + Dᵀ) * (A * Z + B) - (Y * Aᵀ + Bᵀ) * (C * Z + D) = Z - Y := by
@@ -94,6 +139,17 @@ theorem skew (h1 : Aᵀ * C = Cᵀ * A) (h2 : Bᵀ * D = Dᵀ * B) (h3 : Aᵀ * 
 
 end Skew
 
+/- English proof (translation)
+Use `set x : Fin g → ℝ := fun i => (v i).re`. Use `set y : Fin g → ℝ := fun i => (v i).im`. Establish `hre : (star v ⬝ᵥ (cx Y *ᵥ v)).re = x ⬝ᵥ (Y *ᵥ x) + y ⬝ᵥ (Y *ᵥ y)`. Simplify using `only [dotProduct, mulVec, cx, Matrix.map_apply, Pi.star_apply, Complex.re_sum, Finset.mul_sum, ← Finset.sum_add_distrib, x, y]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `simp [Complex.mul_re, Complex.conj_re, Complex.conj_im] <;> ring`. Rewrite `hre` using `[h, Complex.zero_re]`. Establish `hx` using `hY.posSemidef.dotProduct_mulVec_nonneg x`. Establish `hy` using `hY.posSemidef.dotProduct_mulVec_nonneg y`. Simplify using `only [star_trivial] at hx hy`.
+
+Establish `hx0 : x = 0`. Assume the negation of the conclusion as `hne`. Use `hY.dotProduct_mulVec_pos hne` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hy0 : y = 0`. Assume the negation of the conclusion as `hne`. Use `hY.dotProduct_mulVec_pos hne` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `congrFun hx0 i`. Conclude with `congrFun hy0 i`.
+-/
 theorem eq_zero_of_form {Y : Matrix (Fin g) (Fin g) ℝ} (hY : Y.PosDef) {v : Fin g → ℂ}
     (h : star v ⬝ᵥ (cx Y *ᵥ v) = 0) : v = 0 := by
   set x : Fin g → ℝ := fun i => (v i).re
@@ -128,6 +184,17 @@ namespace GlobalTheory.SympUnivGroup
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `rels γ`. Introduce `h0`. Take `⟨v, hv, hq⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hs` using `skew h1 h2 h3 τᴴ τ`. Establish `hD : (den γ τ)ᴴ = τᴴ * (cx γ.mat.toBlocks₂₁)ᵀ + (cx γ.mat.toBlocks₂₂)ᵀ`.
+
+Rewrite using `[den_eq, conjTranspose_add, conjTranspose_mul, cx_conjTranspose, cx_conjTranspose, cx_transpose, cx_transpose]`. Establish `hN : (cx γ.mat.toBlocks₁₁ * τ + cx γ.mat.toBlocks₁₂)ᴴ = τᴴ * (cx γ.mat.toBlocks₁₁)ᵀ + (cx γ.mat.toBlocks₁₂)ᵀ`. Rewrite using `[conjTranspose_add, conjTranspose_mul, cx_conjTranspose, cx_conjTranspose, cx_transpose, cx_transpose]`. Rewrite `hs` using `[← hD, ← hN, ← den_eq]`. Establish `hz : star v ⬝ᵥ ((τ - τᴴ) *ᵥ v) = 0`.
+
+Rewrite using `[← hs, sub_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, hq, mulVec_zero, sub_zero, dotProduct_mulVec, ← star_mulVec, hq]`. Simplify using the standard rewrite rules. Establish `hY : τ - τᴴ = (2 * Complex.I) • cx (τ.map Complex.im)`. Use extensionality with `i j`. Establish `hij : τ j i = τ i j` using `by simpa using congrFun (congrFun hτ.1 i) j`.
+
+Simplify using `only [Matrix.sub_apply, conjTranspose_apply, hij, Matrix.smul_apply, cx, map_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp [hij] <;> ring`. Rewrite `hz` using `[hY, smul_mulVec, dotProduct_smul, smul_eq_mul, mul_eq_zero]`. Break down `hz with hz | hz` into its components or cases. Evaluate the numerical expressions using `[Complex.ext_iff] at hz`.
+
+Conclude with `hv (eq_zero_of_form hτ.2 hz)`.
+-/
 theorem det_den_ne (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel τ) :
     (den γ τ).det ≠ 0 := by
   obtain ⟨h1, h2, h3⟩ := rels γ
@@ -156,6 +223,15 @@ theorem det_den_ne (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : IsSiegel
   · norm_num [Complex.ext_iff] at hz
   · exact hv (eq_zero_of_form hτ.2 hz)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `rels γ`. Establish `hs` using `skew h1 h2 h3 τ τ`. Rewrite `hs` using `[sub_self, sub_eq_zero]`. Establish `hτ' : τᵀ = τ` using `hτ`. Establish `hD : (den γ τ)ᵀ = τ * (cx γ.mat.toBlocks₂₁)ᵀ + (cx γ.mat.toBlocks₂₂)ᵀ`.
+
+Rewrite using `[den_eq, transpose_add, transpose_mul, hτ']`. Establish `hN : (cx γ.mat.toBlocks₁₁ * τ + cx γ.mat.toBlocks₁₂)ᵀ = τ * (cx γ.mat.toBlocks₁₁)ᵀ + (cx γ.mat.toBlocks₁₂)ᵀ`. Rewrite using `[transpose_add, transpose_mul, hτ']`. Rewrite `hs` using `[← hD, ← hN, ← den_eq]`. Establish `hu : IsUnit (den γ τ).det` using `Ne.isUnit hd`.
+
+Establish `hut : IsUnit (den γ τ)ᵀ.det` using `by rwa [det_transpose]`. Use `show (moeb γ τ)ᵀ = moeb γ τ`. Rewrite using `[moeb_eq, transpose_mul, transpose_nonsing_inv]`. Use `set D := den γ τ`. Use `set N := cx γ.mat.toBlocks₁₁ * τ + cx γ.mat.toBlocks₁₂`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = Dᵀ⁻¹ * (Dᵀ * N) * D⁻¹ := by rw [hs]`. Use `_ = N * D⁻¹ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hut, Matrix.one_mul]`.
+-/
 theorem moeb_symm (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     (hd : (den γ τ).det ≠ 0) : (moeb γ τ).IsSymm := by
   obtain ⟨h1, h2, h3⟩ := rels γ
@@ -180,6 +256,9 @@ theorem moeb_symm (γ : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm
     _ = Dᵀ⁻¹ * (Dᵀ * N) * D⁻¹ := by rw [hs]
     _ = N * D⁻¹ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ hut, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h : (γ * γ').mat = γ.mat * γ'.mat` using `rfl`. Rewrite `h` using `[← fromBlocks_toBlocks γ.mat, ← fromBlocks_toBlocks γ'.mat, fromBlocks_multiply]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [h] <;> simp`.
+-/
 theorem blocks_mul (γ γ' : Sp g) :
     (γ * γ').mat.toBlocks₁₁ = γ.mat.toBlocks₁₁ * γ'.mat.toBlocks₁₁ + γ.mat.toBlocks₁₂ * γ'.mat.toBlocks₂₁ ∧
     (γ * γ').mat.toBlocks₁₂ = γ.mat.toBlocks₁₁ * γ'.mat.toBlocks₁₂ + γ.mat.toBlocks₁₂ * γ'.mat.toBlocks₂₂ ∧
@@ -189,6 +268,11 @@ theorem blocks_mul (γ γ' : Sp g) :
   rw [← fromBlocks_toBlocks γ.mat, ← fromBlocks_toBlocks γ'.mat, fromBlocks_multiply] at h
   refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [h] <;> simp
 
+/- English proof (translation)
+Take `⟨-, -, m3, m4⟩` from `blocks_mul γ γ'`. Establish `hW : moeb γ' τ * den γ' τ = cx γ'.mat.toBlocks₁₁ * τ + cx γ'.mat.toBlocks₁₂`. Rewrite using `[moeb_eq, Matrix.mul_assoc, nonsing_inv_mul _ (Ne.isUnit hd), Matrix.mul_one]`. Establish `e : den γ (moeb γ' τ) * den γ' τ = cx γ.mat.toBlocks₂₁ * (moeb γ' τ * den γ' τ) + cx γ.mat.toBlocks₂₂ * den γ' τ`. Rewrite using `[den_eq γ (moeb γ' τ), Matrix.add_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[den_eq (γ * γ'), m3, m4, cx_add, cx_add, cx_mul, cx_mul, cx_mul, cx_mul, e, hW, den_eq γ']`. Use `noncomm_ring`.
+-/
 theorem den_mul (γ γ' : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hd : (den γ' τ).det ≠ 0) :
     den (γ * γ') τ = den γ (moeb γ' τ) * den γ' τ := by
   obtain ⟨-, -, m3, m4⟩ := blocks_mul γ γ'
@@ -200,6 +284,11 @@ theorem den_mul (γ γ' : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hd : (den γ'
   rw [den_eq (γ * γ'), m3, m4, cx_add, cx_add, cx_mul, cx_mul, cx_mul, cx_mul, e, hW, den_eq γ']
   noncomm_ring
 
+/- English proof (translation)
+Take `⟨m1, m2, -, -⟩` from `blocks_mul γ γ'`. Establish `hW : moeb γ' τ * den γ' τ = cx γ'.mat.toBlocks₁₁ * τ + cx γ'.mat.toBlocks₁₂`. Rewrite using `[moeb_eq, Matrix.mul_assoc, nonsing_inv_mul _ (Ne.isUnit hd), Matrix.mul_one]`. Establish `hnum : cx (γ * γ').mat.toBlocks₁₁ * τ + cx (γ * γ').mat.toBlocks₁₂ = (cx γ.mat.toBlocks₁₁ * moeb γ' τ + cx γ.mat.toBlocks₁₂) * den γ' τ`. Establish `e : (cx γ.mat.toBlocks₁₁ * moeb γ' τ + cx γ.mat.toBlocks₁₂) * den γ' τ = cx γ.mat.toBlocks₁₁ * (moeb γ' τ * den γ' τ) + cx γ.mat.toBlocks₁₂ * den γ' τ`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[m1, m2, cx_add, cx_add, cx_mul, cx_mul, cx_mul, cx_mul, e, hW, den_eq γ']`. Use `noncomm_ring`. Rewrite using `[moeb_eq (γ * γ'), hnum, den_mul γ γ' hd, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc (den γ' τ), mul_nonsing_inv _ (Ne.isUnit hd), Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem moeb_mul (γ γ' : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hd : (den γ' τ).det ≠ 0) :
     moeb (γ * γ') τ = moeb γ (moeb γ' τ) := by
   obtain ⟨m1, m2, -, -⟩ := blocks_mul γ γ'
@@ -216,17 +305,34 @@ theorem moeb_mul (γ γ' : Sp g) {τ : Matrix (Fin g) (Fin g) ℂ} (hd : (den γ
     ← Matrix.mul_assoc (den γ' τ), mul_nonsing_inv _ (Ne.isUnit hd), Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij : A j i = A i j` using `by simpa using congrFun (congrFun hA i) j`. Simplify using `[tauU, symPart, hij]`.
+-/
 theorem tauU_symPart {A : Matrix (Fin g) (Fin g) ℂ} (hA : A.IsSymm) : tauU (symPart A) = A := by
   ext i j
   have hij : A j i = A i j := by simpa using congrFun (congrFun hA i) j
   simp [tauU, symPart, hij]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Establish `hij : s.1 j i = s.1 i j` using `(s.2 i j).symm`. Simplify using `[tauU, symPart, hij]`.
+-/
 theorem symPart_tauU (s : symMat g) : symPart (tauU s) = s := by
   apply Subtype.ext
   funext i j
   have hij : s.1 j i = s.1 i j := (s.2 i j).symm
   simp [tauU, symPart, hij]
 
+/- English proof (translation)
+Introduce `g`. Use `⟨fun P _ => ?_, fun γ γ' P hP => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Sp g).mat = 1` using `rfl`. Establish `b11 : (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ).toBlocks₁₁ = 1`. Use extensionality with `i j`.
+
+Simplify using `[toBlocks₁₁, one_apply]`. Establish `b12 : (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ).toBlocks₁₂ = 0`. Use extensionality with `i j`. Simplify using `[toBlocks₁₂, one_apply]`. Establish `b21 : (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ).toBlocks₂₁ = 0`.
+
+Use extensionality with `i j`. Simplify using `[toBlocks₂₁, one_apply]`. Establish `b22 : (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ).toBlocks₂₂ = 1`. Use extensionality with `i j`. Simplify using `[toBlocks₂₂, one_apply]`.
+
+Establish `hden : den 1 (tauU P.1) = 1`. Rewrite using `[den_eq, h1, b21, b22, cx_zero, cx_one, Matrix.zero_mul, zero_add]`. Establish `hmoeb : moeb 1 (tauU P.1) = tauU P.1`. Rewrite using `[moeb_eq, hden, h1, b11, b12, cx_zero, cx_one, Matrix.one_mul, add_zero, inv_one, Matrix.mul_one]`. Simplify using `only [actU, hmoeb, hden, inv_one, vecMul_one, symPart_tauU]`.
+
+Establish `hτ : IsSiegel (tauU P.1)` using `hP.1`. Establish `hd` using `det_den_ne γ' hτ`. Establish `hsym` using `moeb_symm γ' hτ.1 hd`. Simplify using `only [actU, tauU_symPart hsym, moeb_mul γ γ' hd, den_mul γ γ' hd, vecMul_vecMul, Matrix.mul_inv_rev]`.
+-/
 theorem group_action : ∀ g : ℕ, (∀ P ∈ cov (siegel g) g, actU 1 P = P) ∧
     (∀ γ γ' : Sp g, ∀ P ∈ cov (siegel g) g, actU (γ * γ') P = actU γ (actU γ' P)) := by
   intro g

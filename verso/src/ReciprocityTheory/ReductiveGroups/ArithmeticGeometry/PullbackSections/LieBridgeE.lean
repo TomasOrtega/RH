@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
 
+/- English proof (translation)
+Apply `tanM_ext` to reduce the goal to its premises. Use `first`. Consider the case `rfl`. Consider the case `exact Over.OverMorphism.ext rfl`. Consider the case `(ext; rfl)`.
+
+Consider the case `(ext1; simp [tvOf, tv, mkT])`. Consider the case `simp [tvOf, tv, mkT]`.
+-/
 theorem tvOf_tv {x : Sp S ⟶ Xo.X} (n : TanM x Xo.univ.t.G) :
     tvOf (isTanAtG_of (t := Xo.univ.t) (x0 := x) (tv n) (tv_mem n)) = n := by
   apply tanM_ext
@@ -22,6 +27,11 @@ theorem tvOf_tv {x : Sp S ⟶ Xo.X} (n : TanM x Xo.univ.t.G) :
     | (ext1; simp [tvOf, tv, mkT])
     | simp [tvOf, tv, mkT]
 
+/- English proof (translation)
+Establish `hw` using `isTanAtG_of (t := Xo.univ.t) (x0 := y.x) (tv n) (tv_mem n)`. Establish `hE` using `(eigAt_iff c hw τ).2 (by rw [tvOf_tv]; exact hn)`. Take `⟨a, ha, huniq⟩` from `y.basis τ _ hw hE`. Use `⟨a, ?_, fun a' h' => huniq a' ((combAt_iff (y.u τ) (y.tan τ) a' hw).2 ?_)⟩` and prove the remaining obligations. Establish `h1` using `(combAt_iff (y.u τ) (y.tan τ) a hw).1 ha`.
+
+Rewrite `h1` using `[tvOf_tv]`. Conclude with `h1`. Rewrite using `[tvOf_tv]`. Conclude with `h'`.
+-/
 theorem eig_coords (y : FrPt Xo c S) (τ : E →+* ℂ) (n : TanM y.x Xo.univ.t.G)
     (hn : IsEigV (actR (x0 := y.x) (S := S) Xo.univ.t.act) (embK c τ) n) :
     ∃! a : Fin (Dw.mult τ) → S, n = ∑ i, a i • tvOf (y.tan τ i) := by
@@ -35,6 +45,9 @@ theorem eig_coords (y : FrPt Xo c S) (τ : E →+* ℂ) (n : TanM y.x Xo.univ.t.
   · rw [tvOf_tv]
     exact h'
 
+/- English proof (translation)
+Introduce `b`. Rewrite using `[map_sum]`. Use `(Finset.sum_congr rfl fun i _ => ?_).trans Finset.smul_sum.symm` and prove the remaining obligations. Rewrite using `[map_smul, hv i b]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem eig_comb {x : Sp S ⟶ Xo.X} (τ : E →+* ℂ) {m : ℕ} (v : Fin m → TanM x Xo.univ.t.G)
     (hv : ∀ i, IsEigV (actR (x0 := x) (S := S) Xo.univ.t.act) (embK c τ) (v i)) (a : Fin m → S) :
     IsEigV (actR (x0 := x) (S := S) Xo.univ.t.act) (embK c τ) (∑ i, a i • v i) := by
@@ -47,10 +60,24 @@ theorem eig_comb {x : Sp S ⟶ Xo.X} (τ : E →+* ℂ) {m : ℕ} (v : Fin m →
 def fullB (y : FrPt Xo c S) : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → TanM y.x Xo.univ.t.G :=
   fun k => tvOf (y.tan k.1 k.2)
 
+/- English proof (translation)
+The claim follows from `(eigAt_iff c (y.tan τ i) τ).1 (y.eig τ i)`.
+-/
 theorem fullB_eig (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     IsEigV (actR (x0 := y.x) (S := S) Xo.univ.t.act) (embK c τ) (fullB y ⟨τ, i⟩) :=
   (eigAt_iff c (y.tan τ i) τ).1 (y.eig τ i)
 
+/- English proof (translation)
+Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨f, hf, hfs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`. Set `ρ` to `actR (x0 := y.x) (S := S) Xo.univ.t.act`. Establish `hsum : ∑ τ, proj ρ (embK c) α τ m = m`. Use `congrArg (fun e : Module.End S (TanM y.x Xo.univ.t.G) => e m) (sum_proj ρ (embK c) α hinj)` as an intermediate fact.
+
+Simplify `this` using `[LinearMap.sum_apply]`. Establish `hE : ∀ τ, IsEigV ρ (embK c τ) (proj ρ (embK c) α τ m)` using `fun τ => eig_of_alpha ρ (embK c) α hN τ (proj_eig_alpha ρ (embK c) α hinj f hf hfs τ m)`. Use `choose a ha hu using fun τ => eig_coords y τ (proj ρ (embK c) α τ m) (hE τ)`. Use `⟨fun k => a k.1 k.2, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `show m = ∑ k : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), a k.1 k.2 • fullB y k`.
+
+Rewrite using `[Fintype.sum_sigma]`. Use `conv_lhs => rw [← hsum]`. Conclude with `Finset.sum_congr rfl fun τ _ => ha τ`. Establish `hb' : m = ∑ k : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), b k • fullB y k` using `hb`. Rewrite `hb'` using `[Fintype.sum_sigma]`.
+
+Use function extensionality and compare the values at `k`. Take `⟨τ, i⟩` from `k`. Establish `hn` using `proj_sum_eig ρ (embK c) α hinj (fun τ => ∑ i, b ⟨τ, i⟩ • fullB y ⟨τ, i⟩) (fun τ => eig_comb τ _ (fun i => fullB_eig y τ i) _) τ`. Rewrite `hn` using `[← hb']`. Use `hu τ (fun i => b ⟨τ, i⟩) hn` as an intermediate fact.
+
+Conclude with `congrFun this i`.
+-/
 theorem fullB_basis (y : FrPt Xo c S) (m : TanM y.x Xo.univ.t.G) :
     ∃! a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → S, m = ∑ k, a k • fullB y k := by
   classical

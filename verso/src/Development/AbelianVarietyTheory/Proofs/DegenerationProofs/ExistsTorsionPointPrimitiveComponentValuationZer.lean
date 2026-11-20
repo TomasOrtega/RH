@@ -20,6 +20,19 @@ noncomputable section
 namespace GlobalTheory.OneBasis.UnitTerm
 open TWM TWO
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `not_forall.1 hσ`. Establish `hsm` using `P.isAb.smooth`. Set `p : (Over.mk t ⊗ P.A).left ⟶ Spec (CommRingCat.of K)` to `(fst (Over.mk t) P.A).left`. Establish `hp : Smooth p` using `inferInstanceAs (Smooth (pullback.fst t P.A.hom))`. Establish `: IsReduced (Over.mk t ⊗ P.A).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced p`.
+
+Take `⟨P', g, hg, -, hmul, -⟩` from `hL.polBaseChange _ _ t P`. Set `e : P'.A.left ≅ (Over.mk t ⊗ P.A).left` to `hg.flip.isoPullback`. Set `W` to `(Over.mk t ⊗ P.A).left.basicOpen (σ.f j)`. Establish `hW : (W : Set (Over.mk t ⊗ P.A).left).Nonempty` using `Set.nonempty_iff_ne_empty.2 fun h => hj ((basicOpen_eq_bot_iff _).1 (SetLike.coe_injective h))`. Take `⟨y, hy⟩` from `hW`.
+
+Take `⟨_, hq, hq'⟩` from `(PrimePowerTorsion.dense_torsion hL.ample hL.kerPow hL.irred K P' l hl hK).inter_open_nonempty (e.hom ⁻¹ᵁ W) (e.hom ⁻¹ᵁ W).isOpen ⟨e.inv y, by show e.hom (e.inv y) ∈ W`. Rewrite using `[← Scheme.Hom.comp_apply, e.inv_hom_id]`. Conclude with `hy⟩`. Take `⟨x, ⟨m, hx⟩, q, rfl⟩` from `Set.mem_iUnion₂.1 hq'`. Set `Φ : (𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ P'.A) →* (Over.mk (𝟙 _ ≫ t) ⟶ P.A)` to `MonoidHom.mk' (fun x => toBase hg.w x) (hmul _)`.
+
+Set `ρ : Over.mk t ⟶ Over.mk (𝟙 _ ≫ t)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Establish `er : (lift (𝟙 (Over.mk t)) (ρ ≫ Φ x)).left = x.left ≫ e.hom`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Use `(congrArg (fun q => q.left) (lift_fst (𝟙 (Over.mk t)) (ρ ≫ Φ x))).trans ?_` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) hg.flip.isoPullback_hom_fst).trans (Over.w x))).symm`.
+
+Use `(congrArg (fun q => q.left) (lift_snd (𝟙 (Over.mk t)) (ρ ≫ Φ x))).trans ?_` and prove the remaining obligations. Conclude with `(Category.id_comp _).trans ((Category.assoc _ _ _).trans (congrArg (x.left ≫ ·) hg.flip.isoPullback_hom_snd)).symm`. Use `⟨ρ ≫ Φ x, m, by rw [← MonObj.comp_pow, ← map_pow, hx, map_one, MonObj.comp_one], fun z J hJ => ?_⟩` and prove the remaining obligations. Take `rfl : z = q` from `H1.SquareUnits.spec_pt_eq z q`. Establish `hz : (lift (𝟙 (Over.mk t)) (ρ ≫ Φ x)).left z ∈ W` using `by rw [er]; exact hq`.
+
+Conclude with `H1.SectionArithmetic.isUnit_sval σ _ z hJ j hz`.
+-/
 theorem exists_torsion_isUnit (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field K] [IsAlgClosed K]
     (t : Spec (CommRingCat.of K) ⟶ S) {I : Type} [Fintype I] {φ : I → ((Over.mk t ⊗ P.A).left ⟶ P.A.left)}
     {ε : I → ℤ} (σ : LB.Sec (LB.LinComb P.L φ ε)) (hσ : ¬ ∀ j, σ.f j = 0) {l : ℕ} (hl : 2 ≤ l) (hK : (l : K) ≠ 0) :
@@ -56,11 +69,21 @@ theorem exists_torsion_isUnit (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Ty
   have hz : (lift (𝟙 (Over.mk t)) (ρ ≫ Φ x)).left z ∈ W := by rw [er]; exact hq
   exact H1.SectionArithmetic.isUnit_sval σ _ z hJ j hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun j => ∑ i, (SecOps.secScale (b i) (t i)).f j, fun i j => by simp only [map_sum, (SecOps.secScale _ _).compat, Finset.mul_sum]⟩, fun _ => rfl⟩`.
+-/
 theorem exists_sec_lin {Y : Scheme.{0}} {M : LB Y} {n : ℕ} (b : Fin n → Γ(Y, ⊤)) (t : Fin n → LB.Sec M) :
     ∃ s : LB.Sec M, ∀ j, s.f j = ∑ i, resTop _ (b i) * (t i).f j :=
   ⟨⟨fun j => ∑ i, (SecOps.secScale (b i) (t i)).f j, fun i j => by
     simp only [map_sum, (SecOps.secScale _ _).compat, Finset.mul_sum]⟩, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_sec_lin (fun i => (fst (Over.mk t) D.P.A).left.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (a i))) (fun i => DVR.pullSec D.P.L (D.famφB α) (DegPre.famε k) (b i) (snd (Over.mk t) D.P.A).left)`. Take `⟨x, j, hx, hu⟩` from `exists_torsion_isUnit hL D.P t σ (fun h => by`. Take `⟨i, hi⟩` from `ha`. Establish `e` using `(hb σ).unique (y₁ := fun i => (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (a i)) (y₂ := 0) hσ (fun j => (h j).trans (Finset.sum_eq_zero fun i _ => by`. Rewrite using `[Pi.zero_apply, map_zero, map_zero, MulZeroClass.zero_mul]).symm)`.
+
+Conclude with `hi ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1 ((congrFun e i).trans (map_zero _).symm))) hl hK`. Use `⟨x, j, hx, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `q` using `hu z J hJ`. Rewrite `q` using `[SectionScalarValuation.sval_lin _ _ hσ _ z hJ]`. Use `(congrArg IsUnit (Finset.sum_congr rfl fun i _ => ?_)).mp q` and prove the remaining obligations.
+
+Rewrite using `[SectionScalarValuation.sval_pullSec _ _ _ _ _ z hJ, IntegralCoord.gs_appTop, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem exists_torsion_sum (hL : Laws) {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {k : ℕ} {α : D.X} {m : ℕ}
     (b : Fin m → D.SecB k α) {K : Type} [Field K] [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of R))
     (hb : IsSecBasis (T := Over.mk t) (A := D.P.A) _
@@ -90,6 +113,11 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
 
+/- English proof (translation)
+Use `letI := TorusExt.gtGroup D.toPre F`. Use `choose l hl hu using fun g : GtPtF D.toPre F => CoefVal.exists_gtV (hϖ := hϖ) (hv := hv) g`. Set `L : GtPtF D.toPre F →+ (D.toPre.X →+ ℚ)` to `AddMonoidHom.mk' l fun g g' => (hu (g + g') (l g + l g') (CoefVal.gtV_add ((TorusExt.isAdd_iff_eq _ _ _).2 rfl) (hl g) (hl g'))).symm`. Establish `e : N • l g = 0` using `by show N • L g = 0`. Rewrite using `[← map_nsmul, hg, map_zero]`.
+
+Establish `e' : l g χ = 0`. Use `DFunLike.congr_fun e χ` as an intermediate fact. Simplify `this` using `[hN]`. Rewrite using `[← e']`. Conclude with `hl g χ`.
+-/
 theorem genV_torsion {N : ℕ} (hN : N ≠ 0) (g : GtPtF D.toPre F)
     (hg : letI := TorusExt.gtGroup D.toPre F; N • g = 0) (χ : D.toPre.X) : GenV hϖ hv (g.s χ) 0 := by
   letI := TorusExt.gtGroup D.toPre F
@@ -105,6 +133,15 @@ theorem genV_torsion {N : ℕ} (hN : N ≠ 0) (g : GtPtF D.toPre F)
   rw [← e']
   exact hl g χ
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨G₀, hG₀⟩` from `exists_gen_of_local (V := Ov v) D.toPre.P.L hL (fun i => x.left ≫ DegPre.famφB D.toPre α i) (DegPre.famε k)`. Use `choose y hy using fun i => TwistUnit.exists_ratio_local (R := Ov v) hL (H1.SectionArithmetic.pullSec (b i) x.left) G₀ hG₀`. Establish `key : ∀ {E : Type} [CommRing E] (φ : Ov v →+* E) (z : Spec (CommRingCat.of E)) J, Good D.toPre.P.L z J → ∑ i, gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of E)).inv.hom (φ (a i))) * sval (b i) (Spec.map (CommRingCat.ofHom φ) ≫ x.left) z J = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRin …` using `fun φ z J hJ => by`. Rewrite using `[map_sum, map_sum, SectionScalarValuation.gs_sum _ z ⊤ trivial, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `gs_pull (𝟙 _) (Spec.map (CommRingCat.ofHom φ)) z ⊤ trivial (y i)`. Rewrite `e` using `[Category.id_comp]`. Establish `e'` using `e.symm.trans (congrArg (gs (𝟙 _) z ⊤) (appTop_specMap (CommRingCat.ofHom φ) (y i)))`. Establish `q` using `(H1.SectionArithmetic.sval_pullSec (b i) x.left _ z hJ).symm.trans (hy i _ (Spec.map (CommRingCat.ofHom φ)) z J hJ)`.
+
+Rewrite using `[map_mul, map_mul, gs_mul _ z ⊤ trivial, _root_.mul_assoc]`. Conclude with `congrArg (_ * ·) (q.trans (congrArg (· * _) e'))`. Establish `hc : IsUnit (∑ i, a i * (Scheme.ΓSpecIso (CommRingCat.of (Ov v))).hom.hom (y i))`. Set `z₀ : Spec (CommRingCat.of (ResidueField (Ov v)))` to `closedPoint _`. Take `⟨J, hJ⟩` from `CoefBasic.exists_good' hL z₀`.
+
+Establish `h₁` using `isUnit_of_mul_isUnit_left ((congrArg IsUnit (key (residue _) z₀ J hJ)).mp (hu z₀ J hJ))`. Use `isUnit_of_map_unit (residue _) _ (IsUnit.mk0 _ fun h0 => ?_)` and prove the remaining obligations. Rewrite `h₁` using `[h0, map_zero, gs_eq _ _ ⊤ trivial, map_zero, map_zero]`. Conclude with `not_isUnit_zero h₁`. Conclude with `⟨G₀, hG₀, _, v_unit v hc.unit, fun z J hJ => key (algebraMap (Ov v) F) z J hJ⟩`.
+-/
 theorem exists_value_unit {k : ℕ} {α : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre.SecB k α) (a : Fin m → Ov v)
     (x : TO hϖ hv ⟶ D.toPre.P.A)
     (hu : ∀ (z : Spec (CommRingCat.of (ResidueField (Ov v)))) J, Good D.toPre.P.L z J →
@@ -141,6 +178,15 @@ theorem exists_value_unit {k : ℕ} {α : D.toPre.X} {m : ℕ} (b : Fin m → D.
     exact not_isUnit_zero h₁
   exact ⟨G₀, hG₀, _, v_unit v hc.unit, fun z J hJ => key (algebraMap (Ov v) F) z J hJ⟩
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨n, c, σ, σF, hσ, hc, hsum⟩` from `hs`. Set `c₀ : Fin n → Γ(Spec (CommRingCat.of (Ov v)), ⊤)` to `fun l => (Scheme.ΓSpecIso (CommRingCat.of (Ov v))).inv.hom ⟨c l, hc l⟩`. Establish `ec : ∀ l, ιr (v` using `v) (c₀ l) = c l := fun l => congrArg (algebraMap (Ov v) F) (Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of (Ov v))) ⟨c l, hc l⟩)`. Take `⟨t, ht⟩` from `exists_sec_lin (fun l => (fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom (c₀ l)) (fun l => DVR.pullSec D.toPre.P.L (D.toPre.famφB α) (DegPre.famε k) (σ l) (snd (TO hϖ hv) D.toPre.P.A).left)`.
+
+Take `⟨r, hr, -⟩` from `hb t`. Establish `key : ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J → sval s ρ z J = ∑ i, gs ρ z ⊤ (gF D.toPre F (ιr (v` using `v) (r i))) * sval (b i) (ρ ≫ (DegPre.prB D.toPre F).left) z J := fun Z ρ z J hJ => by`. Establish `e₁` using `SectionScalarValuation.sval_lin _ _ ht (ρ ≫ (jO hϖ hv).left) z hJ`. Establish `e₂` using `SectionScalarValuation.sval_lin (fun i => (fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom (r i)) _ hr (ρ ≫ (jO hϖ hv).left) z hJ`. Simplify using `only [SectionScalarValuation.sval_pullSec _ _ _ _ _ z hJ, gs_jO, ec, Category.assoc, jO_snd] at e₁ e₂`.
+
+Rewrite using `[SectionScalarValuation.sval_lin (fun i => gF D.toPre F (c i)) σF (fun j => hsum j) ρ z hJ, ← e₂, e₁]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [SectionScalarValuation.secScal_sval (hσ l) ρ z hJ]`. Use `⟨fun i => (Scheme.ΓSpecIso (CommRingCat.of (Ov v))).hom.hom (r i), fun q hq => ?_, key⟩` and prove the remaining obligations. Establish `hF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB α i) (DegPre.famε k) (DegPre.famφ D.toPre F α) (DegPre.famε k)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Use `choose bF hbF using fun i => exists_sec hL hF (pullSec D.toPre.P.L _ _ (b i) (DegPre.prB D.toPre F).left)`.
+
+Establish `hb'` using `fun i y J hJ => (hbF i _ (𝟙 _) y J hJ).trans (SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ)`. Use `⟨m, _, b, bF, fun i => SectionScalarValuation.secScal_of_sval hL fun y J hJ => (hb' i y J hJ).symm, hq, IntegralCoord.lin_of_sval hL (fun i => gF D.toPre F (ιr (v := v) (r i))) bF fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[key _ _ y J hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (_ * ·) (hb' i y J hJ).symm`.
+-/
 theorem exists_coord {k : ℕ} {α : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre.SecB k α)
     (hb : IsSecBasis (T := TO hϖ hv) (A := D.toPre.P.A) _ (fun i => DVR.pullSec D.toPre.P.L (D.toPre.famφB α)
       (DegPre.famε k) (b i) (snd (TO hϖ hv) D.toPre.P.A).left))
@@ -179,6 +225,9 @@ theorem exists_coord {k : ℕ} {α : D.toPre.X} {m : ℕ} (b : Fin m → D.toPre
 
 end
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `h₁ : (0 : WithTop ℚ) < Finset.univ.inf c` using `(Finset.lt_inf_iff (WithTop.coe_lt_top 0)).2 fun i _ => lt_of_le_of_ne (h₀ i) fun e => hc ⟨i, e.symm⟩`. Take `⟨q, hq, hq'⟩` from `WithTop.lt_iff_exists_coe_btwn.1 h₁`. Conclude with `h q (WithTop.coe_lt_coe.1 hq) fun i => hq'.le.trans (Finset.inf_le (Finset.mem_univ i))`.
+-/
 theorem exists_eq_zero {n : ℕ} (c : Fin n → WithTop ℚ) (h₀ : ∀ i, 0 ≤ c i)
     (h : ∀ q : ℚ, 0 < q → ¬ ∀ i, (q : WithTop ℚ) ≤ c i) : ∃ i, c i = 0 := by
   by_contra hc
@@ -187,6 +236,21 @@ theorem exists_eq_zero {n : ℕ} (c : Fin n → WithTop ℚ) (h₀ : ∀ i, 0 �
   obtain ⟨q, hq, hq'⟩ := WithTop.lt_iff_exists_coe_btwn.1 h₁
   exact h q (WithTop.coe_lt_coe.1 hq) fun i => hq'.le.trans (Finset.inf_le (Finset.mem_univ i))
 
+/- English proof (translation)
+Introduce `hL _ _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k n hk hn hnV s α hs hs'`. Establish `hM` using `D.toPre.P.isLB`. Establish `hT : TwistBaseChangeStatement` using `GlobalTheory.twistBaseChange_of_finrank_sections_one fun K _ _ P => (hL.1.globalSectionsRank K P 1 le_rfl).trans (one_pow _)`. Take `⟨m, b, -, hb⟩` from `hT V D.toPre k (by omega) α`. Establish `hb₁ : ∀ (R' : Type) [CommRing R'] (f : V →+* R') (t : Spec (CommRingCat.of R') ⟶ Spec (CommRingCat.of V)), t = Spec.map (CommRingCat.ofHom f) → IsSecBasis (T` using `Over.mk t) (A := D.toPre.P.A) _ (fun i => DVR.pullSec D.toPre.P.L (D.toPre.famφB α) (DegPre.famε k) (b i) (snd (Over.mk t) D.toPre.P.A).left) := by`.
+
+Introduce `R' _ f t ht`. Substitute `ht` using the available equality. Conclude with `hb R' f _ (fun i j => rfl)`. Take `⟨a, ha, hsa⟩` from `exists_coord hϖ hv b (hb₁ _ _ _ rfl) hs`. Take `⟨i₀, hi₀⟩` from `exists_eq_zero (fun i => v (a i)) (fun i => (a i).2) fun q hq h => hs' q hq (ha q h)`.
+
+Establish `hres : residue (Ov v) (a i₀) ≠ 0`. Rewrite using `[residue_ne_zero_iff_isUnit, ValuationSubring.valuation_eq_one_iff]`. Conclude with `(valuation_eq_one_iff (fun _ => Iff.rfl) _).2 hi₀`. Establish `: IsAlgClosed (ResidueField (Ov v))` using `isAlgClosed_residueField_of_valuationRing_of_isAlgClosed (Ov v) F`. Establish `hK : (n : ResidueField (Ov v)) ≠ 0`.
+
+Use `(hnV.map ((residue (Ov v)).comp (fO v hϖ hv))).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨x₀, j, hx₀, hu⟩` from `exists_torsion_sum hL.1 D.toPre b (Spec.map (CommRingCat.ofHom (residue (Ov v))) ≫ (TO hϖ hv).hom) (hb₁ _ ((residue (Ov v)).comp (fO v hϖ hv)) _ (Spec.map_comp _ _).symm) (fun i => residue _ (a i)) ⟨i₀, hres⟩ hn.two_le hK`. Establish `hN : n ^ j ≠ 0` using `pow_ne_zero _ hn.ne_zero`. Take `⟨hfin, hflat, -⟩` from `hL.1.mulN _ D.toPre.P (n ^ j) (by omega)`.
+
+Take `⟨x, hx, ex⟩ : ∃ x : TO hϖ hv ⟶ D.toPre.P.A, x ^ n ^ j = 1 ∧ Spec.map (CommRingCat.ofHom (residue (Ov v))) ≫ x.left = x₀.left` from `ExactTerm.exists_torsion_lift (Ov v) D.toPre.P.A (n ^ j) (TO hϖ hv).hom x₀ hx₀`. Take `⟨G₀, hG₀, c, hc, hval⟩` from `exists_value_unit hϖ hv b a x (fun z J hJ => by rw [ex]; exact hu z J hJ)`. Use `letI := TorusExt.gtGroup D.toPre F`. Take `⟨g, hg₁, hg₂⟩` from `TorusExt.exists_nsmul_eq_of_pow_eq hN (0 : GtPtF D.toPre F) (b := ιS hϖ hv ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one, TorusExt.zero_b])`. Use `⟨j, g, 0, (TorusExt.isZero_iff_eq _).2 rfl, (TorusExt.isNsmul_iff_eq _ _ _).2 hg₂.symm, fun w _ hω => ?_⟩` and prove the remaining obligations.
+
+Take `⟨d, hd, vd⟩` from `CoefUnit.v_of_isCoef hϖ hv (genV_torsion hϖ hv hN g hg₂ α) hω x hg₁.symm (s.s α) G₀ hG₀ c (fun z J hJ => by`. Rewrite using `[hsa _ _ z J hJ, ← hval z J hJ, ← Over.comp_left, lift_snd, hg₁]`. Use `Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_` and prove the remaining obligations. Use `(gs_pull _ (fst (TF (R := V) F) D.toPre.P.A).left z ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`.
+
+Use the proof step `rfl)`. Rewrite using `[CoefBasic.coef_eq hd, vd, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_torsion_coef_val_zero : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ k n : ℕ, 4 ≤ k → n.Prime → IsUnit (n : V) → ∀ (s : Fam D.toPre F k) (α : D.toPre.X), VGe D F v k α (s.s α) 0 → (∀ q : ℚ, 0 < q → ¬ VGe D F v k α (s.s α) q) → ∃ (i : ℕ) (g o : GtPtF D.toPre F), o.IsZero ∧ GtPtF.IsNsmul (n ^ i) g o ∧ ∀ w : Frm D.toPre F k g.b, w.IsGen → GenV hϖ hv w 0 → v (coef s g w α) = 0 := by
   intro hL _ _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k n hk hn hnV s α hs hs'
   have hM := D.toPre.P.isLB

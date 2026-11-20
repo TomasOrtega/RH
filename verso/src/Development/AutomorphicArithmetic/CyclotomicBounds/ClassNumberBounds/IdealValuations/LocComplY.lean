@@ -10,12 +10,18 @@ variable {l : ℕ} [Fact l.Prime]
 
 variable {E : Type*} [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qj1.mem_of_adjoin_top hS j F h x`.
+-/
 private theorem mem_of_adjoin_top {K : Type*} [Field K] [CharZero K] {S : Set K}
     (hS : Algebra.adjoin ℚ S = ⊤) (j : K →+* PadicAlgCl l)
     (F : IntermediateField ℚ_[l] (PadicAlgCl l)) (h : ∀ s ∈ S, j s ∈ F) (x : K) : j x ∈ F :=
   _root_.UpperTheory.Reformulated.B.Qj1.mem_of_adjoin_top hS j F h x
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (j (x : E))` using `x.isIntegral_coe.map j.toIntAlgHom`. Establish `h2 : IsIntegral (PadicAlgCl.valued l).v.integer (j (x : E))` using `h1.tower_top`. Establish `h3` using `(Valuation.integer.integers (PadicAlgCl.valued l).v).mem_of_integral h2`. Rewrite `h3` using `[Valuation.mem_integer_iff, PadicAlgCl.valuation_def]`. Conclude with `h3` after adjusting the coercions.
+-/
 private theorem norm_int_le_one (j : E →+* PadicAlgCl l) (x : 𝓞 E) : ‖j (x : E)‖ ≤ 1 := by
   have h1 : IsIntegral ℤ (j (x : E)) := x.isIntegral_coe.map j.toIntAlgHom
   have h2 : IsIntegral (PadicAlgCl.valued l).v.integer (j (x : E)) := h1.tower_top
@@ -33,9 +39,17 @@ private def indPrime (j : E →+* PadicAlgCl l) : Ideal (𝓞 E) where
     simp only [Set.mem_ofPred_eq, smul_eq_mul, map_mul, norm_mul] at *
     exact mul_lt_one_of_nonneg_of_lt_one_right (norm_int_le_one j c) (norm_nonneg _) hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_indPrime (j : E →+* PadicAlgCl l) (x : 𝓞 E) :
     x ∈ indPrime j ↔ ‖j (x : E)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Use `⟨?_, fun {x y} h => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_indPrime]`. Simplify using the standard rewrite rules. Simplify using `only [mem_indPrime, map_mul, norm_mul] at *`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Use `one_le_mul_of_one_le_of_one_le hc.1 hc.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem indPrime_isPrime (j : E →+* PadicAlgCl l) : (indPrime j).IsPrime := by
   refine ⟨?_, fun {x y} h => ?_⟩
   · rw [Ideal.ne_top_iff_one, mem_indPrime]; simp
@@ -45,6 +59,11 @@ private theorem indPrime_isPrime (j : E →+* PadicAlgCl l) : (indPrime j).IsPri
     have := one_le_mul_of_one_le_of_one_le hc.1 hc.2
     linarith
 
+/- English proof (translation)
+Rewrite using `[mem_indPrime]`. Establish `: j ((l : 𝓞 E) : E) = ((l : ℚ_[l]) : PadicAlgCl l)`. Rewrite using `[show ((l : 𝓞 E) : E) = (l : E) from map_natCast (algebraMap (𝓞 E) E) l, map_natCast]`. Conclude with `(map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l).symm`. Rewrite using `[this, PadicAlgCl.norm_extends]`.
+
+Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem l_mem_indPrime (j : E →+* PadicAlgCl l) : (l : 𝓞 E) ∈ indPrime j := by
   rw [mem_indPrime]
   have : j ((l : 𝓞 E) : E) = ((l : ℚ_[l]) : PadicAlgCl l) := by
@@ -53,6 +72,9 @@ private theorem l_mem_indPrime (j : E →+* PadicAlgCl l) : (l : 𝓞 E) ∈ ind
   rw [this, PadicAlgCl.norm_extends]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Establish `hl : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp Fact.out`. Establish `hm : (Ideal.span {(l : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime hl.ne_zero).mpr hl).isMaximal (by simpa using hl.ne_zero)`. Use `⟨hm.eq_of_le (Ideal.comap_isPrime _ _).ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap]`. Simplify using `using h`.
+-/
 private theorem liesOver_of_mem {K : Type*} [Field K] [NumberField K] (P : Ideal (𝓞 K))
     [hP : P.IsPrime] (h : (l : 𝓞 K) ∈ P) : P.LiesOver (Ideal.span {(l : ℤ)}) := by
   have hl : Prime (l : ℤ) := Nat.prime_iff_prime_int.mp Fact.out
@@ -62,6 +84,13 @@ private theorem liesOver_of_mem {K : Type*} [Field K] [NumberField K] (P : Ideal
   rw [Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap]
   simpa using h
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Establish `hα' : Algebra.adjoin ℚ {α} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic α), hα]`. Both sides reduce to the same expression. Establish `h : complField j = IntermediateField.adjoin ℚ_[l] {j α}`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[complField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `mem_of_adjoin_top hα' j _ ?_ x` and prove the remaining obligations. Introduce and unpack `_ rfl`.
+
+Conclude with `IntermediateField.mem_adjoin_simple_self _ _`. Conclude with `IntermediateField.adjoin.mono _ _ _ (Set.singleton_subset_iff.mpr ⟨α, rfl⟩)`. Rewrite using `[h]`. Conclude with `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`.
+-/
 private theorem finiteDimensional_complField (j : E →+* PadicAlgCl l) :
     FiniteDimensional ℚ_[l] (complField j) := by
   obtain ⟨α, hα⟩ := Field.exists_primitive_element ℚ E
@@ -80,6 +109,15 @@ private theorem finiteDimensional_complField (j : E →+* PadicAlgCl l) :
   rw [h]
   exact IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)
 
+/- English proof (translation)
+Set `L` to `IntermediateField.normalClosure ℚ E (AlgebraicClosure E)`. Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure E)` using `Algebra.IsAlgebraic.trans ℚ E (AlgebraicClosure E)`. Establish `: IsAlgClosure ℚ (AlgebraicClosure E)` using `⟨inferInstance, inferInstance⟩`. Establish `: IsGalois ℚ (AlgebraicClosure E)` using `IsAlgClosure.isGalois ℚ _`. Establish `: IsGalois ℚ L` using `IsGalois.normalClosure ℚ E (AlgebraicClosure E)`.
+
+Establish `: NumberField L` using `{}`. Set `j0 : L →ₐ[ℚ] PadicAlgCl l` to `IsAlgClosed.lift`. Use `v.isPrime` as an intermediate fact. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 L) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 E) (𝓞 L))).mp (FaithfulSMul.algebraMap_injective (𝓞 E) (𝓞 L))]`.
+
+Conclude with `bot_le)`. Use `indPrime_isPrime j0.toRingHom` as an intermediate fact. Use `liesOver_of_mem (l := l) _ (l_mem_indPrime j0.toRingHom)` as an intermediate fact. Use `liesOver_of_mem (l := l) Q (by` as an intermediate fact. Rewrite `hv` using `[← hQv, Ideal.mem_comap]`.
+
+Simplify using `using hv)`. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(l : ℤ)}) Q (indPrime j0.toRingHom) Gal(L/ℚ)`. Use `⟨j0.toRingHom.comp ((σ : L →+* L).comp (algebraMap E L)), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hQv, Ideal.mem_comap, ← Ideal.smul_mem_pointwise_smul_iff (a := σ), hσ, mem_indPrime]`. Both sides reduce to the same expression.
+-/
 theorem exists_embedding_place (v : HeightOneSpectrum (𝓞 E)) (hv : (l : 𝓞 E) ∈ v.asIdeal) :
     ∃ j : E →+* PadicAlgCl l, ∀ x : 𝓞 E, ‖j (x : E)‖ < 1 ↔ x ∈ v.asIdeal := by
   let L := IntermediateField.normalClosure ℚ E (AlgebraicClosure E)
@@ -107,6 +145,13 @@ theorem exists_embedding_place (v : HeightOneSpectrum (𝓞 E)) (hv : (l : 𝓞 
   rw [← hQv, Ideal.mem_comap, ← Ideal.smul_mem_pointwise_smul_iff (a := σ), hσ, mem_indPrime]
   rfl
 
+/- English proof (translation)
+Take `⟨n, ⟨d, hd⟩, h⟩` from `v.exists_primeCompl_mul_eq_or_mul_eq x`. Establish `hid : ‖i (d : E)‖ = 1` using `le_antisymm (hi1 d) (not_lt.mp fun h => hd ((hi d).mp h))`. Establish `hjd : ‖j (d : E)‖ = 1` using `le_antisymm (hj1 d) (not_lt.mp fun h => hd ((hj d).mp h))`. Break down `h with h | h` into its components or cases. Establish `h : x * (d : E) = (n : E)` using `h`.
+
+Establish `h1 : ‖i x‖ = ‖i (n : E)‖` using `by rw [← h, map_mul, norm_mul, hid, mul_one]`. Establish `h2 : ‖j x‖ = ‖j (n : E)‖` using `by rw [← h, map_mul, norm_mul, hjd, mul_one]`. Rewrite using `[h2, hj, ← hi, ← h1]`. Conclude with `hx`. Establish `h : x * (n : E) = (d : E)` using `h`.
+
+Rewrite `hid` using `[← h, map_mul, norm_mul]`. Conclude with `absurd hid (mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hx (hi1 n)).ne`.
+-/
 private theorem lt_one_iff_of_place (v : HeightOneSpectrum (𝓞 E)) {A B : Type*}
     [NormedField A] [NormedField B] (i : E →+* A) (j : E →+* B)
     (hi1 : ∀ x : 𝓞 E, ‖i (x : E)‖ ≤ 1) (hj1 : ∀ x : 𝓞 E, ‖j (x : E)‖ ≤ 1)
@@ -127,6 +172,11 @@ private theorem lt_one_iff_of_place (v : HeightOneSpectrum (𝓞 E)) {A B : Type
     exact absurd hid (mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hx (hi1 n)).ne
 
 omit [NumberField E] in
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hp1`. Establish `hpn : p ^ n ≠ 0` using `pow_ne_zero _ hp`. Establish `hi : 0 < ‖i (p ^ n)‖` using `norm_pos_iff.mpr ((map_ne_zero i).mpr hpn)`. Establish `hj : 0 < ‖j (p ^ n)‖` using `norm_pos_iff.mpr ((map_ne_zero j).mpr hpn)`. Use `⟨_, hi, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hab`, the goal using `[dist_eq_norm, ← map_sub]`. Use `h ((a - b) / p ^ n) (by rwa [map_div₀, norm_div, div_lt_one hi])` as an intermediate fact. Rewrite `this` using `[map_div₀, norm_div, div_lt_one hj, map_pow, norm_pow]`. Conclude with `this.trans hn`.
+-/
 private theorem eps_delta_of_place {A B : Type*}
     [NormedField A] [NormedField B] (i : E →+* A) (j : E →+* B)
     (h : ∀ x, ‖i x‖ < 1 → ‖j x‖ < 1) (p : E) (hp : p ≠ 0) (hp1 : ‖j p‖ < 1) (ε : ℝ) (hε : 0 < ε) :
@@ -141,6 +191,23 @@ private theorem eps_delta_of_place {A B : Type*}
   rw [map_div₀, norm_div, div_lt_one hj, map_pow, norm_pow] at this
   exact this.trans hn
 
+/- English proof (translation)
+Set `i : E →+* v.adicCompletion E` to `algebraMap E _`. Establish `hi1 : ∀ x : 𝓞 E, ‖i (x : E)‖ ≤ 1` using `fun x => FinitePlace.norm_le_one E v x`. Establish `hi : ∀ x : 𝓞 E, ‖i (x : E)‖ < 1 ↔ x ∈ v.asIdeal` using `fun x => FinitePlace.norm_lt_one_iff_mem E v x`. Take `⟨p, hpv, hp0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hp0' : (p : E) ≠ 0` using `by exact_mod_cast hp0`.
+
+Use `finiteDimensional_complField j` as an intermediate fact. Establish `: CompleteSpace (complField j)` using `FiniteDimensional.complete ℚ_[l] _`. Set `f : E →+* complField j` to `j.codRestrict (complField j) fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩`. Set `: NormedField E` to `NormedField.induced E _ i i.injective`. Apply the tactic sequence `have hiso : Isometry i := fun _ _ => rfl`.
+
+Establish `hf : IsUniformInducing f`. Rewrite using `[Metric.isUniformInducing_iff, Metric.uniformContinuous_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `ε hε`. Take `⟨δ, hδ, h⟩` from `eps_delta_of_place i j (lt_one_iff_of_place v i j hi1 (norm_int_le_one j) hi hj) p hp0' ((hj p).mpr hpv) ε hε`.
+
+Conclude with `⟨δ, hδ, fun {a b} hab => h a b hab⟩`. Introduce `ε hε`. Take `⟨δ, hδ, h⟩` from `eps_delta_of_place j i (lt_one_iff_of_place v j i (norm_int_le_one j) hi1 hj hi) p hp0' ((hi p).mpr hpv) ε hε`. Conclude with `⟨δ, hδ, fun {a b} hab => h a b hab⟩`. Establish `hd : DenseRange i` using `v.denseRange_algebraMap E`.
+
+Set `J' : v.adicCompletion E →+* complField j` to `IsDenseInducing.extendRingHom hiso.isUniformInducing hd hf.uniformContinuous`. Establish `hJ' : IsUniformInducing J'` using `(hiso.isUniformInducing.isDenseInducing hd).isUniformInducing_extend hiso.isUniformInducing hf`. Establish `hJi : ∀ x, J' (i x) = f x` using `fun x => (hiso.isUniformInducing.isDenseInducing hd).extend_eq hf.uniformContinuous.continuous x`. Set `J : v.adicCompletion E →+* PadicAlgCl l` to `(complField j).subtype.comp J'`. Establish `hJ : IsUniformInducing J` using `isUniformEmbedding_subtype_val.isUniformInducing.comp hJ'`.
+
+Establish `hJj : ∀ x : E, J (algebraMap E _ x) = j x` using `fun x => congrArg Subtype.val (hJi x)`. Use `⟨J, hJ.uniformContinuous.continuous, hJj, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(J' x).2`. Establish `hcl : IsClosed (J.fieldRange : Set (PadicAlgCl l))` using `hJ.isComplete_range.isClosed`.
+
+Rewrite using `[complField, IntermediateField.adjoin_toSubfield, Subfield.closure_le]`. Introduce and unpack `_ (⟨q, rfl⟩ | ⟨x, rfl⟩)`. Use `(Padic.denseRange_ratCast l).induction_on q (hcl.preimage (continuous_algebraMap _ _)) fun r => ?_` and prove the remaining obligations. Rewrite using `[map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem J.fieldRange r`.
+
+Conclude with `⟨_, hJj x⟩`.
+-/
 theorem exists_completion_map (v : HeightOneSpectrum (𝓞 E)) (j : E →+* PadicAlgCl l)
     (hj : ∀ x : 𝓞 E, ‖j (x : E)‖ < 1 ↔ x ∈ v.asIdeal) :
     ∃ J : v.adicCompletion E →+* PadicAlgCl l, Continuous J ∧

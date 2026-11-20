@@ -5,6 +5,11 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `hW hP p _ D G L _ _ v _ t₀ _ ρ _ PD RD N hN hNp B a`. Take `⟨D', t, j, hcls, hpl, hco, hloc⟩` from `hW p D G L B N hN hNp a.1.1 ((PD B).lat a.1.2) ((PD B).isLat _) ((PD B).perf _)`. Take `⟨Q, hQ, hrel⟩` from `(RD B).per a.2`. Establish `hev : Even (Module.finrank ℚ D.F)`. Rewrite using `[← NumberField.InfinitePlace.card_add_two_mul_card_eq_rank]`.
+
+Simplify using `[NumberField.IsTotallyComplex.nrRealPlaces_eq_zero]`. Establish `hg : 2 * D.g = Module.finrank ℤ D.La`. Take `⟨k, hk⟩` from `hev`. Rewrite using `[D.rankLa, Datum.g, hk, ← two_mul, mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`. Conclude with `⟨D', t, Q.comp j, j, hcls, (hP p D G L B.β ρ D' j hpl).2 Q hQ hg, hpl, hco, hloc, Q, hQ, fun u => rfl, hrel⟩`.
+-/
 theorem UpperTheory.Gal.W2.coordOcc_of :
     UpperTheory.Gal.W2.WitOfAd → UpperTheory.Gal.W2.PlacePer → UpperTheory.Gal.W2.CoordOcc := by
   intro hW hP p _ D G L _ _ v _ t₀ _ ρ _ PD RD N hN hNp B a

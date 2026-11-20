@@ -16,6 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt | exact _root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt | (intros; apply _root_.GlobalTheory.CovTop.SpanMK.span_MK_eq_top_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gram_MK_spans_of_gramAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m),
     _root_.GlobalTheory.CovTop.RowsTAlt p → GramAt p i →

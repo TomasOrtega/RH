@@ -5,6 +5,9 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ a K hK hKc`. Use `⟨_, (UpperTheory.V.Cj.A.sandCpt E a).2 K hK hKc, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hK hp`. Conclude with `⟨g, hp, rfl⟩`.
+-/
 theorem UpperTheory.V.Cj.H.coneCpt :
     UpperTheory.V.Cj.H.ConeCpt := by
   intro E _ _ a K hK hKc

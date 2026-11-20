@@ -51,14 +51,23 @@ def Mu.map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) : Mu n A →�
     (MonoidHom.toAdditive (restrictRootsOfUnity φ n) : Additive (rootsOfUnity n A) →+ Additive (rootsOfUnity n B))
 
 omit [NeZero n] in
+/- English proof (translation)
+The claim follows from `Additive.toMul.injective (Subtype.ext (Units.ext h))`.
+-/
 theorem Mu.ext' {A : Type} [CommRing A] {x y : Mu n A}
     (h : (((Additive.toMul (show Additive (rootsOfUnity n A) from x) : rootsOfUnity n A) : Aˣ) : A) =
       (((Additive.toMul (show Additive (rootsOfUnity n A) from y) : rootsOfUnity n A) : Aˣ) : A)) : x = y :=
   Additive.toMul.injective (Subtype.ext (Units.ext h))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => Mu.ext' n rfl`.
+-/
 theorem Mu.map_id (A : Type) [CommRing A] : Mu.map n (RingHom.id A) = LinearMap.id :=
   LinearMap.ext fun _ => Mu.ext' n rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => Mu.ext' n rfl`.
+-/
 theorem Mu.map_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B) (ψ : B →+* C) :
     Mu.map n (ψ.comp φ) = (Mu.map n ψ).comp (Mu.map n φ) :=
   LinearMap.ext fun _ => Mu.ext' n rfl

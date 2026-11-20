@@ -11,6 +11,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Unfold `FibreProj.pol`. Use `Fintype.sum_equiv (Equiv.finsetCongr τ) _ _ fun S => ?_` and prove the remaining obligations. Simplify using `only [Equiv.finsetCongr_apply, Finset.card_map]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Function.comp_apply, Finset.mem_map_equiv]`.
+-/
 theorem pol_comp_equiv {ι : Type} [Fintype ι] (τ : ι ≃ ι) (φ : (ι → ℤ) → ℝ) :
     FibreProj.pol (fun n => φ (n ∘ τ.symm)) = FibreProj.pol φ := by
   classical
@@ -21,6 +26,15 @@ theorem pol_comp_equiv {ι : Type} [Fintype ι] (τ : ι ≃ ι) (φ : (ι → �
   funext j
   simp only [Function.comp_apply, Finset.mem_map_equiv]
 
+/- English proof (translation)
+Introduce `k _ Y _ q e L M r hr`. Use `⟨fun L' hL => ?_, fun τ => ?_, fun M' r' hr' hd hn => ?_⟩` and prove the remaining obligations. Establish `h : ∀ n, (comb L n).archInt M e hr = (comb L' n).archInt M e hr` using `fun n => by simp only [HermLB.archInt, (isometric_comb_congr hL n).chernInt_eq]`. Simplify using `only [mixArch, h]`. Establish `h : ∀ n, (comb (fun a => L (τ a)) (n ∘ τ)).archInt M e hr = (comb L n).archInt M e hr` using `fun n => by`.
+
+Establish `iso : (comb (fun a => L (τ a)) (n ∘ τ)).Isometric (comb L n)`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb, icls_comb]`. Conclude with `Fintype.sum_equiv τ _ _ fun a => by simp`. Simplify using `only [HermLB.archInt, iso.chernInt_eq]`.
+
+Simplify using `only [mixArch]`. Rewrite using `[← pol_comp_equiv τ.symm (fun n => (comb (fun a => L (τ a)) n).archInt M e hr)]`. Simplify using `only [Equiv.symm_symm, h]`. Establish `h : ∀ n, (comb L n).archInt M' e hr' = (comb L n).archInt M e hr` using `fun n => by`. Simplify using `only [HermLB.archInt, hd]`.
+
+Conclude with `finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (hn σ)`. Simplify using `only [mixArch, h]`.
+-/
 theorem mixArch_iso_symm_congr : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ) (L : Fin e → HermLB q) (M : HermLB q) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), (∀ L' : Fin e → HermLB q, (∀ a, (L a).Isometric (L' a)) → mixArch L M hr = mixArch L' M hr) ∧ (∀ τ : Equiv.Perm (Fin e), mixArch (fun a => L (τ a)) M hr = mixArch L M hr) ∧ ∀ (M' : HermLB q) (r' : M'.B.ι → Y.functionFieldˣ) (hr' : IsRatSec M'.B r'), M'.div hr' = M.div hr → (∀ σ, Set.EqOn (logNorm (M'.φ σ) r') (logNorm (M.φ σ) r) (offSupp q σ (M.div hr))) → mixArch L M' hr' = mixArch L M hr := by
   intro k _ Y _ q e L M r hr
   refine ⟨fun L' hL => ?_, fun τ => ?_, fun M' r' hr' hd hn => ?_⟩

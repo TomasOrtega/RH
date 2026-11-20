@@ -14,6 +14,33 @@ namespace GlobalTheory.PMon
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI T s hs x hx hφ h1 h2 hj g`. Take `⟨-, -, hsh, hinv, -, -, -, htz, tadd, t0, -⟩` from `GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T`. Establish `iter_mul : ∀ (m : ℕ) (a b : P.R.B), P.φB^[m] (a * b) = P.φB^[m] a * P.φB^[m] b`. Introduce `m a b`. Proceed by induction on `m generalizing a b with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul]`. Establish `iter_one : ∀ m : ℕ, P.φB^[m] (1 : P.R.B) = 1`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ih, map_one]`. Establish `iter_act : ∀ (m : ℕ) (b : P.R.B), P.φB^[m] (P.actQ g b) = P.actQ g (P.φB^[m] b)`. Introduce `m b`. Proceed by induction on `m with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, phiB_actQ]`. Establish `ev_mul : ∀ (m : ℕ) (a b : P.R.B), ev P m (a * b) = ev P m a * ev P m b`. Introduce `m a b`. Rewrite using `[← evHom_apply, map_mul, evHom_apply, evHom_apply]`.
+
+Take `⟨w, hw⟩ : ∃ w : P.R.B, x * w = 1` from `⟨_, hx.mul_val_inv⟩`. Use `set y := P.actQ g x * w with hy`. Establish `hyx : y * x = P.actQ g x` using `by rw [hy, mul_assoc, mul_comm w x, hw, mul_one]`. Establish `hfix : P.φB^[s] y = y`. Establish `e1 : P.φB^[s] x * P.φB^[s] w = 1` using `by rw [← iter_mul, hw, iter_one]`.
+
+Rewrite `e1` using `[hφ]`. Rewrite using `[hy, iter_mul, iter_act, hφ, map_mul, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-(l : P.R.B) * P.actQ g x * P.φB^[s] w) * hw`. Use `_ = P.actQ g x * w := by rw [e1, one_mul]`.
+
+Establish `key : ∀ (k : ℤ) (e u v z : P.R.BdR), e = tz P k * u → u * v = 1 → u ∈ Fil P 0 → v ∈ Fil P 0 → z * e = P.actQdR g e → z ∈ Fil P 0`. Introduce `k e u v z he huv hu hv hz`. Establish `hk : tz P k * tz P (-k) = 1` using `by rw [← tadd, add_neg_cancel, t0]`. Establish `hz' : z * e = algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ k : ℚ_[l]ˣ) : ℚ_[l]) * tz P k * P.actQdR g u`. Rewrite using `[hz, he, map_mul, htz]`.
+
+Establish `hzz : z = algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ k : ℚ_[l]ˣ) : ℚ_[l]) * P.actQdR g u * v`. Take the linear combination `(-z + algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ k : ℚ_[l]ˣ) : ℚ_[l]) * P.actQdR g u * v) * hk - z * tz P k * tz P (-k) * huv - tz P (-k) * v * z * he + tz P (-k) * v * hz'`. Rewrite using `[hzz]`. Conclude with `Fil_mul_right (Fil_mul_left (q_mem_Fil P _) (Fil_act g hu)) hv`. Establish `hev : ∀ j, ev P j y * ev P j x = P.actQdR g (ev P j x)`.
+
+Introduce `j`. Rewrite using `[← ev_mul, hyx, ev_act]`. Establish `hfil : ∀ j < s, ev P j y ∈ Fil P 0`. Introduce `j hjs`. Break down `Nat.eq_zero_or_pos j with rfl | hpos` into its components or cases.
+
+Establish `hu0 : tz P (-1) * P.ιB x ∈ Fil P 0`. Use `(hsh 1 (-1) (P.ιB x)).1 h1` as an intermediate fact. Rewrite `this` using `[show (1 : ℤ) + -1 = 0 by norm_num]`. Then use the resulting hypothesis. Establish `hu1 : tz P (-1) * P.ιB x ∉ Fil P 1`. Introduce `h`.
+
+Apply `h2` to reduce the goal to its premises. Conclude with `(hsh 2 (-1) (P.ιB x)).2 (by rw [show (2 : ℤ) + -1 = 1 by norm_num]; exact h)`. Take `⟨v, hv, huv⟩` from `hinv _ hu0 hu1`. Use `key 1 (ev P 0 x) _ v _ ?_ huv hu0 hv (hev 0)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.ιB x = tz P 1 * (tz P (-1) * P.ιB x)`.
+
+Rewrite using `[← mul_assoc, ← tadd, show (1 : ℤ) + -1 = 0 by norm_num, t0, one_mul]`. Take `⟨e0, e1⟩` from `hj j hpos hjs`. Take `⟨v, hv, huv⟩` from `hinv _ e0 e1`. Conclude with `key 0 (ev P j x) (ev P j x) v _ (by rw [t0, one_mul]) huv e0 hv (hev j)`. Take `⟨a, ha, hya⟩` from `GlobalTheory.T.unramified_of_frobeniusIterate_fixed_filZero l P AI T s hs y hfix hfil`.
+
+Conclude with `⟨a, ha, by rw [← hyx, hya]⟩`.
+-/
 theorem lt_period_conj_ratio : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (s : ℕ), 0 < s → ∀ (x : P.R.B), IsUnit x → P.φB^[s] x = (l : P.R.B) * x → P.ιB x ∈ Fil P 1 → P.ιB x ∉ Fil P 2 → (∀ j, 0 < j → j < s → ev P j x ∈ Fil P 0 ∧ ev P j x ∉ Fil P 1) → ∀ g : GQ l, ∃ a : ↥(MaximalUnramifiedExtension l), fr l s a = a ∧ P.actQ g x = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B a * x := by
   intro l _ P AI T s hs x hx hφ h1 h2 hj g
   obtain ⟨-, -, hsh, hinv, -, -, -, htz, tadd, t0, -⟩ := GlobalTheory.T.deRhamPeriodRing_field_tPow_filtration_units l P AI T

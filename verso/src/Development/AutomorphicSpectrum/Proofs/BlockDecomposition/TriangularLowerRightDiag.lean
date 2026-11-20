@@ -15,32 +15,62 @@ variable {K : Type} [CommRing K] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 def tri (a b : K) : Matrix (ι ⊕ ι) (ι ⊕ ι) K := Matrix.fromBlocks (Matrix.of fun _ _ => a) (Matrix.of fun _ _ => b) 0 1
 
+/- English proof (translation)
+The claim follows from `Fintype.sum_eq_single i fun x h => absurd (hi x) h`.
+-/
 theorem sum_one {i : ι} (hi : ∀ x, x = i) (f : ι → K) : ∑ x, f x = f i :=
   Fintype.sum_eq_single i fun x h => absurd (hi x) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, sum_one hi, sum_one hi]`.
+-/
 theorem mul2 {i : ι} (hi : ∀ x, x = i) (M N : Matrix (ι ⊕ ι) (ι ⊕ ι) K) (r c : ι ⊕ ι) :
     (M * N) r c = M r (Sum.inl i) * N (Sum.inl i) c + M r (Sum.inr i) * N (Sum.inr i) c := by
   rw [Matrix.mul_apply, Fintype.sum_sum_type, sum_one hi, sum_one hi]
 
+/- English proof (translation)
+Use extensionality with `r c`. Apply the tactic sequence `rcases r with r | r <;> rcases c with c | c <;> rw [hi r, hi c] <;> assumption`.
+-/
 theorem ext2 {i : ι} (hi : ∀ x, x = i) {M N : Matrix (ι ⊕ ι) (ι ⊕ ι) K}
     (h11 : M (.inl i) (.inl i) = N (.inl i) (.inl i)) (h12 : M (.inl i) (.inr i) = N (.inl i) (.inr i))
     (h21 : M (.inr i) (.inl i) = N (.inr i) (.inl i)) (h22 : M (.inr i) (.inr i) = N (.inr i) (.inr i)) : M = N := by
   ext r c
   rcases r with r | r <;> rcases c with c | c <;> rw [hi r, hi c] <;> assumption
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tri_inl_inl (a b : K) (i j : ι) : (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K) (.inl i) (.inl j) = a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cechTripleProjFirstSecond (a b : K) (i j : ι) : (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K) (.inl i) (.inr j) = b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem triangular_lower_left (a b : K) (i j : ι) : (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K) (.inr i) (.inl j) = 0 := rfl
+/- English proof (translation)
+Simplify using `[tri]`.
+-/
 @[simp] theorem triangular_lower_right_diag (a b : K) (i : ι) : (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K) (.inr i) (.inr i) = 1 := by
   simp [tri]
 
+/- English proof (translation)
+The claim follows from `ext2 hi (by simp [mul2 hi]) (by simp [mul2 hi]) (by simp [mul2 hi]) (by simp [mul2 hi])`.
+-/
 theorem tri_mul {i : ι} (hi : ∀ x, x = i) (a b c d : K) :
     (tri a b * tri c d : Matrix (ι ⊕ ι) (ι ⊕ ι) K) = tri (a * c) (a * d + b) :=
   ext2 hi (by simp [mul2 hi]) (by simp [mul2 hi]) (by simp [mul2 hi]) (by simp [mul2 hi])
 
+/- English proof (translation)
+The claim follows from `ext2 hi (by simp) (by simp) (by simp) (by simp)`.
+-/
 theorem tri_one {i : ι} (hi : ∀ x, x = i) : (tri 1 0 : Matrix (ι ⊕ ι) (ι ⊕ ι) K) = 1 :=
   ext2 hi (by simp) (by simp) (by simp) (by simp)
 
+/- English proof (translation)
+Use `haveI : Unique ι := ⟨⟨i⟩, fun x => hi x⟩`. Rewrite using `[tri, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique, Matrix.det_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem tri_det {i : ι} (hi : ∀ x, x = i) (a b : K) : (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K).det = a := by
   haveI : Unique ι := ⟨⟨i⟩, fun x => hi x⟩
   rw [tri, Matrix.det_fromBlocks_zero₂₁, Matrix.det_unique, Matrix.det_one, mul_one]
@@ -54,10 +84,18 @@ def triU {i : ι} (hi : ∀ x, x = i) (a b a' b' : K) (h1 : a * a' = 1) (h2 : a 
     have h3 : a' * b + b' = 0 := by linear_combination a' * h2 - b' * h1
     rw [tri_mul hi, mul_comm a' a, h1, h3, tri_one hi]
 
+/- English proof (translation)
+The claim follows from `ext2 hi (by simp) (by simp) (by simp) (by simp)`.
+-/
 theorem tri_map {K' : Type} [CommRing K'] {i : ι} (hi : ∀ x, x = i) (f : K →+* K') (a b : K) :
     (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K).map f = tri (f a) (f b) :=
   ext2 hi (by simp) (by simp) (by simp) (by simp)
 
+/- English proof (translation)
+Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `hf`. Conclude with `hg`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`.
+-/
 theorem tri_cont {T : Type} [TopologicalSpace T] [TopologicalSpace K] {f g : T → K} (hf : Continuous f)
     (hg : Continuous g) : Continuous fun p => (tri (f p) (g p) : Matrix (ι ⊕ ι) (ι ⊕ ι) K) := by
   refine continuous_matrix fun a b => ?_
@@ -67,6 +105,9 @@ theorem tri_cont {T : Type} [TopologicalSpace T] [TopologicalSpace K] {f g : T �
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (Matrix.diagonal (Sum.elim (fun _ => (1 : K)) fun _ => ((v⁻¹ : Kˣ) : K)) * (g : Matrix (ι ⊕ ι) (ι ⊕ ι) K) * Matrix.diagonal (Sum.elim (fun _ => (1 : K)) fun _ => (v : K)) : Matrix (ι ⊕ ι) (ι ⊕ ι) K) a b = _`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem dg_conj (v : Kˣ) (g : GL (ι ⊕ ι) K) (a b : ι ⊕ ι) :
     (((dg ι v)⁻¹ * g * dg ι v : GL (ι ⊕ ι) K) : Matrix (ι ⊕ ι) (ι ⊕ ι) K) a b =
       Sum.elim (fun _ => 1) (fun _ => ((v⁻¹ : Kˣ) : K)) a * (g : Matrix (ι ⊕ ι) (ι ⊕ ι) K) a b *
@@ -77,11 +118,23 @@ theorem dg_conj (v : Kˣ) (g : GL (ι ⊕ ι) K) (a b : ι ⊕ ι) :
       Matrix (ι ⊕ ι) (ι ⊕ ι) K) a b = _
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+The claim follows from `ext2 hi (by simp [dg_conj, h]) (by simp [dg_conj, h]) (by simp [dg_conj, h]) (by simp [dg_conj, h])`.
+-/
 theorem dg_tri {i : ι} (hi : ∀ x, x = i) (v : Kˣ) (g : GL (ι ⊕ ι) K) (a b : K)
     (h : (g : Matrix (ι ⊕ ι) (ι ⊕ ι) K) = tri a b) :
     (((dg ι v)⁻¹ * g * dg ι v : GL (ι ⊕ ι) K) : Matrix (ι ⊕ ι) (ι ⊕ ι) K) = tri a (b * v) :=
   ext2 hi (by simp [dg_conj, h]) (by simp [dg_conj, h]) (by simp [dg_conj, h]) (by simp [dg_conj, h])
 
+/- English proof (translation)
+Establish `a1 : q = σ t'` using `by linear_combination (σ t') * h1 - q * h3`. Establish `a2 : σ t * t' = 1`. Use `congrArg σ h3` as an intermediate fact. Rewrite `this` using `[map_mul, hσ, map_one]`. Then use the resulting hypothesis. Establish `a3 : q' = σ t` using `by linear_combination (σ t) * h2 - q' * a2`.
+
+Establish `a4 : σ q' = t` using `by rw [a3, hσ]`. Establish `a5 : σ q = t'` using `by rw [a1, hσ]`. Establish `h7 : -(e * d) * σ d' = 1`. Rewrite using `[← h6, ← map_mul, h5, map_one]`. Establish `a6 : σ d' = -(e * d')`.
+
+Take the linear combination `(-(e * d')) * h7 - (σ d') * he - (σ d') * e * e * h5`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, a4, a3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, a5, a1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, a4, a6]`. Take the linear combination `(-d') * (q' * t * h4 - e * σ b * t * h2 - b * q' * h3)`.
+-/
 theorem scal {σ : K →+* K} (hσ : ∀ x, σ (σ x) = x) {e t b t' q q' d d' : K} (he : e * e = 1) (h1 : t * q = 1)
     (h2 : t' * q' = 1) (h3 : t * σ t' = 1) (h4 : e * t' * σ b + b * σ t' = 0) (h5 : d * d' = 1)
     (h6 : σ d = -(e * d)) :
@@ -109,6 +162,13 @@ section Unitary
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `h` using `Matrix.mem_unitaryGroup_iff'.1 hM`. Establish `e11` using `congrFun (congrFun h (.inl i)) (.inl i)`. Establish `e12` using `congrFun (congrFun h (.inl i)) (.inr i)`. Establish `e22` using `congrFun (congrFun h (.inr i)) (.inr i)`. Rewrite `e11`, `e12`, `e22` using `[mul2 hi]`.
+
+Simplify using `only [Matrix.star_apply, h21, star_zero, zero_mul, add_zero, Matrix.one_apply_eq, mul_zero, zero_add] at e11 e12 e22`. Establish `e12' : M (.inl i) (.inr i) = 0`. Establish `hne : star (M (.inl i) (.inl i)) ≠ 0` using `fun h0 => by`. Rewrite `e11` using `[h0, zero_mul]`. Conclude with `zero_ne_one e11`.
+
+Establish `: star (M (.inl i) (.inl i)) * M (.inl i) (.inr i) = 0` using `by simpa using e12`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `e22` using `[e12']`. Conclude with `⟨e11, e12', by simpa using e22⟩`.
+-/
 theorem unit_tri {i : ι} (hi : ∀ x, x = i) (M : Matrix (ι ⊕ ι) (ι ⊕ ι) ℂ) (hM : M ∈ Matrix.unitaryGroup (ι ⊕ ι) ℂ)
     (h21 : M (.inr i) (.inl i) = 0) :
     star (M (.inl i) (.inl i)) * M (.inl i) (.inl i) = 1 ∧ M (.inl i) (.inr i) = 0 ∧
@@ -127,6 +187,9 @@ theorem unit_tri {i : ι} (hi : ∀ x, x = i) (M : Matrix (ι ⊕ ι) (ι ⊕ ι
   rw [e12'] at e22
   exact ⟨e11, e12', by simpa using e22⟩
 
+/- English proof (translation)
+Establish `hc' : (starRingEnd ℂ) c * c = 1` using `hc`. Apply the tactic sequence `refine Matrix.mem_unitaryGroup_iff'.2 (ext2 hi ?_ ?_ ?_ ?_) <;> simp [mul2 hi, Matrix.star_apply, hc']`.
+-/
 theorem tri_unitary {i : ι} (hi : ∀ x, x = i) (c : ℂ) (hc : star c * c = 1) :
     (tri c 0 : Matrix (ι ⊕ ι) (ι ⊕ ι) ℂ) ∈ Matrix.unitaryGroup (ι ⊕ ι) ℂ := by
   have hc' : (starRingEnd ℂ) c * c = 1 := hc
@@ -144,6 +207,15 @@ abbrev pm (p : A.uQ ε (Set.univ : Set ι)) : Matrix (ι ⊕ ι) (ι ⊕ ι) R :
 abbrev qm (p : A.uQ ε (Set.univ : Set ι)) : Matrix (ι ⊕ ι) (ι ⊕ ι) R :=
   (((p.1.1 : GL (ι ⊕ ι) R)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R)
 
+/- English proof (translation)
+Establish `hs : p.1.1 ∈ stab R (Sum.inl '' (Set.univ : Set ι))` using `Subgroup.mem_subgroupOf.1 p.2`. Take `⟨e21, f21⟩` from `hs (.inr i) (by simp) (.inl i) (by simp)`. Establish `hpq : pm p * qm p = 1` using `Units.mul_inv _`. Establish `d1` using `congrFun (congrFun hpq (.inl i)) (.inl i)`. Establish `d2` using `congrFun (congrFun hpq (.inr i)) (.inr i)`.
+
+Rewrite `d1`, `d2` using `[mul2 hi]`. Establish `hu : (pm p)ᵀ * Ad.J R ε ι * (pm p).map A.σ = Ad.J R ε ι` using `p.1.2`. Establish `u1` using `congrFun (congrFun hu (.inl i)) (.inr i)`. Establish `u2` using `congrFun (congrFun hu (.inr i)) (.inr i)`. Rewrite `u1`, `u2` using `[mul2 hi]`.
+
+Simplify using `only [mul2 hi, Matrix.transpose_apply, Matrix.map_apply, Ad.J, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.one_apply_eq, Matrix.smul_apply, smul_eq_mul, mul_one, mul_zero, add_zero, zero_add …`. Use `⟨e21, f21, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `d1` using `[f21]`. Simplify `d2` using `[e21]`. Simplify `u1` using `[e21]`.
+
+Take the linear combination `u2`.
+-/
 theorem ent {i : ι} (hi : ∀ x, x = i) (p : A.uQ ε (Set.univ : Set ι)) :
     pm p (.inr i) (.inl i) = 0 ∧ qm p (.inr i) (.inl i) = 0 ∧
     pm p (.inl i) (.inl i) * qm p (.inl i) (.inl i) = 1 ∧ pm p (.inr i) (.inr i) * qm p (.inr i) (.inr i) = 1 ∧
@@ -182,9 +254,15 @@ abbrev ys (p : A.uQ ε (Set.univ : Set ι)) (i : ι) (δ : Eˣ) : R :=
 
 abbrev ys' (p : A.uQ ε (Set.univ : Set ι)) (i : ι) (δ : Eˣ) : R := -(xs' p i * ys p i δ)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or ε with h | h <;> simp [h]`.
+-/
 theorem eps_sq (ε : ℤˣ) : ((ε : ℤ) : R) * ((ε : ℤ) : R) = 1 := by
   rcases Int.units_eq_one_or ε with h | h <;> simp [h]
 
+/- English proof (translation)
+Take `⟨e21, f21, d1, d2, u1, u2⟩` from `ent hi p`. Establish `hd : (A.i δ) * ((dU A δ)⁻¹ : Rˣ) = 1` using `Units.mul_inv (dU A δ)`. Take `⟨s1, s2, s3⟩` from `scal hg.σσ (eps_sq ε) d1 d2 u1 u2 hd hb.δσ`. Use `⟨hb.rfix _ s1, hb.rfix _ s2, hb.rfix _ s3, hb.rfix _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_mul, s2, s3]`.
+-/
 theorem fixes (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x, x = i) (p : A.uQ ε (Set.univ : Set ι)) :
     ν (r (xs p i)) = xs p i ∧ ν (r (xs' p i)) = xs' p i ∧ ν (r (ys p i δ)) = ys p i δ ∧
       ν (r (ys' p i δ)) = ys' p i δ := by
@@ -194,6 +272,17 @@ theorem fixes (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x,
   refine ⟨hb.rfix _ s1, hb.rfix _ s2, hb.rfix _ s3, hb.rfix _ ?_⟩
   rw [map_neg, map_mul, s2, s3]
 
+/- English proof (translation)
+Take `⟨e21, f21, d1, d2, u1, u2⟩` from `ent hi p`. Take `⟨n1, n2, n3, n4⟩` from `fixes hg hb hi p`. Establish `hxx : xs p i * xs' p i = 1`. Simplify using `only [xs, xs']`. Take the linear combination `(pm p (.inr i) (.inr i) * qm p (.inr i) (.inr i)) * d1 + d2`.
+
+Establish `h1 : r (xs p i) * r (xs' p i) = 1` using `hb.inj (by rw [map_mul, n1, n2, hxx, map_one])`. Establish `h2 : r (xs p i) * r (ys' p i δ) + r (ys p i δ) = 0` using `hb.inj (by`. Rewrite using `[map_add, map_mul, n1, n3, n4, map_zero]`. Simplify using `only [ys']`. Take the linear combination `(-(ys p i δ)) * hxx)`.
+
+Set `a : Rˣ` to `⟨pm p (.inr i) (.inr i), qm p (.inr i) (.inr i), d2, by rw [mul_comm]; exact d2⟩`. Set `h : GL (ι ⊕ ι) 𝔸[F]` to `triU hi _ _ _ _ h1 h2`. Use `⟨⟨(a, h), ?_⟩, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Establish `hdet : ν (Matrix.GeneralLinearGroup.det h : 𝔸[F]ˣ) = xs p i`.
+
+Establish `: ((Matrix.GeneralLinearGroup.det h : 𝔸[F]ˣ) : 𝔸[F]) = r (xs p i)` using `tri_det hi _ _`. Rewrite using `[this, n1]`. Use `show pm p (.inr i) (.inr i) * A.σ (pm p (.inr i) (.inr i)) * ν (Matrix.GeneralLinearGroup.det h : 𝔸[F]ˣ) = 1`. Rewrite using `[hdet]`. Simplify using `only [xs]`.
+
+Take the linear combination `(A.σ (pm p (.inr i) (.inr i))) * (pm p (.inl i) (.inl i)) * d2 + u1`.
+-/
 theorem exists_cov (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x, x = i) (p : A.uQ ε (Set.univ : Set ι)) :
     ∃ c : cover A ν ι, ((c.1.1 : Rˣ) : R) = pm p (.inr i) (.inr i) ∧ (((c.1.1)⁻¹ : Rˣ) : R) = qm p (.inr i) (.inr i) ∧
       ((c.1.2 : GL (ι ⊕ ι) 𝔸[F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]) = tri (r (xs p i)) (r (ys p i δ)) ∧
@@ -220,6 +309,13 @@ theorem exists_cov (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : �
   simp only [xs]
   linear_combination (A.σ (pm p (.inr i) (.inr i))) * (pm p (.inl i) (.inl i)) * d2 + u1
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Establish `hm : ((Matrix.GeneralLinearGroup.map ν c.1.2 : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) = tri (ν x) (ν y)` using `by show ((c.1.2 : GL (ι ⊕ ι) 𝔸[F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]).map ν = _`. Rewrite using `[hh, tri_map hi]`. Establish `hdi : (((dU A δ)⁻¹ : Rˣ) : R) * A.i δ = 1` using `Units.inv_mul (dU A δ)`. Rewrite using `[hj c]`.
+
+Apply the tactic sequence `refine ext2 hi ?_ ?_ ?_ ?_ <;> rw [Matrix.smul_apply, dg_conj, hm, hc]`. Simplify using `using h11`. Simplify using `using h12`. Simplify using `using h21.symm`. Establish `hdi' : A.i ((δ : E)⁻¹) * A.i δ = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ δ.ne_zero, map_one]`. Simplify using `[hdi']`.
+-/
 theorem j_eq {j : cover A ν ι →* A.U ε ι} (hj : IsJ δ j) {i : ι} (hi : ∀ x, x = i) (c : cover A ν ι) (g : A.U ε ι)
     (x y : 𝔸[F]) (hc : ((c.1.1 : Rˣ) : R) = (g.1 : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (.inr i) (.inr i))
     (hh : ((c.1.2 : GL (ι ⊕ ι) 𝔸[F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]) = tri x y)
@@ -241,6 +337,13 @@ theorem j_eq {j : cover A ν ι →* A.U ε ι} (hj : IsJ δ j) {i : ι} (hi : �
       rw [← map_mul, inv_mul_cancel₀ δ.ne_zero, map_one]
     simp [hdi']
 
+/- English proof (translation)
+Take `⟨e21, f21, d1, d2, u1, u2⟩` from `ent hi p`. Take `⟨n1, n2, n3, n4⟩` from `fixes hg hb hi p`. Establish `hd : (A.i δ) * ((dU A δ)⁻¹ : Rˣ) = 1` using `Units.mul_inv (dU A δ)`. Use `j_eq hj hi c p.1 _ _ h1 h3 ?_ ?_ e21` and prove the remaining obligations. Use `show pm p (.inr i) (.inr i) * ν (r (xs p i)) = pm p (.inl i) (.inl i)`.
+
+Rewrite using `[n1]`. Simplify using `only [xs]`. Take the linear combination `(pm p (.inl i) (.inl i)) * d2`. Use `show pm p (.inr i) (.inr i) * (ν (r (ys p i δ)) * A.i δ) = pm p (.inl i) (.inr i)`. Rewrite using `[n3]`.
+
+Simplify using `only [ys]`. Take the linear combination `(pm p (.inl i) (.inr i)) * d2 + (pm p (.inr i) (.inr i) * pm p (.inl i) (.inr i) * qm p (.inr i) (.inr i)) * hd`.
+-/
 theorem j_sec (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x, x = i) {j : cover A ν ι →* A.U ε ι}
     (hj : IsJ δ j) (p : A.uQ ε (Set.univ : Set ι)) (c : cover A ν ι)
     (h1 : ((c.1.1 : Rˣ) : R) = pm p (.inr i) (.inr i))
@@ -260,6 +363,13 @@ theorem j_sec (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x,
     linear_combination (pm p (.inl i) (.inr i)) * d2 +
       (pm p (.inr i) (.inr i) * pm p (.inl i) (.inr i) * qm p (.inr i) (.inr i)) * hd
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Conclude with `ha`. Conclude with `hb`. Conclude with `S.zero_mem`. Distinguish the cases in `h : x = y`.
+
+Substitute `h` using the available equality. Rewrite using `[triangular_lower_right_diag]`. Conclude with `S.one_mem`. Use `show (1 : Matrix ι ι K) x y ∈ S`. Rewrite using `[Matrix.one_apply_ne h]`.
+
+Conclude with `S.zero_mem`.
+-/
 theorem tri_mem {K : Type} [CommRing K] (S : Subring K) {a b : K} (ha : a ∈ S) (hb : b ∈ S) (x y : ι ⊕ ι) :
     (tri a b : Matrix (ι ⊕ ι) (ι ⊕ ι) K) x y ∈ S := by
   rcases x with x | x <;> rcases y with y | y
@@ -274,6 +384,11 @@ theorem tri_mem {K : Type} [CommRing K] (S : Subring K) {a b : K} (ha : a ∈ S)
       rw [Matrix.one_apply_ne h]
       exact S.zero_mem
 
+/- English proof (translation)
+Use `⟨fun x y => ⟨?_, ?_⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `tri_mem _ ha hb x y`. Rewrite using `[hv']`. Conclude with `tri_mem _ ha' hb' x y`.
+
+Rewrite using `[hv, tri_map hi, (hu v).2]`. Conclude with `tri_unitary hi _ (hu v).1`.
+-/
 theorem tri_mem_k {i : ι} (hi : ∀ x, x = i) (κ : GL (ι ⊕ ι) 𝔸[F]) (a b a' b' : 𝔸[F])
     (hv : (κ : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]) = tri a b)
     (hv' : ((κ⁻¹ : GL (ι ⊕ ι) 𝔸[F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]) = tri a' b')
@@ -286,6 +401,29 @@ theorem tri_mem_k {i : ι} (hi : ∀ x, x = i) (κ : GL (ι ⊕ ι) 𝔸[F]) (a 
   · rw [hv, tri_map hi, (hu v).2]
     exact tri_unitary hi _ (hu v).1
 
+/- English proof (translation)
+Take `⟨e21, f21, d1, d2, u1, u2⟩` from `ent hi p`. Take `⟨n1, n2, n3, n4⟩` from `fixes hg hb hi p`. Establish `hk : p.1.1 ∈ A.kGL (ι ⊕ ι)` using `Subgroup.mem_subgroupOf.1 hp`. Take `⟨hO, hU⟩` from `hk`. Take `⟨u, hu, huO, huO', -⟩` from `hb.δα`.
+
+Establish `hw : (((dU A δ)⁻¹ : Rˣ) : R) * ν α = ((u⁻¹ : Rˣ) : R)`. Establish `h1 : (((dU A δ)⁻¹ : Rˣ) : R) * A.i δ = 1` using `Units.inv_mul (dU A δ)`. Establish `h2 : (u : R) * ((u⁻¹ : Rˣ) : R) = 1` using `Units.mul_inv u`. Rewrite `h1` using `[hu]`. Take the linear combination `((u⁻¹ : Rˣ) : R) * h1 - ((((dU A δ)⁻¹ : Rˣ) : R) * ν α) * h2`.
+
+Establish `hy : ys p i δ * ν α = pm p (.inl i) (.inr i) * (qm p (.inr i) (.inr i) * ((u⁻¹ : Rˣ) : R))`. Simplify using `only [ys]`. Take the linear combination `(pm p (.inl i) (.inr i) * qm p (.inr i) (.inr i)) * hw`. Establish `hyO : ys p i δ * ν α ∈ A.O`. Rewrite using `[hy]`.
+
+Conclude with `A.O.mul_mem (hO _ _).1 (A.O.mul_mem (hO _ _).2 huO')`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show j c ∈ A.uK ε ι`. Rewrite using `[hjc]`. Conclude with `hp`.
+
+Use `Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨(dg ι (α : 𝔸[F]ˣ))⁻¹ * c.1.2 * dg ι (α : 𝔸[F]ˣ), ?_, ?_⟩) swap` and prove the remaining obligations. Use `show dg ι (α : 𝔸[F]ˣ) * ((dg ι (α : 𝔸[F]ˣ))⁻¹ * c.1.2 * dg ι (α : 𝔸[F]ˣ)) * (dg ι (α : 𝔸[F]ˣ))⁻¹ = c.1.2 group`. Establish `hinv : ((dg ι (α : 𝔸[F]ˣ))⁻¹ * c.1.2 * dg ι (α : 𝔸[F]ˣ))⁻¹ = (dg ι (α : 𝔸[F]ˣ))⁻¹ * (c.1.2)⁻¹ * dg ι (α : 𝔸[F]ˣ)` using `by group`. Use `tri_mem_k hi _ (r (xs p i)) (r (ys p i δ) * (α : 𝔸[F]ˣ)) (r (xs' p i)) (r (ys' p i δ) * (α : 𝔸[F]ˣ)) (dg_tri hi _ _ _ _ h3) (by rw [hinv]; exact dg_tri hi _ _ _ _ h4) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `(hb.int _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[n1]`. Conclude with `A.O.mul_mem (hO _ _).1 (hO _ _).2`. Use `(hb.int _).1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, n3]`. Conclude with `hyO`.
+
+Use `(hb.int _).1 ?_` and prove the remaining obligations. Rewrite using `[n2]`. Conclude with `A.O.mul_mem (hO _ _).1 (hO _ _).2`. Use `(hb.int _).1 ?_` and prove the remaining obligations. Rewrite using `[map_mul, n4]`.
+
+Establish `: ys' p i δ * ν α = -(xs' p i * (ys p i δ * ν α))` using `by simp only [ys']; ring`. Rewrite using `[this]`. Conclude with `A.O.neg_mem (A.O.mul_mem (A.O.mul_mem (hO _ _).1 (hO _ _).2) hyO)`. Introduce `v`. Take `⟨w, hw'⟩` from `hb.inf' v`.
+
+Take `⟨t1, t2, t3⟩` from `unit_tri hi ((pm p).map (A.φ w)) (hU w) (by simp [e21])`. Simplify using `only [Matrix.map_apply] at t1 t2 t3`. Establish `hq : A.φ w (pm p (.inr i) (.inr i)) * A.φ w (qm p (.inr i) (.inr i)) = 1`. Rewrite using `[← map_mul, d2, map_one]`. Establish `hqs : star (A.φ w (pm p (.inr i) (.inr i))) * star (A.φ w (qm p (.inr i) (.inr i))) = 1`.
+
+Rewrite using `[← star_mul', hq, star_one]`. Establish `hq2 : star (A.φ w (qm p (.inr i) (.inr i))) * A.φ w (qm p (.inr i) (.inr i)) = 1`. Take the linear combination `(-(star (A.φ w (qm p (.inr i) (.inr i))) * A.φ w (qm p (.inr i) (.inr i)))) * t3 + (A.φ w (qm p (.inr i) (.inr i)) * A.φ w (pm p (.inr i) (.inr i))) * hqs + hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw', n1, map_mul, star_mul']`.
+
+Take the linear combination `(star (A.φ w (qm p (.inr i) (.inr i))) * A.φ w (qm p (.inr i) (.inr i))) * t1 + hq2`. Rewrite using `[← hw', map_mul, n3, hy, map_mul, t2, zero_mul]`.
+-/
 theorem sec_mem (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ x, x = i) {j : cover A ν ι →* A.U ε ι}
     (p : A.uQ ε (Set.univ : Set ι)) (hp : (p : A.U ε ι) ∈ A.uK ε ι) (c : cover A ν ι)
     (h3 : ((c.1.2 : GL (ι ⊕ ι) 𝔸[F]) : Matrix (ι ⊕ ι) (ι ⊕ ι) 𝔸[F]) = tri (r (xs p i)) (r (ys p i δ)))
@@ -349,14 +487,27 @@ theorem sec_mem (hg : A.Good) (hb : Base A ε ν r δ α ω) {i : ι} (hi : ∀ 
           linear_combination (star (A.φ w (qm p (.inr i) (.inr i))) * A.φ w (qm p (.inr i) (.inr i))) * t1 + hq2
         · rw [← hw', map_mul, n3, hy, map_mul, t2, zero_mul]
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a b`.
+-/
 theorem cont_pm (a b : ι ⊕ ι) : Continuous fun p : A.uQ ε (Set.univ : Set ι) => pm p a b :=
   (Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a b
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a b`.
+-/
 theorem cont_qm (a b : ι ⊕ ι) : Continuous fun p : A.uQ ε (Set.univ : Set ι) => qm p a b :=
   (Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem a b
 
 end Main
 
+/- English proof (translation)
+Introduce `F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hg hb hi hj`. Use `choose s h1 h2 h3 h4 using fun p => exists_cov (ι := ι) (ε := ε) hg hb hi p`. Establish `hjs : ∀ p, j (s p) = p` using `fun p => j_sec hg hb hi hj p (s p) (h1 p) (h3 p)`. Use `⟨s, ?_, hjs, fun p hp => sec_mem hg hb hi p hp (s p) (h3 p) (h4 p) (hjs p)⟩` and prove the remaining obligations. Establish `cx : Continuous fun p : A.uQ ε (Set.univ : Set ι) => xs p i` using `(cont_pm _ _).mul (cont_qm _ _)`.
+
+Establish `cx' : Continuous fun p : A.uQ ε (Set.univ : Set ι) => xs' p i` using `(cont_pm _ _).mul (cont_qm _ _)`. Establish `cy : Continuous fun p : A.uQ ε (Set.univ : Set ι) => ys p i δ` using `((cont_pm _ _).mul (cont_qm _ _)).mul continuous_const`. Establish `cy' : Continuous fun p : A.uQ ε (Set.univ : Set ι) => ys' p i δ` using `(cx'.mul cy).neg`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `show Continuous fun p => ((s p).1.1, (s p).1.2)`.
+
+Use `Continuous.prodMk (Units.continuous_iff.2 ⟨?_, ?_⟩) (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(cont_pm _ _).congr fun p => (h1 p).symm`. Conclude with `(cont_qm _ _).congr fun p => (h2 p).symm`. Conclude with `(tri_cont (hb.rcont.comp cx) (hb.rcont.comp cy)).congr fun p => (h3 p).symm`. Conclude with `(tri_cont (hb.rcont.comp cx') (hb.rcont.comp cy')).congr fun p => (h4 p).symm`.
+-/
 theorem jSec : JSec := by
   intro F E R _ _ _ _ _ _ _ _ _ _ A ε ν r δ α ω ι _ _ i j hg hb hi hj
   choose s h1 h2 h3 h4 using fun p => exists_cov (ι := ι) (ε := ε) hg hb hi p
@@ -375,6 +526,9 @@ theorem jSec : JSec := by
   · exact (tri_cont (hb.rcont.comp cx) (hb.rcont.comp cy)).congr fun p => (h3 p).symm
   · exact (tri_cont (hb.rcont.comp cx') (hb.rcont.comp cy')).congr fun p => (h4 p).symm
 
+/- English proof (translation)
+Introduce `_` and use `jSec`.
+-/
 theorem jSec_of_top : JTop → JSec := fun _ => jSec
 
 end GlobalTheory.CompanionTheory.EisSec

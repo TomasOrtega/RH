@@ -6,6 +6,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.LocalThickGlue
 
+/- English proof (translation)
+Establish `key : ∀ P : PrimeSpectrum (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1)), P.asIdeal.comap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (e + 1))) = IsLocalRing.maximalIdeal R`. Introduce `P`. Establish `hP : (P.asIdeal.comap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (e + 1)))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hle : IsLocalRing.maximalIdeal R ^ (e + 1) ≤ P.asIdeal.comap (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (e + 1)))`. Introduce `r hr`.
+
+Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hr]`. Conclude with `P.asIdeal.zero_mem`. Conclude with `((IsLocalRing.maximalIdeal.isMaximal R).eq_of_le hP.ne_top (hP.le_of_pow_le hle)).symm`. Prove the components needed by the constructor for the conclusion. Introduce `P Q`.
+
+Use `ext1`. Conclude with `Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective ((key P).trans (key Q).symm)`.
+-/
 theorem subsingleton_primeSpectrum (R : Type) [CommRing R] [IsLocalRing R] (e : ℕ) :
     Subsingleton (PrimeSpectrum (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1))) := by
   have key : ∀ P : PrimeSpectrum (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1)),
@@ -25,11 +32,33 @@ theorem subsingleton_primeSpectrum (R : Type) [CommRing R] [IsLocalRing R] (e : 
   ext1
   exact Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective ((key P).trans (key Q).symm)
 
+/- English proof (translation)
+Introduce `h` and use `(IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.mp (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))`.
+-/
 theorem pow_succ_ne_top (R : Type) [CommRing R] [IsLocalRing R] (e : ℕ) :
     IsLocalRing.maximalIdeal R ^ (e + 1) ≠ ⊤ := fun h =>
   (IsLocalRing.maximalIdeal.isMaximal R).ne_top
     (top_le_iff.mp (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))
 
+/- English proof (translation)
+Introduce `R _ _ hc X x hx`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal R) R := hc`. Use `haveI hnt : ∀ e, Nontrivial (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1)) := fun e => Ideal.Quotient.nontrivial_iff.2 (pow_succ_ne_top R e)`. Use `haveI hss := subsingleton_primeSpectrum R`. Set `z : ∀ e, Sp (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1))` to `fun e => (Classical.arbitrary (PrimeSpectrum (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1))))`.
+
+Establish `hpt : ∀ e (a : Sp (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1))), x e a = x 0 (z 0)`. Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => intro a`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum _) a (z 0)]`.
+
+Consider the case `succ n ih`. Introduce `a`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum _) a (Out.thickTrans R (IsLocalRing.maximalIdeal R) n (z n))]`. Establish `e1` using `congrArg (fun h => h (z n)) (hx n)`. Simplify using `only [Scheme.Hom.comp_apply] at e1`.
+
+Rewrite using `[e1, ih]`. Take `⟨U, hU, hqU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show x 0 (z 0) ∈ (⊤ : X.Opens) from trivial)`. Establish `hU' : IsAffineOpen U` using `hU`. Establish `hr : ∀ e, Set.range (x e) ⊆ Set.range hU'.fromSpec`. Introduce `e`.
+
+Rewrite using `[hU'.range_fromSpec]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hpt e a]`. Conclude with `hqU`. Set `ρ : ∀ e, Γ(X, U) ⟶ CommRingCat.of (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1))` to `fun e => Spec.preimage (IsOpenImmersion.lift hU'.fromSpec (x e) (hr e))`.
+
+Establish `hρ : ∀ e, Spec.map (ρ e) ≫ hU'.fromSpec = x e` using `fun e => by`. Simplify using `only [ρ, Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Establish `hcomp : ∀ e, (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)))).comp (ρ (e + 1)).hom = (ρ e).hom` using `fun e => by`. Establish `h1 : ρ (e + 1) ≫ CommRingCat.ofHom (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)))) = ρ e`.
+
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU'.fromSpec, Spec.map_comp, Category.assoc, hρ, hρ]`. Conclude with `hx e`. Conclude with `congrArg CommRingCat.Hom.hom h1`. Establish `ha : StrictMono (fun n : ℕ => n + 1)` using `fun _ _ h => Nat.succ_lt_succ h`.
+
+Set `F : Γ(X, U) →+* R` to `IsAdicComplete.StrictMono.liftRingHom (IsLocalRing.maximalIdeal R) ha (fun n => (ρ n).hom) (fun {n} => hcomp n)`. Use `⟨Spec.map (CommRingCat.ofHom F) ≫ hU'.fromSpec, fun e => ?_⟩` and prove the remaining obligations. Establish `hF : (Ideal.Quotient.mk (IsLocalRing.maximalIdeal R ^ (e + 1))).comp F = (ρ e).hom` using `IsAdicComplete.StrictMono.mk_comp_liftRingHom (IsLocalRing.maximalIdeal R) ha _ _`. Rewrite using `[← hρ e, ← Category.assoc]`. Use `congr 1`.
+
+Rewrite using `[Out.thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hF]`. Both sides reduce to the same expression.
+-/
 theorem exists_glue : ∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (IsLocalRing.maximalIdeal R) R →
     ∀ (X : Scheme.{0}) (x : ∀ e : ℕ, Sp (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1)) ⟶ X),
     (∀ e, Out.thickTrans R (IsLocalRing.maximalIdeal R) e ≫ x (e + 1) = x e) →

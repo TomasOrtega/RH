@@ -6,6 +6,15 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.FinOpenGram
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n μ ν m hμ hν hm f hf hfin U hU hne`. Establish `: BorelSpace (HermR (Ainf F) σ n)` using `⟨rfl⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hpos : ν U ≠ 0` using `(hU.measure_pos ν hne).ne'`.
+
+Establish `h2` using `hm`. Unfold `GlobalTheory.CompanionTheory.SW.IsGramFib Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily at h2`. Establish `hfib` using `h2.2.1 f hf`. Establish `hle : (⊤ : ℝ≥0∞) * ν U ≤ ∫⁻ S, ∫⁻ X, f X ∂(m S) ∂ν`. Rewrite using `[← lintegral_indicator_const hU.measurableSet]`.
+
+Use `lintegral_mono fun S => ?_` and prove the remaining obligations. Distinguish the cases in `hS : S ∈ U`. Rewrite using `[Set.indicator_of_mem hS, hcon S hS]`. Rewrite using `[Set.indicator_of_notMem hS]`. Conclude with `bot_le`.
+
+Rewrite `hle` using `[ENNReal.top_mul hpos, top_le_iff, ← hfib]`. Conclude with `hfin (top_le_iff.1 (hle ▸ setLIntegral_le_lintegral _ _))`.
+-/
 theorem finOpen : PositivityTheory.PfSWUS.SchInf.FinOpen := by
   intro F E _ _ _ _ _ σ hCM M J hJ n μ ν m hμ hν hm f hf hfin U hU hne
   have : BorelSpace (HermR (Ainf F) σ n) := ⟨rfl⟩

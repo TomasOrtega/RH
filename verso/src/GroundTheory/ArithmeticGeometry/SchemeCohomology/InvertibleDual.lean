@@ -16,6 +16,9 @@ structure DualSec (P : PMod X) (U : X.Opens) where
   compat : ∀ (V W : X.Opens) (h : V ≤ U) (i : W ≤ V) (m : P.obj (op V)),
     app W (i.trans h) (resM P i m) = resR i (app V h m)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((X.sheaf.obj ⋙ forget₂ CommRingCat RingCat).map (𝟙 (op V))).hom r = r`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 lemma resR_refl {V : X.Opens} (r : ringOn X V) : resR (le_refl V) r = r := by
   change ((X.sheaf.obj ⋙ forget₂ CommRingCat RingCat).map (𝟙 (op V))).hom r = r
   rw [CategoryTheory.Functor.map_id]
@@ -36,15 +39,33 @@ instance : SMul ℕ (DualSec P U) := ⟨fun n φ => ⟨fun V h => n • φ.app V
 instance : SMul ℤ (DualSec P U) := ⟨fun n φ => ⟨fun V h => n • φ.app V h,
   fun V W h i m => by simp only [LinearMap.smul_apply]; rw [φ.compat, map_zsmul]⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma zero_app' (V : X.Opens) (h : V ≤ U) : (0 : DualSec P U).app V h = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma add_app' (φ ψ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (φ + ψ).app V h = φ.app V h + ψ.app V h := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma neg_app' (φ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (-φ).app V h = -φ.app V h := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma sub_app' (φ ψ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (φ - ψ).app V h = φ.app V h - ψ.app V h := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma nsmul_app' (n : ℕ) (φ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (n • φ).app V h = n • φ.app V h := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma zsmul_app' (n : ℤ) (φ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (n • φ).app V h = n • φ.app V h := rfl
 
@@ -68,24 +89,45 @@ noncomputable instance : SMul (ringOn X U) (DualSec P U) := ⟨fun r φ => ⟨fu
     simp only [LinearMap.smul_apply, smul_eq_mul]
     rw [φ.compat, map_mul, resR_resR]⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma smul_app' (r : ringOn X U) (φ : DualSec P U) (V : X.Opens) (h : V ≤ U) :
     (r • φ).app V h = resR h r • φ.app V h := rfl
 
+/- English proof (translation)
+Use extensionality with `V h m`. Repeat the step `rw [smul_app']` while it applies. Simplify using the standard rewrite rules.
+-/
 lemma one_smul' (φ : DualSec P U) : (1 : ringOn X U) • φ = φ := by
   ext V h m; repeat rw [smul_app']
   simp
+/- English proof (translation)
+Use extensionality with `V h m`. Repeat the step `rw [smul_app']` while it applies. Simplify using `[mul_assoc]`.
+-/
 lemma mul_smul' (r s : ringOn X U) (φ : DualSec P U) : (r * s) • φ = r • s • φ := by
   ext V h m; repeat rw [smul_app']
   simp [mul_assoc]
+/- English proof (translation)
+Use extensionality with `V h m`. Repeat the step `rw [smul_app']` while it applies. Simplify using the standard rewrite rules.
+-/
 lemma smul_zero' (r : ringOn X U) : r • (0 : DualSec P U) = 0 := by
   ext V h m; repeat rw [smul_app']
   simp
+/- English proof (translation)
+Use extensionality with `V h m`. Rewrite using `[add_app', smul_app', smul_app', smul_app']`. Simplify using `[mul_add]`.
+-/
 lemma smul_add' (r : ringOn X U) (φ ψ : DualSec P U) : r • (φ + ψ) = r • φ + r • ψ := by
   ext V h m; rw [add_app', smul_app', smul_app', smul_app']
   simp [mul_add]
+/- English proof (translation)
+Use extensionality with `V h m`. Rewrite using `[add_app', smul_app', smul_app', smul_app']`. Simplify using `[add_mul]`.
+-/
 lemma add_smul' (r s : ringOn X U) (φ : DualSec P U) : (r + s) • φ = r • φ + s • φ := by
   ext V h m; rw [add_app', smul_app', smul_app', smul_app']
   simp [add_mul]
+/- English proof (translation)
+Use extensionality with `V h m`. Repeat the step `rw [smul_app']` while it applies. Simplify using the standard rewrite rules.
+-/
 lemma zero_smul' (φ : DualSec P U) : (0 : ringOn X U) • φ = 0 := by
   ext V h m; repeat rw [smul_app']
   simp
@@ -106,12 +148,21 @@ variable {P : PMod X}
 def restr {U U' : X.Opens} (hU : U' ≤ U) (φ : DualSec P U) : DualSec P U' :=
   ⟨fun V h => φ.app V (h.trans hU), fun V W h i m => φ.compat V W (h.trans hU) i m⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma restr_app {U U' : X.Opens} (hU : U' ≤ U) (φ : DualSec P U) (V : X.Opens)
     (h : V ≤ U') : (restr hU φ).app V h = φ.app V (h.trans hU) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma restr_add {U U' : X.Opens} (hU : U' ≤ U) (φ ψ : DualSec P U) :
     restr hU (φ + ψ) = restr hU φ + restr hU ψ := rfl
 
+/- English proof (translation)
+Use extensionality with `V h m`. Rewrite using `[smul_app', restr_app, restr_app, smul_app', resR_resR]`.
+-/
 lemma restr_smul {U U' : X.Opens} (hU : U' ≤ U) (r : ringOn X U) (φ : DualSec P U) :
     restr hU (r • φ) = resR hU r • restr hU φ := by
   ext V h m
@@ -119,6 +170,9 @@ lemma restr_smul {U U' : X.Opens} (hU : U' ≤ U) (r : ringOn X U) (φ : DualSec
 
 end DualSec
 
+/- English proof (translation)
+Introduce `a b e`. Use `congrArg (resR h') e` as an intermediate fact. Rewrite `this` using `[resR_resR, resR_resR, resR_refl, resR_refl]`. Conclude with `this`.
+-/
 lemma resR_injective_of_le {V W : X.Opens} (h : W ≤ V) (h' : V ≤ W) :
     Function.Injective (resR h) := by
   intro a b e
@@ -154,12 +208,18 @@ variable (hsf : ∀ i j (V : X.Opens) (hi : V ≤ U i) (hj : V ≤ U j) (m : P.o
   (sf i).app V hi m = (sf j).app V hj m)
 include hsf
 
+/- English proof (translation)
+Rewrite using `[glueLocal, glueLocal, ← (sf i).compat, ← (sf j).compat, resM_resM, resM_resM]`. Conclude with `hsf i j _ _ _ _`.
+-/
 lemma glueLocal_compat {V : X.Opens} (m : P.obj (op V)) (i j : ι) :
     resR (inf_le_left : (V ⊓ U i) ⊓ (V ⊓ U j) ≤ V ⊓ U i) (glueLocal sf m i) =
       resR (inf_le_right : (V ⊓ U i) ⊓ (V ⊓ U j) ≤ V ⊓ U j) (glueLocal sf m j) := by
   rw [glueLocal, glueLocal, ← (sf i).compat, ← (sf j).compat, resM_resM, resM_resM]
   exact hsf i j _ _ _ _
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `sheaf_exists_glue X.sheaf (V := V) (fun i => V ⊓ U i) (fun _ => inf_le_left) (fun x hx => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hV hx)`. Conclude with `⟨i, hx, hi⟩) (fun i => glueLocal sf m i) (fun i j => glueLocal_compat hsf m i j)`. Conclude with `⟨r, hr⟩`.
+-/
 lemma exists_glue {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) :
     ∃ r : ringOn X V, ∀ i, resR (inf_le_left : V ⊓ U i ≤ V) r = glueLocal sf m i := by
   obtain ⟨r, hr⟩ := sheaf_exists_glue X.sheaf (V := V) (fun i => V ⊓ U i) (fun _ => inf_le_left)
@@ -169,6 +229,9 @@ lemma exists_glue {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) :
   exact ⟨r, hr⟩
 
 omit hsf in
+/- English proof (translation)
+Apply `sheaf_eq_of_locally X.sheaf (V := V) r s` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hV hx)`. Conclude with `⟨V ⊓ U i, inf_le_left, ⟨hx, hi⟩, (hr i).trans (hs i).symm⟩`.
+-/
 lemma glue_unique {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) (r s : ringOn X V)
     (hr : ∀ i, resR (inf_le_left : V ⊓ U i ≤ V) r = glueLocal sf m i)
     (hs : ∀ i, resR (inf_le_left : V ⊓ U i ≤ V) s = glueLocal sf m i) : r = s := by
@@ -180,6 +243,9 @@ lemma glue_unique {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) (r s : ri
 noncomputable def glueFun {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) : ringOn X V :=
   Classical.choose (exists_glue hsf hV m)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_glue hsf hV m) i`.
+-/
 lemma glueFun_spec {V : X.Opens} (hV : V ≤ iSup U) (m : P.obj (op V)) (i : ι) :
     resR (inf_le_left : V ⊓ U i ≤ V) (glueFun hsf hV m) = glueLocal sf m i :=
   Classical.choose_spec (exists_glue hsf hV m) i
@@ -201,6 +267,11 @@ noncomputable def glue : DualSec P (iSup U) :=
     rw [resR_resR, ← resR_resR (inf_le_left : V ⊓ U j ≤ V) (inf_le_inf_right (U j) i), glueFun_spec,
       glueLocal, glueLocal, ← (sf j).compat, resM_resM, resM_resM]⟩
 
+/- English proof (translation)
+Use extensionality with `V h m`. Rewrite using `[restr_app]`. Establish `hV : V ≤ V ⊓ U i` using `le_inf le_rfl h`. Apply `resR_injective_of_le (inf_le_left : V ⊓ U i ≤ V) hV` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `resR _ (glueFun hsf (h.trans (le_iSup U i)) m) = _`.
+
+Rewrite using `[glueFun_spec, glueLocal, (sf i).compat]`.
+-/
 lemma glue_restr (i : ι) : restr (le_iSup U i) (glue hsf) = sf i := by
   ext V h m
   rw [restr_app]
@@ -210,6 +281,11 @@ lemma glue_restr (i : ι) : restr (le_iSup U i) (glue hsf) = sf i := by
   rw [glueFun_spec, glueLocal, (sf i).compat]
 
 omit hsf in
+/- English proof (translation)
+Use extensionality with `V hVU m`. Apply `sheaf_eq_of_locally X.sheaf (V := V)` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, hi⟩` from `hV x (hVU hx)`. Use `⟨V ⊓ U i, inf_le_left, ⟨hx, hi⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `resR _ (φ.app V hVU m) = resR _ (ψ.app V hVU m)`. Rewrite using `[← φ.compat, ← ψ.compat]`. Use `congrArg (fun ξ => DualSec.app ξ (V ⊓ U i) inf_le_right (resM P inf_le_left m)) (h i)` as an intermediate fact. Conclude with `this`.
+-/
 lemma eq_of_restr (hV : ∀ x, x ∈ iSup U → ∃ i, x ∈ U i) (φ ψ : DualSec P (iSup U))
     (h : ∀ i, restr (le_iSup U i) φ = restr (le_iSup U i) ψ) : φ = ψ := by
   ext V hVU m
@@ -224,6 +300,11 @@ lemma eq_of_restr (hV : ∀ x, x ∈ iSup U → ∃ i, x ∈ U i) (φ ψ : DualS
 
 end DualSec
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `ι U sf hsf`. Establish `hsf' : ∀ i j (V : X.Opens) (hi : V ≤ U i) (hj : V ≤ U j) (m : P.obj (op V)), (sf i).app V hi m = (sf j).app V hj m`. Introduce `i j V hi hj m`. Conclude with `congrArg (fun ξ : DualSec P (U i ⊓ U j) => ξ.app V (le_inf hi hj) m) (hsf i j)`.
+
+Use `⟨DualSec.glue hsf', fun i => DualSec.glue_restr hsf' i, fun φ hφ => ?_⟩` and prove the remaining obligations. Apply `DualSec.eq_of_restr (fun x hx => Opens.mem_iSup.1 hx)` to reduce the goal to its premises. Introduce `i`. Rewrite using `[DualSec.glue_restr hsf' i]`. Conclude with `hφ i`.
+-/
 lemma dualAb_isSheaf (P : PMod X) : (dualAb P).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
   intro ι U sf hsf
@@ -267,6 +348,9 @@ noncomputable def evalPre (M : X.Modules) :
 noncomputable def dualEval (M : X.Modules) : dualSheaf M ⊗ M ⟶ 𝟙_ X.Modules :=
   tensorLift (evalPre M)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `P.map (𝟙 (op U)) x = x`. Rewrite using `[PresheafOfModules.map_id]`. Both sides reduce to the same expression.
+-/
 lemma resM_refl (P : PMod X) {U : X.Opens} (x : P.obj (op U)) : resM P (le_refl U) x = x := by
   change P.map (𝟙 (op U)) x = x
   rw [PresheafOfModules.map_id]
@@ -279,6 +363,9 @@ noncomputable def coordEquiv (hs : IsBasisOn P U s) (V : X.Opens) (h : V ≤ U) 
     ringOn X V ≃ₗ[ringOn X V] P.obj (op V) :=
   LinearEquiv.ofBijective (LinearMap.toSpanSingleton (ringOn X V) _ (resM P h s)) (hs V h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coordEquiv_apply (hs : IsBasisOn P U s) (V : X.Opens) (h : V ≤ U) (r : ringOn X V) :
     coordEquiv hs V h r = r • resM P h s := rfl
 
@@ -291,11 +378,25 @@ noncomputable def dualBasis (hs : IsBasisOn P U s) : DualSec P U where
     conv_lhs => rw [← (coordEquiv hs V h).apply_symm_apply m]
     rw [coordEquiv_apply, resM_smul, resM_resM]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(coordEquiv hs V h).symm (resM P h s) = 1`. Rewrite using `[LinearEquiv.symm_apply_eq, coordEquiv_apply, one_smul]`.
+-/
 lemma dualBasis_app_self (hs : IsBasisOn P U s) (V : X.Opens) (h : V ≤ U) :
     (dualBasis hs).app V h (resM P h s) = 1 := by
   change (coordEquiv hs V h).symm (resM P h s) = 1
   rw [LinearEquiv.symm_apply_eq, coordEquiv_apply, one_smul]
 
+/- English proof (translation)
+Introduce `V h`. Establish `hres : resM (dualPre P) h (dualBasis hs) = restr h (dualBasis hs)` using `rfl`. Rewrite using `[hres]`. Prove the components needed by the constructor for the conclusion. Introduce `c₁ c₂ e`.
+
+Use `congrArg (fun ξ : DualSec P V => ξ.app V le_rfl (resM P h s)) e` as an intermediate fact. Simplify using `only at this`. Express the relevant statement in the definitionally equal form `(c₁ • restr h (dualBasis hs)).app V le_rfl (resM P h s) = (c₂ • restr h (dualBasis hs)).app V le_rfl (resM P h s) at this`. Rewrite `this` using `[smul_app', smul_app', LinearMap.smul_apply, LinearMap.smul_apply, restr_app, dualBasis_app_self, resR_refl, resR_refl]`. Simplify using `using this`.
+
+Introduce `ψ`. Use `⟨ψ.app V le_rfl (resM P h s), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ • restr h (dualBasis hs) = ψ`. Use `DualSec.ext (funext fun W => funext fun i => LinearMap.ext fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(resR i (ψ.app V le_rfl (resM P h s)) • (dualBasis hs).app W (i.trans h)) m = ψ.app W i m`.
+
+Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Establish `hm : m = (coordEquiv hs W (i.trans h)).symm m • resM P i (resM P h s)`. Rewrite using `[resM_resM, ← coordEquiv_apply hs, LinearEquiv.apply_symm_apply]`. Use `conv_rhs => rw [hm]`. Rewrite using `[map_smul, ψ.compat V W le_rfl i (resM P h s), smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 lemma isBasisOn_dualBasis (hs : IsBasisOn P U s) : IsBasisOn (dualPre P) U (dualBasis hs) := by
   intro V h
   have hres : resM (dualPre P) h (dualBasis hs) = restr h (dualBasis hs) := rfl
@@ -338,6 +439,9 @@ noncomputable def dualIsoInv (M : X.Modules) : (preMod X).obj (dualSheaf M) ⟶ 
 instance (M : X.Modules) : IsIso (dualIsoHom M) :=
   ⟨dualIsoInv M, rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, hx, s, hs⟩` from `hM x`. Conclude with `⟨U, hx, _, (DualSec.isBasisOn_dualBasis hs).map_of_alt (dualIsoHom M) (MorphismProperty.of_isIso _ _)⟩`.
+-/
 lemma IsInvertibleSheaf.dual {M : X.Modules} (hM : IsInvertibleSheaf M) :
     IsInvertibleSheaf (dualSheaf M) := by
   intro x
@@ -345,6 +449,13 @@ lemma IsInvertibleSheaf.dual {M : X.Modules} (hM : IsInvertibleSheaf M) :
   exact ⟨U, hx, _, (DualSec.isBasisOn_dualBasis hs).map_of_alt (dualIsoHom M)
     (MorphismProperty.of_isIso _ _)⟩
 
+/- English proof (translation)
+Apply `isIso_of_isBasisOn` to reduce the goal to its premises. Introduce `x`. Take `⟨U, hx, s, hs⟩` from `hM x`. Set `t : ((preMod X).obj (dualSheaf M)).obj (op U)` to `(dualIsoHom M).app (op U) (DualSec.dualBasis hs)`. Establish `ht : IsBasisOn ((preMod X).obj (dualSheaf M)) U t` using `(DualSec.isBasisOn_dualBasis hs).map_of_alt (dualIsoHom M) (MorphismProperty.of_isIso _ _)`.
+
+Set `ts : ((preMod X).obj (dualSheaf M) ⊗ (preMod X).obj M).obj (op U)` to `t ⊗ₜ s`. Use `⟨U, hx, (tensorToSheaf (dualSheaf M) M).app (op U) ts, (ht.tmul hs).map_of_alt _ (W_tensorToSheaf _ M), ?_⟩` and prove the remaining obligations. Establish `e1 : ((preMod X).map (dualEval M)).app (op U) ((tensorToSheaf (dualSheaf M) M).app (op U) ts) = ((tensorToSheaf (dualSheaf M) M ≫ (preMod X).map (dualEval M)).app (op U)) ts` using `rfl`. Establish `e2 : (evalPre M).app (op U) ts = (DualSec.dualBasis hs).app U le_rfl s` using `rfl`. Rewrite using `[e1, dualEval, tensorToSheaf_tensorLift, e2]`.
+
+Establish `h1` using `DualSec.dualBasis_app_self hs U le_rfl`. Rewrite `h1` using `[resM_refl]`. Rewrite using `[h1]`. Conclude with `isBasisOn_one U`.
+-/
 lemma isIso_dualEval {M : X.Modules} (hM : IsInvertibleSheaf M) : IsIso (dualEval M) := by
   apply isIso_of_isBasisOn
   intro x

@@ -9,6 +9,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKTorus
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n J g x hx h`. Apply `hx` to reduce the goal to its premises. Use `set φ := piW B.τ₁ with hφ`. Establish `hinc : (fun k => φ (incV F x k)) = fun k => B.τ₁ (x k)`. Use function extensionality and compare the values at `k`.
+
+Conclude with `GlobalTheory.HTensSplitPair.piW_inclR_eq B.τ₁ (x k)`. Establish `hmv : (fun k => φ ((mat g⁻¹ *ᵥ incV F x) k)) = (mat g⁻¹).map φ *ᵥ (fun k => B.τ₁ (x k))`. Use function extensionality and compare the values at `k`. Rewrite using `[RingHom.map_mulVec, ← hinc]`. Both sides reduce to the same expression.
+
+Establish `hone : mat g * mat g⁻¹ = 1`. Unfold `mat`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hy : (fun k => B.τ₁ (x k)) = 0`.
+
+Use `congrArg (fun v => (mat g).map φ *ᵥ v) (hmv.symm.trans h)` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.map_mul, hone, Matrix.mulVec_zero] at this`. Rewrite `this` using `[Matrix.map_one _ (map_zero φ) (map_one φ), Matrix.one_mulVec]`. Conclude with `this`. Use function extensionality and compare the values at `k`.
+
+Use `congrFun hy k` as an intermediate fact. Simplify using `using (map_eq_zero_iff B.τ₁ B.τ₁.toRingHom.injective).1 this`.
+-/
 theorem piW_mat_inv_mulVec_incV_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) (x : Fin n → E), x ≠ 0 →
     (fun k => piW B.τ₁ ((mat g⁻¹ *ᵥ incV F x) k)) ≠ 0 := by

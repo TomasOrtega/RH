@@ -10,6 +10,9 @@ namespace Formalism.L2.SG.Pf.G6
 
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.HermitianLattices.Ext.L3.LocalSpans
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SummandLocalization.summand_localization`.
+-/
 theorem summand_localization : SummandLoc :=
   _root_.UpperTheory.Reformulated.B.SummandLocalization.summand_localization
 

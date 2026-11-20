@@ -12,6 +12,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.MainNotions.S
 namespace GlobalTheory.TransportIso
 
+/- English proof (translation)
+Introduce `G G' _ _ _ _ _ _ _ _ Φ ν W _ _ σ`. Establish `hs : ∀ g' : G', Φ.symm.toMulEquiv g' = Φ.symm g'` using `fun _ => rfl`. Establish `hs2 : ∀ g' : G', Φ.symm.toMulEquiv.toMonoidHom g' = Φ.symm g'` using `fun _ => rfl`. Establish `hcomp' : ∀ g' : G', (σ.comp Φ.symm.toMulEquiv.toMonoidHom) g' = σ (Φ.symm g')` using `fun _ => rfl`. Establish `hcomp : ∀ g : G, (σ.comp Φ.symm.toMulEquiv.toMonoidHom) (Φ g) = σ g`.
+
+Introduce `g`. Rewrite using `[hcomp', Φ.symm_apply_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hσ`. Set `e : Subrepresentation (σ.comp Φ.symm.toMulEquiv.toMonoidHom) ≃o Subrepresentation σ` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`.
+
+Use `U.apply_mem_toSubmodule (Φ g) hv` as an intermediate fact. Rewrite using `[hcomp] at this⟩` and apply the resulting hypothesis. Use `invFun := fun U => ⟨U.toSubmodule, fun g' v hv => by`. Rewrite using `[hcomp']`. Conclude with `U.apply_mem_toSubmodule _ hv⟩`.
+
+Use `left_inv := fun U => rfl`. Use `right_inv := fun U => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `e.isSimpleOrder`. Introduce and unpack `⟨hsm, hfd⟩`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Establish `: {g' : G' | (σ.comp Φ.symm.toMulEquiv.toMonoidHom) g' v = v} = Φ.symm ⁻¹' {g | σ g v = v}`. Use extensionality with `g'`. Conclude with `Iff.rfl`.
+
+Rewrite using `[this]`. Conclude with `(hsm v).preimage Φ.symm.continuous`. Introduce `K' hK'o hK'c`. Set `K : Subgroup G` to `K'.comap Φ.toMulEquiv.toMonoidHom`. Establish `hKo : IsOpen (K : Set G)` using `hK'o.preimage Φ.continuous`.
+
+Establish `hKc : IsCompact (K : Set G)`. Establish `: (K : Set G) = Φ.symm '' (K' : Set G')`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg; exact ⟨Φ g, hg, by simp⟩`.
+
+Introduce and unpack `⟨g', hg', rfl⟩ show Φ (Φ.symm g') ∈ K'`. Simplify using `using hg'`. Rewrite using `[this]`. Conclude with `hK'c.image Φ.symm.continuous`. Establish `heq : GlobalTheory.PRep.fixed (σ.comp Φ.symm.toMulEquiv.toMonoidHom) K' = GlobalTheory.PRep.fixed σ K`.
+
+Use extensionality with `v`. Simplify using `only [GlobalTheory.PRep.fixed, GlobalTheory.PRep.eig]`. Prove the components needed by the constructor for the conclusion. Introduce `hv h`. Use `hv ⟨Φ h, h.2⟩` as an intermediate fact.
+
+Simplify using `at this ⊢`. Use `this using 3` and compare the differences between its conclusion and the goal. Conclude with `(Φ.symm_apply_apply _).symm`. Introduce `hv h`. Use `hv ⟨Φ.symm h, show Φ (Φ.symm h) ∈ K' by simpa using h.2⟩` as an intermediate fact.
+
+Simplify using `at this ⊢`. Use `this using 3` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `hfd K hKo hKc`.
+
+Introduce `f f' hf A`. Set `e : G ≃ᵐ G'` to `Φ.toHomeomorph.toMeasurableEquiv`. Establish `hmap : ν.map Φ = ν.map e` using `rfl`. Establish `he : ∀ g, e g = Φ g` using `fun g => rfl`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp, hmap]`.
+
+Use `forall_congr' fun v => forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[integrable_map_equiv, integral_map_equiv]`. Establish `hfun : ((fun g' => f' g' * l ((σ.comp Φ.symm.toMulEquiv.toMonoidHom) g' v)) ∘ e) = fun g => f g * l (σ g v)`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, he, hf, hcomp]`.
+
+Establish `hfun' : (fun g => f' (e g) * l ((σ.comp Φ.symm.toMulEquiv.toMonoidHom) (e g) v)) = fun g => f g * l (σ g v)`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, he, hf, hcomp]`. Rewrite using `[hfun, hfun']`.
+-/
 theorem irreducible_admissible_integralOp_transport : ∀ (G G' : Type) [Group G] [Group G'] [TopologicalSpace G] [TopologicalSpace G'] [MeasurableSpace G] [BorelSpace G] [MeasurableSpace G'] [BorelSpace G'] (Φ : G ≃ₜ* G') (ν : Measure G) (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G W), (σ.IsIrreducible → Representation.IsIrreducible (σ.comp Φ.symm.toMulEquiv.toMonoidHom)) ∧ (IsAdmissible σ → IsAdmissible (σ.comp Φ.symm.toMulEquiv.toMonoidHom : Representation ℂ G' W)) ∧ ∀ (f : G → ℂ) (f' : G' → ℂ), (∀ g, f' (Φ g) = f g) → ∀ A, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp (ν.map Φ) (σ.comp Φ.symm.toMulEquiv.toMonoidHom : Representation ℂ G' W) f' A ↔ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ f A := by
   intro G G' _ _ _ _ _ _ _ _ Φ ν W _ _ σ
   have hs : ∀ g' : G', Φ.symm.toMulEquiv g' = Φ.symm g' := fun _ => rfl

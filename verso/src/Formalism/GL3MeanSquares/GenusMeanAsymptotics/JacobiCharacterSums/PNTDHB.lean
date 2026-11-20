@@ -10,6 +10,9 @@ import Formalism.GL3MeanSquares.GenusMeanAsymptotics.JacobiCharacterSums.Deuring
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
+/- English proof (translation)
+The claim follows from `deuring_heilbronn_finish_turan turan_power_sum_bound (deuring_heilbronn_inequality deuring_heilbronn_positivity (deuring_heilbronn_local deuring_heilbronn_cauchy) deuring_heilbronn_dominant) (deuring_heilbronn_prime_sum deuring_heilbronn_hypergeometric)`.
+-/
 theorem deuring_heilbronn_lossy : DeuringHeilbronnMB :=
   deuring_heilbronn_finish_turan turan_power_sum_bound (deuring_heilbronn_inequality deuring_heilbronn_positivity (deuring_heilbronn_local deuring_heilbronn_cauchy) deuring_heilbronn_dominant)
     (deuring_heilbronn_prime_sum deuring_heilbronn_hypergeometric)

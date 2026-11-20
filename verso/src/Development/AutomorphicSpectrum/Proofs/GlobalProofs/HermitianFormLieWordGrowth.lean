@@ -6,6 +6,9 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.CompanionTheory.HCForm
 
+/- English proof (translation)
+The claim follows from `|(⟪T u, v⟫_ℂ + ⟪u, T v⟫_ℂ).re| ≤ A * ‖u‖ * ‖v‖ := by set R : E → E → ℝ := fun u v => (⟪T u, v⟫_ℂ + ⟪u, T v⟫_ℂ).re with hR have hsym : ∀ u v, R v u = R u v := by intro u v simp only [hR, Complex.add_re] rw [← inner_conj_symm (T v) u, ← inner_conj_symm v (T u)] simp only [Complex.c …`.
+-/
 theorem skew_of_diag {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     (T : Module.End ℂ E) (A : ℝ) (hA : 0 ≤ A)
     (h : ∀ x, |(⟪T x, x⟫_ℂ + ⟪x, T x⟫_ℂ).re| ≤ A * ‖x‖ ^ 2) (u v : E) :
@@ -59,6 +62,17 @@ theorem skew_of_diag {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
       _ = _ := by ring
   exact le_of_mul_le_mul_left this hst
 
+/- English proof (translation)
+Establish `hsq : ∀ x : E, Real.sqrt (⟪x, x⟫_ℂ).re = ‖x‖`. Introduce `x`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Conclude with `Real.sqrt_sq (norm_nonneg x)`.
+
+Establish `hskew : ∀ i u v, |(⟪X i u, v⟫_ℂ + ⟪u, X i v⟫_ℂ).re| ≤ A * ‖u‖ * ‖v‖`. Introduce `i`. Use `skew_of_diag (X i) A hA ?_` and prove the remaining obligations. Introduce `x`. Establish `e : (⟪X i x, x⟫_ℂ + ⟪x, X i x⟫_ℂ).re = 2 * (⟪X i x, x⟫_ℂ).re`.
+
+Rewrite using `[Complex.add_re, ← inner_conj_symm x (X i x), Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `n : (⟪x, x⟫_ℂ).re = ‖x‖ ^ 2`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+
+Rewrite using `[e, ← n]`. Conclude with `hs i x`. Take `⟨C, hC, hb⟩` from `GlobalTheory.T.nelson_exists_word_growth_constant X c hc A hA hskew V hV`. Use `⟨C, hC, fun l u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hsq, hsq]`.
+
+Conclude with `hb l u hu`.
+-/
 theorem nelson_inner {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {d : ℕ}
     (X : Fin d → Module.End ℂ E) (c : Fin d → Fin d → Fin d → ℂ)
     (hc : ∀ i j, X i * X j - X j * X i = ∑ l, c i j l • X l) (A : ℝ) (hA : 0 ≤ A)
@@ -89,6 +103,19 @@ theorem nelson_inner {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
   rw [hsq, hsq]
   exact hb l u hu
 
+/- English proof (translation)
+Introduce `M _ _ Q hadd hsmul hconj hpos d X c hc A hA hs V _ hV`. Establish `hzero : ∀ x, Q x 0 = 0`. Introduce `x`. Use `hsmul 0 x 0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hzero' : Q 0 0 = 0` using `hzero 0`. Set `core : InnerProductSpace.Core ℂ M` to `{ inner := Q conj_inner_symm := fun x y => by`. Express the relevant statement in the definitionally equal form `star (Q y x) = Q x y`. Rewrite using `[hconj x y, star_star]`. Use `re_inner_nonneg := fun x => by`.
+
+Express the relevant statement in the definitionally equal form `0 ≤ (Q x x).re`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[hzero']`. Conclude with `(hpos x hx).le`. Use `add_left := fun x y z => by`.
+
+Express the relevant statement in the definitionally equal form `Q (x + y) z = Q x z + Q y z`. Rewrite using `[hconj z (x + y), hadd, star_add, ← hconj, ← hconj]`. Use `smul_left := fun x y r => by`. Express the relevant statement in the definitionally equal form `Q (r • x) y = star r * Q x y`. Rewrite using `[hconj y (r • x), hsmul, star_mul', ← hconj]`.
+
+Use `definite := fun x hx => by`. Assume the negation of the conclusion as `hne`. Establish `h0 : Q x x = 0` using `hx`. Use `hpos x hne` as an intermediate fact. Simplify using `[h0] at this }`.
+
+Use `letI : NormedAddCommGroup M := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ M := InnerProductSpace.ofCore core.toCore`. Conclude with `nelson_inner X c hc A hA hs V hV`.
+-/
 theorem nelson_form : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (Q : M → M → ℂ)
     (hadd : ∀ x y z, Q x (y + z) = Q x y + Q x z)
     (hsmul : ∀ (c : ℂ) x y, Q x (c • y) = c * Q x y)

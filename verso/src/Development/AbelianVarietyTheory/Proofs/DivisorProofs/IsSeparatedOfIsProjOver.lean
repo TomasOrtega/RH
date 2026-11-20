@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.LocExt
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Establish `: IsSeparated (PSpace.str R N)` using `by unfold PSpace.str; infer_instance`. Use `infer_instance`.
+-/
 theorem isSeparated_of_isProjOver {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y ⟶ Sp R} (h : IsProjOver f) :
     IsSeparated f := by
   obtain ⟨N, i, hi, rfl⟩ := h

@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagUnfoldi
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagUnfold.unfoldBound | exact GlobalTheory.FlagUnfold.unfoldBound | (intros; apply GlobalTheory.FlagUnfold.unfoldBound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isotropicFlag_unfolding_bound : UnfoldBound := by
   first | exact @GlobalTheory.FlagUnfold.unfoldBound | exact GlobalTheory.FlagUnfold.unfoldBound | (intros; apply GlobalTheory.FlagUnfold.unfoldBound <;> assumption)

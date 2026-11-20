@@ -9,15 +9,26 @@ noncomputable section
 
 namespace GlobalTheory.PolFan.ConeSpan
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_margin_quadForm_pos_of_perturbation M hM`.
+-/
 theorem exists_margin {ι : Type} [Fintype ι] (M : ι → ι → ℝ)
     (hM : ∀ c : ι → ℝ, c ≠ 0 → 0 < ∑ i, ∑ j, c i * c j * M i j) :
     ∃ η : ℝ, 0 < η ∧ ∀ E : ι → ι → ℝ, (∀ i j, |E i j| ≤ η) → ∀ c : ι → ℝ, c ≠ 0 →
       0 < ∑ i, ∑ j, c i * c j * (M i j + E i j) := GlobalTheory.T.exists_margin_quadForm_pos_of_perturbation M hM
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_realBilinForm_eq_sum_additive_image_intForms B`.
+-/
 theorem exists_rat_span {L : Type} [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
     (B : L →ₗ[ℤ] L →ₗ[ℤ] ℝ) : ∃ (n : ℕ) (w : Fin n → ℝ) (Q : Fin n → LinearMap.BilinForm ℤ L),
       B = ∑ j, w j • toReal (Q j) ∧ ∀ j, ∃ g : ℝ →+ ℝ, ∀ y z, (Q j y z : ℝ) = g (B y z) := GlobalTheory.T.exists_realBilinForm_eq_sum_additive_image_intForms B
 
+/- English proof (translation)
+Establish `: Module.Finite ℤ X₁` using `Module.Finite.trans O X₁`. Use `⟨?_, this⟩` and prove the remaining obligations. Establish `: Module.IsTorsionFree O X₁` using `Module.Flat.isTorsionFree`. Establish `: Module.IsTorsionFree ℤ X₁` using `Module.IsTorsionFree.comap (S := O) (Int.castRingHom O) (fun r hr => IsRegular.of_ne_zero (by`. Introduce `h0`.
+
+Establish `: r = 0` using `by simpa using h0`. Substitute `this` using the available equality. Conclude with `(not_isRegular_zero (R := ℤ)) hr))`. Use the proof step `(fun r m => Int.cast_smul_eq_zsmul O r m)`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem free_finite_int (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Module.Finite ℤ O] (X₁ : Type)
     [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] [Module.Projective O X₁] :
     Module.Free ℤ X₁ ∧ Module.Finite ℤ X₁ := by
@@ -34,6 +45,13 @@ theorem free_finite_int (O : Type) [CommRing O] [IsDomain O] [CharZero O] [Modul
       (fun r m => Int.cast_smul_eq_zsmul O r m)
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Take `⟨η, hη, hE⟩` from `exists_margin (fun i j => B₁ (b i) (b j)) ((isPosDef_iff_basis b B₁).1 h)`. Use `⟨η, hη, fun P D hD hP x => ?_⟩` and prove the remaining obligations. Establish `hP' : IsPosDef (toReal P)` using `(isPosDef_iff_basis b _).2 fun c hc => by`. Establish `h1` using `hE (fun i j => (P (b i) (b j) : ℝ) / D - B₁ (b i) (b j)) hP c hc`. Simplify using `only [add_sub_cancel] at h1`.
+
+Simplify using `only [toReal_apply]`. Establish `e : ∑ i, ∑ j, c i * c j * ((P (b i) (b j) : ℝ) / D) = (∑ i, ∑ j, c i * c j * (P (b i) (b j) : ℝ)) / D`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite `h1` using `[e]`. Conclude with `(div_pos_iff_of_pos_right hD).1 h1`. Use `hP'.nonneg x` as an intermediate fact. Simplify using `using this`.
+-/
 theorem nonneg_of_near {ι L : Type} [Fintype ι] [AddCommGroup L] (b : Module.Basis ι ℤ L)
     {B₁ : L →ₗ[ℤ] L →ₗ[ℤ] ℝ} (h : IsPosDef B₁) : ∃ η : ℝ, 0 < η ∧ ∀ (P : LinearMap.BilinForm ℤ L) (D : ℝ), 0 < D →
       (∀ i j, |(P (b i) (b j) : ℝ) / D - B₁ (b i) (b j)| ≤ η) → ∀ x, 0 ≤ P x x := by
@@ -53,6 +71,41 @@ theorem nonneg_of_near {ι L : Type} [Fintype ι] [AddCommGroup L] (b : Module.B
   have := hP'.nonneg x
   simpa using this
 
+/- English proof (translation)
+Take `⟨X₁, _, _, _, r, B₁, hr, hB₁, hpos, hBr⟩` from `hB`. Establish `: Module.Finite O X₁` using `Module.Finite.of_surjective r hr`. Take `⟨_, _⟩` from `free_finite_int O X₁`. Set `b` to `Module.Free.chooseBasis ℤ X₁`. Take `⟨η, hη, hnear⟩` from `nonneg_of_near b hpos`.
+
+Take `⟨n, w, Q, hw, hg⟩` from `exists_rat_span B₁`. Establish `hwv : ∀ y z, B₁ y z = ∑ k, w k * (Q k y z : ℝ)` using `fun y z => by`. Simplify `LinearMap.congr_fun₂ hw y z` using `[LinearMap.sum_apply]`. Establish `hQ : ∀ k, Q k ∈ balForms bar X₁` using `fun k => by`. Take `⟨g, hg⟩` from `hg k`.
+
+Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Conclude with `(hg y z).trans ((congrArg g (hB₁.1 y z)).trans (hg z y).symm)` after adjusting the coercions. Conclude with `(hg _ _).trans ((congrArg g (hB₁.2 a y z)).trans (hg _ _).symm)` after adjusting the coercions. Use `set K : ℝ := ∑ k, ∑ i, ∑ j, |(Q k (b i) (b j) : ℝ)| with hK`. Establish `hKsum : ∀ i j, ∑ k, |(Q k (b i) (b j) : ℝ)| ≤ K` using `fun i j => Finset.sum_le_sum fun k _ => (Finset.single_le_sum (f := fun j => |(Q k (b i) (b j) : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, |(Q k (b i) (b j) : ℝ)|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Fi …`.
+
+Establish `hKle : ∀ k i j, |(Q k (b i) (b j) : ℝ)| ≤ K` using `fun k i j => (Finset.single_le_sum (f := fun k => |(Q k (b i) (b j) : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)).trans (hKsum i j)`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Take `⟨D, hD⟩` from `exists_nat_gt (2 * (n + 1) * K / η)`. Establish `hDpos : (0 : ℝ) < D` using `lt_of_le_of_lt (by positivity) hD`. Establish `hDK : 2 * (n + 1) * K ≤ D * η` using `by rw [div_lt_iff₀ hη] at hD; linarith`.
+
+Use `set a : Fin n → ℤ := fun k => ⌊(D : ℝ) * w k⌋ with ha`. Use `set δ : Fin n → ℝ := fun k => D * w k - a k with hδ`. Establish `hδ0 : ∀ k, 0 ≤ δ k` using `fun k => sub_nonneg.2 (Int.floor_le _)`. Establish `hδ1 : ∀ k, δ k ≤ 1` using `fun k => by`. Use `Int.lt_floor_add_one ((D : ℝ) * w k)` as an intermediate fact.
+
+Simplify using `only [hδ, ha]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set R : LinearMap.BilinForm ℤ X₁ := ∑ k, a k • Q k with hR`. Establish `hRv : ∀ y z, (R y z : ℝ) = D * B₁ y z - ∑ k, δ k * (Q k y z : ℝ)` using `fun y z => by`. Simplify using `only [hR, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Int.cast_sum, Int.cast_mul, hwv, Finset.mul_sum, ← Finset.sum_sub_distrib, hδ]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hSb : ∀ i j, |∑ k, δ k * (Q k (b i) (b j) : ℝ)| ≤ K` using `fun i j => (Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun k _ => by`. Rewrite using `[abs_mul, abs_of_nonneg (hδ0 k)]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) (hδ1 k)).trans (hKsum i j))`. Establish `hRnn : ∀ x, 0 ≤ R x x` using `hnear R D hDpos fun i j => by`.
+
+Rewrite using `[hRv, show (D * B₁ (b i) (b j) - ∑ k, δ k * (Q k (b i) (b j) : ℝ)) / D - B₁ (b i) (b j) = -(∑ k, δ k * (Q k (b i) (b j) : ℝ)) / D by field_simp; ring, abs_div, abs_neg, abs_of_pos hDpos, div_le_iff₀ hDpos]`. Use polynomial arithmetic with `[hSb i j]`. Set `N : ℤ` to `n + 1`. Establish `hQnn : ∀ k x, 0 ≤ (R + N • Q k) x x` using `fun k => hnear _ D hDpos fun i j => by`. Establish `e : ((R + N • Q k) (b i) (b j) : ℝ) / D - B₁ (b i) (b j) = (N * (Q k (b i) (b j) : ℝ) - ∑ l, δ l * (Q l (b i) (b j) : ℝ)) / D`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, Int.cast_add, Int.cast_mul, hRv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, abs_div, abs_of_pos hDpos, div_le_iff₀ hDpos]`. Establish `h1` using `abs_sub (N * (Q k (b i) (b j) : ℝ)) (∑ l, δ l * (Q l (b i) (b j) : ℝ))`.
+
+Rewrite `h1` using `[abs_mul]`. Establish `h2 : |(N : ℝ)| = n + 1` using `by simp [N]; positivity`. Rewrite `h1` using `[h2]`. Use polynomial arithmetic with `[hSb i j, hKle k i j]`. Set `γ₁ : Fin (n + 1) → LinearMap.BilinForm ℤ X₁` to `Fin.cons R fun k => R + N • Q k`.
+
+Set `c : Fin (n + 1) → ℝ` to `Fin.cons ((1 + ∑ k, (1 - δ k)) / (N * D)) fun k => δ k / (N * D)`. Establish `hN : (0 : ℝ) < N` using `by simp [N]; positivity`. Use `⟨n + 1, fun i => pull r (γ₁ i), c, fun i => pull_mem r ?_, fun i y => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `(Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hQ k) : R ∈ _)`.
+
+Use `show R + N • Q k ∈ _`. Conclude with `Submodule.add_mem _ (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hQ k)) (Submodule.smul_mem _ _ (hQ k))`. Simplify using `only [pull_apply]`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Conclude with `hRnn _`.
+
+Conclude with `hQnn k _`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Use `div_nonneg (add_nonneg zero_le_one (Finset.sum_nonneg fun k _ => sub_nonneg.2 (hδ1 k))) (by positivity)` and prove the remaining obligations. Conclude with `div_nonneg (hδ0 k) (by positivity)`. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations.
+
+Simplify using `only [hBr, LinearMap.sum_apply, LinearMap.smul_apply, toReal_apply, pull_apply, smul_eq_mul, Fin.sum_univ_succ, γ₁, c, Fin.cons_zero, Fin.cons_succ, LinearMap.add_apply, Int.cast_add, Int.cast_mul]`. Rewrite using `[hRv]`. Use `set u := B₁ (r y) (r z)`. Use `set S := ∑ k, δ k * (Q k (r y) (r z) : ℝ)`. Establish `e1 : ∑ k, δ k / (N * D) * (D * u - S + N * (Q k (r y) (r z) : ℝ)) = (∑ k, δ k) * (D * u - S) / (N * D) + S / D`.
+
+Rewrite using `[Finset.sum_mul, Finset.sum_div, Finset.sum_div, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `e2 : ∑ k, (1 - δ k) = n - ∑ k, δ k`. Rewrite using `[Finset.sum_sub_distrib]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Establish `hN' : (N : ℝ) = n + 1` using `by simp [N]`. Rewrite using `[hN']`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_nonneg_comb_of_mem_psdCone (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ)
     (hB : B ∈ psdCone bar X) : ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (c : Fin m → ℝ),

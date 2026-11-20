@@ -13,9 +13,23 @@ abbrev restrictIdeal {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.Opens) :
     U.toScheme.IdealSheafData :=
   I.comap U.ι
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictIdeal_eq_comap_ι {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.Opens) :
     restrictIdeal I U = I.comap U.ι := rfl
 
+/- English proof (translation)
+Establish `hbot : ((⊥ : TopologicalSpace.Closeds U.toScheme) : Set U.toScheme) = ∅` using `rfl`. Establish `hbot' : ∀ A : TopologicalSpace.Closeds U.toScheme, (A = ⊥ ↔ ∀ y : U.toScheme, y ∉ A)`. Introduce `A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl y hy`.
+
+Establish `hy' : y ∈ ((⊥ : TopologicalSpace.Closeds U.toScheme) : Set U.toScheme)` using `hy`. Rewrite `hy'` using `[hbot]`. Conclude with `hy'`. Introduce `hall`. Establish `hA : (A : Set U.toScheme) = ∅` using `Set.Subset.antisymm (fun y hy => absurd hy (hall y)) (Set.empty_subset _)`.
+
+Conclude with `SetLike.coe_injective (hA.trans hbot.symm)`. Establish `key : ∀ (x : X) (hx : x ∈ U), ((⟨x, hx⟩ : U.toScheme) ∈ (I.comap U.ι).support ↔ x ∈ I.support)`. Introduce `x hx`. Simplify using `only [Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression.
+
+Rewrite using `[restrictIdeal_eq_comap_ι]`. Rewrite using `[← Scheme.IdealSheafData.support_eq_bot_iff, hbot']`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx hmem`. Conclude with `h ⟨x, hx⟩ ((key x hx).mpr hmem)`.
+
+Introduce and unpack `h ⟨x, hx⟩ hy`. Conclude with `h x hx ((key x hx).mp hy)`.
+-/
 theorem restrictIdeal_eq_top_iff_forall_notMem_support {X : Scheme.{u}} (I : X.IdealSheafData)
     (U : X.Opens) :
     restrictIdeal I U = ⊤ ↔ ∀ x : X, x ∈ U → x ∉ I.support := by
@@ -45,6 +59,9 @@ theorem restrictIdeal_eq_top_iff_forall_notMem_support {X : Scheme.{u}} (I : X.I
   · rintro h ⟨x, hx⟩ hy
     exact h x hx ((key x hx).mp hy)
 
+/- English proof (translation)
+Establish `hcomp : X.homOfLE h ≫ U.ι = V.ι` using `by simp`. Use `show I.comap V.ι = (I.comap U.ι).comap (X.homOfLE h)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, hcomp]`.
+-/
 theorem restrictIdeal_eq_comap_homOfLE_restrictIdeal {X : Scheme.{u}} (I : X.IdealSheafData)
     {U V : X.Opens} (h : V ≤ U) :
     restrictIdeal I V = (restrictIdeal I U).comap (X.homOfLE h) := by
@@ -52,12 +69,18 @@ theorem restrictIdeal_eq_comap_homOfLE_restrictIdeal {X : Scheme.{u}} (I : X.Ide
   show I.comap V.ι = (I.comap U.ι).comap (X.homOfLE h)
   rw [← Scheme.IdealSheafData.comap_comp, hcomp]
 
+/- English proof (translation)
+Rewrite using `[restrictIdeal_eq_comap_homOfLE_restrictIdeal I h, restrictIdeal_eq_comap_homOfLE_restrictIdeal J h, hU]`.
+-/
 theorem restrictIdeal_eq_of_le_of_eq {X : Scheme.{u}} {I J : X.IdealSheafData} {U V : X.Opens}
     (h : V ≤ U) (hU : restrictIdeal I U = restrictIdeal J U) :
     restrictIdeal I V = restrictIdeal J V := by
   rw [restrictIdeal_eq_comap_homOfLE_restrictIdeal I h,
     restrictIdeal_eq_comap_homOfLE_restrictIdeal J h, hU]
 
+/- English proof (translation)
+Establish `hcomp : f.resLE U V h ≫ U.ι = V.ι ≫ f` using `by simp`. Use `show (I.comap f).comap V.ι = (I.comap U.ι).comap (f.resLE U V h)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hcomp]`.
+-/
 theorem restrictIdeal_comap_eq_comap_resLE_restrictIdeal {X Y : Scheme.{u}} (f : X ⟶ Y)
     (I : Y.IdealSheafData) (U : Y.Opens) (V : X.Opens) (h : V ≤ f ⁻¹ᵁ U) :
     restrictIdeal (I.comap f) V = (restrictIdeal I U).comap (f.resLE U V h) := by
@@ -68,17 +91,26 @@ theorem restrictIdeal_comap_eq_comap_resLE_restrictIdeal {X Y : Scheme.{u}} (f :
 abbrev zeroLocus {X : Scheme.{u}} (I : X.IdealSheafData) : TopologicalSpace.Closeds X :=
   I.support
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zeroLocus_eq_support {X : Scheme.{u}} (I : X.IdealSheafData) :
     zeroLocus I = I.support := rfl
 
 def VanishesAlong {X : Scheme.{u}} (I J : X.IdealSheafData) : Prop := I ≤ J
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem vanishesAlong_iff_le {X : Scheme.{u}} (I J : X.IdealSheafData) :
     VanishesAlong I J ↔ I ≤ J := Iff.rfl
 
 def NonzeroOnComponents {X : Scheme.{u}} (I : X.IdealSheafData) : Prop :=
   ∀ T ∈ irreducibleComponents (↥X), ¬ T ⊆ (I.support : Set ↥X)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem nonzeroOnComponents_iff {X : Scheme.{u}} (I : X.IdealSheafData) :
     NonzeroOnComponents I ↔ ∀ T ∈ irreducibleComponents (↥X), ¬ T ⊆ (I.support : Set ↥X) :=
   Iff.rfl
@@ -87,6 +119,9 @@ def IsSmoothDivisor {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (D : X.IdealSheafData) : Prop :=
   Blowup.IsLocallyGeneratedByNonZeroDivisor D ∧ AlgebraicGeometry.Smooth (D.subschemeι ≫ p)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isSmoothDivisor_iff {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (D : X.IdealSheafData) :
     IsSmoothDivisor p D ↔
@@ -113,6 +148,9 @@ def coordSubspaceIdeal (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
       ((fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up i)) ''
         (S : Set (Fin m))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordSubspaceIdeal_eq_ofIdealTop_span_coord (k : Type u) [Field k] (m : ℕ) (S : Finset (Fin m)) :
     coordSubspaceIdeal k m S =
       Scheme.IdealSheafData.ofIdealTop
@@ -125,6 +163,9 @@ def EtaleChart.coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     (c : EtaleChart p U m) (S : Finset (Fin m)) : U.toScheme.IdealSheafData :=
   (coordSubspaceIdeal k m S).comap c.map
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (S : Finset (Fin m)) :
@@ -142,6 +183,9 @@ def InStrictNormalCrossingPosition {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) : Prop :=
   (∀ D ∈ E, IsSmoothDivisor p D) ∧ ∀ x : X, InStrictNormalCrossingPositionAt p E x
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inStrictNormalCrossingPosition_iff {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (E : List X.IdealSheafData) :
     InStrictNormalCrossingPosition p E ↔
@@ -160,6 +204,9 @@ def HasStrictNormalCrossingsWith {X : Scheme.{u}} {k : Type u} [Field k]
         restrictIdeal (E[i]'h) U = c.coordIdeal {t}) ∧
       restrictIdeal Z U = c.coordIdeal S
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hasStrictNormalCrossingsWith_iff {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) (Z : X.IdealSheafData)
     (E : List X.IdealSheafData) :
@@ -174,6 +221,9 @@ theorem hasStrictNormalCrossingsWith_iff {X : Scheme.{u}} {k : Type u} [Field k]
           restrictIdeal Z U = c.coordIdeal S :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `h x hx`.
+-/
 theorem HasStrictNormalCrossingsWith.exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData}
     {E : List X.IdealSheafData} (h : HasStrictNormalCrossingsWith p Z E) {x : X} (hx : x ∈ Z.support) :
@@ -186,6 +236,9 @@ theorem HasStrictNormalCrossingsWith.exists_etaleChart {X : Scheme.{u}} {k : Typ
       restrictIdeal Z U = c.coordIdeal S :=
   h x hx
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem hasStrictNormalCrossingsWith_of_forall_exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData}
     {E : List X.IdealSheafData}
@@ -200,6 +253,9 @@ theorem hasStrictNormalCrossingsWith_of_forall_exists_etaleChart {X : Scheme.{u}
     HasStrictNormalCrossingsWith p Z E :=
   h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem inStrictNormalCrossingPositionAt_of_exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} {x : X}
     (h : ∃ (U : X.Opens) (_ : x ∈ U) (m : ℕ) (c : EtaleChart p U m) (a : ℕ → Option (Fin m)),
@@ -210,6 +266,9 @@ theorem inStrictNormalCrossingPositionAt_of_exists_etaleChart {X : Scheme.{u}} {
     InStrictNormalCrossingPositionAt p E x :=
   h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem InStrictNormalCrossingPositionAt.exists_etaleChart {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {E : List X.IdealSheafData} {x : X}
     (h : InStrictNormalCrossingPositionAt p E x) :
@@ -220,6 +279,23 @@ theorem InStrictNormalCrossingPositionAt.exists_etaleChart {X : Scheme.{u}} {k :
         restrictIdeal (E[i]'h) U = c.coordIdeal {t}) :=
   h
 
+/- English proof (translation)
+Take `⟨U, hU, m, c, a, S, h1, h2, h3, h4⟩` from `h x hx`. Establish `hzero : 0 < (H :: E).length` using `by simp`. Use `⟨U, hU, m, c, S, a 0, fun i => a (i + 1), h4, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hres` using `h2 0 hzero h0`.
+
+Simplify using `using hres`. Introduce `t ht`. Establish `hres` using `h3 0 hzero t ht`. Simplify using `using hres`. Introduce `i hi hni`.
+
+Establish `hi' : i + 1 < (H :: E).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `hres` using `h2 (i + 1) hi' hni`. Simplify using `using hres`.
+
+Introduce `i hi t ht`. Establish `hi' : i + 1 < (H :: E).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `hres` using `h3 (i + 1) hi' t ht`.
+
+Simplify using `using hres`. Introduce `i hi t ht hc`. Establish `hi' : i + 1 < (H :: E).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers.
+
+Use `h1 (i + 1) hi' 0 hzero t ht hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `i hi j hj t hti htj`. Establish `hi' : i + 1 < (H :: E).length`. Simplify using `only [List.length_cons]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hj' : j + 1 < (H :: E).length`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Use `h1 (i + 1) hi' (j + 1) hj' t hti htj` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem HasStrictNormalCrossingsWith.exists_etaleChart_of_cons {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {Z : X.IdealSheafData}
     {H : X.IdealSheafData} {E : List X.IdealSheafData}

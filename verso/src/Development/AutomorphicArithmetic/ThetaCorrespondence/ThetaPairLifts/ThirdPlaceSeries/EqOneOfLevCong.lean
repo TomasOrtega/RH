@@ -14,6 +14,19 @@ open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR
 end GlobalTheory.BaseLevelInj
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.BaseLevelInj in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M hR hi hG hW hH hF g hg`. Take `⟨κ, hlift, happ⟩` from `(p.pins i).2.lift.lev (g : p.P.Gp)`. Establish `hβ` using `p.charW.base.lev.βW i`. Establish `hSt` using `Formalism.L2.DIV.parLev_St hlift.2.1`. Establish `hfc` using `GlobalTheory.LevelAction.finCong_of_mem_St hβ hSt`.
+
+Establish `hι` using `GlobalTheory.LevelAction.latEmb_iotaW p.T p.fw.laws i`. Establish `hMb : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ p.T.Q.l.Mb`. Establish `h0 : ((p.T.Q.l.M : ℕ) : 𝓞 D.host.E) ∈ Ideal.span {((p.T.Q.l.M : ℕ) : 𝓞 D.host.E)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h0` using `[← p.T.Q.l.prod]`. Conclude with `(Ideal.mul_le_inf.trans inf_le_left : p.T.Q.l.Mb * _ ≤ p.T.Q.l.Mb) h0`.
+
+Establish `h4` using `GlobalTheory.T.levelMove_lift_congruent_mod_ideal (Wc D i) (iotaW p.T i) hι p.T.Q.l.M p.T.Q.l.Mb (Mfr p.T.Q.l) p.T.Q.l.coprime hMb κ hfc ((p.O i).lev (g : p.P.Gp)) happ hg`. Establish `h3` using `GlobalTheory.T.adelicCongruence_selfDual_of_principalLattice (Wc D i) _ _ h4`. Rewrite `h3` using `[← GlobalTheory.PrincInLevel.eq_latC hβ]`. Establish `h2` using `hatL_cong_of_hat (Wc D i) κ _ _ h3`. Establish `hfr : Formalism.L2.DIV.IsFrame (p.R.βW i) (p.R.ΛW i)` using `by obtain ⟨c, h, -⟩ := hβ; exact h`.
+
+Establish `hhalf` using `((p.pins i).2.tuple ()).half.1`. Establish `hred : ∀ PP ∈ p.R.Pg, Formalism.L2.DIV.redFn (p.R.βW i) PP (Formalism.IndefR.Lev.finE (Wc D i) κ) = 1`. Introduce `PP hP`. Use `GlobalTheory.T.frameReduction_eq_one_of_congruent_mod_ideal _ _ _ hfr hSt _ h2 PP ?_` and prove the remaining obligations. Rewrite using `[hhalf]`.
+
+Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hP)`. Establish `hT1 : Formalism.L2.DIV.rTup (p.R.βW i) (p.R.datWp i p.R.triv) (Formalism.IndefR.Lev.finE (Wc D i) κ) = 1`. Use function extensionality and compare the values at `PP`. Use `show Formalism.L2.DIV.upperLeftBlock _ (Formalism.L2.DIV.redFn (p.R.βW i) PP.1 _) = 1`. Rewrite using `[hred PP.1 PP.2]`.
+
+Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Establish `he : p.R.eG (g : p.P.Gp) = 1` using `by rw [← hlift.2.2]; exact hT1`. Establish `: (g : p.P.Gp) = 1` using `by rw [← map_one p.R.eG] at he; exact p.R.eG.injective he`. Conclude with `Subtype.ext this`.
+-/
 theorem GlobalTheory.BaseLevelInj.eq_one_of_lev_sub_mem_Mb : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m) (PP A M : ℝ), _root_.GlobalTheory.CovTop.RowsTAlt p → (i : ℕ) + 1 = D.R.m → GramAt p i → WtNum p i PP → HostNum D L PP A M → FnAlgClosed (p.T.Q.Xo ((i : ℕ) + 1)) p.T.Q.c → ∀ g : (p.F.lv2.lvl false).P, (∀ x : (p.T.Q.Dw ((i : ℕ) + 1)).La, (p.O i).lev (g : p.P.Gp) x - x ∈ p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (p.T.Q.Dw ((i : ℕ) + 1)).La)) → g = 1 := by
   intro D L hT Gi Gl Kc Y0 cX ex Csz p i PP A M hR hi hG hW hH hF g hg
   obtain ⟨κ, hlift, happ⟩ := (p.pins i).2.lift.lev (g : p.P.Gp)

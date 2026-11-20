@@ -4,6 +4,13 @@ universe u_1 u_2
 
 namespace Bl.general_b_fact_right_rest
 
+/- English proof (translation)
+Proceed by induction on `t using Multiset.induction_on with`. Consider the case `empty`. Introduce `s hs`. Rewrite `hs` using `[Multiset.map_zero, Multiset.le_zero]`. Conclude with `⟨0, le_refl _, by rw [Multiset.map_zero, hs]⟩`.
+
+Consider the case `cons a t ih`. Introduce `s hs`. Rewrite `hs` using `[Multiset.map_cons]`. Distinguish the cases in `h : f a ∈ s`. Take `⟨s', rfl⟩` from `Multiset.exists_cons_of_mem h`.
+
+Rewrite `hs` using `[Multiset.cons_le_cons_iff]`. Take `⟨u, hu, hmap⟩` from `ih s' hs`. Conclude with `⟨a ::ₘ u, (Multiset.cons_le_cons_iff a).mpr hu, by rw [Multiset.map_cons, hmap]⟩`. Take `⟨u, hu, hmap⟩` from `ih s ((Multiset.le_cons_of_notMem h).mp hs)`. Conclude with `⟨u, hu.trans (Multiset.le_cons_self t a), hmap⟩`.
+-/
 private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multiset α) :
     ∀ s : Multiset β, s ≤ t.map f → ∃ u : Multiset α, u ≤ t ∧ u.map f = s := by
   induction t using Multiset.induction_on with
@@ -22,6 +29,9 @@ private theorem aux {α : Type u_1} {β : Type u_2} (f : α → β) (t : Multise
     · obtain ⟨u, hu, hmap⟩ := ih s ((Multiset.le_cons_of_notMem h).mp hs)
       exact ⟨u, hu.trans (Multiset.le_cons_self t a), hmap⟩
 
+/- English proof (translation)
+Introduce `α β _ f t s h`. Conclude with `aux f t s h`.
+-/
 theorem goal1 :
   ∀ {α : Type u_1} {β : Type u_2} [DecidableEq.{u_2 + 1} β] (f : α → β) (t : Multiset.{u_1} α) (s : Multiset.{u_2} β),
   LE.le.{u_2} s (Multiset.map.{u_2, u_1} f t) →

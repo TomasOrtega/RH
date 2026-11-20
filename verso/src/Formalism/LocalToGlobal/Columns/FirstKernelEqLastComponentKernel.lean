@@ -36,6 +36,9 @@ def OneYbKer : Prop :=
     Y ∈ ybSet sel mu cst q.deco.1.N → Y ≠ q.deco.1.y0 R.k → cp1K W Ch sel mu cst L (chTh W Ch sel mu cst Am u m2) a q₀ q Y = 0
 
 include hQ in
+/- English proof (translation)
+Unfold `rowSG uSG`. Rewrite using `[hQ, Finset.union_empty]`.
+-/
 theorem rcol_rowSG_eq : Pr.vGs = rowSG Pr sel mu := by
   classical
   unfold rowSG uSG

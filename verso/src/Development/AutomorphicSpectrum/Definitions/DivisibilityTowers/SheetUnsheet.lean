@@ -36,6 +36,9 @@ def toZ {p : X ⟶ Sp k} (L : HermLB p) (t : X ⟶ Sp ℤ) (hc : ∀ τ, (wZ L t
   cInf := hc
   conj _ _ i y y' h hy := L.conj _ _ i (unsheet p y) (unsheet p y') h hy
 
+/- English proof (translation)
+Establish `h : y.1 ≫ p = Spec.map (CommRingCat.ofHom σ)` using `y.2`. Use `show (Spec.preimage (y.1 ≫ p)).hom = σ`. Rewrite using `[h, Spec.preimage_map]`. Both sides reduce to the same expression.
+-/
 theorem emb_sheet {p : X ⟶ Sp k} {σ : k →+* ℂ} (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (y : CxPts p σ) :
     emb p (sheet t τ y) = σ := by
   have h : y.1 ≫ p = Spec.map (CommRingCat.ofHom σ) := y.2
@@ -43,9 +46,15 @@ theorem emb_sheet {p : X ⟶ Sp k} {σ : k →+* ℂ} (t : X ⟶ Sp ℤ) (τ : �
   rw [h, Spec.preimage_map]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sheet_unsheet (p : X ⟶ Sp k) {t : X ⟶ Sp ℤ} {τ : ℤ →+* ℂ} (y : CxPts t τ) :
     sheet t τ (unsheet p y) = y := rfl
 
+/- English proof (translation)
+Introduce `σ i y _`. Establish `key : ∀ (σ' : k →+* ℂ) (_ : σ' = σ) (y' : CxPts p σ'), y'.1 = y.1 → (L.φ σ').φ i y' = (L.φ σ).φ i y`. Introduce and unpack `σ' rfl y' h`. Rewrite using `[Subtype.ext h]`. Conclude with `key _ (emb_sheet t τ y) _ rfl`.
+-/
 theorem wOver_wZ {p : X ⟶ Sp k} (L : HermLB p) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) : WOver L.φ (wZ L t τ) := by
   intro σ i y _
   have key : ∀ (σ' : k →+* ℂ) (_ : σ' = σ) (y' : CxPts p σ'), y'.1 = y.1 → (L.φ σ').φ i y' = (L.φ σ).φ i y := by

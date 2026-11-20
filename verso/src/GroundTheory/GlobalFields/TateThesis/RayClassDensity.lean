@@ -15,12 +15,20 @@ section FiniteCharacters
 
 variable {A : Type*} [AddCommGroup A] [Finite A]
 
+/- English proof (translation)
+Establish `h : φ a ^ Nat.card A = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]`. Establish `h2 : ‖φ a‖ ^ Nat.card A = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) Nat.card_pos.ne').1 h2`.
+-/
 theorem norm_addChar_apply (φ : AddChar A ℂ) (a : A) : ‖φ a‖ = 1 := by
   have h : φ a ^ Nat.card A = 1 := by
     rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]
   have h2 : ‖φ a‖ ^ Nat.card A = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) Nat.card_pos.ne').1 h2
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← AddChar.forall_apply_eq_zero]`. Introduce `φ`. Establish `hb : φ b ≠ 0` using `fun h0 ↦ by`. Use `norm_addChar_apply φ b` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+
+Conclude with `zero_ne_one this`. Rewrite using `[AddChar.map_sub_eq_div, h φ, div_self hb]`.
+-/
 theorem eq_of_forall_addChar_eq {a b : A} (h : ∀ φ : AddChar A ℂ, φ a = φ b) : a = b := by
   rw [← sub_eq_zero, ← AddChar.forall_apply_eq_zero]
   intro φ
@@ -39,6 +47,9 @@ def circleChar (φ : AddChar (Additive G) ℂ) : G →* Circle where
     change φ (Additive.ofMul (g * h)) = φ (Additive.ofMul g) * φ (Additive.ofMul h)
     rw [ofMul_mul, AddChar.map_add_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_circleChar (φ : AddChar (Additive G) ℂ) (g : G) :
     (circleChar φ g : ℂ) = φ (Additive.ofMul g) :=
   rfl
@@ -62,6 +73,9 @@ def ofHom (q : IdeleGroup K →* G) (hq : IsOpen (q.ker : Set (IdeleGroup K)))
       continuous_of_discreteTopology
     exact hc.comp (QuotientGroup.continuous_mk (N := q.ker))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofHom_toIdele (q : IdeleGroup K →* G) (hq : IsOpen (q.ker : Set (IdeleGroup K)))
     (hK : (IdeleGroup.diagonal K).range ≤ q.ker) (ψ : G →* Circle) (x : IdeleGroup K) :
     (ofHom q hq hK ψ).toIdele x = ψ (q x) :=
@@ -73,6 +87,11 @@ def uniformizerClass {G : Type*} [Group G] (q : IdeleGroup K →* G) (v : Height
     G :=
   q (finiteEmbedding v (exists_uniformizer v).choose)
 
+/- English proof (translation)
+Establish `hZ` using `tendsto_primeIdealZetaSum_univ_atTop K`. Establish `h0 : Tendsto (fun s ↦ ((univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s)⁻¹ * (S.primeIdealZetaSum s - δ * (univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s)) (𝓝[>] 1) (𝓝 0)` using `hZ.inv_tendsto_atTop.zero_mul_isBoundedUnder_le (by simpa only [Function.comp_def, Real.norm_eq_abs] using h)`. Establish `h1` using `h0.const_add δ`. Rewrite `h1` using `[add_zero]`. Unfold `Set.HasDirichletDensity`.
+
+Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hZ.eventually_gt_atTop 0] with s hs`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDirichletDensity_of_isBoundedUnder_abs_sub {S : Set (HeightOneSpectrum (𝓞 K))} {δ : ℝ}
     (h : IsBoundedUnder (· ≤ ·) (𝓝[>] 1) fun s ↦
       |S.primeIdealZetaSum s - δ * (univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s|) :
@@ -101,6 +120,9 @@ include hq hK
 def classChar (φ : AddChar (Additive G) ℂ) : HeckeCharacter K :=
   HeckeCharacter.ofHom q hq hK (circleChar φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classChar_toIdele (φ : AddChar (Additive G) ℂ) (x : IdeleGroup K) :
     ((classChar q hq hK φ).toIdele x : ℂ) = φ (Additive.ofMul (q x)) :=
   rfl
@@ -108,6 +130,9 @@ theorem classChar_toIdele (φ : AddChar (Additive G) ℂ) (x : IdeleGroup K) :
 def ramifiedPrimes : Set (HeightOneSpectrum (𝓞 K)) :=
   {v | ∃ φ : AddChar (Additive G) ℂ, v.asIdeal ∣ (classChar q hq hK φ).conductor}
 
+/- English proof (translation)
+Establish `h : ramifiedPrimes q hq hK = ⋃ φ : AddChar (Additive G) ℂ, {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ (classChar q hq hK φ).conductor}`. Use extensionality with `v`. Simplify using `only [ramifiedPrimes, mem_iUnion, mem_ofPred_eq]`. Rewrite using `[h]`. Conclude with `finite_iUnion fun φ ↦ Ideal.finite_factors (classChar q hq hK φ).conductor_ne_bot`.
+-/
 theorem finite_ramifiedPrimes : (ramifiedPrimes q hq hK).Finite := by
   have h : ramifiedPrimes q hq hK = ⋃ φ : AddChar (Additive G) ℂ,
       {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ (classChar q hq hK φ).conductor} := by
@@ -116,6 +141,9 @@ theorem finite_ramifiedPrimes : (ramifiedPrimes q hq hK).Finite := by
   rw [h]
   exact finite_iUnion fun φ ↦ Ideal.finite_factors (classChar q hq hK φ).conductor_ne_bot
 
+/- English proof (translation)
+Establish `hv' : ¬ v.asIdeal ∣ (classChar q hq hK φ).conductor` using `fun h ↦ hv ⟨φ, h⟩`. Rewrite using `[(classChar q hq hK φ).coeff_asIdeal_eq_toIdele hv' (exists_uniformizer v).choose_spec, classChar_toIdele]`. Both sides reduce to the same expression.
+-/
 theorem coeff_classChar {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPrimes q hq hK)
     (φ : AddChar (Additive G) ℂ) :
     (classChar q hq hK φ).coeff v.asIdeal = φ (Additive.ofMul (uniformizerClass q v)) := by
@@ -124,6 +152,9 @@ theorem coeff_classChar {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ ramifiedPri
     classChar_toIdele]
   rfl
 
+/- English proof (translation)
+Use `Additive.ofMul.injective (eq_of_forall_addChar_eq fun φ ↦ ?_)` and prove the remaining obligations. Establish `hv' : ¬ v.asIdeal ∣ (classChar q hq hK φ).conductor` using `fun h ↦ hv ⟨φ, h⟩`. Establish `h` using `(classChar q hq hK φ).localComponent_uniformizer_eq hv' hπ (exists_uniformizer v).choose_spec`. Rewrite `h` using `[HeckeCharacter.localComponent_apply, HeckeCharacter.localComponent_apply]`. Conclude with `congrArg (fun z : Circle ↦ (z : ℂ)) h`.
+-/
 theorem map_finiteEmbedding_eq_uniformizerClass {v : HeightOneSpectrum (𝓞 K)}
     (hv : v ∉ ramifiedPrimes q hq hK) {π : (v.adicCompletion K)ˣ}
     (hπ : Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ)) :
@@ -135,6 +166,11 @@ theorem map_finiteEmbedding_eq_uniformizerClass {v : HeightOneSpectrum (𝓞 K)}
   rw [HeckeCharacter.localComponent_apply, HeckeCharacter.localComponent_apply] at h
   exact congrArg (fun z : Circle ↦ (z : ℂ)) h
 
+/- English proof (translation)
+Use `ContinuousMonoidHom.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Establish `h` using `(classChar q hq hK φ).pow_toIdele (Nat.card G) x`. Rewrite `h` using `[HeckeCharacter.toIdele_apply]`. Establish `h2 : (classChar q hq hK φ).toIdele x ^ Nat.card G = 1`.
+
+Rewrite using `[show (classChar q hq hK φ).toIdele x = circleChar φ (q x) from rfl, ← map_pow, pow_card_eq_one', map_one]`. Rewrite using `[h, h2]`. Both sides reduce to the same expression.
+-/
 theorem classChar_pow_card (φ : AddChar (Additive G) ℂ) :
     classChar q hq hK φ ^ Nat.card G = 1 := by
   refine ContinuousMonoidHom.ext fun c ↦ ?_
@@ -147,6 +183,11 @@ theorem classChar_pow_card (φ : AddChar (Additive G) ℂ) :
   rw [h, h2]
   rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `AddChar.ne_zero_iff.1 hφ`. Take `⟨x, hx⟩` from `hqs (Additive.toMul a)`. Introduce `h1`. Apply `ha` to reduce the goal to its premises. Establish `h` using `classChar_toIdele q hq hK φ x`.
+
+Rewrite `h` using `[HeckeCharacter.toIdele_apply, h1, hx, ofMul_toMul]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem classChar_ne_one (hqs : Function.Surjective q) {φ : AddChar (Additive G) ℂ} (hφ : φ ≠ 0) :
     classChar q hq hK φ ≠ 1 := by
   obtain ⟨a, ha⟩ := AddChar.ne_zero_iff.1 hφ
@@ -161,10 +202,24 @@ theorem classChar_ne_one (hqs : Function.Surjective q) {φ : AddChar (Additive G
 def goodTerm (φ : AddChar (Additive G) ℂ) (s : ℝ) (v : HeightOneSpectrum (𝓞 K)) : ℂ :=
   (ramifiedPrimes q hq hK)ᶜ.indicator (fun v ↦ (classChar q hq hK φ).coeffTerm (s : ℂ) v.asIdeal) v
 
+/- English proof (translation)
+The claim follows from `(Summable.of_norm ((classChar q hq hK φ).summable_norm_coeffTerm_asIdeal hs)).indicator _`.
+-/
 theorem summable_goodTerm (φ : AddChar (Additive G) ℂ) {s : ℝ} (hs : 1 < s) :
     Summable (goodTerm q hq hK φ s) :=
   (Summable.of_norm ((classChar q hq hK φ).summable_norm_coeffTerm_asIdeal hs)).indicator _
 
+/- English proof (translation)
+Establish `: Fintype G` using `Fintype.ofFinite G`. Use `set S := {v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c}`. Rewrite using `[Set.primeIdealZetaSum_def, tsum_subtype S (fun v : HeightOneSpectrum (𝓞 K) ↦ (Ideal.absNorm v.asIdeal : ℝ) ^ (-s)), Complex.ofReal_tsum, ← tsum_mul_left]`. Repeatedly rewrite using `[← tsum_mul_left]`. Rewrite using `[← Summable.tsum_finsetSum fun φ _ ↦ (summable_goodTerm q hq hK φ hs).mul_left _]`.
+
+Use `tsum_congr fun v ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ ramifiedPrimes q hq hK`. Establish `h1 : v ∉ S` using `fun h ↦ h.1 hv`. Establish `h2 : ∀ φ, goodTerm q hq hK φ s v = 0` using `fun φ ↦ indicator_of_notMem (not_not.2 hv) _`. Simplify using `[indicator_of_notMem h1, h2]`.
+
+Establish `hN : (0 : ℝ) ≤ Ideal.absNorm v.asIdeal` using `Nat.cast_nonneg _`. Establish `h2 : ∀ φ : AddChar (Additive G) ℂ, φ (-Additive.ofMul c) * goodTerm q hq hK φ s v = φ (Additive.ofMul (uniformizerClass q v) - Additive.ofMul c) * ((Ideal.absNorm v.asIdeal : ℂ) ^ (s : ℂ))⁻¹` using `fun φ ↦ by`. Rewrite using `[goodTerm, indicator_of_mem (show v ∈ (ramifiedPrimes q hq hK)ᶜ from hv), HeckeCharacter.coeffTerm_apply, coeff_classChar q hq hK hv, sub_eq_add_neg, AddChar.map_add_eq_mul, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h2]`.
+
+Rewrite using `[← Finset.sum_mul, AddChar.sum_apply_eq_ite]`. Simplify using `only [sub_eq_zero, EmbeddingLike.apply_eq_iff_eq]`. Establish `hcard : (Fintype.card (Additive G) : ℂ) = Nat.card G`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_congr (Additive.ofMul (α := G))]`. Establish `hpow : (((Ideal.absNorm v.asIdeal : ℝ) ^ (-s) : ℝ) : ℂ) = ((Ideal.absNorm v.asIdeal : ℂ) ^ (s : ℂ))⁻¹`.
+
+Rewrite using `[Complex.ofReal_cpow hN, Complex.ofReal_neg, Complex.cpow_neg, Complex.ofReal_natCast]`. Distinguish the cases in `hc : uniformizerClass q v = c`. Rewrite using `[indicator_of_mem (show v ∈ S from ⟨hv, hc⟩), if_pos hc, hcard, hpow]`. Rewrite using `[indicator_of_notMem (show v ∉ S from fun h ↦ hc h.2), if_neg hc]`. Simplify using the standard rewrite rules.
+-/
 theorem card_mul_primeIdealZetaSum_uniformizerClass_eq (c : G) {s : ℝ} (hs : 1 < s) :
     (Nat.card G : ℂ) *
       (({v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} : Set _).primeIdealZetaSum s :
@@ -205,6 +260,17 @@ theorem card_mul_primeIdealZetaSum_uniformizerClass_eq (c : G) {s : ℝ} (hs : 1
     · rw [indicator_of_notMem (show v ∉ S from fun h ↦ hc h.2), if_neg hc]
       simp
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(classChar q hq hK φ).isBoundedUnder_norm_primeSum_of_pow_eq_one Nat.card_pos.ne' (classChar_pow_card q hq hK φ) (classChar_ne_one q hq hK hqs hφ)`. Establish `hC' : ∀ᶠ s in 𝓝[>] (1 : ℝ), ‖(classChar q hq hK φ).primeSum s‖ ≤ C` using `eventually_map.mp hC`. Establish `hR` using `finite_ramifiedPrimes q hq hK`. Use `⟨C + hR.toFinset.card, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hC', self_mem_nhdsWithin] with s hs hs1`.
+
+Establish `hs1' : (1 : ℝ) < s` using `hs1`. Use `set f : HeightOneSpectrum (𝓞 K) → ℂ := fun v ↦ (classChar q hq hK φ).coeffTerm (s : ℂ) v.asIdeal`. Establish `hf : Summable f` using `Summable.of_norm ((classChar q hq hK φ).summable_norm_coeffTerm_asIdeal hs1')`. Establish `hsplit : ∑' v, goodTerm q hq hK φ s v = (classChar q hq hK φ).primeSum s - ∑' v, (ramifiedPrimes q hq hK).indicator f v`. Rewrite using `[HeckeCharacter.primeSum, eq_sub_iff_add_eq]`.
+
+Establish `e : ∀ v, goodTerm q hq hK φ s v = (ramifiedPrimes q hq hK)ᶜ.indicator f v` using `fun v ↦ rfl`. Repeatedly rewrite using `[e]`. Rewrite using `[← (hf.indicator _).tsum_add (hf.indicator _)]`. Conclude with `tsum_congr fun v ↦ congrFun (indicator_compl_add_self (ramifiedPrimes q hq hK) f) v`. Establish `hfin : ∑' v, (ramifiedPrimes q hq hK).indicator f v = ∑ v ∈ hR.toFinset, (ramifiedPrimes q hq hK).indicator f v` using `tsum_eq_sum fun v hv ↦ indicator_of_notMem (by simpa using hv) _`.
+
+Establish `hbd : ‖∑ v ∈ hR.toFinset, (ramifiedPrimes q hq hK).indicator f v‖ ≤ hR.toFinset.card`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun v _ ↦ ?_` and prove the remaining obligations. Rewrite using `[norm_indicator_eq_indicator_norm]`.
+
+Use `(indicator_le_self' fun _ _ ↦ norm_nonneg _ ) v |>.trans ?_` and prove the remaining obligations. Conclude with `((classChar q hq hK φ).norm_coeffTerm_asIdeal_le_half hs1'.le v).trans (by norm_num)`. Use `_ = hR.toFinset.card := by simp`. Rewrite using `[hsplit, hfin]`. Conclude with `(norm_sub_le _ _).trans (add_le_add hs hbd)`.
+-/
 theorem exists_norm_tsum_goodTerm_le (hqs : Function.Surjective q) {φ : AddChar (Additive G) ℂ}
     (hφ : φ ≠ 0) :
     ∃ C : ℝ, ∀ᶠ s in 𝓝[>] (1 : ℝ), ‖∑' v, goodTerm q hq hK φ s v‖ ≤ C := by
@@ -240,6 +306,9 @@ theorem exists_norm_tsum_goodTerm_le (hqs : Function.Surjective q) {φ : AddChar
   rw [hsplit, hfin]
   exact (norm_sub_le _ _).trans (add_le_add hs hbd)
 
+/- English proof (translation)
+The claim follows from `|({v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} : Set _).primeIdealZetaSum s - 1 / Nat.card G * (univ : Set (HeightOneSpectrum (𝓞 K))).primeIdealZetaSum s| := by classical set R := ramifiedPrimes q hq hK have hR := finite_ramifiedPrimes q hq hK have hb : ∀ φ : AddCh …`.
+-/
 theorem isBoundedUnder_abs_sub_uniformizerClass (hqs : Function.Surjective q) (c : G) :
     IsBoundedUnder (· ≤ ·) (𝓝[>] 1) fun s ↦
       |({v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} : Set _).primeIdealZetaSum s -
@@ -309,6 +378,11 @@ theorem isBoundedUnder_abs_sub_uniformizerClass (hqs : Function.Surjective q) (c
   rw [e2, abs_div, abs_of_pos hG]
   exact div_le_div_of_nonneg_right key hG.le
 
+/- English proof (translation)
+Establish `hR` using `finite_ramifiedPrimes q hq hK`. Establish `hT : ({v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} : Set _).HasDirichletDensity (1 / Nat.card G)` using `hasDirichletDensity_of_isBoundedUnder_abs_sub (isBoundedUnder_abs_sub_uniformizerClass q hq hK hqs c)`. Establish `hsub : ({v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} : Set _) ⊆ {v : HeightOneSpectrum (𝓞 K) | ∀ π : (v.adicCompletion K)ˣ, Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ) → q (finiteEmbedding v π) = c}` using `fun v hv π hπ ↦ (map_finiteEmbedding_eq_uniformizerClass q hq hK hv.1 hπ).trans hv.2`. Establish `hdiff : {v : HeightOneSpectrum (𝓞 K) | ∀ π : (v.adicCompletion K)ˣ, Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ) → q (finiteEmbedding v π) = c} \ {v | v ∉ ramifiedPrimes q hq hK ∧ uniformizerClass q v = c} ⊆ ramifiedPrimes q hq hK`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hvR`. Conclude with `hv.2 ⟨hvR, hv.1 _ (exists_uniformizer v).choose_spec⟩`. Conclude with `(hasDirichletDensity_iff_of_subset_of_isBoundedUnder hsub (isBoundedUnder_primeIdealZetaSum_of_finite (hR.subset hdiff)) _).1 hT`.
+-/
 theorem hasDirichletDensity_setOf_map_eq (hqs : Function.Surjective q) (c : G) :
     {v : HeightOneSpectrum (𝓞 K) | ∀ π : (v.adicCompletion K)ˣ,
       Valued.v (π : v.adicCompletion K) = WithZero.exp (-1 : ℤ) →
@@ -332,6 +406,11 @@ theorem hasDirichletDensity_setOf_map_eq (hqs : Function.Surjective q) (c : G) :
 
 end Density
 
+/- English proof (translation)
+Establish `: Finite (IdeleGroup K ⧸ H)` using `Subgroup.finite_quotient_of_finiteIndex`. Set `_ : CommGroup (IdeleGroup K ⧸ H)` to `QuotientGroup.Quotient.commGroup H`. Set `q : IdeleGroup K →* IdeleGroup K ⧸ H` to `{ toFun := fun x ↦ (x : IdeleGroup K ⧸ H) map_one' := rfl map_mul' := fun _ _ ↦ rfl }`. Establish `hker : q.ker = H`. Use extensionality with `x`.
+
+Conclude with `QuotientGroup.eq_one_iff x`. Establish `hH' : IsOpen (q.ker : Set (IdeleGroup K))` using `by rw [hker]; exact hH`. Establish `hK' : (IdeleGroup.diagonal K).range ≤ q.ker` using `by rw [hker]; exact hK`. Conclude with `hasDirichletDensity_setOf_map_eq q hH' hK' QuotientGroup.mk_surjective c`.
+-/
 theorem hasDirichletDensity_setOf_mk_eq {H : Subgroup (IdeleGroup K)}
     (hH : IsOpen (H : Set (IdeleGroup K))) (hK : (IdeleGroup.diagonal K).range ≤ H) [H.FiniteIndex]
     (c : IdeleGroup K ⧸ H) :

@@ -8,6 +8,13 @@ open scoped ContDiff
 section
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `h : (fun x : Fin a → Cinf E => ((qf x : ℝ) : ℂ)) = ∑ i : Fin a, ∑ w : InfinitePlace E, ((fun x : Fin a → Cinf E => x i w) * (fun x : Fin a → Cinf E => (starRingEnd ℂ) (x i w)))`. Use function extensionality and compare the values at `x`. Simplify using `only [qf, Finset.sum_apply, Pi.mul_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[h]`. Use `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun w _ => Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin ⟨⟨⟨fun x => x i w, fun _ _ => rfl⟩, fun _ _ => rfl⟩, rfl⟩`. Use `Algebra.subset_adjoin ⟨⟨⟨fun x => (starRingEnd ℂ) (x i w), fun _ _ => ?_⟩, fun c x => ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem qf_mem : (fun x : Fin a → Cinf E => ((qf x : ℝ) : ℂ)) ∈ poly E a := by
   have h : (fun x : Fin a → Cinf E => ((qf x : ℝ) : ℂ)) =
       ∑ i : Fin a, ∑ w : InfinitePlace E,
@@ -23,6 +30,9 @@ private theorem qf_mem : (fun x : Fin a → Cinf E => ((qf x : ℝ) : ℂ)) ∈ 
     · simp
     · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [pg, gauss]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem pg_eq (P : (Fin a → Cinf E) → ℂ) :
     pg P = fun x => P x * Complex.exp (-(Real.pi : ℂ) * ((qf x : ℝ) : ℂ)) := by
   funext x
@@ -30,6 +40,13 @@ private theorem pg_eq (P : (Fin a → Cinf E) → ℂ) :
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt P (fderiv ℝ P x) x` using `(((UpperTheory.admissibleFunctionClass_closure_properties E a P hP).1.differentiable (by simp)) x).hasFDerivAt`. Establish `h2` using `(((UpperTheory.admissibleFunctionClass_closure_properties E a _ qf_mem).1.differentiable (by simp)) x).hasFDerivAt`. Establish `h3` using `h1.mul ((h2.const_mul (-(Real.pi : ℂ))).cexp)`. Establish `hg : ((gauss x : ℝ) : ℂ) = Complex.exp (-(Real.pi : ℂ) * ((qf x : ℝ) : ℂ))`. Simplify using `only [gauss]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `h4` using `h3.fderiv`. Rewrite using `[pg_eq, hg]`. Use `erw [h4]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fderiv_pg {P : (Fin a → Cinf E) → ℂ} (hP : P ∈ poly E a) (x u : Fin a → Cinf E) :
     fderiv ℝ (pg P) x u = (fderiv ℝ P x u - (Real.pi : ℂ) * (P x *
       fderiv ℝ (fun y : Fin a → Cinf E => ((qf y : ℝ) : ℂ)) x u)) * (gauss x : ℝ) := by
@@ -49,6 +66,17 @@ private theorem fderiv_pg {P : (Fin a → Cinf E) → ℂ} (hP : P ∈ poly E a)
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ a P hP`. Take `⟨hP1, -, hP3⟩` from `UpperTheory.admissibleFunctionClass_closure_properties E a P hP`. Take `⟨hR1, -, hR3⟩` from `UpperTheory.admissibleFunctionClass_closure_properties E a _ qf_mem`. Use `⟨?_, ?_, fun T => ?_⟩` and prove the remaining obligations. Rewrite using `[pg_eq]`.
+
+Conclude with `hP1.mul (contDiff_const.mul hR1).cexp`. Set `b` to `Module.finBasis ℝ (Fin a → Cinf E)`. Take `⟨C₀, hC₀, hb⟩` from `b.exists_opNorm_le (F := ℂ)`. Establish `hQ : ∀ u : Fin a → Cinf E, ∃ (C : ℝ) (k : ℕ), ∀ x, ‖fderiv ℝ P x u - (Real.pi : ℂ) * (P x * fderiv ℝ (fun y : Fin a → Cinf E => ((qf y : ℝ) : ℂ)) x u)‖ ≤ C * (1 + qf x) ^ k` using `fun u => (UpperTheory.admissibleFunctionClass_closure_properties E a _ (Subalgebra.sub_mem _ ((hP3 0).2.2 u) (Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hP ((hR3 0).2.2 u)) (Real.pi : ℂ)))).2.1`. Use `choose C k hCk using hQ`.
+
+Use `⟨C₀ * ∑ i, |C (b i)|, ∑ i, k (b i), fun x => ?_⟩` and prove the remaining obligations. Establish `hq : 1 ≤ 1 + qf x` using `by linarith [qf_nonneg x]`. Establish `hg : 0 < gauss x` using `Real.exp_pos _`. Establish `hS : 0 ≤ ∑ i, |C (b i)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `key` using `hb (u := fderiv ℝ (pg P) x) (M := (∑ i, |C (b i)|) * (1 + qf x) ^ (∑ i, k (b i)) * gauss x) (by positivity) (fun i => by`.
+
+Rewrite using `[fderiv_pg hP, norm_mul, Complex.norm_real, Real.norm_of_nonneg hg.le]`. Use `mul_le_mul_of_nonneg_right ((hCk (b i) x).trans ?_) hg.le` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans ?_` and prove the remaining obligations. Use `mul_le_mul ?_ (pow_le_pow_right₀ hq ?_) (by positivity) hS` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => |C (b i)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`.
+
+Conclude with `Finset.single_le_sum (f := fun i => k (b i)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨_, Subalgebra.sub_mem _ (hP3 T).1 (Subalgebra.smul_mem _ (Subalgebra.mul_mem _ hP (hR3 T).1) (Real.pi : ℂ)), fun x => fderiv_pg hP x (T x)⟩`.
+-/
 theorem UpperTheory.quadratic_form_gradient_formula :
     PolyD := by
   intro E _ _ a P hP

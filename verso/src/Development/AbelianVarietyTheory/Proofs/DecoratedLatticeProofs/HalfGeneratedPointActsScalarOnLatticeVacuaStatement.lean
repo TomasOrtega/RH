@@ -8,5 +8,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer)
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HalfGenScalar.exists_scalar | exact GlobalTheory.HalfGenScalar.exists_scalar | (intros; apply GlobalTheory.HalfGenScalar.exists_scalar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.halfGenerated_point_acts_scalar_on_latticeVacua : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (z : WO S T), z ∈ AddSubgroup.closure {u | u ∈ Λ ∧ ∃ e, IsSplitIdem D e ∧ IsHalf e u} → ∃ c : ℂ, ∀ f, IsLatVac (heisO ψ S T) Λ f → heisO ψ S T z f = c • f := by
   first | exact @GlobalTheory.HalfGenScalar.exists_scalar | exact GlobalTheory.HalfGenScalar.exists_scalar | (intros; apply GlobalTheory.HalfGenScalar.exists_scalar <;> assumption)

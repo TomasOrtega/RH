@@ -16,9 +16,17 @@ section Poly
 
 variable {X Y : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => v, fun x => by simp⟩`.
+-/
 theorem isPolyN_const (v : X) : IsPolyN (fun _ => v) 1 :=
   ⟨fun _ => v, fun x => by simp⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Take `⟨d, hd⟩` from `hG`. Use `⟨fun k => c k + d k, fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hc, hd, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => (smul_add _ _ _).symm`.
+-/
 theorem IsPolyN.add {F G : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (hG : IsPolyN G N) :
     IsPolyN (fun x => F x + G x) N := by
   obtain ⟨c, hc⟩ := hF
@@ -28,6 +36,9 @@ theorem IsPolyN.add {F G : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (hG : IsPolyN
   rw [hc, hd, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun k _ => (smul_add _ _ _).symm
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Use `⟨fun k => r • c k, fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hc, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm r (x ^ k) (c k)`.
+-/
 theorem IsPolyN.smul {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (r : ℂ) :
     IsPolyN (fun x => r • F x) N := by
   obtain ⟨c, hc⟩ := hF
@@ -36,6 +47,9 @@ theorem IsPolyN.smul {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (r : ℂ) :
   rw [hc, Finset.smul_sum]
   exact Finset.sum_congr rfl fun k _ => smul_comm r (x ^ k) (c k)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Use `⟨fun k => z • c k, fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hc, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm z (x ^ k) (c k)`.
+-/
 theorem IsPolyN.zsmul {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (z : ℤ) :
     IsPolyN (fun x => z • F x) N := by
   obtain ⟨c, hc⟩ := hF
@@ -44,6 +58,9 @@ theorem IsPolyN.zsmul {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (z : ℤ) :
   rw [hc, Finset.smul_sum]
   exact Finset.sum_congr rfl fun k _ => smul_comm z (x ^ k) (c k)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Use `⟨fun k => L (c k), fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hc, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_smul L _ _`.
+-/
 theorem IsPolyN.map {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (L : X →ₗ[ℂ] Y) :
     IsPolyN (fun x => L (F x)) N := by
   obtain ⟨c, hc⟩ := hF
@@ -52,6 +69,9 @@ theorem IsPolyN.map {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) (L : X →ₗ[�
   rw [hc, map_sum]
   exact Finset.sum_congr rfl fun k _ => map_smul L _ _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, fun x => by simp⟩`. Consider the case `@insert a s ha ih`. Take `⟨c, hc⟩` from `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`. Conclude with `⟨c, fun x => by beta_reduce; rw [Finset.sum_insert ha]; exact hc x⟩`.
+-/
 theorem isPolyN_sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → X} {N : ℕ}
     (h : ∀ i ∈ s, IsPolyN (F i) N) : IsPolyN (fun x => ∑ i ∈ s, F i x) N := by
   classical
@@ -62,6 +82,11 @@ theorem isPolyN_sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → X} {N : ℕ
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
     exact ⟨c, fun x => by beta_reduce; rw [Finset.sum_insert ha]; exact hc x⟩
 
+/- English proof (translation)
+Use `choose c hc using h`. Use `⟨fun k i => c i k, fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`.
+
+Conclude with `hc i x`.
+-/
 theorem isPolyN_pi {ι : Type*} [Fintype ι] {F : ℂ → ι → X} {N : ℕ}
     (h : ∀ i, IsPolyN (fun x => F x i) N) : IsPolyN F N := by
   choose c hc using h
@@ -71,6 +96,9 @@ theorem isPolyN_pi {ι : Type*} [Fintype ι] {F : ℂ → ι → X} {N : ℕ}
   rw [Finset.sum_apply]
   exact hc i x
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Use `⟨fun k => if k < N then c k else 0, fun k hk => if_neg (not_lt.2 hk), fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hc]`. Conclude with `Finset.sum_congr rfl fun k hk => by rw [if_pos (Finset.mem_range.1 hk)]`.
+-/
 theorem IsPolyN.norm {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) :
     ∃ c : ℕ → X, (∀ k, N ≤ k → c k = 0) ∧ ∀ x, F x = ∑ k ∈ range N, x ^ k • c k := by
   obtain ⟨c, hc⟩ := hF
@@ -79,6 +107,11 @@ theorem IsPolyN.norm {F : ℂ → X} {N : ℕ} (hF : IsPolyN F N) :
   rw [hc]
   exact Finset.sum_congr rfl fun k hk => by rw [if_pos (Finset.mem_range.1 hk)]
 
+/- English proof (translation)
+Establish `h1 : ∑ k ∈ range (N + 1), x ^ k • (if k < N then a k else 0) = ∑ k ∈ range N, x ^ k • a k`. Rewrite using `[Finset.sum_range_succ, if_neg (lt_irrefl N), smul_zero, add_zero]`. Conclude with `Finset.sum_congr rfl fun k hk => by rw [if_pos (Finset.mem_range.1 hk)]`. Establish `h2 : ∑ k ∈ range (N + 1), x ^ k • (if k = 0 then (0 : X) else b (k - 1)) = x • ∑ k ∈ range N, x ^ k • b k`. Rewrite using `[Finset.sum_range_succ', Finset.smul_sum]`.
+
+Simplify using `[pow_succ', mul_smul]`. Rewrite using `[← h1, ← h2, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => (smul_add _ _ _).symm`.
+-/
 theorem sum_shift (a b : ℕ → X) (N : ℕ) (x : ℂ) :
     ∑ k ∈ range N, x ^ k • a k + x • ∑ k ∈ range N, x ^ k • b k =
       ∑ k ∈ range (N + 1), x ^ k • ((if k < N then a k else 0) + if k = 0 then 0 else b (k - 1)) := by
@@ -92,6 +125,11 @@ theorem sum_shift (a b : ℕ → X) (N : ℕ) (x : ℂ) :
   rw [← h1, ← h2, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun k _ => (smul_add _ _ _).symm
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Use `⟨fun k => (if k < N then A * c k else 0) + if k = 0 then 0 else B * c (k - 1), fun x => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Establish `e : (A + x • B) * F x = ∑ k ∈ range N, x ^ k • (A * c k) + x • ∑ k ∈ range N, x ^ k • (B * c k)`. Rewrite using `[hc, add_mul, Finset.mul_sum, Finset.mul_sum, Finset.smul_sum]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => mul_smul_comm _ _ _`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_mul_assoc, mul_smul_comm]`. Rewrite using `[e, sum_shift]`.
+-/
 theorem IsPolyN.affine_mul {R : Type*} [Ring R] [Algebra ℂ R] {F : ℂ → R} {N : ℕ} (hF : IsPolyN F N)
     (A B : R) : IsPolyN (fun x => (A + x • B) * F x) (N + 1) := by
   obtain ⟨c, hc⟩ := hF
@@ -105,6 +143,9 @@ theorem IsPolyN.affine_mul {R : Type*} [Ring R] [Algebra ℂ R] {F : ℂ → R} 
     · exact Finset.sum_congr rfl fun k _ => by rw [smul_mul_assoc, mul_smul_comm]
   rw [e, sum_shift]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using isPolyN_const (1 : R)`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.length_cons]`. Conclude with `ih.affine_mul p.1 p.2`.
+-/
 theorem isPolyN_list_prod {R : Type*} [Ring R] [Algebra ℂ R] (l : List (R × R)) :
     IsPolyN (fun x => (l.map fun p => p.1 + x • p.2).prod) (l.length + 1) := by
   induction l with
@@ -113,6 +154,13 @@ theorem isPolyN_list_prod {R : Type*} [Ring R] [Algebra ℂ R] (l : List (R × R
     simp only [List.map_cons, List.prod_cons, List.length_cons]
     exact ih.affine_mul p.1 p.2
 
+/- English proof (translation)
+Use `(Module.forall_dual_apply_eq_zero_iff ℂ (v k)).1 fun φ => ?_` and prove the remaining obligations. Establish `hp0 : (∑ j ∈ range N, Polynomial.C (φ (v j)) * Polynomial.X ^ j : Polynomial ℂ) = 0`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `congrArg φ (h x)`.
+
+Rewrite `h1` using `[map_sum, map_zero]`. Simplify using `only [map_smul, smul_eq_mul] at h1`. Rewrite using `[Polynomial.eval_zero, Polynomial.eval_finset_sum, ← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => by`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, mul_comm]`.
+
+Establish `h2` using `congrArg (fun q : Polynomial ℂ => q.coeff k) hp0`. Simplify `h2` using `[Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Finset.mem_range.2 hk]`.
+-/
 theorem poly_coeff_eq_zero {N : ℕ} (v : ℕ → X) (h : ∀ x : ℂ, ∑ k ∈ range N, x ^ k • v k = 0) (k : ℕ)
     (hk : k < N) : v k = 0 := by
   classical
@@ -131,6 +179,9 @@ theorem poly_coeff_eq_zero {N : ℕ} (v : ℕ → X) (h : ∀ x : ℂ, ∑ k ∈
 
 end Poly
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hF`. Conclude with `⟨c, fun x => by beta_reduce; rw [← h x]; exact hc x⟩`.
+-/
 theorem IsPolyN.congr {X : Type*} [AddCommGroup X] [Module ℂ X] {F G : ℂ → X} {N : ℕ} (hF : IsPolyN F N)
     (h : ∀ x, F x = G x) : IsPolyN G N := by
   obtain ⟨c, hc⟩ := hF
@@ -140,6 +191,9 @@ section Capelli
 
 variable {R : Type*} [Ring R] [Algebra ℂ R] {n : ℕ}
 
+/- English proof (translation)
+Unfold `Capelli.capEntry`. Use `split_ifs`. Rewrite using `[map_sub, Algebra.algebraMap_eq_smul_one x]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+-/
 theorem capEntry_sub (E : Fin n → Fin n → R) (x t : ℂ) (a b : Fin n) :
     Capelli.capEntry E (x - t) a b =
       (E a b - if a = b then algebraMap ℂ R t else 0) + x • (if a = b then (1 : R) else 0) := by
@@ -149,6 +203,13 @@ theorem capEntry_sub (E : Fin n → Fin n → R) (x t : ℂ) (a b : Fin n) :
     abel
   · simp
 
+/- English proof (translation)
+Unfold `Capelli.cminor`. Use `isPolyN_sum _ fun σ _ => IsPolyN.zsmul ?_ _` and prove the remaining obligations. Establish `h` using `isPolyN_list_prod (List.ofFn fun j : Fin p => ((E (Rw (σ j)) (Cl j) - if Rw (σ j) = Cl j then algebraMap ℂ R (s + ((j : ℕ) : ℂ)) else 0), (if Rw (σ j) = Cl j then (1 : R) else 0)))`. Rewrite `h` using `[List.length_ofFn]`. Use `h.congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use `congrArg List.ofFn ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[sub_sub, capEntry_sub]`.
+-/
 theorem isPolyN_cminor {p : ℕ} (E : Fin n → Fin n → R) (Rw Cl : Fin p → Fin n) (s : ℂ) :
     IsPolyN (fun x => Capelli.cminor E Rw Cl (x - s)) (p + 1) := by
   unfold Capelli.cminor
@@ -167,10 +228,16 @@ theorem isPolyN_cminor {p : ℕ} (E : Fin n → Fin n → R) (Rw Cl : Fin p → 
 
 end Capelli
 
+/- English proof (translation)
+Simplify using `[eeV, prj, LinearMap.sum_apply]`.
+-/
 theorem eeV_apply' {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M)
     (g : Fin n → M) (d : Fin n) : eeV E g d = ∑ c, E c d (g c) := by
   simp [eeV, prj, LinearMap.sum_apply]
 
+/- English proof (translation)
+Unfold `Capelli.capEntry`. Use `split_ifs`. Simplify using `[Module.algebraMap_end_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem capEntry_mul_apply {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) (ω : ℂ) (d b : Fin n) (A : Module.End ℂ M) (y : M) :
     (Capelli.capEntry E ω d b * A) y = E d b (A y) + if d = b then ω • A y else 0 := by
@@ -187,6 +254,17 @@ def adjVec (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (f : Fin (m + 
     Fin (m + 1) → M :=
   fun b => ∑ c : Fin (m + 1), ((-1 : ℂ) ^ ((b : ℕ) + (c : ℕ))) • Capelli.cminor E b.succAbove c.succAbove (ω - 1) (f c)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Apply the tactic sequence `have hx : ∀ c : Fin (m + 1), (∑ d : Fin (m + 1), ((-1 : ℂ) ^ ((d : ℕ) + (c : ℕ))) • (Capelli.capEntry E ω d b * Capelli.cminor E d.succAbove c.succAbove (ω - 1))) (f c) = (if b = c then Capelli.capelliC E ω else 0) (f c) := fun c => by`. Rewrite using `[Capelli.capelli_expand_plus E hE ω b c]`. Establish `hsum : ∑ c, (if b = c then Capelli.capelliC E ω else 0) (f c) = Capelli.capelliC E ω (f b)`. Rewrite using `[Finset.sum_eq_single b]`.
+
+Rewrite using `[if_pos rfl]`. Introduce `c _ hc`. Rewrite using `[if_neg (Ne.symm hc), LinearMap.zero_apply]`. Introduce `h`. Conclude with `absurd (mem_univ b) h`.
+
+Rewrite using `[← hsum, ← Finset.sum_congr rfl (fun c _ => hx c)]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, eeV_apply', adjVec, LinearMap.sum_apply, LinearMap.smul_apply, capEntry_mul_apply, map_sum, map_smul, smul_add, sum_add_distrib, smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[if_pos rfl, smul_comm]`. Introduce `d _ hd`. Rewrite using `[if_neg hd, smul_zero]`. Introduce `h`.
+
+Conclude with `absurd (mem_univ b) h`.
+-/
 theorem adjVec_key (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E)
     (f : Fin (m + 1) → M) (ω : ℂ) :
     eeV E (adjVec E f ω) + ω • adjVec E f ω = fun b => Capelli.capelliC E ω (f b) := by
@@ -215,6 +293,9 @@ theorem adjVec_key (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : 
   · intro h
     exact absurd (mem_univ b) h
 
+/- English proof (translation)
+Use `isPolyN_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [adjVec]`. Use `isPolyN_sum _ fun c _ => IsPolyN.smul ?_ _` and prove the remaining obligations. Conclude with `((isPolyN_cminor E b.succAbove c.succAbove 1).map (LinearMap.applyₗ (f c))).congr fun x => by simp`.
+-/
 theorem isPolyN_adjVec (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (f : Fin (m + 1) → M) :
     IsPolyN (adjVec E f) (m + 1) := by
   refine isPolyN_pi fun b => ?_
@@ -232,6 +313,9 @@ variable {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ}
 def shiftPoly (θ : Fin (m + 1) → ℝ) : Polynomial ℂ :=
   ∏ t, (Polynomial.X + Polynomial.C ((θ t : ℝ) : ℂ))
 
+/- English proof (translation)
+Unfold `shiftPoly`. Combine the equalities or inequalities in the displayed calculation. Apply `Polynomial.natDegree_prod_le` to reduce the goal to its premises. Use `_ = m + 1 := by simp [Polynomial.natDegree_X_add_C]`. Use `_ < m + 2 := by omega`.
+-/
 theorem shiftPoly_natDegree_lt (θ : Fin (m + 1) → ℝ) : (shiftPoly θ).natDegree < m + 2 := by
   unfold shiftPoly
   calc _ ≤ ∑ t : Fin (m + 1), (Polynomial.X + Polynomial.C ((θ t : ℝ) : ℂ)).natDegree := by
@@ -239,12 +323,24 @@ theorem shiftPoly_natDegree_lt (θ : Fin (m + 1) → ℝ) : (shiftPoly θ).natDe
     _ = m + 1 := by simp [Polynomial.natDegree_X_add_C]
     _ < m + 2 := by omega
 
+/- English proof (translation)
+Establish `h` using `Polynomial.eval_eq_sum_range' (shiftPoly_natDegree_lt θ) ω`. Rewrite using `[show ∏ t, (ω + ((θ t : ℝ) : ℂ)) = (shiftPoly θ).eval ω by simp [shiftPoly, Polynomial.eval_prod], h]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_eq_mul, mul_comm]`.
+-/
 theorem shiftPoly_eval (θ : Fin (m + 1) → ℝ) (ω : ℂ) :
     ∏ t, (ω + ((θ t : ℝ) : ℂ)) = ∑ k ∈ range (m + 2), ω ^ k • (shiftPoly θ).coeff k := by
   have h := Polynomial.eval_eq_sum_range' (shiftPoly_natDegree_lt θ) ω
   rw [show ∏ t, (ω + ((θ t : ℝ) : ℂ)) = (shiftPoly θ).eval ω by simp [shiftPoly, Polynomial.eval_prod], h]
   exact Finset.sum_congr rfl fun k _ => by rw [smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `key : ∀ (k : ℕ) (g : Fin k → Module.End ℂ (Fin (m + 1) → M)), (List.ofFn fun t => -g t).prod = (-1) ^ k * (List.ofFn g).prod`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Introduce `g`. Rewrite using `[List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons, ih, pow_succ]`. Apply the tactic sequence `rcases neg_one_pow_eq_or (Module.End ℂ (Fin (m + 1) → M)) k with h | h <;> rw [h] <;> simp`. Establish `hl : shiftPoly θ = (List.ofFn fun t => Polynomial.X + Polynomial.C ((θ t : ℝ) : ℂ)).prod`.
+
+Rewrite using `[List.prod_ofFn]`. Both sides reduce to the same expression. Rewrite using `[hl, map_list_prod, List.map_ofFn]`. Unfold `prodShift`. Rewrite using `[← key (m + 1) (fun t => eeV E - ((θ t : ℝ) : ℂ) • (1 : Module.End ℂ (Fin (m + 1) → M)))]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, map_add, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem shiftPoly_aeval (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (θ : Fin (m + 1) → ℝ) :
     Polynomial.aeval (-eeV E) (shiftPoly θ) = (-1) ^ (m + 1) * prodShift (eeV E) θ := by
   have key : ∀ (k : ℕ) (g : Fin k → Module.End ℂ (Fin (m + 1) → M)),
@@ -268,6 +364,27 @@ theorem shiftPoly_aeval (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (
     Algebra.algebraMap_eq_smul_one]
   abel
 
+/- English proof (translation)
+Take `⟨g, hg0, hg⟩` from `(isPolyN_adjVec E f).norm`. Establish `key : ∀ ω : ℂ, ∑ k ∈ range (m + 1 + 1), ω ^ k • (((if k < m + 1 then eeV E (g k) else 0) + if k = 0 then 0 else g (k - 1)) - (shiftPoly θ).coeff k • f) = 0`. Introduce `ω`. Establish `h1` using `adjVec_key E hE f ω`. Establish `h2 : (fun b => Capelli.capelliC E ω (f b)) = (∏ t, (ω + ((θ t : ℝ) : ℂ))) • f`.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[hC ω (f b) (hf b)]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, hg, map_sum]`. Simplify using `only [map_smul] at h1`.
+
+Rewrite `h1` using `[sum_shift, shiftPoly_eval, Finset.sum_smul, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) h1` and prove the remaining obligations. Rewrite using `[smul_sub, smul_assoc]`. Establish `hcoef : ∀ k, k < m + 2 → eeV E (g k) + (if k = 0 then 0 else g (k - 1)) = (shiftPoly θ).coeff k • f`. Introduce `k hk`.
+
+Establish `h3` using `poly_coeff_eq_zero _ key k hk`. Rewrite `h3` using `[sub_eq_zero]`. Rewrite using `[← h3]`. Use `congr 1`. Distinguish the cases in `h : k < m + 1`.
+
+Rewrite using `[if_pos h]`. Rewrite using `[if_neg h, hg0 k (by omega), map_zero]`. Establish `tele : ∀ (w : ℕ → (Fin (m + 1) → M)) (N : ℕ), ∑ k ∈ range (N + 1), (-(w k) + if k = 0 then 0 else w (k - 1)) = -w N`. Introduce `w N`. Proceed by induction on `N with`.
+
+Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[Finset.sum_range_succ, ih, if_neg (Nat.succ_ne_zero N), Nat.add_sub_cancel]`. Normalize the expressions using the abelian group laws. Establish `step : ∀ k ∈ range (m + 2), ((shiftPoly θ).coeff k • (-eeV E) ^ k) f = -(((-eeV E) ^ (k + 1)) (g k)) + if k = 0 then 0 else ((-eeV E) ^ (k - 1 + 1)) (g (k - 1))`.
+
+Introduce `k hk`. Establish `e1 : ((shiftPoly θ).coeff k • (-eeV E) ^ k) f = ((-eeV E) ^ k) (eeV E (g k)) + ((-eeV E) ^ k) (if k = 0 then 0 else g (k - 1))`. Rewrite using `[LinearMap.smul_apply, ← map_smul ((-eeV E) ^ k), ← hcoef k (Finset.mem_range.1 hk), map_add]`. Establish `e2 : ((-eeV E) ^ k) (eeV E (g k)) = -(((-eeV E) ^ (k + 1)) (g k))`. Rewrite using `[pow_succ, Module.End.mul_apply, LinearMap.neg_apply, map_neg, neg_neg]`.
+
+Rewrite using `[e1, e2]`. Use `congr 1`. Distinguish the cases in `h0 : k = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h0, if_neg h0, Nat.sub_add_cancel (Nat.pos_of_ne_zero h0)]`. Establish `hzero : (Polynomial.aeval (-eeV E) (shiftPoly θ)) f = 0`. Rewrite using `[Polynomial.aeval_eq_sum_range' (shiftPoly_natDegree_lt θ), LinearMap.sum_apply, Finset.sum_congr rfl step, tele, hg0 (m + 1) le_rfl, map_zero, neg_zero]`. Establish `hP : prodShift (eeV E) θ = (-1) ^ (m + 1) * Polynomial.aeval (-eeV E) (shiftPoly θ)`. Rewrite using `[shiftPoly_aeval, ← mul_assoc, ← pow_add, Even.neg_one_pow ⟨m + 1, rfl⟩, one_mul]`.
+
+Rewrite using `[hP, Module.End.mul_apply, hzero, map_zero]`.
+-/
 theorem prodShift_eeV_of_capelli (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E)
     (θ : Fin (m + 1) → ℝ) (S : Submodule ℂ M)
     (hC : ∀ ω : ℂ, ∀ y ∈ S, Capelli.capelliC E ω y = (∏ t, (ω + ((θ t : ℝ) : ℂ))) • y)
@@ -327,6 +444,9 @@ theorem prodShift_eeV_of_capelli (E : Fin (m + 1) → Fin (m + 1) → Module.End
 
 end Main
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Consider the case `succ m => exact prodShift_eeV_of_capelli E hE θ S hC f hf`.
+-/
 theorem prodShift_eeV_of_capelli' {M : Type*} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (θ : Fin n → ℝ) (S : Submodule ℂ M)
     (hC : ∀ ω : ℂ, ∀ y ∈ S, Capelli.capelliC E ω y = (∏ t, (ω + ((θ t : ℝ) : ℂ))) • y)

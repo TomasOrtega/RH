@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.WeilEqAdd
 
+/- English proof (translation)
+Establish `h₁` using `GlobalTheory.CommPairing.weilIs_symm P.isLB h`. Establish `h₂` using `GlobalTheory.CommPairing.weilIs_symm P.isLB h'`. Establish `h₃` using `GlobalTheory.CommPairing.weilIs_symm P.isLB (GlobalTheory.weilIs_mul_left GlobalTheory.globalFns_holds S P k T y y' x _ _ h₁ h₂)`. Establish `e : (c⁻¹ * c'⁻¹)⁻¹ = c * c'` using `by rw [mul_inv, inv_inv, inv_inv, mul_comm]`. Rewrite `h₃` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem weilIs_mul_right {S : Scheme.{0}} (P : Out.PolAV S) (k : ℕ) {T : Over S} (x y y' : T ⟶ P.A)
     (c c' : Γ(T.left, ⊤)ˣ) (h : Out.WeilIs P.A P.L k x y c) (h' : Out.WeilIs P.A P.L k x y' c') :
     Out.WeilIs P.A P.L k x (y * y') (c * c') := by
@@ -30,6 +33,19 @@ namespace GlobalTheory
 
 open WeilEqAdd in
 
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ σ₁ A B f g₁ g₂ _ _ _ r₁ r₂ h₁ h₂ n x y c hn hx hy`. Use `haveI : IsCommMonObj A.pol.A := A.ab.comm`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `ex : ∀ r : 𝓞 E, ∃ u : ℂˣ, Out.WeilIs A.t.G A.t.PP.L n (x ≫ A.t.act.act r) (y ≫ 𝟙 _) (unitOn u)`. Introduce `r`.
+
+Use `haveI := A.t.act.hom r`. Establish `hxr : (x ≫ A.t.act.act r) ^ n = 1`. Rewrite using `[← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hy' : (y ≫ 𝟙 _) ^ n = 1` using `by rw [Category.comp_id]; exact hy`. Conclude with `GlobalTheory.TorsionGenerators.exists_weilIs hL A.pol (σ₁.comp (algebraMap (𝓞 K) K)) hxr hy'`.
+
+Establish `um : ∀ a b : ℂˣ, unitOn (a * b) = unitOn a * unitOn b` using `fun a b => map_mul (Units.map _) a b`. Take `⟨c₁, e₁⟩` from `ex r₁`. Take `⟨c₂, e₂⟩` from `ex r₂`. Establish `hA : Out.WeilIs A.t.G A.t.PP.L n (x ≫ A.t.act.act (r₁ + r₂)) (y ≫ 𝟙 _) (unitOn (c₁ * c₂))`. Rewrite using `[A.t.act.add, MonObj.comp_mul, um]`.
+
+Conclude with `GlobalTheory.weilIs_mul_left GlobalTheory.globalFns_holds _ A.pol n _ _ _ _ _ _ e₁ e₂`. Establish `hB : Out.WeilIs B.t.G B.t.PP.L n (x ≫ f) (y ≫ (g₁ * g₂)) (unitOn (c₁ * c₂))`. Rewrite using `[MonObj.comp_mul, um]`. Conclude with `weilIs_mul_right B.pol n _ _ _ _ _ ((h₁ n x y c₁ hn hx hy).2 e₁) ((h₂ n x y c₂ hn hx hy).2 e₂)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `rfl` from `GlobalTheory.weilIs_unique_fieldPoint _ _ _ B.t.PP.isLB _ _ _ _ _ _ _ h hB`. Conclude with `hA`. Introduce `h`. Take `rfl` from `GlobalTheory.weilIs_unique_fieldPoint _ _ _ A.t.PP.isLB _ _ _ _ _ _ _ h hA`.
+
+Conclude with `hB`.
+-/
 theorem weilEq_mul_right_add : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [NumberField K] (σ₁ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f g₁ g₂ : A.t.G ⟶ B.t.G), IsMonHom f → IsMonHom g₁ →
     IsMonHom g₂ → ∀ r₁ r₂ : 𝓞 E,

@@ -4,6 +4,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.Col2.TC
 
+/- English proof (translation)
+Introduce `B X I _ v ⟨P, hP, _⟩`. Establish `e : P ∈ (∅ : Finset (HeightOneSpectrum (𝓞 B.fields.E)))` using `I.twistPrimes_reference_tuple_eq_empty ▸ hP`. Simplify using `at e`.
+-/
 theorem not_underQ_mu0 : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ v : HeightOneSpectrum (𝓞 B.host.F), ¬ I.UnderQ I.mu0 v := by
   intro B X I _ v ⟨P, hP, _⟩
   have e : P ∈ (∅ : Finset (HeightOneSpectrum (𝓞 B.fields.E))) := I.twistPrimes_reference_tuple_eq_empty ▸ hP

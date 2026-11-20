@@ -4,6 +4,9 @@ import Mathlib.Data.Finsupp.WellFounded
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite σ`. Establish `hfin : {m : σ →₀ ℕ | Minimal (· ∈ S) m}.Finite` using `WellQuasiOrderedLE.finite_of_isAntichain (setOf_minimal_antichain _)`. Use `⟨hfin.toFinset, fun m hm => ((Set.Finite.mem_toFinset hfin).1 hm).1, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hmin⟩` from `(Set.isPWO_of_wellQuasiOrderedLE S).exists_le_minimal hn`. Conclude with `⟨b, (Set.Finite.mem_toFinset hfin).2 hmin, hb⟩`.
+-/
 private theorem UpperTheory.V.Alg.gordan_dickson (σ : Type) [Finite σ] (S : Set (σ →₀ ℕ)) :
     ∃ μ : Finset (σ →₀ ℕ), (∀ m ∈ μ, m ∈ S) ∧ ∀ n ∈ S, ∃ m ∈ μ, m ≤ n := by
   classical
@@ -14,6 +17,19 @@ private theorem UpperTheory.V.Alg.gordan_dickson (σ : Type) [Finite σ] (S : Se
   obtain ⟨b, hb, hmin⟩ := (Set.isPWO_of_wellQuasiOrderedLE S).exists_le_minimal hn
   exact ⟨b, (Set.Finite.mem_toFinset hfin).2 hmin, hb⟩
 
+/- English proof (translation)
+Introduce `σ _ X _ _ _ wt`. Take `⟨g, hgS, hg⟩` from `gordan_dickson σ {n | n ≠ 0 ∧ Finsupp.weight wt n = 0}`. Use `⟨g, hgS, ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n using WellFoundedLT.induction with`.
+
+Consider the case `_ n ih`. Introduce `hn`. Distinguish the cases in `h0 : n = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+
+Take `⟨m, hm, hmn⟩` from `hg n ⟨h0, hn⟩`. Establish `hm'` using `hgS m hm`. Establish `hsplit : n = m + (n - m)` using `(add_tsub_cancel_of_le hmn).symm`. Establish `hw : Finsupp.weight wt (n - m) = 0`. Establish `h1` using `hn`.
+
+Rewrite `h1` using `[hsplit, map_add, hm'.2, zero_add]`. Conclude with `h1`. Establish `hlt : n - m < n`. Use `lt_of_le_of_ne tsub_le_self fun h => hm'.1 ?_` and prove the remaining obligations. Establish `h2 : m + (n - m) = n` using `add_tsub_cancel_of_le hmn`.
+
+Rewrite `h2` using `[h]`. Simplify using `using h2`. Rewrite using `[hsplit]`. Conclude with `add_mem (AddSubmonoid.subset_closure hm) (ih _ hlt hw)`. Take `⟨μ, hμS, hμ⟩` from `gordan_dickson σ {n | Finsupp.weight wt n = j}`.
+
+Conclude with `⟨μ, hμS, hμ⟩`.
+-/
 theorem UpperTheory.V.Alg.gordan :
     ∀ (σ : Type) [Finite σ] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (wt : σ → X), ∃ g : Finset (σ →₀ ℕ), (∀ n ∈ g, n ≠ 0 ∧ Finsupp.weight wt n = 0) ∧
       (∀ n, Finsupp.weight wt n = 0 → n ∈ AddSubmonoid.closure (g : Set (σ →₀ ℕ))) ∧

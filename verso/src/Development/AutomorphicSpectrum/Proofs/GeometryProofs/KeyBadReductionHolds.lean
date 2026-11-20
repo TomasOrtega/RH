@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.HtPt.Kftwo.kp`.
+-/
 theorem key_bad : KeyBadSt := PositivityTheory.HtPt.Kftwo.kp
 
 end GlobalTheory.CompanionTheory.Ar.Sl.KP

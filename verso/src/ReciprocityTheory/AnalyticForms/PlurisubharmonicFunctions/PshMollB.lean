@@ -10,6 +10,13 @@ noncomputable section
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Use `measurable_of_Iio fun a => ?_` and prove the remaining obligations. Establish `hO : IsOpen {x | x ∈ U ∧ φ x < a}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `x ⟨hxU, hx⟩`. Establish `h1` using `hφ x hxU _ hx`.
+
+Rewrite `h1` using `[nhdsWithin_eq_nhds.2 (hU.mem_nhds hxU)]`. Use `filter_upwards [h1, hU.mem_nhds hxU] with y hy hyU using ⟨hyU, hy⟩`. Establish `: U.indicator φ ⁻¹' Iio a = {x | x ∈ U ∧ φ x < a} ∪ (Uᶜ ∩ {_x | (0 : ℝ) < a})`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, Set.indicator]`.
+
+Rewrite using `[this]`. Conclude with `hO.measurableSet.union (hU.measurableSet.compl.inter (MeasurableSet.const _))`.
+-/
 lemma measurable_indicator_usc {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ} (hU : IsOpen U)
     (hφ : UpperSemicontinuousOn φ U) : Measurable (U.indicator φ) := by
   refine measurable_of_Iio fun a => ?_
@@ -25,6 +32,11 @@ lemma measurable_indicator_usc {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) �
   rw [this]
   exact hO.measurableSet.union (hU.measurableSet.compl.inter (MeasurableSet.const _))
 
+/- English proof (translation)
+Establish `hζ0 : ζ ≠ 0` using `by rintro rfl; simp at hζ`. Use `⟨?_, (Homeomorph.smulOfNeZero ζ hζ0).measurableEmbedding⟩` and prove the remaining obligations. Set `c : Circle` to `⟨ζ, by simp [Submonoid.unitSphere, hζ]⟩`. Establish `h` using `volume_preserving_pi (ι := Fin D) (fun _ => (rotation c).measurePreserving)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, rotation_apply]`.
+-/
 lemma smul_measurePreserving {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     MeasurePreserving (fun y : Fin D → ℂ => ζ • y) ∧
       MeasurableEmbedding (fun y : Fin D → ℂ => ζ • y) := by
@@ -36,6 +48,21 @@ lemma smul_measurePreserving {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
   funext y i
   rw [Pi.smul_apply, smul_eq_mul, rotation_apply]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hk.bounded_above_of_compact_support hkc`. Use `set μθ : Measure ℝ := volume.restrict (Ioc 0 (2 * π)) with hμθ`. Use `set f : ℝ → (Fin D → ℂ) → ℝ := fun θ y => k y * Φ (P (circleMap 0 1 θ) y) with hf`. Establish `hcm : ∀ θ, ‖circleMap 0 1 θ‖ = 1` using `fun θ => by simp`. Establish `hfm : Measurable (Function.uncurry f)`.
+
+Establish `h1 : Continuous fun q : ℝ × (Fin D → ℂ) => P (circleMap 0 1 q.1) q.2` using `hP.comp (((continuous_circleMap 0 1).comp continuous_fst).prodMk continuous_snd)`. Conclude with `(hk.measurable.comp measurable_snd).mul (hΦm.comp h1.measurable)`. Establish `hsec : ∀ θ, Integrable (f θ) ∧ ∫ y, ‖f θ y‖ ≤ M * ∫ y, |Φ y|`. Introduce `θ`. Take `⟨he, hee⟩` from `hPm _ (hcm θ)`.
+
+Establish `hi : Integrable fun y => Φ (P (circleMap 0 1 θ) y)` using `(he.integrable_comp_emb hee).2 hΦi`. Establish `hint : Integrable (f θ)` using `hi.bdd_mul hk.aestronglyMeasurable (Eventually.of_forall hM)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono hint.norm (hi.abs.const_mul M) fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [hf, norm_mul, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_right (by simpa [Real.norm_eq_abs] using hM y) (abs_nonneg _)`. Use `_ = M * ∫ y, |Φ y| := by`. Rewrite using `[integral_const_mul, he.integral_comp hee (fun y => |Φ y|)]`. Establish `hint : Integrable (Function.uncurry f) (μθ.prod volume)`.
+
+Rewrite using `[integrable_prod_iff hfm.aestronglyMeasurable]`. Use `⟨Eventually.of_forall fun θ => (hsec θ).1, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (integrable_const (M * ∫ y, |Φ y|)) ?_ (Eventually.of_forall fun θ => ?_)` and prove the remaining obligations. Conclude with `hfm.norm.stronglyMeasurable.integral_prod_right'.aestronglyMeasurable`. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`.
+
+Conclude with `(hsec θ).2`. Establish `hswap` using `integral_integral_swap hint`. Establish `hpt : ∀ y, k y * circleAverage (fun ζ => Φ (P ζ y)) 0 1 = (2 * π)⁻¹ * ∫ θ, f θ y ∂μθ`. Introduce `y`. Rewrite using `[circleAverage_def, smul_eq_mul, intervalIntegral.integral_of_le two_pi_pos.le, mul_left_comm, ← integral_const_mul]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hpt]`. Conclude with `hint.integral_prod_right.const_mul _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[circleAverage_def, smul_eq_mul, intervalIntegral.integral_of_le two_pi_pos.le]`.
+-/
 lemma circle_fubini {Φ : (Fin D → ℂ) → ℝ} (hΦm : Measurable Φ) (hΦi : Integrable Φ)
     {k : (Fin D → ℂ) → ℝ} (hk : Continuous k) (hkc : HasCompactSupport k)
     {P : ℂ → (Fin D → ℂ) → (Fin D → ℂ)} (hP : Continuous (Function.uncurry P))
@@ -92,17 +119,26 @@ section Moll
 
 variable (ρ : Mollifier D) {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ}
 
+/- English proof (translation)
+Simplify using `only [Mollifier.scaled]`. Rewrite using `[smul_comm, ρ.circle_inv c _ hc]`.
+-/
 lemma scaled_circle_inv {ε : ℝ} {c : ℂ} (hc : ‖c‖ = 1) (w : Fin D → ℂ) :
     ρ.scaled ε (c • w) = ρ.scaled ε w := by
   simp only [Mollifier.scaled]
   rw [smul_comm, ρ.circle_inv c _ hc]
 
+/- English proof (translation)
+Take `⟨δ, hδ, h⟩` from `(isCompact_closedBall z ε).exists_cthickening_subset_open hU hz`. Rewrite `h` using `[cthickening_closedBall hδ.le hε]`. Conclude with `⟨δ, hδ, by rw [add_comm]; exact h⟩`.
+-/
 lemma exists_thick (hU : IsOpen U) {ε : ℝ} (hε : 0 ≤ ε) {z : Fin D → ℂ} (hz : z ∈ shrink U ε) :
     ∃ δ > 0, closedBall z (ε + δ) ⊆ U := by
   obtain ⟨δ, hδ, h⟩ := (isCompact_closedBall z ε).exists_cthickening_subset_open hU hz
   rw [cthickening_closedBall hδ.le hε] at h
   exact ⟨δ, hδ, by rw [add_comm]; exact h⟩
 
+/- English proof (translation)
+Use `isOpen_iff_mem_nhds.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨δ, hδ, h⟩` from `exists_thick hU hε.le hz`. Use `filter_upwards [ball_mem_nhds z hδ] with y hy`. Rewrite `hy` using `[mem_ball]`. Conclude with `(closedBall_subset_closedBall' (by linarith)).trans h`.
+-/
 lemma isOpen_shrink (hU : IsOpen U) {ε : ℝ} (hε : 0 < ε) : IsOpen (shrink U ε) := by
   refine isOpen_iff_mem_nhds.2 fun z hz => ?_
   obtain ⟨δ, hδ, h⟩ := exists_thick hU hε.le hz
@@ -110,6 +146,11 @@ lemma isOpen_shrink (hU : IsOpen U) {ε : ℝ} (hε : 0 < ε) : IsOpen (shrink U
   rw [mem_ball] at hy
   exact (closedBall_subset_closedBall' (by linarith)).trans h
 
+/- English proof (translation)
+Establish `e : C.indicator φ = C.indicator (U.indicator φ)`. Use extensionality with `x`. Distinguish the cases in `hx : x ∈ C`. Simplify using `[hx, hCU hx]`. Simplify using `[hx]`.
+
+Use `⟨e ▸ (measurable_indicator_usc hU hφ.1).indicator hC.isClosed.measurableSet, ?_⟩` and prove the remaining obligations. Conclude with `(integrable_indicator_iff hC.isClosed.measurableSet).2 ((isPsh_locallyIntegrable_thm D U φ hU hφ).integrableOn_compact_subset hCU hC)`.
+-/
 lemma phiC (hU : IsOpen U) (hφ : IsPsh U φ) {C : Set (Fin D → ℂ)} (hC : IsCompact C)
     (hCU : C ⊆ U) : Measurable (C.indicator φ) ∧ Integrable (C.indicator φ) := by
   have e : C.indicator φ = C.indicator (U.indicator φ) := by
@@ -121,12 +162,18 @@ lemma phiC (hU : IsOpen U) (hφ : IsPsh U φ) {C : Set (Fin D → ℂ)} (hC : Is
   exact (integrable_indicator_iff hC.isClosed.measurableSet).2
     ((isPsh_locallyIntegrable_thm D U φ hU hφ).integrableOn_compact_subset hCU hC)
 
+/- English proof (translation)
+Rewrite using `[molli_congr ρ hε (U := C) hz (fun x hx => (indicator_of_mem hx φ).symm)]`. Both sides reduce to the same expression.
+-/
 lemma molli_eq_C {ε : ℝ} (hε : 0 < ε) {C : Set (Fin D → ℂ)} {z : Fin D → ℂ}
     (hz : closedBall z ε ⊆ C) :
     molli ρ ε φ z = ∫ y, ρ.scaled ε y * C.indicator φ (z - y) := by
   rw [molli_congr ρ hε (U := C) hz (fun x hx => (indicator_of_mem hx φ).symm)]
   rfl
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `(scaled_contDiff ρ ε).continuous.bounded_above_of_compact_support (scaled_hasCompactSupport ρ hε)`. Conclude with `(hΦ.comp_sub_left z).bdd_mul (scaled_contDiff ρ ε).continuous.aestronglyMeasurable (Eventually.of_forall hM)`.
+-/
 lemma integrable_kC {ε : ℝ} (hε : 0 < ε) {Φ : (Fin D → ℂ) → ℝ} (hΦ : Integrable Φ)
     (z : Fin D → ℂ) : Integrable fun y => ρ.scaled ε y * Φ (z - y) := by
   obtain ⟨M, hM⟩ := (scaled_contDiff ρ ε).continuous.bounded_above_of_compact_support
@@ -134,11 +181,31 @@ lemma integrable_kC {ε : ℝ} (hε : 0 < ε) {Φ : (Fin D → ℂ) → ℝ} (h�
   exact (hΦ.comp_sub_left z).bdd_mul (scaled_contDiff ρ ε).continuous.aestronglyMeasurable
     (Eventually.of_forall hM)
 
+/- English proof (translation)
+Rewrite using `[mem_closedBall, dist_eq_norm, sub_sub_cancel_left, norm_neg]`. Conclude with `(norm_lt_of_scaled_ne_zero ρ hε hy).le`.
+-/
 lemma mem_ball_sub {ε : ℝ} (hε : 0 < ε) {y : Fin D → ℂ} (hy : ρ.scaled ε y ≠ 0)
     (z : Fin D → ℂ) : z - y ∈ closedBall z ε := by
   rw [mem_closedBall, dist_eq_norm, sub_sub_cancel_left, norm_neg]
   exact (norm_lt_of_scaled_ne_zero ρ hε hy).le
 
+/- English proof (translation)
+Use `set C := closedBall z ε with hCdef`. Take `⟨hm, hi⟩` from `phiC hU hφ (isCompact_closedBall z ε) hz`. Establish `hP : Continuous (Function.uncurry fun (ζ : ℂ) (y : Fin D → ℂ) => z - ζ • y)` using `continuous_const.sub (continuous_fst.smul continuous_snd)`. Establish `hPm : ∀ ζ : ℂ, ‖ζ‖ = 1 → MeasurePreserving (fun y : Fin D → ℂ => z - ζ • y) ∧ MeasurableEmbedding (fun y : Fin D → ℂ => z - ζ • y)`. Introduce `ζ hζ`.
+
+Take `⟨h1, h2⟩` from `smul_measurePreserving (D := D) hζ`. Conclude with `⟨(Measure.measurePreserving_sub_left volume z).comp h1, (Homeomorph.subLeft z).measurableEmbedding.comp h2⟩`. Take `⟨hFint, hF⟩` from `circle_fubini hm hi (scaled_contDiff ρ ε).continuous (scaled_hasCompactSupport ρ hε) hP hPm`. Establish `hrot : ∀ ζ ∈ sphere (0 : ℂ) |1|, (∫ y, ρ.scaled ε y * C.indicator φ (z - ζ • y)) = molli ρ ε φ z`. Introduce `ζ hζ`.
+
+Establish `hζ' : ‖ζ‖ = 1` using `by simpa using hζ`. Take `⟨h1, h2⟩` from `smul_measurePreserving (D := D) hζ'`. Use `h1.integral_comp h2 (fun u => ρ.scaled ε u * C.indicator φ (z - u))` as an intermediate fact. Rewrite using `[molli_eq_C ρ hε (subset_refl _), ← this]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[scaled_circle_inv ρ hζ']`. Rewrite `hF` using `[circleAverage_congr_sphere hrot, circleAverage_const]`. Rewrite using `[← hF]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[integral_mul_const, integral_scaled ρ hε, one_mul]`. Use `_ ≤ _ := by`. Use `integral_mono ((integrable_scaled ρ hε).mul_const _) hFint fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled ε y = 0`. Simplify using `[hy]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (scaled_nonneg ρ hε y)` and prove the remaining obligations. Establish `hyε` using `(norm_lt_of_scaled_ne_zero ρ hε hy).le`. Establish `hdisc : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z + ζ • (-y) ∈ C`. Introduce `ζ hζ`. Rewrite using `[hCdef, mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul, norm_neg]`.
+
+Use polynomial arithmetic with `[norm_nonneg ζ, norm_nonneg y]`. Take `⟨-, hmean⟩` from `hφ.2 z (-y) (fun ζ hζ => hz (hdisc ζ hζ))`. Use `hmean.trans (le_of_eq (circleAverage_congr_sphere fun ζ hζ => ?_))` and prove the remaining obligations. Establish `hζ' : ‖ζ‖ ≤ 1` using `by simp at hζ; linarith`. Establish `h` using `hdisc ζ hζ'`.
+
+Rewrite `h`, the goal using `[smul_neg, ← sub_eq_add_neg]`. Rewrite using `[indicator_of_mem h]`.
+-/
 lemma le_molli (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε) {z : Fin D → ℂ}
     (hz : z ∈ shrink U ε) : φ z ≤ molli ρ ε φ z := by
   set C := closedBall z ε with hCdef
@@ -184,6 +251,13 @@ lemma le_molli (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε) {z :
       rw [smul_neg, ← sub_eq_add_neg] at h ⊢
       rw [indicator_of_mem h]
 
+/- English proof (translation)
+Take `⟨-, hi⟩` from `phiC hU hφ (isCompact_closedBall z ε) hz`. Rewrite using `[molli_eq_C ρ hε (subset_refl _)]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (integrable_kC ρ hε hi z) ((integrable_scaled ρ hε).mul_const _) fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled ε y = 0`.
+
+Simplify using `[hy]`. Use `mul_le_mul_of_nonneg_left ?_ (scaled_nonneg ρ hε y)` and prove the remaining obligations. Establish `hmem` using `mem_ball_sub ρ hε hy z`. Rewrite using `[indicator_of_mem hmem]`. Conclude with `(hφ.1.mono hz).bddAbove_of_isCompact (isCompact_closedBall z ε) |>.elim fun _ _ => le_csSup ((hφ.1.mono hz).bddAbove_of_isCompact (isCompact_closedBall z ε)) (mem_image_of_mem φ hmem)`.
+
+Use `_ = polyMax φ z ε := by rw [integral_mul_const, integral_scaled ρ hε, one_mul]`.
+-/
 lemma molli_le_polyMax (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε)
     {z : Fin D → ℂ} (hz : z ∈ shrink U ε) : molli ρ ε φ z ≤ polyMax φ z ε := by
   obtain ⟨-, hi⟩ := phiC hU hφ (isCompact_closedBall z ε) hz
@@ -201,6 +275,11 @@ lemma molli_le_polyMax (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < 
             (mem_image_of_mem φ hmem)
     _ = polyMax φ z ε := by rw [integral_mul_const, integral_scaled ρ hε, one_mul]
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδU⟩` from `exists_thick hU hε.le hz`. Take `⟨-, hi⟩` from `phiC hU hφ (isCompact_closedBall z (ε + δ)) hδU`. Establish `hg` using `(scaled_hasCompactSupport ρ hε).contDiff_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ) (μ := volume) (n := ⊤) (scaled_contDiff ρ ε) hi.locallyIntegrable`. Use `hg.contDiffAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds z hδ] with y hy`.
+
+Rewrite `hy` using `[mem_ball]`. Rewrite using `[molli_eq_C ρ hε (C := closedBall z (ε + δ)) (closedBall_subset_closedBall' (by linarith)), convolution_def]`. Both sides reduce to the same expression.
+-/
 lemma molli_contDiffAt (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε)
     {z : Fin D → ℂ} (hz : z ∈ shrink U ε) : ContDiffAt ℝ ∞ (molli ρ ε φ) z := by
   obtain ⟨δ, hδ, hδU⟩ := exists_thick hU hε.le hz
@@ -215,6 +294,23 @@ lemma molli_contDiffAt (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < 
     convolution_def]
   rfl
 
+/- English proof (translation)
+Use `set C : Set (Fin D → ℂ) := (fun q : ℂ × (Fin D → ℂ) => z + q.1 • w + q.2) '' (closedBall 0 1 ×ˢ closedBall 0 ε) with hCdef`. Establish `hC : IsCompact C` using `((isCompact_closedBall _ _).prod (isCompact_closedBall _ _)).image (by fun_prop)`. Establish `hball : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → closedBall (z + ζ • w) ε ⊆ C`. Introduce `ζ hζ x hx`. Use `⟨(ζ, x - (z + ζ • w)), ⟨by simpa using hζ, ?_⟩, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_closedBall, dist_eq_norm, sub_zero, ← dist_eq_norm]`. Conclude with `hx`. Establish `hCU : C ⊆ U`. Introduce and unpack `_ ⟨⟨ζ, v⟩, ⟨hζ, hv⟩, rfl⟩`. Use `hd ζ (by simpa using hζ) ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left]`. Simplify using `using hv`. Take `⟨hm, hi⟩` from `phiC hU hφ hC hCU`. Establish `hP : Continuous (Function.uncurry fun (ζ : ℂ) (y : Fin D → ℂ) => z + ζ • w - y)` using `(continuous_const.add (continuous_fst.smul continuous_const)).sub continuous_snd`. Establish `hPm : ∀ ζ : ℂ, ‖ζ‖ = 1 → MeasurePreserving (fun y : Fin D → ℂ => z + ζ • w - y) ∧ MeasurableEmbedding (fun y : Fin D → ℂ => z + ζ • w - y)` using `fun ζ _ => ⟨Measure.measurePreserving_sub_left volume _, (Homeomorph.subLeft _).measurableEmbedding⟩`.
+
+Take `⟨hFint, hF⟩` from `circle_fubini hm hi (scaled_contDiff ρ ε).continuous (scaled_hasCompactSupport ρ hε) hP hPm`. Establish `hcirc : ∀ ζ ∈ sphere (0 : ℂ) |1|, (∫ y, ρ.scaled ε y * C.indicator φ (z + ζ • w - y)) = molli ρ ε φ (z + ζ • w)`. Introduce `ζ hζ`. Establish `hζ' : ‖ζ‖ ≤ 1` using `by simp at hζ; linarith`. Rewrite using `[molli_eq_C ρ hε (hball ζ hζ')]`.
+
+Rewrite `hF` using `[circleAverage_congr_sphere hcirc]`. Establish `h0 : closedBall z ε ⊆ C` using `by simpa using hball 0 (by simp)`. Rewrite using `[← hF, molli_eq_C ρ hε h0]`. Use `integral_mono (integrable_kC ρ hε hi z) hFint fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled ε y = 0`.
+
+Simplify using `[hy]`. Use `mul_le_mul_of_nonneg_left ?_ (scaled_nonneg ρ hε y)` and prove the remaining obligations. Establish `hyε` using `(norm_lt_of_scaled_ne_zero ρ hε hy).le`. Establish `hin : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z - y + ζ • w ∈ C`. Introduce `ζ hζ`.
+
+Use `hball ζ hζ ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_eq_norm, show z - y + ζ • w - (z + ζ • w) = -y by abel, norm_neg]`. Conclude with `hyε`. Take `⟨-, hmean⟩` from `hφ.2 (z - y) w (fun ζ hζ => hCU (hin ζ hζ))`. Establish `h00 : z - y ∈ C` using `by simpa using hin 0 (by simp)`.
+
+Rewrite using `[indicator_of_mem h00]`. Use `hmean.trans (le_of_eq (circleAverage_congr_sphere fun ζ hζ => ?_))` and prove the remaining obligations. Establish `hζ' : ‖ζ‖ ≤ 1` using `by simp at hζ; linarith`. Use `show φ (z - y + ζ • w) = C.indicator φ (z + ζ • w - y)`. Rewrite using `[show z + ζ • w - y = z - y + ζ • w by abel, indicator_of_mem (hin ζ hζ')]`.
+-/
 lemma molli_submean (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε)
     {z w : Fin D → ℂ} (hd : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z + ζ • w ∈ shrink U ε) :
     molli ρ ε φ z ≤ circleAverage (fun ζ : ℂ => molli ρ ε φ (z + ζ • w)) 0 1 := by
@@ -266,6 +362,9 @@ lemma molli_submean (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε)
   show φ (z - y + ζ • w) = C.indicator φ (z + ζ • w - y)
   rw [show z + ζ • w - y = z - y + ζ • w by abel, indicator_of_mem (hin ζ hζ')]
 
+/- English proof (translation)
+Establish `hcont : ContinuousOn (molli ρ ε φ) (shrink U ε)` using `fun z hz => (molli_contDiffAt ρ hU hφ hε hz).continuousAt.continuousWithinAt`. Use `⟨isOpen_shrink hU hε, fun z hz => (molli_contDiffAt ρ hU hφ hε hz).contDiffWithinAt, ⟨hcont.upperSemicontinuousOn, fun z w hd => ⟨?_, molli_submean ρ hU hφ hε hd⟩⟩, fun z hz => ⟨le_molli ρ hU hφ hε hz, molli_le_polyMax ρ hU hφ hε hz⟩⟩` and prove the remaining obligations. Use `ContinuousOn.circleIntegrable' ?_` and prove the remaining obligations. Use `hcont.comp (by fun_prop : Continuous fun ζ : ℂ => z + ζ • w).continuousOn fun ζ hζ => ?_` and prove the remaining obligations. Conclude with `hd ζ (by simp at hζ; linarith)`.
+-/
 lemma mollify_main (hU : IsOpen U) (hφ : IsPsh U φ) {ε : ℝ} (hε : 0 < ε) :
     IsOpen (shrink U ε) ∧ ContDiffOn ℝ ∞ (molli ρ ε φ) (shrink U ε) ∧
       IsPsh (shrink U ε) (molli ρ ε φ) ∧

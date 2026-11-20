@@ -14,6 +14,13 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt.IndexLog
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `set T : Ideal (𝓞 L) := Ideal.span {ψ s} with hT`. Establish `hST : T ≤ LinearMap.range ψ` using `(Ideal.span_singleton_le_iff_mem _).mpr ⟨s, rfl⟩`. Establish `h` using `Submodule.card_quotient_mul_card_quotient (LinearMap.range ψ) T hST`. Establish `hk : LinearMap.ker (T.mkQ ∘ₗ ψ) = Submodule.comap ψ T`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`.
+
+Establish `hr : LinearMap.range (T.mkQ ∘ₗ ψ) = (LinearMap.range ψ).map T.mkQ` using `LinearMap.range_comp _ _`. Establish `hc : Nat.card (M ⧸ Submodule.comap ψ T) = Nat.card ((LinearMap.range ψ).map T.mkQ)`. Rewrite using `[← hk, ← hr]`. Conclude with `Nat.card_congr (T.mkQ ∘ₗ ψ).quotKerEquivRange.toEquiv`. Rewrite using `[hc]`.
+
+Simplify using `only [Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `h`.
+-/
 theorem card_quot_mul_absNorm {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (ψ : M →ₗ[𝓞 L] 𝓞 L) (s : M) :
     Nat.card (M ⧸ Submodule.comap ψ (Ideal.span {ψ s} : Ideal (𝓞 L))) * Ideal.absNorm (LinearMap.range ψ) =
       Ideal.absNorm (Ideal.span {ψ s} : Ideal (𝓞 L)) := by
@@ -31,6 +38,13 @@ theorem card_quot_mul_absNorm {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (�
   simp only [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   exact h
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span (𝓞 L) (Set.range g)` using `hg ▸ Submodule.mem_top`. Establish `h0 : 0 ≤ ⨆ i, v (φ (g i))` using `Real.iSup_nonneg fun i ↦ apply_nonneg v _`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`.
+
+Conclude with `le_ciSup (f := fun i ↦ v (φ (g i))) (Set.finite_range _).bddAbove i`. Consider the case `zero => simpa using h0`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `(FinitePlace.add_le v _ _).trans (max_le ha hb)`.
+
+Consider the case `smul r a _ ha`. Rewrite using `[map_smul, Algebra.smul_def, map_mul]`. Establish `hr : v (algebraMap (𝓞 L) L r) ≤ 1` using `finitePlace_le_one_of_isIntegral v (r.isIntegral_coe)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem place_le_iSup {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M →ₗ[𝓞 L] L) {n : ℕ} (g : Fin n → M)
     (hg : Submodule.span (𝓞 L) (Set.range g) = ⊤) (v : FinitePlace L) (x : M) :
     v (φ x) ≤ ⨆ i, v (φ (g i)) := by
@@ -52,10 +66,62 @@ theorem place_le_iSup {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M �
           mul_le_mul_of_nonneg_right hr (apply_nonneg v _)
       _ ≤ _ := by simpa using ha
 
+/- English proof (translation)
+The claim follows from `hf.subset fun a ha h1 ↦ ha (by simp only [h1, Real.log_one])`.
+-/
 theorem support_log_finite {α : Type*} {f : α → ℝ} (hf : (Function.mulSupport f).Finite) :
     (Function.support fun a ↦ Real.log (f a)).Finite :=
   hf.subset fun a ha h1 ↦ ha (by simp only [h1, Real.log_one])
 
+/- English proof (translation)
+Use `set y : Fin n → L := fun i ↦ φ (g i) with hydef`. Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `hs' : s ∈ Submodule.span (𝓞 L) (Set.range g)` using `hg ▸ Submodule.mem_top`.
+
+Establish `hle : Submodule.span (𝓞 L) (Set.range g) ≤ LinearMap.ker φ` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact congrFun h i)`. Conclude with `hle hs'`. Take `⟨⟨b, hb⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 L)) y`. Use `choose z hz using hint`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Establish `hbL : (b : L) ≠ 0` using `by rwa [Ne, RingOfIntegers.coe_eq_zero_iff]`. Establish `hzy : ∀ i, ((z i : 𝓞 L) : L) = (b : L) * y i` using `fun i ↦ by`. Establish `h` using `hz i`. Simplify using `only [Algebra.smul_def] at h`. Conclude with `h`.
+
+Establish `hint' : ∀ x, ∃ r : 𝓞 L, (r : L) = (b : L) * φ x`. Introduce `x`. Establish `hx : x ∈ Submodule.span (𝓞 L) (Set.range g)` using `hg ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Take `⟨i, rfl⟩` from `hw`. Conclude with `⟨z i, hzy i⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add p q _ _ hp hq`. Take `⟨r₁, h₁⟩` from `hp`.
+
+Take `⟨r₂, h₂⟩` from `hq`. Conclude with `⟨r₁ + r₂, by rw [map_add, mul_add, ← h₁, ← h₂]; rfl⟩`. Consider the case `smul c p _ hp`. Take `⟨r, h⟩` from `hp`. Use `⟨c * r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(c : L) * (r : L) = (b : L) * ((c : L) * φ p)`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `choose ψ₀ hψ₀ using hint'`.
+
+Set `ψ : M →ₗ[𝓞 L] 𝓞 L` to `{ toFun := ψ₀ map_add' := fun p q ↦ RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `(ψ₀ (p + q) : L) = (ψ₀ p : L) + (ψ₀ q : L)`. Rewrite using `[hψ₀, hψ₀, hψ₀, map_add, mul_add])`. Use the proof step `map_smul' := fun c p ↦ RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `(ψ₀ (c • p) : L) = (c : L) * (ψ₀ p : L)`.
+
+Rewrite using `[hψ₀, hψ₀, map_smul, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(b : L) * ((c : L) * φ p) = _`. Use the proof step `ring) }`. Establish `hψ : ∀ x, ((ψ x : 𝓞 L) : L) = (b : L) * φ x` using `hψ₀`. Establish `hψs0 : ψ s ≠ 0` using `fun h ↦ by`.
+
+Use `hψ s` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `mul_ne_zero hbL hs (by simpa using this.symm)`. Establish `hcomap : Submodule.comap ψ (Ideal.span {ψ s} : Ideal (𝓞 L)) = (Submodule.span (𝓞 L) {φ s}).comap φ`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.mem_comap, Ideal.mem_span_singleton', Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun t : 𝓞 L ↦ (t : L)) hr`.
+
+Express the relevant statement in the definitionally equal form `(r : L) * (ψ s : L) = (ψ x : L) at h`. Rewrite `h` using `[hψ, hψ]`. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `(r : L) * φ s = φ x`. Apply `mul_left_cancel₀ hbL` to reduce the goal to its premises.
+
+Take the linear combination `h`. Introduce and unpack `⟨r, hr⟩`. Use `⟨r, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r : L) * (ψ s : L) = (ψ x : L)`. Rewrite using `[hψ, hψ, ← hr, Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `(r : L) * ((b : L) * φ s) = (b : L) * ((r : L) * φ s)`. Expand and normalize the polynomial expressions, which then agree. Establish `hcard` using `card_quot_mul_absNorm ψ s`. Rewrite `hcard` using `[hcomap]`. Establish `hJ : LinearMap.range ψ = Ideal.span (Set.range fun i ↦ ψ (g i))`.
+
+Rewrite using `[LinearMap.range_eq_map, ← hg, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hx0 : (fun i ↦ ψ (g i)) ≠ 0`. Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hy0`. Introduce `h`.
+
+Establish `h2` using `hψ (g i0)`. Rewrite `h2` using `[congrFun h i0]`. Conclude with `mul_ne_zero hbL hi0 (by simpa [hydef] using h2.symm)`. Establish `hJprod` using `absNorm_mul_finprod_finitePlace_eq_one hx0`. Rewrite `hJprod` using `[← hJ]`.
+
+Establish `hsup : ∀ v : FinitePlace L, ⨆ i, v ((ψ (g i) : 𝓞 L) : L) = v (b : L) * ⨆ i, v (y i)`. Introduce `v`. Repeatedly rewrite using `[hψ, map_mul]`. Conclude with `(Real.mul_iSup_of_nonneg (apply_nonneg v _) _).symm`. Rewrite `hJprod` using `[hsup]`.
+
+Establish `hsprod` using `FinitePlace.prod_eq_inv_abs_norm_int hψs0`. Rewrite `hsprod` using `[hψ, map_mul]`. Establish `hNs : ((Ideal.absNorm (Ideal.span {ψ s} : Ideal (𝓞 L)) : ℕ) : ℝ) = |((Algebra.norm ℤ (ψ s) : ℤ) : ℝ)|`. Rewrite using `[Ideal.absNorm_span_singleton, Nat.cast_natAbs]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hnorm0 : |((Algebra.norm ℤ (ψ s) : ℤ) : ℝ)| ≠ 0`. Rewrite using `[abs_ne_zero, Int.cast_ne_zero, Ne, Algebra.norm_eq_zero_iff]`. Conclude with `hψs0`. Establish `hvb : ∀ v : FinitePlace L, 0 < v (b : L)` using `fun v ↦ FinitePlace.pos_iff.mpr hbL`.
+
+Establish `hvs : ∀ v : FinitePlace L, 0 < v (φ s)` using `fun v ↦ FinitePlace.pos_iff.mpr hs`. Establish `hvt : ∀ v : FinitePlace L, 0 < ⨆ i, v (y i)` using `iSup_place_pos hy0`. Establish `fb : (Function.mulSupport fun v : FinitePlace L ↦ v (b : L)).Finite` using `FinitePlace.hasFiniteMulSupport hbL`. Establish `fs : (Function.mulSupport fun v : FinitePlace L ↦ v (φ s)).Finite` using `FinitePlace.hasFiniteMulSupport hs`. Establish `ft : (Function.mulSupport fun v : FinitePlace L ↦ ⨆ i, v (y i)).Finite` using `hasFiniteMulSupport_iSup_place hy0`.
+
+Establish `fbt : (Function.mulSupport fun v : FinitePlace L ↦ v (b : L) * ⨆ i, v (y i)).Finite` using `(fb.union ft).subset (Function.mulSupport_mul _ _)`. Establish `fbs : (Function.mulSupport fun v : FinitePlace L ↦ v (b : L) * v (φ s)).Finite` using `(fb.union fs).subset (Function.mulSupport_mul _ _)`. Establish `e1 : ∑ᶠ v : FinitePlace L, (Real.log (⨆ i, v (y i)) - Real.log (v (φ s))) = ∑ᶠ v : FinitePlace L, Real.log (v (b : L) * ⨆ i, v (y i)) - ∑ᶠ v : FinitePlace L, Real.log (v (b : L) * v (φ s))`. Rewrite using `[← finsum_sub_distrib (support_log_finite fbt) (support_log_finite fbs)]`. Use `finsum_congr fun v ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (hvb v).ne' (hvt v).ne', Real.log_mul (hvb v).ne' (hvs v).ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, finsum_log_eq_log_finprod (fun v ↦ mul_pos (hvb v) (hvt v)) fbt, finsum_log_eq_log_finprod (fun v ↦ mul_pos (hvb v) (hvs v)) fbs, hsprod]`. Use `set P := ∏ᶠ v : FinitePlace L, v (b : L) * ⨆ i, v (y i) with hP`. Use `set NJ : ℝ := ((Ideal.absNorm (LinearMap.range ψ) : ℕ) : ℝ) with hNJ`.
+
+Establish `hNJ0 : NJ ≠ 0` using `fun h ↦ by rw [h, zero_mul] at hJprod; exact zero_ne_one hJprod`. Establish `hP0 : P ≠ 0` using `fun h ↦ by rw [h, mul_zero] at hJprod; exact zero_ne_one hJprod`. Establish `hc : ((Nat.card (M ⧸ (Submodule.span (𝓞 L) {φ s}).comap φ) : ℕ) : ℝ) * NJ = |((Algebra.norm ℤ (ψ s) : ℤ) : ℝ)|`. Rewrite using `[← hNs, ← hcard]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hC : ((Nat.card (M ⧸ (Submodule.span (𝓞 L) {φ s}).comap φ) : ℕ) : ℝ) = P * |((Algebra.norm ℤ (ψ s) : ℤ) : ℝ)|`. Take the linear combination `P * hc - ((Nat.card (M ⧸ (Submodule.span (𝓞 L) {φ s}).comap φ) : ℕ) : ℝ) * hJprod`. Rewrite using `[hC, Real.log_mul hP0 hnorm0, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_card_eq {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M →ₗ[𝓞 L] L) {n : ℕ} (g : Fin n → M)
     (hg : Submodule.span (𝓞 L) (Set.range g) = ⊤) (s : M) (hs : φ s ≠ 0) :
     Real.log (Nat.card (M ⧸ (Submodule.span (𝓞 L) {φ s}).comap φ)) =
@@ -195,6 +261,9 @@ theorem log_card_eq {M : Type} [AddCommGroup M] [Module (𝓞 L) M] (φ : M →�
   rw [hC, Real.log_mul hP0 hnorm0, Real.log_inv]
   ring
 
+/- English proof (translation)
+The claim follows from `|∑ᶠ a, f a| ≤ ∑ᶠ a, h a := by have hsub : Function.support f ⊆ hh.toFinset := by intro a ha have hne : h a ≠ 0 := fun h0 ↦ ha (abs_nonpos_iff.mp (h0 ▸ hfh a)) exact Finset.mem_coe.mpr (hh.mem_toFinset.mpr hne) rw [finsum_eq_sum_of_support_subset f hsub, finsum_eq_sum_of_support_s …`.
+-/
 theorem abs_finsum_le {α : Type*} {f h : α → ℝ} (hh : (Function.support h).Finite) (hfh : ∀ a, |f a| ≤ h a) :
     |∑ᶠ a, f a| ≤ ∑ᶠ a, h a := by
   have hsub : Function.support f ⊆ hh.toFinset := by
@@ -207,6 +276,9 @@ theorem abs_finsum_le {α : Type*} {f h : α → ℝ} (hh : (Function.support h)
 
 end GlobalTheory.CompanionTheory.Ar.RootHt.IndexLog
 
+/- English proof (translation)
+The claim follows from `|Real.log (Nat.card (F₁ ⧸ (F₀ ⊔ Submodule.span (𝓞 L) {(s : Bc)}).comap F₁.subtype)) - ∑ᶠ v : FinitePlace L, (Real.log (ρ v) - Real.log (v (φ s)))| ≤ Module.finrank ℚ L * Real.log m := by intro L _ _ Bc _ _ F₀ F₁ φ s m ρ hfg hker hs hm hρ hρf hloc classical haveI : Module.Finite ( …`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.RootHt.log_index_le :
     ∀ (L : Type) [Field L] [NumberField L] (Bc : Type) [AddCommGroup Bc] [Module (𝓞 L) Bc]
     (F₀ F₁ : Submodule (𝓞 L) Bc) (φ : F₁ →ₗ[𝓞 L] L) (s : F₁) (m : ℕ) (ρ : FinitePlace L → ℝ),

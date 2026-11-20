@@ -4,6 +4,29 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.TiltResidue
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ hpu _ hv`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hpm : (p : O) ∈ IsLocalRing.maximalIdeal O` using `hpu.out`. Establish `hroot : ∀ y : O, ∃ z : O, z ^ p = y`.
+
+Introduce `y`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O C y) (Fact.out : p.Prime).pos`. Establish `hw1 : v w ≤ 1`. Establish `h` using `hv.map_le_one y`. Rewrite `h` using `[← hw, map_pow]`.
+
+Conclude with `(pow_le_one_iff_of_nonneg zero_le (Fact.out : p.Prime).ne_zero).1 h`. Take `⟨z, hz⟩` from `hv.exists_of_le_one hw1`. Conclude with `⟨z, hv.hom_inj (by rw [map_pow, hz, hw])⟩`. Use `choose s hs using hroot`. Establish `hcoeff : Function.Surjective (PreTilt.coeff (O` using `O) (p := p) 0) := by`.
+
+Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨show Perfection (ModP O p) p from ⟨fun n => Ideal.Quotient.mk _ (s^[n] y), fun n => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Function.iterate_succ_apply', hs]`. Set `q : ModP O p →+* IsLocalRing.ResidueField O` to `Ideal.Quotient.lift _ (IsLocalRing.residue O) (fun a ha => (IsLocalRing.residue_eq_zero_iff a).2 (Ideal.span_le.2 (Set.singleton_subset_iff.2 hpm) ha))`.
+
+Establish `hq : Function.Surjective q`. Introduce `z`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective z`. Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`. Establish `hchar : CharP (IsLocalRing.ResidueField O) p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (by`.
+
+Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hpm)`. Establish `hac : IsAlgClosed (IsLocalRing.ResidueField O)`. Use `IsAlgClosed.of_exists_root _ fun g hg hirr => ?_` and prove the remaining obligations. Establish `hl : g ∈ Polynomial.lifts (IsLocalRing.residue O)` using `(Polynomial.mem_lifts _).mpr (Polynomial.map_surjective _ IsLocalRing.residue_surjective g)`.
+
+Take `⟨f, rfl, hdeg, hf⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hg`. Establish `hd : (f.map (algebraMap O C)).degree ≠ 0`. Rewrite using `[Polynomial.degree_map_eq_of_injective hv.hom_inj]`. Introduce `h0`. Use `Polynomial.degree_pos_of_irreducible hirr` as an intermediate fact.
+
+Rewrite `h0` using `[Polynomial.degree_eq_natDegree hf.ne_zero, Nat.cast_eq_zero]`. Rewrite `this` using `[Polynomial.degree_eq_natDegree (hf.map _).ne_zero]`. Establish `h1 : (f.map (IsLocalRing.residue O)).natDegree = 0`. Rewrite using `[← hdeg]`. Conclude with `h0`.
+
+Rewrite `this` using `[h1]`. Conclude with `lt_irrefl _ this`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root _ hd`. Establish `hi : IsIntegral O a` using `⟨f, hf, by rw [← Polynomial.eval_map]; exact ha⟩`. Take `⟨b, rfl⟩` from `hv.exists_of_le_one (r := a) (hv.mem_of_integral hi)`.
+
+Establish `hb : f.eval b = 0` using `hv.hom_inj (by`. Rewrite using `[map_zero, ← Polynomial.eval₂_hom, ← Polynomial.eval_map]`. Conclude with `ha)`. Use `⟨IsLocalRing.residue O b, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_hom, hb, map_zero]`.
+
+Conclude with `⟨IsLocalRing.ResidueField O, inferInstance, hac, hchar, q.comp (PreTilt.coeff 0), hq.comp hcoeff⟩`.
+-/
 theorem preTilt_onto_algClosed_residue : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (_ : CharP k p) (r : PreTilt O p →+* k), Function.Surjective r := by
   intro p _ C _ _ _ v O _ _ hpu _ hv
   haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)

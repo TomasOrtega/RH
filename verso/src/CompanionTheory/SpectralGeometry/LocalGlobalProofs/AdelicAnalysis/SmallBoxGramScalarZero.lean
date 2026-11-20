@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.SW.SmallQ
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Establish `hs : sigR R σ (s ⊗ₜ[F] (1 : E)) = s ⊗ₜ[F] (1 : E)` using `by simp [sigR]`. Simplify using `only [gramR, hR, hform, Pi.smul_apply, smul_eq_mul, map_mul, hs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gramR_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (s : R)
     (X : Fin n → Fin M → R ⊗[F] E) (a c : Fin n) :
@@ -23,6 +26,21 @@ theorem gramR_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Co
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ d b N hN`. Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `hcont : Continuous (gramR (AF F) σ J : (Fin 1 → Fin M → AF F ⊗[F] E) → _)` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)).2.2.2.2.2.2.2.2.2 1 M J`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_real_flow_adelic_units F E σ hcm`. Establish `hbox` using `GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hcm d b 1 M`.
+
+Establish `hΩ : IsCompact (box b N 1 : Set (Fin 1 → Fin M → AF F ⊗[F] E))` using `hbox.1 N 1 hN`. Set `φ : (Fin 1 → Fin M → AF F ⊗[F] E) → Fin 1 → Fin 1 → AF F ⊗[F] E` to `fun Y a c => gramR (AF F) σ J Y a c`. Establish `hφ : Continuous φ` using `continuous_pi fun a => continuous_pi fun c => hcont.matrix_elem a c`. Take `⟨x₀, C, hcount⟩` from `GlobalTheory.T.flow_lattice_count_bounded F E σ hcm τ hτ 1 (φ '' box b N 1) (hΩ.image hφ)`. Take `⟨x, hx⟩ : ∃ x : ℝ, -(2 * x) < x₀` from `⟨|x₀| + 1, by linarith [neg_abs_le x₀, abs_nonneg x₀]⟩`.
+
+Use `⟨Real.exp (-x), Real.exp_pos _, ?_⟩` and prove the remaining obligations. Introduce `t Y hY hg`. Assume the negation of the conclusion as `ht`. Establish `hY' : ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • Y ∈ box b N 1`. Establish `h` using `(hbox.2.2 τ hτ N (Real.exp (-x)) x Y).2 hY`.
+
+Rewrite `h` using `[← Real.exp_add, add_neg_cancel, Real.exp_zero]`. Then use the resulting hypothesis. Take `⟨-, θ, -, hθ⟩` from `hτ`. Establish `hc` using `hθ x`. Establish `hsq : ((τ (Multiplicative.ofAdd (-(-(2 * x)))) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) * ((τ (Multiplicative.ofAdd x) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)`. Rewrite using `[← Units.val_mul, ← map_mul, ← ofAdd_add]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Set `X₀ : {X : Fin 1 → Fin 1 → E // X ≠ 0}` to `⟨fun _ _ => algebraMap F E t, fun h0 => ht ((algebraMap F E).injective (by simpa using congrFun (congrFun h0 0) 0))⟩`. Establish `hmem : ((τ (Multiplicative.ofAdd (-(-(2 * x)))) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • ratTup (AF F) X₀.1 ∈ φ '' box b N 1`. Use `⟨_, hY', ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a c`. Establish `h1 : gramR (AF F) σ J Y a c = inclR (AF F) (algebraMap F E t)` using `by rw [hg]`. Simplify using `only [φ]`. Rewrite using `[hc, gramR_smul, h1, hsq, hc]`. Both sides reduce to the same expression.
+
+Establish `hle` using `hcount (-(2 * x))`. Rewrite `hle` using `[if_pos hx]`. Establish `h1` using `(ENNReal.le_tsum X₀).trans hle`. Rewrite `h1` using `[Set.indicator_of_mem hmem]`. Simplify using `at h1`.
+-/
 theorem small_length : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (N : ℕ), 0 < N → ∃ r₀ : ℝ, 0 < r₀ ∧ ∀ (t : F) (Y : Fin 1 → Fin M → AF F ⊗[F] E), Y ∈ box b N r₀ → (gramR (AF F) σ J Y = fun _ _ => inclR (AF F) (algebraMap F E t)) → t = 0 := by
   intro F E _ _ _ _ _ σ hcm M J hJ d b N hN
   obtain ⟨⟨hlc, hsc, ht2⟩, -⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F

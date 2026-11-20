@@ -12,6 +12,15 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 open NumberField IsDedekindDomain in
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.Col.phiT`. Establish `key : ∀ P : ST, ∀ y ∈ d.at P, ((x + c • y₀) y ∈ d'.at P ∧ d'.f P ((x + c • y₀) y) = d.f P y) ↔ (x y ∈ d'.at P ∧ d'.f P (x y) = d.f P y)`. Introduce `P y hyP`. Establish `hy0 : y₀ y ∈ d'.at P` using `hy P.1 (hS P.2) y hyP`. Establish `hcy : c • y₀ y ∈ d'.at P` using `Submodule.smul_mem _ c hy0`.
+
+Establish `hf0 : d'.f P (c • y₀ y) = 0`. Rewrite using `[hd'.f_smul P c _ hy0, Ideal.Quotient.eq_zero_iff_mem.2 (hc P), zero_mul]`. Establish `happ : (x + c • y₀) y = x y + c • y₀ y` using `rfl`. Rewrite using `[happ, Submodule.add_mem_iff_left _ hcy]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, by rw [← h2, hd'.f_add P _ h1 _ hcy, hf0, add_zero]⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, by rw [hd'.f_add P _ h1 _ hcy, hf0, add_zero, h2]⟩`. Establish `hiff : (∀ P : ST, ∀ y ∈ d.at P, (x + c • y₀) y ∈ d'.at P ∧ d'.f P ((x + c • y₀) y) = d.f P y) ↔ (∀ P : ST, ∀ y ∈ d.at P, x y ∈ d'.at P ∧ d'.f P (x y) = d.f P y)` using `forall_congr' fun P => forall₂_congr fun y hyP => key P y hyP`.
+
+Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (hiff.1 h1) h2`. Conclude with `absurd (hiff.2 h2) h1`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.phiT_add_smul_homAt (K : Type) [Field K]
     {ST SG SG' S : Finset (HeightOneSpectrum (𝓞 E))}
     (d : _root_.Formalism.L2.Col.Deco E a ST SG) (d' : _root_.Formalism.L2.Col.Deco E b ST SG') (hd' : d'.Ok) (hS : ST ⊆ S) (c : 𝓞 E)
@@ -46,6 +55,9 @@ theorem _root_.GlobalTheory.phiT_add_smul_homAt (K : Type) [Field K]
 open NumberField IsDedekindDomain in
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} in
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.Col.inFr`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add]`.
+-/
 theorem _root_.GlobalTheory.inFr_add (f : _root_.Formalism.L2.Col.Sp E a ≃ₗ[E] _root_.Formalism.L2.Col.Sp E a) (f' : _root_.Formalism.L2.Col.Sp E b ≃ₗ[E] _root_.Formalism.L2.Col.Sp E b)
     (x y : _root_.Formalism.L2.Col.HomE E a b) :
     _root_.Formalism.L2.Col.inFr f f' (x + y) = _root_.Formalism.L2.Col.inFr f f' x + _root_.Formalism.L2.Col.inFr f f' y := by
@@ -55,6 +67,17 @@ theorem _root_.GlobalTheory.inFr_add (f : _root_.Formalism.L2.Col.Sp E a ≃ₗ[
 open NumberField IsDedekindDomain in
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} in
 
+/- English proof (translation)
+Establish `hv : (Pi.single s 1 : _root_.Formalism.L2.Col.Sp E a) ∈ _root_.Formalism.L2.Col.stdAt E a P`. Use `⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use `Submodule.mem_pi.2 fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = s`.
+
+Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hz : y₀ (f (Pi.single s 1)) ∈ _root_.Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N'` using `hy P hP _ ((hf _).2 hv)`. Establish `hw : f'.symm (y₀ (f (Pi.single s 1))) ∈ _root_.Formalism.L2.Col.stdAt E b P` using `(hf' _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hz)`. Take `⟨t, ht, htw⟩` from `hw`. Establish `hl : (t • f'.symm (y₀ (f (Pi.single s 1)))) l ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_pi.1 htw l (Set.mem_univ l)`. Take `⟨r', hr'⟩` from `Submodule.mem_one.1 hl`.
+
+Establish `hval : _root_.Formalism.L2.Col.inFr f f' (c • y₀) (Pi.single s 1) l = algebraMap (𝓞 E) E c * f'.symm (y₀ (f (Pi.single s 1))) l` using `by show (f'.symm (c • y₀ (f (Pi.single s 1)))) l = _`. Rewrite using `[← algebraMap_smul E c (y₀ (f (Pi.single s 1))), map_smul, Pi.smul_apply, smul_eq_mul]`. Unfold `_root_.Formalism.L2.Col.IntAt`. Use `⟨r * r', t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, hc, map_mul, hr', Pi.smul_apply, Algebra.smul_def]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.intAt_inFr_smul_homAt {S : Finset (HeightOneSpectrum (𝓞 E))}
     {N : Submodule (𝓞 E) (_root_.Formalism.L2.Col.Sp E a)}
     {N' : Submodule (𝓞 E) (_root_.Formalism.L2.Col.Sp E b)} {P : HeightOneSpectrum (𝓞 E)} (hP : P ∈ S)

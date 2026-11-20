@@ -18,6 +18,11 @@ variable {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V]
 def twRel (ρ : Representation ℂ Γ V) (ψ : Γ →* ℂˣ) : Submodule ℂ V :=
   Submodule.span ℂ {w | ∃ (γ : Γ) (v : V), w = ρ γ v - (ψ γ : ℂ) • v}
 
+/- English proof (translation)
+Establish `h : twRel (τ.comp (MonoidHom.inl Γ G)) ψ ≤ (twRel (τ.comp (MonoidHom.inl Γ G)) ψ).comap (τ (1, g))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, u, rfl⟩`. Use `Submodule.subset_span ⟨γ, τ (1, g) u, ?_⟩` and prove the remaining obligations. Establish `e : τ (1, g) (τ (γ, 1) u) = τ (γ, 1) (τ (1, g) u)`.
+
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `[e]`. Conclude with `h hv`.
+-/
 theorem twRel_stable (τ : Representation ℂ (Γ × G) V) (ψ : Γ →* ℂˣ) (g : G) (v : V)
     (hv : v ∈ twRel (τ.comp (MonoidHom.inl Γ G)) ψ) :
     τ (1, g) v ∈ twRel (τ.comp (MonoidHom.inl Γ G)) ψ := by
@@ -61,6 +66,9 @@ def fibRep (μ : kˣ →* ℂˣ) (κ : ℕ) :
     Representation ℂ (GL a k × (GL c k × GL d k)) (SB (RankIn k a c {κ})) :=
   twist ((fibBase a c κ).comp ((MonoidHom.id _).prodMap (MonoidHom.fst _ _))) (fibChar a c d μ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibRep_apply (μ : kˣ →* ℂˣ) (κ : ℕ) (g : GL a k) (p₁ : GL c k) (p₂ : GL d k)
     (φ : SB (RankIn k a c {κ})) (y : RankIn k a c {κ}) :
     (fibRep a c d μ κ (g, p₁, p₂) φ).1 y = (fibChar a c d μ (g, p₁, p₂) : ℂ) *

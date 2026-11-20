@@ -9,6 +9,15 @@ namespace GlobalTheory.AdaptCongr
 
 open GlobalTheory.AdLat GlobalTheory.UnRep GlobalTheory.UnRep.Move
 
+/- English proof (translation)
+Take `⟨k, hk, h1, h2⟩` from `ha`. Take `⟨m, hm, h3, h4⟩` from `hb`. Establish `hg : Ideal.span {((Nat.gcd k m : ℕ) : 𝓞 E)} ≤ Ideal.span {(k : 𝓞 E)} ⊔ Ideal.span {(m : 𝓞 E)}`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Establish `e : ((Nat.gcd k m : ℕ) : 𝓞 E) = (k : 𝓞 E) * (Nat.gcdA k m : ℤ) + (m : 𝓞 E) * (Nat.gcdB k m : ℤ)`.
+
+Use `congrArg (Int.cast : ℤ → 𝓞 E) (Nat.gcd_eq_gcd_ab k m)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+
+Use `⟨Nat.gcd k m, (hk.coprime_dvd_left (Nat.gcd_dvd_left _ _)).mul_right (hm.coprime_dvd_left (Nat.gcd_dvd_right _ _)), ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.smul_mono hg le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.sup_smul]`. Conclude with `sup_le h1 h3`. Use `(Submodule.smul_mono hg le_rfl).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.sup_smul]`. Conclude with `sup_le h2 h4`.
+-/
 theorem trivAt_mul {E : Type} [Field E] [NumberField E] {n : ℕ} {Λ : GenLat E n} {a b : ℕ}
     (ha : Λ.TrivAt a) (hb : Λ.TrivAt b) : Λ.TrivAt (a * b) := by
   obtain ⟨k, hk, h1, h2⟩ := ha
@@ -31,6 +40,31 @@ theorem trivAt_mul {E : Type} [Field E] [NumberField E] {n : ℕ} {Λ : GenLat E
     rw [Submodule.sup_smul]
     exact sup_le h2 h4
 
+/- English proof (translation)
+Introduce `E _ _ _ H n M bad Λ hM hbad hU hT`. Take `⟨hherm, hrk, hfg, hsp, -, -, hmov, hun⟩` from `GlobalTheory.T.standardHermitianForm_hostField_inhabitant E H n`. Take `⟨g, hg, hΛ, hgc⟩` from `GlobalTheory.T.exists_adelic_unitary_translate_standardLattice E H n M Λ hM hU hT`. Take `⟨γ, hγ, ⟨t₁, ht₁, hc₁⟩, s, ⟨hs0, hs⟩, hint⟩` from `GlobalTheory.T.exists_rational_unitary_split_denominator (maximalRealSubfield E) E (IsCMField.complexConj E) n 1 hherm hrk (stdLat E n) hfg hsp g (bad * M) hg (Nat.mul_pos hbad hM)`. Take `⟨t₂, ht₂, hc₂⟩` from `hgc M hM`.
+
+Establish `hrat` using `(hat_rational_points_and_approx (maximalRealSubfield E) E n (stdLat E n) hfg hsp).1`. Establish `hmem : ∀ v, v ∈ Λ.La ↔ ∃ z ∈ hat (maximalRealSubfield E) (stdLat E n : Set (Fin n → E)), g.1 *ᵥ z = fv (maximalRealSubfield E) v`. Introduce `v`. Rewrite using `[← SetLike.mem_coe, hΛ]`. Both sides reduce to the same expression.
+
+Establish `hinv : ∀ v : Fin n → E, (γ⁻¹).1 *ᵥ (γ.1 *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hinv' : ∀ v : Fin n → E, γ.1 *ᵥ ((γ⁻¹).1 *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Set `Λ' : GenLat E n` to `⟨Λ.La.comap ((Matrix.mulVecLin (γ⁻¹).1).restrictScalars (𝓞 E))⟩`.
+
+Establish `hΛ' : ∀ v, v ∈ Λ'.La ↔ (γ⁻¹).1 *ᵥ v ∈ Λ.La` using `fun v => Iff.rfl`. Establish `hmove : ∀ v, v ∈ Λ.La ↔ γ.1 *ᵥ v ∈ Λ'.La` using `fun v => by rw [hΛ', hinv]`. Establish `hsE : ∀ v : Fin n → E, s • v = (s : E) • v` using `fun v => rfl`. Establish `h1 : ∀ v ∈ Λ'.La, s • v ∈ stdLat E n`. Introduce `v hv`.
+
+Take `⟨z, hz, hzv⟩` from `(hmem _).1 ((hΛ' v).1 hv)`. Use `(hint z hz).1` as an intermediate fact. Rewrite `this` using `[← Matrix.mulVec_mulVec, hzv, ← fv_mulVec, hinv', ← fv_smul]`. Rewrite using `[hsE]`. Conclude with `(hrat _).1 this`.
+
+Establish `h2 : ∀ v ∈ stdLat E n, s • v ∈ Λ'.La`. Introduce `v hv`. Use `(hint _ ((hrat v).2 hv)).2` as an intermediate fact. Rewrite using `[hΛ', hmem]`. Use `⟨_, this, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul, ← fv_mulVec, ← fv_smul, hsE, Matrix.mulVec_smul]`. Take `⟨k, hk, hsk⟩` from `exists_nat_coprime s (bad * M) fun P hP hsP => (hs P hP hsP).2`. Use `⟨γ, Λ', hγ, ?_, hmove, unimod_move γ hγ Λ Λ' hmove hU, s, hs0, (span_smul_le _ _ _).2 h1, (span_smul_le _ _ _).2 h2, fun P hP hsP => ⟨(hmov P hP).1 (hs P hP hsP).1, (hs P hP hsP).2⟩, k, hk, (span_smul_le _ _ _).2 fun v hv => smul_mem_of_dvd hsk (h1 v hv), (span_smul_le _ _ _).2 f …` and prove the remaining obligations. Take `⟨j, hj, -, hj2⟩` from `hT`. Use `⟨t₁ * t₂ * j, (ht₁.coprime_mul_left_right.mul_left ht₂).mul_left hj, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hjv : j • v ∈ Λ.La`. Use `(span_smul_le _ _ _).1 hj2 v hv` as an intermediate fact. Rewrite `this` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis. Take `⟨z, hz, hzv⟩` from `(hmem _).1 hjv`. Take `⟨w₁, hw₁, e₁⟩` from `hc₁ z hz`.
+
+Take `⟨w₂, hw₂, e₂⟩` from `hc₂ z hz`. Establish `hME : (M : E) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `key : (t₁ * t₂ * j) • (γ.1 *ᵥ v - v) = M • ((M : E)⁻¹ • ((t₁ * t₂ * j) • (γ.1 *ᵥ v - v)))`. Rewrite using `[← Nat.cast_smul_eq_nsmul E M, smul_smul, mul_inv_cancel₀ hME, one_smul]`. Use `⟨_, ?_, key⟩` and prove the remaining obligations.
+
+Rewrite using `[← hrat]`. Establish `e : fv (maximalRealSubfield E) ((M : E)⁻¹ • ((t₁ * t₂ * j) • (γ.1 *ᵥ v - v))) = (t₂ * bad) • w₁ - t₁ • w₂`. Use `nsmul_cancel _ hM ?_` and prove the remaining obligations. Rewrite using `[← cap_fv_nsmul, ← key, mul_smul, smul_sub j, ← Matrix.mulVec_smul, cap_fv_nsmul, fv_sub, fv_mulVec, ← hzv, Matrix.mulVec_mulVec]`. Establish `a1 : M • ((t₂ * bad) • w₁) = t₂ • ((bad * M) • w₁)`.
+
+Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `a2 : M • (t₁ • w₂) = t₁ • (M • w₂)` using `smul_comm _ _ _`. Rewrite using `[smul_sub M, a1, a2, ← e₁, ← e₂, smul_smul, smul_smul, mul_comm t₂ t₁, ← smul_sub, sub_sub_sub_cancel_right]`.
+
+Rewrite using `[e]`. Conclude with `sub_mem (nsmul_mem hw₁ _) (nsmul_mem hw₂ _)`.
+-/
 theorem exists_move_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (n M bad : ℕ) (Λ : GenLat E n), 0 < M → 0 < bad → Λ.Unimod → Λ.TrivAt M → ∃ (γ : GL (Fin n) E) (Λ' : GenLat E n), IsUnE (IsCMField.complexConj E) 1 γ.1 ∧ CongAt (stdLat E n) M M γ.1 ∧ (∀ v, v ∈ Λ.La ↔ γ.1 *ᵥ v ∈ Λ'.La) ∧ Λ'.Unimod ∧ ∃ s : 𝓞 E, s ≠ 0 ∧ Ideal.span {s} • Λ'.La ≤ stdLat E n ∧ Ideal.span {s} • stdLat E n ≤ Λ'.La ∧ (∀ P : Ideal (𝓞 E), P.IsPrime → s ∈ P → P.map (H.bar : 𝓞 E →+* 𝓞 E) ≠ P ∧ ((bad * M : ℕ) : 𝓞 E) ∉ P) ∧ ∃ k : ℕ, k.Coprime (bad * M) ∧ Ideal.span {(k : 𝓞 E)} • Λ'.La ≤ stdLat E n ∧ Ideal.span {(k : 𝓞 E)} • stdLat E n ≤ Λ'.La := by
   intro E _ _ _ H n M bad Λ hM hbad hU hT
   obtain ⟨hherm, hrk, hfg, hsp, -, -, hmov, hun⟩ := GlobalTheory.T.standardHermitianForm_hostField_inhabitant E H n
@@ -96,11 +130,35 @@ theorem exists_move_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [e]
     exact sub_mem (nsmul_mem hw₁ _) (nsmul_mem hw₂ _)
 
+/- English proof (translation)
+Introduce `ha` and use `by obtain ⟨u, v, huv⟩ := (Nat.Coprime.cast (R := R) h) exact hI ((Ideal.eq_top_iff_one _).2 (huv ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))`.
+-/
 theorem not_mem_of_coprime {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) {a b : ℕ} (h : a.Coprime b)
     (hb : (b : R) ∈ I) : (a : R) ∉ I := fun ha => by
   obtain ⟨u, v, huv⟩ := (Nat.Coprime.cast (R := R) h)
   exact hI ((Ideal.eq_top_iff_one _).2 (huv ▸ I.add_mem (I.mul_mem_left _ ha) (I.mul_mem_left _ hb)))
 
+/- English proof (translation)
+Introduce `D T hF j hj n Λ e hb hU hTb hTM la hla`. Establish `hMpos : 0 < (T.dδ j n).l₂.M` using `by have := (T.dδ j n).l₂.three_le; omega`. Establish `hl : 0 < Ideal.absNorm la.asIdeal` using `Nat.pos_of_ne_zero fun h0 => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hT : Λ.TrivAt ((badN D * (T.dδ j n).l₂.M) ^ (e + 1))`. Take `⟨k, hk, h1, h2⟩` from `trivAt_mul hTb hTM`.
+
+Conclude with `⟨k, hk.pow_right _, h1, h2⟩`. Take `⟨γ, Λ', hγ, ⟨t, ht, hc⟩, hmove, hU', s, hs0, hs1, hs2, hs, k, hk, hk1, hk2⟩` from `exists_move_split D.host.E T.Q.H n _ (Ideal.absNorm la.asIdeal) Λ (pow_pos (Nat.mul_pos hb hMpos) _) hl hU hT`. Establish `hkl : k.Coprime (Ideal.absNorm la.asIdeal)` using `hk.coprime_mul_right_right`. Establish `hkbM : k.Coprime (badN D * (T.dδ j n).l₂.M)` using `hk.coprime_mul_left_right.coprime_dvd_right (dvd_pow_self _ (Nat.succ_ne_zero e))`. Establish `hkla : (k : 𝓞 T.Q.c.F) ∉ la.asIdeal` using `not_mem_of_coprime la.isPrime.ne_top hkl (Ideal.absNorm_mem _)`.
+
+Establish `h2b : 2 ∣ badN D`. Unfold `badN`. Establish `hQ : 2 ∣ D.host.QS` using `(dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd`. Conclude with `((hQ.mul_right _).mul_right _).mul_right _`. Set `ga : (Fin n → D.host.E) ≃ₗ[D.host.E] (Fin n → D.host.E)` to `Matrix.toLinearEquiv' γ.1 γ.invertible`.
+
+Establish `hga : ∀ v, ga v = γ.1 *ᵥ v` using `fun v => rfl`. Establish `hM : (T.dδ j n).l₂.M = T.Q.l.M * (T.dδ j n).pd` using `(hF.sh.dLev j hj n).2.1`. Establish `hlM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hF.p.toLawsCore.pins.2.1.1`. Use `⟨Λ', ⟨ga, fun v w => ?_, ?_, t, ht, fun v hv => ?_⟩, hU', ⟨k, hkbM.coprime_mul_right_right, hk1, hk2⟩, ⟨k, hkbM.coprime_mul_left_right, hk1, hk2⟩, ⟨k, hkl, hk1, hk2⟩, ⟨k, hkla, hk1, hk2⟩, ⟨s, hs0, hs1, hs2, fun P hP hsP => ⟨(hs P hP hsP).1, fun h => (hs P hP hsP).2 ?_⟩⟩, ⟨s, hs0, …` and prove the remaining obligations. Rewrite using `[hga, hga, ← hermE_one, hγ, hermE_one]`.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨u, rfl⟩` from `ga.surjective v`. Conclude with `⟨u, (hmove u).2 hv, rfl⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `(hmove u).1 hu`. Conclude with `hc v hv`. Use `Ideal.mem_of_dvd _ (Nat.cast_dvd_cast ?_) h` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Conclude with `Nat.mul_dvd_mul_left _ (dvd_pow_self _ (Nat.succ_ne_zero e))`. Conclude with `(T.dδ j n).l₂.odd.mul (Nat.coprime_two_right.1 (hkbM.coprime_mul_right_right.coprime_dvd_right h2b))`. Use `show _ ≤ Λ'.La ⊓ stdLat D.host.E n`. Use `le_inf ((Submodule.smul_mono_left ?_).trans hk2) Submodule.smul_le_right` and prove the remaining obligations. Use `Ideal.span_singleton_le_span_singleton.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `dvd_mul_left _ _`. Introduce `h`. Rewrite `h` using `[hM, hlM, Nat.cast_mul, Nat.cast_mul, Nat.cast_mul]`. Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases.
+
+Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases. Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hla _ (by simp) h`. Conclude with `hla _ (by simp) h`. Conclude with `hla _ (by simp) h`.
+
+Conclude with `hkla h`.
+-/
 theorem exists_adapted_congr : ∀ (D : D7) (T : Full D) (_hF : LawsFull T) (j : ℕ) (_hj : InR D j) (n : ℕ) (Λ : GenLat D.host.E n) (e : ℕ), 0 < badN D → Λ.Unimod → Λ.TrivAt (badN D) → Λ.TrivAt (T.dδ j n).l₂.M → ∀ la : HeightOneSpectrum (𝓞 T.Q.c.F), (∀ p ∈ (D.host.small ∪ {D.host.q, D.host.d, D.host.g 0, D.host.g 1, (T.dδ j n).pd} : Finset ℕ), ((p : 𝓞 T.Q.c.F) ∉ la.asIdeal)) → ∃ Λ' : GenLat D.host.E n, (∃ ga : (Fin n → D.host.E) ≃ₗ[D.host.E] (Fin n → D.host.E), (∀ v w : Fin n → D.host.E, ∑ i, IsCMField.complexConj D.host.E (ga v i) * ga w i = ∑ i, IsCMField.complexConj D.host.E (v i) * w i) ∧ Λ'.La = Λ.La.map ((ga : (Fin n → D.host.E) →ₗ[D.host.E] (Fin n → D.host.E)).restrictScalars (𝓞 D.host.E)) ∧ ∃ t : ℕ, Nat.Coprime t ((badN D * (T.dδ j n).l₂.M) ^ (e + 1)) ∧ ∀ v ∈ stdLat D.host.E n, ∃ u ∈ stdLat D.host.E n, t • (ga v - v) = ((badN D * (T.dδ j n).l₂.M) ^ (e + 1)) • u) ∧ Λ'.Unimod ∧ Λ'.TrivAt (badN D) ∧ Λ'.TrivAt (T.dδ j n).l₂.M ∧ Λ'.TrivAt (Ideal.absNorm la.asIdeal) ∧ (∃ k : ℕ, (k : 𝓞 T.Q.c.F) ∉ la.asIdeal ∧ Ideal.span {(k : 𝓞 D.host.E)} • Λ'.La ≤ stdLat D.host.E n ∧ Ideal.span {(k : 𝓞 D.host.E)} • stdLat D.host.E n ≤ Λ'.La) ∧ (∃ m : 𝓞 D.host.E, m ≠ 0 ∧ Ideal.span {m} • Λ'.La ≤ stdLat D.host.E n ∧ Ideal.span {m} • stdLat D.host.E n ≤ Λ'.La ∧ ∀ P : Ideal (𝓞 D.host.E), P.IsPrime → m ∈ P → P.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≠ P ∧ ((badN D * (T.dδ j n).l₂.M * Ideal.absNorm la.asIdeal : ℕ) : 𝓞 D.host.E) ∉ P) ∧ GenLat.SplitSupp T.Q.H Λ' ∧ ∃ N' : ℕ, Λ'.LevOK N' (T.dδ j n).l₂.M ∧ ((N' : 𝓞 T.Q.c.F) ∉ la.asIdeal) := by
   intro D T hF j hj n Λ e hb hU hTb hTM la hla
   have hMpos : 0 < (T.dδ j n).l₂.M := by have := (T.dδ j n).l₂.three_le; omega

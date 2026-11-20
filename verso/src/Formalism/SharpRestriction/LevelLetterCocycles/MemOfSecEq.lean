@@ -23,20 +23,40 @@ variable [IsDomain O] [NeZero n]
 
 variable {W}
 
+/- English proof (translation)
+Take `⟨x', hx', hxl, rfl⟩` from `hx`. Take `⟨y', hy', hyl, rfl⟩` from `hy`. Conclude with `⟨x' + y', (W.NΔ T).add_mem hx' hy', by rw [smul_add, hxl, hyl], by simp⟩`.
+-/
 theorem inFNc_add (T : LocLat G Qp LL O) (a : ZMod n) {x y : W.DD T} (hx : InFNc W T a 1 x)
     (hy : InFNc W T a 1 y) : InFNc W T a 1 (x + y) := by
   obtain ⟨x', hx', hxl, rfl⟩ := hx
   obtain ⟨y', hy', hyl, rfl⟩ := hy
   exact ⟨x' + y', (W.NΔ T).add_mem hx' hy', by rw [smul_add, hxl, hyl], by simp⟩
 
+/- English proof (translation)
+Take `⟨x', hx', hxl, rfl⟩` from `hx`. Conclude with `⟨-x', (W.NΔ T).neg_mem hx', by rw [smul_neg, hxl], by simp⟩`.
+-/
 theorem inFNc_neg (T : LocLat G Qp LL O) (a : ZMod n) {x : W.DD T} (hx : InFNc W T a 1 x) :
     InFNc W T a 1 (-x) := by
   obtain ⟨x', hx', hxl, rfl⟩ := hx
   exact ⟨-x', (W.NΔ T).neg_mem hx', by rw [smul_neg, hxl], by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, (W.NΔ T).zero_mem, smul_zero _, by simp⟩`.
+-/
 theorem inFNc_zero (T : LocLat G Qp LL O) (a : ZMod n) : InFNc W T a 1 (0 : W.DD T) :=
   ⟨0, (W.NΔ T).zero_mem, smul_zero _, by simp⟩
 
+/- English proof (translation)
+Use `set Λ := abelian₂ W A (c' + (e : ZMod n)) e with hΛdef`. Establish `r1` using `repVV_lA T c' e _ _ b sol x f (k + k' + t) k hx`. Establish `r2` using `repVV_lA T c' e _ _ b sol z _ (k' + k) k' hz`. Establish `hsec : (fun m => lE W (k' + k) * (lE W t * f m)) = (fun m => lE W (k + k' + t) * f m)`. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[lE_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite `r2` using `[hsec]`. Establish `r3` using `repVV_sub W C.hinj T c' e _ _ b sol _ _ _ _ r1 r2`.
+
+Rewrite `r3` using `[sub_self]`. Establish `hΛu` using `lam_unit W C.hR A (c' + (e : ZMod n)) e`. Establish `hwP : InFP W T c' e 1 (Λ • (lA W ^ (k + (k + k' + t)) • x - lA W ^ (k' + (k' + k)) • z))`. Rewrite using `[smul_sub, smul_comm Λ, smul_comm Λ (lA W ^ (k' + (k' + k)))]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_sub W T c' e _ (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W _) hxP) (Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' e _ (lA_mem W _) hzP)`.
+
+Establish `hw` using `piLam_of_sec W C.hR C.hsatP C.hCA T hT.1 A c' e _ b sol hb.1 _ hwP _ r3 (fun m => inFr_zero W)`. Establish `hwN` using `inN_of_piLam W C.hR.1 T A c' e (Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W C.hs C.hR C.h5 A hA c' hc' e T hT) _ hw`. Establish `hzN'` using `inFNc_smul C.hR.1 T _ (lA_mem W (k' + (k' + k))) hzN`. Establish `hxN` using `inFNc_add T _ hwN hzN'`. Rewrite `hxN` using `[sub_add_cancel]`.
+
+Conclude with `Formalism.MainNotions.UnusedSlot80.ArcC.arc_sat W C.hCA C.hsat C.hR T hT.1 A c' e (Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W C.hs C.hR C.h5 A hA c' hc' e T hT) x hxP ⟨_, hxN⟩`.
+-/
 theorem mem_of_sec_eq (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' ∈ A.cuts)
     (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
     (hb : IsHor W T c' b sol) (e : ℕ) (x z : W.DD T) (k k' t : ℕ) (f : Fin d → W.EE)

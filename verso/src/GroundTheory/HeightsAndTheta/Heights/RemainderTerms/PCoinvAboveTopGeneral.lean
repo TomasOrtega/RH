@@ -8,6 +8,15 @@ open MvPolynomial Finset Coinv
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ _ β ι _ _ _ _ d H hH hd`. Use `set eβ := Fintype.equivFin β`. Use `set eι := Fintype.equivFin ι`. Use `set ψ : β × ι ≃ Fin (Fintype.card β) × Fin (Fintype.card ι) := eβ.prodCongr eι with hψ`. Take `⟨Q', hQ'h, hQ'⟩` from `h1 K (Fintype.card β) (Fintype.card ι) d (rename ψ H) hH.rename_isHomogeneous hd`.
+
+Use `⟨fun m b => rename ψ.symm (Q' m (eβ b)), fun m b => (hQ'h m (eβ b)).rename_isHomogeneous, ?_⟩` and prove the remaining obligations. Establish `hback : H = rename ψ.symm (rename ψ H)`. Rewrite using `[rename_rename, Equiv.symm_comp_self, rename_id_apply]`. Rewrite using `[hback, hQ', map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, ← Equiv.sum_comp eβ.symm]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Simplify using `only [Equiv.apply_symm_apply]`. Use `congr 1`.
+
+Rewrite using `[bps, map_sum, ← Equiv.sum_comp eι.symm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[hψ]`.
+-/
 theorem CoinvAboveTopGeneral.proof (h1 : CoinvAboveTop.Statement) :
     CoinvAboveTopGeneral.Statement := by
   intro K _ _ β ι _ _ _ _ d H hH hd

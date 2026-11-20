@@ -16,12 +16,29 @@ namespace GlobalTheory.MultGelf
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
   {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M}
 
+/- English proof (translation)
+Rewrite using `[sm_eq]`.
+-/
 theorem mem_sm (M : DSModel V S) (τ : D.what₂.Tau) {w : M.H τ} :
     w ∈ M.sm τ ↔ w ∈ smSub (gramAt D V τ) (trRep (M.σ τ) (M.fr τ)) := by rw [sm_eq]
 
+/- English proof (translation)
+The claim follows from `isURepOn_trRep (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1`.
+-/
 theorem isURep (M : DSModel V S) (τ : D.what₂.Tau) : IsURepOn (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (trRep (M.σ τ) (M.fr τ)) :=
   isURepOn_trRep (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1
 
+/- English proof (translation)
+Take `rfl : inst = fun a b => Classical.propDecidable (a = b)` from `Subsingleton.elim _ _`. Use `letI : DecidableEq D.what₂.Tau := fun a b => Classical.propDecidable (a = b)`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hG` using `gram_unit (M.fr_unit τ) (M.fr_gram τ)`. Use function extensionality and compare the values at `x`.
+
+Take `⟨ℓ, hℓ, hℓT⟩` from `hT.cont τ v x`. Take `⟨m, ls, a, hls, ha⟩` from `GlobalTheory.T.sobolevContinuousForm_sum_lieWord_inner _ _ _ (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 ℓ hℓ`. Establish `hu` using `(mem_sm M τ).1 u.2`. Establish `hmem : ∀ t : ℝ, trRep (M.σ τ) (M.fr τ) (NormedSpace.exp (t • X)) u ∈ smSub (gramAt D V τ) (trRep (M.σ τ) (M.fr τ))` using `fun t => rep_mem hG (isURep M τ) hu (exp_mem_UH hG hX t)`. Establish `h1 : (fun t : ℝ => T (@Function.update _ _ (fun a b => Classical.propDecidable (a = b)) v τ u) (x * oneP θ V τ X t)) = fun t : ℝ => ∑ i, ⟪a i, word (trRep (M.σ τ) (M.fr τ)) (ls i) (trRep (M.σ τ) (M.fr τ) (NormedSpace.exp (t • X)) u)⟫_ℂ`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[← ha _ (hmem t)]`. Establish `h2` using `hT.equiv τ _ (exp_mem_UH hG hX t) (@Function.update _ _ (fun a b => Classical.propDecidable (a = b)) v τ u) ⟨_, (mem_sm M τ).2 (hmem t)⟩ (by rw [Function.update_self]; rfl)`. Rewrite `h2` using `[Function.update_idem]`. Establish `h3` using `hℓT ⟨_, (mem_sm M τ).2 (hmem t)⟩`.
+
+Rewrite `h3` using `[h2]`. Conclude with `h3.symm`. Establish `h4 : HasDerivAt (fun t : ℝ => ∑ i, ⟪a i, word (trRep (M.σ τ) (M.fr τ)) (ls i) (trRep (M.σ τ) (M.fr τ) (NormedSpace.exp (t • X)) u)⟫_ℂ) (∑ i, ⟪a i, word (trRep (M.σ τ) (M.fr τ)) (ls i) (dRep (trRep (M.σ τ) (M.fr τ)) X u)⟫_ℂ) 0`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Establish `h5` using `(hasDerivAt_const (0 : ℝ) (a i)).inner ℂ (GlobalTheory.T.lieWord_commutes_oneParameter_derivative _ _ _ (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 (ls i) (hls i) _ hu X hX)`.
+
+Simplify using `using h5`. Unfold `Rder`. Rewrite using `[h1, h4.deriv, ← hℓT w, hw, ha _ (dRep_mem hG (isURep M τ) hu hX)]`.
+-/
 theorem rder_apply (hT : IsMultMap θ M J χ T) [inst : DecidableEq D.what₂.Tau] (τ : D.what₂.Tau) (v : M.Vec)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieG (gramAt D V τ)) (u w : M.sm τ)
     (hw : (w : M.H τ) = dRep (trRep (M.σ τ) (M.fr τ)) X u) :
@@ -59,6 +76,11 @@ theorem rder_apply (hT : IsMultMap θ M J χ T) [inst : DecidableEq D.what₂.Ta
   unfold Rder
   rw [h1, h4.deriv, ← hℓT w, hw, ha _ (dRep_mem hG (isURep M τ) hu hX)]
 
+/- English proof (translation)
+Establish `hG` using `gram_unit (M.fr_unit τ) (M.fr_gram τ)`. Establish `hp` using `parts_mem hG (gram_herm (M.fr_gram τ)) Z`. Establish `hu` using `(mem_sm M τ).1 u.2`. Establish `h1` using `rder_apply hT τ v hp.1 u ⟨_, (mem_sm M τ).2 (dRep_mem hG (isURep M τ) hu hp.1)⟩ rfl`. Establish `h2` using `rder_apply hT τ v hp.2 u ⟨_, (mem_sm M τ).2 (dRep_mem hG (isURep M τ) hu hp.2)⟩ rfl`.
+
+Establish `h3 : w = ⟨_, (mem_sm M τ).2 (dRep_mem hG (isURep M τ) hu hp.1)⟩ + Complex.I • ⟨_, (mem_sm M τ).2 (dRep_mem hG (isURep M τ) hu hp.2)⟩` using `Subtype.ext hw`. Rewrite using `[h3, T.map_update_add, T.map_update_smul, ← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem rderC_apply (hT : IsMultMap θ M J χ T) [DecidableEq D.what₂.Tau] (τ : D.what₂.Tau) (v : M.Vec)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (u w : M.sm τ)
     (hw : (w : M.H τ) = dRepC (gramAt D V τ) (trRep (M.σ τ) (M.fr τ)) Z u) :
@@ -73,6 +95,11 @@ theorem rderC_apply (hT : IsMultMap θ M J χ T) [DecidableEq D.what₂.Tau] (τ
   rw [h3, T.map_update_add, T.map_update_smul, ← h1, ← h2]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨u, rfl, rfl⟩`. Consider the case `cons Z l ih`. Take `⟨w, h1, h2⟩` from `ih`. Use `⟨⟨_, (mem_sm M τ).2 (dRepC_mem (gram_unit (M.fr_unit τ) (M.fr_gram τ)) (gram_herm (M.fr_gram τ)) (isURep M τ) Z ((mem_sm M τ).1 w.2))⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.map_cons, List.foldr_cons, ← h1]`. Rewrite using `[List.map_cons, List.foldr_cons, h2]`. Conclude with `rderC_apply hT τ v Z w _ rfl`.
+-/
 theorem foldr_apply (hT : IsMultMap θ M J χ T) [DecidableEq D.what₂.Tau] (τ : D.what₂.Tau) (v : M.Vec)
     (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (u : M.sm τ) :
     ∃ w : M.sm τ, (w : M.H τ) =
@@ -89,6 +116,11 @@ theorem foldr_apply (hT : IsMultMap θ M J χ T) [DecidableEq D.what₂.Tau] (τ
     · rw [List.map_cons, List.foldr_cons, h2]
       exact rderC_apply hT τ v Z w _ rfl
 
+/- English proof (translation)
+Introduce `D θ V S M J χ _ T hT _ τ k v w hw`. Use `choose f hf1 hf2 using fun idx : Fin (k + 1) → Fin V.rank => foldr_apply hT τ v (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) (1 : ℂ)) (v τ)`. Simplify using `only [List.map_ofFn, Function.comp_def, Function.update_eq_self] at hf1 hf2`. Establish `h1 : w = ∑ idx, f idx`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[hw, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun idx _ => (hf1 idx).symm`. Rewrite using `[h1]`. Use `Eq.trans ?_ (map_sum (T.toLinearMap v τ) f Finset.univ).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun idx _ => hf2 idx`.
+-/
 theorem gelf_apply : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ), IsInfFam θ → ∀ T : MMap M, IsMultMap θ M J χ T → ∀ [DecidableEq D.what₂.Tau] (τ : D.what₂.Tau) (k : ℕ) (v : M.Vec) (w : M.sm τ), (w : M.H τ) = gelfH (gramAt D V τ) (M.rep τ) k (v τ) → gelf θ V τ k (T v) = T (Function.update v τ w) := by
   intro D θ V S M J χ _ T hT _ τ k v w hw
   choose f hf1 hf2 using fun idx : Fin (k + 1) → Fin V.rank =>

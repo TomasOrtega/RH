@@ -11,6 +11,41 @@ noncomputable section
 
 namespace SupBoundCount
 
+/- English proof (translation)
+Rewrite using `[finrank_secM hb]`. Establish `hb'` using `hb`. Use `choose f hf hbf using hb.1`. Establish `hbe : b = fun j => map (Int.castRingHom ℚ) (f j)` using `funext hbf`. Substitute `hbe` using the available equality.
+
+Establish `hli : LinearIndependent ℤ fun k => aeval d.y (f k)`. Use `hb'.2.1` as an intermediate fact. Simplify `this` using `[aeval_map_int]`. Establish `hG` using `gram_posDef d n f hf hli hc hsup`. Use `⟨rank_le d n f hf hli hc hsup, ?_⟩` and prove the remaining obligations.
+
+Use `set Q : (Fin r → ℤ) → ℝ := fun m => (fun k => (m k : ℝ)) ⬝ᵥ (blockGram d n (fun j => map (Int.castRingHom ℚ) (f j)) *ᵥ fun k => (m k : ℝ)) with hQ`. Use `set P : (Fin r → ℤ) → Prop := fun m => IsSmallH (mCoordIdeal d.y) d.y d.A n (aeval d.y (∑ k, m k • f k)) with hPdef`. Establish `hP1 : ∀ m, Q m ≤ (1 / c) ^ 2 → P m`. Introduce `m hm`. Establish `hF` using `isMultiHomog_zsum f m hf`.
+
+Use `(isSmallH_iff d n hF).2 fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `hsup _ hF z hz`. Rewrite `h1` using `[blockL2Norm_sum_eq_sqrt_gram d n f hf m]`. Establish `h2 : Real.sqrt (Q m) ≤ 1 / c`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : c * Real.sqrt (Q m) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : 0 < d.A.h z ^ n` using `pow_pos (d.A.pos z hz.1) n`. Conclude with `(div_le_one hp).1 (h1.trans h3)`. Establish `hP2 : ∀ m, P m → Q m ≤ 1`.
+
+Introduce `m hm`. Establish `hF` using `isMultiHomog_zsum f m hf`. Establish `h1` using `blockL2Norm_le_one_of_sup_bound d n hF ((isSmallH_iff d n hF).1 hm)`. Rewrite `h1` using `[blockL2Norm_sum_eq_sqrt_gram d n f hf m]`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Use `Real.sqrt_lt_sqrt zero_le_one h` as an intermediate fact. Rewrite `this` using `[Real.sqrt_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, hcount⟩` from `count_of_gram hG (by positivity : (0 : ℝ) < 1 / c) P hP1 hP2`.
+
+Establish `hmem : ∀ m : Fin r → ℤ, aeval d.y (∑ k, m k • f k) ∈ secM d.y (blockDeg d.k₀ n)`. Introduce `m`. Rewrite using `[← hb'.2.2]`. Simplify using `only [map_sum, map_zsmul]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, by simp [aeval_map_int]⟩)`.
+
+Establish `hinj : Function.Injective fun m : Fin r → ℤ => aeval d.y (∑ k, m k • f k)`. Introduce `m m' h`. Establish `h0 : ∑ k, (m k - m' k) • aeval d.y (f k) = 0`. Simplify using `only [map_sum, map_zsmul] at h`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+
+Conclude with `sub_eq_zero.2 h`. Use function extensionality and compare the values at `k`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h0 k)`. Set `E : {m // P m} → {s : secM d.y (blockDeg d.k₀ n) // IsSmallH (mCoordIdeal d.y) d.y d.A n (s : Ω)}` to `fun m => ⟨⟨_, hmem m.1⟩, m.2⟩`. Establish `hE : Function.Bijective E`.
+
+Use `⟨fun m m' h => Subtype.ext (hinj (congrArg (fun s => ((s.1 : secM d.y _) : Ω)) h)), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨s, hs⟩, hsm⟩`. Establish `hs'` using `hs`. Rewrite `hs'` using `[← hb'.2.2]`. Take `⟨m, hm⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hs'`.
+
+Establish `hms : aeval d.y (∑ k, m k • f k) = s`. Rewrite using `[← hm]`. Simplify using `[map_sum, aeval_map_int]`. Use `⟨⟨m, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show IsSmallH _ _ _ _ _`.
+
+Rewrite using `[hms]`. Conclude with `hsm`. Conclude with `Subtype.ext (Subtype.ext hms)`. Establish `hcard` using `Nat.card_congr (Equiv.ofBijective E hE)`. Simplify using `only [smallSectionCount]`.
+
+Rewrite using `[← hcard]`. Establish `hV : (r : ℝ) * Real.log (2 / Real.sqrt r) ≤ Real.log (unitBallVolume r)`. Establish `hpos : 0 < (2 / Real.sqrt r) ^ r`. Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases. Simplify using `[h0]`.
+
+Conclude with `pow_pos (div_pos two_pos (Real.sqrt_pos.2 (by exact_mod_cast h0))) r`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log hpos (MinkowskiCount.cube_le_unitBallVolume r)`. Establish `halg : (r : ℝ) * Real.log (2 / Real.sqrt r) + r * Real.log (1 / c / 2) = -((r : ℝ) * Real.log (c * Real.sqrt r))`. Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases.
+
+Simplify using `[h0]`. Establish `hs : 0 < Real.sqrt r` using `Real.sqrt_pos.2 (by exact_mod_cast h0)`. Rewrite using `[← mul_add, ← Real.log_mul (by positivity) (by positivity)]`. Establish `: 2 / Real.sqrt r * (1 / c / 2) = (c * Real.sqrt r)⁻¹`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type}
     [Field Ω] [CharZero Ω] (d : HSMBlockDatum D K ι Ω) (n : ℕ) {c : ℝ} (hc : 0 < c)
     (hsup : ∀ f : MRing ι, IsMultiHomog f (blockDeg d.k₀ n) → ∀ z ∈ mcPts (mCoordIdeal d.y),
@@ -117,6 +152,11 @@ theorem main {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} 
 
 end SupBoundCount
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d n c hc hsup`. Establish `hex` using `SupBoundCount.exists_isSecBasisM d.y d.k₀ n`. Establish `h` using `SupBoundCount.main d n hc hsup hex.choose_spec`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[blockChi, dif_pos hex]`.
+
+Conclude with `h.2`.
+-/
 theorem SupBoundCount.proof : SupBoundCount.Statement := by
   intro D K _ _ ι _ Ω _ _ d n c hc hsup
   have hex := SupBoundCount.exists_isSecBasisM d.y d.k₀ n

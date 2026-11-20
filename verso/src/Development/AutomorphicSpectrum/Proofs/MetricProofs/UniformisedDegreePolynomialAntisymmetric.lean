@@ -11,6 +11,11 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Introduce `hI Ψ _ _ N j D S hj hD hU`. Take `⟨hO, hNull, -, -, -⟩` from `anSys_open_basics D (Ψ × Fin N) S`. Establish `hInt` using `AnSys.mIntegrable_potH_and_mInt_eq_degNum hI.convergenceSigned D (Ψ × Fin N) S`. Establish `hmain` using `GlobalTheory.T.uniformised_potential_integral_formula D S.X S.A Ψ N j S.open' S.th S.ph hj hD hO hNull (fun p => (S.sing p).1) (fun p => (S.sing p).2.1) hU (fun w => (hInt w).1)`. Take `⟨v, hv, hEq⟩` from `hmain`.
+
+Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun w : Fin D → Ψ × Fin N => mInt S.A (fun i => S.th (w i) + LocPot.ofFun (S.ph (w i))) (fun _ => 1)) = S.degNum`. Use function extensionality and compare the values at `fun w => (hInt w).2`. Rewrite `hEq` using `[hfun]`. Conclude with `hEq`.
+-/
 theorem anSys_proportional : Inputs → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j D : ℕ) (S : AnSys D (Ψ × Fin N)), j ≤ N → D = antisymDegree Ψ N → IsUniformised S.A S.open' j S.potH → ∃ v : ℝ, 0 < v ∧ toWt S.degPoly = C v * antisymDelta Ψ N := by
   intro hI Ψ _ _ N j D S hj hD hU
   obtain ⟨hO, hNull, -, -, -⟩ := anSys_open_basics D (Ψ × Fin N) S

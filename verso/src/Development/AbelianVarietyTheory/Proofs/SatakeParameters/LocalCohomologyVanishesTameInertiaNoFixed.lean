@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.StringRepresentationDecomposition
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e` using `cycZ_toZModPow_eq hl h (q := 1) (fun x hx => by simpa using hσ.2 x hx) r`. Simplify using `only [Nat.cast_one, map_one] at e`. Simplify `e` using `[cycMod]`.
+-/
 theorem cycMod_eq_one_of_mem_Ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (r : ℕ) {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal) (h : IsPlaceOver A v)
@@ -17,6 +20,23 @@ theorem cycMod_eq_one_of_mem_Ine {F Ω : Type} [Field F] [NumberField F] [Field 
   simp only [Nat.cast_one, map_one] at e
   simpa [cycMod] using e
 
+/- English proof (translation)
+Introduce `_ hTD hEC F Ω _ _ _ _ _ l _ M _ _ _ _ _ A v rho hA hl hrho hex`. Take `⟨γ, hγI, hγ⟩` from `hex`. Establish `h0 : H0 rho = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `m hm`.
+
+Establish `h1 : rho γ m = m` using `(Representation.mem_invariants rho m).mp hm γ`. Apply `hγ.1` to reduce the goal to its premises. Use `show rho γ m - m = rho γ 0 - 0`. Rewrite using `[h1, map_zero, sub_self, sub_self]`. Use `set χ := (cycMod F Ω l 1).comp (Dec (F := F) A).subtype with hχdef`.
+
+Establish `hχ : χ γ = 1` using `cycMod_eq_one_of_mem_Ine 1 hl hA hγI`. Establish `hdual : Subsingleton (H0 ((twDual χ rho).comp (MonoidHom.id _)))`. Establish `key : ∀ φ ∈ H0 ((twDual χ rho).comp (MonoidHom.id _)), φ = 0`. Introduce `φ hφ`. Establish `h1 : twDual χ rho γ φ = φ` using `(Representation.mem_invariants _ φ).mp hφ γ`.
+
+Use extensionality with `x`. Take `⟨m, rfl⟩` from `hγ.2 x`. Establish `h3` using `congrArg (fun ψ : TDual (ZMod (l ^ 1)) M => ψ (rho γ m)) h1`. Simplify using `only [twDual_apply, hχ, Units.val_one, one_mul] at h3`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Use `show φ (rho γ m - m) = 0`. Conclude with `(LinearMap.map_sub (φ : Module.Dual (ZMod (l ^ 1)) M) (rho γ m) m).trans (sub_eq_zero.mpr h3.symm)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext ((key a.1 a.2).trans (key b.1 b.2).symm)`. Establish `hTD'` using `hTD F Ω l 1 M A rho v Nat.one_pos hA hrho`.
+
+Establish `hinj` using `hTD'.2.2.2.2.1`. Establish `h2 : Subsingleton (H2 rho)`. Use `⟨fun x y => hinj ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[Subsingleton.elim z 0, map_zero, map_zero]`.
+
+Establish `hc0 : Nat.card (H0 rho) = 1`. Rewrite using `[h0]`. Conclude with `Nat.card_unique`. Establish `hc2 : Nat.card (H2 rho) = 1` using `Nat.card_eq_one_iff_unique.mpr ⟨h2, ⟨0⟩⟩`. Establish `he` using `(hEC F Ω l 1 M A rho v Nat.one_pos hA hrho).2 hl`.
+
+Establish `hc1 : Nat.card (H1 rho) = 1` using `by rw [he, hc0, hc2]`. Conclude with `⟨h0, (Nat.card_eq_one_iff_unique.mp hc1).1, h2⟩`.
+-/
 theorem tame_vanish : LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (rho : Representation (ZMod (l ^ 1)) (Dec (F := F) A) M), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → ContAction rho → (∃ γ : Dec (F := F) A, (γ : G F Ω) ∈ Ine (F := F) A ∧ Function.Bijective fun m : M => rho γ m - m) → H0 rho = ⊥ ∧ Subsingleton (H1 rho) ∧ Subsingleton (H2 rho) := by
   intro _ hTD hEC F Ω _ _ _ _ _ l _ M _ _ _ _ _ A v rho hA hl hrho hex
   obtain ⟨γ, hγI, hγ⟩ := hex

@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.DeRham
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k p with h | h` into its components or cases. Use `haveI : Fact p.Prime := ⟨h⟩`. Conclude with `GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charP p k B f`. Substitute `h haveI : CharZero k := CharP.charP_to_charZero k` using the available equality.
+
+Conclude with `GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charZero k B f`.
+-/
 theorem charpoly_push_eq_map_charpoly (k : Type) [Field k] [IsAlgClosed k]
     (B : GlobalTheory.AV.AbVar k) (f : B ⟶ B) [Module.Finite k (HdR B.X)] :
     LinearMap.charpoly (push (dp0 k) (𝟙 _) f.hom) = (GlobalTheory.AV.AbVar.charpoly f).map (Int.castRingHom k) := by
@@ -26,6 +31,11 @@ theorem charpoly_push_eq_map_charpoly (k : Type) [Field k] [IsAlgClosed k]
     haveI : CharZero k := CharP.charP_to_charZero k
     exact GlobalTheory.T.charpoly_deRhamHomology_abelianVariety_charZero k B f
 
+/- English proof (translation)
+Introduce `k _ _ A _ _ hA f _ L _ _ _ φ l hl hlk ev hadd hφ hker him _`. Take `⟨g, hg⟩` from `GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme k A hA`. Set `B : GlobalTheory.AV.AbVar k` to `⟨A, hA, g, hg⟩`. Set `f' : B ⟶ B` to `GlobalTheory.AV.AbVar.Hom.mk (A := B) (B := B) f`. Rewrite using `[GlobalTheory.T.l_power_torsion_endomorphism_evaluation k B f' L φ l hl hlk ev hadd hφ hker him]`.
+
+Conclude with `charpoly_push_eq_map_charpoly k B f'`.
+-/
 theorem charpoly_push_eq : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (f : A ⟶ A) [IsMonHom f] (L : Type) [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L]
       (φ : L →ₗ[ℤ] L) (l : ℕ), l.Prime → (l : k) ≠ 0 →

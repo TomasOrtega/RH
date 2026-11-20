@@ -17,6 +17,9 @@ def conePoints (I : Ideal (MvPolynomial (Coord n) ℤ)) (F : Type*) [CommRing F]
   {z | BlockNonzero z ∧ ∀ f ∈ I, evalCone z f = 0}
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ArithVariety.points_eq_conePoints (P : ArithVariety n) (F : Type*) [CommRing F] :
     P.points F = conePoints P.ideal F := rfl
 
@@ -161,16 +164,25 @@ def inv (A : HermLine n) : HermLine n where
 end HermLine
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `only [chartMonomial, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`.
+-/
 theorem chartMonomial_add (c : (k : ι) → Fin (n k + 1)) (d d' : ι → ℕ) :
     chartMonomial c (d + d') = chartMonomial c d * chartMonomial c d' := by
   simp only [chartMonomial, Pi.add_apply, pow_add, Finset.prod_mul_distrib]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `only [chartMonomial, Pi.smul_apply, smul_eq_mul, ← Finset.prod_pow, ← pow_mul, mul_comm]`.
+-/
 theorem chartMonomial_nsmul (c : (k : ι) → Fin (n k + 1)) (m : ℕ) (d : ι → ℕ) :
     chartMonomial c (m • d) = chartMonomial c d ^ m := by
   simp only [chartMonomial, Pi.smul_apply, smul_eq_mul, ← Finset.prod_pow, ← pow_mul, mul_comm]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Simplify using `[chartMonomial]`.
+-/
 theorem chartMonomial_zero (c : (k : ι) → Fin (n k + 1)) : chartMonomial c 0 = 1 := by
   simp [chartMonomial]
 

@@ -13,6 +13,11 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 
 namespace GlobalTheory.RTransDecay
 
+/- English proof (translation)
+Introduce `D V G hG`. Use `⟨fun h => hG.mul_right h, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hG.decay N`. Use `⟨C, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.Grow.quotHeight V g ≤ GlobalTheory.Grow.quotHeight V (g * h) * GlobalTheory.Grow.height V h`.
+
+Simplify using `using GlobalTheory.Grow.quotHeight_mul_le V (g * h) h⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rapidDec_rTrans : ∀ (D : D7) (V : HSp D) (G : GA D V → ℂ), RapidDec V G → (∀ h, RapidDec V (rTrans h G)) ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ g h, ‖G (g * h)‖ * quotHeight V g ^ N ≤ C * height V h ^ N := by
   intro D V G hG
   refine ⟨fun h => hG.mul_right h, fun N => ?_⟩

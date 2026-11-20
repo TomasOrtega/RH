@@ -12,6 +12,11 @@ namespace GlobalTheory.ValExt
 noncomputable def unitBall (p : ℕ) [Fact p.Prime] : ValuationSubring (PadicAlgCl p) :=
   (Valued.v : Valuation (PadicAlgCl p) NNReal).valuationSubring
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NormExtensionBound.main`. Consider the case `exact _root_.GlobalTheory.NormExtensionBound.main`. Consider the case `(apply _root_.GlobalTheory.NormExtensionBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormExtensionBound.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NormExtensionBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormExtensionBound.main ..)`.
+-/
 theorem exists_ext_centred : ∀ (p : ℕ) [Fact p.Prime] (A B : Type) [CommRing A] [IsLocalRing A] [CommRing B] [IsDomain B] [Algebra A B] [Module.Finite A B] [Finite (B ≃ₐ[A] B)] (𝔷 : Ideal B), Function.Injective (algebraMap A B) → (∀ b : B, (∀ σ : B ≃ₐ[A] B, σ b = b) → b ∈ Set.range (algebraMap A B)) → 𝔷.IsMaximal → ∀ ev : A →+* PadicAlgCl p, (∀ a, ‖ev a‖ ≤ 1) → (∀ a ∈ IsLocalRing.maximalIdeal A, ‖ev a‖ < 1) → ∃ ev' : B →+* PadicAlgCl p, (∀ a, ev' (algebraMap A B a) = ev a) ∧ (∀ b, ‖ev' b‖ ≤ 1) ∧ ∀ b ∈ 𝔷, ‖ev' b‖ < 1 := by
   first
   | exact @_root_.GlobalTheory.NormExtensionBound.main

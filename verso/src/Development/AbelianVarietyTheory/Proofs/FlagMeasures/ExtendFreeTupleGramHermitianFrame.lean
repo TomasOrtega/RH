@@ -15,6 +15,11 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Use `congr 1`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hR_sub_sum_right {m : ℕ} (x w : Fin n → R ⊗[F] E) (c : Fin m → R ⊗[F] E)
     (u : Fin m → Fin n → R ⊗[F] E) :
     hR R σ J x (w - ∑ a, c a • u a) = hR R σ J x w - ∑ a, c a * hR R σ J x (u a) := by
@@ -32,6 +37,57 @@ end Alg
 
 open GlobalTheory.FrameGram in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ v r P T hP y hy hgram`. Establish `hinv : ∀ x, σ (σ x) = x` using `conj_invol hσ`. Take `⟨_, hGh, _, hG0, _⟩` from `std_frame_gram F E σ hσ n J hJ r P T hP`. Establish `hPs` using `hP`. Take `⟨_, hff0, hef, _, hfz, _, _⟩` from `hPs`.
+
+Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsArtinianRing (Fv F v ⊗[F] E)` using `IsArtinianRing.of_finite (Fv F v) (Fv F v ⊗[F] E)`. Establish `: IsReduced (Fv F v ⊗[F] E)` using `PI.VolStabS.isReduced_tens_field F E (Fv F v)`. Establish `: IsSemisimpleRing (Fv F v ⊗[F] E)` using `IsArtinianRing.isSemisimpleRing_of_isReduced _`. Set `s` to `sigR (Fv F v) σ`.
+
+Establish `hsw : ∀ x w, s (hR (Fv F v) σ J x w) = hR (Fv F v) σ J w x` using `PI.VolStabS.hR_herm (Fv F v) σ hinv J hJ.1`. Establish `hss : ∀ x, s (s x) = x` using `PI.VolStabS.sigR_invol (Fv F v) σ hinv`. Set `Z : Fin (r + 1) → Fin n → Fv F v ⊗[F] E` to `fun i => Matrix.vecMul (fun l => s (y i l)) (JR (F := F) (Fv F v) J)`. Establish `hZh : ∀ i w, hR (Fv F v) σ J (y i) w = ∑ k, Z i k * w k`. Introduce `i w`.
+
+Simplify using `only [hR, Formalism.UG.hform, Z, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hZ : LinearIndependent (Fv F v ⊗[F] E) Z`. Establish `hJu : IsUnit (JR (F` using `F) (Fv F v) J).det := by`. Establish `e` using `RingHom.map_det (inclR (F := F) (E := E) (Fv F v)) J`.
+
+Rewrite `e` using `[RingHom.mapMatrix_apply]`. Use `show IsUnit (J.map (inclR (Fv F v))).det`. Rewrite using `[← e]`. Conclude with `(isUnit_iff_ne_zero.2 hJ.2).map _`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations.
+
+Set `w : Fin n → Fv F v ⊗[F] E` to `fun l => ∑ i, g i * s (y i l)`. Establish `hv0 : Matrix.vecMul w (JR (F` using `F) (Fv F v) J) = 0 := by`. Use function extensionality and compare the values at `j`. Use `congrFun hg j` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Z, Matrix.vecMul, dotProduct, Finset.mul_sum, Pi.zero_apply] at this`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, w, Finset.sum_mul, Pi.zero_apply]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`. Establish `hv : w = 0`.
+
+Use `congrArg (fun u => Matrix.vecMul u (JR (F := F) (Fv F v) J)⁻¹) hv0` as an intermediate fact. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hJu, Matrix.vecMul_one, Matrix.zero_vecMul] at this`. Conclude with `this`. Establish `hX0 : ∑ i, s (g i) • y i = 0`. Use function extensionality and compare the values at `l`.
+
+Use `congrArg s (congrFun hv l)` as an intermediate fact. Simplify using `only [w, map_sum, map_mul, hss, Pi.zero_apply, map_zero] at this`. Simplify `this` using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Fintype.linearIndependent_iff.1 hy _ hX0 i` as an intermediate fact. Establish `e2` using `congrArg s this`.
+
+Simplify using `only [hss, map_zero] at e2`. Conclude with `e2`. Take `⟨q, hq⟩` from `PI.VolStabS.exists_leftInv_of_linIndep Z hZ`. Set `f' : Fin r → Fin n → Fv F v ⊗[F] E` to `fun b k => q k b.castSucc`. Establish `hyf' : ∀ i b, hR (Fv F v) σ J (y i) (f' b) = if i = b.castSucc then 1 else 0`.
+
+Introduce `i b`. Rewrite using `[hZh]`. Conclude with `hq i b.castSucc`. Establish `hyy : ∀ i j, hR (Fv F v) σ J (y i) (y j) = inclR (Fv F v) (if i = Fin.last r ∧ j = Fin.last r then algebraMap F E (-T) else 0)`. Introduce `i j`.
+
+Use `congrFun (congrFun hgram i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, hG0] at this`. Conclude with `this`. Establish `hyy0 : ∀ i (a : Fin r), hR (Fv F v) σ J (y i) (y a.castSucc) = 0`. Introduce `i a`.
+
+Rewrite using `[hyy]`. Simplify using `[Fin.castSucc_ne_last]`. Set `h2 : Fv F v ⊗[F] E` to `algebraMap F (Fv F v ⊗[F] E) (1 / 2)`. Establish `hh : h2 + h2 = 1`. Rewrite using `[← map_add, show (1 / 2 : F) + 1 / 2 = 1 by norm_num, map_one]`.
+
+Establish `hsh : s h2 = h2` using `(Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ).commutes _`. Set `c : Fin r → Fin r → Fv F v ⊗[F] E` to `fun a b => h2 * hR (Fv F v) σ J (f' a) (f' b)`. Set `f : Fin r → Fin n → Fv F v ⊗[F] E` to `fun b => f' b - ∑ a, c a b • y a.castSucc`. Establish `hyf : ∀ i b, hR (Fv F v) σ J (y i) (f b) = if i = b.castSucc then 1 else 0`. Introduce `i b`.
+
+Simplify using `only [f]`. Rewrite using `[GlobalTheory.FrameExtend.hR_sub_sum_right, hyf']`. Simplify using `[hyy0]`. Establish `hfy : ∀ b i, hR (Fv F v) σ J (f b) (y i) = if i = b.castSucc then 1 else 0`. Introduce `b i`.
+
+Rewrite using `[← hsw, hyf]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hf'y : ∀ b (d : Fin r), hR (Fv F v) σ J (f' b) (y d.castSucc) = if d = b then 1 else 0`. Introduce `b d`. Rewrite using `[← hsw, hyf']`.
+
+Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [Fin.castSucc_inj]`. Establish `hff : ∀ a b, hR (Fv F v) σ J (f a) (f b) = 0`. Introduce `a b`. Establish `e1 : hR (Fv F v) σ J (f a) (f b) = hR (Fv F v) σ J (f a) (f' b) - c a b`. Simplify using `only [f]`.
+
+Rewrite using `[GlobalTheory.FrameExtend.hR_sub_sum_right]`. Use `congr 1`. Use `fun d => hfy a (Fin.castSucc d)` as an intermediate fact. Simplify using `only [f] at this`. Simplify using `[this, Fin.castSucc_inj]`.
+
+Establish `e2 : hR (Fv F v) σ J (f' b) (f a) = hR (Fv F v) σ J (f' b) (f' a) - c b a`. Simplify using `only [f]`. Rewrite using `[GlobalTheory.FrameExtend.hR_sub_sum_right]`. Use `congr 1`. Simplify using `[hf'y]`.
+
+Establish `e3 : hR (Fv F v) σ J (f a) (f' b) = hR (Fv F v) σ J (f' a) (f' b) - h2 * hR (Fv F v) σ J (f' a) (f' b)`. Rewrite using `[← hsw, e2, map_sub, hsw]`. Simplify using `only [c, map_mul, hsh, hsw]`. Rewrite using `[e1, e3]`. Simplify using `only [c]`.
+
+Take the linear combination `(-(hR (Fv F v) σ J (f' a) (f' b))) * hh`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `hTL : ∀ i (b : Fin r), gramE σ J (tupH P) (Fin.castAdd r i) (Fin.natAdd (r + 1) b) = if i = b.castSucc then 1 else 0`. Introduce `i b`. Simplify using `only [gramE, tupH, Fin.append_left, Fin.append_right, F0]`.
+
+Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, ← hE_swap hinv hJ.1 P.z (P.f b), hfz, map_zero]`. Conclude with `(if_neg (Fin.castSucc_ne_last b).symm).symm`. Rewrite using `[Fin.snoc_castSucc, hef]`. Simplify using `only [Fin.castSucc_inj]`.
+
+Use function extensionality and compare the values at `i j`. Simplify using `only [Matrix.map_apply]`. Use `show hR (Fv F v) σ J (Fin.append y f i) (Fin.append y f j) = _`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun a => ?_) i <;>`. Use `Fin.addCases (fun j => ?_) (fun b => ?_) j` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left, Fin.append_left, hyy, ← hG0]`. Simplify using `[gramE, tupH, Fin.append_left]`. Apply the tactic sequence `rw [Fin.append_left, Fin.append_right, hyf, hTL] split_ifs <;> simp`. Apply the tactic sequence `rw [Fin.append_right, Fin.append_left, hfy, ← hGh, hTL] split_ifs <;> simp`. Rewrite using `[Fin.append_right, Fin.append_right, hff]`.
+
+Simplify using `[gramE, tupH, Fin.append_right, hff0]`.
+-/
 theorem extend_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E, LinearIndependent (Fv F v ⊗[F] E) y → gramR (Fv F v) σ J y = (gramE σ J (F0 P)).map (inclR (Fv F v)) → ∃ f : Fin r → Fin n → Fv F v ⊗[F] E, gramR (Fv F v) σ J (Fin.append y f) = (gramE σ J (tupH P)).map (inclR (Fv F v)) := by
   intro F E _ _ _ _ _ σ hσ n J hJ v r P T hP y hy hgram
   have hinv : ∀ x, σ (σ x) = x := conj_invol hσ

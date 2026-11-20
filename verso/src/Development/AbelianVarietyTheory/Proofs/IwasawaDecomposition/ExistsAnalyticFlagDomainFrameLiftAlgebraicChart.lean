@@ -17,6 +17,31 @@ noncomputable section
 
 namespace GlobalTheory.LieBase
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU X j hj hjo y hy c' hyc`. Break down `Nat.eq_zero_or_pos (Dw.p + Dw.q) with hr | hr` into its components or cases. Take `⟨W⟩` from `GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf _ _ _ _ _ _ _ _ U hU`. Take `⟨i, B, P, hB, hb₀, -, hper, -, hq⟩` from `GlobalTheory.T.algebraicChart_lift_holomorphic_periodMaps E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc`. Take `⟨q₀, hq₀, hu₀⟩` from `hq _ hb₀`.
+
+Establish `hne : ¬ LiesIn (cxOf e σ hj y) (genBd T.Z)`. Rewrite using `[← c'.e.left_inv hyc, ← hq₀]`. Conclude with `not_liesIn_cxPt q₀`. Take `⟨k, x, -, hkx⟩` from `GlobalTheory.HodgeSmooth.exists_orth (Z := T.Z) hσ hU hne`. Establish `hg : IsEmpty (Fin W.g)`.
+
+Use `⟨fun a => ?_⟩` and prove the remaining obligations. Use `(W.e a).2.2` as an intermediate fact. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult] at this`. Apply the tactic sequence `split_ifs at this <;> omega`. Use `⟨k, fun _ => x.1, analyticAt_const, Filter.mem_of_superset (hB.mem_nhds hb₀) fun w hw => ⟨x.2, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨q, hq1, hq2⟩` from `hq w hw`. Establish `hfib : W.F.u i (P (c'.e y)) = W.F.u i (P w)` using `(W.F.fibre i _ _ (hper _ hb₀) (hper w hw)).2 ⟨LinearEquiv.refl _ _, LinearEquiv.refl _ _, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, fun a => funext fun t => (hg.false t).elim⟩`. Establish `e1 : cxPt T.Z q₀ = cxPt T.Z q` using `cxPt_congr (hu₀.symm.trans (hfib.trans hq2))`. Rewrite using `[← hq1, ← e1, hq₀, c'.e.left_inv hyc]`. Conclude with `hkx`.
+
+Take `⟨W, hinj⟩` from `GlobalTheory.HodgeSmooth.exists_unfWit_inj hσ hU hr`. Take `⟨i, B, P, hB, hb₀, -, hper, hdiff, hq⟩` from `GlobalTheory.T.algebraicChart_lift_holomorphic_periodMaps E H Dw l Xo c O β Y T F e σ W.g _ W.F X j hj hjo y hy c' hyc`. Take `⟨q₀, -, hu₀⟩` from `hq _ hb₀`. Take `⟨k, x₁, t, hbor⟩` from `hU.2.2.1 q₀`. Establish `hk : W.ik k = i` using `W.F.disj _ _ _ _ (W.period k x₁) (hper _ hb₀) (((W.lie k x₁).1.symm.trans hbor.1.symm).trans hu₀.symm)`.
+
+Substitute `hk` using the available equality. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Establish `hmult : ∀ τ : E →+* ℂ, Formalism.L2.PjFree.relab c σ τ ∉ (U.X k).Ψ → Dw.mult τ = (U.X k).p0`. Introduce `τ hτ`.
+
+Rewrite using `[hp0]`. Conclude with `if_neg fun h => hτ ((hty _).2 ((hrt τ).2 h))`. Establish `hrep : ∀ b ∈ B, ∀ q : FrPt Xo c (Formalism.L2.Pj.CAt σ), W.F.u (W.ik k) (P b) = q.x → ∃ x' : (U.X k).dom, (U.un k x').x = q.x ∧ ∃ h : (Fin W.g → ℂ) ≃ₗ[ℂ] (Fin W.g → ℂ), ∀ v, P b v = h (fun j => Formalism.L2.PjFree.perFr (U.X k) x'.1 (W.φ k v : Fin (Dw.p + Dw.q) → E) (Formalism.L2 …`. Introduce `b hb q hqu`. Take `⟨x', hx', h, hh⟩` from `GlobalTheory.T.periodMap_member_eq_frame_periodMap_linear_change E H Dw l Xo c σ _ U W hσ hU hinj k (P b) (hper b hb) q hqu`.
+
+Conclude with `⟨x', hx', h, fun v => (hh v).trans (congrArg h (funext fun j => W.Pm_eq k x' v j))⟩`. Take `⟨s, hs, hev⟩` from `GlobalTheory.T.exists_analytic_frame_family_of_holomorphic_periodMaps E (Dw.p + Dw.q) (U.X k) _ (W.φ k) W.g (fun j => Formalism.L2.PjFree.relab c σ (W.e j).1) (fun j => ((W.e j).2 : ℕ)) X.dim B P (c'.e y) hB hb₀ (fun b hb => (hper b hb).1) hdiff (fun ρ hρ m hm => by`. Take `⟨τ', hτ'⟩` from `hbij.2 (conjEmb ρ)`. Establish `hn : Formalism.L2.PjFree.relab c σ τ' ∉ (U.X k).Ψ`. Rewrite using `[hτ']`.
+
+Conclude with `((U.X k).cmType ρ).1 hρ`. Establish `hm' : m < Dw.mult τ'` using `by rw [hmult τ' hn]; exact hm`. Conclude with `⟨W.e.symm ⟨τ', ⟨m, hm'⟩⟩, by rw [Equiv.apply_symm_apply]; exact hτ', by rw [Equiv.apply_symm_apply]⟩)`. Use the proof step `(fun j j' h1 h2 => by`. Establish `h1'` using `hbij.1 h1`.
+
+Conclude with `W.e.injective (Sigma.ext h1' ((Fin.heq_ext_iff (by rw [h1'])).2 h2)))`. Use the proof step `(fun j hj' => by`. Conclude with `lt_of_lt_of_eq (W.e j).2.2 (hmult _ hj'))`. Use the proof step `(fun b hb => by`. Take `⟨q, -, hqu⟩` from `hq b hb`.
+
+Take `⟨x', -, h, hh⟩` from `hrep b hb q hqu`. Conclude with `⟨x'.1, x'.2, h, hh⟩)`. Use `⟨k, s, hs, (hev.and (hB.mem_nhds hb₀)).mono fun w hw => ⟨hw.1.1, ?_⟩⟩` and prove the remaining obligations. Take `⟨q, hq1, hqu⟩` from `hq w hw.2`. Take `⟨x', hx', h, hh⟩` from `hrep w hw.2 q hqu`.
+
+Take `⟨h1, h2⟩` from `hw.1.2 x'.1 x'.2 ⟨h, hh⟩`. Rewrite using `[← hq1]`. Conclude with `cxPt_congr ((GlobalTheory.TrueCx.PointWell.pt_eq_of_block hU hσ k ⟨s w, hw.1.1⟩ x' h1 h2).trans hx')`.
+-/
 theorem exists_analytic_frame_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → ∀ y ∈ ptsIn X.str (σ.comp e.toRingHom) (openPart j), ∀ c' : AlgChart X.str (σ.comp e.toRingHom) X.dim, y ∈ c'.e.source → ∃ (k' : U.Comp) (s : ReciprocityTheory.L2DbarEstimates.V X.dim → ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k').Ψ (Dw.p + Dw.q)), AnalyticAt ℂ s (c'.e y) ∧ ∀ᶠ w in 𝓝 (c'.e y), ∃ hs : s w ∈ (U.X k').dom, cxPt T.Z (U.un k' ⟨s w, hs⟩) = cxOf e σ hj (c'.e.symm w) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU X j hj hjo y hy c' hyc
   rcases Nat.eq_zero_or_pos (Dw.p + Dw.q) with hr | hr

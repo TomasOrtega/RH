@@ -10,21 +10,33 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {r : ℕ}
 
+/- English proof (translation)
+Use `filter_upwards [h.eventuallyEq_nhds] with c' hc'`. Simplify using `only [pbOp, wirtBar, hc'.fderiv_eq]`.
+-/
 theorem pbOp_germ (l : Fin r) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     pbOp l f₁ =ᶠ[𝓝 c] pbOp l f₂ := by
   filter_upwards [h.eventuallyEq_nhds] with c' hc'
   simp only [pbOp, wirtBar, hc'.fderiv_eq]
 
+/- English proof (translation)
+Use `filter_upwards [h] with c' hc'`. Simplify using `only [cbOp, hc']`.
+-/
 theorem cbOp_germ (l : Fin r) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     cbOp l f₁ =ᶠ[𝓝 c] cbOp l f₂ := by
   filter_upwards [h] with c' hc'
   simp only [cbOp, hc']
 
+/- English proof (translation)
+Use `filter_upwards [h] with c' hc'`. Simplify using `only [cbiOp, hc']`.
+-/
 theorem cbiOp_germ (l : Fin r) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     cbiOp l f₁ =ᶠ[𝓝 c] cbiOp l f₂ := by
   filter_upwards [h] with c' hc'
   simp only [cbiOp, hc']
 
+/- English proof (translation)
+Unfold `pbN`. Use `split_ifs with hi`. Conclude with `pbOp_germ _ h`. Conclude with `EventuallyEq.rfl`.
+-/
 theorem pbN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     pbN r i f₁ =ᶠ[𝓝 c] pbN r i f₂ := by
   unfold pbN
@@ -32,6 +44,9 @@ theorem pbN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → �
   · exact pbOp_germ _ h
   · exact EventuallyEq.rfl
 
+/- English proof (translation)
+Unfold `cbN`. Use `split_ifs with hi`. Conclude with `cbOp_germ _ h`. Conclude with `EventuallyEq.rfl`.
+-/
 theorem cbN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     cbN r i f₁ =ᶠ[𝓝 c] cbN r i f₂ := by
   unfold cbN
@@ -39,6 +54,9 @@ theorem cbN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → �
   · exact cbOp_germ _ h
   · exact EventuallyEq.rfl
 
+/- English proof (translation)
+Unfold `cbiN`. Use `split_ifs with hi`. Conclude with `cbiOp_germ _ h`. Conclude with `EventuallyEq.rfl`.
+-/
 theorem cbiN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → ℂ} (h : f₁ =ᶠ[𝓝 c] f₂) :
     cbiN r i f₁ =ᶠ[𝓝 c] cbiN r i f₂ := by
   unfold cbiN
@@ -46,6 +64,9 @@ theorem cbiN_germ (i : ℕ) {f₁ f₂ : (Fin r → ℂ) → X} {c : Fin r → �
   · exact cbiOp_germ _ h
   · exact EventuallyEq.rfl
 
+/- English proof (translation)
+The claim follows from `| 0, f₁, f₂, c, h => ⟨h, EventuallyEq.rfl⟩ | m + 1, f₁, f₂, c, h => by have hin : (fun c' => (w - (m : ℂ)) • f₁ c' - pbN r (r - m - 1) f₁ c') =ᶠ[𝓝 c] (fun c' => (w - (m : ℂ)) • f₂ c' - pbN r (r - m - 1) f₂ c') := by filter_upwards [h, pbN_germ (r - m - 1) h] with c' h1 h2 rw [h1, …`.
+-/
 theorem iteratedOperator_germ (w : ℂ) : ∀ (m : ℕ) (f₁ f₂ : (Fin r → ℂ) → X) (c : Fin r → ℂ), f₁ =ᶠ[𝓝 c] f₂ →
     (kvP r w m).1 f₁ =ᶠ[𝓝 c] (kvP r w m).1 f₂ ∧ (kvP r w m).2 f₁ =ᶠ[𝓝 c] (kvP r w m).2 f₂
   | 0, f₁, f₂, c, h => ⟨h, EventuallyEq.rfl⟩
@@ -62,6 +83,9 @@ theorem iteratedOperator_germ (w : ℂ) : ∀ (m : ℕ) (f₁ f₂ : (Fin r → 
     filter_upwards [ih1.1, cbN_germ (r - m) (cbiN_germ (r - m - 1) ih2.2)] with c' h1 h2
     rw [h1, h2]
 
+/- English proof (translation)
+The claim follows from `| 0, f₁, f₂, c, h => ⟨h, EventuallyEq.rfl⟩ | i + 1, f₁, f₂, c, h => by have ih := vABm_germ y i f₁ f₂ c h by_cases hi : i < r · simp only [vABm, dif_pos hi] refine ⟨?_, cbiOp_germ _ ih.1⟩ filter_upwards [ih.1, pbOp_germ ⟨i, hi⟩ ih.1, cbOp_germ ⟨i, hi⟩ ih.2] with c' h1 h2 h3 simp …`.
+-/
 theorem vABm_germ (y : ℂ) : ∀ (m : ℕ) (f₁ f₂ : (Fin r → ℂ) → X) (c : Fin r → ℂ), f₁ =ᶠ[𝓝 c] f₂ →
     (vABm r y m).1 f₁ =ᶠ[𝓝 c] (vABm r y m).1 f₂ ∧ (vABm r y m).2 f₁ =ᶠ[𝓝 c] (vABm r y m).2 f₂
   | 0, f₁, f₂, c, h => ⟨h, EventuallyEq.rfl⟩

@@ -24,37 +24,64 @@ section Comb
 
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comb_eq_sum (c : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T c f = c.sum fun u a => a • heisO ψ S T u f := rfl
 
+/- English proof (translation)
+Rewrite using `[comb_eq_sum, Finsupp.sum_zero_index]`.
+-/
 theorem comb_zero_left (f : WO S T → ℂ) : comb ψ S T 0 f = 0 := by
   rw [comb_eq_sum, Finsupp.sum_zero_index]
 
+/- English proof (translation)
+Rewrite using `[comb_eq_sum, comb_eq_sum, comb_eq_sum]`. Conclude with `Finsupp.sum_add_index' (fun i => zero_smul ℂ (heisO ψ S T i f)) fun i a b => add_smul a b (heisO ψ S T i f)`.
+-/
 theorem comb_add_left (c₁ c₂ : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (c₁ + c₂) f = comb ψ S T c₁ f + comb ψ S T c₂ f := by
   rw [comb_eq_sum, comb_eq_sum, comb_eq_sum]
   exact Finsupp.sum_add_index' (fun i => zero_smul ℂ (heisO ψ S T i f)) fun i a b => add_smul a b (heisO ψ S T i f)
 
+/- English proof (translation)
+Rewrite using `[comb_eq_sum, comb_eq_sum, Finsupp.sum_smul_index' (fun i => zero_smul ℂ (heisO ψ S T i f)), Finsupp.smul_sum]`. Simplify using `only [smul_smul, smul_eq_mul]`.
+-/
 theorem comb_smul_left (a : ℂ) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (a • c) f = a • comb ψ S T c f := by
   rw [comb_eq_sum, comb_eq_sum, Finsupp.sum_smul_index' (fun i => zero_smul ℂ (heisO ψ S T i f)), Finsupp.smul_sum]
   simp only [smul_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T u f))]`.
+-/
 theorem comb_single (u : WO S T) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single u a) f = a • heisO ψ S T u f := by
   rw [comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T u f))]
 
 variable {S T} {P : Pl D → Prop}
 
+/- English proof (translation)
+Introduce `u hu` and use `by simp at hu`.
+-/
 theorem combAt_zero : CombAt P (0 : WO S T →₀ ℂ) := fun u hu => by simp at hu
 
 open Classical in
+/- English proof (translation)
+Introduce `u hu` and use `(Finset.mem_union.1 (Finsupp.support_add hu)).elim (h₁ u) (h₂ u)`.
+-/
 theorem combAt_add {c₁ c₂ : WO S T →₀ ℂ} (h₁ : CombAt P c₁) (h₂ : CombAt P c₂) : CombAt P (c₁ + c₂) :=
   fun u hu => (Finset.mem_union.1 (Finsupp.support_add hu)).elim (h₁ u) (h₂ u)
 
+/- English proof (translation)
+Introduce `u hu` and use `h u (Finsupp.support_smul hu)`.
+-/
 theorem combAt_smul (a : ℂ) {c : WO S T →₀ ℂ} (h : CombAt P c) : CombAt P (a • c) :=
   fun u hu => h u (Finsupp.support_smul hu)
 
+/- English proof (translation)
+Introduce `u' hu'` and use `by rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu')] exact hu`.
+-/
 theorem combAt_single {u : WO S T} (hu : MxAt P u) (a : ℂ) : CombAt P (Finsupp.single u a) := fun u' hu' => by
   rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu')]
   exact hu
@@ -65,10 +92,16 @@ section Rd
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {p : SplitPt D k} {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {S T : HSp D}
 
+/- English proof (translation)
+Unfold `rd`. Rewrite using `[Matrix.map_add p.pr (map_add p.pr), Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem rd_add (α : Frame p S n') (β : Frame p T n) (t s : WO S T) : rd α β (t + s) = rd α β t + rd α β s := by
   unfold rd
   rw [Matrix.map_add p.pr (map_add p.pr), Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `rd`. Establish `: (N • t).map p.pr = (N : k) • t.map p.pr`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, nsmul_eq_mul, map_mul, map_natCast]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem rd_nsmul (α : Frame p S n') (β : Frame p T n) (N : ℕ) (t : WO S T) : rd α β (N • t) = (N : k) • rd α β t := by
   unfold rd
   have : (N • t).map p.pr = (N : k) • t.map p.pr := by
@@ -78,6 +111,21 @@ theorem rd_nsmul (α : Frame p S n') (β : Frame p T n) (N : ℕ) (t : WO S T) :
 
 end Rd
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT Ψ hΨ`. Take `⟨Na, hNa, ha⟩` from `GlobalTheory.FinPl.RdBound.exists_nat_mul_rd_mem D k p n n' S T α β LS LT hS hT`. Take `⟨Nb, hNb, hb⟩` from `GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int D k p n n' S T α β LS LT hS hT`. Take `⟨Nc, hNc, hc1, hc2⟩` from `GlobalTheory.SBUnif.uniform k n n' Ψ hΨ`. Establish `hhalf_add : ∀ {t u : WO S T}, IsHalf p.e u → (IsHalf p.e (t + u) ↔ IsHalf p.e t)` using `fun {t u} hu => forall_congr' fun i => forall_congr' fun j => by`.
+
+Rewrite using `[Matrix.add_apply, mul_add, hu i j, add_left_inj]`. Establish `hhalf_nsmul : ∀ (N : ℕ) {t : WO S T}, IsHalf p.e t → IsHalf p.e (N • t)` using `fun N t ht i j => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, ht i j]`. Use `⟨fun t ht => ?_, Na * Nb * Nc, Nat.mul_pos (Nat.mul_pos hNa hNb) hNc, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by simp [extFun, h])`. Establish `hu' : IsHalf p.e ((Na * Nb * Nc) • u)` using `hhalf_nsmul _ hh`. Unfold `extFun`. Rewrite using `[if_congr (hhalf_add hu') rfl rfl]`. Use `split_ifs with h`.
+
+Rewrite using `[rd_add, rd_nsmul, show ((Na * Nb * Nc : ℕ) : k) • rd α β u = (Nc : k) • (((Nb : k) * Na) • rd α β u) by`. Rewrite using `[smul_smul]`. Use `push_cast`. Use the proof step `ring_nf]`. Use `hc1 _ _ fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `mul_mem (by exact_mod_cast (algebraMap ℤ 𝒪[k] Nb).2) (ha u hu hh i j)`. Both sides reduce to the same expression. Establish `hth : IsHalf p.e t`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by simp [extFun, h])`. Establish `hΨt : Ψ (rd α β t) ≠ 0` using `by simpa [extFun, hth] using ht`. Establish `h1` using `hb (Nc • t) (hhalf_nsmul _ hth) fun i j => by`. Rewrite using `[rd_nsmul, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hc2 _ hΨt i j`.
+
+Rewrite using `[show (Na * Nb * Nc) • t = Na • (Nb • (Nc • t)) by rw [smul_smul, smul_smul, mul_assoc]]`. Conclude with `nsmul_mem h1 Na`.
+-/
 theorem isSBHalf_extFun : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT →
@@ -117,6 +165,17 @@ theorem isSBHalf_extFun : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [To
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `Λ`. Establish `he` using `hs.1`. Establish `hec` using `hs.2.1`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← map_mul, he]`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * e = e` using `by rw [← heq]; linear_combination he + hec`.
+
+Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e` using `by rw [← heq]; linear_combination he' + hec`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T LS LT hψ hS hT).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T LS LT hS.1.fg hT.1.fg fun w => w = v`. Use `⟨fun u hu y hy => (hdual u (infPart_half hε heε hu.2)).1 (latO_le_top _ hu.1) y (latO_le_top _ hy.1), mem_of_dual hε hdual he heε heε', fun y hy h => ?_, fun k hk => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `mem_of_dual hε hdual he' heε' (by rwa [cA_cA]) y hy fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite `hu` using `[cA_cA]`. Rewrite using `[symplO_skew, AddChar.map_neg_eq_inv, h u hu, inv_one]`. Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`.
+
+Use `⟨_, ⟨r, hr, rfl⟩, e • u, idem_smul_mem hε he heε (latO_le_top _ hu), ?_⟩` and prove the remaining obligations. Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Take `⟨k, hk, hky⟩` from `exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_half hε heε' hy)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+
+Use `(idem_smul_mem hε he' heε' hky).1` as an intermediate fact. Rewrite `this` using `[smul_comm, (mem_half S T).1 hy]`. Then use the resulting hypothesis.
+-/
 theorem dualPair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : Lat T}
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) {e : AE D} {v : Pl D} (hs : IsSplitIdem D e) {ε : AF D.host.F}
     (hε : IsPlaceIdem D v ε) (heq : e + cA D e = algebraMap (AF D.host.F) (AE D) ε) :
@@ -150,6 +209,35 @@ theorem dualPair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S
     have := (idem_smul_mem hε he' heε' hky).1
     rwa [smul_comm, (mem_half S T).1 hy] at this
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ ψ hψ S T α β LS LT hS hT Ψ hΨ`. Take `⟨ε, hε, heq⟩` from `p.above`. Establish `hs` using `p.split`. Establish `he` using `hs.1`. Establish `hec` using `hs.2.1`.
+
+Establish `he' : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, he]`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * p.e = p.e` using `by rw [← heq]; linear_combination he + hec`. Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D p.e = cA D p.e`. Rewrite using `[← heq]`. Take the linear combination `he' + hec`.
+
+Take `⟨hLL', hX, -, hfin, hden⟩` from `dualPair hψ hS hT hs hε heq`. Use `set Λ := latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v) with hΛ`. Establish `hΦ` using `isSBHalf_extFun D k p n n' S T α β LS LT hS hT Ψ hΨ`. Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S T => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S T hk a, ← inv_smul_nsmul S T hk b]`.
+
+Conclude with `congrArg _ hab`. Establish `hb` using `isBichar_symplO S T ψ`. Establish `hm : extFun α β Ψ ∈ waveSpan (fun x y : WO S T => ψ (symplO S T x y)) (half S T p.e) (half S T (cA D p.e)) (Λ ⊓ half S T p.e)`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Conclude with `mem_waveSpan hb inf_le_right inf_le_right hLL' hX (half_div S T p.e) (half_div S T _) tf hfin _ (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2)) fun t ht => ⟨h3 t ht, (half S T p.e).nsmul_mem ((isHalf_iff S T).1 (h1 t ht)) _⟩`.
+
+Establish `hεid : algebraMap (AF D.host.F) (AE D) ε ∈ idAt D (· = p.v)`. Take `⟨a, rfl, -, h0⟩` from `id hε`. Conclude with `LatMem.tmul_mem_idAt (fun w hw => h0 w hw) 1`. Establish `hsupp : ∀ {e' : AE D}, algebraMap (AF D.host.F) (AE D) ε * e' = e' → ∀ x ∈ half S T e', ∀ i j, x i j ∈ idAt D (· = p.v)` using `fun {e'} h x hx i j => by`. Establish `h1` using `(isHalf_iff S T).2 hx i j`.
+
+Establish `: x i j = algebraMap (AF D.host.F) (AE D) ε * x i j`. Take the linear combination `(algebraMap (AF D.host.F) (AE D) ε - 1) * h1 - x i j * h`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hεid`. Establish `hmx : ∀ x ∈ half S T p.e, ∀ y ∈ half S T (cA D p.e), MxAt (· = p.v) (x + y)` using `fun x hx y hy i j => by`.
+
+Rewrite using `[Matrix.add_apply]`. Conclude with `add_mem (hsupp heε x hx i j) (hsupp heε' y hy i j)`. Generalize the expression as in `extFun α β Ψ = Φ at hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem _ hh`.
+
+Take `⟨x, hx, y, hy, rfl⟩` from `hh`. Use `⟨Finsupp.single (x + y) (ψ (symplOH S T x y)), combAt_single (hmx x hx y hy) _, fun f₀ Tm h => ?_⟩` and prove the remaining obligations. Establish `s0` using `GlobalTheory.isSBHalf_halfInd p.e Λ`. Establish `s1 : IsSBHalf p.e Λ fun t => ψ (symplO S T t y) * halfInd p.e Λ t`. Take `⟨k, hk, hk'⟩` from `hden y hy`.
+
+Take `⟨a1, k', hk1, a2, a3⟩` from `s0`. Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : halfInd p.e Λ (t + (k * k') • u) = halfInd p.e Λ t`. Rewrite using `[mul_nsmul]`. Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hh) k)) t`.
+
+Establish `e2 : ψ (symplO S T ((k * k') • u) y) = 1`. Rewrite using `[mul_nsmul']`. Conclude with `(hb.nsmul k _ y).trans (hLL' _ (nsmul_mem (AddSubgroup.mem_inf.2 ⟨hu, (isHalf_iff S T).1 hh⟩) k') _ ⟨hk', nsmul_mem hy k⟩)`. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`. Rewrite using `[mul_nsmul']`.
+
+Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`. Establish `e1 : wave (fun x y : WO S T => ψ (symplO S T x y)) (Λ ⊓ half S T p.e) x y = fun t => (fun t => ψ (symplO S T t y) * halfInd p.e Λ t) (t + x)`. Rewrite using `[halfInd_eq_ind]`. Both sides reduce to the same expression. Establish `v1` using `h.vac`.
+
+Rewrite `v1` using `[one_smul]`. Rewrite using `[e1, h.trans _ s1 x ((isHalf_iff S T).2 hx), h.modul _ s0 y ((isHalf_iff S T).2 hy), v1, comb_single]`. Conclude with `heisL_heisL S T ψ x y f₀`. Consider the case `zero => exact ⟨0, combAt_zero, fun f₀ Tm _ => by rw [LinearMap.map_zero, comb_zero_left]⟩`. Consider the case `add f g _ _ hf hg`.
+
+Take `⟨c₁, hc₁, h₁⟩` from `hf`. Take `⟨c₂, hc₂, h₂⟩` from `hg`. Conclude with `⟨c₁ + c₂, combAt_add hc₁ hc₂, fun f₀ Tm h => by`. Rewrite using `[LinearMap.map_add, h₁ f₀ Tm h, h₂ f₀ Tm h, comb_add_left]⟩`. Consider the case `smul a f _ hf`.
+
+Take `⟨c, hc, h₁⟩` from `hf`. Conclude with `⟨a • c, combAt_smul a hc, fun f₀ Tm h => by rw [LinearMap.map_smul, h₁ f₀ Tm h, comb_smul_left]⟩`.
+-/
 theorem extFun_comb : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ Ψ ∈ SB (Matrix n n' k), ∃ c : WO S T →₀ ℂ, CombAt (· = p.v) c ∧ ∀ (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsPlaceModel ψ (symplO S T) (heisO ψ S T) p.e (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v)) 1 f₀ Tm → Tm (extFun α β Ψ) = comb ψ S T c f₀ := by
   classical
   intro D k _ _ _ _ p n n' _ _ _ _ ψ hψ S T α β LS LT hS hT Ψ hΨ

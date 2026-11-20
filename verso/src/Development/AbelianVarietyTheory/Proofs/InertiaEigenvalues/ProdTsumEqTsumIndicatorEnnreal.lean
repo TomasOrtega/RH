@@ -14,23 +14,40 @@ noncomputable def ofFinset (S : Finset I) (y : S → X) : I →₀ X := by
   exact Finsupp.onFinset S (fun i => if h : i ∈ S then y ⟨i, h⟩ else 0) (by
     intro i hi; by_contra h; exact hi (dif_neg h))
 
+/- English proof (translation)
+Simplify using `[ofFinset, Finsupp.onFinset_apply, i.2]`.
+-/
 theorem ofFinset_apply (S : Finset I) (y : S → X) (i : S) : ofFinset S y i = y i := by
   classical
   simp [ofFinset, Finsupp.onFinset_apply, i.2]
 
+/- English proof (translation)
+Simplify using `[ofFinset, Finsupp.onFinset_apply, h]`.
+-/
 theorem ofFinset_apply_of_notMem (S : Finset I) (y : S → X) {i : I} (h : i ∉ S) :
     ofFinset S y i = 0 := by
   classical
   simp [ofFinset, Finsupp.onFinset_apply, h]
 
+/- English proof (translation)
+Introduce `y z h`. Use function extensionality and compare the values at `i`. Rewrite using `[← ofFinset_apply S y i, ← ofFinset_apply S z i, h]`.
+-/
 theorem ofFinset_injective (S : Finset I) : Function.Injective (ofFinset (X := X) S) := by
   intro y z h; funext i; rw [← ofFinset_apply S y i, ← ofFinset_apply S z i, h]
 
+/- English proof (translation)
+Introduce `i hi`. Assume the negation of the conclusion as `h`. Conclude with `(Finsupp.mem_support_iff.1 hi) (ofFinset_apply_of_notMem S y h)`.
+-/
 theorem support_ofFinset_subset (S : Finset I) (y : S → X) : (ofFinset S y).support ⊆ S := by
   intro i hi
   by_contra h
   exact (Finsupp.mem_support_iff.1 hi) (ofFinset_apply_of_notMem S y h)
 
+/- English proof (translation)
+Use `⟨fun i => l i, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Distinguish the cases in `h : i ∈ S`. Conclude with `ofFinset_apply S _ ⟨i, h⟩`. Rewrite using `[ofFinset_apply_of_notMem S _ h]`.
+
+Conclude with `(Finsupp.notMem_support_iff.1 (fun hi => h (hl hi))).symm`.
+-/
 theorem mem_range_ofFinset (S : Finset I) (l : I →₀ X) (hl : l.support ⊆ S) :
     l ∈ Set.range (ofFinset S) := by
   refine ⟨fun i => l i, ?_⟩
@@ -40,12 +57,20 @@ theorem mem_range_ofFinset (S : Finset I) (l : I →₀ X) (hl : l.support ⊆ S
   · rw [ofFinset_apply_of_notMem S _ h]
     exact (Finsupp.notMem_support_iff.1 (fun hi => h (hl hi))).symm
 
+/- English proof (translation)
+Rewrite using `[Finsupp.prod_of_support_subset _ (support_ofFinset_subset S y) f (fun i _ => hf0 i), ← Finset.prod_coe_sort S]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [ofFinset_apply]`.
+-/
 theorem prod_ofFinset {M : Type} [CommMonoid M] (f : I → X → M) (hf0 : ∀ v, f v 0 = 1)
     (S : Finset I) (y : S → X) : (ofFinset S y).prod f = ∏ i : S, f i (y i) := by
   rw [Finsupp.prod_of_support_subset _ (support_ofFinset_subset S y) f (fun i _ => hf0 i),
     ← Finset.prod_coe_sort S]
   exact Finset.prod_congr rfl fun i _ => by rw [ofFinset_apply]
 
+/- English proof (translation)
+Use `((ofFinset_injective S).tsum_eq ?_).symm.trans ?_` and prove the remaining obligations. Introduce `l hl`. Assume the negation of the conclusion as `h`. Conclude with `hl (Set.indicator_of_notMem (fun hs => h (mem_range_ofFinset S l hs)) _)`. Use `tsum_congr fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[Set.indicator_of_mem (show ofFinset S y ∈ {l : I →₀ X | l.support ⊆ S} from support_ofFinset_subset S y), prod_ofFinset f hf0]`.
+-/
 theorem tsum_indicator_support_subset {R : Type} [CommSemiring R] [TopologicalSpace R]
     (f : I → X → R) (hf0 : ∀ v, f v 0 = 1) (S : Finset I) :
     ∑' l : I →₀ X, ({l : I →₀ X | l.support ⊆ S}.indicator (fun l => l.prod f) l) =
@@ -58,6 +83,9 @@ theorem tsum_indicator_support_subset {R : Type} [CommSemiring R] [TopologicalSp
     rw [Set.indicator_of_mem (show ofFinset S y ∈ {l : I →₀ X | l.support ⊆ S} from
       support_ofFinset_subset S y), prod_ofFinset f hf0]
 
+/- English proof (translation)
+Rewrite using `[tsum_indicator_support_subset f hf0 S, GlobalTheory.VolBoxMajorant.tsum_pi_prod_ennreal' (fun (i : S) x => f i x), Finset.prod_coe_sort S (fun v => ∑' x, f v x)]`.
+-/
 theorem prod_tsum_eq_tsum_indicator_ennreal (f : I → X → ℝ≥0∞) (hf0 : ∀ v, f v 0 = 1)
     (S : Finset I) :
     ∏ v ∈ S, ∑' x, f v x =
@@ -66,6 +94,9 @@ theorem prod_tsum_eq_tsum_indicator_ennreal (f : I → X → ℝ≥0∞) (hf0 : 
     GlobalTheory.VolBoxMajorant.tsum_pi_prod_ennreal' (fun (i : S) x => f i x),
     Finset.prod_coe_sort S (fun v => ∑' x, f v x)]
 
+/- English proof (translation)
+Rewrite using `[tsum_indicator_support_subset f hf0 S, (GlobalTheory.hasSum_pi_prod_of_summable_norm S (fun _ => X) (fun i x => f i x) (fun i => hv i)).tsum_eq, Finset.prod_coe_sort S (fun v => ∑' x, f v x)]`.
+-/
 theorem prod_tsum_eq_tsum_indicator (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 1)
     (hv : ∀ v, Summable fun x => ‖f v x‖) (S : Finset I) :
     ∏ v ∈ S, ∑' x, f v x =
@@ -76,6 +107,13 @@ theorem prod_tsum_eq_tsum_indicator (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 
       (fun i => hv i)).tsum_eq,
     Finset.prod_coe_sort S (fun v => ∑' x, f v x)]
 
+/- English proof (translation)
+Establish `hmono : Monotone (fun S : Finset I => ∏ v ∈ S, ∑' x, f v x)`. Introduce `S T hST`. Conclude with `Finset.prod_le_prod_of_subset_of_one_le' hST (fun v _ _ => (hf0 v).symm.le.trans (ENNReal.le_tsum 0))`. Establish `hsup : ⨆ S : Finset I, ∏ v ∈ S, ∑' x, f v x = ∑' l : I →₀ X, l.prod f`. Repeatedly rewrite using `[prod_tsum_eq_tsum_indicator_ennreal f hf0]`.
+
+Use `le_antisymm (iSup_le fun S => ENNReal.tsum_le_tsum fun l => ?_) ?_` and prove the remaining obligations. Conclude with `Set.indicator_le_self _ _ l`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun T => le_iSup_of_le (T.biUnion Finsupp.support) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `tendsto_atTop_iSup hmono` as an intermediate fact. Rewrite `this` using `[hsup]`. Conclude with `this`.
+-/
 theorem hasProd_tsum_finsupp_ennreal (f : I → X → ℝ≥0∞) (hf0 : ∀ v, f v 0 = 1) :
     HasProd (fun v => ∑' x, f v x) (∑' l : I →₀ X, l.prod f) := by
   classical
@@ -100,10 +138,16 @@ theorem hasProd_tsum_finsupp_ennreal (f : I → X → ℝ≥0∞) (hf0 : ∀ v, 
   rw [hsup] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `(hasProd_tsum_finsupp_ennreal f hf0).tprod_eq.symm`.
+-/
 theorem tsum_finsupp_eq_tprod_ennreal (f : I → X → ℝ≥0∞) (hf0 : ∀ v, f v 0 = 1) :
     ∑' l : I →₀ X, l.prod f = ∏' v, ∑' x, f v x :=
   (hasProd_tsum_finsupp_ennreal f hf0).tprod_eq.symm
 
+/- English proof (translation)
+Establish `h1 : Summable fun x : {x : X // x ≠ 0} => ‖f v x‖` using `((summable_prod_of_nonneg fun _ => norm_nonneg _).1 hsum).1 v`. Use `haveI : Finite ↥({x : X | x ≠ 0}ᶜ) := ((Set.finite_singleton (0 : X)).subset (by intro x hx; simpa using hx)).to_subtype`. Conclude with `(summable_subtype_and_compl (s := {x : X | x ≠ 0})).1 ⟨h1, Summable.of_finite⟩`.
+-/
 theorem summable_norm_local (f : I → X → ℂ)
     (hsum : Summable fun p : I × {x : X // x ≠ 0} => ‖f p.1 p.2‖) (v : I) :
     Summable fun x => ‖f v x‖ := by
@@ -113,6 +157,19 @@ theorem summable_norm_local (f : I → X → ℂ)
     ((Set.finite_singleton (0 : X)).subset (by intro x hx; simpa using hx)).to_subtype
   exact (summable_subtype_and_compl (s := {x : X | x ≠ 0})).1 ⟨h1, Summable.of_finite⟩
 
+/- English proof (translation)
+Establish `hP` using `(summable_prod_of_nonneg fun _ => norm_nonneg _).1 hsum`. Set `a : I → ℝ` to `fun v => ∑' x : {x : X // x ≠ 0}, ‖f v x‖`. Establish `hA : Summable a` using `hP.2`. Establish `ha0 : ∀ v, 0 ≤ a v` using `fun v => tsum_nonneg fun _ => norm_nonneg _`. Set `g : I → X → ℝ≥0∞` to `fun v x => ENNReal.ofReal ‖f v x‖`.
+
+Establish `hg0 : ∀ v, g v 0 = 1` using `by intro v; simp [g, hf0 v]`. Establish `hgv : ∀ v, ∑' x, g v x = ENNReal.ofReal (1 + a v)`. Introduce `v`. Rewrite using `[ENNReal.tsum_eq_add_tsum_ite 0, hg0, ENNReal.ofReal_add zero_le_one (ha0 v), ENNReal.ofReal_one, ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hP.1 v)]`. Use `congr 1`.
+
+Use `Eq.trans ?_ (tsum_subtype {x : X | x ≠ 0} (fun x => ENNReal.ofReal ‖f v x‖)).symm` and prove the remaining obligations. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : x = 0 <;> simp [hx, g]`. Establish `hprod : ∀ l : I →₀ X, ENNReal.ofReal ‖l.prod f‖ = l.prod g`. Introduce `l`.
+
+Simplify using `only [Finsupp.prod, norm_prod, g]`. Conclude with `ENNReal.ofReal_prod_of_nonneg fun _ _ => norm_nonneg _`. Use `summable_of_sum_le (c := Real.exp (∑' v, a v)) (fun _ => norm_nonneg _) fun T => ?_` and prove the remaining obligations. Establish `hS` using `prod_tsum_eq_tsum_indicator_ennreal g hg0 (T.biUnion Finsupp.support)`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (Real.exp_pos _).le, ENNReal.ofReal_sum_of_nonneg fun _ _ => norm_nonneg _]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, Set.indicator_of_mem (show l ∈ {l : I →₀ X | l.support ⊆ T.biUnion Finsupp.support} from Finset.subset_biUnion_of_mem Finsupp.support hl) (fun l : I →₀ X => l.prod g)]`. Use `_ ≤ _ := ENNReal.sum_le_tsum T`. Use `_ = ∏ v ∈ T.biUnion Finsupp.support, ∑' x, g v x := hS.symm`. Use `_ = ENNReal.ofReal (∏ v ∈ T.biUnion Finsupp.support, (1 + a v)) := by`.
+
+Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun v _ => by linarith [ha0 v]]`. Conclude with `Finset.prod_congr rfl fun v _ => hgv v`. Use `_ ≤ ENNReal.ofReal (Real.exp (∑' v, a v)) := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem summable_norm_finsupp_prod (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 1)
     (hsum : Summable fun p : I × {x : X // x ≠ 0} => ‖f p.1 p.2‖) :
     Summable fun l : I →₀ X => ‖l.prod f‖ := by
@@ -159,6 +216,11 @@ theorem summable_norm_finsupp_prod (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 1
           _ = Real.exp (∑ v ∈ T.biUnion Finsupp.support, a v) := (Real.exp_sum _ _).symm
           _ ≤ Real.exp (∑' v, a v) := Real.exp_le_exp.2 (hA.sum_le_tsum _ (fun v _ => ha0 v))
 
+/- English proof (translation)
+Establish `hN` using `summable_norm_finsupp_prod f hf0 hsum`. Establish `key : (fun S : Finset I => ∏ v ∈ S, ∑' x, f v x) = fun S => ∑' l : I →₀ X, ({l : I →₀ X | l.support ⊆ S}.indicator (fun l => l.prod f) l)`. Use function extensionality and compare the values at `(prod_tsum_eq_tsum_indicator f hf0 (summable_norm_local f hsum))`. Use `show Tendsto (fun S : Finset I => ∏ v ∈ S, ∑' x, f v x) atTop _`. Rewrite using `[key]`.
+
+Use `tendsto_tsum_of_dominated_convergence (bound := fun l : I →₀ X => ‖l.prod f‖) hN (fun l => ?_) (Eventually.of_forall fun S l => norm_indicator_le_norm_self _ _)` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop l.support] with S hS`. Conclude with `(Set.indicator_of_mem (show l ∈ {l : I →₀ X | l.support ⊆ S} from hS) (fun l : I →₀ X => l.prod f)).symm`.
+-/
 theorem hasProd_tsum_finsupp (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 1)
     (hsum : Summable fun p : I × {x : X // x ≠ 0} => ‖f p.1 p.2‖) :
     HasProd (fun v => ∑' x, f v x) (∑' l : I →₀ X, l.prod f) := by
@@ -176,6 +238,9 @@ theorem hasProd_tsum_finsupp (f : I → X → ℂ) (hf0 : ∀ v, f v 0 = 1)
   exact (Set.indicator_of_mem (show l ∈ {l : I →₀ X | l.support ⊆ S} from hS)
     (fun l : I →₀ X => l.prod f)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨summable_norm_finsupp_prod f hf0 hsum, hasProd_tsum_finsupp f hf0 hsum, (hasProd_tsum_finsupp f hf0 hsum).tprod_eq.symm⟩`.
+-/
 theorem euler_product_intVec {I : Type} (n : ℕ) (f : I → (Fin n → ℤ) → ℂ)
     (hf0 : ∀ v, f v 0 = 1)
     (hsum : Summable fun p : I × {x : Fin n → ℤ // x ≠ 0} => ‖f p.1 p.2‖) :
@@ -185,6 +250,9 @@ theorem euler_product_intVec {I : Type} (n : ℕ) (f : I → (Fin n → ℤ) →
   ⟨summable_norm_finsupp_prod f hf0 hsum, hasProd_tsum_finsupp f hf0 hsum,
     (hasProd_tsum_finsupp f hf0 hsum).tprod_eq.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hasProd_tsum_finsupp_ennreal f hf0, tsum_finsupp_eq_tprod_ennreal f hf0⟩`.
+-/
 theorem euler_product_intVec_ennreal {I : Type} (n : ℕ) (f : I → (Fin n → ℤ) → ℝ≥0∞)
     (hf0 : ∀ v, f v 0 = 1) :
     HasProd (fun v => ∑' x, f v x) (∑' l : I →₀ (Fin n → ℤ), l.prod f) ∧

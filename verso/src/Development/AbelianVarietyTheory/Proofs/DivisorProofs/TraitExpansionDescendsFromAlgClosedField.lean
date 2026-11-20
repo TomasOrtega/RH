@@ -14,16 +14,30 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TraitDescent
 
+/- English proof (translation)
+Rewrite using `[gs_eq p z ⊤ trivial, map_one, map_one]`.
+-/
 theorem gs_one {Y Z : Scheme.{0}} (p : Z ⟶ Y) (z : Z) : gs p z ⊤ (1 : Γ(Y, ⊤)) = 1 := by
   rw [gs_eq p z ⊤ trivial, map_one, map_one]
 
+/- English proof (translation)
+Unfold `scal`. Rewrite using `[map_mul, map_mul]`.
+-/
 theorem scal_mul {A : Type} [CommRing A] {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of A)) (a b : A) :
     scal g (a * b) = scal g a * scal g b := by
   unfold scal; rw [map_mul, map_mul]
 
+/- English proof (translation)
+Unfold `scal`. Rewrite using `[map_one, map_one]`.
+-/
 theorem scal_one {A : Type} [CommRing A] {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of A)) : scal g 1 = 1 := by
   unfold scal; rw [map_one, map_one]
 
+/- English proof (translation)
+Establish `e1` using `gs_pull p g z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom w)`. Establish `e2` using `gs_pull q (spMap io) z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom w)`. Establish `e3 : ((spMap io).app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom w) = (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (io w)`. Use `congrArg (fun f => f.hom w) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom io))` as an intermediate fact. Conclude with `this.symm`.
+
+Unfold `scal`. Rewrite using `[← e3]`. Conclude with `e1.trans (h ▸ e2.symm)`.
+-/
 theorem gs_scal_eq {A F : Type} [CommRing A] [Field F] {Y Z : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of A))
     (io : A →+* F) (p : Z ⟶ Y) (q : Z ⟶ Spec (CommRingCat.of F)) (h : p ≫ g = q ≫ spMap io) (z : Z) (w : A) :
     gs p z ⊤ (scal g w) = gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (io w)) := by
@@ -42,11 +56,17 @@ end GlobalTheory.Mum.TraitDescent
 noncomputable section
 namespace GlobalTheory.Mum.TraitDescent
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))`.
+-/
 theorem sval_scale {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval (ReciprocityTheory.ChartRestriction.G.DVR.SecOps.secScale c s) r z J = gs r z ⊤ c * sval s r z J :=
   (gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))
 
+/- English proof (translation)
+Take `⟨σ', f', hc, hp, he⟩` from `h`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ T.G.left) z J, Good C.P.L.L z J → sval (ReciprocityTheory.ChartRestriction.G.DVR.SecOps.secScale (scal T.G.hom a) σ) r z J = gs r z ⊤ (scal T.G.hom a) * sval σ r z J` using `fun Z r z J hJ => sval_scale _ σ r z hJ`. Use `⟨_, ⟨σ', f', fun Z r z J J' hJ hJ' => ?_, hp, he⟩, hv⟩` and prove the remaining obligations. Rewrite using `[hv Z r z J hJ, hc Z r z J J' hJ hJ', scal_mul, gs_mul r z ⊤ trivial]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expBy_scale {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)}
     {C : LabCover D} {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (u a : W) {k : ℕ}
     {σ : SecK C.P.L.L T.β k} {F₀ : IntFam (maximalIdeal R) D.toPre k} (h : T.ExpBy u σ F₀) :
@@ -65,6 +85,21 @@ end GlobalTheory.Mum.TraitDescent
 noncomputable section
 namespace GlobalTheory.Mum.TraitDescent
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C k W _ _ _ T F _ _ _ _ hF Φ c hc h1 h2`. Distinguish the cases in `hB : ∃ (F₀ : IntFam (maximalIdeal R) D.toPre k) (σ : SecK C.P.L.L T.β k), T.ExpBy 1 σ F₀ ∧ ∃ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ (TFK (R := R) F ⊗ C.A.A).left) (_ : p ≫ T.β = p' ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α) (_ : p ≫ T.G.hom = p' ≫ (fst (TFK (R := R) F) C.A …`. Take `⟨F₀, σ, hσ, hw⟩` from `hB`. Take `⟨x, hx⟩` from `GlobalTheory.T.relatingConstant_mem_traitFractionField R hR D C k W T F hF σ (Φ F₀) c (h2 F₀ σ hσ) hw`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hc (by rw [← hx, map_zero])`.
+
+Take `⟨⟨b, ⟨a, ha⟩⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors W) x`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hb0 : b ≠ 0` using `by rintro rfl; exact hx0 (by simp)`. Establish `key : ((algebraMap (FractionRing W) F).comp (algebraMap W _)) a * c = ((algebraMap (FractionRing W) F).comp (algebraMap W _)) b`. Rewrite using `[← hx, RingHom.comp_apply, RingHom.comp_apply, ← map_mul, mul_comm]`.
+
+Use `congr 1`. Conclude with `IsLocalization.mk'_spec (FractionRing W) b ⟨a, ha⟩`. Use `⟨b, a, hb0, ha0, fun F₁ => ?_⟩` and prove the remaining obligations. Take `⟨σ₁, hσ₁⟩` from `h1 F₁`. Take `⟨σ₂, hσ₂, hv⟩` from `expBy_scale T 1 a hσ₁`.
+
+Rewrite `hσ₂` using `[_root_.mul_one]`. Use `⟨σ₂, hσ₂, GlobalTheory.T.sectionValues_identity_descends_to_fibreProduct R hR D C k W T F hF σ₂ (Φ F₁) b ?_⟩` and prove the remaining obligations. Introduce `Z p p' e1 e2 z J hJ`. Establish `e2' : p ≫ T.G.hom = (p' ≫ (fst (TFK (R` using `R) F) C.A.A).left) ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _)) := by rw [e2, Category.assoc]`. Establish `ga` using `gs_scal_eq T.G.hom ((algebraMap (FractionRing W) F).comp (algebraMap W _)) p _ e2' z a`.
+
+Establish `gb` using `gs_scal_eq T.G.hom ((algebraMap (FractionRing W) F).comp (algebraMap W _)) p _ e2' z b`. Rewrite using `[hv Z p z J hJ, h2 F₁ σ₁ hσ₁ Z p p' e1 e2 z J hJ, ga, gb, ← _root_.mul_assoc, ← gs_mul _ z ⊤ trivial, fnF, ← map_mul, key]`. Use `push_neg at hB`. Use `⟨1, 1, one_ne_zero, one_ne_zero, fun F₀ => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `h1 F₀`.
+
+Use `⟨σ, hσ, GlobalTheory.T.sectionValues_identity_descends_to_fibreProduct R hR D C k W T F hF σ (Φ F₀) 1 ?_⟩` and prove the remaining obligations. Introduce `Z p p' e1 e2 z J hJ`. Establish `h0` using `hB F₀ σ hσ Z p p' e1 e2 z J hJ`. Establish `e` using `h2 F₀ σ hσ Z p p' e1 e2 z J hJ`. Rewrite `e` using `[h0]`.
+
+Rewrite using `[h0, scal_one, gs_one, _root_.one_mul]`. Establish `hu : gs (p' ≫ (fst (TFK (R` using `R) F) C.A.A).left) z ⊤ (fnF F c⁻¹) * gs (p' ≫ (fst (TFK (R := R) F) C.A.A).left) z ⊤ (fnF F c) = 1 := by`. Rewrite using `[← gs_mul _ z ⊤ trivial, fnF, fnF, ← map_mul, inv_mul_cancel₀ hc, map_one, gs_one]`. Rewrite using `[← _root_.one_mul (sval (Φ F₀) _ z J), ← hu, _root_.mul_assoc, ← e, mul_zero]`.
+-/
 theorem exp_of_values : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F], (∀ r, algebraMap (FractionRing R) F (algebraMap R _ r) = algebraMap (FractionRing W) F (algebraMap W _ (T.φ r))) → ∀ (Φ : IntFam (maximalIdeal R) D.toPre k → SecK C.P.L.L C.α k) (c : F), c ≠ 0 → (∀ F₀, ∃ σ : SecK C.P.L.L T.β k, T.ExpBy 1 σ F₀) → (∀ (F₀ : IntFam (maximalIdeal R) D.toPre k) (σ : SecK C.P.L.L T.β k), T.ExpBy 1 σ F₀ → ∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ (TFK (R := R) F ⊗ C.A.A).left), p ≫ T.β = p' ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α → p ≫ T.G.hom = p' ≫ (fst (TFK (R := R) F) C.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _)) → ∀ z J, Good C.P.L.L z J → sval σ p z J = gs (p' ≫ (fst (TFK (R := R) F) C.A.A).left) z ⊤ (fnF F c) * sval (Φ F₀) (p' ≫ (snd (TFK (R := R) F) C.A.A).left) z J) → ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ ∀ F₀, T.Exp a b (Φ F₀) F₀ := by
   intro R _ _ _ hR D C k W _ _ _ T F _ _ _ _ hF Φ c hc h1 h2
   by_cases hB : ∃ (F₀ : IntFam (maximalIdeal R) D.toPre k) (σ : SecK C.P.L.L T.β k), T.ExpBy 1 σ F₀ ∧ ∃ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ (TFK (R := R) F ⊗ C.A.A).left) (_ : p ≫ T.β = p' ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α) (_ : p ≫ T.G.hom = p' ≫ (fst (TFK (R := R) F) C.A.A).left ≫ spMap ((algebraMap (FractionRing W) F).comp (algebraMap W _))) (z : Z) (J : (Z ⟶ C.G.left) → C.P.L.L.ι), Good C.P.L.L z J ∧ sval σ p z J ≠ 0

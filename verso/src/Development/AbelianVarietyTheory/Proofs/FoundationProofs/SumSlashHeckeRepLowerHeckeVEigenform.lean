@@ -13,18 +13,34 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Unfold `slz`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem slz_const_mul (k : ℕ) (δ : M2) (c : ℂ) (g : ℍ → ℂ) (τ : ℍ) :
     slz k δ (fun σ => c * g σ) τ = c * slz k δ g τ := by
   unfold slz; ring
 
+/- English proof (translation)
+Unfold `slz`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem slz_sub (k : ℕ) (δ : M2) (g g' : ℍ → ℂ) (τ : ℍ) :
     slz k δ (fun σ => g σ - g' σ) τ = slz k δ g τ - slz k δ g' τ := by
   unfold slz; ring
 
+/- English proof (translation)
+Unfold `slz`. Rewrite using `[Finset.mul_sum]`.
+-/
 private theorem slz_sum {ι : Type} (s : Finset ι) (k : ℕ) (δ : M2) (g : ι → ℍ → ℂ) (τ : ℍ) :
     slz k δ (fun σ => ∑ i ∈ s, g i σ) τ = ∑ i ∈ s, slz k δ (g i) τ := by
   unfold slz; rw [Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hlC : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne'`. Establish `him : 0 < ((l : ℂ) * (τ : ℂ)).im`. Simplify using `only [Complex.mul_im, Complex.natCast_re, Complex.natCast_im, zero_mul, add_zero]`. Conclude with `mul_pos (by exact_mod_cast hl) τ.im_pos`. Establish `hV` using `(GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion l a hl ha).2 τ ⟨(l : ℂ) * τ, him⟩ rfl`.
+
+Rewrite using `[hV]`. Unfold `slz`. Simplify using `only [Matrix.det_fin_two_of, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]`. Use `push_cast`. Simplify using `only [zero_mul, zero_add, mul_one, mul_zero, sub_zero, add_zero, div_one, one_pow, inv_one]`.
+
+Rewrite using `[ofComplex_apply_of_im_pos him]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem qs_Vo_slz (k l : ℕ) (hl : 0 < l) (a : ℕ → ℂ) (ha : PolyB a) (τ : ℍ) :
     qs (Vo l a) τ = ((l : ℂ) ^ (k - 1))⁻¹ * slz k !![(l : ℤ), 0; 0, 1] (qs a) τ := by
   have hlC : (l : ℂ) ≠ 0 := by exact_mod_cast hl.ne'
@@ -45,11 +61,45 @@ end GlobalTheory.EisM
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Unfold `qs`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `tsum_mul_left`.
+-/
 private theorem qs_smul (t : ℂ) (a : ℕ → ℂ) : qs (t • a) = fun τ => t * qs a τ := by
   funext τ; unfold qs
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact tsum_mul_left
 
+/- English proof (translation)
+Introduce `k N l ε h t hk hN hl hlN hMF hT τ`. Establish `hl0 : 0 < l` using `hl.pos`. Establish `hlC : (l : ℂ) ≠ 0` using `by exact_mod_cast hl0.ne'`. Use `set F := qs h with hF`. Use `set D : M2 := !![(l : ℤ), 0; 0, 1] with hD`.
+
+Use `set E : M2 := !![(1 : ℤ), 0; 0, (l : ℤ)] with hE`. Establish `hcoc` using `GlobalTheory.T.slashIntMatrixPosDet_properties k`. Establish `hTq` using `(GlobalTheory.T.coeffHeckeTOperator_qExpansion_slashSum k l (ch ε) h hk hl0 (by simp [ch]) hMF.1).2`. Rewrite `hTq` using `[hT, qs_smul]`. Establish `hind` using `GlobalTheory.T.heckeCharacterSlashSum_indep_reps k N N ε (DT N l) (Option (Fin l)) (Option (Fin l)) (repT l) (repL N l) F hk dvd_rfl (fun δ hδ => ⟨by rw [hδ.1]; exact_mod_cast hl0, hδ.2⟩) (GlobalTheory.T.isLeftGamma0CosetDecomposition_heckeRepTOperator N l hl hlN) (GlobalTheory.T …`.
+
+Establish `hcop : Nat.Coprime l N` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hlN`. Establish `hu : IsUnit (((l : ℤ) : ZMod N))`. Rewrite using `[Int.cast_natCast]`. Conclude with `(ZMod.isUnit_iff_coprime l N).2 hcop`. Establish `hεl : ch ε l ≠ 0`.
+
+Unfold `ch`. Conclude with `(IsUnit.map ε hu).ne_zero`. Establish `hinv : ch ε⁻¹ l = (ch ε l)⁻¹`. Unfold `ch`. Rewrite using `[MulChar.inv_apply_eq_inv']`.
+
+Establish `key : ∀ σ : ℍ, ∑ j : Fin l, slz k (repL N l (some j)) F σ = (ch ε l)⁻¹ * (t * F σ - slz k E F σ)`. Introduce `σ`. Establish `h1` using `congrFun hTq σ`. Rewrite `h1` using `[hind]`. Unfold `hsum at h1`.
+
+Rewrite `h1` using `[Fintype.sum_option]`. Establish `h2 : repL N l none = E` using `rfl`. Rewrite `h1` using `[h2]`. Establish `h3 : ∀ j : Fin l, ch ε (repL N l (some j) 0 0) = ch ε l`. Introduce `j`.
+
+Simplify using `[repL]`. Establish `h4 : ch ε (E 0 0) = 1` using `by simp [hE, ch]`. Simplify using `only [h3, h4, one_mul, ← Finset.mul_sum] at h1`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[← hF]`.
+
+Take the linear combination `-h1`. Establish `hVfun : qs (Vo l h) = fun σ => ((l : ℂ) ^ (k - 1))⁻¹ * slz k D F σ`. Use function extensionality and compare the values at `σ`. Conclude with `qs_Vo_slz k l hl0 h hMF.1 σ`. Establish `hdetD : 0 < D.det` using `by simp [hD, Matrix.det_fin_two_of]; exact_mod_cast hl0`.
+
+Establish `hdetE : 0 < E.det` using `by simp [hE, Matrix.det_fin_two_of]; exact_mod_cast hl0`. Establish `hdetA : ∀ (L : ℕ) (j : Fin l), 0 < (repL L l (some j)).det`. Introduce `L j`. Simplify using `[repL, Matrix.det_fin_two_of]`. Conclude with `hl0` after adjusting the coercions.
+
+Establish `hmat : ∀ j : Fin l, D * repL (N * l) l (some j) = repL N l (some j) * D`. Introduce `j`. Apply the tactic sequence `ext i m; fin_cases i <;> fin_cases m <;> simp [hD, repL, Matrix.mul_apply, Fin.sum_univ_two] <;> push_cast <;> ring`. Establish `hED : E * D = !![((l : ℕ) : ℤ), 0; 0, ((l : ℕ) : ℤ)]`. Apply the tactic sequence `ext i m; fin_cases i <;> fin_cases m <;> simp [hD, hE, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Establish `hterm : ∀ j : Fin l, slz k (repL (N * l) l (some j)) (qs (Vo l h)) τ = ((l : ℂ) ^ (k - 1))⁻¹ * slz k D (slz k (repL N l (some j)) F) τ`. Introduce `j`. Rewrite using `[hVfun, slz_const_mul]`. Use `congr 1`. Rewrite using `[← (hcoc F hk).1 D _ hdetD (hdetA _ j), hmat j, (hcoc F hk).1 _ D (hdetA _ j) hdetD]`.
+
+Simplify using `only [hterm]`. Rewrite using `[← Finset.mul_sum, ← slz_sum]`. Establish `hfun : (fun σ => ∑ j : Fin l, slz k (repL N l (some j)) F σ) = fun σ => (ch ε l)⁻¹ * (t * F σ - slz k E F σ)`. Use function extensionality and compare the values at `σ`. Conclude with `key σ`.
+
+Rewrite using `[hfun, slz_const_mul, slz_sub, slz_const_mul]`. Establish `hDE : slz k D (slz k E F) τ = (l : ℂ) ^ k / (l : ℂ) ^ 2 * F τ`. Rewrite using `[← (hcoc F hk).1 E D hdetE hdetD, hED]`. Conclude with `(hcoc F hk).2.2.2.2 l τ hl0`. Rewrite using `[hDE, hinv]`.
+
+Establish `hV` using `qs_Vo_slz k l hl0 h hMF.1 τ`. Rewrite using `[hV]`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_slz_repL_Vo : ∀ (k N l : ℕ) (ε : DirichletCharacter ℂ N) (h : ℕ → ℂ) (t : ℂ), 1 ≤ k → 0 < N → l.Prime → ¬ l ∣ N → MF k N (ch ε) h → To k (ch ε l) l h = t • h → ∀ τ : ℍ, ∑ j : Fin l, slz k (repL (N * l) l (some j)) (qs (Vo l h)) τ = ch ε⁻¹ l * (t * qs (Vo l h) τ - (l : ℂ)⁻¹ * qs h τ) := by
   intro k N l ε h t hk hN hl hlN hMF hT τ
   have hl0 : 0 < l := hl.pos

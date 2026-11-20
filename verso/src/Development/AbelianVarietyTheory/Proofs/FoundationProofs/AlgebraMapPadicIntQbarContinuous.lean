@@ -5,11 +5,23 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Qbar l)]`. Conclude with `(continuous_algebraMap ℚ_[l] (Qbar l)).comp (by exact continuous_subtype_val)`.
+-/
 theorem algebraMap_padicInt_qbar_continuous (l : ℕ) [Fact l.Prime] :
     Continuous (algebraMap ℤ_[l] (Qbar l)) := by
   rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Qbar l)]
   exact (continuous_algebraMap ℚ_[l] (Qbar l)).comp (by exact continuous_subtype_val)
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' ℤ_[l] c.O`. Establish `hg : Continuous (fun v : Fin n → ℤ_[l] => ((f v : c.O) : Qbar l))`. Establish `h : (fun v : Fin n → ℤ_[l] => ((f v : c.O) : Qbar l)) = fun v => ∑ i, algebraMap ℤ_[l] (Qbar l) (v i) * ((f (fun j => if i = j then 1 else 0) : c.O) : Qbar l)`. Use function extensionality and compare the values at `v`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v]`.
+
+Simplify using `[Algebra.smul_def]`. Rewrite using `[h]`. Use `continuous_finset_sum _ (fun i _ => ?_)` and prove the remaining obligations. Conclude with `((algebraMap_padicInt_qbar_continuous l).comp (continuous_apply i)).mul continuous_const`. Establish `hrange : Set.range (fun v : Fin n → ℤ_[l] => ((f v : c.O) : Qbar l)) = (c.O : Set (Qbar l))`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `(f v).2`. Introduce `hx`.
+
+Take `⟨v, hv⟩` from `hf ⟨x, hx⟩`. Conclude with `⟨v, by simp [hv]⟩`. Rewrite using `[← hrange]`. Conclude with `isCompact_range hg`.
+-/
 theorem Coef.isCompact_O (l : ℕ) [Fact l.Prime] (c : Coef l) :
     IsCompact ((c.O : Set (Qbar l))) := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' ℤ_[l] c.O
@@ -34,12 +46,32 @@ theorem Coef.isCompact_O (l : ℕ) [Fact l.Prime] (c : Coef l) :
   rw [← hrange]
   exact isCompact_range hg
 
+/- English proof (translation)
+Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_natCast_prime_qbar (l : ℕ) [Fact l.Prime] :
     ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l]) := by simp
   rw [h, PadicAlgCl.norm_extends]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Use `set q : ℝ := ‖((l : ℕ) : Qbar l)‖ with hq`. Establish `hq1 : q < 1` using `norm_natCast_prime_qbar l`. Establish `hq0 : 0 ≤ q` using `norm_nonneg _`. Establish `hstep' : ∀ r, ‖a (r + 1) - a r‖ ≤ q ^ r` using `fun r => by simpa [norm_pow] using hstep r`. Establish `htail : ∀ N k, ‖a (N + k) - a N‖ ≤ q ^ N`.
+
+Introduce `N k`. Proceed by induction on `k with`. Consider the case `zero => simpa using pow_nonneg hq0 N`. Consider the case `succ k ih`. Establish `e : a (N + (k + 1)) - a N = (a (N + k + 1) - a (N + k)) + (a (N + k) - a N)`.
+
+Rewrite using `[← add_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)` and prove the remaining obligations. Conclude with `(hstep' (N + k)).trans (pow_le_pow_of_le_one hq0 hq1.le (Nat.le_add_right N k))`.
+
+Establish `htail' : ∀ N n, N ≤ n → ‖a n - a N‖ ≤ q ^ N`. Introduce `N n hn`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Conclude with `htail N k`. Establish `hcau : CauchySeq a`.
+
+Use `cauchySeq_of_le_tendsto_0 (fun N => q ^ N) (fun n m N hn hm => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one hq0 hq1)` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Establish `e : a n - a m = (a n - a N) + -(a m - a N)` using `by abel`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (htail' N n hn) ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_neg]`. Conclude with `htail' N m hm`. Take `⟨b, hb, hlim⟩` from `cauchySeq_tendsto_of_isComplete (GlobalTheory.Coef.isCompact_O l c).isComplete ha hcau`. Use `⟨b, hb, fun r => ?_⟩` and prove the remaining obligations. Establish `hmem : b ∈ Metric.closedBall (a r) (q ^ r)`.
+
+Use `Metric.isClosed_closedBall.mem_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop r] with n hn`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `htail' r n hn`. Rewrite `hmem` using `[Metric.mem_closedBall, dist_eq_norm]`.
+
+Simplify `hmem` using `[norm_pow]`.
+-/
 theorem coef_limit (l : ℕ) [Fact l.Prime] (c : Coef l) (a : ℕ → Qbar l)
     (ha : ∀ r, a r ∈ c.O) (hstep : ∀ r, ‖a (r + 1) - a r‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) :
     ∃ b ∈ c.O, ∀ r, ‖b - a r‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖ := by

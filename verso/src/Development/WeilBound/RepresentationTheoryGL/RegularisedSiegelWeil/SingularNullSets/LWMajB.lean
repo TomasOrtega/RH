@@ -20,6 +20,33 @@ namespace PositivityTheory.Rg.Rsw.L.LWMaj
 
 variable {D : D7}
 
+/- English proof (translation)
+Set `rc : Mx D m n → (D.what₂.Tau → Fin m → Fin n → ℂ)` to `fun x τ i j => compAt θ τ x i j`. Establish `hrc : ∀ x, ‖rc x‖ ≤ GlobalTheory.Unf.realSize θ x`. Introduce `x`. Establish `h0` using `GlobalTheory.Unf.realSize_nonneg θ x`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations.
+
+Unfold `GlobalTheory.Unf.realSize`. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, ‖compAt θ τ x i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ τ))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ‖compAt θ τ x i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖compAt θ τ x i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Set `S' : Set ((D.what₂.Tau → Fin m → Fin n → ℂ) → ℂ)` to `{v | ∃ u ∈ S, ∃ x, v = fun z => if z = rc x then u x else 0}`.
+
+Establish `hS' : ∀ N : ℕ, ∃ B : ℝ, ∀ v ∈ S', ∀ z, (1 + ‖z‖) ^ N * ‖v z‖ ≤ B`. Introduce `N`. Take `⟨B, hB⟩` from `hdec N`. Use `⟨max B 0, ?_⟩` and prove the remaining obligations. Introduce and unpack `v ⟨u, hu, x, rfl⟩ z`.
+
+Distinguish the cases in `hz : z = rc x`. Substitute `hz` using the available equality. Simplify using `only [if_true]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hz, if_false, norm_zero, mul_zero]`.
+
+Conclude with `le_max_right _ _`. Take `⟨F, hF⟩` from `schDom S' hS'`. Set `fp : Mx D m n → (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` to `fun x i j => finPart D (x i j)`. Establish `hfp : Continuous fp` using `continuous_pi fun i => continuous_pi fun j => GlobalTheory.SchwartzSch.continuous_finPart'.comp ((continuous_apply j).comp (continuous_apply i))`. Take `⟨U₀, hU₀, hU₀c, h0⟩` from `GlobalTheory.AfTensNbhd.exists_clopen_compact_nbhd_zero D m n`.
+
+Set `_ : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E)` to `⟨rfl⟩`. Establish `: ContinuousAdd (Af D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.toContinuousAdd (Af D.host.F) _`. Establish `: IsTopologicalAddGroup (Af D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.topologicalAddGroup (Af D.host.F) _`. Set `W` to `fp '' K + U₀`. Establish `hWc : IsCompact W` using `(hK.image hfp).add hU₀c`.
+
+Establish `hWo : IsOpen W` using `IsOpen.add_left hU₀.isOpen`. Establish `hWcl : IsClosed W` using `hU₀.isClosed.add_left_of_isCompact (hK.image hfp)`. Establish `hKW : ∀ x, GlobalTheory.Unf.InBox K x → fp x ∈ W`. Introduce and unpack `x ⟨k, hk, hxk⟩`. Use `⟨fp k, ⟨k, hk, rfl⟩, 0, h0, ?_⟩` and prove the remaining obligations.
+
+Use `show fp k + 0 = fp x`. Rewrite using `[add_zero]`. Use function extensionality and compare the values at `i j`. Use `congrFun (congrFun hxk i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.zero_apply] at this`.
+
+Rewrite `this` using `[(finPart D).map_sub, sub_eq_zero]`. Conclude with `this.symm`. Set `g : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `W.indicator 1`. Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `by show IsLocallyConstant g ∧ HasCompactSupport g`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun y => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ W`. Conclude with `⟨W, hWo, hy, fun y' hy' => by simp [g, hy, hy']⟩`. Conclude with `⟨Wᶜ, hWcl.isOpen_compl, hy, fun y' hy' => by`. Rewrite `hy'` using `[Set.mem_compl_iff]`. Simplify using `only [g, Set.indicator_of_notMem hy', Set.indicator_of_notMem hy]⟩`.
+
+Use `HasCompactSupport.intro' (f := g) hWc hWcl fun y hy => ?_` and prove the remaining obligations. Simplify using `only [g, Set.indicator_of_notMem hy]`. Use `⟨fun x => F (rc x) * g (fp x), Submodule.subset_span ⟨F, g, hg, rfl⟩, fun u hu x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : u x = 0`. Rewrite using `[hx, norm_zero]`.
+
+Conclude with `norm_nonneg _`. Establish `hW : fp x ∈ W` using `hKW x (hsupp u hu x hx)`. Establish `h1` using `hF _ ⟨u, hu, x, rfl⟩ (rc x)`. Simplify using `only [if_true] at h1`. Simplify using `only [g, Set.indicator_of_mem hW, Pi.one_apply, mul_one]`.
+
+Conclude with `h1`.
+-/
 theorem adMaj (θ : InfFam D) (hθ : IsInfFam θ) {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) (S : Set (Mx D m n → ℂ))
     (hsupp : ∀ u ∈ S, ∀ x, u x ≠ 0 → GlobalTheory.Unf.InBox K x)
     (hdec : ∀ N : ℕ, ∃ B : ℝ, ∀ u ∈ S, ∀ x, ‖u x‖ * (1 + GlobalTheory.Unf.realSize θ x) ^ N ≤ B) :

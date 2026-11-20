@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z : LocM.Mdl Y i₀} {k : Bool} {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Pad.Letter Dw}
 
+/- English proof (translation)
+Use `(Scheme.preimage_eq_top_of_closedPoint_mem _ ?_).ge` and prove the remaining obligations. Establish `e : (X.fromSpecStalk (genericPoint X) ≫ q) (closedPoint (X.presheaf.stalk (genericPoint X))) = q (genericPoint X)` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg q Scheme.fromSpecStalk_closedPoint)`. Conclude with `e ▸ h`.
+-/
 private theorem top_le_gen {X X' : Scheme.{0}} [IsIntegral X] {q : X ⟶ X'} {V : X'.Opens}
     (h : genericPoint X ∈ q ⁻¹ᵁ V) : ⊤ ≤ (X.fromSpecStalk (genericPoint X) ≫ q) ⁻¹ᵁ V := by
   refine (Scheme.preimage_eq_top_of_closedPoint_mem _ ?_).ge
@@ -26,6 +29,15 @@ private theorem top_le_gen {X X' : Scheme.{0}} [IsIntegral X] {q : X ⟶ X'} {V 
       q (genericPoint X) := (Scheme.Hom.comp_apply _ _ _).trans (congrArg q Scheme.fromSpecStalk_closedPoint)
   exact e ▸ h
 
+/- English proof (translation)
+Set `ρ : Fin M.L.n → X.functionField` to `fun i => valF (F := X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) _ (M.r a i).val`. Establish `n : ∀ i, genericPoint X ∈ q ⁻¹ᵁ M.L.U i → ρ i ≠ 0` using `fun i hi => left_ne_zero_of_mul_eq_one (Pull.valF_mul_inv (F := X.functionField) (top_le_gen (V := (Z.U a).1 ⊓ M.L.U i) ⟨ha, hi⟩) (M.r a i))`. Set `t : (M.L.lb.pull q).ι → X.functionFieldˣ` to `fun i => if h : ρ (i PUnit.unit) ≠ 0 then c₀ * (Units.mk0 _ h)⁻¹ else 1`. Establish `ht : ∀ i, genericPoint X ∈ q ⁻¹ᵁ M.L.U (i PUnit.unit) → (t i : X.functionField) * ρ (i PUnit.unit) = c₀` using `fun i hi => by`. Use `n _ hi` as an intermediate fact.
+
+Simplify using `only [t, dif_pos this, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Use `⟨t, fun i j hij => ?_, ht⟩` and prove the remaining obligations. Establish `le : (M.L.lb.pull q).U i ⊓ (M.L.lb.pull q).U j ≤ q ⁻¹ᵁ (M.L.U (i PUnit.unit) ⊓ M.L.U (j PUnit.unit))` using `fun x hx => ⟨LB.pull_U_le q i hx.1, LB.pull_U_le q j hx.2⟩`. Establish `e₁` using `M.trans X.functionField (X.fromSpecStalk (genericPoint X) ≫ q) a (i PUnit.unit) (j PUnit.unit) (top_le_gen ⟨ha, le hij⟩)`.
+
+Establish `e₂ : fnOf _ hij ((M.L.lb.pull q).g i j).val = valF (F` using `X.functionField) (X.fromSpecStalk (genericPoint X) ≫ q) _ (M.L.g (i PUnit.unit) (j PUnit.unit)).val := by`. Rewrite using `[(UpperTheory.generic_stalk_section_unit X Z.X q _ _).1 (le hij), InducedPull.val_pull_g M.L.lb q i j le]`. Conclude with `fnOf_resG le hij _`. Use `mul_right_cancel₀ (n _ (le hij).1) ?_` and prove the remaining obligations. Rewrite using `[ht i (le hij).1, e₂, ← ht j (le hij).2]`.
+
+Simplify using `only [ρ]`. Rewrite using `[e₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_sec (M : LineModel Z k st x) {X : Scheme.{0}} [IsIntegral X] (q : X ⟶ Z.X) (a : Fin Z.m)
     (ha : genericPoint X ∈ q ⁻¹ᵁ (Z.U a).1) (c₀ : X.functionFieldˣ) :
     ∃ t : (M.L.lb.pull q).ι → X.functionFieldˣ, IsRatSec (M.L.lb.pull q) t ∧
@@ -58,6 +70,9 @@ private theorem exists_sec (M : LineModel Z k st x) {X : Scheme.{0}} [IsIntegral
   rw [e₁]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ m`. Rewrite using `[Vecs.bc, Vecs.bc, ← Category.assoc, ModelRelProbe.spMap_comp]`. Use `congr 2`. Apply the tactic sequence `ext w <;> simp [dualMap]`.
+-/
 private theorem bc_comp {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (χ : B →+* C) (ρ : A →+* B) (u : Vecs Dw t A) :
     (fun σ m => spMap (dualMap (χ.comp ρ)) ≫ u σ m) = Vecs.bc χ (Vecs.bc ρ u) := by
@@ -66,11 +81,17 @@ private theorem bc_comp {X : Scheme.{0}} {t : SAB H X} {A B C : Type} [CommRing 
   congr 2
   ext w <;> simp [dualMap]
 
+/- English proof (translation)
+Rewrite using `[hx, hu]`.
+-/
 private theorem lnStep_congr {X : Scheme.{0}} {t : SAB H X} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     {x x' : Sp C ⟶ X} {u u' : Vecs Dw t C} (hx : x = x') (hu : u = u') (p : ℕ) (b : Bool)
     (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : lnStep t x u p b st = lnStep t x' u' p b st := by
   rw [hx, hu]
 
+/- English proof (translation)
+Apply `Exists.intro` to reduce the goal to its premises. Use `(dif_pos hp).trans ?_` and prove the remaining obligations. Use `congrArg (HMul.hMul _) ?_` and prove the remaining obligations. Conclude with `lnStep_congr rfl (bc_comp _ _ _) _ _ _`.
+-/
 private theorem symLog_eq {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Φ : FlagCpt T e)
     (a : ℕ → Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Φ.Y)
@@ -83,6 +104,21 @@ private theorem symLog_eq {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Ty
   refine congrArg (HMul.hMul _) ?_
   exact lnStep_congr rfl (bc_comp _ _ _) _ _ _
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Use `⟨ht₀, (Φ.gr x.1 x.2).supp.compl, CartierDiv.genericPoint_notMem_supp _, fun ε y₁ z zt i hy hz hzt hi => ?_⟩` and prove the remaining obligations. Take `⟨s, φ', f', u, cf, s₁, s₂, s₃, k₁, k₂, F₁, F₂, k₃, k₄, k₅⟩` from `hB _ z y₁.1 hz`. Take `⟨d₁, d₂⟩` from `UpperTheory.metric_letter_height E H Dw _ _ _ O β T F e Φ Cx hm a' R st x hx v ε y₁ hy`. Take `⟨-, -, -, -, -, -, -, hD'⟩` from `UpperTheory.exists_stalk_point_lift F O' Φ.Y b B μ _ z y₁.1 hz`.
+
+Take `⟨d₃, d₄⟩` from `hD' _ d₁`. Take `⟨_, sy⟩` from `symLog_eq Φ a' st v ε y₁ hp`. Establish `io₁` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Establish `io₂` using `log_w_eq (resP v) ε _ io₁`. Establish `hi' : ⊤ ≤ (zt ≫ q) ⁻¹ᵁ M.L.U (i PUnit.unit)` using `fun w hw => LB.pull_U_le q i (hi hw)`.
+
+Establish `w₀ : spMap ε.O.subtype ≫ zt ≫ q = (z ≫ μ.U.ι) ≫ q` using `by rw [← hzt, Category.assoc]`. Establish `w₁ : ⊤ ≤ ((z ≫ μ.U.ι) ≫ q) ⁻¹ᵁ ((Z.U a).1 ⊓ M.L.U (i PUnit.unit))` using `fun w hw => ⟨Pull.le_of_fromSpec (Z.U a).2 k₁ hw, by rw [← w₀]; exact hi' (Set.mem_univ (spMap ε.O.subtype w))⟩`. Take `⟨r₁, r₂⟩` from `(UpperTheory.generic_stalk_section_unit B.X Z.X q _ (M.r a (i PUnit.unit)).val).2 _ (z ≫ μ.U.ι) w₁ (Units.isUnit _)`. Establish `N` using `UpperTheory.admissible_model_valuation_alt E H Dw Xo _ W Y i₀ Z O β T b₀ hp hW hb hD k st x hx M a (i PUnit.unit) τ mu hT _ ε.O (ioOf (resP v) ε) io₁ (zt ≫ q) φ' (z ≫ y) f' u _ cf (k₁.trans w₀.symm) hi' (by rw [w₀, Category.assoc, h₁]; simp only [Category.assoc]) k₂ F₁ F₂ k₃ k₄ k …`. Establish `g₀ : genericPoint B.X ∈ q ⁻¹ᵁ M.L.U (i PUnit.unit)` using `gen_mem (x := below (z ≫ μ.U.ι)) (w₁ (Set.mem_univ (closedPoint _))).2`.
+
+Establish `t₁` using `ht i g₀`. Rewrite `N` using `[w₀]`. Rewrite `N` using `[← r₂, ← s₃]`. Generalize the expression as in `valF (F := B.X.functionField) (B.X.fromSpecStalk (genericPoint B.X) ≫ q) _ (M.r a (i PUnit.unit)).val = ρ at r₁ t₁ N`. Establish `t₂ : μ.φ (GlobalTheory.LineNorm.dg Φ (below y₁.1) x.1 x.2 : Φ.Y.Fn) = (t i : B.X.functionField) * (s * ρ)`.
+
+Rewrite using `[← s₂, ← t₁]`. Expand and normalize the polynomial expressions, which then agree. Establish `t₃ : UnitAt (below (z ≫ μ.U.ι)) (t i : B.X.functionField)`. Use `d₃.mul (s₁.mul r₁).inv` as an intermediate fact. Rewrite `this` using `[t₂, mul_inv_cancel_right₀ (s₁.mul r₁).ne_zero]`. Then use the resulting hypothesis.
+
+Use `⟨t₃, ?_⟩` and prove the remaining obligations. Establish `pt : spMap ((ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y₁.1).hom) ≫ stalkPt Φ.Y (below y₁.1) ≫ Φ.π ≫ genι T = spMap (ioOf (resP v) ε) ≫ (z ≫ y) ≫ T.j`. Establish `e₀ : spMap (Scheme.stalkClosedPointTo y₁.1).hom ≫ stalkPt Φ.Y (below y₁.1) = y₁.1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk _`. Rewrite using `[← ModelRelProbe.spMap_comp, Category.assoc, reassoc_of% e₀, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j, Category.assoc, reassoc_of% h₂, reassoc_of% hz]`. Rewrite `sy` using `[pt, ha']`.
+
+Rewrite using `[d₂, sy, N, ← d₄, t₂, SmallSec.valAt_mul t₃.regAt (s₁.mul r₁).regAt, SmallSec.valAt_mul s₁.regAt r₁.regAt, map_mul, map_mul, Real.log_mul (ε.w.ne_zero (SmallSec.valAt_ne_zero t₃)) (mul_ne_zero (ε.w.ne_zero (SmallSec.valAt_ne_zero s₁)) (ε.w.ne_zero (SmallSec.valAt_ne_zero r₁))), R …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem reads_sec {O : Type} [CommRing O] {β : O →+* i₀.c.F}
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {b₀ : O →+* i₀.c.V W} (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
     (hb : (i₀.c.V W).subtype.comp b₀ = β) (hD : Dominates T (Y i₀) b₀) {F : Type} [Field F] [NumberField F]
@@ -141,6 +177,9 @@ private theorem reads_sec {O : Type} [CommRing O] {β : O →+* i₀.c.F}
     io₂ (TrueGeo.valAt _ s), io₂ (TrueGeo.valAt _ ρ)]
   ring
 
+/- English proof (translation)
+Rewrite using `[eq_div_iff ht]`. Use `mul_right_cancel₀ (right_ne_zero_of_mul (e₂ ▸ hc)) ?_` and prove the remaining obligations. Rewrite using `[e₂, ← e₃, ← e₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem succ_mul_succ_sub_one_div_succ {K : Type} [Field K] {c u r r' t t' : K} (hc : c ≠ 0) (ht : t' ≠ 0) (e₁ : u * r = r')
     (e₂ : t * r = c) (e₃ : t' * r' = c) : u = t / t' := by
   rw [eq_div_iff ht]
@@ -148,6 +187,11 @@ private theorem succ_mul_succ_sub_one_div_succ {K : Type} [Field K] {c u r r' t 
   rw [e₂, ← e₃, ← e₁]
   ring
 
+/- English proof (translation)
+Take `⟨a, τ, mu, y, ψ, f, g, hU, hT, h₁, h₂, h₃, h₄, h₅⟩` from `hL`. Take `⟨c₀, hc⟩` from `UpperTheory.exists_unit_tri_and_diag_coeff_mul_eq_of_carries E H Dw _ _ _ O β T F e Φ _ μ.φ _ f g x μ.φ_spec h₅`. Establish `hB` using `UpperTheory.admissible_flag_valuation E H Dw Xo p W Y i₀ z.Z O β T F e Φ _ b _ μ ((nmodel z.Z).compι C) a τ mu y ψ f g x c₀ hU hT h₁ h₂ h₃ h₄ hc`. Use `choose t ht₀ ht using fun k => exists_sec (z.line k st x hx) ((nmodel z.Z).compι C) a (hU μ.mem) c₀`. Use `⟨t, fun k a' R ha' => reads_sec hp hW hb hD μ _ a hT h₁ h₂ hx _ c₀ hB (ht₀ k) (ht k) hv hm a' R ha', fun i j h => ?_⟩` and prove the remaining obligations.
+
+Establish `e₁` using `z.isGenId_genId hp hW hx ((nmodel z.Z).comp C).X.functionField (((nmodel z.Z).comp C).X.fromSpecStalk (genericPoint _) ≫ (nmodel z.Z).compι C) a i j (top_le_gen ⟨hU μ.mem, h.2⟩)`. Establish `e₂` using `ht false (fun _ => i) h.2.1`. Establish `e₃` using `ht true (fun _ => j) h.2.2`. Use `((UpperTheory.generic_stalk_section_unit _ _ ((nmodel z.Z).compι C) _ ((z.genId hp hW hx).u i j).val).1 h).symm.trans ?_` and prove the remaining obligations. Conclude with `succ_mul_succ_sub_one_div_succ c₀.ne_zero (Units.ne_zero _) e₁ e₂ e₃`.
+-/
 private theorem main_free (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (z : admitted Y i₀)
     [IsDiscreteValuationRing (z.Z.i.c.V W)] {O : Type} [CommRing O] {β : O →+* i₀.c.F}
     {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {b₀ : O →+* i₀.c.V W}
@@ -173,6 +217,11 @@ private theorem main_free (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (z : ad
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `D A N j S κ s fl _ p hp W hW z _ ε b _ _ v hv C c μ hL Cx hm st x hx`. Set `b₀ : 𝓞 κ.c.F →+* κ.c.V W` to `(algebraMap (𝓞 κ.c.F) κ.c.F).codRestrict (κ.c.V W) fun x => by`. Establish `hx : IsIntegral ℤ (x : κ.c.F)` using `x.2`. Establish `h₂ : IsIntegral (κ.c.V W) (x : κ.c.F)` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h₂`.
+
+Conclude with `(show ((y : κ.c.V W) : κ.c.F) = algebraMap _ _ x from hy) ▸ y.2`. Establish `hD` using `dominates_tor s.T (s.glob.2.1 p W hp hW b₀ fun _ => rfl)`. Conclude with `main_free hp hW z (b₀ := b₀) (RingHom.ext fun _ => rfl) hD hv C μ hL hm hx`.
+-/
 theorem UpperTheory.admissible_point_height_compat :
     ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (fl : s.Flag), (∀ k, (fl.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) → ∀ (p : ℕ) (hp : p.Prime) (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) [IsDiscreteValuationRing (z.Z.i.c.V W)] (ε : D.what₂.LL →+* z.Z.i.c.F) (b : 𝓞 D.what₂.LL →+* z.Z.i.c.V W), (∀ x, ((ε x : z.Z.i.c.F) : ℂ) = D.what₂.embLL x) → (∀ x : 𝓞 D.what₂.LL, ((b x : z.Z.i.c.V W) : z.Z.i.c.F) = ε (x : D.what₂.LL)) → ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), resP v = p → ∀ (C : (nmodel z.Z).Comp) (c : s.Comp) (μ : Match (fl.C c).Y b ((nmodel z.Z).comp C)), Link z.Z C (fl.C c) μ → ∀ (Cx : CxSt D.what₂.LL) (hm : Mets (fl.C c) Cx) (st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ) (x : Pad.Letter S.Dw) (hx : letterOf S.Dw st = some x), ∃ t : ∀ k : Bool, ((z.line k st x hx).L.lb.pull ((nmodel z.Z).compι C)).ι → ((nmodel z.Z).comp C).X.functionFieldˣ, (∀ (k : Bool) (a : ℕ → Bool) (R : Option ℝ), a p = k → Reads μ v ((z.line k st x hx).L.lb.pull ((nmodel z.Z).compι C)) (t k) (lam (adlOf (fl.C c) hm (Finsupp.single (a, R, st) 1)) v)) ∧ ∀ i j (h : genericPoint ((nmodel z.Z).comp C).X ∈ (nmodel z.Z).compι C ⁻¹ᵁ ((nmodel z.Z).gen ⊓ ((z.line false st x hx).L.lb.U i ⊓ (z.line true st x hx).L.lb.U j))), fnOf _ h (((nmodel z.Z).compι C).app _ ((z.genId hp hW hx).u i j).val) = (t false (fun _ => i) : ((nmodel z.Z).comp C).X.functionField) / (t true (fun _ => j) : ((nmodel z.Z).comp C).X.functionField) := by
   intro D A N j S κ s fl _ p hp W hW z _ ε b _ _ v hv C c μ hL Cx hm st x hx

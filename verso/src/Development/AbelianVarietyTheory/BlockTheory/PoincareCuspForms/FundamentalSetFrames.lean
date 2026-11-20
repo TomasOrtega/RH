@@ -20,6 +20,9 @@ def GapsNonneg (X : Data E r) (la : Wt X.Ψ r) : Prop :=
 def pairing (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < r) (la : Wt X.Ψ r) (τ : X.Ψ) : ℤ :=
   la τ ⟨r - 1, by omega⟩ - la τ ⟨0, by omega⟩
 
+/- English proof (translation)
+Establish `: ((r - 1 : ℕ) : ℤ) = (r : ℤ) - 1` using `by omega`. Simplify using `only [pairing, kapW, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_kapW (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < r) (τ : X.Ψ) :
     pairing X h0 h1 (kapW X) τ = 2 * (r : ℤ) - 2 := by
   have : ((r - 1 : ℕ) : ℤ) = (r : ℤ) - 1 := by omega
@@ -32,9 +35,15 @@ def IsInvWeight (X : Data E r) (u : Frame X.Ψ r → EReal) : Prop :=
   (∀ γ ∈ X.Γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, u (lact γ (rmul x b)) = u x) ∧
   ∃ C : ℝ, ∀ x ∈ X.dom, u x ≤ (C : EReal)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measurable_const, fun _ _ _ _ _ _ => rfl, c, fun _ _ => le_rfl⟩`.
+-/
 theorem isInvWeight_const (X : Data E r) (c : ℝ) : IsInvWeight X fun _ => (c : EReal) :=
   ⟨measurable_const, fun _ _ _ _ _ _ => rfl, c, fun _ _ => le_rfl⟩
 
+/- English proof (translation)
+Unfold `dmin lminor`. Use `Continuous.matrix_det (continuous_matrix fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, gram, Matrix.of_apply, hermC, col, mat]`. Use `fun_prop`.
+-/
 theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
   unfold dmin lminor
@@ -42,6 +51,15 @@ theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
   simp only [Matrix.submatrix_apply, gram, Matrix.of_apply, hermC, col, mat]
   fun_prop
 
+/- English proof (translation)
+Take `⟨hsec, C, hC⟩` from `hs`. Use `⟨?_, fun γ hγ x hx b hb => by simp only [hinv γ hγ x hx b hb], (|C| + 1) ^ 2, fun x hx => ?_⟩` and prove the remaining obligations. Use `ENNReal.measurable_log.comp (ENNReal.measurable_ofReal.comp (Measurable.pow_const ?_ 2))` and prove the remaining obligations. Unfold `Data.pnorm`. Use `Measurable.mul (hsec.1.continuousOn.restrict.measurable.norm) ?_` and prove the remaining obligations.
+
+Use `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `refine Measurable.pow_const (Measurable.norm (Measurable.div ?_ ?_)) _ <;>`. Conclude with `((continuous_dmin X τ _).comp continuous_subtype_val).measurable`. Establish `h0 : 0 ≤ X.pnorm L s x`. Unfold `Data.pnorm`.
+
+Check the signs of the components of the expression. Establish `h1 : X.pnorm L s x ^ 2 ≤ (|C| + 1) ^ 2`. Use `hC x hx` as an intermediate fact. Use `le_abs_self C` as an intermediate fact. Use `gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 < (|C| + 1) ^ 2` using `by positivity`. Use `(ENNReal.log_monotone (ENNReal.ofReal_le_ofReal h1)).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.log_ofReal_of_pos h2]`. Conclude with `EReal.coe_le_coe_iff.2 ((Real.log_le_sub_one_of_pos h2).trans (by linarith))`.
+-/
 theorem isInvWeight_log_norm (X : Data E r) (L : Wt X.Ψ r) (s : Frame X.Ψ r → ℂ)
     (hs : X.IsBddSec L s)
     (hinv : ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r,
@@ -87,6 +105,9 @@ def ATilde (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (la : Wt X.Ψ r) (u : F
     Set (V (nd X) → ℂ) :=
   {F | DifferentiableOn ℂ F (OmF X x0) ∧ normSq X x0 bb la u F < ⊤}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiableOn_const 0, by simp [normSq, wsq]⟩`.
+-/
 theorem zero_mem_ATilde (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (la : Wt X.Ψ r)
     (u : Frame X.Ψ r → EReal) : (fun _ => 0) ∈ ATilde X x0 bb la u :=
   ⟨differentiableOn_const 0, by simp [normSq, wsq]⟩
@@ -131,6 +152,9 @@ def ballSup (X : Data E r) (ε : ℝ) (u : Frame X.Ψ r → EReal) (y : Frame X.
 def term (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (γ : X.Γ) (x : Frame X.Ψ r) : ℂ :=
   (X.χ la γ.1)⁻¹ * P (lact γ.1 x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem poin_eq (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     poin X la P x = ∑' γ, term X la P γ x := rfl
 
@@ -163,6 +187,9 @@ def CuspidalStatement : Prop :=
 def PoincareCuspidalStatement (E : Type) [Field E] [NumberField E] [IsCMField E] : Prop :=
   PoincareStatement (E := E) ∧ CuspidalStatement (E := E)
 
+/- English proof (translation)
+Take `⟨-, hb', hs, -⟩` from `(h.1 r X x0 hx0 bb hb la).2.2 u hu F hF P hP`. Conclude with `⟨h.2 r X la hg hp _ hb', hs FF hFF⟩`.
+-/
 theorem poin_mem_ASpace (h : PoincareCuspidalStatement E) (X : Data E r) (x0 : Frame X.Ψ r)
     (hx0 : IsOrth X x0) (bb : ℝ) (hb : 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb) (la : Wt X.Ψ r)
     (hg : GapsNonneg X la)

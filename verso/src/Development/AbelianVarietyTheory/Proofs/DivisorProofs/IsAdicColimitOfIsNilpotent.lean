@@ -27,6 +27,9 @@ def pushEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj
     ⟨Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _),
       Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩⟩
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem actPull_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] [IsCommMonObj G] {Λ : Type} [Ring Λ]
     (ρ : RingAct G Λ) (a : Λ) :
     ((actPull f ρ).act a).left ≫ pullback.fst G.hom f = pullback.fst G.hom f ≫ (ρ.act a).left :=
@@ -34,6 +37,13 @@ theorem actPull_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] [
 
 variable {p : ℕ} {R : Type} [CommRing R] {I : Ideal R} {O : Type} [CommRing O]
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hf`. Take `⟨m, hm⟩` from `hS`. Establish `e : (specO O S).hom ≫ spMap f = Spec.map (CommRingCat.ofHom ((algebraMap O S).comp f))`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Use `isAdicColimit_of_pow I _ (n * m) fun a ha => ?_` and prove the remaining obligations. Establish `h₁ : (I ^ n).map f ≤ Ideal.span {(p : O)}` using `Ideal.map_le_iff_le_comap.2 hn`. Establish `h₂ : f a ∈ Ideal.span {(p : O) ^ m}`. Rewrite using `[← Ideal.span_singleton_pow]`.
+
+Use `Ideal.pow_right_mono h₁ m ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, ← pow_mul]`. Conclude with `Ideal.mem_map_of_mem f ha`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h₂`. Rewrite using `[RingHom.comp_apply, ← hc, map_mul, map_pow, map_natCast, hm, mul_zero]`.
+-/
 theorem isAdicColimit_of_isNilpotent {f : R →+* O} (hf : ∃ n : ℕ, ∀ a ∈ I ^ n, f a ∈ Ideal.span {(p : O)})
     (S : Type) [CommRing S] [Algebra O S] (hS : IsNilpotent (p : S)) :
     IsAdicColimit I (Over.mk ((specO O S).hom ≫ spMap f)) := by
@@ -55,6 +65,9 @@ theorem isAdicColimit_of_isNilpotent {f : R →+* O} (hf : ∃ n : ℕ, ∀ a �
 variable [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} [Algebra O C]
   {Λ : Type} [CommRing Λ] [StarRing Λ]
 
+/- English proof (translation)
+Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp_algebraMap (f : R →+* O) :
     spMap ((algebraMap O C).comp f) = spMap (algebraMap O C) ≫ spMap f := by
   rw [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
@@ -115,6 +128,9 @@ section Unif
 variable [IsDomain R] {D : DegData R I} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G]
   [IsCommMonObj G] (U : UnifPre I D A G)
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.allSixLaws.1.globalFns`. Take `⟨H, _, _, hH⟩` from `exists_isGt hL (splitExt D.toPre)`. Take `⟨Φ, hΦ⟩` from `exists_points hL hH`. Take `⟨J, hJ⟩` from `exists_mulEquiv U hL (Φ := Φ) hΦ`. Conclude with `⟨H, inferInstance, inferInstance, Φ, J, hH, hΦ, hJ, fun T T' hT hT' k x => (hJ _ hT' _ _).2 (((hJ _ hT x _).1 rfl).pull k (hΦ.1 _ _ k _))⟩`.
+-/
 theorem exists_comparison : ∃ (H : Over (Sp R)) (_ : GrpObj H) (_ : IsCommMonObj H)
     (Φ : ∀ T, (T ⟶ H) ≃ GtPt D.toPre T) (J : ∀ T, IsAdicColimit I T → ((T ⟶ H) ≃* (T ⟶ G))),
     (splitExt D.toPre).IsGt H ∧ Represents Φ ∧
@@ -127,6 +143,9 @@ theorem exists_comparison : ∃ (H : Over (Sp R)) (_ : GrpObj H) (_ : IsCommMonO
   exact ⟨H, inferInstance, inferInstance, Φ, J, hH, hΦ, hJ, fun T T' hT hT' k x =>
     (hJ _ hT' _ _).2 (((hJ _ hT x _).1 rfl).pull k (hΦ.1 _ _ k _))⟩
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.allSixLaws.1.globalFns`. Take `⟨H, _, _, Φ, J, ⟨d⟩, hΦ, hJ, hnat⟩` from `exists_comparison U`. Take `⟨ρ, hρ⟩` from `exists_ringAct hL ιD (Φ := Φ) hΦ`. Use `⟨H, inferInstance, inferInstance, Φ, ρ, ofCompletion hv ε f hf hG ιG d ρ J hnat (fun T hT x a => (hJ _ hT _ _).2 (((hJ _ hT x _).1 rfl).smul hL hO a (hρ a _ _))) A' oA' j hj hact, ⟨d⟩, hΦ, hρ, rfl, rfl, HEq.rfl, rfl, rfl, rfl, _, _, isGrpPullback_pullback G _, isGrpPullback_pullb …` and prove the remaining obligations. Conclude with `(hJ _ (isAdicColimit_of_isNilpotent hf S hS) _ _).1 ((pushEquiv (isGrpPullback_pullback G (spMap f)) _).apply_symm_apply _).symm`.
+-/
 theorem exists_point_of_unif (hG : IsSemiAbelian G) [Module Λ D.toPre.X] {ιD : D.OAct Λ} {ιA : A.OAct Λ}
     {ιG : RingAct G Λ} (hO : U.OLinear Λ ιD ιA ιG) (hv : v.Integers O) (ε : Eps p C) (f : R →+* O)
     (hf : ∃ n : ℕ, ∀ a ∈ I ^ n, f a ∈ Ideal.span {(p : O)})

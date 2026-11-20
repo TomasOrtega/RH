@@ -6,12 +6,20 @@ open GlobalTheory.EigenSplit GlobalTheory.HTLat GlobalTheory.TotalFrame
 
 namespace GlobalTheory.RedForm
 
+/- English proof (translation)
+Establish `h` using `halt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, halt, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact h)`.
+-/
 theorem bilin_skew_of_alt {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ M) (halt : ∀ x, B x x = 0)
     (x y : M) : B x y = - B y x := by
   have h := halt (x + y)
   simp only [map_add, LinearMap.add_apply, halt, zero_add, add_zero] at h
   exact eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact h)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k m`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul k' m' => simp [LinearMap.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, h]`. Consider the case `add y1 y2 h1 h2 => simp only [map_add, h1, h2]`. Consider the case `add x1 x2 h1 h2 => simp only [map_add, LinearMap.add_apply, h1, h2]`.
+-/
 theorem baseChange_adjoint {K M : Type} [CommRing K] [AddCommGroup M] (B : LinearMap.BilinForm ℤ M)
     (f g : Module.End ℤ M) (h : ∀ x y, B x (f y) = B (g x) y) (x y : K ⊗[ℤ] M) :
     B.baseChange K x (f.baseChange K y) = B.baseChange K (g.baseChange K x) y := by
@@ -24,6 +32,13 @@ theorem baseChange_adjoint {K M : Type} [CommRing K] [AddCommGroup M] (B : Linea
     | add y1 y2 h1 h2 => simp only [map_add, h1, h2]
   | add x1 x2 h1 h2 => simp only [map_add, LinearMap.add_apply, h1, h2]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ M`. Set `b'` to `Algebra.TensorProduct.basis K b`. Use `choose c hc using fun j => hB.2 (b.coord j)`. Establish `key : ∀ j, (B.baseChange K).flip (1 ⊗ₜ (-c j)) = b'.coord j`. Introduce `j`.
+
+Use `b'.ext fun i => ?_` and prove the remaining obligations. Use `show B.baseChange K (b' i) (1 ⊗ₜ (-c j)) = b'.coord j (b' i)`. Rewrite using `[Algebra.TensorProduct.basis_apply, LinearMap.BilinForm.baseChange_tmul, Module.Basis.coord_apply, Algebra.TensorProduct.basis_repr_tmul, map_neg, hskew, neg_neg, hc, Module.Basis.coord_apply, b.repr_self, one_smul, one_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_eq_of_ne hij, Finsupp.single_eq_of_ne' hij]`. Use `b'.forall_coord_eq_zero_iff.1 fun j => ?_` and prove the remaining obligations. Rewrite using `[← key j]`. Conclude with `hx _`.
+-/
 theorem baseChange_nondeg {K M : Type} [CommRing K] [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     (B : LinearMap.BilinForm ℤ M) (hskew : ∀ x y, B x y = - B y x) (hB : Function.Bijective B)
     (x : K ⊗[ℤ] M) (hx : ∀ y, B.baseChange K x y = 0) : x = 0 := by
@@ -44,6 +59,13 @@ theorem baseChange_nondeg {K M : Type} [CommRing K] [AddCommGroup M] [Module.Fre
   rw [← key j]
   exact hx _
 
+/- English proof (translation)
+Use `Dw.fin` as an intermediate fact. Establish `: Module.Finite ℤ Dw.La` using `.trans (𝓞 E) _`. Establish `: Module.IsTorsionFree ℤ Dw.La`. Establish `: NoZeroSMulDivisors ℤ Dw.La`. Use `⟨fun {n x} h => or_iff_not_imp_left.2 fun hn => Dw.unimod.1 ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `h1 : Dw.EF (n • x) y = n * Dw.EF x y` using `by simp`. Rewrite `h1` using `[h, map_zero, LinearMap.zero_apply]`. Simplify `h1.symm` using `[hn]`. Use `infer_instance`.
+
+Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem free_of_unimod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (Dw : Datum H) :
     Module.Free ℤ Dw.La := by
   have := Dw.fin
@@ -58,6 +80,13 @@ theorem free_of_unimod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : G
     infer_instance
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Introduce `D A N j S κ p ct`. Establish `hbb : ∀ a : 𝓞 D.host.E, A.H.bar (A.H.bar a) = a` using `fun a => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[A.H.bar_eq, A.H.bar_eq, IsCMField.complexConj_apply_apply]`. Establish `hskew` using `bilin_skew_of_alt S.Dw.EF S.Dw.alt`.
+
+Use `⟨fun a => hbb a, fun a x y => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[baseChangeAction_apply, baseChangeAction_apply]`. Use `baseChange_adjoint S.Dw.EF _ _ (fun u v => ?_) x y` and prove the remaining obligations. Simplify using `only [Module.toModuleEnd_apply, DistribSMul.toLinearMap_apply, RingHom.coe_coe]`. Rewrite using `[hskew, S.Dw.adj, hskew (A.H.bar a • u)]`.
+
+Use `free_of_unimod S.Dw` as an intermediate fact. Use `S.Dw.fin` as an intermediate fact. Establish `: Module.Finite ℤ S.Dw.La` using `.trans (𝓞 D.host.E) _`. Conclude with `baseChange_nondeg S.Dw.EF hskew S.Dw.unimod x hx`.
+-/
 theorem psiBar_props : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p),
   (∀ a : 𝓞 D.host.E, (A.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ((A.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) a) = a) ∧
   (∀ (a : 𝓞 D.host.E) (x y : ct.LaBar), ct.psiBar x ((baseChangeAction ct.kbar (Module.toModuleEnd ℤ S.Dw.La : 𝓞 D.host.E →+* Module.End ℤ S.Dw.La)) a y) = ct.psiBar ((baseChangeAction ct.kbar (Module.toModuleEnd ℤ S.Dw.La : 𝓞 D.host.E →+* Module.End ℤ S.Dw.La)) ((A.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) a) x) y) ∧

@@ -9,6 +9,43 @@ namespace GlobalTheory.CNorm
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
+/- English proof (translation)
+Introduce `p F E _ _ _ _ ζ δ θ σ h`. Take `⟨hfd, hrank, hgal, hord, hgen, ⟨e⟩, -⟩` from `_root_.GlobalTheory.CNorm.kummer_galois p F E ζ δ θ σ h`. Establish `hp` using `h.prime`. Establish `hprod : ∀ y : E, algebraMap F E (Algebra.norm F y) = ∏ i ∈ Finset.range p, σ^[i] y`. Introduce `y`.
+
+Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Establish `huniv : (Finset.univ : Finset Gal(E/F)) = (Finset.range p).image (σ ^ ·)`. Use extensionality with `τ`. Simplify using `only [Finset.mem_univ, true_iff]`. Rewrite using `[← hord]`.
+
+Conclude with `mem_zpowers_iff_mem_range_orderOf.1 (hgen τ)`. Rewrite using `[huniv, Finset.prod_image]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [AlgEquiv.coe_pow]`. Introduce `i hi j hj hij`. Conclude with `pow_injOn_Iio_orderOf (by rw [hord]; simpa using hi) (by rw [hord]; simpa using hj) hij`.
+
+Establish `hfix : ∀ y : E, σ y = y → ∃ a : F, y = algebraMap F E a`. Introduce `y hy`. Establish `hmem : y ∈ (⊥ : IntermediateField F E)`. Rewrite using `[IsGalois.mem_bot_iff_fixed]`. Introduce `τ`.
+
+Establish `hσ : σ ∈ MulAction.stabilizer Gal(E/F) y` using `MulAction.mem_stabilizer_iff.2 hy`. Conclude with `MulAction.mem_stabilizer_iff.1 ((Subgroup.zpowers_le.2 hσ) (hgen τ))`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 hmem`. Conclude with `⟨a, ha.symm⟩`. Use `⟨hfd, hrank, ?_, hfix, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y`. Rewrite using `[← AlgEquiv.coe_pow, ← hord, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Introduce `y hy haveI : IsCyclic Gal(E/F) := ⟨⟨σ, fun τ => by`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hgen τ)`.
+
+Conclude with `⟨k, hk⟩⟩⟩`. Establish `hn : Algebra.norm F y = 1` using `(algebraMap F E).injective (by rw [hprod, hy, map_one])`. Take `⟨z, hz⟩` from `groupCohomology.exists_div_of_norm_eq_one hgen hn`. Use `⟨(z : E)⁻¹, inv_ne_zero z.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, inv_div_inv, hz]`.
+
+Introduce `u y hy haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `hζ` using `h.root.map_of_injective (algebraMap F E).injective`. Distinguish the cases in `hy0 : y = 0`. Use `⟨1, 0, ?_⟩` and prove the remaining obligations. Substitute `hy0` using the available equality.
+
+Rewrite `hy` using `[zero_pow hp.ne_zero]`. Establish `hu : u = 0` using `(algebraMap F E).injective (by rw [← hy, map_zero])`. Simplify using `[hu, hp.ne_zero]`. Establish `hσy : (σ y / y) ^ p = 1`. Rewrite using `[div_pow, ← map_pow, hy, AlgEquiv.commutes, ← hy]`.
+
+Conclude with `div_self (pow_ne_zero _ hy0)`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one hσy`. Establish `hσy' : σ y = algebraMap F E ζ ^ j * y`. Rewrite using `[hj]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hδ : δ ≠ 0`. Introduce `hδ`. Conclude with `h.nonpow 0 (by rw [hδ, zero_pow hp.ne_zero])`. Establish `hθ : θ ≠ 0`. Introduce `hθ`.
+
+Use `h.pow` as an intermediate fact. Rewrite `this` using `[hθ, zero_pow hp.ne_zero, eq_comm, map_eq_zero]`. Conclude with `hδ this`. Establish `hζ0 : algebraMap F E ζ ≠ 0` using `hζ.ne_zero hp.ne_zero`. Establish `hw : σ (y / θ ^ j) = y / θ ^ j`.
+
+Rewrite using `[map_div₀, map_pow, h.conj, hσy', mul_pow]`. Clear the denominators using the available nonvanishing facts. Take `⟨a, ha⟩` from `hfix _ hw`. Establish `hy' : y = algebraMap F E a * θ ^ j`. Rewrite using `[← ha]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨j, a, (algebraMap F E).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, hy', mul_pow, ← pow_mul, mul_comm j p, pow_mul, h.pow]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `x`. Rewrite using `[_root_.GlobalTheory.CNorm.mem_kNorm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Use `⟨e.symm w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hprod, Algebra.norm_eq_of_algEquiv, hw]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy⟩`. Establish `hn : Algebra.norm F y = x` using `(algebraMap F E).injective (by rw [hprod, hy])`. Establish `hy0 : y ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hn` using `[Algebra.norm_zero]`. Conclude with `x.ne_zero hn.symm`. Use `⟨Units.map (e : E →* AdjoinRoot (X ^ p - C δ)) (Units.mk0 y hy0), ?_⟩` and prove the remaining obligations. Simplify using `only [Units.coe_map, Units.val_mk0, MonoidHom.coe_coe, RingHom.id_apply]`.
+
+Rewrite using `[Algebra.norm_eq_of_algEquiv, hn]`.
+-/
 theorem _root_.GlobalTheory.CNorm.kummer_basic : ∀ (p : ℕ) (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E] (ζ δ : F) (θ : E) (σ : E ≃ₐ[F] E), _root_.GlobalTheory.CNorm.IsKum p ζ δ θ σ → FiniteDimensional F E ∧ Module.finrank F E = p ∧ (∀ y : E, σ^[p] y = y) ∧ (∀ y : E, σ y = y → ∃ a : F, y = algebraMap F E a) ∧ (∀ y : E, ∏ i ∈ Finset.range p, σ^[i] y = 1 → ∃ z : E, z ≠ 0 ∧ y = σ z / z) ∧ (∀ (u : F) (y : E), y ^ p = algebraMap F E u → ∃ (k : ℕ) (r : F), u = δ ^ k * r ^ p) ∧ ∀ x : Fˣ, x ∈ _root_.GlobalTheory.CNorm.kNorm p (RingHom.id F) δ ↔ ∃ y : E, ∏ i ∈ Finset.range p, σ^[i] y = algebraMap F E (x : F) := by
   intro p F E _ _ _ _ ζ δ θ σ h
   obtain ⟨hfd, hrank, hgal, hord, hgen, ⟨e⟩, -⟩ :=

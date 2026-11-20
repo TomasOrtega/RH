@@ -6,6 +6,19 @@ namespace PI.AprimeInfW
 
 open MeasureTheory Topology Filter
 
+/- English proof (translation)
+Establish `key : ∀ n, μ (f '' A n) = ∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ` using `fun n => (lintegral_abs_det_fderiv_eq_addHaar_image μ (hAm n) (fun x hx => (hf' x (hAU n hx)).mono (hAU n)) (hinj.mono (hAU n))).symm`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set d := |(f' x₀).det| with hd`. Establish `hV : (fun x => |(f' x).det|) ⁻¹' Set.Ioo (d - ε / 2) (d + ε / 2) ∈ 𝓝 x₀` using `hc (Ioo_mem_nhds (by linarith) (by linarith))`.
+
+Use `filter_upwards [hsh _ hV] with n hn`. Establish `hm0` using `hA0 n`. Establish `hmt` using `hAt n`. Establish `hmr : 0 < (μ (A n)).toReal` using `ENNReal.toReal_pos hm0.ne' hmt.ne`. Establish `up : ∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ ≤ ENNReal.ofReal (d + ε / 2) * μ (A n)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `lo : ENNReal.ofReal (d - ε / 2) * μ (A n) ≤ ∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `hupt : ENNReal.ofReal (d + ε / 2) * μ (A n) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hmt.ne`. Establish `hIt : ∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ ≠ ⊤` using `ne_top_of_le_ne_top hupt up`.
+
+Establish `u1 : (∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ).toReal ≤ (d + ε / 2) * (μ (A n)).toReal`. Use `ENNReal.toReal_mono hupt up` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Then use the resulting hypothesis. Establish `l1 : (d - ε / 2) * (μ (A n)).toReal ≤ (∫⁻ x in A n, ENNReal.ofReal |(f' x).det| ∂μ).toReal`. Use `ENNReal.toReal_mono hIt lo` as an intermediate fact.
+
+Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal']`. Conclude with `le_trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hmr.le) this`. Rewrite using `[key n, Real.dist_eq, abs_sub_lt_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[sub_lt_iff_lt_add, div_lt_iff₀ hmr]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[sub_lt_comm, lt_div_iff₀ hmr]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem img_ratio {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
     {f : E → E} {f' : E → (E →L[ℝ] E)} {U : Set E} {x₀ : E}

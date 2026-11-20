@@ -16,6 +16,11 @@ namespace UpperTheory.HilbertEisensteinWeightOne.EisensteinIntegrability
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Take `⟨m, hm, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 H.fin`. Establish `ho` using `isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => congrArg (fun ξ : HChar F => ξ.1 x) hpow`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`. Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`.
+
+Apply `hw` to reduce the goal to its premises. Conclude with `Nat.le_zero.1 ((H.cond w).2 (show (0 : ℕ) ∈ _ from fun x hu _ => key w x hu fun h => absurd h hwS))`.
+-/
 theorem finite_c {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) : {w | c w ≠ 0}.Finite := by
   obtain ⟨m, hm, hpow⟩ := isOfFinOrder_iff_pow_eq_one.1 H.fin
   have ho := isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => congrArg (fun ξ : HChar F => ξ.1 x) hpow
@@ -25,6 +30,9 @@ theorem finite_c {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hy
   apply hw
   exact Nat.le_zero.1 ((H.cond w).2 (show (0 : ℕ) ∈ _ from fun x hu _ => key w x hu fun h => absurd h hwS))
 
+/- English proof (translation)
+Establish `h0 : differentIdeal ℤ (𝓞 F) ≠ ⊥` using `differentIdeal_ne_bot`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, dd, ordI, Nat.cast_ne_zero] at hw ⊢`. Conclude with `(Associates.count_ne_zero_iff_dvd h0 w.irreducible).1 hw`.
+-/
 theorem finite_dd : {w : HeightOneSpectrum (𝓞 F) | dd w ≠ 0}.Finite := by
   have h0 : differentIdeal ℤ (𝓞 F) ≠ ⊥ := differentIdeal_ne_bot
   refine (Ideal.finite_factors h0).subset fun w hw => ?_
@@ -39,11 +47,19 @@ def Jc (c : HeightOneSpectrum (𝓞 F) → ℕ) : (FractionalIdeal (𝓞 F)⁰ F
 
 def Jh (c : HeightOneSpectrum (𝓞 F) → ℕ) : (FractionalIdeal (𝓞 F)⁰ F)ˣ := idealOf F fun w => -((c w : ℤ) + dd w)
 
+/- English proof (translation)
+Use `count_finprod_primeIdealUnit_zpow (fun w => (c w : ℤ)) ?_ w` and prove the remaining obligations. Conclude with `Filter.eventually_cofinite.2 ((finite_c H).subset fun w hw => by simpa using hw)`.
+-/
 private theorem count_Jc {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) (w : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F w ((Jc c : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : FractionalIdeal (𝓞 F)⁰ F) = c w := by
   refine count_finprod_primeIdealUnit_zpow (fun w => (c w : ℤ)) ?_ w
   exact Filter.eventually_cofinite.2 ((finite_c H).subset fun w hw => by simpa using hw)
 
+/- English proof (translation)
+Use `count_finprod_primeIdealUnit_zpow (fun w => -((c w : ℤ) + dd w)) ?_ w` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (((finite_c H).union finite_dd).subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at hw`. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at h`.
+
+Apply `hw` to reduce the goal to its premises. Rewrite using `[h.1, h.2]`. Simplify using the standard rewrite rules.
+-/
 private theorem count_Jh {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) (w : HeightOneSpectrum (𝓞 F)) :
     FractionalIdeal.count F w ((Jh c : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : FractionalIdeal (𝓞 F)⁰ F) = -((c w : ℤ) + dd w) := by
   refine count_finprod_primeIdealUnit_zpow (fun w => -((c w : ℤ) + dd w)) ?_ w
@@ -55,6 +71,11 @@ private theorem count_Jh {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ}
   rw [h.1, h.2]
   simp
 
+/- English proof (translation)
+Unfold `Phi`. Use `congr 1`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Simplify using `only [mem_idealFiniteAdeles, count_Jc H]`. Rewrite using `[← forall_and]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem phi_eq {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) (y : Fin 2 → Ad F) :
     Phi c y = arch (UpperTheory.V.TR.pInf F (y 0)) (UpperTheory.V.TR.pInf F (y 1)) *
       if pFin F (y 0) ∈ idealFiniteAdeles (Jc c) ∧ pFin F (y 1) - 1 ∈ idealFiniteAdeles (Jc c) then 1 else 0 := by
@@ -65,6 +86,13 @@ theorem phi_eq {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp 
   rw [← forall_and]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `PhiH`. Rewrite using `[norm_mul]`. Use `split_ifs with h1 h2`. Rewrite using `[Circle.norm_coe]`. It suffices to derive a contradiction.
+
+Apply `h2` to reduce the goal to its premises. Simplify using `only [mem_idealFiniteAdeles, count_Jh H, neg_neg]`. Conclude with `⟨fun w => (h1 w).1, fun w => (h1 w).2⟩`. Rewrite using `[norm_zero, mul_zero]`. Check the signs of the components of the expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_phiH_le {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) (y : Fin 2 → Ad F) :
     ‖PhiH c y‖ ≤ ‖arch (UpperTheory.V.TR.pInf F (y 0)) (UpperTheory.V.TR.pInf F (y 1))‖ *
       if pFin F (y 0) ∈ idealFiniteAdeles (Jh c) ∧ pFin F (y 1) ∈ idealFiniteAdeles (Jh c) then (1 : ℝ) else 0 := by
@@ -80,11 +108,17 @@ theorem norm_phiH_le {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H 
     positivity
   · simp
 
+/- English proof (translation)
+Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Both sides reduce to the same expression.
+-/
 private theorem pInf_coord_eq (x : Ad F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F x v = (homeomorphMixedSpace F x.1).1 ⟨v, IsTotallyReal.isReal v⟩ := by
   rw [homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]
   rfl
 
+/- English proof (translation)
+Establish `h : (fun x : Ad F => UpperTheory.V.TR.pInf F x v) = fun x => (homeomorphMixedSpace F x.1).1 ⟨v, IsTotallyReal.isReal v⟩` using `funext fun x => pInf_coord_eq x v`. Rewrite using `[h]`. Conclude with `(continuous_apply _).comp (continuous_fst.comp ((homeomorphMixedSpace F).continuous.comp continuous_fst))`.
+-/
 private theorem continuous_pInf_coord (v : InfinitePlace F) :
     Continuous fun x : Ad F => UpperTheory.V.TR.pInf F x v := by
   have h : (fun x : Ad F => UpperTheory.V.TR.pInf F x v) =
@@ -92,6 +126,9 @@ private theorem continuous_pInf_coord (v : InfinitePlace F) :
   rw [h]
   exact (continuous_apply _).comp (continuous_fst.comp ((homeomorphMixedSpace F).continuous.comp continuous_fst))
 
+/- English proof (translation)
+Unfold `arch`. Use `continuous_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p => ((UpperTheory.V.TR.pInf F (a p) v : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp ((continuous_pInf_coord v).comp ha)`. Establish `h2 : Continuous fun p => ((UpperTheory.V.TR.pInf F (b p) v : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp ((continuous_pInf_coord v).comp hb)`. Conclude with `(h1.add (continuous_const.mul h2)).mul (Complex.continuous_exp.comp (continuous_const.mul ((h1.pow 2).add (h2.pow 2))))`.
+-/
 private theorem continuous_arch_comp {X : Type*} [TopologicalSpace X] {a b : X → Ad F} (ha : Continuous a)
     (hb : Continuous b) : Continuous fun p => arch (UpperTheory.V.TR.pInf F (a p)) (UpperTheory.V.TR.pInf F (b p)) := by
   unfold arch
@@ -103,11 +140,17 @@ private theorem continuous_arch_comp {X : Type*} [TopologicalSpace X] {a b : X �
   exact (h1.add (continuous_const.mul h2)).mul
     (Complex.continuous_exp.comp (continuous_const.mul ((h1.pow 2).add (h2.pow 2))))
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.GeneralLinearGroup.coe_scalar]`.
+-/
 private theorem coe_scalar_mul (z : Ideles F) (g : GA F 2) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) z * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) =
       Matrix.scalar (Fin 2) (z : Ad F) * (g : Matrix (Fin 2) (Fin 2) (Ad F)) := by
   rw [Units.val_mul, Matrix.GeneralLinearGroup.coe_scalar]
 
+/- English proof (translation)
+Establish `hz : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ((moduleSection (w0 F) p.1 * (p.2 : Ideles F) : Ideles F) : Ad F)` using `Units.continuous_val.comp (((continuous_moduleSection _).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd))`. Repeatedly rewrite using `[coe_scalar_mul, Matrix.scalar_apply]`. Conclude with `continuous_const.matrix_vecMul ((Continuous.matrix_diagonal (continuous_pi fun _ => hz)).matrix_mul continuous_const)`.
+-/
 private theorem continuous_Y (g : GA F 2) (ξ : Fin 2 → F) :
     Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F =>
       rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) * g :
@@ -120,6 +163,15 @@ private theorem continuous_Y (g : GA F 2) (ξ : Fin 2 → F) :
   exact continuous_const.matrix_vecMul ((Continuous.matrix_diagonal (continuous_pi fun _ => hz)).matrix_mul
     continuous_const)
 
+/- English proof (translation)
+Establish `hz : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => (moduleSection (w0 F) p.1 * (p.2 : Ideles F) : Ideles F)` using `((continuous_moduleSection _).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hterm : ∀ ξ : Fin 2 → F, Measurable fun p : {r : ℝ // 0 < r} × normOneSubgroup F => Phi c (rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))`. Introduce `ξ`. Establish `hY` using `continuous_Y g ξ`. Establish `hY0` using `(continuous_apply (0 : Fin 2)).comp hY`.
+
+Establish `hY1` using `(continuous_apply (1 : Fin 2)).comp hY`. Establish `hf0 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => pFin F ((rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 0)` using `continuous_snd.comp hY0`. Establish `hf1 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => pFin F ((rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 1)` using `continuous_snd.comp hY1`. Establish `hO` using `((isOpen_idealFiniteAdeles (Jc c)).preimage hf0).inter ((isOpen_idealFiniteAdeles (Jc c)).preimage (hf1.sub (continuous_const (y := (1 : Af F)))))`. Repeatedly rewrite using `[phi_eq H]`.
+
+Conclude with `(continuous_arch_comp hY0 hY1).measurable.mul (Measurable.ite hO.measurableSet measurable_const measurable_const)`. Establish `hθ : Measurable fun p : {r : ℝ // 0 < r} × normOneSubgroup F => thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) * g)`. Unfold `thetaS`. Conclude with `Measurable.tsum fun ξ => hterm ξ.1`. Establish `hω : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ((ω.1 (moduleSection (w0 F) p.1 * (p.2 : Ideles F)) : ℂˣ) : ℂ)⁻¹` using `(Units.continuous_val.comp (ω.2.1.comp hz)).inv₀ fun p => Units.ne_zero _`.
+
+Establish `ht : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ((p.1 : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst)`. Unfold `eisInt`. Conclude with `((hθ.mul hω.measurable).mul ht.measurable).mul measurable_const`.
+-/
 theorem measurable_eisInt {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp ω c) (g : GA F 2) :
     Measurable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => eisInt ω (Phi c) g p.1 p.2) := by
   have hz : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F =>

@@ -5,6 +5,11 @@ open MvPolynomial
 
 namespace LateralTheory.EtaleTrace.StepPf
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = m`. Use `hF (mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma eval₂_mul_left {k R σ : Type} [CommSemiring k] [CommSemiring R] (f : k →+* R) (x : σ → R) (r : R)
     {m : ℕ} {F : MvPolynomial σ k} (hF : F.IsHomogeneous m) :
     eval₂ f (fun j => r * x j) F = r ^ m * eval₂ f x F := by
@@ -16,6 +21,9 @@ lemma eval₂_mul_left {k R σ : Type} [CommSemiring k] [CommSemiring R] (f : k 
   simp_rw [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Algebra.smul_def]`. Simplify using `[Derivation.leibniz]`.
+-/
 lemma jet_sub {k K : Type} [Field k] [Field K] [Algebra k K] (a b : K) (c : k) :
     ((a - algebraMap k K c * b), KaehlerDifferential.D k K (a - algebraMap k K c * b)) =
       (a, KaehlerDifferential.D k K a) - (algebraMap k K c) • (b, KaehlerDifferential.D k K b) := by
@@ -23,6 +31,19 @@ lemma jet_sub {k K : Type} [Field k] [Field K] [Algebra k K] (a b : K) (c : k) :
   · simp [Algebra.smul_def]
   · simp [Derivation.leibniz]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual k K, φ (a j0) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha ((Module.forall_dual_apply_eq_zero_iff k (a j0)).mp h)`. Use `set G : MvPolynomial (Fin (n + 1)) k := ∑ j, C (φ (a j)) * X j with hGdef`.
+
+Establish `hG : ∀ c, eval c G = φ (∑ j, a j * algebraMap k K (c j))`. Introduce `c`. Simplify using `only [hGdef, map_sum, map_mul, eval_C, eval_X]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (a j), ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `hG0 : G ≠ 0`. Introduce `h`. Use `hG (Pi.single j0 1)` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `[Pi.single_apply] at this`.
+
+Conclude with `hφ this.symm`. Establish `hP : F * X (Fin.last n) * G ≠ 0` using `mul_ne_zero (mul_ne_zero hF0 (X_ne_zero _)) hG0`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, eval c (F * X (Fin.last n) * G) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hP (MvPolynomial.funext fun x => by simpa using h x)`. Simplify using `only [map_mul, eval_X] at hc`. Use `⟨c, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `left_ne_zero_of_mul (left_ne_zero_of_mul hc)`. Conclude with `right_ne_zero_of_mul (left_ne_zero_of_mul hc)`.
+
+Introduce `h0`. Apply `right_ne_zero_of_mul hc` to reduce the goal to its premises. Rewrite using `[hG, h0, map_zero]`.
+-/
 lemma exists_c {k K : Type} [Field k] [Infinite k] [Field K] [Algebra k K] {n : ℕ}
     (F : MvPolynomial (Fin (n + 1)) k) (hF0 : F ≠ 0) (a : Fin (n + 1) → K) (j0 : Fin (n + 1)) (ha : a j0 ≠ 0) :
     ∃ c : Fin (n + 1) → k, eval c F ≠ 0 ∧ c (Fin.last n) ≠ 0 ∧ ∑ j, a j * algebraMap k K (c j) ≠ 0 := by
@@ -55,6 +76,57 @@ lemma exists_c {k K : Type} [Field k] [Infinite k] [Field K] [Algebra k K] {n : 
     apply right_ne_zero_of_mul hc
     rw [hG, h0, map_zero]
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ n v m F hF0 hFh hFv hli`. Take `⟨a, ha, j0, hj0⟩` from `Fintype.not_linearIndependent_iff.mp hli`. Take `⟨c, hcF, hcl, hcs⟩` from `exists_c F hF0 a j0 hj0`. Use `set e : k := (c (Fin.last n))⁻¹ with he`. Use `set d : Fin (n + 1) → k := fun j => e * c j with hd`.
+
+Establish `hdl : d (Fin.last n) = 1` using `inv_mul_cancel₀ hcl`. Establish `hdF : eval d F ≠ 0`. Establish `h` using `eval₂_mul_left (RingHom.id k) c e hFh`. Express the relevant statement in the definitionally equal form `eval₂ (RingHom.id k) d F ≠ 0`. Rewrite `h` using `[show (fun j => e * c j) = d from rfl]`.
+
+Rewrite using `[h]`. Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero hcl)) hcF`. Use `set s : K := ∑ j, a j * algebraMap k K (d j) with hsdef`. Establish `hs0 : s ≠ 0`. Establish `: s = algebraMap k K e * ∑ j, a j * algebraMap k K (c j)`.
+
+Simplify using `only [hsdef, hd, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this]`. Conclude with `mul_ne_zero ((map_ne_zero _).mpr (inv_ne_zero hcl)) hcs`. Use `set w : Fin n → K := fun j => v j.castSucc - algebraMap k K (d j.castSucc) * v (Fin.last n) with hw`.
+
+Establish `hjw : ∀ j, LateralTheory.EtaleTrace.Cov.jet k w j = LateralTheory.EtaleTrace.Cov.jet k v j.castSucc - algebraMap k K (d j.castSucc) • LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n)`. Introduce `j`. Conclude with `jet_sub _ _ _`. Establish `h1 : ∀ j : Fin n, LateralTheory.EtaleTrace.Cov.jet k v j.castSucc = LateralTheory.EtaleTrace.Cov.jet k w j + algebraMap k K (d j.castSucc) • LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n)`. Introduce `j`.
+
+Rewrite using `[hjw]`. Normalize the expressions using the abelian group laws. Establish `hlast : s • LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n) = -(∑ j : Fin n, a j.castSucc • LateralTheory.EtaleTrace.Cov.jet k w j)`. Establish `hs : s = ∑ j : Fin n, a j.castSucc * algebraMap k K (d j.castSucc) + a (Fin.last n)`. Rewrite using `[hsdef, Fin.sum_univ_castSucc, hdl, map_one, mul_one]`.
+
+Rewrite `ha` using `[Fin.sum_univ_castSucc]`. Rewrite `ha` using `[h1, smul_add, Finset.sum_add_distrib, smul_smul]`. Rewrite using `[hs, add_smul, Finset.sum_smul, eq_neg_iff_add_eq_zero, ← ha]`. Normalize the expressions using the abelian group laws. Use `⟨w, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j`. Use `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hjw]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`. Establish `hL : LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n) ∈ Submodule.span K (Set.range (LateralTheory.EtaleTrace.Cov.jet k w))`.
+
+Establish `: LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n) = s⁻¹ • (s • LateralTheory.EtaleTrace.Cov.jet k v (Fin.last n))`. Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[this, hlast]`. Use `Submodule.smul_mem _ _ (Submodule.neg_mem _ (Submodule.sum_mem _ fun j _ => ?_))` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact hL`. Consider the case `cast j`.
+
+Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨j, rfl⟩) (Submodule.smul_mem _ _ hL)`. Introduce `O hO hk ⟨i, hvi, hvO⟩`. Set `ι : k →+* O` to `(algebraMap k K).codRestrict O hk`. Set `U : Fin (n + 1) → O` to `fun j => ⟨v j / v i, hvO j⟩`.
+
+Establish `hUF : eval₂ ι U F = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `h` using `eval₂_comp_left O.subtype ι U F`. Express the relevant statement in the definitionally equal form `O.subtype (eval₂ ι U F) = 0`. Rewrite using `[h]`.
+
+Establish `h2 : O.subtype.comp ι = algebraMap k K` using `by ext x; rfl`. Establish `h3 : (O.subtype ∘ U) = fun j => (v i)⁻¹ * v j`. Use function extensionality and compare the values at `j`. Simplify using `[U, div_eq_inv_mul]`. Rewrite using `[h2, h3, eval₂_mul_left _ _ _ hFh, ← aeval_def, hFv, mul_zero]`.
+
+Set `W : Fin n → O` to `fun l => U l.castSucc - ι (d l.castSucc) * U (Fin.last n)`. Establish `hWv : ∀ l, (W l : K) = w l / v i`. Introduce `l`. Simplify using `only [W, U, ι, hw, AddSubgroupClass.coe_sub, MulMemClass.coe_mul, RingHom.codRestrict_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hWm : ∀ l, IsLocalRing.residue O (W l) = 0`. Introduce `l`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `hval : w l / v i * (y : K) = 1`. Rewrite using `[← hWv]`. Conclude with `congrArg Subtype.val hy`.
+
+Establish `hwl : w l ≠ 0`. Introduce `h0`. Rewrite `hval` using `[h0, zero_div, zero_mul]`. Conclude with `zero_ne_one hval`. Take `⟨j, hj⟩` from `hcon l hwl`.
+
+Apply `hj` to reduce the goal to its premises. Establish `: v j / w l = v j / v i * (y : K)`. Rewrite using `[eq_comm, eq_div_iff hwl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+
+Conclude with `O.mul_mem (hvO j) y.2`. Use `set π := IsLocalRing.residue O`. Use `set t := π (U (Fin.last n))`. Establish `hπU : (fun j => π (U j)) = fun j => t * (π.comp ι) (d j)`. Use function extensionality and compare the values at `j`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [hdl, map_one, mul_one]`. Consider the case `cast l`. Use `hWm l` as an intermediate fact. Simplify using `only [W, map_sub, map_mul, sub_eq_zero] at this`.
+
+Rewrite using `[this, RingHom.comp_apply, mul_comm]`. Establish `hmain : t ^ m * (π.comp ι) (eval d F) = 0`. Establish `h` using `eval₂_comp_left π ι U F`. Rewrite `h` using `[hUF, map_zero]`. Establish `h' : (π ∘ U) = fun j => t * (π.comp ι) (d j)` using `hπU`.
+
+Rewrite `h` using `[h', eval₂_mul_left _ _ _ hFh]`. Establish `h4` using `eval₂_comp_left (π.comp ι) (RingHom.id k) d F`. Rewrite `h4` using `[RingHom.comp_id]`. Rewrite using `[h]`. Conclude with `congrArg (t ^ m * ·) h4`.
+
+Establish `hne : (π.comp ι) (eval d F) ≠ 0` using `(map_ne_zero _).mpr hdF`. Establish `ht : t = 0` using `pow_eq_zero_iff'.mp ((mul_eq_zero.mp hmain).resolve_right hne) |>.1`. Establish `hUi : π (U i) = 0`. Use `congrFun hπU i` as an intermediate fact. Rewrite using `[this, ht, zero_mul]`.
+
+Establish `: U i = 1` using `Subtype.ext (by simp [U, div_self hvi])`. Rewrite `hUi` using `[this, map_one]`. Conclude with `one_ne_zero hUi`.
+-/
 theorem Step_of : LateralTheory.EtaleTrace.Cov.Step := by
   intro k K _ _ _ _ n v m F hF0 hFh hFv hli
   obtain ⟨a, ha, j0, hj0⟩ := Fintype.not_linearIndependent_iff.mp hli

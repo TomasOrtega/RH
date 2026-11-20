@@ -20,6 +20,29 @@ open Formalism.IndefR.FWT GlobalTheory.BigTop GlobalTheory.OntoChain GlobalTheor
 open GlobalTheory.BigOn GlobalTheory.BigOn.Exp Formalism.L2.Theta GlobalTheory.ExportSeries
 open scoped TensorProduct
 namespace GlobalTheory.BigOn.Exp
+/- English proof (translation)
+Introduce `h1 h2 h3 h4`. Establish `hI` using `_root_.GlobalTheory.BigOn.Exp.readInj_alt`. Establish `hS` using `_root_.GlobalTheory.T.scale_root_of_reciprocity_inputs h1 h2 h3 h4`. Establish `hC` using `_root_.GlobalTheory.T.norm_ratio_realization_same_dual_alt h1 h2 h3 h4`. Establish `hR` using `_root_.GlobalTheory.BigOn.Exp.coordRange_alt`.
+
+Unfold `_root_.GlobalTheory.BigOn.Exp.ReadInjAlt at hI`. Unfold `_root_.GlobalTheory.BigOn.Exp.ScaleRootAltBis at hS`. Unfold `_root_.GlobalTheory.BigOn.Exp.CoordinateRangeCondition at hR`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at hI hS hC hR ⊢`. Use `Closed.imp (Closed.and (Closed.and (Closed.and hI hS) hC) hR) ?_` and prove the remaining obligations.
+
+Introduce `eps Fm CH _ h`. Take `⟨x0, hx0⟩` from `_root_.GlobalTheory.BigTop.EventuallyAtPoints.and (_root_.GlobalTheory.BigTop.EventuallyAtPoints.and (_root_.GlobalTheory.BigTop.EventuallyAtPoints.and h.1.1.1 h.1.1.2) h.1.2) h.2`. Use `⟨x0, ?_⟩` and prove the remaining obligations. Introduce `x hx hle i p hp hm w hw j ρ ρ' hρ hρ' ν ν' hpin hlev hpin' hSB hN hN' hR0 hR0' s h P hd hP f f' hf hf'`. Take `⟨⟨⟨a1, a2⟩, a3⟩, a4⟩` from `hx0 x hx hle i p hp`.
+
+Establish `hν : ν ≠ 0` using `hN.1`. Establish `hν' : ν' ≠ 0` using `hN'.1`. Establish `inj'` using `a1 hm w hw j ρ' hρ' ν hν`. Establish `inj` using `a1 hm w hw j ρ hρ ν hν`. Distinguish the cases in `hf0 : f = 0`.
+
+Substitute `hf0` using the available equality. Establish `h0 : rdAt p w j hρ' ν' f' = rdAt p w j hρ' ν' 0`. Rewrite using `[hf', ← hf, map_zero, map_zero]`. Use `a1 hm w hw j ρ' hρ' ν' hν' h0` as an intermediate fact. Conclude with `⟨1, ⟨1, one_ne_zero, one_pow 1⟩, by rw [this, smul_zero]⟩`.
+
+Establish `hθ : ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Apply `inj` to reduce the goal to its premises. Rewrite using `[hf, h0, map_zero]`.
+
+Take `⟨n, hn, hnn⟩` from `a2 hm w hw j ρ ρ' hρ hρ' ν ν' hpin hpin' hSB hN hN' hR0 hR0' s h P hd hP hθ`. Take `⟨c, ⟨m, hm0, hcm⟩, hc⟩` from `a3 hm w hw j ρ ρ' hρ hρ' ν ν' hpin hlev hpin' hSB hN hN' hR0 hR0' s h P hd hP f hf`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hcm` using `[zero_pow hm0]`.
+
+Conclude with `zero_ne_one hcm`. Establish `hap` using `fun ν₁ g => realRd_apply p.nexp p.v₀ hρ' ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ν₁ g`. Establish `key : rdAt p w j hρ' ν f' = (ν' * ν⁻¹ * c⁻¹) • rdAt p w j hρ' ν f`. Rewrite using `[hc, ← hf', smul_smul]`. Establish `e1` using `hap ν f'`.
+
+Establish `e2` using `hap ν' f'`. Simplify using `only [rdAt]`. Rewrite using `[e1, e2, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Take `⟨u, hu⟩` from `a4 hm w hw j ρ' hρ' ν _ hν f f' hf0 key`. Use `⟨u, ⟨n * m, mul_ne_zero hn hm0, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(ρ'.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w)).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, hu, mul_pow, mul_pow, pow_mul ν', hnn, ← pow_mul, inv_pow, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hν), mul_comm n m, pow_mul c, hcm]`. Simplify using the standard rewrite rules.
+
+Apply `inj'` to reduce the goal to its premises. Rewrite using `[key, map_smulₛₗ, hu]`.
+-/
 theorem seriesUnit_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ (ρ ρ' : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (hρ' : ρ'.Good) (ν ν' : ℂ),
   RealPin p.R p.cG ρ → ρ.LevelOf (Fm.D x i).nexp → RealPin p.R p.cG ρ' → SameBut ρ ρ' →
   IsNorm p.R p.v₀ (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)) ν →

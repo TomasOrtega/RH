@@ -7,6 +7,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.Points Glo
 
 namespace GlobalTheory.PullTop
 
+/- English proof (translation)
+Establish `h : (Finsupp.lapply S ∘ₗ b.ExteriorAlgebra.repr.toLinearMap ∘ₗ (⋀[R]^k M).subtype) = 0`. Use `(b.exteriorPower k).ext fun s => ?_` and prove the remaining obligations. Establish `hs : (s : Finset I) ≠ S` using `fun e => hS (e ▸ s.2)`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, ← ExteriorAlgebra.basis_eq_coe_basis, LinearEquiv.coe_coe, Module.Basis.repr_self, Finsupp.lapply_apply, LinearMap.zero_apply]`. Conclude with `Finsupp.single_eq_of_ne' hs`.
+
+Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem repr_eq_zero_of_card_ne {R M I : Type*} [CommRing R] [AddCommGroup M] [Module R M] [LinearOrder I]
     (b : Module.Basis I R M) {k : ℕ} (x : ⋀[R]^k M) {S : Finset I} (hS : S.card ≠ k) :
     b.ExteriorAlgebra.repr (x : ExteriorAlgebra R M) S = 0 := by
@@ -18,6 +23,11 @@ theorem repr_eq_zero_of_card_ne {R M I : Type*} [CommRing R] [AddCommGroup M] [M
     exact Finsupp.single_eq_of_ne' hs
   exact LinearMap.congr_fun h x
 
+/- English proof (translation)
+Establish `h : (Finsupp.lapply S ∘ₗ c.ExteriorAlgebra.repr.toLinearMap ∘ₗ (ExteriorAlgebra.map f).toLinearMap) = 0`. Use `b.ExteriorAlgebra.ext fun T => ?_` and prove the remaining obligations. Establish `hT : S.card ≠ T.card` using `((Finset.card_le_univ T).trans_lt hS).ne'`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearEquiv.coe_coe, Finsupp.lapply_apply, LinearMap.zero_apply]`. Rewrite using `[ExteriorAlgebra.basis_apply b T, ExteriorAlgebra.map_apply_ιMulti, ← exteriorPower.ιMulti_apply_coe]`.
+
+Conclude with `repr_eq_zero_of_card_ne c _ hT`. Conclude with `LinearMap.congr_fun h β`.
+-/
 theorem repr_map_eq_zero {R M N I J : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [LinearOrder I] [LinearOrder J] [Fintype I] (b : Module.Basis I R M) (c : Module.Basis J R N) (f : M →ₗ[R] N)
     {S : Finset J} (hS : Fintype.card I < S.card) (β : ExteriorAlgebra R M) :
@@ -32,6 +42,9 @@ theorem repr_map_eq_zero {R M N I J : Type*} [CommRing R] [AddCommGroup M] [Modu
     exact repr_eq_zero_of_card_ne c _ hT
   exact LinearMap.congr_fun h β
 
+/- English proof (translation)
+The claim follows from `repr_map_eq_zero ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) _ _ (by simp; omega) β`.
+-/
 theorem repr_pull_univ {n : ℕ} (L : ReciprocityTheory.L2DbarEstimates.V (n + 1) →L[ℂ] ReciprocityTheory.L2DbarEstimates.V n) (β : Alt n) :
     (bas (n + 1)).repr (pull L β) Finset.univ = 0 :=
   repr_map_eq_zero ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) _ _ (by simp; omega) β

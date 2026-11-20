@@ -8,6 +8,11 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 noncomputable section
 namespace GlobalTheory.GJReg
 
+/- English proof (translation)
+Introduce `s`. Unfold `chiS apow`. Establish `h0 : (((nabs k (gdet g) : ℝ)) : ℂ) ≠ 0`. Establish `: 0 < nabs k (gdet g)` using `NNReal.coe_pos.mpr distribHaarChar_pos`. Conclude with `this.ne'` after adjusting the coercions.
+
+Conclude with `(differentiableAt_id.const_cpow (Or.inl h0)).const_mul _`.
+-/
 theorem differentiable_chiS {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (ν : kˣ →* ℂˣ) (g : GL (Fin n) k) :
     Differentiable ℂ fun s : ℂ => chiS ν s g := by
@@ -18,6 +23,13 @@ theorem differentiable_chiS {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     exact_mod_cast this.ne'
   exact (differentiableAt_id.const_cpow (Or.inl h0)).const_mul _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ν m m' c h c' h' s₀ hs s`. Set `F : ℂ → ℂ` to `fun s => ∑ i, c i * chiS ν s (h i) - ∑ i, c' i * chiS ν s (h' i)`. Establish `hd : Differentiable ℂ F`. Use `Differentiable.sub ?_ ?_` and prove the remaining obligations. Conclude with `Differentiable.fun_sum fun i _ => (differentiable_chiS ν (h i)).const_mul (c i)`.
+
+Conclude with `Differentiable.fun_sum fun i _ => (differentiable_chiS ν (h' i)).const_mul (c' i)`. Establish `ha : AnalyticOnNhd ℂ F Set.univ` using `fun z _ => hd.analyticAt z`. Establish `hev : F =ᶠ[nhds (((s₀ + 1 : ℝ)) : ℂ)] 0`. Establish `ho : IsOpen {t : ℂ | s₀ < t.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `filter_upwards [ho.mem_nhds (by simp)] with t ht`.
+
+Simplify using `only [F, Pi.zero_apply, hs t ht, sub_self]`. Use `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ _) hev (Set.mem_univ s)` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem sum_chiS_eq_of_halfPlane : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (ν : kˣ →* ℂˣ) (m m' : ℕ) (c : Fin m → ℂ) (h : Fin m → GL (Fin n) k) (c' : Fin m' → ℂ)
     (h' : Fin m' → GL (Fin n) k) (s₀ : ℝ),

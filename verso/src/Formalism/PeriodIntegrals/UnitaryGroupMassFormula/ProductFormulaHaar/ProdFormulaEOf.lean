@@ -13,12 +13,20 @@ namespace PI.ProdFormulaE.Top
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E}
 
+/- English proof (translation)
+Distinguish the cases in `h : a = 0`. Rewrite using `[h, modF_zero]`. Conclude with `(modF_pos h).le`.
+-/
 theorem modF_nonneg {K : Type} [Field K] [TopologicalSpace K] [IsTopologicalRing K]
     [LocallyCompactSpace K] (a : K) : 0 ≤ modF K a := by
   by_cases h : a = 0
   · rw [h, modF_zero]
   · exact (modF_pos h).le
 
+/- English proof (translation)
+Use `haveI := L.lf`. Use `haveI := hM.borel`. Use `haveI := hM.haar.haar`. Use `haveI := L.free`. Use `haveI := Base.finite L`.
+
+Use `haveI := L.top`. Unfold `Model.modK`. Rewrite using `[hH L.Fp L.Ep M.mu (L.ιE x) (Base.isUnit_ιE L hx) _, hM.haar.volR, mul_one, ENNReal.toReal_ofReal (modF_nonneg _), Base.norm_ιE L h2, hN F p L.Fp L.ιF L.dense L.val]`.
+-/
 theorem modK_eq (hH : St.HaarAlg) (hN : St.NormLoc) (h2 : Module.finrank F E = 2)
     {p : HeightOneSpectrum (𝓞 F)} (L : LocAt F E sig p) (M : Model L.Fp L.Ep) (hM : M.OK)
     {x : E} (hx : x ≠ 0) :
@@ -33,6 +41,11 @@ theorem modK_eq (hH : St.HaarAlg) (hN : St.NormLoc) (h2 : Module.finrank F E = 2
   rw [hH L.Fp L.Ep M.mu (L.ιE x) (Base.isUnit_ιE L hx) _, hM.haar.volR, mul_one,
     ENNReal.toReal_ofReal (modF_nonneg _), Base.norm_ιE L h2, hN F p L.Fp L.ιF L.dense L.val]
 
+/- English proof (translation)
+Establish `hz : Algebra.norm F x ≠ 0` using `Algebra.norm_ne_zero_iff.2 hx`. Establish `he : (fun p => (M p).modK ((L p).ιE x)) = (fun w : FinitePlace F => w (Algebra.norm F x)) ∘ FinitePlace.equivHeightOneSpectrum.symm`. Use function extensionality and compare the values at `p`. Rewrite using `[modK_eq hH hN h2 (L p) (M p) (hM p) hx]`. Both sides reduce to the same expression.
+
+Rewrite using `[he]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mulSupport_comp_eq_preimage]`. Conclude with `(FinitePlace.hasFiniteMulSupport hz).preimage (FinitePlace.equivHeightOneSpectrum.symm.injective.injOn)`. Rewrite using `[Function.comp_def, finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm (f := fun w : FinitePlace F => w (Algebra.norm F x)), FinitePlace.prod_eq_inv_abs_norm hz, Algebra.norm_norm, Rat.cast_inv, Rat.cast_abs]`.
+-/
 theorem clause1 (hH : St.HaarAlg) (hN : St.NormLoc) (h2 : Module.finrank F E = 2)
     (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p)
     (M : ∀ p, Model (L p).Fp (L p).Ep) (hM : ∀ p, (M p).OK) (x : E) (hx : x ≠ 0) :
@@ -53,6 +66,11 @@ theorem clause1 (hH : St.HaarAlg) (hN : St.NormLoc) (h2 : Module.finrank F E = 2
       (f := fun w : FinitePlace F => w (Algebra.norm F x)),
       FinitePlace.prod_eq_inv_abs_norm hz, Algebra.norm_norm, Rat.cast_inv, Rat.cast_abs]
 
+/- English proof (translation)
+Establish `hne : Ideal.span {(q : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hq.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors hne).subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`.
+
+Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `(hR F p q hq).1 hp`.
+-/
 theorem fibFin (hR : St.ResCharIff) {q : ℕ} (hq : q.Prime) :
     {p : HeightOneSpectrum (𝓞 F) | resChar p = q}.Finite := by
   have hne : Ideal.span {(q : 𝓞 F)} ≠ 0 := by
@@ -63,6 +81,9 @@ theorem fibFin (hR : St.ResCharIff) {q : ℕ} (hq : q.Prime) :
   rw [Ideal.dvd_span_singleton]
   exact (hR F p q hq).1 hp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨inferInstance, hc, hf, fun _ _ => rfl⟩`.
+-/
 theorem transport {K : Type} [Field K] [TopologicalSpace K] {m : ℕ} (ℓ : ℕ) (h : m = ℓ)
     [Fact m.Prime] [Fact ℓ.Prime] [Algebra ℚ_[m] K] (hc : Continuous (algebraMap ℚ_[m] K))
     (hf : FiniteDimensional ℚ_[m] K) :
@@ -73,6 +94,9 @@ theorem transport {K : Type} [Field K] [TopologicalSpace K] {m : ℕ} (ℓ : ℕ
   subst h
   exact ⟨inferInstance, hc, hf, fun _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `haveI := (L i.1).ellPrime transport q i.2 (L i.1).qlCont (L i.1).qlFin`.
+-/
 theorem transport_at (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p) (q : ℕ) [Fact q.Prime]
     (i : {p : HeightOneSpectrum (𝓞 F) // resChar p = q}) :
     ∃ A : Algebra ℚ_[q] (L i.1).Fp, Continuous (@algebraMap ℚ_[q] (L i.1).Fp _ _ A) ∧
@@ -99,12 +123,36 @@ def fam (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p) (q : ℕ) [Fac
   dense i := (L i.1).dense
   val i := (L i.1).val
 
+/- English proof (translation)
+Use `⟨Subtype.val_injective, fun p => ⟨?_, fun h => ⟨⟨p, (hR F p q hq.out).2 h⟩, rfl⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(hR F i.1 q hq.out).1 i.2`.
+-/
 theorem fam_over (hR : St.ResCharIff) (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p)
     (q : ℕ) [hq : Fact q.Prime] : (fam L q).Over := by
   refine ⟨Subtype.val_injective, fun p => ⟨?_, fun h => ⟨⟨p, (hR F p q hq.out).2 h⟩, rfl⟩⟩⟩
   rintro ⟨i, rfl⟩
   exact (hR F i.1 q hq.out).1 i.2
 
+/- English proof (translation)
+Use `set z := Algebra.trace F E x with hzdef`. Use `choose a ha hn he using fun p => Base.psiE_ιE (L p) h2 x`. Establish `hfun : (fun p => (L p).psiE ((L p).ιE x)) = fun p => Complex.exp (2 * Real.pi * Complex.I * ((a p : ℚ) : ℂ))` using `funext he`. Rewrite using `[hfun]`. Establish `hprime : ∀ p : HeightOneSpectrum (𝓞 F), (resChar p).Prime` using `fun p => (L p).ellPrime.out`.
+
+Set `fib : ℕ → Finset (HeightOneSpectrum (𝓞 F))` to `fun q => if hq : q.Prime then (fibFin hR hq).toFinset else ∅`. Establish `hfib : ∀ p q, p ∈ fib q ↔ resChar p = q`. Introduce `p q`. Distinguish the cases in `hq : q.Prime`. Simplify using `only [fib, dif_pos hq, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`.
+
+Simplify using `only [fib, dif_neg hq, Finset.notMem_empty, false_iff]`. Introduce and unpack `rfl`. Conclude with `hq (hprime p)`. Establish `hfin : {p | (a p).den ≠ 1}.Finite`. Take `⟨d, hd0, hdint⟩` from `(IsFractionRing.isAlgebraic_iff ℤ ℚ F |>.mpr (.of_finite ℚ z)).exists_integral_multiple`.
+
+Establish `hne : Ideal.span {((d : ℤ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hd0` after adjusting the coercions. Use `(Ideal.finite_factors hne).subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`.
+
+Rewrite using `[Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hdp`. Apply `hp` to reduce the goal to its premises. Use `haveI := (L p).ellPrime`. Establish `hres : ((resChar p : ℕ) : 𝓞 F) ∈ p.asIdeal` using `(hR F p (resChar p) (hprime p)).1 rfl`.
+
+Establish `hnd : ¬ ((resChar p : ℕ) : ℤ) ∣ d`. Introduce and unpack `⟨k, hk⟩`. Apply `hdp` to reduce the goal to its premises. Rewrite using `[hk, Int.cast_mul]`. Conclude with `p.asIdeal.mul_mem_right _ (by exact_mod_cast hres)`.
+
+Establish `hd1 : ‖(d : ℚ_[resChar p])‖ = 1` using `le_antisymm (Padic.norm_int_le_one d) (not_lt.1 fun h => hnd (Padic.norm_intCast_lt_one_iff.1 h))`. Establish `hint : IsIntegral ℤ ((L p).ιF (d • z))` using `hdint.map (L p).ιF.toIntAlgHom`. Use `haveI := (L p).qlFin`. Establish `hT1` using `hI (resChar p) (L p).Fp ((L p).ιF (d • z)) hint`. Establish `hsm : (L p).ιF (d • z) = algebraMap ℚ_[resChar p] (L p).Fp (d : ℚ_[resChar p]) * (L p).ιF z`.
+
+Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, map_intCast]`. Rewrite `hT1` using `[hsm, ← Algebra.smul_def, map_smul, smul_eq_mul, norm_mul, hd1, one_mul]`. Take `⟨n, hn'⟩` from `ha p`. Conclude with `Frac.den_eq_one_of_norm_le_one hn' hT1 (hn p)`. Use `Frac.finprod_exp resChar hprime a ha fib hfib hfin _ fun q hq => ?_` and prove the remaining obligations.
+
+Establish `hfs : Set.Finite {p : HeightOneSpectrum (𝓞 F) | resChar p = q}` using `fibFin hR hq.out`. Use `haveI : Fintype {p : HeightOneSpectrum (𝓞 F) // resChar p = q} := hfs.fintype`. Establish `hsum` using `hT F q _ (fam L q) (fam_over hR L q) z`. Establish `htr : Algebra.trace ℚ F z = Algebra.trace ℚ E x` using `Algebra.trace_trace x`. Rewrite `hsum` using `[htr]`.
+
+Establish `hsub : ∑ i ∈ fib q, (a i : ℚ_[q]) = ∑ i : {p : HeightOneSpectrum (𝓞 F) // resChar p = q}, (a i.1 : ℚ_[q])` using `Finset.sum_subtype _ (fun p => hfib p q) _`. Rewrite using `[hsub, ← eq_ratCast (algebraMap ℚ ℚ_[q]), ← hsum]`. Use `Frac.norm_sum_sub_sum_le_one _ _ _ fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `(transport_at L q i).choose_spec.2.2 ((L i.1).ιF z) (a i.1)`. Conclude with `h1.trans_le (hn i.1)`.
+-/
 theorem clause2 (hT : Tr.TrSum) (hI : St.TrInt) (hR : St.ResCharIff) (h2 : Module.finrank F E = 2)
     (L : ∀ p : HeightOneSpectrum (𝓞 F), LocAt F E sig p) (x : E) :
     (Function.mulSupport fun p => (L p).psiE ((L p).ιE x)).Finite ∧
@@ -173,6 +221,9 @@ theorem clause2 (hT : Tr.TrSum) (hI : St.TrInt) (hR : St.ResCharIff) (h2 : Modul
   have h1 := (transport_at L q i).choose_spec.2.2 ((L i.1).ιF z) (a i.1)
   exact h1.trans_le (hn i.1)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig h2 L`. Conclude with `⟨fun M hM x hx => clause1 hH hN h2 L M hM x hx, fun x => clause2 hT hI hR h2 L x⟩`.
+-/
 theorem prodFormulaE_of (hH : St.HaarAlg) (hN : St.NormLoc) (hT : Tr.TrSum) (hI : St.TrInt)
     (hR : St.ResCharIff) : PI.ProdFormulaE.ProdFormulaE := by
   intro F E _ _ _ _ _ sig h2 L

@@ -10,20 +10,32 @@ namespace PI.WSF
 
 open Formalism.BasicNotions MvPolynomial MeasureTheory Matrix
 
+/- English proof (translation)
+Simplify `(Blin lam q).map_add p p'` using `[cf_Blin_apply]`.
+-/
 private lemma normFock_add_left {N : ℕ} (lam : DomWeight N) (p p' q : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (p + p') q = normFock lam p q + normFock lam p' q := by
   simpa [cf_Blin_apply] using (Blin lam q).map_add p p'
 
+/- English proof (translation)
+Use `(Blin lam q).map_smul c p` as an intermediate fact. Rewrite `this` using `[cf_Blin_apply, cf_Blin_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 private lemma normFock_smul_left {N : ℕ} (lam : DomWeight N) (c : ℂ) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (c • p) q = c * normFock lam p q := by
   have := (Blin lam q).map_smul c p
   rwa [cf_Blin_apply, cf_Blin_apply, smul_eq_mul] at this
 
+/- English proof (translation)
+Simplify using `only [← ci_Alin_apply hμ, map_sum, map_smul, smul_eq_mul]`.
+-/
 private lemma aform_sum_smul_left {N : ℕ} {μ : Measure (Matrix (Fin N) (Fin N) ℂ)} (hμ : IsHaarU N μ) {ι : Type*}
     (t : Finset ι) (c : ι → ℂ) (p : ι → MvPolynomial (Fin N × Fin N) ℂ) (q : MvPolynomial (Fin N × Fin N) ℂ) :
     Aform μ (∑ i ∈ t, c i • p i) q = ∑ i ∈ t, c i * Aform μ (p i) q := by
   simp only [← ci_Alin_apply hμ, map_sum, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ), Finset.sum_nonneg fun m _ => mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations. Unfold `Formalism.REAL.fockF`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj]`.
+-/
 private lemma exists_nonneg_fockF_self {σ : Type*} (f : MvPolynomial σ ℂ) :
     ∃ r : ℝ, 0 ≤ r ∧ Formalism.REAL.fockF f f = (r : ℂ) := by
   refine ⟨∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ),
@@ -33,6 +45,11 @@ private lemma exists_nonneg_fockF_self {σ : Type*} (f : MvPolynomial σ ℂ) :
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [Complex.star_def, Complex.mul_conj]
 
+/- English proof (translation)
+Take `⟨a, ha, hpa⟩` from `exists_nonneg_fockF_self p`. Take `⟨b, hb, heb⟩` from `exists_nonneg_fockF_self (extremal ℂ N lam)`. Establish `h : normFock lam p p = ((a / b : ℝ) : ℂ)`. Rewrite using `[normFock, hpa, heb, Complex.ofReal_div]`. Rewrite using `[h, Complex.ofReal_re]`.
+
+Conclude with `⟨div_nonneg ha hb, rfl⟩`.
+-/
 private lemma normFock_self_re_nonneg_and_real {N : ℕ} (lam : DomWeight N) (p : MvPolynomial (Fin N × Fin N) ℂ) :
     0 ≤ (normFock lam p p).re ∧ normFock lam p p = ((normFock lam p p).re : ℂ) := by
   obtain ⟨a, ha, hpa⟩ := exists_nonneg_fockF_self p
@@ -42,6 +59,67 @@ private lemma normFock_self_re_nonneg_and_real {N : ℕ} (lam : DomWeight N) (p 
   rw [h, Complex.ofReal_re]
   exact ⟨div_nonneg ha hb, rfl⟩
 
+/- English proof (translation)
+Introduce `N lam μ hμ s hs`. Use `set V : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ) := nablaSq ℂ N lam with hV`. Establish `hstab : ∀ (g : Matrix (Fin N) (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ), f ∈ V → Formalism.GradedWeylDivisibility.rowAct ℂ g f ∈ V` using `fun g f hf => Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW g f hf`. Establish `anti : Antitone lam.natW` using `fun a b hab => by`. Use `lam.anti hab` as an intermediate fact.
+
+Conclude with `Int.toNat_le_toNat (by omega)`. Establish `he : extremal ℂ N lam ∈ V` using `Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl lam.natW anti`. Establish `he0 : extremal ℂ N lam ≠ 0` using `Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW`. Use `haveI : FiniteDimensional ℂ V := by`. Take `⟨bb, ⟨-, hspan, -⟩, -⟩` from `Formalism.GradedWeylDivisibility.sSBasis ℂ N N lam.natW`.
+
+Use `haveI : Finite (Formalism.GradedWeylDivisibility.ssIdx N N lam.natW) := (Formalism.GradedWeylDivisibility.sSIdxFinite N N lam.natW).to_subtype`. Establish `: V = Submodule.span ℂ (Set.range bb)` using `hspan.symm`. Rewrite using `[this]`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range bb)`. Use `haveI : Nontrivial V := ⟨⟨⟨_, he⟩, 0, fun h0 => he0 (congrArg Subtype.val h0)⟩⟩`.
+
+Use `letI core : InnerProductSpace.Core ℂ V := { inner := fun x y => normFock lam (y : MvPolynomial (Fin N × Fin N) ℂ) x conj_inner_symm := fun x y => by show (starRingEnd ℂ) (normFock lam (x : MvPolynomial (Fin N × Fin N) ℂ) y) = normFock lam y x`. Rewrite using `[cf_herm lam (x : MvPolynomial (Fin N × Fin N) ℂ) y]`. Both sides reduce to the same expression. Use `re_inner_nonneg := fun x => (normFock_self_re_nonneg_and_real lam x).1`. Use `add_left := fun x y z => by show normFock lam (z : MvPolynomial (Fin N × Fin N) ℂ) ((x + y : V) : MvPolynomial (Fin N × Fin N) ℂ) = normFock lam z x + normFock lam z y`.
+
+Rewrite using `[Submodule.coe_add, cf_herm lam ((x : MvPolynomial (Fin N × Fin N) ℂ) + y) z, normFock_add_left, star_add, ← cf_herm, ← cf_herm]`. Use `smul_left := fun x y r => by show normFock lam (y : MvPolynomial (Fin N × Fin N) ℂ) ((r • x : V) : MvPolynomial (Fin N × Fin N) ℂ) = (starRingEnd ℂ) r * normFock lam y x`. Rewrite using `[Submodule.coe_smul, cf_herm lam (r • (x : MvPolynomial (Fin N × Fin N) ℂ)) y, normFock_smul_left, star_mul', ← cf_herm]`. Both sides reduce to the same expression. Use `definite := fun x hx => by`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `normFock_self_ne_zero lam (x : MvPolynomial (Fin N × Fin N) ℂ) (fun h0 => hne (Subtype.ext h0)) hx }`. Use `letI : NormedAddCommGroup V := @InnerProductSpace.Core.toNormedAddCommGroup ℂ V _ _ _ core`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore core.toCore`. Establish `hin : ∀ x y : V, @inner ℂ V _ x y = normFock lam (y : MvPolynomial (Fin N × Fin N) ℂ) x` using `fun _ _ => rfl`.
+
+Set `b` to `stdOrthonormalBasis ℂ V`. Set `rv : Matrix (Fin N) (Fin N) ℂ → V → V` to `fun g x => ⟨Formalism.GradedWeylDivisibility.rowAct ℂ g x, hstab g x x.2⟩`. Establish `hrv : ∀ g (x : V), (rv g x : MvPolynomial (Fin N × Fin N) ℂ) = Formalism.GradedWeylDivisibility.rowAct ℂ g x` using `fun _ _ => rfl`. Establish `hunit : ∀ u ∈ Matrix.unitaryGroup (Fin N) ℂ, ∀ f : MvPolynomial (Fin N × Fin N) ℂ, Formalism.GradedWeylDivisibility.rowAct ℂ u (Formalism.GradedWeylDivisibility.rowAct ℂ u.conjTranspose f) = f`. Introduce `u hu f`.
+
+Rewrite using `[cr_rowAct_rowAct, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.mp hu, cr_rowAct_one]`. Set `T : V →ₗ[ℂ] V` to `∑ i, ((Alin hμ (b i : MvPolynomial (Fin N × Fin N) ℂ)).comp V.subtype).smulRight (b i)`. Establish `hTapp : ∀ x : V, T x = ∑ i, Aform μ (x : MvPolynomial (Fin N × Fin N) ℂ) (b i) • b i`. Introduce `x`. Simplify using `only [T]`.
+
+Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smulRight_apply, LinearMap.comp_apply, Submodule.subtype_apply, ci_Alin_apply]`. Establish `hT : ∀ x w : V, @inner ℂ V _ (T x) w = Aform μ (w : MvPolynomial (Fin N × Fin N) ℂ) x`. Introduce `x w`. Establish `hw : (w : MvPolynomial (Fin N × Fin N) ℂ) = ∑ i, @inner ℂ V _ (b i) w • (b i : MvPolynomial (Fin N × Fin N) ℂ)` using `by conv_lhs => rw [← b.sum_repr' w]`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[hTapp, sum_inner, hw, aform_sum_smul_left hμ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, ci_herm μ (x : MvPolynomial (Fin N × Fin N) ℂ) (b i), mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hcomm : ∀ u ∈ Matrix.unitaryGroup (Fin N) ℂ, ∀ x : V, T (rv u x) = rv u (T x)`. Introduce `u hu x`. Use `ext_inner_right ℂ fun w => ?_` and prove the remaining obligations. Establish `e1 : @inner ℂ V _ (rv u (T x)) w = @inner ℂ V _ (T x) (rv u.conjTranspose w)`. Rewrite using `[hin, hin, hrv, hrv, cf_herm lam ((Formalism.GradedWeylDivisibility.rowAct ℂ u) (T x : MvPolynomial (Fin N × Fin N) ℂ)) w, cf_adj, ← cf_herm]`.
+
+Rewrite using `[hT, e1, hT, hrv, ← ci_invariant hμ u hu (Formalism.GradedWeylDivisibility.rowAct ℂ u.conjTranspose w) x, hunit u hu]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Take `⟨v0, hv0⟩` from `hc.exists_hasEigenvector`. Establish `hkey : ∀ y : V, T y = c • y → ∀ g : Matrix (Fin N) (Fin N) ℂ, IsUnit g.det → T (rv g y) = c • rv g y`. Introduce `y hy g hg`.
+
+Use `set z : V := T (rv g y) - c • rv g y with hz`. Set `ℓ : V →ₗ[ℂ] ℂ` to `(innerₛₗ ℂ z).comp (T - c • LinearMap.id)`. Take `⟨L, hL⟩` from `LinearMap.exists_extend ℓ`. Establish `hLv : ∀ p : V, L p = @inner ℂ V _ z (T p) - c * @inner ℂ V _ z p` using `fun p => by`. Establish `h2` using `LinearMap.congr_fun hL p`.
+
+Simplify using `[ℓ] at h2`. Rewrite using `[h2, inner_sub_right, inner_smul_right]`. Take `⟨P, hP⟩` from `cr_polyFun (y : MvPolynomial (Fin N × Fin N) ℂ) L`. Establish `hu0 : ∀ u ∈ Matrix.unitaryGroup (Fin N) ℂ, evalM u P = 0`. Introduce `u hu`.
+
+Rewrite using `[← hP u, ← hrv u y, hLv, hcomm u hu, hy]`. Establish `: rv u (c • y) = c • rv u y` using `Subtype.ext (by simp [hrv, map_smul])`. Rewrite using `[this, inner_smul_right, sub_self]`. Establish `h0` using `cz_zariski P hu0 g hg`. Rewrite `h0` using `[← hP g, ← hrv g y, hLv]`.
+
+Establish `hzz : @inner ℂ V _ z z = 0` using `by nth_rewrite 2 [hz]`. Rewrite using `[inner_sub_right, inner_smul_right]`. Conclude with `h0`. Rewrite using `[← sub_eq_zero]`. Conclude with `inner_self_eq_zero.mp hzz`.
+
+Set `K` to `LinearMap.ker (T - c • LinearMap.id)`. Establish `hK : ∀ y : V, y ∈ K ↔ T y = c • y` using `fun y => by`. Simplify using `[K, sub_eq_zero]`. Set `W : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ)` to `K.map V.subtype`. Establish `hWle : W ≤ nablaSq ℂ N lam` using `Submodule.map_subtype_le V K`.
+
+Establish `hWinv : ∀ (g : GL (Fin N) ℂ), ∀ f ∈ W, sqAct ℂ N lam g f ∈ W`. Introduce `g f hf`. Take `⟨y, hy, rfl⟩` from `hf`. Establish `hg : IsUnit ((g : Matrix (Fin N) (Fin N) ℂ).transpose).det`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `Matrix.isUnits_det_units g`. Use `W.smul_mem _ ⟨rv (g : Matrix (Fin N) (Fin N) ℂ).transpose y, (hK _).mpr (hkey y ((hK y).mp hy) _ hg), rfl⟩` and prove the remaining obligations. Establish `hWne : W ≠ ⊥`. Introduce `h0`. Establish `: (v0 : MvPolynomial (Fin N × Fin N) ℂ) ∈ W` using `⟨v0, (hK v0).mpr hv0.apply_eq_smul, rfl⟩`.
+
+Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `hv0.2 (Subtype.ext this)`. Establish `hall : ∀ y : V, T y = c • y`. Introduce `y`. Break down `(h N lam).2.1 W hWle hWinv with h0 | h0` into its components or cases.
+
+Conclude with `absurd h0 hWne`. Establish `: (y : MvPolynomial (Fin N × Fin N) ℂ) ∈ W` using `by rw [h0]; exact y.2`. Take `⟨y', hy', hyy⟩` from `this`. Rewrite using `[← (Subtype.ext hyy : y' = y)]`. Conclude with `(hK y').mp hy'`.
+
+Establish `hAB : ∀ x w : V, Aform μ (w : MvPolynomial (Fin N × Fin N) ℂ) x = (starRingEnd ℂ) c * normFock lam (w : MvPolynomial (Fin N × Fin N) ℂ) x`. Introduce `x w`. Rewrite using `[← hT, hall, inner_smul_left, hin]`. Establish `hsum1 : ∀ x ∈ Matrix.unitaryGroup (Fin N) ℂ, ∑ i, evalM x (b i : MvPolynomial (Fin N × Fin N) ℂ) * star (evalM x (b i : MvPolynomial (Fin N × Fin N) ℂ)) = 1`. Introduce `x hx`.
+
+Set `y : V` to `rv x.conjTranspose ⟨_, he⟩`. Establish `hev : ∀ i, evalM x (b i : MvPolynomial (Fin N × Fin N) ℂ) = @inner ℂ V _ y (b i)`. Introduce `i`. Establish `h1` using `cr_evalM_rowAct x 1 (b i : MvPolynomial (Fin N × Fin N) ℂ)`. Rewrite `h1` using `[mul_one]`.
+
+Rewrite using `[← h1, hA N lam _ (hstab x _ (b i).2), cf_adj, hin]`. Simplify using `only [hev]`. Establish `: ∀ i, star (@inner ℂ V _ y (b i)) = @inner ℂ V _ (b i) y` using `fun i => inner_conj_symm _ _`. Simplify using `only [this]`. Rewrite using `[b.sum_inner_mul_inner y y, hin, hrv, cf_adj, Matrix.conjTranspose_conjTranspose, hunit x hx]`.
+
+Conclude with `cf_ee lam`. Establish `htrace : ∑ i, Aform μ (b i : MvPolynomial (Fin N × Fin N) ℂ) (b i) = 1`. Simplify using `only [Aform]`. Rewrite using `[← integral_finset_sum _ fun i _ => ci_integrable hμ (ci_cont2 _ _)]`. Rewrite using `[integral_congr_ae (g := fun _ => (1 : ℂ)) ?_]`.
+
+Use `haveI := hμ.1`. Simplify using the standard rewrite rules. Use `filter_upwards [hμ.2.1] with x hx`. Conclude with `hsum1 x hx`. Establish `hcd : (starRingEnd ℂ) c * (Module.finrank ℂ V : ℂ) = 1`.
+
+Establish `hdiag : ∀ i, Aform μ (b i : MvPolynomial (Fin N × Fin N) ℂ) (b i) = (starRingEnd ℂ) c`. Introduce `i`. Rewrite using `[hAB, ← hin]`. Establish `: @inner ℂ V _ (b i) (b i) = 1`. Rewrite using `[inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, mul_one]`. Simplify using `only [hdiag, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at htrace`. Rewrite using `[mul_comm]`. Conclude with `htrace`.
+
+Establish `hss : normFock lam s s = (Module.finrank ℂ V : ℂ) * Aform μ s s`. Rewrite using `[show s = ((⟨s, hs⟩ : V) : MvPolynomial (Fin N × Fin N) ℂ) from rfl, hAB, ← mul_assoc, mul_comm (Module.finrank ℂ V : ℂ), hcd, one_mul]`. Establish `hint : Aform μ s s = ((∫ x, ‖evalM x s‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[Aform, ← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hdim : Module.finrank ℂ (delSq ℂ N lam) = Module.finrank ℂ V`. Rewrite using `[hV, (h N lam).1]`. Rewrite using `[hss, hint, hdim, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+-/
 theorem schurOrth_of (h : PI.HwIrred) (hA : EvalOne) : SchurOrth := by
   intro N lam μ hμ s hs
   set V : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ) := nablaSq ℂ N lam with hV

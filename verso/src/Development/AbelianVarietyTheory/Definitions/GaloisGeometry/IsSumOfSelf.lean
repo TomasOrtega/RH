@@ -28,6 +28,9 @@ structure Base : Prop where
   js : GlobalTheory.Published.JacquetShalikaRigidity
   gk : GlobalTheory.Published.GelfandKazhdanDual
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TheRec.recUnique_of_localConverse H.ex H.conv H.exh H.adm H.len`.
+-/
 theorem Base.uniq (H : Base) : GlobalTheory.TheRec.RecUnique :=
   GlobalTheory.TheRec.recUnique_of_localConverse H.ex H.conv H.exh H.adm H.len
 
@@ -38,6 +41,9 @@ def SatMatch (sat : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ → Prop) (ι 
     ∀ (_hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w),
       IsWDOf ι r ((WD.lpUnr h (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ))).lpTw ((1 - (a : ℝ)) / 2))
 
+/- English proof (translation)
+The claim follows from `H.mono fun _ ⟨B, hB, hw⟩ => ⟨B, hB, fun hl A h => (hw hl A h).wdOf_eq hl⟩`.
+-/
 theorem SatMatch.wdOf_eq {sat : HeightOneSpectrum (𝓞 E) → Multiset ℂˣ → Prop} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} (H : SatMatch sat ι r) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, sat w B ∧
@@ -55,11 +61,17 @@ def GalPol [IsCMField E] (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin a) (Qb
     ∀ c : Ω ≃+* Ω, IsCMConjOm E Ω c →
       IsConjDual c r (cycBar E Ω l ^ (1 - (a : ℤ)) * μ.comp (AlgEquiv.restrictScalarsHom (maximalRealSubfield E)))
 
+/- English proof (translation)
+Use `H g` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Then use the resulting hypothesis.
+-/
 example {Γ k : Type} [Group Γ] [Field k] {a : ℕ} {b : Fin 2 → ℕ} (r : Γ →* GL (Fin a) k)
     (ρ : ∀ i, Γ →* GL (Fin (b i)) k) (H : IsSumOf r ρ) (g : Γ) :
     (r g).val.trace = (ρ 0 g).val.trace + (ρ 1 g).val.trace := by
   have := H g; rwa [Fin.sum_univ_two] at this
 
+/- English proof (translation)
+The claim follows from `H.uniq`.
+-/
 example (H : Base) : GlobalTheory.TheRec.RecUnique := H.uniq
 
 end GlobalTheory.AboveL

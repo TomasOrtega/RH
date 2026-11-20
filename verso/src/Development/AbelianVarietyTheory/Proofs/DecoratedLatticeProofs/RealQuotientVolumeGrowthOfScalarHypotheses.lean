@@ -27,6 +27,29 @@ open scoped NNReal ENNReal
 noncomputable section
 namespace GlobalTheory.ChainTw.VolScale
 
+/- English proof (translation)
+Introduce `hle hUA hne hmeas h₁ h₀`. Take `⟨i1, i2, i3, i4, i5, i6, i7, i8⟩` from `GlobalTheory.RealMeasOne.ginfC_facts V`. Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1` as an intermediate fact. Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.1` as an intermediate fact. Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1` as an intermediate fact.
+
+Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1` as an intermediate fact. Take `⟨hH₁, ⟨θ, hθ⟩, k1⟩` from `h₁`. Take `⟨⟨A, hA⟩, k1⟩` from `k1 θ hθ`. Take `⟨⟨m, hm⟩, k1⟩` from `k1 A hA`. Take `⟨hH₀, -, k0⟩` from `h₀`.
+
+Take `⟨-, k0⟩` from `k0 θ hθ`. Take `⟨-, k0⟩` from `k0 A hA`. Establish `k0` using `k0 m hm`. Use `haveI := hH₁`. Use `haveI := hH₀`.
+
+Set `B : ∀ ρ : D.what₂.Tau, TopologicalSpace.PositiveCompacts (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2)` to `fun ρ => Classical.arbitrary _`. Establish `hB : ∀ ρ, MeasurableSet (B ρ : Set (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2))` using `fun ρ => (B ρ).isCompact.measurableSet`. Set `S : Set (GA D V)` to `{h | ∀ ρ, ∃ b ∈ (B ρ : Set _), UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (θ ρ) h}`. Establish `hSc : IsClosed S`. Establish `e : S = ⋂ ρ, (fun h => A ρ * infMat D.sp.cm.sig V.gram (θ ρ) h) ⁻¹' ((fun b => UpqT.mat b * A ρ) '' (B ρ : Set (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2)))`.
+
+Use extensionality with `h`. Simplify using `only [Set.mem_iInter]`. Conclude with `Iff.rfl`. Rewrite using `[e]`. Use `isClosed_iInter fun ρ => IsClosed.preimage ?_ ?_` and prove the remaining obligations.
+
+Conclude with `continuous_const.matrix_mul (GlobalTheory.Mem.VolExists.continuous_infMat (σ := D.sp.cm.sig) V.gram (hθ ρ))`. Conclude with `((B ρ).isCompact.image ((GlobalTheory.UpqTopology.continuous_mat).matrix_mul continuous_const)).isClosed`. Establish `hS : MeasurableSet S` using `hSc.measurableSet`. Set `E : Set (GinfC V)` to `Subtype.val ⁻¹' S`. Establish `hE : MeasurableSet E` using `measurable_subtype_coe hS`.
+
+Establish `hpre : GlobalTheory.AutMult.toInf V ⁻¹' E = S`. Use extensionality with `h`. Simplify using `only [E, S, Set.mem_preimage, Set.mem_setOf_eq, GlobalTheory.RealMeasOne.infMat_toInf]`. Establish `hset : ∀ K : Subgroup (GL (Fin V.rank) (Lev.EAf D)), {g : GA D V | Lev.finE V g ∈ K} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E = {h | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ b ∈ (B ρ : Set _), UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (θ ρ) h}`. Introduce `K`.
+
+Rewrite using `[hpre]`. Both sides reduce to the same expression. Establish `v1 : ν₁ ({g : GA D V | Lev.finE V g ∈ K₁} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E) = ∏ ρ, m ρ (B ρ)` using `(congrArg ν₁ (hset K₁)).trans (k1 m hm (fun ρ => B ρ) hB)`. Establish `v0 : ν₀ ({g : GA D V | Lev.finE V g ∈ K₀} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E) = ∏ ρ, m ρ (B ρ)` using `(congrArg ν₀ (hset K₀)).trans (k0 (fun ρ => B ρ) hB)`. Establish `hI` using `GlobalTheory.T.relIndex_mul_measure_adelicLevelSet D V ν₀ K₁ K₀ E hle hUA hne hmeas hE`.
+
+Rewrite `hI` using `[v0]`. Establish `h0 : ∏ ρ, m ρ (B ρ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => by`. Use `hgood ρ (m ρ) (hm ρ)` as an intermediate fact. Conclude with `(Measure.measure_pos_of_nonempty_interior (m ρ) (B ρ).interior_nonempty).ne'`. Establish `ht : ∏ ρ, m ρ (B ρ) ≠ ⊤` using `ENNReal.prod_ne_top fun ρ _ => by`.
+
+Use `hgood ρ (m ρ) (hm ρ)` as an intermediate fact. Conclude with `(B ρ).isCompact.measure_lt_top.ne`. Use `set x := ν₀ ({g : GA D V | Lev.finE V g ∈ K₁} ∩ GlobalTheory.AutMult.toInf V ⁻¹' E) with hx`. Establish `hx0 : x ≠ 0` using `fun h => h0 (by rw [← hI, h, mul_zero])`. Establish `hxt : x ≠ ⊤` using `fun h => ht (by rw [← hI, h]; exact ENNReal.mul_top (by exact_mod_cast hne))`.
+
+Establish `e : ν₁ = ((Measure.haarScalarFactor ν₁ ν₀ : NNReal) : ENNReal) • ν₀` using `Measure.isMulLeftInvariant_eq_smul ν₁ ν₀`. Establish `e'` using `v1`. Rewrite `e'` using `[e, Measure.smul_apply, smul_eq_mul, ← hI]`. Establish `hc : ((Measure.haarScalarFactor ν₁ ν₀ : NNReal) : ENNReal) = (K₁.relIndex K₀ : ℝ≥0∞)` using `(ENNReal.mul_left_inj hx0 hxt).1 e'`. Rewrite using `[e, hc]`.
+-/
 theorem scale {D : D7} (V : HSp D)
     (good : ∀ ρ : D.what₂.Tau, Measure (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) → Prop)
     (hgood : ∀ ρ m, good ρ m → m.IsHaarMeasure) (K₁ K₀ : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (ν₁ ν₀ : Measure (GA D V)) :
@@ -95,6 +118,13 @@ theorem scale {D : D7} (V : HSp D)
     (ENNReal.mul_left_inj hx0 hxt).1 e'
   rw [e, hc]
 
+/- English proof (translation)
+Establish `hne : (lev D.sp.cm V.gram β L₁).relIndex (lev D.sp.cm V.gram β L₀) ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e` using `scale V good hgood _ _ ν₁ ν₀ hle lev_le_UA hne hmeas h₁ h₀`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ`. Establish `e2 : GlobalTheory.AutomorphicL2Unitary.autMeasure V (((lev D.sp.cm V.gram β L₁).relIndex (lev D.sp.cm V.gram β L₀) : ℝ≥0∞) • ν₀) = ((lev D.sp.cm V.gram β L₁).relIndex (lev D.sp.cm V.gram β L₀) : ℝ≥0∞) • GlobalTheory.AutomorphicL2Unitary.autMeasure V ν₀` using `GlobalTheory.AutomorphicL2Unitary.quotMeasure_smul _`. Rewrite using `[e2, measureReal_ennreal_smul_apply, ← hN, ENNReal.toReal_natCast, mul_comm]`.
+
+Use `haveI := h₁.1`. Conclude with `GlobalTheory.RallisIP.Model.vol_pos ν₁`.
+-/
 theorem vol_step {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L₁ L₀ : LevDat D.host.E ℂ V.rank)
     (good : ∀ ρ : D.what₂.Tau, Measure (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) → Prop)
     (hgood : ∀ ρ m, good ρ m → m.IsHaarMeasure) (ν₁ ν₀ : Measure (GA D V)) (N : ℝ)
@@ -116,6 +146,9 @@ theorem vol_step {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L₁ L
   · haveI := h₁.1
     exact GlobalTheory.RallisIP.Model.vol_pos ν₁
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < (Ideal.absNorm PP.asIdeal : ℝ)`. Use `HeightOneSpectrum.one_lt_absNorm PP` as an intermediate fact. Conclude with `(Nat.zero_lt_one.trans this)` after adjusting the coercions. Unfold `idxQ`. Conclude with `div_pos (mul_pos (pow_pos hq _) (RModel.zinv_pos PP _ _)) (mul_pos (RModel.zinv_pos PP _ _) (RModel.zinv_pos PP _ _))`.
+-/
 theorem idxQ_pos {D : D7} (PP : Pl D.host.E) (j : ℕ) : 0 < idxQ PP j := by
   have hq : (0 : ℝ) < (Ideal.absNorm PP.asIdeal : ℝ) := by
     have := HeightOneSpectrum.one_lt_absNorm PP
@@ -123,6 +156,17 @@ theorem idxQ_pos {D : D7} (PP : Pl D.host.E) (j : ℕ) : 0 < idxQ PP j := by
   unfold idxQ
   exact div_pos (mul_pos (pow_pos hq _) (RModel.zinv_pos PP _ _)) (mul_pos (RModel.zinv_pos PP _ _) (RModel.zinv_pos PP _ _))
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hC hR t`. Establish `hQ0 : (twR R A.μ0).Q = ∅` using `RModel.Q_base R hG.core.lev`. Establish `hprod : ∀ j, 0 < ∏ PP ∈ R.Q t, idxQ PP j` using `fun j => Finset.prod_pos fun PP _ => idxQ_pos PP j`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `hS` using `(hC hR t).2.1 j hj`.
+
+Take `⟨hr0, hL0, -⟩` from `(hC hR A.μ0).2.1 j hj`. Rewrite `hL0` using `[hQ0]`. Take `⟨good, hgood, hW⟩` from `GlobalTheory.RealMeasOne.models_good R hG.core.models j hj`. Take `⟨hle, hN⟩` from `GlobalTheory.T.twistedLevel_relIndex_eq_prod_parabolicIndices D (comR R t) (twR R t) j (stY R t j) (hC hR t).1 hj.le hS hr0 R.chi (R.xiR A.μ0)`. Establish `e : Lev.datY (stY R t j).V.rank D.R.r D.R.t j hr0 (twR R t).Pg ∅ (LevelP.triv _ _ _) R.chi (R.xiR A.μ0) Lev.Frm.B = R.datYt A.μ0 j R.triv` using `hL0.symm`.
+
+Rewrite `hle`, `hN` using `[e]`. Establish `hmeas` using `(GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D (comR R t) (twR R t) (hC hR t).1 j hj.le (stY R t j) hS).1`. Conclude with `vol_step (Yc D j) (R.βY j) (R.datYt t j R.triv) (R.datYt A.μ0 j R.triv) good hgood (R.νY t j) (R.νY A.μ0 j) _ hle hN (hprod j) hmeas (hW t) (hW A.μ0)`. Establish `hS` using `(hC hR t).2.2.1`. Take `⟨hr0, hL0, -⟩` from `(hC hR A.μ0).2.2.1`.
+
+Rewrite `hL0` using `[hQ0]`. Take `⟨hle, hN⟩` from `GlobalTheory.T.twistedLevel_relIndex_eq_prod_parabolicIndices D (comR R t) (twR R t) D.R.m (stX R t) (hC hR t).1 le_rfl hS hr0 R.chi (R.xiR A.μ0)`. Establish `e : Lev.datY (stX R t).V.rank D.R.r D.R.t D.R.m hr0 (twR R t).Pg ∅ (LevelP.triv _ _ _) R.chi (R.xiR A.μ0) Lev.Frm.B = R.datXt A.μ0` using `hL0.symm`. Rewrite `hle`, `hN` using `[e]`. Establish `hmeas` using `(GlobalTheory.T.thetaChainStage_finiteLevel_eq_product_localLevels D (comR R t) (twR R t) (hC hR t).1 D.R.m le_rfl (stX R t) hS).1`.
+
+Establish `h` using `vol_step D.sp.X' R.βX (R.datXt t) (R.datXt A.μ0) (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) (fun _ _ hm => hm.1) (R.νX t) (R.νX A.μ0) _ hle hN (hprod D.R.m) hmeas (hG.core.models.νX t).1 (hG.core.models.νX A.μ0).1`. Conclude with `⟨h.1, h.2⟩`.
+-/
 theorem rVol_of_given : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F →
     (∀ h : RangeX R, RChain R h) → RangeX R → RVol R := by

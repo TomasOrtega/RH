@@ -25,16 +25,28 @@ def Dw {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] :
     List (Idx n) → (Mat n → V) → (Mat n → V) :=
   fun L f => L.foldr (fun p H y => fderiv ℝ H y (bs p)) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pd_nil {ι V : Type} [Fintype ι] [DecidableEq ι] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (F : (ι → ℝ) → V) : pd [] F = F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pd_cons {ι V : Type} [Fintype ι] [DecidableEq ι] [NormedAddCommGroup V] [NormedSpace ℝ V]
     (i : ι) (L : List ι) (F : (ι → ℝ) → V) :
     pd (i :: L) F = fun t => fderiv ℝ (pd L F) t (Pi.single i 1) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Dw_nil {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : Mat n → V) :
     Dw [] f = f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Dw_cons {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (p : Idx n)
     (L : List (Idx n)) (f : Mat n → V) :
     Dw (p :: L) f = fun y => fderiv ℝ (Dw L f) y (bs p) := rfl

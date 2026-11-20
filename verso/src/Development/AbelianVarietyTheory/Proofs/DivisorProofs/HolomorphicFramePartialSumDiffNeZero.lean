@@ -17,6 +17,9 @@ namespace GlobalTheory.MBLow.Cl.CubHol
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ⊤ ≤ pt3 ν d x y z ⁻¹ᵁ (thφ D.P.A (x3 D.P.A) I ⁻¹ᵁ D.P.L.U (j I))` using `fun q hq => LB.wchart_le D.P.L (thφ D.P.A (x3 D.P.A)) j I (hz hq)`. Rewrite using `[← complexCubeAbelianPoint_thetaFace_eq_partialSum ν d x y z I]`. Conclude with `fun q hq => h1 hq`.
+-/
 theorem wI_mem_chart (ν : NumOf D ℂ N) (d : AB N.toNumB g) (x y z : Fin g → ℂ) (j : thK → D.P.L.ι) (I : thK)
     (hz : ⊤ ≤ pt3 ν d x y z ⁻¹ᵁ cubW D j) :
     ⊤ ≤ (ν.eA (d.ex (wI x y z I))).left ⁻¹ᵁ D.P.L.U (j I) := by
@@ -25,6 +28,11 @@ theorem wI_mem_chart (ν : NumOf D ℂ N) (d : AB N.toNumB g) (x y z : Fin g →
   rw [← complexCubeAbelianPoint_thetaFace_eq_partialSum ν d x y z I]
   exact fun q hq => h1 hq
 
+/- English proof (translation)
+Unfold `wI`. Use `Differentiable.fun_sum fun a _ => ?_` and prove the remaining obligations. Use `fin_cases a`. Conclude with `differentiable_const _`. Conclude with `differentiable_const _`.
+
+Conclude with `differentiable_id`.
+-/
 theorem differentiable_wI (x y : Fin g → ℂ) (I : thK) : Differentiable ℂ (fun z => wI x y z I) := by
   unfold wI
   refine Differentiable.fun_sum fun a _ => ?_
@@ -33,6 +41,13 @@ theorem differentiable_wI (x y : Fin g → ℂ) (I : thK) : Differentiable ℂ (
   · exact differentiable_const _
   · exact differentiable_id
 
+/- English proof (translation)
+Use `⟨(geo.fr_hol (j I)).comp (differentiable_wI x y I).differentiableOn fun z hz => wI_mem_chart ν d x y z j I hz, fun z hz => ?_⟩` and prove the remaining obligations. Use `set w := wI x y z I`. Establish `hj` using `wI_mem_chart ν d x y z j I hz`. Establish `hp` using `ν.good (ν.eA (d.ex w)).left`. Establish `hpj : ⊤ ≤ (ν.eA (d.ex w)).left ⁻¹ᵁ (D.P.L.U (ν.J (ν.eA (d.ex w)).left) ⊓ D.P.L.U (j I))` using `fun q hq => ⟨hp hq, hj hq⟩`.
+
+Establish `hc` using `geo.fr_compat _ (j I) w hpj`. Establish `hne : geo.frG (ν.J (ν.eA (d.ex w)).left) w ≠ 0`. Rewrite using `[← geo.fr_eq w]`. Conclude with `mul_ne_zero (Units.ne_zero _) (GlobalTheory.Ex.Arch.AbVal.rg_ne_zero ν)`. Rewrite `hne` using `[hc]`.
+
+Conclude with `right_ne_zero_of_mul hne`.
+-/
 theorem frG_wI_hol_ne (ν : NumOf D ℂ N) (d : AB N.toNumB g) (geo : Geo ν d) (x y : Fin g → ℂ)
     (j : thK → D.P.L.ι) (I : thK) :
     DifferentiableOn ℂ (fun z => geo.frG (j I) (wI x y z I)) {z | ⊤ ≤ pt3 ν d x y z ⁻¹ᵁ cubW D j} ∧

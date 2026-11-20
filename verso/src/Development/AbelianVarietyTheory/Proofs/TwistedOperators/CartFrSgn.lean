@@ -181,6 +181,13 @@ def frSgn (ε : Bool) {V : HSp D} (A : Fr V) : Fr (sgn ε V) where
       show _ = gramAt D (neg V) τ
       rw [e, h, ← A.fr_gram τ, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm (fun a => xor ε (A.ε τ a)) = sgnM ε (Formalism.REAL.Jm (A.ε τ))`. Consider the cases of `ε`. Simplify using `[sgnM]`. Simplify using `only [sgnM, cond_true, Formalism.REAL.Jm, Bool.true_xor]`. Rewrite using `[Matrix.diagonal_neg]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases A.ε τ a <;> simp`. Use `show (A.fr τ)⁻¹ * Formalism.REAL.Jm (fun a => xor ε (A.ε τ a)) * A.fr τ = sgnM ε ((A.fr τ)⁻¹ * Formalism.REAL.Jm (A.ε τ) * A.fr τ)`. Rewrite using `[hJ]`.
+
+Consider the cases of `ε`. Both sides reduce to the same expression. Simplify using `only [sgnM, cond_true, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem cart_frSgn (ε : Bool) {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : (frSgn ε A).cart τ = sgnM ε (A.cart τ) := by
 
   have hJ : Formalism.REAL.Jm (fun a => xor ε (A.ε τ a)) = sgnM ε (Formalism.REAL.Jm (A.ε τ)) := by

@@ -19,6 +19,9 @@ namespace PositivityTheory.Xgp.c_unif
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {M : FlagModel y Ψ N j} {n : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hk : ∀ p, M.blk p ≠ some q.1`. Simplify using `only [FC.flagPt, dif_pos hk]`. Conclude with `hb _`. Simplify using `only [FC.flagPt, dif_neg hk]`. Conclude with `Finset.analyticAt_fun_sum _ fun I _ => (hv q I).mul (Fib.analyticAt_minorIJ_of_entries _ w (hh _) _ _)`.
+-/
 theorem analyticAt_flagPt {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (F : FrameData ι Ψ N M.Ω M.blk)
     {b : E → (Σ k, baseIdx ι M.blk k) → ℂ} {h : Ψ → E → Matrix (Fin N) (Fin N) ℂ} {w : E}
     (hb : ∀ q, AnalyticAt ℂ (fun u => b u q) w) (hv : ∀ q I, AnalyticAt ℂ (fun u => valAt M.x (F.u q I) (b u)) w)
@@ -33,6 +36,9 @@ theorem analyticAt_flagPt {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
 
 variable (BM : BaseMetric M n) {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {pr : X → BM.Rb.X}
 
+/- English proof (translation)
+Establish `key` using `fun k => GlobalTheory.T.base_chart_holomorphic_composition K ι Φ y Ψ N j M n BM l e ((A.chart k).target ∩ (A.chart k).symm ⁻¹' W) (pr ∘ (A.chart k).symm) ((A.chart k).isOpen_inter_preimage_symm hW) (hp.1.comp_continuousOn ((A.chart k).continuousOn_symm.mono Set.inter_subset_left) …`. Conclude with `⟨fun q k => (key k).1 q, fun s hs k => (key k).2 s hs⟩`.
+-/
 theorem bvec_holo (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W) {l : Fin BM.q}
     (hl : ∀ x ∈ W, pr x ∈ BM.O l) :
     (∀ q, A.HoloOn W fun x => FC.bvec BM l (pr x) q) ∧
@@ -44,6 +50,9 @@ theorem bvec_holo (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W) {l : F
     (fun m => (hp.2 k m).mono fun t ht => ⟨ht.1.1, ht.2⟩) (fun u hu => hl _ hu.2)
   exact ⟨fun q k => (key k).1 q, fun s hs k => (key k).2 s hs⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `ho`. Conclude with `⟨c k, hc k, fun m => by rw [← FC.flagPt_step M F b h hk m]⟩`.
+-/
 theorem step_of_orbit {F : FrameData ι Ψ N M.Ω M.blk} {b : (Σ k, baseIdx ι M.blk k) → ℂ} {z : (Σ k, ι k) → ℂ}
     {h : Ψ → Matrix (Fin N) (Fin N) ℂ} (ho : SameOrbit z (FC.flagPt M F b h)) (p : Ψ × Fin N) (k : K)
     (hk : M.blk p = some k) : ∃ α : ℂ, α ≠ 0 ∧ ∀ m : ι k,
@@ -51,11 +60,19 @@ theorem step_of_orbit {F : FrameData ι Ψ N M.Ω M.blk} {b : (Σ k, baseIdx ι 
   obtain ⟨c, hc, rfl⟩ := ho
   exact ⟨c k, hc k, fun m => by rw [← FC.flagPt_step M F b h hk m]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b h => (dif_neg fun e => h e.2).trans (if_neg fun e => h (by rw [e])), fun _ => (dif_neg fun e => lt_irrefl _ e.1).trans (if_pos rfl), fun _ _ h => (dif_neg fun e => lt_asymm h e.1).trans (if_neg h.ne)⟩`.
+-/
 theorem lowMat_props (c : LowIdx Ψ N j → ℂ) (τ : Ψ) : IsBlockDiag j (lowMat c τ) ∧ IsLowerUni (lowMat c τ) :=
   ⟨fun a b h => (dif_neg fun e => h e.2).trans (if_neg fun e => h (by rw [e])),
     fun _ => (dif_neg fun e => lt_irrefl _ e.1).trans (if_pos rfl),
     fun _ _ h => (dif_neg fun e => lt_asymm h e.1).trans (if_neg h.ne)⟩
 
+/- English proof (translation)
+Use extensionality with `a b`. Unfold `lowMat`. Use `split_ifs with h1 h2`. Conclude with `h a b h1`. Rewrite using `[h2, hL.1]`.
+
+Break down `lt_or_gt_of_ne h2 with e | e` into its components or cases. Conclude with `(hL.2 a b e).symm`. Conclude with `(hb a b fun e' => h1 ⟨e, e'⟩).symm`.
+-/
 theorem lowMat_eq {c : LowIdx Ψ N j → ℂ} {τ : Ψ} {L : Matrix (Fin N) (Fin N) ℂ} (hb : IsBlockDiag j L)
     (hL : IsLowerUni L) (h : ∀ (a b : Fin N) (e : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)), c ⟨(τ, a, b), e⟩ = L a b) :
     lowMat c τ = L := by
@@ -68,6 +85,29 @@ theorem lowMat_eq {c : LowIdx Ψ N j → ℂ} {τ : Ψ} {L : Matrix (Fin N) (Fin
     · exact (hL.2 a b e).symm
     · exact (hb a b fun e' => h1 ⟨e, e'⟩).symm
 
+/- English proof (translation)
+Establish `hj` using `M.j_le`. Establish `hF` using `BM.isFrame l`. Establish `hg` using `GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM l`. Establish `hex` using `fun x (hx : x ∈ W) => GlobalTheory.T.exists_flag_point_in_orbit K ι Φ y Ψ N j M n BM l (pr x) (hl x hx) (z x) (hm x hx) (hb x hx)`. Take `⟨h₀, hh₀, ho₀⟩` from `hex x₀ hx₀`.
+
+Set `tw : Fin N → K → Ψ → Finset (Fin N) → X → ℂ` to `fun i k τ J x => twMinor M (BM.F l) (FC.bvec BM l (pr x)) i k (h₀ τ)⁻¹ (z x) J`. Establish `htw : ∀ i k τ J, A.HoloOn W (tw i k τ J)`. Introduce `i k τ J m t ht`. Establish `hv` using `fun I (q : Σ k, ι k) => (bvec_holo BM hp hW hl).2 ((BM.F l).u' I q) (fun b hb => ((hg b hb).2.1.2.1 q I).2) m t ht`. Use `show AnalyticAt ℂ (fun w => tw i k τ J ((A.chart m).symm w)) t`.
+
+Simplify using `only [tw, twMinor, pluck]`. Conclude with `Finset.analyticAt_fun_sum _ fun I _ => analyticAt_const.mul (Finset.analyticAt_fun_sum _ fun r _ => (hv I ⟨k, r⟩).mul (hz ⟨k, r⟩ m t ht))`. Set `T` to `{pk : (Ψ × Fin N) × K // M.blk pk.1 = some pk.2}`. Set `den : T → X → ℂ` to `fun t => tw t.1.1.2 t.1.2 t.1.1.1 (stepCols N j t.1.1.2)`. Establish `tweq : ∀ x ∈ W, ∀ h' : Ψ → Matrix (Fin N) (Fin N) ℂ, (∀ τ, IsBlockDiag j (h' τ)) → SameOrbit (z x) (FC.flagPt M (BM.F l) (FC.bvec BM l (pr x)) h') → ∀ t : T, ∃ α : ℂ, α ≠ 0 ∧ den t x = α * minorIJ ((h₀ t.1.1.1)⁻¹ * h' t.1.1.1) (stepCols N j t.1.1.2) (stepCols N j t.1.1.2)`.
+
+Introduce `x hx h' hb' ho t`. Take `⟨α, hα, hzk⟩` from `step_of_orbit ho t.1.1 t.1.2 t.2`. Conclude with `⟨α, hα, GlobalTheory.T.frame_minor_value_formula K ι Φ y Ψ N j M (BM.F l) _ t.1.1 t.1.2 _ _ _ α _ hF (hg _ (hl x hx)).1 (hg _ (hl x hx)).2.1 t.2 (hb' _) hzk⟩`. Use `⟨{x | x ∈ W ∧ ∀ t, den t x ≠ 0}, isOpen_ne hW fun t => htw _ _ _ _, ⟨hx₀, fun t => ?_⟩, fun x hx => hx.1, h₀, fun τ x => lowMat (fun q : LowIdx Ψ N j => lowRead M (BM.F l) (FC.bvec BM l (pr x)) h₀ (z x) q.1.1 q.1.2.1 q.1.2.2) τ, hh₀, fun τ a b => ?_, fun τ x => lowMat_props _ _, …` and prove the remaining obligations. Take `⟨α, hα, e⟩` from `tweq x₀ hx₀ h₀ (fun τ => (hh₀ τ).1) ho₀ t`.
+
+Rewrite using `[e, Matrix.nonsing_inv_mul _ (hh₀ _).2.isUnit, CPts.minorIJ_one, mul_one]`. Conclude with `hα`. Distinguish the cases in `h1 : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Simplify using `only [lowMat, dif_pos h1, lowRead]`. Break down `hk : M.blk (τ, stepOf N j b) with _ | k` into its components or cases.
+
+Conclude with `fun _ => analyticOnNhd_const`. Introduce `m t ht`. Conclude with `AnalyticAt.div (htw (stepOf N j b) k τ _ m t ⟨ht.1, ht.2.1⟩) (htw (stepOf N j b) k τ _ m t ⟨ht.1, ht.2.1⟩) (ht.2.2 ⟨((τ, stepOf N j b), k), hk⟩)`. Simplify using `only [lowMat, dif_neg h1]`. Conclude with `fun _ => analyticOnNhd_const`.
+
+Take `⟨h', hh', ho⟩` from `hex x hx.1`. Establish `hLU : ∀ τ, ∃ L U : Matrix (Fin N) (Fin N) ℂ, IsBlockDiag j L ∧ IsLowerUni L ∧ IsBlockDiag j U ∧ U.BlockTriangular id ∧ (∀ c, U c c ≠ 0) ∧ (h₀ τ)⁻¹ * h' τ = L * U`. Introduce `τ`. Use `GlobalTheory.T.block_LU_factorization N j _ hj (((hh₀ τ).1.inv (hh₀ τ).2.isUnit).mul (hh' τ).1) ?_ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (hh₀ τ).2.isUnit).ne_zero (hh' τ).2`. Take `⟨k, hk⟩` from `Option.ne_none_iff_exists'.1 fun e => (M.blk_none (τ, i)).1 e hi`. Take `⟨α, -, e⟩` from `tweq x hx.1 h' (fun τ => (hh' τ).1) ho ⟨((τ, i), k), hk⟩`. Use `hx.2 ⟨((τ, i), k), hk⟩` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `right_ne_zero_of_mul this`. Use `choose L U hLb hLu hUb hUt hUd hLU using hLU`. Establish `e1 : ∀ τ, lowMat (fun q : LowIdx Ψ N j => lowRead M (BM.F l) (FC.bvec BM l (pr x)) h₀ (z x) q.1.1 q.1.2.1 q.1.2.2) τ = L τ` using `fun τ => lowMat_eq (hLb τ) (hLu τ) fun a b e => LowRead.main K ι Φ y Ψ N j M (BM.F l) _ h₀ τ a b (z x) (h' τ) (L τ) (U τ) hF (hg _ (hl x hx.1)).1 (hg _ (hl x hx.1)).2.1 (hh' τ).1 (hLU τ) (hLb τ) (hLu τ) (hUb τ) (hUt τ) (fun c _ => hUd τ c) e.1 e.2 fun k hk => step_of_orbit ho (τ, …`. Simplify using `only [e1]`. Establish `e2 : h' = fun τ => (h₀ τ * L τ) * U τ` using `funext fun τ => by`.
+
+Rewrite using `[Matrix.mul_assoc, ← hLU, Matrix.mul_nonsing_inv_cancel_left _ _ (hh₀ τ).2.isUnit]`. Use `orbit_trans ho ?_` and prove the remaining obligations. Rewrite using `[e2]`. Use `GlobalTheory.T.flag_point_triangular_change_orbit K ι Φ y Ψ N j M _ _ (fun τ => h₀ τ * L τ) U fun τ => ⟨hUb τ, hUt τ, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_upperTriangular (hUt τ)]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun c _ => hUd τ c`.
+-/
 theorem exists_holo_flags (hp : HoloMap A BM.Rb.A pr) {W : Set X} (hW : IsOpen W) {z : X → (Σ k, ι k) → ℂ}
     (hz : ∀ q, A.HoloOn W fun x => z x q) (hm : ∀ x ∈ W, z x ∈ mcPts (mCoordIdeal y))
     (hb : ∀ x ∈ W, SameOrbit (basePart M.blk (z x)) (BM.Rb.lift (pr x) (pr x))) {l : Fin BM.q}

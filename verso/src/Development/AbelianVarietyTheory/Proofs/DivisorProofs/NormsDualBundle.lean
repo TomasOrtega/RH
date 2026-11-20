@@ -12,6 +12,29 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts
 
 namespace GlobalTheory.CoverNorm
 
+/- English proof (translation)
+Introduce `F _ _ Y V L f a l h`. Take `⟨r, hr, hun, hcx, hfin⟩` from `h`. Establish `key : ∀ (i : (L.B.pull V.j).ι) (g : Y.Fn), V.φ g⁻¹ * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField) = (V.φ g * r i)⁻¹`. Introduce `i g`. Rewrite using `[map_inv₀, Units.val_inv_eq_inv_val, mul_inv]`.
+
+Use `⟨fun i => (r i)⁻¹, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `e` using `hr i j hij`. Establish `e' : fnOf _ hij (((CechPic.dual L.B).pull V.j).g i j).val = (fnOf _ hij ((L.B.pull V.j).g i j).val)⁻¹` using `(congrArg (fun u : Γ(V.G, (L.B.pull V.j).U i ⊓ (L.B.pull V.j).U j)ˣ => fnOf _ hij u.val) (GlobalTheory.LineNorm.Neg.pull_dual_g L.B V.j i j)).trans (map_units_inv _ _)`. Use `Eq.trans ?_ (congrArg (· * _) e').symm` and prove the remaining obligations.
+
+Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, e, mul_inv]`. Both sides reduce to the same expression. Introduce `i x hx show UnitAt x (V.φ (f (V.π x))⁻¹ * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField))`. Rewrite using `[key i (f (V.π x))]`. Conclude with `(hun i x hx).inv`.
+
+Introduce `σ z y y' i e1 e2 hi`. Establish `H` using `hcx σ z y y' i e1 e2 hi`. Rewrite using `[show (L.dual.φ _).φ (i PUnit.unit) y' = -((L.φ _).φ (i PUnit.unit) y') from rfl]`. Establish `hπ : V.π (under z) = under y` using `by show _ = y.1 _`. Rewrite using `[e1]`.
+
+Both sides reduce to the same expression. Establish `hx : under z ∈ (L.B.pull V.j).U i` using `hi`. Establish `hU` using `hun i _ hx`. Rewrite `hU` using `[hπ]`. Establish `one : ratVal (1 : V.G.functionField) z = 1`.
+
+Establish `e` using `ratVal_fnOf (y := z) CxPts.mem_ptsIn_top trivial 1`. Rewrite `e` using `[map_one]`. Rewrite using `[e]`. Conclude with `CxPts.ev_one CxPts.mem_ptsIn_top`. Establish `k3 : ratVal (V.φ (f (under y)) * (r i : V.G.functionField))⁻¹ z * ratVal (V.φ (f (under y)) * (r i : V.G.functionField)) z = 1`.
+
+Rewrite using `[← ratVal_mul hU.inv.regAt hU.regAt, inv_mul_cancel₀ hU.ne_zero, one]`. Establish `h0 : ratVal (V.φ (f (under y)) * (r i : V.G.functionField)) z ≠ 0` using `right_ne_zero_of_mul_eq_one k3`. Establish `h0' : ratVal (V.φ (f (under y)) * (r i : V.G.functionField))⁻¹ z ≠ 0` using `left_ne_zero_of_mul_eq_one k3`. Establish `k4` using `congrArg (fun t : ℂ => Real.log ‖t‖) k3`. Simplify using `only [norm_mul, norm_one, Real.log_one] at k4`.
+
+Rewrite `k4` using `[Real.log_mul (norm_ne_zero_iff.2 h0') (norm_ne_zero_iff.2 h0)]`. Use `show -a σ y = Real.log ‖ratVal (V.φ (f (under y))⁻¹ * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField)) z‖ - _`. Rewrite using `[key i (f (under y))]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `v e y z yt i e1 e2 hi`.
+
+Establish `H` using `hfin v e y z yt i e1 e2 hi`. Establish `hmem : below z ∈ (L.B.pull V.j).U i`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ L.B.U (i PUnit.unit)`. Rewrite using `[← e2]`. Conclude with `hi (Set.mem_univ _)`.
+
+Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hπ : V.π (below z) = below y.1`. Rewrite using `[← e1]`. Both sides reduce to the same expression. Establish `hU` using `hun i _ hmem`.
+
+Rewrite `hU` using `[hπ]`. Use `show -l v e y = Real.log (e.w (valAt z (V.φ (f (below y.1))⁻¹ * (((r i)⁻¹ : V.G.functionFieldˣ) : V.G.functionField))))`. Rewrite using `[key i (f (below y.1)), GlobalTheory.LineNorm.Neg.valAt_inv hU, map_inv₀, Real.log_inv, H]`.
+-/
 theorem Norms.dual : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn)
     (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ),
     Norms V L f a l → Norms V L.dual (fun x => (f x)⁻¹) (fun σ y => -a σ y) (fun v e y => -l v e y) := by

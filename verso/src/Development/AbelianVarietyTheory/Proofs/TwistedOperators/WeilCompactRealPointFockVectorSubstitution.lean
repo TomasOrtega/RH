@@ -32,6 +32,9 @@ def fockSubOn {m n : ℕ} (s : Finset D.what₂.Tau) (pS pT : D.what₂.Tau → 
 variable {m n : ℕ} (pS pT : D.what₂.Tau → ℕ) (κS : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ)
     (κT : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ)
 
+/- English proof (translation)
+Establish `e : fockSubOn (∅ : Finset D.what₂.Tau) pS pT κS κT = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [fockSubOn, MvPolynomial.aeval_X, Finset.notMem_empty, if_false, AlgHom.id_apply]`. Rewrite using `[e, AlgHom.id_apply]`.
+-/
 theorem fockSubOn_empty (Q : MvPolynomial (FVar D m n) ℂ) : fockSubOn ∅ pS pT κS κT Q = Q := by
   have e : fockSubOn (∅ : Finset D.what₂.Tau) pS pT κS κT = AlgHom.id ℂ _ := by
     apply MvPolynomial.algHom_ext
@@ -39,11 +42,21 @@ theorem fockSubOn_empty (Q : MvPolynomial (FVar D m n) ℂ) : fockSubOn ∅ pS p
     simp only [fockSubOn, MvPolynomial.aeval_X, Finset.notMem_empty, if_false, AlgHom.id_apply]
   rw [e, AlgHom.id_apply]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [fockSubOn, fockSubAll, MvPolynomial.aeval_X, Finset.mem_univ, if_true]`.
+-/
 theorem fockSubOn_univ : fockSubOn Finset.univ pS pT κS κT = fockSubAll pS pT κS κT := by
   apply MvPolynomial.algHom_ext
   intro y
   simp only [fockSubOn, fockSubAll, MvPolynomial.aeval_X, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+It suffices to establish `e : (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub τ (pS τ) (pT τ) (κS τ) (κT τ)).comp (fockSubOn s pS pT κS κT) = fockSubOn (insert τ s) pS pT κS κT from DFunLike.congr_fun e Q`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[AlgHom.comp_apply]`. Distinguish the cases in `hy : y.1 ∈ s`.
+
+Establish `hne : y.1 ≠ τ` using `fun h => hτ (h ▸ hy)`. Simplify using `only [fockSubOn, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub, MvPolynomial.aeval_X, Finset.mem_insert, hy, if_true, or_true, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, hne, if_false]`. Distinguish the cases in `h2 : y.1 = τ`. Take `⟨ρ, a, b⟩` from `y`. Simplify using `only at h2 hy`.
+
+Substitute `h2` using the available equality. Simplify using `only [fockSubOn, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub, MvPolynomial.aeval_X, Finset.mem_insert, hy, if_false, true_or, if_true]`. Simplify using `only [fockSubOn, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub, MvPolynomial.aeval_X, Finset.mem_insert, hy, h2, if_false, or_false]`.
+-/
 theorem fockSub_fockSubOn {τ : D.what₂.Tau} {s : Finset D.what₂.Tau} (hτ : τ ∉ s) (Q : MvPolynomial (FVar D m n) ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub τ (pS τ) (pT τ) (κS τ) (κT τ) (fockSubOn s pS pT κS κT Q) =
       fockSubOn (insert τ s) pS pT κS κT Q := by
@@ -65,6 +78,35 @@ theorem fockSub_fockSubOn {τ : D.what₂.Tau} {s : Finset D.what₂.Tau} (hτ :
     · simp only [fockSubOn, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.fockSub, MvPolynomial.aeval_X, Finset.mem_insert, hy, h2, if_false,
         or_false]
 
+/- English proof (translation)
+Establish `hUS : ∀ ρ, compAt θ ρ (mt S x) ∈ Formalism.QuantumDeterminants.UH (gramAt D S ρ)` using `fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ S x ρ`. Establish `hUT : ∀ ρ, compAt θ ρ (mt T y) ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)` using `fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ T y ρ`. Establish `hAS : ∀ τ, IsAtTau θ S τ (BS τ * κS τ * (BS τ)⁻¹) (atTau θ S τ (compAt θ τ (mt S x)))` using `fun τ => by`. Rewrite using `[← hxc τ]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_spec hθ S τ (hUS τ)`.
+
+Establish `hAT : ∀ τ, IsAtTau θ T τ (BT τ * κT τ * (BT τ)⁻¹) (atTau θ T τ (compAt θ τ (mt T y)))` using `fun τ => by`. Rewrite using `[← hyc τ]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_spec hθ T τ (hUT τ)`. Establish `hev : ∀ τ, ∃ e : ℂ, om (atTau θ S τ (compAt θ τ (mt S x)), atTau θ T τ (compAt θ τ (mt T y))) f = e • f` using `fun τ => by`. Take `⟨mS, mT, h⟩` from `GlobalTheory.VacCharAtPlace.vacuum_char_at_place D ψ θ S T χS χT om hom hθ τ`.
+
+Conclude with `⟨_, h sS BS sT BT pS pT hpS hpT hS hT hBS hBT f hf hvac (κS τ) (κT τ) (hκS τ) (hκT τ) _ _ (hAS τ) (hAT τ)⟩`. Use `choose e he using hev`. Set `MSs : Finset D.what₂.Tau → D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ` to `fun s ρ => if ρ ∈ s then compAt θ ρ (mt S x) else 1`. Set `MTs : Finset D.what₂.Tau → D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ` to `fun s ρ => if ρ ∈ s then compAt θ ρ (mt T y) else 1`. Establish `hUSs : ∀ s ρ, MSs s ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D S ρ)` using `fun s ρ => by`.
+
+Distinguish the cases in `h : ρ ∈ s`. Simplify using `only [MSs, if_pos h]`. Conclude with `hUS ρ`. Simplify using `only [MSs, if_neg h]`. Conclude with `GlobalTheory.PointAtPlaceHom.one_mem_UH _`.
+
+Establish `hUTs : ∀ s ρ, MTs s ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)` using `fun s ρ => by`. Distinguish the cases in `h : ρ ∈ s`. Simplify using `only [MTs, if_pos h]`. Conclude with `hUT ρ`. Simplify using `only [MTs, if_neg h]`.
+
+Conclude with `GlobalTheory.PointAtPlaceHom.one_mem_UH _`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ Q, om (realAll θ S (MSs s), realAll θ T (MTs s)) (pureTensorO ψ θ S T sS sT BS BT f Q) = (∏ τ ∈ s, e τ) • pureTensorO ψ θ S T sS sT BS BT f (fockSubOn s pS pT κS κT Q)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `Q`.
+
+Establish `h1 : MSs ∅ = 1` using `by funext ρ; simp [MSs]`. Establish `h2 : MTs ∅ = 1` using `by funext ρ; simp [MTs]`. Rewrite using `[h1, h2, realAll_one hθ, realAll_one hθ, Prod.mk_one_one, map_one, Module.End.one_apply, Finset.prod_empty, one_smul, fockSubOn_empty]`. Introduce `τ s hτ ih Q`. Establish `eS : realAll θ S (MSs (insert τ s)) = atTau θ S τ (compAt θ τ (mt S x)) * realAll θ S (MSs s)`.
+
+Rewrite using `[realAll_eq_atTau_mul hθ (hUSs (insert τ s)) τ]`. Use `congr 2`. Simplify using `[MSs]`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`.
+
+Substitute `h` using the available equality. Simplify using `[MSs, hτ]`. Simplify using `[MSs, Function.update_of_ne h, h]`. Establish `eT : realAll θ T (MTs (insert τ s)) = atTau θ T τ (compAt θ τ (mt T y)) * realAll θ T (MTs s)`. Rewrite using `[realAll_eq_atTau_mul hθ (hUTs (insert τ s)) τ]`.
+
+Use `congr 2`. Simplify using `[MTs]`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality.
+
+Simplify using `[MTs, hτ]`. Simplify using `[MTs, Function.update_of_ne h, h]`. Rewrite using `[eS, eT, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, ih Q, map_smul, GlobalTheory.FockCompact.om_pureTensorO_compact D ψ θ S T χS χT om hom hθ sS BS sT BT pS pT hpS hpT hS hT hBS hBT f hf τ (κS τ) (κT τ) (hκS τ) (hκT τ) _ _ (hAS τ) (hAT τ) (e τ) (he τ), smul_smul, fockSub_fo …`. Establish `hxr : realAll θ S (MSs Finset.univ) = x` using `realAll_eq hθ (hUSs _) ⟨hx, fun ρ => by simp only [MSs, Finset.mem_univ, if_true]; rfl⟩`. Establish `hyr : realAll θ T (MTs Finset.univ) = y` using `realAll_eq hθ (hUTs _) ⟨hy, fun ρ => by simp only [MTs, Finset.mem_univ, if_true]; rfl⟩`.
+
+Establish `hall` using `key Finset.univ`. Rewrite `hall` using `[hxr, hyr, fockSubOn_univ]`. Establish `hE : om (x, y) f = (∏ τ, e τ) • f`. Establish `h1` using `hall 1`. Rewrite `h1` using `[map_one (fockSubAll pS pT κS κT)]`.
+
+Simplify `h1` using `only [GlobalTheory.FiniteFock.pureTensorO_one]`. Rewrite using `[hall Q]`. Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Establish `z : ∀ P, pureTensorO ψ θ S T sS sT BS BT 0 P = 0` using `fun P => by`.
+
+Use `GlobalTheory.FiniteFock.pureTensorO_smul ψ θ S T sS sT BS BT 0 0 P` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Simplify using `only [z, smul_zero]`. Establish `hce : c = ∏ τ, e τ` using `smul_left_injective ℂ hf0 (hc.symm.trans hE)`. Rewrite using `[hce]`.
+-/
 theorem om_pureTensorO_compact_all (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (χS χT : (AE D)ˣ →* Circle) (om : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.OmT S T) (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -157,6 +199,9 @@ theorem om_pureTensorO_compact_all (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ
 
 end FockAll
 
+/- English proof (translation)
+Introduce `D T L sc G W p hp pS pT hpS hpT hS hT hBS hBT f hf hvac κS κT hκS hκT x y hx hy hxc hyc c hc Q`. Conclude with `om_pureTensorO_compact_all D W.ψ W.θ (G.pS p) (G.pT p) (G.chrS p) (G.chrT p) (W.om p) (W.om_is p hp) W.θ_is (G.cartS W.cart p) (G.onS W.onb p) (G.onT W.cart p) (G.onT W.onb p) pS pT hpS hpT hS hT hBS hBT f hf hvac κS κT hκS hκT x y hx hy hxc hyc c hc Q`.
+-/
 theorem om_fock_compact_all : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (p : Pair T), p.InRange D.R.m →
     ∀ (pS pT : D.what₂.Tau → ℕ), (∀ ρ, pS ρ ≤ (G.pS p).rank) → (∀ ρ, pT ρ ≤ (G.pT p).rank) →
     (∀ ρ, IsCartanInv (gramAt D (G.pS p) ρ) (G.cartS W.cart p ρ)) →

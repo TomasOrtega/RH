@@ -18,6 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PullLin
 
+/- English proof (translation)
+Establish `h` using `Flat.stalkMap f x`. Use `algebraize [(f.stalkMap x).hom]`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (f x)) (X.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (f.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (f x)) (B := X.presheaf.stalk x)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)`.
+-/
 theorem stalkMap_injective_of_flat {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] (x : X) :
     Function.Injective (f.stalkMap x).hom := by
   have h := Flat.stalkMap f x
@@ -27,6 +30,11 @@ theorem stalkMap_injective_of_flat {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] (x 
   have := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := Y.presheaf.stalk (f x)) (B := X.presheaf.stalk x)
   exact FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (f x)) (X.presheaf.stalk x)
 
+/- English proof (translation)
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `f.surjective y`. Apply `stalkMap_injective_of_flat f x` to reduce the goal to its premises. Use `choose J hJ using fun ψ : Y' ⟶ X => exists_chart hL (ψ x)`. Use `(gs_stalkMap f x _ hy _).symm.trans (Eq.trans ?_ (gs_stalkMap f x _ hy _))` and prove the remaining obligations.
+
+Use `(sec_trans s f x hy (Good.mem hJ φ f)).trans ?_` and prove the remaining obligations. Use `(congrArg _ (h x J hJ)).trans ((mul_zero _).trans ?_)` and prove the remaining obligations. Rewrite using `[gs_eq f x _ hy, map_zero, map_zero]`.
+-/
 theorem sec_eq_zero_of_flat {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (f : Y' ⟶ Y) [Flat f] [Surjective f]
     (h : ∀ x J, Good L x J → sval s f x J = 0) (j : K → L.ι) : s.f j = 0 := by
@@ -42,14 +50,23 @@ theorem sec_eq_zero_of_flat {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {D : DegData V (maximalIdeal V)}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_fst (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))`.
+-/
 theorem aF_fst (oa : D.toPre.OAct O) (a : O) :
     (aF D F oa a).left ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left :=
   congrArg (fun q => q.left) (lift_fst (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_snd (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))`.
+-/
 theorem aF_snd (oa : D.toPre.OAct O) (a : O) :
     (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F).left ≫ (oa.onB.act a).left :=
   congrArg (fun q => q.left) (lift_snd (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))
 
+/- English proof (translation)
+Establish `h₀ : IsPullback (fst (TF (R` using `V) F) D.toPre.P.A).left (DegPre.prB D.toPre F).left (TF (R := V) F).hom D.toPre.P.A.hom := IsPullback.of_hasPullback _ _`. Use `IsPullback.of_right ?_ (aF_snd oa a) h₀` and prove the remaining obligations. Rewrite using `[aF_fst, Over.w]`. Conclude with `h₀`.
+-/
 theorem isPullback_aF (oa : D.toPre.OAct O) (a : O) :
     IsPullback (aF D F oa a).left (DegPre.prB D.toPre F).left (DegPre.prB D.toPre F).left (oa.onB.act a).left := by
   have h₀ : IsPullback (fst (TF (R := V) F) D.toPre.P.A).left (DegPre.prB D.toPre F).left
@@ -58,11 +75,19 @@ theorem isPullback_aF (oa : D.toPre.OAct O) (a : O) :
   rw [aF_fst, Over.w]
   exact h₀
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[aF]`. Simplify using `[aF, DegPre.prB, oa.onB.map_mul]`.
+-/
 theorem aF_mul (oa : D.toPre.OAct O) (a b : O) : aF D F oa (a * b) = aF D F oa b ≫ aF D F oa a := by
   apply CartesianMonoidalCategory.hom_ext
   · simp [aF]
   · simp [aF, DegPre.prB, oa.onB.map_mul]
 
+/- English proof (translation)
+Establish `z₁ : DegPre.zF D.toPre F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Use `gen_unique' D.toPre.P.isLB (fun _ _ _ => rfl) (fst (TF (R := V) F) D.toPre.P.A).left (DegPre.zF D.toPre F).left (congrArg (fun q => q.left) z₁) (surj_appTop D.toPre F hG) hu hu' (fun y I hI => ?_) Z r z J hJ` and prove the remaining obligations. Establish `a₁` using `val_corr hI c (𝟙 _)`. Establish `a₂` using `val_corr hI c' (𝟙 _)`. Rewrite `a₁`, `a₂` using `[val_pull hI, Category.id_comp]`.
+
+Conclude with `a₁.trans a₂.symm`.
+-/
 theorem pullAl_val (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X)
     {u u' : LB.Gen (LB.LinComb D.toPre.P.L (pullφ D F oa a χ) (pullε k N))} (hu : u.IsGen) (hu' : u'.IsGen)
     {K : Type} [Fintype K] {φ : K → ((TF (R := V) F).left ⟶ D.toPre.P.A.left)} {ε : K → ℤ}
@@ -80,6 +105,11 @@ theorem pullAl_val (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) 
   rw [val_pull hI, Category.id_comp] at a₁ a₂
   exact a₁.trans a₂.symm
 
+/- English proof (translation)
+Use `fam_ext fun β j => ?_` and prove the remaining obligations. Distinguish the cases in `hβ : ∃ χ, β = star a • χ`. Take `⟨χ, rfl⟩` from `hβ`. Take `⟨u, hu, c, e⟩` from `h.1 χ`. Take `⟨u', hu', c', e'⟩` from `h'.1 χ`.
+
+Use `sec_ext_val D.toPre.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 e _ _ y J hJ, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u').1 e' _ _ y J hJ, pullAl_val hG oa a k N χ hu hu' c c' _ _ y J hJ]`. Conclude with `(h.2 β (fun χ e => hβ ⟨χ, e⟩) j).trans (h'.2 β (fun χ e => hβ ⟨χ, e⟩) j).symm`.
+-/
 theorem pullAl_unique (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) {s : Fam D.toPre F k}
     {t t' : Fam D.toPre F (k * N)} (h : PullAl D F oa a k N s t) (h' : PullAl D F oa a k N s t') : t = t' := by
   refine fam_ext fun β j => ?_
@@ -93,6 +123,11 @@ theorem pullAl_unique (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : �
       pullAl_val hG oa a k N χ hu hu' c c' _ _ y J hJ]
   · exact (h.2 β (fun χ e => hβ ⟨χ, e⟩) j).trans (h'.2 β (fun χ e => hβ ⟨χ, e⟩) j).symm
 
+/- English proof (translation)
+Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, c, e⟩` from `h.1 χ`. Take `⟨u', hu', c', e'⟩` from `h'.1 χ`. Use `⟨u, hu, c, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_add _ _ _ _ y hJ, sval_add _ _ _ _ y hJ, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 e _ _ y J hJ, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u').1 e' _ _ y J hJ, pullAl_val hG oa a k N χ hu' hu c' c _ _ y J hJ, add_mul]`.
+
+Rewrite using `[add_f, h.2 β hβ j, h'.2 β hβ j, add_zero]`.
+-/
 theorem pullAl_add (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) {s s' : Fam D.toPre F k}
     {t t' : Fam D.toPre F (k * N)} (h : PullAl D F oa a k N s t) (h' : PullAl D F oa a k N s' t') :
     PullAl D F oa a k N (s + s') (t + t') := by
@@ -106,6 +141,9 @@ theorem pullAl_add (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) 
       pullAl_val hG oa a k N χ hu' hu c' c _ _ y J hJ, add_mul]
   · rw [add_f, h.2 β hβ j, h'.2 β hβ j, add_zero]
 
+/- English proof (translation)
+Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, c, e⟩` from `h.1 χ`. Use `⟨u, hu, c, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sval_smul _ _ _ _ y hJ, sval_smul _ _ _ _ y hJ, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 e _ _ y J hJ, Category.assoc, aF_fst, _root_.mul_assoc]`. Rewrite using `[smul_f, h.2 β hβ j, mul_zero]`.
+-/
 theorem pullAl_smul (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (ζ : F) {s : Fam D.toPre F k}
     {t : Fam D.toPre F (k * N)} (h : PullAl D F oa a k N s t) : PullAl D F oa a k N (ζ • s) (ζ • t) := by
   refine ⟨fun χ => ?_, fun β hβ j => ?_⟩
@@ -115,6 +153,13 @@ theorem pullAl_smul (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (ζ : F) {s : Fam 
       (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 e _ _ y J hJ, Category.assoc, aF_fst, _root_.mul_assoc]
   · rw [smul_f, h.2 β hβ j, mul_zero]
 
+/- English proof (translation)
+Take `⟨-, hflat, hsurj, -⟩` from `hM _ D.toPre.P N hN`. Establish `hm : oa.onB.act (a * star a) = mulA D.toPre.P.A N`. Rewrite using `[haa, ← _root_.mul_one (N : O), act_nsmul, oa.onB.map_one]`. Rewrite `hflat`, `hsurj` using `[← hm]`. Establish `hp` using `isPullback_aF (F := F) oa (a * star a)`.
+
+Establish `: Flat (aF D F oa (a * star a)).left` using `MorphismProperty.of_isPullback hp.flip hflat`. Establish `: Surjective (aF D F oa (a * star a)).left` using `MorphismProperty.of_isPullback hp.flip hsurj`. Use `fam_ext fun χ j => sec_eq_zero_of_flat D.toPre.P.isLB (s.s χ) (aF D F oa (a * star a)).left (fun x J hJ => ?_) j` and prove the remaining obligations. Take `⟨u, -, -, e⟩` from `h.1 χ`. Establish `e₁` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 e _ (aF D F oa (star a)).left x J hJ`.
+
+Establish `e₀ : sval ((0 : Fam D.toPre F (k * N)).s (star a • χ)) (aF D F oa (star a)).left x J = 0` using `gs_zero _ x _ (hJ.mem _ _)`. Rewrite `e₁` using `[e₀, ← Over.comp_left, ← aF_mul]`. Conclude with `(Units.mul_left_eq_zero _).1 e₁.symm`.
+-/
 theorem eq_zero_of_pullAl_zero (hM : MulNSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (hN : 1 ≤ N)
     (haa : a * star a = (N : O)) {s : Fam D.toPre F k} (h : PullAl D F oa a k N s 0) : s = 0 := by
   obtain ⟨-, hflat, hsurj, -⟩ := hM _ D.toPre.P N hN
@@ -133,6 +178,11 @@ theorem eq_zero_of_pullAl_zero (hM : MulNSt) (oa : D.toPre.OAct O) (a : O) (k N 
   rw [e₀, ← Over.comp_left, ← aF_mul] at e₁
   exact (Units.mul_left_eq_zero _).1 e₁.symm
 
+/- English proof (translation)
+Introduce `hL V _ _ _ D F _ _ O _ _ _ oa w0 hw a N k hN _ haa`. Establish `hG` using `hL.globalFns`. Take `⟨uΨ, huΨ, -⟩` from `id hw`. Use `choose P hP using fun s : Fam D.toPre F k => exists_pullAl D F D.toPre.P.isLB oa w0 uΨ huΨ a N haa hN k s (pullSecs_fe' D F hG D.toPre.P.isLB oa w0 hw uΨ huΨ a N haa hN k s)`. Set `π : Fam D.toPre F k →ₗ[F] Fam D.toPre F (k * N)` to `{ toFun := P map_add' := fun s s' => pullAl_unique hG oa a k N (hP _) (pullAl_add hG oa a k N (hP s) (hP s')) map_smul' := fun ζ s => pullAl_unique hG oa a k N (hP _) (pullAl_smul oa a k N ζ (hP s)) }`.
+
+Use `⟨π, (injective_iff_map_eq_zero π).2 fun s hs => ?_, fun s s' => ⟨fun h => pullAl_unique hG oa a k N h (hP s), fun h => h ▸ hP s⟩⟩` and prove the remaining obligations. Conclude with `eq_zero_of_pullAl_zero hL.mulN oa a k N hN haa (hs ▸ hP s)`.
+-/
 theorem exists_pull_linearMap : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (O : Type) [CommRing O]
     [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (w0 : O), TraceFormTwistIso D.toPre oa w0 →

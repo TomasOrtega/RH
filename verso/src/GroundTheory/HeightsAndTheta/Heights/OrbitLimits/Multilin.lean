@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 
 universe u
 
+/- English proof (translation)
+Introduce `I hI V n L j a b hV`. Establish `e : ∀ L' : Fin n → K → ℤ, I V n L' = intNum F V L'` using `fun L' => Numbers.agree_of hBase hCut hEx hDiv I hI V n L' hV`. Establish `hP : NumbersDVR.IsMultiProjPrime V` using `(Objects.isMultiProjPrime_iff V).mpr hV.1`. Rewrite using `[e, e, e]`. Conclude with `hAdd F K ι V hP.multiHomog hP.relevant n (relDim_eq_of_ringKrullDim V n hV.2) L j a b`.
+-/
 theorem Multilin.of_found
     (hBase : FieldNumbers.IntNumBase.Statement.{u})
     (hCut : FieldNumbers.CutRational.Statement.{u})
@@ -27,6 +30,9 @@ theorem Multilin.of_found
   rw [e, e, e]
   exact hAdd F K ι V hP.multiHomog hP.relevant n (relDim_eq_of_ringKrullDim V n hV.2) L j a b
 
+/- English proof (translation)
+The claim follows from `Multilin.of_found FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full FieldNumbers.ExistsForm.full FieldNumbers.DivCycleSupport.full FieldNumbers.IntNumAdd.full F ι`.
+-/
 theorem Multilin.full {K : Type} [Fintype K] (F : Type u) [Field F] (ι : K → Type)
     [∀ k, Fintype (ι k)] : ReciprocityTheory.ChartRestriction.G.AI.I1.MultilinStatement F ι :=
   Multilin.of_found FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full

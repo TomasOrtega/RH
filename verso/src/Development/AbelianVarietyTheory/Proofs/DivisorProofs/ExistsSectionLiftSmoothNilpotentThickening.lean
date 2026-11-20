@@ -12,6 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SecLift
 
+/- English proof (translation)
+Use `GlobalTheory.T.smooth_section_lift_nilpotent_of_sqZero ?_` and prove the remaining obligations. Introduce `R R₀ _ _ π hπ hsq X X₀ i hpb hsm e₀ he₀`. Establish `hnil : IsNilpotent (RingHom.ker π)` using `⟨2, by rw [hsq]; rfl⟩`. Set `g₀` to `e₀ ≫ i`. Establish `hg₀ : g₀ ≫ X.hom = spMap π`.
+
+Simplify using `only [g₀, Category.assoc]`. Rewrite using `[hpb.w, ← Category.assoc, he₀, Category.id_comp]`. Set `J : Set R` to `{h | ∃ V : X.left.Opens, IsAffineOpen V ∧ LiftIn π X g₀ h V}`. Establish `hS2` using `GlobalTheory.T.exists_smooth_section_lift_basicOpen_affine R R₀ π hπ hnil X hsm g₀ hg₀`. Establish `hspan : Ideal.span J = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨N, hN, hJN⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨f, hf, hfJ⟩` from `hS2 ⟨N, hN.isPrime⟩`. Conclude with `hf (hJN (Ideal.subset_span hfJ))`. Take `⟨s, hsJ, hs⟩` from `(Ideal.span_eq_top_iff_finite J).1 hspan`.
+
+Establish `hV : ∀ k : s, ∃ V : X.left.Opens, IsAffineOpen V ∧ LiftIn π X g₀ k.1 V` using `fun k => hsJ k.2`. Use `choose V hVa hVl using hV`. Take `⟨e, he1, he2⟩` from `GlobalTheory.T.exists_global_lift_of_chartLocal_lifts_squareZero R R₀ π hπ hsq X hsm g₀ hg₀ s (fun k => k.1) (by simpa using hs) V hVa hVl`. Conclude with `⟨e, he1, he2.symm⟩`.
+-/
 theorem exists_section_lift : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →
     ∀ e₀ : Sp R₀ ⟶ X₀.left, e₀ ≫ X₀.hom = 𝟙 _ → ∃ e : Sp R ⟶ X.left, e ≫ X.hom = 𝟙 _ ∧ e₀ ≫ i = spMap π ≫ e := by

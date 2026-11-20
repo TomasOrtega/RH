@@ -12,11 +12,17 @@ open Formalism.QuantumDeterminants Formalism.QuantumDeterminants.GBasic
 
 def sq2 : ℂ := ((Real.sqrt 2)⁻¹ : ℝ)
 
+/- English proof (translation)
+Unfold `sq2`. Rewrite using `[← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sq2_mul_sq2_eq_half : sq2 * sq2 = 1 / 2 := by
   unfold sq2
   rw [← Complex.ofReal_mul, ← mul_inv, Real.mul_self_sqrt (by norm_num)]
   push_cast; ring
 
+/- English proof (translation)
+Unfold `sq2`. Rewrite using `[Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem star_sq2_eq_self : star sq2 = sq2 := by
   unfold sq2; rw [Complex.star_def, Complex.conj_ofReal]
 
@@ -27,10 +33,26 @@ def u2 (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val < r then sq2 else
 def Pu (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := fun i j =>
   (if j = i then u1 k r i else 0) + (if i = sig k r j then u2 k r i else 0)
 
+/- English proof (translation)
+Unfold `Pu u1 u2`. Apply the tactic sequence `split_ifs <;> simp [star_sq2_eq_self]`.
+-/
 theorem Pu_star (k r : ℕ) (i j : Fin (2 * r + k + 1)) : star (Pu k r i j) = Pu k r i j := by
   unfold Pu u1 u2
   split_ifs <;> simp [star_sq2_eq_self]
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm (epsK k r) = diagonal (dK k r)` using `rfl`. Rewrite using `[hJ, mul_apply]`. Simplify using `only [mul_diagonal, conjTranspose_apply, Pu_star]`. Unfold `Pu`. Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[Hpk_eq]`. Establish `hi` using `i.isLt`. Establish `hs` using `sig_val k r i`. Establish `h2` using `sq2_mul_sq2_eq_half`. Distinguish the cases in `hji : j = i`.
+
+Substitute `hji` using the available equality. Simplify using `only [Fin.ext_iff]`. Simplify using `only [u1, u2, dK, epsK, sgn, decide_eq_true_eq]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | ring_nf | skip`. Apply the tactic sequence `all_goals first | ring | linear_combination h2 | linear_combination (-1 : ℂ) * h2 |`.
+
+Take the linear combination `(2 : ℂ) * h2 | linear_combination (-2 : ℂ) * h2`. Distinguish the cases in `hjs : j = sig k r i`. Substitute `hjs` using the available equality. Simplify using `only [sig_sig]`. Establish `hji' : ¬ (sig k r i).val = i.val` using `fun h => hji (Fin.ext h)`.
+
+Simplify using `only [Fin.ext_iff]`. Simplify using `only [u1, u2, dK, epsK, sgn, decide_eq_true_eq]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | ring_nf | skip`. Apply the tactic sequence `all_goals first | ring | linear_combination h2 | linear_combination (-1 : ℂ) * h2 |`. Take the linear combination `(2 : ℂ) * h2 | linear_combination (-2 : ℂ) * h2`.
+
+Establish `h1 : ¬ i = j` using `fun h => hji h.symm`. Establish `h2' : ¬ i = sig k r j` using `fun h => hjs ((eq_sig_iff k r i j).1 h)`. Establish `h3 : ¬ sig k r j = sig k r i` using `fun h => hji ((sig_inj k r j i).1 h)`. Rewrite using `[if_neg h1, if_neg hjs, if_neg h2', if_neg h3, if_neg hjs]`. Evaluate the numerical expressions.
+-/
 theorem PuJPu_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ((Pu k r)ᴴ * Formalism.REAL.Jm (epsK k r) * Pu k r) i j = Hpk k r i j := by
   have hJ : Formalism.REAL.Jm (epsK k r) = diagonal (dK k r) := rfl
@@ -65,6 +87,19 @@ theorem PuJPu_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       rw [if_neg h1, if_neg hjs, if_neg h2', if_neg h3, if_neg hjs]
       norm_num
 
+/- English proof (translation)
+Rewrite using `[mul_apply, one_apply]`. Simplify using `only [conjTranspose_apply, Pu_star]`. Unfold `Pu`. Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hi` using `i.isLt`.
+
+Establish `hs` using `sig_val k r i`. Establish `h2` using `sq2_mul_sq2_eq_half`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `only [Fin.ext_iff]`.
+
+Simplify using `only [u1, u2]`. Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | ring_nf | skip`. Apply the tactic sequence `all_goals first | ring | linear_combination h2 | linear_combination (-1 : ℂ) * h2 |`. Take the linear combination `(2 : ℂ) * h2 | linear_combination (-2 : ℂ) * h2`. Distinguish the cases in `hjs : j = sig k r i`.
+
+Substitute `hjs` using the available equality. Simplify using `only [sig_sig]`. Establish `hji' : ¬ (sig k r i).val = i.val` using `fun h => hji (Fin.ext h)`. Simplify using `only [Fin.ext_iff]`. Simplify using `only [u1, u2]`.
+
+Apply the tactic sequence `split_ifs at * <;> first | (exfalso; omega) | ring_nf | skip`. Apply the tactic sequence `all_goals first | ring | linear_combination h2 | linear_combination (-1 : ℂ) * h2 |`. Take the linear combination `(2 : ℂ) * h2 | linear_combination (-2 : ℂ) * h2`. Establish `h1 : ¬ i = j` using `fun h => hji h.symm`. Establish `h2' : ¬ i = sig k r j` using `fun h => hjs ((eq_sig_iff k r i j).1 h)`.
+
+Establish `h3 : ¬ sig k r j = sig k r i` using `fun h => hji ((sig_inj k r j i).1 h)`. Simplify using `[h1, hjs, h2', h3]`.
+-/
 theorem PuPu_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     ((Pu k r)ᴴ * Pu k r) i j = (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j := by
   rw [mul_apply, one_apply]
@@ -96,12 +131,25 @@ theorem PuPu_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       have h3 : ¬ sig k r j = sig k r i := fun h => hji ((sig_inj k r j i).1 h)
       simp [h1, hjs, h2', h3]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `PuJPu_apply k r i j`.
+-/
 theorem PuJPu (k r : ℕ) : (Pu k r)ᴴ * Formalism.REAL.Jm (epsK k r) * Pu k r = Hpk k r := by
   ext i j; exact PuJPu_apply k r i j
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `PuPu_apply k r i j`.
+-/
 theorem PuPu (k r : ℕ) : (Pu k r)ᴴ * Pu k r = 1 := by
   ext i j; exact PuPu_apply k r i j
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.PF.exists_perm ε hs`. Use `⟨Matrix.of fun i j => Pu k r (σ.symm i) j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← PuJPu k r]`. Use extensionality with `a b`. Rewrite using `[mul_apply, mul_apply]`.
+
+Simplify using `only [Formalism.REAL.Jm, mul_diagonal, conjTranspose_apply, of_apply]`. Use `(Fintype.sum_equiv σ _ _ (fun m => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, hσ m]`. Rewrite using `[← PuPu k r]`. Use extensionality with `a b`.
+
+Rewrite using `[mul_apply, mul_apply]`. Simplify using `only [conjTranspose_apply, of_apply]`. Use `(Fintype.sum_equiv σ _ _ (fun m => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`.
+-/
 theorem exists_unitary {r k : ℕ} (ε : Fin (2 * r + k + 1) → Bool)
     (hs : (Finset.univ.filter (fun i => ε i = false)).card = r + 1) :
     ∃ P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ,

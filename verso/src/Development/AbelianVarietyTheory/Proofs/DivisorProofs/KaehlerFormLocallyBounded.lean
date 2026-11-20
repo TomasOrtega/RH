@@ -9,6 +9,11 @@ namespace GlobalTheory.ShFam
 
 open ReciprocityTheory.L2DbarEstimates in
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ g) v` using `hg.fderiv_right (by norm_num)`. Establish `h2 : ContDiffAt ℝ 1 (wdb d k g) v`. Unfold `wdb`. Conclude with `(((h1.clm_apply contDiffAt_const).add (contDiffAt_const.mul (h1.clm_apply contDiffAt_const))).div_const _)`. Establish `h3 : ContDiffAt ℝ 0 (fderiv ℝ (wdb d k g)) v` using `h2.fderiv_right (by norm_num)`.
+
+Establish `h4` using `h3.continuousAt`. Unfold `wd`. Conclude with `(((h4.clm_apply continuousAt_const).sub (continuousAt_const.mul (h4.clm_apply continuousAt_const))).div_const _)`.
+-/
 theorem continuousAt_wd_wdb {d : ℕ} {g : V d → ℂ} {v : V d} (hg : ContDiffAt ℝ 2 g v) (j k : Fin d) :
     ContinuousAt (fun w => wd d j (wdb d k g) w) v := by
   have h1 : ContDiffAt ℝ 1 (fderiv ℝ g) v := hg.fderiv_right (by norm_num)
@@ -22,6 +27,23 @@ theorem continuousAt_wd_wdb {d : ℕ} {g : V d → ℂ} {v : V d} (hg : ContDiff
   exact (((h4.clm_apply continuousAt_const).sub (continuousAt_const.mul
     (h4.clm_apply continuousAt_const))).div_const _)
 
+/- English proof (translation)
+Take `⟨W, φ, hyW, hWo, hs, e⟩` from `h.1 y`. Use `set O := c.e.target ∩ c.e.symm ⁻¹' W with hO`. Establish `hOo : IsOpen O` using `GlobalTheory.ChartGlue.isOpen_over c.e hWo`. Establish `hv : c.e y ∈ O` using `GlobalTheory.ChartGlue.mem_over c.e hy hyW`. Establish `hc : ContDiffOn ℝ ∞ (φ ∘ c.e.symm) O` using `hs.chart hWo c`.
+
+Use `set g : ReciprocityTheory.L2DbarEstimates.V d → ℂ := fun v => ((φ (c.e.symm v) : ℝ) : ℂ) with hg`. Establish `hgc : ContDiffOn ℝ ∞ g O` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hc`. Establish `hg2 : ContDiffAt ℝ 2 g (c.e y)` using `(hgc.contDiffAt (hOo.mem_nhds hv)).of_le ENat.LEInfty.out`. Use `set N : ReciprocityTheory.L2DbarEstimates.V d → ℝ := fun w => ∑ j, ∑ k, ‖ReciprocityTheory.L2DbarEstimates.wd d j (ReciprocityTheory.L2DbarEstimates.wdb d k g) w‖ with hN`. Establish `hNc : ContinuousAt N (c.e y)` using `tendsto_finset_sum _ fun j _ => tendsto_finset_sum _ fun k _ => (continuousAt_wd_wdb hg2 j k).norm`.
+
+Take `⟨δ₁, hδ₁, hb₁⟩` from `Metric.continuousAt_iff.1 hNc 1 one_pos`. Take `⟨δ₂, hδ₂, hb₂⟩` from `Metric.isOpen_iff.1 hOo _ hv`. Use `⟨min δ₁ δ₂, lt_min hδ₁ hδ₂, (N (c.e y) + 1) / Real.pi, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw₁ : dist w (c.e y) < δ₁` using `lt_of_lt_of_le hw (min_le_left _ _)`. Establish `hwO : w ∈ O` using `hb₂ (lt_of_lt_of_le (Metric.mem_ball.1 hw) (min_le_right _ _))`.
+
+Use `⟨hwO.1, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hN1 : N w ≤ N (c.e y) + 1`. Use `hb₁ hw₁` as an intermediate fact. Rewrite `this` using `[Real.dist_eq]`. Combine the linear relations using `[le_abs_self (N w - N (c.e y))]`.
+
+Establish `hsrc : c.e.symm w ∈ c.e.source` using `c.e.map_target hwO.1`. Rewrite using `[e c _ hsrc hwO.2, ddcForm, AlgChart.levi, c.e.right_inv hwO.1]`. Establish `hL : (ReciprocityTheory.L2DbarEstimates.leviV d (fun v => ((φ (c.e.symm v) : ℝ) : ℂ)) w ξ.ofLp).re ≤ N w * ‖ξ‖ ^ 2`. Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Unfold `ReciprocityTheory.L2DbarEstimates.leviV`.
+
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hN, Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, mul_assoc, sq]`. Establish `hj` using `PiLp.norm_apply_le ξ j`. Establish `hk` using `PiLp.norm_apply_le ξ k`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul hj hk (norm_nonneg _) (norm_nonneg _)) (norm_nonneg _)`.
+
+Rewrite using `[div_mul_eq_mul_div]`. Use `div_le_div_of_nonneg_right (hL.trans ?_) Real.pi_pos.le` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right hN1 (sq_nonneg _)`.
+-/
 theorem IsKaehlerForm.bound_ball {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R : AnRead p σ d} {a : ChartForm p σ d} (h : IsKaehlerForm R a) (c : AlgChart p σ d) {y : CxPts p σ}
     (hy : y ∈ c.e.source) : ∃ ε > 0, ∃ B : ℝ, ∀ w ∈ Metric.ball (c.e y) ε, w ∈ c.e.target ∧

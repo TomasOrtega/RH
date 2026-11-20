@@ -19,10 +19,20 @@ def phiEq (A A' : Matrix (Ix r) (Ix r) O) (h1 : A * A' = 1) (h2 : A' * A = 1) : 
       simp only [LinearMap.comp_apply, Matrix.vecMulLinear_apply, Matrix.vecMul_vecMul, h1, Matrix.vecMul_one,
         LinearMap.id_apply])
 
+/- English proof (translation)
+Simplify using `[Matrix.vecMul, dotProduct]`.
+-/
 theorem coe_vecMul (Y : Ix r → O) (A : Matrix (Ix r) (Ix r) O) (j : Ix r) :
     ((Matrix.vecMul Y A j : O) : E) = Matrix.vecMul (fun i => (Y i : E)) (A.map O.subtype) j := by
   simp [Matrix.vecMul, dotProduct]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hY`. Set `c' : Ix r → O` to `fun i => ⟨∑ k, (c k : E) * C' i k, Subring.sum_mem _ fun k _ => O.mul_mem (c k).2 (hC'O k i)⟩`. Use `⟨c', fun j => ?_⟩` and prove the remaining obligations. Establish `hcE : (fun i => (c' i : E)) = Matrix.vecMul (fun k => (c k : E)) C'.transpose`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[c', Matrix.vecMul, dotProduct]`. Establish `hYE : (fun i => (Y i : E)) = Matrix.vecMul (fun k => (c k : E)) G`. Use function extensionality and compare the values at `j`. Rewrite using `[hc j]`. Simplify using `[Matrix.vecMul, dotProduct]`.
+
+Rewrite using `[coe_vecMul, hA, hYE]`. Use `show _ = Matrix.vecMul (fun i => (c' i : E)) G' j`. Rewrite using `[hcE, hG, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, hC, Matrix.transpose_one, Matrix.one_mul]`.
+-/
 theorem relC_fwd (G G' C C' : Matrix (Ix r) (Ix r) E) (hC : C * C' = 1) (hG : G' = C.transpose * G * C.map cj)
     (A : Matrix (Ix r) (Ix r) O) (hA : A.map O.subtype = C.map cj) (hC'O : ∀ i j, C' j i ∈ O)
     (Y : Ix r → O) (hY : ∃ c : Ix r → O, ∀ j, (Y j : E) = ∑ i, (c i : E) * G i j) :
@@ -41,12 +51,18 @@ theorem relC_fwd (G G' C C' : Matrix (Ix r) (Ix r) E) (hC : C * C' = 1) (hG : G'
 
 def fG (G : Matrix (Ix r) (Ix r) E) (Y W : Ix r → E) : E := ∑ i, ∑ j, Y i * G⁻¹ i j * cj (W j)
 
+/- English proof (translation)
+Unfold `fG`. Simplify using `only [dotProduct, Matrix.vecMul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem fG_eq (G : Matrix (Ix r) (Ix r) E) (Y W : Ix r → E) :
     fG cj G Y W = Matrix.vecMul Y G⁻¹ ⬝ᵥ (fun j => cj (W j)) := by
   unfold fG
   simp only [dotProduct, Matrix.vecMul, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `hcw : (fun j => cj (Matrix.vecMul W (C.map cj) j)) = C.transpose.mulVec fun j => cj (W j)`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, Matrix.mulVec, dotProduct, map_sum, map_mul, hcj, mul_comm]`. Establish `hCt : IsUnit C.transpose.det` using `by rw [Matrix.det_transpose]; exact hCu`. Rewrite using `[fG_eq, fG_eq, hcw, hG, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hCcu, Matrix.one_mul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hCt, Matrix.mul_ …`.
+-/
 theorem fG_invariant (hcj : ∀ x, cj (cj x) = x) (G G' C : Matrix (Ix r) (Ix r) E)
     (hG : G' = C.transpose * G * C.map cj) (hCu : IsUnit C.det) (hCcu : IsUnit (C.map cj).det) (Y W : Ix r → E) :
     fG cj G' (Matrix.vecMul Y (C.map cj)) (Matrix.vecMul W (C.map cj)) = fG cj G Y W := by

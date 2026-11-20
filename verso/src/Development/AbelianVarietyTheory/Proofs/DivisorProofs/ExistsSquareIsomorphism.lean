@@ -11,15 +11,26 @@ namespace GlobalTheory.SquareIso
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc, mul_add]`.
+-/
 theorem per_zsmul (τ : Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (x : Fl g) :
     per τ (n • x) = n • per τ x := by
   ext i
   simp [per, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc, mul_add]
 
+/- English proof (translation)
+Simplify using `only [transl, mulN, per_zsmul, smul_add]`.
+-/
 theorem transl_mulN (τ : E → Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) (P : Pt E g) :
     transl τ (n • l) (mulN n P) = mulN n (transl τ l P) := by
   simp only [transl, mulN, per_zsmul, smul_add]
 
+/- English proof (translation)
+Establish `h1 : (fun i => (((n • l) (Sum.inl i) : ℝ) : ℂ)) = (n : ℂ) • fun i => (l (Sum.inl i) : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `h2 : n • z = (n : ℂ) • z` using `by ext i; simp`. Simplify using `only [thetaExp, h1, h2, Matrix.smul_vecMul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaExp_zsmul (τ : Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) (z : Fin g → ℂ) :
     thetaExp τ (n • l) (n • z) = (n : ℂ) ^ 2 * thetaExp τ l z := by
   have h1 : (fun i => (((n • l) (Sum.inl i) : ℝ) : ℂ)) = (n : ℂ) • fun i => (l (Sum.inl i) : ℂ) := by
@@ -28,13 +39,22 @@ theorem thetaExp_zsmul (τ : Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) (z
   simp only [thetaExp, h1, h2, Matrix.smul_vecMul, smul_dotProduct, dotProduct_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1, trivial⟩`.
+-/
 theorem mulN_mem {B : Set E} (n : ℤ) {P : Pt E g} (hP : P ∈ cov B g) : mulN n P ∈ cov B g :=
   ⟨hP.1, trivial⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1, trivial⟩`.
+-/
 theorem transl_mem {B : Set E} (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) {P : Pt E g}
     (hP : P ∈ cov B g) : transl τ x P ∈ cov B g :=
   ⟨hP.1, trivial⟩
 
+/- English proof (translation)
+Establish `: mulN (E` using `E) (g := g) n = fun P => (P.1, (n : ℂ) • P.2) := by`. Use function extensionality and compare the values at `P`. Simplify using `[mulN, Int.cast_smul_eq_zsmul]`. Rewrite using `[this]`. Use `fun_prop`.
+-/
 theorem differentiable_mulN (n : ℤ) : Differentiable ℂ (mulN (E := E) (g := g) n) := by
   have : mulN (E := E) (g := g) n = fun P => (P.1, (n : ℂ) • P.2) := by
     funext P; simp [mulN, Int.cast_smul_eq_zsmul]
@@ -44,9 +64,17 @@ theorem differentiable_mulN (n : ℤ) : Differentiable ℂ (mulN (E := E) (g := 
 def thetaFac (τ : E → Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (P : Pt E g) : ℂ :=
   Complex.exp (2 * π * Complex.I * thetaExp (τ P.1) l P.2)
 
+/- English proof (translation)
+The claim follows from `Complex.exp_ne_zero _`.
+-/
 theorem thetaFac_ne_zero (τ : E → Matrix (Fin g) (Fin g) ℂ) (l : Fl g) (P : Pt E g) :
     thetaFac τ l P ≠ 0 := Complex.exp_ne_zero _
 
+/- English proof (translation)
+Establish `hN : ((n.natAbs ^ 2 : ℕ) : ℂ) = (n : ℂ) ^ 2`. Establish `h` using `Int.natAbs_sq n`. Establish `: ((n.natAbs : ℤ) : ℂ) ^ 2 = (n : ℂ) ^ 2` using `by exact_mod_cast h`. Use `push_cast`. Simplify using `using this`.
+
+Simplify using `only [thetaFac, mulN, thetaExp_zsmul, ← Complex.exp_nat_mul, hN]`. Put the polynomial expressions in normal form.
+-/
 theorem thetaFac_mulN (τ : E → Matrix (Fin g) (Fin g) ℂ) (n : ℤ) (l : Fl g) (P : Pt E g) :
     thetaFac τ (n • l) (mulN n P) = thetaFac τ l P ^ (n.natAbs ^ 2) := by
   have hN : ((n.natAbs ^ 2 : ℕ) : ℂ) = (n : ℂ) ^ 2 := by
@@ -62,6 +90,9 @@ section Iso
 variable {B U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
   {j₁ j₂ j₃ j₁' j₂' : Fl g → Pt E g → ℂ} {φ ψ : Pt E g → ℂ}
 
+/- English proof (translation)
+Use `⟨h₁.1.mul h₂.1, fun P hP => mul_ne_zero (h₁.2.1 P hP) (h₂.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e1` using `h₁.2.2 l hl P hP`. Establish `e2` using `h₂.2.2 l hl P hP`. Take the linear combination `ψ (transl τ l P) * e1 + φ P * e2`.
+-/
 theorem iso_trans (h₁ : IsBundleIso B τ M j₁ j₂ φ) (h₂ : IsBundleIso B τ M j₂ j₃ ψ) :
     IsBundleIso B τ M j₁ j₃ (fun P => φ P * ψ P) := by
   refine ⟨h₁.1.mul h₂.1, fun P hP => mul_ne_zero (h₁.2.1 P hP) (h₂.2.1 P hP),
@@ -70,6 +101,11 @@ theorem iso_trans (h₁ : IsBundleIso B τ M j₁ j₂ φ) (h₂ : IsBundleIso B
   have e2 := h₂.2.2 l hl P hP
   linear_combination ψ (transl τ l P) * e1 + φ P * e2
 
+/- English proof (translation)
+Use `⟨h.1.inv h.2.1, fun P hP => inv_ne_zero (h.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 l hl P hP`. Establish `a` using `h.2.1 _ (transl_mem τ l hP)`. Establish `b` using `h.2.1 P hP`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-e`.
+-/
 theorem iso_symm (h : IsBundleIso B τ M j₁ j₂ φ) :
     IsBundleIso B τ M j₂ j₁ (fun P => (φ P)⁻¹) := by
   refine ⟨h.1.inv h.2.1, fun P hP => inv_ne_zero (h.2.1 P hP), fun l hl P hP => ?_⟩
@@ -79,16 +115,27 @@ theorem iso_symm (h : IsBundleIso B τ M j₁ j₂ φ) :
   field_simp
   linear_combination -e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.pow k, fun P hP => pow_ne_zero _ (h.2.1 P hP), fun l hl P hP => by simp only rw [← mul_pow, h.2.2 l hl P hP, mul_pow]⟩`.
+-/
 theorem iso_pow (k : ℕ) (h : IsBundleIso B τ M j₁ j₂ φ) :
     IsBundleIso B τ M (fun l P => j₁ l P ^ k) (fun l P => j₂ l P ^ k) (fun P => φ P ^ k) :=
   ⟨h.1.pow k, fun P hP => pow_ne_zero _ (h.2.1 P hP), fun l hl P hP => by
     simp only
     rw [← mul_pow, h.2.2 l hl P hP, mul_pow]⟩
 
+/- English proof (translation)
+Establish `hc : cov U g ⊆ cov B g` using `fun P hP => ⟨hUB hP.1, trivial⟩`. Conclude with `⟨h.1.mono hc, fun P hP => h.2.1 P (hc hP), fun l hl P hP => h.2.2 l hl P (hc hP)⟩`.
+-/
 theorem iso_mono (hUB : U ⊆ B) (h : IsBundleIso B τ M j₁ j₂ φ) : IsBundleIso U τ M j₁ j₂ φ := by
   have hc : cov U g ⊆ cov B g := fun P hP => ⟨hUB hP.1, trivial⟩
   exact ⟨h.1.mono hc, fun P hP => h.2.1 P (hc hP), fun l hl P hP => h.2.2 l hl P (hc hP)⟩
 
+/- English proof (translation)
+Use `⟨h.1.mul (hc.comp differentiableOn_fst fun P hP => hP.1), fun P hP => mul_ne_zero (h.2.1 P hP) (hc0 _ hP.1), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `e` using `h.2.2 l hl P hP`. Use `show φ (transl τ l P) * c (transl τ l P).1 * j₁ l P = j₂ l P * (φ P * c P.1)`. Establish `: (transl τ l P).1 = P.1` using `rfl`. Rewrite using `[this]`.
+
+Take the linear combination `c P.1 * e`.
+-/
 theorem iso_base {c : E → ℂ} (hc : DifferentiableOn ℂ c B) (hc0 : ∀ b ∈ B, c b ≠ 0)
     (h : IsBundleIso B τ M j₁ j₂ φ) : IsBundleIso B τ M j₁ j₂ (fun P => φ P * c P.1) := by
   refine ⟨h.1.mul (hc.comp differentiableOn_fst fun P hP => hP.1),
@@ -99,6 +146,9 @@ theorem iso_base {c : E → ℂ} (hc : DifferentiableOn ℂ c B) (hc0 : ∀ b �
   rw [this]
   linear_combination c P.1 * e
 
+/- English proof (translation)
+Use `⟨h.1.comp (differentiable_mulN n).differentiableOn fun P hP => mulN_mem n hP, fun P hP => h.2.1 _ (mulN_mem n hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Simplify using `only [mulPullFactor]`. Rewrite using `[← transl_mulN]`. Conclude with `h.2.2 _ (Submodule.smul_mem _ n hl) _ (mulN_mem n hP)`.
+-/
 theorem iso_mulPull (n : ℤ) (h : IsBundleIso B τ (stdLat g) j₁ j₂ φ) :
     IsBundleIso B τ (stdLat g) (mulPullFactor n j₁) (mulPullFactor n j₂)
       (fun P => φ (mulN n P)) := by
@@ -110,6 +160,15 @@ theorem iso_mulPull (n : ℤ) (h : IsBundleIso B τ (stdLat g) j₁ j₂ φ) :
 
 end Iso
 
+/- English proof (translation)
+Establish `h0 : χ 0 b = 1`. Establish `e` using `hχ 0 (zero_mem _) 0 (zero_mem _) b hb`. Rewrite `e` using `[add_zero]`. Establish `hz` using `hχ0 0 (zero_mem _) b hb`. Clear denominators, using `at e` for the nonvanishing conditions.
+
+Conclude with `e.symm`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [h0]`. Consider the case `succ k ih`. Rewrite using `[add_smul, one_smul, hχ _ (Submodule.smul_mem _ _ hl) _ hl _ hb, ih, zpow_add_one₀ (hχ0 l hl b hb)]`.
+
+Consider the case `pred k ih`. Establish `e` using `hχ _ (Submodule.smul_mem _ (-(k : ℤ) - 1) hl) _ hl _ hb`. Establish `hk : (-(k : ℤ) - 1) • l + l = (-(k : ℤ)) • l` using `by rw [sub_smul, one_smul]; abel`. Rewrite `e` using `[hk, ih]`. Rewrite using `[zpow_sub_one₀ (hχ0 l hl b hb), e]`.
+
+Clear denominators, using `[hχ0 l hl b hb]` for the nonvanishing conditions.
+-/
 theorem char_zsmul {U : Set E} {χ : Fl g → E → ℂ}
     (hχ0 : ∀ l ∈ stdLat g, ∀ b ∈ U, χ l b ≠ 0)
     (hχ : ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ b ∈ U, χ (l + l') b = χ l b * χ l' b)
@@ -139,6 +198,23 @@ namespace GlobalTheory.SquareIso
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
+/- English proof (translation)
+Use `set K : Fl g → Pt E g → ℂ := fun l P => thetaFac τ l P * χ l P.1 with hK`. Establish `hpullK : ∀ m : ℤ, ∀ l ∈ stdLat g, ∀ P ∈ cov U g, mulPullFactor m K l P = thetaFac τ l P ^ (m.natAbs ^ 2) * χ l P.1 ^ m`. Introduce `m l hl P hP`. Simplify using `only [hK, mulPullFactor, thetaFac_mulN]`. Rewrite using `[show (mulN m P).1 = P.1 from rfl, char_zsmul hχ0 hχ hl hP.1]`.
+
+Take `⟨ψ, hψ⟩ : ∃ ψ, IsBundleIso U τ (stdLat g) (mulPullFactor (-1) K) K ψ` from `⟨_, iso_trans (iso_trans (iso_symm (iso_mulPull (-1) h₀)) hι) h₀⟩`. Establish `hψe : ∀ l ∈ stdLat g, ∀ P ∈ cov U g, ψ (transl τ l P) = χ l P.1 ^ 2 * ψ P`. Introduce `l hl P hP`. Establish `e` using `hψ.2.2 l hl P hP`. Rewrite `e` using `[hpullK (-1) l hl P hP]`.
+
+Establish `ht` using `thetaFac_ne_zero τ l P`. Establish `hc` using `hχ0 l hl P.1 hP.1`. Simplify using `only [hK, Int.reduceNeg, Int.natAbs_neg, Int.natAbs_one, one_pow, pow_one, _root_.zpow_neg, zpow_one] at e`. Establish `hcc : χ l P.1 ^ 2 * (χ l P.1)⁻¹ = χ l P.1` using `by field_simp`. Establish `e2 : thetaFac τ l P * (χ l P.1)⁻¹ * (ψ (transl τ l P) - χ l P.1 ^ 2 * ψ P) = 0`.
+
+Take the linear combination `e - thetaFac τ l P * ψ P * hcc`. Break down `mul_eq_zero.1 e2 with h | h` into its components or cases. Conclude with `absurd h (mul_ne_zero ht (inv_ne_zero hc))`. Conclude with `sub_eq_zero.1 h`. Take `⟨m, hm⟩` from `Int.even_mul_pred_self n`.
+
+Apply the tactic sequence `have hnn : 0 ≤ n * (n - 1) := by rcases le_or_gt n 0 with h | h <;> nlinarith`. Take `⟨k, hk⟩ : ∃ k : ℕ, (k : ℤ) = m` from `⟨m.toNat, Int.toNat_of_nonneg (by omega)⟩`. Establish `hN : ((n.natAbs ^ 2 : ℕ) : ℤ) = n + 2 * k`. Establish `h` using `Int.natAbs_sq n`. Rewrite using `[Nat.cast_pow, h, hk]`.
+
+Take the linear combination `hm`. Establish `hmid : IsBundleIso U τ (stdLat g) (mulPullFactor n K) (fun l P => K l P ^ (n.natAbs ^ 2)) (fun P => ψ P ^ k)`. Use `⟨hψ.1.pow k, fun P hP => pow_ne_zero _ (hψ.2.1 P hP), fun l hl P hP => ?_⟩` and prove the remaining obligations. Establish `hc` using `hχ0 l hl P.1 hP.1`. Establish `hpow : χ l P.1 ^ (n.natAbs ^ 2) = χ l P.1 ^ n * (χ l P.1 ^ 2) ^ k`.
+
+Rewrite using `[← zpow_natCast, hN, zpow_add₀ hc, ← pow_mul, ← zpow_natCast]`. Use `push_cast`. Put the polynomial expressions in normal form. Use `show ψ (transl τ l P) ^ k * mulPullFactor n K l P = K l P ^ (n.natAbs ^ 2) * ψ P ^ k`. Rewrite using `[hpullK n l hl P hP, hψe l hl P hP, hK]`.
+
+Simplify using `only`. Rewrite using `[mul_pow, mul_pow, hpow]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨_, iso_trans (iso_trans (iso_mulPull n h₀) hmid) (iso_symm (iso_pow _ h₀))⟩`.
+-/
 theorem local_sq {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (n : ℤ)
     {j : Fl g → Pt E g → ℂ} {χ : Fl g → E → ℂ}
     (hχ0 : ∀ l ∈ stdLat g, ∀ b ∈ U, χ l b ≠ 0)
@@ -192,6 +268,13 @@ theorem local_sq {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (n : ℤ)
     ring
   exact ⟨_, iso_trans (iso_trans (iso_mulPull n h₀) hmid) (iso_symm (iso_pow _ h₀))⟩
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ hτ j r hj ⟨ι, hι⟩ hr hpol n`. Establish `hloc : ∀ b ∈ B, ∃ U : Set E, IsOpen U ∧ b ∈ U ∧ U ⊆ B ∧ ∃ φ, IsBundleIso U τ (stdLat g) (mulPullFactor n j) (fun l P => j l P ^ (n.natAbs ^ 2)) φ`. Introduce `b hb`. Take `⟨U, hUo, hbU, hUB, χ, hχ1, hχ2, φ₀, h₀⟩` from `GlobalTheory.T.polarisation_local_factor_system hτ j hj hpol b hb`. Conclude with `⟨U, hUo, hbU, hUB, local_sq n (fun l hl b hb => (hχ1 l hl).2 b hb) hχ2 h₀ (iso_mono hUB hι)⟩`.
+
+Take `⟨φ, hφ, hφ0⟩` from `GlobalTheory.T.bundle_isomorphism_local_to_global hτ (mulPullFactor n j) _ (fun l hl P hP => (hj.1 _ (Submodule.smul_mem _ n hl)).2 _ (mulN_mem n hP)) hloc`. Use `⟨fun P => φ P * (r P.1 ^ (n.natAbs ^ 2) * (r P.1)⁻¹), iso_base (c := fun b => r b ^ (n.natAbs ^ 2) * (r b)⁻¹) ?_ ?_ hφ, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `(hr.1.pow _).mul (hr.1.inv hr.2)`. Introduce `b hb`. Conclude with `mul_ne_zero (pow_ne_zero _ (hr.2 b hb)) (inv_ne_zero (hr.2 b hb))`.
+
+Use `show φ (zeroSec g b) * (r b ^ (n.natAbs ^ 2) * (r b)⁻¹) * r b = r b ^ (n.natAbs ^ 2)`. Rewrite using `[hφ0 b hb]`. Clear denominators, using `[hr.2 b hb]` for the nonvanishing conditions.
+-/
 theorem exists_squareIso : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ →
     ∀ (j : Fl g → Pt E g → ℂ) (r : E → ℂ), IsFactor B τ (stdLat g) j →

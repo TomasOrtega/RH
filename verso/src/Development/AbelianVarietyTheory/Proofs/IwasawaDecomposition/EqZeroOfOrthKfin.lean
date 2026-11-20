@@ -11,6 +11,13 @@ namespace GlobalTheory.KFinSep
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use `⟨Submodule.span ℂ (Set.range b), FiniteDimensional.span_of_finite ℂ (Set.finite_range b), Submodule.subset_span ⟨i, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hc j`.
+
+Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact hx.const_smul a`. Introduce `φ hφ k₀`. Proceed by induction on `hφ using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `ht j k₀`. Consider the case `zero => exact ⟨Submodule.zero_mem _, Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy => exact ⟨Submodule.add_mem _ hx.1 hy.1, Submodule.add_mem _ hx.2 hy.2⟩`. Consider the case `smul a x _ hx => exact ⟨Submodule.smul_mem _ a hx.1, Submodule.smul_mem _ a hx.2⟩`.
+-/
 lemma kfin_of_span {ι : Type} [Finite ι] (b : ι → KG ε → ℂ) (hc : ∀ i, Continuous (b i))
     (ht : ∀ i (k₀ : KG ε), (fun k => b i (k₀ * k)) ∈ Submodule.span ℂ (Set.range b) ∧
       (fun k => b i (k * k₀)) ∈ Submodule.span ℂ (Set.range b)) (i : ι) : KFinFun ε (b i) := by
@@ -29,10 +36,18 @@ lemma kfin_of_span {ι : Type} [Finite ι] (b : ι → KG ε → ℂ) (hc : ∀ 
     | add x y _ _ hx hy => exact ⟨Submodule.add_mem _ hx.1 hy.1, Submodule.add_mem _ hx.2 hy.2⟩
     | smul a x _ hx => exact ⟨Submodule.smul_mem _ a hx.1, Submodule.smul_mem _ a hx.2⟩
 
+/- English proof (translation)
+The claim follows from `kfin_of_span (ε := ε) (ι := Unit) (fun _ _ => c) (fun _ => continuous_const) (fun i _ => ⟨Submodule.subset_span ⟨i, rfl⟩, Submodule.subset_span ⟨i, rfl⟩⟩) ()`.
+-/
 lemma kfin_const (c : ℂ) : KFinFun ε (fun _ => c) :=
   kfin_of_span (ε := ε) (ι := Unit) (fun _ _ => c) (fun _ => continuous_const)
     (fun i _ => ⟨Submodule.subset_span ⟨i, rfl⟩, Submodule.subset_span ⟨i, rfl⟩⟩) ()
 
+/- English proof (translation)
+Take `⟨F, _, hpF, hFc, hF⟩` from `hp`. Take `⟨G, _, hqG, hGc, hG⟩` from `hq`. Use `⟨F ⊔ G, inferInstance, Submodule.add_mem_sup hpF hqG, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hφ`.
+
+Conclude with `(hFc x hx).add (hGc y hy)`. Introduce `φ hφ k₀`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hφ`. Conclude with `⟨Submodule.add_mem_sup (hF x hx k₀).1 (hG y hy k₀).1, Submodule.add_mem_sup (hF x hx k₀).2 (hG y hy k₀).2⟩`.
+-/
 lemma kfin_add {p q : KG ε → ℂ} (hp : KFinFun ε p) (hq : KFinFun ε q) : KFinFun ε (p + q) := by
   obtain ⟨F, _, hpF, hFc, hF⟩ := hp
   obtain ⟨G, _, hqG, hGc, hG⟩ := hq
@@ -44,6 +59,11 @@ lemma kfin_add {p q : KG ε → ℂ} (hp : KFinFun ε p) (hq : KFinFun ε q) : K
     obtain ⟨x, hx, y, hy, rfl⟩ := Submodule.mem_sup.1 hφ
     exact ⟨Submodule.add_mem_sup (hF x hx k₀).1 (hG y hy k₀).1, Submodule.add_mem_sup (hF x hx k₀).2 (hG y hy k₀).2⟩
 
+/- English proof (translation)
+Take `⟨F, hFf, hpF, hFc, hF⟩` from `hp`. Take `⟨G, hGf, hqG, hGc, hG⟩` from `hq`. Use `⟨F * G, ?_, Submodule.mul_mem_mul hpF hqG, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 hFf).mul (Module.Finite.iff_fg.1 hGf))`. Introduce `φ hφ`.
+
+Use `Submodule.mul_induction_on hφ (fun x hx y hy => (hFc x hx).mul (hGc y hy)) (fun x y hx hy => hx.add hy)` and prove the remaining obligations. Introduce `φ hφ k₀`. Use `Submodule.mul_induction_on (C := fun φ => (fun k => φ (k₀ * k)) ∈ F * G ∧ (fun k => φ (k * k₀)) ∈ F * G) hφ (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Conclude with `⟨Submodule.mul_mem_mul (hF x hx k₀).1 (hG y hy k₀).1, Submodule.mul_mem_mul (hF x hx k₀).2 (hG y hy k₀).2⟩`. Conclude with `⟨Submodule.add_mem _ hx.1 hy.1, Submodule.add_mem _ hx.2 hy.2⟩`.
+-/
 lemma kfin_mul {p q : KG ε → ℂ} (hp : KFinFun ε p) (hq : KFinFun ε q) : KFinFun ε (p * q) := by
   obtain ⟨F, hFf, hpF, hFc, hF⟩ := hp
   obtain ⟨G, hGf, hqG, hGc, hG⟩ := hq
@@ -57,6 +77,9 @@ lemma kfin_mul {p q : KG ε → ℂ} (hp : KFinFun ε p) (hq : KFinFun ε q) : K
     · exact ⟨Submodule.mul_mem_mul (hF x hx k₀).1 (hG y hy k₀).1, Submodule.mul_mem_mul (hF x hx k₀).2 (hG y hy k₀).2⟩
     · exact ⟨Submodule.add_mem _ hx.1 hy.1, Submodule.add_mem _ hx.2 hy.2⟩
 
+/- English proof (translation)
+Establish `: f = ∑ l, c l • b (j l)`. Use function extensionality and compare the values at `k`. Simplify using `[h, Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j l, rfl⟩)`.
+-/
 lemma mem_span_of_sum {ι κ : Type} [Fintype κ] (b : ι → KG ε → ℂ) (f : KG ε → ℂ) (c : κ → ℂ) (j : κ → ι)
     (h : ∀ k, f k = ∑ l, c l * b (j l) k) : f ∈ Submodule.span ℂ (Set.range b) := by
   have : f = ∑ l, c l • b (j l) := by
@@ -64,6 +87,9 @@ lemma mem_span_of_sum {ι κ : Type} [Fintype κ] (b : ι → KG ε → ℂ) (f 
   rw [this]
   exact Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j l, rfl⟩)
 
+/- English proof (translation)
+Use `kfin_of_span (ε := ε) (ι := Fin n × Fin n) (fun a k => toMK k a.1 a.2) (fun a => (GlobalTheory.KHolExt.ent ε a.1 a.2).continuous) (fun a k₀ => ⟨?_, ?_⟩) (i, j)` and prove the remaining obligations. Use `mem_span_of_sum _ _ (fun l => toMK k₀ a.1 l) (fun l => (l, a.2)) fun k => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.KHolExt.toMK_mul, Matrix.mul_apply]`. Use `mem_span_of_sum _ _ (fun l => toMK k₀ l a.2) (fun l => (a.1, l)) fun k => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.KHolExt.toMK_mul, Matrix.mul_apply, mul_comm]`.
+-/
 lemma kfin_entry (i j : Fin n) : KFinFun ε (fun k => toMK k i j) := by
   refine kfin_of_span (ε := ε) (ι := Fin n × Fin n) (fun a k => toMK k a.1 a.2)
     (fun a => (GlobalTheory.KHolExt.ent ε a.1 a.2).continuous) (fun a k₀ => ⟨?_, ?_⟩) (i, j)
@@ -72,6 +98,9 @@ lemma kfin_entry (i j : Fin n) : KFinFun ε (fun k => toMK k i j) := by
   · refine mem_span_of_sum _ _ (fun l => toMK k₀ l a.2) (fun l => (a.1, l)) fun k => ?_
     simp only [GlobalTheory.KHolExt.toMK_mul, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Use `kfin_of_span (ε := ε) (ι := Fin n × Fin n) (fun a k => star (toMK k a.1 a.2)) (fun a => (GlobalTheory.KHolExt.ent ε a.1 a.2).continuous.star) (fun a k₀ => ⟨?_, ?_⟩) (i, j)` and prove the remaining obligations. Use `mem_span_of_sum _ _ (fun l => star (toMK k₀ a.1 l)) (fun l => (l, a.2)) fun k => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.KHolExt.toMK_mul, Matrix.mul_apply, star_sum, star_mul']`. Use `mem_span_of_sum _ _ (fun l => star (toMK k₀ l a.2)) (fun l => (a.1, l)) fun k => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.KHolExt.toMK_mul, Matrix.mul_apply, star_sum, star_mul', mul_comm]`.
+-/
 lemma kfin_conjEntry (i j : Fin n) : KFinFun ε (fun k => star (toMK k i j)) := by
   refine kfin_of_span (ε := ε) (ι := Fin n × Fin n) (fun a k => star (toMK k a.1 a.2))
     (fun a => (GlobalTheory.KHolExt.ent ε a.1 a.2).continuous.star) (fun a k₀ => ⟨?_, ?_⟩) (i, j)
@@ -95,6 +124,11 @@ def finAlg (ε : Fin n → Bool) : StarSubalgebra ℂ C(KG ε, ℂ) where
     rw [this]; exact kfin_const _⟩
   star_mem' := fun {p} hp => ⟨hp.2, by rw [star_star]; exact hp.1⟩
 
+/- English proof (translation)
+Use `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h : toMK x ≠ toMK y` using `fun h => hxy ((GlobalTheory.KHolExt.isEmb ε).injective h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, toMK x i j ≠ toMK y i j := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `h (Matrix.ext hc)`. Apply the tactic sequence `exact ⟨GlobalTheory.KHolExt.ent ε i j, ⟨GlobalTheory.KHolExt.ent ε i j, ⟨kfin_entry i j, kfin_conjEntry i j⟩, rfl⟩, hij⟩`.
+-/
 lemma finAlg_dense (ε : Fin n → Bool) : (finAlg ε).topologicalClosure = ⊤ := by
   refine ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ ?_
   intro x y hxy

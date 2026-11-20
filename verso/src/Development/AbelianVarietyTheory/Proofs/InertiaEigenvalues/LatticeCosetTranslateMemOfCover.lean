@@ -4,6 +4,11 @@ open scoped InnerProductSpace BigOperators
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h`. Establish `hres : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).2 ((IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit)`. Establish `hm : (IsLocalRing.residue O).mapMatrix (1 + ϖ • a) = 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, hres, apply_ite (IsLocalRing.residue O)]`.
+
+Establish `h1 : IsLocalRing.residue O ((1 + ϖ • a).det) = 1`. Rewrite using `[RingHom.map_det, hm, Matrix.det_one]`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem det_one_add_uniformizer_smul_ne_zero {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {r : ℕ} {ϖ : O} (hϖ : Irreducible ϖ)
     (a : Matrix (Fin r) (Fin r) O) : (1 + ϖ • a).det ≠ 0 := by
@@ -18,6 +23,13 @@ theorem det_one_add_uniformizer_smul_ne_zero {O : Type} [CommRing O] [IsDomain O
   rw [h, map_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy ⟨0, by simp⟩`. Break down `ValuationRing.isInteger_or_isInteger O y with ⟨a, ha⟩ | ⟨u, hu⟩` into its components or cases. Establish `hau : IsUnit a`.
+
+Assume the negation of the conclusion as `hna`. Establish `hmem : a ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal a).2 hna`. Rewrite `hmem` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hmem`. Conclude with `hy ⟨c, by rw [← ha, map_mul]⟩`.
+
+Take `⟨v, rfl⟩` from `hau`. Use `⟨(v⁻¹ : Oˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← map_mul]`. Simplify using the standard rewrite rules. Conclude with `⟨u, by rw [hu]; exact inv_mul_cancel₀ hy0⟩`.
+-/
 theorem exists_inv_integral_of_not_mem {O K : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] {ϖ : O}
     (hϖ : Irreducible ϖ) (y : K) (hy : ¬ ∃ c : O, y = algebraMap O K ϖ * algebraMap O K c) :
@@ -38,6 +50,39 @@ theorem exists_inv_integral_of_not_mem {O K : Type} [CommRing O] [IsDomain O]
     simp
   · exact ⟨u, by rw [hu]; exact inv_mul_cancel₀ hy0⟩
 
+/- English proof (translation)
+Use `set ι := algebraMap O K with hι`. Establish `hsmul : ∀ (c : O) {m n : Type} (A : Matrix m n O), (c • A).map ι = c • A.map ι`. Introduce `c m n A`. Conclude with `Matrix.map_smul _ _ (fun a => by simp [hι, Algebra.smul_def]) A`. Establish `hadd : ∀ {m n : Type} (A B : Matrix m n O), (A + B).map ι = A.map ι + B.map ι` using `fun A B => Matrix.map_add _ (map_add ι) A B`.
+
+Establish `hrow : ∀ (A : Matrix (Fin r ⊕ Fin t) (Fin r) K) (G : Matrix (Fin r) (Fin r) K), (A * G).toRows₁ = A.toRows₁ * G` using `fun A G => rfl`. Use `set x₁ := x.toRows₁ with hx₁`. Establish `hinv : ∀ w : Matrix (Fin r) (Fin r) O, (x₁ + (ϖ ^ N • w).map ι).det ≠ 0`. Introduce `w`. Take `⟨g', z', h⟩` from `hcov (Matrix.fromRows w 0)`.
+
+Establish `h1` using `congrArg Matrix.toRows₁ h`. Rewrite `h1` using `[hrow]`. Establish `e1 : (x + (ϖ ^ N • Matrix.fromRows w (0 : Matrix (Fin t) (Fin r) O)).map ι).toRows₁ = x₁ + (ϖ ^ N • w).map ι`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Establish `e2 : Matrix.toRows₁ (((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • z').map ι) = (1 + ϖ • Matrix.toRows₁ z').map ι`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `h1` using `[e1, e2]`. Establish `h2` using `congrArg Matrix.det h1`.
+
+Rewrite `h2` using `[Matrix.det_mul, show ((1 + ϖ • Matrix.toRows₁ z').map ι).det = ι (1 + ϖ • Matrix.toRows₁ z').det from (RingHom.map_det ι _).symm]`. Introduce `h0`. Rewrite `h2` using `[h0, zero_mul]`. Conclude with `det_one_add_uniformizer_smul_ne_zero hϖ _ ((injective_iff_map_eq_zero ι).1 (IsFractionRing.injective O K) _ h2.symm)`. Establish `hdet : IsUnit x₁.det`.
+
+Use `hinv 0` as an intermediate fact. Rewrite `this` using `[smul_zero, Matrix.map_zero _ (map_zero ι), add_zero]`. Conclude with `isUnit_iff_ne_zero.2 this`. Use `set B := x₁⁻¹ with hB`. Establish `hxB : x₁ * B = 1` using `Matrix.mul_nonsing_inv _ hdet`.
+
+Establish `hC : ∀ i j, ∃ c : O, ι (ϖ ^ N) * B i j = ι ϖ * ι c`. Introduce `i j`. Assume the negation of the conclusion as `hne`. Take `⟨u, hu⟩` from `exists_inv_integral_of_not_mem hϖ (ι (ϖ ^ N) * B i j) hne`. Apply `hinv (Matrix.single j i (-u))` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨fun k => B k j, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrFun h0 i` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`.
+
+Rewrite `hu` using `[this, mul_zero, mul_zero]`. Conclude with `zero_ne_one hu`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.add_mulVec]`. Establish `h1 : Matrix.mulVec x₁ (fun k => B k j) k = (1 : Matrix (Fin r) (Fin r) K) k j`.
+
+Rewrite using `[← hxB]`. Both sides reduce to the same expression. Establish `h2 : Matrix.mulVec ((ϖ ^ N • Matrix.single j i (-u)).map ι) (fun k => B k j) k = if k = j then -(ι u * (ι (ϖ ^ N) * B i j)) else 0`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, Matrix.single_apply]`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [Ne.symm hb]) (fun h => absurd (Finset.mem_univ i) h)]`. Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hk, Ne.symm hk]`.
+
+Rewrite using `[Pi.add_apply, h1, h2, hu, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `choose C hC' using hC`. Use `set Cm : Matrix (Fin r) (Fin r) O := Matrix.of C with hCmdef`. Establish `hCm : ι (ϖ ^ N) • B = ι ϖ • Cm.map ι`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, hCmdef, Matrix.of_apply]`. Conclude with `hC' i j`. Establish `hx1 : x₁ * (g : Matrix (Fin r) (Fin r) K) = (1 + ϖ • Matrix.toRows₁ z₀).map ι`. Establish `h1` using `congrArg Matrix.toRows₁ hx`.
+
+Rewrite `h1` using `[hrow]`. Rewrite using `[h1]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hg : (g : Matrix (Fin r) (Fin r) K) = B * (1 + ϖ • Matrix.toRows₁ z₀).map ι`.
+
+Rewrite using `[← hx1, ← Matrix.mul_assoc, hB, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`. Establish `key : ϖ ^ N • (g : Matrix (Fin r) (Fin r) K) = ϖ • (Cm * (1 + ϖ • Matrix.toRows₁ z₀)).map ι`. Rewrite using `[hg, Matrix.map_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← algebraMap_smul K (ϖ ^ N) B, ← algebraMap_smul K ϖ (Cm.map ι), hCm]`. Use `⟨z₀ + z * (Cm * (1 + ϖ • Matrix.toRows₁ z₀)), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mul, hx, hsmul, Matrix.smul_mul, ← Matrix.mul_smul, key]`.
+
+Simplify using `only [hadd, hsmul, Matrix.map_mul, smul_add, add_assoc, Matrix.mul_smul]`.
+-/
 theorem coset_translate_mem_of_cover (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r t : ℕ) (ϖ : O)
     (hϖ : Irreducible ϖ) (N : ℕ) (x : Matrix (Fin r ⊕ Fin t) (Fin r) K) (g : GL (Fin r) K)

@@ -32,6 +32,9 @@ open GlobalTheory.FlatVecSum (princ)
 def TwQ : Prop := ∀ (D : D7) (i : D.ntw.Tw) (k : ℕ) (Q : Finset (Pl D.host.E))
   (ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ), IntegralHeckeForms.TwOK i k Q ψ → ∀ P ∈ Q, ((D.ntw.l i : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal
 
+/- English proof (translation)
+Introduce `D i k Q ψ hok P hP hl`. Take `⟨-, -, -, -, -, hram, htriv⟩` from `hok`. Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver D.nd.Om P`. Take `⟨σ, hσ, hne⟩` from `(hram P A hA).2 hP`. Conclude with `hne (htriv P hl A hA σ (ReciprocityTheory.Gal.Ine_le_Dec A hσ))`.
+-/
 theorem twQ : TwQ := by
   intro D i k Q ψ hok P hP hl
   obtain ⟨-, -, -, -, -, hram, htriv⟩ := hok
@@ -44,6 +47,31 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz} {w : D.what₂.places.Pl} {j : Fin D.R.m}
 
+/- English proof (translation)
+Take `⟨hadapt, hν, -, hlev⟩` from `hfit`. Establish `hpin` using `hadapt.1`. Establish `hL` using `GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hB0 : BaseOf (R2 p) j (ρ.B (ex.nch.twI w) j (ex.nch.sd w))` using `{ baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin (ex.nch.twI w) j (ex.nch.sd w) with }`.
+
+Take `⟨p1, p2, p3⟩` from `s1 _ _ _ _ _ _ _ _ _ _ p j hr hm w hw hok ρ hρ hpin c1 c2`. Take `⟨ht, hadm, hval⟩` from `GlobalTheory.TwistGood.tw_good _ _ _ ρ hρ _ j (ex.nch.sd w) _ _ _ hok`. Establish `hB` using `hρ.base (ex.nch.twI w) j (ex.nch.sd w)`. Take `⟨z0, cz, hz0, hcz, hfl⟩` from `s2 _ _ _ _ _ _ _ _ _ _ p j hr hm _ _ ((R2 p).mu (D.plEq w)) hB hB0 ht hadm c2 p3`. Establish `hzf : z0 ∈ GfC (Vc D j)` using `GlobalTheory.TwTraceCx.mem_GfC_of_suppAt p1 hz0`.
+
+Establish `hω : (ρ.B (ex.nch.twI w) j (ex.nch.sd w)).IsWeil (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w)).chi ((R2 p).ωP j ((R2 p).mu (D.plEq w)))`. Establish `e0 : (ρ.B (ex.nch.twI w) j (ex.nch.sd w)).mu * (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w)).chi = (R2 p).toLevCh.mu ((R2 p).mu (D.plEq w)) ((j : ℕ) + 1)`. Rewrite using `[Base.mu, hB0.mu0, mul_assoc, ← c2]`. Both sides reduce to the same expression. Rewrite using `[Base.IsWeil, e0, hB0.ψ, hB0.eta]`.
+
+Conclude with `hC.thP.ωP j _`. Establish `hN : IsUnit ((GlobalTheory.TwistField.tupPrime (R2 p) ((R2 p).mu (D.plEq w)) : ℕ) : ex.nch.Oe w)`. Establish `hcop : Nat.Coprime (D.ntw.l (ex.nch.twI w)) (GlobalTheory.TwistField.tupPrime (R2 p) ((R2 p).mu (D.plEq w)))`. Use `Nat.Coprime.prod_right fun q hq => ?_` and prove the remaining obligations. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hq`.
+
+Use `GlobalTheory.NormUnit.coprime_absNorm _ (D.ntw.lPrime _).out P (p2 P hP)` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Then use the resulting hypothesis. Simplify using `using (GlobalTheory.NormUnit.isUnit_natCast_of_coprime (D.ntw.O_l _) hcop).map (algebraMap _ (ex.nch.Oe w))`. Take `⟨ν0, c, hs, n, hn, hνc⟩` from `hν`. Rewrite `hνc` using `[p.phsOne j, map_one, one_mul]`.
+
+Establish `c0 : c ≠ 0` using `fun h => ν0 (by rw [h, zero_pow hn] at hνc; exact pow_eq_zero_iff hn |>.1 hνc)`. Take `⟨u, hu, hio⟩` from `hLI ρ hρ hpin c c0 hs`. Take `⟨s, h, P, hd, hQ, hsupp, hgen⟩` from `hz`. Establish `hq1` using `ht.split`. Establish `hq2 : ∀ P' ∈ (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w)).Q, ((D.ntw.l (ex.nch.twI w) : ℕ) : 𝓞 D.host.E) ∉ P'.asIdeal` using `fun P' hP' => s6 D _ _ _ _ hok P' (mem_half.1 hP').1`.
+
+Establish `hP1` using `lat_translate_of_prime hρ _ j _ hq1 hq2 hsupp hd.mem`. Establish `hP2` using `lat_translate_of_prime hρ _ j _ p1 p2 (GlobalTheory.DownLift.SplitCoef.suppAt_inv_of hz0) hP1`. Establish `hh2 : h * hQ * z0⁻¹ ∈ GfC (Vc D j)` using `mul_mem (mul_mem hd.fin (GlobalTheory.TwTraceCx.mem_GfC_of_suppAt hq1 hsupp)) (inv_mem hzf)`. Take `⟨n', f, g, hsum⟩` from `Submodule.mem_span_set'.1 (hLS _ P hP2)`. Use `choose y hy hyio using fun k => hio _ hh2 (g k).1 (g k).2`.
+
+Use `choose o ho using fun k => RingHom.mem_range.1 (f k).2`. Take `⟨uu, huu⟩` from `hval (detRoot (Vc D j) (h * hQ))`. Establish `hcu : UnitOff (GlobalTheory.TwistField.tupPrime (R2 p) ((R2 p).mu (D.plEq w))) (cz * (c⁻¹ * ν))` using `unitOff_mul hcz (unitOff_root hn (by rw [mul_pow, inv_pow, hνc, inv_mul_cancel₀ (pow_ne_zero _ c0)]))`. Take `⟨-, m, hm1, -⟩` from `hcu`. Use `⟨n', fun _ => h * hQ * z0⁻¹, y, fun k => algebraMap _ (ex.nch.Oe w) ((uu : D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) * algebraMap _ _ (o k)), cz * (c⁻¹ * ν), _, hN, ⟨m, hm1⟩, fun k => ⟨hh2, hy k⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `yy hyy`. Establish `eA : ∀ k, adForm (R2 p) j (yy k) (p.v₀ j (sg0 D p.P.A3.A)) = levelTrace (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ (singleSeries (R2 p) j ((R2 p).ωP j ((R2 p).mu (D.plEq w))) ((R2 p).vP j ((R2 p).mu (D.plEq w))) (h * hQ * z0⁻¹) (y k) u)` using `fun k => (congrArg (adForm (R2 p) j (yy k)) (funext hu)).symm.trans (hyy k u)`. Establish `eE : ∀ k, e (algebraMap (ex.nch.Oe w) (FractionRing (ex.nch.Oe w)) (algebraMap _ (ex.nch.Oe w) ((uu : D.ntw.Ok (ex.nch.twI w) (ex.nch.k' w)) * algebraMap _ _ (o k)))) = ((detChar (Vc D j) (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chose …` using `fun k => by`. Rewrite using `[h2, map_mul, hρ.ek_e, ho k, ← huu]`. Both sides reduce to the same expression.
+
+Establish `eS : ∀ k, series (ρ.B (ex.nch.twI w) j (ex.nch.sd w)).F ((R2 p).ωP j ((R2 p).mu (D.plEq w))) ((princ (ρ.B (ex.nch.twI w) j (ex.nch.sd w))).vecFlat (ρ.tw (ex.nch.twI w) (ex.nch.sd w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w))) (h * hQ) (g k : PolF D …` using `fun k => by`. Establish `e1 : (g k : PolF D (Wc D j).rank (Vc D j).rank) = c⁻¹ • (R2 p).ioP j (PiTensorProduct.tprod ℂ u) (y k)`. Rewrite using `[hyio k, smul_smul, inv_mul_cancel₀ c0, one_smul]`. Rewrite using `[e1, map_smul, hB0.series_eq_ser, hfl]`. Use function extensionality and compare the values at `g'`.
+
+Establish `e3` using `GlobalTheory.Adopt.thetaSeries_translated_datum_at_translated_class _ _ _ _ _ _ (R2 p) _ hC j ((R2 p).mu (D.plEq w)) z0⁻¹ cz (inv_mem hzf) u (h * hQ) (y k) g'`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e3 ⊢`. Rewrite using `[e3]`. Simplify using `only [GlobalTheory.ConjTwist.ser, singleSeries]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hgen, GlobalTheory.TwTraceCx.gen_eq_smul hB ht hadm (hρ.weil_base _ _ _) hω, ← s3 _ _ _ _ _ _ _ _ _ _ p j hr hm ρ hρ hpin hlev _ _ _ _ ht hadm hω, ← hsum, map_sum, map_sum]`. Simplify using `only [Subring.smul_def, map_smul, eS, eA, eE, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem cx_at (s1 : PlacesSt) (s2 : FlatSt) (s3 : TraceSt) (s6 : TwQ) (hr : p.Rows) (hm : More p)
     (hw : D.plEq w ∈ p.R.twPl)
     (hok : IntegralHeckeForms.TwOK (ex.nch.twI w) (ex.nch.k' w) (ex.nch.Q w) (GlobalTheory.TwistIndex.chosenChar ex.nch w))
@@ -155,6 +183,9 @@ theorem cx_at (s1 : PlacesSt) (s2 : FlatSt) (s3 : TraceSt) (s6 : TwQ) (hr : p.Ro
 
 end Point
 
+/- English proof (translation)
+Introduce `_ _ _ _ hAdm hChr` and use `AtTw.imp (AtTw.and hAdm (AtTw.and hChr (AtTw.and GlobalTheory.T.LatticeSmallGeneration GlobalTheory.T.lattice_intersection_at_place))) fun Fm x hx i p hr hm w hw j ⟨a1, a2, a4, a5⟩ ρ hρ ν _ hfit _ e _ h2 z hz => let ⟨c1, c2⟩ := a2 ρ hρ hfit.1 cx_at GlobalTheory.T.places_bound_tup …`.
+-/
 theorem twGen_cx : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → TwAdm → TwChr → AtFit fun Fm x hx i p w j ρ hρ ν _ => ∀ e : FractionRing ((Fm.ex x hx i).nch.Oe w) →+* ℂ, (∀ y, e ((Fm.ex x hx i).nch.embW w y) = (Fm.D x i).what₂.embLL y) → (∀ a : (Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w), e (algebraMap ((Fm.ex x hx i).nch.Oe w) _ (algebraMap _ ((Fm.ex x hx i).nch.Oe w) a)) = ρ.eOk ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.k' w) a) →
   ∀ z ∈ twSet hρ (rdAt p w j hρ ν) ((Fm.ex x hx i).nch.k' w) ((Fm.ex x hx i).nch.Q w) (GlobalTheory.TwistIndex.chosenChar (Fm.ex x hx i).nch w),
   ∃ (n : ℕ) (h : Fin n → GA (Fm.D x i) (Vc (Fm.D x i) j)) (w' : Fin n → ((R2 p).cV j).W) (a : Fin n → (Fm.ex x hx i).nch.Oe w) (κ : ℂ) (N : ℕ),

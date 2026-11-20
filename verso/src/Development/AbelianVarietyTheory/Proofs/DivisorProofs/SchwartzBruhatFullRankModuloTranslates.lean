@@ -12,6 +12,35 @@ open GlobalTheory.WeilM Matrix
 noncomputable section
 namespace GlobalTheory.RankStrata
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ν ϖ hϖ hν Ψ hΨ`. Establish `piece : ∀ ρ < n, ∀ f : Matrix (Fin n) (Fin d) k → ℂ, f ∈ SB (Matrix (Fin n) (Fin d) k) → ∀ (S : Fin ρ → Fin n) (τ : Fin ρ → Fin d), (∀ Y, f Y ≠ 0 → (Y.submatrix S τ).det ≠ 0) → ∃ Φ ∈ Nsp k (Fin n) (Fin d) ν, ∀ Y : Matrix (Fin n) (Fin d) k, Y.rank ≤ ρ → Φ Y = f Y`. Introduce `ρ hρ f hf S τ hS`. Distinguish the cases in `h0 : ∀ Y, f Y = 0`. Conclude with `⟨0, Submodule.zero_mem _, fun Y _ => by simp [h0 Y]⟩`.
+
+Use `push_neg at h0`. Take `⟨Y0, hY0⟩` from `h0`. Establish `hinj : Function.Injective S`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hS Y0 hY0 (Matrix.det_zero_of_row_eq hne (by ext l; simp [hij]))`. Set `e' : Fin ρ ⊕ ↥(Set.range S)ᶜ ≃ Fin n` to `(Equiv.sumCongr (Equiv.ofInjective S hinj) (Equiv.refl _)).trans (Equiv.Set.sumCompl _)`. Establish `he' : ∀ i, e'.symm (S i) = Sum.inl i` using `fun i => by`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[e']`.
+
+Use `haveI : Nonempty ↥(Set.range S)ᶜ := by`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`. Use `Fintype.card_congr e'` as an intermediate fact. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hT` using `GlobalTheory.T.schwartzBruhat_reindex_rows k (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin n) (Fin d) ν e'`. Take `⟨Φ', hΦ', hΦ'f⟩` from `GlobalTheory.T.schwartzBruhat_minor_support k (Fin ρ) (↥(Set.range S)ᶜ) (Fin d) ν ϖ hϖ hν τ (fun Z => f (Z.submatrix e'.symm id)) (hT.1 f hf) (fun Z hZ => by`. Use `hS _ hZ` as an intermediate fact. Rewrite using `[Matrix.submatrix_submatrix, show (e'.symm ∘ S) = Sum.inl from funext he'] at this)` and apply the resulting hypothesis.
+
+Establish `hT2` using `GlobalTheory.T.schwartzBruhat_reindex_rows k (Fin n) (Fin ρ ⊕ ↥(Set.range S)ᶜ) (Fin d) ν e'.symm`. Use `⟨_, hT2.2 Φ' hΦ', fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_symm]`. Rewrite using `[hΦ'f _ (by rw [show (id : Fin d → Fin d) = ⇑(Equiv.refl (Fin d)) from rfl, Matrix.rank_submatrix]; simpa using hY)]`. Simplify using `[Matrix.submatrix_submatrix]`.
+
+Establish `step : ∀ ρ < n, ∀ g ∈ SB (Matrix (Fin n) (Fin d) k), (∀ Y : Matrix (Fin n) (Fin d) k, Y.rank < ρ → g Y = 0) → ∃ Φ ∈ Nsp k (Fin n) (Fin d) ν, ∀ Y : Matrix (Fin n) (Fin d) k, Y.rank ≤ ρ → Φ Y = g Y`. Introduce `ρ hρ g hg hg0`. Use `haveI : T2Space k := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`.
+
+Use `infer_instance`. Establish `hsp` using `GlobalTheory.T.schwartzBruhat_partition_of_unity k (Fin n) (Fin d) ((Fin ρ → Fin n) × (Fin ρ → Fin d)) (fun i => {Y : Matrix (Fin n) (Fin d) k | (Y.submatrix i.1 i.2).det ≠ 0}) (fun i => isOpen_ne_fun ((continuous_id.matrix_submatrix i.1 i.2).matrix_det) continuous_const) g hg (f …`. Establish `: ρ ≤ Y.rank`. Assume the negation of the conclusion as `h`. Conclude with `hY (hg0 Y (by omega))`.
+
+Take `⟨S, τ, h⟩` from `GlobalTheory.T.exists_nonzero_minor_of_rank k _ _ ρ Y this`. Conclude with `⟨(S, τ), h⟩)`. Use `Submodule.span_induction (p := fun g _ => ∃ Φ ∈ Nsp k (Fin n) (Fin d) ν, ∀ Y : Matrix (Fin n) (Fin d) k, Y.rank ≤ ρ → Φ Y = g Y) ?_ ?_ ?_ ?_ hsp` and prove the remaining obligations. Introduce and unpack `f ⟨hf, i, hi⟩`. Conclude with `piece ρ hρ f hf i.1 i.2 hi`.
+
+Conclude with `⟨0, Submodule.zero_mem _, fun _ _ => rfl⟩`. Introduce and unpack `x y _ _ ⟨Φ, hΦ, h⟩ ⟨Φ', hΦ', h'⟩`. Conclude with `⟨Φ + Φ', Submodule.add_mem _ hΦ hΦ', fun Y hY => by simp [h Y hY, h' Y hY]⟩`. Introduce and unpack `c x _ ⟨Φ, hΦ, h⟩`. Conclude with `⟨c • Φ, Submodule.smul_mem _ c hΦ, fun Y hY => by simp [h Y hY]⟩`.
+
+Establish `ind : ∀ ρ ≤ n, ∃ Ψρ ∈ SB (Matrix (Fin n) (Fin d) k), (∀ Y : Matrix (Fin n) (Fin d) k, Y.rank < ρ → Ψρ Y = 0) ∧ Ψ - Ψρ ∈ Nsp k (Fin n) (Fin d) ν`. Introduce `ρ`. Proceed by induction on `ρ with`. Consider the case `zero => intro _; exact ⟨Ψ, hΨ, fun Y h => absurd h (Nat.not_lt_zero _), by simp⟩`. Consider the case `succ ρ ih`.
+
+Introduce `hρ`. Take `⟨Ψρ, hSB, h0, hN⟩` from `ih (by omega)`. Take `⟨Φ, hΦ, hΦe⟩` from `step ρ (by omega) Ψρ hSB h0`. Use `⟨Ψρ - Φ, Submodule.sub_mem _ hSB (Nsp_le_SB _ _ ν hΦ), fun Y hY => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hΦe Y (by omega)]`.
+
+Establish `: Ψ - (Ψρ - Φ) = (Ψ - Ψρ) + Φ` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hN hΦ`. Take `⟨Ψ₀, h1, h2, h3⟩` from `ind n le_rfl`. Use `⟨Ψ₀, h1, fun Y hY => h2 Y (lt_of_le_of_ne ?_ hY), h3⟩` and prove the remaining obligations.
+
+Simplify using `using Matrix.rank_le_card_height Y`.
+-/
 theorem exists_fullRank_sub_mem_span : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ)
     (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → (∀ m : ℕ, 0 < m → ∀ r : ℝ, ((ν ϖ : ℂ)) ^ m ≠ (r : ℂ)) →
     ∀ Ψ ∈ SB (Matrix (Fin n) (Fin d) k), ∃ Ψ₀ ∈ SB (Matrix (Fin n) (Fin d) k), (∀ Y : Matrix (Fin n) (Fin d) k, Y.rank ≠ n → Ψ₀ Y = 0) ∧

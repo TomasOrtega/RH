@@ -23,16 +23,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[MonObj.mul_comp, lift_fst, lift_fst, lift_fst]`. Rewrite using `[MonObj.mul_comp, lift_snd, lift_snd, lift_snd]`.
+-/
 theorem lift_mul_lift {T : Over S} (u v u' v' : T ⟶ A) : lift u v * lift u' v' = lift (u * u') (v * v') := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [MonObj.mul_comp, lift_fst, lift_fst, lift_fst]
   · rw [MonObj.mul_comp, lift_snd, lift_snd, lift_snd]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[MonObj.one_comp, lift_fst]`. Rewrite using `[MonObj.one_comp, lift_snd]`.
+-/
 theorem one_eq_lift {T : Over S} : (1 : T ⟶ A ⊗ A) = lift (1 : T ⟶ A) 1 := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [MonObj.one_comp, lift_fst]
   · rw [MonObj.one_comp, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[lam_pull, comp_lift, comp_lift]`. Simplify using `only [Category.comp_id]`. Establish `ha : lift a a = lift a (1 : T ⟶ A) * lift 1 a` using `by rw [lift_mul_lift, _root_.mul_one, _root_.one_mul]`. Establish `hb : lift b b = lift b (1 : T ⟶ A) * lift 1 b` using `by rw [lift_mul_lift, _root_.mul_one, _root_.one_mul]`. Establish `hmul' : ∀ (X Y Y' : T ⟶ A ⊗ A), lam p X (Y * Y') = lam p X Y + lam p X Y'` using `fun X Y Y' ↦ by`.
+
+Rewrite using `[lam_comm, hmul, lam_comm, lam_comm p Y']`. Rewrite using `[ha, hb, hmul, hmul', hmul']`. Simplify using `only [lam, lift_mul_lift, one_eq_lift, _root_.mul_one, _root_.one_mul, r₁, r₂]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lam_diag (p : Pic (A ⊗ A).left)
     (hmul : ∀ {T : Over S} (X X' Y : T ⟶ A ⊗ A), lam p (X * X') Y = lam p X Y + lam p X' Y)
     (r₁ : ∀ {T : Over S} (v : T ⟶ A), pull (lift (1 : T ⟶ A) v).left p = 0)
@@ -57,6 +68,19 @@ open GlobalTheory.CechPic
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `A _ _ g hA hsm P hP hr₁ hr₂ hsym hamp e La _ Q EF he _ _ _ _ x hx`. Establish `hL : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Take `⟨Λ, hd, hf, hk⟩` from `GlobalTheory.ExpKernel.kernel_isFullLattice (Sp ℂ) A g hA hsm (𝟙 _) e he`. Take `⟨L₀, u₀, -⟩` from `GlobalTheory.exists_holUnif_of_isExp A g e Λ he hd hf hk`. Take `⟨u, Hm, χ, -, hAH⟩` from `GlobalTheory.exists_isFactorAH_frame_of_unif A hA L₀ g u₀ _ hL`.
+
+Establish `pos` using `GlobalTheory.AmpleHermPos.re_form_pos_of_relAmple A hA _ hL hamp g u Hm χ hAH.1 hAH.2.1 hAH.2.2`. Take `⟨PP, ψ, ρ, N, hN, hψ, hρ, h₁, h₂, h₃⟩` from `GlobalTheory.PosAHIsog.exists_isog_principal_lam g A hA _ u Hm χ hL (GlobalTheory.TorusRM.isAH_of_isFactorAH hAH pos)`. Use `⟨N * N, Nat.mul_pos hN hN, GlobalTheory.KillSquare.pow_sq_eq_one_of_lam_trivial A hA _ hL PP ψ ρ N hψ hρ h₁ h₂ h₃ _ x ?_⟩` and prove the remaining obligations. Establish `hG : IsAbelianScheme (A ⊗ A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hΘ` using `GlobalTheory.exists_gen_theta_of_isAbelianScheme ℂ (A ⊗ A) hG P hP`.
+
+Establish `r₁ : ∀ {T : Over (Sp ℂ)} (v : T ⟶ A), pull (lift (1 : T ⟶ A) v).left (cls P hP) = 0` using `fun {T} v ↦ by`. Establish `hv : lift (1 : T ⟶ A) v = v ≫ lift (1 : A ⟶ A) (𝟙 A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Rewrite using `[hv, Over.comp_left, pull_comp, ← cls_pull hP _ (pull_isLB hP _), (cls_eq_zero_iff (pull_isLB hP _)).2 hr₁, map_zero]`. Establish `r₂ : ∀ {T : Over (Sp ℂ)} (v : T ⟶ A), pull (lift v (1 : T ⟶ A)).left (cls P hP) = 0` using `fun {T} v ↦ by`.
+
+Establish `hv : lift v (1 : T ⟶ A) = v ≫ lift (𝟙 A) (1 : A ⟶ A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Rewrite using `[hv, Over.comp_left, pull_comp, ← cls_pull hP _ (pull_isLB hP _), (cls_eq_zero_iff (pull_isLB hP _)).2 hr₂, map_zero]`. Establish `e₀ : cls P hP = pull (lift (snd A A) (fst A A)).left (cls P hP)`. Rewrite using `[← cls_pull hP _ (pull_isLB hP _)]`.
+
+Conclude with `(cls_eq_iff hP (pull_isLB hP _)).2 hsym`. Establish `hsymm : ∀ {T : Over (Sp ℂ)} (u v : T ⟶ A), pull (lift u v).left (cls P hP) = pull (lift v u).left (cls P hP)` using `fun {T} u v ↦ by conv_lhs => rw [e₀]`. Rewrite using `[← pull_comp, ← Over.comp_left, comp_lift, lift_snd, lift_fst]`. Establish `hxA : pull (lift (snd A (𝟙_ (Over (Sp ℂ))) ≫ x) (fst A (𝟙_ (Over (Sp ℂ))))).left (cls P hP) = 0`. Rewrite using `[← cls_pull hP _ (pull_isLB hP _)]`.
+
+Conclude with `(cls_eq_zero_iff _).2 hx`. Use `(cls_eq_zero_iff (pull_isLB (LB.isLB_linComb hL _ _) _)).1 ((GlobalTheory.RealMult.Elliptic.cls_pull_lam hL _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[cls_pull hP _ hL, lam_diag (cls P hP) (fun X X' Y ↦ lam_mul_left hP hΘ X X' Y) r₁ r₂, hsymm, hxA, add_zero]`.
+-/
 theorem exists_pow_eq_one_of_kernel : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ P : LB (G2 A).left, P.IsLB →
     (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →

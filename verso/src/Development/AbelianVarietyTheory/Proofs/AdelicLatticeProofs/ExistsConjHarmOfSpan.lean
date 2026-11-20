@@ -9,6 +9,11 @@ namespace GlobalTheory.ClassFin
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Proceed by induction on `n with`. Consider the case `zero => simp [hU]`. Consider the case `succ n ih => rw [pow_succ, ih, pow_succ]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul]`.
+-/
 private lemma unitary_conj_pow {ι : Type} [Fintype ι] [DecidableEq ι] (U D : Matrix ι ι ℂ) (hU : U * Uᴴ = 1) (n : ℕ) :
     (U * D * Uᴴ) ^ n = U * D ^ n * Uᴴ := by
   have hU' : Uᴴ * U = 1 := mul_eq_one_comm.mp hU
@@ -18,6 +23,9 @@ private lemma unitary_conj_pow {ι : Type} [Fintype ι] [DecidableEq ι] (U D : 
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq, Matrix.mul_add, Matrix.add_mul]`. Consider the case `monomial n a`. Rewrite using `[aeval_monomial, aeval_monomial, unitary_conj_pow U D hU]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 private lemma aeval_unitary_conj_eq_conj_aeval {ι : Type} [Fintype ι] [DecidableEq ι] (U D : Matrix ι ι ℂ) (hU : U * Uᴴ = 1) (p : ℂ[X]) :
     aeval (U * D * Uᴴ) p = U * aeval D p * Uᴴ := by
   induction p using Polynomial.induction_on' with
@@ -28,6 +36,9 @@ private lemma aeval_unitary_conj_eq_conj_aeval {ι : Type} [Fintype ι] [Decidab
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a => simp [Polynomial.aeval_monomial, diagonal_pow, Algebra.algebraMap_eq_smul_one]; ext i j; by_cases h : i = j <;> simp [h, diagonal_apply]`.
+-/
 private lemma aeval_diagonal_adelic_lattice {ι : Type} [Fintype ι] [DecidableEq ι] (f : ι → ℂ) (p : ℂ[X]) :
     aeval (diagonal f) p = diagonal fun i => p.eval (f i) := by
   induction p using Polynomial.induction_on' with
@@ -36,6 +47,9 @@ private lemma aeval_diagonal_adelic_lattice {ι : Type} [Fintype ι] [DecidableE
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨U, d, hU, hH, hA⟩` from `h`. Use `⟨Finset.univ.image d, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hA, aeval_unitary_conj_eq_conj_aeval _ _ hU, aeval_diagonal_adelic_lattice, hH, show (fun i => p.eval ((Real.exp (d i) : ℝ) : ℂ)) = fun i => ((d i : ℝ) : ℂ) from`. Use function extensionality and compare the values at `fun i => hp _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))]`.
+-/
 private lemma exists_interp_aeval_eq_of_isLog {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Matrix ι ι ℂ} (h : _root_.GlobalTheory.ClassFin.IsLog H A) :
     ∃ S : Finset ℝ, ∀ p : ℂ[X], (∀ x ∈ S, p.eval ((Real.exp x : ℝ) : ℂ) = x) → aeval A p = H := by
   obtain ⟨U, d, hU, hH, hA⟩ := h
@@ -46,6 +60,11 @@ private lemma exists_interp_aeval_eq_of_isLog {ι : Type} [Fintype ι] [Decidabl
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Set `T : Finset ℂ` to `S.image fun x => ((Real.exp x : ℝ) : ℂ)`. Use `⟨Lagrange.interpolate T id (fun z => ((Real.log z.re : ℝ) : ℂ)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : ((Real.exp x : ℝ) : ℂ) ∈ T` using `Finset.mem_image_of_mem _ hx`. Use `Lagrange.eval_interpolate_at_node (v := id) (r := fun z : ℂ => ((Real.log z.re : ℝ) : ℂ)) (Set.injOn_id _) hmem` as an intermediate fact. Simplify using `only [id] at this`.
+
+Rewrite using `[this, Complex.ofReal_re, Real.log_exp]`.
+-/
 private lemma exists_poly_eval_exp_eq (S : Finset ℝ) : ∃ p : ℂ[X], ∀ x ∈ S, p.eval ((Real.exp x : ℝ) : ℂ) = x := by
   classical
   let T : Finset ℂ := S.image fun x => ((Real.exp x : ℝ) : ℂ)
@@ -58,6 +77,13 @@ private lemma exists_poly_eval_exp_eq (S : Finset ℝ) : ∃ p : ℂ[X], ∀ x �
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `hk1 : k * k⁻¹ = 1` using `Matrix.mul_nonsing_inv k hk`. Establish `hpow : ∀ n : ℕ, (k⁻¹ * D * k) ^ n = k⁻¹ * D ^ n * k`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [Matrix.nonsing_inv_mul k hk]`.
+
+Consider the case `succ n ih => rw [pow_succ, ih, pow_succ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc k k⁻¹, hk1, Matrix.one_mul]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq, Matrix.mul_add, Matrix.add_mul]`.
+
+Consider the case `monomial n a`. Rewrite using `[aeval_monomial, aeval_monomial, hpow n]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 private lemma aeval_conj_eq_conj_aeval {ι : Type} [Fintype ι] [DecidableEq ι] (k D : Matrix ι ι ℂ) (hk : IsUnit k.det) (p : ℂ[X]) :
     aeval (k⁻¹ * D * k) p = k⁻¹ * aeval D p * k := by
   have hk1 : k * k⁻¹ = 1 := Matrix.mul_nonsing_inv k hk
@@ -74,6 +100,9 @@ private lemma aeval_conj_eq_conj_aeval {ι : Type} [Fintype ι] [DecidableEq ι]
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_interp_aeval_eq_of_isLog hH`. Take `⟨S', hS'⟩` from `exists_interp_aeval_eq_of_isLog hH'`. Take `⟨p, hp⟩` from `exists_poly_eval_exp_eq (S ∪ S')`. Rewrite using `[← hS' p (fun x hx => hp x (Finset.mem_union_right _ hx)), ← hS p (fun x hx => hp x (Finset.mem_union_left _ hx)), hB, aeval_conj_eq_conj_aeval k A hk]`.
+-/
 private lemma isLog_eq_conj_of_conj {ι : Type} [Fintype ι] [DecidableEq ι] {H A H' B k : Matrix ι ι ℂ}
     (hH : _root_.GlobalTheory.ClassFin.IsLog H A) (hH' : _root_.GlobalTheory.ClassFin.IsLog H' B) (hk : IsUnit k.det)
     (hB : B = k⁻¹ * A * k) : H' = k⁻¹ * H * k := by
@@ -85,6 +114,13 @@ private lemma isLog_eq_conj_of_conj {ι : Type} [Fintype ι] [DecidableEq ι] {H
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨U, d, hU, rfl, rfl⟩` from `hH`. Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Use `⟨U, fun i => -d i, hU, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.neg_mul, Matrix.mul_neg, ← diagonal_neg]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul]`. Use `_ = 1 := by`. Rewrite using `[diagonal_mul_diagonal]`.
+
+Simplify using `[← Complex.exp_add, hU]`.
+-/
 private lemma isLog_neg_inv {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Matrix ι ι ℂ}
     (hH : _root_.GlobalTheory.ClassFin.IsLog H A) : _root_.GlobalTheory.ClassFin.IsLog (-H) A⁻¹ := by
   obtain ⟨U, d, hU, rfl, rfl⟩ := hH
@@ -101,6 +137,9 @@ private lemma isLog_neg_inv {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Mat
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨U, d, hU, rfl, -⟩` from `hH`. Simplify using `[conjTranspose_mul, Matrix.mul_assoc, diagonal_conjTranspose]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 private lemma isLog_isHermitian {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Matrix ι ι ℂ}
     (hH : _root_.GlobalTheory.ClassFin.IsLog H A) : Hᴴ = H := by
   obtain ⟨U, d, hU, rfl, -⟩ := hH
@@ -111,6 +150,25 @@ private lemma isLog_isHermitian {ι : Type} [Fintype ι] [DecidableEq ι] {H A :
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `hoff : ∀ i j, i ≠ j → M i j = 0`. Introduce `i j hij`. Establish `h1` using `hV (single i j 1) (single_mul_single_of_ne 1 i j i hij.symm 1)`. Establish `h2` using `hV (single i j Complex.I) (single_mul_single_of_ne _ i j i hij.symm _)`. Establish `hc : M j i = star (M i j)`.
+
+Use `congrFun (congrFun hM j) i` as an intermediate fact. Simplify `this.symm` using `[conjTranspose_apply]`. Simplify using `[conjTranspose_single, Matrix.mul_add, trace_add, trace_mul_single, hc] at h1 h2`. Apply the tactic sequence `apply Complex.ext <;> simp <;> linarith`. Establish `hdiag : ∀ i j, M i i = M j j`.
+
+Introduce `i j`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`. Use `set N : Matrix ι ι ℂ := single i i 1 - single i j 1 + single j i 1 - single j j 1 with hN`. Establish `hNN : N * N = 0`.
+
+Simplify using `only [hN, Matrix.sub_mul, Matrix.mul_sub, Matrix.add_mul, Matrix.mul_add, single_mul_single_same, single_mul_single_of_ne _ _ _ _ hij, single_mul_single_of_ne _ _ _ _ (Ne.symm hij), mul_one]`. Normalize the expressions using the abelian group laws. Establish `h1` using `hV N hNN`. Establish `hc : ∀ k, (M k k).im = 0`. Introduce `k`.
+
+Use `congrFun (congrFun hM k) k` as an intermediate fact. Establish `h' : star (M k k) = M k k` using `by simpa [conjTranspose_apply] using this`. Use `congrArg Complex.im h'` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `[hN, conjTranspose_single, Matrix.mul_add, Matrix.mul_sub, trace_add, trace_sub, trace_mul_single, hoff i j hij, hoff j i (Ne.symm hij)] at h1`. Apply `Complex.ext` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hc i, hc j]`. Use extensionality with `i j`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `ht : M.trace = (Fintype.card ι : ℂ) * M i i`. Rewrite using `[Matrix.trace]`. Simplify using `[hdiag _ i]`.
+
+Rewrite `ht` using `[htr]`. Establish `hcard : (Fintype.card ι : ℂ) ≠ 0`. Establish `: 0 < Fintype.card ι` using `Fintype.card_pos_iff.mpr ⟨i⟩`. Conclude with `this.ne'` after adjusting the coercions. Simplify `ht.symm` using `[hcard]`.
+
+Conclude with `hoff i j hij`.
+-/
 private lemma eq_zero_of_trace_zero_of_re_trace_squareZero {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ)
     (hM : Mᴴ = M) (htr : M.trace = 0)
     (hV : ∀ N : Matrix ι ι ℂ, N * N = 0 → Complex.re (Matrix.trace (M * (N + Nᴴ))) = 0) : M = 0 := by
@@ -160,11 +218,37 @@ private lemma eq_zero_of_trace_zero_of_re_trace_squareZero {ι : Type} [Fintype 
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Combine the linear relations using `[norm_add_le (a + b + c) d, norm_add_le (a + b) c, norm_add_le a b]`.
+-/
 private lemma norm_add_add_add_le (a b c d : ℂ) : ‖a + b + c + d‖ ≤ ‖a‖ + ‖b‖ + ‖c‖ + ‖d‖ := by
   linarith [norm_add_le (a + b + c) d, norm_add_le (a + b) c, norm_add_le a b]
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨C, δ, hδ, hb⟩` from `_root_.GlobalTheory.ClassFin.LogSqVar.first_variation ι H A hH`. Use `set b : ι → ι → ℝ := fun i j => ‖Y1 i j‖ + ‖Y2 i j‖ + ‖Y3 i j‖ + ‖Y4 i j‖ with hb_def`. Use `set B : ℝ := ∑ i, ∑ j, b i j with hB_def`. Use `set l2 := Complex.re (Matrix.trace (H * A⁻¹ * Y2))`. Use `set l3 := Complex.re (Matrix.trace (H * A⁻¹ * Y3))`.
+
+Use `set l4 := Complex.re (Matrix.trace (H * A⁻¹ * Y4))`. Establish `hb0 : ∀ i j, 0 ≤ b i j` using `fun i j => by simp only [hb_def]; positivity`. Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => hb0 i j`. Establish `hbB : ∀ i j, b i j ≤ B` using `fun i j => (Finset.single_le_sum (f := fun j => b i j) (fun j _ => hb0 i j) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, b i j) (fun i _ => Finset.sum_nonneg fun j _ => hb0 i j) (Finset.mem_univ i))`. Use `⟨2 * (|l2| + |l3| + |l4|) + |C| * ∑ i, ∑ j, b i j ^ 2, min 1 (δ / (B + 1)), lt_min one_pos (div_pos hδ (by linarith)), ?_⟩` and prove the remaining obligations.
+
+Introduce `t ht H' hH'`. Establish `ht1 : |t| ≤ 1` using `(lt_of_lt_of_le ht (min_le_left _ _)).le`. Establish `htδ : |t| < δ / (B + 1)` using `lt_of_lt_of_le ht (min_le_right _ _)`. Use `set Y := (t : ℂ) • Y1 + (t : ℂ) ^ 2 • Y2 + (t : ℂ) ^ 3 • Y3 + (t : ℂ) ^ 4 • Y4 with hY`. Establish `ht2 : t ^ 2 ≤ |t|` using `by nlinarith [sq_abs t, abs_nonneg t]`.
+
+Establish `ht3 : |t| ^ 3 ≤ |t|` using `by nlinarith [abs_nonneg t, pow_le_one₀ (abs_nonneg t) ht1 (n := 2)]`. Establish `ht4 : |t| ^ 4 ≤ |t|` using `by nlinarith [abs_nonneg t, pow_le_one₀ (abs_nonneg t) ht1 (n := 3)]`. Apply the tactic sequence `have hentry : ∀ i j, ‖Y i j‖ ≤ |t| * b i j := by`. Introduce `i j`. Simplify using `only [hY, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Use `(norm_add_add_add_le _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, hb_def]`. Use `sq_abs t` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (Y1 i j), norm_nonneg (Y2 i j), norm_nonneg (Y3 i j), norm_nonneg (Y4 i j), mul_le_mul_of_nonneg_right ht2 (norm_nonneg (Y2 i j)), mul_le_mul_of_nonneg_right ht3 (norm_nonneg (Y3 i j)), mul_le_mul_of_nonneg_right ht4 (norm_nonneg (Y4 i j))]`. Establish `hsmall : ∀ i j, ‖Y i j‖ ≤ δ`.
+
+Introduce `i j`. Apply the tactic sequence `refine (hentry i j).trans ?_`. Establish `h1 : |t| * (B + 1) < δ` using `by rwa [lt_div_iff₀ (by linarith)] at htδ`. Use polynomial arithmetic with `[hbB i j, abs_nonneg t]`. Establish `key` using `hb Y H' hsmall hH'`.
+
+Establish `htr : Complex.re (Matrix.trace (H * A⁻¹ * Y)) = t * Complex.re (Matrix.trace (H * A⁻¹ * Y1)) + t ^ 2 * l2 + t ^ 3 * l3 + t ^ 4 * l4`. Rewrite using `[hY]`. Simplify using `only [Matrix.mul_add, Matrix.mul_smul, trace_add, trace_smul, smul_eq_mul, Complex.add_re, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Apply the tactic sequence `all_goals rfl`. Establish `hsq : ∑ i, ∑ j, ‖Y i j‖ ^ 2 ≤ t ^ 2 * ∑ i, ∑ j, b i j ^ 2`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have := hentry i j`.
+
+Establish `h0` using `norm_nonneg (Y i j)`. Combine the equalities or inequalities in the displayed calculation. Establish `hC : C * ∑ i, ∑ j, ‖Y i j‖ ^ 2 ≤ |C| * (t ^ 2 * ∑ i, ∑ j, b i j ^ 2)`. Establish `hS0 : 0 ≤ ∑ i, ∑ j, ‖Y i j‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hl : t ^ 2 * l2 + t ^ 3 * l3 + t ^ 4 * l4 ≤ t ^ 2 * (|l2| + |l3| + |l4|)`. Establish `ha : |t| ^ 3 = t ^ 2 * |t|` using `by rw [pow_succ, sq_abs]`. Establish `hb4 : t ^ 4 ≤ t ^ 2` using `by nlinarith [sq_nonneg t, sq_abs t]`. Establish `e3 : t ^ 3 * l3 ≤ t ^ 2 * |l3|`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e4 : t ^ 4 * l4 ≤ t ^ 2 * |l4|`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[le_abs_self l2, sq_nonneg t, mul_le_mul_of_nonneg_left (le_abs_self l2) (sq_nonneg t)]`. Rewrite `key` using `[htr]`. Combine the linear relations using `[key, hC, hl]`.
+-/
 private lemma re_trace_isLog_sq_le_second_order {ι : Type} [Fintype ι] [DecidableEq ι] (H A Y1 Y2 Y3 Y4 : Matrix ι ι ℂ)
     (hH : _root_.GlobalTheory.ClassFin.IsLog H A) :
     ∃ K ε : ℝ, 0 < ε ∧ ∀ t : ℝ, |t| < ε → ∀ H' : Matrix ι ι ℂ,
@@ -242,6 +326,9 @@ private lemma re_trace_isLog_sq_le_second_order {ι : Type} [Fintype ι] [Decida
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Establish `hNN' : ∀ X : Matrix ι ι ℂ, N * (N * X) = 0` using `fun X => by rw [← Matrix.mul_assoc, hNN, Matrix.zero_mul]`. Simplify using `only [conjTranspose_mul, conjTranspose_add, conjTranspose_sub, conjTranspose_one, conjTranspose_smul, Complex.star_def, Complex.conj_ofReal]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, Matrix.one_mul, Matrix.mul_one, hNN', hNN, smul_zero, Matrix.mul_zero]`. Use `module`.
+-/
 private lemma gram_expansion_quartic_in_t {ι : Type} [Fintype ι] [DecidableEq ι] (h N : Matrix ι ι ℂ) (hNN : N * N = 0) (t : ℝ) :
     ((1 + (t : ℂ) • N) * h * (1 - (t : ℂ) • N))ᴴ * ((1 + (t : ℂ) • N) * h * (1 - (t : ℂ) • N)) - hᴴ * h =
       (t : ℂ) • (hᴴ * (N + Nᴴ) * h - Nᴴ * (hᴴ * h) - hᴴ * h * N) +
@@ -257,6 +344,15 @@ private lemma gram_expansion_quartic_in_t {ι : Type} [Fintype ι] [DecidableEq 
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Assume the negation of the conclusion as `ha`. Use `set s := min (ε / 2) (|a| / (|K| + 1)) with hs`. Establish `hs0 : 0 < s` using `lt_min (by linarith) (div_pos (abs_pos.mpr ha) (by positivity))`. Establish `hsε : s < ε` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`. Establish `hsa : s * (|K| + 1) ≤ |a|`.
+
+Use `min_le_right (ε / 2) (|a| / (|K| + 1))` as an intermediate fact. Rewrite `this` using `[← hs]`. Rewrite `this` using `[le_div_iff₀ (by positivity)]`. Then use the resulting hypothesis. Establish `hK : K ≤ |K|` using `le_abs_self K`. Break down `lt_or_gt_of_ne ha with hneg | hpos` into its components or cases.
+
+Establish `h1` using `h s (by rw [abs_of_pos hs0]; exact hsε)`. Rewrite `hsa` using `[abs_of_neg hneg]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `h (-s) (by rw [abs_neg, abs_of_pos hs0]; exact hsε)`. Rewrite `hsa` using `[abs_of_pos hpos]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma eq_zero_of_nonneg_linear_add_quadratic {a K ε : ℝ} (hε : 0 < ε) (h : ∀ t : ℝ, |t| < ε → 0 ≤ t * a + t ^ 2 * K) :
     a = 0 := by
   by_contra ha
@@ -278,6 +374,9 @@ private lemma eq_zero_of_nonneg_linear_add_quadratic {a K ε : ℝ} (hε : 0 < �
 
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Take `⟨U, d, hU, rfl, rfl⟩` from `hH`. Establish `hU' : Uᴴ * U = 1` using `mul_eq_one_comm.mp hU`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul, ← Matrix.mul_assoc Uᴴ U, hU', Matrix.one_mul, ← Matrix.mul_assoc (diagonal _) (diagonal _), ← Matrix.mul_assoc (diagonal _) (diagonal _), diagonal_mul_diagonal, diagonal_mul_diagonal]`. Simplify using `only [mul_comm]`.
+-/
 private lemma isLog_commute {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Matrix ι ι ℂ}
     (hH : _root_.GlobalTheory.ClassFin.IsLog H A) : H * A = A * H := by
   obtain ⟨U, d, hU, rfl, rfl⟩ := hH
@@ -291,6 +390,53 @@ private lemma isLog_commute {ι : Type} [Fintype ι] [DecidableEq ι] {H A : Mat
 open Matrix Polynomial in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `ι _ _ σ _ τ g hτ hspan`. Establish `hdet : ∀ s, IsUnit (g s).det` using `fun s => Matrix.isUnit_det_of_left_inverse (hτ s)`. Take `⟨P, H, hP, hH, hmin⟩` from `_root_.GlobalTheory.ClassFin.exists_energy_min ι σ g hdet hspan`. Use `⟨P, hP, H, hH, ?_⟩` and prove the remaining obligations. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`.
+
+Establish `hPP' : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Take `⟨h, hh⟩ : ∃ h : σ → Matrix ι ι ℂ, h = fun s => P * g s * P⁻¹` from `⟨_, rfl⟩`. Establish `hH' : ∀ s, _root_.GlobalTheory.ClassFin.IsLog (H s) ((h s)ᴴ * h s)` using `by intro s; rw [hh]; exact hH s`. Establish `hτh : ∀ s, h (τ s) * h s = 1`. Introduce `s`.
+
+Simplify using `only [hh, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPP, Matrix.one_mul, ← Matrix.mul_assoc (g (τ s)), hτ s, Matrix.one_mul, hPP']`. Establish `hhdet : ∀ s, IsUnit (h s).det` using `fun s => Matrix.isUnit_det_of_left_inverse (hτh s)`. Establish `hinv2 : ∀ s, (h (τ s))⁻¹ = h s` using `fun s => Matrix.inv_eq_right_inv (hτh s)`. Establish `hhs : ∀ s, h s * (h s)⁻¹ = 1` using `fun s => Matrix.mul_nonsing_inv _ (hhdet s)`.
+
+Establish `hhs' : ∀ s, (h s)⁻¹ * h s = 1` using `fun s => Matrix.nonsing_inv_mul _ (hhdet s)`. Establish `hconj : ∀ s, -H (τ s) = h s * H s * (h s)⁻¹`. Introduce `s`. Establish `hk : IsUnit ((h s)⁻¹).det`. Rewrite using `[Matrix.det_nonsing_inv]`.
+
+Conclude with `(hhdet s).ringInverse`. Use `isLog_eq_conj_of_conj (hH' s) (isLog_neg_inv (hH' (τ s))) hk ?_` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ (hhdet s)]`. Then use the resulting hypothesis. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (hhdet s), Matrix.mul_inv_rev, hinv2, ← Matrix.conjTranspose_nonsing_inv, hinv2]`. Simplify using `only [Matrix.mul_assoc, hhs, Matrix.mul_one]`.
+
+Establish `hHerm : ∀ s, (H s)ᴴ = H s` using `fun s => isLog_isHermitian (hH' s)`. Establish `htrτ : ∀ s, Matrix.trace (H (τ s)) = -Matrix.trace (H s)`. Introduce `s`. Use `congrArg Matrix.trace (hconj s)` as an intermediate fact. Rewrite `this` using `[trace_neg, Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc, hhs', Matrix.mul_one]`.
+
+Take the linear combination `-this`. Apply `eq_zero_of_trace_zero_of_re_trace_squareZero` to reduce the goal to its premises. Rewrite using `[conjTranspose_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => hHerm s`. Rewrite using `[trace_sum]`.
+
+Establish `h1 : ∑ s, Matrix.trace (H (τ s)) = ∑ s, Matrix.trace (H s)` using `Equiv.sum_comp τ (fun s => Matrix.trace (H s))`. Simplify using `only [htrτ, Finset.sum_neg_distrib] at h1`. Take the linear combination `-h1 / 2`. Introduce `N hNN`. Establish `hb` using `fun s => re_trace_isLog_sq_le_second_order (H s) ((h s)ᴴ * h s) ((h s)ᴴ * (N + Nᴴ) * h s - Nᴴ * ((h s)ᴴ * h s) - (h s)ᴴ * h s * N) ((h s)ᴴ * Nᴴ * N * h s - Nᴴ * ((h s)ᴴ * (N + Nᴴ) * h s) - (h s)ᴴ * (N + Nᴴ) * h s * N + Nᴴ * ((h s)ᴴ * h s) * N) (-(Nᴴ * ((h s)ᴴ * Nᴴ * N * h s)) - ( …`.
+
+Use `choose K ε hε hK using hb`. Use `set ℓ : σ → ℝ := fun s => Complex.re (Matrix.trace (H s * ((h s)ᴴ * h s)⁻¹ * ((h s)ᴴ * (N + Nᴴ) * h s - Nᴴ * ((h s)ᴴ * h s) - (h s)ᴴ * h s * N))) with hℓ`. Use `set ε0 : ℝ := 1 / (1 + ∑ s, 1 / ε s) with hε0_def`. Establish `hS0 : 0 ≤ ∑ s, 1 / ε s` using `Finset.sum_nonneg fun s _ => (one_div_pos.mpr (hε s)).le`. Establish `hε0 : 0 < ε0` using `by positivity`.
+
+Establish `hε0s : ∀ s, ε0 ≤ ε s`. Introduce `s`. Establish `h1 : 1 / ε s ≤ ∑ s, 1 / ε s` using `Finset.single_le_sum (f := fun s => 1 / ε s) (fun s _ => (one_div_pos.mpr (hε s)).le) (Finset.mem_univ s)`. Rewrite using `[hε0_def, div_le_iff₀ (by positivity)]`. Use `hε s` as an intermediate fact.
+
+Rewrite `h1` using `[div_le_iff₀ this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlin : ∀ t : ℝ, |t| < ε0 → 0 ≤ t * (2 * ∑ s, ℓ s) + t ^ 2 * ∑ s, K s`. Introduce `t ht`. Establish `hQQ : (1 + (t : ℂ) • N) * (1 - (t : ℂ) • N) = 1`.
+
+Simplify using `[Matrix.mul_sub, Matrix.add_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hNN]`. Establish `hQdet : IsUnit (1 + (t : ℂ) • N).det` using `Matrix.isUnit_det_of_right_inverse hQQ`. Establish `hQ'det : IsUnit (1 - (t : ℂ) • N).det` using `Matrix.isUnit_det_of_left_inverse hQQ`. Establish `hP' : IsUnit ((1 + (t : ℂ) • N) * P).det` using `by rw [Matrix.det_mul]; exact hQdet.mul hP`. Establish `hinvQP : ((1 + (t : ℂ) • N) * P)⁻¹ = P⁻¹ * (1 - (t : ℂ) • N)` using `Matrix.inv_eq_right_inv (by`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP', Matrix.one_mul, hQQ])`. Establish `hconjQ : ∀ s, (1 + (t : ℂ) • N) * P * g s * ((1 + (t : ℂ) • N) * P)⁻¹ = (1 + (t : ℂ) • N) * h s * (1 - (t : ℂ) • N)`. Introduce `s`. Rewrite using `[hinvQP, hh]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hex : ∀ s, ∃ H'' : Matrix ι ι ℂ, _root_.GlobalTheory.ClassFin.IsLog H'' (((1 + (t : ℂ) • N) * P * g s * ((1 + (t : ℂ) • N) * P)⁻¹)ᴴ * ((1 + (t : ℂ) • N) * P * g s * ((1 + (t : ℂ) • N) * P)⁻¹))`. Introduce `s`. Rewrite using `[hconjQ]`. Use `_root_.GlobalTheory.ClassFin.exists_isLog_gram ι _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`.
+
+Conclude with `(hQdet.mul (hhdet s)).mul hQ'det`. Use `choose H'' hH'' using hex`. Establish `hm` using `hmin ((1 + (t : ℂ) • N) * P) H'' hP' hH''`. Establish `hbound : ∀ s, Complex.re (Matrix.trace (H'' s * H'' s)) ≤ Complex.re (Matrix.trace (H s * H s)) + t * (2 * ℓ s) + t ^ 2 * K s`. Introduce `s`.
+
+Apply `hK s t (lt_of_lt_of_le ht (hε0s s))` to reduce the goal to its premises. Establish `h1` using `hH'' s`. Rewrite `h1` using `[hconjQ s]`. Establish `he` using `gram_expansion_quartic_in_t (h s) N hNN t`. Rewrite `he` using `[sub_eq_iff_eq_add']`.
+
+Rewrite `h1` using `[he]`. Conclude with `h1`. Establish `hsum` using `Finset.sum_le_sum fun s (_ : s ∈ Finset.univ) => hbound s`. Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `hm' : ∑ s, Complex.re (Matrix.trace (H s * H s)) ≤ ∑ s, Complex.re (Matrix.trace (H'' s * H'' s))` using `hm`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL` using `eq_zero_of_nonneg_linear_add_quadratic hε0 hlin`. Establish `hℓs : ∀ s, Matrix.trace (H s * ((h s)ᴴ * h s)⁻¹ * ((h s)ᴴ * (N + Nᴴ) * h s - Nᴴ * ((h s)ᴴ * h s) - (h s)ᴴ * h s * N)) = -Matrix.trace (H (τ s) * (N + Nᴴ)) - Matrix.trace (H s * (N + Nᴴ))`. Introduce `s`. Establish `hcdet : IsUnit ((h s)ᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact (hhdet s).star`.
+
+Establish `hAdet : IsUnit ((h s)ᴴ * h s).det` using `by rw [Matrix.det_mul]; exact hcdet.mul (hhdet s)`. Establish `hAinv : ((h s)ᴴ * h s)⁻¹ = (h s)⁻¹ * ((h s)ᴴ)⁻¹` using `Matrix.mul_inv_rev _ _`. Establish `hc' : ((h s)ᴴ)⁻¹ * (h s)ᴴ = 1` using `Matrix.nonsing_inv_mul _ hcdet`. Establish `hA1 : ((h s)ᴴ * h s)⁻¹ * ((h s)ᴴ * h s) = 1` using `Matrix.nonsing_inv_mul _ hAdet`. Establish `hA2 : ((h s)ᴴ * h s) * ((h s)ᴴ * h s)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hAdet`.
+
+Establish `hcomm` using `isLog_commute (hH' s)`. Establish `t1 : Matrix.trace (H s * ((h s)ᴴ * h s)⁻¹ * ((h s)ᴴ * (N + Nᴴ) * h s)) = -Matrix.trace (H (τ s) * (N + Nᴴ))`. Establish `hτ' : H (τ s) = -(h s * H s * (h s)⁻¹)` using `by rw [← hconj s, neg_neg]`. Rewrite using `[hAinv, hτ', Matrix.neg_mul, trace_neg, neg_neg, show H s * ((h s)⁻¹ * ((h s)ᴴ)⁻¹) * ((h s)ᴴ * (N + Nᴴ) * h s) = (H s * (h s)⁻¹ * (N + Nᴴ)) * h s by`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc ((h s)ᴴ)⁻¹, hc', Matrix.one_mul],`. Use the proof step `trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Establish `t2 : Matrix.trace (H s * ((h s)ᴴ * h s)⁻¹ * (Nᴴ * ((h s)ᴴ * h s))) = Matrix.trace (H s * Nᴴ)`. Rewrite using `[← Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hcomm, Matrix.mul_assoc (H s), hA2, Matrix.mul_one]`.
+
+Establish `t3 : Matrix.trace (H s * ((h s)ᴴ * h s)⁻¹ * ((h s)ᴴ * h s * N)) = Matrix.trace (H s * N)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ _ N, hA1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, trace_sub, trace_sub, t1, t2, t3, Matrix.mul_add (H s) N Nᴴ, trace_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsumℓ : ∑ s, ℓ s = -2 * Complex.re (Matrix.trace ((∑ s, H s) * (N + Nᴴ)))`.
+
+Simplify using `only [hℓ, hℓs, Complex.sub_re, Complex.neg_re, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`. Establish `e` using `Equiv.sum_comp τ (fun s => Complex.re (Matrix.trace (H s * (N + Nᴴ))))`. Rewrite using `[e, Finset.sum_mul, trace_sum, Complex.re_sum]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.ClassFin.exists_conj_harm_of_span : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : Type) [Fintype σ] (τ : σ ≃ σ) (g : σ → Matrix ι ι ℂ), (∀ s, g (τ s) * g s = 1) → Submodule.span ℂ (Set.range g) = ⊤ → ∃ P : Matrix ι ι ℂ, IsUnit P.det ∧ _root_.GlobalTheory.ClassFin.Harm (fun s => P * g s * P⁻¹) := by
   intro ι _ _ σ _ τ g hτ hspan
   have hdet : ∀ s, IsUnit (g s).det := fun s => Matrix.isUnit_det_of_left_inverse (hτ s)

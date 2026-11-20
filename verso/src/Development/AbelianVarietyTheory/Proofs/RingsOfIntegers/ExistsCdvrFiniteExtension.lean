@@ -17,15 +17,26 @@ section Val
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Simplify using `[vV, this]`.
+-/
 theorem vV_unit (u : Vˣ) : vV V (algebraMap V K' u) = 0 := by
   have : valV V (algebraMap V K' u) = 1 := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit
   simp [vV, this]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simp [vV]
 
+/- English proof (translation)
+Establish `h0 : algebraMap V K' a ≠ 0` using `by simpa using ha`. Establish `: valV V (algebraMap V K' a) < 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hu`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this` as an intermediate fact.
+
+Simplify using `only [vV]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap V K' a) := by
   have h0 : algebraMap V K' a ≠ 0 := by simpa using ha
   have : valV V (algebraMap V K' a) < 1 := by
@@ -34,12 +45,28 @@ theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap 
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this
   simp only [vV]; simp at this; omega
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq`. Simplify using `[vV, this]`.
+-/
 theorem vV_irr {a : V} (ha : Irreducible a) : vV V (algebraMap V K' a) = 1 := by
   have : valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ) := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
     exact HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq
   simp [vV, this]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `inj : ∀ v, v ≠ 0 → algebraMap V' K'' (j v) ≠ 0` using `fun v hv => by`. Rewrite using `[← hi]`. Simplify using `using hv`. Establish `pos : 0 < vV V' (algebraMap V' K'' (j p))` using `vV_pos (fun h => inj p hp.ne_zero (by simp [h])) (fun h => hp.not_isUnit (isUnit_of_map_unit j p h))`.
+
+Take `⟨r, hr⟩` from `Int.eq_ofNat_of_zero_le pos.le`. Establish `key : ∀ v : V, v ≠ 0 → vV V' (i (algebraMap V K' v)) = (r : ℤ) * vV V (algebraMap V K' v)`. Introduce `v hv`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv hp`. Establish `h1 : algebraMap V K' p ≠ 0` using `by simpa using hp.ne_zero`.
+
+Establish `h2 : algebraMap V K' u ≠ 0` using `by simp`. Rewrite using `[hi, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, vV_mul (inj _ u.ne_zero) (pow_ne_zero _ (inj p hp.ne_zero)), vV_mul h2 (pow_ne_zero _ h1), vV_pow (inj p hp.ne_zero), vV_pow h1, vV_unit, vV_irr hp, hr]`. Use `vV_unit (K' := K'') (Units.map j.toMonoidHom u)` as an intermediate fact. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at this`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨r, by omega, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hb1 : algebraMap V K' b ≠ 0` using `by simpa using hb0`. Establish `e : algebraMap V K' a / algebraMap V K' b * algebraMap V K' b = algebraMap V K' a` using `div_mul_cancel₀ _ hb1`. Establish `e1` using `vV_mul (V := V) hx hb1`.
+
+Establish `e2` using `vV_mul (V := V') ((map_ne_zero i).2 hx) ((map_ne_zero i).2 hb1)`. Rewrite `e2` using `[← map_mul, e, key a ha0, key b hb0]`. Rewrite `e1` using `[e]`. Rewrite `e2` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K'']
     [Algebra V' K''] [IsFractionRing V' K''] (j : V →+* V') [IsLocalHom j] (i : K' →+* K'')
     (hi : ∀ v, i (algebraMap V K' v) = algebraMap V' K'' (j v)) :
@@ -78,6 +105,15 @@ theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValu
 
 end Val
 
+/- English proof (translation)
+Introduce `T L _ _ _`. Use `haveI : CharZero T.Fr := algebraRat.charZero _`. Take `⟨W, _, _, _, _, _, _, _, hc, hfin, hinj, hloc, -, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension T.V T.Fr L`. Use `haveI : CharZero W := charZero_of_injective_algebraMap hinj`. Set `T' : CDVR` to `{ V := W }`.
+
+Set `ψ : L ≃+* FractionRing W` to `(FractionRing.algEquiv W L).symm.toRingEquiv`. Set `iT : T.Fr →+* FractionRing W` to `ψ.toRingHom.comp (algebraMap T.Fr L)`. Establish `hφ : ∀ a, iT (algebraMap T.V T.Fr a) = algebraMap W (FractionRing W) (algebraMap T.V W a)`. Introduce `a`. Establish `h1 : algebraMap T.Fr L (algebraMap T.V T.Fr a) = algebraMap W L (algebraMap T.V W a)` using `(RingHom.congr_fun hc a).symm`.
+
+Express the relevant statement in the definitionally equal form `(FractionRing.algEquiv W L).symm (algebraMap T.Fr L (algebraMap T.V T.Fr a)) = _`. Rewrite using `[h1, AlgEquiv.commutes]`. Take `⟨e, he, hv⟩` from `exists_index (algebraMap T.V W) iT hφ`. Use `⟨T', iT, e, ψ, algebraMap T.V W, he, hv, fun a => rfl, fun a => (hφ a).symm, fun h => ?_⟩` and prove the remaining obligations. Use `haveI : Finite (ResidueField T.V) := h`.
+
+Conclude with `Module.finite_of_finite (ResidueField T.V) (M := ResidueField W)`.
+-/
 theorem exists_cdvr_finite_extension : ∀ (T : CDVR) (L : Type) [Field L] [Algebra T.Fr L] [FiniteDimensional T.Fr L], ∃ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (ψ : L ≃+* T'.Fr) (φ : T.V →+* T'.V), 0 < e ∧ (∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) ∧ (∀ a, ψ (algebraMap T.Fr L a) = iT a) ∧ (∀ a, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a)) ∧ (T.FinRes → T'.FinRes) := by
   intro T L _ _ _
   haveI : CharZero T.Fr := algebraRat.charZero _

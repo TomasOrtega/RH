@@ -42,6 +42,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.EqualMultAssembly
 
+/- English proof (translation)
+Introduce `an ds rd hf tc dm fl ps hc lc lw ze gl`. Establish `co` using `GlobalTheory.T.cuspidalOperators_vanishingRadicalIntegrals_unitaryGroup tc`. Establish `asep` using `GlobalTheory.T.pseudocoefficient_separation_of_harish_chandra an ps hc lc`. Establish `hyp` using `GlobalTheory.T.hyperbolic_terms_vanish lw GlobalTheory.T.parabolic_and_constant_term GlobalTheory.T.typeIdempotent_constantTerm_vanish GlobalTheory.T.regularSemisimple_unitaryGroup_concrete`. Establish `ell` using `GlobalTheory.T.elliptic_trace_of_inputs lw co GlobalTheory.T.parabolic_and_constant_term GlobalTheory.IwahoriEigenObj.iwahoriEigenvalues GlobalTheory.T.regularSemisimple_unitaryGroup_concrete GlobalTheory.T.non_field_type_vanishing hyp`.
+
+Conclude with `GlobalTheory.T.trace_inputs_imply_cuspidal_trace ps (GlobalTheory.T.cuspidal_spectrum_finiteness_of_decay_harishChandra rd hf dm) (GlobalTheory.T.pseudo_coefficient_separation ds rd hf dm fl hc co GlobalTheory.T.parabolic_and_constant_term asep) (GlobalTheory.T.trace_separation_o …`.
+-/
 theorem trCusp_of_classicalTheorems :
     GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification →
     GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass →

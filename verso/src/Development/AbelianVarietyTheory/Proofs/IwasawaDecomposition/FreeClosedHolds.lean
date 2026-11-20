@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P N hR hN hF`. Take `⟨n, Φ, f, hfΦ, hli, hsp, hcl⟩` from `GlobalTheory.T.exists_fine_section_families R hR P.D P.A t.G t.semi P.U N hN hF`. Use `choose σ hσ using fun i => GlobalTheory.T.uniformization_section_expansion R hR P.D P.A t.G t.semi P.U N hN (Φ i) (f i) (hfΦ i)`. Establish `hb` using `GlobalTheory.T.expansion_independent_sections R hR P.D P.A t.G t.semi P.U N hN n σ Φ f (fun i e => hσ i e) hfΦ hli hsp`. Establish `hi` using `GlobalTheory.T.expansion_constant_term_independent R hR P.D P.A t.G t.semi P.U N hN n σ f (fun i => hσ i 0) hcl`.
+
+Rewrite using `[← P.bundle]`. Conclude with `⟨n, fun i => upSec t.G (σ i), hb, hi⟩`.
+-/
 theorem freeClosedSt : FreeClosedSt := by
   intro E _ _ _ H R _ _ _ t P N hR hN hF
   obtain ⟨n, Φ, f, hfΦ, hli, hsp, hcl⟩ := GlobalTheory.T.exists_fine_section_families R hR P.D P.A t.G t.semi P.U N hN hF

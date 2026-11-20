@@ -13,6 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TieChiPin
 
+/- English proof (translation)
+Introduce `hPr hDZ hL D P hRow hLab hChi i k hl v`. Take `⟨S, hS, -, -⟩` from `GlobalTheory.T.exists_true_reading_with_laws hPr.fin hL D P hRow`. Establish `hsp : IsSplitPl D.host (D.naut.plGw k v)` using `GlobalTheory.T.isSplitPlace_of_over_type_prime D k _ (D.naut.plGw_over k v)`. Take `⟨htame, hχ, u, hu, hlab⟩` from `GlobalTheory.T.tame_character_label hPr hDZ hL D P hChi S hS i k v hsp`. Use `⟨u, hu, fun w hw => ⟨fun hw0 => ?_, fun hc => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨hdR, hwd⟩` from `GlobalTheory.T.chi_de_rham_weil_deligne hPr hL D P i w hw`. Use `⟨hdR, ?_⟩` and prove the remaining obligations. Rewrite using `[hwd, hw0]`. Rewrite using `[GlobalTheory.LabFixed.labFixed hPr hL D P S hS i k v hsp hχ, hlab]`. Take `⟨hdR, hwd⟩` from `GlobalTheory.T.chi_de_rham_weil_deligne hPr hL D P i w hw`.
+
+Use `⟨hdR, ?_⟩` and prove the remaining obligations. Rewrite using `[hwd]`. Conclude with `GlobalTheory.T.tame_label_determinant hPr hL D P hLab S hS i k v hsp hχ u htame hlab w hc _`.
+-/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → LabAll D P.T → ChiTOk D P.cf → PairedCharacterCondition.tieChi (D := D) := by
   intro hPr hDZ hL D P hRow hLab hChi i k hl v
   obtain ⟨S, hS, -, -⟩ := GlobalTheory.T.exists_true_reading_with_laws hPr.fin hL D P hRow

@@ -63,6 +63,9 @@ structure EntPl (D : D7) where
   iL_lam' : ∀ w x (hx : D.what₂.embLL x ∈ algebraicClosure ℚ ℂ), iL w x = lam w ⟨D.what₂.embLL x, hx⟩
   iL_int : ∀ w x, x ∈ intW D.what₂.places w ↔ ‖iL w x‖ ≤ 1
 
+/- English proof (translation)
+Use `choose lam iL h1 h2 using fun w => exists_placeEmb D w`. Conclude with `⟨⟨lam, iL, fun w x => by`. Take `⟨hx, e⟩` from `h1 w x`. Rewrite using `[lamV, dif_pos hx, e], fun w x _ => (h1 w x).choose_spec, h2⟩⟩`.
+-/
 theorem entPl_nonempty (D : D7) : Nonempty (EntPl D) := by
   choose lam iL h1 h2 using fun w => exists_placeEmb D w
   exact ⟨⟨lam, iL, fun w x => by
@@ -73,6 +76,9 @@ def entZero (D : D7) (Dx : DivX D) (Tw : TwForms D) (P : EntPl D)
     (h0 : ∀ u μ i, Subsingleton ((Tw.fm u μ).lat i).V) : KerEnt D Dx Tw :=
   zeroEnt D Dx Tw P.lam P.iL P.iL_lam P.iL_int h0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem entZero_lam (D : D7) (Dx Tw P h0) : (entZero D Dx Tw P h0).lam = P.lam := rfl
 
 end Formalism.BasicNotions.Examples₂

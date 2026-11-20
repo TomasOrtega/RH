@@ -13,6 +13,17 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.LocalInj
 
+/- English proof (translation)
+Introduce `R' _ _ _ _ G₁ _ _ hG x`. Use `haveI : Smooth G₁.hom := hG.smooth`. Use `haveI : Flat G₁.hom := inferInstance`. Establish `hst : Function.Injective (G₁.hom.stalkMap x).hom`. Establish `h` using `Flat.stalkMap G₁.hom x`.
+
+Use `letI := (G₁.hom.stalkMap x).hom.toAlgebra`. Use `haveI : Module.Flat ((Sp R').presheaf.stalk (G₁.hom x)) (G₁.left.presheaf.stalk x) := h`. Establish `: IsLocalHom (algebraMap ((Sp R').presheaf.stalk (G₁.hom x)) (G₁.left.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (G₁.hom.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := (Sp R').presheaf.stalk (G₁.hom x)) (B := G₁.left.presheaf.stalk x)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective ((Sp R').presheaf.stalk (G₁.hom x)) (G₁.left.presheaf.stalk x)`.
+
+Establish `hgerm : Function.Injective ((Sp R').presheaf.germ ⊤ (G₁.hom x) trivial).hom`. Establish `hU` using `isAffineOpen_top (Sp R')`. Set `_` to `(Sp R').presheaf.algebra_section_stalk (U := ⊤) ⟨G₁.hom x, trivial⟩`. Use `hU.isLocalization_stalk ⟨G₁.hom x, trivial⟩` as an intermediate fact. Use `haveI : IsDomain Γ(Sp R', ⊤) := (Scheme.ΓSpecIso (CommRingCat.of R')).commRingCatIsoToRingEquiv.toMulEquiv.isDomain_iff.mpr inferInstance`.
+
+Conclude with `IsLocalization.injective (M := (hU.primeIdealOf ⟨G₁.hom x, trivial⟩).asIdeal.primeCompl) (S := (Sp R').presheaf.stalk ((⟨G₁.hom x, trivial⟩ : (⊤ : (Sp R').Opens)) : Sp R')) (Ideal.primeCompl_le_nonZeroDivisors _)`. Establish `hiso : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R')).inv).1`. Establish `e : ⇑((G₁.left.presheaf.germ ⊤ x trivial).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom)) = ⇑(G₁.hom.stalkMap x).hom ∘ ⇑((Sp R').presheaf.germ ⊤ (G₁.hom x) trivial).hom ∘ ⇑(Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom`. Use function extensionality and compare the values at `a`. Conclude with `(Scheme.Hom.germ_stalkMap_apply G₁.hom ⊤ x trivial _).symm`.
+
+Rewrite using `[e]`. Conclude with `hst.comp (hgerm.comp hiso)`.
+-/
 theorem base_to_stalk_injective : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'], AdmBase R' (maximalIdeal R') → ∀ (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ x : G₁.left, Function.Injective ((G₁.left.presheaf.germ ⊤ x trivial).hom.comp ((G₁.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom)) := by
   intro R' _ _ _ _ G₁ _ _ hG x
   haveI : Smooth G₁.hom := hG.smooth

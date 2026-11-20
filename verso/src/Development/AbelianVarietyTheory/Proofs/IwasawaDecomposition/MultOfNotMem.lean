@@ -17,9 +17,15 @@ def coordOf {H : Host E} {Dw : Datum H} {n : ℕ} (e : Fin n ≃ GlobalTheory.Al
 def InDom {H : Host E} {Dw : Datum H} (z : GlobalTheory.AllWt.Psi H → Matrix (Fin Dw.p) (Fin Dw.q) ℂ) : Prop :=
   ∀ τ, (1 - (z τ)ᴴ * z τ).PosDef
 
+/- English proof (translation)
+Simplify using `[Datum.mult, h]`.
+-/
 theorem mult_of_mem {H : Host E} (Dw : Datum H) {τ : E →+* ℂ} (h : τ (H.rt : E) = H.rt0) : Dw.mult τ = Dw.p := by
   simp [Datum.mult, h]
 
+/- English proof (translation)
+Simplify using `[Datum.mult, h]`.
+-/
 theorem mult_of_not_mem {H : Host E} (Dw : Datum H) {τ : E →+* ℂ} (h : ¬ τ (H.rt : E) = H.rt0) :
     Dw.mult τ = Dw.q := by
   simp [Datum.mult, h]

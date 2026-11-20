@@ -12,6 +12,9 @@ noncomputable section
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Use `i.naturality (homOfLE h).op` as an intermediate fact. Conclude with `congrArg (fun φ => φ.hom r) this`.
+-/
 lemma app_resO (i : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (r : Γ(Y, U)) :
     i.app V (resO h r) = resO ((Opens.map i.base).monotone h) (i.app U r) := by
   have := i.naturality (homOfLE h).op
@@ -19,15 +22,32 @@ lemma app_resO (i : X ⟶ Y) {U V : Y.Opens} (h : V ≤ U) (r : Γ(Y, U)) :
 
 variable (i : X ⟶ Y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma resF_pushforward (F : X.Modules) {U V : Y.Opens} (h : V ≤ U)
     (m : Γ((Scheme.Modules.pushforward i).obj F, U)) :
     resF ((Scheme.Modules.pushforward i).obj F) h m =
       resF F ((Opens.map i.base).monotone h) m := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma smul_pushforward (F : X.Modules) {U : Y.Opens} (r : Γ(Y, U))
     (m : Γ((Scheme.Modules.pushforward i).obj F, U)) :
     r • m = (i.app U r • (show Γ(F, i ⁻¹ᵁ U) from m) : Γ(F, i ⁻¹ᵁ U)) := rfl
 
+/- English proof (translation)
+Use `isQuasicoherent_of_affineCover _ (fun V : Y.affineOpens => (V : Y.Opens)) (fun V => V.2) (iSup_affineOpens_eq_top Y) ?_ ?_` and prove the remaining obligations. Introduce `V f`. Establish `hV' : IsAffineOpen (i ⁻¹ᵁ (V : Y.Opens))` using `V.2.preimage i`. Establish `hb : i ⁻¹ᵁ Y.basicOpen f = X.basicOpen (i.app V f)` using `Scheme.preimage_basicOpen i f`. Use `show ∀ m : Γ(F, i ⁻¹ᵁ Y.basicOpen f), ∃ (e : ℕ) (m' : Γ(F, i ⁻¹ᵁ (V : Y.Opens))), resF F ((Opens.map i.base).monotone (Y.basicOpen_le f)) m' = i.app (Y.basicOpen f) (resO (Y.basicOpen_le f) f ^ e) • m`.
+
+Introduce `m`. Take `⟨e, m', hm'⟩` from `qcoh_exists_res_eq F hV' (i.app V f) (resF F hb.ge m)`. Use `⟨e, m', ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (resF F hb.le) hm'`. Rewrite `h2` using `[resF_resF, resF_smul, resF_resF, resF_self, map_pow, resO_resO]`.
+
+Rewrite using `[h2, map_pow, app_resO]`. Introduce `V f`. Establish `hV' : IsAffineOpen (i ⁻¹ᵁ (V : Y.Opens))` using `V.2.preimage i`. Establish `hb : i ⁻¹ᵁ Y.basicOpen f = X.basicOpen (i.app V f)` using `Scheme.preimage_basicOpen i f`. Use `show ∀ m : Γ(F, i ⁻¹ᵁ (V : Y.Opens)), resF F ((Opens.map i.base).monotone (Y.basicOpen_le f)) m = 0 → ∃ e : ℕ, i.app V (f ^ e) • m = 0`.
+
+Introduce `m hm`. Take `⟨e, he⟩` from `qcoh_exists_pow_smul_eq_zero F hV' (i.app V f) m (by`. Establish `h2` using `congrArg (resF F hb.ge) hm`. Rewrite `h2` using `[resF_resF, map_zero]`. Conclude with `h2)`.
+
+Conclude with `⟨e, by rw [map_pow]; exact he⟩`.
+-/
 theorem isQuasicoherent_pushforward_of_isAffineHom [IsAffineHom i] (F : X.Modules)
     [F.IsQuasicoherent] : ((Scheme.Modules.pushforward i).obj F).IsQuasicoherent := by
   refine isQuasicoherent_of_affineCover _ (fun V : Y.affineOpens => (V : Y.Opens))
@@ -57,6 +77,15 @@ theorem isQuasicoherent_pushforward_of_isAffineHom [IsAffineHom i] (F : X.Module
       exact h2)
     exact ⟨e, by rw [map_pow]; exact he⟩
 
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Use `isQuasicoherent_pushforward_of_isAffineHom i F` as an intermediate fact. Use `isCoherent_of_affineCover _ (fun V : Y.affineOpens => (V : Y.Opens)) (fun V => V.2) (iSup_affineOpens_eq_top Y) (fun V => ?_)` and prove the remaining obligations. Establish `hfin` using `hF.2 _ (V.2.preimage i)`. Take `⟨S, hS⟩` from `hfin.fg_top`.
+
+Establish `hsurj` using `Scheme.Hom.app_surjective i V V.2`. Set `S' : Finset Γ((Scheme.Modules.pushforward i).obj F, V)` to `S`. Use `⟨⟨S', ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ x : Γ(F, i ⁻¹ᵁ (V : Y.Opens)), x ∈ Submodule.span Γ(X, i ⁻¹ᵁ (V : Y.Opens)) (S : Set Γ(F, i ⁻¹ᵁ (V : Y.Opens))) → (show Γ((Scheme.Modules.pushforward i).obj F, V) from x) ∈ Submodule.span Γ(Y, V) (S' : Set Γ((Scheme.Modules.pushforward i).obj F, V))`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`.
+
+Take `⟨c', rfl⟩` from `hsurj c`. Conclude with `Submodule.smul_mem _ c' hx`. Rewrite using `[eq_top_iff]`. Introduce `m _`. Conclude with `key m (by rw [hS]; exact Submodule.mem_top)`.
+-/
 theorem isCoherent_pushforward_of_isClosedImmersion [IsClosedImmersion i] {F : X.Modules}
     (hF : IsCoherent F) : IsCoherent ((Scheme.Modules.pushforward i).obj F) := by
   have := hF.1
@@ -92,6 +121,9 @@ attribute [local instance] Abelian.hasFiniteBiproducts
 
 variable {Y : Scheme.{u}}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+-/
 lemma sum_val_app' {M N : SheafOfModules.{u} Y.ringCatSheaf} {κ : Type*} (s : Finset κ)
     (f : κ → (M ⟶ N)) (W : Y.Opens) (x : M.val.obj (op W)) :
     (∑ k ∈ s, f k).val.app (op W) x = ∑ k ∈ s, (f k).val.app (op W) x := by
@@ -102,6 +134,9 @@ lemma sum_val_app' {M N : SheafOfModules.{u} Y.ringCatSheaf} {κ : Type*} (s : F
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
     rfl
 
+/- English proof (translation)
+Set `b` to `Bicone.ofColimitCocone (colimit.isColimit (Discrete.functor fun _ : κ => SheafOfModules.unit Y.ringCatSheaf))`. Establish `hb : b.IsBilimit` using `biconeIsBilimitOfColimitCoconeOfIsColimit (colimit.isColimit _)`. Establish `h` using `congrArg (fun φ => φ.val.app (op W) z) (IsBilimit.total hb)`. Establish `h2` using `sum_val_app' Finset.univ (fun j => b.π j ≫ b.ι j) W z`. Conclude with `⟨fun k => (b.π k).val.app (op W) z, h.symm.trans h2⟩`.
+-/
 lemma free_section_eq_sum {κ : Type u} [Fintype κ] (W : Y.Opens)
     (z : (SheafOfModules.free (R := Y.ringCatSheaf) κ).val.obj (op W)) :
     ∃ c : κ → Γ(Y, W), z = ∑ k, (SheafOfModules.ιFree (R := Y.ringCatSheaf) k).val.app (op W)
@@ -113,10 +148,40 @@ lemma free_section_eq_sum {κ : Type u} [Fintype κ] (W : Y.Opens)
   have h2 := sum_val_app' Finset.univ (fun j => b.π j ≫ b.ι j) W z
   exact ⟨fun k => (b.π k).val.app (op W) z, h.symm.trans h2⟩
 
+/- English proof (translation)
+The claim follows from `(s.property (homOfLE (le_top : W ≤ ⊤)).op).symm`.
+-/
 lemma sections_val_eq_resF (F : Y.Modules) (s : F.sections) (W : Y.Opens) :
     (show Γ(F, W) from s.val (op W)) = resF F (le_top : W ≤ ⊤) (show Γ(F, ⊤) from s.val (op ⊤)) :=
   (s.property (homOfLE (le_top : W ≤ ⊤)).op).symm
 
+/- English proof (translation)
+Establish `: Finite σ.I` using `(inferInstance : σ.IsFiniteType).finite`. Use `Fintype.ofFinite σ.I` as an intermediate fact. Use `set N := Submodule.span Γ(Y, V) (Set.range fun k => resF G (le_top : V ≤ ⊤) (show Γ(G, ⊤) from (σ.s k).val (op ⊤))) with hN`. Set `π : freeM Y σ.I ⟶ G` to `G.freeHomEquiv.symm σ.s`. Establish `hπ : Epi π` using `⟨fun g h e => σ.epi.left_cancellation g h e⟩`.
+
+Establish `hab : Epi (modulesAbMap π)` using `epi_modulesAbMap π`. Establish `hls` using `(Sheaf.isLocallySurjective_iff_epi' (φ := modulesAbMap π)).2 hab`. Establish `hloc : ∀ g : Γ(G, V), ∀ y ∈ V, ∃ f : Γ(Y, V), y ∈ Y.basicOpen f ∧ ∃ a : ℕ, f ^ a • g ∈ N`. Introduce `g y hy`. Establish `hmem` using `Presheaf.IsLocallySurjective.imageSieve_mem (self := hls) (U := V) g`.
+
+Rewrite `hmem` using `[Opens.mem_grothendieckTopology]`. Take `⟨W, iW, ⟨z, hz⟩, hyW⟩` from `hmem y hy`. Take `⟨f, hfW, hyf⟩` from `hV.exists_basicOpen_le (V := W) ⟨y, hyW⟩ hy`. Establish `hDV : Y.basicOpen f ≤ V` using `Y.basicOpen_le f`. Use `set x : σ.I → Γ(G, ⊤) := fun k => (show Γ(G, ⊤) from (σ.s k).val (op ⊤)) with hx`.
+
+Take `⟨c, hc⟩` from `free_section_eq_sum (Y := Y) (Y.basicOpen f) (resF (freeM Y σ.I) hfW (show Γ(freeM Y σ.I, W) from z))`. Establish `hg : resF G hDV g = ∑ k, c k • resF G (le_top : Y.basicOpen f ≤ ⊤) (x k)`. Establish `h1 : resF G hfW (π.app W z) = π.app (Y.basicOpen f) (resF (freeM Y σ.I) hfW z)` using `(NatTrans.naturality_apply (modulesAbMap π).hom (homOfLE hfW).op z).symm`. Establish `h2 : π.app W z = resF G iW.le g` using `hz`. Rewrite `h1` using `[h2, resF_resF, hc]`.
+
+Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(π.val.app (op (Y.basicOpen f))) (∑ k, (SheafOfModules.ιFree k).val.app (op (Y.basicOpen f)) (c k)) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[freeHomEquiv_symm_app_ιFree, sections_val_eq_resF]`.
+
+Set `_ : Algebra Γ(Y, V) Γ(Y, Y.basicOpen f)` to `(resO hDV).toAlgebra`. Use `hV.isLocalization_basicOpen f` as an intermediate fact. Use `choose n b hb using fun k => IsLocalization.Away.surj f (c k)`. Set `a` to `∑ k, n k`. Establish `hna : ∀ k, n k ≤ a` using `fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`.
+
+Set `b' : σ.I → Γ(Y, V)` to `fun k => b k * f ^ (a - n k)`. Establish `hb' : ∀ k, resO hDV (b' k) = resO hDV f ^ a * c k`. Introduce `k`. Use `hb k` as an intermediate fact. Express the relevant statement in the definitionally equal form `c k * resO hDV f ^ n k = resO hDV (b k) at this`.
+
+Simplify using `only [b', map_mul, map_pow, ← this]`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' (hna k), mul_comm]`. Set `δ : Γ(G, V)` to `f ^ a • g - ∑ k, b' k • resF G (le_top : V ≤ ⊤) (x k)`. Establish `hδ : resF G hDV δ = 0`. Simplify using `only [δ, map_sub, map_sum, resF_smul, resF_resF, hg, Finset.smul_sum, smul_smul, map_pow, hb']`.
+
+Rewrite using `[sub_self]`. Take `⟨e, he⟩` from `qcoh_exists_pow_smul_eq_zero G hV f δ hδ`. Use `⟨f, hyf, e + a, ?_⟩` and prove the remaining obligations. Establish `: f ^ (e + a) • g = ∑ k, (f ^ e * b' k) • resF G (le_top : V ≤ ⊤) (x k)`. Simplify using `only [δ, smul_sub, Finset.smul_sum, smul_smul] at he`.
+
+Rewrite using `[pow_add]`. Conclude with `sub_eq_zero.1 he`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[eq_top_iff]`.
+
+Introduce `g _`. Establish `hT : Ideal.span {f : Γ(Y, V) | ∃ a : ℕ, f ^ a • g ∈ N} = ⊤`. Rewrite using `[← hV.iSup_basicOpen_eq_self_iff]`. Apply `le_antisymm (iSup_le fun f => Y.basicOpen_le _)` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨f, hyf, a, ha⟩` from `hloc g y hy`. Conclude with `Opens.mem_iSup.2 ⟨⟨f, a, ha⟩, hyf⟩`. Establish `hrad : Ideal.span {f : Γ(Y, V) | ∃ a : ℕ, f ^ a • g ∈ N} ≤ (N.colon {g}).radical` using `Ideal.span_le.2 fun f ⟨a, ha⟩ => ⟨a, Submodule.mem_colon_singleton.2 ha⟩`. Establish `hI : N.colon {g} = ⊤` using `Ideal.radical_eq_top.1 (eq_top_iff.2 (hT ▸ hrad))`. Establish `h1 : (1 : Γ(Y, V)) ∈ N.colon {g}` using `hI ▸ Submodule.mem_top`.
+
+Simplify using `using Submodule.mem_colon_singleton.1 h1`.
+-/
 theorem span_eq_top_of_generatingSections (G : Y.Modules) [G.IsQuasicoherent]
     (σ : G.GeneratingSections) [σ.IsFiniteType] {V : Y.Opens} (hV : IsAffineOpen V) :
     Submodule.span Γ(Y, V) (Set.range fun k => resF G (le_top : V ≤ ⊤)
@@ -194,6 +259,15 @@ theorem span_eq_top_of_generatingSections (G : Y.Modules) [G.IsQuasicoherent]
   have h1 : (1 : Γ(Y, V)) ∈ N.colon {g} := hI ▸ Submodule.mem_top
   simpa using Submodule.mem_colon_singleton.1 h1
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `h`. Establish `: Finite σ.I` using `hσ.finite`. Use `isQuasicoherent_pushforward_of_isAffineHom i M` as an intermediate fact. Use `exists_generatingSections M (fun U : Y.affineOpens => i ⁻¹ᵁ (U : Y.Opens)) (fun U => U.2.preimage i) ?_ (κ := σ.I) (fun k => (show Γ(M, ⊤) from (σ.s k).val (op ⊤))) (fun U => ?_)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_iSup, iSup_affineOpens_eq_top]`.
+
+Both sides reduce to the same expression. Establish `hY` using `span_eq_top_of_generatingSections _ σ U.2`. Rewrite using `[eq_top_iff]`. Introduce `m _`. Establish `key : ∀ z : Γ((Scheme.Modules.pushforward i).obj M, U), z ∈ Submodule.span Γ(Y, U) (Set.range fun k => resF ((Scheme.Modules.pushforward i).obj M) (le_top : (U : Y.Opens) ≤ ⊤) (show Γ((Scheme.Modules.pushforward i).obj M, ⊤) from (σ.s k).val (op ⊤))) → (show Γ(M, i ⁻¹ᵁ (U : Y.Ope …`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_mem _ (i.app U c) hx`. Conclude with `key m (by rw [hY]; exact Submodule.mem_top)`.
+-/
 theorem exists_generatingSections_of_pushforward_of_isAffineHom {X : Scheme.{u}} (i : X ⟶ Y)
     [IsAffineHom i] (M : X.Modules) [M.IsQuasicoherent]
     (h : ∃ σ : ((Scheme.Modules.pushforward i).obj M).GeneratingSections, σ.IsFiniteType) :

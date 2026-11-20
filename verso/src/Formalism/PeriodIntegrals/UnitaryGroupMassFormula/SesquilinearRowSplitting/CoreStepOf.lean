@@ -39,6 +39,9 @@ def AsmStep : Prop :=
     (Λ : Submodule (𝓞 E) S.V), CoreHyp S aa F0 Λ → ∀ f, FrameP S aa F0 Λ f →
       (∀ a b, S.hT (f a) (f b) = 0) → Formalism.L2.SG.Saturated.IsSplitBy aa F0 Λ
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T aa F0 Λ hC`. Take `⟨f, hf⟩` from `h1 E S r T aa F0 Λ hC`. Take `⟨f', hf', hiso⟩` from `h2 E S r T aa F0 Λ hC f hf`. Conclude with `h3 E S r T aa F0 Λ hC f' hf' hiso`.
+-/
 theorem coreStep_of (h1 : FrameStep) (h2 : IsoStep) (h3 : AsmStep) : CoreStep := by
   intro E _ _ _ S r T aa F0 Λ hC
   obtain ⟨f, hf⟩ := h1 E S r T aa F0 Λ hC

@@ -4,6 +4,11 @@ open Formalism.MainNotions.S
 
 namespace GlobalTheory.SlocCong
 
+/- English proof (translation)
+Introduce `v hv`. Establish `: Submodule.span E (f '' {c | c < a}) ≤ (Submodule.span E (f '' {c | c < a})).comap g`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `h1 : Submodule.span E (f '' {c' | c' < c}) ≤ Submodule.span E (f '' {c | c < a})` using `Submodule.span_mono (Set.image_mono fun c' (hc' : c' < c) => (show c' < a from lt_trans hc' hc))`.
+
+Establish `h2 : f c ∈ Submodule.span E (f '' {c | c < a})` using `Submodule.subset_span ⟨c, hc, rfl⟩`. Use `Submodule.add_mem _ (h1 (hg c)) h2` as an intermediate fact. Simplify using `using this`. Conclude with `this hv`.
+-/
 theorem stab_of_flag {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V] {n : ℕ}
     (f : Fin n → V) (g : V →ₗ[E] V)
     (hg : ∀ a, g (f a) - f a ∈ Submodule.span E (f '' {c | c < a})) (a : Fin n) :
@@ -19,6 +24,15 @@ theorem stab_of_flag {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module
     simpa using this
   exact this hv
 
+/- English proof (translation)
+Establish `hbt : W.BlockTriangular id` using `fun i j h => hW i j h`. Establish `hbt' : W'.BlockTriangular id` using `fun i j h => hW' i j h`. Establish `hdet : IsUnit W.det`. Rewrite using `[Matrix.det_of_upperTriangular hbt]`. Conclude with `IsUnit.prod_univ_iff.2 hu`.
+
+Use `haveI := W.invertibleOfIsUnitDet hdet`. Establish `hinv : W⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Establish `diag : ∀ P Q : Matrix (Fin n) (Fin n) R, P.BlockTriangular id → Q.BlockTriangular id → ∀ a, (P * Q) a a = P a a * Q a a`. Introduce `P Q hP hQ a`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_single a (fun c _ hc => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[hP h, zero_mul]`. Rewrite using `[hQ h, mul_zero]`. Use `⟨W⁻¹ * W', fun a b h => (hinv.mul hbt') h, fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[diag _ _ hinv hbt', hd, ← diag _ _ hinv hbt, Matrix.nonsing_inv_mul _ hdet, Matrix.one_apply_eq]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul]`.
+-/
 theorem exists_unitri {R : Type} [CommRing R] {n : ℕ} (W W' : Matrix (Fin n) (Fin n) R)
     (hW : ∀ a b, b < a → W a b = 0) (hW' : ∀ a b, b < a → W' a b = 0) (hd : ∀ a, W' a a = W a a)
     (hu : ∀ a, IsUnit (W a a)) :
@@ -46,6 +60,29 @@ end GlobalTheory.SlocCong
 
 namespace GlobalTheory.SlocCong
 
+/- English proof (translation)
+Establish `fmem : ∀ c a : Fin (r + 1), c < a → Fr.f c ∈ Submodule.span E (Fr.f '' {c | c < a})` using `fun c a h => Submodule.subset_span ⟨c, h, rfl⟩`. Establish `Smono : ∀ a b : Fin (r + 1), a ≤ b → Submodule.span E (Fr.f '' {c | c < a}) ≤ Submodule.span E (Fr.f '' {c | c < b})` using `fun a b h => Submodule.span_mono (Set.image_mono fun c (hc : c < a) => (show c < b from lt_of_lt_of_le hc h))`. Set `Q : (V ≃ₗ[E] V) → Prop` to `fun g => ∀ a, g (Fr.f a) - Fr.f a ∈ Submodule.span E (Fr.f '' {c | c < a})`. It suffices to establish `hQ : Q g from hQ a`. Proceed by induction on `hg using Subgroup.closure_induction with`.
+
+Consider the case `mem g hg`. Take `⟨-, hflag, hperp⟩` from `hg`. Introduce `a`. Break down `Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl` into its components or cases. Establish `hv : Fr.f i.castSucc ∈ Fr.Fj (i.val + 1)` using `Submodule.subset_span ⟨i, by simp, rfl⟩`.
+
+Use `hflag (i.val + 1) (by omega) _ hv` as an intermediate fact. Simplify using `only [Nat.add_sub_cancel] at this`. Use `(Submodule.span_le.2 ?_) this` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `fmem b.castSucc i.castSucc (Fin.castSucc_lt_castSucc_iff.2 (Fin.lt_def.2 hb))`.
+
+Establish `hz : Fr.f (Fin.last r) ∈ H.perp (H.X Fr.f)`. Introduce `x hx`. Establish `h0 : H.h x (Fr.f (Fin.last r)) = 0`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨b, rfl⟩` from `hx`. Conclude with `Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last b))`. Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`.
+
+Rewrite using `[H.h_herm, h0, map_zero]`. Use `hperp _ hz` as an intermediate fact. Use `(Submodule.span_le.2 ?_) this` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `fmem b.castSucc (Fin.last r) (Fin.castSucc_lt_last b)`.
+
+Consider the case `one => intro a`. Simplify using the standard rewrite rules. Consider the case `mul g h _ _ hg hh`. Introduce `a`. Use `Submodule.add_mem _ (stab_of_flag Fr.f (g : V →ₗ[E] V) hg a _ (hh a)) (hg a)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearEquiv.coe_coe, map_sub, LinearEquiv.mul_apply]`. Normalize the expressions using the abelian group laws. Consider the case `inv g _ hg`. Introduce `a`.
+
+Proceed by induction on `a using WellFoundedLT.induction with`. Consider the case `_ a ih`. Establish `hst : ∀ v ∈ Submodule.span E (Fr.f '' {c | c < a}), g⁻¹ v ∈ Submodule.span E (Fr.f '' {c | c < a})`. Introduce `v hv`. Establish `: Submodule.span E (Fr.f '' {c | c < a}) ≤ (Submodule.span E (Fr.f '' {c | c < a})).comap (g⁻¹ : V ≃ₗ[E] V).toLinearMap`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `Submodule.add_mem _ (Smono c a (le_of_lt hc) (ih c hc)) (fmem c a hc)` as an intermediate fact. Simplify using `using this`. Conclude with `this hv`.
+
+Use `Submodule.neg_mem _ (hst _ (hg a))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[map_sub]`.
+-/
 theorem flag_of_mem_N {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {V : Type} [AddCommGroup V]
     [Module E V] {H : Loc.HermSp M V} {r : ℕ} (Fr : LocNG.FrameD H r) (g : V ≃ₗ[E] V) (hg : g ∈ Fr.N)
@@ -114,6 +151,39 @@ end GlobalTheory.SlocCong
 
 namespace GlobalTheory.SlocCong
 
+/- English proof (translation)
+Establish `hLam : ∀ v ∈ Fr.LamStd L, ∀ i, H.h v (Fr.es i) ∈ M.L.O`. Introduce `v hv i`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1 i`. Consider the case `zero => rw [H.h_zero_left]`.
+
+Conclude with `M.L.O.zero_mem`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`. Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[show a • x = (a : E) • x from rfl, H.h_smul_left]`.
+
+Conclude with `M.L.O.mul_mem a.2 hx`. Establish `hsum : ∀ (w : V) (c : Fin (r + 1) → E), H.h (∑ a, c a • Fr.f a) w = ∑ a, c a * H.h (Fr.f a) w`. Introduce `w c`. Set `φ : V →ₗ[E] E` to `{ toFun := fun v => H.h v w map_add' := fun x y => H.h_add_left x y w map_smul' := fun a x => by simp [H.h_smul_left] }`. Rewrite using `[show H.h (∑ a, c a • Fr.f a) w = φ (∑ a, c a • Fr.f a) from rfl, map_sum]`.
+
+Simplify using `[φ, H.h_smul_left]`. Establish `hex : ∀ b, ∃ l : Fin (r + 1) →₀ E, (∀ c, ¬ c < b → l c = 0) ∧ g (y b) = B b b • Fr.f b + ∑ c, l c • Fr.f c`. Introduce `b`. Establish `hmem : g (y b) - B b b • Fr.f b ∈ Submodule.span E (Fr.f '' {c | c < b})`. Establish `e1 : g (y b) - B b b • Fr.f b = ∑ a, (B a b • g (Fr.f a) - if a = b then B b b • Fr.f b else 0)`.
+
+Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_eq' Finset.univ b, if_pos (Finset.mem_univ _), hy b]`. Simplify using `[map_sum, map_smul]`. Rewrite using `[e1]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+
+Rewrite using `[if_neg (ne_of_lt h), sub_zero]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `stab_of_flag Fr.f (g : V →ₗ[E] V) hg b _ (Submodule.subset_span ⟨a, h, rfl⟩)`. Rewrite using `[if_pos rfl, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (hg a)`.
+
+Rewrite using `[hB a b h, if_neg (ne_of_gt h), zero_smul, sub_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨l, hl, hlc⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).1 hmem`. Use `⟨l, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hc (hl (Finsupp.mem_support_iff.2 hne))`. Rewrite `hlc` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[hlc]`. Normalize the expressions using the abelian group laws. Use `choose l hl0 hlsum using hex`.
+
+Use `⟨Matrix.of fun c b => l b c + if c = b then B b b else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Simplify using `[hl0 b a (not_lt.2 (le_of_lt h)), ne_of_gt h]`. Introduce `a`. Simplify using `[hl0 a a (lt_irrefl a)]`.
+
+Establish `hcoord : ∀ b, ∀ c, c ≠ Fin.last r → l b c + (if c = b then B b b else 0) ∈ M.L.O`. Introduce `b c hc`. Take `⟨i, rfl⟩` from `Fin.exists_castSucc_eq.2 hc`. Establish `hv` using `hLam _ (hyL b) i`. Establish `eqv : g (y b) = ∑ c, (l b c + if c = b then B b b else 0) • Fr.f c`.
+
+Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hlsum b]`. Normalize the expressions using the abelian group laws. Rewrite `hv` using `[eqv, hsum]`. Rewrite `hv` using `[Finset.sum_eq_single i.castSucc]`.
+
+Rewrite `hv` using `[Fr.h_es i i, if_pos rfl, mul_one]`. Conclude with `hv`. Introduce `c _ hc'`. Break down `Fin.eq_castSucc_or_eq_last c with ⟨j, rfl⟩ | rfl` into its components or cases. Rewrite using `[Fr.h_es j i, if_neg (show j ≠ i from fun h => hc' (h ▸ rfl)), mul_zero]`.
+
+Rewrite using `[H.h_herm, Fr.h_sz, map_zero, mul_zero]`. Simplify using the standard rewrite rules. Introduce `c b`. Distinguish the cases in `hc : c = Fin.last r`. Substitute `hc` using the available equality.
+
+Simplify using `only [Matrix.of_apply]`. Rewrite using `[hl0 b (Fin.last r) (not_lt.2 (Fin.le_last b))]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `using hBO (Fin.last r)`.
+
+Simplify using `using M.L.O.zero_mem`. Conclude with `hcoord b c hc`. Introduce `b`. Simplify using `only [Matrix.of_apply, add_smul, Finset.sum_add_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hlsum b]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem coords_of_flag {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {V : Type} [AddCommGroup V]
     [Module E V] {H : Loc.HermSp M V} {r : ℕ} (Fr : LocNG.FrameD H r) (L : Submodule M.L.O (H.Wb Fr.f))
@@ -206,6 +276,33 @@ end GlobalTheory.SlocCong
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M V _ _ H r P d τ sg hsg hτ y x B B' hB hB' hd hu hy hx hyL hxL`. Take `⟨-, -, ⟨n, hn, hf, hL⟩, ⟨n', hn', hf', hL'⟩, hadm⟩` from `hτ`. Establish `hyL' : ∀ b, n⁻¹ (y b) ∈ P.A.LamStd d.L`. Introduce `b`. Use `hyL b` as an intermediate fact.
+
+Rewrite `this` using `[hL]`. Take `⟨u, hu, hu'⟩` from `Submodule.mem_map.1 this`. Establish `: n⁻¹ (y b) = u`. Rewrite using `[← hu']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `hu`. Establish `hxL' : ∀ b, n'⁻¹ (x b) ∈ P.B.LamStd d.L'`. Introduce `b`. Use `hxL b` as an intermediate fact.
+
+Rewrite `this` using `[hL']`. Take `⟨u, hu, hu'⟩` from `Submodule.mem_map.1 this`. Establish `: n'⁻¹ (x b) = u`. Rewrite using `[← hu']`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `hu`. Take `⟨W, hWt, hWd, hWO, hWy⟩` from `SlocCong.coords_of_flag P.A d.L n⁻¹ (SlocCong.flag_of_mem_N P.A n⁻¹ (inv_mem hn)) y B hB (fun a => (hu a).1) hy hyL'`. Take `⟨W', hWt', hWd', hWO', hWx⟩` from `SlocCong.coords_of_flag P.B d.L' n'⁻¹ (SlocCong.flag_of_mem_N P.B n'⁻¹ (inv_mem hn')) x B' hB' (fun a => hd a ▸ (hu a).1) hx hxL'`. Establish `hy2 : ∀ a, y a = ∑ c, W c a • τ.f c`.
+
+Introduce `a`. Use `congrArg n (hWy a)` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`. Rewrite using `[hf]`. Simplify using `using this`.
+
+Establish `hx2 : ∀ b, x b = ∑ c, W' c b • τ.f' c`. Introduce `b`. Use `congrArg n' (hWx b)` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`. Rewrite using `[hf']`.
+
+Simplify using `using this`. Set `WO : Matrix (Fin (r + 1)) (Fin (r + 1)) M.L.O` to `Matrix.of fun a b => ⟨W a b, hWO a b⟩`. Set `WO' : Matrix (Fin (r + 1)) (Fin (r + 1)) M.L.O` to `Matrix.of fun a b => ⟨W' a b, hWO' a b⟩`. Establish `hunit : ∀ a, IsUnit (WO a a)`. Introduce `a`.
+
+Take `⟨t, ht, ht1⟩` from `(hu a).2`. Use `isUnit_iff_exists_inv.2 ⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[WO, hWd, mul_comm, ht1]`. Take `⟨ξO, hξt, hξd, hξ⟩` from `SlocCong.exists_unitri WO WO' (fun a b h => Subtype.ext (by simp [WO, hWt a b h])) (fun a b h => Subtype.ext (by simp [WO', hWt' a b h])) (fun a => Subtype.ext (by simp [WO, WO', hWd, hWd', hd])) hunit`.
+
+Establish `hWξ : ∀ c b, W' c b = ∑ a, W c a * (ξO a b : E)`. Introduce `c b`. Use `congrArg (fun m => ((m c b : M.L.O) : E)) hξ` as an intermediate fact. Simplify using `[Matrix.mul_apply, WO, WO'] at this`. Conclude with `this.symm`.
+
+Use `⟨fun a b => (ξO a b : E), fun a b => (ξO a b).2, fun a b h => by simp [hξt a b h], fun a => by simp [hξd a], fun b => ?_⟩` and prove the remaining obligations. Establish `hadm'` using `(hadm sg hsg).1`. Establish `key : x b - ∑ a, (ξO a b : E) • y a = ∑ c, W' c b • (τ.f' c - τ.f c)`. Simplify using `only [hy2, Finset.smul_sum, smul_smul, smul_sub, Finset.sum_sub_distrib, hx2 b]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hWξ c b, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Rewrite using `[key]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ (⟨W' c b, hWO' c b⟩ : M.L.O) (hadm' c)` as an intermediate fact. Conclude with `this`.
+-/
 theorem loc_cong_unitri : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V) {r : ℕ} (P : LocNG.FPair H r) (d : LocNG.Datum P) (τ : Loc.Term V M r) (sg : Loc.SplitG M.L), M.split = some sg → LocNG.IsTermOver P d τ → ∀ (y x : Fin (r + 1) → V) (B B' : Matrix (Fin (r + 1)) (Fin (r + 1)) E), (∀ a b, b < a → B a b = 0) → (∀ a b, b < a → B' a b = 0) → (∀ a, B' a a = B a a) → (∀ a, B a a ∈ M.L.O ∧ ∃ t ∈ M.L.O, t * B a a = 1) → (∀ b, y b = ∑ a, B a b • P.A.f a) → (∀ b, x b = ∑ a, B' a b • P.B.f a) → (∀ a, y a ∈ τ.abelian₂) → (∀ b, x b ∈ τ.abelian₂) → ∃ ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (∀ a b, ξ a b ∈ M.L.O) ∧ (∀ a b, b < a → ξ a b = 0) ∧ (∀ a, ξ a a = 1) ∧ ∀ b, x b - ∑ a, ξ a b • y a ∈ H.smulLat (algebraMap F E (sg.q : F)) τ.abelian₂ := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r P d τ sg hsg hτ y x B B' hB hB' hd hu hy hx hyL hxL
   obtain ⟨-, -, ⟨n, hn, hf, hL⟩, ⟨n', hn', hf', hL'⟩, hadm⟩ := hτ

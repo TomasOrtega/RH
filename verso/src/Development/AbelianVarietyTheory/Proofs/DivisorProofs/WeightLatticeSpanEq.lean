@@ -42,6 +42,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
   {Z : Comp Xo c}
 
+/- English proof (translation)
+The claim follows from `| 0 => ⟨(TwSec.const x s.pts 1 one_ne_zero).copy (by rw [Nat.cast_zero, wtOf_zero])⟩ | n + 1 => by obtain ⟨t⟩ := exists_twPow s n exact ⟨(t.mul s).copy (by rw [← wtOf_add, add_zero]; push_cast; rfl)⟩`.
+-/
 theorem exists_twPow (s : TwSec U x Z (wtOf Dw 0 1)) : ∀ n : ℕ, Nonempty (TwSec U x Z (wtOf Dw 0 (n : ℤ)))
   | 0 => ⟨(TwSec.const x s.pts 1 one_ne_zero).copy (by rw [Nat.cast_zero, wtOf_zero])⟩
   | n + 1 => by
@@ -50,6 +53,21 @@ theorem exists_twPow (s : TwSec U x Z (wtOf Dw 0 1)) : ∀ n : ℕ, Nonempty (Tw
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Rewrite using `[eq_top_iff]`. Introduce `F _`. Establish `hF : F = ∑ Z : Comp Xo c, (⟨idem Z * (F : Rul Xo c), GlobalTheory.CompRestr.idem_mul_mem_cuspW hU Z F.2⟩ : cuspW Xo c U (G + G₀))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `(sum_idem_mul _).symm`. Rewrite using `[hF]`. Use `Submodule.sum_mem _ fun Z _ => ?_` and prove the remaining obligations.
+
+Take `⟨s⟩` from `hs Z`. Take `⟨φ, -, -, hA, -⟩` from `GlobalTheory.FlatTw.Mul.twSec_mulEquiv_integral E H Dw l Xo c r U x Z G₀ s G hG`. Take `⟨a, ha0, hlo, -⟩` from `GlobalTheory.FlatTw.Good.exists_twist_scalar s`. Set `p : cuspOn U Z (G + G₀)` to `⟨idem Z * (F : Rul Xo c), GlobalTheory.CompRestr.idem_mul_mem_cuspW hU Z F.2, by rw [mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)⟩`. Set `g : cuspOn U Z G` to `φ.symm p`.
+
+Establish `hmem : (⟨(g : Rul Xo c), g.2.1⟩ : cuspW Xo c U G) ∈ Submodule.span c.F (latW U G : Set (cuspW Xo c U G))`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 c.F)) c.F _ _ hmem`. Rewrite `ht` using `[Submodule.span_eq, Submonoid.smul_def, ← algebraMap_smul c.F]`.
+
+Use `set d : c.F := algebraMap (𝓞 c.F) c.F t with hd`. Establish `hd0 : d ≠ 0` using `by simpa [hd] using nonZeroDivisors.ne_zero t.2`. Establish `hf : d • g ∈ latOn U Z G` using `(mem_latOn U).2 ht`. Establish `hq` using `hA a ha0 hlo (d • g) hf ((a * d) • p) (by`. Simplify using `only [g, map_smul, LinearEquiv.apply_symm_apply, Submodule.coe_smul, smul_smul])`.
+
+Establish `hq'` using `(mem_latOn U).1 hq`. Establish `had : a * d ≠ 0` using `mul_ne_zero ha0 hd0`. Establish `e : (⟨idem Z * (F : Rul Xo c), GlobalTheory.CompRestr.idem_mul_mem_cuspW hU Z F.2⟩ : cuspW Xo c U (G + G₀)) = (a * d)⁻¹ • (⟨(((a * d) • p : cuspOn U Z (G + G₀)) : Rul Xo c), ((a * d) • p).2.1⟩ : cuspW Xo c U (G + G₀))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, smul_smul, inv_mul_cancel₀ had, one_smul, p]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hq')`.
+-/
 theorem span_latW_add (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G G₀ : WTZ E) (hG : Even G.2)
     (hs : ∀ Z : Comp Xo c, Nonempty (TwSec U x Z G₀))
     (h : Submodule.span c.F (latW U G : Set (cuspW Xo c U G)) = ⊤) :
@@ -92,6 +110,13 @@ theorem span_latW_add (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (G G₀ : WTZ
 
 end General
 
+/- English proof (translation)
+Introduce `_ D T hT j hp _ _ hj Y e o hG la _ _ hgood m`. Establish `hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `Formalism.L2.Pj.goodAt_of_two_primes hT.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Establish `hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hG.lev.1.2.1 hg0`. Establish `hs : ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, Nonempty (TwSec Y.U (xiR D) Z (wtOf (T.Q.Dw j) 0 (m : ℤ)))` using `fun Z => by`. Take `⟨s⟩` from `GlobalTheory.KeyTwDeep.twSec_keyRoot _ _ _ _ _ _ _ _ _ hG.unf hG.xiAbs hG.geo (le_add_right hp) hg Z`.
+
+Conclude with `exists_twPow s m`. Establish `h0` using `(hgood 0).2.2`. Rewrite `h0` using `[zero_add, one_smul]`. Establish `key` using `span_latW_add hG.unf (wtOf (T.Q.Dw j) la 0) (wtOf (T.Q.Dw j) 0 (m : ℤ)) (even_wtOf _ _) hs h0`. Establish `hGG : wtOf (T.Q.Dw j) la 0 + wtOf (T.Q.Dw j) 0 (m : ℤ) = wtOf (T.Q.Dw j) la (m : ℤ)`.
+
+Rewrite using `[← wtOf_add, add_zero, zero_add]`. Rewrite `key` using `[hGG]`. Conclude with `key`.
+-/
 theorem span_latW_wtOf : Hypotheses2 → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → (∀ k : ℕ, Y.GoodAt (wtOf _ ((k + 1) • la) 0)) → ∀ m : ℕ, Submodule.span Y.d.c₂.F (GlobalTheory.AllWt.latW Y.U (wtOf _ la m) : Set (Y.V (wtOf _ la m))) = ⊤ := by
   intro _ D T hT j hp _ _ hj Y e o hG la _ _ hgood m
   have hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p :=

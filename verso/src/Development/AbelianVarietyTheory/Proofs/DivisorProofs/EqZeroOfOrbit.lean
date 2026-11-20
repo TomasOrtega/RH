@@ -11,6 +11,11 @@ namespace GlobalTheory.SmoothCyclic
 
 open GlobalTheory.LowTypeDetermined
 
+/- English proof (translation)
+Introduce `D V S M τ ℓ hℓ v hv hv0 h0 w hw`. Take `⟨_, -, hσ, hi, -⟩` from `M.ds τ`. Establish `hs : M.sm τ = smooth (gramAt D V τ) (M.rep τ)` using `Submodule.span_eq (smooth (gramAt D V τ) (M.rep τ))`. Establish `hP` using `M.fr_unit τ`. Establish `h` using `M.fr_gram τ`.
+
+Use `eq_zero_of_translates hσ hi hP h hℓ (hs.le hv) hv0 (fun g hg => ?_) (hs.le hw)` and prove the remaining obligations. Establish `e : M.rep τ ((M.fr τ)⁻¹ * g * M.fr τ) = M.σ τ g` using `congrArg (M.σ τ) (conj_conj hP g)`. Rewrite using `[← e]`. Conclude with `h0 _ (conj_inv_mem hP h hg)`.
+-/
 theorem eq_zero_of_orbit : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau)
     (ℓ : M.H τ →ₗ[ℂ] ℂ), Sobolev₂ (lieAt V τ) (M.rep τ) ℓ → ∀ v ∈ M.sm τ, v ≠ 0 →
     (∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ℓ (M.rep τ g v) = 0) → ∀ w ∈ M.sm τ, ℓ w = 0 := by

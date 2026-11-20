@@ -39,6 +39,9 @@ abbrev Refill.to {a : Late B C} (c : Refill a) : Late B C :=
 abbrev Refill.ofSG (a : Late B C) (S : SStage B C a.W) (G : GJStage B C) : Refill a :=
   ⟨S, G, fun u => (a.V.div.Nu u).L, a.V.div.h, a.V.div.HH, a.V.div.HH_ge, a.V.div.etaF⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Refill.ofSG_to (a : Late B C) (S : SStage B C a.W) (G : GJStage B C) : (Refill.ofSG a S G).to = ⟨a.W, a.V, S, a.N, G⟩ := rfl
 
 abbrev Refill.ofDiv (a : Late B C) (L : ∀ u, Submodule (𝓞 B.LL) (a.V.div.Nu u).V) (h : B.Word → ℝ) : Refill a :=
@@ -93,6 +96,9 @@ def spEEc : type_of% (toChainReal R F tupT hm hTop).EEc := ((chainB c.to F tupT 
 
 variable (F tupT hm hTop) in
 
+/- English proof (translation)
+The claim follows from `(chain_EEc c.to F tupT hm hTop)`.
+-/
 theorem spEEc_eq : (toChainReal R F tupT hm hTop).EEc = spEEc c F tupT hm hTop := (chain_EEc c.to F tupT hm hTop)
 
 variable (F tupT hm hTop) in
@@ -101,6 +107,9 @@ def spCC : type_of% (toChainReal R F tupT hm hTop).CC := ((chainB c.to F tupT hm
 
 variable (F tupT hm hTop) in
 
+/- English proof (translation)
+The claim follows from `(chain_CC c.to F tupT hm hTop)`.
+-/
 theorem spCC_eq : (toChainReal R F tupT hm hTop).CC = spCC c F tupT hm hTop := (chain_CC c.to F tupT hm hTop)
 
 variable (F tupT hm hTop) in
@@ -109,6 +118,9 @@ def spCCP : type_of% (toChainReal R F tupT hm hTop).CCP := ((chainB c.to F tupT 
 
 variable (F tupT hm hTop) in
 
+/- English proof (translation)
+The claim follows from `(chain_CCP c.to F tupT hm hTop)`.
+-/
 theorem spCCP_eq : (toChainReal R F tupT hm hTop).CCP = spCCP c F tupT hm hTop := (chain_CCP c.to F tupT hm hTop)
 
 variable (F tupT hm hTop) in
@@ -117,6 +129,9 @@ def spCCX : type_of% (toChainReal R F tupT hm hTop).CCX := ((chainB c.to F tupT 
 
 variable (F tupT hm hTop) in
 
+/- English proof (translation)
+The claim follows from `(chain_CCX c.to F tupT hm hTop)`.
+-/
 theorem spCCX_eq : (toChainReal R F tupT hm hTop).CCX = spCCX c F tupT hm hTop := (chain_CCX c.to F tupT hm hTop)
 
 variable (F tupT hm hTop) in
@@ -125,15 +140,24 @@ def spCCXP : type_of% (toChainReal R F tupT hm hTop).CCXP := ((chainB c.to F tup
 
 variable (F tupT hm hTop) in
 
+/- English proof (translation)
+The claim follows from `(chain_CCXP c.to F tupT hm hTop)`.
+-/
 theorem spCCXP_eq : (toChainReal R F tupT hm hTop).CCXP = spCCXP c F tupT hm hTop := (chain_CCXP c.to F tupT hm hTop)
 
 variable (F tupT hm hTop) in
 
 def okB (l : Bool) (μ : a.D.what₂.Tup) : Prop := (chainB c.to F tupT hm hTop).IoOK l ((μ))
 
+/- English proof (translation)
+The claim follows from `chain_ioOK c.to F tupT hm hTop ((h))`.
+-/
 theorem okB_imp {l : Bool} {μ : a.D.what₂.Tup} (h : okB c F tupT hm hTop l μ) : (toChainReal R F tupT hm hTop).IoOK l μ :=
   chain_ioOK c.to F tupT hm hTop ((h))
 
+/- English proof (translation)
+Rewrite using `[e, hu, h]`.
+-/
 theorem eq_via {N : Type} {r : ℂ} (f : N → ℂ) {u u' v : N} (h : r = f u) (e : v = u') (hu : u' = u) : r = f v := by
   rw [e, hu, h]
 
@@ -141,6 +165,9 @@ def ioCB (l : Bool) (μ : a.D.what₂.Tup) (k : ℕ) (v : (toChainReal R F tupT 
   (by with_unfolding_all exact (((chainB c.to F tupT hm hTop).ioC l ((by with_unfolding_all exact (μ :))) k
     ((by with_unfolding_all exact ((LinearEquiv.ofEq _ _ (congrFun (congrFun (congrFun (spCC_eq c F tupT hm hTop) l) μ) (k + 1)) v) :)))).1 :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((chain_ioC c.to (R := R) (tupT μ) k ((v.1)) (((LinearEquiv.ofEq _ _ (congrFun (congrFun (congrFun (spCC_eq c F tupT hm hTop) l) μ) (k + 1)) v).2)) ((v.2))) : _))`.
+-/
 theorem ioCB_eq (l : Bool) (μ : a.D.what₂.Tup) (k : ℕ) (v : (toChainReal R F tupT hm hTop).CC l μ (k + 1)) :
     ioCB c l μ k v = ((toChainReal R F tupT hm hTop).ioC l μ k v).1 :=
   (by with_unfolding_all exact ((chain_ioC c.to (R := R) (tupT μ) k ((v.1))
@@ -149,6 +176,9 @@ theorem ioCB_eq (l : Bool) (μ : a.D.what₂.Tup) (k : ℕ) (v : (toChainReal R 
 def ioXB' (l : Bool) (μ : a.D.what₂.Tup) (v : (toChainReal R F tupT hm hTop).CCX l μ) : (toChainReal R F tupT hm hTop).Amb (a.D.R.m - 1) :=
   (by with_unfolding_all exact (((chainB c.to F tupT hm hTop).ioX l ((by with_unfolding_all exact (μ :))) ((by with_unfolding_all exact ((LinearEquiv.ofEq _ _ (congrFun (congrFun (spCCX_eq c F tupT hm hTop) l) μ) v) :)))).1 :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((chain_ioX c.to (R := R) hm hTop (tupT μ) ((by with_unfolding_all exact (v.1 :))) ((by with_unfolding_all exact ((topMult_tr c.to hTop) :))) ((by with_unfolding_all exact ((LinearEquiv.ofEq _ _ (congrFun (congrFun (spCCX_eq c F tupT hm hTop) l) μ) v) …`.
+-/
 theorem ioXB'_eq (l : Bool) (μ : a.D.what₂.Tup) (v : (toChainReal R F tupT hm hTop).CCX l μ) :
     ioXB' c l μ v = ((toChainReal R F tupT hm hTop).ioX l μ v).1 :=
   (by with_unfolding_all exact ((chain_ioX c.to (R := R) hm hTop (tupT μ) ((by with_unfolding_all exact (v.1 :))) ((by with_unfolding_all exact ((topMult_tr c.to hTop) :)))

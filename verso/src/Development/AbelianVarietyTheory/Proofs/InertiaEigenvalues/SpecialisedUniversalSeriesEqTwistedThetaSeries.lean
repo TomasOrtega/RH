@@ -22,6 +22,13 @@ section Fock
 
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
+/- English proof (translation)
+Establish `hA : ∀ k g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k g)` using `fun k g hg => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ hg`. Establish `hl : ∀ l : List (FVar D T.rank S.rank), l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g) (f + f') = l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g) f + l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨rfl, hf, hf'⟩`.
+
+Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`. Use `⟨?_, hA i _ ih.2.1, hA i _ ih.2.2⟩` and prove the remaining obligations. Rewrite using `[ih.1]`. Conclude with `GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ ih.2.1 ih.2.2`.
+
+Establish `e : pureTensorO ψ θ S T sS sT BS BT (f + f') = pureTensorO ψ θ S T sS sT BS BT f + pureTensorO ψ θ S T sS sT BS BT f'`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Simplify using `only [pureTensorO, pureTensorL, LinearMap.add_apply, Module.Basis.constr_basis, opPow]`. Conclude with `(hl _).1`. Rewrite using `[e, LinearMap.add_apply]`.
+-/
 theorem pureTensorO_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     {f f' : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hf' : IsThetaFunO ψ S T f') (P : PolF D T.rank S.rank) :
@@ -51,11 +58,19 @@ theorem pureTensorO_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     exact (hl _).1
   rw [e, LinearMap.add_apply]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun a ha => GlobalTheory.OrientedHeis.theta_smul _ (hf a ha)`.
+-/
 theorem theta_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → WO S T → ℂ) (hf : ∀ a ∈ s, IsThetaFunO ψ S T (f a)) :
     IsThetaFunO ψ S T (∑ a ∈ s, c a • f a) :=
   Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero
     fun a ha => GlobalTheory.OrientedHeis.theta_smul _ (hf a ha)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Use `GlobalTheory.FiniteFock.pureTensorO_smul ψ θ S T sS sT BS BT 0 0 P` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+
+Consider the case `insert a s ha ih`. Establish `hs : ∀ x ∈ s, IsThetaFunO ψ S T (f x)` using `fun x hx => hf x (Finset.mem_insert_of_mem hx)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, pureTensorO_add hψ hθ sS BS sT BT (GlobalTheory.OrientedHeis.theta_smul _ (hf a (Finset.mem_insert_self a s))) (theta_sum s c f hs) P, GlobalTheory.FiniteFock.pureTensorO_smul, ih hs]`.
+-/
 theorem pureTensorO_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → WO S T → ℂ) (hf : ∀ a ∈ s, IsThetaFunO ψ S T (f a))
@@ -74,6 +89,9 @@ theorem pureTensorO_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
         (theta_sum s c f hs) P,
       GlobalTheory.FiniteFock.pureTensorO_smul, ih hs]
 
+/- English proof (translation)
+Simplify using `only [series_apply, Frame.fock]`. Rewrite using `[pureTensorO_sum hB.frame.vac.1 hB.frame.vac.2.inf _ _ _ _ s c f hf P, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem series_sum {B : Base S T} (hB : B.Good) (ω : PairRep S T) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → WO S T → ℂ) (hf : ∀ a ∈ s, IsThetaFunO B.F.ψ S T (f a)) (h : GA D S) (P : PolF D T.rank S.rank) (g : GA D T) :
     series B.F ω (∑ a ∈ s, c a • f a) h P g = ∑ a ∈ s, c a * series B.F ω (f a) h P g := by
@@ -88,6 +106,9 @@ section Spec
 
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
+/- English proof (translation)
+Rewrite using `[map_add, ofAdd_add, map_mul, Units.val_mul, map_mul]`.
+-/
 theorem coef_add (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
     (a a' : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M)) :
@@ -98,6 +119,9 @@ theorem coef_add (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X
 
 open Classical in
 
+/- English proof (translation)
+Establish `e : a = ∑ PP, Pi.single PP (a PP)` using `(Finset.univ_sum_single a).symm`. Use `conv_lhs => rw [e]`. Rewrite using `[map_sum, ofAdd_sum, map_prod, Units.coe_prod, map_prod]`.
+-/
 theorem coef_prod (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
     (a : ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M)) :
@@ -109,6 +133,11 @@ theorem coef_prod (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : 
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [Base.locFn, specLoc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fintype.prod_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coef_prod ρ Y i b k Q M χ a, Finset.prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locFn_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ) :
     (ρ.B i j b).locFn (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) (specLoc ρ Y i j b k Q M χ) =
@@ -124,6 +153,11 @@ theorem locFn_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Base.vecAt, locFn_specLoc]`. Express the relevant statement in the definitionally equal form `(ρ.B i j b).F.vecL (ρ.B i j b).G _ _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem vecAt_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ) :
     (ρ.B i j b).vecAt (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) (specLoc ρ Y i j b k Q M χ) =
@@ -136,6 +170,9 @@ theorem vecAt_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Conclude with `Subgroup.isOpen_mono (H₁ := (Y.delU i Q M).ker) (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) (Y.delU_open i Q M)`. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`.
+-/
 theorem coord_open (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (P : Pl D.host.E) :
     IsOpen ((coord Y i Q M P).ker : Set (G D.host.E N.Om)) := by
   unfold coord
@@ -146,6 +183,15 @@ theorem coord_open (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (Q : Fin
   · rw [MonoidHom.ker_one]
     exact isOpen_univ
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym (detRoot (Wc D j) g)`. Establish `hker : IsOpen ((χ.comp (Y.delU i Q M)).ker : Set (G D.host.E N.Om))` using `Subgroup.isOpen_mono (H₁ := (Y.delU i Q M).ker) (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) (Y.delU_open i Q M)`. Establish `hn : X.l i ^ M ≠ 0` using `NeZero.ne _`. Establish `hpow : (χ.comp (Y.delU i Q M)) σ ^ (X.l i ^ M) = 1`. Rewrite using `[MonoidHom.comp_apply, ← map_pow]`.
+
+Establish `e : Y.delU i Q M σ ^ (X.l i ^ M) = 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Rewrite using `[toAdd_pow, toAdd_one, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, map_one]`. Establish `hd : Multiplicative.toAdd (detChar (Wc D j) ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).delQ (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))) g) = fun P => Multiplicative.toAdd (coord Y i (admissibleConjugatePairPlaces X i Q M) M P.1 σ)`. Use function extensionality and compare the values at `PP`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (ρ.rc.pull (coord Y i (admissibleConjugatePairPlaces X i Q M) M PP.1) (detRoot (Wc D j) g)) = _`. Rewrite using `[ρ.rc.pull_eq (coord_open Y i _ M PP.1) hσ]`.
+
+Express the relevant statement in the definitionally equal form `((charOf ρ.rc (ρ.eOk i b k) (χ.comp (Y.delU i Q M)) (detRoot (Wc D j) g) : Circle) : ℂ) = _`. Rewrite using `[charOf_eq ρ.rc (ρ.eOk i b k) hker hσ hn hpow, hd, MonoidHom.comp_apply, ← ofAdd_toAdd (Y.delU i Q M σ), delU_eq_spread hY (twSet_of_twOK hχ) (hρ.ch i) σ]`.
+-/
 theorem detChar_tw {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hY : GlobalTheory.UnivChar.IsUnivChar Y)
     (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E)) (M : ℕ)
     (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ) (hχ : TwOK i k Q (χ.comp (Y.delU i Q M)))
@@ -179,6 +225,15 @@ theorem detChar_tw {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂
 
 end Spec
 
+/- English proof (translation)
+Introduce `D N X ρ hρ Y hY i j b k Q M χ hχ h P`. Use function extensionality and compare the values at `g`. Establish `hB` using `hρ.base i j b`. Establish `hadm : (ρ.B i j b).admitted (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))` using `GlobalTheory.ChoiceAdm.adm_half_of_good_of_split_disjoint D N X ρ hρ i j b _ (fun _ h => isSplit_of_mem_admissibleConjugatePairPlaces h) (hχ.2.1.mono_left (admissibleConjugatePairPlaces_subset i Q M))`. Establish `htheta : ∀ a ∈ (Finset.univ : Finset (↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M))), IsThetaFunO (ρ.B i j b).F.ψ (Vc D j) (Wc D j) ((ρ.B i j b).vecFam (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) (Base.univFam (univOf Y i (admissibleConj …` using `fun a _ => by`.
+
+Use `Base.isThetaFunO_fock_vecAt hB hadm (fun PP y => ((Base.univFam (univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc) (ρ.β j) PP.1 (a PP) y : ℚ) : ℂ)) 1` as an intermediate fact. Rewrite `this` using `[Frame.fock, GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis. Unfold `specSer`. Rewrite using `[twistBy_apply, vecAt_specLoc, series_sum hB _ _ _ _ htheta, detChar_tw hρ hY i j b k Q M χ hχ g]`. Unfold `specXi`.
+
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Setup.xi, Base.xiCoef_apply]`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (Multiplicative.toAdd (detChar (Wc D j) ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).delQ (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))) g))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_addRight, add_sub_cancel_right, coef_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem specXi_eq_specSer : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (ρ : Setup X), ρ.Good →
   ∀ (Y : NExp D.R D.host D.what₂ D.LL0 N X), GlobalTheory.UnivChar.IsUnivChar Y →
   ∀ (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E)) (M : ℕ)

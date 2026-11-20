@@ -11,6 +11,13 @@ namespace UpperTheory.V.Z.Inf
 
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_fiberwise Finset.univ (fun σ : K →+* ℂ => InfinitePlace.mk σ), Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 (ComplexEmbedding.isReal_iff.2 h.symm))`. Establish `hf : (Finset.univ.filter fun σ : K →+* ℂ => InfinitePlace.mk σ = w) = {w.embedding, ComplexEmbedding.conjugate w.embedding}`. Use extensionality with `σ`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq σ with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+
+Conclude with `Or.inr (by rw [h]; simp)`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hf, Finset.prod_pair hne, GlobalTheory.IsoPull.coord_conj, GlobalTheory.IsoPull.coord_embedding, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 private theorem prod_coord (d : Cinf K) : ∏ σ : K →+* ℂ, coord σ d = ((∏ w, ‖d w‖ ^ 2 : ℝ) : ℂ) := by
   classical
   rw [← Finset.prod_fiberwise Finset.univ (fun σ : K →+* ℂ => InfinitePlace.mk σ), Complex.ofReal_prod]
@@ -33,12 +40,23 @@ private theorem prod_coord (d : Cinf K) : ∏ σ : K →+* ℂ, coord σ d = ((�
   rw [hf, Finset.prod_pair hne, GlobalTheory.IsoPull.coord_conj, GlobalTheory.IsoPull.coord_embedding, Complex.mul_conj,
     Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+The claim follows from `(prod_coord _).symm`.
+-/
 private theorem nrm_eq (x : Lie K n) : ((nrm x : ℝ) : ℂ) = ∏ σ, detAt σ x := (prod_coord _).symm
 
 omit [NumberField K] [IsTotallyComplex K] in
+/- English proof (translation)
+The claim follows from `(((Matrix.isUnit_iff_isUnit_det _).1 hx).map (coord σ)).ne_zero`.
+-/
 private theorem detAt_ne {x : Lie K n} (hx : x ∈ invSet K n) (σ : K →+* ℂ) : detAt σ x ≠ 0 :=
   (((Matrix.isUnit_iff_isUnit_det _).1 hx).map (coord σ)).ne_zero
 
+/- English proof (translation)
+Establish `h0 : ((nrm x : ℝ) : ℂ) ≠ 0`. Rewrite using `[nrm_eq]`. Conclude with `Finset.prod_ne_zero_iff.2 fun σ _ => detAt_ne hx σ`. Establish `h1 : 0 ≤ nrm x` using `Finset.prod_nonneg fun w _ => by positivity`. Rewrite using `[← nrm_eq]`.
+
+Conclude with `Complex.ofReal_mem_slitPlane.2 (lt_of_le_of_ne h1 fun h => h0 (by rw [← h]; simp))`.
+-/
 private theorem nrm_slit {x : Lie K n} (hx : x ∈ invSet K n) : ∏ σ, detAt σ x ∈ Complex.slitPlane := by
   have h0 : ((nrm x : ℝ) : ℂ) ≠ 0 := by
     rw [nrm_eq]; exact Finset.prod_ne_zero_iff.2 fun σ _ => detAt_ne hx σ
@@ -46,16 +64,25 @@ private theorem nrm_slit {x : Lie K n} (hx : x ∈ invSet K n) : ∏ σ, detAt �
   rw [← nrm_eq]
   exact Complex.ofReal_mem_slitPlane.2 (lt_of_le_of_ne h1 fun h => h0 (by rw [← h]; simp))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[wt, nrm_eq]`.
+-/
 private theorem wt_eq (u : ℂ) (e : (K →+* ℂ) → ℕ) :
     (wt u e : Lie K n → ℂ) = fun x => (∏ σ, detAt σ x) ^ u * ∏ σ, (detAt σ x)⁻¹ ^ e σ := by
   funext x; rw [wt, nrm_eq]
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Set `l : Cinf K →ₗ[ℝ] ℂ` to `{ toFun := coord σ, map_add' := map_add _, map_smul' := GlobalTheory.IsoPull.coord_smul σ }`. Conclude with `(LinearMap.toContinuousLinearMap l).contDiff.comp contDiff_det`.
+-/
 private theorem contDiff_detAt (σ : K →+* ℂ) : ContDiff ℝ ∞ (detAt σ : Lie K n → ℂ) := by
   let l : Cinf K →ₗ[ℝ] ℂ :=
     { toFun := coord σ, map_add' := map_add _, map_smul' := GlobalTheory.IsoPull.coord_smul σ }
   exact (LinearMap.toContinuousLinearMap l).contDiff.comp contDiff_det
 
+/- English proof (translation)
+Rewrite using `[wt_eq]`. Use `ContDiffAt.mul ?_ (contDiffAt_prod fun σ _ => ((contDiff_detAt σ).contDiffAt.inv (detAt_ne hx σ)).pow _)` and prove the remaining obligations. Establish `h1 : ContDiffAt ℂ ∞ (fun z : ℂ => z ^ u) (∏ σ, detAt σ x)` using `(analyticAt_id.cpow analyticAt_const (nrm_slit hx)).contDiffAt`. Conclude with `(h1.restrict_scalars ℝ).comp x (f := fun x => ∏ σ, detAt σ x) (contDiffAt_prod fun σ _ => (contDiff_detAt σ).contDiffAt)`.
+-/
 private theorem contDiffAt_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) {x : Lie K n} (hx : x ∈ invSet K n) :
     ContDiffAt ℝ ∞ (wt u e) x := by
   rw [wt_eq]
@@ -65,6 +92,11 @@ private theorem contDiffAt_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) {x : Lie K n
   exact (h1.restrict_scalars ℝ).comp x (f := fun x => ∏ σ, detAt σ x)
     (contDiffAt_prod fun σ _ => (contDiff_detAt σ).contDiffAt)
 
+/- English proof (translation)
+Establish `h : Matrix.single a b c = replicateCol Unit (Pi.single a c) * replicateRow Unit (Pi.single b (1 : R))`. Use extensionality with `i j`. Simplify using `only [Matrix.single_apply, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Pi.single_apply, Finset.univ_unique, Finset.sum_singleton]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[h, det_one_add_replicateCol_mul_replicateRow]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[dotProduct, Pi.single_apply]`. Simplify using `[dotProduct, Pi.single_apply, hab]`.
+-/
 private theorem det_one_add_single {R : Type} [CommRing R] (a b : Fin n) (c : R) :
     (1 + Matrix.single a b c).det = 1 + if a = b then c else 0 := by
   have h : Matrix.single a b c = replicateCol Unit (Pi.single a c) * replicateRow Unit (Pi.single b (1 : R)) := by
@@ -78,6 +110,11 @@ private theorem det_one_add_single {R : Type} [CommRing R] (a b : Fin n) (c : R)
   · simp [dotProduct, Pi.single_apply, hab]
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Establish `hm : Matrix.of (x + s • rmul (toL (single a b c)) x) = Matrix.of x * (1 + single a b (s • c))`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← Matrix.smul_single, Matrix.mul_smul]`. Both sides reduce to the same expression. Unfold `detAt`. Rewrite using `[hm, Matrix.det_mul, map_mul, det_one_add_single, map_add, map_one]`.
+
+Use `split_ifs`. Rewrite using `[GlobalTheory.IsoPull.coord_smul, Complex.real_smul]`. Simplify using the standard rewrite rules.
+-/
 private theorem detAt_line (σ : K →+* ℂ) (a b : Fin n) (c : Cinf K) (x : Lie K n) (s : ℝ) :
     detAt σ (x + s • rmul (toL (single a b c)) x) =
       detAt σ x * (1 + (s : ℂ) * if a = b then coord σ c else 0) := by
@@ -90,6 +127,9 @@ private theorem detAt_line (σ : K →+* ℂ) (a b : Fin n) (c : Cinf K) (x : Li
   · rw [GlobalTheory.IsoPull.coord_smul, Complex.real_smul]
   · simp
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hasDerivAt_const z (1 : ℂ)`. Consider the case `insert j S hj ih`. Simplify using `only [Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `((h j).fun_mul ih).congr_deriv (by ring)`.
+-/
 private theorem hasDerivAt_prod_log {ι : Type} (S : Finset ι) (f : ι → ℂ → ℂ) (l : ι → ℂ) (z : ℂ)
     (h : ∀ i, HasDerivAt (f i) (l i * f i z) z) :
     HasDerivAt (fun s => ∏ i ∈ S, f i s) ((∑ i ∈ S, l i) * ∏ i ∈ S, f i z) z := by
@@ -100,6 +140,13 @@ private theorem hasDerivAt_prod_log {ι : Type} (S : Finset ι) (f : ι → ℂ 
     simp only [Finset.prod_insert hj, Finset.sum_insert hj]
     exact ((h j).fun_mul ih).congr_deriv (by ring)
 
+/- English proof (translation)
+Establish `h1 : ∀ i, HasDerivAt (fun s : ℂ => d i * (1 + s * c i)) (c i * (d i * (1 + 0 * c i))) 0` using `fun i => ((((hasDerivAt_id (0 : ℂ)).mul_const (c i)).const_add 1).const_mul (d i)).congr_deriv (by ring)`. Establish `h2 : ∀ i, HasDerivAt (fun s : ℂ => (d i * (1 + s * c i))⁻¹ ^ e i) ((-(e i : ℂ) * c i) * (d i * (1 + 0 * c i))⁻¹ ^ e i) 0` using `fun i => by`. Establish `hi` using `hd i`. Use `(((h1 i).fun_inv (by simpa using hi)).fun_pow (e i)).congr_deriv ?_` and prove the remaining obligations. Consider the cases of `e i with`.
+
+Consider the case `zero => simp`. Consider the case `succ k => simp only [zero_mul, add_zero, mul_one, Nat.add_sub_cancel, pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `h3` using `(hasDerivAt_prod_log Finset.univ _ _ 0 h1).cpow_const (c := u) (by simpa using hs)`. Establish `h4` using `hasDerivAt_prod_log Finset.univ _ _ 0 h2`.
+
+Use `(h3.fun_mul h4).congr_deriv ?_` and prove the remaining obligations. Establish `hP` using `Complex.slitPlane_ne_zero hs`. Simplify using `only [zero_mul, add_zero, mul_one, sub_mul, Finset.sum_sub_distrib, ← Finset.mul_sum, neg_mul, Finset.sum_neg_distrib, Complex.cpow_sub _ _ hP, Complex.cpow_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hasDerivAt_k {ι : Type} [Fintype ι] (d c : ι → ℂ) (hd : ∀ i, d i ≠ 0) (hs : ∏ i, d i ∈ Complex.slitPlane)
     (u : ℂ) (e : ι → ℕ) :
     HasDerivAt (fun s : ℂ => (∏ i, d i * (1 + s * c i)) ^ u * ∏ i, (d i * (1 + s * c i))⁻¹ ^ e i)
@@ -122,6 +169,13 @@ private theorem hasDerivAt_k {ι : Type} [Fintype ι] (d c : ι → ℂ) (hd : �
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : ∃ w, w = rmul (toL (single a b c)) x` from `⟨_, rfl⟩`. Rewrite using `[← hw]`. Establish `hd : DifferentiableAt ℝ (wt u e) x` using `(contDiffAt_wt u e hx).differentiableAt (by simp)`. Establish `hline : HasDerivAt (fun s : ℝ => x + s • w) w 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const w).const_add x`.
+
+Establish `hd' : HasFDerivAt (wt u e) (fderiv ℝ (wt u e) x) ((fun s : ℝ => x + s • w) 0)`. Simplify using `using hd.hasFDerivAt`. Establish `h1` using `hd'.comp_hasDerivAt (0 : ℝ) hline`. Establish `h2` using `hasDerivAt_k (fun σ => detAt σ x) (fun σ => if a = b then coord σ c else 0) (detAt_ne hx) (nrm_slit hx) u e`. Establish `h3` using `HasDerivAt.comp_ofReal (z := 0) h2`.
+
+Establish `e1 : (wt u e ∘ fun s : ℝ => x + s • w) = fun s : ℝ => (∏ σ, detAt σ x * (1 + (s : ℂ) * if a = b then coord σ c else 0)) ^ u * ∏ σ, (detAt σ x * (1 + (s : ℂ) * if a = b then coord σ c else 0))⁻¹ ^ e σ`. Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp_apply, hw, wt_eq, detAt_line]`. Rewrite `h1` using `[e1]`. Rewrite using `[h1.unique h3, wt_eq]`.
+-/
 private theorem fderiv_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (a b : Fin n) (c : Cinf K) {x : Lie K n} (hx : x ∈ invSet K n) :
     fderiv ℝ (wt u e) x (rmul (toL (single a b c)) x) =
       (∑ σ, (u - e σ) * if a = b then coord σ c else 0) * wt u e x := by
@@ -143,6 +197,11 @@ private theorem fderiv_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (a b : Fin n) (c
   rw [e1] at h1
   rw [h1.unique h3, wt_eq]
 
+/- English proof (translation)
+Rewrite using `[rd, fderiv_wt u e a b _ hx, fderiv_wt u e a b _ hx]`. Use `split_ifs with h`. Establish `: ∑ σ, (u - e σ) * ((1 / 2 : ℂ) * (coord σ (atEmb τ 1) - Complex.I * coord σ (atEmb τ Complex.I))) = u - e τ`. Simplify using `only [UpperTheory.V.WeylC.coord_hol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← this]`.
+
+Simplify using `only [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`. Simplify using the standard rewrite rules.
+-/
 private theorem rd_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ) (a b : Fin n) {x : Lie K n} (hx : x ∈ invSet K n) :
     rd τ a b (wt u e) x = (if a = b then u - e τ else 0) * wt u e x := by
   classical
@@ -156,6 +215,9 @@ private theorem rd_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ) (
   · simp
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Unfold `rd`. Rewrite using `[Filter.EventuallyEq.fderiv_eq h]`.
+-/
 private theorem rd_congr (τ : K →+* ℂ) (a b : Fin n) {F G : Lie K n → ℂ} {x : Lie K n}
     (h : ∀ᶠ y in nhds x, F y = G y) : rd τ a b F x = rd τ a b G x := by
   unfold rd
@@ -166,8 +228,14 @@ private def chartL (g : GA K n) (x : Lie K n) : Sm K n →ₗ[ℂ] ℂ where
   map_add' ψ ψ' := by unfold chart; split_ifs <;> simp
   map_smul' c ψ := by unfold chart; split_ifs <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem chartL_apply (g : GA K n) (x : Lie K n) (ψ : Sm K n) : chartL g x ψ = chart ψ.1 g x := rfl
 
+/- English proof (translation)
+Establish `hE : Eop τ a b ψ = (1 / 2 : ℂ) • (lie K n (toL (single a b (atEmb τ 1))) ψ - Complex.I • lie K n (toL (single a b (atEmb τ Complex.I))) ψ)` using `rfl`. Establish `hl : ∀ X, chartL g x (lie K n X ψ) = fderiv ℝ (chart ψ.1 g) x (rmul X x)` using `fun X => chart_lieD ψ.2 X g hx`. Rewrite using `[← chartL_apply, hE, map_smul, map_sub, map_smul, hl, hl, rd, smul_eq_mul, smul_eq_mul]`.
+-/
 private theorem chart_Eop (τ : K →+* ℂ) (a b : Fin n) (ψ : Sm K n) (g : GA K n) {x : Lie K n} (hx : x ∈ invSet K n) :
     chart (Eop τ a b ψ).1 g x = rd τ a b (chart ψ.1 g) x := by
   have hE : Eop τ a b ψ = (1 / 2 : ℂ) • (lie K n (toL (single a b (atEmb τ 1))) ψ -
@@ -175,6 +243,11 @@ private theorem chart_Eop (τ : K →+* ℂ) (a b : Fin n) (ψ : Sm K n) (g : GA
   have hl : ∀ X, chartL g x (lie K n X ψ) = fderiv ℝ (chart ψ.1 g) x (rmul X x) := fun X => chart_lieD ψ.2 X g hx
   rw [← chartL_apply, hE, map_smul, map_sub, map_smul, hl, hl, rd, smul_eq_mul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hc : DifferentiableAt ℝ (chart ψ.1 g) x` using `(contDiffAt_chart ψ.2 g hx).differentiableAt (by simp)`. Establish `ho : DifferentiableAt ℝ (wt u e) x` using `(contDiffAt_wt u e hx).differentiableAt (by simp)`. Establish `h : rd τ a b (fun y => chart ψ.1 g y * wt u e y) x = rd τ a b (chart ψ.1 g) x * wt u e x + chart ψ.1 g x * rd τ a b (wt u e) x`. Unfold `rd`. Rewrite using `[fderiv_fun_mul hc ho]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, rd_wt u e τ a b hx, chart_Eop τ a b ψ g hx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem rd_chart_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ) (a b : Fin n)
     (ψ : Sm K n) (g : GA K n) {x : Lie K n} (hx : x ∈ invSet K n) :
     rd τ a b (fun y => chart ψ.1 g y * wt u e y) x =
@@ -190,6 +263,15 @@ private theorem rd_chart_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* 
   rw [h, rd_wt u e τ a b hx, chart_Eop τ a b ψ g hx]
   ring
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro x _`. Simplify using the standard rewrite rules. Consider the case `cons j l ih`. Introduce `x hx`.
+
+Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`. Rewrite using `[rd_congr τ (p j) j (Filter.eventually_of_mem (isOpen_invSet.mem_nhds hx) ih), rd_chart_wt u e τ _ _ _ g hx, ih x hx, Module.End.mul_apply]`. Simplify using `only [← chartL_apply, Formalism.REAL.Tm, LinearMap.add_apply, map_add]`. Establish `hj : ((n - 1 - j.val : ℕ) : ℂ) = (n : ℂ) - 1 - (j.val : ℂ)`. Use `j.isLt` as an intermediate fact.
+
+Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hpj : p j = j`. Simplify using `only [if_pos hpj, Module.algebraMap_end_apply, map_smul, smul_eq_mul, hj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [if_neg hpj, LinearMap.zero_apply, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem foldr_chart_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →+* ℂ) (g : GA K n)
     (p : Equiv.Perm (Fin n)) (ψ : Sm K n) (l : List (Fin n)) :
     ∀ x ∈ invSet K n, l.foldr (fun j G y => rd τ (p j) j G y + (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) * G y)
@@ -217,6 +299,17 @@ private theorem foldr_chart_wt (u : ℂ) (e : (K →+* ℂ) → ℕ) (τ : K →
 end UpperTheory.V.Z.Inf
 
 open UpperTheory.V.Z.Inf in
+/- English proof (translation)
+Introduce `hWeyl K _ _ _ n τ φ m hm g u e x hx`. Establish `hs : ContDiffOn ℝ ∞ (fun y => chart φ.1 g y * wt u e y) (invSet K n)` using `fun y hy => ((contDiffAt_chart φ.2 g hy).mul (contDiffAt_wt u e hy)).contDiffWithinAt`. Establish `hW` using `hWeyl K n τ (invSet K n) isOpen_invSet _ hs x hx`. Establish `hfold` using `fun p => foldr_chart_wt u e τ g p φ (List.finRange n) x hx`. Simplify using `only [hfold] at hW`.
+
+Establish `hq : chart (Formalism.REAL.qdet (Eop τ) (u - e τ + n - 1) φ).1 g x = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) * chart (((List.finRange n).map fun j : Fin n => Formalism.REAL.Tm (Eop τ) (u - e τ + n - 1 - ((j : ℕ) : ℂ)) (p j) j).prod φ).1 g x`. Simplify using `only [← chartL_apply, Formalism.REAL.qdet, Formalism.REAL.qminor, LinearMap.sum_apply, map_sum, Module.End.mul_apply, Module.End.intCast_apply, map_zsmul, zsmul_eq_mul, List.ofFn_eq_map, id]`. Establish `hcap : Formalism.REAL.qdet (Eop (a` using `n) τ) (u - e τ + n - 1) = (cap τ (u - e τ + ((n : ℂ) - 1) / 2) : Module.End ℂ (Sm K n)) := by`. Express the relevant statement in the definitionally equal form `_ = Formalism.REAL.qdet (Eop (a := n) τ) (u - e τ + ((n : ℂ) - 1) / 2 + ((n : ℂ) - 1) / 2)`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hq` using `[hcap, hm, ← chartL_apply, map_smul, chartL_apply, smul_eq_mul]`. Establish `hd` using `detAt_ne hx τ`. Establish `hW' : detAt τ x * detD τ (fun y => chart φ.1 g y * wt u e y) x = (m.map (u - e τ + ((n : ℂ) - 1) / 2 + ·)).prod * chart φ.1 g x * wt u e x`. Rewrite using `[hW, hq, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ = _ := by`.
+
+Rewrite using `[hW']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Inf.ptwOf :
     UpperTheory.V.Z.Inf.PtwOf := by
   intro hWeyl K _ _ _ n τ φ m hm g u e x hx

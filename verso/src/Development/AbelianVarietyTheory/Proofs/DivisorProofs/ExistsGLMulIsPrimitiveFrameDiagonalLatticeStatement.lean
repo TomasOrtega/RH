@@ -14,6 +14,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PrimFrameExist.exists_gl_mul_isPrimFrame | exact GlobalTheory.PrimFrameExist.exists_gl_mul_isPrimFrame | (intros; apply GlobalTheory.PrimFrameExist.exists_gl_mul_isPrimFrame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_GL_mul_isPrimitiveFrame_diagonalLattice : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a : ℕ) (C : Type) [Fintype C] [DecidableEq C] (d : C → kˣ) (X : Matrix (Fin a) C k), X.rank = a →
     ∃ g₀ : GL (Fin a) k, IsPrimFrame (diagLat d) (g₀.val * X) := by

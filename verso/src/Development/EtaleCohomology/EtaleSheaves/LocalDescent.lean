@@ -26,6 +26,9 @@ def KerLoc : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRin
   ∀ (Y' : CommRingCat.{0}) (w : Y ⟶ Y') (φ' : D ⟶ Y'), IsPushout φ d w φ' →
   Function.Injective (pull _ (sch.map (Spec.map φ')) (tw q i) n)
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hpush het hlow D d hD hpts Y' w φ' hpo`. Conclude with `⟨hC hH q i n φ hq P hpush het hlow D d hD hpts Y' w φ' hpo, hK hH q i n φ hq P hpush het hlow (fun C c hC' hpC => hC hH q i n φ hq P hpush het hlow C c hC' hpC) D d hD hpts Y' w φ' hpo⟩`.
+-/
 theorem DescLoc_of (hC : CokLoc) (hK : KerLoc) : LateralTheory.E.StalkCut.DescLoc := by
   intro hH q _ i n A Y φ hq P hpush het hlow D d hD hpts Y' w φ' hpo
   exact ⟨hC hH q i n φ hq P hpush het hlow D d hD hpts Y' w φ' hpo,

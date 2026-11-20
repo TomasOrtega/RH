@@ -11,6 +11,39 @@ namespace GlobalTheory.CompanionTheory.GunrJt
 open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory PositivityTheory.PfSWUS.Loc PositivityTheory.SiegelWeilFormula.Gen PositivityTheory.SiegelWeilFormula.Gunr Filter
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `set H : Set V := ι '' {x | r x = 0} with hHdef`. Use `choose s hs using hr`. Set `Pc : Q → Set V` to `fun c => ι '' {x | r x = c}`. Establish `hPc : ∀ c, Pc c = (fun y => -ι (s c) + y) ⁻¹' H`. Introduce `c`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨x - s c, ?_, ?_⟩` and prove the remaining obligations. Establish `hx' : r x = c` using `hx`.
+
+Simplify using `[hx', hs]`. Simplify using `[map_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨x, hx, hxy⟩`. Use `⟨x + s c, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hx' : r x = 0` using `hx`. Simplify using `[hx', hs]`. Establish `hxy' : ι x = -ι (s c) + y` using `hxy`. Rewrite using `[map_add, hxy']`. Normalize the expressions using the abelian group laws.
+
+Establish `hPm : ∀ c, MeasurableSet (Pc c)` using `fun c => by`. Rewrite using `[hPc]`. Conclude with `(measurable_const_add _) hH`. Establish `hPμ : ∀ c, μ (Pc c) = μ H` using `fun c => by`. Rewrite using `[hPc]`.
+
+Conclude with `measure_preimage_add μ _ _`. Establish `hdis : ∀ c c', c ≠ c' → Disjoint (Pc c) (Pc c')`. Introduce `c c' hc`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ ⟨x', hx', he⟩`.
+
+Use `hι he` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hc (hx.symm.trans hx')`. Establish `hU : Set.range ι = ⋃ c ∈ (Finset.univ : Finset Q), Pc c`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_range, Finset.mem_univ, Set.iUnion_true, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨r x, x, rfl, rfl⟩`. Introduce and unpack `⟨c, x, -, rfl⟩`.
+
+Conclude with `⟨x, rfl⟩`. Establish `hsum : (Fintype.card Q : ENNReal) * μ H = 1`. Rewrite using `[← hvol, hU, measure_biUnion_finset (fun c _ c' _ h => hdis c c' h) (fun c _ => hPm c)]`. Simplify using `[hPμ, Finset.card_univ]`. Establish `hcard : (Fintype.card Q : ENNReal) ≠ 0`.
+
+Establish `: Fintype.card Q ≠ 0` using `Fintype.card_ne_zero`. Conclude with `this` after adjusting the coercions. Establish `hHfin : μ H ≠ ⊤`. Introduce `h`. Rewrite `hsum` using `[h, ENNReal.mul_top hcard]`.
+
+Conclude with `ENNReal.top_ne_one hsum`. Establish `hreal : μ.real H = ((Fintype.card Q : ℝ))⁻¹`. Establish `h` using `congrArg ENNReal.toReal hsum`. Rewrite `h` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_one]`. Conclude with `eq_inv_of_mul_eq_one_right h`.
+
+Establish `hdec : f = fun y => ∑ c, (Pc c).indicator (fun _ => g c) y`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ Set.range ι`. Take `⟨x, rfl⟩` from `hy`. Rewrite using `[Finset.sum_eq_single (r x)]`.
+
+Establish `hm : ι x ∈ Pc (r x)` using `⟨x, rfl, rfl⟩`. Rewrite using `[Set.indicator_of_mem hm]`. Conclude with `hf x`. Introduce `c _ hc`. Conclude with `Set.indicator_of_notMem (Set.disjoint_left.1 (hdis _ _ hc.symm) ⟨x, rfl, rfl⟩) _`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hf0 y hy]`. Use `symm`. Use `Finset.sum_eq_zero fun c _ => Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨x, -, rfl⟩`.
+
+Conclude with `hy ⟨x, rfl⟩`. Establish `hint : ∀ c, Integrable ((Pc c).indicator (fun _ => g c)) μ` using `fun c => (integrable_indicator_iff (hPm c)).2 (integrableOn_const (by rw [hPμ]; exact hHfin))`. Rewrite using `[hdec, integral_finset_sum _ (fun c _ => hint c)]`. Simplify using `only [integral_indicator_const _ (hPm _)]`. Establish `: ∀ c, μ.real (Pc c) = ((Fintype.card Q : ℝ))⁻¹` using `fun c => by`.
+
+Rewrite using `[← hreal, Measure.real, Measure.real, hPμ]`. Simplify using `only [this, Complex.real_smul, ← Finset.mul_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem integral_of_factor {V P Q : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V] (μ : Measure V)
     [μ.IsAddLeftInvariant] [AddCommGroup P] [AddCommGroup Q] [Fintype Q] (ι : P →+ V) (hι : Function.Injective ι)
     (r : P →+ Q) (hr : Function.Surjective r) (hH : MeasurableSet (ι '' {x | r x = 0}))
@@ -105,6 +138,9 @@ def redHom {R : Type} [CommRing R] (ϖ : R) (k a b : ℕ) :
   map_zero' := by ext; simp [red]
   map_add' x y := by ext; simp [red]
 
+/- English proof (translation)
+Introduce `y`. Use `choose f hf using fun i j => Ideal.Quotient.mk_surjective (y i j)`. Conclude with `⟨Matrix.of f, by ext i j; exact hf i j⟩`.
+-/
 theorem redHom_surjective {R : Type} [CommRing R] (ϖ : R) (k a b : ℕ) : Function.Surjective (redHom ϖ k a b) := by
   intro y
   choose f hf using fun i j => Ideal.Quotient.mk_surjective (y i j)
@@ -118,6 +154,9 @@ def emb {v : HeightOneSpectrum (𝓞 F)} (S : Subring (Fv F v ⊗[F] E)) (M n : 
   map_zero' := by funext a i; simp
   map_add' x y := by funext a i; simp
 
+/- English proof (translation)
+Introduce `x y h`. Use extensionality with `i a`. Conclude with `congrFun (congrFun h a) i`.
+-/
 theorem emb_injective {v : HeightOneSpectrum (𝓞 F)} (S : Subring (Fv F v ⊗[F] E)) (M n : ℕ) :
     Function.Injective (emb S M n) := by
   intro x y h
@@ -128,11 +167,19 @@ variable {σ : E →ₐ[F] E} {M n d : ℕ} {J : Matrix (Fin M) (Fin M) E} {T : 
   {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)} {ψv : Fv F v → ℂ} {S : Subring (Fv F v ⊗[F] E)}
   {σS : S →+* S} {ϖ : Fv F v} {ε : ℤ}
 
+/- English proof (translation)
+Establish `: z ∈ (S : Set (Fv F v ⊗[F] E)) ↔ z ∈ Rv bs v` using `by rw [hG.carrier]`. Conclude with `this`.
+-/
 theorem mem_S_iff (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (z : Fv F v ⊗[F] E) :
     z ∈ S ↔ ∀ j, (Algebra.TensorProduct.basis (Fv F v) bs).repr z j ∈ v.adicCompletionIntegers F := by
   have : z ∈ (S : Set (Fv F v ⊗[F] E)) ↔ z ∈ Rv bs v := by rw [hG.carrier]
   exact this
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `e : {z : Fv F v ⊗[F] E | c • z ∈ S} = ⋂ j, (fun z => c * (Algebra.TensorProduct.basis (Fv F v) bs).coord j z) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `z`. Simplify using `[mem_S_iff hG]`.
+
+Rewrite using `[e]`. Use `isOpen_iInter_of_finite fun j => hO.preimage ?_` and prove the remaining obligations. Conclude with `continuous_const.mul (IsModuleTopology.continuous_of_linearMap _)`.
+-/
 theorem isOpen_scaled (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (c : Fv F v) :
     IsOpen {z : Fv F v ⊗[F] E | c • z ∈ S} := by
   haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
@@ -145,6 +192,11 @@ theorem isOpen_scaled (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (c : Fv F v) :
   refine isOpen_iInter_of_finite fun j => hO.preimage ?_
   exact continuous_const.mul (IsModuleTopology.continuous_of_linearMap _)
 
+/- English proof (translation)
+Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ a i`. Conclude with `(mem_S_iff hG _).1 (x i a).2`. Introduce `hY`.
+
+Use `⟨Matrix.of fun i a => ⟨Y a i, (mem_S_iff hG _).2 (hY a i)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a i`. Both sides reduce to the same expression.
+-/
 theorem range_emb (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) :
     Set.range (emb S M n) = (latV bs v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
   ext Y
@@ -156,11 +208,23 @@ theorem range_emb (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) :
     funext a i
     rfl
 
+/- English proof (translation)
+Rewrite using `[Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem coe_pow_mul (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (c : S) :
     ((c * hG.pS ^ k : S) : Fv F v ⊗[F] E) = (ϖ ^ k) • (c : Fv F v ⊗[F] E) := by
   rw [Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hϖ : ϖ ^ k ≠ 0` using `pow_ne_zero _ hG.unif_ne`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ a i`. Establish `h0 : Ideal.Quotient.mk (lev hG.pS k) (x i a) = 0` using `congrFun (congrFun hx i) a`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Use `show (ϖ ^ k)⁻¹ • (x i a : Fv F v ⊗[F] E) ∈ S`. Rewrite using `[← hc, coe_pow_mul, smul_smul, inv_mul_cancel₀ hϖ, one_smul]`. Conclude with `c.2`. Introduce `hY`.
+
+Use `⟨Matrix.of fun i a => ⟨_, hY a i⟩ * hG.pS ^ k, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i a`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton'.2 ⟨_, rfl⟩)`. Use function extensionality and compare the values at `a i show (((⟨_, hY a i⟩ : S) * hG.pS ^ k : S) : Fv F v ⊗[F] E) = Y a i`. Rewrite using `[coe_pow_mul]`.
+
+Use `show (ϖ ^ k) • ((ϖ ^ k)⁻¹ • Y a i) = Y a i`. Rewrite using `[smul_smul, mul_inv_cancel₀ hϖ, one_smul]`.
+-/
 theorem image_ker (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) :
     emb S M n '' {x | redHom hG.pS k M n x = 0} = {Y | ∀ a i, (ϖ ^ k)⁻¹ • Y a i ∈ S} := by
   have hϖ : ϖ ^ k ≠ 0 := pow_ne_zero _ hG.unif_ne
@@ -182,6 +246,11 @@ theorem image_ker (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) :
       show (ϖ ^ k) • ((ϖ ^ k)⁻¹ • Y a i) = Y a i
       rw [smul_smul, mul_inv_cancel₀ hϖ, one_smul]
 
+/- English proof (translation)
+Rewrite using `[image_ker hG k]`. Establish `e : {Y : Fin n → Fin M → Fv F v ⊗[F] E | ∀ a i, (ϖ ^ k)⁻¹ • Y a i ∈ S} = ⋂ a, ⋂ i, (fun Y : Fin n → Fin M → Fv F v ⊗[F] E => Y a i) ⁻¹' {z | (ϖ ^ k)⁻¹ • z ∈ S}`. Use extensionality with `Y`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `MeasurableSet.iInter fun a => MeasurableSet.iInter fun i => ?_` and prove the remaining obligations. Conclude with `((measurable_pi_apply i).comp (measurable_pi_apply a)) (isOpen_scaled hG _).measurableSet`.
+-/
 theorem measurable_image_ker (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) :
     MeasurableSet (emb S M n '' {x | redHom hG.pS k M n x = 0}) := by
   rw [image_ker hG k]
@@ -195,6 +264,11 @@ theorem measurable_image_ker (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ
   exact ((measurable_pi_apply i).comp (measurable_pi_apply a)) (isOpen_scaled hG _).measurableSet
 
 open GlobalTheory.CompanionTheory.UnrDens in
+/- English proof (translation)
+Establish `e : PositivityTheory.PfSWUS.Loc.cT (barσ σS hG.pS hG.quad.fix_ϖ k) (red hG.pS k x) = red hG.pS k (PositivityTheory.PfSWUS.Loc.cT σS x)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hm : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) S) (B : Matrix (Fin b) (Fin c) S), red hG.pS k A * red hG.pS k B = red hG.pS k (A * B)` using `fun A B => by`. Simplify using `only [red]`.
+
+Conclude with `(Matrix.map_mul (f := Ideal.Quotient.mk (lev hG.pS k))).symm`. Rewrite using `[e, hm, hm, hm]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, red, Matrix.map_apply, map_sum]`.
+-/
 theorem trace_red (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (X : Matrix (Fin n) (Fin n) S)
     (x : Matrix (Fin M) (Fin n) S) :
     Matrix.trace (red hG.pS k X * (PositivityTheory.PfSWUS.Loc.cT (barσ σS hG.pS hG.quad.fix_ϖ k) (red hG.pS k x) *
@@ -210,6 +284,9 @@ theorem trace_red (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (X : Matr
   rw [e, hm, hm, hm]
   simp only [Matrix.trace, Matrix.diag_apply, red, Matrix.map_apply, map_sum]
 
+/- English proof (translation)
+Simplify using `only [gramR, hR, hform, JR, Matrix.mul_apply, PositivityTheory.PfSWUS.Loc.cT, Matrix.transpose_apply, Matrix.map_apply, emb, matS, Matrix.of_apply, AddMonoidHom.coe_mk, ZeroHom.coe_mk, AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, hG.sig, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_emb (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (x : Matrix (Fin M) (Fin n) S) (c a : Fin n) :
     gramR (Fv F v) σ J (emb S M n x) c a =
       ((PositivityTheory.PfSWUS.Loc.cT σS x * matS S J hG.J_int * x) c a : S) := by
@@ -218,6 +295,13 @@ theorem gram_emb (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (x : Matrix (Fin M) 
     Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[GoodLoc.psiLev_mk]`. Unfold `psiF`. Use `congr 1`. Establish `e2 : (∑ a, ∑ c, (hG.hermLev k X hX : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a c * gramR (Fv F v) σ J (emb S M n x) c a) = (ϖ ^ k)⁻¹ • ((Matrix.trace (X * (PositivityTheory.PfSWUS.Loc.cT σS x * matS S J hG.J_int * x)) : S) : Fv F v ⊗[F] E)`. Simplify using `only [gram_emb hG, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply (M := X), AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show ((ϖ ^ k)⁻¹ • (X a c : Fv F v ⊗[F] E)) * _ = _`. Rewrite using `[smul_mul_assoc]`. Rewrite using `[trPair, e2, map_smul, smul_eq_mul, one_mul]`. Use `congr 1`.
+
+Simplify using `only [one_div, map_inv₀]`. Use `congr 1`. Conclude with `map_ofNat _ 2`.
+-/
 theorem psi_gram (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (X : Matrix (Fin n) (Fin n) S)
     (hX : PositivityTheory.PfSWUS.Loc.cT σS X = X) (x : Matrix (Fin M) (Fin n) S) :
     ψv (trPair (Fv F v) (hG.hermLev k X hX : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J (emb S M n x))) =
@@ -240,6 +324,21 @@ theorem psi_gram (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (X : Matri
   congr 1
   exact map_ofNat _ 2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG μv hμ k X hX`. Establish `hvol : μv (latV bs v) = 1` using `GlobalTheory.T.lattice_volume_unramified F E σ M n d J T bs v ψv S σS ϖ ε hG μv hμ`. Establish `hlev : IsLevelChars σS hG.pS (hG.psiLev (one_mem _))` using `GlobalTheory.T.level_characters_unramified F E σ M n d J T bs v ψv S σS ϖ ε hG 1 (one_mem _) norm_one`. Establish `hR : IsUnrQuad S σS hG.pS (Ideal.absNorm v.asIdeal) ε` using `hG.quad`. Establish `hfin : ∀ k, Finite (S ⧸ lev hG.pS k)` using `fun k => Nat.finite_of_card_ne_zero (by`.
+
+Rewrite using `[GlobalTheory.T.unramified_quotient_card S σS hG.pS _ ε hR k]`. Use `hR.one_lt` as an intermediate fact. Conclude with `pow_ne_zero _ (by omega))`. Use `letI : ∀ k, Fintype (S ⧸ lev hG.pS k) := fun k => Fintype.ofFinite _`. Establish `hε : (ε : ℂ) ^ 2 = 1`.
+
+Apply the tactic sequence `rcases hR.eps with ⟨rfl, -⟩ | ⟨rfl, -⟩ <;> simp`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousAdd (Fv F v) _`. Use `haveI : μv.IsAddHaarMeasure := hμ.1`.
+
+Establish `hB : red hG.pS k X ∈ hermMod σS hG.pS n k` using `⟨X, hX, rfl⟩`. Establish `hS : IsUnimod σS (matS S J hG.J_int)` using `hG.J_unimod`. Establish `hgauss` using `GlobalTheory.CompanionTheory.SiegLoc.gauss_full hR hlev hε k (matS S J hG.J_int) hS (red hG.pS k X) hB`. Establish `hint` using `integral_of_factor μv (emb S M n) (emb_injective S M n) (redHom hG.pS k M n) (redHom_surjective hG.pS k M n) (measurable_image_ker hG k) (by rw [range_emb hG]; exact hvol) (fun Y => (latV bs v).indicator 1 Y * ψv (trPair (Fv F v) (hG.hermLev k X hX : Matrix (Fin n) (Fin n) (Fv F …`. Establish `hm : emb S M n x ∈ (latV bs v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`.
+
+Rewrite using `[← range_emb hG]`. Conclude with `⟨x, rfl⟩`. Rewrite using `[Set.indicator_of_mem hm, Pi.one_apply, one_mul, psi_gram hG k X hX x]`. Use `congr 1`. Conclude with `(trace_red hG k X x).symm)`.
+
+Use the proof step `(fun Y hY => by`. Rewrite `hY` using `[range_emb hG]`. Rewrite using `[Set.indicator_of_notMem hY, zero_mul])`. Establish `hc0 : (Fintype.card (Matrix (Fin M) (Fin n) (S ⧸ lev hG.pS k)) : ℂ) ≠ 0`. Conclude with `(Fintype.card_ne_zero (α := Matrix (Fin M) (Fin n) (S ⧸ lev hG.pS k)))` after adjusting the coercions.
+
+Unfold `jtR`. Rewrite using `[hint, hgauss, Nat.card_eq_fintype_card, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+-/
 theorem jtLev : JtLev := by
   intro F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG μv hμ k X hX
   have hvol : μv (latV bs v) = 1 := GlobalTheory.T.lattice_volume_unramified F E σ M n d J T bs v ψv S σS ϖ ε hG μv hμ

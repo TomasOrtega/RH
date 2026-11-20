@@ -30,6 +30,15 @@ noncomputable section
 
 namespace GlobalTheory.WholeFlag.GlueProof
 
+/- English proof (translation)
+Unfold `minorAt`. Establish `e : (Matrix.of fun r l : Fin k => (R * T) (σ r) (Fin.castLE hk l)) = (Matrix.of fun r l : Fin k => R (σ r) (Fin.castLE hk l)) * (Matrix.of fun a l : Fin k => T (Fin.castLE hk a) (Fin.castLE hk l))`. Use extensionality with `r l`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb hk))) ?_, Finset.sum_map]`.
+
+Both sides reduce to the same expression. Introduce `j _ hj`. Establish `hjk : k ≤ (j : ℕ)`. Assume the negation of the conclusion as `h`. Conclude with `hj (Finset.mem_map.2 ⟨⟨j, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+
+Establish `hlt : id (Fin.castLE hk l) < id j`. Express the relevant statement in the definitionally equal form `(l : ℕ) < j`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hT hlt, mul_zero]`. Establish `ht : (Matrix.of fun a l : Fin k => T (Fin.castLE hk a) (Fin.castLE hk l)).BlockTriangular id`.
+
+Introduce `a l h`. Conclude with `hT (show (Fin.castLE hk l : ℕ) < Fin.castLE hk a from h)`. Rewrite using `[e, Matrix.det_mul, Matrix.det_of_upperTriangular ht]`. Both sides reduce to the same expression.
+-/
 theorem minorAt_mul_triangular {K : Type} [CommRing K] {n g : ℕ} (R : Matrix (Fin n) (Fin g) K) (T : Matrix (Fin g) (Fin g) K)
     (hT : T.BlockTriangular id) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) :
     minorAt (R * T) k hk σ = minorAt R k hk σ * ∏ i : Fin k, T (Fin.castLE hk i) (Fin.castLE hk i) := by
@@ -61,6 +70,9 @@ namespace GlobalTheory.WholeFlag.GlueProof
 
 open GlobalTheory.TrueGeo.SmallSec
 
+/- English proof (translation)
+Establish `hdet : IsUnit T.det`. Rewrite using `[Matrix.det_of_upperTriangular hT]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hd i).isUnit`. Establish `h` using `minorAt_mul_triangular (H * T⁻¹) T hT k hk σ`. Rewrite `h` using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul T hdet, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem minor_eq_mul_inv {K : Type} [Field K] {n g : ℕ} (H : Matrix (Fin n) (Fin g) K) (T : Matrix (Fin g) (Fin g) K)
     (hT : T.BlockTriangular id) (hd : ∀ i, T i i ≠ 0) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) :
     minorAt H k hk σ = minorAt (H * T⁻¹) k hk σ * ∏ i : Fin k, T (Fin.castLE hk i) (Fin.castLE hk i) := by
@@ -70,6 +82,13 @@ theorem minor_eq_mul_inv {K : Type} [Field K] {n g : ℕ} (H : Matrix (Fin n) (F
   have h := minorAt_mul_triangular (H * T⁻¹) T hT k hk σ
   rwa [Matrix.mul_assoc, Matrix.nonsing_inv_mul T hdet, Matrix.mul_one] at h
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro hν`. Simplify using `[div_self (hν 0 le_rfl).ne']`. Consider the case `succ k ih`.
+
+Introduce `hν`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[ih (fun j hj => hν j (hj.trans (Nat.le_succ k))), ← mul_pow]`. Use `congr 1`.
+
+Establish `h1` using `hν k (Nat.le_succ k)`. Establish `h2` using `hν (k + 1) le_rfl`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_ratio (ν : ℕ → ℝ) (m : ℕ) : ∀ k : ℕ, (∀ j, j ≤ k → 0 < ν j) →
     ∏ i : Fin k, (ν i / ν ((i : ℕ) + 1)) ^ m = (ν 0 / ν k) ^ m := by
   intro k
@@ -89,28 +108,45 @@ section Lift
 
 variable {Z : Scheme.{0}} [IsIntegral Z]
 
+/- English proof (translation)
+Use `choose S hS using h`. Conclude with `⟨Matrix.of S, Matrix.ext fun i j => hS i j⟩`.
+-/
 theorem exists_lift {x : Z} {m n : Type} (M : Matrix m n Z.functionField) (h : ∀ i j, RegAt x (M i j)) :
     ∃ S : Matrix m n (Z.presheaf.stalk x), S.map (algebraMap _ Z.functionField) = M := by
   choose S hS using h
   exact ⟨Matrix.of S, Matrix.ext fun i j => hS i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `Res.valAt_algebraMap y _`.
+-/
 theorem map_valAt_lift {K : Type} [Field K] (y : Sp K ⟶ Z) {m n : Type} (S : Matrix m n (Z.presheaf.stalk (below y))) :
     (S.map (algebraMap _ Z.functionField)).map (valAt y) = S.map (Scheme.stalkClosedPointTo y).hom := by
   ext i j
   simp only [Matrix.map_apply]
   exact Res.valAt_algebraMap y _
 
+/- English proof (translation)
+Use `choose s hs using h`. Conclude with `⟨∏ i, s i, by rw [map_prod]; exact Finset.prod_congr rfl fun i _ => hs i⟩`.
+-/
 theorem regAt_prod {x : Z} {ι : Type} [Fintype ι] (f : ι → Z.functionField) (h : ∀ i, RegAt x (f i)) :
     RegAt x (∏ i, f i) := by
   choose s hs using h
   exact ⟨∏ i, s i, by rw [map_prod]; exact Finset.prod_congr rfl fun i _ => hs i⟩
 
+/- English proof (translation)
+Use `choose s hs hs' using h`. Conclude with `⟨∏ i, s i, Finset.prod_induction s IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun i _ => hs i, by`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => hs' i⟩`.
+-/
 theorem unitAt_prod {x : Z} {ι : Type} [Fintype ι] (f : ι → Z.functionField) (h : ∀ i, UnitAt x (f i)) :
     UnitAt x (∏ i, f i) := by
   choose s hs hs' using h
   exact ⟨∏ i, s i, Finset.prod_induction s IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun i _ => hs i, by
     rw [map_prod]; exact Finset.prod_congr rfl fun i _ => hs' i⟩
 
+/- English proof (translation)
+Use `choose s hs using h`. Establish `e : ∏ i, f i = algebraMap _ Z.functionField (∏ i, s i)`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (hs i).symm`. Rewrite using `[e, Res.valAt_algebraMap, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [← hs i, Res.valAt_algebraMap]`.
+-/
 theorem valAt_prod {K : Type} [Field K] (y : Sp K ⟶ Z) {ι : Type} [Fintype ι] (f : ι → Z.functionField)
     (h : ∀ i, RegAt (below y) (f i)) : valAt y (∏ i, f i) = ∏ i, valAt y (f i) := by
   choose s hs using h
@@ -119,6 +155,9 @@ theorem valAt_prod {K : Type} [Field K] (y : Sp K ⟶ Z) {ι : Type} [Fintype ι
   rw [e, Res.valAt_algebraMap, map_prod]
   exact Finset.prod_congr rfl fun i _ => by rw [← hs i, Res.valAt_algebraMap]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hf`. Take `⟨a, ha, e⟩` from `h`. Rewrite `e` using `[← map_pow]`. Take `rfl` from `IsFractionRing.injective (Z.presheaf.stalk x) Z.functionField e`. Conclude with `⟨s, (isUnit_pow_iff hm.ne').1 ha, rfl⟩`.
+-/
 theorem unitAt_of_pow_of_regAt {x : Z} {f : Z.functionField} {m : ℕ} (hm : 0 < m) (hf : RegAt x f)
     (h : UnitAt x (f ^ m)) : UnitAt x f := by
   obtain ⟨s, rfl⟩ := hf
@@ -127,6 +166,11 @@ theorem unitAt_of_pow_of_regAt {x : Z} {f : Z.functionField} {m : ℕ} (hm : 0 <
   obtain rfl := IsFractionRing.injective (Z.presheaf.stalk x) Z.functionField e
   exact ⟨s, (isUnit_pow_iff hm.ne').1 ha, rfl⟩
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `exists_lift H hH`. Establish `e : minorAt (S.map (algebraMap _ Z.functionField)) k hk σ = algebraMap _ Z.functionField (minorAt S k hk σ)`. Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Use `⟨⟨_, e.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Res.valAt_algebraMap, map_valAt_lift]`. Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem minor_valAt {K : Type} [Field K] (y : Sp K ⟶ Z) {n g : ℕ} (H : Matrix (Fin n) (Fin g) Z.functionField)
     (hH : ∀ r l, RegAt (below y) (H r l)) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) :
     RegAt (below y) (minorAt H k hk σ) ∧ valAt y (minorAt H k hk σ) = minorAt (H.map (valAt y)) k hk σ := by
@@ -153,11 +197,17 @@ section More
 
 variable {Z : Scheme.{0}} [IsIntegral Z]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem unitAt_pow {x : Z} {f : Z.functionField} (h : UnitAt x f) (n : ℕ) : UnitAt x (f ^ n) := by
   induction n with
   | zero => simpa using unitAt_one x
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `exists_lift H hH`. Use `⟨minorAt S k hk σ, ?_⟩` and prove the remaining obligations. Unfold `minorAt`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem regAt_minor {x : Z} {n g : ℕ} (H : Matrix (Fin n) (Fin g) Z.functionField) (hH : ∀ r l, RegAt x (H r l))
     (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) : RegAt x (minorAt H k hk σ) := by
   obtain ⟨S, rfl⟩ := exists_lift H hH
@@ -166,6 +216,9 @@ theorem regAt_minor {x : Z} {n g : ℕ} (H : Matrix (Fin n) (Fin g) Z.functionFi
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `e` using `Res.valAt_mul h.regAt h.inv.regAt`. Rewrite `e` using `[mul_inv_cancel₀ h.ne_zero, Res.valAt_one]`. Conclude with `eq_inv_of_mul_eq_one_right e.symm`.
+-/
 theorem valAt_inv {K : Type} [Field K] (y : Sp K ⟶ Z) {f : Z.functionField} (h : UnitAt (below y) f) :
     valAt y f⁻¹ = (valAt y f)⁻¹ := by
   have e := Res.valAt_mul h.regAt h.inv.regAt
@@ -183,16 +236,25 @@ def toG : V.X.functionField ≃+* V.G.functionField :=
   RingEquiv.ofBijective (fnMap V.j (GlobalTheory.Mean4O.RootLine.j_gen_specializes V))
     ⟨(fnMap V.j _).injective, fnMap_surjective V.j _⟩
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V`. Use `conv_rhs => rw [← (toG V).apply_symm_apply f]`. Conclude with `(regAt_fnMap_iff V.j _).symm`.
+-/
 theorem regAt_symm {z : V.G} {f : V.G.functionField} : RegAt (V.j z) ((toG V).symm f) ↔ RegAt z f := by
   haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V
   conv_rhs => rw [← (toG V).apply_symm_apply f]
   exact (regAt_fnMap_iff V.j _).symm
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V`. Use `conv_rhs => rw [← (toG V).apply_symm_apply f]`. Conclude with `⟨fun h => GlobalTheory.Mean4O.RootLine.unitAt_fnMap V.j _ h, fun h => GlobalTheory.Mean4O.RootLine.unitAt_of_fnMap V.j _ h⟩`.
+-/
 theorem unitAt_symm {z : V.G} {f : V.G.functionField} : UnitAt (V.j z) ((toG V).symm f) ↔ UnitAt z f := by
   haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V
   conv_rhs => rw [← (toG V).apply_symm_apply f]
   exact ⟨fun h => GlobalTheory.Mean4O.RootLine.unitAt_fnMap V.j _ h, fun h => GlobalTheory.Mean4O.RootLine.unitAt_of_fnMap V.j _ h⟩
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V`. Rewrite using `[ModelFn.valAt_comp V.j (GlobalTheory.Mean4O.RootLine.j_gen_specializes V) z]`. Conclude with `congrArg _ ((toG V).apply_symm_apply f)`.
+-/
 theorem valAt_symm {K : Type} [Field K] (z : Sp K ⟶ V.G) (f : V.G.functionField) :
     valAt (z ≫ V.j) ((toG V).symm f) = valAt z f := by
   haveI := GlobalTheory.Mean4O.RootLine.isPreimmersion_j V
@@ -209,9 +271,19 @@ def nmin (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (rl : Fin g → V.
     (σ : Fin k → Fin (g + g)) : V.G.functionField :=
   minorAt H k hk σ ^ m / ∏ i : Fin k, (rl (Fin.castLE hk i) : V.G.functionField)
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.map_apply, hT h, map_zero]`.
+-/
 theorem blockTriangular_map {Tz : Matrix (Fin g) (Fin g) Y.Fn} (hT : Tz.BlockTriangular id) :
     (Tz.map V.φ).BlockTriangular id := fun i j h => by rw [Matrix.map_apply, hT h, map_zero]
 
+/- English proof (translation)
+Establish `hd : ∀ i, (Tz.map V.φ) i i ≠ 0` using `fun i => by`. Rewrite using `[Matrix.map_apply, hTd, map_ne_zero]`. Conclude with `Units.ne_zero _`. Unfold `nmin`. Rewrite using `[minor_eq_mul_inv H _ (blockTriangular_map V hT) hd k hk σ]`.
+
+Establish `e : ∀ i : Fin k, V.φ (G (Fin.castLE hk i) * dz (Fin.castLE hk i)) ^ m * (V.φ (G (Fin.castLE hk i) ^ m) * rl (Fin.castLE hk i))⁻¹ = (Tz.map V.φ) (Fin.castLE hk i) (Fin.castLE hk i) ^ m * ((rl (Fin.castLE hk i) : V.G.functionField))⁻¹`. Introduce `i`. Establish `h1 : V.φ (G (Fin.castLE hk i)) ≠ 0` using `(map_ne_zero _).2 (hG _)`. Rewrite using `[Matrix.map_apply, hTd, map_mul, map_pow, mul_pow, mul_inv]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[Finset.prod_congr rfl fun i _ => e i, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_inv_distrib, mul_pow, div_eq_mul_inv, mul_assoc]`.
+-/
 theorem nmin_eq (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (rl : Fin g → V.G.functionFieldˣ) (m k : ℕ)
     (hk : k ≤ g) (σ : Fin k → Fin (g + g)) (Tz : Matrix (Fin g) (Fin g) Y.Fn) (dz : Fin g → Y.Fnˣ) (G : Fin g → Y.Fn)
     (hT : Tz.BlockTriangular id) (hTd : ∀ i, Tz i i = dz i) (hG : ∀ i, G i ≠ 0) :
@@ -232,6 +304,11 @@ theorem nmin_eq (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (rl : Fin g
   rw [Finset.prod_congr rfl fun i _ => e i, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_inv_distrib, mul_pow,
     div_eq_mul_inv, mul_assoc]
 
+/- English proof (translation)
+Establish `hG : ∀ i, G i ≠ 0` using `fun i h => (hGd i).ne_zero (by rw [h, zero_mul, map_zero])`. Establish `hQ` using `unitAt_prod _ fun i : Fin k => (unitAt_pow (hGd (Fin.castLE hk i)) m).mul (hrl (Fin.castLE hk i)).inv`. Establish `hM` using `regAt_minor _ hHz k hk σ`. Rewrite using `[nmin_eq V H rl m k hk σ Tz dz G hT hTd hG]`. Use `⟨(regAt_pow hM m).mul hQ.regAt, fun h => unitAt_of_pow_of_regAt hm hM ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `h.mul hQ.inv`. Rewrite `e` using `[mul_assoc, mul_inv_cancel₀ hQ.ne_zero, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem unitAt_minor_of_nmin {z : V.G} (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField)
     (rl : Fin g → V.G.functionFieldˣ) (m : ℕ) (hm : 0 < m) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin (g + g))
     (Tz : Matrix (Fin g) (Fin g) Y.Fn) (dz : Fin g → Y.Fnˣ) (G : Fin g → Y.Fn) (hT : Tz.BlockTriangular id)
@@ -247,6 +324,19 @@ theorem unitAt_minor_of_nmin {z : V.G} (H : Matrix (Fin (g + g)) (Fin g) V.G.fun
   have e := h.mul hQ.inv
   rwa [mul_assoc, mul_inv_cancel₀ hQ.ne_zero, mul_one] at e
 
+/- English proof (translation)
+Establish `hG : ∀ i, G i ≠ 0` using `fun i h => (hGd i).ne_zero (by rw [h, zero_mul])`. Establish `hGd' : ∀ i, UnitAt (below z) (V.φ (G i * dz i))` using `fun i => V.unitAt_φ (hGd i)`. Establish `hterm : ∀ i : Fin g, e.w (valAt z (V.φ (G i * dz i) ^ m * (V.φ (G i ^ m) * rl i)⁻¹)) = (ν i / ν ((i : ℕ) + 1)) ^ m`. Introduce `i`. Establish `hu` using `(hrl i)`.
+
+Rewrite using `[Res.valAt_mul (regAt_pow (hGd' i).regAt m) hu.inv.regAt, Res.valAt_pow (hGd' i).regAt, valAt_inv z hu, map_mul, map_pow, map_inv₀, V.valAt_φ z (hGd i).regAt]`. Establish `hpos : 0 < e.w (valAt z (V.φ (G i ^ m) * rl i))` using `e.w.pos (Res.valAt_ne_zero hu)`. Establish `hpos' : 0 < e.w (valAt (z ≫ V.π) (G i * dz i))`. Rewrite using `[← V.valAt_φ z (hGd i).regAt]`. Conclude with `e.w.pos (Res.valAt_ne_zero (hGd' i))`.
+
+Establish `h1` using `hnorm i`. Rewrite `h1` using `[hlg i]`. Establish `hb` using `hν _ (Nat.succ_le_of_lt i.2)`. Establish `hc` using `hν _ i.2.le`. Establish `hq : 0 < e.w (valAt (z ≫ V.π) (G i * dz i)) * ν ((i : ℕ) + 1) / ν i` using `div_pos (mul_pos hpos' hb) hc`.
+
+Establish `h2 : e.w (valAt z (V.φ (G i ^ m) * rl i)) = (e.w (valAt (z ≫ V.π) (G i * dz i)) * ν ((i : ℕ) + 1) / ν i) ^ m`. Rewrite using `[← Real.exp_log hpos, ← Real.exp_log (pow_pos hq m), ← h1, Real.log_pow, Real.log_div (mul_pos hpos' hb).ne' hc.ne', Real.log_mul hpos'.ne' hb.ne']`. Rewrite using `[h2, div_pow, mul_pow, div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hQ : ∀ i : Fin k, RegAt (below z) (V.φ (G (Fin.castLE hk i) * dz (Fin.castLE hk i)) ^ m * (V.φ (G (Fin.castLE hk i) ^ m) * rl (Fin.castLE hk i))⁻¹)` using `fun i => (regAt_pow (hGd' _).regAt m).mul (hrl _).inv.regAt`.
+
+Establish `hM` using `minor_valAt z _ hHz k hk σ`. Rewrite using `[nmin_eq V H rl m k hk σ Tz dz G hT hTd hG, Res.valAt_mul (regAt_pow hM.1 m) (regAt_prod _ hQ), Res.valAt_pow hM.1, hM.2, valAt_prod z _ hQ, map_mul, map_pow, map_prod]`. Establish `hprod : ∏ i : Fin k, e.w (valAt z (V.φ (G (Fin.castLE hk i) * dz (Fin.castLE hk i)) ^ m * (V.φ (G (Fin.castLE hk i) ^ m) * rl (Fin.castLE hk i))⁻¹)) = 1 / ν k ^ m`. Rewrite using `[Finset.prod_congr rfl fun i _ => hterm (Fin.castLE hk i)]`. Establish `hr` using `prod_ratio ν m k fun j hj => hν j (hj.trans hk)`.
+
+Simplify using `only [Fin.coe_castLE]`. Rewrite using `[hr, hν0, div_pow, one_pow]`. Rewrite using `[hprod, mul_one_div]`.
+-/
 theorem w_nmin {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G)
     (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (rl : Fin g → V.G.functionFieldˣ) (m k : ℕ) (hk : k ≤ g)
     (σ : Fin k → Fin (g + g)) (Tz : Matrix (Fin g) (Fin g) Y.Fn) (dz : Fin g → Y.Fnˣ) (G : Fin g → Y.Fn)
@@ -345,6 +435,11 @@ def chartSet (V : Cover Y) {ι : Type} {g : ℕ} (U : ι → V.X.Opens) (H : ι 
   {x | x ∈ U q.1 ∧ (∀ i, x ∈ (L i).U (q.2.2 i)) ∧
     ∀ (k : ℕ) (hk : k ≤ g), UnitAt x ((toG V).symm (nmin V (H q.1) (frames r q.2.2) m k hk (q.2.1 k)))}
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x hx`. Take `⟨h1, h2, h3⟩` from `hx`. Use `choose N hN hN' using fun k : Fin (g + 1) => (h3 k (Nat.lt_succ_iff.1 k.2)).exists_nhds`. Use `⟨(U q.1 : Set V.X) ∩ (⋂ i, ((L i).U (q.2.2 i) : Set V.X)) ∩ ⋂ k, (N k : Set V.X), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨⟨hy1, hy2⟩, hy3⟩`. Use `⟨hy1, fun i => Set.mem_iInter.1 hy2 i, fun k hk => ?_⟩` and prove the remaining obligations. Conclude with `hN' ⟨k, Nat.lt_succ_of_le hk⟩ y (Set.mem_iInter.1 hy3 _)`. Conclude with `((U q.1).isOpen.inter (isOpen_iInter_of_finite fun i => ((L i).U _).isOpen)).inter (isOpen_iInter_of_finite fun k => (N k).isOpen)`. Conclude with `⟨⟨h1, Set.mem_iInter.2 h2⟩, Set.mem_iInter.2 fun k => hN k⟩`.
+-/
 theorem isOpen_chartSet (V : Cover Y) {ι : Type} {g : ℕ} (U : ι → V.X.Opens)
     (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (L : Fin g → LB V.X) (m : ℕ)
     (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ) (q : Idx ι L) : IsOpen (chartSet V U H L m r q) := by

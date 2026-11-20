@@ -11,6 +11,27 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n r w hw f hf x`. Establish `hfin : {v : Pl K | finAt v (finEmb K n x) ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite`. Establish `hB : {v : Pl K | AdelicGLn.finiteRestrictedEquiv K n x v ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 (AdelicGLn.finiteRestrictedEquiv K n x).2`. Use `hB.subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Establish `e : finAt v (finEmb K n x) = AdelicGLn.finiteRestrictedEquiv K n x v` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n x)).2) v = _`. Rewrite using `[prodEquiv_finEmb]`. Simplify `hv` using `[e]`. Use `set S : Finset (Pl K) := hfin.toFinset ∪ Finset.univ.image w with hS`. Establish `hoff : ∀ v, v ∉ Set.range w → f v (finAt v (finEmb K n x)) = if finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n then 1 else 0`.
+
+Introduce `v hv`. Rewrite using `[hf v hv]`. Distinguish the cases in `h : finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Rewrite using `[if_pos h]`. Conclude with `Set.indicator_of_mem (s := (GLnLocal.integralGL (v.adicCompletion K) n : Set (Gw n v))) h _`.
+
+Rewrite using `[if_neg h]`. Conclude with `Set.indicator_of_notMem (s := (GLnLocal.integralGL (v.adicCompletion K) n : Set (Gw n v))) h _`. Establish `hsupp : Function.mulSupport (fun v => f v (finAt v (finEmb K n x))) ⊆ (S : Set (Pl K))`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+
+Establish `h1 : v ∉ Set.range w`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `hvS (by simp [hS])`. Establish `h2 : finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hvS (by simp only [hS, Finset.coe_union, Set.mem_union, Finset.mem_coe, Set.Finite.mem_toFinset]; exact Or.inl h)`. Conclude with `hv ((hoff v h1).trans (if_pos h2))`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp]`. Distinguish the cases in `hx : x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))`. Rewrite using `[Set.indicator_of_mem hx, Pi.one_apply, one_mul]`.
+
+Establish `hsub : Finset.univ.image w ⊆ S` using `Finset.subset_union_right`. Rewrite using `[← Finset.prod_subset hsub, Finset.prod_image (fun a _ b _ h => hw h)]`. Introduce `v _ hv`. Establish `h1 : v ∉ Set.range w`. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `hv (by simp)`. Rewrite using `[hoff v h1, if_pos (hx v h1)]`. Rewrite using `[Set.indicator_of_notMem hx, zero_mul]`. Establish `hx' : ∃ v, v ∉ Set.range w ∧ finAt v (finEmb K n x) ∉ GLnLocal.integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hx hc`. Take `⟨v, h1, h2⟩` from `hx'`. Use `Finset.prod_eq_zero (i := v) ?_ ?_` and prove the remaining obligations. Simplify using `only [hS, Finset.mem_union, Set.Finite.mem_toFinset]`.
+
+Conclude with `Or.inl h2`. Rewrite using `[hoff v h1, if_neg h2]`.
+-/
 theorem UpperTheory.finprod_local_eq_indicator_mul_prod :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K), Function.Injective w → ∀ (f : ∀ v : Pl K, Gw n v → ℂ),
           (∀ v, v ∉ Set.range w → f v = (GLnLocal.integralGL (v.adicCompletion K) n : Set (Gw n v)).indicator 1) → ∀ x : AdelicGLn.FiniteAdelicGL K n,

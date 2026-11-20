@@ -20,10 +20,16 @@ def dualMat {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) :
     Br.G D.nbr i w hw →* Matrix (Fin k) (Fin k) (Br.LL D.nbr i w hw) :=
   GlobalTheory.TateDualX.dualTw (cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw)) (Br.loc D.nbr i w hw M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMat_apply {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) :
     dualMat i w hw M g = ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) :
       Br.LL D.nbr i w hw) • (Br.loc D.nbr i w hw M g⁻¹).transpose := rfl
 
+/- English proof (translation)
+Use `haveI := isTopRing i w hw`. Conclude with `GlobalTheory.TateDualX.continuous_dualTw _ _ (GlobalTheory.TateDualX.continuous_cyc D i w hw) (GlobalTheory.PotDual.continuous_loc D i w hw M hM)`.
+-/
 theorem continuous_dualMat {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (hM : Continuous fun g => M g) : Continuous (dualMat i w hw M) := by
   haveI := isTopRing i w hw
@@ -35,12 +41,18 @@ def Udual {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (hM : C
   haveI := isTopRing i w hw
   GlobalTheory.PotDual.bundle ℚ_[D.nd.l i] (Br.OLL D.nbr i w hw) (dualMat i w hw M) (continuous_dualMat i w hw M hM)
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.CycBridge.locChi_epsU_eq_cycLL D i w hw]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem cyc_mem (g : Br.G D.nbr i w hw) : ∃ c : Br.OLL D.nbr i w hw,
     algebraMap (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) c =
       ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) := by
   rw [← GlobalTheory.CycBridge.locChi_epsU_eq_cycLL D i w hw]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `cyc_mem i w hw g`. Use `⟨c • (Br.locO (D.nbr i w hw) (M.comp (decS D.nd w)) g⁻¹).transpose, ?_⟩` and prove the remaining obligations. Rewrite using `[dualMat_apply, ← hc, Matrix.map_smul' _ _ _ (map_mul _), Matrix.transpose_map]`. Both sides reduce to the same expression.
+-/
 theorem dualMat_integral {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw) :
     ∃ N : Matrix (Fin k) (Fin k) (Br.OLL D.nbr i w hw),
       dualMat i w hw M g = N.map (algebraMap (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw)) := by

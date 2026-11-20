@@ -34,12 +34,20 @@ namespace GlobalTheory.HeightCounting.SerCopy
 
 def lamT {D : D7} (N : TwNew D) (Z : GlobalTheory.LamTie.LamDat D) : GlobalTheory.LamTie.LamDat N.toD7 := ⟨N.cf Z.C, Z.q0, Z.w0, Z.c, Z.chi⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨(by with_unfolding_all exact (h.1.places :)), (by with_unfolding_all exact (h.1.aux :)), (by with_unfolding_all exact (h.1.big :))⟩, (by with_unfolding_all exact (h.2.1 :)), congrArg N.cf h.2.2.1, (by with_unfolding_all exact (h.2.2.2.1 :)), (by with_unfolding_all exact (h.2.2. …`.
+-/
 theorem lamT_spec {D : D7} (N : TwNew D) {cf : CharFrame D} {Z : GlobalTheory.LamTie.LamDat D}
     (h : Z.Ok ∧ Z.Teich ∧ Z.C = cf ∧ Z.q0 = AbsolutelyIrreducibleSpan.q0 D ∧ GlobalTheory.LamTie.IsLamTieFull N.tw Z) :
     (lamT N Z).Ok ∧ (lamT N Z).Teich ∧ (lamT N Z).C = N.cf cf ∧ (lamT N Z).q0 = AbsolutelyIrreducibleSpan.q0 N.toD7 ∧
       GlobalTheory.LamTie.IsLamTieFull N.toD7.ntw (lamT N Z) :=
   ⟨⟨(by with_unfolding_all exact (h.1.places :)), (by with_unfolding_all exact (h.1.aux :)), (by with_unfolding_all exact (h.1.big :))⟩, (by with_unfolding_all exact (h.2.1 :)), congrArg N.cf h.2.2.1, (by with_unfolding_all exact (h.2.2.2.1 :)), (by with_unfolding_all exact (h.2.2.2.2 :))⟩
 
+/- English proof (translation)
+Take `⟨N, h1, h2, h3, ⟨B1⟩⟩` from `GlobalTheory.T.secondStep_no_forms_outside_liftRange D cf Rw low Pq S hL eig θ Bs`. Take `⟨τ, hτ⟩` from `GlobalTheory.TwInputs.exists_tau_family hA N.toD7 _ _ _ _ _ _ _ _ B1 ⟨(by with_unfolding_all exact (hV.mu0 :)), (by with_unfolding_all exact (hV.eta :)), (by with_unfolding_all exact (hV.chiPsi :)), (by with_unfolding_all exact (hV.del :)), (by with_unfolding_all exact (hV.del' : …`. Take `⟨⟨tw, ex, h0, th, br, hbr⟩, e, g1, g2, B2, g3⟩` from `GlobalTheory.T.exists_twistData_lowerBlock_universalCharacter N.toD7 _ _ _ _ _ _ _ _ B1 τ hτ`. Simplify using `only at e`. Substitute `e` using the available equality.
+
+Conclude with `⟨⟨N.tw, (by with_unfolding_all exact (ex :)), (by with_unfolding_all exact (h0 :)), (by with_unfolding_all exact (th :)), (by with_unfolding_all exact (br :)), (by with_unfolding_all exact (hbr :))⟩, h1, h2, (by with_unfolding_all exact ((g1 h3) :)), (by with_unfolding_all exact …`.
+-/
 theorem exists_prepared (hA : GlobalTheory.Published.GlobalArtinReciprocity) {D : D7} {cf : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host} {S : RatDat D.ntw}
     {hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)} {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0}
@@ -56,6 +64,9 @@ theorem exists_prepared (hA : GlobalTheory.Published.GlobalArtinReciprocity) {D 
   subst e
   exact ⟨⟨N.tw, (by with_unfolding_all exact (ex :)), (by with_unfolding_all exact (h0 :)), (by with_unfolding_all exact (th :)), (by with_unfolding_all exact (br :)), (by with_unfolding_all exact (hbr :))⟩, h1, h2, (by with_unfolding_all exact ((g1 h3) :)), (by with_unfolding_all exact (g2 :)), (by with_unfolding_all exact (B2 :)), (by with_unfolding_all exact (g3 :))⟩
 
+/- English proof (translation)
+Substitute `e1 e4 e5` using the available equality. Consider the cases of `e6`. Conclude with `h`.
+-/
 theorem sideB_tau_congr {D : D7} {cf cf' : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
     {Pq Pq' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host} {S S' : RatDat D.ntw}
     {hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)} {hL' : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S'.WL j)}
@@ -66,6 +77,9 @@ theorem sideB_tau_congr {D : D7} {cf cf' : CharFrame D} {Rw : RowSide D} {low : 
   cases e6
   exact h
 
+/- English proof (translation)
+Take `rfl : kKs = n.kKs` from `RingHom.ext fun y => Subtype.ext ((hk y).trans (n.hk y).symm)`. Substitute `e1 e2 e3 e5 e6` using the available equality. Consider the cases of `e4`. Conclude with `⟨{ Bs := Bs, Sb_le := h1, rootsOfUnityRing_le_wittIntegers := h2, lam := ⟨ser.lam, ser.lam_ok, ser.lam_teich, ser.lam_C, ser.lam_q, ser.lam_tie⟩ YS := YS, eF := eF, fi := fi, ser := ser, tau := tau }⟩`.
+-/
 theorem nonempty_seriesState {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {C : Formalism.L2.Pj.CoreJ D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat3 D A3 C.Q.c.F}
     {F : Face3 D A3} {X0 : BaseLevelRowSide D} {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {cG : G0 R.Pg D.R.r ≃* G0g D.nd}
@@ -94,6 +108,9 @@ def PreAt {Z : w.Lt} (z : Dat (w.st Z) w.I P.hX T P.Wt) (Rw : RowSide (w.st Z).t
     ∃ (Bs : SideB (w.st Z).toD7 z.R.C Rw (lowAll (w.st Z).toD7) Pq (ratDatR z.R z.cG kKs hk) hL eig θ) (hF : _),
       TauTrue Bs.exp ∧ Nonempty (PreTie (ysOf Bs) z.geo.v₀ Bs.exp hF Pq)
 
+/- English proof (translation)
+Substitute `e0 e1 e2 e4 e5` using the available equality. Take `⟨g1, k, hk, hf, g2, g3⟩` from `h`. Conclude with `⟨g1, k, hk, hf, g2.trans e3, g3⟩`.
+-/
 theorem preAt_congr {Z : w.Lt} {z z' : Dat (w.st Z) w.I P.hX T P.Wt} {Rw Rw' Pq Pq'} {α α' : Type} {h₀ : α} {h₀' : α'}
     {eig eig' θ θ'} (e0 : z = z') (e1 : Rw = Rw') (e2 : Pq = Pq') (e3 : HEq h₀ h₀') (e4 : eig = eig') (e5 : θ = θ')
     (h : PreAt (P := P) z Rw Pq h₀ eig θ) : PreAt (P := P) z' Rw' Pq' h₀' eig' θ' := by
@@ -101,6 +118,9 @@ theorem preAt_congr {Z : w.Lt} {z z' : Dat (w.st Z) w.I P.hX T P.Wt} {Rw Rw' Pq 
   obtain ⟨g1, k, hk, hf, g2, g3⟩ := h
   exact ⟨g1, k, hk, hf, g2.trans e3, g3⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.choice_of_local_admissible hL hK hS x l.toLA`. Take `⟨Bs, hτ⟩` from `sideB_tau_congr h4.symm rfl rfl HEq.rfl hB`. Conclude with `⟨h4, l.rat.kKs, l.rat.hk, l.rat.In.hL, HEq.rfl, Bs, x.r.Y.hF, hτ, GlobalTheory.T.exists_newThetaData_series_classSums_lattices hA (Dof x) _ _ _ _ _ _ x.m.z.R x.m.z.F x.m.z.cG l.rat.kKs l.rat.hk _ _ _ _ _ Bs l.rat.In.Sb x.m.z.geo.v₀ x.r.Y.hF x.m.z.pins x.m.intersectionNumber_baseC …`.
+-/
 theorem preAt_state (hA : GlobalTheory.Published.GlobalArtinReciprocity) {hL : GlobalTheory.Published.LocalLanglandsGL} (hK : K.Over B.toPre)
     (hS : Start K B f T w) (x : St P) (l : LI hL x)
     (hB : ∃ Bs : SideB (Dof x) (cfOf x) l.a.A.row (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ, TauTrue Bs.exp)
@@ -113,6 +133,13 @@ theorem preAt_state (hA : GlobalTheory.Published.GlobalArtinReciprocity) {hL : G
       x.m.z.pins x.m.intersectionNumber_baseChange (fun j => x.m.z.geo.fw.hv₀ j _) x.m.z.geo.fw.ks l.rat.rat.hecke hSb hτ (h4 ▸ l.a.A.chr) (h4 ▸ l.a.val)
       l.a.elem.split l.Pq_over h1 h2 hZ h3⟩
 
+/- English proof (translation)
+Take `⟨x', l', ho, -, hrow, hPq, hS', hSb', hhL, heig, hθ, hR, hcG, hgeo⟩` from `GlobalTheory.T.twisted_state_transport_heq_levels hL x l N`. Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`. Simplify using `only at ho`. Substitute `ho` using the available equality. Establish `hz : m'.z = datTw x N` using `moved_eq_datTw x N m' copy' hR hcG hgeo`.
+
+Establish `e1 : l'.a.A.row = (by with_unfolding_all exact ((N.row l.a.A.row) :))` using `(by with_unfolding_all exact ((eq_of_heq hrow) :))`. Establish `e2 : l'.Pq = (by with_unfolding_all exact (l.Pq :))` using `(by with_unfolding_all exact ((eq_of_heq hPq) :))`. Establish `e3 : l'.rat.S = (by with_unfolding_all exact ((N.rat l.rat.S) :))` using `(by with_unfolding_all exact ((eq_of_heq hS') :))`. Establish `e4 : l'.rat.In.Sb = (by with_unfolding_all exact (l.rat.In.Sb :))` using `(by with_unfolding_all exact ((eq_of_heq hSb') :))`. Establish `e5 : l'.rat.In.eig = (by with_unfolding_all exact (l.rat.In.eig :))` using `(by with_unfolding_all exact ((eq_of_heq heig) :))`.
+
+Establish `e6 : l'.rat.In.θ = (by with_unfolding_all exact (l.rat.In.θ :))` using `(by with_unfolding_all exact ((eq_of_heq hθ) :))`. Establish `h` using `preAt_state hA hK hS _ l' (by rewrite [e1, e5, e6]`. Conclude with `sideB_tau_congr rfl e2.symm e3.symm hhL.symm ((by with_unfolding_all exact (hB :)))) (by rewrite [e4]; exact (by with_unfolding_all exact (hSb :))) ((by with_unfolding_all exact (hZ :)))`. Conclude with `preAt_congr hz e1 e2 hhL e5 e6 h`.
+-/
 theorem preAt_copy (hA : GlobalTheory.Published.GlobalArtinReciprocity) {hL : GlobalTheory.Published.LocalLanglandsGL} (hK : K.Over B.toPre)
     (hS : Start K B f T w) (x : St P) (l : LI hL x) (N : TwNew (Dof x))
     (hB : ∃ Bs : SideB N.toD7 (N.cf (cfOf x)) (N.row l.a.A.row) (lowAll (Dof x)) l.Pq (N.rat l.rat.S) l.rat.In.hL l.rat.In.eig
@@ -150,6 +177,9 @@ def bsP : SideB (DN x (nP p)) (((kwP p).cf cf)) (((kwP p).row Rw)) (lowAll (DN x
     ((θ)) :=
   (by with_unfolding_all exact ((keepSideB (DN x N₁) p.Dat p.th p.lev p.thPsi p.h1 p.thU p.thP p.MtLat p.h2 p.h3 p.nth p.hU cf Rw _ Pq _ hf eig θ Bs) :))
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Take `⟨Z, z1, z2, z3, z4, z5⟩` from `hZ`. Establish `e1 : ((by with_unfolding_all exact (((kwP p).cf cf) :)) : CharFrame (DN x (nP p))) = TC.cf w.I w.l (oTw x (nP p)).Z` using `(by with_unfolding_all exact ((congrArg (kwP p).cf hC) :))`. Conclude with `nonempty_seriesState _ a n PV (bsP p) (ysP p) ((by with_unfolding_all exact ((Eq.refl Bs.eF) :))) ((by with_unfolding_all exact ((ysOf_fi Bs) :))) ((by with_unfolding_all exact ((serP p hu ho Bs.bsup PV hPV Z ⟨z1, z2, z3.trans e1.symm, z4, z5⟩) :))) ((by with_unfolding_all exact …`.
+-/
 theorem series_state_b1_twist {hL : GlobalTheory.Published.LocalLanglandsGL} (hτ : TauTrue Bs.exp) (hC : cf = TC.cf w.I w.l (oTw x N₁).Z)
     (hu : GlobalTheory.UnivChar.IsUnivChar (DN x N₁).nexp) (ho : NoOff (DN x N₁))
     (z : Dat (w.st (oTw x (nP p)).Z) w.I P.hX T P.Wt) (hz : z = datTw x (nP p)) {X0 : BaseLevelRowSide (DN x (nP p))}
@@ -174,6 +204,15 @@ end Install
 
 open GlobalTheory.Mem.Top.GroupRetwisting in
 
+/- English proof (translation)
+Introduce `hPr _ hL K B f T w hK _ hS P x l`. Take `⟨-, -, -, -, hr⟩` from `GlobalTheory.T.choice_of_local_admissible hL hK hS x l.toLA`. Take `⟨N, h1, h2, h3, h4, hB⟩` from `exists_prepared hPr.what₂.art l.b.Bs l.a.val hr`. Take `⟨Z, z1, z2, z3, z4, z5⟩` from `l.b.lam`. Establish `hSb : ∀ i, l.rat.In.Sb ⊆ N.tw.S0 i` using `fun i => by`.
+
+Take `⟨i₀, e, -⟩` from `h2 i`. Use `rewrite [e]`. Conclude with `l.b.Sb_le i₀`. Establish `hS0 : ∀ i, OverSet (Dof x) (N.tw.S0 i) (insert (N.tw.l i) (lowAll (Dof x)))` using `fun i => by`. Take `⟨i₀, e, e'⟩` from `h2 i`.
+
+Use `rewrite [e, e']`. Conclude with `l.b.rootsOfUnityRing_le_wittIntegers i₀`. Take `⟨hC, kKs, hk, hf, g, Bs, hF, hτ, ⟨p⟩⟩` from `preAt_copy hPr.what₂.art hK hS x l.toLI N hB hSb ⟨_, (lamT_spec N ⟨z1, z2, z3, z4, h1 Z z5⟩).1⟩`. Use `⟨nP p, h1, fun x' l' ho hrow hPq _ hSb' hhL heig hθ hR hcG hgeo m hm => ?_⟩` and prove the remaining obligations. Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`.
+
+Simplify using `only at ho`. Substitute `ho` using the available equality. Establish `e4 : l'.rat.In.Sb = (by with_unfolding_all exact (l.rat.In.Sb :))` using `(by with_unfolding_all exact ((eq_of_heq hSb') :))`. Conclude with `series_state_b1_twist p hτ hC ((by with_unfolding_all exact (h4 :))) ((by with_unfolding_all exact (h3 :))) m'.z (moved_eq_datTw x _ m' copy' hR hcG hgeo) r'.Y l'.a l'.rat m.ad.PV hm l'.Pq ⟨(by with_unfolding_all exact ((lamT (nP p) Z) :)), (by with_unfolding_all exact ((lamT_spe …`.
+-/
 theorem series_copy : PrN → SerN → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}, K.Over B.toPre → Forced K B T → Start K B f T w → ∀ {P : Pre2 K w} (x : St P) (l : SettingsLevel hL x), ∃ N : TwNew (Dof x), (∀ Z : GlobalTheory.LamTie.LamDat (Dof x), GlobalTheory.LamTie.IsLamTieFull (Dof x).ntw Z → GlobalTheory.LamTie.IsLamTieFull N.tw Z) ∧ ∀ (x' : St P) (l' : LI hL x'), x'.o = oTw x N → HEq l'.a.A.row (N.row l.a.A.row) → HEq l'.Pq l.Pq → HEq l'.rat.S (N.rat l.rat.S) → HEq l'.rat.In.Sb l.rat.In.Sb → HEq l'.rat.In.hL l.rat.In.hL → HEq l'.rat.In.eig l.rat.In.eig → HEq l'.rat.In.θ l.rat.In.θ → HEq x'.m.z.R (GlobalTheory.Mem.R3.Tr.real3 (a := x.o.Z) (oTw x N).Z (iK := x.m.z.alg) x.m.z.R) → HEq x'.m.z.cG x.m.z.cG → HEq x'.m.z.geo (GlobalTheory.Mem.R3.Tr.geoHalf (a := x.o.Z) (oTw x N).Z (iK := x.m.z.alg) x.m.z.geo) → ∀ m : InMt x'.r.Y (cfOf x') w.I.xi (QOf P), (∀ i, GlobalTheory.MtRead.IdFrame x'.r.Y.hF (m.ad.PV i)) → Nonempty (SeriesState x'.m.z.geo l'.a l'.rat m.ad.PV l'.Pq) := by
   intro hPr _ hL K B f T w hK _ hS P x l
   obtain ⟨-, -, -, -, hr⟩ := GlobalTheory.T.choice_of_local_admissible hL hK hS x l.toLA

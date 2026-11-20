@@ -20,20 +20,32 @@ noncomputable def evalPoint {x y : F} (h : W.toAffine.Equation x y) :
     W.toAffine.CoordinateRing →+* F :=
   AdjoinRoot.lift (evalRingHom x) y (by rw [eval₂_evalRingHom]; exact h)
 
+/- English proof (translation)
+Rewrite using `[evalPoint, AdjoinRoot.lift_mk, eval₂_evalRingHom]`.
+-/
 theorem evalPoint_mk {x y : F} (h : W.toAffine.Equation x y) (p : F[X][X]) :
     evalPoint h (AdjoinRoot.mk W.toAffine.polynomial p) = p.evalEval x y := by
   rw [evalPoint, AdjoinRoot.lift_mk, eval₂_evalRingHom]
 
+/- English proof (translation)
+Rewrite using `[XClass, evalPoint_mk]`. Simplify using `[evalEval_C]`.
+-/
 theorem evalPoint_XClass {x y : F} (h : W.toAffine.Equation x y) (x' : F) :
     evalPoint h (XClass W.toAffine x') = x - x' := by
   rw [XClass, evalPoint_mk]
   simp [evalEval_C]
 
+/- English proof (translation)
+Rewrite using `[YClass, evalPoint_mk]`. Simplify using `[evalEval_sub, evalEval_X, evalEval_C]`.
+-/
 theorem evalPoint_YClass {x y : F} (h : W.toAffine.Equation x y) (y' : F) :
     evalPoint h (YClass W.toAffine (C y')) = y - y' := by
   rw [YClass, evalPoint_mk]
   simp [evalEval_sub, evalEval_X, evalEval_C]
 
+/- English proof (translation)
+Rewrite using `[XYIdeal, Ideal.span_le]`. Introduce and unpack `_ (rfl | rfl)`. Simplify using `[evalPoint_XClass]`. Simplify using `[evalPoint_YClass]`.
+-/
 theorem XYIdeal_le_ker {x y : F} (h : W.toAffine.Equation x y) :
     XYIdeal W.toAffine x (C y) ≤ RingHom.ker (evalPoint h) := by
   rw [XYIdeal, Ideal.span_le]
@@ -41,12 +53,18 @@ theorem XYIdeal_le_ker {x y : F} (h : W.toAffine.Equation x y) :
   · simp [evalPoint_XClass]
   · simp [evalPoint_YClass]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.maximal_of_isField _ <| MulEquiv.isField (Field.toIsField F) (quotientXYIdealEquiv (W' := W.toAffine) (x := x) (y := C y) h).toRingEquiv.toMulEquiv`.
+-/
 theorem isMaximal_XYIdeal {x y : F} (h : W.toAffine.Equation x y) :
     (XYIdeal W.toAffine x (C y)).IsMaximal :=
   Ideal.Quotient.maximal_of_isField _ <|
     MulEquiv.isField (Field.toIsField F)
       (quotientXYIdealEquiv (W' := W.toAffine) (x := x) (y := C y) h).toRingEquiv.toMulEquiv
 
+/- English proof (translation)
+Introduce `h0`. Establish `hx : XClass W.toAffine x ∈ XYIdeal W.toAffine x y` using `Ideal.subset_span (Set.mem_insert _ _)`. Rewrite `hx` using `[h0, Ideal.mem_bot]`. Conclude with `XClass_ne_zero x hx`.
+-/
 theorem XYIdeal_ne_bot (x : F) (y : F[X]) : XYIdeal W.toAffine x y ≠ ⊥ := by
   intro h0
   have hx : XClass W.toAffine x ∈ XYIdeal W.toAffine x y :=
@@ -54,6 +72,11 @@ theorem XYIdeal_ne_bot (x : F) (y : F[X]) : XYIdeal W.toAffine x y ≠ ⊥ := by
   rw [h0, Ideal.mem_bot] at hx
   exact XClass_ne_zero x hx
 
+/- English proof (translation)
+Establish `h1 : XClass W.toAffine x ∈ XYIdeal W.toAffine x' (C y')` using `he ▸ Ideal.subset_span (Set.mem_insert _ _)`. Establish `h2 : YClass W.toAffine (C y) ∈ XYIdeal W.toAffine x' (C y')` using `he ▸ Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`. Establish `e1` using `XYIdeal_le_ker h' h1`. Establish `e2` using `XYIdeal_le_ker h' h2`. Rewrite `e1` using `[RingHom.mem_ker, evalPoint_XClass]`.
+
+Rewrite `e2` using `[RingHom.mem_ker, evalPoint_YClass]`. Conclude with `⟨(sub_eq_zero.mp e1).symm, (sub_eq_zero.mp e2).symm⟩`.
+-/
 theorem XYIdeal_inj {x y x' y' : F} (h' : W.toAffine.Equation x' y')
     (he : XYIdeal W.toAffine x (C y) = XYIdeal W.toAffine x' (C y')) : x = x' ∧ y = y' := by
   have h1 : XClass W.toAffine x ∈ XYIdeal W.toAffine x' (C y') :=
@@ -72,9 +95,15 @@ noncomputable def heightOneOfNonsingular {x y : F} (h : W.toAffine.Nonsingular x
   isPrime := (isMaximal_XYIdeal h.1).isPrime
   ne_bot := XYIdeal_ne_bot x (C y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heightOneOfNonsingular_asIdeal {x y : F} (h : W.toAffine.Nonsingular x y) :
     (heightOneOfNonsingular h).asIdeal = XYIdeal W.toAffine x (C y) := rfl
 
+/- English proof (translation)
+The claim follows from `XYIdeal_inj h'.1 (congrArg HeightOneSpectrum.asIdeal he)`.
+-/
 theorem heightOneOfNonsingular_inj {x y x' y' : F} (h : W.toAffine.Nonsingular x y)
     (h' : W.toAffine.Nonsingular x' y')
     (he : heightOneOfNonsingular h = heightOneOfNonsingular h') : x = x' ∧ y = y' :=
@@ -85,6 +114,9 @@ instance : IsNoetherianRing W.toAffine.CoordinateRing :=
 
 end Field
 
+/- English proof (translation)
+Establish `hunit : IsUnit ((IsLocalRing.maximalIdeal R : Ideal R) : FractionalIdeal R⁰ (FractionRing R))`. Use `isUnit_iff_exists_inv.mpr ⟨(J : FractionalIdeal R⁰ (FractionRing R)) * ((Ideal.span {t} : Ideal R) : FractionalIdeal R⁰ (FractionRing R))⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← FractionalIdeal.coeIdeal_mul, h, FractionalIdeal.coe_ideal_span_singleton_mul_inv (FractionRing R) ht]`. Establish `hprinc` using `Ideal.IsPrincipal.of_finite_maximals_of_isUnit ((Set.finite_singleton (IsLocalRing.maximalIdeal R)).subset fun I hI => IsLocalRing.eq_maximalIdeal hI) hunit`. Conclude with `((IsDiscreteValuationRing.TFAE R hnf).out 0 4).mpr hprinc`.
+-/
 theorem isDiscreteValuationRing_of_maximalIdeal_mul_eq {R : Type*} [CommRing R] [IsDomain R]
     [IsNoetherianRing R] [IsLocalRing R] (hnf : ¬ IsField R) (J : Ideal R) {t : R} (ht : t ≠ 0)
     (h : IsLocalRing.maximalIdeal R * J = Ideal.span {t}) : IsDiscreteValuationRing R := by
@@ -102,6 +134,9 @@ section AlgClosed
 
 variable [IsAlgClosed F]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `IsAlgClosed.exists_root (C (1 : F) * X ^ 2 + C (W.a₁ * x + W.a₃) * X + C (-(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆))) (by rw [degree_quadratic one_ne_zero]; norm_num)`. Use `⟨y, (W.toAffine.equation_iff x y).mpr ?_⟩` and prove the remaining obligations. Simplify using `only [IsRoot, eval_add, eval_mul, eval_C, eval_pow, eval_X] at hy`. Take the linear combination `hy`.
+-/
 theorem exists_equation (x : F) : ∃ y, W.toAffine.Equation x y := by
   obtain ⟨y, hy⟩ := IsAlgClosed.exists_root
     (C (1 : F) * X ^ 2 + C (W.a₁ * x + W.a₃) * X + C (-(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆)))
@@ -112,6 +147,17 @@ theorem exists_equation (x : F) : ∃ y, W.toAffine.Equation x y := by
 
 variable [W.IsElliptic]
 
+/- English proof (translation)
+Take `⟨Q, hQdef⟩ : ∃ Q, Q = P.comap (algebraMap F[X] W.toAffine.CoordinateRing)` from `⟨_, rfl⟩`. Establish `hQ0 : Q ≠ ⊥` using `fun h => hP0 (Ideal.eq_bot_of_comap_eq_bot (hQdef ▸ h))`. Establish `hQ : Q.IsPrime` using `hQdef ▸ Ideal.IsPrime.comap _`. Establish `hg` using `Submodule.IsPrincipal.prime_generator_of_isPrime Q hQ0`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root _ (degree_pos_of_irreducible hg.irreducible).ne'`.
+
+Establish `hdvd : Submodule.IsPrincipal.generator Q ∣ X - C x` using `(irreducible_X_sub_C x).dvd_symm hg.irreducible (dvd_iff_isRoot.mpr hx)`. Establish `hxQ : X - C x ∈ Q`. Rewrite using `[← Submodule.IsPrincipal.span_singleton_generator Q]`. Conclude with `Ideal.mem_span_singleton.mpr hdvd`. Establish `hXP : XClass W.toAffine x ∈ P`.
+
+Establish `: algebraMap F[X] W.toAffine.CoordinateRing (X - C x) = XClass W.toAffine x`. Simplify using `only [XClass, AdjoinRoot.mk_C, AdjoinRoot.algebraMap_eq]`. Rewrite using `[← this]`. Conclude with `Ideal.mem_comap.mp (hQdef ▸ hxQ)`. Take `⟨y, hy⟩` from `exists_equation W x`.
+
+Establish `hns : W.toAffine.Nonsingular x y` using `equation_iff_nonsingular.mp hy`. Establish `hle : XYIdeal W.toAffine x (C (W.toAffine.negY x y)) * XYIdeal W.toAffine x (C y) ≤ P`. Rewrite using `[XYIdeal_neg_mul hns, XIdeal, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hXP`. Break down `hP.mul_le.mp hle with h1 | h1` into its components or cases.
+
+Conclude with `⟨x, _, (nonsingular_neg ..).mpr hns, ((isMaximal_XYIdeal ((equation_neg ..).mpr hy)).eq_of_le hP.ne_top h1).symm⟩`. Conclude with `⟨x, y, hns, ((isMaximal_XYIdeal hy).eq_of_le hP.ne_top h1).symm⟩`.
+-/
 theorem exists_eq_XYIdeal {P : Ideal W.toAffine.CoordinateRing} [hP : P.IsPrime] (hP0 : P ≠ ⊥) :
     ∃ x y, W.toAffine.Nonsingular x y ∧ P = XYIdeal W.toAffine x (C y) := by
   obtain ⟨Q, hQdef⟩ : ∃ Q, Q = P.comap (algebraMap F[X] W.toAffine.CoordinateRing) := ⟨_, rfl⟩
@@ -141,6 +187,9 @@ theorem exists_eq_XYIdeal {P : Ideal W.toAffine.CoordinateRing} [hP : P.IsPrime]
 
 omit [IsAlgClosed F] [W.IsElliptic] in
 
+/- English proof (translation)
+Establish `hnf : ¬ IsField (Localization.AtPrime (XYIdeal W.toAffine x (C y)))` using `IsLocalization.AtPrime.not_isField W.toAffine.CoordinateRing (P := XYIdeal W.toAffine x (C y)) (XYIdeal_ne_bot x (C y)) _`. Establish `hinj : Function.Injective (algebraMap W.toAffine.CoordinateRing (Localization.AtPrime (XYIdeal W.toAffine x (C y))))` using `IsLocalization.injective _ (XYIdeal W.toAffine x (C y)).primeCompl_le_nonZeroDivisors`. Establish `: IsNoetherianRing (Localization.AtPrime (XYIdeal W.toAffine x (C y)))` using `IsLocalization.isNoetherianRing (XYIdeal W.toAffine x (C y)).primeCompl _ inferInstance`. Use `isDiscreteValuationRing_of_maximalIdeal_mul_eq hnf ((XYIdeal W.toAffine x (C (W.toAffine.negY x y))).map (algebraMap _ _)) ((map_ne_zero_iff _ hinj).mpr (XClass_ne_zero (W' := W.toAffine) x)) ?_` and prove the remaining obligations. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal (XYIdeal W.toAffine x (C y)), ← Ideal.map_mul, mul_comm, XYIdeal_neg_mul h, XIdeal, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem isDiscreteValuationRing_localization_XYIdeal {x y : F} (h : W.toAffine.Nonsingular x y)
     [(XYIdeal W.toAffine x (C y)).IsPrime] :
     IsDiscreteValuationRing (Localization.AtPrime (XYIdeal W.toAffine x (C y))) := by
@@ -178,6 +227,9 @@ noncomputable def affinePointEquiv :
       obtain ⟨x, y, h, hv⟩ := exists_eq_XYIdeal W v.ne_bot
       exact ⟨⟨(x, y), h⟩, HeightOneSpectrum.ext hv.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem affinePointEquiv_apply_asIdeal (p : {xy : F × F // W.toAffine.Nonsingular xy.1 xy.2}) :
     (affinePointEquiv W p).asIdeal = XYIdeal W.toAffine p.1.1 (C p.1.2) := rfl
 

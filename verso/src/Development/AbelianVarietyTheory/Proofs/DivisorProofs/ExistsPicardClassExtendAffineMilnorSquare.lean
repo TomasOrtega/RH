@@ -16,6 +16,23 @@ namespace GlobalTheory.DualOpen
 
 open TopologicalSpace
 
+/- English proof (translation)
+Establish `hW : ∀ a : D.ι, ∃ W : X.Opens, ∀ y : X₂, p₂ y ∈ W ↔ y ∈ D.U a` using `fun a => by`. Take `⟨t, ht, e⟩` from `(p₂.isClosedEmbedding.isInducing.isOpen_iff).1 (D.U a).isOpen`. Conclude with `⟨⟨t, ht⟩, fun y => Set.ext_iff.1 e y⟩`. Use `choose W hW using hW`. Establish `hle : ∀ a b, p₂ ⁻¹ᵁ (W a ⊓ W b) ≤ D.U a ⊓ D.U b` using `fun a b y hy => ⟨(hW a y).1 hy.1, (hW b y).1 hy.2⟩`.
+
+Use `choose v hv₁ hv₂ using fun a b => glue (W a ⊓ W b) a b (hle a b)`. Establish `g₁ : ∀ (y : X₁) a b, p₁ y ∈ W a → p₁ y ∈ W b → gm (𝟙 X₁ ≫ p₁) y (W a ⊓ W b) (v a b) = 1` using `fun y a b ha hb => by`. Rewrite using `[← gm_pull (𝟙 X₁) p₁ y (W a ⊓ W b) ⟨ha, hb⟩, hv₁, map_one]`. Establish `g₂ : ∀ (y : X₂) a b, p₂ y ∈ W a → p₂ y ∈ W b → gm (𝟙 X₂ ≫ p₂) y (W a ⊓ W b) (v a b) = gm (𝟙 X₂) y _ (D.g a b)` using `fun y a b ha hb => by`. Rewrite using `[← gm_pull (𝟙 X₂) p₂ y (W a ⊓ W b) ⟨ha, hb⟩, hv₂, gm_res (𝟙 X₂) y (hle a b) ⟨ha, hb⟩]`.
+
+Establish `ext : ∀ (V : X.Opens) (a b : Γ(X, V)ˣ), (∀ y : X₁, p₁ y ∈ V → gm (𝟙 X₁ ≫ p₁) y V a = gm (𝟙 X₁ ≫ p₁) y V b) → (∀ y : X₂, p₂ y ∈ V → gm (𝟙 X₂ ≫ p₂) y V a = gm (𝟙 X₂ ≫ p₂) y V b) → a = b` using `fun V a b h₁ h₂ => inj V a b (unit_ext fun y hy => by rw [gm_pull (𝟙 X₁) p₁ y V hy, gm_pull (𝟙 X₁) p₁ y V hy]; exact h₁ y hy) (unit_ext fun y hy => by rw [gm_pull (𝟙 X₂) p₂ y V hy, gm_pull (𝟙 X₂) p₂ y V hy]; exact h₂ y hy)`. Set `E : LB X` to `⟨D.ι, W, v⟩`. Establish `hE : E.IsLB` using `{ cover := by`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨y, rfl⟩` from `Surjective.surj (f := p₂) x`. Take `⟨a, ha⟩` from `exists_chart hD y`. Conclude with `Opens.mem_iSup.2 ⟨a, (hW a y).2 ha⟩`. Use `g_self := fun a => ext _ _ _ (fun y hy => by`. Rewrite using `[gm_res (𝟙 X₁ ≫ p₁) y _ hy, map_one]`.
+
+Conclude with `g₁ y a a hy hy)`. Use the proof step `(fun y hy => by`. Rewrite using `[gm_res (𝟙 X₂ ≫ p₂) y _ hy, map_one]`. Conclude with `(g₂ y a a hy hy).trans (gm_self hD (𝟙 X₂) y ((hW a y).1 hy)))`. Use `cocycle := fun a b c => ext _ _ _ (fun y hy => by`.
+
+Rewrite using `[map_mul, gm_res (𝟙 X₁ ≫ p₁) y _ hy, gm_res (𝟙 X₁ ≫ p₁) y _ hy, gm_res (𝟙 X₁ ≫ p₁) y _ hy]`. Conclude with `(congrArg₂ (· * ·) (g₁ y a b hy.1.1 hy.1.2) (g₁ y b c hy.1.2 hy.2)).trans ((_root_.mul_one _).trans (g₁ y a c hy.1.1 hy.2).symm))`. Use the proof step `(fun y hy => by`. Rewrite using `[map_mul, gm_res (𝟙 X₂ ≫ p₂) y _ hy, gm_res (𝟙 X₂ ≫ p₂) y _ hy, gm_res (𝟙 X₂ ≫ p₂) y _ hy]`. Conclude with `(congrArg₂ (· * ·) (g₂ y a b hy.1.1 hy.1.2) (g₂ y b c hy.1.2 hy.2)).trans ((gm_cocycle hD (𝟙 X₂) y ((hW a y).1 hy.1.1) ((hW b y).1 hy.1.2) ((hW c y).1 hy.2)).trans (g₂ y a c hy.1.1 hy.2).symm)) }`.
+
+Use `⟨cls E hE, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cls_pull hE p₁ (pull_isLB hE p₁), cls_eq_zero_iff]`. Use `⟨⟨fun _ => 1⟩, (isGen_iff_germ _).2 fun y J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, map_one, _root_.mul_one]`. Conclude with `((gm_pull_g E p₁ (𝟙 _) y J J' hJ hJ').trans (g₁ y _ _ (mem_pull.1 hJ) (mem_pull.1 hJ'))).symm`.
+
+Rewrite using `[← cls_pull hE p₂ (pull_isLB hE p₂)]`. Use `Eq.symm ((cls_eq_iff hD (pull_isLB hE p₂)).2 (iso_of_chart (pull_isLB hE p₂) ?_))` and prove the remaining obligations. Conclude with `{ idx := fun a _ => a le := fun a y hy => mem_pull.2 ((hW a y).2 hy) g := fun y a b ha hb => Eq.symm ((gm_pull_g E p₂ (𝟙 _) y (fun _ => a) (fun _ => b) (mem_pull.2 ((hW a y).2 ha)) (mem_pull.2 ((hW b y).2 hb))).trans (g₂ y a b ((hW a y).2 ha) ((hW b y).2 hb))) }`.
+-/
 theorem exists_pic_of_glue_units {X X₁ X₂ : Scheme.{0}} (p₁ : X₁ ⟶ X) (p₂ : X₂ ⟶ X) [IsClosedImmersion p₂]
     [Surjective p₂] (D : LB X₂) (hD : D.IsLB)
     (inj : ∀ (W : X.Opens) (a b : Γ(X, W)ˣ), pullU p₁ W a = pullU p₁ W b → pullU p₂ W a = pullU p₂ W b → a = b)
@@ -80,6 +97,11 @@ theorem exists_pic_of_glue_units {X X₁ X₂ : Scheme.{0}} (p₁ : X₁ ⟶ X) 
           (mem_pull.2 ((hW a y).2 ha)) (mem_pull.2 ((hW b y).2 hb))).trans
           (g₂ y a b ((hW a y).2 ha) ((hW b y).2 hb))) }
 
+/- English proof (translation)
+Establish `P : IsPullback (A ◁ j) (snd A T') (snd A T) j`. Use `⟨⟨by simp⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => lift (s.fst ≫ fst A T) s.snd) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Apply the tactic sequence `ext <;> simp [s.condition]`. Introduce `s`.
+
+Simplify using the standard rewrite rules. Introduce `s m h₁ h₂`. Apply the tactic sequence `ext <;> simp [← h₁, ← h₂]`. Conclude with `P.map (Over.forget S)`.
+-/
 theorem isPullback_whiskerLeft_left {S : Scheme.{0}} (A : Over S) {T T' : Over S} (j : T' ⟶ T) :
     IsPullback (A ◁ j).left (snd A T').left (snd A T).left j.left := by
   have P : IsPullback (A ◁ j) (snd A T') (snd A T) j := by
@@ -92,6 +114,19 @@ theorem isPullback_whiskerLeft_left {S : Scheme.{0}} (A : Over S) {T T' : Over S
       ext <;> simp [← h₁, ← h₂]
   exact P.map (Over.forget S)
 
+/- English proof (translation)
+Introduce `S A T T₁ T₂ T₀ _ j₁ j₂ k₁ k₂ hM hj hj' hk' c₂ hc`. Establish `hk` using `hM.closed`. Use `haveI : IsClosedImmersion (A ◁ j₂).left := MorphismProperty.of_isPullback (isPullback_whiskerLeft_left A j₂).flip hj`. Use `haveI : Surjective (A ◁ j₂).left := MorphismProperty.of_isPullback (isPullback_whiskerLeft_left A j₂).flip hj'`. Use `haveI : IsClosedImmersion (A ◁ k₂).left := MorphismProperty.of_isPullback (isPullback_whiskerLeft_left A k₂).flip hk`.
+
+Use `haveI : Surjective (A ◁ k₂).left := MorphismProperty.of_isPullback (isPullback_whiskerLeft_left A k₂).flip hk'`. Establish `w₀ : k₁ ≫ j₁ = k₂ ≫ j₂` using `Over.OverMorphism.ext hM.w`. Establish `w : (A ◁ k₁).left ≫ (A ◁ j₁).left = (A ◁ k₂).left ≫ (A ◁ j₂).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← MonoidalCategory.whiskerLeft_comp, ← MonoidalCategory.whiskerLeft_comp, w₀]`. Take `⟨D, hD, rfl, h1⟩` from `GlobalTheory.T.exists_cechCocycle_one_on_thickening _ _ (A ◁ k₂).left c₂ hc`.
+
+Establish `H` using `GlobalTheory.T.sections_flat_baseChange_affineMilnorSquare_open S A T T₁ T₂ T₀ j₁ j₂ k₁ k₂ hM`. Generalize the expression as in `(A ◁ j₁).left = p₁ at *`. Generalize the expression as in `(A ◁ j₂).left = p₂ at *`. Generalize the expression as in `(A ◁ k₁).left = q₁ at *`. Generalize the expression as in `(A ◁ k₂).left = q₂ at *`.
+
+Establish `inj : ∀ (W : (A ⊗ T).left.Opens) (a b : Γ((A ⊗ T).left, W)ˣ), pullU p₁ W a = pullU p₁ W b → pullU p₂ W a = pullU p₂ W b → a = b` using `fun W a b h₁ h₂ => Units.ext ((H W).1 _ _ (congrArg Units.val h₁) (congrArg Units.val h₂))`. Use `exists_pic_of_glue_units p₁ p₂ D hD inj fun W a b h => ?_` and prove the remaining obligations. Establish `e : q₁ ⁻¹ᵁ (p₁ ⁻¹ᵁ W) = q₂ ⁻¹ᵁ (p₂ ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`. Establish `lift : ∀ u : Γ((A ⊗ T₂).left, p₂ ⁻¹ᵁ W)ˣ, pullU q₂ _ u = 1 → ∃ s : Γ((A ⊗ T).left, W), p₁.app W s = 1 ∧ p₂.app W s = u.val` using `fun u hu => (H W).2 _ e.ge le_rfl e.le 1 u.val (by`.
+
+Rewrite using `[map_one, Scheme.Hom.appLE_eq_app]`. Conclude with `(congrArg Units.val hu).symm)`. Establish `hu : pullU q₂ _ (res h (D.g a b)) = 1` using `unit_ext fun y hy => by`. Rewrite using `[gm_pull (𝟙 _) q₂ y _ hy, gm_res (𝟙 _ ≫ q₂) y h hy, ← gm_pull (𝟙 _) q₂ y _ (h hy), h1, map_one, map_one]`. Take `⟨s, hs₁, hs₂⟩` from `lift _ hu`.
+
+Take `⟨t, ht₁, ht₂⟩` from `lift (res h (D.g a b))⁻¹ (by rw [map_inv, hu, inv_one])`. Establish `st : s * t = 1` using `(H W).1 _ _ (by rw [map_mul, hs₁, ht₁, map_one, _root_.mul_one]) (by rw [map_mul, hs₂, ht₂, map_one, Units.mul_inv])`. Conclude with `⟨⟨s, t, st, (mul_comm _ _).trans st⟩, Units.ext hs₁, Units.ext hs₂⟩`.
+-/
 theorem exists_pic_extend_of_milnor : ∀ (S : Scheme.{0}) (A T T₁ T₂ T₀ : Over S) [Flat A.hom] (j₁ : T₁ ⟶ T) (j₂ : T₂ ⟶ T) (k₁ : T₀ ⟶ T₁) (k₂ : T₀ ⟶ T₂), Milnor j₁.left j₂.left k₁.left k₂.left → IsClosedImmersion j₂.left → Surjective j₂.left → Surjective k₂.left → ∀ c₂ : Pic (A ⊗ T₂).left, GlobalTheory.CechPic.pull (A ◁ k₂).left c₂ = 0 → ∃ c : Pic (A ⊗ T).left, GlobalTheory.CechPic.pull (A ◁ j₁).left c = 0 ∧ GlobalTheory.CechPic.pull (A ◁ j₂).left c = c₂ := by
   intro S A T T₁ T₂ T₀ _ j₁ j₂ k₁ k₂ hM hj hj' hk' c₂ hc
   have hk := hM.closed

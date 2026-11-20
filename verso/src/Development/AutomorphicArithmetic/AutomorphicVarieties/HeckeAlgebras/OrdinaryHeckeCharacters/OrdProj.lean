@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `‹Module.Projective A M›.out`. Set `e` to `ρ.asModuleEquiv`. Set `L : G → (ρ.asModule →ₗ[A] (ρ.asModule →₀ MonoidAlgebra A G))` to `fun g => Finsupp.mapRange.linearMap (MonoidAlgebra.lsingle (R := A) g) ∘ₗ Finsupp.lmapDomain A A e.symm ∘ₗ s ∘ₗ φ ∘ₗ ρ g⁻¹ ∘ₗ e.toLinearMap`. Establish `hsm : ∀ (g : G) (a : A) (x : M), (MonoidAlgebra.single g a : MonoidAlgebra A G) • e.symm x = e.symm (a • ρ g x)`. Introduce `g a x`.
+
+Apply `e.injective` to reduce the goal to its premises. Apply the tactic sequence `(simp [e]) <;> rfl`. Establish `hL : ∀ g v, Finsupp.linearCombination (MonoidAlgebra A G) id (L g v) = e.symm (ρ g (φ (ρ g⁻¹ (e v))))`. Introduce `g v`. Simplify using `only [L, LinearMap.comp_apply, Finsupp.mapRange.linearMap_apply, Finsupp.lmapDomain_apply, LinearEquiv.coe_coe]`.
+
+Use `conv_rhs => rw [← hs (φ (ρ g⁻¹ (e v)))]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp), Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_smul])]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, id, MonoidAlgebra.lsingle_apply, hsm]`. Establish `hk : ∀ (k g : G) v, MonoidAlgebra.single k (1 : A) • L g v = L (k * g) (MonoidAlgebra.single k (1 : A) • v)`. Introduce `k g v`.
+
+Apply the tactic sequence `have he : e (MonoidAlgebra.single k (1 : A) • v) = ρ k (e v) := by (simp [e]) <;> rfl`. Establish `hinv : ρ (k * g)⁻¹ (ρ k (e v)) = ρ g⁻¹ (e v)`. Rewrite using `[_root_.mul_inv_rev, map_mul, Module.End.mul_apply, ← Module.End.mul_apply (ρ k⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Simplify using `only [L, LinearMap.comp_apply, LinearEquiv.coe_coe, he, hinv]`. Use extensionality with `x`.
+
+Simplify using `[Finsupp.smul_apply, Finsupp.mapRange_apply, MonoidAlgebra.single_mul_single]`. Establish `hF : ∀ (k : G) (v : ρ.asModule), (∑ g, L g) (MonoidAlgebra.single k (1 : A) • v) = MonoidAlgebra.single k (1 : A) • (∑ g, L g) v`. Introduce `k v`. Simplify using `only [LinearMap.sum_apply, Finset.smul_sum, hk]`. Conclude with `(Equiv.sum_comp (Equiv.mulLeft k) (fun g => L g (MonoidAlgebra.single k (1 : A) • v))).symm`.
+
+Use `⟨⟨MonoidAlgebra.equivariantOfLinearOfComm (∑ g, L g) hF, fun v => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.equivariantOfLinearOfComm_apply]`. Simplify using `only [LinearMap.sum_apply, map_sum, hL]`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_sum, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `h' (e v)`.
+-/
 private theorem ordProj_higman {A G M : Type} [CommRing A] [Group G] [Fintype G] [AddCommGroup M] [Module A M]
     [Module.Projective A M] (ρ : Representation A G M) (φ : Module.End A M)
     (h' : ∀ v, ∑ g, ρ g (φ (ρ g⁻¹ v)) = v) : Module.Projective (MonoidAlgebra A G) ρ.asModule := by
@@ -49,6 +64,25 @@ private theorem ordProj_higman {A G M : Type} [CommRing A] [Group G] [Fintype G]
   simp only [map_sum, LinearEquiv.apply_symm_apply]
   exact h' (e v)
 
+/- English proof (translation)
+Set `f : U ⧸ V.subgroupOf U → H` to `fun q => ((q.out : U) : H)`. Establish `hinj : Function.Injective f` using `fun q q' h => Quotient.out_injective (Subtype.val_injective h)`. Establish `hq : ∀ q q' : U ⧸ V.subgroupOf U, ((f q : H) : H ⧸ V) = ((f q' : H) : H ⧸ V) → q = q'`. Introduce `q q' h`. Rewrite `h` using `[QuotientGroup.eq]`.
+
+Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `h` using `[f]`. Establish `hcov : ∀ u : U, ((f (QuotientGroup.mk u) : H) : H ⧸ V) = ((u : H) : H ⧸ V)`. Introduce `u`. Establish `h` using `QuotientGroup.out_eq' (QuotientGroup.mk u : U ⧸ V.subgroupOf U)`.
+
+Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Rewrite using `[QuotientGroup.eq]`. Simplify `h` using `[f]`. Establish `hsm : ∀ u : U, u • ((1 : H) : H ⧸ V) = ((u : H) : H ⧸ V)`. Introduce `u`.
+
+Express the relevant statement in the definitionally equal form `((u : H) • ((1 : H) : H ⧸ V)) = _`. Conclude with `congrArg _ (mul_one _)`. Establish `horb : ∀ p, p ∈ MulAction.orbit U ((1 : H) : H ⧸ V) ↔ ∃ u : U, ((u : H) : H ⧸ V) = p`. Introduce `p`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u, (hsm u).symm⟩`. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u, hsm u⟩`. Establish `hfin : (MulAction.orbit U ((1 : H) : H ⧸ V)).Finite`.
+
+Apply `(Set.finite_range (fun q : U ⧸ V.subgroupOf U => ((f q : H) : H ⧸ V))).subset` to reduce the goal to its premises. Introduce `p hp`. Take `⟨u, rfl⟩` from `(horb p).1 hp`. Conclude with `⟨QuotientGroup.mk u, hcov u⟩`. Establish `hs1 : ∀ y ∈ Finset.univ.image f, ((y : H) : H ⧸ V) ∈ MulAction.orbit U ((1 : H) : H ⧸ V)`.
+
+Introduce `y hy`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(horb _).2 ⟨q.out, rfl⟩`. Establish `hs2 : ∀ p ∈ MulAction.orbit U ((1 : H) : H ⧸ V), ∃! y, y ∈ Finset.univ.image f ∧ ((y : H) : H ⧸ V) = p`. Introduce `p hp`.
+
+Take `⟨u, rfl⟩` from `(horb p).1 hp`. Use `⟨f (QuotientGroup.mk u), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), hcov u⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyu⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hyu` using `[← hcov u]`.
+
+Conclude with `congrArg f (hq _ _ hyu)`. Rewrite using `[(dcSum A H M ρ U V 1 hfin).1 (Finset.univ.image f) hs1 hs2 v hv, Finset.sum_image (fun x _ y _ h => hinj h)]`.
+-/
 private theorem ordProj_dc {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (U V : Subgroup H) [Fintype (U ⧸ V.subgroupOf U)] (v : M) (hv : v ∈ fixd ρ V) :
     dc ρ U V 1 v = ∑ q : U ⧸ V.subgroupOf U, ρ (q.out : U) v := by
@@ -114,6 +148,31 @@ private def ordProj_rel (U : Subgroup X.Ub) : Setoid (Ga × Gp) where
         refine ⟨γ' * γ, u * u', mul_mem hu hu', b * b', mul_mem hb hb', ?_⟩
         ext <;> simp [mul_assoc] }
 
+/- English proof (translation)
+Set `R : Ga × Gp → Ga × Gp` to `fun x => (Quotient.mk (ordProj_rel X U) x).out`. Establish `hRsound : ∀ x y : Ga × Gp, (∃ γ, ∃ u ∈ U, ∃ b ∈ X.I.Iw 0, y = X.glob γ * x * ((u : Ga), b)) → R y = R x`. Introduce `x y h`. Establish `h' : Quotient.mk (ordProj_rel X U) x = Quotient.mk (ordProj_rel X U) y` using `Quotient.sound h`. Simplify using `only [R, h']`.
+
+Establish `hRout : ∀ x : Ga × Gp, ∃ γ, ∃ u ∈ U, ∃ b ∈ X.I.Iw 0, x = X.glob γ * R x * ((u : Ga), b)`. Introduce `x`. Conclude with `Quotient.mk_out (s := ordProj_rel X U) x`. Establish `uniq : ∀ (r : Ga × Gp) (γ γ' : Γ) (a a' : X.Ub), a ∈ U → a' ∈ U → ∀ b b' : Gp, b ∈ X.I.Iw 0 → b' ∈ X.I.Iw 0 → X.glob γ * r * ((a : Ga), b) = X.glob γ' * r * ((a' : Ga), b') → a = a'`. Introduce `r γ γ' a a' ha ha' b b' hb hb' h`.
+
+Establish `hp : (((a' * a⁻¹ : X.Ub) : Ga), b' * b⁻¹) = ((a' : Ga), b') * ((a : Ga), b)⁻¹`. Apply the tactic sequence `ext <;> simp`. Establish `key` using `hN r (γ'⁻¹ * γ) (a' * a⁻¹) (mul_mem ha' (inv_mem ha)) (b' * b⁻¹) (mul_mem hb' (inv_mem hb)) (by`. Rewrite using `[hp, map_mul, map_inv, mul_assoc, eq_mul_inv_of_mul_eq h]`. Use the proof step `group)`.
+
+Conclude with `(mul_inv_eq_one.1 key.1).symm`. Set `P : Ga × Gp → Prop` to `fun x => ∃ γ, ∃ u ∈ V, ∃ b ∈ X.I.Iw 0, x = X.glob γ * R x * ((u : Ga), b)`. Use `⟨fun x => if P x then 1 else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g u hu b hb`. Establish `hR : R (X.glob γ * g * ((u : Ga), b)) = R g` using `hRsound g _ ⟨γ, u, hVU hu, b, hb, rfl⟩`.
+
+Establish `hiff : P (X.glob γ * g * ((u : Ga), b)) ↔ P g`. Simplify using `only [P, hR]`. Generalize the expression as in `R g = r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ2, u2, hu2, b2, hb2, h2⟩`.
+
+Use `⟨γ⁻¹ * γ2, u2 * u⁻¹, mul_mem hu2 (inv_mem hu), b2 * b⁻¹, mul_mem hb2 (inv_mem hb), ?_⟩` and prove the remaining obligations. Establish `e : g = (X.glob γ)⁻¹ * (X.glob γ * g * ((u : Ga), b)) * ((u : Ga), b)⁻¹` using `by group`. Rewrite using `[e, h2]`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Introduce and unpack `⟨γ1, u1, hu1, b1, hb1, h1⟩`.
+
+Use `⟨γ * γ1, u1 * u, mul_mem hu1 hu, b1 * b, mul_mem hb1 hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Simplify using `only [hiff]`. Introduce `g`.
+
+Take `⟨γ0, u0, hu0, b0, hb0, h0⟩` from `hRout g`. Establish `hterm : ∀ q : U ⧸ V.subgroupOf U, P (g * ((((q.out : U) : X.Ub) : Ga), 1)) ↔ u0 * ((q.out : U) : X.Ub) ∈ V`. Introduce `q`. Establish `hR : R (g * ((((q.out : U) : X.Ub) : Ga), 1)) = R g` using `hRsound g _ ⟨1, (q.out : U), (q.out).2, 1, one_mem _, by simp⟩`. Simplify using `only [P, hR]`.
+
+Generalize the expression as in `R g = r at h0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ2, u2, hu2, b2, hb2, h2⟩`. Establish `e` using `uniq r γ0 γ2 (u0 * ((q.out : U) : X.Ub)) u2 (mul_mem hu0 (q.out).2) (hVU hu2) b0 b2 hb0 hb2 (by`. Rewrite using `[← h2, h0]`.
+
+Apply the tactic sequence `ext <;> simp [mul_assoc])`. Rewrite using `[e]`. Conclude with `hu2`. Introduce `h`. Use `⟨γ0, _, h, b0, hb0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h0]`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Establish `hsum : ∀ q : U ⧸ V.subgroupOf U, u0 * ((q.out : U) : X.Ub) ∈ V ↔ ((⟨u0⁻¹, inv_mem hu0⟩ : U) : U ⧸ V.subgroupOf U) = q`. Introduce `q`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`.
+
+Rewrite using `[QuotientGroup.eq]`. Simplify using `[Subgroup.mem_subgroupOf]`. Simplify using `only [hterm, hsum]`. Simplify using the standard rewrite rules.
+-/
 private theorem ordProj_chi (A : Type) [CommRing A] (U V : Subgroup X.Ub) (hVU : V ≤ U) (hN : X.Neat U)
     [Fintype (U ⧸ V.subgroupOf U)] :
     ∃ χ : Ga × Gp → A, (∀ γ g, ∀ u ∈ V, ∀ b ∈ X.I.Iw 0, χ (X.glob γ * g * ((u : Ga), b)) = χ g) ∧
@@ -194,9 +253,15 @@ section
 variable {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A] [IsCNL A] {m : ℕ}
   (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ)
 
+/- English proof (translation)
+Simplify using `[Frame.valIn, Submodule.mem_pi]`.
+-/
 private theorem ordProj_val (k : ℕ) (f : X.Fn A m) : f ∈ X.valIn A m k ↔ ∀ g i, f g i ∈ maximalIdeal A ^ k := by
   simp [Frame.valIn, Submodule.mem_pi]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[ordProj_val]`. Introduce `g i`. Rewrite using `[Frame.ra_apply]`. Simplify using `only [mulVec, dotProduct]`. Conclude with `Submodule.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hf _ j)`.
+-/
 private theorem ordProj_valra (k : ℕ) (u : X.Ub) (f : X.Fn A m) (hf : f ∈ X.valIn A m k) :
     X.ra τ u f ∈ X.valIn A m k := by
   rw [ordProj_val] at hf ⊢
@@ -205,6 +270,9 @@ private theorem ordProj_valra (k : ℕ) (u : X.Ub) (f : X.Fn A m) (hf : f ∈ X.
   simp only [mulVec, dotProduct]
   exact Submodule.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hf _ j)
 
+/- English proof (translation)
+Proceed by induction on `n generalizing f with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, (spStab _ _ _ X A m τ θ hθ).2.2.1 _ X.I.z_mem]`.
+-/
 private theorem ordProj_pow (hθ : X.I.ContChar θ) (u : X.Ub) (n : ℕ) (f : X.Fn A m) :
     X.ra τ u ((X.U A m X.I.z ^ n) f) = (X.U A m X.I.z ^ n) (X.ra τ u f) := by
   induction n generalizing f with
@@ -213,6 +281,13 @@ private theorem ordProj_pow (hθ : X.I.ContChar θ) (u : X.Ub) (n : ℕ) (f : X.
     rw [pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih,
       (spStab _ _ _ X A m τ θ hθ).2.2.1 _ X.I.z_mem]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[Frame.Sp.eq_1, Submodule.mem_inf]`. Use `⟨(spStab _ _ _ X A m τ θ hθ).2.1 u f hf.1, ?_⟩` and prove the remaining obligations. Establish `hf2 : ∀ w ∈ V, X.ra τ w f = f` using `hf.2`. Establish `key : ∀ w ∈ V, X.ra τ w (X.ra τ u f) = X.ra τ u f`. Introduce `w hw`.
+
+Establish `hmem : (u : X.Ub)⁻¹ * w * u ∈ V`. Establish `h1 : (⟨w, hVU hw⟩ : U) ∈ V.subgroupOf U` using `by simpa [Subgroup.mem_subgroupOf] using hw`. Establish `h2` using `hn.conj_mem _ h1 u⁻¹`. Simplify `h2` using `[Subgroup.mem_subgroupOf, mul_assoc]`. Establish `e : w * (u : X.Ub) = (u : X.Ub) * ((u : X.Ub)⁻¹ * w * u)` using `by group`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hf2 _ hmem]`. Conclude with `key`.
+-/
 private theorem ordProj_sp (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [hn : (V.subgroupOf U).Normal] (hVU : V ≤ U)
     (u : U) (f : X.Fn A m) (hf : f ∈ X.Sp τ θ V) : X.ra τ u f ∈ X.Sp τ θ V := by
   rw [Frame.Sp.eq_1, Submodule.mem_inf] at hf ⊢
@@ -228,6 +303,11 @@ private theorem ordProj_sp (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [hn : (
     rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hf2 _ hmem]
   exact key
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_ord_iff]`. Use `⟨ordProj_sp X τ θ hθ U V hVU u f hf.1, fun k => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hf.2 k`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← ordProj_pow X τ θ hθ, ← map_sub]`.
+
+Conclude with `ordProj_valra X τ k u _ hn`.
+-/
 private theorem ordProj_ord (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [(V.subgroupOf U).Normal] (hVU : V ≤ U)
     (u : U) (f : X.Fn A m) (hf : f ∈ X.Ord τ θ V) : X.ra τ u f ∈ X.Ord τ θ V := by
   rw [mem_ord_iff] at hf ⊢
@@ -237,6 +317,29 @@ private theorem ordProj_ord (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [(V.su
   rw [← ordProj_pow X τ θ hθ, ← map_sub]
   exact ordProj_valra X τ k u _ hn
 
+/- English proof (translation)
+Establish `hrp : ∀ (b : Gp) (F : X.Fn A m) g, X.rp A m b F g = F (g * (1, b))` using `fun _ _ _ => rfl`. Establish `hI : ∀ b, b ∈ X.I.Iw 0 → ∀ g, χ (g * (1, b)) = χ g`. Introduce `b hb g`. Simplify using `using hχ 1 g 1 V.one_mem b hb`. Establish `hN : ∀ b ∈ X.I.N, b ∈ X.I.Iw 0` using `fun b hb => by`.
+
+Rewrite using `[Iwa.Iw.eq_1]`. Conclude with `Subgroup.mem_sup_left (Subgroup.mem_sup_left hb)`. Establish `hT : ∀ b ∈ X.I.T, b ∈ X.I.Iw 0` using `fun b hb => by`. Rewrite using `[Iwa.Iw.eq_1]`. Conclude with `Subgroup.mem_sup_left (Subgroup.mem_sup_right hb)`.
+
+Establish `hM : ∀ c, ∀ b ∈ X.I.Nm c, b ∈ X.I.Iw 0` using `fun c b hb => by`. Rewrite using `[Iwa.Iw.eq_1]`. Conclude with `Subgroup.mem_sup_right (X.I.Nm_anti (Nat.zero_le c) hb)`. Rewrite `hf`, the goal using `[Frame.Sp.eq_1, Submodule.mem_inf]`. Take `⟨hA, hV⟩` from `hf`.
+
+Establish `hV' : ∀ w ∈ V, X.ra τ w f = f` using `hV`. Rewrite `hA`, the goal using `[Frame.Amb.eq_1]`. Simplify using `only [Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_setOf_eq] at hA ⊢`. Take `⟨h1, h2, h3, h4⟩` from `hA`. Establish `h2' : ∀ b ∈ X.I.N, X.rp A m b f = f` using `h2`.
+
+Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `γ g`. Establish `e : χ (X.glob γ * g) = χ g`. Establish `e0` using `hχ γ g 1 V.one_mem 1 (one_mem _)`. Simplify using `only [OneMemClass.coe_one] at e0`.
+
+Rewrite `e0` using `[show ((1 : Ga), (1 : Gp)) = 1 from rfl, mul_one]`. Then use the resulting hypothesis. Simplify using `only [e, h1]`. Establish `key : ∀ b ∈ X.I.N, X.rp A m b (fun g => χ g • f g) = fun g => χ g • f g`. Introduce `b hb`. Use function extensionality and compare the values at `g`.
+
+Establish `e` using `congrFun (h2' b hb) g`. Rewrite `e` using `[hrp]`. Simplify using `only [hrp, hI b (hN b hb), e]`. Conclude with `key`. Introduce `t`.
+
+Use function extensionality and compare the values at `g`. Establish `e` using `congrFun (h3 t) g`. Rewrite `e` using `[hrp, Pi.smul_apply]`. Simplify using `only [hrp, Pi.smul_apply, hI _ (hT _ t.2), e]`. Conclude with `smul_comm _ _ _`.
+
+Introduce `k`. Take `⟨c, hc⟩` from `h4 k`. Use `⟨c, fun y hy g i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hI y (hM c y hy)]`. Rewrite using `[← mul_sub]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (hc y hy g i)`. Establish `key : ∀ w ∈ V, X.ra τ w (fun g => χ g • f g) = fun g => χ g • f g`. Introduce `w hw`. Use function extensionality and compare the values at `g`. Establish `hw' : χ (g * ((w : Ga), 1)) = χ g` using `by simpa using hχ 1 g w hw 1 (one_mem _)`.
+
+Establish `e` using `congrFun (hV' w hw) g`. Rewrite `e` using `[Frame.ra_apply]`. Simplify using `only [Frame.ra_apply, hw', Matrix.mulVec_smul, e]`. Conclude with `key`.
+-/
 private theorem ordProj_mul (V : Subgroup X.Ub) (χ : Ga × Gp → A)
     (hχ : ∀ γ g, ∀ u ∈ V, ∀ b ∈ X.I.Iw 0, χ (X.glob γ * g * ((u : Ga), b)) = χ g) (f : X.Fn A m)
     (hf : f ∈ X.Sp τ θ V) : (fun g => χ g • f g : X.Fn A m) ∈ X.Sp τ θ V := by
@@ -295,6 +398,33 @@ private theorem ordProj_mul (V : Subgroup X.Ub) (χ : Ga × Gp → A)
       simp only [Frame.ra_apply, hw', Matrix.mulVec_smul, e]
     exact key
 
+/- English proof (translation)
+Take `⟨χ, hχ1, hχ2⟩` from `ordProj_chi X A U V hVU hN`. Take `⟨-, -, -, -, e, he1, he2⟩` from `ordStruct X τ θ hθ V hV hF`. Establish `hOS : ∀ f ∈ X.Ord τ θ V, f ∈ X.Sp τ θ V` using `fun f hf => ((mem_ord_iff X τ θ V f).1 hf).1`. Set `Mχ : X.Ord τ θ V →ₗ[A] X.Sp τ θ V` to `{ toFun := fun f => ⟨fun g => χ g • (f : X.Fn A m) g, ordProj_mul X τ θ V χ hχ1 f (hOS f f.2)⟩ map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Simplify using `[smul_add]`. Use the proof step `map_smul' := fun c a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Use `show χ g • (c • (a : X.Fn A m)) g = c • (χ g • (a : X.Fn A m) g)`. Rewrite using `[Pi.smul_apply, smul_comm] }`. Establish `hMχ : ∀ f, ((Mχ f : X.Sp τ θ V) : X.Fn A m) = fun g => χ g • (f : X.Fn A m) g` using `fun f => rfl`. Establish `hc : ∀ (q : U ⧸ V.subgroupOf U) (w : X.Ord τ θ V), ((ρ q w : X.Ord τ θ V) : X.Fn A m) = X.ra τ ((q.out : U) : X.Ub) (w : X.Fn A m)`. Introduce `q w`.
+
+Establish `h0` using `hρ q.out w`. Rewrite `h0` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis. Establish `hgg : ∀ q v, ρ q (ρ q⁻¹ v) = v`. Introduce `q v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Establish `hK : ∀ F : X.Fn A m, (∀ k, F ∈ X.valIn A m k) → F = 0`. Introduce `F hF`. Use function extensionality and compare the values at `x i`. Establish `h0 : F x i ∈ ⨅ k, maximalIdeal A ^ k` using `(Submodule.mem_iInf _).2 fun k => (ordProj_val X k F).1 (hF k) x i`. Rewrite `h0` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal A).ne_top]`.
+
+Simplify using `using h0`. Use `⟨e ∘ₗ Mχ, fun v => ?_⟩` and prove the remaining obligations. Establish `hd : ∑ q, X.ra τ ((q.out : U) : X.Ub) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m) = (v : X.Fn A m)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
+
+Establish `e1 : ∀ q : U ⧸ V.subgroupOf U, X.ra τ ((q.out : U) : X.Ub) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m) x = χ (x * ((((q.out : U) : X.Ub) : Ga), 1)) • (v : X.Fn A m) x`. Introduce `q`. Establish `hw : X.ra τ ((q.out : U) : X.Ub) ((ρ q⁻¹ v : X.Ord τ θ V) : X.Fn A m) = v`. Rewrite using `[← hc, hgg]`. Establish `hw'` using `congrFun hw x`.
+
+Rewrite `hw'` using `[Frame.ra_apply]`. Rewrite using `[Frame.ra_apply, hMχ]`. Simplify using `only [Matrix.mulVec_smul, hw']`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.sum_smul, hχ2 x, one_smul]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `sub_eq_zero.1 (hK _ fun k => ?_)` and prove the remaining obligations. Use `choose J hJ using fun q => he2 (Mχ (ρ q⁻¹ v)) k`. Take `⟨J0, hJ0⟩` from `he2 ⟨v, hOS v v.2⟩ k`. Use `set n := (Finset.univ.sup J ⊔ J0).factorial with hn`.
+
+Establish `ha : ∀ q, (X.U A m X.I.z ^ n) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m) - ((e (Mχ (ρ q⁻¹ v)) : X.Ord τ θ V) : X.Fn A m) ∈ X.valIn A m k` using `fun q => hJ q _ (le_sup_of_le_left (Finset.le_sup (Finset.mem_univ q)))`. Establish `hb : (X.U A m X.I.z ^ n) (v : X.Fn A m) - v ∈ X.valIn A m k`. Establish `h0` using `hJ0 (Finset.univ.sup J ⊔ J0) le_sup_right`. Rewrite `h0` using `[← hn, he1 ⟨v, hOS v v.2⟩ v.2]`. Conclude with `h0`.
+
+Establish `hexp : ((∑ q, ρ q ((e ∘ₗ Mχ) (ρ q⁻¹ v)) : X.Ord τ θ V) : X.Fn A m) - v = (∑ q, X.ra τ ((q.out : U) : X.Ub) (((e (Mχ (ρ q⁻¹ v)) : X.Ord τ θ V) : X.Fn A m) - (X.U A m X.I.z ^ n) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m))) + ((X.U A m X.I.z ^ n) (v : X.Fn A m) - v)`. Establish `hs : ∑ q, X.ra τ ((q.out : U) : X.Ub) ((X.U A m X.I.z ^ n) ((Mχ (ρ q⁻¹ v) : X.Sp τ θ V) : X.Fn A m)) = (X.U A m X.I.z ^ n) (v : X.Fn A m)`. Repeatedly rewrite using `[ordProj_pow X τ θ hθ]`. Rewrite using `[← map_sum, hd]`. Rewrite using `[Submodule.coe_sum]`.
+
+Simplify using `only [LinearMap.comp_apply, hc, map_sub, Finset.sum_sub_distrib, hs]`. Normalize the expressions using the abelian group laws. Rewrite using `[hexp]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun q _ => ordProj_valra X τ k _ _ ?_) hb` and prove the remaining obligations. Rewrite using `[← neg_sub]`.
+
+Conclude with `Submodule.neg_mem _ (ha q)`.
+-/
 private theorem ordProj_phi (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [(V.subgroupOf U).Normal] (hVU : V ≤ U)
     [Fintype (U ⧸ V.subgroupOf U)] (hN : X.Neat U) (hV : X.FinLevel V) (hF : X.Free τ θ V)
     (ρ : Representation A (U ⧸ V.subgroupOf U) (X.Ord τ θ V))
@@ -376,6 +506,51 @@ private theorem ordProj_phi (hθ : X.I.ContChar θ) (U V : Subgroup X.Ub) [(V.su
 
 end
 
+/- English proof (translation)
+Introduce `Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U V _ hVU hidx hU hN`. Establish `hFU : X.Free τ θ U`. Introduce `g γ u hu b hb h`. Take `⟨rfl, rfl⟩` from `hN g γ u hu b hb h`. Use `⟨Subgroup.one_mem _, Subgroup.one_mem _, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (⟨1, Subgroup.one_mem _⟩ : ↥X.I.T) = 1` using `rfl`. Simplify using `[h1]`. Take `⟨hV, hFV, hUV⟩` from `ordLevel Γ Ga Gp X A m τ θ hθ U V hVU hidx hU hFU`. Take `⟨_, hfree, _⟩` from `ordFree Γ Ga Gp X A m τ θ hθ V hV hFV`. Use `haveI : (V.subgroupOf U).FiniteIndex := ⟨hidx⟩`.
+
+Use `letI : Fintype (U ⧸ V.subgroupOf U) := Fintype.ofFinite _`. Establish `hOS : ∀ f ∈ X.Ord τ θ V, f ∈ X.Sp τ θ V` using `fun f hf => ((mem_ord_iff X τ θ V f).1 hf).1`. Establish `hfixd : ∀ f ∈ X.Ord τ θ V, f ∈ fixd (X.ra τ) V` using `fun f hf => by`. Establish `h` using `hOS f hf`. Rewrite `h` using `[Frame.Sp.eq_1, Submodule.mem_inf]`.
+
+Conclude with `h.2`. Establish `hfixV : ∀ f ∈ X.Ord τ θ V, ∀ w ∈ V, X.ra τ w f = f` using `fun f hf => hfixd f hf`. Set `σ : U →* Module.End A (X.Ord τ θ V)` to `{ toFun := fun u => (X.ra τ (u : X.Ub)).restrict (fun f hf => ordProj_ord X τ θ hθ U V hVU u f hf) map_one' := by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `a b`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[map_mul] }`. Establish `hker : V.subgroupOf U ≤ σ.ker`. Introduce `u hu`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show X.ra τ (u : X.Ub) (f : X.Fn A m) = f`.
+
+Conclude with `hfixV f f.2 u (Subgroup.mem_subgroupOf.1 hu)`. Set `ρ : Representation A (U ⧸ V.subgroupOf U) (X.Ord τ θ V)` to `QuotientGroup.lift (V.subgroupOf U) σ hker`. Establish `hρ : ∀ (u : U) f, ((ρ (u : U ⧸ V.subgroupOf U) f : X.Ord τ θ V) : X.Fn A m) = X.ra τ u f` using `fun u f => rfl`. Use `haveI : Module.Free A (X.Ord τ θ V) := hfree`. Take `⟨φ, hφ⟩` from `ordProj_phi X τ θ hθ U V hVU hN hV hFV ρ hρ`.
+
+Establish `hc : ∀ (q : U ⧸ V.subgroupOf U) (w : X.Ord τ θ V), ((ρ q w : X.Ord τ θ V) : X.Fn A m) = X.ra τ ((q.out : U) : X.Ub) (w : X.Fn A m)`. Introduce `q w`. Establish `h0` using `hρ q.out w`. Rewrite `h0` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis. Establish `htr : ∀ w : X.Ord τ θ V, dc (X.ra τ) U V 1 (w : X.Fn A m) = ((∑ q, ρ q w : X.Ord τ θ V) : X.Fn A m)`.
+
+Introduce `w`. Rewrite using `[ordProj_dc (X.ra τ) U V _ (hfixd _ w.2), Submodule.coe_sum]`. Simplify using `only [hc]`. Establish `htrinv : ∀ (w : X.Ord τ θ V) (u : U ⧸ V.subgroupOf U), ∑ q, ρ q (ρ u w) = ∑ q, ρ q w`. Introduce `w u`.
+
+Establish `h0 : ∀ q, ρ q (ρ u w) = ρ (q * u) w` using `fun q => by rw [map_mul, Module.End.mul_apply]`. Repeatedly rewrite using `[h0]`. Conclude with `Fintype.sum_equiv (Equiv.mulRight u) _ _ (fun q => rfl)`. Establish `htrinvL : ∀ (w : X.Ord τ θ V) (u : U ⧸ V.subgroupOf U), ∑ q, ρ u (ρ q w) = ∑ q, ρ q w`. Introduce `w u`.
+
+Establish `h0 : ∀ q, ρ u (ρ q w) = ρ (u * q) w` using `fun q => by rw [map_mul, Module.End.mul_apply]`. Repeatedly rewrite using `[h0]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft u) _ _ (fun q => rfl)`. Use `⟨⟨ρ, hρ, ordProj_higman ρ φ hφ⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[hUV]`. Establish `e1 : dc (X.ra τ) U V 1 f = ((∑ q, ρ q ⟨f, hf⟩ : X.Ord τ θ V) : X.Fn A m)` using `htr ⟨f, hf⟩`. Rewrite using `[e1]`. Use `Submodule.mem_inf.2 ⟨Subtype.mem _, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ u ∈ U, X.ra τ u ((∑ q, ρ q ⟨f, hf⟩ : X.Ord τ θ V) : X.Fn A m) = ((∑ q, ρ q ⟨f, hf⟩ : X.Ord τ θ V) : X.Fn A m)`. Introduce `u hu`. Rewrite using `[show X.ra τ u = X.ra τ ((⟨u, hu⟩ : U) : X.Ub) from rfl, ← hρ, map_sum, htrinvL]`. Conclude with `key`. Introduce `f hf`.
+
+Establish `hfV : f ∈ X.Ord τ θ V`. Rewrite `hf` using `[hUV]`. Conclude with `(Submodule.mem_inf.1 hf).1`. Establish `hfU : ∀ u ∈ U, X.ra τ u f = f`. Rewrite `hf` using `[hUV]`.
+
+Conclude with `(Submodule.mem_inf.1 hf).2`. Use `⟨(φ ⟨f, hfV⟩ : X.Fn A m), (φ ⟨f, hfV⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[htr]`. Establish `hq : ∀ q : U ⧸ V.subgroupOf U, ρ q⁻¹ ⟨f, hfV⟩ = ⟨f, hfV⟩` using `fun q => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hc]`. Conclude with `hfU _ (q⁻¹.out).2`. Establish `h0` using `hφ ⟨f, hfV⟩`. Simplify using `only [hq] at h0`. Rewrite using `[h0]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `f ⟨hfV, hk⟩`. Establish `hf0 : (∑ q, ρ q ⟨f, hfV⟩) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← htr]`.
+
+Simplify using `using LinearMap.mem_ker.1 hk`. Establish `hsumw : ∑ q, φ (ρ q⁻¹ ⟨f, hfV⟩) = 0`. Rewrite using `[← map_sum, Fintype.sum_equiv (Equiv.inv _) (fun q => ρ q⁻¹ ⟨f, hfV⟩) (fun q => ρ q ⟨f, hfV⟩) (fun q => rfl), hf0, map_zero]`. Establish `hfe : (⟨f, hfV⟩ : X.Ord τ θ V) = ∑ q, (ρ q (φ (ρ q⁻¹ ⟨f, hfV⟩)) - φ (ρ q⁻¹ ⟨f, hfV⟩))`. Rewrite using `[Finset.sum_sub_distrib, hsumw, sub_zero]`.
+
+Conclude with `(hφ _).symm`. Establish `h1 : f = ((∑ q, (ρ q (φ (ρ q⁻¹ ⟨f, hfV⟩)) - φ (ρ q⁻¹ ⟨f, hfV⟩)) : X.Ord τ θ V) : X.Fn A m)` using `congrArg Subtype.val hfe`. Rewrite using `[h1, Submodule.coe_sum]`. Use `Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨((q.out : U) : X.Ub), (q.out).2, _, (φ (ρ q⁻¹ ⟨f, hfV⟩)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, hc]`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, f, hf, rfl⟩`. Use `Submodule.mem_inf.2 ⟨Submodule.sub_mem _ (ordProj_ord X τ θ hθ U V hVU ⟨u, hu⟩ f hf) hf, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub]`. Establish `e2 : dc (X.ra τ) U V 1 (X.ra τ u f) = ((∑ q, ρ q (ρ ((⟨u, hu⟩ : U) : U ⧸ V.subgroupOf U) ⟨f, hf⟩) : X.Ord τ θ V) : X.Fn A m)` using `htr (ρ ((⟨u, hu⟩ : U) : U ⧸ V.subgroupOf U) ⟨f, hf⟩)`.
+
+Establish `e1 : dc (X.ra τ) U V 1 f = ((∑ q, ρ q ⟨f, hf⟩ : X.Ord τ θ V) : X.Fn A m)` using `htr ⟨f, hf⟩`. Rewrite using `[e2, e1, htrinv, sub_self]`.
+-/
 theorem UpperTheory.V.Hi.ordProj :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] [IsCNL A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ), X.I.ContChar θ → ∀ (U V : Subgroup X.Ub) [(V.subgroupOf U).Normal], V ≤ U → V.relIndex U ≠ 0 → X.FinLevel U → X.Neat U → (∃ ρ : Representation A (U ⧸ V.subgroupOf U) (X.Ord τ θ V), (∀ (u : U) f, (ρ (u : U ⧸ V.subgroupOf U) f : X.Fn A m) = X.ra τ u f) ∧ Module.Projective (MonoidAlgebra A (U ⧸ V.subgroupOf U)) ρ.asModule) ∧ (X.Ord τ θ V).map (dc (X.ra τ) U V 1) = X.Ord τ θ U ∧ X.Ord τ θ V ⊓ LinearMap.ker (dc (X.ra τ) U V 1) = Submodule.span A {y | ∃ u ∈ U, ∃ f ∈ X.Ord τ θ V, y = X.ra τ u f - f} := by
   intro Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U V _ hVU hidx hU hN

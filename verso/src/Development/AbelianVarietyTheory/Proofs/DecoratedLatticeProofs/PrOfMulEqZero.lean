@@ -21,6 +21,9 @@ variable {D : D7}
 
 def tens {S T : HSp D} (b : AE D) (Φ Ψ : WO S T → ℂ) : WO S T → ℂ := fun t => Φ (t - b • t) * Ψ (b • t)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tens_apply {S T : HSp D} (b : AE D) (Φ Ψ : WO S T → ℂ) (t : WO S T) :
     tens b Φ Ψ t = Φ (t - b • t) * Ψ (b • t) := rfl
 
@@ -34,14 +37,23 @@ def tensR {S T : HSp D} (b : AE D) (Φ : WO S T → ℂ) : (WO S T → ℂ) →�
   map_add' Ψ Ψ' := by funext t; simp only [tens, Pi.add_apply, mul_add]
   map_smul' c Ψ := by funext t; simp only [tens, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensL_apply {S T : HSp D} (b : AE D) (Ψ Φ : WO S T → ℂ) : tensL b Ψ Φ = tens b Φ Ψ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensR_apply {S T : HSp D} (b : AE D) (Φ Ψ : WO S T → ℂ) : tensR b Φ Ψ = tens b Φ Ψ := rfl
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
 
 def eSum (p : ι → SplitPt D k) (J : List ι) : AE D := (J.map fun i => (p i).e).sum
 
+/- English proof (translation)
+Simplify using `[eSum]`.
+-/
 theorem eSum_cons (p : ι → SplitPt D k) (i : ι) (J : List ι) : eSum p (i :: J) = (p i).e + eSum p J := by
   simp [eSum]
 
@@ -51,22 +63,39 @@ def datJ (p : ι → SplitPt D k) {n n' : Type} [Fintype n] [DecidableEq n] [Fin
     (α : ∀ i, Frame (p i) S n') (β : ∀ i, Frame (p i) T n) (Ψ : ι → Matrix n n' k → ℂ) (J : List ι) (t : WO S T) : ℂ :=
   if IsHalf (eSum p J) t then (J.map fun i => Ψ i (rd (α i) (β i) t)).prod else 0
 
+/- English proof (translation)
+Rewrite using `[← p.sec_one, p.pr_sec]`.
+-/
 theorem pr_e (p : SplitPt D k) : p.pr p.e = 1 := by
   rw [← p.sec_one, p.pr_sec]
 
+/- English proof (translation)
+Use `congrArg p.pr h` as an intermediate fact. Rewrite `this` using `[map_mul, pr_e, one_mul, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem pr_of_mul_eq_zero (p : SplitPt D k) {a : AE D} (h : p.e * a = 0) : p.pr a = 0 := by
   have := congrArg p.pr h
   rwa [map_mul, pr_e, one_mul, map_zero] at this
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `nil => simp [eSum]`. Consider the case `cons j J ih`. Rewrite using `[eSum_cons, mul_add, h j (List.mem_cons_self), ih fun j' hj' => h j' (List.mem_cons_of_mem _ hj'), add_zero]`.
+-/
 theorem mul_eSum (p : ι → SplitPt D k) (a : AE D) (J : List ι) (h : ∀ j ∈ J, a * (p j).e = 0) : a * eSum p J = 0 := by
   induction J with
   | nil => simp [eSum]
   | cons j J ih =>
     rw [eSum_cons, mul_add, h j (List.mem_cons_self), ih fun j' hj' => h j' (List.mem_cons_of_mem _ hj'), add_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_comm]; exact mul_eSum p a J fun j hj => by rw [mul_comm]; exact h j hj`.
+-/
 theorem eSum_mul (p : ι → SplitPt D k) (a : AE D) (J : List ι) (h : ∀ j ∈ J, (p j).e * a = 0) : eSum p J * a = 0 := by
   rw [mul_comm]; exact mul_eSum p a J fun j hj => by rw [mul_comm]; exact h j hj
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `nil => simp [eSum]`. Consider the case `cons i J ih`. Rewrite `hJ` using `[List.nodup_cons]`. Establish `h1 : (p i).e * eSum p J = 0` using `mul_eSum p _ J fun j hj => horth i j fun h => hJ.1 (h ▸ hj)`.
+
+Establish `h2 : eSum p J * (p i).e = 0` using `by rw [mul_comm, h1]`. Rewrite using `[eSum_cons, add_mul, mul_add, mul_add, (p i).split.1, h1, h2, ih hJ.2, add_zero, zero_add]`.
+-/
 theorem eSum_idem (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e * (p j).e = 0) (J : List ι) (hJ : J.Nodup) :
     eSum p J * eSum p J = eSum p J := by
   induction J with
@@ -77,6 +106,11 @@ theorem eSum_idem (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e
     have h2 : eSum p J * (p i).e = 0 := by rw [mul_comm, h1]
     rw [eSum_cons, add_mul, mul_add, mul_add, (p i).split.1, h1, h2, ih hJ.2, add_zero, zero_add]
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `nil => simp at hi`. Consider the case `cons j J ih`. Rewrite `hJ` using `[List.nodup_cons]`. Rewrite using `[eSum_cons, map_add]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[pr_e, pr_of_mul_eq_zero (p i) (mul_eSum p _ J fun j hj => horth i j fun h => hJ.1 (h ▸ hj)), add_zero]`. Rewrite using `[pr_of_mul_eq_zero (p i) (horth i j hij), zero_add, ih hJ.2 ((List.mem_cons.1 hi).resolve_left hij)]`.
+-/
 theorem pr_eSum (p : ι → SplitPt D k) (horth : ∀ i j, i ≠ j → (p i).e * (p j).e = 0) (J : List ι) (hJ : J.Nodup)
     (i : ι) (hi : i ∈ J) : (p i).pr (eSum p J) = 1 := by
   induction J with

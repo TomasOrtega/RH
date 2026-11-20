@@ -22,6 +22,9 @@ open GlobalTheory.LamBiext GlobalTheory.LamRigid GlobalTheory.PolDeg
 variable {R : Type} [CommRing R] [IsDomain R] (D₀ D : DegPre R) (β : D₀.P.A ⟶ D.P.A)
   (b : 𝟙_ (Over (Sp R)) ⟶ D.P.A)
 
+/- English proof (translation)
+Establish `hu : x ≫ toUnit D₀.P.A = toUnit T` using `toUnit_unique _ _`. Rewrite using `[Fin.prod_univ_three]`. Use `show h (x ≫ (β * (toUnit D₀.P.A ≫ b))).left ^ (1 : ℤ) * h (x ≫ toUnit D₀.P.A ≫ b).left ^ (-1 : ℤ) * h (x ≫ toUnit D₀.P.A ≫ η[D.P.A]).left ^ (1 : ℤ) = _`. Rewrite using `[MonObj.comp_mul, ← Category.assoc x, ← Category.assoc x, hu, zpow_one, zpow_one, zpow_neg_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_tw {T : Over (Sp R)} (x : T ⟶ D₀.P.A) {U : Type} [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ i, h (x.left ≫ twφ D₀ D β b i) ^ twε i =
       h ((x ≫ β) * (toUnit T ≫ b)).left * (h (toUnit T ≫ b).left)⁻¹ * h (1 : T ⟶ D.P.A).left := by
@@ -32,6 +35,9 @@ theorem prod_tw {T : Over (Sp R)} (x : T ⟶ D₀.P.A) {U : Type} [CommGroup U] 
   rw [MonObj.comp_mul, ← Category.assoc x, ← Category.assoc x, hu, zpow_one, zpow_one, zpow_neg_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`.
+-/
 theorem lift_β {T : Over (Sp R)} (p q : T ⟶ D₀.P.A) :
     (lift p q).left ≫ (lift (fst D₀.P.A D₀.P.A ≫ β) (snd D₀.P.A D₀.P.A ≫ β) : G2 D₀.P.A ⟶ G2 D.P.A).left =
       (lift (p ≫ β) (q ≫ β)).left := by
@@ -39,6 +45,19 @@ theorem lift_β {T : Over (Sp R)} (p q : T ⟶ D₀.P.A) :
 
 variable {D₀ D β b} [IsMonHom β]
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.globalFns_holds`. Set `B₀` to `D₀.P.A`. Set `f : B₀ ⊗ B₀ ⟶ B₀` to `fst B₀ B₀`. Set `s : B₀ ⊗ B₀ ⟶ B₀` to `snd B₀ B₀`. Establish `H` using `(((((reg_wv hw (f * s).left).mul (reg_wv hw f.left).inv).mul (reg_wv hw s.left).inv).mul (reg_wv hw (1 : B₀ ⊗ B₀ ⟶ B₀).left)).mul (reg_lam hΛ (lift f s).left).inv).mul (reg_val (L' := D₀.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.isGen (lift (f ≫ β) (lift (s ≫ β) (toUnit ( …`.
+
+Establish `ev : ∀ x y : T ⟶ B₀, wv w ((lift x y).left ≫ (f * s).left) z J J' * (wv w ((lift x y).left ≫ f.left) z J J')⁻¹ * (wv w ((lift x y).left ≫ s.left) z J J')⁻¹ * wv w ((lift x y).left ≫ (1 : B₀ ⊗ B₀ ⟶ B₀).left) z J J' * (lamVal wΛ ((lift x y).left ≫ (lift f s).left) z J J')⁻¹ * (val …` using `D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t ((lift x y).left ≫ (lift (f ≫ β) (lift (s ≫ β) (toUnit (B₀ ⊗ B₀) ≫ b))).left) z J)⁻¹ = wv w (x * y).left z J J' * (wv w x.left z J J')⁻¹ * (wv w y.left z J J')⁻¹ * wv w (1 : T ⟶ B₀).left z J J' * (lamVal wΛ (lift x y).left z J …`. Establish `hu : lift x y ≫ toUnit (B₀ ⊗ B₀) = toUnit T` using `toUnit_unique _ _`. Simplify using `only [← Over.comp_left]`. Rewrite using `[MonObj.comp_mul, MonObj.comp_one, comp_lift, comp_lift, comp_lift, ← Category.assoc (lift x y) (toUnit _), hu, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd]`. Both sides reduce to the same expression.
+
+Establish `E` using `H.rigid D.P.isLB D₀.P.isLB (fun U _ h h' => by show _ * _ * _ * _ * _ * _ = _`. Rewrite using `[prod_tw, prod_tw, prod_tw, prod_tw, lift_β, prod_lam, prod_lam]`. Use `erw [prod_cub (G := D.P.A) (f ≫ β) (s ≫ β) (toUnit (B₀ ⊗ B₀) ≫ b) h]`. Rewrite using `[MonObj.mul_comp, MonObj.one_comp, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel)`. Use the proof step `((snd B₀ B₀).left ≫ B₀.hom) (surj_comp (surj_snd hG D₀.P.isAb _) (hG _ _ D₀.P.isAb).2)`. Use the proof step `(lift x y).left (lift (1 : T ⟶ B₀) (1 : T ⟶ B₀)).left (by`. Rewrite using `[Over.w, Over.w, Over.w]) z hJ hJ'`.
+
+Establish `E'` using `(ev x y).symm.trans (E.trans (ev 1 1))`. Rewrite `E'` using `[MonObj.one_comp, (isCub_cubV D.cub hJ).face, _root_.mul_one (1 : T ⟶ B₀)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e` using `congrArg Additive.ofMul E'`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at e ⊢`.
+
+Take the linear combination `(norm := abel) e`.
+-/
 theorem wv_mul {w : LB.Iso D₀.P.L (LB.LinComb D.P.L (twφ D₀ D β b) twε)} (hw : w.IsGen)
     {wΛ : LB.Iso (abelian₂ D₀.P.A D₀.P.L) ((abelian₂ D.P.A D.P.L).pull
       (lift (fst D₀.P.A D₀.P.A ≫ β) (snd D₀.P.A D₀.P.A ≫ β) : G2 D₀.P.A ⟶ G2 D.P.A).left)} (hΛ : wΛ.IsGen)
@@ -88,6 +107,19 @@ theorem wv_mul {w : LB.Iso D₀.P.L (LB.LinComb D.P.L (twφ D₀ D β b) twε)} 
   simp only [ofMul_mul, ofMul_inv, ofMul_one] at e ⊢
   linear_combination (norm := abel) e
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.globalFns_holds`. Set `B₀` to `D₀.P.A`. Set `f : B₀ ⟶ B₀` to `𝟙 B₀`. Establish `hbb : (toUnit B₀ ≫ b) * (toUnit B₀ ≫ b) = 1`. Rewrite using `[← MonObj.comp_mul]`.
+
+Conclude with `congrArg (toUnit B₀ ≫ ·) hb`. Establish `H` using `(((((reg_wv hw f.left).mul (reg_val (L' := D₀.P.L) D.sym_gen (f ≫ β).left)).mul (reg_val (L' := D₀.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.isGen (lift (f ≫ β) (lift (toUnit B₀ ≫ b) (toUnit B₀ ≫ b))).left)).mul (reg_wv hw (f⁻¹).left).inv).mul (reg_val' (L := D.P.L) D₀.sy …`. Establish `ev : ∀ x : T ⟶ B₀, wv w (x.left ≫ f.left) z J J' * val D.sym (x.left ≫ (f ≫ β).left) z J * val (L` using `D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t (x.left ≫ (lift (f ≫ β) (lift (toUnit B₀ ≫ b) (toUnit B₀ ≫ b))).left) z J * (wv w (x.left ≫ (f⁻¹).left) z J J')⁻¹ * (val D₀.sym (x.left ≫ f.left) z J')⁻¹ * (val (L := D.P.L) (φ := thφ D.P.A (x3 D.P.A)) (ε := thε) D.cub.t (x.le …`. Establish `hu : x ≫ toUnit B₀ = toUnit T` using `toUnit_unique _ _`. Simplify using `only [← Over.comp_left]`.
+
+Rewrite using `[comp_lift, comp_lift, comp_lift, comp_lift, ← Category.assoc x (toUnit _), hu, GrpObj.comp_inv, GrpObj.comp_inv, ← Category.assoc x f, Category.comp_id]`. Both sides reduce to the same expression. Establish `E` using `H.rigid D.P.isLB D₀.P.isLB (fun U _ h h' => by show _ * _ * _ * _ * _ * _ = _`. Rewrite using `[prod_tw, prod_tw, GlobalTheory.GaugeValues.prod_sym, GlobalTheory.GaugeValues.prod_sym]`. Use `erw [prod_cub (G := D.P.A) (f ≫ β) (toUnit B₀ ≫ b) (toUnit B₀ ≫ b) h, prod_cub (G := D.P.A) (f ≫ β) (f ≫ β)⁻¹ (toUnit B₀ ≫ b) h]`.
+
+Rewrite using `[GrpObj.inv_comp, _root_.mul_assoc (f ≫ β), hbb, _root_.mul_one (f ≫ β), mul_inv_cancel (f ≫ β), _root_.one_mul (toUnit B₀ ≫ b)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel)`. Use the proof step `B₀.hom (hG _ _ D₀.P.isAb).2 x.left (1 : T ⟶ B₀).left (by rw [Over.w, Over.w]) z hJ hJ'`.
+
+Establish `E'` using `(ev x).symm.trans (E.trans (ev 1))`. Rewrite `E'` using `[MonObj.one_comp, (isCub_cubV D.cub hJ).face, (isCub_cubV D.cub hJ).face, inv_one, GlobalTheory.GaugeValues.val_sym_one D hJ, GlobalTheory.GaugeValues.val_sym_one D₀ hJ']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e` using `congrArg Additive.ofMul E'`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at e ⊢`.
+
+Take the linear combination `(norm := abel) e`.
+-/
 theorem wv_inv (hb : padd D.P.A b b = η[D.P.A]) {w : LB.Iso D₀.P.L (LB.LinComb D.P.L (twφ D₀ D β b) twε)} (hw : w.IsGen)
     {T : Over (Sp R)} (x : T ⟶ D₀.P.A) {z : T.left} {J J'} (hJ : Good D.P.L z J) (hJ' : Good D₀.P.L z J') :
     wv w x.left z J J' * val D.sym (x ≫ β).left z J * cubV D.cub z J (x ≫ β) (toUnit T ≫ b) (toUnit T ≫ b) =

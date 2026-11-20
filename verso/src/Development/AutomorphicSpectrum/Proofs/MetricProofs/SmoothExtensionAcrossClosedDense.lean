@@ -5,6 +5,13 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.SmoothGlue
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover p`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' N)` using `(A.chart j).isOpen_inter_preimage_symm hN`. Establish `hz : A.chart j p ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' N`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify `hp` using `[Set.mem_preimage, (A.chart j).left_inv hj]`.
+
+Establish `h1 : ContinuousAt (E ∘ (A.chart j).symm) (A.chart j p)` using `((hS j).continuousOn).continuousAt (hopen.mem_nhds hz)`. Establish `h2 : ContinuousAt (A.chart j) p` using `(A.chart j).continuousAt hj`. Establish `h1' : ContinuousAt (E ∘ (A.chart j).symm) ((A.chart j) p)` using `h1`. Establish `h3 : ContinuousAt ((E ∘ (A.chart j).symm) ∘ (A.chart j)) p` using `ContinuousAt.comp h1' h2`. Use `h3.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[Function.comp, (A.chart j).left_inv hy]`.
+-/
 theorem continuousAt_of_smoothOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {N : Set X} {E : X → ℝ} (hN : IsOpen N) (hS : A.SmoothOn N E) {p : X} (hp : p ∈ N) :
     ContinuousAt E p := by
@@ -24,6 +31,11 @@ theorem continuousAt_of_smoothOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : 
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [Function.comp, (A.chart j).left_inv hy]
 
+/- English proof (translation)
+Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `hc : ContinuousAt (fun w => f w - g w) y` using `(hf y hy).sub (hg y hy)`. Establish `hev : ∀ᶠ w in 𝓝 y, f w - g w ≠ 0` using `hc.eventually_ne (sub_ne_zero.mpr hne)`. Take `⟨w, hwB, hw1, hw2⟩` from `hD.inter_nhds_nonempty (hev.and (hW.mem_nhds hy))`.
+
+Conclude with `hw1 (sub_eq_zero.mpr (hfg w hw2 hwB))`.
+-/
 theorem eq_of_dense_compl {X : Type} [TopologicalSpace X] {B W : Set X} {f g : X → ℝ}
     (hD : Dense Bᶜ) (hW : IsOpen W) (hf : ∀ p ∈ W, ContinuousAt f p)
     (hg : ∀ p ∈ W, ContinuousAt g p) (hfg : ∀ y ∈ W, y ∉ B → f y = g y) :
@@ -35,6 +47,19 @@ theorem eq_of_dense_compl {X : Type} [TopologicalSpace X] {B W : Set X} {f g : X
   obtain ⟨w, hwB, hw1, hw2⟩ := hD.inter_nhds_nonempty (hev.and (hW.mem_nhds hy))
   exact hw1 (sub_eq_zero.mpr (hfg w hw2 hwB))
 
+/- English proof (translation)
+Introduce `e X _ A B u _ hD h`. Use `choose N E hN hx hS hE using h`. Establish `hagree : ∀ x y, ∀ w ∈ N x ∩ N y, E x w = E y w`. Introduce `x y`. Use `eq_of_dense_compl hD ((hN x).inter (hN y)) (fun p hp => continuousAt_of_smoothOn A (hN x) (hS x) hp.1) (fun p hp => continuousAt_of_smoothOn A (hN y) (hS y) hp.2) ?_` and prove the remaining obligations.
+
+Introduce `w hw hwB`. Rewrite using `[hE x w hw.1 hwB, hE y w hw.2 hwB]`. Use `⟨fun y => if y ∈ B then E y y else u y, ?_, ?_⟩` and prove the remaining obligations. Establish `hu' : ∀ x, ∀ y ∈ N x, (if y ∈ B then E y y else u y) = E x y`. Introduce `x y hy`.
+
+Distinguish the cases in `hB : y ∈ B`. Rewrite using `[if_pos hB]`. Conclude with `hagree y x y ⟨hx y, hy⟩`. Rewrite using `[if_neg hB]`. Conclude with `(hE x y hy hB).symm`.
+
+Introduce `j z hz`. Establish `hzt : z ∈ (A.chart j).target` using `hz.1`. Use `set x := (A.chart j).symm z with hxdef`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' N x)` using `(A.chart j).isOpen_inter_preimage_symm (hN x)`. Establish `hzm : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' N x` using `⟨hzt, hx x⟩`.
+
+Establish `hc : ContDiffAt ℝ ∞ (E x ∘ (A.chart j).symm) z` using `(hS x j).contDiffAt (hopen.mem_nhds hzm)`. Use `(hc.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds hzm] with w hw`. Conclude with `hu' x _ hw.2`. Introduce `y hy`.
+
+Simplify using `[hy]`.
+-/
 theorem glue : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (B : Set X) (u : X → ℝ), IsClosed B → Dense Bᶜ → (∀ x, ∃ (N : Set X) (E : X → ℝ), IsOpen N ∧ x ∈ N ∧ A.SmoothOn N E ∧ ∀ y ∈ N, y ∉ B → E y = u y) → ∃ u' : X → ℝ, A.Smooth u' ∧ ∀ y ∉ B, u' y = u y := by
   intro e X _ A B u _ hD h
   classical

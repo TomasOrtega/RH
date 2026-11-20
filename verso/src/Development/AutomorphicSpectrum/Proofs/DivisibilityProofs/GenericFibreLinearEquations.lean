@@ -10,6 +10,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.FlDeg.FibreLin
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨a.den, C a.num, by exact_mod_cast a.den_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[map_C, ← C_mul]`. Use `congr 1`.
+
+Simplify using `[Rat.den_mul_eq_num]`. Consider the case `add p q hp hq`. Take `⟨n, f, hn, hf⟩` from `hp`. Take `⟨m, g, hm, hg⟩` from `hq`. Use `⟨n * m, C m * f + C n * g, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, map_mul, hf, hg, map_C, Int.coe_castRingHom, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i hp`. Take `⟨n, f, hn, hf⟩` from `hp`. Conclude with `⟨n, f * X i, hn, by simp only [map_mul, hf, map_X]; ring⟩`.
+-/
 theorem exists_int_poly {σ : Type} (p : MvPolynomial σ ℚ) :
     ∃ (n : ℤ) (f : MvPolynomial σ ℤ), n ≠ 0 ∧ map (Int.castRingHom ℚ) f = C (n : ℚ) * p := by
   induction p using MvPolynomial.induction_on with
@@ -28,6 +35,9 @@ theorem exists_int_poly {σ : Type} (p : MvPolynomial σ ℚ) :
     obtain ⟨n, f, hn, hf⟩ := hp
     exact ⟨n, f * X i, hn, by simp only [map_mul, hf, map_X]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem map_aeval_int {σ A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (x : σ → A)
     (f : MvPolynomial σ ℤ) : φ (aeval x f) = aeval (fun i => φ (x i)) f := by
   induction f using MvPolynomial.induction_on with
@@ -35,6 +45,11 @@ theorem map_aeval_int {σ A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
   | add p q hp hq => simp [hp, hq]
   | mul_X p i hp => simp [hp]
 
+/- English proof (translation)
+Take `⟨n, f, hn, hf⟩` from `exists_int_poly p`. Use `⟨n, f, hn, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (aeval x) hf`. Establish `h2 : aeval x (map (Int.castRingHom ℚ) f) = aeval x f` using `aeval_map_algebraMap (R := ℤ) ℚ x f`. Rewrite `h` using `[h2, map_mul, aeval_C]`.
+
+Simplify using `using h`.
+-/
 theorem exists_int_value {σ E : Type} [Field E] [Algebra ℚ E] (x : σ → E) (p : MvPolynomial σ ℚ) :
     ∃ (n : ℤ) (f : MvPolynomial σ ℤ), n ≠ 0 ∧ aeval x f = (n : E) * aeval x p := by
   obtain ⟨n, f, hn, hf⟩ := exists_int_poly p
@@ -44,6 +59,13 @@ theorem exists_int_value {σ E : Type} [Field E] [Algebra ℚ E] (x : σ → E) 
   rw [h2, map_mul, aeval_C] at h
   simpa using h
 
+/- English proof (translation)
+Take `⟨p, q, hpq⟩` from `(IntermediateField.mem_adjoin_range_iff ℚ x c).1 hc`. Distinguish the cases in `hq : aeval x q = 0`. Conclude with `⟨0, 1, by simp, by simp [hpq, hq]⟩`. Take `⟨n, f, hn, hf⟩` from `exists_int_value x p`. Take `⟨m, g, hm, hg⟩` from `exists_int_value x q`.
+
+Establish `hn' : (n : E) ≠ 0` using `by exact_mod_cast hn`. Establish `hm' : (m : E) ≠ 0` using `by exact_mod_cast hm`. Use `⟨(m : MvPolynomial σ ℤ) * f, (n : MvPolynomial σ ℤ) * g, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_intCast, hg]`. Conclude with `mul_ne_zero hn' (mul_ne_zero hm' hq)`.
+
+Simplify using `only [map_mul, map_intCast, hf, hg, hpq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_quot {σ E : Type} [Field E] [Algebra ℚ E] [CharZero E] (x : σ → E) (c : E)
     (hc : c ∈ IntermediateField.adjoin ℚ (Set.range x)) :
     ∃ f g : MvPolynomial σ ℤ, aeval x g ≠ 0 ∧ c = aeval x f / aeval x g := by
@@ -99,6 +121,9 @@ def genOf (E : Type) [Field E] [Algebra ℚ E] [CharZero E] (v : (Σ k, ι k) �
 
 end Gen
 
+/- English proof (translation)
+Establish `h1` using `((AlgebraicIndependent.iff_adjoin_image_compl (Set.range r)).1 he).2`. Establish `h2` using `IntermediateField.algebraicIndependent_adjoin_iff.2 h1`. Conclude with `h2.comp (Set.rangeFactorization r) (Set.rangeFactorization_injective.2 hr)`.
+-/
 theorem indep_over_rest {F E I C : Type} [Field F] [Field E] [Algebra F E] (e : I → E)
     (he : AlgebraicIndependent F e) (r : Option C → I) (hr : Function.Injective r) :
     AlgebraicIndependent (IntermediateField.adjoin F (e '' (Set.range r)ᶜ)) (e ∘ r) := by
@@ -106,6 +131,13 @@ theorem indep_over_rest {F E I C : Type} [Field F] [Field E] [Algebra F E] (e : 
   have h2 := IntermediateField.algebraicIndependent_adjoin_iff.2 h1
   exact h2.comp (Set.rangeFactorization r) (Set.rangeFactorization_injective.2 hr)
 
+/- English proof (translation)
+Set `f : D → MvPolynomial (Option D) F` to `fun c => X (some c) * X none * C w`. Set `L : MvPolynomial (Option D) F →ₐ[F] MvPolynomial D F` to `aeval fun o => o.elim (C w⁻¹) X`. Establish `hL : (L.comp (aeval f)) = AlgHom.id F _`. Use extensionality with `c`. Simplify using `[f, L, mul_assoc, ← C_mul, hw]`.
+
+Establish `hinj : Function.Injective (aeval f : MvPolynomial D F →ₐ[F] MvPolynomial (Option D) F)` using `Function.LeftInverse.injective (g := L) fun p => by`. Simplify using `using DFunLike.congr_fun hL p`. Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Establish `hc : (aeval (fun c => y (some c) * y none * algebraMap F E w) : MvPolynomial D F →ₐ[F] E) = (aeval y).comp (aeval f)`. Use extensionality with `c`.
+
+Simplify using `[f]`. Rewrite using `[hc]`. Conclude with `(algebraicIndependent_iff_injective_aeval.1 hy).comp hinj`.
+-/
 theorem indep_scaled {F E D : Type} [Field F] [Field E] [Algebra F E] (y : Option D → E)
     (hy : AlgebraicIndependent F y) (w : F) (hw : w ≠ 0) :
     AlgebraicIndependent F (fun c => y (some c) * y none * algebraMap F E w) := by
@@ -126,11 +158,17 @@ theorem indep_scaled {F E D : Type} [Field F] [Field E] [Algebra F E] (y : Optio
   rw [hc]
   exact (algebraicIndependent_iff_injective_aeval.1 hy).comp hinj
 
+/- English proof (translation)
+Take `rfl : a = Ring.toIntAlgebra E` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+-/
 theorem ker_aeval_inst {σ E : Type} [Field E] (a : Algebra ℤ E) (x : σ → E) :
     RingHom.ker (@aeval ℤ E σ _ _ a x) = RingHom.ker (@aeval ℤ E σ _ _ (Ring.toIntAlgebra E) x) := by
   obtain rfl : a = Ring.toIntAlgebra E := Subsingleton.elim _ _
   rfl
 
+/- English proof (translation)
+Establish `hne : (⟨w⁻¹, inv_mem hw⟩ : B) ≠ 0` using `fun h => inv_ne_zero hw0 (congrArg Subtype.val h)`. Establish `h2` using `indep_scaled y hy ⟨w⁻¹, inv_mem hw⟩ hne`. Set `_ : Algebra A B` to `(IntermediateField.inclusion hle).toRingHom.toAlgebra`. Establish `: IsScalarTower A B E` using `.of_algebraMap_eq fun _ => rfl`. Conclude with `h2.restrictScalars (IntermediateField.inclusion hle).toRingHom.injective`.
+-/
 theorem indep_of_le {F E D : Type} [Field F] [Field E] [Algebra F E] (A B : IntermediateField F E) (hle : A ≤ B)
     (y : Option D → E) (hy : AlgebraicIndependent B y) (w : E) (hw0 : w ≠ 0) (hw : w ∈ B) :
     AlgebraicIndependent A (fun c => y (some c) * y none * w⁻¹) := by
@@ -162,6 +200,9 @@ variable {Ψ N K}
 
 omit [Fintype Ψ] in
 
+/- English proof (translation)
+Unfold `minorPolynomial`. Rewrite using `[Matrix.det_succ_row _ (Fin.last r)]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.val_last, Matrix.of_apply, Fin.succAbove_last]`. Use `congr 2`.
+-/
 theorem minorPolynomial_succ (τ : Ψ) (r : ℕ) (hr : r + 1 ≤ N) (A : Fin (r + 1) → Fin N) :
     minorPolynomial Ψ N τ (r + 1) hr A = ∑ b : Fin (r + 1), (-1) ^ (r + (b : ℕ)) * X (τ, ⟨r, hr⟩, A b) *
       minorPolynomial Ψ N τ r (by omega) (fun a => A (b.succAbove a)) := by
@@ -175,6 +216,9 @@ def xP (j : K → FlBlock Ψ N) (p : Σ k, PIdx j k) : CF Ψ N K :=
   thF Ψ N K (minorPolynomial Ψ N (j p.1).1 ((j p.1).2 + 1) (step_le _) p.2.1) * tF Ψ N p.1
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Rewrite using `[map_mul, xP, tF, thF, RingHom.comp_apply, IsScalarTower.algebraMap_apply (ΩFl Ψ N) (MvPolynomial K (ΩFl Ψ N)) (CF Ψ N K), MvPolynomial.algebraMap_eq]`. Both sides reduce to the same expression.
+-/
 theorem xP_eq (j : K → FlBlock Ψ N) (p : Σ k, PIdx j k) :
     xP j p = algebraMap (MvPolynomial K (ΩFl Ψ N)) (CF Ψ N K) (C (yPart j p) * X p.1) := by
   rw [map_mul, xP, tF, thF, RingHom.comp_apply, IsScalarTower.algebraMap_apply (ΩFl Ψ N)
@@ -182,6 +226,11 @@ theorem xP_eq (j : K → FlBlock Ψ N) (p : Σ k, PIdx j k) :
   rfl
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Simplify using `only [map_mul, hp, aeval_X]`.
+
+Simplify using `only [mConeMap, aeval_X, xP_eq, map_mul]`.
+-/
 theorem aeval_xP [Fintype K] (j : K → FlBlock Ψ N) (f : MRing (PIdx j)) :
     aeval (xP j) f = algebraMap _ (CF Ψ N K) (mConeMap (yPart j) f) := by
   induction f using MvPolynomial.induction_on with
@@ -192,6 +241,9 @@ theorem aeval_xP [Fintype K] (j : K → FlBlock Ψ N) (f : MRing (PIdx j)) :
     simp only [mConeMap, aeval_X, xP_eq, map_mul]
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, aeval_xP, map_eq_zero_iff _ (IsFractionRing.injective _ _), PPart, mCoordIdeal, RingHom.mem_ker]`.
+-/
 theorem ker_xP [Fintype K] (j : K → FlBlock Ψ N) :
     RingHom.ker (aeval (xP j) : MRing (PIdx j) →ₐ[ℤ] CF Ψ N K) = PPart j := by
   ext f
@@ -204,6 +256,9 @@ def eF : K ⊕ (Ψ × Fin N × Fin N) → CF Ψ N K :=
   Sum.elim (tF Ψ N) (fun v => thF Ψ N K (X v))
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Establish `hx : AlgebraicIndependent ℚ (fun v : Ψ × Fin N × Fin N => algebraMap (GRing Ψ N) (ΩFl Ψ N) (X v))` using `(algebraicIndependent_X _ ℚ).map' (f := (algebraMap (GRing Ψ N) (ΩFl Ψ N)).toRatAlgHom) (IsFractionRing.injective _ _)`. Establish `hy : AlgebraicIndependent (ΩFl Ψ N) (tF Ψ N : K → CF Ψ N K)` using `(algebraicIndependent_X _ (ΩFl Ψ N)).map' (f := IsScalarTower.toAlgHom (ΩFl Ψ N) (MvPolynomial K (ΩFl Ψ N)) (CF Ψ N K)) (IsFractionRing.injective _ _)`. Use `haveI : @IsScalarTower ℚ (ΩFl Ψ N) (CF Ψ N K) Algebra.toSMul Algebra.toSMul Algebra.toSMul := .of_algebraMap_eq' (Subsingleton.elim _ _)`. Conclude with `hx.sumElim_comp hy`.
+-/
 theorem indep_eF : AlgebraicIndependent ℚ (eF Ψ N K) := by
   have hx : AlgebraicIndependent ℚ (fun v : Ψ × Fin N × Fin N => algebraMap (GRing Ψ N) (ΩFl Ψ N) (X v)) :=
     (algebraicIndependent_X _ ℚ).map' (f := (algebraMap (GRing Ψ N) (ΩFl Ψ N)).toRatAlgHom)
@@ -224,6 +279,11 @@ def specF (j : K → FlBlock Ψ N) (k₀ : K) : Option (Fin N) → K ⊕ (Ψ × 
   | some c => Sum.inr ((j k₀).1, rowF j k₀, c)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Introduce and unpack `(_ | a) (_ | b) h`. Both sides reduce to the same expression. Simplify using `[specF] at h`. Simplify using `[specF] at h`. Simplify using `only [specF, Sum.inr.injEq, Prod.mk.injEq, true_and] at h`.
+
+Rewrite using `[h]`.
+-/
 theorem specF_injective (j : K → FlBlock Ψ N) (k₀ : K) : Function.Injective (specF j k₀) := by
   rintro (_ | a) (_ | b) h
   · rfl
@@ -236,12 +296,18 @@ abbrev restF (j : K → FlBlock Ψ N) (k₀ : K) : IntermediateField ℚ (CF Ψ 
   IntermediateField.adjoin ℚ (eF Ψ N K '' (Set.range (specF j k₀))ᶜ)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Use `IntermediateField.subset_adjoin _ _ ⟨Sum.inl k, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨(_ | c), h⟩`. Conclude with `hk (Sum.inl.inj h).symm`. Simplify using `[specF] at h`.
+-/
 theorem tF_mem_rest (j : K → FlBlock Ψ N) {k₀ k : K} (hk : k ≠ k₀) : tF Ψ N k ∈ restF j k₀ := by
   refine IntermediateField.subset_adjoin _ _ ⟨Sum.inl k, ?_, rfl⟩
   rintro ⟨(_ | c), h⟩
   · exact hk (Sum.inl.inj h).symm
   · simp [specF] at h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply', map_sum]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `mul_mem ?_ (prod_mem fun i _ => h _ _)` and prove the remaining obligations. Simplify using `using intCast_mem A _`.
+-/
 theorem det_mem {R E S : Type} [CommRing R] [Field E] [SetLike S E] [SubringClass S E] (A : S) (θ : R →+* E) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) R) (h : ∀ a b, θ (M a b) ∈ A) : θ M.det ∈ A := by
   rw [Matrix.det_apply', map_sum]
@@ -251,6 +317,13 @@ theorem det_mem {R E S : Type} [CommRing R] [Field E] [SetLike S E] [SubringClas
   simpa using intCast_mem A _
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Use `mul_mem (det_mem _ _ _ fun a b => ?_) (tF_mem_rest j hk)` and prove the remaining obligations. Use `IntermediateField.subset_adjoin _ _ ⟨Sum.inr _, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨(_ | c), h⟩`. Simplify using `[specF] at h`. Simplify using `only [specF, Sum.inr.injEq, Prod.mk.injEq] at h`.
+
+Take `⟨h1, h2, -⟩` from `h`. Establish `h3 : (a : ℕ) = (j k₀).2`. Use `congrArg Fin.val h2` as an intermediate fact. Simplify `this.symm` using `[rowF]`. Establish `h4 : (a : ℕ) < (j k).2 + 1` using `a.2`.
+
+Establish `h5` using `htop k`. Conclude with `hk (hj.inj (Prod.ext h1.symm (Fin.ext (by omega))))`.
+-/
 theorem xP_mem_rest (j : K → FlBlock Ψ N) (hj : IsChain j) {k₀ : K} (htop : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2)
     {k : K} (hk : k ≠ k₀) (A : PIdx j k) : xP j ⟨k, A⟩ ∈ restF j k₀ := by
   refine mul_mem (det_mem _ _ _ fun a b => ?_) (tF_mem_rest j hk)
@@ -270,6 +343,9 @@ abbrev PhiF (j : K → FlBlock Ψ N) (k₀ : K) : IntermediateField ℚ (CF Ψ N
   IntermediateField.adjoin ℚ (Set.range (xP j ∘ dropV j k₀))
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨k, hk⟩, A⟩, rfl⟩`. Conclude with `xP_mem_rest j hj htop hk A`.
+-/
 theorem phi_le_rest (j : K → FlBlock Ψ N) (hj : IsChain j) {k₀ : K} (htop : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) :
     PhiF j k₀ ≤ restF j k₀ := by
   refine IntermediateField.adjoin_le_iff.2 ?_
@@ -277,6 +353,11 @@ theorem phi_le_rest (j : K → FlBlock Ψ N) (hj : IsChain j) {k₀ : K} (htop :
   exact xP_mem_rest j hj htop hk A
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Establish `key : ∀ q : FlBlock Ψ N, q.1 = τ → (q.2 : ℕ) + 1 = r → ∃ B' : FlIdx Ψ N q, minorPolynomial Ψ N q.1 (q.2 + 1) (step_le _) B'.1 = minorPolynomial Ψ N τ r hr B`. Introduce and unpack `⟨τ', i⟩ h1 h2`. Substitute `h1 h2` using the available equality. Conclude with `⟨⟨B, hB⟩, rfl⟩`. Take `⟨B', h⟩` from `key (j k) h1 h2`.
+
+Conclude with `⟨B', by simp only [xP]; rw [h]⟩`.
+-/
 theorem xP_eq_minor (j : K → FlBlock Ψ N) (k : K) (τ : Ψ) (r : ℕ) (hr : r ≤ N) (h1 : (j k).1 = τ)
     (h2 : ((j k).2 : ℕ) + 1 = r) (B : Fin r → Fin N) (hB : StrictMono B) :
     ∃ B' : PIdx j k, xP j ⟨k, B'⟩ = thF Ψ N K (minorPolynomial Ψ N τ r hr B) * tF Ψ N k := by
@@ -290,6 +371,15 @@ theorem xP_eq_minor (j : K → FlBlock Ψ N) (k : K) (τ : Ψ) (r : ℕ) (hr : r
 
 omit [Fintype Ψ] in
 
+/- English proof (translation)
+Consider the cases of `s with`. Consider the case `zero`. Use `⟨1, one_ne_zero, one_mem _, fun B _ => ?_⟩` and prove the remaining obligations. Simplify using `only [minorPolynomial, Matrix.det_isEmpty, map_one, mul_one]`. Conclude with `one_mem _`.
+
+Consider the case `succ s'`. Establish `hlt` using `(j k₀).2.2`. Take `⟨kp, hkp⟩` from `hj.down k₀ ((j k₀).1, ⟨s', by omega⟩) rfl (by simp only; omega)`. Establish `hne : kp ≠ k₀`. Introduce and unpack `rfl`.
+
+Use `congrArg (fun q : FlBlock Ψ N => (q.2 : ℕ)) hkp` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Use `⟨tF Ψ N kp, (map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 (X_ne_zero _), tF_mem_rest j hne, fun B hB => ?_⟩` and prove the remaining obligations. Take `⟨B', h⟩` from `xP_eq_minor j kp (j k₀).1 (s' + 1) hsN (by rw [hkp]) (by rw [hkp]) B hB`.
+
+Rewrite using `[← h]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨⟨kp, hne⟩, B'⟩, rfl⟩`.
+-/
 theorem exists_scale (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K) (s : ℕ) (hs : s = (j k₀).2) (hsN : s ≤ N) :
     ∃ w : CF Ψ N K, w ≠ 0 ∧ w ∈ restF j k₀ ∧ ∀ B : Fin s → Fin N, StrictMono B →
       thF Ψ N K (minorPolynomial Ψ N (j k₀).1 s hsN B) * w ∈ PhiF j k₀ := by
@@ -316,12 +406,22 @@ def uF (j : K → FlBlock Ψ N) (k₀ : K) (w : CF Ψ N K) (c : Fin N) : CF Ψ N
   thF Ψ N K (X ((j k₀).1, rowF j k₀, c)) * tF Ψ N k₀ * w⁻¹
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Conclude with `indep_of_le (PhiF j k₀) (restF j k₀) hle _ (indep_over_rest (eF Ψ N K) indep_eF (specF j k₀) (specF_injective j k₀)) w hw0 hw`.
+-/
 theorem indep_uF (j : K → FlBlock Ψ N) (k₀ : K) (hle : PhiF j k₀ ≤ restF j k₀) (w : CF Ψ N K) (hw0 : w ≠ 0)
     (hw : w ∈ restF j k₀) : AlgebraicIndependent (PhiF j k₀) (uF j k₀ w) := by
   exact indep_of_le (PhiF j k₀) (restF j k₀) hle _
     (indep_over_rest (eF Ψ N K) indep_eF (specF j k₀) (specF_injective j k₀)) w hw0 hw
 
 omit [Fintype Ψ] in
+/- English proof (translation)
+Simplify using `only [xP]`. Rewrite using `[minorPolynomial_succ, map_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Establish `hm` using `hB (fun a => A.1 (b.succAbove a)) (A.2.comp (Fin.strictMono_succAbove b))`. Establish `hs : ((-1 : CF Ψ N K) ^ (((j k₀).2 : ℕ) + (b : ℕ))) ∈ PhiF j k₀` using `pow_mem (neg_mem (one_mem _)) _`.
+
+Establish `e : thF Ψ N K ((-1) ^ (((j k₀).2 : ℕ) + (b : ℕ)) * X ((j k₀).1, ⟨(j k₀).2, step_le _⟩, A.1 b) * minorPolynomial Ψ N (j k₀).1 (j k₀).2 (by have` using `(j k₀).2.2; omega) (fun a => A.1 (b.succAbove a))) * tF Ψ N k₀ = (⟨_, mul_mem hs hm⟩ : PhiF j k₀) • uF j k₀ w (A.1 b) := by`. Rewrite using `[Algebra.smul_def, IntermediateField.algebraMap_apply]`. Simplify using `only [map_mul, map_pow, map_neg, map_one, uF, rowF]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem xP_mem_span (j : K → FlBlock Ψ N) (k₀ : K) (w : CF Ψ N K) (hw0 : w ≠ 0)
     (hB : ∀ B : Fin (j k₀).2 → Fin N, StrictMono B →
       thF Ψ N K (minorPolynomial Ψ N (j k₀).1 (j k₀).2 (by have := (j k₀).2.2; omega) B) * w ∈ PhiF j k₀)
@@ -342,6 +442,17 @@ theorem xP_mem_span (j : K → FlBlock Ψ N) (k₀ : K) (w : CF Ψ N K) (hw0 : w
 
 end Flag
 
+/- English proof (translation)
+Introduce `Ψ _ _ N K _ _ j hj k₀ htop _`. Establish `hlt` using `(j k₀).2.2`. Take `⟨w, hw0, hw, hB⟩` from `exists_scale j hj k₀ (j k₀).2 rfl (by omega)`. Establish `hind` using `indep_uF j k₀ (phi_le_rest j hj htop) w hw0 hw`. Establish `hspan` using `xP_mem_span j k₀ w hw0 hB`.
+
+Set `κ : {k // k ≠ k₀} → K` to `Subtype.val`. Establish `hk₀ : k₀ ∉ Set.range κ`. Introduce and unpack `⟨⟨k, hk⟩, h⟩`. Conclude with `hk h`. Establish `huniq : ∀ a : FibreBlock κ, a = ⟨k₀, hk₀⟩`.
+
+Introduce and unpack `⟨a, ha⟩`. Use `Subtype.ext (by_contra fun h => ha ⟨⟨a, h⟩, rfl⟩)` and prove the remaining obligations. Establish `hform : ∀ q : Σ k : FibreBlock κ, PIdx j k.1, ∃ l : Fin N → PhiF j k₀, xP j ⟨q.1.1, q.2⟩ = ∑ c, algebraMap (PhiF j k₀) (CF Ψ N K) (l c) * uF j k₀ w c`. Establish `h : ∀ k (_ : k = k₀) (A : PIdx j k), ∃ l : Fin N → PhiF j k₀, xP j ⟨k, A⟩ = ∑ c, algebraMap (PhiF j k₀) (CF Ψ N K) (l c) * uF j k₀ w c`. Introduce and unpack `k rfl A`.
+
+Take `⟨l, hl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hspan A)`. Conclude with `⟨l, by rw [← hl]; simp only [Algebra.smul_def]⟩`. Conclude with `fun q => h _ (congrArg Subtype.val (huniq q.1)) q.2`. Use `choose l hl using hform`. Take `⟨S, hS1, hS2⟩` from `GlobalTheory.CompanionTheory.Ar.Top.FlDeg.LinKer.ker_linearForms_span (PhiF j k₀) (CF Ψ N K) (FibreBlock κ) (fibreIdx (PIdx j) κ) ⟨k₀, hk₀⟩ huniq (Fin N) (uF j k₀ w) l hind`.
+
+Use `⟨genOf (CF Ψ N K) (dropV j k₀) (PPart j) (xP j) ((ker_aeval_inst _ (xP j)).symm.trans (ker_xP j)), S, hS1, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ hS2` and prove the remaining obligations. Establish `hfun : (fun q : Σ k : FibreBlock κ, PIdx j k.1 => xP j ⟨q.1.1, q.2⟩) = fun q => ∑ c, algebraMap (PhiF j k₀) (CF Ψ N K) (l q c) * uF j k₀ w c` using `funext hl`. Conclude with `congrArg (fun y => RingHom.ker (aeval y : MRingOver (PhiF j k₀) (fibreIdx (PIdx j) κ) →ₐ[PhiF j k₀] CF Ψ N K)) hfun`.
+-/
 theorem fibre_lin : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (K : Type) [Fintype K] [DecidableEq K]
     (j : K → FlBlock Ψ N), IsChain j → ∀ k₀ : K, (∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) → (∃ k, k ≠ k₀) →
     ∃ G : GenFibre (dropV j k₀) (PPart j),

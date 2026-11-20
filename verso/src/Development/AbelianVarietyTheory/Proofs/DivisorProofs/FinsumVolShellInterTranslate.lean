@@ -28,6 +28,9 @@ attribute [local instance] _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTe
 open ValuativeRel in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SplitFlip.isOpen_KO.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+-/
 theorem _root_.GlobalTheory.PureMatch.ShellVolume.isOpen_translate {a : ℕ} (u u' : GL (Fin a) k) :
     IsOpen {g : GL (Fin a) k | u * g * u' ∈ _root_.GlobalTheory.SplitWeil.KO k (Fin a)} :=
   _root_.GlobalTheory.SplitFlip.isOpen_KO.preimage
@@ -43,6 +46,33 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
 attribute [local instance] _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv in
 open ValuativeRel in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a ϖ u u' hϖ`. Establish `hv : valuation k ↑ϖ = uniformizer k` using `hϖ`. Use `letI : MeasurableSpace (GL (Fin a) k) := Units.instMeasurableSpace`. Use `set K := _root_.GlobalTheory.SplitWeil.KO k (Fin a) with hK`. Use `set μ := _root_.GlobalTheory.SplitFlip.haarVol K with hμ`.
+
+Use `haveI : μ.IsHaarMeasure := _root_.GlobalTheory.SplitFlip.isHaarMeasure_haarVol_KO`. Use `haveI : μ.IsMulRightInvariant := _root_.GlobalTheory.SplitFlip.isMulRightInvariant_of_haar μ`. Use `set S : Set (GL (Fin a) k) := {g | u * g * u' ∈ K} with hS`. Establish `hshell : ∀ m : Fin a → ℤ, _root_.GlobalTheory.SplitFlip.shellSet ϖ m = _root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ m`. Introduce `m`.
+
+Unfold `_root_.GlobalTheory.GLDoubling.cell _root_.GlobalTheory.SplitFlip.shellSet`. Use `congr 1`. Use extensionality with `: 1`. Rewrite using `[_root_.GlobalTheory.GLDoubling.val_torusElt, _root_.GlobalTheory.SplitFlip.diagGL_val]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [hshell]`. Establish `hSopen : IsOpen S` using `_root_.GlobalTheory.PureMatch.ShellVolume.isOpen_translate u u'`. Establish `hSeq : S = (fun x => u⁻¹ * x * u'⁻¹) '' (K : Set (GL (Fin a) k))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨u * g * u', hg, by group⟩`. Introduce and unpack `⟨x, hx, rfl⟩ show u * (u⁻¹ * x * u'⁻¹) * u' ∈ K`. Establish `hx' : u * (u⁻¹ * x * u'⁻¹) * u' = x` using `by group`. Rewrite using `[hx']`.
+
+Conclude with `hx`. Establish `hScpt : IsCompact S`. Rewrite using `[hSeq]`. Conclude with `_root_.GlobalTheory.SplitFlip.isCompact_KO.image ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hμS : μ S = 1`.
+
+Establish `: S = (fun g => u * g) ⁻¹' ((fun g => g * u') ⁻¹' (K : Set (GL (Fin a) k)))`. Use extensionality with `g`. Simplify using `[hS, mul_assoc]`. Rewrite using `[this, measure_preimage_mul, measure_preimage_mul_right]`. Conclude with `_root_.GlobalTheory.SplitFlip.haarVol_self _root_.GlobalTheory.SplitFlip.isOpen_KO le_rfl`.
+
+Take `⟨t, ht⟩` from `hScpt.elim_finite_subcover (fun e : {m : Fin a → ℤ // Antitone m} => _root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ e.1) (fun e => _root_.GlobalTheory.GLDoubling.isOpen_cell _ _) (by rw [_root_.GlobalTheory.GLDoubling.iUnion_cell hv]; exact Set.subset_univ _)`. Establish `hdisj` using `_root_.GlobalTheory.GLDoubling.pairwise_disjoint_cell (k := k) (N := a) hv`. Establish `hsupp : Function.support (fun e : {m : Fin a → ℤ // Antitone m} => μ.real (_root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ e.1 ∩ S)) ⊆ ↑t`. Introduce `e he`. Assume the negation of the conclusion as `het`.
+
+Apply `he` to reduce the goal to its premises. Establish `hempty : _root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ e.1 ∩ S = ∅`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hge hgS`.
+
+Take `⟨i, hi, hgi⟩` from `Set.mem_iUnion₂.mp (ht hgS)`. Establish `hie : i ≠ e` using `fun h => het (h ▸ hi)`. Conclude with `Set.disjoint_left.mp (hdisj hie) hgi hge`. Simplify using `[hempty]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`.
+
+Establish `hpd : (↑t : Set {m : Fin a → ℤ // Antitone m}).PairwiseDisjoint (fun e => _root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ e.1 ∩ S)`. Introduce `i _ j _ hij`. Conclude with `(hdisj hij).mono Set.inter_subset_left Set.inter_subset_left`. Establish `hmeas : ∀ i ∈ t, MeasurableSet (_root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ i.1 ∩ S)` using `fun i _ => (_root_.GlobalTheory.GLDoubling.isOpen_cell _ _).measurableSet.inter hSopen.measurableSet`. Establish `hfin : ∀ i ∈ t, μ (_root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ i.1 ∩ S) ≠ ⊤` using `fun i _ => ne_top_of_le_ne_top (by rw [hμS]; exact ENNReal.one_ne_top) (measure_mono Set.inter_subset_right)`.
+
+Rewrite using `[← measureReal_biUnion_finset hpd hmeas hfin]`. Establish `hU : (⋃ e ∈ t, _root_.GlobalTheory.GLDoubling.cell k (Fin a) ϖ e.1 ∩ S) = S`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Conclude with `Set.iUnion₂_subset fun _ _ => Set.inter_subset_right`. Introduce `g hg`.
+
+Take `⟨i, hi, hgi⟩` from `Set.mem_iUnion₂.mp (ht hg)`. Conclude with `Set.mem_iUnion₂.mpr ⟨i, hi, hgi, hg⟩`. Rewrite using `[hU, measureReal_def, hμS, ENNReal.toReal_one]`.
+-/
 theorem _root_.GlobalTheory.PureMatch.ShellVolume.finsum_vol_shell_inter_translate : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (a : ℕ) (ϖ : kˣ) (u u' : GL (Fin a) k), _root_.GlobalTheory.SplitFlip.IsUnif ϖ →
     ∑ᶠ m : {m : Fin a → ℤ // Antitone m}, (_root_.GlobalTheory.SplitFlip.haarVol (_root_.GlobalTheory.SplitWeil.KO k (Fin a))).real (_root_.GlobalTheory.SplitFlip.shellSet ϖ m.1 ∩ {g | u * g * u' ∈ _root_.GlobalTheory.SplitWeil.KO k (Fin a)}) = 1 := by

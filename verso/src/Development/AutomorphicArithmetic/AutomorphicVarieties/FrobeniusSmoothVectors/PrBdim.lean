@@ -42,6 +42,9 @@ private def borEquiv (K : Type) [Field K] (n : ℕ) (g : GL (Fin n) K) :
     rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc,
       Units.mul_inv, Matrix.mul_one, Matrix.of_apply, dif_pos p.2]
 
+/- English proof (translation)
+Introduce `K _ n g`. Rewrite using `[(borEquiv K n g).finrank_eq, Module.finrank_fintype_fun_eq_card, ← Fintype.card_congr (Sym2.sortEquiv (α := Fin n)), Sym2.card, Fintype.card_fin, Nat.choose_two_right, Nat.add_sub_cancel, Nat.mul_comm (n + 1) n]`. Conclude with `Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd`.
+-/
 theorem UpperTheory.V.Fr.pr_bdim :
     ∀ (K : Type) [Field K] (n : ℕ) (g : GL (Fin n) K), 2 * Module.finrank K (bor g) = n * (n + 1) := by
   intro K _ n g

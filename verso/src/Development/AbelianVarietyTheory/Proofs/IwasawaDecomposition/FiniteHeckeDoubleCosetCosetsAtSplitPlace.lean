@@ -10,6 +10,23 @@ namespace GlobalTheory.TSetFinLoc
 
 open GlobalTheory.TSetFin
 
+/- English proof (translation)
+Introduce `L _ _ _ n s ϖ hϖ J hJ k`. Take `⟨c, hc⟩` from `approx_class s.v`. Use `haveI : Finite (𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ s.v.ne_bot`. Set `κ : GAf L n → (Fin n → Fin n → 𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal)` to `fun x => if h : x ∈ tSet L n s ϖ k then fun i j => c (((h.2.choose : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) else 0`. Establish `key : ∀ x ∈ tSet L n s ϖ k, ∀ x' ∈ tSet L n s ϖ k, κ x = κ x' → (x : GAf L n ⧸ J) = x'`.
+
+Introduce `x hx x' hx' hκ`. Simplify using `only [κ, dif_pos hx, dif_pos hx'] at hκ`. Take `⟨ha, b, hb, hg⟩` from `hx.2.choose_spec`. Take `⟨ha', b', hb', hg'⟩` from `hx'.2.choose_spec`. Use `set a := hx.2.choose`.
+
+Use `set a' := hx'.2.choose`. Establish `ia` using `glint_int ha`. Establish `ia'` using `glint_int ha'`. Establish `ib` using `glint_int hb`. Establish `ib'` using `glint_int hb'`.
+
+Establish `hcl : ∀ i j, Valued.v ((a : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j - (a' : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) < 1` using `fun i j => hc _ _ (ia.1 i j) (ia'.1 i j) (congrFun (congrFun hκ i) j)`. Establish `hcl' : ∀ i j, Valued.v ((a' : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j - (a : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) i j) < 1` using `fun i j => by`. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `hcl i j`. Establish `hunif : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`.
+
+Establish `h1` using `local_int s.v ϖ k hunif a a' b b' _ _ ia'.1 ia.2 ib.2 ib'.1 hcl hg hg'`. Establish `h2` using `local_int s.v ϖ k hunif a' a b' b _ _ ia.1 ia'.2 ib'.2 ib.1 hcl' hg' hg`. Rewrite using `[QuotientGroup.eq]`. Establish `htriv : TrivOutside {s.v} (x⁻¹ * x')` using `triv_mul (triv_inv hx.1) hx'.1`. Use `(hJ _ htriv).2 ?_` and prove the remaining obligations.
+
+Use `mem_Umax_of_loc s _ htriv (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Conclude with `h1 i j`. Rewrite using `[mul_inv_rev, inv_inv, map_mul, map_inv]`. Conclude with `h2 i j`.
+
+Set `g : GAf L n ⧸ J → (Fin n → Fin n → 𝓞 (maximalRealSubfield L) ⧸ s.v.asIdeal)` to `fun q => if h : ∃ x ∈ tSet L n s ϖ k, (x : GAf L n ⧸ J) = q then κ h.choose else 0`. Use `Set.Finite.of_finite_image (f := g) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨x', hx', rfl⟩ hgg`. Establish `h : ∃ y ∈ tSet L n s ϖ k, (y : GAf L n ⧸ J) = x` using `⟨x, hx, rfl⟩`. Establish `h' : ∃ y ∈ tSet L n s ϖ k, (y : GAf L n ⧸ J) = x'` using `⟨x', hx', rfl⟩`.
+
+Simplify using `only [g, dif_pos h, dif_pos h'] at hgg`. Use `show (x : GAf L n ⧸ J) = x'`. Rewrite using `[← h.choose_spec.2, ← h'.choose_spec.2]`. Conclude with `key _ h.choose_spec.1 _ h'.choose_spec.1 hgg`.
+-/
 theorem finite_image_tSet_loc : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L)
     (ϖ : s.v.adicCompletion (maximalRealSubfield L)), IsUnif L s.v ϖ → ∀ J : Subgroup (GAf L n),
     (∀ κ, TrivOutside {s.v} κ → (κ ∈ J ↔ κ ∈ Umax L n)) → ∀ k : ℕ,

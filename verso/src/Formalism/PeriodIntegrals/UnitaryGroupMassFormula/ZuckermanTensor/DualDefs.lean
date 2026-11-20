@@ -18,7 +18,13 @@ def mk (x : H) : Cj H := x
 
 def un (x : Cj H) : H := x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem un_mk (x : H) : un (mk x) = x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_un (x : Cj H) : mk (un x) = x := rfl
 
 instance [NormedAddCommGroup H] : NormedAddCommGroup (Cj H) := inferInstanceAs (NormedAddCommGroup H)
@@ -31,6 +37,9 @@ variable [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 instance : Module ℂ (Cj H) := Module.compHom H (starRingEnd ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem un_smul (c : ℂ) (x : Cj H) : un (c • x) = (starRingEnd ℂ) c • un x := rfl
 
 instance : NormedSpace ℂ (Cj H) where
@@ -47,6 +56,9 @@ instance : InnerProductSpace ℂ (Cj H) where
     show ⟪un y, (starRingEnd ℂ) r • un x⟫_ℂ = (starRingEnd ℂ) r * ⟪un y, un x⟫_ℂ
     rw [inner_smul_right]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_def (x y : Cj H) : ⟪x, y⟫_ℂ = ⟪un y, un x⟫_ℂ := rfl
 
 end Cj
@@ -64,6 +76,9 @@ def cjOp (T : H →L[ℂ] H) : Cj H →L[ℂ] Cj H :=
         exact map_smul T _ _ }
     ‖T‖ (fun x => T.le_opNorm (Cj.un x))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cjOp_apply (T : H →L[ℂ] H) (x : Cj H) : Cj.un (cjOp T x) = T (Cj.un x) := rfl
 
 variable {n : ℕ}

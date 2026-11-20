@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.InfClass
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 open GlobalTheory.SumCount GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CosCount.cosK | exact GlobalTheory.CosCount.cosK | (intros; apply GlobalTheory.CosCount.cosK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cosine_count_of_hypotheses : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.SumCount.CosK := by
   first | exact @GlobalTheory.CosCount.cosK | exact GlobalTheory.CosCount.cosK | (intros; apply GlobalTheory.CosCount.cosK <;> assumption)

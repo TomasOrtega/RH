@@ -30,6 +30,17 @@ section NabAbstract
 
 variable {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
 
+/- English proof (translation)
+Unfold `bcPol at hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Introduce `a`.
+
+Take `⟨r, hr⟩` from `hI a`. Use `⟨r • y, N.smul_mem r hy, fun m => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Establish `hc : (r • y).coeff m = algebraMap (𝓞 K) K r * y.coeff m` using `(MvPolynomial.coeff_smul m r y).trans (Algebra.smul_def _ _)`. Use `hc.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_map, mul_comm (algebraMap (𝓞 K') K' a), hF, hr, mul_comm]`. Consider the case `zero => exact fun a => ⟨0, N.zero_mem, fun m => by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `a`. Take `⟨q, hq, e⟩` from `hx a`.
+
+Take `⟨q', hq', e'⟩` from `hy a`. Conclude with `⟨q + q', N.add_mem hq hq', fun m => by`. Rewrite using `[MvPolynomial.coeff_add, MvPolynomial.coeff_add, mul_add, map_add, e, e']⟩`. Consider the case `smul r x _ hx`. Introduce `a`.
+
+Take `⟨q, hq, e⟩` from `hx (a * r)`. Conclude with `⟨q, hq, fun m => by`. Rewrite using `[e, ← algebraMap_smul K' r x, MvPolynomial.coeff_smul, smul_eq_mul, map_mul (algebraMap (𝓞 K') K'), mul_assoc]⟩`.
+-/
 theorem exists_coord_of_mem_bcPol (φ : K →+* K') {σ : Type} (F : K' →+ K) (hF : ∀ a x, F (φ a * x) = a * F x)
     (hI : ∀ a : 𝓞 K', ∃ r : 𝓞 K, F (algebraMap (𝓞 K') K' a) = algebraMap (𝓞 K) K r)
     (N : Submodule (𝓞 K) (MvPolynomial σ K)) {p : MvPolynomial σ K'} (hp : p ∈ bcPol φ N) :
@@ -59,6 +70,23 @@ theorem exists_coord_of_mem_bcPol (φ : K →+* K') {σ : Type} (F : K' →+ K) 
     exact ⟨q, hq, fun m => by
       rw [e, ← algebraMap_smul K' r x, MvPolynomial.coeff_smul, smul_eq_mul, map_mul (algebraMap (𝓞 K') K'), mul_assoc]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, b, F, hF, hI, hb⟩` from `exists_dual_family φ`. Take `⟨n, a, g, hg⟩` from `Submodule.mem_span_set'.1 (hsp (Submodule.mem_top (x := f')))`. Use `choose u hu using fun k => (g k).2`.
+
+Establish `hf : f' = ∑ k, a k • L (u k)`. Rewrite using `[← hg]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hu]`. Establish `h1 : f' = ∑ i, b i • L (∑ k, F i (a k) • u k)`. Rewrite using `[hf]`.
+
+Simplify using `only [map_sum, hL, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hb (a k), Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, algebraMap_smul]`. Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun c => ?_, rfl⟩)` and prove the remaining obligations. Take `⟨q, hq, e⟩` from `exists_coord_of_mem_bcPol φ (F i) (hF i) (hI i) (N c) (h c) 1`. Establish `h2 : ev c (∑ k, F i (a k) • u k) = q`.
+
+Use extensionality with `μ`. Rewrite using `[e, hf, map_one, one_mul]`. Simplify using `only [map_sum, map_smul, hev, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, MvPolynomial.coeff_map, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (a k), hF, mul_comm]`.
+
+Rewrite using `[h2]`. Conclude with `hq`. Introduce `h c`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[hev]`. Conclude with `bc_map_mem φ (hy c)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul K' r x, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem integral_span_of_values (φ : K →+* K') {σ C M M' : Type} [AddCommGroup M] [Module K M] [AddCommGroup M'] [Module K' M']
     [Module (𝓞 K') M'] [IsScalarTower (𝓞 K') K' M']
     (L : M →+ M') (hL : ∀ (a : K) (f : M), L (a • f) = φ a • L f) (hsp : ⊤ ≤ Submodule.span K' (Set.range L))
@@ -105,6 +133,9 @@ theorem integral_span_of_values (φ : K →+* K') {σ C M M' : Type} [AddCommGro
       rw [← algebraMap_smul K' r x, map_smul, algebraMap_smul]
       exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Establish `: y = x` using `Subtype.ext e`. Conclude with `this ▸ hy`. Conclude with `fun h => ⟨x, h, rfl⟩`.
+-/
 theorem mem_polOfVV_iff {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (VV K lam))
     (x : VV K lam) : x.1 ∈ polOfVV lam T ↔ x ∈ T := by
   constructor
@@ -121,11 +152,17 @@ def SemiSpan [StarRing K] [StarRing K'] (φ : K →+* K') (S : CSD K) (S' : CSD 
   (∀ f g, T (f + g) = T f + T g) ∧ (∀ (a : K) (f : S.Forms), T (a • f) = φ a • T f) ∧
     ⊤ ≤ Submodule.span K' (Set.range T)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.map_add, hT, h.trans (Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨S.basis k, rfl⟩))⟩`.
+-/
 theorem semiSpan_of [StarRing K] [StarRing K'] (φ : K →+* K') (S : CSD K) (S' : CSD K') (T : S.Forms →+ S'.Forms)
     (hT : ∀ (a : K) (f : S.Forms), T (a • f) = φ a • T f)
     (h : ⊤ ≤ Submodule.span K' (Set.range fun k => T (S.basis k))) : SemiSpan φ S S' T :=
   ⟨T.map_add, hT, h.trans (Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨S.basis k, rfl⟩))⟩
 
+/- English proof (translation)
+Introduce `f'`. Establish `main` using `integral_span_of_values φ (C := S.Cl) (AddMonoidHom.mk' T hT.1) hT.2.1 hT.2.2 (fun c => v ∘ₗ LinearMap.proj (R := K) (φ := fun _ : S.Cl => S.V) c ∘ₗ S.Forms.subtype) (fun c => v' ∘ₗ LinearMap.proj (R := K') (φ := fun _ : S'.Cl => S'.V) (p c) ∘ₗ S'.Forms.subtype) hev N f'`. Establish `e1 : {f : S.Forms | ∀ c, (f : S.Cl → S.V) c ∈ S.Nab c} = {f | ∀ c, (v ∘ₗ LinearMap.proj (R` using `K) (φ := fun _ : S.Cl => S.V) c ∘ₗ S.Forms.subtype) f ∈ N c} := Set.ext fun f => forall_congr' fun c => hN c _`. Rewrite using `[e1, hp.forall]`. Conclude with `Iff.trans (forall_congr' fun c => hN' c _) main`.
+-/
 theorem nabSpan_of_values [StarRing K] [StarRing K'] (φ : K →+* K') {σ : Type} {S : CSD K} {S' : CSD K'}
     (T : S.Forms → S'.Forms) (hT : SemiSpan φ S S' T) (p : S.Cl → S'.Cl) (hp : Function.Surjective p)
     (v : S.V →ₗ[K] MvPolynomial σ K) (v' : S'.V →ₗ[K'] MvPolynomial σ K')
@@ -144,11 +181,23 @@ theorem nabSpan_of_values [StarRing K] [StarRing K'] (φ : K →+* K') {σ : Typ
 
 end NabAbstract
 
+/- English proof (translation)
+The claim follows from `congrArg (fun u : (S.toCSD h).Forms => (u.1 : S.Cl → S.V) c) ((S.res h).apply_symm_apply f)`.
+-/
 theorem nab_res_symm {K : Type} [Field K] [NumberField K] [StarRing K] (S : Formalism.L2.Col.GSD K) (h : S.Ok)
     (f : (S.toCSD h).Forms) (c : S.Cl) :
     (((S.res h).symm f : S.EqFun) : S.D → S.V) (Quotient.out c) = (f.1 : S.Cl → S.V) c :=
   congrArg (fun u : (S.toCSD h).Forms => (u.1 : S.Cl → S.V) c) ((S.res h).apply_symm_apply f)
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `he' : e = fun τ => ι.comp (X.emb τ)` using `funext fun τ => (he τ).symm`. Substitute `he'` using the available equality. Take `⟨H₂, l₂, rfl⟩ : ∃ (H₂ : ∀ w : ↥SG₂, Subgroup (GL (Fin n) (𝓞 X.E ⧸ w.1.asIdeal))) (l₂ : ∀ w, ↥(H₂ w) →* Lˣ), Λ₂ = fun w => ⟨H₂ w, l₂ w⟩` from `⟨fun w => (Λ₂ w).H, fun w => (Λ₂ w).lam, rfl⟩`. Establish `hH' : H₂ = fun w => (Λ₁ w).H` using `funext fun w => hH w w.2`.
+
+Substitute `hH'` using the available equality. Establish `key : ∀ (p : Pol X.K X.Tau n) (q : Pol L X.Tau n), HEq (MvPolynomial.map c₂ q) (MvPolynomial.map c₁ p) → q = MvPolynomial.map ι p`. Introduce `p q h`. Apply `MvPolynomial.map_injective c₂ c₂.injective` to reduce the goal to its premises. Rewrite using `[eq_of_heq h, MvPolynomial.map_map, show c₂.comp ι = c₁ from RingHom.ext hc]`.
+
+Establish `hev : ∀ (c : (Formalism.L2.Col.GSD.toCSD _ h₁).Cl) f, ((T f).1 c).1 = MvPolynomial.map ι (f.1 c).1`. Introduce `c f`. Establish `a1` using `key _ _ (hf f (Quotient.out c) (Quotient.out c) HEq.rfl)`. Establish `b1` using `nab_res_symm _ h₁ f c`. Establish `b3` using `nab_res_symm _ h₂ (T f) c`.
+
+Conclude with `(congrArg Subtype.val b3).symm.trans (a1.trans (congrArg (fun v => MvPolynomial.map ι (Subtype.val v)) b1))`. Use `nabSpan_of_values ι T hT (fun c => c) (fun c => ⟨c, rfl⟩) (VV X.K lam).subtype (VV L lam).subtype hev (fun c => polOfVV lam (nabAtr X.emb lam (Quotient.out c : Formalism.L2.Col.DecoSet X.E n ∅ SG₂).1.N)) (fun c x => (mem_polOfVV_iff lam _ x).symm) fun c x => ?_` and prove the remaining obligations. Rewrite using `[← (nablaDeltaBaseChangeAt_holds X.E X.K L ι X.Tau n X.emb lam _ (Quotient.out c : Formalism.L2.Col.DecoSet X.E n ∅ SG₂).2.lat).2.2.1]`. Conclude with `(mem_polOfVV_iff lam _ x).symm`.
+-/
 theorem nab_round_bc (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (e : X.Tau → X.E →+* L) (he : ∀ τ, ι.comp (X.emb τ) = e τ) {n : ℕ} (lam : X.Tau → DomWeight n)
     {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (hS : SG₂ = SG₁)
@@ -189,6 +238,13 @@ theorem nab_round_bc (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberF
     (Quotient.out c : Formalism.L2.Col.DecoSet X.E n ∅ SG₂).2.lat).2.2.1]
   exact (mem_polOfVV_iff lam _ x).symm
 
+/- English proof (translation)
+Introduce `w hw`. Establish `h1 : w.1 ∈ SG₁`. Use `w.2` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₁, Finset.union_empty] at this`. Conclude with `this`.
+
+Establish `h2 : w.1 ∈ SG₂`. Use `hw` as an intermediate fact. Simplify using `only [Formalism.L2.Col.uSG, hQ₂, Finset.union_empty] at this`. Conclude with `this`. Use `show ((A₂.glue B₂) ⟨w.1, hw⟩).H = ((A₁.glue B₁) w).H`.
+
+Rewrite using `[Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h2, Formalism.L2.Col.LevFam.glue_of_mem _ _ _ h1]`. Conclude with `hA ⟨w.1, h1⟩ h2`.
+-/
 theorem nab_glue_inv_H {E K L : Type} [Field E] [NumberField E] [Field K] [Field L] {n : ℕ}
     {SG₁ Q₁ SG₂ Q₂ : Finset (HeightOneSpectrum (𝓞 E))} (hQ₁ : Q₁ = ∅) (hQ₂ : Q₂ = ∅)
     (A₁ : Formalism.L2.Col.LevFam E K n SG₁) (B₁ : Formalism.L2.Col.LevFam E K n Q₁)
@@ -211,6 +267,15 @@ theorem nab_glue_inv_H {E K L : Type} [Field E] [NumberField E] [Field K] [Field
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Consider the cases of `B₁ with | mk P₁ =>`. Consider the cases of `B₂ with | mk P₂ =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality.
+
+Establish `hpx : w₂.px = w₁.px` using `eq_of_heq hp`. Use `nab_round_bc (baseOfColW w₁).fields ι (baseOfColW w₂).tauLL ?_ ((baseOfColW w₁).wts.lamV j₁) ?_ (Formalism.L2.Col.mtTyKK w₁.I.Ch w₁.I.sel (mu0F (X := (baseOfColW w₁).fields) (tuOf w₁.I (usedOf w₁.I T₁ W₁))).1 j₁).inv (Formalism.L2.Col.mtTyKK w₂.I.Ch w₂.I.sel (mu0F (X := (baseOfCo …` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`. Apply `(baseOfColW w₂).embLL.injective` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₁) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w₂) τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Rewrite using `[RingHom.comp_apply, hι]`. Conclude with `h1.trans h2.symm`.
+
+Use `(rowLevelPrimes_colTuples_eq_vGs w₂ W₂).trans (Eq.trans ?_ (rowLevelPrimes_colTuples_eq_vGs w₁ W₁).symm)` and prove the remaining obligations. Rewrite using `[hpx]`. Both sides reduce to the same expression. Conclude with `nab_glue_inv_H (twistRamifiedPrimes_empty_colTuples w₁ W₁) (twistRamifiedPrimes_empty_colTuples w₂ W₂) _ _ _ _ fun w hw => rfl`.
+-/
 theorem nab_refTuple {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.toPre} {T₁ : TwDat B₁} {T₂ : TwDat B₂}
     (w₁ : ColW B₁ f₁ T₁) (w₂ : ColW B₂ f₂ T₂) (W₁ : Set B₁.places.Pl) (W₂ : Set B₂.places.Pl)
     (hpre : B₂.toPre = B₁.toPre) (hp : HEq w₂.px w₁.px) (j₁ j₂ : ℕ) (hj : j₁ = j₂)
@@ -247,6 +312,11 @@ theorem nab_refTuple {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.t
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (GlobalTheory.T.liftForms_referenceTuple_basis_extended h1 h2 h3 h4 h5 h6 h7) (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hf hP hpx Z hX Wt z g1 g2 g3 g4 Z' hX' g5 g6 g7 z' g8 g9 j j' hj φ hφ L hL hC`. Use `beta_reduce at H`. Establish `Ha` using `(H B f T w hE hf hP hpx Z hX Wt z g1 g2 g3 g4 Z' hX' g5 g6 g7 z' g8 g9 j j' hj φ hφ L hL hC).2`.
+
+Establish `Hb` using `semiSpan_of φ _ _ L hL Ha`. Use `clear H Ha`. Use `show NabSpan ((famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).fam3.F.L j (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0).S ((famR (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) z'.Xg z'.tr).fam3.F.L j' (famR (w'.st Z') w'.I hX' (usedOf w'.I T' …`. Conclude with `nab_refTuple w w' Wt {v | B'.places.resChar v ∈ T'.pl} hE.1 hpx ((j : ℕ) + 1) ((j' : ℕ) + 1) (by rw [hj]) φ hφ (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 hX ((j : ℕ) + 1)) (Formalism.L2.Col.mtKOk (Pr := …`.
+-/
 theorem nab_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

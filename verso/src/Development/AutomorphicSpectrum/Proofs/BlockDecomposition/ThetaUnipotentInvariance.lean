@@ -23,6 +23,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Establish `had` using `hc0 hc`. Substitute `hc` using the available equality. Establish `h1 : a * (b + x * d) * Algebra.norm F z = x * Algebra.norm F z + a * b * Algebra.norm F z`. Take the linear combination `(x * Algebra.norm F z) * had`.
+
+Simplify using `only [GL2LocalData.rW, if_true, mul_zero, add_zero]`. Rewrite using `[h1, AddChar.map_add_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ u : E, ((χ (((a + x * c) * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : Circle) : ℂ) * Φ u = (χ (x * Algebra.norm F z) : ℂ) * (((χ ((a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : Circle) : ℂ) * Φ u)`.
+
+Introduce `u`. Establish `h2 : ((a + x * c) * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c = x * Algebra.norm F z + (a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, AddChar.map_add_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GL2LocalData.rW, if_neg hc, hk]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_shift (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (a b c d x : F)
     (hc0 : c = 0 → a * d = 1) (Φ : E → ℂ) (z : E) :
     GL2LocalData.rW χ σ μE lam (a + x * c) (b + x * d) c d Φ z =
@@ -55,12 +64,22 @@ theorem rW_shift (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) 
     rw [integral_const_mul]
     ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.WeilPsi.unipotent_mul_val_real]`. Simplify using the standard rewrite rules.
+-/
 theorem entries (x : F) (g : GL (Fin 2) F) :
     (uni2 x * g).val 0 0 = g.val 0 0 + x * g.val 1 0 ∧ (uni2 x * g).val 0 1 = g.val 0 1 + x * g.val 1 1 ∧
       (uni2 x * g).val 1 0 = g.val 1 0 ∧ (uni2 x * g).val 1 1 = g.val 1 1 := by
   rw [GlobalTheory.CompanionTheory.WeilPsi.unipotent_mul_val_real]
   simp
 
+/- English proof (translation)
+Establish `hΔ : (g.val).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det g.val).1 g.isUnit).ne_zero`. Introduce `h0`. Establish `hC : g.val 1 0 = 0`. Break down `div_eq_zero_iff.1 h0 with h1 | h1` into its components or cases. Conclude with `h1`.
+
+Conclude with `absurd h1 hΔ`. Establish `hD : (g.val).det = g.val 0 0 * g.val 1 1`. Rewrite using `[Matrix.det_fin_two g.val, hC]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_mul_eq_mul_div, ← hD]`.
+
+Conclude with `div_self hΔ`.
+-/
 theorem corner (g : GL (Fin 2) F) :
     g.val 1 0 / (g.val).det = 0 → g.val 0 0 / (g.val).det * g.val 1 1 = 1 := by
   have hΔ : (g.val).det ≠ 0 := ((Matrix.isUnit_iff_isUnit_det g.val).1 g.isUnit).ne_zero
@@ -75,6 +94,13 @@ theorem corner (g : GL (Fin 2) F) :
   rw [div_mul_eq_mul_div, ← hD]
   exact div_self hΔ
 
+/- English proof (translation)
+Establish `hdet` using `GlobalTheory.CompanionTheory.WeilPsi.det_left_unipotent_mul x g`. Take `⟨e00, e01, e10, e11⟩` from `entries x g`. Unfold `GL2LocalData.piG`. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Establish `h' : ∃ t : Eˣ, Algebra.norm F (t : E) = ((uni2 x * g).val).det` using `by rwa [hdet]`.
+
+Rewrite using `[dif_pos h', dif_pos h]`. Establish `hch : h'.choose = h.choose` using `GlobalTheory.CompanionTheory.WeilPsi.choose_congr (by simp only [hdet]) h' h`. Establish `hsplit : (g.val 0 0 + x * g.val 1 0) / (g.val).det = g.val 0 0 / (g.val).det + x * (g.val 1 0 / (g.val).det)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hch, hdet, e00, e01, e10, e11, hsplit, rW_shift χ σ μE lam _ _ _ _ x (corner g)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((uni2 x * g).val).det` using `by rwa [hdet]`. Rewrite using `[dif_neg h', dif_neg h, mul_zero]`.
+-/
 theorem field_weil_action_unipotent (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ)
     (x : F) (g : GL (Fin 2) F) (Φ : E → ℂ) (z : E) :
     GL2LocalData.piG χ σ μE lam c (uni2 x * g) Φ z =
@@ -101,6 +127,11 @@ section Split
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hdet` using `GlobalTheory.CompanionTheory.WeilPsi.det_left_unipotent_mul x g`. Take `⟨e00, e01, e10, e11⟩` from `entries x g`. Establish `hD : Matrix.GeneralLinearGroup.det (uni2 x * g) = Matrix.GeneralLinearGroup.det g`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hdet`.
+
+Establish `hsplit : (g.val 0 0 + x * g.val 1 0) / (g.val).det = g.val 0 0 / (g.val).det + x * (g.val 1 0 / (g.val).det)`. Expand and normalize the polynomial expressions, which then agree. Unfold `GL2LocalData.piS`. Rewrite using `[hD, hdet, e00, e01, e10, e11, hsplit, rW_shift χ _ _ 1 _ _ _ _ x (corner g)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_weil_action_unipotent (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (x : F) (g : GL (Fin 2) F) (Φ : F × F → ℂ)
     (z : F × F) :
     GL2LocalData.piS χ c₁ (uni2 x * g) Φ z =
@@ -117,6 +148,9 @@ theorem split_weil_action_unipotent (χ : AddChar F Circle) (c₁ : Fˣ →* ℂ
   rw [hD, hdet, e00, e01, e10, e11, hsplit, rW_shift χ _ _ 1 _ _ _ _ x (corner g)]
   ring
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_matrix_det (Module.Basis.finTwoProd F), Matrix.det_fin_two]`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+-/
 theorem norm_prod (y : F × F) : Algebra.norm F y = y.1 * y.2 := by
   rw [Algebra.norm_eq_matrix_det (Module.Basis.finTwoProd F), Matrix.det_fin_two]
   simp [Algebra.leftMulMatrix_eq_repr_mul]
@@ -125,6 +159,17 @@ end Split
 
 section Real
 
+/- English proof (translation)
+Unfold `rWR`. Distinguish the cases in `hc : c = 0`. Establish `had` using `hc0 hc`. Substitute `hc` using the available equality. Establish `e : a * (b + x * d) * Complex.normSq z = a * b * Complex.normSq z + x * Complex.normSq z`.
+
+Take the linear combination `(x * Complex.normSq z) * had`. Simplify using `only [if_true, mul_zero, add_zero]`. Rewrite using `[e, show (2 * (Real.pi : ℂ) * Complex.I * (((a * b * Complex.normSq z + x * Complex.normSq z : ℝ)) : ℂ)) = 2 * (Real.pi : ℂ) * Complex.I * ((a * b * Complex.normSq z : ℝ) : ℂ) + 2 * (Real.pi : ℂ) * Complex.I * ((x * Complex.normSq z : ℝ) : ℂ) by push_cast; ring, Complex.exp_add]`. Simplify using `only [GlobalTheory.CompanionTheory.GlobalWhittakerPsi.eC]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg hc, if_neg hc]`. Establish `hint : ∀ u : ℂ, Complex.exp (2 * Real.pi * Complex.I * ((((a + x * c) * Complex.normSq z + d * Complex.normSq u - 2 * (conj z * u).re) / c : ℝ) : ℂ)) * Φ u = GlobalTheory.CompanionTheory.GlobalWhittakerPsi.eC (x * Complex.normSq z) * (Complex.exp (2 * Real.pi * Complex.I * (((a * …`. Introduce `u`. Establish `e : ((a + x * c) * Complex.normSq z + d * Complex.normSq u - 2 * (conj z * u).re) / c = x * Complex.normSq z + (a * Complex.normSq z + d * Complex.normSq u - 2 * (conj z * u).re) / c`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc, GlobalTheory.CompanionTheory.GlobalWhittakerPsi.eC, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hint]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rWR_shift (a b c d x : ℝ) (hc0 : c = 0 → a * d = 1) (Φ : ℂ → ℂ) (z : ℂ) :
     rWR (a + x * c) (b + x * d) c d Φ z =
       GlobalTheory.CompanionTheory.GlobalWhittakerPsi.eC (x * Complex.normSq z) * rWR a b c d Φ z := by
@@ -158,6 +203,19 @@ theorem rWR_shift (a b c d x : ℝ) (hc0 : c = 0 → a * d = 1) (Φ : ℂ → �
     rw [integral_const_mul]
     ring
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.CompanionTheory.GlobalWhittakerPsi.unipotent_mul_val_real x g`. Establish `hdet : ((uni2 x * g).val).det = (g.val).det`. Rewrite using `[hv, Matrix.det_fin_two_of, Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Unfold `piRc`.
+
+Distinguish the cases in `h : 0 < (g.val).det`. Establish `h' : 0 < ((uni2 x * g).val).det` using `hdet ▸ h`. Rewrite using `[dif_pos h', dif_pos h]`. Simplify using `only [hdet]`. Establish `e00 : (uni2 x * g).val 0 0 = g.val 0 0 + x * g.val 1 0` using `by rw [hv]; simp`.
+
+Establish `e01 : (uni2 x * g).val 0 1 = g.val 0 1 + x * g.val 1 1` using `by rw [hv]; simp`. Establish `e10 : (uni2 x * g).val 1 0 = g.val 1 0` using `by rw [hv]; simp`. Establish `e11 : (uni2 x * g).val 1 1 = g.val 1 1` using `by rw [hv]; simp`. Establish `hsplit : (g.val 0 0 + x * g.val 1 0) / (g.val).det = g.val 0 0 / (g.val).det + x * (g.val 1 0 / (g.val).det)`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc0 : g.val 1 0 / (g.val).det = 0 → g.val 0 0 / (g.val).det * g.val 1 1 = 1`. Introduce `h0`. Establish `hC : g.val 1 0 = 0`. Break down `div_eq_zero_iff.1 h0 with h1 | h1` into its components or cases. Conclude with `h1`.
+
+Conclude with `absurd h1 h.ne'`. Establish `hD : (g.val).det = g.val 0 0 * g.val 1 1`. Rewrite using `[Matrix.det_fin_two g.val, hC]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_mul_eq_mul_div, ← hD]`.
+
+Conclude with `div_self h.ne'`. Rewrite using `[e00, e01, e10, e11, hsplit, rWR_shift _ _ _ _ x hc0]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ 0 < ((uni2 x * g).val).det` using `hdet ▸ h`. Rewrite using `[dif_neg h', dif_neg h, mul_zero]`.
+-/
 theorem real_weil_action_unipotent (cf : ℂˣ → ℂ) (x : ℝ) (g : GL (Fin 2) ℝ) (Φ : ℂ → ℂ) (z : ℂ) :
     piRc cf (uni2 x * g) Φ z =
       GlobalTheory.CompanionTheory.GlobalWhittakerPsi.eC (x * Complex.normSq z) * piRc cf g Φ z := by
@@ -199,10 +257,16 @@ section Places
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `eq_ratCast (@algebraMap ℚ R _ _ inst) q`.
+-/
 theorem algebraMap_rat_eq {R : Type} [Field R] [CharZero R] (inst : Algebra ℚ R) (q : ℚ) :
     @algebraMap ℚ R _ _ inst q = (q : R) :=
   eq_ratCast (@algebraMap ℚ R _ _ inst) q
 
+/- English proof (translation)
+Establish `h` using `SemiLocal.algebraMap_norm_eq_prod (K := ℚ) (L := K) v ξ`. Use `haveI : Subsingleton (SemiLocal.PlacesOver K v) := ⟨fun a b => Subtype.ext ((hu a.1 a.2).trans (hu b.1 b.2).symm)⟩`. Rewrite `h` using `[Fintype.prod_subsingleton _ (⟨w, i⟩ : SemiLocal.PlacesOver K v)]`. Use `h.symm.trans ?_` and prove the remaining obligations. Rewrite using `[algebraMap_rat_eq, algebraMap_rat_eq]`.
+-/
 theorem norm_ns (v : Pl) (w : PlK K) [i : w.asIdeal.LiesOver v.asIdeal]
     (hu : ∀ w' : PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w) (ξ : K) :
     Algebra.norm (Qv v) (algebraMap K (Kv K w) ξ) = algebraMap ℚ (Qv v) (Algebra.norm ℚ ξ) := by
@@ -214,6 +278,15 @@ theorem norm_ns (v : Pl) (w : PlK K) [i : w.asIdeal.LiesOver v.asIdeal]
   refine h.symm.trans ?_
   rw [algebraMap_rat_eq, algebraMap_rat_eq]
 
+/- English proof (translation)
+Take `⟨hall, d₁, d₂⟩` from `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hne`. Establish `h` using `SemiLocal.algebraMap_norm_eq_prod (K := ℚ) (L := K) v ξ`. Establish `hab : (⟨w₁, i₁⟩ : SemiLocal.PlacesOver K v) ≠ ⟨w₂, i₂⟩` using `fun e => hne (congrArg Subtype.val e)`. Establish `huniv : (Finset.univ : Finset (SemiLocal.PlacesOver K v)) = {⟨w₁, i₁⟩, ⟨w₂, i₂⟩}`. Use extensionality with `u`.
+
+Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Break down `hall u.1 u.2 with e | e` into its components or cases. Conclude with `Or.inl (Subtype.ext e)`. Conclude with `Or.inr (Subtype.ext e)`. Rewrite `h` using `[huniv, Finset.prod_pair hab]`.
+
+Establish `one : ∀ (w : PlK K) [w.asIdeal.LiesOver v.asIdeal], Module.finrank (Qv v) (Kv K w) = 1 → Algebra.norm (Qv v) (algebraMap K (Kv K w) ξ) = dg1 v w ξ`. Introduce `w _ d`. Establish `e : algebraMap (Qv v) (Kv K w) (dg1 v w ξ) = algebraMap K (Kv K w) ξ` using `Function.invFun_eq ((GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.algebraMap_bijective v w d).2 _)`. Rewrite using `[← e, Algebra.norm_algebraMap, d, pow_one]`. Rewrite using `[← one w₁ d₁, ← one w₂ d₂]`.
+
+Use `h.symm.trans ?_` and prove the remaining obligations. Rewrite using `[algebraMap_rat_eq, algebraMap_rat_eq]`.
+-/
 theorem norm_sp (h2 : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K)
     [i₁ : w₁.asIdeal.LiesOver v.asIdeal] [i₂ : w₂.asIdeal.LiesOver v.asIdeal] (hne : w₁ ≠ w₂) (ξ : K) :
     dg1 v w₁ ξ * dg1 v w₂ ξ = algebraMap ℚ (Qv v) (Algebra.norm ℚ ξ) := by
@@ -238,6 +311,11 @@ theorem norm_sp (h2 : Module.finrank ℚ K = 2) (v : Pl) (w₁ w₂ : PlK K)
   refine h.symm.trans ?_
   rw [algebraMap_rat_eq, algebraMap_rat_eq]
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Simplify using `only [LM.val]`. Rewrite using `[split_weil_action_unipotent, norm_prod]`. Simplify using `only`.
+
+Rewrite using `[norm_sp h2 v w₁ w₂ hok.1]`. Consider the case `@ns w i σ η Φ`. Simplify using `only [LM.val]`. Rewrite using `[field_weil_action_unipotent, norm_ns v w hok.1]`.
+-/
 theorem local_theta_value_unipotent (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v : Pl} (m : LM c v) (hok : m.ok)
     (x : Qv v) (g : GL (Fin 2) (Qv v)) (ξ : K) :
     m.val (uni2 x * g) ξ =

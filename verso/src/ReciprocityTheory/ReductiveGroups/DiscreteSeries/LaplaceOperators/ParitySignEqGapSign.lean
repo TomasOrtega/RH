@@ -15,6 +15,11 @@ def NVStatement : Prop :=
     1 ≤ k → IsHCPar (parLam k r v b) → Interlaces k r u v b → HalfInts k r u v b → LowGaps r b h →
     GapLap (parEps k r) (parLam k r v b) h → BesselAll (parEps k r) (parLam k r v b) u
 
+/- English proof (translation)
+Introduce `k r u v b h hk hHC hIL hHalf hLow hGap`. Establish `hp` using `parEps_pOf k r hk`. Establish `hq` using `parEps_qOf k r hk`. Establish `hSG : StepGap (parEps k r) r h`. Use `gapLap_stepGap _ (parEps k r) (parLam k r v b) h (by rw [hp]; omega) (by rw [hq]; omega) hGap` as an intermediate fact.
+
+Rewrite `this` using `[hq, Nat.add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨t₀, ht⟩` from `hI k r u v b hk hHC hIL hHalf`. Conclude with `TransportInt.transport_of hIS hDD hk hGap (walkStep hIS hS k r u v b h t₀ hk hHC hIL hHalf hLow hSG (ht t₀ le_rfl))`.
+-/
 theorem nv_of (hI : Base.StepIBaseStatement) (hS : StepStatement) (hIS : S0.IntSStatement)
     (hDD : DecDerivStatement) : NVStatement := by
   intro k r u v b h hk hHC hIL hHalf hLow hGap

@@ -9,6 +9,9 @@ namespace Formalism.RepresentationBoundsCohomology.JS
 
 open Formalism.NG Formalism.RepresentationBoundsCohomology.BR
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g m => h.2.2.1 (g : G) m, fun g m => h.2.2.2 (g : G) m⟩`.
+-/
 theorem IsLatSeq.res {O G T₂ V A : Type*} [CommRing O] [Group G] [AddCommGroup T₂] [Module O T₂]
     [AddCommGroup V] [Module O V] [AddCommGroup A] [Module O A]
     {ρ₂ : Representation O G T₂} {ρV : Representation O G V} {ρA : Representation O G A}

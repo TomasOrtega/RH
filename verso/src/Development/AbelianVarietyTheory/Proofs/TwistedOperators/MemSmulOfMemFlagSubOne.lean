@@ -16,6 +16,9 @@ open MeasureTheory ValuativeRel Matrix IsLocalRing in
 open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
+/- English proof (translation)
+The claim follows from `mul_inv_cancel₀ q.ne_zero`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.mul_inv_q (q : _root_.GlobalTheory.LatPair.Unif k) :
     (q.1 : k) * q.inv = 1 :=
   mul_inv_cancel₀ q.ne_zero
@@ -25,6 +28,11 @@ open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
 
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.LatPair.gluedLat_one, _root_.GlobalTheory.LatPair.mem_gluedLat]`. Use `exists_congr fun s => and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2, h3⟩`. Conclude with `⟨fun h => h2 (by omega), fun h => h3 (by omega)⟩`.
+
+Introduce and unpack `⟨h2, h3⟩`. Conclude with `⟨fun h => absurd h (by omega), fun h => h2 (by omega), fun h => h3 (by omega)⟩`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.mem_gluedS {L : Submodule 𝒪[k] (n → k)} {f : n → k}
     {y : n ⊕ Fin c → k} :
     y ∈ _root_.GlobalTheory.LatPair.gluedS q c L f ↔ ∃ s : 𝒪[k], y ∘ Sum.inl - s • f ∈ L ∧ ∀ i : Fin c,
@@ -43,6 +51,11 @@ open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.LatPair.gluedS`. Rewrite using `[sup_le_iff, sup_le_iff, Submodule.map_le_iff_le_comap, Submodule.span_singleton_le_iff_mem, Submodule.span_le, and_assoc]`. Use `and_congr Iff.rfl (and_congr Iff.rfl ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`.
+
+Conclude with `h ⟨i.val + 1, by omega, by omega, rfl⟩`. Introduce and unpack `h y ⟨j, hj2, hjc, rfl⟩`. Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Conclude with `h ⟨m, by omega⟩ (by simp only; omega)`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.gluedS_le_iff {L : Submodule 𝒪[k] (n → k)} {f : n → k}
     {M : Submodule 𝒪[k] (n ⊕ Fin c → k)} :
     _root_.GlobalTheory.LatPair.gluedS q c L f ≤ M ↔ (∀ y ∈ L, _root_.GlobalTheory.LatPair.inX k n c y ∈ M) ∧
@@ -65,6 +78,9 @@ open MeasureTheory ValuativeRel Matrix IsLocalRing in
 open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FlagVolumeFiltration.interX`. Use extensionality with `x`. Rewrite using `[Submodule.mem_comap, ← _root_.GlobalTheory.LatPair.gluedLat_one]`. Conclude with `_root_.GlobalTheory.LatPair.inX_mem_gluedLat le_rfl hc`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.interX_gluedS (hc : 1 ≤ c) (L : Submodule 𝒪[k] (n → k))
     (f : n → k) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FlagVolumeFiltration.interX (_root_.GlobalTheory.LatPair.gluedS q c L f) = L := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.FlagVolumeFiltration.interX
@@ -76,6 +92,9 @@ open MeasureTheory ValuativeRel Matrix IsLocalRing in
 open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.LatPair.gluedS`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _))`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.glue_mem_gluedS (L : Submodule 𝒪[k] (n → k)) (f : n → k) :
     q.inv • _root_.GlobalTheory.LatPair.avec k n c 1 +
       _root_.GlobalTheory.LatPair.inX k n c f ∈ _root_.GlobalTheory.LatPair.gluedS q c L f := by
@@ -86,6 +105,9 @@ open MeasureTheory ValuativeRel Matrix IsLocalRing in
 open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
+/- English proof (translation)
+Establish `hg` using `_root_.GlobalTheory.LevelUnfold.glue_mem_gluedS (q := q) (c := c) L f`. Establish `hsplit : q.inv • _root_.GlobalTheory.LatPair.avec k n c 1 + _root_.GlobalTheory.LatPair.inX k n c x = (q.inv • _root_.GlobalTheory.LatPair.avec k n c 1 + _root_.GlobalTheory.LatPair.inX k n c f) + _root_.GlobalTheory.LatPair.inX k n c (x - f)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, Submodule.add_mem_iff_right _ hg, ← _root_.GlobalTheory.LatPair.gluedLat_one, _root_.GlobalTheory.LatPair.inX_mem_gluedLat le_rfl hc]`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.glue_mem_gluedS_iff (hc : 1 ≤ c) {L : Submodule 𝒪[k] (n → k)}
     {f x : n → k} :
     q.inv • _root_.GlobalTheory.LatPair.avec k n c 1 +
@@ -101,6 +123,9 @@ theorem _root_.GlobalTheory.LevelUnfold.glue_mem_gluedS_iff (hc : 1 ≤ c) {L : 
   rw [hsplit, Submodule.add_mem_iff_right _ hg, ← _root_.GlobalTheory.LatPair.gluedLat_one,
     _root_.GlobalTheory.LatPair.inX_mem_gluedLat le_rfl hc]
 
+/- English proof (translation)
+Take `⟨s, -, h⟩` from `mem_gluedS.1 hy`. Break down `Nat.eq_zero_or_pos i.val with hi | hi` into its components or cases. Rewrite using `[(h i).1 hi, ← mul_assoc, mul_inv_q, one_mul]`. Conclude with `s.2`. Conclude with `(h i).2 hi`.
+-/
 theorem mul_coord_mem {L : Submodule 𝒪[k] (n → k)} {f : n → k} {y : n ⊕ Fin c → k} (hy : y ∈ gluedS q c L f)
     (i : Fin c) : (q.1 : k) * y (Sum.inr i) ∈ 𝒪[k] := by
   obtain ⟨s, -, h⟩ := mem_gluedS.1 hy
@@ -113,6 +138,9 @@ open MeasureTheory ValuativeRel Matrix IsLocalRing in
 open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.LatPair.gluedLat_one, ← _root_.GlobalTheory.LatPair.gluedLat_one, _root_.GlobalTheory.LatPair.gluedLat_congr q c 1 h]`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.gluedS_congr {L : Submodule 𝒪[k] (n → k)} {f f' : n → k}
     (h : f - f' ∈ L) : _root_.GlobalTheory.LatPair.gluedS q c L f = _root_.GlobalTheory.LatPair.gluedS q c L f' := by
   rw [← _root_.GlobalTheory.LatPair.gluedLat_one, ← _root_.GlobalTheory.LatPair.gluedLat_one,
@@ -125,6 +153,9 @@ open scoped Pointwise ENNReal in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} {c : ℕ} {q : _root_.GlobalTheory.LatPair.Unif k} in
 variable [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.LatPair.gluedLat_one, ← _root_.GlobalTheory.LatPair.gluedLat_one, _root_.GlobalTheory.LatPair.embX_smul_gluedLat]`.
+-/
 theorem _root_.GlobalTheory.LevelUnfold.embX_smul_gluedS (g : GL n k) (L : Submodule 𝒪[k] (n → k))
     (f : n → k) :
     _root_.GlobalTheory.RootEx.embX c g • _root_.GlobalTheory.LatPair.gluedS q c L f =

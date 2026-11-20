@@ -34,6 +34,13 @@ namespace GlobalTheory.IdemIota
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨b, hb, x, rfl⟩` from `hz`. Establish `e2 : Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E) (b ⊗ₜ[D.host.F] (x : D.host.E)) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q b ⊗ₜ[D.host.F] (x : D.host.E)` using `Algebra.TensorProduct.map_tmul _ _ _ _`. Rewrite using `[e2]`.
+
+Conclude with `GlobalTheory.LFun.InertChart.toCompl_mem h (GlobalTheory.AdelicU.tmul_mem_intLoc (hb q) x)`. Consider the case `zero`. Rewrite using `[map_zero (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E)), map_zero (GlobalTheory.LFun.toCompl h)]`. Conclude with `(w.adicCompletionIntegers D.host.E).zero_mem`. Consider the case `add y y' _ _ h1 h2`.
+
+Rewrite using `[map_add (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E)), map_add (GlobalTheory.LFun.toCompl h)]`. Conclude with `(w.adicCompletionIntegers D.host.E).add_mem _ _ h1 h2`. Consider the case `neg y _ h1`. Rewrite using `[map_neg (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E)), map_neg (GlobalTheory.LFun.toCompl h)]`. Conclude with `(w.adicCompletionIntegers D.host.E).neg_mem _ h1`.
+-/
 theorem toCompl_map_mem {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.FinPl D} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : w.under (𝓞 D.host.F) = q) (z : Af D.host.F ⊗[D.host.F] D.host.E) (hz : z ∈ intAE D) :
     GlobalTheory.LFun.toCompl h (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E) z)
@@ -59,6 +66,11 @@ theorem toCompl_map_mem {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.Sp
       map_neg (GlobalTheory.LFun.toCompl h)]
     exact (w.adicCompletionIntegers D.host.E).neg_mem _ h1
 
+/- English proof (translation)
+Establish `e : GlobalTheory.Core.Rk.SWQ.cw h a = GlobalTheory.LFun.toCompl h (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F q) (AlgHom.id D.host.F D.host.E) (finPart D a))` using `by show GlobalTheory.LFun.toCompl h (GlobalTheory.AdelicU.compFin D.host.F D.host.E q a) = _`. Use `congr 1`. Use `clear ha`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[e]`. Conclude with `toCompl_map_mem h _ ha`.
+-/
 theorem cw_mem_integers {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.FinPl D} {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h : w.under (𝓞 D.host.F) = q) {a : AE D} (ha : finPart D a ∈ intAE D) :
     GlobalTheory.Core.Rk.SWQ.cw h a ∈ w.adicCompletionIntegers D.host.E := by
@@ -74,6 +86,29 @@ theorem cw_mem_integers {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.Sp
   rw [e]
   exact toCompl_map_mem h _ ha
 
+/- English proof (translation)
+Introduce `D P e he ι hι`. Take `⟨-, -, -, -, -, h6, -, -⟩` from `hι`. Establish `hq : P.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)` using `rfl`. Establish `hee : e * e = e` using `he.1.1`. Establish `hec : e * cA D e = 0` using `he.1.2.1`.
+
+Establish `hne : e ≠ 0`. Introduce `h0`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Use `(he.2 x hx0).1 hx` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, map_zero]`.
+
+Conclude with `this (zero_mem _)`. Establish `idem01 : ∀ a : AE D, a * a = a → GlobalTheory.Core.Rk.SWQ.cw hq a = 0 ∨ GlobalTheory.Core.Rk.SWQ.cw hq a = 1` using `fun a ha => IsIdempotentElem.iff_eq_zero_or_one.mp (by show GlobalTheory.Core.Rk.SWQ.cw hq a * GlobalTheory.Core.Rk.SWQ.cw hq a = GlobalTheory.Core.Rk.SWQ.cw hq a; rw [← map_mul, ha])`. Establish `he'` using `GlobalTheory.ExportSeries.LatHalf.isIdemAt_conjPl he`. Establish `hPP : Formalism.L2.DIV.conjPl P ≠ P`. Introduce `hP`.
+
+Rewrite `he'` using `[hP]`. Establish `h1` using `GlobalTheory.Tow.idemAt_unique he' he`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hee]`. Use `nth_rewrite 2 [← h1]`.
+
+Conclude with `hec`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxP, hxP'⟩ : ∃ x ∈ P.asIdeal, x ∉ (Formalism.L2.DIV.conjPl P).asIdeal := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hPP (HeightOneSpectrum.ext (P.isMaximal.eq_of_le (Formalism.L2.DIV.conjPl P).isPrime.ne_top hc)).symm`.
+
+Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hxP' (Formalism.L2.DIV.conjPl P).asIdeal.zero_mem`. Establish `hint : finPart D (cA D e * incA D ((x : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `hc`. Conclude with `hxP' ((he'.2 x hx0).2 hc)`. Establish `hc0 : GlobalTheory.Core.Rk.SWQ.cw hq (cA D e) = 0`.
+
+Establish `hm` using `cw_mem_integers hq hint`. Rewrite `hm` using `[map_mul, GlobalTheory.Core.Rk.SecPar.cw_incA]`. Break down `idem01 (cA D e) (by rw [← map_mul, hee]) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Establish `hv : Valued.v ((algebraMap D.host.E (HeightOneSpectrum.adicCompletion D.host.E P)) ((x : D.host.E))⁻¹) = HeightOneSpectrum.valuation D.host.E P ((x : D.host.E))⁻¹` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _`. Rewrite `hm` using `[h, one_mul, HeightOneSpectrum.mem_adicCompletionIntegers, hv]`. Establish `hv0 : HeightOneSpectrum.valuation D.host.E P (x : D.host.E) ≠ 0` using `by simpa using hx0`. Rewrite `hm` using `[map_inv₀, inv_le_one₀ (zero_lt_iff.mpr hv0), ← not_lt, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hm hxP`.
+
+Establish `he0 : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin (P.under (𝓞 D.host.F)) 1)) = e + cA D e`. Rewrite using `[Formalism.IndefR.Fin.below_of_idemAt he]`. Use `show _ = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (Formalism.IndefR.Fin.sglV _ 1))`. Establish `hb : Formalism.IndefR.Fin.belowPl P = P.under (𝓞 D.host.F)` using `HeightOneSpectrum.ext rfl`. Rewrite using `[hb]`.
+
+Use `congr 2`. Establish `h6e` using `h6 e`. Rewrite `h6e` using `[he0, add_mul, hee, mul_comm (cA D e) e, hec, add_zero, hc0, map_zero, map_zero, add_zero]`. Break down `idem01 e hee with h | h` into its components or cases. Rewrite `h6e` using `[h, map_zero]`.
+
+Conclude with `absurd h6e hne`. Rewrite `h6e` using `[h]`. Conclude with `h6e`.
+-/
 theorem idemAt_eq_iota_one : ∀ (D : D7) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e P →
     ∀ ι : P.adicCompletion D.host.E →+ AE D,
       GlobalTheory.DivPtLocal.IsIotaAt (rfl : P.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)) ι → e = ι 1 := by

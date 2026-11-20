@@ -29,10 +29,20 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {n : ℕ} {emb : ZMod n → (K₀ →ₐ[Qp] LL)}
     {Γ : GalData G Qp LL O} {k : Type} [Field k] [Algebra O k]
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (DFunLike.congr_fun (latRep_twLattice T.L θ) g) x`.
+-/
 theorem latRep_twLat (T : LocLat G Qp LL O) (θ : G →* Oˣ) (hθ : Continuous fun g => algebraMap O LL (θ g)) (g : G)
     (x : ↥T.L.T) : latRep (twLat T θ hθ).L g x = twistRep (latRep T.L) θ g x :=
   LinearMap.congr_fun (DFunLike.congr_fun (latRep_twLattice T.L θ) g) x
 
+/- English proof (translation)
+Set `Z` to `twLat (AdmClosure.prodLoc T T') θ hθ`. Set `u : ↥Z.L.T ≃ₗ[O] (↥(twLat T θ hθ).L.T × ↥(twLat T' θ hθ).L.T)` to `StdAdm.prodSubEquiv T.L.T T'.L.T`. Take `⟨C, r, a, b, hr1, hr2, ha, hb, hab, hz⟩` from `exists_sum_reduction (twLat T θ hθ) (twLat T' θ hθ) Z u (fun _ _ => rfl) A A' q q' h hk h' hk'`. Set `f : LatHom (twLat T θ hθ).L Z.L` to `{ f := LinearMap.inl LL T.V T'.V equiv := fun g x => Prod.ext rfl (map_zero ((twLat T' θ hθ).ρ g)).symm cont := continuous_id.prodMk continuous_const T_le := fun x hx => ⟨hx, Submodule.zero_mem _⟩ }`. Set `g : LatHom (twLat T' θ hθ).L Z.L` to `{ f := LinearMap.inr LL T.V T'.V equiv := fun g x => Prod.ext (map_zero ((twLat T θ hθ).ρ g)).symm rfl cont := continuous_const.prodMk continuous_id T_le := fun x hx => ⟨Submodule.zero_mem _, hx⟩ }`.
+
+Use `⟨C, r, f, g, a, b, hr1, hr2, hab, ?_, fun z hz => ⟨z.1, hz.1, z.2, hz.2, Prod.ext (add_zero _).symm (zero_add _).symm⟩, ha, hb, fun x x' hx => ?_, fun x x' hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Bijective ((LinearMap.inl LL T.V T'.V).coprod (LinearMap.inr LL T.V T'.V))`. Rewrite using `[LinearMap.coprod_inl_inr]`. Conclude with `Function.bijective_id`. Establish `h1 : (u x').1 = x` using `Subtype.ext (congrArg Prod.fst hx)`.
+
+Establish `h2 : (u x').2 = 0` using `Subtype.ext (congrArg Prod.snd hx)`. Rewrite using `[hz, h1, h2, map_zero, map_zero, add_zero]`. Establish `h1 : (u x').1 = 0` using `Subtype.ext (congrArg Prod.fst hx)`. Establish `h2 : (u x').2 = x` using `Subtype.ext (congrArg Prod.snd hx)`. Rewrite using `[hz, h1, h2, map_zero, map_zero, zero_add]`.
+-/
 theorem exists_tw_sum [IsTopologicalRing LL] {lam : O} (T T' : LocLat G Qp LL O) (θ : G →* Oˣ)
     (hθ : Continuous fun g => algebraMap O LL (θ g)) (A A' : Ob k G)
     (q : ↥(twLat T θ hθ).L.T →ₗ[O] (Fin A.m → k)) (q' : ↥(twLat T' θ hθ).L.T →ₗ[O] (Fin A'.m → k))
@@ -76,6 +86,9 @@ theorem exists_tw_sum [IsTopologicalRing LL] {lam : O} (T T' : LocLat G Qp LL O)
     have h2 : (u x').2 = x := Subtype.ext (congrArg Prod.snd hx)
     rw [hz, h1, h2, map_zero, map_zero, zero_add]
 
+/- English proof (translation)
+Take `⟨e₀, he₀⟩` from `exists_ref_equiv Γ hs hk A₀ q₀ h₀.1 hK₀ (fun g x => (congrArg q₀ (latRep_twLat Γ.T₀ _ hθ g x).symm).trans (h₀.2 g x)) ω hω t`. Take `⟨e, he⟩` from `exists_quot_equiv (M := ↥T.L.T) q h.1 hK`. Use `sameSS_twist_residue (π := modRep (latRep T.L) Γ.lam) (π' := piRep fun _ : Fin μ => Γ.refRep t) hs Γ.χ₁⁻¹ e (fun g x => ?_) (LinearEquiv.piCongrRight fun _ => e₀) (fun g x => funext fun j => he₀ g (x j)) (sumFull_sameSS hlam hT)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `(he (twistRep (latRep T.L) Γ.χ₁⁻¹ g x)).trans (((congrArg q (latRep_twLat T _ hθ g x).symm).trans (h.2 g x)).trans (congrArg (A.ρ g) (he x).symm))`.
+-/
 theorem sameSS_base [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] (hlam : Irreducible Γ.lam)
     (hs : Function.Surjective (algebraMap O k)) (hk : ∀ x, algebraMap O k x = 0 ↔ Γ.lam ∣ x)
     (hθ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) {A₀ A : Ob k G}
@@ -94,6 +107,11 @@ theorem sameSS_base [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O L
   exact (he (twistRep (latRep T.L) Γ.χ₁⁻¹ g x)).trans
     (((congrArg q (latRep_twLat T _ hθ g x).symm).trans (h.2 g x)).trans (congrArg (A.ρ g) (he x).symm))
 
+/- English proof (translation)
+Take `⟨-, μ, T, hT, L₂, s, -, hs', hg, -⟩` from `hπ`. Use `⟨μ, T, hT, fun C q hq hK => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_descend (M := ↥T.L.T) hs h0 q hq.1 hK (e.toLinearMap ∘ₗ s)`. Use `⟨a, fun g y => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hq.1 y`.
+
+Establish `h1 : C.ρ g (q x) = q (twistRep (latRep T.L) Γ.χ₁⁻¹ g x)` using `(hq.2 g x).symm.trans (congrArg q (latRep_twLat T _ hθ g x))`. Establish `h2 : s (twistRep (latRep T.L) Γ.χ₁⁻¹ g x) = twistRep π Γ.χ₁⁻¹ g (s x)` using `(map_smul s _ _).trans (congrArg (((Γ.χ₁⁻¹ g : Oˣ) : O) • ·) (hg g x))`. Conclude with `(congrArg a h1).trans ((ha _).trans ((congrArg e h2).trans ((he g _).trans (congrArg (A.ρ g) (ha x).symm))))`. Take `⟨x, hx⟩` from `(e.surjective.comp hs') y`. Conclude with `⟨q x, (ha x).trans hx⟩`.
+-/
 theorem exists_quot_of_admissible (hs : Function.Surjective (algebraMap O k)) (h0 : algebraMap O k Γ.lam = 0)
     (hθ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) {t : ℕ} {U : ZMod n → Multiset ℤ}
     (A : Ob k G) (N : Type) [AddCommGroup N] [Module O N] (π : Representation O G N)
@@ -116,6 +134,11 @@ theorem exists_quot_of_admissible (hs : Function.Surjective (algebraMap O k)) (h
   · obtain ⟨x, hx⟩ := (e.surjective.comp hs') y
     exact ⟨q x, (ha x).trans hx⟩
 
+/- English proof (translation)
+Take `⟨u, -, hu⟩` from `charLattice_equiv hinj (Γ.chi (c + 1))`. Establish `hω' : ω = (Units.map (algebraMap O k : O →* k)).comp Γ.ε` using `MonoidHom.ext fun g => Units.ext (hω g)`. Use `exists_char_reduction hs hk (twLat (charLat Qp hinj (Γ.chi (c + 1)) hc) Γ.χ₁⁻¹ hθ) u (Γ.χ₁⁻¹ * Γ.chi (c + 1)) (fun g a => ?_) _ fun g => ?_` and prove the remaining obligations. Use `(latRep_twLat (charLat Qp hinj (Γ.chi (c + 1)) hc) _ hθ g (u a)).trans ?_` and prove the remaining obligations. Use `(congrArg (((Γ.χ₁⁻¹ g : Oˣ) : O) • ·) (hu g a).symm).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((Γ.χ₁⁻¹ g : Oˣ) : O) • u (((Γ.chi (c + 1) g : Oˣ) : O) • a) = (((Γ.χ₁⁻¹ g * Γ.chi (c + 1) g : Oˣ) : O)) • u a`. Rewrite using `[map_smul, smul_smul, Units.val_mul]`. Rewrite using `[hω']`. Simplify using `[GalData.chi]`.
+-/
 theorem exists_chi_reduction [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (hs : Function.Surjective (algebraMap O k)) (hk : ∀ x, algebraMap O k x = 0 ↔ Γ.lam ∣ x)
     (hθ : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)) (c : ℕ)
@@ -134,6 +157,9 @@ theorem exists_chi_reduction [IsTopologicalRing LL] (hinj : Function.Injective (
   · rw [hω']
     simp [GalData.chi]
 
+/- English proof (translation)
+Take `⟨u, -, hu⟩` from `charLattice_equiv hinj Γ.ε`. Use `exists_char_reduction hs hk (charLat Qp hinj Γ.ε hc) u Γ.ε (fun g a => ?_) _ fun g => ?_` and prove the remaining obligations. Conclude with `(hu g a).symm.trans (map_smul u _ _)`. Rewrite using `[neg_neg, zpow_one, hω]`.
+-/
 theorem exists_eps_reduction [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (hs : Function.Surjective (algebraMap O k)) (hk : ∀ x, algebraMap O k x = 0 ↔ Γ.lam ∣ x)
     (hc : Continuous fun g => algebraMap O LL (Γ.ε g))
@@ -167,6 +193,9 @@ def Red (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m →
 abbrev tw (hθ : IsCrysChar PD emb Γ.χ₁⁻¹ fun i => -D.w i) (T : LocLat G Qp LL O) : LocLat G Qp LL O :=
   twLat T Γ.χ₁⁻¹ hθ.1
 
+/- English proof (translation)
+The claim follows from `(htw T U _ _ h hθ).1`.
+-/
 theorem crys_tw (htw : StdAdm.TwistRule PD emb O) (hθ : IsCrysChar PD emb Γ.χ₁⁻¹ fun i => -D.w i)
     {T : LocLat G Qp LL O} {U : ZMod n → Multiset ℤ} (h : CrysWith PD emb T.ρ U) :
     CrysWith PD emb (tw hθ T).ρ (fun i => (U i).map (· + -D.w i)) :=
@@ -213,6 +242,11 @@ set_option linter.unusedSectionVars false
 
 include hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd
 
+/- English proof (translation)
+Use `StdAdm.finite_lat T` as an intermediate fact. Use `T.L.free` as an intermediate fact. Take `⟨A, q, hm, hq, hK, hg⟩` from `exists_reduction hk.1 hk.2 (latRep T.L)`. Take `⟨N, hN, -⟩` from `hex T A q U ⟨hq, hg⟩ hK h`. Use `⟨A, q, N, hm.trans ?_, ⟨hq, hg⟩, hK, hN⟩` and prove the remaining obligations.
+
+Establish `: Submodule.IsLattice LL T.L.T` using `⟨T.L.fg, T.L.span⟩`. Rewrite using `[Module.finrank, Module.finrank, Submodule.IsLattice.rank' LL]`.
+-/
 theorem exists_red {T : LocLat G Qp LL O} {U : ZMod n → Multiset ℤ} (h : CrysWith PD emb T.ρ U) :
     ∃ (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)) (N : Lats k n A.m),
       A.m = Module.finrank LL T.V ∧ Red Γ RN T A q N := by
@@ -224,6 +258,11 @@ theorem exists_red {T : LocLat G Qp LL O} {U : ZMod n → Multiset ℤ} (h : Cry
   have : Submodule.IsLattice LL T.L.T := ⟨T.L.fg, T.L.span⟩
   rw [Module.finrank, Module.finrank, Submodule.IsLattice.rank' LL]
 
+/- English proof (translation)
+Take `⟨C, r, f, g, a, b, hr1, hr2, hab, h1, h2, ha, hb, h3, h4⟩` from `exists_tw_sum T T' _ hθ.1 A A' q q' hr.1 hr.2.1 hr'.1 hr'.2.1`. Establish `hZ` using `crys_tw htw hθ (T := AdmClosure.prodLoc T T') (hsum T T' (AdmClosure.prodLoc T T') _ _ (LinearEquiv.refl _ _) (fun _ _ => rfl) h h')`. Take `⟨L, hL, -⟩` from `hex (tw hθ (AdmClosure.prodLoc T T')) C r _ hr1 hr2 hZ`. Establish `key` using `hadd (tw hθ T) A q _ hr.1 hr.2.1 (crys_tw htw hθ h) (tw hθ T') A' q' _ hr'.1 hr'.2.1 (crys_tw htw hθ h') (tw hθ (AdmClosure.prodLoc T T')) C r _ hr1 hr2 hZ f g a b h1 h2 ha hb h3 h4 N N' L hr.2.2 hr'.2.2 hL`. Take `rfl : L = fun i => F.push A C a N i ⊔ F.push A' C b N' i` from `funext key`.
+
+Conclude with `⟨C, r, a, b, ha, hb, hab, hr1, hr2, hL⟩`.
+-/
 theorem exists_red_sum {T T' : LocLat G Qp LL O} {U U' : ZMod n → Multiset ℤ} (h : CrysWith PD emb T.ρ U)
     (h' : CrysWith PD emb T'.ρ U') {A A' : Ob k G} {q q' N N'} (hr : Red Γ RN (tw hθ T) A q N)
     (hr' : Red Γ RN (tw hθ T') A' q' N') :
@@ -240,6 +279,13 @@ theorem exists_red_sum {T T' : LocLat G Qp LL O} {U U' : ZMod n → Multiset ℤ
   obtain rfl : L = fun i => F.push A C a N i ⊔ F.push A' C b N' i := funext key
   exact ⟨C, r, a, b, ha, hb, hab, hr1, hr2, hL⟩
 
+/- English proof (translation)
+Take `⟨μ, T, q, hT, hr⟩` from `h`. Establish `key` using `habc (tw hθ T) A q _ hr.1 hr.2.1 (crys_tw htw hθ (sumFull_crys hsum hT)) N hr.2.2 (fun i => (D.w i).toNat) (fun i => (D.wst i).toNat) (fun i u hu => by`. Take `⟨u', hu', rfl⟩` from `Multiset.mem_map.1 hu`. Use `D.mem_Ut i (Multiset.mem_of_mem_nsmul hu')` as an intermediate fact. Use `w_range D i` as an intermediate fact.
+
+Simplify using `only [TopData.wst]`. Use the proof step `omega)`. Establish `e1 : (fun i => (((D.w i).toNat : ℕ) : ℤ)) = D.w` using `funext fun i => by`. Use `w_range D i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `e2 : (fun i => (((D.wst i).toNat : ℕ) : ℤ)) = D.wst` using `funext fun i => by`. Use `w_range D i` as an intermediate fact. Simplify using `only [TopData.wst]`. Use linear arithmetic over natural numbers and integers. Rewrite `key` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem base_abc {A : Ob k G} {N} (h : Base RN hθ A N) : ABC (F.D A) D.w D.wst N := by
   obtain ⟨μ, T, q, hT, hr⟩ := h
   have key := habc (tw hθ T) A q _ hr.1 hr.2.1
@@ -259,6 +305,9 @@ theorem base_abc {A : Ob k G} {N} (h : Base RN hθ A N) : ABC (F.D A) D.w D.wst 
     omega
   rwa [e1, e2] at key
 
+/- English proof (translation)
+Take `⟨μ, T, q, hT, hr⟩` from `h`. Use `⟨μ, ?_, fun i x => ?_⟩` and prove the remaining obligations. Conclude with `sameSS_base hlam hk.1 hk.2 hθ.1 h₀.1 h₀.2.1 ω hω hT hr.1 hr.2.1`. Rewrite using `[hsen (tw hθ T) A q _ hr.1 hr.2.1 (crys_tw htw hθ (sumFull_crys hsum hT)) N hr.2.2 i x, resCount_nsmul_map]`.
+-/
 theorem base_sen {A₀ : Ob k G} {q₀ N₀} (h₀ : Red Γ RN (tw hθ Γ.T₀) A₀ q₀ N₀) (ω : G →* kˣ)
     (hω : ∀ g, (ω g : k) = algebraMap O k (Γ.ε g)) {A : Ob k G} {N} (h : Base RN hθ A N) :
     ∃ μ : ℕ, SameSS A.ρ (piRep fun _ : Fin μ => refSum A₀ ω D.t) ∧
@@ -269,6 +318,9 @@ theorem base_sen {A₀ : Ob k G} {q₀ N₀} (h₀ : Red Γ RN (tw hθ Γ.T₀) 
   · rw [hsen (tw hθ T) A q _ hr.1 hr.2.1
       (crys_tw htw hθ (sumFull_crys hsum hT)) N hr.2.2 i x, resCount_nsmul_map]
 
+/- English proof (translation)
+Take `⟨μ, T, q, hT, hr⟩` from `h`. Take `⟨μ', T', q', hT', hr'⟩` from `h'`. Take `⟨C, r, a, b, ha, hb, hab, hr⟩` from `exists_red_sum hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (sumFull_crys hsum hT) (sumFull_crys hsum hT') hr hr'`. Conclude with `⟨C, a, b, ha, hb, hab, μ + μ', _, r, AdmClosure.sumFull_prod hT hT', hr⟩`.
+-/
 theorem base_sum {A A' : Ob k G} {N N'} (h : Base RN hθ A N) (h' : Base RN hθ A' N') :
     ∃ C i j, IsHom A C i ∧ IsHom A' C j ∧ Function.Bijective (i.coprod j) ∧
       Base RN hθ C (fun a => F.push A C i N a ⊔ F.push A' C j N' a) := by
@@ -278,6 +330,11 @@ theorem base_sum {A A' : Ob k G} {N N'} (h : Base RN hθ A N) (h' : Base RN hθ 
     exists_red_sum hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (sumFull_crys hsum hT) (sumFull_crys hsum hT') hr hr'
   exact ⟨C, a, b, ha, hb, hab, μ + μ', _, r, AdmClosure.sumFull_prod hT hT', hr⟩
 
+/- English proof (translation)
+Take `⟨μ, T, q, hT, hr⟩` from `h`. Establish `hw` using `w_range D i`. Establish `key` using `hpoly (tw hθ T) A q _ hr.1 hr.2.1 (crys_tw htw hθ (sumFull_crys hsum hT)) N hr.2.2 i (D.wst i + 1).toNat (fun u hu a ha hd => by`. Take `⟨u', hu', rfl⟩` from `Multiset.mem_map.1 hu`. Conclude with `eq_of_dvd D hT1 hT3 i hi u' (Multiset.mem_of_mem_nsmul hu') a (by omega) hd)`.
+
+Establish `e : (((D.wst i + 1).toNat : ℕ) : ℤ) = D.wst i + 1`. Simplify using `only [TopData.wst]`. Use linear arithmetic over natural numbers and integers. Rewrite `key` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem base_e (hT1 : D.T1 l) (hT3 : D.T3 l) {A : Ob k G} {N} (h : Base RN hθ A N) (i : ZMod n) (hi : D.ty i = LType.Bd) :
     EPoly ((F.D A).γ i) (N i) (D.wst i + 1) := by
   obtain ⟨μ, T, q, hT, hr⟩ := h
@@ -292,6 +349,9 @@ theorem base_e (hT1 : D.T1 l) (hT3 : D.T3 l) {A : Ob k G} {N} (h : Base RN hθ A
     omega
   rwa [e] at key
 
+/- English proof (translation)
+Establish `key` using `habc T _ q _ hr.1 hr.2.1 h N hr.2.2 (fun _ => (-e).toNat) (fun _ => e.toNat) (fun i u hu => by`. Rewrite using `[Multiset.mem_singleton.1 hu]`. Use the proof step `omega)`. Conclude with `⟨key.1 i, key.2.2 i, hrk T _ q _ hr.1 hr.2.1 h N hr.2.2 (fun _ => e) rfl (fun _ => rfl) i, hsen T _ q _ hr.1 hr.2.1 h N hr.2.2 i⟩`.
+-/
 theorem char_props {T : LocLat G Qp LL O} {e : ℤ} (h : CrysWith PD emb T.ρ fun _ => {e}) {ψ : G →* kˣ} {q N}
     (hr : Red Γ RN T (chr ψ) q N) (i : ZMod n) : IsLat (N i) ∧ CondC ((F.D (chr ψ)).γ i) (N i) ∧
       pull ((F.D (chr ψ)).φ i) (N (i - 1)) = sh e (N i) ∧
@@ -304,6 +364,9 @@ theorem char_props {T : LocLat G Qp LL O} {e : ℤ} (h : CrysWith PD emb T.ρ fu
     hrk T _ q _ hr.1 hr.2.1 h N hr.2.2 (fun _ => e) rfl (fun _ => rfl) i,
     hsen T _ q _ hr.1 hr.2.1 h N hr.2.2 i⟩
 
+/- English proof (translation)
+Take `⟨μ, T, hT, h⟩` from `exists_quot_of_admissible hk.1 ((hk.2 _).2 dvd_rfl) hθ.1 A N π e hπ he`. Take `⟨C, q, Nb, -, hr⟩` from `exists_red hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (crys_tw htw hθ (sumFull_crys hsum hT))`. Take `⟨a, ha, hs⟩` from `h C q hr.1 hr.2.1`. Conclude with `⟨_, C, Nb, C, LinearMap.id, a, ⟨μ, T, q, hT, hr⟩, fun _ _ => rfl, Function.injective_id, ha, hs, rfl⟩`.
+-/
 theorem exists_model (A : Ob k G) (N : Type) [AddCommGroup N] [Module O N] (π : Representation O G N)
     (e : N ≃ₗ[O] (Fin A.m → k)) (hπ : Admissible PD emb Γ D.t D.Ut π) (he : ∀ σ x, e (twistRep π Γ.χ₁⁻¹ σ x) = A.ρ σ (e x)) :
     ∃ L, IsModel F (Base RN hθ) A L := by
@@ -312,6 +375,21 @@ theorem exists_model (A : Ob k G) (N : Type) [AddCommGroup N] [Module O N] (π :
   obtain ⟨a, ha, hs⟩ := h C q hr.1 hr.2.1
   exact ⟨_, C, Nb, C, LinearMap.id, a, ⟨μ, T, q, hT, hr⟩, fun _ _ => rfl, Function.injective_id, ha, hs, rfl⟩
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective O LL`. Establish `hχ` using `StdAdm.isCrysChar_chi hinj htw hD.2.2.1 hε`. Set `X : ℕ → LocLat G Qp LL O` to `fun c => charLat Qp hinj _ (hχ c).1`. Establish `hX₀ : ∀ c : ℕ, CrysWith PD emb (X c).ρ fun i => {D.w i + c}` using `fun c => (hχ c).2`. Establish `hX : ∀ c : ℕ, CrysWith PD emb (tw hθ (X c)).ρ fun _ => {(c : ℤ)}` using `fun c => by`.
+
+Establish `h` using `crys_tw htw hθ (T := X c) (hX₀ c)`. Simplify using `using h`. Establish `hXr : ∀ c : ℕ, ∃ q N, Red Γ RN (tw hθ (X c)) (chr (ω ^ (-(c : ℤ)))) q N` using `fun c => by`. Take `⟨q, hq, hK⟩` from `exists_chi_reduction (Qp := Qp) hinj hk.1 hk.2 hθ.1 c (hχ c).1 ω hω`. Take `⟨N, hN, -⟩` from `hex (tw hθ (X c)) (chr (ω ^ (-(c : ℤ)))) q _ hq hK (hX c)`.
+
+Conclude with `⟨q, N, hq, hK, hN⟩`. Use `choose q N hr using hXr`. Take `⟨T, e, hT, ⟨C, r, L, hL, t0, t1⟩, he⟩` from `exists_sum_ind hinj hsum hD.2.1 hχ (fun j T => ∃ C r L, Red Γ RN (tw hθ T) C r L ∧ IsTrace F A₀ N₀ C L ∧ ∀ c : ℕ, c < j → IsTrace F (chr (ω ^ (-(c : ℤ)))) (N c) C L) ⟨A₀, q₀, N₀, h₀, IsTrace.refl F A₀ (hobj _ _ _ h₀.1) N₀, fun c hc => absurd hc (Nat.not_lt_zero c)⟩ (fun j T hT ⟨C …`. Take `⟨C', r', a, b, ha, hb, hab, hL'⟩` from `exists_red_sum hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (T := T) (T' := X j) hT (hX₀ j) hL (hr j)`. Establish `hC'` using `hobj _ _ _ hL'.1`.
+
+Take `⟨s0, s1⟩` from `isTrace_sum F _ _ C' a b hC' ha hb hab L (N j)`. Use `⟨C', r', _, hL', t0.trans hC' s0, fun c hc => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.1 hc with hc | rfl` into its components or cases. Conclude with `(t1 c hc).trans hC' s0`. Conclude with `s1) D.t`.
+
+Establish `hB : Base RN hθ C L` using `⟨1, T, r, (StdAdm.full_of_equiv hlam T e hT he).sumFull, hL⟩`. Establish `hC'` using `hobj _ _ _ hL.1`. Use `⟨t0.isModel hC' hB, fun e => ?_⟩` and prove the remaining obligations. Break down `le_or_gt 0 e with he | he` into its components or cases. Take `⟨c, rfl⟩` from `Int.eq_ofNat_of_zero_le he`.
+
+Conclude with `⟨N c, fun _ => ⟨hobj _ _ _ (hr c).1, char_props hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (hX c) (hr c)⟩, fun _ hc => (t1 c (by exact_mod_cast hc)).isModel hC' hB⟩`. Take `⟨q', hq, hK⟩` from `exists_eps_reduction (Qp := Qp) hinj hk.1 hk.2 hε.1 ω hω`. Set `Y : LocLat G Qp LL O` to `charLat Qp hinj _ hε.1`. Establish `hY : CrysWith PD emb Y.ρ fun _ => {-1}` using `hε.2`. Take `⟨N', hN, -⟩` from `hex Y (chr (ω ^ (-(-1 : ℤ)))) q' _ hq hK hY`.
+
+Use `⟨N', fun h => ?_, fun h => absurd h (not_le.2 he)⟩` and prove the remaining obligations. Take `rfl : e = -1` from `by omega`. Conclude with `⟨hobj Y _ _ hq, char_props hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (T := Y) hY ⟨hq, hK, hN⟩⟩`.
+-/
 theorem exists_std (hD : IsTopGal PD emb D Γ) (hε : IsCrysChar PD emb Γ.ε fun _ => -1)
     {A₀ : Ob k G} {q₀ N₀} (h₀ : Red Γ RN (tw hθ Γ.T₀) A₀ q₀ N₀) (ω : G →* kˣ)
     (hω : ∀ g, (ω g : k) = algebraMap O k (Γ.ε g)) :
@@ -360,6 +438,11 @@ theorem exists_std (hD : IsTopGal PD emb D Γ) (hε : IsCrysChar PD emb Γ.ε fu
     obtain rfl : e = -1 := by omega
     exact ⟨hobj Y _ _ hq, char_props hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (T := Y) hY ⟨hq, hK, hN⟩⟩
 
+/- English proof (translation)
+Take `⟨A₀, q₀, N₀, hm, h₀⟩` from `exists_red hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd (crys_tw htw hθ hD.2.1)`. Set `ω : G →* kˣ` to `(Units.map (algebraMap O k : O →* k)).comp Γ.ε`. Establish `hω : ∀ g, (ω g : k) = algebraMap O k (Γ.ε g)` using `fun _ => rfl`. Take `⟨hs, hN⟩` from `exists_std hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd hD hε h₀ ω hω`. Use `choose N hN hM using hN`.
+
+Use `⟨{ T := A₀ T_m := hm.trans hD.1 ω := ω ω_ne := hne ω hω Base := Base RN hθ base_obj := fun A N ⟨_, _, _, _, h⟩ => hobj _ _ _ h.1 base_abc := fun A N h => base_abc hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd h base_sen := fun A N h => base_sen hθ hk hlam hsum htw hobj he …` and prove the remaining obligations. Establish `h` using `resCount_nsmul_map 1 (D.U i) (D.w i) x`. Rewrite `h` using `[one_nsmul, one_mul]`. Rewrite using `[hsen (tw hθ Γ.T₀) A₀ q₀ _ h₀.1 h₀.2.1 (crys_tw htw hθ hD.2.1) N₀ h₀.2.2 i x, h]`.
+-/
 theorem exists_modTh [Fact l.Prime] [CharP k l] [NeZero n] (hD : IsTopGal PD emb D Γ)
     (hε : IsCrysChar PD emb Γ.ε fun _ => -1)
     (hne : ∀ ω : G →* kˣ, (∀ g, (ω g : k) = algebraMap O k (Γ.ε g)) → ∀ e : ℕ, 0 < e → e + 1 < l → ω ^ e ≠ 1) :
@@ -395,6 +478,9 @@ theorem exists_modTh [Fact l.Prime] [CharP k l] [NeZero n] (hD : IsTopGal PD emb
   rw [hsen (tw hθ Γ.T₀) A₀ q₀ _ h₀.1 h₀.2.1
     (crys_tw htw hθ hD.2.1) N₀ h₀.2.2 i x, h]
 
+/- English proof (translation)
+Take `⟨M, h1, ⟨q, hq, hK⟩, h3⟩` from `exists_modTh hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd hD hε hne`. Use `⟨M, h1, ⟨q, hq.1, hK, fun g x => (congrArg q (latRep_twLat Γ.T₀ _ hθ.1 g x).symm).trans (hq.2 g x)⟩, fun A N _ _ π e hπ he => ?_⟩` and prove the remaining obligations. Establish `h` using `exists_model hθ hk hlam hsum htw hobj hex habc hsen hpoly hrk hadd A N π e hπ he`. Rewrite `h` using `[← h3]`. Then use the resulting hypothesis.
+-/
 theorem exists_real [Fact l.Prime] [CharP k l] [NeZero n] (hD : IsTopGal PD emb D Γ)
     (hε : IsCrysChar PD emb Γ.ε fun _ => -1)
     (hne : ∀ ω : G →* kˣ, (∀ g, (ω g : k) = algebraMap O k (Γ.ε g)) → ∀ e : ℕ, 0 < e → e + 1 < l → ω ^ e ≠ 1) :

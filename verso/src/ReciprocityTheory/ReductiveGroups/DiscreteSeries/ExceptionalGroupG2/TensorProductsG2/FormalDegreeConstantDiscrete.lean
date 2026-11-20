@@ -9,6 +9,9 @@ open MeasureTheory
 
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 
+/- English proof (translation)
+The claim follows from `zuckG`.
+-/
 theorem zuckerman_tensor_exists :
     ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),
@@ -16,6 +19,9 @@ theorem zuckerman_tensor_exists :
         ∃ X : PI.ZuckTensor.TensorDS n ε μ H σ, ∀ s, s ∈ X.Sm ↔ PI.UpqRep.IsHCParam (μ + Pi.single s 1) :=
   zuckG
 
+/- English proof (translation)
+The claim follows from `zuckDualG`.
+-/
 theorem zuckerman_dual_tensor_exists :
     ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
       [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),
@@ -29,6 +35,9 @@ section FdCons
 
 open ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+The claim follows from `fdCons_muG n ε`.
+-/
 theorem formal_degree_constant_measure (n : ℕ) (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧
     ∀ (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H),

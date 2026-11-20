@@ -36,12 +36,18 @@ abbrev Pb : Type := SemidirectProduct (Multiplicative (Mt L n r)) (Gm L n) (act 
 def blk (M : Matrix (Fin n) (Fin n) (𝓞 L)) (B : Mt L n r) : Matrix (Fin (n + r)) (Fin (n + r)) (𝓞 L) :=
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks M B 0 1)
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[add_comm]`.
+-/
 theorem blk_mul (M M' : Matrix (Fin n) (Fin n) (𝓞 L)) (B B' : Mt L n r) :
     blk L n r M B * blk L n r M' B' = blk L n r (M * M') (B + M * B') := by
   unfold blk
   rw [Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   simp [add_comm]
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[Matrix.fromBlocks_one]`. Simplify using the standard rewrite rules.
+-/
 theorem blk_one : blk L n r 1 0 = 1 := by
   unfold blk
   rw [Matrix.fromBlocks_one]

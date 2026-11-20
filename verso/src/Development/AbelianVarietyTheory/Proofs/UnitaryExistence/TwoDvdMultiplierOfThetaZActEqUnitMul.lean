@@ -13,6 +13,13 @@ namespace GlobalTheory
 
 open Complex Matrix NumberField Filter Topology in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, t w ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `ht0 (funext hne)`. Establish `hU : ∀ᶠ y in 𝓝 w, f y = 0` using `by filter_upwards [ht.continuousAt.eventually_ne hw] with y hy`.
+
+Conclude with `(mul_eq_zero.mp (h y)).resolve_right hy`. Establish `hc : Continuous fun s : ℂ => w + s • (z - w)` using `by fun_prop`. Establish `hlim : Tendsto (fun s : ℂ => w + s • (z - w)) (𝓝 0) (𝓝 w)`. Simplify using `using hc.tendsto 0`. Establish `hd : Differentiable ℂ fun s : ℂ => f (w + s • (z - w))` using `hf.comp ((differentiable_const _).add (differentiable_id.smul_const _))`.
+
+Establish `h0 : (fun s : ℂ => f (w + s • (z - w))) =ᶠ[𝓝 0] 0` using `by filter_upwards [hlim.eventually hU] with s hs`. Simplify using `using hs`. Establish `han : AnalyticOnNhd ℂ (fun s : ℂ => f (w + s • (z - w))) Set.univ` using `fun s _ => hd.analyticAt s`. Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) h0 (Set.mem_univ 1)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem _root_.GlobalTheory.entire_eq_zero_of_mul_continuous_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {f t : E → ℂ} (hf : Differentiable ℂ f) (ht : Continuous t) (ht0 : t ≠ 0)
     (h : ∀ z, f z * t z = 0) (z : E) : f z = 0 := by
@@ -38,6 +45,17 @@ theorem _root_.GlobalTheory.entire_eq_zero_of_mul_continuous_eq_zero {E : Type*}
   simpa using this
 
 open Complex Matrix NumberField Filter Topology in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.PTheta.SiegelH at hτ`. Take `⟨-, hY⟩` from `hτ`. Use `set Y : Matrix (Fin g) (Fin g) ℝ := τ.map Complex.im with hYdef`. Establish `hYu : IsUnit Y.det` using `isUnit_iff_ne_zero.mpr hY.det_pos.ne'`. Rewrite using `[eq_top_iff]`.
+
+Introduce `v _`. Use `set a : Fin g → ℝ := Y⁻¹ *ᵥ fun i => (v i).im`. Use `set u : Fin g → ℝ := (fun i => (v i).re) - (τ.map Complex.re) *ᵥ a`. Establish `hYa : Y *ᵥ a = fun i => (v i).im`. Simplify using `only [a, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hYu, Matrix.one_mulVec]`.
+
+Establish `hv : v = ∑ j, a j • (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec (Pi.single j 1) + _root_.ReciprocityTheory.PTheta.ofIntVec 0) + ∑ j, u j • (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec 0 + _root_.ReciprocityTheory.PTheta.ofIntVec (Pi.single j 1))`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun hYa i`. Simplify using `only [Matrix.mulVec, dotProduct, Y, Matrix.map_apply] at hi`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using `[Finset.sum_apply, Matrix.mulVec, dotProduct, _root_.ReciprocityTheory.PTheta.ofIntVec, Pi.single_apply, u]`. Rewrite using `[Finset.sum_congr rfl fun x _ => mul_comm (a x) _]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Finset.sum_apply, Matrix.mulVec, dotProduct, _root_.ReciprocityTheory.PTheta.ofIntVec, Pi.single_apply, u]`. Rewrite using `[← hi]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _`. Rewrite using `[hv]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨(Pi.single j 1, 0), rfl⟩`. Conclude with `Submodule.subset_span ⟨(0, Pi.single j 1), rfl⟩`.
+-/
 private theorem span_real_period_lattice_full {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g)) :
     Submodule.span ℝ (Set.range fun p : (Fin g → ℤ) × (Fin g → ℤ) =>
@@ -72,6 +90,17 @@ private theorem span_real_period_lattice_full {g : ℕ} {τ : Matrix (Fin g) (Fi
 
 open Complex Matrix NumberField Filter Topology in
 
+/- English proof (translation)
+Establish `hsq : ∀ z w, σ z ^ 2 = σ w ^ 2` using `_root_.GlobalTheory.entire_apply_eq_of_periodic_of_span_real (F := fun z => σ z ^ 2) (hσ.pow 2) (span_real_period_lattice_full hτ) (by`. Introduce and unpack `x _ ⟨⟨n, n'⟩, rfl⟩`. Simplify using `only`. Rewrite using `[← add_assoc, h, mul_pow, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.eC_pow, show ((2 : ℕ) : ℂ) * ((N n n' : ℂ) / 2) = ((N n n' : ℤ) : ℂ) by push_cast; ring, _root_.ReciprocityTheory.PTheta.eC_int, one_mul])`. Establish `hconst : ∀ z, σ z - σ 0 = 0`.
+
+Use `_root_.GlobalTheory.entire_eq_zero_of_mul_continuous_eq_zero (t := fun z => σ z + σ 0) (hσ.sub_const _) (hσ.continuous.add continuous_const) ?_ ?_` and prove the remaining obligations. Introduce `ht`. Use `congrFun ht 0` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Conclude with `h0 (by linear_combination this / 2)`.
+
+Introduce `z`. Use `hsq z 0` as an intermediate fact. Take the linear combination `this`. Establish `he : _root_.ReciprocityTheory.PTheta.eC ((N m m' : ℂ) / 2) = 1`. Establish `h1` using `h m m' 0`.
+
+Rewrite `h1` using `[zero_add, sub_eq_zero.mp (hconst _)]`. Establish `h2 : (_root_.ReciprocityTheory.PTheta.eC ((N m m' : ℂ) / 2) - 1) * σ 0 = 0` using `by linear_combination -h1`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp h2).resolve_right h0)`. Establish `hz` using `_root_.GlobalTheory.intCast_zmod_eq_of_eC_eq (N := 2) two_pos (p := N m m') (q := 0) (by rw [show ((N m m' : ℤ) : ℂ) / ((2 : ℕ) : ℂ) = (N m m' : ℂ) / 2 by norm_num, he]`. Simplify using `[_root_.ReciprocityTheory.PTheta.eC_zero])`.
+
+Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ 2).mp (by simpa using hz)`.
+-/
 theorem _root_.GlobalTheory.two_dvd_of_entire_sign_periodic {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g)) {σ : (Fin g → ℂ) → ℂ} (hσ : Differentiable ℂ σ) (h0 : σ 0 ≠ 0)
     {N : (Fin g → ℤ) → (Fin g → ℤ) → ℤ}
@@ -112,6 +141,9 @@ variable {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ} {τ : M
 end Transform
 
 open Complex Matrix NumberField Filter Topology in
+/- English proof (translation)
+Establish `e : (τ * Aᵀ + Bᵀ) * D - (τ * Cᵀ + Dᵀ) * B = τ * (-(Cᵀ * B - Aᵀ * D)) - (Dᵀ * B - Bᵀ * D)`. Simplify using `only [Matrix.mul_sub, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, r2, r4, neg_neg, Matrix.mul_one, sub_zero]`.
+-/
 private theorem symplectic_block_combination_eq {g : ℕ} (A B C D τ : Matrix (Fin g) (Fin g) ℂ)
     (r2 : Cᵀ * B - Aᵀ * D = -1) (r4 : Dᵀ * B - Bᵀ * D = 0) :
     (τ * Aᵀ + Bᵀ) * D - (τ * Cᵀ + Dᵀ) * B = τ := by
@@ -121,6 +153,9 @@ private theorem symplectic_block_combination_eq {g : ℕ} (A B C D τ : Matrix (
   rw [e, r2, r4, neg_neg, Matrix.mul_one, sub_zero]
 
 open Complex Matrix NumberField Filter Topology in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec, F2, ← F1]`. Simplify using `only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem mulVec_lattice_translate_eq {g : ℕ} (A B C D τ τ' Mi : Matrix (Fin g) (Fin g) ℂ)
     (F1 : A - τ' * C = Mi) (F2 : Mi * τ = τ' * D - B) (z u v : Fin g → ℂ) :
     Mi *ᵥ (z + τ *ᵥ u + v) = Mi *ᵥ z + τ' *ᵥ (D *ᵥ u - C *ᵥ v) + (A *ᵥ v - B *ᵥ u) := by
@@ -129,6 +164,15 @@ private theorem mulVec_lattice_translate_eq {g : ℕ} (A B C D τ τ' Mi : Matri
   abel
 
 open Complex Matrix NumberField Filter Topology in
+/- English proof (translation)
+Use `set l := τ *ᵥ u + v with hl`. Establish `hSl : (M⁻¹ * C) *ᵥ l = u - M⁻¹ *ᵥ q`. Rewrite using `[← Matrix.mulVec_mulVec, hC, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hM, Matrix.one_mulVec]`. Establish `hsymm : ∀ a b : Fin g → ℂ, a ⬝ᵥ (M⁻¹ * C) *ᵥ b = b ⬝ᵥ (M⁻¹ * C) *ᵥ a`. Introduce `a b`.
+
+Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hS, dotProduct_comm]`. Establish `htr : ∀ a b : Fin g → ℂ, a ⬝ᵥ M⁻¹ *ᵥ b = (M⁻¹ᵀ *ᵥ a) ⬝ᵥ b`. Introduce `a b`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`. Establish `hτu : l ⬝ᵥ u = u ⬝ᵥ τ *ᵥ u + u ⬝ᵥ v`.
+
+Rewrite using `[hl, add_dotProduct, dotProduct_comm v u, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, hτ]`. Rewrite using `[dotProduct_comm]`. Establish `e1 : ∀ a b : Fin g → ℂ, (a + b) ⬝ᵥ (M⁻¹ * C) *ᵥ (a + b) = a ⬝ᵥ (M⁻¹ * C) *ᵥ a + 2 * (b ⬝ᵥ (M⁻¹ * C) *ᵥ a) + b ⬝ᵥ (M⁻¹ * C) *ᵥ b`. Introduce `a b`. Rewrite using `[Matrix.mulVec_add, dotProduct_add, add_dotProduct, add_dotProduct, hsymm a b]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[add_assoc z, ← hl]`. Use `clear_value l`. Rewrite using `[e1 z l, hsymm l z, hSl, dotProduct_sub, dotProduct_sub, htr, htr, hL, hτu, add_dotProduct, dotProduct_comm z u, dotProduct_comm (M⁻¹ᵀ *ᵥ z) q, dotProduct_comm (τ' *ᵥ q) q, dotProduct_comm q' q]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem quadratic_lattice_translate_eq {g : ℕ} (C τ τ' M : Matrix (Fin g) (Fin g) ℂ) (hM : IsUnit M.det)
     (hτ : τᵀ = τ) (hS : (M⁻¹ * C)ᵀ = M⁻¹ * C) (z u v q q' : Fin g → ℂ)
     (hC : C *ᵥ (τ *ᵥ u + v) = M *ᵥ u - q)
@@ -162,6 +206,65 @@ private theorem quadratic_lattice_translate_eq {g : ℕ} (C τ τ' M : Matrix (F
 
 open Complex Matrix NumberField Filter Topology in
 
+/- English proof (translation)
+Introduce `g γ hγ h8 c n n' hc _hθ τ hτ ρ hρ hρ0 hrel`. Take `⟨r1, r2, r3, r4⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.sp_rel hγ`. Use `set A := (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat γ).toBlocks₁₁ with hA`. Use `set B := (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat γ).toBlocks₁₂ with hB`. Use `set C := (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat γ).toBlocks₂₁ with hC`.
+
+Use `set D := (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.cMat γ).toBlocks₂₂ with hD`. Establish `hτs : τ.IsSymm` using `hτ.1`. Establish `hM : IsUnit (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ).det` using `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut_isUnit hγ hτ`. Establish `hτ'mem : _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g)` using `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct_mem hγ hτ`. Establish `hτ's : (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ).IsSymm` using `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct_isSymm hγ hτs hM`.
+
+Establish `F1 : A - _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ * C = (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ)⁻¹ᵀ` using `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.sp_A hγ hτs hM`. Establish `hMeq : _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ = C * τ + D` using `_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut_eq γ τ`. Establish `hτ'eq : _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ = (A * τ + B) * (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ)⁻¹` using `by rw [_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct_eq, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.nAut_eq]`. Use `set M := _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ with hMdef`. Use `set τ' := _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ with hτ'def`.
+
+Establish `hMt : IsUnit Mᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `F2 : M⁻¹ᵀ * τ = τ' * D - B`. Establish `h1 : τ' * M = A * τ + B`. Rewrite using `[hτ'eq, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hM, Matrix.mul_one]`. Establish `h2 : Mᵀ * τ' = (A * τ + B)ᵀ`.
+
+Rewrite using `[← h1, Matrix.transpose_mul, hτ's.eq]`. Establish `key : Mᵀ * (τ' * D - B) = τ`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h2, hMeq]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_mul, hτs.eq]`. Conclude with `symplectic_block_combination_eq A B C D τ r2 r4`.
+
+Rewrite using `[← key, ← Matrix.mul_assoc, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_mul _ hMt, Matrix.one_mul]`. Establish `hMi : M⁻¹ = Aᵀ - Cᵀ * τ'`. Rewrite using `[← Matrix.transpose_transpose M⁻¹, ← F1, Matrix.transpose_sub, Matrix.transpose_mul, hτ's.eq]`. Establish `hS : (M⁻¹ * C)ᵀ = M⁻¹ * C`. Rewrite using `[Matrix.transpose_mul, ← F1, hMi]`.
+
+Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`. Rewrite using `[sub_eq_zero.mp r1]`. Establish `hAi : A = γ.toBlocks₁₁.map (↑)` using `by ext i j; rfl`. Establish `hBi : B = γ.toBlocks₁₂.map (↑)` using `by ext i j; rfl`. Establish `hCi : C = γ.toBlocks₂₁.map (↑)` using `by ext i j; rfl`.
+
+Establish `hDi : D = γ.toBlocks₂₂.map (↑)` using `by ext i j; rfl`. Establish `hsub : ∀ u v : Fin g → ℤ, _root_.ReciprocityTheory.PTheta.ofIntVec (u - v) = _root_.ReciprocityTheory.PTheta.ofIntVec u - _root_.ReciprocityTheory.PTheta.ofIntVec v`. Introduce `u v`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.ReciprocityTheory.PTheta.ofIntVec]`.
+
+Establish `transl : ∀ (a b : Fin g → ℝ) (σ₀ : Matrix (Fin g) (Fin g) ℂ), σ₀ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ (u u' : Fin g → ℤ) (x : Fin g → ℂ), _root_.ReciprocityTheory.PTheta.theta a b (x + σ₀ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec u + _root_.ReciprocityTheory.PT …`. Introduce `a b σ₀ hσ₀ u u' x`. Establish `hmem : (fun z => _root_.ReciprocityTheory.PTheta.theta a b z σ₀) ∈ _root_.GlobalTheory.thetaLevelChar a b 1 σ₀`. Rewrite using `[_root_.GlobalTheory.thetaLevelChar_one hσ₀]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Use `(_root_.GlobalTheory.mem_thetaLevelChar.mp hmem).2 u u' x` as an intermediate fact. Simplify `this` using `only [Nat.cast_one, one_mul, neg_one_mul]`. Establish `hzact : ∀ z, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.zAct γ τ z = M⁻¹ᵀ *ᵥ z` using `fun z => rfl`. Establish `hJ : ∀ z, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ z = z ⬝ᵥ (M⁻¹ * C) *ᵥ z` using `fun z => rfl`. Establish `hdlin : ∀ (K : Matrix (Fin g) (Fin g) ℂ) (u : Fin g → ℂ), Differentiable ℂ fun z : Fin g → ℂ => u ⬝ᵥ K *ᵥ z`.
+
+Introduce `K u`. Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hdJ : Differentiable ℂ fun z => _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ z`. Simplify using `only [hJ, dotProduct, Matrix.mulVec]`.
+
+Use `fun_prop`. Establish `hdE : ∀ f : (Fin g → ℂ) → ℂ, Differentiable ℂ f → Differentiable ℂ fun z => _root_.ReciprocityTheory.PTheta.eC (f z)`. Introduce `f hf`. Unfold `_root_.ReciprocityTheory.PTheta.eC`. Use `fun_prop`.
+
+Use `set a := _root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n`. Use `set b := _root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n'`. Establish `hθne : (fun z => _root_.ReciprocityTheory.PTheta.theta a b z τ) ≠ 0` using `_root_.GlobalTheory.theta_ne_zero hτ a b`. Establish `hθc : Continuous fun z => _root_.ReciprocityTheory.PTheta.theta a b z τ` using `(_root_.GlobalTheory.differentiable_theta hτ a b).continuous`. Set `P : (Fin g → ℤ) → (Fin g → ℤ) → Fin g → ℤ` to `fun m m' => γ.toBlocks₂₂ *ᵥ m - γ.toBlocks₂₁ *ᵥ m'`.
+
+Set `P' : (Fin g → ℤ) → (Fin g → ℤ) → Fin g → ℤ` to `fun m m' => γ.toBlocks₁₁ *ᵥ m' - γ.toBlocks₁₂ *ᵥ m`. Set `N : (Fin g → ℤ) → (Fin g → ℤ) → ℤ` to `fun m m' => n ⬝ᵥ P' m m' - n' ⬝ᵥ P m m' - n ⬝ᵥ m' + n' ⬝ᵥ m - m ⬝ᵥ m' + P m m' ⬝ᵥ P' m m'`. Set `σ : (Fin g → ℂ) → ℂ` to `fun z => ρ z * _root_.ReciprocityTheory.PTheta.eC (-(_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ z) / 2)`. Establish `hdJ2 : Differentiable ℂ fun z => -(_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ z) / 2`. Simplify using `only [div_eq_mul_inv]`.
+
+Conclude with `hdJ.neg.mul_const _`. Establish `hσd : Differentiable ℂ σ` using `hρ.mul (hdE _ hdJ2)`. Establish `hσ0 : σ 0 ≠ 0` using `mul_ne_zero (hρ0 0) (_root_.GlobalTheory.eC_ne_zero _)`. Establish `hper : ∀ m m' z, σ (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') = _root_.ReciprocityTheory.PTheta.eC ((N m m' : ℂ) / 2) * σ z`. Introduce `m m' z`.
+
+Establish `hp : _root_.ReciprocityTheory.PTheta.ofIntVec (P m m') = D *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m - C *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m'`. Simplify using `only [P, hsub, _root_.ReciprocityTheory.PTheta.ofIntVec_mulVec, hDi, hCi]`. Establish `hp' : _root_.ReciprocityTheory.PTheta.ofIntVec (P' m m') = A *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m' - B *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m`. Simplify using `only [P', hsub, _root_.ReciprocityTheory.PTheta.ofIntVec_mulVec, hAi, hBi]`. Establish `hL : ∀ x, M⁻¹ᵀ *ᵥ (x + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') = M⁻¹ᵀ *ᵥ x + τ' *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec (P m m') + _root_.ReciprocityTheory.PTheta.ofIntVec (P' m m')`.
+
+Introduce `x`. Rewrite using `[hp, hp']`. Conclude with `mulVec_lattice_translate_eq A B C D τ τ' M⁻¹ᵀ F1 F2 x _ _`. Establish `hL0 : M⁻¹ᵀ *ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') = τ' *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec (P m m') + _root_.ReciprocityTheory.PTheta.ofIntVec (P' m m')`. Simplify `hL 0` using `[add_assoc]`.
+
+Establish `hCl : C *ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') = M *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m - _root_.ReciprocityTheory.PTheta.ofIntVec (P m m')`. Rewrite using `[hp, hMeq]`. Simplify using `only [Matrix.mulVec_add, Matrix.add_mulVec, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Establish `hquad` using `quadratic_lattice_translate_eq C τ τ' M hM hτs.eq hS z _ _ _ _ hCl hL0`.
+
+Rewrite `hquad` using `[← hJ, ← hJ]`. Establish `key : ∀ x, (ρ (x + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') * (_root_.ReciprocityTheory.PTheta.eC (_root_.ReciprocityTheory.PTheta.ofRealVec a ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m' - _root_.ReciprocityTheory.PTheta.of …`. Introduce `x`. Establish `h1` using `hrel (x + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m')`. Rewrite `h1` using `[hzact, hL, transl a b τ' hτ'mem, ← hzact, hrel x, transl a b τ hτ]`.
+
+Rewrite `h1` using `[hzact]`. Take the linear combination `-h1`. Establish `hdot : ∀ u : Fin g → ℂ, Differentiable ℂ fun x : Fin g → ℂ => u ⬝ᵥ x`. Introduce `u`. Simplify using `only [dotProduct]`.
+
+Use `fun_prop`. Establish `hfd : Differentiable ℂ fun x => ρ (x + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m') * (_root_.ReciprocityTheory.PTheta.eC (_root_.ReciprocityTheory.PTheta.ofRealVec a ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m' - _root_.Recipro …` using `((hρ.comp ((differentiable_id.add_const _).add_const _)).mul ((differentiable_const _).mul (hdE _ ((differentiable_const _).add (hdot _)).neg))).sub (((differentiable_const _).mul (hdE _ ((differentiable_const _).add (hdlin _ _)).neg)).mul hρ)`. Establish `hρrel` using `sub_eq_zero.mp (_root_.GlobalTheory.entire_eq_zero_of_mul_continuous_eq_zero hfd hθc hθne key z)`. Establish `hEne : _root_.ReciprocityTheory.PTheta.eC (_root_.ReciprocityTheory.PTheta.ofRealVec a ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m' - _root_.ReciprocityTheory.PTheta.ofRealVec b ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m) * _root_.ReciprocityTheory.PTheta.eC (-(_root_.Recipr …` using `mul_ne_zero (_root_.GlobalTheory.eC_ne_zero _) (_root_.GlobalTheory.eC_ne_zero _)`. Apply `mul_left_cancel₀ hEne` to reduce the goal to its premises.
+
+Establish `hexp : _root_.ReciprocityTheory.PTheta.eC (_root_.ReciprocityTheory.PTheta.ofRealVec a ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec (P' m m') - _root_.ReciprocityTheory.PTheta.ofRealVec b ⬝ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec (P m m')) * _root_.ReciprocityTheory.PTheta.eC (- …`. Simplify using `only [← _root_.ReciprocityTheory.PTheta.eC_add]`. Use `congr 1`. Rewrite using `[hquad]`. Simplify using `only [a, b, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.ofRealVec_halfVec, smul_dotProduct, _root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.ofIntVec_dot, smul_eq_mul, N]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [σ]`. Take the linear combination `ρ z * hexp + _root_.ReciprocityTheory.PTheta.eC (-(_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec m + _root_.ReciprocityTheory.PTheta.ofIntVec m')) / 2) * hρrel`. Establish `hN : ∀ m m', 2 ∣ N m m'` using `_root_.GlobalTheory.two_dvd_of_entire_sign_periodic hτ hσd hσ0 hper`.
+
+Establish `hev : ∀ (X : Matrix (Fin g) (Fin g) ℤ), (∀ i j, (2:ℤ) ∣ X i j) → ∀ u v : Fin g → ℤ, (2:ℤ) ∣ u ⬝ᵥ X *ᵥ v`. Introduce `X hX u v`. Use `Finset.dvd_sum fun j _ => dvd_mul_of_dvd_right ?_ _` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.dvd_sum fun k _ => dvd_mul_of_dvd_left (hX j k) _`.
+
+Establish `hCev : ∀ i j, (2:ℤ) ∣ γ.toBlocks₂₁ i j` using `fun i j => dvd_trans (by norm_num) (h8 i j).2`. Establish `hBev : ∀ i j, (2:ℤ) ∣ γ.toBlocks₁₂ i j` using `fun i j => dvd_trans (by norm_num) (h8 i j).1`. Establish `hsingle : ∀ (X : Matrix (Fin g) (Fin g) ℤ) (u : Fin g → ℤ) (i : Fin g), (Xᵀ *ᵥ u) i = u ⬝ᵥ X *ᵥ Pi.single i 1`. Introduce `X u i`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`.
+
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `i`. Establish `h` using `hN 0 (Pi.single i 1)`. Establish `e : (γ.toBlocks₁₁ᵀ *ᵥ n) i - n i = N 0 (Pi.single i 1) - n' ⬝ᵥ γ.toBlocks₂₁ *ᵥ Pi.single i 1 + (γ.toBlocks₁₁ *ᵥ Pi.single i 1) ⬝ᵥ γ.toBlocks₂₁ *ᵥ Pi.single i 1`.
+
+Simplify using `only [N, P, P', hsingle]`. Simplify using the standard rewrite rules. Rewrite using `[dotProduct_comm (γ.toBlocks₂₁.col i)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `dvd_add (dvd_sub h (hev _ hCev _ _)) (hev _ hCev _ _)`. Introduce `i`. Establish `h` using `hN (Pi.single i 1) 0`. Establish `e : (γ.toBlocks₂₂ᵀ *ᵥ n') i - n' i = -N (Pi.single i 1) 0 - n ⬝ᵥ γ.toBlocks₁₂ *ᵥ Pi.single i 1 - (γ.toBlocks₂₂ *ᵥ Pi.single i 1) ⬝ᵥ γ.toBlocks₁₂ *ᵥ Pi.single i 1`. Simplify using `only [N, P, P', hsingle]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_sub (dvd_neg.mpr h) (hev _ hBev _ _)) (hev _ hBev _ _)`.
+-/
 theorem _root_.GlobalTheory.halfChar_fixed_of_theta_transform_unit :
     ∀ (g : ℕ) (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ), γ ∈ Matrix.symplecticGroup (Fin g) ℤ → (∀ i j, (8 : ℤ) ∣ γ (Sum.inl i) (Sum.inr j) ∧ (8 : ℤ) ∣ γ (Sum.inr i) (Sum.inl j)) → ∀ (c : ℂ) (n n' : Fin g → ℤ), c ≠ 0 → (∀ τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g), ∀ z : Fin g → ℂ, _root_.ReciprocityTheory.PTheta.theta (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec 0) (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec 0) (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.zAct γ τ z) (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ) ^ 2 = c * (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.jAut γ τ).det * _root_.ReciprocityTheory.PTheta.eC (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.expArg γ τ z) * _root_.ReciprocityTheory.PTheta.theta (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec 0) (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec 0) z τ ^ 2) → ∀ τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g), ∀ ρ : (Fin g → ℂ) → ℂ, Differentiable ℂ ρ → (∀ z, ρ z ≠ 0) → (∀ z, _root_.ReciprocityTheory.PTheta.theta (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n) (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n') (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.zAct γ τ z) (_root_.ReciprocityTheory.ChartRestriction.G.Key.Chi.spAct γ τ) = ρ z * _root_.ReciprocityTheory.PTheta.theta (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n) (_root_.ReciprocityTheory.ChartRestriction.G.Key.halfVec n') z τ) → (∀ i, (2 : ℤ) ∣ (γ.toBlocks₁₁ᵀ *ᵥ n) i - n i) ∧ (∀ i, (2 : ℤ) ∣ (γ.toBlocks₂₂ᵀ *ᵥ n') i - n' i) := by
 

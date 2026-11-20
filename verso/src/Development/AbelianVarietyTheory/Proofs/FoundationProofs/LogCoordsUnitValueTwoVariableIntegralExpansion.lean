@@ -23,6 +23,9 @@ section Coef
 
 open Polynomial GlobalTheory.K5.DlogCoef GlobalTheory.K5.DlogUniq
 
+/- English proof (translation)
+Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, Derivation.leibniz, Derivation.map_algebraMap, deriv_pow J D _ _ hx, deriv_pow J D _ _ hy, smul_zero, add_zero, smul_mk, smul_mk, smul_mk, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_sum' {n N M : ℕ} (J : Ideal (On p n)) (D : Derivation (O0 p) (On p n) (On p n ⧸ J))
     (cx cy : On p n) (hx : D (xn p n) = Ideal.Quotient.mk J (cx * xn p n))
     (hy : D (yn p n) = Ideal.Quotient.mk J (cy * yn p n)) (a : Fin N → Fin M → O0 p) :
@@ -38,6 +41,27 @@ theorem deriv_sum' {n N M : ℕ} (J : Ideal (On p n)) (D : Derivation (O0 p) (On
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hxy : IsUnit (xn p (m + 1) * yn p (m + 1))` using `(isUnit_xn p m).mul (isUnit_yn p (m + 1))`. Prove the components needed by the constructor for the conclusion. Take `⟨D, hx, hy⟩` from `exists_derivation (cyclotomic (p ^ (m + 1)) (O0 p)) (p ^ (m + 1)) (qO p) (towerIdeal p (m + 1)) rfl (On p (m + 1) ⧸ Ideal.span {(p : On p (m + 1)) ^ (m + 1)}) 0 (Ideal.Quotient.mk _ (yn p (m + 1))) (mul_zero _) (by`. Establish `h0` using `natCast_pow_quot (A := On p (m + 1)) p (m + 1)`. Rewrite `h0` using `[mul_one]`.
+
+Rewrite using `[h0, zero_mul])`. Express the relevant statement in the definitionally equal form `D (xn p (m + 1)) = 0 at hx`. Express the relevant statement in the definitionally equal form `D (yn p (m + 1)) = _ at hy`. Establish `hx' : D (xn p (m + 1)) = Ideal.Quotient.mk _ (0 * xn p (m + 1))`. Rewrite using `[zero_mul, map_zero]`.
+
+Conclude with `hx`. Establish `hy' : D (yn p (m + 1)) = Ideal.Quotient.mk _ (1 * yn p (m + 1))`. Rewrite using `[one_mul]`. Conclude with `hy`. Establish `hDw` using `deriv_sum' _ D 0 1 hx' hy' a`.
+
+Rewrite `hDw` using `[← hsum]`. Simplify using `only [mul_zero, zero_add, mul_one] at hDw`. Establish `e2` using `congrArg D.liftKaehlerDifferential h`. Simplify using `only [map_add, map_smul, Derivation.liftKaehlerDifferential_comp_D] at e2`. Rewrite `e2` using `[hDw, hx', hy', smul_mk, smul_mk, smul_mk, ← map_add, Ideal.Quotient.eq]`.
+
+Use `(Ideal.unit_mul_mem_iff_mem _ hxy).1 ?_` and prove the remaining obligations. Use `(Ideal.neg_mem_iff _).2 e2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨D, hx, hy⟩` from `exists_derivation (cyclotomic (p ^ (m + 1)) (O0 p)) (p ^ (m + 1)) (qO p) (towerIdeal p (m + 1)) rfl (On p (m + 1) ⧸ Ideal.span {aeval (xn p (m + 1)) (derivative (cyclotomic (p ^ (m + 1)) (O0 p)))}) (Ideal.Quotient.mk _ (xn p (m + 1))) 0 (by`. Rewrite using `[Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (mul_zero _)`. Express the relevant statement in the definitionally equal form `D (xn p (m + 1)) = _ at hx`. Express the relevant statement in the definitionally equal form `D (yn p (m + 1)) = 0 at hy`. Establish `hx' : D (xn p (m + 1)) = Ideal.Quotient.mk _ (1 * xn p (m + 1))`. Rewrite using `[one_mul]`.
+
+Conclude with `hx`. Establish `hy' : D (yn p (m + 1)) = Ideal.Quotient.mk _ (0 * yn p (m + 1))`. Rewrite using `[zero_mul, map_zero]`. Conclude with `hy`. Establish `hDw` using `deriv_sum' _ D 1 0 hx' hy' a`.
+
+Rewrite `hDw` using `[← hsum]`. Simplify using `only [mul_zero, mul_one, add_zero] at hDw`. Establish `e2` using `congrArg D.liftKaehlerDifferential h`. Simplify using `only [map_add, map_smul, Derivation.liftKaehlerDifferential_comp_D] at e2`. Rewrite `e2` using `[hDw, hx', hy', smul_mk, smul_mk, smul_mk, ← map_add, Ideal.Quotient.eq]`.
+
+Establish `e3 : (xn p (m + 1) * yn p (m + 1)) * (w * β - ∑ i : Fin N, ∑ j : Fin M, ((i : ℕ) : On p (m + 1)) * algebraMap (O0 p) (On p (m + 1)) (a i j) * xn p (m + 1) ^ (i : ℕ) * yn p (m + 1) ^ (j : ℕ)) ∈ Ideal.span {aeval (xn p (m + 1)) (derivative (cyclotomic (p ^ (m + 1)) (O0 p)))}`. Use `(Ideal.neg_mem_iff _).2 e2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 ((Ideal.unit_mul_mem_iff_mem _ hxy).1 e3)`. Rewrite using `[← hc, mul_assoc, derivative_cyclotomic_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+-/
 theorem coef {N M : ℕ} (m : ℕ) (a : Fin N → Fin M → O0 p) (w α β : On p (m + 1))
     (hsum : w = ∑ i : Fin N, ∑ j : Fin M,
       algebraMap (O0 p) (On p (m + 1)) (a i j) * xn p (m + 1) ^ (i : ℕ) * yn p (m + 1) ^ (j : ℕ))
@@ -100,12 +124,20 @@ theorem coef {N M : ℕ} (m : ℕ) (a : Fin N → Fin M → O0 p) (w α β : On 
 
 end Coef
 
+/- English proof (translation)
+Take `⟨b, -⟩` from `GlobalTheory.K5.OnFree.on_free p L`. Use `haveI : Module.Finite (O0 p) (On p L) := Module.Finite.of_basis b`. Use `haveI : Algebra.IsIntegral (O0 p) (On p L) := Algebra.IsIntegral.of_finite _ _`. Conclude with `IsIntegral.map ι (Algebra.IsIntegral.isIntegral z)`.
+-/
 theorem emb_int (L : ℕ) (ι : On p L →ₐ[O0 p] Ω) (z : On p L) : IsInt p (ι z) := by
   obtain ⟨b, -⟩ := GlobalTheory.K5.OnFree.on_free p L
   haveI : Module.Finite (O0 p) (On p L) := Module.Finite.of_basis b
   haveI : Algebra.IsIntegral (O0 p) (On p L) := Algebra.IsIntegral.of_finite _ _
   exact IsIntegral.map ι (Algebra.IsIntegral.isIntegral z)
 
+/- English proof (translation)
+Use `letI : Algebra (On p L) Ω := ι.toRingHom.toAlgebra`. Use `haveI : IsScalarTower (O0 p) (On p L) Ω := IsScalarTower.of_algebraMap_eq fun x => (ι.commutes x).symm`. Establish `hi' : IsIntegral (On p L) (ι w)⁻¹` using `IsIntegral.tower_top hi`. Use `haveI : FaithfulSMul (On p L) (integralClosure (On p L) Ω) := (faithfulSMul_iff_algebraMap_injective _ _).2 fun a b hab => hι (congrArg Subtype.val hab)`. Establish `hu : IsUnit (algebraMap (On p L) (integralClosure (On p L) Ω) w)` using `IsUnit.of_mul_eq_one ⟨_, hi'⟩ (Subtype.ext (mul_inv_cancel₀ h0))`.
+
+Use `haveI : IsLocalHom (algebraMap (On p L) (integralClosure (On p L) Ω)) := Algebra.IsIntegral.isLocalHom _ _`. Conclude with `isUnit_of_map_unit _ _ hu`.
+-/
 theorem isUnit_of_inv {L : ℕ} (ι : On p L →ₐ[O0 p] Ω) (hι : Function.Injective ι) (w : On p L) (h0 : ι w ≠ 0)
     (hi : IsInt p (ι w)⁻¹) : IsUnit w := by
   letI : Algebra (On p L) Ω := ι.toRingHom.toAlgebra
@@ -119,14 +151,25 @@ theorem isUnit_of_inv {L : ℕ} (ι : On p L →ₐ[O0 p] Ω) (hι : Function.In
     Algebra.IsIntegral.isLocalHom _ _
   exact isUnit_of_map_unit _ _ hu
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X - Polynomial.C (u : ℤ_[p]), Polynomial.X_sub_C_ne_zero _, by simp⟩`.
+-/
 theorem isAlgZp_int (u : ℤ) : IsAlgZp p (u : Ω) :=
   ⟨Polynomial.X - Polynomial.C (u : ℤ_[p]), Polynomial.X_sub_C_ne_zero _, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, T.ζpow, ih]`.
+-/
 theorem zeta_one (T : GlobalTheory.K5.Tower p Ω) (k : ℕ) : T.ζ (k + 1) ^ p ^ k = T.ζ 1 := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', pow_mul, T.ζpow, ih]
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ r % (N : ℤ)` using `Int.emod_nonneg r (by exact_mod_cast hN.ne')`. Establish `hne : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hN.ne']`. Conclude with `zero_ne_one hz`.
+
+Rewrite using `[← zpow_natCast z, Int.toNat_of_nonneg h0]`. Use `conv_lhs => rw [← Int.emod_add_mul_ediv r (N : ℤ)]`. Rewrite using `[zpow_add₀ hne, zpow_mul, zpow_natCast, hz, one_zpow, mul_one]`.
+-/
 theorem zpow_emod {z : Ω} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) (r : ℤ) : z ^ r = z ^ (r % (N : ℤ)).toNat := by
   have h0 : 0 ≤ r % (N : ℤ) := Int.emod_nonneg r (by exact_mod_cast hN.ne')
   have hne : z ≠ 0 := by
@@ -137,6 +180,13 @@ theorem zpow_emod {z : Ω} {N : ℕ} (hN : 0 < N) (hz : z ^ N = 1) (r : ℤ) : z
   conv_lhs => rw [← Int.emod_add_mul_ediv r (N : ℤ)]
   rw [zpow_add₀ hne, zpow_mul, zpow_natCast, hz, one_zpow, mul_one]
 
+/- English proof (translation)
+Rewrite using `[HahnSeries.coeff_mul, finsum_eq_sum_of_support_subset (s := (Finset.addAntidiagonal C.isPWO_support D.isPWO_support r).image Prod.fst)]`. Rewrite using `[Finset.sum_image]`. Use `Finset.sum_congr rfl fun ij hij => ?_ replace hij := Finset.mem_addAntidiagonal.1 hij` and prove the remaining obligations. Rewrite using `[← hij.2.2, add_sub_cancel_left]`. Introduce `a ha b hb hab replace ha := Finset.mem_addAntidiagonal.1 (Finset.mem_coe.1 ha) replace hb := Finset.mem_addAntidiagonal.1 (Finset.mem_coe.1 hb)`.
+
+Use `Prod.ext hab ?_` and prove the remaining obligations. Use `ha.2.2.trans hb.2.2.symm` as an intermediate fact. Rewrite `this` using `[hab]`. Conclude with `add_left_cancel this`. Introduce `i hi`.
+
+Rewrite `hi` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finset.mem_image]`. Conclude with `⟨(i, r - i), Finset.mem_addAntidiagonal.2 ⟨left_ne_zero_of_mul hi, right_ne_zero_of_mul hi, by simp⟩, rfl⟩`.
+-/
 theorem coeff_mul_finsum (C D : HahnSeries ℤ Ω) (r : ℤ) :
     (C * D).coeff r = ∑ᶠ i : ℤ, C.coeff i * D.coeff (r - i) := by
   classical
@@ -162,9 +212,25 @@ def ofInt (f : ℤ → ℤ) (r0 : ℤ) (hf : ∀ r, r < r0 → f r = 0) : Lau p 
   coeff r := (f r : ℤ_[p])
   isPWO_support' := Set.IsWF.isPWO (BddBelow.wellFoundedOn_lt ⟨r0, fun j hj => not_lt.1 fun h => hj (by simp [hf j h])⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofInt_coeff (f : ℤ → ℤ) (r0 : ℤ) (hf : ∀ r, r < r0 → f r = 0) (r : ℤ) :
     (ofInt (p := p) f r0 hf).coeff r = (f r : ℤ_[p]) := rfl
 
+/- English proof (translation)
+Establish `hN : 0 < p ^ L` using `pow_pos hp.out.pos L`. Establish `hζ : T.ζ L ^ p ^ L = 1` using `(T.prim L).pow_eq_one`. Establish `key : ∀ r : ℤ, ∃ n : Fin (p ^ L) → ℤ, c r = ∑ m : Fin (p ^ L), T.ζ L ^ (m : ℕ) * (n m : Ω) ∧ (r < 0 → n = 0)`. Introduce `r`. Distinguish the cases in `hr : r < 0`.
+
+Conclude with `⟨0, by simp [h0 r hr], fun _ => rfl⟩`. Establish `h1 : c r ∈ Algebra.adjoin ℤ {T.ζ L}` using `(Subring.closure_le (t := (Algebra.adjoin ℤ {T.ζ L}).toSubring)).2 Algebra.subset_adjoin (hc r)`. Rewrite `h1` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, hf⟩` from `h1`. Establish `hm : (Polynomial.X ^ (p ^ L) - Polynomial.C 1 : Polynomial ℤ).Monic` using `Polynomial.monic_X_pow_sub_C _ hN.ne'`.
+
+Establish `hd : (f %ₘ (Polynomial.X ^ (p ^ L) - Polynomial.C 1)).natDegree < p ^ L`. Use `Polynomial.natDegree_modByMonic_lt f hm (by` as an intermediate fact. Introduce `h`. Use `congrArg Polynomial.natDegree h` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_X_pow_sub_C, Polynomial.natDegree_one]`.
+
+Conclude with `hN.ne' this)`. Rewrite `this` using `[Polynomial.natDegree_X_pow_sub_C]`. Then use the resulting hypothesis. Use `⟨fun m => (f %ₘ (Polynomial.X ^ (p ^ L) - Polynomial.C 1)).coeff m, ?_, fun h => absurd h hr⟩` and prove the remaining obligations. Establish `e : Polynomial.aeval (T.ζ L) (f %ₘ (Polynomial.X ^ (p ^ L) - Polynomial.C 1)) = Polynomial.aeval (T.ζ L) f` using `by conv_rhs => rw [← Polynomial.modByMonic_add_div f (Polynomial.X ^ (p ^ L) - Polynomial.C 1)]`. Simplify using `[hζ]`.
+
+Rewrite using `[← hf]`. Use `show Polynomial.aeval (T.ζ L) f = _`. Rewrite using `[← e, Polynomial.aeval_eq_sum_range' hd, Finset.sum_range]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [zsmul_eq_mul, mul_comm]`. Use `choose n hn hn0 using key`.
+
+Establish `hz : ∀ i : ℕ, (T.ζ L ^ i) ^ p ^ L = 1` using `fun i => by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Use `⟨_, _, EvRing.ev_of_fintype ψ c _ _ (fun m : Fin (p ^ L) => T.ζ L ^ (m : ℕ)) (fun m => ofInt (fun r => n r m) 0 fun r hr => by rw [hn0 r hr]; rfl) (fun m => ⟨EvTwist.isInt_of_pow hN (hz _), EvTwist.isAlgZp_of_pow hN (hz _)⟩) (fun r => ?_) rfl rfl⟩` and prove the remaining obligations. Rewrite using `[hn r]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [ofInt_coeff, EvRing.zp_eq, map_intCast]`.
+-/
 theorem ev_cyc (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ψ : O0 p →+* Ω) (c : ℤ → Ω) (h0 : ∀ r : ℤ, r < 0 → c r = 0)
     (hc : ∀ r : ℤ, c r ∈ Subring.closure {T.ζ L}) : ∃ z z', Ev ψ c z z' := by
   have hN : 0 < p ^ L := pow_pos hp.out.pos L
@@ -201,6 +267,15 @@ theorem ev_cyc (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ψ : O0 p →+* Ω) (
   rw [hn r]
   exact Finset.sum_congr rfl fun m _ => by rw [ofInt_coeff, EvRing.zp_eq, map_intCast]
 
+/- English proof (translation)
+Use `set c := EvTwist.part ((p ^ n : ℕ) : ℤ) (i : ℤ) a with hc`. Use `set B : Lau p := HahnSeries.single (-(i : ℤ)) 1 * c with hB`. Establish `hcB : c = HahnSeries.single (1 : ℤ) (1 : ℤ_[p]) ^ i * B`. Rewrite using `[hB, ← mul_assoc, HahnSeries.single_pow, HahnSeries.single_mul_single]`. Simplify using `[HahnSeries.single_zero_one]`.
+
+Establish `hBc : ∀ r : ℤ, B.coeff r = c.coeff (r + i)` using `fun r => by`. Use `HahnSeries.coeff_single_mul_add (r := (1 : ℤ_[p])) (x := c) (a := r + i) (b := -(i : ℤ))` as an intermediate fact. Rewrite `this` using `[one_mul, add_neg_cancel_right]`. Conclude with `this`. Establish `hpos : (0 : ℤ) < (p : ℤ) ^ n` using `pow_pos (by exact_mod_cast hp.out.pos) n`.
+
+Establish `hs` using `hψ.sub (EvTwist.contr ((p : ℤ) ^ n) hpos B) B (fun _ => rfl) (fun r hr => by`. Rewrite using `[hBc, hc, EvTwist.part_coeff, if_neg]`. Introduce `h`. Apply `hr` to reduce the goal to its premises. Use `Int.emod_add_mul_ediv (r + i) ((p ^ n : ℕ) : ℤ)` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Move the coercions through the operations in `at this`. Conclude with `⟨(r + i) / (p : ℤ) ^ n, by linarith⟩)`. Establish `hq : ψ (algebraMap (Lau p) (O0 p) (HahnSeries.single (1 : ℤ) (1 : ℤ_[p]))) = T.qq n` using `hψ.par`. Conclude with `⟨_, by rw [hcB, map_mul, map_mul, map_pow, map_pow, hq, hs]⟩`.
+-/
 theorem psi_part {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T n ψ) (i : ℕ) (a : Lau p) :
     ∃ b : O0 p, ψ (algebraMap (Lau p) (O0 p) (EvTwist.part ((p ^ n : ℕ) : ℤ) (i : ℤ) a)) =
       T.qq n ^ i * algebraMap (O0 p) Ω b := by
@@ -225,6 +300,19 @@ theorem psi_part {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω}
   have hq : ψ (algebraMap (Lau p) (O0 p) (HahnSeries.single (1 : ℤ) (1 : ℤ_[p]))) = T.qq n := hψ.par
   exact ⟨_, by rw [hcB, map_mul, map_mul, map_pow, map_pow, hq, hs]⟩
 
+/- English proof (translation)
+Establish `hN : 0 < p ^ L` using `pow_pos hp.out.pos L`. Establish `hζ : T.ζ L ^ p ^ L = 1` using `(T.prim L).pow_eq_one`. Establish `hz : ∀ i : ℕ, (T.ζ L ^ i) ^ p ^ L = 1` using `fun i => by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Set `b : Fin (p ^ L) → Lau p` to `fun m => ofInt (fun r => ∑ k ∈ S r, if g * k % ((p ^ L : ℕ) : ℤ) = ((m : ℕ) : ℤ) then θ k r else 0) r0 fun r hr => Finset.sum_eq_zero fun k _ => by simp [h0 k r hr]`. Use `choose a ha using fun (m j : Fin (p ^ L)) => psi_part hψ j (b m)`.
+
+Use `⟨a, fun u => ⟨_, EvRing.ev_of_fintype (ι := Fin (p ^ L) × Fin (p ^ L)) ψ _ _ _ (fun s => (u s.1 s.2 : Ω) * T.ζ L ^ (s.1 : ℕ)) (fun s => EvTwist.part ((p ^ L : ℕ) : ℤ) ((s.2 : ℕ) : ℤ) (b s.1)) (fun s => ⟨IsIntegral.mul (Basic.isInt_intCast _) (EvTwist.isInt_of_pow hN (hz _)), EvRi …` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Establish `h1 : ∀ m j : Fin (p ^ L), (u m j : Ω) * T.ζ L ^ (m : ℕ) * zp Ω ((EvTwist.part ((p ^ L : ℕ) : ℤ) ((j : ℕ) : ℤ) (b m)).coeff r) = if r % ((p ^ L : ℕ) : ℤ) = ((j : ℕ) : ℤ) then (u m j : Ω) * T.ζ L ^ (m : ℕ) * zp Ω ((b m).coeff r) else 0` using `fun m j => by`. Rewrite using `[EvTwist.part_coeff]`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Rewrite using `[EvRing.zp_eq, map_zero, mul_zero]`. Establish `h2 : ∀ m : Fin (p ^ L), ∑ j : Fin (p ^ L), (u m j : Ω) * T.ζ L ^ (m : ℕ) * zp Ω ((EvTwist.part ((p ^ L : ℕ) : ℤ) ((j : ℕ) : ℤ) (b m)).coeff r) = ∑ k ∈ S r, if g * k % ((p ^ L : ℕ) : ℤ) = ((m : ℕ) : ℤ) then (u m (r % ((p ^ L : ℕ) : ℤ)).toNat : Ω) * (θ k r : Ω) * T.ζ L ^ (m : ℕ) el …` using `fun m => by`. Simplify using `only [h1]`. Rewrite using `[EvTwist.sum_ite (p ^ L) hN r (fun j => (u m j : Ω) * T.ζ L ^ (m : ℕ) * zp Ω ((b m).coeff r)), ofInt_coeff, EvRing.zp_eq, map_intCast, Int.cast_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `only [h2]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[EvTwist.sum_ite (p ^ L) hN (g * k) (fun m => (u m (r % ((p ^ L : ℕ) : ℤ)).toNat : Ω) * (θ k r : Ω) * T.ζ L ^ m), ← zpow_emod hN hζ]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rep {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L ψ) (g : ℤ) (θ : ℤ → ℤ → ℤ) (S : ℤ → Finset ℤ)
     (r0 : ℤ) (h0 : ∀ k r : ℤ, r < r0 → θ k r = 0) :
     ∃ a : Fin (p ^ L) → Fin (p ^ L) → O0 p, ∀ u : ℕ → ℕ → ℤ, ∃ y',
@@ -272,6 +360,11 @@ theorem rep {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ
     rw [ha]
     ring
 
+/- English proof (translation)
+Use `choose c hc using hv`. Use `⟨∑ k ∈ S, (c k : Ω) * e k, IsIntegral.sum _ fun k _ => IsIntegral.mul (Basic.isInt_intCast _) (he k), ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hc k]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cong_sum {L : ℕ} (S : Finset ℤ) (v : ℤ → ℤ) (e : ℤ → Ω) (he : ∀ k, IsInt p (e k)) (hv : ∀ k, (p : ℤ) ^ L ∣ v k) :
     Cong p L (∑ k ∈ S, (v k : Ω) * e k) 0 := by
   choose c hc using hv
@@ -282,6 +375,17 @@ theorem cong_sum {L : ℕ} (S : Finset ℤ) (v : ℤ → ℤ) (e : ℤ → Ω) (
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hN : 0 < p ^ L` using `pow_pos hp.out.pos L`. Establish `hζ : T.ζ L ^ p ^ L = 1` using `(T.prim L).pow_eq_one`. Take `⟨R1, R2⟩` from `EvRing.ev_ring p Ω hc T L ψ hψ`. Take `⟨U, rfl⟩` from `(R2 _ _ _ hx).2.2.1`. Take `⟨E, rfl⟩` from `(R2 _ _ _ hz).2.2.1`.
+
+Take `⟨Y, hY⟩` from `(R2 _ _ _ hy).2.2.1`. Establish `h1` using `(R2 _ _ _ (R1 E U _ _ _ _ hz hx).1).2.2.2.2.1 (A : Ω) (Basic.isInt_intCast _) (isAlgZp_int _)`. Take `⟨V, hV⟩` from `(R2 _ _ _ h1).2.2.1`. Rewrite `h1` using `[← hV]`. Rewrite `hy` using `[← hY]`.
+
+Use `((GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ω hc T L ψ hψ L _ _ _ (R1 Y V _ _ _ _ hy h1).2.1).1).2 fun r => ?_` and prove the remaining obligations. Establish `e : (Y + V).coeff r = ∑ k ∈ S r, (((v k r - A * k) * θ k r : ℤ) : Ω) * T.ζ L ^ (g * k)`. Rewrite using `[HahnSeries.coeff_add, hY, hV]`. Simplify using `only`. Rewrite using `[coeff_mul_finsum, ← neg_eq_iff_eq_neg.2 (hE r), mul_neg, Finset.mul_sum, ← sub_eq_add_neg, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `cong_sum _ (fun k => (v k r - A * k) * θ k r) _ (fun k => ?_) fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[zpow_emod hN hζ]`. Conclude with `IsIntegral.pow (EvTwist.isInt_of_pow hN hζ) _`. Distinguish the cases in `h : θ k r = 0`. Simplify using `[h]`. Conclude with `Dvd.dvd.mul_right (hv k r h) _`.
+-/
 theorem cong_val (hc : IsClo p Ω) {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L ψ) (g A : ℤ)
     (θ v : ℤ → ℤ → ℤ) (S : ℤ → Finset ℤ) (cU cE : ℤ → Ω) (x x' z z' y y' : Ω)
     (hv : ∀ k r, θ k r ≠ 0 → (p : ℤ) ^ L ∣ v k r - A * k)
@@ -315,6 +419,29 @@ theorem cong_val (hc : IsClo p Ω) {T : GlobalTheory.K5.Tower p Ω} {L : ℕ} {�
     · simp [h]
     · exact Dvd.dvd.mul_right (hv k r h) _
 
+/- English proof (translation)
+Introduce `p hp Ω _ _ hc T L ψ ι hL hψ hι A₁ g θ cU cE x x' hB ⟨r0, h0⟩ hdiv hU hE hE0 hEm hx hx0 hxi`. Take `⟨m, rfl⟩ : ∃ m, L = m + 1` from `⟨L - 1, by omega⟩`. Use `choose B hB using hB`. Set `S : ℤ → Finset ℤ` to `fun r => Finset.Icc (-(B r : ℤ)) (B r)`. Establish `hS : ∀ (r : ℤ) (f : ℤ → Ω), (∀ k, θ k r = 0 → f k = 0) → ∑ᶠ k, f k = ∑ k ∈ S r, f k` using `fun r f hf => finsum_eq_sum_of_support_subset _ fun k hk => by`.
+
+Rewrite using `[Finset.mem_coe, Finset.mem_Icc, ← abs_le]`. Conclude with `not_lt.1 fun h => hk (hf k (hB r k h))`. Establish `hE' : ∀ r, ∑ k ∈ S r, ((k * θ k r : ℤ) : Ω) * T.ζ (m + 1) ^ (g * k) = -∑ᶠ i : ℤ, cE i * cU (r - i)` using `fun r => by`. Rewrite using `[← hE r, hS r _ fun k hk => by simp [hk]]`. Take `⟨z, z', hz⟩` from `ev_cyc T (m + 1) ψ cE hE0 hEm`.
+
+Take `⟨a, ha⟩` from `rep hψ g θ S r0 h0`. Take `⟨y0, e0⟩` from `ha fun _ _ => 1`. Take `⟨y1, e1⟩` from `ha fun _ j => j`. Take `⟨y2, e2⟩` from `ha fun i _ => i`. Establish `hN : (0 : ℤ) < ((p ^ (m + 1) : ℕ) : ℤ)` using `by exact_mod_cast pow_pos hp.out.pos _`.
+
+Establish `hmod : ∀ r : ℤ, (p : ℤ) ^ (m + 1) ∣ ((r % ((p ^ (m + 1) : ℕ) : ℤ)).toNat : ℤ) - r` using `fun r => by`. Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg r hN.ne')]`. Use `Int.emod_add_mul_ediv r ((p ^ (m + 1) : ℕ) : ℤ)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `⟨-(r / (p : ℤ) ^ (m + 1)), by linarith⟩`.
+
+Take `⟨c1, hc1, k1⟩` from `cong_val hc hψ g A₁ θ (fun _ r => ((r % ((p ^ (m + 1) : ℕ) : ℤ)).toNat : ℤ)) S cU cE x x' z z' _ _ (fun k r h => by simpa using dvd_add (hmod r) (hdiv k r h)) hE' hx hz e1`. Take `⟨c2, hc2, k2⟩` from `cong_val hc hψ g g θ (fun k _ => ((g * k % ((p ^ (m + 1) : ℕ) : ℤ)).toNat : ℤ)) S cU cE x x' z z' _ _ (fun k r _ => hmod _) hE' hx hz e2`. Establish `hcU : cU = fun r => ∑ k ∈ S r, ((1 : ℤ) : Ω) * (θ k r : Ω) * T.ζ (m + 1) ^ (g * k)` using `funext fun r => by`. Rewrite using `[hU r, hS r _ fun k hk => by simp [hk]]`. Simplify using the standard rewrite rules.
+
+Rewrite `e0` using `[← hcU]`. Establish `hxe` using `(GlobalTheory.T.evalSeriesAndDeriv_unique_of_coefficients p Ω hc T (m + 1) ψ hψ _ _ _ _ _ hx e0).1`. Use `set w0 : On p (m + 1) := ∑ i : Fin (p ^ (m + 1)), ∑ j : Fin (p ^ (m + 1)), algebraMap (O0 p) (On p (m + 1)) (a i j) * xn p (m + 1) ^ (i : ℕ) * yn p (m + 1) ^ (j : ℕ) with hw0`. Establish `hw : ι w0 = x`. Rewrite using `[hxe, hw0]`.
+
+Simplify using `only [map_sum, map_mul, map_pow, AlgHom.commutes, hι.1, hι.2, Int.cast_one, one_mul]`. Take `⟨w, hwu⟩` from `isUnit_of_inv ι (GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hc T (m + 1) hL ι hι).1 w0 (hw ▸ hx0) (hw ▸ hxi)`. Take `⟨α, β, hd⟩` from `GlobalTheory.K5.exists_isDlog p (m + 1) w`. Take `⟨d1, d2⟩` from `coef m a w α β (hwu.trans hw0) hd`. Take `⟨f1, d1⟩` from `Ideal.mem_span_singleton'.1 d1`.
+
+Take `⟨f2, d2⟩` from `Ideal.mem_span_singleton'.1 d2`. Use `replace d1 := congrArg ι d1`. Use `replace d2 := congrArg ι d2`. Simplify using `only [map_sum, map_mul, map_pow, map_sub, map_natCast, map_one, AlgHom.commutes, hι.1, hι.2, hwu, hw, zeta_one] at d1 d2`. Simplify using `only [Int.cast_natCast] at k1 k2`.
+
+Establish `hinv : x * x⁻¹ = 1` using `mul_inv_cancel₀ hx0`. Use `⟨w, α, β, z, z', hd, hwu ▸ hw, hz, ⟨(ι f1 + c1) * x⁻¹, IsIntegral.mul (IsIntegral.add (emb_int _ ι _) hc1) hxi, ?_⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `x⁻¹ * k1 - x⁻¹ * d1 - (ι α + A₁ * z) * hinv`. Establish `hζ1 : T.ζ 1 - 1 ≠ 0` using `sub_ne_zero.2 ((T.prim 1).ne_one (by simpa using hp.out.one_lt))`. Establish `hpd` using `GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T 1 1 le_rfl (Nat.totient_pos.2 (pow_pos hp.out.pos _))`.
+
+Rewrite `hpd` using `[pow_one, div_eq_mul_inv]`. Establish `hinv2 : (T.ζ 1 - 1) * (T.ζ 1 - 1)⁻¹ = 1` using `mul_inv_cancel₀ hζ1`. Establish `hpi : IsInt p (p : Ω)` using `by simpa using Basic.isInt_intCast (p := p) (Ω := Ω) (p : ℤ)`. Use `⟨(ι f2 * ((p : Ω) * (T.ζ 1 - 1)⁻¹) + p * c2) * x⁻¹, IsIntegral.mul (IsIntegral.add (IsIntegral.mul (emb_int _ ι _) hpd) (IsIntegral.mul hpi hc2)) hxi, ?_⟩` and prove the remaining obligations. Generalize the expression as in `(∑ i : Fin (p ^ (m + 1)), ∑ j : Fin (p ^ (m + 1)), ((i : ℕ) : Ω) * algebraMap (O0 p) Ω (a i j) * T.ζ (m + 1) ^ (i : ℕ) * T.qq (m + 1) ^ (j : ℕ)) = Y at k2 d2`.
+
+Take the linear combination `(p * x⁻¹) * k2 - (p * x⁻¹ * (T.ζ 1 - 1)⁻¹) * d2 - (p * x⁻¹ * (x * ι β - Y)) * hinv2 - (p * (ι β + g * z)) * hinv`.
+-/
 theorem local_coords : ∀ (p : ℕ) [Fact p.Prime] (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl], IsClo p Ωl → ∀ (T : GlobalTheory.K5.Tower p Ωl) (L : ℕ) (ψ : O0 p →+* Ωl) (ι : On p L →ₐ[O0 p] Ωl), 1 ≤ L → IsReb T L ψ → IsEmb T L ι →
   ∀ (A₁ g : ℤ) (θ : ℤ → ℤ → ℤ) (cU cE : ℤ → Ωl) (x x' : Ωl),
   (∀ r : ℤ, ∃ B : ℕ, ∀ k : ℤ, (B : ℤ) < |k| → θ k r = 0) →

@@ -24,6 +24,13 @@ namespace ProjLine
 
 attribute [local instance] projectiveLineMeasurableSpace
 
+/- English proof (translation)
+Use `show Measurable fun x : OnePoint ℂ => ProjectiveLineResolution.lift x x`. Use `measurable_of_continuousOn_compl_singleton OnePoint.infty ?_` and prove the remaining obligations. Establish `hc : ContinuousOn crd0 ({OnePoint.infty}ᶜ : Set (OnePoint ℂ))`. Rewrite using `[OnePoint.compl_infty]`. Conclude with `continuousOn_finiteCoord`.
+
+Establish `hv : ContinuousOn (fun x : OnePoint ℂ => ProjectiveLineResolution.vec 1 (crd0 x)) {OnePoint.infty}ᶜ`. Use `continuousOn_pi.2 fun q => ?_` and prove the remaining obligations. Take `⟨⟨⟩, i⟩` from `q`. Use `fin_cases i`. Conclude with `continuousOn_const`.
+
+Conclude with `hc`. Use `hv.congr fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ≠ OnePoint.infty` using `hx`. Simplify using `[ProjectiveLineResolution.lift, hx']`.
+-/
 theorem measurable_resPt_hsmProjLine : Measurable (resPt hsmProjLine) := by
   show Measurable fun x : OnePoint ℂ => ProjectiveLineResolution.lift x x
   refine measurable_of_continuousOn_compl_singleton OnePoint.infty ?_
@@ -40,6 +47,9 @@ theorem measurable_resPt_hsmProjLine : Measurable (resPt hsmProjLine) := by
   have hx' : x ≠ OnePoint.infty := hx
   simp [ProjectiveLineResolution.lift, hx']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hsmProjLine, measurable_resPt_hsmProjLine⟩`.
+-/
 theorem ResChiSymMeasure.hyps_inhabited :
     ∃ d : HSMDatum 1 FnField (Fin 2), Measurable (resPt d) :=
   ⟨hsmProjLine, measurable_resPt_hsmProjLine⟩

@@ -13,6 +13,9 @@ variable {Λ : AddSubgroup ℂ}
 open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
+/- English proof (translation)
+Establish `h` using `hΛ.sg_law ha z`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1 at h`. Rewrite using `[← h, mul_assoc, ← Complex.exp_add]`. Apply the tactic sequence `ring_nf <;> simp`.
+-/
 private lemma sgStar_add_lattice_eq_mul_exp (hΛ : _root_.GlobalTheory.EvenTheta.IsLat Λ) {a : ℂ} (ha : a ∈ Λ)
     (z : ℂ) :
     _root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ (z + a) = (if a / 2 ∈ Λ then 1 else -1) * _root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ z *
@@ -26,6 +29,11 @@ private lemma sgStar_add_lattice_eq_mul_exp (hΛ : _root_.GlobalTheory.EvenTheta
 open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
+/- English proof (translation)
+Establish `h' : -1 * s * Complex.exp x = ε * (-1 * s * (Complex.exp x * Complex.exp k))`. Rewrite using `[← Complex.exp_add, ← hk, Complex.exp_add]`. Take the linear combination `h`. Establish `hprod : (s * Complex.exp x) * (ε * Complex.exp k - 1) = 0`. Take the linear combination `h'`.
+
+Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. Conclude with `absurd h0 (mul_ne_zero hs (Complex.exp_ne_zero x))`. Conclude with `sub_eq_zero.1 h0`.
+-/
 private lemma mul_exp_eq_one_of_exp_relation {ε s x y w k : ℂ} (hs : s ≠ 0)
     (h : -1 * s * Complex.exp x = ε * (-1 * s * Complex.exp y) * Complex.exp w)
     (hk : y + w = x + k) : ε * Complex.exp k = 1 := by
@@ -41,6 +49,9 @@ private lemma mul_exp_eq_one_of_exp_relation {ε s x y w k : ℂ} (hs : s ≠ 0)
 open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
+/- English proof (translation)
+Rewrite using `[hs, Complex.exp_add]`. Take the linear combination `(a * Complex.exp q) * h`.
+-/
 private lemma mul_mul_exp_eq_of_mul_exp_eq_one {ε k a s q : ℂ} (h : ε * Complex.exp k = 1) (hs : s = k + q) :
     ε * (a * Complex.exp s) = a * Complex.exp q := by
   rw [hs, Complex.exp_add]
@@ -50,6 +61,31 @@ open NumberField Classical in
 open scoped BigOperators in
 variable {Λ : AddSubgroup ℂ} in
 
+/- English proof (translation)
+Introduce `Λ hΛ t ht h2t`. Establish `hσt : _root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ t ≠ 0` using `fun h => ht ((hΛ.sg_eq_zero t).1 h)`. Establish `hhalf : ¬ (2 * t / 2 ∈ Λ)` using `by rwa [mul_div_cancel_left₀ t two_ne_zero]`. Establish `hU0 : _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) 0 ≠ 0`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+
+Rewrite using `[zero_add]`. Conclude with `mul_ne_zero hσt (Complex.exp_ne_zero _)`. Establish `hopp : ∀ y, _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ (-t) (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) y = -_root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) y`. Introduce `y`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+
+Rewrite using `[show y + t = y + -t + 2 * t by ring, sgStar_add_lattice_eq_mul_exp hΛ h2t, if_neg hhalf]`. Simplify using `only [mul_assoc, ← Complex.exp_add, map_neg, map_mul, map_ofNat]`. Put the polynomial expressions in normal form. Establish `heven : ∀ z, _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) (-z) = _root_.Formalism.MainNotions.TaylorLogMetric.U1 Λ t (_root_.Formalism.MainNotions.TaylorLogMetric.sgStar Λ) z`. Introduce `z`.
+
+Establish `h` using `hopp z`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1 at h ⊢`. Rewrite using `[show -z + t = -(z + -t) by ring, hΛ.sg_neg]`. Simplify using `only [map_neg] at h ⊢`. Use `ring_nf at h ⊢`.
+
+Take the linear combination `-h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hd` using `hΛ.differentiable`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0 _root_.Formalism.MainNotions.TaylorLogMetric.U1`. Use `fun_prop`.
+
+Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Conclude with `div_self hU0`. Introduce `z`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[heven]`.
+
+Introduce `z`. Establish `h` using `hΛ.sqTh_mul ht z`. Rewrite `h` using `[hopp, hopp]`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[div_pow, div_eq_iff (pow_ne_zero 2 hU0)]`.
+
+Take the linear combination `h`. Introduce `z`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0`. Rewrite using `[div_eq_zero_iff, or_iff_left hU0]`. Unfold `_root_.Formalism.MainNotions.TaylorLogMetric.U1`.
+
+Rewrite using `[mul_eq_zero, or_iff_left (Complex.exp_ne_zero _), hΛ.sg_eq_zero]`. Introduce `ω hω hωt z`. Establish `hsum : ¬ ((ω + 2 * t) / 2 ∈ Λ)`. Rewrite using `[show (ω + 2 * t) / 2 = ω / 2 + t by ring]` and apply the resulting hypothesis. Establish `h1` using `sgStar_add_lattice_eq_mul_exp hΛ (add_mem hω h2t) t`.
+
+Establish `h2` using `sgStar_add_lattice_eq_mul_exp hΛ hω (t + 2 * t)`. Establish `h3` using `sgStar_add_lattice_eq_mul_exp hΛ h2t t`. Rewrite `h1` using `[if_neg hsum]`. Rewrite `h3` using `[if_neg hhalf]`. Rewrite `h2` using `[show t + 2 * t + ω = t + (ω + 2 * t) by ring, h1, h3]`.
+
+Establish `hε` using `mul_exp_eq_one_of_exp_relation (k := (↑Real.pi * t * (starRingEnd ℂ) ω - ↑Real.pi * ω * (starRingEnd ℂ) t) / ↑(_root_.Formalism.MainNotions.TaylorLogMetric.area Λ)) hσt h2 (by simp only [map_add, map_mul, map_ofNat]; ring)`. Unfold `_root_.Formalism.MainNotions.GL3Theta.th0 _root_.Formalism.MainNotions.TaylorLogMetric.U1`. Use `beta_reduce`. Rewrite using `[show z + ω + t = z + t + ω by ring, sgStar_add_lattice_eq_mul_exp hΛ hω, div_mul_eq_mul_div]`. Use `congr 1`.
+
+Simplify using `only [mul_assoc, ← Complex.exp_add]`. Conclude with `mul_mul_exp_eq_of_mul_exp_eq_one hε (by ring)`.
+-/
 theorem _root_.GlobalTheory.EvenTheta.evenThetaTwoTorsion_basic_properties : ∀ Λ : AddSubgroup ℂ, _root_.GlobalTheory.EvenTheta.IsLat Λ →
     ∀ t₀ : ℂ, t₀ ∉ Λ → 2 * t₀ ∈ Λ → Differentiable ℂ (_root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀) ∧ _root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀ 0 = 1 ∧
     (∀ z, _root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀ (-z) = _root_.Formalism.MainNotions.GL3Theta.th0 Λ t₀ z) ∧

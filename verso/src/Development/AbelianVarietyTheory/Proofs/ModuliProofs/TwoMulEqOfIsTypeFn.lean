@@ -14,6 +14,17 @@ namespace GlobalTheory.PeriodDatum
 
 noncomputable section
 
+/- English proof (translation)
+Set `L : Submodule ℤ (Fin g → ℂ)` to `LinearMap.range P.toIntLinearMap`. Use `haveI : DiscreteTopology L := hdisc`. Use `haveI : IsZLattice ℝ L := ⟨hspan⟩`. Set `f : La ≃ₗ[ℤ] L` to `LinearEquiv.ofInjective P.toIntLinearMap hinj`. Use `haveI : Module.Finite ℤ L := ZLattice.module_finite ℝ L`.
+
+Use `haveI : Module.Free ℤ L := ZLattice.module_free ℝ L`. Use `haveI : Module.Finite ℤ La := Module.Finite.equiv f.symm`. Use `haveI : Module.Free ℤ La := Module.Free.of_equiv f.symm`. Establish `hr : Module.finrank ℤ La = Module.finrank ℝ (Fin g → ℂ)`. Rewrite using `[f.finrank_eq, ZLattice.rank ℝ L]`.
+
+Establish `hg : Module.finrank ℝ (Fin g → ℂ) = 2 * g`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, Module.finrank_fin_fun]`. Set `φ : ℝ ⊗[ℤ] La →ₗ[ℝ] (Fin g → ℂ)` to `P.toIntLinearMap.liftBaseChange ℝ`. Establish `hφ : ∀ x, φ (1 ⊗ₜ x) = P x` using `fun x => by simp [φ]`. Establish `hs : Function.Surjective φ`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, hφ x⟩`. Establish `hd : Module.finrank ℝ (ℝ ⊗[ℤ] La) = Module.finrank ℝ (Fin g → ℂ)`. Rewrite using `[Module.finrank_baseChange, hr]`.
+
+Conclude with `⟨inferInstance, hr.trans hg, LinearEquiv.ofBijective φ ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).2 hs, hs⟩, hφ⟩`.
+-/
 lemma lattice_equiv {La : Type} [AddCommGroup La] {g : ℕ} (P : La →+ (Fin g → ℂ)) (hinj : Function.Injective P)
     (hdisc : DiscreteTopology P.range) (hspan : Submodule.span ℝ (Set.range P) = ⊤) :
     Module.Finite ℤ La ∧ Module.finrank ℤ La = 2 * g ∧
@@ -41,22 +52,37 @@ lemma lattice_equiv {La : Type} [AddCommGroup La] {g : ℕ} (P : La →+ (Fin g 
   exact ⟨inferInstance, hr.trans hg, LinearEquiv.ofBijective φ
     ⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).2 hs, hs⟩, hφ⟩
 
+/- English proof (translation)
+Simplify using `[hermForm]`.
+-/
 lemma hermForm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (c • z) w = c * hermForm Hm z w := by
   simp [hermForm]
 
+/- English proof (translation)
+Simplify using `[hermForm, Matrix.mulVec_smul]`.
+-/
 lemma hermForm_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm z (c • w) = starRingEnd ℂ c * hermForm Hm z w := by
   simp [hermForm, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Simplify using `[hermForm]`.
+-/
 lemma hermForm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp [hermForm]
 
+/- English proof (translation)
+Simplify using `[hermForm, Matrix.mulVec_add]`.
+-/
 lemma hermForm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
   simp [hermForm, Matrix.mulVec_add]
 
+/- English proof (translation)
+Use `h.im_star_dotProduct_mulVec_self (star z)` as an intermediate fact. Simplify `this` using `[hermForm]`.
+-/
 lemma hermForm_self_im {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian) (z : Fin g → ℂ) :
     (hermForm Hm z z).im = 0 := by
   have := h.im_star_dotProduct_mulVec_self (star z)
@@ -64,6 +90,13 @@ lemma hermForm_self_im {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHer
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin (E →+* ℂ)).symm`. Establish `he : IsTypeFn H 1 1 e` using `fun τ => by`. Establish `: Nat.card {i // e i = τ} = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (e.injective (a.2.trans b.2.symm))⟩, ⟨⟨e.symm τ, by simp⟩⟩⟩`.
+
+Conclude with `⟨fun _ => this, fun _ => this⟩`. Establish `h1` using `PeriodNonempty.sum_type H hty 1`. Establish `h2` using `PeriodNonempty.sum_type H he 1`. Simplify using `only [map_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, Embeddings.card, Nat.cast_one] at h1 h2`. Establish `: (2 * g : ℂ) = Module.finrank ℚ E * (p + q)` using `by rw [h1, h2]; ring`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 lemma two_mul_eq_of_isTypeFn (H : Host E) {p q g : ℕ} {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H p q ty) :
     2 * g = Module.finrank ℚ E * (p + q) := by
   classical
@@ -80,6 +113,41 @@ lemma two_mul_eq_of_isTypeFn (H : Host E) {p q g : ℕ} {ty : Fin g → (E →+*
   have : (2 * g : ℂ) = Module.finrank ℚ E * (p + q) := by rw [h1, h2]; ring
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `E _ _ _ H La _ _ EF p q g ty P Hm hty hbij hadj hlin hinj hdisc hspan hH hpos him`. Take `⟨hfin, hrk, e, he⟩` from `lattice_equiv P hinj hdisc hspan`. Use `haveI : Module.Finite (𝓞 E) La := Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) La`. Establish `htor : Submodule.torsion (𝓞 E) La = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Establish `ha0 : (a : E) ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero ha`. Rewrite using `[Submodule.mem_bot]`. Apply `hinj` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `hlin a x i`. Establish `h2 : a • x = 0` using `hx`. Rewrite `h1` using `[h2, map_zero]`. Rewrite using `[map_zero]`.
+
+Conclude with `(mul_eq_zero.1 h1.symm).resolve_left ((map_ne_zero (ty i)).2 ha0)`. Use `haveI : Module.Flat (𝓞 E) La := IsDedekindDomain.flat_iff_torsion_eq_bot.2 htor`. Use `haveI : Module.FinitePresentation (𝓞 E) La := Module.finitePresentation_of_finite _ _`. Establish `hproj : Module.Projective (𝓞 E) La` using `Module.Flat.projective_of_finitePresentation`. Establish `hrank : Module.finrank (𝓞 E) La = p + q`.
+
+Establish `h1` using `finrank_int_eq_mul_of_finite (O := 𝓞 E) (M := La)`. Rewrite `h1` using `[hrk, two_mul_eq_of_isTypeFn H hty, RingOfIntegers.rank]`. Conclude with `(Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1).symm`. Establish `het : ∀ (r : ℝ) x, e (r ⊗ₜ x) = (r : ℂ) • P x` using `fun r x => by`. Rewrite using `[← he, Complex.coe_smul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Establish `hB : ∀ x y, EF.baseChange ℝ x y = (hermForm Hm (e x) (e y)).im` using `fun x y => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [hermForm]`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h', hermForm_add_left, Complex.add_im]`. Consider the case `tmul r x`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [hermForm]`. Consider the case `add y y' h h' => simp only [map_add, h, h', hermForm_add_right, Complex.add_im]`. Consider the case `tmul r' y`. Rewrite using `[het, het, hermForm_smul_left, hermForm_smul_right, LinearMap.BilinForm.baseChange_tmul]`.
+
+Simplify using `[him]`. Expand and normalize the polynomial expressions, which then agree. Set `d : (Fin g → ℂ) → Module.End ℂ (Fin g → ℂ)` to `fun c => Matrix.toLin' (Matrix.diagonal c)`. Establish `hd : ∀ c z i, d c z i = c i * z i` using `fun c z i => by simp [d, Matrix.mulVec_diagonal]`. Establish `hdt : ∀ c, LinearMap.trace ℝ _ (e.symm.conj ((d c).restrictScalars ℝ)) = 2 * (∑ i, c i).re` using `fun c => by`.
+
+Rewrite using `[LinearMap.trace_conj', PeriodNonempty.trace_real]`. Simplify using `[d]`. Set `J : ℝ ⊗[ℤ] La →ₗ[ℝ] ℝ ⊗[ℤ] La` to `e.symm.conj ((d fun _ => Complex.I).restrictScalars ℝ)`. Establish `hJ : ∀ x, e (J x) = Complex.I • e x` using `fun x => by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[J, LinearEquiv.conj_apply, hd]`. Use `⟨{ La := La, fin := inferInstance, proj := hproj, EF := EF, alt := fun x => ?_, unimod := hbij, adj := hadj, p := p, q := q, rank := hrank, dom := ⟨J, fun x => ?_, fun x y => ?_, fun x hx => ?_, ?_⟩ }, LinearEquiv.refl _ _, rfl, rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Use `him x x` as an intermediate fact. Rewrite `this` using `[hermForm_self_im hH]`. Conclude with `this.symm` after adjusting the coercions.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hJ, hJ, smul_smul, Complex.I_mul_I, map_neg, neg_smul, one_smul]`. Rewrite using `[hB, hB, hJ, hJ, hermForm_smul_left, hermForm_smul_right]`. Simplify using the standard rewrite rules. Rewrite using `[hB, hJ, hermForm_smul_left]`.
+
+Simplify `hx)` using `using hpos (e x) (by simpa`. Introduce `a A t hA ht`. Rewrite `ht` using `[← PeriodNonempty.sum_type H hty]`. Establish `hAe : ∀ x i, e (A x) i = ty i (a : E) * e x i` using `fun x i => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, Pi.add_apply, h, h', mul_add]`. Consider the case `tmul r x`. Establish `: (r ⊗ₜ[ℤ] x : ℝ ⊗[ℤ] La) = r • (1 ⊗ₜ[ℤ] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite using `[this, map_smul, hA, map_smul, map_smul, he, he]`. Simplify using `only [Pi.smul_apply, hlin, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : A = e.symm.conj ((d fun i => ty i (a : E)).restrictScalars ℝ)`. Use `LinearMap.ext fun x => e.injective (funext fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `[LinearEquiv.conj_apply, hd, hAe]`. Establish `h2 : J ∘ₗ A = e.symm.conj ((d fun i => Complex.I * ty i (a : E)).restrictScalars ℝ)`. Use `LinearMap.ext fun x => e.injective (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[LinearEquiv.conj_apply, hd, hAe, hJ, mul_assoc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun x => e.injective (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hJ, hAe, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hdt, ht]`. Rewrite using `[h2, hdt, ht, ← Finset.mul_sum]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_datum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (La : Type)
     [AddCommGroup La] [Module (𝓞 E) La] (EF : LinearMap.BilinForm ℤ La) (p q g : ℕ) (ty : Fin g → (E →+* ℂ))
     (P : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), IsTypeFn H p q ty → Function.Bijective EF →

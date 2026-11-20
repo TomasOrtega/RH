@@ -20,6 +20,9 @@ def permGL {n : ℕ} (σ : Equiv.Perm (Fin n)) : GL (Fin n) k :=
     rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [PEquiv.toMatrix_apply, Matrix.one_apply, eq_comm], by
     rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [PEquiv.toMatrix_apply, Matrix.one_apply, eq_comm]⟩
 
+/- English proof (translation)
+Establish `: ((permGL σ * g * (permGL σ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = σ.toPEquiv.toMatrix * (g : Matrix (Fin n) (Fin n) k) * σ.symm.toPEquiv.toMatrix` using `rfl`. Rewrite using `[this, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using the standard rewrite rules.
+-/
 theorem permGL_conj_apply {n : ℕ} (σ : Equiv.Perm (Fin n)) (g : GL (Fin n) k) (i j : Fin n) :
     ((permGL σ * g * (permGL σ)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j =
       (g : Matrix (Fin n) (Fin n) k) (σ i) (σ j) := by
@@ -28,6 +31,9 @@ theorem permGL_conj_apply {n : ℕ} (σ : Equiv.Perm (Fin n)) (g : GL (Fin n) k)
   rw [this, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]
   simp
 
+/- English proof (translation)
+Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Simplify using `only [map_smul, piTensor_tprod, PiTensorProduct.constantBaseRingEquiv_tprod, detRep, ofChar_apply, detChar_apply, Finset.prod_mul_distrib, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, mul_add]`.
+-/
 theorem constEquiv_piTensor_detRep {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (L : ∀ _ : Fin n, GL (Fin 1) k)
     (t : ⨂[ℂ] _ : Fin n, ℂ) :
     PiTensorProduct.constantBaseRingEquiv (Fin n) ℂ (piTensor (fun a => detRep (Fin 1) (χ a)) L t) =
@@ -39,6 +45,27 @@ theorem constEquiv_piTensor_detRep {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (L 
     ring
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, mul_add]
 
+/- English proof (translation)
+Set `f : Fin n ≃ Fin n` to `(Equiv.sigmaUnique (Fin n) fun _ => Fin 1).symm.trans e`. Set `σ : Equiv.Perm (Fin n)` to `f.symm`. Set `P : GL (Fin n) k` to `permGL σ`. Establish `hf : ∀ a (i : Fin 1), e ⟨a, i⟩ = f a` using `fun a i => by`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Both sides reduce to the same expression. Establish `hq : ∀ p : parab k (points (Fin n)), P * (p : GL (Fin n) k) * P⁻¹ ∈ parab k e` using `fun p => by`. Use `mem_parab_iff.2 fun a b i j hab => ?_` and prove the remaining obligations. Rewrite using `[hf, hf, permGL_conj_apply]`. Simplify `mem_parab_iff.1 p.2 a b () () hab` using `[σ]`.
+
+Set `κ` to `(PiTensorProduct.constantBaseRingEquiv (Fin n) ℂ).toLinearEquiv`. Set `Ψ : IndSp e (piTensor fun a => detRep (Fin 1) (χ a)) →ₗ[ℂ] IndSp (points (Fin n)) ((ofChar (torusChar χ)).comp (leviTorus k (Fin n)).symm.toMonoidHom)` to `{ toFun := fun F => ⟨⟨fun g => κ (F.1.1 (P * g)), fun p g => by`. Set `q : parab k e` to `⟨P * p * P⁻¹, hq p⟩`. Establish `e1 : P * ((p : GL (Fin n) k) * g) = (q : GL (Fin n) k) * (P * g)`. Simplify using `only [q, mul_assoc, inv_mul_cancel_left]`.
+
+Establish `hdet : ∀ a, GeneralLinearGroup.det (leviProj k e q a) = GeneralLinearGroup.det (leviProj k (points (Fin n)) p a)` using `fun a => by`. Use `ext`. Simplify using `only [GeneralLinearGroup.val_det_apply, det_unique]`. Rewrite using `[leviProj_apply, leviProj_apply, hf]`. Use `show ((P * p * P⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (f a) (f a) = _`.
+
+Rewrite using `[permGL_conj_apply]`. Simplify using `[σ]`. Establish `hd : deltaHalf k (fun _ : Fin n => Fin 1) (leviProj k e q) = deltaHalf k (fun _ : Fin n => Unit) (leviProj k (points (Fin n)) p)`. Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hdet, modExp_fin _ (fun _ => by simp), modExp_fin _ (fun _ => by simp)]`. Use `beta_reduce`. Rewrite using `[e1, parInd_law]`. Generalize the expression as in `F.1.1 (P * g) = t`. Use `show κ ((deltaHalf k (fun _ : Fin n => Fin 1) (leviProj k e q) : ℂ) • piTensor (fun a => detRep (Fin 1) (χ a)) (leviProj k e q) t) = (deltaHalf k (fun _ : Fin n => Unit) (leviProj k (points (Fin n)) p) : ℂ) • ofChar (torusChar χ) ((leviTorus k (Fin n)).symm (leviProj k (points (F …`.
+
+Rewrite using `[map_smul, hd, ofChar_apply, torusChar_apply]`. Use `congr 1`. Use `(constEquiv_piTensor_detRep χ _ t).trans ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun a _ => by rw [hdet]; rfl⟩,`. Use the proof step `MultiIrr.mem_smooth_of_eventually _ ((MultiIrr.eventually_of_smooth F).mono fun u hu x => by show κ (F.1.1 (P * (x * u))) = κ (F.1.1 (P * x))`. Rewrite using `[← mul_assoc, hu])⟩`. Use the proof step `map_add' := fun F G => Subtype.ext (Subtype.ext (funext fun x => map_add κ _ _))`. Use the proof step `map_smul' := fun c F => Subtype.ext (Subtype.ext (funext fun x => map_smul κ _ _)) }`.
+
+Use `.of_injective ⟨Ψ, fun g => LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => ?_))⟩ fun F F' h => ?_` and prove the remaining obligations. Use `show κ (F.1.1 (P * x * g)) = κ (F.1.1 (P * (x * g)))`. Rewrite using `[mul_assoc]`. Use `Subtype.ext (Subtype.ext (funext fun x => κ.injective ?_))` and prove the remaining obligations. Establish `h1 : κ (F.1.1 (P * (P⁻¹ * x))) = κ (F'.1.1 (P * (P⁻¹ * x)))` using `congrFun (congrArg (fun φ => φ.1.1) h) (P⁻¹ * x)`.
+
+Simplify `h1` using `only [← mul_assoc, mul_inv_cancel, one_mul]`.
+-/
 theorem isSubquotient_multiProd_prinSeries {n : ℕ} (e : (Σ _ : Fin n, Fin 1) ≃ Fin n)
     (χ : Fin n → kˣ →* ℂˣ) :
     IsSubquotient (multiProd e fun a => detRep (Fin 1) (χ a)) (prinSeries χ) := by

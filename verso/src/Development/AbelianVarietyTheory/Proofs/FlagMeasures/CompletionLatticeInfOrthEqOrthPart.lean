@@ -16,10 +16,16 @@ namespace GlobalTheory.Unfold.OrthLoc
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [LocFacts₂, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem localForm_add_left (Z : LocDat D) (p : PlF D) (x y z : Vp D p) :
     LocFacts₂ Z.M p (x + y) z = LocFacts₂ Z.M p x z + LocFacts₂ Z.M p y z := by
   simp only [LocFacts₂, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [LocFacts₂, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem localForm_smul_left (Z : LocDat D) (p : PlF D) (c : (D.s.atP p).Ep) (x z : Vp D p) :
     LocFacts₂ Z.M p (c • x) z = c * LocFacts₂ Z.M p x z := by
   simp only [LocFacts₂, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
@@ -31,6 +37,11 @@ def orthP (Z : LocDat D) (p : PlF D) (U : Submodule D.host.E (VS D).V) :
   add_mem' := by intro a b ha hb u hu; rw [localForm_add_left, ha u hu, hb u hu, add_zero]
   smul_mem' := by intro c a ha u hu; rw [localForm_smul_left, ha u hu, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ u hu`. Establish `ha' : (VS D).hT u a = 0`. Establish `ha2 : a ∈ orth (VS D) U` using `ha`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at ha2`.
+
+Conclude with `ha2 u hu`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p)]`. Simplify using `[brS, ha']`.
+-/
 theorem span_orth_le (Z : LocDat D) (p : PlF D) (U : Submodule D.host.E (VS D).V) :
     Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (orth (VS D) U : Set (VS D).V)) ≤ orthP Z p U := by
   rw [Submodule.span_le]
@@ -42,6 +53,17 @@ theorem span_orth_le (Z : LocDat D) (p : PlF D) (U : Submodule D.host.E (VS D).V
   rw [baseChangeAt_form Z.M p (Z.hcj p)]
   simp [brS, ha']
 
+/- English proof (translation)
+Introduce `D Z U hdec huniq Λ hΛ p t ht horth`. Establish `hsat` using `Formalism.L2.SG.Pf.locSatC_holds D Z p Λ (orth (VS D) U) hΛ.fg`. Establish `hmem : t ∈ (lattice₂ D Z.M p (Λ ⊓ toO (VS D) (orth (VS D) U)) : Set (Vp D p))`. Rewrite using `[hsat]`. Use `⟨ht, ?_⟩` and prove the remaining obligations.
+
+Establish `htop : Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (orth (VS D) U : Set (VS D).V)) ⊔ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (U : Set (VS D).V)) = ⊤`. Rewrite using `[eq_top_iff, ← span_baseChange_eq_top (D := D) p, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, ha, b, hb, rfl⟩` from `hdec x`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨a, ha, rfl⟩) (Submodule.subset_span ⟨b, hb, rfl⟩)`. Establish `ht' : t ∈ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (orth (VS D) U : Set (VS D).V)) ⊔ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (U : Set (VS D).V))` using `htop ▸ Submodule.mem_top`. Take `⟨α, hα, β, hβ, hαβ⟩` from `Submodule.mem_sup.1 ht'`. Establish `hβ0 : β = 0`. Apply `huniq p β hβ` to reduce the goal to its premises.
+
+Establish `e : β = t - α` using `by rw [← hαβ]; abel`. Establish `hto : t ∈ orthP Z p U` using `horth`. Establish `h2` using `(orthP Z p U).sub_mem hto (span_orth_le Z p U hα)`. Rewrite `h2` using `[← e]`. Conclude with `h2`.
+
+Rewrite using `[← hαβ, hβ0, add_zero]`. Conclude with `hα`. Conclude with `hmem`.
+-/
 theorem mem_localLattice_inf_orthogonal : ∀ (D : D7) (Z : LocDat D) (U : Submodule D.host.E (VS D).V),
     (∀ x : (VS D).V, ∃ a ∈ orth (VS D) U, ∃ b ∈ U, x = a + b) →
     (∀ (p : PlF D) (v : Vp D p), v ∈ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (U : Set (VS D).V)) →

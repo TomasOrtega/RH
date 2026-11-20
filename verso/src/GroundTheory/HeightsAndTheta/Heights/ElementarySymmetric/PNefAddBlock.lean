@@ -22,6 +22,9 @@ variable (p : ℕ) [Fact p.Prime]
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [Bridge.GeoNum.red, coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem red_component (f : NumbersDVR.MRing ι ℤ) (b : K → ℕ) :
     Bridge.GeoNum.red p (weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f) =
       weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b (Bridge.GeoNum.red p f) := by
@@ -29,6 +32,11 @@ theorem red_component (f : NumbersDVR.MRing ι ℤ) (b : K → ℕ) :
   simp only [Bridge.GeoNum.red, coeff_map, coeff_weightedHomogeneousComponent]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `hQ.isPrime` as an intermediate fact. Use `⟨Ideal.comap_isPrime _ _, ?_, (Bridge.GeoNum.isRelevant_comap_iff p Q).mpr hQ.relevant⟩` and prove the remaining obligations. Rewrite using `[← Bridge.isMultiHomogIdeal_iff]`. Introduce `f hf b`. Rewrite using `[Ideal.mem_comap, red_component]`.
+
+Conclude with `hQ.multiHomog _ hf b`.
+-/
 theorem isMultiProjPrime_comap_red {Q : Ideal (NumbersDVR.MRing ι (ZMod p))}
     (hQ : NumbersDVR.IsMultiProjPrime Q) :
     Geo.IsMultiProjPrime (Q.comap (Bridge.GeoNum.red p)) := by
@@ -39,6 +47,15 @@ theorem isMultiProjPrime_comap_red {Q : Ideal (NumbersDVR.MRing ι (ZMod p))}
   rw [Ideal.mem_comap, red_component]
   exact hQ.multiHomog _ hf b
 
+/- English proof (translation)
+Establish `hker : RingHom.ker (Bridge.GeoNum.red (ι` using `ι) p) ≤ W := by`. Rewrite using `[Bridge.GeoNum.ker_red, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hpW`. Establish `hcm : (W.map (Bridge.GeoNum.red p)).comap (Bridge.GeoNum.red p) = W` using `Bridge.GeoNum.comap_map_eq p hker`. Establish `: W.IsPrime` using `hW.1`.
+
+Use `⟨⟨Ideal.map_isPrime_of_surjective (Bridge.GeoNum.red_surjective p) hker, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Bridge.isMultiHomogIdeal_iff]`. Take `⟨S, hS, hWS⟩` from `hW.2.1`. Use `⟨Bridge.GeoNum.red p '' S, ?_, by rw [hWS, Ideal.map_span]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+
+Take `⟨b, hb⟩` from `hS f hf`. Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Rewrite using `[← Bridge.GeoNum.isRelevant_comap_iff p, hcm]`. Conclude with `hW.2.2`. Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, ← hdim]`.
+
+Use `ringKrullDim_eq_of_ringEquiv (Bridge.GeoNum.quotEquiv p (W.map (Bridge.GeoNum.red p)))` as an intermediate fact. Rewrite `this` using `[hcm]`. Conclude with `this.symm`.
+-/
 theorem map_red {W : Ideal (Geo.MRing ι)} (hW : Geo.IsMultiProjPrime W)
     (hpW : (C (p : ℤ) : Geo.MRing ι) ∈ W) (n : ℕ)
     (hdim : ringKrullDim (Geo.MRing ι ⧸ W) = ((n + Fintype.card K : ℕ) : WithBot ℕ∞)) :
@@ -66,6 +83,13 @@ theorem map_red {W : Ideal (Geo.MRing ι)} (hW : Geo.IsMultiProjPrime W)
 
 end Reduction
 
+/- English proof (translation)
+Set `φ : MvPolynomial K Ω →ₐ[ℤ] MvPolynomial K' Ω'` to `((rename j).toRingHom.comp (MvPolynomial.map (algebraMap Ω Ω'))).toIntAlgHom`. Establish `e : (Geo.mConeMap Y).comp (rename (FieldNumbers.blockIncl j ι')) = φ.comp (Geo.mConeMap y)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k, i⟩`. Simplify using `[φ, Geo.mConeMap, FieldNumbers.blockIncl, hY]`.
+
+Express the relevant statement in the definitionally equal form `_ = (rename j) (MvPolynomial.map (algebraMap Ω Ω') ((aeval fun p => C (y p) * X p.fst) (X ⟨k, i⟩)))`. Simplify using the standard rewrite rules. Establish `h` using `DFunLike.congr_fun e f`. Simplify using `only [AlgHom.comp_apply] at h`. Rewrite `hf`, the goal using `[Geo.mCoordIdeal, RingHom.mem_ker]`.
+
+Rewrite using `[h, hf, map_zero]`.
+-/
 theorem rename_mem_mCoordIdeal {K K' : Type} [Fintype K] [Fintype K'] (j : K ↪ K')
     {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Ω Ω' : Type} [Field Ω] [Field Ω'] [Algebra Ω Ω']
     (y : (Σ k, ι' (j k)) → Ω) (Y : (Σ k', ι' k') → Ω')
@@ -87,6 +111,25 @@ theorem rename_mem_mCoordIdeal {K K' : Type} [Fintype K] [Fintype K'] (j : K ↪
   rw [Geo.mCoordIdeal, RingHom.mem_ker] at hf ⊢
   rw [h, hf, map_zero]
 
+/- English proof (translation)
+Introduce `K _ ι _ κ _ Ω Ω' _ _ _ y z a hnef W' hW' hyz hchar hdim`. Establish `hhor : ¬ Geo.IsHorizontal W'` using `fun h => hchar (by`. Unfold `Geo.charOf`. Rewrite using `[(Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero _).mp h]`. Use the proof step `rfl)`.
+
+Use `set p := Geo.charOf W' with hp_def`. Establish `hp : p.Prime` using `Geo.charOf_prime hW'.1 hhor`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hpW' : (C (p : ℤ) : Geo.MRing (addBlockIdx ι κ)) ∈ W'` using `Inter.C_charOf_mem W'`. Rewrite using `[← Bridge.intNum_map_eq_geoNum p 1 W' hW' hpW' hdim (fun _ => addBlockDeg a)]`.
+
+Take `⟨hQ', hQ'd⟩` from `map_red p hW' hpW' 1 hdim`. Use `set Q' := W'.map (Bridge.GeoNum.red p) with hQ'_def`. Set `j : K ↪ Option K` to `Function.Embedding.some`. Establish `hpull : (fun _ : Fin 1 => FieldNumbers.pullDeg j a) = fun _ => addBlockDeg a`. Use function extensionality and compare the values at `_ o`.
+
+Consider the cases of `o with`. Consider the case `none`. Conclude with `Function.extend_apply' _ _ _ (fun ⟨k, hk⟩ => Option.some_ne_none k hk)`. Consider the case `some k`. Conclude with `Option.some_injective _ |>.extend_apply a 0 k`.
+
+Use `set Q := FieldNumbers.contractPrime j Q' with hQ_def`. Establish `hQ : NumbersDVR.IsMultiProjPrime Q` using `FieldNumbers.isMultiProjPrime_contractPrime j (addBlockIdx ι κ) hQ'`. Establish `hle` using `FieldNumbers.ContractRelDimLe.proof (ZMod p) K (Option K) j (addBlockIdx ι κ) Q' hQ'`. Rewrite `hle` using `[hQ'd]`. Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases.
+
+Establish `h0` using `FieldNumbers.ProjectionFormulaContracted.full (ZMod p) K (Option K) j (addBlockIdx ι κ) Q' hQ' 1 hQ'd hlt (fun _ => a)`. Rewrite using `[← hpull, h0]`. Take `⟨-, h1⟩` from `hPF (ZMod p) K (Option K) j (addBlockIdx ι κ) Q' hQ' 1 hQ'd heq (fun _ => a)`. Rewrite using `[← hpull, h1]`. Use `mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations.
+
+Rewrite using `[Bridge.GeoNum.intNum_eq_geoNum_comap p 1 Q hQ heq (fun _ => a)]`. Set `y' : (Σ k, addBlockIdx ι κ (j k)) → Ω` to `y`. Establish `hnef' : Geo.NefOnFibres (Geo.mCoordIdeal y') a` using `hnef`. Use `hnef' (Q.comap (Bridge.GeoNum.red p)) (isMultiProjPrime_comap_red p hQ) ?_ ?_ ?_` and prove the remaining obligations. Introduce `f hf`.
+
+Rewrite using `[Ideal.mem_comap, hQ_def, FieldNumbers.contractPrime, Ideal.mem_comap, Bridge.GeoNum.red, ← map_rename]`. Conclude with `Ideal.mem_map_of_mem _ (hyz (rename_mem_mCoordIdeal j y' (addBlockPt y z) (fun _ _ => rfl) hf))`. Use `ArakelovGeometry.charOf_ne_zero_of_mem hp.ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, map_natCast, CharP.cast_eq_zero]`. Conclude with `Q.zero_mem`.
+
+Rewrite using `[ringKrullDim_eq_of_ringEquiv (Bridge.GeoNum.quotEquiv p Q)]`. Conclude with `(FieldNumbers.CutRegular.relDim_eq_natCast_iff Q 1).mp heq`.
+-/
 theorem proof (hPF : FieldNumbers.ProjectionFormulaDegree.Statement.{0}) : NefAddBlock.Statement := by
   classical
   intro K _ ι _ κ _ Ω Ω' _ _ _ y z a hnef W' hW' hyz hchar hdim

@@ -4,6 +4,9 @@ namespace GlobalTheory.LatticeIntegerMultiple
 
 open NumberField
 
+/- English proof (translation)
+Establish `hQ : IsAlgebraic ℚ a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `hZ : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hQ`. Take `⟨m, hm, hi⟩` from `hZ.exists_integral_multiple`. Conclude with `⟨m, ⟨m • a, hi⟩, hm, rfl⟩`.
+-/
 theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ (m : ℤ) (b : RingOfIntegers E), m ≠ 0 ∧ algebraMap (RingOfIntegers E) E b = m • a := by
   have hQ : IsAlgebraic ℚ a := Algebra.IsAlgebraic.isAlgebraic a
@@ -11,6 +14,17 @@ theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (a : E) :
   obtain ⟨m, hm, hi⟩ := hZ.exists_integral_multiple
   exact ⟨m, ⟨m • a, hi⟩, hm, rfl⟩
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[Submodule.IsLattice.span_eq_top (A := E)]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨m, hm, hy⟩` from `hy`. Take `⟨k, hk, hz⟩` from `hz`. Use `⟨m * k, mul_ne_zero hm hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `zsmul_mem hy k`. Rewrite using `[mul_smul]`.
+
+Conclude with `zsmul_mem hz m`. Consider the case `smul a y _ hy`. Take `⟨m, hm, hy⟩` from `hy`. Take `⟨k, b, hk, hb⟩` from `exists_int_mul_mem a`. Use `⟨k * m, mul_ne_zero hk hm, ?_⟩` and prove the remaining obligations.
+
+Establish `h : (k * m) • a • y = b • (m • y)`. Rewrite using `[← algebraMap_smul E b, hb, mul_smul, smul_comm m a y, smul_assoc]`. Rewrite using `[h]`. Conclude with `L.smul_mem b hy`.
+-/
 theorem exists_zsmul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E)) [Submodule.IsLattice E L] (x : Fin n → E) :
     ∃ (m : ℤ), m ≠ (0 : ℤ) ∧ m • x ∈ L := by

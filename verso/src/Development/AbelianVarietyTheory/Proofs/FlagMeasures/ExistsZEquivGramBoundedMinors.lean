@@ -11,6 +11,13 @@ namespace GlobalTheory.ReducedGram
 
 open NumberField Module Matrix in
 open scoped Classical in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Rewrite using `[hA1, hB1, one_mul]`. Rewrite using `[hA1, one_mul]`.
+
+Conclude with `hB0 i j (lt_of_le_of_ne h (fun e => hij e.symm))`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hki | hik` into its components or cases. Rewrite using `[hA0 i k hki, zero_mul]`. Rewrite using `[hB0 k j (lt_of_le_of_lt h hik), mul_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 private lemma upperUnitriangular_mul_apply_of_le {R : Type} [CommRing R] {N : ℕ}
     (A B : Matrix (Fin N) (Fin N) R) (hA0 : ∀ i j, j < i → A i j = 0) (hA1 : ∀ i, A i i = 1)
     (hB0 : ∀ i j, j < i → B i j = 0) (hB1 : ∀ i, B i i = 1) {i j : Fin N} (h : j ≤ i) :
@@ -30,6 +37,23 @@ private lemma upperUnitriangular_mul_apply_of_le {R : Type} [CommRing R] {N : �
 
 open NumberField Module Matrix in
 open scoped Classical in
+/- English proof (translation)
+Use `set c := Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ)) with hc_def`. Set `φ : K →+* (InfinitePlace K → ℂ)` to `Pi.ringHom fun w => w.embedding`. Set `O : Subring (InfinitePlace K → ℂ)` to `(φ.comp (algebraMap (𝓞 K) K)).range`. Set `FF : Set (InfinitePlace K → ℂ)` to `{x | ∀ w, ‖x w‖ ≤ c}`. Establish `hφ : ∀ (x : K) (w : InfinitePlace K), φ x w = w.embedding x` using `fun _ _ => rfl`.
+
+Establish `hcov : ∀ x : InfinitePlace K → ℂ, ∃ a ∈ O, x + a ∈ FF`. Introduce `x`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.coveringO_holds K hK (fun w => -x w)`. Use `⟨φ (a : K), ⟨a, rfl⟩, fun w => ?_⟩` and prove the remaining obligations. Establish `e : (x + φ (a : K)) w = -(-x w - w.embedding (a : K))`.
+
+Rewrite using `[Pi.add_apply, hφ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_neg]`. Conclude with `ha w`. Take `⟨n, hn1, hn0, hnO, hnF⟩` from `_root_.Formalism.HermitianLatticeCounting.P.unitriangularReduction (InfinitePlace K → ℂ) O FF N (V.map φ) hcov (fun i => by simp [hV1]) (fun i j h => by simp [hV0 i j h])`.
+
+Establish `hlift : ∀ i j, ∃ a : 𝓞 K, φ (a : K) = n i j`. Introduce `i j`. Take `⟨a, ha⟩` from `hnO i j`. Conclude with `⟨a, ha⟩`. Use `choose m₀ hm₀ using hlift`.
+
+Set `m : Matrix (Fin N) (Fin N) (𝓞 K)` to `Matrix.of m₀`. Establish `hm : ∀ i j, φ (m i j : K) = n i j` using `hm₀`. Establish `hinj : ∀ a b : 𝓞 K, φ (a : K) = φ (b : K) → a = b` using `fun a b h => RingOfIntegers.coe_injective (φ.injective h)`. Establish `hm0 : ∀ i j, j < i → m i j = 0` using `fun i j h => hinj _ _ (by rw [hm, hn0 i j h]; simp)`. Establish `hm1 : ∀ i, m i i = 1` using `fun i => hinj _ _ (by rw [hm, hn1]; simp)`.
+
+Use `⟨m, hm0, hm1, ?_⟩` and prove the remaining obligations. Establish `hn : n = (m.map (fun x : 𝓞 K => (x : K))).map φ`. Conclude with `Matrix.ext fun i j => (hm i j).symm`. Establish `hprod : V.map φ * n = (V * m.map (fun x : 𝓞 K => (x : K))).map φ`. Rewrite using `[hn, Matrix.map_mul]`.
+
+Establish `key : ∀ (i j : Fin N) (w : InfinitePlace K), ‖w.embedding ((V * m.map (fun x : 𝓞 K => (x : K))) i j)‖ ≤ max 1 c`. Introduce `i j w`. Break down `lt_or_ge i j with hij | hji` into its components or cases. Establish `h` using `hnF i j hij w`. Rewrite `h` using `[hprod, Matrix.map_apply, hφ]`.
+
+Conclude with `le_max_of_le_right h`. Apply the tactic sequence `rw [upperUnitriangular_mul_apply_of_le V _ hV0 hV1 (fun a b h => by simp [hm0 a b h]) (fun a => by simp [hm1 a]) hji] split_ifs <;> simp`. Introduce `τ i j`. Rewrite using `[← InfinitePlace.apply, ← InfinitePlace.norm_embedding_eq]`. Conclude with `key i j _`.
+-/
 private lemma exists_integral_unitriangular_reduction {K : Type} [Field K] [NumberField K]
     (hK : ∀ w : InfinitePlace K, w.IsComplex) {N : ℕ} (V : Matrix (Fin N) (Fin N) K)
     (hV0 : ∀ i j, j < i → V i j = 0) (hV1 : ∀ i, V i i = 1) :
@@ -85,6 +109,9 @@ private lemma exists_integral_unitriangular_reduction {K : Type} [Field K] [Numb
 
 open NumberField Module Matrix in
 open scoped Classical in
+/- English proof (translation)
+Establish `hsub : (X * diagonal s).submatrix I J = X.submatrix I J * diagonal (fun k => s (J k))`. Use extensionality with `a b`. Simplify using `[Matrix.mul_diagonal]`. Rewrite using `[hsub, det_mul, det_diagonal]`.
+-/
 private lemma det_submatrix_mul_diagonal {R : Type} [CommRing R] {N t : ℕ}
     (X : Matrix (Fin N) (Fin N) R) (s : Fin N → R) (I J : Fin t → Fin N) :
     ((X * diagonal s).submatrix I J).det = (X.submatrix I J).det * ∏ k, s (J k) := by
@@ -96,6 +123,45 @@ private lemma det_submatrix_mul_diagonal {R : Type} [CommRing R] {N t : ℕ}
 open NumberField Module Matrix in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `K _ _ hK r Z p hcell`. Use `set c := Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ)) with hc_def`. Establish `hc : 1 ≤ c`. Establish `h1 : (1 : ℝ) ≤ Real.sqrt (finrank ℚ K)`. Rewrite using `[Real.one_le_sqrt]`.
+
+Conclude with `Module.finrank_pos` after adjusting the coercions. Establish `h2 : (1 : ℝ) ≤ |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ))`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `hd : discr K ≠ 0` using `discr_ne_zero K`. Establish `: (1 : ℤ) ≤ |discr K|` using `Int.one_le_abs hd`.
+
+Conclude with `this` after adjusting the coercions. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. Establish `hmax : max 1 c = c` using `max_eq_right hc`. Unfold `_root_.Formalism.MainNotions.S.IsInCell at hcell`.
+
+Take `⟨L, U, hL, hU, hZ⟩` from `hcell`. Unfold `_root_.Formalism.MainNotions.S.IsLoUni at hL`. Unfold `_root_.Formalism.MainNotions.S.IsUpUni at hU`. Use `set P := _root_.Formalism.MainNotions.S.ptMat p with hP`. Set `s : Fin (r + 1) → K` to `fun b => (-1) ^ (r - (b : ℕ))`.
+
+Establish `hss : ∀ b, s b * s b = 1`. Introduce `b`. Simplify using `only [s, ← mul_pow, neg_one_mul, neg_neg, one_pow]`. Establish `hDD : diagonal s * diagonal s = 1`. Rewrite using `[diagonal_mul_diagonal]`.
+
+Simplify using `only [hss]`. Conclude with `diagonal_one`. Establish `hZD : Z = _root_.Formalism.MainNotions.S.ZhatOM Z * diagonal s`. Use extensionality with `a b`. Simplify using `only [_root_.Formalism.MainNotions.S.ZhatOM, mul_diagonal, s]`.
+
+Take the linear combination `(-Z a b) * hss b`. Establish `hZD' : Z = L * P * U * diagonal s`. Rewrite using `[← hZ]`. Conclude with `hZD`. Set `V` to `diagonal s * U * diagonal s`.
+
+Establish `hVapp : ∀ i j, V i j = s i * U i j * s j`. Introduce `i j`. Simplify using `[V, mul_diagonal, diagonal_mul]`. Establish `hV0 : ∀ i j, j < i → V i j = 0` using `fun i j h => by rw [hVapp, (hU i j).1 h]; ring`. Establish `hV1 : ∀ i, V i i = 1` using `fun i => by`.
+
+Rewrite using `[hVapp, (hU i i).2 rfl, mul_one, hss]`. Establish `hZeq : Z = L * (P * diagonal s) * V`. Rewrite using `[hZD']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDD, Matrix.mul_one]`.
+
+Use `_ = L * (P * diagonal s) * V := by simp only [V, Matrix.mul_assoc]`. Take `⟨m, hm0, hm1, hmb⟩` from `exists_integral_unitriangular_reduction hK V hV0 hV1`. Take `⟨m', hm'0, hm'1, hm'b⟩` from `exists_integral_unitriangular_reduction hK Lᵀ (fun i j h => by rw [transpose_apply]; exact (hL j i).1 h) (fun i => by rw [transpose_apply]; exact (hL i i).2 rfl)`. Rewrite `hmb`, `hm'b` using `[hmax]`. Set `A` to `m'ᵀ.map (fun x : 𝓞 K => (x : K)) * L`.
+
+Set `B` to `V * m.map (fun x : 𝓞 K => (x : K))`. Set `W` to `P * diagonal s`. Use `⟨A * W * B, ⟨m'ᵀ, m, fun a b h => hm'0 b a h, fun a => hm'1 a, hm0, hm1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [A, B, W]`. Rewrite using `[hZeq]`.
+
+Simplify using `only [Matrix.mul_assoc, transpose_map]`. Introduce `τ t I J`. Establish `hmin : ∀ (X : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (t : ℕ) (I J : Fin t → Fin (r + 1)), ((X.map τ).submatrix I J).det = τ ((X.submatrix I J).det)`. Introduce `X t I J`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hsign : ∀ (t : ℕ) (J : Fin t → Fin (r + 1)), ‖τ (∏ k, s (J k))‖ = 1`. Introduce `t J`. Rewrite using `[map_prod, norm_prod]`. Simplify using `[s]`.
+
+Establish `hA : ∀ i j, ‖(A.map τ) i j‖ ≤ c`. Introduce `i j`. Establish `hAt : A = (Lᵀ * m'.map (fun x : 𝓞 K => (x : K)))ᵀ`. Simplify using `only [A, transpose_mul, transpose_transpose, transpose_map]`. Rewrite using `[Matrix.map_apply, hAt, transpose_apply]`.
+
+Conclude with `hm'b τ j i`. Establish `hB : ∀ i j, ‖(B.map τ) i j‖ ≤ c` using `fun i j => hmb τ i j`. Use `set Pb := ∏ l ∈ Finset.range (r + 1), _root_.GlobalTheory.LoopC.CovTerm.gg2 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P (l + 1))‖ with hPb`. Establish `hW : ∀ (t : ℕ) (I J : Fin t → Fin (r + 1)), ‖((W.map τ).submatrix I J).det‖ ≤ Pb`. Introduce `t I J`.
+
+Rewrite using `[hmin, det_submatrix_mul_diagonal, map_mul, norm_mul, hsign, mul_one, ← hmin]`. Conclude with `_root_.GlobalTheory.LoopC.CovTerm.minor_pt_le τ p t I J`. Establish `hbound` using `_root_.Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.minorBound (r + 1) (A.map τ) (W.map τ) (B.map τ) c Pb hc hA hB hW t I J`. Establish `hlead : ∀ l, ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖ = ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P l)‖`. Introduce `l`.
+
+Unfold `_root_.Formalism.MainNotions.S.leadMinorE`. Use `split_ifs with hl`. Rewrite using `[hZD', det_submatrix_mul_diagonal, map_mul, norm_mul, hsign, mul_one, _root_.Formalism.HermitianLatticeCounting.P.leadingMinorTriangularInvariant K (r + 1) l hl L P U (fun i => (hL i i).2 rfl) (fun i j h => (hL i j).1 h) (fun i => (hU i i).2 rfl) (fun i j h => (hU i j).1 h)]`. Both sides reduce to the same expression. Establish `hPbeq : Pb = ∏ l ∈ Finset.Icc 1 (r + 1), (max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖ * max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖⁻¹)`.
+
+Rewrite using `[hPb, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun l => _root_.GlobalTheory.LoopC.CovTerm.gg2 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P l)‖) 0 (r + 1) 1, zero_add, Finset.Ico_add_one_right_eq_Icc]`. Use `Finset.prod_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[hlead]`. Both sides reduce to the same expression. Rewrite using `[← hmin, Matrix.map_mul, Matrix.map_mul, ← hPbeq]`.
+
+Conclude with `hbound`.
+-/
 theorem _root_.GlobalTheory.ReducedGram.exists_reduced : ∀ (K : Type) [Field K] [NumberField K],
     (∀ w : InfinitePlace K, w.IsComplex) → ∀ (r : ℕ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K)
     (p : _root_.Formalism.MainNotions.S.Point K (r + 1)), _root_.Formalism.MainNotions.S.IsInCell (_root_.Formalism.MainNotions.S.ZhatOM Z) p →

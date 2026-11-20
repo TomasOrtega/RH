@@ -9,6 +9,11 @@ open MeasureTheory Topology Filter Formalism.BasicNotions Formalism.L2.SG.HidaSe
   Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `set R := (stdOrthonormalBasis ℝ W).repr with hR`. Use `⟨e.trans R.toHomeomorph, fun x y => ?_, ?_⟩` and prove the remaining obligations. Use `show R (e (x + y)) = R (e x) + R (e y)`. Rewrite using `[he, map_add]`. Establish `e1 : ((e.trans R.toHomeomorph : V ≃ₜ _) : V → _) = R ∘ e` using `rfl`.
+
+Rewrite using `[e1, ← Measure.map_map R.continuous.measurable e.continuous.measurable, h, Measure.map_smul, R.measurePreserving.map_eq]`.
+-/
 theorem euc_coords {V W : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
     (μ : Measure V) (e : V ≃ₜ W) (he : ∀ x y, e (x + y) = e x + e y) (c : ℝ)
@@ -28,6 +33,9 @@ def HermEuc : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ
     ∃ (η : Type) (_ : Fintype η) (eH : HmI X ≃ₜ EuclideanSpace ℝ η) (cν : ℝ),
       (∀ S T, eH (S + T) = eH S + eH T) ∧ νinf.map eH = ENNReal.ofReal cν • volume
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) := ⟨rfl⟩`. Take `⟨eH, hadd, hmap⟩` from `euc_coords νinf (hermCoord X) (hermCoord_add X) _ (densNu_holds X u' ψ hT μinf νinf fibInf hP)`. Conclude with `⟨_, inferInstance, eH, _, hadd, hmap⟩`.
+-/
 theorem hermEuc : HermEuc := by
   intro D X u' ψ hT μinf νinf fibInf hP
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

@@ -22,6 +22,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 abbrev thLevel (l : Level H) {R : ℕ} (hR : R ^ 2 ∣ l.M) : Level H :=
   { l with A := R ^ 2, A_pos := Nat.pos_of_dvd_of_pos hR (lt_of_lt_of_le (by norm_num) l.three_le) }
 
+/- English proof (translation)
+Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos hM l.A_pos`. Take `⟨k, hk⟩ : d ∣ l.M'` from `hd.trans (Nat.dvd_lcm_left _ _)`. Establish `hd0 : (d : ℂ) ≠ 0`. Introduce and unpack `h`.
+
+Establish `: d = 0` using `by exact_mod_cast h`. Rewrite `hk` using `[this, zero_mul]`. Use linear arithmetic over natural numbers and integers. Establish `hk0 : (k : ℂ) ≠ 0`. Introduce and unpack `h`.
+
+Establish `: k = 0` using `by exact_mod_cast h`. Rewrite `hk` using `[this, mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `: zeta d = zeta l.M' ^ k`. Unfold `zeta`.
+
+Rewrite using `[← Complex.exp_nat_mul, hk]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `pow_mem c.zeta_mem k`.
+-/
 theorem zeta_mem_of_dvd (c : Coeff l) {d : ℕ} (hd : d ∣ l.M) : zeta d ∈ c.F := by
   have hM : 0 < l.M := lt_of_lt_of_le (by norm_num) l.three_le
   have hM' : 0 < l.M' := Nat.lcm_pos hM l.A_pos

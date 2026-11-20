@@ -21,6 +21,11 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.DetHodgeExt
 
+/- English proof (translation)
+Establish `hp` using `fun k => (GlobalTheory.GradedCompare.lminor_re_pos h k).1`. Establish `h0 : lminor M 0 = 1`. Unfold `lminor`. Conclude with `Matrix.det_isEmpty (n := Fin 0)`. Establish `hl : lminor M (Fin.last m) = M.det` using `rfl`.
+
+Establish `h1` using `(Fin.prod_univ_succ fun k => (lminor M k).re).symm.trans (Fin.prod_univ_castSucc fun k => (lminor M k).re)`. Rewrite `h1` using `[h0, Complex.one_re, one_mul, hl]`. Simplify using `only [GlobalTheory.GradedCompare.grSq_eq h]`. Rewrite using `[Finset.prod_div_distrib, h1, mul_div_cancel_left₀ _ (Finset.prod_ne_zero_iff.2 fun i _ => (hp _).ne')]`.
+-/
 theorem prod_grSq {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) : ∏ i, grSq M i = M.det.re := by
   have hp := fun k => (GlobalTheory.GradedCompare.lminor_re_pos h k).1
   have h0 : lminor M 0 = 1 := by
@@ -32,6 +37,9 @@ theorem prod_grSq {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) : �
   simp only [GlobalTheory.GradedCompare.grSq_eq h]
   rw [Finset.prod_div_distrib, h1, mul_div_cancel_left₀ _ (Finset.prod_ne_zero_iff.2 fun i _ => (hp _).ne')]
 
+/- English proof (translation)
+Rewrite using `[det_smul, det_mul, det_conjTranspose, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, RCLike.star_def, mul_comm (starRingEnd ℂ _), Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem det_smul_gram {m : ℕ} (b : ℝ) (T : Matrix (Fin m) (Fin m) ℂ) :
     ((b : ℂ) • (Tᴴ * T)).det.re = b ^ m * ‖T.det‖ ^ 2 := by
   rw [det_smul, det_mul, det_conjTranspose, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul,
@@ -42,6 +50,13 @@ section Free
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Use `⟨Pm, fun z => Pi.single (e.symm z) 1, GlobalTheory.AllWt.ptF (S := CAt σ) P, hP, ?_, rfl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ShFam.Descent.ptF_fst P).trans hx`. Introduce `z`. Take `⟨w, h1, h2, h3⟩` from `EigFrame.ofFrPt_v (S := CAt σ) Z P (Category.assoc (GlobalTheory.AllWt.ptF (S := CAt σ) P) Z.jQ (genι Z)).symm z.1 z.2`. Use `⟨w, h1.1, h3, ?_⟩` and prove the remaining obligations.
+
+Use `hd z.1 z.2` as an intermediate fact. Rewrite `this` using `[← h2]`. Conclude with `this`. Introduce `v`. Simplify using `only [hQ]`.
+
+Rewrite using `[Fintype.sum_equiv e.symm (fun z => Pm v (e.symm z) • (Pi.single (e.symm z) 1 : Fin g → ℂ)) (fun j => Pm v j • (Pi.single j 1 : Fin g → ℂ)) (fun _ => rfl)]`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem per_cx {Z : Model Xo c β} {σ : c.F →+* ℂ} {g : ℕ} {e : Fin g ≃ Letter Dw} (Fu : Fam Xo c σ e)
     (P : FrPt Xo c (CAt σ)) (i : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ))
     (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) Pm) (hx : P.x = Fu.u i Pm)
@@ -64,6 +79,15 @@ theorem per_cx {Z : Model Xo c β} {σ : c.F →+* ℂ} {g : ℕ} {e : Fin g ≃
     funext j
     simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Take `⟨g, e, Fu, ik, φ, hEF, hun⟩` from `hU.2.2.2.2.2`. Use `choose x hm hx using fun i : Fin Fu.n => GlobalTheory.T.exists_hermitianPeriodLatticeBasis_same_signature _ H Dw (Fu.Di i) τ (Fu.sig i)`. Use `⟨_, GlobalTheory.ShFam.Hor.horFn_horOf (Fu := Fu) (τ := τ) (x := x) (hm := hm) T hσ hr hl hx, ?_⟩` and prove the remaining obligations. Establish `hΨ : ∀ k (ρ : E →+* ℂ), Formalism.L2.PjFree.relab c σ ρ ∈ (U.X k).Ψ ↔ ρ (H.rt : E) = H.rt0` using `fun k ρ => ((hU.2.1 k).2 _).trans (ReciprocityTheory.ChartRestriction.G.PullbackSections.UH.relab_rt c σ hσ ρ)`. Use `choose c₀ hc₀ hper using fun k => GlobalTheory.T.period_relabel_matrix _ H Dw l c σ r (U.X k) (Fu.Di (ik k)) τ ((hΨ k τ).2 hτ) (φ k) (x (ik k)) (hm (ik k)) hU.1 (hU.2.1 k).1 hτ (hΨ k) (hEF k) (hx (ik k))`.
+
+Use `⟨fun k => ‖c₀ k‖ ^ 2 * ‖Formalism.L2.PjFree.relab c σ τ (U.X k).Gm.det‖, fun k y hy => ?_⟩` and prove the remaining obligations. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun k y`. Set `Q : (Fu.Di (ik k)).La →+ (Letter Dw → ℂ)` to `{ toFun := fun v z => Pm v (e.symm z) map_zero' := by funext z; simp map_add' := fun a b => by funext z; simp }`. Establish `hQ : ∀ v z, Q v z = Formalism.L2.PjFree.perFr (U.X k) y (φ k v : Fin r → E) (Formalism.L2.PjFree.relab c σ z.1) z.2` using `fun v z => by`. Use `h1 v (e.symm z)` as an intermediate fact.
+
+Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`. Establish `hP` using `per_cx (Z := T.Z) Fu (U.un k y) (ik k) Pm h2 h3 h4 Q (fun _ _ => rfl)`. Rewrite using `[GlobalTheory.ShFam.Hor.horOf_eq hl hx _ (ik k) Q hP, hper k y.1 y.2 Q hQ, norm_mul, mul_pow]`. Use `congr 1`.
+
+Establish `h5` using `GlobalTheory.FlatLine.det_gram (Formalism.L2.PjFree.relab c σ τ) (U.X k).Gm (mat y.1 ⟨_, (hΨ k τ).2 hτ⟩)`. Apply the tactic sequence `rw [hy ⟨_, (hΨ k τ).2 hτ⟩, Matrix.det_diagonal, norm_prod, Finset.prod_eq_one fun i _ => by unfold sgn; split_ifs <;> simp] at h5`. Rewrite using `[GlobalTheory.FlatLine.horizGen, norm_inv, inv_pow]`. Conclude with `(eq_inv_of_mul_eq_one_left h5.symm).symm`.
+-/
 theorem exists_horFn {Y : Model Xo c β} (T : TorModel Y) {σ : c.F →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb c σ) {r : ℕ}
     {U : Formalism.L2.PjFree.Unf Xo c σ r} (hU : Formalism.L2.PjFree.IsUnf U) (hr : 1 ≤ Dw.p + Dw.q)
     (hl : ∀ p : ℕ, p.Prime → l.GoodAt p) {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) :
@@ -100,6 +124,11 @@ variable {Z : Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `hne : conjEmb τ ≠ τ` using `fun e => GlobalTheory.AllWt.conj_not_mem ⟨τ, hτ⟩ (e.symm ▸ hτ)`. Establish `hE` using `GlobalTheory.ShFam.Pad.expo_detSym Dw ⟨τ, hτ⟩ (fun _ => false) none`. Rewrite using `[FlagCpt.genSq, Fintype.prod_sigma, Finset.prod_eq_mul τ (conjEmb τ) hne.symm, ← prod_grSq (G.pos _ _ _), ← prod_grSq (G.pos _ _ _), div_eq_mul_inv, ← Finset.prod_inv_distrib]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hE]; simp`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [hE]; simp [hne]`. Introduce `ρ _ h`. Conclude with `Finset.prod_eq_one fun i _ => by rw [hE]; simp [h.1, h.2]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem genSq_det (G : EigMet Z (embOf e σ)) {τ : E →+* ℂ} (hτ : τ (H.rt : E) = H.rt0) {p : Y.Y.pts σ} (g : Y.FrameAt p) :
     Y.genSq G (expo Dw (detSym Dw (fun _ => false) none τ)) g =
       (G.gram _ g τ).det.re / (G.gram _ g (conjEmb τ)).det.re := by
@@ -115,12 +144,22 @@ theorem genSq_det (G : EigMet Z (embOf e σ)) {τ : E →+* ℂ} (hτ : τ (H.rt
   · simp
   · simp
 
+/- English proof (translation)
+Take `⟨q, h1, φ, f, h2, h3⟩` from `Y.exists_adapted p`. Take `⟨r, -, hr⟩` from `(CartierDiv.IsEqn.generatesAt_iff (FlagCpt.prodPow_mem n h1)).1 hs`. Conclude with `⟨q.2, _, _, _, φ, f, _, _, r, (Y.spMap_evStalk p).symm, h2, h3, hr, rfl⟩`.
+-/
 theorem exists_isCoord (n : Letter Dw → ℤ) {s : Y.Y.Fn} (p : Y.Y.pts σ) (hs : (divOf Y n).GeneratesAt (Var.base p) s) :
     ∃ (g : Y.FrameAt p) (v : ℂ), IsCoord Y p.1 g n s v := by
   obtain ⟨q, h1, φ, f, h2, h3⟩ := Y.exists_adapted p
   obtain ⟨r, -, hr⟩ := (CartierDiv.IsEqn.generatesAt_iff (FlagCpt.prodPow_mem n h1)).1 hs
   exact ⟨q.2, _, _, _, φ, f, _, _, r, (Y.spMap_evStalk p).symm, h2, h3, hr, rfl⟩
 
+/- English proof (translation)
+Take `⟨q, h1, h2⟩` from `Y.exists_adapted p`. Establish `key : ∀ m : Letter Dw → ℤ, lnRatio (C` using `cxSt F) (Y.met G m) (Y.met G₀ m) p = ∑ z : Letter Dw, (m z : ℝ) * ((Real.log (grSq (G.gram _ q.2 z.1) z.2) - Real.log (grSq (G₀.gram _ q.2 z.1) z.2)) / 2) := fun m => by`. Establish `hm` using `FlagCpt.prodPow_mem m h1`. Establish `hg : (divOf Y m).GeneratesAt (under p) (((prodPow q.1 m)⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn)`. Rewrite using `[Units.val_inv_eq_inv_val]`.
+
+Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 hm`. Rewrite using `[lnRatio_eq hg (posAt_of_posSet (FlagCpt.posSet_met _ _) p) (posAt_of_posSet (FlagCpt.posSet_met _ _) p)]`. Use `show Real.log (Y.Y.pn σ _ (Y.met G m) (Y.Y.cx σ _) p) / 2 - Real.log (Y.Y.pn σ _ (Y.met G₀ m) (Y.Y.cx σ _) p) / 2 = _`. Establish `hone : ‖((prodPow (1 : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂˣ) m : ℂˣ) : ℂ)‖ ^ 2 = 1` using `by simp [prodPow]`. Rewrite using `[Var.pn_frame hm, Var.pn_frame hm, FlagCpt.met_h G m h2, FlagCpt.met_h G₀ m h2, hone, div_one, div_one, GlobalTheory.GradedCompare.log_genSq, GlobalTheory.GradedCompare.log_genSq, ← sub_div, ← Finset.sum_sub_distrib, Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun z _ => by ring`. Simplify using `only [key, Finset.sum_apply, Int.cast_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem lnRatio_sum (G G₀ : EigMet Z (embOf e σ)) {ι : Type} (S : Finset ι) (n : ι → Letter Dw → ℤ) (p : Y.Y.pts σ) :
     ∑ i ∈ S, lnRatio (C := cxSt F) (Y.met G (n i)) (Y.met G₀ (n i)) p =
       lnRatio (C := cxSt F) (Y.met G (∑ i ∈ S, n i)) (Y.met G₀ (∑ i ∈ S, n i)) p := by
@@ -151,6 +190,23 @@ include hφ
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hr : 1 ≤ S.Dw.p + S.Dw.q` using `by have := S.two_le; have := S.rank_eq; omega`. Take `⟨h, hh, b, hb⟩` from `exists_horFn s.T hσ (s.unf _ hσ).1 hr κ.good (A.cm τ)`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.ShFam.Horiz.rigid (Φ.C k) (A.cm τ) hh hφ`. Use `⟨Set.range fun k' => (2 * Real.pi * xiR D) ^ S.Dw.mult (DV.tauEmb D τ) / (2 * Real.pi * xiR D) ^ S.Dw.mult (conjEmb (DV.tauEmb D τ)) * b k' / ‖b₀‖ ^ 2, Set.finite_range _, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hp`.
+
+Take `⟨g, v, hv⟩` from `exists_isCoord (Φ.C k) (detEx S τ) p (hφ _)`. Take `⟨ψ, σ', k', y, rfl | rfl, h2, h3, h4, h5, h6⟩` from `id hf`. Use `swap`. Conclude with `(not_good_conj κ.c (σ := embOf κ.e σ) hσ (h2 ▸ h3)).elim`. Take `rfl : σ' = embOf κ.e σ` from `h2`.
+
+Establish `e0 : cxPt s.T.Z ((s.U _).un k' y) = (Φ.C k).down p` using `Subtype.ext (h5.trans ((congrArg (· ≫ ((Φ.C k).down p).1) (Spec.map_id _)).trans (Category.id_comp _)))`. Establish `hv' : ∀ ρ, (cxFrame s.T.Z ((s.U _).un k' y)).v ρ = f.v ρ` using `fun ρ => funext fun i => by`. Rewrite using `[h6, spMap_dualMap_id, Category.id_comp]`. Establish `hC : ∀ ρ, Chg (⟨_, cxFrame s.T.Z ((s.U _).un k' y)⟩ : CxFr s.T.Z _) ⟨(Φ.C k).down p, g⟩ ρ (f.co g ρ)ᵀ` using `fun ρ => ⟨e0, fun i => by show IsCombAtG _ _ ((cxFrame s.T.Z ((s.U _).un k' y)).v ρ) _ _`. Rewrite using `[hv']`.
+
+Conclude with `f.co_spec g ρ i⟩`. Establish `hin : Hor.Inner (cxPt s.T.Z ((s.U _).un k' y))` using `not_liesIn_cxPt (Z := s.T.Z) ((s.U _).un k' y)`. Establish `hin' : Hor.Inner ((Φ.C k).down p)` using `hp`. Establish `e1` using `hh.2.1 _ _ _ _ hin (hC (DV.tauEmb D τ)) (hC (conjEmb (DV.tauEmb D τ)))`. Establish `hstr : p.1 ≫ (Φ.C k).Y.str = spMap ((embOf κ.e σ).comp κ.e.toRingHom)` using `p.2.trans (congrArg spMap (RingHom.ext fun a => congrArg σ (κ.e.symm_apply_apply a).symm))`.
+
+Establish `e2` using `hb₀ ⟨(Φ.C k).down p, g⟩ ⟨p.1, hstr⟩ v hin' rfl hv`. Establish `e3` using `hh.1 ⟨(Φ.C k).down p, g⟩ hin'`. Establish `e4` using `hb k' y h4`. Use `⟨k', ?_⟩` and prove the remaining obligations. Establish `e5` using `FlagCpt.pn_met (x.hodge (embOf κ.e σ)) (detEx S τ) hv`.
+
+Rewrite `e5` using `[genSq_det (Φ.C k) _ (A.cm τ), x.hodge_gram hf, x.hodge_gram hf, det_smul_gram, det_smul_gram]`. Use `Eq.trans ?_ e5.symm` and prove the remaining obligations. Rewrite `e1` using `[det_transpose, det_transpose, e2]`. Rewrite `e3` using `[e2]`. Establish `e6` using `congrArg (fun z : ℂ => ‖z‖ ^ 2) e1`.
+
+Simplify using `only [norm_mul, mul_pow] at e6`. Rewrite `e6` using `[e4]`. Establish `n1 : ‖b₀‖ ≠ 0` using `norm_ne_zero_iff.2 (left_ne_zero_of_mul e3)`. Establish `n2 : ‖(f.co g (conjEmb (DV.tauEmb D τ))).det‖ ≠ 0` using `norm_ne_zero_iff.2 (f.isUnit_det_co g _).ne_zero`. Establish `n3 : 2 * Real.pi * xiR D ≠ 0` using `(mul_pos Real.two_pi_pos (xiR_pos D)).ne'`.
+
+Generalize the expression as in `2 * Real.pi * xiR D = t at n3 ⊢`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-e6`.
+-/
 theorem finite_good {σ : D.what₂.LL →+* ℂ} (hσ : Formalism.L2.PjFree.GoodEmb κ.c (embOf κ.e σ)) :
     ∃ V : Set ℝ, V.Finite ∧ ∀ p : (Φ.C k).Y.pts σ, ¬ LiesIn ((Φ.C k).down p) (genBd s.T.Z) →
       (Φ.C k).Y.pn σ _ (metsOf x Φ k none σ (detEx S τ)) ((Φ.C k).Y.cx σ φ) p ∈ V := by
@@ -200,6 +256,13 @@ theorem finite_good {σ : D.what₂.LL →+* ℂ} (hσ : Formalism.L2.PjFree.Goo
 
 omit hφ in
 
+/- English proof (translation)
+Establish `hφ : IsFlat (Φ.C k) (DV.tauEmb D τ) ((u⁻¹ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn)` using `fun y => by`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 (hu y)`. Establish `good : ∀ σ : D.what₂.LL →+* ℂ, Formalism.L2.PjFree.GoodEmb κ.c (embOf κ.e σ) → ∃ V : Set ℝ, V.Finite ∧ ∀ p : (Φ.C k).Y.pts σ, ¬ LiesIn ((Φ.C k).down p) (genBd s.T.Z) → Var.Met.h (metsOf x Φ k none σ (detEx S τ)) u p ∈ V` using `fun σ hσ => by`. Take `⟨V, h1, h2⟩` from `finite_good x Φ k τ hφ hσ`.
+
+Conclude with `⟨V, h1, fun p hp => Var.pn_frame (m := metsOf x Φ k none σ (detEx S τ)) (y := p) (hu _) ▸ h2 p hp⟩`. Distinguish the cases in `hσ : GoodEmb κ.c (embOf κ.e σ)`. Conclude with `good σ hσ`. Establish `h1 : GoodEmb κ.c ((starRingEnd ℂ).comp (embOf κ.e σ))`. Simplify `goodEmb_goodOf κ.c (embOf κ.e σ)` using `only [goodOf, if_neg hσ]`.
+
+Take `⟨V, h2, h3⟩` from `good ((starRingEnd ℂ).comp σ) h1`. Use `⟨V, h2, fun p hp => ?_⟩` and prove the remaining obligations. Set `p' : (Φ.C k).Y.pts ((starRingEnd ℂ).comp σ)` to `⟨spMap (starRingEnd ℂ) ≫ p.1, by rw [Category.assoc, p.2, ← Spec.map_comp]; rfl⟩`. Rewrite using `[← (GlobalTheory.ShFam.mets_conj D A N j S κ s x Φ k σ _ (detEx S τ) p p' u rfl (hu _)).1 none]`. Conclude with `h3 p' fun h => hp ((liesIn_iff_of_comp (y := (Φ.C k).down p) (y' := (Φ.C k).down p') (ψ := starRingEnd ℂ) (Category.assoc _ _ _) _).1 h)`.
+-/
 theorem finite_all {u : (Φ.C k).Y.Fnˣ} (hu : ∀ y, (divOf (Φ.C k) (detEx S τ)).IsEqn y u) (σ : D.what₂.LL →+* ℂ) :
     ∃ V : Set ℝ, V.Finite ∧ ∀ p : (Φ.C k).Y.pts σ, ¬ LiesIn ((Φ.C k).down p) (genBd s.T.Z) →
       Var.Met.h (metsOf x Φ k none σ (detEx S τ)) u p ∈ V := by
@@ -225,6 +288,15 @@ theorem finite_all {u : (Φ.C k).Y.Fnˣ} (hu : ∀ y, (divOf (Φ.C k) (detEx S �
 
 omit hφ in
 
+/- English proof (translation)
+Take `⟨V, hV, h⟩` from `finite_all x Φ k τ hu σ`. Use `set B := ptsIn (Φ.C k).Y.str σ ((Φ.C k).π ⁻¹ᵁ (genBd s.T.Z).compl) with hB`. Establish `hm : ∀ p, p ∈ B ↔ (Φ.C k).π (Var.base p) ∉ genBd s.T.Z` using `fun p => mem_ptsIn`. Establish `hc : ContinuousOn (Var.Met.wt (metsOf x Φ k none σ (detEx S τ)) u) B` using `(((GlobalTheory.metsOf_smooth D A N j S κ s x Φ k σ (detEx S τ)).2.2.2 u).mono fun p hp => ⟨(hm p).1 hp, hu _⟩).continuousOn (isOpen_ptsIn _)`. Establish `hs : (Var.Met.wt (metsOf x Φ k none σ (detEx S τ)) u '' B).Subsingleton`.
+
+Establish `h1` using `(GlobalTheory.CxConn.isPreconnected_ptsIn _ (Φ.C k).Y σ _).image _ hc`. Establish `h2 : (Var.Met.wt (metsOf x Φ k none σ (detEx S τ)) u '' B).Finite` using `(hV.image fun t => -Real.log t).subset (by`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `⟨_, h p ((hm p).1 hp), rfl⟩)`. Introduce `a ha b hb`.
+
+Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `(Set.Icc_infinite hlt) (h2.subset (h1.Icc_subset ha hb))`. Conclude with `(Set.Icc_infinite hlt) (h2.subset (h1.Icc_subset hb ha))`. Distinguish the cases in `hne : B.Nonempty`.
+
+Take `⟨p₀, hp₀⟩` from `hne`. Conclude with `⟨_, fun p hp => hs ⟨p, (hm p).2 hp, rfl⟩ ⟨p₀, hp₀, rfl⟩⟩`. Conclude with `⟨0, fun p hp => (hne ⟨p, (hm p).2 hp⟩).elim⟩`.
+-/
 theorem exists_wt_const {u : (Φ.C k).Y.Fnˣ} (hu : ∀ y, (divOf (Φ.C k) (detEx S τ)).IsEqn y u) (σ : D.what₂.LL →+* ℂ) :
     ∃ a : ℝ, ∀ p : (Φ.C k).Y.pts σ, (Φ.C k).π (Var.base p) ∉ genBd s.T.Z →
       Var.Met.wt (metsOf x Φ k none σ (detEx S τ)) u p = a := by
@@ -252,6 +324,15 @@ theorem exists_wt_const {u : (Φ.C k).Y.Fnˣ} (hu : ∀ y, (divOf (Φ.C k) (detE
 
 omit hφ in
 
+/- English proof (translation)
+Establish `hφ` using `GlobalTheory.ShFam.Hor.isFlat_flatSec D A N j S κ s Φ k τ`. Generalize the expression as in `flatSec s Φ k τ = φ at hφ`. Establish `h0 : φ ≠ 0` using `have ⟨_, _, hu⟩ := hφ (genericPoint _)`. Use `left_ne_zero_of_mul hu.ne_zero`. Establish `hu : ∀ y, (divOf (Φ.C k) (detEx S τ)).IsEqn y (Units.mk0 φ h0)⁻¹` using `fun y => CartierDiv.isEqn_iff_generatesAt_inv.2 (by simpa using hφ y)`.
+
+Take `⟨a, ha⟩` from `exists_wt_const x Φ k τ hu σ`. Establish `hs` using `((GlobalTheory.metsOf_smooth D A N j S κ s x Φ k σ (detEx S τ)).2.1.2 (Units.mk0 φ h0)⁻¹).mono (T := Set.univ) fun p _ => ⟨trivial, hu _⟩`. Use `⟨fun p => (a - Var.Met.wt (refMet x Φ k σ (detEx S τ)) (Units.mk0 φ h0)⁻¹ p) / 2, fun i => (contDiffOn_const.sub (hs i)).div_const 2, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[lnRatio_eq (f := φ) (hφ _) (posAt_of_posSet (posSet_metsOf x Φ k none σ _) p) (posAt_of_posSet (posSet_refMet x Φ k σ _) p), ← ha p hp]`. Establish `e₁` using `Var.pn_frame (m := metsOf x Φ k none σ (detEx S τ)) (y := p) (hu _)`.
+
+Establish `e₂` using `Var.pn_frame (m := refMet x Φ k σ (detEx S τ)) (y := p) (hu _)`. Rewrite `e₁`, `e₂` using `[inv_inv, Units.val_mk0]`. Use `show _ = -(Real.log ((Φ.C k).Y.pn σ _ _ ((Φ.C k).Y.cx σ φ) p) / 2 - Real.log ((Φ.C k).Y.pn σ _ _ ((Φ.C k).Y.cx σ φ) p) / 2)`. Rewrite using `[e₁, e₂]`. Unfold `Var.Met.wt`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smooth (σ : D.what₂.LL →+* ℂ) : ∃ g : (Φ.C k).Y.pts σ → ℝ, ((Φ.C k).Y.an σ).SmoothOn Set.univ g ∧
     ∀ p, (Φ.C k).π (Var.base p) ∉ genBd s.T.Z →
       g p = -lnRatio (metsOf x Φ k none σ (detEx S τ)) (refMet x Φ k σ (detEx S τ)) p := by
@@ -282,6 +363,15 @@ end GlobalTheory.DetHodgeExt
 open IsDedekindDomain Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 ReciprocityTheory.AnForm
   ReciprocityTheory.AnForm.M in
 
+/- English proof (translation)
+Introduce `_ _ D O hO _ A T H h τ c`. Take `⟨x, P, hc⟩` from `hO`. Set `I` to `h.man c`. Use `choose g hg he using fun σ => GlobalTheory.DetHodgeExt.exists_smooth x O.Φ c τ σ`. Use `⟨fun a z => g (I.ε a) (I.pt a z), fun a j => ?_, fun a z hz => ?_⟩` and prove the remaining obligations.
+
+Simplify using `using GlobalTheory.HodgeChgSmooth.smoothOn_of_manIs I (O.dim_eq c) a isOpen_univ (hg (I.ε a)) (f := fun z => g (I.ε a) (I.pt a z)) (fun _ _ => rfl) j`. Establish `hz'` using `((h.an c).Z a z).not.1 hz`. Use `((he _ _ hz').trans ?_).trans ((h.an c).ph _ a z hz).symm` and prove the remaining obligations. Establish `hn : detEx O.S τ = ∑ i : Fin O.N, O.ex (τ, i)`. Use function extensionality and compare the values at `w`.
+
+Apply the tactic sequence `have e : expo O.S.Dw (detSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ)) w = ∑ k ∈ Finset.range (O.S.Dw.p + O.S.Dw.q), expo O.S.Dw (rootSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ) k) w := (Finsupp.sum_finsetSum_index (fun _ => by simp) fun _ _ _ => by split_ifs <;> simp).s …`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[O.S.rank_eq, Finset.sum_apply, Finset.sum_range]`. Both sides reduce to the same expression. Unfold `Setup.chg`.
+
+Rewrite using `[hc.hm_eq, hc.h0_eq, Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp), hn]`. Simplify using `only [if_true, neg_one_mul, Finset.sum_neg_distrib]`. Conclude with `congrArg Neg.neg (GlobalTheory.DetHodgeExt.lnRatio_sum (O.Φ.C c) (x.hodge _) (x.eigMet _) Finset.univ (fun i => O.ex (τ, i)) _).symm`.
+-/
 theorem GlobalTheory.DetHodgeExt.exists_smooth_ext : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ _ => ∀ (τ : D.what₂.Tau) c,
     ∃ g : (T.M c).Fun, (T.M c).Smooth g ∧
       ∀ σ x, x ∉ (T.M c).Z σ → g σ x = (T.F c).ph (fun σ' _ => if σ' = τ then (-1 : ℝ) else 0) σ x := by

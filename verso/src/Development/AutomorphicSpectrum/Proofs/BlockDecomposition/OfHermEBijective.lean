@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.HermPoisson
 
 variable {D : D7} {r : ℕ}
 
+/- English proof (translation)
+Use `show adj (rat β.1) = rat β.1`. Rewrite using `[← rat_conjTranspose]`. Use `congr 1`. Conclude with `β.2`.
+-/
 theorem rat_mem_hermA (β : HermE D r) : rat β.1 ∈ hermA D r := by
   show adj (rat β.1) = rat β.1
   rw [← rat_conjTranspose]
@@ -21,8 +24,16 @@ theorem rat_mem_hermA (β : HermE D r) : rat β.1 ∈ hermA D r := by
 def ofHermE (β : HermE D r) : ratHerm D r :=
   ⟨⟨rat β.1, rat_mem_hermA β⟩, ⟨β.1, rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofHermE_val (β : HermE D r) : (ofHermE β).1.1 = β.1.map (incA D) := rfl
 
+/- English proof (translation)
+Use `⟨fun a b h => Subtype.ext (rat_injective (congrArg (fun c : ratHerm D r => c.1.1) h)), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨x, hx⟩, hr⟩`. Take `⟨γ, hγ⟩` from `(mem_ratMx).1 (AddSubgroup.mem_comap.1 hr)`. Establish `hγ' : rat γ = x` using `hγ`. Use `⟨⟨γ, rat_injective ?_⟩, Subtype.ext (Subtype.ext hγ')⟩` and prove the remaining obligations.
+
+Establish `hx' : adj x = x` using `hx`. Establish `: rat γᴴ = rat γ` using `by rw [rat_conjTranspose, hγ', hx']`. Conclude with `this`.
+-/
 theorem ofHermE_bijective : Function.Bijective (ofHermE (D := D) (r := r)) := by
   refine ⟨fun a b h => Subtype.ext (rat_injective (congrArg (fun c : ratHerm D r => c.1.1) h)), ?_⟩
   rintro ⟨⟨x, hx⟩, hr⟩
@@ -35,11 +46,20 @@ theorem ofHermE_bijective : Function.Bijective (ofHermE (D := D) (r := r)) := by
 
 def hermEquiv : HermE D r ≃ ratHerm D r := Equiv.ofBijective _ ofHermE_bijective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermEquiv_apply (β : HermE D r) : (hermEquiv (D := D) (r := r)) β = ofHermE β := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem J_eq_Jt (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank r)) (φ : Mx D V.rank r → ℂ)
     (β : HermE D r) : J ψ V μ φ β = Jt ψ V μ φ (ofHermE β).1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem W_eq (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r))
     (φ : Mx D V.rank r → ℂ) (β : HermE D r) :
     W ψ V μ lam φ β = ∫ b, Jt ψ V μ φ b *

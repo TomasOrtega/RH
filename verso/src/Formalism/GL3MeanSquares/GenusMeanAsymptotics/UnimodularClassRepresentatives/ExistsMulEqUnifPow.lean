@@ -15,18 +15,32 @@ namespace NO
 abbrev zR (𝔭 : Ideal (𝓞 F)) (z : K) : AddSubgroup K :=
   (pK K 𝔭 0).toAddSubgroup.map (AddMonoidHom.mulLeft z)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_zR {𝔭 : Ideal (𝓞 F)} {z a : K} : a ∈ zR 𝔭 z ↔ ∃ b ∈ pK K 𝔭 0, z * b = a := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `mul_mem_pK h𝔭 ha hb`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem mul_mem₀ {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {a b : K} (ha : a ∈ pK K 𝔭 k)
     (hb : b ∈ pK K 𝔭 0) : a * b ∈ pK K 𝔭 k := by
   have h := mul_mem_pK h𝔭 ha hb
   rwa [add_zero] at h
 
+/- English proof (translation)
+Introduce and unpack `a ⟨b, hb, rfl⟩`. Conclude with `mul_mem₀ h𝔭 hz hb`.
+-/
 theorem zR_le {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K} (hz : z ∈ pK K 𝔭 0) :
     zR 𝔭 z ≤ (pK K 𝔭 0).toAddSubgroup := by
   rintro a ⟨b, hb, rfl⟩
   exact mul_mem₀ h𝔭 hz hb
 
+/- English proof (translation)
+Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨w * b, ⟨b, hb, rfl⟩, (mul_assoc z w b).symm⟩`. Introduce and unpack `⟨_, ⟨b, hb, rfl⟩, rfl⟩`.
+
+Conclude with `⟨b, hb, mul_assoc z w b⟩`.
+-/
 theorem zR_mul (𝔭 : Ideal (𝓞 F)) (z w : K) :
     zR 𝔭 (z * w) = (zR 𝔭 w).map (AddMonoidHom.mulLeft z) := by
   ext a
@@ -36,6 +50,9 @@ theorem zR_mul (𝔭 : Ideal (𝓞 F)) (z w : K) :
   · rintro ⟨_, ⟨b, hb, rfl⟩, rfl⟩
     exact ⟨b, hb, mul_assoc z w b⟩
 
+/- English proof (translation)
+Use `(mem_pK h𝔭).2 ⟨1, fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h), algebraMap (𝓞 F) (𝓞 K) s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[extP, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hs`. Rewrite using `[show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem algF_mem_pK {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {s : 𝓞 F} (hs : s ∈ 𝔭 ^ k) :
     algebraMap F K (s : F) ∈ pK K 𝔭 k := by
   refine (mem_pK h𝔭).2 ⟨1, fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h),
@@ -45,6 +62,11 @@ theorem algF_mem_pK {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {
   · rw [show ((1 : 𝓞 F) : F) = 1 from rfl, map_one, one_mul]
     rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `(mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨b, hb, rfl⟩`. Introduce `ha`.
+
+Take `⟨b, hb, e⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 ha`. Conclude with `⟨b, hb, e.symm⟩`.
+-/
 theorem zR_unif_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 F} (hπ : π ∈ 𝔭) (hπ' : π ∉ 𝔭 ^ 2)
     (k : ℕ) : zR 𝔭 (algebraMap F K (π : F) ^ k) = (pK K 𝔭 k).toAddSubgroup := by
   ext a
@@ -55,6 +77,13 @@ theorem zR_unif_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 
     obtain ⟨b, hb, e⟩ := (mem_pK_iff_unif h𝔭 hπ hπ').1 ha
     exact ⟨b, hb, e.symm⟩
 
+/- English proof (translation)
+Take `⟨t, ht, z, -, e⟩` from `(mem_pK h𝔭).1 ha`. Take `⟨u, hu⟩` from `MeanA.exists_mul_sub_one_mem_pow h𝔭 ht k`. Use `⟨algebraMap (𝓞 F) (𝓞 K) u * z, ?_⟩` and prove the remaining obligations. Establish `h1` using `mul_mem₀ h𝔭 (algF_mem_pK (K := K) h𝔭 hu) ha`. Establish `h2 : a - algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) u * z) = -(algebraMap F K ((u * t - 1 : 𝓞 F) : F) * a)`.
+
+Rewrite using `[map_mul, e]`. Establish `e1 : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) u) = algebraMap F K (u : F)` using `rfl`. Establish `e2 : ((u * t - 1 : 𝓞 F) : F) = (u : F) * (t : F) - 1` using `by simp`. Rewrite using `[e1, e2, map_sub, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2]`. Conclude with `(pK K 𝔭 k).neg_mem h1`.
+-/
 theorem exists_sub_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) {a : K} (ha : a ∈ pK K 𝔭 0) :
     ∃ z : 𝓞 K, a - algebraMap (𝓞 K) K z ∈ pK K 𝔭 k := by
   obtain ⟨t, ht, z, -, e⟩ := (mem_pK h𝔭).1 ha
@@ -71,6 +100,15 @@ theorem exists_sub_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ
   rw [h2]
   exact (pK K 𝔭 k).neg_mem h1
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨t, ht, w, hw, e⟩` from `(mem_pK h𝔭).1 (show algebraMap (𝓞 K) K z ∈ pK K 𝔭 k from hz)`. Take `⟨u, hu⟩` from `MeanA.exists_mul_sub_one_mem_pow h𝔭 ht k`.
+
+Establish `e1 : w = algebraMap (𝓞 F) (𝓞 K) t * z`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `e`. Establish `e2 : z = algebraMap (𝓞 F) (𝓞 K) u * w - algebraMap (𝓞 F) (𝓞 K) (u * t - 1) * z`. Rewrite using `[e1, map_sub, map_mul, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show z ∈ extP K 𝔭 ^ k`. Rewrite using `[e2]`. Use `sub_mem (Ideal.mul_mem_left _ _ hw) (Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations. Rewrite using `[extP, ← Ideal.map_pow]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hu`. Introduce `hz`. Conclude with `(mem_pK h𝔭).2 ⟨1, fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h), z, hz, by simp⟩`.
+-/
 theorem comap_pK {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     (pK K 𝔭 k).toAddSubgroup.comap (algebraMap (𝓞 K) K).toAddMonoidHom =
       (extP K 𝔭 ^ k).toAddSubgroup := by
@@ -93,6 +131,11 @@ theorem comap_pK {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
   · intro hz
     exact (mem_pK h𝔭).2 ⟨1, fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h), z, hz, by simp⟩
 
+/- English proof (translation)
+Establish `h1 : (algebraMap (𝓞 K) K).toAddMonoidHom.range ⊔ (pK K 𝔭 k).toAddSubgroup = (pK K 𝔭 0).toAddSubgroup`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ (pK_anti 𝔭 (Nat.zero_le k))` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `algebraMap_mem_pK 𝔭 z`.
+
+Introduce `a ha`. Take `⟨z, hz⟩` from `exists_sub_mem h𝔭 k ha`. Rewrite using `[show a = algebraMap (𝓞 K) K z + (a - algebraMap (𝓞 K) K z) by ring]`. Conclude with `add_mem (AddSubgroup.mem_sup_left ⟨z, rfl⟩) (AddSubgroup.mem_sup_right hz)`. Rewrite using `[← h1, AddSubgroup.relIndex_sup_right, ← AddSubgroup.index_comap, comap_pK h𝔭, ← Ideal.absNorm_eq_index, map_pow, idealPowerSpanBounds.absNorm_extP_eq_sq hK hF h𝔭, ← pow_mul]`.
+-/
 theorem relIndex_pK (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     (pK K 𝔭 k).toAddSubgroup.relIndex (pK K 𝔭 0).toAddSubgroup = Ideal.absNorm 𝔭 ^ (2 * k) := by
@@ -112,6 +155,9 @@ theorem relIndex_pK (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
 end NO
 
 open NO in
+/- English proof (translation)
+Establish `h1` using `AddSubgroup.relIndex_mul_relIndex ((zR 𝔭 w).map (AddMonoidHom.mulLeft z)) (zR 𝔭 z) (pK K 𝔭 0).toAddSubgroup (AddSubgroup.map_mono (zR_le h𝔭 hw)) (zR_le h𝔭 hz)`. Establish `h2 : ((zR 𝔭 w).map (AddMonoidHom.mulLeft z)).relIndex (zR 𝔭 z) = nO 𝔭 w` using `AddSubgroup.relIndex_map_map_of_injective _ _ (mul_right_injective₀ hz0)`. Rewrite `h1` using `[h2, ← zR_mul]`. Rewrite using `[mul_comm (nO 𝔭 z)]`. Conclude with `h1.symm`.
+-/
 theorem nO_mul {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z w : K} (hz : z ∈ pK K 𝔭 0) (hz0 : z ≠ 0)
     (hw : w ∈ pK K 𝔭 0) : nO 𝔭 (z * w) = nO 𝔭 z * nO 𝔭 w := by
   have h1 := AddSubgroup.relIndex_mul_relIndex ((zR 𝔭 w).map (AddMonoidHom.mulLeft z)) (zR 𝔭 z)
@@ -123,6 +169,15 @@ theorem nO_mul {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z w : K} (hz : 
   exact h1.symm
 
 open NO in
+/- English proof (translation)
+Establish `hs : ∀ a : K, star a ∈ pK K 𝔭 0 ↔ a ∈ pK K 𝔭 0` using `fun a => ⟨fun h => by simpa using star_mem_pK hF h𝔭 h, star_mem_pK hF h𝔭⟩`. Establish `h1 : (pK K 𝔭 0).toAddSubgroup.map (starAddEquiv : K ≃+ K).toAddMonoidHom = (pK K 𝔭 0).toAddSubgroup`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`.
+
+Conclude with `star_mem_pK hF h𝔭 hb`. Introduce `ha`. Conclude with `⟨star a, star_mem_pK hF h𝔭 ha, star_star a⟩`. Establish `h2 : (zR 𝔭 z).map (starAddEquiv : K ≃+ K).toAddMonoidHom = zR 𝔭 (star z)`. Use extensionality with `a`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨b, hb, rfl⟩, rfl⟩`. Conclude with `⟨star b, star_mem_pK hF h𝔭 hb, (star_mul' z b).symm⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Use `⟨z * star b, ⟨star b, star_mem_pK hF h𝔭 hb, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show star (z * star b) = star z * b`. Rewrite using `[star_mul', star_star]`. Establish `h3` using `AddSubgroup.relIndex_map_map_of_injective (zR 𝔭 z) (pK K 𝔭 0).toAddSubgroup (f := (starAddEquiv : K ≃+ K).toAddMonoidHom) (starAddEquiv : K ≃+ K).injective`. Rewrite `h3` using `[h1, h2]`. Conclude with `h3`.
+-/
 theorem nO_star (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (z : K) :
     nO 𝔭 (star z) = nO 𝔭 z := by
   have hs : ∀ a : K, star a ∈ pK K 𝔭 0 ↔ a ∈ pK K 𝔭 0 := fun a =>
@@ -150,6 +205,11 @@ theorem nO_star (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaxima
   exact h3
 
 open NO in
+/- English proof (translation)
+Establish `h1 : zR 𝔭 z = (pK K 𝔭 0).toAddSubgroup`. Apply `le_antisymm (zR_le h𝔭 hz)` to reduce the goal to its premises. Introduce `a ha`. Conclude with `⟨z⁻¹ * a, mul_mem₀ h𝔭 hz' ha, mul_inv_cancel_left₀ hz0 a⟩`. Use `show (zR 𝔭 z).relIndex _ = 1`.
+
+Rewrite using `[h1, AddSubgroup.relIndex_self]`.
+-/
 theorem nO_unit {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K} (hz : z ∈ pK K 𝔭 0)
     (hz' : z⁻¹ ∈ pK K 𝔭 0) (hz0 : z ≠ 0) : nO 𝔭 z = 1 := by
   have h1 : zR 𝔭 z = (pK K 𝔭 0).toAddSubgroup := by
@@ -160,6 +220,9 @@ theorem nO_unit {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K} (hz : z
   rw [h1, AddSubgroup.relIndex_self]
 
 open NO in
+/- English proof (translation)
+Use `show (zR 𝔭 _).relIndex _ = _`. Rewrite using `[zR_unif_pow h𝔭 hπ hπ', relIndex_pK hK hF h𝔭]`.
+-/
 theorem nO_unif_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {π : 𝓞 F} (hπ : π ∈ 𝔭) (hπ' : π ∉ 𝔭 ^ 2) (k : ℕ) :
     nO 𝔭 (algebraMap F K (π : F) ^ k) = Ideal.absNorm 𝔭 ^ (2 * k) := by
@@ -168,6 +231,27 @@ theorem nO_unif_pow (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
 
 namespace NO
 
+/- English proof (translation)
+Take `⟨t, ht, z₀, -, e⟩` from `(mem_pK h𝔭).1 hz`. Establish `ht0 : (t : F) ≠ 0`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Rewrite using `[show t = 0 from RingOfIntegers.ext h]`.
+
+Conclude with `𝔭.zero_mem`. Establish `hz₀ : z₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `e` using `[map_zero]`. Break down `mul_eq_zero.1 e.symm with h | h` into its components or cases.
+
+Conclude with `ht0 ((map_eq_zero _).1 h)`. Conclude with `hz0 h`. Use `set n : ℕ := Ideal.absNorm (Ideal.span {z₀}) with hn`. Establish `hn0 : n ≠ 0`. Rewrite using `[hn, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hz₀`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {z₀}))`. Establish `hc' : Ideal.span {(n : 𝓞 F)} ≠ (0 : Ideal (𝓞 F))`. Simplify using `using hn0`. Establish `hun : ¬ IsUnit 𝔭`.
+
+Rewrite using `[Ideal.isUnit_iff]`. Conclude with `h𝔭.ne_top`. Take `⟨𝔟, hb, hnd⟩` from `(FiniteMultiplicity.of_not_isUnit hun hc').exists_eq_pow_mul_and_not_dvd`. Rewrite `hnd` using `[Ideal.dvd_iff_le]`. Take `⟨s, hsb, hsp⟩` from `SetLike.not_le_iff_exists.mp hnd`.
+
+Use `set m := multiplicity 𝔭 (Ideal.span {(n : 𝓞 F)}) with hm`. Establish `h1 : π ^ m * s ∈ Ideal.span {(n : 𝓞 F)}`. Rewrite using `[hb]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hπ m) hsb`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`.
+
+Establish `hs0 : (s : F) ≠ 0`. Introduce `h`. Apply `hsp` to reduce the goal to its premises. Rewrite using `[show s = 0 from RingOfIntegers.ext h]`. Conclude with `𝔭.zero_mem`.
+
+Establish `hs0' : algebraMap F K (s : F) ≠ 0` using `(map_ne_zero _).2 hs0`. Establish `hu' : algebraMap (𝓞 K) K u * algebraMap (𝓞 K) K z₀ = (n : K)`. Rewrite using `[← map_mul, hu, map_natCast]`. Establish `hr' : algebraMap F K (r : F) * (n : K) = algebraMap F K (π : F) ^ m * algebraMap F K (s : F)`. Use `congrArg (fun x : 𝓞 F => algebraMap F K (x : F)) hr` as an intermediate fact.
+
+Simplify using `using this`. Use `⟨m, (algebraMap F K (s : F))⁻¹ * (algebraMap F K (r : F) * algebraMap (𝓞 K) K u * algebraMap F K (t : F)), ?_, ?_⟩` and prove the remaining obligations. Use `(mem_pK h𝔭).2 ⟨s, hsp, algebraMap (𝓞 F) (𝓞 K) r * u * algebraMap (𝓞 F) (𝓞 K) t, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_left₀ hs0', map_mul, map_mul]`. Both sides reduce to the same expression.
+
+Establish `: z * (algebraMap F K (r : F) * algebraMap (𝓞 K) K u * algebraMap F K (t : F)) = algebraMap F K (π : F) ^ m * algebraMap F K (s : F)`. Rewrite using `[← hr', ← hu', e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_left_comm, this, mul_left_comm, inv_mul_cancel₀ hs0', mul_one]`.
+-/
 theorem exists_mul_eq_unif_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 F} (hπ : π ∈ 𝔭) {z : K}
     (hz : z ∈ pK K 𝔭 0) (hz0 : z ≠ 0) :
     ∃ (m : ℕ) (w : K), w ∈ pK K 𝔭 0 ∧ z * w = algebraMap F K (π : F) ^ m := by
@@ -226,6 +310,11 @@ theorem exists_mul_eq_unif_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) 
 
 end NO
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Take `⟨m, w, hw, e⟩` from `NO.exists_mul_eq_unif_pow h𝔭 hπ hz hz0`. Establish `h1` using `nO_mul h𝔭 hz hz0 hw`. Rewrite `h1` using `[e, nO_unif_pow hK hF h𝔭 hπ hπ']`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, zero_mul]`. Conclude with `pow_ne_zero _ (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact idealPowerSpanBounds.ne_bot h𝔭) h1`.
+-/
 theorem nO_ne_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K}
     (hz : z ∈ pK K 𝔭 0) (hz0 : z ≠ 0) : nO 𝔭 z ≠ 0 := by
   obtain ⟨π, hπ, hπ'⟩ := exists_unif h𝔭
@@ -261,9 +350,19 @@ def scal (κ : Type) (𝔭 : Ideal (𝓞 F)) (a : K) :
     ext i j
     simp [mul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scal_apply {κ : Type} (𝔭 : Ideal (𝓞 F)) (a : K) (v : κ × κ → (pK K 𝔭 0).toAddSubgroup)
     (i j : κ) : scal κ 𝔭 a v i j = a * (v (i, j) : K) := rfl
 
+/- English proof (translation)
+Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩ i j`. Conclude with `⟨_, (mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨_, (v (i, j)).2, rfl⟩, rfl⟩`. Introduce `hM`.
+
+Establish `h1 : ∀ p : κ × κ, ∃ b ∈ pK K 𝔭 0, M p.1 p.2 = algebraMap F K (π : F) ^ k * b`. Introduce `p`. Take `⟨w, hw, e⟩` from `hM p.1 p.2`. Rewrite `e` using `[one_mul, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `(mem_pK_iff_unif h𝔭 hπ hπ').1 hw`. Use `choose b hb e using h1`. Use `⟨fun p => ⟨b p, hb p⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(e (i, j)).symm`.
+-/
 theorem range_scal {κ : Type} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 F} (hπ : π ∈ 𝔭)
     (hπ' : π ∉ 𝔭 ^ 2) (k : ℕ) :
     (scal κ 𝔭 (algebraMap F K (π : F) ^ k)).range = matL 𝔭 k (fun _ _ => 1) (fun _ _ => 1) := by
@@ -283,6 +382,15 @@ theorem range_scal {κ : Type} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) 
     ext i j
     exact (e (i, j)).symm
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hv ⟨i, j⟩ -`. Take `⟨w, hw, e⟩` from `hv i j`.
+
+Take `⟨b, hb, rfl⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 hw`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `show d i j * b = (v (i, j) : K)`. Rewrite `e` using `[scal_apply]`.
+
+Apply `mul_left_cancel₀ (mul_ne_zero (hf i j) (pow_ne_zero k hπ0))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce `hv i j`. Take `⟨b, hb, e⟩` from `AddSubgroup.mem_addSubgroupOf.1 (hv (i, j) (Set.mem_univ _))`. Use `replace e : d i j * b = (v (i, j) : K) := e`.
+
+Use `⟨algebraMap F K (π : F) ^ (k + c) * b, (mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨b, hb, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[scal_apply, ← e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comap_scal {κ : Type} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 F} (hπ : π ∈ 𝔭)
     (hπ' : π ∉ 𝔭 ^ 2) (hπ0 : algebraMap F K (π : F) ≠ 0) (k c : ℕ) (f g d : κ → κ → K)
     (hf : ∀ i j, f i j ≠ 0)
@@ -317,6 +425,23 @@ theorem comap_scal {κ : Type} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) 
 end NO
 
 open NO in
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `exists_unif h𝔭`. Establish `hπ0 : algebraMap F K (π : F) ≠ 0`. Rewrite using `[map_ne_zero]`. Introduce `h`. Apply `hπ'` to reduce the goal to its premises.
+
+Rewrite using `[show π = 0 from RingOfIntegers.ext h]`. Conclude with `(𝔭 ^ 2).zero_mem`. Use `set ϖ : K := algebraMap F K (π : F) with hϖ`. Establish `hϖc : ϖ ^ c ∈ pK K 𝔭 0` using `pK_anti 𝔭 (Nat.zero_le c) ((mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨1, by simpa using algebraMap_mem_pK (K := K) 𝔭 1, (mul_one _).symm⟩)`. Set `d : κ → κ → K` to `fun i j => (f i j)⁻¹ * (g i j * ϖ ^ c)`.
+
+Establish `hfd : ∀ i j, f i j * d i j = g i j * ϖ ^ c` using `fun i j => mul_inv_cancel_left₀ (hf i j).2 _`. Establish `hd : ∀ i j, d i j ∈ pK K 𝔭 0`. Introduce `i j`. Establish `h1 : Matrix.single i j (ϖ ^ k * d i j) ∈ matL 𝔭 (k + c) f g`. Introduce `i' j'`.
+
+Distinguish the cases in `h : i = i' ∧ j = j'`. Take `⟨rfl, rfl⟩` from `h`. Use `⟨ϖ ^ (k + c) * 1, (mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨1, by simpa using algebraMap_mem_pK (K := K) 𝔭 1, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_same, mul_left_comm, hfd, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨0, (pK K 𝔭 (k + c)).zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg h, mul_zero, mul_zero]`. Take `⟨w, hw, e⟩` from `hle h1 i j`. Rewrite `e` using `[one_mul, one_mul, Matrix.single_apply_same]`. Take `⟨b, hb, rfl⟩` from `(mem_pK_iff_unif h𝔭 hπ hπ').1 hw`.
+
+Rewrite using `[mul_left_cancel₀ (pow_ne_zero k hπ0) e]`. Conclude with `hb`. Establish `hn : ∀ i j, nO 𝔭 (d i j) * nO 𝔭 (f i j) = nO 𝔭 (g i j) * Ideal.absNorm 𝔭 ^ (2 * c)`. Introduce `i j`. Rewrite using `[mul_comm, ← nO_mul h𝔭 (hf i j).1 (hf i j).2 (hd i j), hfd, nO_mul h𝔭 (hg i j).1 (hg i j).2 hϖc, nO_unif_pow hK hF h𝔭 hπ hπ']`.
+
+Establish `h1 : (matL 𝔭 (k + c) f g).relIndex (matL 𝔭 k (fun _ _ => 1) (fun _ _ => 1)) = ∏ i, ∏ j, nO 𝔭 (d i j)`. Rewrite using `[← range_scal h𝔭 hπ hπ' k, ← AddSubgroup.index_comap, comap_scal h𝔭 hπ hπ' hπ0 k c f g d (fun i j => (hf i j).2) hfd, AddSubgroup.index_pi, Fintype.prod_prod_type]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Repeatedly rewrite using `[← Finset.prod_mul_distrib, hn, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem relIndex_matL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {κ : Type} [Fintype κ] (f g : κ → κ → K) (hf : ∀ i j, f i j ∈ pK K 𝔭 0 ∧ f i j ≠ 0)
     (hg : ∀ i j, g i j ∈ pK K 𝔭 0 ∧ g i j ≠ 0) (k c : ℕ)

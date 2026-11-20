@@ -10,11 +10,17 @@ noncomputable section
 
 namespace GlobalTheory.FibreLine
 
+/- English proof (translation)
+Use `Matrix.ext_of_mulVec_single fun j => hA ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]`.
+-/
 theorem cancel_left {O : Type} [CommRing O] {a b c : ℕ} {A : Matrix (Fin a) (Fin b) O}
     (hA : Function.Injective A.mulVec) {X Y : Matrix (Fin b) (Fin c) O} (h : A * X = A * Y) : X = Y := by
   refine Matrix.ext_of_mulVec_single fun j => hA ?_
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]
 
+/- English proof (translation)
+Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Use `sub_eq_zero.mp (hA _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h, sub_self]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h', sub_self]`.
+-/
 theorem cancel_left₂ {O : Type} [CommRing O] {a a' b c : ℕ} {A : Matrix (Fin a) (Fin b) O}
     {A' : Matrix (Fin a') (Fin b) O} (hA : ∀ v, A *ᵥ v = 0 → A' *ᵥ v = 0 → v = 0)
     {X Y : Matrix (Fin b) (Fin c) O} (h : A * X = A * Y) (h' : A' * X = A' * Y) : X = Y := by
@@ -23,6 +29,11 @@ theorem cancel_left₂ {O : Type} [CommRing O] {a a' b c : ℕ} {A : Matrix (Fin
   · rw [Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h, sub_self]
   · rw [Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h', sub_self]
 
+/- English proof (translation)
+Use `choose w hw using h`. Use `⟨Matrix.of fun i j => w (Pi.single j 1) i, Matrix.ext_of_mulVec_single fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← hw]`. Use `congr 1`. Rewrite using `[Matrix.mulVec_single_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem solve {O : Type} [CommRing O] {a b c : ℕ} (A : Matrix (Fin a) (Fin b) O) (B : Matrix (Fin a) (Fin c) O)
     (h : ∀ v, ∃ w, A *ᵥ w = B *ᵥ v) : ∃ S : Matrix (Fin b) (Fin c) O, B = A * S := by
   choose w hw using h
@@ -32,6 +43,13 @@ theorem solve {O : Type} [CommRing O] {a b c : ℕ} (A : Matrix (Fin a) (Fin b) 
   rw [Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Use `choose w hw using hst`. Set `M : Γ → Matrix (Fin m) (Fin m) O` to `fun g => Matrix.of fun i j => w g (Pi.single j 1) i`. Establish `hM : ∀ g j, M g *ᵥ Pi.single j 1 = w g (Pi.single j 1)` using `fun g j => by`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+
+Establish `k1 : ∀ g, A * M g = (ρ g : Matrix (Fin a) (Fin a) O) * A` using `fun g => Matrix.ext_of_mulVec_single fun j => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hM, (hw g _).1]`. Establish `k2 : ∀ g, A' * M g = (ρ' g : Matrix (Fin a') (Fin a') O) * A'` using `fun g => Matrix.ext_of_mulVec_single fun j => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hM, (hw g _).2]`. Set `f : Γ →* Matrix (Fin m) (Fin m) O` to `{ toFun := M map_one' := cancel_left₂ hA (by rw [k1, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]) (by rw [k2, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]) map_mul' := fun g h => cancel_left₂ hA (by rw [k1, ← Matrix.mul_assoc, k1, Matrix.mul_assoc, k1, ← Ma …`.
+
+Use `⟨f.toHomUnits, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_toHomUnits]`. Conclude with `k1 g`. Rewrite using `[MonoidHom.coe_toHomUnits]`. Conclude with `k2 g`.
+-/
 theorem mkRep {Γ O : Type} [Group Γ] [CommRing O] {a a' m : ℕ} (A : Matrix (Fin a) (Fin m) O)
     (A' : Matrix (Fin a') (Fin m) O) (ρ : Γ →* GL (Fin a) O) (ρ' : Γ →* GL (Fin a') O)
     (hA : ∀ v, A *ᵥ v = 0 → A' *ᵥ v = 0 → v = 0)
@@ -62,10 +80,38 @@ theorem mkRep {Γ O : Type} [Group Γ] [CommRing O] {a a' m : ℕ} (A : Matrix (
   · rw [MonoidHom.coe_toHomUnits]
     exact k2 g
 
+/- English proof (translation)
+The claim follows from `rank_of_mul_eq_one _ _ (by rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)])`.
+-/
 theorem rank_map {O F : Type} [CommRing O] [Field F] (f : O →+* F) {a b : ℕ} (A : Matrix (Fin a) (Fin b) O)
     (B : Matrix (Fin b) (Fin a) O) (h : A * B = 1) : (A.map f).rank = a ∧ (B.map f).rank = a :=
   rank_of_mul_eq_one _ _ (by rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)])
 
+/- English proof (translation)
+Introduce `Γ O _ _ _ _ n r χ Ac As ρc ρs x hAc hAs htc hts h1 h2 h3 h4`. Set `B : Matrix (Fin n) (Fin (n + 1)) O` to `Matrix.of fun i j => Fin.lastCases (x i) (fun j => Ac i j) j`. Set `Cm : Matrix (Fin 1) (Fin (n + 1)) O` to `Matrix.of fun _ j => Fin.lastCases (1 : O) (fun _ => 0) j`. Set `E : Matrix (Fin (n + 1)) (Fin n) O` to `Matrix.of fun i j => if i = j.castSucc then 1 else 0`. Set `P : Matrix (Fin n) (Fin (n + 1)) O` to `Matrix.of fun i j => Fin.lastCases (0 : O) (fun j => if i = j then 1 else 0) j`.
+
+Set `e : Matrix (Fin (n + 1)) (Fin 1) O` to `Matrix.of fun _ _ => 1`. Establish `hB : ∀ v, B *ᵥ v = Ac *ᵥ (fun j => v j.castSucc) + v (Fin.last n) • x` using `fun v => by`. Use function extensionality and compare the values at `i`. Simplify using `[B, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, mul_comm]`. Establish `hC : ∀ v, Cm *ᵥ v = fun _ => v (Fin.last n)` using `fun v => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Cm, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`. Establish `hBs : ∀ (u : Fin n → O) (c : O), B *ᵥ (Fin.snoc u c : Fin (n + 1) → O) = Ac *ᵥ u + c • x` using `fun u c => by`. Rewrite using `[hB]`. Simplify using the standard rewrite rules.
+
+Establish `hBE : B * E = Ac`. Use extensionality with `i k`. Simplify using `[B, E, Matrix.mul_apply]`. Establish `hCE : Cm * E = 0`. Use extensionality with `i k`.
+
+Simplify using `[Cm, E, Matrix.mul_apply]`. Establish `hPE : P * E = 1`. Use extensionality with `i k`. Simplify using `[P, E, Matrix.mul_apply, Matrix.one_apply]`. Establish `hCe : Cm * e = 1`.
+
+Use extensionality with `i k`. Rewrite using `[Subsingleton.elim i k]`. Simplify using `[Cm, e, Matrix.mul_apply, Fin.sum_univ_castSucc]`. Establish `hinj : ∀ v, B *ᵥ v = 0 → Cm *ᵥ v = 0 → v = 0` using `fun v hb hc => by`. Establish `hl : v (Fin.last n) = 0`.
+
+Rewrite `hc` using `[hC]`. Conclude with `congrFun hc 0`. Rewrite `hb` using `[hB, hl, zero_smul, add_zero]`. Establish `h0 : (fun j : Fin n => v j.castSucc) = 0` using `hAc (by rw [hb, Matrix.mulVec_zero])`. Use function extensionality and compare the values at `j`.
+
+Use `Fin.lastCases hl (fun j => congrFun h0 j) j` and prove the remaining obligations. Establish `hr : ∀ g, (GlobalTheory.TripleGal.rk1 χ g : Matrix (Fin 1) (Fin 1) O) = Matrix.scalar (Fin 1) (χ g : O)` using `fun _ => rfl`. Take `⟨r2, hr2B, hr2C⟩` from `mkRep B Cm r (GlobalTheory.TripleGal.rk1 χ) hinj (fun g v => by`. Take `⟨u, hu⟩` from `h4 g`. Establish `hu' : (r g : Matrix (Fin n) (Fin n) O) *ᵥ x = Ac *ᵥ u + (χ g : O) • x`.
+
+Rewrite using `[hu]`. Conclude with `(sub_add_cancel _ _).symm`. Use `⟨Fin.snoc ((ρc g : Matrix (Fin n) (Fin n) O) *ᵥ (fun j => v j.castSucc) + v (Fin.last n) • u) ((χ g : O) * v (Fin.last n)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hBs, hB, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, htc g, Matrix.mulVec_smul, Matrix.mulVec_smul, hu', smul_add, smul_smul, mul_comm, add_assoc]`. Rewrite using `[hC, hC, hr]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec_diagonal])`. Take `⟨B', hB'⟩` from `solve As B (fun v => by`. Take `⟨w0, hw0⟩` from `h2`. Take `⟨w1, hw1⟩` from `h3 (fun j => v j.castSucc)`.
+
+Conclude with `⟨w1 + v (Fin.last n) • w0, by rw [hB, Matrix.mulVec_add, Matrix.mulVec_smul, hw0, hw1]⟩)`. Take `⟨S, hS⟩` from `solve B' (1 : Matrix (Fin n) (Fin n) O) (fun v => by`. Take `⟨u, c, huc⟩` from `h1 v`. Use `⟨Fin.snoc u c, hAs ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, Matrix.mulVec_mulVec, ← hB', hBs, huc]`.
+
+Use the proof step `rfl)`. Use `⟨r2, B, B', Cm, E, hr2B, fun g => cancel_left hAs ?_, hr2C, fun g => cancel_left₂ hinj ?_ ?_, hBE, hCE, hB', (rank_map _ P E hPE).2, (rank_map _ Cm e hCe).1, (rank_map _ B' S hS.symm).1, hinj⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hB', hr2B g, hts g, Matrix.mul_assoc, ← hB']`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hBE, hr2B g, Matrix.mul_assoc, hBE, htc g]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hCE, hr2C g, Matrix.mul_assoc, hCE, Matrix.zero_mul, Matrix.mul_zero]`.
+-/
 theorem fibre_line : ∀ {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (n : ℕ) (r : Γ →* GL (Fin n) O) (χ : Γ →* Oˣ) (Ac As : Matrix (Fin n) (Fin n) O) (ρc ρs : Γ →* GL (Fin n) O) (x : Fin n → O), Function.Injective Ac.mulVec → Function.Injective As.mulVec → Tw ρc r Ac → Tw ρs r As → (∀ w, ∃ u c, As *ᵥ w = Ac *ᵥ u + fun a => c * x a) → (∃ w, As *ᵥ w = x) → (∀ u, ∃ w, As *ᵥ w = Ac *ᵥ u) → (∀ g, ∃ u, Ac *ᵥ u = (r g : Matrix (Fin n) (Fin n) O) *ᵥ x - fun a => (χ g : O) * x a) → ∃ (r2 : Γ →* GL (Fin (n + 1)) O) (B B' : Matrix (Fin n) (Fin (n + 1)) O) (C : Matrix (Fin 1) (Fin (n + 1)) O) (E : Matrix (Fin (n + 1)) (Fin n) O), Tw r2 r B ∧ Tw r2 ρs B' ∧ Tw r2 (GlobalTheory.TripleGal.rk1 χ) C ∧ Tw ρc r2 E ∧ B * E = Ac ∧ C * E = 0 ∧ B = As * B' ∧ (E.map (residue O)).rank = n ∧ (C.map (residue O)).rank = 1 ∧ (B'.map (residue O)).rank = n ∧ ∀ v, B *ᵥ v = 0 → C *ᵥ v = 0 → v = 0 := by
   intro Γ O _ _ _ _ n r χ Ac As ρc ρs x hAc hAs htc hts h1 h2 h3 h4
   let B : Matrix (Fin n) (Fin (n + 1)) O := Matrix.of fun i j => Fin.lastCases (x i) (fun j => Ac i j) j

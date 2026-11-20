@@ -21,6 +21,33 @@ noncomputable section
 namespace UpperTheory.Lit.Rallis.RallisIPProof
 open GlobalTheory
 
+/- English proof (translation)
+Introduce `hDM hSWU hWC D A B hab hb2 hw ψ χA χB ω ωd hω hωd hTC a ha hI ν 𝓕 hcov θ C hθ hSig hCart m hm hmr mH hmH U hU hUc _hLow Φ₁ Φ₂ hΦ₁ hΦ₂ hK f₁ hf₁ f₂ hf₂`. Establish `hW` using `GlobalTheory.weilRepresentationUnitaryPair`. Establish `hC : GlobalTheory.Published.CuspRapidDecay` using `GlobalTheory.RapidDecay.cuspRapidDecay`. Establish `ha1 : 1 ≤ A.rank` using `by omega`. Apply the tactic sequence `have hw' : A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank := by rcases hw with h | h <;> omega`.
+
+Take `⟨hφ, hid⟩` from `hTC Φ₁ Φ₂ hΦ₁ hΦ₂`. Establish `hmem` using `GlobalTheory.SwSecMem.swSec_mem_degPS hW D ψ A B χB ωd hωd ν 𝓕 hcov (delta A B Φ₁ Φ₂) hφ a hK`. Establish `hHk : IsHeckeChar D χB⁻¹`. Establish `h` using `hωd.hecT`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `: (χB⁻¹ : (AE D)ˣ →* Circle) = fun x => (χB x)⁻¹` using `rfl`. Rewrite using `[this]`. Conclude with `h.1.inv`. Rewrite using `[MonoidHom.inv_apply, h.2 x, inv_one]`. Take `⟨hDM1, -, hDM3⟩` from `hDM D A (by omega) a ha hI χB⁻¹ B.rank hHk (resEta_inv hωd.resT) (sZero A B) (swSec A B ωd ν 𝓕 (delta A B Φ₁ Φ₂)) hmem`.
+
+Establish `hA₁ : f₁ ∈ A0 θ A C` using `hf₁.1`. Establish `hA₂ : f₂ ∈ A0 θ A C` using `hf₂.1`. Establish `rd : ∀ u ∈ A0 θ A C, GlobalTheory.Grow.RapidDec A u` using `fun u hu => GlobalTheory.Grow.rapidDec_of_cuspForm hC hθ (mem_cuspForms.1 hu).1.1 (mem_cuspForms.1 hu).1.2`. Establish `rdc : ∀ u ∈ A0 θ A C, GlobalTheory.Grow.RapidDec A (fun g => conj (u g))` using `fun u hu => rd _ (GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 D θ A C hθ u hu)`. Take `⟨hBI, -⟩` from `hDM3 θ hθ hSig C hCart m hm f₁ hA₁ f₂ hA₂`.
+
+Establish `hEF` using `hDM1.1.1`. Establish `hZF : GlobalTheory.Eis.IsZetaFamily A χB⁻¹ m (flat A a (swSec A B ωd ν 𝓕 (delta A B Φ₁ Φ₂)) (sZero A B)) f₁ f₂` using `⟨hEF, fun s hs => (hBI s hs).1⟩`. Establish `hEV` using `UpperTheory.Lit.Rallis.T.siegelWeil_convergent_range_kFinite_thetaFun hSWU hWC D ψ A B χB ωd hωd hab hb2 hw' a ha hI θ hθ ν 𝓕 hcov mH hmH _ hφ hK`. Take `⟨-, hZV⟩` from `GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt D A χB⁻¹ hHk m hm _ hDM1.1 (fun g => hEF.analyticOnNhd_flat g) hDM1.2 f₁ f₂ (rd _ hA₁) (rd _ hA₂) hZF (sZero A B) _ hEV`. Establish `hKer : ∀ Φ, IsThetaFunO ψ A B Φ → Continuous (Function.uncurry fun g h => thetaKO ω g h Φ) ∧ (∀ γ ∈ GQ A, ∀ g h, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ) ∧ (∀ g, MemL2Quotient (GQ B) mH fun h => thetaKO ω g h Φ) ∧ (GlobalTheory.Grow.ModGrowth A fun g => petersson B mH (fun h => t …`.
+
+Introduce `Φ hΦ`. Take `⟨hL2, hMG⟩` from `UpperTheory.Lit.Rallis.T.petersson_normSq_thetaKernel_moderateGrowth hWC D ψ A B χA χB ω ωd hω hωd hTC ha1 hw mH hmH Φ hΦ`. Use `⟨hω.om_cont Φ hΦ 0, fun γ hγ g h => ?_, hL2, hMG, fun h => ?_⟩` and prove the remaining obligations. Establish `e : ((γ * g, h) : GA D A × GA D B) = (γ, 1) * (g, h)` using `by simp`. Unfold `thetaKO`.
+
+Rewrite using `[e, map_mul]`. Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hΦ)`. Take `⟨C, N, hCN⟩` from `GlobalTheory.Core.Rk.ThetaGrowthBoth.thetaKO_modGrowth₂ D ψ A B χA χB ω hω Φ hΦ`. Use `⟨C * GlobalTheory.Grow.height B h ^ N, N, fun g => (hCN g h).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Rewrite using `[mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨i₁, i₂, l₁, l₂, hss⟩` from `GlobalTheory.Core.Rk.Seesaw.seesaw_fubini D A B m mH hm hmH (fun g h => thetaKO ω g h Φ₁) (fun g h => thetaKO ω g h Φ₂) (fun K hK => by`. Break down `hK with rfl | rfl` into its components or cases. Use `exacts [hKer Φ₁ hΦ₁, hKer Φ₂ hΦ₂]) (fun g => conj (f₁ g)) (fun g => conj (f₂ g)) (rdc f₁ hA₁) (rdc f₂ hA₂)`. Establish `key : ∀ g₁ g₂ h, thetaKO ω g₁ h Φ₁ * conj (thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * thetaKO ωd (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)`.
+
+Introduce `g₁ g₂ h`. Rewrite using `[(hid g₁ g₂ h).2]`. Establish `e : ((χB (detA A g₂) : Circle) : ℂ) * (((χB (detA A g₂))⁻¹ : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`. Take the linear combination `(-(thetaKO ω g₁ h Φ₁ * conj (thetaKO ω g₂ h Φ₂))) * e`.
+
+Establish `hpet : ∀ g₁ g₂, petersson B mH (fun h => thetaKO ω g₁ h Φ₁) (fun h => thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ((((autMeasure B mH).real Set.univ : ℝ) : ℂ) * ThetaMean.thetaMean ωd mH (delta A B Φ₁ Φ₂) (io A (g₁, g₂)))`. Introduce `g₁ g₂`. Establish `e1 : petersson B mH (fun h => thetaKO ω g₁ h Φ₁) (fun h => thetaKO ω g₂ h Φ₂) = ((χB (detA A g₂) : Circle) : ℂ) * ∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ B) (fun h => thetaKO ωd (io A (g₁, g₂)) h (delta A B Φ₁ Φ₂)) q ∂autMeasure B mH`. Rewrite using `[← integral_const_mul]`. Simplify using `only [petersson, pet, GlobalTheory.AutomorphicL2Unitary.descend]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `key g₁ g₂ _`. Rewrite using `[e1, ← measure_smul_average, ThetaMean.thetaMean, Complex.real_smul]`. Establish `hv : (((autMeasure B mH).real Set.univ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (volQuot_pos B mH).ne'`.
+
+Establish `hval : (((autMeasure B mH).real Set.univ : ℝ) : ℂ)⁻¹ * petersson B mH (RallisIP.thetaLift ω m Φ₁ f₁) (RallisIP.thetaLift ω m Φ₂ f₂) = GlobalTheory.Eis.dblInt A χB⁻¹ m (ThetaMean.thetaMean ωd mH (delta A B Φ₁ Φ₂)) f₁ f₂`. Establish `hss' : petersson B mH (RallisIP.thetaLift ω m Φ₁ f₁) (RallisIP.thetaLift ω m Φ₂ f₂) = _` using `hss`. Rewrite using `[hss', GlobalTheory.Eis.dblInt, ← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [GlobalTheory.Eis.dblIntegrandQ, GlobalTheory.Eis.dblIntegrand, hpet, MonoidHom.inv_apply, Circle.coe_inv, inv_inv, RCLike.conj_conj]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨⟨i₁, l₁⟩, ⟨i₂, l₂⟩, hZF, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Conclude with `hZV.2.valueAt`.
+-/
 theorem rallis_of_dm : ResidueKilled.DM → GlobalTheory.Published.SiegelWeilUnitaryConvergent →
     GlobalTheory.Published.WeilThetaConvergence → GlobalTheory.Published.RallisInnerProductConvergent := by
   intro hDM hSWU hWC D A B hab hb2 hw ψ χA χB ω ωd hω hωd hTC a ha hI ν 𝓕 hcov θ C hθ hSig hCart m hm hmr mH hmH U hU hUc

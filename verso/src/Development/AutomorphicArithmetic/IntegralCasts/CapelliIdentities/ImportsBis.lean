@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `n a G hG`. Establish `ha : a ≤ n`. Establish `h` using `G.card_le_univ`. Rewrite `h` using `[Fintype.card_fin, hG]`. Conclude with `h`.
+
+Establish `hp : Fintype.card {x : Fin n // (x : ℕ) < a} = a`. Establish `e : Fin a ≃ {x : Fin n // (x : ℕ) < a}` using `{ toFun := fun i => ⟨Fin.castLE ha i, i.isLt⟩ invFun := fun x => ⟨x.1.1, x.2⟩ left_inv := fun i => rfl right_inv := fun x => rfl }`. Rewrite using `[← Fintype.card_congr e, Fintype.card_fin]`. Establish `hq : Fintype.card {x : Fin n // x ∈ G} = a`. Rewrite using `[Fintype.card_coe, hG]`.
+
+Set `e : {x : Fin n // (x : ℕ) < a} ≃ {x : Fin n // x ∈ G}` to `Fintype.equivOfCardEq (hp.trans hq.symm)`. Use `⟨e.extendSubtype, fun j => ⟨fun h => e.extendSubtype_mem j h, fun h => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `e.extendSubtype_not_mem j h' h`.
+-/
 theorem UpperTheory.Reformulated.B.DYdc4.main :
     ∀ (n a : ℕ) (G : Finset (Fin n)),
       G.card = a → ∃ (τ : Equiv.Perm (Fin n)), ∀ (j : Fin n), (↑j : ℕ) < a ↔ (τ : Fin n → Fin n) j ∈ G := by

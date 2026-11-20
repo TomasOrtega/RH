@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Introduce `X F m fl₁ fl₂ v h₁ h₂ i`. Take `⟨s₁, hs₁, e₁⟩` from `h₁ i`. Take `⟨s₂, hs₂, e₂⟩` from `h₂ i`. Conclude with `GlobalTheory.VB.exists_iso_of_frames_app_eq (fl₁.ι i) (fl₂.ι i) (i : ℕ) fun _ => ⟨⊤, s₁, s₂, trivial, hs₁, hs₂, fun j => (e₁ j).trans (e₂ j).symm⟩`.
+-/
 theorem steps_iso_of_spans_top : ∀ (X : Scheme.{0}) (F : X.Modules) (m : ℕ) (fl₁ fl₂ : Vert.Flag F m) (v : Fin m → Γ(F, ⊤)), Spans fl₁ ⊤ v → Spans fl₂ ⊤ v → ∀ i, ∃ e : fl₁.F i ≅ fl₂.F i, e.hom ≫ fl₂.ι i = fl₁.ι i := by
   intro X F m fl₁ fl₂ v h₁ h₂ i
   obtain ⟨s₁, hs₁, e₁⟩ := h₁ i

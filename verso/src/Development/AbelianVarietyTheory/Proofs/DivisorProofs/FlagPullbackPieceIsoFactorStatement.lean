@@ -16,6 +16,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VMetric.isometric_grLB_of_steps_pull | exact GlobalTheory.VMetric.isometric_grLB_of_steps_pull | (intros; apply GlobalTheory.VMetric.isometric_grLB_of_steps_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pullback_piece_iso_factor : ∀ {k : Type} [CommRing k] {B Y₀ Y : Scheme.{0}} (p : B ⟶ Sp k) (π₀ : Y₀ ⟶ B)
     (π : Y ⟶ B) (E : B.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf)
     (fl₀ : Vert.Flag ((Scheme.Modules.pullback π₀).obj E) r) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) r)

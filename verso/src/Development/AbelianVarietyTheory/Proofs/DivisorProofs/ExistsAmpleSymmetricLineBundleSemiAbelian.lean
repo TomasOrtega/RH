@@ -13,6 +13,13 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.SymAmple
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ hG hab`. Take `⟨M₀, s₀, hM, ha, hy₀⟩` from `GlobalTheory.T.exists_affine_nonzeroLocus_unit_closedFibre_semiAb R G hG hab`. Establish `hpt` using `GlobalTheory.T.exists_affine_nonzeroLocus_flat_local_baseChange GlobalTheory.T.exists_theorem_of_square_semiAbelian_genericAbelian R G hG hab M₀ hM s₀ ha hy₀`. Use `hG.quasiCompact` as an intermediate fact. Use `hG.separated` as an intermediate fact.
+
+Establish `hcs : CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `hamp : IsAmpleLB M₀` using `⟨hM, hcs, fun y => by`. Take `⟨R', _, ρ, hρ, x', hx', hs⟩` from `hpt y`. Establish `h` using `GlobalTheory.T.exists_affine_nonzeroLocus_descend_flat_baseChange R R' ρ hρ G.left G.hom inferInstance inferInstance M₀ hM x' hs`. Rewrite using `[hx'] at h⟩` and apply the resulting hypothesis.
+
+Conclude with `GlobalTheory.T.exists_ample_symmetric_lineBundle_grpScheme (Sp R) G M₀ hamp`.
+-/
 theorem exists_ample_symmetric : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → IsAbelianScheme ((Over.pullback (jK R)).obj G) → ∃ M : LB G.left, IsAmpleLB M ∧ LBIso (M.pull (GrpObj.inv : G ⟶ G).left) M := by
   intro R _ _ _ G _ hG hab
   obtain ⟨M₀, s₀, hM, ha, hy₀⟩ := GlobalTheory.T.exists_affine_nonzeroLocus_unit_closedFibre_semiAb R G hG hab

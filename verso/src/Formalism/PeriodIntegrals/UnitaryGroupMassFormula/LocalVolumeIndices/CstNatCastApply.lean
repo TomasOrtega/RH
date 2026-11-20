@@ -11,6 +11,9 @@ open Formalism.MainNotions.S (AutInst)
 
 variable (I : AutInst)
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`. Establish `e1 : (m : Fv I.F v) = ((algebraMap (𝓞 I.F) I.F (m : 𝓞 I.F) : I.F) : Fv I.F v)`. Rewrite using `[← map_natCast (algebraMap (𝓞 I.F) (Fv I.F v)) m]`. Conclude with `congrFun (HeightOneSpectrum.algebraMap_adicCompletion ..) _`. Rewrite using `[e1, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.mpr hm, inv_one]`.
+-/
 theorem Cst_inv_int (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) (hm : (m : 𝓞 I.F) ∉ v.asIdeal) :
     ((m : Fv I.F v))⁻¹ ∈ v.adicCompletionIntegers I.F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]
@@ -20,6 +23,9 @@ theorem Cst_inv_int (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) (hm : (m : 𝓞
   rw [e1, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap,
     HeightOneSpectrum.intValuation_eq_one_iff.mpr hm, inv_one]
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[Nat.cast_mul]`. Conclude with `hv (v.isPrime.mem_or_mem h)`.
+-/
 theorem Cst_not_mem (g1 g2 : ℕ) (v : HeightOneSpectrum (𝓞 I.F)) (hv : ¬ IsTyped I.F g1 g2 v) :
     ((g1 * g2 : ℕ) : 𝓞 I.F) ∉ v.asIdeal := by
   intro h
@@ -39,9 +45,17 @@ def cElt (g1 g2 : ℕ) : Af I.F :=
       (fun v => v.adicCompletionIntegers I.F) Filter.cofinite)
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Cst_apply (g1 g2 : ℕ) (v : HeightOneSpectrum (𝓞 I.F)) :
     cElt I g1 g2 v = if IsTyped I.F g1 g2 v then 0 else (((g1 * g2 : ℕ) : Fv I.F v))⁻¹ := rfl
 
+/- English proof (translation)
+Introduce `v`. Use `show cElt I g1 g2 v ∈ _`. Rewrite using `[Cst_apply]`. Use `split_ifs with h`. Conclude with `zero_mem _`.
+
+Conclude with `Cst_inv_int I v _ (Cst_not_mem I g1 g2 v h)`.
+-/
 theorem Cst_int (g1 g2 : ℕ) : cElt I g1 g2 ∈ Formalism.UG.intAd I.F := by
   classical
   intro v
@@ -51,13 +65,30 @@ theorem Cst_int (g1 g2 : ℕ) : cElt I g1 g2 ∈ Formalism.UG.intAd I.F := by
   · exact zero_mem _
   · exact Cst_inv_int I v _ (Cst_not_mem I g1 g2 v h)
 
+/- English proof (translation)
+The claim follows from `map_natCast (evalV I.F v) m`.
+-/
 theorem Cst_natCast_apply (m : ℕ) (v : HeightOneSpectrum (𝓞 I.F)) : (m : Af I.F) v = (m : Fv I.F v) :=
   map_natCast (evalV I.F v) m
 
+/- English proof (translation)
+The claim follows from `map_sum (evalV I.F v) f s`.
+-/
 theorem Cst_sum_apply {ι : Type} (s : Finset ι) (f : ι → Af I.F) (v : HeightOneSpectrum (𝓞 I.F)) :
     (∑ i ∈ s, f i) v = ∑ i ∈ s, f i v :=
   map_sum (evalV I.F v) f s
 
+/- English proof (translation)
+Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Comp_mul_apply, Comp_sub_apply, Comp_one_apply, Cst_natCast_apply, Cst_sum_apply, Cst_apply]`. Distinguish the cases in `hv : IsTyped I.F g1 g2 v`. Establish `hmem : v ∈ typSet I.F g1 g2` using `(mem_typSet I.F g1 g2 h1 h2 v).mpr hv`.
+
+Rewrite using `[if_pos hv, mul_zero, Finset.sum_eq_single (⟨v, hmem⟩ : TypP I.F g1 g2)]`. Rewrite using `[Comp_chi_same, sub_self]`. Introduce `b _ hb`. Conclude with `Comp_chi_ne I b.1 v (fun h => hb (Subtype.ext h.symm))`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hv, Finset.sum_eq_zero, sub_zero]`. Apply `mul_inv_cancel₀` to reduce the goal to its premises. Introduce `h0`. Establish `: ((g1 * g2 : ℕ) : I.F) = 0`.
+
+Establish `h3 : algebraMap I.F (Fv I.F v) ((g1 * g2 : ℕ) : I.F) = 0` using `by rw [map_natCast]; exact h0`. Conclude with `(algebraMap I.F (Fv I.F v)).injective (by rw [h3, map_zero])`. Conclude with `(Nat.cast_ne_zero.mpr (Nat.mul_ne_zero h1 h2)) this`. Introduce `p _`. Use `Comp_chi_ne I p.1 v fun h => hv ?_` and prove the remaining obligations.
+
+Rewrite using `[h]`. Conclude with `(mem_typSet I.F g1 g2 h1 h2 p.1).mp p.2`.
+-/
 theorem Cst_gc (g1 g2 : ℕ) (h1 : g1 ≠ 0) (h2 : g2 ≠ 0) :
     ((g1 * g2 : ℕ) : Af I.F) * cElt I g1 g2 = 1 - ∑ p : TypP I.F g1 g2, chi I p.1 := by
   classical

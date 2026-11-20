@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ConjHilb
 
+/- English proof (translation)
+Use `choose x hx using hx`. Use `choose y hy using hy`. Conclude with `⟨{ toFun := y invFun := x map_add' := fun a b => hinj (funext fun g => by rw [ha, hy, hy, hy, ha', map_add]) map_smul' := fun z a => hinj (funext fun g => by rw [hs, hy, hy, hs', map_mul]) left_inv := fun a => hinj' (funext fun g => by rw [hx, hy, Complex.conj_conj]) right_inv := …`.
+-/
 theorem nonempty_antilinear {H H' Y : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup H'] [Module ℂ H']
     (ev : H → Y → ℂ) (ev' : H' → Y → ℂ)
     (ha : ∀ a b g, ev (a + b) g = ev a g + ev b g) (hs : ∀ (z : ℂ) a g, ev (z • a) g = z * ev a g)
@@ -29,6 +32,11 @@ theorem nonempty_antilinear {H H' Y : Type} [AddCommGroup H] [Module ℂ H] [Add
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Take `⟨-, hmul⟩` from `GlobalTheory.ConjMult.conj_mult R.θ (R.MW i σ') (R.MW i σ) c hc`. Establish `hχ : (fun k => star (levChi _ (R.βW i) (R.datWp i R.triv) k)) = levChi _ (R.βW i) (R.datWp i R.triv)`. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.ConjEval.levChi_principal, star_one]`. Establish `h1 : (R.HW i σ').e y ∈ R.Wall i σ'` using `(hm i _).2.1 ▸ LinearMap.mem_range_self _ y`.
+
+Take `⟨T', hT', h2⟩` from `hmul _ _ _ h1`. Rewrite `hT'` using `[hχ]`. Take `⟨x, rfl⟩ : T' ∈ LinearMap.range (R.HW i σ).e` from `(hm i σ).2.1.symm ▸ hT'`. Conclude with `⟨x, h2 v _ hv⟩`.
+-/
 theorem exists_conj_value (R : RealDat D A Ks) (hm : R.models_HW) (i : Fin D.R.m) (σ σ' : D.what₂.LL →+* ℂ)
     (c : ∀ τ, (R.MW i σ).H τ ≃ₗᵢ⋆[ℂ] (R.MW i σ').H τ)
     (hc : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (Wc D i) τ), ∀ w, c τ ((R.MW i σ).rep τ g w) = (R.MW i σ').rep τ g (c τ w))
@@ -44,6 +52,9 @@ theorem exists_conj_value (R : RealDat D A Ks) (hm : R.models_HW) (i : Fin D.R.m
   obtain ⟨x, rfl⟩ : T' ∈ LinearMap.range (R.HW i σ).e := (hm i σ).2.1.symm ▸ hT'
   exact ⟨x, h2 v _ hv⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EvalInj.evAt_injective_of_ne R hm i σ v fun τ h => by have := hv τ rw [h, norm_zero] at this exact zero_ne_one this`.
+-/
 theorem evAt_inj (R : RealDat D A Ks) (hm : R.models_HW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ).Vec)
     (hv : IsUnitV v) : Function.Injective (evAt R i σ v) :=
   GlobalTheory.EvalInj.evAt_injective_of_ne R hm i σ v fun τ h => by
@@ -51,6 +62,15 @@ theorem evAt_inj (R : RealDat D A Ks) (hm : R.models_HW) (i : Fin D.R.m) (σ : D
     rw [h, norm_zero] at this
     exact zero_ne_one this
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hM ht`. Establish `hm` using `hM.HW`. Establish `hadd : ∀ i (σ' : D.what₂.LL →+* ℂ) (u : (R.MW i σ').Vec) a b g, evAt R i σ' u (a + b) g = evAt R i σ' u a g + evAt R i σ' u b g` using `fun i σ' u a b g => by`. Simplify using `[evAt]`. Establish `hsmul : ∀ i (σ' : D.what₂.LL →+* ℂ) (u : (R.MW i σ').Vec) (z : ℂ) a g, evAt R i σ' u (z • a) g = z * evAt R i σ' u a g` using `fun i σ' u z a g => by`.
+
+Simplify using `[evAt]`. Establish `key : ∀ i σ, ¬ GoodEmb T.Q.c (res T σ) → ∃ v : (R.MW i σ).Vec, IsUnitV v ∧ (∀ y, ∃ x, ∀ g, evAt R i σ v x g = starRingEnd ℂ (evAt R i _ (v₀ i ((starRingEnd ℂ).comp σ)) y g)) ∧ ∀ x, ∃ y, ∀ g, evAt R i _ (v₀ i ((starRingEnd ℂ).comp σ)) y g = starRingEnd ℂ (evAt R i σ v x g)`. Introduce `i σ hσ`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_antiunitary_intertwiner_conjugateEmbedding_models D G Pl0 T0 A T R κ v₀ hM ht i σ hσ`. Take `⟨hsm, -⟩` from `GlobalTheory.ConjMult.conj_mult R.θ (R.MW i ((starRingEnd ℂ).comp σ)) (R.MW i σ) c hc`.
+
+Set `v : (R.MW i σ).Vec` to `fun τ => ⟨(c τ).symm (v₀ i ((starRingEnd ℂ).comp σ) τ), (hsm τ _).2 (by`. Rewrite using `[LinearIsometryEquiv.apply_symm_apply]`. Conclude with `(v₀ i ((starRingEnd ℂ).comp σ) τ).2)⟩`. Use `⟨v, fun τ => ((c τ).symm.norm_map _).trans ((ht.hv₀ i _).norm R τ), exists_conj_value R hm i σ _ c hc v _ fun τ => ((c τ).apply_symm_apply _).symm, exists_conj_value R hm i _ σ (fun τ => (c τ).symm) (fun τ g hg w => (c τ).injective ?_) _ v fun τ => rfl⟩` and prove the remaining obligations. Rewrite using `[hc τ g hg, (c τ).apply_symm_apply, (c τ).apply_symm_apply]`.
+
+Use `⟨fun i σ hσ => ?_, fun hJ i σ hσ hV => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hx, hy⟩` from `key i σ hσ`. Conclude with `nonempty_antilinear _ _ (hadd _ _ _) (hsmul _ _ _) (hadd _ _ _) (hsmul _ _ _) (evAt_inj R hm i _ _ fun τ => (ht.hv₀ i _).norm R τ) (evAt_inj R hm i σ v hv) hx hy`. Take `⟨v, hv, hx, -⟩` from `key i σ hσ`. Conclude with `⟨v, hv, GlobalTheory.ConjEval.evEx_conj (res T σ) _ _ (hadd _ _ _) (hsmul _ _ _) (hadd _ _ _) (hsmul _ _ _) (evAt_inj R hm i σ v hv) hx _ (hJ i ((starRingEnd ℂ).comp σ) (good_resC T hσ) hV)⟩`.
+-/
 theorem conj_hilbert : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.IsModels → TieIn T R κ v₀ → (∀ i σ, ¬ GoodEmb T.Q.c (res T σ) → Nonempty ((R.HW i σ).H ≃ₗ⋆[ℂ] (R.HW i ((starRingEnd ℂ).comp σ)).H)) ∧ (JEvExists T R κ v₀ → JEvBar T R κ) := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hM ht
   have hm := hM.HW

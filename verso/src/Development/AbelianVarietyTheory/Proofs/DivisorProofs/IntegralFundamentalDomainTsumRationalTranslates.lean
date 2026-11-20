@@ -26,6 +26,23 @@ noncomputable section
 
 namespace GlobalTheory.ThetaUnfoldInt
 
+/- English proof (translation)
+Introduce `F _ _ κ _`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Introduce `μ hμ 𝓕₁ h𝓕 hfin h hc hB`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Take `⟨B, hB⟩` from `hB`.
+
+Use `haveI : Countable F := by`. Establish `b` using `Module.finBasis ℚ F`. Conclude with `Countable.of_equiv _ b.equivFun.toEquiv.symm`. Use `haveI : Countable (GlobalTheory.ThetaParseval.ratVec F κ) := Countable.of_equiv _ (GlobalTheory.ThetaUnfold.ratEquiv F κ)`. Establish `hcont : ∀ η : κ → F, Continuous fun x => h ((fun i => algebraMap F (AF F) (η i)) + x)` using `fun η => hc.comp (continuous_const.add continuous_id)`.
+
+Establish `hreidx : ∀ f : (κ → AF F) → ENNReal, ∫⁻ x, f x ∂μ = ∑' η : κ → F, ∫⁻ x in 𝓕₁, f ((fun i => algebraMap F (AF F) (η i)) + x) ∂μ`. Introduce `f`. Rewrite using `[h𝓕.lintegral_eq_tsum' f, ← ((GlobalTheory.ThetaUnfold.ratEquiv F κ).trans (Equiv.neg _)).tsum_eq]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.neg_apply, neg_neg, AddSubgroup.vadd_def, vadd_eq_add]`.
+
+Both sides reduce to the same expression. Establish `hpt : ∀ x, ∑' η : κ → F, ‖h ((fun i => algebraMap F (AF F) (η i)) + x)‖ₑ ≤ ENNReal.ofReal B`. Introduce `x`. Take `⟨hs, hle⟩` from `hB x`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`.
+
+Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`. Conclude with `ENNReal.ofReal_le_ofReal hle`. Establish `hfinite : ∑' η : κ → F, ∫⁻ x in 𝓕₁, ‖h ((fun i => algebraMap F (AF F) (η i)) + x)‖ₑ ∂μ ≠ ⊤`. Rewrite using `[← lintegral_tsum fun η => (hcont η).measurable.enorm.aemeasurable]`. Use `ne_top_of_le_ne_top ?_ (lintegral_mono hpt)` and prove the remaining obligations.
+
+Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin`. Establish `hint : Integrable h μ`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ a, ‖h a‖ₑ ∂μ < ⊤`.
+
+Rewrite using `[hreidx fun a => ‖h a‖ₑ]`. Conclude with `hfinite.lt_top`. Rewrite using `[integral_tsum (fun η => (hcont η).aestronglyMeasurable) hfinite, h𝓕.integral_eq_tsum' h hint, ← ((GlobalTheory.ThetaUnfold.ratEquiv F κ).trans (Equiv.neg _)).tsum_eq]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.neg_apply, neg_neg, AddSubgroup.vadd_def, vadd_eq_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_fundamentalDomain_tsum : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _
     ∀ (μ : MeasureTheory.Measure (κ → AF F)), μ.IsAddHaarMeasure →

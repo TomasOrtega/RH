@@ -22,6 +22,9 @@ def rtr (A H M : Type) [CommRing A] [Group H] [AddCommGroup M] [Module A M] : Re
   map_one' := by ext f g; simp
   map_mul' h h' := by ext f g; simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rtr_apply (h g : H) (f : H → M) : rtr A H M h f g = f (g * h) := rfl
 
 end Rep
@@ -185,6 +188,9 @@ def ra : Representation A X.Ub (X.Fn A m) where
   map_one' := by ext f g i; simp [← Prod.one_eq_mk]
   map_mul' u u' := by ext f g i; simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ra_apply (u : X.Ub) (f : X.Fn A m) (g : Ga × Gp) :
     X.ra τ u f g = (τ u : Matrix (Fin m) (Fin m) A) *ᵥ f (g * ((u : Ga), 1)) := rfl
 
@@ -284,6 +290,9 @@ structure WtRep {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsL
   continuous_torusCharacter : ∀ k : ℕ, ∃ c, ∀ t : I.Tf, (t : G) ∈ I.Tc c → ∃ x ∈ maximalIdeal O ^ k, (χ t : Ω) = 1 + algebraMap O Ω x
   central : ∀ t : I.Tf, (t : G) ∈ Subgroup.center G → ∀ i j, ξ t i j = if i = j then (χ t : Ω) else 0
 
+/- English proof (translation)
+The claim follows from `Subsingleton.elim (α := Fin 1) i j`.
+-/
 private theorem fin1 (i j : Fin (0 + 1)) : i = j := Subsingleton.elim (α := Fin 1) i j
 
 def WtRep.triv {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] :

@@ -16,6 +16,9 @@ open scoped Classical
 
 namespace GlobalTheory.CovTest.BunModelEx
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | m + 1 => by rw [← add_assoc, Nat.choose_succ_succ, choose_two_add j m, Nat.choose_one_right, Nat.choose_succ_succ m 1, Nat.choose_one_right] ring`.
+-/
 theorem choose_two_add (j : ℕ) : ∀ m : ℕ, (j + m).choose 2 = j.choose 2 + m.choose 2 + j * m
   | 0 => by simp
   | m + 1 => by
@@ -23,6 +26,11 @@ theorem choose_two_add (j : ℕ) : ∀ m : ℕ, (j + m).choose 2 = j.choose 2 + 
       Nat.choose_one_right]
     ring
 
+/- English proof (translation)
+Rewrite using `[show (O.var c).dim = _ from O.dim_eq c, Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_bool, rkB, cond_true, cond_false, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Unfold `dimGr Formalism.DegreeFormula.dimFl`. Rewrite using `[← Nat.choose_two_right, ← Nat.choose_two_right, ← Nat.choose_two_right]`. Take `⟨hj, hN⟩` from `O.indef`.
+
+Establish `e : O.N = O.j + (O.N - O.j)` using `by omega`. Use `conv_rhs => rw [e]`. Rewrite using `[choose_two_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dim_sum {D : D7} (O : Setup D) (c : O.s.Comp) :
     dimGr D.what₂.Tau O.N O.j + ∑ a : D.what₂.Tau × Bool, rkB D.what₂.Tau O.N O.j a * (rkB D.what₂.Tau O.N O.j a - 1) / 2 =
       (O.var c).dim := by
@@ -36,6 +44,11 @@ theorem dim_sum {D : D7} (O : Setup D) (c : O.s.Comp) :
   rw [choose_two_add]
   ring
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 D O hO B hB R hR c`. Take `⟨Bs, hBs, q, ar, nB, E, h, H, hBC⟩` from `GlobalTheory.T.toroidal_metrized_bundle_flag_pullback h1 h2 h3 h4 D O hO B hB R hR c`. Take `⟨Y, hY, π, fl, univ, arY, nY⟩` from `GlobalTheory.T.exists_normal_isFlagBundle_isArithVar (𝓞 D.what₂.LL) Bs q _ ar nB (D.what₂.Tau × Bool) E (rkB D.what₂.Tau O.N O.j) fun a => (h a).isVB`. Rewrite `arY` using `[dim_sum O c]`. Take `⟨G, hG, j, πG, pb, hf, hs, φ, φs, hind⟩` from `hBC Y hY π fl univ arY nY`.
+
+Conclude with `⟨BunModel.mk (@Cover.mk _ _ (O.var c) Y _ (π ≫ q) arY nY G _ j πG pb _ _ φ φs) Bs q ar π rfl E h H fl univ hind⟩`.
+-/
 theorem bunSt_holds : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → BunSt := by
   intro h1 h2 h3 h4 D O hO B hB R hR c
   obtain ⟨Bs, hBs, q, ar, nB, E, h, H, hBC⟩ := GlobalTheory.T.toroidal_metrized_bundle_flag_pullback h1 h2 h3 h4 D O hO B hB R hR c

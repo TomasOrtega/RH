@@ -11,6 +11,11 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel.LatticeJInt
 
+/- English proof (translation)
+Introduce `L β hβ him`. Take `⟨c, τ, hτ⟩` from `ReciprocityTheory.ChartRestriction.L1.latTau L`. Establish `hj` using `GlobalTheory.JInt.main L c τ β hτ hβ him`. Rewrite `hj` using `[← ReciprocityTheory.ChartRestriction.L1.jInv_eq_jT hτ]`. Rewrite using `[latticeCurve_j_eq]`.
+
+Conclude with `hj`.
+-/
 theorem main : ∀ (L : PeriodPair) (β : ℂ), MulStable L β → β.im ≠ 0 →
     _root_.IsIntegral ℤ (latticeCurve L).j := by
   intro L β hβ him

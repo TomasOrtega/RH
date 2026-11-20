@@ -15,9 +15,15 @@ def resc (w : VTup t) (s : ∀ j, t.Ch j → ℂ) : VTup t :=
 def QPinU (v : VCom c) (w : VTup t) : Prop :=
   ∃ (w₀ : VTup t) (s : ∀ j, t.Ch j → ℂ), (∀ j α, ∃ n : ℕ, 0 < n ∧ s j α ^ n = 1) ∧ QPin v w₀ ∧ w = resc w₀ s
 
+/- English proof (translation)
+Simplify using `[resc]`.
+-/
 theorem resc_one (w : VTup t) : resc w (fun _ _ => 1) = w := by
   simp [resc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w, fun _ _ => 1, fun _ _ => ⟨1, one_pos, one_pow 1⟩, h, (resc_one w).symm⟩`.
+-/
 theorem QPinU.of {v : VCom c} {w : VTup t} (h : QPin v w) : QPinU v w :=
   ⟨w, fun _ _ => 1, fun _ _ => ⟨1, one_pos, one_pow 1⟩, h, (resc_one w).symm⟩
 

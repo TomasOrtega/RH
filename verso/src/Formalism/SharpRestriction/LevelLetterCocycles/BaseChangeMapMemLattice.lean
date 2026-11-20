@@ -21,6 +21,9 @@ def bρ {V : Type} [AddCommGroup V] [Module LL V] (ρ : Representation LL G V) :
   map_one' := by rw [map_one]; exact LinearMap.baseChange_one _ _
   map_mul' g h := by rw [map_mul, LinearMap.baseChange_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bρ_tmul {V : Type} [AddCommGroup V] [Module LL V] (ρ : Representation LL G V) (g : G) (a : LL')
     (v : V) : bρ LL' ρ g (a ⊗ₜ[LL] v) = a ⊗ₜ[LL] ρ g v := rfl
 
@@ -36,6 +39,9 @@ set_option warn.classDefReducibility false in
 def bTop (V : Type) [AddCommGroup V] [Module LL V] : TopologicalSpace (LL' ⊗[LL] V) :=
   moduleTopology LL' (LL' ⊗[LL] V)
 
+/- English proof (translation)
+The claim follows from `@IsModuleTopology.mk LL' _ (LL' ⊗[LL] V) _ _ (bTop (LL := LL) (LL' := LL') V) rfl`.
+-/
 theorem bIsMod (V : Type) [AddCommGroup V] [Module LL V] :
     @IsModuleTopology LL' _ (LL' ⊗[LL] V) _ _ (bTop (LL := LL) (LL' := LL') V) :=
   @IsModuleTopology.mk LL' _ (LL' ⊗[LL] V) _ _ (bTop (LL := LL) (LL' := LL') V) rfl
@@ -44,6 +50,15 @@ end Top
 
 section Lin
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.2 fun x hx i => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (Finset.univ.image x)`. Establish `ha : ∀ j, ∃ a : O, algebraMap O LL a = (s : O) • x j` using `fun j => hs (x j) (Finset.mem_image_of_mem _ (Finset.mem_univ j))`. Use `choose a ha using ha`. Establish `h0 : ∑ j, a j • b j = 0`.
+
+Establish `: ∑ j, ((s : O) • x j) • b j = (s : O) • ∑ j, x j • b j`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_assoc]`. Rewrite `this` using `[hx, smul_zero]`. Rewrite using `[← this]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ha j, algebraMap_smul]`. Establish `h1` using `Fintype.linearIndependent_iff.1 hb a h0 i`. Establish `h2` using `ha i`. Rewrite `h2` using `[h1, map_zero]`.
+
+Establish `hs0 : (algebraMap O LL (s : O)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite `h2` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left hs0`.
+-/
 theorem linInd_frac {O LL V ι : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
     [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     [Fintype ι] (b : ι → V) (hb : LinearIndependent O b) : LinearIndependent LL b := by
@@ -77,6 +92,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL LL' O O' : Type} [Fiel
   [TopologicalSpace LL] [TopologicalSpace LL'] [IsTopologicalRing LL'] [CommRing O] [Algebra O LL]
   [CommRing O'] [Algebra O' LL']
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Establish `e : (fun p : LL × M => p.1 • p.2) = fun p : LL × M => (algebraMap LL LL' p.1) • p.2`. Use function extensionality and compare the values at `p`. Rewrite using `[algebraMap_smul]`. Rewrite using `[e]`.
+
+Conclude with `(hc.comp continuous_fst).smul continuous_snd`.
+-/
 theorem contSMul_of (hc : Continuous (algebraMap LL LL')) (M : Type) [AddCommGroup M] [Module LL M]
     [Module LL' M] [IsScalarTower LL LL' M] [TopologicalSpace M] [ContinuousSMul LL' M] :
     ContinuousSMul LL M := by
@@ -86,9 +106,21 @@ theorem contSMul_of (hc : Continuous (algebraMap LL LL')) (M : Type) [AddCommGro
   rw [e]
   exact (hc.comp continuous_fst).smul continuous_snd
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (V : Type) [AddCommGroup V] [Module LL V] : Module O' (LL' ⊗[LL] V) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower O' LL' (LL' ⊗[LL] V) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower Qp LL' (LL' ⊗[LL] V) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (V : Type) [AddCommGroup V] [Module LL V] [FiniteDimensional LL V] :
     FiniteDimensional LL' (LL' ⊗[LL] V) := inferInstance
 
@@ -104,6 +136,9 @@ def bT {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O L
     (T : Submodule O V) : Submodule O' (LL' ⊗[LL] V) :=
   Submodule.span O' (Set.range fun t : T => (1 : LL') ⊗ₜ[LL] (t : V))
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul LL c v, TensorProduct.tmul_smul, algebraMap_smul]`. Conclude with `(algebraMap_smul O' c _).symm`.
+-/
 theorem one_tmul_smul {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     (c : O) (v : V) :
     (1 : LL') ⊗ₜ[LL] (c • v) = (algebraMap O O' c) • ((1 : LL') ⊗ₜ[LL] v) := by
@@ -137,6 +172,9 @@ def basisV {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T
       rw [← algebraMap_smul LL (c i)]
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
+/- English proof (translation)
+Simplify using `[basisV]`.
+-/
 theorem basisV_apply {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T)
     (hspan : Submodule.span LL (T : Set V) = ⊤) (i : ι) : basisV T b hspan i = (b i : V) := by
   simp [basisV]
@@ -154,11 +192,23 @@ def basisV' {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O 
     (hspan : Submodule.span LL (T : Set V) = ⊤) : Module.Basis ι LL' (LL' ⊗[LL] V) :=
   (basisV T b hspan).baseChange LL'
 
+/- English proof (translation)
+Simplify using `[basisV', Module.Basis.baseChange_apply, basisV_apply]`.
+-/
 theorem basisV'_apply {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T)
     (hspan : Submodule.span LL (T : Set V) = ⊤) (i : ι) :
     basisV' (LL' := LL') T b hspan i = (1 : LL') ⊗ₜ[LL] (b i : V) := by
   simp [basisV', Module.Basis.baseChange_apply, basisV_apply]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: t ∈ Submodule.span O (Set.range b)` using `by rw [b.span_eq]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 this`.
+
+Establish `ht : (t : V) = ∑ i, c i • (b i : V)`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Use `show (1 : LL') ⊗ₜ[LL] (t : V) ∈ _`. Rewrite using `[ht, TensorProduct.tmul_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_tmul_smul (O' := O')]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨b i, rfl⟩`.
+-/
 theorem bT_eq {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T) :
     bT (LL' := LL') (O' := O') T = Submodule.span O' (Set.range fun i => (1 : LL') ⊗ₜ[LL] (b i : V)) := by
   apply le_antisymm
@@ -241,6 +291,9 @@ variable {G : Type} [Group G] {Qp LL LL' O O' : Type} [Field Qp] [Field LL] [Fie
 
 abbrev bf (f : V →ₗ[LL] V₂) : (LL' ⊗[LL] V) →ₗ[LL'] (LL' ⊗[LL] V₂) := f.baseChange LL'
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v => simp [bf, bρ, hf]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem bf_equiv {ρ : Representation LL G V} {ρ₂ : Representation LL G V₂} (f : V →ₗ[LL] V₂)
     (hf : ∀ g x, f (ρ g x) = ρ₂ g (f x)) (g : G) (x : LL' ⊗[LL] V) :
     bf (LL' := LL') f (bρ LL' ρ g x) = bρ LL' ρ₂ g (bf (LL' := LL') f x) := by
@@ -249,6 +302,11 @@ theorem bf_equiv {ρ : Representation LL G V} {ρ₂ : Representation LL G V₂}
   | tmul a v => simp [bf, bρ, hf]
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Use `Submodule.span_induction (fun y hy => ?_) (by simp) (fun a b _ _ ha hb => ?_) (fun c a _ ha => ?_) hx` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨⟨f t, hf t t.2⟩, by simp [bf]⟩`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+
+Rewrite using `[← algebraMap_smul LL' c a, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem baseChange_map_mem_lattice {f : V →ₗ[LL] V₂} {T : Submodule O V} {T₂ : Submodule O V₂} (hf : ∀ x ∈ T, f x ∈ T₂)
     (x : LL' ⊗[LL] V) (hx : x ∈ bT (LL' := LL') (O' := O') T) :
     bf (LL' := LL') f x ∈ bT (LL' := LL') (O' := O') T₂ := by
@@ -259,6 +317,9 @@ theorem baseChange_map_mem_lattice {f : V →ₗ[LL] V₂} {T : Submodule O V} {
   · rw [map_add]; exact Submodule.add_mem _ ha hb
   · rw [← algebraMap_smul LL' c a, map_smul, algebraMap_smul]; exact Submodule.smul_mem _ _ ha
 
+/- English proof (translation)
+Use `Submodule.span_induction (fun z hz => ?_) ⟨0, Submodule.zero_mem _, by simp⟩ (fun a b _ _ ⟨xa, ha, ea⟩ ⟨xb, hb, eb⟩ => ⟨xa + xb, Submodule.add_mem _ ha hb, by rw [map_add, ea, eb]⟩) (fun c a _ ⟨xa, ha, ea⟩ => ⟨c • xa, Submodule.smul_mem _ _ ha, by` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL' c xa, map_smul, ea, algebraMap_smul]⟩) hy`. Take `⟨t, rfl⟩` from `hz`. Take `⟨x, hx, e⟩` from `hon t t.2`. Conclude with `⟨(1 : LL') ⊗ₜ[LL] x, Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩, by simp [bf, e]⟩`.
+-/
 theorem bf_onto {f : V →ₗ[LL] V₂} {T : Submodule O V} {T₂ : Submodule O V₂}
     (hon : ∀ y ∈ T₂, ∃ x ∈ T, f x = y) (y : LL' ⊗[LL] V₂) (hy : y ∈ bT (LL' := LL') (O' := O') T₂) :
     ∃ x ∈ bT (LL' := LL') (O' := O') T, bf (LL' := LL') f x = y := by
@@ -329,6 +390,9 @@ def bHom (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebr
     cont := IsModuleTopology.continuous_of_linearMap (R := LL') _
     T_le := fun x hx => baseChange_map_mem_lattice (O' := O') F.T_le x hx }
 
+/- English proof (translation)
+Introduce `y hy` and use `bf_onto (O' := O') hF y hy`.
+-/
 theorem bHom_onto (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hF : F.Onto) : (bHom (O' := O') hc hO' F).Onto :=
   fun y hy => bf_onto (O' := O') hF y hy

@@ -23,17 +23,26 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.HeatDefect
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r h z U hU, gs_eq r z (h ⁻¹ᵁ U) hU, gs_eq h (r z) U hU]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (h ⁻¹ᵁ U) z hU _).symm`.
+-/
 theorem gs_comp_stalk {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (h : Y ⟶ X) (z : Z) (U : X.Opens) (hU : h (r z) ∈ U)
     (a : Γ(X, U)) : gs (r ≫ h) z U a = (r.stalkMap z).hom (gs h (r z) U a) := by
   rw [← gs_pull r h z U hU, gs_eq r z (h ⁻¹ᵁ U) hU, gs_eq h (r z) U hU]
   exact (Scheme.Hom.germ_stalkMap_apply r (h ⁻¹ᵁ U) z hU _).symm
 
+/- English proof (translation)
+Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gs_comp_stalk r h z _ (Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)) _`.
+-/
 theorem sval_comp_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval s (r ≫ h) z J = (r.stalkMap z).hom (sval s h (r z) (fun ψ => J (r ≫ ψ))) := by
   rw [sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]
   exact gs_comp_stalk r h z _ (Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)) _
 
+/- English proof (translation)
+Rewrite using `[val_of t (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc]), val_of t h (r z) (fun ψ => J (r ≫ ψ)) (fun k => J (r ≫ h ≫ φ k)) (fun k => rfl)]`. Establish `hm : (r ≫ h) z ∈ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)`. Conclude with `(gs_unit _ z _ hm _).symm.trans ((gs_comp_stalk r h z _ hm _).trans (congrArg _ (gs_unit h (r z) _ hm _)))`.
+-/
 theorem val_comp_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     (val t (r ≫ h) z J).val = (r.stalkMap z).hom (val t h (r z) (fun ψ => J (r ≫ ψ))).val := by
@@ -42,6 +51,9 @@ theorem val_comp_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
   have hm : (r ≫ h) z ∈ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k)) := Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)
   exact (gs_unit _ z _ hm _).symm.trans ((gs_comp_stalk r h z _ hm _).trans (congrArg _ (gs_unit h (r z) _ hm _)))
 
+/- English proof (translation)
+Introduce `ψ` and use `by have := hJ (r ≫ ψ) rwa [Scheme.Hom.comp_apply] at this`.
+-/
 theorem good_comp {X Z : Scheme.{0}} {L : LB X} (r : Z ⟶ Z) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     Good L (r z) (fun ψ => J (r ≫ ψ)) := fun ψ => by
   have := hJ (r ≫ ψ)
@@ -49,6 +61,11 @@ theorem good_comp {X Z : Scheme.{0}} {L : LB X} (r : Z ⟶ Z) (z : Z) {J : (Z �
 
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R}
 
+/- English proof (translation)
+Rewrite using `[← gs_comp_stalk m.left (𝟙 _) z ⊤ trivial, Category.comp_id]`. Unfold `ReciprocityTheory.ChartRestriction.G.Out.scal`. Establish `e₁` using `gs_pull m.left (DegPre.BF Q (FractionRing R)).hom z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)`. Establish `e₂` using `gs_pull (𝟙 _) (DegPre.BF Q (FractionRing R)).hom z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)`. Rewrite `e₁` using `[Over.w m]`.
+
+Rewrite `e₂` using `[Category.id_comp]`. Conclude with `e₁.trans e₂.symm`.
+-/
 theorem gs_scal (m : DegPre.BF Q (FractionRing R) ⟶ DegPre.BF Q (FractionRing R)) (z : (DegPre.BF Q (FractionRing R)).left)
     (c : R) : (m.left.stalkMap z).hom (gs (𝟙 _) (m.left z) ⊤ (scal (DegPre.BF Q (FractionRing R)).hom c)) =
       gs (𝟙 _) z ⊤ (scal (DegPre.BF Q (FractionRing R)).hom c) := by
@@ -67,6 +84,11 @@ end GlobalTheory.HeatDefect
 namespace GlobalTheory.HeatDefect
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R}
 
+/- English proof (translation)
+Establish `e` using `congrArg (m.left.stalkMap z).hom (H u hu hc (m.left z) _ (good_comp m.left z hJ))`. Rewrite using `[Over.comp_left, Over.comp_left, Over.comp_left, sval_comp_stalk _ _ _ _ hJ, sval_comp_stalk _ _ _ _ hJ, sval_comp_stalk _ _ _ _ hJ, e, map_add, map_mul, map_mul, gs_scal]`. Use `congr 2`. Use `val_comp_stalk u (𝟙 _) m.left z hJ` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`.
+
+Conclude with `this.symm`.
+-/
 theorem shiftEq_at {k : ℕ} {mu α : Q.X} {σ : Q.SecB k α} {σ₁ σ₂ : Q.SecB k (α + k • mu)} {c : R}
     (H : ShiftEq Q k mu α σ σ₁ c σ₂)
     (u : LB.Gen (LB.LinComb Q.P.L (DegPre.deltaφ Q (FractionRing R) k α mu) (DegPre.deltaε k))) (hu : u.IsGen)
@@ -91,6 +113,15 @@ end GlobalTheory.HeatDefect
 
 namespace GlobalTheory.HeatDefect
 
+/- English proof (translation)
+Set `F` to `FractionRing R`. Set `χ : F →+* (DegPre.BF Q F).left.presheaf.stalk z` to `((DegPre.BF Q F).left.presheaf.germ ⊤ z trivial).hom.comp ((fst (TF (R := R) F) Q.P.A).left.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom)`. Establish `hT : (DegPre.BF Q F).hom = (fst (TF (R` using `R) F) Q.P.A).left ≫ Spec.map (CommRingCat.ofHom (algebraMap R F)) := by`. Rewrite using `[← Over.w (fst (TF (R := R) F) Q.P.A)]`. Use `show _ ≫ (jFK (R := R) F ≫ jK R) = _`.
+
+Rewrite using `[jFK, jK, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `key : ∀ r : R, gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Q F).hom r) = χ (algebraMap R F r)`. Introduce `r`. Unfold `ReciprocityTheory.ChartRestriction.G.Out.scal`.
+
+Rewrite using `[hT, gs_eq _ z ⊤ trivial]`. Establish `n` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R F))`. Establish `n'` using `congrArg (fun f => f.hom r) n`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n'`. Simplify using `only [χ, RingHom.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, n']`.
+
+Both sides reduce to the same expression. Introduce `a b hab`. Establish `: χ (algebraMap R F a) = χ (algebraMap R F b)` using `(key a).symm.trans (hab.trans (key b))`. Conclude with `IsFractionRing.injective R F (χ.injective this)`.
+-/
 theorem scal_injective (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (z : (DegPre.BF Q (FractionRing R)).left) :
     Function.Injective (fun r : R => gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Q (FractionRing R)).hom r)) := by
   let F := FractionRing R
@@ -118,17 +149,26 @@ end GlobalTheory.HeatDefect
 
 namespace GlobalTheory.HeatDefect
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem sval_cast {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {k : ℕ} {x y : Q.X} (e : x = y)
     (he : Q.SecB k x = Q.SecB k y) (σ : Q.SecB k x) {Z : Scheme.{0}} (r : Z ⟶ Q.P.A.left) (z : Z)
     (J : (Z ⟶ Q.P.A.left) → Q.P.L.ι) : sval (cast he σ) r z J = sval σ r z J := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `H`.
+-/
 theorem tActs_cast {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O]
     [Module O Q.X] {oa : Q.OAct O} {Y : Ray oa} {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R}
     {h : Heat Y.H Y.q.left Q.P.L dd D} {k : ℕ} {x y : Q.X} (e : x = y) (he : Q.SecB k x = Q.SecB k y)
     {σ σ' : Q.SecB k x} (H : TActs Y h k x σ σ') : TActs Y h k y (cast he σ) (cast he σ') := by
   subst e; exact H
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Out.scal`. Rewrite using `[map_add, map_add]`. Conclude with `gs_add (𝟙 _) z ⊤ trivial _ _`.
+-/
 theorem scal_add {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (z : (DegPre.BF Q (FractionRing R)).left) (a b : R) :
     gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Q (FractionRing R)).hom (a + b)) =
       gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Q (FractionRing R)).hom a) +
@@ -137,12 +177,34 @@ theorem scal_add {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (z : (DegPr
   rw [map_add, map_add]
   exact gs_add (𝟙 _) z ⊤ trivial _ _
 
+/- English proof (translation)
+Use `scal_add Q z 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem scal_zero {R : Type} [CommRing R] [IsDomain R] (Q : DegPre R) (z : (DegPre.BF Q (FractionRing R)).left) :
     gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Q (FractionRing R)).hom 0) = 0 := by
   have := scal_add Q z 0 0
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h c hB hD k hk mu mu' α`. Take `⟨σ, σ₁, σ₂, he, h1, h2, h3, z, J, hJ, hs⟩` from `GlobalTheory.T.exists_integral_sections_thetaShift_triple R Dd k hk mu mu' α`. Establish `e : α + k • mu + k • mu' = α + k • (mu + mu')` using `by rw [smul_add, add_assoc]`. Take `⟨σ', a1⟩` from `GlobalTheory.T.torusInvariant_heatOperator_acts_on_fourierTerms R Dd O oa Y n v dd hv D h hB k α σ`. Take `⟨σ₁', a2⟩` from `GlobalTheory.T.torusInvariant_heatOperator_acts_on_fourierTerms R Dd O oa Y n v dd hv D h hB k _ σ₁`.
+
+Take `⟨σ₂', a3⟩` from `GlobalTheory.T.torusInvariant_heatOperator_acts_on_fourierTerms R Dd O oa Y n v dd hv D h hB k _ σ₂`. Establish `d1` using `hD k mu α σ σ' σ₁ σ₁' hk h1 a1 a2`. Establish `d2` using `hD k mu' (α + k • mu) σ₁ σ₁' σ₂ σ₂' hk h2 a2 a3`. Establish `d3` using `hD k (mu + mu') α σ σ' _ _ hk h3 a1 (tActs_cast e he a3)`. Take `⟨⟨u1, hu1, hc1⟩, -⟩` from `gen_fe (D := Dd.toPre) (F := FractionRing R) GlobalTheory.SemiRigid.globalFns k mu α`.
+
+Take `⟨⟨u2, hu2, hc2⟩, -⟩` from `gen_fe (D := Dd.toPre) (F := FractionRing R) GlobalTheory.SemiRigid.globalFns k mu' (α + k • mu)`. Take `⟨⟨u3, hu3, hc3⟩, -⟩` from `gen_fe (D := Dd.toPre) (F := FractionRing R) GlobalTheory.SemiRigid.globalFns k (mu + mu') α`. Establish `E1` using `shiftEq_at d1 u1 hu1 hc1 (DegPre.trF Dd.toPre (FractionRing R) mu') z J hJ`. Establish `E10` using `shiftEq_at h1 u1 hu1 hc1 (DegPre.trF Dd.toPre (FractionRing R) mu') z J hJ`. Establish `E2` using `shiftEq_at d2 u2 hu2 hc2 (𝟙 _) z J hJ`.
+
+Establish `E20` using `shiftEq_at h2 u2 hu2 hc2 (𝟙 _) z J hJ`. Establish `E3` using `shiftEq_at d3 u3 hu3 hc3 (𝟙 _) z J hJ`. Establish `E30` using `shiftEq_at h3 u3 hu3 hc3 (𝟙 _) z J hJ`. Simplify using `only [Category.id_comp, scal_zero, zero_mul, add_zero] at E1 E10 E2 E20 E3 E30`. Rewrite `E3` using `[sval_cast e he, sval_cast e he]`.
+
+Rewrite `E30` using `[sval_cast e he]`. Rewrite `E1`, `E10` using `[← Category.assoc, UUA.trF_add, add_comm mu' mu]`. Use `set s := sval σ (DegPre.trF Dd.toPre (FractionRing R) (mu + mu') ≫ DegPre.prB Dd.toPre (FractionRing R)).left z J`. Use `set s' := sval σ' (DegPre.trF Dd.toPre (FractionRing R) (mu + mu') ≫ DegPre.prB Dd.toPre (FractionRing R)).left z J`. Use `set v1 := (val u1 (DegPre.trF Dd.toPre (FractionRing R) mu').left z J).val`.
+
+Use `set v2 := (val u2 (Over.Hom.left (𝟙 (DegPre.BF Dd.toPre (FractionRing R)))) z J).val`. Use `set v3 := (val u3 (Over.Hom.left (𝟙 (DegPre.BF Dd.toPre (FractionRing R)))) z J).val`. Use `set p1 := sval σ₁ (DegPre.trF Dd.toPre (FractionRing R) mu' ≫ DegPre.prB Dd.toPre (FractionRing R)).left z J`. Use `set q := sval σ₂ (DegPre.prB Dd.toPre (FractionRing R)).left z J`. Use `set C1 := gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Dd.toPre (FractionRing R)).hom (c k mu α))`.
+
+Use `set C2 := gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Dd.toPre (FractionRing R)).hom (c k mu' (α + k • mu)))`. Use `set C3 := gs (𝟙 _) z ⊤ (ReciprocityTheory.ChartRestriction.G.Out.scal (DegPre.BF Dd.toPre (FractionRing R)).hom (c k (mu + mu') α))`. Establish `k1 : (v2 * v1 - v3) * s = 0` using `by linear_combination (-v2) * E10 - E20 + E30`. Establish `hv' : v2 * v1 - v3 = 0` using `hs.mul_left_eq_zero.mp k1`. Establish `k2 : (C3 - (C1 + C2)) * q = 0` using `by linear_combination E2 - E3 + v2 * E1 + s' * hv' - C1 * E20`.
+
+Establish `hq : IsUnit q`. Rewrite using `[E30]`. Conclude with `(Units.isUnit _).mul hs`. Establish `hC : C3 = C1 + C2` using `sub_eq_zero.mp (hq.mul_left_eq_zero.mp k2)`. Rewrite `hC` using `[← scal_add]`.
+
+Conclude with `scal_injective R Dd.toPre z hC`.
+-/
 theorem defect_cocycle : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (h : Heat Y.H Y.q.left Dd.toPre.P.L dd ⇑D) (c : ℕ → Dd.toPre.X → Dd.toPre.X → R), IsBasic Y h → HasDefect Y h c → ∀ (k : ℕ), 1 ≤ k → ∀ mu mu' α, c k (mu + mu') α = c k mu α + c k mu' (α + k • mu) := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hv D h c hB hD k hk mu mu' α
   obtain ⟨σ, σ₁, σ₂, he, h1, h2, h3, z, J, hJ, hs⟩ := GlobalTheory.T.exists_integral_sections_thetaShift_triple R Dd k hk mu mu' α

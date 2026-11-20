@@ -14,13 +14,22 @@ def FramesP {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word) : P
     ∀ c c', Formalism.MainNotions.flipTwoThree.SameCls D.sp.X' (Formalism.MainNotions.flipTwoThree.Tu D u * D.host.g 0 * D.host.g 1) ((X.atT u).lattice₂ c)
       ((X.atT u).lattice₂ c') (e c) (e c') → c = c'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(X.atT u).lattice₂, fun c => localLattice_selfDual X u c, hF⟩`.
+-/
 theorem clauseP_of_framesP {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word) (hF : FramesP X u) : ClauseP D u :=
   ⟨(X.atT u).lattice₂, fun c => localLattice_selfDual X u c, hF⟩
 
+/- English proof (translation)
+The claim follows from `clsTie_of X u hF (clauseP_of_framesP X u hP)`.
+-/
 theorem clsTie_of_frames {D : D7} (X : Formalism.L2.Herm.FullTied D) (u : D.what₂.Word)
     (hF : ∀ i ≤ D.R.m, FramesStep D u i) (hP : FramesP X u) : Formalism.MainNotions.flipTwoThree.ClsTie D u :=
   clsTie_of X u hF (clauseP_of_framesP X u hP)
 
+/- English proof (translation)
+Introduce `D X u` and use `clsTie_of_frames X u (fun i hi => hF D X u i hi) (hP D X u)`.
+-/
 theorem ClsTieOfTied_of_frames
     (hF : ∀ D : D7, Formalism.L2.Herm.FullTied D → ∀ u i, i ≤ D.R.m → FramesStep D u i)
     (hP : ∀ (D : D7) (X : Formalism.L2.Herm.FullTied D) u, FramesP X u) : ClassCompatibilityOfRowCompatibility :=

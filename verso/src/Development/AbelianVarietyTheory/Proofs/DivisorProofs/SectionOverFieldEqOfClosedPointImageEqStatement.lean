@@ -13,5 +13,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.section_eq_of_point_eq | exact GlobalTheory.section_eq_of_point_eq | (intros; apply GlobalTheory.section_eq_of_point_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.section_over_field_eq_of_closedPoint_image_eq : ∀ (K : Type) [Field K] (X : Scheme.{0}) (q : X ⟶ Sp K) (z z' : Sp K ⟶ X), z ≫ q = 𝟙 _ → z' ≫ q = 𝟙 _ → z (IsLocalRing.closedPoint K) = z' (IsLocalRing.closedPoint K) → z = z' := by
   first | exact @GlobalTheory.section_eq_of_point_eq | exact GlobalTheory.section_eq_of_point_eq | (intros; apply GlobalTheory.section_eq_of_point_eq <;> assumption)

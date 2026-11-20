@@ -18,6 +18,9 @@ namespace GlobalTheory.FrameDecay
 section Frob
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedRing
 
+/- English proof (translation)
+Rewrite using `[Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(Real.rpow_natCast _ 2).symm`.
+-/
 theorem hs_eq_norm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     Real.sqrt (∑ i, ∑ j, ‖A i j‖ ^ 2) = ‖A‖ := by
   rw [Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]
@@ -25,6 +28,9 @@ theorem hs_eq_norm {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   exact (Real.rpow_natCast _ 2).symm
 
+/- English proof (translation)
+Unfold `GlobalTheory.SepPer.hsn`. Rewrite using `[hs_eq_norm, hs_eq_norm, hs_eq_norm]`. Conclude with `Matrix.frobenius_norm_mul A B`.
+-/
 theorem hsn_mul_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.SepPer.hsn (A * B) ≤ GlobalTheory.SepPer.hsn A * GlobalTheory.SepPer.hsn B := by
   unfold GlobalTheory.SepPer.hsn
@@ -33,8 +39,20 @@ theorem hsn_mul_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) :
 
 end Frob
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem hsn_nonneg {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ GlobalTheory.SepPer.hsn A := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Establish `hy' : yᴴ * Formalism.REAL.Jm ε * y = Formalism.REAL.Jm ε` using `hy`. Establish `h` using `congrFun (congrFun hy' i) i`. Establish `e1 : (yᴴ * Formalism.REAL.Jm ε * y) i i = ∑ k, star (y k i) * ((if ε k then 1 else -1) * y k i)`. Simplify using `only [Formalism.REAL.Jm]`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, Matrix.conjTranspose_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ‖Formalism.REAL.Jm ε i i‖ = 1`. Apply the tactic sequence `by_cases hi : ε i = true <;> simp [Formalism.REAL.Jm, hi]`.
+
+Establish `hcol : 1 ≤ ∑ k, ‖y k i‖ ^ 2`. Rewrite using `[← e2, ← h, e1]`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun k _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `by_cases hk : ε k = true <;> simp [hk, norm_mul, sq]`. Establish `hall : ∑ k, ‖y k i‖ ^ 2 ≤ ∑ a, ∑ b, ‖y a b‖ ^ 2` using `Finset.sum_le_sum fun a _ => Finset.single_le_sum (f := fun b => ‖y a b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ i)`.
+
+Unfold `GlobalTheory.SepPer.hsn`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt (hcol.trans hall)`.
+-/
 theorem one_le_hsn_of_mem {n : ℕ} (ε : Fin n → Bool) (i : Fin n) (y : Matrix (Fin n) (Fin n) ℂ)
     (hy : y ∈ Formalism.MainNotions.S.UJset ε) : 1 ≤ GlobalTheory.SepPer.hsn y := by
   have hy' : yᴴ * Formalism.REAL.Jm ε * y = Formalism.REAL.Jm ε := hy
@@ -62,6 +80,41 @@ end GlobalTheory.FrameDecay
 
 namespace GlobalTheory.FrameDecay
 
+/- English proof (translation)
+Introduce `m N hN ε H instH instI π v₀ g₀ F G A₀ hπ hg₀ hF hG hdec`. Take `⟨⟨_, hmul⟩, hiso, -⟩` from `hπ`. Establish `hg₀' : g₀ᴴ * Formalism.REAL.Jm ε * g₀ = Formalism.REAL.Jm ε` using `hg₀`. Establish `hJJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `hleft : (Formalism.REAL.Jm ε * g₀ᴴ * Formalism.REAL.Jm ε) * g₀ = 1`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc g₀ᴴ, hg₀', hJJ]`. Establish `hinv : g₀⁻¹ = Formalism.REAL.Jm ε * g₀ᴴ * Formalism.REAL.Jm ε` using `Matrix.inv_eq_left_inv hleft`. Establish `hl : g₀⁻¹ * g₀ = 1` using `by rw [hinv, hleft]`. Establish `hr : g₀ * g₀⁻¹ = 1` using `Matrix.mul_nonsing_inv g₀ (Matrix.isUnit_det_of_left_inverse hleft)`. Establish `hmemMul : ∀ a ∈ Formalism.MainNotions.S.UJset ε, ∀ b ∈ Formalism.MainNotions.S.UJset ε, a * b ∈ Formalism.MainNotions.S.UJset ε`.
+
+Introduce `a ha b hb`. Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hb']`. Establish `hinvMem : g₀⁻¹ ∈ Formalism.MainNotions.S.UJset ε` using `by show (g₀⁻¹)ᴴ * Formalism.REAL.Jm ε * g₀⁻¹ = Formalism.REAL.Jm ε conv_lhs => rw [← hg₀']`. Rewrite using `[show (g₀⁻¹)ᴴ * (g₀ᴴ * Formalism.REAL.Jm ε * g₀) * g₀⁻¹ = (g₀ * g₀⁻¹)ᴴ * Formalism.REAL.Jm ε * (g₀ * g₀⁻¹) by`.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc], hr]`. Simplify using the standard rewrite rules. Establish `hFd : IsUnit F.det` using `(Matrix.isUnit_iff_isUnit_det F).mp hF`. Establish `hFl : F⁻¹ * F = 1` using `Matrix.nonsing_inv_mul F hFd`.
+
+Establish `hFr : F * F⁻¹ = 1` using `Matrix.mul_nonsing_inv F hFd`. Establish `hkeep : ∀ u w : H, ⟪π g₀ u, π g₀ w⟫_ℂ = ⟪u, w⟫_ℂ`. Introduce `u w`. Set `T : H →ₗᵢ[ℂ] H` to `⟨(π g₀ : H →ₗ[ℂ] H), fun v => hiso g₀ hg₀ v⟩`. Conclude with `T.inner_map_map u w`.
+
+Use `set k : ℝ := 20 * ((m : ℝ) + 1) ^ 2 with hk`. Use `set e : ℕ := 2 * N ^ 2 + 1 with he`. Establish `hek : (e : ℝ) ≤ k`. Establish `h1 : (1 : ℝ) ≤ (m : ℝ) + 1` using `by linarith [(Nat.cast_nonneg m : (0 : ℝ) ≤ m)]`. Rewrite using `[he, hk, hN]`.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Use `set c₁ : ℝ := GlobalTheory.SepPer.hsn (F⁻¹ * g₀⁻¹) * GlobalTheory.SepPer.hsn (g₀ * F) with hc₁`. Establish `hc₁0 : 0 ≤ c₁` using `mul_nonneg (hsn_nonneg _) (hsn_nonneg _)`. Use `⟨|A₀| * (1 + c₁) ^ e, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `hg' : gᴴ * G * g = G` using `hg`. Use `set x := F * g * F⁻¹ with hx`. Establish `hxMem : x ∈ Formalism.MainNotions.S.UJset ε` using `by show xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε`. Establish `: xᴴ * Formalism.REAL.Jm ε * x = (F⁻¹)ᴴ * (gᴴ * (Fᴴ * Formalism.REAL.Jm ε * F) * g) * F⁻¹`. Rewrite using `[hx, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hG, hg', ← hG]`. Establish `hFH : (F⁻¹)ᴴ * Fᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hFr, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [hFH, hFr, Matrix.one_mul, Matrix.mul_one]`. Use `set y := g₀ * x * g₀⁻¹ with hy`. Establish `hyMem : y ∈ Formalism.MainNotions.S.UJset ε` using `hmemMul _ (hmemMul _ hg₀ _ hxMem) _ hinvMem`. Establish `hco : ⟪v₀, π x v₀⟫_ℂ = ⟪π g₀ v₀, π y (π g₀ v₀)⟫_ℂ`. Establish `h1 : π y (π g₀ v₀) = π g₀ (π x v₀)`.
+
+Establish `h2 : y * g₀ = g₀ * x` using `by rw [hy, Matrix.mul_assoc, hl, Matrix.mul_one]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hyMem _ hg₀, h2, hmul _ hg₀ _ hxMem, ContinuousLinearMap.comp_apply]`. Rewrite using `[h1, hkeep]`. Use `set s := GlobalTheory.SepPer.hsn y with hs`. Use `set t := GlobalTheory.SepPer.hsn g with ht`.
+
+Establish `hs1 : 1 ≤ s` using `one_le_hsn_of_mem ε ⟨0, by omega⟩ y hyMem`. Establish `hs0 : 0 < s` using `by linarith`. Establish `hts : t ≤ c₁ * s`. Establish `hgeq : g = (F⁻¹ * g₀⁻¹) * y * (g₀ * F)`. Establish `: (F⁻¹ * g₀⁻¹) * y * (g₀ * F) = (F⁻¹ * F) * g * (F⁻¹ * F)`.
+
+Rewrite using `[hy, hx]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc g₀⁻¹ g₀, hl, Matrix.one_mul, ← Matrix.mul_assoc g₀⁻¹ g₀, hl, Matrix.one_mul]`. Rewrite using `[this, hFl, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[ht, hgeq, hc₁]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hbd` using `hdec y hyMem`. Establish `hsame : GlobalTheory.SepReal.hsn y = s` using `rfl`. Rewrite `hbd` using `[hsame, ← hco]`. Establish `hpow : s ^ (-k) ≤ (s ^ e)⁻¹`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg hs0.le]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hs1 (by linarith)`. Establish `hz : ‖⟪v₀, π x v₀⟫_ℂ‖ ≤ |A₀| * (s ^ e)⁻¹` using `hbd.trans ((mul_le_mul_of_nonneg_right (le_abs_self A₀) (Real.rpow_nonneg hs0.le _)).trans (mul_le_mul_of_nonneg_left hpow (abs_nonneg _)))`. Establish `hT : (1 + t) ^ e ≤ (1 + c₁) ^ e * s ^ e`. Rewrite using `[← mul_pow]`.
+
+Use `pow_le_pow_left₀ (by linarith [hsn_nonneg g]) ?_ e` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hse : 0 < s ^ e` using `pow_pos hs0 e`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_frame_decay : ∀ (m N : ℕ), N = m + 1 → ∀ (ε : Fin N → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   (π : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (v₀ : H) (g₀ F G : Matrix (Fin N) (Fin N) ℂ) (A₀ : ℝ),
   Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) π → g₀ ∈ Formalism.MainNotions.S.UJset ε → IsUnit F → Fᴴ * Formalism.REAL.Jm ε * F = G →

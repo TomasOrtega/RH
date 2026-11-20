@@ -12,6 +12,9 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 
 namespace GlobalTheory.GelfandTwo
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.rhoStd, Formalism.BasicNotions.TH.rhoSq]`. Use `push_cast`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (((n : ℂ) - 1) / 2 - (i : ℂ)) * (((n : ℂ) - 1) / 2 - (i : ℂ))) n]`. Conclude with `Finset.sum_congr rfl fun i _ => (sq _).symm`.
+-/
 theorem sum_rhoStd_sq (n : ℕ) :
     ∑ a : Fin n, (Formalism.QuantumDeterminants.rhoStd n a : ℂ) * (Formalism.QuantumDeterminants.rhoStd n a : ℂ) = ((Formalism.BasicNotions.TH.rhoSq n : ℚ) : ℂ) := by
   simp only [Formalism.QuantumDeterminants.rhoStd, Formalism.BasicNotions.TH.rhoSq]
@@ -19,11 +22,17 @@ theorem sum_rhoStd_sq (n : ℕ) :
   rw [Fin.sum_univ_eq_sum_range (fun i => (((n : ℂ) - 1) / 2 - (i : ℂ)) * (((n : ℂ) - 1) / 2 - (i : ℂ))) n]
   exact Finset.sum_congr rfl fun i _ => (sq _).symm
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CasimirEigen.gelfVal_two_eq, sum_rhoStd_sq]`. Simplify using `only [sq]`.
+-/
 theorem gelfVal_two (n : ℕ) (lam : Fin n → ℂ) :
     GlobalTheory.Dec.gelfVal lam 2 = ∑ a, lam a ^ 2 - ((Formalism.BasicNotions.TH.rhoSq n : ℚ) : ℂ) := by
   rw [GlobalTheory.CasimirEigen.gelfVal_two_eq, sum_rhoStd_sq]
   simp only [sq]
 
+/- English proof (translation)
+The claim follows from `gelfVal_two`.
+-/
 example : ∀ (n : ℕ) (lam : Fin n → ℂ), GlobalTheory.Dec.gelfVal lam 2 = ∑ a, lam a ^ 2 - ((rhoSq n : ℚ) : ℂ) := gelfVal_two
 
 end GlobalTheory.GelfandTwo

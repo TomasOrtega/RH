@@ -5,22 +5,34 @@ namespace GlobalTheory
 
 namespace CompletedInvariants
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+-/
 theorem smodEq_iff {R : Type} [CommRing R] (q : R) (n : ℕ) (a b : R) :
     a ≡ b [SMOD ((Ideal.span {q}) ^ n • ⊤ : Submodule R R)] ↔ q ^ n ∣ a - b := by
   rw [SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top,
     Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Use `IsHausdorff.haus h.toIsHausdorff z fun n => ?_` and prove the remaining obligations. Rewrite using `[smodEq_iff, sub_zero]`. Conclude with `hz n`.
+-/
 theorem eq_zero_of_dvd {R : Type} [CommRing R] (q : R) (h : IsAdicComplete (Ideal.span {q}) R)
     (z : R) (hz : ∀ k : ℕ, q ^ k ∣ z) : z = 0 := by
   refine IsHausdorff.haus h.toIsHausdorff z fun n => ?_
   rw [smodEq_iff, sub_zero]; exact hz n
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `IsPrecomplete.prec h.toIsPrecomplete (f := f) (fun {m n} hmn => (smodEq_iff q m _ _).2 (hf m n hmn))`. Conclude with `⟨L, fun n => (smodEq_iff q n _ _).1 (hL n)⟩`.
+-/
 theorem exists_lim {R : Type} [CommRing R] (q : R) (h : IsAdicComplete (Ideal.span {q}) R)
     (f : ℕ → R) (hf : ∀ m n, m ≤ n → q ^ m ∣ f m - f n) : ∃ L, ∀ n, q ^ n ∣ f n - L := by
   obtain ⟨L, hL⟩ := IsPrecomplete.prec h.toIsPrecomplete (f := f)
     (fun {m n} hmn => (smodEq_iff q m _ _).2 (hf m n hmn))
   exact ⟨L, fun n => (smodEq_iff q n _ _).1 (hL n)⟩
 
+/- English proof (translation)
+Use `map_dvd f h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem map_dvd' {O R S : Type} [CommRing O] [CommRing R] [CommRing S] [Algebra O R] [Algebra O S]
     (f : R →ₐ[O] S) (p k : ℕ) {z : R} (h : (p : R) ^ k ∣ z) : (p : S) ^ k ∣ f z := by
   have := map_dvd f h
@@ -30,6 +42,37 @@ end CompletedInvariants
 
 open CompletedInvariants in
 
+/- English proof (translation)
+Introduce `O A A' E E' J _ _ _ _ _ _ _ _ _ p x x' ι ι' j g D δA δE hg hδ hx hE hE' dE dE' sE' sj hxx hD hinv havg`. Establish `hxm : ∀ m : ℕ, IsUnit (ι (x ^ m))` using `fun m => by rw [map_pow]; exact hx.pow m`. Establish `hfix : ∀ a, ∀ d ∈ D, δE d (g (ι a)) = g (ι a)` using `fun a d hd => by`. Rewrite using `[hg, hδ, (hinv (j a)).1 ⟨a, rfl⟩ d hd]`. Establish `sat : ∀ (z : E) (k : ℕ), (p : E') ^ k ∣ g z → (p : E) ^ k ∣ z`.
+
+Introduce `z k hz`. Take `⟨a, m, h⟩` from `dE z k`. Establish `h1` using `map_dvd' g p k h`. Rewrite `h1` using `[map_sub, map_mul]`. Establish `h2 : (p : E') ^ k ∣ g (ι a)` using `(dvd_sub_right (hz.mul_right _)).1 h1`.
+
+Rewrite `h2` using `[hg]`. Establish `h3` using `map_dvd' ι p k (sj a k (sE' _ k h2))`. Establish `h4 : (p : E) ^ k ∣ z * ι (x ^ m)`. Use `dvd_add h h3` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `(hxm m).dvd_mul_right.1 h4`. Use `⟨?_, fun y => ⟨?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Conclude with `eq_zero_of_dvd _ hE z fun k => sat z k (hz ▸ dvd_zero _)`.
+
+Introduce and unpack `⟨z, rfl⟩ d hd`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_dvd _ hE' _ fun k => ?_` and prove the remaining obligations. Take `⟨a, m, h⟩` from `dE z k`. Establish `h1` using `map_dvd' g p k h`.
+
+Rewrite `h1` using `[map_sub, map_mul]`. Establish `h2` using `map_dvd' (δE d) p k h1`. Rewrite `h2` using `[map_sub, map_mul, hfix _ d hd, hfix _ d hd]`. Establish `h3` using `dvd_sub h2 h1`. Establish `hu : IsUnit (g (ι (x ^ m)))` using `(hxm m).map g`.
+
+Use `hu.dvd_mul_right.1 ?_` and prove the remaining obligations. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ k : ℕ, ∃ z, (p : E') ^ k ∣ y - g z`. Introduce `k`.
+
+Take `⟨a', m, h⟩` from `dE' y k`. Take `⟨c, hc⟩` from `hxx`. Establish `h1 : (p : E') ^ k ∣ y * g (ι (x ^ m)) - ι' (a' * c ^ m)`. Use `h.mul_right (ι' (c ^ m))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hg, map_pow j, hc, mul_pow, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `set b := a' * c ^ m`. Establish `h2 : ∀ d ∈ D, (p : E') ^ k ∣ y * g (ι (x ^ m)) - ι' (δA d b)` using `fun d hd => by`. Use `map_dvd' (δE d) p k h1` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_mul, hfix _ d hd, hy d hd, hδ]`. Then use the resulting hypothesis. Establish `h3` using `Finset.dvd_sum h2`. Take `⟨a, ha⟩` from `(hinv _).2 (havg b)`. Rewrite `h3` using `[Finset.sum_sub_distrib, ← map_sum, ← ha, ← hg, Finset.sum_const, nsmul_eq_mul]`. Take `⟨n, hn⟩` from `hD.exists_left_inv`.
+
+Take `⟨v, hv⟩` from `(hxm m).exists_right_inv`. Establish `hn' : algebraMap O E' n * (D.card : E') = 1`. Use `congrArg (algebraMap O E') hn` as an intermediate fact. Simplify using `using this`. Establish `hv' : g (ι (x ^ m)) * g v = 1` using `by rw [← map_mul, hv, map_one]`.
+
+Use `⟨algebraMap O E n * ι a * v, ?_⟩` and prove the remaining obligations. Use `h3.mul_right (algebraMap O E' n * g v)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_mul, AlgHom.commutes]`. Take the linear combination `(-y) * hv' - y * (g (ι (x ^ m)) * g v) * hn'`.
+
+Use `choose z hz using key`. Take `⟨L, hL⟩` from `exists_lim _ hE z fun m n hmn => sat _ _ (by`. Use `dvd_sub ((pow_dvd_pow _ hmn).trans (hz n)) (hz m)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+
+Use the proof step `ring)`. Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_comm, ← sub_eq_zero]`. Use `eq_zero_of_dvd _ hE' _ fun k => ?_` and prove the remaining obligations. Use `dvd_add (hz k) (map_dvd' g p k (hL k))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem completed_localisation_invariants : ∀ {O A A' E E' J : Type} [CommRing O] [CommRing A] [CommRing A'] [CommRing E] [CommRing E'] [Algebra O A] [Algebra O A'] [Algebra O E] [Algebra O E'] (p : ℕ) (x : A) (x' : A') (ι : A →ₐ[O] E) (ι' : A' →ₐ[O] E') (j : A →ₐ[O] A') (g : E →ₐ[O] E') (D : Finset J) (δA : J → (A' →ₐ[O] A')) (δE : J → (E' →ₐ[O] E')), (∀ a, g (ι a) = ι' (j a)) → (∀ d a, δE d (ι' a) = ι' (δA d a)) → IsUnit (ι x) → IsAdicComplete (Ideal.span {(p : E)}) E → IsAdicComplete (Ideal.span {(p : E')}) E' → (∀ (y : E) (k : ℕ), ∃ (a : A) (m : ℕ), (p : E) ^ k ∣ y * ι (x ^ m) - ι a) → (∀ (y : E') (k : ℕ), ∃ (a : A') (m : ℕ), (p : E') ^ k ∣ y * ι' (x' ^ m) - ι' a) → (∀ (a : A') (k : ℕ), (p : E') ^ k ∣ ι' a → (p : A') ^ k ∣ a) → (∀ (a : A) (k : ℕ), (p : A') ^ k ∣ j a → (p : A) ^ k ∣ a) → x' ∣ j x → IsUnit (D.card : O) → (∀ a', (∃ a, j a = a') ↔ ∀ d ∈ D, δA d a' = a') → (∀ a', ∀ d ∈ D, δA d (∑ d' ∈ D, δA d' a') = ∑ d' ∈ D, δA d' a') → Function.Injective g ∧ ∀ y, (∃ z, g z = y) ↔ ∀ d ∈ D, δE d y = y := by
   intro O A A' E E' J _ _ _ _ _ _ _ _ _ p x x' ι ι' j g D δA δE hg hδ hx hE hE' dE dE' sE' sj
     hxx hD hinv havg

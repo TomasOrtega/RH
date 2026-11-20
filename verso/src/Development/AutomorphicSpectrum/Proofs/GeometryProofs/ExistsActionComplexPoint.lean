@@ -7,6 +7,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `hpt0 : M.pt 0 = 1`. Establish `h : M.pt 0 * 1 = M.pt 0 * M.pt 0`. Rewrite using `[_root_.mul_one, ← M.add, add_zero]`. Conclude with `(mul_left_cancel h).symm`. Establish `hact0 : act.act 0 = 1`.
+
+Establish `h : act.act 0 * 1 = act.act 0 * act.act 0`. Rewrite using `[_root_.mul_one, ← act.add, add_zero]`. Conclude with `(mul_left_cancel h).symm`. Establish `htan : ∀ (a : O) (e : V), GlobalTheory.CompanionTheory.Ar.IsTanAt G x (M.pt e ≫ act.act a)`. Introduce `a e`.
+
+Use `haveI := act.hom a`. Establish `h1` using `M.tan e`. Unfold `GlobalTheory.CompanionTheory.Ar.IsTanAt at h1 ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, h1, ← Over.comp_left, MonObj.one_comp]`. Use `choose f hf using fun (a : O) (e : V) => M.onto _ (htan a e)`.
+
+Establish `hadd : ∀ (a : O) (e e' : V), f a (e + e') = f a e + f a e'`. Introduce `a e e'`. Use `haveI := act.hom a`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hf, M.add, M.add, hf, hf, MonObj.mul_comp]`.
+
+Establish `hsmul : ∀ (a : O) (r : R) (e : V), f a (r • e) = r • f a e`. Introduce `a r e`. Apply `M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hf, M.smul, hf, Over.comp_left, Over.comp_left, M.smul, Category.assoc]`.
+
+Use `⟨{ toFun := fun a => { toFun := f a, map_add' := hadd a, map_smul' := hsmul a } map_one' := ?_ map_mul' := ?_ map_zero' := ?_ map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Use extensionality with `e show f 1 e = e`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hf, act.one, Category.comp_id]`. Introduce `a b`.
+
+Use extensionality with `e`. Use `show f (a * b) e = f a (f b e)`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hf, hf, hf, mul_comm a b, act.mul, Category.assoc]`. Use extensionality with `e show f 0 e = 0`.
+
+Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hf, hact0, MonObj.comp_one, hpt0]`. Introduce `a b`. Use extensionality with `e`. Use `show f (a + b) e = f a e + f b e`.
+
+Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hf, M.add, hf, hf, act.add, MonObj.comp_mul]`. Unfold `GlobalTheory.CompanionTheory.Ar.LieModel.IsActOf GlobalTheory.CompanionTheory.Ar.LieModel.IsDiffOf`. Introduce `a e`. Conclude with `hf a e`.
+-/
 private theorem exists_isActOf_lemma {S : Scheme} {R : Type} [CommRing R]
     {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S} {V : Type} [AddCommGroup V]
     [Module R V] (M : GlobalTheory.CompanionTheory.Ar.LieModel G x V) {O : Type} [CommRing O]
@@ -65,6 +84,25 @@ private theorem exists_isActOf_lemma {S : Scheme} {R : Type} [CommRing R]
     intro a e
     exact hf a e
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y y`. Use `haveI := Xo.univ.t.comm`. Take `⟨V, i1, i2, ⟨M₀⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists _ Xo.univ.t.G ℂ (under y)`. Take `⟨ρ, hρ⟩` from `exists_isActOf_lemma M₀ Xo.univ.t.act`. Take `⟨M', hM'⟩` from `(GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback _ _ _ _ _ _ Y.m0.toSABMap.cart ℂ y V).1 M₀`.
+
+Take `⟨N, hN⟩` from `(GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback _ _ _ _ _ _ Y.m.cart ℂ y V).2 M'`. Establish `hsame : ∀ e, SameVec Y y (M₀.pt e) (N.pt e)`. Introduce `e`. Unfold `GlobalTheory.CompanionTheory.Ar.Flat.SameVec`. Conclude with `⟨(M'.pt e).left, Over.w (M'.pt e), hM' e, hN e⟩`.
+
+Establish `hK : ∀ (a : 𝓞 E) (e : V), (M'.pt (ρ a e)).left = (M'.pt e).left ≫ (Y.oF.t.act.act a).left`. Introduce `a e`. Use `Y.m0.toSABMap.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hM', Category.assoc, Y.m0.toSABMap.act a, ← Category.assoc, hM', ← Over.comp_left, ← hρ a e]`. Rewrite using `[Over.w, Category.assoc, Over.w, Over.w]`.
+
+Establish `hNact : N.IsActOf Y.t.act.act ρ`. Unfold `GlobalTheory.CompanionTheory.Ar.LieModel.IsActOf GlobalTheory.CompanionTheory.Ar.LieModel.IsDiffOf`. Introduce `a e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hN, hK, Over.comp_left, ← hN, Category.assoc, Category.assoc, Y.m.act a]`.
+
+Use `⟨V, i1, i2, N, ρ, hNact, ?_⟩` and prove the remaining obligations. Introduce `ch n v w hmult hsv hli hmem`. Establish `hv : v = fun k => M₀.pt (w k)`. Use function extensionality and compare the values at `k`. Conclude with `SameVec.unique_left (hsv k) (hsame (w k))`.
+
+Take `⟨v₀, hv₀⟩` from `hmult`. Establish `hfr₀ : IsEigFrame Xo.univ.t.act (under y) ch v₀` using `hv₀`. Establish `htan₀ : ∀ k, IsTanAt Xo.univ.t.G (under y) (v₀ k)` using `fun k => (hfr₀.1 k).1`. Use `choose u hu using fun k => M₀.onto (v₀ k) (htan₀ k)`. Establish `hI` using `(GlobalTheory.T.lie_model_eigenvectors_action _ ℂ Xo.univ.t.G (under y) V M₀).2 _ Xo.univ.t.act ρ ch hρ`.
+
+Establish `hv₀' : v₀ = fun k => M₀.pt (u k)` using `funext fun k => (hu k).symm`. Rewrite `hfr₀` using `[hv₀']`. Take `⟨hu_li, hu_span⟩` from `(hI.2 n u).1 hfr₀`. Use `haveI : FiniteDimensional ℂ (eigSp ρ ch) := by`. Rewrite using `[← hu_span]`.
+
+Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range u)`. Establish `hspan : Submodule.span ℂ (Set.range w) = eigSp ρ ch`. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `hmem k`. Rewrite using `[finrank_span_eq_card hli, ← hu_span, finrank_span_eq_card hu_li]`. Rewrite using `[hv]`. Conclude with `(hI.2 n w).2 ⟨hli, hspan⟩`.
+-/
 theorem exists_lieModel_tied_isEigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (y : Sp ℂ ⟶ Xo.XF c), ∃ (EC : Type) (_ : AddCommGroup EC) (_ : Module ℂ EC) (N : LieModel Y.t.G (y ≫ Y.j) EC) (ρ : 𝓞 E →+* Module.End ℂ EC), N.IsActOf Y.t.act.act ρ ∧ ∀ (ch : 𝓞 E →+* ℂ) (n : ℕ) (v : Vecs y n) (w : Fin n → EC), LieMult Xo.univ.t.act (under y) ch n → (∀ i, SameVec Y y (v i) (N.pt (w i))) → LinearIndependent ℂ w → (∀ i, w i ∈ eigSp ρ ch) → IsEigFrame Xo.univ.t.act (under y) ch v := by
   intro E _ _ _ H D l Xo c O _ β Y y
   haveI := Xo.univ.t.comm

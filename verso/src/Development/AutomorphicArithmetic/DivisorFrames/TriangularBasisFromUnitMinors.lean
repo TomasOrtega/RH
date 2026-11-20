@@ -6,6 +6,15 @@ open CategoryTheory AlgebraicGeometry Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.Mean4O
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hk' : k + 1 ≤ n` using `Nat.succ_le_of_lt hk`. Set `c : Fin (k + 1) → K` to `fun l => (-1) ^ ((l : ℕ) + k) * (Matrix.of fun (p q : Fin k) => a (Fin.castLE hk' (l.succAbove p)) (s q)).det`. Use `⟨fun l => if h : l.1 < k + 1 then c ⟨l.1, h⟩ else 0, ?_, fun l hl => dif_neg (by omega), fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)) = Fin.last k` using `rfl`. Simplify using `only [Nat.lt_succ_self, dif_pos, c, h1, Fin.val_last, Fin.succAbove_last, minor]`.
+
+Rewrite using `[← two_mul, pow_mul, neg_one_sq, one_pow, _root_.one_mul]`. Both sides reduce to the same expression. Rewrite using `[minor, Matrix.det_succ_column _ (Fin.last k)]`. Use `Finset.sum_of_injOn (Fin.castLE hk') (Fin.castLE_injective hk').injOn (by simp) (fun l _ hl => ?_) (fun l _ => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[dif_neg, zero_mul]`. Introduce `hc`. Conclude with `hl ⟨⟨l, hc⟩, by simp, rfl⟩`. Establish `h2 : (Fin.castLE hk' l).1 < k + 1` using `l.2 beta_reduce`. Rewrite using `[dif_pos h2]`.
+
+Simplify using `only [c, Matrix.of_apply, Fin.snoc_last, Fin.val_last, Fin.val_castLE, Fin.eta, Fin.succAbove_last]`. Rewrite using `[mul_right_comm]`. Use `congr 3`. Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Fin.snoc_castSucc]`.
+-/
 private theorem minor_snoc_expand {K : Type} [CommRing K] {n g k : ℕ} (a : Fin n → Fin g → K) (hk : k < n)
     (s : Fin k → Fin g) : ∃ t : Fin n → K, t ⟨k, hk⟩ = minor a hk.le s ∧ (∀ l : Fin n, k < l.1 → t l = 0) ∧
       ∀ j, minor a (Nat.succ_le_of_lt hk) (Fin.snoc (α := fun _ => Fin g) s j) = ∑ l, t l * a l j := by
@@ -33,6 +42,15 @@ private theorem minor_snoc_expand {K : Type} [CommRing K] {n g k : ℕ} (a : Fin
       ext p q
       simp only [Matrix.submatrix_apply, Matrix.of_apply, Fin.snoc_castSucc]
 
+/- English proof (translation)
+Introduce `A K _ _ ι hι n g a h1 h2`. Establish `key : ∀ i : Fin n, ∃ (w : Fin g → A) (t : Fin n → K), t i = 1 ∧ (∀ l, i < l → t l = 0) ∧ (fun j => ι (w j)) = ∑ l, t l • a l`. Introduce `i`. Take `⟨s, u, hu⟩` from `h2 i.1 i.2.le`. Take `⟨t, ht1, ht2, ht3⟩` from `minor_snoc_expand a i.2 s`.
+
+Use `choose c hc using fun j => h1 _ (Nat.succ_le_of_lt i.2) (Fin.snoc (α := fun _ => Fin g) s j)`. Use `⟨fun j => (u⁻¹ : Aˣ) * c j, fun l => ι (u⁻¹ : Aˣ) * t l, ?_, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Establish `: t i = ι u` using `ht1.trans hu.symm`. Simplify using `only [this]`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Simplify using `only [ht2 l hl, mul_zero]`. Use function extensionality and compare the values at `j`. Simplify using `only [map_mul, hc, ht3, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, _root_.mul_assoc]`. Use `choose v T hT1 hT2 hT3 using key`. Use `⟨v, T, hT1, hT2, hT3, ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, u, hu⟩` from `h2 n le_rfl`. Use `⟨s, u, hι ?_⟩` and prove the remaining obligations. Rewrite using `[hu, GlobalTheory.LineNorm.Chart.map_minor, GlobalTheory.LineNorm.Chart.minor_tri a _ T hT2 hT3]`. Simplify using `only [hT1, Finset.prod_const_one, _root_.one_mul]`.
+-/
 theorem UpperTheory.triangular_basis_from_unit_minors :
     ∀ (A K : Type) [CommRing A] [CommRing K] (ι : A →+* K), Function.Injective ι → ∀ (n g : ℕ) (a : Fin n → Fin g → K), (∀ (k : ℕ) (hk : k ≤ n) (s : Fin k → Fin g), ∃ c : A, ι c = minor a hk s) → (∀ (k : ℕ) (hk : k ≤ n), ∃ (s : Fin k → Fin g) (c : Aˣ), ι c = minor a hk s) → ∃ (v : Fin n → Fin g → A) (T : Fin n → Fin n → K), (∀ i, T i i = 1) ∧ (∀ i l, i < l → T i l = 0) ∧ (∀ i, (fun j => ι (v i j)) = ∑ l, T i l • a l) ∧ ∃ s, IsUnit (minor v le_rfl s) := by
   intro A K _ _ ι hι n g a h1 h2

@@ -4,6 +4,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Glo
 open GlobalTheory.QCoh (pullbackSections)
 open GlobalTheory.Twist (resM)
 
+/- English proof (translation)
+Use extensionality with `V s`. Use `congr($((he.basis le_top).ext (f₁ := QCoh.appLinear φ V) (f₂ := QCoh.appLinear ψ V) fun i => ?_) s)` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`. Conclude with `(Twist.app_resM φ _ _).trans ((congrArg _ (h i)).trans (Twist.app_resM ψ _ _).symm)`.
+-/
 private theorem hom_ext_frame {X : Scheme.{0}} {F G : X.Modules} {κ : Type} [Fintype κ] {e : κ → Γ(F, ⊤)}
     (he : IsFrame e) {φ ψ : F ⟶ G} (h : ∀ i, φ.app ⊤ (e i) = ψ.app ⊤ (e i)) : φ = ψ := by
   ext V s
@@ -12,6 +15,15 @@ private theorem hom_ext_frame {X : Scheme.{0}} {F G : X.Modules} {κ : Type} [Fi
   rw [IsFrame.basis_apply]
   exact (Twist.app_resM φ _ _).trans ((congrArg _ (h i)).trans (Twist.app_resM ψ _ _).symm)
 
+/- English proof (translation)
+Introduce `X E A A' u v m r e a hu hv he fu au fv av`. Establish `key : cokernel.π u ≫ (IsFrame.iso fu fv).hom = cokernel.π v`. Use `hom_ext_frame he fun i => ?_` and prove the remaining obligations. Rewrite using `[← QCoh.app_app]`. Break down `i with i | k` into its components or cases.
+
+Rewrite using `[au, av]`. Use `(map_sum (QCoh.appLinear (IsFrame.iso fu fv).hom ⊤) _ _).trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `congrArg _ (IsFrame.iso_hom_app fu fv k)`. Conclude with `IsFrame.iso_hom_app fu fv k`.
+
+Establish `h1 : u ≫ cokernel.π v = 0`. Rewrite using `[← key, ← Category.assoc, cokernel.condition, zero_comp]`. Establish `h2 : v ≫ cokernel.π u = 0`. Rewrite using `[← cancel_mono (IsFrame.iso fu fv).hom, Category.assoc, key, cokernel.condition, zero_comp]`. Establish `hf` using `Abelian.monoLift_comp v u h1`.
+
+Establish `hg` using `Abelian.monoLift_comp u v h2`. Conclude with `⟨⟨Abelian.monoLift v u h1, Abelian.monoLift u v h2, by rw [← cancel_mono u, Category.assoc, hg, hf, Category.id_comp], by rw [← cancel_mono v, Category.assoc, hf, hg, Category.id_comp]⟩, hf⟩`.
+-/
 theorem UpperTheory.cokernel_frame_compat_mono :
     ∀ (X : Scheme.{0}) (E A A' : X.Modules) (u : A ⟶ E) (v : A' ⟶ E) (m r : ℕ) (e : Fin m ⊕ Fin r → Γ(E, ⊤))
         (a : Fin m → Fin r → Γ(X, ⊤)), Mono u → Mono v → IsFrame e →

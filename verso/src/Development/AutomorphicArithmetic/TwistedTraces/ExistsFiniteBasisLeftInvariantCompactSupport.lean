@@ -9,6 +9,37 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `G _ _ _ _ V hVo hVc S hS`. Establish `hVcl : IsClosed (V : Set G)` using `Subgroup.isClosed_of_isOpen V hVo`. Set `W : G → Set G` to `fun b => {h | b * h⁻¹ ∈ V}`. Establish `hWpre : ∀ b, W b = (fun h : G => b * h⁻¹) ⁻¹' (V : Set G)` using `fun b => rfl`. Establish `hcont : ∀ b : G, Continuous (fun h : G => b * h⁻¹)` using `fun b => continuous_const.mul continuous_inv`.
+
+Establish `hWo : ∀ b, IsOpen (W b)` using `fun b => by`. Rewrite using `[hWpre]`. Conclude with `hVo.preimage (hcont b)`. Establish `hWcl : ∀ b, IsClosed (W b)` using `fun b => by`. Rewrite using `[hWpre]`.
+
+Conclude with `hVcl.preimage (hcont b)`. Establish `hWself : ∀ b, b ∈ W b` using `fun b => by show b * b⁻¹ ∈ V`. Simplify using `using V.one_mem`. Establish `hWK : ∀ b, W b ⊆ (fun v : G => v⁻¹ * b) '' (V : Set G)` using `fun b h hh => ⟨b * h⁻¹, hh, by group⟩`. Establish `hKc : ∀ b, IsCompact ((fun v : G => v⁻¹ * b) '' (V : Set G))` using `fun b => hVc.image (continuous_inv.mul continuous_const)`.
+
+Establish `hWinv : ∀ b, ∀ v ∈ V, ∀ h, v * h ∈ W b ↔ h ∈ W b` using `fun b v hv h => by show b * (v * h)⁻¹ ∈ V ↔ b * h⁻¹ ∈ V`. Establish `: b * (v * h)⁻¹ = b * h⁻¹ * v⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `V.mul_mem_cancel_right (V.inv_mem hv)`. Set `E : G → CompactlySupportedContinuousMap G ℂ` to `fun b => { toFun := (W b).indicator (fun _ => (1 : ℂ)) continuous_toFun := (IsClopen.continuous_indicator ⟨hWcl b, hWo b⟩ continuous_const) hasCompactSupport' := by`.
+
+Use `HasCompactSupport.intro (hKc b) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (fun hxW => hx (hWK b hxW)) _ }`. Establish `hE : ∀ b h, E b h = (W b).indicator (fun _ => (1 : ℂ)) h` using `fun _ _ => rfl`. Set `q : G → Quotient (QuotientGroup.rightRel V)` to `fun h => Quotient.mk _ h`. Establish `hq : ∀ x y : G, q x = q y ↔ x ∈ W y` using `fun x y => by show Quotient.mk _ x = Quotient.mk _ y ↔ y * x⁻¹ ∈ V`.
+
+Rewrite using `[Quotient.eq]`. Conclude with `QuotientGroup.rightRel_apply`. Take `⟨t, -, ht⟩` from `hS.elim_nhds_subcover W (fun x _ => (hWo x).mem_nhds (hWself x))`. Set `T : Finset (Quotient (QuotientGroup.rightRel V))` to `t.image q`. Set `ε` to `T.equivFin`.
+
+Set `b : Fin T.card → G` to `fun j => (ε.symm j).1.out`. Establish `hqb : ∀ j, q (b j) = (ε.symm j).1` using `fun j => Quotient.out_eq _`. Use `⟨T.card, b, fun j => E (b j), ?_, ?_⟩` and prove the remaining obligations. Introduce `j v hv h`. Rewrite using `[hE, hE]`.
+
+Distinguish the cases in `hh : h ∈ W (b j)`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem ((hWinv _ v hv h).2 hh)]`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (fun h' => hh ((hWinv _ v hv h).1 h'))]`. Introduce `f hfV hfS h`. Establish `hfW : ∀ c x, x ∈ W c → f x = f c` using `fun c x hx => by`.
+
+Use `hfV (c * x⁻¹) hx x` as an intermediate fact. Simplify using `using this.symm`. Distinguish the cases in `hT : q h ∈ T`. Set `j0 : Fin T.card` to `ε ⟨q h, hT⟩`. Establish `hj0 : q (b j0) = q h`.
+
+Rewrite using `[hqb]`. Simplify using `[j0]`. Establish `hmem : h ∈ W (b j0)` using `(hq _ _).1 hj0.symm`. Rewrite using `[Finset.sum_eq_single j0]`. Rewrite using `[hE, Set.indicator_of_mem hmem, one_mul]`.
+
+Conclude with `hfW _ _ hmem`. Introduce `j _ hj`. Establish `hnot : h ∉ W (b j)` using `fun hm => by`. Apply `hj` to reduce the goal to its premises. Establish `h1 : (ε.symm j).1 = q h` using `by rw [← hqb]; exact ((hq _ _).2 hm).symm`.
+
+Establish `h2 : ε.symm j = ⟨q h, hT⟩` using `Subtype.ext h1`. Simplify using `[j0, ← h2]`. Rewrite using `[hE, Set.indicator_of_notMem hnot, zero_mul]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ _) hj`.
+
+Establish `hhS : h ∉ S` using `fun hs => by`. Use `ht hs` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hx, hxW⟩` from `this`. Conclude with `hT (Finset.mem_image.2 ⟨x, hx, ((hq _ _).2 hxW).symm⟩)`.
+
+Rewrite using `[hfS h hhS]`. Use `symm`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Establish `hnot : h ∉ W (b j)` using `fun hm => hT (by`. Rewrite using `[(hq _ _).2 hm, hqb]`.
+
+Conclude with `(ε.symm j).2)`. Rewrite using `[hE, Set.indicator_of_notMem hnot, zero_mul]`.
+-/
 theorem UpperTheory.exists_finite_basis_leftInvariant_compactSupport :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (V : Subgroup G),
         IsOpen (V : Set G) → IsCompact (V : Set G) → ∀ S : Set G, IsCompact S →

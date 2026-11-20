@@ -13,14 +13,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {χY χW : Chr F E} {om : Rep σ Y W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, add_mul]`.
+-/
 theorem pureA_add (f f' : SInf F (Fin n × Fin d)) (φ : (Fin n × Fin d → Af F) → ℂ) :
     pureA F ⇑(f + f') φ = pureA F f φ + pureA F f' φ := by
   funext x; simp [pureA, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc, Complex.real_smul]`.
+-/
 theorem pureA_smul (c : ℝ) (f : SInf F (Fin n × Fin d)) (φ : (Fin n × Fin d → Af F) → ℂ) :
     pureA F ⇑(c • f) φ = (c : ℂ) • pureA F f φ := by
   funext x; simp [pureA, mul_assoc, Complex.real_smul]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`.
+-/
 theorem pureA_mem (f : SInf F (Fin n × Fin d)) {φ : (Fin n × Fin d → Af F) → ℂ} (hφ : φ ∈ SB (Fin n × Fin d → Af F)) :
     pureA F f φ ∈ schA F (Fin n × Fin d) :=
   Submodule.subset_span ⟨f, φ, hφ, rfl⟩
@@ -36,6 +45,11 @@ def thetaLinAt (hP : IsPair B M χY χW om r s r' s') {φ : (Fin n × Fin d → 
     simp only [theta, pureA_smul, map_smul, RingHom.id_apply]
     rw [thetaSum_smul, Complex.real_smul]
 
+/- English proof (translation)
+Establish `hc : Continuous (thetaLinAt hP hφ g h)` using `(hB F E σ B n d Y W M χY χW om r s r' s' hP).2 φ hφ g h`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Establish `e : ∀ t : ℝ, slope (fun t : ℝ => theta om (pureA F (f t) φ) g h) 0 t = thetaLinAt hP hφ g h (t⁻¹ • (f t - f 0))`. Introduce `t`. Rewrite using `[slope_def_module, map_smul, map_sub, sub_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[show slope (fun t : ℝ => theta om (pureA F (f t) φ) g h) 0 = fun t => thetaLinAt hP hφ g h (t⁻¹ • (f t - f 0)) from funext e]`. Conclude with `(hc.tendsto f₁).comp hf`.
+-/
 theorem hasDerivAt_theta_pureA (hB : ThetaBasic) (hP : IsPair B M χY χW om r s r' s')
     {φ : (Fin n × Fin d → Af F) → ℂ} (hφ : φ ∈ SB (Fin n × Fin d → Af F)) (f : ℝ → SInf F (Fin n × Fin d))
     (f₁ : SInf F (Fin n × Fin d)) (hf : Tendsto (fun t : ℝ => t⁻¹ • (f t - f 0)) (𝓝[≠] 0) (𝓝 f₁)) (g : UA σ Y.J)
@@ -52,6 +66,13 @@ theorem hasDerivAt_theta_pureA (hB : ThetaBasic) (hP : IsPair B M χY χW om r s
 
 end GlobalTheory.ThetaKernelDeriv
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d Y W M χY χW om r s r' s' hP m φ f f₁ hφ hf g h`. Establish `hB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hK.base`. Establish `hs` using `hP.weil.isUSplitting.pres`. Establish `hsum : ∀ u : Fin m → SInf F (Fin n × Fin d), theta om (∑ i, pureA F (u i) (φ i)) g h = ∑ i, theta om (pureA F (u i) (φ i)) g h`. Introduce `u`.
+
+Simplify using `only [theta, map_sum]`. Proceed by induction on `(Finset.univ : Finset (Fin m)) using Finset.induction_on with`. Consider the case `empty => simp [thetaSum]`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, thetaSum_add F (hs _ _ (GlobalTheory.ThetaKernelDeriv.pureA_mem _ (hφ a))) (Submodule.sum_mem _ fun i _ => hs _ _ (GlobalTheory.ThetaKernelDeriv.pureA_mem _ (hφ i))), ih]`.
+
+Repeatedly rewrite using `[hsum]`. Conclude with `HasDerivAt.fun_sum fun i _ => GlobalTheory.ThetaKernelDeriv.hasDerivAt_theta_pureA hB hP (hφ i) (fun t => f t i) (f₁ i) (hf i) g h`.
+-/
 theorem GlobalTheory.ThetaKernelDeriv.hasDerivAt_theta_sum : KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Y : Spc F E n) (W : Spc F E d) (M : Model σ Y W) (χY χW : Chr F E) (om : Rep σ Y W) (r s r' s' : ℕ), IsPair B M χY χW om r s r' s' → ∀ (m : ℕ) (φ : Fin m → (Fin n × Fin d → Af F) → ℂ) (f : ℝ → Fin m → SInf F (Fin n × Fin d)) (f₁ : Fin m → SInf F (Fin n × Fin d)), (∀ i, φ i ∈ SB (Fin n × Fin d → Af F)) → (∀ i, Tendsto (fun t : ℝ => t⁻¹ • (f t i - f 0 i)) (𝓝[≠] 0) (𝓝 (f₁ i))) → ∀ g h, HasDerivAt (fun t : ℝ => theta om (∑ i, pureA F (f t i) (φ i)) g h) (theta om (∑ i, pureA F (f₁ i) (φ i)) g h) 0 := by
   intro hK F E _ _ _ _ _ σ B n d Y W M χY χW om r s r' s' hP m φ f f₁ hφ hf g h
   have hB : ThetaBasic := GlobalTheory.T.theta_basic_properties hK.base

@@ -17,6 +17,9 @@ open Pb GlobalTheory.CompanionTheory.LiftLat
 section Gr
 variable {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L))
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Rewrite `h` using `[pow_succ, mul_smul]`. Conclude with `hT T x (ih _ h)`.
+-/
 theorem pow_tf (c : b.R) (r : ℤ)
     (hT : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x ∈ (sFil Q r).S T → x ∈ (sFil Q r).S T) (n : ℕ)
     (T : Q.FullSubcategory) (x : (sP Q).A.obj T) (h : c ^ n • x ∈ (sFil Q r).S T) : x ∈ (sFil Q r).S T := by
@@ -26,6 +29,19 @@ theorem pow_tf (c : b.R) (r : ℤ)
     rw [pow_succ, mul_smul] at h
     exact hT T x (ih _ h)
 
+/- English proof (translation)
+Establish `hle : ∀ T : Q.FullSubcategory, (sFil Q ((r : ℤ) + 1)).S T ≤ (sFil Q r).S T` using `fun T => T.obj.pdPow_anti (Nat.le_succ r)`. Set `red` to `fun n : ℕ => sqLe (a := sFil Q r) (b := sFil Q ((r : ℤ) + 1)) (a' := stdI Q (some (r : ℤ)) (c ^ n)) (b' := stdI Q (some ((r : ℤ) + 1)) (c ^ n)) (fun _ => le_sup_left) fun _ => le_sup_left`. Set `tr` to `fun n : ℕ => sqLe (stdI_le Q (some (r : ℤ)) c n) (stdI_le Q (some ((r : ℤ) + 1)) c n)`. Use `gen (G := fun n => sq (stdI Q (some (r : ℤ)) (c ^ n)) (stdI Q (some ((r : ℤ) + 1)) (c ^ n))) c red tr (fun n T => (red n).τ T) (fun n T => (tr n).τ T) (fun _ _ _ _ => rfl) (fun _ _ _ _ => rfl) ?_ ?_ ?_ ?_ j k h1 h2 h3` and prove the remaining obligations. Introduce `n T x`.
+
+Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Both sides reduce to the same expression. Introduce `n T y`. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ y`. Take `⟨u, hu⟩` from `(mem_some Q r _ T y).1 hy`.
+
+Use `⟨sqMk _ _ _ hu, (sq_eq _ _ (Ideal.mem_sup_left hu) hy).2 ((mem_some Q _ _ T _).2 ⟨-u, ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[smul_neg, show y - c ^ n • u - y - -(c ^ n • u) = 0 by abel]`. Conclude with `zero_mem _`. Introduce `n T x`. Take `⟨w, hw, rfl⟩` from `sq_surj _ _ x`.
+
+Establish `e1 : (red n).τ T (sqMk _ _ w hw) = 0 ↔ w ∈ (stdI Q (some ((r : ℤ) + 1)) (c ^ n)).S T` using `sqMk_eq_zero (stdI Q (some (r : ℤ)) (c ^ n)) _ w (Ideal.mem_sup_left hw)`. Use `e1.trans ((mem_some Q _ _ T w).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : y ∈ (sFil Q r).S T` using `pow_tf Q c r (hT r) n T y (by`. Use `sub_mem hw (hle T hy)` as an intermediate fact.
+
+Rewrite using `[sub_sub_cancel] at this)` and apply the resulting hypothesis. Conclude with `⟨sqMk _ _ y hy', (sq_eq _ _ hw (Submodule.smul_of_tower_mem _ _ hy')).2 hy⟩`. Introduce and unpack `⟨y, h⟩`. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ y`. Conclude with `⟨y, (sq_eq _ _ hw (Submodule.smul_of_tower_mem _ _ hy)).1 h⟩`.
+
+Introduce `T x hx`. Take `⟨w, hw, rfl⟩` from `sq_surj _ _ x`. Establish `e2` using `(sqMk_eq_zero _ _ (c • w) (Submodule.smul_of_tower_mem _ _ hw)).1 hx`. Conclude with `(sqMk_eq_zero _ _ w hw).2 (hT _ T w e2)`.
+-/
 theorem gr_part (c : b.R) (r : ℕ)
     (hT : ∀ (r : ℤ) (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x ∈ (sFil Q r).S T → x ∈ (sFil Q r).S T) (j k : ℕ)
     (h1 : ∀ (x : HG Q r (j + 1)) (n : ℕ), c ^ n • x = 0 → c ^ k • x = 0)
@@ -69,6 +85,11 @@ theorem gr_part (c : b.R) (r : ℕ)
 
 end Gr
 
+/- English proof (translation)
+Establish `hf` using `fun j => hA γ l m m hdv hO hL le_rfl q U {⊤} sSup_singleton r ((r : ℤ) + 1) (by omega) (by omega) j`. Take `⟨k, a, b, d⟩` from `bounds hL (hf j) (hf (j + 1))`. Use `⟨k, gr_part (TS γ q l m {⊤}) (l : A) r ?_ j k a b d⟩` and prove the remaining obligations. Introduce `r T x h`. Establish `e : (l : A) • x = (l : T.obj.B) * (show T.obj.B from x)`.
+
+Rewrite using `[Algebra.smul_def, map_natCast]`. Rewrite `h` using `[e]`. Conclude with `T.property.1.2 _ _ h`.
+-/
 theorem lift_gr (hA : AfgA) {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing A] [Algebra O A] {I : Ideal A}
     (γ : DividedPowers I) (l m : ℕ) (hdv : ∀ a : O, a ≠ 0 → ∃ k : ℕ, a ∣ (l : O) ^ k) (hO : TFBase (dividedPowersBot O) l m)
     (hL : LatBase γ l m) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsProper q] (U : Cov q) (r : ℕ) (hr : r < m) (j : ℕ) :
@@ -84,6 +105,13 @@ theorem lift_gr (hA : AfgA) {O A : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
   rw [e] at h
   exact T.property.1.2 _ _ h
 
+/- English proof (translation)
+Establish `hρ : ∀ x, d₂.ρ (σ' x) = lnMap (RingHom.id A) l n.le_succ (d₁.ρ x)` using `fun x => by`. Take `⟨a, rfl⟩` from `hs x`. Rewrite using `[h₀, hc₁, hc₂]`. Both sides reduce to the same expression. Rewrite using `[pull_pull lam]`.
+
+Express the relevant statement in the definitionally equal form `_ = (sqLe (stdI_le (TS γ q l s 𝒱) (some (r : ℤ)) (l : A) n) (stdI_le (TS γ q l s 𝒱) (some ((r : ℤ) + 1)) (l : A) n)).pull j _`. Rewrite using `[pull_pull lam]`. Use `(CrystallineSemistableComparison.P.prism _ _ ⟨fun T => GlobalTheory.CompanionTheory.RedTrans.eta d₁ d₂ m hpt hρ T.obj T.property.1, fun T T' f => ?_⟩ (fun T x => ?_) j x).symm` and prove the remaining obligations. Use `hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun _ => rfl))` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l (n + 1)) x`. Both sides reduce to the same expression.
+-/
 theorem sub_trans {O A R₁ R₂ Λ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing R₁] [CommRing R₂] [CommRing Λ]
     {I : Ideal A} {γ : DividedPowers I} {J₁ : Ideal R₁} {J₂ : Ideal R₂} {δ₁ : DividedPowers J₁} {δ₂ : DividedPowers J₂}
     {κ₁ : O →+* R₁ ⧸ J₁} {κ₂ : O →+* R₂ ⧸ J₂} {l n : ℕ} (d₁ : RedIn δ₁ κ₁ γ l (n + 1)) (d₂ : RedIn δ₂ κ₂ γ l n) {X : Scheme.{0}}

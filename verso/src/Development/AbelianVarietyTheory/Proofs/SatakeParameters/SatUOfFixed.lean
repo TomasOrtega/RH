@@ -21,6 +21,47 @@ noncomputable section
 
 namespace GlobalTheory.InertSph
 
+/- English proof (translation)
+Introduce `L _ _ _ n a S hS v w Dv α _ hsat U hU f hfS hfU h hh`. Take `⟨f₀, hf₀S, hf₀0, U', hf₀U', hU', hH⟩` from `hsat`. Establish `hf₀S' : f₀ ∈ S` using `hf₀S`. Establish `hK : ∀ κ : GAf L n, κ ∈ Umax L n → TrivOutside {v} κ → ∃ hκ : Dv.loc κ ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc κ, hκ⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n` using `fun κ hκ _ => ⟨GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal L n v w Dv κ, GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact L n v w Dv κ hκ _⟩`. Establish `hUmax : ∀ κ : GAf L n, TrivOutside {v} κ → (κ ∈ Umax L n ↔ κ ∈ Umax L n)` using `fun _ _ => Iff.rfl`.
+
+Set `ρ : GAf L n →* Module.End ℂ (GAf L n → a.W)` to `{ toFun := fun g => NG.rt L n g map_one' := LinearMap.ext fun φ => funext fun x => by show φ (x * 1) = φ x`. Rewrite using `[mul_one]`. Use the proof step `map_mul' := fun g g' => LinearMap.ext fun φ => funext fun x => by show φ (x * (g * g')) = φ (x * g * g')`. Rewrite using `[mul_assoc] }`. Establish `hρ : ∀ g φ, ρ g φ = NG.rt L n g φ` using `fun _ _ => rfl`.
+
+Establish `hf₀K : ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f₀ = f₀` using `fun κ hκ ht => hf₀U' κ ((hU' κ ht).2 hκ)`. Establish `hfK : ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f` using `fun κ hκ ht => hfU κ ((hU κ ht).2 hκ)`. Establish `hrtc : ∀ (φ : GAf L n → a.W) (x b : GAf L n), TrivOutside {v} x → TrivOutside {v}ᶜ b → NG.rt L n x (NG.rt L n b φ) = NG.rt L n b (NG.rt L n x φ)`. Introduce `φ x b hx hb`. Use function extensionality and compare the values at `y`.
+
+Use `show φ (y * x * b) = φ (y * b * x)`. Rewrite using `[mul_assoc, mul_assoc, (GlobalTheory.InertSph.commute_of_trivOutside v x b hx hb).eq]`. Establish `hrtm : ∀ (φ : GAf L n → a.W) (x b : GAf L n), NG.rt L n x (NG.rt L n b φ) = NG.rt L n (x * b) φ`. Introduce `φ x b`. Use function extensionality and compare the values at `y`.
+
+Use `show φ (y * x * b) = φ (y * (x * b))`. Rewrite using `[mul_assoc]`. Establish `hloc` using `fun x (hx : TrivOutside {v} x) => GlobalTheory.T.inertDoubleCosetOperator_eq_inertHeckeOperator L n v w Dv (GlobalTheory.T.inertDatum_local_mem_unitaryGroup_antidiagonal L n v w Dv) (GlobalTheory.T.inertDatum_local_stdLatticeStabilizer_mem_maxCompact L n v w Dv) (GlobalTheory.T.e …`. Use `choose! R ha hR hha hA using hloc`. Establish `hχ : ∀ x, TrivOutside {v} x → ∑ γ ∈ R x, NG.rt L n γ f₀ = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) (ha x) α • f₀`.
+
+Introduce `x hx`. Rewrite using `[hA x hx a.W f₀ hf₀K, GlobalTheory.T.inertHeckeOperator_level_independent L n v w Dv hK (Umax L n) U' hUmax hU' a.W (ha x) (hha x hx).1 f₀ hf₀K]`. Conclude with `hH _ (hha x hx)`. Set `W' : Submodule ℂ (GAf L n → a.W)` to `Submodule.span ℂ (Set.range fun b : {b : GAf L n // TrivOutside {v}ᶜ b} => NG.rt L n (b : GAf L n) f₀)`. Establish `hgen : ∀ b : GAf L n, TrivOutside {v}ᶜ b → NG.rt L n b f₀ ∈ W'` using `fun b hb => Submodule.subset_span ⟨⟨b, hb⟩, rfl⟩`.
+
+Establish `hW : W' ≤ GlobalTheory.SphScalar.fixS ρ S (GlobalTheory.InertSph.Kv L n v)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨b, hb⟩, rfl⟩`. Use `⟨hS.1.stable b f₀ hf₀S', fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, hrtc f₀ k b hk.2 hb, hf₀K k hk.1 hk.2]`.
+
+Establish `hf₀W : f₀ ∈ W'`. Use `hgen 1 (GlobalTheory.InertSph.trivOutside_one _)` as an intermediate fact. Establish `e : NG.rt L n (1 : GAf L n) f₀ = f₀` using `funext fun y => by show f₀ (y * 1) = f₀ y`. Rewrite using `[mul_one]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Establish `hW0 : W' ≠ ⊥`. Introduce `h0`. Apply `hf₀0` to reduce the goal to its premises. Use `hf₀W` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `hWb : ∀ b ∈ {b : GAf L n | TrivOutside {v}ᶜ b}, ∀ x ∈ W', ρ b x ∈ W'`. Introduce `b hb x hx`. Establish `hle : W' ≤ W'.comap (ρ b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨b', hb'⟩, rfl⟩`. Use `show ρ b (NG.rt L n b' f₀) ∈ W'`. Rewrite using `[hρ, hrtm]`. Conclude with `hgen _ (GlobalTheory.SatInd.CosetFin.trivOutside_mul hb hb')`. Conclude with `hle hx`.
+
+Establish `hWR : ∀ x ∈ {x : GAf L n | TrivOutside {v} x}, ∀ y ∈ W', ∑ γ ∈ R x, ρ γ y ∈ W'`. Introduce `x hx y hy`. Establish `hγ : ∀ γ ∈ R x, TrivOutside {v} γ`. Introduce `γ hγ`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `(hR x hx).1 γ hγ`.
+
+Conclude with `GlobalTheory.SatInd.CosetFin.trivOutside_mul (GlobalTheory.SatInd.CosetFin.trivOutside_mul hk₁.2 hx) hk₂.2`. Establish `hle : W' ≤ W'.comap (∑ γ ∈ R x, ρ γ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨b, hb⟩, rfl⟩`. Use `show (∑ γ ∈ R x, ρ γ) (NG.rt L n b f₀) ∈ W'`.
+
+Rewrite using `[LinearMap.sum_apply]`. Establish `e : ∑ γ ∈ R x, ρ γ (NG.rt L n b f₀) = NG.rt L n b (∑ γ ∈ R x, NG.rt L n γ f₀)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun γ hγ' => hrtc f₀ γ b (hγ γ hγ') hb`. Rewrite using `[e, hχ x hx, map_smul]`.
+
+Conclude with `W'.smul_mem _ (hgen b hb)`. Use `hle hy` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, LinearMap.sum_apply]`. Then use the resulting hypothesis. Establish `hdec : ∀ g : GAf L n, ∃ x ∈ {x : GAf L n | TrivOutside {v} x}, ∃ b ∈ {b : GAf L n | TrivOutside {v}ᶜ b}, g = x * b`. Introduce `g`.
+
+Take `⟨x, b, hx, hb, e⟩` from `GlobalTheory.T.finiteAdelicUnitary_eq_mul_trivOutside_place_and_at_place L n v g`. Conclude with `⟨x, hx, b, hb, e⟩`. Establish `hirr : ∀ S' : Submodule ℂ (GAf L n → a.W), S' ≤ S → (∀ g, ∀ x ∈ S', ρ g x ∈ S') → S' = ⊥ ∨ S' = S` using `fun S' hle hst => hS.2.2 S' ⟨hle.trans hS.1.le, fun g x hx => hst g x hx⟩ hle`. Establish `heq` using `GlobalTheory.SphScalar.fixS_simple ρ S (fun g x hx => hS.1.stable g x hx) hirr (GlobalTheory.InertSph.Kv L n v) {x : GAf L n | TrivOutside {v} x} {b : GAf L n | TrivOutside {v}ᶜ b} hdec R (fun x hx => hR x hx) W' hW hW0 hWR hWb`. Establish `hfW : f ∈ W'`.
+
+Rewrite using `[heq]`. Conclude with `⟨hfS, fun k hk => hfK k hk.1 hk.2⟩`. Take `⟨C, cf, xs, hC⟩` from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv U h (GlobalTheory.SatInd.CosetFin.finite_inert_support L n v w Dv (GlobalTheory.SatInd.DCoset.finite_dcoset Dv.ϖ Dv.σw _ n Dv.unram) (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv) U hU h hh)`. Use `set c := Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α with hc`. Set `T : Module.End ℂ (GAf L n → a.W)` to `∑ d ∈ C, cf d • NG.rt L n (xs d)`.
+
+Establish `hT : ∀ φ, heckeFunI L n U Dv h φ = T φ`. Introduce `φ`. Rewrite using `[hC a.W φ, LinearMap.sum_apply]`. Both sides reduce to the same expression. Set `E : Module.End ℂ (GAf L n → a.W)` to `T - c • (1 : Module.End ℂ (GAf L n → a.W))`.
+
+Establish `hE : ∀ φ, E φ = T φ - c • φ` using `fun φ => rfl`. Establish `hker : W' ≤ LinearMap.ker E`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨b, hb⟩, rfl⟩`. Use `show E (NG.rt L n b f₀) = 0`.
+
+Rewrite using `[hE, ← hT, GlobalTheory.InertSph.heckeFunI_rt U Dv h f₀ b hb, GlobalTheory.T.inertHeckeOperator_level_independent L n v w Dv hK U U' hU hU' a.W h hh.1 f₀ hf₀K, hH h hh, map_smul, sub_self]`. Use `hker hfW` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, hE, sub_eq_zero]`. Rewrite using `[hT]`. Conclude with `this`.
+-/
 theorem satU_of_fixed : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)) (hS : NG.IsIrrRep a.ρ S) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (α : Fin (n / 2) → ℂ), NG.OverPl w v → NG.SatAt { a with S := S, irrS := hS } Dv α → ∀ U : Subgroup (GAf L n), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ f ∈ S, (∀ κ ∈ U, NG.rt L n κ f = f) → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), heckeFunI L n U Dv h f = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV (maximalRealSubfield L) v) h α • f := by
   intro L _ _ _ n a S hS v w Dv α _ hsat U hU f hfS hfU h hh
   obtain ⟨f₀, hf₀S, hf₀0, U', hf₀U', hU', hH⟩ := hsat

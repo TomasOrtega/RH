@@ -21,6 +21,11 @@ section Abstract
 
 variable {R K : Type} [CommRing R] [CommRing K] {n : ℕ}
 
+/- English proof (translation)
+Establish `mv : ∀ (M : Matrix (Fin n) (Fin n) R) x, φ ∘ (M *ᵥ x) = M.map φ *ᵥ (φ ∘ x)` using `fun M x =>`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec φ M x i`. Establish `sm : ∀ x : Fin n → R, φ ∘ (ε • x) = φ ∘ x` using `fun x => funext fun i => by simp [hε]`. Establish `ss : φ ∘ (s ∘ w) = w` using `funext fun i => hs _`. Take `⟨z, hz, e⟩` from `h2 _ (h1 (s ∘ w) fun i => hO' _ (hw i))`.
+
+Use `⟨φ ∘ z, fun i => hO _ (hz i), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem read_one {Λ : (Fin n → R) → Prop} {O : R → Prop} {OK : Subring K} {ε : R} (φ : R →+* K) (s : K → R)
     (hs : ∀ t, φ (s t) = t) (hε : φ ε = 1) (hO : ∀ x, O x → φ x ∈ OK) (hO' : ∀ t ∈ OK, O (s t))
     {B B' : Matrix (Fin n) (Fin n) R}
@@ -39,6 +44,11 @@ theorem read_one {Λ : (Fin n → R) → Prop} {O : R → Prop} {OK : Subring K}
     _ = φ ∘ (ε • B' *ᵥ z) := by rw [e]
     _ = B'.map φ *ᵥ (φ ∘ z) := by rw [sm, mv]
 
+/- English proof (translation)
+Establish `mv : ∀ (M : Matrix (Fin n) (Fin n) R) x, φ ∘ (M *ᵥ x) = M.map φ *ᵥ (φ ∘ x)` using `fun M x =>`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec φ M x i`. Establish `sm : ∀ x : Fin n → R, φ ∘ (ε • x) = φ ∘ x` using `fun x => funext fun i => by simp [hε]`. Establish `hu : ∀ u z : Fin n → R, φ ∘ (fun i => u i * z i) = Matrix.diagonal (fun i => φ (u i)) *ᵥ (φ ∘ z)` using `fun u z => funext fun i => by simp [Matrix.mulVec_diagonal]`. Establish `ss : φ ∘ (s ∘ w) = w` using `funext fun i => hs _`.
+
+Take `⟨y, hy, e⟩` from `h4 (s ∘ w) fun i => hO' _ (hw i)`. Take `⟨z, hz, e'⟩` from `h3 y hy`. Use `⟨φ ∘ z, fun i => hO _ (hz i), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sm, mv, hu, Matrix.mulVec_mulVec]`.
+-/
 theorem read_step {Λ : (Fin n → R) → Prop} {O : R → Prop} {OK : Subring K} {ε : R} (φ : R →+* K) (s : K → R)
     (hs : ∀ t, φ (s t) = t) (hε : φ ε = 1) (hO : ∀ x, O x → φ x ∈ OK) (hO' : ∀ t ∈ OK, O (s t))
     {A B B' : Matrix (Fin n) (Fin n) R} {u u' : Fin n → R}
@@ -64,6 +74,17 @@ theorem read_step {Λ : (Fin n → R) → Prop} {O : R → Prop} {OK : Subring K
     _ = (B'.map φ * Matrix.diagonal (fun i => φ (u' i))) *ᵥ (φ ∘ z) := by
       rw [sm, mv, hu, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `GlobalTheory.PlaceDiv.exists_factor OK b b' H1`. Take `⟨N, hN⟩` from `GlobalTheory.PlaceDiv.exists_factor OK b' b H2`. Take `⟨M₂, hM₂⟩` from `GlobalTheory.PlaceDiv.exists_factor OK (b * T) (b' * U) H3`. Take `⟨N₂, hN₂⟩` from `GlobalTheory.PlaceDiv.exists_factor OK (b' * U) (b * T) H4`. Establish `hMN : M.map OK.subtype * N.map OK.subtype = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb', Matrix.one_mul]`. Use `_ = c' * (b' * M.map OK.subtype * N.map OK.subtype) := by simp only [Matrix.mul_assoc]`. Use `_ = c' * b' := by rw [← hM, ← hN]`. Use `_ = 1 := hb'`.
+
+Establish `hl : T' * c * (b * T) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc c, hb, Matrix.one_mul, hT]`. Establish `hNM : N₂.map OK.subtype * M₂.map OK.subtype = 1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨k₁, hk₁, e₁⟩` from `GlobalTheory.PlaceDiv.mem_range_of_mul_eq_one OK M N hMN`.
+
+Take `⟨k₂, hk₂, e₂⟩` from `GlobalTheory.PlaceDiv.mem_range_of_mul_eq_one OK N₂ M₂ hNM`. Use `⟨k₁, hk₁, k₂, hk₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb', Matrix.one_mul]`.
+
+Use `_ = c' * (b' * M.map OK.subtype * T * N₂.map OK.subtype) := by simp only [Matrix.mul_assoc]`. Use `_ = c' * (b' * U) := by rw [← hM, ← hN₂]`. Use `_ = U := by rw [← Matrix.mul_assoc, hb', Matrix.one_mul]`.
+-/
 theorem coset (OK : Subring K) {b b' c c' T T' U : Matrix (Fin n) (Fin n) K}
     (hb : c * b = 1) (hb' : c' * b' = 1) (hT : T' * T = 1)
     (H1 : ∀ y : Fin n → K, (∀ i, y i ∈ OK) → ∃ z : Fin n → K, (∀ i, z i ∈ OK) ∧ b *ᵥ y = b' *ᵥ z)
@@ -104,6 +125,27 @@ end Abstract
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V P e f ϖ d d' g hP h1 h2 hd hd' hD hD'`. Establish `he : e * e = e`. Break down `id hP with ⟨hs, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `hs.1.1`. Conclude with `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 P _ _ hP).1`.
+
+Take `⟨φ, s, hs, hε, -, hO, hO', hinc⟩` from `GlobalTheory.SphLabelOps.exists_component he (GlobalTheory.SphLabelOps.tie_of_isPrimeIdem hP)`. Establish `hee : finPart D e * finPart D e = finPart D e` using `by rw [← RingHom.map_mul, he]`. Rewrite `hD`, `hD'` using `[GlobalTheory.DivDual.divAt_iff]`. Take `⟨l, B, b1, b2, b3, b4⟩` from `hD`. Take `⟨l', B', b1', b2', b3', b4'⟩` from `hD'`.
+
+Take `⟨C, -, c2⟩` from `(GlobalTheory.LatIntFacts.int_facts V).2.2 _ B hee fun y hy => (b2 y hy).imp fun _ h => h.2`. Take `⟨C', -, c2'⟩` from `(GlobalTheory.LatIntFacts.int_facts V).2.2 _ B' hee fun y hy => (b2' y hy).imp fun _ h => h.2`. Establish `mp : ∀ X Y : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), finPart D e • (X * Y) = finPart D e • (1 : Matrix (Fin V.rank) (Fin V.rank) _) → X.map φ * Y.map φ = 1`. Introduce `X Y hXY`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_one φ (map_zero φ) (map_one φ)]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg φ (congrFun (congrFun hXY i) j)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, hε, one_mul, one_mul]`. Then use the resulting hypothesis. Establish `hv : Formalism.UG.IsUnifV D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E))` using `(P.valuedAdicCompletion_eq_valuation' (ϖ : D.host.E)).trans ((P.valuation_of_algebraMap ϖ).trans (GlobalTheory.LatIntFacts.intValuation_uniformiser P h1 h2))`. Establish `h0` using `Formalism.UG.P.cartan_unif_ne_zero D.host.E P _ hv`.
+
+Establish `e1 : ∀ a : List ℤ, (Matrix.diagonal fun i : Fin V.rank => φ (finPart D (incA D ((ϖ : D.host.E) ^ (a.getD i.1 0))))) = Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E)) fun i : Fin V.rank => a.getD i.1 0`. Introduce `a`. Unfold `Formalism.UG.diagPow`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hinc, map_zpow₀]`. Establish `hinv : (Matrix.diagonal fun i : Fin V.rank => (algebraMap D.host.E (P.adicCompletion D.host.E) (ϖ : D.host.E)) ^ (-(d.getD i.1 0))) * Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E)) (fun i : Fin V.rank => d.getD i.1 0) = 1`. Unfold `Formalism.UG.diagPow`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ h0, neg_add_cancel, zpow_zero]`. Take `⟨k₁, hk₁, k₂, hk₂, hk⟩` from `coset (Formalism.UG.Ov D.host.E P) (b := B.map φ) (b' := B'.map φ) (c := C.map φ) (c' := C'.map φ) (T := Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D.host.E)) fun i : Fin V.rank => d.getD i.1 0) (U := Formalism.UG.diagPow D.host.E P (algebraMap D.host.E _ (ϖ : D. …`. Rewrite using `[← e1, ← e1]`. Conclude with `read_step (Λ := fun y => y ∈ Formalism.L2.NTheta.LamHat V) (O := fun x => x ∈ intAE D) φ s hs hε hO hO' b4 b3')`.
+
+Use the proof step `(by`. Rewrite using `[← e1, ← e1]`. Conclude with `read_step (Λ := fun y => y ∈ Formalism.L2.NTheta.LamHat V) (O := fun x => x ∈ intAE D) φ s hs hε hO hO' b4' b3)`. Establish `anti : ∀ a : List ℤ, a.length = V.rank → a.Pairwise (fun a b => b ≤ a) → Antitone fun i : Fin V.rank => a.getD i.1 0`. Introduce `a la ha i j hij`.
+
+Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `hi : i.1 < a.length` using `by rw [la]; exact i.2`. Establish `hj : j.1 < a.length` using `by rw [la]; exact j.2`. Simplify using `only [List.getD_eq_getElem _ _ hi, List.getD_eq_getElem _ _ hj]`.
+
+Conclude with `List.pairwise_iff_getElem.1 ha _ _ hi hj hlt`. Establish `key` using `Formalism.UG.Final.CartanUnique D.host.E P V.rank _ (Formalism.UG.P.cartan_unif_lt_one D.host.E P _ hv).le hv _ _ (anti d l hd) (anti d' l' hd') k₁ hk₁ k₂ hk₂ hk`. Use `List.ext_getElem (l.trans l'.symm) fun i hi hi' => ?_` and prove the remaining obligations. Use `congrFun key ⟨i, by rw [← l]; exact hi⟩` as an intermediate fact. Simplify `this` using `only [List.getD_eq_getElem _ _ hi, List.getD_eq_getElem _ _ hi']`.
+-/
 theorem div_unique : ∀ {D : D7} (V : HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (e f : Formalism.L2.Theta.AE D) (ϖ : 𝓞 D.host.E) (d d' : List ℤ) (g : GA D V), IsPrimeIdem P e f → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → d.Pairwise (fun a b => b ≤ a) → d'.Pairwise (fun a b => b ≤ a) → DivAt V e (ϖ : D.host.E) d g → DivAt V e (ϖ : D.host.E) d' g → d = d' := by
   intro D V P e f ϖ d d' g hP h1 h2 hd hd' hD hD'
   have he : e * e = e := by

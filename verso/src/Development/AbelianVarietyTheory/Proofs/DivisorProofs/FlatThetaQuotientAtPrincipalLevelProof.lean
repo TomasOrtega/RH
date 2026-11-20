@@ -22,6 +22,11 @@ open GlobalTheory.PlaceModel
 
 open Classical in
 
+/- English proof (translation)
+Use `MonoidHom.ext fun u => Units.ext ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_isLocUnit (hB.de.split.isIdemAt hPP) u`. Take `⟨k1, k2⟩` from `hx.res`. Establish `e1` using `eq_res_of_chrEq hc (hB.de.split.isIdemAt hPP) (hK.tame PP) (hK.res PP hPP) x hx.off k1 u k2`. Establish `e2` using `hx.eq (hB.de.res PP hPP)`.
+
+Rewrite using `[← e1, e2]`. Both sides reduce to the same expression.
+-/
 theorem resC_eq_of_kerDat {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
     {ξ : Formalism.L2.Host.HChar D.host.E} {χ : (AE D)ˣ →* Circle} {ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ}
@@ -38,6 +43,9 @@ theorem resC_eq_of_kerDat {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Ty
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FlatVecSum.omegaFlat_eq_prod, Base.locFn]`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, mul_one]`. Conclude with `Finset.prod_congr rfl fun PP hP => by rw [resC_eq_of_kerDat hB hK hc hP]; rfl`.
+-/
 theorem omegaFlat_eq_locFn_empty {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
     {ξ : Formalism.L2.Host.HChar D.host.E} {χ : (AE D)ˣ →* Circle} {ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ}
@@ -50,6 +58,21 @@ theorem omegaFlat_eq_locFn_empty {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 
 
 open Classical in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξ χ ξR ω φ B hB h hK hc`. Take `⟨hvac, e, he, -⟩` from `hK.vec`. Establish `hψ` using `hvac.1`. Establish `sV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βV i))`. Establish `sW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βW i))`.
+
+Establish `hdisj : Disjoint R.Pg B.de.Q` using `h.Pg ▸ hB.places.disj`. Take `⟨eg, eQ, hg, hq, h1, h2, h3⟩` from `GlobalTheory.FlatVecExist.idemSum_split he hdisj`. Establish `hinfg` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hg)`. Take `⟨fg, hfg⟩` from `GlobalTheory.PlaceVec.exists_isThetaAt hψ sV sW (a := cA D eg) (by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self hg]) hinfg (GlobalTheory.PlaceModelSum.placeModelExistsSum D R.ψ hψ _ _ _ _ sV sW _ eg hg _ hvac.2.theta hvac.2.lat).2 (GlobalTheory.PlaceVec.isSBHalf_ …`. Establish `hoQ` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hq`.
+
+Establish `fix : ∀ u, (∀ a b, cA D eg * u a b = 0 ∧ eg * u a b = 0) → heisO R.ψ (Vc D i) (Wc D i) u (R.vacP i) = R.vacP i → heisO R.ψ (Vc D i) (Wc D i) u fg = fg` using `fun u hu h0 => GlobalTheory.Hk3.heisO_fix_thetaAt_off R.ψ _ _ (cA D eg) _ 1 _ _ fg hfg u (fun a b => by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hu a b) h0`. Establish `hPM` using `GlobalTheory.FlatVecExist.exists_model_of_fix hψ sV sW hoQ hq.2 (fun u hu => fix u (fun a b => (GlobalTheory.FlatVecExist.off_of_half h1 (by rw [mul_comm, h3]) ((isHalf_iff _ _).2 hu.2) a b).symm) (hoQ.heisO_eq (by rw [mul_comm, hq.2]) hvac.2.lat u hu)) (fun u hu => fix u (fun a …`. Establish `hinfQ` using `GlobalTheory.PlaceDatum.infPart_idemSum hq`. Take `⟨K, hK', hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO sV.1 sW.1 (R.βV i) (R.βW i)`. Take `⟨f, hf⟩` from `GlobalTheory.PlaceDatum.exists_isThetaAt hψ sV sW (GlobalTheory.PlaceDatum.idemSum_mul_self hq) hinfQ hPM (GlobalTheory.PlaceDatum.isSBHalf_of_red eQ _ (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceDatum.frMapO_add _ _) (GlobalTheory.PlaceDatum.exists_den_frMapO …`.
+
+Establish `hfeq : f = (GlobalTheory.FlatVecSum.princ B).vecBase`. Establish `k1` using `hfg`. Establish `k2` using `hf`. Simplify using `only [omegaFlat_eq_locFn_empty hB hK hc] at k2`. Rewrite `k1` using `[← idem_eq hg]`.
+
+Rewrite `k2` using `[← idem_eq hq]`. Rewrite `k1`, `k2` using `[← h.ψ, ← h.ΛS, ← h.ΛT, ← h.βS, ← h.βT]`. Rewrite `k1` using `[← h.vac, ← h.Pg]`. Unfold `Base.vecBase Base.vecAt`. Rewrite using `[Finset.union_empty]`.
+
+Use `GlobalTheory.FlatVecSum.eq_vec_of_two_steps (G := GlobalTheory.FlatVecSum.princG B.G) hB.frame hB.places (fun y y' hy => ?_) (fg := fg) ?_ k2` and prove the remaining obligations. Unfold `Base.locFn`. Rewrite using `[Finset.prod_congr rfl fun PP hPP => by rw [hy PP hPP]]`. Simplify using `only [GlobalTheory.FlatVecSum.omegaG_princ]`. Conclude with `k1`.
+
+Use `⟨eg, eQ, fg, hg, hq, hfg, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfeq]`. Conclude with `hf`.
+-/
 theorem flatTwoStep_holds : FlatTwoStep := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξ χ ξR ω φ B hB h hK hc
   obtain ⟨hvac, e, he, -⟩ := hK.vec

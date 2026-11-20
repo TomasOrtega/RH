@@ -14,6 +14,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
+/- English proof (translation)
+Establish `h1 : Integrable (Function.uncurry fun (z v : X) => (∫ y, φ y * k v y ∂ν) * e v z * Φ z) (μ.prod μ)`. Use `Integrable.mono (hΦ.mul_prod hJ) ?_ ?_` and prove the remaining obligations. Establish `hm1 : AEStronglyMeasurable (fun p : X × X => ∫ y, φ y * k p.2 y ∂ν) (μ.prod μ)` using `hJ.aestronglyMeasurable.comp_snd`. Establish `hm2 : AEStronglyMeasurable (fun p : X × X => e p.2 p.1) (μ.prod μ)` using `(he.comp measurable_swap).aestronglyMeasurable`. Establish `hm3 : AEStronglyMeasurable (fun p : X × X => Φ p.1) (μ.prod μ)` using `hΦ.aestronglyMeasurable.comp_fst`.
+
+Conclude with `(hm1.mul hm2).mul hm3`. Use `Filter.Eventually.of_forall ?_` and prove the remaining obligations. Introduce and unpack `⟨z, v⟩`. Simplify using `only [Function.uncurry_apply_pair, norm_mul, hen, mul_one]`. Conclude with `le_of_eq (mul_comm _ _)`.
+
+Establish `h2 : Integrable (Function.uncurry fun (v : X) (y : Y) => φ y * k v y * H v) (μ.prod ν)`. Use `Integrable.mono (hHi.mul_prod hφ) ?_ ?_` and prove the remaining obligations. Establish `hm1 : AEStronglyMeasurable (fun p : X × Y => φ p.2) (μ.prod ν)` using `hφ.aestronglyMeasurable.comp_snd`. Establish `hm2 : AEStronglyMeasurable (fun p : X × Y => k p.1 p.2) (μ.prod ν)` using `hk.aestronglyMeasurable`. Establish `hm3 : AEStronglyMeasurable (fun p : X × Y => H p.1) (μ.prod ν)` using `hHi.aestronglyMeasurable.comp_fst`.
+
+Conclude with `(hm1.mul hm2).mul hm3`. Use `Filter.Eventually.of_forall ?_` and prove the remaining obligations. Introduce and unpack `⟨v, y⟩`. Simplify using `only [Function.uncurry_apply_pair, norm_mul, hkn, mul_one]`. Conclude with `le_of_eq (mul_comm _ _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `(integral_mul_const (Φ z) _).symm`. Use `_ = ∫ v, ∫ z, (∫ y, φ y * k v y ∂ν) * e v z * Φ z ∂μ ∂μ := integral_integral_swap h1`.
+
+Use `_ = ∫ v, (∫ y, φ y * k v y ∂ν) * H v ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[hH v, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ v, ∫ y, φ y * k v y * H v ∂ν ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Conclude with `(integral_mul_const (H v) _).symm`. Use `_ = ∫ y, ∫ v, φ y * k v y * H v ∂μ ∂ν := integral_integral_swap h2`. Use `_ = ∫ y, φ y * ∫ v, H v * k v y ∂μ ∂ν := by`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by simp [hinv]`.
+-/
 theorem pair_abs {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (μ : Measure X) [SFinite μ]
     (ν : Measure Y) [SFinite ν] (k : X → Y → ℂ) (e : X → X → ℂ)
     (hk : Measurable (Function.uncurry k)) (he : Measurable (Function.uncurry e))
@@ -68,11 +87,25 @@ theorem pair_abs {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (μ : Meas
         congr 1; funext v; ring
     _ = 0 := by simp [hinv]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 theorem haar_facts {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsAddHaarMeasure] :
     SFinite μ ∧ μ.IsNegInvariant :=
   ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Establish `hdot : Continuous (fun p : (κ → R) × (κ → R) => p.1 ⬝ᵥ p.2)` using `continuous_fst.dotProduct continuous_snd`. Establish `hk : Measurable (Function.uncurry fun (v : κ → R) (y : Y) => ψ (v ⬝ᵥ g y))`. Establish `hm : Measurable (fun p : (κ → R) × (κ → R) => ψ (p.1 ⬝ᵥ p.2))` using `(hc.comp hdot).measurable`. Conclude with `hm.comp (measurable_fst.prodMk (hg.comp measurable_snd))`. Establish `he : Measurable (Function.uncurry fun (v z : κ → R) => ψ (-(v ⬝ᵥ z)))` using `(hc.comp hdot.neg).measurable`.
+
+Establish `hHi' : Integrable (fun w : κ → R => ∫ z, Φ z * ψ (-(w ⬝ᵥ z)) ∂μ) μ`. Use `hHi.comp_neg.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [dotProduct_neg]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[dotProduct_comm]`. Establish `hinv' : ∀ y, ∫ v, (∫ z, Φ z * ψ (-(v ⬝ᵥ z)) ∂μ) * ψ (v ⬝ᵥ g y) ∂μ = 0`. Introduce `y`. Establish `h1` using `hinv (-(g y))`. Rewrite `h1` using `[neg_neg, h0 y]`.
+
+Use `(integral_neg_eq_self (fun v => (∫ z, Φ z * ψ (-(v ⬝ᵥ z)) ∂μ) * ψ (v ⬝ᵥ g y)) μ).symm.trans (Eq.trans ?_ h1)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [neg_dotProduct, neg_neg, dotProduct_neg]`. Use `congr 1`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[dotProduct_comm]`. Conclude with `pair_abs μ ν (fun v y => ψ (v ⬝ᵥ g y)) (fun v z => ψ (-(v ⬝ᵥ z))) hk he (fun v y => hn _) (fun v z => hn _) φ hφ hJ Φ hΦi _ hHi' (fun v => rfl) hinv'`.
+-/
 theorem pair_ring {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [SecondCountableTopology R]
     {κ : Type} [Fintype κ] [MeasurableSpace (κ → R)] [BorelSpace (κ → R)] (μ : Measure (κ → R)) [SFinite μ]
     [μ.IsNegInvariant] (ψ : AddChar R ℂ) (hc : Continuous ψ) (hn : ∀ x, ‖ψ x‖ = 1)
@@ -110,6 +143,17 @@ theorem pair_ring {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRin
   exact pair_abs μ ν (fun v y => ψ (v ⬝ᵥ g y)) (fun v z => ψ (-(v ⬝ᵥ z))) hk he
     (fun v y => hn _) (fun v z => hn _) φ hφ hJ Φ hΦi _ hHi' (fun v => rfl) hinv'
 
+/- English proof (translation)
+Introduce `F _ _ hF ψ hψ κ _ _ _ μ hμ Y _ ν _ φ g hφ hg hJ Φ hΦ h0`. Establish `hH : μ.IsAddHaarMeasure` using `hμ.1`. Take `⟨hS, hN⟩` from `haar_facts μ`. Establish `hc : Continuous ψ` using `hψ.1`. Establish `hn : ∀ x, ‖ψ x‖ = 1` using `hψ.2.1`.
+
+Take `⟨-, -, hint⟩` from `GlobalTheory.SplitSvN.schA_facts hF hΦ`. Establish `hinv` using `GlobalTheory.TamFourier.fourier_inversion_tamagawa F hF ψ hψ κ μ hμ Φ hΦ`. Establish `hHi : Integrable (fun w => ∫ z, Φ z * ψ (z ⬝ᵥ w) ∂μ) μ`. Assume the negation of the conclusion as `hni`. Establish `hzero : ∀ x, Φ x = 0`.
+
+Introduce `x`. Establish `h1` using `hinv (-x)`. Rewrite `h1` using `[neg_neg]`. Rewrite using `[← h1]`. Apply `integral_undef` to reduce the goal to its premises.
+
+Introduce `hi`. Apply `hni` to reduce the goal to its premises. Conclude with `integrable_of_mul_unimodular μ (fun y => ∫ z, Φ z * ψ (z ⬝ᵥ y) ∂μ) (fun y => ψ (y ⬝ᵥ -x)) hi ((hc.comp (continuous_id.dotProduct continuous_const)).aestronglyMeasurable) (fun y => hn _)`. Apply `hni` to reduce the goal to its premises. Establish `hfun : (fun w => ∫ z, Φ z * ψ (z ⬝ᵥ w) ∂μ) = fun _ => (0 : ℂ)`.
+
+Use function extensionality and compare the values at `w`. Simplify using `[hzero]`. Rewrite using `[hfun]`. Conclude with `integrable_zero _ _ _`. Conclude with `pair_ring μ ψ hc hn ν φ g hφ hg hJ Φ (hint μ hH) hHi hinv h0`.
+-/
 theorem pair_vanish : ∀ (F : Type) [Field F] [NumberField F], NumberField.IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ (κ : Type) [Fintype κ] [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)] (μ : Measure (κ → AF F)), GlobalTheory.SWLit.IsTamagawa F κ μ → ∀ (Y : Type) [MeasurableSpace Y] (ν : Measure Y) [SFinite ν] (φ : Y → ℂ) (g : Y → κ → AF F), Integrable φ ν → Measurable g → Integrable (fun v : κ → AF F => ∫ y, φ y * ψ (v ⬝ᵥ g y) ∂ν) μ → ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, (∀ y, Φ (g y) = 0) → ∫ z, (∫ v, (∫ y, φ y * ψ (v ⬝ᵥ g y) ∂ν) * ψ (-(v ⬝ᵥ z)) ∂μ) * Φ z ∂μ = 0 := by
   intro F _ _ hF ψ hψ κ _ _ _ μ hμ Y _ ν _ φ g hφ hg hJ Φ hΦ h0
   have hH : μ.IsAddHaarMeasure := hμ.1

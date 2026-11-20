@@ -22,6 +22,15 @@ def blockColumnMatrix {R : Type} {k : ℕ} (a b : Matrix (Fin n) (Fin k) R) : Ma
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : ∀ i j, (mat g * blockColumnMatrix (1 : Matrix (Fin n) (Fin n) (AE F E)) 1) i j = mat g i (finSumFinEquiv (.inl j)) + mat g i (finSumFinEquiv (.inr j))` using `fun i j => by`. Rewrite using `[Matrix.mul_apply, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [blockColumnMatrix, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero, mem_unipOf, mem_siegelOf, keepsDiag_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use extensionality with `i j`. Establish `h3 : ∀ i, mat g (finSumFinEquiv (.inl i)) (finSumFinEquiv (.inl j)) + mat g (finSumFinEquiv (.inl i)) (finSumFinEquiv (.inr j)) = (1 : Matrix (Fin n) (Fin n) (AE F E)) i j` using `fun i => congrFun (congrFun h2 i) j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> rw [e] <;>`.
+
+Simplify using `only [blockColumnMatrix, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Conclude with `h3 i`. Conclude with `(h1 i j).trans (h3 i)`. Introduce `h`. Establish `h3 : ∀ i j, mat g (finSumFinEquiv i) (finSumFinEquiv (.inl j)) + mat g (finSumFinEquiv i) (finSumFinEquiv (.inr j)) = Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) 1 i j` using `fun i j => by`.
+
+Rewrite using `[← e, h]`. Simplify using `only [blockColumnMatrix, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Conclude with `⟨fun i j => (h3 (.inr i) j).trans (h3 (.inl i) j).symm, Matrix.ext fun i j => h3 (.inl i) j⟩`.
+-/
 theorem mem_unipN_iff (g : UA σ J₂) : g ∈ unipN σ J₂ ↔ (mat g - 1) * blockColumnMatrix (1 : Matrix (Fin n) (Fin n) (AE F E)) 1 = 0 := by
   have e : ∀ i j, (mat g * blockColumnMatrix (1 : Matrix (Fin n) (Fin n) (AE F E)) 1) i j =
       mat g i (finSumFinEquiv (.inl j)) + mat g i (finSumFinEquiv (.inr j)) := fun i j => by
@@ -47,6 +56,41 @@ theorem mem_unipN_iff (g : UA σ J₂) : g ∈ unipN σ J₂ ↔ (mat g - 1) * b
         simp only [blockColumnMatrix, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]
     exact ⟨fun i j => (h3 (.inr i) j).trans (h3 (.inl i) j).symm, Matrix.ext fun i j => h3 (.inl i) j⟩
 
+/- English proof (translation)
+Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Take `⟨δ, hδ, hδs⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hc : δ * σ l⁻¹ ≠ 0` using `mul_ne_zero hδ ((map_ne_zero σ).2 (inv_ne_zero hl))`. Use `set c := δ * σ l⁻¹ with hcd`. Use `set H : Matrix (Fin n) (Fin n) E := c • J.map σ with hH`.
+
+Establish `hHd : H.det ≠ 0`. Rewrite using `[hH, Matrix.det_smul]`. Use `mul_ne_zero (pow_ne_zero _ hc) ?_` and prove the remaining obligations. Rewrite using `[show (J.map σ).det = σ J.det from ((σ : E →+* E).map_det J).symm]`. Conclude with `(map_ne_zero σ).2 hdet`.
+
+Establish `hHh : ∀ i j, σ (H j i) = H i j` using `fun i j => by`. Establish `h` using `congrArg σ (hJ i j)`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_neg, hσ] at h`. Simplify using `only [hH, hcd, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hσ, hδs]`. Take the linear combination `(-δ) * h`.
+
+Establish `hG : c • J₂.map σ = dblGram finSumFinEquiv H`. Rewrite using `[h₂, dblGram, dblGram, blkMat_map _ _ (map_zero σ), Matrix.map_neg _ (map_neg σ), hH]`. Express the relevant statement in the definitionally equal form `(c • Matrix.fromBlocks (J.map σ) 0 0 (-J.map σ)).submatrix _ _ = _`. Rewrite using `[Matrix.fromBlocks_smul, smul_zero, smul_neg, blkMat]`. Establish `hN : IsHermND σ (c • J₂.map σ)`.
+
+Rewrite using `[hG]`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, map_zero, Matrix.neg_apply, map_neg, hHh]`. Rewrite using `[dblGram, det_blkMat, Matrix.det_neg]`.
+
+Conclude with `mul_ne_zero hHd (mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) hHd)`. Set `C : Matrix (Fin (n + n)) (Fin n) E` to `blockColumnMatrix 1 1`. Set `D : Matrix (Fin (n + n)) (Fin n) E` to `blockColumnMatrix H⁻¹ 0`. Establish `hi : H * H⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ hHd)`. Establish `hi' : H⁻¹ * H = 1` using `mul_eq_one_comm.1 hi`.
+
+Establish `hCJ : cT (σ : E →+* E) C * (c • J₂.map σ) = (Matrix.fromCols H (-H)).submatrix id finSumFinEquiv.symm`. Establish `: cT (σ : E →+* E) C = (Matrix.fromCols 1 1).submatrix id finSumFinEquiv.symm`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [C, cT, blockColumnMatrix, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.one_apply, apply_ite (σ : E →+* E), map …`.
+
+Rewrite using `[this, hG, dblGram, blkMat, Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules. Establish `xy : cT (σ : E →+* E) C * (c • J₂.map σ) * D = 1`. Rewrite using `[hCJ]`. Simplify using `only [D, blockColumnMatrix]`.
+
+Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows, hi]`. Simplify using the standard rewrite rules. Establish `xx : cT (σ : E →+* E) C * (c • J₂.map σ) * C = 0`. Rewrite using `[hCJ]`. Simplify using `only [C, blockColumnMatrix]`.
+
+Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromRows]`. Simplify using the standard rewrite rules. Establish `hP : 1 - D * (cT (σ : E →+* E) C * (c • J₂.map σ)) = C * ((Matrix.fromCols (0 : Matrix (Fin n) (Fin n) E) (1 : Matrix (Fin n) (Fin n) E)).submatrix id finSumFinEquiv.symm : Matrix (Fin n) (Fin (n + n)) E)`. Rewrite using `[hCJ]`. Simplify using `only [C, D, blockColumnMatrix]`.
+
+Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.fromRows_mul_fromCols, Matrix.fromRows_mul_fromCols, ← Matrix.submatrix_one_equiv finSumFinEquiv.symm, ← Matrix.fromBlocks_one]`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Apply the tactic sequence `simp only [Matrix.sub_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] <;> simp [hi']`. Establish `hC : GlobalTheory.UAut.IsIsoCols σ (c • J₂.map σ) C`.
+
+Use `⟨Matrix.mulVec_injective_iff.1 fun x y h => funext fun i => ?_, xx⟩` and prove the remaining obligations. Use `congrFun h (finSumFinEquiv (.inl i))` as an intermediate fact. Simplify `this` using `only [C, blockColumnMatrix, Matrix.submatrix_mulVec_equiv, Matrix.mulVec, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inl, Matrix.one_apply, dotProduct, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hCa : GlobalTheory.SiegelSet.adMat F C = blockColumnMatrix (1 : Matrix (Fin n) (Fin n) (AE F E)) 1`. Simplify using `only [C, blockColumnMatrix, GlobalTheory.SiegelSet.adMat, ← Matrix.submatrix_map, Matrix.fromRows_map, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use `set e := GlobalTheory.ThK.SquareIntegrability.toGAd hσ J₂ hc with he`. Establish `hmem : ∀ g : UA σ J₂, g ∈ unipN σ J₂ ↔ e g ∈ GlobalTheory.SiegelSet.unipRad σ (c • J₂.map σ) C` using `fun g => by`. Rewrite using `[mem_unipN_iff, GlobalTheory.EisCT.mem_unipRad_iff_dual xy, hP, ← hCa]`. Use `⟨fun h => ⟨h, 0, ?_⟩, fun h => h.1⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SiegelSet.adMat, Matrix.map_mul, ← Matrix.mul_assoc, Matrix.mul_zero]`.
+
+Conclude with `(congrArg (· * _) h).trans (Matrix.zero_mul _)`. Establish `hrat` using `GlobalTheory.RatCorr.ratU_iff_ratPts F E σ hσ _ J₂ c hc`. Use `haveI := GlobalTheory.UAut.locallyCompact_unipRad hcm hN hC`. Take `⟨K', hK', hcov'⟩` from `GlobalTheory.UAut.cocompact_unipRad hcm hN hC`. Establish `hec : Continuous e` using `continuous_subtype_val.subtype_mk _`.
+
+Establish `hes : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Set `eH : unipN σ J₂ ≃ₜ GlobalTheory.SiegelSet.unipRad σ (c • J₂.map σ) C` to `{ toFun := fun x => ⟨e x, (hmem x).1 x.2⟩ invFun := fun y => ⟨e.symm y, (hmem _).2 (by rw [e.apply_symm_apply]; exact y.2)⟩ left_inv := fun x => by ext; simp right_inv := fun y => by ext; simp continuous_toFun := (hec.comp continuous_subtype_val).subtype_mk _ continuous_invFun := …`. Use `⟨eH.isClosedEmbedding.locallyCompactSpace, eH ⁻¹' K', eH.isCompact_preimage.2 hK', fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ', hK⟩` from `hcov' (eH g)`. Use `⟨⟨eH.symm γ', ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show e.symm (γ' : _) ∈ ratU σ J₂`. Rewrite using `[hrat, MulEquiv.apply_symm_apply]`. Conclude with `Subgroup.mem_subgroupOf.1 hγ'`. Use `show eH (eH.symm γ' * g) ∈ K'`. Establish `: eH (eH.symm γ' * g) = γ' * eH g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show e (e.symm (γ' : _) * (g : _)) = (γ' : _) * e g`. Rewrite using `[map_mul, MulEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `hK`.
+-/
 theorem cocompact_unipN (hcm : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (hdet : J.det ≠ 0) (h₂ : J₂ = dblGram finSumFinEquiv J) :
     LocallyCompactSpace (unipN σ J₂) ∧
@@ -154,6 +198,13 @@ theorem cocompact_unipN (hcm : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {l
     rw [this]
     exact hK
 
+/- English proof (translation)
+Take `⟨hLC, C, hC, hcov⟩` from `cocompact_unipN hcm hl hJ hdet h₂`. Take `⟨hTG, -, hSC, hT2⟩` from `GlobalTheory.UnipMass.topUA σ J₂`. Use `haveI : BorelSpace (UA σ J₂) := ⟨rfl⟩`. Use `haveI : Countable (ratN σ J₂) := GlobalTheory.UnipMass.countable_ratU' σ J₂ (unipN σ J₂)`. Use `haveI : DiscreteTopology (ratN σ J₂) := GlobalTheory.T.discrete_rational_points_subgroup F E σ _ J₂ (unipN σ J₂)`.
+
+Take `⟨ν, 𝓓, h1, h2, h3⟩` from `GlobalTheory.T.cocompact_lattice_unit_covolume _ (ratN σ J₂) C hC hcov`. Use `⟨ν, ⟨h1, 𝓓, h2, h3⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ν' ⟨h1', 𝓓', h2', h3'⟩`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul ν' ν`. Use `haveI : MeasurableConstSMul (ratN σ J₂) (unipN σ J₂) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : unipN σ J₂ => (γ : unipN σ J₂) * x).measurable⟩`.
+
+Use `haveI : SMulInvariantMeasure (ratN σ J₂) (unipN σ J₂) ν' := ⟨fun γ A _ => measure_preimage_mul ν' (γ : unipN σ J₂) A⟩`. Establish `h4 : IsFundamentalDomain (ratN σ J₂) 𝓓 ν'` using `h2.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)`. Establish `h5 : ν' 𝓓 = 1` using `(h4.measure_eq h2').trans h3'`. Rewrite `h5` using `[e, Measure.smul_apply, h3, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one]`. Rewrite using `[e, h5, one_smul]`.
+-/
 theorem existsUnique_isNormN (hcm : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} {l : E} (hl : l ≠ 0)
     (hJ : ∀ i j, σ ((l⁻¹ • J) j i) = -(l⁻¹ • J) i j) (hdet : J.det ≠ 0) (h₂ : J₂ = dblGram finSumFinEquiv J) :
     ∃! νN : Measure (unipN σ J₂), IsNormN σ νN := by

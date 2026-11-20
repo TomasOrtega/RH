@@ -20,6 +20,9 @@ instance : NormedAddCommGroup (Cj H) := inferInstanceAs (NormedAddCommGroup H)
 
 instance instModuleCj : Module ℂ (Cj H) := Module.compHom H (starRingEnd ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (c : ℂ) (x : Cj H) : c • x = toCj (conj c • ofCj x) := rfl
 
 instance : NormedSpace ℂ (Cj H) where
@@ -29,6 +32,9 @@ instance : NormedSpace ℂ (Cj H) where
 
 instance : Inner ℂ (Cj H) := ⟨fun x y => ⟪(ofCj y : H), ofCj x⟫_ℂ⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_def (x y : Cj H) : ⟪x, y⟫_ℂ = ⟪(ofCj y : H), ofCj x⟫_ℂ := rfl
 
 instance : InnerProductSpace ℂ (Cj H) where
@@ -55,6 +61,9 @@ def opCj (A : H →L[ℂ] H) : Cj H →L[ℂ] Cj H where
   map_smul' c x := A.map_smul (conj c) (ofCj x)
   cont := A.continuous
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opCj_apply (A : H →L[ℂ] H) (x : Cj H) : opCj A x = toCj (A (ofCj x)) := rfl
 
 def eCj : Cj H ≃ₗᵢ⋆[ℂ] H where

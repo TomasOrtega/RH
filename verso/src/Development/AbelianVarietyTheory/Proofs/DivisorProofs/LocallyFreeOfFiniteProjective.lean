@@ -19,6 +19,11 @@ open GlobalTheory.CechPic GlobalTheory.DiagPairing GlobalTheory.LevCover
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.CubeNoeth.triv_add (𝟙 (A ⊗ A)) hG hA hP (by rw [Category.comp_id]; exact h₁) (by rw [Category.comp_id]; exact h₂) x x' y` as an intermediate fact. Simplify using `only [Category.comp_id] at this`. Conclude with `this`. Establish `sw : ∀ {T : Over S} (a b : T ⟶ A), lift a b ≫ lift (snd A A) (fst A A) = lift b a` using `fun a b => by`.
+
+Rewrite using `[comp_lift, lift_snd, lift_fst]`. Use `GlobalTheory.CubeNoeth.triv_add (lift (snd A A) (fst A A)) hG hA hP (by rw [sw]; exact h₂) (by rw [sw]; exact h₁) x x' y` as an intermediate fact. Simplify using `only [sw] at this`. Conclude with `this`.
+-/
 theorem biadd_noeth {S : Scheme.{0}} [IsLocallyNoetherian S] {A : Over S} [GrpObj A] (hG : Out.GlobalFnsSt)
     (hA : IsAbelianScheme A) (P : LB (G2 A).left) (hP : P.IsLB)
     (h₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen)
@@ -39,6 +44,23 @@ theorem biadd_noeth {S : Scheme.{0}} [IsLocallyNoetherian S] {A : Over S} [GrpOb
     simp only [sw] at this
     exact this
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y + pc hP x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(biadd_noeth hG hA P hP r₁ r₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+
+Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+
+Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), pc hP x (y * y') = pc hP x y + pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(biadd_noeth hG hA P hP r₁ r₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`.
+
+Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `lifts : ∀ z : T ⟶ A, z ^ N = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz p => by`. Take `⟨θ, hθ⟩` from `exists_theta_diag hP hB hB' (k := N) (Out.overResι ⊤ ≫ z) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`.
+
+Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.CommutatorPairing.exists_weilIs hG hA hD (lifts x hx) (lifts y hy)`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.CommutatorPairing.exists_weilIs hG hA hD (lifts 1 (one_pow N)) (lifts y hy)`. Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD hc₁ hc₁`. Rewrite `h11` using `[_root_.mul_one]`.
+
+Establish `e₁ : c₁ * c₁ = c₁` using `GlobalTheory.CommutatorPairing.weilIs_unique hG hA hD h11 hc₁`. Establish `e₁' : c₁ = 1` using `mul_eq_left.1 e₁`. Establish `pw : ∀ m : ℕ, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (x ^ (m + 1)) y (c₀ ^ (m + 1))`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using hc₀`. Consider the case `succ m ih`. Rewrite using `[pow_succ x (m + 1), pow_succ c₀ (m + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD ih hc₀`. Establish `hp` using `pw (N - 1)`.
+
+Rewrite `hp` using `[Nat.sub_add_cancel hN, hx]`. Conclude with `⟨c₀, GlobalTheory.CommutatorPairing.weilIs_unique hG hA hD hp (e₁' ▸ hc₁), hc₀⟩`.
+-/
 theorem exists_weilIs_root {S : Scheme.{0}} [IsLocallyNoetherian S] {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     (P : LB (G2 A).left) (hP : P.IsLB)
     (r₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen)
@@ -91,6 +113,35 @@ theorem exists_weilIs_root {S : Scheme.{0}} [IsLocallyNoetherian S] {A : Over S}
   rw [Nat.sub_add_cancel hN, hx] at hp
   exact ⟨c₀, GlobalTheory.CommutatorPairing.weilIs_unique hG hA hD hp (e₁' ▸ hc₁), hc₀⟩
 
+/- English proof (translation)
+Introduce `S _ M t G _ _ P h lev hA hP r₁ r₂ _hsym hM3 _hodd ladd ltors k _ _ x₀ β₀ z₀ hx₀ hz₀ Hx₀`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 G) (𝟙 G)).left).IsLB` using `pull_isLB hP _`. Establish `hM0 : M ≠ 0` using `by omega`. Establish `hMpos : 0 < M` using `by omega`.
+
+Establish `hMS : IsUnit (M : Γ(S, ⊤))`. Use `(isUnit_natCast hM0).map (fnOn t)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Set `ζu : (cycAway M)ˣ` to `(cycBase hM0).ζ`. Establish `hζv : (ζu : cycAway M) = zetaAway M` using `rfl`.
+
+Establish `hzeta : zetaAway M ^ M = 1` using `Subtype.ext (Complex.isPrimitiveRoot_exp M hM0).pow_eq_one`. Establish `hζu : ζu ^ M = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hζv, Units.val_one]; exact hzeta)`. Establish `hζM : ∀ (k : Type) [Field k] (β : cycAway M →+* k), Units.map β.toMonoidHom ζu ^ M = 1` using `fun k _ β => by`. Rewrite using `[← map_pow, hζu, map_one]`. Set `P2 : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ℤ) → HkClopen.GeoCond S` to `fun a c k _ _ x => ∀ (β : cycAway M →+* k) (z : kˣ), x ≫ t = spMap β → (z : k) = β (zetaAway M) → Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) M (toUnit (Over.mk x) ≫ lev a) (toUnit (Over.mk x) ≫ lev c) (unitOn (z ^ (2 * omegaStd a c)))`.
+
+Establish `locPair : ∀ a c, HkClopen.Loc (P2 a c)` using `fun a c => by`. Take `⟨v, hv, hW⟩` from `exists_weilIs_root hA P hP r₁ r₂ M hMpos (ltors a) (ltors c)`. Use `(GlobalTheory.loc_units_eq S M v (Units.map (fnOn t).toMonoidHom (ζu ^ (2 * omegaStd a c))) hMS hv fun k _ _ g => ?_).congr fun k _ _ g => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ t)`. Rewrite using `[map_fnOn _ g β hβ, ← GlobalTheory.SiegCover.unitOn_pow', map_zpow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζM, one_zpow]`.
+
+Conclude with `GlobalTheory.SiegCover.unitOn_one'`. Establish `hW'` using `GlobalTheory.CommPairing.weilIs_pull hG hA hD (toUnit (Over.mk g)) hW`. Establish `hgl : (toUnit (Over.mk g)).left = g` using `by simpa using Over.w (toUnit (Over.mk g))`. Rewrite `hW'` using `[hgl]`. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ t)`.
+
+Establish `hu` using `map_fnOn _ g β hβ (ζu ^ (2 * omegaStd a c))`. Rewrite `hu` using `[show Units.map β.toMonoidHom (ζu ^ (2 * omegaStd a c)) = Units.map β.toMonoidHom ζu ^ (2 * omegaStd a c) from map_zpow _ _ _]`. Establish `hzβ : ((Units.map β.toMonoidHom ζu : kˣ) : k) = β (zetaAway M)`. Rewrite using `[Units.coe_map]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `E β' z hβ' hz`. Take `rfl : β = β'` from `spMap_inj' (hβ.symm.trans hβ')`. Take `rfl : z = Units.map β.toMonoidHom ζu` from `Units.ext (hz.trans hzβ.symm)`. Rewrite using `[← hu, ← E]`.
+
+Conclude with `hW'`. Introduce `H`. Conclude with `GlobalTheory.CommutatorPairing.weilIs_unique hG hA hD hW' (hu ▸ H β _ hβ hzβ)`. Establish `e1 : ∀ a c, lev (a + M • c) = lev a` using `fun a c => by`. Rewrite using `[ladd, add_map_nsmul ladd, ltors, _root_.mul_one]`.
+
+Establish `inv : ∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ S) (a a' c₁ c₂ : Fin h ⊕ Fin h → ℤ), P2 a a' k g → P2 (a + M • c₁) (a' + M • c₂) k g`. Introduce `k _ _ g a a' c₁ c₂ H β z hβ hz`. Establish `hzM : z ^ M = 1` using `Units.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, hz, ← map_pow, hzeta, map_one, Units.val_one])`. Take `⟨m, hm⟩ : ∃ m : ℤ, omegaStd (a + M • c₁) (a' + M • c₂) = omegaStd a a' + M * m` from `⟨_, GlobalTheory.SiegCover.omegaStd_add_nsmul M a a' c₁ c₂⟩`.
+
+Establish `hz' : z ^ (2 * omegaStd (a + M • c₁) (a' + M • c₂)) = z ^ (2 * omegaStd a a')`. Rewrite using `[hm, mul_add, zpow_add, show (2 : ℤ) * (M * m) = M * (2 * m) by ring, zpow_mul _ (M : ℤ), zpow_natCast, hzM, one_zpow, _root_.mul_one]`. Use `show Out.WeilIs _ _ _ _ _ _`. Rewrite using `[e1, e1, hz']`. Conclude with `H β z hβ hz`.
+
+Take `⟨κ, hκ, q, hq⟩` from `exists_finite_mod (Fin h ⊕ Fin h → ℤ) hMpos`. Use `haveI := hκ`. Set `r : κ → (Fin h ⊕ Fin h → ℤ)` to `Function.invFun q`. Establish `localization₂ : HkClopen.Loc (fun (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ S) => ∀ a a', P2 a a' k g)`. Use `(HkClopen.Loc.all (I₀ := κ × κ) (P := fun i => P2 (r i.1) (r i.2)) fun i => locPair _ _).congr fun k _ _ g => ⟨fun H a a' => ?_, fun H i => H _ _⟩` and prove the remaining obligations.
+
+Take `⟨c₁, e₁⟩` from `hq (r (q a)) a (Function.invFun_eq ⟨a, rfl⟩)`. Take `⟨c₂, e₂⟩` from `hq (r (q a')) a' (Function.invFun_eq ⟨a', rfl⟩)`. Rewrite using `[e₁, e₂]`. Conclude with `inv k g _ _ c₁ c₂ (H (q a, q a'))`. Take `⟨V, hV, HV⟩` from `localization₂`.
+
+Use `⟨⟨V, hV.isOpen⟩, ?_, fun k' _ _ x β z hxW hβ hz a b => ?_⟩` and prove the remaining obligations. Use `(HkClopen.range_subset_iff x₀ V).2 ((HV k x₀).2 fun a b β z hβ hz => ?_)` and prove the remaining obligations. Take `rfl : β₀ = β` from `spMap_inj' (hx₀.symm.trans hβ)`. Take `rfl : z₀ = z` from `Units.ext (hz₀.trans hz.symm)`. Conclude with `Hx₀ a b`.
+
+Conclude with `(HV k' x).1 ((HkClopen.range_subset_iff x V).1 hxW) a b β z hβ hz`.
+-/
 theorem weil_open : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (M : ℕ) (t : S ⟶ Sp (cycAway M)) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left) (h : ℕ) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ G)), IsAbelianScheme G → P.IsLB → (∃ s : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, s.IsGen) → (∃ s : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, s.IsGen) → LBIso P (P.pull (lift (snd G G) (fst G G)).left) → 3 ≤ M → Odd M → (∀ a b, lev (a + b) = lev a * lev b) → (∀ a, lev a ^ M = 1) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x₀ : Sp k ⟶ S) (β₀ : cycAway M →+* k) (z₀ : kˣ), x₀ ≫ t = spMap β₀ → (z₀ : k) = β₀ (zetaAway M) → (∀ a b, Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) M (toUnit (Over.mk x₀) ≫ lev a) (toUnit _ ≫ lev b) (unitOn (z₀ ^ (2 * omegaStd a b)))) → ∃ W : S.Opens, Set.range x₀.base ⊆ W ∧ ∀ (k' : Type) [Field k'] [IsAlgClosed k'] (x : Sp k' ⟶ S) (β : cycAway M →+* k') (z : k'ˣ), Set.range x.base ⊆ W → x ≫ t = spMap β → (z : k') = β (zetaAway M) → ∀ a b, Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) M (toUnit (Over.mk x) ≫ lev a) (toUnit _ ≫ lev b) (unitOn (z ^ (2 * omegaStd a b))) := by
   intro S _ M t G _ _ P h lev hA hP r₁ r₂ _hsym hM3 _hodd ladd ltors k _ _ x₀ β₀ z₀ hx₀ hz₀ Hx₀
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds

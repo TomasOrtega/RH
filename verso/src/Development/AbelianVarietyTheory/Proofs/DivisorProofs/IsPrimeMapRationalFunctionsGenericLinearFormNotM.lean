@@ -11,6 +11,43 @@ namespace GlobalTheory.ExtPrime
 open MvPolynomial Filter in
 open scoped ENNReal in
 
+/- English proof (translation)
+Use `haveI := hP`. Set `e` to `(commAlgEquiv K (Fin N) (Fin N)).toRingEquiv`. Set `ι : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) (MvPolynomial (Fin N) K)` to `MvPolynomial.map (algebraMap K (MvPolynomial (Fin N) K))`. Set `π : MvPolynomial (Fin N) (MvPolynomial (Fin N) K) →+* MvPolynomial (Fin N) (MvPolynomial (Fin N) K ⧸ P)` to `(MvPolynomial.map (Ideal.Quotient.mk P)).comp e.toRingHom`. Establish `heι : ∀ p, e (ι p) = C p`.
+
+Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [e, ι, commAlgEquiv_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, hp, map_X]`.
+
+Simplify using `[e, commAlgEquiv_X]`. Establish `hQ : P.map ι = RingHom.ker π`. Use extensionality with `b`. Rewrite using `[RingHom.mem_ker]`. Establish `hb : b = e.symm (e b)` using `(e.symm_apply_apply b).symm`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hb'`. Establish `h1 : P.map ι ≤ RingHom.ker π`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Use `show MvPolynomial.map (Ideal.Quotient.mk P) (e (ι p)) = 0`. Rewrite using `[heι p, map_C, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`. Conclude with `h1 hb'`. Introduce `hb'`.
+
+Establish `hmem : e b ∈ Ideal.map C P`. Establish `hk : Ideal.map (C : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) (MvPolynomial (Fin N) K)) P = RingHom.ker (MvPolynomial.map (σ` using `Fin N) (Ideal.Quotient.mk P)) := by`. Rewrite using `[MvPolynomial.ker_map, Ideal.mk_ker]`. Rewrite using `[hk, RingHom.mem_ker]`. Conclude with `hb'`.
+
+Rewrite using `[hb]`. Establish `h2 : Ideal.map e.symm (Ideal.map C P) ≤ P.map ι`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Establish `h4 : e.symm (C p) = ι p`.
+
+Rewrite using `[← heι p]`. Conclude with `e.symm_apply_apply _`. Establish `h3 : e.symm (C p) ∈ P.map ι`. Rewrite using `[h4]`. Conclude with `Ideal.mem_map_of_mem ι hp`.
+
+Conclude with `h3`. Conclude with `h2 (Ideal.mem_map_of_mem _ hmem)`. Establish `hQprime : (P.map ι).IsPrime` using `by rw [hQ]; exact RingHom.ker_isPrime π`. Use `letI : Algebra (MvPolynomial (Fin N) (MvPolynomial (Fin N) K)) (MvPolynomial (Fin N) L) := (MvPolynomial.map (algebraMap (MvPolynomial (Fin N) K) L)).toAlgebra`. Set `Mₛ : Submonoid (MvPolynomial (Fin N) (MvPolynomial (Fin N) K))` to `Submonoid.map (C : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) (MvPolynomial (Fin N) K)) (nonZeroDivisors (MvPolynomial (Fin N) K))`.
+
+Use `haveI hloc : IsLocalization Mₛ (MvPolynomial (Fin N) L) := MvPolynomial.isLocalization (nonZeroDivisors (MvPolynomial (Fin N) K)) L`. Establish `hdisj : Disjoint (Mₛ : Set (MvPolynomial (Fin N) (MvPolynomial (Fin N) K))) ↑(P.map ι)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrQ`. Rewrite `hrQ` using `[SetLike.mem_coe, hQ, RingHom.mem_ker]`.
+
+Establish `hπ : π (C r) = MvPolynomial.map (algebraMap K (MvPolynomial (Fin N) K ⧸ P)) r`. Simplify using `only [π, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[show e.toRingHom (C r) = MvPolynomial.map C r from commAlgEquiv_C (R := K) (S₁ := Fin N) r, MvPolynomial.map_map]`. Both sides reduce to the same expression. Rewrite `hrQ` using `[hπ]`.
+
+Establish `hinj` using `MvPolynomial.map_injective (σ := Fin N) _ (algebraMap K (MvPolynomial (Fin N) K ⧸ P)).injective`. Establish `hr0 : r = 0` using `hinj (by rw [hrQ, map_zero])`. Conclude with `nonZeroDivisors.ne_zero hr hr0`. Establish `hcomp : (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L) = (algebraMap (MvPolynomial (Fin N) (MvPolynomial (Fin N) K)) (MvPolynomial (Fin N) L)).comp ι`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, ι, RingHom.algebraMap_toAlgebra, MvPolynomial.map_map]`. Rewrite using `[← IsScalarTower.algebraMap_eq]`. Establish `hmapeq : P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L) = (P.map ι).map (algebraMap (MvPolynomial (Fin N) (MvPolynomial (Fin N) K)) (MvPolynomial (Fin N) L))`. Rewrite using `[hcomp, Ideal.map_map]`. Rewrite using `[hmapeq]`.
+
+Use `⟨IsLocalization.isPrime_of_isPrime_disjoint _ _ _ hQprime hdisj, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, hj⟩ hG`. Set `G₀ : MvPolynomial (Fin N) (MvPolynomial (Fin N) K)` to `∑ i : Fin N, C (X i) * X i`. Establish `hG₀ : algebraMap _ (MvPolynomial (Fin N) L) G₀ = ∑ i : Fin N, C (algebraMap (MvPolynomial (Fin N) K) L (X i)) * X i`. Simplify using `[G₀, RingHom.algebraMap_toAlgebra, map_sum]`.
+
+Rewrite `hG` using `[← hG₀]`. Establish `hG₀Q : G₀ ∈ P.map ι`. Establish `h` using `IsLocalization.comap_map_of_isPrime_disjoint _ (MvPolynomial (Fin N) L) hQprime hdisj`. Rewrite using `[← h]`. Conclude with `hG`.
+
+Rewrite `hG₀Q` using `[hQ, RingHom.mem_ker]`. Establish `hπG : π G₀ = ∑ i : Fin N, X i * C (Ideal.Quotient.mk P (X i))`. Simplify using `only [π, G₀, RingHom.coe_comp, Function.comp_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show e.toRingHom (C (X i)) = X i from commAlgEquiv_C_X (R := K) (S₁ := Fin N) i, show e.toRingHom (X i) = C (X i) from commAlgEquiv_X (R := K) (S₂ := Fin N) i, map_X, map_C]`.
+
+Rewrite `hG₀Q` using `[hπG]`. Establish `hcoeff` using `congrArg (MvPolynomial.coeff (Finsupp.single j 1)) hG₀Q`. Simplify using `only [coeff_sum, coeff_zero] at hcoeff`. Rewrite `hcoeff` using `[mul_comm (X _), coeff_C_mul, coeff_X', Finsupp.single_left_inj one_ne_zero]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at hcoeff`.
+
+Conclude with `hj (Ideal.Quotient.eq_zero_iff_mem.mp hcoeff)`.
+-/
 theorem _root_.GlobalTheory.ExtPrime.isPrime_map_and_generic_form_notMem (K L : Type) [Field K] [Field L] (N : ℕ) [Algebra K L]
     [Algebra (MvPolynomial (Fin N) K) L] [IsScalarTower K (MvPolynomial (Fin N) K) L]
     [IsFractionRing (MvPolynomial (Fin N) K) L] (P : Ideal (MvPolynomial (Fin N) K))

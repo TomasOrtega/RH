@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.ConjRowLevel
 
+/- English proof (translation)
+Take `⟨h1, hmul, hnorm, -⟩` from `GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec`. Set `L : X.B.I.L2 X.B.μf X.B.fund →ₗᵢ[ℂ] X.B.I.L2 X.B.μf X.B.fund` to `{ toLinearMap := (X.B.R a⁻¹ : X.B.I.L2 X.B.μf X.B.fund →ₗ[ℂ] X.B.I.L2 X.B.μf X.B.fund) norm_map' := hnorm a⁻¹ }`. Establish `hback : X.B.R a⁻¹ (X.B.R a z) = z`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul, inv_mul_cancel, h1]`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hback]`.
+-/
 private theorem inner_R_eq_inner_R_inv {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (a : X.B.I.GA)
     (x z : X.B.I.L2 X.B.μf X.B.fund) : ⟪x, X.B.R a z⟫_ℂ = ⟪X.B.R a⁻¹ x, z⟫_ℂ := by
   obtain ⟨h1, hmul, hnorm, -⟩ := GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous X.B.I X.B.μf X.B.fund
@@ -32,6 +37,13 @@ private theorem inner_R_eq_inner_R_inv {D : D7} (X : Formalism.L2.SG.HidaSetting
       show ⟪X.B.R a⁻¹ x, X.B.R a⁻¹ (X.B.R a z)⟫_ℂ = _
       rw [hback]
 
+/- English proof (translation)
+Take `⟨_, hmulK, hinvK, hchi, hnorm⟩` from `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `he : ∀ z, X.B.e z = if z ∈ X.K2 then star (X.chi2 z) / ((X.B.μf X.K2).toReal : ℂ) else 0` using `X.e_eq`. Establish `hunit : X.chi2 k * star (X.chi2 k) = 1`. Rewrite using `[RCLike.star_def, RCLike.mul_conj, hnorm k hk]`. Evaluate the numerical expressions.
+
+Distinguish the cases in `hy : y ∈ X.K2`. Establish `hky : k⁻¹ * y ∈ X.K2` using `hmulK _ (hinvK _ hk) _ hy`. Establish `hsplit : X.chi2 y = X.chi2 k * X.chi2 (k⁻¹ * y)`. Rewrite using `[← hchi _ hk _ hky, mul_inv_cancel_left]`. Rewrite using `[he, he, if_pos hky, if_pos hy, hsplit, star_mul']`.
+
+Take the linear combination `(-(star (X.chi2 (k⁻¹ * y)) / ((X.B.μf X.K2).toReal : ℂ))) * hunit`. Establish `hky : k⁻¹ * y ∉ X.K2` using `fun h => hy (by simpa using hmulK _ hk _ h)`. Rewrite using `[he, he, if_neg hky, if_neg hy, mul_zero]`.
+-/
 private theorem e_inv_mul_eq_chi2_mul {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (k : X.B.I.Gf) (hk : k ∈ X.K2)
     (y : X.B.I.Gf) : X.B.e (k⁻¹ * y) = X.chi2 k * X.B.e y := by
   classical
@@ -50,6 +62,15 @@ private theorem e_inv_mul_eq_chi2_mul {D : D7} (X : Formalism.L2.SG.HidaSetting.
   · have hky : k⁻¹ * y ∉ X.K2 := fun h => hy (by simpa using hmulK _ hk _ h)
     rw [he, he, if_neg hky, if_neg hy, mul_zero]
 
+/- English proof (translation)
+Take `⟨-, hmul, -, -⟩` from `GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec`. Use `ext1 y`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `x`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, inner_smul_right, inner_R_eq_inner_R_inv X, X.B.Re_spec.2, X.B.Re_spec.2]`.
+
+Establish `hstep : ∀ g : X.B.I.Gf, ⟪X.B.R (1, k)⁻¹ x, X.B.R (1, g) y⟫_ℂ = ⟪x, X.B.R (1, k * g) y⟫_ℂ`. Introduce `g`. Establish `hprod : (((1 : X.B.I.Ginf), k * g) : X.B.I.GA) = (1, k) * (1, g)` using `by simp`. Rewrite using `[hprod, hmul, ContinuousLinearMap.comp_apply]`. Conclude with `(inner_R_eq_inner_R_inv X (1, k) x _).symm`.
+
+Repeatedly rewrite using `[hstep]`. Establish `hinv` using `integral_mul_left_eq_self (μ := X.B.μf) (fun g' => X.B.e (k⁻¹ * g') * ⟪x, X.B.R (1, g') y⟫_ℂ) k`. Simplify using `only [inv_mul_cancel_left] at hinv`. Rewrite using `[hinv]`. Repeatedly rewrite using `[e_inv_mul_eq_chi2_mul X k hk, mul_assoc]`.
+
+Conclude with `integral_const_mul _ _`.
+-/
 theorem reg_comp_Re {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (k : X.B.I.Gf) (hk : k ∈ X.K2) :
     (X.B.R (1, k)).comp X.B.Re = X.chi2 k • X.B.Re := by
   obtain ⟨-, hmul, -, -⟩ := GlobalTheory.RightRegProps.rightReg_unitary_mul_continuous X.B.I X.B.μf X.B.fund
@@ -72,6 +93,13 @@ theorem reg_comp_Re {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (k 
   rw [hinv]
   simp_rw [e_inv_mul_eq_chi2_mul X k hk, mul_assoc]
   exact integral_const_mul _ _
+/- English proof (translation)
+Take `⟨A, -, hA⟩` from `Submodule.mem_map.1 hΦ`. Establish `hΦv : Φ v = X.B.Re (A v)`. Rewrite using `[← hA]`. Both sides reduce to the same expression. Establish `h1` using `Formalism.L2.SG.EvalTOntoRep.contRep_reg X hψ ((1 : X.B.I.Ginf), κ)`.
+
+Establish `hR : X.B.R ((1 : X.B.I.Ginf), κ) (Φ v) = X.chi2 κ • Φ v`. Rewrite using `[hΦv, ← ContinuousLinearMap.comp_apply, reg_comp_Re X κ hκ, ContinuousLinearMap.smul_apply]`. Rewrite `h1` using `[hR]`. Establish `h2` using `Formalism.L2.SG.EvalTOntoRep.contRep_smul X (X.chi2 κ) hψ`. Establish `heq` using `Formalism.L2.SG.EvalTOntoRep.contRep_unique X h1 h2`.
+
+Introduce `z`. Simplify using `using congrFun heq z`.
+-/
 private theorem contRep_mul_right_eq_chi2_mul {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (Φ : X.B.Hs →L[ℂ] L2X X)
     (hΦ : Φ ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re) (v : X.B.Hs) {ψ : X.B.I.GA → ℂ}
     (hψ : Formalism.L2.SG.EvalTOntoRep.IsContRep X (Φ v) ψ) (κ : X.B.I.Gf) (hκ : κ ∈ X.K2) :
@@ -89,6 +117,17 @@ private theorem contRep_mul_right_eq_chi2_mul {D : D7} (X : Formalism.L2.SG.Hida
   intro z
   simpa using congrFun heq z
 
+/- English proof (translation)
+Introduce `_ D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ _ _ t c _ hconj _ Φ hΦ hcont u k hk g`. Take `⟨ψ, hψ⟩` from `hcont u`. Use `erw [GlobalTheory.ConjRowMult.conjMap_apply, GlobalTheory.ConjRowMult.conjMap_apply]`. Rewrite using `[GlobalTheory.ConjRowMult.contRepL_spec X hψ]`. Take `⟨hmem, hval⟩` from `hconj k`.
+
+Establish `hk' : ((iotaX X h).toMulEquiv (t⁻¹⁻¹ * k * t⁻¹)).1 = 1 ∧ ((iotaX X h).toMulEquiv (t⁻¹⁻¹ * k * t⁻¹)).2 ∈ X.K2` using `hmem.1 hk`. Establish `hv` using `hval hk`. Take `⟨hp1, hp2⟩` from `hk'`. Take `⟨κ, hκdef⟩ : ∃ κ, κ = ((iotaX X h).toMulEquiv (t⁻¹⁻¹ * k * t⁻¹)).2` from `⟨_, rfl⟩`. Establish `hq : (iotaX X h).toMulEquiv (t⁻¹⁻¹ * k * t⁻¹) = ((1 : X.B.I.Ginf), κ)` using `Prod.ext hp1 hκdef.symm`.
+
+Establish `hκ : κ ∈ X.K2`. Rewrite using `[hκdef]`. Conclude with `hp2`. Establish `hv' : star (X.chi2 κ) = levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true)) k`. Rewrite using `[hκdef]`.
+
+Conclude with `hv`. Establish `hsplit : (iotaX X h).toMulEquiv (g * k * t⁻¹) = (iotaX X h).toMulEquiv (g * t⁻¹) * ((1 : X.B.I.Ginf), κ)`. Rewrite using `[← hq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show g * t⁻¹ * (t⁻¹⁻¹ * k * t⁻¹) = g * k * t⁻¹ by group]`.
+
+Use `_ = _ := map_mul _ _ _`. Express the relevant statement in the definitionally equal form `star (ψ ((iotaX X h).toMulEquiv (g * k * t⁻¹))) = _ * star (ψ ((iotaX X h).toMulEquiv (g * t⁻¹)))`. Rewrite using `[hsplit, contRep_mul_right_eq_chi2_mul X Φ hΦ _ hψ κ hκ, star_mul', hv']`.
+-/
 theorem conjMap_level : GlobalTheory.Published.DiscreteSeriesClassification → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (t : GA D (Yc D 0)) (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), t ∈ GfC (Yc D 0) → ConjLevel (t)⁻¹ (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) ((iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2}) (fun k => star (X.chi2 ((iotaX X h).toMulEquiv k).2)) → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ ((MP R).rep τ g w) = X.B.σ (X.pl.symm τ) (uMat ((iotaX X h (atTau R.θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) → ∀ Φ : X.B.Hs →L[ℂ] L2X X, Φ ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re → (∀ u : (MP R).Vec, ∃ ψ, Formalism.L2.SG.EvalTOntoRep.IsContRep X (Φ (X.B.tens (GlobalTheory.ConjRowMult.vecC X (MP R) c u))) ψ) → ∀ u : (MP R).Vec, ∀ k ∈ levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true)), ∀ g : GA D (Yc D 0), GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t u (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ g k) = levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true)) k * GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t u g := by
   intro _ D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ _ _ t c _ hconj _ Φ hΦ hcont u k hk g
   obtain ⟨ψ, hψ⟩ := hcont u

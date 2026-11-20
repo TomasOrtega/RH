@@ -23,6 +23,27 @@ namespace GlobalTheory.RealVacPow
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP p BW hB`. Establish `hP1` using `hP.1`. Take `⟨η, hη⟩` from `hP1.eta`. Use `choose b hb using hP1.expW`. Establish `hsW : ∀ τ, IsCartanInv (gramAt D W τ) (sW τ)` using `hP.2.2.2.2.2.2.2.1`.
+
+Use `choose q hq1 hq using fun τ => GlobalTheory.OneMapRef.RealMove.detPlus_one (n := V.rank) (sW τ) (hsW τ).1`. Use `⟨fun τ => -(b τ) - (q τ : ℤ), fun a ha f hf hv => ?_⟩` and prove the remaining obligations. Establish `hθ : IsInfFam θ` using `hP1.inf`. Establish `hψ` using `hP1.weil.std`. Establish `hgV : ∀ τ, gramAt D V τ = 1` using `fun τ => by`.
+
+Unfold `gramAt`. Rewrite using `[hP1.std]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hS : ∀ τ, IsCartanInv (gramAt D V τ) 1` using `fun τ => by`. Rewrite using `[hgV]; exact ⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩`.
+
+Establish `hdetV : ∀ τ, (gramAt D V τ).det ≠ 0` using `fun τ => by rw [hgV]; simp`. Take `⟨x, hx, hxv⟩` from `GlobalTheory.OneMapRef.RealMove.exists_root hθ V hdetV a ha`. Establish `mt1 : Formalism.L2.Theta.mt W 1 = 1` using `by unfold Formalism.L2.Theta.mt; rw [map_one]; rfl`. Establish `hy : IsDetRoot W 1 1`. Unfold `IsDetRoot`.
+
+Establish `: ((matHom W 1).1 : Matrix (Fin W.rank) (Fin W.rank) (AE D)) = 1` using `mt1`. Rewrite using `[this, Matrix.det_one, one_mul, Units.val_one, map_one]`. Establish `one : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt W 1) = 1` using `fun τ => by`. Rewrite using `[mt1]; exact Matrix.map_one _ (by simp) (by simp)`. Rewrite using `[GlobalTheory.WeilVacChar.vacuum_character D ψ hψ V W θ hθ χV χW om η hη hP1.weil (fun _ => 1) sW hS hsW a ha 1 (one_mem _) (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [one, Matrix.one_mul, Matrix.mul_one]) x 1 hx hy f hf hv]`.
+
+Use `congr 1`. Establish `hexp : ∀ τ, HasInfExp D (χW * (η ^ W.rank)⁻¹) τ ((b τ : ℤ) : ℚ)` using `fun τ => by`. Use `GlobalTheory.OneMapRef.RealMove.hasInfExp_twist (hb τ) (hη.2.2.2 τ) W.rank` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hνx` using `hxv _ b hexp`.
+
+Establish `hinv : ∀ τ, (compAt θ τ (Formalism.L2.Theta.mt V a⁻¹)).det * (compAt θ τ (Formalism.L2.Theta.mt V a)).det = 1` using `fun τ => by`. Rewrite using `[GlobalTheory.OneMapRef.RealMove.det_compAt, GlobalTheory.OneMapRef.RealMove.det_compAt, ← map_mul, ← map_mul, ← Matrix.det_mul]`. Establish `: Formalism.L2.Theta.mt V a⁻¹ * Formalism.L2.Theta.mt V a = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_one, map_one, map_one]`. Establish `hd0 : ∀ τ, (compAt θ τ (Formalism.L2.Theta.mt V a)).det ≠ 0` using `fun τ h => by`. Use `hinv τ` as an intermediate fact. Rewrite `this` using `[h, mul_zero]`.
+
+Conclude with `zero_ne_one this`. Establish `hdp : ∀ τ, GlobalTheory.WeilParts.detPlus 1 (sW τ) (compAt θ τ (Formalism.L2.Theta.mt V a⁻¹)) (compAt θ τ (Formalism.L2.Theta.mt W 1)) = ((compAt θ τ (Formalism.L2.Theta.mt V a)).det)⁻¹ ^ q τ` using `fun τ => by`. Rewrite using `[one, (hq τ _ 1 (by rw [Matrix.one_mul, Matrix.mul_one])).1]`. Establish `e : (1 / 2 : ℂ) • (1 + sW τ) * 1 + (1 / 2 : ℂ) • (1 - sW τ) = 1` using `by rw [Matrix.mul_one]; module`. Rewrite using `[e, Matrix.det_one, one_pow, one_mul, eq_inv_of_mul_eq_one_left (hinv τ)]`.
+
+Rewrite using `[map_one, mul_one, Circle.coe_inv, hνx, Finset.prod_congr rfl fun τ _ => hdp τ, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_sub₀ (hd0 τ), _root_.zpow_neg, zpow_natCast, inv_pow, div_eq_mul_inv]`.
+-/
 theorem vacuum_det_power : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)

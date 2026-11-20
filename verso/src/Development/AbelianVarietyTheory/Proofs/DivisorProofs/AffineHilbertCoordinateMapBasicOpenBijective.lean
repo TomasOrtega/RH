@@ -5,6 +5,13 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Set `gM : (Fin r → R) →ₗ[R] (Fin r → R')` to `LinearMap.pi (fun k => (Algebra.linearMap R R') ∘ₗ LinearMap.proj k)`. Use `haveI : IsLocalizedModule (Submonoid.powers f) gM := IsLocalizedModule.pi (Submonoid.powers f) (fun _ : Fin r => Algebra.linearMap R R')`. Set `gS : S →ₗ[R] S'` to `(IsScalarTower.toAlgHom R S S').toLinearMap`. Use `haveI : IsLocalizedModule (Submonoid.powers f) gS := inferInstance`. Set `φ : (Fin r → R') →ₗ[R] S'` to `(Fintype.linearCombination R' (fun k => algebraMap S S' (v k))).restrictScalars R`.
+
+Establish `hcomm : φ ∘ₗ gM = gS ∘ₗ Fintype.linearCombination R v`. Use extensionality with `c`. Simplify using `[φ, gM, gS, Fintype.linearCombination_apply, Algebra.smul_def, map_sum, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `hmap : IsLocalizedModule.map (Submonoid.powers f) gM gS (Fintype.linearCombination R v) = φ`. Apply `IsLocalizedModule.linearMap_ext (Submonoid.powers f) gM gS` to reduce the goal to its premises.
+
+Rewrite using `[IsLocalizedModule.map_comp, hcomm]`. Rewrite using `[← IsLocalizedModule.map_bijective_iff_localizedModuleMap_bijective gM gS, hmap]`. Both sides reduce to the same expression.
+-/
 theorem bijective_linearCombination_iff_localizedModule_map {R R' S S' : Type} [CommRing R]
     [CommRing R'] [CommRing S] [CommRing S'] [Algebra R R'] [Algebra R S] [Algebra R' S']
     [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : R)
@@ -34,6 +41,19 @@ end GlobalTheory.HilbAff
 
 namespace GlobalTheory.HilbAff
 
+/- English proof (translation)
+Introduce `A B _ _ _ N r e σ Z y W f`. Use `haveI : IsFinite (subStr A B y) := y.2.2.1`. Establish `hV : IsAffineOpen (subStr A B y ⁻¹ᵁ (W : Z.Opens))` using `W.2.preimage _`. Establish `hle : subStr A B y ⁻¹ᵁ Z.basicOpen f ≤ subStr A B y ⁻¹ᵁ (W : Z.Opens)` using `fun _ h => Z.basicOpen_le f h`. Establish `hpre : subStr A B y ⁻¹ᵁ Z.basicOpen f = y.2.1.subscheme.basicOpen ((subStr A B y).app W f)` using `Scheme.preimage_basicOpen _ f`.
+
+Use `letI i1 : Algebra Γ(Z, W) Γ(Z, Z.basicOpen f) := (Z.presheaf.map (homOfLE (Z.basicOpen_le f)).op).hom.toAlgebra`. Use `letI i2 : Algebra (Sec A B y W) (Sec A B y (Z.basicOpen f)) := (y.2.1.subscheme.presheaf.map (homOfLE hle).op).hom.toAlgebra`. Use `letI i3 : Algebra Γ(Z, W) (Sec A B y (Z.basicOpen f)) := ((algebraMap (Sec A B y W) (Sec A B y (Z.basicOpen f))).comp (algebraMap Γ(Z, W) (Sec A B y W))).toAlgebra`. Use `haveI : IsScalarTower Γ(Z, W) (Sec A B y W) (Sec A B y (Z.basicOpen f)) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(Z, W) Γ(Z, Z.basicOpen f) (Sec A B y (Z.basicOpen f)) := IsScalarTower.of_algebraMap_eq' (by`.
+
+Use extensionality with `a`. Conclude with `(congr($((subStr A B y).naturality (homOfLE (Z.basicOpen_le f)).op) a)).symm)`. Use `haveI : IsLocalization.Away f Γ(Z, Z.basicOpen f) := W.2.isLocalization_of_eq_basicOpen f (homOfLE (Z.basicOpen_le f)) rfl`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (Sec A B y W) (Submonoid.powers f)) (Sec A B y (Z.basicOpen f)) := by`. Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers]`.
+
+Conclude with `hV.isLocalization_of_eq_basicOpen _ (homOfLE hle) hpre`. Establish `hgen : ∀ b, gen A B y (Z.basicOpen f) b = algebraMap (Sec A B y W) (Sec A B y (Z.basicOpen f)) (gen A B y W b)`. Introduce `b`. Establish `h` using `Scheme.Hom.appLE_map (y.2.1.subschemeι ≫ pullback.fst _ y.1) (U := ⊤) (V := subStr A B y ⁻¹ᵁ (W : Z.Opens)) (by simp) (homOfLE hle).op`. Simplify using `only [gen]`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `hc : coord A B e σ y (Z.basicOpen f) = Fintype.linearCombination Γ(Z, Z.basicOpen f) (fun k => algebraMap (Sec A B y W) (Sec A B y (Z.basicOpen f)) (gen A B y W (e (σ k))))`. Simplify using `only [coord, hgen]`. Rewrite using `[hc]`.
+
+Conclude with `bijective_linearCombination_iff_localizedModule_map f _`.
+-/
 theorem coord_basicOpen_bijective_iff : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (N r : ℕ)
     (e : Module.Basis (Fin N) A B) (σ : Fin r ↪ Fin N) (Z : Scheme.{0})
     (y : (GlobalTheory.HilbAff.functor A B r).obj (op Z)) (W : Z.affineOpens) (f : Γ(Z, W)),

@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.TwistPullTame
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem`. Consider the case `exact _root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem`. Consider the case `(apply _root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CoprimeAbsNorm.coprime_absNorm_of_natCast_notMem ..)`.
+-/
 theorem coprime_absNorm {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {m : ℕ}
     (hm : ((m : ℕ) : 𝓞 E) ∉ P.asIdeal) : Nat.Coprime m (Ideal.absNorm P.asIdeal) := by
   first
@@ -35,6 +40,15 @@ theorem coprime_absNorm {E : Type} [Field E] [NumberField E] {P : HeightOneSpect
 
 open GlobalTheory.HeckeGal (Gab toAb IsGlobalArtin) in
 
+/- English proof (translation)
+Introduce `x hx hx1`. Take `⟨a, ha'⟩` from `GlobalTheory.Mem.UnrAe.exists_levelLe χ P`. Establish `hmem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem P.asIdeal`. Establish `hlt : Valued.v ((Ideal.absNorm P.asIdeal : ℕ) : P.adicCompletion E) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 E) (P.adicCompletion E)), GlobalTheory.Mem.WildChar.valued_algebraMap_lt_one]`.
+
+Conclude with `hmem`. Establish `h3` using `ha' _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hx (Ideal.absNorm P.asIdeal ^ a)) (by`. Rewrite using `[Units.val_pow_eq_pow_val]`. Use `GlobalTheory.Mem.WildChar.val_pow_pow_sub_one_le _ (le_of_eq hx) (hx1.trans_lt ?_) hlt a` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use the proof step `norm_num)`. Rewrite `h3` using `[map_pow]`. Establish `h4 : χ.loc P x ^ m = 1`. Take `⟨σ, hσ, e⟩` from `(ha.ine P B hB _).mp ⟨x, hx, rfl⟩`. Establish `e2 : χ.loc P x = r σ` using `h _ σ e.symm`.
+
+Rewrite using `[e2, hi σ hσ]`. Establish `hc : Nat.Coprime m (Ideal.absNorm P.asIdeal ^ a)` using `(coprime_absNorm hm).pow_right a`. Rewrite using `[← pow_one (χ.loc P x), ← hc.gcd_eq_one]`. Conclude with `pow_gcd_eq_one.2 ⟨h4, h3⟩`.
+-/
 theorem tameAt_of_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {art : Neutral.B1.Ideles E →* Gab E Ω}
     (ha : IsGlobalArtin art) {r : G E Ω →* ℂˣ} {χ : Formalism.L2.Host.HChar E} (h : GlobalTheory.ToricDistribution.Corr art r χ)
     {P : HeightOneSpectrum (𝓞 E)} {B : ValuationSubring Ω} (hB : IsPlaceOver B P) {m : ℕ}
@@ -59,6 +73,9 @@ theorem tameAt_of_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebr
   rw [← pow_one (χ.loc P x), ← hc.gcd_eq_one]
   exact pow_gcd_eq_one.2 ⟨h4, h3⟩
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.TwistDet.cConj_mem_ine X hσ`. Establish `h2` using `GlobalTheory.TwistDet.isPlaceOver_moveVal_cc X (GlobalTheory.TwistDet.isConjPl_symm hc) hB'`. Establish `h3` using `h _ h2 _ h1`. Rewrite `h3` using `[GlobalTheory.TwistDet.antiHom_cConj X hanti, inv_pow, inv_eq_one]`. Conclude with `h3`.
+-/
 theorem ine_pow_of_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) {A : Type} [CommGroup A]
     {φ : G D.host.E N.Om →* A} (hanti : AntiHom X.cc φ) {P P' : Pl D.host.E} (hc : Formalism.BasicNotions.IsConjPl D.host P P') {m : ℕ}
     (h : ∀ B : ValuationSubring N.Om, IsPlaceOver B P → ∀ σ ∈ Ine (F := D.host.E) B, φ σ ^ m = 1)
@@ -70,6 +87,9 @@ theorem ine_pow_of_conj {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D
   rw [GlobalTheory.TwistDet.antiHom_cConj X hanti, inv_pow, inv_eq_one] at h3
   exact h3
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TwistDet.isConjPl_iff.1 hc, map_natCast]`.
+-/
 theorem natCast_mem_conj {D : D7} {P P' : Pl D.host.E} (hc : Formalism.BasicNotions.IsConjPl D.host P P') (m : ℕ) :
     ((m : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal ↔ ((m : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := by
   rw [GlobalTheory.TwistDet.isConjPl_iff.1 hc, map_natCast]
@@ -80,6 +100,37 @@ namespace GlobalTheory.TwistPullTame
 
 open GlobalTheory.TwistPull
 
+/- English proof (translation)
+Introduce `D N X a ha A _ φ hφ hanti Q hQ hQm hunr`. Use `haveI := finite_range (D := D) hφ`. Use `set M := Nat.card φ.range with hMdef`. Establish `hM : M ≠ 0` using `Nat.card_pos.ne'`. Establish `hr : ∀ f : φ.range →* ℂˣ, IsOpen ((f.comp φ.rangeRestrict).ker : Set (G D.host.E N.Om)) ∧ ∀ σ, (f.comp φ.rangeRestrict) σ ^ M = 1` using `fun f => by`.
+
+Use `⟨Subgroup.isOpen_mono (H₁ := φ.ker) (fun g hg => ?_) hφ, fun σ => ?_⟩` and prove the remaining obligations. Establish `: φ.rangeRestrict g = 1` using `Subtype.ext (MonoidHom.mem_ker.1 hg)`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, this, map_one]`. Rewrite using `[MonoidHom.comp_apply, ← map_pow, pow_card_eq_one', map_one]`. Establish `hanti' : ∀ f : φ.range →* ℂˣ, AntiHom X.cc (f.comp φ.rangeRestrict)` using `fun f g g' hg => by`.
+
+Establish `e : φ.rangeRestrict g' = (φ.rangeRestrict g)⁻¹` using `Subtype.ext (hanti g g' hg)`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, e, map_inv]`. Establish `hin : ∀ P ∈ Q, ∀ P' : Pl D.host.E, (P' = P ∨ Formalism.BasicNotions.IsConjPl D.host P P') → ∃ m : ℕ, ((m : ℕ) : 𝓞 D.host.E) ∉ P'.asIdeal ∧ ∀ B : ValuationSubring N.Om, IsPlaceOver B P' → ∀ σ ∈ Ine (F` using `D.host.E) B, φ σ ^ m = 1 := by`. Introduce `P hP P' hP'`. Take `⟨m, hm, hB⟩` from `hQm P hP`.
+
+Break down `hP' with rfl | hc` into its components or cases. Conclude with `⟨m, hm, hB⟩`. Conclude with `⟨m, fun h => hm ((natCast_mem_conj hc m).1 h), ine_pow_of_conj X hanti hc hB⟩`. Establish `htame : ∀ (f : φ.range →* ℂˣ) (χ : Formalism.L2.Host.HChar D.host.E), GlobalTheory.ToricDistribution.Corr a.art (f.comp φ.rangeRestrict) χ → ∀ P ∈ Q, ∀ P' : Pl D.host.E, (P' = P ∨ Formalism.BasicNotions.IsConjPl D.host P P') → χ.TameAt P'`. Introduce `f χ hχ P hP P' hP'`.
+
+Take `⟨m, hm, hB⟩` from `hin P hP P' hP'`. Take `⟨B, hB'⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver N.Om P'`. Use `tameAt_of_ine ha.artin hχ hB' hm fun σ hσ => ?_` and prove the remaining obligations. Establish `e : φ.rangeRestrict σ ^ m = 1` using `Subtype.ext (by`. Rewrite using `[SubmonoidClass.coe_pow, MonoidHom.coe_rangeRestrict, hB B hB' σ hσ]`.
+
+Use the proof step `rfl)`. Rewrite using `[MonoidHom.comp_apply, ← map_pow, e, map_one]`. Use `⟨isOpen_ker_pull ha hφ, fun x => pull_rat ha φ x, fun y => ?_, hQ, ?_, fun PP hPP => isResAt_resOf ?_⟩` and prove the remaining obligations. Use `(pull_eq_of_chars a hφ (y := 1) fun f => ?_).trans (map_one _)` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hr f`.
+
+Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha h1 hM h2`. Rewrite using `[map_one]`. Use `Units.ext ((hcr _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[real_C D N X a.art ha.artin _ _ hM h2 (hanti' f) c χ hc hχ y]`. Simplify using the standard rewrite rules.
+
+Introduce `x h1 h2 h3 h4`. Use `(pull_eq_of_chars a hφ (y := 1) fun f => ?_).trans (map_one _)` and prove the remaining obligations. Take `⟨o1, o2⟩` from `hr f`. Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha o1 hM o2`. Rewrite using `[map_one]`.
+
+Use `Units.ext ((hcr _).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.heckeChar_unramified_outside_split_set_of_tame D N a.art ha.artin _ M hM o2 c χ hc hχ Q hQ (htame f χ hχ) (fun v hv hc' B hB σ hσ => by`. Rewrite using `[MonoidHom.comp_apply, show φ.rangeRestrict σ = 1 from Subtype.ext (hunr v hv hc' B hB σ hσ), map_one]) x h1 h2 h3 h4]`. Simplify using the standard rewrite rules. Establish `hPP` using `hQ.isIdemAt hPP`.
+
+Establish `same : ∀ (x x' : (AE D)ˣ) (u : (kP PP)ˣ), (1 - idemAt PP) * (x : AE D) = 1 - idemAt PP → (1 - idemAt PP) * (x' : AE D) = 1 - idemAt PP → ∀ (hi : toEAf D (x : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hi' : toEAf D (x' : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) …`. Introduce `x x' u hx hx' hi hi' hu hu'`. Use `pull_eq_of_chars a hφ fun f => ?_` and prove the remaining obligations. Take `⟨o1, o2⟩` from `hr f`. Take `⟨c, χ, hc, hχ, hcr⟩` from `exists_chrEq_pull ha o1 hM o2`.
+
+Establish `ht : χ.TameAt PP` using `htame f χ hχ PP ‹_› PP (Or.inl rfl)`. Take `⟨ρ, hρ⟩` from `GlobalTheory.exists_isRes_of_tameAt D χ PP ht`. Establish `e : ∀ z : (AE D)ˣ, (1 - idemAt PP) * (z : AE D) = 1 - idemAt PP → ∀ (hz : toEAf D (z : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), resS D.host.F PP ⟨_, hz⟩ = u → a.pull (f.comp φ.rangeRestrict) z = ρ u` using `fun z hz hzi hzu => Units.ext ((hcr z).symm.trans (GlobalTheory.ConjTwist.eq_res_of_chrEq hc hPP ht hρ z hz hzi u hzu))`. Rewrite using `[e x hx hi hu, e x' hx' hi' hu']`. Establish `hlift` using `fun u => GlobalTheory.ConjTwist.exists_isLocUnit hPP u`.
+
+Use `choose xs hxs using hlift`. Establish `hmul : ∀ u v, a.pull φ (xs (u * v)) = a.pull φ (xs u * xs v)` using `fun u v => by`. Take `⟨hi, hu⟩` from `(hxs (u * v)).res`. Take `⟨hi1, hu1⟩` from `(hxs u).res`. Take `⟨hi2, hu2⟩` from `(hxs v).res`.
+
+Establish `hi3 : toEAf D ((xs u * xs v : (AE D)ˣ) : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `mul_mem hi1 hi2`. Use `same _ _ (u * v) (hxs (u * v)).off ?_ hi hi3 hu ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← mul_assoc, (hxs u).off, (hxs v).off]`.
+
+Establish `: (⟨_, hi3⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨_, hi1⟩ * ⟨_, hi2⟩` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `toEAf D ((xs u * xs v : (AE D)ˣ) : AE D) = toEAf D (xs u : AE D) * toEAf D (xs v : AE D)`. Rewrite using `[Units.val_mul, map_mul])`. Rewrite using `[this, map_mul, hu1, hu2, Units.val_mul]`. Use `⟨MonoidHom.mk' (fun u => a.pull φ (xs u)) (fun u v => ?_), ?_⟩` and prove the remaining obligations.
+
+Use `show a.pull φ (xs (u * v)) = a.pull φ (xs u) * a.pull φ (xs v)`. Rewrite using `[hmul, map_mul]`. Introduce `x hx hi u hu show a.pull φ x = a.pull φ (xs u)`. Take `⟨hi', hu'⟩` from `(hxs u).res`. Conclude with `same x (xs u) u hx (hxs u).off hi hi' hu hu'`.
+-/
 theorem good_pull_tame : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (a : Recip D N.Om), a.Good → ∀ (A : Type) [CommGroup A] (φ : G D.host.E N.Om →* A), IsOpen (φ.ker : Set (G D.host.E N.Om)) → AntiHom X.cc φ → ∀ Q : Finset (Pl D.host.E), SplitSet Q → (∀ P ∈ Q, ∃ m : ℕ, ((m : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧ ∀ B : ValuationSubring N.Om, IsPlaceOver B P → ∀ σ ∈ Ine (F := D.host.E) B, φ σ ^ m = 1) → (∀ v : Pl D.host.E, v ∉ Q → (∀ P ∈ Q, ¬ Formalism.BasicNotions.IsConjPl D.host P v) → ∀ B : ValuationSubring N.Om, IsPlaceOver B v → ∀ σ ∈ Ine (F := D.host.E) B, φ σ = 1) → (⟨Q, a.pull φ, resOf (a.pull φ)⟩ : Twist D A).Good := by
   intro D N X a ha A _ φ hφ hanti Q hQ hQm hunr
   haveI := finite_range (D := D) hφ

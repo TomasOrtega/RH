@@ -12,6 +12,13 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.ThetaFac
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM`. Establish `hFin` using `GlobalTheory.T.matched_triple_finite_weil_identity hK F E σ B a a' G X om om' R Rf hM`. Establish `hCpt` using `GlobalTheory.T.matched_triple_lattice_vector_identity hK F E σ B a a' G X om om' R Rf hM`. Establish `hSub` using `GlobalTheory.T.matched_triple_casimir_compatible hK F E σ B a a' G X om om' R Rf hM`. Establish `hTr` using `GlobalTheory.T.matched_pair_theta_lattice_sum hK F E σ B a a' G X om om' R Rf hM`.
+
+Establish `hLie` using `GlobalTheory.T.modelI_eq_zero_of_hasDerivAt_line hK F E σ B a a' G X om om' R Rf hM`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v g hg Φ hΦ`. Use `Submodule.subset_span ⟨Submodule.sub_mem _ (hFin v g hg Φ hΦ) hΦ, ?_⟩` and prove the remaining obligations. Rewrite using `[hSub _ (hFin v g hg Φ hΦ) _ hΦ, hTr g Φ hΦ, sub_self]`.
+
+Introduce `γ hγ Φ hΦ Φ₁ hΦ₁ hd`. Conclude with `Submodule.subset_span ⟨hΦ₁, hLie γ hγ Φ hΦ Φ₁ hΦ₁ hd⟩`. Introduce `k hk Φ hΦ`. Use `Submodule.subset_span ⟨Submodule.sub_mem _ (hCpt k hk Φ hΦ) hΦ, ?_⟩` and prove the remaining obligations. Rewrite using `[hSub _ (hCpt k hk Φ hΦ) _ hΦ, hTr k Φ hΦ, sub_self]`.
+-/
 theorem coinvLe_span_ker : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → GlobalTheory.ThetaFac.CoinvLe B om' (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) (Submodule.span ℂ {Ψ | Ψ ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁ ∧ G.M'.I om' Ψ = 0}) := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM
   have hFin := GlobalTheory.T.matched_triple_finite_weil_identity hK F E σ B a a' G X om om' R Rf hM

@@ -8,6 +8,11 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, h1.1, h2⟩`.
+-/
 theorem rdb_glev0_inter_om (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     Q.Glev k r 0 ∩ JF.Om k r z z' = Q.Glev k r 0 ∩ Q.OmPlus k r z z' := by
   ext g
@@ -17,12 +22,18 @@ theorem rdb_glev0_inter_om (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
   · rintro ⟨h1, h2⟩
     exact ⟨h1, h1.1, h2⟩
 
+/- English proof (translation)
+Simplify using `only [Q.FFl, Q.SmoothLev, Q.LeftEq, Q.RightEq, rdb_glev0_inter_om]`.
+-/
 theorem rdb_ffl_om_eq (k r : ℕ) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (z z' : Fin (2 * r + k + 1) → ℂ) (π : Q.Mx k r → (Wp →L[ℂ] Wp))
     (π' : Q.Mx k r → (Wq →L[ℂ] Wq)) :
     Q.FFl k r z z' π π' 0 (JF.Om k r z z') = Q.FFl k r z z' π π' 0 (Q.OmPlus k r z z') := by
   simp only [Q.FFl, Q.SmoothLev, Q.LeftEq, Q.RightEq, rdb_glev0_inter_om]
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by`. Rewrite using `[ha, hb]`.
+-/
 private theorem conjTranspose_mul_H_mul_preserved_of_preserved {n : ℕ} (H a b : Matrix (Fin n) (Fin n) ℂ)
     (ha : a.conjTranspose * H * a = H) (hb : b.conjTranspose * H * b = H) :
     (a * b).conjTranspose * H * (a * b) = H := by
@@ -34,6 +45,27 @@ private theorem conjTranspose_mul_H_mul_preserved_of_preserved {n : ℕ} (H a b 
         rw [ha, hb]
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD J hJ`. Establish `hz` using `hD.1.2.1`. Establish `hz'` using `hD.1.2.2.1`. Rewrite `hJ` using `[rdb_ffl_om_eq]`. Take `⟨hS, -, -, hE⟩` from `hJ`.
+
+Establish `huh : ∀ a b : Mx P.k P.r, a ∈ UH (Hpk P.k P.r) → b ∈ UH (Hpk P.k P.r) → a * b ∈ UH (Hpk P.k P.r)` using `fun a b ha hb => conjTranspose_mul_H_mul_preserved_of_preserved _ a b ha hb`. Establish `hcell : ∀ c ∈ OmX P.r, wCell P.k P.r (Fin.last P.r) c ∈ UH (Hpk P.k P.r)`. Introduce `c hc`. Use `List.prod_induction _ huh ?_ ?_` and prove the remaining obligations. Use `show (1 : Mx P.k P.r).conjTranspose * Hpk P.k P.r * 1 = Hpk P.k P.r`.
+
+Simplify using the standard rewrite rules. Introduce `x hx`. Take `⟨a, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `Qx3.weyl_cell_mem_unitary a (hc a)`. Establish `hcomm : ∀ (c : Fin P.r → ℂ) (h : Mx P.k P.r), h ∈ UWset P.k P.r z → Commute (wCell P.k P.r (Fin.last P.r) c) h`.
+
+Introduce `c h hh`. Use `Commute.list_prod_left _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `Qx3.w1_commute_of_mem_Glev a (c a) ⟨hh.1, fun b _ => hh.2.1 b⟩`.
+
+Establish `hin : ∀ x ∈ DomR P.k P.r z z', wCell P.k P.r (Fin.last P.r) x.1 * x.2 ∈ Glev P.k P.r 0 ∩ OmPlus P.k P.r z z'` using `fun x hx => ⟨Rad.glev0 (huh _ _ (hcell _ hx.1) hx.2.1.1), Rad.wCell_mem_omPlus hz hz' hx.1 hx.2.1 hx.2.2⟩`. Set `Φ0 : Fn P.k P.r (Wq →L[ℂ] Wp)` to `fun c g => if (c, g) ∈ DomR P.k P.r z z' then resG P.k P.r (Fin.last P.r) J c g else 0`. Establish `hmem : Φ0 ∈ RadSp P.k P.r z z' π π'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Conclude with `if_neg hx`. Introduce `x₀ hx₀`. Take `⟨U, F, hU, hxU, hF, hag⟩` from `Rad.sf_resG hS x₀ ⟨hx₀.1, (hin x₀ hx₀).2⟩ hx₀.2.1`. Use `⟨U ∩ (Prod.fst ⁻¹' OmX P.r ∩ Prod.snd ⁻¹' {g | 0 < GGl P.k P.r z z' g}), F, hU.inter (((Qx3.isOpen_OmX _).preimage continuous_fst).inter (isOpen_lt continuous_const ((Qx5.GGl_continuous _ _ _ _).comp continuous_snd))), ⟨hxU, hx₀.1, hx₀.2.2⟩, hF.mono Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Introduce `x hx hg`.
+
+Establish `hxD : x ∈ DomR P.k P.r z z'` using `⟨hx.2.1, hg, hx.2.2⟩`. Use `show (if (x.1, x.2) ∈ DomR P.k P.r z z' then _ else _) = _`. Rewrite using `[if_pos hxD]`. Conclude with `hag x hx.1 hg`. Introduce `x hx h hh h' hh'`.
+
+Establish `hx'` using `Rad.domR_uw hx hh hh'`. Use `show (if (x.1, h * x.2 * h') ∈ DomR P.k P.r z z' then _ else _) = π h ∘SL (if (x.1, x.2) ∈ DomR P.k P.r z z' then _ else _) ∘SL π' h'`. Rewrite using `[if_pos hx', if_pos hx]`. Simplify using `only [resG]`. Rewrite using `[show wCell P.k P.r (Fin.last P.r) x.1 * (h * x.2 * h') = h * (wCell P.k P.r (Fin.last P.r) x.1 * x.2) * h' by`.
+
+Simplify using `only [← mul_assoc, (hcomm x.1 h hh).eq]]`. Rewrite using `[hE _ (hin x hx) h hh h' hh']`. Simplify using `[ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`. Use `⟨⟨Φ0, hmem⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use `show (if (x.1, x.2) ∈ DomR P.k P.r z z' then _ else _) = _`.
+
+Rewrite using `[if_pos hx]`.
+-/
 theorem radial_residue_formula : RDResRad := by
   classical
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD J hJ

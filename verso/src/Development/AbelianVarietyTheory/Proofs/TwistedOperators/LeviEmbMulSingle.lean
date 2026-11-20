@@ -17,6 +17,11 @@ open ValuativeRel Matrix MeasureTheory in
 variable {n : Type} [Fintype n] [DecidableEq n] in
 omit [DecidableEq n] in
 
+/- English proof (translation)
+Set `S : Finset ℤ` to `Finset.univ.image c`. Set `o` to `S.orderIsoOfFin rfl`. Set `φ : n → Fin S.card` to `fun i => o.symm ⟨c i, Finset.mem_image_of_mem c (Finset.mem_univ i)⟩`. Use `⟨S.card, fun a => Fintype.card {i // φ i = a}, (Equiv.sigmaCongrRight fun a => (Fintype.equivFin {i // φ i = a}).symm).trans (Equiv.sigmaFiberEquiv φ), ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Establish `key : ∀ x, (((Equiv.sigmaCongrRight fun a => (Fintype.equivFin {i // φ i = a}).symm).trans (Equiv.sigmaFiberEquiv φ)).symm x).1 = φ x` using `fun x => rfl`. Unfold `_root_.GlobalTheory.SmGL.blk`. Rewrite using `[key, key]`. Simplify using `only [φ, OrderIso.lt_iff_lt, Subtype.mk_lt_mk]`.
+-/
 theorem _root_.GlobalTheory.InertSupp.exists_blocks (c : n → ℤ) :
     ∃ (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ n),
     ∀ i j, _root_.GlobalTheory.SmGL.blk e i < _root_.GlobalTheory.SmGL.blk e j ↔ c i < c j := by
@@ -50,6 +55,9 @@ variable {n : Type} [Fintype n] [DecidableEq n] in
 variable (R : Type) [CommRing R] in
 variable {R} in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem _root_.GlobalTheory.InertSupp.mem_unipOf {c : n → ℤ} {g : GL n R} :
     g ∈ _root_.GlobalTheory.InertSupp.unipOf R c ↔
       ∀ i j, ¬ c i < c j → (g : Matrix n n R) i j = (1 : Matrix n n R) i j :=
@@ -65,6 +73,9 @@ variable {α : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fin
   [∀ a, DecidableEq (m a)] in
 variable (R) in
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[_root_.GlobalTheory.InertSupp.mem_unipOf, _root_.GlobalTheory.SmGL.CuspMax.mem_unipRad_iff_entries]`. Simplify using `only [h]`.
+-/
 theorem _root_.GlobalTheory.InertSupp.unipRad_eq_unipOf {e : (Σ a, m a) ≃ n}
     {c : n → ℤ} (h : ∀ i j, _root_.GlobalTheory.SmGL.blk e i < _root_.GlobalTheory.SmGL.blk e j ↔ c i < c j) :
     _root_.GlobalTheory.SmGL.unipRad R e = _root_.GlobalTheory.InertSupp.unipOf R c := by

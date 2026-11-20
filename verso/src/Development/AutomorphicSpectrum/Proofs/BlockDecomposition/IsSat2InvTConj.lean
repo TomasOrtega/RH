@@ -27,12 +27,18 @@ def pairConj (c : u.adicCompletion E ≃+* w.adicCompletion E) (k : GLw a u × G
     GLw a u × GLw b u ≃* GLw a w × GLw b w :=
   MulEquiv.trans (MulAut.conj k⁻¹) (pairInv c a b)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.ThetaPull.thetaA E a (finGL E a (locGL E a (GlobalTheory.ThetaSatake.cw u) g)) = finGL E a (locGL E a u _)`. Rewrite using `[GlobalTheory.ThetaPull.thetaA_finGL, GlobalTheory.ThetaSatake.theta_locGL, GlobalTheory.ThetaSatake.thetaGL_conj]`.
+-/
 theorem embT_cw (a : ℕ) (u : Pl E) (g : GLw a (GlobalTheory.ThetaSatake.cw u)) :
     embT a (GlobalTheory.ThetaSatake.cw u) g =
       embW a u (PhiU a _ * invT (GlobalTheory.ThetaSatake.cloc u) a g * (PhiU a _)⁻¹) := by
   change GlobalTheory.ThetaPull.thetaA E a (finGL E a (locGL E a (GlobalTheory.ThetaSatake.cw u) g)) = finGL E a (locGL E a u _)
   rw [GlobalTheory.ThetaPull.thetaA_finGL, GlobalTheory.ThetaSatake.theta_locGL, GlobalTheory.ThetaSatake.thetaGL_conj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invT_symm {K K' : Type} [Field K] [Field K'] (c : K ≃+* K') (n : ℕ) (g : GL (Fin n) K') :
     (invT c n).symm g = invT c.symm n g := rfl
 

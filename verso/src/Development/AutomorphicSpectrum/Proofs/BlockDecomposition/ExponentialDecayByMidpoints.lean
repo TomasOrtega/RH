@@ -8,11 +8,31 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
+/- English proof (translation)
+Distinguish the cases in `h : 0 ≤ u`. Conclude with `⟨1, by simp, by rw [one_mul, abs_of_nonneg h]⟩`. Conclude with `⟨-1, by simp, by rw [abs_of_neg (not_le.1 h)]; ring⟩`.
+-/
 theorem exists_unit_mul_eq_abs (u : ℝ) : ∃ s : ℝ, |s| = 1 ∧ s * u = |u| := by
   by_cases h : 0 ≤ u
   · exact ⟨1, by simp, by rw [one_mul, abs_of_nonneg h]⟩
   · exact ⟨-1, by simp, by rw [abs_of_neg (not_le.1 h)]; ring⟩
 
+/- English proof (translation)
+Introduce `X _ _ T _ φ S hS hmid x₀ g`. Take `⟨a, ha, b, hb, hx₀⟩` from `hmid x₀`. Take `⟨ra, hra, Ua, hUa, Ma, hMa⟩` from `hS a ha g`. Take `⟨rb, hrb, Ub, hUb, Mb, hMb⟩` from `hS b hb g`. Establish `hm1 : a.1 + b.1 = 2 * x₀.1` using `by rw [hx₀]; simp [midpoint_eq_smul_add]; ring`.
+
+Establish `hm2 : a.2 + b.2 = 2 * x₀.2` using `by rw [hx₀]; simp [midpoint_eq_smul_add]; ring`. Use `⟨min ra rb / 2, by positivity, Ua ∩ Ub, Filter.inter_mem hUa hUb, max (max Ma Mb) 0, ?_⟩` and prove the remaining obligations. Introduce `x hx1 hx2 g' hg' t`. Use `set ε := min ra rb / 2 with hε`. Establish `hεa : 2 * ε ≤ ra` using `by rw [hε]; linarith [min_le_left ra rb]`.
+
+Establish `hεb : 2 * ε ≤ rb` using `by rw [hε]; linarith [min_le_right ra rb]`. Establish `hε0 : 0 ≤ ε` using `by rw [hε]; positivity`. Take `⟨s1, hs1, hst1⟩` from `exists_unit_mul_eq_abs t.1`. Take `⟨s2, hs2, hst2⟩` from `exists_unit_mul_eq_abs t.2`. Establish `close : ∀ c d s : ℝ, |s| = 1 → |d| ≤ ε → |c + d + ε * s - c| ≤ 2 * ε`.
+
+Introduce `c d s hs hd`. Establish `hcd : c + d + ε * s - c = d + ε * s` using `by ring`. Rewrite using `[hcd]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA` using `hMa (a.1 + (x.1 - x₀.1) + ε * s1, a.2 + (x.2 - x₀.2) + ε * s2) ((close _ _ s1 hs1 hx1).trans hεa) ((close _ _ s2 hs2 hx2).trans hεa) g' hg'.1 t`.
+
+Establish `hB` using `hMb (b.1 + (x.1 - x₀.1) + ε * s1, b.2 + (x.2 - x₀.2) + ε * s2) ((close _ _ s1 hs1 hx1).trans hεb) ((close _ _ s2 hs2 hx2).trans hεb) g' hg'.2 t`. Use `set A := rdot (a.1 + (x.1 - x₀.1) + ε * s1, a.2 + (x.2 - x₀.2) + ε * s2) t with hAdef`. Use `set B := rdot (b.1 + (x.1 - x₀.1) + ε * s1, b.2 + (x.2 - x₀.2) + ε * s2) t with hBdef`. Establish `hsum : A + B = 2 * (rdot x t + ε * (|t.1| + |t.2|))`. Rewrite using `[hAdef, hBdef, ← hst1, ← hst2]`.
+
+Simplify using `only [rdot]`. Take the linear combination `t.1 * hm1 + t.2 * hm2`. Establish `hM0 : 0 ≤ max (max Ma Mb) 0` using `le_max_right _ _`. Establish `hR : max (max Ma Mb) 0 * Real.exp (-rdot x t) * Real.exp (-ε * (|t.1| + |t.2|)) = max (max Ma Mb) 0 * Real.exp (-((A + B) / 2))`. Rewrite using `[mul_assoc, ← Real.exp_add, hsum]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR]`. Break down `le_total B A with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem expDecay_of_midpoint : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (T : Type)
     [TopologicalSpace T] (φ : ℝ × ℝ → T → X) (S : Set (ℝ × ℝ)),
     (∀ a ∈ S, ∀ g : T, ∃ r : ℝ, 0 < r ∧ ∃ U ∈ 𝓝 g, ∃ M : ℝ, ∀ x : ℝ × ℝ, |x.1 - a.1| ≤ r → |x.2 - a.2| ≤ r →

@@ -17,6 +17,9 @@ variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R} {
 abbrev sPow (X : GenModel gb N) (r : ℕ) : (GlobalTheory.KS.pow X.univ.A r).left ⟶ Sp R :=
   (GlobalTheory.KS.pow X.univ.A r).hom ≫ X.s
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w]`.
+-/
 theorem liftMap_w {X : GenModel gb N} {X' : GenModel gb M} {f : X'.X ⟶ X.X} {o : GObj gb N X'.s}
     (ψ : X'.univ.A ⟶ o.A) (m : GObjMap o X.univ f) :
     (ψ.left ≫ m.φ) ≫ X.univ.A.hom = X'.univ.A.hom ≫ f := by

@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Unfold `zT`. Use `split_ifs`. Establish `hu : IsUnit (f τ).det` using `isUnit_iff_ne_zero.mpr (hf τ)`. Establish `e : ((f τ)⁻¹).transpose.submatrix id Fin.rev = ((f τ)⁻¹).transpose.submatrix id (Fin.revPerm : Equiv.Perm (Fin n))` using `rfl`. Rewrite using `[e, Matrix.det_permute', Matrix.det_transpose]`.
+
+Use `mul_ne_zero (by simp [Units.ne_zero]) ?_` and prove the remaining obligations. Introduce `h0`. Use `Matrix.det_nonsing_inv_mul_det (f τ) hu` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`.
+
+Conclude with `hf τ`.
+-/
 theorem det_zT_ne_zero {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     {n : ℕ} (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (hf : ∀ τ, (f τ).det ≠ 0) (τ : D.what₂.Tau) :
     (zT X D pos f τ).det ≠ 0 := by
@@ -23,6 +30,15 @@ theorem det_zT_ne_zero {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ 
     exact zero_ne_one this
   · exact hf τ
 
+/- English proof (translation)
+Introduce `p _ X D pos Kc _ _ ι j hN ν hν Q hQ Gc G hR hG s hs`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `GlobalTheory.T.symbolFramePolynomial_eq_zero_of_generic_vanish X D pos Kc ι j hN` to reduce the goal to its premises. Introduce `d f' hf hdf`. Establish `hZ : ι (∏ τ, (zT X D pos f' τ).det ^ eT X D pos (j + 1) τ) ≠ 0`.
+
+Rewrite using `[map_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ (det_zT_ne_zero X D pos f' hf τ)`. Establish `hL` using `GlobalTheory.T.operatorIdentity_leftSide_complexPoint X D pos Kc ι j hN ν hν Q hQ Gc G hR hG d f' hf hdf`. Establish `hRr` using `GlobalTheory.T.transportedPolynomial_complexPoint_evaluation X D pos Kc ι j hN ν hν Q hQ s hs d f' hf`. Establish `hc : evD X D pos ι hN d f' (cD X Kc j (ι (cOp X D pos j s))) = ι (cOp X D pos j s)`.
+
+Simplify using `[evD, cD]`. Establish `hS : (∏ τ, s τ ^ (-(szT X D pos j τ))) * ∏ τ, s τ ^ szT X D pos j τ = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hs τ))]`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Apply `mul_right_cancel₀ hZ` to reduce the goal to its premises. Rewrite using `[hL, (evD X D pos ι hN d f').map_mul (denD X Kc j), (evD X D pos ι hN d f').map_mul (cD X Kc j _), hc, mul_assoc ((evD X D pos ι hN d f') (denD X Kc j)), mul_assoc (ι (cOp X D pos j s)), hRr, ← ι.map_mul]`. Use `congr 2`. Unfold `cOp`. Take the linear combination `(-(sgO X D pos j * (∏ τ, (f' τ).det ^ (-(wT X D pos j τ))) * GL3Theta.evFr D Q (dfr X D hN d f'))) * hS`.
+-/
 theorem opId_denom : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j) (ν : D.what₂.Tau → Fin (D.R.N j) → ℕ), NuIs X D pos j ν → ∀ (Q : MvPolynomial (GL3Theta.FrV D (D.R.N j)) ℂ), Q ∈ WtPol ℂ ν → ∀ (Gc : XR (X.Pj j) ℂ) (G : (X.Pj j).Xsp), Realises X D pos j (rkS X D hN) (wT X D pos j) Q Gc → MvPolynomial.map (algebraMap X.G.Kf Kc) G = MvPolynomial.map ι Gc → ∀ (s : D.what₂.Tau → ℂ), (∀ τ, s τ ≠ 0) → subD X Kc j G * numD X Kc j = denD X Kc j * (cD X Kc j (ι (cOp X D pos j s)) * trDY X Kc j D (eIdx X D pos j hN) (phi0 X D pos ι j) (polDY D s Q (N' := D.R.N (j + 1)))) := by
   intro p _ X D pos Kc _ _ ι j hN ν hν Q hQ Gc G hR hG s hs
   apply sub_eq_zero.mp

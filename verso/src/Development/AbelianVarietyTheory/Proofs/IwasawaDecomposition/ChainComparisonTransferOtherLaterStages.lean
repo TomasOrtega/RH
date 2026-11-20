@@ -14,6 +14,37 @@ namespace GlobalTheory.Mem.R3.Rw
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B C a b G _ _ Pl0 T Ks _ _ iK A R F y y' hS bb Φ rep Top c jA t jA' hjA`. Establish `hP` using `(GlobalTheory.T.typeRepresentativesParts_otherLaterStages B C a b G Pl0 T Ks A R F y y' hS).2.1`. Take `⟨htup, htupT, hPY, hPW⟩` from `hS`. Break down `y' with ⟨tup', tupT', tupT_tup', tup0', hm', hTop', hinj', PY', PW', ιW', isomFin', frameMatch', hF', stdPsi'⟩` into its components or cases. Establish `e1 : tup' = (y.tup)` using `eq_of_heq ((htup))`.
+
+Establish `e2 : tupT' = (y.tupT)` using `eq_of_heq ((htupT))`. Substitute `e1 e2` using the available equality. Establish `e3 : jA' = (jA)` using `eq_of_heq ((hjA))`. Substitute `e3` using the available equality. Establish `hCC` using `chain_CC b F y.tupT y.hm y.hTop`.
+
+Establish `hCCX` using `chain_CCX b F y.tupT y.hm y.hTop`. Establish `hCCP` using `chain_CCP b F y.tupT y.hm y.hTop`. Establish `hCCXP` using `chain_CCXP b F y.tupT y.hm y.hTop`. Establish `hEEc` using `chain_EEc b F y.tupT y.hm y.hTop`. Use `letI := alg b iK`.
+
+Use `⟨{ jE := (t.jE) jM := (t.jM) jX := (t.jX) jE_inj := (t.jE_inj) jE_range := by` and prove the remaining obligations. Establish `e : LinearMap.range t.jE = _` using `t.jE_range.trans (congrFun hEEc bb)`. Conclude with `(e)`. Use `jE_ip := (t.jE_ip)`. Use `jM_inj := (t.jM_inj)`.
+
+Use `jM_range := fun μ hU j h1 h2 => by`. Set `μa : a.D.what₂.Tup` to `(μ)`. Establish `hUa : y.Us μa` using `(hU)`. Establish `h2a : j ≤ a.D.R.m - 1` using `(h2)`. Establish `e : LinearMap.range (t.jM μa j) = _` using `(t.jM_range μa hUa j h1 h2a).trans (congrFun (congrFun (congrFun hCCP bb) μa) j)`.
+
+Conclude with `(e)`. Use `jM_ip := (t.jM_ip)`. Use `jX_inj := (t.jX_inj)`. Use `jX_range := fun μ hU => by`. Set `μa : a.D.what₂.Tup` to `(μ)`.
+
+Establish `hUa : y.Us μa` using `(hU)`. Establish `e : LinearMap.range (t.jX μa) = _` using `(t.jX_range μa hUa).trans (congrFun (congrFun hCCXP bb) μa)`. Conclude with `(e)`. Use `jX_ip := (t.jX_ip)`. Use `io0 := fun μ hU x v h => by`.
+
+Set `μa : a.D.what₂.Tup` to `(μ)`. Establish `hUa : y.Us μa` using `(hU)`. Set `va : (c.Mult μa 1).T` to `(v)`. Establish `e` using `congrFun (congrFun (congrFun hCC bb) μa) 1`. Establish `h0 : t.jM μa 1 va ∈ (y.C F).CC bb μa 1` using `cast (congrArg (t.jM μa 1 va ∈ ·) e.symm) ((h))`.
+
+Establish `hv` using `chain_ioC b (R := R) (y.tupT μa) 0 (t.jM μa 1 va) ((h)) h0`. Establish `e'` using `(t.io0 μa hUa x va h0).trans (congrArg (fun z => (y.C F).ipE bb (t.jE x) z) hv.symm)`. Use `kexactB e'`. Use `io := fun μ hU j h1 h2 x v h => by`. Set `μa : a.D.what₂.Tup` to `(μ)`.
+
+Establish `hUa : y.Us μa` using `(hU)`. Establish `h2a : j + 1 ≤ a.D.R.m - 1` using `(h2)`. Set `va : (c.Mult μa (j + 1)).T` to `(v)`. Establish `e` using `congrFun (congrFun (congrFun hCC bb) μa) (j + 1)`. Establish `h0 : t.jM μa (j + 1) va ∈ (y.C F).CC bb μa (j + 1)` using `cast (congrArg (t.jM μa (j + 1) va ∈ ·) e.symm) ((h))`.
+
+Establish `hv` using `chain_ioC b (R := R) (y.tupT μa) j (t.jM μa (j + 1) va) ((h)) h0`. Establish `e'` using `(t.io μa hUa j h1 h2a x va h0).trans (congrArg (fun z => (y.C F).ipP bb μa j (t.jM μa j x) z) hv.symm)`. Use `kexactB e'`. Use `ioTop := fun μ hU x v v' hvv h => by`. Set `μa : a.D.what₂.Tup` to `(μ)`.
+
+Establish `hUa : y.Us μa` using `(hU)`. Set `va : (c.Mult μa a.D.R.m).T` to `(v)`. Set `va' : (c.Mult μa (a.D.R.m - 1 + 1)).T` to `(v')`. Establish `hvva : HEq va' va` using `(hvv)`. Establish `e` using `congrFun (congrFun hCCX bb) μa`.
+
+Establish `h0 : t.jX μa (c.multTop μa va) ∈ (y.C F).CCX bb μa` using `cast (congrArg (t.jX μa (c.multTop μa va) ∈ ·) e.symm) ((h))`. Establish `hv` using `chain_ioX b (R := R) y.hm y.hTop (y.tupT μa) (t.jX μa (c.multTop μa va)) ((topMult_tr b y.hTop)) ((h)) h0`. Establish `e'` using `(t.ioTop μa hUa x va va' hvva h0).trans (congrArg (fun z => (y.C F).ipP bb μa (a.D.R.m - 1) (t.jM μa (a.D.R.m - 1) x) z) hv.symm)`. Conclude with `(e')`. Use `junk := (t.junk)`.
+
+Use `ft := fun π => by`. Rewrite using `[eq_of_heq (hP bb (rep π))]`. Conclude with `(t.ft π)`. Use `disj := fun π π' hne => by`. Rewrite using `[eq_of_heq (hP bb (rep π)), eq_of_heq (hP bb (rep π'))]`.
+
+Conclude with `(t.disj π π' hne)`. Use `top := (t.top) }, (HEq.refl t.jE), (HEq.refl t.jM), (HEq.refl t.jX)⟩`.
+-/
 theorem chT_tr : ∀ (B : Base) (C : Cols B) (a b : Late B C) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (Ks : Type) [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL] (A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m) (R : RealDat a.D A Ks) (F : Face a.D A) (y : Hd R) (y' : HdB b R), Same b y y' → ∀ (bb : Bool) (Φ : Type) (rep : Φ → _) (Top : C.Tup → Hs) (c : ChD C.Tup Φ B.R.m Top) jA (t : ChT y F bb rep (Top := Top) jA c) jA', HEq jA' jA → ∃ t' : @ChT b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) y' (face b F) bb Φ ((rep)) Top jA' c, letI := alg b iK; HEq t'.jE t.jE ∧ HEq t'.jM t.jM ∧ HEq t'.jX t.jX := by
   intro B C a b G _ _ Pl0 T Ks _ _ iK A R F y y' hS bb Φ rep Top c jA t jA' hjA
   have hP := (GlobalTheory.T.typeRepresentativesParts_otherLaterStages B C a b G Pl0 T Ks A R F y y' hS).2.1

@@ -10,9 +10,15 @@ open Formalism.MainNotions.G Formalism.FrobeniusOrbits NumberField LevelValuatio
 
 def tau1P (φ : Formalism.HC.Frame) (t : φ.A) : ↥φ.Psi := ⟨φ.tau1 t, rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `φ.tau1_injective (congrArg Subtype.val h)`.
+-/
 theorem tau1P_injective (φ : Formalism.HC.Frame) : Function.Injective (tau1P φ) := fun _ _ h =>
   φ.tau1_injective (congrArg Subtype.val h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaH_nsmul (φ : Formalism.HC.Frame) (t h : φ.A) (s : ℕ) :
     φ.iota (t + s • h) = φ.iota t * φ.iota h ^ s := rfl
 
@@ -21,10 +27,18 @@ def iotaHom (φ : Formalism.HC.Frame) : Multiplicative φ.A →* φ.MA where
   map_one' := φ.iota_zero
   map_mul' x y := φ.iota_add x.toAdd y.toAdd
 
+/- English proof (translation)
+The claim follows from `φ.orderOf_iota h`.
+-/
 theorem orderOf_iotaH (φ : Formalism.HC.Frame) (h : φ.A) : orderOf (φ.iota h) = addOrderOf h := φ.orderOf_iota h
 
 variable (D : D7) {p : ℕ}
 
+/- English proof (translation)
+Take `⟨P, hP', hL, σ, hσ⟩` from `exists_frob D.host p S.prime S.cls`. Establish `hne : ∃ g, g ∈ frobSet D p` using `⟨_, P, hP', hL, σ, hσ, rfl⟩`. Take `⟨P₂, h1, h2, σ₂, hσ₂, he⟩` from `Classical.epsilon_spec hne`. Establish `hv` using `@frob_val _ D.host p S.prime S.cls P₂ h1 h2 σ₂ hσ₂`. Unfold `hP`.
+
+Rewrite using `[Formalism.HC.Frame.iota_iotaInv, ← he, hv]`.
+-/
 theorem iotaH_hP (S : Served D.host p) :
     D.R.iota (hP D p) = hOf D.host p := by
   obtain ⟨P, hP', hL, σ, hσ⟩ := exists_frob D.host p S.prime S.cls
@@ -34,6 +48,11 @@ theorem iotaH_hP (S : Served D.host p) :
   unfold hP
   rw [Formalism.HC.Frame.iota_iotaInv, ← he, hv]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hg : ((gPsi S ^ s : ↥(D.R.Psi)) : D.R.GG) = (1, hOf D.host p ^ s)`. Unfold `gPsi`. Rewrite using `[← map_pow]`. Both sides reduce to the same expression.
+
+Use `show D.R.tau1 t0 * ((gPsi S ^ s : ↥(D.R.Psi)) : D.R.GG) = D.R.tau1 (t0 + s • hP D p)`. Unfold `Formalism.HC.Frame.tau1`. Rewrite using `[hg, Prod.mk_mul_mk, mul_one, iotaH_nsmul, iotaH_hP D S]`.
+-/
 theorem tau1P_mul_gPsi_pow (S : Served D.host p) (t0 : HH D) (s : ℕ) :
     tau1P D.R.toFrame t0 * gPsi S ^ s = tau1P D.R.toFrame (t0 + s • hP D p) := by
   apply Subtype.ext
@@ -46,9 +65,17 @@ theorem tau1P_mul_gPsi_pow (S : Served D.host p) (t0 : HH D) (s : ℕ) :
   unfold Formalism.HC.Frame.tau1
   rw [hg, Prod.mk_mul_mk, mul_one, iotaH_nsmul, iotaH_hP D S]
 
+/- English proof (translation)
+Rewrite using `[(ord_spec S).1, ← iotaH_hP D S, orderOf_iotaH]`.
+-/
 theorem order_gPsi (S : Served D.host p) : orderOf (gPsi S) = addOrderOf (hP D p) := by
   rw [(ord_spec S).1, ← iotaH_hP D S, orderOf_iotaH]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨t, ht, rfl⟩ _ ⟨t', ht', rfl⟩ h`. Establish `h1 : (tau1P D.R.toFrame t)⁻¹ * tau1P D.R.toFrame t' ∈ Subgroup.zpowers (gPsi S)` using `QuotientGroup.eq.mp h`. Rewrite `h1` using `[← mem_powers_iff_mem_zpowers]`. Take `⟨i, hi⟩` from `h1`. Establish `h2 : tau1P D.R.toFrame t' = tau1P D.R.toFrame t * gPsi S ^ i`.
+
+Establish `hi' : gPsi S ^ i = (tau1P D.R.toFrame t)⁻¹ * tau1P D.R.toFrame t'` using `hi`. Rewrite using `[hi', mul_inv_cancel_left]`. Rewrite `h2` using `[tau1P_mul_gPsi_pow]`. Rewrite using `[hB t ht t' ht' i (tau1P_injective _ h2)]`.
+-/
 theorem injOn_tau1P (S : Served D.host p) (B : Set (HH D))
     (hB : ∀ t ∈ B, ∀ t' ∈ B, ∀ i : ℕ, t' = t + i • hP D p → t' = t) :
     Set.InjOn (fun x => (QuotientGroup.mk x : Quo (gPsi S))) (tau1P D.R.toFrame '' B) := by
@@ -77,18 +104,30 @@ def vOfB (u : D.what₂.Word) (w : D.what₂.places.Pl)
 variable (u : D.what₂.Word) (w : D.what₂.places.Pl)
   (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
 
+/- English proof (translation)
+Introduce `t ht t' ht' e` and use `tau1P_injective _ (orbIdx_injOn _ _ (injOn_tau1P D (served_of h) _ hB) ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩ e)`.
+-/
 theorem vOfB_injOn
     (hB : ∀ t ∈ B u (D.what₂.places.resChar w), ∀ t' ∈ B u (D.what₂.places.resChar w), ∀ i : ℕ,
       t' = t + i • hP D (D.what₂.places.resChar w) → t' = t) :
     Set.InjOn (vOfB D h0 rOf B u w h) (B u (D.what₂.places.resChar w)) := fun t ht t' ht' e =>
   tau1P_injective _ (orbIdx_injOn _ _ (injOn_tau1P D (served_of h) _ hB) ⟨t, ht, rfl⟩ ⟨t', ht', rfl⟩ e)
 
+/- English proof (translation)
+The claim follows from `order_gPsi D (served_of h)`.
+-/
 theorem withGatB_n' (v) :
     ((withGatB D h0 rOf B).gat u w h).P.n' v = addOrderOf (hP D (D.what₂.places.resChar w)) :=
   order_gPsi D (served_of h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withGatB_r : ((withGatB D h0 rOf B).gat u w h).P.r = rOf u (D.what₂.places.resChar w) := rfl
 
+/- English proof (translation)
+Establish `h1` using `gatTies_pos_base D h0 rOf (fun u p => tau1P D.R.toFrame '' B u p) u w h (injOn_tau1P D (served_of h) _ hB) ⟨t0, ht0, rfl⟩ s`. Conclude with `congrArg (fun x : ↥(D.R.Psi) => (x : D.R.GG)) (h1.trans (tau1P_mul_gPsi_pow D (served_of h) t0 s.val))`.
+-/
 theorem gatTiesB_pos
     (hB : ∀ t ∈ B u (D.what₂.places.resChar w), ∀ t' ∈ B u (D.what₂.places.resChar w), ∀ i : ℕ,
       t' = t + i • hP D (D.what₂.places.resChar w) → t' = t)
@@ -101,6 +140,9 @@ theorem gatTiesB_pos
   exact congrArg (fun x : ↥(D.R.Psi) => (x : D.R.GG))
     (h1.trans (tau1P_mul_gPsi_pow D (served_of h) t0 s.val))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hP_withGatB (p : ℕ) : hP (withGatB D h0 rOf B) p = hP D p := rfl
 
 end Formalism.BasicNotions.Examples₂

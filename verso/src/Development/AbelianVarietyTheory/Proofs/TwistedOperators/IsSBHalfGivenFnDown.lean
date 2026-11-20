@@ -16,6 +16,13 @@ open GlobalTheory.FunObj.Comparison₂
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Distinguish the cases in `hw : w ∈ GlobalTheory.FlipTop.topPl L t`. Conclude with `GlobalTheory.FlipTop.stepFn_congr_red G hL t hj hw ha hb N N' h`. Establish `hP : w ∉ L.Pg` using `fun h => hw (Finset.mem_union_left _ h)`. Establish `hQ : w ∉ L.Q t` using `fun h => hw (Finset.mem_union_right _ h)`. Establish `hI : ∀ M : Matrix (Fin b) (Fin a) (OA D), GlobalTheory.StepData.IntM ((M.map (cptO w)).submatrix (ixOf G t w hb) (ixOf G t w ha))`.
+
+Introduce `M i l`. Establish `h1` using `(mem_OA_iff _).1 (M (ixOf G t w hb i) (ixOf G t w ha l)).2 w`. Use `show cptO w (M (ixOf G t w hb i) (ixOf G t w ha l)) ∈ _`. Rewrite using `[cptO_apply]`. Conclude with `(vEq w).le_one_iff_le_one.2 h1`.
+
+Unfold `stepFn`. Simplify using `only [if_neg hP, if_neg hQ, Set.indicator_apply, Set.mem_setOf_eq, if_pos (hI N), if_pos (hI N'), Pi.one_apply]`.
+-/
 theorem stepFn_congr_red' (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (t : T) {j : ℕ} (hj : j < D.R.m) (w : Pl D.host.E)
     {a b : ℕ} (ha : a = D.R.r + j * D.R.t) (hb : b = D.R.r + (j + 1) * D.R.t)
     (N N' : Matrix (Fin b) (Fin a) (OA D)) (h : N.map (resS D.host.F w) = N'.map (resS D.host.F w)) :
@@ -47,6 +54,31 @@ def colFn {G : GridData L sc} (B : Frames G) (t : T) (e : AE D) (j : ℕ) (ha : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hFS : IsFrame (B.β 0 j) (G.Λ (.grid 0 j))` using `B.isFrame_β hL (Nat.zero_le _) hj.le`. Establish `hFT : IsFrame (B.β 0 (j + 1)) (G.Λ (.grid 0 (j + 1)))` using `B.isFrame_β hL (Nat.zero_le _) hj`. Take `⟨a, ha, h1⟩` from `WeilOver.exists_hom_le (S := G.V (.grid 0 j)) (T := G.V (.grid 0 (j + 1))) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFS) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFT)`. Take `⟨b, hb, h2⟩` from `WeilOver.exists_le_hom (S := G.V (.grid 0 j)) (T := G.V (.grid 0 (j + 1))) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFS) (GlobalTheory.DiagLiftFix.isLattice_of_isFrame hFT)`. Take `⟨e0, -, -⟩` from `cpt_idemSum he`.
+
+Use `set 𝔪 : Ideal (𝓞 D.host.E) := ∏ w ∈ locPl G t, w.asIdeal ^ 1 with h𝔪`. Establish `hN : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero fun h => CosSB.prod_pow_ne_bot (locPl G t) 1 (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hle : ∀ w ∈ locPl G t, 𝔪 ≤ w.asIdeal ^ 1` using `fun w hw => Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun w : Pl D.host.E => w.asIdeal ^ 1) hw)`. Take `⟨K, hK⟩ : ∃ K : ℕ, K = a * (b * Ideal.absNorm 𝔪)` from `⟨_, rfl⟩`. Use `⟨fun x hx => ?_, K, by rw [hK]; positivity, fun u hu hh x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx (by unfold colFn; rw [if_neg fun H => h H.1])`. Establish `hk : K • u ∈ hatMx (𝔪 • homLat (G.Λ (.grid 0 j)) (G.Λ (.grid 0 (j + 1))))`. Use `nsmul_mem (CosSB.nsmul_mem_hatMx h2 𝔪 hu) a` as an intermediate fact. Rewrite `this` using `[smul_smul, ← hK]`. Then use the resulting hypothesis.
+
+Establish `hk2` using `((mem_hatMx_iff hFS hFT 𝔪 _).1 hk).2`. Establish `hXYZ : fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D)) = fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) + fr (B.β 0 (j + 1)) (B.β 0 j) ((K • u).map (toEAf D))`. Rewrite using `[Matrix.map_add _ (toEAf D).map_add, fr_add]`. Establish `hZ : ∀ i l, fr (B.β 0 (j + 1)) (B.β 0 j) ((K • u).map (toEAf D)) i l ∈ OA D` using `fun i l => by`. Take `⟨s, -, hs⟩` from `hk2 i l`.
+
+Rewrite using `[← hs]`. Conclude with `s.2`. Establish `hint : IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D))) ↔ IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)))`. Use `forall₂_congr fun i l => ?_` and prove the remaining obligations. Rewrite using `[hXYZ, Matrix.add_apply]`.
+
+Conclude with `⟨fun h => by simpa using sub_mem h (hZ i l), fun h => add_mem h (hZ i l)⟩`. Unfold `colFn`. Use `split_ifs with H1 H2 H2`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Set `NX : Matrix (Fin (G.V (.grid 0 (j + 1))).rank) (Fin (G.V (.grid 0 j)).rank) (OA D)` to `fun i l => ⟨_, H1.2 i l⟩`.
+
+Set `NY : Matrix (Fin (G.V (.grid 0 (j + 1))).rank) (Fin (G.V (.grid 0 j)).rank) (OA D)` to `fun i l => ⟨_, H2.2 i l⟩`. Establish `eX : (fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D))).map (cpt (D` using `D) w) = NX.map (cptO w) := Matrix.ext fun i l => (cptO_apply w (NX i l)).symm`. Establish `eY : (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D))).map (cpt (D` using `D) w) = NY.map (cptO w) := Matrix.ext fun i l => (cptO_apply w (NY i l)).symm`. Rewrite using `[eX, eY]`. Use `stepFn_congr_red' G hL t hj w _ _ NX NY (Matrix.ext fun i l => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← sub_eq_zero, ← map_sub, (isRed w).ker, cptO_apply]`. Take `⟨s, hs, hs'⟩` from `hk2 i l`. Establish `e3 : ((NX i l - NY i l : OA D) : EAf D) = s.1`. Rewrite using `[hs', AddSubgroupClass.coe_sub]`. Express the relevant statement in the definitionally equal form `fr (B.β 0 (j + 1)) (B.β 0 j) ((x + K • u).map (toEAf D)) i l - fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) i l = _`.
+
+Rewrite using `[hXYZ, Matrix.add_apply, add_sub_cancel_left]`. Rewrite using `[e3]`. Conclude with `(vEq w).lt_one_iff_lt_one.2 ((v_lt_one_iff _).2 (v_le_of_mem_idS (hle w hw) hs))`. Conclude with `absurd ⟨(CosSB.isHalf_add_nsmul K hh).1 H1.1, hint.1 H1.2⟩ H2`. Conclude with `absurd ⟨(CosSB.isHalf_add_nsmul K hh).2 H2.1, hint.2 H2.2⟩ H1`.
+
+Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨hth, hti⟩ : IsHalf e x ∧ IsIntM (fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D))) := by`. Assume the negation of the conclusion as `h`. Conclude with `hx (by unfold colFn; rw [if_neg h])`. Establish `hmem : x ∈ hatMx ((⊤ : Ideal (𝓞 D.host.E)) • homLat (G.Λ (.grid 0 j)) (G.Λ (.grid 0 (j + 1))))`.
+
+Use `(mem_hatMx_iff hFS hFT ⊤ _).2 ⟨fun i l => ?_, fun i l => ⟨⟨_, hti i l⟩, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[← hth i l, map_mul, e0, zero_mul]`. Rewrite using `[idS, Ideal.map_top]`. Conclude with `Submodule.mem_top`. Use `nsmul_mem (CosSB.nsmul_mem_latO h1 ⊤ hmem) (b * Ideal.absNorm 𝔪)` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, mul_comm (b * Ideal.absNorm 𝔪) a, ← hK]`. Then use the resulting hypothesis.
+-/
 theorem isSBHalf_colFn (G : GridData L sc) (B : Frames G) {μ₀ : T} (hL : L.Is μ₀) (t : T) {e : AE D}
     (he : IsIdemSum e (locPl G t)) (j : ℕ) (hj : j < D.R.m) :
     IsSBHalf e (latO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (G.latS (.mu t 0 j) : Set _) (G.latT (.mu t 0 j) : Set _)
@@ -122,6 +154,25 @@ theorem isSBHalf_colFn (G : GridData L sc) (B : Frames G) {μ₀ : T} (hL : L.Is
 
 open Classical in
 
+/- English proof (translation)
+Establish `ha` using `GlobalTheory.FlipTop.rank_col G hj.le`. Establish `hb` using `GlobalTheory.FlipTop.rank_col G hj`. Take `⟨-, c1, c0⟩` from `cpt_idemSum he`. Use function extensionality and compare the values at `x`. Use `set N := fr (B.β 0 (j + 1)) (B.β 0 j) (x.map (toEAf D)) with hN`.
+
+Establish `hsubm : ∀ w : Pl D.host.E, GlobalTheory.StepData.IntM ((N.map (cpt (D` using `D) w)).submatrix (ixOf G t w hb) (ixOf G t w ha)) ↔ GlobalTheory.StepData.IntM (N.map (cpt (D := D) w)) := fun w => ⟨fun h i l => by simpa using h ((ixOf G t w hb).symm i) ((ixOf G t w ha).symm l), fun h i l => h _ _⟩`. Establish `hR : ∀ w, givenDatum t w B Φ (edgeOf (.down t 0 j)) (locArg B t w (.down t 0 j) x) = stepFn L t w j ((N.map (cpt (D` using `D) w)).submatrix (ixOf G t w hb) (ixOf G t w ha)) := by`. Introduce `w`. Establish `hla : locArg B t w (.down t 0 j) x = B.coord t w (X` using `(0, j + 1)) (Y := (0, j)) ⟨Nat.zero_le _, hj⟩ ⟨Nat.zero_le _, hj.le⟩ ((x.map (toEAf D)).map (cpt (D := D) w)) := by`. Rewrite using `[Matrix.map_map]`.
+
+Conclude with `dif_pos ⟨Nat.zero_le _, hj⟩`. Rewrite using `[hla]`. Conclude with `givenDatum_theta_coord B t w Φ hj ha hb (x.map (toEAf D))`. Unfold `GlobalTheory.FlipStart.givenFn colFn`. Rewrite using `[Finset.prod_congr rfl fun w _ => hR w]`.
+
+Distinguish the cases in `hx : IsHalf e x`. Use `swap`. Rewrite using `[if_neg hx, if_neg fun h => hx h.1]`. Establish `hex : e • x = x` using `Matrix.ext fun p q => by rw [Matrix.smul_apply, smul_eq_mul]; exact hx p q`. Establish `hNe : N = toEAf D e • N`.
+
+Rewrite using `[hN, ← fr_smul]`. Use `congr 1`. Use `conv_lhs => rw [← hex]`. Use extensionality with `p q`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, RingHom.map_mul]`.
+
+Establish `hint : IsIntM N ↔ ∀ w ∈ locPl G t, GlobalTheory.StepData.IntM (N.map (cpt (D` using `D) w)) := by`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw i l`. Conclude with `(vEq w).le_one_iff_le_one.2 ((mem_OA_iff _).1 (h i l) w)`. Introduce `h i l`.
+
+Use `(mem_OA_iff _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ locPl G t`. Conclude with `(vEq w).le_one_iff_le_one.1 (h w hw i l)`. Rewrite using `[hNe, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, c0 w hw, zero_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_pos hx]`. Distinguish the cases in `H : ∀ w ∈ locPl G t, GlobalTheory.StepData.IntM (N.map (cpt (D := D) w))`. Rewrite using `[if_pos ⟨hx, hint.2 H⟩]`. Rewrite `H` using `[if_neg fun h => H (hint.1 h.2)] push_neg`. Take `⟨w, hw, hn⟩` from `H`.
+
+Use `Finset.prod_eq_zero hw ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hn ((hsubm w).1 (GlobalTheory.FunObj.LocTest.intM_of_stepFn t w j h0))`.
+-/
 theorem givenFn_down_eq_colFn (G : GridData L sc) (B : Frames G) {μ₀ : T} (hL : L.Is μ₀) (t : T) (j : ℕ) (hj : j < D.R.m)
     (Φ : G.Datum) {e : AE D} (he : IsIdemSum e (locPl G t)) :
     GlobalTheory.FlipStart.givenFn B t Φ e (.down t 0 j) = colFn B t e j (GlobalTheory.FlipTop.rank_col G hj.le) (GlobalTheory.FlipTop.rank_col G hj) := by
@@ -174,6 +225,9 @@ theorem givenFn_down_eq_colFn (G : GridData L sc) (B : Frames G) {μ₀ : T} (hL
     by_contra h0
     exact hn ((hsubm w).1 (GlobalTheory.FunObj.LocTest.intM_of_stepFn t w j h0))
 
+/- English proof (translation)
+Introduce `D T L sc G B μ₀ hL t j hj Φ e he`. Rewrite using `[givenFn_down_eq_colFn G B hL t j hj Φ he]`. Conclude with `isSBHalf_colFn G B hL t he j hj`.
+-/
 theorem isSBHalf_givenFn_down : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (B : Frames G) {μ₀ : T},
     L.Is μ₀ → ∀ (t : T) (j : ℕ), j < D.R.m → ∀ (Φ : G.Datum) (e : AE D), IsIdemSum e (locPl G t) →
     IsSBHalf e (latO (G.pS (.mu t 0 j)) (G.pT (.mu t 0 j)) (G.latS (.mu t 0 j) : Set _) (G.latT (.mu t 0 j) : Set _)

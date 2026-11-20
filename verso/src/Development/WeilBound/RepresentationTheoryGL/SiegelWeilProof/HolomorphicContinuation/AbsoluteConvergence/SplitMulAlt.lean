@@ -16,9 +16,19 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   [SecondCountableTopology G] {Pp Γ : Subgroup G} {ι : GR n →* G} {s₀ : ℂ} {Ht : G → ℝ≥0}
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)}
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← map_mul]`.
+-/
 theorem split_mul (x₀ : G) (y k : GR n) : x₀ * ι y * ι k = x₀ * ι (y * k) := by
   rw [mul_assoc, ← map_mul]
 
+/- English proof (translation)
+Take `⟨x₀, y, S, r, hr, rfl, h⟩` from `hG.split x`. Establish `hfun : (fun k : KR n => hz Ht sec s₀ z 1 (x₀ * ι y * ι ((k : GR n) * b))) = fun k : KR n => ((r * hLoc (y * (k : GR n) * b) : ℝ) : ℂ) ^ (z - s₀) * (S * F0 p q e (y * (k : GR n) * b))`. Use function extensionality and compare the values at `k`. Unfold `hz`. Rewrite using `[split_mul, ← mul_assoc y (k : GR n) b, (h _).1, (h _).2 1, hL.vac]`.
+
+Rewrite using `[hfun]`. Establish `hc : Continuous fun k : KR n => y * (k : GR n) * b` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Use `Continuous.mul ?_ (continuous_const.mul ((continuous_weight_factor hD p q e).comp hc))` and prove the remaining obligations. Use `Continuous.cpow ?_ continuous_const (fun k => ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (continuous_const.mul ((continuous_hLoc hD).comp hc))`.
+
+Conclude with `Complex.ofReal_mem_slitPlane.mpr (mul_pos hr (hLoc_pos hD _))`.
+-/
 theorem cont_hz (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ) (hG : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I)
     (z : ℂ) (b : GR n) (x : G) : Continuous fun k : KR n => hz Ht sec s₀ z 1 (x * ι ((k : GR n) * b)) := by
   obtain ⟨x₀, y, S, r, hr, rfl, h⟩ := hG.split x
@@ -35,6 +45,13 @@ theorem cont_hz (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ) 
   · exact Complex.continuous_ofReal.comp (continuous_const.mul ((continuous_hLoc hD).comp hc))
   · exact Complex.ofReal_mem_slitPlane.mpr (mul_pos hr (hLoc_pos hD _))
 
+/- English proof (translation)
+Take `⟨x₀, y, S, r, hr, rfl, h⟩` from `hG.split x`. Establish `hfun : (fun k : KR n => κ k * hz Ht sec s₀ z 1 (x₀ * ι y * ι ((k : GR n) * yy i))) = fun k : KR n => ((r : ℂ) ^ (z - s₀) * S) * (κ k * ((hLoc (y * (k : GR n) * yy i) : ℂ) ^ (z - s₀) * F0 p q e (y * (k : GR n) * yy i)))`. Use function extensionality and compare the values at `k`. Unfold `hz`. Rewrite using `[split_mul, ← mul_assoc y (k : GR n) (yy i), (h _).1, (h _).2 1, hL.vac, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_pos hD _).le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, integral_const_mul, hMid (z - s₀) i y, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `hz`. Rewrite using `[(h y).1, (h y).2 (QQ j), Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hr.le (hLoc_pos hD _).le]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointId [MeasurableSpace (KR n)] (hD : CayleyBlocksInvertible) (hL : LocData ε c t p q e sL ρ)
     (hG : GlobCore ε c sL ρ G Pp Γ ι s₀ Ht sec I) {ν : Measure (KR n)} {κ : KR n → ℂ} {N : ℕ}
     {yy : Fin N → GR n} {QQ : Fin N → PX m n} {M : ℂ → Matrix (Fin N) (Fin N) ℂ}

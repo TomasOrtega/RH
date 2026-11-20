@@ -17,20 +17,32 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Use `ext1`. Both sides reduce to the same expression.
+-/
 private theorem retract_finEmb (h : AdelicGLn.FiniteAdelicGL K n) :
     retractOne (finEmb K n h) = MultiplicityOne.finProj K n h := by
   ext1
   rfl
 
+/- English proof (translation)
+Rewrite using `[infFinEquiv_apply, retractOne_mul, retract_infEmb, retract_finEmb]`.
+-/
 private theorem retract_pair (a : archGroup K n) (h : AdelicGLn.FiniteAdelicGL K n) :
     retractOne (infFinEquiv K n (a, h)) = archP K n a * MultiplicityOne.finProj K n h := by
   rw [infFinEquiv_apply, retractOne_mul, retract_infEmb, retract_finEmb]
 
+/- English proof (translation)
+Rewrite using `[coe_retractOne, ← map_inv, map_mul]`. Conclude with `kbar_mul_zInf κ _ _`.
+-/
 private theorem kbar_retract (κ : archGroup K n → ℂ) (g : AdelicGLn.AdelicGL K n) :
     kbar κ (infPart K n (retractOne g : AdelicGLn.AdelicGL K n)) = kbar κ (infPart K n g) := by
   rw [coe_retractOne, ← map_inv, map_mul]
   exact kbar_mul_zInf κ _ _
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator_kbar hn hκ hκc hΨ hΨz ν, ← integral_mul_left_eq_self (fun a => GroundTheory.Global.posRealUnitInterval.indicator (fun _ => (1 : ℂ)) (detA K n a) * (kbar κ a * Ψ a)) (zInf K n d)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[zInf_mul_comm, kbar_mul_zInf, hΨz, map_mul, detA_zInf hn]`.
+-/
 private theorem integral_indicator_kbar_shift (hn : 0 < n) {κ : archGroup K n → ℂ} (hκ : Continuous κ)
     (hκc : HasCompactSupport κ) {Ψ : archGroup K n → ℂ} (hΨ : Continuous Ψ)
     (hΨz : ∀ a s, Ψ (a * zInf K n s) = Ψ a) (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
@@ -46,6 +58,29 @@ private theorem integral_indicator_kbar_shift (hn : 0 < n) {κ : archGroup K n �
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ n hn μ _ ν _ m _`. Establish `hm : (ν.prod m).IsHaarMeasure` using `inferInstance`. Establish `hμA : (Measure.map (infFinEquiv K n) (ν.prod m)).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map (ν.prod m) (infFinEquiv K n)`. Take `⟨c, hc0, hct, hμ⟩` from `exists_eq_smul_map_retract hn μ (Measure.map (infFinEquiv K n) (ν.prod m))`. Use `⟨c.toReal, ENNReal.toReal_pos hc0 hct, fun β e Θ hΘ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hF, hFc, -⟩` from `UpperTheory.ConvolutionTheory.Tf.tensCont K n hn β e`. Establish `hS : MeasurableSet (detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval)` using `continuous_detModule.measurable GroundTheory.Global.measurableSet_posRealUnitInterval`. Take `⟨Ξ, hΞdef⟩ : ∃ Ξ : normOneGL K n → ℂ, Ξ = fun x : normOneGL K n => kbar β (infPart K n (x : AdelicGLn.AdelicGL K n)) * e (finPart K n (x : AdelicGLn.AdelicGL K n)) * Θ x` from `⟨_, rfl⟩`. Establish `hΞ : Continuous Ξ` using `hΞdef ▸ hF.mul hΘ`. Establish `hΞc : HasCompactSupport Ξ` using `hΞdef ▸ hFc.mul_right`.
+
+Establish `hFm : Measurable ((detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval).indicator (fun g => Ξ (retractOne g)))` using `(hΞ.comp continuous_retractOne).measurable.indicator hS`. Establish `hecont : Continuous (infFinEquiv K n)` using `(infFinEquiv K n).continuous`. Establish `step1 : ∫ x, Ξ x ∂μ = c.toReal • ∫ p, (detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval).indicator (fun g => Ξ (retractOne g)) (infFinEquiv K n p) ∂(ν.prod m)` using `by conv_lhs => rw [hμ]`. Rewrite using `[integral_smul_measure, integral_map continuous_retractOne.aemeasurable hΞ.aestronglyMeasurable, ← integral_indicator hS, integral_map hecont.aemeasurable hFm.aestronglyMeasurable]`. Establish `hint : Integrable (fun p => (detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval).indicator (fun g => Ξ (retractOne g)) (infFinEquiv K n p)) (ν.prod m)`.
+
+Take `⟨M, hM⟩` from `hΞ.bounded_above_of_compact_support hΞc`. Establish `hC : IsCompact ((infFinEquiv K n) ⁻¹' (retractOne ⁻¹' tsupport Ξ ∩ detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval))`. Use `(infFinEquiv K n).toHomeomorph.isCompact_preimage.2 ?_` and prove the remaining obligations. Rewrite using `[← image_mul_centralSection_eq hn]`. Conclude with `(hΞc.isCompact.prod isCompact_posRealUnitInterval).image ((continuous_subtype_val.comp continuous_fst).mul (continuous_centralSection.comp continuous_snd))`.
+
+Use `integrable_of_bound_of_compact (hFm.comp hecont.measurable).aestronglyMeasurable hC M (fun p _ => (norm_indicator_le_norm_self _ _).trans (hM _)) fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `Set.mem_of_indicator_ne_zero hne`. Rewrite `hne` using `[Set.indicator_of_mem h1]`. Conclude with `hp ⟨subset_tsupport _ hne, h1⟩`.
+
+Establish `hpt : ∀ (a : archGroup K n) (h : AdelicGLn.FiniteAdelicGL K n), (detModule K n ⁻¹' GroundTheory.Global.posRealUnitInterval).indicator (fun g => Ξ (retractOne g)) (infFinEquiv K n (a, h)) = GroundTheory.Global.posRealUnitInterval.indicator (fun _ => (1 : ℂ)) (detA K n a * detModul …`. Introduce `a h`. Establish `hd : detModule K n (infFinEquiv K n (a, h)) = detA K n a * detModule K n (finEmb K n h)`. Rewrite using `[infFinEquiv_apply, map_mul]`. Both sides reduce to the same expression.
+
+Establish `hv : Ξ (retractOne (infFinEquiv K n (a, h))) = kbar β a * (e h * Θ (archP K n a * MultiplicityOne.finProj K n h))`. Rewrite using `[hΞdef]`. Simplify using `only`. Rewrite using `[kbar_retract, finPart_retract, retract_pair, infFinEquiv_apply]`. Simplify using `only [map_mul, infPart_infEmb, infPart_finEmb, finPart_infEmb, finPart_finEmb, mul_one, one_mul, mul_assoc]`.
+
+Distinguish the cases in `hI : detA K n a * detModule K n (finEmb K n h) ∈ GroundTheory.Global.posRealUnitInterval`. Rewrite using `[Set.indicator_of_mem (by rw [Set.mem_preimage, hd]; exact hI), Set.indicator_of_mem hI, hv, one_mul]`. Rewrite using `[Set.indicator_of_notMem (by rw [Set.mem_preimage, hd]; exact hI), Set.indicator_of_notMem hI, zero_mul]`. Establish `hint2 : Integrable (Function.uncurry fun (a : archGroup K n) (h : AdelicGLn.FiniteAdelicGL K n) => β a * e h * Θ (archP K n a * MultiplicityOne.finProj K n h)) (ν.prod m)`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations.
+
+Conclude with `((β.continuous.comp continuous_fst).mul (e.continuous.comp continuous_snd)).mul (hΘ.comp ((continuous_archP.comp continuous_fst).mul (MultiplicityOne.continuous_finProj.comp continuous_snd)))`. Use `HasCompactSupport.intro (β.hasCompactSupport.isCompact.prod e.hasCompactSupport.isCompact) ?_` and prove the remaining obligations. Introduce and unpack `⟨a, h⟩ hp`. Assume the negation of the conclusion as `hne`. Conclude with `hp ⟨subset_tsupport _ (left_ne_zero_of_mul (left_ne_zero_of_mul hne)), subset_tsupport _ (right_ne_zero_of_mul (left_ne_zero_of_mul hne))⟩`.
+
+Rewrite using `[← hΞdef, step1, integral_prod_symm _ hint, integral_integral_swap hint2, Complex.real_smul]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [hpt]`. Simplify using `only [mul_assoc]`.
+
+Conclude with `integral_indicator_kbar_shift (κ := β) (Ψ := fun a => e h * Θ (archP K n a * MultiplicityOne.finProj K n h)) hn β.continuous β.hasCompactSupport (continuous_const.mul (hΘ.comp (continuous_archP.mul continuous_const))) (fun a s => by simp only [archimedeanProjection_mul_positiveSc …`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.tensMeas :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
       (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure], ∃ c : ℝ, 0 < c ∧

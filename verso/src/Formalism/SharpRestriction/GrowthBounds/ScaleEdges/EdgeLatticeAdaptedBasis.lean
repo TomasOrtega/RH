@@ -12,6 +12,27 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 def ordMax {n' m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) : ℤ :=
   ∑ s : Fin n', ∑ a : Fin (m + 1) with a.val < r, (lamAt lam0 s a - lamAt lam0 s (Fin.last m))
 
+/- English proof (translation)
+Take `⟨b, hb, hbd⟩` from `Formalism.MainNotions.G.LatticeSystems.lb_basis O (m + 1) (m + 1) (nuOf lam)`. Take `⟨hKi, hKs⟩` from `nablaLKBasis O Kf hinj (m + 1) (m + 1) (nuOf lam) b _ hb g hg`. Establish `hdet0 : g.det ≠ 0` using `hg.ne_zero`. Use `set ll := lam (Fin.last m) with hll`. Use `set S := Finset.univ.filter fun a : Fin (m + 1) => a.val < r with hS`.
+
+Use `set f := fun i : ↥(ssIdx (m + 1) (m + 1) (nuOf lam)) => rowAct Kf g⁻¹ (map (algebraMap O Kf) (b i)) with hf`. Establish `hdg0 : g.det ^ (-ll) ≠ 0` using `zpow_ne_zero _ hdet0`. Use `⟨fun i => g.det ^ (-ll) • f i, fun i => ((∑ a ∈ S, rowWt i.1 a : ℕ) : ℤ) + (S.card : ℤ) * ll, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hKi.units_smul (fun _ => Units.mk0 (g.det ^ (-ll)) hdg0)`. Rewrite using `[← Set.smul_set_range, Submodule.span_smul_eq_of_isUnit _ _ (Ne.isUnit hdg0)]`.
+
+Conclude with `hKs`. Introduce `i`. Establish `h1` using `hbd i r`. Establish `h2 : ((∑ a ∈ S, rowWt i.1 a : ℕ) : ℤ) ≤ ∑ a ∈ S, (lam a - ll)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: ll ≤ lam a` using `hlam (Fin.le_last a)`. Simplify using `only [nuOf]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : ∑ a ∈ S, (lam a - ll) = ∑ a ∈ S, lam a - (S.card : ℤ) * ll`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i`. Establish `: (0 : ℤ) ≤ ((∑ a ∈ S, rowWt i.1 a : ℕ) : ℤ)` using `Int.natCast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c hc`. Establish `ht : ∀ a : Fin (m + 1), (if a.val < r then c⁻¹ else 1) ≠ 0`. Apply the tactic sequence `intro a; split_ifs <;> simp [hc]`. Take `⟨-, hD⟩` from `nablaLDiag O Kf hinj (m + 1) (m + 1) (nuOf lam) b _ hb g _ hg ht`.
+
+Establish `hgD : g * lb_D (m + 1) r c = g * Matrix.diagonal (fun a : Fin (m + 1) => if a.val < r then c⁻¹ else 1)` using `rfl`. Rewrite using `[nablaLTw, hgD]`. Express the relevant statement in the definitionally equal form `_ = Submodule.map _ (nablaL O Kf (m + 1) (m + 1) (nuOf lam) _)`. Rewrite using `[← hD, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Establish `hprod : (∏ a, (if a.val < r then c⁻¹ else 1) ^ rowWt i.1 a)⁻¹ = c ^ (∑ a ∈ S, rowWt i.1 a)`. Repeatedly rewrite using `[ite_pow, one_pow]`. Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_pow_eq_pow_sum, inv_pow, inv_inv]`.
+
+Establish `hdet : (g * Matrix.diagonal fun a : Fin (m + 1) => if a.val < r then c⁻¹ else 1).det = g.det * c⁻¹ ^ S.card`. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal, Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`. Establish `hpw : (c⁻¹ ^ S.card) ^ (-ll) = c ^ ((S.card : ℤ) * ll)`. Rewrite using `[inv_pow, inv_zpow', ← zpow_natCast, ← zpow_mul]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[hdet, ← hll, hprod]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, smul_smul]`. Use `congr 1`. Rewrite using `[mul_zpow, hpw, zpow_add₀ hc, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pos_basisO (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m r : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det) :
@@ -79,6 +100,31 @@ theorem pos_basisO (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O
     rw [mul_zpow, hpw, zpow_add₀ hc, zpow_natCast]
     ring
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`. Establish `hinj' : Function.Injective fun a : O => a • (1 : Kf)`. Establish `: (fun a : O => a • (1 : Kf)) = algebraMap O Kf`. Use function extensionality and compare the values at `fun a => (Algebra.algebraMap_eq_smul_one a).symm`. Rewrite using `[this]`.
+
+Conclude with `hinj`. Establish `hA : ∀ s, Antitone (lamAt lam0 s)` using `kp_lamAt_antitone lam0 hd`. Establish `hI` using `Formalism.MainNotions.G.LatticeSystems.la_indep (O := O) (Kf := Kf) hinj`. Establish `hpos` using `fun s => pos_basisO O Kf hinj m r (lamAt lam0 s) (hA s) (gs s) (hgs s)`. Use `choose X π hXi hXs hup hlo hspan using hpos`.
+
+Establish `: ∀ s, Finite ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))` using `fun s => (sSIdxFinite _ _ _).to_subtype`. Establish `: ∀ s, Fintype ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))` using `fun s => Fintype.ofFinite _`. Establish `: IsFractionRing Kf Kf` using `jr_KK Kf`. Use `set P : (∀ s : Fin n', ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))) → MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf := fun i => ∏ s, blockEmb Kf s (X s (i s)) with hP`. Take `⟨hPi, hPs⟩` from `tensorBasis Kf Kf (Fin n') (m + 1) (m + 1) _ _ X hXi hXs`.
+
+Establish `hV : Vsp Kf lam0 = Submodule.span Kf (Set.range P)`. Rewrite using `[hPs]`. Simplify using `only [Vsp, hA, ↓reduceIte]`. Establish `hmem : ∀ i, P i ∈ Vsp Kf lam0` using `fun i => hV ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `set y : (∀ s : Fin n', ↥(ssIdx (m + 1) (m + 1) (nuOf (lamAt lam0 s)))) → Vsp Kf lam0 := fun i => ⟨P i, hmem i⟩ with hy`.
+
+Establish `hyi : LinearIndependent Kf y` using `LinearIndependent.of_comp (Vsp Kf lam0).subtype hPi`. Establish `hys : Submodule.span Kf (Set.range y) = ⊤`. Rewrite using `[eq_top_iff, ← comap_span_coe (O := Kf) (Kf := Kf) (Vsp Kf lam0) y]`. Introduce `v _`. Rewrite using `[Submodule.mem_comap]`.
+
+Establish `hv : (v : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ Submodule.span Kf (Set.range P)` using `hV ▸ v.2`. Conclude with `hv`. Use `⟨_, inferInstance, Module.Basis.mk hyi hys.symm.le, fun i => ∑ s, π s (i s), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Unfold `Ar`.
+
+Conclude with `Finset.sum_le_sum fun s _ => hup s (i s)`. Introduce `i`. Unfold `Ar ordMax`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Combine the linear relations using `[hlo s (i s)]`. Introduce `c hc`. Establish `hdet : ∀ s, IsUnit (gs s * lb_D (m + 1) r c).det` using `fun s => by`. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `(hgs s).mul (lb_D_det _ _ _ hc)`. Establish `hli : ∀ s, LinearIndependent O fun j => c ^ π s j • X s j` using `fun s => ((hXi s).units_smul fun j => Units.mk0 (c ^ π s j) (zpow_ne_zero _ hc)).restrict_scalars hinj'`. Take `⟨-, hT⟩` from `tensorBasis O Kf (Fin n') (m + 1) (m + 1) _ (fun s => Submodule.span O (Set.range fun j => c ^ π s j • X s j)) (fun s j => c ^ π s j • X s j) hli (fun s => rfl)`. Establish `hH : Hten O lam0 (fun s => colSpan O (gs s * lb_D (m + 1) r c)) = Submodule.span O (Set.range fun i => c ^ (∑ s, π s (i s)) • P i)`. Establish `e1 : (fun s => H0 O m (lamAt lam0 s) (colSpan O (gs s * lb_D (m + 1) r c))) = fun s => Submodule.span O (Set.range fun j => c ^ π s j • X s j)`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[H0_eq_twisted_nabla hI m _ (hA s) _ (hdet s), hspan s c hc]`. Rewrite using `[Hten, e1, ← hT]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [hP, MvPolynomial.smul_eq_C_mul, map_mul, blockEmb, MvPolynomial.rename_C, Finset.prod_mul_distrib]`. Rewrite using `[← map_prod, lb_zpow_sum c hc]`. Rewrite using `[toV, hH, ← comap_span_coe (O := O) (Kf := Kf) (Vsp Kf lam0) (fun i => c ^ (∑ s, π s (i s)) • (Module.Basis.mk hyi hys.symm.le) i)]`. Use `congr 3`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Submodule.coe_smul, Module.Basis.mk_apply]`.
+-/
 theorem ten_basisO (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] [IsFractionRing O Kf]
     {n' m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0)
     (gs : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hgs : ∀ s, IsUnit (gs s).det) :
@@ -159,6 +205,21 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
+/- English proof (translation)
+Establish `hw` using `w_ne h`. Establish `hp` using `p_eq h`. Establish `hp0 : (p : Kf) ≠ 0` using `by rw [hp]; exact pow_ne_zero 2 hw`. Establish `: IsFractionRing O Kf` using `h.frac_O`. Take `⟨gs, hgs, hsrc, hLe, htgt⟩` from `edgeLat h m r e he`.
+
+Take `⟨I, hI, x, π, hup, hord, hsp⟩` from `ten_basisO O Kf r lam0 hd (fun s : Fin n' => gs s.val) (fun s => hgs s.val)`. Establish `h3 : Submodule.span O (Set.range fun i => (algebraMap O Kf w ^ π i) • x i) = HLe p ι σ w lam0 e`. Rewrite using `[HLe, show (fun s : Fin n' => LeAt p ι σ w s.val e) = fun s => colSpan O (gs s.val * lb_D (m + 1) r (algebraMap O Kf w)) from funext fun s => hLe s.val]`. Conclude with `hsp _ hw`. Use `⟨I, hI, x, π, ?_, ?_, h3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[HL, show (fun s : Fin n' => extO O ι σ s.val e.src) = fun s => colSpan O (gs s.val) from`. Use function extensionality and compare the values at `fun s => hsrc s.val]`. Simplify `hsp 1 one_ne_zero` using `[lb_D_one]`. Rewrite using `[HL, show (fun s : Fin n' => extO O ι σ s.val e.tgt) = fun s => colSpan O (gs s.val * lb_D (m + 1) r (p : Kf)) from`. Use function extensionality and compare the values at `fun s => by rw [htgt, Matrix.mul_assoc, lb_D_sq, hp]]`.
+
+Conclude with `hsp _ hp0`. Introduce `i`. Unfold `order`. Combine the linear relations using `[hup i]`. Conclude with `hord`.
+
+Rewrite using `[Re, ← h3, scale_span]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[smul_smul, order, ← zpow_add₀ hw]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Re', ← h3, dualLat_span x _ (fun i => zpow_ne_zero _ hw), scale_span]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Rewrite using `[hp, order, ← zpow_neg, ← zpow_natCast (algebraMap O Kf w) 2, ← zpow_mul, ← zpow_add₀ hw, ← zpow_add₀ hw]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem edge_lattice_adapted_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (hd : IsDominant lam0) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e) :
     ∃ (I : Type) (_ : Finite I) (x : Module.Basis I Kf ↥(Vsp Kf lam0)) (π : I → ℤ),
@@ -212,6 +273,13 @@ theorem edge_lattice_adapted_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨I, hI, x, π, hsrc, -, -, -, hmax, hRe, -⟩` from `edge_lattice_adapted_basis h m r lam0 hd e he`. Establish `hw` using `w_ne h`. Rewrite using `[← hRe, ← hsrc, scale_span, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hk : 0 ≤ (M : ℤ) - order r lam0 (π i)` using `by linarith [hmax i]`.
+
+Take `⟨k, hk'⟩` from `Int.eq_ofNat_of_zero_le hk`. Establish `he' : (algebraMap O Kf w ^ (-order r lam0 (π i))) • x i = (w ^ k) • ((algebraMap O Kf w ^ (-(M : ℤ))) • x i)`. Rewrite using `[← algebraMap_smul Kf (w ^ k), smul_smul, map_pow, ← zpow_natCast, ← zpow_add₀ hw]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Use `beta_reduce`. Rewrite using `[SetLike.mem_coe, he']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem Re_le_scale_HL (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (hd : IsDominant lam0) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e) (M : ℕ) (hM : ordMax r lam0 ≤ M) :
     Re p ι σ w r lam0 e ≤ scale (algebraMap O Kf w ^ (-(M : ℤ))) (HL (O := O) ι σ lam0 e.src) := by

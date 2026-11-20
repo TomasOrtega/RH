@@ -9,6 +9,11 @@ namespace GlobalTheory.LocalDivisor
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h1 : ord P (-1 : E) = 0`. Use `ord_mul P (x := (-1 : E)) (y := -1) (by norm_num) (by norm_num)` as an intermediate fact. Rewrite `this` using `[show (-1 : E) * -1 = 1 by ring, ord_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[show -x = (-1 : E) * x by ring, ord_mul P (by norm_num) hx, h1, zero_add]`.
+-/
 theorem ord_neg (P : HeightOneSpectrum (𝓞 E)) (x : E) : ord P (-x) = ord P x := by
   rcases eq_or_ne x 0 with rfl | hx
   · simp
@@ -18,6 +23,9 @@ theorem ord_neg (P : HeightOneSpectrum (𝓞 E)) (x : E) : ord P (-x) = ord P x 
     linarith
   rw [show -x = (-1 : E) * x by ring, ord_mul P (by norm_num) hx, h1, zero_add]
 
+/- English proof (translation)
+Unfold `ord`. Establish `: y = algebraMap (𝓞 E) E (IsIntegralClosure.mk' (𝓞 E) y hy)` using `(IsIntegralClosure.algebraMap_mk' (𝓞 E) y hy).symm`. Rewrite using `[this, ← FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `FractionalIdeal.count_coe_nonneg _ _ _`.
+-/
 theorem ord_nonneg_of_isIntegral (P : HeightOneSpectrum (𝓞 E)) {y : E} (hy : IsIntegral ℤ y) :
     0 ≤ ord P y := by
   unfold ord
@@ -26,6 +34,11 @@ theorem ord_nonneg_of_isIntegral (P : HeightOneSpectrum (𝓞 E)) {y : E} (hy : 
   rw [this, ← FractionalIdeal.coeIdeal_span_singleton]
   exact FractionalIdeal.count_coe_nonneg _ _ _
 
+/- English proof (translation)
+Establish `hr0 : r ≠ 0` using `by rintro rfl; exact hr P.asIdeal.zero_mem`. Unfold `ord`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe E P (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])]`. Establish `hne : Ideal.span {r} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Rewrite using `[Nat.cast_eq_zero]`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hr (Ideal.dvd_span_singleton.1 ((Associates.count_ne_zero_iff_dvd hne P.irreducible).1 hc))`.
+-/
 theorem ord_algebraMap_eq_zero (P : HeightOneSpectrum (𝓞 E)) {r : 𝓞 E} (hr : r ∉ P.asIdeal) :
     ord P (algebraMap (𝓞 E) E r) = 0 := by
   have hr0 : r ≠ 0 := by rintro rfl; exact hr P.asIdeal.zero_mem
@@ -37,6 +50,11 @@ theorem ord_algebraMap_eq_zero (P : HeightOneSpectrum (𝓞 E)) {r : 𝓞 E} (hr
   by_contra hc
   exact hr (Ideal.dvd_span_singleton.1 ((Associates.count_ne_zero_iff_dvd hne P.irreducible).1 hc))
 
+/- English proof (translation)
+Introduce `h`. Establish `hc : IsCoprime (ℓ : ℤ) (d : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hℓ).2 hd)`. Take `⟨u, v, huv⟩` from `hc`. Establish `: (1 : 𝓞 E) ∈ P.asIdeal`. Establish `e : (((u * ℓ + v * d : ℤ)) : 𝓞 E) = 1` using `by rw [huv]; simp`.
+
+Rewrite using `[← e]`. Use `push_cast`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hP) (P.asIdeal.mul_mem_left _ h)`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+-/
 theorem natCast_not_mem (P : HeightOneSpectrum (𝓞 E)) {ℓ d : ℕ} (hℓ : ℓ.Prime)
     (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) (hd : ¬ ℓ ∣ d) : (d : 𝓞 E) ∉ P.asIdeal := by
   intro h
@@ -49,11 +67,25 @@ theorem natCast_not_mem (P : HeightOneSpectrum (𝓞 E)) {ℓ d : ℕ} (hℓ : �
     exact P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hP) (P.asIdeal.mul_mem_left _ h)
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (𝓞 E) E) d]`. Conclude with `ord_algebraMap_eq_zero P (natCast_not_mem P hℓ hP hd)`.
+-/
 theorem ord_natCast_coprime (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) {d : ℕ} (hd : ¬ ℓ ∣ d) : ord P (d : E) = 0 := by
   rw [← map_natCast (algebraMap (𝓞 E) E) d]
   exact ord_algebraMap_eq_zero P (natCast_not_mem P hℓ hP hd)
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.ne_bot`. It suffices to establish `∀ n : ℕ, n ≠ 0 → (n : 𝓞 E) ∈ P.asIdeal → ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 E) ∈ P.asIdeal from this _ h0 (Ideal.absNorm_mem P.asIdeal)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `hn hmem`. Establish `hn1 : n ≠ 1`. Introduce and unpack `rfl`. Simplify using `only [Nat.cast_one] at hmem`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hmem)`.
+
+Establish `hp` using `Nat.minFac_prime hn1`. Establish `e : n = n.minFac * (n / n.minFac)` using `(Nat.mul_div_cancel' (Nat.minFac_dvd n)).symm`. Establish `hm0 : n / n.minFac ≠ 0`. Introduce `h`. Rewrite `e` using `[h, mul_zero]`.
+
+Conclude with `hn e`. Rewrite `hmem` using `[e]`. Move the coercions through the operations in `at hmem`. Break down `P.isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `⟨_, hp, h⟩`.
+
+Use `ih _ ?_ hm0 h` and prove the remaining obligations. Use `hp.two_le` as an intermediate fact. Establish `: 0 < n / n.minFac` using `Nat.pos_of_ne_zero hm0`. Use `conv_rhs => rw [e]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_prime_mem (P : HeightOneSpectrum (𝓞 E)) :
     ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 E) ∈ P.asIdeal := by
   have h0 : Ideal.absNorm P.asIdeal ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.ne_bot
@@ -81,23 +113,37 @@ theorem exists_prime_mem (P : HeightOneSpectrum (𝓞 E)) :
       conv_rhs => rw [e]
       nlinarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `natCast_not_mem P h hm (by rwa [Nat.prime_dvd_prime_iff_eq h h']) hm'`.
+-/
 theorem prime_eq_of_mem (P : HeightOneSpectrum (𝓞 E)) {ℓ ℓ' : ℕ} (h : ℓ.Prime) (h' : ℓ'.Prime)
     (hm : (ℓ : 𝓞 E) ∈ P.asIdeal) (hm' : (ℓ' : 𝓞 E) ∈ P.asIdeal) : ℓ = ℓ' := by
   by_contra hne
   exact natCast_not_mem P h hm (by rwa [Nat.prime_dvd_prime_iff_eq h h']) hm'
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [ord_one]`. Consider the case `succ n ih => rw [pow_succ, ord_mul P (pow_ne_zero _ hx) hx, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_pow (P : HeightOneSpectrum (𝓞 E)) {x : E} (hx : x ≠ 0) (n : ℕ) :
     ord P (x ^ n) = n * ord P x := by
   induction n with
   | zero => simp [ord_one]
   | succ n ih => rw [pow_succ, ord_mul P (pow_ne_zero _ hx) hx, ih]; push_cast; ring
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat n => simp only [Int.ofNat_eq_coe, zpow_natCast]`. Conclude with `ord_pow P hx n`. Consider the case `negSucc n => rw [zpow_negSucc, ord_inv, ord_pow P hx, Int.negSucc_eq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_zpow (P : HeightOneSpectrum (𝓞 E)) {x : E} (hx : x ≠ 0) (n : ℤ) :
     ord P (x ^ n) = n * ord P x := by
   cases n with
   | ofNat n => simp only [Int.ofNat_eq_coe, zpow_natCast]; exact ord_pow P hx n
   | negSucc n => rw [zpow_negSucc, ord_inv, ord_pow P hx, Int.negSucc_eq]; push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ord_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ord_mul P (hg a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.2 fun i hi => hg i (Finset.mem_insert_of_mem hi)), ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem ord_prod (P : HeightOneSpectrum (𝓞 E)) {ι : Type} (s : Finset ι) (g : ι → E)
     (hg : ∀ i ∈ s, g i ≠ 0) : ord P (∏ i ∈ s, g i) = ∑ i ∈ s, ord P (g i) := by
   induction s using Finset.induction_on with
@@ -108,6 +154,11 @@ theorem ord_prod (P : HeightOneSpectrum (𝓞 E)) {ι : Type} (s : Finset ι) (g
         (Finset.prod_ne_zero_iff.2 fun i hi => hg i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Use `haveI := Fact.mk hℓ`. Take `⟨m, hm⟩` from `pow_padicValNat_dvd (p := ℓ) (n := n)`. Establish `hmd : ¬ ℓ ∣ m` using `fun h => (pow_succ_padicValNat_not_dvd (p := ℓ) hn) (by conv_rhs => rw [hm]`. Rewrite using `[pow_succ]`. Conclude with `mul_dvd_mul_left _ h)`.
+
+Establish `hm0 : m ≠ 0` using `by rintro rfl; rw [mul_zero] at hm; exact hn hm`. Establish `hl0 : (ℓ : E) ≠ 0` using `Nat.cast_ne_zero.2 hℓ.ne_zero`. Use `conv_lhs => rw [hm, Nat.cast_mul, Nat.cast_pow]`. Rewrite using `[ord_mul P (pow_ne_zero _ hl0) (Nat.cast_ne_zero.2 hm0), ord_pow P hl0, ord_natCast_coprime P hℓ hP hmd, add_zero]`.
+-/
 theorem ord_natCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) {n : ℕ} (hn : n ≠ 0) :
     ord P (n : E) = padicValNat ℓ n * ord P (ℓ : E) := by
@@ -122,6 +173,11 @@ theorem ord_natCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Pri
   rw [ord_mul P (pow_ne_zero _ hl0) (Nat.cast_ne_zero.2 hm0), ord_pow P hl0,
     ord_natCast_coprime P hℓ hP hmd, add_zero]
 
+/- English proof (translation)
+Establish `h` using `ord_natCast P hℓ hP (Int.natAbs_ne_zero.2 hz)`. Establish `hv : padicValInt ℓ z = padicValNat ℓ z.natAbs` using `rfl`. Rewrite using `[hv, ← h]`. Break down `Int.natAbs_eq z with e | e` into its components or cases. Use `conv_lhs => rw [e]`.
+
+Simplify using the standard rewrite rules. Use `conv_lhs => rw [e]`. Rewrite using `[Int.cast_neg, ord_neg]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_intCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) {z : ℤ} (hz : z ≠ 0) :
     ord P (z : E) = padicValInt ℓ z * ord P (ℓ : E) := by
@@ -135,6 +191,9 @@ theorem ord_intCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Pri
     rw [Int.cast_neg, ord_neg]
     simp
 
+/- English proof (translation)
+Rewrite using `[Rat.cast_def, ord_div P (Int.cast_ne_zero.2 (Rat.num_ne_zero.2 hq)) (Nat.cast_ne_zero.2 q.den_pos.ne'), ord_intCast P hℓ hP (Rat.num_ne_zero.2 hq), ord_natCast P hℓ hP q.den_pos.ne']`. Simplify using `only [padicValRat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_ratCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Prime)
     (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) {q : ℚ} (hq : q ≠ 0) :
     ord P (q : E) = padicValRat ℓ q * ord P (ℓ : E) := by
@@ -144,6 +203,13 @@ theorem ord_ratCast (P : HeightOneSpectrum (𝓞 E)) {ℓ : ℕ} (hℓ : ℓ.Pri
   simp only [padicValRat]
   ring
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[ord_zero]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`.
+
+Establish `hab : a * b ≠ 0` using `mul_ne_zero ha0 hb0`. Use `(Ideal.finite_factors (I := Ideal.span {a * b}) (by simpa using hab)).subset fun P hP => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hP ⊢`. Rewrite using `[Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hn`.
+
+Apply `hP` to reduce the goal to its premises. Establish `haP : a ∉ P.asIdeal` using `fun h => hn (P.asIdeal.mul_mem_right _ h)`. Establish `hbP : b ∉ P.asIdeal` using `fun h => hn (P.asIdeal.mul_mem_left _ h)`. Establish `inj` using `IsFractionRing.injective (𝓞 E) E`. Rewrite using `[ord_div P ((map_ne_zero_iff _ inj).2 ha0) ((map_ne_zero_iff _ inj).2 hb0), ord_algebraMap_eq_zero P haP, ord_algebraMap_eq_zero P hbP, sub_zero]`.
+-/
 theorem ord_finite (x : E) : {P : HeightOneSpectrum (𝓞 E) | ord P x ≠ 0}.Finite := by
   rcases eq_or_ne x 0 with rfl | hx
   · simp [ord_zero]
@@ -162,6 +228,11 @@ theorem ord_finite (x : E) : {P : HeightOneSpectrum (𝓞 E) | ord P x ≠ 0}.Fi
   rw [ord_div P ((map_ne_zero_iff _ inj).2 ha0) ((map_ne_zero_iff _ inj).2 hb0),
     ord_algebraMap_eq_zero P haP, ord_algebraMap_eq_zero P hbP, sub_zero]
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[ord_prod P _ _ (fun ℓ hℓ => zpow_ne_zero _ (Nat.cast_ne_zero.2 (hT ℓ hℓ).ne_zero))]`. Rewrite using `[Finset.sum_congr rfl (g := fun ℓ => if ℓ₀ = ℓ then k ℓ * ord P (ℓ : E) else 0) ?_]`. Rewrite using `[Finset.sum_ite_eq]`. Introduce `ℓ hℓ`.
+
+Rewrite using `[ord_zpow P (Nat.cast_ne_zero.2 (hT ℓ hℓ).ne_zero)]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[ord_natCast_coprime P h0 hm (by rwa [Nat.prime_dvd_prime_iff_eq h0 (hT ℓ hℓ)]), mul_zero]`.
+-/
 theorem ord_prod_primePow (P : HeightOneSpectrum (𝓞 E)) (T : Finset ℕ) (hT : ∀ ℓ ∈ T, ℓ.Prime)
     (k : ℕ → ℤ) {ℓ₀ : ℕ} (h0 : ℓ₀.Prime) (hm : (ℓ₀ : 𝓞 E) ∈ P.asIdeal) :
     ord P (((∏ ℓ ∈ T, (ℓ : ℚ) ^ k ℓ : ℚ) : E)) = if ℓ₀ ∈ T then k ℓ₀ * ord P (ℓ₀ : E) else 0 := by
@@ -175,11 +246,21 @@ theorem ord_prod_primePow (P : HeightOneSpectrum (𝓞 E)) (T : Finset ℕ) (hT 
   · subst h; rfl
   · rw [ord_natCast_coprime P h0 hm (by rwa [Nat.prime_dvd_prime_iff_eq h0 (hT ℓ hℓ)]), mul_zero]
 
+/- English proof (translation)
+Use `ord_primeMap τ (primeMap τ P) a` as an intermediate fact. Rewrite `this` using `[primeMap_primeMap τ hτ]`. Then use the resulting hypothesis.
+-/
 theorem ord_primeMap_symm (τ : E ≃+* E) (hτ : ∀ x, τ (τ x) = x) (P : HeightOneSpectrum (𝓞 E))
     (a : E) : ord P (τ a) = ord (primeMap τ P) a := by
   have := ord_primeMap τ (primeMap τ P) a
   rwa [primeMap_primeMap τ hτ] at this
 
+/- English proof (translation)
+Establish `hd0 : (d : E) ≠ 0` using `Nat.cast_ne_zero.2 (by rintro rfl; exact hd (dvd_zero _))`. Establish `hc0 : (c : E) ≠ 0` using `Rat.cast_ne_zero.2 hc`. Establish `hta : τ a ≠ 0` using `(map_ne_zero τ).2 ha`. Establish `hy : (c : E) * a * τ a ≠ 0` using `mul_ne_zero (mul_ne_zero hc0 ha) hta`. Establish `o1` using `ord_nonneg_of_isIntegral P h1`.
+
+Establish `o2` using `ord_nonneg_of_isIntegral P h2`. Rewrite `o1` using `[ord_mul P hd0 (mul_ne_zero hl (inv_ne_zero hy)), ord_mul P hl (inv_ne_zero hy), ord_inv]`. Rewrite `o2` using `[ord_mul P (mul_ne_zero hd0 hy) (inv_ne_zero hl), ord_mul P hd0 hy, ord_inv]`. Establish `hdz : ord P (d : E) = 0` using `ord_natCast_coprime P hℓ hP hd`. Establish `hyv : ord P ((c : E) * a * τ a) = ord P (c : E) + ord P a + ord (primeMap τ P) a`.
+
+Rewrite using `[ord_mul P (mul_ne_zero hc0 ha) hta, ord_mul P hc0 ha, ord_primeMap_symm τ hτ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ord_eq_local (τ : E ≃+* E) (hτ : ∀ x, τ (τ x) = x) (P : HeightOneSpectrum (𝓞 E))
     {ℓ : ℕ} (hℓ : ℓ.Prime) (hP : (ℓ : 𝓞 E) ∈ P.asIdeal) {l : E} (hl : l ≠ 0) {c : ℚ} {a : E}
     (hc : c ≠ 0) (ha : a ≠ 0) {d : ℕ} (hd : ¬ ℓ ∣ d)
@@ -199,6 +280,21 @@ theorem ord_eq_local (τ : E ≃+* E) (hτ : ∀ x, τ (τ x) = x) (P : HeightOn
     rw [ord_mul P (mul_ne_zero hc0 ha) hta, ord_mul P hc0 ha, ord_primeMap_symm τ hτ]
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ τ hτ S l hl _ H`. Use `choose! cc aa hc0 ha0 dd hdd hI1 hI2 using H`. Set `rc : HeightOneSpectrum (𝓞 E) → ℕ` to `fun P => Classical.choose (exists_prime_mem P)`. Establish `rc_prime : ∀ P, (rc P).Prime` using `fun P => (Classical.choose_spec (exists_prime_mem P)).1`. Establish `rc_mem : ∀ P, ((rc P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `fun P => (Classical.choose_spec (exists_prime_mem P)).2`.
+
+Establish `rc_map : ∀ P, rc (primeMap τ P) = rc P` using `fun P => prime_eq_of_mem (primeMap τ P) (rc_prime _) (rc_prime P) (rc_mem _) (by rw [mem_primeMap, map_natCast]; exact rc_mem P)`. Set `T : Finset ℕ` to `(ord_finite l).toFinset.image rc`. Establish `hT : ∀ ℓ ∈ T, ℓ.Prime`. Introduce `ℓ hℓ`. Take `⟨P, -, rfl⟩` from `Finset.mem_image.1 hℓ`.
+
+Conclude with `rc_prime P`. Set `k : ℕ → ℤ` to `fun ℓ => padicValRat ℓ (cc ℓ)`. Set `f : HeightOneSpectrum (𝓞 E) → ℤ` to `fun P => if rc P ∈ T then ord P (aa (rc P)) else 0`. Use `⟨∏ ℓ ∈ T, (ℓ : ℚ) ^ k ℓ, f, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun ℓ hℓ => zpow_ne_zero _ (Nat.cast_ne_zero.2 (hT ℓ hℓ).ne_zero)`.
+
+Use `(Set.Finite.biUnion T.finite_toSet fun ℓ _ => ord_finite (aa ℓ)).subset ?_` and prove the remaining obligations. Introduce `P hP`. Simplify using `only [Function.mem_support, f] at hP`. Use `split_ifs at hP with h`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Finset.mem_coe]`.
+
+Conclude with `⟨rc P, h, hP⟩`. Conclude with `absurd rfl hP`. Introduce `P hPS`. Establish `hS : rc P ∉ S` using `fun h => hPS _ h (rc_prime P) (rc_mem P)`. Rewrite using `[ord_prod_primePow P T hT k (rc_prime P) (rc_mem P)]`.
+
+Establish `hfτ : f (primeMap τ P) = if rc P ∈ T then ord (primeMap τ P) (aa (rc P)) else 0`. Simplify using `only [f, rc_map]`. Rewrite using `[hfτ]`. Simplify using `only [f]`. Use `split_ifs with h`.
+
+Rewrite using `[ord_eq_local τ hτ P (rc_prime P) (rc_mem P) hl (hc0 _ (rc_prime P) hS) (ha0 _ (rc_prime P) hS) (hdd _ (rc_prime P) hS) (hI1 _ (rc_prime P) hS) (hI2 _ (rc_prime P) hS), ord_ratCast P (rc_prime P) (rc_mem P) (hc0 _ (rc_prime P) hS)]`. Simplify using `only [add_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `h (Finset.mem_image.2 ⟨P, (ord_finite l).mem_toFinset.2 hne, rfl⟩)`.
+-/
 theorem localDivisor : ∀ (E : Type) [Field E] [NumberField E] (τ : E ≃+* E), (∀ x, τ (τ x) = x) →
     ∀ (S : Finset ℕ) (l : E), l ≠ 0 → τ l = l →
     (∀ ℓ : ℕ, ℓ.Prime → ℓ ∉ S → ∃ (c : ℚ) (a : E), c ≠ 0 ∧ a ≠ 0 ∧ ∃ d : ℕ, ¬ ℓ ∣ d ∧

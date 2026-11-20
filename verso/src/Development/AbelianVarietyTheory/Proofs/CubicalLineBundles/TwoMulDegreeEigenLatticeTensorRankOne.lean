@@ -19,6 +19,11 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM.TensorDeg
 
+/- English proof (translation)
+Establish `hre : ∀ a b, (B a b).re = (B b a).re` using `fun a b => by rw [← hsym a b, Complex.conj_re]`. Establish `h0 : ∀ a b, (B a b).re = 0` using `fun a b => by`. Establish `h1` using `hd (a + b)`. Rewrite `h1` using `[hadd, Complex.add_re, hre (a + b) a, hre (a + b) b, hadd, hadd, Complex.add_re, Complex.add_re, hd, hd, hre b a]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2` using `h0 a (W b)`. Rewrite `h2` using `[hW, Complex.mul_re, h0, mul_zero, zero_sub, neg_eq_zero, mul_eq_zero]`. Conclude with `Complex.ext (h0 a b) (h2.resolve_left hl)`.
+-/
 theorem eq_zero_of_re_diag {L : Type} [AddCommGroup L] (B : L → L → ℂ) (W : L → L) (l : ℂ) (hl : l.im ≠ 0)
     (hadd : ∀ a b c, B a (b + c) = B a b + B a c) (hsym : ∀ a b, starRingEnd ℂ (B a b) = B b a)
     (hW : ∀ a b, B a (W b) = l * B a b) (hd : ∀ a, (B a a).re = 0) (a b : L) : B a b = 0 := by
@@ -32,6 +37,13 @@ theorem eq_zero_of_re_diag {L : Type} [AddCommGroup L] (B : L → L → ℂ) (W 
   rw [hW, Complex.mul_re, h0, mul_zero, zero_sub, neg_eq_zero, mul_eq_zero] at h2
   exact Complex.ext (h0 a b) (h2.resolve_left hl)
 
+/- English proof (translation)
+Use `span_flip_eq_top_iff_linearIndependent.2 (?_ : LinearIndependent K fun i a => σ i (e a))` and prove the remaining obligations. Establish `hinj : Function.Injective fun i => ((σ i).comp (algebraMap (𝓞 E) E)).toMonoidHom` using `fun i j hij => hσ (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => DFunLike.congr_fun hij a))`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) K).comp _ hinj`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Use `hli (fun i => g i * σ i (e a₀)) (funext fun s => by` as an intermediate fact. Use `congrFun hg (s • a₀)` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul, Algebra.smul_def, map_mul, Pi.zero_apply] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Function.comp]`. Rewrite using `[← this]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`. Use the proof step `ring) i`. Conclude with `(mul_eq_zero.1 this).resolve_right ((map_ne_zero _).2 h₀)`.
+-/
 theorem span_embeddings_eq_top {E K L I : Type} [Field E] [NumberField E] [Field K] [AddCommGroup L] [Module (𝓞 E) L]
     [Fintype I] (σ : I → (E →+* K)) (hσ : Function.Injective σ) (e : L →ₗ[𝓞 E] E) (a₀ : L) (h₀ : e a₀ ≠ 0) :
     Submodule.span K (Set.range fun a i => σ i (e a)) = ⊤ := by
@@ -51,6 +63,13 @@ theorem span_embeddings_eq_top {E K L I : Type} [Field E] [NumberField E] [Field
     ring) i
   exact (mul_eq_zero.1 this).resolve_right ((map_ne_zero _).2 h₀)
 
+/- English proof (translation)
+Establish `key : ∀ z, (∀ y, h.form s (Φ z) (Φ (ev y)) = ∑ i, b i * (starRingEnd ℂ (s (z i)) * s (ev y i))) → ∀ w, h.form s (Φ z) (Φ w) = ∑ i, b i * (starRingEnd ℂ (s (z i)) * s (w i))` using `fun z hz w => by`. Establish `hw : w ∈ Submodule.span K (Set.range ev)` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv => obtain ⟨y, rfl⟩ := hv`. Conclude with `hz y`.
+
+Consider the case `zero => simpa using h.smul_right s 0 (Φ z) 0`. Consider the case `add u v _ _ hu hv => simp only [map_add, h.add_right, hu, hv, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Consider the case `smul r u _ hu`. Rewrite using `[map_smul, h.smul_right, hu, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp; ring`.
+
+Use `key z (fun y => ?_) w` and prove the remaining obligations. Rewrite using `[← h.conj_symm, key _ (hf y), map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [_root_.mul_comm]`.
+-/
 theorem form_eq_of_span {K V L I : Type} [Field K] [AddCommGroup V] [Module K V] [Fintype I] (h : HermFam K V)
     (s : K →+* ℂ) (Φ : (I → K) →ₗ[K] V) (ev : L → I → K) (b : I → ℝ)
     (hsp : Submodule.span K (Set.range ev) = ⊤)
@@ -70,6 +89,53 @@ theorem form_eq_of_span {K V L I : Type} [Field K] [AddCommGroup V] [Module K V]
   rw [← h.conj_symm, key _ (hf y), map_sum]
   exact Finset.sum_congr rfl fun i _ => by simp [_root_.mul_comm]
 
+/- English proof (translation)
+Use `set ev : L → I → K := fun a i => σ i (e a) with hev`. Use `set dv : L → I → K := fun b i => σ i (β * IsCMField.complexConj E (e b)) with hdv`. Establish `hsp : Submodule.span K (Set.range ev) = ⊤` using `span_embeddings_eq_top σ hσ e a₀ h₀`. Establish `hh' : ∀ a b, algebraMap (𝓞 K) K (τ₀ (hK a b)) = ∑ i, ev a i * dv b i` using `fun a b => (hh a b).trans (Finset.sum_congr rfl fun i _ => by simp only [hev, hdv, map_mul]; ring)`. Establish `hexp : ∀ a, ev a = ∑ m, algebraMap (𝓞 K) K (τ₀ (hK a (y m))) • ev (x m)` using `fun a => by`.
+
+Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [hdual a]`. Simplify using `only [hev, map_sum, he, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Set `Φ : (I → K) →ₗ[K] V` to `{ toFun := fun z => ∑ m, (∑ i, z i * dv (y m) i) • c (x m) map_add' := fun z z' => by simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, add_smul] map_smul' := fun t z => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, _root_.mul_assoc, ← Finset.mul_sum, mul_smul, Finset.smul_sum, RingHom.id_apply] }`.
+
+Establish `hΦ : ∀ a, Φ (ev a) = c a` using `fun a => by conv_rhs => rw [hdual a]`. Simplify using `only [map_sum, hc]`. Express the relevant statement in the definitionally equal form `∑ m, (∑ i, ev a i * dv (y m) i) • c (x m) = _`. Simplify using `only [← hh']`. Set `b : (K →+* ℂ) → I → ℝ` to `fun s i => (s (σ i β)).re * n s`.
+
+Establish `hb : ∀ s i, 0 < b s i` using `fun s i => mul_pos (hβ (s.comp (σ i))).1 (hn s)`. Establish `hb' : ∀ (s : K →+* ℂ) i, (b s i : ℂ) = s (σ i β) * n s` using `fun s i => by`. Establish `: s (σ i β) = ((s (σ i β)).re : ℂ)` using `Complex.ext rfl (hβ (s.comp (σ i))).2`. Rewrite using `[this]`. Simplify using `[b]`.
+
+Establish `hform : ∀ s z z', h.form s (Φ z) (Φ z') = ∑ i, b s i * (starRingEnd ℂ (s (z i)) * s (z' i))` using `fun s => by`. Use `form_eq_of_span h s Φ ev (b s) hsp fun a a' => sub_eq_zero.1 ?_` and prove the remaining obligations. Use `eq_zero_of_re_diag (fun a a' => h.form s (Φ (ev a)) (Φ (ev a')) - ∑ i, b s i * (starRingEnd ℂ (s (ev a i)) * s (ev a' i))) (fun a => w • a) (s (τ₀ w)) (hw s) (fun a a' a'' => ?_) (fun a a' => ?_) (fun a a' => ?_) (fun a => ?_) a a'` and prove the remaining obligations. Simplify using `only [hΦ]`. Simplify using `only [map_add, h.add_right, hev, mul_add, Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, h.conj_symm, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [_root_.mul_comm]`. Simplify using `only [hΦ]`.
+
+Simplify using `only [hc, h.smul_right, hev, he, mul_sub, Finset.mul_sum, map_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `: ∑ i, b s i * (starRingEnd ℂ (s (ev a i)) * s (ev a i)) = s (τ₀ (hK a a)) * n s`. Rewrite using `[hh, map_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `IsCMField.complexEmbedding_complexConj E (s.comp (σ i)) (e a)` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[hb', map_mul, map_mul, map_mul, map_mul, this]`. Simplify using `only [hev]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hΦ, Complex.sub_re, hnorm, Complex.re_mul_ofReal, sub_self]`. Take `⟨s₀⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hinj : ∀ z, Φ z = 0 → z = 0` using `fun z hz => by`. Establish `h1` using `hform s₀ z z`.
+
+Establish `h2 : h.form s₀ 0 0 = 0` using `by simpa using h.smul_right s₀ 0 0 0`. Rewrite `h1` using `[hz, h2]`. Establish `h3 : ∑ i, b s₀ i * Complex.normSq (s₀ (z i)) = 0`. Establish `: ((∑ i, b s₀ i * Complex.normSq (s₀ (z i)) : ℝ) : ℂ) = 0`. Rewrite using `[h1]`.
+
+Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Complex.normSq_eq_conj_mul_self]`. Conclude with `this` after adjusting the coercions. Rewrite `h3` using `[Finset.sum_eq_zero_iff_of_nonneg fun i _ => mul_nonneg (hb s₀ i).le (Complex.normSq_nonneg _)]`. Use function extensionality and compare the values at `i`.
+
+Use `(mul_eq_zero.1 (h3 i (Finset.mem_univ i))).resolve_left (hb s₀ i).ne'` as an intermediate fact. Simplify using `using this`. Establish `hinj' : Function.Injective Φ` using `(injective_iff_map_eq_zero Φ).2 hinj`. Establish `hact : ∀ (a : 𝓞 E) z, r a (Φ z) = Φ fun i => σ i a * z i` using `fun a z => by`. Establish `hz : z ∈ Submodule.span K (Set.range ev)` using `hsp ▸ Submodule.mem_top`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨u, rfl⟩` from `hv`. Rewrite using `[hΦ, ← hr, ← hΦ]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hev, Algebra.smul_def]`. Consider the case `zero => simp only [Pi.zero_apply, mul_zero, map_zero]`. Conclude with `(map_zero Φ).symm`. Consider the case `add u v _ _ hu hv`.
+
+Rewrite using `[map_add, map_add, hu, hv, ← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `smul t u _ hu`.
+
+Rewrite using `[map_smul, map_smul, hu, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmap : Submodule.span (𝓞 K) (Set.range c) = (Submodule.span (𝓞 K) (Set.range ev)).map (Φ.restrictScalars (𝓞 K))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Conclude with `funext fun a => (hΦ a).symm`. Establish `hline` using `single_mem_span_iff_of_selfDual O (𝓞 K) K L I τ₀ hK ev dv N x y hh' hexp hsp i₀`.
+
+Establish `hint : ∀ t : K, t ∈ (algebraMap (𝓞 K) K).range ↔ IsIntegral ℤ t` using `fun t => ⟨fun ⟨u, hu⟩ => hu ▸ u.isIntegral_coe, fun ht => ⟨⟨t, ht⟩, rfl⟩⟩`. Establish `hsing : ∀ t : K, t • Φ (Pi.single i₀ 1) = Φ (Pi.single i₀ t)` using `fun t => by`. Rewrite using `[← map_smul, ← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Use `⟨Φ (Pi.single i₀ 1), fun hv => ?_, fun s => ?_, fun z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `using congrFun (hinj _ hv) i₀`.
+
+Rewrite using `[hform, Finset.sum_eq_single i₀ (fun i _ hi => by simp [Pi.single_eq_of_ne hi]) (by simp)]`. Simplify using `[b]`. Introduce and unpack `⟨hz, hz'⟩`. Rewrite `hz` using `[hmap]`. Take `⟨u, hu, rfl⟩` from `hz`.
+
+Establish `hu' : u = Pi.single i₀ (u i₀)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i₀`. Simplify using `[hi]`. Rewrite using `[Pi.single_eq_of_ne hi]`.
+
+Assume the negation of the conclusion as `hne`. Use `hi (hσ (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)))` and prove the remaining obligations. Use `hz' a` as an intermediate fact. Rewrite `this` using `[LinearMap.restrictScalars_apply, hact, ← map_smul]`. Conclude with `mul_right_cancel₀ hne (congrFun (hinj' this) i)`.
+
+Use `⟨u i₀, by rw [hsing, ← hu']; rfl, fun a => (hint _).1 ((hline (u i₀)).1 (hu' ▸ hu) a)⟩` and prove the remaining obligations. Introduce and unpack `⟨t, rfl, ht⟩`. Rewrite using `[hsing, hmap]`. Use `⟨⟨_, (hline t).2 fun a => (hint _).2 (ht a), rfl⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hact, ← map_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i₀`. Simplify using `[hi]`. Simplify using `[Pi.single_eq_of_ne hi]`.
+-/
 theorem exists_eigenline {E K O L V I : Type} [Field E] [NumberField E] [IsCMField E] [Field K] [NumberField K]
     [CommRing O] [AddCommGroup L] [Module (𝓞 E) L] [Module O L] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Fintype I] (σ : I → (E →+* K)) (hσ : Function.Injective σ) (i₀ : I)
@@ -210,6 +276,47 @@ theorem exists_eigenline {E K O L V I : Type} [Field E] [NumberField E] [IsCMFie
     · simp [hi]
     · simp [Pi.single_eq_of_ne hi]
 
+/- English proof (translation)
+Introduce `hU hL E _ _ _ H K _ _ ω C D ε hK T x hsp hrk hKF hpos ⟨t⟩ ⟨n, hn, hx⟩ F h hh τ hτ`. Take `⟨τ₀, hτ₀w, hτ₀⟩` from `LieChar.ell_char E H (𝓞 K) ω C`. Take `⟨τ', hτ'⟩` from `(existsUnique_extend_ringOfIntegers_hom τ).exists`. Establish `hext : ∀ σ : E →+* K, σ (H.rt : E) = τ' (H.rt : E) → ∀ k : OK H, σ ((k : 𝓞 E) : E) = τ₀ k` using `fun σ hσ k => by`. Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`.
+
+Simplify `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` using `[map_ofNat]`. Establish `hw : σ (H.w0 : E) = τ₀ (wK H)`. Rewrite using `[hτ₀w, ← hτ, ← hτ']`. Establish `h3` using `congrArg σ h2`. Establish `h4` using `congrArg τ' h2`.
+
+Simplify using `only [map_mul, map_add, map_one, map_ofNat] at h3 h4`. Take the linear combination `(h3 - h4 + hσ) / 2`. Take `⟨m, rfl, -⟩` from `existsUnique_coord H k`. Simplify using `only [map_add, map_mul, map_intCast, ← hw]`. Simplify using `[wK]`.
+
+Take `⟨𝔞, e, β, h𝔞, he, hrange, hβc, hβ, hform, hnorm⟩` from `GlobalTheory.T.exists_fractionalIdeal_traceForm_rank_one E H D ε hK hrk hKF hpos`. Take `⟨k, hk, hku, -, -, -, -, N, xs, ys, hdual⟩` from `GlobalTheory.T.exists_unique_cmHermitianLatticeForm E H D ε`. Take `rfl` from `hku hK hKF`. Take `⟨c1, c2, c3, c4, c5, -⟩` from `integral_tangent_coordinates K T.pol F`. Take `⟨r, hr, hr'⟩` from `GlobalTheory.T.exists_lieRepresentation_eigenLattices K T.pol F (𝓞 E) T.t.act`.
+
+Use `letI : Algebra (OK H) (𝓞 K) := τ₀.toAlgebra`. Take `⟨hfin, hproj, -⟩` from `(OK_isDedekindDomain_and_projective E H).2.2.2.2.2 D.La D.fin D.proj`. Take `⟨f, -, f2, f3, f4, f5⟩` from `lie_tensor_line (𝓞 K) (OK H) C.P.A T.t.G C.act _ D.La t.ten C.v hfin hproj C.basis hτ₀`. Use `choose co hco hcou using fun z => c1 (f z) ((f2 _).2 ⟨z, rfl⟩)`. Establish `coadd : ∀ z z', co (z + z') = co z + co z'` using `fun z z' => (hcou _ _ (by rw [f3]; exact c3 _ _ _ _ (hco z) (hco z'))).symm`.
+
+Establish `cosmul : ∀ (a : 𝓞 K) z, co (a • z) = a • co z` using `fun a z => (hcou _ _ (c4 _ _ _ _ (hco z) (f4 a z))).symm`. Set `c : D.La →+ (Fin F.P₀.g → K)` to `AddMonoidHom.mk' (fun a => co (TensorProduct.tmul (OK H) 1 a)) fun a b => by`. Rewrite using `[TensorProduct.tmul_add, coadd]`. Establish `hc : ∀ a, F.IsCoord (C.v ≫ t.ten.tmul a) (c a)` using `fun a => f5 a ▸ hco _`. Establish `hlat : F.lieLat = Submodule.span (𝓞 K) (Set.range c)`.
+
+Use `le_antisymm (fun z hz => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Take `⟨u, hu⟩` from `(c5 z).1 hz`. Take `⟨z', rfl⟩` from `(f2 u).1 hu.1`. Rewrite using `[hcou _ _ hu]`. Use `clear hu hz`.
+
+Proceed by induction on `z' with`. Consider the case `zero`. Use `cosmul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `tmul a m`. Rewrite using `[show TensorProduct.tmul (OK H) a m = a • TensorProduct.tmul (OK H) 1 m by`. Simplify using `[TensorProduct.smul_tmul'], cosmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`.
+
+Consider the case `add z z' hz hz' => rw [coadd]`. Conclude with `add_mem hz hz'`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(c5 _).2 ⟨_, hc a⟩`. Establish `hβ' : ∀ s : E →+* ℂ, 0 < (s β).re ∧ (s β).im = 0` using `fun s => ⟨hβ s, by`.
+
+Rewrite using `[← Complex.conj_eq_iff_im, ← IsCMField.complexEmbedding_complexConj E s, hβc]⟩`. Take `⟨a₀, ha₀⟩ : ∃ a, e a ≠ 0` from `by by_contra! h0`. Use `h𝔞 (FractionalIdeal.coeToSubmodule_eq_bot.1 ?_)` and prove the remaining obligations. Rewrite using `[← hrange, LinearMap.range_eq_bot]`. Conclude with `LinearMap.ext h0`.
+
+Establish `: Finite (E →+* K)` using `Finite.of_equiv _ (RingHom.equivRatAlgHom E K).symm`. Use `Fintype.ofFinite {σ : E →+* K // σ (H.rt : E) = τ' (H.rt : E)}` as an intermediate fact. Take `⟨v, hv0, hvn, hv⟩` from `exists_eigenline (I := {σ : E →+* K // σ (H.rt : E) = τ' (H.rt : E)}) Subtype.val Subtype.val_injective ⟨τ', rfl⟩ τ₀ (wK H) (fun s => by`. Introduce `him`. Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`.
+
+Simplify `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` using `[map_ofNat]`. Establish `h3` using `congrArg (s.comp τ') h2`. Establish `h4` using `congrArg (s.comp τ') (HostModel.coe_sq_eq_neg H.rt_sq)`. Establish `h5 : s (τ' (H.w0 : E)) = s (τ₀ (wK H))` using `congrArg s (hext τ' rfl (wK H))`. Simplify using `only [map_mul, map_add, map_one, map_ofNat, map_pow, map_neg, map_natCast, RingHom.comp_apply] at h3 h4`.
+
+Establish `h6` using `congrArg Complex.im h3`. Establish `h7` using `congrArg Complex.re h4`. Establish `h8 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Rewrite `h6` using `[h5]`. Simplify using `[him] at h6`.
+
+Simplify using `[sq, ← h6] at h7`. Use polynomial arithmetic with `[mul_self_nonneg (s (τ' (H.rt : E))).re]) e`. Use the proof step `(fun i a b => by`. Rewrite using `[← hext i.1 i.2, ← map_mul, Subalgebra.smul_def, map_smul]`. Use the proof step `rfl) a₀ ha₀ β hβ' (fun x y => k x y)`.
+
+Use the proof step `(fun a b => by rw [← hext τ' rfl, hform K (splits_iff_card.1 hsp) τ' a b, finsum_eq_sum_of_fintype])`. Use `N xs ys hdual h n (fun s => (hn s).1) c`. Use the proof step `(fun a m => by`. Express the relevant statement in the definitionally equal form `co _ = _ • co _`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul (𝓞 K) a, cosmul]`.
+
+Use the proof step `rfl) (fun a => r a)`. Use the proof step `(fun s a => by`. Use `(c1 _ (hc _).1).unique (hc _) ?_` and prove the remaining obligations. Rewrite using `[t.lin, ← Category.assoc]`. Conclude with `hr s _ _ (hc a))`.
+
+Use the proof step `(fun s a => GlobalTheory.T.lieAlgebraSquaredLength_comp_pairing_hom hU hL (𝓞 K) C.P T.pol (t.ten.tmul a) (C.act.act (k a a)) C.v (τ₀ (k a a)) (s.comp (algebraMap (𝓞 K) K)) (n s) _ inferInstance (C.act.hom _) (t.lam a a) (C.basis.1 0) (hτ₀ _) (((hn s).2 _).2 rfl) (HermNorm.isLieNo …`. Establish `hE : (Module.finrank ℚ E : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Rewrite using `[GlobalTheory.T.two_mul_deg_dual_line_cmIdeal E K _ h _ v τ' 𝔞 β n h𝔞 hv0 (fun s => (hn s).1) hβ' hvn fun z => ?_, hnorm, ← hx]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[(hr' τ z).1, hlat]`. Use `Iff.trans (and_congr_right fun _ => forall_congr' fun a => by rw [hτ']; rfl) ((hv z).trans ?_)` and prove the remaining obligations. Use `exists_congr fun s => and_congr_right fun _ => ⟨fun h1 b hb => ?_, fun h1 b => h1 _ ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : b ∈ LinearMap.range e` from `hrange ▸ hb`. Conclude with `h1 a`.
+
+Conclude with `(hrange.le ⟨b, rfl⟩ : e b ∈ (𝔞 : Submodule (𝓞 E) E))`.
+-/
 theorem two_mul_deg_eigLat : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K] [NumberField K] (ω : 𝓞 K) (C : Ell H (𝓞 K) ω) (D : Datum H) (ε : ℤˣ) (hK : D.La → D.La → OK H) (T : PAT H (Sp (𝓞 K))) (x : ℝ), Splits E K → D.p + D.q = 1 → IsKForm D ε hK → (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → Nonempty (IsTen C D hK T) → C.HasPeriod x → ∀ (F : GenFib T.pol) (h : HermFam K (Fin F.P₀.g → K)), F.IsHerm h → ∀ τ : 𝓞 E →+* 𝓞 K, τ H.w0 = ω → 2 * deg h (F.eigLat T.t.act τ) = x + Real.log H.d / 2 - Real.log (NumberField.rootDiscr E) := by
   intro hU hL E _ _ _ H K _ _ ω C D ε hK T x hsp hrk hKF hpos ⟨t⟩ ⟨n, hn, hx⟩ F h hh τ hτ
   classical

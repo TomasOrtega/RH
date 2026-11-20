@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdTh
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om hP mu hmu _ ΛV ΛW hV hW f hf hvac v ε k hv hk hst`. Take `⟨uV, uW⟩` from `hP.unr v ε hv`. Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.WeilParts.SuppPl ε V 1` using `fun i j => by`. Rewrite using `[GlobalTheory.FinWeilO.mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+
+Use `GlobalTheory.T.weilDatum_fixes_vacuum_nonSplitPlace_unramified D ψ hP.weil.std V W ΛV ΛW hV hW χV χW om hP.eta hP.weil v ε hv uV uW 1 k h1 hk (fun u => ?_) f hf fun u hu => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.InertVac.mem_latO_place_iff hv.1, GlobalTheory.InertVac.mem_latO_place_iff hv.1, ← hst, ← GlobalTheory.FinWeilO.actO_smul, (GlobalTheory.InertVac.actO_injective 1 k).eq_iff]`. Take `⟨a, ha, ha2⟩` from `GlobalTheory.FinWeilO.exists_half_of_nonSplit hv`. Establish `h1 : 2 • (a • u) = u`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, ha2, GlobalTheory.InertVac.placeIdem_smul_eq hv.1 hu]`.
+
+Establish `h2` using `hvac.1 (a • u) (GlobalTheory.LatticeStable.smul_mem_latO D V W _ _ _ a ha u (GlobalTheory.PlaceModel.latO_le_top _ hu))`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis. Take `⟨x, hx, -, xs, x1, x2⟩` from `GlobalTheory.VacInert.exists_unit_root hv W k hk`. Rewrite using `[hmu.2 k x hx, uV x xs x1 x2, Circle.coe_one]`.
+-/
 theorem nonSplit_fixes_latVac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ mu : GA D W → ℂ, Formalism.L2.Pj.MuVal W χV mu → ∀ (H : Geo.Tor.Host D.host.E) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)), IsSelfDualC V ΛV → IsSelfDualC W ΛW → ∀ f, IsThetaFunO ψ V W f → IsLatVac (heisO ψ V W) (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) f → ∀ v ε (k : GA D W), GlobalTheory.WeilParts.NonSplitAt D v ε → GlobalTheory.WeilParts.SuppPl ε W k → (∀ u, u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔ actO V W 1 k u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True)) → om (1, k) f = f ∧ (V.rank ≠ 0 → mu k = 1) := by
   intro D ψ θ V W χV χW om hP mu hmu _ ΛV ΛW hV hW f hf hvac v ε k hv hk hst
   obtain ⟨uV, uW⟩ := hP.unr v ε hv

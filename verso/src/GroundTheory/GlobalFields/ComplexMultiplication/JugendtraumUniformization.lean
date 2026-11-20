@@ -15,12 +15,18 @@ section Points
 
 variable {F : Type*} [Field F]
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem vcPoint_eq_variableChangePoint (C : VariableChange F) {W W' : WeierstrassCurve F}
     (h : C • W = W') (P : W.toAffine.Point) : vcPoint C h P = variableChangePoint C h P := by
   rcases P with _ | ⟨x, y, hP⟩
   · rfl
   · rfl
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem pointMapRing_eq_pointMapOfRingHom {L : Type*} [Field L] [DecidableEq F] [DecidableEq L]
     (φ : F →+* L) (W : WeierstrassCurve F) (P : W.toAffine.Point) :
     pointMapRing φ W P = pointMapOfRingHom φ P := by
@@ -34,6 +40,11 @@ section Compare
 
 variable {E₁ E₂ : WeierstrassCurve ℂ} [E₁.IsElliptic] [E₂.IsElliptic]
 
+/- English proof (translation)
+Take `⟨C₁, h₁, e₁⟩` from `exists_vcPoint_of_isAnalyticUniformization hf₁`. Take `⟨C₂, h₂, e₂⟩` from `exists_vcPoint_of_isAnalyticUniformization hf₂`. Establish `hinv : C₁⁻¹ • E₁ = weierstrassCurve L` using `by rw [← h₁, inv_smul_smul]`. Use `⟨C₂ * C₁⁻¹, by rw [mul_smul, hinv, h₂], fun z ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[vcPoint_mul_apply C₂ C₁⁻¹ hinv h₂, e₁ z, e₂ z]`.
+
+Use `congr 1`. Conclude with `(vcPoint_inv_vcPoint C₁ h₁ _).symm`.
+-/
 theorem exists_vcPoint_eq_of_isAnalyticUniformization {L : PeriodPair}
     {f₁ : ℂ →+ E₁.toAffine.Point} {f₂ : ℂ →+ E₂.toAffine.Point}
     (hf₁ : IsAnalyticUniformization L.lattice f₁) (hf₂ : IsAnalyticUniformization L.lattice f₂) :
@@ -46,10 +57,16 @@ theorem exists_vcPoint_eq_of_isAnalyticUniformization {L : PeriodPair}
   congr 1
   exact (vcPoint_inv_vcPoint C₁ h₁ _).symm
 
+/- English proof (translation)
+Rewrite using `[← variableChange_j E₁ D]`. Conclude with `j_congr h.symm`.
+-/
 theorem j_eq_of_smul_eq {D : VariableChange ℂ} (h : D • E₁ = E₂) : E₂.j = E₁.j := by
   rw [← variableChange_j E₁ D]
   exact j_congr h.symm
 
+/- English proof (translation)
+Take `⟨D, h, -⟩` from `exists_vcPoint_eq_of_isAnalyticUniformization hf₁ hf₂`. Conclude with `j_eq_of_smul_eq h`.
+-/
 theorem j_eq_of_isAnalyticUniformization {L : PeriodPair}
     {f₁ : ℂ →+ E₁.toAffine.Point} {f₂ : ℂ →+ E₂.toAffine.Point}
     (hf₁ : IsAnalyticUniformization L.lattice f₁) (hf₂ : IsAnalyticUniformization L.lattice f₂) :
@@ -57,6 +74,9 @@ theorem j_eq_of_isAnalyticUniformization {L : PeriodPair}
   obtain ⟨D, h, -⟩ := exists_vcPoint_eq_of_isAnalyticUniformization hf₁ hf₂
   exact j_eq_of_smul_eq h
 
+/- English proof (translation)
+Take `⟨D, h, e⟩` from `exists_vcPoint_eq_of_isAnalyticUniformization hf₁ hf₂`. Rewrite using `[e z, vcPoint_eq_variableChangePoint]`. Conclude with `weberFunction_variableChangePoint D h hE₁ hE₂ _`.
+-/
 theorem weberFunction_eq_of_isAnalyticUniformization {L : PeriodPair} (hE₁ : IsShortForm E₁)
     (hE₂ : IsShortForm E₂) {f₁ : ℂ →+ E₁.toAffine.Point} {f₂ : ℂ →+ E₂.toAffine.Point}
     (hf₁ : IsAnalyticUniformization L.lattice f₁) (hf₂ : IsAnalyticUniformization L.lattice f₂)
@@ -76,6 +96,13 @@ variable {E₁ E₂ : WeierstrassCurve ℂ} [E₁.IsElliptic] [E₂.IsElliptic]
 
 include hK in
 
+/- English proof (translation)
+Establish `hL` using `lattice_idealPeriodPair (algebraMap K ℂ) hK 𝔞`. Establish `hξ : ξ.1 • E = E` using `MulAction.mem_stabilizer_iff.mp ξ.2`. Establish `hg` using `hf.vcPoint ξ.1 hξ`. Rewrite `hf`, `hg` using `[← hL]`. Take `⟨c, -, hcl, hcz⟩` from `exists_mul_eq_of_isAnalyticUniformization hf hg`.
+
+Rewrite `hcl` using `[hL]`. Take `⟨ε, rfl⟩` from `exists_unit_of_forall_mem_iff (algebraMap K ℂ) hK _ hcl`. Use `⟨ε, fun z ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `hcz z`. Rewrite `e` using `[AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply]`.
+
+Rewrite using `[automorphismPoint, ← vcPoint_eq_variableChangePoint, e]`.
+-/
 theorem exists_unit_automorphismPoint_eq (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {E : WeierstrassCurve ℂ}
     [E.IsElliptic] {f : ℂ →+ E.toAffine.Point}
     (hf : IsAnalyticUniformization (idealLattice (algebraMap K ℂ) 𝔞) f)

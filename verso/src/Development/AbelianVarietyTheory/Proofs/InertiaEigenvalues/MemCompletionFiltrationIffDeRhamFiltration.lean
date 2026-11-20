@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.BKGal.JumpDR.CmpFil
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add v w hv hw => simp only [map_add, hv, hw]`. Consider the case `tmul v c`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [zero_mul, map_zero, AddMonoidHom.zero_apply]`. Consider the case `add x x' hx hx' => simp only [add_mul, map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `tmul o b`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [mul_zero, map_zero, AddMonoidHom.zero_apply]`.
+
+Consider the case `add y y' hy hy' => simp only [mul_add, map_add, AddMonoidHom.add_apply, hy, hy']`. Consider the case `tmul o' b'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hA, hA, hA, map_mul, mul_assoc, h1, mul_smul]`.
+-/
 theorem amulG {l : ℕ} [Fact l.Prime] {O K V R : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K]
     [AddCommGroup V] [Module K V] [Module ℚ_[l] V] [CommRing R] [Algebra ℚ_[l] R] (ι' : O → K)
     (h1 : ∀ o o', ι' (o * o') = ι' o * ι' o') (cD : Per.BdRp l →+* R)
@@ -33,6 +40,9 @@ theorem amulG {l : ℕ} [Fact l.Prime] {O K V R : Type} [CommRing O] [Algebra �
       | tmul o' b' =>
         rw [Algebra.TensorProduct.tmul_mul_tmul, hA, hA, hA, map_mul, mul_assoc, h1, mul_smul]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add v w hv hw => simp only [map_add, hv, hw]`. Consider the case `tmul v c => rw [Algebra.TensorProduct.one_def, hA, map_one, one_mul, h1, one_smul]`.
+-/
 theorem aoneG {l : ℕ} [Fact l.Prime] {O K V R : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K]
     [AddCommGroup V] [Module K V] [Module ℚ_[l] V] [CommRing R] [Algebra ℚ_[l] R] (ι' : O → K)
     (h1 : ι' 1 = 1) (cD : Per.BdRp l →+* R)
@@ -46,6 +56,9 @@ theorem aoneG {l : ℕ} [Fact l.Prime] {O K V R : Type} [CommRing O] [Algebra �
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `amulG (K := ↥LL.1) (fun o : ↥(OL LL) => (o : ↥LL.1)) (fun _ _ => rfl) (GlobalTheory.BKGal.JumpDR.cD Td) A hA x y v`.
+-/
 theorem amulL {l : ℕ} [Fact l.Prime] {LL : FinExt l} {T : QLat LL} {Pl : LocPrime l} {AI : LocAinf l Pl} {Td : LocTied l Pl AI}
     (A : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR))
     (hA : ∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), A (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c))
@@ -54,6 +67,9 @@ theorem amulL {l : ℕ} [Fact l.Prime] {LL : FinExt l} {T : QLat LL} {Pl : LocPr
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `aoneG (K := ↥LL.1) (fun o : ↥(OL LL) => (o : ↥LL.1)) rfl (GlobalTheory.BKGal.JumpDR.cD Td) A hA v`.
+-/
 theorem aoneL {l : ℕ} [Fact l.Prime] {LL : FinExt l} {T : QLat LL} {Pl : LocPrime l} {AI : LocAinf l Pl} {Td : LocTied l Pl AI}
     (A : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR))
     (hA : ∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), A (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c))
@@ -61,6 +77,55 @@ theorem aoneL {l : ℕ} [Fact l.Prime] {LL : FinExt l} {T : QLat LL} {Pl : LocPr
   aoneG (K := ↥LL.1) (fun o : ↥(OL LL) => (o : ↥LL.1)) rfl (GlobalTheory.BKGal.JumpDR.cD Td) A hA v
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hbijN : ∀ N : ℕ, Function.Bijective (A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ N))`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Establish `h0 : ⇑(A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ 0)) = id` using `funext fun v => by rw [pow_zero]; exact aone v`.
+
+Rewrite using `[h0]`. Conclude with `Function.bijective_id`. Consider the case `succ N ih`. Establish `h0 : ⇑(A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ (N + 1))) = ⇑(A (ϖ.iD t K (fun _ => Ehat O K l e))) ∘ ⇑(A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ N))`. Use function extensionality and compare the values at `fun v => by rw [pow_succ', amul]; rfl`.
+
+Rewrite using `[h0]`. Conclude with `hbij.comp ih`. Establish `hSh : ∀ (N : ℕ) (y : W) (j : ℤ), Fil j y ↔ Fil (j + N) (A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ N) y)`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => intro y j`. Rewrite using `[pow_zero, aone, Nat.cast_zero, add_zero]`. Consider the case `succ N ih`. Introduce `y j`. Establish `e1 : (j + ((N + 1 : ℕ) : ℤ)) = (j + N) + 1` using `by push_cast; ring`.
+
+Establish `e2 : A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ (N + 1)) y = A (ϖ.iD t K (fun _ => Ehat O K l e)) (A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ N) y)` using `by rw [pow_succ', amul]`. Rewrite using `[e1, e2]`. Conclude with `(ih y j).trans (hS _ _)`. Establish `Fb : ∀ (d : ι → OD l O) (kk : ℕ), Fil kk (∑ i, A (d i) (f i)) ↔ ∀ i, d i ∈ Ideal.span {(ϖ.iD t K (fun _ => Ehat O K l e)) ^ kk}`. Introduce `d kk`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hd`. Take `⟨v', hv'⟩` from `(hbijN kk).2 (∑ i, A (d i) (f i))`. Establish `h0 : Fil 0 v'` using `(hSh kk v' 0).2 (by rw [hv', zero_add]; exact hd)`. Take `⟨z, rfl⟩` from `(hspan v').1 h0`.
+
+Establish `h4 : ∑ i, A (d i - (ϖ.iD t K (fun _ => Ehat O K l e)) ^ kk * z i) (f i) = 0`. Simplify using `only [map_sub, AddMonoidHom.sub_apply, Finset.sum_sub_distrib, amul]`. Rewrite using `[← map_sum, hv', sub_self]`. Introduce `i`. Establish `h5` using `hind _ h4 i`.
+
+Rewrite `h5` using `[sub_eq_zero]`. Rewrite using `[h5]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Introduce `hd choose z hz using fun i => Ideal.mem_span_singleton'.1 (hd i)`. Establish `h6 : ∑ i, A (d i) (f i) = A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ kk) (∑ i, A (z i) (f i))`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hz i, mul_comm, amul]`. Establish `h7` using `(hSh kk _ 0).1 ((hspan _).2 ⟨z, rfl⟩)`. Rewrite `h7` using `[zero_add]`.
+
+Rewrite using `[h6]`. Conclude with `h7`. Establish `key : ∀ (N : ℕ) (x : ZMod a → ι → Ahat O K l e), (∀ τ i, algebraMap (Ahat O K l e) (AhatE O K l e) (x τ i) = algebraMap (Ahat O K l e) (AhatE O K l e) (Ehat O K l e) ^ N * GlobalTheory.BKGal.JumpDR.hsum P s (fun k => (m k).1) τ i) → A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ N) (∑ k …`. Introduce `N x hx`. Set `s' : Fin n → ZMod a → Ahat O K l e` to `fun k => (fun _ => Ehat O K l e) ^ (N + β) * s k`.
+
+Set `c : ZMod a → ι → Ahat O K l e` to `fun τ j => ∑ i, y τ j i * x τ i`. Establish `hw : ∀ τ i, GlobalTheory.BKGal.JumpDR.hsum P s' (fun k => (m k).1) τ i = algebraMap (Ahat O K l e) (AhatE O K l e) (Ehat O K l e) ^ (N + β) * GlobalTheory.BKGal.JumpDR.hsum P s (fun k => (m k).1) τ i`. Introduce `τ i`. Simplify using `only [GlobalTheory.BKGal.JumpDR.hsum, s', Pi.mul_apply, Pi.pow_apply, map_mul, map_pow, Finset.mul_sum, mul_assoc]`. Establish `hc : ∀ τ j, algebraMap (Ahat O K l e) (AhatE O K l e) (c τ j) = ∑ i, hat O l e (P.mxInv τ j i) * GlobalTheory.BKGal.JumpDR.hsum P s' (fun k => (m k).1) τ i`.
+
+Introduce `τ j`. Simplify using `only [c, map_sum, map_mul, hy, hx, hw]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hC'` using `hC s' c hc`.
+
+Establish `h1 : ∑ k, A (ϖ.iD t K (s' k)) (g k) = A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ (N + β)) (∑ k, A (ϖ.iD t K (s k)) (g k))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [s', map_mul, map_pow]`. Rewrite using `[amul]`.
+
+Establish `h2' : ∑ j, A (ϖ.iD t K (fun τ => c τ j)) (gB j) = ∑ i, A (ϖ.iD t K (fun τ => x τ i)) (A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ β) (f i))`. Establish `h3 : ∀ j, (fun τ => c τ j) = ∑ i, (fun τ => x τ i) * (fun τ => y τ j i)`. Introduce `j`. Use function extensionality and compare the values at `τ`. Simplify using `only [c, Finset.sum_apply, Pi.mul_apply, mul_comm]`.
+
+Simplify using `only [h3, map_sum, AddMonoidHom.finset_sum_apply, map_mul, amul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hf1 i, map_sum]`. Rewrite `hC'` using `[h1, h2']`.
+
+Establish `h3 : ∑ i, A (ϖ.iD t K (fun τ => x τ i)) (A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ β) (f i)) = A ((ϖ.iD t K (fun _ => Ehat O K l e)) ^ β) (∑ i, A (ϖ.iD t K (fun τ => x τ i)) (f i))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← amul, ← amul, mul_comm]`. Rewrite `hC'` using `[h3, pow_add, mul_comm, amul]`.
+
+Conclude with `(hbijN β).1 hC'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, hN, hx⟩ choose x' hx' using hx`. Establish `hkj : (((j + N).toNat : ℕ) : ℤ) = j + N` using `Int.toNat_of_nonneg hN`. Set `x : ZMod a → ι → Ahat O K l e` to `fun τ i => Ehat O K l e ^ (j + N).toNat * x' τ i`.
+
+Establish `hxx : ∀ τ i, algebraMap (Ahat O K l e) (AhatE O K l e) (x τ i) = algebraMap (Ahat O K l e) (AhatE O K l e) (Ehat O K l e) ^ N * GlobalTheory.BKGal.JumpDR.hsum P s (fun k => (m k).1) τ i`. Introduce `τ i`. Rewrite using `[← map_pow]`. Conclude with `hx' τ i`. Establish `hK` using `key N x hxx`.
+
+Establish `hmem : Fil (((j + N).toNat : ℕ) : ℤ) (∑ i, A (ϖ.iD t K (fun τ => x τ i)) (f i))`. Use `(Fb _ _).2 fun i => ?_` and prove the remaining obligations. Establish `h8 : (fun τ => x τ i) = (fun _ => Ehat O K l e) ^ (j + N).toNat * fun τ => x' τ i`. Use function extensionality and compare the values at `τ`. Simplify using `only [x, Pi.mul_apply, Pi.pow_apply]`.
+
+Rewrite using `[h8, map_mul, map_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Rewrite `hmem` using `[← hK, hkj]`. Conclude with `(hSh N _ j).2 hmem`. Introduce `hF`.
+
+Take `⟨N₁, x₁, hx₁⟩` from `hE1`. Set `x : ZMod a → ι → Ahat O K l e` to `fun τ i => Ehat O K l e ^ j.natAbs * x₁ τ i`. Establish `hxx : ∀ τ i, algebraMap (Ahat O K l e) (AhatE O K l e) (x τ i) = algebraMap (Ahat O K l e) (AhatE O K l e) (Ehat O K l e) ^ (N₁ + j.natAbs) * GlobalTheory.BKGal.JumpDR.hsum P s (fun k => (m k).1) τ i`. Introduce `τ i`. Simplify using `only [x, map_mul, map_pow, hx₁, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hK` using `key _ x hxx`. Establish `hN : 0 ≤ j + ((N₁ + j.natAbs : ℕ) : ℤ)` using `by push_cast; have := neg_abs_le j; omega`. Establish `hkj : (((j + ((N₁ + j.natAbs : ℕ) : ℤ)).toNat : ℕ) : ℤ) = j + ((N₁ + j.natAbs : ℕ) : ℤ)` using `Int.toNat_of_nonneg hN`. Establish `h1` using `(hSh (N₁ + j.natAbs) _ j).1 hF`.
+
+Rewrite `h1` using `[hK, ← hkj]`. Establish `h2` using `(Fb _ _).1 h1`. Use `⟨N₁ + j.natAbs, hN, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `PiSys.eq_Ehat_pow_mul_of_iD_mem l a e O K t ϖ _ _ (h2 i)`. Use `⟨z τ, ?_⟩` and prove the remaining obligations.
+
+Establish `h9` using `congrFun hz τ`. Simplify using `only [Pi.mul_apply, Pi.pow_apply] at h9`. Rewrite using `[← h9, map_pow]`. Conclude with `hxx τ i`.
+-/
 theorem coreG {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O] [Algebra ℤ_[l] O]
     [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     [NormedAlgebra ℚ_[l] K] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -196,6 +261,9 @@ end GlobalTheory.BKGal.JumpDR.CmpFil
 open GlobalTheory.BKGal.JumpDR.CmpFil in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hFont l _ a e _ _ ϖ LL _ _ h2 ι _ _ P T I jB Pl AI Td hcmp X hX A hA n s m j`. Take `⟨hbij, hS⟩` from `GlobalTheory.T.eisenstein_mul_bijective_shifts_filtrationV l a e ϖ LL T Pl AI Td A hA`. Take `⟨β, y, hy⟩` from `GlobalTheory.T.exists_eisenstein_pow_mul_phiMatrix_inv_ahat l a e ϖ LL ι P`. Take `⟨f, hf1, hspan, hind⟩` from `GlobalTheory.T.breuilKisin_basis_images_basis_BdRplus hFont l a e ϖ LL h2 ι P T I jB Pl AI Td hcmp X hX A hA β y hy`. Conclude with `coreG (thetaW a LL) ϖ P A (fun j y => y ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) j) (amulL A hA) (aoneL A hA) hbij hS (fun j => X (jB (Pi.single j 1))) β y hy f hf1 hspan hind s m (fun k => X (jB (toBcris (thetaW a LL) ϖ P (m k))) …`.
+-/
 theorem GlobalTheory.BKGal.JumpDR.inEhat_iff_filV : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI), IsCrisCmp I jB → ∀ (X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR), (∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), X ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) → ∀ (A : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), A (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (n : ℕ) (s : Fin n → ZMod a → Ahat ↥(OL LL) ↥LL.1 l e) (m : Fin n → P.MMl) (j : ℤ), GlobalTheory.BKGal.JumpDR.InEhat ↥(OL LL) ↥LL.1 l e j (GlobalTheory.BKGal.JumpDR.hsum P s (fun k => (m k).1)) ↔ ∑ k, A (ϖ.iD (thetaW a LL) ↥LL.1 (s k)) (X (jB (toBcris (thetaW a LL) ϖ P (m k)))) ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) j := by
   intro hFont l _ a e _ _ ϖ LL _ _ h2 ι _ _ P T I jB Pl AI Td hcmp X hX A hA n s m j
   obtain ⟨hbij, hS⟩ := GlobalTheory.T.eisenstein_mul_bijective_shifts_filtrationV l a e ϖ LL T Pl AI Td A hA

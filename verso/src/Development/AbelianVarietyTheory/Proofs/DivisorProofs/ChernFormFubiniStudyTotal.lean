@@ -16,6 +16,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FSMass
 
+/- English proof (translation)
+Introduce `N`. Establish `hproj : IsProjOver (PSpace.str ℂ N)` using `ProjSpace.isProjOver_str ℂ N`. Use `haveI : IsIntegral (PSpace ℂ N) := ProjSpace.isIntegral_of_isDomain ℂ N`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver (σ := RingHom.id ℂ) hproj`. Establish `hC : ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).IsCInf` using `(ProjSpace.hermitianTwistingSheaf ℂ N).cInf _`.
+
+Establish `hSP : ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).SemiPosReg N` using `(HermLB.semiPos_fs _ _ _ _ _ _ : (ProjSpace.hermitianTwistingSheaf ℂ N).SemiPos N) _`. Use `⟨?_, by rw [Weight.chernPart_neg_eq_zero hC hSP]; rfl⟩` and prove the remaining obligations. Take `⟨c, i, hsrc, htgt, hsub, hφv⟩` from `GlobalTheory.T.exists_projSpace_standardChart_fubiniStudy N`. Establish `hmem : c.e.symm 0 ∈ c.e.source` using `c.e.map_target (htgt ▸ mem_univ _)`. Establish `hgen : genericPoint (PSpace ℂ N) ∈ ProjSpace.chart ℂ N 0`.
+
+Establish `h0 : c.e.symm 0 ∈ ptsIn (PSpace.str ℂ N) (RingHom.id ℂ) (ProjSpace.chart ℂ N 0)` using `hsrc ▸ hmem`. Conclude with `((genericPoint_spec (PSpace ℂ N)).mem_open_set_iff (ProjSpace.chart ℂ N 0).isOpen).2 ⟨_, by simp, mem_ptsIn.1 h0⟩`. Establish `hnull` using `GlobalTheory.T.chernPart_complement_dense_open_null_field ℂ (PSpace ℂ N) (PSpace.str ℂ N) (RingHom.id ℂ) N hproj _ hgen _ ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)) 1`. Rewrite `hnull` using `[← hsrc]`. Establish `hmeas : MeasurableSet c.e.source` using `c.e.open_source.measurableSet`.
+
+Rewrite using `[← union_compl_self c.e.source, measure_union disjoint_compl_right hmeas.compl, hnull, add_zero, Weight.chernPart_apply hC 1 c hmeas subset_rfl, c.e.image_source_eq_target, htgt, Measure.restrict_univ]`. Use `Eq.trans (lintegral_congr fun v => ?_) (GlobalTheory.T.lintegral_fubiniStudy_density_eq_one' N)` and prove the remaining obligations. Establish `hv : c.e.symm v ∈ c.e.source` using `c.e.map_target (htgt ▸ mem_univ _)`. Rewrite using `[AlgChart.chernDens_eq c hC hv (hsub hv), AlgChart.hess, c.e.right_inv (htgt ▸ mem_univ _)]`. Establish `hf : (fun w => ((((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).φ i (c.e.symm w) : ℝ) : ℂ)) = fun w => ((Real.log (1 + ‖w‖ ^ 2) : ℝ) : ℂ)` using `funext fun w => by rw [hφv w]`.
+
+Rewrite using `[hf, GlobalTheory.T.det_complexHessian_fubiniStudy_potential N v]`. Simplify using the standard rewrite rules.
+-/
 theorem chern_mass_hermitian_O_one_projective : ∀ N : ℕ, ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).chernPart N 1 Set.univ = 1 ∧ ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).chernPart N (-1) Set.univ = 0 := by
   intro N
   have hproj : IsProjOver (PSpace.str ℂ N) := ProjSpace.isProjOver_str ℂ N

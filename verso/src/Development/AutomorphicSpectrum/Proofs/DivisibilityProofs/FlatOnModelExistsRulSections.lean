@@ -22,6 +22,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.RuleGlue
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p z`. Use `haveI : IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Use `sub_eq_zero.1 (eq_zero_of_fields _ fun F _ ψ => ?_)` and prove the remaining obligations. Establish `hsp` using `Formalism.L2.Pj.CompSplitPfB.cspB_idem_spec C hC z.x z.x_over (kerPt ψ)`. Establish `hid` using `Formalism.L2.Pj.CompSplitPfB.cspB_idem_idem C hC z.x z.x_over`.
+
+Establish `hl : Formalism.L2.Pj.CompSplitPfB.cspB_lift z.x z.x_over = frPtF z` using `rfl`. Rewrite `hsp` using `[hl, ← range_fpt_subset_iff]`. Establish `hi : Formalism.L2.Pj.CompSplitPfB.cspB_rule Xo c C hC p z = Formalism.L2.Pj.CompSplitPfB.cspB_idem C hC z.x z.x_over` using `rfl`. Rewrite using `[hi, map_sub]`. Use `set i := Formalism.L2.Pj.CompSplitPfB.cspB_idem C hC z.x z.x_over`.
+
+Establish `hker : i ∉ (kerPt ψ).asIdeal ↔ ψ i ≠ 0` using `Iff.rfl`. Rewrite `hsp` using `[hker]`. Establish `h01 : ψ i = 0 ∨ ψ i = 1` using `IsIdempotentElem.iff_eq_zero_or_one.1 (hid.map ψ)`. Distinguish the cases in `hr : Set.range (fpt z ψ) ⊆ C`. Rewrite using `[(he p z F ψ).2 hr]`.
+
+Break down `h01 with h | h` into its components or cases. Conclude with `absurd h (hsp.2 hr)`. Rewrite using `[h, sub_self]`. Rewrite using `[(he p z F ψ).1 hr]`. Break down `h01 with h | h` into its components or cases.
+
+Rewrite using `[h, sub_self]`. Conclude with `absurd (hsp.1 (by rw [h]; exact one_ne_zero)) hr`.
+-/
 theorem eq_cspB_rule {C : Set (Xo.XF c)} (hC : IsClopen C) (e : Formalism.L2.Pj.Rul Xo c)
     (he : ∀ (p : Formalism.L2.Pj.TRing c.F) (z : Formalism.L2.Pj.FrPt Xo c p.R) (F : Type) [Field F] (ψ : p.R →+* F),
       (¬ Set.range (fpt z ψ) ⊆ C → ψ (e p z) = 0) ∧ (Set.range (fpt z ψ) ⊆ C → ψ (e p z) = 1)) :
@@ -50,6 +61,23 @@ theorem eq_cspB_rule {C : Set (Xo.XF c)} (hC : IsClopen C) (e : Formalism.L2.Pj.
     · rw [h, sub_self]
     · exact absurd (hsp.1 (by rw [h]; exact one_ne_zero)) hr
 
+/- English proof (translation)
+Establish `f1 : ∀ (τ' : GlobalTheory.AllWt.Psi H) (j : Fin (D.p + D.q)), τ' = τ → GlobalTheory.FlatLine.flatWt D τ τ' j = -1` using `fun τ' j h => by simp [GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, h]`. Establish `f0 : ∀ (τ' : GlobalTheory.AllWt.Psi H) (j : Fin (D.p + D.q)), τ' ≠ τ → GlobalTheory.FlatLine.flatWt D τ τ' j = 0` using `fun τ' j h => by simp [GlobalTheory.FlatLine.flatWt, GlobalTheory.FlatLine.parWt, h]`. Break down `i with _ | ⟨σ, i⟩` into its components or cases. Establish `: GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 none = 0` using `rfl`. Simplify using `[this, detE, Formalism.L2.Pj.ex]`.
+
+Establish `hne : τ.1 ≠ ComplexEmbedding.conjugate τ.1` using `fun h => GlobalTheory.AllWt.conj_not_mem τ ((DFunLike.congr_fun h.symm _).trans τ.2)`. Establish `hex : GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 (some ⟨σ, i⟩) = (GlobalTheory.AllWt.wtOf D (GlobalTheory.FlatLine.flatWt D τ) 0).1 (σ, i)` using `rfl`. Rewrite using `[hex]`. Simplify using `only [detE, Formalism.L2.Pj.ex]`. Distinguish the cases in `h : σ (H.rt : E) = H.rt0`.
+
+Establish `hm : D.mult σ = D.p` using `by rw [Datum.mult, if_pos h]`. Establish `hi : (i : ℕ) < D.p` using `hm ▸ i.2`. Establish `hw` using `GlobalTheory.AllWt.wtOf_big (GlobalTheory.FlatLine.flatWt D τ) 0 ⟨σ, h⟩ i hi`. Simplify using `only at hw`. Rewrite using `[hw]`.
+
+Establish `hc : σ ≠ ComplexEmbedding.conjugate τ.1` using `fun e => GlobalTheory.AllWt.conj_not_mem τ ((DFunLike.congr_fun e.symm _).trans h)`. Distinguish the cases in `e : σ = τ.1`. Rewrite using `[f1 _ _ (Subtype.ext e)]`. Simplify using `[e, hne]`. Rewrite using `[f0 _ _ fun h' => e (congrArg Subtype.val h')]`.
+
+Simplify using `[e, hc]`. Establish `h'` using `GlobalTheory.AllWt.conj_mem h`. Establish `hm : D.mult σ = D.q` using `by rw [Datum.mult, if_neg h]`. Establish `hi : (i : ℕ) < D.q` using `hm ▸ i.2`. Establish `hw` using `GlobalTheory.AllWt.wtOf_small (GlobalTheory.FlatLine.flatWt D τ) 0 ⟨conjEmb σ, h'⟩ i hi`.
+
+Simplify using `only [GlobalTheory.AllWt.conjEmb_conjEmb] at hw`. Rewrite using `[hw]`. Establish `hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ.1) = τ.1` using `GlobalTheory.AllWt.conjEmb_conjEmb τ.1`. Establish `hσ : σ ≠ τ.1` using `fun e => h (e ▸ τ.2)`. Distinguish the cases in `e : σ = ComplexEmbedding.conjugate τ.1`.
+
+Rewrite using `[f1 _ _ (Subtype.ext (by show conjEmb σ = τ.1; rw [e]; exact hcc))]`. Simplify using `[e, hne.symm]`. Rewrite using `[f0 _ _ fun h2 => e (by`. Establish `h3 : conjEmb σ = τ.1` using `congrArg Subtype.val h2`. Rewrite using `[← h3]`.
+
+Conclude with `(GlobalTheory.AllWt.conjEmb_conjEmb σ).symm)]`. Simplify using `[e, hσ]`.
+-/
 theorem exOf_add_detE (τ : GlobalTheory.AllWt.Psi H) (i : Formalism.L2.Pj.Ix D) :
     GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 i + (detE D τ.1 i : ℤ) =
       (detE D (ComplexEmbedding.conjugate τ.1) i : ℤ) := by
@@ -98,10 +126,16 @@ theorem exOf_add_detE (τ : GlobalTheory.AllWt.Psi H) (i : Formalism.L2.Pj.Ix D)
           exact (GlobalTheory.AllWt.conjEmb_conjEmb σ).symm)]
         simp [e, hσ]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Pj.wchar, Units.coe_prod]`.
+-/
 theorem wchar_eq_units {S : Type} [CommRing S] (b : Formalism.L2.Pj.Ix D → ℕ) (t : Formalism.L2.Pj.Ix D → Sˣ) :
     Formalism.L2.Pj.wchar b t = ((∏ i, t i ^ (b i : ℤ) : Sˣ) : S) := by
   simp [Formalism.L2.Pj.wchar, Units.coe_prod]
 
+/- English proof (translation)
+Rewrite using `[wchar_eq_units, wchar_eq_units, ← Units.val_mul, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add, exOf_add_detE]`.
+-/
 theorem prod_exOf_mul {S : Type} [CommRing S] (τ : GlobalTheory.AllWt.Psi H) (t : Formalism.L2.Pj.Ix D → Sˣ) :
     ((∏ i, t i ^ GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 i : Sˣ) : S) * Formalism.L2.Pj.wchar (detE D τ.1) t =
       Formalism.L2.Pj.wchar (detE D (ComplexEmbedding.conjugate τ.1)) t := by
@@ -118,6 +152,49 @@ open GlobalTheory.CompanionTheory.Ar.Flat.RuleGlue GlobalTheory.CompanionTheory.
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y Z Z' τ φ hf`. Establish `hτ` using `τ.2`. Establish `hC : IsClopen (Z : Set (Xo.XF c))` using `Formalism.L2.Pj.CompSplitPfB.cspB_isClopen (Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj Xo c) Z`. Establish `hl` using `hf.1`. Take `⟨s, s', e, -, hss₀, hsE₀, hs'E₀, -, hval⟩` from `GlobalTheory.T.flat_line_idempotent_sections E H D l Xo c (Z : Set (Xo.XF c)) τ.1 O β Y Z' φ hτ hC hl hf`.
+
+Establish `hp : D.mult τ.1 = D.p` using `by rw [Datum.mult, if_pos hτ]`. Establish `hq : D.mult (ComplexEmbedding.conjugate τ.1) = D.q` using `conj_mult hτ`. Establish `red : ∀ p : Formalism.L2.Pj.TRing c.F, IsReduced p.R` using `fun p => (Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Establish `hss : ∀ p z, s p z * s' p z = e p z` using `fun p z => congrFun (congrFun hss₀ p) z`. Establish `hsE : ∀ p z, s p z * e p z = s p z` using `fun p z => congrFun (congrFun hsE₀ p) z`.
+
+Establish `hs'E : ∀ p z, s' p z * e p z = s' p z` using `fun p z => congrFun (congrFun hs'E₀ p) z`. Establish `hse : ∀ (p : Formalism.L2.Pj.TRing c.F) (z : Formalism.L2.Pj.FrPt Xo c p.R) (F : Type) [Field F] (ψ : p.R →+* F) (y : Sp F ⟶ Xo.XF c), under y = spMap ψ ≫ z.x → y ≫ pullback.snd _ _ = spMap (ψ.comp (algebraMap c.F p.R)) → (¬ Set.range y ⊆ (Z : Set (Xo.XF c)) → ψ (e p z) = 0 ∧ ψ ( …` using `fun p z F _ ψ y h1 h2 => by`. Establish `Dv` using `hval p z F ψ y h1 h2`. Use `⟨fun hr => ⟨Dv.1 hr, ?_⟩, Dv.2⟩` and prove the remaining obligations. Use `congrArg ψ (hsE p z)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, Dv.1 hr, mul_zero]`. Conclude with `this.symm`. Establish `C` using `fun (p : Formalism.L2.Pj.TRing c.F) (z : Formalism.L2.Pj.FrPt Xo c p.R) (F : Type) [Field F] (ψ : p.R →+* F) => hse p z F ψ (fpt z ψ) (fpt_under z ψ) (fpt_snd z ψ)`. Establish `zero : ∀ (p : Formalism.L2.Pj.TRing c.F) (x : p.R), (∀ (F : Type) [Field F] (ψ : p.R →+* F), ψ x = 0) → x = 0` using `fun p x h => by haveI := red p`. Conclude with `eq_zero_of_fields x h`.
+
+Establish `hE : e = GlobalTheory.FlatLine.idem Z` using `eq_cspB_rule _ e fun p z F _ ψ => ⟨fun hr => ((C p z F ψ).1 hr).1, fun hr => ((C p z F ψ).2 hr).1⟩`. Establish `hnat : ∀ (p q : Formalism.L2.Pj.TRing c.F) (f : p.R →ₐ[c.F] q.R) (y : Formalism.L2.Pj.FrPt Xo c p.R) (z : Formalism.L2.Pj.FrPt Xo c q.R), Formalism.L2.Pj.FrMap f y z → e q z = f (e p y) ∧ s q z = f (s p y)` using `fun p q f y z h => by`. Establish `key : ∀ (F : Type) [Field F] (ψ : q.R →+* F), ψ (e q z) = ψ (f (e p y)) ∧ ψ (s q z) = ψ (f (s p y))`. Introduce `F _ ψ`. Set `ψ' : p.R →+* F` to `ψ.comp f.toRingHom`.
+
+Establish `h1 : under (fpt z ψ) = spMap ψ' ≫ y.x`. Rewrite using `[fpt_under, h.1, ← Category.assoc, ← spMap_comp']`. Establish `h2 : fpt z ψ ≫ pullback.snd _ _ = spMap (ψ'.comp (algebraMap c.F p.R))`. Rewrite using `[fpt_snd]`. Use `congr 1`.
+
+Use extensionality with `a`. Simplify using `[ψ']`. Establish `D2` using `hse p y F ψ' (fpt z ψ) h1 h2`. Establish `D1` using `C q z F ψ`. Establish `e1 : ∀ x : p.R, ψ (f x) = ψ' x` using `fun _ => rfl`.
+
+Rewrite using `[e1, e1]`. Distinguish the cases in `hr : Set.range (fpt z ψ) ⊆ (Z : Set (Xo.XF c))`. Take `⟨v, w, ev, ew, -⟩` from `GlobalTheory.T.frame_point_vectors E H D l Xo c τ.1 q.R z F ψ (fpt z ψ) hp hq (fpt_under z ψ) (fpt_snd z ψ)`. Use `⟨by rw [(D1.2 hr).1, (D2.2 hr).1], ?_⟩` and prove the remaining obligations. Rewrite using `[(D1.2 hr).2 v w hp hq ev ew, (D2.2 hr).2 v w hp hq (fun i => ?_) (fun j => ?_)]`.
+
+Rewrite using `[ev i, h.2.1, ← Category.assoc, dualMap_spMap_comp]`. Rewrite using `[ew j, h.2.1, ← Category.assoc, dualMap_spMap_comp]`. Rewrite using `[(D1.1 hr).1, (D1.1 hr).2, (D2.1 hr).1, (D2.1 hr).2]`. Conclude with `⟨rfl, rfl⟩`. Conclude with `⟨sub_eq_zero.1 (zero q _ fun F _ ψ => by rw [map_sub, (key F ψ).1, sub_self]), sub_eq_zero.1 (zero q _ fun F _ ψ => by rw [map_sub, (key F ψ).2, sub_self])⟩`.
+
+Establish `hnat' : ∀ (p q : Formalism.L2.Pj.TRing c.F) (f : p.R →ₐ[c.F] q.R) (y : Formalism.L2.Pj.FrPt Xo c p.R) (z : Formalism.L2.Pj.FrPt Xo c q.R), Formalism.L2.Pj.FrMap f y z → s' q z = f (s' p y)` using `fun p q f y z h => by`. Take `⟨h1, h2⟩` from `hnat p q f y z h`. Establish `h3` using `hss q z`. Establish `h4` using `congrArg f (hss p y)`. Establish `h5` using `hs'E q z`.
+
+Establish `h6` using `congrArg f (hs'E p y)`. Rewrite `h4`, `h6` using `[map_mul]`. Rewrite `h4` using `[← h2]`. Rewrite `h4`, `h6` using `[← h1]`. Take the linear combination `(f (s' p y)) * h3 - (s' q z) * h4 - h5 + h6`.
+
+Establish `hwt : ∀ (p : Formalism.L2.Pj.TRing c.F) (t : Formalism.L2.Pj.Ix D → (p.R)ˣ) (y y' : Formalism.L2.Pj.FrPt Xo c p.R), Formalism.L2.Pj.FrBor t y y' → e p y' = e p y ∧ s p y' * Formalism.L2.Pj.wchar (detE D τ.1) t = s p y * Formalism.L2.Pj.wchar (detE D (ComplexEmbedding.conjugate τ. …` using `fun p t y y' h => by`. Establish `key : ∀ (F : Type) [Field F] (ψ : p.R →+* F), ψ (e p y') = ψ (e p y) ∧ ψ (s p y' * Formalism.L2.Pj.wchar (detE D τ.1) t) = ψ (s p y * Formalism.L2.Pj.wchar (detE D (ComplexEmbedding.conjugate τ.1)) t)`. Introduce `F _ ψ`. Establish `h1 : under (fpt y ψ) = spMap ψ ≫ y'.x` using `by rw [fpt_under, h.1]`. Establish `D2` using `hse p y' F ψ (fpt y ψ) h1 (fpt_snd y ψ)`.
+
+Establish `D1` using `C p y F ψ`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hr : Set.range (fpt y ψ) ⊆ (Z : Set (Xo.XF c))`. Take `⟨v, w, ev, ew, hfr⟩` from `GlobalTheory.T.frame_point_vectors E H D l Xo c τ.1 p.R y F ψ (fpt y ψ) hp hq (fpt_under y ψ) (fpt_snd y ψ)`. Take `⟨v', w', ev', ew', hfr'⟩` from `GlobalTheory.T.frame_point_vectors E H D l Xo c τ.1 p.R y' F ψ (fpt y ψ) hp hq h1 (fpt_snd y ψ)`.
+
+Take `⟨A, B, hA, hB, dA, dB⟩` from `GlobalTheory.T.frame_borel_change_vectors E H D l Xo c τ.1 p.R t y y' h F ψ (fpt y ψ) hp hq v v' w w' (fpt_under y ψ) ev ew ev' ew'`. Use `⟨by rw [(D1.2 hr).1, (D2.2 hr).1], ?_⟩` and prove the remaining obligations. Rewrite using `[(D1.2 hr).2 v w hp hq ev ew, (D2.2 hr).2 v' w' hp hq ev' ew', wchar_detE τ.1 hp, wchar_detE _ hq, map_prod, map_prod, ← dA, ← dB]`. Conclude with `hl.chg F _ _ v w v' w' A B (hfr _ hr) (hfr' _ hr) hA hB`. Rewrite using `[(D1.1 hr).1, (D1.1 hr).2, (D2.1 hr).1, (D2.1 hr).2]`.
+
+Simplify using the standard rewrite rules. Establish `k1 : e p y' - e p y = 0` using `zero p _ fun F _ ψ => by rw [map_sub, (key F ψ).1, sub_self]`. Establish `k2 : s p y' * Formalism.L2.Pj.wchar (detE D τ.1) t - s p y * Formalism.L2.Pj.wchar (detE D (ComplexEmbedding.conjugate τ.1)) t = 0` using `zero p _ fun F _ ψ => by`. Use `(key F ψ).2` as an intermediate fact. Conclude with `(map_sub ψ _ _).trans (sub_eq_zero.2 this)`.
+
+Conclude with `⟨sub_eq_zero.1 k1, sub_eq_zero.1 k2⟩`. Establish `hunitW : ∀ (p : Formalism.L2.Pj.TRing c.F) (t : Formalism.L2.Pj.Ix D → (p.R)ˣ) (b : Formalism.L2.Pj.Ix D → ℕ), IsUnit (Formalism.L2.Pj.wchar b t)` using `fun p t b => IsUnit.prod_univ_iff.2 fun i => (t i).isUnit.pow _`. Establish `hS : ∀ (p : Formalism.L2.Pj.TRing c.F) (t : Formalism.L2.Pj.Ix D → (p.R)ˣ) (y y' : Formalism.L2.Pj.FrPt Xo c p.R), Formalism.L2.Pj.FrBor t y y' → s p y' = ((∏ i, t i ^ GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 i : (p.R)ˣ) : p.R) * s p y` using `fun p t y y' h => by`. Use `(hunitW p t (detE D τ.1)).mul_right_cancel ?_` and prove the remaining obligations. Establish `h1` using `(hwt p t y y' h).2`.
+
+Establish `h2` using `prod_exOf_mul τ t`. Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨s, s', GlobalTheory.AllWt.mem_secZ.2 ⟨fun p q f y z h => (hnat p q f y z h).2, hS⟩, GlobalTheory.AllWt.mem_secZ.2 ⟨hnat', fun p t y y' h => ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `set T := ((∏ i, t i ^ GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0 i : (p.R)ˣ) : p.R) with hTdef set T' := ((∏ i, t i ^ (-GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0) i : (p.R)ˣ) : p.R) with hT'def`.
+
+Establish `hT : T' * T = 1`. Rewrite using `[hTdef, hT'def, ← Units.val_mul, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Establish `hw` using `hS p t y y' h`. Establish `h1` using `(hwt p t y y' h).1`.
+
+Establish `h3` using `hss p y`. Establish `h4` using `hss p y'`. Establish `h5` using `hs'E p y`. Establish `h6` using `hs'E p y'`. Rewrite `h4`, `h6` using `[h1]`.
+
+Take the linear combination `(-1) * h6 + (-(s' p y')) * h3 + (-(s' p y') * s p y * s' p y) * hT + (-T' * s' p y' * s' p y) * hw + (T' * s' p y) * h4 + T' * h5`. Rewrite using `[← hE, mul_comm]`. Conclude with `hsE₀`. Rewrite using `[← hE, mul_comm]`. Conclude with `hs'E₀`.
+
+Rewrite using `[← hE]`. Conclude with `hss₀`. Conclude with `fun p z F _ ψ y h1 h2 hr v w hp' hq' ev ew => ((hval p z F ψ y h1 h2).2 hr).2 v w hp' hq' ev ew`.
+-/
 theorem exists_flat_sec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : Formalism.L2.Pj.Comp Xo c) (Z' : CptOver Y (Z : Set (Xo.XF c))) (τ : GlobalTheory.AllWt.Psi H) (φ : FrameFn Xo c), FlatOnModel Z' τ.1 φ → ∃ s s' : Formalism.L2.Pj.Rul Xo c, s ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0) ∧ s' ∈ GlobalTheory.AllWt.secZ Xo c (-GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ GlobalTheory.FlatLine.idem Z * s' = s' ∧ s * s' = GlobalTheory.FlatLine.idem Z ∧ Reads (Z : Set (Xo.XF c)) τ.1 s φ := by
   intro E _ _ _ H D l Xo c O _ β Y Z Z' τ φ hf
   have hτ := τ.2

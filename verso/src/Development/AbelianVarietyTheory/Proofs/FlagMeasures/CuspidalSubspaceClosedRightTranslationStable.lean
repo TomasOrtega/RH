@@ -19,6 +19,11 @@ section General
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
   [BorelSpace G] [SecondCountableTopology G] {μ : Measure G} [μ.IsMulLeftInvariant] [SFinite μ]
 
+/- English proof (translation)
+Establish `hm : Measurable (fun p : G × G => p.2 * p.1)` using `measurable_snd.mul measurable_fst`. Use `⟨hm, Measure.AbsolutelyContinuous.mk fun s hs h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm hs, Measure.prod_apply_symm (hm hs)]`. Establish `h1 : ∀ y : G, μ ((fun x => (x, y)) ⁻¹' ((fun p : G × G => p.2 * p.1) ⁻¹' s)) = 0`. Introduce `y`.
+
+Express the relevant statement in the definitionally equal form `μ ((fun x => y * x) ⁻¹' s) = 0`. Rewrite using `[measure_preimage_mul]`. Conclude with `h0`. Simplify using `only [h1, lintegral_zero]`.
+-/
 theorem qmp_mul (ν : Measure G) [SFinite ν] :
     Measure.QuasiMeasurePreserving (fun p : G × G => p.2 * p.1) (μ.prod ν) μ := by
   have hm : Measurable (fun p : G × G => p.2 * p.1) := measurable_snd.mul measurable_fst
@@ -31,11 +36,17 @@ theorem qmp_mul (ν : Measure G) [SFinite ν] :
     exact h0
   simp only [h1, lintegral_zero]
 
+/- English proof (translation)
+Establish `h` using `(qmp_mul (μ := μ) ν).ae hp`. Conclude with `Measure.ae_ae_of_ae_prod (p := fun q : G × G => p (q.2 * q.1)) h`.
+-/
 theorem ae_ae_mul (ν : Measure G) [SFinite ν] {p : G → Prop} (hp : ∀ᵐ y ∂μ, p y) :
     ∀ᵐ x ∂μ, ∀ᵐ m ∂ν, p (m * x) := by
   have h := (qmp_mul (μ := μ) ν).ae hp
   exact Measure.ae_ae_of_ae_prod (p := fun q : G × G => p (q.2 * q.1)) h
 
+/- English proof (translation)
+Use `filter_upwards [ae_ae_mul (μ := μ) ν (p := fun y => f y = g y) h] with x hx`. Conclude with `integral_congr_ae hx`.
+-/
 theorem constTerm_congr (ν : Measure G) [SFinite ν] {f g : G → ℂ} (h : f =ᵐ[μ] g) :
     ∀ᵐ x ∂μ, ∫ m, f (m * x) ∂ν = ∫ m, g (m * x) ∂ν := by
   filter_upwards [ae_ae_mul (μ := μ) ν (p := fun y => f y = g y) h] with x hx
@@ -45,6 +56,17 @@ variable {Γ : Subgroup G} [Countable Γ] {D : Set G} {r : G → G}
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
   [BorelSpace G] [SecondCountableTopology G] [Countable Γ] in
+/- English proof (translation)
+Use `set S : Set Γ := {δ | (δ : G) ∈ (C * C⁻¹) ∩ (Γ : Set G)} with hS`. Establish `hSf : S.Finite` using `hC.preimage Subtype.coe_injective.injOn`. Use `⟨(hSf.toFinset.card : ℝ≥0∞), ENNReal.natCast_ne_top _, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ∃ γ₀ : Γ, (γ₀ : G) * x ∈ C`. Take `⟨γ₀, hγ₀⟩` from `hx`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun γ => ?_` and prove the remaining obligations. Distinguish the cases in `hγ : (γ : G) * x ∈ C`. Establish `hmem : γ * γ₀⁻¹ ∈ S`. Use `⟨?_, (γ * γ₀⁻¹).2⟩` and prove the remaining obligations.
+
+Use `Set.mem_mul.2 ⟨(γ : G) * x, hγ, ((γ₀ : G) * x)⁻¹, Set.inv_mem_inv.2 hγ₀, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Rewrite using `[Set.indicator_of_mem hγ, Set.indicator_of_mem hmem]`. Rewrite using `[Set.indicator_of_notMem hγ]`. Conclude with `zero_le`.
+
+Use `_ = ∑' δ : Γ, S.indicator (fun _ => (1 : ℝ≥0∞)) δ := (Equiv.mulRight γ₀⁻¹).tsum_eq (fun δ => S.indicator (fun _ => (1 : ℝ≥0∞)) δ)`. Use `_ = hSf.toFinset.card := by`. Rewrite using `[tsum_eq_sum (s := hSf.toFinset) fun b hb => Set.indicator_of_notMem (by simpa using hb) _]`. Rewrite using `[Finset.sum_congr rfl fun b hb => Set.indicator_of_mem (by simpa using hb) _]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [not_exists] at hx`. Simplify using `[Set.indicator_of_notMem (hx _)]`.
+-/
 theorem exists_mult_bound {C : Set G} (hC : ((C * C⁻¹) ∩ (Γ : Set G)).Finite) :
     ∃ M : ℝ≥0∞, M ≠ ∞ ∧ ∀ x : G, ∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) ≤ M := by
   classical
@@ -74,6 +96,15 @@ theorem exists_mult_bound {C : Set G} (hC : ((C * C⁻¹) ∩ (Γ : Set G)).Fini
     simp [Set.indicator_of_notMem (hx _)]
 
 omit [SecondCountableTopology G] [SFinite μ] in
+/- English proof (translation)
+Establish `hgood : ∀ᵐ x ∂(μ.restrict D), x ∈ D ∧ Good Γ D x` using `(ae_restrict_mem hDm).and (ae_restrict_of_ae (GlobalTheory.RightRegFund.ae_good hD))`. Establish `hr1 : ∀ x, x ∈ D → Good Γ D x → ∀ γ : Γ, r ((γ : G) * x) = x`. Introduce `x hxD hx γ`. Rewrite using `[GlobalTheory.RightRegFund.rep_mul hr hx γ]`. Establish `h1` using `GlobalTheory.RightRegFund.rep_eq hr hx (γ := 1) (by simpa using hxD)`.
+
+Simplify using `using h1`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun γ => lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with x hx`. Express the relevant statement in the definitionally equal form `C.indicator (fun y => φ (r y)) ((γ : G) * x) = _`.
+
+Distinguish the cases in `hc : (γ : G) * x ∈ C`. Rewrite using `[Set.indicator_of_mem hc, Set.indicator_of_mem hc, hr1 x hx.1 hx.2 γ, one_mul]`. Rewrite using `[Set.indicator_of_notMem hc, Set.indicator_of_notMem hc, zero_mul]`. Use `_ = ∫⁻ x in D, ∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) * φ x ∂μ := by`. Use `(lintegral_tsum fun γ : Γ => ?_).symm` and prove the remaining obligations.
+
+Conclude with `(((measurable_const.indicator hCm).comp (measurable_const_mul (γ : G))).mul hφ).aemeasurable`. Use `_ = ∫⁻ x in D, (∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x)) * φ x ∂μ := by`. Repeatedly rewrite using `[ENNReal.tsum_mul_right]`. Use `_ ≤ ∫⁻ x in D, M * φ x ∂μ := lintegral_mono fun x => by gcongr; exact hM x`. Use `_ = M * ∫⁻ x in D, φ x ∂μ := lintegral_const_mul M hφ`.
+-/
 theorem setLIntegral_rep_le (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) {C : Set G} (hCm : MeasurableSet C)
     {M : ℝ≥0∞} (hM : ∀ x : G, ∑' γ : Γ, C.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) ≤ M)
@@ -106,6 +137,15 @@ theorem setLIntegral_rep_le (hD : IsFundamentalDomain Γ D μ) (hDm : Measurable
     _ = M * ∫⁻ x in D, φ x ∂μ := lintegral_const_mul M hφ
 
 omit [SecondCountableTopology G] [SFinite μ] in
+/- English proof (translation)
+Take `⟨M, hMt, hM⟩` from `exists_mult_bound (Γ := Γ) (hΓ _ (hC.mul hC.inv))`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Use `⟨M ^ (1 / 2 : ℝ) * μ C ^ (1 / 2 : ℝ), ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hMt) (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hC.measure_lt_top.ne), fun F => ?_⟩` and prove the remaining obligations. Establish `hFm : StronglyMeasurable (F : G → ℂ)` using `Lp.stronglyMeasurable F`. Establish `hFr : AEStronglyMeasurable (fun y => F (r y)) (μ.restrict C)` using `(GlobalTheory.RightRegFund.aestronglyMeasurable_comp_rep hD hDm hr hFm).restrict`.
+
+Establish `h2 : ∫⁻ y in C, ‖F (r y)‖ₑ ^ (2 : ℝ) ∂μ ≤ M * ∫⁻ x in D, ‖F x‖ₑ ^ (2 : ℝ) ∂μ` using `setLIntegral_rep_le hD hDm hr hCm hM (hFm.measurable.enorm.pow_const _)`. Establish `hF : ‖F‖ₑ = (∫⁻ x in D, ‖F x‖ₑ ^ (2 : ℝ) ∂μ) ^ (1 / 2 : ℝ)`. Rewrite using `[Lp.enorm_def, eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat]`. Establish `h1` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hFr`.
+
+Rewrite `h1` using `[eLpNorm_one_eq_lintegral_enorm, eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num), Measure.restrict_apply_univ]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.toReal_one] at h1`. Rewrite `h1` using `[show (1 : ℝ) / 1 - 1 / 2 = 1 / 2 by norm_num]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), hF]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_L1_bound_of_L2_section [T2Space G] [IsFiniteMeasureOnCompacts μ]
     (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
@@ -137,6 +177,9 @@ theorem exists_L1_bound_of_L2_section [T2Space G] [IsFiniteMeasureOnCompacts μ]
         rw [ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), hF]
         ring
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.RightRegFund.aestronglyMeasurable_comp_rep hD hDm hr (Lp.stronglyMeasurable F)).comp_quasiMeasurePreserving (qmp_mul ν)`.
+-/
 theorem aesm_prod (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D) (ν : Measure G) [SFinite ν]
     (F : Lp ℂ 2 (μ.restrict D)) :
@@ -144,6 +187,21 @@ theorem aesm_prod (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
   exact (GlobalTheory.RightRegFund.aestronglyMeasurable_comp_rep hD hDm hr
     (Lp.stronglyMeasurable F)).comp_quasiMeasurePreserving (qmp_mul ν)
 
+/- English proof (translation)
+Take `⟨K, hKt, hK⟩` from `exists_L1_bound_of_L2_section hD hDm hr hΓ (hC.mul hB)`. Use `⟨ν Set.univ * K, ENNReal.mul_ne_top (measure_ne_top ν _) hKt, fun F => ?_⟩` and prove the remaining obligations. Establish `hBm : MeasurableSet B` using `hB.isClosed.measurableSet`. Establish `hCBm : MeasurableSet (C * B)` using `(hC.mul hB).isClosed.measurableSet`. Establish `e : (μ.restrict B).prod ν = (μ.prod ν).restrict (B ×ˢ Set.univ)`.
+
+Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hmeas : AEMeasurable (Function.uncurry fun x m => ‖F (r (m * x))‖ₑ) ((μ.restrict B).prod ν)`. Rewrite using `[e]`. Conclude with `(aesm_prod hD hDm hr ν F).enorm.restrict`. Rewrite using `[lintegral_lintegral_swap hmeas]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hν] with m hm`. Take `⟨γ, hγ⟩` from `hm`. Take `⟨c, hcC, rfl⟩ : ∃ c ∈ C, m = (γ : G) * c` from `⟨(γ : G)⁻¹ * m, hγ, by simp⟩`.
+
+Establish `hgood : ∀ᵐ x ∂μ, Good Γ D (c * x)` using `(measurePreserving_mul_left μ c).quasiMeasurePreserving.ae (GlobalTheory.RightRegFund.ae_good hD)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hgood] with x hx`. Rewrite using `[mul_assoc, GlobalTheory.RightRegFund.rep_mul hr hx γ]`.
+
+Use `_ = ∫⁻ x, B.indicator (fun x => ‖F (r (c * x))‖ₑ) x ∂μ := (lintegral_indicator hBm _).symm`. Use `_ ≤ ∫⁻ x, (C * B).indicator (fun y => ‖F (r y)‖ₑ) (c * x) ∂μ := by`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (Set.mul_mem_mul hcC hx)]`.
+
+Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `zero_le`. Use `_ = ∫⁻ y, (C * B).indicator (fun y => ‖F (r y)‖ₑ) y ∂μ := lintegral_mul_left_eq_self _ c`. Use `_ = ∫⁻ y in C * B, ‖F (r y)‖ₑ ∂μ := lintegral_indicator hCBm _`. Use `_ ≤ K * ‖F‖ₑ := hK F`.
+
+Use `_ = ν Set.univ * K * ‖F‖ₑ := by`. Rewrite using `[lintegral_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_double_bound [T2Space G] [IsFiniteMeasureOnCompacts μ]
     (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
@@ -189,6 +247,9 @@ theorem exists_double_bound [T2Space G] [IsFiniteMeasureOnCompacts μ]
         ring
 
 omit [Group G] [IsTopologicalGroup G] [BorelSpace G] [μ.IsMulLeftInvariant] [SFinite μ] in
+/- English proof (translation)
+Establish `h2 : ∀ n, ∀ᵐ x ∂(μ.restrict (compactCovering G n)), p x` using `fun n => h _ (isCompact_compactCovering G n)`. Establish `h3` using `(ae_restrict_iUnion_iff (μ := μ) (compactCovering G) p).2 h2`. Rewrite `h3` using `[iUnion_compactCovering, Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 theorem ae_of_compact [LocallyCompactSpace G] {p : G → Prop}
     (h : ∀ B : Set G, IsCompact B → ∀ᵐ x ∂(μ.restrict B), p x) : ∀ᵐ x ∂μ, p x := by
   have h2 : ∀ n, ∀ᵐ x ∂(μ.restrict (compactCovering G n)), p x :=
@@ -198,6 +259,11 @@ theorem ae_of_compact [LocallyCompactSpace G] {p : G → Prop}
 
 variable [T2Space G] [LocallyCompactSpace G] [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Use `ae_of_compact (μ := μ) fun B hB => ?_` and prove the remaining obligations. Take `⟨K, hKt, hK⟩` from `exists_double_bound hD hDm hr hΓ hC hν hB`. Establish `e : (μ.restrict B).prod ν = (μ.prod ν).restrict (B ×ˢ Set.univ)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hprod : AEStronglyMeasurable (fun p : G × G => F (r (p.2 * p.1))) ((μ.restrict B).prod ν)`.
+
+Rewrite using `[e]`. Conclude with `(aesm_prod hD hDm hr ν F).restrict`. Establish `hfin : ∫⁻ x in B, ∫⁻ m, ‖F (r (m * x))‖ₑ ∂ν ∂μ ≠ ∞` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top hKt enorm_ne_top) (hK F)`. Use `filter_upwards [hprod.prodMk_left, ae_lt_top' hprod.enorm.lintegral_prod_right' hfin] with x h1 h2`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem ae_integrable (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
     (hΓ : ∀ C : Set G, IsCompact C → (C ∩ (Γ : Set G)).Finite)
@@ -216,6 +282,9 @@ theorem ae_integrable (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
   filter_upwards [hprod.prodMk_left, ae_lt_top' hprod.enorm.lintegral_prod_right' hfin] with x h1 h2
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ y ∂μ, (F + F') (r y) = F (r y) + F' (r y)` using `by filter_upwards [GlobalTheory.RightRegFund.ae_rep (μ := μ) hDm hr (Lp.coeFn_add F F')] with y hy`. Simplify using `using hy`. Use `filter_upwards [ae_ae_mul (μ := μ) ν h1, ae_integrable hD hDm hr hΓ hC hν F, ae_integrable hD hDm hr hΓ hC hν F'] with x hx hFx hF'x`. Rewrite using `[integral_congr_ae hx, integral_add hFx hF'x]`.
+-/
 theorem constTerm_add (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
     (hΓ : ∀ C : Set G, IsCompact C → (C ∩ (Γ : Set G)).Finite)
@@ -229,6 +298,21 @@ theorem constTerm_add (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     ae_integrable hD hDm hr hΓ hC hν F'] with x hx hFx hF'x
   rw [integral_congr_ae hx, integral_add hFx hF'x]
 
+/- English proof (translation)
+Use `isClosed_of_closure_subset fun F hF => ?_` and prove the remaining obligations. Take `⟨u, hu, hlim⟩` from `mem_closure_iff_seq_limit.1 hF`. Express the relevant statement in the definitionally equal form `∀ᵐ x ∂μ, ∫ m, F (r (m * x)) ∂ν = 0`. Use `ae_of_compact (μ := μ) fun B hB => ?_` and prove the remaining obligations. Take `⟨K, hKt, hK⟩` from `exists_double_bound hD hDm hr hΓ hC hν hB`.
+
+Establish `e : (μ.restrict B).prod ν = (μ.prod ν).restrict (B ×ˢ Set.univ)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hmeas : AEStronglyMeasurable (fun x => ∫ m, F (r (m * x)) ∂ν) (μ.restrict B)`. Establish `h : AEStronglyMeasurable (fun p : G × G => F (r (p.2 * p.1))) ((μ.restrict B).prod ν)`. Rewrite using `[e]`.
+
+Conclude with `(aesm_prod hD hDm hr ν F).restrict`. Conclude with `h.integral_prod_right'`. Establish `hle : ∀ n, ∫⁻ x in B, ‖∫ m, F (r (m * x)) ∂ν‖ₑ ∂μ ≤ K * ‖F - u n‖ₑ`. Introduce `n`. Use `le_trans (lintegral_mono_ae ?_) (hK (F - u n))` and prove the remaining obligations.
+
+Establish `h0 : ∀ᵐ x ∂μ, ∫ m, (u n) (r (m * x)) ∂ν = 0` using `hu n`. Use `filter_upwards [ae_restrict_of_ae h0, ae_restrict_of_ae (constTerm_add hD hDm hr hΓ hC hν (F - u n) (u n))] with x hx0 hxa`. Rewrite `hxa` using `[sub_add_cancel]`. Rewrite using `[hxa, hx0, add_zero]`. Conclude with `enorm_integral_le_lintegral_enorm _`.
+
+Establish `hlim' : Tendsto (fun n => K * ‖F - u n‖ₑ) atTop (𝓝 (K * 0))`. Use `ENNReal.Tendsto.const_mul ?_ (Or.inr hKt)` and prove the remaining obligations. Establish `h1 : Tendsto (fun n => ‖u n - F‖) atTop (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 hlim`. Establish `h2` using `ENNReal.tendsto_ofReal h1`. Rewrite `h2` using `[ENNReal.ofReal_zero]`.
+
+Use `h2.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_sub_rev, ofReal_norm]`. Rewrite `hlim'` using `[mul_zero]`. Establish `hzero : ∫⁻ x in B, ‖∫ m, F (r (m * x)) ∂ν‖ₑ ∂μ = 0` using `le_antisymm (ge_of_tendsto' hlim' hle) zero_le`. Rewrite `hzero` using `[lintegral_eq_zero_iff' hmeas.enorm]`.
+
+Use `filter_upwards [hzero] with x hx`. Simplify using `using hx`.
+-/
 theorem isClosed_constTerm_zero (hD : IsFundamentalDomain Γ D μ) (hDm : MeasurableSet D)
     (hr : ∀ y, ∃ γ : Γ, r y = (γ : G) * y ∧ r y ∈ D)
     (hΓ : ∀ C : Set G, IsCompact C → (C ∩ (Γ : Set G)).Finite)
@@ -275,6 +359,49 @@ end General
 open GlobalTheory.Count Formalism.MainNotions.S Formalism.HN Formalism.REAL Matrix NumberField MeasureTheory Finset
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `B`. Take `⟨hT2, hLC, hSC, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨Γ, hΓset, hΓc, hΓfin, hΓfd⟩` from `GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain B.I`. Establish `h8` using `GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf`. Establish `: (B.I.muA B.μf).IsMulLeftInvariant` using `⟨h8.1⟩`.
+
+Establish `: (B.I.muA B.μf).IsMulRightInvariant` using `⟨h8.2.1⟩`. Establish `: SFinite (B.I.muA B.μf)`. Unfold `Formalism.MainNotions.S.AutInst.muA`. Use `infer_instance`. Establish `: IsFiniteMeasureOnCompacts (B.I.muA B.μf)`.
+
+Unfold `Formalism.MainNotions.S.AutInst.muA`. Use `infer_instance`. Establish `hD : IsFundamentalDomain Γ B.fund (B.I.muA B.μf)` using `hΓfd B.μf B.fund B.fund_spec`. Establish `hDm : MeasurableSet B.fund` using `B.fund_spec.1`. Establish `hfin : ∀ C : Set B.I.GA, IsCompact C → (C ∩ (Γ : Set B.I.GA)).Finite`.
+
+Introduce `C hC`. Rewrite using `[hΓset]`. Conclude with `hΓfin C hC`. Establish `hr : ∀ y, ∃ γ : Γ, B.I.rep B.fund y = (γ : B.I.GA) * y ∧ B.I.rep B.fund y ∈ B.fund`. Introduce `y`.
+
+Establish `hex : ∃ γ ∈ B.I.GFset, γ * y ∈ B.fund` using `B.fund_spec.2.1 y`. Establish `hrep : B.I.rep B.fund y = hex.choose * y`. Unfold `Formalism.MainNotions.S.AutInst.rep`. Rewrite using `[dif_pos hex]`. Establish `hmem : hex.choose ∈ Γ`.
+
+Rewrite using `[← SetLike.mem_coe, hΓset]`. Conclude with `hex.choose_spec.1`. Conclude with `⟨⟨hex.choose, hmem⟩, hrep, hrep ▸ hex.choose_spec.2⟩`. Establish `hν : ∀ W : Submodule B.I.E (Fin B.I.n → B.I.E), B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∃ Cp : Set B.I.GA, IsCompact Cp ∧ ∀ᵐ m ∂ν, ∃ γ : Γ, (γ : B.I.GA)⁻¹ * m ∈ Cp`. Introduce `W hW ν hνW`.
+
+Take `⟨-, -, -, -, Cp, hCp, -, hCpm⟩` from `GlobalTheory.T.strong_approximation_unitaryUnipotentRadical B.I W hW`. Use `⟨Cp, hCp, ?_⟩` and prove the remaining obligations. Establish `hN : ∀ᵐ m ∂ν, m ∈ B.I.NA W` using `ae_iff.2 hνW.2.2.1`. Use `filter_upwards [hN] with m hm`. Take `⟨γ, hγ, hγm⟩` from `hCpm m hm`.
+
+Establish `hγΓ : γ ∈ Γ`. Rewrite using `[← SetLike.mem_coe, hΓset]`. Conclude with `hγ.1`. Conclude with `⟨⟨γ, hγΓ⟩, hγm⟩`. Establish `hzero : ∀ (ν : Measure B.I.GA) [IsFiniteMeasure ν], ∀ᵐ x ∂(B.I.muA B.μf), ∫ m, B.I.ext (0 : B.I.L2 B.μf B.fund) (m * x) ∂ν = 0`.
+
+Introduce `ν _`. Establish `h1 : ∀ᵐ y ∂(B.I.muA B.μf), (0 : B.I.L2 B.μf B.fund) (B.I.rep B.fund y) = 0` using `by filter_upwards [GlobalTheory.RightRegFund.ae_rep (μ := B.I.muA B.μf) hDm hr (Lp.coeFn_zero ℂ 2 ((B.I.muA B.μf).restrict B.fund))] with y hy`. Simplify using `using hy`. Use `filter_upwards [ae_ae_mul (μ := B.I.muA B.μf) ν h1] with x hx`. Express the relevant statement in the definitionally equal form `∫ m, (0 : B.I.L2 B.μf B.fund) (B.I.rep B.fund (m * x)) ∂ν = 0`.
+
+Rewrite using `[integral_congr_ae hx]`. Simplify using the standard rewrite rules. Establish `hsmul : ∀ (ν : Measure B.I.GA) [IsFiniteMeasure ν] (c : ℂ) (F : B.I.L2 B.μf B.fund), ∀ᵐ x ∂(B.I.muA B.μf), ∫ m, B.I.ext (c • F) (m * x) ∂ν = c * ∫ m, B.I.ext F (m * x) ∂ν`. Introduce `ν _ c F`. Establish `h1 : ∀ᵐ y ∂(B.I.muA B.μf), (c • F) (B.I.rep B.fund y) = c * F (B.I.rep B.fund y)` using `by filter_upwards [GlobalTheory.RightRegFund.ae_rep (μ := B.I.muA B.μf) hDm hr (Lp.coeFn_smul c F)] with y hy`.
+
+Simplify using `using hy`. Use `filter_upwards [ae_ae_mul (μ := B.I.muA B.μf) ν h1] with x hx`. Express the relevant statement in the definitionally equal form `∫ m, (c • F) (B.I.rep B.fund (m * x)) ∂ν = c * ∫ m, F (B.I.rep B.fund (m * x)) ∂ν`. Rewrite using `[integral_congr_ae hx, integral_const_mul]`. Set `S : Submodule ℂ (B.I.L2 B.μf B.fund)` to `{ carrier := {F | B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext F)} add_mem' := by`.
+
+Introduce `F F' hF hF' W hW ν hνW`. Use `hνW.1` as an intermediate fact. Take `⟨Cp, hCp, hCpm⟩` from `hν W hW ν hνW`. Use `filter_upwards [constTerm_add (μ := B.I.muA B.μf) hD hDm hr hfin hCp hCpm F F', hF W hW ν hνW, hF' W hW ν hνW] with x h1 h2 h3`. Express the relevant statement in the definitionally equal form `∫ m, (F + F') (B.I.rep B.fund (m * x)) ∂ν = 0`.
+
+Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `∫ m, B.I.ext F (m * x) ∂ν + ∫ m, B.I.ext F' (m * x) ∂ν = 0`. Rewrite using `[h2, h3, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `W hW ν hνW`.
+
+Use `hνW.1` as an intermediate fact. Conclude with `hzero ν`. Use the proof step `smul_mem' := by`. Introduce `c F hF W hW ν hνW`. Use `hνW.1` as an intermediate fact.
+
+Use `filter_upwards [hsmul ν c F, hF W hW ν hνW] with x h1 h2`. Rewrite using `[h1, h2, mul_zero] }`. Use `⟨S, fun F => Iff.rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsClosed {F : B.I.L2 B.μf B.fund | ∀ W : Submodule B.I.E (Fin B.I.n → B.I.E), B.I.IsIsot W → ∀ ν : Measure B.I.GA, B.I.IsNQuotMeas W ν → ∀ᵐ x ∂(B.I.muA B.μf), ∫ m, B.I.ext F (m * x) ∂ν = 0}`. Simplify using `only [Set.ofPred_forall]`.
+
+Use `isClosed_iInter fun W => isClosed_iInter fun hW => isClosed_iInter fun ν => isClosed_iInter fun hνW => ?_` and prove the remaining obligations. Use `hνW.1` as an intermediate fact. Take `⟨Cp, hCp, hCpm⟩` from `hν W hW ν hνW`. Conclude with `isClosed_constTerm_zero (μ := B.I.muA B.μf) hD hDm hr hfin hCp hCpm`. Introduce `g F hF W hW ν hνW`.
+
+Use `hνW.1` as an intermediate fact. Establish `h1 : ∀ᵐ y ∂(B.I.muA B.μf), B.I.ext (B.R g F) y = B.I.ext F (y * g)` using `by filter_upwards [GlobalTheory.RightRegFund.ae_rep (μ := B.I.muA B.μf) hDm hr (B.R_spec g F), GlobalTheory.RightRegFund.ae_good_mul hD g] with y hy hg`. Express the relevant statement in the definitionally equal form `(B.R g F) (B.I.rep B.fund y) = F (B.I.rep B.fund (y * g))`. Rewrite using `[hy]`. Take `⟨γ, hγ, -⟩` from `hr y`.
+
+Express the relevant statement in the definitionally equal form `F (B.I.rep B.fund (B.I.rep B.fund y * g)) = F (B.I.rep B.fund (y * g))`. Rewrite using `[hγ, mul_assoc, GlobalTheory.RightRegFund.rep_mul hr hg γ]`. Establish `h2 : ∀ᵐ x ∂(B.I.muA B.μf), ∫ m, B.I.ext F (m * (x * g)) ∂ν = 0` using `(measurePreserving_mul_right (B.I.muA B.μf) g).quasiMeasurePreserving.ae (hF W hW ν hνW)`. Use `filter_upwards [ae_ae_mul (μ := B.I.muA B.μf) ν h1, h2] with x hx h2x`. Rewrite using `[integral_congr_ae hx]`.
+
+Simplify `h2x` using `[mul_assoc]`. Introduce `F f _ _ hf`. Express the relevant statement in the definitionally equal form `B.I.IsCuspFn _ (B.I.ext F) ↔ B.I.IsCuspFn _ f`. Use `forall_congr' fun W => forall_congr' fun hW => forall_congr' fun ν => forall_congr' fun hνW => ?_` and prove the remaining obligations. Use `hνW.1` as an intermediate fact.
+
+Establish `h` using `constTerm_congr (μ := B.I.muA B.μf) ν hf`. Prove the components needed by the constructor for the conclusion. Introduce `h0 filter_upwards [h0, h] with x h1 h2`. Rewrite using `[h2]`. Conclude with `h1`.
+
+Introduce `h0 filter_upwards [h0, h] with x h1 h2`. Rewrite using `[← h2]`. Conclude with `h1`.
+-/
 theorem cuspidal_closed_stable : ∀ B : RowsAut, ∃ S : Submodule ℂ (B.I.L2 B.μf B.fund), (∀ F, F ∈ S ↔ B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext F)) ∧ IsClosed (S : Set (B.I.L2 B.μf B.fund)) ∧ (∀ g, ∀ F ∈ S, B.R g F ∈ S) ∧ ∀ (F : B.I.L2 B.μf B.fund) (f : B.I.GA → ℂ), (∀ γ ∈ B.I.GFset, ∀ y, f (γ * y) = f y) → Continuous f → f =ᵐ[B.I.muA B.μf] B.I.ext F → (F ∈ S ↔ B.I.IsCuspFn (B.I.muA B.μf) f) := by
   intro B
   classical

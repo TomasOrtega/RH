@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationInvarian
 
 namespace GlobalTheory.CharInvAtZero
 
+/- English proof (translation)
+Introduce `Y _ _ _ ℓ hinv f g h0`. Use `GlobalTheory.SchwartzHadamard.eq_of_eqOn (⊥ : Submodule ℝ Y) ℓ (fun L _ => hinv L) f g ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Submodule.mem_bot]`. Substitute `hp` using the available equality.
+
+Conclude with `h0`.
+-/
 theorem eq_of_eq_zero : ∀ {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℝ Y] [FiniteDimensional ℝ Y]
     (ℓ : SchwartzMap Y ℂ →L[ℂ] ℂ),
     (∀ L : Y →ₗ[ℝ] ℝ, ∀ f g : SchwartzMap Y ℂ, ⇑g = (fun x => GlobalTheory.ArchSch.ech (L x) * f x) → ℓ g = ℓ f) →

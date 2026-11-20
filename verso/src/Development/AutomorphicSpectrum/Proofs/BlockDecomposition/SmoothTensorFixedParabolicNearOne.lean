@@ -19,6 +19,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG.Stab
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ z`. Establish `hs : IsSmooth (hRep τ σ)` using `isSmooth_comp (isSmooth_extTensor hτ hσ) _ (GlobalTheory.CompanionTheory.BZPhiPG.Onto.continuous_pgProj k i t)`. Take `⟨O, hO, e⟩` from `isOpen_induced_iff.1 (hs z)`. Establish `hmem : ∀ h : HPG k i t, (h : Mir k (i + t)) ∈ O ↔ hRep τ σ h z = z` using `fun h => Set.ext_iff.1 e h`. Establish `h1 : (1 : Mir k (i + t)) ∈ O` using `(hmem 1).2 (by simp)`.
+
+Conclude with `⟨O, hO.mem_nhds h1, fun h hh => (hmem h).1 hh⟩`.
+-/
 theorem hRep_fix : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ z : V ⊗[ℂ] W, ∃ U ∈ nhds (1 : Mir k (i + t)), ∀ h : HPG k i t, (h : Mir k (i + t)) ∈ U → hRep τ σ h z = z := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ z
   have hs : IsSmooth (hRep τ σ) :=

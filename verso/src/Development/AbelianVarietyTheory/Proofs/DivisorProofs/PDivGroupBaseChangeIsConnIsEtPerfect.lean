@@ -10,6 +10,15 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b a`. Establish `hc : Coalgebra.counit (R` using `k') (b ⊗ₜ[k] a : (G.baseChange k').A n) = b * algebraMap k k' (Coalgebra.counit (R := k) a) := by`. Simplify using `[Algebra.smul_def, mul_comm]`.
+
+Establish `ha : a - algebraMap k (G.A n) (Coalgebra.counit (R` using `k) a) ∈ augIdeal k (G.A n) := by`. Simplify using `[RingHom.mem_ker]`. Establish `he : (b ⊗ₜ[k] a : k' ⊗[k] G.A n) - algebraMap k' (k' ⊗[k] G.A n) (b * algebraMap k k' (Coalgebra.counit (R` using `k) a)) = (b ⊗ₜ[k] (1 : G.A n)) * Algebra.TensorProduct.includeRight (a - algebraMap k (G.A n) (Coalgebra.counit (R := k) a)) := by`. Rewrite using `[map_sub, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeRight_apply, mul_sub, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Use `congr 1`.
+
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one (A := G.A n), one_mul, tmul_smul, smul_tmul', Algebra.algebraMap_self, RingHom.id_apply, Algebra.smul_def, mul_comm]`. Rewrite using `[hc]`. Conclude with `he ▸ Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ ha)`. Consider the case `add x y hx hy`. Establish `: x + y - algebraMap k' ((G.baseChange k').A n) (Coalgebra.counit (R` using `k') (x + y)) = (x - algebraMap k' _ (Coalgebra.counit (R := k') x)) + (y - algebraMap k' _ (Coalgebra.counit (R := k') y)) := by`.
+
+Rewrite using `[map_add, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem hx hy`.
+-/
 theorem baseChange_sub_counit_mem (p : ℕ) (k k' : Type) [Field k] [Field k'] [Algebra k k']
     (G : PDivGroup p k) (n : ℕ) (x : (G.baseChange k').A n) :
     x - algebraMap k' _ (Coalgebra.counit (R := k') x) ∈
@@ -44,6 +53,13 @@ theorem baseChange_sub_counit_mem (p : ℕ) (k k' : Type) [Field k] [Field k'] [
     rw [this]
     exact add_mem hx hy
 
+/- English proof (translation)
+Introduce `p _ k k' _ _ _ _ _ _ _ G`. Use `⟨fun hG n x hx => ?_, fun hG n => ?_⟩` and prove the remaining obligations. Establish `h0 : Coalgebra.counit (R` using `k') x = 0 := hx`. Establish `hmem` using `baseChange_sub_counit_mem p k k' G n x`. Rewrite `hmem` using `[h0, map_zero, sub_zero]`.
+
+Establish `hle : Ideal.map (Algebra.TensorProduct.includeRight : G.A n →ₐ[k] k' ⊗[k] G.A n) (augIdeal k (G.A n)) ≤ nilradical (k' ⊗[k] G.A n)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Conclude with `(hG n a ha).map _`. Conclude with `hle hmem`.
+
+Use `haveI : PerfectField k := PerfectRing.toPerfectField k p haveI : IsReduced (G.A n) := hG n`. Conclude with `GlobalTheory.ReducedAlg.isReduced_field_tensor k' (G.A n)`.
+-/
 theorem baseChange_isConn_isEt : ∀ (p : ℕ) [Fact p.Prime] (k k' : Type) [Field k] [CharP k p] [PerfectRing k p] [Field k'] [CharP k' p] [PerfectRing k' p] [Algebra k k'] (G : PDivGroup p k), (G.IsConn → (G.baseChange k').IsConn) ∧ (G.IsEt → (G.baseChange k').IsEt) := by
   intro p _ k k' _ _ _ _ _ _ _ G
   refine ⟨fun hG n x hx => ?_, fun hG n => ?_⟩

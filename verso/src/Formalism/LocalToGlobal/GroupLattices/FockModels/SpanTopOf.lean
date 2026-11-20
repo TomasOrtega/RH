@@ -26,37 +26,67 @@ variable {K k ν}
 def Rel (u : Module.End K (VK K k ν)) (U : Module.End K (PK K k)) : Prop :=
   ∀ x : VK K k ν, ((u x : VK K k ν) : PK K k) = U x
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem rel_EV (a b : Fin k) : Rel (EV K k ν a b) (DL K a b) := fun _ => rfl
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem rel_one : Rel (1 : Module.End K (VK K k ν)) 1 := fun _ => rfl
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem rel_zero : Rel (0 : Module.End K (VK K k ν)) 0 := fun _ => rfl
 
+/- English proof (translation)
+Introduce `x` and use `by rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]`.
+-/
 theorem rel_mul {u u' : Module.End K (VK K k ν)} {U U' : Module.End K (PK K k)} (h1 : Rel u U)
     (h2 : Rel u' U') : Rel (u * u') (U * U') := fun x => by
   rw [Module.End.mul_apply, Module.End.mul_apply, h1, h2]
 
+/- English proof (translation)
+Introduce `x` and use `by rw [LinearMap.sub_apply, LinearMap.sub_apply, AddSubgroupClass.coe_sub, h1, h2]`.
+-/
 theorem rel_sub {u u' : Module.End K (VK K k ν)} {U U' : Module.End K (PK K k)} (h1 : Rel u U)
     (h2 : Rel u' U') : Rel (u - u') (U - U') := fun x => by
   rw [LinearMap.sub_apply, LinearMap.sub_apply, AddSubgroupClass.coe_sub, h1, h2]
 
+/- English proof (translation)
+Introduce `x` and use `by rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]`.
+-/
 theorem rel_smul (c : K) {u : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) :
     Rel (c • u) (c • U) := fun x => by
   rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, h1]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `rel_one`. Consider the case `succ j ih => rw [pow_succ, pow_succ]`. Conclude with `rel_mul ih h1`.
+-/
 theorem rel_pow {u : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) (j : ℕ) :
     Rel (u ^ j) (U ^ j) := by
   induction j with
   | zero => rw [pow_zero, pow_zero]; exact rel_one
   | succ j ih => rw [pow_succ, pow_succ]; exact rel_mul ih h1
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact rel_one`. Consider the case `cons i l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]`. Conclude with `rel_mul (h i) ih`.
+-/
 theorem rel_list {I : Type} (l : List I) (f : I → Module.End K (VK K k ν)) (g : I → Module.End K (PK K k))
     (h : ∀ i, Rel (f i) (g i)) : Rel (l.map f).prod (l.map g).prod := by
   induction l with
   | nil => exact rel_one
   | cons i l ih => rw [List.map_cons, List.map_cons, List.prod_cons, List.prod_cons]; exact rel_mul (h i) ih
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => Subtype.ext ((h1 x).trans (h2 x).symm)`.
+-/
 theorem rel_inj {u u' : Module.End K (VK K k ν)} {U : Module.End K (PK K k)} (h1 : Rel u U) (h2 : Rel u' U) :
     u = u' := LinearMap.ext fun x => Subtype.ext ((h1 x).trans (h2 x).symm)
 
+/- English proof (translation)
+Introduce `x`. Establish `h1 : Rel (divPowE (EV K k ν) a b j) (((j.factorial : K)⁻¹) • (DL K a b) ^ j)` using `rel_smul _ (rel_pow (rel_EV a b) j)`. Rewrite using `[h1 x, LinearMap.smul_apply, ← sw_pow_ne K a b hab, smul_smul, inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]`. Both sides reduce to the same expression.
+-/
 theorem rel_divPow [CharZero K] (a b : Fin k) (hab : a ≠ b) (j : ℕ) :
     Rel (divPowE (EV K k ν) a b j) (rowDivL K a b j) := by
   intro x
@@ -66,6 +96,9 @@ theorem rel_divPow [CharZero K] (a b : Fin k) (hab : a ≠ b) (j : ℕ) :
     inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `x`. Establish `h1 : Rel (binomE (EV K k ν) a j) (((j.factorial : K)⁻¹) • ((List.range j).map fun i : ℕ => DL K (n` using `k) a a - (i : K) • (1 : Module.End K (PK K k))).prod) := rel_smul _ (rel_list _ _ _ fun i => rel_sub (rel_EV a a) (rel_smul _ rel_one))`. Rewrite using `[h1 x, LinearMap.smul_apply, ← sw_pow_eq K a, smul_smul, inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]`. Both sides reduce to the same expression.
+-/
 theorem rel_binom [CharZero K] (a : Fin k) (j : ℕ) :
     Rel (binomE (EV K k ν) a j) (rowDivL K a a j) := by
   intro x
@@ -76,6 +109,13 @@ theorem rel_binom [CharZero K] (a : Fin k) (j : ℕ) :
     inv_mul_cancel₀ (by exact_mod_cast j.factorial_ne_zero), one_smul]
   rfl
 
+/- English proof (translation)
+Unfold `UZmon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨a, b, j, hab, rfl⟩ | ⟨a, j, rfl⟩` into its components or cases. Conclude with `⟨[(a, b, j)], fun x => rel_divPow a b hab j x⟩`.
+
+Conclude with `⟨[(a, a, j)], fun x => rel_binom a j x⟩`. Consider the case `one => exact ⟨[], fun x => rfl⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨w1, h1⟩` from `hu`. Take `⟨w2, h2⟩` from `hv`.
+
+Use `⟨w1 ++ w2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, h1, h2]`. Simplify using `[applyWord, List.foldr_append]`.
+-/
 theorem rel_mon [CharZero K] (u : Module.End K (VK K k ν)) (hu : u ∈ UZmon (EV K k ν)) :
     ∃ w, ∀ x : VK K k ν, ((u x : VK K k ν) : PK K k) = applyWord K w x := by
   unfold UZmon at hu
@@ -92,6 +132,11 @@ theorem rel_mon [CharZero K] (u : Module.End K (VK K k ν)) (hu : u ∈ UZmon (E
     rw [Module.End.mul_apply, h1, h2]
     simp [applyWord, List.foldr_append]
 
+/- English proof (translation)
+Unfold `weightSp`. Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_smul, Int.cast_natCast, ← sw_euler K a μ _ hx]`. Both sides reduce to the same expression.
+-/
 theorem wt_mem (x : VK K k ν) (μ : Fin k → ℕ) (hx : IsWeightedHomogeneous (rowW k k) (x : PK K k) μ) :
     x ∈ weightSp (EV K k ν) (fun a => (μ a : ℤ)) := by
   unfold weightSp
@@ -102,6 +147,9 @@ theorem wt_mem (x : VK K k ν) (μ : Fin k → ℕ) (hx : IsWeightedHomogeneous 
   rw [Submodule.coe_smul, Int.cast_natCast, ← sw_euler K a μ _ hx]
   rfl
 
+/- English proof (translation)
+Take `⟨b, hb, -⟩` from `sSBasis K k k ν`. Establish `: Finite ↥(ssIdx k k ν)` using `(sSIdxFinite k k ν).to_subtype`. Establish `h` using `FiniteDimensional.span_of_finite K (Set.finite_range b)`. Rewrite `h` using `[hb.2.1]`. Conclude with `h`.
+-/
 theorem fin_VK : FiniteDimensional K (VK K k ν) := by
   obtain ⟨b, hb, -⟩ := sSBasis K k k ν
   have : Finite ↥(ssIdx k k ν) := (sSIdxFinite k k ν).to_subtype
@@ -109,6 +157,9 @@ theorem fin_VK : FiniteDimensional K (VK K k ν) := by
   rw [hb.2.1] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← comap_span_coe (O := K) (Kf := K) (dualWeyl K k k ν) f, hf, eq_top_iff]`. Introduce `x _`. Conclude with `x.2`.
+-/
 theorem span_top_of {I : Type} (f : I → VK K k ν)
     (hf : Submodule.span K (Set.range fun i => (f i : PK K k)) = dualWeyl K k k ν) :
     Submodule.span K (Set.range f) = ⊤ := by
@@ -116,6 +167,13 @@ theorem span_top_of {I : Type} (f : I → VK K k ν)
   intro x _
   exact x.2
 
+/- English proof (translation)
+Use `fin_VK (K := K) (k := k) (ν := ν)` as an intermediate fact. Use `⟨fun a b c d => ?_, fun x => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩, ?_⟩` and prove the remaining obligations. Apply `rel_inj (U := DL K a b * DL K c d - DL K c d * DL K a b)` to reduce the goal to its premises. Conclude with `rel_sub (rel_mul (rel_EV a b) (rel_EV c d)) (rel_mul (rel_EV c d) (rel_EV a b))`. Rewrite using `[sw_rel]`.
+
+Apply the tactic sequence `refine rel_sub ?_ ?_ <;> split_ifs <;> first | exact rel_EV _ _ | exact rel_zero`. Take `⟨b, hb, -⟩` from `sSBasis K k k ν`. Establish `hm : ∀ i, b i ∈ dualWeyl K k k ν` using `fun i => by`. Rewrite using `[← hb.2.1]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Rewrite using `[eq_top_iff, ← span_top_of (fun i => (⟨b i, hm i⟩ : VK K k ν)) hb.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem _ (wt_mem _ (rowWt i.1) (hb.2.2 i))`.
+-/
 theorem isGLRep : IsGLRep (EV K k ν) := by
   have := fin_VK (K := K) (k := k) (ν := ν)
   refine ⟨fun a b c d => ?_, fun x => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩, ?_⟩
@@ -136,10 +194,18 @@ def hwV (hν : Antitone ν) : VK K k ν := ⟨hw K le_rfl ν, hwMem K k k le_rfl
 
 variable {K k ν}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[rowNu]`.
+-/
 theorem rowNu_self : rowNu (r := k) ν = ν := by
   funext a
   simp [rowNu]
 
+/- English proof (translation)
+Use `⟨fun h => hwNe K k k le_rfl ν (congrArg Subtype.val h), ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `wt_mem (hwV K k ν hν) (rowNu (r := k) ν) (hwRowWeight K k k le_rfl ν hν)` as an intermediate fact. Rewrite `this` using `[rowNu_self]`. Then use the resulting hypothesis. Apply `Subtype.ext show Dop K a b (hw K le_rfl ν) = 0` to reduce the goal to its premises. Rewrite using `[sw_Dop_rowDiv]`.
+
+Conclude with `hwRaise K k k le_rfl ν a b 1 hab le_rfl`.
+-/
 theorem isHWV (hν : Antitone ν) : IsHWV (EV K k ν) (fun a => (ν a : ℤ)) (hwV K k ν hν) := by
   refine ⟨fun h => hwNe K k k le_rfl ν (congrArg Subtype.val h), ?_, fun a b hab => ?_⟩
   · have := wt_mem (hwV K k ν hν) (rowNu (r := k) ν) (hwRowWeight K k k le_rfl ν hν)
@@ -149,6 +215,11 @@ theorem isHWV (hν : Antitone ν) : IsHWV (EV K k ν) (fun a => (ν a : ℤ)) (h
     rw [sw_Dop_rowDiv]
     exact hwRaise K k k le_rfl ν a b 1 hab le_rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro x hx`. Simplify using `using hx`. Consider the case `cons g l ih`. Introduce `x hx`.
+
+Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `h g (List.mem_cons_self) _ (ih (fun g' hg' => h g' (List.mem_cons_of_mem _ hg')) x hx)`.
+-/
 theorem stab_list {V : Type} [AddCommGroup V] [Module K V] (T : Submodule K V) (l : List (Module.End K V))
     (h : ∀ g ∈ l, ∀ x ∈ T, g x ∈ T) : ∀ x ∈ T, l.prod x ∈ T := by
   induction l with
@@ -158,6 +229,27 @@ theorem stab_list {V : Type} [AddCommGroup V] [Module K V] (T : Submodule K V) (
     rw [List.prod_cons, Module.End.mul_apply]
     exact h g (List.mem_cons_self) _ (ih (fun g' hg' => h g' (List.mem_cons_of_mem _ hg')) x hx)
 
+/- English proof (translation)
+Use `set T := Submodule.span K {x | ∃ u ∈ Umon (EV K k ν), x = u (hwV K k ν hν)} with hT`. Establish `hE : ∀ a b, ∀ x ∈ T, EV K k ν a b x ∈ T`. Introduce `a b`. Establish `h1 : T ≤ T.comap (EV K k ν a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `Submodule.subset_span ⟨EV K k ν a b * u, Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu, rfl⟩`. Conclude with `fun x hx => h1 hx`. Establish `hdiv : ∀ a b j, ∀ x ∈ T, divPowE (EV K k ν) a b j x ∈ T`. Introduce `a b j x hx`.
+
+Unfold `divPowE`. Rewrite using `[LinearMap.smul_apply, ← List.prod_replicate]`. Conclude with `Submodule.smul_mem _ _ (stab_list T _ (fun g hg => by`. Rewrite using `[List.eq_of_mem_replicate hg]`. Conclude with `hE a b) x hx)`.
+
+Establish `hbin : ∀ a j, ∀ x ∈ T, binomE (EV K k ν) a j x ∈ T`. Introduce `a j x hx`. Unfold `binomE`. Rewrite using `[LinearMap.smul_apply]`. Use `Submodule.smul_mem _ _ (stab_list T _ (fun g hg => ?_) x hx)` and prove the remaining obligations.
+
+Take `⟨i, -, rfl⟩` from `List.mem_map.1 hg`. Introduce `y hy`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `Submodule.sub_mem _ (hE a a y hy) (Submodule.smul_mem _ _ hy)`. Establish `hw : ∀ w, ∃ y ∈ T, (y : PK K k) = applyWord K w (hw K le_rfl ν)`.
+
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨hwV K k ν hν, Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩, rfl⟩`. Consider the case `cons c w ih`. Take `⟨a, b, j⟩` from `c`.
+
+Take `⟨y, hy, hyw⟩` from `ih`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Use `⟨binomE (EV K k ν) a j y, hbin a j y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[rel_binom a j y, hyw]`.
+
+Both sides reduce to the same expression. Use `⟨divPowE (EV K k ν) a b j y, hdiv a b j y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[rel_divPow a b hab j y, hyw]`. Both sides reduce to the same expression. Use `choose f hfT hf using hw`.
+
+Establish `h2 : Submodule.span K (Set.range fun w => (f w : PK K k)) = dualWeyl K k k ν`. Use `Eq.trans ?_ (sw_weyl_eq K k k le_rfl ν hν)` and prove the remaining obligations. Unfold `weyl`. Use `congr 2`. Use function extensionality and compare the values at `w`.
+
+Conclude with `hf w`. Rewrite using `[eq_top_iff, ← span_top_of f h2, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hfT w`.
+-/
 theorem gen_top [CharZero K] (hν : Antitone ν) :
     Submodule.span K {x | ∃ u ∈ Umon (EV K k ν), x = u (hwV K k ν hν)} = ⊤ := by
   set T := Submodule.span K {x | ∃ u ∈ Umon (EV K k ν), x = u (hwV K k ν hν)} with hT
@@ -210,6 +302,9 @@ theorem gen_top [CharZero K] (hν : Antitone ν) :
   rintro _ ⟨w, rfl⟩
   exact hfT w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isGLRep, fun a b hab => by show ((ν b : ℕ) : ℤ) ≤ ((ν a : ℕ) : ℤ) exact_mod_cast hν hab, isHWV hν, gen_top hν⟩`.
+-/
 theorem isIrrHW [CharZero K] (hν : Antitone ν) :
     IsIrrHW (EV K k ν) (fun a => (ν a : ℤ)) (hwV K k ν hν) :=
   ⟨isGLRep, fun a b hab => by

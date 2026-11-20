@@ -27,21 +27,33 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonOb
 def sqOf (h : IsGrpPullback G' G f φ) : (G2 G').left ⟶ (G2 G).left :=
   (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))).left
 
+/- English proof (translation)
+The claim follows from `(psum_push h _ _ (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))) (fun i => by fin_cases i <;> simp [x2]) I.down).symm`.
+-/
 theorem sqOf_lamφ (h : IsGrpPullback G' G f φ) (I : ULift.{0} (Finset (Fin 2))) :
     sqOf h ≫ lamφ G I = lamφ G' I ≫ φ :=
   (psum_push h _ _ (lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')))
     (fun i => by fin_cases i <;> simp [x2]) I.down).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨congrArg (fun z => z.left) (lift_fst (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))), congrArg (fun z => z.left) (lift_snd (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')))⟩`.
+-/
 theorem isSquare_sqOf (h : IsGrpPullback G' G f φ) : IsSquare φ (sqOf h) :=
   ⟨congrArg (fun z => z.left) (lift_fst (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))),
     congrArg (fun z => z.left) (lift_snd (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')))⟩
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => g x) (sqOf_lamφ h I)`.
+-/
 theorem pt_sqOf (h : IsGrpPullback G' G f φ) (I : ULift.{0} (Finset (Fin 2))) (x : (G2 G').left) :
     lamφ G I (sqOf h x) = φ (lamφ G' I x) :=
   congrArg (fun g => g x) (sqOf_lamφ h I)
 
 variable {L : LB G.left} {L' : LB G'.left}
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨mem_pull.2 (by have := Set.mem_iInter.1 (mem_pull.1 hx.1) I show φ (lamφ G' I x) ∈ _ rw [← pt_sqOf h I x]; exact this), Set.mem_iInter.1 hx.2 I⟩`.
+-/
 theorem lamIso_le (h : IsGrpPullback G' G f φ) (p : ((abelian₂ G L).pull (sqOf h)).ι × (abelian₂ G' L').ι)
     (I : ULift.{0} (Finset (Fin 2))) :
     ((abelian₂ G L).pull (sqOf h)).U p.1 ⊓ (abelian₂ G' L').U p.2 ≤
@@ -54,6 +66,11 @@ theorem lamIso_le (h : IsGrpPullback G' G f φ) (p : ((abelian₂ G L).pull (sqO
 def lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) : LB.Iso (abelian₂ G' L') ((abelian₂ G L).pull (sqOf h)) :=
   ⟨fun p => ∏ I, (res (lamIso_le h p I) (pullU (lamφ G' I) _ (v.s (fun _ => p.1 PUnit.unit I, p.2 I)))) ^ lamε I⟩
 
+/- English proof (translation)
+Establish `hm : r y ∈ ((abelian₂ G L).pull (sqOf h)).U (fun _ => j) ⊓ (abelian₂ G' L').U k` using `⟨mem_pull.2 (Set.mem_iInter.2 fun I => by show lamφ G I (sqOf h (r y)) ∈ L.U (j I)`. Rewrite using `[pt_sqOf]`. Conclude with `hj I), Set.mem_iInter.2 hk⟩`. Unfold `gw`. Simplify using `only [lamIso]`.
+
+Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun I _ => (map_zpow _ _ _).trans (congrArg (· ^ lamε I) ?_))` and prove the remaining obligations. Conclude with `(gm_res r y _ hm _).trans (gm_pull r (lamφ G' I) y ((L.pull φ).U (fun _ => j I) ⊓ L'.U (k I)) ⟨mem_pull.2 (hj I), hk I⟩ _)`.
+-/
 theorem gw_lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) {Y : Scheme.{0}} (r : Y ⟶ (G2 G').left)
     (y : Y) (j : ULift.{0} (Finset (Fin 2)) → L.ι) (k : ULift.{0} (Finset (Fin 2)) → L'.ι)
     (hj : ∀ I, φ (lamφ G' I (r y)) ∈ L.U (j I)) (hk : ∀ I, lamφ G' I (r y) ∈ L'.U (k I)) :
@@ -67,6 +84,15 @@ theorem gw_lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) {Y :
   refine (map_prod _ _ _).trans (Finset.prod_congr rfl fun I _ => (map_zpow _ _ _).trans (congrArg (· ^ lamε I) ?_))
   exact (gm_res r y _ hm _).trans (gm_pull r (lamφ G' I) y ((L.pull φ).U (fun _ => j I) ⊓ L'.U (k I)) ⟨mem_pull.2 (hj I), hk I⟩ _)
 
+/- English proof (translation)
+Introduce `Y r y j j' k k' hj hj' hk hk'`. Establish `aj : ∀ I, φ (lamφ G' I (r y)) ∈ L.U (j I)` using `fun I => by`. Rewrite using `[← pt_sqOf h I]`. Conclude with `Set.mem_iInter.1 hj I`. Establish `aj' : ∀ I, φ (lamφ G' I (r y)) ∈ L.U (j' I)` using `fun I => by`.
+
+Rewrite using `[← pt_sqOf h I]`. Conclude with `Set.mem_iInter.1 hj' I`. Establish `ak : ∀ I, lamφ G' I (r y) ∈ L'.U (k I)` using `fun I => Set.mem_iInter.1 hk I`. Establish `ak' : ∀ I, lamφ G' I (r y) ∈ L'.U (k' I)` using `fun I => Set.mem_iInter.1 hk' I`. Rewrite using `[gw_lamIso h v r y j k aj ak, gw_lamIso h v r y j' k' aj' ak']`.
+
+Establish `e₁` using `gm_linComb L (lamφ G) lamε (r ≫ sqOf h) y j j' hj hj'`. Establish `e₂` using `gm_linComb L' (lamφ G') lamε r y k k' hk hk'`. Use `erw [e₁, e₂]`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hv Y (r ≫ lamφ G' I) y (j I) (j' I) (k I) (k' I) (aj I) (aj' I) (ak I) (ak' I), Category.assoc, Category.assoc, sqOf_lamφ, mul_zpow, mul_zpow, inv_zpow]`.
+-/
 theorem pgen_lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) (hv : PGen v) :
     PGen (lamIso h v) := by
   intro Y r y j j' k k' hj hj' hk hk'
@@ -85,6 +111,9 @@ theorem pgen_lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) (h
   rw [hv Y (r ≫ lamφ G' I) y (j I) (j' I) (k I) (k' I) (aj I) (aj' I) (ak I) (ak' I), Category.assoc,
     Category.assoc, sqOf_lamφ, mul_zpow, mul_zpow, inv_zpow]
 
+/- English proof (translation)
+The claim follows from `(isGen_iff _).2 (pgen_lamIso h v ((isGen_iff v).1 hv))`.
+-/
 theorem isGen_lamIso (h : IsGrpPullback G' G f φ) (v : LB.Iso L' (L.pull φ)) (hv : v.IsGen) :
     (lamIso h v).IsGen :=
   (isGen_iff _).2 (pgen_lamIso h v ((isGen_iff v).1 hv))
@@ -95,10 +124,16 @@ section Kappa
 
 variable {R R₁ R₂ : Type} [CommRing R] [IsDomain R] [CommRing R₁] [IsDomain R₁] [CommRing R₂] [IsDomain R₂]
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Establish `e₁ : jK R₁ = spMap (algebraMap R₁ (FractionRing R₁))` using `rfl`. Establish `e₂ : jK R₂ = spMap (algebraMap R₂ (FractionRing R₂))` using `rfl`. Rewrite using `[e₁, e₂, spMap_comp_spMap', spMap_comp_spMap']`. Use `congr 1`. Conclude with `RingHom.ext hg`.
+-/
 theorem gam_comm (σ : R₁ →+* R₂) (gam : FractionRing R₁ →+* FractionRing R₂)
     (hg : ∀ r, gam (algebraMap R₁ _ r) = algebraMap R₂ _ (σ r)) : spMap gam ≫ jK R₁ = jK R₂ ≫ spMap σ := by
   have e₁ : jK R₁ = spMap (algebraMap R₁ (FractionRing R₁)) := rfl
@@ -107,6 +142,17 @@ theorem gam_comm (σ : R₁ →+* R₂) (gam : FractionRing R₁ →+* FractionR
   congr 1
   exact RingHom.ext hg
 
+/- English proof (translation)
+Set `m : FractionRing R →+* FractionRing R₁` to `IsLocalization.map (FractionRing R₁) ρ (M := nonZeroDivisors R) (T := nonZeroDivisors R₁) (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ hρ)`. Establish `hm : m.comp (algebraMap R (FractionRing R)) = (algebraMap R₁ (FractionRing R₁)).comp ρ` using `IsLocalization.map_comp _`. Establish `e : ∀ A : Type, ∀ [CommRing A] [IsDomain A], jK A = spMap (algebraMap A (FractionRing A))` using `fun _ => rfl`. Use `⟨spMap m, ?_, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[e, e, spMap_comp_spMap', spMap_comp_spMap', hm]`.
+
+Take `⟨κ', rfl⟩ : ∃ κ', Spec.map κ' = κ` from `⟨Spec.preimage κ, Spec.map_preimage κ⟩`. Rewrite `hκ` using `[e, e, spMap_comp_spMap']`. Rewrite using `[spMap_comp_spMap']`. Establish `h₁ : Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ κ') = Spec.map (CommRingCat.ofHom ((algebraMap R₂ (FractionRing R₂)).comp (σ.comp ρ)))`. Rewrite using `[Spec.map_comp]`.
+
+Conclude with `hκ`. Establish `h₂` using `Spec.map_injective h₁`. Use `show Spec.map κ' = Spec.map (CommRingCat.ofHom _)`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Use `IsLocalization.ringHom_ext (nonZeroDivisors R) ?_` and prove the remaining obligations. Use extensionality with `r`. Establish `h₃` using `congrArg (fun q => q.hom r) h₂`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at h₃`. Simplify using `only [RingHom.comp_apply, CommRingCat.hom_ofHom]`.
+
+Rewrite using `[h₃, show m (algebraMap R _ r) = algebraMap R₁ _ (ρ r) from IsLocalization.map_eq _ _, hg]`.
+-/
 theorem exists_kappa (ρ : R →+* R₁) (σ : R₁ →+* R₂) (gam : FractionRing R₁ →+* FractionRing R₂)
     (hg : ∀ r, gam (algebraMap R₁ _ r) = algebraMap R₂ _ (σ r)) (hρ : Function.Injective ρ) :
     ∃ κ₁ : (TK R₁).left ⟶ (TK R).left, κ₁ ≫ jK R = jK R₁ ≫ spMap ρ ∧
@@ -139,6 +185,9 @@ end Kappa
 
 section Main
 
+/- English proof (translation)
+Use `show gw w (σ ≫ p) z (fun I => J ((σ ≫ p) ≫ β₂ ≫ lamφ B I)) (fun I => J' ((σ ≫ p) ≫ lamφ B' I)) = _`. Simplify using `only [Category.assoc]`. Conclude with `GlobalTheory.ConstFam.gm_comp_stalkMap σ p z (((abelian₂ B M).pull β₂).U (fun _ I => J (σ ≫ p ≫ β₂ ≫ lamφ B I)) ⊓ (abelian₂ B' M').U (fun I => J' (σ ≫ p ≫ lamφ B' I))) ⟨mem_pull.2 (Set.mem_iInter.2 fun I => hJ (σ ≫ p ≫ β₂ ≫ lamφ B I)), Set.mem_iInter.2 fun I => hJ' (σ ≫ p ≫ lamφ …`.
+-/
 theorem lamVal_comp {S S' : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj B']
     [IsCommMonObj B'] {M : LB B.left} {M' : LB B'.left} {β₂ : (G2 B').left ⟶ (G2 B).left}
     (w : LB.Iso (abelian₂ B' M') ((abelian₂ B M).pull β₂)) {Z Z' : Scheme.{0}} (σ : Z' ⟶ Z) (p : Z ⟶ (G2 B').left) (z : Z')
@@ -152,6 +201,11 @@ theorem lamVal_comp {S S' : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [
     ⟨mem_pull.2 (Set.mem_iInter.2 fun I => hJ (σ ≫ p ≫ β₂ ≫ lamφ B I)),
       Set.mem_iInter.2 fun I => hJ' (σ ≫ p ≫ lamφ B' I)⟩ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[Category.assoc, (isSquare_sqOf h).1, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]`. Both sides reduce to the same expression. Use `show _ ≫ (snd G G).left = _ ≫ (snd G G).left`.
+
+Rewrite using `[Category.assoc, (isSquare_sqOf h).2, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem lift_sqOf {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'}
     (x y : T ⟶ G') : (lift x y).left ≫ sqOf h = (lift (pushPt h.1.w x) (pushPt h.1.w y)).left := by
@@ -163,6 +217,39 @@ theorem lift_sqOf {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Is
     rw [Category.assoc, (isSquare_sqOf h).2, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd]
     rfl
 
+/- English proof (translation)
+Introduce `R _ _ Q R₁ _ _ R₂ _ _ σ D₁ D₂ β v xe gam hgam gp hv hc hrig hψ ρ e hρ H`. Take `⟨β₁, β₂₁, w₁, pb₁, sq₁, gen₁, norm₁, c₁, tau₁⟩` from `H`. Establish `hΛQ : (abelian₂ Q.B Q.M.L).IsLB` using `DVR.linComb_isLB _ Q.M.isLB _ _`. Establish `hΛ₁ : (abelian₂ D₁.P.A D₁.P.L).IsLB` using `DVR.linComb_isLB _ D₁.P.isLB _ _`. Establish `hΛ₂ : (abelian₂ D₂.P.A D₂.P.L).IsLB` using `DVR.linComb_isLB _ D₂.P.isLB _ _`.
+
+Take `⟨w', T⟩` from `exists_comp hΛ₁ w₁ (lamIso gp v) ((isGen_iff _).1 gen₁) (pgen_lamIso gp v ((isGen_iff v).1 hv)) hΛQ hΛ₂`. Establish `sgam` using `gam_comm σ gam hgam`. Take `⟨κ₁, hκ₁, hκu⟩` from `exists_kappa ρ σ gam hgam hρ`. Establish `key : ∀ (Z : Scheme.{0}) (p : Z ⟶ (G2 D₂.P.A).left) (z : Z) J J₁ J', Good Q.M.L z J → Good D₁.P.L z J₁ → Good D₂.P.L z J' → lamVal w' p z J J' = lamVal w₁ (p ≫ sqOf gp) z J J₁ * ∏ I, gw v (p ≫ lamφ D₂.P.A I) z (J₁ ((p ≫ lamφ D₂.P.A I) ≫ β)) (J' (p ≫ lamφ D₂.P.A I)) ^ lamε I`. Introduce `Z p z J J₁ J' hJ hJ₁ hJ'`.
+
+Establish `t` using `T Z p z (fun I => J (p ≫ (sqOf gp ≫ β₂₁) ≫ lamφ Q.B I)) (fun I => J₁ ((p ≫ sqOf gp) ≫ lamφ D₁.P.A I)) (fun I => J' (p ≫ lamφ D₂.P.A I)) (Set.mem_iInter.2 fun I => hJ (p ≫ (sqOf gp ≫ β₂₁) ≫ lamφ Q.B I)) (Set.mem_iInter.2 fun I => hJ₁ ((p ≫ sqOf gp) ≫ lamφ D₁.P.A I)) (Set.mem_iInte …`. Use `t.trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `show _ = gw w₁ (p ≫ sqOf gp) z (fun I => J ((p ≫ sqOf gp) ≫ β₂₁ ≫ lamφ Q.B I)) (fun I => J₁ ((p ≫ sqOf gp) ≫ lamφ D₁.P.A I))`. Simplify using `only [Category.assoc]`. Rewrite using `[gw_lamIso gp v p z _ _ (fun I => by`.
+
+Use `hJ₁ ((p ≫ sqOf gp) ≫ lamφ D₁.P.A I)` as an intermediate fact. Rewrite `this`, the goal using `[Category.assoc, sqOf_lamφ, ← Category.assoc]`. Conclude with `this) (fun I => hJ' (p ≫ lamφ D₂.P.A I))]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, sqOf_lamφ, ← Category.assoc]`.
+
+Use `⟨β ≫ β₁, sqOf gp ≫ β₂₁, w', ?_, ⟨?_, ?_⟩, (isGen_iff _).2 (T.pgen_comp hΛ₁ ((isGen_iff _).1 gen₁) (pgen_lamIso gp v ((isGen_iff v).1 hv))), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsGrpPullback.comp gp pb₁).congr (spMap_comp_spMap' ρ σ) rfl`. Rewrite using `[Category.assoc, sq₁.1, ← Category.assoc, (isSquare_sqOf gp).1, Category.assoc]`. Rewrite using `[Category.assoc, sq₁.2, ← Category.assoc, (isSquare_sqOf gp).2, Category.assoc]`. Introduce `T z J J' hJ hJ' choose J₁ hJ₁ using fun χ : T.left ⟶ D₁.P.A.left => exists_chart D₁.P.isLB (χ z)`.
+
+Establish `o : pushPt gp.1.w (1 : T ⟶ D₂.P.A) = 1` using `map_one (pushHom gp T)`. Rewrite using `[key _ _ z J J₁ J' hJ hJ₁ hJ', lift_sqOf gp, o]`. Rewrite using `[norm₁ (Over.mk (T.hom ≫ spMap σ)) z J J₁ hJ hJ₁, _root_.one_mul]`. Rewrite using `[prod_lam (1 : T ⟶ D₂.P.A) 1 (fun q => gw v q z (J₁ (q ≫ β)) (J' q)), _root_.mul_one]`. Simplify using `only [mul_inv_cancel, _root_.one_mul, inv_mul_cancel]`.
+
+Introduce `a show (D₂.c a).left ≫ β ≫ β₁ = spMap (σ.comp ρ) ≫ (Q.c (e (xe a))).left`. Rewrite using `[← Category.assoc, hc, Category.assoc, c₁, ← Category.assoc, spMap_comp_spMap']`. Introduce `κ hκ a b z J J' hJ hJ'`. Take `rfl` from `hκu κ hκ`. Rewrite using `[show unitOn (1 : (FractionRing R₂)ˣ) = 1 from map_one _, map_one, _root_.mul_one]`.
+
+Use `choose J₁ hJ₀ using fun χ : (TK R₂).left ⟶ D₁.P.A.left => exists_chart D₁.P.isLB (χ z)`. Establish `hJ₁ : Good D₁.P.L z J₁` using `hJ₀`. Set `g₀ : (TK R₂).left ⟶ (TK R₁).left` to `spMap gam`. Establish `hx : ∀ χ, D₂.xK χ ≫ β = g₀ ≫ D₁.xK (xe χ)` using `fun χ => by show (jK R₂ ≫ (D₂.c χ).left) ≫ β = spMap gam ≫ jK R₁ ≫ (D₁.c (xe χ)).left`. Rewrite using `[Category.assoc, hc, ← Category.assoc, ← sgam, Category.assoc]`.
+
+Establish `hP : (lift (toUnit (TK R₂) ≫ D₂.c a) (toUnit (TK R₂) ≫ D₂.c b)).left ≫ sqOf gp = g₀ ≫ (lift (toUnit (TK R₁) ≫ D₁.c (xe a)) (toUnit (TK R₁) ≫ D₁.c (xe b))).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst D₁.P.A D₁.P.A).left = _ ≫ (fst D₁.P.A D₁.P.A).left`. Rewrite using `[Category.assoc, (isSquare_sqOf gp).1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `hx a`.
+
+Use `show _ ≫ (snd D₁.P.A D₁.P.A).left = _ ≫ (snd D₁.P.A D₁.P.A).left`. Rewrite using `[Category.assoc, (isSquare_sqOf gp).2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Conclude with `hx b`. Establish `t₁` using `tau₁ κ₁ hκ₁ (xe a) (xe b) (g₀ z) (fun ψ => J (g₀ ≫ ψ)) (fun ψ => J₁ (g₀ ≫ ψ)) (fun ψ => hJ (g₀ ≫ ψ)) (fun ψ => hJ₁ (g₀ ≫ ψ))`. Rewrite `t₁` using `[show unitOn (1 : (FractionRing R₁)ˣ) = 1 from map_one _, map_one, _root_.mul_one]`.
+
+Establish `t₂` using `(congrArg (Units.map (g₀.stalkMap z).hom.toMonoidHom) t₁).trans (map_mul _ _ _)`. Establish `n₁ : val (D₁.tau (xe a) (xe b)) (g₀ ≫ 𝟙 _) z J₁ = Units.map (g₀.stalkMap z).hom.toMonoidHom (val (D₁.tau (xe a) (xe b)) (𝟙 _) (g₀ z) (fun ψ => J₁ (g₀ ≫ ψ)))` using `Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ (𝟙 _) g₀ z J₁ hJ₁).2.2.1 _)`. Establish `nQ : val (Q.tau (e (xe a)) (e (xe b))) (g₀ ≫ κ₁) z J = Units.map (g₀.stalkMap z).hom.toMonoidHom (val (Q.tau (e (xe a)) (e (xe b))) κ₁ (g₀ z) (fun ψ => J (g₀ ≫ ψ)))` using `Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ κ₁ g₀ z J hJ).2.2.1 _)`. Rewrite `n₁` using `[Category.comp_id]`. Establish `A` using `n₁.trans (t₂.trans (congrArg₂ (· * ·) (lamVal_comp w₁ g₀ _ z J J₁ hJ hJ₁).symm nQ.symm))`.
+
+Set `h : ((TK R₂).left ⟶ D₂.P.A.left) → ((TK R₂).left.presheaf.stalk z)ˣ` to `fun q => gw v q z (J₁ (q ≫ β)) (J' q)`. Establish `vψ : ∀ χ, val (D₁.psi (xe χ)) g₀ z J₁ = (h (DVR.cP D₂ _ χ).left)⁻¹ * val (D₂.psi χ) (𝟙 _) z J'` using `fun χ => by`. Establish `e` using `CubTransport.val_pmaps (fun _ => hx χ) (hψ χ) (𝟙 _) hJ₁ hJ'`. Rewrite `e` using `[Fintype.prod_unique, zpow_neg_one, Category.id_comp, Category.id_comp]`. Conclude with `e`.
+
+Establish `vρ : val D₁.rigK g₀ z J₁ = h (1 : TK R₂ ⟶ D₂.P.A).left * val D₂.rigK (𝟙 _) z J'`. Establish `h₁ : eSec D₂.P.A ≫ β = spMap σ ≫ eSec D₁.P.A` using `(cubeMapOf gp).e_comm`. Establish `e` using `CubTransport.val_pmaps (fun _ => h₁) hrig (TK R₂).hom hJ₁ hJ'`. Rewrite `e` using `[Fintype.prod_unique, zpow_one]`. Establish `b₁ : g₀ ≫ (toUnit (TK R₁)).left = (TK R₂).hom ≫ spMap σ` using `sgam`.
+
+Establish `b₂ : 𝟙 _ ≫ (toUnit (TK R₂)).left = (TK R₂).hom` using `Category.id_comp _`. Use `(val_pull hJ₁ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))` and prove the remaining obligations. Rewrite using `[b₁, b₂]`. Conclude with `e`. Establish `K` using `(key _ (lift (toUnit (TK R₂) ≫ D₂.c a) (toUnit (TK R₂) ≫ D₂.c b)).left z J J₁ J' hJ hJ₁ hJ').trans (congrArg₂ (· * ·) (congrArg (fun q => lamVal w₁ q z J J₁) hP) (prod_lam (DVR.cP D₂ (TK R₂) a) (DVR.cP D₂ (TK R₂) b) h))`.
+
+Rewrite `A` using `[TauPull.val_tau _ hJ₁, ← map_add, vψ, vψ, vψ, vρ, DVR.cPoint_add]`. Use `Eq.trans ?_ (congrArg₂ (· * ·) K.symm rfl)` and prove the remaining obligations. Rewrite using `[TauPull.val_tau _ hJ']`. Use `Eq.trans ?_ (mul_right_comm _ _ _)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) A rfl)` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem half_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : Data R) (R₁ : Type) [CommRing R₁] [IsDomain R₁] (R₂ : Type) [CommRing R₂] [IsDomain R₂] (σ : R₁ →+* R₂) (D₁ : DegPre R₁) (D₂ : DegPre R₂) (β : D₂.P.A.left ⟶ D₁.P.A.left) (v : LB.Iso D₂.P.L (D₁.P.L.pull β)) (xe : D₂.X ≃+ D₁.X) (gam : FractionRing R₁ →+* FractionRing R₂), (∀ r, gam (algebraMap R₁ _ r) = algebraMap R₂ _ (σ r)) → IsGrpPullback D₂.P.A D₁.P.A (spMap σ) β → v.IsGen → (∀ x, (D₂.c x).left ≫ β = spMap σ ≫ (D₁.c (xe x)).left) → GlobalTheory.PsiRing.RigCmp σ D₁ D₂ β v → GlobalTheory.PsiRing.PsiCmp D₁ D₂ β v xe (spMap gam) → ∀ (ρ : R →+* R₁) (e : D₁.X ≃+ Q.X), Function.Injective ρ → Half Q ρ D₁ e (fun _ _ => 1) → Half Q (σ.comp ρ) D₂ (xe.trans e) (fun _ _ => 1) := by
   intro R _ _ Q R₁ _ _ R₂ _ _ σ D₁ D₂ β v xe gam hgam gp hv hc hrig hψ ρ e hρ H
   obtain ⟨β₁, β₂₁, w₁, pb₁, sq₁, gen₁, norm₁, c₁, tau₁⟩ := H

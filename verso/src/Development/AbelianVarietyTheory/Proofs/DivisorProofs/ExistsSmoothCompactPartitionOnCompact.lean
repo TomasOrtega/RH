@@ -4,6 +4,15 @@ open scoped FourierTransform ContDiff Manifold
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Z _ _ _ K hK ι _ U hU hKU`. Use `haveI : ProperSpace Z := FiniteDimensional.proper ℝ Z`. Take `⟨R, hR⟩` from `hK.isBounded.subset_ball (0 : Z)`. Establish `hcov : K ⊆ ⋃ i, U i ∩ Metric.ball (0 : Z) R`. Introduce `z hz`.
+
+Take `⟨i, hi⟩` from `Set.mem_iUnion.1 (hKU hz)`. Conclude with `Set.mem_iUnion.2 ⟨i, hi, hR hz⟩`. Take `⟨ρ, hρ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate (modelWithCornersSelf ℝ Z) hK.isClosed (fun i => U i ∩ Metric.ball (0 : Z) R) (fun i => (hU i).inter Metric.isOpen_ball) hcov`. Establish `hρs : ∀ i, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (ρ i)` using `fun i => contMDiff_iff_contDiff.1 (ρ i).contMDiff`. Use `⟨fun i z => ((ρ i z : ℝ) : ℂ), fun i => ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Complex.ofRealCLM.contDiff.comp (hρs i)`. Establish `h1 : tsupport (fun z => ((ρ i z : ℝ) : ℂ)) ⊆ tsupport (ρ i)` using `tsupport_comp_subset Complex.ofReal_zero _`. Use `IsCompact.of_isClosed_subset (isCompact_closedBall (0 : Z) R) (isClosed_tsupport _) ?_` and prove the remaining obligations. Conclude with `h1.trans ((hρ i).trans (Set.inter_subset_right.trans Metric.ball_subset_closedBall))`. Conclude with `(tsupport_comp_subset Complex.ofReal_zero _).trans ((hρ i).trans Set.inter_subset_left)`.
+
+Introduce `z hz`. Establish `h2` using `ρ.sum_eq_one hz`. Rewrite `h2` using `[finsum_eq_sum_of_fintype]`. Simplify using `only`. Rewrite using `[← Complex.ofReal_sum, h2, Complex.ofReal_one]`.
+-/
 theorem exists_smooth_compact_partition_on_compact :
     ∀ (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] (K : Set Z),
     IsCompact K → ∀ (ι : Type) [Fintype ι] (U : ι → Set Z), (∀ i, IsOpen (U i)) →

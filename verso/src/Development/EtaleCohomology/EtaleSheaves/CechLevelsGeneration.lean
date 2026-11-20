@@ -13,6 +13,9 @@ def CechLevel : Prop := ∀ (p : ℕ) {D E Y' Y'' : CommRingCat.{0}} (e : D ⟶ 
       Nonempty (Arrow.mk ((Arrow.mapCechNerve (sq e φ' u φ'' hpo.w)).app (op (SimplexCategory.mk p))) ≅
         Arrow.mk (yoneda.map (Spec.map φp)))
 
+/- English proof (translation)
+Establish `h1 : ∀ x, pull R a.inv F n (pull R a.hom F n x) = x` using `fun x => by`. Rewrite using `[← pull_comp, Iso.inv_hom_id, pull_id]`. Establish `h2 : ∀ x, pull R a.hom F n (pull R a.inv F n x) = x` using `fun x => by`. Rewrite using `[← pull_comp, Iso.hom_inv_id, pull_id]`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+-/
 theorem pull_iso_bij (R : Type) [CommRing R] {E E' : Spc} (a : E ≅ E') (F : Shv R) (n : ℤ) :
     Function.Bijective (pull R a.hom F n) := by
   have h1 : ∀ x, pull R a.inv F n (pull R a.hom F n x) = x := fun x => by
@@ -21,6 +24,15 @@ theorem pull_iso_bij (R : Type) [CommRing R] {E E' : Spc} (a : E ≅ E') (F : Sh
     rw [← pull_comp, Iso.hom_inv_id, pull_id]
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
+/- English proof (translation)
+Set `αl : P ≅ P'` to `Arrow.leftFunc.mapIso α`. Set `αr : Q ≅ Q'` to `Arrow.rightFunc.mapIso α`. Establish `hw : f ≫ αr.hom = αl.hom ≫ g`. Conclude with `(Arrow.w α.hom).symm`. Establish `hf : f = αl.hom ≫ g ≫ αr.inv`.
+
+Rewrite using `[← Category.assoc, Iso.eq_comp_inv]`. Conclude with `hw`. Establish `he : ⇑(pull R (disc.map f) F n) = pull R (disc.mapIso αl).hom F n ∘ pull R (disc.map g) F n ∘ pull R (disc.mapIso αr).symm.hom F n`. Use function extensionality and compare the values at `x`. Rewrite using `[hf, Functor.map_comp, Functor.map_comp, pull_comp, pull_comp]`.
+
+Both sides reduce to the same expression. Establish `bl` using `pull_iso_bij R (disc.mapIso αl) F n`. Establish `br` using `pull_iso_bij R (disc.mapIso αr).symm F n`. Use `⟨fun hs => ?_, fun hi => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+
+Conclude with `bl.2.comp (hs.comp br.2)`. Rewrite using `[he]`. Conclude with `bl.1.comp (hi.comp br.1)`.
+-/
 theorem transfer (R : Type) [CommRing R] (F : Shv R) {P Q P' Q' : PSh} (f : P ⟶ Q) (g : P' ⟶ Q')
     (α : Arrow.mk f ≅ Arrow.mk g) (n : ℤ) :
     (Function.Surjective (pull R (disc.map g) F n) → Function.Surjective (pull R (disc.map f) F n)) ∧
@@ -41,6 +53,11 @@ theorem transfer (R : Type) [CommRing R] (F : Shv R) {P Q P' Q' : PSh} (f : P �
   · rw [he]; exact bl.2.comp (hs.comp br.2)
   · rw [he]; exact bl.1.comp (hi.comp br.1)
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hpush het hlow D d hD Y' w φ' hpo E e Y'' u φ'' hpo' he hs hE p m hm`. Take `⟨Ep, Yp, dp, wp, φp, hpp, hP, ⟨α⟩⟩` from `hC p e φ' u φ'' hpo'`. Establish `hsq : IsPushout φ (d ≫ dp) (w ≫ wp) φp` using `hpo.paste_vert hpp`. Establish `hrel : RelZ q i m φp` using `hlow m hm Ep (d ≫ dp) (hP d P hpush hD hE) Yp (w ≫ wp) φp hsq`. Establish `ht` using `fun k => transfer (ZMod q) (tw q i) _ _ α k`.
+
+Use `⟨fun k hk => (ht k).1 (hrel.1 k hk), (ht m).2 hrel.2⟩` and prove the remaining obligations.
+-/
 theorem Levels_of (hC : CechLevel) : LateralTheory.E.TruncCokPf.Levels := by
   intro hH q _ i n A Y φ hq P hpush het hlow D d hD Y' w φ' hpo E e Y'' u φ'' hpo' he hs hE p m hm
   obtain ⟨Ep, Yp, dp, wp, φp, hpp, hP, ⟨α⟩⟩ := hC p e φ' u φ'' hpo'

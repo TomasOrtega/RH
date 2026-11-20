@@ -7,6 +7,23 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.ThetaMove
 
+/- English proof (translation)
+Set `Q : S → Type` to `fun P => (localization₂ P.1.asIdeal M₁).toAddSubgroup ⧸ (localization₂ P.1.asIdeal M₂).toAddSubgroup.addSubgroupOf (localization₂ P.1.asIdeal M₁).toAddSubgroup`. Set `g : ∀ P : S, M₁.toAddSubgroup →+ Q P` to `fun P => (QuotientAddGroup.mk' _).comp (AddSubgroup.inclusion (H := M₁.toAddSubgroup) (K := (localization₂ P.1.asIdeal M₁).toAddSubgroup) fun x hx => mem_localization_of_mem P.1 hx)`. Establish `hg : ∀ (P : S) (x : M₁.toAddSubgroup) (y : (localization₂ P.1.asIdeal M₁).toAddSubgroup), g P x = (QuotientAddGroup.mk y : Q P) ↔ (x : W) - y ∈ localization₂ P.1.asIdeal M₂`. Introduce `P x y`. Conclude with `QuotientAddGroup.eq_iff_sub_mem`.
+
+Set `f : M₁.toAddSubgroup →+ ∀ P : S, Q P` to `AddMonoidHom.pi g`. Establish `hker : f.ker = M₂.toAddSubgroup.addSubgroupOf M₁.toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, funext_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `mem_of_locP fun P => ?_` and prove the remaining obligations. Distinguish the cases in `hP : P ∈ S`. Simplify using `using (hg ⟨P, hP⟩ x 0).1 (h ⟨P, hP⟩)`. Conclude with `hD.2 P hP (mem_localization_of_mem P x.2)`.
+
+Introduce `h P`. Conclude with `(hg P x 0).2 (by simpa using mem_localization_of_mem P.1 h)`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Use `choose x hx using fun P : S => QuotientAddGroup.mk_surjective (y P)`.
+
+Use `choose t ht ht' using fun P : S => (h₁.inf h₂).approx {P.1} (x P : W)`. Establish `htM : ∀ P : S, t P ∈ M₁` using `fun P => mem_of_locP fun R => by`. Distinguish the cases in `hR : R = P.1`. Substitute `hR` using the available equality. Use `(localization₂ P.1.asIdeal M₁).add_mem (localization_mono P.1 inf_le_left (ht P P.1 (Finset.mem_singleton_self _))) (x P).2` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `localization_mono R inf_le_left (ht' P R (by simpa using hR))`. Use `⟨∑ P : S, ⟨t P, htM P⟩, funext fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx P]`. Use `(hg P _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[AddSubgroup.val_finset_sum, ← Finset.add_sum_erase _ _ (Finset.mem_univ P), add_sub_right_comm]`. Use `Submodule.add_mem _ (localization_mono P.1 inf_le_right (ht P P.1 (Finset.mem_singleton_self _))) (Submodule.sum_mem _ fun R hR => localization_mono P.1 inf_le_right (ht' R P.1 ?_))` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton]`. Conclude with `fun e => (Finset.ne_of_mem_erase hR) (Subtype.ext e.symm)`. Rewrite using `[AddSubgroup.relIndex, ← hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, AddSubgroup.card_top, Nat.card_pi, ← Finset.prod_coe_sort S]`.
+
+Both sides reduce to the same expression.
+-/
 theorem relIndex_eq_prod_locP (E : Type) [Field E] [NumberField E] (W : Type) [AddCommGroup W] [Module (𝓞 E) W]
     (S : Finset (HeightOneSpectrum (𝓞 E))) (M₁ M₂ : Submodule (𝓞 E) W) (h₁ : Full M₁) (h₂ : Full M₂) (hD : Dom S M₁ M₂) :
     M₂.toAddSubgroup.relIndex M₁.toAddSubgroup =

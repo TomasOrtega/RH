@@ -6,6 +6,11 @@ namespace GroundTheory.Variant₂.N1
 noncomputable def coeffNorm {K : Type} {ι : K → Type} (G : ReciprocityTheory.ChartRestriction.G.Geo.MRing ι) : ℝ :=
   ∑ m ∈ MvPolynomial.support G, ‖(Int.castRingHom ℂ) (MvPolynomial.coeff m G)‖
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval₂_eq', coeffNorm, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_prod, Fintype.prod_sigma]`.
+
+Use `Finset.prod_le_prod (fun k _ => Finset.prod_nonneg fun i _ => norm_nonneg _) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hG m hm k, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hz k i) _`.
+-/
 theorem norm_eval_le_of_forall_norm_le {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {z : (k : K) × ι k → ℂ} {c : (k : K) → ι k}
     (hz : ∀ (k : K) (i : ι k), ‖z ⟨k, i⟩‖ ≤ ‖z ⟨k, c k⟩‖)

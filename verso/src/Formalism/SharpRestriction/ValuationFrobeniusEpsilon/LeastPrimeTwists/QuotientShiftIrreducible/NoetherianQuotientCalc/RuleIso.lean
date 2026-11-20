@@ -10,6 +10,11 @@ namespace GIso
 
 variable {F G : GMod B R k}
 
+/- English proof (translation)
+Rewrite using `[← φ.map_gr m]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Establish `: y = x` using `φ.e.injective hxy`. Conclude with `this ▸ hy`.
+
+Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem mem_gr_iff (φ : GIso F G) (m : Deg k) (x : F.M) : φ.e x ∈ G.gr m ↔ x ∈ F.gr m := by
   rw [← φ.map_gr m]
   constructor
@@ -88,6 +93,11 @@ def ann (φ : GIso F G) (s : R) (d : Deg k) : GIso (F.ann s d) (G.ann s d) :=
 
 end GIso
 
+/- English proof (translation)
+Proceed by induction on `ts with`. Consider the case `nil`. Introduce `F G φ m`. Simplify using `only [chi]`. Rewrite using `[(φ.grEquiv m).length_eq]`.
+
+Consider the case `cons p ts ih`. Take `⟨d, s⟩` from `p`. Introduce `F G φ m`. Simplify using `only [chi]`. Rewrite using `[ih _ _ (φ.quot s) m, ih _ _ (φ.ann s d) m]`.
+-/
 theorem chi_congr (ts : List (Deg k × R)) : ∀ (F G : GMod B R k), GIso F G →
     ∀ m, chi ts F m = chi ts G m := by
   induction ts with
@@ -101,6 +111,9 @@ theorem chi_congr (ts : List (Deg k × R)) : ∀ (F G : GMod B R k), GIso F G �
     simp only [chi]
     rw [ih _ _ (φ.quot s) m, ih _ _ (φ.ann s d) m]
 
+/- English proof (translation)
+Introduce `_ _ ts F G φ m` and use `chi_congr ts F G φ m`.
+-/
 theorem ruleIso : RuleIso := fun _ _ ts F G φ m => chi_congr ts F G φ m
 
 end Formalism.MainNotions.V.Pf.V2.Calc

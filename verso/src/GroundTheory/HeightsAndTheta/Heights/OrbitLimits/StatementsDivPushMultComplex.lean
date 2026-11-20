@@ -16,6 +16,13 @@ def DivPushMultComplex.Statement : Prop :=
     Wa ∈ (W.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes →
     multAt I W = multAt (I.map (MvPolynomial.map (Int.castRingHom ℂ))) Wa
 
+/- English proof (translation)
+Establish `hprime : (Ideal.span {(Xc 2 0 : MRing (PBlk 2))}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Establish `hprimeC : (Ideal.span {(X ⟨(), 0⟩ : MRingOver ℂ (PBlk 2))}).IsPrime` using `(Ideal.span_singleton_prime (X_ne_zero _)).mpr X_prime`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton _`.
+
+Rewrite using `[IsHorizontal, eq_bot_iff]`. Introduce `c hc`. Rewrite `hc` using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Take `⟨q, hq⟩` from `hc`. Establish `h` using `congrArg constantCoeff hq`.
+
+Simplify using `using h`. Rewrite using `[Ideal.map_span, Set.image_singleton, Xc, map_X, Ideal.minimalPrimes_eq_subsingleton_self]`. Conclude with `Set.mem_singleton _`.
+-/
 theorem DivPushMultComplex.hyps_inhabited :
     (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))) ∈ (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))).minimalPrimes ∧
       IsHorizontal (Ideal.span {Xc 2 0} : Ideal (MRing (PBlk 2))) ∧

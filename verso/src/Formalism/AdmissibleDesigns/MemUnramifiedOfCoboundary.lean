@@ -25,6 +25,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {M : Type} [AddCommGroup M] [Module A M] [Module O' M] [SMulCommClass A O' M]
     {r : GG →* A} {χ : GG →* T'ˣ} {E : A} {Dw : Subgroup GG} {eG : Dw ≃* G}
 
+/- English proof (translation)
+Apply `Cd.u.injective` to reduce the goal to its premises. Rewrite using `[map_sub, Cd.u_act, AddEquiv.apply_symm_apply, Cd.u_smul, map_pow, map_natCast, ← hg, ← hp]`. Simplify using `only [trC, MulEquiv.symm_apply_apply, Pi.smul_apply]`.
+-/
 theorem back_cob {e cB ℓ : ℕ} (Cd : CoefDict PD LL O σ M r χ Dw eG e) (hp : PD.p = ℓ) (z : Dw → M)
     (x : Cd.Ce.V ⧸ Cd.Ce.L.T) (g : Dw)
     (hg : (((PD.p : O) ^ cB) • trC Cd z) (eG g) = actD Cd.Ce.L (eG g) x - x) :
@@ -33,6 +36,13 @@ theorem back_cob {e cB ℓ : ℕ} (Cd : CoefDict PD LL O σ M r χ Dw eG e) (hp 
   rw [map_sub, Cd.u_act, AddEquiv.apply_symm_apply, Cd.u_smul, map_pow, map_natCast, ← hg, ← hp]
   simp only [trC, MulEquiv.symm_apply_apply, Pi.smul_apply]
 
+/- English proof (translation)
+Establish `hzl : IsLocallyConstant (z : Dw → M)`. Establish `h` using `hloc ψ hψe`. Establish `hf : (z : Dw → M) = fun g : Dw => ψ (yY r χ E (g : GG))` using `funext hz`. Rewrite using `[hf]`. Conclude with `h`.
+
+Establish `h1` using `trC_hf hTB het Y hY Cd hψ ψ hψe (z : Dw → M) hz`. Establish `h2` using `trC_mem_Z1D Cd heG z hzl ((PD.p : O) ^ cB)`. Take `⟨x, hx⟩` from `(hTB.2 e het Cd.Ce.V Cd.Ce.ρ Cd.Ce.L Cd.Ce.cont Cd.Ce.mat).1 he ⟨h2, h1⟩`. Use `⟨Cd.u.symm x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Use `show uElt r χ (g : GG) • Cd.u.symm x - Cd.u.symm x = ((ℓ : O') ^ cB) • (z : Dw → M) g`. Use `(back_cob Cd hp (z : Dw → M) x g ?_).symm` and prove the remaining obligations. Use `congrFun hx (eG g)` as an intermediate fact. Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply] at this`. Conclude with `this.symm`.
+-/
 theorem tb_pos {e t cB ℓ : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Set ℤ}
     (hTB : Formalism.MainNotions.N.TBAt PD (O := O) I J t cB) (he : 0 < e) (het : e < t)
     (Y : YtLat (G := G) (Qp := Qp) LL O) (hY : YtCrys (PD := PD) Y J)
@@ -57,6 +67,15 @@ theorem tb_pos {e t cB ℓ : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Se
   simp only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `hzl : IsLocallyConstant (z : Dw → M)`. Establish `h` using `hloc ψ hψe`. Establish `hf : (z : Dw → M) = fun g : Dw => ψ (yY r χ E (g : GG))` using `funext hz`. Rewrite using `[hf]`. Conclude with `h`.
+
+Use `⟨hzl, ?_⟩` and prove the remaining obligations. Establish `h1` using `trC_hf hTB het Y hY Cd hψ ψ hψe (z : Dw → M) hz`. Establish `h2` using `trC_mem_Z1D Cd heG z hzl ((PD.p : O) ^ cB)`. Establish `hmem : ((PD.p : O) ^ cB) • trC Cd (z : Dw → M) ∈ divisibleCocycles Cd.Ce.L ⊓ HfD PD Cd.Ce.L` using `⟨h2, h1⟩`. Rewrite `hmem` using `[(hTB.2 e het Cd.Ce.V Cd.Ce.ρ Cd.Ce.L Cd.Ce.cont Cd.Ce.mat).2.1 he]`.
+
+Take `⟨a, ⟨x, hx⟩, b, ⟨y, hy⟩, hab⟩` from `Submodule.mem_sup.1 hmem.2`. Use `⟨Cd.u.symm (x + y), fun g hg => back_cob Cd hp (z : Dw → M) (x + y) g ?_⟩` and prove the remaining obligations. Establish `hb` using `congrFun hy (eG g)`. Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply] at hb`. Rewrite using `[← hab, Pi.add_apply, hx (eG g) (hI g hg), ← hb, map_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem tb_zero {e t cB ℓ : ℕ} {I : Subgroup G} {J : (K →ₐ[Qp] LL) → Set ℤ}
     (hTB : Formalism.MainNotions.N.TBAt PD (O := O) I J t cB) (he : e = 0) (het : e < t)
     (Y : YtLat (G := G) (Qp := Qp) LL O) (hY : YtCrys (PD := PD) Y J)
@@ -90,10 +109,16 @@ section Cls
 
 variable {O Γ M : Type} [CommRing O] [Group Γ] [AddCommGroup M] [Module O M] (ρ : Representation O Γ M)
 
+/- English proof (translation)
+Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr h`.
+-/
 theorem mkQ_eq_zero_of (z : coZ1s ρ) (h : (z : Γ → M) ∈ coB1 ρ) :
     (Submodule.mkQ _ z : H1z ρ) = 0 := by
   exact (Submodule.Quotient.mk_eq_zero _).mpr h
 
+/- English proof (translation)
+Rewrite using `[unrH1, LinearMap.mem_ker, Formalism.NG.resH1, Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Conclude with `(hm g.1 g.2).symm`.
+-/
 theorem mem_unramified_of_coboundary (I : Subgroup Γ) (z : coZ1s ρ) (m : M) (hm : ∀ g ∈ I, (z : Γ → M) g = ρ g m - m) :
     (Submodule.mkQ _ z : H1z ρ) ∈ unrH1 ρ I := by
   rw [unrH1, LinearMap.mem_ker, Formalism.NG.resH1, Submodule.mkQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]
@@ -101,6 +126,9 @@ theorem mem_unramified_of_coboundary (I : Subgroup Γ) (z : coZ1s ρ) (m : M) (h
   funext g
   exact (hm g.1 g.2).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨z, h, rfl⟩`.
+-/
 theorem mem_locally_constant_of [TopologicalSpace Γ] (z : coZ1s ρ) (h : IsLocallyConstant (z : Γ → M)) :
     (Submodule.mkQ _ z : H1z ρ) ∈ Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology.lcH1 ρ :=
   ⟨z, h, rfl⟩

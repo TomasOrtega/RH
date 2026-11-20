@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ h x hx`. Set `v : Valuation K NNReal` to `NormedField.valuation`. Establish `hv : ∀ y : K, v y ≤ 1 ↔ ‖y‖ ≤ 1` using `fun y => by`. Express the relevant statement in the definitionally equal form `‖y‖₊ ≤ 1 ↔ ‖y‖ ≤ 1`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`.
+
+Set `f : A →+* v.integer` to `(algebraMap A K).codRestrict v.integer (fun a => (hv _).2 (h a))`. Establish `hx' : IsIntegral v.integer x` using `IsIntegral.map_of_comp_eq f (RingHom.id K) (by ext a; rfl) hx`. Conclude with `(hv x).1 ((Valuation.integer.integers v).mem_of_integral hx')`.
+-/
 theorem UpperTheory.Reformulated.B.NormLeOneOfIntegral.norm_le_one_of_int :
     ∀ {A K : Type} [inst : CommRing A]
     [inst_1 : NormedField K] [IsUltrametricDist K] [inst_3 : Algebra A K],

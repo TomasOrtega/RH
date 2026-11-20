@@ -24,6 +24,43 @@ open scoped Matrix nonZeroDivisors
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨hr, hty, -, h4, -, g, e, F, ik, φ, hef, hun⟩` from `hU`. Take `⟨φ0, hφe⟩ : ∃ φ0 : (F.Di (ik k)).La →ₗ[𝓞 E] (Fin r → E), ∀ a, φ0 a = (φ k a : Fin r → E)` from `⟨(U.X k).Λ.subtype ∘ₗ (φ k).toLinearMap, fun _ => rfl⟩`. Establish `hΛ : LinearMap.range φ0 = (U.X k).Λ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hφe]`. Conclude with `(φ k a).2`. Introduce `hy`. Conclude with `⟨(φ k).symm ⟨y, hy⟩, by rw [hφe, LinearEquiv.apply_symm_apply]⟩`.
+
+Establish `hlat : Function.Injective φ0 ∧ Submodule.span E (Set.range φ0) = ⊤ ∧ (∀ a b, cc ((U.X k).Gm a b) = (U.X k).Gm b a) ∧ (U.X k).Gm.det ≠ 0 ∧ ∀ x y, (((F.Di (ik k)).EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm (φ0 x) (φ0 y))`. Use `⟨fun a b hab => ?_, ?_, (U.X k).Gm_herm, (U.X k).Gm_det, fun x y => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[hφe, hφe]`. Conclude with `(φ k).injective (Subtype.ext hab)`. Rewrite using `[← LinearMap.coe_range, hΛ]`.
+
+Conclude with `(U.X k).Λ_span`. Rewrite using `[hφe, hφe]`. Conclude with `hef k x y`. Establish `hξ` using `(U.X k).ξ0_im`. Establish `hξ' : cc (-(U.X k).ξ0) = -(-(U.X k).ξ0)`.
+
+Unfold `cc at hξ ⊢`. Rewrite using `[map_neg, hξ]`. Establish `hneg : ∀ τ ∈ (U.X k).Ψ, (τ (U.X k).ξ0).im < 0`. Take `⟨x, hx⟩` from `GlobalTheory.UnifFamily.dom_nonempty (U.X k)`. Take `⟨Pm, h1, h2, -⟩` from `hun k ⟨x, hx⟩`.
+
+Conclude with `GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (φ k) hσ hr (hty k).1 (hty k).2 (hef k) x hx Pm h1 h2 (by omega)`. Take `⟨m, hm, ht⟩` from `GlobalTheory.T.transvection_mem_principalCongruenceGroup E H l _ r _ _ φ0 hξ hlat`. Establish `hi` using `GlobalTheory.T.principalLevelGroup_finiteIndex_unitaryStabiliser E H l _ r _ _ φ0 hξ hlat`. Establish `hf` using `GlobalTheory.T.principalGroup_acts_freely_on_flags E H l _ r _ _ φ0 hξ hlat (U.X k).Ψ (U.X k).p0 (hty k).2`. Establish `hmem : ∀ γ : GL (Fin r) E, γ ∈ princ l (U.X k).Gm (F.Di (ik k)) φ0 ↔ IsUStab (U.X k).Gm (U.X k).Λ γ ∧ (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La), ∃ b : (F.Di (ik k)).La, (γ : Matrix (Fin r) (Fin r) E).mulVec (φ k a : Fin r → E) = (φ k a : Fin r …`.
+
+Introduce `γ`. Simplify using `only [← hφe]`. Rewrite using `[← hΛ]`. Conclude with `Iff.rfl`. Establish `hs : ∀ γ ∈ princ l (U.X k).Gm (F.Di (ik k)) φ0, IsUStab (U.X k).Gm (U.X k).Λ γ` using `fun γ hγ => ((hmem γ).1 hγ).1`.
+
+Rewrite `hi`, `ht` using `[hΛ]`. Use `set Y := reGrp (U.X k) _ m hs hi hf hm (ht _ (U.X k).κ0_xi) with hYdef`. Establish `hL : GlobalTheory.EqCovol.IsLevGrp l Y`. Introduce `γ`. Use `(hmem γ).trans (and_congr Iff.rfl (and_congr ?_ ?_))` and prove the remaining obligations.
+
+Establish `hI : (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (U.X k).Λ = (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La)).map φ0`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, hΛ]`. Use `show _ ↔ ∀ x ∈ (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (U.X k).Λ, ∃ y ∈ (U.X k).Λ, _`. Rewrite using `[hI]`. Simplify using `only [← hφe]`.
+
+Rewrite using `[← hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨a, ha, rfl⟩`. Take `⟨b, hb⟩` from `h a ha`. Conclude with `⟨_, ⟨b, rfl⟩, sub_eq_iff_eq_add'.2 hb⟩`.
+
+Introduce `h a ha`. Take `⟨_, ⟨b, rfl⟩, hb⟩` from `h _ ⟨a, ha, rfl⟩`. Conclude with `⟨b, sub_eq_iff_eq_add'.1 hb⟩`. Use `show _ ↔ ∀ x ∈ (U.X k).Λ, ∃ y ∈ (U.X k).Λ, _`. Simplify using `only [← hφe]`.
+
+Rewrite using `[← hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨a, rfl⟩`. Take `⟨b, hb⟩` from `h a`. Conclude with `⟨_, ⟨b, rfl⟩, sub_eq_iff_eq_add'.2 hb⟩`.
+
+Introduce `h a`. Take `⟨_, ⟨b, rfl⟩, hb⟩` from `h _ ⟨a, rfl⟩`. Conclude with `⟨b, sub_eq_iff_eq_add'.1 hb⟩`. Establish `hS : GlobalTheory.EqCovol.IsSelfDualTr (U.X k)`. Introduce `x`.
+
+Establish `hd` using `(GlobalTheory.HermModel.rank_integral_selfDual E H _ r _ _ φ0 hξ' hlat).2.2.2 x`. Use `show x ∈ (U.X k).Λ ↔ ∀ y ∈ (U.X k).Λ, ∃ n : ℤ, Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm x y) = n`. Rewrite using `[← hΛ, ← hd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y, rfl⟩`.
+
+Conclude with `h y`. Conclude with `fun h y => h _ ⟨y, rfl⟩`. Establish `hSY : GlobalTheory.EqCovol.IsSelfDualTr Y` using `hS`. Establish `orb : ∀ x ∈ (U.X k).dom, ∀ x' ∈ (U.X k).dom, (∃ γ ∈ (U.X k).Γ, ∃ b ∈ Bor (U.X k).Ψ r, x' = rmul (lact γ x) b) → ∃ γ ∈ Y.Γ, ∃ b ∈ Bor Y.Ψ r, x' = rmul (lact γ x) b`. Introduce `x hx x' hx'`.
+
+Introduce and unpack `⟨γ, hγ, b, hb, hxx⟩`. Take `⟨t, hx0, hu, -⟩` from `(h4 k k ⟨x, hx⟩ ⟨x', hx'⟩).2 ⟨γ, hγ, b, hb, by rw [← hxx]⟩`. Take `⟨Pm, hPm, -, hxP, hd, -⟩` from `hun k ⟨x, hx⟩`. Take `⟨Pm', hPm', -, hxP', hd', -⟩` from `hun k ⟨x', hx'⟩`. Use `fib_single e F hσ hr (ik k) Y (φ k) (hty k) (fun _ _ => rfl) (hef k) hmem hneg ⟨x, hx⟩ ⟨x', hx'⟩ Pm Pm' _ _ hPm hPm' (hxP.symm.trans (hx0.symm.trans hxP')) hd hd' fun τ i => ?_` and prove the remaining obligations.
+
+Take `⟨cf, hcf, htri, hcomb⟩` from `hu τ i`. Use `⟨cf, by rw [hcf]; exact Units.isUnit _, htri, ?_⟩` and prove the remaining obligations. Rewrite `hcomb` using `[hxP]`. Conclude with `hcomb`. Use `⟨hS, fun γ hγ x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hxg : lact γ x ∈ (U.X k).dom` using `Formalism.L2.Pj.dom_lact _ hx ((U.X k).Γ_stab γ hγ)`. Take `⟨γ', hγ', b', hb', e'⟩` from `orb x hx _ hxg ⟨γ, hγ, ExtFPf.oneF (U.X k), ExtFPf.oneF_mem (U.X k), (ExtFPf.rmul_oneF (U.X k) _).symm⟩`. Take `⟨hU', hc⟩` from `(GlobalTheory.EqCovol.mem_iff_congr_lcm E H l r Y hL hSY γ').1 hγ'`. Conclude with `⟨γ', hU', hc, b', hb', e'⟩`.
+-/
 theorem selfDual_and_congr_free (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H)
     (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (σ : c.F →+* ℂ) (r : ℕ)
@@ -147,6 +184,9 @@ end GlobalTheory.EqCovol.CongrOrb
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU _ _ hq k`. Conclude with `GlobalTheory.EqCovol.CongrOrb.selfDual_and_congr_free E H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hq k`.
+-/
 theorem GlobalTheory.EqCovol.selfDual_and_congr_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → (∀ p : ℕ, p.Prime → l.GoodAt p) → 1 ≤ Dw.p → 1 ≤ Dw.q → ∀ k : U.Comp, GlobalTheory.EqCovol.IsSelfDualTr (U.X k) ∧ ∀ γ ∈ (U.X k).Γ, ∀ x ∈ (U.X k).dom, ∃ γ' : GL (Fin r) E, IsUStab (U.X k).Gm (U.X k).Λ γ' ∧ (∀ v ∈ (U.X k).Λ, ∃ w ∈ (U.X k).Λ, (γ' : Matrix (Fin r) (Fin r) E).mulVec v - v = l.M' • w) ∧ ∃ b ∈ Bor (U.X k).Ψ r, lact γ x = rmul (lact γ' x) b := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU _ _ hq k
   exact GlobalTheory.EqCovol.CongrOrb.selfDual_and_congr_free E H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hq k

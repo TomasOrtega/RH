@@ -16,6 +16,9 @@ open GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.ZM.EndBuild
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod m hy]`.
+-/
 theorem pow_val_natCast {A : Type} [Monoid A] {k : ℕ} (y : A) (hy : y ^ k = 1) (m : ℕ) :
     y ^ ((m : ZMod k)).val = y ^ m := by
   rw [ZMod.val_natCast, ← pow_eq_pow_mod m hy]
@@ -23,10 +26,24 @@ theorem pow_val_natCast {A : Type} [Monoid A] {k : ℕ} (y : A) (hy : y ^ k = 1)
 def labMap {g : ℕ} {J : Type} (k : ℕ) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (i : Option J) (h : Ix g k) : Ix g k :=
   i.elim (-h) (fun j i' => ((∑ c, (Mat j i' c : ZMod k).val * (h c).val : ℕ) : ZMod k))
 
+/- English proof (translation)
+Rewrite using `[Out.linComb, List.prod_ofFn]`.
+-/
 theorem linComb_eq_prod {S : Scheme.{0}} {A T : Over S} [GrpObj A] [IsCommMonObj A] {r : ℕ}
     (y : Fin r → (T ⟶ A)) (a : Fin r → ℕ) : Out.linComb y a = ∏ i, y i ^ a i := by
   rw [Out.linComb, List.prod_ofFn]
 
+/- English proof (translation)
+Use `haveI := t.ab.comm`. Consider the cases of `i with`. Consider the case `none`. Simplify using `only [Option.elim, labMap]`. Rewrite using `[GrpObj.comp_inv, Category.comp_id]`.
+
+Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[TObj.lab, TObj.lab, linComb_eq_prod, linComb_eq_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← pow_val_natCast _ (t.torsion c)]`. Simplify using the standard rewrite rules.
+
+Consider the case `some j`. Simplify using `only [Option.elim, labMap]`. Use `haveI := t.hom j`. Establish `e : t.lab h ≫ t.act j = ∏ c, (t.pt c ≫ t.act j) ^ (h c).val`. Rewrite using `[TObj.lab, linComb_eq_prod]`.
+
+Use `map_prod (IsMonHom.monoidHom (t.act j) (Out.baseOver S)) (fun c => t.pt c ^ (h c).val) Finset.univ` as an intermediate fact. Simplify using `only [map_pow] at this`. Conclude with `this`. Rewrite using `[e, TObj.lab, linComb_eq_prod]`. Simplify using `only [(ht j).1, TObj.lab, linComb_eq_prod, ← Finset.prod_pow, ← pow_mul]`.
+
+Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[pow_val_natCast _ (t.torsion c), Finset.prod_pow_eq_pow_sum]`.
+-/
 theorem lab_comp {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} [NeZero k] {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
     (t : TObj g k J b s) {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ} (ht : t.Shape Mat κ)
     (i : Option J) (h : Ix g k) :
@@ -55,6 +72,11 @@ theorem lab_comp {o : Type} [CommRing o] {S : Scheme.{0}} {g k : ℕ} [NeZero k]
     refine Finset.prod_congr rfl fun c _ => ?_
     rw [pow_val_natCast _ (t.torsion c), Finset.prod_pow_eq_pow_sum]
 
+/- English proof (translation)
+Unfold `graphIdeal`. Use `le_iInf fun T => le_iInf fun _ => le_iInf fun β => le_iInf fun y => le_iInf fun v₁ => le_iInf fun v₂ => le_iInf fun hy => ?_` and prove the remaining obligations. Use `iInf_le_of_le T <| iInf_le_of_le inferInstance <| iInf_le_of_le β <| iInf_le_of_le (y ≫ e) <| iInf_le_of_le v₁ <| iInf_le_of_le v₂ <| iInf_le_of_le ⟨?_, ?_, ?_⟩ le_rfl` and prove the remaining obligations. Rewrite using `[Category.assoc, he, hy.1]`. Rewrite using `[Category.assoc]`.
+
+Conclude with `h₁ _ _ _ hy.2.1`. Rewrite using `[Category.assoc]`. Conclude with `h₂ _ _ _ hy.2.2`.
+-/
 theorem graphIdeal_le {R σ₁ σ₂ : Type} [CommRing R] {Y Y' X₁ X₂ X₁' X₂' : Scheme.{0}} (s : Y ⟶ Sp R) (s' : Y' ⟶ Sp R)
     (M₁ : LB X₁) (th₁ : σ₁ → M₁.Sec) (a₁ : Y ⟶ X₁) (M₂ : LB X₂) (th₂ : σ₂ → M₂.Sec) (a₂ : Y ⟶ X₂)
     (M₁' : LB X₁') (th₁' : σ₁ → M₁'.Sec) (a₁' : Y' ⟶ X₁') (M₂' : LB X₂') (th₂' : σ₂ → M₂'.Sec) (a₂' : Y' ⟶ X₂')
@@ -73,6 +95,9 @@ theorem graphIdeal_le {R σ₁ σ₂ : Type} [CommRing R] {Y Y' X₁ X₂ X₁' 
   · rw [Category.assoc]; exact h₁ _ _ _ hy.2.1
   · rw [Category.assoc]; exact h₂ _ _ _ hy.2.2
 
+/- English proof (translation)
+Use `le_antisymm (graphIdeal_le _ _ _ _ _ _ _ _ _ _ _ _ _ _ e he (fun T _ y w => (h₁ T y w).1) (fun T _ y w => (h₂ T y w).1)) (graphIdeal_le _ _ _ _ _ _ _ _ _ _ _ _ _ _ (inv e) (by rw [← he, IsIso.inv_hom_id_assoc]) (fun T _ y w hw => ?_) (fun T _ y w hw => ?_))` and prove the remaining obligations. Rewrite using `[← Category.assoc, h₁]`. Simplify using `using hw`. Rewrite using `[← Category.assoc, h₂]`. Simplify using `using hw`.
+-/
 theorem graphIdeal_eq {R σ₁ σ₂ : Type} [CommRing R] {Y Y' X₁ X₂ X₁' X₂' : Scheme.{0}} (s : Y ⟶ Sp R) (s' : Y' ⟶ Sp R)
     (M₁ : LB X₁) (th₁ : σ₁ → M₁.Sec) (a₁ : Y ⟶ X₁) (M₂ : LB X₂) (th₂ : σ₂ → M₂.Sec) (a₂ : Y ⟶ X₂)
     (M₁' : LB X₁') (th₁' : σ₁ → M₁'.Sec) (a₁' : Y' ⟶ X₁') (M₂' : LB X₂') (th₂' : σ₂ → M₂'.Sec) (a₂' : Y' ⟶ X₂')
@@ -88,6 +113,15 @@ theorem graphIdeal_eq {R σ₁ σ₂ : Type} [CommRing R] {Y Y' X₁ X₂ X₁' 
   · rw [← Category.assoc, h₁]; simpa using hw
   · rw [← Category.assoc, h₂]; simpa using hw
 
+/- English proof (translation)
+Establish `hpt : ∀ h, SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ N)).left (fun a => x (p h a))`. Introduce `h`. Use `(hσ K _ _).2 ?_` and prove the remaining obligations. Establish `e : (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t.lab h ^ N)).left ≫ (snd (Over.mk (𝟙 (Sp K))) t.A).left ≫ φ = spMap x ≫ (sc h).left`. Rewrite using `[← hl h, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+
+Use `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique _ M _ th R (sc h).left (p h) hM (hp h)).1 K x` as an intermediate fact. Conclude with `e ▸ this`. Establish `H` using `hcut (fun h a => x (p h a)) (fun h a => x (p (labMap (N ^ 2) Mat i h) a)) _ rfl (fun h => ⟨hpt h, by rw [lab_comp t ht]; exact hpt _⟩)`. Use `haveI : IsIso (snd (Over.mk (𝟙 (Sp K))) t.A).left := inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp K)) t.A.hom))`. Establish `hs : (snd (Over.mk (𝟙 (Sp K))) t.A).left ≫ t.A.hom = (fst (Over.mk (𝟙 (Sp K))) t.A).left` using `(pullback.condition (f := 𝟙 (Sp K)) (g := t.A.hom)).symm.trans (Category.comp_id _)`.
+
+Rewrite using `[graphIdeal_eq (fst (Over.mk (𝟙 (Sp K))) t.A).left (pullback.snd Z.hom (spMap x)) _ σ (𝟙 _) _ σ (lift (fst _ _) (snd (Over.mk (𝟙 (Sp K))) t.A ≫ (i.elim (𝟙 t.A)⁻¹ t.act : t.A ⟶ t.A))).left M th _ M th _ ((snd (Over.mk (𝟙 (Sp K))) t.A).left ≫ hφ.isoPullback.hom)]`. Simplify `H` using `only [map_mul]`. Rewrite using `[Category.assoc, IsPullback.isoPullback_hom_snd]`. Conclude with `hs`. Introduce `T _ y w`.
+
+Rewrite using `[hσ, Category.assoc, Category.assoc, IsPullback.isoPullback_hom_fst, Category.id_comp]`. Introduce `T _ y w`. Rewrite using `[hσ, Category.assoc, Category.assoc, Iso.hom_inv_id_assoc, ← Category.assoc _ _ φ, ← Over.comp_left, lift_snd, Over.comp_left, Category.assoc]`.
+-/
 theorem cut_fibre {o R K : Type} [CommRing o] [CommRing R] [Field K] {g N m : ℕ} [NeZero (N ^ 2)] {J : Type}
     {b : TBase o (N ^ 2)} {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ} (i : Option J) (Q : Polynomial ℚ) (d : ℕ)
     {s : Sp K ⟶ Sp o} (t : TObj g (N ^ 2) J b s) (ht : t.Shape Mat κ)
@@ -132,6 +166,19 @@ theorem cut_fibre {o R K : Type} [CommRing o] [CommRing R] [Field K] {g N m : �
     rw [hσ, Category.assoc, Category.assoc, Iso.hom_inv_id_assoc, ← Category.assoc _ _ φ,
       ← Over.comp_left, lift_snd, Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+Introduce `hL hL2 g J _ Mat κ n hn hodd`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.graph_inversion_endomorphism_cut_bounded_degree hL hL2 g J Mat κ n hn hodd`. Use `⟨j₀, fun j hj o _ b R _ _ _ β v Z I M th sc p hvd hPF hfib => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. Take `⟨hrep, hsm, -, hp⟩` from `hPF`.
+
+Establish `hprop` using `(GlobalTheory.T.isProj_proper_relAmple_of_projectiveCoordinateRep R _ I Z M th hrep).2.1`. Establish `hsm' : Smooth Z.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `key : ∀ i : Option J, ∃ F : Z ⟶ Z, ∀ (K : Type) [Field K] (x : R →+* K) (f : pullback Z.hom (spMap x) ⟶ Z.left), (∃ (_ : IsAlgClosed K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)) (φ : t'.A.left ⟶ Z.left) (hφ : IsPullback φ t'.A.hom Z.hom (spMap x)), t'.Shape Mat κ ∧ (∃ σ …`. Introduce `i`. Take `⟨Q, d, hQ⟩` from `hj₀ j hj o b i`.
+
+Use `GlobalTheory.T.exists_family_morphism_from_veryDense_graphs R _ _ (Ix g ((n ^ j) ^ 2)) Z Z I I M M th th p (fun h => p (labMap _ Mat i h)) Q d _ hrep hrep hprop hprop hsm' ?_ ?_` and prove the remaining obligations. Introduce and unpack `K _ x f ⟨_, t', φ, hφ, ht, ⟨σ, hE, hσ⟩, hl, rfl⟩`. Use `⟨?_, cut_fibre (m := n ^ 2) i Q d t' ht σ ?_ Z M hrep.1 th sc p hp x φ hφ hσ hl⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hφ.w, ← Category.assoc (Option.elim _ _ _ : t'.A ⟶ t'.A).left, Over.w, ← Category.assoc, IsPullback.isoPullback_inv_snd]`. Establish `e : spMap x ≫ spMap β = spMap (x.comp β)` using `by rw [← Spec.map_comp]; rfl clear hσ hl hφ φ`.
+
+Generalize the expression as in `spMap x ≫ spMap β = s at e t' ht σ hE`. Substitute `e` using the available equality. Conclude with `fun p' q' f hf h => hQ K (x.comp β) t' σ p' q' f ht hf hE h`. Introduce `q r hq hr`. Take `⟨P, ⟨K, _, _, x, t', hx, ht, hth⟩, hP⟩` from `hvd q r hq hr`.
+
+Take `⟨φ, hφ, hσ, -, hl⟩` from `hfib K x t' ht hth`. Conclude with `⟨P, ⟨K, _, x, _, hx, inferInstance, t', φ, hφ, ht, hσ, hl, rfl⟩, hP⟩`. Use `choose F hF using key`. Use `⟨F, fun K _ _ x t' φ ht hfb i => ?_⟩` and prove the remaining obligations. Take `⟨hφ, hσ, -, hl⟩` from `hfb`.
+
+Use `hF i K x _ ⟨inferInstance, t', φ, hφ, ht, hσ, hl, rfl⟩` as an intermediate fact. Rewrite `this` using `[Iso.inv_comp_eq, IsPullback.isoPullback_hom_fst_assoc]`. Conclude with `this.symm`.
+-/
 theorem exists_endomorphisms : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R) (Z : Over (Sp R)) (I : Ideal (MvPolynomial (Ix g ((n ^ j) ^ 2)) R)) (M : LB Z.left) (th : Ix g ((n ^ j) ^ 2) → M.Sec) (sc : Ix g ((n ^ j) ^ 2) → (Out.baseOver (Sp R) ⟶ Z)) (p : Ix g ((n ^ j) ^ 2) → Ix g ((n ^ j) ^ 2) → R), VeryDense (objPrimes b Mat κ β v) → (ProjRep I Z.hom M th ∧ SmoothOfRelativeDimension g Z.hom ∧ GeometricallyConnected Z.hom ∧ (∀ h, SecCoord M th (sc h).left (p h))) → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)), t'.Shape Mat κ → t'.HasTh (𝟙 _) (fun a => x (v a)) → ∃ φ : t'.A.left ⟶ Z.left, (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t'.A).left) (w : Ix g ((n ^ j) ^ 2) → T), SecCoord _ σ y w ↔ SecCoord M th (y ≫ (snd (Over.mk (𝟙 (Sp K))) t'.A).left ≫ φ) w) ∧ LBIso (lbPow t'.L ((n ^ 2) ^ 2)) (M.pull φ) ∧ ∀ h, (t'.lab h ^ n ^ j).left ≫ φ = spMap x ≫ (sc h).left)) → ∃ F : Option J → (Z ⟶ Z), (∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)) (φ : t'.A.left ⟶ Z.left), t'.Shape Mat κ → (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t'.A).left) (w : Ix g ((n ^ j) ^ 2) → T), SecCoord _ σ y w ↔ SecCoord M th (y ≫ (snd (Over.mk (𝟙 (Sp K))) t'.A).left ≫ φ) w) ∧ LBIso (lbPow t'.L ((n ^ 2) ^ 2)) (M.pull φ) ∧ ∀ h, (t'.lab h ^ n ^ j).left ≫ φ = spMap x ≫ (sc h).left) → ∀ i : Option J, φ ≫ (F i).left = (i.elim (𝟙 t'.A)⁻¹ t'.act : t'.A ⟶ t'.A).left ≫ φ) := by
   intro hL hL2 g J _ Mat κ n hn hodd
   obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.graph_inversion_endomorphism_cut_bounded_degree hL hL2 g J Mat κ n hn hodd

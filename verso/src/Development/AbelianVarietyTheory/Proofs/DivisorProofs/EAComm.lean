@@ -19,6 +19,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : V
 def eA (M : AM B Λ) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) : M.V ⟶ M.V :=
   ∑ k, smulHom M.V (c k) ≫ (M.ρ (a k) : M.V ⟶ M.V)
 
+/- English proof (translation)
+Simplify using `only [eA, Preadditive.sum_comp, Preadditive.comp_sum, Category.assoc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h1 : (M.ρ (a k) : M.V ⟶ M.V) ≫ f.hom = f.hom ≫ (N.ρ (a k) : N.V ⟶ N.V)` using `f.comm (a k)`. Rewrite using `[h1, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+
+Apply the tactic sequence `first | exact (smulHom_comp _ _).symm | exact smulHom_comp _ _`.
+-/
 theorem eA_comm {M N : AM B Λ} (f : M ⟶ N) {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) :
     eA M c a ≫ f.hom = f.hom ≫ eA N c a := by
   simp only [eA, Preadditive.sum_comp, Preadditive.comp_sum, Category.assoc]

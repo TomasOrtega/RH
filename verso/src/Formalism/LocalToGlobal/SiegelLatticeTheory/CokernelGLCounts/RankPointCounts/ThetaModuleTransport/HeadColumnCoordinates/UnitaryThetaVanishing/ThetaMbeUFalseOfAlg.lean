@@ -2,6 +2,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.ThetaMbeU
 
+/- English proof (translation)
+The claim follows from `thetaMbeU_false_of coordU_holds h2 M r n`.
+-/
 theorem thetaMbeU_false_of_alg (h2 : AlgAll) {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Formalism.MainNotions.S.Loc.Model F E) (r n : ℕ) : Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUL.ThetaMbeU M r n false :=

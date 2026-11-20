@@ -5,6 +5,17 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzDigTot
 
 namespace DiscreteGroups.sglob.DzType
 
+/- English proof (translation)
+Introduce `p n hp hn h16 k k' _ _ H`. Establish `hp2` using `hp.two_le`. Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hee` using `DzDig.ee_eq (n := n) hp2`. Establish `hN` using `DzDig.N_eq (n := n) hp2`.
+
+Establish `he` using `DzDig.ee_pos (p := p) hn1`. Establish `hNpos` using `DzDig.N_pos hp2 hn1`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hm : ∀ u < p ^ n - 1, (p ^ n - 1).Coprime u → ∃ j < n, p ^ j * (u * k % (p ^ n - 1)) % (p ^ n - 1) / DzDig.ee p n = u * k' % (p ^ n - 1) / DzDig.ee p n`.
+
+Introduce `u _ hu`. Apply `DzDig.match_of_hyp hp2 hn1` to reduce the goal to its premises. Introduce `b`. Use `H u b (Nat.coprime_comm.mp hu)` as an intermediate fact. Rewrite `this` using `[hee]`.
+
+Conclude with `this`. Establish `htot` using `DzDig.totient_le hNpos he (fun j _ => hno j) hm`. Establish `hineq` using `DzDig.two_n_N_lt hp hn h16`. Establish `h2 : (p - 1) * (2 * n * DzDig.ee p n) < (p - 1) * (p ^ n - 1).totient`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3` using `(Nat.mul_lt_mul_left (by omega : 0 < p - 1)).mp h2`. Establish `h5 : n * (2 * (DzDig.ee p n - 1)) ≤ 2 * n * DzDig.ee p n`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (lt_of_lt_of_le h3 (htot.trans h5)) (lt_irrefl _)`.
+-/
 theorem dig : Dig := by
   intro p n hp hn h16 k k' _ _ H
   have hp2 := hp.two_le

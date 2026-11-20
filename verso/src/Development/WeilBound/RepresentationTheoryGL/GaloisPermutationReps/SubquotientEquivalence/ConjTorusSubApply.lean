@@ -21,6 +21,9 @@ open GlobalTheory.IwahoriInj GlobalTheory.DepthZeroJac
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Use `GlobalTheory.IwahoriInj.mem_fixed.2 fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `hj.2 ⟨g, GlobalTheory.StepData.KOne_le_KO hg⟩ w`. Rewrite `h1` using `[(redK_eq_one_iff ⟨g, GlobalTheory.StepData.KOne_le_KO hg⟩).2 hg, map_one, Module.End.one_apply]`. Conclude with `h1.symm`.
+-/
 theorem range_le_fixed {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W}
     {π : Representation ℂ (GL (Fin n) k) V} {j : W →ₗ[ℂ] V} (hj : IsTypeMap τ π j) :
     LinearMap.range j ≤ fixed π (KOne k (Fin n)) := by
@@ -30,12 +33,20 @@ theorem range_le_fixed {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W}
   rw [(redK_eq_one_iff ⟨g, GlobalTheory.StepData.KOne_le_KO hg⟩).2 hg, map_one, Module.End.one_apply] at h1
   exact h1.symm
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[redK_apply]`. Both sides reduce to the same expression.
+-/
 theorem redK_incl (a : GL (Fin n) 𝒪[k]) :
     redK k (Fin n) ⟨incl k n a, incl_mem_KO a⟩ = red k n a := by
   ext i l
   rw [redK_apply]
   rfl
 
+/- English proof (translation)
+Use `set t := GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a`. Establish `h1 : t.val * diagonal (fun i => ((ϖ : k) ^ a i)⁻¹) = 1`. Rewrite using `[GlobalTheory.GLDoubling.val_torusElt, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `mul_inv_cancel₀ (zpow_ne_zero _ (Units.ne_zero ϖ))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_val_torusElt (ϖ : kˣ) (a : Fin n → ℤ) :
     ((GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a)⁻¹).val = diagonal fun i => ((ϖ : k) ^ a i)⁻¹ := by
   set t := GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a
@@ -47,6 +58,9 @@ theorem inv_val_torusElt (ϖ : kˣ) (a : Fin n → ℤ) :
   calc (t⁻¹).val = (t⁻¹).val * (t.val * diagonal (fun i => ((ϖ : k) ^ a i)⁻¹)) := by rw [h1, mul_one]
     _ = _ := by rw [← mul_assoc, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Use `set t := GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a`. Establish `: (t * g * t⁻¹).val - 1 = t.val * (g.val - 1) * (t⁻¹).val`. Simplify using `[mul_sub, sub_mul]`. Rewrite using `[this, inv_val_torusElt, GlobalTheory.GLDoubling.val_torusElt, mul_diagonal, diagonal_mul]`.
+-/
 theorem conj_torus_sub_apply (ϖ : kˣ) (a : Fin n → ℤ) (g : GL (Fin n) k) (i l : Fin n) :
     ((GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a * g * (GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a)⁻¹).val - 1) i l =
       (ϖ : k) ^ a i * (g.val - 1) i l * ((ϖ : k) ^ a l)⁻¹ := by
@@ -55,6 +69,9 @@ theorem conj_torus_sub_apply (ϖ : kˣ) (a : Fin n → ℤ) (g : GL (Fin n) k) (
     simp [mul_sub, sub_mul]
   rw [this, inv_val_torusElt, GlobalTheory.GLDoubling.val_torusElt, mul_diagonal, diagonal_mul]
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[GlobalTheory.GLDoubling.val_torusElt, GeneralLinearGroup.coe_scalar]`. Simplify using `[Matrix.diagonal_apply, Matrix.scalar_apply, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem torusElt_const (ϖ : kˣ) (c : ℤ) :
     GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ (fun _ => c) = GeneralLinearGroup.scalar (Fin n) (ϖ ^ c) := by
   ext i l
@@ -66,23 +83,58 @@ def side (a : Fin n → ℤ) (i : Fin n) : Fin 2 := if ∀ l, a l ≤ a i then 0
 def bl (a : Fin n → ℤ) : (Σ b : Fin 2, Fin (Fintype.card {x // side a x = b})) ≃ Fin n :=
   (Equiv.sigmaCongrRight fun b => (Fintype.equivFin {x // side a x = b}).symm).trans (Equiv.sigmaFiberEquiv (side a))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_bl (a : Fin n → ℤ) (i : Fin n) : blk (bl a) i = side a i := rfl
 
+/- English proof (translation)
+Rewrite using `[blk_bl, blk_bl]`. Unfold `side`. Apply the tactic sequence `by_cases h1 : ∀ x, a x ≤ a i <;> by_cases h2 : ∀ x, a x ≤ a l <;> simp [h1, h2]`.
+-/
 theorem blk_lt_iff (a : Fin n → ℤ) (i l : Fin n) :
     blk (bl a) i < blk (bl a) l ↔ (∀ x, a x ≤ a i) ∧ ¬ ∀ x, a x ≤ a l := by
   rw [blk_bl, blk_bl]
   unfold side
   by_cases h1 : ∀ x, a x ≤ a i <;> by_cases h2 : ∀ x, a x ≤ a l <;> simp [h1, h2]
 
+/- English proof (translation)
+Unfold `Deep`. Rewrite using `[map_zpow₀, hϖ]`.
+-/
 theorem deep_zpow {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (m : ℤ) : Deep m ((ϖ : k) ^ m) := by
   unfold Deep
   rw [map_zpow₀, hϖ]
 
+/- English proof (translation)
+Unfold `Deep`. Rewrite using `[map_inv₀, map_zpow₀, hϖ, _root_.zpow_neg]`.
+-/
 theorem deep_inv_zpow {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (m : ℤ) :
     Deep (-m) (((ϖ : k) ^ m)⁻¹) := by
   unfold Deep
   rw [map_inv₀, map_zpow₀, hϖ, _root_.zpow_neg]
 
+/- English proof (translation)
+Use `set t := GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a with ht`. Use `set e := bl a`. Take `⟨i1, l1, h1⟩` from `ha`. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ a ⟨i1, Finset.mem_univ _⟩`. Establish `hmax : ∀ x, a x ≤ a i0` using `fun x => hi0 x (Finset.mem_univ _)`.
+
+Establish `hj0 : ∃ l0, ¬ ∀ x, a x ≤ a l0`. Break down `lt_or_gt_of_ne h1 with h | h` into its components or cases. Conclude with `⟨i1, fun hh => absurd (hh l1) (not_le.2 h)⟩`. Conclude with `⟨l1, fun hh => absurd (hh i1) (not_le.2 h)⟩`. Take `⟨l0, hl0⟩` from `hj0`.
+
+Establish `hne : unipRad 𝓀[k] e ≠ ⊥` using `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.2 ⟨i0, l0, (blk_lt_iff a i0 l0).2 ⟨hmax, hl0⟩⟩`. Use `haveI := Fintype.ofFinite (unipRad 𝓀[k] e)`. Establish `hsum : ∑ u : unipRad 𝓀[k] e, τ u w = 0`. Use `hτ 2 _ e hne _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft (⟨x, hx⟩ : unipRad 𝓀[k] e)) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft]`. Use `show _ = τ (x * (u : GL (Fin n) 𝓀[k])) w`. Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `hterm : ∀ u : unipRad 𝓀[k] e, π t (j w) - π t (j (τ u w)) ∈ twKer π (KOne k (Fin n)) 1`.
+
+Introduce `u`. Take `⟨b, hb, hb1, -⟩` from `exists_lift (k := k) (Z := fun i l => (∀ x, a x ≤ a i) ∧ ¬ ∀ x, a x ≤ a l) (fun i m l h1 h2 => h1.2 h2.1) (u : GL (Fin n) 𝓀[k]) (fun i l h => by`. Use `(GlobalTheory.SmGL.CuspMax.mem_unipRad_iff_entries.1 u.2) i l (fun h' => h ((blk_lt_iff a i l).1 h'))` as an intermediate fact. Rewrite using `[Matrix.sub_apply, this, sub_self])`. Establish `hred : τ u w = τ (redK k (Fin n) ⟨incl k n b, incl_mem_KO b⟩) w` using `by rw [redK_incl, hb]`.
+
+Rewrite using `[hred, hj.2]`. Establish `hK : t * incl k n b * t⁻¹ ∈ KOne k (Fin n)`. Use `GlobalTheory.StepData.mem_KOne.2 fun i l => ?_` and prove the remaining obligations. Rewrite using `[conj_torus_sub_apply]`. Distinguish the cases in `hZ : (∀ x, a x ≤ a i) ∧ ¬ ∀ x, a x ≤ a l`.
+
+Establish `hil : a l < a i`. Take `⟨x, hx⟩` from `not_forall.1 hZ.2`. Conclude with `lt_of_lt_of_le (not_le.1 hx) (hZ.1 x)`. Establish `hint : Deep 0 (((incl k n b).val - 1) i l)` using `deep_sub_one_of_intM (intM_incl b) i l`. Use `((deep_zpow hϖ (a i)).mul hint).mul (deep_inv_zpow hϖ (a l))` as an intermediate fact.
+
+Conclude with `deep_one_iff.1 (this.mono (by omega))`. Rewrite using `[hb1 i l hZ]`. Simplify using the standard rewrite rules. Establish `: π t (π (incl k n b) (j w)) = π (t * incl k n b * t⁻¹) (π t (j w))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+
+Rewrite using `[this, ← neg_sub]`. Conclude with `neg_mem (sub_mem_twKer hK _)`. Establish `hcard : (Fintype.card (unipRad 𝓀[k] e) : ℂ) • π t (j w) ∈ twKer π (KOne k (Fin n)) 1`. Establish `h2` using `Submodule.sum_mem (twKer π (KOne k (Fin n)) 1) fun u (_ : u ∈ Finset.univ) => hterm u`. Establish `h3 : ∑ u : unipRad 𝓀[k] e, π t (j (τ u w)) = 0`.
+
+Rewrite using `[← map_sum (π t), ← map_sum j, hsum, map_zero, map_zero]`. Rewrite `h2` using `[Finset.sum_sub_distrib, h3, sub_zero, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `h2`. Establish `hc : (Fintype.card (unipRad 𝓀[k] e) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `Submodule.smul_mem _ (Fintype.card (unipRad 𝓀[k] e) : ℂ)⁻¹ hcard` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem torus_mem_twKer {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W} (hτ : FinCusp τ)
     {π : Representation ℂ (GL (Fin n) k) V} {j : W →ₗ[ℂ] V} (hj : IsTypeMap τ π j)
     {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (a : Fin n → ℤ) (ha : ∃ i l, a i ≠ a l) (w : W) :
@@ -145,6 +197,17 @@ theorem torus_mem_twKer {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W} (hτ : 
   have := Submodule.smul_mem _ (Fintype.card (unipRad 𝓀[k] e) : ℂ)⁻¹ hcard
   rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Take `⟨⟨a, _ha⟩, hg⟩` from `GlobalTheory.UnramDoublingProof.exists_cell hϖ g`. Take `⟨k1, h1, k2, h2, hg'⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Rewrite using `[hg', map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ← hj.2 ⟨k2, h2⟩]`. Use `set w' := τ (redK k (Fin n) ⟨k2, h2⟩) w`.
+
+Establish `hmid : π (GlobalTheory.GLDoubling.torusElt k (Fin n) ϖ a) (j w') ∈ LinearMap.range j ⊔ twKer π (KOne k (Fin n)) 1`. Distinguish the cases in `ha : ∃ i l, a i ≠ a l`. Conclude with `Submodule.mem_sup_right (torus_mem_twKer hτ hj hϖ a ha w')`. Use `push_neg at ha`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, a = fun _ => c := by`.
+
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `⟨0, funext fun i => i.elim0⟩`. Conclude with `⟨a ⟨0, hn⟩, funext fun i => ha i _⟩`. Rewrite using `[hc, torusElt_const, hω]`.
+
+Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ ⟨w', rfl⟩)`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hmid`. Rewrite using `[← hyz, map_add]`. Take `⟨w'', rfl⟩` from `hy`. Use `add_mem (Submodule.mem_sup_left ⟨_, hj.2 ⟨k1, h1⟩ w''⟩) (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+
+Conclude with `apply_mem_twKer_of_normalizer (mem_normalizer_KOne h1) hz`.
+-/
 theorem apply_mem_sup {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W} (hτ : FinCusp τ)
     {π : Representation ℂ (GL (Fin n) k) V} {ω : kˣ →* ℂˣ} (hω : HasCentralChar π ω) {j : W →ₗ[ℂ] V}
     (hj : IsTypeMap τ π j) (g : GL (Fin n) k) (w : W) :
@@ -175,6 +238,25 @@ theorem apply_mem_sup {τ : Representation ℂ (GL (Fin n) 𝓀[k]) W} (hτ : Fi
 end TorusConjugationFixed
 
 open TorusConjugationFixed in
+/- English proof (translation)
+Introduce `k W _ _ _ _ _ _ _ n τ hτ π ω hω j hj`. Use `le_antisymm ?_ (range_le_fixed hj)` and prove the remaining obligations. Set `S : Submodule ℂ π.V` to `Submodule.span ℂ {x | ∃ g w, x = π.ρ g (j w)}`. Establish `hS : ∀ g, ∀ x ∈ S, π.ρ g x ∈ S`. Introduce `g x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, w, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨g * h, w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+
+Set `U : Subrepresentation π.ρ` to `⟨S, fun g _ hx => hS g _ hx⟩`. Take `⟨w0, hw0⟩` from `exists_ne (0 : W)`. Establish `hj0 : j w0 ∈ S` using `Submodule.subset_span ⟨1, w0, by rw [map_one, Module.End.one_apply]⟩`. Use `haveI := π.irr`. Establish `hU : U = ⊤`.
+
+Break down `IsSimpleOrder.eq_bot_or_eq_top U with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h0 : j w0 ∈ U.toSubmodule` using `hj0`. Rewrite `h0` using `[h]`. Establish `h0' : j w0 = 0` using `(Submodule.mem_bot ℂ).1 h0`.
+
+Conclude with `hw0 (hj.1 (by rw [h0', map_zero]))`. Conclude with `h`. Establish `hle : S ≤ LinearMap.range j ⊔ twKer π.ρ (KOne k (Fin n)) 1` using `Submodule.span_le.2 (by rintro _ ⟨g, w, rfl⟩; exact apply_mem_sup hτ hω hj g w)`. Introduce `v hv`. Establish `hvS : v ∈ S`.
+
+Establish `h0 : v ∈ U.toSubmodule` using `by rw [hU]; exact Submodule.mem_top`. Conclude with `h0`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hle hvS)`. Take `⟨w, rfl⟩` from `hy`. Establish `hzf : z ∈ fixed π.ρ (KOne k (Fin n))`.
+
+Use `sub_mem hv (range_le_fixed hj ⟨w, rfl⟩)` as an intermediate fact. Simplify using `using this`. Establish `h0` using `GlobalTheory.IwahoriInj.eq_zero_of_fixed π.smooth GlobalTheory.DepthZeroJac.isCompact_KOne hzf hz`. Substitute `h0` using the available equality. Rewrite using `[add_zero]`.
+
+Conclude with `⟨w, rfl⟩`.
+-/
 theorem st6 : St6 := by
   intro k W _ _ _ _ _ _ _ n τ hτ π ω hω j hj
   refine le_antisymm ?_ (range_le_fixed hj)

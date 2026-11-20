@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.HomFixMatEx
 
+/- English proof (translation)
+Set `a0 : A'.left ⟶ (⊤ : (Sp Rg).Opens).toScheme` to `IsOpenImmersion.lift (⊤ : (Sp Rg).Opens).ι (A'.hom ≫ t) (by simp)`. Set `X : Over (Sp Rg)` to `Over.mk (A'.hom ≫ t)`. Set `a : X ⟶ topS Rg` to `Over.homMk a0 (by simp only [a0, X, topS, overRes, baseOver, Over.mk_hom, Category.comp_id]; exact IsOpenImmersion.lift_fac _ _ _)`. Set `b : X ⟶ A` to `Over.homMk φA' hpb.w`. Use `⟨(lift a b).left, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem liftTop (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg)
     (A' : Over (Sp R)) (φA' : A'.left ⟶ A.left) (hpb : IsPullback φA' A'.hom A.hom t) :
     ∃ ψ : A'.left ⟶ (topS Rg ⊗ A).left, ψ ≫ (snd (topS Rg) A).left = φA' := by
@@ -27,6 +32,13 @@ theorem liftTop (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) (R : Type) [CommRin
   rw [← Over.comp_left, lift_snd]
   rfl
 
+/- English proof (translation)
+Set `T : Over (Sp R)` to `𝟙_ (Over (Sp R))`. Set `u : Over.mk (T.hom ≫ t) ⟶ A` to `Over.homMk ((1 : T ⟶ A').left ≫ φA') (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[h.1.w, ← Category.assoc, Over.w])`. Establish `hu : u * u = u` using `Over.OverMorphism.ext (by`.
+
+Rewrite using `[h.2 T 1 1 u u rfl rfl, _root_.mul_one]`. Use the proof step `rfl)`. Establish `hu1 : u = 1` using `mul_eq_left.1 hu`. Establish `e` using `congrArg (fun x => Over.Hom.left x) hu1`. Simplify using `only [u, Over.homMk_left] at e`.
+
+Rewrite `e` using `[Hom.one_def, Hom.one_def]`. Simplify using `at e`. Conclude with `e`.
+-/
 theorem zero_comp (Rg : Type) [CommRing Rg] (A : Over (Sp Rg)) [GrpObj A] (R : Type) [CommRing R]
     (t : Sp R ⟶ Sp Rg) (A' : Over (Sp R)) [GrpObj A'] (φA' : A'.left ⟶ A.left) (h : IsGrpPullback A' A t φA') :
     zeroPt A' ≫ φA' = t ≫ eSec A := by
@@ -46,6 +58,9 @@ end GlobalTheory.HomFixMatEx
 
 namespace GlobalTheory.HomFixMatEx
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+-/
 theorem res_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) {U : Y.Opens} {V V' : X.Opens} (e : V ≤ f ⁻¹ᵁ U) (h : V' ≤ V)
     (x : Γ(Y, U)) :
     (X.presheaf.map (homOfLE h).op).hom ((f.appLE U V e).hom x) = (f.appLE U V' (h.trans e)).hom x := by
@@ -56,6 +71,23 @@ end GlobalTheory.HomFixMatEx
 namespace GlobalTheory.HomFixMat
 open GlobalTheory.HomFixMatEx
 
+/- English proof (translation)
+Introduce `Rg _ _ A B _ _ _ _ L M k mA mB bA bB eA eB hH R _ t A' B' _ _ φA' φB' Φ' hT`. Take `⟨_, _, hL, hM, heA, heB, _, _, _, hbA, _⟩` from `hH`. Take `⟨hpA, hpB, hΦ, hiso⟩` from `hT`. Take `⟨ψA, hψA⟩` from `liftTop Rg A R t A' φA' hpA.1`. Take `⟨ψB, hψB⟩` from `liftTop Rg B R t B' φB' hpB.1`.
+
+Take `⟨w, hw⟩` from `hiso`. Establish `eg : (Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left = Φ'.left ≫ φB'` using `by rw [Category.assoc, hψB]`. Take `⟨α₀, hα₀⟩ : ∃ α₀ : LB.Gen (isoLB (L` from `L) (M := M) k Φ' ψA ψB), α₀.IsGen := by`. Use `GlobalTheory.T.exists_lineBundlePower_iso_reindexed_charts L M φA' Φ'.left φB' k w hw` as an intermediate fact. Use `show ∃ α₀ : LB.Gen (LB.div (powPull M ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left) (k : ℤ)) (powPull L (ψA ≫ (snd (topS Rg) A).left) (k : ℤ))), α₀.IsGen`.
+
+Rewrite using `[eg, hψA]`. Conclude with `this`. Establish `hΦ0 : zeroPt A' ≫ Φ'.left = zeroPt B'` using `by haveI := hΦ`. Conclude with `congrArg Over.Hom.left (IsMonHom.one_hom (f := Φ'))`. Establish `hz1 : zeroPt A' ≫ (ψA ≫ (snd (topS Rg) A).left) = t ≫ eSec A`.
+
+Rewrite using `[hψA]`. Conclude with `zero_comp Rg A R t A' φA' hpA`. Establish `hz2 : zeroPt A' ≫ ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left) = t ≫ eSec B`. Rewrite using `[eg, ← Category.assoc, hΦ0]`. Conclude with `zero_comp Rg B R t B' φB' hpB`.
+
+Establish `hzπ : zeroPt A' ≫ A'.hom = 𝟙 (Sp R)` using `Over.w η[A']`. Take `⟨α, hα, hrig⟩` from `GlobalTheory.T.exists_rescaled_lineBundlePower_iso_generator (Z₀ := Sp Rg) L M (ψA ≫ (snd (topS Rg) A).left) ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left) (eSec A) (eSec B) t (zeroPt A') A'.hom k eA eB α₀ hL hM heA heB hα₀ hzπ hz1 hz2`. Establish `key : ∀ j : Fin mB, ∃ cj : Fin mA → Γ(Sp R, ⊤), ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), ((Φ'.left ≫ ψB).appLE (LB.wchart M (fun _ : Fin 1 => (snd (topS Rg) B).left) p.1) ((isoLB (L` using `L) (M := M) k Φ' ψA ψB).U p) (inf_le_left.trans (GlobalTheory.HomFixMat.wchart_comp_le M _ _ p.1))).hom ((bB j).f p.1) = (α.s p).val * ∑ i, (A'.hom.appLE ⊤ ((isoLB (L := L) (M := M) k Φ' ψA ψB).U p) (by simp)).hom (cj i) * (ψA.appLE (LB.wchart L (fun _ : Fin 1 => (snd (topS Rg) A …`. Introduce `j`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_lineBundlePowerPullback_section_pullback M (snd (topS Rg) B).left (Φ'.left ≫ ψB) (k : ℤ) (bB j)`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.T.power_pullback_section_exists L M (ψA ≫ (snd (topS Rg) A).left) ((Φ'.left ≫ ψB) ≫ (snd (topS Rg) B).left) (k : ℤ) α hα hL hM σ`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_coeff_pullback_baseChangeStableSectionBasis Rg A L k mA bA hbA R t A' φA' hpA.1 ψA hψA s`. Use `⟨c, fun p => ?_⟩` and prove the remaining obligations. Establish `e1` using `hs p`. Rewrite `e1` using `[hσ p.1, hc p.2, map_sum]`.
+
+Use `erw [res_appLE] at e1`. Simplify using `only [map_mul] at e1`. Use `erw [e1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `res_appLE _ _ _ _`. Conclude with `res_appLE _ _ _ _`. Use `choose cj hcj using key`. Conclude with `⟨fun i j => cj j i, ψA, ψB, α, hψA, hψB, hα, hrig, fun j p => hcj j p⟩`.
+-/
 theorem exists_isMat : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (k : ℕ) (mA mB : ℕ) (bA : Fin mA → LB.Sec (LPow A L (k : ℤ) (topS Rg))) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (eA : LB.Gen (L.pull (eSec A))) (eB : LB.Gen (M.pull (eSec B))), Hyps L M k bA bB eA eB → ∀ (R : Type) [CommRing R] (t : Sp R ⟶ Sp Rg) (A' B' : Over (Sp R)) [GrpObj A'] [GrpObj B'] (φA' : A'.left ⟶ A.left) (φB' : B'.left ⟶ B.left) (Φ' : A' ⟶ B'), IsTest A B L M t A' B' φA' φB' Φ' → ∃ c, IsMat L M k bA bB eA eB t A' B' φA' φB' Φ' c := by
   intro Rg _ _ A B _ _ _ _ L M k mA mB bA bB eA eB hH R _ t A' B' _ _ φA' φB' Φ' hT
   obtain ⟨_, _, hL, hM, heA, heB, _, _, _, hbA, _⟩ := hH

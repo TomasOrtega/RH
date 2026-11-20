@@ -18,6 +18,11 @@ set_option maxHeartbeats 2000000
 
 namespace GlobalTheory.CharsDesc
 
+/- English proof (translation)
+Introduce `m m' h`. Establish `hc : coordL P (invL l (S O K e)) m = coordL P (invL l (S O K e)) m'`. Use function extensionality and compare the values at `i`. Apply `hB` to reduce the goal to its premises. Use `congrFun h i` as an intermediate fact.
+
+Rewrite `this` using `[toBcris_apply, toBcris_apply]`. Then use the resulting hypothesis. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Rewrite using `[← mx_mulVec_coordL P _ m τ, ← mx_mulVec_coordL P _ m' τ, hc]`.
+-/
 theorem toBcris_inj {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e)
@@ -33,6 +38,11 @@ theorem toBcris_inj {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {
   funext τ
   rw [← mx_mulVec_coordL P _ m τ, ← mx_mulVec_coordL P _ m' τ, hc]
 
+/- English proof (translation)
+Use `((GlobalTheory.T.breuilKisin_section_trivialises_invertPrime_tensor O K l e a ι P).2 (cst d)).2 ?_` and prove the remaining obligations. Use `mem_tot.2 fun τ i => ?_` and prove the remaining obligations. Take `⟨n, b, hb⟩` from `exists_pow_mul_mem (O := O) l (d τ i)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : (((l : S O K e) : K⟦X⟧)) ^ n * cst d τ i = algebraMap O K⟦X⟧ b`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply O K K⟦X⟧, ← hb]`. Simplify using `[cst, PowerSeries.algebraMap_apply]`. Rewrite using `[h1]`. Conclude with `Subalgebra.algebraMap_mem _ b`.
+-/
 theorem xi_mem_MMl {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     [Algebra O K] [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
     [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] (P : PhiMod O K l e a ι) (d : P.D) :
@@ -47,6 +57,17 @@ theorem xi_mem_MMl {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist 
   rw [h1]
   exact Subalgebra.algebraMap_mem _ b
 
+/- English proof (translation)
+Establish `hf : ringAct (TameGal.inertia ζ : TameGal K l e a) (Pi.single τ 1) = Pi.single τ 1`. Use function extensionality and compare the values at `σ`. Rewrite using `[ringAct_apply, TameGal.shift_inertia, sub_zero]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hc : cst (Pi.single τ (d τ) : P.D) = (Pi.single τ 1 : ZMod a → K⟦X⟧) • cst d`. Use function extensionality and compare the values at `σ i`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Simplify using `[cst]`. Simplify using `[cst, h]`. Establish `hr : ∀ w : Vec K a ι, red ((Pi.single τ 1 : ZMod a → K⟦X⟧) • w) = Pi.single τ (red w τ)`. Introduce `w`.
+
+Use function extensionality and compare the values at `σ i`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[red, red0]`. Simplify using `[red, red0, h]`.
+
+Express the relevant statement in the definitionally equal form `red (Δ.act _ (cst _)) = _`. Rewrite using `[hc, Δ.act_smul_tot, hf, hr]`. Both sides reduce to the same expression.
+-/
 theorem actD_single {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] [Fact l.Prime]
     [NormedAlgebra ℚ_[l] K] [NeZero a] [TameDescentExponentData K l e a] {P : PhiMod O K l e a ι} (Δ : Descent P)
@@ -74,15 +95,26 @@ theorem actD_single {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist
   rw [hc, Δ.act_smul_tot, hf, hr]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (OB l ↥(OL LL)) o v, map_smul, algebraMap_smul]`.
+-/
 theorem jB_smul {l : ℕ} [Fact l.Prime] {LL : FinExt l} {T : QLat LL} {ι : Type} [Fintype ι]
     (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (o : ↥(OL LL))
     (v : ι → OB l ↥(OL LL)) : jB (o • v) = o • jB v := by
   rw [← algebraMap_smul (OB l ↥(OL LL)) o v, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul (↥LL.1) o x).symm`.
+-/
 theorem smul_eq_algebraMap_smul {l : ℕ} [Fact l.Prime] {LL : FinExt l} (T : QLat LL) (Pl : LocPrime l)
     (o : ↥(OL LL)) (x : T.V ⊗[ℚ_[l]] Pl.R.B) : o • x = (algebraMap ↥(OL LL) ↥LL.1 o) • x :=
   (algebraMap_smul (↥LL.1) o x).symm
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).2 fun g => LinearMap.mem_ker.2 (sub_eq_zero.2 ?_)` and prove the remaining obligations. Establish `key : actVB (Pl.PD F) (resF T F).ρ g = actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ (inclG F g)`. Unfold `actVB`. Use `congr 1`. Use extensionality with `b`.
+
+Conclude with `(Pl.PD_actB F g b).trans (Pl.PD_actB _ (inclG F g) b).symm`. Conclude with `(LinearMap.congr_fun key x).trans (h g)`.
+-/
 theorem mem_Dcris_res {l : ℕ} [Fact l.Prime] {LL : FinExt l} (T : QLat LL) (Pl : LocPrime l) (F : FinExt l)
     (x : (resF T F).V ⊗[ℚ_[l]] Pl.R.B)
     (h : ∀ g : ↥(GK F), actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ (inclG F g) (x : T.V ⊗[ℚ_[l]] Pl.R.B) = x) :
@@ -101,6 +133,37 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 open GlobalTheory.CharsDesc in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ ϖ LL _ _ _ ι _ _ P T I jB Δ Pl AI hStd hCmp hHor hDesc Sig hType τ c hc`. Establish `hc0 : c ∈ Δ.chars 0`. Rewrite using `[← (GlobalTheory.T.tameDescent_characters_eq_and_frobenius_stable _ _ l e a ι P Δ).1 τ 0]`. Conclude with `hc`. Take `⟨d, hd0, hdc⟩` from `hc0`.
+
+Take `⟨ζ, hζ⟩` from `TameDescentExponentData.prim (K := ↥LL.1) (l := l) (e := e) (a := a)`. Take `⟨ζu, hζu⟩ : ∃ ζu : rootsOfUnity e ↥LL.1, (((ζu : (↥LL.1)ˣ) : ↥LL.1)) = ζ` from `⟨hζ.toRootsOfUnity, rfl⟩`. Establish `I8` using `GlobalTheory.T.galois_eq_mul_kisinInf_tameSemidirect l a e ϖ LL`. Take `⟨k, -, hkc⟩` from `I8.2.2.1 (TameGal.inertia ζu)`. Take `⟨k', hk'I, hk'c, hk'π⟩` from `I8.2.2.2.2.2.2 k ζu hkc`.
+
+Take `⟨d', hd'_def⟩ : ∃ d' : P.D, d' = Pi.single 0 (d 0)` from `⟨_, rfl⟩`. Establish `hd'0 : d' ≠ 0`. Introduce `h`. Apply `hd0` to reduce the goal to its premises. Use `congrFun h 0` as an intermediate fact.
+
+Rewrite `this` using `[hd'_def, Pi.single_eq_same]`. Conclude with `this`. Establish `hact' : Δ.actD (TameGal.inertia ζu) d' = (ζ ^ c.val) • d'`. Rewrite using `[hd'_def, actD_single, hdc ζu, TameGal.root_inertia_zero, hζu, Pi.single_smul]`. Establish `hm` using `xi_mem_MMl P d'`.
+
+Take `⟨σ, hσ_def⟩ : ∃ σ : P.MMl, σ = ⟨P.xi d', hm⟩` from `⟨_, rfl⟩`. Establish `hnorm : ‖ζ ^ c.val‖ ≤ 1`. Establish `h1 : ‖ζ‖ = 1`. Establish `h` using `congrArg norm hζ.pow_eq_one`. Rewrite `h` using `[norm_pow, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne e)).1 h`. Rewrite using `[norm_pow, h1, one_pow]`. Take `⟨o, ho⟩` from `(IsUnitBall.mem_range_iff (O := ↥(OL LL)) (ζ ^ c.val)).2 hnorm`. Establish `hσ' : (o • σ).1 = Δ.act (TameGal.inertia ζu) σ.1`. Rewrite using `[hσ_def, Descent.act_xi, hact', map_smul, Submodule.coe_smul_of_tower, ← ho, algebraMap_smul]`.
+
+Establish `hA` using `GlobalTheory.T.kisinInfGalois_acts_through_descentDatum l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P T I jB Δ hCmp hDesc k' (TameGal.inertia ζu) hk'c σ (o • σ) hσ'`. Take `⟨β, -, hβ2, -, -⟩` from `GlobalTheory.T.exists_bcrisTensorLattice_equiv_periodRing l LL T Pl AI hStd`. Take `⟨x, hx_def⟩ : ∃ x, x = β (jB (toBcris (thetaW a LL) ϖ P σ))` from `⟨_, rfl⟩`. Establish `hx0 : x ≠ 0`. Introduce `h`.
+
+Rewrite `h` using `[hx_def, LinearEquiv.map_eq_zero_iff, LinearEquiv.map_eq_zero_iff]`. Establish `h2 : σ = 0` using `toBcris_inj (thetaW a LL) ϖ P (GlobalTheory.T.embeddingProductSeriesToTensorBcris_injective_finExt l a e LL (thetaW a LL) ϖ) (h.trans (map_zero _).symm)`. Apply `hd'0` to reduce the goal to its premises. Establish `h3 : P.xi d' = 0` using `by rw [hσ_def] at h2; exact congrArg Subtype.val h2`. Establish `h4` using `congrArg red h3`.
+
+Rewrite `h4` using `[PhiMod.red_xi, map_zero]`. Then use the resulting hypothesis. Establish `hxD : x ∈ Dcris (Pl.PD (ϖ.field a)) (resF T (ϖ.field a)).ρ`. Use `mem_Dcris_res T Pl (ϖ.field a) x fun g => ?_` and prove the remaining obligations. Establish `e` using `hβ2 (inclG (ϖ.field a) g) (jB (toBcris (thetaW a LL) ϖ P σ))`. Establish `e' : actB (sQ l) T (inclG (ϖ.field a) g) (jB (toBcris (thetaW a LL) ϖ P σ)) = jB (toBcris (thetaW a LL) ϖ P σ)`.
+
+Substitute `hσ_def` using the available equality. Conclude with `hHor (inclG (ϖ.field a) g) g.2 d' hm`. Rewrite `e` using `[e']`. Substitute `hx_def` using the available equality. Conclude with `e.symm`.
+
+Establish `hA' : actB (sQ l) T k' (jB (toBcris (thetaW a LL) ϖ P σ)) = jB (toBcris (thetaW a LL) ϖ P (o • σ))` using `hA`. Establish `hact : (actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ k' : Module.End ↥LL.1 (T.V ⊗[ℚ_[l]] Pl.R.B)) x = (ζ ^ c.val) • x`. Establish `e1` using `(hβ2 k' (jB (toBcris (thetaW a LL) ϖ P σ))).symm`. Establish `e6` using `congrArg β hA'`. Establish `e2 : toBcris (thetaW a LL) ϖ P (o • σ) = o • toBcris (thetaW a LL) ϖ P σ` using `map_smul _ _ _`.
+
+Establish `e3 : jB (o • toBcris (thetaW a LL) ϖ P σ) = o • jB (toBcris (thetaW a LL) ϖ P σ)` using `jB_smul jB o _`. Establish `e4 : β (jB (toBcris (thetaW a LL) ϖ P (o • σ))) = o • β (jB (toBcris (thetaW a LL) ϖ P σ))` using `(congrArg (fun v => β (jB v)) e2).trans ((congrArg β e3).trans (β.map_smul o _))`. Substitute `hx_def` using the available equality. Use `e1.trans (e6.trans (e4.trans ?_))` and prove the remaining obligations. Conclude with `(smul_eq_algebraMap_smul T Pl o _).trans (congrArg (fun s : ↥LL.1 => s • β (jB (toBcris (thetaW a LL) ϖ P σ))) ho)`.
+
+Establish `hk'π' : ((ζ : ↥LL.1) : Om l) * ϖ.seq 0 = (k' : GQ l) (ϖ.seq 0)` using `by rw [← hζu]; exact hk'π`. Establish `hT` using `hType k' hk'I ζ hk'π' x hxD`. Establish `hev : Module.End.HasEigenvector (actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ k' : Module.End ↥LL.1 (T.V ⊗[ℚ_[l]] Pl.R.B)) (ζ ^ c.val) x` using `Module.End.hasEigenvector_iff.2 ⟨Module.End.mem_eigenspace_iff.2 hact, hx0⟩`. Rewrite `hT` using `[Module.End.aeval_apply_of_hasEigenvector hev, smul_eq_zero]`. Break down `hT with hT | hT` into its components or cases.
+
+Rewrite `hT` using `[Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨c', hc', hcc⟩` from `hT`. Rewrite `hcc` using `[Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_eq_zero]`. Use `hζ.pow_inj (ZMod.val_lt c) (ZMod.val_lt c') hcc` as an intermediate fact. Rewrite using `[ZMod.val_injective e this]`.
+
+Conclude with `hc'`. Conclude with `absurd hT hx0`.
+-/
 theorem GlobalTheory.CharsDesc.chars_subset_sig : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Δ : Descent P) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → IsCrisCmp I jB → IsHoriz (thetaW a LL) ϖ (sQ l) P jB → IsGalDesc (sQ l) I Δ → ∀ Sig : Finset (ZMod e), TameType a ϖ Pl T Sig → ∀ τ, Δ.chars τ ⊆ (Sig : Set (ZMod e)) := by
   intro l _ a e _ _ ϖ LL _ _ _ ι _ _ P T I jB Δ Pl AI hStd hCmp hHor hDesc Sig hType τ c hc
   have hc0 : c ∈ Δ.chars 0 := by

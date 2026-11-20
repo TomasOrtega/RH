@@ -11,6 +11,17 @@ namespace GlobalTheory.CompanionTheory.BZCore
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {d : ℕ}
 
+/- English proof (translation)
+Establish `hall : ∀ᶠ t : k in 𝓝 0, ∀ w ∈ ((lat0 : COSub k d).sub : Set (Fin d → k)), t • w ∈ A`. Use `(lat0 : COSub k d).isCompact.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : k × (Fin d → k) => p.1 • p.2` using `continuous_fst.smul continuous_snd`. Establish `h0 : A ∈ 𝓝 (((0 : k), w).1 • ((0 : k), w).2)` using `by simpa using hA`. Conclude with `hc.continuousAt.eventually h0`.
+
+Establish `ht : Filter.Tendsto (fun n : ℕ => ϖ ^ n) Filter.atTop (𝓝 0)`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValuativeRel.ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hϖ (Units.mk0 γ hγ)`.
+
+Use `filter_upwards [Filter.eventually_ge_atTop n] with m hm`. Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hϖ.le hm) hn`. Take `⟨r, hr⟩` from `(ht.eventually hall).exists`. Use `⟨r, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ϖ ^ r • ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y) ∈ A` using `hr _ hy`. Establish `h2 : ϖ ^ r • ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y) = y`. Use `zpow_mulVec z ϖ hz hϖ0 (r : ℤ) ((((z ^ (r : ℤ) : GL (Fin d) k)⁻¹ : GL (Fin d) k) : Matrix (Fin d) (Fin d) k).mulVec y)` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec, zpow_natCast]`. Conclude with `this.symm`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem latZ_subset_of_mem_nhds (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
     (hϖ : ValuativeRel.valuation k ϖ < 1) (hϖ0 : ϖ ≠ 0) {A : Set (Fin d → k)} (hA : A ∈ 𝓝 (0 : Fin d → k)) :
@@ -38,6 +49,9 @@ theorem latZ_subset_of_mem_nhds (z : GL (Fin d) k) (ϖ : k)
     exact this.symm
   rwa [h2] at h1
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, Matrix.smul_apply, smul_eq_mul, Pi.single_apply]`. Simplify using `only [mul_ite, mul_one, mul_zero, ite_mul, zero_mul, one_mul]`. Simplify using the standard rewrite rules. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+-/
 theorem vecMulVec_single_mul_self (i : Fin d) (u : Fin d → k) :
     vecMulVec u (Pi.single i (1 : k)) * vecMulVec u (Pi.single i (1 : k)) =
       u i • vecMulVec u (Pi.single i (1 : k)) := by
@@ -47,6 +61,31 @@ theorem vecMulVec_single_mul_self (i : Fin d) (u : Fin d → k) :
   simp
   split_ifs <;> simp [mul_comm]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`. Set `P : (Fin d → k) → Matrix (Fin d) (Fin d) k` to `fun y => vecMulVec (y - x) (Pi.single i (1 : k))`.
+
+Set `M : (Fin d → k) → Matrix (Fin d) (Fin d) k` to `fun y => 1 + (x i)⁻¹ • P y`. Set `N : (Fin d → k) → Matrix (Fin d) (Fin d) k` to `fun y => 1 - (y i)⁻¹ • P y`. Establish `hPc : Continuous P` using `(continuous_id.sub continuous_const).matrix_vecMulVec continuous_const`. Establish `hPx : P x = 0`. Use extensionality with `a b`.
+
+Simplify using `[P, vecMulVec_apply]`. Establish `hMc : ContinuousAt M x`. Establish `h : Continuous fun y => (1 : Matrix (Fin d) (Fin d) k) + (x i)⁻¹ • P y` using `by fun_prop`. Conclude with `h.continuousAt`. Establish `hNc : ContinuousAt N x`.
+
+Establish `h1 : ContinuousAt (fun y : Fin d → k => (y i)⁻¹) x` using `(continuous_apply i).continuousAt.inv₀ hi`. Establish `h2 : ContinuousAt (fun y => (y i)⁻¹ • P y) x` using `h1.fun_smul hPc.continuousAt`. Establish `h3 : ContinuousAt (fun y => (1 : Matrix (Fin d) (Fin d) k) - (y i)⁻¹ • P y) x` using `continuousAt_const.fun_sub h2`. Conclude with `h3`. Establish `hMx : M x = 1` using `by simp [M, hPx]`.
+
+Establish `hNx : N x = 1` using `by simp [N, hPx]`. Establish `hMN : ∀ y, y i ≠ 0 → M y * N y = 1`. Introduce `y hy`. Establish `hsq : P y * P y = (y i - x i) • P y`. Simplify `vecMulVec_single_mul_self i (y - x)` using `[P]`.
+
+Simplify using `only [M, N, mul_sub, add_mul, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, hsq, smul_smul]`. Establish `h3 : (y i)⁻¹ + ((y i)⁻¹ * ((x i)⁻¹ * y i) - (y i)⁻¹ * ((x i)⁻¹ * x i)) = (x i)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← add_smul, h3, add_sub_cancel_right]`.
+
+Establish `hNM : ∀ y, y i ≠ 0 → N y * M y = 1` using `fun y hy => mul_eq_one_comm.1 (hMN y hy)`. Establish `hMv : ∀ y, (M y).mulVec x = y`. Introduce `y`. Establish `h1 : (P y).mulVec x = x i • (y - x)`. Use extensionality with `a`.
+
+Simplify using `[P, vecMulVec, Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`. Simplify using `only [M, Matrix.add_mulVec, one_mulVec, Matrix.smul_mulVec, h1, smul_smul, inv_mul_cancel₀ hi, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hT : Filter.Tendsto (fun y => (M y, MulOpposite.op (N y))) (𝓝 x) (𝓝 (Units.embedProduct (Matrix (Fin d) (Fin d) k) 1))`. Establish `e : Units.embedProduct (Matrix (Fin d) (Fin d) k) 1 = (M x, MulOpposite.op (N x))`.
+
+Rewrite using `[hMx, hNx, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hMc.tendsto.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp hNc.tendsto)`. Rewrite `hU` using `[Units.isEmbedding_embedProduct.isInducing.nhds_eq_comap, Filter.mem_comap]`.
+
+Take `⟨W, hW, hWU⟩` from `hU`. Establish `hgood : ∀ᶠ y in 𝓝 x, y i ≠ 0 ∧ (M y, MulOpposite.op (N y)) ∈ W` using `((continuous_apply i).continuousAt.eventually_ne hi).and (hT.eventually hW)`. Establish `hA : {l : Fin d → k | (x + l) i ≠ 0 ∧ (M (x + l), MulOpposite.op (N (x + l))) ∈ W} ∈ 𝓝 (0 : Fin d → k)`. Establish `hc : Filter.Tendsto (fun l : Fin d → k => x + l) (𝓝 0) (𝓝 x)`. Establish `h : Continuous fun l : Fin d → k => x + l` using `by fun_prop`.
+
+Simplify using `using h.tendsto 0`. Conclude with `hc.eventually hgood`. Take `⟨s, hs⟩` from `latZ_subset_of_mem_nhds z ϖ hz hϖ hϖ0 hA`. Use `⟨s, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `hs _ hy`.
+
+Rewrite `hy'` using `[Set.mem_setOf_eq, add_sub_cancel]`. Use `⟨⟨M y, N y, hMN y hy'.1, hNM y hy'.1⟩, hWU ?_, hMv y⟩` and prove the remaining obligations. Conclude with `hy'.2`.
+-/
 theorem exists_mem_nhds_one_mulVec_eq (z : GL (Fin d) k) (ϖ : k)
     (hz : (z : Matrix (Fin d) (Fin d) k) = ϖ • (1 : Matrix (Fin d) (Fin d) k))
     (hϖ : ValuativeRel.valuation k ϖ < 1) (hϖ0 : ϖ ≠ 0) (U : Set (GL (Fin d) k))

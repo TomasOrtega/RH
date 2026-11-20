@@ -12,6 +12,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.St
 
+/- English proof (translation)
+Introduce `D X u F Tr hK hσ hL`. Take `⟨hψ, -, hEq, hDet, hOnto⟩` from `cols_sharp_dictionary D X u hK`. Take `⟨hJinj, hJsurj⟩` from `GlobalTheory.T.transportCoeffMap_bijective_onto_values D X u F Tr`. Establish `hW : WittX X u Tr.wt` using `⟨Tr.wt_isom, Tr.wt_e, Tr.wt_f, Tr.weight_z⟩`. Establish `hA : IsAdeleIso X Tr.ιA` using `⟨Tr.ιA_rat, Tr.ιA_int⟩`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `T hT`. Establish `hcls` using `(GlobalTheory.T.transport_represents_classes_weight_one D X u F Tr hK hσ hL).1`. Establish `h1 : ∀ c, shP X u T.1 (Tr.hc c) = 0`.
+
+Introduce `c`. Apply `hJinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `y`. Use `congrFun (congrFun hT c) (F.val0.eY.symm y)` as an intermediate fact.
+
+Simplify `this` using `[colDictL, dictA]`. Apply `hDet T` to reduce the goal to its premises. Introduce `x`. Take `⟨c, ⟨γ, κ, hx⟩, -⟩` from `hcls x`. Rewrite using `[hx, hEq, h1, map_zero, smul_zero]`.
+
+Introduce `φ hφ`. Rewrite `hφ` using `[Formalism.L2.Forms.Mu0_iff F.val0]`. Take `⟨g, hg, hres⟩` from `Submodule.mem_map.1 hφ`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.frameAction_mulEquiv_finiteAdelic_unitary D X u Tr.wt Tr.ιA hW hA hσ`. Take `⟨hΓ, -, hs⟩` from `GlobalTheory.T.transport_rational_points_stabiliser_frame D X u Tr.wt Tr.ιA hW hA Φ hΦ`.
+
+Establish `hKm : ∀ h : Hfin X u, h ∈ Ku X u hK ↔ ((Tr.h0⁻¹ * Φ h * Tr.h0 : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) : GL _ _) ∈ F.cls0.lev.U` using `fun h => (hL.2 h (Φ h) ((hΦ h _).2 rfl)).1`. Establish `hχ : ∀ (h : Hfin X u) (hk : h ∈ Ku X u hK) (hy : ((Tr.h0⁻¹ * Φ h * Tr.h0 : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) : GL _ _) ∈ F.cls0.lev.U), ((psiK X u hK ⟨h, hk⟩ : ℂˣ) : ℂ) = ((F.cls0. …` using `fun h hk hy => (hL.2 h (Φ h) ((hΦ h _).2 rfl)).2 hk hy`. Establish `hπ : ∀ (γ : Gam X u) (g : GL (Fin (D.R.N 0)) D.host.E), (Φ (iotaF X u γ)).1 = Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) g → ∀ (ξ : X.Vpi u) (y y' : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _)), Formalism.L2.Forms.IsTr (Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) g.1) y' y → Tr.J (piRep X u (iotaI X u γ) ξ) y = Tr.J ξ y' := by`. Introduce `γ g e ξ y y' hy`. Establish `h2` using `hs γ g e`.
+
+Conclude with `Tr.J_eqv (iotaI X u γ) (iotaI X u γ).2 ξ y y' (by rw [h2]; exact hy)`. Rewrite `hJsurj` using `[Formalism.L2.Forms.lamT_zero]`. Take `⟨φ', hφ'eq, hφ'g⟩` from `GlobalTheory.adForm_from_equivariant _ _ (Formalism.L2.Forms.sigD D) _ _ _ _ _ F.cls0.lev (Gam X u) (Hinf X u) (Hfin X u) (iotaI X u) (iotaF X u) (Ku X u hK) (psiK X u hK) Φ Tr.h0 _ (Formalism.L2.Forms.embT D) ((D.fm u).lam 0) (X.Vpi u) (piRep X u) Tr.J hψ hKm hχ hΓ hπ hJinj hJsu …`. Take `⟨T, hT⟩` from `hOnto φ' hφ'eq`. Use `⟨T, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `c z`. Establish `hc : Φ (Tr.hc c) = F.cls0.y c * Tr.h0⁻¹` using `(hΦ _ _).1 (Tr.hc_rep c)`. Establish `e1` using `congrFun (congrFun hres c) (F.val0.eY z)`. Establish `e2` using `hφ'g (F.cls0.y c)`. Establish `e3 : Φ.symm (F.cls0.y c * Tr.h0⁻¹) = Tr.hc c` using `(MulEquiv.symm_apply_eq Φ).2 hc.symm`.
+
+Rewrite `e2` using `[e3]`. Use `show Tr.J (shP X u T.1 (Tr.hc c)) (F.val0.eY z) = φ c z`. Rewrite using `[hT, ← e2]`. Simplify `e1` using `[Formalism.L2.Forms.res]`.
+-/
 theorem colDict_bij_of_levelMatch : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (Tr : Transport X u F) (hK : X.LevelSubgroupCharacter), (∀ a, Tr.ιA (sigA X.B.I a) = Formalism.UG.sigR (Formalism.L2.Forms.sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (Tr.ιA a)) → LevelMatch X Tr hK → ColDictBij X Tr hK := by
   intro D X u F Tr hK hσ hL
   obtain ⟨hψ, -, hEq, hDet, hOnto⟩ := cols_sharp_dictionary D X u hK

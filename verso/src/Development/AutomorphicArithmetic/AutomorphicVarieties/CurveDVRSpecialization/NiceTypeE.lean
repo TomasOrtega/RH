@@ -44,6 +44,13 @@ private def eqv : Fin 3 ≃ Fin 2 ⊕ Fin 1 where
   left_inv := by decide
   right_inv := by decide
 
+/- English proof (translation)
+Introduce `W _`. Distinguish the cases in `hW : W = ⊥`. Conclude with `Or.inl hW`. Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`.
+
+Establish `h0 : v 0 ≠ 0` using `fun h => hv0 (funext fun i => by fin_cases i; exact h)`. Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `hu : u = (u 0 / v 0) • v` using `funext fun i => by fin_cases i`. Simplify using `[div_mul_cancel₀ _ h0]`.
+
+Rewrite using `[hu]`. Conclude with `W.smul_mem _ hv`.
+-/
 private theorem irr_one {H K : Type} [Group H] [Field K] (U : Subgroup H) (a : H → Matrix (Fin 1) (Fin 1) K) :
     MatIrr U a := by
   intro W _
@@ -60,6 +67,17 @@ private theorem irr_one {H K : Type} [Group H] [Field K] (U : Subgroup H) (a : H
     rw [hu]
     exact W.smul_mem _ hv
 
+/- English proof (translation)
+Establish `hinv : ∀ g ∈ U, ∀ v ∈ LinearMap.ker M.mulVecLin, a g *ᵥ v ∈ LinearMap.ker M.mulVecLin`. Introduce `g hg v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[Matrix.mulVec_mulVec, hM g hg, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`. Break down `h _ hinv with hb | ht` into its components or cases.
+
+Establish `hv : ![M 0 1, -M 0 0] ∈ LinearMap.ker M.mulVecLin`. Rewrite using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hv` using `[hb, Submodule.mem_bot]`. Establish `h1` using `congrFun hv 0`. Establish `h2` using `congrFun hv 1`. Simplify using `at h1 h2`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Apply the tactic sequence `fin_cases j <;> simp [h1, h2]`. Use extensionality with `i j`. Establish `hj : (Pi.single j 1 : Fin 2 → K) ∈ LinearMap.ker M.mulVecLin`.
+
+Rewrite using `[ht]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hj` using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Use `congrFun hj i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 private theorem hom_zero {H K : Type} [Group H] [Field K] (U : Subgroup H) (a : H → Matrix (Fin 2) (Fin 2) K)
     (b : H → Matrix (Fin 1) (Fin 1) K) (h : MatIrr U a) (M : Matrix (Fin 1) (Fin 2) K)
     (hM : ∀ g ∈ U, M * a g = b g * M) : M = 0 := by
@@ -89,6 +107,13 @@ private theorem hom_zero {H K : Type} [Group H] [Field K] (U : Subgroup H) (a : 
     have := congrFun hj i
     simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
+/- English proof (translation)
+Establish `hc : ∀ h : F.G0, F.conj h = F.star h⁻¹` using `fun h => by simp [Fr.Frame.star]`. Establish `hr : (ρ.r (K.π g))ᵀ * Jmat A n * ρ.r (F.conj (K.π g)) = Jmat A n`. Rewrite using `[hc, ρ.pol]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ (Jmat A n) (Jmat A n), Jmat_mul_Jmat, Matrix.mul_one, ← Matrix.transpose_mul, ← map_mul, inv_mul_cancel, map_one, Matrix.transpose_one, Matrix.one_mul]`.
+
+Establish `hκ : (K.κA A g : A) * (K.κA A (G.conj g) : A) = ((G.eps O A g ^ (1 - (n : ℤ)) : Aˣ) : A)`. Use `congrArg (fun u : Oˣ => ((Units.map (algebraMap O A : O →* A) u : Aˣ) : A)) (K.κ_conj g)` as an intermediate fact. Simplify using `[TwLink.κA, GFrame.eps, pushCh, map_zpow] at this ⊢`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Simplify using `only [TwLink.tw, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, K.π_conj, hr, smul_smul]`. Rewrite using `[← hκ, mul_comm]`.
+-/
 private theorem tw_form {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {F : Fr.Frame l (IsLocalRing.ResidueField O)} {n : ℕ} {G : W.GFrame l} {r : W.Resid G O n} (K : TwLink F r)
     {A : Type} [CommRing A] [Algebra O A] (ρ : Fr.NRep F n A) (g : G.G₀) :
@@ -108,6 +133,15 @@ private theorem tw_form {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoca
     K.π_conj, hr, smul_smul]
   rw [← hκ, mul_comm]
 
+/- English proof (translation)
+Take `⟨x1, x2, x3, x4⟩` from `hX`. Take `⟨y1, y2, y3, y4⟩` from `hY`. Establish `he : ∀ i j, (Xᵀ * Jmat K 3 * Y) i j = (c • Jmat K 3) i j` using `fun i j => by rw [h]`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`.
+
+Use `he (![0, 2] i) (![0, 2] j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.smul_apply, Fin.sum_univ_two, Fin.sum_univ_three] at this ⊢`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Jmat, x1, x2, x3, x4, y1, y2, y3, y4] at this ⊢ <;>`. Take the linear combination `this`.
+
+Use extensionality with `i j`. Use `he 1 1` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.smul_apply, Fin.sum_univ_one, Fin.sum_univ_three] at this ⊢`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using `[Jmat, x1, x2, x3, x4, y1, y2, y3, y4] at this ⊢`. Take the linear combination `this`.
+-/
 private theorem blk_form {K : Type} [CommRing K] (X Y : Matrix (Fin 3) (Fin 3) K) (c : K)
     (hX : X 0 1 = 0 ∧ X 1 0 = 0 ∧ X 1 2 = 0 ∧ X 2 1 = 0) (hY : Y 0 1 = 0 ∧ Y 1 0 = 0 ∧ Y 1 2 = 0 ∧ Y 2 1 = 0)
     (h : Xᵀ * Jmat K 3 * Y = c • Jmat K 3) :
@@ -137,6 +171,29 @@ private def JU (K : Type) [CommRing K] (n : ℕ) : GL (Fin n) K := ⟨Jmat K n, 
 
 end UpperTheory.V.Pr
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F T x L y j hj hN hmat hψ hTE`. Establish `hee : L.ρ.ee ≤ RingHom.ker j` using `hTE.2.2`. Establish `hz0 : ∀ g (i k : Fin 3), Odd (Fr.w 3 i - Fr.w 3 k) → mat y.ρ g i k = 0`. Introduce `g i k hodd`. Establish `hm : L.ρ.r (T.K.π g) i k ∈ RingHom.ker j` using `hee (Ideal.subset_span ⟨_, i, k, hodd, rfl⟩)`.
+
+Rewrite `hm` using `[RingHom.mem_ker]`. Rewrite using `[hmat]`. Simplify using `[TwLink.tw, Fr.NRep.map, hm]`. Establish `hz : ∀ g, mat y.ρF g 0 1 = 0 ∧ mat y.ρF g 1 0 = 0 ∧ mat y.ρF g 1 2 = 0 ∧ mat y.ρF g 2 1 = 0`. Introduce `g`.
+
+Establish `e : ∀ i k, Odd (Fr.w 3 i - Fr.w 3 k) → mat y.ρF g i k = 0` using `fun i k h => by show algebraMap y.A y.Fr (mat y.ρ g i k) = 0`. Rewrite using `[hz0 g i k h, map_zero]`. Apply the tactic sequence `refine ⟨e 0 1 ?_, e 1 0 ?_, e 1 2 ?_, e 2 1 ?_⟩ <;> decide`. Establish `hF : ∀ g, (mat y.ρF g)ᵀ * Jmat y.Fr 3 * mat y.ρF (T.G.conj g) = ((T.G.eps O y.Fr g ^ (1 - ((3 : ℕ) : ℤ)) : y.Frˣ) : y.Fr) • Jmat y.Fr 3`. Introduce `g`.
+
+Establish `h` using `UpperTheory.V.Pr.tw_form T.K (L.ρ.map (j : L.R →+* y.A)) g`. Rewrite `h` using `[← hmat]`. Establish `h2` using `congrArg (fun M => M.map (algebraMap y.A y.Fr)) h`. Establish `heps : (T.G.eps O y.Fr g ^ (1 - ((3 : ℕ) : ℤ)) : y.Frˣ) = Units.map (algebraMap y.A y.Fr : y.A →* y.Fr) (T.G.eps O y.A g ^ (1 - ((3 : ℕ) : ℤ)))`. Rewrite using `[map_zpow]`.
+
+Use `congr 1`. Establish `hs : ∀ (c : y.A) (M : Matrix (Fin 3) (Fin 3) y.A), (c • M).map (algebraMap y.A y.Fr) = algebraMap y.A y.Fr c • M.map (algebraMap y.A y.Fr)` using `fun c M => by`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[heps]`.
+
+Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Jmat_map] at h2`. Rewrite `h2` using `[hs, Jmat_map]`. Conclude with `h2`. Establish `hB` using `fun g => UpperTheory.V.Pr.blk_form _ _ _ (hz g) (hz (T.G.conj g)) (hF g)`. Establish `hb : ∀ g, mat (UpperTheory.V.Pr.blk y.ρF hz) g = (mat y.ρF g).submatrix ![0, 2] ![0, 2]` using `fun g => rfl`.
+
+Establish `hm : ∀ g, mat (UpperTheory.V.Pr.mid y.ρF hz) g = (mat y.ρF g).submatrix ![1] ![1]` using `fun g => rfl`. Establish `hirr` using `UpperTheory.V.Pr.niceIrrE l O F T x L y j hj hN hmat hψ hTE ⊤ isOpen_univ`. Rewrite `hirr` using `[top_inf_eq]`. Establish `hirr1 : MatIrr T.G.G' (mat (pushRep (algebraMap y.Fr y.Fb) (UpperTheory.V.Pr.blk y.ρF hz)))` using `hirr`. Use `⟨2, 1, by norm_num, le_rfl, UpperTheory.V.Pr.eqv, 1, UpperTheory.V.Pr.blk y.ρF hz, UpperTheory.V.Pr.mid y.ρF hz, ?_, ⟨UpperTheory.V.Pr.JU _ 2, ?_⟩, ⟨UpperTheory.V.Pr.JU _ 1, ?_⟩, hirr1, UpperTheory.V.Pr.irr_one _ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `g`. Establish `h1 : ((1 * y.ρF g * 1⁻¹ : GL (Fin 3) y.Fr) : Matrix (Fin 3) (Fin 3) y.Fr) = mat y.ρF g`. Simplify using `[mat]`. Take `⟨a1, a2, a3, a4⟩` from `hz g`. Rewrite using `[h1, hb, hm]`.
+
+Apply the tactic sequence `ext (i | i) (k | k) <;> fin_cases i <;> fin_cases k`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply] first | exact a1 | exact a2 | exact a3 | exact a4)`. Introduce `g`.
+
+Rewrite using `[hb, hb]`. Conclude with `(hB g).1`. Introduce `g`. Rewrite using `[hm, hm]`. Conclude with `(hB g).2`.
+
+Introduce `M hM`. Conclude with `UpperTheory.V.Pr.hom_zero _ _ _ hirr1 M hM`.
+-/
 theorem UpperTheory.V.Pr.niceTypeE :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (T : UpperTheory.V.Pr.Setup F 3) (x : Ideal T.S.A) (L : T.S.Loc x) (y : UpperTheory.V.W.Point T.r) (j : L.R →ₐ[O] y.A), IsLocalHom j → UpperTheory.V.Pr.Nice L.ρ (RingHom.ker j) → UpperTheory.V.W.mat y.ρ = T.K.tw (L.ρ.map (j : L.R →+* y.A)) → y.ψ = T.K.twψ (L.ρ.map (j : L.R →+* y.A)) → L.ρ.TE (RingHom.ker j) → y.TypeE := by
   intro l _ O _ _ _ _ _ F T x L y j hj hN hmat hψ hTE

@@ -18,6 +18,9 @@ open GlobalTheory.PsiRing
 noncomputable section
 namespace GlobalTheory.RigCmpPf
 
+/- English proof (translation)
+The claim follows from `(cubeMapOf h).e_comm`.
+-/
 theorem eSec_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {F : G'.left ⟶ G.left} (h : IsGrpPullback G' G f F) :
     eSec G' ≫ F = f ≫ eSec G := (cubeMapOf h).e_comm
@@ -31,11 +34,19 @@ def upt (G : Over (Spec (CommRingCat.of R))) [GrpObj G] {e : ℕ} {Z : Scheme.{0
   a ≫ eSec (thickObj R I e G)
 
 omit [IsDomain R] [IsCommMonObj G] in
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans ((congrArg (a ≫ ·) (UnitValue.eSec_pullback_fst (thick R I e) G)).trans (Category.assoc _ _ _).symm)`.
+-/
 theorem eSec_fst (e : ℕ) {Z : Scheme.{0}} (a : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) :
     (upt G a) ≫ (fstG I e G).left = (a ≫ thick R I e) ≫ eSec G :=
   (Category.assoc _ _ _).trans ((congrArg (a ≫ ·) (UnitValue.eSec_pullback_fst (thick R I e) G)).trans
     (Category.assoc _ _ _).symm)
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Establish `h1 : (η[thickObj R I e G] ≫ g.q) = η[thickObj R I e D.P.A]` using `IsMonHom.one_hom _`. Establish `h2 : eSec (thickObj R I e G) ≫ g.q.left = eSec (thickObj R I e D.P.A)` using `congrArg Over.Hom.left h1`. Use `Eq.trans ?_ (eSec_fst (G := D.P.A) e a)` and prove the remaining obligations. Unfold `upt`.
+
+Rewrite using `[← h2]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (a ≫ ·) (Category.assoc _ _ _).symm).trans (Category.assoc _ _ _).symm)`.
+-/
 theorem eSec_pG {e : ℕ} (g : GtCoord I D e G) {Z : Scheme.{0}} (a : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) :
     (upt G a) ≫ g.pG.left = (a ≫ thick R I e) ≫ eSec D.P.A := by
   have := g.q_hom
@@ -47,6 +58,9 @@ theorem eSec_pG {e : ℕ} (g : GtCoord I D e G) {Z : Scheme.{0}} (a : Z ⟶ Spec
   exact (Category.assoc _ _ _).trans ((congrArg (a ≫ ·) (Category.assoc _ _ _).symm).trans
     (Category.assoc _ _ _).symm)
 
+/- English proof (translation)
+Establish `h` using `(U.w_vals e (Over.mk a) z JG J hJG hJ _ (fun _ => rfl)).1`. Rewrite `h` using `[one_left]`. Conclude with `h`.
+-/
 theorem rig_val (U : PreU I D A G) (e : ℕ) {Z : Scheme.{0}} (a : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))
     (z : Z) {JG : (Z ⟶ G.left) → U.P.L.L.ι} {J : (Z ⟶ D.P.A.left) → D.P.L.ι} (hJG : Good U.P.L.L z JG)
     (hJ : Good D.P.L z J) :
@@ -58,6 +72,13 @@ theorem rig_val (U : PreU I D A G) (e : ℕ) {Z : Scheme.{0}} (a : Z ⟶ Spec (C
   rw [one_left] at h
   exact h
 
+/- English proof (translation)
+Establish `hG` using `eSec_comm C.pb`. Take `⟨K, hK⟩` from `exists_good_pt U.P.L.isLB z`. Take `⟨K', hK'⟩` from `exists_good_pt U'.P.L.isLB z`. Establish `e₁` using `rig_val U e a z hK hJ`. Establish `e₂` using `rig_val U' e a' z hK' hJ'`.
+
+Establish `e₃` using `(C.wL_map.vals (Over.mk (a' ≫ thick V I' e)) z K' K hK' hK _ (fun _ => rfl)).1`. Rewrite `e₃` using `[one_left]`. Establish `hx : upt G a ≫ (fstG I e G).left = (upt G' a' ≫ (fstG I' e G').left) ≫ F`. Rewrite using `[eSec_fst e a, eSec_fst e a', ha]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hG.symm).trans (Category.assoc _ _ _).symm)`.
+
+Establish `e₄` using `((C.lev e _ _ _ (hx.trans (Category.assoc _ _ _))).2 z J J' hJ hJ').2 _ _ (hK (upt G a ≫ (fstG I e G).left)) (hK' (upt G' a' ≫ (fstG I' e G').left))`. Establish `f₃ : val (L` using `U.P.L.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.P.L.rig (a ≫ thick R I e) z K = gw C.wL (upt G' a' ≫ (fstG I' e G').left) z (K (upt G a ≫ (fstG I e G).left)) (K' (upt G' a' ≫ (fstG I' e G').left)) * val (L := U'.P.L.L) (φ := fun _ : PUnit => eSec G') (ε := fun _ => 1) …`. Rewrite using `[ha, hx, eSec_fst e a']`. Conclude with `e₃`. Conclude with `e₁.trans ((congrArg _ f₃).trans ((_root_.mul_assoc _ _ _).symm.trans ((congrArg (· * _) e₄.symm).trans ((_root_.mul_assoc _ _ _).trans (congrArg _ e₂.symm)))))`.
+-/
 theorem rig_level {V : Type} [CommRing V] [IsDomain V] {I' : Ideal V} {D' : DegPre V}
     {A' : PolAV (Spec (CommRingCat.of (FractionRing V)))} {G' : Over (Spec (CommRingCat.of V))} [GrpObj G']
     [IsCommMonObj G'] {φ : R →+* V} {U : PreU I D A G} {U' : PreU I' D' A' G'} {F : G'.left ⟶ G.left}
@@ -97,6 +118,19 @@ namespace GlobalTheory
 
 open RigCmpPf in
 
+/- English proof (translation)
+Introduce `R V _ _ _ _ _ _ I I' φ hI' hφ D D' A G _ _ A' G' _ _ U U' F C`. Establish `hB` using `eSec_comm C.pbB`. Establish `key` using `AbelianPartIso.pmaps_of_thickenings hI' D.P.isLB D'.P.isLB C.v C.v_gen (eSec D'.P.A) (spMap φ ≫ eSec D.P.A) hB D'.rig D'.rig_gen (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig (spMap φ)) (DVR.pullGen_isGen _ _ _ _ D.rig_gen _) fun e z p q hp hq => by`. Establish `hle : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`.
+
+Conclude with `Ideal.pow_right_mono hφ _`. Set `a : Spec (CommRingCat.of (V ⧸ I' ^ (e + 1))) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))` to `spMap (Ideal.quotientMap _ φ hle)`. Establish `ha : a ≫ thick R I e = (𝟙 _ ≫ thick V I' e) ≫ spMap φ`. Rewrite using `[Category.id_comp, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB z (fun _ : Unit => thick V I' e ≫ spMap φ ≫ eSec D.P.A) (fun _ => p) (fun _ _ _ => rfl) (fun _ => hp)`. Take `⟨J', hJ', eJ'⟩` from `exists_good D'.P.L D'.P.isLB z (fun _ : Unit => thick V I' e ≫ eSec D'.P.A) (fun _ => q) (fun _ _ _ => rfl) (fun _ => hq)`. Establish `E` using `rig_level C e a (𝟙 _) ha z hJ hJ'`. Establish `hp' : (a ≫ thick R I e) ≫ eSec D.P.A = thick V I' e ≫ spMap φ ≫ eSec D.P.A`. Rewrite using `[ha, Category.id_comp]`.
+
+Conclude with `Category.assoc _ _ _`. Rewrite `E` using `[eSec_pG (U.gt e) a, eSec_pG (U'.gt e) (𝟙 _), hp', ha, Category.id_comp, eJ (), eJ' (), val_of _ _ z J (fun _ => p) (fun _ => (congrArg J (Category.assoc _ _ _)).trans (eJ ())), val_of _ _ z J' (fun _ => q) (fun _ => eJ' ())]`. Use `Eq.trans ?_ E` and prove the remaining obligations. Establish `m₁ : thick V I' e z ∈ LB.wchart D.P.L (fun _ : PUnit => spMap φ ≫ eSec D.P.A) (fun _ => p)` using `Set.mem_iInter.2 fun _ => hp`. Establish `m₂ : spMap φ (thick V I' e z) ∈ LB.wchart D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => p)` using `Set.mem_iInter.2 fun _ => hp`.
+
+Conclude with `(gm_res _ z _ m₁ _).trans (gm_pull _ (spMap φ) z _ m₂ _)`. Introduce `Z r z p q hp hq`. Establish `hm : (spMap φ ≫ eSec D.P.A) (r z) ∈ D.P.L.U (p PUnit.unit)` using `(congrArg (fun g => g (r z) ∈ D.P.L.U (p PUnit.unit)) hB).mp (hp PUnit.unit)`. Use `Eq.trans ?_ (key Z r z p q hp hq)` and prove the remaining obligations. Rewrite using `[Category.comp_id]`.
+
+Establish `m₁ : r z ∈ LB.wchart D.P.L (fun _ : PUnit => spMap φ ≫ eSec D.P.A) p` using `Set.mem_iInter.2 fun _ => hm`. Establish `m₂ : spMap φ (r z) ∈ LB.wchart D.P.L (fun _ : PUnit => eSec D.P.A) p` using `Set.mem_iInter.2 fun _ => hm`. Conclude with `((gm_res r z _ m₁ _).trans (gm_pull r (spMap φ) z _ m₂ _)).symm`.
+-/
 theorem rigCmp_of_cmp : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] [IsLocalRing V] [IsNoetherianRing V] (I : Ideal R) (I' : Ideal V) (φ : R →+* V), I' ≠ ⊤ → I.map φ ≤ I' → ∀ (D : DegPre R) (D' : DegPre V) (A : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (A' : PolAV (Sp (FractionRing V))) (G' : Over (Spec (CommRingCat.of V))) [GrpObj G'] [IsCommMonObj G'] (U : PreU I D A G) (U' : PreU I' D' A' G') (F : G'.left ⟶ G.left) (C : Cmp φ U U' F), RigCmp φ D D' C.β C.v := by
   intro R V _ _ _ _ _ _ I I' φ hI' hφ D D' A G _ _ A' G' _ _ U U' F C
   have hB := eSec_comm C.pbB

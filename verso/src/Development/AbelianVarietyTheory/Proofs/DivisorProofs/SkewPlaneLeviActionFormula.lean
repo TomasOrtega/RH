@@ -28,6 +28,27 @@ open GlobalTheory.SmoothForms (gelfA)
 open Formalism.REAL (GlRel qdet)
 open GlobalTheory.LeviHC.MidBlock (stab mem_stab qdet_map qdet_one upperSpan_maps blk_castAdd_lt)
 
+/- English proof (translation)
+Set `K : Submodule ℂ M` to `Γ.comap (LinearMap.inl ℂ M M₁)`. Set `S : Subalgebra ℂ (Module.End ℂ M × Module.End ℂ M₁)` to `(stab Γ).comap (LinearMap.prodMapAlgHom ℂ M M₁)`. Establish `hS : ∀ a b, (a, b) ∈ S ↔ ∀ f φ, (f, φ) ∈ Γ → (a f, b φ) ∈ Γ` using `fun a b => ⟨fun h f φ hf => h (f, φ) hf, fun h p hp => h p.1 p.2 hp⟩`. Set `X' : Fin (1 + n₁ + 1) → Fin (1 + n₁ + 1) → stab M'` to `fun a b => ⟨X a b, mem_stab.2 (hM a b)⟩`. Establish `hX' : GlRel X'`.
+
+Introduce `a b c d`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hX a b c d` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [X'] using this`. Establish `hF' : GlRel fun p q : Fin (1 + n₁) => X' (Fin.castAdd 1 p) (Fin.castAdd 1 q)` using `GlobalTheory.CapHC.glRel_restrict hX' (Fin.castAdd 1) (fun a b h => Fin.ext (by simpa using congrArg Fin.val h))`.
+
+Establish `e1 : ∀ u : ℂ, ∀ x ∈ M', qdet X (u + 1) x - qdet (fun p q : Fin 1 => X (Fin.natAdd (1 + n₁) p) (Fin.natAdd (1 + n₁) q)) (u + 1) (qdet (fun p q : Fin (1 + n₁) => X (Fin.castAdd 1 p) (Fin.castAdd 1 q)) u x) ∈ K`. Introduce `u x hx`. Establish `h` using `upperSpan_maps (K := K) X' (fun p q x hx => hup _ _ (blk_castAdd_lt p q) x hx) (GlobalTheory.CapHC.two_block (r := 1 + n₁) (m := 1) X' hX' (u + 1)) x hx`. Express the relevant statement in the definitionally equal form `(stab M').val (_ - _ * _) x ∈ K at h`. Rewrite `h` using `[map_sub, map_mul, qdet_map, qdet_map, qdet_map, Nat.cast_one, add_sub_cancel_right]`.
+
+Conclude with `h`. Establish `e2 : ∀ u : ℂ, ∀ x ∈ M', qdet (fun p q : Fin (1 + n₁) => X (Fin.castAdd 1 p) (Fin.castAdd 1 q)) u x - qdet (fun p q : Fin n₁ => X (mid p) (mid q)) u (qdet (fun p q : Fin 1 => X (Fin.castAdd 1 (Fin.castAdd n₁ p)) (Fin.castAdd 1 (Fin.castAdd n₁ q))) (u - n₁) x) ∈ K`. Introduce `u x hx`. Establish `h` using `upperSpan_maps (K := K) (fun p q : Fin (1 + n₁) => X' (Fin.castAdd 1 p) (Fin.castAdd 1 q)) (fun p q x hx => hup (Fin.castAdd 1 (Fin.castAdd n₁ p)) (mid q) (by rw [block_matrix_mulVec_basis, blk_mid]; norm_num) x hx) (GlobalTheory.CapHC.two_block (r := 1) (m := n₁) _ hF' u) x hx`. Express the relevant statement in the definitionally equal form `(stab M').val (_ - _ * _) x ∈ K at h`.
+
+Rewrite `h` using `[map_sub, map_mul, qdet_map, qdet_map, qdet_map]`. Conclude with `h`. Establish `hone : ∀ (i : Fin 1 → Fin (1 + n₁ + 1)) (l : ℂ), (∀ f φ, (f, φ) ∈ Γ → (X (i 0) (i 0) f, l • φ) ∈ Γ) → ∀ u f φ, (f, φ) ∈ Γ → (qdet (fun p q => X (i p) (i q)) u f, (u + l) • φ) ∈ Γ` using `fun i l hi u f φ hf => by`. Use `Γ.add_mem (Γ.smul_mem u hf) (hi f φ hf)` as an intermediate fact. Rewrite using `[qdet_one, add_smul]`.
+
+Simplify using `using this`. Establish `hq : ∀ u f φ, (f, φ) ∈ Γ → (qdet (fun p q : Fin n₁ => X (mid p) (mid q)) u f, qdet X₁ u φ) ∈ Γ` using `fun u => by`. Establish `h` using `GlobalTheory.LeviHC.qdet_mem (fun p q : Fin n₁ => (X (mid p) (mid q), X₁ p q)) S (fun a b => (hS _ _).2 (hmid a b)) u`. Establish `h1` using `qdet_map (AlgHom.fst ℂ _ _) (fun p q : Fin n₁ => (X (mid p) (mid q), X₁ p q)) u`. Establish `h2` using `qdet_map (AlgHom.snd ℂ _ _) (fun p q : Fin n₁ => (X (mid p) (mid q), X₁ p q)) u`.
+
+Use `(hS _ _).1 ?_` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext h1.symm h2.symm`. Establish `key : Algebra.adjoin ℂ (Set.range (qdet X)) ≤ (S ⊓ (Algebra.adjoin ℂ (Set.range (qdet X₁))).comap (AlgHom.snd ℂ _ _)).map (AlgHom.fst ℂ _ _)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u', rfl⟩`. Take `⟨u, rfl⟩ : ∃ u, u' = u + 1` from `⟨u' - 1, by ring⟩`. Use `⟨(qdet X (u + 1), ((u + 1 + ly) * (u - n₁ + lx)) • qdet X₁ u), ⟨(hS _ _).2 fun f φ hf => ?_, Subalgebra.smul_mem (Algebra.adjoin ℂ (Set.range (qdet X₁))) (Algebra.subset_adjoin (Set.mem_range_self u)) _⟩, rfl⟩` and prove the remaining obligations. Establish `h1` using `hq u _ _ (hone (fun p => Fin.castAdd 1 (Fin.castAdd n₁ p)) lx hx (u - n₁) f φ hf)`. Establish `h2` using `Γ.add_mem (e2 u f (hΓ f φ hf)) h1`.
+
+Simplify using `only [LinearMap.inl_apply, Prod.mk_add_mk, sub_add_cancel, zero_add] at h2`. Establish `h3` using `Γ.add_mem (e1 u f (hΓ f φ hf)) (hone (Fin.natAdd (1 + n₁)) ly hy (u + 1) _ _ h2)`. Simplify using `only [LinearMap.inl_apply, Prod.mk_add_mk, sub_add_cancel, zero_add, map_smul, smul_smul] at h3`. Conclude with `h3`. Introduce `a ha`.
+
+Take `⟨⟨a', b⟩, ⟨h1, h2⟩, rfl⟩` from `key ha`. Conclude with `⟨b, h2, (hS _ _).1 h1⟩`.
+-/
 theorem exists_rel_qdet {M M₁ : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup M₁] [Module ℂ M₁] {n₁ : ℕ}
     (X : Fin (1 + n₁ + 1) → Fin (1 + n₁ + 1) → Module.End ℂ M) (hX : GlRel X)
     (X₁ : Fin n₁ → Fin n₁ → Module.End ℂ M₁) (M' : Submodule ℂ M) (Γ : Submodule ℂ (M × M₁))
@@ -108,6 +129,13 @@ variable {B : Type} [Ring B] [Algebra ℂ B] {n m : ℕ} (D : Matrix (Fin n) (Fi
   (hQR : Q * R = 1) (hRQ : R * Q = 1)
 include hD hQR hRQ
 
+/- English proof (translation)
+Establish `hG` using `glRel_frame D hD hRQ`. Use `⟨Algebra.adjoin_le ?_ ha, fun X => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `GlobalTheory.LeviHC.qdet_mem _ (Algebra.adjoin ℂ (Set.range D)) (fun a b => Algebra.subset_adjoin (Set.mem_range_self _)) u`. Establish `: Algebra.adjoin ℂ (Set.range (qdet fun a b : Fin m => D (Q * Matrix.single a b (1 : ℂ) * R))) ≤ Subalgebra.centralizer ℂ {D X}`.
+
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩ _ rfl`. Rewrite using `[eq_sum_frame hQR X]`. Simplify using `only [map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by`.
+
+Rewrite using `[Formalism.REAL.qDetCentral _ _ _ hG u a b]`. Conclude with `this ha _ rfl`.
+-/
 theorem central_of_mem_qdet {a : B}
     (ha : a ∈ Algebra.adjoin ℂ (Set.range (qdet fun a b : Fin m => D (Q * Matrix.single a b (1 : ℂ) * R)))) :
     a ∈ Algebra.adjoin ℂ (Set.range D) ∧ ∀ X, D X * a = a * D X := by
@@ -126,6 +154,13 @@ theorem central_of_mem_qdet {a : B}
         rw [Formalism.REAL.qDetCentral _ _ _ hG u a b]
     exact this ha _ rfl
 
+/- English proof (translation)
+Establish `hG` using `glRel_frame D hD hRQ`. Establish `h` using `GlobalTheory.T.relativeCentre' B m _ hG ⊥ (fun b hb i j => by`. Take `⟨c, rfl⟩` from `Algebra.mem_bot.1 hb`. Conclude with `(Algebra.commutes c _).symm) a (by`. Rewrite using `[sup_bot_eq]`.
+
+Use `Algebra.adjoin_le ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, rfl⟩`. Rewrite using `[eq_sum_frame hQR Z]`. Simplify using `only [map_sum, map_smul]`. Conclude with `Subalgebra.sum_mem _ fun i _ => Subalgebra.sum_mem _ fun j _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range.2 ⟨(i, j), rfl⟩)) _) fun i j => h2 _`.
+
+Rewrite `h` using `[sup_bot_eq]`. Use `Algebra.adjoin_le ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `GlobalTheory.T.gelfand_generator_mem_quantum_det _ _ _ hG k`.
+-/
 theorem mem_qdet_of_central {a : B} (h1 : a ∈ Algebra.adjoin ℂ (Set.range D)) (h2 : ∀ X, D X * a = a * D X) :
     a ∈ Algebra.adjoin ℂ (Set.range (qdet fun a b : Fin m => D (Q * Matrix.single a b (1 : ℂ) * R))) := by
   have hG := glRel_frame D hD hRQ
@@ -153,6 +188,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Take `⟨ax, ay, aι⟩` from `hm`. Take `⟨cx, cy, cι⟩` from `hm'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mat m * mat m') *ᵥ _ = _`. Rewrite using `[← Matrix.mulVec_mulVec, cx, Matrix.mulVec_smul, ax, smul_smul, Units.val_mul, mul_comm]`.
+
+Express the relevant statement in the definitionally equal form `(mat m * mat m') *ᵥ _ = _`. Rewrite using `[← Matrix.mulVec_mulVec, cy, Matrix.mulVec_smul, ay, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`. Express the relevant statement in the definitionally equal form `(mat m * mat m') * _ = _ * (mat h * mat h')`. Rewrite using `[Matrix.mul_assoc, cι, ← Matrix.mul_assoc, aι, Matrix.mul_assoc]`.
+-/
 theorem isLevi_mul {t t' : (AE F E)ˣ} {h h' : UA σ W₁.J} {m m' : UA σ W.J} (hm : IsLevi (W₁ := W₁) H t h m)
     (hm' : IsLevi (W₁ := W₁) H t' h' m') : IsLevi (W₁ := W₁) H (t * t') (h * h') (m * m') := by
   obtain ⟨ax, ay, aι⟩ := hm
@@ -165,6 +205,23 @@ theorem isLevi_mul {t t' : (AE F E)ˣ} {h h' : UA σ W₁.J} {m m' : UA σ W.J} 
   · change (mat m * mat m') * _ = _ * (mat h * mat h')
     rw [Matrix.mul_assoc, cι, ← Matrix.mul_assoc, aι, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `set N : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) (AE F E) := incM F R * (mat m - 1 : Matrix (Fin n) (Fin n) (AE F E)) * incM F (frame H) with hN`. Establish `hQR' : incM F (frame H) * incM F R = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, hQR, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : mat m * incM F (frame H) = incM F (frame H) + incM F (frame H) * N`. Rewrite using `[hN, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQR', Matrix.one_mul, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel]`.
+
+Establish `col : ∀ j, mat m *ᵥ (fun r => incM F (frame H) r j) = (1 + N j j) • fun r => incM F (frame H) r j` using `fun j => by`. Use function extensionality and compare the values at `r`. Use `congrFun (congrFun e r) j` as an intermediate fact. Rewrite `this` using `[Matrix.add_apply, Matrix.mul_apply (M := incM F (frame H)), Finset.sum_eq_single j (fun i _ hi => by rw [hm i j (Or.inl hi), mul_zero]) (by simp)]`. Express the relevant statement in the definitionally equal form `(mat m * incM F (frame H)) r j = _`.
+
+Rewrite using `[this, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx` using `col (Fin.castAdd 1 (Fin.castAdd n₁ 0))`. Establish `hy` using `col (Fin.natAdd (1 + n₁) 0)`. Simplify using `only [incM, Matrix.map_apply, frame_alt, frame_y] at hx hy`.
+
+Generalize the expression as in `(1 + N _ _ : AE F E) = α at hx`. Generalize the expression as in `(1 + N _ _ : AE F E) = β at hy`. Express the relevant statement in the definitionally equal form `mat m *ᵥ incV F H.x = α • incV F H.x at hx`. Express the relevant statement in the definitionally equal form `mat m *ᵥ incV F H.y = β • incV F H.y at hy`. Establish `h1 : α * cA σ β = 1`.
+
+Establish `h2` using `GlobalTheory.AdelicPlaneLevi.fR_mulVec (cA σ).toRingHom (incM F W.J) (mat m) (incV F H.x) (incV F H.y)`. Establish `h3 : (mat m)ᵀ * incM F W.J * (mat m).map (cA σ).toRingHom = incM F W.J` using `m.2`. Rewrite `h2` using `[h3, hx, hy, GlobalTheory.AdelicPlaneLevi.fR_smul_left, GlobalTheory.AdelicPlaneLevi.fR_smul_right]`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.AdelicPlaneLevi.fR (cA σ).toRingHom (incM F W.J) (incV F H.x) (incV F H.y) at h2`. Rewrite `h2` using `[GlobalTheory.AdelicPlaneLevi.fR_inc, hxy, map_one, mul_one]`.
+
+Conclude with `h2`. Use `⟨⟨α, cA σ β, h1, (mul_comm _ _).trans h1⟩, hx, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Use `congr 1`. Conclude with `(GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ β).symm`.
+
+Rewrite using `[FlagPar.mat_one, Matrix.mul_one]`. Use extensionality with `r k`. Use `congrFun (col (mid k)) r` as an intermediate fact. Rewrite `this` using `[hm _ _ (Or.inr (blk_mid k)), add_zero, one_smul]`. Simplify using `only [incM, Matrix.map_apply, frame_mid] at this`.
+
+Conclude with `this`.
+-/
 theorem isLevi_of_diag (hσ : ∀ x, σ (σ x) = x) (hxy : form σ W.J H.x H.y = 1)
     {R : Matrix (Fin (1 + n₁ + 1)) (Fin n) E} (hQR : frame H * R = 1) (m : UA σ W.J)
     (hm : ∀ i j, i ≠ j ∨ blk n₁ j = 1 → (incM F R * (mat m - 1 : Matrix (Fin n) (Fin n) (AE F E)) * incM F (frame H) :
@@ -207,6 +264,23 @@ theorem isLevi_of_diag (hσ : ∀ x, σ (σ x) = x) (hxy : form σ W.J H.x H.y =
     simp only [incM, Matrix.map_apply, frame_mid] at this
     exact this
 
+/- English proof (translation)
+Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma h`. Establish `hGf : ∀ a b, ((frame H)ᵀ * W.J * (frame H).map σ) a b = form σ W.J (fun r => frame H r a) (fun r => frame H r b)`. Introduce `a b`. Simplify using `only [Matrix.mul_apply, form, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Establish `hskew : ∀ u v : Fin n → E, form σ W.J u v = -σ (form σ W.J v u)`. Introduce `u v`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcol : ∀ k : Fin n₁, (fun r => H.ι r k) = H.ι *ᵥ Pi.single k 1`. Introduce `k`. Use extensionality with `r`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hGs : ((frame H)ᵀ * W.J * (frame H).map σ) a b = 0`. Rewrite using `[hGf]`. Apply the tactic sequence `rcases blk_cases a with ⟨a, rfl⟩ | ⟨k, rfl⟩ | ⟨a, rfl⟩ <;>`. Apply the tactic sequence `rcases blk_cases b with ⟨b, rfl⟩ | ⟨l, rfl⟩ | ⟨b, rfl⟩ <;>`.
+
+Simplify using `only [block_matrix_mulVec_basis, blk_mid, blk_y, frame_alt, frame_mid, frame_y] at hab ⊢`. Conclude with `hxx`. Rewrite using `[hcol, hskew, (horth _).1, map_zero, neg_zero]`. Conclude with `absurd rfl hab`. Rewrite using `[hcol]`.
+
+Conclude with `(horth _).1`. Conclude with `absurd rfl hab`. Rewrite using `[hcol]`. Conclude with `(horth _).2`. Conclude with `absurd rfl hab`.
+
+Rewrite using `[hcol, hskew, (horth _).2, map_zero, neg_zero]`. Conclude with `hyy`. Establish `hA'e : (((frame H).map τ)ᴴ * (c • W.J.map σ).map τ * (frame H).map τ) a b = τ c * star (τ (((frame H)ᵀ * W.J * (frame H).map σ) a b))`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply, map_mul, map_sum, h.2.2.2, star_sum, star_mul', star_star, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`.
+
+Rewrite using `[hA'e, hGs, map_zero, star_zero, mul_zero]`.
+-/
 theorem gram_frame_support (h : IsCMExt F E σ) (hsk : ∀ i j, σ (W.J j i) = -W.J i j) (hxx : form σ W.J H.x H.x = 0)
     (hyy : form σ W.J H.y H.y = 0) (horth : ∀ u, form σ W.J (H.ι *ᵥ u) H.x = 0 ∧ form σ W.J (H.ι *ᵥ u) H.y = 0)
     (c : E) (τ : E →+* ℂ) (a b : Fin (1 + n₁ + 1)) (hab : blk n₁ a + blk n₁ b ≠ 2) :
@@ -250,6 +324,25 @@ theorem gram_frame_support (h : IsCMExt F E σ) (hsk : ∀ i j, σ (W.J j i) = -
 def torDiag (n₁ : ℕ) (l : ℂ) (i : Fin (1 + n₁ + 1)) : ℂ :=
   if blk n₁ i = 0 then l else if blk n₁ i = 1 then 0 else -star l
 
+/- English proof (translation)
+Establish `hQR' : (frame H).map τ.1 * R.map τ.1 = 1`. Rewrite using `[← Matrix.map_mul, hQR, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hRQ' : R.map τ.1 * (frame H).map τ.1 = 1`. Rewrite using `[← Matrix.map_mul, hRQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hG` using `gram_frame_support h hsk hxx hyy horth c τ.1`.
+
+Generalize the expression as in `hA : (c • W.J.map σ).map τ.1 = A at hG`. Generalize the expression as in `hQ : (frame H).map τ.1 = Q at hG hQR' hRQ'`. Generalize the expression as in `hR : R.map τ.1 = R' at hG hQR' hRQ'`. Establish `h0 : (Matrix.diagonal (torDiag n₁ l))ᴴ * (Qᴴ * A * Q) + Qᴴ * A * Q * Matrix.diagonal (torDiag n₁ l) = 0`. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.add_apply, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.zero_apply]`. Distinguish the cases in `hab : blk n₁ a + blk n₁ b = 2`. Establish `: star (torDiag n₁ l a) + torDiag n₁ l b = 0`. Unfold `torDiag`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+
+Rewrite using `[Pi.star_apply]`. Take the linear combination `(Qᴴ * A * Q) a b * this`. Rewrite using `[hG a b hab]`. Simplify using the standard rewrite rules. Establish `hZ : (Q * Matrix.diagonal (torDiag n₁ l) * R')ᴴ * A + A * (Q * Matrix.diagonal (torDiag n₁ l) * R') = 0`.
+
+Establish `h1` using `congrArg (fun Y => R'ᴴ * Y * R') h0`. Establish `h2 : ∀ Y : Matrix (Fin n) (Fin n) ℂ, R'ᴴ * (Qᴴ * Y) = Y` using `fun Y => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hQR', Matrix.conjTranspose_one, Matrix.one_mul]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hQR', Matrix.mul_one, h2, Matrix.mul_zero, Matrix.zero_mul] at h1`. Simplify `h1` using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Substitute `hA` using the available equality. Take `⟨γ, hγ⟩` from `exists_isLineOf h hJ hZ`. Use `⟨γ, hγ, fun s => isLevi_of_diag (sigma_sigma h) hxy hQR _ fun i j hij => ?_⟩` and prove the remaining obligations. Take `⟨y, hy1, hy2⟩` from `hγ s`. Express the relevant statement in the definitionally equal form `(incM F R * (((γ s).1 : GL (Fin n) (AE F E)).1 - 1 : Matrix (Fin n) (Fin n) (AE F E)) * incM F (frame H) : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) (AE F E)) i j = 0`.
+
+Rewrite using `[hy1, BlockTriLine.mat_embArch_sub_one, BlockTriLine.incM_mul_map_mul, Matrix.map_apply]`. Establish `h3 : (R.map (inclR (F` using `F) w.Completion) * ((y.1 : GL (Fin n) (w.Completion ⊗[F] E)).1 - 1) * (frame H).map (inclR (F := F) w.Completion) : Matrix (Fin (1 + n₁ + 1)) (Fin (1 + n₁ + 1)) (w.Completion ⊗[F] E)) i j = 0 := by`. Apply `(infEmb_bijective h τ).1` to reduce the goal to its premises. Establish `h4` using `congrFun (congrFun (BlockTriLine.map_infEmb_conj τ R (frame H) y) i) j`. Rewrite `h4` using `[Matrix.map_apply]`.
+
+Rewrite using `[map_zero, h4, hy2, hR, hQ, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hRQ', BlockTriLine.conj_exp _ _ hQR' hRQ', Matrix.mul_smul, Matrix.smul_mul, show R' * (Q * Matrix.diagonal (torDiag n₁ l) * R') * Q = Matrix.diagonal (torDiag n₁ l) by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hRQ', Matrix.one_mul, Matrix.mul_assoc, hRQ', Matrix.mul_one],`. Use the proof step `← Matrix.diagonal_smul, Matrix.exp_diagonal, Matrix.sub_apply]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+
+Establish `hb : blk n₁ i = 1` using `hij.resolve_left (fun e => e rfl)`. Simplify using `[Pi.coe_exp, torDiag, hb]`. Simplify using `[e]`. Rewrite using `[h3, map_zero]`.
+-/
 theorem exists_torus_line (h : IsCMExt F E σ) (hsk : ∀ i j, σ (W.J j i) = -W.J i j) (hxx : form σ W.J H.x H.x = 0)
     (hyy : form σ W.J H.y H.y = 0) (hxy : form σ W.J H.x H.y = 1)
     (horth : ∀ u, form σ W.J (H.ι *ᵥ u) H.x = 0 ∧ form σ W.J (H.ι *ᵥ u) H.y = 0)
@@ -309,6 +402,13 @@ theorem exists_torus_line (h : IsCMExt F E σ) (hsk : ∀ i j, σ (W.J j i) = -W
 
 end Geo
 
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_single, ← Matrix.diagonal_smul, ← Matrix.diagonal_smul, Matrix.diagonal_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hI` using `Complex.I_mul_I`. Break down `blk_cases i with ⟨a, rfl⟩ | ⟨k, rfl⟩ | ⟨a, rfl⟩` into its components or cases.
+
+Take `rfl : a = 0` from `Subsingleton.elim _ _`. Simplify using `only [Pi.single_eq_same, Pi.smul_apply, torDiag, block_matrix_mulVec_basis, if_true, smul_eq_mul]`. Take the linear combination `(1 / 2 : ℂ) * hI`. Rewrite using `[Pi.single_eq_of_ne (fun e => by simpa [block_matrix_mulVec_basis, blk_mid] using congrArg (blk n₁) e)]`. Simplify using `[torDiag, blk_mid]`.
+
+Rewrite using `[Pi.single_eq_of_ne (fun e => by simpa [block_matrix_mulVec_basis, blk_y] using congrArg (blk n₁) e)]`. Simplify using `[torDiag, blk_y]`. Take the linear combination `(1 / 2 : ℂ) * hI`.
+-/
 theorem matrix_single_zero_eq_half_diagonal_torDiag (n₁ : ℕ) : Matrix.single (Fin.castAdd 1 (Fin.castAdd n₁ (0 : Fin 1))) (Fin.castAdd 1 (Fin.castAdd n₁ 0)) (1 : ℂ) =
     (1 / 2 : ℂ) • Matrix.diagonal (torDiag n₁ 1) + (-Complex.I / 2) • Matrix.diagonal (torDiag n₁ Complex.I) := by
   rw [← Matrix.diagonal_single, ← Matrix.diagonal_smul, ← Matrix.diagonal_smul, Matrix.diagonal_add]
@@ -325,6 +425,13 @@ theorem matrix_single_zero_eq_half_diagonal_torDiag (n₁ : ℕ) : Matrix.single
     simp [torDiag, blk_y]
     linear_combination (1 / 2 : ℂ) * hI
 
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_single, ← Matrix.diagonal_smul, ← Matrix.diagonal_smul, Matrix.diagonal_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hI` using `Complex.I_mul_I`. Break down `blk_cases i with ⟨a, rfl⟩ | ⟨k, rfl⟩ | ⟨a, rfl⟩` into its components or cases.
+
+Rewrite using `[Pi.single_eq_of_ne (fun e => by simpa [block_matrix_mulVec_basis, blk_y] using congrArg (blk n₁) e)]`. Simplify using `[torDiag, block_matrix_mulVec_basis]`. Take the linear combination `(1 / 2 : ℂ) * hI`. Rewrite using `[Pi.single_eq_of_ne (fun e => by simpa [blk_y, blk_mid] using congrArg (blk n₁) e)]`. Simplify using `[torDiag, blk_mid]`.
+
+Take `rfl : a = 0` from `Subsingleton.elim _ _`. Simplify using `[torDiag, blk_y]`. Take the linear combination `(1 / 2 : ℂ) * hI`.
+-/
 theorem single_y (n₁ : ℕ) : Matrix.single (Fin.natAdd (1 + n₁) (0 : Fin 1)) (Fin.natAdd (1 + n₁) (0 : Fin 1)) (1 : ℂ) =
     (-1 / 2 : ℂ) • Matrix.diagonal (torDiag n₁ 1) + (-Complex.I / 2) • Matrix.diagonal (torDiag n₁ Complex.I) := by
   rw [← Matrix.diagonal_single, ← Matrix.diagonal_smul, ← Matrix.diagonal_smul, Matrix.diagonal_add]
@@ -346,6 +453,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Take `⟨z, hz1, hz2⟩` from `GlobalTheory.T.universal_enveloping_line_derivatives F E σ h n J hJ w τ D hD a h1`. Use `⟨z, ⟨hz1, fun f hf b _ g => ?_⟩, (hz2 v).symm⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.central_element_commutes_translates F E σ h n J hJ w τ D hD a h1 h2 b ⟨f, hf⟩ ⟨_, GlobalTheory.EisCont.CentreFinite.isSm_mul_right h hf b⟩ rfl`. Rewrite `e` using `[← hz2, ← hz2]`. Conclude with `congrFun e g`.
+-/
 theorem exists_isCentral_of_central (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlace F} {τ : EmbOver E w}
     {D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (SmG σ J)} (hD : IsDer σ J τ D) {a : Module.End ℂ (SmG σ J)}
     (h1 : a ∈ Algebra.adjoin ℂ (Set.range D)) (h2 : ∀ X, D X * a = a * D X) (v : SmG σ J) :
@@ -361,6 +471,69 @@ end General
 open GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.CuspTransfer in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hdet₁ : Y₁.J.det ≠ 0` using `fun h0 => hJ₁.2 (by`. Establish `e : (Y₁.J.map σ).det = (σ : E →+* E) Y₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`. Establish `hyp : GlobalTheory.ThK.GLTwo.IsHypPlane σ H Y Y₁` using `⟨hn, hxx, hyy, hxy, horth, hgram⟩`. Take `⟨R, hQR, hRQ⟩` from `GlobalTheory.T.levi_embedding_hyperbolic_first F E σ h n n₁ Y Y₁ H hsk hn hxx hyy hxy horth hgram hdet₁`.
+
+Take `⟨ι, hι, hιl⟩` from `GlobalTheory.T.levi_embedding_hyperbolic_second F E σ h n n₁ Y Y₁ H hsk hn hxx hyy hxy horth hgram hdet₁ R hQR hRQ c hc hJ hJ₁`. Set `e` to `toGAd hσ Y.J hc`. Set `e₁` to `toGAd hσ Y₁.J hc`. Establish `hemb : ∀ y, CuspTransfer.emb hσ Y Y₁ hc M y = ι y` using `fun y => by`. Take `⟨m, hm, em⟩` from `hι (e₁.symm y) y rfl`.
+
+Use `hyp.levi_unique hσ hsk hdet₁ (hM _) hm` as an intermediate fact. Unfold `CuspTransfer.emb`. Rewrite using `[this]`. Conclude with `Subtype.ext em`. Establish `hιM : ∀ y, ι y = e (M (e₁.symm y))` using `fun y => (hemb y).symm`.
+
+Establish `hN : ∀ u, u ∈ unip σ Y H ↔ e u ∈ GlobalTheory.StdPar.unip σ (c • Y.J.map σ) X' {0}` using `fun u => hyp.mem_unip_iff hσ hsk hdet₁ hc hW (Nat.succ_pos r) hX' u`. Simplify using `only [IsInd, hemb] at hΨ`. Take `⟨hdec, hval⟩` from `hΨ`. Establish `hcomm : ∀ t m y, IsLevi (W₁` using `Y₁) H t 1 m → ι y * e m = e m * ι y := fun t m y hm => by`. Establish `h1` using `isLevi_mul (hM (e₁.symm y)) hm`.
+
+Establish `h2` using `isLevi_mul hm (hM (e₁.symm y))`. Rewrite `h1`, `h2` using `[one_mul, mul_one]`. Rewrite using `[hιM, ← map_mul, ← map_mul, hyp.levi_unique hσ hsk hdet₁ h1 h2]`. Set `v : SmG σ (c • Y.J.map σ)` to `⟨Ψ, hsm⟩`. Set `τ : ∀ w : InfinitePlace F, EmbOver E w` to `fun w => Classical.choice inferInstance`.
+
+Use `choose D hD using fun w => exists_isDer h hJ (τ w)`. Use `choose D₁ hD₁ using fun w => exists_isDer h hJ₁ (τ w)`. Use `finite_of_gelf h hJ τ D hD v fun w => ?_` and prove the remaining obligations. Set `Q` to `(frame H).map (τ w).1`. Set `R'` to `R.map (τ w).1`.
+
+Establish `hQR' : Q * R' = 1` using `by rw [← Matrix.map_mul, hQR, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hRQ' : R' * Q = 1` using `by rw [← Matrix.map_mul, hRQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `X : Fin (1 + n₁ + 1) → Fin (1 + n₁ + 1) → Module.End ℂ (SmG σ (c • Y.J.map σ))` to `fun a b => D w (Q * Matrix.single a b (1 : ℂ) * R')`. Establish `hX : GlRel X` using `glRel_frame (D w) (hD w).1 hRQ'`. Set `M' : Submodule ℂ (SmG σ (c • Y.J.map σ))` to `{ carrier := {f | ∀ u ∈ unip σ Y H, ∀ x, f.1 (e u * x) = f.1 x} add_mem' := fun {f f'} hf hf' u hu x => by`.
+
+Rewrite using `[Submodule.coe_add, Pi.add_apply, Pi.add_apply, hf u hu, hf' u hu]`. Use the proof step `zero_mem' := fun _ _ _ => rfl`. Use the proof step `smul_mem' := fun a f hf u hu x => by rw [Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hf u hu] }`. Set `Γ : Submodule ℂ (SmG σ (c • Y.J.map σ) × SmG σ (c • Y₁.J.map σ))` to `{ carrier := {p | p.1 ∈ M' ∧ ∀ t m y, IsLevi (W₁ := Y₁) H t 1 m → p.1.1 (e m * ι y) = (χ t : ℂ) * p.2.1 y} add_mem' := fun {p p'} hp hp' => ⟨M'.add_mem hp.1 hp'.1, fun t m y hm => by`. Rewrite using `[Prod.fst_add, Prod.snd_add, Submodule.coe_add, Submodule.coe_add, Pi.add_apply, Pi.add_apply, hp.2 t m y hm, hp'.2 t m y hm, mul_add]⟩`.
+
+Use the proof step `zero_mem' := ⟨M'.zero_mem, fun t m y _ => (mul_zero _).symm⟩`. Use the proof step `smul_mem' := fun b p hp => ⟨M'.smul_mem b hp.1, fun t m y hm => by`. Rewrite using `[Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hp.2 t m y hm, smul_eq_mul, smul_eq_mul, mul_left_comm]⟩ }`. Establish `hMl : ∀ Z γ, IsLineOf σ (c • Y.J.map σ) (τ w) Z γ → ∀ f ∈ M', D w Z f ∈ M'` using `fun Z γ hγ f hf u hu x => by`. Rewrite using `[(hD w).2 Z γ hγ]`.
+
+Simplify using `only [lineDer, mul_assoc, hf u hu]`. Establish `hM' : ∀ Z, ∀ f ∈ M', D w Z f ∈ M'` using `fun Z f hf => by`. Take `⟨γ₁, γ₂, h1, h2, e2⟩` from `exists_lines h hJ (τ w) Z`. Rewrite using `[e2, map_add, map_smul (D w) Complex.I, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `M'.add_mem (hMl _ _ h1 f hf) (M'.smul_mem _ (hMl _ _ h2 f hf))`.
+
+Establish `hupl : ∀ Z γ, IsLineOf σ (c • Y.J.map σ) (τ w) Z γ → (∀ i j, blk n₁ j < blk n₁ i + 1 → (R' * Z * Q) i j = 0) → ∀ f ∈ M', (D w Z f, (0 : SmG σ (c • Y₁.J.map σ))) ∈ Γ` using `fun Z γ hγ hZ f hf => ⟨hM' Z f hf, fun t m y hm => by`. Express the relevant statement in the definitionally equal form `(D w Z f).1 _ = _ * 0`. Rewrite using `[(hD w).2 Z γ hγ, mul_zero]`. Establish `h1 : ∀ s, f.1 (e m * ι y * γ s) = f.1 (e m * ι y)` using `fun s => by`. Establish `h2 : e.symm (γ s) ∈ unip σ Y H` using `GlobalTheory.T.unipotent_block_triangular_nilpotent F E σ n n₁ Y H R hQR hRQ _ fun i j hij => (BlockTriLine.blockTri_adelic F E σ h n _ hJ _ _ R hQR hRQ (blk n₁) 1 w (τ w) Z γ hγ hZ s i j hij).1`.
+
+Use `hf _ (GlobalTheory.CTFirst.levi_conj_mem_unip H t m hm _ (GlobalTheory.T.levi_normalizes_unipotent_bis F E σ n n₁ Y Y₁ H _ _ (hM (e₁.symm y)) _ h2)) (e m * ι y)` as an intermediate fact. Simplify `this` using `only [map_mul, map_inv, MulEquiv.apply_symm_apply, ← hιM, mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`. Simplify using `only [lineDer, h1, deriv_const]⟩`. Establish `hup : ∀ a b, blk n₁ a < blk n₁ b → ∀ f ∈ M', (X a b f, (0 : SmG σ (c • Y₁.J.map σ))) ∈ Γ`. Introduce `a b hab f hf`.
+
+Take `⟨γ₁, γ₂, h1, h2, e2⟩` from `exists_lines h hJ (τ w) (Q * Matrix.single a b (1 : ℂ) * R')`. Establish `h0 : ∀ i j, blk n₁ j < blk n₁ i + 1 → (R' * (Q * Matrix.single a b (1 : ℂ) * R') * Q) i j = 0` using `fun i j hij => by`. Rewrite using `[frame_unit_apply hRQ']`. Use `Matrix.single_apply_of_ne _ _ _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h0'` using `adj_frame_blockTri F E σ h n n₁ Y Y₁ H hsk hn hxx hyy hxy horth hgram hdet₁ R hQR hRQ c hc hJ hJ₁ (τ w).1 1 _ h0`. Establish `h3` using `Γ.add_mem (hupl _ _ h1 (fun i j hij => by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.smul_apply, Matrix.sub_apply, h0 i j hij, h0' i j hij, sub_zero, smul_zero]) f hf) (Γ.smul_mem Complex.I (hupl _ _ h2 (fun i j hij => by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.smul_apply, Matrix.add_apply, h0 i j hij, h0' i j hij, add_zero, smul_zero]) f hf))`.
+
+Express the relevant statement in the definitionally equal form `(D w _ f, _) ∈ Γ`. Rewrite using `[e2, map_add, map_smul (D w) Complex.I, LinearMap.add_apply, LinearMap.smul_apply]`. Rewrite `h3` using `[Prod.smul_mk, Prod.mk_add_mk, smul_zero, add_zero]`. Conclude with `h3`. Establish `hline : ∀ Z γ, IsLineOf σ (c • Y₁.J.map σ) (τ w) Z γ → ∀ f φ, (f, φ) ∈ Γ → (D w (H.ι.map (τ w).1 * Z * (R.submatrix mid id).map (τ w).1) f, D₁ w Z φ) ∈ Γ` using `fun Z γ hγ f φ hf => ⟨hM' _ f hf.1, fun t m y hm => by`.
+
+Express the relevant statement in the definitionally equal form `(D w _ f).1 _ = _ * (D₁ w Z φ).1 y`. Rewrite using `[(hD₁ w).2 Z γ hγ, (hD w).2 _ _ (hιl w _ Z γ hγ)]`. Establish `h1 : ∀ s, f.1 (e m * ι y * ι (γ s)) = (χ t : ℂ) * φ.1 (y * γ s)` using `fun s => by`. Rewrite using `[mul_assoc, ← map_mul]`. Conclude with `hf.2 t m _ hm`.
+
+Simplify using `only [lineDer, h1, deriv_const_mul_field']⟩`. Establish `hmid : ∀ a b f φ, (f, φ) ∈ Γ → (X (mid a) (mid b) f, D₁ w (1 * Matrix.single a b 1 * 1) φ) ∈ Γ` using `fun a b f φ hf => by`. Establish `e1 : Q * Matrix.single (mid a) (mid b) (1 : ℂ) * R' = H.ι.map (τ w).1 * Matrix.single a b (1 : ℂ) * (R.submatrix mid id).map (τ w).1`. Use extensionality with `r s`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Q, R', frame_mid]`.
+
+Take `⟨γ₁, γ₂, h1, h2, e2⟩` from `exists_lines h hJ₁ (τ w) (Matrix.single a b 1)`. Establish `h3` using `Γ.add_mem (hline _ _ h1 f φ hf) (Γ.smul_mem Complex.I (hline _ _ h2 f φ hf))`. Express the relevant statement in the definitionally equal form `(D w _ f, _) ∈ Γ`. Rewrite using `[Matrix.one_mul, Matrix.mul_one, e1, e2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul _ Complex.I, Matrix.smul_mul, map_add, map_add, map_smul (D₁ w) Complex.I, map_smul (D w) Complex.I]`. Conclude with `h3`.
+
+Establish `htor : ∀ l : ℂ, ∃ μ : ℂ, ∀ f φ, (f, φ) ∈ Γ → (D w (Q * Matrix.diagonal (torDiag n₁ l) * R') f, μ • φ) ∈ Γ` using `fun l => by`. Take `⟨γ, hγ, ht⟩` from `exists_torus_line (W₁ := Y₁) h hsk hxx hyy hxy horth hQR hRQ hc hJ (τ w) l`. Use `choose t ht using ht`. Use `⟨deriv (fun s => (χ (t s) : ℂ)) 0, fun f φ hf => ⟨hM' _ f hf.1, fun t₀ m y hm => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D w _ f).1 _ = _ * (_ * φ.1 y)`.
+
+Rewrite using `[(hD w).2 _ _ hγ]`. Establish `h1 : ∀ s, f.1 (e m * ι y * γ s) = (χ t₀ : ℂ) * ((χ (t s) : ℂ) * φ.1 y)` using `fun s => by`. Establish `h2` using `isLevi_mul hm (ht s)`. Rewrite `h2` using `[mul_one]`. Establish `h3` using `hf.2 _ _ y h2`.
+
+Rewrite `h3` using `[map_mul, map_mul, Circle.coe_mul, mul_assoc, mul_assoc, ← hcomm _ _ y (ht s)]`. Rewrite using `[← h3, mul_assoc]`. Conclude with `congrArg (fun x => f.1 (e m * (ι y * x))) (e.apply_symm_apply _).symm`. Simplify using `only [lineDer, h1, deriv_const_mul_field', deriv_mul_const_field']`. Establish `hcorner : ∀ (i : Fin (1 + n₁ + 1)) (α β : ℂ), Matrix.single i i (1 : ℂ) = α • Matrix.diagonal (torDiag n₁ 1) + β • Matrix.diagonal (torDiag n₁ Complex.I) → ∃ μ : ℂ, ∀ f φ, (f, φ) ∈ Γ → (X i i f, μ • φ) ∈ Γ` using `fun i α β hi => by`.
+
+Take `⟨μ, hμ⟩` from `htor 1`. Take `⟨ν, hν⟩` from `htor Complex.I`. Use `⟨α * μ + β * ν, fun f φ hf => ?_⟩` and prove the remaining obligations. Establish `h3` using `Γ.add_mem (Γ.smul_mem α (hμ f φ hf)) (Γ.smul_mem β (hν f φ hf))`. Express the relevant statement in the definitionally equal form `(D w _ f, _) ∈ Γ`.
+
+Rewrite using `[hi, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, map_add, map_smul, map_smul, add_smul, mul_smul, mul_smul]`. Conclude with `h3`. Take `⟨lx, hx⟩` from `hcorner _ _ _ (matrix_single_zero_eq_half_diagonal_torDiag n₁)`. Take `⟨ly, hy⟩` from `hcorner _ _ _ (single_y n₁)`. Establish `hrel` using `exists_rel_qdet X hX _ M' Γ (fun f φ hf => hf.1) (fun a b => hM' _) hup hmid lx ly hx hy`.
+
+Set `ψ : Fin d → SmG σ (c • Y₁.J.map σ)` to `fun i => ⟨ψs i, hψsm i⟩`. Set `vk : GAd σ (c • Y.J.map σ) → SmG σ (c • Y.J.map σ)` to `fun k => ⟨fun x => Ψ (x * k), GlobalTheory.EisCont.CentreFinite.isSm_mul_right h hsm k⟩`. Establish `hk : ∀ k ∈ Kc, (vk k, ∑ i, a i k • ψ i) ∈ Γ` using `fun k hk => ⟨fun u hu x => by`. Take `⟨u', hu', t, m, y, k', hk', hm, e'⟩` from `hdec (x * k)`. Express the relevant statement in the definitionally equal form `Ψ (e u * x * k) = Ψ (x * k)`.
+
+Rewrite using `[mul_assoc, e', hval u' hu' t m y k' hk' hm, ← hval _ (mul_mem ((hN u).1 hu) hu') t m y k' hk' hm]`. Simplify using `only [mul_assoc], fun t m y hm => by`. Use `hval 1 (one_mem _) t m y k hk hm` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use `this.trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ψ, mul_comm]⟩`. Use `choose u hu t m y k hkc hm hg using hdec`. Set `V : Fin d → Submodule ℂ (GAd σ (c • Y₁.J.map σ) → ℂ)` to `fun i => Submodule.span ℂ {f | ∃ z, IsCentral σ (c • Y₁.J.map σ) z ∧ f = dop z (ψs i)}`. Set `L : (∀ i, V i) →ₗ[ℂ] (GAd σ (c • Y.J.map σ) → ℂ)` to `{ toFun := fun φ g => (χ (t g) : ℂ) * ∑ i, a i (k g) * (φ i).1 (y g) map_add' := fun φ φ' => funext fun g => by simp [mul_add, Finset.sum_add_distrib] map_smul' := fun b φ => funext fun g => by`. Simplify using `only [Pi.smul_apply, Submodule.coe_smul, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring }`. Establish `hS : FiniteDimensional ℂ ((LinearMap.range L).comap (SmG σ (c • Y.J.map σ)).subtype)` using `FiniteDimensional.of_injective ((SmG σ (c • Y.J.map σ)).subtype.restrict (q := LinearMap.range L) fun x hx => hx) fun x y e => by`. Establish `h'` using `congrArg Subtype.val e`. Conclude with `Subtype.ext (Subtype.ext h')`. Use `Submodule.finiteDimensional_of_le (S₂ := (LinearMap.range L).comap (SmG σ (c • Y.J.map σ)).subtype) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hG : GlRel fun p q : Fin n => D w (1 * Matrix.single p q (1 : ℂ) * 1)` using `glRel_frame (D w) (hD w).1 (Matrix.mul_one _)`. Take `⟨hb1, hb2⟩` from `central_of_mem_qdet (D w) (hD w).1 (Q := 1) (R := 1) (Matrix.mul_one _) (Matrix.mul_one _) (a := b) (by`. Use `Algebra.adjoin_le ?_ hb` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Simplify using `using GlobalTheory.T.gelfand_generator_mem_quantum_det _ _ _ hG j)`. Take `⟨b₁, hb₁, hbb⟩` from `hrel b (mem_qdet_of_central (D w) (hD w).1 hQR' hRQ' hb1 hb2)`. Take `⟨hc1, hc2⟩` from `central_of_mem_qdet (D₁ w) (hD₁ w).1 (Q := 1) (R := 1) (Matrix.mul_one _) (Matrix.mul_one _) hb₁`. Use `⟨fun i => ⟨(b₁ (ψ i)).1, Submodule.subset_span (exists_isCentral_of_central h hJ₁ (hD₁ w) hc1 hc2 (ψ i))⟩,` and prove the remaining obligations. Use function extensionality and compare the values at `fun g => ?_⟩`.
+
+Establish `h1` using `congrFun (GlobalTheory.T.central_element_commutes_translates F E σ h n _ hJ w (τ w) (D w) (hD w) b hb1 hb2 (k g) v (vk (k g)) rfl) (u g * e (m g) * ι (y g))`. Establish `h2` using `hbb _ _ (hk _ (hkc g))`. Establish `h3` using `h2.1 (e.symm (u g)) ((hN _).2 (by rw [e.apply_symm_apply]; exact hu g)) (e (m g) * ι (y g))`. Establish `h4` using `h2.2 _ _ (y g) (hm g)`. Rewrite `h3` using `[e.apply_symm_apply, ← mul_assoc]`.
+
+Express the relevant statement in the definitionally equal form `_ = (b v).1 g`. Use `conv_rhs => rw [hg g]`. Use `Eq.trans ?_ (h4.symm.trans (h3.symm.trans h1))` and prove the remaining obligations. Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk, map_sum, map_smul, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem finite_of_isInd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁}
     (hsk : ∀ i j, σ (Y.J j i) = -Y.J i j) (hn : n = n₁ + 2) (hxx : form σ Y.J H.x H.x = 0) (hyy : form σ Y.J H.y H.y = 0)
@@ -567,6 +740,9 @@ theorem finite_of_isInd {F E : Type} [Field F] [NumberField F] [Field E] [Number
   simp only [L, LinearMap.coe_mk, AddHom.coe_mk, map_sum, map_smul, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul,
     Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c hc hJ₁ hJ M hMc hM hMr r Xf Yf hf X' Y' hW hX hY hXY S' χ hχ hχc K₁ hK₁ K' hK' Kc d ψs a Ψ hΨ hψ hKc ha ha' _`. Conclude with `finite_of_isInd h hσ hsk hn hxx hyy hxy horth hgram hc hJ₁ hJ hM hW hX hΨ (fun i => (hψ i).1.smooth) (fun i => (hψ i).1.zfin) (GlobalTheory.T.skew_plane_jacobian_identity F E σ h hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c hc hJ₁ hJ M hMc hM hMr r Xf Yf hf X' Y' hW hX hY hXY …`.
+-/
 theorem finite_centre_of_isInd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →
@@ -593,6 +769,9 @@ theorem finite_centre_of_isInd : ∀ (F E : Type) [Field F] [NumberField F] [Fie
     (fun i => (hψ i).1.zfin) (GlobalTheory.T.skew_plane_jacobian_identity F E σ h hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c hc hJ₁ hJ M hMc hM hMr r
       Xf Yf hf X' Y' hW hX hY hXY S' χ hχ hχc K₁ hK₁ K' hK' Kc d ψs a Ψ hΨ hψ hKc ha ha')
 
+/- English proof (translation)
+Introduce `_` and use `finite_centre_of_isInd`.
+-/
 theorem finite_centre_of_isInd_of : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

@@ -20,6 +20,9 @@ variable {R : Type*} [CommRing R]
 
 def blkWt : (Σ k, ι k) → K → ℕ := fun p => Pi.single p.1 1
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[blkWt]`. Introduce `b _ hb`. Simplify using `[blkWt, Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_blkWt_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blkWt (ι := ι)) m k = ∑ i, m ⟨k, i⟩ := by
   classical
@@ -30,6 +33,11 @@ theorem weight_blkWt_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     simp [blkWt, Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_blkWt_apply]`. Conclude with `h m (mem_support_iff.mpr hm) k`.
+
+Introduce `h m hm k`. Rewrite using `[← weight_blkWt_apply, h (mem_support_iff.mp hm)]`.
+-/
 theorem isMultiHomog_iff (s : MRingOver R ι) (a : K → ℕ) :
     IsMultiHomog s a ↔ IsWeightedHomogeneous (blkWt (ι := ι)) s a := by
   constructor
@@ -40,30 +48,55 @@ theorem isMultiHomog_iff (s : MRingOver R ι) (a : K → ℕ) :
   · intro h m hm k
     rw [← weight_blkWt_apply, h (mem_support_iff.mp hm)]
 
+/- English proof (translation)
+The claim follows from `(isMultiHomog_iff _ _).2 (((isMultiHomog_iff _ _).1 hf).mul ((isMultiHomog_iff _ _).1 hg))`.
+-/
 theorem isMultiHomog_mul {f g : MRingOver R ι} {a b : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g b) : IsMultiHomog (f * g) (a + b) :=
   (isMultiHomog_iff _ _).2 (((isMultiHomog_iff _ _).1 hf).mul ((isMultiHomog_iff _ _).1 hg))
 
+/- English proof (translation)
+The claim follows from `(isMultiHomog_iff _ _).2 (((isMultiHomog_iff _ _).1 hf).add ((isMultiHomog_iff _ _).1 hg))`.
+-/
 theorem isMultiHomog_add {f g : MRingOver R ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g a) : IsMultiHomog (f + g) a :=
   (isMultiHomog_iff _ _).2 (((isMultiHomog_iff _ _).1 hf).add ((isMultiHomog_iff _ _).1 hg))
 
+/- English proof (translation)
+Rewrite `*` using `[isMultiHomog_iff]`. Conclude with `(weightedHomogeneousSubmodule R _ a).sub_mem hf hg`.
+-/
 theorem isMultiHomog_sub {f g : MRingOver R ι} {a : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g a) : IsMultiHomog (f - g) a := by
   rw [isMultiHomog_iff] at *
   exact (weightedHomogeneousSubmodule R _ a).sub_mem hf hg
 
+/- English proof (translation)
+The claim follows from `(isMultiHomog_iff _ _).2 (isWeightedHomogeneous_C _ _)`.
+-/
 theorem isMultiHomog_C (c : R) : IsMultiHomog (C c : MRingOver R ι) 0 :=
   (isMultiHomog_iff _ _).2 (isWeightedHomogeneous_C _ _)
 
+/- English proof (translation)
+Simplify using `using isMultiHomog_C (R := R) (ι := ι) 1`.
+-/
 theorem isMultiHomog_one : IsMultiHomog (1 : MRingOver R ι) 0 := by
   simpa using isMultiHomog_C (R := R) (ι := ι) 1
 
+/- English proof (translation)
+The claim follows from `(isMultiHomog_iff _ _).2 (isWeightedHomogeneous_X R _ p)`.
+-/
 theorem isMultiHomog_X (p : Σ k, ι k) : IsMultiHomog (X p : MRingOver R ι) (Pi.single p.1 1) :=
   (isMultiHomog_iff _ _).2 (isWeightedHomogeneous_X R _ p)
 
 def segForm (s : ∀ k, ι k) : MRingOver R ι := ∏ k, X ⟨k, s k⟩
 
+/- English proof (translation)
+Establish `h : IsWeightedHomogeneous (blkWt (ι` using `ι)) (segForm (R := R) s) (∑ k, blkWt (ι := ι) ⟨k, s k⟩) := IsWeightedHomogeneous.prod _ _ _ fun k _ => isWeightedHomogeneous_X R _ _`. Establish `e : (∑ k, blkWt (ι` using `ι) ⟨k, s k⟩) = fun _ => 1 := by`. Use function extensionality and compare the values at `k`. Simplify using `only [blkWt, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+
+Conclude with `(isMultiHomog_iff _ _).2 h`.
+-/
 theorem isMultiHomog_segForm (s : ∀ k, ι k) :
     IsMultiHomog (segForm (R := R) s) (fun _ => 1) := by
   have h : IsWeightedHomogeneous (blkWt (ι := ι)) (segForm (R := R) s) (∑ k, blkWt (ι := ι) ⟨k, s k⟩) :=
@@ -79,14 +112,27 @@ theorem isMultiHomog_segForm (s : ∀ k, ι k) :
   rw [e] at h
   exact (isMultiHomog_iff _ _).2 h
 
+/- English proof (translation)
+Simplify using `[segForm, mseg, map_prod]`.
+-/
 theorem aeval_segForm {S : Type*} [CommRing S] [Algebra R S] (y : (Σ k, ι k) → S) (s : ∀ k, ι k) :
     aeval y (segForm (R := R) s) = mseg y s := by
   simp [segForm, mseg, map_prod]
 
+/- English proof (translation)
+Simplify using `[segForm, map_prod]`.
+-/
 theorem map_segForm {S : Type*} [CommRing S] (f : R →+* S) (s : ∀ k, ι k) :
     MvPolynomial.map f (segForm (R := R) s) = segForm s := by
   simp [segForm, map_prod]
 
+/- English proof (translation)
+Use `conv_lhs => rw [H.as_sum]`. Use `conv_rhs => rw [H.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [mcMap, aeval_monomial, MvPolynomial.algebraMap_apply, map_mul]`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]`. Rewrite using `[mul_assoc]`. Use `congr 2`. Rewrite using `[Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hH m hm k, ← Finset.prod_pow_eq_pow_sum]`.
+-/
 theorem mcMap_of_isMultiHomog {Ω : Type*} [CommRing Ω] [Algebra R Ω] (x : (Σ k, ι k) → Ω)
     {H : MRingOver R ι} {α : K → ℕ} (hH : IsMultiHomog H α) :
     mcMap R x H = MvPolynomial.C (aeval x H) * ∏ k, X k ^ α k := by
@@ -104,6 +150,9 @@ theorem mcMap_of_isMultiHomog {Ω : Type*} [CommRing Ω] [Algebra R Ω] (x : (Σ
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [← hH m hm k, ← Finset.prod_pow_eq_pow_sum]
 
+/- English proof (translation)
+Rewrite using `[mcIdeal, RingHom.mem_ker, mcMap_of_isMultiHomog x hH, mul_eq_zero, MvPolynomial.C_eq_zero]`. Establish `: (∏ k, X k ^ α k : MvPolynomial K Ω) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)`. Simplify using `[this]`.
+-/
 theorem mem_mcIdeal_iff {Ω : Type*} [Field Ω] [Algebra R Ω] (x : (Σ k, ι k) → Ω)
     {H : MRingOver R ι} {α : K → ℕ} (hH : IsMultiHomog H α) :
     H ∈ mcIdeal R x ↔ aeval x H = 0 := by
@@ -118,6 +167,9 @@ section GenPt
 
 variable {F : Type*} [Field F] (Q : Ideal (MRingOver F ι)) [Q.IsPrime]
 
+/- English proof (translation)
+Establish `h : (aeval (genPt F Q) : MRingOver F ι →ₐ[F] FractionRing (MRingOver F ι ⧸ Q)) = (IsScalarTower.toAlgHom F (MRingOver F ι ⧸ Q) (FractionRing (MRingOver F ι ⧸ Q))).comp (Ideal.Quotient.mkₐ F Q)`. Use `MvPolynomial.algHom_ext fun p => ?_` and prove the remaining obligations. Simplify using `[genPt]`. Conclude with `congrArg (fun φ : MRingOver F ι →ₐ[F] FractionRing (MRingOver F ι ⧸ Q) => φ H) h`.
+-/
 theorem aeval_genPt (H : MRingOver F ι) :
     aeval (genPt F Q) H = algebraMap (MRingOver F ι ⧸ Q) (FractionRing (MRingOver F ι ⧸ Q))
       (Ideal.Quotient.mk Q H) := by
@@ -128,9 +180,21 @@ theorem aeval_genPt (H : MRingOver F ι) :
     simp [genPt]
   exact congrArg (fun φ : MRingOver F ι →ₐ[F] FractionRing (MRingOver F ι ⧸ Q) => φ H) h
 
+/- English proof (translation)
+Rewrite using `[aeval_genPt, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem aeval_genPt_eq_zero_iff (H : MRingOver F ι) : aeval (genPt F Q) H = 0 ↔ H ∈ Q := by
   rw [aeval_genPt, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `H hH`. Rewrite using `[← aeval_genPt_eq_zero_iff]`. Establish `h : (MvPolynomial.eval (fun _ : K => (1 : FractionRing (MRingOver F ι ⧸ Q)))).comp (mcMap F (genPt F Q)).toRingHom = (aeval (genPt F Q)).toRingHom`. Use `MvPolynomial.ringHom_ext (fun c => ?_) fun p => ?_` and prove the remaining obligations.
+
+Simplify using `[mcMap]`. Simplify using `[mcMap]`. Establish `h2` using `congrArg (fun φ => φ H) h`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2`. Rewrite using `[← h2]`.
+
+Express the relevant statement in the definitionally equal form `MvPolynomial.eval _ (mcMap F (genPt F Q) H) = 0`. Rewrite using `[show mcMap F (genPt F Q) H = 0 from hH, map_zero]`. Take `⟨S, hS, rfl⟩` from `hQ`. Rewrite using `[Ideal.span_le]`. Introduce `g hg`.
+
+Take `⟨a, ha⟩` from `hS g hg`. Conclude with `(mem_mcIdeal_iff _ ha).2 ((aeval_genPt_eq_zero_iff _ g).2 (Ideal.subset_span hg))`.
+-/
 theorem mcIdeal_genPt (hQ : IsMultiHomogIdeal Q) : mcIdeal F (genPt F Q) = Q := by
   apply le_antisymm
   · intro H hH
@@ -163,10 +227,16 @@ abbrev red : MRingOver O ι →+* MRingOver (kap O) ι := MvPolynomial.map (IsLo
 variable {O}
 variable {x : (Σ k, ι k) → Ω} {Q : Ideal (MRingOver (kap O) ι)} [Q.IsPrime]
 
+/- English proof (translation)
+Introduce `h` and use `hGQ (hPQ (Ideal.mem_map_of_mem _ ((mem_mcIdeal_iff x hG).2 h)))`.
+-/
 theorem aeval_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {G : MRingOver O ι} {α : K → ℕ}
     (hG : IsMultiHomog G α) (hGQ : red O G ∉ Q) : aeval x G ≠ 0 := fun h =>
   hGQ (hPQ (Ideal.mem_map_of_mem _ ((mem_mcIdeal_iff x hG).2 h)))
 
+/- English proof (translation)
+Introduce `h` and use `hGQ ((aeval_genPt_eq_zero_iff Q _).1 h)`.
+-/
 theorem aeval_genPt_red_ne_zero {G : MRingOver O ι} (hGQ : red O G ∉ Q) :
     aeval (genPt (kap O) Q) (red O G) ≠ 0 := fun h => hGQ ((aeval_genPt_eq_zero_iff Q _).1 h)
 
@@ -175,6 +245,9 @@ variable (O Q) in
 def resOf (F G : MRingOver O ι) : FractionRing (MRingOver (kap O) ι ⧸ Q) :=
   aeval (genPt (kap O) Q) (red O F) / aeval (genPt (kap O) Q) (red O G)
 
+/- English proof (translation)
+Take `⟨α, hF, hG, hGQ⟩` from `h1`. Take `⟨β, hF', hG', hG'Q⟩` from `h2`. Use `⟨α + β, isMultiHomog_mul hF hF', isMultiHomog_mul hG hG', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hGQ hG'Q`.
+-/
 theorem isLocFrac_mul {F G F' G' : MRingOver O ι} (h1 : IsLocFrac O Q F G) (h2 : IsLocFrac O Q F' G') :
     IsLocFrac O Q (F * F') (G * G') := by
   obtain ⟨α, hF, hG, hGQ⟩ := h1
@@ -183,6 +256,9 @@ theorem isLocFrac_mul {F G F' G' : MRingOver O ι} (h1 : IsLocFrac O Q F G) (h2 
   rw [map_mul]
   exact fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hGQ hG'Q
 
+/- English proof (translation)
+Take `⟨α, hF, hG, hGQ⟩` from `h1`. Take `⟨β, hF', hG', hG'Q⟩` from `h2`. Use `⟨α + β, isMultiHomog_add (isMultiHomog_mul hF hG') (isMultiHomog_mul hG hF'), isMultiHomog_mul hG hG', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hGQ hG'Q`.
+-/
 theorem isLocFrac_add {F G F' G' : MRingOver O ι} (h1 : IsLocFrac O Q F G) (h2 : IsLocFrac O Q F' G') :
     IsLocFrac O Q (F * G' + G * F') (G * G') := by
   obtain ⟨α, hF, hG, hGQ⟩ := h1
@@ -192,16 +268,29 @@ theorem isLocFrac_add {F G F' G' : MRingOver O ι} (h1 : IsLocFrac O Q F G) (h2 
   · rw [map_mul]
     exact fun h => (Ideal.IsPrime.mem_or_mem ‹_› h).elim hGQ hG'Q
 
+/- English proof (translation)
+Use `⟨0, isMultiHomog_C c, isMultiHomog_one, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `fun h => ‹Q.IsPrime›.ne_top ((Ideal.eq_top_iff_one Q).2 h)`.
+-/
 theorem isLocFrac_C (c : O) : IsLocFrac O Q (C c) 1 := by
   refine ⟨0, isMultiHomog_C c, isMultiHomog_one, ?_⟩
   rw [map_one]
   exact fun h => ‹Q.IsPrime›.ne_top ((Ideal.eq_top_iff_one Q).2 h)
 
+/- English proof (translation)
+Take `⟨α, h1, h2, _⟩` from `h`. Conclude with `⟨α, h2, h1, hF⟩`.
+-/
 theorem isLocFrac_swap {F G : MRingOver O ι} (h : IsLocFrac O Q F G) (hF : red O F ∉ Q) :
     IsLocFrac O Q G F := by
   obtain ⟨α, h1, h2, _⟩ := h
   exact ⟨α, h2, h1, hF⟩
 
+/- English proof (translation)
+Take `⟨α, hF, hG, hGQ⟩` from `h1`. Take `⟨β, hF', hG', hG'Q⟩` from `h2`. Rewrite `h` using `[div_eq_div_iff (aeval_ne_zero hPQ hG hGQ) (aeval_ne_zero hPQ hG' hG'Q)]`. Establish `hH : IsMultiHomog (F * G' - F' * G) (α + β)`. Use `isMultiHomog_sub (isMultiHomog_mul hF hG') ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm]`. Conclude with `isMultiHomog_mul hF' hG`. Establish `h0 : aeval x (F * G' - F' * G) = 0`. Rewrite using `[map_sub, map_mul, map_mul, h, sub_self]`. Establish `hmem : red O (F * G' - F' * G) ∈ Q` using `hPQ (Ideal.mem_map_of_mem _ ((mem_mcIdeal_iff x hH).2 h0))`.
+
+Rewrite `hmem` using `[← aeval_genPt_eq_zero_iff, map_sub, map_sub, map_mul, map_mul, map_mul, map_mul, sub_eq_zero]`. Unfold `resOf`. Rewrite using `[div_eq_div_iff (aeval_genPt_red_ne_zero hGQ) (aeval_genPt_red_ne_zero hG'Q)]`. Conclude with `hmem`.
+-/
 theorem resOf_congr (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {F G F' G' : MRingOver O ι}
     (h1 : IsLocFrac O Q F G) (h2 : IsLocFrac O Q F' G')
     (h : aeval x F / aeval x G = aeval x F' / aeval x G') : resOf O Q F G = resOf O Q F' G' := by
@@ -235,9 +324,15 @@ def locAlg : Subalgebra O Ω where
       by rw [div_add_div _ _ hx hx', map_add, map_mul, map_mul, map_mul]⟩
   algebraMap_mem' c := ⟨C c, 1, isLocFrac_C c, by simp, by simp⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locAlg_iff {z : Ω} : z ∈ locAlg x Q ↔
     ∃ F G : MRingOver O ι, IsLocFrac O Q F G ∧ aeval x G ≠ 0 ∧ z = aeval x F / aeval x G := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨F, G, h, aeval_ne_zero hPQ h.choose_spec.2.1 h.choose_spec.2.2, rfl⟩`.
+-/
 theorem mem_locAlg (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {F G : MRingOver O ι} (h : IsLocFrac O Q F G) :
     aeval x F / aeval x G ∈ locAlg x Q :=
   ⟨F, G, h, aeval_ne_zero hPQ h.choose_spec.2.1 h.choose_spec.2.2, rfl⟩
@@ -248,6 +343,9 @@ variable (x Q) in
 def rs (z : Ω) : FractionRing (MRingOver (kap O) ι ⧸ Q) :=
   if h : z ∈ locAlg x Q then resOf O Q (mem_locAlg_iff.1 h).choose (mem_locAlg_iff.1 h).choose_spec.choose else 0
 
+/- English proof (translation)
+Establish `hm : z ∈ locAlg x Q` using `hz ▸ mem_locAlg hPQ hFG`. Rewrite using `[rs, dif_pos hm]`. Take `⟨h1, _, h2⟩` from `(mem_locAlg_iff.1 hm).choose_spec.choose_spec`. Conclude with `resOf_congr hPQ h1 hFG (h2.symm.trans hz)`.
+-/
 theorem rs_eq (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {z : Ω} {F G : MRingOver O ι} (hFG : IsLocFrac O Q F G)
     (hz : z = aeval x F / aeval x G) : rs x Q z = resOf O Q F G := by
   have hm : z ∈ locAlg x Q := hz ▸ mem_locAlg hPQ hFG
@@ -255,21 +353,36 @@ theorem rs_eq (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {z : Ω} {F G : MRingOver O
   obtain ⟨h1, _, h2⟩ := (mem_locAlg_iff.1 hm).choose_spec.choose_spec
   exact resOf_congr hPQ h1 hFG (h2.symm.trans hz)
 
+/- English proof (translation)
+The claim follows from `rs_eq hPQ hFG rfl`.
+-/
 theorem rs_frac (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {F G : MRingOver O ι} (hFG : IsLocFrac O Q F G) :
     rs x Q (aeval x F / aeval x G) = resOf O Q F G :=
   rs_eq hPQ hFG rfl
 
+/- English proof (translation)
+Rewrite using `[rs_eq hPQ (isLocFrac_C c) (by simp)]`. Simplify using `[resOf]`.
+-/
 theorem rs_algebraMap (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (c : O) :
     rs x Q (algebraMap O Ω c) = algebraMap (kap O) _ (IsLocalRing.residue O c) := by
   rw [rs_eq hPQ (isLocFrac_C c) (by simp)]
   simp [resOf]
 
+/- English proof (translation)
+Simplify using `using rs_algebraMap (x := x) (Q := Q) hPQ 1`.
+-/
 theorem rs_one (hPQ : redIdeal O (mcIdeal O x) ≤ Q) : rs x Q (1 : Ω) = 1 := by
   simpa using rs_algebraMap (x := x) (Q := Q) hPQ 1
 
+/- English proof (translation)
+Simplify using `using rs_algebraMap (x := x) (Q := Q) hPQ 0`.
+-/
 theorem rs_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) : rs x Q (0 : Ω) = 0 := by
   simpa using rs_algebraMap (x := x) (Q := Q) hPQ 0
 
+/- English proof (translation)
+Take `⟨F, G, h1, hx, rfl⟩` from `ha`. Take `⟨F', G', h2, hx', rfl⟩` from `hb`. Rewrite using `[rs_frac hPQ h1, rs_frac hPQ h2, rs_eq hPQ (isLocFrac_mul h1 h2) (by rw [map_mul, map_mul, mul_div_mul_comm])]`. Simplify using `only [resOf, map_mul, mul_div_mul_comm]`.
+-/
 theorem rs_mul (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a b : Ω} (ha : a ∈ locAlg x Q) (hb : b ∈ locAlg x Q) :
     rs x Q (a * b) = rs x Q a * rs x Q b := by
   obtain ⟨F, G, h1, hx, rfl⟩ := ha
@@ -278,6 +391,9 @@ theorem rs_mul (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a b : Ω} (ha : a ∈ loc
     (by rw [map_mul, map_mul, mul_div_mul_comm])]
   simp only [resOf, map_mul, mul_div_mul_comm]
 
+/- English proof (translation)
+Take `⟨F, G, h1, hx, rfl⟩` from `ha`. Take `⟨F', G', h2, hx', rfl⟩` from `hb`. Rewrite using `[rs_frac hPQ h1, rs_frac hPQ h2, rs_eq hPQ (isLocFrac_add h1 h2) (by rw [div_add_div _ _ hx hx', map_add, map_mul, map_mul, map_mul])]`. Simplify using `only [resOf, map_add, map_mul]`. Rewrite using `[div_add_div _ _ (aeval_genPt_red_ne_zero h1.choose_spec.2.2) (aeval_genPt_red_ne_zero h2.choose_spec.2.2)]`.
+-/
 theorem rs_add (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a b : Ω} (ha : a ∈ locAlg x Q) (hb : b ∈ locAlg x Q) :
     rs x Q (a + b) = rs x Q a + rs x Q b := by
   obtain ⟨F, G, h1, hx, rfl⟩ := ha
@@ -288,12 +404,18 @@ theorem rs_add (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a b : Ω} (ha : a ∈ loc
   rw [div_add_div _ _ (aeval_genPt_red_ne_zero h1.choose_spec.2.2)
     (aeval_genPt_red_ne_zero h2.choose_spec.2.2)]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [rs_one hPQ]`. Consider the case `succ n ih => rw [pow_succ, rs_mul hPQ (pow_mem ha n) ha, ih, pow_succ]`.
+-/
 theorem rs_pow (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ locAlg x Q) (n : ℕ) :
     rs x Q (a ^ n) = rs x Q a ^ n := by
   induction n with
   | zero => simp [rs_one hPQ]
   | succ n ih => rw [pow_succ, rs_mul hPQ (pow_mem ha n) ha, ih, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rs_zero hPQ]`. Consider the case `insert a s has ih`. Rewrite using `[Finset.sum_insert has, Finset.sum_insert has, rs_add hPQ (hf a (Finset.mem_insert_self a s)) (sum_mem fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem rs_sum (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {β : Type*} (s : Finset β) (f : β → Ω)
     (hf : ∀ i ∈ s, f i ∈ locAlg x Q) : rs x Q (∑ i ∈ s, f i) = ∑ i ∈ s, rs x Q (f i) := by
   classical
@@ -304,6 +426,9 @@ theorem rs_sum (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {β : Type*} (s : Finset �
       (sum_mem fun i hi => hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rs_one hPQ]`. Consider the case `insert a s has ih`. Rewrite using `[Finset.prod_insert has, Finset.prod_insert has, rs_mul hPQ (hf a (Finset.mem_insert_self a s)) (prod_mem fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem rs_prod (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {β : Type*} (s : Finset β) (f : β → Ω)
     (hf : ∀ i ∈ s, f i ∈ locAlg x Q) : rs x Q (∏ i ∈ s, f i) = ∏ i ∈ s, rs x Q (f i) := by
   classical
@@ -314,6 +439,11 @@ theorem rs_prod (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {β : Type*} (s : Finset 
       (prod_mem fun i hi => hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Take `⟨F, G, h1, hx, rfl⟩` from `ha`. Rewrite `h0`, the goal using `[rs_frac hPQ h1]`. Establish `hF : red O F ∉ Q` using `fun h => h0 (by`. Rewrite using `[resOf, (aeval_genPt_eq_zero_iff Q _).2 h, zero_div])`. Establish `h2` using `isLocFrac_swap h1 hF`.
+
+Rewrite using `[inv_div]`. Conclude with `⟨mem_locAlg hPQ h2, by rw [rs_frac hPQ h2, resOf, resOf, inv_div]⟩`.
+-/
 theorem inv_mem_of_rs_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ locAlg x Q)
     (h0 : rs x Q a ≠ 0) : a⁻¹ ∈ locAlg x Q ∧ rs x Q a⁻¹ = (rs x Q a)⁻¹ := by
   obtain ⟨F, G, h1, hx, rfl⟩ := ha
@@ -324,9 +454,17 @@ theorem inv_mem_of_rs_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (h
   rw [inv_div]
   exact ⟨mem_locAlg hPQ h2, by rw [rs_frac hPQ h2, resOf, resOf, inv_div]⟩
 
+/- English proof (translation)
+Introduce `h` and use `h0 (by rw [h, rs_zero hPQ])`.
+-/
 theorem ne_zero_of_rs_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (h0 : rs x Q a ≠ 0) : a ≠ 0 :=
   fun h => h0 (by rw [h, rs_zero hPQ])
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat m => simp only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `⟨pow_mem ha m, rs_pow hPQ ha m⟩`. Consider the case `negSucc m`. Rewrite using `[zpow_negSucc, zpow_negSucc]`.
+
+Establish `h1 : rs x Q (a ^ (m + 1)) ≠ 0` using `by rw [rs_pow hPQ ha]; exact pow_ne_zero _ h0`. Take `⟨h2, h3⟩` from `inv_mem_of_rs_ne_zero hPQ (pow_mem ha (m + 1)) h1`. Conclude with `⟨h2, by rw [h3, rs_pow hPQ ha]⟩`.
+-/
 theorem zpow_mem_of_rs_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ locAlg x Q)
     (h0 : rs x Q a ≠ 0) (n : ℤ) : a ^ n ∈ locAlg x Q ∧ rs x Q (a ^ n) = rs x Q a ^ n := by
   cases n with
@@ -345,19 +483,33 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {Ω : Type*} [Field Ω] [Algebra O Ω]
 variable {x : (Σ k, ι k) → Ω} {Q : Ideal (MRingOver (kap O) ι)} [Q.IsPrime]
 
+/- English proof (translation)
+The claim follows from `map_segForm _ s`.
+-/
 theorem red_segForm (s : ∀ k, ι k) : red O (segForm s) = segForm s :=
   map_segForm _ s
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[red_segForm, ← aeval_genPt_eq_zero_iff, aeval_segForm]`. Conclude with `hs h`.
+-/
 theorem red_segForm_notMem {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0) :
     red O (segForm s) ∉ Q := by
   intro h
   rw [red_segForm, ← aeval_genPt_eq_zero_iff, aeval_segForm] at h
   exact hs h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 1, isMultiHomog_segForm t, isMultiHomog_segForm s, red_segForm_notMem hs⟩`.
+-/
 theorem isLocFrac_seg {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0) (t : ∀ k, ι k) :
     IsLocFrac O Q (segForm t) (segForm s) :=
   ⟨fun _ => 1, isMultiHomog_segForm t, isMultiHomog_segForm s, red_segForm_notMem hs⟩
 
+/- English proof (translation)
+Establish `h` using `isLocFrac_seg (O := O) hs t`. Establish `e : mseg x t / mseg x s = aeval x (segForm (R` using `O) t) / aeval x (segForm (R := O) s) := by`. Rewrite using `[aeval_segForm, aeval_segForm]`. Rewrite using `[e]`. Use `⟨mem_locAlg hPQ h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[rs_frac hPQ h, resOf, red_segForm, red_segForm, aeval_segForm, aeval_segForm]`.
+-/
 theorem seg_ratio (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0)
     (t : ∀ k, ι k) : mseg x t / mseg x s ∈ locAlg x Q ∧
       rs x Q (mseg x t / mseg x s) = mseg (genPt (kap O) Q) t / mseg (genPt (kap O) Q) s := by
@@ -368,10 +520,18 @@ theorem seg_ratio (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs :
   refine ⟨mem_locAlg hPQ h, ?_⟩
   rw [rs_frac hPQ h, resOf, red_segForm, red_segForm, aeval_segForm, aeval_segForm]
 
+/- English proof (translation)
+The claim follows from `(Finset.prod_ne_zero_iff.1 hs) k (Finset.mem_univ k)`.
+-/
 theorem genPt_ne_zero_of_mseg {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0) (k : K) :
     genPt (kap O) Q ⟨k, s k⟩ ≠ 0 :=
   (Finset.prod_ne_zero_iff.1 hs) k (Finset.mem_univ k)
 
+/- English proof (translation)
+Establish `hQ : red O (X ⟨k, j⟩) ∉ Q`. Introduce `h`. Rewrite `h` using `[map_X, ← aeval_genPt_eq_zero_iff, aeval_X]`. Conclude with `hj h`. Establish `h : IsLocFrac O Q (X ⟨k, i⟩) (X ⟨k, j⟩)` using `⟨_, isMultiHomog_X _, isMultiHomog_X _, hQ⟩`.
+
+Establish `e : x ⟨k, i⟩ / x ⟨k, j⟩ = aeval x (X ⟨k, i⟩ : MRingOver O ι) / aeval x (X ⟨k, j⟩ : MRingOver O ι)`. Rewrite using `[aeval_X, aeval_X]`. Rewrite using `[e]`. Use `⟨mem_locAlg hPQ h, ?_⟩` and prove the remaining obligations. Rewrite using `[rs_frac hPQ h, resOf, map_X, map_X, aeval_X, aeval_X]`.
+-/
 theorem coord_ratio (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (k : K) (i j : ι k)
     (hj : genPt (kap O) Q ⟨k, j⟩ ≠ 0) : x ⟨k, i⟩ / x ⟨k, j⟩ ∈ locAlg x Q ∧
       rs x Q (x ⟨k, i⟩ / x ⟨k, j⟩) = genPt (kap O) Q ⟨k, i⟩ / genPt (kap O) Q ⟨k, j⟩ := by
@@ -386,6 +546,15 @@ theorem coord_ratio (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (k : K) (i j : ι k)
   refine ⟨mem_locAlg hPQ h, ?_⟩
   rw [rs_frac hPQ h, resOf, map_X, map_X, aeval_X, aeval_X]
 
+/- English proof (translation)
+Establish `e : chartMon x s m / chartMon x s₀ m = ∏ k, (x ⟨k, s k⟩ / x ⟨k, s₀ k⟩) ^ m k`. Rewrite using `[chartMon, chartMon, ← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => (div_zpow _ _ _).symm`. Establish `e' : chartMon (genPt (kap O) Q) s m / chartMon (genPt (kap O) Q) s₀ m = ∏ k, (genPt (kap O) Q ⟨k, s k⟩ / genPt (kap O) Q ⟨k, s₀ k⟩) ^ m k`. Rewrite using `[chartMon, chartMon, ← Finset.prod_div_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => (div_zpow _ _ _).symm`. Establish `hk : ∀ k, (x ⟨k, s k⟩ / x ⟨k, s₀ k⟩) ^ m k ∈ locAlg x Q ∧ rs x Q ((x ⟨k, s k⟩ / x ⟨k, s₀ k⟩) ^ m k) = (genPt (kap O) Q ⟨k, s k⟩ / genPt (kap O) Q ⟨k, s₀ k⟩) ^ m k`. Introduce `k`. Take `⟨h1, h2⟩` from `coord_ratio hPQ k (s k) (s₀ k) (genPt_ne_zero_of_mseg hs₀ k)`. Establish `h0 : rs x Q (x ⟨k, s k⟩ / x ⟨k, s₀ k⟩) ≠ 0`.
+
+Rewrite using `[h2]`. Conclude with `div_ne_zero (genPt_ne_zero_of_mseg hs k) (genPt_ne_zero_of_mseg hs₀ k)`. Take `⟨h3, h4⟩` from `zpow_mem_of_rs_ne_zero hPQ h1 h0 (m k)`. Conclude with `⟨h3, by rw [h4, h2]⟩`. Rewrite using `[e, e']`.
+
+Conclude with `⟨prod_mem fun k _ => (hk k).1, by`. Rewrite using `[rs_prod hPQ _ _ fun k _ => (hk k).1]`. Conclude with `Finset.prod_congr rfl fun k _ => (hk k).2⟩`.
+-/
 theorem chartMon_ratio (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s s₀ : ∀ k, ι k}
     (hs : mseg (genPt (kap O) Q) s ≠ 0) (hs₀ : mseg (genPt (kap O) Q) s₀ ≠ 0) (m : K → ℤ) :
     chartMon x s m / chartMon x s₀ m ∈ locAlg x Q ∧
@@ -422,6 +591,9 @@ def goodSub (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (s : ∀ k, ι k) : Subalgebr
   algebraMap_mem' c := ⟨Subalgebra.algebraMap_mem _ c, by
     rw [rs_algebraMap hPQ]; exact Subalgebra.algebraMap_mem _ _⟩
 
+/- English proof (translation)
+Establish `h : chartRing O (mseg x) s ≤ goodSub x Q hPQ s` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨h1, h2⟩` from `seg_ratio hPQ hs t`. Conclude with `⟨h1, h2 ▸ div_mem_chartRing _ _ _⟩)`. Conclude with `h ha`.
+-/
 theorem chartRing_sub (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k}
     (hs : mseg (genPt (kap O) Q) s ≠ 0) {a : Ω} (ha : a ∈ chartRing O (mseg x) s) :
     a ∈ locAlg x Q ∧ rs x Q a ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s := by
@@ -431,6 +603,15 @@ theorem chartRing_sub (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k}
     exact ⟨h1, h2 ▸ div_mem_chartRing _ _ _⟩)
   exact h ha
 
+/- English proof (translation)
+Set `T : Subalgebra (kap O) (FractionRing (MRingOver (kap O) ι ⧸ Q))` to `{ carrier := {b | ∃ a ∈ chartRing O (mseg x) s, a ∈ locAlg x Q ∧ rs x Q a = b} mul_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, ha', rfl⟩ ⟨b, hb, hb', rfl⟩`. Conclude with `⟨a * b, mul_mem ha hb, mul_mem ha' hb', rs_mul hPQ ha' hb'⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, ha', rfl⟩ ⟨b, hb, hb', rfl⟩`.
+
+Conclude with `⟨a + b, add_mem ha hb, add_mem ha' hb', rs_add hPQ ha' hb'⟩`. Use the proof step `algebraMap_mem' := by`. Introduce `r`. Take `⟨c, rfl⟩` from `IsLocalRing.residue_surjective r`. Conclude with `⟨algebraMap O Ω c, Subalgebra.algebraMap_mem _ c, Subalgebra.algebraMap_mem _ c, rs_algebraMap hPQ c⟩ }`.
+
+Establish `h : chartRing (kap O) (mseg (genPt (kap O) Q)) s ≤ T` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Distinguish the cases in `hs : mseg (genPt (kap O) Q) s = 0`. Use `⟨0, zero_mem _, zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [hs, div_zero]`.
+
+Conclude with `rs_zero hPQ`. Take `⟨h1, h2⟩` from `seg_ratio hPQ hs t`. Conclude with `⟨_, div_mem_chartRing _ _ _, h1, h2⟩)`. Conclude with `h hb`.
+-/
 theorem exists_lift (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (s : ∀ k, ι k) {b : FractionRing (MRingOver (kap O) ι ⧸ Q)}
     (hb : b ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s) :
     ∃ a ∈ chartRing O (mseg x) s, a ∈ locAlg x Q ∧ rs x Q a = b := by

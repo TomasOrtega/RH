@@ -8,6 +8,23 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Establish `hmem : ∀ a : 𝓞 F', (algebraMap (𝓞 F') F') a ∈ O`. Introduce `a`. Establish `h1 : IsIntegral O (algebraMap (𝓞 F') F' a)` using `(RingOfIntegers.isIntegral_coe a).tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Rewrite using `[← hz]`.
+
+Conclude with `z.2`. Set `c : 𝓞 F' →+* O` to `(algebraMap (𝓞 F') F').codRestrict O hmem`. Establish `hc : ∀ a, ((c a : O) : F') = algebraMap (𝓞 F') F' a` using `fun _ => rfl`. Establish `hprime : ((maximalIdeal O).comap c).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hne : (maximalIdeal O).comap c ≠ ⊥`.
+
+Introduce `h`. Establish `: x ∈ (maximalIdeal O).comap c`. Establish `: c x = y` using `Subtype.ext hxy.symm`. Rewrite using `[Ideal.mem_comap, this]`. Conclude with `hy`.
+
+Rewrite `this` using `[h]`. Conclude with `hx this`. Use `⟨c, hprime.isMaximal hne, fun o => ?_⟩` and prove the remaining obligations. Set `P : HeightOneSpectrum (𝓞 F')` to `⟨_, hprime, hne⟩`. Distinguish the cases in `e0 : (o : F') = 0`.
+
+Conclude with `⟨0, 1, fun h => hprime.ne_top ((Ideal.eq_top_iff_one _).2 h), by`. Rewrite using `[show o = 0 from Subtype.ext e0]`. Use the proof step `simp⟩`. Establish `hS` using `P.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsLocalization P.asIdeal.primeCompl (P.valuationSubringAtPrime F') := Localization.subalgebra.isLocalization_ofField F' _ hS`.
+
+Break down `(P.valuationSubringAtPrime F').mem_or_inv_mem (o : F') with h | h` into its components or cases. Take `⟨⟨r, s⟩, hh⟩` from `IsLocalization.surj P.asIdeal.primeCompl (⟨o, h⟩ : P.valuationSubringAtPrime F')`. Establish `h2 : (o : F') * algebraMap (𝓞 F') F' s = algebraMap (𝓞 F') F' r` using `congrArg Subtype.val hh`. Conclude with `⟨r, s, s.2, Subtype.ext h2⟩`. Take `⟨⟨r, s⟩, hh⟩` from `IsLocalization.surj P.asIdeal.primeCompl (⟨(o : F')⁻¹, h⟩ : P.valuationSubringAtPrime F')`.
+
+Establish `h2 : (o : F')⁻¹ * algebraMap (𝓞 F') F' s = algebraMap (𝓞 F') F' r` using `congrArg Subtype.val hh`. Establish `h3 : o * c r = c s` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(o : F') * algebraMap (𝓞 F') F' r = algebraMap (𝓞 F') F' s`. Rewrite using `[← h2, ← mul_assoc, mul_inv_cancel₀ e0, one_mul])`. Use `⟨s, r, fun hr => s.2 ?_, h3⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `c s ∈ maximalIdeal O`. Rewrite using `[← h3]`. Conclude with `Ideal.mul_mem_left _ _ hr`.
+-/
 private theorem exists_loc {F' : Type} [Field F'] [NumberField F'] (O : ValuationSubring F') (x : 𝓞 F') (hx : x ≠ 0)
     (y : O) (hy : y ∈ maximalIdeal O) (hxy : (y : F') = (x : F')) :
     ∃ c : 𝓞 F' →+* O, ((maximalIdeal O).comap c).IsMaximal ∧
@@ -51,6 +68,49 @@ private theorem exists_loc {F' : Type} [Field F'] [NumberField F'] (O : Valuatio
     rw [← h3]
     exact Ideal.mul_mem_left _ _ hr
 
+/- English proof (translation)
+Introduce `F _ _ v F' _ _ ε O _ b hup R _ _ _ hft _ 𝔫 hn hmn g hg`. Take `⟨x, hxv, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hx1 : RingOfIntegers.mapRingHom ε x ≠ 0`. Introduce `h`. Establish `h1 : ε (x : F) = 0` using `congrArg (fun t : 𝓞 F' => (t : F')) h`.
+
+Rewrite `h1` using `[map_eq_zero]`. Conclude with `hx0 (RingOfIntegers.coe_eq_zero_iff.1 h1)`. Take `⟨c, hP, hloc⟩` from `exists_loc O _ hx1 (b x) ((hup.2 x).1 hxv) (hup.1 x)`. Use `letI : Algebra (𝓞 F) R := ((algebraMap O R).comp b).toAlgebra`. Take `⟨S, hS⟩` from `hft.out`.
+
+Take `⟨T, hT⟩` from `Module.Finite.fg_top (R := ℤ) (M := 𝓞 F')`. Set `d : 𝓞 F' →+* R` to `(algebraMap O R).comp c`. Set `R0 : Subalgebra (𝓞 F) R` to `Algebra.adjoin (𝓞 F) ((S ∪ T.image d : Finset R) : Set R)`. Establish `hft0 : Algebra.FiniteType (𝓞 F) R0` using `(Subalgebra.fg_iff_finiteType _).1 ⟨_, rfl⟩`. Establish `hd : ∀ a, d a ∈ R0`.
+
+Introduce `a`. Establish `ha : a ∈ Submodule.span ℤ (T : Set (𝓞 F'))` using `hT ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem t ht => exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image_of_mem _ ht)))`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add s t _ _ hs ht => rw [map_add]`. Conclude with `add_mem hs ht`. Consider the case `smul n t _ ht => rw [map_zsmul]`. Conclude with `zsmul_mem ht n`.
+
+Set `d0 : 𝓞 F' →+* R0` to `d.codRestrict R0 hd`. Establish `hn0 : 𝔫.comap R0.val.toRingHom ≠ ⊤` using `Ideal.comap_ne_top _ hn`. Take `⟨𝔪, h𝔪, hle⟩` from `Ideal.exists_le_maximal _ hn0`. Establish `hPm : (maximalIdeal O).comap c = 𝔪.comap d0` using `hP.eq_of_le (Ideal.comap_ne_top _ h𝔪.ne_top) fun a ha => hle (hmn _ ha)`. Establish `hsurj : ∀ r : R, ∃ s : 𝓞 F', s ∉ (maximalIdeal O).comap c ∧ r * d s ∈ R0`.
+
+Introduce `r`. Establish `h1 : (1 : 𝓞 F') ∉ (maximalIdeal O).comap c` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hr : r ∈ Algebra.adjoin O (S : Set R)` using `hS ▸ Algebra.mem_top`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem t ht`.
+
+Conclude with `⟨1, h1, by`. Rewrite using `[map_one, mul_one]`. Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_left _ ht))⟩`. Consider the case `algebraMap o`. Take `⟨a, s, hs, h⟩` from `hloc o`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `: algebraMap O R o * d s = d a`. Express the relevant statement in the definitionally equal form `algebraMap O R o * algebraMap O R (c s) = algebraMap O R (c a)`. Rewrite using `[← map_mul, h]`. Rewrite using `[this]`.
+
+Conclude with `hd a`. Consider the case `add p q _ _ hp hq`. Take `⟨s, hs, h⟩` from `hp`. Take `⟨t, ht, h'⟩` from `hq`. Use `⟨s * t, fun hst => (hP.isPrime.mem_or_mem hst).elim hs ht, ?_⟩` and prove the remaining obligations.
+
+Establish `: (p + q) * d (s * t) = p * d s * d t + q * d t * d s` using `by rw [map_mul]; ring`. Rewrite using `[this]`. Conclude with `add_mem (mul_mem h (hd t)) (mul_mem h' (hd s))`. Consider the case `mul p q _ _ hp hq`. Take `⟨s, hs, h⟩` from `hp`.
+
+Take `⟨t, ht, h'⟩` from `hq`. Use `⟨s * t, fun hst => (hP.isPrime.mem_or_mem hst).elim hs ht, ?_⟩` and prove the remaining obligations. Establish `: (p * q) * d (s * t) = p * d s * (q * d t)` using `by rw [map_mul]; ring`. Rewrite using `[this]`. Conclude with `mul_mem h h'`.
+
+Establish `hunit : ∀ s : 𝓞 F', s ∉ (maximalIdeal O).comap c → IsUnit (d s)` using `fun s hs => (IsLocalRing.notMem_maximalIdeal.1 hs).map (algebraMap O R)`. Use `haveI := h𝔪.isPrime`. Set `M : Submonoid R0` to `𝔪.primeCompl ⊓ (IsUnit.submonoid R).comap R0.val`. Establish `hM : ∀ s : 𝓞 F', s ∉ (maximalIdeal O).comap c → d0 s ∈ M` using `fun s hs => ⟨fun h => hs (hPm ▸ h), hunit s hs⟩`. Use `haveI : IsLocalization M R := by`.
+
+Rewrite using `[isLocalization_iff]`. Use `⟨fun y => y.2.2, fun r => ?_, fun {p q} h => ⟨1, by rw [Subtype.ext h]⟩⟩` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `hsurj r`. Conclude with `⟨⟨⟨_, h⟩, ⟨d0 s, hM s hs⟩⟩, rfl⟩`. Take `⟨s, hs, hgs⟩` from `hsurj g`.
+
+Establish `hg0 : (⟨_, hgs⟩ : R0) ≠ 0` using `fun h => mul_ne_zero hg (hunit s hs).ne_zero (congrArg Subtype.val h)`. Take `⟨v', e, φ, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F R0 𝔪 h𝔪 _ hg0`. Establish `hv : v = v'`. Use `HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top fun a ha => ?_)` and prove the remaining obligations. Establish `h₄ : algebraMap (𝓞 F) R0 a ∈ 𝔪` using `hle (hmn _ ((hup.2 a).1 ha))`.
+
+Rewrite `h₄` using `[← h₂]`. Assume the negation of the conclusion as `hv`. Use `(IsLocalRing.mem_maximalIdeal _).1 h₄ (GlobalTheory.TrueGeo.RegCrit.isUnit_of_one_le e _ ?_)` and prove the remaining obligations. Rewrite using `[h₁ a, e.w_alg, ← FinitePlace.norm_embedding]`. Conclude with `((FinitePlace.norm_eq_one_iff_notMem F v' a).2 hv).ge`.
+
+Substitute `hv` using the available equality. Establish `hφ : ∀ y : M, IsUnit (φ y)` using `fun y => by`. Use `IsLocalRing.notMem_maximalIdeal.1 fun h => y.2.1 ?_` and prove the remaining obligations. Rewrite using `[← h₂]`. Conclude with `h`.
+
+Establish `hl : ∀ y : R0, IsLocalization.lift (S` using `R) hφ (y : R) = φ y := fun y => IsLocalization.lift_eq hφ y`. Use `⟨e, IsLocalization.lift hφ, fun a => ?_, fun r hr => ?_, fun h => h₃ ?_⟩` and prove the remaining obligations. Rewrite using `[← h₁ a, ← hl]`. Both sides reduce to the same expression. Take `⟨t, ht, hrt⟩` from `hsurj r`.
+
+Assume the negation of the conclusion as `hw`. Establish `hu` using `GlobalTheory.TrueGeo.RegCrit.isUnit_of_one_le e _ (not_lt.1 hw)`. Establish `h₄ : (⟨_, hrt⟩ : R0) ∈ 𝔪` using `hle (Ideal.mul_mem_right _ _ hr)`. Rewrite `h₄` using `[← h₂]`. Use `(IsLocalRing.mem_maximalIdeal _).1 h₄ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hl]`. Express the relevant statement in the definitionally equal form `IsUnit (IsLocalization.lift (S := R) hφ (r * d t))`. Rewrite using `[map_mul]`. Conclude with `hu.mul ((hunit t ht).map _)`. Rewrite using `[← hl]`.
+
+Express the relevant statement in the definitionally equal form `IsLocalization.lift (S := R) hφ (g * d s) = 0`. Rewrite using `[map_mul, h, zero_mul]`.
+-/
 theorem UpperTheory.finiteType_domain_extension_point :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] (b : 𝓞 F →+* O), IsUp v ε O b → ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra O R] [Algebra.FiniteType O R] [CharZero R] (𝔫 : Ideal R), 𝔫 ≠ ⊤ → (∀ a ∈ maximalIdeal O, algebraMap O R a ∈ 𝔫) → ∀ g : R, g ≠ 0 → ∃ (e : TrueGeo.Ext v) (φ : R →+* e.O), (∀ a : 𝓞 F, ((φ (algebraMap O R (b a)) : e.O) : AlgebraicClosure F) = algebraMap F (AlgebraicClosure F) (algebraMap (𝓞 F) F a)) ∧ (∀ r ∈ 𝔫, e.w ((φ r : e.O) : AlgebraicClosure F) < 1) ∧ φ g ≠ 0 := by
   intro F _ _ v F' _ _ ε O _ b hup R _ _ _ hft _ 𝔫 hn hmn g hg

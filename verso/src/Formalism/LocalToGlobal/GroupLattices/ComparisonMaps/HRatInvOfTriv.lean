@@ -18,11 +18,21 @@ def HRatInv : Prop :=
     {ξ | ξ ∈ G.P.HtupW L0 ∧ InvAt G i L0 ξ} ⊆
       Submodule.span G.O {ξ | ξ ∈ G.P.HtupW L0 ∧ InvAt G i L0 ξ ∧ RatX G e ξ}
 
+/- English proof (translation)
+Rewrite using `[map_mul, Units.val_mul, Formalism.MainNotions.G.LatticeSystems.jd_actX_mul, LinearMap.comp_apply, LinearMap.map_smul_of_tower, smul_smul]`.
+-/
 theorem chiAct_mul (i : G.comp) (a b : (G.lev i).Γ) (ξ : G.P.Xsp) :
     ((G.lev i).χ (a * b) : G.O) • (G.lev i).actX (a * b) ξ =
       ((G.lev i).χ a : G.O) • (G.lev i).actX a (((G.lev i).χ b : G.O) • (G.lev i).actX b ξ) := by
   rw [map_mul, Units.val_mul, Formalism.MainNotions.G.LatticeSystems.jd_actX_mul, LinearMap.comp_apply, LinearMap.map_smul_of_tower, smul_smul]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.LatticeSystems.delta`. Establish `hex : ∃ γ' : (G.lev i).Γ, (G.lev i).smul γ L0 = (G.lev i).smul γ' L0` using `⟨γ, rfl⟩`. Rewrite using `[dif_pos hex, if_pos rfl]`. Establish `hspec : (G.lev i).smul γ L0 = (G.lev i).smul hex.choose L0` using `hex.choose_spec`. Establish `hstab : (G.lev i).smul (γ⁻¹ * hex.choose) L0 = L0`.
+
+Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, ← hspec, ← Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, inv_mul_cancel, Formalism.MainNotions.G.LatticeSystems.jd_smul_one]`. Establish `h1` using `hξ (γ⁻¹ * hex.choose) hstab`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`. Use `_ = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ (((G.lev i).χ (γ⁻¹ * hex.choose) : G.O) • (G.lev i).actX (γ⁻¹ * hex.choose) ξ) := chiAct_mul G i _ _ ξ`.
+
+Use `_ = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ ξ := by rw [h1]`.
+-/
 theorem jdI_apply (i : G.comp) (L0 : G.P.Tup) (γ : (G.lev i).Γ) (ξ : G.P.Xsp) (hξ : InvAt G i L0 ξ) :
     delta G i L0 ξ i ((G.lev i).smul γ L0) = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ ξ := by
   classical
@@ -41,6 +51,25 @@ theorem jdI_apply (i : G.comp) (L0 : G.P.Tup) (γ : (G.lev i).Γ) (ξ : G.P.Xsp)
           (G.lev i).actX (γ⁻¹ * hex.choose) ξ) := chiAct_mul G i _ _ ξ
     _ = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ ξ := by rw [h1]
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.G.GAtP.funMod, Submodule.mem_pi]`. Introduce `i' _`. Unfold `Formalism.MainNotions.G.Level.funMod`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`.
+
+Introduce `L`. Rewrite using `[Submodule.mem_iInf]`. Introduce `hL`. Rewrite using `[Submodule.mem_comap, LinearMap.proj_apply]`. Unfold `Formalism.MainNotions.G.LatticeSystems.delta`.
+
+Use `split_ifs with h1 h2`. Establish `h3` using `hE i h1.choose L0 hL0 ξ hξ`. Rewrite `h3` using `[← h1.choose_spec]`. Then use the resulting hypothesis. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.zero_mem _`.
+
+Rewrite using `[Submodule.mem_iInf]`. Introduce `L`. Rewrite using `[Submodule.mem_iInf]`. Introduce `hL`. Rewrite using `[LinearMap.mem_ker, LinearMap.proj_apply]`.
+
+Apply `Formalism.MainNotions.G.LatticeSystems.jd_zero` to reduce the goal to its premises. Use `right`. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `hL (Formalism.MainNotions.G.LatticeSystems.jd_lat _ γ L0 hL0)`. Rewrite using `[Submodule.mem_iInf]`.
+
+Introduce `γ`. Rewrite using `[Submodule.mem_iInf]`. Introduce `L`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `only [LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply]`.
+
+Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Distinguish the cases in `hL : ∃ h : (G.lev i').Γ, L = (G.lev i').smul h L0`. Take `⟨h, rfl⟩` from `hL`. Rewrite using `[← Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, jdI_apply G i' L0 _ ξ hI, jdI_apply G i' L0 h ξ hI, chiAct_mul]`.
+
+Establish `hL' : ¬ ∃ h : (G.lev i').Γ, (G.lev i').smul γ L = (G.lev i').smul h L0`. Introduce and unpack `⟨h, hh⟩`. Apply `hL` to reduce the goal to its premises. Use `⟨γ⁻¹ * h, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, ← hh, ← Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, inv_mul_cancel, Formalism.MainNotions.G.LatticeSystems.jd_smul_one]`.
+
+Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_zero G i' L0 ξ i' _ (Or.inr hL'), Formalism.MainNotions.G.LatticeSystems.jd_zero G i' L0 ξ i' _ (Or.inr hL), map_zero, smul_zero]`. Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_zero G i L0 ξ i' _ (Or.inl hi), Formalism.MainNotions.G.LatticeSystems.jd_zero G i L0 ξ i' _ (Or.inl hi), map_zero, smul_zero]`.
+-/
 theorem jdI_mem (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (hE : EquivSys G Hv)
     (i : G.comp) (L0 : G.P.Tup) (hL0 : G.P.IsLatTup L0) (ξ : G.P.Xsp) (hξ : ξ ∈ Hv L0) (hI : InvAt G i L0 ξ) :
     delta G i L0 ξ ∈ G.funMod Hv := by
@@ -92,6 +121,13 @@ theorem jdI_mem (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (hE : EquivSys G Hv)
     · rw [Formalism.MainNotions.G.LatticeSystems.jd_zero G i L0 ξ i' _ (Or.inl hi), Formalism.MainNotions.G.LatticeSystems.jd_zero G i L0 ξ i' _ (Or.inl hi),
         map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `hFi : F i ∈ (G.lev i).funMod Hv` using `(Submodule.mem_pi.mp hF) i (Set.mem_univ i)`. Unfold `Formalism.MainNotions.G.Level.funMod at hFi`. Rewrite `hFi` using `[Submodule.mem_inf, Submodule.mem_inf]`. Establish `h3` using `hFi.2`.
+
+Rewrite `h3` using `[Submodule.mem_iInf]`. Establish `h4` using `h3 γ`. Rewrite `h4` using `[Submodule.mem_iInf]`. Establish `h5` using `h4 L0`. Rewrite `h5` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+
+Simplify using `only [LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply] at h5`. Rewrite `h5` using `[hγ]`. Conclude with `h5.symm`.
+-/
 theorem inv_of_mem (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (F : G.Fn) (hF : F ∈ G.funMod Hv) (i : G.comp)
     (L0 : G.P.Tup) : InvAt G i L0 (F i L0) := by
   intro γ hγ
@@ -109,6 +145,29 @@ theorem inv_of_mem (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (F : G.Fn) (hF : F �
   rw [hγ] at h5
   exact h5.symm
 
+/- English proof (translation)
+Establish `hcomp : ∀ i, F i ∈ (G.lev i).funMod Hv` using `fun i => (Submodule.mem_pi.mp hF) i (Set.mem_univ i)`. Establish `heqv : ∀ (i : G.comp) (γ : (G.lev i).Γ) (L : G.P.Tup), F i ((G.lev i).smul γ L) = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ (F i L)`. Introduce `i γ L`. Establish `hFi` using `hcomp i`. Unfold `Formalism.MainNotions.G.Level.funMod at hFi`.
+
+Rewrite `hFi` using `[Submodule.mem_inf, Submodule.mem_inf]`. Establish `h3` using `hFi.2`. Rewrite `h3` using `[Submodule.mem_iInf]`. Establish `h4` using `h3 γ`. Rewrite `h4` using `[Submodule.mem_iInf]`.
+
+Establish `h5` using `h4 L`. Rewrite `h5` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify `h5` using `only [LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply]`. Establish `hzero : ∀ (i : G.comp) (L : G.P.Tup), ¬ G.P.IsLatTup L → F i L = 0`. Introduce `i L hL`.
+
+Establish `hFi` using `hcomp i`. Unfold `Formalism.MainNotions.G.Level.funMod at hFi`. Rewrite `hFi` using `[Submodule.mem_inf, Submodule.mem_inf]`. Establish `h3` using `hFi.1.2`. Rewrite `h3` using `[Submodule.mem_iInf]`.
+
+Establish `h4` using `h3 L`. Rewrite `h4` using `[Submodule.mem_iInf]`. Establish `h5` using `h4 hL`. Rewrite `h5` using `[LinearMap.mem_ker, LinearMap.proj_apply]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i' L`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Distinguish the cases in `hL : G.P.IsLatTup L`. Take `⟨⟨i0, L0⟩, hr0, hi0, γ, hγ⟩` from `hR.2.2 i' L hL dsimp only at hi0 hγ`. Substitute `hi0` using the available equality. Rewrite using `[Finset.sum_eq_single ⟨i0, L0⟩]`.
+
+Simplify using `only`. Rewrite using `[hγ, jdI_apply G i0 L0 γ _ (inv_of_mem G Hv F hF i0 L0), heqv]`. Introduce and unpack `⟨i1, L1⟩ hr1 hne`. Apply `Formalism.MainNotions.G.LatticeSystems.jd_zero` to reduce the goal to its premises. Distinguish the cases in `h1 : i0 = i1`.
+
+Substitute `h1 right` using the available equality. Introduce and unpack `⟨g, hg⟩`. Use `hne (hR.2.1 ⟨i0, L0⟩ hr0 ⟨i0, L1⟩ hr1 rfl ⟨g⁻¹ * γ, ?_⟩).symm` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, ← hγ, hg, ← Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, inv_mul_cancel, Formalism.MainNotions.G.LatticeSystems.jd_smul_one]`.
+
+Use `left`. Conclude with `fun h => h1 (by simpa using h)`. Introduce `h`. Conclude with `absurd hr0 h`. Rewrite using `[hzero i' L hL]`.
+
+Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨i1, L1⟩ hr1`. Apply `Formalism.MainNotions.G.LatticeSystems.jd_zero` to reduce the goal to its premises. Use `right`.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `hL (Formalism.MainNotions.G.LatticeSystems.jd_lat _ g L1 (hR.1 _ hr1))`.
+-/
 theorem jdI_decomp (reps : Finset (G.comp × G.P.Tup)) (hR : IsReps G reps)
     (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (F : G.Fn) (hF : F ∈ G.funMod Hv) :
     F = ∑ r ∈ reps, delta G r.1 r.2 (F r.1 r.2) := by
@@ -171,6 +230,11 @@ theorem jdI_decomp (reps : Finset (G.comp × G.P.Tup)) (hR : IsReps G reps)
     rintro ⟨g, rfl⟩
     exact hL (Formalism.MainNotions.G.LatticeSystems.jd_lat _ g L1 (hR.1 _ hr1))
 
+/- English proof (translation)
+Introduce `i' L`. Unfold `Formalism.MainNotions.G.LatticeSystems.delta`. Use `split_ifs with h1 h2`. Conclude with `hA i h1.choose ξ hξ`. Conclude with `⟨0, by simp⟩`.
+
+Conclude with `⟨0, by simp⟩`.
+-/
 theorem deltaI_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp) (hξ : RatX G e ξ) :
     RatFn G e (delta G i L0 ξ) := by
   intro i' L
@@ -181,6 +245,19 @@ theorem deltaI_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp)
   · exact ⟨0, by simp⟩
   · exact ⟨0, by simp⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `F hF`.
+
+Take `⟨reps, hR⟩` from `jd_reps G h2`. Rewrite using `[jdI_decomp G reps hR G.P.HtupW F hF]`. Use `Submodule.sum_mem _ fun r hr => ?_` and prove the remaining obligations. Establish `hlat : G.P.IsLatTup r.2` using `hR.1 r hr`. Establish `hval : F r.1 r.2 ∈ G.P.HtupW r.2` using `((jd_fmem G G.P.HtupW F).1 hF r.1).1 r.2 hlat`.
+
+Establish `hsp : F r.1 r.2 ∈ Submodule.span G.O {ξ | ξ ∈ G.P.HtupW r.2 ∧ InvAt G r.1 r.2 ξ ∧ RatX G e ξ}` using `hH r.1 r.2 hlat ⟨hval, inv_of_mem G G.P.HtupW F hF r.1 r.2⟩`. Generalize the expression as in `F r.1 r.2 = x at hsp`. Proceed by induction on `hsp using Submodule.span_induction with`. Consider the case `mem ξ hξ`. Establish `hm : delta G r.1 r.2 ξ ∈ G.M` using `jdI_mem G G.P.HtupW hE r.1 r.2 hlat ξ hξ.1 hξ.2.1`.
+
+Conclude with `Submodule.subset_span ⟨⟨delta G r.1 r.2 ξ, Submodule.subset_span hm, deltaI_rat G e hA r.1 r.2 ξ hξ.2.2⟩, hm, rfl⟩`. Consider the case `zero`. Establish `: delta G r.1 r.2 (0 : G.P.Xsp) = 0`. Use `jd_smul G r.1 r.2 0 0` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ h1' h2' => rw [jd_add]`. Conclude with `Submodule.add_mem _ h1' h2'`. Consider the case `smul a y _ h1' => rw [jd_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ h1'`.
+-/
 theorem mRatSpan_inv (h2 : G.FinClasses) (hE : EquivSys G G.P.HtupW) (hA : RatActG G e) (hH : HRatInv G e) :
     MRatSpan G.P G.comp e G.M := by
   apply le_antisymm

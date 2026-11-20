@@ -20,9 +20,15 @@ def owedC_res (hp : p.Prime) (h : Nat.card A = p) : A ≃+* ZMod p :=
   letI := Fintype.ofFinite A
   (ZMod.ringEquivOfPrime A hp (by rw [← Nat.card_eq_fintype_card]; exact h)).symm
 
+/- English proof (translation)
+The claim follows from `map_intCast _ _`.
+-/
 theorem owedC_res_intCast (hp : p.Prime) (h : Nat.card A = p) (a : ℤ) :
     owedC_res hp h (a : A) = (a : ZMod p) := map_intCast _ _
 
+/- English proof (translation)
+Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Use `⟨((owedC_res hp h x).val : ℤ), ?_⟩` and prove the remaining obligations. Apply `(owedC_res hp h).injective` to reduce the goal to its premises. Rewrite using `[owedC_res_intCast]`. Simplify using the standard rewrite rules.
+-/
 theorem owedC_exists_int (hp : p.Prime) (h : Nat.card A = p) (x : A) : ∃ a : ℤ, x = (a : A) := by
   have : NeZero p := ⟨hp.ne_zero⟩
   refine ⟨((owedC_res hp h x).val : ℤ), ?_⟩
@@ -30,6 +36,9 @@ theorem owedC_exists_int (hp : p.Prime) (h : Nat.card A = p) (x : A) : ∃ a : �
   rw [owedC_res_intCast]
   simp
 
+/- English proof (translation)
+Rewrite using `[← (owedC_res hp h).injective.eq_iff, owedC_res_intCast, owedC_res_intCast, ZMod.intCast_eq_intCast_iff_dvd_sub, ← dvd_neg, neg_sub]`.
+-/
 theorem owedC_intCast_eq_iff (hp : p.Prime) (h : Nat.card A = p) (a b : ℤ) :
     (a : A) = (b : A) ↔ (p : ℤ) ∣ a - b := by
   rw [← (owedC_res hp h).injective.eq_iff, owedC_res_intCast, owedC_res_intCast,
@@ -37,6 +46,11 @@ theorem owedC_intCast_eq_iff (hp : p.Prime) (h : Nat.card A = p) (a b : ℤ) :
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hp.ne']`.
+
+Conclude with `zero_ne_one hζ`. Use `conv_rhs => rw [← Int.emod_add_mul_ediv a p, zpow_add₀ h0, zpow_mul, zpow_natCast, hζ, one_zpow, mul_one]`.
+-/
 theorem owedC_zpow_emod {ζ : K} (hζ : ζ ^ p = 1) (a : ℤ) : ζ ^ (a % (p : ℤ)) = ζ ^ a := by
   rcases Nat.eq_zero_or_pos p with rfl | hp
   · simp
@@ -50,6 +64,9 @@ def owedC_chr (hp : p.Prime) (h : Nat.card A = p) {ζ : K} (hζ : ζ ^ p = 1) : 
   haveI : NeZero p := ⟨hp.ne_zero⟩
   (AddChar.zmodChar p hζ).compAddMonoidHom (owedC_res hp h).toAddEquiv.toAddMonoidHom
 
+/- English proof (translation)
+Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Establish `e : owedC_chr hp h hζ (a : A) = AddChar.zmodChar p hζ (owedC_res hp h (a : A))` using `rfl`. Rewrite using `[e, owedC_res_intCast, AddChar.zmodChar_apply, ← owedC_zpow_emod hζ a, ← ZMod.val_intCast, zpow_natCast]`.
+-/
 theorem owedC_chr_intCast (hp : p.Prime) (h : Nat.card A = p) {ζ : K} (hζ : ζ ^ p = 1) (a : ℤ) :
     owedC_chr hp h hζ (a : A) = ζ ^ a := by
   have : NeZero p := ⟨hp.ne_zero⟩
@@ -62,6 +79,9 @@ section Chars
 
 variable {X : Fields} {Pr : Primes X}
 
+/- English proof (translation)
+Rewrite using `[← hPr.vT_norm u P.1 P.2, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_quotient_eq_prime (hPr : Pr.Ok) (u : Pr.Word) (P : {P // P ∈ Pr.vT u}) :
     Nat.card (𝓞 X.E ⧸ P.1.asIdeal) = Pr.T u := by
   rw [← hPr.vT_norm u P.1 P.2, Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -88,12 +108,20 @@ def XiUnitT (Pr : Primes X) (xi0 : X.E) : Prop :=
   ∀ u : Pr.Word, ∃ b : ℤ, ¬ (Pr.T u : ℤ) ∣ b ∧
     ∀ P : {P // P ∈ Pr.vT u}, redP P.1 xi0 = (b : 𝓞 X.E ⧸ P.1.asIdeal)
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem owedC_exp_zpow (n : ℕ) (b : ℤ) :
     Complex.exp (2 * Real.pi * Complex.I / n) ^ b = Complex.exp (2 * Real.pi * Complex.I * b / n) := by
   rw [← Complex.exp_int_mul]
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨ψ⟩` from `Ps`. Take `⟨ψ'⟩` from `Ps'`. Use `congr 1`. Use function extensionality and compare the values at `u P`. Use extensionality with `c`.
+
+Take `⟨a, rfl⟩` from `owedC_exists_int (hPr.T_prime u) (card_quotient_eq_prime hPr u P) c`. Take `⟨b, hb⟩` from `owedC_exists_int (hPr.T_prime u) (card_quotient_eq_prime hPr u P) (redP P.1 xi0 * (a : 𝓞 X.E ⧸ P.1.asIdeal))`. Conclude with `σ₀.injective ((h u P a b hb).trans (h' u P a b hb).symm)`.
+-/
 theorem CharT.WeilTied.unique (hPr : Pr.Ok) {Ps Ps' : CharT X Pr} {σ₀ : X.K →+* ℂ} {xi0 : X.E}
     (h : Ps.WeilTied σ₀ xi0) (h' : Ps'.WeilTied σ₀ xi0) : Ps = Ps' := by
   obtain ⟨ψ⟩ := Ps
@@ -106,6 +134,11 @@ theorem CharT.WeilTied.unique (hPr : Pr.Ok) {Ps Ps' : CharT X Pr} {σ₀ : X.K �
     (redP P.1 xi0 * (a : 𝓞 X.E ⧸ P.1.asIdeal))
   exact σ₀.injective ((h u P a b hb).trans (h' u P a b hb).symm)
 
+/- English proof (translation)
+Take `⟨b, hb, hbP⟩` from `hxi u`. Establish `h1` using `h u P 1 b (by rw [hbP P]; simp)`. Rewrite `h1` using `[hp, AddChar.one_apply, map_one, ← owedC_exp_zpow]`. Conclude with `hb (((Complex.isPrimitiveRoot_exp (Pr.T u) (hPr.T_prime u).ne_zero).zpow_eq_one_iff_dvd b).1 h1.symm)`. Use `same u P P' a := by`.
+
+Take `⟨b, -, hbP⟩` from `hxi u`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[h u P a (b * a) (by rw [hbP P]; push_cast; rfl), h u P' a (b * a) (by rw [hbP P']; push_cast; rfl)]`.
+-/
 theorem CharT.WeilTied.ok (hPr : Pr.Ok) {Ps : CharT X Pr} {σ₀ : X.K →+* ℂ} {xi0 : X.E}
     (h : Ps.WeilTied σ₀ xi0) (hxi : XiUnitT Pr xi0) : Ps.Ok where
   ne u P hp := by
@@ -118,6 +151,9 @@ theorem CharT.WeilTied.ok (hPr : Pr.Ok) {Ps : CharT X Pr} {σ₀ : X.K →+* ℂ
     apply σ₀.injective
     rw [h u P a (b * a) (by rw [hbP P]; push_cast; rfl), h u P' a (b * a) (by rw [hbP P']; push_cast; rfl)]
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨hn⟩`. Take `⟨i, -, hi⟩` from `(hζ.map_of_injective σ₀.injective).eq_pow_of_pow_eq_one (Complex.isPrimitiveRoot_exp n hn).pow_eq_one`. Conclude with `⟨ζ ^ i, by rw [map_pow, hi]⟩`.
+-/
 theorem owedC_exists_exp {K : Type} [Field K] (σ₀ : K →+* ℂ) {n : ℕ} (hn : n ≠ 0) {ζ : K} (hζ : IsPrimitiveRoot ζ n) :
     ∃ ζ' : K, σ₀ ζ' = Complex.exp (2 * Real.pi * Complex.I / n) := by
   have : NeZero n := ⟨hn⟩
@@ -129,9 +165,15 @@ def CharT.psiC (Ps : CharT X Pr) (σ₀ : X.K →+* ℂ) (u : Pr.Word) (P : {P /
     AddChar (𝓞 X.E ⧸ P.1.asIdeal) ℂ :=
   (σ₀ : X.K →* ℂ).compAddChar (Ps.psiT u P)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CharT.psiC_apply (Ps : CharT X Pr) (σ₀ : X.K →+* ℂ) (u : Pr.Word) (P : {P // P ∈ Pr.vT u})
     (c : 𝓞 X.E ⧸ P.1.asIdeal) : Ps.psiC σ₀ u P c = σ₀ (Ps.psiT u P c) := rfl
 
+/- English proof (translation)
+Introduce `h1`. Apply `h.ne u P` to reduce the goal to its premises. Use extensionality with `c`. Apply `σ₀.injective` to reduce the goal to its premises. Rewrite using `[← CharT.psiC_apply, h1, AddChar.one_apply, AddChar.one_apply, map_one]`.
+-/
 theorem CharT.Ok.psiC_ne {Ps : CharT X Pr} (h : Ps.Ok) (σ₀ : X.K →+* ℂ) (u : Pr.Word) (P : {P // P ∈ Pr.vT u}) :
     Ps.psiC σ₀ u P ≠ 1 := by
   intro h1

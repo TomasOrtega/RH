@@ -9,6 +9,11 @@ namespace GlobalTheory.PtDeg.FrameGen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Use `haveI : Epi (CommRingCat.ofHom (algebraMap (𝓞 K) K)) := IsLocalization.epi (nonZeroDivisors (𝓞 K)) K`. Use `haveI : Mono (spMap (algebraMap (𝓞 K) K)) := Scheme.Spec.map_mono (CommRingCat.ofHom _).op`. Rewrite using `[← cancel_mono (spMap (algebraMap (𝓞 K) K)), Category.assoc, ← m2.cart.1.w, ← Category.assoc, h, Category.assoc]`. Use `F.fib.2.1.1.w` as an intermediate fact. Use `erw [this, ← Category.assoc, Over.w w]`.
+
+Both sides reduce to the same expression.
+-/
 theorem over_of_fib {K : Type} [Field K] [NumberField K] {B : GlobalTheory.CM.PAT H (Sp (𝓞 K))} {t₀ : SAB H (Sp K)}
     (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol)
     (u₀ : Sp (DualNumber K) ⟶ t₀.G.left) (w : epsR K ⟶ F.P₀.A) (h : u₀ ≫ m2.φ = w.left ≫ F.φ) :
@@ -25,6 +30,9 @@ end GlobalTheory.PtDeg.FrameGen
 
 namespace GlobalTheory.PtDeg.FrameGen
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem spMap_dualMap_algebraMap {S R : Type} [CommRing S] [CommRing R] (f : S →+* R) :
     spMap (dualMap f) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap R (DualNumber R)) ≫ spMap f := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -33,6 +41,11 @@ theorem spMap_dualMap_algebraMap {S R : Type} [CommRing S] [CommRing R] (f : S �
   · simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
   · simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Establish `: dualMap (RingHom.id S) = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [dualMap]`. Simplify using `only [spMap, this]`.
+
+Conclude with `Spec.map_id _`.
+-/
 theorem spMap_dualMap_id {S : Type} [CommRing S] : spMap (dualMap (RingHom.id S)) = 𝟙 _ := by
   have : dualMap (RingHom.id S) = RingHom.id _ := by
     apply RingHom.ext
@@ -47,6 +60,9 @@ namespace GlobalTheory.PtDeg.FrameGen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (hp.lift (spMap (dualMap f) ≫ u₀) (spMap (algebraMap Tf (DualNumber Tf))) (by rw [Category.assoc, hu, spMap_dualMap_algebraMap])) (hp.lift_snd _ _ _), hp.lift_fst _ _ _⟩`.
+-/
 theorem exists_lift_eps {K Tf : Type} [CommRing K] [CommRing Tf] {G' : Over (Sp Tf)} {G : Over (Sp K)}
     (f : K →+* Tf) {φ : G'.left ⟶ G.left} (hp : IsPullback φ G'.hom G.hom (spMap f))
     (u₀ : Sp (DualNumber K) ⟶ G.left) (hu : u₀ ≫ G.hom = spMap (algebraMap K (DualNumber K))) :
@@ -54,6 +70,11 @@ theorem exists_lift_eps {K Tf : Type} [CommRing K] [CommRing Tf] {G' : Over (Sp 
   ⟨Over.homMk (hp.lift (spMap (dualMap f) ≫ u₀) (spMap (algebraMap Tf (DualNumber Tf)))
       (by rw [Category.assoc, hu, spMap_dualMap_algebraMap])) (hp.lift_snd _ _ _), hp.lift_fst _ _ _⟩
 
+/- English proof (translation)
+Take `⟨w', hw'⟩` from `((GlobalTheory.LieComb.lieComb_algebra T.Fr t'.G _ v' hv'.1).1 (fun k => iK (c k))).exists`. Establish `hpb` using `IsGrpPullback.comp n'.cart m2.cart`. Establish `hid : spMap (RingHom.id T.Fr) = 𝟙 _`. Simplify using `only [spMap, CommRingCat.ofHom_id]`. Conclude with `Spec.map_id _`.
+
+Establish `key` using `GlobalTheory.LamT.LetterInt.comb_match hpb F.fib.2.1 (RingHom.id T.Fr) iK (by rw [hid, Category.id_comp]) (v₁ := v') (v₂ := F.v) (fun k => by rw [spMap_dualMap_id, Category.id_comp]; exact hv'φ k) (c₁ := fun k => iK (c k)) (c₂ := c) (fun k => rfl) hw' hw`. Rewrite `key` using `[spMap_dualMap_id, Category.id_comp, ← hg]`. Establish `: w' = g` using `Over.OverMorphism.ext (hpb.1.hom_ext key (by rw [Over.w w', Over.w g]))`. Substitute `this` using the available equality. Conclude with `hw'`.
+-/
 theorem isLieComb_of_match {K : Type} [Field K] [NumberField K] {B : GlobalTheory.CM.PAT H (Sp (𝓞 K))} {t₀ : SAB H (Sp K)}
     (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) {T : CDVR} (iK : K →+* T.Fr)
     {t' : SAB H (Sp T.Fr)} (n' : SABMap t' t₀ (spMap iK)) {v' : Fin F.P₀.g → (epsR T.Fr ⟶ t'.G)}
@@ -82,6 +103,9 @@ namespace GlobalTheory.PtDeg.FrameGen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `hz`. Take `⟨a, ha, rfl⟩` from `hw`. Use `GlobalTheory.LamT.LetterInt.prod_pull m1'.cart (epsR Tf) _ (𝟙 _) (by rw [Category.id_comp]; rfl) a b (fun j => by rw [hb j, Category.id_comp, ha j, Category.assoc, hg j]; rfl)` as an intermediate fact. Rewrite using `[this, Category.id_comp]`.
+-/
 theorem comb_left_of_isCombAt {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {Tf : Type} [CommRing Tf]
     {x : Sp Tf ⟶ Xo.X} {t' : SAB H (Sp Tf)} (m1' : SABMap t' Xo.univ.t x) {m : ℕ}
     (e : Fin m → (Sp (DualNumber Tf) ⟶ Xo.univ.t.G.left)) (cc : Fin m → Tf)
@@ -99,6 +123,15 @@ end GlobalTheory.PtDeg.FrameGen
 namespace GlobalTheory.PtDeg
 
 open GlobalTheory.PtDeg.FrameGen in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ u hF T iK`. Use `letI : Algebra c.F T.Fr := (iK.comp (algebraMap c.F K)).toAlgebra`. Introduce `yT hyT t' n' m1' h1 v' hv' hv'φ C a y' hchg i u'' hu''0 hu''1`. Use `choose u₀ w hu₁ hu₂ hw using hF`. Establish `hover : ∀ j, u₀ j ≫ t₀.G.hom = spMap (algebraMap K (DualNumber K))` using `fun j => over_of_fib m2 F (u₀ j) (w j) (hu₂ j)`.
+
+Use `choose g hg using fun j => exists_lift_eps iK n'.cart.1 (u₀ j) (hover j)`. Establish `hg1 : ∀ j, (g j).left ≫ m1'.φ = yT.u ρ j` using `fun j => by`. Rewrite using `[h1, ← Category.assoc, hg j, Category.assoc, hu₁ j]`. Conclude with `(hyT.2.1 ρ j).symm`. Establish `hcomb : ∀ j, IsLieComb (fun k => iK (u j k)) v' (g j)` using `fun j => isLieComb_of_match m2 F iK n' hv' hv'φ (u j) (w j) (hw j) (g j) (by rw [← Category.assoc, hg j, Category.assoc, hu₂ j])`.
+
+Establish `hA` using `GlobalTheory.LieComb.lieComb_algebra T.Fr t'.G _ v' hv'.1`. Establish `htan : ∀ j, IsTangent (g j)` using `fun j => hA.2.1 _ _ (hcomb j)`. Establish `hB` using `GlobalTheory.LieComb.lieComb_algebra T.Fr t'.G _ g htan`. Take `⟨w'', hw''⟩` from `(hB.1 (C ρ i)).exists`. Establish `hleft : w''.left ≫ m1'.φ = y'.u ρ i` using `comb_left_of_isCombAt m1' (yT.u ρ) (C ρ i) _ (hchg.2.1 ρ i) g hg1 w'' hw''`.
+
+Use `⟨w'', m1'.cart.1.hom_ext (by rw [hleft, hu''1]) (by rw [Over.w w'', hu''0]; rfl), ?_⟩` and prove the remaining obligations. Conclude with `hA.2.2.1 _ (fun j k => iK (u j k)) g (C ρ i) w'' hcomb hw''`.
+-/
 theorem frame_genFib_coords : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (B : GlobalTheory.CM.PAT H (Sp (𝓞 K))) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (m2 : SABMap t₀ B.t (spMap (algebraMap (𝓞 K) K))) (F : GlobalTheory.CM.GenFib B.pol) (ρ : E →+* ℂ) (u : Fin (Dw.mult ρ) → Fin F.P₀.g → K), GlobalTheory.PtDeg.FrameCoord y m1 m2 F ρ u → ∀ (T : CDVR) (iK : K →+* T.Fr), letI := (iK.comp (algebraMap c.F K)).toAlgebra; ∀ (yT : FrPt Xo c T.Fr), FrMap ({ iK with commutes' := fun _ => rfl } : K →ₐ[c.F] T.Fr) y yT → ∀ (t' : SAB H (Sp T.Fr)) (n' : SABMap t' t₀ (spMap iK)) (m1' : SABMap t' Xo.univ.t yT.x), m1'.φ = n'.φ ≫ m1.φ → ∀ (v' : Fin F.P₀.g → (epsR T.Fr ⟶ t'.G)), IsLieBasis v' → (∀ k, (v' k).left ≫ n'.φ ≫ m2.φ = spMap (Formalism.L2.Pj.dualMap iK) ≫ (F.v k).left ≫ F.φ) → ∀ (C : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) T.Fr) (a : T.Fr) (y' : FrPt Xo c T.Fr), FrChg C a yT y' → ∀ (i : Fin (Dw.mult ρ)) (u'' : Sp (DualNumber T.Fr) ⟶ t'.G.left), u'' ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) → u'' ≫ m1'.φ = y'.u ρ i → ∃ w'' : epsR T.Fr ⟶ t'.G, w''.left = u'' ∧ IsLieComb (∑ j, C ρ i j • fun k => iK (u j k)) v' w'' := by
   intro E _ _ _ H Dw l Xo c K _ _ _ y B t₀ m1 m2 F ρ u hF T iK
   letI : Algebra c.F T.Fr := (iK.comp (algebraMap c.F K)).toAlgebra

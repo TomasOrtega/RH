@@ -13,6 +13,23 @@ noncomputable section
 
 namespace GlobalTheory.LevMoveAA
 
+/- English proof (translation)
+Introduce `D k Λ ΛT m hA hm`. Take `⟨n, a, c, ha, hc, hsum⟩` from `GlobalTheory.T.cmHostFractionalIdeal_partitionOfUnity D`. Establish `h1 : ∀ i, ∀ x ∈ ΛT, a i • x ∈ Λ` using `fun i x hx => (hA _).2 (AddSubgroup.subset_closure ⟨a i, ha i, x, hx, rfl⟩)`. Establish `h2 : ∀ i, ∀ x ∈ Λ, c i • x ∈ ΛT`. Introduce `i x hx`.
+
+Establish `hx'` using `(hA x).1 hx`. Use `clear hx`. Proceed by induction on `hx' using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨a', ha', t, ht, rfl⟩` from `hu`.
+
+Take `⟨b, hb⟩` from `hc i a' ha'`. Rewrite using `[smul_smul, ← hb]`. Conclude with `ΛT.smul_of_tower_mem b ht`. Consider the case `zero => simp`. Consider the case `add x y _ _ ihx ihy => rw [smul_add]`.
+
+Conclude with `ΛT.add_mem ihx ihy`. Consider the case `neg x _ ihx => rw [smul_neg]`. Conclude with `ΛT.neg_mem ihx`. Establish `hs1 : ∀ i, ∀ u ∈ hatV ΛT, ((1 : Af D.host.F) ⊗ₜ[D.host.F] a i) • u ∈ hatV Λ` using `fun i => GlobalTheory.T.smul_mem_hermitianLatticeAdelicCompletion_of_smul_le D ΛT Λ (a i) (h1 i)`. Establish `hs2 : ∀ i, ∀ u ∈ hatV Λ, ((1 : Af D.host.F) ⊗ₜ[D.host.F] c i) • u ∈ hatV ΛT` using `fun i => GlobalTheory.T.smul_mem_hermitianLatticeAdelicCompletion_of_smul_le D Λ ΛT (c i) (h2 i)`.
+
+Establish `key : ∀ u : Fin k → AfE D, ∑ i, ((1 : Af D.host.F) ⊗ₜ[D.host.F] c i) • ((1 : Af D.host.F) ⊗ₜ[D.host.F] a i) • u = u`. Introduce `u`. Repeatedly rewrite using `[smul_smul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Finset.sum_smul, ← TensorProduct.tmul_sum]`. Rewrite using `[show ∑ i, c i * a i = 1 by rw [← hsum]; exact Finset.sum_congr rfl fun i _ => mul_comm _ _]`. Rewrite using `[← Algebra.TensorProduct.one_def, one_smul]`.
+
+Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hw : ∀ i, ∃ w ∈ hatV Λ, ((1 : Af D.host.F) ⊗ₜ[D.host.F] a i) • u = m *ᵥ w` using `fun i => (hm _).1 (hs1 i u hu)`. Use `choose w hwΛ hwe using hw`.
+
+Use `⟨∑ i, ((1 : Af D.host.F) ⊗ₜ[D.host.F] c i) • w i, AddSubgroup.sum_mem _ fun i _ => hs2 i _ (hwΛ i), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_sum]`. Use `conv_lhs => rw [← key u]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hwe i, Matrix.mulVec_smul]`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`.
+
+Rewrite using `[← key u₀, Matrix.mulVec_sum]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `hs2 i _ ((hm _).2 ⟨_, hs1 i u₀ hu₀, rfl⟩)`.
+-/
 theorem isMov_of_isAA : ∀ (D : D7) {k : ℕ} (Λ ΛT : Lt D.host.E k) (m : Matrix (Fin k) (Fin k) (AfE D)),
     IsAA Λ ΛT → IsMov m Λ Λ → IsMov m ΛT ΛT := by
   intro D k Λ ΛT m hA hm

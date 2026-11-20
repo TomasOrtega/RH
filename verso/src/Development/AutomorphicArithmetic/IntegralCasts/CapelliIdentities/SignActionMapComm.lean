@@ -3,6 +3,9 @@ import Formalism.LocalRingCardinality.DataSpaces
 import Formalism.SatakeDualWeyl.Statement
 import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 
+/- English proof (translation)
+Introduce `I`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qk24.aux2 :
     ∀ (I : Formalism.MainNotions.S.AutInst), IsFractionRing (NumberField.RingOfIntegers I.F) I.F := by
   intro I
@@ -49,11 +52,17 @@ noncomputable def UpperTheory.Reformulated.B.Qk24.Mk :
           UpperTheory.Reformulated.B.Qk24.colM I b * X * UpperTheory.Reformulated.B.Qk24.rowM I d +
         UpperTheory.Reformulated.B.Qk24.colM I d * Y * UpperTheory.Reformulated.B.Qk24.rowM I b
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk24.sandwich_mul {R : Type*} [Semiring R] {n k : Type*} [Fintype n] [Fintype k]
     (B C : Matrix n k R) (P Q : Matrix k n R) (X Y : Matrix k k R) :
     B * X * P * (C * Y * Q) = B * (X * (P * C * Y)) * Q := by
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, UpperTheory.Reformulated.B.Qk24.sandwich_mul, h1, h2, h3, h4, Matrix.zero_mul, Matrix.mul_zero, add_zero]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem UpperTheory.Reformulated.B.Qk24.block_mul {R : Type*} [Semiring R] {n k : Type*} [Fintype n] [Fintype k]
     [DecidableEq n] (B D : Matrix n k R) (P Q : Matrix k n R) (H K : Matrix k k R)
     (h1 : P * B = H) (h2 : P * D = 0) (h3 : Q * B = 0) (h4 : Q * D = K) (X Y X' Y' : Matrix k k R) :
@@ -63,6 +72,9 @@ private theorem UpperTheory.Reformulated.B.Qk24.block_mul {R : Type*} [Semiring 
     UpperTheory.Reformulated.B.Qk24.sandwich_mul, h1, h2, h3, h4, Matrix.zero_mul, Matrix.mul_zero, add_zero]
   abel
 
+/- English proof (translation)
+Introduce `I k b d η h1 h2 h3 h4 X Y X' Y'`. Conclude with `UpperTheory.Reformulated.B.Qk24.block_mul _ _ _ _ _ _ h1 h2 h3 h4 X Y X' Y'`.
+-/
 theorem UpperTheory.Reformulated.B.Qk24.Mk_mul :
     ∀ {I : Formalism.MainNotions.S.AutInst} {k : ℕ} (b d : Fin k → UpperTheory.Reformulated.B.Qk24.VA I) (η : TensorProduct I.F I.E (Formalism.MainNotions.S.Af I.F)),
       UpperTheory.Reformulated.B.Qk24.rowM I d * UpperTheory.Reformulated.B.Qk24.colM I b =

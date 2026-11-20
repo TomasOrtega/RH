@@ -28,6 +28,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `ha`. Establish `h1 : ValAt ξ zV (a : Ω) ((Scheme.stalkClosedPointTo zV).hom s)` using `⟨h, s, hs, rfl⟩`. Conclude with `⟨_, LieTangent.valAt_unique hξ (LieTangent.valAt_base hξ (algebraMap T.V T.Fr) h1) (hR a)⟩`.
+-/
 theorem reg_val {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {A : Subring Ω} {T : CDVR}
     {evT : A →+* T.Fr} {zV : Spec (CommRingCat.of T.V) ⟶ X} (hξ : IsCptGen ξ) (hR : ReadsPt ξ A T evT zV)
     (h : genPt ξ ⤳ centre zV) (a : A) (ha : (a : Ω) ∈ regAt ξ ⟨centre zV, h⟩) :
@@ -36,6 +39,9 @@ theorem reg_val {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.
   have h1 : ValAt ξ zV (a : Ω) ((Scheme.stalkClosedPointTo zV).hom s) := ⟨h, s, hs, rfl⟩
   exact ⟨_, LieTangent.valAt_unique hξ (LieTangent.valAt_base hξ (algebraMap T.V T.Fr) h1) (hR a)⟩
 
+/- English proof (translation)
+The claim follows from `|Real.log S - Real.log (S / m / y⁻¹ ^ n)| ≤ θ := by have hm0 : 0 < m := hm ▸ zpow_pos hx n have hy' : 0 < y⁻¹ ^ n := zpow_pos (inv_pos.2 hy) n rw [Real.log_div (div_pos hS hm0).ne' hy'.ne', Real.log_div hS.ne' hm0.ne', hm, Real.log_zpow, Real.log_zpow, Real.log_inv] rcases hn wit …`.
+-/
 theorem log_bound {S m x y θ : ℝ} (hS : 0 < S) (hx : 0 < x) (hy : 0 < y) {n : ℤ} (hn : n = 1 ∨ n = -1)
     (hm : m = x ^ n) (hb : |Real.log x - Real.log y| ≤ θ) :
     |Real.log S - Real.log (S / m / y⁻¹ ^ n)| ≤ θ := by
@@ -56,6 +62,19 @@ end GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
+/- English proof (translation)
+Introduce `hG E _ _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hval hA la T io e y evT zT t hI zV hR hOm hpq hSS EC _ _ _ _ MC ρC hact s σ hσ`. Establish `hpla : (p : 𝓞 c.F) ∈ la.asIdeal` using `hI.1`. Establish `he : 0 < e` using `hI.2.1.1`. Take `⟨hmul, hone, hpos, hle⟩` from `GlobalTheory.T.finite_residue_absolute_value E H l c p la T e he (ram_pos hpla)`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`.
+
+Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hθ` using `Small.latExp_nonneg E SS (Fact.out : p.Prime)`. Establish `hle1 : (p : ℝ) ^ (-Small.latExp E SS p) ≤ absT p la T e (algebraMap T.V T.Fr 1)`. Rewrite using `[map_one, hone]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hp1 (by linarith)`.
+
+Distinguish the cases in `hpS : p ∈ SS`. Take `⟨κz, h1, h2, h3⟩` from `GlobalTheory.T.root_origin_frame_total_bound hG E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI zV hR hOm hpq hpS EC MC ρC hact s σ hσ`. Take `⟨h4, D, h5, h6⟩` from `GlobalTheory.T.root_origin_frame_height_estimate E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI zV hR hpS EC MC ρC s`. Use `⟨1, κz * D, fun w hw => ?_, fun w hw => ?_, hle1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`.
+
+Conclude with `h4 (h1 hw)`. Rewrite using `[mul_smul]`. Conclude with `h2 _ (h6 w hw)`. Rewrite using `[map_mul, hmul, h3]`. Establish `e1 : Small.latExp E SS p = Small.htExp p + (padicValInt p (discr E) : ℝ) / Module.finrank ℚ E` using `if_pos hpS`.
+
+Rewrite using `[e1, neg_add, Real.rpow_add hp0]`. Conclude with `mul_le_mul_of_nonneg_left h5 (Real.rpow_nonneg hp0.le _)`. Establish `hd : ¬ (p : ℤ) ∣ discr E` using `fun h => hpS (hSS p Fact.out h)`. Establish `h1` using `GlobalTheory.T.root_origin_frame_combined E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI zV hR hpS hd EC MC ρC hact s σ hσ`. Use `⟨1, 1, fun w hw => ?_, fun w hw => ?_, hle1, hle1⟩` and prove the remaining obligations.
+
+Rewrite using `[one_smul, h1]`. Conclude with `hw`. Rewrite using `[one_smul, ← h1]`. Conclude with `hw`.
+-/
 theorem compare : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → Or.𝔐.OmVB → 0 < Dw.p + Dw.q →
     (∀ p' : ℕ, p'.Prime → (p' : ℤ) ∣ discr E → p' ∈ SS) →
     ∀ (EC : Type) [AddCommGroup EC] [Module T.Fr EC] [Module T.V EC] [IsScalarTower T.V T.Fr EC]
@@ -99,6 +118,9 @@ theorem compare : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     · rw [one_smul, ← h1]
       exact hw
 
+/- English proof (translation)
+The claim follows from `|Real.log (absT p la T e (evT ⟨Tm i i, hT i i⟩)) - Real.log (absT p la T e (t (Small.labelIx Dw ⟨s, i⟩) : T.Fr))| ≤ Small.latExp E SS p * Real.log p := by intro hG E _ _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr A p _ z ev hz hval hA la T io e y evT zT t hI zV hR hOm hpq hSS s b …`.
+-/
 theorem diag_bound : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → ∀ (zV : Spec (CommRingCat.of T.V) ⟶ Or.𝔐.X), FinRd.Roots.ReadsPt Or.𝔐.ξ A T evT zV → Or.𝔐.OmVB → 0 < Dw.p + Dw.q →
     (∀ p' : ℕ, p'.Prime → (p' : ℤ) ∣ discr E → p' ∈ SS) →
     ∀ (s : CMType H ⊕ CMType H) (b : Fin (labelRk Dw s) → Or.𝔐.Li)
@@ -185,6 +207,61 @@ end GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots
 
+/- English proof (translation)
+Introduce `hG E _ _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr hOm hSS A p _ z ev hz hval hA hrat la T io e y evT zT t hI`. Establish `hpla : (p : 𝓞 c.F) ∈ la.asIdeal` using `hI.1`. Establish `he : 0 < e` using `hI.2.1.1`. Take `⟨hmul, hone, hpos, hle⟩` from `GlobalTheory.T.finite_residue_absolute_value E H l c p la T e he (ram_pos hpla)`. Establish `habs : ∀ x : A, ‖ev x‖ = absT p la T e (evT x)` using `hI.2.2.2.2.2.1`.
+
+Establish `hzp` using `hz.1`. Establish `hmax : ∀ k, ∃ ck : RM.ι k, z ⟨k, ck⟩ ≠ 0 ∧ ∀ i, ‖z ⟨k, i⟩‖ ≤ ‖z ⟨k, ck⟩‖`. Introduce `k`. Take `⟨u, hu⟩` from `hzp.1 k`. Use `haveI : Nonempty (RM.ι k) := ⟨u⟩`.
+
+Take `⟨m, hm⟩` from `Finite.exists_max (fun i => ‖z ⟨k, i⟩‖)`. Use `⟨m, fun h0 => ?_, hm⟩` and prove the remaining obligations. Establish `h1` using `hm u`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `hu (norm_le_zero_iff.1 h1)`.
+
+Use `choose ch hc0 hcm using hmax`. Establish `hy : ∀ k, RM.y ⟨k, ch k⟩ ≠ 0`. Introduce `k h0`. Establish `hmem : (MvPolynomial.X ⟨k, ch k⟩ : MRing RM.ι) ∈ mCoordIdeal RM.y` using `by show mConeMap RM.y _ = 0`. Rewrite using `[Small.ReadFinTest.mConeMap_form RM.y (TiePrimes.homog_X _)]`.
+
+Simplify using `[h0]`. Establish `h1` using `hzp.2 _ hmem`. Rewrite `h1` using `[MvPolynomial.aeval_X]`. Conclude with `hc0 k h1`. Establish `hr : ∀ k i, RM.y ⟨k, i⟩ / RM.y ⟨k, ch k⟩ ∈ A` using `fun k i => hrat k i (ch k) (hy k)`.
+
+Take `⟨hevr, hden⟩` from `GlobalTheory.T.specialization_coord_ratio_value RM.K RM.ι RM.Ω RM.y (PadicAlgCl p) z A ev hzp hval ch hc0 hy hr`. Establish `hVr : ∀ k i, evT ⟨_, hr k i⟩ ∈ (algebraMap T.V T.Fr).range` using `fun k i => (hle _).1 (by`. Rewrite using `[← habs, hevr, norm_div]`. Conclude with `div_le_one_of_le₀ (hcm k i) (norm_nonneg _))`. Establish `hne : ∀ x : A, ev x ≠ 0 → evT x ≠ 0` using `fun x hx h0 => by`.
+
+Establish `h1` using `habs x`. Rewrite `h1` using `[h0, show absT p la T e (0 : T.Fr) = 0 from if_pos rfl]`. Conclude with `hx (norm_eq_zero.1 h1)`. Take `⟨zV, h, hch, hRd⟩` from `GlobalTheory.T.complete_dvr_coord_ratio_value Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.all Or.𝔐.tie A T evT ch hy hr hVr (fun a => by`. Take `⟨b, h1, h2, h3⟩` from `hden a`.
+
+Conclude with `⟨b, hne b h1, h2, h3⟩)`. Establish `hunit : ∀ u u' : A, (u : RM.Ω) ∈ regAt Or.𝔐.ξ ⟨centre zV, h⟩ → (u' : RM.Ω) ∈ regAt Or.𝔐.ξ ⟨centre zV, h⟩ → u * u' = 1 → ‖ev u‖ = 1`. Introduce `u u' h1 h2 h3`. Establish `a1 : ‖ev u‖ ≤ 1`. Rewrite using `[habs]`.
+
+Conclude with `(hle _).2 (reg_val Or.𝔐.tie.gen hRd h u h1)`. Establish `a2 : ‖ev u'‖ ≤ 1`. Rewrite using `[habs]`. Conclude with `(hle _).2 (reg_val Or.𝔐.tie.gen hRd h u' h2)`. Establish `a3 : ‖ev u‖ * ‖ev u'‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, h3, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ev u), norm_nonneg (ev u')]`. Establish `hsingle : ∀ k, Small.HasVal RM.y (Pi.single k 1) (RM.y ⟨k, ch k⟩) z (z ⟨k, ch k⟩)` using `fun k => ⟨Pi.single k 1, 0, MvPolynomial.X ⟨k, ch k⟩, 1, TiePrimes.homog_X _, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, fun j => by`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj], by simp, by simp, by simp⟩`. Introduce `ρ`. Establish `hpq : 0 < Dw.p + Dw.q` using `lt_of_le_of_lt (Nat.zero_le _) ρ.2.2`. Establish `hsg : HodgeCpt.rootSgn Dw ρ = 1 ∨ HodgeCpt.rootSgn Dw ρ = -1`.
+
+Unfold `HodgeCpt.rootSgn`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨b, Tm, hfl, hfr, hb, hTA, hTd⟩` from `hA.2.2.2 (HodgeCpt.rootIdx Dw ρ).1 ⟨centre zV, h⟩`. Take `⟨hM, hMi⟩` from `hA.2.2.1 ρ ch hy`. Establish `hne' : ∀ j, evT ⟨Tm j j, hTA j j⟩ ≠ 0` using `fun j h0 => by`.
+
+Establish `h1 : (⟨Tm j j, hTA j j⟩ : A) * ⟨_, (hTd j).2⟩ = 1` using `Subtype.ext (mul_inv_cancel₀ (hTd j).1)`. Establish `h2` using `congrArg evT h1`. Rewrite `h2` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one h2`. Establish `hP0 : (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`.
+
+Establish `he0 : Or.e ρ ≠ 0` using `(Or.lines ρ).1`. Establish `hM0 : (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) * Or.e ρ ≠ 0` using `mul_ne_zero hP0 he0`. Take `⟨hu1, hu2⟩` from `GlobalTheory.T.root_origin_root_index_bound E H Dw l Xo c O β Y SS RM Sys Fx Or ρ ⟨centre zV, h⟩ ch hch b Tm hfl hfr hb (fun j => (hTd j).1)`. Establish `hT0` using `(hTd (HodgeCpt.rootIdx Dw ρ).2).1`. Establish `hTi` using `(hTd (HodgeCpt.rootIdx Dw ρ).2).2`.
+
+Set `Ma : A` to `⟨_, hM⟩`. Set `Mi : A` to `⟨_, hMi⟩`. Set `Ta : A` to `⟨_, hTA (HodgeCpt.rootIdx Dw ρ).2 (HodgeCpt.rootIdx Dw ρ).2⟩`. Set `Ti : A` to `⟨_, hTi⟩`. Establish `hMM : Ma * Mi = 1` using `Subtype.ext (mul_inv_cancel₀ hM0)`.
+
+Establish `hTT : Ta * Ti = 1` using `Subtype.ext (mul_inv_cancel₀ hT0)`. Establish `nMM : ‖ev Ma‖ * ‖ev Mi‖ = 1` using `by rw [← norm_mul, ← map_mul, hMM, map_one, norm_one]`. Establish `nTT : ‖ev Ta‖ * ‖ev Ti‖ = 1` using `by rw [← norm_mul, ← map_mul, hTT, map_one, norm_one]`. Establish `hx : 0 < ‖ev Ta‖`. Assume the negation of the conclusion as `h0`.
+
+Establish `h1 : ‖ev Ta‖ = 0` using `le_antisymm (not_lt.1 h0) (norm_nonneg _)`. Rewrite `nTT` using `[h1, zero_mul]`. Conclude with `zero_ne_one nTT`. Establish `hm0 : 0 < ‖ev Ma‖`. Assume the negation of the conclusion as `h0`.
+
+Establish `h1 : ‖ev Ma‖ = 0` using `le_antisymm (not_lt.1 h0) (norm_nonneg _)`. Rewrite `nMM` using `[h1, zero_mul]`. Conclude with `zero_ne_one nMM`. Establish `hm : ‖ev Ma‖ = ‖ev Ta‖ ^ HodgeCpt.rootSgn Dw ρ`. Break down `hsg with hs | hs` into its components or cases.
+
+Rewrite `hu1`, `hu2`, the goal using `[hs]`. Establish `h1` using `hunit (Ma * Ti) (Mi * Ta) (by simpa [Ma, Ti] using hu1) (by`. Simplify `hu2) (by` using `[Mi, Ta, mul_comm]`. Rewrite using `[show Ma * Ti * (Mi * Ta) = (Ma * Mi) * (Ta * Ti) by ring, hMM, hTT, one_mul])`. Rewrite `h1` using `[map_mul, norm_mul]`.
+
+Rewrite using `[zpow_one]`. Establish `hTi0 : ‖ev Ti‖ ≠ 0` using `fun h0 => by`. Rewrite `nTT` using `[h0, mul_zero]`. Conclude with `zero_ne_one nTT`. Conclude with `mul_right_cancel₀ hTi0 (h1.trans nTT.symm)`.
+
+Rewrite `hu1`, `hu2`, the goal using `[hs]`. Establish `h1` using `hunit (Ma * Ta) (Mi * Ti) (by simpa [Ma, Ta] using hu1) (by`. Simplify `hu2) (by` using `[Mi, Ti, mul_comm]`. Rewrite using `[show Ma * Ta * (Mi * Ti) = (Ma * Mi) * (Ta * Ti) by ring, hMM, hTT, one_mul])`. Rewrite `h1` using `[map_mul, norm_mul]`.
+
+Rewrite using `[zpow_neg_one]`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Establish `hseg : Small.HasVal RM.y (RM.xdeg ρ) (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) z (∏ k, z ⟨k, ch k⟩ ^ RM.xdeg ρ k)`. Establish `h1` using `hv_prod (Finset.univ) (fun k _ => hv_zpow hzp (hsingle k) (hy k) (hc0 k) (RM.xdeg ρ k))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hS : 0 < Small.supMet (RM.xdeg ρ) z` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 fun h0 => hc0 k (congrFun h0 (ch k))) _`. Establish `hsup : Small.supMet (RM.xdeg ρ) z = ∏ k, ‖z ⟨k, ch k⟩‖ ^ RM.xdeg ρ k`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[le_antisymm ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 (hcm k)) (norm_le_pi_norm (fun i => z ⟨k, i⟩) (ch k))]`. Use `⟨ev Mi * ∏ k, z ⟨k, ch k⟩ ^ RM.xdeg ρ k, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hv_mul (hval Mi) hseg`. Rewrite `h1` using `[zero_add]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use `show (Or.e ρ)⁻¹ = ((∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) * Or.e ρ)⁻¹ * _`. Clear the denominators using the available nonvanishing facts. Use `mul_ne_zero (fun h0 => ?_) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hc0 k))` and prove the remaining obligations. Rewrite `nMM` using `[h0, norm_zero, mul_zero]`. Conclude with `zero_ne_one nMM`.
+
+Establish `hw : ‖ev Mi * ∏ k, z ⟨k, ch k⟩ ^ RM.xdeg ρ k‖ = Small.supMet (RM.xdeg ρ) z / ‖ev Ma‖`. Rewrite using `[norm_mul, norm_prod, hsup]`. Simplify using `only [norm_zpow]`. Rewrite using `[eq_div_iff hm0.ne']`. Take the linear combination `(∏ k, ‖z ⟨k, ch k⟩‖ ^ RM.xdeg ρ k) * nMM`.
+
+Establish `hb'` using `diag_bound hG E H Dw l Xo c O β Y SS RM Sys Fx Or Fr A p z ev hz hval hA la T io e y evT zT t hI zV hRd hOm hpq hSS _ b Tm hTA hfl hfr hb (fun j => hne' j) (HodgeCpt.rootIdx Dw ρ).2`. Establish `hyy : 0 < absT p la T e (t (Small.rootFrameIx Dw ρ) : T.Fr)` using `hpos _ (Units.ne_zero _)`. Rewrite using `[hw]`. Use `log_bound (m := ‖ev Ma‖) (θ := Small.latExp E SS p * Real.log p) hS (x := ‖ev Ta‖) hx hyy hsg hm (by rw [habs]; exact hb')` as an intermediate fact. Conclude with `this`.
+-/
 theorem reads_roots : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or), Or.𝔐.OmVB → (∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ SS) → ∀ (A : Subring RM.Ω) (p : ℕ) [Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p) (ev : A →+* PadicAlgCl p), z ∈ Small.algPts p (mCoordIdeal RM.y) → (∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) → FinRd.GoodRing Fr A → (∀ (k : RM.K) (i j : RM.ι k), RM.y ⟨k, j⟩ ≠ 0 → RM.y ⟨k, i⟩ / RM.y ⟨k, j⟩ ∈ A) → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : IntFr Xo c T io) (evT : A →+* T.Fr) (zT : letI := io.toAlgebra; FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), FinRd.IsIntPt Fr A ev la T io e y evT zT t → Small.ReadsRootsFin Or z (FinRd.tOf p la T e t) (Small.latExp E SS p) := by
   intro hG E _ _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr hOm hSS A p _ z ev hz hval hA hrat la T io e y evT zT t hI
   have hpla : (p : 𝓞 c.F) ∈ la.asIdeal := hI.1

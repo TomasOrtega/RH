@@ -23,6 +23,13 @@ variable {a b : ℕ} {JA : Matrix (Fin a) (Fin a) E} {JB : Matrix (Fin b) (Fin b
   {χ : Chr F E} {om : UG (cA σ) (incM F JB) →* Module.End ℂ ((κ → AF F) → ℂ)}
   {omd : UG (cA σ) (dbl (incM F JB)) →* Module.End ℂ ((κ ⊕ κ → AF F) → ℂ)}
 end Member
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h`. Take `⟨hw, ⟨d', ht, hw'⟩, -⟩` from `h.weil`. Establish `ht' : ∀ x, M.co.e xᵀ = d'.e x` using `fun x => (ht xᵀ).symm`. Take `⟨dd, om₂, S, h1, h2, h3⟩` from `dbl_main h.base.std h.base.cm.2.2.1 (by simp [mul_comm]) (skew_det h.skew) (herm_det h.herm) h.hX.1 (fun x => by rw [← ht']; exact h.good.rat xᵀ) ht' hw' hw`. Use `⟨dd, om₂, S, _, h1, fun φ hφ φ' hφ' => ⟨box_mem hφ hφ', fun k g g' x hx => ⟨?_, (h3 φ hφ φ' hφ').2 g g' x hx⟩⟩, ⟨d', ht, h2⟩, lD_haar⟩` and prove the remaining obligations.
+
+Establish `p` using `h.weil.isUSplitting.pres`. Establish `e : ∀ (g : UA σ X.J) ϕ, om.comp (MonoidHom.inl _ _) g (om.comp (MonoidHom.inr _ _) k ϕ) = om (g, k) ϕ` using `fun g ϕ => by`. Rewrite using `[← Module.End.mul_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[(h3 φ hφ φ' hφ').1, ← thetaSum_smul, (h3 _ (hw.1.pres k φ hφ) _ (hw.1.pres k φ' hφ')).2 g g' x hx, e, e, theta_box (p _ φ hφ) (p _ φ' hφ')]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dblX_k : _root_.GlobalTheory.ThK.Dbl.DblX_k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h
   obtain ⟨hw, ⟨d', ht, hw'⟩, -⟩ := h.weil

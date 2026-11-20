@@ -23,6 +23,29 @@ open GlobalTheory.RowEx
 
 namespace GlobalTheory.HalfIndex
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT hS hT c v π hc hπ k hk`. Use `haveI : CharZero (Fv D.host.F v) := algebraRat.charZero _`. Take `⟨σ, q1, q2⟩` from `GlobalTheory.SplitLinear.exists_section (S := S) (T := T) hc.1 hπ`. Establish `inj : Function.Injective σ` using `fun w w' h => by rw [← q1 w, h, q1]`. Establish `hinf : infPart D c = 0` using `GlobalTheory.PlaceModelSum.infPart_split hc`.
+
+Use `set L0 := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hL0`. Use `set L := L0.comap σ with hL`. Establish `hM : L0 ⊓ GlobalTheory.PlaceModel.half S T c = L.map σ`. Rewrite using `[hL, AddSubgroup.map_comap_eq, ← GlobalTheory.SplitLinear.section_range hπ q1 q2, inf_comm]`. Set `nk : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) →+ Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v)` to `nsmulAddMonoidHom k`.
+
+Establish `hcomm : (L.map σ).map (nsmulAddMonoidHom k) = (L.map nk).map σ`. Rewrite using `[AddSubgroup.map_map, AddSubgroup.map_map]`. Use `congr 1`. Conclude with `AddMonoidHom.ext fun w => (map_nsmul σ k w).symm`. Establish `e1 : ((L0 ⊓ GlobalTheory.PlaceModel.half S T c).map (nsmulAddMonoidHom k)).relIndex (L0 ⊓ GlobalTheory.PlaceModel.half S T c) = (L.map nk).relIndex L`.
+
+Rewrite using `[hM, hcomm, AddSubgroup.relIndex_map_map_of_injective _ _ inj]`. Establish `hk0 : (k : Fv D.host.F v) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hnk : ∀ w, nk w = (k : Fv D.host.F v) • w` using `fun w => (Nat.cast_smul_eq_nsmul (Fv D.host.F v) k w).symm`. Establish `nkinj : Function.Injective nk` using `fun w w' h => by`. Rewrite `h` using `[hnk, hnk]`.
+
+Conclude with `smul_right_injective _ hk0 h`. Establish `nksurj : Function.Surjective nk` using `fun w => ⟨(k : Fv D.host.F v)⁻¹ • w, by rw [hnk, smul_inv_smul₀ hk0]⟩`. Establish `e2 : (L.map nk).relIndex L = L.relIndex (L.comap nk)`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective L (L.comap nk) nkinj, AddSubgroup.map_comap_eq_self_of_surjective nksurj]`. Set `u : (Fv D.host.F v)ˣ` to `Units.mk0 _ hk0`.
+
+Establish `hH : ∀ w : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v), ((k : Fv D.host.F v) • (1 : Matrix (Fin T.rank) (Fin T.rank) (Fv D.host.F v))) * w * (1 : Matrix (Fin S.rank) (Fin S.rank) (Fv D.host.F v)) = nk w` using `fun w => by`. Rewrite using `[hnk, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul]`. Establish `hA` using `GlobalTheory.SplitLinear.relIndex_matrix_lattice D.host.F v S.rank T.rank L (L.comap nk) (fun o ho m hm => GlobalTheory.SplitLinear.section_smul hc.1 hπ q1 q2 o ho m hm) (GlobalTheory.SplitLinear.section_den hS hT hπ q1 q2) (fun w => ?_) ((k : Fv D.host.F v) • 1) 1 1 (u ^ T.rank) …`. Use `rotate_left`. Take `⟨N, hN, h1⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS hT (σ w) (GlobalTheory.PlaceDatum.infPart_of_half hinf (q2 w))`.
+
+Conclude with `⟨N, hN, by rwa [AddSubgroup.mem_comap, map_nsmul]⟩`. Rewrite using `[hH]`. Conclude with `nsmul_mem hm k`. Rewrite using `[hH]`. Both sides reduce to the same expression.
+
+Establish `hkc : (((k : v.adicCompletionIntegers D.host.F)) : Fv D.host.F v) = (k : Fv D.host.F v)` using `by simp`. Establish `hv : Valued.v (k : Fv D.host.F v) ≠ 0` using `by simpa using hk0`. Establish `h1 : Valued.v (k : Fv D.host.F v) ≤ 1` using `hkc ▸ (k : v.adicCompletionIntegers D.host.F).2`. Establish `hl : WithZero.log (Valued.v (k : Fv D.host.F v)) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hv, WithZero.exp_zero]`.
+
+Conclude with `h1`. Take `⟨e, he⟩ : ∃ e : ℕ, WithZero.log (Valued.v (k : Fv D.host.F v)) = -(e : ℤ)` from `⟨(-WithZero.log (Valued.v (k : Fv D.host.F v))).toNat, by omega⟩`. Establish `he' : Valued.v (k : Fv D.host.F v) = WithZero.exp (-(e : ℤ))`. Rewrite using `[← he, WithZero.exp_log hv]`. Establish `hcard` using `(GlobalTheory.CNorm.isAdicComplete_and_card_quotient_adicCompletionIntegers D.host.F v).2 (k : v.adicCompletionIntegers D.host.F) e (by rw [hkc]; exact he')`.
+
+Establish `hu : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV D.host.F v u = (((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ e)⁻¹`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV, Units.val_mk0, he, zpow_neg, zpow_natCast]`. Establish `h1' : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV D.host.F v 1 = 1` using `by simp [GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`. Rewrite using `[e1, e2, hcard]`. Apply `Nat.cast_injective (R := ℝ)` to reduce the goal to its premises.
+
+Rewrite using `[hA, GlobalTheory.SplitLinear.absV_pow, hu, h1']`. Use `push_cast`. Rewrite using `[one_pow, one_mul, ← pow_mul, inv_pow, inv_inv, mul_comm T.rank S.rank]`.
+-/
 theorem relIndex_nsmul_half : ∀ {D : D7} (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), Submodule.IsLattice D.host.E ΛS → Submodule.IsLattice D.host.E ΛT → ∀ (c : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsSplitIdem D c → GlobalTheory.SplitHecke.Chart c v π → ∀ k : ℕ, 0 < k → (AddSubgroup.map (nsmulAddMonoidHom k) ((latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ⊓ GlobalTheory.PlaceModel.half S T c)).relIndex ((latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ⊓ GlobalTheory.PlaceModel.half S T c) = Nat.card (v.adicCompletionIntegers D.host.F ⧸ Ideal.span {(k : v.adicCompletionIntegers D.host.F)}) ^ (S.rank * T.rank) := by
   intro D S T ΛS ΛT hS hT c v π hc hπ k hk
   haveI : CharZero (Fv D.host.F v) := algebraRat.charZero _

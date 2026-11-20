@@ -9,6 +9,19 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ hB C Cn`. Take `⟨ε', τ₀, hε', hFB, hTau⟩` from `GlobalTheory.T.canonicalFamily_periods_in_coordinates Xo c φ R hB C Cn`. Use `⟨Cn.N, fun k => Cn.ψ (MvPolynomial.X k), ε', τ₀, fun i => Cn.bd i, ?_, fun k => Cn.tor k, hTau, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[hε', Cn.cone i]`.
+
+Introduce `K _ _ ev k₀ hk₀ hemb hsep`. Take `⟨h1, h2, h3⟩` from `hsep`. Establish `hbase : ∀ a, ev ((Cn.ψ.comp MvPolynomial.C) a) ∈ k₀` using `GlobalTheory.T.canonicalFamily_base_value_mem_descended_point Cn.L C.P.D.toPre C.P.oD (Cn.ψ.comp MvPolynomial.C) (fun k => Cn.ψ (MvPolynomial.X k)) (fun k => (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X)) Cn.e Cn.data K ev k₀ hk₀ h2`. Establish `htor` using `h3 Cn.L.W (Cn.ψ.comp MvPolynomial.C) hFB hbase`. Establish `hX : ∀ k, ev (Cn.ψ (MvPolynomial.X k)) ∈ k₀`.
+
+Introduce and unpack `(i | i)`. Use `h1 i` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this]`. Conclude with `k₀.zero_mem`.
+
+Conclude with `htor i`. Establish `hall : ∀ a : MvPolynomial (Fin C.m ⊕ Fin Cn.N) Cn.L.W, ev (Cn.ψ a) ∈ k₀`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C a => exact hbase a`.
+
+Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `k₀.add_mem hp hq`. Consider the case `mul_X p k hp => rw [map_mul, map_mul]`. Conclude with `k₀.mul_mem hp (hX k)`. Establish `hft : ((MvPolynomial.C : Cn.L.W →+* MvPolynomial (Fin C.m ⊕ Fin Cn.N) Cn.L.W).comp Cn.L.b).EssFiniteType`.
+
+Use `RingHom.EssFiniteType.comp Cn.L.ft ?_` and prove the remaining obligations. Conclude with `(RingHom.FiniteType.essFiniteType (by`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance))`. Conclude with `GlobalTheory.T.closedPoint_of_values_in_small_algClosed c.F (MvPolynomial (Fin C.m ⊕ Fin Cn.N) Cn.L.W) R K (MvPolynomial.C.comp Cn.L.b) hft Cn.ψ Cn.compl ev k₀ hemb hall`.
+-/
 theorem GlobalTheory.UCanon.canon_hasRigidCoords : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R]
     [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), HasRigidCoords C := by

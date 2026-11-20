@@ -16,6 +16,29 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 
 namespace GlobalTheory.DetInv
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ Φ τ f hf ι lam hι hlat`. Take `⟨-, -, -, hθs, -, -, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `hfs : Function.Surjective f`. Introduce `y`.
+
+Take `⟨a, rfl⟩` from `hθs y`. Conclude with `⟨a ⊗ₜ 1, by rw [hf]; simp⟩`. Take `⟨⟨-, hTtop, hTrk⟩, ⟨-, hHtop, hHrk⟩⟩` from `GlobalTheory.T.sandwich_datum_eigen_multiplicity p C v O hv ε hε Λ N h hh D`. Take `⟨πT, hπT⟩` from `GlobalTheory.T.exists_theta_projection p O C Λ N h τ f Φ.eT hf`. Take `⟨πH, hπH⟩` from `GlobalTheory.T.exists_theta_projection p O C Λ N h τ f Φ.eM hf`.
+
+Take `⟨qT, hqT, hqTL⟩ : ∃ q : eig C (actT D) τ ≃ₗ[C] (Fin N → C), (∀ x, q x = πT x) ∧ ∀ x, x ∈ quotLattice C (actT D) τ ↔ ∀ i, q x i ∈ (algebraMap O C).range` from `GlobalTheory.T.theta_projection_surjective_eigen p O C Λ N h τ f (rhoTA D) Φ.eT πT hinj hθs hfs hf Φ.frameT hπT hTtop (hTrk τ)`. Take `⟨qH, hqH, hqHL⟩ : ∃ q : eig C (actH D) τ ≃ₗ[C] (Fin N → C), (∀ x, q x = πH x) ∧ ∀ x, x ∈ quotLattice C (actH D) τ ↔ ∀ i, q x i ∈ (algebraMap O C).range` from `GlobalTheory.T.theta_projection_surjective_eigen p O C Λ N h τ f D.ρM Φ.eM πH hinj hθs hfs hf Φ.frameM hπH hHtop (hHrk τ)`. Take `⟨δT, hδT, hδTL⟩` from `GlobalTheory.T.exists_det_line_coordinate_iso C O Λ h N (actT D) τ qT hqTL`. Take `⟨δH, hδH, hδHL⟩` from `GlobalTheory.T.exists_det_line_coordinate_iso C O Λ h N (actH D) τ qH hqHL`. Take `⟨l₀, hl₀v, hl₀⟩` from `GlobalTheory.T.lattice_scaling_valuation_eq C v O _ _ (detLattice C (actT D) τ N : Set (detLine C (actT D) τ N)) (detLattice C (actH D) τ N : Set (detLine C (actH D) τ N)) δT δH ι lam hv (fun w => hδTL w) (fun w => hδHL w) hlat`.
+
+Take `⟨-, -, hGρ, -, -⟩` from `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`. Establish `hG : ∀ l, D.G.map (WittVector.fontaineTheta O p) * actH D l = actT D l * D.G.map (WittVector.fontaineTheta O p)`. Introduce `l`. Establish `e` using `congrArg (fun M => M.map (WittVector.fontaineTheta O p)) (hGρ l)`. Simplify `e` using `[Matrix.map_mul, actH, actT, rhoTA, Matrix.map_map, padicToO]`.
+
+Establish `hF : ∀ l, D.F.map (WittVector.fontaineTheta O p) * actT D l = actH D l * D.F.map (WittVector.fontaineTheta O p)`. Introduce `l`. Establish `e` using `congrArg (fun M => M.map (WittVector.fontaineTheta O p)) (D.F_act l)`. Simplify `e` using `[Matrix.map_mul, actH, actT, Matrix.map_map, padicToO]`. Establish `hbmem : ∀ y : eig C (actH D) τ, bC C D y ∈ eig C (actT D) τ`.
+
+Introduce `y`. Apply `(GlobalTheory.T.intertwiner_maps_eigenspaces C O Λ h (actH D) (actT D) _ hG).1 τ` to reduce the goal to its premises. Conclude with `⟨y, y.2, rfl⟩`. Establish `hamem : ∀ x : eig C (actT D) τ, alC C D x ∈ eig C (actH D) τ`. Introduce `x`.
+
+Apply `(GlobalTheory.T.intertwiner_maps_eigenspaces C O Λ h (actT D) (actH D) _ hF).1 τ` to reduce the goal to its premises. Conclude with `⟨x, x.2, rfl⟩`. Use `⟨l₀, hl₀v, ?_⟩` and prove the remaining obligations. Introduce `X Y hX hY`. Establish `h1 : ∀ i : Fin N, (i : ℕ) < D.lieRank τ → ((qT.symm (X i) : eig C (actT D) τ) : Fin h → C) = bC C D (qH.symm (Y i))`.
+
+Introduce `i hi`. Establish `hz : qT ⟨bC C D (qH.symm (Y i)), hbmem _⟩ = X i`. Rewrite using `[hqT]`. Use `show πT (redC C D.G (qH.symm (Y i))) = X i`. Rewrite using `[GlobalTheory.T.theta_projection_intertwining p O C Λ N h f Φ.eM Φ.eT πH πT D.G Φ.G hπH hπT Φ.matG, ← hqH, qH.apply_symm_apply, hX i hi]`.
+
+Rewrite using `[← hz, qT.symm_apply_apply]`. Establish `h2 : ∀ i : Fin N, D.lieRank τ ≤ (i : ℕ) → ((qH.symm (Y i) : eig C (actH D) τ) : Fin h → C) = alC C D (qT.symm (X i))`. Introduce `i hi`. Establish `hz : qH ⟨alC C D (qT.symm (X i)), hamem _⟩ = Y i`. Rewrite using `[hqH]`.
+
+Use `show πH (redC C D.F (qT.symm (X i))) = Y i`. Rewrite using `[GlobalTheory.T.theta_projection_intertwining p O C Λ N h f Φ.eT Φ.eM πT πH D.F Φ.F hπT hπH Φ.matF, ← hqT, qT.apply_symm_apply, hY i hi]`. Rewrite using `[← hz, qH.symm_apply_apply]`. Establish `e` using `hl₀ (exteriorPower.ιMulti C N fun i => qT.symm (X i))`. Rewrite `e` using `[hι _ _ h1 h2, hδH, hδT]`.
+
+Simplify using `using e`.
+-/
 theorem iotaScalar_of_freeForm : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ (N h : ℕ) , h = Module.finrank ℤ_[p] Λ * N → ∀ (D : Datum ε h Λ) (ψ : RL p O Λ →+* RL p O Λ) (Φ : FreeForm D N ψ) (τ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta τ f → ∀ ι (lam : C), IsIota C D τ N ι → ι '' (detLattice C (actT D) τ N : Set (detLine C (actT D) τ N)) = (fun w => lam • w) '' (detLattice C (actH D) τ N : Set (detLine C (actH D) τ N)) → ∃ l₀ : C, v l₀ = v lam ∧ IotaScalar (Φ.F.map ((algebraMap O C).comp f)) (Φ.G.map ((algebraMap O C).comp f)) (D.lieRank τ) l₀ := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ N h hh D ψ Φ τ f hf ι lam hι hlat
   obtain ⟨-, -, -, hθs, -, -, -⟩ := GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε

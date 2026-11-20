@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 open ReciprocityTheory.AnForm (levi)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg | exact GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg | (intros; apply GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nef_on_fibres_add_nonneg : PB.Inputs → ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (a a' : K → ℤ) (p q : ℕ), NefOnFibres P a → (∀ k, 0 ≤ a' k) → NefOnFibres P ((q : ℤ) • a + (p : ℤ) • a') := by
   first | exact @GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg | exact GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg | (intros; apply GlobalTheory.CompanionTheory.Relay.nef_on_fibres_add_nonneg <;> assumption)

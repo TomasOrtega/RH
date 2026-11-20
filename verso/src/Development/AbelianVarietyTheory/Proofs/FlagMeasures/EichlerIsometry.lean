@@ -11,31 +11,58 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `[hf, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_l (a b y : Fin n → E) : hf L Hm (a + b) y = hf L Hm a y + hf L Hm b y := by
   simp [hf, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_l (a b y : Fin n → E) : hf L Hm (a - b) y = hf L Hm a y - hf L Hm b y := by
   simp [hf, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hf_smul_l (c : E) (a y : Fin n → E) : hf L Hm (c • a) y = c * hf L Hm a y := by
   simp [hf, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[hf, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_r (a b y : Fin n → E) : hf L Hm y (a + b) = hf L Hm y a + hf L Hm y b := by
   simp [hf, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_r (a b y : Fin n → E) : hf L Hm y (a - b) = hf L Hm y a - hf L Hm y b := by
   simp [hf, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, Finset.sum_neg_distrib]`.
+-/
 theorem hf_neg_r (a y : Fin n → E) : hf L Hm y (-a) = - hf L Hm y a := by
   simp [hf, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, Finset.sum_neg_distrib]`.
+-/
 theorem hf_neg_l (a y : Fin n → E) : hf L Hm (-a) y = - hf L Hm a y := by
   simp [hf, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hf_smul_r (c : E) (a y : Fin n → E) : hf L Hm y (c • a) = L.cj c * hf L Hm y a := by
   simp only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `h' : ∀ i j, L.cj (Hm j i) = Hm i j` using `fun i j => congrFun (congrFun h i) j`. Simplify using `only [hf, map_sum, map_mul, L.cj_cj, h']`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hf_cj {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (x y : Fin n → E) :
     L.cj (hf L Hm x y) = hf L Hm y x := by
   have h' : ∀ i j, L.cj (Hm j i) = Hm i j := fun i j => congrFun (congrFun h i) j
@@ -50,6 +77,9 @@ def eichL (x u : Fin n → E) (s : E) : (Fin n → E) →ₗ[E] (Fin n → E) wh
   map_smul' c a := by
     simp only [eich, hf_smul_l, RingHom.id_apply]; module
 
+/- English proof (translation)
+Establish `hu' : hf L Hm x u = 0` using `by rw [← hf_cj L h, hu, map_zero]`. Simplify using `only [eich, hf_add_l, hf_sub_l, hf_smul_l, hf_neg_r, hx, hu, hu', ← hs]`. Use `module`.
+-/
 theorem eich_inv {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (x u : Fin n → E) (s : E)
     (hx : hf L Hm x x = 0) (hu : hf L Hm u x = 0) (hs : s + L.cj s = hf L Hm u u) (v : Fin n → E) :
     eich L Hm x (-u) (L.cj s) (eich L Hm x u s v) = v := by
@@ -57,6 +87,9 @@ theorem eich_inv {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (x u : Fin n 
   simp only [eich, hf_add_l, hf_sub_l, hf_smul_l, hf_neg_r, hx, hu, hu', ← hs]
   module
 
+/- English proof (translation)
+Establish `hu' : hf L Hm x u = 0` using `by rw [← hf_cj L h, hu, map_zero]`. Simplify using `only [eich, hf_add_l, hf_sub_l, hf_smul_l, hf_add_r, hf_sub_r, hf_smul_r, hx, hu, hu', ← hs, hf_cj L h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eich_isom {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (x u : Fin n → E) (s : E)
     (hx : hf L Hm x x = 0) (hu : hf L Hm u x = 0) (hs : s + L.cj s = hf L Hm u u) (v w : Fin n → E) :
     hf L Hm (eich L Hm x u s v) (eich L Hm x u s w) = hf L Hm v w := by
@@ -67,6 +100,11 @@ theorem eich_isom {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm) (x u : Fin n
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L n Hm hH x u s hx hu hs`. Establish `h1` using `eich_inv L hH.1 x u s hx hu hs`. Establish `h2` using `eich_inv L hH.1 x (-u) (L.cj s) hx (by rw [hf_neg_l, hu, neg_zero]) (by rw [L.cj_cj, hf_neg_l, hf_neg_r, neg_neg, add_comm, hs])`. Simplify using `only [neg_neg, L.cj_cj] at h2`. Use `⟨{ eichL L Hm x u s with invFun := eich L Hm x (-u) (L.cj s) left_inv := h1 right_inv := h2 }, ?_, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations.
+
+Conclude with `fun v w => eich_isom L hH.1 x u s hx hu hs v w`.
+-/
 theorem eichler_isometry : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ (x u : Fin n → E) (s : E), hf L Hm x x = 0 → hf L Hm u x = 0 → s + L.cj s = hf L Hm u u → ∃ g ∈ isomG L Hm, (∀ v, g v = eich L Hm x u s v) ∧ ∀ v, g⁻¹ v = eich L Hm x (-u) (L.cj s) v := by
   intro F _ _ _ _ _ E _ _ _ L n Hm hH x u s hx hu hs
   have h1 := eich_inv L hH.1 x u s hx hu hs

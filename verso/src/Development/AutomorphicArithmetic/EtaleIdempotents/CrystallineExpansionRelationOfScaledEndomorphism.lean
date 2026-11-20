@@ -6,6 +6,39 @@ set_option backward.isDefEq.respectTransparency false
 
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison
 
+/- English proof (translation)
+Use `set τ := Ring.inverse (c t) with hτdef`. Establish `hτ : τ * c t = 1` using `Ring.inverse_mul_cancel _ ht`. Establish `hpow : ∀ (m : ℕ) (x : C), (φ.toLinearMap ^ m) x = (⇑φ)^[m] x`. Introduce `m x`. Rewrite using `[Module.End.pow_apply]`.
+
+Both sides reduce to the same expression. Establish `hic : ∀ (m : ℕ) (a : R), (⇑φ)^[m] (c a) = c (φR^[m] a)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a`.
+
+Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `a`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, hφ, ih]`. Establish `hit : ∀ m : ℕ, φR^[m] t = (L : R) ^ m * t`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_mul, map_pow, map_natCast, hφt, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hτm : ∀ m : ℕ, (⇑φ)^[m] τ * ((L : C) ^ m * c t) = 1`. Introduce `m`. Establish `h2` using `congrArg (⇑φ)^[m] hτ`. Rewrite `h2` using `[iterate_map_mul, iterate_map_one, hic, hit, map_mul, map_pow, map_natCast]`.
+
+Conclude with `h2`. Establish `nat_unit : ∀ a : ℕ, (a : F) ≠ 0 → IsUnit (a : C)`. Introduce `a ha`. Use `(IsUnit.mk0 _ ha).map (algebraMap F C)` as an intermediate fact. Simplify using `using this`.
+
+Use `set u : C := (κ : C) * (L : C) ^ (s + f * (n + N) * r) * c t ^ r with hu`. Establish `huu : IsUnit u` using `((nat_unit κ hκ).mul ((nat_unit L hL).pow _)).mul (ht.pow _)`. Take `⟨u', hu'⟩` from `huu.exists_left_inv`. Establish `hinj : ∀ x : V ⊗[F] C, LinearMap.lTensor V (LinearMap.mulLeft F u) x = 0 → x = 0`. Introduce `x hx`.
+
+Establish `hl : ∀ y : V ⊗[F] C, LinearMap.lTensor V (LinearMap.mulLeft F u') (LinearMap.lTensor V (LinearMap.mulLeft F u) y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [← mul_assoc, hu']`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[← hl x, hx, map_zero]`. Establish `hsc : ∀ (i : Fin (n + 1)) (x : R), u * (⇑φ)^[f * (n - i + N)] (c x * τ ^ r) = (L ^ s : ℕ) • c ((κ : R) * ((L : R) ^ (f * (i : ℕ) * r) * φR^[f * (n - i + N)] x))`. Introduce `i x`. Establish `hi : (i : ℕ) ≤ n` using `Nat.lt_succ_iff.1 i.2`.
+
+Establish `hexp : f * (n + N) * r = f * (n - i + N) * r + f * (i : ℕ) * r`. Establish `h1 : n + N = (n - i + N) + i` using `by omega`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[iterate_map_mul, iterate_map_pow, hic, nsmul_eq_mul, Nat.cast_pow, map_mul, map_mul, map_natCast, map_pow, map_natCast]`.
+
+Establish `h` using `hτm (f * (n - i + N))`. Rewrite using `[hu, hexp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, pow_add, pow_add, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by`. Rewrite using `[h, one_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ (i : Fin (n + 1)) (k : ι), σ i • (A i (v k) ⊗ₜ[F] (u * (⇑φ)^[f * (n - i + N)] (c (d k) * τ ^ r))) = w i k ⊗ₜ[F] (c ((κ : R) * (((σ i : ℤ) : R) * (L : R) ^ (f * (i : ℕ) * r) * φR^[f * (n - i + N)] (d k))) * τ ^ 0)`. Introduce `i k`.
+
+Establish `hy : c ((κ : R) * (((σ i : ℤ) : R) * (L : R) ^ (f * (i : ℕ) * r) * φR^[f * (n - i + N)] (d k))) = σ i • c ((κ : R) * ((L : R) ^ (f * (i : ℕ) * r) * φR^[f * (n - i + N)] (d k)))`. Rewrite using `[zsmul_eq_mul, ← map_intCast c, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsc, hw, pow_zero, mul_one, hy]`.
+
+Generalize the expression as in `c ((κ : R) * ((L : R) ^ (f * (i : ℕ) * r) * φR^[f * (n - i + N)] (d k))) = y`. Generalize the expression as in `A i (v k) = a`. Establish `e1 : a ⊗ₜ[F] ((L ^ s : ℕ) • y) = (L ^ s : ℕ) • (a ⊗ₜ[F] y)` using `map_nsmul (TensorProduct.mk F V C a) _ y`. Establish `e2 : ((L ^ s : ℕ) • a) ⊗ₜ[F] (σ i • y) = (L ^ s : ℕ) • (a ⊗ₜ[F] (σ i • y))` using `map_nsmul ((TensorProduct.mk F V C).flip (σ i • y)) _ a`. Establish `e3 : a ⊗ₜ[F] (σ i • y) = σ i • (a ⊗ₜ[F] y)` using `map_zsmul (TensorProduct.mk F V C a) _ y`.
+
+Rewrite using `[e1, e2, e3, smul_comm]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hvec, Fintype.sum_prod_type, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_sum, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, LinearMap.lTensor_tmul, LinearMap.mulLeft_apply, hpow, hterm i k]`.
+-/
 private theorem core {F R C : Type} {V : Type*} [Field F] [AddCommGroup V] [Module F V] [CommRing R] [CommRing C] [Algebra F C]
     (c : R →+* C) (φ : C →ₐ[F] C) (φR : R →+* R) (t : R) (ht : IsUnit (c t)) (hφ : ∀ a, φ (c a) = c (φR a))
     (L : ℕ) (hL : (L : F) ≠ 0) (hφt : φR t = (L : R) * t) (f n N r s κ : ℕ) (hκ : (κ : F) ≠ 0)
@@ -103,9 +136,15 @@ private theorem core {F R C : Type} {V : Type*} [Field F] [AddCommGroup V] [Modu
 
 section
 variable {l : ℕ} [Fact l.Prime]
+/- English proof (translation)
+The claim follows from `ACris.phi_periodT_eq_mul (untilt_epsilon (p := l))`.
+-/
 private theorem crisFrobenius_cyclotomicPeriod : phiA l (tA l) = (l : Acris l) * tA l := ACris.phi_periodT_eq_mul (untilt_epsilon (p := l))
 end
 
+/- English proof (translation)
+Introduce `l _ K B M j f n N r s κ hκ ι _ A v c w σ hw hv`. Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hκ' : (κ : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hκ`. Simplify using `only [vec] at hv ⊢`. Conclude with `core (F := ℚ_[l]) (V := M.V j) B.c B.φ (phiA l) (tA l) B.t_unit B.φ_c l hl crisFrobenius_cyclotomicPeriod f n N r s κ hκ' A (fun k => M.toV j (v k)) c (fun i k => M.toV j (w i k)) σ hw hv`.
+-/
 theorem UpperTheory.crystalline_expansion_relation_of_scaled_endomorphisms :
     ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (B : PB l K) (M : Model l K) (j f n N r s κ : ℕ) (_ : κ ≠ 0)
         {ι : Type} [Fintype ι] (A : Fin (n + 1) → (M.V j →ₗ[ℚ_[l]] M.V j)) (v : ι → M.T j) (c : ι → Acris l)

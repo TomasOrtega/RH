@@ -47,6 +47,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.GalN.V
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ ι a π hπ`. Use `choose HTF hHTF using fun τ : F →+* Qbar l => exists_hodgeTate π hπ (InfinitePlace.mk (ι.toRingHom.comp τ))`. Establish `key : ∀ (τ : F →+* Qbar l) (m : Multiset ℂ), π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) m → (HTF τ).map (fun n : ℤ => (n : ℂ)) = m.map fun z => ((a : ℂ) - 1) / 2 - z`. Introduce `τ m hm`. Take `⟨m0, hm0, e⟩` from `hHTF τ`.
+
+Rewrite using `[e, TR.CuspSub.HasInfChar.unique hm0 hm]`. Use `⟨HTF, fun τ => ?_, key, ?_⟩` and prove the remaining obligations. Take `⟨m0, hm0, e⟩` from `hHTF τ`. Use `congrArg Multiset.card e` as an intermediate fact. Simplify `this` using `[hm0.1]`.
+
+Introduce `K _ _ _ _ _ _ _ h2 P hBC χ r wt HT hG`. Establish `hK : ∀ τ : K →+* Qbar l, HT τ = HTF (τ.comp (algebraMap F K))`. Introduce `τ`. Take `⟨m0, hm0, e⟩` from `hHTF (τ.comp (algebraMap F K))`. Establish `h1 : P.HasInfChar (ι.toRingHom.comp τ) m0` using `hBC.inf _ _ hm0`.
+
+Establish `h3 : (CG.mk P).infChar (ι.toRingHom.comp τ) = m0` using `CG.HasInfChar.infChar_eq h1`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[hG.weights τ, h3, e]`. Use `⟨hK, fun τ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra F (Qbar l) := τ.toAlgebra`.
+
+Use `haveI : Module.Finite F K := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsAlgebraic F K := Algebra.IsAlgebraic.of_finite F K`. Set `τ' : K →ₐ[F] Qbar l` to `IsAlgClosed.lift`. Establish `hτ' : (τ' : K →+* Qbar l).comp (algebraMap F K) = τ` using `RingHom.ext fun x => τ'.commutes x`. Establish `hc : ((τ' : K →+* Qbar l).comp (IsCMField.complexConj K).toRingEquiv.toRingHom).comp (algebraMap F K) = τ`.
+
+Rewrite using `[← hτ']`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Conclude with `congrArg τ' (complexConj_algebraMap (K := K) x)`. Use `hG.weights_conj (τ' : K →+* Qbar l)` as an intermediate fact.
+
+Rewrite `this` using `[hK, hK, hc, hτ']`. Conclude with `this`.
+-/
 theorem hodgeTate : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a), π.IsRegAlg → ∃ HTF : (F →+* Qbar l) → Multiset ℤ, (∀ τ, (HTF τ).card = a) ∧ (∀ (τ : F →+* Qbar l) (m : Multiset ℂ), π.HasInfChar (InfinitePlace.mk (ι.toRingHom.comp τ)) m → (HTF τ).map (fun n : ℤ => (n : ℂ)) = m.map fun z => ((a : ℂ) - 1) / 2 - z) ∧ ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω], Module.finrank F K = 2 → ∀ (P : CuspSub K a), IsBC π P → ∀ (χ : HChar (maximalRealSubfield K)) (r : G K Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (K →+* Qbar l) → Multiset ℤ), UpperTheory.GalN.IsGalU P χ ι r wt HT → (∀ τ : K →+* Qbar l, HT τ = HTF (τ.comp (algebraMap F K))) ∧ ∀ τ : F →+* Qbar l, HTF τ = (HTF τ).map (wt - ·) := by
   intro F Ω _ _ _ _ _ _ l _ ι a π hπ
   choose HTF hHTF using fun τ : F →+* Qbar l => exists_hodgeTate π hπ (InfinitePlace.mk (ι.toRingHom.comp τ))

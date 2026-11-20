@@ -10,6 +10,17 @@ namespace PI.VolSemiDirect.W.Lc
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub NumberField IsDedekindDomain MeasureTheory
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ`. Take `⟨htr, ht2, hlc, hsc⟩` from `hT F E`. Establish `: Module.Finite F E` using `finite_nf F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `hs : Continuous (sigR (AF F) σ)` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (sigL (AF F) σ)`.
+
+Establish `hcl : IsClosed ((HR (AF F) σ J : Subgroup (GL (Fin M) (AF F ⊗[F] E))) : Set (GL (Fin M) (AF F ⊗[F] E)))`. Establish `hc : Continuous fun g : GL (Fin M) (AF F ⊗[F] E) => Formalism.UG.cT (sigR (AF F) σ) (g : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) * JR (AF F) J * (g : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))`. Unfold `Formalism.UG.cT`. Establish `h0 : Continuous fun g : GL (Fin M) (AF F ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `Units.continuous_val`. Conclude with `(((h0.matrix_map hs).matrix_transpose).matrix_mul continuous_const).matrix_mul h0`.
+
+Conclude with `isClosed_eq hc continuous_const`. Establish `hMlc : LocallyCompactSpace (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin M → Fin M → AF F ⊗[F] E))`. Establish `hMsc : SecondCountableTopology (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → AF F ⊗[F] E))`. Establish `hMt2 : T2Space (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))` using `inferInstanceAs (T2Space (Fin M → Fin M → AF F ⊗[F] E))`. Establish `hMosc : SecondCountableTopology (Matrix (Fin M) (Fin M) (AF F ⊗[F] E))ᵐᵒᵖ` using `(MulOpposite.opHomeomorph (M := Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).symm.isEmbedding.secondCountableTopology`.
+
+Establish `hGe` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin M) (Fin M) (AF F ⊗[F] E))`. Establish `hGlc : LocallyCompactSpace (GL (Fin M) (AF F ⊗[F] E))` using `hGe.locallyCompactSpace`. Establish `hGsc : SecondCountableTopology (GL (Fin M) (AF F ⊗[F] E))` using `hGe.isEmbedding.secondCountableTopology`. Establish `hGt2 : T2Space (GL (Fin M) (AF F ⊗[F] E))` using `hGe.isEmbedding.t2Space`. Establish `r : LCSC (HR (AF F) σ J)` using `⟨hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace, hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstance, inferInstance⟩`.
+
+Conclude with `r`.
+-/
 theorem lcscHA_of (hT : TensTop) : LcscHA := by
   intro F E _ _ _ _ _ σ hCM M J hJ
   obtain ⟨htr, ht2, hlc, hsc⟩ := hT F E

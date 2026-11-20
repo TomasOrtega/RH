@@ -12,6 +12,15 @@ open scoped TensorProduct
 
 namespace RestrictedProductFiber
 
+/- English proof (translation)
+Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Establish `hK' : IsCompact (K ∩ f ⁻¹' {ι b})` using `hK.inter_right hC`. Take `⟨φ, h1, hφc, hφU, _h01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK' hU (Set.inter_subset_right.trans hCU)`. Establish `hint : Integrable φ (fib b)` using `(h.2.2 φ φ.continuous hφc hφU).1 b hb`. Establish `hnull : fib b (f ⁻¹' {ι b} ∩ U)ᶜ = 0` using `h.1 b`.
+
+Establish `hM : fib b (K ∩ f ⁻¹' {ι b}) ≤ ∫⁻ x, ENNReal.ofReal (φ x) ∂(fib b)`. Establish `hm : AEMeasurable (fun x => ENNReal.ofReal (φ x)) (fib b)` using `(ENNReal.continuous_ofReal.comp φ.continuous).measurable.aemeasurable`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, h1 hx, Pi.one_apply, ENNReal.ofReal_one, le_refl]`.
+
+Use `_ = 1 * fib b {x | 1 ≤ ENNReal.ofReal (φ x)} := (one_mul _).symm`. Use `_ ≤ ∫⁻ x, ENNReal.ofReal (φ x) ∂(fib b) := mul_meas_ge_le_lintegral₀ hm 1`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hx2 : x ∈ f ⁻¹' {ι b} ∩ U`.
+
+Conclude with `Or.inl ⟨hx, hx2.1⟩`. Conclude with `Or.inr hx2`. Use `_ ≤ fib b (K ∩ f ⁻¹' {ι b}) + fib b (f ⁻¹' {ι b} ∩ U)ᶜ := measure_union_le _ _`. Use `_ = fib b (K ∩ f ⁻¹' {ι b}) := by rw [hnull, add_zero]`. Use `_ < ⊤ := lt_of_le_of_lt hM hint.lintegral_lt_top`.
+-/
 theorem finite_on_compacts {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V]
     [OpensMeasurableSpace V] [LocallyCompactSpace V] [T2Space V] [TopologicalSpace X]
     [MeasurableSpace X] (μ : Measure V) (f : V → Y) (ι : X → Y) (U : Set V) (hU : IsOpen U)
@@ -42,6 +51,13 @@ theorem finite_on_compacts {V X Y : Type} [TopologicalSpace V] [MeasurableSpace 
     _ = fib b (K ∩ f ⁻¹' {ι b}) := by rw [hnull, add_zero]
     _ < ⊤ := lt_of_le_of_lt hM hint.lintegral_lt_top
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, _h4, h5, _h6, h7⟩` from `hTF`. Establish `: BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: T2Space (Matrix (Fin a) (Fin a) (R ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → R ⊗[F] E))`. Establish `hC : IsClosed (gramR R σ J ⁻¹' {((hermOf R σ T hT : HermR R σ a) : Matrix (Fin a) (Fin a) (R ⊗[F] E))})` using `isClosed_singleton.preimage h5`. Establish `hCU : gramR R σ J ⁻¹' {((hermOf R σ T hT : HermR R σ a) : Matrix (Fin a) (Fin a) (R ⊗[F] E))} ⊆ {X | LinearIndependent (R ⊗[F] E) X}`.
+
+Introduce `X hX`. Establish `hX' : gramR R σ J X = ((hermOf R σ T hT : HermR R σ a) : Matrix (Fin a) (Fin a) (R ⊗[F] E))` using `hX`. Establish `hu` using `isUnit_det_hermOf R σ T hT hdet`. Rewrite `hu` using `[← hX']`. Conclude with `linIndep_of_isUnit_det R σ J X hu`.
+
+Establish `hfin` using `finite_on_compacts μ (gramR R σ J) Subtype.val _ h7 ν Set.univ fib h (hermOf R σ T hT) (Set.mem_univ _) hC hCU`. Establish `: SigmaCompactSpace (Fin a → Fin M → R ⊗[F] E)` using `sigmaCompactSpace_of_locallyCompact_secondCountable`. Conclude with `⟨inferInstance, fun Φ hc hs => hc.integrable_of_hasCompactSupport hs⟩`.
+-/
 theorem fib_props {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (a : ℕ) (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] (hTF : TensFacts F E σ M J a R)
@@ -75,6 +91,9 @@ theorem fib_props {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensio
 
 end RestrictedProductFiber
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨hI, hV⟩` from `tensAll_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Use `⟨fun μ ν fib h => RestrictedProductFiber.fib_props σ J a (Ainf F) hI _ hT hdet μ ν fib h, fun v μ ν fib h => RestrictedProductFiber.fib_props σ J a (Fv F v) (hV v) _ hT hdet μ ν fib h⟩` and prove the remaining obligations.
+-/
 theorem rpFib_holds : RPFib := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)

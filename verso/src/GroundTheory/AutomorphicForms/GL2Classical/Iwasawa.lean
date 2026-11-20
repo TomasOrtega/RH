@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GL2Classical
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_fin_two_of, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_fin_two_kmat (w : ℂ) : (!![w.re, -w.im; w.im, w.re] : Matrix (Fin 2) (Fin 2) ℝ).det =
     Complex.normSq w := by
   rw [Matrix.det_fin_two_of, Complex.normSq_apply]
@@ -19,27 +22,45 @@ def kGL (w : ℂ) (hw : w ≠ 0) : GL (Fin 2) ℝ :=
     exact (Complex.normSq_pos.2 hw).ne')
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_kGL (w : ℂ) (hw : w ≠ 0) :
     (kGL w hw : Matrix (Fin 2) (Fin 2) ℝ) = !![w.re, -w.im; w.im, w.re] :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_kGL, det_fin_two_kmat]`.
+-/
 theorem det_kGL (w : ℂ) (hw : w ≠ 0) : (kGL w hw).det.val = Complex.normSq w := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, coe_kGL, det_fin_two_kmat]
 
+/- English proof (translation)
+Rewrite using `[det_kGL]`. Conclude with `Complex.normSq_pos.2 hw`.
+-/
 theorem det_kGL_pos (w : ℂ) (hw : w ≠ 0) : 0 < (kGL w hw).det.val := by
   rw [det_kGL]
   exact Complex.normSq_pos.2 hw
 
+/- English proof (translation)
+Rewrite using `[denom]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 theorem denom_kGL (w : ℂ) (hw : w ≠ 0) : denom (kGL w hw) (I : ℂ) = w := by
   rw [denom]
   apply Complex.ext <;> simp
 
+/- English proof (translation)
+Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_smul_of_det_pos (det_kGL_pos w hw), denom_kGL, div_eq_iff hw]`. Rewrite using `[num]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 theorem kGL_smul_I (w : ℂ) (hw : w ≠ 0) : kGL w hw • I = I := by
   apply UpperHalfPlane.ext
   rw [coe_smul_of_det_pos (det_kGL_pos w hw), denom_kGL, div_eq_iff hw]
   rw [num]
   apply Complex.ext <;> simp
 
+/- English proof (translation)
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_kGL, coe_kGL, coe_kGL]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem kGL_mul (w₁ w₂ : ℂ) (hw₁ : w₁ ≠ 0) (hw₂ : w₂ ≠ 0) :
     kGL w₁ hw₁ * kGL w₂ hw₂ = kGL (w₁ * w₂) (mul_ne_zero hw₁ hw₂) := by
   refine Matrix.GeneralLinearGroup.ext fun i j => ?_
@@ -52,26 +73,44 @@ def borelGL (z : ℍ) : GL (Fin 2) ℝ :=
     simpa using z.im_pos.ne')
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_borelGL (z : ℍ) :
     (borelGL z : Matrix (Fin 2) (Fin 2) ℝ) = !![z.im, z.re; 0, 1] :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_borelGL, Matrix.det_fin_two_of]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_borelGL (z : ℍ) : (borelGL z).det.val = z.im := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, coe_borelGL, Matrix.det_fin_two_of]
   ring
 
+/- English proof (translation)
+Rewrite using `[det_borelGL]`. Conclude with `z.im_pos`.
+-/
 theorem det_borelGL_pos (z : ℍ) : 0 < (borelGL z).det.val := by
   rw [det_borelGL]
   exact z.im_pos
 
+/- English proof (translation)
+Simplify using `[denom]`.
+-/
 theorem denom_borelGL (z : ℍ) (w : ℂ) : denom (borelGL z) w = 1 := by
   simp [denom]
 
+/- English proof (translation)
+Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_smul_of_det_pos (det_borelGL_pos z), denom_borelGL, div_one, num]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 theorem borelGL_smul_I (z : ℍ) : borelGL z • I = z := by
   apply UpperHalfPlane.ext
   rw [coe_smul_of_det_pos (det_borelGL_pos z), denom_borelGL, div_one, num]
   apply Complex.ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[UpperHalfPlane.re, coe_smul_of_det_pos hpos, Complex.div_re]`. Simplify using `only [num, denom, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, coe_I, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_smul_I {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) :
     (h • I).re = ((h : Matrix (Fin 2) (Fin 2) ℝ) 0 0 * h 1 0 + h 0 1 * h 1 1) /
       Complex.normSq (denom h (I : ℂ)) := by
@@ -80,10 +119,22 @@ theorem re_smul_I {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) :
     Complex.ofReal_re, Complex.ofReal_im, coe_I, Complex.I_re, Complex.I_im]
   ring
 
+/- English proof (translation)
+Rewrite using `[im_smul_eq_div_normSq, abs_of_pos hpos, I_im, mul_one]`.
+-/
 theorem im_smul_I {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) :
     (h • I).im = h.det.val / Complex.normSq (denom h (I : ℂ)) := by
   rw [im_smul_eq_div_normSq, abs_of_pos hpos, I_im, mul_one]
 
+/- English proof (translation)
+Establish `hN : Complex.normSq (denom h (I : ℂ)) ≠ 0` using `(Complex.normSq_pos.2 (denom_ne_zero h I)).ne'`. Establish `hN' : Complex.normSq (denom h (I : ℂ)) = (h : Matrix (Fin 2) (Fin 2) ℝ) 1 0 ^ 2 + h 1 1 ^ 2`. Simplify using `[denom, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : h.det.val = (h : Matrix (Fin 2) (Fin 2) ℝ) 0 0 * h 1 1 - h 0 1 * h 1 0`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Establish `hre` using `re_smul_I hpos`. Establish `him` using `im_smul_I hpos`. Rewrite `hre`, `him` using `[hN']`. Establish `hD : (h : Matrix (Fin 2) (Fin 2) ℝ) 1 0 ^ 2 + h 1 1 ^ 2 ≠ 0` using `hN' ▸ hN`.
+
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_borelGL, coe_kGL]`. Establish `hdr : (denom h (I : ℂ)).re = (h : Matrix (Fin 2) (Fin 2) ℝ) 1 1` using `by simp [denom]`. Establish `hdi : (denom h (I : ℂ)).im = (h : Matrix (Fin 2) (Fin 2) ℝ) 1 0` using `by simp [denom]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+
+Apply the tactic sequence `simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Fin.zero_eta, Fin.mk_one, hdr, hdi, hre, him, hdet] <;>`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem eq_borelGL_mul_kGL {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) :
     h = borelGL (h • I) * kGL (denom h (I : ℂ)) (denom_ne_zero h I) := by
   have hN : Complex.normSq (denom h (I : ℂ)) ≠ 0 :=

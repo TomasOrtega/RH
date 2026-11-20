@@ -9,5 +9,8 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.FrameGlue.glue | exact GlobalTheory.OmegaHT.FrameGlue.glue | (intros; apply GlobalTheory.OmegaHT.FrameGlue.glue <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.OmegaGlueStatement : GlobalTheory.OmegaHT.GlueSt := by
   first | exact @GlobalTheory.OmegaHT.FrameGlue.glue | exact GlobalTheory.OmegaHT.FrameGlue.glue | (intros; apply GlobalTheory.OmegaHT.FrameGlue.glue <;> assumption)

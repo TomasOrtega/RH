@@ -5,6 +5,17 @@ namespace Formalism.LogVandermondeBounds.StandardLattice
 
 open Finset
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `lt_of_lt_of_le hm hx`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le hm hy`. Establish `h1 : Real.log x - Real.log y ≤ (x - y) / y`. Use `Real.log_le_sub_one_of_pos (div_pos hx0 hy0)` as an intermediate fact. Rewrite `this` using `[Real.log_div hx0.ne' hy0.ne']`.
+
+Rewrite using `[sub_div, div_self hy0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.log y - Real.log x ≤ (y - x) / x`. Use `Real.log_le_sub_one_of_pos (div_pos hy0 hx0)` as an intermediate fact. Rewrite `this` using `[Real.log_div hy0.ne' hx0.ne']`.
+
+Rewrite using `[sub_div, div_self hx0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : 0 ≤ e` using `le_trans (abs_nonneg _) hxy`. Establish `ha` using `abs_le.mp hxy`. Establish `h3 : (x - y) / y ≤ e / m`.
+
+Rewrite using `[div_le_div_iff₀ hy0 hm]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (y - x) / x ≤ e / m`. Rewrite using `[div_le_div_iff₀ hx0 hm]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`.
+-/
 lemma abs_log_sub_le_of {x y m e : ℝ} (hm : 0 < m) (hx : m ≤ x) (hy : m ≤ y)
     (hxy : |x - y| ≤ e) : |Real.log x - Real.log y| ≤ e / m := by
   have hx0 : 0 < x := lt_of_lt_of_le hm hx
@@ -27,6 +38,9 @@ lemma abs_log_sub_le_of {x y m e : ℝ} (hm : 0 < m) (hx : m ≤ x) (hy : m ≤ 
     nlinarith
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+The claim follows from `|Real.log x - Real.log y| ≤ Real.log (1 + e) := by have hx0 : 0 < x := by linarith have hy0 : 0 < y := by linarith have ha := abs_le.mp hxy have he : 0 ≤ e := le_trans (abs_nonneg _) hxy have h1 : Real.log x - Real.log y ≤ Real.log (1 + e) := by rw [← Real.log_div hx0.ne' hy0.ne' …`.
+-/
 lemma abs_log_sub_le_log {x y e : ℝ} (hx : 1 ≤ x) (hy : 1 ≤ y) (hxy : |x - y| ≤ e) :
     |Real.log x - Real.log y| ≤ Real.log (1 + e) := by
   have hx0 : 0 < x := by linarith
@@ -43,6 +57,13 @@ lemma abs_log_sub_le_log {x y e : ℝ} (hx : 1 ≤ x) (hy : 1 ≤ y) (hxy : |x -
     rw [div_le_iff₀ hx0]; nlinarith
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `b hb _`. Establish `: b = a` using `Fin.ext (by omega)`.
+
+Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `b hb hbn`. Set `c : Fin (n + 2)` to `⟨a.val + m, by omega⟩`.
+
+Establish `h1` using `ih c rfl (by simp [c]; omega)`. Establish `h2` using `h c b (by simp [c]; omega) (by simp [c]; omega) hbn`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma gap_sum {n : ℕ} (u : Fin (n + 2) → ℝ) (g : ℝ)
     (h : ∀ i j : Fin (n + 2), 1 ≤ i.val → j.val = i.val + 1 → j.val ≤ n → g ≤ u i - u j)
     (a : Fin (n + 2)) (ha : 1 ≤ a.val) :
@@ -61,6 +82,11 @@ lemma gap_sum {n : ℕ} (u : Fin (n + 2) → ℝ) (g : ℝ)
     push_cast
     linarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Distinguish the cases in `h : a = a0`. Simplify using `only [h, true_and, if_true]`.
+
+Rewrite using `[Finset.sum_ite_eq']`. Apply the tactic sequence `split_ifs <;> linarith`. Simplify using `[h]`. Use `_ = L := by simp`.
+-/
 lemma ind_sum_le {N : ℕ} (a0 b0 : Fin N) (L : ℝ) (hL : 0 ≤ L) :
     ∑ a, ∑ b ∈ univ.filter (fun b => a < b), (if a = a0 ∧ b = b0 then L else 0) ≤ L := by
   calc ∑ a, ∑ b ∈ univ.filter (fun b => a < b), (if a = a0 ∧ b = b0 then L else 0)
@@ -74,6 +100,13 @@ lemma ind_sum_le {N : ℕ} (a0 b0 : Fin N) (L : ℝ) (hL : 0 ≤ L) :
         · simp [h]
     _ = L := by simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_image (f := fun i : ℕ => (1 : ℝ) / ((i : ℝ) + 1)) (g := fun b : Fin N => b.val - a.val - 1)]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hi`. Take `⟨b, _, rfl⟩` from `hi`.
+
+Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `i _ _`. Check the signs of the components of the expression. Introduce `b hb c hc hbc`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hb hc`. Establish `hb' : a.val < b.val` using `hb`. Establish `hc' : a.val < c.val` using `hc`. Simplify using `only at hbc`. Conclude with `Fin.ext (by omega)`.
+-/
 lemma inner_harm_le {N : ℕ} (a : Fin N) :
     ∑ b ∈ univ.filter (fun b => a < b), (1 : ℝ) / (((b.val - a.val - 1 : ℕ) : ℝ) + 1) ≤
       ∑ i ∈ range N, (1 : ℝ) / ((i : ℝ) + 1) := by
@@ -92,12 +125,18 @@ lemma inner_harm_le {N : ℕ} (a : Fin N) :
     simp only at hbc
     exact Fin.ext (by omega)
 
+/- English proof (translation)
+Use `harmonic_le_one_add_log N` as an intermediate fact. Simplify using `only [harmonic, Rat.cast_sum, Rat.cast_inv, Nat.cast_add, Nat.cast_one] at this`. Simplify `this` using `[one_div]`.
+-/
 lemma harm_le (N : ℕ) : ∑ i ∈ range N, (1 : ℝ) / ((i : ℝ) + 1) ≤ 1 + Real.log N := by
   have := harmonic_le_one_add_log N
   simp only [harmonic, Rat.cast_sum, Rat.cast_inv, Nat.cast_add,
     Nat.cast_one] at this
   simpa [one_div] using this
 
+/- English proof (translation)
+Establish `h' : a.val < b.val` using `h`. Establish `: b.val - a.val - 1 + 1 + a.val = b.val` using `by omega`. Establish `h2 : (((b.val - a.val - 1 : ℕ) : ℝ) + 1) + (a.val : ℝ) = b.val` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma dist_cast {N : ℕ} (a b : Fin N) (h : a < b) :
     ((b.val - a.val - 1 : ℕ) : ℝ) + 1 = (b.val : ℝ) - a.val := by
   have h' : a.val < b.val := h
@@ -105,6 +144,9 @@ lemma dist_cast {N : ℕ} (a b : Fin N) (h : a < b) :
   have h2 : (((b.val - a.val - 1 : ℕ) : ℝ) + 1) + (a.val : ℝ) = b.val := by exact_mod_cast this
   linarith
 
+/- English proof (translation)
+The claim follows from `|Real.log (u a - u b) - Real.log (u' a - u' b)| ≤ 2 / (((b.val - a.val - 1 : ℕ) : ℝ) + 1) + ((if a = 0 ∧ b = ⟨1, by omega⟩ then Real.log (1 + Δ) else 0) + (if a = ⟨n, by omega⟩ ∧ b = Fin.last (n + 1) then Real.log (1 + Δ) else 0)) := by obtain ⟨hΔ, h1, h1', hcl, h0, hl, hg⟩ := hw …`.
+-/
 lemma pair_bound {n : ℕ} {Δ : ℝ} {u u' : Fin (n + 2) → ℝ} (hw : WordPair n Δ u u')
     (a b : Fin (n + 2)) (hab : a < b) :
     |Real.log (u a - u b) - Real.log (u' a - u' b)| ≤
@@ -218,6 +260,13 @@ lemma pair_bound {n : ℕ} {Δ : ℝ} {u u' : Fin (n + 2) → ℝ} (hw : WordPai
       nlinarith
     linarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Establish `h` using `(inner_harm_le a).trans (harm_le N)`. Establish `e : ∑ b ∈ univ.filter (fun b => a < b), 2 / (((b.val - a.val - 1 : ℕ) : ℝ) + 1) = 2 * ∑ b ∈ univ.filter (fun b => a < b), 1 / (((b.val - a.val - 1 : ℕ) : ℝ) + 1)`.
+
+Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 2 * N * (1 + Real.log N) := by simp; ring`.
+-/
 lemma harm_double (N : ℕ) :
     ∑ a : Fin N, ∑ b ∈ univ.filter (fun b => a < b), 2 / (((b.val - a.val - 1 : ℕ) : ℝ) + 1) ≤
       2 * N * (1 + Real.log N) := by
@@ -232,6 +281,19 @@ lemma harm_double (N : ℕ) :
         rw [e]; linarith
     _ = 2 * N * (1 + Real.log N) := by simp; ring
 
+/- English proof (translation)
+Introduce `n Δ u u' hw`. Establish `hΔ` using `hw.1`. Establish `hL : 0 ≤ Real.log (1 + Δ)` using `Real.log_nonneg (by linarith)`. Establish `e : vandLog u - vandLog u' = ∑ a, ∑ b ∈ univ.filter (fun b => a < b), (Real.log (u a - u b) - Real.log (u' a - u' b))`. Unfold `vandLog`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`.
+
+Establish `hsum` using `harm_double (n + 2)`. Establish `i0` using `ind_sum_le (0 : Fin (n + 2)) ⟨1, by omega⟩ (Real.log (1 + Δ)) hL`. Establish `i1` using `ind_sum_le (⟨n, by omega⟩ : Fin (n + 2)) (Fin.last (n + 1)) (Real.log (1 + Δ)) hL`. Establish `hlog : 0 ≤ Real.log ((n : ℝ) + 2)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])`. Move the coercions through the operations in `at hsum`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `b hb`.
+
+Conclude with `pair_bound hw a b (by simpa using hb)`. Use `_ = (∑ a : Fin (n + 2), ∑ b ∈ univ.filter (fun b => a < b), 2 / (((b.val - a.val - 1 : ℕ) : ℝ) + 1)) + ((∑ a : Fin (n + 2), ∑ b ∈ univ.filter (fun b => a < b), (if a = 0 ∧ b = ⟨1, by omega⟩ then Real.log (1 + Δ) else 0)) + (∑ a : Fin (n + 2), ∑ b ∈ univ.filter (fun b => a < b), ( …`. Simplify using `only [Finset.sum_add_distrib]`. Use `_ ≤ 6 * (n + 2) * (1 + Real.log (n + 2)) + 2 * Real.log (1 + Δ) := by`. Establish `: 0 ≤ ((n : ℝ) + 2) * (1 + Real.log ((n : ℝ) + 2))` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem variation_exponent_bound : LogVandermondeVariation := by
   intro n Δ u u' hw
   have hΔ := hw.1
@@ -267,6 +329,9 @@ theorem variation_exponent_bound : LogVandermondeVariation := by
         have : 0 ≤ ((n : ℝ) + 2) * (1 + Real.log ((n : ℝ) + 2)) := by positivity
         nlinarith
 
+/- English proof (translation)
+Introduce `n Δ u u' hw hΔ`. Establish `h` using `variation_exponent_bound n Δ u u' hw`. Establish `hlog : 0 ≤ Real.log ((n : ℝ) + 2)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])`. Establish `: 0 ≤ ((n : ℝ) + 2) * Real.log ((n : ℝ) + 2)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem variation_in_context : LogVandermondeVariationOfLogLe := by
   intro n Δ u u' hw hΔ
   have h := variation_exponent_bound n Δ u u' hw

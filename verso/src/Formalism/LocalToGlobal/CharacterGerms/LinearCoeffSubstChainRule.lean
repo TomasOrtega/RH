@@ -15,11 +15,47 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 
 def lin1 {σ : Type} (f : MvPowerSeries σ C) (j : σ) : C := MvPowerSeries.constantCoeff (MvPowerSeries.pderiv C j f)
 
+/- English proof (translation)
+Unfold `lin1`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem linear_coeff_eq_coeff_single {σ : Type} (f : MvPowerSeries σ C) (j : σ) : lin1 f j = MvPowerSeries.coeff (Finsupp.single j 1) f := by
   unfold lin1
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]
   simp
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst A` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hA`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hA`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [hA s]; exact IsNilpotent.zero)`. Establish `hmul : ∀ P R : MvPowerSeries τ C, MvPowerSeries.constantCoeff P = 0 → MvPowerSeries.constantCoeff R = 0 → MvPowerSeries.coeff (Finsupp.single j 1) (P * R) = 0`.
+
+Introduce `P R hP hR`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun ab hab => ?_` and prove the remaining obligations. Use `first`. Consider the case `rw [Finset.HasAntidiagonal.mem_antidiagonal] at hab`.
+
+Consider the case `rw [Finset.mem_antidiagonal] at hab`. Consider the case `simp only [Finset.mem_antidiagonal] at hab`. Distinguish the cases in `ha : ab.1 = 0`. Rewrite using `[ha, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hP, zero_mul]`. Establish `hb : ab.2 = 0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ab.1 i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha (Finsupp.ext h)`. Establish `hij : i = j`.
+
+Assume the negation of the conclusion as `hne`. Use `congrArg (fun d => d i) hab` as an intermediate fact. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, Ne.symm hne, if_false] at this`. Use linear arithmetic over natural numbers and integers. Substitute `hij` using the available equality.
+
+Use extensionality with `t`. Use `congrArg (fun d => d t) hab` as an intermediate fact. Distinguish the cases in `ht : t = i`. Substitute `ht` using the available equality. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same] at this`.
+
+Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, Ne.symm ht, if_false] at this`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hb, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hR, mul_zero]`. Establish `hpow : ∀ (a : σ) (b : ℕ), b ≠ 0 → MvPowerSeries.constantCoeff (A a ^ b) = 0`. Introduce `a b hb`. Rewrite using `[map_pow, hA a, zero_pow hb]`. Establish `hprod : ∀ d : σ →₀ ℕ, d ≠ 0 → MvPowerSeries.constantCoeff (d.prod fun s e => A s ^ e) = 0 ∧ ((∀ k, d ≠ Finsupp.single k 1) → MvPowerSeries.coeff (Finsupp.single j 1) (d.prod fun s e => A s ^ e) = 0)`.
+
+Introduce `d`. Use `Finsupp.induction d ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `absurd rfl h`. Introduce `a b g hag hb ih _`.
+
+Establish `hP : (Finsupp.single a b + g).prod (fun s e => A s ^ e) = A a ^ b * g.prod (fun s e => A s ^ e)`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), show (Finsupp.single a b).prod (fun s e => A s ^ e) = A a ^ b from Finsupp.prod_single_index (pow_zero _)]`. Rewrite using `[hP]`. Use `⟨by rw [map_mul, hpow a b hb, zero_mul], fun hnot => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg : g = 0`.
+
+Substitute `hg` using the available equality. Rewrite using `[Finsupp.prod_zero_index, mul_one]`. Establish `hb1 : b ≠ 1`. Introduce `h1`. Substitute `h1` using the available equality.
+
+Conclude with `hnot a (add_zero _)`. Take `⟨c, rfl⟩ : ∃ c, b = c + 1` from `⟨b - 1, by omega⟩`. Rewrite using `[pow_succ]`. Conclude with `hmul _ _ (hpow a c (by omega)) (hA a)`. Conclude with `hmul _ _ (hpow a b hb) (ih hg).1`.
+
+Rewrite using `[linear_coeff_eq_coeff_single, MvPowerSeries.coeff_subst hs]`. Establish `hsupp : (Function.support fun d : σ →₀ ℕ => MvPowerSeries.coeff d f • MvPowerSeries.coeff (Finsupp.single j 1) (d.prod fun s e => A s ^ e)) ⊆ ↑(Finset.univ.image fun k : σ => Finsupp.single k 1)`. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range]`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hd` to reduce the goal to its premises. Distinguish the cases in `h0 : d = 0`. Substitute `h0` using the available equality.
+
+Rewrite using `[Finsupp.prod_zero_index, MvPowerSeries.coeff_one, if_neg (Finsupp.single_ne_zero.mpr one_ne_zero), smul_zero]`. Rewrite using `[(hprod d h0).2 (fun k h => hne k h.symm), smul_zero]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image (fun k _ l _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[show (Finsupp.single k 1).prod (fun s e => A s ^ e) = A k ^ 1 from Finsupp.prod_single_index (pow_zero _), pow_one, smul_eq_mul, linear_coeff_eq_coeff_single, linear_coeff_eq_coeff_single, mul_comm]`.
+-/
 theorem linear_coeff_subst_chain_rule {σ : Type} [Fintype σ] {A : σ → MvPowerSeries τ C}
     (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0) (f : MvPowerSeries σ C) (j : τ) :
     lin1 (MvPowerSeries.subst A f) j = ∑ k, lin1 (A k) j * lin1 f k := by
@@ -112,6 +148,11 @@ theorem linear_coeff_subst_chain_rule {σ : Type} [Fintype σ] {A : σ → MvPow
   rw [show (Finsupp.single k 1).prod (fun s e => A s ^ e) = A k ^ 1 from Finsupp.prod_single_index (pow_zero _),
     pow_one, smul_eq_mul, linear_coeff_eq_coeff_single, linear_coeff_eq_coeff_single, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[linear_coeff_eq_coeff_single, MvPowerSeries.coeff_X]`. Distinguish the cases in `h : m = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce `h'`. Conclude with `h ((Finsupp.single_left_inj one_ne_zero).mp h').symm`.
+-/
 theorem linear_coeff_X_eq_ite {σ : Type} (m j : σ) : lin1 (MvPowerSeries.X m : MvPowerSeries σ C) j = if m = j then 1 else 0 := by
   rw [linear_coeff_eq_coeff_single, MvPowerSeries.coeff_X]
   by_cases h : m = j
@@ -121,6 +162,37 @@ theorem linear_coeff_X_eq_ite {σ : Type} (m j : σ) : lin1 (MvPowerSeries.X m :
     intro h'
     exact h ((Finsupp.single_left_inj one_ne_zero).mp h').symm
 
+/- English proof (translation)
+Establish `cS : ∀ m : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X ((0 : Fin 2), m) + MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd) = 0` using `fun m => by`. Rewrite using `[map_add, cc_X, cc_X, add_zero]`. Use `set K : Fin 2 × Fin dd → MvPowerSeries (Fin dd) C := P2 MvPowerSeries.X (fun _ => 0) with hK`. Establish `cK : ∀ q, MvPowerSeries.constantCoeff (K q) = 0` using `constantCoeff_pair_substitution (fun _ => cc_X _) (fun _ => map_zero _)`. Establish `hder : ∀ i, MvPowerSeries.pderiv C i f = MvPowerSeries.C (lin1 f i)`.
+
+Introduce `i`. Establish `h` using `congrArg (fun G => MvPowerSeries.subst K (MvPowerSeries.pderiv C ((1 : Fin 2), i) G)) hadd`. Use `beta_reduce at h`. Rewrite `h` using `[map_add, pderiv_subst (og cS), pderiv_subst (og fun _ => cc_X _), pderiv_subst (og fun _ => cc_X _), subst_add' cK, subst_sum cK, subst_sum cK, subst_sum cK]`. Establish `h1 : ∀ m, MvPowerSeries.subst K (MvPowerSeries.pderiv C ((1 : Fin 2), i) (MvPowerSeries.X ((0 : Fin 2), m) + MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd) * MvPowerSeries.subst (fun m : Fin dd => (MvPowerSeries.X ((0 : Fin 2), m) + MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd)) ( …`.
+
+Introduce `m`. Rewrite using `[map_add, MvPowerSeries.pderiv_X_of_ne (fun hh => by simpa using (Prod.ext_iff.1 hh).1), zero_add]`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality. Rewrite using `[MvPowerSeries.pderiv_X_self, one_mul, subst_subst cS cK, if_pos rfl]`.
+
+Establish `: (fun s : Fin dd => MvPowerSeries.subst K (MvPowerSeries.X ((0 : Fin 2), s) + MvPowerSeries.X ((1 : Fin 2), s) : PS C 2 dd)) = MvPowerSeries.X`. Use function extensionality and compare the values at `s`. Rewrite using `[subst_add' cK, subst_X cK, subst_X cK]`. Use `show MvPowerSeries.X s + 0 = _`. Rewrite using `[add_zero]`.
+
+Rewrite using `[this, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Rewrite using `[MvPowerSeries.pderiv_X_of_ne (fun hh => hm (Prod.ext_iff.1 hh).2), zero_mul, subst_zero' cK, if_neg hm]`. Establish `h2 : ∀ m, MvPowerSeries.subst K (MvPowerSeries.pderiv C ((1 : Fin 2), i) (MvPowerSeries.X ((0 : Fin 2), m) : PS C 2 dd) * MvPowerSeries.subst (fun m : Fin dd => (MvPowerSeries.X ((0 : Fin 2), m) : PS C 2 dd)) (MvPowerSeries.pderiv C m f)) = 0`. Introduce `m`.
+
+Rewrite using `[MvPowerSeries.pderiv_X_of_ne (fun hh => by simpa using (Prod.ext_iff.1 hh).1), zero_mul, subst_zero' cK]`. Establish `h3 : ∀ m, MvPowerSeries.subst K (MvPowerSeries.pderiv C ((1 : Fin 2), i) (MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd) * MvPowerSeries.subst (fun m : Fin dd => (MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd)) (MvPowerSeries.pderiv C m f)) = if m = i then MvPowerSeries.C (lin1 f i …`. Introduce `m`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality.
+
+Rewrite using `[MvPowerSeries.pderiv_X_self, one_mul, subst_subst (fun _ => cc_X _) cK, if_pos rfl]`. Establish `: (fun s : Fin dd => MvPowerSeries.subst K (MvPowerSeries.X ((1 : Fin 2), s) : PS C 2 dd)) = fun _ => 0`. Use function extensionality and compare the values at `s`. Rewrite using `[subst_X cK]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, subst_zeroPt]`. Both sides reduce to the same expression. Rewrite using `[MvPowerSeries.pderiv_X_of_ne (fun hh => hm (Prod.ext_iff.1 hh).2), zero_mul, subst_zero' cK, if_neg hm]`. Rewrite `h` using `[Finset.sum_congr rfl fun m _ => h1 m, Finset.sum_congr rfl fun m _ => h2 m, Finset.sum_congr rfl fun m _ => h3 m, Finset.sum_const_zero, zero_add, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using `using h`.
+
+Use extensionality with `μ`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, MvPowerSeries.coeff_X]`. Distinguish the cases in `hμ : μ = 0`. Substitute `hμ` using the available equality.
+
+Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Use `symm`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (fun h => by simpa using congrArg (fun x => x j) h), mul_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, μ i ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Conclude with `hμ (Finsupp.ext hcon)`. Take `⟨ν, rfl⟩ : ∃ ν : Fin dd →₀ ℕ, μ = ν + Finsupp.single i 1` from `⟨μ - Finsupp.single i 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hi))).symm⟩`. Establish `hc` using `congrArg (MvPowerSeries.coeff ν) (hder i)`.
+
+Rewrite `hc` using `[MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_C]`. Establish `hne : ((ν i : C) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (ν i)`. Distinguish the cases in `hν : ν = 0`. Substitute `hν` using the available equality. Rewrite using `[zero_add, Finset.sum_eq_single i]`.
+
+Rewrite using `[if_pos rfl, mul_one, linear_coeff_eq_coeff_single]`. Introduce `j _ hj`. Rewrite using `[if_neg fun h => hj (Finsupp.single_left_injective one_ne_zero h).symm, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite `hc` using `[if_neg hν]`. Rewrite using `[(mul_eq_zero.1 hc).resolve_right hne]`. Use `symm`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`.
+
+Introduce `h`. Establish `hd` using `congrArg Finsupp.degree h`. Rewrite `hd` using `[map_add, Finsupp.degree_single, Finsupp.degree_single]`. Conclude with `hν ((Finsupp.degree_eq_zero_iff _).1 (by omega))`.
+-/
 theorem lin_of_add (f : MvPowerSeries (Fin dd) C) (h0 : MvPowerSeries.constantCoeff f = 0)
     (hadd : MvPowerSeries.subst (fun m : Fin dd => (MvPowerSeries.X ((0 : Fin 2), m) + MvPowerSeries.X ((1 : Fin 2), m) : PS C 2 dd)) f =
       MvPowerSeries.subst (fun m : Fin dd => (MvPowerSeries.X ((0 : Fin 2), m) : PS C 2 dd)) f +

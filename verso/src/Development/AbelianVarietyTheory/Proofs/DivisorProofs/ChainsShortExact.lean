@@ -15,6 +15,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtC.MVEtale
 
+/- English proof (translation)
+Establish `h` using `BiprodCls.cpull_add g (-g) I n x`. Rewrite `h` using `[add_neg_cancel, BiprodCls.cpull_zero]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`.
+-/
 theorem cpull_neg {R : Type} [CommRing R] {K L : Cx R} (g : K ⟶ L) (I : Cx R) (n : ℤ) (x : CohomologyClass L I n) :
     cpull (-g) I n x = -cpull g I n x := by
   have h := BiprodCls.cpull_add g (-g) I n x
@@ -23,6 +26,9 @@ theorem cpull_neg {R : Type} [CommRing R] {K L : Cx R} (g : K ⟶ L) (I : Cx R) 
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped TensorProduct in
+/- English proof (translation)
+Rewrite using `[biprod.lift_eq, _root_.GlobalTheory.EtC.BiprodCls.cpull_add, Preadditive.neg_comp, _root_.GlobalTheory.EtC.MayerVietoris.cpull_neg, _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, sub_eq_add_neg]`.
+-/
 theorem _root_.GlobalTheory.EtC.MVEtale.cpull_lift_neg {R : Type} [CommRing R] {K M N : _root_.GlobalTheory.EtC.Cx R} (a : K ⟶ M) (b : K ⟶ N) (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ)
     (x : CohomologyClass (M ⊞ N) I n) :
     _root_.GlobalTheory.EtC.cpull (biprod.lift a (-b)) I n x =
@@ -33,6 +39,9 @@ theorem _root_.GlobalTheory.EtC.MVEtale.cpull_lift_neg {R : Type} [CommRing R] {
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped TensorProduct in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, _root_.GlobalTheory.EtC.BiprodCls.cpull_cpull, biprod.inl_desc, biprod.inr_desc]`.
+-/
 theorem _root_.GlobalTheory.EtC.MVEtale.cpull_desc_pair {R : Type} [CommRing R] {M N L : _root_.GlobalTheory.EtC.Cx R} (c : M ⟶ L) (d : N ⟶ L) (I : _root_.GlobalTheory.EtC.Cx R) (n : ℤ)
     (z : CohomologyClass L I n) :
     (_root_.GlobalTheory.EtC.cpull (biprod.inl : M ⟶ M ⊞ N) I n (_root_.GlobalTheory.EtC.cpull (biprod.desc c d) I n z),
@@ -42,6 +51,15 @@ theorem _root_.GlobalTheory.EtC.MVEtale.cpull_desc_pair {R : Type} [CommRing R] 
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped TensorProduct in
+/- English proof (translation)
+Establish `hcomp : (Localization.awayMap (algebraMap A A') f).comp (algebraMap A (Localization.Away f)) = (algebraMap A' (Localization.Away (algebraMap A A' f))).comp (algebraMap A A')` using `IsLocalization.map_comp _`. Establish `hsq : _root_.GlobalTheory.EtC.spMap (Localization.awayMap (algebraMap A A') f) ≫ _root_.GlobalTheory.EtC.spMap (algebraMap A (Localization.Away f)) = _root_.GlobalTheory.EtC.spMap (algebraMap A' (Localization.Away (algebraMap A A' f))) ≫ _root_.GlobalTheory.EtC.spMap (algebraMap …`. Unfold `_root_.GlobalTheory.EtC.spMap`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hcomp]`. Establish `hchains` using `((_root_.GlobalTheory.EtC.chains R).map_comp _ _).symm.trans ((congrArg (_root_.GlobalTheory.EtC.chains R).map hsq).trans ((_root_.GlobalTheory.EtC.chains R).map_comp _ _))`.
+
+Take `⟨w', hw'⟩` from `_root_.GlobalTheory.EtC.MVExact.mv_exact R A A' f h1 h2`. Establish `hfree` using `_root_.GlobalTheory.EtC.MVFree.shortExact R A A' f ⟨h1, h2⟩ w'`. Establish `w : biprod.lift ((_root_.GlobalTheory.EtC.chains R).map (_root_.GlobalTheory.EtC.spMap (Localization.awayMap (algebraMap A A') f))) (-(_root_.GlobalTheory.EtC.chains R).map (_root_.GlobalTheory.EtC.spMap (algebraMap A' (Localization.Away (algebraMap A A' f))))) ≫ biprod.desc ((_r …`. Rewrite using `[biprod.lift_desc, Preadditive.neg_comp, hchains, add_neg_cancel]`. Use `⟨w, HomologicalComplex.shortExact_of_degreewise_shortExact _ fun i => ?_⟩` and prove the remaining obligations.
+
+Break down `lt_or_ge 0 i with hi | hi` into its components or cases. Establish `hX₁` using `_root_.GlobalTheory.EtC.chains_isZero_pos R (_root_.GlobalTheory.EtC.sp (Localization.Away (algebraMap A A' f))) i hi`. Establish `hX₃` using `_root_.GlobalTheory.EtC.chains_isZero_pos R (_root_.GlobalTheory.EtC.sp A) i hi`. Establish `hX₂ : IsZero (((_root_.GlobalTheory.EtC.chains R).obj (_root_.GlobalTheory.EtC.sp (Localization.Away f)) ⊞ (_root_.GlobalTheory.EtC.chains R).obj (_root_.GlobalTheory.EtC.sp A')).X i)` using `IsZero.of_iso ((biprod_isZero_iff _ _).2 ⟨_root_.GlobalTheory.EtC.chains_isZero_pos R _ i hi, _root_.GlobalTheory.EtC.chains_isZero_pos R _ i hi⟩) (HomologicalComplex.biprodXIso _ _ i)`. Conclude with `{ exact := ShortComplex.exact_of_isZero_X₂ _ hX₂ mono_f := ⟨fun _ _ _ => hX₁.eq_of_tgt _ _⟩ epi_g := ⟨fun _ _ _ => hX₃.eq_of_src _ _⟩ }`.
+
+Take `⟨p, rfl⟩ : ∃ p : ℕ, i = -(p : ℤ)` from `⟨i.natAbs, by omega⟩`. Conclude with `_root_.GlobalTheory.EtC.mv_map_shortExact (HomologicalComplex.eval _ _ (-(p : ℤ))) (a := (_root_.GlobalTheory.EtC.chains R).map (_root_.GlobalTheory.EtC.spMap (Localization.awayMap (algebraMap A A') f))) (b := (_root_.GlobalTheory.EtC.chains R).map (_root_.GlobalTheory.EtC.spMap …`.
+-/
 theorem _root_.GlobalTheory.EtC.MVEtale.chains_shortExact (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A']
     [Algebra.Etale A A'] (f : A)
     (h1 : ∀ a' : A', ∃ a : A, a' - algebraMap A A' a ∈ Ideal.span {algebraMap A A' f})

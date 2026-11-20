@@ -23,6 +23,11 @@ section Block
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
   {B : BlockDat K G Pl0} {ℓ : Lvl K G} {Z : Submodule K B.S.Forms} {v0 : InfinitePlace K} {s : ℕ}
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `hz`. Unfold `CSD.gaMat`. Rewrite using `[Matrix.sum_mulVec]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec]`.
+
+Conclude with `Submodule.smul_mem _ _ ⟨B.r t f, hZ t ⟨f, hf, rfl⟩, CyclotomicLifting.equivFun_end (B := B) (B.r t) f⟩`.
+-/
 theorem gaMat_mem_coord (hZ : ∀ g, Z.map (B.r g) ≤ Z) (a : MonoidAlgebra K G) {z : Fin B.S.dim → K} (hz : z ∈ B.coord Z) :
     (B.S.gaMat B.r a).mulVec z ∈ B.coord Z := by
   obtain ⟨f, hf, rfl⟩ := hz
@@ -32,6 +37,19 @@ theorem gaMat_mem_coord (hZ : ∀ g, Z.map (B.r g) ≤ Z) (a : MonoidAlgebra K G
   rw [Matrix.smul_mulVec]
   exact Submodule.smul_mem _ _ ⟨B.r t f, hZ t ⟨f, hf, rfl⟩, CyclotomicLifting.equivFun_end (B := B) (B.r t) f⟩
 
+/- English proof (translation)
+Establish `hc` using `idempotent_central K G ℓ.X h.irr`. Establish `h1` using `(level_operator_spec K v0 h.conj B.S (h.ok.hpos v0) G B.r h.ok.act ℓ.P ℓ.ψ (idemOf ℓ.X) (hc.2 _).symm).1`. Take `⟨⟨hv1, hv2⟩, hv3⟩` from `BlockDat.lf_v_proj h`. Take `⟨⟨hl1, -⟩, hl3⟩` from `BlockDat.lf_lvl_proj h`. Establish `hz2` using `(BlockDat.lf_z_proj (Z := Z) h).2`.
+
+Establish `hO` using `orthogonal_tower_projection B.S.H (B.vE ℓ) (B.vPr ℓ) (B.zE ℓ Z) (B.Pq ℓ Z) _ (BlockDat.lf_card_inv_ne (ℓ := ℓ)) hv2 hz2`. Establish `hg` using `good_at_spec K v0 h.conj G ℓ.X h.irr ℓ.P ℓ.ψ`. Establish `hadj : (B.vE ℓ * B.vPr ℓ)ᴴ * B.S.H = B.S.H * (B.vE ℓ * B.vPr ℓ)`. Use `group_action_matrix_adjoint K B.S G B.r h.ok.act (goodAt ℓ.X ℓ.P ℓ.ψ)` as an intermediate fact. Rewrite `this` using `[hg.selfAdj, ← hv3]`. Then use the resulting hypothesis.
+
+Establish `h2 : B.S.lvlE B.r ℓ.P ℓ.ψ * B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X) = B.vE ℓ * B.vPr ℓ * B.S.lvlE B.r ℓ.P ℓ.ψ`. Rewrite using `[h1, hv3, goodAt, (group_action_matrix_hom K B.S G B.r).2, ← hl3, Matrix.mul_assoc, Matrix.mul_assoc, hl1, Matrix.mul_one]`. Establish `h3 : (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec ((B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X)).mulVec x) - (B.fE ℓ Z).mulVec ((B.lPr ℓ Z).mulVec x) = (B.vE ℓ * B.vPr ℓ).mulVec ((1 - B.vE ℓ * B.zE ℓ Z * B.Pq ℓ Z * B.vPr ℓ).mulVec ((B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec x))`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.sub_mulVec, h2]`.
+
+Use `congr 1`. Unfold `BlockDat.fE BlockDat.lPr`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (B.vPr ℓ) (B.vE ℓ), hv1, Matrix.one_mul]`. Establish `h4 : (B.vPr ℓ).mulVec z ∈ B.Z0 ℓ Z` using `by show (B.vE ℓ).mulVec ((B.vPr ℓ).mulVec z) ∈ B.coord Z`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hv3]`. Conclude with `gaMat_mem_coord hZ _ hz`. Take `⟨u, hu⟩` from `(subspace_image_spec K _ (B.Z0 ℓ Z)).2.ge h4`. Establish `hu' : (B.vE ℓ * B.vPr ℓ).mulVec z = (B.vE ℓ * B.zE ℓ Z).mulVec u`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hu]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3, ← CyclotomicLifting.hform_adj hadj, hu', RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hO, Matrix.zero_mulVec, dotProduct_zero]`.
+-/
 theorem orth_good_sub_proj (h : BlockHyp B ℓ v0 s) (hZ : ∀ g, Z.map (B.r g) ≤ Z)
     (x : Fin (B.S.lvlDim B.r ℓ.P ℓ.ψ) → K) {z : Fin B.S.dim → K} (hz : z ∈ B.coord Z) :
     hform B.S.H z ((B.S.lvlE B.r ℓ.P ℓ.ψ).mulVec ((B.S.lvlOp B.r ℓ.P ℓ.ψ (idemOf ℓ.X)).mulVec x) -

@@ -9,6 +9,9 @@ namespace Formalism.MainNotions.V.Pf.ShaCmp
 
 variable {K Ω' : Type*} [Field K] [NumberField K] [Field Ω'] [Algebra K Ω'] (A : ValuationSubring Ω')
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℤ (algebraMap K Ω' (x : K))` using `(x.2.map (IsScalarTower.toAlgHom ℤ K Ω'))`. Establish `hA : IsIntegral A (algebraMap K Ω' (x : K))` using `hx.tower_top`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hA`. Rewrite using `[← ha]`. Conclude with `(A.valuation_le_one_iff _).mpr a.2`.
+-/
 theorem val_le_one (x : 𝓞 K) : A.valuation (algebraMap K Ω' (x : K)) ≤ 1 := by
   have hx : IsIntegral ℤ (algebraMap K Ω' (x : K)) :=
     (x.2.map (IsScalarTower.toAlgHom ℤ K Ω'))
@@ -36,8 +39,24 @@ def ltIdeal : Ideal (𝓞 K) where
       _ = A.valuation (algebraMap K Ω' (x : K)) := one_mul _
       _ < 1 := hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ltIdeal (x : 𝓞 K) : x ∈ ltIdeal (K := K) A ↔ A.valuation (algebraMap K Ω' (x : K)) < 1 := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Use `⟨Ideal.absNorm v.asIdeal, Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h), ?_⟩` and prove the remaining obligations. Establish `h1` using `(hv (Ideal.absNorm v.asIdeal : 𝓞 K)).mpr (Ideal.absNorm_mem v.asIdeal)`. Simplify using `using h1`.
+
+Introduce and unpack `⟨n, hn, hv⟩`. Establish `hP : (ltIdeal (K` using `K) A).IsPrime := by`. Use `⟨fun h => ?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : 𝓞 K) ∈ ltIdeal (K` using `K) A := by rw [h]; trivial`. Rewrite `h1` using `[mem_ltIdeal]`.
+
+Simplify using `at h1`. Rewrite using `[mem_ltIdeal, mem_ltIdeal]`. Rewrite `hxy` using `[mem_ltIdeal]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Establish `hx1 : A.valuation (algebraMap K Ω' (x : K)) = 1` using `le_antisymm (val_le_one A x) hc.1`. Establish `hy1 : A.valuation (algebraMap K Ω' (y : K)) = 1` using `le_antisymm (val_le_one A y) hc.2`. Establish `e : ((x * y : 𝓞 K) : K) = (x : K) * (y : K)` using `by norm_cast`. Rewrite `hxy` using `[e, map_mul, map_mul, hx1, hy1, one_mul]`. Conclude with `lt_irrefl _ hxy`.
+
+Establish `hne : ltIdeal (K` using `K) A ≠ ⊥ := by`. Introduce `h`. Establish `h1 : ((n : ℕ) : 𝓞 K) ∈ ltIdeal (K` using `K) A := by`. Rewrite using `[mem_ltIdeal]`. Simplify using `using hv`.
+
+Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr hn.ne') h1`. Conclude with `⟨⟨ltIdeal A, hP, hne⟩, fun x => Iff.rfl⟩`.
+-/
 theorem exists_over_iff : (∃ v : HeightOneSpectrum (𝓞 K), Formalism.ConjugateSelfDual.IsPlaceOver A v) ↔
     ∃ n : ℕ, 0 < n ∧ A.valuation (n : Ω') < 1 := by
   constructor

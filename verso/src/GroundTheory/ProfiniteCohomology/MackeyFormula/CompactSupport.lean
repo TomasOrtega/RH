@@ -77,11 +77,23 @@ noncomputable def mackeyCompactMap :
       compactCochains (mackeyFamily V φ) N (mackeyCoeff V φ N) (fun _ => 𝟙 _) :=
   mappingCoconeNat.mapOfHomotopy (mackeyLocalHomotopy V φ N)
 
+/- English proof (translation)
+Rewrite using `[homologyMap_shapiroCochains]`. Conclude with `isIso_shapiroMap' V N n`.
+-/
 theorem isIso_homologyMap_shapiroCochains (n : ℕ) :
     IsIso (homologyMap (shapiroCochains V N) n) := by
   rw [homologyMap_shapiroCochains]
   exact isIso_shapiroMap' V N n
 
+/- English proof (translation)
+Establish `hS` using `piHomologyToPi_bijective (fun v => cochainsComplex (Rep.res (φ v).toMonoidHom (Rep.coind (V : Subgroup G).subtype N))) n`. Establish `hT` using `piHomologyToPi_bijective (fun p : MackeyIndex V φ => cochainsComplex (mackeyCoeff V φ N p)) n`. Establish `key : ∀ x (p : MackeyIndex V φ), (piHomologyToPi _ n).hom ((homologyMap (mackeyLocalMap V φ N) n).hom x) p = (mackeyCohomologyMap V (φ p.1) N p.2.out n).hom ((piHomologyToPi _ n).hom x p.1)`. Introduce `x p`. Rewrite using `[piHomologyToPi_hom_apply, piHomologyToPi_hom_apply, ← homologyMap_mackeyCochainsMap, hom_apply_hom_apply_of_comp_eq (homologyMap_comp _ _ n).symm x]`.
+
+Use `erw [mackeyLocalMap, piLift_piProj, homologyMap_comp]`. Both sides reduce to the same expression. Establish `hM` using `fun v => mackeyCohomology_bijective V (φ v) N n`. Establish `hbij : Function.Bijective (homologyMap (mackeyLocalMap V φ N) n).hom`. Use `⟨fun x x' hx => hS.1 (funext fun v => (hM v).1 (funext fun d => ?_)), fun z => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun w => (piHomologyToPi _ n).hom w ⟨v, d⟩) hx` as an intermediate fact. Simplify using `only [key] at this`. Conclude with `this`. Use `choose c hc using fun v => (hM v).2 fun d => (piHomologyToPi _ n).hom z ⟨v, d⟩`. Take `⟨x, hx⟩` from `hS.2 c`.
+
+Use `⟨x, hT.1 (funext fun p => ?_)⟩` and prove the remaining obligations. Rewrite using `[key, hx]`. Conclude with `congrFun (hc p.1) p.2`. Conclude with `@isIso_of_mono_of_epi _ _ _ _ _ _ ((ModuleCat.mono_iff_injective _).2 hbij.1) ((ModuleCat.epi_iff_surjective _).2 hbij.2)`.
+-/
 theorem isIso_homologyMap_mackeyLocalMap (n : ℕ) : IsIso (homologyMap (mackeyLocalMap V φ N) n) := by
   have hS := piHomologyToPi_bijective (fun v => cochainsComplex (Rep.res (φ v).toMonoidHom
     (Rep.coind (V : Subgroup G).subtype N))) n
@@ -110,6 +122,9 @@ theorem isIso_homologyMap_mackeyLocalMap (n : ℕ) : IsIso (homologyMap (mackeyL
   exact @isIso_of_mono_of_epi _ _ _ _ _ _ ((ModuleCat.mono_iff_injective _).2 hbij.1)
     ((ModuleCat.epi_iff_surjective _).2 hbij.2)
 
+/- English proof (translation)
+The claim follows from `mappingCoconeNat.isIso_homologyMap_mapOfHomotopy _ (isIso_homologyMap_shapiroCochains V N) (isIso_homologyMap_mackeyLocalMap V φ N) n`.
+-/
 theorem isIso_homologyMap_mackeyCompactMap (n : ℕ) :
     IsIso (homologyMap (mackeyCompactMap V φ N) n) :=
   mappingCoconeNat.isIso_homologyMap_mapOfHomotopy _

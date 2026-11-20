@@ -19,6 +19,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def toSum0 (k : Type) [Field k] (n : Type) [Fintype n] [DecidableEq n] : GL n k ≃* GL (n ⊕ Fin 0) k :=
   Units.mapEquiv (Matrix.reindexAlgEquiv k k (Equiv.sumEmpty n (Fin 0)).symm).toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSum0_val (g : GL n k) :
     ((toSum0 k n g : GL (n ⊕ Fin 0) k) : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) =
       (g : Matrix n n k).reindex (Equiv.sumEmpty n (Fin 0)).symm (Equiv.sumEmpty n (Fin 0)).symm := rfl
@@ -30,6 +33,9 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : B.Word}
   {a : GeoAll W u} {t : W.P.T}
 
+/- English proof (translation)
+Establish `h1` using `(J.G i).hs`. Establish `h2 : (I.rec7 l Z).R.m = B.R.m` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem step_before_last_eq_s_succ (J : QJ a t) {j : ℕ} (hj : j + 1 = B.R.m) (i : Fin J.r) : j = (J.G i).s + 1 := by
   have h1 := (J.G i).hs
   have h2 : (I.rec7 l Z).R.m = B.R.m := rfl
@@ -60,6 +66,11 @@ namespace GlobalTheory.PenBridge
 section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨Units.mapEquiv (Matrix.reindexAlgEquiv 𝒪[k] 𝒪[k] (Equiv.sumEmpty n (Fin 0))).toMulEquiv y, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `congrArg (fun g : GL (n ⊕ Fin 0) k => (g : Matrix (n ⊕ Fin 0) (n ⊕ Fin 0) k) (Sum.inl a) (Sum.inl b)) hy` as an intermediate fact.
+
+Simplify `this` using `[toSum0_val, Matrix.reindex_apply]`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨Units.mapEquiv (Matrix.reindexAlgEquiv 𝒪[k] 𝒪[k] (Equiv.sumEmpty n (Fin 0)).symm).toMulEquiv y, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[toSum0_val, Matrix.reindex_apply]`.
+-/
 theorem toSum0_mem_KO_iff (x : GL n k) : toSum0 k n x ∈ KO k (n ⊕ Fin 0) ↔ x ∈ KO k n := by
   constructor
   · rintro ⟨y, hy⟩
@@ -74,6 +85,11 @@ theorem toSum0_mem_KO_iff (x : GL n k) : toSum0 k n x ∈ KO k (n ⊕ Fin 0) ↔
 
 end Local
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex_comap]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `K.mul_mem (K.mul_mem hc hy) (K.inv_mem hc)`. Introduce `hx`. Conclude with `⟨c⁻¹ * x * c, K.mul_mem (K.mul_mem (K.inv_mem hc) hx) hc, by group⟩`.
+-/
 theorem relIndex_comap_conj {G : Type} [Group G] (H K : Subgroup G) {c : G} (hc : c ∈ K) :
     (H.comap (MulAut.conj c).toMonoidHom).relIndex K = H.relIndex K := by
   rw [Subgroup.relIndex_comap]
@@ -91,11 +107,17 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : B.Word}
   {a : GeoAll W u} {t : W.P.T}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `fun y => (J.G i).latX _ le_rfl y`.
+-/
 theorem intIn_frJ (J : QJ a t) (j : ℕ) (i : Fin J.r) (e : j = (J.G i).s + 1) :
     IntIn (J.G i).q ((I.rec7 l Z).sp.X j) (frJ J j i e) (a.g.x j).L := by
   subst e
   exact fun y => (J.G i).latX _ le_rfl y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rdAt_apply (J : QJ a t) (j : ℕ) (i : Fin J.r) (e : j = (J.G i).s + 1) (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) :
     rdAt J j i e g = toSum0 (J.G i).k _ (GlobalTheory.LevIdx.locHom (J.G i).q _ (frJ J j i e) g) := rfl
 

@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Mass.MeanV
 
+/- English proof (translation)
+Take `⟨N, hN, hNx⟩` from `GlobalTheory.T.exists_integral_multiple_bounded_places F T Kv hKv`. Take `⟨C0, h⟩` from `hC F hF θ hθ K hK N hN`. Use `((h δ hδ ⊤ top_ne_bot).1).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨h0, h1, h2, h3⟩`. Take `⟨y, hy⟩` from `hNx x h1 h3`.
+
+Conclude with `⟨h0, ⟨y, Submodule.mem_top, hy⟩, h2⟩`.
+-/
 theorem support_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (T : Finset (HeightOneSpectrum (𝓞 F))) (K : Set (Ainf F))
     (hK : IsCompact K) (Kv : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)) (hKv : ∀ v ∈ T, IsCompact (Kv v))
@@ -20,6 +25,13 @@ theorem support_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF :
   obtain ⟨y, hy⟩ := hNx x h1 h3
   exact ⟨h0, ⟨y, Submodule.mem_top, hy⟩, h2⟩
 
+/- English proof (translation)
+Establish `h1 : ∑' β : {β : F // β ≠ 0}, h β.1 = ∑ β ∈ B.subtype (fun x => x ≠ 0), h β.1`. Use `tsum_eq_sum ?_` and prove the remaining obligations. Introduce `b hb`. Conclude with `hh b.1 b.2 (by simpa [Finset.mem_subtype] using hb)`. Rewrite using `[h1]`.
+
+Use `Finset.sum_bij (fun b _ => b.1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Simplify `ha` using `[Finset.mem_subtype]`. Introduce `a _ b _ hab`. Conclude with `Subtype.ext hab`.
+
+Introduce `b hb; exact ⟨⟨b, hB b hb⟩, by simpa [Finset.mem_subtype] using hb, rfl⟩`. Introduce `a _`. Both sides reduce to the same expression.
+-/
 theorem tsum_ne_zero_eq_sum {F : Type} [Field F] (h : F → ℝ) (B : Finset F) (hB : ∀ x ∈ B, x ≠ 0)
     (hh : ∀ x, x ≠ 0 → x ∉ B → h x = 0) :
     ∑' β : {β : F // β ≠ 0}, h β.1 = ∑ x ∈ B, h x := by
@@ -34,6 +46,13 @@ theorem tsum_ne_zero_eq_sum {F : Type} [Field F] (h : F → ℝ) (B : Finset F) 
   · intro b hb; exact ⟨⟨b, hB b hb⟩, by simpa [Finset.mem_subtype] using hb, rfl⟩
   · intro a _; rfl
 
+/- English proof (translation)
+Establish `hfin` using `support_finite hC F hF θ hθ T (tsupport G) hGc (fun v => tsupport (ψ v)) hψ δ hδ`. Use `⟨hfin.toFinset, fun x hx => ((hfin.mem_toFinset).1 hx).1, ?_⟩` and prove the remaining obligations. Introduce `x hx0 hxB`. Distinguish the cases in `hxT : x ∈ IntOut T`. Rewrite using `[Set.indicator_of_mem hxT]`.
+
+Distinguish the cases in `h1 : θ δ * algebraMap F (Ainf F) x ∈ tsupport G`. Establish `: ∃ v ∈ T, algebraMap F (Fv F v) x ∉ tsupport (ψ v)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hxB ((hfin.mem_toFinset).2 ⟨hx0, hxT, h1, hcon⟩)`.
+
+Take `⟨v, hv, hvx⟩` from `this`. Establish `h0 : ψ v (algebraMap F (Fv F v) x) = 0` using `image_eq_zero_of_notMem_tsupport hvx`. Rewrite using `[Finset.prod_eq_zero hv h0, mul_zero]`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul]`. Conclude with `Set.indicator_of_notMem hxT _`.
+-/
 theorem truncTerm_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (ψ : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (hGc : HasCompactSupport G)
@@ -56,6 +75,9 @@ theorem truncTerm_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF
     · rw [image_eq_zero_of_notMem_tsupport h1, zero_mul]
   · exact Set.indicator_of_notMem hxT _
 
+/- English proof (translation)
+Take `⟨B, hB, hh⟩` from `truncTerm_finite hC F hF θ hθ T G ψ hGc hψ δ hδ`. Use `summable_of_ne_finset_zero (s := B.subtype (fun x => x ≠ 0)) ?_` and prove the remaining obligations. Introduce `b hb`. Conclude with `hh b.1 b.2 (by simpa [Finset.mem_subtype] using hb)`.
+-/
 theorem truncTerm_summable (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF : IsTotallyReal F)
     (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (ψ : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (hGc : HasCompactSupport G)

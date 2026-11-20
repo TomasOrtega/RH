@@ -27,6 +27,17 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 variable {A A' : Type} [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A'] {f : A →+* A'} {D₀ : DegPre A}
   {D₁ : DegPre A'} (p : IsPullDeg f D₀ D₁)
 
+/- English proof (translation)
+Establish `gp` using `pull_grp p`. Rewrite `h`, `h'` using `[ArcQBC.letBC_iff]`. Establish `e : spMap (dualMap f) ≫ spMap (epsScaleR a) = spMap (epsScaleR (f a)) ≫ spMap (dualMap f)` using `LieCombBaseChange.dualMap_epsScale f a`. Establish `o : spMap (epsScaleR (f a)) ≫ (epsR A').hom = (epsR A').hom` using `(spMap_comp _ _).symm.trans (congrArg spMap (RingHom.ext fun x => by`. Simplify using `[epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]))`.
+
+Establish `hb : ω₁.b.left = spMap (epsScaleR (f a)) ≫ ν₁.b.left`. Use `gp.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `h'.1.trans ?_` and prove the remaining obligations. Rewrite using `[hs.1, ← Category.assoc, e, Category.assoc, ← h.1]`. Conclude with `(Category.assoc _ _ _).symm`.
+
+Rewrite using `[Category.assoc, Over.w, Over.w, o]`. Use `⟨hb, fun χ => corr_of_val D₁.P.isLB fun y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D₀.P.isLB y`. Establish `e₁` using `ConstFam.pmaps_val (h'.2 χ).1 (h'.2 χ).2 (𝟙 _) hJ hJ'`. Establish `e₂` using `ConstFam.pmaps_val (h.2 χ).1 (h.2 χ).2 (𝟙 _ ≫ spMap (epsScaleR (f a))) hJ hJ'`.
+
+Establish `e₃` using `(val_corr hJ (hs.2 (p.xe χ)) (𝟙 _ ≫ spMap (dualMap f))).trans (val_pull hJ _ _ _)`. Establish `g : ∀ k, (𝟙 _ ≫ spMap (epsScaleR (f a))) ≫ DegPre.gtφT D₁ (epsR A') ν₁.b χ k = 𝟙 _ ≫ DegPre.gtφT D₁ (epsR A') ω₁.b χ k` using `fun k => by`. Rewrite using `[TorusCoord.gtφT_eq ω₁.b]`. Conclude with `(TorusCoord.comp_eq_of_left ν₁.b ω₁.b _ _ ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) hb.symm))).1 χ k`. Establish `m : (𝟙 _ ≫ spMap (dualMap f)) ≫ spMap (epsScaleR a) = (𝟙 _ ≫ spMap (epsScaleR (f a))) ≫ spMap (dualMap f)` using `by rw [Category.assoc, e, Category.assoc]`.
+
+Simplify using `only [g] at e₂`. Establish `e₄` using `e₁.symm.trans (e₃.trans ((congrArg (fun r => val (ν.s (p.xe χ)) r y J) m).trans e₂))`. Conclude with `(mul_left_cancel e₄).trans (val_pull hJ' _ _ _).symm`.
+-/
 theorem isPull_scale {a : A} {ν ω : GtPt D₀ (epsR A)} {ν₁ ω₁ : GtPt D₁ (epsR A')} (h : LetBC p ν ν₁)
     (h' : LetBC p ω ω₁) (hs : GtPt.IsPull (spMap (epsScaleR a)) ν ω) :
     GtPt.IsPull (spMap (epsScaleR (f a))) ν₁ ω₁ := by
@@ -59,6 +70,9 @@ theorem isPull_scale {a : A} {ν ω : GtPt D₀ (epsR A)} {ν₁ ω₁ : GtPt D�
   have e₄ := e₁.symm.trans (e₃.trans ((congrArg (fun r => val (ν.s (p.xe χ)) r y J) m).trans e₂))
   exact (mul_left_cancel e₄).trans (val_pull hJ' _ _ _).symm
 
+/- English proof (translation)
+Establish `gp` using `pull_grp p`. Establish `w : (spMap (dualMap f) ≫ v.left) ≫ D₀.P.A.hom = (epsR A').hom ≫ spMap f`. Rewrite using `[Category.assoc, Over.w, ArcQBC.dual_base]`. Establish `e` using `gp.1.lift_fst _ _ w`. Conclude with `⟨Over.homMk (gp.1.lift _ _ w) (gp.1.lift_snd _ _ w), e, IsVecOver.isTangent gp e hv⟩`.
+-/
 theorem exists_vec (v : epsR A ⟶ D₀.P.A) (hv : IsTangent v) :
     ∃ v₁ : epsR A' ⟶ D₁.P.A, v₁.left ≫ prj p = spMap (dualMap f) ≫ v.left ∧ IsTangent v₁ := by
   have gp := pull_grp p
@@ -71,6 +85,29 @@ end Scale
 
 open Classical in
 
+/- English proof (translation)
+Establish `h₁ : ∀ (a : 𝓞 E) v, L (fun j => ty j (a : E) * v j) = fun j => ty j (a : E) * L v j` using `fun a v => by`. Establish `hv : v ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h a x hx`. Consider the case `zero => funext j`.
+
+Simplify using `[show (fun _ : Fin g => (0 : ℂ)) = 0 from rfl]`. Consider the case `add x y _ _ hx hy`. Establish `: (fun j => ty j (a : E) * (x + y) j) = (fun j => ty j (a : E) * x j) + fun j => ty j (a : E) * y j`. Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`.
+
+Rewrite using `[this, map_add, map_add, hx, hy]`. Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`. Consider the case `smul r x _ hx`. Establish `: (fun j => ty j (a : E) * (r • x) j) = (r : ℂ) • (fun j => ty j (a : E) * x j)`.
+
+Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_smul, hx, show r • x = (r : ℂ) • x from rfl, map_smul]`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `h₂ : ∀ i j, ty i ≠ ty j → L (Pi.single j 1) i = 0` using `fun i j hij => by`. Assume the negation of the conclusion as `hne`. Use `hij (ArchLen.emb_ext fun a => mul_right_cancel₀ hne ?_)` and prove the remaining obligations.
+
+Use `congrFun (h₁ a (Pi.single j 1)) i` as an intermediate fact. Establish `e : (fun k => ty k (a : E) * (Pi.single j 1 : Fin g → ℂ) k) = ty j (a : E) • (Pi.single j 1 : Fin g → ℂ)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hk]`. Rewrite `this` using `[e, map_smul]`. Conclude with `this.symm`. Establish `h₃ : ∀ u : Fin g → ℂ, ∀ i, L u i = ∑ j, u j * L (Pi.single j 1) i` using `fun u i => by`.
+
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ L u, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (fun k => if j = k then (1 : ℂ) else 0) = Pi.single j 1`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Rewrite using `[h₃, h₃ v]`. Use `split_ifs with hi`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_ split_ifs with hj` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[h₂ i j (fun q => hj (q.symm.trans hi))]`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun j _ => ?_ split_ifs with hj` and prove the remaining obligations.
+
+Rewrite using `[h₂ i j (fun q => hi (q.trans hj))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem map_proj {E : Type} [Field E] [NumberField E] {g : ℕ} (ty : Fin g → (E →+* ℂ))
     (L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (S : Set (Fin g → ℂ)) (hS : Submodule.span ℝ S = ⊤)
     (h : ∀ (a : 𝓞 E), ∀ v ∈ S, L (fun j => ty j (a : E) * v j) = fun j => ty j (a : E) * L v j) (ρ : E →+* ℂ)
@@ -119,6 +156,9 @@ theorem map_proj {E : Type} [Field E] [NumberField E] {g : ℕ} (ty : Fin g → 
     · rw [h₂ i j (fun q => hi (q.trans hj))]; simp
     · simp
 
+/- English proof (translation)
+Take `⟨B, rfl⟩` from `Matrix.toLin'.surjective L`. Use `⟨B.transpose * Hm * B.transpose.conjTranspose, Matrix.isHermitian_mul_mul_conjTranspose _ hH, fun z w => ?_⟩` and prove the remaining obligations. Simplify using `only [hermForm, Matrix.toLin'_apply]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec z, Matrix.vecMul_transpose, ← Matrix.mulVec_transpose]`. Both sides reduce to the same expression.
+-/
 theorem exists_pull_form {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.IsHermitian)
     (L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) :
     ∃ Hm' : Matrix (Fin g) (Fin g) ℂ, Hm'.IsHermitian ∧ ∀ z w, hermForm Hm' z w = hermForm Hm (L z) (L w) := by
@@ -129,6 +169,9 @@ theorem exists_pull_form {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (hH : Hm.Is
     Matrix.vecMul_transpose, ← Matrix.mulVec_transpose]
   rfl
 
+/- English proof (translation)
+Use `(traceForm_nondegenerate ℚ E).1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← (integralBasis E).sum_repr y, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.traceForm_apply, integralBasis_apply, _root_.mul_comm x]`. Conclude with `smul_eq_zero_of_right _ (h _)`.
+-/
 theorem eq_zero_of_trace {E : Type} [Field E] [NumberField E] {x : E}
     (h : ∀ a : 𝓞 E, Algebra.trace ℚ E ((a : E) * x) = 0) : x = 0 := by
   refine (traceForm_nondegenerate ℚ E).1 x fun y => ?_
@@ -137,6 +180,9 @@ theorem eq_zero_of_trace {E : Type} [Field E] [NumberField E] {x : E}
   rw [map_smul, Algebra.traceForm_apply, integralBasis_apply, _root_.mul_comm x]
   exact smul_eq_zero_of_right _ (h _)
 
+/- English proof (translation)
+Simplify using `only [herm, cc, map_sum, map_mul, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← X.Gm_herm a b, cc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_swap {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (u v : Fin r → E) :
     herm X.Gm v u = cc (herm X.Gm u v) := by
   simp only [herm, cc, map_sum, map_mul, IsCMField.complexConj_apply_apply]
@@ -145,6 +191,11 @@ theorem herm_swap {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (
   rw [← X.Gm_herm a b, cc]
   ring
 
+/- English proof (translation)
+Establish `h₁ : y ≤ b ^ 2`. Assume the negation of the conclusion as `hn`. Use `Real.log_lt_log (pow_pos hb 2) (not_le.1 hn)` as an intermediate fact. Rewrite `this` using `[Real.log_pow]`. Move the coercions through the operations in `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h₁.trans (pow_le_pow_left₀ hb.le (le_mul_of_one_le_right hb.le hm) 2)`.
+-/
 theorem le_sq_of_log {y b m : ℝ} (hb : 0 < b) (hm : 1 ≤ m) (h : Real.log y / 2 ≤ Real.log b) : y ≤ (b * m) ^ 2 := by
   have h₁ : y ≤ b ^ 2 := by
     by_contra hn
@@ -154,6 +205,59 @@ theorem le_sq_of_log {y b m : ℝ} (hb : 0 < b) (hm : 1 ≤ m) (h : Real.log y /
     linarith
   exact h₁.trans (pow_le_pow_left₀ hb.le (le_mul_of_one_le_right hb.le hm) 2)
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ a e th jj n' La c₁ s em _ _ σ r U Uw O _ β Y aC p χ W Ha k ξ' x x'' sf w₁ L gm ep Hm hσ hG hU hBC hLa hep hξ hw hP hEF ⟨t, ht, htξ⟩ hx htt hH τ i eC z hL hz`. Use `letI := H.starRing`. Establish `hGl : Out.GlobalFnsSt` using `hK.laws.globalFns`. Take `⟨hlin, -, -, -, Hm₀, hH₀⟩` from `Uw.period k x`. Take `⟨hlin', -, -, hspan', -⟩` from `Ha.period w₁ hw`.
+
+Take `⟨hab, htor⟩` from `ArchLen.lengths_along_flow E H Dw l Xo c σ r U Uw k ξ' x x'' sf Hm₀ Hm hG hU hξ hx hH₀ hH`. Take `⟨nn, hN, -, -, hnn, hy, -⟩` from `holArc_nilpotent E H Dw l Xo c σ O β Y aC χ W _ _ Uw.F Ha`. Establish `hPw : ∀ v, Ha.y v = 0 → Ha.Pw w₁ v = Ha.P₀ v` using `fun v hv => by`. Rewrite using `[Ha.Pw_eq, hN, hnn v hv, map_zero, smul_zero, add_zero]`. Establish `ht0 : ∀ v', Ha.y v' = 0 → (Uw.F.Di Ha.i).EF t v' = 0` using `fun v' hv' => by`.
+
+Use `ht v'` as an intermediate fact. Rewrite `this` using `[hv', map_zero, map_zero, neg_eq_zero]`. Then use the resulting hypothesis. Establish `hm : 1 ≤ Real.sqrt (max 1 ep⁻¹)` using `Real.one_le_sqrt.2 (le_max_left _ _)`. Establish `htan : GtTanR eC` using `ArcQBC.gtTanR_of_letBC p hGl hL (s.tan τ i)`. Unfold `CMIn.line`.
+
+Consider the cases of `hk : s.kind τ i with`. Consider the case `none`. Take `⟨hb, hd⟩` from `s.xi τ i hk`. Take `⟨hsm, hadd, -⟩` from `pairE_properties E a.D₀.X s.ξ`. Set `φ₀ : a.D₀.X →+ K₁` to `AddMonoidHom.mk' (fun x => labK c K₁ τ (cc (pairE s.ξ x))) fun x y => by`.
+
+Rewrite using `[hadd]`. Simplify using `[cc]`. Take `⟨b₂, d₂⟩` from `(TorusTangent.main hGl K₁ a.D₀).2.2 ℂ aC.D₀ em p φ₀ (e τ i) eC hb hd hL`. Set `ξC : Module.Dual ℤ aC.D₀.X` to `s.ξ.comp p.xe.toIntLinearEquiv.toLinearMap`. Establish `hpair : ∀ y, pairE (E` using `E) ξC y = pairE s.ξ (p.xe y) := fun y => Finset.sum_congr rfl fun j _ => congrArg (fun q => _ * ((s.ξ q : ℤ) : E)) (hBC.2.1 _ y)`.
+
+Establish `hv : ∀ y, xiVal (conjEmb (relab c σ τ)) ξC y = em (φ₀ (p.xe y))` using `fun y => by`. Rewrite using `[(pairE_properties E aC.D₀.X ξC).2.2.2.2, hpair]`. Use `(ArchLen.emb_cc (relab c σ τ) _).symm.trans ?_` and prove the remaining obligations. Conclude with `RingHom.congr_fun hσ _`. Establish `ha` using `anVec_torusLetter hGl E H Dw l Xo c σ O β Y aC χ W _ _ Uw.F Ha ξC t (conjEmb (relab c σ τ)) eC ht htan b₂ fun y j hj => (d₂ y j hj).trans (congrArg _ (hv y).symm)`.
+
+Establish `hcc : conjEmb (conjEmb (relab c σ τ)) = relab c σ τ` using `by ext u; simp [conjEmb]`. Rewrite `ha` using `[hcc]`. Establish `hz'` using `((ExpTan.anVec_bijective hGl E H Dw l Xo c σ O β Y aC χ W _ _ Uw.F Ha).1 eC htan).unique hz ha`. Establish `hLz : L z = (2 * Real.pi * Complex.I : ℂ)⁻¹ • fun j => if (Uw.e j).1 = τ then Uw.Pm k x (gm t) j else 0`. Use `map_proj (fun j => relab c σ (Uw.e j).1) L.toLinearMap _ hspan' (by` as an intermediate fact.
+
+Introduce and unpack `u _ ⟨v, rfl⟩`. Use function extensionality and compare the values at `j`. Establish `e₁ : (fun j => relab c σ (Uw.e j).1 (u : E) * Ha.Pw w₁ v j) = Ha.Pw w₁ (u • v)`. Use function extensionality and compare the values at `fun j => (hlin' u v j).symm`. Rewrite using `[e₁, LinearEquiv.coe_coe, ← hP, ← hP, map_smul, hlin]) (relab c σ τ) (Ha.Pw w₁ t)`.
+
+Simplify using `only [(ArchLen.relab_inj c σ).eq_iff, LinearEquiv.coe_coe] at this hz'`. Rewrite using `[hP, ← this, ← map_smul, hz', hPw t (hy t ht0)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+
+Choose the witnesses or unpack the hypotheses as in `⟨τ', hτ'⟩ : ∃ τ' : (U.X k).Ψ, τ'.1 = relab c σ τ ∨ conjEmb τ'.1 = relab c σ τ := by`. Distinguish the cases in `hm : relab c σ τ ∈ (U.X k).Ψ`. Conclude with `⟨⟨_, hm⟩, Or.inl rfl⟩`. Use `⟨⟨conjEmb (relab c σ τ), ?_⟩, Or.inr hcc⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+
+Conclude with `hm (((U.X k).cmType _).2 h')`. Establish `key` using `htor (gm t) htξ τ τ' hτ'`. Rewrite `key` using `[htt]`. Establish `hs : ∀ (q : ℂ) (u : Fin Uw.g → ℂ), (hermForm Hm (q • u) (q • u)).re = ‖q‖ ^ 2 * (hermForm Hm u u).re` using `fun q u => by`. Rewrite using `[← Complex.re_ofReal_mul, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`.
+
+Simplify using `only [hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ‖(2 * Real.pi * Complex.I : ℂ)⁻¹‖ = (2 * Real.pi)⁻¹`.
+
+Simplify using `[abs_of_pos Real.pi_pos]`. Rewrite using `[hLz, hs, hn]`. Establish `hπ` using `Real.pi_gt_three`. Establish `h1 : Real.pi * (2 * Real.pi)⁻¹ ^ 2 ≤ 1`. Rewrite using `[inv_pow, ← div_eq_mul_inv, div_le_one (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (0 : ℝ) ≤ Real.pi * (2 * Real.pi)⁻¹ ^ 2` using `by positivity`. Establish `h3 : ep⁻¹ ≤ max 1 ep⁻¹` using `le_max_right _ _`. Establish `h4 : max 1 ep⁻¹ ≤ (La * Real.sqrt (max 1 ep⁻¹) * 1) ^ 2`. Rewrite using `[_root_.mul_one, mul_pow, Real.sq_sqrt (by positivity)]`.
+
+Conclude with `le_mul_of_one_le_left (by positivity) (one_le_pow₀ hLa)`. Use `le_trans ?_ (h3.trans h4)` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`. Use `(mul_le_mul_of_nonneg_left ?_ h2).trans (mul_le_of_le_one_left (inv_pos.2 hep).le h1)` and prove the remaining obligations. Use `key` and compare the differences between its conclusion and the goal.
+
+Consider the case `some m`. Take `⟨w, hw₁, hw₂⟩` from `s.eta τ i m hk`. Establish `htw : IsTangent w`. Take `⟨w', hw1, hw2⟩` from `s.L_good.2.2.1 m`. Choose the witnesses or unpack the hypotheses as in `rfl : w = w' := by`.
+
+Use `Over.OverMorphism.ext (s.good.2.2.2.1.1.1.hom_ext ?_ ((Over.w w).trans (Over.w w').symm))` and prove the remaining obligations. Unfold `LamLetters.IsLetter at hw₁ hw1`. Consider the cases of `hq : s.L.src m with`. Consider the case `inl q => rw [hq] at hw₁ hw1`. Conclude with `hw₁.trans hw1.symm`.
+
+Consider the case `inr q => rw [hq] at hw₁ hw1`. Conclude with `hw₁.trans hw1.symm`. Conclude with `GlobalTheory.Reg.isTangent_of_isLieComb s.basis.1 hw2`. Establish `hpos : 0 < (s.L.ℓ m).n em`. Use `s.L_good.2.2.2 m` as an intermediate fact.
+
+Consider the cases of `hq : s.L.src m with`. Consider the case `inl q => rw [hq] at this`. Conclude with `this ▸ (s.good.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 q.2).1.2 em`. Consider the case `inr q => rw [hq] at this`. Conclude with `this ▸ (s.good.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 q.2).1.2 em`.
+
+Take `⟨wC, hwC, htC⟩` from `exists_vec p w htw`. Take `⟨hc, -⟩` from `(TauCanPull.tauCan_iff_of_isPullDeg hK K₁ ℂ em a.D₀ aC.D₀ p n' em.injective a.bimult aC.bimult).1 s.tau`. Take `⟨sC, hsC⟩` from `exists_isSplit hK ℂ aC.D₀ n' s.n_pos hc`. Establish `hsc` using `isPull_scale p (SplitBC.split_baseChange hK K₁ ℂ em a.D₀ aC.D₀ p n' s.sB sC em.injective s.split hsC w wC hwC).2 hL hw₂`. Rewrite `hsc` using `[map_inv₀, map_natCast]`.
+
+Take `⟨V, hV, hV'⟩` from `AbelianLetters.exists_subspace_isometric hK.laws hK.laws2 E H Dw l Xo c σ O β Y aC χ W _ _ Uw.F Ha n' sC s.n_pos hsC.1 hsC.2.1 hsC.2.2`. Take `⟨hzV, hlen⟩` from `hV' wC eC z htC hsc hz`. Take `⟨y, hy₁, hy₂⟩` from `((NormTie.lengths_eq_norms hK E H Dw l c K₁ a e th jj n' La c₁ s em).2.2.2 aC.D₀ p).2 m w wC hw₁ hwC`. Take `⟨Hm₁, hh, hf⟩` from `exists_pull_form Hm₀ hH₀.1 L.toLinearMap`. Simplify using `only [LinearEquiv.coe_coe] at hf`.
+
+Establish `hy₃` using `hlen w₁ Hm₁ y hw ⟨hh, fun u hu => hf u u ▸ hH₀.2.1 _ (L.map_ne_zero_iff.2 hu), fun u v => by`. Rewrite using `[hf, ← hP, ← hP, hH₀.2.2, hEF]⟩ hy₁`. Establish `horth : ∀ v, Ha.y v = 0 → herm (U.X k).Gm (Uw.φ k (gm v) : Fin r → E) ξ' = 0` using `fun v hv => by`. Use `eq_zero_of_trace (x := cc (-(U.X k).ξ0) * herm (U.X k).Gm (Uw.φ k (gm v) : Fin r → E) ξ') fun u => by` as an intermediate fact. Establish `e₁` using `Uw.iso k (gm t) (gm (u • v))`.
+
+Rewrite `e₁` using `[hEF, ht0 _ (by rw [map_smul, hv, smul_zero]), htξ, map_smul, map_smul]`. Establish `s1 : ((u • Uw.φ k (gm v) : (U.X k).Λ) : Fin r → E) = (u : E) • (Uw.φ k (gm v) : Fin r → E)` using `rfl`. Rewrite `e₁` using `[s1, herm_swap, ArchLen.herm_smul_left]`. Establish `e₂` using `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) ((u : E) * (cc (-(U.X k).ξ0) * herm (U.X k).Gm (Uw.φ k (gm v) : Fin r → E) ξ'))`. Rewrite using `[← e₂]`.
+
+Use `Eq.trans ?_ (e₁.symm.trans (by simp))` and prove the remaining obligations. Use `congr 1`. Simplify using `only [cc, AlgEquiv.coe_restrictScalars', map_mul, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 this).resolve_left ((map_ne_zero (IsCMField.complexConj E)).2 (neg_ne_zero.2 (U.X k).ξ0_ne))`.
+
+Establish `hsame` using `hab (V.map L.toLinearMap) (by`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `Submodule.span_mono ?_ (Submodule.apply_mem_span_image_of_mem_span (L.toLinearMap.restrictScalars ℝ) (hV u hu))` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨gm v, horth v hv, by rw [hP, hPw v hv]; rfl⟩) (L z) ⟨z, hzV, rfl⟩`.
+
+Rewrite using `[hsame, ← hf, mul_right_comm]`. Establish `hLa' : 0 < La` using `one_pos.trans_le hLa`. Conclude with `le_sq_of_log (mul_pos hLa' hpos) hm (hy₃ ▸ hy₂ hLa')`.
+-/
 theorem letter_length_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (jj : ℤ) (n' : ℕ) (La c₁ : ℝ) (s : CMIn a e th jj n' La c₁) (em : K₁ →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (aC : ArcIn Dw l β ℂ (σ.comp β)) (p : Out.IsPullDeg em a.D₀ aC.D₀) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y aC χ) (Ha : HolArc Y σ aC χ W Uw.F) (k : U.Comp) (ξ' : Fin r → E) (x x'' : (U.X k).dom) (sf : (U.X k).Ψ → ℂ) (w₁ : ℂ) (L : (Fin Uw.g → ℂ) ≃ₗ[ℂ] (Fin Uw.g → ℂ)) (gm : (Uw.F.Di Ha.i).La ≃ₗ[𝓞 E] (Uw.F.Di (Uw.ik k)).La) (ep : ℝ) (Hm : Matrix (Fin Uw.g) (Fin Uw.g) ℂ), σ = em.comp (algebraMap c.F K₁) → GoodEmb c σ → IsUnf U → InBC em (a.restrict β) aC p → 1 ≤ La → 0 < ep → (U.X k).IsIso ξ' → Ha.T < w₁.im → (∀ v, Uw.Pm k x (gm v) = L (Ha.Pw w₁ v)) → (∀ v v', (Uw.F.Di (Uw.ik k)).EF (gm v) (gm v') = (Uw.F.Di Ha.i).EF v v') → (∃ t, (∀ v', -(Uw.F.Di Ha.i).EF t v' = s.ξ (p.xe (Ha.y v'))) ∧ (Uw.φ k (gm t) : Fin r → E) = ξ') → x''.1 = (U.X k).flow ξ' sf x.1 → (∀ τ, (U.X k).tt ξ' x''.1 τ = ep) → IsRiem Uw.F (Uw.ik k) (Uw.Pm k x'') Hm → ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) (eC : Out.GtPt aC.D₀ (epsR ℂ)) (z : Fin Uw.g → ℂ), LetBC p (e τ i) eC → AnVec Ha eC z → Real.pi * (hermForm Hm (L z) (L z)).re ≤ (La * Real.sqrt (max 1 ep⁻¹) * (s.line τ i).n em) ^ 2 := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ a e th jj n' La c₁ s em _ _ σ r U Uw O _ β Y aC p χ W Ha k ξ' x x'' sf w₁ L gm
     ep Hm hσ hG hU hBC hLa hep hξ hw hP hEF ⟨t, ht, htξ⟩ hx htt hH τ i eC z hL hz

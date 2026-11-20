@@ -23,6 +23,9 @@ namespace GlobalTheory.IsoALoc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Establish `h1` using `congrArg (inclR (F := F) (AF F)) h0`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`. Simplify using `only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]`.
+-/
 theorem pair_zero_of_form (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x x' : Fin n → E)
     (h0 : form σ J x x' = 0) :
     ∑ i, ∑ k, incV F x i * incM F J i k * cA σ (incV F x' k) = 0 := by
@@ -32,6 +35,15 @@ theorem pair_zero_of_form (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fi
   rw [← h1]
   simp only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Establish `hq : ∀ q, ∑ i, ∑ k, inclR (F` using `F) (AF F) (ι i q) * incM F J i k * cA σ (incV F x k) = 0 := by`. Introduce `q`. Establish `h1` using `congrArg (inclR (F := F) (AF F)) (h0 (Pi.single q 1))`. Rewrite `h1` using `[map_zero]`.
+
+Rewrite using `[← h1]`. Simplify using `only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ i k, (incM F ι *ᵥ y) i * incM F J i k * cA σ (incV F x k) = ∑ q, y q * (inclR (F` using `F) (AF F) (ι i q) * incM F J i k * cA σ (incV F x k)) := by`.
+
+Introduce `i k`. Simplify using `only [Matrix.mulVec, dotProduct, incM, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `sw : ∀ i, ∑ k, ∑ q, y q * (inclR (F` using `F) (AF F) (ι i q) * incM F J i k * cA σ (incV F x k)) = ∑ q, ∑ k, y q * (inclR (F := F) (AF F) (ι i q) * incM F J i k * cA σ (incV F x k)) := fun i => Finset.sum_comm`.
+
+Simplify using `only [e, sw]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.mul_sum]`. Rewrite using `[hq q, mul_zero]`.
+-/
 theorem pair_iota_left (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin n₁) E)
     (x : Fin n → E) (h0 : ∀ u, form σ J (ι *ᵥ u) x = 0) (y : Fin n₁ → AE F E) :
     ∑ i, ∑ k, (incM F ι *ᵥ y) i * incM F J i k * cA σ (incV F x k) = 0 := by
@@ -60,6 +72,11 @@ theorem pair_iota_left (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (
   simp only [← Finset.mul_sum]
   rw [hq q, mul_zero]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [map_sum, map_mul, GlobalTheory.IsoOrthLoc.cA_cA hσ, incM, Matrix.map_apply, hc, hJ, map_neg]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_conj_skew (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (a b : Fin n → AE F E) :
     ∑ i, ∑ k, a i * incM F J i k * cA σ (b k) = -cA σ (∑ i, ∑ k, b i * incM F J i k * cA σ (a k)) := by
@@ -71,6 +88,13 @@ theorem pair_conj_skew (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n : �
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ X X₁ W W₁ H H' M hB hX hW hH hH' v u hu _ u' hu' _`. Establish `hσ` using `GlobalTheory.IsoOrthLoc.sigma_sigma hB.cm`. Rewrite using `[GlobalTheory.IsoOrthLoc.locCo_form M.co v u u']`. It suffices to establish `hs : symp (cA σ) (-1) (incM F X.J) (incM F W.J) u u' = 0 by rw [hs, map_zero]`. Establish `hxx` using `pair_zero_of_form (F := F) σ X.J H.x H.x hH.xx`.
+
+Establish `hww` using `pair_zero_of_form (F := F) σ W.J H'.x H'.x hH'.xx`. Establish `hl : ∀ z, ∑ i, ∑ k, (incM F H'.ι *ᵥ z) i * incM F W.J i k * cA σ (incV F H'.x k) = 0` using `pair_iota_left σ W.J H'.ι H'.x (fun u => (hH'.orth u).1)`. Establish `hr : ∀ z, ∑ i, ∑ k, incV F H'.x i * incM F W.J i k * cA σ ((incM F H'.ι *ᵥ z) k) = 0`. Introduce `z`. Rewrite using `[pair_conj_skew σ hσ W.J hW.skew, hl z, map_zero, neg_zero]`.
+
+Apply the tactic sequence `rcases hu with ⟨y, rfl⟩ | ⟨z, rfl⟩ <;> rcases hu' with ⟨y', rfl⟩ | ⟨z', rfl⟩`. Rewrite using `[symp, GlobalTheory.MixedLagr.hTens_vecMulVec, hww, mul_zero, mul_zero, map_zero]`. Rewrite using `[symp, GlobalTheory.MixedLagr.hTens_vecMulVec, hr, mul_zero, mul_zero, map_zero]`. Rewrite using `[symp, GlobalTheory.MixedLagr.hTens_vecMulVec, hl, mul_zero, mul_zero, map_zero]`. Rewrite using `[symp, GlobalTheory.MixedLagr.hTens_vecMulVec, hxx, zero_mul, mul_zero, map_zero]`.
+-/
 theorem isoA_locCo_iso : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (W : Spc F E d) (W₁ : Spc F E d₁)
     (H : Plane E n n₁) (H' : Plane E d d₁) (M : Model σ X W),

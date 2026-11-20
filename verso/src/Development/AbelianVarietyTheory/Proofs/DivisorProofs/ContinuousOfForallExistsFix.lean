@@ -6,6 +6,15 @@ namespace GlobalTheory.ContinuityFromFixedPoints
 
 open Topology
 
+/- English proof (translation)
+Use `choose x hx using h`. Use `continuous_of_continuousAt_one φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨E', hE', hs'⟩` from `(krullTopology_mem_nhds_one_iff k' F' s).1 hs`.
+
+Set `b` to `Module.finBasis k' E'`. Set `S : Set F` to `Set.range fun i => x (b i : F')`. Establish `hS : S.Finite` using `Set.finite_range _`. Use `haveI : Finite S := hS.to_subtype`. Establish `hfin : FiniteDimensional k (IntermediateField.adjoin k S)` using `IntermediateField.finiteDimensional_adjoin fun z _ => Algebra.IsIntegral.isIntegral z`.
+
+Rewrite using `[Filter.mem_map]`. Use `(krullTopology_mem_nhds_one_iff k F _).2 ⟨IntermediateField.adjoin k S, hfin, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Apply `hs'` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Establish `hb : ∀ i, φ σ (b i : F') = b i` using `fun i => hx _ σ (hσ _ (IntermediateField.subset_adjoin k S ⟨i, rfl⟩))`. Introduce `y hy`. Establish `hlin : ((φ σ).toLinearMap ∘ₗ E'.val.toLinearMap) = E'.val.toLinearMap` using `b.ext fun i => by simpa using hb i`. Simplify using `using LinearMap.congr_fun hlin ⟨y, hy⟩`.
+-/
 theorem continuous_of_forall_exists_fix {k : Type u_1} {F : Type u_2} {k' : Type u_3}
     {F' : Type u_4} [Field k] [Field F] [Algebra k F] [Field k'] [Field F'] [Algebra k' F']
     [Algebra.IsIntegral k F] (φ : Gal(F/k) →* Gal(F'/k'))

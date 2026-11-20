@@ -7,6 +7,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GroundTheory.PAdicHodge Glob
 noncomputable section
 namespace GlobalTheory.CompanionTheory.BcAcris
 
+/- English proof (translation)
+Establish `e : bWL r M n j y = (B.omMor ((nm r M n).mor l) r.w (Mid.wn_mk r n)).pull j y` using `congrArg (fun t => CH.Mor.pull t j y) (bWMorL_eq r M n)`. Conclude with `(congrArg (fun v => (toQ Q' ((base l).cris n)).pull j (idA r a • v)) e).trans (LinearMap.map_smulₛₗ ((toQ Q' ((base l).cris n)).pull j) (idA r a) _)`.
+-/
 theorem pull_comm {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K) (j n : ℕ)
     (Q' : ObjectProperty (Thick (nlFun (B.DD true (base l) n) l M.X M.p (Mid.κm r n)))) (a : AW r)
     (y : (Wc.HS l (B.schFn M.p) r.ρ j).M n) :
@@ -20,6 +23,17 @@ theorem pull_comm {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (Padic
 
 set_option maxHeartbeats 12000000 in
 
+/- English proof (translation)
+Introduce `l _ K r M hM j n`. Use `letI := (Mid.wn r n).toAlgebra`. Use `haveI : Module.Flat (Wc.Wm l r.k n) ((base l).Acr n) := GlobalTheory.T.flat_acris_truncated_witt r n`. Take `⟨U⟩` from `cov_of_sm M hM`. Set `m` to `nm r M n`.
+
+Set `Q : ObjectProperty (Thick (nlFun (Wc.pd l r.k n) l M.X M.p ((Wc.res l r.k n).comp r.ρ)))` to `St ⊤ {⊤}`. Set `Q' : ObjectProperty (Thick (nlFun (B.DD true (base l) n) l M.X M.p (Mid.κm r n)))` to `St ⊤ {⊤}`. Establish `hQ : ∀ T, Q T` using `st_all`. Establish `hQ' : ∀ T, Q' T` using `st_all`. Establish `h : ∀ T, Q' T → Q ((m.mor l).functor.obj T)` using `fun T _ => hQ _`.
+
+Establish `ha : ∀ a, (m.smor Q Q' h).LeC a (oT Q) (oT Q')` using `fun a => GlobalTheory.CompanionTheory.BcCov.leC_top _ a _ _ (oT_top Q')`. Establish `hb : ∀ a, (m.smor Q Q' h).LeC a (oB Q) (oB Q')` using `fun a => GlobalTheory.CompanionTheory.BcCov.leC_bot _ a _ _ fun T => oB_bot Q _`. Establish `T` using `GlobalTheory.T.nilpotent_identity_morphism_compat (Fact.out : l.Prime).ne_zero (l_nil r n) m rfl rfl U Q Q' rfl rfl h ha hb j`. Use `tens_change (A := AW r) (Ideal.Quotient.mk _) ((base l).cris n) (cris_surjective n) (fun w => rfl) Ideal.Quotient.mk_surjective ((l : WittVector l r.k) ^ n) (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)) ?_ ((toQ Q (Ideal.Quotient.mk _)).pull j) (toQ_pull_bi …` and prove the remaining obligations. Introduce `a h0`.
+
+Take `⟨b, hb'⟩` from `cris_ker n a h0`. Use `⟨b, hb'.trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = r.w _ * b`. Rewrite using `[map_pow, map_natCast]`. Introduce `a y`.
+
+Establish `key` using `sqC_toQ m Q Q' h (Ideal.Quotient.mk _) ((base l).cris n) r.w (Mid.wn_mk r n) ((base l).cris n a) (ha _) (hb _) j y`. Conclude with `(pull_comm r M j n Q' a y).trans key.symm`.
+-/
 theorem bc_tens : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K), M.Sm → ∀ j n,
     Tens (WittVector l r.k) (N := fun _ : Unit => AW r) (M := fun _ => (Wc.HS l (B.schFn M.p) r.ρ j).M n)
       (M' := Mid.HM r M n j) fun _ a y => idA r a • bWL r M n j y := by

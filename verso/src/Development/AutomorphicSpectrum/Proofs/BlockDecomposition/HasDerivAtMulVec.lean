@@ -20,25 +20,46 @@ variable {n : ℕ}
 def hv (lam : Fin n → ℤ) : nablaSq ℂ n (dw lam) :=
   ⟨extremal ℂ n (dw lam), hwMem ℂ n n le_rfl _ (factNatW n (dw lam)).1⟩
 
+/- English proof (translation)
+Introduce `h` and use `hwNe ℂ n n le_rfl (dw lam).natW (congrArg Subtype.val h)`.
+-/
 theorem hv_ne (lam : Fin n → ℤ) : hv lam ≠ 0 := fun h =>
   hwNe ℂ n n le_rfl (dw lam).natW (congrArg Subtype.val h)
 
+/- English proof (translation)
+Unfold `dw`. Rewrite using `[dif_pos h]`.
+-/
 theorem dw_w {lam : Fin n → ℤ} (h : Antitone lam) (a : Fin n) : (dw lam).w a = lam a := by
   unfold dw
   rw [dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[Rm_of_unit lam h]`. Conclude with `LinearMap.toMatrix_mulVec_repr _ _ _ _`.
+-/
 theorem Rm_mulVec (lam : Fin n → ℤ) {x : Mat n} (h : IsUnit x.det) (v : nablaSq ℂ n (dw lam)) :
     Rm lam x *ᵥ ((wb lam).repr v : Jd n lam → ℂ) =
       ((wb lam).repr (GlobalTheory.Branching.sqRep ℂ n (dw lam) (Matrix.nonsingInvUnit x h) v) : Jd n lam → ℂ) := by
   rw [Rm_of_unit lam h]
   exact LinearMap.toMatrix_mulVec_repr _ _ _ _
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `HasDerivAt.fun_sum fun j _ => (hasDerivAt_line hD B i j).mul_const _`.
+-/
 theorem hasDerivAt_mulVec {lam : Fin n → ℤ} (hD : HolRm lam) (B : Mat n) (c : Jd n lam → ℂ)
     (i : Jd n lam) :
     HasDerivAt (fun t : ℂ => (Rm lam (1 + t • B) *ᵥ c) i) ((XA lam B *ᵥ c) i) 0 := by
   simp only [Matrix.mulVec, dotProduct]
   exact HasDerivAt.fun_sum fun j _ => (hasDerivAt_line hD B i j).mul_const _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `(factSqHighestWeight ℂ n (dw lam)).2 _ ?_ ?_` and prove the remaining obligations. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Use `show ((1 : Mat n) + t • Matrix.single a b (1 : ℂ)) i j = 0`.
+
+Establish `h1 : (1 : Mat n) i j = 0` using `Matrix.one_apply_ne (ne_of_gt hij')`. Establish `h2 : Matrix.single a b (1 : ℂ) i j = 0`. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hab (not_lt.2 hij'.le)`.
+
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, h1, h2]`. Simplify using the standard rewrite rules. Introduce `i show ((1 : Mat n) + t • Matrix.single a b (1 : ℂ)) i i = 1`. Establish `h2 : Matrix.single a b (1 : ℂ) i i = 0`. Rewrite using `[Matrix.single_apply_of_ne]`.
+
+Introduce and unpack `⟨rfl, h⟩`. Conclude with `hab.ne' h`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem fix_upper (lam : Fin n → ℤ) {a b : Fin n} (hab : a < b) {t : ℂ}
     (h : IsUnit ((1 : Mat n) + t • Matrix.single a b (1 : ℂ)).det) :
     GlobalTheory.Branching.sqRep ℂ n (dw lam) (Matrix.nonsingInvUnit _ h) (hv lam) = hv lam := by
@@ -63,6 +84,21 @@ theorem fix_upper (lam : Fin n → ℤ) {a b : Fin n} (hab : a < b) {t : ℂ}
     rw [Matrix.add_apply, Matrix.smul_apply, h2]
     simp
 
+/- English proof (translation)
+Set `u : Fin n → ℂˣ` to `fun i => if i = a then Units.mk0 (1 + t) ht else 1`. Establish `e : Matrix.nonsingInvUnit _ h = diagGL ℂ n u`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show ((1 : Mat n) + t • Matrix.single a a (1 : ℂ)) i j = Matrix.diagonal (fun k => (u k : ℂ)) i j`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[u]`.
+
+Establish `h2 : Matrix.single a a (1 : ℂ) i i = 0`. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨h, -⟩`. Conclude with `hia h.symm`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, h2]`.
+
+Simplify using `[u, hia]`. Establish `h2 : Matrix.single a a (1 : ℂ) i j = 0`. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨h, h'⟩`. Conclude with `hij (h.symm.trans h')`.
+
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, h2, Matrix.one_apply_ne hij, Matrix.diagonal_apply_ne _ hij]`. Simplify using the standard rewrite rules. Establish `hp : ((∏ i, (u i) ^ ((dw lam).w i) : ℂˣ) : ℂ) = (1 + t) ^ (lam a)`. Rewrite using `[Finset.prod_eq_single a]`. Simplify using `[u, dw_w hA]`.
+
+Introduce `b _ hb`. Simplify using `[u, hb]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hh` using `(factSqHighestWeight ℂ n (dw lam)).1 u`. Rewrite `hh` using `[hp]`. Conclude with `hh`.
+-/
 theorem diag_act {lam : Fin n → ℤ} (hA : Antitone lam) (a : Fin n) {t : ℂ} (ht : 1 + t ≠ 0)
     (h : IsUnit ((1 : Mat n) + t • Matrix.single a a (1 : ℂ)).det) :
     GlobalTheory.Branching.sqRep ℂ n (dw lam) (Matrix.nonsingInvUnit _ h) (hv lam) =
@@ -101,6 +137,17 @@ theorem diag_act {lam : Fin n → ℤ} (hA : Antitone lam) (a : Fin n) {t : ℂ}
   rw [hp] at hh
   exact hh
 
+/- English proof (translation)
+Use `⟨hv lam, hv_ne lam, fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Establish `h1` using `hasDerivAt_mulVec hD (Matrix.single a b (1 : ℂ)) ((wb lam).repr (hv lam)) i`. Establish `hev : (fun t : ℂ => (Rm lam (1 + t • Matrix.single a b (1 : ℂ)) *ᵥ ((wb lam).repr (hv lam) : Jd n lam → ℂ)) i) =ᶠ[𝓝 0] fun _ => ((wb lam).repr (hv lam) : Jd n lam → ℂ) i` using `by filter_upwards [eventually_line_unit (Matrix.single a b (1 : ℂ))] with t ht`. Rewrite using `[Rm_mulVec lam ht, fix_upper lam hab ht]`.
+
+Establish `h2` using `(hasDerivAt_const (0 : ℂ) (((wb lam).repr (hv lam) : Jd n lam → ℂ) i)).congr_of_eventuallyEq hev`. Simplify `h1.unique h2` using `[Xu]`. Use extensionality with `i`. Establish `h1` using `hasDerivAt_mulVec hD (Matrix.single a a (1 : ℂ)) ((wb lam).repr (hv lam)) i`. Establish `hne : ∀ᶠ t : ℂ in 𝓝 0, 1 + t ≠ 0`.
+
+Establish `hc : ContinuousAt (fun t : ℂ => 1 + t) 0` using `by fun_prop`. Conclude with `hc.eventually_ne (by simp)`. Establish `hev : (fun t : ℂ => (Rm lam (1 + t • Matrix.single a a (1 : ℂ)) *ᵥ ((wb lam).repr (hv lam) : Jd n lam → ℂ)) i) =ᶠ[𝓝 0] fun t => (1 + t) ^ (lam a) * ((wb lam).repr (hv lam) : Jd n lam → ℂ) i` using `by filter_upwards [eventually_line_unit (Matrix.single a a (1 : ℂ)), hne] with t ht ht'`. Rewrite using `[Rm_mulVec lam ht, diag_act hA a ht' ht]`. Simplify using the standard rewrite rules.
+
+Establish `hz : HasDerivAt (fun t : ℂ => (1 + t) ^ (lam a)) (lam a : ℂ) 0`. Establish `h0` using `hasDerivAt_zpow (lam a) ((1 : ℂ) + 0) (Or.inl (by simp))`. Establish `h3` using `h0.comp_const_add 1 0`. Establish `e : (lam a : ℂ) * ((1 : ℂ) + 0) ^ (lam a - 1) = lam a` using `by simp`. Rewrite `h3` using `[e]`.
+
+Conclude with `h3`. Establish `h2` using `(hz.mul_const (((wb lam).repr (hv lam) : Jd n lam → ℂ) i)).congr_of_eventuallyEq hev`. Simplify `h1.unique h2` using `[Xu]`.
+-/
 theorem exists_hw (n : ℕ) (lam : Fin n → ℤ) (hD : HolRm lam) (hA : Antitone lam) :
     ∃ v : Formalism.BasicNotions.nablaSq ℂ n (dw lam), v ≠ 0 ∧
       (∀ a b : Fin n, a < b → Xu lam a b *ᵥ ((wb lam).repr v : Jd n lam → ℂ) = 0) ∧

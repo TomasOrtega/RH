@@ -23,6 +23,17 @@ section General
 
 variable {X Y Y' : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `⟨τ, hτ, H⟩` from `H`. Establish `mem : ∀ y j, x' y ∈ LB.wchart L φ' j → x y ∈ LB.wchart L φ j` using `fun y j hy => Set.mem_iInter.2 fun k => by`. Establish `: (x' ≫ φ' k) y ∈ L.U (j k)` using `Set.mem_iInter.1 hy k`. Rewrite `this` using `[← e]`. Conclude with `this`.
+
+Establish `le : ∀ j : PUnit → K → L.ι, ((LB.LinComb L φ' ε).pull x').U j ≤ ((LB.LinComb L φ ε).pull x).U j` using `fun j y hy => mem_pull.2 (mem y _ (mem_pull.1 hy))`. Use `SegreCoord.secCoord_mk (fun j => resG (Sp R) (le j) (τ.s j).val) (fun y j => gs (𝟙 _) y _ (τ.s fun _ => j).val) (fun j y hy => gs_res _ y (le j) hy _) (fun y j hy => ?_) (fun y j j' hy hy' => ?_) (fun y j i hy => ?_)` and prove the remaining obligations. Establish `hy₁ : y ∈ ((LB.LinComb L φ ε).pull x).U (fun _ => j)` using `mem_pull.2 (mem y j hy)`. Conclude with `(congrArg IsUnit (gs_unit (𝟙 _) y _ hy₁ _)).mpr (Units.isUnit _)`. Establish `hy₁ : y ∈ ((LB.LinComb L φ ε).pull x).U (fun _ => j)` using `mem_pull.2 (mem y j hy)`.
+
+Establish `hy₂ : y ∈ ((LB.LinComb L φ ε).pull x).U (fun _ => j')` using `mem_pull.2 (mem y j' hy')`. Establish `q` using `gen_trans (φ := fun _ : PUnit => x) (ε := fun _ => 1) hτ (𝟙 _) y hy₁ hy₂`. Use `(gs_unit (𝟙 _) y _ hy₁ _).trans ((congrArg Units.val q).trans ((Units.val_mul _ _).trans (congrArg₂ (· * ·) (congrArg Units.val ?_) (gs_unit (𝟙 _) y _ hy₂ _).symm)))` and prove the remaining obligations. Unfold `trF`. Rewrite using `[Fintype.prod_unique, zpow_one, Category.id_comp]`.
+
+Use `(gm_linComb L φ ε x y j j' (mem y j hy) (mem y j' hy')).trans (Eq.trans ?_ (gm_linComb L φ' ε x' y j j' hy hy').symm)` and prove the remaining obligations. Simplify using `only [e]`. Establish `hy' : y ∈ ((LB.LinComb L φ ε).pull x).U (fun _ => j)` using `mem_pull.2 (mem y j hy)`. Use `congrArg (gs (𝟙 _) y _) (H i (fun _ => j) (fun z hz => mem_pull.1 hz))` as an intermediate fact. Use `(hσ i y j (mem y j hy)).trans ((SegreCoord.gs_appLE x y _ hy' _).symm.trans (this.trans ((gs_mul _ y _ hy' _ _).trans (congrArg (· * _) ?_))))` and prove the remaining obligations.
+
+Conclude with `(gs_res _ y _ hy' _).trans (SegreCoord.ev_eq y _).symm`.
+-/
 theorem secCoord_of_germ {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} {I : Type}
     {σ : I → (LB.LinComb L φ ε).Sec} {σ' : I → (LB.LinComb L φ' ε).Sec} {R : Type} [CommRing R]
     {x : Sp R ⟶ Y} {x' : Sp R ⟶ Y'} (e : ∀ k, x ≫ φ k = x' ≫ φ' k)
@@ -57,16 +68,25 @@ theorem secCoord_of_germ {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K
       (this.trans ((gs_mul _ y _ hy' _ _).trans (congrArg (· * _) ?_))))
     exact (gs_res _ y _ hy' _).trans (SegreCoord.ev_eq y _).symm
 
+/- English proof (translation)
+The claim follows from `(gs_res r z (wchart_le_of_eq h e j) hz _).trans (gs_pull r h z _ (wchart_le_of_eq h e j hz) _)`.
+-/
 theorem gs_pullTo {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} (s : (LB.LinComb L φ ε).Sec) (h : Y' ⟶ Y)
     (e : ∀ k, h ≫ φ k = φ' k) {Z : Scheme.{0}} (r : Z ⟶ Y') (z : Z) (j : K → L.ι) (hz : r z ∈ LB.wchart L φ' j) :
     gs r z (LB.wchart L φ' j) ((pullTo s h e).f j) = gs (r ≫ h) z (LB.wchart L φ j) (s.f j) :=
   (gs_res r z (wchart_le_of_eq h e j) hz _).trans (gs_pull r h z _ (wchart_le_of_eq h e j hz) _)
 
+/- English proof (translation)
+Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext e`. Conclude with `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k`.
+-/
 theorem mem_wchart_of_eq {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} (h : Y' ⟶ Y)
     (e : ∀ k, h ≫ φ k = φ' k) (z : Y') (j : K → L.ι) (hz : h z ∈ LB.wchart L φ j) : z ∈ LB.wchart L φ' j := by
   obtain rfl : (fun k => h ≫ φ k) = φ' := funext e
   exact Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k
 
+/- English proof (translation)
+Establish `e' : ∀ k, y ≫ φ' k = (y ≫ h) ≫ φ k` using `fun k => by rw [Category.assoc, e]`. Conclude with `⟨secCoord_of_germ e' fun i z j hz => (gs_pullTo (σ i) h e y z j hz).symm, secCoord_of_germ (fun k => (e' k).symm) fun i z j hz => gs_pullTo (σ i) h e y z j (mem_wchart_of_eq h e _ j hz)⟩`.
+-/
 theorem secCoord_pullTo {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} {I : Type}
     (σ : I → (LB.LinComb L φ ε).Sec) (h : Y' ⟶ Y) (e : ∀ k, h ≫ φ k = φ' k) {R : Type} [CommRing R]
     (y : Sp R ⟶ Y') (w : I → R) :
@@ -76,6 +96,17 @@ theorem secCoord_pullTo {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K 
     secCoord_of_germ (fun k => (e' k).symm) fun i z j hz =>
       gs_pullTo (σ i) h e y z j (mem_wchart_of_eq h e _ j hz)⟩
 
+/- English proof (translation)
+Establish `hz : ∀ z, h z ∈ Y.basicOpen a` using `fun z => ha.le ⟨z, rfl⟩`. Use `choose θ hθ using fun j => PushInv.exists_lift h (Y.basicOpen a ⊓ (LB.LinComb L φ ε).U j) (inf_le_left.trans ha.ge) (LB.wchart L φ' j) (fun z hz => mem_wchart_of_eq h e z j hz.2) (x.f j)`. Establish `hθ' : θ ∈ secOn (LB.LinComb L φ ε) (Y.basicOpen a)` using `LBGerm.mem_secOn_of_germ θ fun g i j hg hi hj => by`. Take `⟨z, rfl⟩` from `ha.ge hg`. Apply `PushInv.stalk_inj h z` to reduce the goal to its premises.
+
+Establish `hi'` using `mem_wchart_of_eq h e z i hi`. Establish `hj'` using `mem_wchart_of_eq h e z j hj`. Rewrite using `[map_mul, ← gs_stalkMap _ z (Y.basicOpen a ⊓ (LB.LinComb L φ ε).U i) ⟨hg, hi⟩, ← gs_stalkMap _ z (Y.basicOpen a ⊓ (LB.LinComb L φ ε).U j) ⟨hg, hj⟩, ← PushInv.gm_comp _ (𝟙 _) z ((LB.LinComb L φ ε).U i ⊓ (LB.LinComb L φ ε).U j) ⟨hi, hj⟩, Category.comp_id]`. Establish `e₁` using `hθ i _ (𝟙 _) z ⟨hg, hi⟩`. Establish `e₂` using `hθ j _ (𝟙 _) z ⟨hg, hj⟩`.
+
+Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Rewrite using `[e₁, e₂]`. Use `(sec_trans x (𝟙 _) z hi' hj').trans (congrArg (fun q : (Y'.presheaf.stalk z)ˣ => q.val * _) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb L φ ε h z i j hi hj).symm` and prove the remaining obligations. Simplify using `only [trF, e, Category.id_comp]`.
+
+Take `⟨n, t, ht⟩` from `AbLaw.SecOn.exists_pow_smul_eq_restrict (LB.isLB_linComb hL φ ε) (V := ⊤) isCompact_univ isQuasiSeparated_univ a le_top rfl ((AbLaw.SecOn.equivFamilies _ _).symm ⟨θ, hθ'⟩)`. Use `⟨n, AbLaw.SecOn.topEquiv _ t, fun j z hj => ?_⟩` and prove the remaining obligations. Establish `hj' : h z ∈ (LB.LinComb L φ ε).U j` using `wchart_le_of_eq h e j hj`. Establish `hm : h z ∈ Y.basicOpen a ⊓ (LB.LinComb L φ ε).U j` using `⟨hz z, hj'⟩`. Establish `q` using `congrArg (fun s => gs h z _ (GlobalTheory.LB.coord s j)) ht`.
+
+Establish `e₁` using `hθ j _ (𝟙 _) z hm`. Rewrite `e₁` using `[Category.id_comp]`. Rewrite using `[gs_pullTo _ _ _ _ _ _ hj, Category.id_comp, ← e₁]`. Use `(gs_res h z _ hj' _).trans ((gs_res h z _ hm _).symm.trans (q.symm.trans ((gs_mul h z _ hm _ _).trans (congrArg₂ (· * ·) ?_ rfl))))` and prove the remaining obligations. Conclude with `(gs_res h z _ hm _).trans ((LBGerm.gs_pow h z _ (hz z) _ _).trans (congrArg (· ^ n) (gs_res h z _ (hz z) _)))`.
+-/
 theorem exists_pow_extend [CompactSpace Y] [QuasiSeparatedSpace Y] (hL : L.IsLB) {φ : K → (Y ⟶ X)}
     {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) [IsOpenImmersion h] (e : ∀ k, h ≫ φ k = φ' k) (a : Γ(Y, ⊤))
     (ha : h.opensRange = Y.basicOpen a) (x : (LB.LinComb L φ' ε).Sec) :
@@ -112,6 +143,13 @@ theorem exists_pow_extend [CompactSpace Y] [QuasiSeparatedSpace Y] (hL : L.IsLB)
     (congrArg₂ (· * ·) ?_ rfl))))
   exact (gs_res h z _ hm _).trans ((LBGerm.gs_pow h z _ (hz z) _ _).trans (congrArg (· ^ n) (gs_res h z _ (hz z) _)))
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `AbLaw.SecOn.exists_pow_smul_eq_zero (LB.isLB_linComb hL φ ε) (V := ⊤) isCompact_univ a le_top rfl ((AbLaw.SecOn.topEquiv _).symm u) (GlobalTheory.LB.sec_ext fun j => fn_ext fun y hy => by`. Take `⟨z, rfl⟩` from `ha.ge hy.1`. Establish `hj` using `mem_wchart_of_eq h e z j hy.2`. Establish `q` using `(gs_pullTo u h e (𝟙 _) z j hj).symm.trans ((congrArg (gs _ z _) (hu j)).trans (LBGerm.gs_zero _ z _ hj))`. Rewrite `q` using `[Category.id_comp]`.
+
+Use `replace q := (gs_stalkMap h z (LB.wchart L φ j) hy.2 _).symm.trans q`. Establish `hy' : (𝟙 Y : Y ⟶ Y) (h z) ∈ ⊤ ⊓ (LB.LinComb L φ ε).U j` using `⟨trivial, hy.2⟩`. Use `(gs_res (𝟙 Y) (h z) (inf_le_inf_right _ le_top) hy _).trans ((gs_res (𝟙 Y) (h z) inf_le_right hy' (u.f j)).trans (Eq.trans ?_ (LBGerm.gs_zero (𝟙 Y) (h z) _ hy).symm))` and prove the remaining obligations. Conclude with `PushInv.stalk_inj h z (q.trans (map_zero _).symm))`. Use `congrArg (AbLaw.SecOn.topEquiv _) hn` as an intermediate fact.
+
+Rewrite `this` using `[map_smul, LinearEquiv.apply_symm_apply, map_zero]`. Conclude with `⟨n, fun j => congrArg (fun q => q.f j) this⟩`.
+-/
 theorem exists_pow_kill [CompactSpace Y] (hL : L.IsLB) {φ : K → (Y ⟶ X)}
     {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) [IsOpenImmersion h] (e : ∀ k, h ≫ φ k = φ' k) (a : Γ(Y, ⊤))
     (ha : h.opensRange = Y.basicOpen a) (u : (LB.LinComb L φ ε).Sec) (hu : ∀ j, (pullTo u h e).f j = 0) :
@@ -131,6 +169,13 @@ theorem exists_pow_kill [CompactSpace Y] (hL : L.IsLB) {φ : K → (Y ⟶ X)}
   rw [map_smul, LinearEquiv.apply_symm_apply, map_zero] at this
   exact ⟨n, fun j => congrArg (fun q => q.f j) this⟩
 
+/- English proof (translation)
+Establish `main : ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsOpenImmersion i], i.opensRange = Y.basicOpen f → ∀ d : Γ(Z, ⊤), ∃ (m : ℕ) (d₀ : Γ(Y, ⊤)), i.appTop.hom d₀ = i.appTop.hom (f ^ m) * d` using `fun Z i _ hi d => by`. Take `⟨c, hc⟩` from `PushInv.exists_lift i (Y.basicOpen f) hi.ge ⊤ le_top d`. Take `⟨m, d₀, hd₀⟩` from `exists_eq_pow_mul_of_isAffineOpen Y ⊤ (isAffineOpen_top _) f c`. Establish `hd : resG Y (Y.basicOpen_le f) d₀ = resG Y (Y.basicOpen_le f) f ^ m * c` using `hd₀`. Use `⟨m, d₀, fn_ext fun z _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : (𝟙 Z ≫ i) z ∈ Y.basicOpen f` using `hi.le ⟨z, rfl⟩`. Establish `q` using `congrArg (gs (𝟙 Z ≫ i) z (Y.basicOpen f)) hd`. Rewrite `q` using `[gs_res _ z _ hz, gs_mul _ z _ hz, LBGerm.gs_pow _ z _ hz, gs_res _ z _ hz, hc _ _ z hz, ← LBGerm.gs_pow _ z ⊤ trivial]`. Establish `k : ∀ a, gs (𝟙 Z) z ⊤ (i.appTop.hom a) = gs (𝟙 Z ≫ i) z ⊤ a` using `fun a => gs_pull (𝟙 Z) i z ⊤ trivial a`. Rewrite using `[gs_mul _ z ⊤ trivial, k, k, q]`.
+
+Conclude with `main _ _ (Scheme.Opens.opensRange_ι _) d`.
+-/
 theorem exists_pow_mul_extend [IsAffine Y] (f : Γ(Y, ⊤)) (d : Γ((Y.basicOpen f).toScheme, ⊤)) :
     ∃ (m : ℕ) (d₀ : Γ(Y, ⊤)), (Y.basicOpen f).ι.appTop.hom d₀ = (Y.basicOpen f).ι.appTop.hom (f ^ m) * d := by
   have main : ∀ (Z : Scheme.{0}) (i : Z ⟶ Y) [IsOpenImmersion i], i.opensRange = Y.basicOpen f → ∀ d : Γ(Z, ⊤),
@@ -147,6 +192,9 @@ theorem exists_pow_mul_extend [IsAffine Y] (f : Γ(Y, ⊤)) (d : Γ((Y.basicOpen
     rw [gs_mul _ z ⊤ trivial, k, k, q]
   exact main _ _ (Scheme.Opens.opensRange_ι _) d
 
+/- English proof (translation)
+Rewrite using `[map_sub, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_mul, map_mul, hd, hd₀, mul_smul, mul_smul, mul_smul, e₁, smul_comm d, sub_self]`.
+-/
 theorem map_sub_eq_zero {R R' M M' : Type} [CommRing R] [CommRing R'] [AddCommGroup M] [AddCommGroup M'] [Module R M]
     [Module R' M'] (σ : R →+* R') (φ : M →ₛₗ[σ] M') (s t : M) (b : M') (a c d₀ r : R) (d : R')
     (e₁ : σ r • φ t = σ c • b) (hd : φ s = d • b) (hd₀ : σ d₀ = σ a * d) : φ ((a * c) • s - (d₀ * r) • t) = 0 := by
@@ -157,6 +205,9 @@ end General
 
 variable {S : Scheme.{0}} (P : PolAV S) {T T' : Over S}
 
+/- English proof (translation)
+Use `IsPullback.of_right ?_ (by rw [← Over.comp_left, whiskerRight_fst, Over.comp_left]) (IsPullback.of_hasPullback T.hom A.hom).flip` and prove the remaining obligations. Establish `e : (h ▷ A).left ≫ pullback.snd T.hom A.hom = pullback.snd T'.hom A.hom` using `congrArg CommaMorphism.left (whiskerRight_snd h A)`. Rewrite using `[e, Over.w]`. Conclude with `(IsPullback.of_hasPullback T'.hom A.hom).flip`.
+-/
 theorem isPullback_whisker (A : Over S) (h : T' ⟶ T) :
     IsPullback (h ▷ A).left (fst T' A).left (fst T A).left h.left := by
   refine IsPullback.of_right ?_ (by rw [← Over.comp_left, whiskerRight_fst, Over.comp_left])
@@ -166,16 +217,25 @@ theorem isPullback_whisker (A : Over S) (h : T' ⟶ T) :
   rw [e, Over.w]
   exact (IsPullback.of_hasPullback T'.hom A.hom).flip
 
+/- English proof (translation)
+Use `P.isAb.proper` as an intermediate fact. Establish `: IsProper (fst T P.A).left` using `inferInstanceAs (IsProper (pullback.fst T.hom P.A.hom))`. Conclude with `⟨QuasiCompact.compactSpace_of_compactSpace (fst T P.A).left, quasiSeparatedSpace_of_quasiSeparated (fst T P.A).left⟩`.
+-/
 theorem qcqs [IsAffine T.left] : CompactSpace (T ⊗ P.A).left ∧ QuasiSeparatedSpace (T ⊗ P.A).left := by
   have := P.isAb.proper
   have : IsProper (fst T P.A).left := inferInstanceAs (IsProper (pullback.fst T.hom P.A.hom))
   exact ⟨QuasiCompact.compactSpace_of_compactSpace (fst T P.A).left,
     quasiSeparatedSpace_of_quasiSeparated (fst T P.A).left⟩
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_whisker P.A (overResι W)).flip (inferInstanceAs (IsOpenImmersion W.ι))`.
+-/
 theorem isOpenImmersion_whisker (W : T.left.Opens) : IsOpenImmersion (overResι W ▷ P.A).left :=
   MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_whisker P.A (overResι W)).flip
     (inferInstanceAs (IsOpenImmersion W.ι))
 
+/- English proof (translation)
+The claim follows from `isOpenImmersion_whisker P (T.left.basicOpen f) (overResι (T.left.basicOpen f) ▷ P.A).left.opensRange = (T ⊗ P.A).left.basicOpen ((fst T P.A).left.appTop.hom f) := by have H := isPullback_whisker P.A (overResι (T.left.basicOpen f)) refine Eq.trans ?_ (Scheme.preimage_basicOpen_top …`.
+-/
 theorem opensRange_whisker (f : Γ(T.left, ⊤)) :
     haveI := isOpenImmersion_whisker P (T.left.basicOpen f)
     (overResι (T.left.basicOpen f) ▷ P.A).left.opensRange =
@@ -190,6 +250,11 @@ theorem opensRange_whisker (f : Γ(T.left, ⊤)) :
   · obtain ⟨z, hz, -⟩ := Scheme.exists_preimage_of_isPullback H y ⟨_, hy⟩ rfl
     exact ⟨z, hz⟩
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `qcqs P (T := T)`. Use `isOpenImmersion_whisker P (T.left.basicOpen f)` as an intermediate fact. Take `⟨n, u, hu⟩` from `exists_pow_extend P.isLB (φ := fun _ : Fin 1 => (snd T P.A).left) (ε := fun _ => a) (overResι (T.left.basicOpen f) ▷ P.A).left (fun _ => whisker_snd_left P.A _) _ (opensRange_whisker P f) (SecM.toSec P.A x)`. Use `⟨n, SecM.ofSec P.A u, Subtype.ext (funext fun j => fn_ext fun z hz => (hu j z hz).trans ?_)⟩` and prove the remaining obligations. Use `Eq.trans (congrArg (· * _) ?_) (PushInv.gs_smul P.A P.L _ a _ x j z hz).symm` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (gs_pull _ (overResι (T.left.basicOpen f)).left z ⊤ trivial _).symm` and prove the remaining obligations. Rewrite using `[LBGerm.gs_pow _ z ⊤ trivial, ← (isPullback_whisker P.A (overResι (T.left.basicOpen f))).w]`. Conclude with `congrArg (· ^ n) (gs_pull _ (fst T P.A).left z ⊤ trivial f)`.
+-/
 theorem exists_pow_extend_secM [IsAffine T.left] (a : ℤ) (f : Γ(T.left, ⊤))
     (x : SecM P.A P.L a (overRes (T.left.basicOpen f))) :
     ∃ (n : ℕ) (u : SecM P.A P.L a T), pullM P.A P.L a (overResι (T.left.basicOpen f)) u =
@@ -205,6 +270,11 @@ theorem exists_pow_extend_secM [IsAffine T.left] (a : ℤ) (f : Γ(T.left, ⊤))
   rw [LBGerm.gs_pow _ z ⊤ trivial, ← (isPullback_whisker P.A (overResι (T.left.basicOpen f))).w]
   exact congrArg (· ^ n) (gs_pull _ (fst T P.A).left z ⊤ trivial f)
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `qcqs P (T := T)`. Use `isOpenImmersion_whisker P (T.left.basicOpen f)` as an intermediate fact. Take `⟨n, hn⟩` from `exists_pow_kill P.isLB (φ := fun _ : Fin 1 => (snd T P.A).left) (ε := fun _ => a) (overResι (T.left.basicOpen f) ▷ P.A).left (fun _ => whisker_snd_left P.A _) _ (opensRange_whisker P f) (SecM.toSec P.A u) (fun j => congrFun (congrArg Subtype.val hu) j)`. Use `⟨n, Subtype.ext (funext fun j => Eq.trans ?_ (hn j))⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_pow_kill_secM [IsAffine T.left] (a : ℤ) (f : Γ(T.left, ⊤)) (u : SecM P.A P.L a T)
     (hu : pullM P.A P.L a (overResι (T.left.basicOpen f)) u = 0) : ∃ n : ℕ, f ^ n • u = 0 := by
   obtain ⟨_, _⟩ := qcqs P (T := T)
@@ -216,6 +286,29 @@ theorem exists_pow_kill_secM [IsAffine T.left] (a : ℤ) (f : Γ(T.left, ⊤)) (
   rw [← map_pow]
   rfl
 
+/- English proof (translation)
+Introduce `s`. Set `I : Ideal Γ(T'.left, ⊤)` to `(Submodule.span Γ(T'.left, ⊤) {pullM P.A P.L 1 h (SecM.ofSec P.A th)}).comap (LinearMap.toSpanSingleton _ _ (SecM.ofSec P.A s))`. Establish `key : ∀ p : T'.left, ∃ f ∈ I, p ∈ T'.left.basicOpen f` using `fun p => by`. Take `⟨V, hV, b, hb⟩` from `hS S P 1 le_rfl (T.hom (h.left p))`. Establish `hq : Unique (Fin (1 ^ P.g))` using `by rw [one_pow]; infer_instance`.
+
+Take `⟨f, hf, hp⟩` from `(isAffineOpen_top T.left).exists_basicOpen_le (V := T.hom ⁻¹ᵁ V) ⟨h.left p, hV⟩ trivial`. Set `f'` to `h.left.appTop.hom f`. Establish `hf' : h.left ⁻¹ᵁ T.left.basicOpen f = T'.left.basicOpen f'` using `Scheme.preimage_basicOpen_top _ _`. Set `W` to `T.left.basicOpen f`. Set `W'` to `T'.left.basicOpen f'`.
+
+Set `l : overRes W ⟶ overRes (T` to `baseOver S) V := Over.homMk (IsOpenImmersion.lift V.ι (W.ι ≫ T.hom) (by`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hf y.2)) ((congrArg (_ ≫ ·) (Category.comp_id _)).trans (IsOpenImmersion.lift_fac _ _ _))`. Set `k₀ : W'.toScheme ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι (W'.ι ≫ h.left) (by`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hf'.ge y.2)`. Establish `hk₀ : k₀ ≫ W.ι = W'.ι ≫ h.left` using `IsOpenImmersion.lift_fac _ _ _`. Set `k : overRes W' ⟶ overRes W` to `Over.homMk k₀ (by`.
+
+Express the relevant statement in the definitionally equal form `k₀ ≫ W.ι ≫ T.hom = W'.ι ≫ T'.hom`. Rewrite using `[← Category.assoc, hk₀, Category.assoc, Over.w])`. Establish `hk : k ≫ overResι W = overResι W' ≫ h` using `Over.OverMorphism.ext hk₀`. Establish `hW' : IsAffineOpen W'` using `(isAffineOpen_top _).basicOpen f'`. Establish `: IsAffine (overRes W').left` using `hW'`.
+
+Take `⟨c, hc⟩` from `exists_basis P 1 b hb (overRes W') (k ≫ l)`. Take `⟨n, u, hu⟩` from `exists_pow_extend_secM P 1 f (pullM P.A P.L 1 l (SecM.ofSec P.A (b hq.default)))`. Take `⟨r, hr⟩` from `H (SecM.toSec P.A u)`. Establish `hr' : u = r • SecM.ofSec P.A th` using `Subtype.ext (funext hr)`. Establish `e₁` using `congrArg (pullM P.A P.L 1 k) hu`.
+
+Rewrite `e₁` using `[LinearMap.map_smulₛₗ, pullM_comp _ P.isLB, pullM_comp _ P.isLB, hk, ← pullM_comp _ P.isLB, hr', LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ]`. Establish `e₂ : k.left.appTop.hom ((overResι W).left.appTop.hom (f ^ n)) = (overResι W').left.appTop.hom (f' ^ n)` using `(congrArg (fun q => q.left.appTop.hom (f ^ n)) hk).trans (congrArg (overResι W').left.appTop.hom (map_pow h.left.appTop.hom f n))`. Rewrite `e₁` using `[e₂]`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : Γ((overRes W').left, ⊤), pullM P.A P.L 1 (overResι W') (SecM.ofSec P.A s) = d • pullM P.A P.L 1 (k ≫ l) (SecM.ofSec P.A (b hq.default)) := by`. Use `c.sum_repr (pullM P.A P.L 1 (overResι W') (SecM.ofSec P.A s))` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_unique, hc]`. Conclude with `⟨_, this.symm⟩`. Take `⟨m, d₀, hd₀⟩ : ∃ (m : ℕ) (d₀ : Γ(T'.left, ⊤)), (overResι W').left.appTop.hom d₀ = (overResι W').left.appTop.hom (f' ^ m) * d` from `exists_pow_mul_extend f' d`. Take `⟨N, hN⟩` from `exists_pow_kill_secM P 1 f' ((f' ^ m * f' ^ n) • SecM.ofSec P.A s - (d₀ * h.left.appTop.hom r) • pullM P.A P.L 1 h (SecM.ofSec P.A th)) (map_sub_eq_zero _ _ _ _ _ _ _ _ _ d e₁ hd hd₀)`. Use `⟨f' ^ N * (f' ^ m * f' ^ n), Submodule.mem_span_singleton.2 ⟨f' ^ N * (d₀ * h.left.appTop.hom r), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hN` using `[smul_sub, sub_eq_zero, ← mul_smul, ← mul_smul]`. Conclude with `hN.symm`. Establish `hp' : p ∈ T'.left.basicOpen f'` using `hf'.le hp`. Rewrite `hp'`, the goal using `[Scheme.mem_basicOpen_top]`. Simplify using `only [map_mul, map_pow]`.
+
+Conclude with `(hp'.pow _).mul ((hp'.pow _).mul (hp'.pow _))`. Establish `hI : Ideal.span (I : Set Γ(T'.left, ⊤)) = ⊤` using `(isAffineOpen_top T'.left).self_le_iSup_basicOpen_iff.1 fun p _ => by`. Take `⟨f, hf, hp⟩` from `key p`. Conclude with `Opens.mem_iSup.2 ⟨⟨f, hf⟩, hp⟩`. Rewrite `hI` using `[Ideal.span_eq, Ideal.eq_top_iff_one]`.
+
+Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hI`. Rewrite `hr` using `[LinearMap.toSpanSingleton_apply, one_smul]`. Conclude with `⟨r, fun j => (congrArg (fun q => q.1 j) hr).symm⟩`.
+-/
 theorem isGenSec_pullS (hS : SecBaseChangeAnySt) [IsAffine T.left] [IsAffine T'.left] (h : T' ⟶ T)
     {th : LB.Sec (LPow P.A P.L 1 T)} (H : IsGenSec P.A P.L 1 th) : IsGenSec P.A P.L 1 (pullS P.A 1 h th) := by
   intro s
@@ -288,6 +381,11 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G.Out VVRank EmbPull in
 
+/- English proof (translation)
+Introduce `hl o _ g N' J b S s t m T T' h σ _ _ ⟨th, s₁, α, U, hth, hα, hs₁, hU, hσ⟩`. Establish `hL` using `t.isLB`. Take `⟨α', hα', k₁⟩` from `exists_twist_pull t.A (ψ := mulT t.A T m) (hm := lift_snd _ _) (b := 1) hL hα h (ψ' := mulT t.A T' m) (lift_snd _ _) (mulT_comm t.A h m)`. Use `choose U' hU' k₃ using fun a => ThetaCoord.exists_symLift_act_pull hL h (hU a)`. Use `⟨fun a => pullS t.A _ h (σ a), ⟨_, _, α', U', isGenSec_pullS t.pol hl.secBaseChangeAny h hth, hα', k₁ _ _ hs₁, fun a => ?_, fun a => k₃ a _ _ (hσ a)⟩, fun R _ y w => secCoord_pullTo σ _ _ y w⟩` and prove the remaining obligations.
+
+Establish `e : h ≫ (Over.homMk T.hom (by simp) : T ⟶ baseOver S) = Over.homMk T'.hom (by simp)` using `Over.OverMorphism.ext (Over.w h)`. Use `hU' a` as an intermediate fact. Rewrite `this` using `[MonObj.comp_pow, ← Category.assoc, e]`. Then use the resulting hypothesis.
+-/
 theorem emb_baseChange : Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (S : Scheme.{0}) (s : S ⟶ Sp o) (t : TObj g (N' ^ 2) J b s) (m : ℕ) (T T' : Over S) (h : T' ⟶ T) σ, IsAffine T.left → IsAffine T'.left → t.Emb m T σ → ∃ σ', t.Emb m T' σ' ∧ ∀ (R : Type) [CommRing R] (y : Sp R ⟶ (T' ⊗ t.A).left) (w : Ix g (N' ^ 2) → R), SecCoord _ σ' y w ↔ SecCoord _ σ (y ≫ (h ▷ t.A).left) w := by
   intro hl o _ g N' J b S s t m T T' h σ _ _ ⟨th, s₁, α, U, hth, hα, hs₁, hU, hσ⟩
   have hL := t.isLB

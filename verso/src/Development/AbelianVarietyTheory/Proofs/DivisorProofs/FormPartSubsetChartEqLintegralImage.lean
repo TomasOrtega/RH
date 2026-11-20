@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ n A β hβ s i T hT hTi`. Use `set ρ : A.ι → M → ENNReal := fun k y => ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β k (A.e k y))).re) with hρ`. Establish `hp : A.part β s = ChartGlue.glueMeas A.e ρ` using `rfl`. Establish `hρc : ∀ k l y, y ∈ (A.e k).source → y ∈ (A.e l).source → ρ k y = ENNReal.ofReal (‖ChartGlue.transDet (A.e k) (A.e l) y‖ ^ 2) * ρ l y`. Introduce `k l y hk hl`.
+
+Establish `h1` using `A.loc_crd β (⟨(k, y), hk⟩ : A.Pt)`. Establish `h2` using `A.loc_crd β (⟨(l, y), hl⟩ : A.Pt)`. Establish `h3` using `hβ.compat (⟨(k, y), hk⟩ : A.Pt) ⟨(l, y), hl⟩ rfl`. Simplify using `only [hρ]`. Use `erw [h1, h2, h3, dens_pull]`.
+
+Rewrite using `[Complex.re_ofReal_mul, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Simplify using `only [ChartGlue.transDet]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hp, ChartGlue.glueMeas_apply A.e ρ A.holo hρc i hT hTi, ChartGlue.chartMeas_apply_of_subset _ _ hT hTi]`.
+
+Use `setLIntegral_congr_fun (ChartGlue.measurableSet_image _ hT hTi) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [hρ, (A.e i).left_inv (hTi hy)]`.
+-/
 theorem part_subset_chart : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n) (β : A.Fld), A.IsForm β → ∀ (s : ℤˣ) (i : A.ι) (T : Set M), MeasurableSet T → T ⊆ (A.e i).source → A.part β s T = ∫⁻ v in A.e i '' T, ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β i v)).re) := by
   intro M _ _ _ _ _ n A β hβ s i T hT hTi
   set ρ : A.ι → M → ENNReal := fun k y => ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β k (A.e k y))).re) with hρ

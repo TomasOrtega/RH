@@ -16,6 +16,9 @@ noncomputable def UpperTheory.Reformulated.B.SplittingFieldConstruction.SplitFie
                   z.comp (Algebra.algebraMap A B) = φ.comp (Algebra.algebraMap A ↥(integralClosure A L)) →
                     ∃! σ : B →ₐ[A] ↥(integralClosure A L), φ.comp (↑σ : B →+* ↥(integralClosure A L)) = z
 
+/- English proof (translation)
+Establish `h : ∀ b : B, ∃ q : A[X], q.Monic ∧ aeval b q = 0` using `fun b => (Algebra.IsIntegral.isIntegral (R := A) b)`. Use `choose q hq hq0 using h`. Use `⟨∏ b ∈ s, q b, monic_prod_of_monic _ _ fun b _ => hq b, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_zero hb (hq0 b)`.
+-/
 private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.exists_monic {A B : Type} [CommRing A] [CommRing B]
     [Algebra A B] [Module.Finite A B] (s : Finset B) :
     ∃ p : A[X], p.Monic ∧ ∀ b ∈ s, aeval b p = 0 := by
@@ -26,6 +29,11 @@ private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.exists_mon
   rw [map_prod]
   exact Finset.prod_eq_zero hb (hq0 b)
 
+/- English proof (translation)
+Set `f : (B →ₐ[A] C) → (s → p.rootSet C)` to `fun σ b => ⟨σ b, by`. Rewrite using `[hp.mem_rootSet, aeval_algHom_apply, h0 b b.2, map_zero]⟩`. Use `Finite.of_injective f fun σ τ h => ?_` and prove the remaining obligations. Apply `AlgHom.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.ext_on hs fun b hb => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Subtype.val (congrFun h ⟨b, hb⟩)`.
+-/
 private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.finite_algHom {A B C : Type} [CommRing A] [CommRing B]
     [CommRing C] [IsDomain C] [Algebra A B] [Algebra A C] (s : Finset B)
     (hs : Submodule.span A (s : Set B) = ⊤) (p : A[X]) (hp : p.Monic)
@@ -38,6 +46,19 @@ private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.finite_alg
   refine LinearMap.ext_on hs fun b hb => ?_
   exact congrArg Subtype.val (congrFun h ⟨b, hb⟩)
 
+/- English proof (translation)
+Establish `hφ : Function.Injective φ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := A)` to reduce the goal to its premises. Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hinj`.
+
+Establish `hzA : ∀ a : A, z (algebraMap A B a) = φ (algebraMap A C a)` using `fun a => DFunLike.congr_fun hz a`. Establish `hgen : ∀ b ∈ s, z b ∈ φ.range`. Introduce `b hb`. Establish `h1 : eval (z b) ((p.map (algebraMap A C)).map φ) = 0`. Rewrite using `[Polynomial.map_map, ← hz, eval_map, ← hom_eval₂, ← aeval_def, h0 b hb, map_zero]`.
+
+Rewrite `h1` using `[hsp.eq_prod_roots_of_monic (hp.map _), Polynomial.map_multiset_prod, eval_multiset_prod, Multiset.prod_eq_zero_iff]`. Simplify using `only [Multiset.map_map, Multiset.mem_map, Function.comp_apply, Polynomial.map_sub, map_X, map_C, eval_sub, eval_X, eval_C] at h1`. Take `⟨c, -, hc⟩` from `h1`. Conclude with `⟨c, (sub_eq_zero.1 hc).symm⟩`. Establish `hall : ∀ b : B, z b ∈ φ.range`.
+
+Introduce `b`. Establish `hb : b ∈ Submodule.span A (s : Set B)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hgen x hx`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, hzA]`.
+
+Conclude with `mul_mem ⟨_, rfl⟩ hx`. Use `choose g hg using hall`. Set `σ : B →ₐ[A] C` to `{ toFun := g map_one' := hφ (by rw [hg, map_one, map_one]) map_mul' := fun x y => hφ (by rw [map_mul φ, hg, hg, hg, map_mul]) map_zero' := hφ (by rw [hg, map_zero, map_zero]) map_add' := fun x y => hφ (by rw [map_add φ, hg, hg, hg, map_add]) commutes' := fun a => hφ (by rw [hg, h …`. Use `⟨σ, RingHom.ext fun b => hg b, fun τ hτ => AlgHom.ext fun b => hφ ?_⟩` and prove the remaining obligations. Conclude with `(DFunLike.congr_fun hτ b).trans (hg b).symm`.
+-/
 private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.factor {A B C Ω : Type} [CommRing A] [Nontrivial A] [CommRing B]
     [CommRing C] [IsDomain C] [Algebra A B] [Algebra A C] [Algebra.IsIntegral A C] [Field Ω]
     (s : Finset B) (hs : Submodule.span A (s : Set B) = ⊤) (p : A[X]) (hp : p.Monic)
@@ -83,6 +104,11 @@ private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.factor {A 
   refine ⟨σ, RingHom.ext fun b => hg b, fun τ hτ => AlgHom.ext fun b => hφ ?_⟩
   exact (DFunLike.congr_fun hτ b).trans (hg b).symm
 
+/- English proof (translation)
+Establish `hm : (p.map (algebraMap A (integralClosure A L))).map (algebraMap (integralClosure A L) L) = p.map (algebraMap A L)`. Rewrite using `[Polynomial.map_map, ← IsScalarTower.algebraMap_eq]`. Use `Splits.of_splits_map_of_injective (i := algebraMap (integralClosure A L) L) Subtype.val_injective (hm ▸ hsp) fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[hm]`. Establish `h1` using `isRoot_of_mem_roots ha`.
+
+Rewrite `h1` using `[IsRoot.def, eval_map]`. Conclude with `⟨⟨a, p, hp, h1⟩, rfl⟩`.
+-/
 private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.splits_closure {A L : Type} [CommRing A] [Field L]
     [Algebra A L] (p : A[X]) (hp : p.Monic) (hsp : (p.map (algebraMap A L)).Splits) :
     (p.map (algebraMap A (integralClosure A L))).Splits := by
@@ -96,6 +122,13 @@ private theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.splits_clo
   rw [IsRoot.def, eval_map] at h1
   exact ⟨⟨a, p, hp, h1⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := A) (M := B)`. Take `⟨p, hp, h0⟩` from `UpperTheory.Reformulated.B.SplittingFieldConstruction.exists_monic (A := A) s`. Set `q : (FractionRing A)[X]` to `p.map (algebraMap A (FractionRing A))`. Set `L : Type` to `q.SplittingField`.
+
+Use `letI iK : Algebra (FractionRing A) L := inferInstance`. Use `letI iA : Algebra A L := ((algebraMap (FractionRing A) L).comp (algebraMap A (FractionRing A))).toAlgebra`. Use `haveI iT : @IsScalarTower A (FractionRing A) L Algebra.toSMul iK.toSMul iA.toSMul := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hsp : (p.map (algebraMap A L)).Splits`. Rewrite using `[IsScalarTower.algebraMap_eq A (FractionRing A) L, ← Polynomial.map_map]`.
+
+Conclude with `SplittingField.splits q`. Use `⟨L, inferInstance, iA, iK, iT, inferInstance, inferInstance, UpperTheory.Reformulated.B.SplittingFieldConstruction.finite_algHom s hs p hp h0, ?_⟩` and prove the remaining obligations. Introduce `Ω _ φ z hinj hz`. Conclude with `UpperTheory.Reformulated.B.SplittingFieldConstruction.factor s hs p hp h0 (UpperTheory.Reformulated.B.SplittingFieldConstruction.splits_closure p hp hsp) φ z hinj hz`.
+-/
 theorem UpperTheory.Reformulated.B.SplittingFieldConstruction.splitField_of :
     UpperTheory.Reformulated.B.SplittingFieldConstruction.SplitField := by
   intro A B _ _ _ _ _

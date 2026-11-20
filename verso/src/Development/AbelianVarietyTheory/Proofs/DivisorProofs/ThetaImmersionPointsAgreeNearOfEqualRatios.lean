@@ -14,6 +14,9 @@ open GlobalTheory.ProjSpace
 
 variable {X H Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Establish `hc` using `hJ.mem φ r`. Establish `hm : r z ∈ nonzeroLocus a ⊓ (LB.LinComb L φ ε).U (fun k => J (r ≫ φ k))` using `⟨ha, hc⟩`. Establish `e` using `congrArg (gs r z _) (secRatio_spec a b (fun k => J (r ≫ φ k)))`. Rewrite `e` using `[gs_mul r z _ hm, gs_res r z _ hm, gs_res r z _ hm, gs_res r z _ hm]`. Conclude with `e`.
+-/
 theorem sval_eq_secRatio_mul {φ : K → (H ⟶ X)} {ε : K → ℤ} (a b : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ H) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (ha : r z ∈ nonzeroLocus a) :
     sval b r z J = gs r z (nonzeroLocus a) (secRatio a b) * sval a r z J := by
@@ -23,6 +26,9 @@ theorem sval_eq_secRatio_mul {φ : K → (H ⟶ X)} {ε : K → ℤ} (a b : LB.S
   rw [gs_mul r z _ hm, gs_res r z _ hm, gs_res r z _ hm, gs_res r z _ hm] at e
   exact e
 
+/- English proof (translation)
+Establish `hW' : ⊤ ≤ W.ι ⁻¹ᵁ (r ⁻¹ᵁ U)` using `W.ι_preimage_self.ge.trans (W.ι.preimage_mono hW)`. Rewrite using `[pullRatio_of_eq (Category.assoc W.ι r P).symm h ((hW'.trans ((W.ι ≫ r).preimage_mono hi))), ← appLE_pullRatio (W.ι ≫ r) hW', Scheme.Hom.app_eq_appLE, appLE_appLE]`.
+-/
 theorem pullRatio_ι_comp {R : Type} [CommRing R] {M : ℕ} (P : H ⟶ PSpace R M) {U : H.Opens} {i : Fin (M + 1)}
     (hi : U ≤ P ⁻¹ᵁ chart R M i) (r : Z ⟶ H) (W : Z.Opens) (hW : W ≤ r ⁻¹ᵁ U)
     (h : ⊤ ≤ (W.ι ≫ r ≫ P) ⁻¹ᵁ chart R M i) (j : Fin (M + 1)) :
@@ -39,6 +45,23 @@ namespace GlobalTheory.Mum.ThetaSep
 
 open GlobalTheory.ProjSpace
 
+/- English proof (translation)
+Introduce `R _ _ D Y k N τ hτ hImm T y y' z J hJ hrel`. Establish `hmono : Mono (GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ)` using `inferInstance`. Take `⟨j₀, hj₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hτ.ge (Set.mem_univ (y.left z)))`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hτ.ge (Set.mem_univ (y'.left z)))`. Establish `ua : IsUnit (sval (τ j₀) y.left z J)` using `(GlobalTheory.MulPullSec.mem_nonzeroLocus_iff _ _ _ hJ).1 hj₀`.
+
+Establish `ubi : IsUnit (sval (τ i) y'.left z J)` using `(GlobalTheory.MulPullSec.mem_nonzeroLocus_iff _ _ _ hJ).1 hi`. Establish `ub : IsUnit (sval (τ j₀) y'.left z J)`. Establish `h` using `hrel j₀ i`. Establish `: IsUnit (sval (τ i) y.left z J * sval (τ j₀) y'.left z J)` using `h ▸ ua.mul ubi`. Conclude with `isUnit_of_mul_isUnit_right this`.
+
+Establish `hj₀' : y'.left z ∈ nonzeroLocus (τ j₀)` using `(GlobalTheory.MulPullSec.mem_nonzeroLocus_iff _ _ _ hJ).2 ub`. Establish `hg : ∀ j, gs y.left z (nonzeroLocus (τ j₀)) (secRatio (τ j₀) (τ j)) = gs y'.left z (nonzeroLocus (τ j₀)) (secRatio (τ j₀) (τ j))`. Introduce `j`. Establish `h` using `hrel j₀ j`. Rewrite `h` using `[sval_eq_secRatio_mul (τ j₀) (τ j) y.left z hJ hj₀, sval_eq_secRatio_mul (τ j₀) (τ j) y'.left z hJ hj₀']`.
+
+Use `((ua.mul ub).mul_right_cancel ?_).symm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hW : ∀ j, ∃ W : T.left.Opens, z ∈ W ∧ ∃ (h₁ : W ≤ y.left ⁻¹ᵁ nonzeroLocus (τ j₀)) (h₂ : W ≤ y'.left ⁻¹ᵁ nonzeroLocus (τ j₀)), resG T.left h₁ ((y.left.app _).hom (secRatio (τ j₀) (τ j))) = resG T.left h₂ ((y'.left.app _).hom (secRatio (τ j₀) (τ j)))`. Introduce `j`. Establish `e` using `hg j`.
+
+Rewrite `e` using `[gs_eq _ z _ hj₀, gs_eq _ z _ hj₀']`. Take `⟨W, hzW, iU, iV, e'⟩` from `TopCat.Presheaf.germ_eq T.left.presheaf z hj₀ hj₀' _ _ e`. Conclude with `⟨W, hzW, leOfHom iU, leOfHom iV, e'⟩`. Use `choose Wj hzWj h₁ h₂ heq using hW`. Set `W : T.left.Opens` to `Finset.univ.inf Wj`.
+
+Establish `hzW : z ∈ W` using `Finset.inf_induction (p := fun U : T.left.Opens => z ∈ U) trivial (fun _ h _ h' => ⟨h, h'⟩) (fun j _ => hzWj j)`. Establish `hWle : ∀ j, W ≤ Wj j` using `fun j => Finset.inf_le (Finset.mem_univ j)`. Use `⟨W, hzW, (cancel_mono (GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ)).1 ?_⟩` and prove the remaining obligations. Establish `hpre` using `toProj_preimage_chart Y.H.hom τ hτ j₀`. Establish `hA : ∀ (r : T.left ⟶ Y.H.left), W ≤ r ⁻¹ᵁ nonzeroLocus (τ j₀) → ⊤ ≤ (W.ι ≫ r ≫ GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ) ⁻¹ᵁ chart R N j₀` using `fun r hr => (W.ι_preimage_self.ge.trans (W.ι.preimage_mono hr)).trans ((W.ι ≫ r).preimage_mono hpre.ge)`.
+
+Establish `hy₁ : W ≤ y.left ⁻¹ᵁ nonzeroLocus (τ j₀)` using `(hWle j₀).trans (h₁ j₀)`. Establish `hy₂ : W ≤ y'.left ⁻¹ᵁ nonzeroLocus (τ j₀)` using `(hWle j₀).trans (h₂ j₀)`. Simplify using `only [Category.assoc]`. Use `hom_ext ?_ fun _ => ⟨⊤, trivial, j₀, hA _ hy₁, hA _ hy₂, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, toProj_str]`.
+
+Rewrite using `[Over.w y, Over.w y']`. Rewrite using `[pullRatio_ι_comp _ hpre.ge _ W hy₁, pullRatio_ι_comp _ hpre.ge _ W hy₂, pullRatio_toProj]`. Establish `hW₁ : ⊤ ≤ W.ι ⁻¹ᵁ Wj j` using `W.ι_preimage_self.ge.trans (W.ι.preimage_mono (hWle j))`. Rewrite using `[← appLE_resG W.ι (h₁ j) hW₁, ← appLE_resG W.ι (h₂ j) hW₁, heq j]`.
+-/
 theorem agree_near_of_minors : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Y : Ext D) (k N : ℕ)
     (τ : Fin (N + 1) → SecK D.P.L Y.q.left k) (hτ : ⨆ i, nonzeroLocus (τ i) = ⊤),
     IsImmersion (GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ) → ∀ (T : Over (Sp R)) (y y' : T ⟶ Y.H) (z : T.left)

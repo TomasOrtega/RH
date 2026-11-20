@@ -4,6 +4,39 @@ import Development.AutomorphicArithmetic.TwistedTraces.NormSkewAdjointLeOfEigenv
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
+/- English proof (translation)
+Introduce `E _ _ _ u D p M h0 hadd hiso hder hroot hM x`. Establish `hshift : ∀ (t : ℝ) (w : E), HasDerivAt (fun s : ℝ => u s w) (u t (D w)) t`. Introduce `t w`. Set `L : E →L[ℂ] E` to `LinearMap.toContinuousLinearMap (u t)`. Set `LR : E →L[ℝ] E` to `L.restrictScalars ℝ`.
+
+Establish `h1 : HasDerivAt (fun s : ℝ => LR (u s w)) (LR (D w)) 0` using `LR.hasFDerivAt.comp_hasDerivAt 0 (hder w)`. Establish `h2 : HasDerivAt (fun s : ℝ => LR (u (s - t) w)) (LR (D w)) t`. Apply `HasDerivAt.comp_sub_const t t (f := fun s : ℝ => LR (u s w))` to reduce the goal to its premises. Simplify using `using h1`. Establish `h3 : (fun s : ℝ => LR (u (s - t) w)) = fun s => u s w`.
+
+Use function extensionality and compare the values at `s`. Use `show u t (u (s - t) w) = u s w`. Rewrite using `[← Module.End.mul_apply, ← hadd]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h2` using `[h3]`. Conclude with `h2`. Establish `hinner : ∀ (t : ℝ) (a b : E), inner ℂ (u t a) (u t b) = inner ℂ a b`. Introduce `t a b`. Conclude with `LinearIsometry.inner_map_map (⟨u t, hiso t⟩ : E →ₗᵢ[ℂ] E) a b`.
+
+Establish `h0' : ∀ a : E, u 0 a = a`. Introduce `a`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hskew : ∀ a b : E, inner ℂ (D a) b + inner ℂ a (D b) = 0`.
+
+Introduce `a b`. Establish `h1` using `(hder a).inner ℂ (hder b)`. Establish `h2 : (fun t : ℝ => inner ℂ (u t a) (u t b)) = fun _ => inner ℂ a b`. Use function extensionality and compare the values at `t`. Conclude with `hinner t a b`.
+
+Rewrite `h1` using `[h2]`. Establish `h3` using `h1.unique (hasDerivAt_const (0 : ℝ) (inner ℂ a b))`. Rewrite `h3` using `[h0', h0']`. Rewrite using `[add_comm]`. Conclude with `h3`.
+
+Establish `hev : ∀ z : ℂ, D.HasEigenvalue z → ‖z‖ ≤ M`. Introduce `z hz`. Take `⟨w, hw⟩` from `hz.exists_hasEigenvector`. Establish `hDw : D w = z • w` using `hw.apply_eq_smul`. Establish `hw0 : w ≠ 0` using `hw.2`.
+
+Establish `hconst : ∀ t : ℝ, Complex.exp (-(z * t)) • u t w = w`. Establish `hd : ∀ t : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-(z * s)) • u s w) 0 t`. Introduce `t`. Establish `he : HasDerivAt (fun s : ℝ => Complex.exp (-(z * s))) (Complex.exp (-(z * t)) * (-z)) t`. Establish `hl : HasDerivAt (fun s : ℝ => -(z * (s : ℂ))) (-z) t`.
+
+Establish `h : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 t`. Simplify using `using (hasDerivAt_id t).ofReal_comp`. Establish `h2` using `h.const_mul (-z)`. Simplify `h2` using `[neg_mul]`. Conclude with `hl.cexp`.
+
+Establish `h1` using `he.smul (hshift t w)`. Establish `h2 : Complex.exp (-(z * t)) • u t (D w) + (Complex.exp (-(z * t)) * (-z)) • u t w = 0`. Rewrite using `[hDw, map_smul, smul_smul, ← add_smul]`. Establish `: Complex.exp (-(z * t)) * z + Complex.exp (-(z * t)) * (-z) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+
+Rewrite `h1` using `[h2]`. Conclude with `h1`. Introduce `t`. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun s : ℝ => Complex.exp (-(z * s)) • u s w) (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) t 0`. Simplify `hc` using `[h0']`.
+
+Establish `hut : ∀ t : ℝ, u t w = Complex.exp (z * t) • w`. Introduce `t`. Establish `h1` using `congrArg (fun v => Complex.exp (z * t) • v) (hconst t)`. Simplify using `only [smul_smul] at h1`. Rewrite `h1` using `[← Complex.exp_add]`.
+
+Simplify using `using h1`. Apply `hM` to reduce the goal to its premises. Introduce `t`. Establish `hvec : (u t).HasEigenvector (Complex.exp (z * t)) w` using `⟨Module.End.mem_eigenspace_iff.2 (hut t), hw0⟩`. Establish `h1` using `Module.End.aeval_apply_of_hasEigenvector (p := p t) hvec`.
+
+Rewrite `h1` using `[hroot t]`. Establish `h2 : (p t).eval (Complex.exp (z * t)) • w = 0`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Conclude with `(smul_eq_zero.1 h2).resolve_right hw0`.
+
+Conclude with `UpperTheory.norm_skewAdjoint_le_of_eigenvalue_bound E D M hskew hev x`.
+-/
 theorem UpperTheory.norm_generator_le_of_polynomial_annihilated :
     ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] (u : ℝ → Module.End ℂ E) (D : Module.End ℂ E) (p : ℝ → ℂ[X]) (M : ℝ), u 0 = 1 → (∀ s t, u (s + t) = u s * u t) → (∀ t x, ‖u t x‖ = ‖x‖) → (∀ x, HasDerivAt (fun t : ℝ => u t x) (D x) 0) → (∀ t, aeval (u t) (p t) = 0) → (∀ z : ℂ, (∀ t : ℝ, (p t).IsRoot (Complex.exp (z * t))) → ‖z‖ ≤ M) → ∀ x, ‖D x‖ ≤ M * ‖x‖ := by
   intro E _ _ _ u D p M h0 hadd hiso hder hroot hM x

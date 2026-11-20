@@ -9,5 +9,8 @@ open GlobalTheory.ChiGrid GlobalTheory.RowReal GlobalTheory.IndefiniteRowSideFul
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowReal.hw_basePar_eq_neg_lowK | exact GlobalTheory.RowReal.hw_basePar_eq_neg_lowK | (intros; apply GlobalTheory.RowReal.hw_basePar_eq_neg_lowK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.highestWeight_basePar_eq_neg_lowestKType : ∀ (D : D7) (C : ℝ) (M : Formalism.IndefR.Mult.DSModel D.sp.X' (Formalism.IndefR.Mult.parB (Ptw D) D.R.m)) (τ : D.what₂.Tau) (i : Fin D.sp.X'.rank), (hw (rowEntries D C τ).basePar i : ℝ) = -(Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) (Fin.rev i) := by
   first | exact @GlobalTheory.RowReal.hw_basePar_eq_neg_lowK | exact GlobalTheory.RowReal.hw_basePar_eq_neg_lowK | (intros; apply GlobalTheory.RowReal.hw_basePar_eq_neg_lowK <;> assumption)

@@ -19,6 +19,11 @@ open scoped Pointwise
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, y, hy, rfl⟩`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hs`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `Λ.smul_mem r hy`. Introduce `y hy`. Conclude with `Submodule.subset_span ⟨1, FractionalIdeal.one_mem_one _, y, hy, (one_smul _ _).symm⟩`.
+-/
 theorem idLat_one {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
     idLat (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) Λ = Λ := by
   apply le_antisymm
@@ -30,6 +35,13 @@ theorem idLat_one {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)
   · intro y hy
     exact Submodule.subset_span ⟨1, FractionalIdeal.one_mem_one _, y, hy, (one_smul _ _).symm⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[GlobalTheory.SeeSaw.mem_conjFI, FractionalIdeal.mem_coeIdeal, FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, hx⟩`. Use `⟨D.host.conj • r, Ideal.smul_mem_pointwise_smul _ _ _ hr, ?_⟩` and prove the remaining obligations.
+
+Use `show D.host.conj (r : D.host.E) = x`. Rewrite using `[show (r : D.host.E) = D.host.conj x from hx, GlobalTheory.SeeSaw.conj_conj_host]`. Introduce and unpack `⟨r, hr, rfl⟩`. Use `⟨D.host.conj⁻¹ • r, Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hr, ?_⟩` and prove the remaining obligations. Use `show D.host.conj.symm (r : D.host.E) = D.host.conj (r : D.host.E)`.
+
+Rewrite using `[AlgEquiv.symm_apply_eq, GlobalTheory.SeeSaw.conj_conj_host]`.
+-/
 theorem conjFI_coe (I : Ideal (𝓞 D.host.E)) :
     GlobalTheory.SeeSaw.conjFI D (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
       ((D.host.conj • I : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
@@ -45,10 +57,16 @@ theorem conjFI_coe (I : Ideal (𝓞 D.host.E)) :
     show D.host.conj.symm (r : D.host.E) = D.host.conj (r : D.host.E)
     rw [AlgEquiv.symm_apply_eq, GlobalTheory.SeeSaw.conj_conj_host]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.conj_conj_host]`.
+-/
 theorem conjFI_conjFI (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : GlobalTheory.SeeSaw.conjFI D (GlobalTheory.SeeSaw.conjFI D 𝔞) = 𝔞 := by
   ext x
   rw [GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.conj_conj_host]
 
+/- English proof (translation)
+Establish `hb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = GlobalTheory.SeeSaw.conjFI D (G.modul : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)` using `(conjFI_coe _).symm`. Unfold `shiftId`. Rewrite using `[hb, map_mul, map_inv₀, conjFI_conjFI, mul_inv, inv_inv, mul_comm]`.
+-/
 theorem conjFI_shiftId {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) :
     GlobalTheory.SeeSaw.conjFI D (shiftId G) = (shiftId G)⁻¹ := by
   have hb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
@@ -56,6 +74,9 @@ theorem conjFI_shiftId {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L 
   unfold shiftId
   rw [hb, map_mul, map_inv₀, conjFI_conjFI, mul_inv, inv_inv, mul_comm]
 
+/- English proof (translation)
+Establish `hm : (G.modul : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (G.pl.modul_ne_bot sc)`. Establish `hb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[show ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = GlobalTheory.SeeSaw.conjFI D (G.modul : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) from (conjFI_coe _).symm]`. Conclude with `(RingEquiv.map_ne_zero_iff _).2 hm`. Conclude with `mul_ne_zero hm (inv_ne_zero hb)`.
+-/
 theorem shiftId_ne_zero {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) : shiftId G ≠ 0 := by
   have hm : (G.modul : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 :=
     FractionalIdeal.coeIdeal_ne_zero.2 (G.pl.modul_ne_bot sc)
@@ -65,11 +86,19 @@ theorem shiftId_ne_zero {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L
     exact (RingEquiv.map_ne_zero_iff _).2 hm
   exact mul_ne_zero hm (inv_ne_zero hb)
 
+/- English proof (translation)
+Use `GlobalTheory.ScaleSelfDual.isSelfDualC_scaleLat S Λ hΛ (shiftId_ne_zero G) fun c => ?_` and prove the remaining obligations. Rewrite using `[← conjFI_shiftId, GlobalTheory.SeeSaw.mem_conjFI, Formalism.BasicNotions.bridge_star_holds D.R D.host c]`.
+-/
 theorem isSelfDualC_idLat_shiftId {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {S : HSp D} (Λ : Lat S)
     (hΛ : IsSelfDualC S Λ) : IsSelfDualC S (idLat (shiftId G) Λ) := by
   refine GlobalTheory.ScaleSelfDual.isSelfDualC_scaleLat S Λ hΛ (shiftId_ne_zero G) fun c => ?_
   rw [← conjFI_shiftId, GlobalTheory.SeeSaw.mem_conjFI, Formalism.BasicNotions.bridge_star_holds D.R D.host c]
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM i hi1 him u hu`. Establish `hS : IsSelfDualC (G.V (.grid (i + 1) 0)) (G.Λ (.grid (i + 1) 0))` using `(G.isV (X := .grid (i + 1) 0) ⟨by omega, by omega⟩ (fun j h => by injection h with h1 h2; omega)).sd`. Establish `hT : IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0))` using `(G.isV (X := .grid i 0) ⟨by omega, by omega⟩ (fun j h => by injection h with h1 h2; omega)).sd`. Establish `h1` using `idLat_one (G.Λ (.grid i 0))`. Establish `hsh` using `isSelfDualC_idLat_shiftId G _ hT`.
+
+Take `⟨e, he, -⟩` from `W.cosVec_is`. Establish `hu' : u ∈ latO (negSp (G.V (.grid (i + 1) 0))) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (fun _ => True) ∧ ∀ e : AE D, IsIdemSum e G.pl.W0 → e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)))` using `hu`. Establish `key` using `GlobalTheory.T.completedHomLattice_modulus_depth_mem_shift hq μ0 hL G (G.Λ (.grid (i + 1) 0)) 1 (G.Λ (.grid i 0)) hS (by rw [h1]; exact hT) (by rw [one_mul]; exact hsh) u (by rw [h1]; exact GlobalTheory.RowLoc.mem_latO_negSp.1 hu'.1) ⟨e, he, by rw [h1]; exact hu'.2 e he⟩`. Rewrite `key` using `[one_mul]`. Conclude with `key`.
+-/
 theorem latRow_le_latBig : All fun {D} _ _ _ {G} _ _ => ∀ i, 1 ≤ i → i < D.R.m → latRow G i ≤ latBig G i := by
   intro D hq T L μ0 hL sc G W M hM i hi1 him u hu
   have hS : IsSelfDualC (G.V (.grid (i + 1) 0)) (G.Λ (.grid (i + 1) 0)) :=

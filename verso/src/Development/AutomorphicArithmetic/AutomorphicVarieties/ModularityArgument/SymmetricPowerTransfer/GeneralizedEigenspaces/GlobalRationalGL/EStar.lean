@@ -26,6 +26,9 @@ structure Pre where
 
 def Pre.rt (P : Pre L) (w : Plc L) : Kw w := algebraMap L (Kw w) (P.e QuadraticAlgebra.omega)
 
+/- English proof (translation)
+Establish `hw : (QuadraticAlgebra.omega : Lsq (Lp L) P.Δ) * QuadraticAlgebra.omega = algebraMap (Lp L) (Lsq (Lp L) P.Δ) P.Δ`. Rewrite using `[QuadraticAlgebra.omega_mul_omega_eq_algebraMap]`. Simplify using the standard rewrite rules. Unfold `Pre.rt`. Rewrite using `[← map_mul, ← map_mul, hw, P.e_alg, P.φ_alg]`.
+-/
 theorem Pre.rt_sq (P : Pre L) (v : Pl (Lp L)) (w : Plc L) (h : un w = v) : P.rt w * P.rt w = P.φ v w h (cv v P.Δ) := by
   have hw : (QuadraticAlgebra.omega : Lsq (Lp L) P.Δ) * QuadraticAlgebra.omega
       = algebraMap (Lp L) (Lsq (Lp L) P.Δ) P.Δ := by

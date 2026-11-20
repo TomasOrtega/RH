@@ -2,10 +2,16 @@ import Mathlib
 
 namespace UpperTheory.Reformulated.B.P6.r20a
 
+/- English proof (translation)
+Use `haveI : Fintype α := Fintype.ofFinite α`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+-/
 theorem finsum_const_eq_card_mul {α : Type} [Finite α] (c : ℂ) : ∑ᶠ _ : α, c = (Nat.card α : ℂ) * c := by
   haveI : Fintype α := Fintype.ofFinite α
   rw [finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K x`. Rewrite using `[hk]`. Conclude with `hu x k k.2`.
+-/
 theorem quotient_out_right_invariant {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ)
     (hu : ∀ (x k : H), k ∈ K → u (x * k) = u x) (x : H) :
     u (Quotient.out (x : H ⧸ K)) = u x := by
@@ -13,6 +19,25 @@ theorem quotient_out_right_invariant {H : Type} [Group H] (K : Subgroup H) (u : 
   rw [hk]
   exact hu x k k.2
 
+/- English proof (translation)
+Introduce `H _ S T hST u hu hidx hfin`. Establish `huS : ∀ (x s : H), s ∈ S → u (x * s) = u x` using `fun x s hs => hu x s (hST hs)`. Use `set e := Subgroup.quotientEquivProdOfLE hST with he`. Establish `hfst : ∀ x : H, (e (x : H ⧸ S)).1 = (x : H ⧸ T)` using `fun x => rfl`. Establish `key : ∀ q : H ⧸ S, u (Quotient.out q) = u (Quotient.out (e q).1)`.
+
+Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[hfst x, quotient_out_right_invariant S u huS x, quotient_out_right_invariant T u hu x]`. Establish `hcard : S.relIndex T = Nat.card (T ⧸ S.subgroupOf T)` using `rfl`.
+
+Use `haveI : Finite (T ⧸ S.subgroupOf T) := Nat.finite_of_card_ne_zero (by rw [← hcard]; exact hidx)`. Use `set F : (H ⧸ T) × (T ⧸ S.subgroupOf T) → ℂ := fun pr => u (Quotient.out pr.1) with hF`. Establish `h1 : ∑ᶠ (q : H ⧸ S), u (Quotient.out q) = ∑ᶠ (q : H ⧸ S), F (e q)` using `finsum_congr key`. Establish `h2 : ∑ᶠ (q : H ⧸ S), F (e q) = ∑ᶠ pr, F pr` using `finsum_comp_equiv e`. Establish `hFfin : (Function.support F).Finite`.
+
+Apply `(hfin.image e).subset` to reduce the goal to its premises. Introduce `pr hpr`. Use `⟨e.symm pr, ?_, by simp⟩` and prove the remaining obligations. Establish `: u (Quotient.out (e.symm pr)) = F pr`. Rewrite using `[key]`.
+
+Simplify using `[hF]`. Simplify `hpr` using `[Function.mem_support, this]`. Establish `h3 : ∑ᶠ pr, F pr = ∑ᶠ (p : H ⧸ T) (r : T ⧸ S.subgroupOf T), F (p, r)` using `finsum_curry F hFfin`. Establish `h4 : ∀ p : H ⧸ T, ∑ᶠ (r : T ⧸ S.subgroupOf T), F (p, r) = (Nat.card (T ⧸ S.subgroupOf T) : ℂ) * u (Quotient.out p)` using `fun p => finsum_const_eq_card_mul (u (Quotient.out p))`. Establish `hffin : (Function.support fun (p : H ⧸ T) => u (Quotient.out p)).Finite`.
+
+Apply `(hfin.image fun q => (e q).1).subset` to reduce the goal to its premises. Introduce `p hp`. Use `⟨((Quotient.out p : H) : H ⧸ S), ?_, ?_⟩` and prove the remaining obligations. Establish `h5 : u (Quotient.out ((Quotient.out p : H) : H ⧸ S)) = u (Quotient.out p)` using `quotient_out_right_invariant S u huS _`. Simplify `hp` using `[Function.mem_support, h5]`.
+
+Use `show (e ((Quotient.out p : H) : H ⧸ S)).1 = p`. Rewrite using `[hfst]`. Conclude with `QuotientGroup.out_eq' p`. Rewrite using `[h1, h2, h3, finsum_congr h4, hcard]`. Establish `hsub : (Function.support fun p : H ⧸ T => (Nat.card (T ⧸ S.subgroupOf T) : ℂ) * u (Quotient.out p)) ⊆ ↑hffin.toFinset`.
+
+Introduce `p hp`. Rewrite using `[Set.Finite.coe_toFinset, Function.mem_support]`. Rewrite `hp` using `[Function.mem_support]`. Introduce `h0`. Apply `hp` to reduce the goal to its premises.
+
+Simplify using `only [h0, mul_zero]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsub, finsum_eq_sum _ hffin, Finset.mul_sum]`.
+-/
 theorem PositivityTheory.Rg.BcN.F2.LocOpPf.finsum_quot_le :
     ∀ {H : Type} [inst : Group H] {S T : Subgroup H}, S ≤ T → ∀ (u : H → ℂ), (∀ (x t : H), t ∈ T → u (x * t) = u x) → S.relIndex T ≠ OfNat.ofNat (nat_lit 0) → (Function.support fun (q : H ⧸ S) ↦ u (Quotient.out q)).Finite → ∑ᶠ (q : H ⧸ S), u (Quotient.out q) = (S.relIndex T).cast * ∑ᶠ (q : H ⧸ T), u (Quotient.out q) := by
   intro H _ S T hST u hu hidx hfin

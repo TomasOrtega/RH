@@ -15,6 +15,15 @@ namespace CrystallineSemistableComparison.Pb
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Establish `hsm : Smooth q` using `SmoothOfRelativeDimension.smooth n q`. Establish `hE : ∀ (A : Type) [CommRing A] [Algebra K A] [Algebra.Smooth K A] (p : Ideal A) [p.IsPrime], ∃ r ∉ p, ∀ (S : Type) [CommRing S] [Algebra A S] [IsLocalization.Away r S], IsDomain S` using `fun A _ _ _ p _ => CrystallineSemistableComparison.Pb.EtaleIntegralityFacts.exists_away_isDomain_of_smooth (K := K) p`. Use `choose W hxW hW using fun x => CrystallineSemistableComparison.Pb.EtaleIntegralityFacts.exists_integral_nbhd q hE x`. Establish `hcov : TopologicalSpace.IsOpenCover W` using `eq_top_iff.mpr fun x _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨x, hxW x⟩`. Establish `hredi : ∀ i, IsReduced ((X.openCoverOfIsOpenCover W hcov).X i)`.
+
+Introduce `i`. Rewrite using `[Scheme.openCoverOfIsOpenCover_X]`. Use `hW i` as an intermediate fact. Conclude with `isReduced_of_isIntegral _`. Establish `hred : IsReduced X` using `IsReduced.of_openCover X (X.openCoverOfIsOpenCover W hcov)`.
+
+Establish `hirr : IrreducibleSpace X`. Use `CrystallineSemistableComparison.Pb.EtaleIntegralityFacts.irreducibleSpace_of_connected_of_locally fun x => ⟨W x, (W x).isOpen, hxW x, ?_⟩` and prove the remaining obligations. Use `hW x` as an intermediate fact. Establish `hi` using `irreducibleSpace_of_isIntegral (W x : Scheme)`. Establish `h2` using `(IrreducibleSpace.isIrreducible_univ (↥(W x : Scheme))).image Subtype.val continuous_subtype_val.continuousOn`.
+
+Rewrite `h2` using `[Set.image_univ, Subtype.range_coe]`. Then use the resulting hypothesis. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced X`.
+-/
 theorem isIntegral_of_smooth_pf {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [ConnectedSpace X] (n : ℕ) [SmoothOfRelativeDimension n q] : IsIntegral X := by
   have hsm : Smooth q := SmoothOfRelativeDimension.smooth n q

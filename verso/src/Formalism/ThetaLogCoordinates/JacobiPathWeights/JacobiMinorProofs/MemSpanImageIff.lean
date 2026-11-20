@@ -12,6 +12,11 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
 namespace SpanImageLemmas
 
+/- English proof (translation)
+Use `⟨a.filter (· ∈ S), a.filter (fun x => ¬ x ∈ S), (Finsupp.filter_add_filter_not a _).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `Finsupp.filter_apply_neg _ _ hx`. Introduce `x hx`. Conclude with `Finsupp.filter_apply_neg _ _ (not_not.mpr hx)`.
+
+Introduce `x hx`. Conclude with `Finsupp.filter_apply_pos _ _ hx`.
+-/
 theorem split {X R : Type} [CommRing R] (a : X →₀ R) (S : Set X) :
     ∃ a1 a2 : X →₀ R, a = a1 + a2 ∧ (∀ x ∉ S, a1 x = 0) ∧ (∀ x ∈ S, a2 x = 0) ∧ ∀ x ∉ S, a2 x = a x := by
   classical
@@ -25,6 +30,9 @@ theorem split {X R : Type} [CommRing R] (a : X →₀ R) (S : Set X) :
 
 variable {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ}
 
+/- English proof (translation)
+The claim follows from `h2 n N isVec B (hc n N isVec B) R`.
+-/
 theorem basis (hc : CountPAll) (h2 : PathBasisOfCount) (R : Type) [CommRing R] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ) :
     LinearIndependent R (psiFam R n N isVec B) ∧
       Submodule.span R (Set.range (psiFam R n N isVec B)) = polB R n N B :=

@@ -29,6 +29,9 @@ end GlobalTheory.LevPeriod
 
 namespace GlobalTheory.LevPeriod
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ Mfr l`. Rewrite using `[Mfr, l.coprime]`. Conclude with `Submodule.mem_top`. Conclude with `Submodule.mem_sup.1 h1`.
+-/
 theorem exists_split {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (l : Geo.Tor.Level H) :
     ∃ α ∈ l.Mb, ∃ β ∈ Mfr l, α + β = 1 := by
   have h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ Mfr l := by

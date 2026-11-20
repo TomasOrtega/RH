@@ -52,6 +52,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsTotallyComplex E]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w)`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ ord (w.adicCompletion E) x)⁻¹)`.
+
+Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, SphCompletion.ord_completion]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`.
+
+Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`. Take `⟨a, ha, ε, -, H⟩` from `ParLaws.isRec_locRec hL h`. Establish `e2 : ParLaws.locPar hL (CG.ofChar χ) h = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Rewrite using `[ParLaws.locPar_ofChar, H.one]`.
+
+Establish `hs` using `ha.smooth (ParLaws.isSmoothChar_loc χ w)`. Establish `: ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : WeilDeligne.IsSmooth (ξ.comp a)), ξ = SmGL.unrChar (w.adicCompletion E) (χ.val w) → WD.lpOfChar h (ξ.comp a) hξ = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Introduce and unpack `ξ hξ rfl`. Conclude with `Test.lpOfChar_unrChar ha _ _`. Conclude with `this _ _ e`.
+
+Rewrite using `[e2, WD.frobEig_diag]`. Conclude with `⟨(WD.unr_mk _).2 (WDRep.unr_diag _), by simp⟩`.
+-/
 theorem locPar_ofChar_unr (hL : GlobalTheory.Published.LocalLanglandsGL) (χ : HChar E) (h : IsPlaceOver A w) (hu : χ.UnrAt w) :
     (ParLaws.locPar hL (CG.ofChar χ) h).unr ∧
       (ParLaws.locPar hL (CG.ofChar χ) h).frobEig = {(((χ.val w)⁻¹ : ℂˣ) : ℂ)} := by
@@ -87,6 +98,9 @@ section Twist
 
 variable {Γ k : Type} [Group Γ] [Field k] {a : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [GeneralLinearGroup.scalar, Matrix.diagonal, Matrix.one_apply, h]`.
+-/
 theorem coe_scalar (u : kˣ) : ((GeneralLinearGroup.scalar (Fin a) u : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) =
     (u : k) • (1 : Matrix (Fin a) (Fin a) k) := by
   ext i j
@@ -103,6 +117,9 @@ def twistBy (c : Γ →* kˣ) (r : Γ →* GL (Fin a) k) : Γ →* GL (Fin a) k 
     simp only [mul_assoc]
     rw [← mul_assoc (GeneralLinearGroup.scalar (Fin a) (c h)), e, mul_assoc]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.scalar (Fin a) (c g) * r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) = _`. Rewrite using `[Units.val_mul, coe_scalar, Matrix.smul_mul, Matrix.one_mul]`.
+-/
 theorem coe_twistBy (c : Γ →* kˣ) (r : Γ →* GL (Fin a) k) (g : Γ) :
     (twistBy c r g : Matrix (Fin a) (Fin a) k) = (c g : k) • (r g : Matrix (Fin a) (Fin a) k) := by
   change ((GeneralLinearGroup.scalar (Fin a) (c g) * r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) = _
@@ -113,6 +130,9 @@ end Twist
 section G
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨ψ, h1, h2⟩` from `GlobalTheory.PolChar.exists_compNorm_eq hν`. Use `⟨_, IsConjDualBy.isPolarized (m := 0) (χ := ψ) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `GlobalTheory.T.isConjugateDualTwistBy_twist_of_conjSelfDual hc ν`. Simplify using `using h2`.
+-/
 theorem isPolarized_twist {π : CuspSub E a} (hc : π.IsCsd) {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) :
     ∃ ψ, IsPolarized (π.twist ν) ψ := by
   obtain ⟨ψ, h1, h2⟩ := GlobalTheory.PolChar.exists_compNorm_eq hν
@@ -120,6 +140,9 @@ theorem isPolarized_twist {π : CuspSub E a} (hc : π.IsCsd) {ν : HChar E} {s :
   · rw [h1]; exact GlobalTheory.T.isConjugateDualTwistBy_twist_of_conjSelfDual hc ν
   · simpa using h2
 
+/- English proof (translation)
+Establish `h` using `(CG.hasInfChar_ofChar χ τ).twist χ'`. Rewrite `h` using `[CG.twist_ofChar, Multiset.map_singleton]`. Use `h.infChar_eq` as an intermediate fact. Rewrite `this` using `[CG.infChar_ofChar]`. Simplify using `using this`.
+-/
 theorem expo_mul (χ χ' : HChar E) (τ : E →+* ℂ) : expo (χ * χ') τ = expo χ τ + expo χ' τ := by
   have h := (CG.hasInfChar_ofChar χ τ).twist χ'
   rw [CG.twist_ofChar, Multiset.map_singleton] at h
@@ -127,11 +150,19 @@ theorem expo_mul (χ χ' : HChar E) (τ : E →+* ℂ) : expo (χ * χ') τ = ex
   rw [CG.infChar_ofChar] at this
   simpa using this
 
+/- English proof (translation)
+Use `expo_mul χ χ⁻¹ τ` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, CG.expo_one]`. Take the linear combination `-this`.
+-/
 theorem expo_inv (χ : HChar E) (τ : E →+* ℂ) : expo χ⁻¹ τ = -expo χ τ := by
   have := expo_mul χ χ⁻¹ τ
   rw [mul_inv_cancel, CG.expo_one] at this
   linear_combination -this
 
+/- English proof (translation)
+Take `⟨hu, he⟩` from `locPar_ofChar_unr hL ν h (hν.1 w)`. Take `⟨c1, c2, c3⟩` from `WD.lpUnr_spec (h := h) {1} (by simp)`. Establish `hy : ParLaws.locPar hL (CG.ofChar ν) h = (WD.lpUnr h {1}).lpTw s`. Rewrite using `[WD.unr_eq_lpUnr _ hu, WD.unr_eq_lpUnr ((WD.lpUnr h {1}).lpTw s) ((WD.unr_tw _ _).2 c1), WD.frobEig_tw _ _ c1, he, c2]`. Use `congr 1`.
+
+Simplify using `only [Multiset.map_singleton, one_mul]`. Use `congr 1`. Rewrite using `[Units.val_inv_eq_inv_val, hν.2.1 w, Complex.cpow_neg, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[ParLaws.locPar_twist hL hF, hy, (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.1, (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.2.2.2 c1 (by simpa using c3) c2]`.
+-/
 theorem locPar_twist_abs (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (π : CG E a)
     {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) :
     ParLaws.locPar hL (π.twist ν) h = (ParLaws.locPar hL π h).lpTw s := by
@@ -147,12 +178,18 @@ theorem locPar_twist_abs (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Gl
   rw [ParLaws.locPar_twist hL hF, hy, (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.1,
     (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.2.2.2 c1 (by simpa using c3) c2]
 
+/- English proof (translation)
+Establish `key : ∀ W, IsInv (twistBy c ρ) W ↔ IsInv ρ W` using `fun W => forall_congr' fun g => forall₂_congr fun v _ => by`. Rewrite using `[coe_twistBy, Matrix.smul_mulVec, W.smul_mem_iff (c g).ne_zero]`. Conclude with `fun W hW => (hs W ((key W).1 hW)).imp fun W' h' => ⟨(key W').2 h'.1, h'.2⟩`.
+-/
 theorem isSSRep_twistBy {Γ K : Type} [Group Γ] [Field K] {n : ℕ} (c : Γ →* Kˣ) {ρ : Γ →* GL (Fin n) K} (hs : IsSSRep ρ) :
     IsSSRep (twistBy c ρ) := by
   have key : ∀ W, IsInv (twistBy c ρ) W ↔ IsInv ρ W := fun W => forall_congr' fun g => forall₂_congr fun v _ => by
     rw [coe_twistBy, Matrix.smul_mulVec, W.smul_mem_iff (c g).ne_zero]
   exact fun W hW => (hs W ((key W).1 hW)).imp fun W' h' => ⟨(key W').2 h'.1, h'.2⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Rewrite using `[H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]`. Conclude with `congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm`.
+-/
 theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {π : CuspSub E a}
     {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} (H : IsGalRepOf π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
@@ -162,6 +199,13 @@ theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Glob
   rw [H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]
   exact congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm
 
+/- English proof (translation)
+Establish `htr : ∀ g, ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace`. Introduce `g`. Use `congrFun (Continuous.ext_on (hD _ (Filter.eventually_cofinite.1 h)) (hc.matrix_trace) (hc'.matrix_trace) ?_) g` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, B, hB, hσ⟩`. Establish `e` using `not_not.1 hw B σ hB hσ`.
+
+Use `show Matrix.trace _ = Matrix.trace _`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Simplify using `[Matrix.trace]`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`.
+
+Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]`. Conclude with `GlobalTheory.TraceConj.conj_of_trace_eq _ _ a r r' hs hs' htr`.
+-/
 theorem conj_of_frob (hD : ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite → Dense {g : G E Ω | ∃ w ∉ S, ∃ B : ValuationSubring Ω,
       IsPlaceOver (F := E) B w ∧ IsFrob (F := E) B (normV w) g})
     {r r' : G E Ω →* GL (Fin a) (Qbar l)} (hc : Continuous fun g => (r g : Matrix (Fin a) (Fin a) (Qbar l)))
@@ -185,6 +229,23 @@ theorem conj_of_frob (hD : ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite �
       rw [Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]
   exact GlobalTheory.TraceConj.conj_of_trace_eq _ _ a r r' hs hs' htr
 
+/- English proof (translation)
+Take `⟨L₁, r₁, m₁, hp₁⟩` from `hr`. Take `⟨L₂, c₂, m₂, hc₂⟩` from `hc`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `m₁'` using `m₁.enlarge l₁`.
+
+Establish `m₂'` using `m₂.enlarge l₂`. Take `⟨K', hK, hcr⟩` from `(local_ext P Bw l₁ r₁).2.2.1.2 hp₁`. Establish `hq` using `(local_ext P Bw l₂ c₂).1.2 hc₂`. Use `set L := supExt L₁ L₂ with hL`. Use `set r₁' := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₁).toRingHom r₁ with hr₁'`.
+
+Use `set c₂' := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₂).toRingHom c₂ with hc₂'`. Set `d : ↥Gw →* (↥L.1)ˣ` to `Matrix.GeneralLinearGroup.det.comp c₂'`. Establish `hd : ∀ g, ((c₂' g : GL (Fin 1) ↥L.1) : Matrix (Fin 1) (Fin 1) ↥L.1) 0 0 = (d g : ↥L.1)` using `fun g => by`. Express the relevant statement in the definitionally equal form `_ = Matrix.det _`. Rewrite using `[Matrix.det_fin_one]`.
+
+Establish `hcd : ∀ g, ((d g : ↥L.1) : Om l) = (c g : Om l)` using `fun g => by`. Establish `e` using `congrArg (fun f : ↥Gw →* GL (Fin 1) (Om l) => ((f g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) 0 0) m₂'.2`. Rewrite using `[← hd]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, coe_scalar]`.
+
+Simplify using the standard rewrite rules. Establish `hM : IsModel Bw (twistBy c r) L (twistBy d r₁')`. Use `⟨m₁'.1, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Establish `e : algebraMap ↥L.1 (Om l) (((r₁' g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) i j) = (r g : Matrix (Fin a) (Fin a) (Om l)) i j` using `congrArg (fun f : ↥Gw →* GL (Fin a) (Om l) => ((f g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j) m₁'.2`.
+
+Express the relevant statement in the definitionally equal form `algebraMap ↥L.1 (Om l) (((twistBy d r₁' g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) i j) = ((twistBy c r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j`. Rewrite using `[coe_twistBy, coe_twistBy, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, e]`. Conclude with `congrArg₂ (· * ·) (hcd g) rfl`. Use `⟨L, _, hM, K', hK, ?_⟩` and prove the remaining obligations. Set `θ : ↥(GK K') →* (↥L.1)ˣ` to `(d.comp Bw.e.symm.toMonoidHom).comp (Subgroup.inclusion (GK_le hK))`.
+
+Use `(GlobalTheory.TopSteps.CrysRules.isCrys_iff T K' L _ _ θ (fun g x => ?_) ?_).1 hcr` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Bw.repE L (twistBy d r₁') _ x = _ • Bw.repE L r₁' _ x`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply, GlobalTheory.ConjLocal.repE_apply, coe_twistBy, Matrix.smul_mulVec]`. Both sides reduce to the same expression. Establish `h1` using `GlobalTheory.Per.TiedRestrict.isCrys_restrict hK (Bw.repE L c₂') T hq`.
+
+Use `GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv (P.PD K') (LinearEquiv.funUnique (Fin 1) ↥L.1 ↥L.1) (fun g x => ?_) h1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Bw.repE L c₂' _ x) 0 = ((θ g : (↥L.1)ˣ) : ↥L.1) * x 0`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.univ_unique, Finset.sum_singleton]`. Conclude with `congrArg (· * x 0) (hd (Bw.e.symm (Subgroup.inclusion (GK_le hK) g)))`.
+-/
 theorem potCrys_twistBy {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (c : ↥Gw →* (Om l)ˣ) (r : ↥Gw →* GL (Fin a) (Om l))
     (hr : IsPotCrysAt P Bw r) (hc : IsCrysAt P Bw ((GeneralLinearGroup.scalar (Fin 1)).comp c)) :
@@ -233,6 +294,21 @@ theorem potCrys_twistBy {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     simp only [Matrix.mulVec, dotProduct, Finset.univ_unique, Finset.sum_singleton]
     exact congrArg (· * x 0) (hd (Bw.e.symm (Subgroup.inclusion (GK_le hK) g)))
 
+/- English proof (translation)
+Take `⟨χ, hχ⟩` from `hp`. Establish `hreg : (CG.mk ((CuspSub.triv E (le_refl 1)).twist ψ)).IsRegAlg` using `(CG.isRegAlg_ofChar ψ).2 hr`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι 1 le_rfl _ χ hreg hχ`. Establish `hcr : Continuous fun g => (r g : Matrix (Fin 1) (Fin 1) (Qbar l))` using `Units.continuous_val.comp H.cont`. Establish `hsc : (GeneralLinearGroup.scalar (Fin 1)).comp (Matrix.GeneralLinearGroup.det.comp r) = r`.
+
+Use extensionality with `g i j`. Rewrite using `[MonoidHom.comp_apply, coe_scalar, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `Matrix.det (r g : Matrix (Fin 1) (Fin 1) (Qbar l)) = _`. Rewrite using `[Matrix.det_fin_one]`.
+
+Establish `hdet : Continuous fun x : GL (Fin 1) (Qbar l) => Matrix.GeneralLinearGroup.det x` using `GeneralLinearGroup.continuous_det`. Use `⟨MonoidHom.comp Matrix.GeneralLinearGroup.det r, hdet.comp H.cont, fun w hl B g hB hg => ?_, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Take `⟨y1, y2⟩` from `locPar_ofChar_unr hL ψ hB (hu w)`. Establish `e1 : wdOf hB hl ι r = ParLaws.locPar hL (CG.ofChar ψ) hB`. Rewrite using `[wdOf_eq_locPar hL hF H hl hB, show (1 - ((1 : ℕ) : ℝ)) / 2 = 0 by norm_num, WD.lpTw_zero]`.
+
+Both sides reduce to the same expression. Establish `f` using `frobEig_wdOf hl ι hcr (e1 ▸ y1) hB hg`. Rewrite `f` using `[e1, y2]`. Establish `h1 : (r g : Matrix (Fin 1) (Fin 1) (Qbar l)).charpoly = X - C ((r g : Matrix (Fin 1) (Fin 1) (Qbar l)) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply]`.
+
+Rewrite `f` using `[h1]`. Establish `f2` using `congrArg (fun p => p.coeff 0) f`. Simplify using `at f2`. Express the relevant statement in the definitionally equal form `ι (Matrix.det _) = _`. Rewrite using `[Matrix.det_fin_one]`.
+
+Conclude with `f2.trans (Units.val_inv_eq_inv_val _).symm`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E 1 ((CuspSub.triv E (le_refl 1)).twist ψ) w`. Establish `hc` using `(H.above P AI hT w A h O Bw hj).crys σ hσ ((ParLaws.unr_iff (ParLaws.isRec_locRec hL h) (ParLaws.toRep σ)).1 (by`. Rewrite using `[← ParLaws.locPar_mk hL hσ h]`. Conclude with `(locPar_ofChar_unr hL ψ h (hu w)).1))`.
+
+Establish `e : (GeneralLinearGroup.scalar (Fin 1)).comp ((Matrix.GeneralLinearGroup.det.comp r).comp (Dec (F` using `E) A).subtype) = r.comp (Dec (F := E) A).subtype := by`. Rewrite using `[← MonoidHom.comp_assoc, hsc]`. Rewrite using `[e]`. Conclude with `hc`.
+-/
 theorem exists_char (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal)
     (ι : Qbar l ≃+* ℂ) (ψ : HChar E) (hu : ∀ v, ψ.UnrAt v) (hr : ∀ τ, ∃ n : ℤ, expo ψ τ = n)
     (hp : ∃ χ, IsPolarized ((CuspSub.triv E (le_refl 1)).twist ψ) χ) :
@@ -280,6 +356,31 @@ theorem exists_char (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalT
     rw [e]
     exact hc
 
+/- English proof (translation)
+Establish `hc' : (π₀.twist ξ).IsCsd` using `CG.IsCsd.twist hξc (π := CG.mk π₀) hc`. Take `⟨r₀, wt₀, HT₀, H₀⟩` from `hG.of_isCsd Ω ι (by omega) hreg hc'`. Establish `e0 : (π₀.twist ξ).twist (ξ⁻¹ * ν) = π₀.twist ν`. Rewrite using `[← CuspSub.twist_mul, mul_inv_cancel_left]`. Establish `hψu : ∀ v, (ξ⁻¹ * ν).UnrAt v` using `fun v => (hξu v).inv.mul (hν.1 v)`.
+
+Establish `hp : ∃ χ', IsPolarized ((CuspSub.triv E (le_refl 1)).twist (ξ⁻¹ * ν)) χ'`. Rewrite using `[CuspSub.twist_mul]`. Conclude with `isPolarized_twist hξc' hν`. Take `⟨c, hcc, hcf, hcr⟩` from `exists_char (Ω := Ω) hL hF hG ι (ξ⁻¹ * ν) hψu hint hp`. Establish `hc0 : Continuous fun g => (r₀ g : Matrix (Fin a) (Fin a) (Qbar l))` using `Units.continuous_val.comp H₀.cont`.
+
+Establish `hc1 : Continuous fun g => (r g : Matrix (Fin a) (Fin a) (Qbar l))` using `Units.continuous_val.comp H.cont`. Establish `hc2 : Continuous fun g => (twistBy c r₀ g : Matrix (Fin a) (Fin a) (Qbar l))`. Simplify using `only [coe_twistBy]`. Conclude with `(Units.continuous_val.comp hcc).smul hc0`. Take `⟨B, hBc⟩` from `conj_of_frob hD hc1 hc2 H.ss (isSSRep_twistBy c H₀.ss) (by filter_upwards [eventually_natCast_notMem E l, ParLaws.eventually_unr (Ω := Ω) hL hF (CG.mk (π₀.twist ξ))] with w hl hu Bp g hBp hg`.
+
+Establish `e1` using `wdOf_eq_locPar hL hF H hl hBp`. Establish `e2` using `wdOf_eq_locPar hL hF H₀ hl hBp`. Establish `e3 : ParLaws.locPar hL (CG.mk (π₀.twist ν)) hBp = (ParLaws.locPar hL (CG.mk (π₀.twist ξ)) hBp).lpChar (ParLaws.locPar hL (CG.ofChar (ξ⁻¹ * ν)) hBp)`. Rewrite using `[← e0]`. Conclude with `ParLaws.locPar_twist hL hF (CG.mk (π₀.twist ξ)) _ hBp`.
+
+Take `⟨y1, y2⟩` from `locPar_ofChar_unr hL (ξ⁻¹ * ν) hBp (hψu w)`. Establish `u1` using `hu _ hBp`. Establish `u2 : (wdOf hBp hl ι r).unr` using `by rw [e1, e3, WD.unr_tw]; exact WD.unr_lpChar _ _ u1 y1`. Establish `u3 : (wdOf hBp hl ι r₀).unr` using `by rw [e2, WD.unr_tw]; exact u1`. Establish `f1` using `frobEig_wdOf hl ι hc1 u2 hBp hg`.
+
+Establish `f2` using `frobEig_wdOf hl ι hc0 u3 hBp hg`. Rewrite `f1` using `[e1, e3, WD.frobEig_tw _ _ (WD.unr_lpChar _ _ u1 y1), WD.frobEig_char _ _ _ u1 y1 y2]`. Rewrite `f2` using `[e2, WD.frobEig_tw _ _ u1]`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises. Rewrite using `[f1, coe_twistBy]`.
+
+Establish `f3 : (((c g : Qbar l) • (r₀ g : Matrix (Fin a) (Fin a) (Qbar l))).charpoly.map ι.toRingHom) = ((ι (c g : Qbar l)) • ((r₀ g : Matrix (Fin a) (Fin a) (Qbar l)).map ι.toRingHom)).charpoly`. Rewrite using `[← Matrix.charpoly_map]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[f3, GlobalTheory.Triple.charpoly_smul_of_prod _ _ _ (by rw [Matrix.charpoly_map]; exact f2), hcf w hl Bp g hBp hg]`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Use `congr 1`. Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use the proof step `ring)`. Take `⟨σ₁, hσ₁, -⟩` from `LocEx.exists_isLocComp hF E a (π₀.twist ξ) w`. Establish `g1` using `hGL E Ω l ι a ha _ hc' hreg r₀ wt₀ HT₀ H₀ P AI ⟨T⟩ w hw A h O Bw hj σ₁ hσ₁ _ (ParLaws.isRec_locRec hL h)`. Establish `g2 : wdAt P ι Bw h hj (r₀.comp (Dec (F` using `E) A).subtype) = (ParLaws.locPar hL (CG.mk (π₀.twist ξ)) h).lpTw ((1 - (a : ℝ)) / 2) := by`. Rewrite using `[g1, rec_algNorm (ParLaws.isRec_locRec hL h) σ₁]`.
+
+Conclude with `congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ₁ h).symm`. Establish `hm' : (wdAt P ι Bw h hj (r₀.comp (Dec (F` using `E) A).subtype)).mono0 := by`. Rewrite using `[g2, WD.monomial_twist_iff]`. Establish `e4 : ParLaws.locPar hL (CG.mk (π₀.twist ξ)) h = (ParLaws.locPar hL (CG.mk π₀) h).lpChar (ParLaws.locPar hL (CG.ofChar ξ) h)` using `ParLaws.locPar_twist hL hF (CG.mk π₀) ξ h`. Rewrite using `[e4, WD.monomial_char_iff _ _ (ParLaws.lpDim_locPar hL _ h)]`.
+
+Conclude with `hm`. Establish `hab` using `H₀.above P AI ⟨T⟩ w A h O Bw hj`. Establish `hpst` using `hB.isPstAt T Bw (r₀.comp (Dec (F := E) A).subtype) (H₀.cont.comp continuous_subtype_val |> Units.continuous_val.comp) hab.deRham`. Establish `hpot` using `(GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw h hj P ι _ hpst).1 hm'`. Establish `hpot2` using `potCrys_twistBy T Bw (c.comp (Dec (F := E) A).subtype) (r₀.comp (Dec (F := E) A).subtype) hpot (hcr P AI ⟨T⟩ w A h O Bw hj)`.
+
+Use `(GlobalTheory.ConjLocal.local_conj l P E Ω O _ Bw a _ (r.comp (Dec (F := E) A).subtype) B⁻¹ (fun g => ?_)).2.2.1 hpot2` and prove the remaining obligations. Use `hBc g` as an intermediate fact. Express the relevant statement in the definitionally equal form `r g = B⁻¹ * twistBy c r₀ g * B⁻¹⁻¹`. Rewrite using `[this]`. Use `group`.
+-/
 theorem isPotCrysAt_of_mono0 (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hGL : LocalGlobalAboveL)
     (hD : ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite → Dense {g : G E Ω | ∃ w ∉ S, ∃ B : ValuationSubring Ω,
@@ -364,6 +465,25 @@ theorem isPotCrysAt_of_mono0 (hL : GlobalTheory.Published.LocalLanglandsGL) (hF 
 
 end G
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LvT.Inh.ResFin.infinite_places H.E`. Take `⟨w, hl', hu⟩` from `((eventually_natCast_notMem H.E l).and (A.locG_unr_ae π)).exists`. Take `⟨w', hw', -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl H.conj.toRingEquiv w`. Establish `hcp : IsConjPl H w w'` using `(GlobalTheory.Mem.Chr.conjPl_main.2.1 R H w w').2 hw'`. Establish `key : ∀ P : PlE H, ((l : ℕ) : 𝓞 H.E) ∈ P.asIdeal ↔ P.valuation H.E ((l : ℕ) : H.E) < 1` using `fun P => by`.
+
+Establish `e` using `P.valuation_lt_one_iff_mem (K := H.E) ((l : ℕ) : 𝓞 H.E)`. Simplify using `using e.symm`. Establish `hl2 : ((l : ℕ) : 𝓞 H.E) ∉ w'.asIdeal` using `fun hm => hl' <| by`. Establish `e` using `hw' ((l : ℕ) : H.E)`. Rewrite `e` using `[map_natCast]`.
+
+Rewrite using `[key, ← e, ← key]`. Conclude with `hm`. Take `⟨hu', hfe⟩` from `A.csd_unr π w w' hc hcp hu`. Take `⟨α, hα⟩ : ∃ α, α ∈ A.frobEig (A.locG π w)` from `Multiset.card_pos_iff_exists_mem.1 (by`. Rewrite using `[A.frobEig_card _ hu, A.locG_dim]`.
+
+Use the proof step `omega)`. Establish `hq : 1 < normV w` using `GlobalTheory.WeilDeligne.one_lt_normV w`. Establish `hq' : normV w' = normV w` using `GlobalTheory.AntiLAdic.normV_conjPl hw'`. Establish `hn : ∀ P : PlE H, normV P = normV w → ∀ β : ℂ, ‖β * ((normV P : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)‖ = ‖β‖ * (normV w : ℝ) ^ v` using `fun P e β => by`. Rewrite using `[norm_mul, e, Complex.norm_natCast_cpow_of_pos (by omega)]`.
+
+Simplify using the standard rewrite rules. Establish `t1` using `(A.tempered_unr _ ((A.unr_tw _ v).2 hu)).1 (h w hl') (α * ((normV w : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)) (by`. Rewrite using `[A.frobEig_tw _ _ hu]`. Conclude with `Multiset.mem_map_of_mem _ hα)`. Establish `t2` using `(A.tempered_unr _ ((A.unr_tw _ v).2 hu')).1 (h w' hl2) (α⁻¹ * ((normV w' : ℕ) : ℂ) ^ ((v : ℝ) : ℂ)) (by`.
+
+Rewrite using `[A.frobEig_tw _ _ hu', hfe]`. Conclude with `Multiset.mem_map_of_mem _ (Multiset.mem_map_of_mem _ hα))`. Rewrite `t1` using `[hn w rfl]`. Rewrite `t2` using `[hn w' hq', norm_inv]`. Establish `hq1 : (1 : ℝ) < normV w` using `by exact_mod_cast hq`.
+
+Establish `hp : 0 < (normV w : ℝ) ^ v` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `ha0 : ‖α‖ ≠ 0` using `fun h0 => by rw [h0, zero_mul] at t1; exact zero_ne_one t1`. Establish `h2 : ((normV w : ℝ) ^ v) ^ 2 = 1`. Use `congrArg₂ (· * ·) t1 t2` as an intermediate fact. Simplify using `only [mul_one] at this`.
+
+Rewrite using `[← this]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : (normV w : ℝ) ^ v = 1` using `by nlinarith`. Establish `h4` using `congrArg Real.log h3`. Rewrite `h4` using `[Real.log_rpow (by linarith), Real.log_one]`.
+
+Conclude with `(mul_eq_zero.1 h4).resolve_right (Real.log_pos hq1).ne'`.
+-/
 theorem exponent_eq_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) {a : ℕ} (ha : 1 ≤ a)
     (π : A.CG a) (hc : A.csd π) (l : ℕ) [hl : Fact l.Prime] (v : ℝ)
     (h : ∀ w : PlE H, ((l : ℕ) : 𝓞 H.E) ∉ w.asIdeal → A.tempered (A.lpTw (A.locG π w) v)) : v = 0 := by
@@ -408,6 +528,9 @@ theorem exponent_eq_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : N
   rw [Real.log_rpow (by linarith), Real.log_one] at h4
   exact (mul_eq_zero.1 h4).resolve_right (Real.log_pos hq1).ne'
 
+/- English proof (translation)
+The claim follows from `host_isCMField D.host; ∃ ξ : HChar D.host.E, (∀ v, ξ.UnrAt v) ∧ (CG.ofChar ξ).IsCsd ∧ (CG.ofChar ξ⁻¹).IsCsd ∧ ∀ τ, ∃ n : ℤ, expo ξ τ = n + 1 / 2 := by have := host_isCMField D.host obtain ⟨ξ, h⟩ := GlobalTheory.Mem.EtaT.etaT_exists D.R D.host have hneg : (-1 : ℂˣ)⁻¹ = -1 := inv_e …`.
+-/
 theorem exists_halfChar (D : D7) : haveI := host_isCMField D.host; ∃ ξ : HChar D.host.E, (∀ v, ξ.UnrAt v) ∧
     (CG.ofChar ξ).IsCsd ∧ (CG.ofChar ξ⁻¹).IsCsd ∧ ∀ τ, ∃ n : ℤ, expo ξ τ = n + 1 / 2 := by
   have := host_isCMField D.host
@@ -445,6 +568,53 @@ theorem exists_halfChar (D : D7) : haveI := host_isCMField D.host; ∃ ξ : HCha
         RingHom.ext (GlobalTheory.JumpDictionaryFoundation.embOver_true_apply D ρ), h3.2]
       norm_num
 
+/- English proof (translation)
+Introduce `l _ ι π s hc hr`. Use `host_isCMField D.host` as an intermediate fact. Establish `ha : 2 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (C.e _ π).1`. Establish `hmk : CG.mk π₀ = (C.e _ π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`.
+
+Establish `h1` using `(C.csd _ π).1 hc`. Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow D.host.E s`. Use `set ν := GlobalTheory.HeckeGal.Model.absPow D.host.E s`.
+
+Establish `inf₁ : ∀ τ, (CG.mk (π₀.twist ν)).infChar τ = (D.naut.infG π τ).map (· + (s : ℂ))` using `fun τ => by`. Establish `h1` using `(ParLaws.hasInfChar_infChar (CG.mk π₀) τ).twist ν`. Rewrite `h1` using `[(GlobalTheory.T.heckeChar_exponent_of_infinityType _ ν).2.1 s hν τ]`. Rewrite using `[C.inf, CGu.infChar, ← hmk]`. Conclude with `h1.infChar_eq`.
+
+Establish `hreg : (CG.mk (π₀.twist ν)).IsRegAlg` using `(CG.isRegAlg_iff _).2 fun τ => by`. Take `⟨h1, h2⟩` from `hr τ`. Rewrite using `[inf₁]`. Use `⟨h1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`.
+
+Conclude with `h2 y hy`. Take `⟨ψp, hP⟩` from `isPolarized_twist hc₀ hν`. Take `⟨r, wt, HT, H⟩` from `hG _ D.nd.Om l ι _ (by omega) _ ψp hreg hP`. Establish `hloc : ∀ (w : PlE D.host) (u : ℝ), T.e w (D.naut.lpTw (D.naut.locG π w) u) = (ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 w)).lpTw u` using `fun w u => by`. Rewrite using `[T.tw, C.loc, hmk]`.
+
+Both sides reduce to the same expression. Establish `haway : ∀ (w : PlE D.host) (hl : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal), wdOf (D.nd.plOm.2 w) hl ι r = T.e w (D.naut.lpTw (D.naut.locG π w) (s + (1 - (D.R.r : ℝ)) / 2))` using `fun w hl => by`. Establish `e` using `locPar_twist_abs hL hF (CG.mk π₀) hν (D.nd.plOm.2 w)`. Rewrite using `[wdOf_eq_locPar hL hF H hl, show ParLaws.locPar hL (CG.mk (π₀.twist ν)) (D.nd.plOm.2 w) = _ from e, WD.lpTw_add, hloc]`. Establish `hv : s + (1 - (D.R.r : ℝ)) / 2 + (wt : ℝ) / 2 = 0`.
+
+Use `exponent_eq_zero D.naut (by omega) π hc l _ fun w hl => ?_` and prove the remaining obligations. Establish `h1` using `H.tempered_wdOf hl (D.nd.plOm.2 w)`. Rewrite `h1` using `[haway w hl, ← T.tw, ← T.tempered, D.naut.lpTw_add]`. Conclude with `h1`. Establish `htemp : ∀ w : PlE D.host, ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal → D.naut.tempered (D.naut.locG π w)` using `fun w hl => by`.
+
+Establish `h1` using `H.tempered_wdOf hl (D.nd.plOm.2 w)`. Rewrite `h1` using `[haway w hl, ← T.tw, ← T.tempered, D.naut.lpTw_add, hv, D.naut.lpTw_zero]`. Conclude with `h1`. Use `⟨r, ⟨Units.continuous_val.comp H.cont, H.ss, haway, htemp⟩, fun w hw O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Establish `hpar : T.e w (D.naut.locG π w) = ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 w)`.
+
+Rewrite using `[C.loc, hmk]`. Both sides reduce to the same expression. Establish `hab` using `H.above (D.loc l) (D.locA l) ⟨D.locT l⟩ w _ (D.nd.plOm.2 w) O Bw hj`. Use `⟨⟨hab.deRham, fun τ L τ' hτ => ⟨HT τ, ?_, hab.jumps τ L τ' hτ⟩⟩, fun hu => ?_, fun hm => ?_⟩` and prove the remaining obligations. Rewrite using `[H.weights, inf₁, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨σ₀, hσ₀, -⟩` from `LocEx.exists_isLocComp hF _ _ (π₀.twist ν) w`. Use `hab.crys σ₀ hσ₀ ((ParLaws.unr_iff (ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) (ParLaws.toRep σ₀)).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← ParLaws.locPar_mk hL hσ₀ (D.nd.plOm.2 w)]`. Establish `e` using `locPar_twist_abs hL hF (CG.mk π₀) hν (D.nd.plOm.2 w)`. Rewrite using `[show ParLaws.locPar hL (CG.mk (π₀.twist ν)) (D.nd.plOm.2 w) = _ from e, WD.unr_tw, ← hpar]`. Conclude with `(T.unr w _).1 hu`. Establish `hm' : (ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 w)).mono0`.
+
+Rewrite using `[← hpar]`. Conclude with `(T.mono0 w _).1 hm`. Establish `hs2 : 2 * s = ((D.R.r : ℤ) - 1 - wt : ℤ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `key : ∀ ξ : HChar D.host.E, (∀ τ, ∃ n : ℤ, expo ξ τ = (s : ℂ) + n) → (CG.mk (π₀.twist ξ)).IsRegAlg ∧ ∀ τ, ∃ n : ℤ, expo (ξ⁻¹ * ν) τ = n` using `fun ξ hξ => by`. Use `⟨(CG.isRegAlg_iff _).2 fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hr τ`. Take `⟨n, hn⟩` from `hξ τ`. Establish `e` using `((ParLaws.hasInfChar_infChar (CG.mk π₀) τ).twist ξ).infChar_eq`.
+
+Establish `e' : (CG.mk (π₀.twist ξ)).infChar τ = (D.naut.infG π τ).map (· + expo ξ τ)`. Rewrite using `[C.inf, CGu.infChar, ← hmk]`. Conclude with `e`. Rewrite using `[e']`. Use `⟨h1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨m, hm2⟩` from `h2 y hy`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Simplify using `only [hn]`. Use `push_cast`.
+
+Take the linear combination `hm2`. Take `⟨n, hn⟩` from `hξ τ`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[expo_mul, expo_inv, hn, (GlobalTheory.T.heckeChar_exponent_of_infinityType _ ν).2.1 s hν τ]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ S : Set (HeightOneSpectrum (𝓞 D.host.E)), S.Finite → Dense {g : G D.host.E D.nd.Om | ∃ w ∉ S, ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) g} := fun S hS => Dense.mono (by rintro g ⟨w, h1, -, h2⟩; exact ⟨w, h1, h2⟩) (GlobalTheory.SplitFrobDense.frobDense D (GlobalTheory.Published.chebotarevDegreeOne_iff_cheb.1 GlobalTheory.Published.chebotarevDegreeOne') S hS)`. Take `⟨ξh, x1, x2, x3, x4⟩` from `exists_halfChar D`. Establish `hone : ∀ v, (1 : HChar D.host.E).UnrAt v` using `fun v x _ => rfl`. Establish `cone : (CG.ofChar (1 : HChar D.host.E)).IsCsd` using `isCsd_ofChar_of_res _ _ (Or.inl ⟨fun v k => by`.
+
+Simplify using `only [HChar.resFin, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl,`. Use `fun v k => by`. Simplify using `only [HChar.resInf, MonoidHom.finset_prod_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl⟩)`.
+
+Break down `Int.even_or_odd' ((D.R.r : ℤ) - 1 - wt) with ⟨k, hk | hk⟩` into its components or cases. Establish `hsk : (s : ℂ) = k`. Rewrite `hs2` using `[hk]`. Move the coercions through the operations in `at hs2`. Establish `: s = k` using `by linarith`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Take `⟨k1, k2⟩` from `key 1 fun τ => ⟨-k, by rw [CG.expo_one, hsk]; push_cast; ring⟩`. Conclude with `isPotCrysAt_of_mono0 hL hF hG hB hGL hD ha hc₀ hν (fun v => hone v) cone (by rwa [inv_one]) k1 k2 H (D.locT l) hw (D.nd.plOm.2 w) Bw hj hm'`. Establish `hsk : (s : ℂ) = k + 1 / 2`.
+
+Rewrite `hs2` using `[hk]`. Move the coercions through the operations in `at hs2`. Establish `: s = k + 1 / 2` using `by linarith`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Take `⟨k1, k2⟩` from `key ξh fun τ => by`. Take `⟨n, hn⟩` from `x4 τ`. Conclude with `⟨n - k, by rw [hn, hsk]; push_cast; ring⟩`. Conclude with `isPotCrysAt_of_mono0 hL hF hG hB hGL hD ha hc₀ hν x1 x2 x3 k1 k2 H (D.locT l) hw (D.nd.plOm.2 w) Bw hj hm'`.
+-/
 theorem galHodge_of_cgTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hGL : LocalGlobalAboveL)
     {D : D7} {T : WDTie D.nd D.naut} (C : CGTrue hL D T) : GalHodge D T := by
@@ -568,6 +738,9 @@ theorem galHodge_of_cgTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : 
         exact ⟨n - k, by rw [hn, hsk]; push_cast; ring⟩
       exact isPotCrysAt_of_mono0 hL hF hG hB hGL hD ha hc₀ hν x1 x2 x3 k1 k2 H (D.locT l) hw (D.nd.plOm.2 w) Bw hj hm'
 
+/- English proof (translation)
+Introduce `hL hF hG hB hGL D T C`. Establish `h` using `galHodge_of_cgTrue hL hF hG hB hGL C`. Use `⟨h, fun π hc hr l _ ι => ?_⟩` and prove the remaining obligations. Take `⟨r, H⟩` from `h l ι π 0 hc ((GlobalTheory.GalOfCusp.regAlgShift_zero D.naut π).2 hr)`. Conclude with `⟨r, H.toIsAttachedAway.isGaloisRepOf⟩`.
+-/
 theorem galHodge_galoisReps_of_cgTrue : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL →
     GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → GlobalTheory.Published.DeRhamPotSemistable → GlobalTheory.GalOfCusp.LocalGlobalAboveL →
     ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), CGTrue hL D T →

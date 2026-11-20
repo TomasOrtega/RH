@@ -15,6 +15,13 @@ open UpperTheory.V.Published UpperTheory.CBC
 open scoped Classical
 
 open GroundTheory.Global.AdeleBaseChange in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp v w hw i1 i2 i3 i4 hmap η hη u`. Take `⟨w0, hw0⟩` from `w`. Take `rfl : below F w0 = v` from `(below_eq_iff w0 v).2 hw0`. Establish `h2` using `ideleNorm_finiteEmbedding (K := F) w0 u`. Establish `h3` using `UpperTheory.Gal.InertialTypesAlt.G.normTriv F E η hη (IdeleGroup.finiteEmbedding w0 u)`.
+
+Rewrite `h3` using `[h2]`. Establish `hi : i1 = GroundTheory.Global.SemiLocal.algebraCompletion (below F w0) w0`. Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `(hmap r).symm`.
+
+Substitute `hi` using the available equality. Conclude with `h3`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.normLoc :
     UpperTheory.Gal.InertialTypesAlt.L.NormLoc := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp v w hw i1 i2 i3 i4 hmap η hη u

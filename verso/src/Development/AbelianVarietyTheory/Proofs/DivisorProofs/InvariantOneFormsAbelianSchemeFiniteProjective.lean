@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.InvFormProj
 
+/- English proof (translation)
+Set `s : Set R` to `{r | ∃ (F : Type) (_ : AddCommGroup F) (_ : Module R F) (_ : Module (Localization.Away r) F) (_ : IsScalarTower R (Localization.Away r) F) (_ : Module.Finite (Localization.Away r) F) (_ : Module.Projective (Localization.Away r) F) (ϕ : M →ₗ[R] F), IsBaseChange (Localization.Away …`. Establish `hs : Ideal.span s = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨r, hr, hP⟩` from `h ⟨m, hm.isPrime⟩`.
+
+Conclude with `hr (hsm (Ideal.subset_span hP))`. Establish `hg : ∀ g : s, g.1 ∈ s` using `fun g => g.2`. Use `choose F iA iM iL iT iFin iProj ϕ hϕ using hg`. Use `letI := iA`. Use `letI := iM`.
+
+Use `letI := iL`. Use `haveI := iT`. Use `haveI := iFin`. Use `haveI := iProj`. Use `haveI (g : s) : IsLocalizedModule (Submonoid.powers g.1) (ϕ g) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers g.1) (Localization.Away g.1) (ϕ g)).2 (hϕ g)`.
+
+Use `haveI (g : s) : Module.Flat R (F g) := by haveI : Module.Flat R (Localization.Away g.1) := IsLocalization.flat _ (Submonoid.powers g.1)`. Conclude with `Module.Flat.trans R (Localization.Away g.1) (F g)`. Use `haveI hfp : Module.FinitePresentation R M := Module.FinitePresentation.of_localizationSpan' s hs (Mₚ := F) (Rₚ := fun g : s => Localization.Away g.1) ϕ fun _ => Module.finitePresentation_of_projective _ _`. Use `haveI : Module.Flat R M := Module.flat_of_isLocalized_span R M s hs F ϕ fun _ => inferInstance`. Conclude with `⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩`.
+-/
 theorem finite_projective_of_locally_projective (R M : Type) [CommRing R] [AddCommGroup M] [Module R M]
     (h : ∀ q : PrimeSpectrum R, ∃ r : R, r ∉ q.asIdeal ∧ ∃ (F : Type) (_ : AddCommGroup F) (_ : Module R F)
       (_ : Module (Localization.Away r) F) (_ : IsScalarTower R (Localization.Away r) F)
@@ -54,6 +63,17 @@ theorem finite_projective_of_locally_projective (R M : Type) [CommRing R] [AddCo
     Module.flat_of_isLocalized_span R M s hs F ϕ fun _ => inferInstance
   exact ⟨inferInstance, Module.Flat.projective_of_finitePresentation⟩
 
+/- English proof (translation)
+Introduce `R _ A _ g _ hsm hbc`. Use `haveI : SmoothOfRelativeDimension g A.hom := hsm`. Use `haveI : Smooth A.hom := SmoothOfRelativeDimension.smooth g A.hom`. Apply `finite_projective_of_locally_projective` to reduce the goal to its premises. Introduce `q`.
+
+Set `e : Spec (CommRingCat.of R) ⟶ A.left` to `η[A].left`. Establish `he : e ≫ A.hom = 𝟙 _` using `by simp [e]`. Take `⟨V, hV, hqV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp A.left.isBasis_affineOpens) (show e q ∈ (⊤ : A.left.Opens) from trivial)`. Take `⟨_, ⟨r, rfl⟩, hr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := q) (u := (e ⁻¹ᵁ V).1) hqV (e ⁻¹ᵁ V).2`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Set `y : Sp (Localization.Away r) ⟶ A.left` to `spMap (algebraMap R (Localization.Away r)) ≫ e`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ V`. Introduce `t _`. Establish `: PrimeSpectrum.comap (algebraMap R (Localization.Away r)) t ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`.
+
+Conclude with `⟨t, rfl⟩`. Conclude with `hsub this`. Establish `hs : y ≫ A.hom = spMap (algebraMap R (Localization.Away r))`. Simplify using `only [y, Category.assoc, he, Category.comp_id]`. Set `φ` to `GlobalTheory.CechKS.FormLocal.valHom (s := A.hom) (U := V) y hy hs`.
+
+Use `letI : Algebra (Sec A.hom V) (Localization.Away r) := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (Sec A.hom V) (Localization.Away r) := IsScalarTower.of_algebraMap_eq fun a => (φ.commutes a).symm`. Use `haveI : Algebra.Smooth R (Sec A.hom V) := smooth_sec_affine A.hom ⟨V, hV⟩`. Establish `hb` using `hbc (Opposite.op ⟨V, hV⟩)`. Conclude with `⟨Localization.Away r ⊗[Sec A.hom V] Ω[Sec A.hom V⁄R], inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, _, hb.comp (TensorProduct.isBaseChange (Sec A.hom V) Ω[Sec A.hom V⁄R] (Localization.Away r))⟩`.
+-/
 theorem finite_projective : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → (∀ U : AffOp A.left, IsBaseChange (Sec A.hom U.unop.1) (evForm A.hom U ∘ₗ (GlobalTheory.InvForm.InvForm A).subtype)) → Module.Finite R (GlobalTheory.InvForm.InvForm A) ∧ Module.Projective R (GlobalTheory.InvForm.InvForm A) := by
   intro R _ A _ g _ hsm hbc
   haveI : SmoothOfRelativeDimension g A.hom := hsm

@@ -23,6 +23,11 @@ open CechPic
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Take `⟨L, hL, rfl⟩` from `cls_surj c`. Establish `hx : CechPic.pull x.left (cls L hL) = 0`. Establish `hc` using `hL.cover`. Set `z₀ : (𝟙_ (Over (Sp K))).left` to `(default : PrimeSpectrum K)`. Establish `hz : x.left z₀ ∈ (⨆ i, L.U i)` using `by rw [hc]; trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Use `GlobalTheory.RigidifyTwist.pull_cls_eq_zero hL x.left i fun z => ?_` and prove the remaining obligations. Rewrite using `[show z = z₀ from Subsingleton.elim (α := PrimeSpectrum K) _ _]` and apply the resulting hypothesis. Rewrite using `[Over.comp_left, pull_comp, hx, map_zero]`.
+-/
 theorem pull_const {A T : Over (Sp K)} (x : 𝟙_ (Over (Sp K)) ⟶ A) (c : CechPic.Pic A.left) :
     CechPic.pull (toUnit T ≫ x).left c = 0 := by
   obtain ⟨L, hL, rfl⟩ := cls_surj c
@@ -35,6 +40,11 @@ theorem pull_const {A T : Over (Sp K)} (x : 𝟙_ (Over (Sp K)) ⟶ A) (c : Cech
     rwa [show z = z₀ from Subsingleton.elim (α := PrimeSpectrum K) _ _]
   rw [Over.comp_left, pull_comp, hx, map_zero]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (k := K) (pullback.snd s.left y.left)`. Establish `h1` using `Over.w s`. Establish `h2` using `Over.w y`. Use `⟨Over.homMk (t ≫ pullback.fst s.left y.left) ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, ← h1, pullback.condition_assoc, h2]`.
+
+Simplify using `using ht`. Use `ext`. Simplify using `only [Over.comp_left, Over.homMk_left, Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, ht]`. Conclude with `Category.id_comp _`.
+-/
 theorem exists_comp_eq [IsAlgClosed K] {A B : Over (Sp K)} (s : A ⟶ B) [IsFinite s.left] [Surjective s.left]
     (y : 𝟙_ (Over (Sp K)) ⟶ B) : ∃ x : 𝟙_ (Over (Sp K)) ⟶ A, x ≫ s = y := by
   obtain ⟨t, ht⟩ := ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (k := K) (pullback.snd s.left y.left)
@@ -48,6 +58,9 @@ theorem exists_comp_eq [IsAlgClosed K] {A B : Over (Sp K)} (s : A ⟶ B) [IsFini
     rw [← Category.assoc, ht]
     exact Category.id_comp _
 
+/- English proof (translation)
+Establish `h1 : (1 : A ⟶ A) = toUnit A ≫ (1 : 𝟙_ (Over (Sp K)) ⟶ A)` using `by simp`. Establish `hc : (𝟙 A) * (toUnit A ≫ x) = (toUnit A ≫ x) * 𝟙 A` using `mul_comm _ _`. Simplify using `only [lam, hc, Over.id_left, pull_id, pull_const, h1]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lam_id_const {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (x : 𝟙_ (Over (Sp K)) ⟶ A)
     (c : CechPic.Pic A.left) :
     lam c (𝟙 A) (toUnit A ≫ x) = CechPic.pull ((toUnit A ≫ x) * 𝟙 A).left c - c := by
@@ -56,6 +69,15 @@ theorem lam_id_const {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (x : 𝟙_ (O
   simp only [lam, hc, Over.id_left, pull_id, pull_const, h1]
   abel
 
+/- English proof (translation)
+Take `⟨-, hiso⟩` from `hs`. Establish `hL : P.L.IsLB` using `P.isLB`. Establish `hc1 : (cubeLB P.A ![fst P.A P.A, snd P.A P.A] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hc2 : (cubeLB P.A ![fst P.A P.A, snd P.A P.A ≫ s] P.L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hLam : abelian₂ P.A M = cubeLB P.A ![fst P.A P.A, snd P.A P.A] M` using `rfl`.
+
+Rewrite `hiso` using `[hLam]`. Establish `e` using `(cls_eq_iff hc1 hc2).2 hiso`. Rewrite `e` using `[cls_cube_two hM _ _ hc1, cls_cube_two hL _ _ hc2]`. Establish `e2` using `congrArg (CechPic.pull (lift (𝟙 P.A) (toUnit P.A ≫ x)).left) e`. Rewrite `e2` using `[pull_lam, pull_lam]`.
+
+Simplify using `only [lift_fst, lift_snd_assoc, lift_snd] at e2`. Rewrite `e2` using `[lam_id_const, Category.assoc, lam_id_const]`. Establish `hd` using `LB.isLB_div hM (LB.isLB_linComb hL (K := Fin 2) ![𝟙 P.A.left, ((toUnit P.A ≫ x ≫ s) * 𝟙 P.A).left] ![1, -1])`. Use `(cls_eq_iff hd (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_div hM (LB.isLB_linComb hL _ _), cls_linComb hL, cls_pull hM]`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, one_smul, neg_smul]`. Rewrite `e2` using `[sub_eq_iff_eq_add]`. Rewrite using `[e2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem iso_of_formIs (P : Out.PolAV (Sp K)) (M : LB P.A.left) (hM : M.IsLB) (s : P.A ⟶ P.A) (hs : FormIs P M s)
     (x : 𝟙_ (Over (Sp K)) ⟶ P.A) :
     LBIso (LB.div M (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, ((toUnit P.A ≫ x ≫ s) * 𝟙 P.A).left] ![1, -1]))
@@ -82,6 +104,11 @@ theorem iso_of_formIs (P : Out.PolAV (Sp K)) (M : LB P.A.left) (hM : M.IsLB) (s 
   rw [e2]
   abel
 
+/- English proof (translation)
+Introduce `hA hB K _ _ P M y hM hAmp`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_polarisationForm_of_lineBundle hA hB K P M hM`. Take `⟨hfin, hsurj⟩` from `GlobalTheory.T.isFinite_and_surjective_of_formIs' hA hB K P M s hM hAmp hs`. Take `⟨x, hx⟩` from `exists_comp_eq s y`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `iso_of_formIs P M hM s hs x`. Rewrite `h` using `[hx]`. Then use the resulting hypothesis.
+-/
 theorem twist_iso_translate : Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M : LB P.A.left) (y : 𝟙_ (Over (Sp K)) ⟶ P.A), M.IsLB → Out.RelAmple P.A M → ∃ x : 𝟙_ (Over (Sp K)) ⟶ P.A, LBIso (LB.div M (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, ((toUnit P.A ≫ y) * 𝟙 P.A).left] ![1, -1])) (M.pull ((toUnit P.A ≫ x) * 𝟙 P.A).left) := by
   intro hA hB K _ _ P M y hM hAmp
   obtain ⟨s, hs⟩ := GlobalTheory.T.exists_polarisationForm_of_lineBundle hA hB K P M hM

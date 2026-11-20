@@ -8,6 +8,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero, RingEquiv.map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a x`. Establish `h1` using `congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) (toAd_spec D x a.2)`.
+
+Establish `h2` using `congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) ((GlobalTheory.LFun.toFinAd_tmul (F := D.host.F) a.2 x).trans (mul_comm _ _))`. Conclude with `h1.trans h2.symm`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingEquiv.map_add, ha, hb]`. Both sides reduce to the same expression.
+-/
 private theorem cpt_finAd {D : D7} (Q : Pl D.host.E) (z : AE D) :
     cpt (D := D) Q (toEAf D z) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D z) Q := by
   induction z using TensorProduct.induction_on with
@@ -19,6 +24,9 @@ private theorem cpt_finAd {D : D7} (Q : Pl D.host.E) (z : AE D) :
     exact h1.trans h2.symm
   | add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingEquiv.map_add, ha, hb]; rfl
 
+/- English proof (translation)
+Rewrite using `[cpt_finAd]`. Conclude with `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.LFun.finTens_locIdele (F := D.host.F) w y)`.
+-/
 private theorem cpt_loc {D : D7} (w Q : Pl D.host.E) (y : (Kw w)ˣ) :
     cpt (D := D) Q (toEAf D (GlobalTheory.LFun.locIdele D.host.F w y : AE D)) =
       (Neutral.B1.finiteSingle D.host.E w (y : Kw w)) Q := by
@@ -26,6 +34,11 @@ private theorem cpt_loc {D : D7} (w Q : Pl D.host.E) (y : (Kw w)ˣ) :
   exact congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.LFun.finTens_locIdele (F := D.host.F) w y)
 
 open Classical in
+/- English proof (translation)
+Take `⟨⟨es, hes, hsum⟩, -⟩` from `he`. Rewrite using `[hsum, map_sum (toEAf D), map_sum (cpt (D := D) Q)]`. Use `split_ifs with hQ`. Rewrite using `[Finset.sum_eq_single Q (fun P hP hPQ => (cpt_of_isIdemAt (hes P hP)).2 Q (Ne.symm hPQ)) (fun h => absurd hQ h)]`. Conclude with `(cpt_of_isIdemAt (hes Q hQ)).1`.
+
+Conclude with `Finset.sum_eq_zero fun P hP => (cpt_of_isIdemAt (hes P hP)).2 Q (fun h => hQ (h ▸ hP))`.
+-/
 private theorem cpt_sum {D : D7} {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) (Q : Pl D.host.E) :
     cpt (D := D) Q (toEAf D e) = if Q ∈ P then 1 else 0 := by
   obtain ⟨⟨es, hes, hsum⟩, -⟩ := he
@@ -36,6 +49,13 @@ private theorem cpt_sum {D : D7} {P : Finset (Pl D.host.E)} {e : AE D} (he : IsI
     exact (cpt_of_isIdemAt (hes Q hQ)).1
   · exact Finset.sum_eq_zero fun P hP => (cpt_of_isIdemAt (hes P hP)).2 Q (fun h => hQ (h ▸ hP))
 
+/- English proof (translation)
+Use `⟨?_, fun i => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_prod, map_prod (infPart D)]`. Conclude with `Finset.prod_eq_one fun i _ => GlobalTheory.LFun.infTens_locIdele (F := D.host.F) (w i) _`. Rewrite using `[Units.coe_prod, map_prod (toEAf D), map_prod (cpt (D := D) _), Finset.prod_eq_single i]`. Rewrite using `[cpt_loc, GlobalTheory.LFun.finSingle_self]`.
+
+Introduce `b _ hb`. Rewrite using `[cpt_loc]`. Conclude with `GlobalTheory.LFun.finSingle_ne (fun h => hb (hw h).symm) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite using `[Units.coe_prod, map_prod (toEAf D), map_prod (cpt (D := D) _)]`. Conclude with `Finset.prod_eq_one fun i _ => by`. Rewrite using `[cpt_loc]`. Conclude with `GlobalTheory.LFun.finSingle_ne (hQ i).symm _`.
+-/
 private theorem cpt_prod {D : D7} {ι : Type} [Fintype ι] (w : ι → Pl D.host.E) (hw : Function.Injective w)
     (y : ∀ i, (Kw (w i))ˣ) :
     infPart D ((∏ i, GlobalTheory.LFun.locIdele D.host.F (w i) (y i) : (AE D)ˣ) : AE D) = 1 ∧
@@ -56,10 +76,38 @@ private theorem cpt_prod {D : D7} {ι : Type} [Fintype ι] (w : ι → Pl D.host
       rw [cpt_loc]
       exact GlobalTheory.LFun.finSingle_ne (hQ i).symm _
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.BotMatch.complEquiv_evW, complEquiv_apply, SplitTie.valued_complMap]`.
+-/
 private theorem valued_evW {D : D7} {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (z : Lev.EAf D) :
     Valued.v (GlobalTheory.BotMatch.evW τ z) = Valued.v (cpt (D := D) (splitPrime τ) z) := by
   rw [← GlobalTheory.BotMatch.complEquiv_evW, complEquiv_apply, SplitTie.valued_complMap]
 
+/- English proof (translation)
+Introduce `D ε Pw hε ι _ pl τ hPw hinj ν n N hN`. Establish `hc : ∀ Q, cpt (D` using `D) Q (1 - toEAf D ε + toEAf D ε * N.det) = if Q ∈ Pw then cpt (D := D) Q N.det else 1 := by`. Introduce `Q`. Rewrite using `[RingHom.map_add, RingHom.map_sub, RingHom.map_mul, RingHom.map_one, cpt_sum hε]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Distinguish the cases in `h : ∀ i, GlobalTheory.BotMatch.evW (τ i) N.det ≠ 0 ∧ valuation (Fv D.host.F (pl i)) (GlobalTheory.BotMatch.evW (τ i) N.det) = 1`. Set `y : ∀ i, (Kw (D` to `D) (splitPrime (τ i)))ˣ := fun i => Units.map (complMap (splitPrime_under (τ i))).toMonoidHom (Units.mk0 _ (h i).1)`. Establish `hy : ∀ i, (y i : Kw (D` using `D) (splitPrime (τ i))) = cpt (D := D) (splitPrime (τ i)) N.det := fun i => GlobalTheory.BotMatch.complEquiv_evW (τ i) N.det`. Establish `hv : ∀ i, Valued.v (y i : Kw (D` using `D) (splitPrime (τ i))) = 1 := fun i => by`. Rewrite using `[hy, ← valued_evW]`.
+
+Conclude with `(GlobalTheory.FlipMatch.isEquiv_Fv (pl i)).eq_one_iff_eq_one.1 (h i).2`. Take `⟨x, hx⟩ : ∃ x : (AE D)ˣ, x = ∏ i, GlobalTheory.LFun.locIdele D.host.F (splitPrime (τ i)) (y i)` from `⟨_, rfl⟩`. Take `⟨h1, h2, h3⟩` from `cpt_prod (fun i => splitPrime (τ i)) hinj y`. Take `⟨-, h5, h6⟩` from `cpt_prod (fun i => splitPrime (τ i)) hinj (fun i => (y i)⁻¹)`. Establish `hxi : x⁻¹ = ∏ i, GlobalTheory.LFun.locIdele D.host.F (splitPrime (τ i)) (y i)⁻¹`.
+
+Rewrite using `[hx, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => (map_inv _ _).symm`. Rewrite `h1`, `h2`, `h3` using `[← hx]`. Rewrite `h5`, `h6` using `[← hxi]`. Establish `hU : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.IsUnitDet ε N x`.
+
+Use `⟨h1, cpt_ext fun Q => ?_, (mem_OA_iff _).2 fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[hc] split_ifs with hQ`. Take `⟨i, rfl⟩` from `(hPw Q).1 hQ`. Conclude with `(h2 i).trans (hy i)`. Conclude with `h3 Q fun i hi => hQ ((hPw Q).2 ⟨i, hi⟩)`.
+
+Distinguish the cases in `hQ : ∃ i, splitPrime (τ i) = Q`. Take `⟨i, rfl⟩` from `hQ`. Rewrite using `[h5 i, HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Rewrite using `[h6 Q fun i hi => hQ ⟨i, hi⟩]`. Conclude with `one_mem _`.
+
+Establish `hex : ∃ x, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.IsUnitDet ε N x` using `⟨x, hU⟩`. Establish `he : hex.choose = x` using `Units.ext (ae_ext (hex.choose_spec.1.trans hU.1.symm) fun Q => by`. Rewrite using `[hex.choose_spec.2.1, hU.2.1])`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.unitChar, dif_pos hex, he, hx, map_prod ν, ← Finset.prod_inv_distrib]`. Use `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.StdPairCone.unitInd, dif_pos (h i)]`. Both sides reduce to the same expression. Take `⟨i, hi⟩` from `not_forall.1 h`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by rw [GlobalTheory.StdPairCone.unitInd, dif_neg hi]), GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.unitChar, dif_neg]`. Introduce and unpack `⟨x, -, h2, h3⟩`.
+
+Apply `hi` to reduce the goal to its premises. Establish `h4` using `(mem_OA_iff _).1 h3 (splitPrime (τ i))`. Establish `h5 : cpt (D` using `D) (splitPrime (τ i)) (toEAf D (x : AE D)) = cpt (D := D) (splitPrime (τ i)) N.det := by`. Rewrite using `[h2, hc, if_pos ((hPw _).2 ⟨i, rfl⟩)]`. Establish `h6 : cpt (D` using `D) (splitPrime (τ i)) N.det * cpt (D := D) (splitPrime (τ i)) (toEAf D ((x⁻¹ : (AE D)ˣ) : AE D)) = 1 := by`.
+
+Rewrite using `[← h5, ← RingHom.map_mul, ← RingHom.map_mul, Units.mul_inv, RingHom.map_one, RingHom.map_one]`. Establish `h7 : Valued.v (cpt (D` using `D) (splitPrime (τ i)) N.det) ≤ 1 := by`. Rewrite using `[← valued_evW]`. Conclude with `(GlobalTheory.FlipMatch.isEquiv_Fv (pl i)).le_one_iff_le_one.1 ((Valuation.mem_integer_iff _ _).1 (hN i))`. Rewrite `h4` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Establish `h8` using `congrArg Valued.v h6`. Rewrite `h8` using `[map_mul, map_one]`. Establish `h9 : Valued.v (GlobalTheory.BotMatch.evW (τ i) N.det) = 1`. Rewrite using `[valued_evW]`. Conclude with `le_antisymm h7 (h8 ▸ mul_le_of_le_one_right' h4)`.
+
+Conclude with `⟨fun h0 => by rw [h0, map_zero] at h9; exact zero_ne_one h9, (GlobalTheory.FlipMatch.isEquiv_Fv (pl i)).eq_one_iff_eq_one.2 h9⟩`.
+-/
 theorem UpperTheory.unitChar_idempotentSum_eq_prod_unitInd :
     ∀ (D : D7) (ε : AE D) (Pw : Finset (Pl D.host.E)), IsIdemSum ε Pw → ∀ (ι : Type) [Fintype ι] (pl : ι → Pl D.host.F)
         (τ : ∀ i, D.host.E →ₐ[D.host.F] Fv D.host.F (pl i)), (∀ w, w ∈ Pw ↔ ∃ i, splitPrime (τ i) = w) →

@@ -16,6 +16,11 @@ open GlobalTheory.AdelicU
 
 variable {D : D7} {v : FinPl D}
 
+/- English proof (translation)
+Use `⟨(φ.restrictScalars D.host.F).comp Algebra.TensorProduct.includeRight, ?_⟩` and prove the remaining obligations. Use `AlgHom.ext fun y => ?_` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x`.
+
+Establish `hax : a ⊗ₜ[D.host.F] x = a • ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[splitProj_tmul, hax, map_smul, smul_eq_mul]`. Both sides reduce to the same expression. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+-/
 theorem exists_eq_splitProj (φ : SplitProj D v) :
     ∃ τ : D.host.E →ₐ[D.host.F] Fv D.host.F v, φ = splitProj τ := by
   refine ⟨(φ.restrictScalars D.host.F).comp Algebra.TensorProduct.includeRight, ?_⟩
@@ -30,6 +35,11 @@ theorem exists_eq_splitProj (φ : SplitProj D v) :
     rfl
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
+/- English proof (translation)
+Establish `hred : ∀ x : 𝓞 D.host.E, rdQ (D` using `D) (v := v) (splitProj τ) (x : D.host.E) = τ x := fun x => by`. Simplify using `only [rdQ, splitProj_tmul, one_mul]`. Unfold `IsProjAt`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[h x, hred, mem_splitPrime]`. Introduce and unpack `rfl x`. Rewrite using `[hred, mem_splitPrime]`.
+-/
 theorem isProjAt_iff (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (PP : Formalism.L2.DIV.Pl D.host.E) :
     IsProjAt (D := D) (v := v) (splitProj τ) PP ↔ PP = splitPrime τ := by
 
@@ -43,6 +53,9 @@ theorem isProjAt_iff (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (PP : Formal
   · rintro rfl x
     rw [hred, mem_splitPrime]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => simp [sigR, compFin]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem sigR_compFin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     sigR _ σ (compFin F E v z) = compFin F E v (sigR _ σ z) := by
@@ -52,18 +65,31 @@ theorem sigR_compFin {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   | tmul a x => simp [sigR, compFin]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Establish `h` using `sigR_compFin D.sp.cm.sig v z`. Conclude with `h`.
+-/
 theorem compFin_cA (z : AE D) :
     sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v z) = compFin D.host.F D.host.E v (cA D z) := by
 
   have h := sigR_compFin D.sp.cm.sig v z
   exact h
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.idem, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 private theorem idem_inl_eq_tensAt_one (D : D7) (v : FinPl D) :
     GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.idem D (.inl v) = GlobalTheory.EmbChart.tensAt D.host.E v 1 := by
   rw [Algebra.TensorProduct.one_def, GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.idem, Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨⟨hee, hce, -⟩, hsum, hone⟩` from `he`. Establish `hone' : splitProj τ (compFin D.host.F D.host.E v e) = 1` using `hone`. Establish `hε` using `idem_inl_eq_tensAt_one D v`. Establish `h1 : e = GlobalTheory.EmbChart.tensAt D.host.E v (compFin D.host.F D.host.E v e)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hε, ← hsum, add_mul, hee, mul_comm (cA D e) e, hce, add_zero]`. Use `_ = _ := by rw [GlobalTheory.EmbChart.tensAt_mul_right, one_mul]`. Establish `hc : cA D e = GlobalTheory.EmbChart.tensAt D.host.E v 1 - e`. Rewrite using `[← hε, ← hsum, add_sub_cancel_left]`. Establish `h2 : compFin D.host.F D.host.E v e = splitIdem (isCMExt_host D) τ`.
+
+Apply `split_ext (isCMExt_host D) τ` to reduce the goal to its premises. Rewrite using `[splitProj_splitIdem, hone']`. Rewrite using `[splitProj_comp_splitIdem, splitProj_comp, compFin_cA, hc, map_sub, GlobalTheory.EmbChart.compFin_tensAt, map_sub, map_one, hone', sub_self]`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem eq_idem {τ : D.host.E →ₐ[D.host.F] Fv D.host.F v} {e : AE D} (he : IsIdemOf (D := D) (v := v) (splitProj τ) e) :
     e = GlobalTheory.EmbChart.idem τ := by
   obtain ⟨⟨hee, hce, -⟩, hsum, hone⟩ := he
@@ -85,6 +111,9 @@ theorem eq_idem {τ : D.host.E →ₐ[D.host.F] Fv D.host.F v} {e : AE D} (he : 
   rw [h1, h2]
   rfl
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Conclude with `⟨fun _ => Q.asIdeal.zero_mem, fun _ => P.asIdeal.zero_mem⟩`. Conclude with `(hP.2 x hx).trans (hQ.2 x hx).symm`.
+-/
 private theorem eq_of_isIdemAt_of_isIdemAt' {e : AE D} {P Q : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : Formalism.L2.NTheta.IsIdemAt e P) (hQ : Formalism.L2.NTheta.IsIdemAt e Q) : P = Q := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
@@ -93,6 +122,27 @@ private theorem eq_of_isIdemAt_of_isIdemAt' {e : AE D} {P Q : HeightOneSpectrum 
     exact ⟨fun _ => Q.asIdeal.zero_mem, fun _ => P.asIdeal.zero_mem⟩
   · exact (hP.2 x hx).trans (hQ.2 x hx).symm
 
+/- English proof (translation)
+Take `⟨⟨hee, hce, w, ε, ⟨α, rfl, hαw, hαo⟩, hsum⟩, -⟩` from `id he`. Establish `hα : α = singleV D.host.F w 1` using `by classical`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = w`.
+
+Substitute `hu` using the available equality. Rewrite using `[singleV, RestrictedProduct.single_eq_same]`. Conclude with `hαw`. Rewrite using `[singleV, RestrictedProduct.single_eq_of_ne _ _ hu]`. Conclude with `hαo u hu`.
+
+Substitute `hα` using the available equality. Establish `hsum' : e + cA D e = GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.idem D (.inl w)` using `hsum`. Establish `hε` using `idem_inl_eq_tensAt_one D w`. Use `set y := compFin D.host.F D.host.E w e with hy`. Establish `hy1 : y * y = y` using `by rw [hy, ← map_mul, hee]`.
+
+Establish `hy2 : y + sigR _ D.sp.cm.sig y = 1`. Rewrite using `[hy, compFin_cA, ← map_add, hsum', hε, GlobalTheory.EmbChart.compFin_tensAt]`. Establish `hσy : sigR _ D.sp.cm.sig y = 1 - y` using `eq_sub_of_add_eq' hy2`. Establish `hnf : ¬ IsField (Fv D.host.F w ⊗[D.host.F] D.host.E)`. Introduce `hf`.
+
+Distinguish the cases in `hy0 : y = 0`. Rewrite `hy2` using `[hy0, map_zero, add_zero]`. Conclude with `hf.exists_pair_ne.elim fun a ha => ha.elim fun b hab => hab (by rw [← mul_one a, ← mul_one b, ← hy2, mul_zero, mul_zero])`. Take `⟨z, hz⟩` from `hf.mul_inv_cancel hy0`. Establish `hy1' : y = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hy2` using `[hy1', map_one]`. Establish `h10 : (1 : Fv D.host.F w ⊗[D.host.F] D.host.E) = 0` using `add_left_cancel (hy2.trans (add_zero 1).symm)`. Conclude with `hf.exists_pair_ne.elim fun a ha => ha.elim fun b hab => hab (by rw [← mul_one a, ← mul_one b, h10, mul_zero, mul_zero])`. Establish `hfin : Module.finrank (Fv D.host.F w) (Fv D.host.F w ⊗[D.host.F] D.host.E) = 2`.
+
+Rewrite using `[Module.finrank_baseChange]`. Conclude with `(isCMExt_host D).2.2.1`. Take `⟨φ₀⟩` from `nonempty_algHom_of_not_isField hfin hnf`. Take `⟨τ₀, rfl⟩` from `exists_eq_splitProj (D := D) (v := w) φ₀`. Establish `hτ : ∃ τ : D.host.E →ₐ[D.host.F] Fv D.host.F w, splitProj τ y = 1`.
+
+Establish `hp : IsIdempotentElem (splitProj τ₀ y)`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, hy1]`. Break down `IsIdempotentElem.iff_eq_zero_or_one.mp hp with h0 | h1` into its components or cases. Use `⟨τ₀.comp D.sp.cm.sig, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[splitProj_comp, hσy, map_sub, map_one, h0, sub_zero]`. Conclude with `⟨τ₀, h1⟩`. Take `⟨τ, hτ⟩` from `hτ`. Establish `hi : IsIdemOf (D` using `D) (v := w) (splitProj τ) e := ⟨he.1, hsum', hτ⟩`. Use `⟨w, τ, hi, ?_⟩` and prove the remaining obligations.
+
+Establish `he'` using `he`. Rewrite `he'` using `[eq_idem hi]`. Conclude with `eq_of_isIdemAt_of_isIdemAt' he' (GlobalTheory.EmbChart.isIdemAt_idem τ)`.
+-/
 theorem exists_emb {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e PP) :
     ∃ (v : FinPl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v), IsIdemOf (D := D) (v := v) (splitProj τ) e ∧ PP = splitPrime τ := by
   obtain ⟨⟨hee, hce, w, ε, ⟨α, rfl, hαw, hαo⟩, hsum⟩, -⟩ := id he
@@ -154,6 +204,15 @@ theorem exists_emb {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalis
   rw [eq_idem hi] at he'
   exact eq_of_isIdemAt_of_isIdemAt' he' (GlobalTheory.EmbChart.isIdemAt_idem τ)
 
+/- English proof (translation)
+Introduce `D`. Use `⟨fun e PP he => ?_, fun v φ PP hφ => ?_⟩` and prove the remaining obligations. Take `⟨w, τ, hi, rfl⟩` from `exists_emb he`. Conclude with `⟨w, splitProj τ, hi, (isProjAt_iff τ _).2 rfl⟩`. Take `⟨τ, rfl⟩` from `exists_eq_splitProj φ`.
+
+Take `rfl : PP = splitPrime τ` from `(isProjAt_iff τ PP).1 hφ`. Use `⟨(splitPrime_liesOver τ).over.symm, fun PP' h' => (isProjAt_iff τ PP').1 h', fun e he => ?_⟩` and prove the remaining obligations. Take `rfl` from `eq_idem he`. Use `⟨GlobalTheory.EmbChart.isIdemAt_idem τ, fun e' he' => ?_, fun φ' hφ' => ?_⟩` and prove the remaining obligations. Take `⟨w, τ', hi', hP'⟩` from `exists_emb he'`.
+
+Establish `hw : w = v`. Combine the equalities or inequalities in the displayed calculation. Substitute `hw` using the available equality. Rewrite using `[eq_idem hi', splitPrime_injective (isCMExt_host D) hP'.symm]`. Take `⟨τ'', rfl⟩` from `exists_eq_splitProj φ'`.
+
+Establish `h2` using `GlobalTheory.EmbChart.isIdemAt_idem τ''`. Rewrite `h2` using `[← eq_idem hφ']`. Rewrite using `[splitPrime_injective (isCMExt_host D) (eq_of_isIdemAt_of_isIdemAt' h2 (GlobalTheory.EmbChart.isIdemAt_idem τ))]`.
+-/
 theorem idem_dictionary : ∀ (D : D7), (∀ (e : AE D) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e PP → ∃ (v : FinPl D) (φ : SplitProj D v), IsIdemOf φ e ∧ IsProjAt φ PP) ∧ ∀ (v : FinPl D) (φ : SplitProj D v) (PP : Formalism.L2.DIV.Pl D.host.E), IsProjAt φ PP → PP.asIdeal.under (𝓞 D.host.F) = v.asIdeal ∧ (∀ PP', IsProjAt φ PP' → PP' = PP) ∧ ∀ e, IsIdemOf φ e → Formalism.L2.NTheta.IsIdemAt e PP ∧ (∀ e', Formalism.L2.NTheta.IsIdemAt e' PP → e' = e) ∧ ∀ φ' : SplitProj D v, IsIdemOf φ' e → φ' = φ := by
   intro D
   refine ⟨fun e PP he => ?_, fun v φ PP hφ => ?_⟩

@@ -11,6 +11,19 @@ namespace Formalism.MainNotions.N.Pv.LocalLengthBound
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc PowerSeries Formalism.MainNotions.N.Pv.LocalLengthBound.Ser TensorProduct
 
+/- English proof (translation)
+Take `⟨k, Fl, gen, h0, hk, hsub, hg, hl, hs⟩` from `h`. Establish `hall : ∀ i < k, i ∈ gen`. Introduce `i hi`. Assume the negation of the conclusion as `hig`. Establish `hsub' : gen ⊆ (Finset.range k).erase i` using `fun x hx => Finset.mem_erase.2 ⟨fun h => hig (h ▸ hx), hsub hx⟩`.
+
+Use `Finset.card_le_card hsub'` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem (Finset.mem_range.2 hi), Finset.card_range]`. Use linear arithmetic over natural numbers and integers. Establish `step : ∀ i < k, Fl (i + 1) = Fl i`. Introduce `i hi`.
+
+Take `⟨hle, Q, _, _, ob, hker, hgen, -⟩` from `hs i hi`. Take `⟨s, hs0, hspan⟩` from `hgen (hall i hi)`. Establish `hsE : s = ∅` using `Finset.card_eq_zero.1 (by omega)`. Use `le_antisymm hle fun x hx => ?_` and prove the remaining obligations. Establish `h1 : ob ⟨x, hx⟩ = 0`.
+
+Establish `hm : ob ⟨x, hx⟩ ∈ Submodule.span O (↑s : Set Q)` using `by rw [hspan]; trivial`. Rewrite `hm` using `[hsE, Finset.coe_empty, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `hm`. Conclude with `(hker ⟨x, hx⟩).1 h1`. Establish `hall' : ∀ i ≤ k, Fl i = Fl 0`.
+
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Both sides reduce to the same expression. Consider the case `succ j ih => intro hj; rw [step j (by omega), ih (by omega)]`.
+
+Rewrite using `[← hk, ← h0]`. Conclude with `hall' k le_rfl`.
+-/
 theorem passage_chain_zero {O FF : Type} [CommRing O] [AddCommGroup FF] [Module O FF] {lenO : ℕ∞} {c : ℝ}
     {A Bs : Submodule O FF} {ng : ℕ} (h : Formalism.MainNotions.RamifiedCoefficientChains.S9.PChain lenO 0 c A Bs ng 0) : Bs = A := by
   obtain ⟨k, Fl, gen, h0, hk, hsub, hg, hl, hs⟩ := h
@@ -53,6 +66,17 @@ section SlopeTestRemainingChoices
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `key : ∀ z ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T (c - 1) 1, W.Q ^ Bn • z ∈ W.N T`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, ⟨hyN, hyD⟩, rfl⟩` from `hz`.
+
+Rewrite using `[pow_one]`. Conclude with `hM y (mem_Nl W T hyN hyD.1)`. Consider the case `zero => rw [smul_zero]`. Conclude with `(W.N T).zero_mem`. Consider the case `add z₁ z₂ _ _ h₁ h₂ => rw [smul_add]`.
+
+Conclude with `(W.N T).add_mem h₁ h₂`. Consider the case `smul a z _ h => rw [aself_comm W T]`. Conclude with `(W.N T).smul_mem a h`. Take `⟨U, hU⟩` from `qp_eq_unit W hs hR`. Establish `h1` using `key _ hx.1`.
+
+Establish `e : W.Q ^ (η + Bn) • x = ((U⁻¹ : (LetA O n)ˣ) : LetA O n) ^ η • (W.Q ^ Bn • (Formalism.MainNotions.LiftingTheory.qp W ^ η • x))`. Rewrite using `[hU, mul_pow, smul_smul, smul_smul]`. Use `congr 1`. Establish `hUU : ((U⁻¹ : (LetA O n)ˣ) : LetA O n) * (U : LetA O n) = 1` using `Units.inv_mul U`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e]`. Conclude with `(W.N T).smul_mem _ h1`.
+-/
 theorem qK_mem [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     (T : LocLat G Qp LL O) {c : ZMod n} {Bn η : ℕ}
     (hM : ∀ z ∈ W.Nl T (c - 1), W.Q ^ Bn • W.φD T z ∈ W.N T) {x : W.DD T}
@@ -84,6 +108,9 @@ end SlopeTestRemainingChoices
 
 section Main
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T).smul_mem _ (NDl_N W T hx)`. Rewrite using `[osmul_comm W T, (NDl_DL W T hx).1]`. Rewrite using `[map_smul, (NDl_DL W T hx).2 δ hδ]`.
+-/
 theorem ndl_osmul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {i : ZMod n} (o : O) {x : W.DD T}
     (hx : x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i) : o • x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i := by
   refine ⟨?_, ?_, fun δ hδ => ?_⟩
@@ -91,6 +118,9 @@ theorem ndl_osmul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {i : ZMod n} 
   · rw [osmul_comm W T, (NDl_DL W T hx).1]
   · rw [map_smul, (NDl_DL W T hx).2 δ hδ]
 
+/- English proof (translation)
+The claim follows from `frobenius_sq_comparison_letter W T c hy`.
+-/
 theorem frobenius_sq_letter_shift (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) {y : W.DD T}
     (hy : y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) :
     φVB PD (LL := LL) (V := T.V) (φVB PD (LL := LL) (V := T.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T y)) ∈
@@ -98,6 +128,69 @@ theorem frobenius_sq_letter_shift (W : LocWach PD LL O v n) (T : LocLat G Qp LL 
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset`. Establish `hset'` using `hset`. Take `⟨hCA, hl, hn, ⟨hDom, hDVR, hFrac⟩, ⟨ζ₀, hζ₀⟩, hSur, -, -, -, -⟩` from `hset'`. Use `haveI := hDom`. Use `haveI := hDVR`.
+
+Use `haveI := hFrac`. Take `⟨hbij, hs, hp2⟩` from `hCA`. Establish `hK1 : Module.finrank K₀ K = 1` using `Formalism.MainNotions.UnusedSlot80.SatW.finrank_one_of_bij' hbij`. Take `⟨-, -, h9₁⟩` from `h9 T₁ hSur.1 hs hp2`. Take `⟨hR, hmod₁⟩` from `h9₁ hK1`.
+
+Take `⟨-, -, h9₂⟩` from `h9 T₂ hSur.2.1 hs hp2`. Take `⟨-, hmod₂⟩` from `h9₂ hK1`. Establish `h3₁` using `h3 T₁ hSur.1`. Establish `h3₂` using `h3 T₂ hSur.2.1`. Establish `h5₂` using `h5 T₂ (boxM d b S η) (boxH d b S η) hSur.2.1 (rk_jumpsLet₂ W hE hC hQ hset)`.
+
+Establish `hT₁` using `hSur.1`. Establish `hT₂` using `hSur.2.1`. Establish `hl2 : 2 ≤ PD.p` using `by omega`. Establish `hlam` using `Formalism.MainNotions.RamifiedCoefficientChains.one_le_lam PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) hl2`. Establish `haR` using `Formalism.MainNotions.RamifiedCoefficientChains.aR_nonneg PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) hl2`.
+
+Establish `hl1 : (0 : ℝ) < (PD.p : ℝ) - 1`. Establish `: (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl0 : (0 : ℝ) < (PD.p : ℝ)` using `by linarith`. Use `set σ : ℝ := Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) with hσ`.
+
+Use `set EGv : ℝ := Formalism.MainNotions.RamifiedCoefficientChains.S9.EG PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S) η S with hEGv`. Establish `hσ0 : 0 ≤ σ` using `by rw [hσ, Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂]; positivity`. Establish `hEG0 : 0 ≤ EGv`. Rewrite using `[hEGv, Formalism.MainNotions.RamifiedCoefficientChains.S9.EG]`. Establish `: 0 ≤ (3 * (Formalism.MainNotions.RamifiedCoefficientChains.S9.aN PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((PD.p : ℝ) - 1)` using `div_nonneg (by positivity) hl1.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set Bd : ℝ := Formalism.MainNotions.RamifiedCoefficientChains.S9.wachVectorLiftingExponent PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S) η S with hBd`. Establish `hBd0 : 0 ≤ Bd`. Rewrite using `[hBd, Formalism.MainNotions.RamifiedCoefficientChains.S9.wachVectorLiftingExponent]`. Establish `h1 : 0 ≤ ((Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S : ℕ) : ℝ) / ((PD.p : ℝ) * ((PD.p : ℝ) - 1))` using `div_nonneg (by positivity) (by positivity)`.
+
+Establish `h2 : 0 ≤ ((S : ℝ) + 1) / ((PD.p : ℝ) - 1)` using `div_nonneg (by positivity) hl1.le`. Establish `h3' : (0 : ℝ) ≤ S` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set E : ℕ := ⌊Bd⌋₊ with hEdef`. Use `⟨E, Nat.floor_le hBd0, fun c hc FF _ _ _ _ Fs w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hcD : (c.val + d) % 2 = 0` using `(Finset.mem_filter.1 hc).2`. Establish `hc1 : ((c - 1).val + d) % 2 = 1`. Use `Formalism.MainNotions.RamifiedCoefficientChains.S9.parity_succ hn d (c - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hc2 : ((c - 1 - 1).val + d) % 2 = 0`. Use `Formalism.MainNotions.RamifiedCoefficientChains.S9.parity_succ hn d (c - 1 - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers. Establish `hc2m : c - 1 - 1 ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hc2⟩`.
+
+Establish `hMc : boxM d b S η c = b c + S` using `if_pos hcD`. Establish `hMc2 : boxM d b S η (c - 1 - 1) = b (c - 1 - 1) + S` using `if_pos hc2`. Establish `hM₂ : ∀ z ∈ W.Nl T₂ (c - 1), W.Q ^ (b c + S) • W.φD T₂ z ∈ W.N T₂`. Rewrite using `[← hMc]`. Conclude with `h5₂.1 c`.
+
+Establish `hM₂' : ∀ z ∈ W.Nl T₂ (c - 1 - 1 - 1), W.Q ^ (b (c - 1 - 1) + S) • W.φD T₂ z ∈ W.N T₂`. Rewrite using `[← hMc2]`. Conclude with `h5₂.1 (c - 1 - 1)`. Establish `hηb` using `rk_eta_lt W hset c`. Establish `hB1 : 1 ≤ b c + S` using `by omega`.
+
+Establish `hQK : ∀ f, W.Q ^ (η + (b c + S)) • w f ∈ W.N T₂` using `fun f => qK_mem W hs hR T₂ hM₂ (hw f)`. Establish `hγw : ∀ f, W.γ T₂ (w f) - w f ∈ W.N T₂`. Introduce `f`. Take `⟨y, hyN, -, hye⟩` from `(hw f).2.2.2`. Rewrite using `[hye, pow_one]`.
+
+Conclude with `(W.N T₂).smul_mem _ hyN`. Take `⟨u₀, hu₀, hu0⟩` from `lev_q_simple W c ζ₀ hζ₀`. Establish `hζ₀' : IsPrimitiveRoot ζ₀ (PD.p ^ (0 + 1))` using `by rwa [zero_add, pow_one]`. Establish `hLv` using `(hLev T₂ hT₂ c 0 ζ₀ hζ₀').1`. Take `⟨dd, hddLB, hdde, hddF, hdda, hdds⟩` from `fam_exp W T₂ (A := ↥Fs) hs c ζ₀ hLv _ hχ0 hχ (hγN T₂ hT₂ c ζ₀ hζ₀) (hγA c ζ₀ hζ₀) u₀ hu₀ hu0 (η + (b c + S)) w hQK hγw`.
+
+Take `⟨ec, hec, hH⟩` from `hH2 d T₁ T₂ F b S η m hset c hc`. Take `⟨κ, hκ, hLk⟩` from `hL41 d T₁ T₂ F b S η m hset c hc`. Use `set hh : ℕ := b (c - 1 - 1) + S with hhh`. Establish `hbh : (b c : ℝ) ≤ (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S : ℝ)`. Establish `: b c ≤ Finset.univ.sup b` using `Finset.le_sup (Finset.mem_univ c)`.
+
+Rewrite using `[Formalism.MainNotions.RamifiedCoefficientChains.hpar]; push_cast; exact_mod_cast (by omega : b c ≤ Finset.univ.sup b + S)`. Establish `hEge : (ec : ℤ) + κ - hh ≤ (E : ℤ)`. Establish `hreal : ((ec : ℤ) + κ - hh : ℝ) ≤ Bd`. Rewrite using `[hBd, Formalism.MainNotions.RamifiedCoefficientChains.S9.wachVectorLiftingExponent]`. Establish `key : (((b c + S : ℕ) : ℝ) + 1) / ((PD.p : ℝ) - 1) - (b c : ℝ) / (PD.p : ℝ) = (b c : ℝ) / ((PD.p : ℝ) * ((PD.p : ℝ) - 1)) + ((S : ℝ) + 1) / ((PD.p : ℝ) - 1)`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiv : (b c : ℝ) / ((PD.p : ℝ) * ((PD.p : ℝ) - 1)) ≤ ((Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S : ℕ) : ℝ) / ((PD.p : ℝ) * ((PD.p : ℝ) - 1))` using `div_le_div_of_nonneg_right hbh (by positivity)`. Simplify using `only [hhh] at hκ ⊢`.
+
+Move the coercions through the operations in `at hec hκ key ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (ec : ℤ) + κ - hh ≤ ⌊Bd⌋` using `Int.le_floor.2 (by exact_mod_cast hreal)`. Establish `h2 : (⌊Bd⌋₊ : ℤ) = ⌊Bd⌋`. Rewrite using `[← Int.floor_toNat, Int.toNat_of_nonneg (Int.floor_nonneg.2 hBd0)]`.
+
+Rewrite using `[hEdef, h2]`. Conclude with `h1`. Use `set N₀ : ℕ := ((E : ℤ) - ec - (κ - hh)).toNat with hN₀`. Establish `hN₀' : (N₀ : ℤ) = (E : ℤ) - ec - (κ - hh)` using `Int.toNat_of_nonneg (by omega)`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`.
+
+Use `set Fη := Formalism.MainNotions.WachCoordinates.FilLev W T₂ c 0 (-(η : ℤ)) with hFη`. Establish `hex : ∀ f : ↥Fs, ∃ x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1 - 1), (PD.p : LL) ^ E • dd f 0 - (PD.p : LL) ^ (κ - hh) • ιV PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ x))) ∈ Fη := by`. Introduce `f`. Take `⟨x, hx, hxF⟩` from `hH ζ₀ hζ₀ u₀ hu₀ hu0 (w f) (hw f) (η + (b c + S)) (hQK f) (dd f) (hddLB f) (hdde f)`. Use `⟨((PD.p : ℕ) : O) ^ N₀ • x, ndl_osmul W T₂ _ hx, ?_⟩` and prove the remaining obligations.
+
+Establish `hcm : Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (((PD.p : ℕ) : O) ^ N₀ • x) = (PD.p : LL) ^ N₀ • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ x`. Rewrite using `[cmpD_osmul W T₂ _ (NDl_N W T₂ hx), map_pow, map_natCast]`. Rewrite using `[hcm, map_smul, map_smul, map_smul, smul_smul]`. Establish `hsc : (PD.p : LL) ^ (κ - hh) * (PD.p : LL) ^ N₀ = (PD.p : LL) ^ ((E : ℤ) - ec)`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hp, hN₀']`.
+
+Put the polynomial expressions in normal form. Establish `hsc2 : (PD.p : LL) ^ E = (PD.p : LL) ^ ((E : ℤ) - ec) * (PD.p : LL) ^ ec`. Rewrite using `[← zpow_natCast, ← zpow_natCast (PD.p : LL) ec, ← zpow_add₀ hp]`. Put the polynomial expressions in normal form. Rewrite using `[hsc, hsc2, ← smul_smul, ← smul_sub]`.
+
+Conclude with `Fη.smul_mem _ hxF`. Use `haveI := rk_fd_letter₂ W hset (c - 1)`. Establish `hRk` using `rk_corankQ₂ W hE hC hQ hset (c - 1) hc1`. Establish `hDN` using `hD d T₁ T₂ F b S η m hset (c - 1 - 1) hc2m`. Take `⟨F3, hF3, ch3, hell⟩` from `pass3 W T₂ hs hR h3₂ hmod₂ c η hM₂' hDN (FilCris PD T₂.ρ (b (c - 1) : ℤ)) hRk Fs (fun f => dd f 0) (fun f g => by rw [hdda]; rfl) (fun o f => by rw [hdds]; rfl) hex`.
+
+Use `haveI : FiniteDimensional LL ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ c) := by haveI := rk_fd_letter₂ W hset c`. Conclude with `Module.Finite.map _ _`. Use `haveI : FiniteDimensional LL ↥Fη := by`. Establish `hle : Fη ≤ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ c`. Rewrite using `[hFη, Formalism.MainNotions.UnusedSlot80.LevR.filLev_zero]`.
+
+Conclude with `inf_le_left`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hrk` using `rk_evenQ₂ W hE hC hQ hset c hcD`. Establish `hlow : ∀ i : ℤ, ((b c + S : ℕ) : ℤ) ≤ i → Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ c ≤ Formalism.MainNotions.WachCoordinates.FilLev W T₂ c 0 (-i)` using `fun i hi => rk_low₂ W hE hC hQ hset c hcD (-i) (by omega)`. Establish `hTr₂` using `fun ζ hζ => hTr T₂ hT₂ c ζ ζ₀ hζ hζ₀`.
+
+Take `⟨F4, hF4, y, ch4, hres⟩` from `pass4 W hs hR F hT₁ hT₂ hMC c ζ₀ hTr₂ u₀ hu₀ hu0 (m := m) (cc := Formalism.MainNotions.RamifiedCoefficientChains.S9.lenC (Module.finrank LL T₂.V) m PD.p (Formalism.MainNotions.RamifiedCoefficientChains.hpar n b S + η) S) hB1 hlow hrk (FilCris PD T₂.ρ (b (c - 1) : ℤ)) F3 (w.comp ( …`. Use `⟨⟨F4, hF4.trans hF3, y, (ch3.trans ch4).mono (by norm_num) (by norm_num), fun f => hres f⟩, ?_⟩` and prove the remaining obligations. Introduce `hm0`. Substitute `hm0` using the available equality. Establish `hCD` using `rk_corank_zero₂ W hE hC hQ hset rfl (c - 1) hc1`.
+
+Establish `hell0 : ∀ f : ↥Fs, ∃ ell ∈ (fun z => φVB PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) z)) '' Formalism.MainNotions.CrystallineLiftingInputs.Dlat W T₂ (c - 1 - 1 - 1), ell ∈ FilCris PD T₂.ρ (b (c - 1) : ℤ) ∧ (PD.p : LL) ^ (E + S) • dd f 0 - (PD.p : LL) ^ κ • ιV PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) e …`. Introduce `f`. Take `⟨x, hx, hxF⟩` from `hex f`. Establish `hx0` using `hD0 d T₁ T₂ F b S η 0 hset rfl (c - 1 - 1) hc2m x hx`. Take `⟨y0, hy0, hy0e⟩` from `cmp_of_mem_X W T₂ hs hR h3₂ hM₂' hx0`.
+
+Establish `hy0N` using `NDl_N W T₂ hy0`. Use `⟨φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y0)), ⟨Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y0, ⟨y0, hy0N, NDl_DL W T₂ hy0, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T₂ hy0N⟩, rfl⟩, hCD (frobeni …` and prove the remaining obligations. Establish `hcm : Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (((PD.p : ℕ) : O) ^ S • x) = (PD.p : LL) ^ S • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ x`. Rewrite using `[cmpD_osmul W T₂ _ (NDl_N W T₂ hx), map_pow, map_natCast]`. Rewrite `hy0e` using `[hcm]`.
+
+Establish `h1` using `Fη.smul_mem ((PD.p : LL) ^ S) hxF`. Establish `hsc : (PD.p : LL) ^ (κ - hh) * (PD.p : LL) ^ hh = (PD.p : LL) ^ κ`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hp, sub_add_cancel]`. Establish `hXS : (PD.p : LL) ^ S • ιV PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ x))) = (PD.p : LL) ^ hh • ιV PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Form …`. Use `congrArg (fun z => ιV PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) z))) hy0e` as an intermediate fact.
+
+Simplify `this` using `only [map_smul]`. Establish `e : (PD.p : LL) ^ (E + S) • dd f 0 - (PD.p : LL) ^ κ • ιV PD (LL` using `LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y0)))) = (PD.p : LL) ^ S • ((PD.p : LL) ^ E • dd f 0 - (PD.p : LL) ^ (κ - hh) • ιV PD (LL := LL) (V := T₂.V) (φVB PD (LL : …`. Rewrite using `[smul_sub, smul_smul, smul_comm ((PD.p : LL) ^ S) ((PD.p : LL) ^ (κ - hh)), hXS, smul_smul, hsc, ← pow_add, add_comm S E]`. Rewrite using `[e]`. Conclude with `h1`.
+
+Establish `hrk0` using `rk_evenQ₂ W hE hC hQ hset c hcD`. Take `⟨F4', hF4', y', ch4', hres'⟩` from `pass4 W hs hR F hT₁ hT₂ hMC c ζ₀ hTr₂ u₀ hu₀ hu0 (m := 0) (cc := 0) (e₂ := E + S) hB1 hlow hrk0 (FilCris PD T₂.ρ (b (c - 1) : ℤ)) Fs w (fun f => (hw _).2.1) hQK dd hddLB hdde hddF hdda hdds hell0 (fun ell hell1 hell2 => hLk ell hell1 hell2) hζ₀`. Establish `hFeq : F4' = Fs` using `passage_chain_zero ch4'`. Use `⟨y'.comp (Submodule.inclusion (le_of_eq hFeq.symm)), fun f => ?_⟩` and prove the remaining obligations. Conclude with `hres' (Submodule.inclusion (le_of_eq hFeq.symm) f)`.
+-/
 theorem length_bound_of_hypotheses [NeZero n] (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hLev : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)
     (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL) (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL)

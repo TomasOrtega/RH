@@ -7,6 +7,21 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.RootsOfUnity.HostAppro
 
 open NumberField Formalism.HC KStar.Tree
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero M := ⟨hM⟩`. Use `haveI : NeZero (M * l) := ⟨mul_ne_zero hM hl.ne_zero⟩`. Set `e` to `ZMod.chineseRemainder hc`.
+
+Set `w : (ZMod M × ZMod l)ˣ` to `MulEquiv.prodUnits.symm (1, Units.map (PadicInt.toZMod : ℤ_[l] →+* ZMod l).toMonoidHom u)`. Set `v : (ZMod (M * l))ˣ` to `Units.map e.symm.toRingHom.toMonoidHom w`. Establish `he : e (v : ZMod (M * l)) = (w : ZMod M × ZMod l)`. Simplify using `[v]`. Establish `hw : (w : ZMod M × ZMod l) = (1, PadicInt.toZMod (u : ℤ_[l]))` using `rfl`.
+
+Establish `h1 : ZMod.cast (v : ZMod (M * l)) = (1 : ZMod M)`. Use `congrArg Prod.fst he` as an intermediate fact. Rewrite `this` using `[hw]`. Simplify `this` using `[e, ZMod.chineseRemainder]`. Establish `h2 : ZMod.cast (v : ZMod (M * l)) = PadicInt.toZMod (u : ℤ_[l])`.
+
+Use `congrArg Prod.snd he` as an intermediate fact. Rewrite `this` using `[hw]`. Simplify `this` using `[e, ZMod.chineseRemainder]`. Establish `hfac : (M * l).factorization l = 1`. Rewrite using `[Nat.factorization_mul hM hl.ne_zero]`.
+
+Simplify using `only [Finsupp.add_apply, hl.factorization_self]`. Establish `: ¬ l ∣ M` using `fun h => by`. Establish `h'` using `Nat.Coprime.coprime_dvd_left h hc`. Establish `h'' : l = 1` using `by simpa using h'`. Conclude with `hl.one_lt.ne' h''`.
+
+Rewrite using `[Nat.factorization_eq_zero_of_not_dvd this]`. Use `⟨v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_val, h1, Nat.cast_one]`. Rewrite using `[hfac, pow_one]`. Establish `hk : PadicInt.toZMod (((u ^ 2 : ℤ_[l]ˣ) : ℤ_[l]) - ((((v ^ 2 : (ZMod (M * l))ˣ) : ZMod (M * l)).val : ℕ) : ℤ_[l])) = 0`.
+
+Rewrite using `[map_sub, map_natCast, ZMod.natCast_val, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, ZMod.cast_pow (dvd_mul_left l M), h2, sub_self]`. Establish `hmem : _ ∈ RingHom.ker (PadicInt.toZMod : ℤ_[l] →+* ZMod l)` using `hk`. Rewrite `hmem` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `hmem`.
+-/
 private theorem nuQD_unit (N M l : ℕ) [Fact l.Prime] (hN : N = M * l) (hM : M ≠ 0) (hc : M.Coprime l)
     (u : ℤ_[l]ˣ) :
     ∃ v : (ZMod N)ˣ, (v : ZMod N).val ≡ 1 [MOD M] ∧
@@ -48,6 +63,23 @@ private theorem nuQD_unit (N M l : ℕ) [Fact l.Prime] (hN : N = M * l) (hM : M 
     rw [PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton] at hmem
     exact hmem
 
+/- English proof (translation)
+Introduce `φ H l _ Ω _ _ _ n hl hn`. Establish `hl2 : l ≠ 2`. Break down `hl with rfl | rfl` into its components or cases. Conclude with `H.q_ne_two`. Conclude with `H.d_ne_two`.
+
+Take `⟨u, hu⟩` from `exists_sq_unit_not_dvd l n hn hl2`. Establish `hle` using `nuOf_le_of_approx l (cyc l H.E Ω) n 0 (u ^ 2) ?_ hu`. Use linear arithmetic over natural numbers and integers. Introduce `k`. Establish `hN : H.condN = H.QS * H.q * H.d` using `rfl`.
+
+Break down `hl with rfl | rfl` into its components or cases. Take `⟨v, hv1, hv⟩` from `nuQD_unit H.condN (H.QS * H.d) H.q (by rw [hN]; ring) (mul_ne_zero H.QS_ne_zero H.d_prime.ne_zero) H.coprime_QSd_q u`. Establish `ha : H.art (v ^ 2) = 1`. Rewrite using `[map_pow]`. Conclude with `H.art_q v hv1`.
+
+Conclude with `UpperTheory.Mu.hostApprox φ H H.q Ω (v ^ 2) ha (u ^ 2) hv k`. Take `⟨v, hv1, hv⟩` from `nuQD_unit H.condN (H.QS * H.q) H.d hN (mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero) H.coprime_QSq_d u`. Establish `ha : H.art (v ^ 2) = 1` using `by haveI : NeZero (H.QS * H.q) := ⟨mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero⟩ haveI : NeZero H.condN := ⟨H.condN_ne_zero⟩`. Establish `hdvd : H.QS * H.q ∣ H.condN` using `⟨H.d, hN⟩`. Establish `hv2 : ((v ^ 2 : (ZMod H.condN)ˣ) : ZMod H.condN).val ≡ 1 [MOD H.QS * H.q]`.
+
+Establish `h1` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hv1`. Rewrite `h1` using `[ZMod.natCast_val]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_val, Units.val_pow_eq_pow_val, ZMod.cast_pow hdvd, h1]`. Simplify using the standard rewrite rules. Establish `hd2` using `H.art_d (v ^ 2) hv2`.
+
+Rewrite `hd2`, the goal using `[map_pow]`. Break down `H.art_d v hv1 with h | h` into its components or cases. Rewrite using `[h, one_pow]`. Rewrite `hd2`, the goal using `[h]`. Break down `hd2 with h' | h'` into its components or cases.
+
+Conclude with `h'`. Establish `hi : φ.iod = 1`. Rewrite `h'` using `[pow_two]`. Conclude with `mul_eq_left.mp h'`. Rewrite using `[hi, one_pow]`.
+
+Conclude with `UpperTheory.Mu.hostApprox φ H H.d Ω (v ^ 2) ha (u ^ 2) hv k`.
+-/
 theorem UpperTheory.Mu.nuQD :
     ∀ (φ : Frame) (H : HostRaw φ) (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω] (n : ℕ), (l = H.q ∨ l = H.d) → ¬ (l - 1) / 2 ∣ n → nuOf l (cyc l H.E Ω) n = 0 := by
   intro φ H l _ Ω _ _ _ n hl hn

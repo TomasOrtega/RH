@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite TensorProduct GlobalTheory
 
 namespace LateralTheory.E.H2CurveOrder.TwLocGenPfSec
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f.hom x) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp] at h`. Conclude with `h.symm`.
+-/
 theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) {V U : Scheme.{0}}
     (g : V ⟶ U) (x : M.obj Γ(U, ⊤)) :
     Sec.res g (ofRings.sec M U x) = ofRings.sec M V ((M.map g.appTop).hom x) := by
@@ -16,20 +19,32 @@ theorem ofRings_sec_res {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleC
 def TwSecLoc : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (y : Sec (tw q i) U),
   Loc U fun V g => ∃ c : ℕ, Sec.res g y = c • twGen i (ζ.map g.appTop.hom)
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+-/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hPQ : ∀ V g, P V g → Q V g) : Loc U Q := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun _ _ _ => trivial⟩`.
+-/
 theorem loc_true (U : Scheme.{0}) : Loc U fun _ _ => True :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun _ _ _ => trivial⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hS'⟩` from `hP`. Take `⟨T, hT, hT'⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hS' V g hg.1, hT' V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
   obtain ⟨S, hS, hS'⟩ := hP
   obtain ⟨T, hT, hT'⟩ := hQ
   exact ⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨hS' V g hg.1, hT' V g hg.2⟩⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hS'⟩` from `hP`. Use `choose T hT hT' using fun V (g : V ⟶ U) (hg : S.arrows g) => hQ V g (hS' V g hg)`. Use `⟨Sieve.bind S.arrows T, Scheme.etaleTopology.bind_covering hS hT, ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨V, h, g, hg, hh, rfl⟩`. Conclude with `hT' V g hg W h hh`.
+-/
 theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (hP : Loc U P) (hQ : ∀ V (g : V ⟶ U), P V g → Loc V fun W h => Q W (h ≫ g)) : Loc U Q := by
   obtain ⟨S, hS, hS'⟩ := hP
@@ -38,6 +53,9 @@ theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {
   rintro W _ ⟨V, h, g, hg, hh, rfl⟩
   exact hT' V g hg W h hh
 
+/- English proof (translation)
+Establish `h` using `Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ M)) y`. Use `⟨_, h, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hg`. Conclude with `⟨x, hx.symm⟩`.
+-/
 theorem loc_surj {R : Type} [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)) (U : Scheme.{0})
     (y : Sec (ofRings R M) U) :
     Loc U fun V g => ∃ x : M.obj Γ(V, ⊤), Sec.res g y = ofRings.sec M V x := by
@@ -53,6 +71,11 @@ namespace LateralTheory.E.H2CurveOrder.TwLocGenPfSec
 def ZarPow : Prop := ∀ (q : ℕ) [NeZero q] (V : Scheme.{0}) (ζ ξ : Prim q Γ(V, ⊤)),
   Loc V fun W h => ∃ a : (ZMod q)ˣ, (ξ.map h.appTop.hom).1 = (ζ.map h.appTop.hom).1 ^ (a : ZMod q).val
 
+/- English proof (translation)
+Establish `: r = ((r.down.val : ℕ) : ULift.{1} (ZMod q))`. Consider the cases of `r with`. Consider the case `up a`. Express the relevant statement in the definitionally equal form `ULift.up a = ULift.up ((a.val : ℕ) : ZMod q)`. Rewrite using `[ZMod.natCast_zmod_val]`.
+
+Use `conv_lhs => rw [this]`. Conclude with `Nat.cast_smul_eq_nsmul _ _ _`.
+-/
 theorem ulift_smul_eq_nsmul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (r : ULift.{1} (ZMod q)) (m : M) : r • m = r.down.val • m := by
   have : r = ((r.down.val : ℕ) : ULift.{1} (ZMod q)) := by
@@ -63,10 +86,18 @@ theorem ulift_smul_eq_nsmul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [M
   conv_lhs => rw [this]
   exact Nat.cast_smul_eq_nsmul _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twF_map_mk (q : ℕ) (i : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) (x : Prim q A →₀ ULift.{1} (ZMod q)) :
     ((twF q i).map f).hom (Submodule.Quotient.mk x) =
       (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map f.hom) x) : (twF q i).obj B) := rfl
 
+/- English proof (translation)
+Establish `hrel : (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q i).obj A) = Submodule.Quotient.mk (Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)))` using `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩)`. Establish `e1 : Finsupp.single ξ b = b • Finsupp.single ξ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Establish `e2 : Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)) = (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)) • Finsupp.single ζ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[e1, Submodule.Quotient.mk_smul, hrel, e2, Submodule.Quotient.mk_smul, smul_smul]`. Conclude with `ulift_smul_eq_nsmul _ _`.
+-/
 theorem twF_single_pow (q : ℕ) [NeZero q] (i : ℤ) (A : CommRingCat.{0}) (ζ ξ : Prim q A) (a : (ZMod q)ˣ)
     (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) (b : ULift.{1} (ZMod q)) :
     (Submodule.Quotient.mk (Finsupp.single ξ b) : (twF q i).obj A) =
@@ -82,6 +113,13 @@ theorem twF_single_pow (q : ℕ) [NeZero q] (i : ℤ) (A : CommRingCat.{0}) (ζ 
   rw [e1, Submodule.Quotient.mk_smul, hrel, e2, Submodule.Quotient.mk_smul, smul_smul]
   exact ulift_smul_eq_nsmul _ _
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Proceed by induction on `f using Finsupp.induction with`. Consider the case `zero`. Use `loc_mono (loc_true V) fun W h _ => ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul, Submodule.Quotient.mk_zero]`.
+
+Conclude with `map_zero ((twF q i).map h.appTop).hom`. Consider the case `single_add ξ b g _ _ ih`. Use `loc_mono (loc_and (hZ q V ζ ξ) ih) fun W h ⟨⟨a, ha⟩, ⟨c, hc⟩⟩ => ⟨(b.down * ((a ^ i : (ZMod q)ˣ) : ZMod q)).val + c, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_add]`. Use `(map_add ((twF q i).map h.appTop).hom _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, twF_map_mk, Finsupp.mapDomain_single, twF_single_pow q i _ _ _ a ha b, add_smul]`. Both sides reduce to the same expression.
+-/
 theorem twF_loc (hZ : ZarPow) (q : ℕ) [NeZero q] (i : ℤ) (V : Scheme.{0}) (ζ : Prim q Γ(V, ⊤))
     (x : (twF q i).obj Γ(V, ⊤)) :
     Loc V fun W h => ∃ c : ℕ, ((twF q i).map h.appTop).hom x =
@@ -101,6 +139,13 @@ theorem twF_loc (hZ : ZarPow) (q : ℕ) [NeZero q] (i : ℤ) (V : Scheme.{0}) (�
       twF_single_pow q i _ _ _ a ha b, add_smul]
     rfl
 
+/- English proof (translation)
+Introduce `q _ i U ζ y`. Use `loc_bind (loc_surj (twF q i) U y) fun V g ⟨x, hx⟩ => ?_` and prove the remaining obligations. Use `loc_mono (twF_loc hZ q i V (ζ.map g.appTop.hom) x) fun W h ⟨c, hc⟩ => ⟨c, ?_⟩` and prove the remaining obligations. Establish `e : Sec.res (h ≫ g) y = Sec.res h (Sec.res g y)`. Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+
+Establish `hp : (ζ.map g.appTop.hom).map h.appTop.hom = ζ.map (h ≫ g).appTop.hom`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Prim.map]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `(congrArg (fun z => ((tw q i).obj.map h.op).hom z) hx).trans ?_` and prove the remaining obligations. Use `(LateralTheory.E.H2CurveOrder.TwLocGenPfSec.ofRings_sec_res (twF q i) h x).trans ?_` and prove the remaining obligations. Rewrite using `[hc, ← hp]`. Unfold `twGen ofRings.sec`. Conclude with `map_nsmul _ _ _`.
+-/
 theorem TwSecLoc_of (hZ : ZarPow) : LateralTheory.E.H2CurveOrder.TwLocGenPfSec.TwSecLoc := by
   intro q _ i U ζ y
   refine loc_bind (loc_surj (twF q i) U y) fun V g ⟨x, hx⟩ => ?_
@@ -126,6 +171,21 @@ namespace LateralTheory.E.H2CurveOrder.TwLocGenPfSec
 def AlgPow : Prop := ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (ζ ξ : Prim q A),
   ∃ s : Set A, Ideal.span s = ⊤ ∧ ∀ f ∈ s, ∃ (a : (ZMod q)ˣ) (n : ℕ), f ^ n * (ξ.1 - ζ.1 ^ (a : ZMod q).val) = 0
 
+/- English proof (translation)
+Introduce `q _ V ζ ξ`. Take `⟨s, hs, hf⟩` from `hA q Γ(V, ⊤) ζ ξ`. Set `U : s → V.Opens` to `fun f => V.basicOpen f.1`. Establish `hU : TopologicalSpace.IsOpenCover U`. Unfold `TopologicalSpace.IsOpenCover`.
+
+Establish `h` using `iSup_basicOpen_of_span_eq_top ⊤ s hs`. Use `show ⨆ f : s, V.basicOpen f.1 = ⊤`. Rewrite using `[iSup_subtype]`. Conclude with `h`. Set `𝒰` to `V.openCoverOfIsOpenCover U hU`.
+
+Use `⟨Sieve.generate (Presieve.ofArrows 𝒰.X 𝒰.f), Scheme.zariskiTopology_le_etaleTopology _ (Scheme.mem_grothendieckTopology_iff.2 ⟨𝒰, Sieve.le_generate _⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `W g ⟨Y, h, _, ⟨i⟩, rfl⟩`. Take `⟨a, n, hn⟩` from `hf i.1 i.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hle : (U i).ι ''ᵁ ⊤ ≤ V.basicOpen i.1` using `by simp [U]`.
+
+Establish `hu : IsUnit ((U i).ι.appTop.hom i.1)`. Use `(V.toRingedSpace.isUnit_res_basicOpen i.1).map (V.presheaf.map (homOfLE hle).op).hom` as an intermediate fact. Establish `e : V.presheaf.map (homOfLE (x` using `(U i).ι ''ᵁ ⊤) (y := ⊤) le_top).op = V.presheaf.map (homOfLE (V.basicOpen_le i.1)).op ≫ V.presheaf.map (homOfLE hle).op := by`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[Scheme.Opens.ι_appTop, e]`. Conclude with `this`. Establish `key : (U i).ι.appTop.hom ξ.1 = ((U i).ι.appTop.hom ζ.1) ^ (a : ZMod q).val`. Establish `h0 : (U i).ι.appTop.hom (i.1 ^ n * (ξ.1 - ζ.1 ^ (a : ZMod q).val)) = 0` using `by rw [hn, map_zero]`. Rewrite `h0` using `[map_mul, map_pow, map_sub, map_pow]`.
+
+Conclude with `sub_eq_zero.1 ((hu.pow n).mul_right_eq_zero.1 h0)`. Establish `hc : ∀ x, (h ≫ (U i).ι).appTop.hom x = h.appTop.hom ((U i).ι.appTop.hom x)` using `fun x => by`. Both sides reduce to the same expression. Use `show (h ≫ (U i).ι).appTop.hom ξ.1 = ((h ≫ (U i).ι).appTop.hom ζ.1) ^ _`. Rewrite using `[hc, hc, key]`.
+
+Conclude with `map_pow _ _ _`.
+-/
 theorem ZarPow_of (hA : AlgPow) : ZarPow := by
   intro q _ V ζ ξ
   obtain ⟨s, hs, hf⟩ := hA q Γ(V, ⊤) ζ ξ
@@ -160,6 +220,9 @@ theorem ZarPow_of (hA : AlgPow) : ZarPow := by
   rw [hc, hc, key]
   exact map_pow _ _ _
 
+/- English proof (translation)
+The claim follows from `TwSecLoc_of (ZarPow_of hA)`.
+-/
 theorem TwSecLoc_of_alg (hA : AlgPow) : LateralTheory.E.H2CurveOrder.TwLocGenPfSec.TwSecLoc := TwSecLoc_of (ZarPow_of hA)
 
 end LateralTheory.E.H2CurveOrder.TwLocGenPfSec
@@ -170,6 +233,9 @@ open Polynomial GlobalTheory.EtC
 
 namespace LateralTheory.E.H2CurveOrder.TwLocGenPfSec
 
+/- English proof (translation)
+Establish `: NeZero (q : K)` using `⟨hq⟩`. Establish `h : (cyclotomic q K).IsRoot z`. Rewrite using `[IsRoot, ← map_cyclotomic_int, eval_map]`. Simplify `hz` using `[aeval_def]`. Conclude with `(isRoot_cyclotomic_iff).1 h`.
+-/
 theorem root_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (hq : (q : K) ≠ 0) (z : K)
     (hz : aeval z (cyclotomic q ℤ) = 0) : IsPrimitiveRoot z q := by
   have : NeZero (q : K) := ⟨hq⟩
@@ -178,6 +244,9 @@ theorem root_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (hq :
     simpa [aeval_def] using hz
   exact (isRoot_cyclotomic_iff).1 h
 
+/- English proof (translation)
+Take `⟨i, hi, hzi⟩` from `hz.eq_pow_of_pow_eq_one hx.pow_eq_one`. Establish `hc : i.Coprime q` using `(hz.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (hzi ▸ hx)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hzi]`.
+-/
 theorem eq_pow_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (z x : K)
     (hz : IsPrimitiveRoot z q) (hx : IsPrimitiveRoot x q) : ∃ b : (ZMod q)ˣ, x = z ^ (b : ZMod q).val := by
   obtain ⟨i, hi, hzi⟩ := hz.eq_pow_of_pow_eq_one hx.pow_eq_one
@@ -185,6 +254,9 @@ theorem eq_pow_dom {K : Type} [CommRing K] [IsDomain K] (q : ℕ) [NeZero q] (z 
   refine ⟨ZMod.unitOfCoprime i hc, ?_⟩
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hzi]
 
+/- English proof (translation)
+Introduce `e`. Apply `h` to reduce the goal to its premises. Conclude with `Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e))`.
+-/
 theorem pow_ne_dom {K : Type} [CommRing K] (q : ℕ) [NeZero q] (z : K)
     (hz : IsPrimitiveRoot z q) (a b : (ZMod q)ˣ) (h : a ≠ b) :
     z ^ (a : ZMod q).val ≠ z ^ (b : ZMod q).val := by
@@ -192,12 +264,26 @@ theorem pow_ne_dom {K : Type} [CommRing K] (q : ℕ) [NeZero q] (z : K)
   apply h
   exact Units.ext (ZMod.val_injective q (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) e))
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `cyclotomic.dvd_X_pow_sub_one q ℤ`. Use `congrArg (aeval z) hp` as an intermediate fact. Simplify using `[hz] at this`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem pow_q {A : Type} [CommRing A] (q : ℕ) (z : A) (hz : aeval z (cyclotomic q ℤ) = 0) : z ^ q = 1 := by
   obtain ⟨p, hp⟩ := cyclotomic.dvd_X_pow_sub_one q ℤ
   have := congrArg (aeval z) hp
   simp [hz] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Use `set d := x - y`. Use `set u := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)`. Establish `hdu : u * d = 0`. Use `geom_sum₂_mul x y q` as an intermediate fact. Rewrite `this` using `[hx, hy, sub_self]`.
+
+Conclude with `this`. Establish `hyu : IsUnit y` using `isUnit_iff_exists_inv.2 ⟨y ^ (q - 1), by rw [← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero (NeZero.ne q)), hy]⟩`. Use `set c : A := (q : A) * y ^ (q - 1)`. Establish `hc : IsUnit c` using `hq.mul (hyu.pow _)`. Establish `hmem : u - c ∈ Ideal.span {d}`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hxy : Ideal.Quotient.mk (Ideal.span {d}) x = Ideal.Quotient.mk (Ideal.span {d}) y`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span rfl`. Simplify using `only [u, c, map_sub, map_sum, map_mul, map_pow, map_natCast, hxy]`.
+
+Rewrite using `[geom_sum₂_self, sub_self]`. Take `⟨w0, hw0⟩` from `Ideal.mem_span_singleton'.1 hmem`. Take `⟨cu, hcu⟩` from `hc`. Use `⟨-(w0 * ↑cu⁻¹), ?_⟩` and prove the remaining obligations. Establish `hdc : d * c = -(d ^ 2 * w0)`.
+
+Establish `: c = u - w0 * d` using `by rw [hw0]; ring`. Rewrite using `[this]`. Take the linear combination `hdu`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A)) (x y : A)
     (hx : x ^ q = 1) (hy : y ^ q = 1) : ∃ w : A, x - y = (x - y) ^ 2 * w := by
   set d := x - y
@@ -224,6 +310,9 @@ theorem self_sq {A : Type} [CommRing A] (q : ℕ) [NeZero q] (hq : IsUnit (q : A
   calc d = d * c * ↑cu⁻¹ := by rw [← hcu, mul_assoc, Units.mul_inv, mul_one]
     _ = _ := by rw [hdc]; ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => calc d = d ^ (k + 1) * w ^ k := ih _ = d ^ k * d * w ^ k := by ring _ = d ^ k * (d ^ 2 * w) * w ^ k := by rw [← h] _ = _ := by ring`.
+-/
 theorem self_pow {A : Type} [CommRing A] (d w : A) (h : d = d ^ 2 * w) (k : ℕ) : d = d ^ (k + 1) * w ^ k := by
   induction k with
   | zero => simp
@@ -232,6 +321,27 @@ theorem self_pow {A : Type} [CommRing A] (d w : A) (h : d = d ^ 2 * w) (k : ℕ)
       _ = d ^ k * (d ^ 2 * w) * w ^ k := by rw [← h]
       _ = _ := by ring
 
+/- English proof (translation)
+Introduce `q _ A _ ζ ξ`. Take `⟨hqA, hζ⟩` from `ζ.2`. Take `⟨-, hξ⟩` from `ξ.2`. Set `f : (ZMod q)ˣ → A` to `fun a => ∏ b ∈ Finset.univ.erase a, (ξ.1 - ζ.1 ^ (b : ZMod q).val)`. Establish `hdom : ∀ p : Ideal A, p.IsPrime → IsPrimitiveRoot (Ideal.Quotient.mk p ζ.1) q ∧ IsPrimitiveRoot (Ideal.Quotient.mk p ξ.1) q`.
+
+Introduce `p hp`. Establish `hq : ((q : ℕ) : A ⧸ p) ≠ 0`. Use `hqA.map (Ideal.Quotient.mk p)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`.
+
+Establish `hm : ∀ z : A, aeval z (cyclotomic q ℤ) = 0 → aeval (Ideal.Quotient.mk p z) (cyclotomic q ℤ) = 0`. Introduce `z hz`. Use `Polynomial.aeval_algHom_apply (Ideal.Quotient.mkₐ ℤ p) z (cyclotomic q ℤ)` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Simplify using `using this`.
+
+Conclude with `⟨root_dom q hq _ (hm _ hζ), root_dom q hq _ (hm _ hξ)⟩`. Use `⟨Set.range f, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hsm⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨h1, h2⟩` from `hdom m hm.isPrime`.
+
+Take `⟨b0, hb0⟩` from `eq_pow_dom q _ _ h1 h2`. Establish `hin : f b0 ∈ m` using `hsm (Ideal.subset_span ⟨b0, rfl⟩)`. Rewrite `hin` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [f, map_prod, map_sub, map_pow, hb0] at hin`. Rewrite `hin` using `[Finset.prod_eq_zero_iff]`.
+
+Take `⟨b, hb, e⟩` from `hin`. Conclude with `pow_ne_dom q _ h1 b0 b (Finset.ne_of_mem_erase hb).symm (sub_eq_zero.1 e)`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hnil : IsNilpotent (f a * (ξ.1 - ζ.1 ^ (a : ZMod q).val))`.
+
+Rewrite using `[← mem_nilradical, nilradical_eq_sInf, Ideal.mem_sInf]`. Introduce `p hp`. Establish `hp : p.IsPrime` using `hp`. Take `⟨h1, h2⟩` from `hdom p hp`. Take `⟨b0, hb0⟩` from `eq_pow_dom q _ _ h1 h2`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [f, map_mul, map_prod, map_sub, map_pow, hb0]`. Distinguish the cases in `hab : b0 = a`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hab, Finset.mem_univ _⟩) (sub_self _)`. Take `⟨n, hn⟩` from `hnil`. Take `⟨w, hw⟩` from `self_sq q hqA ξ.1 (ζ.1 ^ (a : ZMod q).val) (pow_q q _ hξ) (by rw [← pow_mul, mul_comm, pow_mul, pow_q q _ hζ, one_pow])`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite `*` using `[self_pow _ w hw n, pow_succ, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem AlgPow_of : LateralTheory.E.H2CurveOrder.TwLocGenPfSec.AlgPow := by
   classical
   intro q _ A _ ζ ξ

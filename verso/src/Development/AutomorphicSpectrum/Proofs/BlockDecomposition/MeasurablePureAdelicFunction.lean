@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BasePsi
 
+/- English proof (translation)
+Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Establish `hval : Measurable (Units.val : (AF F)ˣ → AF F)` using `comap_measurable _`. Establish `hfst : Continuous (fun x : AF F => x.1)` using `continuous_fst`. Establish `hev : ∀ v : HeightOneSpectrum (𝓞 F), Continuous (fun x : AF F => x.2 v)` using `fun v => (RestrictedProduct.continuous_eval v).comp continuous_snd`. Establish `hc : Continuous (fun x : AF F => G x.1 * ∏ v ∈ S, g v (x.2 v))` using `(hG.comp hfst).mul (continuous_finsetProd _ fun v hv => (hg v hv).comp (hev v))`.
+
+Establish `hopen : IsOpen {x : AF F | ∀ v, v ∉ S → x.2 v ∈ v.adicCompletionIntegers F}` using `(RestrictedProduct.isOpen_forall_imp_mem (fun v => Valued.isOpen_valuationSubring _) (p := fun v : HeightOneSpectrum (𝓞 F) => v ∉ S)).preimage continuous_snd`. Establish `hh : Measurable (fun x : AF F => if ∀ v, v ∉ S → x.2 v ∈ v.adicCompletionIntegers F then ENNReal.ofReal (G x.1 * ∏ v ∈ S, g v (x.2 v)) else 0)` using `Measurable.ite hopen.measurableSet (ENNReal.measurable_ofReal.comp hc.measurable) measurable_const`. Establish `he : (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) = (fun x : AF F => if ∀ v, v ∉ S → x.2 v ∈ v.adicCompletionIntegers F then ENNReal.ofReal (G x.1 * ∏ v ∈ S, g v (x.2 v)) else 0) ∘ Units.val`. Use function extensionality and compare the values at `fun a => GlobalTheory.CompanionTheory.BasePsi.pure_rv_zero_apply S G g a`. Rewrite using `[he]`.
+
+Conclude with `hh.comp hval`.
+-/
 theorem measurable_pure_rv_zero (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (hG : Continuous G)

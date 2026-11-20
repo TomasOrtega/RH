@@ -43,6 +43,9 @@ open Classical in
 def kerE (ε : Fin n → Bool) (i : ℕ) : KG ε → ℂ :=
   if h : ∃ e, IsKer ε i e then h.choose else 0
 
+/- English proof (translation)
+Unfold `kerE`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isKer_kerE {ε : Fin n → Bool} {i : ℕ} (h : ∃ e, IsKer ε i e) : IsKer ε i (kerE ε i) := by
   unfold kerE
   rw [dif_pos h]
@@ -51,12 +54,23 @@ theorem isKer_kerE {ε : Fin n → Bool} {i : ℕ} (h : ∃ e, IsKer ε i e) : I
 def rder (ε : Fin n → Bool) (l : List (Matrix (Fin n) (Fin n) ℂ)) (φ : KG ε → ℂ) : KG ε → ℂ :=
   l.foldr (fun X ψ => fun k => deriv (fun t : ℝ => ψ (k * expK ε X t)) 0) φ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rder_nil (ε : Fin n → Bool) (φ : KG ε → ℂ) : rder ε [] φ = φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rder_cons (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (l : List (Matrix (Fin n) (Fin n) ℂ))
     (φ : KG ε → ℂ) (k : KG ε) :
     rder ε (X :: l) φ k = deriv (fun t : ℝ => rder ε l φ (k * expK ε X t)) 0 := rfl
 
+/- English proof (translation)
+Proceed by induction on `l generalizing k with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Rewrite using `[rder_cons, rder_cons]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[ih, mul_assoc]`.
+-/
 theorem rder_left (ε : Fin n → Bool) (l : List (Matrix (Fin n) (Fin n) ℂ)) (φ : KG ε → ℂ) (a k : KG ε) :
     rder ε l (fun x => φ (a * x)) k = rder ε l φ (a * k) := by
   induction l generalizing k with
@@ -71,16 +85,28 @@ def avgK (ε : Fin n → Bool) (e : KG ε → ℂ) (f : Matrix (Fin n) (Fin n) �
     KG ε → ℂ :=
   fun k' => ∫ k, e k * f (y * toMK k' * toMK k) ∂(muK ε)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMK_mul (ε : Fin n → Bool) (a b : KG ε) : toMK (a * b) = toMK a * toMK b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMK_one (ε : Fin n → Bool) : toMK (1 : KG ε) = 1 := rfl
 
+/- English proof (translation)
+Unfold `expK`. Rewrite using `[dif_pos h]`. Conclude with `toM_expG ε X t h.1`.
+-/
 theorem toMK_expK {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h : inK ε X) (t : ℝ) :
     toMK (expK ε X t) = NormedSpace.exp ((t : ℂ) • X) := by
   unfold expK
   rw [dif_pos h]
   exact toM_expG ε X t h.1
 
+/- English proof (translation)
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3 : Xᴴ * Jm ε + Jm ε * X = 0` using `h1`. Rewrite `h3` using `[h2, neg_mul]`. Conclude with `neg_add_eq_zero.1 h3`.
+-/
 theorem inK_of_skew {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (h1 : X ∈ GlobalTheory.SmoothGlob.lieSet ε)
     (h2 : Xᴴ = -X) : inK ε X := by
   refine ⟨h1, ?_⟩
@@ -99,19 +125,36 @@ variable {n : ℕ}
 def mono (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) : KG ε → ℂ :=
   fun k => (s.map fun c => coord ε c k).prod
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨s, h, rfl⟩`.
+-/
 theorem mono_mem {ε : Fin n → Bool} {d : ℕ} {s : List (Fin n × Fin n × Bool)} (h : s.length ≤ d) :
     mono ε s ∈ polyV ε d := Submodule.subset_span ⟨s, h, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (fun _ ⟨s, hs, e⟩ => ⟨s, hs.trans h, e⟩)`.
+-/
 theorem polyV_mono (ε : Fin n → Bool) {d d' : ℕ} (h : d ≤ d') : polyV ε d ≤ polyV ε d' := Submodule.span_mono (fun _ ⟨s, hs, e⟩ => ⟨s, hs.trans h, e⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [mono, List.map_append, List.prod_append, Pi.mul_apply]`.
+-/
 theorem mono_append (ε : Fin n → Bool) (s s' : List (Fin n × Fin n × Bool)) :
     mono ε (s ++ s') = mono ε s * mono ε s' := by
   funext k
   simp only [mono, List.map_append, List.prod_append, Pi.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem polyV_eq (ε : Fin n → Bool) (d : ℕ) :
     polyV ε d = Submodule.span ℂ {φ | ∃ s : List (Fin n × Fin n × Bool), s.length ≤ d ∧ φ = mono ε s} := rfl
 
+/- English proof (translation)
+Establish `hK : Continuous (fun k : KG ε => toMK k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `he : Continuous (fun k : KG ε => toMK k c.1 c.2.1)` using `(continuous_apply c.2.1).comp ((continuous_apply c.1).comp hK)`. Break down `c with ⟨i, j, b⟩` into its components or cases. Consider the cases of `b`. Conclude with `he.star`.
+
+Conclude with `he`.
+-/
 theorem continuous_coord (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) : Continuous (coord ε c) := by
   have hK : Continuous (fun k : KG ε => toMK k) :=
     Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
@@ -122,10 +165,18 @@ theorem continuous_coord (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) : Co
   · exact he.star
   · exact he
 
+/- English proof (translation)
+Unfold `mono`. Conclude with `continuous_list_prod s (fun c _ => continuous_coord ε c)`.
+-/
 theorem continuous_mono (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) : Continuous (mono ε s) := by
   unfold mono
   exact continuous_list_prod s (fun c _ => continuous_coord ε c)
 
+/- English proof (translation)
+Set `S : Submodule ℂ (KG ε → ℂ)` to `{ carrier := {f | Continuous f} add_mem' := fun ha hb => ha.add hb zero_mem' := continuous_zero smul_mem' := fun c _ hf => hf.const_smul c }`. Establish `hle : polyV ε d ≤ S`. Rewrite using `[polyV_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨s, _, rfl⟩`. Conclude with `continuous_mono ε s`.
+
+Conclude with `hle h`.
+-/
 theorem continuous_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) : Continuous φ := by
   let S : Submodule ℂ (KG ε → ℂ) :=
     { carrier := {f | Continuous f}
@@ -138,6 +189,9 @@ theorem continuous_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (
     exact continuous_mono ε s
   exact hle h
 
+/- English proof (translation)
+Use `((List.finite_length_le (Fin n × Fin n × Bool) d).image (mono ε)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, rfl⟩`.
+-/
 theorem finite_gen (ε : Fin n → Bool) (d : ℕ) :
     {φ : KG ε → ℂ | ∃ s : List (Fin n × Fin n × Bool), s.length ≤ d ∧ φ = fun k => (s.map fun c => coord ε c k).prod}.Finite := by
   refine ((List.finite_length_le (Fin n × Fin n × Bool) d).image (mono ε)).subset ?_
@@ -147,6 +201,9 @@ theorem finite_gen (ε : Fin n → Bool) (d : ℕ) :
 instance finiteDimensional_polyV (ε : Fin n → Bool) (d : ℕ) : FiniteDimensional ℂ (polyV ε d) :=
   FiniteDimensional.span_of_finite ℂ (finite_gen ε d)
 
+/- English proof (translation)
+Establish `key : polyV ε a * polyV ε b ≤ polyV ε (a + b)`. Rewrite using `[polyV_eq, polyV_eq, polyV_eq, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, ⟨s, hs, rfl⟩, y, ⟨t, ht, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨s ++ t, by rw [List.length_append]; omega, (mono_append ε s t).symm⟩`. Conclude with `key (Submodule.mul_mem_mul hφ hψ)`.
+-/
 theorem mul_mem {ε : Fin n → Bool} {a b : ℕ} {φ ψ : KG ε → ℂ} (hφ : φ ∈ polyV ε a) (hψ : ψ ∈ polyV ε b) :
     φ * ψ ∈ polyV ε (a + b) := by
   have key : polyV ε a * polyV ε b ≤ polyV ε (a + b) := by
@@ -155,6 +212,9 @@ theorem mul_mem {ε : Fin n → Bool} {a b : ℕ} {φ ψ : KG ε → ℂ} (hφ :
     exact Submodule.subset_span ⟨s ++ t, by rw [List.length_append]; omega, (mono_append ε s t).symm⟩
   exact key (Submodule.mul_mem_mul hφ hψ)
 
+/- English proof (translation)
+Establish `e : (fun _ : KG ε => c) = c • mono ε []`. Use function extensionality and compare the values at `k`. Simplify using `[mono]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c (mono_mem (by simp))`.
+-/
 theorem const_mem (ε : Fin n → Bool) (d : ℕ) (c : ℂ) : (fun _ : KG ε => c) ∈ polyV ε d := by
   have e : (fun _ : KG ε => c) = c • mono ε [] := by
     funext k
@@ -162,6 +222,9 @@ theorem const_mem (ε : Fin n → Bool) (d : ℕ) (c : ℂ) : (fun _ : KG ε => 
   rw [e]
   exact Submodule.smul_mem _ c (mono_mem (by simp))
 
+/- English proof (translation)
+Establish `e : coord ε c = mono ε [c]`. Use function extensionality and compare the values at `k`. Simplify using `[mono]`. Rewrite using `[e]`. Conclude with `mono_mem (by simp)`.
+-/
 theorem coord_mem (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) : coord ε c ∈ polyV ε 1 := by
   have e : coord ε c = mono ε [c] := by
     funext k
@@ -169,6 +232,11 @@ theorem coord_mem (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) : coord ε 
   rw [e]
   exact mono_mem (by simp)
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => simpa [mono] using GlobalTheory.KFourier.const_mem ε 0 1`. Consider the case `cons c s ih`. Establish `h` using `GlobalTheory.KFourier.mul_mem (hT c) ih`. Establish `e : (fun k => mono ε (c :: s) (T k)) = (fun k => coord ε c (T k)) * (fun k => mono ε s (T k))`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[mono]`. Rewrite using `[e, List.length_cons, Nat.add_comm]`. Conclude with `h`.
+-/
 private theorem mono_comp_mem_polyV_of_coord_mem {ε : Fin n → Bool} (T : KG ε → KG ε)
     (hT : ∀ c, (fun k => coord ε c (T k)) ∈ polyV ε 1) (s : List (Fin n × Fin n × Bool)) :
     (fun k => mono ε s (T k)) ∈ polyV ε s.length := by
@@ -182,6 +250,9 @@ private theorem mono_comp_mem_polyV_of_coord_mem {ε : Fin n → Bool} (T : KG �
     rw [e, List.length_cons, Nat.add_comm]
     exact h
 
+/- English proof (translation)
+Establish `hle : polyV ε d ≤ (polyV ε d).comap (LinearMap.funLeft ℂ ℂ T)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `polyV_mono ε hs (mono_comp_mem_polyV_of_coord_mem T hT s)`. Conclude with `hle h`.
+-/
 theorem comp_mem {ε : Fin n → Bool} (T : KG ε → KG ε) (hT : ∀ c, (fun k => coord ε c (T k)) ∈ polyV ε 1)
     {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) : (fun k => φ (T k)) ∈ polyV ε d := by
   have hle : polyV ε d ≤ (polyV ε d).comap (LinearMap.funLeft ℂ ℂ T) := by
@@ -190,6 +261,13 @@ theorem comp_mem {ε : Fin n → Bool} (T : KG ε → KG ε) (hT : ∀ c, (fun k
     exact polyV_mono ε hs (mono_comp_mem_polyV_of_coord_mem T hT s)
   exact hle h
 
+/- English proof (translation)
+Break down `c with ⟨i, j, b⟩` into its components or cases. Consider the cases of `b`. Establish `e : (fun k => coord ε (i, j, false) (k * a)) = ∑ l, star (toMK a l j) • coord ε (i, l, false)`. Use function extensionality and compare the values at `k`. Simplify using `only [coord, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, toMK_mul, Matrix.mul_apply, star_sum, star_mul', Bool.false_eq_true, if_false, ↓reduceIte]`.
+
+Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl (fun l _ => ?_); ring)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))`. Establish `e : (fun k => coord ε (i, j, true) (k * a)) = ∑ l, toMK a l j • coord ε (i, l, true)`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [coord, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, toMK_mul, Matrix.mul_apply, if_true, ↓reduceIte]`. Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl (fun l _ => ?_); ring)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))`.
+-/
 theorem coord_mul_right_mem (ε : Fin n → Bool) (a : KG ε) (c : Fin n × Fin n × Bool) :
     (fun k => coord ε c (k * a)) ∈ polyV ε 1 := by
   rcases c with ⟨i, j, b⟩
@@ -209,6 +287,13 @@ theorem coord_mul_right_mem (ε : Fin n → Bool) (a : KG ε) (c : Fin n × Fin 
     rw [e]
     exact Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))
 
+/- English proof (translation)
+Break down `c with ⟨i, j, b⟩` into its components or cases. Consider the cases of `b`. Establish `e : (fun k => coord ε (i, j, false) (a * k)) = ∑ l, star (toMK a i l) • coord ε (l, j, false)`. Use function extensionality and compare the values at `k`. Simplify using `only [coord, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, toMK_mul, Matrix.mul_apply, star_sum, star_mul', Bool.false_eq_true, if_false, ↓reduceIte]`.
+
+Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl (fun l _ => ?_); ring)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))`. Establish `e : (fun k => coord ε (i, j, true) (a * k)) = ∑ l, toMK a i l • coord ε (l, j, true)`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [coord, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, toMK_mul, Matrix.mul_apply, if_true, ↓reduceIte]`. Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl (fun l _ => ?_); ring)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))`.
+-/
 theorem coord_mul_left_mem (ε : Fin n → Bool) (a : KG ε) (c : Fin n × Fin n × Bool) :
     (fun k => coord ε c (a * k)) ∈ polyV ε 1 := by
   rcases c with ⟨i, j, b⟩
@@ -228,19 +313,31 @@ theorem coord_mul_left_mem (ε : Fin n → Bool) (a : KG ε) (c : Fin n × Fin n
     rw [e]
     exact Submodule.sum_mem _ (fun l _ => Submodule.smul_mem _ _ (coord_mem ε _))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.KFourier.comp_mem (fun k => k * a) (fun c => coord_mul_right_mem ε a c) h`.
+-/
 theorem mul_right_mem {ε : Fin n → Bool} (a : KG ε) {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     (fun k => φ (k * a)) ∈ polyV ε d := GlobalTheory.KFourier.comp_mem (fun k => k * a) (fun c => coord_mul_right_mem ε a c) h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.KFourier.comp_mem (fun k => a * k) (fun c => coord_mul_left_mem ε a c) h`.
+-/
 theorem mul_left_mem {ε : Fin n → Bool} (a : KG ε) {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     (fun k => φ (a * k)) ∈ polyV ε d := GlobalTheory.KFourier.comp_mem (fun k => a * k) (fun c => coord_mul_left_mem ε a c) h
 
 def flipC (c : Fin n × Fin n × Bool) : Fin n × Fin n × Bool := (c.1, c.2.1, !c.2.2)
 
+/- English proof (translation)
+Break down `c with ⟨i, j, b⟩` into its components or cases. Apply the tactic sequence `cases b <;> simp [coord, flipC]`.
+-/
 theorem star_coord (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) (k : KG ε) :
     star (coord ε c k) = coord ε (flipC c) k := by
   rcases c with ⟨i, j, b⟩
   cases b <;> simp [coord, flipC]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => simp [mono]`. Consider the case `cons c s ih`. Simplify using `only [mono, List.map_cons, List.prod_cons, star_mul'] at ih ⊢`. Rewrite using `[ih, star_coord]`.
+-/
 theorem star_mono (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) (k : KG ε) :
     star (mono ε s k) = mono ε (s.map flipC) k := by
   induction s with
@@ -249,6 +346,19 @@ theorem star_mono (ε : Fin n → Bool) (s : List (Fin n × Fin n × Bool)) (k :
     simp only [mono, List.map_cons, List.prod_cons, star_mul'] at ih ⊢
     rw [ih, star_coord]
 
+/- English proof (translation)
+Rewrite `h` using `[polyV_eq]`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Use `show (fun k => star (mono ε s k)) ∈ polyV ε d`.
+
+Establish `e : (fun k => star (mono ε s k)) = mono ε (s.map flipC)` using `funext (star_mono ε s)`. Rewrite using `[e]`. Conclude with `mono_mem (by simpa using hs)`. Consider the case `zero`. Establish `e : (fun k => star ((0 : KG ε → ℂ) k)) = 0`.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Establish `e : (fun k => star ((x + y) k)) = (fun k => star (x k)) + (fun k => star (y k))`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `e : (fun k => star ((c • x) k)) = star c • (fun k => star (x k))`. Use function extensionality and compare the values at `k`. Simplify using `[star_mul']`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem star_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     (fun k => star (φ k)) ∈ polyV ε d := by
   rw [polyV_eq] at h
@@ -278,6 +388,9 @@ theorem star_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ �
     rw [e]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `hk : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `((Formalism.REAL.mem_KG ε k.1).1 k.2).1`. Establish `h1 : toMK k * star (toMK k) = 1` using `Matrix.mem_unitaryGroup_iff.1 hk`. Establish `h2 : toMK k⁻¹ * toMK k = 1` using `by rw [← toMK_mul, inv_mul_cancel, toMK_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem toMK_inv (ε : Fin n → Bool) (k : KG ε) : toMK k⁻¹ = star (toMK k) := by
   have hk : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ := ((Formalism.REAL.mem_KG ε k.1).1 k.2).1
   have h1 : toMK k * star (toMK k) = 1 := Matrix.mem_unitaryGroup_iff.1 hk
@@ -285,6 +398,11 @@ theorem toMK_inv (ε : Fin n → Bool) (k : KG ε) : toMK k⁻¹ = star (toMK k)
   calc toMK k⁻¹ = toMK k⁻¹ * (toMK k * star (toMK k)) := by rw [h1, mul_one]
     _ = star (toMK k) := by rw [← mul_assoc, h2, one_mul]
 
+/- English proof (translation)
+Break down `c with ⟨i, j, b⟩` into its components or cases. Establish `e : (fun k : KG ε => coord ε (i, j, b) k⁻¹) = coord ε (j, i, !b)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases b <;> simp only [coord, toMK_inv, Matrix.star_apply, star_star, Bool.not_false, Bool.not_true, Bool.false_eq_true, if_false, if_true, ↓reduceIte]`. Rewrite using `[e]`.
+
+Conclude with `coord_mem ε _`.
+-/
 theorem coord_inv_mem (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) :
     (fun k : KG ε => coord ε c k⁻¹) ∈ polyV ε 1 := by
   rcases c with ⟨i, j, b⟩
@@ -295,9 +413,15 @@ theorem coord_inv_mem (ε : Fin n → Bool) (c : Fin n × Fin n × Bool) :
   rw [e]
   exact coord_mem ε _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.KFourier.comp_mem (fun k => k⁻¹) (fun c => coord_inv_mem ε c) h`.
+-/
 theorem inv_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     (fun k => φ k⁻¹) ∈ polyV ε d := GlobalTheory.KFourier.comp_mem (fun k => k⁻¹) (fun c => coord_inv_mem ε c) h
 
+/- English proof (translation)
+Unfold `GlobalTheory.TypeSum.KFinFun`. Conclude with `⟨polyV ε d, inferInstance, h, fun ψ hψ => continuous_of_mem hψ, fun ψ hψ k₀ => ⟨GlobalTheory.KFourier.mul_left_mem k₀ hψ, GlobalTheory.KFourier.mul_right_mem k₀ hψ⟩⟩`.
+-/
 theorem kFinFun_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     GlobalTheory.TypeSum.KFinFun ε φ := by
   unfold GlobalTheory.TypeSum.KFinFun

@@ -37,6 +37,15 @@ namespace GlobalTheory.Mem.Top.Bl.MultQClose
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 hL N S Γ`. Use `(GlobalTheory.Fc.EvP.and (GlobalTheory.Fc.EvP.of_ev GlobalTheory.Mem.R3.LedRec.ev_exists_sizeData) (GlobalTheory.Fc.EvP.of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)).mono ?_` and prove the remaining obligations. Introduce and unpack `κ K - ⟨hLed, hHost⟩ q`. Take `⟨Z', g1', hη, hA⟩` from `GlobalTheory.Mem.R3.LedRec.exists_bare h14 (B := q.B) (C := q.w.C) q.Z q.f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨L, -, -, hpar, -⟩` from `hLed (q.w.st Z') q.x.isOver hη hA`.
+
+Take `⟨hhost, -⟩` from `hHost (q.w.st Z') q.x.isOver`. Establish `s` using `GlobalTheory.Mem.R3.LedRec.sameGrp q.x.what₂.grp g1'`. Use `(GlobalTheory.T.equalMultiplicities_rowTest_of_sameGroupTransfer q.B q.w.C q.Z Z' q.w.px q.w.I q.x.what₂.hX q.T q.x.Wt s q.x.what₂.r.z).1 ?_` and prove the remaining obligations. Establish `hEx'` using `GlobalTheory.Mem.R3.DatCopy.copy_exAt Z' s q.x.what₂.exAt`. Establish `hok` using `q.x.what₂.r.intersectionNumber_baseChange.ok`.
+
+Establish `hok' : (GlobalTheory.Mem.R3.famR Z'.st q.w.I q.x.what₂.hX (GlobalTheory.Mem.R3.usedOf q.w.I q.T q.x.Wt) (GlobalTheory.Mem.R3.DatCopy.copy Z' s q.x.what₂.r.z).Xg (GlobalTheory.Mem.R3.DatCopy.copy Z' s q.x.what₂.r.z).tr).fam3.Ok3 1` using `hok`. Use `clear hok`. Generalize the expression as in `GlobalTheory.Mem.R3.DatCopy.copy Z' s q.x.what₂.r.z = y at hEx' hok' ⊢`. Establish `hch` using `y.pins.char`. Establish `hT : TypesTrue (q.w.st Z').toD7.ntypes y.R.C.P y.R.C.W`.
+
+Rewrite using `[y.lev.C, q.w.C_eq]`. Conclude with `g1'`. Conclude with `GlobalTheory.T.multiplicity_equality_statement h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 y.R y.F (s := 1) hok' hch hEx' hhost ⟨L, hpar⟩ q.B.ccK_top y.pins.keep.guard (GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue hch.base.lev hT)`.
+-/
 theorem multQ_prmR : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), MultQ (prmR N S Γ) := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 hL N S Γ
   refine (GlobalTheory.Fc.EvP.and (GlobalTheory.Fc.EvP.of_ev GlobalTheory.Mem.R3.LedRec.ev_exists_sizeData)

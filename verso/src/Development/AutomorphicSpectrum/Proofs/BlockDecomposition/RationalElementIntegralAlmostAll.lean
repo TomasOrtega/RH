@@ -9,6 +9,11 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LocalHypotheses
 
+/- English proof (translation)
+Establish `h` using `HeightOneSpectrum.Support.finite (𝓞 E) x`. Rewrite using `[Filter.eventually_cofinite]`. Use `h.subset fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ¬ Valued.v ((x : E) : w.adicCompletion E) ≤ 1` using `hw`. Rewrite `hw'` using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', not_le]`.
+
+Conclude with `hw'`.
+-/
 theorem eventually_val_le_one (E : Type) [Field E] [NumberField E] (x : E) :
     ∀ᶠ w : Pl E in cofinite, Valued.v (algebraMap E (w.adicCompletion E) x) ≤ 1 := by
   have h := HeightOneSpectrum.Support.finite (𝓞 E) x
@@ -18,6 +23,13 @@ theorem eventually_val_le_one (E : Type) [Field E] [NumberField E] (x : E) :
   rw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation', not_le] at hw'
   exact hw'
 
+/- English proof (translation)
+Establish `hall : ∀ M : GL (Fin n) E, ∀ᶠ w : Pl E in cofinite, ∀ i j : Fin n, Valued.v (algebraMap E (w.adicCompletion E) ((M : Matrix (Fin n) (Fin n) E) i j)) ≤ 1`. Introduce `M`. Rewrite using `[Filter.eventually_all]`. Introduce `i`. Rewrite using `[Filter.eventually_all]`.
+
+Introduce `j`. Conclude with `eventually_val_le_one E _`. Use `filter_upwards [hall δ, hall δ⁻¹] with w h1 h2`. Rewrite using `[GlobalTheory.BCT.GlobLev.mem_KGL_iff_val]`. Use `⟨fun i j => h1 i j, fun i j => ?_⟩` and prove the remaining obligations.
+
+Establish `key : (ratW n w δ)⁻¹ = ratW n w δ⁻¹` using `(map_inv (ratW n w) δ).symm`. Rewrite using `[key]`. Conclude with `h2 i j`.
+-/
 theorem ratW_mem_KGL_eventually (E : Type) [Field E] [NumberField E] (n : ℕ) (δ : GL (Fin n) E) :
     ∀ᶠ w : Pl E in cofinite, ratW n w δ ∈ GlobalTheory.LFun.KGL w n := by
   have hall : ∀ M : GL (Fin n) E, ∀ᶠ w : Pl E in cofinite, ∀ i j : Fin n,

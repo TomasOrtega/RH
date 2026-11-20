@@ -13,12 +13,40 @@ open GlobalTheory.KJInf Formalism.L2.Ker
 noncomputable section
 namespace GlobalTheory.LevLaw
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (x : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T x (c • f) = c • heisO ψ S T x f := by
   funext t
   simp only [heisO, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hstd μ om hW e SS hSS vac Φ w hvac hΦ hw k hk k' hk' hkeep p q hp hq`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hSS`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum hSS`. Establish `sdS0` using `GlobalTheory.SplitMove.selfDual_int S hstd.gS`. Establish `sdT0` using `GlobalTheory.SplitMove.selfDual_int T hstd.gT`.
+
+Establish `hth : IsThetaFunO ψ S T vac` using `hvac.2.theta`. Take `⟨⟨T₀, hT₀⟩, hall⟩` from `hw`. Establish `th0` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hstd.std S T _ _ sdS0 sdT0 e hee hinf vac hth T₀ hT₀`. Establish `pm` using `GlobalTheory.SplitMove.isPlaceModel_move₂ hW hkeep hT₀ th0`. Rewrite `pm` using `[hp]`.
+
+Establish `omm : ∀ r s (X : WO S T → ℂ), om r (om s X) = om (r * s) X` using `fun r s X => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hv0 : vac ≠ 0`. Introduce `h0`.
+
+Take `⟨⟨m, hm⟩, hn⟩` from `hvac.2.norm`. Establish `h1` using `hn m hm`. Rewrite `h1` using `[h0]`. Simplify using `[nrm2] at h1`. Establish `hp0 : p ≠ 0`.
+
+Introduce `h0`. Apply `hv0` to reduce the goal to its premises. Establish `e1 : om (k⁻¹, k'⁻¹) (om (k, k') vac) = vac`. Rewrite using `[omm, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+
+Rewrite `e1` using `[hp, h0, zero_smul, map_zero]`. Conclude with `e1.symm`. Use `set L := om (k, k') ∘ₗ T₀ ∘ₗ LinearMap.funLeft ℂ ℂ (actO S T k k') with hL`. Establish `pm2 : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (stdHom S T) 1 vac (p⁻¹ • L)`. Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, pm.trans Ψ hΨ x hx, heisO_smul]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, pm.modul Ψ hΨ y hy, heisO_smul]`. Rewrite using `[LinearMap.smul_apply, pm.vac, smul_smul, inv_mul_cancel₀ hp0, one_smul]`. Establish `w1 : w = T₀ Φ` using `hall T₀ hT₀`. Establish `w2 : w = (p⁻¹ • L) Φ` using `hall _ pm2`.
+
+Establish `hfun : q • (fun t => Φ (actO S T k k' t)) = p • Φ`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hz : IsHalf e (actO S T k k' z)`. Establish `h1` using `hq _ hz`.
+
+Rewrite `h1` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Conclude with `h1.symm`. Establish `h2 : Φ (actO S T k k' z) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hz (hΦ.1 _ hne)`.
+
+Establish `h3 : Φ z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hz (GlobalTheory.SplitHecke.isHalf_actO k k' (hΦ.1 _ hne))`. Rewrite using `[h2, h3, mul_zero, mul_zero]`. Establish `eL : L Φ = om (k, k') (T₀ fun t => Φ (actO S T k k' t))` using `rfl`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, map_smul, smul_smul, inv_mul_cancel₀ hp0, one_smul]`. Use `_ = p⁻¹ • om (k, k') (T₀ (q • fun t => Φ (actO S T k k' t))) := by rw [hfun]`. Use `_ = q • (p⁻¹ • L) Φ := by`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, eL, smul_comm]`.
+
+Use `_ = q • w := by rw [← w2]`.
+-/
 theorem omega_eq_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (μ : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T μ μ om → ∀ e (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ vac Φ w, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (intVec D _) (intVec D _) vac → IsSBHalf e (stdHom S T) Φ → IsThetaAt ψ (symplO S T) (heisO ψ S T) e (stdHom S T) 1 vac Φ w → ∀ k ∈ GfC S, ∀ k' ∈ GfC T, (∀ x, x ∈ stdHom S T ↔ actO S T k k' x ∈ stdHom S T) → ∀ p q : ℂ, om (k, k') vac = p • vac → (∀ z, IsHalf e z → p * Φ (actO S T k⁻¹ k'⁻¹ z) = q * Φ z) → om (k, k') w = q • w := by
   intro D ψ θ S T a b hS hT δ sc hstd μ om hW e SS hSS vac Φ w hvac hΦ hw k hk k' hk' hkeep p q hp hq
   have hee : e * e = e := GlobalTheory.PlaceDatum.idemSum_mul_self hSS

@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[IsLocalizedModule.eq_zero_iff M, ← Ideal.mem_span_singleton, ← Set.image_singleton, ← Ideal.map_span, IsLocalization.algebraMap_mem_map_algebraMap_iff M]`. Establish `key : ∀ m : R, m • (Ideal.Quotient.mk (Ideal.span {s}) c) = 0 ↔ m * c ∈ Ideal.span {s}`. Introduce `m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, m.2, (key m).1 hm⟩`. Introduce and unpack `⟨m, hm, h⟩`. Conclude with `⟨⟨m, hm⟩, (key m).2 h⟩`.
+-/
 theorem localizedModule_mk_quotient_eq_zero_iff_dvd {R : Type} [CommRing R] (M : Submonoid R)
     (s c : R) :
     LocalizedModule.mkLinearMap M (R ⧸ Ideal.span {s}) (Ideal.Quotient.mk _ c) = 0 ↔
@@ -19,6 +24,19 @@ theorem localizedModule_mk_quotient_eq_zero_iff_dvd {R : Type} [CommRing R] (M :
   · rintro ⟨m, hm, h⟩
     exact ⟨⟨m, hm⟩, (key m).2 h⟩
 
+/- English proof (translation)
+Introduce `R _ _ _ s _`. Use `⟨PrimeSpectrum.asIdeal ⁻¹' associatedPrimes R (R ⧸ Ideal.span {s}), (associatedPrimes.finite R _).preimage (fun _ _ _ _ h => PrimeSpectrum.ext h), ?_⟩` and prove the remaining obligations. Introduce `P τ g hτ hd`. Take `⟨a, v, rfl⟩` from `IsLocalization.exists_mk'_eq P.asIdeal.primeCompl τ`. Take `⟨b, u, rfl⟩` from `IsLocalization.exists_mk'_eq P.asIdeal.primeCompl g`.
+
+Establish `hab : algebraMap R (Localization.AtPrime P.asIdeal) s ∣ algebraMap R _ (a * b)`. Rewrite `hd` using `[← IsLocalization.mk'_mul]`. Establish `h` using `hd.mul_right (algebraMap R _ ((u * v : P.asIdeal.primeCompl) : R))`. Rewrite `h` using `[IsLocalization.mk'_spec, mul_comm b a]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hg`.
+
+Establish `hb : ¬ algebraMap R (Localization.AtPrime P.asIdeal) s ∣ algebraMap R _ b`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `h.mul_right _`.
+
+Establish `hx` using `mt (localizedModule_mk_quotient_eq_zero_iff_dvd P.asIdeal.primeCompl s b).1 hb`. Establish `hax` using `(localizedModule_mk_quotient_eq_zero_iff_dvd P.asIdeal.primeCompl s (a * b)).2 hab`. Take `⟨q, hq, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing (Localization P.asIdeal.primeCompl) _ hx`. Establish `hqp : q.IsPrime` using `hq.isPrime`. Establish `haq : algebraMap R (Localization P.asIdeal.primeCompl) a ∈ q`.
+
+Apply `hle` to reduce the goal to its premises. Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, algebraMap_smul, ← map_smul, ← hax, map_mul]`. Both sides reduce to the same expression. Establish `hQ : q.comap (algebraMap R (Localization P.asIdeal.primeCompl)) ∈ associatedPrimes R (R ⧸ Ideal.span {s})` using `Module.associatedPrimes.comap_mem_associatedPrimes_of_mem_associatedPrimes_of_isLocalizedModule_of_fg P.asIdeal.primeCompl (LocalizedModule.mkLinearMap P.asIdeal.primeCompl _) q hq (IsNoetherian.noetherian _)`. Use `hτ ⟨q.comap (algebraMap R (Localization P.asIdeal.primeCompl)), hqp.comap _⟩ hQ ?_ ?_` and prove the remaining obligations.
+
+Introduce `r hr`. Assume the negation of the conclusion as `hrP`. Conclude with `hqp.ne_top (Ideal.eq_top_of_isUnit_mem q hr (IsLocalization.map_units (Localization P.asIdeal.primeCompl) (⟨r, hrP⟩ : P.asIdeal.primeCompl)))`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ haq)`.
+-/
 theorem exists_finite_primes_dvd_of_dvd_mul_localization :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (s : R), s ≠ 0 → ∃ S : Set (PrimeSpectrum R), S.Finite ∧ ∀ (P : PrimeSpectrum R) (τ g : Localization.AtPrime P.asIdeal), (∀ Q ∈ S, Q ≤ P → τ ∉ Q.asIdeal.map (algebraMap R (Localization.AtPrime P.asIdeal))) → algebraMap R _ s ∣ g * τ → algebraMap R _ s ∣ g := by
   intro R _ _ _ s _

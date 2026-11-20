@@ -22,6 +22,17 @@ noncomputable def stab {D : D7} (V : HSp D) (L : AddSubgroup (Fin V.rank → Af 
     rw [ha ((finHom V a⁻¹).1.mulVec y), Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, mul_inv_cancel,
       map_one, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `D V`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Take `⟨-, -, hfg, hsp, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `e : Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V) = GlobalTheory.AdLat.hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`. Rewrite using `[GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hn` using `GlobalTheory.LevelOpen.congr_mem_nhds D.host.F D.host.E V.rank _ hfg hsp 1 one_pos`. Establish `hc` using `GlobalTheory.Member.continuous_finHom_val D V`. Establish `h1` using `hc.continuousAt (x := 1) |>.preimage_mem_nhds (by rw [map_one, Units.val_one]; exact hn)`.
+
+Establish `h2` using `(hc.comp continuous_inv).continuousAt (x := 1) |>.preimage_mem_nhds (by rw [Function.comp_apply, inv_one, map_one, Units.val_one]; exact hn)`. Use `Subgroup.isOpen_of_mem_nhds (stab V (GlobalTheory.AdLat.hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)))) (g := 1) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (Filter.inter_mem h1 h2) ?_` and prove the remaining obligations. Introduce and unpack `k ⟨hk1, hk2⟩ y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Take `⟨w, hw, h⟩` from `hk1 y hy`. Rewrite using `[eq_add_of_sub_eq h]`. Conclude with `add_mem (nsmul_mem hw 1) hy`. Introduce `hy`.
+
+Take `⟨w, hw, h⟩` from `hk2 _ hy`. Rewrite `h` using `[Function.comp_apply, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[eq_add_of_sub_eq h]`. Conclude with `add_mem (nsmul_mem hw 1) hy`.
+-/
 theorem isOpen_stab_latHat : ∀ (D : D7) (V : HSp D), IsOpen {h : GA D V | ∀ y, y ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V) ↔ (finMat D.sp.cm.sig V.gram h).mulVec y ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V)} := by
   intro D V
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram

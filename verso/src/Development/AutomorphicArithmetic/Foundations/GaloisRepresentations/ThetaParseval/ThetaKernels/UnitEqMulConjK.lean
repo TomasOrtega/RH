@@ -24,6 +24,19 @@ open IsDedekindDomain.HeightOneSpectrum Polynomial
 end GlobalTheory.InertUnitNorm
 namespace GlobalTheory.InertUnitNorm
 open IsDedekindDomain.HeightOneSpectrum Polynomial
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB v w hvw _hfield u hu`. Establish `hp : (v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))).IsPrime`. Rewrite using `[show v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) = w.asIdeal from hvw]`. Conclude with `w.isPrime`. Take `⟨a, b, c, hq, hconj, hroot⟩` from `exists_integral_gen σ hB.cm v hp`.
+
+Establish `h2 : (2 : 𝓞 F) ∉ v.asIdeal` using `(hB.inert v w hvw).1`. Take `⟨x, y, hxy⟩` from `exists_int_sol v b c h2 hroot ⟨u, hu.le⟩ hu`. Establish `hK : (x : Fv F v) ^ 2 - algebraMap F (Fv F v) (b : F) * x * y + algebraMap F (Fv F v) (c : F) * y ^ 2 = u`. Use `congrArg (fun t : v.adicCompletionIntegers F => (t : v.adicCompletion F)) hxy` as an intermediate fact. Simplify using `only [AddSubgroupClass.coe_sub, AddMemClass.coe_add, MulMemClass.coe_mul, SubmonoidClass.coe_pow, coe_algebraMap_adicCompletionIntegers] at this`.
+
+Conclude with `this`. Set `ι` to `algebraMap (Fv F v) (Fv F v ⊗[F] E)`. Establish `hιF : ∀ t : F, ι (algebraMap F (Fv F v) t) = (1 : Fv F v) ⊗ₜ[F] algebraMap F E t` using `fun t => by`. Rewrite using `[← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`. Use `set α : Fv F v ⊗[F] E := (1 : Fv F v) ⊗ₜ[F] (a : E) with hα`.
+
+Establish `hq' : α ^ 2 + ι (algebraMap F (Fv F v) (b : F)) * α + ι (algebraMap F (Fv F v) (c : F)) = 0`. Use `congrArg (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E) hq` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_mul, map_pow, map_zero]`. Rewrite using `[hιF, hιF]`. Conclude with `this`.
+
+Establish `hσα : Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ α = -ι (algebraMap F (Fv F v) (b : F)) - α`. Rewrite using `[hα, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hconj, hιF, TensorProduct.tmul_sub, TensorProduct.tmul_neg]`. Use `⟨ι x + ι y * α, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, AlgHom.commutes, AlgHom.commutes, hσα]`. Establish `hKι` using `congrArg ι hK`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_pow] at hKι`. Take the linear combination `(-1 : Fv F v ⊗[F] E) * hKι + ι y ^ 2 * hq'`.
+-/
 theorem unit_eq_mul_conj_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → IsField (Fv F v ⊗[F] E) →
     ∀ u : Fv F v, Valued.v u = 1 →

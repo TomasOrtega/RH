@@ -12,6 +12,31 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.TypeSum.TraceBound
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ`. Take `⟨hk, hp⟩` from `GlobalTheory.T.indefinite_unitary_lie_orthonormal_bases_props n ε`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.casimir_unitaryGroup_acts_by_scalar_smoothVectors n ε H σ hσ`. Use `⟨_, kB ε, hk, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨S0, C0, hS0, hC0, HS⟩` from `SobHS.sobolev_hilbertSchmidt n ε H σ hσ`.
+
+Establish `hT : Words (lieSet ε) (S.flatMap fun l => S0.map (· ++ l))`. Introduce `m hm X hX`. Take `⟨l, hl, hm⟩` from `List.mem_flatMap.1 hm`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hm`. Conclude with `(List.mem_append.1 hX).elim (hS0 l' hl' X) (hS l hl X)`.
+
+Take `⟨s, C, hC⟩` from `GlobalTheory.T.words_on_weighted_casimir_eigenvectors_bounded_frame n ε H σ hσ (fun i => (hk i).1) (fun b => (hp b).1) χ hχ (GlobalTheory.T.elliptic_estimate_word_le_onePlusLaplacian_pow n ε H σ hσ) _ hT`. Use `set C' := max C 0 with hC'`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Use `⟨2 * s, S.length * (S.length * (C0 * C')), fun q e μ he hK hμ heig => ?_⟩` and prove the remaining obligations. Establish `hsm : ∀ j, Sm ε σ (e j)` using `fun j => hσ.2.2.1 _ (hK j)`.
+
+Establish `hμ0 : ∀ j, 0 < μ j` using `fun j => lt_of_lt_of_le one_pos (hμ j)`. Establish `key : ∀ l ∈ S, ∑ j, ‖Dw σ l (e j)‖ ^ 2 / μ j ^ (2 * s) ≤ C0 * C'`. Introduce `l hl`. Establish `hlw : ∀ X ∈ l, X ∈ lieSet ε` using `hS l hl`. Use `set c : Fin q → ℝ := fun j => (μ j ^ s)⁻¹ with hc`.
+
+Establish `hc0 : ∀ j, 0 ≤ c j` using `fun j => inv_nonneg.2 (pow_nonneg (hμ0 j).le _)`. Use `set x : Fin q → H := fun j => ((c j : ℝ) : ℂ) • Dw σ l (e j) with hx`. Establish `hxs : ∀ j, Sm ε σ (x j)` using `fun j => sm_iff.2 ((smooth (Jm ε) σ).smul_mem _ (sm_iff.1 ((hsm j).word hσ.1 hlw)))`. Establish `hframe : ∀ l' ∈ S0, ∀ z : Fin q → ℂ, ‖∑ j, z j • Dw σ l' (x j)‖ ^ 2 ≤ C' * ∑ j, ‖z j‖ ^ 2`. Introduce `l' hl' z`.
+
+Establish `e1 : ∀ j, z j • Dw σ l' (x j) = (((c j : ℝ) : ℂ) * z j) • Dw σ (l' ++ l) (e j)` using `fun j => by`. Rewrite using `[hx, Dw_smul hσ.1 (hS0 l' hl') _ ((hsm j).word hσ.1 hlw), Dw_append, smul_smul, mul_comm]`. Simplify using `only [e1]`. Establish `hm : l' ++ l ∈ S.flatMap fun l => S0.map (· ++ l)` using `List.mem_flatMap.2 ⟨l, hl, List.mem_map.2 ⟨l', hl', rfl⟩⟩`. Use `(hC _ hm q e μ he hK hμ heig z).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (Finset.sum_nonneg fun _ _ => by positivity)`. Establish `hH` using `HS (Fin q) x x C' hC'0 hxs hframe`. Establish `eQ : ∑ j, ⟪x j, x j⟫_ℂ = ((∑ j, ‖x j‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun j _ => inner_self_eq_norm_sq_to_K (x j)`.
+
+Rewrite `hH` using `[eQ, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Establish `hQ0 : 0 ≤ ∑ j, ‖x j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `hQ : ∑ j, ‖x j‖ ^ 2 ≤ C0 * C'`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `hK0 : 0 ≤ C0 * C'` using `mul_nonneg hC0 hC'0`. Use the polynomial consequences of the given equalities and inequalities. Use `le_of_eq_of_le (Finset.sum_congr rfl fun j _ => ?_) hQ` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `only`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hc0 j), mul_pow, hc, inv_pow, ← pow_mul, mul_comm s 2, div_eq_mul_inv, mul_comm]`. Establish `hcs : ∀ j, sobNorm σ S (e j) ^ 2 ≤ S.length * ∑ i : Fin S.length, ‖Dw σ S[i] (e j)‖ ^ 2`. Introduce `j`. Use `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin S.length))) (f := fun i => ‖Dw σ S[i] (e j)‖)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`.
+
+Unfold `sobNorm`. Rewrite using `[← Fin.sum_univ_fun_getElem]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.sum_div, mul_div_assoc]`.
+
+Conclude with `Finset.sum_comm`. Use `_ ≤ S.length * ∑ _i : Fin S.length, C0 * C' := by gcongr with i`. Conclude with `key _ (List.getElem_mem _)`. Use `_ = S.length * (S.length * (C0 * C')) := by simp`.
+-/
 theorem trace_bound : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∃ (d : ℕ) (X : Fin d → Mx n), (∀ i, X i ∈ lieSet ε ∧ (X i)ᴴ = -X i ∧ hs (X i) ≤ 1) ∧ ∀ S : List (List (Mx n)), Words (lieSet ε) S → ∃ (r : ℕ) (A : ℝ), ∀ (q : ℕ) (e : Fin q → H) (μ : Fin q → ℝ), Orthonormal ℂ e → (∀ i, IsKFin ε σ (e i)) → (∀ i, 1 ≤ μ i) → (∀ i, onePlusCas σ X (e i) = (μ i : ℂ) • e i) → ∑ i, sobNorm σ S (e i) ^ 2 / μ i ^ r ≤ A := by
   intro n ε H _ _ _ σ hσ
   obtain ⟨hk, hp⟩ := GlobalTheory.T.indefinite_unitary_lie_orthonormal_bases_props n ε

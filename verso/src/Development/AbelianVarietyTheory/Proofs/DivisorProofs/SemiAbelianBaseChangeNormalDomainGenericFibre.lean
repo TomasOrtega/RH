@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SemiAbGenericFibre
 
+/- English proof (translation)
+Introduce `S G _ hG R _ _ _ _ χ`. Use `set K := FractionRing R`. Use `set T : Over S := Over.mk χ`. Use `set TK : Over S := Over.mk (spMap (algebraMap R K) ≫ χ)`. Use `set h : TK ⟶ T := Over.homMk (spMap (algebraMap R K)) rfl`.
+
+Establish `hpb : IsPullback (h ▷ G).left (CartesianMonoidalCategory.fst TK G).left (CartesianMonoidalCategory.fst T G).left (spMap (algebraMap R K))` using `GlobalTheory.ThetaRuleCompare.isPullback_whisker h`. Establish `hsm : Smooth G.hom` using `hG.smooth`. Establish `h1 : IsPullback (CartesianMonoidalCategory.snd T G).left (CartesianMonoidalCategory.fst T G).left G.hom T.hom` using `(IsPullback.of_hasPullback T.hom G.hom).flip`. Establish `hsf : Smooth (CartesianMonoidalCategory.fst T G).left` using `MorphismProperty.of_isPullback h1 hsm`. Establish `: IsLocallyNoetherian T.left` using `(inferInstance : IsLocallyNoetherian (Sp R))`.
+
+Establish `: IsLocallyNoetherian (T ⊗ G).left` using `LocallyOfFiniteType.isLocallyNoetherian (CartesianMonoidalCategory.fst T G).left`. Establish `: GlobalTheory.IsNormalScheme T.left` using `(inferInstance : GlobalTheory.IsNormalScheme (Sp R))`. Establish `: IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Use `⟨inferInstance, GlobalTheory.isNormalScheme_of_smooth (CartesianMonoidalCategory.fst T G).left, MorphismProperty.of_isPullback hpb.flip ‹_›, fun W => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Exist.CubicalExtension.app_injective_generic hpb W`.
+-/
 theorem baseChange_normal_generic : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSemiAbelian G → ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (χ : Sp R ⟶ S), IsLocallyNoetherian (Over.mk χ ⊗ G).left ∧ GlobalTheory.IsNormalScheme (Over.mk χ ⊗ G).left ∧ IsPreimmersion ((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left ∧ ∀ W : (Over.mk χ ⊗ G).left.Opens, Function.Injective ((((Over.homMk (spMap (algebraMap R (FractionRing R))) rfl : Over.mk (spMap (algebraMap R (FractionRing R)) ≫ χ) ⟶ Over.mk χ) ▷ G).left.app W).hom) := by
   intro S G _ hG R _ _ _ _ χ
   set K := FractionRing R

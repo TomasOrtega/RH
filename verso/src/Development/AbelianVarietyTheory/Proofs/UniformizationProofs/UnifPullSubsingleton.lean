@@ -32,6 +32,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {G' : Over (Spec (CommRingCat.of R'))} [GrpObj G']
 
 omit [IsDomain R] [IsDomain R'] in
+/- English proof (translation)
+The claim follows from `((isGrpPullback_of_iso bc).comp (isGrpPullback_pullback G (specOf φ))).congr (Category.id_comp _) rfl`.
+-/
 theorem isGrpPullback_of_bc (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc.hom) :
     IsGrpPullback G' G (specOf φ) (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) :=
   ((isGrpPullback_of_iso bc).comp (isGrpPullback_pullback G (specOf φ))).congr (Category.id_comp _) rfl
@@ -43,6 +46,9 @@ def toGrpPull (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc
   F_mul := (isGrpPullback_iff (isGrpPullback_of_bc bc hbc).1).1 (isGrpPullback_of_bc bc hbc)
 
 omit [IsDomain R] [IsDomain R'] in
+/- English proof (translation)
+Take `⟨e, me, he⟩` from `grpPullback_iso ((isGrpPullback_iff p.cart).2 p.F_mul) (isGrpPullback_pullback G (specOf φ))`. Take `⟨F, cart, F₁, Fm⟩` from `p`. Simplify using `only at he`. Substitute `he` using the available equality. Conclude with `⟨e, me, rfl⟩`.
+-/
 theorem exists_toGrpPull_eq (p : GrpPull φ G G') :
     ∃ (bc : G' ≅ (Over.pullback (specOf φ)).obj G) (hbc : IsMonHom bc.hom), toGrpPull bc hbc = p := by
   obtain ⟨e, me, he⟩ := grpPullback_iso ((isGrpPullback_iff p.cart).2 p.F_mul)

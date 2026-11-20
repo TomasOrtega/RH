@@ -5,6 +5,11 @@ namespace GlobalTheory.CompanionTheory.HCFin
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x', hx', j, hj, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨x * x', Subalgebra.mul_mem _ hx hx', j, hj, (mul_assoc _ _ _).symm⟩`. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hy`.
+-/
 theorem mul_mem_span_zalg_mul {J : Set (Module.End ℂ (Sm E a))} {x : Module.End ℂ (Sm E a)} (hx : x ∈ Zalg E a)
     {s : Module.End ℂ (Sm E a)} (hs : s ∈ Submodule.span ℂ {y | ∃ x ∈ Zalg E a, ∃ j ∈ J, y = x * j}) :
     x * s ∈ Submodule.span ℂ {y | ∃ x ∈ Zalg E a, ∃ j ∈ J, y = x * j} := by

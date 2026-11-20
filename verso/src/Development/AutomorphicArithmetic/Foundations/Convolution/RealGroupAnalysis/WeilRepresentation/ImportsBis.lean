@@ -8,6 +8,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π h0 Φ hΦ`. Establish `hG : Good D Φ.1`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, e⟩` from `hx`.
+
+Rewrite using `[e]`. Conclude with `G.goodLift F E D W M π h0 f hf φ hφ`. Consider the case `zero => exact (G.goodSpan F E D).1`. Consider the case `add x y _ _ hx hy => exact (G.goodSpan F E D).2.1 _ _ hx hy`. Consider the case `smul c x _ hx => exact (G.goodSpan F E D).2.2 c _ hx`.
+
+Use `⟨G.cuspE F E D _ hG.left hG.zero, fun hW => Subtype.ext (funext fun h => ?_)⟩` and prove the remaining obligations. Establish `hs` using `hG.sum h`. Simplify using `only [hW] at hs`. Conclude with `hs.unique hasSum_zero`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.cusp :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Cusp W M π := by
   intro F E _ _ _ _ _ _ _ D W M π h0 Φ hΦ

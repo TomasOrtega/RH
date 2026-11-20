@@ -5,6 +5,19 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+Introduce `II hII K _ ι _ D σ _ S P Re K' _ ι' _ Ω _ _ y S' Re' κ v hbl hP hpull hdeg`. Establish `hr0 : IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) ≠ 0`. Introduce `h`. Establish `hd` using `Re'.deg_pos`. Rewrite `hd` using `[hdeg, h, zero_mul]`.
+
+Conclude with `lt_irrefl 0 hd`. Establish `hr : ((IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) : ℕ) : ℝ) ≠ 0`. Conclude with `hr0` after adjusting the coercions. Establish `harith : IsArithVar (imageZ v (mCoordIdeal y)) (D + 1)`. Rewrite using `[hP]`.
+
+Conclude with `Re.arith`. Establish `key : ∀ w : Fin (D + 1) → σ, Re'.limNum II w = Re.limNum II w`. Introduce `w`. Establish `ht0 : 0 < S.t₀` using `(S.reg (w 0)).1`. Establish `hle : ∀ᶠ t in 𝓝[>] (0 : ℝ), t ≤ S.t₀` using `by filter_upwards [Ioo_mem_nhdsGT ht0] with t ht using ht.2.le`.
+
+Establish `hpos : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t` using `self_mem_nhdsWithin`. Establish `heq : (fun t => Re'.num II t w) =ᶠ[𝓝[>] (0 : ℝ)] (fun t => Re.num II t w)` using `by filter_upwards [hpull, hle, hpos] with t hpt hle' hpos'`. Establish `hPF` using `hII.2.2.1 K ι K' ι' κ v Ω y (D + 1) (fun j => Re.line (w j) t) (fun j => Re'.line (w j) t) hbl Re'.arith harith (fun j => Re.line_smooth (w j) t hpos' hle') (fun j => hpt (w j))`. Rewrite `hPF` using `[hP]`. Use `show (II K' ι' (mCoordIdeal y) (D + 1) fun j => Re'.line (w j) t) / (Re'.deg : ℝ) = (II K ι P (D + 1) fun j => Re.line (w j) t) / (Re.deg : ℝ)`.
+
+Rewrite using `[hPF, hdeg]`. Use `push_cast`. Conclude with `mul_div_mul_left _ _ hr`. Unfold `Realis.limNum Filter.limUnder`. Rewrite using `[Filter.map_congr heq]`.
+
+Unfold `Realis.PB`. Rewrite using `[show Re'.limNum II = Re.limNum II from funext key]`.
+-/
 theorem pb_indep_cover : ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (P : Ideal (MRing ι)) (Re : Realis S P) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Ω : Type) [Field Ω] [CharZero Ω] (y : (Σ k', ι' k') → Ω) (S' : AnSys D σ) (Re' : Realis S' (mCoordIdeal y)) (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')), IsBlockMap κ v → imageZ v (mCoordIdeal y) = P → (∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ a, IsPullHerm κ v (Re.line a t) (Re'.line a t)) → Re'.deg = IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) * Re.deg → Re'.PB II = Re.PB II := by
   intro II hII K _ ι _ D σ _ S P Re K' _ ι' _ Ω _ _ y S' Re' κ v hbl hP hpull hdeg
   have hr0 : IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) ≠ 0 := by

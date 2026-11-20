@@ -6,6 +6,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 noncomputable section
 namespace GlobalTheory.NotCartier
 
+/- English proof (translation)
+Use `haveI := IsLocallyNoetherian.component_noetherian V`. Establish `hV : IsAffineOpen V.1` using `V.2`. Set `p` to `hV.primeIdealOf ⟨x, hxV⟩`. Set `_ : Algebra Γ(X, V.1) (X.presheaf.stalk x)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hxV⟩`. Establish `hloc` using `hV.isLocalization_stalk ⟨x, hxV⟩`.
+
+Establish `hp : hV.fromSpec p = x` using `hV.fromSpec_primeIdealOf ⟨x, hxV⟩`. Establish `hsupp : ∀ q : Spec Γ(X, V.1), hV.fromSpec q ∈ J.support ↔ J.ideal V ≤ q.asIdeal`. Introduce `q`. Establish `hqV : hV.fromSpec q ∈ V.1` using `(Set.ext_iff.1 hV.range_fromSpec _).1 ⟨q, rfl⟩`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem hqV]`.
+
+Express the relevant statement in the definitionally equal form `q ∈ hV.fromSpec ⁻¹' X.zeroLocus (J.ideal V : Set Γ(X, V.1)) ↔ _`. Rewrite using `[hV.fromSpec_preimage_zeroLocus]`. Conclude with `Iff.rfl`. Establish `hmem : p.asIdeal ∈ (J.ideal V).minimalPrimes`. Use `⟨⟨p.isPrime, (hsupp p).1 (hp ▸ hx)⟩, fun q hq hqp => ?_⟩` and prove the remaining obligations.
+
+Set `y : PrimeSpectrum Γ(X, V.1)` to `⟨q, hq.1⟩`. Establish `hsp : hV.fromSpec y ⤳ x`. Use `((PrimeSpectrum.le_iff_specializes y p).1 hqp).map hV.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hp]`. Then use the resulting hypothesis. Establish `hyx : hV.fromSpec y = hV.fromSpec p` using `(hmin _ ((hsupp y).2 hq.2) hsp).trans hp.symm`.
+
+Use `congrArg PrimeSpectrum.asIdeal (hV.fromSpec.isOpenEmbedding.injective hyx)` as an intermediate fact. Conclude with `le_of_eq this.symm`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p.asIdeal (X.presheaf.stalk x)]`. Conclude with `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmem` after adjusting the coercions.
+-/
 theorem ringKrullDim_stalk_le_one {X : Scheme.{0}} [IsLocallyNoetherian X] (J : X.IdealSheafData) (x : X)
     (hx : x ∈ J.support) (hmin : ∀ z ∈ J.support, z ⤳ x → z = x) (V : X.affineOpens) (hxV : x ∈ V.1)
     (hP : (J.ideal V).IsPrincipal) : ringKrullDim (X.presheaf.stalk x) ≤ 1 := by
@@ -38,6 +49,21 @@ end GlobalTheory.NotCartier
 
 namespace GlobalTheory.NotCartier
 
+/- English proof (translation)
+Introduce `W Y _ _ i _ hdim`. Use `set y := i (genericPoint W) with hy`. Establish `hsub : (i.ker.support : Set Y) ⊆ closure {y}`. Rewrite using `[Scheme.Hom.support_ker]`. Use `closure_minimal ?_ isClosed_closure` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : w ∈ closure {genericPoint W}`. Rewrite using `[(genericPoint_spec W).def]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `specializes_iff_mem_closure.1 ((specializes_iff_mem_closure.2 hw).map i.continuous)`.
+
+Establish `hyS : y ∈ i.ker.support`. Rewrite using `[← SetLike.mem_coe, Scheme.Hom.support_ker]`. Conclude with `subset_closure ⟨_, rfl⟩`. Establish `hmin : ∀ z ∈ i.ker.support, z ⤳ y → z = y` using `fun z hz hzy => (hzy.antisymm (specializes_iff_mem_closure.2 (hsub hz))).eq`. Establish `hlt : ¬ ringKrullDim (Y.presheaf.stalk y) ≤ 1` using `fun h => by`.
+
+Use `hdim.trans h` as an intermediate fact. Conclude with `absurd this (by decide)`. Use `⟨fun hbot => ?_, fun U hyU hC => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hyV, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `hlt (ringKrullDim_stalk_le_one i.ker y hyS hmin ⟨V, hV⟩ hyV ?_)` and prove the remaining obligations.
+
+Rewrite using `[hbot, Scheme.IdealSheafData.ideal_bot]`. Conclude with `bot_isPrincipal`. Set `x : U.toScheme` to `⟨y, hyU⟩`. Take `⟨V, f, hxV, -, hf⟩` from `hC x`. Establish `hxS : x ∈ (i.ker.comap U.ι).support`.
+
+Rewrite using `[Scheme.IdealSheafData.support_comap]`. Conclude with `hyS`. Establish `hminU : ∀ z ∈ (i.ker.comap U.ι).support, z ⤳ x → z = x`. Introduce `z hz hzx`. Rewrite `hz` using `[Scheme.IdealSheafData.support_comap]`.
+
+Conclude with `Subtype.ext (hmin _ hz (hzx.map U.ι.continuous))`. Establish `h1` using `ringKrullDim_stalk_le_one _ x hxS hminU V hxV ⟨⟨f, hf⟩⟩`. Rewrite `h1` using `[← ringKrullDim_eq_of_ringEquiv (asIso (U.ι.stalkMap x)).commRingCatIsoToRingEquiv]`. Conclude with `hlt h1`.
+-/
 theorem ker_ne_bot_and_not_effCartier : ∀ {W Y : Scheme.{0}} [IsIntegral W] [IsLocallyNoetherian Y] (i : W ⟶ Y)
     [IsClosedImmersion i], 2 ≤ ringKrullDim (Y.presheaf.stalk (i (genericPoint W))) →
     i.ker ≠ ⊥ ∧ ∀ U : Y.Opens, i (genericPoint W) ∈ U → ¬ FinalTheorems.EffCartier (i.ker.comap U.ι) := by

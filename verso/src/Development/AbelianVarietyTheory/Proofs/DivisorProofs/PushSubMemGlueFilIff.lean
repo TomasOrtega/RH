@@ -16,6 +16,9 @@ section Coords
 
 variable {k : Type} [Field k] {A₀ : Over (Sp k)} [GrpObj A₀]
 
+/- English proof (translation)
+Rewrite using `[map_sub, fstC_push, fstC_smul]`.
+-/
 theorem fstC_push_sub {V : Type} [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V] [IsCentralScalar k V]
     (g : A₀ ⟶ A₀) [IsMonHom g] (r : k)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀) :
@@ -23,6 +26,9 @@ theorem fstC_push_sub {V : Type} [AddCommGroup V] [Module k V] [Module kᵐᵒ�
       algebraMap k (TrivSqZeroExt k V) r • e) = push (dp0 k) (𝟙 _) g (fstC A₀ e) - r • fstC A₀ e := by
   rw [map_sub, fstC_push, fstC_smul]
 
+/- English proof (translation)
+Rewrite using `[map_sub, sndC_push, sndC_smul]`.
+-/
 theorem sndC_push_sub {V : Type} [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V] [IsCentralScalar k V]
     (g : A₀ ⟶ A₀) [IsMonHom g] (r : k)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀) :
@@ -30,6 +36,9 @@ theorem sndC_push_sub {V : Type} [AddCommGroup V] [Module k V] [Module kᵐᵒ�
       algebraMap k (TrivSqZeroExt k V) r • e) = sndC A₀ e ∘ₗ primPull (dp0 k) (𝟙 _) g - r • sndC A₀ e := by
   rw [map_sub, sndC_push, sndC_smul]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem proj_comp_sub {d : ℕ} {M : Type*} [AddCommGroup M] [Module k M] (a : M →ₗ[k] (Fin d → k))
     (P : M →ₗ[k] M) (r : k) (j : Fin d) :
     LinearMap.proj j ∘ₗ (a ∘ₗ P - r • a) = (LinearMap.proj j ∘ₗ a) ∘ₗ P - r • (LinearMap.proj j ∘ₗ a) := by
@@ -37,6 +46,9 @@ theorem proj_comp_sub {d : ℕ} {M : Type*} [AddCommGroup M] [Module k M] (a : M
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Rewrite using `[mem_glueFil_iff, fstC_push_sub]`. Use `and_congr Iff.rfl (forall_congr' fun j ↦ ?_)` and prove the remaining obligations. Establish `h0` using `sndC_push_sub (V := Fin d → k) g r e`. Rewrite using `[h0, proj_comp_sub]`. Both sides reduce to the same expression.
+-/
 theorem push_sub_mem_glueFil_iff {d : ℕ} (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀)) (g : A₀ ⟶ A₀) [IsMonHom g] (r : k)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀) :
     push (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) g e -
@@ -52,6 +64,11 @@ theorem push_sub_mem_glueFil_iff {d : ℕ} (f : Fin d → (HdR A₀ →ₗ[k] Hd
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Rewrite using `[mem_glueFil_iff, map_sub, map_sum]`. Use `and_congr Iff.rfl (forall_congr' fun j ↦ ?_)` and prove the remaining obligations. Establish `hs : ∀ h : Fin a → (primDR A₀ →ₗ[k] (Fin d → k)), LinearMap.proj j ∘ₗ ∑ x, h x = ∑ x, LinearMap.proj j ∘ₗ h x` using `fun h ↦ by`. Use extensionality with `c`. Simplify using `[LinearMap.sum_apply]`.
+
+Rewrite using `[map_sub, map_sum, LinearMap.comp_sub, hs]`.
+-/
 theorem sub_sum_mem_glueFil_iff {d a : ℕ} (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀))
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
     (w : Fin a → Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k)))
@@ -73,6 +90,9 @@ variable (f : HdR A₀ →ₗ[k] HdR A₀)
 include hE
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Rewrite using `[hE, fstC_push_sub, sndC_push_sub]`. Both sides reduce to the same expression.
+-/
 theorem push_sub_mem_iff (g : A₀ ⟶ A₀) [IsMonHom g] (r : k)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀) :
     push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) g e -
@@ -84,6 +104,9 @@ theorem push_sub_mem_iff (g : A₀ ⟶ A₀) [IsMonHom g] (r : k)
   rfl
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Rewrite using `[hE, fstC_push, sndC_push]`. Both sides reduce to the same expression.
+-/
 theorem push_mem_iff (g : A₀ ⟶ A₀) [IsMonHom g]
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀) :
     push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) g e ∈ E ↔
@@ -93,6 +116,9 @@ theorem push_mem_iff (g : A₀ ⟶ A₀) [IsMonHom g]
   rfl
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Rewrite using `[hE, map_sub, map_sub, map_sum, map_sum]`.
+-/
 theorem sub_sum_mem_iff {a : ℕ}
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀)
     (w : Fin a → Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀) :

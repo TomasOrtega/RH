@@ -5,6 +5,11 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 
 namespace GlobalTheory.FlatPointNe
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x _ Z τ s K _ _ _ y hy h0`. Establish `ht : Tested y` using `GlobalTheory.FlagTan.fromTest_of_isLocalRing y`. Establish `h1 : evR Xo c s.sig y * evR Xo c s.inv y = 1`. Rewrite using `[← CompSplitPfB.cspB_evR_mul, s.mul_inv, evR_idem hy ht]`. Rewrite `h1` using `[h0, zero_mul]`.
+
+Conclude with `zero_ne_one h1`.
+-/
 theorem evR_sig_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → evR Xo c s.sig y ≠ 0 := by
   intro E _ _ _ H Dw l Xo c r U x _ Z τ s K _ _ _ y hy h0
   have ht : Tested y := GlobalTheory.FlagTan.fromTest_of_isLocalRing y

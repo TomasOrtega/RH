@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.PairCov
 
+/- English proof (translation)
+Introduce `D O R c Bs _ q Bg jB πB G Y X Gs _ _ _ π ρ j πG φ jG hc σ M M' hM hM' u t t' ht ht' hu F F' hF r hr`. Take `⟨-, -, -, -, -, -, -, h₁, h₂, h₃⟩` from `hc`. Conclude with `GlobalTheory.PairCov.exists_isFrameSecX D O c Bs Bg jB πB Y X Gs π ρ j πG φ jG h₁ h₂ h₃ σ M' hM' t' ht' F' (GlobalTheory.FlagMove.flagMat_move D O c Bs Bg jB πB Y X Gs π ρ j πG φ jG h₁ h₂ h₃ σ M hM t ht F M' hM' t' ht' F' u hu hF (GlobalTheory.FlagCls.flagMat_of_isFrameSecX D O c …`.
+-/
 theorem exists_isFrameSecX_of_compat : ∀ (D : D7) (O : Setup D) (R : ℝ) (c : O.s.Comp) (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z) (G : ∀ σ', EigMet O.s.T.Z σ')
     (Y X Gs : Scheme.{0}) [IsIntegral Y] [IsIntegral X] [IsIntegral Gs] (π : Y ⟶ Bs) (ρ : X ⟶ Y) (j : Gs ⟶ X)

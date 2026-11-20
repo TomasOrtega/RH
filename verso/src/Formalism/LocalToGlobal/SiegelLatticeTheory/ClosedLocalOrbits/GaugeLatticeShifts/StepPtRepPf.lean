@@ -22,6 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.SG.PoincareInHH.Cut.hform_crd (X := X) x y]`. Use `first`. Consider the case `rw [RingEquiv.symm_apply_apply]`. Consider the case `simp only [RingEquiv.symm_apply_apply]`. Consider the case `simp`.
+
+Conclude with `PI.ScPiFrameW.hJ_rv X.B.I v (X.crd x) (X.crd y)`.
+-/
 theorem hJ_crd (v : InfinitePlace X.B.I.F) (x y : (VS D).V) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.crd x)) (rv X.B.I v (X.crd y)) = X.B.I.φ v (X.ιE.symm ((VS D).hT x y)) := by
   rw [← Formalism.L2.SG.PoincareInHH.Cut.hform_crd (X := X) x y]
@@ -64,11 +69,17 @@ def frU (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Fr (X.B.I.ε v) D.R.r
   fw := fun a i => ((X.wfr_perp u v i).1 a).2
   zw := fun i => (X.wfr_perp u v i).2
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Formalism.L2.SG.RealObj.ZhatO, ← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions.
+-/
 theorem zhatO_zhatO {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : ZhatO (ZhatO Z) = Z := by
   ext a b
   simp only [Formalism.L2.SG.RealObj.ZhatO, ← mul_assoc, ← mul_pow]
   norm_num
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.L2.SG.RealObj.famSc, Complex.ofReal_one, one_pow, inv_one, one_smul]`.
+-/
 theorem famSc_one {n r : ℕ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : famSc 1 e z = fam e z := by
   funext a
   simp only [Formalism.L2.SG.RealObj.famSc, Complex.ofReal_one, one_pow, inv_one, one_smul]
@@ -77,6 +88,25 @@ end PtRepPf
 
 open PtRepPf in
 
+/- English proof (translation)
+Introduce `D X u u' sc hsc i0 w hw`. Establish `hloc` using `fun v => locMain (frU X u v) (frU X u' v) rfl (i0 v) (ZhatO (ptC X v w)) (hw v) sc hsc`. Use `choose g hgZ φ hφ hD using hloc`. Establish `hω : ∀ v, hJ (X.B.I.ε v) (X.wfr u' v (i0 v)) (X.wfr u' v (i0 v)) = 1` using `fun v => by`. Rewrite using `[X.wfr_on, if_pos rfl]`.
+
+Use `⟨g, fun v => ?_, 1, fun v => rotU (X.B.I.ε v) (X.wfr u' v (i0 v)) (hω v) (φ v) (hφ v), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ZhatO (Zhat (X.B.I.ε v) (frm X u 1 v) (frm X u' 1 v) (uMat (g v))) = ptC X v w`. Simplify using `only [frm, famSc_one]`. Rewrite using `[show Zhat (X.B.I.ε v) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (uMat (g v)) = ZhatO (ptC X v w) from hgZ v, zhatO_zhatO]`. Introduce `v x _ show uMat (1 : Formalism.REAL.UJ (X.B.I.ε v)) *ᵥ rv X.B.I v x = rv X.B.I v x`.
+
+Simplify using `[uMat]`. Introduce `v x hx`. Rewrite using `[rotU_mulVec]`. Establish `h0 : hJ (X.B.I.ε v) (X.wfr u' v (i0 v)) (rv X.B.I v x) = 0`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases.
+
+Conclude with `(frU X u' v).we (i0 v) a`. Conclude with `(frU X u' v).wf (i0 v) a`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `(frU X u' v).wz (i0 v)`.
+
+Rewrite using `[h0, mul_zero, zero_smul, add_zero]`. Introduce `v`. Establish `hm1 : Formalism.L2.SG.HidaSetting.matW X.B.I (X.wfr u v) v 1 = 1`. Use extensionality with `a b`. Use `show hJ (X.B.I.ε v) (X.wfr u v a) (uMat (1 : Formalism.REAL.UJ (X.B.I.ε v)) *ᵥ X.wfr u v b) = _`.
+
+Simplify using `[uMat, X.wfr_on, one_apply]`. Establish `hm2 : Formalism.L2.SG.HidaSetting.matW X.B.I (X.wfr u' v) v (fun v => rotU (X.B.I.ε v) (X.wfr u' v (i0 v)) (hω v) (φ v) (hφ v)) = Matrix.diagonal fun i => if i = i0 v then φ v else 1`. Use extensionality with `a b`. Use `show hJ (X.B.I.ε v) (X.wfr u' v a) (uMat (rotU (X.B.I.ε v) (X.wfr u' v (i0 v)) (hω v) (φ v) (hφ v)) *ᵥ X.wfr u' v b) = _`. Rewrite using `[rotU_mulVec, hJ_add_right, hJ_smul_right, X.wfr_on, X.wfr_on, X.wfr_on, diagonal_apply]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `ha : a = i0 v`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[ha, Ne.symm ha]`. Distinguish the cases in `hb : b = i0 v`. Substitute `hb` using the available equality. Simplify using `[hab]`. Simplify using `[hab, hb, Ne.symm hb]`.
+
+Rewrite using `[hm1, hm2]`. Conclude with `hD v`.
+-/
 theorem real_point_representative_diagonal : StepPtRepDiag := by
   intro D X u u' sc hsc i0 w hw
   have hloc := fun v => locMain (frU X u v) (frU X u' v) rfl (i0 v) (ZhatO (ptC X v w)) (hw v) sc hsc
@@ -123,6 +153,9 @@ theorem real_point_representative_diagonal : StepPtRepDiag := by
     rw [hm1, hm2]
     exact hD v
 
+/- English proof (translation)
+The claim follows from `real_point_representative_diagonal`.
+-/
 theorem real_point_representative_exists : StepPtRep := real_point_representative_diagonal
 
 end Formalism.L2.SG.RealObj.InfCut

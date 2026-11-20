@@ -22,6 +22,19 @@ open GlobalTheory.Orb (archMat)
 
 namespace GlobalTheory.LeviHC.LineLie
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ w τ f hf ι _ Y δ c γ hδ hγ`. Establish `hsm : ∀ (Z : Matrix (Fin n) (Fin n) ℂ) (β : ℝ → GAd σ J) (a : ℝ), IsLineOf σ J τ Z β → lineDer (fun t => β (t * a)) f = (a : ℂ) • lineDer β f`. Introduce `Z β a hβ`. Use function extensionality and compare the values at `g`. Establish `hd` using `((differentiable_of_isSm hf (hβ.isRealLine h) g) (0 * a)).hasDerivAt.scomp (0 : ℝ) ((hasDerivAt_id (0 : ℝ)).mul_const a)`.
+
+Use `hd.deriv` as an intermediate fact. Simplify using `only [zero_mul, one_mul] at this`. Simplify `this` using `[lineDer, Function.comp_def]`. Establish `key : ∀ s : Finset ι, (∃ β, IsLineOf σ J τ (∑ j ∈ s, c j • Y j) β) ∧ ∀ β, IsLineOf σ J τ (∑ j ∈ s, c j • Y j) β → lineDer β f = ∑ j ∈ s, (c j : ℂ) • lineDer (δ j) f`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨exists_isLineOf h hJ (by simp), fun β hβ => ?_⟩` and prove the remaining obligations. Rewrite `hβ`, the goal using `[Finset.sum_empty]`. Establish `h0` using `hβ.smul 0`.
+
+Rewrite `h0` using `[smul_zero]`. Rewrite using `[hβ.unique h h0, hsm _ _ _ hβ]`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Take `⟨⟨β₀, hβ₀⟩, ih⟩` from `ih`.
+
+Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Establish `h1` using `(hδ i).smul (c i)`. Use `⟨exists_isLineOf h hJ ?_, fun β hβ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, h1.skew h, hβ₀.skew h, add_zero]`. Rewrite using `[(lineDer_add_bracket F E σ h n J hJ w τ f hf _ _ _ _ β h1 hβ₀).1 hβ, hsm _ _ _ (hδ i), ih _ hβ₀]`.
+
+Conclude with `(key Finset.univ).2 γ hγ`.
+-/
 theorem lineDer_sum_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (w : InfinitePlace F) (τ : EmbOver E w) (f : GAd σ J → ℂ), GlobalTheory.UAut.IsSm σ J f →

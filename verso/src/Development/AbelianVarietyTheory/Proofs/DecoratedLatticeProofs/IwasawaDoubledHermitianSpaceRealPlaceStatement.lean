@@ -11,5 +11,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | exact GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | (intros; apply GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_doubled_hermitian_space_real_place : ∀ (D : D7) (A : HSp D) (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ w : InfinitePlace D.host.F, HasIwasawa D.sp.cm.sig (dblSp A).gram (KArch D.sp.cm.sig (dblSp A).gram w (Formalism.UG.bc (compInf D.host.F D.host.E w) a)) := by
   first | exact @GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | exact GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch | (intros; apply GlobalTheory.Core.Rk.IwArch.hasIwasawa_dblSp_arch <;> assumption)

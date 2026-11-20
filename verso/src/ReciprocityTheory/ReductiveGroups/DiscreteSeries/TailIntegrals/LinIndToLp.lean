@@ -14,6 +14,9 @@ variable {n m : ℕ}
 def gram (w : Fin m → EuclideanSpace ℂ (Fin n)) : Matrix (Fin m) (Fin m) ℂ :=
   Matrix.of fun a b => inner ℂ (w a) (w b)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, of_apply, mul_apply, conjTranspose_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_comb (w : Fin m → EuclideanSpace ℂ (Fin n)) (τ : Matrix (Fin m) (Fin m) ℂ) :
     gram (fun a => ∑ b, τ b a • w b) = τᴴ * gram w * τ := by
   ext a b
@@ -22,6 +25,19 @@ theorem gram_comb (w : Fin m → EuclideanSpace ℂ (Fin n)) (τ : Matrix (Fin m
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   simp only [starRingEnd_apply]; ring
 
+/- English proof (translation)
+Use `set u := gramSchmidtNormed ℂ w with hudef`. Establish `hu : Orthonormal ℂ u` using `gramSchmidtNormed_orthonormal hw`. Establish `hspan : Submodule.span ℂ (Set.range u) = Submodule.span ℂ (Set.range w)`. Rewrite using `[hudef, span_gramSchmidtNormed_range, span_gramSchmidt]`. Use `⟨u, fun b a => inner ℂ (u b) (w a), hu, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `only [hudef, gramSchmidtNormed, inner_smul_left]`. Rewrite using `[gramSchmidt_inv_triangular ℂ w hij', mul_zero]`. Introduce `j hj`.
+
+Establish `hg` using `gramSchmidt_ne_zero j hw`. Establish `h0 : inner ℂ (u j) (w j) = inner ℂ (u j) (gramSchmidt ℂ w j)` using `by conv_lhs => rw [gramSchmidt_def'' ℂ w j]`. Rewrite using `[inner_add_right, inner_sum, Finset.sum_eq_zero, add_zero]`. Introduce `i hi`. Rewrite using `[inner_smul_right]`.
+
+Simplify using `only [hudef, gramSchmidtNormed, inner_smul_left, gramSchmidt_orthogonal ℂ w (Finset.mem_Iio.1 hi).ne', mul_zero]`. Simplify using `only at hj`. Rewrite `hj` using `[h0]`. Simplify using `only [hudef, gramSchmidtNormed, inner_smul_left, inner_self_eq_norm_sq_to_K] at hj`. Simplify using `[hg] at hj`.
+
+Introduce `a`. Establish `: w a ∈ Submodule.span ℂ (Set.range u)` using `hspan ▸ Submodule.subset_span ⟨a, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 this`. Use `conv_lhs => rw [← hc]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Use `show c b • u b = inner ℂ (u b) (w a) • u b`. Rewrite using `[← hc, hu.inner_right_fintype]`. Introduce `a`. Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem gs_fac (w : Fin m → EuclideanSpace ℂ (Fin n)) (hw : LinearIndependent ℂ w) :
     ∃ (u : Fin m → EuclideanSpace ℂ (Fin n)) (τ : Matrix (Fin m) (Fin m) ℂ), Orthonormal ℂ u ∧
       τ.BlockTriangular id ∧ (∀ j, τ j j ≠ 0) ∧ (∀ a, w a = ∑ b, τ b a • u b) ∧
@@ -57,6 +73,13 @@ theorem gs_fac (w : Fin m → EuclideanSpace ℂ (Fin n)) (hw : LinearIndependen
     rw [← hc, hu.inner_right_fintype]
   · intro a; rw [← hspan]; exact Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : gram u = 1`. Use extensionality with `i j`. Simplify using `[gram, orthonormal_iff_ite.1 hu, Matrix.one_apply]`. Establish `hg : gram w = τᴴ * τ`. Rewrite using `[show w = fun a => ∑ b, τ b a • u b from funext hw, gram_comb, h1, Matrix.mul_one]`.
+
+Rewrite using `[hg, det_mul, det_conjTranspose, det_of_isUpperTriangular hτ]`. Rewrite using `[show star (∏ j, τ j j) = ∏ j, star (τ j j) by`. Simplify using `using map_prod (starRingEnd ℂ) (fun j => τ j j) Finset.univ]`. Rewrite using `[← Finset.prod_mul_distrib, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← starRingEnd_apply, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_of (w u : Fin m → EuclideanSpace ℂ (Fin n)) (τ : Matrix (Fin m) (Fin m) ℂ)
     (hu : Orthonormal ℂ u) (hτ : τ.BlockTriangular id) (hw : ∀ a, w a = ∑ b, τ b a • u b) :
     (gram w).det = ((∏ j, ‖τ j j‖ ^ 2 : ℝ) : ℂ) := by
@@ -71,6 +94,9 @@ theorem det_gram_of (w u : Fin m → EuclideanSpace ℂ (Fin n)) (τ : Matrix (F
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [← starRingEnd_apply, Complex.conj_mul']; push_cast; ring
 
+/- English proof (translation)
+Unfold `Ga`. Use `congr 2`. Use extensionality with `a b`. Simplify using `only [gram, of_apply, EuclideanSpace.inner_eq_star_dotProduct]`. Rewrite using `[dotProduct_comm]`.
+-/
 theorem ga_eq (k r : ℕ) (l : Fin (r + 1)) (Y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) :
     Ga k r l Y = (gram (fun a : Fin (l.val + 1) =>
       (WithLp.toLp 2 (Y (Fin.castLE (by omega) a)) : EuclideanSpace ℂ (Fin (2 * r + k + 1))))).det.re := by
@@ -78,10 +104,16 @@ theorem ga_eq (k r : ℕ) (l : Fin (r + 1)) (Y : Fin (r + 1) → Fin (2 * r + k 
   simp only [gram, of_apply, EuclideanSpace.inner_eq_star_dotProduct]
   rw [dotProduct_comm]
 
+/- English proof (translation)
+The claim follows from `hY.map' (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm.toLinearMap (LinearEquiv.ker _)`.
+-/
 theorem linInd_toLp {ι : Type*} (Y : ι → Fin n → ℂ) (hY : LinearIndependent ℂ Y) :
     LinearIndependent ℂ (fun a => (WithLp.toLp 2 (Y a) : EuclideanSpace ℂ (Fin n))) :=
   hY.map' (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm.toLinearMap (LinearEquiv.ker _)
 
+/- English proof (translation)
+Rewrite using `[ga_eq]`. Establish `hw` using `(linInd_toLp Y hY).comp _ (Fin.castLE_injective (show l.val + 1 ≤ r + 1 by omega))`. Take `⟨u, τ, hu, hτ, hd, hwe, -⟩` from `gs_fac (fun a : Fin (l.val + 1) => (WithLp.toLp 2 (Y (Fin.castLE (by omega) a)) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))) hw`. Rewrite using `[det_gram_of _ u τ hu hτ hwe, Complex.ofReal_re]`. Conclude with `Finset.prod_pos fun j _ => pow_pos (norm_pos_iff.2 (hd j)) 2`.
+-/
 theorem ga_pos (k r : ℕ) (Y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (hY : LinearIndependent ℂ Y)
     (l : Fin (r + 1)) : 0 < Ga k r l Y := by
   rw [ga_eq]
@@ -91,6 +123,13 @@ theorem ga_pos (k r : ℕ) (Y : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (hY
   rw [det_gram_of _ u τ hu hτ hwe, Complex.ofReal_re]
   exact Finset.prod_pos fun j _ => pow_pos (norm_pos_iff.2 (hd j)) 2
 
+/- English proof (translation)
+Establish `hnn : (0 : ℝ) ≤ ∑ i, ∑ j, Complex.normSq (A i j)` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg (A i j)`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, gN, ← Real.sqrt_mul hnn]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : ‖(A *ᵥ y) i‖ ≤ ∑ j, ‖A i j‖ * ‖y j‖`. Simplify using `only [mulVec, dotProduct]`. Conclude with `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun j _ => norm_mul _ _))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`.
+
+Simplify using `only [Complex.normSq_eq_norm_sq]`.
+-/
 theorem norm_mulVec_le {k r : ℕ} (A : Mat k r) (y : Fin (2 * r + k + 1) → ℂ) :
     ‖(WithLp.toLp 2 (A *ᵥ y) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))‖ ≤
       gN A * ‖(WithLp.toLp 2 y : EuclideanSpace ℂ (Fin (2 * r + k + 1)))‖ := by

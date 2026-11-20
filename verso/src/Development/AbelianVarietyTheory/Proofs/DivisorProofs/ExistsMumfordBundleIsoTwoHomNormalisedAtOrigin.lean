@@ -16,6 +16,17 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 
 namespace GlobalTheory.Mum.Two
 
+/- English proof (translation)
+Introduce `S B₀ B _ _ _ _ M₀ M hM₀ hM a b _ _ H`. Take `⟨w₀, hw₀⟩` from `H`. Set `F : (G2 B₀).left ⟶ (G2 B).left` to `(lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left`. Set `e : (𝟙_ (Over S)).left ⟶ (G2 B₀).left` to `(lift (1 : 𝟙_ (Over S) ⟶ B₀) 1).left`. Set `q : (𝟙_ (Over S)).left ⟶ B.left` to `(1 : 𝟙_ (Over S) ⟶ B).left`.
+
+Set `q' : (𝟙_ (Over S)).left ⟶ B₀.left` to `(1 : 𝟙_ (Over S) ⟶ B₀).left`. Establish `eF : e ≫ F = (lift (1 : 𝟙_ (Over S) ⟶ B) 1).left` using `by show (lift (1 : 𝟙_ (Over S) ⟶ B₀) 1 ≫ lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b)).left = _`. Rewrite using `[comp_lift, lift_fst_assoc, lift_snd_assoc, MonObj.one_comp, MonObj.one_comp]`. Establish `hq : ∀ I : ULift.{0} (Finset (Fin 2)), (e ≫ F) ≫ (psum B (x2 B) I.down).left = q` using `fun I => by`. Rewrite using `[eF]`.
+
+Conclude with `congrArg (fun z => z.left) (GlobalTheory.PolDeg.NormIso.lift_one_psum B (T := 𝟙_ (Over S)) I.down)`. Establish `hq' : ∀ I : ULift.{0} (Finset (Fin 2)), e ≫ (psum B₀ (x2 B₀) I.down).left = q'` using `fun I => congrArg (fun z => z.left) (GlobalTheory.PolDeg.NormIso.lift_one_psum B₀ (T := 𝟙_ (Over S)) I.down)`. Take `⟨w, hw, hv⟩` from `GlobalTheory.PolDeg.NormIso.exists_normalised M M₀ hM hM₀ (K := ULift.{0} (Finset (Fin 2))) (fun I => (psum B (x2 B) I.down).left) (fun I => (psum B₀ (x2 B₀) I.down).left) (fun I => (-1) ^ (2 - I.down.card)) (by decide) F e (toUnit (G2 B₀)).left (congrArg (fun z => z.left) (toUni …`. Use `⟨w, hw, fun T z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `hp : (lift (1 : T ⟶ B₀) (1 : T ⟶ B₀)).left = (toUnit T).left ≫ e` using `by show _ = (toUnit T ≫ lift (1 : 𝟙_ (Over S) ⟶ B₀) 1).left`.
+
+Rewrite using `[comp_lift, MonObj.comp_one]`. Establish `key : ∀ (p : T.left ⟶ (G2 B₀).left) (j : (abelian₂ B M).ι) (k : (abelian₂ B₀ M₀).ι), (fun I : ULift.{0} (Finset (Fin 2)) => J (p ≫ F ≫ (psum B (x2 B) I.down).left)) = j → (fun I : ULift.{0} (Finset (Fin 2)) => J' (p ≫ (psum B₀ (x2 B₀) I.down).left)) = k → GlobalTheory.PolDeg.lamV …` using `abelian₂ B M) (L' := abelian₂ B₀ M₀) w p z j k := by`. Introduce and unpack `p _ _ rfl rfl`. Both sides reduce to the same expression. Rewrite using `[hp]`.
+
+Use `(key _ (fun _ => J ((toUnit T).left ≫ q)) (fun _ => J' ((toUnit T).left ≫ q')) (funext fun I => ?_) (funext fun I => ?_)).trans (hv T.left (toUnit T).left z _ _ (hJ ((toUnit T).left ≫ q)) (hJ' ((toUnit T).left ≫ q')))` and prove the remaining obligations. Rewrite using `[← hq I, Category.assoc, Category.assoc]`. Rewrite using `[← hq' I, Category.assoc]`.
+-/
 theorem exists_lamVal_origin_two : ∀ {S : Scheme.{0}} (B₀ B : Over S) [GrpObj B₀] [IsCommMonObj B₀] [GrpObj B] [IsCommMonObj B] (M₀ : LB B₀.left) (M : LB B.left), M₀.IsLB → M.IsLB → ∀ (a b : B₀ ⟶ B) [IsMonHom a] [IsMonHom b], LBIso (abelian₂ B₀ M₀) ((abelian₂ B M).pull (lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left) → ∃ w : LB.Iso (abelian₂ B₀ M₀) ((abelian₂ B M).pull (lift (fst B₀ B₀ ≫ a) (snd B₀ B₀ ≫ b) : G2 B₀ ⟶ G2 B).left), w.IsGen ∧ ∀ (T : Over S) (z : T.left) (J : (T.left ⟶ B.left) → M.ι) (J' : (T.left ⟶ B₀.left) → M₀.ι), Good M z J → Good M₀ z J' → GlobalTheory.PolDeg.lamVal w (lift (1 : T ⟶ B₀) (1 : T ⟶ B₀)).left z J J' = 1 := by
   intro S B₀ B _ _ _ _ M₀ M hM₀ hM a b _ _ H
   obtain ⟨w₀, hw₀⟩ := H

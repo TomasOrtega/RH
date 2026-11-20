@@ -23,6 +23,11 @@ abbrev EpsAlg (k : ℕ) : Type := MvPolynomial (Fin k) R ⧸ sqIdeal R k
 
 def topMon (k : ℕ) : Fin k →₀ ℕ := ∑ a, Finsupp.single a 1
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hp`. Rewrite using `[MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.X_pow_eq_monomial, MvPolynomial.coeff_mul_monomial', if_neg]`. Introduce `h`.
+
+Use `h a` as an intermediate fact. Simplify using `[topMon, Finsupp.finsetSum_apply, Finsupp.single_apply] at this`.
+-/
 theorem coeff_topMon_eq_zero {k : ℕ} {p : MvPolynomial (Fin k) R} (hp : p ∈ sqIdeal R k) :
     MvPolynomial.coeff (topMon k) p = 0 := by
   obtain ⟨c, rfl⟩ := Ideal.mem_span_range_iff_exists_fun.1 hp
@@ -40,6 +45,9 @@ def topCoeff (k : ℕ) : EpsAlg R k →ₗ[R] R :=
 
 def eps {k : ℕ} (a : Fin k) : EpsAlg R k := Ideal.Quotient.mk _ (MvPolynomial.X a)
 
+/- English proof (translation)
+Rewrite using `[eps, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← sq]`. Conclude with `Ideal.subset_span ⟨a, rfl⟩`.
+-/
 theorem eps_mul_self {k : ℕ} (a : Fin k) : eps R a * eps R a = 0 := by
   rw [eps, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, ← sq]
   exact Ideal.subset_span ⟨a, rfl⟩
@@ -60,6 +68,9 @@ variable (R : Type) [CommRing R]
 
 abbrev epsT (k : ℕ) : Over (Sp R) := Over.mk (spMap (algebraMap R (EpsAlg R k)))
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `f.comp_algebraMap`.
+-/
 theorem spMap_comp_eq {A B : Type} [CommRing A] [CommRing B] [Algebra R A] [Algebra R B] (f : A →ₐ[R] B) :
     spMap (f : A →+* B) ≫ spMap (algebraMap R A) = spMap (algebraMap R B) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -87,6 +98,9 @@ def jetVal {G : Over (Sp R)} [GrpObj G] (y : epsR R ⟶ G) (k : ℕ) (U : G.left
 def tanComb {G : Over (Sp R)} [GrpObj G] {m : ℕ} (c : Fin m → R) (v : Fin m → (epsR R ⟶ G)) : epsR R ⟶ G :=
   (List.ofFn fun i => epsScale R (c i) ≫ v i).prod
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, fun _ => rfl, rfl⟩`.
+-/
 theorem isLieComb_tanComb {G : Over (Sp R)} [GrpObj G] {m : ℕ} (c : Fin m → R) (v : Fin m → (epsR R ⟶ G)) :
     IsLieComb c v (tanComb c v) :=
   ⟨_, fun _ => rfl, rfl⟩
@@ -97,6 +111,9 @@ def jetFun {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (y : epsR K ⟶ G) 
     {r : ℕ} (b : Fin r → L.Sec) (i : ℕ) : (Fin r → K) →ₗ[K] K :=
   ∑ a, (c₀⁻¹ * jetVal y i (L.U i₀) ((b a).f i₀)) • LinearMap.proj a
 
+/- English proof (translation)
+Simplify using `[jetFun]`.
+-/
 theorem jetFun_apply {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (y : epsR K ⟶ G) {L : LB G.left} (i₀ : L.ι)
     (c₀ : K) {r : ℕ} (b : Fin r → L.Sec) (i : ℕ) (c : Fin r → K) :
     jetFun y i₀ c₀ b i c = ∑ a, c₀⁻¹ * jetVal y i (L.U i₀) ((b a).f i₀) * c a := by
@@ -105,6 +122,9 @@ theorem jetFun_apply {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] (y : epsR
 def filt {K V : Type} [Field K] [AddCommGroup V] [Module K V] (j : ℕ → V →ₗ[K] K) (i : ℕ) : Submodule K V :=
   Nat.rec ⊤ (fun k F => F ⊓ LinearMap.ker (j k)) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem filt_succ {K V : Type} [Field K] [AddCommGroup V] [Module K V] (j : ℕ → V →ₗ[K] K) (i : ℕ) :
     filt j (i + 1) = filt j i ⊓ LinearMap.ker (j i) := rfl
 

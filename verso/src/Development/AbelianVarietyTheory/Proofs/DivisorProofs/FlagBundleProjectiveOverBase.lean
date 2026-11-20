@@ -13,6 +13,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 
 namespace GlobalTheory.FlagProj
 
+/- English proof (translation)
+Introduce `k _ _ B Y q π ι _ E r fl hq hE hY`. Take `⟨Y₀, π₀, fl₀, h₀, hp₀⟩` from `GlobalTheory.T.flag_bundle_product_of_each k B q ι E r hq fun a => GlobalTheory.T.exists_flag_bundle_proj_vector_bundle k B q (E a) (r a) hq (hE a)`. Take `⟨e, he⟩` from `GlobalTheory.T.flag_bundle_unique_up_to_iso B Y Y₀ π π₀ ι E r fl fl₀ hY h₀`. Take `⟨N, φ, hφ, w⟩` from `hp₀`. Conclude with `⟨N, e.hom ≫ φ, inferInstance, by rw [Category.assoc, w, ← Category.assoc, he]⟩`.
+-/
 theorem isProjOver_of_isFlagBundle : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsProjOver q → (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → IsProjOver (π ≫ q) := by
   intro k _ _ B Y q π ι _ E r fl hq hE hY
   obtain ⟨Y₀, π₀, fl₀, h₀, hp₀⟩ := GlobalTheory.T.flag_bundle_product_of_each k B q ι E r hq fun a => GlobalTheory.T.exists_flag_bundle_proj_vector_bundle k B q (E a) (r a) hq (hE a)

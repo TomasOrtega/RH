@@ -12,6 +12,17 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `key : ∀ (G : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)), (∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), CkOn ((P.r : ℕ) : ℕ∞) (GV P.k P.r) F → ∀ p, Bs.inSS p → ∀ g ∈ GV P.k P.r, G (rho Bs p F) g = rho Bs p (G F) g) → (∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (g : B.Ma …`. Introduce `G hG hA p hp f hf g hg`. Establish `hgG : g ∈ GV P.k P.r` using `hg.1`. Take `⟨h1, h2, h3, h4⟩` from `hp`. Establish `ha : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ ∈ GV P.k P.r` using `gv_mul (gv_inv h1.1) (gv_inv h2.1)`.
+
+Establish `hb : Matrix.of p.2.2 * Matrix.of p.2.1 ∈ GV P.k P.r` using `gv_mul h4.1 h3.1`. Establish `hck : ∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (x : B.Mat P.k P.r), x ∈ GV P.k P.r → CkOn (B.opOrder Θ : ℕ∞) (GV P.k P.r) F → CkOn (B.opOrder Θ : ℕ∞) {x} F`. Introduce `F x hx hF g₀ hg₀`. Rewrite `hg₀` using `[Set.mem_singleton_iff]`. Substitute `hg₀` using the available equality.
+
+Conclude with `hF _ hx`. Establish `hfr : CkOn ((P.r : ℕ) : ℕ∞) (GV P.k P.r) f` using `sCkOn_mono (by exact_mod_cast hm) hf`. Establish `hrho : CkOn (B.opOrder Θ : ℕ∞) (GV P.k P.r) (rho Bs p f)`. Rewrite using `[rho_eq_trn']`. Conclude with `CkOn_trn _ ha hb hf`.
+
+Establish `hx : sgs p g ∈ GV P.k P.r`. Rewrite using `[show sgs p g = (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * g * (Matrix.of p.2.2 * Matrix.of p.2.1) by`. Simplify using `[sgs, Matrix.mul_assoc]]`. Conclude with `gv_mul (gv_mul ha hgG) hb`. Rewrite using `[hA _ g hgG (hck _ g hgG hrho), hG f hfr p ⟨h1, h2, h3, h4⟩ g hgG]`.
+
+Simplify using `only [rho]`. Rewrite using `[hA f (sgs p g) hx (hck f _ hx hf)]`. Prove the components needed by the constructor for the conclusion. Conclude with `key _ fun F hF p hp g hg => (rho_AA_ck Bs hF (Q.uC P.k P.r 0 y) 0 hp hg).1`. Conclude with `key _ fun F hF p hp g hg => (rho_AA_ck Bs hF 0 (y - ((2 * P.r + P.k : ℕ) : ℂ) / 2) hp hg).2`.
+-/
 theorem rdsag_capInv {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (Bs : B.RealPlaceData P.k P.r Wp Wq) (y : ℂ) (Θ : B.DiffOp P.k P.r Wp Wq) (hm : P.r ≤ B.opOrder Θ) :
@@ -62,6 +73,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hGG` using `JDAToda.gg_pos Bs hc hg hcg`. Establish `hx : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hc, hg, hGG⟩`. Take `⟨hf, hLf, hRf, -⟩` from `hJ`. Rewrite `hf`, `hLf`, `hRf` using `[JDAToda.omB_eq]`. Establish `hm` using `JDAToda.minorCell_of Bs hf hLf hRf y (c, g) hx`.
+
+Establish `hcell` using `Formalism.FourierDecayAlt.P.raising_cell P.k P.r (Wq →L[ℂ] Wp) J (Q.uC P.k P.r 0 y) c g hg`. Simplify using `only [dMul, drF, Q.crd, Q.cmp, ↓reduceIte] at hm ⊢`. Rewrite using `[← hm]`. Simplify using `only [Q.resG, capA]`. Rewrite using `[hcell, JDAToda.uC_zero, smul_comm]`.
+-/
 theorem rdsag_toda {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (Bs : B.RealPlaceData P.k P.r Wp Wq) (y : ℂ) (J : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -89,6 +105,21 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `hGG` using `JDAToda.gg_pos Bs hc hg hcg`. Establish `hx : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hc, hg, hGG⟩`. Take `⟨hf, hLf, hRf, -⟩` from `hJ`. Rewrite `hf`, `hLf`, `hRf` using `[JDAToda.omB_eq]`. Use `set D := OmPlus P.k P.r Bs.z Bs.z' with hDdef`.
+
+Establish `hD : IsOpen D` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus Bs.z Bs.z'`. Establish `h1N : (1 : Mx P.k P.r) ∈ Nlev P.k P.r 0` using `⟨(Formalism.QuantumDeterminants.unipotent_subgroup_holds P.k P.r).1, by simp [Glev, UH]⟩`. Establish `hN : ∀ g ∈ Glev P.k P.r 0 ∩ D, ∀ n ∈ Nlev P.k P.r 0, n * g ∈ D`. Introduce `g hg n hn`. Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := P.k) (r := P.r) Bs.z_mem Bs.z'_mem`.
+
+Use `hDom.2 g hg n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z, n, hn, (one_mul n).symm⟩ 1 ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z', 1, h1N, (one_mul 1).symm⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `set v₀ : VS P.k P.r 0 D (Wq →L[ℂ] Wp) := ⟨cut P.k P.r 0 D J, cut_mem hD hf⟩ with hv₀`. Establish `hcellB : ∀ c ∈ OmX P.r, wCell P.k P.r (Fin.last P.r) c * g ∈ C6.bigPos Bs` using `fun c hc => (Formalism.FourierDecayAlt.P.big_cell_values P.k P.r Wp Wq Bs (c, g) ⟨hc, hx.2.1, hx.2.2⟩).1`. Establish `hcell : ∀ c ∈ OmX P.r, wCell P.k P.r (Fin.last P.r) c * g ∈ Glev P.k P.r 0 ∩ D`.
+
+Introduce `c hc`. Establish `h` using `hcellB c hc`. Conclude with `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 h.1, fun l _ => h.2.2 l (by simp), h.2.1⟩`. Establish `hcl` using `claimV mirror_right_rule_holds mirror_left_rule_cell_holds mirror_torus_cell_holds mirror_chain_expansion_holds hD v₀ g (kvTop P.k P.r y) Bs.z Bs.z' Bs.z_mem Bs.z'_mem hN hf hLf hRf rfl hg hcell P.r le_rfl 1 (Subalgebra.one_mem _) c hc`. Rewrite `hcl` using `[mul_one]`.
+
+Establish `eR : kvC P.r (kvTop P.k P.r y) P.r (fun c' => J (wCell P.k P.r (Fin.last P.r) c' * g)) c = kvC P.r (kvTop P.k P.r y) P.r (fun c' => La hD v₀ (wCell P.k P.r (Fin.last P.r) c' * g) 1) c` using `kvC_loc _ _ _ _ (fun c' hc' => (cut_of_mem _ (hcell c' hc')).symm) hc`. Rewrite using `[eR, ← hcl, La_apply]`. Establish `hγ` using `hcell c hc`. Establish `e1 : ((qminor (EA (E` using `Wq →L[ℂ] Wp) hD) (colsVm P.k P.r P.r) (colsVm P.k P.r P.r) (kvTop P.k P.r y) : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS P.k P.r 0 D (Wq →L[ℂ] Wp))) = qminor (Eh (E := Wq →L[ℂ] Wp) (i := 0) hD) (cI ∘ colsVm P.k P.r P.r) (cI ∘ colsVm P.k P.r P.r) (kvTop P.k P.r y) := by`. Use `map_qminor (SA (Wq →L[ℂ] Wp) hD).val (EA hD) (colsVm P.k P.r P.r) (colsVm P.k P.r P.r) (kvTop P.k P.r y)` as an intermediate fact.
+
+Rewrite `this` using `[Subalgebra.coe_val]`. Rewrite using `[this]`. Conclude with `qminor_reindex (Eh hD) cI cI_inj _ _ _`. Rewrite using `[e1, rep_qminor hD _ _ _ v₀ _ hγ]`. Establish `hpos : posL P.k P.r 0 ∘ (cI ∘ colsVm P.k P.r P.r) = colsVm P.k P.r P.r` using `funext fun l => posL_cI _`.
+
+Establish `hloc` using `(good_qminor (E := Wq →L[ℂ] Wp) hD (cI ∘ colsVm P.k P.r P.r) (cI ∘ colsVm P.k P.r P.r) (kvTop P.k P.r y)).loc (cut P.k P.r 0 D J) J (fun x' hx' => cut_of_mem _ hx') _ hγ`. Rewrite `hloc` using `[hpos]`. Rewrite using `[hpos]`. Conclude with `hloc.symm`.
+-/
 theorem rdsag_tvGrp {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (Bs : B.RealPlaceData P.k P.r Wp Wq) (y : ℂ) (J : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -152,6 +183,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open scoped ContDiff in
 
+/- English proof (translation)
+Establish `e1 : capAv P.k P.r y J (Q.wCell P.k P.r (Fin.last P.r) c * g) = drbF P.r c • kvM P.k P.r P.r (kvTop P.k P.r y) J (Q.wCell P.k P.r (Fin.last P.r) c * g)`. Take `⟨hGV, hCk⟩` from `capa_J_ck P Bs hJ hc hg hcg ((P.r : ℕ) : ℕ∞)`. Conclude with `TVCoefPf.coef_gen hc hg hGV (hCk _ (Set.mem_singleton _)) y`. Establish `e2` using `TVG.rdsag_tvGrp P Bs y J hJ c hc g hg hcg`. Establish `hD : Q.IsDom P.k P.r Bs.z Bs.z' 0 (Gauge.OmB Bs)` using `isDom_omP Bs.z_mem Bs.z'_mem`.
+
+Establish `hfam` using `(Formalism.FourierDecayAlt.P.restriction_good_family Wp Wq P.k P.r Bs.z Bs.z' Bs.π Bs.π' (Gauge.OmB Bs) Bs.z_mem Bs.z'_mem hD J hJ (Fin.last P.r)).1`. Take `⟨U, F, hUo, hx0, hF, hFeq⟩` from `hfam (c, g) ⟨hc, hcg⟩ hg`. Establish `hemb : ContDiff ℝ ∞ (fun c' : Fin P.r → ℂ => (c', g))` using `contDiff_id.prodMk contDiff_const`. Use `set U' : Set (Fin P.r → ℂ) := {c' | (c', g) ∈ U} ∩ OmX P.r with hU'`. Establish `hU'o : IsOpen U'` using `(hUo.preimage hemb.continuous).inter (Formalism.FourierDecayAlt.P.Qx5.isOpen_OmX P.r)`.
+
+Establish `hgauge : ∀ c' : Fin P.r → ℂ, gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g) = Q.resG P.k P.r (Fin.last P.r) J c' g`. Introduce `c'`. Simplify using `only [gaugeF, Q.resG, smul_eq_mul, mul_one]`. Establish `hsm : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun c' => gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) U'`. Use `((hF.comp hemb.contDiffOn (fun c' hc' => hc'.1))).congr (fun c' hc' => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hgauge c']`. Conclude with `hFeq (c', g) hc'.1 hg`. Establish `e3` using `toda_coordinate_holds P.k P.r (Wq →L[ℂ] Wp) y (fun c' => J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) U' c hU'o (fun _ h => h.2) ⟨hx0, hc⟩ hsm`. Establish `hfun : (fun c' => gaugeF P.k P.r c' • J (Q.wCell P.k P.r (Fin.last P.r) c' * g)) = fun c' => Q.resG P.k P.r (Fin.last P.r) J c' g` using `funext hgauge`. Rewrite `e3` using `[hfun]`.
+
+Simplify using `only [dMul, Q.crd, Q.cmp, if_true]`. Rewrite using `[← e3]`. Establish `hres : Q.resG P.k P.r (Fin.last P.r) (capAv P.k P.r y J) c g = gaugeF P.k P.r c • capAv P.k P.r y J (Q.wCell P.k P.r (Fin.last P.r) c * g)`. Simplify using `only [gaugeF, Q.resG, smul_eq_mul, mul_one]`. Rewrite using `[hres, e1, e2, smul_comm]`.
+-/
 theorem rdsag_todaV {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (Bs : B.RealPlaceData P.k P.r Wp Wq) (y : ℂ) (J : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -201,6 +243,15 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P D hPl y`. Take `⟨Θ, Θv, hP, hPv, hO, hOv, hA, hAv⟩` from `CutMP.capelli_representation_holds P.k P.r Wp Wq y`. Use `⟨Θ, Θv, ⟨_, _, hP⟩, ⟨_, _, hPv⟩, (CutMP.rdsag_capInv P D y Θ hO.ge).1 hA, (CutMP.rdsag_capInv P D y Θv hOv.ge).2 hAv, fun J hJ x hx => ?_⟩` and prove the remaining obligations. Establish `hJB : J ∈ Q.FFl P.k P.r D.z D.z' D.π D.π' 0 (CutMP.Gauge.OmB D)`. Rewrite using `[CutMP.JDAToda.omB_eq, ← ffl_om_eq]`.
+
+Conclude with `hJ`. Establish `hcell : Q.wCell P.k P.r (Fin.last P.r) x.1 * x.2 ∈ CutMP.Gauge.OmB D`. Rewrite using `[CutMP.JDAToda.omB_eq]`. Establish `h` using `(Formalism.FourierDecayAlt.P.big_cell_values P.k P.r Wp Wq D x hx).1`. Conclude with `⟨fun l _ => h.2.2 l (by simp), h.2.1⟩`.
+
+Take `⟨hc, hg, -⟩` from `hx`. Prove the components needed by the constructor for the conclusion. Take `⟨hGV, hCk⟩` from `CutMP.capa_J_ck P D hJB hc hg hcell (B.opOrder Θ)`. Rewrite using `[← CutMP.rdsag_toda P D y J hJB x.1 hc x.2 hg hcell]`. Simplify using `only [Q.resG]`.
+
+Rewrite using `[hA J _ hGV hCk]`. Take `⟨hGV, hCk⟩` from `CutMP.capa_J_ck P D hJB hc hg hcell (B.opOrder Θv)`. Rewrite using `[← CutMP.rdsag_todaV P D y J hJB x.1 hc x.2 hg hcell]`. Simplify using `only [Q.resG]`. Rewrite using `[hAv J _ hGV hCk]`.
+-/
 theorem spectral_group_action : RDSAGrp := by
   intro Wp Wq _ _ _ _ _ _ P D hPl y
   obtain ⟨Θ, Θv, hP, hPv, hO, hOv, hA, hAv⟩ := CutMP.capelli_representation_holds P.k P.r Wp Wq y

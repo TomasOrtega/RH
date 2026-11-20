@@ -21,6 +21,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ emb n σ M hM v hv`. Establish `hA : ∀ τ, (tauLat emb τ M).FG` using `fun τ => (Formalism.L2.DIV.tauLatLattice E K ι n emb τ M hM).fg`. Express the relevant statement in the definitionally equal form `((GlobalTheory.FunObj.funEquiv σ).symm v).1 ∈ nabP σ (fun τ => tauLat emb τ M)`. Simplify using `only [nabP, transLat, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `w B hB`.
+
+Establish `hB' : ∀ τ, IsBasisAt w (dualFr (tauLat emb τ M)) (invTrK B τ)` using `fun τ => GlobalTheory.DualWeylDual.isBasisAt_dualFr w (hA τ) (hB τ)`. Establish `h1 : v.1 ∈ nabP (fun τ => (σ τ).dual) (fun τ => dualFr (tauLat emb τ M))` using `hv`. Simplify using `only [nabP, transLat, Submodule.mem_iInf, Submodule.mem_comap] at h1`. Establish `h2` using `h1 w (invTrK B) hB'`. Rewrite `h2` using `[← map_inv]`.
+
+Take `⟨s, hs, hsv⟩` from `(Formalism.L2.DIV.lc_mem_locP w _ _).1 h2`. Use `(Formalism.L2.DIV.lc_mem_locP w _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Use `set F := (GlobalTheory.FunObj.funEquiv σ).symm v with hF`. Establish `e2 : GlobalTheory.FunObj.funEquiv σ (s • rhoK σ B⁻¹ F) = s • rhoK (fun τ => (σ τ).dual) (invTrK B⁻¹) v`. Rewrite using `[LinearMapClass.map_smul_of_tower, GlobalTheory.FunObj.funEquiv_rhoK, hF, LinearEquiv.apply_symm_apply]`.
+
+Establish `h3 : (s • rhoK σ B⁻¹ F).1 ∈ nabStd K σ`. Rewrite using `[GlobalTheory.FunObj.funEquiv_mem_nabStd, e2]`. Conclude with `hsv`. Conclude with `h3`.
+-/
 theorem funEquiv_symm_mem_nabAt_of_nabAtr : ∀ {E K ι : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Fintype ι]
     (emb : ι → E →+* K) {n : ℕ} (σ : ι → DomWeight n) (M : Submodule (𝓞 E) (Fin n → E)),
     Submodule.IsLattice E M → ∀ (v : VV K fun τ => (σ τ).dual),

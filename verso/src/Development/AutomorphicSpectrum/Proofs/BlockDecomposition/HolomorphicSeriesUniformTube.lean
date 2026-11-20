@@ -4,6 +4,21 @@ open Filter Topology
 
 namespace GlobalTheory.CompanionTheory.RgEisCross
 
+/- English proof (translation)
+Establish `hc : Continuous fun l : ℂ × ℂ => (l.1.re, l.2.re)` using `by fun_prop`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g p v τ₀ hτ₀`. Take `⟨V, hV, U, hU, u, hu, hb⟩` from `hdom _ hτ₀ g`. Establish `hline : Continuous fun τ : ℂ => ((p + τ • v).1.re, (p + τ • v).2.re)` using `hc.comp (by fun_prop : Continuous fun τ : ℂ => p + τ • v)`.
+
+Establish `hS : (fun τ : ℂ => ((p + τ • v).1.re, (p + τ • v).2.re)) ⁻¹' V ∈ 𝓝 τ₀` using `hline.continuousAt.preimage_mem_nhds hV`. Take `⟨S, hSsub, hSo, hτS⟩` from `mem_nhds_iff.1 hS`. Establish `hd : DifferentiableOn ℂ (fun τ : ℂ => ∑' r, t r (p + τ • v) g) S` using `Complex.differentiableOn_tsum_of_summable_norm hu (fun r => (hhol r g p v).differentiableOn) hSo (fun r τ hτ => hb _ (hSsub hτ) g (mem_of_mem_nhds hU) r)`. Conclude with `((hd τ₀ hτS).differentiableAt (hSo.mem_nhds hτS)).differentiableWithinAt`. Introduce and unpack `⟨l₀, g₀⟩ ⟨hl₀, -⟩`.
+
+Take `⟨V, hV, U, hU, u, hu, hb⟩` from `hdom _ hl₀ g₀`. Establish `hVl : (fun l : ℂ × ℂ => (l.1.re, l.2.re)) ⁻¹' V ∈ 𝓝 l₀` using `hc.continuousAt.preimage_mem_nhds hV`. Establish `hS : ((fun l : ℂ × ℂ => (l.1.re, l.2.re)) ⁻¹' V) ×ˢ U ∈ 𝓝 (l₀, g₀)` using `prod_mem_nhds hVl hU`. Establish `hd : ContinuousOn (fun y : (ℂ × ℂ) × T => ∑' r, t r y.1 y.2) (((fun l : ℂ × ℂ => (l.1.re, l.2.re)) ⁻¹' V) ×ˢ U)` using `continuousOn_tsum (fun r => (hcont r).continuousOn) hu (fun r y hy => hb _ hy.1 _ hy.2 r)`. Conclude with `(hd.continuousAt hS).continuousWithinAt`.
+
+Introduce `C hCΩ hC g`. Use `hC.induction_on (p := fun S => ∃ U ∈ 𝓝 g, ∃ M : ℝ, ∀ l ∈ PositivityTheory.RgEis.tube S, ∀ g' ∈ U, ‖∑' r, t r l g'‖ ≤ M) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨Set.univ, univ_mem, 0, fun l hl => hl.elim⟩`. Introduce and unpack `s s' hss ⟨U, hU, M, hM⟩`. Conclude with `⟨U, hU, M, fun l hl g' hg' => hM l (hss hl) g' hg'⟩`.
+
+Introduce and unpack `s s' ⟨U, hU, M, hM⟩ ⟨U', hU', M', hM'⟩`. Use `⟨U ∩ U', inter_mem hU hU', max M M', ?_⟩` and prove the remaining obligations. Introduce and unpack `l (hl | hl) g' hg'`. Conclude with `(hM l hl g' hg'.1).trans (le_max_left _ _)`. Conclude with `(hM' l hl g' hg'.2).trans (le_max_right _ _)`.
+
+Introduce `x hx`. Take `⟨V, hV, U, hU, u, hu, hb⟩` from `hdom x (hCΩ hx) g`. Conclude with `⟨V, mem_nhdsWithin_of_mem_nhds hV, U, hU, ∑' r, u r, fun l hl g' hg' => tsum_of_norm_bounded hu.hasSum (fun r => hb l hl g' hg' r)⟩`. Introduce `l hl g`. Take `⟨V, hV, U, hU, u, hu, hb⟩` from `hdom _ hl g`.
+
+Conclude with `Summable.of_nonneg_of_le (fun r => norm_nonneg _) (fun r => hb l (show (l.1.re, l.2.re) ∈ V from mem_of_mem_nhds hV) g (mem_of_mem_nhds hU) r) hu`.
+-/
 theorem tubeGood_tsum (ι X T : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X]
     [TopologicalSpace T] (t : ι → ℂ × ℂ → T → X) (Ω : Set (ℝ × ℝ))
     (hhol : ∀ r g (p v : ℂ × ℂ), Differentiable ℂ fun τ : ℂ => t r (p + τ • v) g)

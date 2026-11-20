@@ -24,6 +24,23 @@ def DatumSign {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (
     ∀ x y, ((Dw.EF x y : ℤ) : ℚ) =
       ((ε : ℤ) : ℚ) * Algebra.trace ℚ D.host.E (-D.host.xi0 * herm V'.Gm (φ x) (φ y))
 
+/- English proof (translation)
+Establish `hp` using `volPair_isVolPair V hP`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.T.lcsc_adelic_unitary_group _ _ D.sp.cm.sig _ V.gram`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: Countable (GQ V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`.
+
+Establish `: (volPair V).1.IsHaarMeasure` using `hp.1.1`. Establish `hV'` using `hV`. Rewrite `hV'` using `[FinVol, muQ_univ]`. Establish `hq : muQ1 V = ((volPair V).1 (volPair V).2)⁻¹ • ((volPair V).1.restrict (volPair V).2).map (autMk V)`. Rewrite using `[muQ1, if_pos (show _ ∧ _ from hV), muQ_univ]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[hq]`. Conclude with `GlobalTheory.T.invariant_probability_lattice_quotient_unique _ (GQ V) _ _ hp.2 hV'.2 ν h2`.
+
+Introduce and unpack `rfl`. Use `⟨inferInstance, fun h ρ hρ s hs => ?_⟩` and prove the remaining obligations. Establish `hm` using `autMk_measurable V`. Establish `e : autMk V ⁻¹' (ρ ⁻¹' s) = (· * h) ⁻¹' (autMk V ⁻¹' s)`. Use extensionality with `g`.
+
+Conclude with `iff_of_eq (congrArg (· ∈ s) (hρ g))`. Establish `hs' : MeasurableSet (ρ ⁻¹' s)`. Express the relevant statement in the definitionally equal form `MeasurableSet (autMk V ⁻¹' (ρ ⁻¹' s))`. Rewrite using `[e]`. Conclude with `measurable_mul_const h (hm hs)`.
+
+Establish `hri` using `GlobalTheory.AutQuotCheck.rightInvariant_of_covolume (GQ V) _ hp.2 hV'.1 hV'.2`. Establish `: (volPair V).1.IsMulRightInvariant` using `⟨hri⟩`. Establish `hF : IsFundamentalDomain (GQ V) ((Equiv.mulRight h⁻¹) ⁻¹' (volPair V).2) (volPair V).1` using `hp.2.preimage_of_equiv (measurePreserving_mul_right _ h⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, mul_assoc])`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ V)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ V) (volPair V).1` as an intermediate fact.
+
+Rewrite using `[hq, Measure.smul_apply, Measure.smul_apply]`. Use `congr 1`. Rewrite using `[show ((volPair V).1.restrict (volPair V).2).map (autMk V) s = _ from congrArg (fun m : Measure (AutQ V) => m s) (GlobalTheory.AutQuotCheck.map_restrict_eq (GQ V) _ hp.2 hF), Measure.map_apply hm hs', Measure.map_apply hm hs, Measure.restrict_apply (hm hs'), Measure.restrict_appl …`. Use `congr 1`. Use extensionality with `g`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem invProb_iff (V : HSp D) (hP : VolPairEx V) (hV : FinVol V) (ν : Measure (AutQ V)) :
     IsProbabilityMeasure ν ∧ RightInv V ν ↔ ν = muQ1 V := by
   have hp := volPair_isVolPair V hP

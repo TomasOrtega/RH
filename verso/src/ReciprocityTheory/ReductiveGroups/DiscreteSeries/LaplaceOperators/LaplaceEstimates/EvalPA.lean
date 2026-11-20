@@ -15,6 +15,9 @@ namespace CapelliMinorRestriction
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Unfold `Capelli.cminor`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `List.ofFn_inj.mpr (funext fun j => ?_)` and prove the remaining obligations. Simplify using `only [Capelli.capEntry, Function.comp_apply, he.eq_iff]`.
+-/
 theorem cminor_reindex {n n' p : ℕ} (E : Fin n' → Fin n' → Module.End ℂ M) (e : Fin n → Fin n')
     (he : Function.Injective e) (R C : Fin p → Fin n) (x : ℂ) :
     Capelli.cminor (fun a b => E (e a) (e b)) R C x = Capelli.cminor E (e ∘ R) (e ∘ C) x := by
@@ -24,12 +27,18 @@ theorem cminor_reindex {n n' p : ℕ} (E : Fin n' → Fin n' → Module.End ℂ 
   refine List.ofFn_inj.mpr (funext fun j => ?_)
   simp only [Capelli.capEntry, Function.comp_apply, he.eq_iff]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cminor_cast {n p p' : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (h : p = p')
     (R C : Fin p' → Fin n) (x : ℂ) :
     Capelli.cminor E (R ∘ Fin.cast h) (C ∘ Fin.cast h) x = Capelli.cminor E R C x := by
   subst h
   rfl
 
+/- English proof (translation)
+The claim follows from `| 0, f, g, _ => by ext; simp | p + 1, f, g, h => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, h 0, LinearMap.comp_assoc, ofFn_prod_intertwine S p (fun j => f j.succ) (fun j => g j.su …`.
+-/
 theorem ofFn_prod_intertwine (S : Submodule ℂ M) :
     ∀ (p : ℕ) (f : Fin p → Module.End ℂ S) (g : Fin p → Module.End ℂ M),
       (∀ j, S.subtype ∘ₗ f j = g j ∘ₗ S.subtype) →
@@ -45,6 +54,9 @@ def resE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ
     (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (a b : Fin n) : Module.End ℂ S :=
   (E a b).restrict (hS a b)
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [Capelli.capEntry, LinearMap.comp_apply, LinearMap.add_apply, map_add, resE, Submodule.subtype_apply, LinearMap.coe_restrict_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem capEntry_resE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M)
     (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (t : ℂ) (a b : Fin n) :
     S.subtype ∘ₗ Capelli.capEntry (resE E S hS) t a b = Capelli.capEntry E t a b ∘ₗ S.subtype := by
@@ -53,6 +65,9 @@ theorem capEntry_resE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : 
     Submodule.subtype_apply, LinearMap.coe_restrict_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `Capelli.cminor`. Simplify using `only [LinearMap.sum_apply, Submodule.coe_sum, LinearMap.smul_apply, Submodule.coe_smul_of_tower]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `congrArg (fun f => f m) (ofFn_prod_intertwine S p _ _ (fun j => capEntry_resE E S hS _ _ _))`.
+-/
 theorem cminor_resE {n p : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M)
     (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (R C : Fin p → Fin n) (x : ℂ) (m : S) :
     ((Capelli.cminor (resE E S hS) R C x m : S) : M) = Capelli.cminor E R C x (m : M) := by
@@ -63,6 +78,11 @@ theorem cminor_resE {n p : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : 
   congr 1
   exact congrArg (fun f => f m) (ofFn_prod_intertwine S p _ _ (fun j => capEntry_resE E S hS _ _ _))
 
+/- English proof (translation)
+Introduce `a b c d`. Use extensionality with `m`. Use `congrArg (fun f => f (m : M)) (hE a b c d)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, resE, Submodule.coe_sub, LinearMap.coe_restrict_apply]`.
+
+Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [resE, LinearMap.coe_restrict_apply]`.
+-/
 theorem isGlRep_resE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : Submodule ℂ M)
     (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (hE : IsGlRep E) : IsGlRep (resE E S hS) := by
   intro a b c d
@@ -74,6 +94,9 @@ theorem isGlRep_resE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (S : S
   rw [this]
   split_ifs <;> simp [resE, LinearMap.coe_restrict_apply]
 
+/- English proof (translation)
+Unfold `frameE actM`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul]`.
+-/
 theorem frameE_eq_actM {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (E : Fin n → Fin n → Module.End ℂ M)
     (i j : Fin n) : frameE Q E i j = actM E (Q⁻¹ * Matrix.single i j 1 * Q) := by
   unfold frameE actM
@@ -99,6 +122,11 @@ namespace CapelliMinorRestriction
 section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Establish `hFc : ContinuousAt F g₀` using `(hF.continuousOn).continuousAt (hU.mem_nhds hgU)`. Use `(hFc.continuousWithinAt (s := UJset ε)).congr_of_eventuallyEq ?_ (hfF g₀ hgU hg₀)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hU.mem_nhds hgU)] with g hg hgU'`.
+
+Conclude with `hfF g hgU' hg`.
+-/
 theorem cont_of_smoothOnG {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : Formalism.REAL.SmoothOnG ε f) : ContinuousOn f (UJset ε) := by
   intro g₀ hg₀
@@ -112,6 +140,11 @@ end
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `e1 : (P * G * P⁻¹) *ᵥ y = P *ᵥ (G *ᵥ (P⁻¹ *ᵥ y))`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Unfold `cJ Formalism.QuantumDeterminants.herm`. Rewrite using `[e1, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[← hP]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cJ_transport (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (x1 y : Fin (2 * r + k + 1) → ℂ) (G : Mat k r) :
     cJ ε (P *ᵥ x1) y (P * G * P⁻¹) = star x1 ⬝ᵥ (Formalism.QuantumDeterminants.Hpk k r *ᵥ (G *ᵥ (P⁻¹ *ᵥ y))) := by
@@ -122,6 +155,11 @@ theorem cJ_transport (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r)
   rw [← hP]
   rfl
 
+/- English proof (translation)
+Take `⟨hsU, hsx⟩` from `ExponentialSlopeDerivatives.s_fix k r z s hs`. Establish `hsU' : sᴴ * Formalism.QuantumDeterminants.Hpk k r * s = Formalism.QuantumDeterminants.Hpk k r` using `hsU`. Unfold `xJ`. Rewrite using `[cJ_transport ε P hP, cJ_transport ε P hP, ← Matrix.mulVec_mulVec]`. Use `ExponentialSlopeDerivatives.herm_UH hsU' (xOne k r z) (x *ᵥ (P⁻¹ *ᵥ y))` as an intermediate fact.
+
+Rewrite `this` using `[hsx]`. Then use the resulting hypothesis.
+-/
 theorem cJ_sinv (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (z y : Fin (2 * r + k + 1) → ℂ) (s x : Mat k r)
     (hs : s ∈ Formalism.QuantumDeterminants.Sset k r z) :
@@ -133,6 +171,11 @@ theorem cJ_sinv (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r)
   have := ExponentialSlopeDerivatives.herm_UH hsU' (xOne k r z) (x *ᵥ (P⁻¹ *ᵥ y))
   rwa [hsx] at this
 
+/- English proof (translation)
+Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ Formalism.QuantumDeterminants.UWset k r z` using `(measure_eq_zero_iff_ae_notMem.mp hW.2.2.1).mono fun x hx => not_not.mp hx`. Establish `h2 : ∀ᵐ x ∂μN, Matrix.of x ∈ Formalism.QuantumDeterminants.Nset k r` using `(measure_eq_zero_iff_ae_notMem.mp hN.2.2.1).mono fun x hx => not_not.mp hx`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hp1 hp2`.
+
+Conclude with `⟨_, hp1, _, hp2, rfl⟩`.
+-/
 theorem ae_S {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hW : Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW) (hN : Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN) :
     ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.Sset k r z := by
@@ -146,6 +189,11 @@ theorem ae_S {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.Qua
     with p hp1 hp2
   exact ⟨_, hp1, _, hp2, rfl⟩
 
+/- English proof (translation)
+Unfold `tMap`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Pi.single_eq_of_ne hc, coefX]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tMap_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin (2 * r + k + 1) → Bool) (σ : Mat k r → (H →L[ℂ] H)) (x1 : Fin (2 * r + k + 1) → ℂ)
     (x₀ : Mat k r) (w : H) (d : Fin (2 * r + k + 1)) (m : H) (G : Mat k r) :
@@ -157,6 +205,9 @@ theorem tMap_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     simp [Pi.single_eq_of_ne hc, coefX]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl fun d _ => tMap_single ε σ x1 x₀ w d (f d) G]`. Both sides reduce to the same expression.
+-/
 theorem tMap_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin (2 * r + k + 1) → Bool) (σ : Mat k r → (H →L[ℂ] H)) (x1 : Fin (2 * r + k + 1) → ℂ)
     (x₀ : Mat k r) (w : H) (f : Fin (2 * r + k + 1) → H) (G : Mat k r) :
@@ -164,11 +215,17 @@ theorem tMap_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   rw [Finset.sum_congr rfl fun d _ => tMap_single ε σ x1 x₀ w d (f d) G]
   rfl
 
+/- English proof (translation)
+Simplify using `[coefX, inner_add_right]`.
+-/
 theorem coefX_add {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mat k r → (H →L[ℂ] H))
     (x₀ : Mat k r) (w m₁ m₂ : H) (G : Mat k r) :
     coefX σ x₀ w (m₁ + m₂) G = coefX σ x₀ w m₁ G + coefX σ x₀ w m₂ G := by
   simp [coefX, inner_add_right]
 
+/- English proof (translation)
+Simplify using `[coefX, inner_smul_right]`.
+-/
 theorem coefX_smul {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mat k r → (H →L[ℂ] H))
     (x₀ : Mat k r) (w m : H) (a : ℂ) (G : Mat k r) :
     coefX σ x₀ w (a • m) G = a * coefX σ x₀ w m G := by
@@ -180,10 +237,16 @@ def perI (P : Mat k r) (ψ : Mat k r → ℂ) (π : Mat k r → (Vp →L[ℂ] Vp
     (x : Mat k r) (p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) : Vp :=
   F (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) • chiInv ψ π (Matrix.of p.1) (Matrix.of p.2) ξ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem per_eq (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) (F : Mat k r → ℂ) (ξ : Vp) (x : Mat k r) :
     per P μW μN ψ π F ξ x = ∫ p, perI P ψ π F ξ x p ∂(μW.prod μN) := rfl
 
+/- English proof (translation)
+Rewrite using `[per_eq, per_eq, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[perI, mul_smul]`.
+-/
 theorem per_smul (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) (F : Mat k r → ℂ) (a : ℂ) (ξ : Vp) (x : Mat k r) :
     per P μW μN ψ π (fun G => a * F G) ξ x = a • per P μW μN ψ π F ξ x := by
@@ -192,6 +255,9 @@ theorem per_smul (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants
   funext p
   simp [perI, mul_smul]
 
+/- English proof (translation)
+Simplify using `only [per_eq]`. Rewrite using `[← integral_finsetSum s hF]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[perI, Finset.sum_smul]`.
+-/
 theorem per_sum (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) {ι : Type*} (s : Finset ι) (F : ι → Mat k r → ℂ) (ξ : Vp) (x : Mat k r)
     (hF : ∀ i ∈ s, Integrable (perI P ψ π (F i) ξ x) (μW.prod μN)) :
@@ -202,6 +268,9 @@ theorem per_sum (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.
   funext p
   simp [perI, Finset.sum_smul]
 
+/- English proof (translation)
+Rewrite using `[per_eq, per_eq, ← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_S hW hN] with p hp`. Simplify using `only [perI]`. Rewrite using `[tMap_single, cJ_sinv ε P hP z _ _ g hp, mul_smul]`.
+-/
 theorem per_tMap_single (ε : Fin (2 * r + k + 1) → Bool) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (z : Fin (2 * r + k + 1) → ℂ) (P : Mat k r)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))

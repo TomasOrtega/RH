@@ -11,6 +11,19 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Use `haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Establish `hL` using `(UpperTheory.ConvolutionTheory.R2.Pp.cuspZero F π f hf).1`. Take `⟨σ, hσ⟩` from `exists_rowSec (F := F)`. Establish `hN` using `fun ξ => UpperTheory.ConvolutionTheory.R2.G.uxAv F E D W f.1 hL φ h ξ`.
+
+Take `⟨hs, hi, he⟩` from `UpperTheory.ConvolutionTheory.R2.G.unfoldSum F M σ hσ (Fin 2 → F) (ux W f.1 φ h) (fun ξ => (hN ξ).1) (UpperTheory.ConvolutionTheory.R2.G.absFin F E D W M π f hf φ hφ h)`. Establish `hav : ∀ ξ, M.I0 (av (ux W f.1 φ h ξ)) = Wx W M f.1 φ h ξ` using `fun ξ => by`. Rewrite using `[(hN ξ).2.1]`. Both sides reduce to the same expression. Simplify using `only [hav] at hs he`.
+
+Take `⟨-, c2, -⟩` from `UpperTheory.ConvolutionTheory.R2.conv F E D W M π f hf φ hφ h`. Establish `hk : ∀ g : G1 F, f.1 (gl g * dM (nu F h)) * Th (W.Om g (W.L h φ)).1 = f.1 (gl g * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1 + ∑' r, ∑' ξ, ux W f.1 φ h ξ (ratS F (σ r) * g)`. Introduce `g`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.G.kern F E D W σ hσ (W.Om g (W.L h φ)), mul_add]`. Use `congr 1`.
+
+Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun r => ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `e1 : f.1 (gl (ratS F (σ r) * g) * dM (nu F h)) = f.1 (gl g * dM (nu F h))`.
+
+Rewrite using `[gl_mul, gl_ratS, mul_assoc, hL.2]`. Establish `e2 : W.Om (ratS F (σ r) * g) (W.L h φ) = W.Om (ratS F (σ r)) (W.Om g (W.L h φ))`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Simplify using `only [ux]`.
+
+Rewrite using `[e1, e2]`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `hlift : lift W M f.1 φ h = ∫ g in M.D, (f.1 (gl g * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1 + ∑' r, ∑' ξ, ux W f.1 φ h ξ (ratS F (σ r) * g)) ∂M.μ` using `integral_congr_ae (Eventually.of_forall hk)`. Rewrite using `[hlift, integral_add c2 hi, he]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.expand1 :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ h, Summable (fun ξ => ‖Wx W M f.1 φ h ξ‖) ∧
     lift W M f.1 φ h = T0 W M f.1 φ h + ∑' ξ, Wx W M f.1 φ h ξ := by

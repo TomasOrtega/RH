@@ -7,6 +7,9 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h1` using `ContinuousAt.comp (x := y) hf ((A.chart j).continuousAt hy)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hy] with z hz`. Simplify using `[Function.comp, (A.chart j).left_inv hz]`.
+-/
 theorem continuousAt_of_chart {e : ℕ} {X : Type} [TopologicalSpace X] {E : Type*}
     [TopologicalSpace E] (A : FinHolAtlas e X) (f : X → E) (y : X) (j : Fin A.n)
     (hy : y ∈ (A.chart j).source) (hf : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j y)) :
@@ -16,6 +19,11 @@ theorem continuousAt_of_chart {e : ℕ} {X : Type} [TopologicalSpace X] {E : Typ
   filter_upwards [(A.chart j).open_source.mem_nhds hy] with z hz
   simp [Function.comp, (A.chart j).left_inv hz]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover y`. Apply `continuousAt_of_chart A g y j hj` to reduce the goal to its premises. Establish `hmem : (A.chart j) y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm ((A.chart j) y) ∈ U`.
+
+Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hy`. Conclude with `(hg j _ hmem).continuousAt`.
+-/
 theorem continuousAt_of_holoOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g) {y : X} (hy : y ∈ U) :
     ContinuousAt g y := by
@@ -28,6 +36,11 @@ theorem continuousAt_of_holoOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fi
     exact hy
   exact (hg j _ hmem).continuousAt
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover y`. Apply `continuousAt_of_chart A g y j hj` to reduce the goal to its premises. Establish `hmem : (A.chart j) y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm ((A.chart j) y) ∈ U`.
+
+Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hy`. Conclude with `(hg j).continuousOn.continuousAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds hmem)`.
+-/
 theorem continuousAt_of_smoothOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {U : Set X} (hU : IsOpen U) {g : X → ℝ} (hg : A.SmoothOn U g) {y : X} (hy : y ∈ U) :
     ContinuousAt g y := by
@@ -40,6 +53,13 @@ theorem continuousAt_of_smoothOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : 
     exact hy
   exact (hg j).continuousOn.continuousAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds hmem)
 
+/- English proof (translation)
+Establish `h` using `hS.2 x z z ⟨hz, L.mem_U z⟩`. Establish `he1` using `(Real.exp_pos (-L.φ x z)).ne'`. Establish `he2` using `(Real.exp_pos (-L.φ z z)).ne'`. Apply the tactic sequence `constructor <;> intro h0`. Establish `h2 : ‖s x z‖ * Real.exp (-L.φ x z) = 0` using `by rw [h, h0, norm_zero, zero_mul]`.
+
+Break down `mul_eq_zero.1 h2 with h1 | h1` into its components or cases. Conclude with `norm_eq_zero.1 h1`. Conclude with `absurd h1 he1`. Establish `h2 : ‖s z z‖ * Real.exp (-L.φ z z) = 0` using `by rw [← h, h0, norm_zero, zero_mul]`. Break down `mul_eq_zero.1 h2 with h1 | h1` into its components or cases.
+
+Conclude with `norm_eq_zero.1 h1`. Conclude with `absurd h1 he2`.
+-/
 theorem bdry_iff {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {L : LocPot X}
     {s : X → X → ℂ} (hS : IsSection A L s) {x z : X} (hz : z ∈ L.U x) :
     s z z = 0 ↔ s x z = 0 := by
@@ -56,6 +76,11 @@ theorem bdry_iff {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     · exact norm_eq_zero.1 h1
     · exact absurd h1 he2
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y hy`. Establish `hc : ContinuousAt (s y) y` using `continuousAt_of_holoOn A (hS.1 y) (L.mem_U y)`. Establish `h1 : ∀ᶠ z in 𝓝 y, s y z ≠ 0` using `hc.eventually_ne hy`. Use `filter_upwards [h1, (L.isOpen_U y).mem_nhds (L.mem_U y)] with z hz hzU`.
+
+Conclude with `fun hb => hz ((bdry_iff hS hzU).1 hb)`.
+-/
 theorem isClosed_bdry {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {L : LocPot X}
     {s : X → X → ℂ} (hS : IsSection A L s) : IsClosed (bdry s) := by
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
@@ -65,6 +90,23 @@ theorem isClosed_bdry {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas
   filter_upwards [h1, (L.isOpen_U y).mem_nhds (L.mem_U y)] with z hz hzU
   exact fun hb => hz ((bdry_iff hS hzU).1 hb)
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hy`. Take `⟨ψ, -, hyψ, hsrc, σ, -, -, u, -, hu, hfac⟩` from `hSNC y`. Establish `hVo : IsOpen (interior (bdry s) ∩ ψ.source)` using `isOpen_interior.inter ψ.open_source`.
+
+Establish `hOo : IsOpen (ψ '' (interior (bdry s) ∩ ψ.source))` using `by first`. Consider the case `exact ψ.isOpen_image_of_subset_source hVo Set.inter_subset_right`. Consider the case `exact ψ.isOpen_image_source_inter isOpen_interior`. Establish `hw0 : ψ y ∈ ψ '' (interior (bdry s) ∩ ψ.source)` using `⟨y, ⟨hy, hyψ⟩, rfl⟩`. Establish `hT : Filter.Tendsto (fun t : ℂ => ψ y + t • (fun _ : Fin e => (1 : ℂ))) (𝓝[≠] 0) (𝓝 (ψ y))`.
+
+Establish `hc : Continuous (fun t : ℂ => ψ y + t • (fun _ : Fin e => (1 : ℂ)))` using `by fun_prop`. Establish `h0` using `hc.tendsto 0`. Simplify using `only [zero_smul, add_zero] at h0`. Conclude with `h0.mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ t in 𝓝[≠] (0 : ℂ), ψ y + t • (fun _ : Fin e => (1 : ℂ)) ∈ ψ '' (interior (bdry s) ∩ ψ.source) ∧ ∀ i, ψ y i + t ≠ 0`.
+
+Use `(hT.eventually (hOo.mem_nhds hw0)).and (Filter.eventually_all.2 fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : ψ y i = 0`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Rewrite using `[h0, zero_add]`. Conclude with `ht`.
+
+Establish `hc : Continuous (fun t : ℂ => ψ y i + t)` using `by fun_prop`. Establish `h2 : ∀ᶠ t in 𝓝 (0 : ℂ), ψ y i + t ≠ 0` using `hc.continuousAt.eventually_ne (by simpa using h0)`. Conclude with `nhdsWithin_le_nhds h2`. Take `⟨t, ⟨z, ⟨hzI, hzψ⟩, hzt⟩, hne⟩` from `hev.exists`. Establish `hzb : z ∈ bdry s` using `interior_subset hzI`.
+
+Establish `hzU : z ∈ L.U y` using `hsrc hzψ`. Establish `h1 : s y z = 0` using `(bdry_iff hS hzU).1 hzb`. Rewrite `h1` using `[hfac z hzψ]`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `hu z hzψ h2`.
+
+Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h2`. Break down `hσ : σ k with _ | i` into its components or cases. Simplify using `[hσ] at hk`. Simplify using `only [hσ] at hk`. Establish `hzi : ψ z i = ψ y i + t`.
+
+Rewrite using `[hzt]`. Simplify using the standard rewrite rules. Conclude with `hne i (by rw [← hzi]; by_contra hz0; exact pow_ne_zero _ hz0 hk)`.
+-/
 theorem interior_bdry_eq_empty {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {L : LocPot X} {s : X → X → ℂ} {n : ℕ} {m : Fin n → ℕ} {W : Fin n → Set X}
     (hS : IsSection A L s) (hSNC : IsSNC A L s m W) : interior (bdry s) = ∅ := by
@@ -112,6 +154,9 @@ theorem interior_bdry_eq_empty {e : ℕ} {X : Type} [TopologicalSpace X] {A : Fi
         simp
       exact hne i (by rw [← hzi]; by_contra hz0; exact pow_ne_zero _ hz0 hk)
 
+/- English proof (translation)
+Unfold `levi`. Rewrite using `[show fderiv ℝ (fun y => f y - a) = fderiv ℝ f from funext fun _ => fderiv_sub_const a]`.
+-/
 theorem levi_sub_const {D : ℕ} (f : (Fin D → ℂ) → ℝ) (a : ℝ) (z w : Fin D → ℂ) :
     levi (fun y => f y - a) z w = levi f z w := by
   unfold levi

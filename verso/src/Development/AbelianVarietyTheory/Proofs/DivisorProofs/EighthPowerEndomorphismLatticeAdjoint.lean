@@ -19,6 +19,19 @@ namespace GlobalTheory.Poinc.E8Endomorphism
 
 open GlobalTheory.Poinc.Sep.EndCompat
 
+/- English proof (translation)
+Establish `hM' : a'.transpose * S = S * a`. Use `congrArg Matrix.transpose hSa` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hS]`. Then use the resulting hypothesis. Establish `hM : ∀ w u, ∑ v, a' v w * S v u = ∑ x, S w x * a x u` using `fun w u => by`. Use `congrFun (congrFun hM' w) u` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply]`. Establish `key : ∀ x : Fin 8 → X, ∑ v, c v (∑ u, S v u • x u) = e.symm x`. Introduce `x`. Use `conv_rhs => rw [← hT (e.symm x)]`. Simplify using the standard rewrite rules.
+
+Apply `e.symm.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.symm_apply_apply, ← key]`. Use `conv_lhs => rw [← hT y]`. Simplify using `only [map_sum, map_zsmul, hh, Finset.smul_sum, smul_smul]`. Establish `L : ∀ f : Fin 8 → Fin 8 → Fin 8 → Y, ∑ v, ∑ u, ∑ w, f v u w = ∑ w, ∑ u, ∑ v, f v u w` using `fun f => by`.
+
+Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl fun u _ => Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [mul_comm]`. Use `_ = ∑ w, ∑ u, (∑ x, S w x * a x u) • c w (e y u) := by simp only [hM]`. Use `_ = ∑ w, ∑ x, ∑ u, (S w x * a x u) • c w (e y u) := by`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun u _ => Finset.sum_smul`.
+-/
 theorem lattice_of_charMap {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (S a a' : Matrix (Fin 8) (Fin 8) ℤ)
     (hS : S.transpose = S) (hSa : S * a' = a.transpose * S) (c : Fin 8 → (X →+ Y)) (e : Y ≃+ (Fin 8 → X))
     (hT : ∀ y, ∑ v, c v (∑ u, S v u • e y u) = y) (h : Y →+ Y) (hh : ∀ u χ, h (c u χ) = ∑ v, a' u v • c v χ)
@@ -53,6 +66,19 @@ theorem lattice_of_charMap {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (S a a
         rw [Finset.sum_comm]
         exact Finset.sum_congr rfl fun u _ => Finset.sum_smul
 
+/- English proof (translation)
+Introduce `R _ _ _ hB hDVR G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniqA hL pG hpG hpGc c hc e he a a' haa' E' hE' y`. Establish `hCN : GlobalTheory.TorRef.IsCN R` using `⟨hB.1.1, hB.1.2.2.1, hB.1.2.2.2, hB.2⟩`. Use `haveI : IsNoetherianRing R := hCN.1`. Use `haveI : IsIntegrallyClosed R := hCN.2.1`. Use `haveI := E'.homG`.
+
+Use `haveI := U.gen_hom`. Establish `hstep : ∀ u, E'.aG ≫ pG u = (List.ofFn fun v => pG v ^ a' u v).prod`. Introduce `u`. Use `haveI := hpG u`. Establish `hR : IsMonHom (List.ofFn fun v => pG v ^ a' u v).prod`.
+
+Use `isMonHom_of_mul _ fun T x z => ?_` and prove the remaining obligations. Establish `key : ∀ w : T ⟶ G', w ≫ (List.ofFn fun v => pG v ^ a' u v).prod = ∏ v, (w ≫ pG v) ^ a' u v` using `fun w => by`. Rewrite using `[← List.prod_ofFn]`. Conclude with `map_ofFn_prod (preH w) pG (a' u)`. Rewrite using `[key, key, key, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `haveI := hpG v`. Rewrite using `[MonObj.mul_comp, mul_zpow]`. Take `⟨F0, -, huniq⟩` from `GlobalTheory.semiAbelianHomExtension_holds.fractionField R (FractionRing R) G' G hG' hG ((Over.pullback (jK R)).map (E'.aG ≫ pG u))`. Use `(huniq _ ⟨inferInstance, rfl⟩).trans (huniq _ ⟨hR, ?_⟩).symm` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono U.gen.hom]`. Establish `e1 : (Over.pullback (jK R)).map (E'.aG ≫ pG u) ≫ U.gen.hom = U'.gen.hom ≫ (List.ofFn fun v => pr v ^ a' u v).prod`. Rewrite using `[Functor.map_comp, Category.assoc, hpGc u, ← Category.assoc, E'.ext, Category.assoc, hE' u]`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hEC` using `GlobalTheory.Poinc.Eq8.endChar_endU R hCN D' A' G' hG' U' E'`. Establish `hh` using `GlobalTheory.T.characterMap_of_integral_matrix_action R hCN D A G hG U D' A' G' hG' U' pG hpG c hc a' E'.aG E'.h E'.homG hEC hstep`. Conclude with `lattice_of_charMap (W + W.transpose) a a' (by rw [Matrix.transpose_add, Matrix.transpose_transpose, add_comm]) haa' c e he E'.h hh y`.
+-/
 theorem endU_lattice_adjoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → IsDiscreteValuationRing R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ A.A)), ∃! z : T' ⟶ A'.A, ∀ a, z ≫ pr a = y a) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ (pG : Fin 8 → (G' ⟶ G)), (∀ v, IsMonHom (pG v)) → (∀ v, (Over.pullback (jK R)).map (pG v) ≫ U.gen.hom = U'.gen.hom ≫ pr v) → ∀ (c : Fin 8 → (D.toPre.X →+ D'.toPre.X)), (∀ v, TorMatch U U' (RingHom.id R) (pG v).left (c v)) → ∀ e : D'.toPre.X ≃+ (Fin 8 → D.toPre.X), (∀ y, ∑ v, c v (∑ u, (W + W.transpose) v u • e y u) = y) → ∀ (a a' : Matrix (Fin 8) (Fin 8) ℤ), (W + W.transpose) * a' = a.transpose * (W + W.transpose) → ∀ E' : GlobalTheory.UT.EndU U'.toUnifPre, (∀ u, E'.aA ≫ pr u = (List.ofFn fun v => pr v ^ a' u v).prod) → ∀ y, e (E'.h y) = fun u => ∑ v, a u v • e y v := by
   intro R _ _ _ hB hDVR G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr huniqA hL pG hpG hpGc c hc e he a a' haa' E' hE' y
   have hCN : GlobalTheory.TorRef.IsCN R := ⟨hB.1.1, hB.1.2.2.1, hB.1.2.2.2, hB.2⟩

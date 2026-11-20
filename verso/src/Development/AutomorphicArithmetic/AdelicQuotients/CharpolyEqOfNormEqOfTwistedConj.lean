@@ -5,6 +5,13 @@ open GroundTheory.Global.AdeleBaseChange
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped ENNReal NumberField.AdeleRing TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ _ n _ δ δ' h γ γ' hγ hγ' hδ`. Establish `hℓ : σ ^ Module.finrank F E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Establish `hθ : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank F E = 1`.
+
+Rewrite using `[← sigmaGL_pow, hℓ, sigmaGL_one]`. Establish `h1 : normGL σ δ' = h⁻¹ * normGL σ δ * h`. Rewrite using `[hδ]`. Conclude with `twNorm_twConj_of_pow_eq_one (sigmaGL σ) hθ h δ`. Rewrite `h1` using `[hγ, hγ']`.
+
+Establish `hv : ∀ g : GL (Fin n) F, ((incl g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = (g : Matrix (Fin n) (Fin n) F).map (algebraMap F E)` using `fun _ => rfl`. Apply `Polynomial.map_injective (algebraMap F E) (algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, ← Matrix.charpoly_map, ← hv, ← hv, h1, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+-/
 theorem UpperTheory.charpoly_eq_of_norm_eq_of_twisted_conj :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E),
         (∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) → ∀ n : ℕ, 0 < n → ∀ (δ δ' h : GL (Fin n) E) (γ γ' : GL (Fin n) F), normGL σ δ = incl γ → normGL σ δ' = incl γ' →

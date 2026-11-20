@@ -3,6 +3,19 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ Z ρ hρ`. Establish `hKo : IsOpen ((G0.η.ker : Subgroup G0.Γ) : Set G0.Γ)` using `G0.η_open`. Establish `hKc : IsClosed ((G0.η.ker : Subgroup G0.Γ) : Set G0.Γ)` using `Subgroup.isClosed_of_isOpen _ hKo`. Use `haveI : CompactSpace G0.G₀ := isCompact_iff_compactSpace.mp hKc.isCompact`. Establish `hfin : (Set.range ρ).Finite` using `hρ.range_finite`.
+
+Establish `hS : ∀ z, ∃ V ∈ nhds (1 : G0.Γ), ∀ v ∈ V, ∀ x ∈ (Subtype.val '' (ρ ⁻¹' {z}) : Set G0.Γ), v * x ∈ (Subtype.val '' (ρ ⁻¹' {z}) : Set G0.Γ)`. Introduce `z`. Establish `hc : IsCompact (Subtype.val '' (ρ ⁻¹' {z}) : Set G0.Γ)` using `(hρ.isClosed_fiber z).isCompact.image continuous_subtype_val`. Establish `ho : IsOpen (Subtype.val '' (ρ ⁻¹' {z}) : Set G0.Γ)` using `hKo.isOpenMap_subtype_val _ (hρ.isOpen_fiber z)`. Use `open scoped Pointwise in`.
+
+Take `⟨V, hV, hVS⟩` from `compact_open_separated_mul_left hc ho subset_rfl`. Use `open scoped Pointwise in`. Conclude with `⟨V, hV, fun v hv x hx => hVS (Set.mul_mem_mul hv hx)⟩`. Use `choose V hV hVS using hS`. Establish `hW : (⋂ z ∈ Set.range ρ, V z) ∈ nhds (1 : G0.Γ)` using `(Filter.biInter_mem hfin).2 fun z _ => hV z`.
+
+Take `⟨O, hOW, hOo, h1O⟩` from `mem_nhds_iff.1 hW`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hOo h1O`. Use `filter_upwards [Λ.p_lim H] with N hN g`. Use `set a := (T.h N).p₀ (Λ.π0 N g)`. Use `set b := Λ.h.p₀ (Λ.πo0 g)`.
+
+Establish `hab : (a : G0.Γ) * (b : G0.Γ)⁻¹ ∈ (H : Set G0.Γ)` using `hN g.1`. Establish `h1 : (a : G0.Γ) * (b : G0.Γ)⁻¹ ∈ V (ρ b)` using `Set.mem_iInter₂.1 (hOW (hH hab)) (ρ b) ⟨b, rfl⟩`. Establish `h2 : (b : G0.Γ) ∈ Subtype.val '' (ρ ⁻¹' {ρ b})` using `⟨b, rfl, rfl⟩`. Establish `h3` using `hVS (ρ b) _ h1 _ h2`. Rewrite `h3` using `[inv_mul_cancel_right]`.
+
+Take `⟨a', ha', he⟩` from `h3`. Establish `e : a' = a` using `Subtype.ext he`. Rewrite using `[← e]`. Conclude with `ha'`.
+-/
 theorem UpperTheory.V.Pa.eventually_locallyConstant_comp_tower_eq :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (Z : Type) (ρ : G0.G₀ → Z), IsLocallyConstant ρ → ∀ᶠ N in (Λ.U : Filter ℕ), ∀ g, ρ ((T.h N).p₀ (Λ.π0 N g)) = ρ (Λ.h.p₀ (Λ.πo0 g)) := by
   intro l _ L G0 T Λ Z ρ hρ

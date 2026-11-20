@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun v hv => ?_)` and prove the remaining obligations.
+
+Conclude with `Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+-/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
   have hl : l.Prime := Fact.out
@@ -17,16 +22,29 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
   refine Filter.eventually_cofinite.2 ((Ideal.finite_factors h0).subset fun v hv => ?_)
   exact Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
+/- English proof (translation)
+Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+-/
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[CG.hasSat_mk]`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist K n P κ w B hκ h`.
+-/
 private theorem sat_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} (P : CuspSub K n)
     {w : HeightOneSpectrum (𝓞 K)} {B : Multiset ℂˣ} (h : (CG.mk P).HasSat w B) {κ : HChar K} (hκ : κ.UnrAt w) :
     (CG.mk (P.twist κ)).HasSat w (B.map (· * κ.val w)) := by
   rw [CG.hasSat_mk] at h ⊢
   exact GlobalTheory.SphGal.hasSatGL_twist K n P κ w B hκ h
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ l _ ι n R P hA art κ m μ ha h`. Use `⟨(UpperTheory.galoisRep_irreducibility_criterion.1 _ (G K Ω) _ n R).2.2 μ hA.1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA.2, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified κ), ev_notMem (K := K) l] with w ⟨B, hB, hE⟩ hu hl`. Use `⟨_, sat_twist P hB hu, ?_⟩` and prove the remaining obligations. Establish `hc : UpperTheory.V.Af.Bc.CharEig ι μ w (κ.val w : ℂ)`.
+
+Use `fun A hA => ⟨(h.unr_iff ha (Or.inl hl) hA).2 hu, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, h.frob_unr ha (Or.inl hl) hu hA hσ, inv_inv, RingEquiv.apply_symm_apply]`. Establish `h4` using `UpperTheory.frobenius_eigenvalues_twist K Ω l ι n R μ w _ _ hE hc`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [algSat_eq, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, mul_assoc]`.
+-/
 theorem UpperTheory.V.Af.Cq.attTwist :
     ∀ (K Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ)
         (R : G K Ω →* GL (Fin n) (Qbar l)) (P : CuspSub K n), AttC ι R P → ∀ (art : Ideles K →* Gab K Ω) (κ : HChar K) (m : (K →+* ℂ) → ℤ)

@@ -23,6 +23,11 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {G : Over (Sp R)} {D : DegData R I}
   {A : PolAV (Sp (FractionRing R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `a : hRed I (𝟙 (𝟙_ (Over (Sp R)))) e ≫ (fstG I e (𝟙_ (Over (Sp R)))).left = thick R I e` using `(hRed_fst _ e).trans (Category.comp_id _)`. Establish `b : hRed I (𝟙 (𝟙_ (Over (Sp R)))) e ≫ ((Over.pullback (thick R I e)).map h).left = hRed I h e`. Use `GlobalTheory.TorsionTranslate.mono_fst (I := I) e G` as an intermediate fact. Rewrite using `[← cancel_mono (fstG I e G).left, hRed_fst, Category.assoc]`. Establish `c : ((Over.pullback (thick R I e)).map h).left ≫ (fstG I e G).left = (fstG I e (𝟙_ (Over (Sp R)))).left ≫ h.left` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[c, ← Category.assoc, a]`. Conclude with `(congrArg (· ≫ pGl U e) b).symm.trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (hg e).1.symm).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ g.b.left) a))))`.
+-/
 theorem hRed_pGl {U : UnifPre I D A G} {h : 𝟙_ (Over (Sp R)) ⟶ G} {g : GtPt D.toPre (𝟙_ (Over (Sp R)))}
     (hg : GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U h g) (e : ℕ) : hRed I h e ≫ pGl U e = thick R I e ≫ g.b.left := by
   have a : hRed I (𝟙 (𝟙_ (Over (Sp R)))) e ≫ (fstG I e (𝟙_ (Over (Sp R)))).left = thick R I e :=
@@ -36,6 +41,17 @@ theorem hRed_pGl {U : UnifPre I D A G} {h : 𝟙_ (Over (Sp R)) ⟶ G} {g : GtPt
   exact (congrArg (· ≫ pGl U e) b).symm.trans ((Category.assoc _ _ _).trans
     ((congrArg (_ ≫ ·) (hg e).1.symm).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ g.b.left) a))))
 
+/- English proof (translation)
+Take `⟨ν, ν', hν, hν', v⟩` from `GlobalTheory.TorsionTranslate.exists_matching U hI (K := Fin 1) (fun _ => 1) (fun _ => b.left) (fun _ => h.left) (fun e _ => hRed I h e) (fun e _ => hb e) (fun e _ => hRed_fst h e)`. Take `⟨ρ, hρ⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_ratio U.LG.isLB rfl f ν' hf hν'`. Take `⟨μ₁, hμ, vμ⟩` from `GlobalTheory.TorsionTranslate.exists_scale ν hν ρ`. Take `⟨t, ht, vt⟩` from `exists_gen D.toPre.P.isLB (φ' := ![(η[D.toPre.P.A]).left, b.left]) (ε' := DegPre.lineε 1) (fun W _ k => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_two, Fintype.prod_unique, Fintype.prod_unique]`. Use the proof step `rfl)`. Use the proof step `(LB.mulGen D.toPre.P.L (K := PUnit) _ _ _ _ D.toPre.rig (LB.invGen D.toPre.P.L _ _ μ₁))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ D.toPre.rig_gen (invGen_isGen _ _ _ _ hμ))`. Use `⟨t, ht, fun e Z r z J JG hJ hJG => ?_⟩` and prove the remaining obligations.
+
+Establish `k` using `v e Z r z J JG hJ hJG`. Rewrite `k` using `[Fintype.prod_unique, zpow_one]`. Establish `w : wv U e (r ≫ hRed I h e) z (J (r ≫ hRed I h e ≫ pGl U e)) (JG (r ≫ hRed I h e ≫ fGl I G e)) = GlobalTheory.TorusInvariance.wVal U e z J JG (r ≫ hRed I h e)`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `k₁` using `(vt _ (r ≫ thick R I e) z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg (_ * ·) ((val_inv _ _).trans (congrArg (·⁻¹) ((vμ _ _ z J hJ).trans (congrArg (_ * ·) k))))))`. Establish `k₂` using `hρ _ (r ≫ thick R I e) z JG hJG`. Use `(congrArg₂ (· * ·) (congrArg₂ (· * ·) k₁ w) k₂).trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_tRel [IsLocalRing R] [IsAdicComplete I R] (hI : I ≠ ⊤) {U : UnifPre I D A G}
     {h : 𝟙_ (Over (Sp R)) ⟶ G} {b : 𝟙_ (Over (Sp R)) ⟶ D.toPre.P.A}
     (hb : ∀ e, hRed I h e ≫ pGl U e = thick R I e ≫ b.left)
@@ -69,6 +85,9 @@ theorem exists_tRel [IsLocalRing R] [IsAdicComplete I R] (hI : I ≠ ⊤) {U : U
 
 end
 
+/- English proof (translation)
+Introduce `V _ _ _ hV D A G _ _ U h g hg f hf`. Use `hV.2.2.1` as an intermediate fact. Conclude with `exists_tRel (maximalIdeal.isMaximal V).ne_top (hRed_pGl hg) f hf`.
+-/
 theorem exists_integral_frame : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (h : 𝟙_ (Over (Sp V)) ⟶ G) (g : GtPt D.toPre (𝟙_ (Over (Sp V)))), GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U h g → ∀ f : LB.Gen (LB.LinComb U.LG.L (K := Fin 1) (fun _ => h.left) (fun _ => 1)), f.IsGen → ∃ t : LB.Gen (LB.LinComb D.toPre.P.L ![(η[D.toPre.P.A]).left, g.b.left] (DegPre.lineε 1)), t.IsGen ∧ ∀ e : ℕ, GlobalTheory.Poinc.IntEval.TRel U h g.b f t e := by
   intro V _ _ _ hV D A G _ _ U h g hg f hf
   have := hV.2.2.1

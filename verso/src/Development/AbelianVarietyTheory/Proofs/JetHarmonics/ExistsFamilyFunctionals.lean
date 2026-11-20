@@ -10,6 +10,17 @@ import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R hN hF`. Use `FiniteDimensional.complete ℂ Wp` as an intermediate fact. Use `FiniteDimensional.complete ℂ Wq` as an intermediate fact. Take `⟨-, -, -, -, -, hu, hu'⟩` from `p.hP`. Take `⟨νq, νq', hS, hS'⟩` from `GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' hu hu'`.
+
+Take `⟨⟨-, -, -, -, hG⟩, hν⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Take `⟨c, hc, hd⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) p.T.base.μG hS.2.2.2.2.2.2.1`. Establish `h1 : ∀ ν, ∃ l : (R ν).H → Wp, n1 ν ≤ q0 → IsBeL (R ν) p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN l`. Introduce `ν`. Distinguish the cases in `hq : n1 ν ≤ q0`.
+
+Take `⟨l, hl⟩` from `GlobalTheory.T.bessel_gap_exists_functional hH P.k P.r _ _ (h / 2) (R ν) Wp _ _ _ _ _ _ _ (hF ν hq) (hν ν hq).2.2.1 hG hS`. Conclude with `⟨l, fun _ => hl⟩`. Conclude with `⟨0, fun h' => absurd h' hq⟩`. Establish `h2 : ∀ ν, ∃ l : (R ν).H → Wq, n1 ν ≤ q0 → IsBeL (R ν) p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN l`. Introduce `ν`.
+
+Distinguish the cases in `hq : n1 ν ≤ q0`. Take `⟨l, hl⟩` from `GlobalTheory.T.bessel_gap_exists_functional hH P.k P.r _ _ (h / 2) (R ν) Wq _ _ _ _ _ _ _ (hF ν hq) (hν ν hq).2.2.1 hG hS'`. Conclude with `⟨l, fun _ => hl⟩`. Conclude with `⟨0, fun h' => absurd h' hq⟩`. Use `choose l hl using h1`.
+
+Use `choose l' hl' using h2`. Establish `hp : ∀ ν, n1 ν ≤ q0 → 0 < c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ))` using `fun ν hq => mul_pos hc (GlobalTheory.FamilyDegreeRatio.degree_ratios P.k P.r lam P.u b bv ga h q0 hN ν hq).1`. Conclude with `⟨l, l', fun ν => c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ)), fun ν hq => ⟨hl ν hq, hp ν hq, (hd _ _ (hF ν hq)).1⟩, fun ν hq => ⟨hl' ν hq, hp ν hq, (hd _ _ (hF ν hq)).1⟩⟩`.
+-/
 theorem GlobalTheory.exists_sideFam_both_sides : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r), Num P.k P.r lam P.u b bv ga h q0 → IsFam lam q0 R → ∃ (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ), (haveI := FiniteDimensional.complete ℂ Wp; SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg) ∧ (haveI := FiniteDimensional.complete ℂ Wq; SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg) := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R hN hF
   have := FiniteDimensional.complete ℂ Wp

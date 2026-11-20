@@ -11,6 +11,11 @@ section Flat
 
 variable {A : Type*} [CommRing A] {M : Type*} [AddCommGroup M] [Module A M]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Take `⟨c, rfl⟩` from `(mem_pow_smul_top_iff f n z).mp (ih (powGr.pow_succ_smul_le _ M n hz))`. Use `sum_monoVal_smul_mem_pow_succ f fun α => hg _ ?_` and prove the remaining obligations.
+
+Conclude with `h n (fun α => g (c α)) (by simpa using hz) α`.
+-/
 theorem IsQuasiRegularSeq.mem_pow_smul_of_map_mem {ι : Type*} [Finite ι] {f : ι → A}
     (h : IsQuasiRegularSeq M f) {F : Type*} [AddCommGroup F] [Module A F] (g : F →ₗ[A] M)
     (hg : ∀ z, g z ∈ (Ideal.span (Set.range f) • ⊤ : Submodule A M) →
@@ -24,6 +29,11 @@ theorem IsQuasiRegularSeq.mem_pow_smul_of_map_mem {ι : Type*} [Finite ι] {f : 
     refine sum_monoVal_smul_mem_pow_succ f fun α => hg _ ?_
     exact h n (fun α => g (c α)) (by simpa using hz) α
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `eq_top_iff.mpr (ih.ge.trans (sup_le le_sup_left ?_))` and prove the remaining obligations. Use `(Submodule.smul_mono le_rfl h.ge).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.smul_sup, ← mul_smul, ← pow_succ]`. Conclude with `sup_le_sup_right Submodule.smul_le_right _`.
+-/
 theorem sup_pow_smul_top_eq_top {I : Ideal A} {N : Submodule A M} (h : N ⊔ I • ⊤ = ⊤) (n : ℕ) :
     N ⊔ I ^ n • ⊤ = ⊤ := by
   induction n with
@@ -34,6 +44,33 @@ theorem sup_pow_smul_top_eq_top {I : Ideal A} {N : Submodule A M} (h : N ⊔ I �
     rw [Submodule.smul_sup, ← mul_smul, ← pow_succ]
     exact sup_le_sup_right Submodule.smul_le_right _
 
+/- English proof (translation)
+Rewrite using `[Module.Flat.iff_lTensor_injective']`. Introduce `J`. Use `haveI : SMulCommClass A B M := IsScalarTower.to_smulCommClass`. Use `haveI : Module.Finite B (M ⊗[A] J) := by`. Conclude with `Module.Finite.equiv (AlgebraTensorModule.cancelBaseChange A B B M J)`.
+
+Set `φ : (S →₀ J) →ₗ[A] M ⊗[A] J` to `Finsupp.lsum A fun s => TensorProduct.mk A M J (m s)`. Establish `hφ : LinearMap.range φ ⊔ I • ⊤ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `t -`. Proceed by induction on `t with`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul y j`. Establish `hy : y ∈ Submodule.span A (Set.range m) ⊔ I • ⊤` using `by rw [hsurj]; trivial`. Use `Submodule.mem_map_of_mem (f := (TensorProduct.mk A M J).flip j) hy` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_sup, Submodule.map_smul'']`. Use `SetLike.le_def.mp (sup_le_sup ?_ (Submodule.smul_mono le_rfl le_top)) this` and prove the remaining obligations. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, rfl⟩`. Conclude with `⟨Finsupp.single s j, by simp [φ]⟩`.
+
+Set `μ : M ⊗[A] J →ₗ[A] M` to `(TensorProduct.rid A M).toLinearMap ∘ₗ J.subtype.lTensor M`. Establish `hμφ : ∀ w, μ (φ w) = Finsupp.linearCombination A m (Finsupp.mapRange.linearMap J.subtype w)`. Introduce `w`. Proceed by induction on `w using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single s j => simp [μ, φ]`. Take `⟨c, hc⟩` from `I.exists_pow_inf_eq_pow_smul (M := A) J`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`.
+
+Establish `hμt : μ t = 0` using `by simp [μ, ht]`. Establish `key : ∀ n : ℕ, t ∈ (I ^ n • ⊤ : Submodule A (M ⊗[A] J))`. Introduce `n`. Establish `h1 : t ∈ LinearMap.range φ ⊔ I ^ (n + c) • ⊤`. Rewrite using `[sup_pow_smul_top_eq_top hφ]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨_, ⟨w, rfl⟩, v, hv, rfl⟩` from `Submodule.mem_sup.mp h1`. Use `add_mem ?_ (Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega)) hv)` and prove the remaining obligations. Establish `h2 : μ (φ w) ∈ (I ^ (n + c) • ⊤ : Submodule A M)`. Rewrite `hμt` using `[map_add, add_eq_zero_iff_eq_neg]`.
+
+Rewrite using `[hμt, neg_mem_iff]`. Use `Submodule.mem_map_of_mem (f := μ) hv` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`. Rewrite `h2` using `[hμφ]`.
+
+Establish `h3 : ∀ s, w s ∈ (I ^ n • ⊤ : Submodule A J)`. Introduce `s`. Establish `h4 : (w s : A) ∈ (I ^ (n + c) • ⊤ ⊓ J : Submodule A A)` using `⟨by simpa using hinj _ _ h2 s, (w s).2⟩`. Rewrite `h4` using `[hc _ (by omega), Nat.add_sub_cancel]`. Rewrite using `[Submodule.mem_smul_top_iff]`.
+
+Conclude with `Submodule.smul_mono le_rfl inf_le_right h4`. Rewrite using `[show φ w = w.sum fun s j => m s ⊗ₜ j from rfl]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := TensorProduct.mk A M J (m s)) (h3 s)` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top this`. Establish `h0` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := M ⊗[A] J) _ hI`. Rewrite using `[← Submodule.mem_bot B, ← h0, Submodule.mem_iInf]`. Introduce `n`. Rewrite using `[← Ideal.map_pow, ← Submodule.restrictScalars_mem A, Ideal.smul_restrictScalars]`.
+
+Conclude with `key n`.
+-/
 theorem flat_of_basis_mod_pow [IsNoetherianRing A] (B : Type*) [CommRing B] [IsNoetherianRing B]
     [Algebra A B] [Module B M] [IsScalarTower A B M] [Module.Finite B M] {I : Ideal A}
     (hI : I.map (algebraMap A B) ≤ (⊥ : Ideal B).jacobson) {S : Type*} (m : S → M)
@@ -104,6 +141,21 @@ theorem flat_of_basis_mod_pow [IsNoetherianRing A] (B : Type*) [CommRing B] [IsN
   rw [← Ideal.map_pow, ← Submodule.restrictScalars_mem A, Ideal.smul_restrictScalars]
   exact key n
 
+/- English proof (translation)
+Use `set I := Ideal.span (Set.range f) with hIdef`. Use `letI := Ideal.Quotient.field I`. Set `b` to `Module.Free.chooseBasis (A ⧸ I) (M ⧸ (I • ⊤ : Submodule A M))`. Use `choose m hm using fun s => Submodule.Quotient.mk_surjective _ (b s)`. Establish `hb : ∀ z, (Submodule.Quotient.mk (Finsupp.linearCombination A m z) : M ⧸ (I • ⊤ : Submodule A M)) = Finsupp.linearCombination (A ⧸ I) b (z.mapRange (Ideal.Quotient.mk I) (map_zero _))`.
+
+Introduce `z`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, Submodule.Quotient.mk_add, hx, hy, Finsupp.mapRange_add (map_add _), map_add]`.
+
+Consider the case `single s a => simp [hm, ← Ideal.Quotient.algebraMap_eq]`. Use `flat_of_basis_mod_pow B hI m ?_ fun n z hz s => ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨z, hz⟩` from `Finsupp.mapRange_surjective (Ideal.Quotient.mk I) (map_zero _) Ideal.Quotient.mk_surjective (b.repr (Submodule.Quotient.mk y))`.
+
+Establish `h1` using `hb z`. Rewrite `h1` using `[hz, b.linearCombination_repr, Submodule.Quotient.eq']`. Establish `h2 : Finsupp.linearCombination A m z ∈ Submodule.span A (Set.range m)`. Rewrite using `[← Finsupp.range_linearCombination]`. Conclude with `⟨z, rfl⟩`.
+
+Simplify using `using Submodule.add_mem_sup h2 h1`. Establish `h1` using `h.mem_pow_smul_of_map_mem (Finsupp.linearCombination A m) (fun z hz => ?_) n z hz`. Use `Submodule.mem_map_of_mem (f := Finsupp.lapply (R := A) s) h1` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Simplify using `using Submodule.smul_mono le_rfl le_top this`.
+
+Rewrite `hz` using `[← Submodule.Quotient.mk_eq_zero, hb]`. Establish `h2` using `(linearIndependent_iff.mp b.linearIndependent) _ hz`. Rewrite using `[← z.sum_single]`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (z s), ← smul_eq_mul, ← Finsupp.smul_single]`.
+
+Use `Submodule.smul_mem_smul (Ideal.Quotient.eq_zero_iff_mem.mp ?_) trivial` and prove the remaining obligations. Simplify using `using DFunLike.congr_fun h2 s`.
+-/
 theorem IsQuasiRegularSeq.flat_of_isMaximal [IsNoetherianRing A] (B : Type*) [CommRing B]
     [IsNoetherianRing B] [Algebra A B] [Module B M] [IsScalarTower A B M] [Module.Finite B M]
     {ι : Type*} [Finite ι] {f : ι → A} (h : IsQuasiRegularSeq M f)
@@ -146,6 +198,9 @@ theorem IsQuasiRegularSeq.flat_of_isMaximal [IsNoetherianRing A] (B : Type*) [Co
       refine Submodule.smul_mem_smul (Ideal.Quotient.eq_zero_iff_mem.mp ?_) trivial
       simpa using DFunLike.congr_fun h2 s
 
+/- English proof (translation)
+Establish `he : Ideal.span (Set.range xs.get) = maximalIdeal A`. Rewrite using `[← ofList_ofFn_eq_span_range, List.ofFn_get, hxs]`. Apply the tactic sequence `refine (isQuasiRegularSeq_get_of_isWeaklyRegular h).flat_of_isMaximal B ?_ ?_ <;> rw [he]`. Use `exacts [inferInstance, hB]`.
+-/
 theorem flat_of_isWeaklyRegular_of_le_jacobson [IsNoetherianRing A] [IsLocalRing A] (B : Type*)
     [CommRing B] [IsNoetherianRing B] [Algebra A B] [Module B M] [IsScalarTower A B M]
     [Module.Finite B M] (hB : (maximalIdeal A).map (algebraMap A B) ≤ (⊥ : Ideal B).jacobson)
@@ -156,6 +211,9 @@ theorem flat_of_isWeaklyRegular_of_le_jacobson [IsNoetherianRing A] [IsLocalRing
   refine (isQuasiRegularSeq_get_of_isWeaklyRegular h).flat_of_isMaximal B ?_ ?_ <;> rw [he]
   exacts [inferInstance, hB]
 
+/- English proof (translation)
+The claim follows from `flat_of_isWeaklyRegular_of_le_jacobson B ((map_maximalIdeal_le _).trans (maximalIdeal_le_jacobson _)) hxs h`.
+-/
 theorem flat_of_isWeaklyRegular_of_isLocalHom [IsNoetherianRing A] [IsLocalRing A] (B : Type*)
     [CommRing B] [IsNoetherianRing B] [IsLocalRing B] [Algebra A B] [IsLocalHom (algebraMap A B)]
     [Module B M] [IsScalarTower A B M] [Module.Finite B M]
@@ -170,18 +228,35 @@ section Domain
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `have : Nontrivial (R ⧸ Ideal.span {x}) := Ideal.Quotient.nontrivial_iff.mpr fun h => hx (Ideal.span_singleton_eq_top.mp h) .of_surjective' _ Ideal.Quotient.mk_surjective`.
+-/
 theorem isLocalRing_quotient_span_singleton [IsLocalRing R] {x : R} (hx : x ∈ maximalIdeal R) :
     IsLocalRing (R ⧸ Ideal.span {x}) :=
   have : Nontrivial (R ⧸ Ideal.span {x}) := Ideal.Quotient.nontrivial_iff.mpr fun h =>
     hx (Ideal.span_singleton_eq_top.mp h)
   .of_surjective' _ Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Rewrite using `[← map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective, ← h, Ideal.ofList_cons, Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_ofList]`.
+-/
 theorem ofList_map_mk_eq_maximalIdeal [IsLocalRing R] {x : R} {xs : List R}
     (h : Ideal.ofList (x :: xs) = maximalIdeal R) [IsLocalRing (R ⧸ Ideal.span {x})] :
     Ideal.ofList (xs.map (Ideal.Quotient.mk (Ideal.span {x}))) = maximalIdeal _ := by
   rw [← map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective, ← h, Ideal.ofList_cons,
     Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_ofList]
 
+/- English proof (translation)
+Establish `he : Ideal.span (Set.range xs.get) = maximalIdeal R`. Rewrite using `[← ofList_ofFn_eq_span_range, List.ofFn_get, h]`. Establish `hmem : ∀ i, xs.get i ∈ maximalIdeal R` using `fun i => he ▸ Ideal.subset_span ⟨i, rfl⟩`. Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (he.symm ▸ hx)`. Take `⟨i, hi⟩ : ∃ i, IsUnit (a i)` from `by by_contra! hne`.
+
+Use `hx2 (ha ▸ Ideal.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hne i) (hmem i)`. Use `⟨xs.eraseIdx i, List.length_eraseIdx_add_one i.2, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ofList_cons, sup_le_iff, Ideal.span_singleton_le_iff_mem, ← h]`.
+
+Conclude with `⟨h.symm ▸ hx, Ideal.span_mono fun y hy => List.mem_of_mem_eraseIdx hy⟩`. Establish `hj : ∀ j, j ≠ i → xs.get j ∈ Ideal.ofList (x :: xs.eraseIdx i)` using `fun j hj => Ideal.subset_span (List.mem_cons_of_mem _ (List.mem_eraseIdx_iff_getElem.mpr ⟨j, j.2, fun e => hj (Fin.ext e), rfl⟩))`. Rewrite using `[← he, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `hji : j = i`.
+
+Use `swap`. Conclude with `hj j hji`. Substitute `hji` using the available equality. Rewrite using `[SetLike.mem_coe, ← Ideal.unit_mul_mem_iff_mem _ hi]`. Rewrite `ha` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`.
+
+Rewrite using `[eq_sub_of_add_eq ha]`. Conclude with `sub_mem (Ideal.subset_span List.mem_cons_self) (Ideal.sum_mem _ fun k hk => Ideal.mul_mem_left _ _ (hj k (Finset.ne_of_mem_erase hk)))`.
+-/
 theorem exists_ofList_cons_eq_maximalIdeal [IsLocalRing R] {xs : List R}
     (h : Ideal.ofList xs = maximalIdeal R) {x : R} (hx : x ∈ maximalIdeal R)
     (hx2 : x ∉ maximalIdeal R ^ 2) :
@@ -215,6 +290,21 @@ theorem exists_ofList_cons_eq_maximalIdeal [IsLocalRing R] {xs : List R}
       (Ideal.sum_mem _ fun k hk => Ideal.mul_mem_left _ _ (hj k (Finset.ne_of_mem_erase hk)))
 
 universe u in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ _ xs hn h _`. Rewrite `h` using `[List.length_eq_zero_iff.mp hn, Ideal.ofList_nil]`. Conclude with `(isField_iff_maximalIdeal_eq.mpr h.symm).isDomain`.
+
+Consider the case `succ n ih`. Introduce `R _ _ _ xs hn h hd`. Establish `hmin : maximalIdeal R ∉ minimalPrimes R`. Introduce `hm`. Establish `h0 : ringKrullDim R = 0`.
+
+Rewrite using `[← maximalIdeal_height_eq_ringKrullDim, Ideal.height_eq_zero_iff.mpr hm]`. Both sides reduce to the same expression. Rewrite `hd` using `[h0]`. Normalize the coercions in `at hd`. Take `⟨x, hx, hx'⟩ : ∃ x ∈ maximalIdeal R, ∀ p ∈ insert (maximalIdeal R ^ 2) (minimalPrimes R), x ∉ p` from `by by_contra! hne`.
+
+Take `⟨p, hp, hle⟩` from `(Ideal.subset_union_prime_finite ((minimalPrimes.finite_of_isNoetherianRing R).insert (maximalIdeal R ^ 2)) (f := id) (maximalIdeal R ^ 2) (maximalIdeal R ^ 2) (I := maximalIdeal R) (fun p hp h1 _ => (hp.resolve_left h1).1.1)).mp fun x hx => by simpa using hne x hx`. Break down `hp with rfl | hp` into its components or cases. Establish `hb : maximalIdeal R = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) _ (IsNoetherian.noetherian _) (by simpa [pow_two] using hle) (maximalIdeal_le_jacobson _)`. Conclude with `hmin ⟨⟨inferInstance, bot_le⟩, fun q _ _ => hb ▸ bot_le⟩`. Conclude with `hmin (((maximalIdeal.isMaximal R).eq_of_le hp.1.1.ne_top hle).symm ▸ hp)`.
+
+Take `⟨ys, hys, hgen⟩` from `exists_ofList_cons_eq_maximalIdeal h hx (hx' _ (.inl rfl))`. Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Establish `hdom : IsDomain (R ⧸ Ideal.span {x})`. Use `ih _ _ (by simp; omega) (ofList_map_mk_eq_maximalIdeal hgen) ?_` and prove the remaining obligations. Use `hd.trans (ringKrullDim_le_ringKrullDim_quotient_add_card {x} (by simpa [ringJacobson_eq_maximalIdeal] using hx))` as an intermediate fact.
+
+Rewrite `this` using `[Finset.coe_singleton, Finset.card_singleton, Nat.cast_add]`. Conclude with `ENat.WithBot.add_le_add_natCast_right_iff.mp this`. Establish `hp : (Ideal.span {x}).IsPrime` using `(Ideal.Quotient.isDomain_iff_prime _).mp hdom`. Take `⟨p, hpm, hle⟩` from `Ideal.exists_minimalPrimes_le (I := ⊥) (J := Ideal.span {x}) bot_le`. Establish `hb : p = ⊥`.
+
+Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) _ (IsNoetherian.noetherian _) (fun y hy => ?_) (maximalIdeal_le_jacobson _)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton.mp (hle hy)`. Conclude with `Ideal.mul_mem_mul hx ((hpm.1.1.mem_or_mem hy).resolve_left (hx' p (.inr hpm)))`. Establish `: (⊥ : Ideal R).IsPrime` using `hb ▸ hpm.1.1`. Conclude with `IsDomain.of_bot_isPrime R`.
+-/
 private theorem is_domain_of_regular_local (n : ℕ) : ∀ (R : Type u) [CommRing R] [IsNoetherianRing R]
     [IsLocalRing R] (xs : List R), xs.length = n → Ideal.ofList xs = maximalIdeal R →
     (n : WithBot ℕ∞) ≤ ringKrullDim R → IsDomain R := by
@@ -263,6 +353,11 @@ private theorem is_domain_of_regular_local (n : ℕ) : ∀ (R : Type u) [CommRin
     have : (⊥ : Ideal R).IsPrime := hb ▸ hpm.1.1
     exact IsDomain.of_bot_isPrime R
 
+/- English proof (translation)
+Take `⟨s, hs, hspan⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank (IsNoetherian.noetherian (maximalIdeal R))`. Use `⟨s.toList, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hspan, Ideal.ofList]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.length_toList, hs, IsRegularLocalRing.spanFinrank_maximalIdeal]`.
+-/
 theorem exists_ofList_eq_maximalIdeal_length_eq (R : Type*) [CommRing R] [IsRegularLocalRing R] :
     ∃ xs : List R, Ideal.ofList xs = maximalIdeal R ∧ (xs.length : WithBot ℕ∞) = ringKrullDim R := by
   obtain ⟨s, hs, hspan⟩ := Submodule.FG.exists_span_finset_card_eq_spanFinrank
@@ -274,12 +369,30 @@ theorem exists_ofList_eq_maximalIdeal_length_eq (R : Type*) [CommRing R] [IsRegu
     simp
   · rw [Finset.length_toList, hs, IsRegularLocalRing.spanFinrank_maximalIdeal]
 
+/- English proof (translation)
+Take `⟨xs, h, hd⟩` from `exists_ofList_eq_maximalIdeal_length_eq R`. Conclude with `is_domain_of_regular_local _ R xs rfl h hd.le`.
+-/
 theorem isDomain_of_isRegularLocalRing (R : Type*) [CommRing R] [IsRegularLocalRing R] :
     IsDomain R := by
   obtain ⟨xs, h, hd⟩ := exists_ofList_eq_maximalIdeal_length_eq R
   exact is_domain_of_regular_local _ R xs rfl h hd.le
 
 universe u in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ _ xs hn h _`. Rewrite using `[List.length_eq_zero_iff.mp hn]`. Conclude with `.nil R R`.
+
+Consider the case `succ n ih`. Introduce `R _ _ _ xs hn h hd`. Use `is_domain_of_regular_local _ R xs hn h hd` as an intermediate fact. Take `_ | ⟨x, ys⟩` from `xs`. Simplify using `at hn`.
+
+Establish `hx : x ∈ maximalIdeal R` using `h ▸ Ideal.subset_span List.mem_cons_self`. Use `isLocalRing_quotient_span_singleton hx` as an intermediate fact. Establish `hn' : (ys.map (Ideal.Quotient.mk (Ideal.span {x}))).length = n` using `by simpa using hn`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `h1 : Ideal.ofList ys = maximalIdeal R` using `by simpa using h`. Establish `h2` using `hd.trans (ringKrullDim_le_spanFinrank_maximalIdeal R)`. Establish `h3 : (maximalIdeal R).spanFinrank ≤ ys.length` using `by classical`. Rewrite using `[← h1]`. Use `(Submodule.spanFinrank_span_le_ncard_of_finite (List.finite_toSet ys)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← List.coe_toFinset, Set.ncard_coe_finset]`. Conclude with `List.toFinset_card_le ys`. Normalize the coercions in `at h2`. Simplify using `at hn`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hq : IsWeaklyRegular (R ⧸ Ideal.span {x}) (ys.map (Ideal.Quotient.mk (Ideal.span {x})))`. Use `ih _ _ hn' (ofList_map_mk_eq_maximalIdeal h) ?_` and prove the remaining obligations. Use `hd.trans (ringKrullDim_le_ringKrullDim_quotient_add_card {x} (by simpa [ringJacobson_eq_maximalIdeal] using hx))` as an intermediate fact. Rewrite `this` using `[Finset.coe_singleton, Finset.card_singleton, Nat.cast_add]`. Conclude with `ENat.WithBot.add_le_add_natCast_right_iff.mp this`.
+
+Rewrite using `[isWeaklyRegular_cons_iff]`. Use `⟨IsSMulRegular.of_ne_zero hx0, ?_⟩` and prove the remaining obligations. Establish `e : QuotSMulTop x R ≃ₗ[R] R ⧸ Ideal.span {x}` using `Submodule.quotEquivOfEq _ _ (by simp [← Submodule.ideal_span_singleton_smul])`. Rewrite using `[e.isWeaklyRegular_congr, ← isWeaklyRegular_map_algebraMap_iff (R ⧸ Ideal.span {x})]`. Conclude with `hq`.
+-/
 private theorem is_weakly_regular_of_system_parameters (n : ℕ) : ∀ (R : Type u) [CommRing R] [IsNoetherianRing R]
     [IsLocalRing R] (xs : List R), xs.length = n → Ideal.ofList xs = maximalIdeal R →
     (n : WithBot ℕ∞) ≤ ringKrullDim R → IsWeaklyRegular R xs := by
@@ -322,12 +435,18 @@ private theorem is_weakly_regular_of_system_parameters (n : ℕ) : ∀ (R : Type
     rw [e.isWeaklyRegular_congr, ← isWeaklyRegular_map_algebraMap_iff (R ⧸ Ideal.span {x})]
     exact hq
 
+/- English proof (translation)
+The claim follows from `(isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal fun _ hx => h ▸ Ideal.subset_span hx).mpr (is_weakly_regular_of_system_parameters _ R xs rfl h hd)`.
+-/
 theorem isRegular_of_ofList_eq_maximalIdeal [IsNoetherianRing R] [IsLocalRing R] {xs : List R}
     (h : Ideal.ofList xs = maximalIdeal R) (hd : (xs.length : WithBot ℕ∞) ≤ ringKrullDim R) :
     RingTheory.Sequence.IsRegular R xs :=
   (isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal
     fun _ hx => h ▸ Ideal.subset_span hx).mpr (is_weakly_regular_of_system_parameters _ R xs rfl h hd)
 
+/- English proof (translation)
+The claim follows from `isRegular_of_ofList_eq_maximalIdeal h (by rw [hd, IsRegularLocalRing.spanFinrank_maximalIdeal])`.
+-/
 theorem isRegular_of_length_eq_spanFinrank [IsRegularLocalRing R] {xs : List R}
     (h : Ideal.ofList xs = maximalIdeal R) (hd : xs.length = (maximalIdeal R).spanFinrank) :
     RingTheory.Sequence.IsRegular R xs :=
@@ -343,6 +462,21 @@ open CategoryTheory Abelian
 
 variable {R : Type u} [CommRing R] [IsNoetherianRing R] [IsLocalRing R]
 
+/- English proof (translation)
+Establish `hco : ∀ (q : Ideal R) (hq : q.IsPrime), ringKrullDim (R ⧸ q) = Order.coheight (⟨q, hq⟩ : PrimeSpectrum R)` using `fun q hq => by`. Rewrite using `[ringKrullDim_quotient, Order.coheight_eq_krullDim_Ici]`. Both sides reduce to the same expression. Proceed by induction on `xs generalizing M p with`. Consider the case `nil`.
+
+Rewrite using `[hco p hp.isPrime]`. Conclude with `WithBot.coe_le_coe.mpr zero_le`. Consider the case `cons x xs ih`. Rewrite `h` using `[isWeaklyRegular_cons_iff]`. Establish `hx : x ∈ maximalIdeal R` using `hm x List.mem_cons_self`.
+
+Take `⟨hpp, y, hy⟩` from `isAssociatedPrime_iff.mp hp`. Establish `hy' : ∀ r, r ∈ p ↔ r • y = 0` using `fun r => by simp [hy]`. Establish `hy0 : y ≠ 0` using `fun h0 => hpp.ne_top (by ext r; simp [hy', h0])`. Take `⟨z, hz, hzx⟩ : ∃ z : M, (∀ r ∈ p, r • z = 0) ∧ (Submodule.Quotient.mk z : QuotSMulTop x M) ≠ 0` from `by by_contra! hne`. Set `N : Submodule R M` to `Submodule.torsionBySet R M p`.
+
+Establish `hN : N = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal R) _ (IsNoetherian.noetherian _) (fun z hz => ?_) (maximalIdeal_le_jacobson _)` and prove the remaining obligations. Establish `hz' : ∀ r ∈ p, r • z = 0` using `fun r hr => (Submodule.mem_torsionBySet_iff _ _).mp hz ⟨r, hr⟩`. Take `⟨w, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp ((Submodule.Quotient.mk_eq_zero _).mp (hne z hz'))`. Use `Submodule.smul_mem_smul hx ((Submodule.mem_torsionBySet_iff _ _).mpr fun r => ?_)` and prove the remaining obligations.
+
+Conclude with `h.1.right_eq_zero_of_smul (by rw [smul_comm]; exact hz' r r.2)`. Conclude with `hy0 ((Submodule.mem_bot R).mp (hN ▸ (Submodule.mem_torsionBySet_iff _ _).mpr fun r => (hy' r).mp r.2))`. Take `⟨q, hq, hle⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing R _ hzx`. Establish `hpq : p ≤ q` using `fun r hr => hle (by`. Simplify using `[← Submodule.Quotient.mk_smul, hz r hr])`.
+
+Establish `hxq : x ∈ q` using `hle (by`. Simplify using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.smul_mem_pointwise_smul])`. Establish `hxp : x ∉ p` using `fun hxp => hy0 (h.1.right_eq_zero_of_smul ((hy' x).mp hxp))`. Establish `h1` using `ih (fun r hr => hm r (List.mem_cons_of_mem _ hr)) h.2 hq`. Establish `h2` using `Order.coheight_add_one_le (show (⟨p, hpp⟩ : PrimeSpectrum R) < ⟨q, hq.isPrime⟩ from lt_of_le_of_ne hpq fun e => hxp ((show p = q from congrArg PrimeSpectrum.asIdeal e) ▸ hxq))`.
+
+Rewrite `h1` using `[hco q hq.isPrime]`. Rewrite using `[hco p hpp, List.length_cons, Nat.cast_add_one]`. Use `(add_le_add_left h1 1).trans ?_` and prove the remaining obligations. Conclude with `h2` after adjusting the coercions.
+-/
 theorem length_le_ringKrullDim_quotient_of_isAssociatedPrime {M : Type*} [AddCommGroup M]
     [Module R M] [Module.Finite R M] {xs : List R} (hm : ∀ x ∈ xs, x ∈ maximalIdeal R)
     (h : IsWeaklyRegular M xs) {p : Ideal R} (hp : IsAssociatedPrime p M) :
@@ -392,6 +526,11 @@ theorem length_le_ringKrullDim_quotient_of_isAssociatedPrime {M : Type*} [AddCom
     refine (add_le_add_left h1 1).trans ?_
     exact_mod_cast h2
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop`. Consider the case `exact _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop`. Consider the case `(apply _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop ..)`.
+-/
 theorem exists_isRegular_quotSMulTop [Small.{v} R] {M : Type v} [AddCommGroup M] [Module R M]
     [Module.Finite R M] {xs : List R} (h : RingTheory.Sequence.IsRegular M xs) {n : ℕ}
     (hn : n + 1 ≤ xs.length) {y : R} (hy : y ∈ maximalIdeal R) (hreg : IsSMulRegular M y) :
@@ -404,6 +543,11 @@ theorem exists_isRegular_quotSMulTop [Small.{v} R] {M : Type v} [AddCommGroup M]
   | (intros; apply @_root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop ..)
 
+/- English proof (translation)
+Proceed by induction on `ys generalizing M with`. Consider the case `nil`. Rewrite using `[Ideal.ofList_nil, Submodule.bot_smul]`. Simplify using `using (Module.supportDim_eq_of_equiv (Submodule.quotEquivOfEqBot ⊥ rfl)).ge`. Consider the case `cons y ys ih`.
+
+Rewrite using `[Module.supportDim_eq_of_equiv (Submodule.quotOfListConsSMulTopEquivQuotSMulTopInner M y _), List.length_cons, Nat.cast_add_one, ← add_assoc]`. Conclude with `(Module.supportDim_le_supportDim_quotSMulTop_succ (hm y List.mem_cons_self)).trans (add_le_add_left (ih fun r hr => hm r (List.mem_cons_of_mem _ hr)) 1)`.
+-/
 theorem supportDim_le_supportDim_quotient_add_length {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Finite R M] {ys : List R} (hm : ∀ y ∈ ys, y ∈ maximalIdeal R) :
     Module.supportDim R M ≤
@@ -418,6 +562,23 @@ theorem supportDim_le_supportDim_quotient_add_length {M : Type*} [AddCommGroup M
     exact (Module.supportDim_le_supportDim_quotSMulTop_succ (hm y List.mem_cons_self)).trans
       (add_le_add_left (ih fun r hr => hm r (List.mem_cons_of_mem _ hr)) 1)
 
+/- English proof (translation)
+Proceed by induction on `ys generalizing M xs with`. Consider the case `nil`. Use `h.nontrivial` as an intermediate fact. Conclude with `.nil R M`. Consider the case `cons y ys ih`.
+
+Use `h.nontrivial` as an intermediate fact. Establish `hy : y ∈ maximalIdeal R` using `hm y List.mem_cons_self`. Establish `hm' : ∀ r ∈ ys, r ∈ maximalIdeal R` using `fun r hr => hm r (List.mem_cons_of_mem _ hr)`. Establish `hxs : ∀ x ∈ xs, x ∈ maximalIdeal R` using `fun x hx => le_maximalIdeal (J := Ideal.ofList xs) (fun e => h.2 (by simp [e])) (Ideal.subset_span hx)`. Rewrite `hd` using `[Module.supportDim_eq_of_equiv (Submodule.quotOfListConsSMulTopEquivQuotSMulTopInner M y _), List.length_cons, Nat.cast_add_one, ← add_assoc]`.
+
+Establish `hq : Module.supportDim R (QuotSMulTop y M) + 1 ≤ xs.length` using `(add_le_add_left (supportDim_le_supportDim_quotient_add_length hm') 1).trans hd`. Establish `hreg : IsSMulRegular M y`. Assume the negation of the conclusion as `hne`. Establish `: y ∈ ⋃ p ∈ associatedPrimes R M, (p : Set R)`. Rewrite using `[biUnion_associatedPrimes_eq_compl_regular R M]`.
+
+Conclude with `hne`. Take `⟨p, hp, hyp⟩` from `Set.mem_iUnion₂.mp this`. Establish `h1` using `length_le_ringKrullDim_quotient_of_isAssociatedPrime hxs h.1 hp`. Establish `h2 : ringKrullDim (R ⧸ p) ≤ Module.supportDim R (QuotSMulTop y M)`. Rewrite using `[ringKrullDim_quotient, Module.supportDim]`.
+
+Use `Order.krullDim_le_of_strictMono (Set.inclusion fun q hq => ?_) fun _ _ h => h` and prove the remaining obligations. Rewrite using `[Module.support_quotSMulTop]`. Use `⟨Module.mem_support_iff_of_finite.mpr (le_trans ?_ hq), ?_⟩` and prove the remaining obligations. Simplify `IsAssociatedPrime.annihilator_le hp` using `[Submodule.annihilator_top]`. Simplify using `using hq hyp`.
+
+Establish `h3` using `(add_le_add_left (h1.trans h2) 1).trans hq`. Normalize the coercions in `at h3`. Use linear arithmetic over natural numbers and integers. Use `nontrivial_quotSMulTop_of_mem_maximalIdeal M hy` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, xs.length = n + 1 := by`.
+
+Use `Nat.exists_eq_add_one_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Rewrite `hq` using `[h0, Nat.cast_zero, ENat.WithBot.add_one_le_zero_iff]`. Conclude with `Module.supportDim_ne_bot_of_nontrivial R _ hq`. Take `⟨zs, hzs, hz⟩` from `exists_isRegular_quotSMulTop h hn.ge hy hreg`. Rewrite using `[isRegular_cons_iff]`.
+
+Use `⟨hreg, ih hz hm' ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[hn, ← hzs, ← Nat.cast_one, Nat.cast_add]`. Conclude with `ENat.WithBot.add_le_add_natCast_right_iff.mp hd`.
+-/
 theorem isRegular_of_supportDim_quotient_add_length_le [Small.{v} R] {M : Type v} [AddCommGroup M]
     [Module R M] [Module.Finite R M] {xs : List R} (h : RingTheory.Sequence.IsRegular M xs)
     {ys : List R} (hm : ∀ y ∈ ys, y ∈ maximalIdeal R)
@@ -473,11 +634,17 @@ open ReciprocityTheory.CA
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Take `⟨xs, h, hd⟩` from `exists_ofList_eq_maximalIdeal_length_eq R`. Conclude with `⟨inferInstance, xs.length, hd.symm, xs, rfl, fun _ hx => h ▸ Ideal.subset_span hx, isRegular_of_ofList_eq_maximalIdeal h hd.le⟩`.
+-/
 theorem isCM_of_isRegularLocalRing (R : Type*) [CommRing R] [IsRegularLocalRing R] : IsCM R := by
   obtain ⟨xs, h, hd⟩ := exists_ofList_eq_maximalIdeal_length_eq R
   exact ⟨inferInstance, xs.length, hd.symm, xs, rfl, fun _ hx => h ▸ Ideal.subset_span hx,
     isRegular_of_ofList_eq_maximalIdeal h hd.le⟩
 
+/- English proof (translation)
+Take `⟨_, n, hn, xs, rfl, -, hxs⟩` from `hR`. Use `isRegular_of_supportDim_quotient_add_length_le hxs hm ?_` and prove the remaining obligations. Rewrite using `[← hn, smul_eq_mul, Ideal.mul_top, Module.supportDim_quotient_eq_ringKrullDim]` and apply the resulting hypothesis.
+-/
 theorem isRegular_of_isCM_of_ringKrullDim_quotient_add_length_le [IsLocalRing R] (hR : IsCM R)
     {ys : List R} (hm : ∀ y ∈ ys, y ∈ maximalIdeal R)
     (hd : ringKrullDim (R ⧸ Ideal.ofList ys) + ys.length ≤ ringKrullDim R) :
@@ -486,6 +653,9 @@ theorem isRegular_of_isCM_of_ringKrullDim_quotient_add_length_le [IsLocalRing R]
   refine isRegular_of_supportDim_quotient_add_length_le hxs hm ?_
   rwa [← hn, smul_eq_mul, Ideal.mul_top, Module.supportDim_quotient_eq_ringKrullDim]
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient]`. Establish `: Subsingleton (PrimeSpectrum.zeroLocus (R` using `R) I) := ⟨fun p q => Subtype.ext (PrimeSpectrum.ext ((h _ p.1.2 p.2).trans (h _ q.1.2 q.2).symm))⟩`. Conclude with `Order.krullDim_nonpos_of_subsingleton`.
+-/
 theorem ringKrullDim_quotient_le_zero_of_forall_eq [IsLocalRing R] {I : Ideal R}
     (h : ∀ p : Ideal R, p.IsPrime → I ≤ p → p = maximalIdeal R) : ringKrullDim (R ⧸ I) ≤ 0 := by
   rw [ringKrullDim_quotient]
@@ -493,6 +663,9 @@ theorem ringKrullDim_quotient_le_zero_of_forall_eq [IsLocalRing R] {I : Ideal R}
     ⟨fun p q => Subtype.ext (PrimeSpectrum.ext ((h _ p.1.2 p.2).trans (h _ q.1.2 q.2).symm))⟩
   exact Order.krullDim_nonpos_of_subsingleton
 
+/- English proof (translation)
+Use `isRegular_of_isCM_of_ringKrullDim_quotient_add_length_le hR (fun y hy => hr ▸ Ideal.le_radical (Ideal.subset_span hy)) ?_` and prove the remaining obligations. Use `ringKrullDim_quotient_le_zero_of_forall_eq (I := Ideal.ofList ys) fun p hp hle => ((maximalIdeal.isMaximal R).eq_of_le hp.ne_top (hr ▸ hp.radical_le_iff.mpr hle)).symm` as an intermediate fact. Conclude with `(add_le_add_left this _).trans (by rwa [zero_add])`.
+-/
 theorem isRegular_of_isCM_of_radical_eq [IsLocalRing R] (hR : IsCM R) {ys : List R}
     (hr : (Ideal.ofList ys).radical = maximalIdeal R)
     (hd : (ys.length : WithBot ℕ∞) ≤ ringKrullDim R) : RingTheory.Sequence.IsRegular R ys := by
@@ -502,6 +675,9 @@ theorem isRegular_of_isCM_of_radical_eq [IsLocalRing R] (hR : IsCM R) {ys : List
     ((maximalIdeal.isMaximal R).eq_of_le hp.ne_top (hr ▸ hp.radical_le_iff.mpr hle)).symm
   exact (add_le_add_left this _).trans (by rwa [zero_add])
 
+/- English proof (translation)
+The claim follows from `isRegular_of_isCM_of_radical_eq (isCM_of_isRegularLocalRing R) hr hd`.
+-/
 theorem isRegular_of_radical_eq_maximalIdeal [IsRegularLocalRing R] {ys : List R}
     (hr : (Ideal.ofList ys).radical = maximalIdeal R)
     (hd : (ys.length : WithBot ℕ∞) ≤ ringKrullDim R) : RingTheory.Sequence.IsRegular R ys :=
@@ -509,6 +685,11 @@ theorem isRegular_of_radical_eq_maximalIdeal [IsRegularLocalRing R] {ys : List R
 
 variable {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
 
+/- English proof (translation)
+Use `hB.1` as an intermediate fact. Take `⟨xs, h, hl⟩` from `exists_ofList_eq_maximalIdeal_length_eq A`. Use `flat_of_isWeaklyRegular_of_isLocalHom B h ?_` and prove the remaining obligations. Rewrite using `[← isWeaklyRegular_map_algebraMap_iff B]`. Use `(isRegular_of_isCM_of_ringKrullDim_quotient_add_length_le hB (fun y hy => ?_) ?_).1` and prove the remaining obligations.
+
+Use `map_maximalIdeal_le (algebraMap A B) ?_` and prove the remaining obligations. Rewrite using `[← h, Ideal.map_ofList]`. Conclude with `Ideal.subset_span hy`. Rewrite using `[← Ideal.map_ofList, h, List.length_map, hl, add_comm]` and apply the resulting hypothesis.
+-/
 theorem flat_of_isCM_of_ringKrullDim_add_le [IsRegularLocalRing A] [IsLocalRing B]
     [IsLocalHom (algebraMap A B)] (hB : IsCM B)
     (hd : ringKrullDim A + ringKrullDim (B ⧸ (maximalIdeal A).map (algebraMap A B)) ≤
@@ -523,6 +704,9 @@ theorem flat_of_isCM_of_ringKrullDim_add_le [IsRegularLocalRing A] [IsLocalRing 
     exact Ideal.subset_span hy
   · rwa [← Ideal.map_ofList, h, List.length_map, hl, add_comm]
 
+/- English proof (translation)
+Use `ringKrullDim_quotient_le_zero_of_forall_eq fun p hp hle => ?_` and prove the remaining obligations. Use `Algebra.QuasiFinite.eq_of_le_of_under_eq (R := A) _ _ (le_maximalIdeal hp.ne_top) ?_` and prove the remaining obligations. Conclude with `((maximalIdeal.isMaximal A).eq_of_le (Ideal.comap_ne_top _ hp.ne_top) (Ideal.map_le_iff_le_comap.mp hle)).symm.trans (maximalIdeal_comap _).symm`.
+-/
 theorem ringKrullDim_quotient_map_maximalIdeal_le_zero [IsLocalRing A] [IsLocalRing B]
     [IsLocalHom (algebraMap A B)] [Algebra.QuasiFinite A B] :
     ringKrullDim (B ⧸ (maximalIdeal A).map (algebraMap A B)) ≤ 0 := by
@@ -531,23 +715,37 @@ theorem ringKrullDim_quotient_map_maximalIdeal_le_zero [IsLocalRing A] [IsLocalR
   exact ((maximalIdeal.isMaximal A).eq_of_le (Ideal.comap_ne_top _ hp.ne_top)
     (Ideal.map_le_iff_le_comap.mp hle)).symm.trans (maximalIdeal_comap _).symm
 
+/- English proof (translation)
+The claim follows from `flat_of_isCM_of_ringKrullDim_add_le hB ((add_le_add_right ringKrullDim_quotient_map_maximalIdeal_le_zero _).trans (by rwa [add_zero]))`.
+-/
 theorem flat_of_isCM_of_quasiFinite [IsRegularLocalRing A] [IsLocalRing B]
     [IsLocalHom (algebraMap A B)] [Algebra.QuasiFinite A B] (hB : IsCM B)
     (hd : ringKrullDim A ≤ ringKrullDim B) : Module.Flat A B :=
   flat_of_isCM_of_ringKrullDim_add_le hB
     ((add_le_add_right ringKrullDim_quotient_map_maximalIdeal_le_zero _).trans (by rwa [add_zero]))
 
+/- English proof (translation)
+The claim follows from `flat_of_isCM_of_quasiFinite (isCM_of_isRegularLocalRing B) hd.le`.
+-/
 theorem flat_of_isRegularLocalRing_of_quasiFinite [IsRegularLocalRing A] [IsRegularLocalRing B]
     [IsLocalHom (algebraMap A B)] [Algebra.QuasiFinite A B]
     (hd : ringKrullDim A = ringKrullDim B) : Module.Flat A B :=
   flat_of_isCM_of_quasiFinite (isCM_of_isRegularLocalRing B) hd.le
 
+/- English proof (translation)
+The claim follows from `have := flat_of_isRegularLocalRing_of_quasiFinite hd Module.free_of_flat_of_isLocalRing`.
+-/
 theorem free_of_isRegularLocalRing_of_finite [IsRegularLocalRing A] [IsRegularLocalRing B]
     [IsLocalHom (algebraMap A B)] [Module.Finite A B]
     (hd : ringKrullDim A = ringKrullDim B) : Module.Free A B :=
   have := flat_of_isRegularLocalRing_of_quasiFinite hd
   Module.free_of_flat_of_isLocalRing
 
+/- English proof (translation)
+Use `letI := Localization.AtPrime.algebraOfLiesOver p q`. Establish `: Algebra.QuasiFinite (Localization.AtPrime p) (Localization.AtPrime q)` using `.of_restrictScalars A _ _`. Establish `: Module.Flat (Localization.AtPrime p) (Localization.AtPrime q)`. Use `flat_of_isCM_of_quasiFinite hB ?_` and prove the remaining obligations. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height p, IsLocalization.AtPrime.ringKrullDim_eq_height q]`.
+
+Conclude with `WithBot.coe_le_coe.mpr hd`. Conclude with `.trans A (Localization.AtPrime p) _`.
+-/
 theorem flat_localization_atPrime_of_isCM (p : Ideal A) [p.IsPrime] (q : Ideal B) [q.IsPrime]
     [q.LiesOver p] [IsRegularLocalRing (Localization.AtPrime p)] [Algebra.QuasiFiniteAt A q]
     (hB : IsCM (Localization.AtPrime q)) (hd : p.height ≤ q.height) :
@@ -562,6 +760,9 @@ theorem flat_localization_atPrime_of_isCM (p : Ideal A) [p.IsPrime] (q : Ideal B
     exact WithBot.coe_le_coe.mpr hd
   exact .trans A (Localization.AtPrime p) _
 
+/- English proof (translation)
+The claim follows from `Module.flat_of_isLocalized_maximal B B (fun q _ => Localization.AtPrime q) (fun q _ => Algebra.linearMap B (Localization.AtPrime q)) fun q hq => flat_localization_atPrime_of_isCM (q.under A) q (hB q) (hd q hq)`.
+-/
 theorem flat_of_isRegularRing_of_isCM [IsRegularRing A] [Algebra.QuasiFinite A B]
     (hB : ∀ (q : Ideal B) [q.IsMaximal], IsCM (Localization.AtPrime q))
     (hd : ∀ q : Ideal B, q.IsMaximal → (q.under A).height ≤ q.height) : Module.Flat A B :=
@@ -569,11 +770,17 @@ theorem flat_of_isRegularRing_of_isCM [IsRegularRing A] [Algebra.QuasiFinite A B
     (fun q _ => Algebra.linearMap B (Localization.AtPrime q))
     fun q hq => flat_localization_atPrime_of_isCM (q.under A) q (hB q) (hd q hq)
 
+/- English proof (translation)
+The claim follows from `flat_of_isRegularRing_of_isCM (fun _ _ => isCM_of_isRegularLocalRing _) hd`.
+-/
 theorem flat_of_isRegularRing_of_isRegularRing [IsRegularRing A] [IsRegularRing B]
     [Algebra.QuasiFinite A B]
     (hd : ∀ q : Ideal B, q.IsMaximal → (q.under A).height ≤ q.height) : Module.Flat A B :=
   flat_of_isRegularRing_of_isCM (fun _ _ => isCM_of_isRegularLocalRing _) hd
 
+/- English proof (translation)
+Use `isRegular_of_radical_eq_maximalIdeal ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.ofList_singleton, ← Ideal.span_singleton_pow, Ideal.radical_pow _ two_ne_zero, ← PadicInt.maximalIdeal_eq_span_p, (maximalIdeal.isMaximal _).isPrime.radical]`. Rewrite using `[IsDiscreteValuationRing.ringKrullDim_eq_one]`. Simplify using the standard rewrite rules.
+-/
 example (p : ℕ) [Fact p.Prime] : RingTheory.Sequence.IsRegular ℤ_[p] [(p : ℤ_[p]) ^ 2] := by
   refine isRegular_of_radical_eq_maximalIdeal ?_ ?_
   · rw [Ideal.ofList_singleton, ← Ideal.span_singleton_pow, Ideal.radical_pow _ two_ne_zero,

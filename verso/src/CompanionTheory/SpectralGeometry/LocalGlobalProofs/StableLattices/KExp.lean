@@ -6,6 +6,9 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
 
 namespace GlobalTheory.CompanionTheory.DSICKExp
 
+/- English proof (translation)
+Introduce `n ε g hg`. Take `⟨Y, hY, he, -⟩` from `Formalism.REAL.compact_exponential_surjective n ε g hg`. Conclude with `⟨Y, hY, he.symm⟩`.
+-/
 theorem kExp : CompanionTheory.D.DSIC.KExp := by
   intro n ε g hg
   obtain ⟨Y, hY, he, -⟩ := Formalism.REAL.compact_exponential_surjective n ε g hg

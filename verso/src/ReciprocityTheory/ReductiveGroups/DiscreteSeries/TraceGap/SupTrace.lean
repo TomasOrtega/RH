@@ -32,6 +32,13 @@ section Helpers
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Establish `hle : LinearMap.range f ≤ L`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hfL x`. Use `set R' : Submodule ℂ L := (LinearMap.range f).comap L.subtype`. Establish `hr : LinearMap.range (f.restrict (fun x _ => hfL x) : L →ₗ[ℂ] L) ≤ R'`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `LinearMap.mem_range_self f _`. Rewrite using `[trace_eq_trace_restrict_of_range_le _ _ hr]`. Set `e : R' ≃ₗ[ℂ] LinearMap.range f` to `Submodule.comapSubtypeEquivOfLe hle`. Rewrite using `[← LinearMap.trace_conj' _ e]`.
+
+Use `congr 1`.
+-/
 theorem trace_restrict_range (f : M →ₗ[ℂ] M) (L : Submodule ℂ M) [FiniteDimensional ℂ L] (hfL : ∀ x, f x ∈ L) :
     LinearMap.trace ℂ (LinearMap.range f) (f.restrict (fun x _ => LinearMap.mem_range_self f x)) =
       LinearMap.trace ℂ L (f.restrict (fun x _ => hfL x)) := by
@@ -53,6 +60,13 @@ section Helpers2
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H}
 
+/- English proof (translation)
+Set `e : L ≃ₗ[ℂ] L.map D.subtype` to `L.equivMapOfInjective D.subtype D.injective_subtype`. Rewrite using `[← LinearMap.trace_conj' (g.restrict hg) e]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+
+Rewrite using `[LinearEquiv.conj_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `show f ((x : D) : H) = ((g (x : D) : D) : H)`.
+
+Conclude with `hfg x`.
+-/
 theorem trace_map_subtype {L : Submodule ℂ D} [FiniteDimensional ℂ L] (g : D →ₗ[ℂ] D) (hg : ∀ x ∈ L, g x ∈ L)
     (f : H →ₗ[ℂ] H) (hf : ∀ x ∈ L.map D.subtype, f x ∈ L.map D.subtype) (hfg : ∀ x : D, f x = g x) :
     LinearMap.trace ℂ (L.map D.subtype) (f.restrict hf) = LinearMap.trace ℂ L (g.restrict hg) := by
@@ -72,6 +86,53 @@ end Helpers2
 
 open MeasureTheory in
 
+/- English proof (translation)
+Introduce `ε lam h H _ _ σ hDS hHC hgap hthr hp hq`. Establish `: CompleteSpace H` using `hDS.1`. Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Take `⟨hanti, hint⟩` from `hHC`. Establish `hstd : StdGap ε lam` using `⟨hanti, h, hgap, lt_of_le_of_lt (le_max_left _ _) hthr⟩`.
+
+Take `⟨V, hV, hV0, hVK, hc⟩` from `arb_datum hDS (casOnSmooth_of_isDS hDS hstd)`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `htop` using `data_closGen_eq_top hstd hσ hD hV hc hVK hDS.2.2.2.1 hV0`. Take `⟨W, i1, i2, i3, T, hWnt, hTU, hTK, hTtr⟩` from `kType_clause hσ hD hV hc hVK hint hanti hgap hthr hp hq`. Use `⟨W, i1, i2, i3, T, hWnt, hTU, hTK, fun P B hB => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, -, hzV, hzK, hzdeg, hKK, -⟩` from `ker_D_eq_kLowSpan hσ hD hV hc hVK hint hanti hgap hthr hp hq`. Establish `hemb : Topology.IsEmbedding (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Establish `: SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Establish `: SecondCountableTopology (Formalism.REAL.KG ε)` using `hemb.isInducing.secondCountableTopology`. Use `set φ : Formalism.REAL.KG ε → Matrix (Fin n) (Fin n) ℂ := fun k => Formalism.REAL.toMK k with hφdef`.
+
+Establish `hφc : Continuous φ` using `hemb.continuous`. Establish `hφK : ∀ g, φ g ∈ Kset ε` using `fun g => g.2`. Establish `hφ1 : φ 1 = 1` using `rfl`. Establish `hφm : ∀ a b, φ (a * b) = φ a * φ b` using `fun a b => rfl`. Establish `hφs : ∀ m ∈ Kset ε, ∃ g, φ g = m`.
+
+Introduce `m hm`. Establish `: m ∈ Set.range (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)`. Rewrite using `[Formalism.REAL.range_toMK]`. Conclude with `hm`. Take `⟨g, hg⟩` from `this`.
+
+Conclude with `⟨g, hg⟩`. Use `choose Qm hQm using fun s s' => ffMat_poly (ε := ε) s s'`. Use `set Q := ∑ s ∈ Finset.univ.filter (IsPhysSet ε), ((-1 : ℂ) ^ s.card) • Qm s s with hQdef`. Establish `hQ : ∀ m, MvPolynomial.eval (entVar m) Q = physDet ε m`. Introduce `m`.
+
+Rewrite using `[← strPhys_eq_physDet, strPhys, hQdef, map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eval, hQm]`. Both sides reduce to the same expression. Establish `hL3` using `fun R => range_one_layer hstd hσ hD hV hc htop (Formalism.REAL.muK ε) φ hφc hφ1 hφm hφK hφs R`.
+
+Take `⟨j0, hj0⟩` from `hL3 (P * Q)`. Use `choose js hjs using fun (s s' : Finset (Fin (n * n))) => hL3 (P * Qm s s')`. Use `set J := max j0 (Finset.univ.sup fun p : Finset (Fin (n * n)) × Finset (Fin (n * n)) => js p.1 p.2) with hJ`. Establish `hj0J : j0 ≤ J` using `le_max_left _ _`. Establish `hjsJ : ∀ s s', js s s' ≤ J` using `fun s s' => le_trans (Finset.le_sup (f := fun p : Finset (Fin (n * n)) × Finset (Fin (n * n)) => js p.1 p.2) (Finset.mem_univ (s, s'))) (le_max_right _ _)`.
+
+Establish `hE : IsGlRep (smE ε σ)` using `hD.glRep`. Establish `hLDf : FiniteDimensional ℂ (layer ε (smE ε σ) V J)` using `finiteDimensional_layer hV.1 J`. Establish `hlayer : ∀ {j : ℕ}, j ≤ J → (layer ε (smE ε σ) V j).map (smD ε σ).subtype ≤ (layer ε (smE ε σ) V J).map (smD ε σ).subtype` using `fun hj => Submodule.map_mono (layer_mono hj)`. Use `set LH := (layer ε (smE ε σ) V J).map (smD ε σ).subtype with hLHdef`. Establish `hLHf : FiniteDimensional ℂ LH` using `Module.Finite.map _ _`.
+
+Establish `hent : ∀ R : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ, Continuous fun k => MvPolynomial.eval (entVar (φ k)) R`. Introduce `R`. Use `(MvPolynomial.continuous_eval R).comp (continuous_pi fun p => ?_)` and prove the remaining obligations. Break down `p with p | p` into its components or cases. Conclude with `(continuous_apply p.2).comp ((continuous_apply p.1).comp hφc)`.
+
+Conclude with `continuous_star.comp ((continuous_apply p.2).comp ((continuous_apply p.1).comp hφc))`. Establish `hBL : ∀ w, B w ∈ LH`. Introduce `w`. Rewrite using `[hB]`. Use `hlayer hj0J (hj0 w)` as an intermediate fact.
+
+Simplify `this` using `only [map_mul, hQ]`. Establish `hrB : LinearMap.range (B : H →ₗ[ℂ] H) ≤ LH`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hBL w`. Use `⟨Submodule.finiteDimensional_of_le hrB, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[trace_restrict_range (B : H →ₗ[ℂ] H) LH hBL]`. Establish `hAL : ∀ k, ∀ x ∈ LH, σ (φ k) x ∈ LH`. Introduce and unpack `k _ ⟨y, hy, rfl⟩`. Conclude with `⟨sigD hD (hφK k) y, sigD_layer hσ hD hV.2.1 hVK J (hφK k) hy, rfl⟩`. Establish `hAc : ∀ v, Continuous fun k => σ (φ k) v` using `fun v => (hσ.2.2 v).comp_continuous hφc fun g => kset_mem_UJset (hφK g)`.
+
+Establish `hcont : Continuous fun k => MvPolynomial.eval (entVar (φ k)) P * physDet ε (φ k)`. Use `hent (P * Q)` as an intermediate fact. Simplify `this` using `only [map_mul, hQ]`. Rewrite using `[trace_integral_restrict (μ := Formalism.REAL.muK ε) LH hcont (fun k => σ (φ k)) hAc hAL B hB (fun x _ => hBL x)]`. Establish `hYf : FiniteDimensional ℂ (YY ε (smE ε σ) V J)` using `YY_fd hV.1 J`.
+
+Establish `hY0G : ∀ y ∈ Y0 ε (smE ε σ) V J, gradT y ∈ Y0 ε (smE ε σ) V J` using `fun y hy => ⟨tensFock_lTensor_stable _ hy.1, (physSub_stable ε (smE ε σ)).2.2.2.2 y hy.2⟩`. Establish `hY0K : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ Y0 ε (smE ε σ) V J, wK hD hk y ∈ Y0 ε (smE ε σ) V J` using `fun k hk y hy => compactAction_mem_layer hσ hD hV.2.1 hVK J hk hy`. Establish `hYK : ∀ (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε), ∀ y ∈ YY ε (smE ε σ) V J, wK hD hk y ∈ YY ε (smE ε σ) V J` using `fun k hk y hy => YY_wK hσ hD hV.2.1 hVK J hk hy`. Establish `hle : Y0 ε (smE ε σ) V J ≤ YY ε (smE ε σ) V J` using `le_sup_left`. Establish `hpt : ∀ k, MvPolynomial.eval (entVar (φ k)) P * physDet ε (φ k) * LinearMap.trace ℂ LH (((σ (φ k) : H →L[ℂ] H) : H →ₗ[ℂ] H).restrict (hAL k)) = MvPolynomial.eval (entVar (φ k)) P * LinearMap.trace ℂ (Y0 ε (smE ε σ) V J) ((gradT ∘ₗ wK hD (hφK k)).restrict (fun y hy => hY0G _ (hY0K …`.
+
+Introduce `k`. Rewrite using `[trace_map_subtype (sigD hD (hφK k)) (fun x hx => sigD_layer hσ hD hV.2.1 hVK J (hφK k) hx) _ _ (fun x => rfl)]`. Use `str_tensFock_physSub hD (hφK k) (fun x hx => sigD_layer hσ hD hV.2.1 hVK J (hφK k) hx) (fun y hy => hY0G _ (hY0K _ (hφK k) y hy))` as an intermediate fact. Rewrite using `[show LinearMap.trace ℂ (Y0 ε (smE ε σ) V J) ((gradT ∘ₗ wK hD (hφK k)).restrict (fun y hy => hY0G _ (hY0K _ (hφK k) y hy))) = _ from this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[hpt]`. Establish `hcP` using `hent P`. Establish `hrange` using `fun y => btot_range (μ := Formalism.REAL.muK ε) hσ hD hYK (L := layer ε (smE ε σ) V J) hφc hφK hcP (fun s s' u => by`. Establish `h1` using `hlayer (hjsJ s s') (hjs s s' u)`. Establish `h2 : ∫ k, (MvPolynomial.eval (entVar (φ k)) P * ffMat ε (φ k) s s') • σ (φ k) u ∂(Formalism.REAL.muK ε) = ∫ k, MvPolynomial.eval (entVar (φ k)) (P * Qm s s') • σ (φ k) u ∂(Formalism.REAL.muK ε)`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_mul, hQm]`. Both sides reduce to the same expression. Use `show ∫ k, (MvPolynomial.eval (entVar (φ k)) P * ffMat ε (φ k) s s') • σ (φ k) u ∂(Formalism.REAL.muK ε) ∈ _`.
+
+Rewrite using `[h2]`. Conclude with `h1) (YY_le_genSub J |>.trans inf_le_right) y`. Rewrite using `[← int_str_eq (μ := Formalism.REAL.muK ε) hσ hD hle hYK hY0K (fun y hy => YY_gradT J hy) hY0G hφc hφK hcP hrange]`. Establish `hcg : ∀ v ∈ genSub (smE ε σ) V, casimir (smE ε σ) v = ((casVal lam : ℝ) : ℂ) • v` using `casimir_scalar_on_generated hE hc`. Establish `hAK : IsKStableSub ε (diagE ε (eT (smE ε σ)) cpT cmT) (tensFock (n` using `n) V) := fun a b hab y hy => tensorFock_diagAction_stable ε hV.2.1 hab hy`.
+
+Establish `hKKY0 : LinearMap.ker (dOp ε (eT (smE ε σ)) cpT + dOp' ε (eT (smE ε σ)) cmT) ⊓ tensFock (genSub (smE ε σ) V) ⊓ physicalSubspace ε ≤ Y0 ε (smE ε σ) V J`. Introduce `y hy`. Establish `hyP : y ∈ physicalSubspace (N` using `smD ε σ) ε := hy.2`. Rewrite `hy` using `[hKK]`. Establish `hyV : y ∈ tensFock (n` using `n) V := kLowSpan_le hAK hzV hy`.
+
+Conclude with `⟨tensorFock_mono (layer_mono (E := smE ε σ) (V := V) (ε := ε) (Nat.zero_le J)) hyV, hyP⟩`. Establish `hgr : ∀ y ∈ LinearMap.ker (dOp ε (eT (smE ε σ)) cpT + dOp' ε (eT (smE ε σ)) cmT) ⊓ tensFock (genSub (smE ε σ) V) ⊓ physicalSubspace ε, gradT y = ((-1 : ℂ) ^ sDeg ε) • y`. Introduce `y hy`. Rewrite `hy` using `[hKK]`. Conclude with `gradT_kLowSpan (smE ε σ) (gradT_range_ext hzdeg) hy`.
+
+Establish `hfin : ∀ k, MvPolynomial.eval (entVar (φ k)) P * LinearMap.trace ℂ (YY ε (smE ε σ) V J) ((gradT ∘ₗ wK hD (hφK k)).restrict (fun y hy => YY_gradT J (hYK _ (hφK k) y hy))) = (-1 : ℂ) ^ sDeg ε * (MvPolynomial.eval (entVar (φ k)) P * LinearMap.trace ℂ W (T (φ k) : W →ₗ[ℂ] W))`. Introduce `k`. Rewrite using `[str_YY hσ hD hV.2.1 hVK hcg J hKKY0 hgr (hφK k), hTtr (φ k) (hφK k)]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hfin]`.
+
+Rewrite using `[integral_const_mul]`.
+-/
 theorem supTrace (n : ℕ) : SupTraceStatement n := by
   intro ε lam h H _ _ σ hDS hHC hgap hthr hp hq
   have : CompleteSpace H := hDS.1

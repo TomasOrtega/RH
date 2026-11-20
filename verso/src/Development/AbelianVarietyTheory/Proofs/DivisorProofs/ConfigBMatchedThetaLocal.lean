@@ -41,16 +41,28 @@ variable {R S : ℕ}
 
 def cen (r₀ : Fin R) (s₀ : Fin S) : Mat R S := Eab (.inl r₀) (.inl r₀) + Eab (.inr s₀) (.inr s₀)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [cen, Eab, Matrix.single_apply] <;> aesop`.
+-/
 theorem cen_apply (r₀ : Fin R) (s₀ : Fin S) (a b : Ix R S) :
     cen r₀ s₀ a b = if a = b then (if b = .inl r₀ ∨ b = .inr s₀ then 1 else 0) else 0 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [cen, Eab, Matrix.single_apply] <;> aesop
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FockKStab.isKC_add (GlobalTheory.FockLowDeg.isKC_Eab_diag _) (GlobalTheory.FockLowDeg.isKC_Eab_diag _)`.
+-/
 theorem isKC_cen (r₀ : Fin R) (s₀ : Fin S) : IsKC (cen r₀ s₀) :=
   GlobalTheory.FockKStab.isKC_add (GlobalTheory.FockLowDeg.isKC_Eab_diag _) (GlobalTheory.FockLowDeg.isKC_Eab_diag _)
 
+/- English proof (translation)
+Rewrite using `[cen, Matrix.trace_add, GlobalTheory.FockLowDeg.trace_Eab_diag, GlobalTheory.FockLowDeg.trace_Eab_diag]`. Evaluate the numerical expressions.
+-/
 theorem trace_cen (r₀ : Fin R) (s₀ : Fin S) : (cen r₀ s₀).trace = 2 := by
   rw [cen, Matrix.trace_add, GlobalTheory.FockLowDeg.trace_Eab_diag, GlobalTheory.FockLowDeg.trace_Eab_diag]; norm_num
 
+/- English proof (translation)
+Simplify using `[cen, Eab, Matrix.conjTranspose_single]`.
+-/
 theorem cen_conjTranspose (r₀ : Fin R) (s₀ : Fin S) : (cen r₀ s₀)ᴴ = cen r₀ s₀ := by
   simp [cen, Eab, Matrix.conjTranspose_single]
 
@@ -63,6 +75,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {C : InfinitePlace F → Matrix (Fin d) (Ix R S) ℂ} {Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)}
   {c : InfinitePlace F → ℂ} {Z : Type} [AddCommGroup Z] [Module ℂ Z] {p : SInf F (Fin n × Fin d) →ₗ[ℂ] Z}
 
+/- English proof (translation)
+Rewrite using `[genOp_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, LinearMap.add_apply, fockOp_apply hq (hK w)]`. Both sides reduce to the same expression.
+-/
 theorem q_genOp {q : Tens F P Q R S →ₗ[ℂ] Z} (hq : Function.Surjective q)
     (hK : ∀ w X, Keeps q (atPl w (fockAct2 P Q R S X))) (Yg : InfinitePlace F → Mat R S) (T : Tens F P Q R S) :
     q (genOp P Q c Yg T) = (∑ w, (fockOp q w (Yg w) + (c w * (Yg w).trace) • 1)) (q T) := by
@@ -71,6 +86,9 @@ theorem q_genOp {q : Tens F P Q R S →ₗ[ℂ] Z} (hq : Function.Surjective q)
   rw [map_add, map_smul, LinearMap.add_apply, fockOp_apply hq (hK w)]
   rfl
 
+/- English proof (translation)
+Take `⟨k, hk, hkC, hU⟩` from `exp_of_skew hcm hC hθ hact hadm (fun w => (θ w * Complex.I) • cen r₀ s₀) (fun w => GlobalTheory.FockKStab.isKC_smul (isKC_cen r₀ s₀) _) (fun w => by simp [Matrix.conjTranspose_smul, cen_conjTranspose])`. Use `⟨k, hk, fun w => ⟨fun i => ?_, fun i => ?_, fun b h1 h2 i => ?_⟩, hU⟩` and prove the remaining obligations. Rewrite using `[hkC]; exact mul_exp_col _ _ _ _ (fun a => by simp [cen_apply]) i`. Rewrite using `[hkC]; exact mul_exp_col _ _ _ _ (fun a => by simp [cen_apply]) i`. Rewrite using `[hkC, mul_exp_col _ _ b 0 (fun a => by simp [cen_apply, h1, h2]) i, Complex.exp_zero, one_mul]`.
+-/
 theorem centLine (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
     (hθ : ∀ w, W.θ w * C w = C w * Formalism.BasicNotions.TH.Jm R S)
     (hact : ActsBy B.emb C (om.comp (MonoidHom.inr _ _)) Φ (fockAct2 P Q R S) c)
@@ -90,6 +108,9 @@ theorem centLine (hcm : IsCMExt F E σ) (hC : ∀ w, IsFrame (Complex.I • (inc
   · rw [hkC]; exact mul_exp_col _ _ _ _ (fun a => by simp [cen_apply]) i
   · rw [hkC, mul_exp_col _ _ b 0 (fun a => by simp [cen_apply, h1, h2]) i, Complex.exp_zero, one_mul]
 
+/- English proof (translation)
+Rewrite using `[hχ t ht, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[h, Complex.norm_exp_ofReal_mul_I, Complex.ofReal_one, div_one, mul_comm _ (m w : ℂ), Complex.exp_int_mul]`.
+-/
 theorem chr_eq {χ : Chr F E} {m : InfinitePlace F → ℤ} (hχ : HasExp B.emb χ m) {t : (AE F E)ˣ}
     (ht : At (evI F) ((t : AE F E) - 1)) (θ : InfinitePlace F → ℝ)
     (h : ∀ w, piInf (B.emb w) (t : AE F E) = Complex.exp (θ w * Complex.I)) :
@@ -98,6 +119,39 @@ theorem chr_eq {χ : Chr F E} {m : InfinitePlace F → ℤ} (hχ : HasExp B.emb 
   refine Finset.prod_congr rfl fun w _ => ?_
   rw [h, Complex.norm_exp_ofReal_mul_I, Complex.ofReal_one, div_one, mul_comm _ (m w : ℂ), Complex.exp_int_mul]
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.T.adapted_real_line_second F E σ B d d₁ i₀ i₁ r s r₁ s₁ W W₁ H' hB hW hW₁ hH R S r₀ s₀ C hC hθ hAd`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Take `⟨T, rfl⟩` from `hq x`. Use `set q := p ∘ₗ Φ with hqdef`.
+
+Set `θ : ℝ → InfinitePlace F → ℝ` to `fun s => Pi.single w s`. Set `L : Module.End ℂ (Tens F P Q R S)` to `genOp P Q c fun w' => (θ 1 w' * Complex.I) • cen r₀ s₀`. Establish `hL : ∀ s : ℝ, (genOp P Q c fun w' => (θ s w' * Complex.I) • cen r₀ s₀) = (s : ℂ) • L` using `fun s => by`. Rewrite using `[← genOp_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w'`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Simplify using `[θ, smul_smul]`. Simplify using `[θ, Pi.single_eq_of_ne e]`.
+
+Establish `hs : ∀ s : ℝ, ∃ U, IsExp ((s : ℂ) • L) U ∧ q (U T) = Complex.exp (s * (Complex.I * m w)) • q T` using `fun s => by`. Take `⟨k, hk, hcol, U, hU, hAc⟩` from `centLine hB.cm hC hθ hact hadm r₀ s₀ (θ s)`. Take `⟨t, hL1, ht⟩` from `GlobalTheory.T.adapted_real_line_third F E σ B d d₁ i₀ i₁ r _ r₁ s₁ W W₁ H' hB hW hW₁ hH R S r₀ s₀ C hC hθ hAd _ (fun w' => Complex.norm_exp_ofReal_mul_I _) k hk.1 hcol`. Take `⟨h1, h2, -⟩` from `hA k hk t hL1`. Use `⟨U, hL s ▸ hU, ?_⟩` and prove the remaining obligations.
+
+Use `h k hk t hL1 (Φ T) (hr ▸ LinearMap.mem_range_self Φ T) _ (hAc T) rfl` as an intermediate fact. Rewrite `this` using `[h2, Real.one_rpow, Complex.ofReal_one, mul_one, chr_eq hχ h1 (θ s) ht, Finset.sum_eq_single w]`. Simplify using `only [θ, Pi.single_eq_same, mul_assoc] at this`. Conclude with `this`. Introduce `w' _ e`.
+
+Simplify using `[θ, Pi.single_eq_of_ne e]`. Simplify using the standard rewrite rules. Establish `hmem` using `GlobalTheory.FockKStab.mem_of_exp L (genOp_locFin c fun w' => GlobalTheory.FockKStab.isKC_smul (isKC_cen r₀ s₀) _) ((Submodule.span ℂ {q T}).comap q) T fun s => by`. Take `⟨U, hU, e⟩` from `hs s`. Conclude with `⟨U, hU, by rw [Submodule.mem_comap, e]; exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)⟩`.
+
+Take `⟨μ, hμ⟩` from `Submodule.mem_span_singleton.1 (Submodule.mem_comap.1 hmem)`. Establish `hL0 : ∀ v, q (L v) = Complex.I • (fockOp q w (cen r₀ s₀) (q v) + (2 * c w) • q v)` using `fun v => by`. Rewrite using `[q_genOp hq hK, Finset.sum_eq_single w]`. Simplify using `only [θ, Pi.single_eq_same, Complex.ofReal_one, one_mul, map_smul, Matrix.trace_smul, trace_cen, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, smul_add, smul_smul, smul_eq_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `w' _ e`. Simplify using `[θ, Pi.single_eq_of_ne e]`. Simplify using the standard rewrite rules. Distinguish the cases in `h0 : q T = 0`.
+
+Simplify using `[h0]`. Establish `hμm : μ = Complex.I * m w` using `exp_mul_eq fun s => by`. Take `⟨U, hU, e⟩` from `hs s`. Use `isExp_eig hU q (((s : ℂ) * Complex.I) • (fockOp q w (cen r₀ s₀) + (2 * c w) • 1)) (fun v => by rw [LinearMap.smul_apply, map_smul, hL0, smul_smul]; rfl) (T := T) (μ := s * μ) (by rw [mul_smul (s : ℂ) μ, hμ, hL0, smul_smul]; rfl)` as an intermediate fact. Conclude with `smul_left_injective ℂ h0 (this.symm.trans e)`.
+
+Rewrite `hμ` using `[hL0, hμm, mul_smul]`. Use `smul_right_injective Z Complex.I_ne_zero hμ` as an intermediate fact. Rewrite using `[sub_smul, this]`. Simplify using the standard rewrite rules. Introduce `h k hk t hL f hf f₁ hf₁ hx`.
+
+Take `⟨h1, h2, h3⟩` from `hA k hk t hL`. Set `θ : InfinitePlace F → ℝ` to `fun w => Complex.arg (piInf (B.emb w) (t : AE F E))`. Establish `ht : ∀ w, piInf (B.emb w) (t : AE F E) = Complex.exp (θ w * Complex.I)` using `fun w => by`. Use `Complex.norm_mul_exp_arg_mul_I (piInf (B.emb w) (t : AE F E))` as an intermediate fact. Rewrite `this` using `[(h3 w).1, Complex.ofReal_one, one_mul]`.
+
+Conclude with `this.symm`. Take `⟨k', hk', hcol, U, hU, hAc⟩` from `centLine hB.cm hC hθ hact hadm r₀ s₀ θ`. Establish `hkk : k = k'` using `eq_of_frame hB.cm hC hk.1 hk'.1 fun w => by`. Use extensionality with `i b`. Distinguish the cases in `e1 : b = .inl r₀`.
+
+Rewrite using `[e1, (h3 w).2.1, (hcol w).1, ht]`. Distinguish the cases in `e2 : b = .inr s₀`. Rewrite using `[e2, (h3 w).2.2.1, (hcol w).2.1, ht]`. Rewrite using `[(h3 w).2.2.2 b e1 e2, (hcol w).2.2 b e1 e2]`. Substitute `hkk` using the available equality.
+
+Take `⟨T, rfl⟩` from `Main.pol_eq B M Φ hr hf`. Rewrite using `[acts_unique hf₁ (hAc T), h2, Real.one_rpow, Complex.ofReal_one, mul_one, chr_eq hχ h1 θ ht, ← hx]`. Use `isExp_eig hU (p ∘ₗ Φ) _ (q_genOp hq hK _) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Establish `hw` using `h w`. Rewrite `hw` using `[← hx]`. Express the relevant statement in the definitionally equal form `fockOp (p ∘ₗ Φ) w (cen r₀ s₀) ((p ∘ₗ Φ) T) = _ • (p ∘ₗ Φ) T at hw`. Simplify using `only [map_smul, Matrix.trace_smul, trace_cen, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, hw, smul_smul, smul_eq_mul, ← add_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isTwEig_iff {H' : Plane E d d₁} {i₀ i₁ r s r₁ s₁ : ℕ} (hB : B.IsGood σ) (hW : W.IsSkew σ B r s)
     (hW₁ : W₁.IsSkew σ B r₁ s₁) (hH : H'.IsAdapted σ B W W₁ i₀ i₁)
     (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
@@ -194,29 +248,55 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Rf : FinMaps F a a'} {A : InfinitePlace F → Matrix (Fin a) (Ix P Q) ℂ}
   {C : InfinitePlace F → Matrix (Fin (a + a')) (Ix R S) ℂ} {Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin a × Fin (a + a'))}
 
+/- English proof (translation)
+The claim follows from `Main.i_polrange Main.i_actslaws Main.i_derex (Main.i_vacline Main.i_derex) F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hT.base.cm hT.base.std hD.1.1 hD.1.2.1 hD.1.2.2 hD.2`.
+-/
 theorem range_eq (hT : IsTriple B G X om om') (hD : IsFockData B G.M A C Φ) : LinearMap.range Φ = G.M.Pol B.ψ B.emb :=
   Main.i_polrange Main.i_actslaws Main.i_derex (Main.i_vacline Main.i_derex) F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ
     hT.base.cm hT.base.std hD.1.1 hD.1.2.1 hD.1.2.2 hD.2
 
+/- English proof (translation)
+The claim follows from `Main.i_liesecond hKP.base Main.i_derex (Main.i_fockex Main.i_derex) (Main.i_vacline Main.i_derex) (Main.i_liescalar hKP.base Main.i_derex (Main.i_vacline Main.i_derex))`.
+-/
 theorem lieSecond (hKP : KP) : LieSecond :=
   Main.i_liesecond hKP.base Main.i_derex (Main.i_fockex Main.i_derex) (Main.i_vacline Main.i_derex)
     (Main.i_liescalar hKP.base Main.i_derex (Main.i_vacline Main.i_derex))
 
+/- English proof (translation)
+Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Conclude with `lieSecond hKP F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hT.base.cm hT.base.std hD.1.1 hD.2 hwp.1 hT.chars.expβ`.
+-/
 theorem actsBy_second (hKP : KP) (hT : IsTriple B G X om om') (hD : IsFockData B G.M A C Φ) :
     ActsBy B.emb C (om.comp (MonoidHom.inr _ _)) Φ (fockAct2 P Q R S) fun w => (B.mβ w : ℂ) / 2 := by
   have hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om := hT.weil
   exact lieSecond hKP F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hT.base.cm hT.base.std hD.1.1 hD.2
     hwp.1 hT.chars.expβ
 
+/- English proof (translation)
+Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Conclude with `fun g => (hwp.isUSplitting).adm g`.
+-/
 theorem admissible_weil_action (hT : IsTriple B G X om om') :
     ∀ g, ∀ l ∈ (adeleClass F).adm (Fin a × Fin (a + a')), l ∘ₗ om g ∈ (adeleClass F).adm (Fin a × Fin (a + a')) := by
   have hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om := hT.weil
   exact fun g => (hwp.isUSplitting).adm g
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, range_eq hM.triple hD]`. Conclude with `hM.real.quot.onto`.
+-/
 theorem surj_q (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) : Function.Surjective (Rm.p ∘ₗ Φ) := by
   rw [← LinearMap.range_eq_top, LinearMap.range_comp, range_eq hM.triple hD]
   exact hM.real.quot.onto
 
+/- English proof (translation)
+Establish `key : ∀ Y ∈ upq R S, Keeps (Rm.p ∘ₗ Φ) (atPl w (fockAct2 P Q R S Y))`. Introduce `Y hY T hT0`. Take `⟨γ, hγ, hgen⟩` from `Main.i_lineex F E σ (Fin (a + a')) R S B.emb (incM F G.W.J) Complex.I C hM.triple.base.cm hD.1.1.2.2 (Pi.single w Y) fun w' => by`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality.
+
+Simplify using `using hY`. Simplify `Main.zero_mem_upq R S` using `[Pi.single_eq_of_ne h]`. Establish `hsd` using `actsBy_second hKP hM.triple hD γ hγ _ hgen T`. Establish `h1` using `(Main.i_actslaws F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) hsd`. Establish `h0 : ActsD (evI F) (fun t => om' (1, γ (Multiplicative.ofAdd t))) (0 : SInf F (Fin a' × Fin (a + a'))) (0 : SInf F (Fin a' × Fin (a + a')))`.
+
+Introduce `r _ x`. Establish `e : tens (evI F) (0 : SInf F (Fin a' × Fin (a + a'))) r = 0` using `by funext y; simp [tens]`. Simplify using `only [e, map_zero]`. Conclude with `hasDerivAt_const _ _`. Establish `h2` using `hM.real.lie γ hγ (Φ T) (range_eq hM.triple hD ▸ LinearMap.mem_range_self Φ T) 0 (Submodule.zero_mem _) _ 0 h1 h0 (by rw [map_zero]; exact hT0)`.
+
+Rewrite `h2` using `[map_zero]`. Express the relevant statement in the definitionally equal form `(Rm.p ∘ₗ Φ) (genOp P Q _ (Pi.single w Y) T) = 0 at h2`. Rewrite `h2` using `[genOp_single, map_add, map_smul, hT0, smul_zero, add_zero]`. Then use the resulting hypothesis. Take `⟨Y₁, h₁, Y₂, h₂, rfl⟩` from `upq_decomp Z`. Introduce `T hT0`.
+
+Rewrite using `[map_add, map_smul, Main.atPl_add, Main.atPl_smul, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, key Y₁ h₁ T hT0, key Y₂ h₂ T hT0, smul_zero, add_zero]`.
+-/
 theorem keeps_q (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) (w : InfinitePlace F)
     (Z : Mat R S) : Keeps (Rm.p ∘ₗ Φ) (atPl w (fockAct2 P Q R S Z)) := by
   have key : ∀ Y ∈ upq R S, Keeps (Rm.p ∘ₗ Φ) (atPl w (fockAct2 P Q R S Y)) := by
@@ -244,6 +324,9 @@ theorem keeps_q (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData 
   rw [map_add, map_smul, Main.atPl_add, Main.atPl_smul, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul,
     key Y₁ h₁ T hT0, key Y₂ h₂ T hT0, smul_zero, add_zero]
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `surj_q hM hD v`. Rewrite using `[fockOp_apply (surj_q hM hD) (keeps_q hKP hM hD w)]`. Conclude with `stab_of_fix hM.triple.base.cm hD.1.1.2.2 hD.1.2.2 (actsBy_second hKP hM.triple hD) (admissible_weil_action hM.triple) I (N.comap (Rm.p ∘ₗ Φ)) (fun k hk hfix T hT T' hA => hN k hk hfix (Φ T) (range_eq hM.triple hD ▸ LinearMap.mem_range_self Φ T) _ hA hT) w Z hZ hI hv`.
+-/
 theorem fockOp_mem (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) (I : Set (Ix R S))
     (N : Submodule ℂ Rm.Pi)
     (hN : ∀ k ∈ KInf σ G.W B.emb, (∀ w, ∀ b ∈ I, ∀ i, ((mat k).map (piInf (B.emb w)) * C w) i b = C w i b) →
@@ -256,12 +339,20 @@ theorem fockOp_mem (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockDa
     (N.comap (Rm.p ∘ₗ Φ)) (fun k hk hfix T hT T' hA =>
       hN k hk hfix (Φ T) (range_eq hM.triple hD ▸ LinearMap.mem_range_self Φ T) _ hA hT) w Z hZ hI hv
 
+/- English proof (translation)
+The claim follows from `fockOp_mem hKP hM hD ∅ _ (fun k hk _ => (GlobalTheory.T.low_part_compact_stable hKP F E σ B a a' G X om om' Rm Rf hM).1 k hk) w Z hZ (fun _ h => h.elim) hv`.
+-/
 theorem low_stab (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) (w : InfinitePlace F)
     (Z : Mat R S) (hZ : IsKC Z) {v : Rm.Pi} (hv : v ∈ lowPartInf B G.M Rm.p) :
     fockOp (Rm.p ∘ₗ Φ) w Z v ∈ lowPartInf B G.M Rm.p :=
   fockOp_mem hKP hM hD ∅ _ (fun k hk _ => (GlobalTheory.T.low_part_compact_stable hKP F E σ B a a' G X om om' Rm Rf hM).1 k hk) w Z hZ
     (fun _ h => h.elim) hv
 
+/- English proof (translation)
+Use `GlobalTheory.T.lowPart_invariant_submodule_dense hKP F E σ B a a' G X om om' Rm Rf hM N hle fun k hk f hf f₁ hf₁ hfN => ?_` and prove the remaining obligations. Take `⟨T, rfl⟩` from `Main.pol_eq B G.M Φ (range_eq hM.triple hD) hf`. Take `⟨Yg, U, hKC, hU, hA⟩` from `exp_of_kInf hM.triple.base.cm hD.1.1.2.2 hD.1.2.2 (actsBy_second hKP hM.triple hD) (admissible_weil_action hM.triple) hk`. Rewrite using `[acts_unique hf₁ (hA T)]`. Use `isExp_mem hU (N.comap (Rm.p ∘ₗ Φ)) (fun v hv => ?_) hfN` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap, q_genOp (surj_q hM hD) (keeps_q hKP hM hD), LinearMap.sum_apply]`. Conclude with `N.sum_mem fun w _ => N.add_mem (hN w _ (hKC w) _ hv) (N.smul_mem _ hv)`.
+-/
 theorem low_irr (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) (N : Submodule ℂ Rm.Pi)
     (hle : N ≤ lowPartInf B G.M Rm.p) (hN : ∀ w Z, IsKC Z → ∀ v ∈ N, fockOp (Rm.p ∘ₗ Φ) w Z v ∈ N) :
     N = ⊥ ∨ N = lowPartInf B G.M Rm.p := by
@@ -274,6 +365,11 @@ theorem low_irr (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData 
   rw [Submodule.mem_comap, q_genOp (surj_q hM hD) (keeps_q hKP hM hD), LinearMap.sum_apply]
   exact N.sum_mem fun w _ => N.add_mem (hN w _ (hKC w) _ hv) (N.smul_mem _ hv)
 
+/- English proof (translation)
+Use `fockOp_mem hKP hM hD {.inl r₀, .inr s₀} N (fun k hk hfix => ?_) w Z hZ ?_ hv` and prove the remaining obligations. Take `⟨k₁, hk₁, hL⟩` from `GlobalTheory.T.adapted_real_line_first F E σ B _ d₁ i₀ i₁ _ _ r₁ s₁ G.W W₁ H' hM.triple.base hM.triple.geo.hW hW₁ hH R S r₀ s₀ C hD.1.1.2.2 hD.1.2.2 hAd k hk fun w => ⟨hfix w _ (by simp), hfix w _ (by simp)⟩`. Conclude with `hN k hk k₁ hk₁ hL`. Introduce and unpack `b (rfl | rfl) a`. Conclude with `⟨(h0 a).1, (h0 a).2.1⟩`.
+
+Conclude with `⟨(h0 a).2.2.1, (h0 a).2.2.2⟩`.
+-/
 theorem kone_stab (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) {d₁ i₀ i₁ r₁ s₁ : ℕ}
     {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁} (hW₁ : W₁.IsSkew σ B r₁ s₁) (hH : H'.IsAdapted σ B G.W W₁ i₀ i₁)
     {r₀ : Fin R} {s₀ : Fin S} (hAd : IsAdaptedFrame B H' C r₀ s₀) (N : Submodule ℂ Rm.Pi)
@@ -292,6 +388,9 @@ end Triple
 
 section Weights
 
+/- English proof (translation)
+Use `choose ℓ hℓ using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)`. Introduce `h`. Use `congrArg (GlobalTheory.TensIrr.prodForm (V := fun _ : ι => V) ℓ) h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.TensIrr.prodForm_tprod, map_zero]`. Simplify using `[hℓ] at this`.
+-/
 theorem tprod_ne_zero {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module ℂ V] (v : ι → V)
     (hv : ∀ w, v w ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
   choose ℓ hℓ using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)
@@ -302,6 +401,15 @@ theorem tprod_ne_zero {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup 
 
 open GlobalTheory.KFixIrr in
 
+/- English proof (translation)
+Establish `hmD : m ≤ ∑ w, (P * k w + Q * k' w)`. Assume the negation of the conclusion as `hlt`. Use `choose v hv hv0 using fun w => Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.T.lowest_degree_component_nonzero P Q R S (x w) (k w) (k' w) hPR hQS (hk w) (hk' w) (ek w) (ek' w))`. Use `tprod_ne_zero v hv0 ((Submodule.eq_bot_iff _).1 (hm _ (not_le.1 hlt)) _ ⟨?_, tprod_mem_degLE v ?_⟩)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_chiPart]`.
+
+Introduce `w X hX`. Rewrite using `[GlobalTheory.TensIrr.atPl_tprod, (mem_chiOne _ _).1 ((mem_lowOne _ _ _).1 (hv w)).1 X hX, MultilinearMap.map_update_smul, Function.update_eq_self]`. Conclude with `Finset.sum_le_sum fun w _ => ((mem_lowOne _ _ _).1 (hv w)).2`. Introduce `T hT`. Use `(Submodule.span_le.2 ?_) (GlobalTheory.T.character_part_tensor_span ι P Q R S x _ T hT)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, hg, hs, rfl⟩`. Distinguish the cases in `h0 : ∃ w, g w = 0`. Take `⟨w, hw⟩` from `h0`. Rewrite using `[MultilinearMap.map_coord_zero _ w hw]`. Conclude with `Submodule.zero_mem _`.
+
+Use `push Not at h0`. Establish `hle : ∀ w, P * k w + Q * k' w ≤ (g w).totalDegree` using `fun w => GlobalTheory.FockLowDeg.lowerDeg P Q R S (x w) (k w) (k' w) (ek w) (ek' w) (g w) (hg w) (h0 w)`. Establish `heq : ∑ w, (P * k w + Q * k' w) = ∑ w, (g w).totalDegree` using `le_antisymm (Finset.sum_le_sum fun w _ => hle w) (hs.trans hmD)`. Conclude with `tprod_mem_tensSpan _ g fun w => (mem_lowOne _ _ _).2 ⟨hg w, ((Finset.sum_eq_sum_iff_of_le (fun w _ => hle w)).1 heq w (Finset.mem_univ w)).symm.le⟩`.
+-/
 theorem chi_le_tensSpan {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} (x : ι → ℚ) (hPR : P ≤ R) (hQS : Q ≤ S)
     (k k' : ι → ℕ) (hk : ∀ w, 0 < k w) (hk' : ∀ w, 0 < k' w) (ek : ∀ w, x w - cPair R S = k w)
     (ek' : ∀ w, x w + cPair R S = k' w) (m : ℕ) (hm : ∀ m' < m, chiPart ι P Q R S x ⊓ degLE ι P Q R S m' = ⊥) :
@@ -339,6 +447,41 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.KFixIrr in
 
+/- English proof (translation)
+Take `⟨hb, hg, hc, hw, hw'⟩` from `hM.triple`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Establish `hW1` using `Main.i_liefirst (lieSecond hKP) F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std hD.1.1 hD.2 hd hB1 (Main.hasExp_div B.emb hc.expβ hc.expα)`. Set `c : InfinitePlace F → ℚ` to `fun w => ((B.mα w - B.mβ w : ℤ) : ℚ) / 2`.
+
+Establish `ec : (fun w => -((c w : ℚ) : ℂ)) = fun w => ((B.mβ w - B.mα w : ℤ) : ℂ) / 2`. Use function extensionality and compare the values at `w`. Simplify using `only [c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hW1' : ActsBy B.emb A (om.comp (MonoidHom.inl _ _)) Φ (fockAct1 _ _ _ _) (fun w => -((c w : ℚ) : ℂ))`. Rewrite using `[ec]`. Conclude with `hW1`. Establish `hinj : Function.Injective Φ` using `hD.2.1`. Establish `L1` using `GlobalTheory.T.archimedean_theta_polynomial_lift_exists Main.i_actslaws Main.i_derex (Main.i_vacline Main.i_derex) F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std hD.1.1 hD.1.2.1 hD.1.2.2 hD.2`.
+
+Establish `L2` using `GlobalTheory.T.archimedean_polynomial_tensor_character Main.i_actslaws Main.i_lineex (Main.i_kline Main.i_lineex) F E σ B _ _ _ _ _ _ G.V G.W om A Φ c hb.cm hD.1.1.2.1 hD.1.2.1 hinj hW1' (admissible_weil_action hM.triple)`. Establish `key : ∀ k, fixPart B G.M om k = (chiPart (InfinitePlace F) _ _ _ _ c ⊓ degLE (InfinitePlace F) _ _ _ _ k).map Φ`. Introduce `k`. Establish `hs : {f | f ∈ fockDeg G.M B.ψ B.emb k ∧ IsKFix B om f} = Φ '' ((chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k : Submodule ℂ _) : Set _)`. Use extensionality with `f`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hfix⟩`. Rewrite `hf` using `[L1 k]`. Take `⟨T, hT, rfl⟩` from `hf`. Conclude with `⟨T, ⟨(L2 T).1 hfix, hT⟩, rfl⟩`.
+
+Introduce and unpack `⟨T, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨by rw [L1 k]; exact ⟨T, h2, rfl⟩, (L2 T).2 h1⟩`. Rewrite using `[fixPart, hs, Submodule.span_image, Submodule.span_eq]`. Establish `bot : ∀ k < fixDeg B G.M om, chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ degLE (InfinitePlace F) _ _ _ _ k = ⊥`. Introduce `k hk`.
+
+Establish `h0` using `fixPart_eq_bot_of_lt B G.M om hk`. Rewrite `h0` using `[key]`. Rewrite using `[← Submodule.comap_map_eq_of_injective hinj (_ ⊓ _), h0, Submodule.comap_bot, LinearMap.ker_eq_bot.2 hinj]`. Establish `hPR : a - G.p ≤ a + a' - (G.p + G.q)` using `by have := hg.aBig; omega`. Establish `hQS : G.p ≤ G.p + G.q` using `Nat.le_add_right _ _`.
+
+Establish `hnum : ∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ c w - cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k ∧ c w + cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k'`. Introduce `w`. Establish `hk` using `hg.kappa w`. Take `⟨j, hj⟩` from `Main.i_parity F E σ B a a' G X om om' hM.triple w`. Take `⟨i, hi⟩` from `hg.even`.
+
+Establish `h1` using `hg.eBig`. Establish `h2` using `hg.aBig`. Establish `hle : G.p + G.q ≤ a + a'` using `by omega`. Establish `hR : ((a + a' - (G.p + G.q) : ℕ) : ℚ) = (i : ℚ) + i - ((G.p : ℚ) + G.q)`. Rewrite using `[Nat.cast_sub hle, hi]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(j - i + (G.p + G.q : ℕ)).toNat, (j + i - (G.p + G.q : ℕ)).toNat, by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (((j - i + (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j - i + (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions.
+
+Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (((j + i - (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j + i - (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions.
+
+Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose k k' hk hk' ek ek' using hnum`. Establish `hdeg` using `GlobalTheory.T.low_degree_le_fixed_degree hKP F E σ B a a' G X om om' Rm Rf hM`.
+
+Use `(GlobalTheory.T.low_part_le_fixed_part_image hKP F E σ B a a' G X om om' Rm Rf hM).trans ?_` and prove the remaining obligations. Rewrite using `[key, ← Submodule.map_comp, Submodule.map_le_iff_le_comap]`. Use `(chi_le_tensSpan c hPR hQS k k' hk hk' ek ek' _ fun m' hm' => bot m' (hm'.trans_le hdeg)).trans ?_` and prove the remaining obligations. Rewrite using `[tensSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg', rfl⟩`.
+
+Establish `hwt` using `GlobalTheory.T.low_irreducible_eigenspace_sup _ _ _ _ (c w) (k w) (k' w) (ek w) (ek' w) r s (hg' w)`. Set `ℓ` to `(Rm.p ∘ₗ Φ) ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap g w`. Establish `hℓ : ∀ Z f, fockOp (Rm.p ∘ₗ Φ) w Z (ℓ f) = ℓ (fockAct2 _ _ _ _ Z f)` using `fun Z f => by`. Simplify using `only [ℓ, LinearMap.comp_apply _ ((PiTensorProduct.tprod ℂ).toLinearMap g w), MultilinearMap.toLinearMap_apply]`. Rewrite using `[fockOp_apply (surj_q hM hD) (keeps_q hKP hM hD w), GlobalTheory.TensIrr.atPl_tprod]`.
+
+Simplify using the standard rewrite rules. Establish `e : (Rm.p ∘ₗ Φ) (PiTensorProduct.tprod ℂ g) = ℓ (g w)` using `by simp [ℓ]`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, e]`. Establish `h2` using `Submodule.mem_map_of_mem (f := ℓ) hwt`. Rewrite `h2` using `[Submodule.map_iSup]`.
+
+Use `SetLike.le_def.1 (iSup_mono fun n => ?_) h2` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨h1, h2⟩, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[hℓ, h1, map_smul]`.
+
+Rewrite `h2`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[hℓ, h2, map_smul]`.
+-/
 theorem low_weights (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) (w : InfinitePlace F)
     (r : Fin (a + a' - (G.p + G.q))) (s : Fin (G.p + G.q)) :
     lowPartInf B G.M Rm.p ≤ ⨆ n : ℕ × ℕ,
@@ -426,14 +569,41 @@ theorem low_weights (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockD
 
 end Weights
 
+/- English proof (translation)
+Simplify using `[Eab, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ h.symm]`.
+-/
 theorem eab_lie {R S : ℕ} {a b : Ix R S} (h : b ≠ a) : Eab a a * Eab b a - Eab b a * Eab a a = -Eab b a := by
   simp [Eab, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ h.symm]
 
+/- English proof (translation)
+Introduce `a' b' h'` and use `by rw [Eab, Matrix.single_apply, if_neg] rintro ⟨rfl, rfl⟩ exact h' h`.
+-/
 theorem isKC_Eab {R S : ℕ} {a b : Ix R S} (h : sameBlock a b) : IsKC (Eab a b) := fun a' b' h' => by
   rw [Eab, Matrix.single_apply, if_neg]
   rintro ⟨rfl, rfl⟩
   exact h' h
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hCfg X om om' Rm Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hb` using `hM.triple.base`. Establish `hg` using `hM.triple.geo`. Establish `hg₁` using `hM₁.triple.geo`. Take `⟨r₀, s₀, C, hC, hCθ, hAd⟩` from `GlobalTheory.T.adapted_real_frame_exists F E σ B _ _ _ _ _ _ _ _ G.W G₁.W H' hb hg.hW hg₁.hW hCfg.hH' (by have := hCfg.ep; have := hCfg.eq; have := hg.aBig; omega) (by have := hCfg.ep; have := hCfg.eq; omega)`.
+
+Use `choose A hA hAθ using fun w => Main.i_frameex _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[Main.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC⟩`.
+
+Take `⟨Φ, hΦ⟩` from `Main.i_fockex Main.i_derex F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hD : IsFockData B G.M A C Φ` using `⟨⟨fr, hAθ, hCθ⟩, hΦ⟩`. Establish `hq` using `surj_q hM hD`. Establish `hK` using `keeps_q hKP hM hD`. Use `set q := Rm.p ∘ₗ Φ with hqdef`.
+
+Use `set x₂ : ℂ := (((a - G.p : ℕ) : ℂ) - G.p) / 2 with hx₂`. Establish `hact : ∀ w Z, twAct false q w Z = fockOp q w (negT _ _ Z)` using `fun _ _ => rfl`. Establish `htw : ∀ v, v ∈ twPart B G.M om Rm.p G₁.W H' X.β ((a : ℝ) / 2) (lowPartInf B G.M Rm.p) ↔ v ∈ lowPartInf B G.M Rm.p ∧ ∀ w, fockOp q w (Eab (.inl r₀) (.inl r₀)) v = x₂ • v ∧ fockOp q w (Eab (.inr s₀) (.inr s₀)) v = (-x₂) • v`. Establish `hs : {x | x ∈ lowPartInf B G.M Rm.p ∧ IsTwEig B G.M om Rm.p G₁.W H' X.β ((a : ℝ) / 2) x} = ((lowPartInf B G.M Rm.p ⊓ ⨅ w, LinearMap.ker (fockOp q w (cen r₀ s₀)) : Submodule ℂ Rm.Pi) : Set Rm.Pi)`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Rewrite using `[isTwEig_iff hb hg.hW hg₁.hW hCfg.hH' hC hCθ hAd (actsBy_second hKP hM.triple hD) (admissible_weil_action hM.triple) (range_eq hM.triple hD) hq hK hM.triple.chars.expβ]`. Simplify using `only [mul_div_cancel₀ _ (two_ne_zero (α := ℂ)), sub_self, zero_smul]`. Both sides reduce to the same expression. Introduce `v`.
+
+Rewrite using `[twPart, hs, Submodule.span_eq]`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, cen, map_add, LinearMap.add_apply]`. Use `and_congr_right fun hv => forall_congr' fun w => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `bottom_of_sum _ _ x₂ (low_weights hKP hM hD w r₀ s₀ hv) h`. Rewrite using `[h.1, h.2, neg_smul, add_neg_cancel]`.
+
+Establish `hlow : ∀ w (i j : Ix _ _) (μ : ℂ) (v : Rm.Pi), j ≠ i → fockOp q w (Eab i i) v = μ • v → fockOp q w (Eab i i) (fockOp q w (Eab j i) v) = (μ - 1) • fockOp q w (Eab j i) v`. Introduce `w i j μ v hji hv`. Use `LinearMap.congr_fun (fockOp_lie hq (hK w) (Eab i i) (Eab j i)) v` as an intermediate fact. Rewrite `this` using `[eab_lie hji, map_neg, LinearMap.neg_apply, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hv, map_smul, eq_sub_iff_add_eq]`. Rewrite using `[← this, sub_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨_, _, r₀, s₀, twAct false q, fun _ => -x₂, fun _ => x₂, fun w Y Z _ _ => twAct_lie hq (hK w) _ Y Z, fun w w' hw Y Z _ _ => twAct_comm hq hK _ hw Y Z, fun w Z hZ v hv => low_stab hKP hM hD w _ (isKC_negT hZ) hv, fun N hle hN => low_irr hKP hM hD N hle fun w Z hZ v hv => ?_, fun v …` and prove the remaining obligations. Use `hN w _ (isKC_negT hZ) v hv` as an intermediate fact. Rewrite `this` using `[hact, negT_negT]`. Then use the resulting hypothesis. Rewrite using `[htw]`.
+
+Use `and_congr_right fun _ => forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[hact, hact, negT_Eab, negT_Eab, map_neg, map_neg, LinearMap.neg_apply, LinearMap.neg_apply, neg_smul, neg_inj, neg_eq_iff_eq_neg]`. Take `⟨hv1, hv2⟩` from `(htw v).1 hv`. Rewrite using `[hact, negT_Eab, map_neg, LinearMap.neg_apply, neg_eq_zero]`. Conclude with `eq_zero_of_below _ x₂ Prod.fst _ (fun _ => inf_le_left) (low_weights hKP hM hD w r₀ s₀ (low_stab hKP hM hD w _ (isKC_Eab (by trivial)) hv1)) (hlow w _ _ _ v (by simpa using hi) (hv2 w).1)`.
+
+Take `⟨hv1, hv2⟩` from `(htw v).1 hv`. Rewrite using `[hact, negT_Eab, map_neg, LinearMap.neg_apply, neg_eq_zero]`. Conclude with `eq_zero_of_below _ (-x₂) Prod.snd _ (fun _ => inf_le_right) (low_weights hKP hM hD w r₀ s₀ (low_stab hKP hM hD w _ (isKC_Eab (by trivial)) hv1)) (hlow w _ _ _ v (by simpa using hj) (hv2 w).2)`. Simplify using `[negT_apply, h0 c]`.
+-/
 theorem bridge_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

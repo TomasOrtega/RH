@@ -10,6 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace PositivityTheory.HtPt.Cg
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ _ X0 t k _ _ p _ _ x d g xk h1 h2`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ↥(pullback t.G.hom x)` using `GeometricallyConnected.connectedSpace_of_subsingleton (pullback.snd t.G.hom x)`. Establish `hI : IsIntegral (pullback t.G.hom x)` using `GlobalTheory.isIntegral_of_smooth_field_of_connectedSpace (pullback.snd t.G.hom x)`.
+
+Use `⟨hI, GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (pullback.snd t.G.hom x) ((GlobalTheory.isNormalScheme_iff _).mp (inferInstance : GlobalTheory.IsNormalScheme (Sp k))), ?_, fun U hU _ f => ?_⟩` and prove the remaining obligations. Conclude with `charP_of_injective_ringHom (StructureSheaf.toStalk k _ ≫ (pullback.snd t.G.hom x).stalkMap (genericPoint _)).hom.injective p`. Establish `hid : spMap (algebraMap k k) = 𝟙 (Sp k)` using `Spec.map_id _`. Set `e : Sp k ⟶ pullback t.G.hom x` to `pullback.lift (1 : overAt x k ⟶ t.G).left (𝟙 _) ((Over.w (1 : overAt x k ⟶ t.G)).trans (congrArg (· ≫ x) hid))`. Establish `e1 : e ≫ pullback.fst _ _ = (1 : overAt x k ⟶ t.G).left` using `pullback.lift_fst _ _ _`.
+
+Establish `e2 : e ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Use `taylor (π := pullback.snd t.G.hom x) p e2 xk (fun m B _ _ aug hB y hy hy0 => ?_) h2 (fun m => ?_) (fun m => ?_) U hU f` and prove the remaining obligations. Set `y' : overAt x B ⟶ t.G` to `Over.homMk (y ≫ pullback.fst _ _) (by show (y ≫ pullback.fst _ _) ≫ t.G.hom = spMap (algebraMap k B) ≫ x`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy])`. Use `Cd.coord_aug g (m := m) aug hB y' (Over.OverMorphism.ext (by show spMap (aug : B →+* k) ≫ y ≫ pullback.fst _ _ = _` as an intermediate fact.
+
+Rewrite using `[← Category.assoc, hy0, e1]))`. Use `(existsUnique_congr fun χ => and_congr_right fun _ => ⟨fun h => ?_, fun h => ?_⟩).1 this` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h1]`. Conclude with `congrArg (·.left) h`.
+
+Rewrite using `[Category.assoc, h2, hy, spMap_comp_alg]`. Use `Over.OverMorphism.ext ?_ show y ≫ pullback.fst _ _ = spMap (χ : Jet k (Fin 1 × Fin d) m →+* B) ≫ (g.x m).left` and prove the remaining obligations. Rewrite using `[h, Category.assoc, h1]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h1, e1]`.
+
+Conclude with `congrArg (·.left) (g.chart.zero m)`. Rewrite using `[Category.assoc, h2, e2, spMap_comp_alg, hid]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h1, h1]`. Conclude with `congrArg (·.left) (g.chart.trunc m)`.
+
+Rewrite using `[Category.assoc, h2, h2, spMap_comp_alg]`.
+-/
 theorem fibre_taylor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d) (xk : ∀ m, Sp (Jet k (Fin 1 × Fin d) m) ⟶ pullback t.G.hom x), (∀ m, xk m ≫ pullback.fst _ _ = (g.x m).left) → (∀ m, xk m ≫ pullback.snd _ _ = spMap (algebraMap k _)) → ∃ _ : IsIntegral (pullback t.G.hom x), IsNormalScheme (pullback t.G.hom x) ∧ CharP (pullback t.G.hom x).functionField p ∧ ∀ (U : (pullback t.G.hom x).Opens) (hU : ∀ m, ⊤ ≤ xk m ⁻¹ᵁ U) [Nonempty U] (f : Γ(pullback t.G.hom x, U)), ∃ F : MvPowerSeries (Fin 1 × Fin d) k, (∀ m, ((xk m).appLE U ⊤ (hU m)).hom f = toΓ _ (psJet m F)) ∧ (F = 0 → f = 0) ∧ ((∀ q, MvPowerSeries.pderiv k q F = 0) → ∃ r : (pullback t.G.hom x).functionField, r ^ p = ((pullback t.G.hom x).germToFunctionField U).hom f) := by
   intro E _ _ _ H _ _ X0 t k _ _ p _ _ x d g xk h1 h2
   have := t.semi.smooth

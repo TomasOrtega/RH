@@ -14,5 +14,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UU.exists_degData_unif_unconditional | exact GlobalTheory.UU.exists_degData_unif_unconditional | (intros; apply GlobalTheory.UU.exists_degData_unif_unconditional <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_degenerationData_uniformisation_unconditional : AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegData V (IsLocalRing.maximalIdeal V)) (U : Unif (IsLocalRing.maximalIdeal V) D A G), U.LG = s.P.L ∧ U.gen = s.gen ∧ HEq U.cubG s.P.c := by
   first | exact @GlobalTheory.UU.exists_degData_unif_unconditional | exact GlobalTheory.UU.exists_degData_unif_unconditional | (intros; apply GlobalTheory.UU.exists_degData_unif_unconditional <;> assumption)

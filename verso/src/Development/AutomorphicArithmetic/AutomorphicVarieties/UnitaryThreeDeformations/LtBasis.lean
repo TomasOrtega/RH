@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Establish `h1 : IsUnit ((t : O) - 1)`. Establish `: (t : O) ^ 2 - 1 = ((t : O) - 1) * ((t : O) + 1)` using `by ring`. Rewrite `ht` using `[this]`. Conclude with `isUnit_of_mul_isUnit_left ht`. Establish `hi : ((t⁻¹ : Oˣ) : O) * (t : O) = 1` using `by simp`.
+
+Establish `h2 : IsUnit ((t : O) - ((t⁻¹ : Oˣ) : O))`. Establish `: (t : O) - ((t⁻¹ : Oˣ) : O) = ((t⁻¹ : Oˣ) : O) * ((t : O) ^ 2 - 1)`. Take the linear combination `(-(t : O)) * hi`. Rewrite using `[this]`. Conclude with `(Units.isUnit _).mul ht`.
+
+Establish `h3 : IsUnit (1 - ((t⁻¹ : Oˣ) : O))`. Establish `: 1 - ((t⁻¹ : Oˣ) : O) = ((t⁻¹ : Oˣ) : O) * ((t : O) - 1)`. Take the linear combination `(-1 : O) * hi`. Rewrite using `[this]`. Conclude with `(Units.isUnit _).mul h1`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [wt1] at hab ⊢`. Apply the tactic sequence `all_goals first`. Consider the case `exact h1 | exact h2 | exact h3`. Consider the case `exact (by simpa [neg_sub] using h1.neg)`. Consider the case `exact (by simpa [neg_sub] using h2.neg)`.
+
+Consider the case `exact (by simpa [neg_sub] using h3.neg)`.
+-/
 private theorem lb_unit {O : Type} [CommRing O] (t : Oˣ) (ht : IsUnit ((t : O) ^ 2 - 1)) (a b : Fin 3)
     (hab : a ≠ b) : IsUnit (((t ^ wt1 a : Oˣ) : O) - ((t ^ wt1 b : Oˣ) : O)) := by
   have h1 : IsUnit ((t : O) - 1) := by
@@ -30,6 +41,25 @@ private theorem lb_unit {O : Type} [CommRing O] (t : Oˣ) (ht : IsUnit ((t : O) 
     | exact (by simpa [neg_sub] using h2.neg)
     | exact (by simpa [neg_sub] using h3.neg)
 
+/- English proof (translation)
+Introduce `O R R' D _ _ _ _ _ _ _ _ _ _ 𝒜 _ p hp η Ψ I r' x hr hx hΨ hc hex`. Take `⟨X, hX, hXp⟩` from `hex`. Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`. Use `haveI : IsLocalHom (p : R →+* R') := IsLocalHom.of_surjective _ hp`. Establish `hm : ∀ y : R, p y ∈ maximalIdeal R' ↔ y ∈ maximalIdeal R`.
+
+Introduce `y`. Simplify using `only [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `not_congr (isUnit_map_iff (p : R →+* R') y)`. Establish `hd : (r0 η Ψ x).mat = diagonal fun i => (((Ψ x) ^ wt1 i : Oˣ) : O)`. Unfold `GG.mat`.
+
+Rewrite using `[unitaryThreeReflection_left, tor_val]`. Establish `hred` using `hr.red x`. Rewrite `hred` using `[hd]`. Establish `hent : ∀ a b : Fin 3, p (X a b) = (r' x).mat a b`. Introduce `a b`.
+
+Rewrite using `[← hXp]`. Both sides reduce to the same expression. Establish `hoff : ∀ a b : Fin 3, a ≠ b → X a b ∈ maximalIdeal R`. Introduce `a b hab`. Rewrite using `[← hm, hent]`.
+
+Use `hred a b` as an intermediate fact. Simplify `this` using `[Matrix.map_apply, Matrix.diagonal_apply_ne _ hab]`. Establish `hdiff : ∀ a b : Fin 3, a ≠ b → IsUnit (X a a - X b b)`. Introduce `a b hab`. Assume the negation of the conclusion as `hn`.
+
+Establish `h1 : X a a - X b b ∈ maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hn`. Rewrite `h1` using `[← hm, map_sub, hent, hent]`. Establish `ha` using `hred a a`.
+
+Establish `hb` using `hred b b`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.diagonal_apply_eq] at ha hb`. Establish `hu : IsUnit (algebraMap O R' ((((Ψ x) ^ wt1 a : Oˣ) : O) - (((Ψ x) ^ wt1 b : Oˣ) : O)))` using `(lb_unit (Ψ x) hΨ a b hab).map _`. Apply `(IsLocalRing.mem_maximalIdeal _).mp _ hu` to reduce the goal to its premises. Establish `: algebraMap O R' ((((Ψ x) ^ wt1 a : Oˣ) : O) - (((Ψ x) ^ wt1 b : Oˣ) : O)) = ((r' x).mat a a - (r' x).mat b b) - ((r' x).mat a a - algebraMap O R' (((Ψ x) ^ wt1 a : Oˣ) : O)) + ((r' x).mat b b - algebraMap O R' (((Ψ x) ^ wt1 b : Oˣ) : O))`.
+
+Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.sub_mem _ h1 ha) hb`. Take `⟨h, hh⟩` from `exists_canon X hdiff hoff`.
+
+Establish `hg` using `canon_graded 𝒜 X h hdiff hX hh`. Establish `hh'` using `canon_map.1 (p : R →+* R') X h hh`. Establish `hXp' : X.map (p : R →+* R') = (r' x).mat` using `hXp`. Rewrite `hh'` using `[hXp']`. Conclude with `⟨h, hh.hat, hg.1, hh'.hat, (cond_iff_canon η Ψ I r' x _ hr hx hΨ hh').1.1 hc⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_basis :
     ∀ {O R R' D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] [Finite R] [CommRing R'] [Algebra O R'] [IsCO O R'] [Group D]
       (𝒜 : ℤ → Submodule O R) [GradedAlgebra 𝒜] (p : R →ₐ[O] R'), Function.Surjective p →

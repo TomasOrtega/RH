@@ -27,8 +27,16 @@ private def eD : (V →L[ℂ] ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (Module.f
     ext j
     simp [ContinuousLinearMap.sum_apply, OrthonormalBasis.inner_eq_ite]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem eD_apply (ξ : V →L[ℂ] ℂ) (i) : eD ξ i = ξ (stdOrthonormalBasis ℂ V i) := rfl
 
+/- English proof (translation)
+Use `set b := stdOrthonormalBasis ℂ V`. Use `set u := (InnerProductSpace.toDual ℂ V).symm ξ`. Establish `hu : ∀ v, ξ v = ⟪u, v⟫_ℂ` using `fun v => (InnerProductSpace.toDual_symm_apply).symm`. Rewrite using `[← (InnerProductSpace.toDual ℂ V).symm.norm_map ξ, ← b.repr.norm_map u, EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eD_apply, hu, b.repr_apply_apply, ← inner_conj_symm, Complex.norm_conj]`.
+-/
 private theorem norm_eD (ξ : V →L[ℂ] ℂ) : ‖eD ξ‖ = ‖ξ‖ := by
   set b := stdOrthonormalBasis ℂ V
   set u := (InnerProductSpace.toDual ℂ V).symm ξ
@@ -45,26 +53,46 @@ private def pr (A : V →L[ℂ] V) :
     (((ContinuousLinearMap.compL ℂ V V ℂ).flip A).comp
       ((eD (V := V)).toContinuousLinearEquiv.symm : _ →L[ℂ] (V →L[ℂ] ℂ)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pr_apply (A : V →L[ℂ] V) (y) : pr A y = eD ((eD.symm y).comp A) := rfl
 
+/- English proof (translation)
+Rewrite using `[pr_apply, LinearEquiv.symm_apply_apply]`.
+-/
 private theorem pr_eD (A : V →L[ℂ] V) (ξ : V →L[ℂ] ℂ) : pr A (eD ξ) = eD (ξ.comp A) := by
   rw [pr_apply, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `ext1 y`. Rewrite using `[pr_apply, ContinuousLinearMap.one_apply]`. Use `show eD ((eD.symm y).comp (ContinuousLinearMap.id ℂ V)) = y`. Rewrite using `[ContinuousLinearMap.comp_id, LinearEquiv.apply_symm_apply]`.
+-/
 private theorem pr_one : pr (1 : V →L[ℂ] V) = 1 := by
   ext1 y
   rw [pr_apply, ContinuousLinearMap.one_apply]
   show eD ((eD.symm y).comp (ContinuousLinearMap.id ℂ V)) = y
   rw [ContinuousLinearMap.comp_id, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `ext1 y`. Rewrite using `[ContinuousLinearMap.mul_apply, pr_apply, pr_apply, pr_apply, LinearEquiv.symm_apply_apply, ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_assoc]`.
+-/
 private theorem pr_mul (A B : V →L[ℂ] V) : pr (A * B) = pr B * pr A := by
   ext1 y
   rw [ContinuousLinearMap.mul_apply, pr_apply, pr_apply, pr_apply, LinearEquiv.symm_apply_apply,
     ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_assoc]
 
+/- English proof (translation)
+Unfold `pr`. Use `fun_prop`.
+-/
 private theorem continuous_pr : Continuous (pr (V := V)) := by
   unfold pr
   fun_prop
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (EuclideanSpace.basisFun (Fin (Module.finrank ℂ V)) ℂ).toBasis, LinearMap.trace_eq_matrix_trace ℂ (stdOrthonormalBasis ℂ V).toBasis]`. Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.toMatrix_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.coe_toBasis, OrthonormalBasis.repr_apply_apply, EuclideanSpace.basisFun_apply, EuclideanSpace.basisFun_repr, ContinuousLinearMap.coe_coe, pr_apply, eD_apply]`. Rewrite using `[EuclideanSpace.inner_single_left, map_one, one_mul, eD_apply, ContinuousLinearMap.comp_apply]`.
+
+Use `show (∑ j, (EuclideanSpace.single i (1 : ℂ)) j • innerSL ℂ (stdOrthonormalBasis ℂ V j)) (A (stdOrthonormalBasis ℂ V i)) = _`. Simplify using `[ContinuousLinearMap.sum_apply, EuclideanSpace.single_apply]`.
+-/
 private theorem trace_pr (A : V →L[ℂ] V) :
     LinearMap.trace ℂ (EuclideanSpace ℂ (Fin (Module.finrank ℂ V)))
       ((pr A : EuclideanSpace ℂ (Fin (Module.finrank ℂ V)) →L[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ V))) :
@@ -83,6 +111,21 @@ private theorem trace_pr (A : V →L[ℂ] V) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `n E T hT`. Establish `hnorm : ∀ (k : UK n) (ξ : E.V →L[ℂ] ℂ), ‖ξ.comp (E.ρ k)‖ ≤ ‖ξ‖`. Introduce `k ξ`. Establish `hk : ‖E.ρ k‖ ≤ 1` using `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by rw [E.iso, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinv : Continuous (fun k : UK n => k⁻¹)` using `by first`. Consider the case `exact continuous_inv`. Consider the case `exact Continuous.subtype_mk (continuous_star.comp continuous_subtype_val) _`. Set `ρ' : UK n →* (EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) →L[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)))` to `{ toFun := fun k => pr (E.ρ k⁻¹) map_one' := by simp [pr_one] map_mul' := by`. Introduce `k l`.
+
+Simplify using `only [_root_.mul_inv_rev, map_mul, pr_mul] }`. Set `E' : KMod n` to `{ V := EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) ρ := ρ' iso := by`. Introduce `k y`. Take `⟨ξ, rfl⟩` from `eD.surjective y`. Use `show ‖pr (E.ρ k⁻¹) (eD ξ)‖ = ‖eD ξ‖`.
+
+Rewrite using `[pr_eD, norm_eD, norm_eD]`. Apply `le_antisymm (hnorm _ ξ)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.comp_assoc, ← ContinuousLinearMap.mul_def, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_def, ContinuousLinearMap.comp_id]`. Use `_ ≤ ‖ξ.comp (E.ρ k⁻¹)‖ := hnorm _ _`.
+
+Use `cont := continuous_pr.comp (E.cont.comp hinv) }`. Use `⟨E', eD, (pr T : E'.V →L[ℂ] E'.V), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k ξ`. Conclude with `(pr_eD _ ξ).symm`. Introduce `ξ`.
+
+Conclude with `(pr_eD T ξ).symm`. Introduce `k`. Prove the components needed by the constructor for the conclusion. Conclude with `trace_pr (E.ρ k⁻¹)`. Use `show LinearMap.trace ℂ _ ((pr (E.ρ k⁻¹) : E'.V →ₗ[ℂ] E'.V) * (pr T : E'.V →ₗ[ℂ] E'.V)) = _`.
+
+Rewrite using `[← ContinuousLinearMap.coe_mul, ← pr_mul, trace_pr, hT]`.
+-/
 theorem UpperTheory.RealTr.dualEx :
     ∀ (n : ℕ) (E : KMod n) (T : E.V →L[ℂ] E.V), (∀ k, T * E.ρ k = E.ρ k * T) → ∃ (E' : KMod n) (e : (E.V →L[ℂ] ℂ) ≃ₗ[ℂ] E'.V) (T' : Module.End ℂ E'.V),
       (∀ k ξ, e (ξ ∘L E.ρ k⁻¹) = E'.ρ k (e ξ)) ∧ (∀ ξ, e (dualT E T ξ) = T' (e ξ)) ∧

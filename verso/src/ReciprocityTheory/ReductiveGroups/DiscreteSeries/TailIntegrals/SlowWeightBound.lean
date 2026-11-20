@@ -8,6 +8,11 @@ open scoped ENNReal
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 namespace PolynomialGrowthIntegrals
 
+/- English proof (translation)
+Establish `hr : (-1 : ℝ) < -κ` using `by linarith`. Establish `hint : IntegrableOn (fun β : ℝ => β ^ (-κ)) (Ioc 0 R)` using `(intervalIntegrable_iff_integrableOn_Ioc_of_le hR.le).1 (intervalIntegral.intervalIntegrable_rpow' hr)`. Establish `hnn : 0 ≤ᵐ[volume.restrict (Ioc 0 R)] fun β : ℝ => β ^ (-κ)` using `by filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx`. Conclude with `Real.rpow_nonneg hx.1.le _`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint hnn, ← intervalIntegral.integral_of_le hR.le, integral_rpow (Or.inl hr)]`.
+
+Establish `h1 : -κ + 1 = 1 - κ` using `by ring`. Rewrite using `[h1, Real.zero_rpow (by linarith), sub_zero]`.
+-/
 lemma int_pos_rpow {R κ : ℝ} (hR : 0 < R) (hκ : κ < 1) :
     ∫⁻ β in Ioc 0 R, ENNReal.ofReal (β ^ (-κ)) = ENNReal.ofReal (R ^ (1 - κ) / (1 - κ)) := by
   have hr : (-1 : ℝ) < -κ := by linarith
@@ -21,6 +26,15 @@ lemma int_pos_rpow {R κ : ℝ} (hR : 0 < R) (hκ : κ < 1) :
   have h1 : -κ + 1 = 1 - κ := by ring
   rw [h1, Real.zero_rpow (by linarith), sub_zero]
 
+/- English proof (translation)
+Establish `hpos : ∫⁻ β in Icc 0 R, ENNReal.ofReal (|β| ^ (-κ)) = ENNReal.ofReal (R ^ (1 - κ) / (1 - κ))`. Rewrite using `[setLIntegral_congr Ioc_ae_eq_Icc.symm, ← int_pos_rpow hR hκ]`. Conclude with `setLIntegral_congr_fun measurableSet_Ioc fun x hx => by rw [abs_of_pos hx.1]`. Establish `hneg : ∫⁻ β in Icc (-R) 0, ENNReal.ofReal (|β| ^ (-κ)) = ∫⁻ β in Icc 0 R, ENNReal.ofReal (|β| ^ (-κ))`. Establish `h` using `(Measure.measurePreserving_neg (volume : Measure ℝ)).setLIntegral_comp_preimage (measurableSet_Icc (a := (0 : ℝ)) (b := R)) (f := fun β : ℝ => ENNReal.ofReal (|β| ^ (-κ))) (by fun_prop)`.
+
+Establish `hs : Neg.neg ⁻¹' Icc (0 : ℝ) R = Icc (-R) 0`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_Icc]`. Apply the tactic sequence `constructor <;> intro hx <;> constructor <;> linarith [hx.1, hx.2]`. Simplify using `only [abs_neg] at h`.
+
+Rewrite `h` using `[hs]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Icc_union_Icc_eq_Icc (by linarith : -R ≤ 0) hR.le]`. Conclude with `lintegral_union_le _ _ _`.
+
+Use `_ = 2 * ENNReal.ofReal (R ^ (1 - κ) / (1 - κ)) := by rw [hneg, hpos, two_mul]`.
+-/
 lemma int_abs_rpow {R κ : ℝ} (hR : 0 < R) (hκ0 : 0 < κ) (hκ : κ < 1) :
     ∫⁻ β in Icc (-R) R, ENNReal.ofReal (|β| ^ (-κ)) ≤ 2 * ENNReal.ofReal (R ^ (1 - κ) / (1 - κ)) := by
   have hpos : ∫⁻ β in Icc 0 R, ENNReal.ofReal (|β| ^ (-κ)) =
@@ -46,6 +60,13 @@ lemma int_abs_rpow {R κ : ℝ} (hR : 0 < R) (hκ0 : 0 < κ) (hκ : κ < 1) :
         exact lintegral_union_le _ _ _
     _ = 2 * ENNReal.ofReal (R ^ (1 - κ) / (1 - κ)) := by rw [hneg, hpos, two_mul]
 
+/- English proof (translation)
+Establish `hA0 : 0 < A` using `lt_of_lt_of_le hR hA`. Establish `hx : 0 < A ^ 2 + (β - b) ^ 2` using `by positivity`. Establish `hy : 0 < A ^ 2 + (β' - b) ^ 2` using `by positivity`. Establish `h1` using `abs_le.1 hβ`. Establish `h2` using `abs_le.1 hβ'`.
+
+Establish `hd : (β' - β) ^ 2 ≤ 4 * A ^ 2` using `by nlinarith`. Establish `h9 : A ^ 2 + (β' - b) ^ 2 ≤ 9 * (A ^ 2 + (β - b) ^ 2)`. Use polynomial arithmetic with `[sq_nonneg ((β' - β) - (β - b))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by norm_num) hx.le, show (9 : ℝ) = 3 ^ (2 : ℝ) by norm_num, ← Real.rpow_mul (by norm_num), ← mul_assoc, ← Real.rpow_add (by norm_num)]`.
+
+Establish `h0 : t + 2 * (-t / 2) = 0` using `by ring`. Rewrite using `[h0, Real.rpow_zero, one_mul]`. Use `_ ≤ 3 ^ t * (A ^ 2 + (β' - b) ^ 2) ^ (-t / 2) := mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_nonpos hy h9 (by linarith)) (by positivity)`.
+-/
 lemma fac_le {A b t β β' R : ℝ} (hR : 0 < R) (hA : R ≤ A) (ht : 0 ≤ t) (hβ : |β| ≤ R)
     (hβ' : |β'| ≤ R) :
     (A ^ 2 + (β - b) ^ 2) ^ (-t / 2) ≤ 3 ^ t * (A ^ 2 + (β' - b) ^ 2) ^ (-t / 2) := by
@@ -66,6 +87,9 @@ lemma fac_le {A b t β β' R : ℝ} (hR : 0 < R) (hA : R ≤ A) (ht : 0 ≤ t) (
     _ ≤ 3 ^ t * (A ^ 2 + (β' - b) ^ 2) ^ (-t / 2) :=
         mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_nonpos hy h9 (by linarith)) (by positivity)
 
+/- English proof (translation)
+Unfold `slowly`. Rewrite using `[Real.rpow_sum_of_pos (by norm_num : (0 : ℝ) < 3), ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity), ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod' fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (fac_le hR (hA i) (ht i) hβ hβ')`.
+-/
 lemma slowWeight_le {n : ℕ} {t A b : Fin n → ℝ} {R β β' : ℝ} (hR : 0 < R) (ht : ∀ i, 0 ≤ t i)
     (hA : ∀ i, R ≤ A i) (hβ : |β| ≤ R) (hβ' : |β'| ≤ R) :
     slowly t A b β ≤ ENNReal.ofReal (3 ^ ∑ i, t i) * slowly t A b β' := by
@@ -76,6 +100,9 @@ lemma slowWeight_le {n : ℕ} {t A b : Fin n → ℝ} {R β β' : ℝ} (hR : 0 <
   rw [← ENNReal.ofReal_mul (by positivity)]
   exact ENNReal.ofReal_le_ofReal (fac_le hR (hA i) (ht i) hβ hβ')
 
+/- English proof (translation)
+Unfold `slowly`. Use `fun_prop`.
+-/
 lemma measurable_slowWeight {n : ℕ} (t A b : Fin n → ℝ) : Measurable (slowly t A b) := by
   unfold slowly
   fun_prop
@@ -83,6 +110,31 @@ lemma measurable_slowWeight {n : ℕ} (t A b : Fin n → ℝ) : Measurable (slow
 end PolynomialGrowthIntegrals
 
 open PolynomialGrowthIntegrals in
+/- English proof (translation)
+Introduce `n T κ hκ0 hκ1`. Use `⟨3 ^ T / (1 - κ) + 1, fun t A b R hR ht hT hA => ?_⟩` and prove the remaining obligations. Use `set f := slowly t A b with hf_def`. Use `set I := ∫⁻ β, f β with hI`. Establish `hfm : Measurable f` using `measurable_slowWeight t A b`.
+
+Establish `hw : Measurable fun β : ℝ => ENNReal.ofReal (|β| ^ (-κ))` using `by fun_prop`. Use `set c : ℝ := 3 ^ (∑ i, t i) / (2 * R) with hc`. Use `set q : ℝ := R ^ (1 - κ) / (1 - κ) with hq`. Establish `hcen : ∀ β ∈ Icc (-R) R, f β ≤ ENNReal.ofReal c * I`. Introduce `β hβ`.
+
+Establish `hb : |β| ≤ R` using `abs_le.2 ⟨hβ.1, hβ.2⟩`. Establish `key : f β * ENNReal.ofReal (2 * R) ≤ ENNReal.ofReal (3 ^ ∑ i, t i) * I`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, Real.volume_Icc]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∫⁻ β' in Icc (-R) R, ENNReal.ofReal (3 ^ ∑ i, t i) * f β' := setLIntegral_mono (measurable_const.mul hfm) fun β' hβ' => slowWeight_le hR ht hA hb (abs_le.2 ⟨hβ'.1, hβ'.2⟩)`. Use `_ = ENNReal.ofReal (3 ^ ∑ i, t i) * ∫⁻ β' in Icc (-R) R, f β' := lintegral_const_mul _ hfm`. Use `_ ≤ ENNReal.ofReal (3 ^ ∑ i, t i) * I := by gcongr; exact setLIntegral_le_lintegral _ _`. Establish `hinv : ENNReal.ofReal (2 * R) * ENNReal.ofReal (1 / (2 * R)) = 1`.
+
+Rewrite using `[← ENNReal.ofReal_mul (by positivity), mul_one_div_cancel (by positivity), ENNReal.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hinv, mul_one]`. Use `_ ≤ ENNReal.ofReal (3 ^ ∑ i, t i) * I * ENNReal.ofReal (1 / (2 * R)) := by gcongr`. Use `_ = ENNReal.ofReal c * I := by`.
+
+Rewrite using `[hc, div_eq_mul_one_div (3 ^ ∑ i, t i), ENNReal.ofReal_mul (by positivity)]; ring`. Establish `hA1 : ∫⁻ β in Icc (-R) R, f β * ENNReal.ofReal (|β| ^ (-κ)) ≤ ENNReal.ofReal (c * (2 * q)) * I`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_ofNat]`. Apply the tactic sequence `try ring`.
+
+Establish `hA2 : ∫⁻ β in (Icc (-R) R)ᶜ, f β * ENNReal.ofReal (|β| ^ (-κ)) ≤ ENNReal.ofReal (R ^ (-κ)) * I`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono (hfm.mul measurable_const) fun β hβ => ?_` and prove the remaining obligations. Establish `hb : R < |β|`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hβ (abs_le.1 (not_lt.1 h))`. Use `gcongr f β * ?_`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos hR hb.le (by linarith))`. Use `_ = (∫⁻ β in (Icc (-R) R)ᶜ, f β) * ENNReal.ofReal (R ^ (-κ)) := lintegral_mul_const _ hfm`. Use `_ ≤ I * ENNReal.ofReal (R ^ (-κ)) := by gcongr; exact setLIntegral_le_lintegral _ _`.
+
+Use `_ = ENNReal.ofReal (R ^ (-κ)) * I := mul_comm _ _`. Establish `hRk : R ^ (1 - κ) = R * R ^ (-κ)`. Rewrite using `[show 1 - κ = 1 + -κ by ring, Real.rpow_add hR, Real.rpow_one]`. Establish `hcq : c * (2 * q) = 3 ^ (∑ i, t i) * R ^ (-κ) / (1 - κ)`. Rewrite using `[hc, hq, hRk]`.
+
+Establish `: (1 - κ) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hsT : (3 : ℝ) ^ (∑ i, t i) ≤ 3 ^ T` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) hT`. Establish `hRp : 0 < R ^ (-κ)` using `Real.rpow_pos_of_pos hR _`.
+
+Establish `hreal : c * (2 * q) + R ^ (-κ) ≤ (3 ^ T / (1 - κ) + 1) * R ^ (-κ)`. Rewrite using `[hcq, add_mul, one_mul, div_mul_eq_mul_div]`. Use `gcongr`. Apply the tactic sequence `try linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ENNReal.ofReal_add (by positivity) hRp.le, add_mul]`. Use `_ ≤ ENNReal.ofReal ((3 ^ T / (1 - κ) + 1) * R ^ (-κ)) * I := by gcongr`.
+-/
 theorem slowWeightBound' : SLOW := by
   intro n T κ hκ0 hκ1
   refine ⟨3 ^ T / (1 - κ) + 1, fun t A b R hR ht hT hA => ?_⟩

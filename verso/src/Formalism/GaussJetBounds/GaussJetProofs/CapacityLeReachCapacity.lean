@@ -9,6 +9,17 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Establish `hl0 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Use `set r : ℝ := ((l : ℝ) ^ 2)⁻¹ with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr1 : r < 1` using `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hl0 (by norm_num))`. Establish `hg : HasSum (fun k : ℕ => (l : ℝ)⁻¹ * r ^ k) ((l : ℝ)⁻¹ * (1 - r)⁻¹)` using `(hasSum_geometric_of_lt_one hr0 hr1).mul_left _`.
+
+Establish `hval : (l : ℝ)⁻¹ * (1 - r)⁻¹ = gam l`. Rewrite using `[gam, hr]`. Establish `h1 : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Establish `h2 : (l : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hg` using `[hval]`. Establish `hodd : Function.Injective (fun k : ℕ => 2 * k + 1)` using `fun a b h => by simpa using h`. Rewrite using `[← hodd.hasSum_iff]`. Use `hg using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Establish `ho : Odd (2 * k + 1)` using `odd_two_mul_add_one k`. Simplify using `only [Function.comp, ho, if_true, hr]`. Rewrite using `[pow_succ, pow_mul, mul_inv, mul_comm, inv_pow]`. Introduce `x hx`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨k, rfl⟩`. Conclude with `hx ⟨k, rfl⟩`.
+-/
 theorem asmA_odd_hasSum (l : ℕ) (hl : 2 ≤ l) :
     HasSum (fun e : ℕ => if Odd e then ((l : ℝ) ^ e)⁻¹ else 0) (gam l) := by
   have hl0 : (1 : ℝ) < l := by exact_mod_cast (by omega : 1 < l)
@@ -35,6 +46,9 @@ theorem asmA_odd_hasSum (l : ℕ) (hl : 2 ≤ l) :
     rintro ⟨k, rfl⟩
     exact hx ⟨k, rfl⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem asmA_sum_odd_le (l : ℕ) (hl : 2 ≤ l) (N : Finset ℕ) (hN : ∀ n ∈ N, Odd n) :
     ∑ n ∈ N, ((l : ℝ) ^ n)⁻¹ ≤ gam l := by
   calc ∑ n ∈ N, ((l : ℝ) ^ n)⁻¹
@@ -42,6 +56,15 @@ theorem asmA_sum_odd_le (l : ℕ) (hl : 2 ≤ l) (N : Finset ℕ) (hN : ∀ n �
         Finset.sum_congr rfl fun n hn => by rw [if_pos (hN n hn)]
     _ ≤ gam l := sum_le_hasSum N (fun i _ => by split_ifs <;> positivity) (asmA_odd_hasSum l hl)
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Establish `hterm : ∀ j ∈ R, cap j * max (1 - (l : ℝ) ^ j * ((l : ℝ) ^ T)⁻¹) 0 ≤ if j < T then h j else 0`. Introduce `j hj`. Use `split_ifs with hjT`. Establish `hpos : 0 ≤ (l : ℝ) ^ j * ((l : ℝ) ^ T)⁻¹` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 1 ≤ (l : ℝ) ^ j * ((l : ℝ) ^ T)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity), one_mul]`. Conclude with `pow_le_pow_right₀ hl1 (not_lt.mp hjT)`. Rewrite using `[max_eq_right (by linarith), mul_zero]`.
+
+Establish `hsumR : ∑ j ∈ R, cap j * max (1 - (l : ℝ) ^ j * ((l : ℝ) ^ T)⁻¹) 0 ≤ ∑ j ∈ Finset.range T, h j`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_filter] at hj`.
+
+Conclude with `Finset.mem_range.mpr hj.2`. Introduce `i _ _`. Conclude with `hh i`. Establish `hA : A * ((l : ℝ) ^ T)⁻¹ ≤ h T` using `by rw [← div_eq_mul_inv]; exact hT`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem asmA_top_core (l : ℕ) (hl : 2 ≤ l) (A : ℝ) (cap h : ℕ → ℝ)
     (hcap : ∀ j, 0 ≤ cap j) (hh : ∀ e, 0 ≤ h e) (hsum : Summable h) (R : Finset ℕ) (T : ℕ)
     (hT : A / (l : ℝ) ^ T ≤ h T) (hR : ∀ j ∈ R, j < T → cap j ≤ h j) :
@@ -78,6 +101,17 @@ theorem asmA_top_core (l : ℕ) (hl : 2 ≤ l) (A : ℝ) (cap h : ℕ → ℝ)
     _ = ∑ j ∈ Finset.range (T + 1), h j := (Finset.sum_range_succ _ _).symm
     _ ≤ ∑' e, h e := Summable.sum_le_tsum _ (fun i _ => hh i) hsum
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Establish `hcapj : ∀ j : ℕ, Odd j → (j : ℕ∞) < D → ¬ (A / (l : ℝ) ^ j ≤ h j) → cap j ≤ h j` using `fun j hj hjD hn => (min_le_iff.mp (hmin j hj hjD)).resolve_left hn`. Distinguish the cases in `hS : ∃ e : ℕ, Odd e ∧ (e : ℕ∞) < D ∧ A / (l : ℝ) ^ e ≤ h e`. Establish `hTs` using `Nat.find_spec hS`. Use `⟨((l : ℝ) ^ Nat.find hS)⁻¹, by positivity, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `e he`. Establish `hlt : (Nat.find hS : ℕ∞) < (e : ℕ∞)` using `lt_of_lt_of_eq hTs.2.1 he`. Establish `hle : Nat.find hS ≤ e` using `le_of_lt (ENat.coe_lt_coe.mp hlt)`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ hl1 hle)`. Apply `asmA_top_core l hl A cap h hcap hh hsum R (Nat.find hS) hTs.2.2` to reduce the goal to its premises.
+
+Introduce `j hj hjT`. Establish `hjD : (j : ℕ∞) < D` using `lt_trans (ENat.coe_lt_coe.mpr hjT) hTs.2.1`. Conclude with `hcapj j (hRodd j hj) hjD (fun hle => Nat.find_min hS hjT ⟨hRodd j hj, hjD, hle⟩)`. Use `push_neg at hS`. Establish `hcapR : ∀ j ∈ R, (j : ℕ∞) < D → cap j ≤ h j` using `fun j hj hjD => hcapj j (hRodd j hj) hjD (not_le.mpr (hS j (hRodd j hj) hjD))`.
+
+Distinguish the cases in `hDt : D = ⊤`. Substitute `hDt` using the available equality. Use `⟨0, le_rfl, fun e he => absurd he (ENat.top_ne_coe e), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨e0, rfl⟩` from `ENat.ne_top_iff_exists.mp hDt`.
+
+Use `⟨((l : ℝ) ^ e0)⁻¹, by positivity, fun e he => ?_, ?_⟩` and prove the remaining obligations. Establish `: e0 = e` using `by exact_mod_cast he`. Rewrite using `[this]`. Conclude with `asmA_top_core l hl A cap h hcap hh hsum R e0 (hD e0 rfl) (fun j hj hjT => hcapR j hj (ENat.coe_lt_coe.mpr hjT))`.
+-/
 theorem asmA_top_choice (l : ℕ) (hl : 2 ≤ l) (A : ℝ) (cap h : ℕ → ℝ)
     (hcap : ∀ j, 0 ≤ cap j) (hh : ∀ e, 0 ≤ h e) (hsum : Summable h) (R : Finset ℕ) (D : ℕ∞)
     (hRodd : ∀ j ∈ R, Odd j)
@@ -123,6 +157,27 @@ def asmA_f (l : ℕ) (A : ℝ) (cap : ℕ → ℝ) (D : ℕ∞) (e : ℕ) : ℝ 
 
 def asmA_g (l : ℕ) (A : ℝ) (e : ℕ) : ℝ := if Odd e then A / (l : ℝ) ^ e else 0
 
+/- English proof (translation)
+Establish `hx : ∀ e : ℕ, 0 ≤ A / (l : ℝ) ^ e` using `fun e => div_nonneg hA (by positivity)`. Establish `hf0 : ∀ e, 0 ≤ asmA_f l A cap D e`. Introduce `e`. Unfold `asmA_f`. Use `split_ifs`.
+
+Conclude with `le_max_right _ _`. Conclude with `hx e`. Conclude with `le_rfl`. Establish `hfg : ∀ e, asmA_f l A cap D e ≤ asmA_g l A e`. Introduce `e`.
+
+Unfold `asmA_f asmA_g`. Distinguish the cases in `ho : Odd e`. Rewrite using `[if_pos ho] split_ifs`. Conclude with `max_le (by linarith [hcap e]) (hx e)`. Conclude with `le_rfl`.
+
+Conclude with `hx e`. Rewrite using `[if_neg ho, if_neg (fun h' => ho h'.1), if_neg (fun h' => ho h'.1)]`. Establish `hgs : HasSum (asmA_g l A) (A * gam l)`. Establish `hfun : asmA_g l A = fun i => A * (if Odd i then ((l : ℝ) ^ i)⁻¹ else 0)`. Use function extensionality and compare the values at `e`.
+
+Unfold `asmA_g`. Use `split_ifs`. Rewrite using `[div_eq_mul_inv]`. Rewrite using `[mul_zero]`. Rewrite using `[hfun]`.
+
+Conclude with `(asmA_odd_hasSum l hl).mul_left A`. Establish `hfs : Summable (asmA_f l A cap D)` using `Summable.of_nonneg_of_le hf0 hfg hgs.summable`. Establish `hhs : Summable (fun e => asmA_g l A e - asmA_f l A cap D e)` using `hgs.summable.sub hfs`. Establish `hmin : ∀ e : ℕ, Odd e → (e : ℕ∞) < D → min (A / (l : ℝ) ^ e) (cap e) ≤ asmA_g l A e - asmA_f l A cap D e`. Introduce `e ho he`.
+
+Unfold `asmA_f asmA_g`. Rewrite using `[if_pos ho, if_pos ⟨ho, he⟩]`. Break down `le_total (A / (l : ℝ) ^ e) (cap e) with h1 | h1` into its components or cases. Rewrite using `[min_eq_left h1, max_eq_right (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[min_eq_right h1, max_eq_left (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDv : ∀ e : ℕ, D = e → A / (l : ℝ) ^ e ≤ asmA_g l A e - asmA_f l A cap D e`. Introduce `e he`. Establish `ho` using `hDodd e he`.
+
+Unfold `asmA_f asmA_g`. Rewrite using `[if_pos ho, if_neg (fun h' => by rw [he] at h'; exact lt_irrefl _ h'.2), if_neg (fun h' => by rw [he] at h'; exact lt_irrefl _ h'.2)]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ε, hε0, hεD, hε⟩` from `asmA_top_choice l hl A cap (fun e => asmA_g l A e - asmA_f l A cap D e) hcap (fun e => by linarith [hfg e]) hhs R D hR hmin hDv`. Use `⟨ε, hε0, hεD, ?_⟩` and prove the remaining obligations.
+
+Establish `htot : ∑' e, asmA_f l A cap D e + ∑' e, (asmA_g l A e - asmA_f l A cap D e) = A * gam l`. Rewrite using `[← Summable.tsum_add hfs hhs]`. Simplify using `only [add_sub_cancel]`. Conclude with `hgs.tsum_eq`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem asmA_top_gen (l : ℕ) (hl : 2 ≤ l) (A : ℝ) (hA : 0 ≤ A) (cap : ℕ → ℝ)
     (hcap : ∀ j, 0 ≤ cap j) (D : ℕ∞) (hDodd : ∀ e : ℕ, D = e → Odd e) (R : Finset ℕ)
     (hR : ∀ j ∈ R, Odd j) :
@@ -185,6 +240,15 @@ theorem asmA_top_gen (l : ℕ) (hl : 2 ≤ l) (A : ℝ) (hA : 0 ≤ A) (cap : �
     exact hgs.tsum_eq
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `hne : ∃ e' : ℕ, Odd e' ∧ s + (e' : ZMod d) ∈ TT`. Establish `h1 : dTop d TT s = ((sInf {e' : ℕ | Odd e' ∧ s + (e' : ZMod d) ∈ TT} : ℕ) : ℕ∞)`. Rewrite using `[ENat.coe_sInf (s := {e' : ℕ | Odd e' ∧ s + (e' : ZMod d) ∈ TT}) hne]`. Both sides reduce to the same expression. Rewrite `h` using `[h1]`.
+
+Establish `hm` using `Nat.sInf_mem (s := {e' : ℕ | Odd e' ∧ s + (e' : ZMod d) ∈ TT}) hne`. Establish `he : sInf {e' : ℕ | Odd e' ∧ s + (e' : ZMod d) ∈ TT} = e` using `by exact_mod_cast h`. Rewrite `hm` using `[he]`. Conclude with `hm.1`. Use `push_neg at hne`.
+
+Establish `htop : dTop d TT s = ⊤`. Unfold `dTop`. Use `iInf_eq_top.mpr fun e' => iInf_eq_top.mpr fun h' => ?_` and prove the remaining obligations. Conclude with `absurd h'.2 (hne e' h'.1)`. Rewrite `h` using `[htop]`.
+
+Conclude with `absurd h (ENat.top_ne_coe e)`.
+-/
 theorem asmA_dTop_odd {d : ℕ} [NeZero d] (TT : Finset (ZMod d)) (s : ZMod d) (e : ℕ)
     (h : dTop d TT s = (e : ℕ∞)) : Odd e := by
   classical
@@ -205,6 +269,9 @@ theorem asmA_dTop_odd {d : ℕ} [NeZero d] (TT : Finset (ZMod d)) (s : ZMod d) (
     rw [htop] at h
     exact absurd h (ENat.top_ne_coe e)
 
+/- English proof (translation)
+Take `⟨ε, h0, h1, h2⟩` from `asmA_top_gen l hl (nu1 s : ℝ) (Nat.cast_nonneg _) (fun e => (capL d TT nu1 nu2 (s + (e : ZMod d)) : ℝ)) (fun _ => Nat.cast_nonneg _) (dTop d TT s) (fun e he => asmA_dTop_odd TT s e he) R hR`. Conclude with `⟨ε, h0, h1, h2⟩`.
+-/
 theorem asmA_top (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (TT : Finset (ZMod d))
     (nu1 nu2 : ZMod d → ℕ) (s : ZMod d) (R : Finset ℕ) (hR : ∀ j ∈ R, Odd j) :
     ∃ ε : ℝ, 0 ≤ ε ∧ (∀ e : ℕ, dTop d TT s = e → ((l : ℝ) ^ e)⁻¹ ≤ ε) ∧
@@ -216,6 +283,15 @@ theorem asmA_top (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (TT : Finset (ZMod d))
     (dTop d TT s) (fun e he => asmA_dTop_odd TT s e he) R hR
   exact ⟨ε, h0, h1, h2⟩
 
+/- English proof (translation)
+Establish `hnn : ((-j).toNat : ℤ) = -j` using `Int.toNat_of_nonneg (by omega)`. Establish `hi : Odd (-j).toNat`. Establish `ho : Odd (((-j).toNat : ℕ) : ℤ)` using `by rw [hnn]; exact hodd.neg`. Conclude with `(Int.odd_coe_nat _).mp ho`. Establish `hsj : s - (((-j).toNat : ℕ) : ZMod d) = s + (j : ZMod d)`.
+
+Rewrite using `[show (((-j).toNat : ℕ) : ZMod d) = ((((-j).toNat : ℕ) : ℤ) : ZMod d) from (Int.cast_natCast _).symm, hnn, Int.cast_neg, sub_neg_eq_add]`. Unfold `Wcap`. Apply `le_csSup` to reduce the goal to its premises. Use `(Set.finite_range (fun t : ZMod d => capL d TT nu1 nu2 t)).bddAbove.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, _, rfl⟩`.
+
+Conclude with `⟨_, rfl⟩`. Use `⟨(-j).toNat, ⟨hi, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show l ^ (-j).toNat ≤ size (s - (((-j).toNat : ℕ) : ZMod d))`. Rewrite using `[hsj]`. Conclude with `hsz`.
+
+Simplify using `only [hsj]`.
+-/
 theorem capacity_le_reachCapacity (l d : ℕ) [NeZero d] (TT : Finset (ZMod d)) (nu1 nu2 size : ZMod d → ℕ)
     (s : ZMod d) (j : ℤ) (hj : j < 0) (hodd : Odd j)
     (hsz : l ^ (-j).toNat ≤ size (s + (j : ZMod d))) :
@@ -243,6 +319,9 @@ def asmA_cost (l : ℕ) {d : ℕ} (eps : ZMod d → ℝ) : Option (ZMod d × ℤ
   | some (s, j) =>
       if 0 < j then max (1 - (l : ℝ) ^ j.toNat * eps s) 0 else ((l : ℝ) ^ (-j).toNat)⁻¹
 
+/- English proof (translation)
+Break down `p with _ | ⟨s, j⟩` into its components or cases. Simplify using `[asmA_cost]`. Simplify using `only [asmA_cost] split_ifs`. Conclude with `le_max_right _ _`. Check the signs of the components of the expression.
+-/
 theorem asmA_cost_nonneg (l : ℕ) {d : ℕ} (eps : ZMod d → ℝ) (p : Option (ZMod d × ℤ)) :
     0 ≤ asmA_cost l eps p := by
   rcases p with _ | ⟨s, j⟩
@@ -252,6 +331,13 @@ theorem asmA_cost_nonneg (l : ℕ) {d : ℕ} (eps : ZMod d → ℝ) (p : Option 
     · exact le_max_right _ _
     · positivity
 
+/- English proof (translation)
+Establish `hk : (0 : ℝ) ≤ κ i` using `Nat.cast_nonneg _`. Distinguish the cases in `ht : isTop i = true`. Rewrite using `[if_pos ht, htop ht]`. Simplify using `[rowRad, ht, asmA_cost]`. Rewrite using `[if_neg ht]`.
+
+Establish `hrr : rowRad l sig eps lt isTop spec i ≤ sig (lt i) + asmA_cost l eps (spec i)`. Unfold `rowRad`. Rewrite using `[if_neg ht]`. Break down `hsp : spec i with _ | ⟨s, j⟩` into its components or cases. Simplify using `[asmA_cost]`.
+
+Simplify using `only [asmA_cost] split_ifs with hj`. Conclude with `max_le (le_add_of_nonneg_right (le_max_right _ _)) (by linarith [le_max_left (1 - (l : ℝ) ^ j.toNat * eps s) 0, hsig (lt i)])`. Conclude with `max_le (le_add_of_nonneg_right (by positivity)) (le_add_of_nonneg_left (hsig _))`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hrr hk]`.
+-/
 theorem asmA_row {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (hsig : ∀ s, 0 ≤ sig s)
     (lt : ι → ZMod d) (isTop : ι → Bool) (spec : ι → Option (ZMod d × ℤ)) (κ : ι → ℕ) (i : ι)
     (htop : isTop i = true → spec i = none) :
@@ -275,6 +361,79 @@ theorem asmA_row {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (hsi
         · exact max_le (le_add_of_nonneg_right (by positivity)) (le_add_of_nonneg_left (hsig _))
     nlinarith [mul_le_mul_of_nonneg_left hrr hk]
 
+/- English proof (translation)
+Introduce `l d _ hl hd hde TT nu1 nu2 size hn21 hn1s sig hsig ι _ lt isTop spec κ htop htopsum hnonsum hspec hcap`. Establish `hl2 : 2 ≤ l` using `by omega`. Establish `hsig0 : ∀ s, 0 ≤ sig s` using `fun s => (hsig.1.1 s).1`. Take `⟨R, hRdef⟩ : ∃ R : Finset ℕ, R = ((Finset.univ.image (fun i => (spec i).elim (0 : ℤ) Prod.snd)).filter (fun j => 0 < j)).image Int.toNat` from `⟨_, rfl⟩`. Establish `hRodd : ∀ j ∈ R, Odd j`.
+
+Introduce `j hj`. Rewrite `hj` using `[hRdef]`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hj`. Take `⟨k, ⟨⟨i, rfl⟩, hk⟩, rfl⟩` from `hj`. Break down `hsp : spec i with _ | ⟨s, j'⟩` into its components or cases.
+
+Rewrite `hk` using `[hsp]`. Simplify using `at hk`. Take `⟨_, hodd, _⟩` from `hspec i s j' hsp`. Rewrite `hk` using `[hsp]`. Simplify using `only [Option.elim] at hk ⊢`.
+
+Establish `h1 : ((j'.toNat : ℕ) : ℤ) = j'` using `Int.toNat_of_nonneg hk.le`. Conclude with `(Int.odd_coe_nat _).mp (by rw [h1]; exact hodd)`. Establish `hex : ∀ s, ∃ ε : ℝ, 0 ≤ ε ∧ (∀ e : ℕ, dTop d TT s = e → ((l : ℝ) ^ e)⁻¹ ≤ ε) ∧ topTerm l d TT nu1 nu2 s + ((nu1 s : ℝ) * ε + ∑ j ∈ R, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * ε) 0) ≤ (nu1 s : ℝ) * gam l` using `fun s => asmA_top l d hl2 TT nu1 nu2 s R hRodd`. Use `choose eps heps0 hepsD hepsT using hex`. Use `⟨eps, heps0, fun s _ e he => hepsD s e he, ?_⟩` and prove the remaining obligations.
+
+Take `⟨X, hXdef⟩ : ∃ X : ι → ℝ, ∀ i, X i = if isTop i = true then (κ i : ℝ) * (gam l - eps (lt i)) else (κ i : ℝ) * (gam l - sig (lt i))` from `⟨_, fun _ => rfl⟩`. Establish `hrow : ∀ i, X i - (κ i : ℝ) * asmA_cost l eps (spec i) ≤ (κ i : ℝ) * (gam l - rowRad l sig eps lt isTop spec i)` using `fun i => by`. Rewrite using `[hXdef]`. Conclude with `asmA_row l sig eps hsig0 lt isTop spec κ i (fun h => (htop i h).2)`. Establish `hX : ∑ i, X i = ∑ s ∈ TT, (nu1 s : ℝ) * (gam l - eps s) + Fnum l d (fun s => (Dl d TT nu1 size s : ℝ))`.
+
+Rewrite using `[hsig.2, ← Finset.sum_fiberwise Finset.univ lt X]`. Establish `hs : ∀ s : ZMod d, ∑ i ∈ Finset.univ.filter (fun i => lt i = s), X i = (if s ∈ TT then (nu1 s : ℝ) * (gam l - eps s) else 0) + (Dl d TT nu1 size s : ℝ) * (gam l - sig s)`. Introduce `s`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun i => isTop i = true), Finset.filter_filter, Finset.filter_filter]`. Rewrite using `[Finset.filter_congr (p := fun i => lt i = s ∧ ¬isTop i = true) (q := fun i => lt i = s ∧ isTop i = false) (fun i _ => by simp)]`.
+
+Use `congr 1`. Establish `e1 : ∑ i ∈ Finset.univ.filter (fun i => lt i = s ∧ isTop i = true), X i = (∑ i ∈ Finset.univ.filter (fun i => lt i = s ∧ isTop i = true), (κ i : ℝ)) * (gam l - eps s)`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_filter]`.
+
+Rewrite using `[hXdef, if_pos hi.2.2, hi.2.1]`. Rewrite using `[e1]`. Use `split_ifs with hsT`. Rewrite using `[htopsum s hsT]`. Establish `hem : Finset.univ.filter (fun i => lt i = s ∧ isTop i = true) = ∅`.
+
+Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false, not_and]`. Introduce `h1 h2`. Conclude with `hsT (h1 ▸ (htop i h2).1)`. Rewrite using `[hem]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : ∑ i ∈ Finset.univ.filter (fun i => lt i = s ∧ isTop i = false), X i = (∑ i ∈ Finset.univ.filter (fun i => lt i = s ∧ isTop i = false), (κ i : ℝ)) * (gam l - sig s)`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_filter]`.
+
+Rewrite using `[hXdef, if_neg (by rw [hi.2.2]; exact Bool.false_ne_true), hi.2.1]`. Rewrite using `[e2, hnonsum s]`. Rewrite using `[Finset.sum_congr rfl (fun s _ => hs s), Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter]`. Take `⟨P, hPdef⟩ : ∃ P : Finset (ZMod d × ℤ), P = Finset.univ.biUnion (fun i => (spec i).toFinset)` from `⟨_, rfl⟩`. Establish `hPmem : ∀ p ∈ P, ∃ i, spec i = some p`.
+
+Introduce `p hp`. Rewrite `hp` using `[hPdef, Finset.mem_biUnion]`. Take `⟨i, _, hi⟩` from `hp`. Conclude with `⟨i, Option.mem_toFinset.mp hi⟩`. Establish `hstepA : ∑ i, (κ i : ℝ) * asmA_cost l eps (spec i) = ∑ p ∈ P, (∑ i ∈ Finset.univ.filter (fun i => spec i = some p), (κ i : ℝ)) * asmA_cost l eps (some p)`.
+
+Establish `hR : ∑ p ∈ P, (∑ i ∈ Finset.univ.filter (fun i => spec i = some p), (κ i : ℝ)) * asmA_cost l eps (some p) = ∑ i, ∑ p ∈ P, (if spec i = some p then (κ i : ℝ) * asmA_cost l eps (some p) else 0)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_filter]`. Rewrite using `[hR]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `hsp : spec i with _ | p0` into its components or cases. Simplify using `[asmA_cost]`. Establish `hp0 : p0 ∈ P`. Rewrite using `[hPdef, Finset.mem_biUnion]`.
+
+Conclude with `⟨i, Finset.mem_univ _, Option.mem_toFinset.mpr hsp⟩`. Rewrite using `[Finset.sum_eq_single p0]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Conclude with `hp (Option.some_injective _ h).symm`. Introduce `h`. Conclude with `absurd hp0 h`. Establish `hstepB : ∑ p ∈ P, (∑ i ∈ Finset.univ.filter (fun i => spec i = some p), (κ i : ℝ)) * asmA_cost l eps (some p) ≤ ∑ p ∈ P, (capL d TT nu1 nu2 (p.1 + (p.2 : ZMod d)) : ℝ) * asmA_cost l eps (some p)` using `Finset.sum_le_sum fun p _ => mul_le_mul_of_nonneg_right (hcap p.1 p.2) (asmA_cost_nonneg l eps _)`.
+
+Establish `hpos : ∑ p ∈ P.filter (fun p => 0 < p.2), (capL d TT nu1 nu2 (p.1 + (p.2 : ZMod d)) : ℝ) * asmA_cost l eps (some p) ≤ ∑ s ∈ TT, ∑ j ∈ R, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * eps s) 0`. Take `⟨G, hG⟩ : ∃ G : ZMod d × ℕ → ℝ, ∀ x, G x = (capL d TT nu1 nu2 (x.1 + (x.2 : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ x.2 * eps x.1) 0` from `⟨_, fun _ => rfl⟩`. Establish `hinj : Set.InjOn (fun p : ZMod d × ℤ => (p.1, p.2.toNat)) (P.filter (fun p => 0 < p.2) : Set (ZMod d × ℤ))`. Introduce and unpack `⟨a, j⟩ hp ⟨b, j'⟩ hp' h`. Establish `h1` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hp)).2`.
+
+Establish `h2` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hp')).2`. Simplify using `only [Prod.mk.injEq] at h ⊢`. Conclude with `⟨h.1, by omega⟩`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨s, j⟩ hp`. Establish `hj` using `(Finset.mem_filter.mp hp).2`. Establish `hcast : ((j.toNat : ℕ) : ZMod d) = (j : ZMod d)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hj.le]`. Rewrite using `[hG]`.
+
+Simplify using `only at hj ⊢`. Simplify using `only [asmA_cost, if_pos hj, hcast]`. Use `_ = ∑ x ∈ (P.filter (fun p => 0 < p.2)).image (fun p : ZMod d × ℤ => (p.1, p.2.toNat)), G x := (Finset.sum_image hinj).symm`. Use `_ ≤ ∑ x ∈ TT ×ˢ R, G x := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises.
+
+Introduce `x hx`. Rewrite `hx` using `[Finset.mem_image]`. Take `⟨⟨s, j⟩, hp, rfl⟩` from `hx`. Rewrite `hp` using `[Finset.mem_filter]`. Take `⟨i, hi⟩` from `hPmem _ hp.1`.
+
+Take `⟨hsT, -⟩` from `hspec i s j hi`. Rewrite using `[Finset.mem_product]`. Use `⟨hsT, ?_⟩` and prove the remaining obligations. Rewrite using `[hRdef]`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Conclude with `⟨j, ⟨⟨i, by rw [hi]; rfl⟩, hp.2⟩, rfl⟩`. Introduce `x _ _`. Rewrite using `[hG]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (le_max_right _ _)`. Use `_ = _ := by`.
+
+Rewrite using `[Finset.sum_product]`. Simplify using `only [hG]`. Establish `hneg : ∑ p ∈ P.filter (fun p => ¬ 0 < p.2), (capL d TT nu1 nu2 (p.1 + (p.2 : ZMod d)) : ℝ) * asmA_cost l eps (some p) ≤ ∑ s ∈ TT, gam l * (Wcap l d TT nu1 nu2 size s : ℝ)`. Establish `hmaps : ∀ p ∈ P.filter (fun p => ¬ 0 < p.2), p.1 ∈ TT`. Introduce `p hp`.
+
+Take `⟨i, hi⟩` from `hPmem p (Finset.mem_filter.mp hp).1`. Conclude with `(hspec i p.1 p.2 hi).1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩ : ∃ Q : Finset (ZMod d × ℤ), Q = (P.filter (fun p => ¬ 0 < p.2)).filter (fun p => p.1 = s)` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hQ]`. Establish `hQmem : ∀ p ∈ Q, p.1 = s ∧ p.2 < 0 ∧ Odd p.2 ∧ ∃ i, spec i = some p`. Introduce `p hp`. Rewrite `hp` using `[hQ, Finset.mem_filter, Finset.mem_filter]`. Take `⟨⟨hpP, hn⟩, hps⟩` from `hp`.
+
+Take `⟨i, hi⟩` from `hPmem p hpP`. Establish `ho` using `(hspec i p.1 p.2 hi).2.1`. Establish `hne : p.2 ≠ 0`. Take `⟨k, hk⟩` from `ho`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨hps, by omega, ho, i, hi⟩`. Establish `hinj2 : Set.InjOn (fun p : ZMod d × ℤ => (-p.2).toNat) (Q : Set (ZMod d × ℤ))`. Introduce and unpack `⟨a, j⟩ hp ⟨b, j'⟩ hp' h`. Establish `h1` using `hQmem _ (Finset.mem_coe.mp hp)`. Establish `h2` using `hQmem _ (Finset.mem_coe.mp hp')`.
+
+Simplify using `only at h h1 h2`. Rewrite using `[Prod.mk.injEq]`. Conclude with `⟨h1.1.trans h2.1.symm, by omega⟩`. Establish `hoddN : ∀ n ∈ Q.image (fun p : ZMod d × ℤ => (-p.2).toNat), Odd n`. Introduce `n hn`.
+
+Rewrite `hn` using `[Finset.mem_image]`. Take `⟨⟨a, j⟩, hp, rfl⟩` from `hn`. Take `⟨-, hj, hodd, -⟩` from `hQmem _ hp`. Simplify using `only at hj hodd ⊢`. Establish `h1 : (((-j).toNat : ℕ) : ℤ) = -j` using `Int.toNat_of_nonneg (by omega)`.
+
+Conclude with `(Int.odd_coe_nat _).mp (by rw [h1]; exact hodd.neg)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum ?_` and prove the remaining obligations. Introduce and unpack `⟨s', j⟩ hp`. Take `⟨hs', hj, hodd, i, hi⟩` from `hQmem _ hp`.
+
+Simplify using `only at hs' hj hodd hi ⊢`. Substitute `hs'` using the available equality. Take `⟨-, -, hlt, -, hsz⟩` from `hspec i s' j hi`. Establish `hsz'` using `hsz hj`. Rewrite `hsz'` using `[hlt]`.
+
+Simplify using `only [asmA_cost, if_neg (not_lt.mpr hj.le)]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast capacity_le_reachCapacity l d TT nu1 nu2 size s' j hj hodd hsz') (by positivity)`. Use `_ = (Wcap l d TT nu1 nu2 size s : ℝ) * ∑ n ∈ Q.image (fun p : ZMod d × ℤ => (-p.2).toNat), ((l : ℝ) ^ n)⁻¹ := by`. Rewrite using `[Finset.mul_sum, Finset.sum_image hinj2]`. Use `_ ≤ (Wcap l d TT nu1 nu2 size s : ℝ) * gam l := mul_le_mul_of_nonneg_left (asmA_sum_odd_le l hl2 _ hoddN) (Nat.cast_nonneg _)`.
+
+Use `_ = gam l * (Wcap l d TT nu1 nu2 size s : ℝ) := mul_comm _ _`. Establish `hcost : ∑ i, (κ i : ℝ) * asmA_cost l eps (spec i) ≤ ∑ s ∈ TT, ∑ j ∈ R, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * eps s) 0 + ∑ s ∈ TT, gam l * (Wcap l d TT nu1 nu2 size s : ℝ)`. Rewrite using `[hstepA]`. Use `le_trans hstepB ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not P (fun p => 0 < p.2)]`.
+
+Conclude with `add_le_add hpos hneg`. Establish `hsr` using `Finset.sum_le_sum (fun i (_ : i ∈ (Finset.univ : Finset ι)) => hrow i)`. Rewrite `hsr` using `[Finset.sum_sub_distrib]`. Establish `hT : ∑ s ∈ TT, topTerm l d TT nu1 nu2 s ≤ ∑ s ∈ TT, (nu1 s : ℝ) * (gam l - eps s) - ∑ s ∈ TT, ∑ j ∈ R, (capL d TT nu1 nu2 (s + (j : ZMod d)) : ℝ) * max (1 - (l : ℝ) ^ j * eps s) 0`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub]`. Combine the linear relations using `[hepsT s]`. Rewrite using `[Finset.sum_sub_distrib]`. Combine the linear relations using `[hX, hcost, hT, hsr]`.
+-/
 theorem rowRadiusAssembly : ThmAAssembly := by
   intro l d _ hl hd hde TT nu1 nu2 size hn21 hn1s sig hsig ι _ lt isTop spec κ htop htopsum hnonsum
     hspec hcap

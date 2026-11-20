@@ -28,6 +28,11 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)} {S : List (List (Mx n))} {v v' : ℕ → H} {ℓ : ℕ → (H →ₗ[ℂ] ℂ)} {C : ℕ → ℝ}
   {f f' : Mx n → ℂ}
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => simp [sobNorm]`. Consider the case `cons l S ih`. Establish `h1` using `ih fun l' h => hS l' (List.mem_cons_of_mem _ h)`. Establish `h2` using `norm_add_le (Dw σ l x) (Dw σ l y)`.
+
+Rewrite `h2` using `[← Dw_add hσ (hS l List.mem_cons_self) hx hy]`. Simplify using `only [sobNorm, List.map_cons, List.sum_cons] at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sob_add (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) {x y : H} (hx : Sm ε σ x) (hy : Sm ε σ y) :
     sobNorm σ S (x + y) ≤ sobNorm σ S x + sobNorm σ S y := by
   induction S with
@@ -39,6 +44,11 @@ theorem sob_add (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) {x y :
     simp only [sobNorm, List.map_cons, List.sum_cons] at h1 ⊢
     linarith
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => simp [sobNorm]`. Consider the case `cons l S ih`. Establish `h1` using `ih fun l' h => hS l' (List.mem_cons_of_mem _ h)`. Establish `h2` using `norm_smul c (Dw σ l x)`.
+
+Rewrite `h2` using `[← Dw_smul hσ (hS l List.mem_cons_self) c hx]`. Simplify using `only [sobNorm, List.map_cons, List.sum_cons] at h1 ⊢`. Rewrite using `[h1, mul_add]`. Conclude with `congrArg (· + _) h2`.
+-/
 theorem sob_smul (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) (c : ℂ) {x : H} (hx : Sm ε σ x) :
     sobNorm σ S (c • x) = ‖c‖ * sobNorm σ S x := by
   induction S with
@@ -51,6 +61,11 @@ theorem sob_smul (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) (c : 
     rw [h1, mul_add]
     exact congrArg (· + _) h2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `sob_smul hσ hS 0 (x := 0) (smooth (Jm ε) σ).zero_mem` as an intermediate fact. Simplify using `only [zero_smul, norm_zero, zero_mul] at this`. Simplify using `[this]`.
+
+Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, ← sob_smul hσ hS _ (ha j)]`. Conclude with `(sob_add hσ hS ((smooth (Jm ε) σ).smul_mem _ (ha j)) ((smooth (Jm ε) σ).sum_mem fun j _ => (smooth (Jm ε) σ).smul_mem _ (ha j))).trans (by linarith)`.
+-/
 theorem sob_sum (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) {ι : Type} (s : Finset ι) (z : ι → ℂ) {a : ι → H}
     (ha : ∀ j, Sm ε σ (a j)) : sobNorm σ S (∑ j ∈ s, z j • a j) ≤ ∑ j ∈ s, ‖z j‖ * sobNorm σ S (a j) := by
   classical
@@ -66,11 +81,19 @@ theorem sob_sum (hσ : IsURepOn (UJset ε) σ) (hS : Words (lieSet ε) S) {ι : 
 
 abbrev Expn (ε : Fin n → Bool) (σ : Mx n → (H →L[ℂ] H)) := IsExpnAll (lieSet ε) (UJset ε) σ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h1, h.1.2.1, h.1.2.2.1, h2 S hS, h3⟩, h2⟩`.
+-/
 theorem Expn.mk' (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (h1 : ∀ i, Sm ε σ (v' i))
     (h2 : ∀ S', Words (lieSet ε) S' → Summable fun i => C i * sobNorm σ S' (v' i))
     (h3 : ∀ g ∈ UJset ε, HasSum (fun i => ℓ i (σ g (v' i))) (f' g)) : Expn ε σ S v' ℓ C f' :=
   ⟨⟨h1, h.1.2.1, h.1.2.2.1, h2 S hS, h3⟩, h2⟩
 
+/- English proof (translation)
+Use `h.mk' hS (fun i => Sm.translate hσ (h.1.1 i) hg) (fun S' hS' => ?_) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [fun i => sobNorm_translate hσ hg (h.1.1 i) hS']`. Use `h.2 _ fun l hl X hX => ?_` and prove the remaining obligations. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`.
+
+Conclude with `conj_mem_lie (isUnit_Jm ε) hg (hS' l' hl' Y hY)`. Simplify using `only [← sigma_mul hσ hy hg, hf y hy]`. Conclude with `h.1.2.2.2.2 _ (mul_mem_UJ hy hg)`.
+-/
 theorem Expn.translate (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) {g : Mx n}
     (hg : g ∈ UJset ε) (hf : ∀ y ∈ UJset ε, f' y = f (y * g)) : Expn ε σ S (fun i => σ g (v i)) ℓ C f' := by
   refine h.mk' hS (fun i => Sm.translate hσ (h.1.1 i) hg) (fun S' hS' => ?_) fun y hy => ?_
@@ -82,6 +105,11 @@ theorem Expn.translate (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C 
   · simp only [← sigma_mul hσ hy hg, hf y hy]
     exact h.1.2.2.2.2 _ (mul_mem_UJ hy hg)
 
+/- English proof (translation)
+Use `h.mk' hS (fun i => (smooth (Jm ε) σ).add_mem (h.1.1 i) (h'.1.1 i)) (fun S' hS' => ?_) fun y hy => ?_` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun i => mul_nonneg (h.1.2.1 i) (sobNorm_nonneg _ _ _)) (fun i => ?_) ((h.2 S' hS').add (h'.2 S' hS'))` and prove the remaining obligations. Rewrite using `[← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (sob_add hσ hS' (h.1.1 i) (h'.1.1 i)) (h.1.2.1 i)`. Simplify using `only [map_add]`.
+
+Conclude with `(h.1.2.2.2.2 y hy).add (h'.1.2.2.2.2 y hy)`.
+-/
 theorem Expn.add (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (h' : Expn ε σ S v' ℓ C f')
     (hS : Words (lieSet ε) S) : Expn ε σ S (fun i => v i + v' i) ℓ C fun y => f y + f' y := by
   refine h.mk' hS (fun i => (smooth (Jm ε) σ).add_mem (h.1.1 i) (h'.1.1 i)) (fun S' hS' => ?_) fun y hy => ?_
@@ -92,6 +120,9 @@ theorem Expn.add (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (h'
   · simp only [map_add]
     exact (h.1.2.2.2.2 y hy).add (h'.1.2.2.2.2 y hy)
 
+/- English proof (translation)
+Use `h.mk' hS (fun i => (smooth (Jm ε) σ).smul_mem c (h.1.1 i)) (fun S' hS' => ?_) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [fun i => sob_smul hσ hS' c (h.1.1 i), mul_left_comm _ ‖c‖]`. Conclude with `(h.2 S' hS').mul_left _`. Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `(h.1.2.2.2.2 y hy).mul_left c`.
+-/
 theorem Expn.smul (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (c : ℂ) :
     Expn ε σ S (fun i => c • v i) ℓ C fun y => c * f y := by
   refine h.mk' hS (fun i => (smooth (Jm ε) σ).smul_mem c (h.1.1 i)) (fun S' hS' => ?_) fun y hy => ?_
@@ -100,19 +131,33 @@ theorem Expn.smul (hσ : IsURepOn (UJset ε) σ) (h : Expn ε σ S v ℓ C f) (h
   · simp only [map_smul, smul_eq_mul]
     exact (h.1.2.2.2.2 y hy).mul_left c
 
+/- English proof (translation)
+Simplify `h.2 [[]] (by simp [Words])` using `[sobNorm]`.
+-/
 theorem Expn.summable_norm (h : Expn ε σ S v ℓ C f) : Summable fun i => C i * ‖v i‖ := by
   simpa [sobNorm] using h.2 [[]] (by simp [Words])
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul (norm_inner_le_norm c (v i)) (h.1.2.2.1 i u hu) (norm_nonneg _) (by positivity)).trans (le_of_eq (by ring))`.
+-/
 theorem Expn.term_le (h : Expn ε σ S v ℓ C f) (c : H) {u : H} (hu : Sm ε σ u) (i : ℕ) :
     ‖⟪c, v i⟫_ℂ * ℓ i u‖ ≤ ‖c‖ * (C i * ‖v i‖) * sobNorm σ S u := by
   rw [norm_mul]
   exact (mul_le_mul (norm_inner_le_norm c (v i)) (h.1.2.2.1 i u hu) (norm_nonneg _) (by positivity)).trans
     (le_of_eq (by ring))
 
+/- English proof (translation)
+The claim follows from `Summable.of_norm_bounded ((h.summable_norm.mul_left _).mul_right _) (h.term_le c hu)`.
+-/
 theorem Expn.summable_term (h : Expn ε σ S v ℓ C f) (c : H) {u : H} (hu : Sm ε σ u) :
     Summable fun i => ⟪c, v i⟫_ℂ * ℓ i u :=
   Summable.of_norm_bounded ((h.summable_norm.mul_left _).mul_right _) (h.term_le c hu)
 
+/- English proof (translation)
+Use `⟨fun x y hx hy => ?_, fun z x _ => ?_, S, ∑' i, ‖c‖ * (C i * ‖v i‖), hS, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, mul_add]`. Conclude with `(h.summable_term c hx).tsum_add (h.summable_term c hy)`. Simplify using `only [map_smul, smul_eq_mul, mul_left_comm _ z]`. Conclude with `tsum_mul_left`.
+
+Conclude with `tsum_of_norm_bounded ((h.summable_norm.mul_left _).hasSum.mul_right _) (h.term_le c hw)`.
+-/
 theorem Expn.sobFun (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (c : H) :
     SobFun ε σ fun u => ∑' i, ⟪c, v i⟫_ℂ * ℓ i u := by
   refine ⟨fun x y hx hy => ?_, fun z x _ => ?_, S, ∑' i, ‖c‖ * (C i * ‖v i‖), hS, fun w hw => ?_⟩
@@ -124,6 +169,13 @@ theorem Expn.sobFun (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S) (c :
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Take `⟨m, a, c, -, ha, -, hQ⟩` from `kAvg_finite_rank n ε H σ hσ e he`. Establish `ha'` using `fun j => hσ.2.2.1 _ (ha j)`. Establish `hs : ∀ w, Sm ε σ (kAvg ε σ e w)` using `fun w => by`. Rewrite using `[hQ]`. Conclude with `(smooth (Jm ε) σ).sum_mem fun j _ => (smooth (Jm ε) σ).smul_mem _ (ha' j)`.
+
+Use `h.mk' hS (fun i => hs _) (fun S' hS' => ?_) ((GlobalTheory.ExpansionAverage.continuousOn_and_hasSum_kAvg n ε H σ hσ S v ℓ C f hS hc h.1).2 e (by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1) hs)` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun i => mul_nonneg (h.1.2.1 i) (sobNorm_nonneg _ _ _)) (fun i => ?_) (h.summable_norm.mul_right (∑ j, ‖c j‖ * sobNorm σ S' (a j)))` and prove the remaining obligations. Rewrite using `[mul_assoc, hQ]`. Use `mul_le_mul_of_nonneg_left ((sob_sum hσ.1 hS' _ _ ha').trans ?_) (h.1.2.1 i)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun j _ => (mul_le_mul_of_nonneg_right (norm_inner_le_norm _ _) (sobNorm_nonneg _ _ _)).trans (le_of_eq (by ring))`.
+-/
 theorem Expn.avg (hσ : Std ε σ) (h : Expn ε σ S v ℓ C f) (hS : Words (lieSet ε) S)
     (hc : Ctrl (lieSet ε) (UJset ε) σ S) {e : KG ε → ℂ} (he : KFinFun ε e) :
     Expn ε σ S (fun i => kAvg ε σ e (v i)) ℓ C fun y => ∫ k, e k * f (y * toMK k) ∂(muK ε) := by
@@ -144,6 +196,9 @@ theorem Expn.avg (hσ : Std ε σ) (h : Expn ε σ S v ℓ C f) (hS : Words (lie
     (sobNorm_nonneg _ _ _)).trans (le_of_eq (by ring))
 
 omit [CompleteSpace H] in
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨W, h1, h2, h3⟩ => (le_sSup (a := W) ⟨h1, h3⟩ : W ≤ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ) h2⟩` and prove the remaining obligations. Conclude with `(sSup_le fun W hW w hw => ⟨W, hW.1, hw, hW.2⟩ : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ ≤ kfin ε σ) h`.
+-/
 theorem mem_kFin_iff {u : H} : u ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ ↔ IsKFin ε σ u := by
   refine ⟨fun h => ?_, fun ⟨W, h1, h2, h3⟩ => (le_sSup (a := W) ⟨h1, h3⟩ : W ≤ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ) h2⟩
   exact (sSup_le fun W hW w hw => ⟨W, hW.1, hw, hW.2⟩ : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ ≤ kfin ε σ) h
@@ -176,11 +231,17 @@ def Acts (T : H → H) : Prop :=
 
 variable {θ V τ ε σ P}
 
+/- English proof (translation)
+Rewrite using `[GrowthAtPlace.conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP hJ ha) (conj_inv_mem hP hJ hb)]`.
+-/
 theorem at_mul (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ) {a b : Mx V.rank}
     (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) :
     atTau θ V τ (P⁻¹ * (a * b) * P) = atTau θ V τ (P⁻¹ * a * P) * atTau θ V τ (P⁻¹ * b * P) := by
   rw [GrowthAtPlace.conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP hJ ha) (conj_inv_mem hP hJ hb)]
 
+/- English proof (translation)
+Establish `h : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hP)`. Establish `e : P⁻¹ * (P * g * P⁻¹) * P = g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[res, e]`.
+-/
 theorem res_conj (hP : IsUnit P) (φ : GA D V → ℂ) (x : GA D V) (g : Mx V.rank) :
     res θ V τ P φ x (P * g * P⁻¹) = φ (x * atTau θ V τ g) := by
   have h : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hP)
@@ -189,15 +250,26 @@ theorem res_conj (hP : IsUnit P) (φ : GA D V → ℂ) (x : GA D V) (g : Mx V.ra
       _ = g := by rw [h, one_mul, mul_one]
   rw [res, e]
 
+/- English proof (translation)
+Rewrite using `[res, mul_one, Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hP), atTau_one hθ, mul_one]`.
+-/
 theorem res_one (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (φ : GA D V → ℂ) (x : GA D V) :
     res θ V τ P φ x 1 = φ x := by
   rw [res, mul_one, Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hP), atTau_one hθ, mul_one]
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul (continuous_toMK ε)).matrix_mul continuous_const`.
+-/
 theorem continuous_conjK : Continuous fun k : KG ε => P⁻¹ * toMK k * P :=
   (continuous_const.matrix_mul (continuous_toMK ε)).matrix_mul continuous_const
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Introduce `x S v ℓ C hS hc h`. Establish `h1` using `h.avg hσ hS hc he`. Use `h1.mk' hS h1.1.1 h1.2 fun y hy => ?_` and prove the remaining obligations. Establish `h2` using `h1.1.2.2.2.2 y hy`. Simplify using `only [res, avg, at_mul hθ hP hJ hy (K_le_UJ (toMK_mem_K _)), ← mul_assoc x] at h2 ⊢`.
+
+Conclude with `h2`.
+-/
 theorem moves_avg (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ) (hσ : Std ε σ)
     {e : KG ε → ℂ} (he : KFinFun ε e) (φ : GA D V → ℂ) :
     Moves θ V τ ε σ P (kAvg ε σ e) φ (avg θ V τ ε P e φ) := by
@@ -208,6 +280,13 @@ theorem moves_avg (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm �
   simp only [res, avg, at_mul hθ hP hJ hy (K_le_UJ (toMK_mem_K _)), ← mul_assoc x] at h2 ⊢
   exact h2
 
+/- English proof (translation)
+Establish `hsmul : ∀ (c : ℂ) (T : H → H), Acts θ V τ ε σ P T → Acts θ V τ ε σ P fun w => c • T w` using `fun c T hT φ hφ => by`. Take `⟨ψ, h1, h2⟩` from `hT φ hφ`. Conclude with `⟨c • ψ, isAutFunSm_smul c h1, fun x S v ℓ C hS hc h => (h2 x S v ℓ C hS hc h).smul hσ.1 hS c⟩`. Establish `htr : ∀ g ∈ UJset ε, Acts θ V τ ε σ P (σ g)` using `fun g hg φ hφ => ⟨_, GlobalTheory.Mem.RealTranslate.isAutFunSm_rTr_atTau D θ hθ V φ hφ τ _ (conj_inv_mem hP hJ hg), fun x S v ℓ C hS _ h => h.translate hσ.1 hS hg fun y hy => by`. Simplify using `only [res, rTr, at_mul hθ hP hJ hy hg, mul_assoc x]⟩`.
+
+Use `GlobalTheory.T.rankOneOperator_mem_of_translation_average_closed _ ε H σ hσ (Acts θ V τ ε σ P) htr (fun T T' hT hT' => ⟨fun φ hφ => ?_, fun φ hφ => ?_⟩) hsmul (fun e he φ hφ => ⟨_, GlobalTheory.T.isSmoothAutomorphicFunction_compactFamily_average D θ hθ V τ (KG ε) (muK ε) _ contin …` and prove the remaining obligations. Take `⟨ψ, h1, h2⟩` from `hT φ hφ`. Take `⟨ψ', h1', h2'⟩` from `hT' φ hφ`. Conclude with `⟨ψ + ψ', isAutFunSm_add h1 h1', fun x S v ℓ C hS hc h => (h2 x S v ℓ C hS hc h).add hσ.1 (h2' x S v ℓ C hS hc h) hS⟩`. Take `⟨ψ', h1', h2'⟩` from `hT' φ hφ`.
+
+Take `⟨ψ, h1, h2⟩` from `hT ψ' h1'`. Conclude with `⟨ψ, h1, fun x S v ℓ C hS hc h => h2 x S _ ℓ C hS hc (h2' x S v ℓ C hS hc h)⟩`. Simplify using `using hsmul 0 _ (htr 1 (one_mem_UJ ε))`.
+-/
 theorem exists_rank_one (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ) (hσ : Std ε σ)
     {e : KG ε → ℂ} (he : KFinFun ε e) :
     ∃ (m : ℕ) (a c : Fin m → H), (∀ j, IsKFin ε σ (a j)) ∧ (∀ w, kAvg ε σ e w = ∑ j, ⟪c j, w⟫_ℂ • a j) ∧
@@ -232,6 +311,21 @@ theorem exists_rank_one (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ 
     exact ⟨ψ, h1, fun x S v ℓ C hS hc h => h2 x S _ ℓ C hS hc (h2' x S v ℓ C hS hc h)⟩
   · simpa using hsmul 0 _ (htr 1 (one_mem_UJ ε))
 
+/- English proof (translation)
+Establish `hb` using `fun x => (h x).sobFun (hS x) c`. Establish `hsm : ∀ u : kFin ε σ, Sm ε σ u` using `fun u => hσ.2.2.1 _ (mem_kFin_iff.1 u.2)`. Set `T : kFin ε σ →ₗ[ℂ] (GA D V → ℂ)` to `{ toFun := fun u x => ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i u map_add' := fun a b => funext fun x => (hb x).1 _ _ (hsm a) (hsm b) map_smul' := fun z a => funext fun x => (hb x).2.1 z _ (hsm a) }`. Establish `key : ∀ u : kFin ε σ, IsAutFunSm θ V (T u) ∧ ∀ x, ∀ y ∈ UJset ε, res θ V τ P (T u) x y = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i (σ y u)` using `fun u => by`. Take `⟨ψ, h1, h2⟩` from `hA u (mem_kFin_iff.1 u.2) φ hφ`.
+
+Establish `h3 : ∀ x, ∀ y ∈ UJset ε, res θ V τ P ψ x y = ∑' i, ⟪c, v x i⟫_ℂ * ℓ x i (σ y u)` using `fun x y hy => by`. Use `(h2 x _ _ _ _ (hS x) (hc x) (h x)).1.2.2.2.2 y hy` as an intermediate fact. Simplify using `only [map_smul, smul_eq_mul] at this`. Conclude with `this.tsum_eq.symm`. Establish `e : T u = ψ` using `funext fun x => by`.
+
+Use `h3 x 1 (one_mem_UJ ε)` as an intermediate fact. Rewrite `this` using `[res_one hθ hP, sigma_one hσ.1]`. Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `⟨h1, h3⟩`.
+
+Use `⟨T, ⟨fun u => (key u).1, fun g _ hg a b hab => funext fun x => ?_, fun X hX a b hab => funext fun x => ?_⟩, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[rTr, ← res_conj hP (T a) x g, (key a).2 x _ (K_le_UJ hg), ← hab]`. Both sides reduce to the same expression. Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `hY : P * X * P⁻¹ ∈ lieSet ε`.
+
+Use `Transport.conj_lie (G := gramAt D V τ) (Matrix.nonsing_inv_mul _ hd) ?_ hX` and prove the remaining obligations. Rewrite using `[← hJ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Transport.exp_smul_conj hP] at hab`. Establish `e : (b : H) = dRep σ (P * X * P⁻¹) a` using `hab.deriv.symm`.
+
+Establish `h1` using `(hσ.hasDerivAt_sobFun (hb x) (hsm a) hY).deriv`. Rewrite `h1` using `[← e]`. Use `h1.symm.trans ?_` and prove the remaining obligations. Unfold `Rder oneP`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[← res_conj hP (T a) x, ← Transport.exp_smul_conj hP, (key a).2 x _ (exp_mem_UJ hY t)]`.
+-/
 theorem exists_gkMap (hθ : IsInfFam (D := D) θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ) (hσ : Std ε σ)
     {φ : GA D V → ℂ} (hφ : IsAutFunSm θ V φ) {S : GA D V → List (List (Mx V.rank))} {v : GA D V → ℕ → H}
     {ℓ : GA D V → ℕ → (H →ₗ[ℂ] ℂ)} {C : GA D V → ℕ → ℝ} (hS : ∀ x, Words (lieSet ε) (S x))
@@ -287,6 +381,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.REAL MeasureTheory GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.PointAtPlaceHom GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes in
 open scoped InnerProductSpace in
 
+/- English proof (translation)
+Introduce `D θ V τ S φ _ _ hHC _ hθ _ hS hφ ⟨H, i1, i2, σ, lam, ε, P, hE, hD, hP, hJ, hx⟩ K hK δ hδ`. Use `haveI : CompleteSpace H := hD.1`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hσ : Std ε σ` using `std_of_isDS hHC hD`. Establish `hlam : Formalism.QuantumDeterminants.IsHCParam lam`.
+
+Take `⟨l, e, h1, h2, -⟩` from `hS`. Rewrite using `[(GlobalTheory.SignedParTest.isEnum_unique hE h1).1]` and apply the resulting hypothesis. Establish `hx' : ∀ x, HasTypeAll (lieSet ε) (UJset ε) σ (res θ V τ P φ x)` using `fun x => hasTypeAll_transport _ H H _ σ (gramAt D V τ) (Jm ε) P (isUnit_gram hP hJ) hP hJ (LinearIsometryEquiv.refl ℂ H) (fun _ _ _ => rfl) (fun g => φ (x * atTau θ V τ g)) (hasTypeAll_iff.2 (hx x))`. Use `choose W hW hc v ℓ C h using hx'`. Establish `hk : Continuous fun k : KG ε => atTau θ V τ (P⁻¹ * toMK k * P)` using `(continuousOn_atTau hθ V τ).comp_continuous continuous_conjK fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`.
+
+Take `⟨e, he, hap⟩` from `GlobalTheory.T.exists_compactFinite_approxIdentity _ ε (GA D V) (fun x k => φ (x * atTau θ V τ (P⁻¹ * toMK k * P))) (hφ.cont.comp (continuous_fst.mul (hk.comp continuous_snd))) K hK δ hδ`. Take `⟨m, a, c, ha, hQ, hA⟩` from `exists_rank_one hθ hP hJ hσ he`. Use `choose T hT hTv using fun j => exists_gkMap hθ hP hJ hσ hφ hW hc h (hA j)`. Use `⟨∑ j, T j ⟨a j, mem_kFin_iff.2 (ha j)⟩, Submodule.sum_mem _ fun j _ => (le_sSup (a := LinearMap.range (T j)) ⟨H, _, _, σ, lam, ε, P, T j, hE, hlam, hD, hP, hJ, hT j, rfl⟩ : _ ≤ finPartOfType θ V τ S) ⟨_, rfl⟩, fun x hxK => ?_⟩` and prove the remaining obligations. Establish `h1` using `(moves_avg hθ hP hJ hσ he φ x _ _ _ _ (hW x) (hc x) (h x)).1.2.2.2.2 1 (one_mem_UJ ε)`.
+
+Simplify using `only [res_one hθ hP, sigma_one hσ.1, hQ, map_sum, map_smul, smul_eq_mul] at h1`. Establish `h2` using `h1.unique (hasSum_sum fun j _ => (Expn.summable_term (h x) (c j) (hσ.2.2.1 _ (ha j))).hasSum)`. Establish `h3` using `hap x hxK`. Establish `h4 : φ (x * atTau θ V τ (P⁻¹ * toMK (1 : KG ε) * P)) = φ x` using `res_one hθ hP φ x`. Simplify using `only [Finset.sum_apply, hTv]`.
+
+Rewrite using `[← h2, ← h4]`. Conclude with `h3`.
+-/
 theorem hasTypeAt_of_isTypeAt : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (τ : D.what₂.Tau) (S : SPar) (φ : GA D V → ℂ),
     GlobalTheory.Published.DiscreteSeriesUpqExists → GlobalTheory.Published.DiscreteSeriesUpqUnique → GlobalTheory.Published.HarishChandraModules →
     GlobalTheory.Published.CasselmanWallach → IsInfFam (D := D) θ → V.SigOK →

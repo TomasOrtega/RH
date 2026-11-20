@@ -21,8 +21,14 @@ def dotL {O : Type} [CommRing O] {h : ℕ} (u : Fin h → O) : (Fin h → O) →
   map_add' a b := dotProduct_add u a b
   map_smul' c m := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dotL_apply {O : Type} [CommRing O] {h : ℕ} (u m : Fin h → O) : dotL u m = u ⬝ᵥ m := rfl
 
+/- English proof (translation)
+Establish `hx : x = ∑ i, x i • Pi.single i (1 : O)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `[map_sum, dotProduct, mul_comm]`.
+-/
 theorem dot_single {O : Type} [CommRing O] {h : ℕ} (g : (Fin h → O) →ₗ[O] O) (x : Fin h → O) :
     (fun i => g (Pi.single i 1)) ⬝ᵥ x = g x := by
   have hx : x = ∑ i, x i • Pi.single i (1 : O) := by
@@ -31,6 +37,9 @@ theorem dot_single {O : Type} [CommRing O] {h : ℕ} (g : (Fin h → O) →ₗ[O
   conv_rhs => rw [hx]
   simp [map_sum, dotProduct, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.transpose_map, Matrix.mulVec_transpose, Matrix.dotProduct_mulVec]`.
+-/
 theorem toLin'_transpose_dot {A O : Type} [CommRing A] [CommRing O] (θ : A →+* O) {h : ℕ}
     (X : Matrix (Fin h) (Fin h) A) (a b : Fin h → O) :
     Matrix.toLin' (Xᵀ.map θ) a ⬝ᵥ b = a ⬝ᵥ Matrix.toLin' (X.map θ) b := by
@@ -43,6 +52,69 @@ open GlobalTheory.DualDatumDot
 
 namespace GlobalTheory.DualDatum
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G ⟨D, e, fil, lie, hA, hB⟩`. Establish `hζ : IsPrimitiveRoot (root ε).untilt p` using `by simpa [zeta] using hε 1`. Take `⟨hdom, -, -, -, hν, hξ, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hζ`. Establish `hν' : nu ε ≠ 0` using `fun h0 => hν (by rw [h0, map_zero])`. Establish `hμ : Sandwich.mu ε ≠ 0` using `by rw [← xi_mul_nu]; exact mul_ne_zero hξ hν'`.
+
+Take `⟨-, h1, -, h3, -⟩` from `HodgeTateBound.bound p C v O hv ε hζ ℤ_[p] _ D`. Use `hv.isFractionRing` as an intermediate fact. Use `hv.isIntegrallyClosed` as an intermediate fact. Establish `: IsIntegrallyClosedIn O C` using `(isIntegrallyClosed_iff_isIntegrallyClosedIn C).1 inferInstance`. Take `⟨hfin, hproj⟩` from `GlobalTheory.PDiv.omega_finite_projective p C v O hv G`.
+
+Use `haveI := hfin`. Use `haveI := hproj`. Set `θ` to `WittVector.fontaineTheta O p`. Set `D'` to `SelfDualFil.dualDatum hμ hξ D`. Establish `perp : ∀ a, a ∈ D'.Fil ↔ ∀ f ∈ D.Fil, a ⬝ᵥ f = 0`.
+
+Introduce `a`. Express the relevant statement in the definitionally equal form `Matrix.toLin' ((D.F)ᵀ.map θ) a = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `ha f hf`. Take `⟨w, hw⟩` from `h3 f hf`.
+
+Establish `e1 : a ⬝ᵥ D.al w = 0`. Rewrite using `[show D.al w = Matrix.toLin' (D.F.map θ) w from rfl, ← toLin'_transpose_dot, ha, zero_dotProduct]`. Rewrite `e1` using `[hw, dotProduct_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 e1).resolve_left hν`. Introduce `ha`.
+
+Use function extensionality and compare the values at `i`. Establish `h2` using `ha _ (h1 ⟨Pi.single i 1, rfl⟩)`. Rewrite `h2` using `[show D.al (Pi.single i 1) = Matrix.toLin' (D.F.map θ) (Pi.single i 1) from rfl, ← toLin'_transpose_dot]`. Simplify using `using h2`. Set `E : Fin G.height → G.Tate` to `fun i => e.symm (Pi.single i 1)`.
+
+Establish `hexp : ∀ t, t = ∑ i, e t i • E i`. Introduce `t`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Use extensionality with `j`.
+
+Simplify using `[E, Finset.sum_apply, Pi.single_apply]`. Set `L : G.dual.Tate →ₗ[ℤ_[p]] (Fin G.height → ℤ_[p])` to `LinearMap.pi fun i => (epsEquiv hε).symm.toLinearMap ∘ₗ pairing G O (E i)`. Establish `hL : ∀ χ i, L χ i = epsPairing hε G (E i) χ` using `fun _ _ => rfl`. Establish `hflip` using `G.pairing_flip_bijective C`. Establish `hLb : Function.Bijective L`.
+
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero L).2 fun χ hχ => hflip.1 ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `LinearMap.ext fun t => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, LinearMap.zero_apply, hexp t, map_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, ← epsPairing_smul hε, ← hL, hχ]`. Simplify using the standard rewrite rules. Introduce `c`. Set `φ : G.Tate →ₗ[ℤ_[p]] (PDivGroup.mu p O).Tate` to `(epsEquiv hε).toLinearMap ∘ₗ (∑ i, c i • LinearMap.proj i) ∘ₗ e.toLinearMap`.
+
+Take `⟨χ, hχ⟩` from `hflip.2 φ`. Use `⟨χ, funext fun j => ?_⟩` and prove the remaining obligations. Establish `hj : pairing G O (E j) χ = φ (E j)` using `LinearMap.congr_fun hχ (E j)`. Rewrite using `[hL, epsPairing, hj]`. Simplify using `[φ, E, Pi.single_apply]`.
+
+Set `e' : G.dual.Tate ≃ₗ[ℤ_[p]] (Fin G.height → ℤ_[p])` to `LinearEquiv.ofBijective L hLb`. Establish `he' : ∀ χ i, e' χ i = epsPairing hε G (E i) χ` using `fun _ _ => rfl`. Establish `hdualb : ∀ t i, epsPairing hε G t (e'.symm (Pi.single i 1)) = e t i`. Introduce `t i`. Establish `hj : ∀ j, epsPairing hε G (E j) (e'.symm (Pi.single i 1)) = (Pi.single i (1 : ℤ_[p]) : Fin G.height → ℤ_[p]) j`.
+
+Introduce `j`. Rewrite using `[← he', LinearEquiv.apply_symm_apply]`. Establish `hs : ∀ s, epsPairing hε G s (e'.symm (Pi.single i 1)) = (epsEquiv hε).symm.toLinearMap ((pairing G O).flip (e'.symm (Pi.single i 1)) s)` using `fun _ => rfl`. Rewrite using `[hs]`. Use `conv_lhs => rw [hexp t]`.
+
+Rewrite using `[map_sum, map_sum]`. Simplify using `only [map_smul, ← hs, hj, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Set `Φ : G.omega →ₗ[O] (Fin G.height → O)` to `LinearMap.pi fun i => lie (D.Fil.mkQ (Pi.single i 1))`. Set `g : G.omega → (Fin G.height → O) →ₗ[O] O` to `fun w => Module.Dual.eval O G.omega w ∘ₗ lie.toLinearMap ∘ₗ D.Fil.mkQ`. Establish `hΦdot : ∀ w m, Φ w ⬝ᵥ m = lie (D.Fil.mkQ m) w` using `fun w m => dot_single (g w) m`.
+
+Establish `hΦmem : ∀ w, Φ w ∈ D'.Fil` using `fun w => (perp _).2 fun f hf => by`. Rewrite using `[hΦdot, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hf, map_zero, LinearMap.zero_apply]`. Establish `hΦinj : Function.Injective Φ`. Use `(injective_iff_map_eq_zero Φ).2 fun w hw => ?_` and prove the remaining obligations. Apply `(Module.evalEquiv O G.omega).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨q, rfl⟩` from `lie.surjective x`. Take `⟨m, rfl⟩` from `D.Fil.mkQ_surjective q`. Rewrite using `[Module.evalEquiv_apply, Module.Dual.eval_apply, LinearMap.zero_apply, ← hΦdot, hw, zero_dotProduct]`.
+
+Establish `hΦsurj : ∀ u ∈ D'.Fil, ∃ w, Φ w = u`. Introduce `u hu`. Establish `hle : D.Fil ≤ LinearMap.ker (dotL u)` using `fun f hf => (perp u).1 hu f hf`. Set `ℓ : G.Lie →ₗ[O] O` to `D.Fil.liftQ (dotL u) hle ∘ₗ lie.symm.toLinearMap`. Use `⟨(Module.evalEquiv O G.omega).symm ℓ, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `hw : ∀ x : G.Lie, x ((Module.evalEquiv O G.omega).symm ℓ) = ℓ x` using `fun x => by`. Establish `h5` using `LinearMap.congr_fun ((Module.evalEquiv O G.omega).apply_symm_apply ℓ) x`. Rewrite `h5` using `[Module.evalEquiv_apply, Module.Dual.eval_apply]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `lie (D.Fil.mkQ (Pi.single i 1)) _ = u i`. Rewrite using `[hw]`.
+
+Express the relevant statement in the definitionally equal form `D.Fil.liftQ (dotL u) hle (lie.symm (lie (D.Fil.mkQ (Pi.single i 1)))) = u i`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `u ⬝ᵥ Pi.single i 1 = u i`. Simplify using the standard rewrite rules. Set `filE : G.omega ≃ₗ[O] D'.Fil` to `LinearEquiv.ofBijective (Φ.codRestrict D'.Fil hΦmem) ⟨fun a b hab => hΦinj (congrArg Subtype.val hab), fun u => by`.
+
+Take `⟨w, hw⟩` from `hΦsurj u.1 u.2`. Conclude with `⟨w, Subtype.ext hw⟩⟩`. Set `fil' : G.dual.dual.omega ≃ₗ[O] D'.Fil` to `(DlogSpan.pDivGroupOmegaBidualEquiv G).symm ≪≫ₗ filE`. Set `Ψ : (Fin G.height → O) →ₗ[O] G.dual.Lie` to `LinearMap.mk₂ O (fun m w => m ⬝ᵥ (fil w : Fin G.height → O)) (fun _ _ _ => by simp [add_dotProduct]) (fun _ _ _ => by simp) (fun _ _ _ => by simp [dotProduct_add]) (fun _ _ _ => by simp)`. Establish `hΨ : ∀ m w, Ψ m w = m ⬝ᵥ (fil w : Fin G.height → O)` using `fun _ _ => rfl`.
+
+Establish `hΨker : LinearMap.ker Ψ = D'.Fil`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, perp]`. Prove the components needed by the constructor for the conclusion. Introduce `hm f hf`.
+
+Take `⟨w, hw⟩` from `fil.surjective ⟨f, hf⟩`. Establish `h5` using `LinearMap.congr_fun hm w`. Rewrite `h5` using `[hΨ, hw]`. Then use the resulting hypothesis. Introduce `hm`. Conclude with `LinearMap.ext fun w => hm _ (fil w).2`.
+
+Use `haveI : Module.Projective O ((Fin G.height → O) ⧸ D.Fil) := Module.Projective.of_equiv lie.symm`. Take `⟨s, hs⟩` from `Module.projective_lifting_property D.Fil.mkQ LinearMap.id D.Fil.mkQ_surjective`. Set `r : (Fin G.height → O) →ₗ[O] D.Fil` to `(LinearMap.id - s ∘ₗ D.Fil.mkQ).codRestrict D.Fil fun x => by`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, LinearMap.sub_apply, map_sub]`. Establish `h5` using `LinearMap.congr_fun hs (D.Fil.mkQ x)`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h5 ⊢`. Rewrite using `[h5, sub_self]`. Establish `hr : ∀ f : D.Fil, r f = f` using `fun f => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h0 : D.Fil.mkQ (f : Fin G.height → O) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 f.2`.
+
+Simplify using `[r, h0]`. Establish `hΨsurj : Function.Surjective Ψ`. Introduce `y`. Set `φ : (Fin G.height → O) →ₗ[O] O` to `y ∘ₗ fil.symm.toLinearMap ∘ₗ r`. Use `⟨fun i => φ (Pi.single i 1), LinearMap.ext fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΨ, dot_single]`. Simplify using `[φ, hr]`. Set `lie' : ((Fin G.height → O) ⧸ D'.Fil) ≃ₗ[O] G.dual.Lie` to `Submodule.quotEquivOfEq _ _ hΨker.symm ≪≫ₗ Ψ.quotKerEquivOfSurjective hΨsurj`. Establish `hlie' : ∀ m, lie' (D'.Fil.mkQ m) = Ψ m` using `fun _ => rfl`. Use `⟨D', e', fil', lie', fun χ => ?_, fun y ψ => ?_⟩` and prove the remaining obligations.
+
+Establish `hf : fil' (hodgeTate G.dual χ) = filE (dlog G χ)`. Simplify using `only [fil', LinearEquiv.trans_apply]`. Use `congr 1`. Rewrite using `[LinearEquiv.symm_apply_eq, DlogSpan.pDivGroupOmegaBidual_dlog_eq_dual_hodgeTate]`. Rewrite using `[hf]`.
+
+Express the relevant statement in the definitionally equal form `_ = Φ (dlog G χ)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = lie (D.Fil.mkQ (Pi.single i 1)) (dlog G χ)`. Rewrite using `[← hB, LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `Matrix.toLin' ((D.G)ᵀ.map θ) (toO e' χ) i = pairingO hε e (Matrix.toLin' (D.G.map θ) (Pi.single i 1)) χ`.
+
+Simplify using `[pairingO, toO, he', E, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, θ, Pi.single_apply, mul_comm]`. Take `⟨m, rfl⟩` from `hΨsurj y`. Take `⟨t, rfl⟩` from `(tateCongr O G.bidual).surjective ψ`. Establish `hl : lie'.symm (Ψ m) = D'.Fil.mkQ m`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Conclude with `(hlie' m).symm`. Rewrite using `[hl]`. Express the relevant statement in the definitionally equal form `pairingO hε e' (D'.bb m) (tateMap G G.dual.dual O G.bidual.hom t) = Ψ m (dlog G.dual (tateMap G G.dual.dual O G.bidual.hom t))`. Rewrite using `[← hodgeTate_apply, hΨ, ← hA]`. Establish `hp : ∀ i, epsPairing hε G.dual (e'.symm (Pi.single i 1)) (tateMap G G.dual.dual O G.bidual.hom t) = e t i` using `fun i => by`.
+
+Rewrite using `[epsPairing, DetInv.pairing_dual_bidual]`. Conclude with `hdualb t i`. Simplify using `only [pairingO, hp]`. Express the relevant statement in the definitionally equal form `Matrix.toLin' ((D.F)ᵀ.map θ) m ⬝ᵥ toO e t = m ⬝ᵥ Matrix.toLin' (D.F.map θ) (toO e t)`. Rewrite using `[toLin'_transpose_dot]`.
+-/
 theorem hasDatum_dual : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, HasDatum hε G → HasDatum hε G.dual := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G ⟨D, e, fil, lie, hA, hB⟩
   have hζ : IsPrimitiveRoot (root ε).untilt p := by simpa [zeta] using hε 1

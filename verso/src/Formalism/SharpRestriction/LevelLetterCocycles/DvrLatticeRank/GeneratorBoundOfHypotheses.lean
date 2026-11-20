@@ -8,6 +8,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Use `left`. Rewrite using `[hx]`. Conclude with `zero_mem _`. Rewrite using `[← P.v_O, ← P.v_O]`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨h1, h2⟩` from `hc`. Establish `hs : P.v LL x + P.v LL x⁻¹ = 0`. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hx, AddValuation.map_one]`.
+
+Take `⟨a, ha⟩` from `WithTop.ne_top_iff_exists.mp (ne_top_of_lt h1)`. Take `⟨c, hc⟩` from `WithTop.ne_top_iff_exists.mp (ne_top_of_lt h2)`. Rewrite `hs` using `[← ha, ← hc]`. Rewrite `h1` using `[← ha]`. Rewrite `h2` using `[← hc]`.
+
+Establish `h1' : a < 0` using `by exact_mod_cast h1`. Establish `h2' : c < 0` using `by exact_mod_cast h2`. Establish `hs' : a + c = 0` using `by exact_mod_cast hs`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mem_or_inv_mem (P : LocPrime l) (LL : FinExt l) (x : ↥LL.1) :
     x ∈ OL LL ∨ x⁻¹ ∈ OL LL := by
   by_cases hx : x = 0
@@ -28,6 +37,15 @@ theorem mem_or_inv_mem (P : LocPrime l) (LL : FinExt l) (x : ↥LL.1) :
   have hs' : a + c = 0 := by exact_mod_cast hs
   linarith
 
+/- English proof (translation)
+Use `{ cond' := fun a b => ?_ }` and prove the remaining obligations. Distinguish the cases in `ha : (a : ↥LL.1) = 0`. Use `⟨0, Or.inr ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[ha]`.
+
+Distinguish the cases in `hb : (b : ↥LL.1) = 0`. Use `⟨0, Or.inl ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hb]`. Break down `mem_or_inv_mem P LL ((b : ↥LL.1) / a) with h | h` into its components or cases.
+
+Use `⟨⟨_, h⟩, Or.inl ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(a : ↥LL.1) * ((b : ↥LL.1) / a) = b`. Clear the denominators using the available nonvanishing facts. Use `⟨⟨_, h⟩, Or.inr ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b : ↥LL.1) * ((b : ↥LL.1) / a)⁻¹ = a`. Rewrite using `[inv_div]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem valuationRing (P : LocPrime l) (LL : FinExt l) : ValuationRing ↥(OL LL) := by
   refine { cond' := fun a b => ?_ }
   by_cases ha : (a : ↥LL.1) = 0
@@ -49,6 +67,19 @@ theorem valuationRing (P : LocPrime l) (LL : FinExt l) : ValuationRing ↥(OL LL
     rw [inv_div]
     field_simp
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Introduce `hF`. Establish `hp : l.Prime` using `Fact.out`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h`.
+
+Establish `h2 : ((l : ℕ) : ↥LL.1) = 0`. Use `congrArg (fun z : ↥(OL LL) => (z : ↥LL.1)) h` as an intermediate fact. Simplify using `using this`. Conclude with `(Nat.cast_ne_zero.mpr hp.ne_zero) h2`. Take `⟨y, hy⟩` from `hF.mul_inv_cancel hl0`.
+
+Establish `hyv : (y : ↥LL.1) = algebraMap ℚ_[l] ↥LL.1 ((l : ℚ_[l])⁻¹)`. Establish `h1` using `congrArg (fun z : ↥(OL LL) => (z : ↥LL.1)) hy`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_one] at h1`. Move the coercions through the operations in `at h1`. Rewrite using `[map_inv₀, map_natCast]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `hint : IsIntegral ℤ_[l] (algebraMap ℚ_[l] ↥LL.1 ((l : ℚ_[l])⁻¹))`. Rewrite using `[← hyv]`. Unfold `OL at y`. Conclude with `y.2`.
+
+Establish `hint' : IsIntegral ℤ_[l] ((l : ℚ_[l])⁻¹)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ_[l] ℚ_[l] ↥LL.1) (algebraMap ℚ_[l] ↥LL.1).injective).mp hint`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint'`. Establish `h1 : ‖((l : ℚ_[l])⁻¹)‖ ≤ 1`. Rewrite using `[← hz]`. Conclude with `PadicInt.norm_le_one z`.
+
+Rewrite `h1` using `[norm_inv, Padic.norm_p]`. Establish `: (1 : ℝ) < l` using `by exact_mod_cast hp.one_lt`. Rewrite `h1` using `[inv_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_isField (P : LocPrime l) (LL : FinExt l) : ¬ IsField ↥(OL LL) := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   intro hF
@@ -82,17 +113,32 @@ theorem not_isField (P : LocPrime l) (LL : FinExt l) : ¬ IsField ↥(OL LL) := 
   rw [inv_inv] at h1
   linarith
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : ValuationRing ↥(OL LL) := valuationRing P LL`. Use `haveI : IsNoetherianRing ↥(OL LL) := integralClosure.isNoetherianRing (A := ℤ_[l]) (K := ℚ_[l]) ↥LL.1`. Conclude with `((IsDiscreteValuationRing.TFAE ↥(OL LL) (not_isField P LL)).out 1 0).mp (valuationRing P LL)`.
+-/
 theorem isDVR (P : LocPrime l) (LL : FinExt l) : IsDiscreteValuationRing ↥(OL LL) := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   haveI : ValuationRing ↥(OL LL) := valuationRing P LL
   haveI : IsNoetherianRing ↥(OL LL) := integralClosure.isNoetherianRing (A := ℤ_[l]) (K := ℚ_[l]) ↥LL.1
   exact ((IsDiscreteValuationRing.TFAE ↥(OL LL) (not_isField P LL)).out 1 0).mp (valuationRing P LL)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Unfold `OL`. Conclude with `integralClosure.isFractionRing_of_finite_extension ℚ_[l] _`.
+-/
 theorem isFractionRing (LL : FinExt l) : IsFractionRing ↥(OL LL) ↥LL.1 := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   unfold OL
   exact integralClosure.isFractionRing_of_finite_extension ℚ_[l] _
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Set `Φ : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → (↥K.1 →ₐ[ℚ_[l]] Om l)` to `fun σ => LL.1.val.comp σ`. Establish `hinj : Function.Injective Φ`. Introduce `σ σ' h`. Use extensionality with `x`.
+
+Use `congrArg (fun f : ↥K.1 →ₐ[ℚ_[l]] Om l => f x) h` as an intermediate fact. Simplify `this` using `[Φ]`. Establish `hsurj : Function.Surjective Φ`. Introduce `σ`. Set `ψ : Om l →ₐ[ℚ_[l]] Om l` to `σ.liftNormal (Om l)`.
+
+Establish `hψ : ∀ x : ↥K.1, ψ (x : Om l) = σ x` using `fun x => σ.liftNormal_commutes (Om l) x`. Establish `hmem : ∀ x : ↥K.1, σ x ∈ LL.1`. Introduce `x`. Establish `hx : (x : Om l) ∈ Ks K 1` using `hg.2.2.1 x.2`. Use `hg.2.2.2 (ψ.comp (Ks K 1).val) ⟨x, hx⟩` as an intermediate fact.
+
+Simplify `this` using `[hψ]`. Use `⟨AlgHom.codRestrict σ LL.1.toSubalgebra hmem, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[Nat.card_eq_of_bijective Φ ⟨hinj, hsurj⟩, ← Field.finSepDegree_eq_of_isAlgClosed, Field.finSepDegree_eq_finrank_of_isSeparable]`.
+-/
 theorem natCard_emb (K LL : FinExt l) (hg : Good K 1 LL) :
     Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1 := by
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2
@@ -117,11 +163,17 @@ theorem natCard_emb (K LL : FinExt l) (hg : Good K 1 LL) :
   rw [Nat.card_eq_of_bijective Φ ⟨hinj, hsurj⟩, ← Field.finSepDegree_eq_of_isAlgClosed,
     Field.finSepDegree_eq_finrank_of_isSeparable]
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_eq_nat_card, natCard_emb K LL hg, Module.finrank_mul_finrank]`.
+-/
 theorem card_emb (K LL : FinExt l) (hg : Good K 1 LL) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] :
     Fintype.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) =
       finrank ℚ_[l] ↥(K0 K) * finrank ↥(K0 K) ↥K.1 := by
   rw [Fintype.card_eq_nat_card, natCard_emb K LL hg, Module.finrank_mul_finrank]
 
+/- English proof (translation)
+Use `⟨⟨LL.2, ?_⟩, inferInstance, inferInstance, isDVR P LL, isFractionRing LL⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_eq_nat_card, natCard_emb K LL hg]`.
+-/
 theorem goodCoeffs (P : LocPrime l) (K LL : FinExt l) (hg : Good K 1 LL)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)] :
     GoodCoeffs (K := ↥K.1) (Qp := ℚ_[l]) (LL := ↥LL.1) (O := ↥(OL LL)) (V := T.V) := by
@@ -142,6 +194,15 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
     [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
 
+/- English proof (translation)
+Introduce `c hc'`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hc'`. Establish `hcoc : cob ρ x ∈ continuousCocycles ρ` using `by show Continuous (cob ρ x) ∧ ∀ g h, cob ρ x (g * h) = cob ρ x g + ρ g (cob ρ x h)`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `e : (cob ρ x : G → V) = fun g => ρ g x + -x`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[cob, sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `(hc x).add continuous_const`. Simplify using `only [cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, map_mul, Module.End.mul_apply, map_sub]`.
+
+Normalize the expressions using the abelian group laws. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hcoc, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_pi]`. Introduce `g _`. Use `show cob ρ x g ∈ L.T`.
+
+Simplify using `only [cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Conclude with `L.T.sub_mem (L.stable g x hx) hx`. Use `show cob ρ x ∈ continuousCocycles ρ ∧ ∃ X : TensorProduct Qp V B, ∀ g, TensorProduct.tmul Qp (cob ρ x g) (1 : B) = actVB PD ρ g X - X`. Use `⟨hcoc, TensorProduct.tmul Qp x (1 : B), fun g => ?_⟩` and prove the remaining obligations. Simplify using `[cob, actVB, TensorProduct.sub_tmul]`.
+-/
 theorem coboundaries_le_bloch_kato (hc : ∀ x, Continuous fun g => ρ g x) (L : Lattice (O := O) ρ) :
     latticeCoboundaries L ≤ latticeFiniteCocycles PD L := by
   intro c hc'
@@ -166,6 +227,23 @@ theorem coboundaries_le_bloch_kato (hc : ∀ x, Continuous fun g => ρ g x) (L :
     refine ⟨hcoc, TensorProduct.tmul Qp x (1 : B), fun g => ?_⟩
     simp [cob, actVB, TensorProduct.sub_tmul]
 
+/- English proof (translation)
+Use `set N := (latticeCoboundaries L).comap (latticeCocycles L).subtype`. Set `rep : LatticeCohomology L → ↥(latticeCocycles L)` to `fun q => (N.mkQ_surjective q).choose`. Establish `hrep : ∀ q, N.mkQ (rep q) = q` using `fun q => (N.mkQ_surjective q).choose_spec`. Use `set t : Finset (G → V) := s.image (fun q => ((rep q : ↥(latticeCocycles L)) : G → V)) with ht`. Use `⟨t, Finset.card_image_le, ?_⟩` and prove the remaining obligations.
+
+Establish `hB` using `coboundaries_le_bloch_kato PD hc L`. Establish `hmem : ∀ q ∈ s, ((rep q : ↥(latticeCocycles L)) : G → V) ∈ latticeFiniteCocycles PD L`. Introduce `q hq`. Establish `hq' : q ∈ latticeFiniteCohomology PD L` using `hs ▸ Submodule.subset_span hq`. Take `⟨c, hc', hcq⟩` from `hq'`.
+
+Establish `h1 : N.mkQ (rep q) = N.mkQ c` using `by rw [hrep]; exact hcq.symm`. Establish `h2 : rep q - c ∈ N` using `(Submodule.Quotient.eq N).mp h1`. Establish `h3 : ((rep q : ↥(latticeCocycles L)) : G → V) - (c : G → V) ∈ latticeFiniteCocycles PD L` using `hB h2`. Establish `h4` using `(latticeFiniteCocycles PD L).add_mem h3 hc'`. Simplify using `using h4`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ hB` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Simplify using `only [ht, Finset.coe_image, Set.mem_image, Finset.mem_coe] at hz`.
+
+Take `⟨q, hq, rfl⟩` from `hz`. Conclude with `hmem q hq`. Introduce `p hp`. Establish `hpZ : p ∈ latticeCocycles L` using `(Submodule.mem_inf.mp hp).1`. Use `set W : Submodule O ↥(latticeCocycles L) := (Submodule.span O (t : Set (G → V)) ⊔ latticeCoboundaries L).comap (latticeCocycles L).subtype with hW`.
+
+Establish `hNW : N ≤ W` using `fun z hz => Submodule.mem_sup_right hz`. Establish `hsW : (s : Set (LatticeCohomology L)) ⊆ W.map N.mkQ`. Introduce `q hq`. Use `⟨rep q, ?_, hrep q⟩` and prove the remaining obligations. Apply `Submodule.mem_sup_left` to reduce the goal to its premises.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Simplify using `only [ht, Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨q, hq, rfl⟩`. Establish `hspan : latticeFiniteCohomology PD L ≤ W.map N.mkQ`. Rewrite using `[← hs, Submodule.span_le]`.
+
+Conclude with `hsW`. Establish `hpf : N.mkQ ⟨p, hpZ⟩ ∈ latticeFiniteCohomology PD L` using `⟨⟨p, hpZ⟩, hp, rfl⟩`. Establish `h1 : (⟨p, hpZ⟩ : ↥(latticeCocycles L)) ∈ (W.map N.mkQ).comap N.mkQ` using `hspan hpf`. Rewrite `h1` using `[Submodule.comap_map_mkQ, sup_eq_right.mpr hNW]`. Conclude with `h1`.
+-/
 theorem lift_gens (hc : ∀ x, Continuous fun g => ρ g x) (L : Lattice (O := O) ρ)
     (s : Finset (LatticeCohomology L)) (hs : Submodule.span O (s : Set (LatticeCohomology L)) = latticeFiniteCohomology PD L) :
     ∃ t : Finset (G → V), t.card ≤ s.card ∧
@@ -214,6 +292,9 @@ theorem lift_gens (hc : ∀ x, Continuous fun g => ρ g x) (L : Lattice (O := O)
 
 end Gen
 
+/- English proof (translation)
+Establish `h1 : (tc : ℤ) ≤ sc` using `by exact_mod_cast hts`. Establish `h2 : (H0 : ℤ) ≤ r` using `by exact_mod_cast h0`. Establish `h3 : (0 : ℤ) ≤ (N : ℤ) * r` using `by positivity`. Use `zify`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem arith {tc sc N r H0 : ℕ} {S : ℤ} (hts : tc ≤ sc) (hs : (sc : ℤ) ≤ H0 + r + S)
     (h0 : H0 ≤ r) (hS : S ≤ (N : ℤ) * r) : tc ≤ 2 * ((N + 1) * r) := by
   have h1 : (tc : ℤ) ≤ sc := by exact_mod_cast hts
@@ -223,6 +304,17 @@ theorem arith {tc sc N r H0 : ℕ} {S : ℤ} (hts : tc ≤ sc) (hs : (sc : ℤ) 
   nlinarith
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `letI : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Fintype.ofFinite _`. Use `haveI : IsTopologicalAddGroup T.V := IsModuleTopology.topologicalAddGroup ↥LL.1 T.V`. Establish `H` using `hgen l hl K LL hg T`. Take `⟨s, hspan, hcard⟩` from `H (goodCoeffs (LT l) K LL hg T) hc T.cont`.
+
+Take `⟨t, ht, heq⟩` from `lift_gens ((LT l).PD K) T.cont T.L s hspan`. Use `⟨t, ?_, heq⟩` and prove the remaining obligations. Establish `hsum : ∑ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, ((finrank ↥LL.1 ↥(DdRE ((LT l).PD K) T.ρ τ) : ℤ) - finrank ↥LL.1 ↥(FildR ((LT l).PD K) T.ρ τ 0)) ≤ ∑ _τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, (r : ℤ)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `τ _`.
+
+Establish `h1` using `((hfon l K LL T).2 τ).2`. Rewrite `h1` using `[hr]`. Establish `h2 : (0 : ℤ) ≤ finrank ↥LL.1 ↥(FildR ((LT l).PD K) T.ρ τ 0)` using `Int.natCast_nonneg _`. Establish `h3 : (finrank ↥LL.1 ↥(DdRE ((LT l).PD K) T.ρ τ) : ℤ) ≤ r` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hS` using `hsum.trans (le_of_eq (by`. Rewrite using `[Finset.sum_const, Finset.card_univ, card_emb K LL hg, nsmul_eq_mul]))`. Establish `hV : (finrank ↥LL.1 T.V : ℤ) = r` using `by exact_mod_cast hr`. Rewrite `hcard` using `[hV]`. Establish `h0' : finrank ↥LL.1 ↥(H0V T.ρ) ≤ r` using `hr ▸ Submodule.finrank_le _`.
+
+Conclude with `arith ht hcard h0' hS`.
+-/
 theorem gen_core (LT : LocTheory) (hgen : H1fGeneratorBoundAll LT) (hfon : FontaineRegularity LT) (l : ℕ) [Fact l.Prime]
     (hl : l ≠ 2) (K LL : FinExt l) (hg : Good K 1 LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
     (r : ℕ) (hc : IsCrys ((LT l).PD K) T.ρ) (hr : finrank ↥LL.1 T.V = r) :
@@ -259,6 +351,9 @@ namespace Formalism.MainNotions.N.Ln34
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, h7, h8, -, -⟩` from `hA`. Introduce `l _ hl K LL hg T₁ T₂ F' r S η m h up b hH`. Conclude with `GenPf.gen_core D.loc h7 h8 l hl K LL hg T₂ r hH.2.1 hH.2.2.2.1`.
+-/
 theorem generator_bound_of_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CA CB CK : ℝ) (hA : Adm1 D HW F Cm CA CB CK) : genR D := by
   obtain ⟨-, -, -, -, -, -, -, -, -, h7, h8, -, -⟩ := hA

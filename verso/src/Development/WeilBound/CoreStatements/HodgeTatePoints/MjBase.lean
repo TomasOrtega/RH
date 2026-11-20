@@ -9,6 +9,9 @@ namespace PositivityTheory.HtPt.Mj
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨n, p, g, -, -, hpg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R N`. Use `⟨n, fun i => (LinearMap.proj i).comp g, fun i => p fun j => if i = j then 1 else 0, fun a => ?_⟩` and prove the remaining obligations. Establish `hx : p (g a) = a` using `LinearMap.congr_fun hpg a`. Rewrite `hx` using `[LinearMap.pi_apply_eq_sum_univ p (g a)]`. Conclude with `hx`.
+-/
 theorem exists_dual_family (N : Type) [AddCommGroup N] [Module R N] [Module.Finite R N] [Module.Projective R N] :
     ∃ (n : ℕ) (l : Fin n → N →ₗ[R] R) (b : Fin n → N), ∀ a, ∑ i, l i a • b i = a := by
   classical
@@ -23,12 +26,23 @@ variable {X Y Z : Type}
 def pspan (A : Subalgebra R (X → R)) (B : Subalgebra R (Y → R)) : Submodule R (X × Y → R) :=
   Submodule.span R {g | ∃ a ∈ A, ∃ b ∈ B, g = fun z => a z.1 * b z.2}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodSpan_eq (A : Subalgebra R (X → R)) : prodSpan A = pspan A A := rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, ha, b, hb, rfl⟩`.
+-/
 theorem mul_mem_pspan {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} {a : X → R} {b : Y → R}
     (ha : a ∈ A) (hb : b ∈ B) : (fun z : X × Y => a z.1 * b z.2) ∈ pspan A B :=
   Submodule.subset_span ⟨a, ha, b, hb, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `hg`. Conclude with `h a ha b hb`. Consider the case `zero => exact N.zero_mem`.
+
+Consider the case `add g g' _ _ h h' => exact N.add_mem h h'`. Consider the case `smul r g _ h => exact N.smul_mem r h`.
+-/
 theorem pspan_comp {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} (N : Submodule R (Z → R))
     (σ : Z → X × Y) (h : ∀ a ∈ A, ∀ b ∈ B, (fun z => a (σ z).1 * b (σ z).2) ∈ N) {g : X × Y → R}
     (hg : g ∈ pspan A B) : (fun z => g (σ z)) ∈ N := by
@@ -40,6 +54,9 @@ theorem pspan_comp {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} (N 
   | add g g' _ _ h h' => exact N.add_mem h h'
   | smul r g _ h => exact N.smul_mem r h
 
+/- English proof (translation)
+The claim follows from `pspan_comp (Subalgebra.toSubmodule A) (fun x => (x, y)) (fun a ha b _ => by have := A.smul_mem ha (b y) rw [Subalgebra.mem_toSubmodule] convert this using 1 funext x simp [mul_comm]) hg`.
+-/
 theorem slice_mem {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} {g : X × Y → R}
     (hg : g ∈ pspan A B) (y : Y) : (fun x => g (x, y)) ∈ A :=
   pspan_comp (Subalgebra.toSubmodule A) (fun x => (x, y)) (fun a ha b _ => by
@@ -49,6 +66,11 @@ theorem slice_mem {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} {g :
     funext x
     simp [mul_comm]) hg
 
+/- English proof (translation)
+Take `⟨n, l, b, h⟩` from `exists_dual_family (R := R) A`. Use `Submodule.sum_mem (pspan A B) (t := Finset.univ) fun i _ => mul_mem_pspan (b i).2 (h2 (l i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Establish `e` using `congrFun (congrArg Subtype.val (h ⟨_, h1 z.2⟩)) z.1`.
+
+Simplify using `only [AddSubmonoidClass.coe_finsetSum, Finset.sum_apply, SetLike.val_smul, Pi.smul_apply, smul_eq_mul] at e ⊢`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem mem_pspan_of {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} [Module.Finite R A]
     [Module.Projective R A] {g : X × Y → R} (h1 : ∀ y, (fun x => g (x, y)) ∈ A)
     (h2 : ∀ l : A →ₗ[R] R, (fun y => l ⟨_, h1 y⟩) ∈ B) : g ∈ pspan A B := by
@@ -61,6 +83,29 @@ theorem mem_pspan_of {A : Subalgebra R (X → R)} {B : Subalgebra R (Y → R)} [
   rw [← e]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Set `p : A →ₐ[R] (Z → R)` to `(AlgHom.pi fun z => Pi.evalAlgHom R (fun _ : X => R) (E.symm z).1).comp A.val`. Set `q : B →ₐ[R] (Z → R)` to `(AlgHom.pi fun z => Pi.evalAlgHom R (fun _ : Y => R) (E.symm z).2).comp B.val`. Set `m : A ⊗[R] B →ₐ[R] (Z → R)` to `Algebra.TensorProduct.lift p q fun _ _ => Commute.all _ _`. Establish `hm : ∀ (a : A) (b : B) z, m (a ⊗ₜ b) (E z) = a.1 z.1 * b.1 z.2` using `fun a b z => by`. Simplify using `[m, p, q]`.
+
+Establish `hmem : ∀ w, m w ∈ C` using `fun w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[hC]`.
+
+Simplify using `only [hm]`. Conclude with `mul_mem_pspan a.2 b.2`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `C.add_mem ha hb`. Establish `hinj : Function.Injective m`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Take `⟨n, l, b, h⟩` from `exists_dual_family (R := R) A`. Set `c : (A →ₗ[R] R) → A ⊗[R] B →ₗ[R] B` to `fun l => (TensorProduct.lid R B).toLinearMap ∘ₗ l.rTensor B`. Set `s : Y → A ⊗[R] B →ₗ[R] A` to `fun y => (TensorProduct.rid R A).toLinearMap ∘ₗ ((LinearMap.proj y).comp B.val.toLinearMap).lTensor A`.
+
+Establish `h1 : ∀ y x w, (s y w).1 x = m w (E (x, y))` using `fun y x w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul a b => rw [hm]`. Simplify using `[s, mul_comm]`.
+
+Consider the case `add a b ha hb => simp only [map_add, AddMemClass.coe_add, Pi.add_apply, ha, hb]`. Establish `h2 : ∀ l y w, (c l w).1 y = l (s y w)` using `fun l y w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [s, c, mul_comm]`.
+
+Consider the case `add a b ha hb => simp only [map_add, AddMemClass.coe_add, Pi.add_apply, ha, hb]`. Establish `h3 : ∀ w, ∑ i, b i ⊗ₜ c (l i) w = w` using `fun w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul a b' => conv_rhs => rw [← h a, TensorProduct.sum_tmul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[c, TensorProduct.smul_tmul]`. Consider the case `add a b ha hb => simp only [map_add, tmul_add, Finset.sum_add_distrib, ha, hb]`. Establish `h4 : ∀ y, s y w = 0` using `fun y => Subtype.ext (funext fun x => by rw [h1, hw]; rfl)`. Establish `h5 : ∀ l, c l w = 0` using `fun l => Subtype.ext (funext fun y => by rw [h2, h4, map_zero]; rfl)`.
+
+Rewrite using `[← h3 w]`. Simplify using `[h5]`. Use `⟨AlgEquiv.ofBijective (m.codRestrict C hmem) ⟨fun u v huv => hinj (congrArg Subtype.val huv), ?_⟩, fun a b x y => hm a b (x, y)⟩` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩`. Use `pspan_comp (LinearMap.range m.toLinearMap) E.symm (fun a ha b hb => ⟨(⟨a, ha⟩ : A) ⊗ₜ (⟨b, hb⟩ : B), funext fun z => by` as an intermediate fact.
+
+Use `hm ⟨a, ha⟩ ⟨b, hb⟩ (E.symm z)` as an intermediate fact. Rewrite using `[E.apply_symm_apply] at this⟩) ((hC f).1 hf)` and apply the resulting hypothesis. Take `⟨w, hw⟩` from `this`. Use `⟨w, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [E.apply_symm_apply] at hw`.
+
+Conclude with `hw`.
+-/
 theorem exists_tensor_equiv (A : Subalgebra R (X → R)) (B : Subalgebra R (Y → R)) [Module.Finite R A]
     [Module.Projective R A] (E : X × Y ≃ Z) (C : Subalgebra R (Z → R))
     (hC : ∀ f, f ∈ C ↔ (fun z => f (E z)) ∈ pspan A B) :
@@ -121,12 +166,21 @@ theorem exists_tensor_equiv (A : Subalgebra R (X → R)) (B : Subalgebra R (Y �
 
 variable {T H : Type} [CommGroup T] [CommGroup H]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_resOrder {ι : H →* T} {A : Subalgebra R (T → R)} {g : H → R} :
     g ∈ resOrder ι A ↔ ∃ f ∈ A, (fun h => f (ι h)) = g := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨f, hf, rfl⟩`.
+-/
 theorem res_mem (ι : H →* T) {A : Subalgebra R (T → R)} {f : T → R} (hf : f ∈ A) :
     (fun h => f (ι h)) ∈ resOrder ι A := ⟨f, hf, rfl⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_quotOrder {π : T →* H} {A : Subalgebra R (T → R)} {g : H → R} :
     g ∈ quotOrder π A ↔ (fun t => g (π t)) ∈ A := Iff.rfl
 
@@ -135,10 +189,20 @@ def resMap (ι : H →* T) (A : Subalgebra R (T → R)) : A →ₗ[R] resOrder �
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨_, f, hf, rfl⟩`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+-/
 theorem resMap_surjective (ι : H →* T) (A : Subalgebra R (T → R)) : Function.Surjective (resMap ι A) := by
   rintro ⟨_, f, hf, rfl⟩
   exact ⟨⟨f, hf⟩, rfl⟩
 
+/- English proof (translation)
+Use `hA.finite` as an intermediate fact. Use `⟨Module.Finite.of_surjective _ (resMap_surjective ι A), hp, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨d, hd, h⟩` from `hA.full`. Use `⟨d, hd, fun f => ⟨_, h (Function.extend ι f 0), ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Express the relevant statement in the definitionally equal form `d * Function.extend ι f 0 (ι x) = d * f x`. Rewrite using `[hι.extend_apply]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `pspan_comp (prodSpan (resOrder ι A)) (fun z : H × H => (ι z.1, ι z.2)) (fun a ha b hb => mul_mem_pspan (res_mem ι ha) (res_mem ι hb)) (hA.comul f hf)` as an intermediate fact. Simplify using `only [← map_mul] at this`.
+
+Conclude with `this`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `res_mem ι (hA.inv f hf)` as an intermediate fact. Simplify using `only [← map_inv] at this`. Conclude with `this`.
+-/
 theorem res_hopf {ι : H →* T} (hι : Function.Injective ι) {A : Subalgebra R (T → R)} (hA : IsHopfOrder A)
     (hp : Module.Projective R (resOrder ι A)) : IsHopfOrder (resOrder ι A) := by
   have := hA.finite
@@ -158,6 +222,11 @@ theorem res_hopf {ι : H →* T} (hι : Function.Injective ι) {A : Subalgebra R
     simp only [← map_inv] at this
     exact this
 
+/- English proof (translation)
+Use `hA.projective` as an intermediate fact. Use `res_hopf hι hA (Module.Projective.of_split (M := A) (LinearMap.codRestrict (Subalgebra.toSubmodule A) (s ∘ₗ (resOrder ι A).val.toLinearMap) ?_) (resMap ι A) ?_)` and prove the remaining obligations. Introduce and unpack `⟨_, f, hf, rfl⟩`. Conclude with `hs f hf`. Use extensionality with `g h`.
+
+Conclude with `hs' g h`.
+-/
 theorem res_hopf_of_section {ι : H →* T} (hι : Function.Injective ι) {A : Subalgebra R (T → R)}
     (hA : IsHopfOrder A) (s : (H → R) →ₗ[R] (T → R)) (hs : ∀ f ∈ A, s (fun h => f (ι h)) ∈ A)
     (hs' : ∀ g h, s g (ι h) = g h) : IsHopfOrder (resOrder ι A) := by

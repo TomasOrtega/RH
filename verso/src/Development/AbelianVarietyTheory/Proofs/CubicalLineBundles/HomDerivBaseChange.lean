@@ -13,6 +13,17 @@ open scoped CategoryTheory.Obj UpperHalfPlane
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ P Q v t R₀ _ ρ P₀ Q₀ φ ψ v₀ t₀ f a hP hQ hv ht hf hlie R₁ _ g P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP₁ hQ₁ hv₁ ht₁`. Take `⟨φ', hφ', hφφ⟩` from `PolFibre.cancel hP hP₁`. Take `⟨ψ', hψ', hψψ⟩` from `PolFibre.cancel hQ hQ₁`. Establish `hv' : IsVecOver g φ' v₀ v₁` using `(PolFibre.vec_iff hP.2.1.1 hφ'.2.1.1.w hv).mpr (by rw [hφφ]; exact hv₁)`. Establish `ht' : IsVecOver g ψ' t₀ t₁` using `(PolFibre.vec_iff hQ.2.1.1 hψ'.2.1.1.w ht).mpr (by rw [hψψ]; exact ht₁)`.
+
+Establish `hsq : (φ' ≫ f.left) ≫ Q₀.A.hom = P₁.A.hom ≫ spMap g`. Rewrite using `[Category.assoc, Over.w f]`. Conclude with `hφ'.2.1.1.w`. Set `f₁ : P₁.A ⟶ Q₁.A` to `Over.homMk (hψ'.2.1.1.lift (φ' ≫ f.left) P₁.A.hom hsq) (hψ'.2.1.1.lift_snd _ _ _)`. Establish `hf₁ : f₁.left ≫ ψ' = φ' ≫ f.left` using `hψ'.2.1.1.lift_fst _ _ _`.
+
+Establish `: IsMonHom f` using `hf`. Use `⟨f₁, GlobalTheory.UU.isMonHom_of_over_isMonHom hφ'.2.1 hψ'.2.1 f f₁ hf₁, ?_⟩` and prove the remaining obligations. Establish `hw : (v₁ ≫ f₁).left ≫ ψ' = spMap (Chart.dualMapR g) ≫ (v₀ ≫ f).left`. Establish `e : v₁.left ≫ φ' = spMap (Chart.dualMapR g) ≫ v₀.left` using `hv'`. Simplify using `only [Over.comp_left, Category.assoc, hf₁]`.
+
+Rewrite using `[← Category.assoc, e, Category.assoc]`. Establish `key` using `(lieComb_baseChange R₀ R₁ g Q₀.A Q₁.A ψ' hψ'.2.1 1 ![t₀] (v₀ ≫ f) ![a] ![t₁] (v₁ ≫ f₁) (by intro j; fin_cases j; exact ht') hlie).mp hw`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression.
+-/
 theorem hom_deriv_baseChange : ∀ (R : Type) [CommRing R] (P Q : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A) (t : epsR R ⟶ Q.A) (R₀ : Type) [CommRing R₀] (ρ : R →+* R₀) (P₀ Q₀ : Out.PolAV (Sp R₀)) (φ : P₀.A.left ⟶ P.A.left) (ψ : Q₀.A.left ⟶ Q.A.left) (v₀ : epsR R₀ ⟶ P₀.A) (t₀ : epsR R₀ ⟶ Q₀.A) (f : P₀.A ⟶ Q₀.A) (a : R₀), IsPolFibre ρ P P₀ φ → IsPolFibre ρ Q Q₀ ψ → IsVecOver ρ φ v v₀ → IsVecOver ρ ψ t t₀ → IsMonHom f → IsLieComb ![a] ![t₀] (v₀ ≫ f) → ∀ (R₁ : Type) [CommRing R₁] (g : R₀ →+* R₁), (∀ (P₁ Q₁ : Out.PolAV (Sp R₁)) (φ₁ : P₁.A.left ⟶ P.A.left) (ψ₁ : Q₁.A.left ⟶ Q.A.left) (v₁ : epsR R₁ ⟶ P₁.A) (t₁ : epsR R₁ ⟶ Q₁.A), IsPolFibre (g.comp ρ) P P₁ φ₁ → IsPolFibre (g.comp ρ) Q Q₁ ψ₁ → IsVecOver (g.comp ρ) φ₁ v v₁ → IsVecOver (g.comp ρ) ψ₁ t t₁ → ∃ f₁ : P₁.A ⟶ Q₁.A, IsMonHom f₁ ∧ IsLieComb ![g a] ![t₁] (v₁ ≫ f₁)) := by
   intro R _ P Q v t R₀ _ ρ P₀ Q₀ φ ψ v₀ t₀ f a hP hQ hv ht hf hlie R₁ _ g P₁ Q₁ φ₁ ψ₁ v₁ t₁ hP₁ hQ₁ hv₁ ht₁
 

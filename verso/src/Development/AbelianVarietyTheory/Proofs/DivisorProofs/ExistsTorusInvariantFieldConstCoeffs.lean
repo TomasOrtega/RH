@@ -34,6 +34,11 @@ section Group
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem isGrpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
   let ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
@@ -42,6 +47,13 @@ theorem isGrpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullb
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_self G`. Use `choose u e using fun i => PullbackSections.push_surj h (tv (v i))`. Establish `ts : ∀ f : Fin n → TanM (𝟙 (Sp R)) G, tv (∑ i, f i) = ∏ i, tv (f i)` using `fun f => by`. Simplify using `only [tv, toMul_sum, Subgroup.val_finset_prod]`. Establish `key : ∀ a p m, pushHom h (epsR R) p = tv m → (IsLieComb a u p ↔ m = ∑ k, a k • v k)` using `fun a p m hp => by`.
+
+Rewrite using `[PullbackSections.isLieComb_iff h, hp]`. Simplify using `only [e]`. Conclude with `⟨fun q => PullbackSections.tanM_ext (q.trans (by rw [ts]; rfl)), fun q => (congrArg tv q).trans (by rw [ts]; rfl)⟩`. Use `⟨u, ⟨fun i => (PullbackSections.isTangent_iff h _).2 (by rw [e]; exact PullbackSections.tv_mem _), fun p hp => ?_⟩, fun i => (Category.comp_id _).symm.trans (congrArg (fun q => q.left) (e i))⟩` and prove the remaining obligations. Simplify using `only [key _ p (PullbackSections.mkT _ ((PullbackSections.isTangent_iff h p).1 hp)) rfl]`.
+
+Use `⟨v.repr _, (v.sum_repr _).symm, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use function extensionality and compare the values at `i`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem exists_isLieBasis (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) :
     ∃ u : Fin n → (epsR R ⟶ G), IsLieBasis u ∧ ∀ i, (u i).left = (tv (v i)).left := by
   have h := isGrpPullback_self G
@@ -62,6 +74,19 @@ theorem exists_isLieBasis (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) :
 
 variable {B : Type} [CommRing B] [Algebra R B]
 
+/- English proof (translation)
+Establish `hz : z.left ≫ G.hom = spMap (algebraMap R B)` using `Over.w z`. Set `w : sp (R₀` to `R) (DualNumber B) ⟶ G := (Chart.spMap (SqZero.inlS R B) ≫ z) * (Chart.spMap (SqZero.dualMap (Algebra.ofId R B)) ≫ u)`. Establish `hw : IsTr G (algebraMap R B) z.left v w.left`. Set `ρ : tEpsG (z.left ≫ G.hom) ⟶ sp (R₀` to `R) (DualNumber B) := Over.homMk (𝟙 _) (by`. Rewrite using `[hz]`.
+
+Use `(Category.id_comp _).trans ?_` and prove the remaining obligations. Conclude with `(Spec.map_comp (CommRingCat.ofHom (algebraMap R B)) (CommRingCat.ofHom (algebraMap B (DualNumber B)))))`. Use `⟨ρ ≫ Chart.spMap (SqZero.inlS R B) ≫ z, ρ ≫ Chart.spMap (SqZero.dualMap (Algebra.ofId R B)) ≫ u, Category.id_comp _, (Category.id_comp _).trans ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Use `congrArg (fun q : DualNumber R →+* DualNumber B => spMap q ≫ u.left) (RingHom.ext fun a => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [dualMap, Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[← MonObj.comp_mul]`. Conclude with `Category.id_comp _`. Establish `h0 : Chart.spMap (SqZero.fstS R B) ≫ w = z`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, Chart.spMap_comp, Chart.spMap_comp, SqZero.fstS_comp_dualMap, ← Chart.spMap_comp (SqZero.fstS R R), Category.assoc, show Chart.spMap (SqZero.fstS R R) ≫ u = 1 from (Chart.isTan_iff _).2 ht, MonObj.comp_one, _root_.mul_one, sho …`.
+
+Establish `h0' : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ w.left = z.left` using `congrArg (fun q => q.left) h0`. Establish `hwO : ⊤ ≤ w.left ⁻¹ᵁ O` using `InvWt.top_le_preimage_of_fst (S := B) w.left z.left O h0' h`. Establish `h1 : Chart.spMap (SqZero.dualTo (AlgHom.id R B) e he) ≫ w = (Chart.spMap (SqZero.epsTo R e he) ≫ u : sp (R₀` using `R) B ⟶ G) * z := by`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, Chart.spMap_comp, Chart.spMap_comp, show (SqZero.dualTo (AlgHom.id R B) e he).comp (SqZero.inlS R B) = AlgHom.id R B from AlgHom.ext fun _ => by simp [SqZero.dualTo_apply], Chart.spMap_id, Category.id_comp, _root_.mul_comm, sh …`. Rewrite using `[← h1]`.
+
+Take `⟨a₁, a₂⟩` from `valR_spMap (SqZero.dualTo (AlgHom.id R B) e he).toRingHom w.left O hwO`. Use `⟨a₁, fun f => (a₂ f).trans ?_⟩` and prove the remaining obligations. Establish `b₁` using `(valR_spMap (TrivSqZeroExt.fstHom B B B).toRingHom w.left O hwO).2 f`. Rewrite `b₁` using `[h0']`. Rewrite using `[← hd.2 B (algebraMap R B) z.left w.left O f hz h hw, b₁, _root_.mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem valR_translate {v : TanM (𝟙 (Sp R)) G} {u : epsR R ⟶ G} (hu : u.left = (tv v).left) (ht : IsTangent u)
     {dd : Fld G.left} (hd : IsInv G v dd) (e : B) (he : e * e = 0) (z : sp (R₀ := R) B ⟶ G) (O : G.left.Opens)
     (h : ⊤ ≤ z.left ⁻¹ᵁ O) :
@@ -106,6 +131,11 @@ theorem valR_translate {v : TanM (𝟙 (Sp R)) G} {u : epsR R ⟶ G} (hu : u.lef
   rw [← hd.2 B (algebraMap R B) z.left w.left O f hz h hw, b₁, _root_.mul_comm]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert a s ha ih`. Take `⟨h₁, H₁⟩` from `ih`. Take `⟨h₂, H₂⟩` from `valR_translate (hu a) (ht a) (hd a) (e a) (he a a) _ O h₁`.
+
+Rewrite using `[Finset.prod_insert ha, _root_.mul_assoc]`. Use `⟨h₂, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[H₂, H₁, H₁, Finset.sum_insert ha, mul_add, Finset.mul_sum]`. Simplify using `only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem valR_prod {v : Fin n → TanM (𝟙 (Sp R)) G} {u : Fin n → (epsR R ⟶ G)} (hu : ∀ i, (u i).left = (tv (v i)).left)
     (ht : ∀ i, IsTangent (u i)) {dd : Fin n → Fld G.left} (hd : ∀ i, IsInv G (v i) (dd i)) (e : Fin n → B)
     (he : ∀ i j, e i * e j = 0) (z : sp (R₀ := R) B ⟶ G) (O : G.left.Opens) (h : ⊤ ≤ z.left ⁻¹ᵁ O) (s : Finset (Fin n)) :
@@ -130,6 +160,11 @@ section Raynaud
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O} (Y : Ray oa)
 
+/- English proof (translation)
+Establish `hqm : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Use `hf S φ x ((t ≫ Y.i) * x) c _ _ rfl rfl h h' ?_ fun χ y J hJ => ?_` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, Y.i_q, MonObj.comp_one, _root_.one_mul]`. Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x (t ≫ Y.i))).2 χ y J hJ`. Establish `C : IsCub (DVR.th Q (T` using `Over.mk (spMap φ)) y J) := isCub_cubV Q.cub hJ`.
+
+Rewrite `h1` using `[(Y.Φ_i t).1, C.face₃, _root_.mul_one, _root_.mul_comm x]`. Use `h1.trans ((_root_.mul_comm _ _).trans (congrArg (· * _) (Units.ext ?_)))` and prove the remaining obligations. Conclude with `((Y.Φ_i t).2 χ y J hJ).trans ((congrArg (gs _ y ⊤) (hc χ)).trans (gs_unit _ y ⊤ trivial _))`.
+-/
 theorem valR_torus_mul {S : Type} [CommRing S] {φ : R →+* S} (t : Over.mk (spMap φ) ⟶ splitTorus (Sp R) (RayEv.Chr Q))
     (c : Q.X → Sˣ) (hc : ∀ χ : Q.X, (coord t).hom (AddMonoidAlgebra.single χ 1) = (unitOn (c χ)).val)
     (x : Over.mk (spMap φ) ⟶ Y.H) {α : Q.X} {W : Y.H.left.Opens} {f : Γ(Y.H.left, W)} (hf : IsWt Y α W f)
@@ -159,12 +194,20 @@ def torTan (ℓ : Q.X →+ R) : sp (R₀ := R) (DualNumber R) ⟶ splitTorus (Sp
         exact (congrArg (fun u => (unitOn u).val) (this a.toAdd b.toAdd)).trans
           (map_mul (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom _ _) }
 
+/- English proof (translation)
+Rewrite using `[coord_comp, ← InvWt.map_unitOn]`. Conclude with `congrArg (spMap ψ.toRingHom).appTop.hom (Diag.coord_ofChar _ _ χ)`.
+-/
 theorem coord_torTan (ℓ : Q.X →+ R) {B : Type} [CommRing B] [Algebra R B] (ψ : DualNumber R →ₐ[R] B) (χ : Q.X) :
     (coord (Chart.spMap ψ ≫ torTan ℓ)).hom (AddMonoidAlgebra.single χ 1) =
       (unitOn (Units.map ψ.toRingHom.toMonoidHom (epsUnit (ℓ χ)))).val := by
   rw [coord_comp, ← InvWt.map_unitOn]
   exact congrArg (spMap ψ.toRingHom).appTop.hom (Diag.coord_ofChar _ _ χ)
 
+/- English proof (translation)
+Use `Y.i_linear.isMonHom` as an intermediate fact. Use `(Chart.isTan_iff _).1 ?_` and prove the remaining obligations. Establish `e : Chart.spMap (Chart.fstD R) ≫ torTan ℓ = 1` using `Diag.hom_ext fun χ => by`. Use `(coord_torTan ℓ _ χ).trans (Eq.trans ?_ (Diag.coord_one _ χ).symm)` and prove the remaining obligations. Establish `: Units.map (Chart.fstD R).toRingHom.toMonoidHom (epsUnit (ℓ χ)) = 1` using `Units.ext (by show (1 + inr (ℓ χ) : DualNumber R).fst = 1 simp)`.
+
+Conclude with `(congrArg (fun u => (unitOn u).val) this).trans (map_one (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Rewrite using `[Chart.IsTan, ← Category.assoc, e, MonObj.one_comp]`.
+-/
 theorem isTangent_torTan (ℓ : Q.X →+ R) : IsTangent (torTan ℓ ≫ Y.i) := by
   have := Y.i_linear.isMonHom
   refine (Chart.isTan_iff _).1 ?_
@@ -176,6 +219,19 @@ theorem isTangent_torTan (ℓ : Q.X →+ R) : IsTangent (torTan ℓ ≫ Y.i) := 
     exact (congrArg (fun u => (unitOn u).val) this).trans (map_one (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)
   rw [Chart.IsTan, ← Category.assoc, e, MonObj.one_comp]
 
+/- English proof (translation)
+Take `⟨u, hb, hu⟩` from `exists_isLieBasis v`. Take `⟨c, hc, -⟩` from `hb.2 _ (isTangent_torTan Y ℓ)`. Rewrite `hc` using `[SqZero.isLieComb_iff_lieExp]`. Use `⟨c, fun α W f hf => sub_eq_zero.1 (Adjust.eq_zero_of_valR_points _ _ fun S _ g hg => ?_)⟩` and prove the remaining obligations. Take `⟨φ', hφ'⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) (g ≫ Y.H.hom)`.
+
+Set `φ : R →+* S` to `φ'.hom`. Establish `hφ : g ≫ Y.H.hom = spMap φ` using `hφ'.symm`. Use `letI : Algebra R S := φ.toAlgebra`. Set `z : sp (R₀` to `R) S ⟶ Y.H := Over.homMk g hφ`. Set `ψ : DualNumber R →ₐ[R] DualNumber S` to `SqZero.dualMap (Algebra.ofId R S)`.
+
+Establish `hψ : ∀ a : R, ψ (inr a) = inr (φ a)` using `fun a => SqZero.dualMap_inr _ _`. Take `⟨a₁, a₂⟩` from `valR_spMap (SqZero.inlS R S).toRingHom g W hg`. Take `⟨b₁, b₂⟩` from `valR_prod hu hb.1 hd (fun i => ψ (inr (c i))) (fun _ _ => by rw [← map_mul, TrivSqZeroExt.inr_mul_inr, map_zero]) (Chart.spMap (SqZero.inlS R S) ≫ z) W a₁ Finset.univ`. Establish `e` using `congrArg (Chart.spMap ψ ≫ ·) hc`. Simplify using `only [SqZero.comp_lieExp, ← Category.assoc] at e`.
+
+Rewrite `e` using `[SqZero.lieExp]`. Rewrite `b₁`, `b₂` using `[← e]`. Establish `k` using `valR_torus_mul Y (S := DualNumber S) (φ := algebraMap R (DualNumber S)) (Chart.spMap ψ ≫ torTan ℓ) _ (coord_torTan ℓ ψ) (Chart.spMap (SqZero.inlS R S) ≫ z) hf a₁ b₁`. Establish `a₃ : ∀ s, valR (A` using `DualNumber S) (Chart.spMap (SqZero.inlS R S) ≫ z).left W s = inl (valR g W s) := a₂`. Establish `k'` using `congrArg TrivSqZeroExt.snd ((b₂ f).symm.trans k)`.
+
+Establish `hu' : ((Units.map ψ.toRingHom.toMonoidHom (epsUnit (ℓ α)) : (DualNumber S)ˣ) : DualNumber S) = 1 + inr (φ (ℓ α))`. Rewrite using `[← hψ, ← map_one ψ, ← map_add]`. Both sides reduce to the same expression. Simplify using `only [a₃, hψ, hu'] at k'`. Rewrite using `[WtAlg.valR_sub' _ _ hg, WtAlg.valR_mul'' _ _ hg, Adjust.valR_const _ φ g hφ W hg, combF, GlobalTheory.ZH.CrdCalc.valR_eq _ _ hg, map_sum, sub_eq_zero]`.
+
+Simplify using `only [← GlobalTheory.ZH.CrdCalc.valR_eq _ _ hg, WtAlg.valR_mul'' _ _ hg, Adjust.valR_const _ φ g hφ W hg]`. Simplify `k'` using `[TrivSqZeroExt.snd_sum, _root_.mul_comm]`.
+-/
 theorem exists_comb {n : ℕ} (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) {dd : Fin n → Fld Y.H.left}
     (hd : ∀ a, IsInv Y.H (v a) (dd a)) (ℓ : Q.X →+ R) : ∃ c : Fin n → R, ∀ (α : Q.X) (W : Y.H.left.Opens) f,
       IsWt Y α W f → combF Y.H.hom dd c W f = constFn Y.H.hom W (ℓ α) * f := by
@@ -209,6 +265,9 @@ theorem exists_comb {n : ℕ} (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.
   simp only [← GlobalTheory.ZH.CrdCalc.valR_eq _ _ hg, WtAlg.valR_mul'' _ _ hg, Adjust.valR_const _ φ g hφ W hg]
   simpa [TrivSqZeroExt.snd_sum, _root_.mul_comm] using k'
 
+/- English proof (translation)
+Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Establish `e : a' ≫ Y.q.left = a ≫ Y.q.left`. Substitute `ha ha'` using the available equality. Conclude with `congrArg (fun q => q.left) hq`. Rewrite using `[GlobalTheory.KS.pbT_of_le _ hW, HolHom.valR_appLE _ _ _ _ _ _ hV', HolHom.valR_appLE _ _ _ _ _ _ hV, e, WtAlg.c_zero x x' c hc, Units.val_one, _root_.one_mul]`.
+-/
 theorem isWt_pbT (U : Q.P.A.left.Opens) (g : Γ(Q.P.A.left, U)) (W : Y.H.left.Opens) (hW : W ≤ Y.q.left ⁻¹ᵁ U) :
     IsWt Y 0 W (pbT Y.q.left g W) := by
   intro S _ φ x x' c a a' ha ha' hV hV' hq hc
@@ -220,18 +279,29 @@ theorem isWt_pbT (U : Q.P.A.left.Opens) (g : Γ(Q.P.A.left, U)) (W : Y.H.left.Op
 
 end Raynaud
 
+/- English proof (translation)
+Use `Adjust.isField_add_comb (fun _ _ => 0) dd (fun a => constFn s ⊤ (c a)) (isField_zero ⊤) h` as an intermediate fact. Simplify using `only [zero_add, GlobalTheory.KS.rsT_constFn s le_top] at this`. Conclude with `this`.
+-/
 theorem isField_combF {R : Type} [CommRing R] {Z : Scheme.{0}} (s : Z ⟶ Sp R) {n : ℕ} (dd : Fin n → Fld Z) (c : Fin n → R)
     (h : ∀ a, IsField ⊤ (dd a)) : IsField ⊤ (combF s dd c) := by
   have := Adjust.isField_add_comb (fun _ _ => 0) dd (fun a => constFn s ⊤ (c a)) (isField_zero ⊤) h
   simp only [zero_add, GlobalTheory.KS.rsT_constFn s le_top] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', _root_.mul_assoc, hF.2.1 W le_top, hg, mul_zero, add_zero, ih, _root_.mul_assoc]`.
+-/
 theorem field_pow_mul {Z : Scheme.{0}} {F : Fld Z} (hF : IsField ⊤ F) (W : Z.Opens) (g : Γ(Z, W)) (hg : F W g = 0)
     (k : ℕ) (f : Γ(Z, W)) : F W (g ^ k * f) = g ^ k * F W f := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', _root_.mul_assoc, hF.2.1 W le_top, hg, mul_zero, add_zero, ih, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hd ℓ`. Take `⟨c, hc⟩` from `exists_comb Y v hd ℓ`. Establish `hF` using `isField_combF Y.H.hom dd c fun a => (hd a).1`. Use `⟨c, hF, fun W r => ?_, fun α W _ f hf => hc α W f hf, fun U g W k f hW => field_pow_mul hF W _ ?_ k f⟩` and prove the remaining obligations. Simplify using `only [combF, fun a => Adjust.inv_constFn Y.H (v a) (dd a) (hd a) W r, mul_zero, Finset.sum_const_zero]`.
+
+Rewrite using `[hc 0 W _ (isWt_pbT Y U g W hW), map_zero]`. Simplify using `[constFn]`.
+-/
 theorem exists_isTorField : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ ℓ : Dd.toPre.X →+ R, ∃ c : Fin n → R, GlobalTheory.HeatMod.IsTorField Y (GlobalTheory.HeatMod.combF Y.H.hom dd c) ℓ := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hd ℓ
   obtain ⟨c, hc⟩ := exists_comb Y v hd ℓ

@@ -12,12 +12,27 @@ def transv {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : L) : GL (Fin n) L :=
     by rw [Matrix.add_mul, Matrix.mul_sub, Matrix.mul_sub, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm]; simp,
     by rw [Matrix.sub_mul, Matrix.mul_add, Matrix.mul_add, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm]; simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transv_val {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : L) :
     ((transv i j hij c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1 + Matrix.single i j c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transv_inv_val {n : ℕ} (i j : Fin n) (hij : i ≠ j) (c : L) :
     (((transv i j hij c)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1 - Matrix.single i j c := rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LGrp.mem_GU_iff]`. Introduce `p r`. Establish `e1 : ∀ x : Fin n, i = x.rev ↔ x = j` using `fun x => by rw [← hr]; exact ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Establish `e2 : ∀ x : Fin n, j = x.rev ↔ x = i` using `fun x => by`. Rewrite using `[← hr]; exact ⟨fun h => Fin.rev_injective (by rw [← h]), fun h => by rw [h]⟩`.
+
+Rewrite using `[transv_inv_val, transv_val]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Fin.rev_inj, e1, e2]`. Distinguish the cases in `h : i = p ∧ j = r`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[hij, hij.symm, hc, sub_eq_add_neg]`.
+
+Establish `h' : ¬ (r = j ∧ p = i)` using `fun h' => h ⟨h'.2.symm, h'.1.symm⟩`. Rewrite using `[if_neg h, if_neg h']`. Distinguish the cases in `hpr : p = r`. Substitute `hpr` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hpr, Ne.symm hpr]`.
+-/
 theorem transv_mem_GU (σ : L →+* L) {n : ℕ} (i j : Fin n) (hij : i ≠ j) (hr : i.rev = j) (c : L)
     (hc : σ c = -c) : transv i j hij c ∈ GU σ n := by
   rw [GlobalTheory.LGrp.mem_GU_iff]
@@ -40,6 +55,9 @@ end GlobalTheory.GKUnitaryRankOne
 namespace GlobalTheory.GKUnitaryRankOne
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (t⁻¹ i)]`. Introduce `l _ hl`. Rewrite using `[hY i l (fun h => hl (by rw [h]; simp)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem monomial_mul_apply {n : ℕ} {t : Equiv.Perm (Fin n)} {Y : GL (Fin n) L} (hY : IsWeylRep t Y)
     (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     ((Y : Matrix (Fin n) (Fin n) L) * M) i j = (Y : Matrix (Fin n) (Fin n) L) i (t⁻¹ i) * M (t⁻¹ i) j := by
@@ -50,8 +68,16 @@ theorem monomial_mul_apply {n : ℕ} {t : Equiv.Perm (Fin n)} {Y : GL (Fin n) L}
 
 variable [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+The claim follows from `hx`.
+-/
 theorem mem_intL {x : L} (hx : Valued.v x ≤ 1) : x ∈ intL L := hx
 
+/- English proof (translation)
+Establish `hc' : c ∈ intL L` using `mem_intL hc`. Use `P.cartan_mem_of_entries (intL L) _ (fun p r => ?_) (fun p r => ?_)` and prove the remaining obligations. Rewrite using `[transv_val, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `refine add_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact hc'`. Rewrite using `[transv_inv_val, Matrix.sub_apply, Matrix.one_apply, Matrix.single_apply]`.
+
+Apply the tactic sequence `refine sub_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact hc'`.
+-/
 theorem transv_mem_GLint {n : ℕ} (i j : Fin n) (hij : i ≠ j) {c : L} (hc : Valued.v c ≤ 1) :
     transv i j hij c ∈ GLint (Fin n) (intL L) := by
   have hc' : c ∈ intL L := mem_intL hc
@@ -61,17 +87,29 @@ theorem transv_mem_GLint {n : ℕ} (i j : Fin n) (hij : i ≠ j) {c : L} (hc : V
   · rw [transv_inv_val, Matrix.sub_apply, Matrix.one_apply, Matrix.single_apply]
     refine sub_mem ?_ ?_ <;> split_ifs <;> first | exact one_mem _ | exact zero_mem _ | exact hc'
 
+/- English proof (translation)
+Simplify using `only [ordL, Valuation.map_neg]`.
+-/
 theorem ordL_neg (x : L) : ordL (-x) = ordL x := by
   simp only [ordL, Valuation.map_neg]
 
+/- English proof (translation)
+The claim follows from `P.fIwasawa_ordL_unit 1 1 (by rw [map_one]) (by rw [map_one]) (mul_one 1)`.
+-/
 theorem ordL_one' : ordL (1 : L) = 0 :=
   P.fIwasawa_ordL_unit 1 1 (by rw [map_one]) (by rw [map_one]) (mul_one 1)
 
+/- English proof (translation)
+Establish `h` using `P.fIwasawa_ordL_mul x x⁻¹ hx (inv_ne_zero hx)`. Rewrite `h` using `[mul_inv_cancel₀ hx, ordL_one']`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordL_inv {x : L} (hx : x ≠ 0) : ordL x⁻¹ = -ordL x := by
   have h := P.fIwasawa_ordL_mul x x⁻¹ hx (inv_ne_zero hx)
   rw [mul_inv_cancel₀ hx, ordL_one'] at h
   omega
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (Units.mul_inv Y) i) i`. Rewrite `h` using `[monomial_mul_apply hY, Matrix.one_apply_eq]`. Conclude with `P.fIwasawa_ordL_unit _ _ (P.cartan_entries_of_mem _ Y hYK _ _) (P.cartan_entries_of_mem _ _ (inv_mem hYK) _ _) (by rw [mul_comm]; exact h)`.
+-/
 theorem ordL_monomial_entry {n : ℕ} {t : Equiv.Perm (Fin n)} {Y : GL (Fin n) L} (hY : IsWeylRep t Y)
     (hYK : Y ∈ GLint (Fin n) (intL L)) (i : Fin n) :
     ordL ((Y : Matrix (Fin n) (Fin n) L) i (t⁻¹ i)) = 0 := by
@@ -80,10 +118,16 @@ theorem ordL_monomial_entry {n : ℕ} {t : Equiv.Perm (Fin n)} {Y : GL (Fin n) L
   exact P.fIwasawa_ordL_unit _ _ (P.cartan_entries_of_mem _ Y hYK _ _)
     (P.cartan_entries_of_mem _ _ (inv_mem hYK) _ _) (by rw [mul_comm]; exact h)
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[Matrix.one_apply, ne_of_gt h]`.
+-/
 theorem isBorelU_one (σ : L →+* L) (n : ℕ) : IsBorelU (1 : GU σ n) := by
   intro i j h
   simp [Matrix.one_apply, ne_of_gt h]
 
+/- English proof (translation)
+Unfold `chiDeltaU`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `[ordL_one']`. Both sides reduce to the same expression.
+-/
 theorem chiDeltaU_one (σ : L →+* L) (n m q : ℕ) (α : Fin m → ℂ) : chiDeltaU q α (1 : GU σ n) = 1 := by
   unfold chiDeltaU
   refine Finset.prod_eq_one fun i _ => ?_
@@ -96,6 +140,9 @@ end GlobalTheory.GKUnitaryRankOne
 namespace GlobalTheory.GKUnitaryRankOne
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `congrFun (congrFun (Units.mul_inv Y) i) i`. Rewrite `h` using `[monomial_mul_apply hY, Matrix.one_apply_eq, h0, zero_mul]`. Conclude with `zero_ne_one h`.
+-/
 theorem monomial_entry_ne_zero {n : ℕ} {t : Equiv.Perm (Fin n)} {Y : GL (Fin n) L} (hY : IsWeylRep t Y)
     (i : Fin n) : (Y : Matrix (Fin n) (Fin n) L) i (t⁻¹ i) ≠ 0 := by
   intro h0
@@ -106,6 +153,49 @@ end GlobalTheory.GKUnitaryRankOne
 
 namespace GlobalTheory.GKUnitaryRankOne
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ q _ n k hk hn α φ hφ hφ1 y hy hyw u hu`. Establish `hn2 : n = 2 * k.val + 2` using `by obtain ⟨r, hr⟩ := hn; omega`. Use `set a : Fin n := lo k with ha`. Use `set a' : Fin n := (lo k).rev with ha'`. Establish `hav : a.val = k.val` using `rfl`.
+
+Establish `ha'v : a'.val = k.val + 1` using `by rw [ha', Fin.val_rev]; simp; omega`. Establish `haa' : a ≠ a'` using `fun h => by have := congrArg Fin.val h; omega`. Establish `hra : a'.rev = a` using `by rw [ha', Fin.rev_rev]`. Use `set b := ((u : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a' with hb`. Establish `hU : (u : GL (Fin n) L) = transv a a' haa' b`.
+
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[transv_val]`. Distinguish the cases in `h : i = a ∧ j = a'`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Matrix.single_apply, haa', hb]`.
+
+Rewrite using `[hu i j h, Matrix.add_apply, Matrix.single_apply, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩), add_zero]`. Establish `hσb : σ b = -b`. Establish `h` using `(GlobalTheory.LGrp.mem_GU_iff σ n (u : GL (Fin n) L)).1 u.2 a a'`. Rewrite `h` using `[hra, ← ha', ← hb, hU, transv_inv_val]`. Simplify `h.symm` using `[Matrix.single_apply, haa']`.
+
+Distinguish the cases in `hv : Valued.v b ≤ 1`. Rewrite using `[if_pos hv]`. Establish `huK : u ∈ KU σ n`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.LFun.IntPtsUnitary.coe_KU]`. Use `show (u : GL (Fin n) L) ∈ GLint (Fin n) (intL L)`.
+
+Rewrite using `[hU]`. Conclude with `transv_mem_GLint a a' haa' hv`. Establish `h` using `hφ 1 1 (y⁻¹ * u) (isBorelU_one σ n) (mul_mem (inv_mem hy) huK)`. Rewrite `h` using `[one_mul, one_mul]`. Rewrite using `[h, chiDeltaU_one, hφ1, one_mul]`.
+
+Rewrite `hv` using `[if_neg hv] push_neg`. Establish `hb0 : b ≠ 0` using `fun h => by rw [h, map_zero] at hv; exact not_lt_of_ge zero_le' hv`. Use `set c := b⁻¹ with hc`. Establish `hvc : Valued.v c ≤ 1` using `((Valuation.one_lt_val_iff _ hb0).1 hv).le`. Establish `hσc : σ c = -c` using `by rw [hc, map_inv₀, hσb, inv_neg]`.
+
+Establish `hbc : b * c = 1` using `mul_inv_cancel₀ hb0`. Set `κ : GU σ n` to `⟨transv a' a haa'.symm c, transv_mem_GU σ a' a haa'.symm hra c hσc⟩`. Establish `hκ : κ ∈ KU σ n`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.LFun.IntPtsUnitary.coe_KU]`. Conclude with `transv_mem_GLint a' a haa'.symm hvc`.
+
+Use `set Pb : GU σ n := y⁻¹ * u * κ⁻¹ with hPb`. Establish `e : Pb * 1 * κ = y⁻¹ * u` using `by rw [hPb]; group`. Establish `hyK : (y : GL (Fin n) L) ∈ GLint (Fin n) (intL L)` using `hy.2`. Establish `hyiw` using `IsWeylRep.inv hyw`. Establish `hs : simpleU k = Equiv.swap a a'` using `by unfold simpleU; rw [if_neg hk]`.
+
+Use `set M : Matrix (Fin n) (Fin n) L := (1 + Matrix.single a a' b) * (1 - Matrix.single a' a c) with hMdef`. Establish `hM : ∀ l j, M l j = (1 : Matrix (Fin n) (Fin n) L) l j + (if a = l ∧ a' = j then b else 0) - (if a' = l ∧ a = j then c else 0) - (if a = l ∧ a = j then 1 else 0)`. Introduce `l j`. Rewrite using `[hMdef, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_sub, Matrix.single_mul_single_same, hbc]`. Simplify using `[Matrix.single_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hP : ∀ i j, (((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = (((y : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i (Equiv.swap a a' i) * M (Equiv.swap a a' i) j`. Introduce `i j`. Establish `: (((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (((y : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * M`. Rewrite using `[hPb, hMdef, ← transv_val a a' haa' b, ← transv_inv_val a' a haa'.symm, ← hU]`.
+
+Simplify using `[Matrix.mul_assoc, κ]`. Rewrite using `[this, monomial_mul_apply hyiw, inv_inv, hs]`. Establish `hunit : ∀ i, ordL ((((y : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i (Equiv.swap a a' i)) = 0` using `fun i => by`. Apply the tactic sequence `have := ordL_monomial_entry hyiw (inv_mem hyK) i`. Rewrite `this` using `[inv_inv, hs]`. Then use the resulting hypothesis.
+
+Establish `hB : IsBorelU Pb`. Introduce `i j hji`. Establish `hj : j.val < i.val` using `hji`. Rewrite using `[hP, hM]`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises.
+
+Simplify using `only [Matrix.one_apply, Equiv.swap_apply_def, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | ring`. Rewrite using `[← e, hφ Pb 1 κ hB hκ, hφ1, mul_one]`. Establish `hdiag : ∀ i : Fin n, i ≠ a → i ≠ a' → ordL ((((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) = 0`. Introduce `i h1 h2`.
+
+Rewrite using `[hP, Equiv.swap_apply_of_ne_of_ne h1 h2, hM]`. Simplify using `only [Matrix.one_apply_eq, if_neg (fun h : a = i ∧ a' = i => h1 h.1.symm), if_neg (fun h : a' = i ∧ a = i => h2 h.1.symm), if_neg (fun h : a = i ∧ a = i => h1 h.1.symm)]`. Use `hunit i` as an intermediate fact. Rewrite `this` using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`. Simplify using `using this`.
+
+Establish `hdiag_a : ordL ((((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a) = -ordL b`. Rewrite using `[hP, Equiv.swap_apply_left, hM]`. Simplify using `only [Matrix.one_apply, if_neg haa'.symm, if_neg (fun h : a = a' ∧ a' = a => haa' h.1), if_pos (⟨rfl, rfl⟩ : a' = a' ∧ a = a), if_neg (fun h : a = a' ∧ a = a => haa' h.1)]`. Establish `hy0 : (((y : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a' ≠ 0`. Use `monomial_entry_ne_zero hyiw a` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv, hs, Equiv.swap_apply_left]`. Then use the resulting hypothesis. Establish `hc0 : c ≠ 0` using `inv_ne_zero hb0`. Establish `e2 : ((0 : L) + 0 - if True ∧ True then c else 0) - (if a = a' ∧ True then 1 else 0) = -c`. Rewrite using `[if_pos ⟨trivial, trivial⟩, if_neg (fun h => haa' h.1)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e2, P.fIwasawa_ordL_mul _ _ hy0 (neg_ne_zero.2 hc0), ordL_neg, hc, ordL_inv hb0]`. Use `hunit a` as an intermediate fact. Rewrite `this` using `[Equiv.swap_apply_left]`. Rewrite using `[this, zero_add]`. Unfold `chiDeltaU`.
+
+Rewrite using `[Finset.prod_eq_single k]`. Rewrite using `[dif_pos (by omega)] show α k ^ ordL ((((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a) * (q : ℂ) ^ (-(ordL ((((Pb : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a)) * ((n : ℤ) - 1 - 2 * (k.val : ℤ))) = _`. Establish `e3 : (n : ℤ) - 1 - 2 * (k.val : ℤ) = 1` using `by omega`. Rewrite using `[hdiag_a, e3, neg_neg, mul_one]`. Introduce `i _ hik`.
+
+Establish `hi : i.val < k.val`. Establish `: i.val ≠ k.val` using `fun h => hik (Fin.ext h)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos (by omega), hdiag _ (fun h => by have := congrArg Fin.val h; simp at this; omega) (fun h => by have := congrArg Fin.val h; simp at this; omega)]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem value_rankOne : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ),
     IsUnramInv ϖ σ q → ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → Even n →
     ∀ (α : Fin (n / 2) → ℂ) (φ : GU σ n → ℂ), IsSphericalU q α φ → φ 1 = 1 →

@@ -7,6 +7,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.Primes
 
+/- English proof (translation)
+Introduce `F _ _`. Establish `h` using `(ReciprocityTheory.Cheb.summable_absNorm_rpow_ideal F (s := 2) (by norm_num)).comp_injective (i := fun v : HeightOneSpectrum (𝓞 F) => v.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)`. Use `h.congr fun v => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Real.rpow_neg (Nat.cast_nonneg _), one_div]`.
+
+Evaluate the numerical expressions.
+-/
 theorem summable_one_div_absNorm_sq :
     ∀ (F : Type) [Field F] [NumberField F],
       Summable fun v : HeightOneSpectrum (𝓞 F) => 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by

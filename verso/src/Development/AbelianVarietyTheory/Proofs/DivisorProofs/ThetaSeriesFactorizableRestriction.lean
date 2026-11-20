@@ -12,6 +12,9 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.VacFactor
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite using `[GlobalTheory.PureFactor.finprod_update φ w (r • h) hφ x, GlobalTheory.PureFactor.finprod_update φ w h hφ x]`. Simplify using `only [SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_update_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (w : Pl F) (r : ℂ) (h : (κ → Fv F w) → ℂ)
     (hφ : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1) :
@@ -22,11 +25,17 @@ theorem pure_update_smul {F : Type} [Field F] [NumberField F] {κ : Type} [Finty
   simp only [SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+-/
 theorem tens_smul {F : Type} [Field F] [NumberField F] {R κ : Type} (ev : AF F → R) (c : ℂ) (g : (κ → R) → ℂ)
     (r : (κ → AF F) → ℂ) : tens ev (c • g) r = c • tens ev g r := by
   funext x
   simp [tens, mul_assoc]
 
+/- English proof (translation)
+Use `filter_upwards [hvac, U.finite_toSet.compl_mem_cofinite] with v h1 h2`. Rewrite using `[h v h2, h1]`.
+-/
 theorem std_of_off {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (vac φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hvac : ∀ᶠ v in Filter.cofinite, vac v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1)
     (U : Finset (Pl F)) (h : ∀ v, v ∉ U → φ v = vac v) :
@@ -34,6 +43,29 @@ theorem std_of_off {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   filter_upwards [hvac, U.finite_toSet.compl_mem_cofinite] with v h1 h2
   rw [h v h2, h1]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT S f φ hφSB hφvac Ψ hΨ hyp`. Establish `hvstd` using `hT.geo.hM'.std`. Establish `hvSB : ∀ v, G.M'.vac v ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `fun v => (hT.geo.hM'.vac v).1`. Establish `hyp' : ∀ w, w ∉ S → ∀ γ ∈ latAtV G.V' G.W w, ∀ c : ℂ, Acts (evFin F w) (G.M'.co.rho B.ψ γ) (G.M'.vac w) (c • G.M'.vac w) → G.M'.co.rho B.ψ γ Ψ = c • Ψ`. Introduce `w hw γ hγ c hc`.
+
+Establish `hstd` using `std_of_off G.M'.vac φ hvstd S hφvac`. Take `⟨r, hr1, hr2⟩` from `GlobalTheory.PureFactor.exists_rest_factor w f φ hstd`. Establish `e : pure f φ = tens (evFin F w) (G.M'.vac w) r`. Rewrite using `[hr2, ← hφvac w hw, Function.update_eq_self]`. Use `hyp w hw γ hγ c ?_` and prove the remaining obligations.
+
+Establish `hR : Rest (evFin F w) (G.M'.vac w) r` using `⟨hr1, e ▸ GlobalTheory.TensUniq.pure_mem_schA f φ hφSB hstd⟩`. Rewrite using `[e, hc r hR, tens_smul]`. Take `⟨T, m, f₀, φ₀, hSB₀, hstd₀, hsum₀⟩` from `GlobalTheory.T.adelic_schwartz_finite_pure_tensors F _ Ψ hΨ`. Establish `hfin : {v | ¬ G.M'.vac v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1}.Finite` using `Filter.eventually_cofinite.1 hvstd`. Establish `key : ∀ U : Finset (Pl F), ∀ (f : Fin m → SInf F (Fin a' × Fin (a + a'))) (φ : Fin m → ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ), (∀ i v, φ i v ∈ SB (Fin a' × Fin (a + a') → Fv F v)) → (∀ i v, v ∉ S → v ∉ U → φ i v = G.M'.vac v) → Ψ = ∑ i, pure (f i) (φ i) → ∃ (f' : Fin m …`.
+
+Introduce `U`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => exact fun f φ h1 h2 h3 => ⟨f, φ, h1, fun i v hv => h2 i v hv (Finset.notMem_empty v), h3⟩`. Consider the case `insert w U hwU ih`. Introduce `f φ h1 h2 h3`.
+
+Distinguish the cases in `hwS : w ∈ S`. Use `ih f φ h1 (fun i v hv hvU => h2 i v hv ?_) h3` and prove the remaining obligations. Rewrite using `[Finset.mem_insert]`. Introduce and unpack `(rfl | h)`. Use `exacts [hv hwS, hvU h]`.
+
+Establish `hstd : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `fun i => std_of_off G.M'.vac (φ i) hvstd (S ∪ insert w U) fun v hv => h2 i v (fun h => hv (Finset.mem_union_left _ h)) (fun h => hv (Finset.mem_union_right _ h))`. Take `⟨g, hgSB, hgE, hgsum⟩` from `GlobalTheory.T.triple_lattice_invariant_schwartz_global hP F E σ B a a' G X om om' hT w Ψ hΨ (hyp' w hwS) m f φ h1 hstd h3`. Use `choose r hr using fun i => GlobalTheory.T.triple_lattice_invariant_schwartz_local hP F E σ B a a' G X om om' hT w (g i) (hgSB i) (hgE i)`. Use `ih (fun i => r i • f i) (fun i => Function.update (φ i) w (G.M'.vac w)) (fun i v => ?_) (fun i v hv hvU => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hvw : v = w`.
+
+Substitute `hvw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hvSB _`. Rewrite using `[Function.update_of_ne hvw]`. Conclude with `h1 i v`.
+
+Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hvw]`. Use `h2 i v hv ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_insert]`. Introduce and unpack `(h | h)`. Use `exacts [hvw h, hvU h]`. Rewrite using `[hgsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hr i, pure_update_smul _ _ _ _ _ (hstd i)]`. Take `⟨f', φ', h1, h2, h3⟩` from `key (T ∪ hfin.toFinset) f₀ φ₀ hSB₀ (fun i v _ hv => by`. Rewrite using `[hstd₀ i v (fun h => hv (Finset.mem_union_left _ h))]`. Assume the negation of the conclusion as `hne`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 fun h => hne h.symm))) hsum₀`.
+
+Conclude with `⟨m, f', φ', h1, h2, h3⟩`.
+-/
 theorem factor : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (S : Finset (Pl F)) (f : SInf F (Fin a' × Fin (a + a'))) (φ : ∀ w : Pl F, (Fin a' × Fin (a + a') → Fv F w) → ℂ),

@@ -24,6 +24,11 @@ def extZero (n₀ n₁ : ℕ) : (Fin n₀ → ℕ) →+ (Fin n₁ → ℕ) where
     funext a
     by_cases ha : a.val < n₀ <;> simp [rowNu, ha]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `rowNu (r := n₁) (Pi.single s 1) a = _`. Distinguish the cases in `ha : a.val < n₀`. Simplify using `only [rowNu, ha, dite_true, Pi.single_apply, Fin.ext_iff, Fin.val_castLE]`. Establish `: a ≠ Fin.castLE h s`.
+
+Introduce `e`. Apply `ha` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `s.2`. Simplify using `[rowNu, ha, this]`.
+-/
 theorem extZero_single {n₀ n₁ : ℕ} (h : n₀ ≤ n₁) (s : Fin n₀) :
     extZero n₀ n₁ (Pi.single s 1) = Pi.single (Fin.castLE h s) 1 := by
   funext a
@@ -37,6 +42,25 @@ theorem extZero_single {n₀ n₁ : ℕ} (h : n₀ ≤ n₁) (s : Fin n₀) :
       exact s.2
     simp [rowNu, ha, this]
 
+/- English proof (translation)
+Rewrite `hF`, the goal using `[dualWeylPoint]`. Prove the components needed by the constructor for the conclusion. Use `isWH_algHom (subst h x) (fun v => extZero n₀ n₁ (colW n₀ n₀ v)) (colW n₁ n₁) ?_ ?_` and prove the remaining obligations. Introduce `v`. Rewrite using `[subst, aeval_X, colW, extZero_single h]`.
+
+Conclude with `IsWeightedHomogeneous.sum _ _ _ fun b _ => (isWeightedHomogeneous_X ℂ (colW n₁ n₁) (b, Fin.castLE h v.2)).C_mul _`. Introduce `m hm`. Establish `h1` using `hF.1 hm`. Express the relevant statement in the definitionally equal form `_ = extZero n₀ n₁ ν`. Rewrite using `[← h1, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, map_sum]`.
+
+Simplify using `only [map_nsmul]`. Introduce `l j hlj c`. Distinguish the cases in `hj : j.val < n₀`. Establish `hl : l.val < n₀` using `lt_trans hlj hj`. Establish `e : (colAdd ℂ l j c).comp (subst h x) = (subst h x).comp (colAdd ℂ (⟨l.val, hl⟩ : Fin n₀) ⟨j.val, hj⟩ c)`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v.2 = ⟨j.val, hj⟩`. Establish `h2 : Fin.castLE h v.2 = j` using `by rw [hv]; rfl`. Establish `h3 : Fin.castLE h (⟨l.val, hl⟩ : Fin n₀) = l` using `rfl`.
+
+Simplify using `only [AlgHom.comp_apply, subst, colAdd, aeval_X, map_sum, map_mul, map_add, algHom_C, if_pos hv, h2, h3, if_true, algebraMap_eq, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun b _ => rfl) (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Fin.castLE h v.2 ≠ j`. Introduce `e`.
+
+Establish `e' : v.2.val = j.val` using `congrArg (fun z : Fin n₁ => z.val) e`. Conclude with `hv (Fin.ext e')`. Simplify using `only [AlgHom.comp_apply, subst, colAdd, aeval_X, map_sum, map_mul, algHom_C, if_neg hv, if_neg h2, algebraMap_eq]`. Use `DFunLike.congr_fun e F` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, AlgHom.comp_apply, hF.2 _ _ (by exact hlj) c]`.
+
+Conclude with `this`. Establish `e : (colAdd ℂ l j c).comp (subst h x) = subst h x`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Establish `h2 : Fin.castLE h v.2 ≠ j`.
+
+Introduce `e`. Apply `hj` to reduce the goal to its premises. Rewrite using `[← e]`. Conclude with `v.2.2`. Simplify using `only [AlgHom.comp_apply, subst, colAdd, aeval_X, map_sum, map_mul, algHom_C, if_neg h2, algebraMap_eq]`.
+
+Conclude with `DFunLike.congr_fun e F`.
+-/
 theorem subst_mem {n₀ n₁ : ℕ} (h : n₀ ≤ n₁) (x : Matrix (Fin n₁) (Fin n₀) ℂ) (ν : Fin n₀ → ℕ)
     {F : MvPolynomial (Fin n₀ × Fin n₀) ℂ} (hF : F ∈ dualWeyl ℂ n₀ n₀ ν) :
     subst h x F ∈ dualWeyl ℂ n₁ n₁ (rowNu (r := n₁) ν) := by

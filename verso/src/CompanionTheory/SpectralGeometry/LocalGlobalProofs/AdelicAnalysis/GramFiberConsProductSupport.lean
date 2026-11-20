@@ -12,11 +12,19 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+-/
 theorem one_tmul_algebraMap (t : F) :
     (1 : R) ⊗ₜ[F] (algebraMap F E t) = (algebraMap F R t) ⊗ₜ[F] (1 : E) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul,
     TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Establish `hfin : Module.Finite F E` using `Module.finite_of_finrank_eq_succ hfr`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hfr`. Establish `htr : Algebra.trace R (R ⊗[F] E) (x ⊗ₜ[F] (1 : E)) = 2 * x`. Establish `h1` using `Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R b) x`. Rewrite `h1` using `[Algebra.TensorProduct.algebraMap_apply]`.
+
+Simplify `h1` using `[two_mul, two_nsmul]`. Establish `h2 : algebraMap F R (1 / 2) * 2 = 1`. Combine the equalities or inequalities in the displayed calculation. Unfold `s0`. Rewrite using `[h, htr, ← mul_assoc, h2, one_mul]`.
+-/
 theorem corner_half_trace_eq_of_pure_tensor [CharZero F] (hfr : Module.finrank F E = 2) {n : ℕ}
     (S : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) {x : R}
     (h : S 0 0 = x ⊗ₜ[F] (1 : E)) : s0 R S = x := by
@@ -33,6 +41,9 @@ theorem corner_half_trace_eq_of_pure_tensor [CharZero F] (hfr : Module.finrank F
   unfold s0
   rw [h, htr, ← mul_assoc, h2, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.TensorProduct.one_def]`. Both sides reduce to the same expression.
+-/
 theorem vec_one_zero {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) :
     vec ((1 : R) ⊗ₜ[F] (1 : E)) (0 : Fin n → R ⊗[F] E) X = consTup X := by
   rw [← Algebra.TensorProduct.one_def]
@@ -45,17 +56,26 @@ section Main
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) (t : F) (a : R → Rˣ) {n : ℕ}
 
+/- English proof (translation)
+Apply `corner_half_trace_eq_of_pure_tensor R hfr` to reduce the goal to its premises. Rewrite using `[← one_tmul_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem corner_half_trace_block_one [CharZero F] (hfr : Module.finrank F E = 2) (T : Matrix (Fin n) (Fin n) E) :
     s0 R ((blockOne (algebraMap F E t) T).map (inclR (F := F) R)) = algebraMap F R t := by
   apply corner_half_trace_eq_of_pure_tensor R hfr
   rw [← one_tmul_algebraMap]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[cvec, blockOne]`.
+-/
 theorem cvec_block (T : Matrix (Fin n) (Fin n) E) :
     cvec R t a ((blockOne (algebraMap F E t) T).map (inclR R)) = 0 := by
   funext j
   simp [cvec, blockOne]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hc` using `cvec_block R t a T`. Simplify using `only [schurM, hc, Pi.zero_apply, map_zero, zero_mul, sub_zero]`. Simplify using `[blockOne]`.
+-/
 theorem schurM_block (T : Matrix (Fin n) (Fin n) E) :
     schurM R σ t a ((blockOne (algebraMap F E t) T).map (inclR R)) = T.map (inclR R) := by
   ext i j
@@ -63,6 +83,11 @@ theorem schurM_block (T : Matrix (Fin n) (Fin n) E) :
   simp only [schurM, hc, Pi.zero_apply, map_zero, zero_mul, sub_zero]
   simp [blockOne]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hm : schurM R σ t a ((hermOf R σ _ hT' : HermR R σ (n + 1)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) ∈ HermR R σ n` using `by show schurM R σ t a ((blockOne (algebraMap F E t) T).map (inclR R)) ∈ HermR R σ n`. Rewrite using `[schurM_block]`. Conclude with `map_mem_HermR R σ T hT`. Rewrite using `[schur_coe R σ t a _ hm]`.
+
+Conclude with `schurM_block R σ t a T`.
+-/
 theorem schur_block (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b)
     (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b) :
     schur R σ t a (hermOf R σ _ hT') = hermOf R σ T hT := by
@@ -75,6 +100,9 @@ theorem schur_block (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T
   rw [schur_coe R σ t a _ hm]
   exact schurM_block R σ t a T
 
+/- English proof (translation)
+Establish `h` using `(IsUnit.mk0 _ hdet).map (inclR (F := F) R)`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`.
+-/
 theorem isUnit_det_map (T : Matrix (Fin n) (Fin n) E) (hdet : T.det ≠ 0) :
     IsUnit (T.map (inclR (F := F) R)).det := by
   have h := (IsUnit.mk0 _ hdet).map (inclR (F := F) R)
@@ -83,6 +111,13 @@ theorem isUnit_det_map (T : Matrix (Fin n) (Fin n) E) (hdet : T.det ≠ 0) :
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D T hT hdet hT'`. Establish `hfr : Module.finrank F E = 2` using `D.hCM.2.2.1`. Establish `hs0 : s0 R ((hermOf R σ _ hT' : HermR R σ (n + 1)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = algebraMap F R t` using `corner_half_trace_block_one R t hfr T`. Establish `hsch` using `schur_block R σ t a T hT hT'`. Establish `hmem : hermOf R σ _ hT' ∈ (Bset R σ t a B₀ : Set (HermR R σ (n + 1)))`.
+
+Use `⟨by rw [hs0]; exact D.htB, ?_⟩` and prove the remaining obligations. Rewrite using `[hsch]`. Conclude with `isUnit_det_map R T hdet`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hc : cvec R t a ((hermOf R σ _ hT' : HermR R σ (n + 1)) : Matrix (Fin (n + 1)) (Fin (n + 1)) (R ⊗[F] E)) = 0` using `cvec_block R t a T`.
+
+Unfold `fibS`. Rewrite using `[Set.indicator_of_mem hmem]`. Simplify using `only [hs0, D.ha1, hsch, hc, D.hκ1, one_mul, Units.val_one, vec_one_zero]`.
+-/
 theorem family_at_block : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R) (m₁ : HermR R σ 1 → Measure (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (m' : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)) (s : (Fin 1 → Fin (M + 1) → R ⊗[F] E) → HA R σ (blockOne (algebraMap F E t) J)) (B₀ : Set R) (a : R → Rˣ) (κ₁ cm : Rˣ → ℝ≥0), StageData σ J t n b lam m₁ m' s B₀ a κ₁ cm → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), hermOf R σ _ hT' ∈ (Bset R σ t a B₀ : Set (HermR R σ (n + 1))) ∧ fibS σ J t m₁ m' s B₀ a κ₁ cm (hermOf R σ _ hT') = cm 1 ^ n • ((m₁ (hermScal R σ (algebraMap F R t))).prod (m' (hermOf R σ T hT))).map (fun p => actW R σ _ (s p.1) (consTup p.2)) := by
   intro F E _ _ _ _ _ σ M J t n R _ _ _ _ _ d b lam m₁ m' s B₀ a κ₁ cm D T hT hdet hT'
   have hfr : Module.finrank F E = 2 := D.hCM.2.2.1

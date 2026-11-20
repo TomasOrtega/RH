@@ -15,6 +15,19 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪`. Establish `hj : (TFK (R` using `V) (FractionRing V)).hom = 𝟙 _ := by show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`. Establish `gp` using `𝔪.cart`.
+
+Establish `hsq : ∀ a, (spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) ≫ X₁.ρ.P.A.hom = (TFK (R` using `V) (FractionRing V)).hom ≫ spMap 𝔪.yK := by`. Introduce `a`. Rewrite using `[Category.assoc, Over.w (X₁.ρ.pt a), hj]`. Simplify using the standard rewrite rules. Set `x : X₁.S.Gam → (TFK (R` to `V) (FractionRing V) ⟶ 𝔪.A.A) := fun a => Over.homMk (gp.1.lift _ _ (hsq a)) (gp.1.lift_snd _ _ _)`.
+
+Establish `hx : ∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left` using `fun a => gp.1.lift_fst _ _ _`. Take `⟨rig, fr, hrig, -, hfr⟩` from `GlobalTheory.exists_frames_move_through (T := baseOver (Sp X₁.S.R)) (T' := TFK (R := V) (FractionRing V)) (h := spMap 𝔪.yK) gp 𝔪.wl_gen X₁.ρ.rig_gen hx X₁.ρ.fr_tors`. Establish `hτ : (spMap 𝔪.yK : (TFK (R` using `V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left) ≫ (baseOver (Sp X₁.S.R)).hom = (TFK (R := V) (FractionRing V)).hom ≫ spMap 𝔪.yK := by`. Rewrite using `[hj]`. Simplify using the standard rewrite rules.
+
+Take `⟨th, hth⟩` from `GlobalTheory.ThetaPtMove.exists_secRel (T := TFK (R := V) (FractionRing V)) (T₀ := baseOver (Sp X₁.S.R)) (τ := spMap 𝔪.yK) gp hτ (w := 𝔪.wl) 𝔪.wl_gen X₁.ρ.P.isLB 𝔪.A.isLB (a := 1) X₁.ρ.th₁`. Use `⟨x, fr, th, rig, hx, fun a => ⟨(hfr a).1.2.1, fun z J J' hJ hJ' => ?_⟩, fun a => ?_, hrig, fun a => (hfr a).1⟩` and prove the remaining obligations. Establish `e` using `(hfr a).2 _ (𝟙 _) z J J' hJ hJ'`. Rewrite `e` using `[Fin.prod_univ_one, zpow_one, Category.id_comp, Category.id_comp]`. Conclude with `e.symm`.
+
+Establish `hv` using `GlobalTheory.ThetaPtMove.isValueAt_move (T := TFK (R := V) (FractionRing V)) (T₀ := baseOver (Sp X₁.S.R)) (τ := spMap 𝔪.yK) gp hτ (w := 𝔪.wl) X₁.ρ.P.isLB 𝔪.A.isLB (a := 1) (x := x a) (x₀ := X₁.ρ.pt a) (hx a).symm (ρ₀ := X₁.ρ.fr a) (ρ := fr a) (hfr a).2 (s₀ := X₁.ρ.th₁) (s := th) …`. Introduce `z J hJ`. Establish `e` using `GlobalTheory.FrameMove.sval_valueAt hv (𝟙 _) hJ`. Rewrite `e` using `[Category.id_comp]`. Use `e.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FrameMove.val_powFrame, Nat.cast_one, zpow_one]`. Use `congr 1`. Conclude with `(gs_pull (𝟙 _) (spMap 𝔪.yK) z ⊤ trivial _).trans ((congrArg (fun q => gs q z ⊤ _) (Category.id_comp _)).trans (GlobalTheory.FrameMove.gs_spMap 𝔪.yK z _))`.
+-/
 theorem exists_points_frames_theta : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), ∃ (x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)) (fr : ∀ a, FrAt (x a)) (th : SecA 𝔪.A (FractionRing V) 1) (ρ : LB.Gen (𝔪.A.L.pull (eSec 𝔪.A.A))), (∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) ∧ (∀ a, (fr a).IsGen ∧ ∀ z J J', Good X₁.ρ.P.L z J → Good 𝔪.A.L z J' → Geo.Tor.gw 𝔪.wl (x a).left z (J ((x a).left ≫ 𝔪.φ)) (J' (x a).left) * val (fr a) (𝟙 _) z J' = val (X₁.ρ.fr a) (show (TFK (R := V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔪.yK) z J) ∧ (∀ a, ValAt th (x a) (fr a) (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩)) ∧ ρ.IsGen ∧ ∀ a, IsTorsFrame 𝔪.A ρ (X₁.S.r * X₁.S.N) (x a) (fr a) := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪
   have hj : (TFK (R := V) (FractionRing V)).hom = 𝟙 _ := by

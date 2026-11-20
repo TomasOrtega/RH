@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.GE.PSupp
 def badSet {X : Scheme.{0}} {P : X.Modules} (S : Subobject P) : Set X :=
   {x | ∀ V : X.affineOpens, secs S (V : X.Opens) = Set.univ → x ∉ (V : X.Opens)}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [badSet, Set.mem_compl_iff, Set.mem_ofPred_eq, not_forall, exists_prop, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨V, hV, hx⟩`. Conclude with `⟨V, hV, not_not.mp hx⟩`.
+
+Introduce and unpack `⟨V, hV, hx⟩`. Conclude with `⟨V, hV, not_not.mpr hx⟩`.
+-/
 lemma badSet_compl_eq {X : Scheme.{0}} {P : X.Modules} (S : Subobject P) :
     (badSet S)ᶜ = ⋃ V ∈ {V : X.affineOpens | secs S (V : X.Opens) = Set.univ}, ((V : X.Opens) : Set X) := by
   ext x
@@ -23,10 +28,18 @@ lemma badSet_compl_eq {X : Scheme.{0}} {P : X.Modules} (S : Subobject P) :
   · rintro ⟨V, hV, hx⟩
     exact ⟨V, hV, not_not.mpr hx⟩
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff, badSet_compl_eq]`. Conclude with `isOpen_biUnion fun V _ => (V : X.Opens).isOpen`.
+-/
 lemma isClosed_badSet {X : Scheme.{0}} {P : X.Modules} (S : Subobject P) : IsClosed (badSet S) := by
   rw [← isOpen_compl_iff, badSet_compl_eq]
   exact isOpen_biUnion fun V _ => (V : X.Opens).isOpen
 
+/- English proof (translation)
+Establish `hZ` using `GlobalTheory.CompanionTheory.ClosedFibre.closed_missing_closedFibre_empty A I hI (Over.mk (X ↘ Spec (.of A))) (inferInstanceAs (UniversallyClosed (X ↘ Spec (.of A)))) (C ∩ (O : Set X)ᶜ) (hC.inter O.isOpen.isClosed_compl) (by`. Introduce and unpack `x ⟨hxC, hxO⟩ hIx`. Conclude with `hxO (h x hxC hIx))`. Introduce `x hx`. Assume the negation of the conclusion as `hxO`.
+
+Establish `hx' : x ∈ C ∩ (O : Set X)ᶜ` using `⟨hx, hxO⟩`. Rewrite `hx'` using `[hZ]`. Conclude with `hx'`.
+-/
 theorem subset_of_closedFibre {A : Type} [CommRing A] (I : Ideal A) (hI : IsAdicComplete I A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (O : X.Opens) (C : Set X)
     (hC : IsClosed C) (h : ∀ x ∈ C, I ≤ ((X ↘ Spec (.of A)).base x).asIdeal → x ∈ (O : Set X)) :

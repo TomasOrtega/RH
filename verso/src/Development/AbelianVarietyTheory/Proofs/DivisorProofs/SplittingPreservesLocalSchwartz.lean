@@ -17,6 +17,13 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.LocSplitOp
 
+/- English proof (translation)
+Introduce `F _ _ W _ _ Bf κ _ dd ψ hψ G _ act om hsp v p hat hex`. Use `choose! S hS using hex`. Use `⟨S, hS, ?_⟩` and prove the remaining obligations. Introduce `u hu Φ hΦ`. Establish `hc : Continuous ψ` using `hψ.1`.
+
+Establish `hw` using `GlobalTheory.SchrSB.schr_mem_SB ψ hc v (GlobalTheory.LatVac.locCo dd v u) Φ hΦ`. Establish `restS : ∀ r, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) Φ r → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) (S Φ) r` using `fun r hr => ⟨hr.1, by rw [← (hS Φ hΦ).2 r hr]; exact hsp.pres p _ hr.2⟩`. Use `GlobalTheory.TensUniq.eq_of_tens_eq v Φ _ _ hΦ fun r hr => ?_` and prove the remaining obligations. Establish `hb1` using `GlobalTheory.VacBridge.rho_acts_locCo dd ψ v u hu Φ r hr`. Establish `hRw : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) (schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo dd v u) Φ) r` using `⟨hr.1, by rw [← hb1]; exact GlobalTheory.SchrKeepsSchA.schr_mem_schA F ψ hψ κ _ _ hr.2⟩`.
+
+Rewrite using `[← (hS _ hw).2 r hRw, ← hb1, hsp.impl _ _ _ hr.2, (hS Φ hΦ).2 r hr, GlobalTheory.VacBridge.rho_acts_locCo dd ψ v _ (hat u hu) (S Φ) r (restS r hr)]`.
+-/
 theorem exists_locOp : ∀ {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W] {Bf : W → W → AF F} {κ : Type} [Fintype κ]
     (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ {G : Type} [Group G] (act : G → W → W) (om : G →* Module.End ℂ ((κ → AF F) → ℂ)),

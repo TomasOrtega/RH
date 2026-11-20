@@ -177,11 +177,20 @@ structure LinDat {p : ℕ} [Fact p.Prime] {g d r m : ℕ} {C : Type} [Field C] {
   fromB : ∀ i, ∃ k, s k = Bᵀ *ᵥ (fun l => H.Ht l i)
   fromT : ∀ i, ∃ k, Aᵀ *ᵥ s k = Pi.single i 1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isEigBasis_iff {O OE : Type} [CommRing O] [CommRing OE] {d s : ℕ} (act : OE → Fin d → PS O 1 d)
     (τ : OE →+* O) (w : Fin s → Fin d → O) : IsEigBasis act τ w ↔ EigB (fun a => linPart (act a)) τ w := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lin_eq_linPart {O : Type} [CommRing O] {d : ℕ} (φ : Fin d → PS O 1 d) : lin φ = linPart φ := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, 1, 0, by simp, Subsingleton.elim _ _, by simp⟩`.
+-/
 theorem splitEx_one {R : Type} [CommRing R] (d : ℕ) :
     SplitEx (1 : Matrix (Fin d) (Fin d) R) (0 : Matrix (Fin 0) (Fin d) R) :=
   ⟨by simp, 1, 0, by simp, Subsingleton.elim _ _, by simp⟩

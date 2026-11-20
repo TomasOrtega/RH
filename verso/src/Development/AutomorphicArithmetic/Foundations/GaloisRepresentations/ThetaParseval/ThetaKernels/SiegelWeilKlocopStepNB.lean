@@ -17,20 +17,42 @@ namespace PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := piInf (d.B.emb w'))`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR {p q r : Type} [Fintype q] (w' : InfinitePlace F) (A : Matrix p q (AE F E)) (B : Matrix q r (AE F E)) :
     d.cw w' (A * B) = d.cw w' A * d.cw w' B :=
   Matrix.map_mul (f := piInf (d.B.emb w'))
+/- English proof (translation)
+Establish `e : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X`. Use extensionality with `i j`. Conclude with `star_star _`. Rewrite using `[e, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_loc (X : Mx F E d.m d.n) : d.cw w X = (R.fr w).1 * (Matrix.of (R.loc w X)).map star := by
   have e : (Matrix.of (R.loc w X)).map star = ((R.fr w)⁻¹).1 * d.cw w X := by
     ext i j
     exact star_star _
   rw [e, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
+/- English proof (translation)
+Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR, _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_transpose_k d, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d, _root_.PositivityTheory.SiegelWeilFormula.Pl …`. Conclude with `gram_loc _ _ _ _ hζ0 (R.hfr w) _`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_gram (X : Mx F E d.m d.n) :
     d.cw w (d.gram X X) = (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X)) := by
   have hζ0 : R.ζ ≠ 0 := Krd.zeta_ne R.hζ
   simp only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.gram]
   rw [_root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR, _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_transpose_k d, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_incM_k d, _root_.PositivityTheory.SiegelWeilFormula.Place.cw_cA_k d, R.cw_loc w X]
   exact gram_loc _ _ _ _ hζ0 (R.hfr w) _
+/- English proof (translation)
+Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Use `set z : AE F E := (-(⅟(2 : AF F))) • (β * d.gram X X).trace with hz`. Establish `e1 : -(⅟(2 : AF F) * d.tt (β * d.gram X X)) = Algebra.trace (AF F) (AE F E) z`. Rewrite using `[hz, LinearMap.map_smul, smul_eq_mul, neg_mul]`. Both sides reduce to the same expression.
+
+Establish `hpi : ∀ w', piInf (d.B.emb w') z = -(1 / 2) * (d.cw w' β * d.cw w' (d.gram X X)).trace`. Introduce `w'`. Rewrite using `[hz, Algebra.smul_def, map_mul, map_neg, map_neg, piInf_half, ← _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR]`. Use `congr 1`. Simplify using `only [Matrix.trace, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, Matrix.map_apply, Matrix.diag, map_sum]`.
+
+Establish `hf : finOne F • z = 0`. Rewrite using `[hz, smul_comm, ← Matrix.trace_smul, ← Matrix.smul_mul, hβf, Matrix.zero_mul, Matrix.trace_zero, smul_zero]`. Establish `ho : ∀ u, u ≠ w → piInf (d.B.emb u) z = 0`. Introduce `u hu`. Rewrite using `[hpi, hβo u hu, Matrix.zero_mul, Matrix.trace_zero, mul_zero]`.
+
+Rewrite using `[e1, Place.psi_trace_at d.std d.cm d.B.emb w z hf ho, hpi, hβw, R.cw_gram w X]`. Use `set T := (b * ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X))).trace with hT`. Establish `hreal : ((T.re : ℝ) : ℂ) = T` using `trace_herm_real _ _ hb (by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose])`. Establish `e2 : (R.ζ • b * (R.ζ⁻¹ * ((R.sg w : ℤ) : ℂ)) • ((Matrix.of (R.loc w X))ᴴ * Matrix.of (R.loc w X))).trace = ((R.sg w : ℤ) : ℂ) * T`. Rewrite using `[smul_mul_smul_comm, Matrix.trace_smul, hT, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hζ0, one_mul]`.
+
+Rewrite using `[e2]`. Rewrite using `[← hreal]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.ofReal_re, Complex.ofReal_im, Complex.intCast_re, Complex.intCast_im, mul_zero, sub_zero, Complex.div_ofNat_re, Complex.one_re, Complex.neg_im, Complex.div_ofNat_im, Complex.one_im, zero_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.psi_nU (b : Matrix (Fin d.n) (Fin d.n) ℂ) (hb : bᴴ = b) (β : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (hβw : d.cw w β = R.ζ • b) (hβo : ∀ w', w' ≠ w → d.cw w' β = 0) (hβf : finOne F • β = 0) (X : Mx F E d.m d.n) :
     d.B.ψ (-(⅟(2 : AF F) * d.tt (β * d.gram X X))) = Complex.exp (2 * Real.pi * Complex.I * ((R.sg w : ℤ) : ℂ) *

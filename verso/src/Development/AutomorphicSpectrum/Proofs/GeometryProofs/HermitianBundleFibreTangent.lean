@@ -13,6 +13,13 @@ namespace GlobalTheory.CompanionTheory.Ar.HodgeBC
 
 open GroundTheory.Heights₂.Heights in
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `w -`. Express the relevant statement in the definitionally equal form `ComplexAt e ⊗[𝓞 L] V at w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `tmul c y`. Establish `h : (c ⊗ₜ[𝓞 L] y : ComplexAt e ⊗[𝓞 L] V) = c • ((1 : ComplexAt e) ⊗ₜ[𝓞 L] y)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)`.
+
+Consider the case `add a b ha hb => exact Submodule.add_mem _ ha hb`.
+-/
 theorem span_one_tmul {L : Type} [Field L] (e : L →+* ℂ) (V : Type) [AddCommGroup V] [Module (𝓞 L) V] :
     Submodule.span ℂ {w : Fibre e V | ∃ y : V, w = (1 : ComplexAt e) ⊗ₜ[𝓞 L] y} = ⊤ := by
   rw [eq_top_iff]
@@ -27,6 +34,9 @@ theorem span_one_tmul {L : Type} [Field L] (e : L →+* ℂ) (V : Type) [AddComm
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)
   | add a b ha hb => exact Submodule.add_mem _ ha hb
 
+/- English proof (translation)
+Establish `h` using `LieSigma.comp_one_over (M := G) (Over.homMk A.hom (by simp) : A ⟶ Over.mk (𝟙 S))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem isGrpPullback_one_left {S : Scheme.{0}} {G : Over S} [GrpObj G] (A : Over S) :
     (1 : A ⟶ G).left = A.hom ≫ (1 : Over.mk (𝟙 S) ⟶ G).left := by
   have h := LieSigma.comp_one_over (M := G) (Over.homMk A.hom (by simp) : A ⟶ Over.mk (𝟙 S))
@@ -34,6 +44,13 @@ private theorem isGrpPullback_one_left {S : Scheme.{0}} {G : Over S} [GrpObj G] 
       = ((Over.homMk A.hom (by simp) : A ⟶ Over.mk (𝟙 S)) ≫ (1 : Over.mk (𝟙 S) ⟶ G)).left := by rw [h]
     _ = A.hom ≫ (1 : Over.mk (𝟙 S) ⟶ G).left := by rw [Over.comp_left]; rfl
 
+/- English proof (translation)
+Establish `hε : (1 : Over.mk (𝟙 X') ⟶ G').left ≫ G'.hom = 𝟙 X'` using `Over.w (1 : Over.mk (𝟙 X') ⟶ G')`. Establish `hw : ((1 : Over.mk (𝟙 X') ⟶ G').left ≫ φ) ≫ G.hom = (Over.mk ((Over.mk (𝟙 X')).hom ≫ f)).hom`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, hε]`. Simplify using the standard rewrite rules. Set `x₀ : Over.mk ((Over.mk (𝟙 X')).hom ≫ f) ⟶ G` to `Over.homMk ((1 : Over.mk (𝟙 X') ⟶ G').left ≫ φ) hw`.
+
+Establish `hmul` using `hφ.2 (Over.mk (𝟙 X')) 1 1 x₀ x₀ rfl rfl`. Establish `hx : x₀ * x₀ = x₀ * 1`. Rewrite using `[_root_.mul_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hmul, _root_.mul_one]`.
+
+Both sides reduce to the same expression. Establish `h1 : x₀ = 1` using `_root_.mul_left_cancel hx`. Establish `h2 : x₀.left = (1 : Over.mk ((Over.mk (𝟙 X')).hom ≫ f) ⟶ G).left` using `by rw [h1]`. Rewrite `h2` using `[isGrpPullback_one_left]`. Simplify `h2` using `[x₀]`.
+-/
 private theorem one_left_comp_eq_comp_one_of_isGrpPullback {X X' : Scheme.{0}} (G' : Over X') [GrpObj G'] (G : Over X) [GrpObj G]
     (f : X' ⟶ X) (φ : G'.left ⟶ G.left) (hφ : IsGrpPullback G' G f φ) :
     (1 : Over.mk (𝟙 X') ⟶ G').left ≫ φ = f ≫ (1 : Over.mk (𝟙 X) ⟶ G).left := by
@@ -53,6 +70,11 @@ private theorem one_left_comp_eq_comp_one_of_isGrpPullback {X X' : Scheme.{0}} (
   rw [isGrpPullback_one_left] at h2
   simpa [x₀] using h2
 
+/- English proof (translation)
+Establish `hsq : m.φ ≫ t.G.hom = t'.G.hom ≫ f` using `m.cart.1.w`. Use `⟨Over.homMk (v.left ≫ m.φ) ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hsq, ← Category.assoc, Over.w v]`. Simplify using `[epsAt]`. Establish `hv' : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ v.left = (1 : Over.mk z ⟶ t'.G).left` using `hv show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ (v.left ≫ m.φ) = (1 : Over.mk (z ≫ f) ⟶ t.G).left`.
+
+Establish `h1 : (1 : Over.mk z ⟶ t'.G).left = (Over.mk z).hom ≫ (1 : Over.mk (𝟙 X') ⟶ t'.G).left` using `isGrpPullback_one_left _`. Establish `h2 : (1 : Over.mk (z ≫ f) ⟶ t.G).left = (Over.mk (z ≫ f)).hom ≫ (1 : Over.mk (𝟙 X) ⟶ t.G).left` using `isGrpPullback_one_left _`. Rewrite using `[h2, ← Category.assoc, hv', h1, Category.assoc, one_left_comp_eq_comp_one_of_isGrpPullback t'.G t.G f m.φ m.cart]`. Simplify using `[epsAt]`.
+-/
 private theorem exists_tanAt_comp_of_sabMap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme.{0}}
     {t : SAB H X} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f) (z : Sp ℂ ⟶ X')
     (v : epsAt z ⟶ t'.G) (hv : IsTanAt t'.G z v) :
@@ -74,6 +96,15 @@ private theorem exists_tanAt_comp_of_sabMap {E : Type} [Field E] [NumberField E]
 
 open LieMove in
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Establish `hall : ∀ a b : V, HodgeIP t₂.G t₂.PP.L ((z ≫ f₀) ≫ f₁) (Mp.pt a) (Mp.pt b) (core.inner a b)` using `GlobalTheory.T.hodge_inner_product_on_span E H X₁ X₂ t₁ t₂ f₁ m₁ (z ≫ f₀) V Mp core W h0 hs hW`. Establish `key : ∀ x, ∃ w₁ : epsAt (z ≫ f₀) ⟶ t₁.G, w₁.left = (Tn x).left ≫ m₀.φ ∧ ∃ a : V, (Mp.pt a).left = w₁.left ≫ m₁.φ`. Introduce `x`. Take `⟨w₁, hw₁, ht₁⟩` from `exists_tanAt_comp_of_sabMap m₀ z (Tn x) (hT x)`.
+
+Take `⟨w₂, hw₂, ht₂⟩` from `exists_tanAt_comp_of_sabMap m₁ (z ≫ f₀) w₁ ht₁`. Take `⟨a, ha⟩` from `Mp.onto w₂ ht₂`. Conclude with `⟨w₁, hw₁, a, by rw [ha, hw₂]⟩`. Use `choose w₁ hw₁ D hD using key`. Use `⟨D, fun x x' => ?_, fun x a h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.T.hodge_inner_product_map_iff E H X₁ t₁ X₀ t₀ f₀ m₀ z (Tn x) (Tn x') (w₁ x) (w₁ x') _ (hw₁ x) (hw₁ x'), GlobalTheory.T.hodge_inner_product_map_iff E H X₂ t₂ X₁ t₁ f₁ m₁ (z ≫ f₀) (w₁ x) (w₁ x') (Mp.pt (D x)) (Mp.pt (D x')) _ (hD x) (hD x')]`. Conclude with `hall _ _`. Apply `Mp.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hD x, hw₁ x]`.
+
+Conclude with `(Category.assoc _ _ _).trans h`.
+-/
 theorem hodge_along {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X₀ X₁ X₂ : Scheme.{0}}
     {t₀ : SAB H X₀} {t₁ : SAB H X₁} {t₂ : SAB H X₂} {f₀ : X₀ ⟶ X₁} {f₁ : X₁ ⟶ X₂} (m₀ : SABMap t₀ t₁ f₀)
     (m₁ : SABMap t₁ t₂ f₁) (z : Sp ℂ ⟶ X₀) (p : Sp ℂ ⟶ X₂) (hp : p = (z ≫ f₀) ≫ f₁)
@@ -103,6 +134,9 @@ theorem hodge_along {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     rw [hD x, hw₁ x]
     exact (Category.assoc _ _ _).trans h
 
+/- English proof (translation)
+Establish `h' : v.left ≫ 𝟙 G.left = spMap (dualMap c) ≫ (M.pt a).left` using `h`. Simplify using `using h'`.
+-/
 theorem lifts_left {S : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {V : Type} [AddCommGroup V] [Module R V] (M : LieModel G x V) (c : R →+* R') (a : V)
     (v : epsAt (spMap c ≫ x) ⟶ G) (h : M.Lifts c (𝟙 G.left) a v) :
@@ -112,6 +146,15 @@ theorem lifts_left {S : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] {G 
 
 open GroundTheory.Heights₂.Heights in
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ t' tB tC e m' mB B MB hF V' Tn hT`. Use `haveI : Smooth t'.G.hom := @ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian.smooth _ _ _ t'.semi`. Take `⟨Mσ, hMσ⟩` from `LieSigma.lieModel_fibre (Sp (𝓞 L)) t'.G L (𝟙 _) B.carrier MB e`. Establish `hp : spMap (e.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L)) = (𝟙 (Sp ℂ) ≫ spMap e) ≫ spMap (algebraMap (𝓞 L) L)`. Simplify using `only [Category.comp_id, Category.id_comp]`.
+
+Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨D, hD1, hD2⟩` from `hodge_along mB m' (𝟙 _) _ hp Mσ (B.metric.form e) {w | ∃ y : B.carrier, w = (1 : ComplexAt e) ⊗ₜ[𝓞 L] y} ⟨0, by simp⟩ (span_one_tmul e B.carrier) (by`. Introduce and unpack `a ⟨y, rfl⟩ b ⟨y', rfl⟩`. Conclude with `hF e y y' _ _ (hMσ y) (hMσ y'))`.
+
+Use `Tn hT`. Use `⟨fun x x' => (B.metric.form e).inner (D x) (D x'), hD1, ?_⟩` and prove the remaining obligations. Introduce `x x' y y' hx hx'`. Establish `e1 : D x = (1 : ComplexAt e) ⊗ₜ[𝓞 L] y` using `hD2 x _ (hx.trans (lifts_left MB _ _ _ (hMσ y)).symm)`. Establish `e2 : D x' = (1 : ComplexAt e) ⊗ₜ[𝓞 L] y'` using `hD2 x' _ (hx'.trans (lifts_left MB _ _ _ (hMσ y')).symm)`.
+
+Simplify using `only [e1, e2]`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t' : SAB H (Sp (𝓞 L))) (tB : SAB H (Sp L)) (tC : SAB H (Sp ℂ)) (e : L →+* ℂ) (m' : SABMap tB t' (spMap (algebraMap (𝓞 L) L))) (mB : SABMap tC tB (spMap e)) (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel t'.G (𝟙 _) B.carrier), IsFibre (HodgeIP t'.G t'.PP.L) (𝟙 _) B MB → ∀ (V' : Type) (Tn : V' → (epsAt (𝟙 (Sp ℂ)) ⟶ tC.G)), (∀ x, IsTanAt tC.G (𝟙 _) (Tn x)) → ∃ hb : V' → V' → ℂ, (∀ x x', HodgeIP tC.G tC.PP.L (𝟙 _) (Tn x) (Tn x') (hb x x')) ∧ ∀ (x x' : V') (y y' : B.carrier), (Tn x).left ≫ mB.φ ≫ m'.φ = spMap (dualMap (e.comp (algebraMap (𝓞 L) L))) ≫ (MB.pt y).left → (Tn x').left ≫ mB.φ ≫ m'.φ = spMap (dualMap (e.comp (algebraMap (𝓞 L) L))) ≫ (MB.pt y').left → hb x x' = (B.metric.form e).inner ((1 : GroundTheory.Heights₂.Heights.ComplexAt e) ⊗ₜ[𝓞 L] y) ((1 : GroundTheory.Heights₂.Heights.ComplexAt e) ⊗ₜ[𝓞 L] y') := by
   intro E _ _ _ H L _ _ t' tB tC e m' mB B MB hF V' Tn hT
   haveI : Smooth t'.G.hom := @ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian.smooth _ _ _ t'.semi

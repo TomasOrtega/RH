@@ -12,6 +12,9 @@ open scoped Classical
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DenomTrace.trace_int_of_psi_eq_one | exact GlobalTheory.DenomTrace.trace_int_of_psi_eq_one | (intros; apply GlobalTheory.DenomTrace.trace_int_of_psi_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.standard_character_kernel_integral_trace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (t : AF F) (a : F) (ht : evI F t = 0)
     (hv : ∀ v, evFin F v t = algebraMap F (Fv F v) a) (h1 : ψ t = 1), ∃ z : ℤ, Algebra.trace ℚ F a = z := by
   first | exact @GlobalTheory.DenomTrace.trace_int_of_psi_eq_one | exact GlobalTheory.DenomTrace.trace_int_of_psi_eq_one | (intros; apply GlobalTheory.DenomTrace.trace_int_of_psi_eq_one <;> assumption)

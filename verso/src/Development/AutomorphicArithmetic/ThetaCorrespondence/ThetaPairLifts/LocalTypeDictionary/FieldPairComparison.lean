@@ -10,6 +10,9 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FPair
+/- English proof (translation)
+Introduce `_` and use `⟨finPair, infPair⟩`.
+-/
 theorem lift_splits_locally : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinPairK ∧ InfPairK := fun _ => ⟨finPair, infPair⟩
 end GlobalTheory.FPair
 end
@@ -18,6 +21,9 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FPair.lift_splits_locally | exact _root_.GlobalTheory.FPair.lift_splits_locally | (intros; apply _root_.GlobalTheory.FPair.lift_splits_locally <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.field_pair_comparison : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinPairK ∧ InfPairK := by
   first | exact @_root_.GlobalTheory.FPair.lift_splits_locally | exact _root_.GlobalTheory.FPair.lift_splits_locally | (intros; apply _root_.GlobalTheory.FPair.lift_splits_locally <;> assumption)
 end

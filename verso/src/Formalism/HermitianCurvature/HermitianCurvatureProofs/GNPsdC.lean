@@ -17,6 +17,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hw' : KB.CutWord (D.parOf S v) (p v).l0 w` using `by rw [hl0]; exact hw`. Use `set Dv := CV ((p v).T.bs j) (S := Fin w.length) with hDv`.
+
+Use `block_iso Dv ((p v).form j hj w) cv_zero (fun x y hx hy => cv_add hx hy) (fun c x hx => cv_smul c hx) (fun x₁ x₂ y c h₁ h₂ hy => form_slC (p v) j hj w x₁ x₂ y c h₁ h₂ hy) (fun x y₁ y₂ c hx h₁ h₂ => form_srC (p v) j hj w x y₁ y₂ c hx h₁ h₂) (fun x hx => hFP hA _ _ (D.parOf S v) (p …` and prove the remaining obligations. Establish `: 0 ≤ ΓS S j * S.sizeAt v w`. Use `mul_nonneg ?_ (sizeAt_nonneg S v w)` and prove the remaining obligations. Unfold `ΓS`. Establish `hgpos` using `g_pos_of_built hB`.
+
+Establish `hrd` using `PBD.rd_pos' E`. Conclude with `(PBD.gamLev_pos _ _ _ _ (by unfold D.kapG; positivity) (by unfold D.deG; positivity) _).le`. Check the signs of the components of the expression. Introduce `h hh h' hh'`. Rewrite using `[uY_mem S p F v ε j hj w Y h hh, uY_mem S p F v ε j hj w Y h' hh']`.
+
+Conclude with `gN_uB hB F hF v ε hε j hj w h h'`. Introduce `h hh h' hh'`. Rewrite using `[uY_mem S p F v ε j hj w Y h hh, uY_mem S p F v ε j hj w Y h' hh']`. Conclude with `hatB_uB_C hPSC hB F hF v ε hε j hj w hw l h h' (hY h hh) (hY h' hh')`.
+-/
 theorem block0C (hA : P5.ThmPActualCpt) (hPSC : StandardPairingDecay.PStdC) (hVI : KB.VIsoCpt) (hFP : FormPosCpt)
     (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
@@ -52,6 +61,13 @@ theorem block0C (hA : P5.ThmPActualCpt) (hPSC : StandardPairingDecay.PStdC) (hVI
     rw [uY_mem S p F v ε j hj w Y h hh, uY_mem S p F v ε j hj w Y h' hh']
     exact hatB_uB_C hPSC hB F hF v ε hε j hj w hw l h h' (hY h hh) (hY h' hh')
 
+/- English proof (translation)
+Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hw' : KB.CutWord (D.parOf S v) (p v).l0 w` using `by rw [hl0]; exact hw`. Use `set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v w) with hc0`.
+
+Establish `hc0n : 0 ≤ c0`. Use `gam_pos hB j` as an intermediate fact. Use `sizeAt_nonneg S v w` as an intermediate fact. Check the signs of the components of the expression. Use `set Dv := CV ((p v).T.bs j) (S := Fin w.length) with hDv`.
+
+Establish `hG` using `gram_psd Dv (fun x y => (c0 : ℂ) * (p v).form j hj w x y) cv_zero (fun x y hx hy => cv_add hx hy) (fun c x hx => cv_smul c hx) (fun x₁ x₂ y c h₁ h₂ hy => by simp only [form_slC (p v) j hj w x₁ x₂ y c h₁ h₂ hy]; ring) (fun x y₁ y₂ c hx h₁ h₂ => by simp only [form_srC (p v) j hj w …`. Use `psd_congr (fun x hx y hy => ?_) hG` and prove the remaining obligations. Use `show (c0 : ℂ) * (p v).form j hj w (uY S p F v ε j hj w Y x) (uY S p F v ε j hj w Y y) = _`. Rewrite using `[uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]`.
+-/
 theorem gN_psdC (hA : P5.ThmPActualCpt) (hFP : FormPosCpt) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)

@@ -13,17 +13,29 @@ variable {E : Type} [Field E] [NumberField E]
 abbrev Int' (E : Type) [Field E] : Subring E := (algebraMap (𝓞 E) E).range
 
 omit [NumberField E] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_int_iff (x : E) : x ∈ Int' E ↔ IsIntegral ℤ x :=
   ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_int_iff]`. Conclude with `h.map σ.toIntAlgHom`.
+-/
 theorem map_mem_int (σ : E →+* E) {x : E} (h : x ∈ Int' E) : σ x ∈ Int' E := by
   rw [mem_int_iff] at h ⊢
   exact h.map σ.toIntAlgHom
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Algebra.smul_def c x`.
+-/
 theorem smul_eq (c : 𝓞 E) (x : E) : c • x = algebraMap (𝓞 E) E c * x := Algebra.smul_def c x
 
+/- English proof (translation)
+Simplify using `only [dInv, pow_zero, FractionalIdeal.mem_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_dInv_zero (x : E) : x ∈ dInv E 0 ↔ x ∈ Int' E := by
   simp only [dInv, pow_zero, FractionalIdeal.mem_one_iff]
   rfl
@@ -32,6 +44,11 @@ def std (E : Type) [Field E] : Submodule (𝓞 E) (Fin 2 → E) :=
   Submodule.span (𝓞 E) {![0, 1], ![1, 1]}
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[std, Submodule.mem_span_pair]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, rfl⟩`. Prove the components needed by the constructor for the conclusion. Conclude with `⟨b, by simp [smul_eq]⟩`.
+
+Conclude with `⟨a + b, by simp [smul_eq]⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨b - a, a, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [smul_eq, ← ha, ← hb]`.
+-/
 theorem mem_std (v : Fin 2 → E) : v ∈ std E ↔ v 0 ∈ Int' E ∧ v 1 ∈ Int' E := by
   rw [std, Submodule.mem_span_pair]
   constructor
@@ -45,10 +62,18 @@ theorem mem_std (v : Fin 2 → E) : v ∈ std E ↔ v 0 ∈ Int' E ∧ v 1 ∈ I
     fin_cases i <;> simp [smul_eq, ← ha, ← hb]
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[form, dotProduct, Matrix.mulVec, Fin.sum_univ_two, sub_eq_add_neg]`.
+-/
 theorem form_two (σ : E →+* E) (v w : Fin 2 → E) :
     form σ !![1, 0; 0, -1] v w = σ (w 0) * v 0 - σ (w 1) * v 1 := by
   simp [form, dotProduct, Matrix.mulVec, Fin.sum_univ_two, sub_eq_add_neg]
 
+/- English proof (translation)
+Use `⟨Submodule.fg_span (Set.toFinite _), fun v => ⟨fun hv w hw => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite `hv`, `hw` using `[mem_std]`. Rewrite using `[form_two]`. Conclude with `sub_mem (mul_mem (map_mem_int σ hw.1) hv.1) (mul_mem (map_mem_int σ hw.2) hv.2)`. Establish `h0` using `h ![1, 0] ((mem_std _).2 ⟨one_mem _, zero_mem _⟩)`.
+
+Establish `h1` using `h ![0, -1] ((mem_std _).2 ⟨zero_mem _, neg_mem (one_mem _)⟩)`. Rewrite `h0`, `h1` using `[form_two]`. Conclude with `(mem_std v).2 ⟨by simpa using h0, by simpa using h1⟩`.
+-/
 theorem selfDual_std (σ : E →+* E) : SelfDual σ !![1, 0; 0, -1] (std E) := by
   refine ⟨Submodule.fg_span (Set.toFinite _), fun v => ⟨fun hv w hw => ?_, fun h => ?_⟩⟩
   · rw [mem_std] at hv hw
@@ -59,6 +84,11 @@ theorem selfDual_std (σ : E →+* E) : SelfDual σ !![1, 0; 0, -1] (std E) := b
     rw [form_two] at h0 h1
     exact (mem_std v).2 ⟨by simpa using h0, by simpa using h1⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[frameLat, Submodule.span_le]`. Introduce and unpack `v ⟨b, a, ha, rfl⟩`. Take `rfl : b = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Take `⟨c, rfl⟩` from `(mem_dInv_zero a).1 ha`.
+
+Conclude with `Submodule.mem_span_singleton.2 ⟨c, by ext i; simp [smul_eq]⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `v rfl`. Conclude with `Submodule.subset_span ⟨0, 1, (mem_dInv_zero 1).2 (one_mem _), by simp⟩`.
+-/
 theorem frameLat_zero {n : ℕ} (P : Matrix (Fin n) (Fin (0 + 1)) E) :
     frameLat P = Submodule.span (𝓞 E) {fun i => P i 0} := by
   apply le_antisymm
@@ -71,6 +101,9 @@ theorem frameLat_zero {n : ℕ} (P : Matrix (Fin n) (Fin (0 + 1)) E) :
     rintro v rfl
     exact Submodule.subset_span ⟨0, 1, (mem_dInv_zero 1).2 (one_mem _), by simp⟩
 
+/- English proof (translation)
+Establish `hg' : (g : E) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Rewrite using `[pairLat, frameLat_zero, frameLat_zero, std, Submodule.span_insert]`. Use `congr 3`. Apply the tactic sequence `ext i; fin_cases i <;> simp`. Apply the tactic sequence `ext i; fin_cases i <;> simp [hg']`.
+-/
 theorem pairLat_std {g : ℕ} (hg : g ≠ 0) :
     pairLat (r := 0) g (!![0; 1] : Matrix (Fin 2) (Fin (0 + 1)) E) !![(g : E); 1 + g] = std E := by
   have hg' : (g : E) ≠ 0 := Nat.cast_ne_zero.2 hg
@@ -79,6 +112,19 @@ theorem pairLat_std {g : ℕ} (hg : g ≠ 0) :
   · ext i; fin_cases i <;> simp
   · ext i; fin_cases i <;> simp [hg']
 
+/- English proof (translation)
+Use `⟨selfDual_std σ, ⟨⟨⟨!![0, 1], ?_⟩, ?_⟩, ⟨⟨!![-1, 1], ?_⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply]`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[pairM, cT, TF, Matrix.mul_apply]`. Use extensionality with `i j`.
+
+Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply]`. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[pairM, cT, TF, Matrix.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify using `[pairM, cT, Matrix.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[pairLat_std hg]`.
+
+Conclude with `⟨le_rfl, fun v hv _ => hv⟩`.
+-/
 theorem mem_genConf_zero (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
     ((std E, !![0; 1], !![(g : E); 1 + g]) : Tri E 2 0) ∈
       GenConf σ !![1, 0; 0, -1] 1 (1 + 2 * g) g !![-1 - (g : E)] := by
@@ -93,11 +139,21 @@ theorem mem_genConf_zero (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
     exact ⟨le_rfl, fun v hv _ => hv⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[Gq, lead]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gq_zero (σ : E →+* E) (g : ℕ) :
     Gq (r := 0) σ 1 (1 + 2 * g) !![-1 - (g : E)] = (g : E) ^ 2 := by
   simp [Gq, lead]
   ring
 
+/- English proof (translation)
+Use `⟨selfDual_std σ, by simp [form_two], ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `v rfl`. Conclude with `(mem_std _).2 ⟨zero_mem _, one_mem _⟩`.
+
+Introduce `v hv hs dsimp only at hv hs ⊢`. Rewrite `hs` using `[Submodule.span_span_of_tower, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hs`. Take `⟨c, hc⟩` from `((mem_std _).1 hv).2`. Use `Submodule.mem_span_singleton.2 ⟨c, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [smul_eq]`. Simplify using `using hc`.
+-/
 theorem mem_lzSet (σ : E →+* E) : (std E, ![0, 1]) ∈ LzSet σ !![1, 0; 0, -1] 1 := by
   refine ⟨selfDual_std σ, by simp [form_two], ?_, ?_⟩
   · dsimp only
@@ -114,6 +170,21 @@ theorem mem_lzSet (σ : E →+* E) : (std E, ![0, 1]) ∈ LzSet σ !![1, 0; 0, -
     fin_cases i <;> simp [smul_eq]
     simpa using hc
 
+/- English proof (translation)
+Take `⟨Λ, P, Q⟩` from `x`. Take `⟨-, ⟨⟨-, h1⟩, ⟨-, h2⟩, h3⟩, -⟩` from `hx`. Take `⟨-, -, hP, hQ⟩` from `hγ`. Simplify using `only at h1 h2 h3 hP hQ`. Establish `hg' : (g : E) ≠ 0` using `Nat.cast_ne_zero.2 hg`.
+
+Establish `e1` using `congrFun (congrFun h1 0) 0`. Establish `e2` using `congrFun (congrFun h2 0) 0`. Establish `e3` using `congrFun (congrFun h3 0) 0`. Simplify using `[pairM, cT, TF, Matrix.mul_apply] at e1 e2 e3`. Establish `hd : P 0 0 * Q 1 0 - P 1 0 * Q 0 0 ≠ 0`.
+
+Introduce `hd`. Establish `q0 : Q 0 0 = (1 + g) * P 0 0`. Take the linear combination `Q 0 0 * e1 - P 0 0 * e3 - σ (P 1 0) * hd`. Establish `q1 : Q 1 0 = (1 + g) * P 1 0`. Take the linear combination `Q 1 0 * e1 - P 1 0 * e3 - σ (P 0 0) * hd`.
+
+Rewrite `e2` using `[q0, q1]`. Simplify using `only [map_mul, map_add, map_one, map_natCast] at e2`. Apply `pow_ne_zero 2 hg'` to reduce the goal to its premises. Take the linear combination `(1 + g : E) ^ 2 * e1 - e2`. Establish `p (i)` using `congrFun (congrFun hP i) 0`.
+
+Establish `q (i)` using `congrFun (congrFun hQ i) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two] at p q`. Use extensionality with `i j`. Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+
+Take the linear combination `Q 1 0 * p 0 - P 1 0 * q 0`. Use `right`. Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Take the linear combination `P 0 0 * q 0 - Q 0 0 * p 0`. Use `right`.
+
+Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Take the linear combination `Q 1 0 * p 1 - P 1 0 * q 1`. Take the linear combination `P 0 0 * q 1 - Q 0 0 * p 1`.
+-/
 theorem aut_eq_one (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) {x : Tri E 2 0}
     (hx : x ∈ GenConf σ !![1, 0; 0, -1] 1 (1 + 2 * g) g !![-1 - (g : E)])
     {γ : Matrix (Fin 2) (Fin 2) E} (hγ : IsoTri σ !![1, 0; 0, -1] γ x x) : γ = 1 := by
@@ -151,6 +222,11 @@ theorem aut_eq_one (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) {x : Tri E 2 0}
     linear_combination Q 1 0 * p 1 - P 1 0 * q 1
   · linear_combination P 0 0 * q 1 - Q 0 0 * p 1
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hC`. Rewrite using `[massOf, Ne, ENNReal.tsum_eq_zero]`. Introduce `h`. Establish `h1` using `h (Quot.mk _ ⟨x, hx⟩)`. Rewrite `h1` using `[ENNReal.inv_eq_zero, ENat.toENNReal_eq_top, ENat.card_eq_top]`.
+
+Conclude with `h1.not_finite (hf _ (Quot.out (Quot.mk (fun x y : C => ∃ γ, iso γ x.1 y.1) ⟨x, hx⟩)).2)`.
+-/
 theorem massOf_ne_zero {G X : Type} {C : Set X} {iso : G → X → X → Prop} (hC : C.Nonempty)
     (hf : ∀ x ∈ C, Finite {γ : G // iso γ x x}) : massOf C iso ≠ 0 := by
   obtain ⟨x, hx⟩ := hC
@@ -160,6 +236,9 @@ theorem massOf_ne_zero {G X : Type} {C : Set X} {iso : G → X → X → Prop} (
   rw [ENNReal.inv_eq_zero, ENat.toENNReal_eq_top, ENat.card_eq_top] at h1
   exact h1.not_finite (hf _ (Quot.out (Quot.mk (fun x y : C => ∃ γ, iso γ x.1 y.1) ⟨x, hx⟩)).2)
 
+/- English proof (translation)
+Use `massOf_ne_zero ⟨_, mem_genConf_zero σ hg⟩ fun x hx => ?_` and prove the remaining obligations. Establish `: Subsingleton {γ // IsoTri σ !![1, 0; 0, -1] γ x x}` using `⟨fun a b => Subtype.ext ((aut_eq_one σ hg hx a.2).trans (aut_eq_one σ hg hx b.2).symm)⟩`. Use `infer_instance`.
+-/
 theorem mass_ne_zero (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
     Mass (r := 0) σ !![1, 0; 0, -1] 1 (1 + 2 * g) g !![-1 - (g : E)] ≠ 0 := by
   refine massOf_ne_zero ⟨_, mem_genConf_zero σ hg⟩ fun x hx => ?_
@@ -170,25 +249,42 @@ theorem mass_ne_zero (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
 abbrev dOne (E : Type) [Field E] [NumberField E] : FractionalIdeal (𝓞 E)⁰ E :=
   (differentIdeal ℤ (𝓞 E) : FractionalIdeal (𝓞 E)⁰ E)
 
+/- English proof (translation)
+Rewrite using `[dOne, coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]`. Conclude with `inv_ne_zero (FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero)`.
+-/
 theorem dOne_ne_zero : dOne E ≠ 0 := by
   rw [dOne, coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]
   exact inv_ne_zero (FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero)
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [FractionalIdeal.mem_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_one_iff' (x : E) : x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ x ∈ Int' E := by
   simp only [FractionalIdeal.mem_one_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[dInv, pow_one, FractionalIdeal.mem_inv_iff dOne_ne_zero]`. Simplify using `only [mem_one_iff']`.
+-/
 theorem mem_dInv_one (x : E) : x ∈ dInv E 1 ↔ ∀ t ∈ dOne E, x * t ∈ Int' E := by
   rw [dInv, pow_one, FractionalIdeal.mem_inv_iff dOne_ne_zero]
   simp only [mem_one_iff']
 
+/- English proof (translation)
+Establish `h : dOne E = (dInv E 1)⁻¹` using `by rw [dInv, pow_one, inv_inv]`. Establish `h0 : dInv E 1 ≠ 0` using `by rw [dInv, pow_one]; exact inv_ne_zero dOne_ne_zero`. Rewrite using `[h, FractionalIdeal.mem_inv_iff h0]`. Simplify using `only [mem_one_iff']`.
+-/
 theorem mem_dOne (t : E) : t ∈ dOne E ↔ ∀ x ∈ dInv E 1, t * x ∈ Int' E := by
   have h : dOne E = (dInv E 1)⁻¹ := by rw [dInv, pow_one, inv_inv]
   have h0 : dInv E 1 ≠ 0 := by rw [dInv, pow_one]; exact inv_ne_zero dOne_ne_zero
   rw [h, FractionalIdeal.mem_inv_iff h0]
   simp only [mem_one_iff']
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[dInv, pow_one, coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), inv_inv, FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))]`. Introduce `a ha`. Establish `h` using `hx (σ a) ((mem_one_iff' _).2 (map_mem_int σ ((mem_one_iff' _).1 ha)))`. Set `e : E ≃ₐ[ℚ] E` to `AlgEquiv.ofBijective σ.toRatAlgHom (Function.Involutive.bijective hσ)`. Establish `he : e (x * σ a) = σ x * a`.
+
+Express the relevant statement in the definitionally equal form `σ (x * σ a) = _`. Rewrite using `[map_mul, hσ]`. Rewrite `h`, the goal using `[Algebra.traceForm_apply]`. Rewrite using `[← he, Algebra.trace_eq_of_algEquiv]` and apply the resulting hypothesis.
+-/
 theorem map_mem_dInv (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {x : E} (hx : x ∈ dInv E 1) :
     σ x ∈ dInv E 1 := by
   rw [dInv, pow_one, coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), inv_inv,
@@ -202,6 +298,9 @@ theorem map_mem_dInv (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {x : E} (hx :
   rw [Algebra.traceForm_apply] at h ⊢
   rwa [← he, Algebra.trace_eq_of_algEquiv]
 
+/- English proof (translation)
+Rewrite `ht`, the goal using `[mem_dOne]`. Introduce `x hx`. Use `map_mem_int σ (ht _ (map_mem_dInv σ hσ hx))` as an intermediate fact. Rewrite `this` using `[map_mul, hσ]`. Then use the resulting hypothesis.
+-/
 theorem map_mem_dOne (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {t : E} (ht : t ∈ dOne E) :
     σ t ∈ dOne E := by
   rw [mem_dOne] at ht ⊢
@@ -210,6 +309,9 @@ theorem map_mem_dOne (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {t : E} (ht :
   rwa [map_mul, hσ] at this
 
 omit [NumberField E] in
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hc`. Rewrite using `[← smul_eq]`. Conclude with `Submodule.smul_mem (I : Submodule (𝓞 E) E) c hx`.
+-/
 theorem int_mul_mem {I : FractionalIdeal (𝓞 E)⁰ E} {c x : E} (hc : c ∈ Int' E) (hx : x ∈ I) :
     c * x ∈ I := by
   obtain ⟨c, rfl⟩ := hc
@@ -221,6 +323,9 @@ def splitJ (E : Type) [Field E] : Matrix (Fin 8) (Fin 8) E :=
     0, 0, 0, 0, 1, 0, 0, 0; 0, 0, 0, 0, 0, 1, 0, 0; 0, 0, 0, 0, 0, 0, 1, 0; 0, 0, 0, 0, 0, 0, 0, -1]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `⟨?_, Matrix.isUnit_det_of_left_inverse (B := splitJ E) ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [cT, splitJ]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [splitJ, Matrix.mul_apply, Fin.sum_univ_eight]`.
+-/
 theorem isHermU_splitJ (σ : E →+* E) : IsHermU σ (splitJ E) := by
   refine ⟨?_, Matrix.isUnit_det_of_left_inverse (B := splitJ E) ?_⟩
   · ext i j
@@ -229,6 +334,9 @@ theorem isHermU_splitJ (σ : E →+* E) : IsHermU σ (splitJ E) := by
     fin_cases i <;> fin_cases j <;> simp [splitJ, Matrix.mul_apply, Fin.sum_univ_eight]
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[form, splitJ, dotProduct, Matrix.mulVec, Fin.sum_univ_eight, sub_eq_add_neg]`.
+-/
 theorem form_split (σ : E →+* E) (v w : Fin 8 → E) :
     form σ (splitJ E) v w = σ (w 0) * v 1 + σ (w 1) * v 0 + σ (w 2) * v 2 + σ (w 3) * v 3 +
       σ (w 4) * v 4 + σ (w 5) * v 5 + σ (w 6) * v 6 - σ (w 7) * v 7 := by
@@ -238,12 +346,24 @@ def splitLat (E : Type) [Field E] [NumberField E] : Submodule (𝓞 E) (Fin 8 �
   Submodule.pi Set.univ fun i =>
     ((![dInv E 1, dOne E, 1, 1, 1, 1, 1, 1] : Fin 8 → FractionalIdeal (𝓞 E)⁰ E) i : Submodule (𝓞 E) E)
 
+/- English proof (translation)
+Simplify using `only [← mem_one_iff', splitLat, Submodule.mem_pi, Set.mem_univ, forall_true_left, FractionalIdeal.mem_coe, Fin.forall_fin_succ, IsEmpty.forall_iff, and_true]`. Both sides reduce to the same expression.
+-/
 theorem mem_splitLat (v : Fin 8 → E) : v ∈ splitLat E ↔ v 0 ∈ dInv E 1 ∧ v 1 ∈ dOne E ∧
     v 2 ∈ Int' E ∧ v 3 ∈ Int' E ∧ v 4 ∈ Int' E ∧ v 5 ∈ Int' E ∧ v 6 ∈ Int' E ∧ v 7 ∈ Int' E := by
   simp only [← mem_one_iff', splitLat, Submodule.mem_pi, Set.mem_univ, forall_true_left,
     FractionalIdeal.mem_coe, Fin.forall_fin_succ, IsEmpty.forall_iff, and_true]
   rfl
 
+/- English proof (translation)
+Use `⟨Submodule.fg_pi fun i => FractionalIdeal.fg_of_isNoetherianRing le_rfl _, fun v => ⟨fun hv w hw => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite `hv`, `hw` using `[mem_splitLat]`. Take `⟨v0, v1, v2, v3, v4, v5, v6, v7⟩` from `hv`. Take `⟨w0, w1, w2, w3, w4, w5, w6, w7⟩` from `hw`. Rewrite using `[form_split]`.
+
+Establish `m {x y : E} (hx : x ∈ Int' E) (hy : y ∈ Int' E)` using `mul_mem (map_mem_int σ hx) hy`. Conclude with `sub_mem (add_mem (add_mem (add_mem (add_mem (add_mem (add_mem ((mem_dInv_one _).1 (map_mem_dInv σ hσ w0) _ v1) ((mem_dOne _).1 (map_mem_dOne σ hσ w1) _ v0)) (m w2 v2)) (m w3 v3)) (m w4 v4)) (m w5 v5)) (m w6 v6)) (m w7 v7)`. Establish `z (I : FractionalIdeal (𝓞 E)⁰ E) : (0 : E) ∈ I` using `FractionalIdeal.zero_mem I`. Establish `o : (0 : E) ∈ Int' E` using `zero_mem _`. Establish `u : (1 : E) ∈ Int' E` using `one_mem _`.
+
+Use `(mem_splitLat v).2 ⟨(mem_dInv_one _).2 fun t ht => ?_, (mem_dOne _).2 fun t ht => ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h ![0, σ t, 0, 0, 0, 0, 0, 0] ((mem_splitLat _).2 ⟨z _, map_mem_dOne σ hσ ht, o, o, o, o, o, o⟩)` using `[form_split, hσ, mul_comm]`. Simplify `h ![σ t, 0, 0, 0, 0, 0, 0, 0] ((mem_splitLat _).2 ⟨map_mem_dInv σ hσ ht, z _, o, o, o, o, o, o⟩)` using `[form_split, hσ, mul_comm]`. Simplify `h ![0, 0, 1, 0, 0, 0, 0, 0] ((mem_splitLat _).2 ⟨z _, z _, u, o, o, o, o, o⟩)` using `[form_split]`. Simplify `h ![0, 0, 0, 1, 0, 0, 0, 0] ((mem_splitLat _).2 ⟨z _, z _, o, u, o, o, o, o⟩)` using `[form_split]`.
+
+Simplify `h ![0, 0, 0, 0, 1, 0, 0, 0] ((mem_splitLat _).2 ⟨z _, z _, o, o, u, o, o, o⟩)` using `[form_split]`. Simplify `h ![0, 0, 0, 0, 0, 1, 0, 0] ((mem_splitLat _).2 ⟨z _, z _, o, o, o, u, o, o⟩)` using `[form_split]`. Simplify `h ![0, 0, 0, 0, 0, 0, 1, 0] ((mem_splitLat _).2 ⟨z _, z _, o, o, o, o, u, o⟩)` using `[form_split]`. Simplify `h ![0, 0, 0, 0, 0, 0, 0, -1] ((mem_splitLat _).2 ⟨z _, z _, o, o, o, o, o, neg_mem u⟩)` using `[form_split]`.
+-/
 theorem selfDual_splitLat (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) :
     SelfDual σ (splitJ E) (splitLat E) := by
   refine ⟨Submodule.fg_pi fun i => FractionalIdeal.fg_of_isNoetherianRing le_rfl _,
@@ -278,6 +398,15 @@ theorem selfDual_splitLat (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) :
     · simpa [form_split] using h ![0, 0, 0, 0, 0, 0, 0, -1]
         ((mem_splitLat _).2 ⟨z _, z _, o, o, o, o, o, neg_mem u⟩)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨b, a, ha, rfl⟩` from `hv`.
+
+Use `fin_cases b`. Conclude with `⟨a, ha, 0, zero_mem _, by ext i; simp⟩`. Conclude with `⟨0, FractionalIdeal.zero_mem _, a, (mem_dInv_zero a).1 ha, by ext i; simp⟩`. Consider the case `zero => exact ⟨0, FractionalIdeal.zero_mem _, 0, zero_mem _, by ext i; simp⟩`. Consider the case `add v w _ _ hv hw`.
+
+Take `⟨α, hα, β, hβ, rfl⟩` from `hv`. Take `⟨α', hα', β', hβ', rfl⟩` from `hw`. Conclude with `⟨α + α', Submodule.add_mem (dInv E 1 : Submodule (𝓞 E) E) hα hα', β + β', add_mem hβ hβ', by ext i; simp; ring⟩`. Consider the case `smul c v _ hv`. Take `⟨α, hα, β, hβ, rfl⟩` from `hv`.
+
+Conclude with `⟨algebraMap _ E c * α, int_mul_mem ⟨c, rfl⟩ hα, algebraMap _ E c * β, mul_mem ⟨c, rfl⟩ hβ, by ext i; simp [smul_eq]; ring⟩`. Introduce and unpack `⟨α, hα, β, hβ, rfl⟩`. Establish `h0 : (α • fun i => P i 0) ∈ frameLat P` using `Submodule.subset_span ⟨0, α, hα, rfl⟩`. Establish `h1 : (β • fun i => P i 1) ∈ frameLat P` using `Submodule.subset_span ⟨1, β, (mem_dInv_zero β).2 hβ, rfl⟩`. Conclude with `add_mem h0 h1`.
+-/
 theorem mem_frameLat_one {n : ℕ} (P : Matrix (Fin n) (Fin (1 + 1)) E) (v : Fin n → E) :
     v ∈ frameLat P ↔ ∃ α ∈ dInv E 1, ∃ β ∈ Int' E, v = fun i => α * P i 0 + β * P i 1 := by
   constructor
@@ -312,6 +441,11 @@ def splitC (σ : E →+* E) (g : ℕ) (a b : E) : E := -(g * (a * σ a + b * σ 
 def splitQ (σ : E →+* E) (g : ℕ) (a b : E) : Matrix (Fin 8) (Fin (1 + 1)) E :=
   !![1, 0; g * splitC σ g a b, 0; g * a, 0; g * a, 0; g * b, 0; g * b, 0; 0, g; 0, 1 + g]
 
+/- English proof (translation)
+Establish `hg' : (g : E) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Establish `key (α β γ δ : E) : ((fun i => α * splitP E i 0 + β * splitP E i 1) + fun i => γ * ((g : E)⁻¹ • (splitQ σ g a b - splitP E)) i 0 + δ * ((g : E)⁻¹ • (splitQ σ g a b - splitP E)) i 1) = ![α, γ * splitC σ g a b, γ * a, γ * a, γ * b, γ * b, δ, β + δ]`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [splitP, splitQ, hg']`. Simplify using `only [pairLat, Submodule.mem_sup, mem_frameLat_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨α, hα, β, hβ, rfl⟩, _, ⟨γ, hγ, δ, hδ, rfl⟩, rfl⟩`. Conclude with `⟨α, hα, β, hβ, γ, hγ, δ, hδ, key α β γ δ⟩`. Introduce and unpack `⟨α, hα, β, hβ, γ, hγ, δ, hδ, rfl⟩`. Conclude with `⟨_, ⟨α, hα, β, hβ, rfl⟩, _, ⟨γ, hγ, δ, hδ, rfl⟩, key α β γ δ⟩`.
+-/
 theorem mem_pairLat_split (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) (a b : E) (v : Fin 8 → E) :
     v ∈ pairLat g (splitP E) (splitQ σ g a b) ↔
       ∃ α ∈ dInv E 1, ∃ β ∈ Int' E, ∃ γ ∈ dInv E 1, ∃ δ ∈ Int' E,
@@ -330,6 +464,23 @@ theorem mem_pairLat_split (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) (a b : E) (v
   · rintro ⟨α, hα, β, hβ, γ, hγ, δ, hδ, rfl⟩
     exact ⟨_, ⟨α, hα, β, hβ, rfl⟩, _, ⟨γ, hγ, δ, hδ, rfl⟩, key α β γ δ⟩
 
+/- English proof (translation)
+Establish `ha : (a : E) ∈ dOne E` using `FractionalIdeal.mem_coeIdeal_of_mem _ (hab ▸ Ideal.subset_span (by simp))`. Establish `hb : (b : E) ∈ dOne E` using `FractionalIdeal.mem_coeIdeal_of_mem _ (hab ▸ Ideal.subset_span (by simp))`. Prove the components needed by the constructor for the conclusion. Introduce `v hv`. Take `⟨α, hα, β, hβ, γ, hγ, δ, hδ, rfl⟩` from `(mem_pairLat_split σ hg _ _ v).1 hv`.
+
+Establish `h1` using `(mem_dInv_one γ).1 hγ _ ha`. Establish `h2` using `(mem_dInv_one γ).1 hγ _ hb`. Use `(mem_splitLat _).2 ⟨hα, ?_, h1, h1, h2, h2, hδ, add_mem hβ hδ⟩` and prove the remaining obligations. Establish `h3` using `Submodule.add_mem (dOne E : Submodule (𝓞 E) E) (int_mul_mem h1 (map_mem_dOne σ hσ ha)) (int_mul_mem h2 (map_mem_dOne σ hσ hb))`. Establish `h4` using `int_mul_mem (I := dOne E) (neg_mem (natCast_mem (Int' E) g)) h3`.
+
+Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `[splitC]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v hv hs`. Establish `hv' : ∃ α β γ δ : E, v = ![α, γ * splitC σ g (a : E) (b : E), γ * a, γ * a, γ * b, γ * b, δ, β + δ]` using `by clear hv`.
+
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨α, -, β, -, γ, -, δ, -, rfl⟩` from `(mem_pairLat_split σ hg _ _ v).1 hv`. Conclude with `⟨α, β, γ, δ, rfl⟩`. Consider the case `zero => exact ⟨0, 0, 0, 0, by ext i; fin_cases i <;> simp⟩`.
+
+Consider the case `add v w _ _ hv hw`. Take `⟨α, β, γ, δ, rfl⟩` from `hv`. Take `⟨α', β', γ', δ', rfl⟩` from `hw`. Apply the tactic sequence `exact ⟨α + α', β + β', γ + γ', δ + δ', by ext i; fin_cases i <;> simp <;> ring⟩`. Consider the case `smul c v _ hv`.
+
+Take `⟨α, β, γ, δ, rfl⟩` from `hv`. Apply the tactic sequence `exact ⟨c * α, c * β, c * γ, c * δ, by ext i; fin_cases i <;> simp <;> ring⟩`. Take `⟨α, β, γ, δ, rfl⟩` from `hv'`. Take `⟨h0, -, h2, -, h4, -, h6, h7⟩` from `(mem_splitLat _).1 hv`. Use `(mem_pairLat_split σ hg _ _ _).2 ⟨α, h0, β, by simpa using sub_mem h7 h6, γ, (mem_dInv_one γ).2 fun t ht => ?_, δ, h6, rfl⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ht`. Rewrite `hs` using `[hab, Ideal.mem_span_pair]`. Take `⟨p, q, rfl⟩` from `hs`. Use `add_mem (mul_mem (⟨p, rfl⟩ : _ ∈ Int' E) h2) (mul_mem (⟨q, rfl⟩ : _ ∈ Int' E) h4) using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem primIn_split (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {g : ℕ} (hg : g ≠ 0) {a b : 𝓞 E}
     (hab : differentIdeal ℤ (𝓞 E) = Ideal.span {a, b}) :
     PrimIn (pairLat g (splitP E) (splitQ σ g (a : E) (b : E))) (splitLat E) := by
@@ -376,6 +527,11 @@ theorem primIn_split (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {g : ℕ} (hg
     simp
     ring
 
+/- English proof (translation)
+Use `⟨selfDual_splitLat σ hσ, ⟨⟨⟨!![1, 0, 0, 0, 0, 0, 0, 0; 0, 0, 0, 0, 0, 0, 0, 1], ?_⟩, ?_⟩, ⟨⟨!![1, 0, 0, 0, 0, 0, 0, 0; 0, 0, 0, 0, 0, 0, -1, 1], ?_⟩, ?_⟩, ?_⟩, primIn_split σ hσ hg hab⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [splitP, Matrix.mul_apply, Fin.sum_univ_eight]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Simplify using `[pairM, cT, TF, splitP, splitJ, Matrix.mul_apply, Fin.sum_univ_eight]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [splitQ, Matrix.mul_apply, Fin.sum_univ_eight]`.
+
+Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [pairM, cT, TF, splitQ, splitC, splitJ, hσ, Matrix.mul_apply, Fin.sum_univ_eight] <;> ring`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [pairM, cT, splitP, splitQ, splitJ, Matrix.mul_apply, Fin.sum_univ_eight] <;> ring`.
+-/
 theorem mem_genConf_one (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {g : ℕ} (hg : g ≠ 0) {a b : 𝓞 E}
     (hab : differentIdeal ℤ (𝓞 E) = Ideal.span {a, b}) :
     ((splitLat E, splitP E, splitQ σ g (a : E) (b : E)) : Tri E 8 1) ∈
@@ -399,12 +555,18 @@ theorem mem_genConf_one (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) {g : ℕ} 
       simp [pairM, cT, splitP, splitQ, splitJ, Matrix.mul_apply, Fin.sum_univ_eight] <;> ring
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[Gq, lead, splitC, hσ, Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gq_one (σ : E →+* E) (hσ : ∀ x, σ (σ x) = x) (g : ℕ) (a b : E) :
     Gq (r := 1) σ 1 (1 + 2 * g) !![(g : E) * splitC σ g a b, 0; 0, -1 - (g : E)] =
       ((g : E) ^ 3 * (a * σ a + b * σ b)) ^ 2 := by
   simp [Gq, lead, splitC, hσ, Matrix.det_fin_two]
   ring
 
+/- English proof (translation)
+Establish `h : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `fun h => dOne_ne_zero (E := E) (by simp [dOne, h])`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Take `⟨b, hb⟩` from `IsDedekindDomain.exists_eq_span_pair ha ha0`. Conclude with `⟨a, b, ha0, hb⟩`.
+-/
 theorem exists_different_pair (E : Type) [Field E] [NumberField E] :
     ∃ a b : 𝓞 E, a ≠ 0 ∧ differentIdeal ℤ (𝓞 E) = Ideal.span {a, b} := by
   have h : differentIdeal ℤ (𝓞 E) ≠ ⊥ := fun h => dOne_ne_zero (E := E) (by simp [dOne, h])
@@ -413,6 +575,11 @@ theorem exists_different_pair (E : Type) [Field E] [NumberField E] :
   exact ⟨a, b, ha0, hb⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg τ h`. Rewrite `h1` using `[map_add, map_mul, map_mul, hτ, hτ, Complex.mul_conj, Complex.mul_conj, map_zero, ← Complex.ofReal_add, Complex.ofReal_eq_zero]`. Establish `h2` using `Complex.normSq_pos.2 ((map_ne_zero τ).2 ha)`. Establish `h3` using `Complex.normSq_nonneg (τ b)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_add_norm_ne_zero (σ : E →+* E) (τ : E →+* ℂ) (hτ : ∀ x, τ (σ x) = starRingEnd ℂ (τ x))
     {a : E} (ha : a ≠ 0) (b : E) : a * σ a + b * σ b ≠ 0 := by
   intro h
@@ -423,6 +590,11 @@ theorem norm_add_norm_ne_zero (σ : E →+* E) (τ : E →+* ℂ) (hτ : ∀ x, 
   have h3 := Complex.normSq_nonneg (τ b)
   linarith
 
+/- English proof (translation)
+Use `⟨⟨⟨?_, by simp [Matrix.det_fin_two]⟩, mem_genConf_zero σ hg, gq_zero σ g⟩, mem_lzSet σ, fun hσ => ⟨isHermU_splitJ σ, ?_⟩, mass_ne_zero σ hg⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [cT]`. Take `⟨a, b, ha, hab⟩` from `exists_different_pair E`. Use `⟨_, _, mem_genConf_one σ hσ hg hab, fun ⟨τ, hτ⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[gq_one σ hσ]`.
+
+Conclude with `pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 hg)) (norm_add_norm_ne_zero σ τ hτ (RingOfIntegers.coe_ne_zero_iff.2 ha) _))`.
+-/
 theorem inhabitants (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
     (IsHermU σ (!![1, 0; 0, -1] : Matrix (Fin 2) (Fin 2) E) ∧
       ((Submodule.span (𝓞 E) {![0, 1], ![1, 1]}, !![0; 1], !![(g : E); 1 + g]) : Tri E 2 0) ∈

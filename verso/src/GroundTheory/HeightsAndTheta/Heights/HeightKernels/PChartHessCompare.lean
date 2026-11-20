@@ -21,12 +21,18 @@ variable {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℂ F] {e : ℕ}
 def gramHess (u : F) (d : Fin e → F) : Matrix (Fin e) (Fin e) ℂ :=
   Matrix.of fun i j => (⟪u, u⟫_ℂ * ⟪d j, d i⟫_ℂ - ⟪u, d i⟫_ℂ * ⟪d j, u⟫_ℂ) / (2 * ⟪u, u⟫_ℂ ^ 2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramHess, conjTranspose_apply, of_apply, star_div₀, star_sub, star_mul', star_pow, Complex.star_def, inner_conj_symm, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gramHess_isHermitian (u : F) (d : Fin e → F) : (gramHess u d).IsHermitian := by
   ext i j
   simp only [gramHess, conjTranspose_apply, of_apply, star_div₀, star_sub, star_mul', star_pow,
     Complex.star_def, inner_conj_symm, map_ofNat]
   ring
 
+/- English proof (translation)
+Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [dotProduct, mulVec, gramHess, of_apply, Pi.star_apply, Complex.star_def, Complex.conj_conj, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gramHess_form (u : F) (d : Fin e → F) (x : Fin e → ℂ) :
     star x ⬝ᵥ (gramHess u d *ᵥ x) =
       (⟪u, u⟫_ℂ * ⟪∑ i, star (x i) • d i, ∑ i, star (x i) • d i⟫_ℂ -
@@ -38,6 +44,13 @@ theorem gramHess_form (u : F) (d : Fin e → F) (x : Fin e → ℂ) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hN0 : ⟪u, u⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hu`. Establish `hNr : (starRingEnd ℂ) ⟪u, u⟫_ℂ = ⟪u, u⟫_ℂ` using `inner_conj_symm u u`. Establish `hq : ⟪D, u⟫_ℂ = (starRingEnd ℂ) ⟪u, D⟫_ℂ` using `(inner_conj_symm D u).symm`. Establish `hexp : ⟪D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u, D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u⟫_ℂ = ⟪D, D⟫_ℂ - ⟪u, D⟫_ℂ * (starRingEnd ℂ) ⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ`. Simplify using `only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, map_div₀, hNr, hq]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hn1 : ⟪D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u, D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u⟫_ℂ = ((‖D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u‖ : ℝ) : ℂ) ^ 2` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) _`. Establish `hn2 : ⟪u, u⟫_ℂ = ((‖u‖ : ℝ) : ℂ) ^ 2` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) u`. Use `push_cast`.
+
+Rewrite using `[← hn1, ← hn2, hexp, hq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gram_numer_eq (u D : F) (hu : u ≠ 0) :
     (⟪u, u⟫_ℂ * ⟪D, D⟫_ℂ - ⟪u, D⟫_ℂ * ⟪D, u⟫_ℂ) / (2 * ⟪u, u⟫_ℂ ^ 2) =
       ((‖D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u‖ ^ 2 / (2 * ‖u‖ ^ 2) : ℝ) : ℂ) := by
@@ -57,6 +70,13 @@ theorem gram_numer_eq (u D : F) (hu : u ≠ 0) :
   rw [← hn1, ← hn2, hexp, hq]
   field_simp
 
+/- English proof (translation)
+Establish `hN0 : ⟪u, u⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hu`. Establish `hNr : (starRingEnd ℂ) ⟪u, u⟫_ℂ = ⟪u, u⟫_ℂ` using `inner_conj_symm u u`. Establish `hq : ⟪D, u⟫_ℂ = (starRingEnd ℂ) ⟪u, D⟫_ℂ` using `(inner_conj_symm D u).symm`. Use `set t := ⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ with ht`. Establish `horth : ⟪D - t • u, (t - s) • u⟫_ℂ = 0`.
+
+Simplify using `only [inner_smul_right, inner_sub_left, inner_smul_left, ht, map_div₀, hNr, hq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth`. Establish `hsum : D - t • u + (t - s) • u = D - s • u`.
+
+Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite `h` using `[hsum]`. Use polynomial arithmetic with `[mul_self_nonneg ‖(t - s) • u‖]`.
+-/
 theorem norm_sub_proj_le (u D : F) (hu : u ≠ 0) (s : ℂ) :
     ‖D - (⟪u, D⟫_ℂ / ⟪u, u⟫_ℂ) • u‖ ^ 2 ≤ ‖D - s • u‖ ^ 2 := by
   have hN0 : ⟪u, u⟫_ℂ ≠ 0 := inner_self_ne_zero.mpr hu
@@ -73,6 +93,11 @@ theorem norm_sub_proj_le (u D : F) (hu : u ≠ 0) (s : ℂ) :
   rw [hsum] at h
   nlinarith [mul_self_nonneg ‖(t - s) • u‖]
 
+/- English proof (translation)
+Establish `hu : ∀ᶠ y' in nhds y, AnalyticAt ℂ (fun y' => c + L y') y'` using `Filter.Eventually.of_forall fun y' => analyticAt_const.add (L.analyticAt y')`. Establish `hd : fderiv ℂ (fun y' => c + L y') y = L`. Rewrite using `[fderiv_const_add]`. Conclude with `L.fderiv`. Use extensionality with `i j`.
+
+Rewrite using `[ChartGram.cxHessian_half_log hu h0 i j, hd]`. Both sides reduce to the same expression.
+-/
 theorem cxHessian_affine [CompleteSpace F] (c : F) (L : (Fin e → ℂ) →L[ℂ] F) (y : Fin e → ℂ)
     (h0 : c + L y ≠ 0) :
     cxHessian (fun y' => 2⁻¹ * Real.log (⟪c + L y', c + L y'⟫_ℂ).re) y =
@@ -85,6 +110,11 @@ theorem cxHessian_affine [CompleteSpace F] (c : F) (L : (Fin e → ℂ) →L[ℂ
   rw [ChartGram.cxHessian_half_log hu h0 i j, hd]
   rfl
 
+/- English proof (translation)
+Establish `hD : ∑ i, star (x i) • L (Pi.single i 1) = L (star x)`. Repeatedly rewrite using `[← L.map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite using `[cxHessian_affine c L y h0, gramHess_form, hD, gram_numer_eq _ _ h0]`.
+-/
 theorem cxHessian_affine_form [CompleteSpace F] (c : F) (L : (Fin e → ℂ) →L[ℂ] F) (y x : Fin e → ℂ)
     (h0 : c + L y ≠ 0) :
     star x ⬝ᵥ (cxHessian (fun y' => 2⁻¹ * Real.log (⟪c + L y', c + L y'⟫_ℂ).re) y *ᵥ x) =
@@ -116,28 +146,43 @@ def chartLin : (Fin e → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin (e + 1)) :=
         rw [h, mulVec_smul, WithLp.toLp_smul]
         rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartLin_apply (y : Fin e → ℂ) :
     chartLin B y = WithLp.toLp 2 (B *ᵥ (Fin.cons 0 y : Fin (e + 1) → ℂ)) := rfl
 
 def chartConst : EuclideanSpace ℂ (Fin (e + 1)) :=
   WithLp.toLp 2 (B *ᵥ (Fin.cons 1 0 : Fin (e + 1) → ℂ))
 
+/- English proof (translation)
+Establish `h : (Fin.cons 1 y : Fin (e + 1) → ℂ) = Fin.cons 1 0 + Fin.cons 0 y`. Apply the tactic sequence `funext k; refine Fin.cases ?_ (fun k => ?_) k <;> simp`. Rewrite using `[chartConst, chartLin_apply, h, mulVec_add, WithLp.toLp_add]`.
+-/
 theorem chart_add (y : Fin e → ℂ) :
     chartConst B + chartLin B y = WithLp.toLp 2 (B *ᵥ (Fin.cons 1 y : Fin (e + 1) → ℂ)) := by
   have h : (Fin.cons 1 y : Fin (e + 1) → ℂ) = Fin.cons 1 0 + Fin.cons 0 y := by
     funext k; refine Fin.cases ?_ (fun k => ?_) k <;> simp
   rw [chartConst, chartLin_apply, h, mulVec_add, WithLp.toLp_add]
 
+/- English proof (translation)
+Rewrite using `[chart_add, chartLin_apply, mulVec_sub, mulVec_smul, WithLp.toLp_sub, WithLp.toLp_smul]`.
+-/
 theorem chart_sub (y z : Fin e → ℂ) (t : ℂ) :
     chartLin B z - t • (chartConst B + chartLin B y) =
       WithLp.toLp 2 (B *ᵥ ((Fin.cons 0 z : Fin (e + 1) → ℂ) - t • Fin.cons 1 y)) := by
   rw [chart_add, chartLin_apply, mulVec_sub, mulVec_smul, WithLp.toLp_sub, WithLp.toLp_smul]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]`.
+-/
 theorem inner_toLp_mulVec (v w : Fin (e + 1) → ℂ) :
     ⟪(WithLp.toLp 2 (B *ᵥ v) : EuclideanSpace ℂ (Fin (e + 1))), WithLp.toLp 2 (B *ᵥ w)⟫_ℂ =
       star v ⬝ᵥ ((Bᴴ * B) *ᵥ w) := by
   rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[← inner_toLp_mulVec]`. Establish `h : ⟪(WithLp.toLp 2 (B *ᵥ v) : EuclideanSpace ℂ (Fin (e + 1))), WithLp.toLp 2 (B *ᵥ v)⟫_ℂ = ((‖(WithLp.toLp 2 (B *ᵥ v) : EuclideanSpace ℂ (Fin (e + 1)))‖ : ℝ) : ℂ) ^ 2` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) _`. Rewrite using `[h, ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem norm_sq_toLp_mulVec (v : Fin (e + 1) → ℂ) :
     ‖(WithLp.toLp 2 (B *ᵥ v) : EuclideanSpace ℂ (Fin (e + 1)))‖ ^ 2 = (star v ⬝ᵥ ((Bᴴ * B) *ᵥ v)).re := by
   rw [← inner_toLp_mulVec]
@@ -146,6 +191,9 @@ theorem norm_sq_toLp_mulVec (v : Fin (e + 1) → ℂ) :
     inner_self_eq_norm_sq_to_K (𝕜 := ℂ) _
   rw [h, ← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Introduce `h`. Apply `hv` to reduce the goal to its premises. Apply `eq_zero_of_mulVec_eq_zero hB` to reduce the goal to its premises. Use `congrArg WithLp.ofLp h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem toLp_mulVec_ne_zero (hB : B.det ≠ 0) {v : Fin (e + 1) → ℂ} (hv : v ≠ 0) :
     (WithLp.toLp 2 (B *ᵥ v) : EuclideanSpace ℂ (Fin (e + 1))) ≠ 0 := by
   intro h
@@ -154,6 +202,9 @@ theorem toLp_mulVec_ne_zero (hB : B.det ≠ 0) {v : Fin (e + 1) → ℂ} (hv : v
   have := congrArg WithLp.ofLp h
   simpa using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `hermChartPot`. Rewrite using `[← inner_toLp_mulVec, ← chart_add, Real.log_sqrt (show (0 : ℝ) ≤ (⟪chartConst B + chartLin B y, chartConst B + chartLin B y⟫_ℂ).re from inner_self_nonneg (𝕜 := ℂ))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermChartPot_eq :
     hermChartPot (Bᴴ * B) = fun y => 2⁻¹ * Real.log (⟪chartConst B + chartLin B y, chartConst B + chartLin B y⟫_ℂ).re := by
   funext y
@@ -167,22 +218,34 @@ def hessForm (y x : Fin e → ℂ) : ℝ :=
       ⟪chartConst B + chartLin B y, chartConst B + chartLin B y⟫_ℂ) • (chartConst B + chartLin B y)‖ ^ 2 /
     (2 * ‖chartConst B + chartLin B y‖ ^ 2)
 
+/- English proof (translation)
+Rewrite using `[chart_add]`. Use `toLp_mulVec_ne_zero B hB fun h => ?_` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`.
+-/
 theorem chart_ne_zero (hB : B.det ≠ 0) (y : Fin e → ℂ) : chartConst B + chartLin B y ≠ 0 := by
   rw [chart_add]
   refine toLp_mulVec_ne_zero B hB fun h => ?_
   have := congrFun h 0
   simp at this
 
+/- English proof (translation)
+Rewrite using `[hermChartPot_eq, cxHessian_affine_form _ _ _ _ (chart_ne_zero B hB y)]`. Both sides reduce to the same expression.
+-/
 theorem hess_form_eq (hB : B.det ≠ 0) (y x : Fin e → ℂ) :
     star x ⬝ᵥ (cxHessian (hermChartPot (Bᴴ * B)) y *ᵥ x) = (hessForm B y x : ℂ) := by
   rw [hermChartPot_eq, cxHessian_affine_form _ _ _ _ (chart_ne_zero B hB y)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hermChartPot_eq, cxHessian_affine _ _ _ (chart_ne_zero B hB y)]`. Conclude with `gramHess_isHermitian _ _`.
+-/
 theorem hess_isHermitian (hB : B.det ≠ 0) (y : Fin e → ℂ) :
     (cxHessian (hermChartPot (Bᴴ * B)) y).IsHermitian := by
   rw [hermChartPot_eq, cxHessian_affine _ _ _ (chart_ne_zero B hB y)]
   exact gramHess_isHermitian _ _
 
+/- English proof (translation)
+Establish `hu` using `chart_ne_zero B hB y`. Unfold `hessForm`. Rewrite using `[← norm_sq_toLp_mulVec, ← norm_sq_toLp_mulVec, ← chart_sub, ← chart_add]`. Conclude with `div_le_div_of_nonneg_right (norm_sub_proj_le _ _ hu s) (by positivity)`.
+-/
 theorem hessForm_le (hB : B.det ≠ 0) (y x : Fin e → ℂ) (s : ℂ) :
     hessForm B y x ≤
       (star ((Fin.cons 0 (star x) : Fin (e + 1) → ℂ) - s • Fin.cons 1 y) ⬝ᵥ
@@ -193,6 +256,9 @@ theorem hessForm_le (hB : B.det ≠ 0) (y x : Fin e → ℂ) (s : ℂ) :
   rw [← norm_sq_toLp_mulVec, ← norm_sq_toLp_mulVec, ← chart_sub, ← chart_add]
   exact div_le_div_of_nonneg_right (norm_sub_proj_le _ _ hu s) (by positivity)
 
+/- English proof (translation)
+Use `⟨⟪chartConst B + chartLin B y, chartLin B (star x)⟫_ℂ / ⟪chartConst B + chartLin B y, chartConst B + chartLin B y⟫_ℂ, ?_⟩` and prove the remaining obligations. Unfold `hessForm`. Rewrite using `[← norm_sq_toLp_mulVec, ← norm_sq_toLp_mulVec, ← chart_sub, ← chart_add]`.
+-/
 theorem hessForm_eq (y x : Fin e → ℂ) :
     ∃ s : ℂ, hessForm B y x =
       (star ((Fin.cons 0 (star x) : Fin (e + 1) → ℂ) - s • Fin.cons 1 y) ⬝ᵥ
@@ -203,6 +269,11 @@ theorem hessForm_eq (y x : Fin e → ℂ) :
   unfold hessForm
   rw [← norm_sq_toLp_mulVec, ← norm_sq_toLp_mulVec, ← chart_sub, ← chart_add]
 
+/- English proof (translation)
+Establish `hu` using `chart_ne_zero B hB y`. Unfold `hessForm`. Rewrite using `[chart_sub]`. Use `div_pos (pow_pos (norm_pos_iff.mpr (toLp_mulVec_ne_zero B hB fun h => hx ?_)) 2) (by have := norm_pos_iff.mpr hu; positivity)` and prove the remaining obligations. Use `set t := ⟪chartConst B + chartLin B y, chartLin B (star x)⟫_ℂ / ⟪chartConst B + chartLin B y, chartConst B + chartLin B y⟫_ℂ`.
+
+Establish `h0 : t = 0` using `by simpa using congrFun h 0`. Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun h k.succ`. Simplify using `[h0] at hk`. Simplify using `using hk`.
+-/
 theorem hessForm_pos (hB : B.det ≠ 0) (y : Fin e → ℂ) {x : Fin e → ℂ} (hx : x ≠ 0) :
     0 < hessForm B y x := by
   have hu := chart_ne_zero B hB y
@@ -224,6 +295,23 @@ end ChartHessianComparison
 
 open ChartHessianComparison in
 
+/- English proof (translation)
+Introduce `e M N hM hN`. Take `⟨B, hMB, hB⟩` from `ChartDensityIntegrableAlt.exists_conjTranspose_mul_self hM`. Take `⟨B', hNB, hB'⟩` from `ChartDensityIntegrableAlt.exists_conjTranspose_mul_self hN`. Take `⟨a, ha, hMN⟩` from `hCmp (e + 1) M N hM hN`. Take `⟨a', ha', hNM⟩` from `hCmp (e + 1) N M hN hM`.
+
+Substitute `hMB hNB` using the available equality. Use `⟨a * a', fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `PosDef.of_dotProduct_mulVec_pos (hess_isHermitian B hB y) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hess_form_eq B hB]`. Conclude with `Complex.zero_lt_real.mpr (hessForm_pos B hB y hx)`.
+
+Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨((hess_isHermitian B' hB' y).smul ?_).sub (hess_isHermitian B hB y), fun x => ?_⟩` and prove the remaining obligations. Use `show star ((a * a' : ℝ) : ℂ) = ((a * a' : ℝ) : ℂ)`. Simplify using the standard rewrite rules. Rewrite using `[sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, hess_form_eq B hB, hess_form_eq B' hB', smul_eq_mul, ← Complex.ofReal_mul, ← Complex.ofReal_sub]`.
+
+Use `Complex.zero_le_real.mpr (sub_nonneg.mpr ?_)` and prove the remaining obligations. Take `⟨s, hs⟩` from `hessForm_eq B' y x`. Establish `h1` using `hessForm_le B hB y x s`. Rewrite using `[hs]`. Use `set w := (Fin.cons 0 (star x) : Fin (e + 1) → ℂ) - s • Fin.cons 1 y with hw`.
+
+Use `set v := (Fin.cons 1 y : Fin (e + 1) → ℂ) with hv`. Establish `hv0 : v ≠ 0` using `fun h => by simpa [hv] using congrFun h 0`. Establish `hqv : 0 < (star v ⬝ᵥ ((Bᴴ * B) *ᵥ v)).re`. Rewrite using `[← norm_sq_toLp_mulVec]`. Use `norm_pos_iff.mpr (toLp_mulVec_ne_zero B hB hv0)` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hqv' : 0 < (star v ⬝ᵥ ((B'ᴴ * B') *ᵥ v)).re`. Rewrite using `[← norm_sq_toLp_mulVec]`. Use `norm_pos_iff.mpr (toLp_mulVec_ne_zero B' hB' hv0)` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hqw' : 0 ≤ (star w ⬝ᵥ ((B'ᴴ * B') *ᵥ w)).re`. Rewrite using `[← norm_sq_toLp_mulVec]`. Check the signs of the components of the expression. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Use `set r := (star w ⬝ᵥ ((B'ᴴ * B') *ᵥ w)).re / (2 * (star v ⬝ᵥ ((B'ᴴ * B') *ᵥ v)).re) with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `e1 : (star w ⬝ᵥ ((B'ᴴ * B') *ᵥ w)).re = r * (2 * (star v ⬝ᵥ ((B'ᴴ * B') *ᵥ v)).re)`. Rewrite using `[hr, div_mul_cancel₀ _ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ChartHessCompare.proof (hCmp : HermFormCompare.Statement) : ChartHessCompare.Statement := by
   intro e M N hM hN
   obtain ⟨B, hMB, hB⟩ := ChartDensityIntegrableAlt.exists_conjTranspose_mul_self hM

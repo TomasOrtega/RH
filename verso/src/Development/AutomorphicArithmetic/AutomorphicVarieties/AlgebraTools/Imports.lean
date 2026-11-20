@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Ultra
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F hF P hP`. Establish `hall : ∀ j, ∀ᶠ N in F, ∀ i ≤ j, P i N` using `fun j => (Filter.eventually_all_finite (Set.finite_Iic j)).2 (fun i _ => hP i)`. Use `⟨fun N => Nat.findGreatest (fun j => ∀ i ≤ j, P i N) N, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tendsto_atTop]`. Introduce `j`.
+
+Use `filter_upwards [hall j, hF (eventually_ge_atTop j)] with N h1 h2`. Conclude with `Nat.le_findGreatest (P := fun j => ∀ i ≤ j, P i N) h2 h1`. Use `filter_upwards [hall 0] with N h1`. Conclude with `Nat.findGreatest_spec (P := fun j => ∀ i ≤ j, P i N) (Nat.zero_le N) h1`.
+-/
 theorem UpperTheory.V.AlgebraTools.exists_diag :
     ∀ (F : Filter ℕ), F ≤ atTop → ∀ P : ℕ → ℕ → Prop, (∀ j, ∀ᶠ N in F, P j N) →
       ∃ ν : ℕ → ℕ, Tendsto ν F atTop ∧ ∀ᶠ N in F, ∀ j ≤ ν N, P j N := by

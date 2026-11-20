@@ -7,6 +7,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Introduce `n k J u p x m γ hJ hdim hu hcov hdisj b s hs hsx P hP`. Take `⟨ε₀, hε₀, ρ, hρ, hrimb⟩` from `hrim n k J u p x m γ hJ hdim hu hcov hdisj b`. Take `⟨P', hP'P, hP'o, hsP'⟩` from `mem_nhds_iff.mp hP`. Use `set K : Set (Fin k → ℂ) := Metric.closedBall 0 ρ \ P' with hK`. Establish `hKc : IsCompact K` using `(isCompact_closedBall 0 ρ).diff hP'o`.
+
+Establish `hKD : K ⊆ Metric.ball 0 (γ b).radius` using `fun τ hτ => mem_ball_zero_iff.mpr (lt_of_le_of_lt (mem_closedBall_zero_iff.mp hτ.1) hρ)`. Establish `hcont : ContinuousOn (γ b).toFun K` using `(γ b).differentiableOn.continuousOn.mono hKD`. Establish `hxK : x ∉ (γ b).toFun '' K`. Introduce and unpack `⟨τ, hτK, hτx⟩`. Establish `hτs : τ = s` using `(γ b).injOn (hKD hτK) hs (hτx.trans hsx.symm)`.
+
+Conclude with `hτK.2 (hτs ▸ hsP')`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp (hKc.image_of_continuousOn hcont).isClosed.isOpen_compl x hxK`. Use `⟨min ε₀ δ, lt_min hε₀ hδ, fun τ hτ hfτ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖τ‖ ≤ ρ` using `hrimb τ hτ (Metric.ball_subset_ball (min_le_left _ _) hfτ)`. Assume the negation of the conclusion as `hτP`.
+
+Establish `hτK : τ ∈ K` using `⟨mem_closedBall_zero_iff.mpr h1, fun h => hτP (hP'P h)⟩`. Conclude with `hball (Metric.ball_subset_ball (min_le_right _ _) hfτ) ⟨τ, hτK, rfl⟩`.
+-/
 theorem BranchProperAtPoint.proof (hrim : BranchAwayFromRim.Statement) :
     BranchProperAtPoint.Statement := by
   intro n k J u p x m γ hJ hdim hu hcov hdisj b s hs hsx P hP

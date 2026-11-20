@@ -6,6 +6,13 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ _ C _ _ _ ι`. Use `letI : Module L C := Module.compHom C ι.toRingHom`. Establish `hsmul : ∀ (l : L) (x : C), l • x = ι l * x` using `fun _ _ => rfl`. Use `haveI : IsScalarTower ℚ L C := ⟨fun q l x => by`. Rewrite using `[hsmul, hsmul, map_smul, smul_mul_assoc]⟩`.
+
+Use `haveI : Module.Finite L C := Module.Finite.of_restrictScalars_finite ℚ L C`. Set `b` to `Module.finBasis L C`. Use `⟨Module.finrank L C, b, fun x => ⟨b.repr x, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [← hsmul]`. Conclude with `(b.sum_repr x).symm`.
+
+Introduce `c hc`. Simplify using `only [← hsmul] at hc`. Rewrite using `[hc, b.repr_sum_self]`.
+-/
 theorem exists_left_basis_through_algHom : ∀ (L : Type) [Field L] [NumberField L] (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C]
     (ι : L →ₐ[ℚ] C), ∃ (r : ℕ) (e : Fin r → C), ∀ x : C, ∃! c : Fin r → L, x = ∑ i, ι (c i) * e i := by
   intro L _ _ C _ _ _ ι

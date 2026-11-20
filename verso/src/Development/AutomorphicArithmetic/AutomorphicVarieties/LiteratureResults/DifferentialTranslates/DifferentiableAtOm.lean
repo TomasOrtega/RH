@@ -33,6 +33,9 @@ instance {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] (
 def mulVecL {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) : (Fin d → ℂ) →L[ℝ] (Fin d → ℂ) :=
   LinearMap.toContinuousLinearMap ((Matrix.toLin' A).restrictScalars ℝ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulVecL_apply {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (v : Fin d → ℂ) : mulVecL A v = A *ᵥ v := rfl
 
 section Pull
@@ -56,9 +59,15 @@ namespace Geo
 
 variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {d : ℕ} (G : Geo Γ V S d)
 
+/- English proof (translation)
+Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem ρ_inv_apply (γ : Γ) (p : V) : G.ρ γ⁻¹ (G.ρ γ p) = p := by
   rw [← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => G.ρ_inv_apply γ p ▸ G.maps γ⁻¹ _ h, G.maps γ p⟩`.
+-/
 theorem ρ_mem_iff (γ : Γ) (p : V) : G.ρ γ p ∈ G.Y ↔ p ∈ G.Y :=
   ⟨fun h => G.ρ_inv_apply γ p ▸ G.maps γ⁻¹ _ h, G.maps γ p⟩
 
@@ -70,6 +79,9 @@ def lev : Representation ℂ Γ (S → Fin d → ℂ) where
   map_one' := by ext f x; simp
   map_mul' γ δ := by ext f x; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_apply (γ : Γ) (f : S → Fin d → ℂ) (s : S) : G.lev γ f s = G.ξ γ *ᵥ f (G.σ γ⁻¹ s) := rfl
 
 def Om (q : ℕ) : Submodule ℂ (S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) where
@@ -78,6 +90,9 @@ def Om (q : ℕ) : Submodule ℂ (S → V → V [⋀^Fin q]→L[ℝ] (Fin d → 
   zero_mem' s := ⟨contDiffOn_const, fun _ _ => rfl⟩
   smul_mem' c w h s := ⟨(h s).1.const_smul c, fun p hp => by simp [(h s).2 p hp]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Om {q : ℕ} {w : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)} :
     w ∈ G.Om q ↔ ∀ s, ContDiffOn ℝ ∞ (w s) G.Y ∧ ∀ p ∉ G.Y, w s p = 0 := Iff.rfl
 
@@ -85,6 +100,9 @@ def tr (q : ℕ) (γ : Γ) : (V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) →L[ℝ] 
   (ContinuousLinearMap.compContinuousAlternatingMapCLM ℝ V (Fin d → ℂ) (Fin d → ℂ) (Fin q) (mulVecL (G.ξ γ))).comp
     (ContinuousAlternatingMap.compContinuousLinearMapCLM (G.ρ γ⁻¹))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tr_apply (q : ℕ) (γ : Γ) (m : V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) (v : Fin q → V) :
     G.tr q γ m v = G.ξ γ *ᵥ m (fun i => G.ρ γ⁻¹ (v i)) := rfl
 
@@ -98,14 +116,23 @@ def act (q : ℕ) : Representation ℂ Γ (G.Om q) where
   map_one' := by ext w s p v; simp
   map_mul' γ δ := by ext w s p v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_apply (q : ℕ) (γ : Γ) (w : G.Om q) (s : S) (p : V) (v : Fin q → V) :
     (G.act q γ w).1 s p v = G.ξ γ *ᵥ w.1 (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) (fun i => G.ρ γ⁻¹ (v i)) := rfl
 
 variable {G} in
+/- English proof (translation)
+The claim follows from `(w.2 s).1.contDiffAt (G.isOpen.mem_nhds hp)`.
+-/
 theorem contDiffAt_Om {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : ContDiffAt ℝ ∞ (w.1 s) p :=
   (w.2 s).1.contDiffAt (G.isOpen.mem_nhds hp)
 
 variable {G} in
+/- English proof (translation)
+The claim follows from `(contDiffAt_Om w s hp).differentiableAt (by simp)`.
+-/
 theorem differentiableAt_Om {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : DifferentiableAt ℝ (w.1 s) p :=
   (contDiffAt_Om w s hp).differentiableAt (by simp)
 
@@ -128,6 +155,9 @@ def dOm (q : ℕ) : G.Om q →ₗ[ℂ] G.Om (q + 1) where
       simp [ContinuousAlternatingMap.alternatizeUncurryFin_apply, Finset.mul_sum, mul_left_comm]
     · simp [Set.indicator_of_notMem hp]
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem hp _`.
+-/
 theorem dOm_apply {q : ℕ} (w : G.Om q) (s : S) {p : V} (hp : p ∈ G.Y) : (G.dOm q w).1 s p = extDeriv (w.1 s) p :=
   Set.indicator_of_mem hp _
 
@@ -137,6 +167,9 @@ def incl : (S → Fin d → ℂ) →ₗ[ℂ] G.Om 0 where
   map_add' f g := by ext s p v; by_cases hp : p ∈ G.Y <;> simp [hp]
   map_smul' c f := by ext s p v; by_cases hp : p ∈ G.Y <;> simp [hp]
 
+/- English proof (translation)
+Simplify using `[incl, hp]`.
+-/
 theorem incl_apply (f : S → Fin d → ℂ) (s : S) {p : V} (hp : p ∈ G.Y) (v : Fin 0 → V) : (G.incl f).1 s p v = f s := by
   simp [incl, hp]
 

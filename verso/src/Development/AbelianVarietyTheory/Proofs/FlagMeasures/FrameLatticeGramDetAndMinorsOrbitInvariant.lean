@@ -13,6 +13,11 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.FrameGram
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hm) (Fin.castLE_injective hm) _ _ ?_ fun _ => rfl` and prove the remaining obligations. Introduce `i hi`.
+
+Rewrite using `[hB, mul_zero]`. Assume the negation of the conclusion as `h`. Apply `hi` to reduce the goal to its premises. Establish `h1 : (i : ℕ) ≤ b` using `not_lt.1 h`. Conclude with `⟨⟨i, by omega⟩, rfl⟩`.
+-/
 theorem submatrix_mul_upper {E : Type} [CommRing E] {N m : ℕ} (hm : m ≤ N) {ι : Type} (f : ι → Fin N)
     (M B : Matrix (Fin N) (Fin N) E) (hB : ∀ i j, j < i → B i j = 0) :
     (M * B).submatrix f (Fin.castLE hm) =
@@ -28,6 +33,9 @@ theorem submatrix_mul_upper {E : Type} [CommRing E] {N m : ℕ} (hm : m ≤ N) {
   have h1 : (i : ℕ) ≤ b := not_lt.1 h
   exact ⟨⟨i, by omega⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[h1]`. Introduce `i j hij`. Conclude with `hB _ _ hij`.
+-/
 theorem det_sub_upper {E : Type} [CommRing E] {N m : ℕ} (hm : m ≤ N)
     (B : Matrix (Fin N) (Fin N) E) (hB : ∀ i j, j < i → B i j = 0) (h1 : ∀ i, B i i = 1) :
     (B.submatrix (Fin.castLE hm) (Fin.castLE hm)).det = 1 := by
@@ -36,18 +44,27 @@ theorem det_sub_upper {E : Type} [CommRing E] {N m : ℕ} (hm : m ≤ N)
   · intro i j hij
     exact hB _ _ hij
 
+/- English proof (translation)
+Unfold `lead`. Rewrite using `[submatrix_mul_upper _ _ _ _ hB, Matrix.det_mul, det_sub_upper _ _ hB h1, mul_one]`.
+-/
 theorem lead_mul_upper {E : Type} [CommRing E] {N : ℕ} (M B : Matrix (Fin N) (Fin N) E)
     (hB : ∀ i j, j < i → B i j = 0) (h1 : ∀ i, B i i = 1) (l : Fin (N + 1)) :
     lead (M * B) l = lead M l := by
   unfold lead
   rw [submatrix_mul_upper _ _ _ _ hB, Matrix.det_mul, det_sub_upper _ _ hB h1, mul_one]
 
+/- English proof (translation)
+Unfold `lead`. Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression.
+-/
 theorem lead_transpose {E : Type} [CommRing E] {N : ℕ} (M : Matrix (Fin N) (Fin N) E)
     (l : Fin (N + 1)) : lead M.transpose l = lead M l := by
   unfold lead
   rw [← Matrix.det_transpose]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← lead_transpose, Matrix.transpose_mul, Matrix.transpose_transpose, lead_mul_upper _ _ hB h1, lead_transpose]`.
+-/
 theorem lead_lower_mul {E : Type} [CommRing E] {N : ℕ} (M B : Matrix (Fin N) (Fin N) E)
     (hB : ∀ i j, j < i → B i j = 0) (h1 : ∀ i, B i i = 1) (l : Fin (N + 1)) :
     lead (B.transpose * M) l = lead M l := by
@@ -57,6 +74,9 @@ theorem lead_lower_mul {E : Type} [CommRing E] {N : ℕ} (M B : Matrix (Fin N) (
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.FrameBasic.hfL L H y _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl`.
+-/
 theorem hf_sum_left (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) {ι : Type} [Fintype ι]
     (α : ι → E) (g : ι → Fin n → E) (y : Fin n → E) :
     hf L H (∑ i, α i • g i) y = ∑ i, α i * hf L H (g i) y := by
@@ -64,6 +84,11 @@ theorem hf_sum_left (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) {ι 
   rw [map_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[hv', hf_sum_left]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, GlobalTheory.FrameBasic.hf_conj L h, hv, hf_sum_left, map_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← GlobalTheory.FrameBasic.hf_conj L h]`.
+-/
 theorem gram_change (L : LocE F E) {n : ℕ} {H : Matrix (Fin n) (Fin n) E} (h : IsHerm L H)
     {ι : Type} [Fintype ι] (u u' v v' : ι → Fin n → E) (P P' : Matrix ι ι E)
     (hv : ∀ j, v j = ∑ i, P i j • u i) (hv' : ∀ j, v' j = ∑ i, P' i j • u' i) :
@@ -78,11 +103,21 @@ theorem gram_change (L : LocE F E) {n : ℕ} {H : Matrix (Fin n) (Fin n) E} (h :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, ← GlobalTheory.FrameBasic.hf_conj L h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_transpose]`. Conclude with `(AlgEquiv.map_det L.cj A).symm`.
+-/
 theorem det_conj (L : LocE F E) {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι E) :
     (A.map L.cj).transpose.det = L.cj A.det := by
   rw [Matrix.det_transpose]
   exact (AlgEquiv.map_det L.cj A).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i | i, rfl⟩`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)) (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)))`.
+
+Rewrite using `[sup_le_iff, Submodule.span_le, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Establish `e : g' i = algebraMap F E t • (algebraMap F E t⁻¹ • (g' i - g i)) + g i`. Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ ht, map_one, one_smul, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr i, rfl⟩)) (Submodule.subset_span ⟨Sum.inl i, rfl⟩)`.
+-/
 theorem span_frames {V : Type} [AddCommGroup V] [Module E V] {ι : Type} (g g' : ι → V) (t : F)
     (ht : t ≠ 0) :
     Submodule.span E (Set.range (Sum.elim g fun i => algebraMap F E t⁻¹ • (g' i - g i))) =
@@ -105,6 +140,19 @@ theorem span_frames {V : Type} [AddCommGroup V] [Module E V] {ι : Type} (g g' :
       exact Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr i, rfl⟩))
         (Submodule.subset_span ⟨Sum.inl i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨hadd, hϖ, -, -⟩` from `GlobalTheory.UnramVal.vE_valuation L S.ϖ S.ϖ_irr`. Establish `hth : S.th ≠ 0` using `(GlobalTheory.FrameBasic.main L r k S).2.2.2.2.2.1`. Establish `h1 : vE L S.ϖ (algebraMap F E 1) = 0`. Use `hadd 1 1 one_ne_zero one_ne_zero` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hn : vE L S.ϖ (algebraMap F E (-1)) = 0`. Use `hadd (-1) (-1) (by simp) (by simp)` as an intermediate fact. Rewrite `this` using `[neg_mul_neg, mul_one]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ht : vE L S.ϖ (algebraMap F E S.th) = S.vth`. Unfold `Frames.th Frames.vth`. Use `split_ifs`. Conclude with `hϖ`. Conclude with `h1`.
+
+Establish `hti : vE L S.ϖ (algebraMap F E S.th⁻¹) = -S.vth`. Use `hadd S.th S.th⁻¹ hth (inv_ne_zero hth)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hth]`. Use linear arithmetic over natural numbers and integers. Establish `hpow : ∀ x : F, x ≠ 0 → ∀ j : ℕ, vE L S.ϖ (algebraMap F E (x ^ j)) = j * vE L S.ϖ (algebraMap F E x)`.
+
+Introduce `x hx j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, h1]`. Simplify using the standard rewrite rules. Consider the case `succ j ih => rw [pow_succ, hadd _ _ (pow_ne_zero _ hx) hx, ih]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd _ _ (mul_ne_zero (pow_ne_zero _ (by simp)) hc) (pow_ne_zero _ (inv_ne_zero hth)), hadd _ _ (pow_ne_zero _ (by simp)) hc, hpow _ (by simp), hpow _ (inv_ne_zero hth), hn, hti]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vE_const [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) (r k : ℕ)
     (S : Frames L r k) (c : F) (hc : c ≠ 0) (m : ℕ) :
     vE L S.ϖ (algebraMap F E ((-1) ^ (r + 1) * c * S.th⁻¹ ^ m)) =
@@ -138,6 +186,27 @@ theorem vE_const [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) (r k
     hadd _ _ (pow_ne_zero _ (by simp)) hc, hpow _ (by simp), hpow _ (inv_ne_zero hth), hn, hti]
   ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S n hn n' hn'`. Take `⟨⟨s, ⟨hs0, hs1⟩, hs⟩, hsp, -⟩` from `(GlobalTheory.HL.frame_unipotent_unitriangular L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩)).2 n hn`. Take `⟨⟨s', ⟨hs0', hs1'⟩, hs'⟩, hsp', -⟩` from `(GlobalTheory.HL.frame_unipotent_unitriangular L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩)).2 n' hn'`. Take `⟨-, -, ⟨c, hc0, hc⟩, -, -, hth, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Establish `hlead : ∀ l, lead (Matrix.of fun a b => S.h (n' (S.f' b)) (n (S.f a))) l = S.D l`.
+
+Introduce `l`. Establish `e` using `gram_change L S.herm.1 S.f S.f' _ _ s s' hs hs'`. Unfold `Frames.h`. Rewrite using `[e, lead_mul_upper _ _ hs0' hs1', lead_lower_mul]`. Both sides reduce to the same expression.
+
+Introduce `i j hij`. Rewrite using `[Matrix.map_apply, hs0 i j hij, map_zero]`. Introduce `i`. Rewrite using `[Matrix.map_apply, hs1, map_one]`. Use `⟨⟨(-1) ^ (r + 1) * c * S.th⁻¹ ^ (2 * (r + 1)), mul_ne_zero (mul_ne_zero (pow_ne_zero _ (by simp)) hc0) (pow_ne_zero _ (inv_ne_zero hth)), ?_, ?_⟩, hlead, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[vE_const L r k S c hc0, Frames.a, hc] push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E := Matrix.of fun a b => S.h (n' (S.f' b)) (n (S.f a)) with hZ set t : E := algebraMap F E S.th⁻¹ with ht`. Set `P : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E` to `Matrix.fromBlocks 1 (Matrix.diagonal fun _ => -t) 0 (Matrix.diagonal fun _ => t)`. Establish `hP : ∀ j, (Sum.elim (fun i => n (S.f i)) (fun i => t • (n' (S.f' i) - n (S.f i)))) j = ∑ i, P i j • (Sum.elim (fun i => n (S.f i)) (fun i => n' (S.f' i))) i`.
+
+Introduce and unpack `(j | j)`. Simplify using `[P, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[P, Fintype.sum_sum_type, Matrix.diagonal_apply, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hPd : P.det = t ^ (r + 1)`.
+
+Simplify using `[P, Matrix.det_fromBlocks_zero₂₁]`. Establish `e` using `gram_change L S.herm.1 _ _ _ _ P P hP hP`. Establish `hG : (Matrix.of fun a b => hf L S.Hm ((Sum.elim (fun i => n (S.f i)) (fun i => n' (S.f' i))) b) ((Sum.elim (fun i => n (S.f i)) (fun i => n' (S.f' i))) a)) = Matrix.fromBlocks (Matrix.single (Fin.last r) (Fin.last r) (-(algebraMap F E S.T))) Z (Z.map L.cj).transpose (Matrix.singl …`. Use extensionality with `(a | a) (b | b)`. Use `hn.1.1 (S.f b) (S.f a)` as an intermediate fact.
+
+Simplify using `only [Matrix.of_apply, Sum.elim_inl, Matrix.fromBlocks_apply₁₁, this, S.gram, Matrix.single_apply, eq_comm, and_comm]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.FrameBasic.hf_conj L S.herm.1 _ _`. Use `hn'.1.1 (S.f' b) (S.f' a)` as an intermediate fact. Simplify using `only [Matrix.of_apply, Sum.elim_inr, Matrix.fromBlocks_apply₂₂, this, S.gram', Matrix.single_apply, eq_comm, and_comm]`.
+
+Establish `hD1 : Z.det = S.D (Fin.last (r + 1))` using `hlead (Fin.last (r + 1))`. Establish `hD0 : (Z.submatrix Fin.castSucc Fin.castSucc).det = S.D (Fin.last r).castSucc` using `hlead (Fin.last r).castSucc`. Establish `e2 : ((Z.map L.cj).transpose.submatrix Fin.castSucc Fin.castSucc) = ((Z.submatrix Fin.castSucc Fin.castSucc).map L.cj).transpose` using `rfl`. Establish `hct : L.cj t = t` using `L.cj.commutes _`. Unfold `Frames.h`.
+
+Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, det_conj, hPd, hG, GlobalTheory.HL.det_gram_two_frames, e2, det_conj, det_conj, hD1, hD0, ← map_mul (algebraMap F E), map_pow, hct]`. Express the relevant statement in the definitionally equal form `_ * (_ * S.G) * _ = _`. Rewrite using `[hc, map_mul, map_mul, map_pow, map_pow, map_neg, map_one, ← ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ`.
+
+Use extensionality with `i`. Simplify using `using i.2`. Rewrite using `[span_frames _ _ _ hth, Frames.ME, ← hsp, ← hsp']`. Simplify using `only [Frames.spanTo, hu, Set.image_univ]`.
+-/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ n ∈ S.N, ∀ n' ∈ S.N', (∃ c : F, c ≠ 0 ∧ vE L S.ϖ (algebraMap F E c) = S.a ∧ (Matrix.of fun a b => S.h (Sum.elim (fun i => n (S.f i)) (fun i => algebraMap F E S.th⁻¹ • (n' (S.f' i) - n (S.f i))) b) (Sum.elim (fun i => n (S.f i)) (fun i => algebraMap F E S.th⁻¹ • (n' (S.f' i) - n (S.f i))) a)).det = algebraMap F E c) ∧ (∀ l, lead (Matrix.of fun a b => S.h (n' (S.f' b)) (n (S.f a))) l = S.D l) ∧ Submodule.span E (Set.range (Sum.elim (fun i => n (S.f i)) (fun i => algebraMap F E S.th⁻¹ • (n' (S.f' i) - n (S.f i))))) = S.ME := by
   intro F _ _ _ _ _ E _ _ _ L r k S n hn n' hn'
   obtain ⟨⟨s, ⟨hs0, hs1⟩, hs⟩, hsp, -⟩ := (GlobalTheory.HL.frame_unipotent_unitriangular L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩)).2 n hn

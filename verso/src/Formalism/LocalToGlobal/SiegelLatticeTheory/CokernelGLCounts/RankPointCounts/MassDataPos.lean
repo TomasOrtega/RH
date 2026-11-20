@@ -14,21 +14,37 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Loca
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Unfold `glkC`. Conclude with `Nat.card_pos`.
+-/
 theorem glkC_pos (k g : ℕ) (hg : g.Prime) : 0 < glkC k g := by
   haveI : NeZero g := ⟨hg.ne_zero⟩
   unfold glkC
   exact Nat.card_pos
 
+/- English proof (translation)
+Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Unfold `ukC`. Conclude with `Nat.card_pos`.
+-/
 theorem ukC_pos (k g : ℕ) (hg : g.Prime) : 0 < ukC k g := by
   haveI : NeZero g := ⟨hg.ne_zero⟩
   unfold ukC
   exact Nat.card_pos
 
+/- English proof (translation)
+Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Unfold `ggC`. Conclude with `Nat.card_pos`.
+-/
 theorem ggC_pos (r k g : ℕ) (hg : g.Prime) : 0 < ggC r k g := by
   haveI : NeZero g := ⟨hg.ne_zero⟩
   unfold ggC
   exact Nat.card_pos
 
+/- English proof (translation)
+Use `haveI : NeZero g := ⟨hg.ne_zero⟩`. Unfold `nnC`. Rewrite using `[Nat.card_pos_iff]`. Use `⟨⟨⟨1, ?_⟩⟩, inferInstance⟩` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.S3.IsN`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals first`. Consider the case `(simp only [Formalism.DoubleCosetMeasures.IsUpUni, Formalism.FourierDecayAlt.S3.b11, Formalism.FourierDecayAlt.S3.b33, Formalism.FourierDecayAlt.S3.b22, Formalism.FourierDecayAlt.S3.b21, Formalism.FourierDecayAlt.S3.b31, Formalism.FourierDecayAlt.S3.b32]`. Conclude with `⟨fun i j hij => by simp [Matrix.one_apply, (show j < i from hij).ne'], fun a => by simp [Matrix.one_apply]⟩)`. Consider the case `(simp [Formalism.FourierDecayAlt.S3.b11, Formalism.FourierDecayAlt.S3.b33, Formalism.FourierDecayAlt.S3.b22, Formalism.FourierDecayAlt.S3.b21, Formalism.FourierDecayAlt.S3.b31, Formalism.FourierDecayAlt.S3.b32, Matrix.one_apply]; done)`.
+
+Consider the case `(ext i j; simp [Formalism.FourierDecayAlt.S3.b11, Formalism.FourierDecayAlt.S3.b33, Formalism.FourierDecayAlt.S3.b22, Formalism.FourierDecayAlt.S3.b21, Formalism.FourierDecayAlt.S3.b31, Formalism.FourierDecayAlt.S3.b32, Matrix.one_apply]; done)`.
+-/
 theorem nnC_pos (r k g : ℕ) (hg : g.Prime) : 0 < nnC r k g := by
   haveI : NeZero g := ⟨hg.ne_zero⟩
   unfold nnC
@@ -101,12 +117,32 @@ def RecPosC : Prop :=
   0 < (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d ∧
   0 < (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d'
 
+/- English proof (translation)
+Unfold `gOf`. Use `split_ifs`. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`.
+-/
 theorem gOf_prime (p : TypX X) : (gOf p).Prime := by
   unfold gOf
   split_ifs
   · exact D.host.g_prime 0
   · exact D.host.g_prime 1
 
+/- English proof (translation)
+Take `⟨hv, -, -, -, hUo, -, hZZ, hPP, -, hal, -⟩` from `hP`. Take `⟨hloc, hGf, hSf, hSf', hH, hH', hHpp, hHpp', hN, hN'⟩` from `hL`. Take `⟨hG, hHa, hHa', hNa, hNa', hB⟩` from `hCv`. Take `⟨hvH, hvH', hvN, hvN'⟩` from `hQv`. Take `⟨hdeg, hdp, hdp', hr0, hr0', hd, hd'⟩` from `hR`.
+
+Use `set B := bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq with hBdef`. Establish `hMp : ∀ p, 0 < B.Mp p` using `fun p => (hv p.1).1 p.2`. Establish `hU00p : ∀ p, 0 < B.localVolumeAtPlace p` using `fun p => (hv p.1).2.1`. Establish `hKo : 0 < B.μKo` using `div_pos hGf (Finset.prod_pos fun p _ => (hloc p).1)`. Establish `hSo : 0 < B.μSo` using `div_pos hSf (Finset.prod_pos fun p _ => (hloc p).2.2.2.1)`.
+
+Establish `hSo' : 0 < B.μSo'` using `div_pos hSf' (Finset.prod_pos fun p _ => (hloc p).2.2.2.2.1)`. Establish `hU00o : 0 < B.localVolumeArchimedean` using `hUo`. Establish `hMo : 0 < B.Mo` using `div_pos (mul_pos hU00o (pow_pos hKo 2)) (mul_pos hSo hSo')`. Establish `hZ : 0 < B.volZZ` using `hZZ`. Establish `hPPp : 0 < B.volPP` using `by show 0 < ∏ l : Fin (D.R.rS + 1), ∏' v : Formalism.L2.SG.LocVol.PlX X, Formalism.L2.SG.LocVol.PPX X u u' ψ l v`.
+
+Conclude with `Finset.prod_pos fun l _ => (hPP l).2`. Establish `hAl : 0 < B.al` using `mul_pos (Finset.prod_pos fun p _ => (hv p.1).2.2.2.2) hal`. Establish `hCo : 0 < B.Coo` using `mul_pos hκ hCoo`. Establish `hMM : 0 < B.MM` using `mul_pos hMo (Finset.prod_pos fun p _ => hMp p)`. Establish `hμK : 0 < B.μK` using `mul_pos hKo (Finset.prod_pos fun p _ => (hloc p).1)`.
+
+Establish `hAA : 0 < B.AA` using `div_pos (mul_pos (mul_pos hB hCo) (div_pos hMM hZ)) hμK`. Establish `hn0c : 0 < B.n0c` using `div_pos hAA hr0`. Establish `hgp : ∀ p, 0 < B.g p` using `fun p => by show (0 : ℝ) < ((gOf p : ℕ) : ℝ)`. Conclude with `(gOf_prime X p).pos` after adjusting the coercions. Establish `hglk : ∀ p, 0 < B.glk p` using `fun p => by show (0 : ℝ) < ((glkC D.R.k (gOf p) : ℕ) : ℝ)`.
+
+Conclude with `glkC_pos _ _ (gOf_prime X p)` after adjusting the coercions. Establish `huk : ∀ p, 0 < B.uk p` using `fun p => by show (0 : ℝ) < ((ukC D.R.k (gOf p) : ℕ) : ℝ)`. Conclude with `ukC_pos _ _ (gOf_prime X p)` after adjusting the coercions. Establish `hnn : ∀ p, 0 < B.nn p` using `fun p => by show (0 : ℝ) < ((nnC D.R.rS D.R.k (gOf p) : ℕ) : ℝ)`. Conclude with `nnC_pos _ _ _ (gOf_prime X p)` after adjusting the coercions.
+
+Establish `hgg : ∀ p, 0 < B.gg p` using `fun p => by show (0 : ℝ) < ((ggC D.R.rS D.R.k (gOf p) : ℕ) : ℝ)`. Conclude with `ggC_pos _ _ _ (gOf_prime X p)` after adjusting the coercions. Establish `hδ : 0 ≤ B.δ` using `by show 0 ≤ C * ((D.R.rS : ℝ) + 1) * (C / Th) ^ (Fintype.card (NumberField.InfinitePlace X.B.I.F))`. Conclude with `mul_nonneg (mul_nonneg hC (by positivity)) (pow_nonneg (div_nonneg hC hTh.le) _)`. Unfold `MassDataPosC Formalism.FourierDecayAlt.S3.MassData.Pos`.
+
+Conclude with `⟨fun p => ⟨hgp p, hglk p, huk p, hnn p, hgg p, (hloc p).1, (hloc p).2.1, (hloc p).2.2.1, (hloc p).2.2.2.1, (hloc p).2.2.2.2.1, (hloc p).2.2.2.2.2.1, (hloc p).2.2.2.2.2.2, hMp p, hU00p p⟩, hKo, hSo, hSo', hMo, hU00o, hH, hH', hHpp, hHpp', hN, hN', hZ, hPPp, hAl, hG, hHa, hHa', hNa …`.
+-/
 theorem massDataPosC_of (hL : LocHaarPosC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq)
     (hCv : CovolPosC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq)
     (hQv : QuotVolPosC X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq)
@@ -163,6 +199,9 @@ theorem massDataPosC_of (hL : LocHaarPosC X hb hK FdN FdN' u u' X0 ψ T sd C Th 
 
 end Main
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.haar_disintegration_real_holds D X u u' 1 one_pos`. Establish `h' : ∃ C, 0 < C ∧ Formalism.L2.SG.RealObj.Disint X u u' 1 C` using `h`. Unfold `Formalism.L2.SG.RealObj.DisintegrationConstant`. Rewrite using `[dif_pos h']`. Conclude with `h'.choose_spec.1`.
+-/
 theorem cooOf_pos {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) : 0 < Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 := by
   have h := Formalism.L2.SG.RealObj.InfCut.ProductExactness.haar_disintegration_real_holds D X u u' 1 one_pos
   have h' : ∃ C, 0 < C ∧ Formalism.L2.SG.RealObj.Disint X u u' 1 C := h
@@ -170,6 +209,11 @@ theorem cooOf_pos {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) : 0 < For
   rw [dif_pos h']
   exact h'.choose_spec.1
 
+/- English proof (translation)
+Take `⟨hN, hH⟩` from `Formalism.L2.SG.Closed.VolPosC_holds D X Y u hK2`. Take `⟨hN', hH'⟩` from `Formalism.L2.SG.Closed.VolPosC_holds D X Y u' hK2`. Use `⟨hH, hH', ?_, ?_⟩` and prove the remaining obligations. Use `show 0 < ((X.muN u) (Y.FN u)).toReal`. Conclude with `pos_of_mul_pos_right hN hV.le`.
+
+Use `show 0 < ((X.muN u') (Y.FN u')).toReal`. Conclude with `pos_of_mul_pos_right hN' hV.le`.
+-/
 theorem quotVolPosC_of {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
     (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ)

@@ -14,6 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PerfectDual
 
+/- English proof (translation)
+Establish `h' : (ev P' (fst A B) (snd A B ≫ x)).IsLB` using `pull_isLB h.isLB _`. Establish `hc : cls P hP.isLB = cls _ h'` using `(cls_eq_iff hP.isLB h').2 hx`. Establish `key : ∀ {Y : Over S} (a : Y ⟶ A) (t : Y ⟶ B), evc hP.isLB a t = evc h.isLB a (t ≫ x)`. Introduce `Y a t`. Use `show CechPic.pull (lift a t).left (cls P hP.isLB) = _`.
+
+Rewrite using `[hc, cls_ev h.isLB, pull_evc, lift_fst, lift_snd_assoc]`. Use `⟨fun {T} u v huv ↦ ?_⟩` and prove the remaining obligations. Establish `hw : (u * v⁻¹) ≫ x = 1` using `by rw [MonObj.mul_comp, GrpObj.inv_comp, huv, mul_inv_cancel]`. Establish `t` using `hP.ker_right T (u * v⁻¹) ((triv_ev_iff hP.isLB _ _).2 (by`. Rewrite using `[key, Category.assoc, hw, MonObj.comp_one, evc_one_right h.isLB h.zero]))`.
+
+Rewrite `t` using `[mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem mono_of_isPerfect {S : Scheme.{0}} {A B B' : Over S} [GrpObj A] [GrpObj B] [GrpObj B']
     {P : LB (A ⊗ B).left} {P' : LB (A ⊗ B').left} (h : IsDual A B' P') (hP : IsPerfect A B P) (x : B ⟶ B')
     [IsMonHom x] (hx : LBIso P (ev P' (fst A B) (snd A B ≫ x))) : Mono x := by
@@ -29,6 +36,9 @@ theorem mono_of_isPerfect {S : Scheme.{0}} {A B B' : Over S} [GrpObj A] [GrpObj 
     rw [key, Category.assoc, hw, MonObj.comp_one, evc_one_right h.isLB h.zero]))
   rwa [mul_inv_eq_one] at t
 
+/- English proof (translation)
+Use `haveI : IsEmpty X.left := ⟨fun p ↦ hS.false (X.hom p)⟩`. Use `haveI : IsEmpty Y.left := ⟨fun p ↦ hS.false (Y.hom p)⟩`. Use `haveI : IsIso f.left := ⟨⟨isInitialOfIsEmpty.to _, isInitialOfIsEmpty.hom_ext _ _, isInitialOfIsEmpty.hom_ext _ _⟩⟩`. Use `haveI : IsIso ((Over.forget S).map f) := ‹IsIso f.left›`. Conclude with `isIso_of_reflects_iso f (Over.forget S)`.
+-/
 theorem isIso_of_isEmpty {S : Scheme.{0}} (hS : IsEmpty S) {X Y : Over S} (f : X ⟶ Y) : IsIso f := by
   haveI : IsEmpty X.left := ⟨fun p ↦ hS.false (X.hom p)⟩
   haveI : IsEmpty Y.left := ⟨fun p ↦ hS.false (Y.hom p)⟩
@@ -36,6 +46,17 @@ theorem isIso_of_isEmpty {S : Scheme.{0}} (hS : IsEmpty S) {X Y : Over S} (f : X
   haveI : IsIso ((Over.forget S).map f) := ‹IsIso f.left›
   exact isIso_of_reflects_iso f (Over.forget S)
 
+/- English proof (translation)
+Take `⟨B', _, P', hB', hd', h1, h2⟩` from `hD S A hA`. Take `⟨A'', _, Q, hA'', hdQ, k1, k2⟩` from `hD S B hB`. Take `⟨x, hx, -⟩` from `h1.univ B P hP.isLB haddA`. Establish `hs : (swap P).IsLB` using `pull_isLB hP.isLB _`. Take `⟨y, hy, -⟩` from `k1.univ A (swap P) hs haddB`.
+
+Establish `hmx : IsMonHom x` using `GlobalTheory.AbDual.isMonHom_of_classifying S A B B' P P' h1 h2.additive hP.isLB haddB x hx`. Establish `hss : (swap (swap P)).IsLB` using `pull_isLB hs _`. Establish `haddSS : IsAdditive (swap (swap P))` using `(isAdditive_iff hss).2 fun Y a a' t ↦ by`. Rewrite using `[evc_swap hs hss, evc_swap hs hss, evc_swap hs hss, evc_swap hP.isLB hs, evc_swap hP.isLB hs, evc_swap hP.isLB hs]`. Conclude with `(isAdditive_iff hP.isLB).1 haddA Y a a' t`.
+
+Establish `hmy : IsMonHom y` using `GlobalTheory.AbDual.isMonHom_of_classifying S B A A'' (swap P) Q k1 k2.additive hs haddSS y hy`. Establish `mx : Mono x` using `mono_of_isPerfect h1 hP x hx`. Establish `my : Mono y` using `mono_of_isPerfect k1 hP.swap y hy`. Establish `ix : IsIso x`. Break down `le_or_gt g g' with hle | hlt` into its components or cases.
+
+Conclude with `GlobalTheory.AbMonoIso.isIso_of_mono S B B' hB hB' g' g hg' (hd' g hg) hle x hmx mx`. Distinguish the cases in `hS : Nonempty S`. It suffices to derive a contradiction. Establish `iy` using `GlobalTheory.AbMonoIso.isIso_of_mono S A A'' hA hA'' g g' hg (hdQ g' hg') hlt.le y hmy my`. Conclude with `absurd (GlobalTheory.relDim_unique_of_iso_grp S hS A A'' y iy g g' hg (hdQ g' hg')) hlt.ne'`.
+
+Conclude with `isIso_of_isEmpty (not_nonempty_iff.1 hS) x`. Conclude with `GlobalTheory.AbDual.transport S A B B' P P' h1 hP.isLB x ix hmx hx`.
+-/
 theorem isDual_of_isPerfect_of_additive (hD : GlobalTheory.Published.DualAbelianScheme) {S : Scheme.{0}} [IsLocallyNoetherian S]
     (A B : Over S) [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {g g' : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) (hg' : SmoothOfRelativeDimension g' B.hom)
@@ -65,6 +86,9 @@ theorem isDual_of_isPerfect_of_additive (hD : GlobalTheory.Published.DualAbelian
       · exact isIso_of_isEmpty (not_nonempty_iff.1 hS) x
   exact GlobalTheory.AbDual.transport S A B B' P P' h1 hP.isLB x ix hmx hx
 
+/- English proof (translation)
+The claim follows from `isDual_of_isPerfect_of_additive hD A B hA hB hg hg' hP (CubeNoeth.isAdditive_of_triv_axes hA hB hP.isLB hP.zero_left hP.zero_right) (CubeNoeth.isAdditive_swap_of_triv_axes hA hB hP.isLB hP.zero_left hP.zero_right)`.
+-/
 theorem isDual_of_isPerfect (hD : GlobalTheory.Published.DualAbelianScheme) {S : Scheme.{0}} [IsLocallyNoetherian S]
     (A B : Over S) [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {g g' : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) (hg' : SmoothOfRelativeDimension g' B.hom)

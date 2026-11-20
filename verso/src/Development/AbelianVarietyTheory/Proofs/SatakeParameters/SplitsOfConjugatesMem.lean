@@ -7,6 +7,11 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ K LL h ft`. Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Use `⟨LL.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.card ℚ_[l] ↥K.1 (Loc.Om l), ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Use `Nat.card_congr { toFun := fun σ => LL.1.val.comp σ invFun := fun τ => τ.codRestrict LL.1.toSubalgebra (h τ) left_inv := fun σ => ?_ right_inv := fun τ => ?_ }` and prove the remaining obligations.
+
+Use extensionality with `x`. Both sides reduce to the same expression. Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem splits_of_conjugates_mem :
     ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l),
       (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Loc.Om l) (x : ↥K.1), τ x ∈ LL.1) →

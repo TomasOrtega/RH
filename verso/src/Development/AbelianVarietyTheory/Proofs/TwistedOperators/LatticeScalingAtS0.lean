@@ -27,12 +27,23 @@ namespace GlobalTheory.DepthMap
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_mul]; exact mul_mem (hα v) (hβ v)`.
+-/
 theorem intAf_mul' {α β : Af D.host.F} (hα : α ∈ intAf D.host.F) (hβ : β ∈ intAf D.host.F) :
     α * β ∈ intAf D.host.F := fun v => by rw [map_mul]; exact mul_mem (hα v) (hβ v)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul _) rfl`.
+-/
 theorem pairA_mul' (α β : Af D.host.F) :
     pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β) := Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Use `show evalV D.host.F w (α * _) = evalV D.host.F w α`. Rewrite using `[map_mul, GlobalTheory.FinPlLoc.evalV_ePl]`. Distinguish the cases in `hw : w = v`. Rewrite using `[if_pos hw, mul_one]`.
+
+Rewrite using `[if_neg hw, mul_zero, h w hw]`.
+-/
 theorem mul_ePl {v : GlobalTheory.FinPl.Pl D} {α : Af D.host.F} (h : ∀ w, w ≠ v → evalV D.host.F w α = 0) :
     α * GlobalTheory.FinPlLoc.ePl D (· = v) = α := by
   classical
@@ -43,6 +54,13 @@ theorem mul_ePl {v : GlobalTheory.FinPl.Pl D} {α : Af D.host.F} (h : ∀ w, w �
   · rw [if_pos hw, mul_one]
   · rw [if_neg hw, mul_zero, h w hw]
 
+/- English proof (translation)
+Establish `hne : ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h𝔪`. Use `Submodule.smul_induction_on hX (fun r hr Y hY => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Establish `h1 : c * algebraMap (𝓞 D.host.E) D.host.E r ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[← inv_mul_cancel₀ hne]`. Conclude with `FractionalIdeal.mul_mem_mul hc (FractionalIdeal.mem_coeIdeal_of_mem _ hr)`.
+
+Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Establish `e : c • (r • Y) = o • Y`. Rewrite using `[← algebraMap_smul D.host.E r Y, smul_smul, ← ho, algebraMap_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ o hY`.
+
+Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem smul_mem_homLat {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
     {c : D.host.E} (hc : c ∈ ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹)
@@ -59,6 +77,17 @@ theorem smul_mem_homLat {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D
     exact Submodule.smul_mem _ o hY
   · rw [smul_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, -, c, hc, rfl⟩` from `hz`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Take `⟨β, hβ, X, hX, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨α * β, intAf_mul' hα hβ, c • X, smul_mem_homLat h𝔪 hc hX, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, pairA_mul']`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
+
+Conclude with `neg_mem hx`. Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `add_mem ha hb`.
+
+Consider the case `neg a _ ha => rw [neg_smul]`. Conclude with `neg_mem ha`.
+-/
 theorem smul_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {v : GlobalTheory.FinPl.Pl D}
     {z : AE D} (hz : z ∈ GlobalTheory.SeeSaw.idV ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹ v) {x : Mx D m n}
@@ -80,6 +109,13 @@ theorem smul_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.
   | add a b _ _ ha hb => rw [add_smul]; exact add_mem ha hb
   | neg a _ ha => rw [neg_smul]; exact neg_mem ha
 
+/- English proof (translation)
+Take `⟨m, hm, hmQ⟩` from `Set.not_subset.1 hQ`. Establish `hne : ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h𝔪`. Establish `h1 : a * algebraMap (𝓞 D.host.E) D.host.E m ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[← inv_mul_cancel₀ hne]`. Conclude with `FractionalIdeal.mul_mem_mul ha (FractionalIdeal.mem_coeIdeal_of_mem _ hm)`.
+
+Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite using `[show Valued.v (algebraMap D.host.E (Kw Q) a) = Q.valuation D.host.E a from IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q a]`. Establish `hm1 : Q.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E m) = 1`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (Q.intValuation_le_one m) (not_lt.1 fun h => hmQ ((Q.intValuation_lt_one_iff_mem m).1 h))`.
+
+Establish `ho1 : Q.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E o) ≤ 1` using `Q.valuation_le_one o`. Rewrite `ho1` using `[ho, map_mul, hm1, mul_one]`. Conclude with `ho1`.
+-/
 theorem val_le_one_of_mem_inv {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {Q : Formalism.L2.DIV.Pl D.host.E}
     (hQ : ¬ 𝔪 ≤ Q.asIdeal) {a : D.host.E} (ha : a ∈ ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹) :
     Valued.v (algebraMap D.host.E (Kw Q) a) ≤ 1 := by
@@ -105,6 +141,13 @@ namespace GlobalTheory.DepthMap
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, -, c, hc, rfl⟩` from `hz`. Establish `e : pairA D.host.F 0 α ⊗ₜ[D.host.F] c = (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D c`. Express the relevant statement in the definitionally equal form `_ = _ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] c)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e, RingHom.map_mul, RingHom.map_mul, Valuation.map_mul, show GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D (incA D c)) = algebraMap D.host.E (Kw Q) c from Comparison₂.cpt_tmul Q c]`. Establish `hi : finPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ intAE D` using `AddSubgroup.subset_closure ⟨α, hα, 1, rfl⟩`. Conclude with `mul_le_one' (((GlobalTheory.StdFrames.comp_toAd D).int _).1 hi Q) (val_le_one_of_mem_inv h𝔪 hQ hc)`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [RingHom.map_add, RingHom.map_add]`. Conclude with `Valuation.map_add_le _ hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg, RingHom.map_neg, Valuation.map_neg]`. Conclude with `hx`.
+-/
 theorem val_cpt_le_one {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {Q : Formalism.L2.DIV.Pl D.host.E}
     (hQ : ¬ 𝔪 ≤ Q.asIdeal) {v : GlobalTheory.FinPl.Pl D} {z : AE D}
     (hz : z ∈ GlobalTheory.SeeSaw.idV ((𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹ v) :
@@ -125,6 +168,11 @@ theorem val_cpt_le_one {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {Q 
   | add x y _ _ hx hy => rw [RingHom.map_add, RingHom.map_add]; exact Valuation.map_add_le _ hx hy
   | neg x _ hx => rw [RingHom.map_neg, RingHom.map_neg, Valuation.map_neg]; exact hx
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[show toEAf D (∑ PP ∈ P, es PP) = ∑ PP ∈ P, toEAf D (es PP) from map_sum (toEAf D).toAddMonoidHom (fun PP => es PP) P, show GlobalTheory.StdFrames.cpt (D := D) Q (∑ PP ∈ P, toEAf D (es PP)) = ∑ PP ∈ P, GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D (es PP)) from map_sum (GlobalTh …`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes Q hQ)).1`. Introduce `b hb hbQ`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes b hb)).2 Q (Ne.symm hbQ)`.
+
+Introduce `h`. Conclude with `absurd hQ h`.
+-/
 theorem cpt_idemSum_of_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P)
     {Q : Formalism.L2.DIV.Pl D.host.E} (hQ : Q ∈ P) : GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D e) = 1 := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he
@@ -136,6 +184,9 @@ theorem cpt_idemSum_of_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)
   · intro b hb hbQ; exact (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes b hb)).2 Q (Ne.symm hbQ)
   · intro h; exact absurd hQ h
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[show toEAf D (∑ PP ∈ P, es PP) = ∑ PP ∈ P, toEAf D (es PP) from map_sum (toEAf D).toAddMonoidHom (fun PP => es PP) P, show GlobalTheory.StdFrames.cpt (D := D) Q (∑ PP ∈ P, toEAf D (es PP)) = ∑ PP ∈ P, GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D (es PP)) from map_sum (GlobalTh …`. Conclude with `Finset.sum_eq_zero fun b hb => (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes b hb)).2 Q fun h => hQ (h ▸ hb)`.
+-/
 theorem cpt_idemSum_of_not_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P)
     {Q : Formalism.L2.DIV.Pl D.host.E} (hQ : Q ∉ P) : GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D e) = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he
@@ -145,6 +196,11 @@ theorem cpt_idemSum_of_not_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.hos
       map_sum (GlobalTheory.StdFrames.cpt (D := D) Q).toAddMonoidHom (fun PP => toEAf D (es PP)) P]
   exact Finset.sum_eq_zero fun b hb => (GlobalTheory.StdFrames.cpt_of_isIdemAt (hes b hb)).2 Q fun h => hQ (h ▸ hb)
 
+/- English proof (translation)
+Introduce `h`. Unfold `Places.modul at h`. Take `⟨v, hv, hle⟩` from `(Ideal.IsPrime.prod_le Q.isPrime).1 h`. Establish `h1 : (P.w v).asIdeal ≤ Q.asIdeal` using `Ideal.IsPrime.le_of_pow_le hle`. Establish `h2 : P.w v = Q` using `HeightOneSpectrum.ext ((P.w v).isMaximal.eq_of_le Q.isPrime.ne_top h1)`.
+
+Conclude with `hQ (h2 ▸ Finset.mem_image_of_mem P.w hv)`.
+-/
 theorem modul_not_le {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) {Q : Formalism.L2.DIV.Pl D.host.E}
     (hQ : Q ∉ P.W0) : ¬ P.modul sc ≤ Q.asIdeal := by
   classical
@@ -160,6 +216,37 @@ set_option maxHeartbeats 800000 in
 
 open GlobalTheory.DepthMap in
 
+/- English proof (translation)
+Introduce `D hD T L μ0 hL sc G W M hM i hi u hu v hv y hy s hs`. Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Establish `P7` using `GlobalTheory.SeeSaw.idV_props D ψ hψ v`. Establish `hm0 : G.pl.modul sc ≠ ⊥` using `G.pl.modul_ne_bot sc`. Establish `hmF : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hm0`.
+
+Take `⟨e, he⟩` from `GlobalTheory.GridIdem.exists_idempotentSum_auxiliaryPlaces D T L G.pl`. Establish `h0 : ∀ j, (Node.grid (i + 1) 0 : Node) ≠ .grid 0 j` using `fun j h => by injection h with h'`. Use linear arithmetic over natural numbers and integers. Establish `hsd : IsSelfDualC (G.V (.grid (i + 1) 0)) (G.Λ (.grid (i + 1) 0))` using `(G.isV (show (Node.grid (i + 1) 0 : Node).InRange D.R.m from ⟨hi, Nat.zero_le _⟩) h0).sd`. Take `⟨-, -, -, -, -, P6, P7'⟩` from `P7`.
+
+Establish `key : ∀ z ∈ GlobalTheory.SeeSaw.idV ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹ v, z • u ∈ latO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (· = v)`. Introduce `z hz`. Take `⟨g, hg, g', hg', hid, hiff⟩` from `P6 _ (inv_ne_zero hmF)`. Establish `hzA : z ∈ idAt D (· = v)` using `((hiff z).1 hz).1`. Establish `hsplit : z • u = (e * z) • u + ((1 - e) * z) • u`.
+
+Rewrite using `[← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Establish `h1 : e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)))` using `hu.2 e he`. Establish `h2` using `smul_mem_hatMx hm0 hz h1`. Establish `h3 : (e * z) • u = z • (e • u)` using `by rw [mul_comm, mul_smul]`. Rewrite using `[h3]`. Establish `hhalf : IsHalf e (z • (e • u))` using `fun a b => by`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, mul_comm e z, mul_assoc, ← mul_assoc e e, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `h4` using `GlobalTheory.RowLatChi.mem_latO_of_mem_hatMx hsd he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hD hL G) hhalf h2`. Use `(GlobalTheory.AscFinWit.mem_latO_at (fun a b => ?_)).1 h4` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hzA`. Establish `hint : finPart D ((1 - e) * z) ∈ intAE D`. Use `((GlobalTheory.StdFrames.comp_toAd D).int _).2 fun Q => ?_` and prove the remaining obligations. Use `show Valued.v (GlobalTheory.StdFrames.cpt (D := D) Q (toEAf D ((1 - e) * z))) ≤ 1`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, RingHom.map_sub, RingHom.map_sub, RingHom.map_one, RingHom.map_one]`.
+
+Distinguish the cases in `hQ : Q ∈ G.pl.W0`. Rewrite using `[cpt_idemSum_of_mem he hQ, sub_self, zero_mul, Valuation.map_zero]`. Conclude with `zero_le'`. Establish `hc` using `cpt_idemSum_of_not_mem he hQ`. Establish `hb` using `val_cpt_le_one hm0 (modul_not_le G.pl sc hQ) hz`.
+
+Simplify using `only [hc, sub_zero, one_mul]`. Conclude with `hb`. Establish `hI : (1 - e) * z ∈ intAt D (· = v)`. Use `⟨?_, hint⟩` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ hzA`.
+
+Establish `hS` using `GlobalTheory.RowInt.smul_mem_latO_at D hD T L μ0 hL sc G W M hM`. Conclude with `hS i hi v _ hI u hu`. Establish `hlatA : ∀ z ∈ GlobalTheory.SeeSaw.idV ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹ v, z • (u *ᵥ y) ∈ latA (G.V (.grid i 0)) (G.Λ (.grid i 0)) (· = v)`. Introduce `z hz`. Rewrite using `[← Matrix.smul_mulVec]`.
+
+Conclude with `GlobalTheory.FinPl.LatMem.latO_maps hsd (key z hz) hy`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Take `⟨α, hα, hsupp, a, ha, rfl⟩` from `hs`. Use `FractionalIdeal.mul_induction_on (C := fun a => (pairA D.host.F 0 α ⊗ₜ[D.host.F] a) • (u *ᵥ y) ∈ GlobalTheory.FinPl.latV (G.V (.grid i 0)) (G.Λ (.grid i 0)) (· = v)) ha (fun b hb c hc => ?_) (fun x x' hx hx' => ?_)` and prove the remaining obligations.
+
+Establish `e1 : pairA D.host.F 0 α ⊗ₜ[D.host.F] (b * c) = (pairA D.host.F 0 α ⊗ₜ[D.host.F] b) * (pairA D.host.F 0 (GlobalTheory.FinPlLoc.ePl D (· = v)) ⊗ₜ[D.host.F] c)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, pairA_mul', mul_ePl hsupp]`. Establish `hz : pairA D.host.F 0 (GlobalTheory.FinPlLoc.ePl D (· = v)) ⊗ₜ[D.host.F] c ∈ GlobalTheory.SeeSaw.idV ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹ v` using `AddSubgroup.subset_closure ⟨_, GlobalTheory.FinPlLoc.ePl_int _, fun w hw => by`. Rewrite using `[GlobalTheory.FinPlLoc.evalV_ePl, if_neg hw], c, hc, rfl⟩`. Establish `hs' : pairA D.host.F 0 α ⊗ₜ[D.host.F] b ∈ GlobalTheory.SeeSaw.idV D.host.AA⁻¹ v` using `AddSubgroup.subset_closure ⟨α, hα, hsupp, b, hb, rfl⟩`.
+
+Use `show (pairA D.host.F 0 α ⊗ₜ[D.host.F] (b * c)) • (u *ᵥ y) ∈ _`. Rewrite using `[e1, mul_smul]`. Conclude with `((P7' _ _ _).1 (hlatA _ hz)).2 _ hs'`. Use `show (pairA D.host.F 0 α ⊗ₜ[D.host.F] (x + x')) • (u *ᵥ y) ∈ _`. Rewrite using `[TensorProduct.tmul_add, add_smul]`.
+
+Conclude with `add_mem hx hx'`. Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_smul]`. Conclude with `add_mem ha hb`.
+
+Consider the case `neg a _ ha => rw [neg_smul]`. Conclude with `neg_mem ha`.
+-/
 theorem GlobalTheory.DepthMap.smul_mulVec_mem_latV : All fun {D} _ _ {sc} {G} _ _ => ∀ i, i < D.R.m → ∀ u ∈ latRow G i, ∀ v ∈ G.pl.S0, ∀ y ∈ latV (G.V (.grid (i + 1) 0)) (G.Λ (.grid (i + 1) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹ * ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)⁻¹) v, s • (u *ᵥ y) ∈ latV (G.V (.grid i 0)) (G.Λ (.grid i 0)) (· = v) := by
   intro D hD T L μ0 hL sc G W M hM i hi u hu v hv y hy s hs
   classical

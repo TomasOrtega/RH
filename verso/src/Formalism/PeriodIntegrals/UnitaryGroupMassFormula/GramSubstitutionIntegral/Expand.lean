@@ -14,20 +14,35 @@ open PI.FglGram PI.UnitaryGroupMassFormula.PhGram
 
 variable {p : ℕ} [Fact p.Prime] {l ex ph : PowerSeries ℂ_[p]} {σ : Type}
 
+/- English proof (translation)
+Conclude with `PI.UnitaryGroupMassFormula.PhGram.cc_l hd`.
+-/
 theorem cc_l (hd : Data l ex ph) : PowerSeries.constantCoeff l = 0 := by
   exact PI.UnitaryGroupMassFormula.PhGram.cc_l hd
 
+/- English proof (translation)
+The claim follows from `(PI.FglPhSplit.Wk.compositionalInverseSymm ℂ_[p] l ex hd.1 hd.2.1).2`.
+-/
 theorem ex_l (hd : Data l ex ph) : PowerSeries.subst l ex = PowerSeries.X :=
   (PI.FglPhSplit.Wk.compositionalInverseSymm ℂ_[p] l ex hd.1 hd.2.1).2
 
+/- English proof (translation)
+Conclude with `PI.UnitaryGroupMassFormula.PhGram.cc_lg hd ha`.
+-/
 theorem cc_lg (hd : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0) :
     MvPowerSeries.constantCoeff (lg l a) = 0 := by
   exact PI.UnitaryGroupMassFormula.PhGram.cc_lg hd ha
 
+/- English proof (translation)
+Conclude with `PI.UnitaryGroupMassFormula.PhGram.lg_pt hd hx`.
+-/
 theorem lg_pt (hd : Data l ex ph) {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0) :
     lg l (pt ex x) = x := by
   exact PI.UnitaryGroupMassFormula.PhGram.lg_pt hd hx
 
+/- English proof (translation)
+Unfold `pt lg`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero (cc_l hd)) (PowerSeries.HasSubst.of_constantCoeff_zero ha), ex_l hd, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`.
+-/
 theorem pt_lg (hd : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0) :
     pt ex (lg l a) = a := by
   unfold pt lg
@@ -35,30 +50,53 @@ theorem pt_lg (hd : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSe
     (PowerSeries.HasSubst.of_constantCoeff_zero ha), ex_l hd,
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha)]
 
+/- English proof (translation)
+Conclude with `PowerSeries.subst_zero_of_constantCoeff_zero hd.1`.
+-/
 theorem pt_zero (hd : Data l ex ph) : pt ex (0 : MvPowerSeries σ ℂ_[p]) = 0 := by
   exact PowerSeries.subst_zero_of_constantCoeff_zero hd.1
 
+/- English proof (translation)
+Conclude with `PowerSeries.subst_zero_of_constantCoeff_zero (cc_l hd)`.
+-/
 theorem lg_zero (hd : Data l ex ph) : lg l (0 : MvPowerSeries σ ℂ_[p]) = 0 := by
   exact PowerSeries.subst_zero_of_constantCoeff_zero (cc_l hd)
 
+/- English proof (translation)
+Conclude with `PowerSeries.subst_zero_of_constantCoeff_zero hd.2.2`.
+-/
 theorem phAt_zero (hd : Data l ex ph) : phAt ph (0 : MvPowerSeries σ ℂ_[p]) = 0 := by
   exact PowerSeries.subst_zero_of_constantCoeff_zero hd.2.2
 
+/- English proof (translation)
+Unfold `add`. Rewrite using `[lg_pt hd hx]`.
+-/
 theorem add_pt (hd : Data l ex ph) {x : MvPowerSeries σ ℂ_[p]} (hx : MvPowerSeries.constantCoeff x = 0)
     (b : MvPowerSeries σ ℂ_[p]) : add l ex (pt ex x) b = pt ex (x + lg l b) := by
   unfold add
   rw [lg_pt hd hx]
 
+/- English proof (translation)
+Unfold `be add`. Rewrite using `[lg_zero hd, zero_add, pt_lg hd hb, phAt_zero hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem be_zero_left (hd : Data l ex ph) {b : MvPowerSeries σ ℂ_[p]} (hb : MvPowerSeries.constantCoeff b = 0) :
     be l ex ph 0 b = 0 := by
   unfold be add
   rw [lg_zero hd, zero_add, pt_lg hd hb, phAt_zero hd]
   ring
 
+/- English proof (translation)
+Unfold `mulBy`. Rewrite using `[map_zero, zero_mul, pt_zero hd]`.
+-/
 theorem mulBy_zero (hd : Data l ex ph) (a : MvPowerSeries σ ℂ_[p]) : mulBy l ex 0 a = 0 := by
   unfold mulBy
   rw [map_zero, zero_mul, pt_zero hd]
 
+/- English proof (translation)
+Unfold `mulBy add`. Establish `h1 : MvPowerSeries.constantCoeff (MvPowerSeries.C e * lg l a) = 0`. Rewrite using `[map_mul, cc_lg hd ha, mul_zero]`. Establish `h2 : MvPowerSeries.constantCoeff (MvPowerSeries.C e' * lg l a) = 0`. Rewrite using `[map_mul, cc_lg hd ha, mul_zero]`.
+
+Rewrite using `[lg_pt hd h1, lg_pt hd h2, map_add, add_mul]`.
+-/
 theorem mulBy_add (hd : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
     (e e' : ℂ_[p]) : mulBy l ex (e + e') a = add l ex (mulBy l ex e a) (mulBy l ex e' a) := by
   unfold mulBy add
@@ -68,9 +106,17 @@ theorem mulBy_add (hd : Data l ex ph) {a : MvPowerSeries σ ℂ_[p]} (ha : MvPow
     rw [map_mul, cc_lg hd ha, mul_zero]
   rw [lg_pt hd h1, lg_pt hd h2, map_add, add_mul]
 
+/- English proof (translation)
+Conclude with `⟨map_zero _, fun n => by simp [IsIntP]⟩`.
+-/
 theorem good_zero : Good (0 : MvPowerSeries σ ℂ_[p]) := by
   exact ⟨map_zero _, fun n => by simp [IsIntP]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, mulBy_zero H.data]`. Conclude with `good_zero`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi, mulBy_add H.data ha.1]`. Conclude with `hGA p l ex ph S H σ _ _ (he i (Finset.mem_insert_self i s)) (ih (fun j hj => he j (Finset.mem_insert_of_mem hj)))`.
+-/
 theorem good_mulBy_sum (hGA : GoodAdd) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps l ex ph S) {ι : Type}
     {a : MvPowerSeries σ ℂ_[p]} (ha : Good a) (s : Finset ι) (e : ι → ℂ_[p])
     (he : ∀ i ∈ s, Good (mulBy l ex (e i) a)) : Good (mulBy l ex (∑ i ∈ s, e i) a) := by
@@ -83,6 +129,13 @@ theorem good_mulBy_sum (hGA : GoodAdd) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps 
     exact hGA p l ex ph S H σ _ _ (he i (Finset.mem_insert_self i s))
       (ih (fun j hj => he j (Finset.mem_insert_of_mem hj)))
 
+/- English proof (translation)
+Introduce `p _ l ex ph S H σ ι s e a b ha hb he`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[mulBy_zero H.data, be_zero_left H.data hb.1]`.
+
+Conclude with `sRefl 0`. Consider the case `insert i s hi ih`. Establish `he' : ∀ j ∈ s, Good (mulBy l ex (e j) a)` using `fun j hj => he j (Finset.mem_insert_of_mem hj)`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, mulBy_add H.data ha.1]`. Establish `hY` using `good_mulBy_sum hGA H ha s e he'`.
+
+Conclude with `sTrans (sAdd (sRefl _) (ih he')) (sSymm (hBS p l ex ph S H σ _ _ b (he i (Finset.mem_insert_self i s)) hY hb))`.
+-/
 theorem sumFirst_of (hGA : GoodAdd) (hBS : BiaddSub) : SumFirst := by
   intro p _ l ex ph S H σ ι s e a b ha hb he
   induction s using Finset.induction_on with
@@ -97,22 +150,36 @@ theorem sumFirst_of (hGA : GoodAdd) (hBS : BiaddSub) : SumFirst := by
     exact sTrans (sAdd (sRefl _) (ih he'))
       (sSymm (hBS p l ex ph S H σ _ _ b (he i (Finset.mem_insert_self i s)) hY hb))
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => cc_lg hd (ha j)`.
+-/
 theorem cc_sum_lg (hd : Data l ex ph) {m : ℕ} {a : Fin m → MvPowerSeries σ ℂ_[p]}
     (ha : ∀ j, MvPowerSeries.constantCoeff (a j) = 0) :
     MvPowerSeries.constantCoeff (∑ j, lg l (a j)) = 0 := by
   rw [map_sum]
   exact Finset.sum_eq_zero fun j _ => cc_lg hd (ha j)
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_castSucc, ← add_pt hd (cc_sum_lg hd (fun j => ha (Fin.castSucc j)))]`.
+-/
 theorem pt_sum_succ (hd : Data l ex ph) {m : ℕ} (a : Fin (m + 1) → MvPowerSeries σ ℂ_[p])
     (ha : ∀ j, MvPowerSeries.constantCoeff (a j) = 0) :
     pt ex (∑ j, lg l (a j)) =
       add l ex (pt ex (∑ j : Fin m, lg l (a (Fin.castSucc j)))) (a (Fin.last m)) := by
   rw [Fin.sum_univ_castSucc, ← add_pt hd (cc_sum_lg hd (fun j => ha (Fin.castSucc j)))]
 
+/- English proof (translation)
+Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, pt_zero hd]`.
+-/
 theorem pt_sum_zero (hd : Data l ex ph) (a : Fin 0 → MvPowerSeries σ ℂ_[p]) :
     pt ex (∑ j, lg l (a j)) = 0 := by
   rw [Finset.univ_eq_empty, Finset.sum_empty, pt_zero hd]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pt_sum_zero H.data]`. Conclude with `good_zero`. Consider the case `succ m ih`.
+
+Rewrite using `[pt_sum_succ H.data a (fun j => (ha j).1)]`. Conclude with `hGA p l ex ph S H σ _ _ (ih (fun j => a (Fin.castSucc j)) (fun j => ha _)) (ha _)`.
+-/
 theorem good_pt_sum (hGA : GoodAdd) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps l ex ph S) {m : ℕ}
     (a : Fin m → MvPowerSeries σ ℂ_[p]) (ha : ∀ j, Good (a j)) : Good (pt ex (∑ j, lg l (a j))) := by
   induction m with
@@ -123,6 +190,11 @@ theorem good_pt_sum (hGA : GoodAdd) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps l e
     rw [pt_sum_succ H.data a (fun j => (ha j).1)]
     exact hGA p l ex ph S H σ _ _ (ih (fun j => a (Fin.castSucc j)) (fun j => ha _)) (ha _)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pt_sum_zero H.data, be_zero_left H.data hz.1, Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `sRefl 0`. Consider the case `succ m ih`.
+
+Rewrite using `[pt_sum_succ H.data a (fun j => (ha j).1), Fin.sum_univ_castSucc]`. Establish `hX` using `good_pt_sum hGA H (fun j => a (Fin.castSucc j)) (fun j => ha _)`. Conclude with `sTrans (hBS p l ex ph S H σ _ _ z hX (ha _) hz) (sAdd (ih (fun j => a (Fin.castSucc j)) (fun j => ha _)) (sRefl _))`.
+-/
 theorem be_pt_sum (hGA : GoodAdd) (hBS : BiaddSub) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps l ex ph S)
     {z : MvPowerSeries σ ℂ_[p]} (hz : Good z) {m : ℕ} (a : Fin m → MvPowerSeries σ ℂ_[p])
     (ha : ∀ j, Good (a j)) : Simeq (be l ex ph (pt ex (∑ j, lg l (a j))) z) (∑ j, be l ex ph (a j) z) := by
@@ -139,6 +211,11 @@ theorem be_pt_sum (hGA : GoodAdd) (hBS : BiaddSub) {S : Set (ℂ_[p] × ℂ_[p])
 def rhsBy (l ex ph : PowerSeries ℂ_[p]) {m : ℕ} (a : Fin m → MvPowerSeries σ ℂ_[p]) : MvPowerSeries σ ℂ_[p] :=
   ∑ j', (phAt ph (a j') + ∑ j, if j < j' then be l ex ph (a j) (a j') else 0)
 
+/- English proof (translation)
+Unfold `rhsBy`. Rewrite using `[Fin.sum_univ_castSucc]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `[Fin.castSucc_lt_castSucc_iff, (Fin.castSucc_lt_last k).asymm]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[Fin.castSucc_lt_last]`.
+-/
 theorem rhsBy_succ {m : ℕ} (a : Fin (m + 1) → MvPowerSeries σ ℂ_[p]) :
     rhsBy l ex ph a = rhsBy l ex ph (fun j : Fin m => a (Fin.castSucc j)) +
       (phAt ph (a (Fin.last m)) + ∑ j : Fin m, be l ex ph (a (Fin.castSucc j)) (a (Fin.last m))) := by
@@ -151,6 +228,13 @@ theorem rhsBy_succ {m : ℕ} (a : Fin (m + 1) → MvPowerSeries σ ℂ_[p]) :
   · rw [Fin.sum_univ_castSucc]
     simp [Fin.castSucc_lt_last]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[pt_sum_zero H.data, phAt_zero H.data]`. Unfold `rhsBy`. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty]`.
+
+Conclude with `sRefl 0`. Consider the case `succ m ih`. Rewrite using `[pt_sum_succ H.data a (fun j => (ha j).1), rhsBy_succ]`. Establish `e : phAt ph (add l ex (pt ex (∑ j : Fin m, lg l (a (Fin.castSucc j)))) (a (Fin.last m))) = phAt ph (pt ex (∑ j : Fin m, lg l (a (Fin.castSucc j)))) + (phAt ph (a (Fin.last m)) + be l ex ph (pt ex (∑ j : Fin m, lg l (a (Fin.castSucc j)))) (a (Fin.last m)))`. Unfold `be`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sAdd (ih (fun j => a (Fin.castSucc j)) (fun j => ha _)) (sAdd (sRefl _) (be_pt_sum hGA hBS H (ha _) (fun j => a (Fin.castSucc j)) (fun j => ha _)))`.
+-/
 theorem ph_pt_sum (hGA : GoodAdd) (hBS : BiaddSub) {S : Set (ℂ_[p] × ℂ_[p])} (H : Hyps l ex ph S)
     {m : ℕ} (a : Fin m → MvPowerSeries σ ℂ_[p]) (ha : ∀ j, Good (a j)) :
     Simeq (phAt ph (pt ex (∑ j, lg l (a j)))) (rhsBy l ex ph a) := by
@@ -171,6 +255,9 @@ theorem ph_pt_sum (hGA : GoodAdd) (hBS : BiaddSub) {S : Set (ℂ_[p] × ℂ_[p])
     exact sAdd (ih (fun j => a (Fin.castSucc j)) (fun j => ha _))
       (sAdd (sRefl _) (be_pt_sum hGA hBS H (ha _) (fun j => a (Fin.castSucc j)) (fun j => ha _)))
 
+/- English proof (translation)
+Unfold `rhsBy`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_comm (f := fun j' j => if j < j' then be l ex ph (a j) (a j') else 0)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`.
+-/
 theorem rhsBy_eq {m : ℕ} (a : Fin m → MvPowerSeries σ ℂ_[p]) :
     rhsBy l ex ph a = ∑ j, phAt ph (a j) +
       ∑ j, ∑ j' ∈ Finset.univ.filter (fun j' => j < j'), be l ex ph (a j) (a j') := by
@@ -180,6 +267,9 @@ theorem rhsBy_eq {m : ℕ} (a : Fin m → MvPowerSeries σ ℂ_[p]) :
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [Finset.sum_filter]
 
+/- English proof (translation)
+Introduce `p _ l ex ph S H σ m a ha`. Rewrite using `[← rhsBy_eq]`. Conclude with `ph_pt_sum hGA hBS H a ha`.
+-/
 theorem expand_of (hGA : GoodAdd) (hBS : BiaddSub) : Expand := by
   intro p _ l ex ph S H σ m a ha
   rw [← rhsBy_eq]
@@ -189,12 +279,24 @@ end PI.UnitaryGroupMassFormula.PhGram.ExpandW
 
 namespace PI.UnitaryGroupMassFormula.PhGram
 
+/- English proof (translation)
+The claim follows from `ExpandW.expand_of hGA hBS`.
+-/
 theorem expand_of (hGA : GoodAdd) (hBS : BiaddSub) : Expand := ExpandW.expand_of hGA hBS
 
+/- English proof (translation)
+The claim follows from `ExpandW.sumFirst_of hGA hBS`.
+-/
 theorem sumFirst_of (hGA : GoodAdd) (hBS : BiaddSub) : SumFirst := ExpandW.sumFirst_of hGA hBS
 
+/- English proof (translation)
+The claim follows from `expand_of goodAdd biaddSub`.
+-/
 theorem gram_bilinear_expansion : Expand := expand_of goodAdd biaddSub
 
+/- English proof (translation)
+The claim follows from `sumFirst_of goodAdd biaddSub`.
+-/
 theorem gram_sum_first_variable : SumFirst := sumFirst_of goodAdd biaddSub
 
 end PI.UnitaryGroupMassFormula.PhGram

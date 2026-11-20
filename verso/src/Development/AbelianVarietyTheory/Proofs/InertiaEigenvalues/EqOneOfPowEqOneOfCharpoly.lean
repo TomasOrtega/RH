@@ -4,6 +4,15 @@ open Polynomial
 
 namespace GlobalTheory.FinOrd
 
+/- English proof (translation)
+Take `⟨m, hm, hM⟩` from `h`. Establish `hpr : Prime (X - 1 : K[X])` using `by simpa using prime_X_sub_C (1 : K)`. Establish `hsep : (X ^ m - 1 : K[X]).Separable`. Simplify using `using separable_X_pow_sub_C (1 : K) (Nat.cast_ne_zero.2 hm.ne') one_ne_zero`. Establish `h1 : minpoly K M ∣ X ^ m - 1` using `minpoly.dvd_iff.2 (by simp [hM])`.
+
+Establish `h2 : minpoly K M ∣ (X - 1) ^ N`. Rewrite using `[← hc]`. Conclude with `minpoly.dvd_iff.2 (Matrix.aeval_self_charpoly M)`. Take `⟨i, -, hi⟩` from `(dvd_prime_pow hpr N).1 h2`. Establish `hsi : ((X - 1 : K[X]) ^ i).Separable` using `hsep.of_dvd (hi.symm.dvd.trans h1)`.
+
+Establish `hle : minpoly K M ∣ X - 1`. Break down `hsi.of_pow' with hu | ⟨-, rfl⟩ | rfl` into its components or cases. Conclude with `absurd hu hpr.not_unit`. Simplify using `using hi.dvd`. Conclude with `hi.dvd.trans (by simp)`.
+
+Establish `h0 : Polynomial.aeval M (X - 1 : K[X]) = 0` using `minpoly.dvd_iff.1 hle`. Simplify `h0` using `[sub_eq_zero]`.
+-/
 theorem eq_one_of_pow_eq_one_of_charpoly (K : Type) [Field K] [CharZero K] (N : ℕ)
     (M : Matrix (Fin N) (Fin N) K) (h : ∃ m : ℕ, 0 < m ∧ M ^ m = 1)
     (hc : M.charpoly = (X - 1) ^ N) : M = 1 := by

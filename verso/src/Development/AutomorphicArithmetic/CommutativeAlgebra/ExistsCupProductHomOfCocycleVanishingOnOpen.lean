@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Face
 import Development.AutomorphicArithmetic.CommutativeAlgebra.MemPullbackImageIffFactorsThroughOpen
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut UpperTheory.Et.Prd
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Take `rfl : w' = w + 1` from `by omega`. Rewrite using `[μ.leibniz W s t w h a b, hb, map_zero, smul_zero, add_zero]`.
+-/
 private theorem leib {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (W : Scheme.{0})
     (s s' t w w' : ℤ) (h : s + t = w) (h' : s' + t = w') (hs : s' = s + 1)
     (a : Sec (I.X s) W) (b : Sec (J.X t) W) (hb : Sec.map (J.d t (t + 1)) b = 0) :
@@ -11,19 +14,31 @@ private theorem leib {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (W
   obtain rfl : w' = w + 1 := by omega
   rw [μ.leibniz W s t w h a b, hb, map_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Simplify using `only [Sec.res, Units.smul_def, map_zsmul]`.
+-/
 private theorem res_usmul {R : Type} [CommRing R] {F : Shv R} {V W : Scheme.{0}} (g : V ⟶ W)
     (u : ℤˣ) (x : Sec F W) : Sec.res g (u • x) = u • Sec.res g x := by
   simp only [Sec.res, Units.smul_def, map_zsmul]
 
+/- English proof (translation)
+Simplify using `only [Sec.map, Units.smul_def, map_zsmul]`.
+-/
 private theorem map_usmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {W : Scheme.{0}}
     (u : ℤˣ) (x : Sec F W) : Sec.map φ (u • x) = u • Sec.map φ x := by
   simp only [Sec.map, Units.smul_def, map_zsmul]
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_comp {R : Type} [CommRing R] {F : Shv R} {V W X : Scheme.{0}} (g : V ⟶ W)
     (f : W ⟶ X) (x : Sec F X) : Sec.res (g ≫ f) x = Sec.res g (Sec.res f x) := by
   simp only [Sec.res, op_comp, Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (φ.hom.naturality g.op) x`.
+-/
 private theorem map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V W : Scheme.{0}}
     (g : V ⟶ W) (x : Sec F W) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
   ConcreteCategory.congr_hom (φ.hom.naturality g.op) x
@@ -45,6 +60,17 @@ private noncomputable def prodFam {R : Type} [CommRing R] {I J K : Cx R} (μ : P
   map_zero' := by ext W z; simp
   map_add' a b := by ext W z; simp
 
+/- English proof (translation)
+Introduce `R _ I J K μ X U E π m β hd hU`. Use `⟨fun p s => prodFam μ U π m β hU p s, fun p s a W z => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `p s a`. Use `Subtype.ext (funext fun W => funext fun z => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(m * (p : ℕ)).negOnePow • μ.mul W (s + 1 + 0) m (s + 1 + m) (by omega) (Sec.map (I.d (s + 0) (s + 1 + 0)) (a.1 W z)) (Sec.res (under π z) β) = Sec.map (K.d (s + m) (s + 1 + m)) ((m * (p : ℕ)).negOnePow • μ.mul W (s + 0) m (s + m) (by omega) (a.1 W z) (Sec.res (under π z) β))`.
+
+Rewrite using `[map_usmul, leib μ W (s + 0) (s + 1 + 0) m (s + m) (s + 1 + m) (by omega) (by omega) (by omega) _ _ (by rw [map_res, hd]; simp)]`. Introduce `p s a`. Use `Subtype.ext (funext fun W => funext fun z => ?_)` and prove the remaining obligations. Establish `hf : ∀ i : Fin (p + 2), under π (z.face i) = under π z` using `fun i => (UpperTheory.mem_pullbackImage_iff_factors_through_open U π (p + 1) W z).2.2 p (SimplexCategory.δ i)`. Express the relevant statement in the definitionally equal form `((m * ((p + 1 : ℕ) : ℤ))).negOnePow • μ.mul W (s + 0) m (s + m) (by omega) ((0 : ℤ).negOnePow • ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • a.1 W (z.face i)) (Sec.res (under π z) β) = m.negOnePow • ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • ((m * (p : ℕ)).negOnePow • μ.mul W (s + 0) m ( …`.
+
+Simplify using `only [hf]`. Establish `hsign : (m * ((p + 1 : ℕ) : ℤ)).negOnePow = m.negOnePow * (m * (p : ℕ)).negOnePow`. Rewrite using `[Nat.cast_add, Nat.cast_one, mul_add, mul_one, add_comm, Int.negOnePow_add]`. Generalize the expression as in `Sec.res (under π z) β = b`. Set `f` to `((μ.mul W (s + 0) m (s + m) (by omega)).flip b).toAddMonoidHom`.
+
+Express the relevant statement in the definitionally equal form `_ • f _ = _ • ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (_ • f _)`. Establish `e : ∀ (u : ℤˣ) (i : Fin (p + 2)) (y : Sec (K.X (s + m)) W), (-1 : ℤ) ^ (i : ℕ) • (u • y) = u • ((-1 : ℤ) ^ (i : ℕ) • y)`. Introduce `u i y`. Simplify using `only [Units.smul_def]`. Conclude with `smul_comm _ _ _`.
+
+Simplify using `only [e]`. Rewrite using `[← Finset.smul_sum, hsign, mul_smul, Int.negOnePow_zero, one_smul, map_sum]`. Simplify using `only [map_zsmul]`.
+-/
 theorem UpperTheory.exists_cupProduct_hom_of_cocycle_vanishing_on_open :
     ∀ (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) {X : Scheme.{0}} (U : X.Opens) {E : Spc} (π : E ⟶ sch.obj X) (m : ℤ) (β : Sec (J.X m) X), Sec.map (J.d m (m + 1)) β = 0 → Sec.res U.ι β = 0 →
     ∃ Φ : (famDC (Sub.bot E) I 0).Hom (famDC (Sub.img (E := E) (pullback.fst π (sch.map U.ι))) K m), IsProd μ π β Φ ∧ Φ.Ok := by

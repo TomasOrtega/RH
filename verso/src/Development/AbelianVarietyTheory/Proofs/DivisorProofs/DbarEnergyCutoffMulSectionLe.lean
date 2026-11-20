@@ -15,6 +15,13 @@ noncomputable section
 variable {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
 
+/- English proof (translation)
+Use `set e := A.chart (C.idx a)`. Establish `hg : ContDiffOn ℝ ∞ (fun w => ((χ (e.symm w) : ℝ) : ℂ)) e.target` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hχ (C.idx a))`. Establish `hd : ContDiffOn ℝ ∞ (fderiv ℝ (fun w => ((χ (e.symm w) : ℝ) : ℂ))) e.target` using `hg.fderiv_of_isOpen e.open_target (by simp)`. Establish `hc : ContinuousOn (fun v => ∑ j, ‖wdb n j (fun w => ((χ (e.symm w) : ℝ) : ℂ)) v‖ ^ 2) e.target`. Use `continuousOn_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+
+Establish `: ContDiffOn ℝ ∞ (wdb n j (fun w => ((χ (e.symm w) : ℝ) : ℂ))) e.target` using `((hd.clm_apply contDiffOn_const).add (contDiffOn_const.mul (hd.clm_apply contDiffOn_const))).div_const 2`. Conclude with `(this.continuousOn.norm).pow 2`. Take `⟨K, hK⟩` from `(isCompact_closedBall (C.c a) (C.r a)).exists_bound_of_continuousOn (hc.mono (C.sub a))`. Use `⟨max K 0, le_max_right _ _, fun v hv => ?_⟩` and prove the remaining obligations. Use `hK v hv` as an intermediate fact.
+
+Conclude with `(le_abs_self _).trans ((Real.norm_eq_abs _ ▸ this).trans (le_max_left _ _))`.
+-/
 theorem wdb_bound (A : WeightedAtlas n Y ι La) (C : Cover A) (χ : Y → ℝ) (hχ : A.SmoothFn χ)
     (a : Fin C.m) : ∃ K : ℝ, 0 ≤ K ∧ ∀ v ∈ closedBall (C.c a) (C.r a),
       (∑ j, ‖wdb n j (fun w => ((χ ((A.chart (C.idx a)).symm w) : ℝ) : ℂ)) v‖ ^ 2) ≤ K := by
@@ -36,6 +43,35 @@ theorem wdb_bound (A : WeightedAtlas n Y ι La) (C : Cover A) (χ : Y → ℝ) (
   have := hK v hv
   exact (le_abs_self _).trans ((Real.norm_eq_abs _ ▸ this).trans (le_max_left _ _))
 
+/- English proof (translation)
+Use `set i := C.idx a`. Use `set e := A.chart i`. Use `set y := e.symm v`. Use `set g : V n → ℂ := fun w => ((χ (e.symm w) : ℝ) : ℂ)`. Establish `hvt : v ∈ e.target` using `C.sub a (ball_subset_closedBall hv)`.
+
+Establish `hys : y ∈ e.source` using `e.map_target hvt`. Establish `hgs : ContDiffOn ℝ ∞ g e.target` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hχ i)`. Establish `hgd : DifferentiableAt ℝ g v` using `(hgs.differentiableOn (by simp)).differentiableAt (e.open_target.mem_nhds hvt)`. Establish `hzero : y ∉ Z ∩ W → ∀ j, wdb n j ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) v = 0`. Introduce `hy j`.
+
+Distinguish the cases in `hyW : y ∈ W`. Establish `hyZ : y ∉ Z` using `fun hz => hy ⟨hz, hyW⟩`. Establish `hU : IsOpen (e.target ∩ e.symm ⁻¹' W)` using `e.isOpen_inter_preimage_symm hW`. Establish `hvU : v ∈ e.target ∩ e.symm ⁻¹' W` using `⟨hvt, hyW⟩`. Establish `hH : DifferentiableAt ℂ (h i ∘ e.symm) v` using `(hsec.1 i).differentiableAt (hU.mem_nhds hvU)`.
+
+Establish `hg0 : wdb n j g v = 0`. Establish `hev : g =ᶠ[𝓝 v] fun _ => ((χ y : ℝ) : ℂ)`. Use `(e.continuousAt_symm hvt).eventually (hZ y hyZ)` as an intermediate fact. Use `filter_upwards [this] with w hw`. Simplify using `only [g]`.
+
+Rewrite using `[hw]`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.wdb_congr hev]`. Conclude with `wdb_of_differentiableAt (differentiableAt_const _)`. Establish `hfun : ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) = fun w => g w * (h i ∘ e.symm) w`. Both sides reduce to the same expression.
+
+Rewrite using `[hfun, wdb_mul hgd (hH.restrictScalars ℝ), wdb_of_differentiableAt hH, hg0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyt : y ∉ tsupport χ` using `fun ht => hyW (hsupp ht)`. Establish `h0` using `(notMem_tsupport_iff_eventuallyEq.mp hyt)`. Establish `hev : ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) =ᶠ[𝓝 v] fun _ => (0 : ℂ)`.
+
+Use `(e.continuousAt_symm hvt).eventually h0` as an intermediate fact. Use `filter_upwards [this] with w hw`. Simplify using `only [Function.comp_apply, Pi.zero_apply] at hw ⊢`. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[ReciprocityTheory.L2DbarEstimates.wdb_congr hev]`. Conclude with `wdb_of_differentiableAt (differentiableAt_const _)`. Distinguish the cases in `hy : y ∈ Z ∩ W`. Establish `hU : IsOpen (e.target ∩ e.symm ⁻¹' W)` using `e.isOpen_inter_preimage_symm hW`. Establish `hvU : v ∈ e.target ∩ e.symm ⁻¹' W` using `⟨hvt, hy.2⟩`.
+
+Establish `hH : DifferentiableAt ℂ (h i ∘ e.symm) v` using `(hsec.1 i).differentiableAt (hU.mem_nhds hvU)`. Establish `hfun : ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) = fun w => g w * (h i ∘ e.symm) w`. Both sides reduce to the same expression. Establish `hw : ∀ j, wdb n j ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) v = wdb n j g v * h i y`. Introduce `j`.
+
+Rewrite using `[hfun, wdb_mul hgd (hH.restrictScalars ℝ), wdb_of_differentiableAt hH]`. Simplify using `[y]`. Establish `hsum : (∑ j, ‖wdb n j ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) v‖ ^ 2) = ‖h i y‖ ^ 2 * ∑ j, ‖wdb n j g v‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hw j, norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnsq` using `api_nsq_eq A hsec hys hy.2`. Rewrite `hnsq` using `[A.ph_add _ _ i y hys]`. Establish `hexp : Real.exp (-A.ph la i y) = Real.exp (-(A.ph A.kap i y + A.ph la i y)) * Real.exp (A.ph A.kap i y)`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_mem hy, ← ENNReal.ofReal_mul (by unfold WeightedAtlas.nsq; positivity), ← ENNReal.ofReal_mul hK0]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[hsum, ← hnsq, hexp]`. Establish `hS` using `hK v (ball_subset_closedBall hv)`. Establish `h1 : 0 ≤ ‖h i y‖ ^ 2 * (Real.exp (-(A.ph A.kap i y + A.ph la i y)) * Real.exp (A.ph A.kap i y))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `: (∑ j, ‖wdb n j ((fun i y => (χ y : ℂ) * h i y) i ∘ e.symm) v‖ ^ 2) = 0` using `Finset.sum_eq_zero fun j _ => by rw [hzero hy j]; simp`.
+
+Rewrite using `[this, zero_mul, ENNReal.ofReal_zero]`. Conclude with `zero_le`.
+-/
 theorem pt_bound (A : WeightedAtlas n Y ι La) (C : Cover A) (χ : Y → ℝ) (hχ : A.SmoothFn χ)
     (a : Fin C.m) (K : ℝ) (hK0 : 0 ≤ K) (hK : ∀ v ∈ closedBall (C.c a) (C.r a),
       (∑ j, ‖wdb n j (fun w => ((χ ((A.chart (C.idx a)).symm w) : ℝ) : ℂ)) v‖ ^ 2) ≤ K)
@@ -134,6 +170,15 @@ end GlobalTheory.CutEnergy
 
 namespace GlobalTheory.CutEnergy
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A C χ hχ`. Use `choose K hK0 hK using fun a => wdb_bound A C χ hχ a`. Use `⟨∑ a, K a, Finset.sum_nonneg fun a _ => hK0 a, ?_⟩` and prove the remaining obligations. Introduce `la W Z h hW hsupp hsec hZm hZ`. Use `set G : Y → ℝ≥0∞ := (Z ∩ W).indicator (fun y => ENNReal.ofReal (A.nsq (A.kap + la) h y)) with hGdef`.
+
+Establish `hGm : Measurable G` using `by classical`. Establish `h1 : Measurable (W.indicator fun y => ENNReal.ofReal (A.nsq (A.kap + la) h y))`. Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `ContinuousOn.measurable_piecewise (ENNReal.continuous_ofReal.comp_continuousOn (api_nsq_contOn A hW hsec)) continuousOn_const hW.measurableSet`. Establish `: G = Z.indicator (W.indicator fun y => ENNReal.ofReal (A.nsq (A.kap + la) h y))` using `(Set.indicator_indicator _ _ _).symm`.
+
+Rewrite using `[this]`. Conclude with `h1.indicator hZm`. Establish `hint : ∫⁻ y, G y ∂A.mu = ∫⁻ y in Z ∩ W, ENNReal.ofReal (A.nsq (A.kap + la) h y) ∂A.mu` using `lintegral_indicator (hZm.inter hW.measurableSet) _`. Rewrite using `[← hint, ENNReal.ofReal_sum_of_nonneg (fun a _ => hK0 a), Finset.sum_mul]`. Unfold `n1`.
+
+Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `A.aap_lintegral_chart_le _ G hGm _ (ball_subset_closedBall.trans (C.sub a))`.
+-/
 theorem dbarEnergy_cutoff_mul_section_le : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (χ : Y → ℝ), A.SmoothFn χ → ∃ K : ℝ, 0 ≤ K ∧ ∀ (la : La) (W Z : Set Y) (h : ι → Y → ℂ), IsOpen W → tsupport χ ⊆ W → A.IsSecOn (A.kap + la) W h → MeasurableSet Z → (∀ y, y ∉ Z → ∀ᶠ x in 𝓝 y, χ x = χ y) → n1 C la (fun i y => (χ y : ℂ) * h i y) ≤ ENNReal.ofReal K * ∫⁻ y in Z ∩ W, ENNReal.ofReal (A.nsq (A.kap + la) h y) ∂A.mu := by
   intro n Y _ _ _ _ _ ι La _ A C χ hχ
   choose K hK0 hK using fun a => wdb_bound A C χ hχ a

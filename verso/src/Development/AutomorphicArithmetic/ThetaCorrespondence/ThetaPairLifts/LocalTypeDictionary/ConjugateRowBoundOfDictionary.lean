@@ -17,6 +17,45 @@ section Row
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 end Row
+/- English proof (translation)
+Introduce `_ hInp hDict _ C1 hC1`. Take `⟨K, hK0, hFock⟩` from `GlobalTheory.FockJetBound.jetOp_norm_le`. Take `⟨CF0, h⟩` from `BigC.and (BigC.and hDict rowSizes) GlobalTheory.KerConjMean.TopSizes.sizesK`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`.
+
+Use `⟨max C0 (24 * (6 + 126 * K) + 36 * C1), fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ε C ((le_max_left _ _).trans hC)`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨⟨hA, hwt⟩, hb3, hN1, hNb, hf1, hfb, hcard, hrd0, hrd, -⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Establish `hCb : 24 * (6 + 126 * K) + 36 * C1 ≤ C` using `(le_max_right _ _).trans hC`.
+
+Establish `hlogb : 1 ≤ Real.log large₂.sc.b`. Establish `: Real.exp 1 ≤ large₂.sc.b` using `by linarith [Real.exp_one_lt_d9]`. Simplify using `using Real.log_le_log (Real.exp_pos 1) this`. Establish `hlog4 : Real.log (4 * large₂.sc.b) ≤ 3 * Real.log large₂.sc.b`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hN1' : (1 : ℝ) ≤ (bigN D : ℝ)` using `by exact_mod_cast hN1`. Establish `hf1' : (1 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf1`. Establish `hb0 : 0 ≤ large₂.sc.b` using `by linarith`. Establish `hX : 0 ≤ (D.R.f : ℝ) * (bigN D : ℝ) * large₂.sc.b * Real.log large₂.sc.b` using `by positivity`. Use `⟨12 * (6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b, 32 * D.R.f * bigN D * large₂.sc.b, 4 * D.R.f * bigN D * large₂.sc.b, by positivity, by positivity, by positivity, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hsig : 0 ≤ sig ch.G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `h2 : 0 ≤ C * D.R.m * (bigN D : ℝ) ^ 2 * sig ch.G` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_right hCb hX`. Unfold `aOne`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `Φ β d hocc c j fm hfm σ ρ hρ u B hu`. Take `⟨L, hL⟩ : ∃ L, L = lamConj (fld D ch.S.Z.δ ch.S.Z.t0) ρ (lat D ch.S.Z.δ)` from `⟨_, rfl⟩`. Take `⟨g, hg⟩ : ∃ g, g = fF D * (ch.G.V (.grid (j + 1) D.R.m)).rank * (ch.G.V (.grid j D.R.m)).rank` from `⟨_, rfl⟩`. Take `⟨H, harea, hdiff, hgr, hfeq⟩` from `row_jets ch (hInp D) hA hocc c j fm hfm σ hρ L hL g hg`.
+
+Establish `hp : DefPair D.R.m (.chi j D.R.m : GlobalTheory.ChiGrid.Pair T)` using `⟨j.2, rfl⟩`. Take `⟨hpos, Kx, hKx, hlogKx, hop⟩` from `hFock D _ _ (wt ch.G (.grid j D.R.m)) (wt ch.G (.grid (j + 1) D.R.m)) _ (wtOK_of_defPair ch.G _ hp).2`. Establish `eA : hArea D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (area L)⁻¹`. Unfold `hArea`. Rewrite using `[hL]`.
+
+Establish `eT : hTh D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (nrm1Sq L (GL3Theta.th0 L (tc D ch.S.Z.δ ch.S.Z.t0 ρ)))`. Unfold `hTh`. Rewrite using `[hL]`. Use `set X := nrm1Sq L (GL3Theta.th0 L (tc D ch.S.Z.δ ch.S.Z.t0 ρ)) with hXdef`. Use `set a := (ch.G.V (.grid j D.R.m)).rank with ha`.
+
+Use `set bb := (ch.G.V (.grid ((j : ℕ) + 1) D.R.m)).rank with hbb`. Use `set P := 3 * (2 * ((g : ℕ) : ℝ) * D.host.rdE + 1) ^ g with hP`. Use `set deg := ∑ τ, ∑ i, (wt ch.G (.grid ((j : ℕ) + 1) D.R.m) τ).natW i with hdeg`. Establish `hS : 0 ≤ P * X ^ g`. Establish `h0` using `hgr 0`.
+
+Establish `: (∑ τ, ∑ i, ∑ j, ‖(0 : VC D a bb) τ i j‖ ^ 2) = 0` using `by simp`. Rewrite `h0` using `[this, mul_zero, zero_div, Real.exp_zero, mul_one]`. Conclude with `le_trans (sq_nonneg _) h0`. Establish `hop'` using `hop _ (P * X ^ g) _ harea hS hdiff hgr (GlobalTheory.CoefModel.mapVV (σ.comp (starRingEnd D.what₂.LL)) _ u)`. Establish `hM0 : 0 ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg` using `mul_nonneg (mul_nonneg hS hKx.le) (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _)`.
+
+Establish `hrdpos : 0 < 2 * ((g : ℕ) : ℝ) * D.host.rdE + 1`. Use `mul_nonneg (mul_nonneg zero_le_two (Nat.cast_nonneg g)) hrd0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPpos : 0 < P` using `by rw [hP]; exact mul_pos (by norm_num) (pow_pos hrdpos g)`. Establish `hrk : ∀ jj : ℕ, jj ≤ D.R.m → ((ch.G.V (.grid jj D.R.m)).rank : ℝ) ≤ bigN D` using `fun jj hjj => by`.
+
+Conclude with `GlobalTheory.DefRank.rank_le_bigN ch.G (.grid jj D.R.m) ⟨hjj, rfl⟩` after adjusting the coercions. Establish `hW : ∀ jj : ℕ, jj ≤ D.R.m → (∑ τ, ∑ i, ((wt ch.G (.grid jj D.R.m) τ).natW i : ℝ)) ≤ (D.R.f : ℝ) * (bigN D : ℝ) * (8 * (4 * large₂.sc.b))`. Introduce `jj hjj`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Use `_ ≤ (D.R.f : ℝ) * ((bigN D : ℝ) * (8 * (4 * large₂.sc.b))) := by`. Establish `h1 : (Fintype.card D.what₂.Tau : ℝ) ≤ D.R.f` using `by exact_mod_cast hcard`. Conclude with `mul_le_mul h1 (mul_le_mul_of_nonneg_right (hrk jj hjj) (by positivity)) (by positivity) (by positivity)`. Use `_ = _ := by ring`. Establish `hW0 : ∀ jj : ℕ, 0 ≤ (∑ τ, ∑ i, ((wt ch.G (.grid jj D.R.m) τ).natW i : ℝ))` using `fun jj => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`.
+
+Establish `haN : (a : ℝ) ≤ bigN D` using `hrk j j.2.le`. Establish `hbN : (bb : ℝ) ≤ bigN D` using `hrk _ (Nat.succ_le_of_lt j.2)`. Establish `hgc : (g : ℝ) = (D.R.f : ℝ) * a * bb` using `by rw [hg, mul_right_comm]; push_cast; rfl`. Take `⟨hc0, hgG⟩` from `size_bound K D.R.f (bigN D) (4 * large₂.sc.b) D.host.rdE Kx _ _ a bb (Fintype.card D.what₂.Tau) g hK0 (Nat.cast_nonneg _) (by exact_mod_cast hcard) (by linarith) hN1' (by linarith) hf1' (by linarith) hrd0 (by linarith) (Nat.cast_nonneg _) haN (Nat.cast_nonneg _) hbN (hW j j.2.le) …`. Establish `hc : Real.log (P * Kx) ≤ 12 * (6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b`.
+
+Rewrite using `[hP]`. Use `hc0.trans ((mul_le_mul_of_nonneg_left hlog4 (by positivity)).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hdN : (deg : ℝ) ≤ 32 * D.R.f * bigN D * large₂.sc.b`. Establish `e : (deg : ℝ) = ∑ τ, ∑ i, ((wt ch.G (.grid ((j : ℕ) + 1) D.R.m) τ).natW i : ℝ)` using `by rw [hdeg]; push_cast; rfl`.
+
+Rewrite using `[e]`. Use `(hW _ (Nat.succ_le_of_lt j.2)).trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hpA : 0 ≤ Real.posLog (area L)⁻¹` using `Real.posLog_nonneg`. Establish `hpX : 0 ≤ Real.posLog X` using `Real.posLog_nonneg`.
+
+Establish `hMexp : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ Real.exp (12 * (6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b + 32 * D.R.f * bigN D * large₂.sc.b * hArea D ch.S.Z.δ ch.S.Z.t0 ρ + 4 * D.R.f * bigN D * large₂.sc.b * hTh D ch.S.Z.δ ch.S.Z.t0 ρ)`. Establish `hXg` using `pow_le_exp_posLog X g`. Establish `hMd` using `max_pow_le_exp_posLog (area L) harea deg`. Establish `step1 : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹))`. Use `mul_le_mul hXg hMd (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _) (Real.exp_pos _).le` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Use `step1.trans ?_` and prove the remaining obligations. Establish `eq : (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹)) = Real.exp (Real.log (P * Kx) + g * Real.posLog X + deg * Real.posLog (area L)⁻¹)`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log (mul_pos hPpos hKx)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[eq, Real.exp_le_exp, eA, eT]`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hgG hpX, mul_le_mul_of_nonneg_right hdN hpA]`. Rewrite using `[hfeq u]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conjugate_row_mem_kernel : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 →
     BigC fun _ ch C b => ConjRowAt ch C b C1 := by
   intro _ hInp hDict _ C1 hC1
@@ -137,6 +176,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Form
 open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.RowClaim GlobalTheory.TestLat
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel | exact _root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel | (intros; apply _root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.conjRowAt_of_dict_depth : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 → BigC fun _ ch C b => ConjRowAt ch C b C1 := by
   first | exact @_root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel | exact _root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel | (intros; apply _root_.GlobalTheory.KerConjRow.conjugate_row_mem_kernel <;> assumption)
 end

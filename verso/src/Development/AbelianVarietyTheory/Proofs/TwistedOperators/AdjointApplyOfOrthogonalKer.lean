@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ConjScalar
 
+/- English proof (translation)
+Establish `hk : LinearMap.adjoint T (T u) - l • u ∈ LinearMap.ker T`. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, h, sub_self]`. Establish `hr : LinearMap.adjoint T (T u) ∈ (LinearMap.ker T)ᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `k hk'`.
+
+Rewrite using `[LinearMap.adjoint_inner_right, LinearMap.mem_ker.mp hk', inner_zero_left]`. Establish `ho : LinearMap.adjoint T (T u) - l • u ∈ (LinearMap.ker T)ᗮ` using `Submodule.sub_mem _ hr (Submodule.smul_mem _ l hu)`. Establish `hz` using `Submodule.inner_right_of_mem_orthogonal hk ho`. Rewrite `hz` using `[inner_self_eq_zero, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem adjoint_apply_of_orthogonal_ker {H W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (T : H →ₗ[ℂ] W) {u : H} {l : ℂ}
     (hu : u ∈ (LinearMap.ker T)ᗮ) (h : T (LinearMap.adjoint T (T u)) = l • T u) : LinearMap.adjoint T (T u) = l • u := by
@@ -28,11 +33,17 @@ theorem adjoint_apply_of_orthogonal_ker {H W : Type} [NormedAddCommGroup H] [Inn
   have hz := Submodule.inner_right_of_mem_orthogonal hk ho
   rwa [inner_self_eq_zero, sub_eq_zero] at hz
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.adjoint_inner_left, h, inner_smul_left, Complex.conj_ofReal]`.
+-/
 theorem inner_apply_of_adjoint_eq {H W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (T : H →ₗ[ℂ] W) {u : H} {l : ℝ}
     (h : LinearMap.adjoint T (T u) = (l : ℂ) • u) (w : H) : ⟪T u, T w⟫_ℂ = (l : ℂ) * ⟪u, w⟫_ℂ := by
   rw [← LinearMap.adjoint_inner_left, h, inner_smul_left, Complex.conj_ofReal]
 
+/- English proof (translation)
+Unfold `GlobalTheory.LiftLower.csumAt`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, RingHom.comp_apply, map_sum, map_mul, Complex.star_def, Complex.conj_conj]`.
+-/
 theorem conj_csumAt {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K) (σ : K →+* ℂ) (f g : S.Forms) :
     starRingEnd ℂ (GlobalTheory.LiftLower.csumAt S ((starRingEnd ℂ).comp σ) f g) = GlobalTheory.LiftLower.csumAt S σ f g := by
   unfold GlobalTheory.LiftLower.csumAt

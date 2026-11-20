@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsL
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
 open GlobalTheory.SW hiding Level
 
+/- English proof (translation)
+Introduce `E _ _ _ r X hL`. Take `⟨bas, hbas⟩` from `GlobalTheory.Dict.Letters.exists_isSympl X hL (Fintype.equivFin (X.Ψ × Fin r)).symm`. Conclude with `⟨_, bas, (Fintype.equivFin _).symm, hbas⟩`.
+-/
 theorem GlobalTheory.Ker.exists_symplectic_basis_of_selfD : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r : ℕ) (X : Data E r), SelfD X X.Λ →
     ∃ (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (_ : Fin g ≃ X.Ψ × Fin r), IsSympl X bas := by

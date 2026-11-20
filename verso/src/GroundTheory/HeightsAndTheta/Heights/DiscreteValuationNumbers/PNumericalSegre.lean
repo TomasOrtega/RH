@@ -13,6 +13,27 @@ namespace NumericalSegreProof
 
 section Combinatorics
 
+/- English proof (translation)
+Establish `hsum : ∀ (α : Fin (i + 1) → ℕ) (v : ℕ), ∑ j, Function.update α (Fin.last i) v j = ∑ j : Fin i, α (Fin.castSucc j) + v`. Introduce `α v`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using the standard rewrite rules. Establish `hsum' : ∀ α : Fin (i + 1) → ℕ, ∑ j, α j = ∑ j : Fin i, α (Fin.castSucc j) + α (Fin.last i)` using `fun α => Fin.sum_univ_castSucc α`.
+
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not _ (fun α : Fin (i + 1) → ℕ => α (Fin.last i) = 0)]`. Use `congr 1`. Use `Finset.sum_nbij' Fin.init (fun α => Fin.snoc α 0) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `α hα`. Simplify using `only [Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple] at hα ⊢`.
+
+Rewrite `hα` using `[hsum']`. Simplify `hα.1` using `[Fin.init, hα.2]`. Introduce `α hα`. Simplify using `only [Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple] at hα ⊢`. Use `⟨?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[hsum']`. Simplify using `using hα`. Introduce `α hα`. Simplify using `only [Finset.mem_filter] at hα`. Rewrite using `[← hα.2, Fin.snoc_init_self]`.
+
+Introduce `α _`. Conclude with `Fin.init_snoc _ _`. Introduce `α hα`. Simplify using `only [Finset.mem_filter] at hα`. Rewrite using `[← hα.2, Fin.snoc_init_self]`.
+
+Establish `linv : ∀ α : Fin (i + 1) → ℕ, α (Fin.last i) ≠ 0 → Function.update (Function.update α (Fin.last i) (α (Fin.last i) - 1)) (Fin.last i) (Function.update α (Fin.last i) (α (Fin.last i) - 1) (Fin.last i) + 1) = α`. Introduce `α hα`. Rewrite using `[Function.update_self, Function.update_idem, Nat.sub_add_cancel (Nat.pos_of_ne_zero hα), Function.update_eq_self]`. Use `Finset.sum_nbij' (fun α => Function.update α (Fin.last i) (α (Fin.last i) - 1)) (fun β => Function.update β (Fin.last i) (β (Fin.last i) + 1)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `α hα`.
+
+Simplify using `only [Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple] at hα ⊢`. Rewrite using `[hsum]`. Rewrite `hα` using `[hsum']`. Use linear arithmetic over natural numbers and integers. Introduce `β hβ`.
+
+Simplify using `only [Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple] at hβ ⊢`. Rewrite using `[hsum, Function.update_self]`. Rewrite `hβ` using `[hsum']`. Use `⟨by omega, by omega⟩` and prove the remaining obligations. Introduce `α hα`.
+
+Simplify using `only [Finset.mem_filter] at hα`. Conclude with `linv α hα.2`. Introduce `β _`. Simplify using the standard rewrite rules. Introduce `α hα`.
+
+Simplify using `only [Finset.mem_filter] at hα`. Rewrite using `[linv α hα.2]`.
+-/
 theorem sum_antidiagonalTuple_succ {A : Type*} [AddCommMonoid A] (i c : ℕ)
     (f : (Fin (i + 1) → ℕ) → A) :
     ∑ α ∈ Finset.Nat.antidiagonalTuple (i + 1) (c + 1), f α =
@@ -82,6 +103,9 @@ variable {K : Type*} [DecidableEq K]
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Unfold `rootList`. Rewrite using `[List.finRange_succ_last]`. Simplify using `[List.flatMap_append, Fin.init, List.flatMap_map]`.
+-/
 theorem rootList_succ {i : ℕ} (x : Fin (i + 1) → K → ℤ) (α : Fin (i + 1) → ℕ) :
     rootList x α = rootList (fun j => x (Fin.castSucc j)) (Fin.init α) ++
       List.replicate (α (Fin.last i)) (x (Fin.last i)) := by
@@ -90,12 +114,18 @@ theorem rootList_succ {i : ℕ} (x : Fin (i + 1) → K → ℤ) (α : Fin (i + 1
   simp [List.flatMap_append, Fin.init, List.flatMap_map]
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Rewrite using `[rootList_succ, Fin.init_snoc, Fin.snoc_last]`. Simplify using the standard rewrite rules.
+-/
 theorem rootList_snoc_zero {i : ℕ} (x : Fin (i + 1) → K → ℤ) (α : Fin i → ℕ) :
     rootList x (Fin.snoc α 0) = rootList (fun j => x (Fin.castSucc j)) α := by
   rw [rootList_succ, Fin.init_snoc, Fin.snoc_last]
   simp
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Establish `hinit : Fin.init (Function.update β (Fin.last i) (β (Fin.last i) + 1)) = Fin.init β`. Use function extensionality and compare the values at `j`. Simplify using `[Fin.init]`. Rewrite using `[rootList_succ, rootList_succ x β, hinit, Function.update_self, List.replicate_succ', List.append_assoc]`.
+-/
 theorem rootList_update_last {i : ℕ} (x : Fin (i + 1) → K → ℤ) (β : Fin (i + 1) → ℕ) :
     rootList x (Function.update β (Fin.last i) (β (Fin.last i) + 1)) =
       rootList x β ++ [x (Fin.last i)] := by
@@ -106,14 +136,23 @@ theorem rootList_update_last {i : ℕ} (x : Fin (i + 1) → K → ℤ) (β : Fin
     List.append_assoc]
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Simplify using `[rootList]`.
+-/
 theorem rootList_zero {n : ℕ} (x : Fin n → K → ℤ) : rootList x 0 = [] := by
   simp [rootList]
 
+/- English proof (translation)
+Unfold `intNumL intNum mixedDiff`. Rewrite using `[List.ofFn_get]`.
+-/
 theorem intNumL_eq {ι : K → Type*} (F : Type*) [Field F] (P : Ideal (MRing ι F))
     (l : List (K → ℤ)) : intNumL F P l = eventualValue (l.foldr diffStep (hilbFn P)) := by
   unfold intNumL intNum mixedDiff
   rw [List.ofFn_get]
 
+/- English proof (translation)
+Rewrite using `[intNumL_eq, intNumL_eq, h.foldr_eq]`.
+-/
 theorem intNumL_perm {ι : K → Type*} (F : Type*) [Field F] (P : Ideal (MRing ι F))
     {l l' : List (K → ℤ)} (h : l.Perm l') : intNumL F P l = intNumL F P l' := by
   rw [intNumL_eq, intNumL_eq, h.foldr_eq]
@@ -126,6 +165,13 @@ def segreSide {K : Type*} [DecidableEq K] {ι : K → Type*} (F : Type*) [Field 
     ∑ α ∈ Finset.Nat.antidiagonalTuple i (n - (i - 1)), intNumL F P (rootList x α ++ Y)
   else 0
 
+/- English proof (translation)
+Unfold `segreSide`. Simplify using `only [Nat.add_sub_cancel]`. Distinguish the cases in `h : i ≤ m + 1`. Take `⟨c, hc⟩ : ∃ c, m + 1 = i + c` from `⟨m + 1 - i, by omega⟩`. Rewrite using `[if_pos h, if_pos (by omega), show m + 1 - i = c by omega, show m - (i - 1) = c by omega]`.
+
+Break down `c with _ | c` into its components or cases. Rewrite using `[if_neg (by omega), add_zero, Finset.Nat.antidiagonalTuple_zero_right, Finset.Nat.antidiagonalTuple_zero_right, Finset.sum_singleton, Finset.sum_singleton, rootList_zero, rootList_zero]`. Rewrite using `[if_pos (by omega), show m - i = c by omega, sum_antidiagonalTuple_succ]`. Use `congr 1`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[rootList_snoc_zero]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[rootList_update_last, List.append_assoc, List.singleton_append]`. Rewrite using `[if_neg h, if_neg (by omega), if_neg (by omega), add_zero]`.
+-/
 theorem segreSide_succ {K : Type*} [DecidableEq K] {ι : K → Type*} (F : Type*) [Field F]
     (P : Ideal (MRing ι F)) {i : ℕ} (hi : 1 ≤ i) (x : Fin (i + 1) → K → ℤ) (m : ℕ)
     (Y : List (K → ℤ)) :
@@ -149,16 +195,27 @@ theorem segreSide_succ {K : Type*} [DecidableEq K] {ι : K → Type*} (F : Type*
         rw [rootList_update_last, List.append_assoc, List.singleton_append]
   · rw [if_neg h, if_neg (by omega), if_neg (by omega), add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> simp [zetaDeg, liftDeg]`.
+-/
 theorem zetaDeg_split {K : Type*} (a c : K → ℤ) :
     ((zetaDeg + liftDeg (c - a)) + liftDeg (a - c) : Option K → ℤ) = zetaDeg := by
   funext o
   cases o <;> simp [zetaDeg, liftDeg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[truncCoord, lt_of_lt_of_le j.isLt h]`.
+-/
 theorem truncCoord_of_le {N : ℕ} {Φ : Type*} [Zero Φ] (t : Fin N → Φ) {i : ℕ} (h : N ≤ i) :
     truncCoord t i = t := by
   funext j
   simp [truncCoord, lt_of_lt_of_le j.isLt h]
 
+/- English proof (translation)
+Establish `key : ∀ d, Function.update (c :: l).get (0 : Fin (l.length + 1)) d = (d :: l).get`. Introduce `d`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Rewrite using `[Function.update_of_ne (Fin.succ_ne_zero j)]`. Both sides reduce to the same expression. Establish `h` using `hadd F K ι P hP.multiHomog hP.relevant (l.length + 1) hd ((c :: l).get) 0 c c'`. Rewrite `h` using `[key, key, key]`. Conclude with `h`.
+-/
 theorem intNumL_cons_add (hadd : FieldNumbers.IntNumAdd.Statement.{0}) (F : Type) [Field F]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι F)) (hP : IsMultiProjPrime P) (l : List (K → ℤ))
@@ -179,6 +236,23 @@ end NumericalSegreProof
 
 open NumericalSegreProof in
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ _ ι _ y e hP hdimV N hN E _ _ B w b hflag M a φ hφ Φ _ _ t ht n Y hnY`. Establish `claim : ∀ i : ℕ, 1 ≤ i → ∀ hi : i ≤ N, ∀ (n : ℕ) (Y : List (K → ℤ)), n + Y.length + 1 = e + i → intNumL F (projIdeal F y w φ (truncCoord t i)) (List.replicate n zetaDeg ++ Y.map liftDeg) = segreSide F (pointIdeal F y) (fun j : Fin i => a - b (Fin.castLE hi j)) n Y`. Introduce `i hi1`. Proceed by induction on `i, hi1 using Nat.le_induction with`. Consider the case `base`.
+
+Introduce `hi n Y hnY`. Rewrite using `[hbase F Ω K ι y e hP hdimV N E B w b hflag M a φ hφ Φ t ht hi n Y (by omega)]`. Simplify using `[segreSide, Finset.Nat.antidiagonalTuple_one, rootList, List.finRange_succ]`. Both sides reduce to the same expression. Consider the case `succ i hi1 ih`.
+
+Introduce `hi n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Y hY`. Rewrite using `[List.replicate_zero, List.nil_append, hvan F Ω K ι y e hP hdimV N E B w b hflag M a φ hφ Φ t ht (i + 1) (by omega) hi Y (by omega)]`.
+
+Unfold `segreSide`. Rewrite using `[if_neg (by omega)]`. Consider the case `succ m ihm`. Introduce `Y hY`. Use `set l := List.replicate m (zetaDeg : Option K → ℤ) ++ Y.map liftDeg with hl`.
+
+Establish `hlen : l.length + 1 = e + i`. Simplify using `[hl]`. Use linear arithmetic over natural numbers and integers. Take `⟨hPi, hdi⟩` from `hdim F Ω K ι y e hP hdimV N E B w b hflag M a φ hφ Φ t ht (i + 1) (by omega) hi`. Rewrite `hdi` using `[show e + (i + 1) - 1 = l.length + 1 by omega]`.
+
+Rewrite using `[List.replicate_succ, List.cons_append, ← hl, ← zetaDeg_split a (b ⟨i, hi⟩), intNumL_cons_add hadd F _ hPi l hdi]`. Establish `hc` using `hcut F Ω K ι y e hP hdimV N E B w b hflag M a φ hφ Φ t ht ⟨i, hi⟩ hi1 l hlen`. Simplify using `only at hc`. Rewrite using `[hc, ih (by omega) m Y (by omega)]`. Establish `hperm : (liftDeg (a - b ⟨i, hi⟩) :: l).Perm (List.replicate m zetaDeg ++ ((a - b ⟨i, hi⟩) :: Y).map liftDeg)`.
+
+Rewrite using `[hl, List.map_cons]`. Conclude with `List.perm_middle.symm`. Rewrite using `[intNumL_perm F _ hperm, ihm _ (by simp; omega), segreSide_succ F _ hi1]`. Both sides reduce to the same expression. Rewrite using `[← truncCoord_of_le t (le_refl N), claim N hN (le_refl N) n Y (by omega)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem NumericalSegre.proof (hadd : FieldNumbers.IntNumAdd.Statement.{0})
     (hdim : FlagBundleDim.Statement) (hcut : FlagBundleCut.Statement)
     (hvan : FlagBundlePullbackVanish.Statement) (hbase : FlagBundleLineBase.Statement) :

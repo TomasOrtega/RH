@@ -30,6 +30,9 @@ section Basic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [herm, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem herm_col (G P : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
     herm G (fun k => P k a) (fun k => P k b) = (Pᵀ * G * P.map cc) a b := by
   simp only [herm, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
@@ -37,6 +40,9 @@ theorem herm_col (G P : Matrix (Fin r) (Fin r) E) (a b : Fin r) :
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G Q = Qᵀ * G.map τ * Q.map conj := by
   ext a b
@@ -44,18 +50,33 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Q : Matrix (F
     Matrix.map_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_cc_eq (P : Matrix (Fin r) (Fin r) E) :
     P.map cc = (IsCMField.complexConj E : E →+* E).mapMatrix P := rfl
 
+/- English proof (translation)
+Rewrite using `[map_cc_eq, ← RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_map_cc (P : Matrix (Fin r) (Fin r) E) : (P.map cc).det = cc P.det := by
   rw [map_cc_eq, ← RingHom.map_det]; rfl
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem embedding_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Simplify `hx` using `[cc]`.
+-/
 theorem cc_ne_zero {x : E} (hx : x ≠ 0) : cc x ≠ 0 := by
   simpa [cc] using hx
 
+/- English proof (translation)
+Rewrite using `[← det_map_cc, ← Matrix.det_transpose G]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `hG a b`.
+-/
 theorem cc_det_of_herm {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a) :
     cc G.det = G.det := by
   rw [← det_map_cc, ← Matrix.det_transpose G]
@@ -70,6 +91,11 @@ namespace Landherr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
   {G G' : Matrix (Fin r) (Fin r) E}
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `h`. Use `⟨P.map τ, ?_, ?_⟩` and prove the remaining obligations. Establish `: (P.map τ).det = τ P.det` using `(RingHom.map_det τ P).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero τ).mpr hP`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `embedding_cc τ _`.
+-/
 theorem congr_complex (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc)
     (τ : E →+* ℂ) :
     ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map τ = Qᵀ * G.map τ * Q.map conj := by
@@ -83,6 +109,11 @@ theorem congr_complex (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' 
     ext a b
     exact embedding_cc τ _
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `h`. Use `⟨P.det⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : cc P.det⁻¹ = (cc P.det)⁻¹` using `by simp [cc]`. Establish `h2` using `cc_ne_zero hP`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, det_map_cc, h1]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem det_norm (hG : G.det ≠ 0)
     (h : ∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc) :
     ∃ x : E, G.det / G'.det = x * cc x := by
@@ -93,6 +124,9 @@ theorem det_norm (hG : G.det ≠ 0)
   rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, det_map_cc, h1]
   field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨congr_complex h, det_norm hd h⟩, fun h => H E r G G' hG hG' hd hd' h.1 h.2⟩`.
+-/
 theorem iff (H : Landherr) (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc (G' a b) = G' b a)
     (hd : G.det ≠ 0) (hd' : G'.det ≠ 0) :
     (∃ P : Matrix (Fin r) (Fin r) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc) ↔
@@ -100,10 +134,20 @@ theorem iff (H : Landherr) (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc
         G'.map τ = Qᵀ * G.map τ * Q.map conj) ∧ ∃ x : E, G.det / G'.det = x * cc x :=
   ⟨fun h => ⟨congr_complex h, det_norm hd h⟩, fun h => H E r G G' hG hG' hd hd' h.1 h.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, Subsingleton.elim _ _⟩`.
+-/
 theorem size_zero (G G' : Matrix (Fin 0) (Fin 0) E) :
     ∃ P : Matrix (Fin 0) (Fin 0) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc :=
   ⟨1, by simp, Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `div_ne_zero hd hd' (by simpa using hx)`. Establish `hc` using `cc_ne_zero hx0`.
+
+Establish `h1 : cc x⁻¹ = (cc x)⁻¹` using `by simp [cc]`. Rewrite `hd`, `hd'` using `[Matrix.det_fin_one]`. Rewrite `hx` using `[Matrix.det_fin_one, Matrix.det_fin_one, div_eq_iff hd']`. Use `⟨!![x⁻¹], by simpa using hx0, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Use `fin_cases a`. Use `fin_cases b`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_one, Matrix.transpose_apply, Matrix.map_apply, Fin.zero_eta, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_fin_one, h1, hx]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem size_one (G G' : Matrix (Fin 1) (Fin 1) E) (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
     (h : ∃ x : E, G.det / G'.det = x * cc x) :
     ∃ P : Matrix (Fin 1) (Fin 1) E, P.det ≠ 0 ∧ G' = Pᵀ * G * P.map cc := by
@@ -124,6 +168,15 @@ theorem size_one (G G' : Matrix (Fin 1) (Fin 1) E) (hd : G.det ≠ 0) (hd' : G'.
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite `h` using `[gram_eq, gram_eq]`. Establish `hu : IsUnit Q'.det` using `isUnit_iff_ne_zero.mpr hQ'`. Use `⟨Q * Q'⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hQ (Matrix.isUnit_nonsing_inv_det _ hu).ne_zero`.
+
+Establish `e1 : Q'⁻¹ᵀ * Q'ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one]`. Establish `e2 : Q'.map conj * Q'⁻¹.map conj = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, e2, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Q'⁻¹ᵀ * (Q'ᵀ * G'.map τ * Q'.map conj) * Q'⁻¹.map conj := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Q * Q'⁻¹)ᵀ * G.map τ * (Q * Q'⁻¹).map conj := by`. Rewrite using `[← h, Matrix.transpose_mul, Matrix.map_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem congr_of_gram_eq (τ : E →+* ℂ) {Q Q' : Matrix (Fin r) (Fin r) ℂ} (hQ : Q.det ≠ 0)
     (hQ' : Q'.det ≠ 0) (h : gram τ G Q = gram τ G' Q') :
     ∃ R : Matrix (Fin r) (Fin r) ℂ, R.det ≠ 0 ∧ G'.map τ = Rᵀ * G.map τ * R.map conj := by
@@ -146,6 +199,11 @@ theorem congr_of_gram_eq (τ : E →+* ℂ) {Q Q' : Matrix (Fin r) (Fin r) ℂ} 
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨Q, hQ, h⟩` from `h`. Use `⟨Q.map conj, ?_, ?_⟩` and prove the remaining obligations. Establish `: (Q.map conj).det = conj Q.det` using `(RingHom.map_det (starRingEnd ℂ) Q).symm`. Rewrite using `[this]`. Conclude with `(map_ne_zero _).mpr hQ`.
+
+Establish `e : ∀ M : Matrix (Fin r) (Fin r) E, M.map (ComplexEmbedding.conjugate τ) = (M.map τ).map conj` using `fun M => rfl`. Rewrite using `[e, e, h, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem congr_conjugate (τ : E →+* ℂ)
     (h : ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map τ = Qᵀ * G.map τ * Q.map conj) :
     ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map (ComplexEmbedding.conjugate τ) =
@@ -161,6 +219,11 @@ theorem congr_conjugate (τ : E →+* ℂ)
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Establish `key : ∀ σ ∈ Ψ, ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map σ = Qᵀ * G.map σ * Q.map conj`. Introduce `σ hσ`. Take `⟨p, ⟨Q, hQ, h⟩, Q', hQ', h'⟩` from `hs σ hσ`. Conclude with `congr_of_gram_eq σ hQ hQ' (h.trans h'.symm)`. Break down `hΨ τ with h | h` into its components or cases.
+
+Conclude with `key τ h`. Use `congr_conjugate _ (key _ h)` as an intermediate fact. Rewrite `this` using `[show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from star_star τ]`. Then use the resulting hypothesis.
+-/
 theorem congr_of_signature (Ψ : Set (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ∨ ComplexEmbedding.conjugate τ ∈ Ψ)
     (hs : ∀ τ ∈ Ψ, ∃ p : ℕ,
@@ -180,6 +243,9 @@ theorem congr_of_signature (Ψ : Set (E →+* ℂ))
   · have := congr_conjugate _ (key _ h)
     rwa [show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from star_star τ] at this
 
+/- English proof (translation)
+The claim follows from `H E r G G' hG hG' hd hd' (congr_of_signature Ψ hΨ hs) hn`.
+-/
 theorem of_signature (H : Landherr) (hG : ∀ a b, cc (G a b) = G b a)
     (hG' : ∀ a b, cc (G' a b) = G' b a) (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
     (Ψ : Set (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ∨ ComplexEmbedding.conjugate τ ∈ Ψ)
@@ -194,6 +260,13 @@ theorem of_signature (H : Landherr) (hG : ∀ a b, cc (G a b) = G b a)
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨Q, hQ, h⟩` from `h`. Establish `e : ∀ M : Matrix (Fin r) (Fin r) E, (M.map τ).det = τ M.det` using `fun M => (RingHom.map_det τ M).symm`. Establish `e' : (Q.map conj).det = conj Q.det` using `(RingHom.map_det (starRingEnd ℂ) Q).symm`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, e, e, e']`.
+
+Establish `hτ : τ G.det ≠ 0` using `(map_ne_zero τ).mpr hd`. Establish `hc : conj Q.det ≠ 0` using `(map_ne_zero _).mpr hQ`. Establish `h3 : τ (G.det / G'.det) = (((Complex.normSq Q.det)⁻¹ : ℝ) : ℂ)`. Rewrite using `[map_div₀, h2, Complex.ofReal_inv, ← Complex.mul_conj]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h3, Complex.ofReal_re]`. Conclude with `inv_pos.mpr (Complex.normSq_pos.mpr hQ)`.
+-/
 theorem re_det_div_pos (hd : G.det ≠ 0) (τ : E →+* ℂ)
     (h : ∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ G'.map τ = Qᵀ * G.map τ * Q.map conj) :
     0 < (τ (G.det / G'.det)).re := by
@@ -217,6 +290,11 @@ section QuadraticNorm
 
 variable {A S : Type*} [CommRing A] [CommRing S] [Algebra A S]
 
+/- English proof (translation)
+Establish `e0 : (x • b 0 + y • b 1) * b 0 = x • b 0 + y • b 1` using `by rw [h0, mul_one]`. Establish `e1 : (x • b 0 + y • b 1) * b 1 = (y * d) • b 0 + x • b 1`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, h1, h0, one_mul, Algebra.algebraMap_eq_smul_one, smul_smul, add_comm]`. Rewrite using `[Algebra.norm_eq_matrix_det b, Matrix.det_fin_two]`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, e0, e1, map_add, map_smul, Module.Basis.repr_self, Finsupp.add_apply, Finsupp.smul_apply, Finsupp.single_apply]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_of_basis_one_sqrt (b : Module.Basis (Fin 2) A S) (h0 : b 0 = 1) (d : A)
     (h1 : b 1 * b 1 = algebraMap A S d) (x y : A) :
     Algebra.norm A (x • b 0 + y • b 1) = x ^ 2 - d * y ^ 2 := by
@@ -230,6 +308,11 @@ theorem norm_of_basis_one_sqrt (b : Module.Basis (Fin 2) A S) (h0 : b 0 = 1) (d 
   simp
   ring
 
+/- English proof (translation)
+Establish `hz : z = b.repr z 0 • b 0 + b.repr z 1 • b 1` using `by conv_lhs => rw [← b.sum_repr z, Fin.sum_univ_two]`. Generalize the expression as in `b.repr z 0 = x, b.repr z 1 = y at hz`. Substitute `hz` using the available equality. Rewrite using `[norm_of_basis_one_sqrt b h0 d h1, map_add, map_smul, map_smul, hσ, h0, map_one σ]`. Simplify using `only [Algebra.smul_def, map_sub, map_mul, map_pow, ← h1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem algebraMap_norm_of_basis_one_sqrt (b : Module.Basis (Fin 2) A S) (h0 : b 0 = 1) (d : A)
     (h1 : b 1 * b 1 = algebraMap A S d) (σ : S →ₐ[A] S) (hσ : σ (b 1) = -b 1) (z : S) :
     algebraMap A S (Algebra.norm A z) = z * σ z := by
@@ -249,6 +332,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 variable (E) in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, IsCMField.complexConj E x ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Conclude with `⟨x - cc x, sub_ne_zero.mpr hx.symm, by simp [cc]⟩`.
+-/
 theorem exists_cc_eq_neg : ∃ θ : E, θ ≠ 0 ∧ cc θ = -θ := by
   obtain ⟨x, hx⟩ : ∃ x : E, IsCMField.complexConj E x ≠ x := by
     by_contra h
@@ -256,6 +342,13 @@ theorem exists_cc_eq_neg : ∃ θ : E, θ ≠ 0 ∧ cc θ = -θ := by
     exact IsCMField.complexConj_ne_one E (AlgEquiv.ext h)
   exact ⟨x - cc x, sub_ne_zero.mpr hx.symm, by simp [cc]⟩
 
+/- English proof (translation)
+Establish `hli : LinearIndependent (maximalRealSubfield E) ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1 : (s : E) + (t : E) * θ = 0`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`.
+
+Conclude with `hst`. Establish `h2 : (s : E) - (t : E) * θ = 0`. Use `congrArg (IsCMField.complexConj E) h1` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, IsCMField.complexConj_apply_eq_self, IsCMField.complexConj_apply_eq_self, map_zero, show IsCMField.complexConj E θ = -θ from hθ]`. Take the linear combination `this`.
+
+Establish `hs : (s : E) = 0` using `by linear_combination (h1 + h2) / 2`. Establish `ht : (t : E) * θ = 0` using `by linear_combination h1 - hs`. Conclude with `⟨by exact_mod_cast hs, by exact_mod_cast (mul_eq_zero.mp ht).resolve_right h0⟩`. Apply the tactic sequence `refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by rw [Algebra.IsQuadraticExtension.finrank_eq_two]; simp), ?_, ?_⟩ <;> simp`.
+-/
 theorem exists_basis_one_imaginary {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) :
     ∃ b : Module.Basis (Fin 2) (maximalRealSubfield E) E, b 0 = 1 ∧ b 1 = θ := by
   have hli : LinearIndependent (maximalRealSubfield E) ![(1 : E), θ] := by
@@ -276,11 +369,17 @@ theorem exists_basis_one_imaginary {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) 
   refine ⟨basisOfLinearIndependentOfCardEqFinrank hli
     (by rw [Algebra.IsQuadraticExtension.finrank_eq_two]; simp), ?_, ?_⟩ <;> simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨θ * θ, (IsCMField.complexConj_eq_self_iff E _).mp (by rw [map_mul, show IsCMField.complexConj E θ = -θ from hθ]; ring)⟩, rfl⟩`.
+-/
 theorem exists_sq_real {θ : E} (hθ : cc θ = -θ) :
     ∃ d : maximalRealSubfield E, (d : E) = θ * θ :=
   ⟨⟨θ * θ, (IsCMField.complexConj_eq_self_iff E _).mp (by
     rw [map_mul, show IsCMField.complexConj E θ = -θ from hθ]; ring)⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨θ, h0, hθ⟩` from `exists_cc_eq_neg E`. Take `⟨b, hb0, hb1⟩` from `exists_basis_one_imaginary h0 hθ`. Take `⟨d, hd⟩` from `exists_sq_real hθ`. Conclude with `algebraMap_norm_of_basis_one_sqrt b hb0 d (by rw [hb1]; exact hd.symm) (IsCMField.complexConj E).toAlgHom (by rw [hb1]; exact hθ) x`.
+-/
 theorem coe_norm_eq_mul_cc (x : E) :
     ((Algebra.norm (maximalRealSubfield E) x : maximalRealSubfield E) : E) = x * cc x := by
   obtain ⟨θ, h0, hθ⟩ := exists_cc_eq_neg E
@@ -291,6 +390,9 @@ theorem coe_norm_eq_mul_cc (x : E) :
 
 variable (A : Type*) [CommRing A] [Algebra (maximalRealSubfield E) A]
 
+/- English proof (translation)
+Take `⟨b, hb0, hb1⟩` from `exists_basis_one_imaginary h0 hθ`. Use `norm_of_basis_one_sqrt (Algebra.TensorProduct.basis A b) (by rw [Algebra.TensorProduct.basis_apply, hb0]; rfl) (algebraMap _ A d) (by` as an intermediate fact. Rewrite using `[Algebra.TensorProduct.basis_apply, hb1, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hd, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.algebraMap_apply' d).symm) x y`. Rewrite `this` using `[Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, hb0, hb1, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem norm_tmul_add_tmul {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) {d : maximalRealSubfield E}
     (hd : (d : E) = θ * θ) (x y : A) :
     Algebra.norm A (x ⊗ₜ[maximalRealSubfield E] (1 : E) + y ⊗ₜ[maximalRealSubfield E] θ) =
@@ -306,6 +408,11 @@ theorem norm_tmul_add_tmul {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) {d : max
     TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one,
     mul_one] at this
 
+/- English proof (translation)
+Take `⟨θ, h0, hθ⟩` from `exists_cc_eq_neg E`. Take `⟨b, hb0, hb1⟩` from `exists_basis_one_imaginary h0 hθ`. Take `⟨d, hd⟩` from `exists_sq_real hθ`. Use `algebraMap_norm_of_basis_one_sqrt (Algebra.TensorProduct.basis A b) (by rw [Algebra.TensorProduct.basis_apply, hb0]; rfl) (algebraMap _ A d) ?_ _ ?_ z` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, hb1, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hd, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `(Algebra.TensorProduct.algebraMap_apply' d).symm`. Rewrite using `[Algebra.TensorProduct.basis_apply, hb1, Algebra.TensorProduct.map_tmul, ← TensorProduct.tmul_neg, ← hθ]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_norm_tensor (z : A ⊗[maximalRealSubfield E] E) :
     algebraMap A (A ⊗[maximalRealSubfield E] E) (Algebra.norm A z) =
       z * Algebra.TensorProduct.map (AlgHom.id A A) (IsCMField.complexConj E).toAlgHom z := by
@@ -325,6 +432,9 @@ end CM
 
 namespace HasseNorm
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `h`. Use `⟨1 ⊗ₜ x, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`. Conclude with `(Algebra.baseChange_lmul x).symm`.
+-/
 theorem local_of_global {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
     (A : Type*) [CommRing A] [Algebra K A] {a : K} (h : ∃ x : L, Algebra.norm K x = a) :
     ∃ z : A ⊗[K] L, Algebra.norm A z = algebraMap K A a := by
@@ -336,6 +446,13 @@ theorem local_of_global {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteD
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hv : v.IsReal` using `IsTotallyReal.isReal v`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hv`. Establish `he : e (algebraMap _ v.Completion a) = InfinitePlace.embedding_of_isReal hv a` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm a)`. Establish `hpos : 0 < InfinitePlace.embedding_of_isReal hv a`. Establish `h1` using `ha (ComplexEmbedding.lift E v.embedding)`.
+
+Establish `h2 : ComplexEmbedding.lift E v.embedding (a : E) = v.embedding a` using `ComplexEmbedding.lift_algebraMap_apply E v.embedding a`. Rewrite `h1` using `[h2, ← InfinitePlace.embedding_of_isReal_apply hv, Complex.ofReal_re]`. Then use the resulting hypothesis. Take `⟨θ, h0, hθ⟩` from `exists_cc_eq_neg E`. Take `⟨d, hd⟩` from `exists_sq_real hθ`. Use `⟨_, (norm_tmul_add_tmul v.Completion h0 hθ hd (e.symm (Real.sqrt (InfinitePlace.embedding_of_isReal hv a))) 0).trans ?_⟩` and prove the remaining obligations.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, zero_pow two_ne_zero, mul_zero, sub_zero, map_pow, e.apply_symm_apply, Real.sq_sqrt hpos.le]`.
+-/
 theorem infinite_of_pos (a : maximalRealSubfield E) (ha : ∀ τ : E →+* ℂ, 0 < (τ a).re)
     (v : InfinitePlace (maximalRealSubfield E)) :
     ∃ z : v.Completion ⊗[maximalRealSubfield E] E,
@@ -356,6 +473,11 @@ theorem infinite_of_pos (a : maximalRealSubfield E) (ha : ∀ τ : E →+* ℂ, 
   apply e.injective
   rw [he, zero_pow two_ne_zero, mul_zero, sub_zero, map_pow, e.apply_symm_apply, Real.sq_sqrt hpos.le]
 
+/- English proof (translation)
+Establish `: IsCyclic (E ≃ₐ[maximalRealSubfield E] E)` using `isCyclic_iff_exists_zpowers_eq_top.mpr ⟨_, IsCMField.zpowers_complexConj_eq_top E⟩`. Establish `h0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `using ha (Classical.choice inferInstance)`. Take `⟨x, hx⟩` from `H (maximalRealSubfield E) E a h0 hf (infinite_of_pos a ha)`.
+
+Conclude with `⟨x, by rw [← hx, coe_norm_eq_mul_cc]⟩`.
+-/
 theorem cm (H : HasseNorm) (a : maximalRealSubfield E) (ha : ∀ τ : E →+* ℂ, 0 < (τ a).re)
     (hf : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)),
       ∃ z : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] E,

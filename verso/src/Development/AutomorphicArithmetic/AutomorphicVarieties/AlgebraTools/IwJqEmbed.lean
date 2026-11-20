@@ -8,6 +8,9 @@ section General
 
 variable {G V : Type} [CommGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `h : Commute (ρ t - algebraMap ℂ (Module.End ℂ V) c) (ρ g)` using `Commute.sub_left ((Commute.all t g).map ρ) (Algebra.commutes c (ρ g))`. Conclude with `LinearMap.congr_fun (h.pow_left m).eq v`.
+-/
 private theorem pow_comm_rep (ρ : Representation ℂ G V) (t g : G) (c : ℂ) (m : ℕ) (v : V) :
     ((ρ t - algebraMap ℂ (Module.End ℂ V) c) ^ m) (ρ g v) =
       ρ g (((ρ t - algebraMap ℂ (Module.End ℂ V) c) ^ m) v) := by
@@ -15,6 +18,9 @@ private theorem pow_comm_rep (ρ : Representation ℂ G V) (t g : G) (c : ℂ) (
     Commute.sub_left ((Commute.all t g).map ρ) (Algebra.commutes c (ρ g))
   exact LinearMap.congr_fun (h.pow_left m).eq v
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hv`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Conclude with `sub_mem (N.apply_mem_toSubmodule t ih) (N.toSubmodule.smul_mem c ih)`.
+-/
 private theorem pow_mem_sub (ρ : Representation ℂ G V) (N : Subrepresentation ρ) (t : G) (c : ℂ) (m : ℕ)
     (v : V) (hv : v ∈ N.toSubmodule) : ((ρ t - algebraMap ℂ (Module.End ℂ V) c) ^ m) v ∈ N.toSubmodule := by
   induction m with
@@ -23,6 +29,19 @@ private theorem pow_mem_sub (ρ : Representation ℂ G V) (N : Subrepresentation
     rw [pow_succ', Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply]
     exact sub_mem (N.apply_mem_toSubmodule t ih) (N.toSubmodule.smul_mem c ih)
 
+/- English proof (translation)
+Use `haveI := ((hasFiniteLength_iff_wellFounded ρ).1 hl).1`. Take `⟨N, hN, hmax⟩` from `(wellFounded_gt (α := Subrepresentation ρ)).has_min {N | x ∉ N.toSubmodule} ⟨⊥, fun h => hx ((Submodule.mem_bot ℂ).1 h)⟩`. Use `⟨N, fun h => hN (by rw [h]; trivial), fun t => ?_⟩` and prove the remaining obligations. Use `set f := ρ t - algebraMap ℂ (Module.End ℂ V) (c t) with hf`. Set `K : ℕ →o Subrepresentation ρ` to `⟨fun m => ⟨N.toSubmodule.comap (f ^ m), fun g v hv => by show (f ^ m) (ρ g v) ∈ N.toSubmodule`.
+
+Rewrite using `[hf, pow_comm_rep]`. Conclude with `N.apply_mem_toSubmodule g hv⟩,`. Use `monotone_nat_of_le_succ fun m v hv => by show (f ^ (m + 1)) v ∈ N.toSubmodule`. Rewrite using `[add_comm, pow_add, Module.End.mul_apply]`. Conclude with `pow_mem_sub ρ N t _ 1 _ hv⟩`.
+
+Take `⟨a, ha⟩` from `WellFoundedGT.monotone_chain_condition K`. Take `⟨b, hb⟩` from `hxc t`. Set `R : Subrepresentation ρ` to `⟨N.toSubmodule ⊔ LinearMap.range (f ^ (a + b)), fun g v hv => by`. Take `⟨y, hy, _, ⟨z, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem_sup (N.apply_mem_toSubmodule g hy) ⟨ρ g z, by rw [hf, pow_comm_rep]⟩⟩`. Establish `hR : x ∉ R.toSubmodule` using `fun hv => by`. Take `⟨y, hy, _, ⟨z, rfl⟩, h⟩` from `Submodule.mem_sup.1 hv`. Establish `h1 : z ∈ (K (b + (a + b))).toSubmodule` using `by show (f ^ (b + (a + b))) z ∈ N.toSubmodule`. Rewrite using `[pow_add, Module.End.mul_apply, eq_sub_of_add_eq' h, map_sub, hb, zero_sub]`.
+
+Conclude with `neg_mem (pow_mem_sub ρ N t _ b _ hy)`. Rewrite `h1` using `[← ha _ (by omega), ha (a + b) (by omega)]`. Conclude with `hN (h ▸ add_mem hy h1)`. Establish `hNR : N ≤ R` using `fun v hv => Submodule.mem_sup_left (S := N.toSubmodule) hv`. Establish `hE : N = R`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hmax R hR (lt_of_le_of_ne hNR hne)`. Use `⟨a + b, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `Submodule.mem_sup_right ⟨v, rfl⟩`.
+-/
 private theorem exists_nil {ρ : Representation ℂ G V} (hl : HasFiniteLength ρ) {c : G → ℂ} {x : V} (hx : x ≠ 0)
     (hxc : ∀ t, ∃ m : ℕ, ((ρ t - algebraMap ℂ (Module.End ℂ V) (c t)) ^ m) x = 0) :
     ∃ N : Subrepresentation ρ, N ≠ ⊤ ∧
@@ -65,6 +84,23 @@ private theorem exists_nil {ρ : Representation ℂ G V} (hl : HasFiniteLength �
 
 variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace.SeparableSpace G]
 
+/- English proof (translation)
+Take `⟨T, hT, hnil⟩` from `exists_nil hl hx hxc`. Use `haveI := ((hasFiniteLength_iff_wellFounded ρ).1 hl).1`. Take `⟨M, hM, hTM⟩` from `(eq_top_or_exists_le_coatom T).resolve_left hT`. Establish `hi` using `isIrreducible_subQuot hM.covBy_top`. Set `p : (⊤ : Subrepresentation ρ).toRepresentation.IntertwiningMap (subQuot ⊤ M)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`.
+
+Establish `hs : IsSmooth (subQuot ⊤ M)` using `IsSubquotient.isSmooth ⟨⊤, p, Submodule.Quotient.mk_surjective _⟩ hρ`. Take `⟨μ, hμ⟩` from `GlobalTheory.TorusEigenform.exists_char_of_isIrreducible hs hi`. Establish `hμM : ∀ g v, ρ g v - (μ g : ℂ) • v ∈ M.toSubmodule` using `fun g v => by`. Use `hμ g (Submodule.Quotient.mk ⟨v, trivial⟩)` as an intermediate fact. Conclude with `(Submodule.Quotient.eq (M.toSubmodule.comap (⊤ : Subrepresentation ρ).toSubmodule.subtype) (x := ⟨ρ g v, trivial⟩) (y := ⟨(μ g : ℂ) • v, trivial⟩)).1 this`.
+
+Establish `hM' : M.toSubmodule < ⊤` using `lt_top_iff_ne_top.2 fun h => hM.1 (Subrepresentation.toSubmodule_injective h)`. Take `⟨l, hl0, hlM⟩` from `Submodule.exists_le_ker_of_lt_top _ hM'`. Establish `hle : ∀ g v, l (ρ g v) = (μ g : ℂ) * l v` using `fun g v => by`. Use `hlM (hμM g v)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, l v ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `hl0 (LinearMap.ext hn)`. Establish `hμχ : μ = χ` using `MonoidHom.ext fun t => by`.
+
+Take `⟨m, hm⟩` from `hnil t`. Establish `h1 : ∀ m : ℕ, l (((ρ t - algebraMap ℂ (Module.End ℂ V) (χ t : ℂ)) ^ m) v) = ((μ t : ℂ) - χ t) ^ m * l v` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply, map_sub, hle, map_smul, ih, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hlM (hTM (hm v))`. Rewrite `h2` using `[LinearMap.mem_ker, h1]`. Conclude with `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff'.1 ((mul_eq_zero.1 h2).resolve_right hv)).1)`.
+
+Substitute `hμχ` using the available equality. Use `⟨?_, l, hl0, hle⟩` and prove the remaining obligations. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hρ v).mem_nhds (by simp)) ?_)` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : ρ g v = v` using `hg`.
+
+Establish `h` using `hle g v`. Rewrite `h` using `[hg']`. Conclude with `Units.ext (mul_right_cancel₀ hv (h.symm.trans (one_mul _).symm))`.
+-/
 private theorem exists_form {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ) {χ : G →* ℂˣ}
     {x : V} (hx : x ≠ 0)
     (hxc : ∀ t, ∃ m : ℕ, ((ρ t - algebraMap ℂ (Module.End ℂ V) (χ t : ℂ)) ^ m) x = 0) :
@@ -116,6 +152,29 @@ private theorem exists_form {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (h
 
 end General
 
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ n C V _ _ π hπ hirr θ hθ χ hne`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Use `set δ : (Fin n → kˣ) →* ℂˣ := (deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom with hδ`. Establish `hl : HasFiniteLength (jacB π)` using `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2 ((hBZ k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))`. Set `q : fixd π (iwC k n C) →ₗ[ℂ] Jacquet π (unipB k (Fin n))` to `(Submodule.mkQ _) ∘ₗ (fixd π (iwC k n C)).subtype`.
+
+Establish `hq : ∀ t w, jacB π t (q w) = (δ t : ℂ) • q ((θ t : Module.End ℂ (fixd π (iwC k n C))) w)` using `fun t w => by`. Establish `h : q ((θ t : Module.End ℂ (fixd π (iwC k n C))) w) = (((δ t)⁻¹ : ℂˣ) : ℂ) • jacB π t (q w)` using `jqTheta k n C V π θ hθ t w`. Rewrite using `[h, smul_smul, Units.mul_inv, one_smul]`. Establish `hx : q v ≠ 0` using `fun h => hv0 (jqInj k n C V π hπ v h)`. Establish `hxc : ∀ t, ∃ m : ℕ, ((jacB π t - algebraMap ℂ (Module.End ℂ (Jacquet π (unipB k (Fin n)))) ((χ * δ) t : ℂ)) ^ m) (q v) = 0` using `fun t => by`.
+
+Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hv t)`. Establish `h1 : ∀ m : ℕ, ((jacB π t - algebraMap ℂ (Module.End ℂ (Jacquet π (unipB k (Fin n)))) ((χ * δ) t : ℂ)) ^ m) (q v) = (δ t : ℂ) ^ m • q ((((θ t : Module.End ℂ (fixd π (iwC k n C))) - (χ t : ℂ) • 1) ^ m) v)` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, pow_succ' (_ - _), Module.End.mul_apply, LinearMap.sub_apply, LinearMap.sub_apply, hq, Module.algebraMap_end_apply, map_sub, LinearMap.smul_apply, Module.End.one_apply, map_smul, MonoidHom.mul_apply, Units.val_mul, mul_comm (χ t : ℂ …`. Conclude with `⟨m, by rw [h1, hm, map_zero, smul_zero]⟩`. Use `haveI := GlobalTheory.TorusEigenform.secondCountableTopology_units k`. Take `⟨hs, l, hl0, hle⟩` from `exists_form (isSmooth_jacB hπ) hl hx hxc`. Establish `htc : torusChar (fun i => (χ * δ).comp (MonoidHom.mulSingle (fun _ => kˣ) i)) = χ * δ` using `MonoidHom.ext fun t => by`.
+
+Rewrite using `[torusChar_apply]`. Use `conv_rhs => rw [← Finset.univ_prod_mulSingle t, map_prod]`. Both sides reduce to the same expression. Use `⟨fun i => (χ * δ).comp (MonoidHom.mulSingle (fun _ => kˣ) i), fun i => hs.comp _ (continuous_mulSingle (A := fun _ => kˣ) i), fun i x hxC => ?_, htc, ?_⟩` and prove the remaining obligations. Establish `ht : Pi.mulSingle i x ∈ torC k n C` using `fun j _ => by`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hxC`. Simplify using `[Pi.mulSingle_eq_of_ne h, one_mem]`. Use `show (χ * δ) (Pi.mulSingle i x) = 1`.
+
+Generalize the expression as in `(Pi.mulSingle i x : Fin n → kˣ) = t at ht ⊢`. Establish `hO : t ∈ torusO k (Fin n)` using `fun j => by`. Take `⟨u, -, hu⟩` from `ht j trivial`. Rewrite using `[← hu]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit u)`.
+
+Establish `hfix : jacB π t (q v) = q v`. Establish `h1 : δ t = 1` using `UnramFixed.deltaHalf_torusO k hO`. Establish `h2 : π (diagT k (Fin n) t) v = v` using `v.2 _ (Subgroup.mem_sup_right ⟨t, ht, rfl⟩)`. Use `show jacB π t (Submodule.Quotient.mk (v : V)) = Submodule.Quotient.mk (v : V)`. Rewrite using `[UnramFixed.jacB_apply, jacBU_mk, h2, ← hδ, h1]`.
+
+Simplify using the standard rewrite rules. Take `⟨m, hm⟩` from `hxc t`. Establish `h1 : ∀ m : ℕ, ((jacB π t - algebraMap ℂ (Module.End ℂ (Jacquet π (unipB k (Fin n)))) ((χ * δ) t : ℂ)) ^ m) (q v) = (1 - ((χ * δ) t : ℂ)) ^ m • q v` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, hfix, Module.algebraMap_end_apply, pow_succ, mul_smul, sub_smul, one_smul]`. Rewrite `hm` using `[h1]`. Conclude with `Units.ext (sub_eq_zero.1 (pow_eq_zero_iff'.1 ((smul_eq_zero.1 hm).resolve_right hx)).1).symm`. Establish `key` using `GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hirr (χ * δ) l hl0 hle`.
+
+Rewrite `key` using `[← htc]`. Conclude with `key`.
+-/
 theorem UpperTheory.V.AlgebraTools.jqEmbed :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → π.IsIrreducible → ∀ θ : (Fin n → kˣ) →* (Module.End ℂ (fixd π (iwC k n C)))ˣ, (∀ t, Dom t → (θ t : Module.End ℂ (fixd π (iwC k n C))) = hk π (iwC k n C) (diagT k (Fin n) t)) → ∀ χ : (Fin n → kˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd π (iwC k n C))) (χ t : ℂ)) ≠ ⊥ → ∃ ψ : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ψ i)) ∧ (∀ i, ∀ x ∈ unitsC k C, ψ i x = 1) ∧ torusChar ψ = χ * ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom) ∧ IsSubquotient π (prinSeries ψ) := by
   intro hBZ k _ _ _ _ n C V _ _ π hπ hirr θ hθ χ hne

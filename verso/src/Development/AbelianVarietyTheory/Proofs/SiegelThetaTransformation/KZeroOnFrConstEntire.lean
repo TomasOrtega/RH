@@ -12,10 +12,18 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Simplify using `[sgnM, Matrix.det_diagonal]`.
+-/
 private theorem det_sgnM_eq_prod_sgn {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : Data E r) : (sgnM X).det = ∏ a : Fin r, ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) := by
   simp [sgnM, Matrix.det_diagonal]
 
+/- English proof (translation)
+Establish `hdet` using `congrArg Matrix.det (hx τ)`. Rewrite `hdet` using `[GlobalTheory.SW.Slab.det_gram, det_sgnM_eq_prod_sgn X]`. Establish `hG : (X.Gm.map τ.1).det = τ.1 X.Gm.det` using `(RingHom.map_det τ.1 X.Gm).symm`. Establish `hn` using `congrArg norm hdet`. Rewrite `hn` using `[norm_mul, norm_mul, Complex.norm_conj, norm_prod]`.
+
+Simplify using `only [GlobalTheory.SW.Slab.norm_sgn, Finset.prod_const_one] at hn`. Rewrite using `[hG, Complex.normSq_eq_norm_sq]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_det_of_isONFr {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {X : Data E r} {x : Frame X.Ψ r} (hx : IsONFr X x) (τ : X.Ψ) :
     normSq (mat x τ).det = ‖(X.Gm.map τ.1).det‖⁻¹ := by
@@ -31,6 +39,13 @@ theorem normSq_det_of_isONFr {E : Type} [Field E] [NumberField E] [IsCMField E] 
   rw [← hn]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n _ _`. Use `⟨⟨∏ τ : X.Ψ, ‖(X.Gm.map τ.1).det‖⁻¹ ^ (n / 2), ?_, fun x hx => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use `Finset.prod_pos fun τ _ => pow_pos (inv_pos.mpr (norm_pos_iff.mpr ?_)) _` and prove the remaining obligations. Conclude with `GlobalTheory.SW.KernSym.det_map_Gm X τ`. Take `⟨δ₀, hδ₀, hs⟩` from `GlobalTheory.SW.thin_slab E r X`.
+
+Take `⟨-, hsub, hon, -⟩` from `hs δ₀ hδ₀ le_rfl`. Conclude with `hsub (hon x hx)`. Rewrite using `[GlobalTheory.SW.KernSym.kZero_ortho idx hx]`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero, Complex.exp_zero, mul_one]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => by rw [normSq_det_of_isONFr hx τ]`. Introduce `x₁ _ x₂ _ p`. Conclude with `(GlobalTheory.SW.KernSym.analyticAt_kZero X idx x₁ x₂ p).differentiableAt`.
+-/
 theorem kZero_onFr_const_entire : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → (∃ κ : ℝ, 0 < κ ∧ ∀ x : Frame X.Ψ r, IsONFr X x → x ∈ X.dom ∧ kZero X idx x x (0 : Fin n → Fin g → ℂ) 0 = κ) ∧ ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, Differentiable ℂ (fun p : (Fin n → Fin g → ℂ) × (Fin n → Fin g → ℂ) => kZero X idx x₁ x₂ p.1 p.2) := by
   intro E _ _ _ r X g q0 hr bas idx n _ _
   refine ⟨⟨∏ τ : X.Ψ, ‖(X.Gm.map τ.1).det‖⁻¹ ^ (n / 2), ?_, fun x hx => ⟨?_, ?_⟩⟩, ?_⟩

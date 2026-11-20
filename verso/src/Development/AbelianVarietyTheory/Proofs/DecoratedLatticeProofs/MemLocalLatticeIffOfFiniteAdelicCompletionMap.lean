@@ -17,6 +17,19 @@ namespace GlobalTheory.Core.LocFromGlob
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `ext : (Fin n → Fv F v ⊗[F] E) → (Fin n → Af F ⊗[F] E)` to `fun z i => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v) (z i)`. Establish `hself : ∀ z, GlobalTheory.AdelicU.vecLoc v (ext z) = z` using `fun z =>`. Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_self _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_self v) _`. Establish `hne : ∀ z u, u ≠ v → GlobalTheory.AdelicU.vecLoc u (ext z) = 0` using `fun z u hu =>`. Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_ne hu) _`.
+
+Establish `hmul : ∀ (g : GL (Fin n) (TensorProduct F (Af F) E)) u y, GlobalTheory.AdelicU.vecLoc u (g.val *ᵥ y) = (Formalism.UG.bc (Algebra.TensorProduct.map (evalV F u) (AlgHom.id F E)).toRingHom g).val *ᵥ GlobalTheory.AdelicU.vecLoc u y` using `fun g u y => funext fun i => RingHom.map_mulVec (Algebra.TensorProduct.map (evalV F u) (AlgHom.id F E)).toRingHom _ y i`. Establish `hext : ∀ (M : Submodule (𝓞 E) (Fin n → E)), M.FG → ∀ z, z ∈ latLoc F M v →`. Use extensionality with `z ∈ Formalism.MainNotions.StandardLattice.latHat F E (M : Set (Fin n → E)) := fun M hM z hz => by`. Rewrite using `[GlobalTheory.AdelicU.mem_latHat_iff hM]`. Introduce `u`.
+
+Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[hself]`. Conclude with `hz`. Rewrite using `[hne z u e]`.
+
+Conclude with `zero_mem _`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `(GlobalTheory.AdelicU.mem_latHat_iff hL' _).1 ((hb _).1 (hext L hL z hz)) v`. Rewrite `h1` using `[hmul, hself]`. Then use the resulting hypothesis.
+
+Introduce `hz`. Establish `h1` using `hext L' hL' _ hz`. Use `set y := ext ((Formalism.UG.bc (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).toRingHom b).val *ᵥ z)`. Establish `h2 : b.val *ᵥ ((b⁻¹).val *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+
+Establish `h3` using `(GlobalTheory.AdelicU.mem_latHat_iff hL _).1 ((hb _).2 (h2 ▸ h1)) v`. Rewrite `h3` using `[hmul, hself, Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `h3`.
+-/
 theorem mem_latLoc_iff_of_latHat (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L L' : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) (hL' : L'.FG) (b : GL (Fin n) (TensorProduct F (Af F) E))
     (hb : ∀ w, w ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E)) ↔

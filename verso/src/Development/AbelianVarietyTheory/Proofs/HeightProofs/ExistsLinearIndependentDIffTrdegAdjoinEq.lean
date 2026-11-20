@@ -15,6 +15,25 @@ open NumberField in
 open scoped TensorProduct in
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨J, hJ⟩`. Establish `hind : AlgebraicIndependent K fun k => x (J k)` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.differentialIndependence K Ω D (fun k => x (J k)) hJ`. Set `y : Fin D → IntermediateField.adjoin K (Set.range x)` to `fun k => ⟨x (J k), IntermediateField.subset_adjoin K _ ⟨J k, rfl⟩⟩`. Establish `hy : AlgebraicIndependent K y` using `AlgebraicIndependent.of_comp (IntermediateField.adjoin K (Set.range x)).val hind`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hD]`. Conclude with `trdeg_le_of_injective _ (IntermediateField.adjoin K (Set.range x)).val.injective`. Simplify using `using hy.cardinalMk_le_trdeg`. Introduce `h set L := IntermediateField.adjoin K (Set.range x) with hL set s : Set L := Subtype.val ⁻¹' Set.range x with hs`.
+
+Establish `hmem : ∀ z : L, z ∈ IntermediateField.adjoin K s`. Introduce `z`. Establish `hle : L ≤ (IntermediateField.adjoin K s).map L.val`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨⟨x i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩, rfl⟩`. Take `⟨m, hm, hmz⟩` from `hle z.2`. Rewrite `hm` using `[show m = z from Subtype.ext hmz]`. Then use the resulting hypothesis. Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin K s) L := ⟨fun z => by`. Establish `hz` using `isAlgebraic_algebraMap (R := IntermediateField.adjoin K s) (A := L) ⟨z, hmem z⟩`.
+
+Conclude with `IntermediateField.isAlgebraic_adjoin_iff.mp hz⟩`. Take `⟨t, hts, ht⟩` from `exists_isTranscendenceBasis_subset (R := K) (A := L) s`. Establish `hcard : Cardinal.mk t = D` using `by rw [ht.cardinalMk_eq_trdeg, h]`. Take `⟨e⟩` from `Cardinal.mk_eq_nat_iff.mp hcard`. Set `v : t → Ω` to `fun z => ((z : L) : Ω)`.
+
+Establish `hv : AlgebraicIndependent K v` using `ht.1.map' (f := L.val) Subtype.val_injective`. Use `haveI : Finite t := Finite.of_equiv _ e.symm`. Establish `hvb : IsTranscendenceBasis K v`. Use `hv.isTranscendenceBasis_of_lift_trdeg_le ?_ ?_` and prove the remaining obligations. Rewrite using `[hD]`.
+
+Conclude with `Cardinal.nat_lt_aleph0 D`. Rewrite using `[hD, hcard]`. Use `haveI := hvb.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin K (Set.range v)) Ω := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Take `⟨b, hb⟩` from `_root_.GlobalTheory.exists_basis_kaehler_of_algebraicIndependent hv`.
+
+Establish `hex : ∀ k : Fin D, ∃ i, x i = (((e.symm k : t) : L) : Ω)` using `fun k => hts (e.symm k).2`. Use `choose J hJ using hex`. Use `⟨J, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun k => KaehlerDifferential.D K Ω (x (J k))) = b ∘ e.symm`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Function.comp_apply, hb, hJ k]`. Rewrite using `[hfun]`. Conclude with `b.linearIndependent.comp _ e.symm.injective`.
+-/
 theorem _root_.GlobalTheory.exists_linearIndependent_D_iff_trdeg_adjoin_eq {K Ω κ : Type} [Field K] [CharZero K]
     [Field Ω] [Algebra K Ω] {D : ℕ} (hD : Algebra.trdeg K Ω = D) (x : κ → Ω) :
     (∃ J : Fin D → κ, LinearIndependent Ω fun k => KaehlerDifferential.D K Ω (x (J k))) ↔
@@ -79,6 +98,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 end Ratios
 
 open NumberField in
+/- English proof (translation)
+Break down `p with ⟨a, i⟩` into its components or cases. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg _root_.ReciprocityTheory.MultiplicativeHeights.sImage`. Break down `Fin.eq_self_or_eq_succAbove j i with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `only [Equiv.trans_apply, finSuccEquiv'_at, finSuccEquiv_symm_none, Fin.cases_zero]`. Conclude with `congrArg _ (Fin.insertNth_apply_same i _ _)`.
+
+Simplify using `only [Equiv.trans_apply, finSuccEquiv'_succAbove, finSuccEquiv_symm_some, Fin.cases_succ]`. Conclude with `congrArg _ (Fin.insertNth_apply_succAbove j _ _ k)`.
+-/
 private theorem sImg_eq_sImage_finSuccEquiv_reindex {Ω : Type} [Field Ω] {D N : ℕ} (j : Fin (N + 1))
     (x : Fin N → Ω) (p : _root_.ReciprocityTheory.ChartRestriction.G.T0.TVar D N) :
     _root_.ReciprocityTheory.ChartRestriction.G.T0.sImg j x p = _root_.ReciprocityTheory.MultiplicativeHeights.sImage x (p.1, ((finSuccEquiv' j).trans (finSuccEquiv N).symm) p.2) := by
@@ -92,6 +116,21 @@ private theorem sImg_eq_sImage_finSuccEquiv_reindex {Ω : Type} [Field Ω] {D N 
 
 open NumberField in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Ω _ _ WT _ A _ _ _ _ _𝒜 d c hfg hD hw`. Establish `hadj : IntermediateField.adjoin K (Set.range fun j => _root_.ReciprocityTheory.ChartRestriction.G.T0.ratio (d.w j c) (d.w (d.jc c) c)) = IntermediateField.adjoin K (Set.range (d.x c))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Break down `Fin.eq_self_or_eq_succAbove (d.jc c) j with rfl | ⟨k, rfl⟩` into its components or cases. Use `show _root_.ReciprocityTheory.ChartRestriction.G.T0.ratio (d.w (d.jc c) c) (d.w (d.jc c) c) ∈ _`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq hw (one_smul _ _).symm]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin K _ ⟨k, rfl⟩`.
+
+Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨(d.jc c).succAbove k, rfl⟩`. Establish `htr : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD d c ↔ Algebra.trdeg K (IntermediateField.adjoin K (Set.range (d.x c))) = d.D`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD`.
+
+Rewrite using `[hadj]`. Establish `key` using `_root_.GlobalTheory.exists_linearIndependent_D_iff_trdeg_adjoin_eq hD (d.x c)`. Use `⟨key.trans htr.symm, fun hT => ?_⟩` and prove the remaining obligations. Take `⟨hind, hfin⟩` from `_root_.ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS K (Ω c) d.D d.N (d.x c) hfg hD (key.mpr (htr.mp hT))`. Set `e` to `(finSuccEquiv' (d.jc c)).trans (finSuccEquiv d.N).symm`.
+
+Set `σ : _root_.ReciprocityTheory.ChartRestriction.G.T0.TVar d.D d.N → Fin (d.D + 1) × Fin (d.N + 1)` to `fun p => (p.1, e p.2)`. Establish `hσ : Function.Bijective σ` using `((Equiv.refl (Fin (d.D + 1))).prodCongr e).bijective`. Establish `hcomp : _root_.ReciprocityTheory.ChartRestriction.G.T0.sImg (d.jc c) (d.x c) = _root_.ReciprocityTheory.MultiplicativeHeights.sImage (d.x c) ∘ σ`. Use function extensionality and compare the values at `fun p => sImg_eq_sImage_finSuccEquiv_reindex _ _ p`. Prove the components needed by the constructor for the conclusion.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.Data.sH _root_.ReciprocityTheory.ChartRestriction.G.T0.sHom`. Rewrite using `[hcomp]`. Conclude with `hind.comp σ hσ.1`. Establish `hrange : Set.range (_root_.ReciprocityTheory.ChartRestriction.G.T0.sImg (d.jc c) (d.x c)) = Set.range (_root_.ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c)) := by`. Rewrite using `[hcomp, Set.range_comp, hσ.2.range_eq, Set.image_univ]`.
+
+Establish `hKT : d.KT c = IntermediateField.adjoin K (Set.range (_root_.ReciprocityTheory.MultiplicativeHeights.sImage (D` using `d.D) (d.x c))) := by`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.T0.Data.KT`. Rewrite using `[hrange]`. Rewrite using `[hKT]`. Conclude with `hfin`.
+-/
 theorem _root_.GlobalTheory.differentials_iff_trdegD_and_genericSection : ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] (Ω : ι → Type) [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] (WT : Type) [AddCommGroup WT] (A : ι → Type) [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)] [∀ c, Algebra (𝓞 K) (A c)] (_𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)) (d : _root_.ReciprocityTheory.ChartRestriction.G.T0.Data K ι Ω WT A), ∀ c : ι, (⊤ : IntermediateField K (Ω c)).FG → Algebra.trdeg K (Ω c) = d.D → d.w (d.jc c) c ≠ 0 → ((∃ J : Fin d.D → Fin d.N, LinearIndependent (Ω c) fun k => KaehlerDifferential.D K (Ω c) (d.x c (J k))) ↔ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD d c) ∧ (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.TrdegD d c → Function.Injective (d.sH c) ∧ FiniteDimensional (d.KT c) (_root_.ReciprocityTheory.ChartRestriction.G.T0.OmS (Ω c) d.D d.N)) := by
   intro K _ _ ι _ Ω _ _ WT _ A _ _ _ _ _𝒜 d c hfg hD hw
   have hadj : IntermediateField.adjoin K

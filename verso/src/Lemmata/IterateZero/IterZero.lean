@@ -2,6 +2,15 @@ import Mathlib
 
 namespace Bl.IterateZero
 
+/- English proof (translation)
+Establish `hA : 0 ≤ A`. Use `hb 0` as an intermediate fact. Simplify using `only [norm_zero, add_zero, one_pow, mul_one] at this`. Conclude with `le_trans (norm_nonneg _) this`. Establish `key : ∀ R : Real, 1 ≤ R → ‖iteratedDeriv n g 0‖ ≤ (n.factorial * A * 2 ^ k) / R`.
+
+Introduce `R hR`. Establish `hR0 : 0 < R` using `lt_of_lt_of_le one_pos hR`. Establish `h1` using `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (c := 0) (C := A * (1 + R) ^ k) (f := g) n hR0 hg.diffContOnCl (by`. Introduce `z hz`. Establish `hz' : ‖z‖ = R` using `by simpa using hz`.
+
+Simplify `hb z)` using `[hz']`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ (pow_pos hR0 n) hR0]`. Establish `hf : (0 : Real) ≤ n.factorial` using `Nat.cast_nonneg _`. Establish `e1 : (1 + R) ^ k ≤ (2 * R) ^ k` using `pow_le_pow_left₀ (by linarith) (by linarith) k`.
+
+Establish `e2 : R ^ (k + 1) ≤ R ^ n` using `pow_le_pow_right₀ hR hn`. Combine the equalities or inequalities in the displayed calculation. Establish `ht : Filter.Tendsto (fun R : Real => (n.factorial * A * 2 ^ k) / R) Filter.atTop (nhds 0)` using `tendsto_const_nhds.div_atTop Filter.tendsto_id`. Establish `: ‖iteratedDeriv n g 0‖ ≤ 0` using `ge_of_tendsto ht (Filter.eventually_atTop.2 ⟨1, key⟩)`. Conclude with `norm_le_zero_iff.mp this`.
+-/
 private lemma iter_zero (k : Nat) (g : Complex → Complex) (A : Real) (hg : Differentiable Complex g)
     (hb : ∀ t : Complex, ‖g t‖ ≤ A * (1 + ‖t‖) ^ k) (n : Nat) (hn : k < n) :
     iteratedDeriv n g 0 = 0 := by
@@ -32,6 +41,13 @@ private lemma iter_zero (k : Nat) (g : Complex → Complex) (A : Real) (hg : Dif
     ge_of_tendsto ht (Filter.eventually_atTop.2 ⟨1, key⟩)
   exact norm_le_zero_iff.mp this
 
+/- English proof (translation)
+Introduce `k g A hg hb`. Use `⟨∑ n ∈ Finset.range (k + 1), Polynomial.C ((n.factorial : Complex)⁻¹ * iteratedDeriv n g 0) * Polynomial.X ^ n, ?_, ?_⟩` and prove the remaining obligations. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `n hn`. Conclude with `le_trans (Polynomial.natDegree_C_mul_X_pow_le _ n) (Nat.lt_succ_iff.mp (Finset.mem_range.mp hn))`.
+
+Introduce `t`. Establish `hs` using `Complex.hasSum_taylorSeries_of_entire hg 0 t`. Establish `hz : ∀ n ∉ Finset.range (k + 1), (n.factorial : Complex)⁻¹ • (t - 0) ^ n • iteratedDeriv n g 0 = 0`. Introduce `n hn`. Rewrite using `[iter_zero k g A hg hb n (by simpa using hn), smul_zero, smul_zero]`.
+
+Rewrite using `[hs.unique (hasSum_sum_of_ne_finset_zero hz), Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `n _`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, sub_zero, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem goal1 :
   ∀ (k : Nat) (g : Complex → Complex) (A : Real),
   Differentiable.{0, 0, 0} Complex g →

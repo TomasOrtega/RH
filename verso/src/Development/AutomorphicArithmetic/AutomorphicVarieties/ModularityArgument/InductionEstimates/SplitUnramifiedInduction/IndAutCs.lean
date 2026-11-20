@@ -4,11 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal
 open GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Sd UpperTheory.V.Base UpperTheory.V.Z.Bc UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
+/- English proof (translation)
+Establish `e : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2` using `by norm_num`. Rewrite using `[infOf, e]`. Both sides reduce to the same expression.
+-/
 private theorem infOf_two (m : Fin 2 → ℤ) : infOf m = {1 / 2 + (m 0 : ℂ), 1 / 2 + (m 1 : ℂ)} := by
   have e : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2 := by norm_num
   rw [infOf, e]
   rfl
 
+/- English proof (translation)
+Establish `e : infOf m + infOf m' = Finset.univ.val.map fun i => 1 / 2 + ((![m 0, m 1, m' 0, m' 1] i : ℤ) : ℂ)`. Rewrite using `[infOf_two, infOf_two]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨Finset.univ.nodup.map fun i j hij => h (Int.cast_injective (add_left_cancel hij)), fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨![m 0, m 1, m' 0, m' 1] i - 1, by push_cast; ring⟩`.
+-/
 private theorem infOf_add {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, m 1, m' 0, m' 1]) :
     (infOf m + infOf m').Nodup ∧ ∀ z ∈ infOf m + infOf m', ∃ n : ℤ, z = (n : ℂ) + (((4 : ℕ) : ℂ) - 1) / 2 := by
   have e : infOf m + infOf m' = Finset.univ.val.map fun i => 1 / 2 + ((![m 0, m 1, m' 0, m' 1] i : ℤ) : ℂ) := by
@@ -19,12 +27,20 @@ private theorem infOf_add {m m' : Fin 2 → ℤ} (h : Function.Injective ![m 0, 
   obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz
   exact ⟨![m 0, m 1, m' 0, m' 1] i - 1, by push_cast; ring⟩
 
+/- English proof (translation)
+Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Rewrite using `[tw_val, tw_val, smul_smul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem tw_back {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime]
     (R : G F Ω →* GL (Fin 4) (Qbar l)) : R = tw (tw R (cycBar F Ω l)⁻¹) (cycBar F Ω l ^ (1 : ℤ) * 1) := by
   refine MonoidHom.ext fun s => Units.ext ?_
   rw [tw_val, tw_val, smul_smul, ← Units.val_mul]
   simp
 
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ _ h2 l _ ι π r hatt hm hb R hR H`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩`. Take `⟨P, hfin, hinf⟩` from `h K M h2 π hm hb`. Establish `key : IsAutC ι (tw R (cycBar K Ω l)⁻¹)`. Use `⟨P, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun φ => ?_, attInd K M Ω h2 l ι r R (CG.mk π).HasSat (CG.mk P).HasSat (fun _ _ _ h h' => h.unique h') (fun _ _ _ h h' => h.unique h') hatt hfin hR H⟩` and prove the remaining obligations.
+
+Take `⟨m, m', τ, τ', hne, rfl, e, hv, hv', hinj⟩` from `hm φ`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hinf τ τ' _ _ hne e.symm hv hv')]`. Conclude with `infOf_add hinj`. Rewrite using `[tw_back R]`. Conclude with `UpperTheory.V.Sd.twC hP K Ω l ι 4 _ _ ((UpperTheory.V.Sd.algCyc hP K Ω l ι).1 1 1 (by simp)) key`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.indAutCs_of (hP : Af.Hypotheses₂) (h : IndCs) : IndAutCs := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ _ h2 l _ ι π r hatt hm hb R hR H
   haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩

@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SymAmple.exists_ample_symmetric | exact GlobalTheory.SymAmple.exists_ample_symmetric | (intros; apply GlobalTheory.SymAmple.exists_ample_symmetric <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_ample_symmetric_lineBundle_semiAbelian : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → IsAbelianScheme ((Over.pullback (jK R)).obj G) → ∃ M : LB G.left, IsAmpleLB M ∧ LBIso (M.pull (GrpObj.inv : G ⟶ G).left) M := by
   first | exact @GlobalTheory.SymAmple.exists_ample_symmetric | exact GlobalTheory.SymAmple.exists_ample_symmetric | (intros; apply GlobalTheory.SymAmple.exists_ample_symmetric <;> assumption)

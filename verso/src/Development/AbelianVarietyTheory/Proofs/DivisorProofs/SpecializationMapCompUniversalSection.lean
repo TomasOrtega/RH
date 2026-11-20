@@ -33,12 +33,20 @@ def AdlIso (A : Adl C Y) (A' : Adl C Y') (φ : Y.X ≅ Y'.X) (ψ : Y'.Fn →+* Y
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)`.
+-/
 theorem spMap_alg_stalkPt (y : Y.X) :
     spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ stalkPt Y y = genericPt Y :=
   Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `h1 : spMap (f.stalkMap y).hom ≫ stalkPt Y' (f y) = stalkPt Y y ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Establish `h2 : spMap (ψ.comp (algebraMap (Y'.X.presheaf.stalk (f y)) Y'.X.functionField)) = spMap ((algebraMap (Y.X.presheaf.stalk y) Y.X.functionField).comp (f.stalkMap y).hom)` using `(cancel_mono (Y'.X.fromSpecStalk (f y))).1 (by`. Establish `e1` using `Spec.map_comp (CommRingCat.ofHom (algebraMap (Y'.X.presheaf.stalk (f y)) Y'.X.functionField)) (CommRingCat.ofHom ψ)`. Establish `e2` using `Spec.map_comp (CommRingCat.ofHom (f.stalkMap y).hom) (CommRingCat.ofHom (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField))`. Use `(congrArg (· ≫ _) e1).trans (Eq.trans ?_ (congrArg (· ≫ _) e2).symm)` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).trans <| (congrArg (_ ≫ ·) (spMap_alg_stalkPt (f y))).trans <| h.symm.trans <| (congrArg (· ≫ f) (spMap_alg_stalkPt y).symm).trans <| (Category.assoc _ _ _).trans <| (congrArg (_ ≫ ·) h1.symm).trans (Category.assoc _ _ _).symm)`. Conclude with `RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective h2)) z`.
+-/
 theorem map_alg {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') (y : Y.X)
     (z : Y'.X.presheaf.stalk (f y)) : ψ (algebraMap (Y'.X.presheaf.stalk (f y)) Y'.X.functionField z) =
       algebraMap (Y.X.presheaf.stalk y) Y.X.functionField ((f.stalkMap y).hom z) := by
@@ -58,6 +66,9 @@ theorem map_alg {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y ≫ 
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `ha`. Conclude with `⟨_, (map_alg h y z).symm⟩`.
+-/
 theorem regAt_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') {y : Y.X}
     {a : Y'.Fn} (ha : RegAt (f y) a) : RegAt y (ψ a) := by
   obtain ⟨z, rfl⟩ := ha
@@ -65,6 +76,9 @@ theorem regAt_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y �
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `ha`. Conclude with `⟨_, hz.map _, (map_alg h y z).symm⟩`.
+-/
 theorem unitAt_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') {y : Y.X}
     {a : Y'.Fn} (ha : UnitAt (f y) a) : UnitAt y (ψ a) := by
   obtain ⟨z, hz, rfl⟩ := ha
@@ -72,6 +86,9 @@ theorem unitAt_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y �
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `ha`. Rewrite using `[Base.valAt_stalk]`. Use `(congrArg _ (map_alg h (below p) z)).trans ((Base.valAt_stalk _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
+-/
 theorem valAt_map {f : Y.X ⟶ Y'.X} {ψ : Y'.Fn →+* Y.Fn} (h : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') {K : Type}
     [Field K] (p : Sp K ⟶ Y.X) {a : Y'.Fn} (ha : RegAt (below (p ≫ f)) a) : valAt p (ψ a) = valAt (p ≫ f) a := by
   obtain ⟨z, rfl⟩ := ha
@@ -120,6 +137,9 @@ structure Tw (Z : Model Xo c β) : Type where
   j_ρ : Z.j ≫ ρ.hom = r.hom ≫ Z.j
   m_mu : Z.m.φ ≫ mu.cm.F = ν.cm.F ≫ Z.m.φ
 
+/- English proof (translation)
+Establish `e : ∀ (R : Type) [CommRing R], spMap (RingEquiv.refl R).toRingHom = 𝟙 _` using `fun R _ => Spec.map_id (CommRingCat.of R)`. Take `⟨ρ, mu, h1, h2, h3, -⟩` from `h σ (RingEquiv.refl _) (RingEquiv.refl _) r ν hw (fun _ _ => rfl) (fun _ => rfl) (by rw [e, Category.comp_id, hr])`. Conclude with `⟨⟨s, σ, hs, hw, r, hr, ν, ρ, mu, by rw [h1, e, Category.comp_id], h2, h3⟩, rfl⟩`.
+-/
 theorem exists_tw {Y : Model Xo c β} {T : TorModel Y} (h : IsStable T) (s : E ≃ₐ[ℚ] E) (σ : 𝓞 E ≃+* 𝓞 E)
     (hs : ∀ a : 𝓞 E, ((σ a : 𝓞 E) : E) = s a) (hw : σ H.w0 = H.w0) (r : Xo.XF c ≅ Xo.XF c)
     (ν : TwMap σ T.Z.oF.t T.Z.oF.t r.hom) (hr : r.hom ≫ pullback.snd _ _ = pullback.snd _ _) :
@@ -145,14 +165,28 @@ def g : gen Z ≅ gen Z where
     (by rw [Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, Category.assoc, Iso.inv_hom_id]; simp)
     (by rw [Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.id_comp])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem g_ι : T.g.hom ≫ genι Z = genι Z ≫ T.ρ.hom := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem g_str : T.g.hom ≫ genStr Z = genStr Z := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext (by rw [Category.assoc, Category.assoc, T.g_ι, ← Category.assoc]; exact T.j_ρ) (by rw [Category.assoc, Category.assoc, T.g_str, Z.jQ_over, T.r_snd])`.
+-/
 theorem jQ_g : Z.jQ ≫ T.g.hom = T.r.hom ≫ Z.jQ :=
   pullback.hom_ext (by rw [Category.assoc, Category.assoc, T.g_ι, ← Category.assoc]; exact T.j_ρ)
     (by rw [Category.assoc, Category.assoc, T.g_str, Z.jQ_over, T.r_snd])
 
+/- English proof (translation)
+Use `not_congr ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz⟩`. Use `⟨T.r.inv z, ?_⟩` and prove the remaining obligations. Establish `h1 : T.r.inv ≫ Z.jQ = Z.jQ ≫ T.g.inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← T.jQ_g, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, h1, Scheme.Hom.comp_apply, hz, ← Scheme.Hom.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨T.r.hom z, by rw [← Scheme.Hom.comp_apply, ← T.jQ_g, Scheme.Hom.comp_apply]⟩`.
+-/
 theorem mem_genBd (x : gen Z) : T.g.hom x ∈ genBd Z ↔ x ∈ genBd Z := by
   refine not_congr ⟨?_, ?_⟩
   · rintro ⟨z, hz⟩
@@ -167,6 +201,9 @@ theorem mem_genBd (x : gen Z) : T.g.hom x ∈ genBd Z ↔ x ∈ genBd Z := by
 def sab : SABMap Z.t (GlobalTheory.FiniteStable.twist T.σ T.w0 Z.t) T.ρ.hom :=
   ⟨T.mu.cm, T.mu.cart, T.mu.base, T.mu.act, T.mu.lin⟩
 
+/- English proof (translation)
+Establish `h` using `congrArg T.σ H.two_weight_eq_one_add_root`. Rewrite `h` using `[map_mul, map_ofNat, T.w0, H.two_weight_eq_one_add_root, map_add, map_one]`. Rewrite using `[← T.coe_σ, ← add_left_cancel h]`.
+-/
 theorem s_rt : T.s (H.rt : E) = H.rt := by
   have h := congrArg T.σ H.two_weight_eq_one_add_root
   rw [map_mul, map_ofNat, T.w0, H.two_weight_eq_one_add_root, map_add, map_one] at h
@@ -180,20 +217,32 @@ def embEquiv : (E →+* ℂ) ≃ (E →+* ℂ) where
   left_inv τ := RingHom.ext fun a => by simp
   right_inv τ := RingHom.ext fun a => by simp
 
+/- English proof (translation)
+The claim follows from `congrArg τ T.s_rt`.
+-/
 theorem emb_rt (τ : E →+* ℂ) : T.emb τ (H.rt : E) = τ (H.rt : E) := congrArg τ T.s_rt
 
+/- English proof (translation)
+Unfold `Datum.mult`. Rewrite using `[T.emb_rt]`.
+-/
 theorem mult_emb (τ : E →+* ℂ) : Dw.mult τ = Dw.mult (T.emb τ) := by
   unfold Datum.mult
   rw [T.emb_rt]
 
 abbrev ix {τ : E →+* ℂ} (i : Fin (Dw.mult τ)) : Fin (Dw.mult (T.emb τ)) := Fin.cast (T.mult_emb τ) i
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (congrArg τ (T.coe_σ a).symm)`.
+-/
 theorem embK_emb (τ : E →+* ℂ) (a : 𝓞 E) : embK c (T.emb τ) a = embK c τ (T.σ a) :=
   Subtype.ext (congrArg τ (T.coe_σ a).symm)
 
 def letter : Letter Dw ≃ Letter Dw :=
   Equiv.sigmaCongr T.embEquiv fun τ => finCongr (T.mult_emb τ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem letter_mk (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) : T.letter ⟨τ, i⟩ = ⟨T.emb τ, T.ix i⟩ := rfl
 
 def sym (a : Sym E) : Sym E := (a.1, a.2.1, Sum.map (fun p => (T.emb p.1, p.2)) id a.2.2)
@@ -207,11 +256,20 @@ def Push (f : EigFrame Z φ x) (f' : EigFrame Z φ' x') : Prop :=
 
 def lie (hx : x ≫ T.ρ.hom = x') : TanM x Z.t.G ≃ₗ[R] TanM x' Z.t.G := pushE T.sab x hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem left_lie (hx : x ≫ T.ρ.hom = x') (v : TanM x Z.t.G) : (tv (T.lie hx v)).left = (tv v).left ≫ T.mu.cm.F := rfl
 
+/- English proof (translation)
+The claim follows from `pushE_act T.sab x hx a v`.
+-/
 theorem lie_act (hx : x ≫ T.ρ.hom = x') (a : 𝓞 E) (v : TanM x Z.t.G) :
     T.lie hx (actR Z.t.act a v) = actR Z.t.act (T.σ a) (T.lie hx v) := pushE_act T.sab x hx a v
 
+/- English proof (translation)
+Use `⟨fun h a => ?_, fun h a => (T.lie hx).injective ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `T.σ.surjective a`. Rewrite using `[← T.lie_act, h, map_smul, T.embK_emb]`. Rewrite using `[T.lie_act, h, map_smul, T.embK_emb]`.
+-/
 theorem eig_iff (hx : x ≫ T.ρ.hom = x') (τ : E →+* ℂ) (v : TanM x Z.t.G) :
     (∀ a, actR Z.t.act a v = φ (embK c (T.emb τ) a) • v) ↔
       ∀ a, actR Z.t.act a (T.lie hx v) = φ (embK c τ a) • T.lie hx v := by
@@ -220,9 +278,17 @@ theorem eig_iff (hx : x ≫ T.ρ.hom = x') (τ : E →+* ℂ) (v : TanM x Z.t.G)
     rw [← T.lie_act, h, map_smul, T.embK_emb]
   · rw [T.lie_act, h, map_smul, T.embK_emb]
 
+/- English proof (translation)
+The claim follows from `tan_ext (h.2.2 τ i)`.
+-/
 theorem Push.vec {T : Tw Z} {f : EigFrame Z φ x} {f' : EigFrame Z φ' x'} (h : T.Push f f') (τ : E →+* ℂ)
     (i : Fin (Dw.mult τ)) : f'.vec τ i = T.lie h.2.1.symm (f.vec (T.emb τ) (T.ix i)) := tan_ext (h.2.2 τ i)
 
+/- English proof (translation)
+Substitute `hφ` using the available equality. Use `⟨EigFrame.ofVec (fun τ i => T.lie hx.symm (f.vec (T.emb τ) (T.ix i))) (fun τ i => (T.eig_iff hx.symm τ _).1 (f.act_vec _ _)) fun τ w hw => ?_, rfl, hx, fun _ _ => rfl⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(T.lie hx.symm).surjective w`. Establish `h` using `f.existsUnique_sum (T.emb τ) w ((T.eig_iff hx.symm τ _).2 hw)`. Use `(Equiv.existsUnique_congr (Equiv.arrowCongr (finCongr (T.mult_emb τ)) (Equiv.refl R)) fun a => ?_).2 h` and prove the remaining obligations.
+
+Rewrite using `[← (T.lie hx.symm).injective.eq_iff, map_sum, ← (finCongr (T.mult_emb τ)).sum_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_push (f : EigFrame Z φ x) (hφ : φ' = φ) (hx : x' = x ≫ T.ρ.hom) :
     ∃ f' : EigFrame Z φ' x', T.Push f f' := by
   subst hφ
@@ -234,6 +300,15 @@ theorem exists_push (f : EigFrame Z φ x) (hφ : φ' = φ) (hx : x' = x ≫ T.ρ
   rw [← (T.lie hx.symm).injective.eq_iff, map_sum, ← (finCongr (T.mult_emb τ)).sum_comp]
   simp
 
+/- English proof (translation)
+Substitute `hφ` using the available equality. Establish `key : ∀ z : Letter Dw, ∃ v : TanM x Z.t.G, T.lie hx.symm v = f'.vec (T.letter.symm z).1 (T.letter.symm z).2` using `fun z => (T.lie hx.symm).surjective _`. Use `choose u hu using key`. Establish `hu' : ∀ τ i, T.lie hx.symm (u ⟨T.emb τ, T.ix i⟩) = f'.vec τ i` using `fun τ i => by`. Rewrite using `[hu, ← T.letter_mk, Equiv.symm_apply_apply]`.
+
+Use `⟨EigFrame.ofVec (fun τ i => u ⟨τ, i⟩) (fun τ i => ?_) fun τ w hw => ?_, rfl, hx, fun τ i => (congrArg (fun v => (tv v).left) (hu' τ i)).symm⟩` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `T.embEquiv.surjective τ`. Take `⟨i, rfl⟩` from `(finCongr (T.mult_emb τ)).surjective i`. Use `(T.eig_iff hx.symm τ _).2 fun a => ?_` and prove the remaining obligations. Use `erw [hu']`.
+
+Conclude with `f'.act_vec τ i a`. Take `⟨τ, rfl⟩` from `T.embEquiv.surjective τ`. Establish `h` using `f'.existsUnique_sum τ _ ((T.eig_iff hx.symm τ _).1 hw)`. Use `(Equiv.existsUnique_congr (Equiv.arrowCongr (finCongr (T.mult_emb τ)) (Equiv.refl R)) fun a => ?_).1 h` and prove the remaining obligations. Rewrite using `[← (T.lie hx.symm).injective.eq_iff (a := w), map_sum]`.
+
+Use `iff_of_eq (congrArg _ (Fintype.sum_equiv (finCongr (T.mult_emb τ)) _ _ fun i => ?_))` and prove the remaining obligations. Rewrite using `[map_smul, ← hu']`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem exists_pull (f' : EigFrame Z φ' x') (hφ : φ' = φ) (hx : x' = x ≫ T.ρ.hom) :
     ∃ f : EigFrame Z φ x, T.Push f f' := by
   subst hφ
@@ -258,6 +333,9 @@ theorem exists_pull (f' : EigFrame Z φ' x') (hφ : φ' = φ) (hx : x' = x ≫ T
     simp
     rfl
 
+/- English proof (translation)
+The claim follows from `EigFrame.co_eq fun i => (isComb_iff (f'.vec τ) _ (g'.vec τ i)).2 (by rw [hg.vec, f.vec_eq g, map_sum, ← (finCongr (T.mult_emb τ)).sum_comp] simp only [map_smul, hf.vec] rfl)`.
+-/
 theorem Push.co {T : Tw Z} {f g : EigFrame Z φ x} {f' g' : EigFrame Z φ' x'} (hf : T.Push f f') (hg : T.Push g g')
     (τ : E →+* ℂ) : f'.co g' τ = (f.co g (T.emb τ)).submatrix T.ix T.ix :=
   EigFrame.co_eq fun i => (isComb_iff (f'.vec τ) _ (g'.vec τ i)).2 (by
@@ -265,11 +343,27 @@ theorem Push.co {T : Tw Z} {f g : EigFrame Z φ x} {f' g' : EigFrame Z φ' x'} (
     simp only [map_smul, hf.vec]
     rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hχ, hy, fun τ i => by rw [hg', hg, h.2.2, Category.assoc]⟩`.
+-/
 theorem Push.map {T : Tw Z} {f : EigFrame Z φ x} {f' : EigFrame Z φ' x'} (h : T.Push f f') {R' : Type} [CommRing R']
     {ψ : R →+* R'} {χ χ' : c.F →+* R'} {y y' : Sp R' ⟶ Z.X} {g : EigFrame Z χ y} {g' : EigFrame Z χ' y'}
     (hg : f.IsMap ψ g) (hg' : f'.IsMap ψ g') (hχ : χ' = χ) (hy : y' = y ≫ T.ρ.hom) : T.Push g g' :=
   ⟨hχ, hy, fun τ i => by rw [hg', hg, h.2.2, Category.assoc]⟩
 
+/- English proof (translation)
+Establish `hx : y = spMap ψ ≫ x ↔ y' = spMap ψ ≫ x'`. Rewrite using `[hg.2.1, h.2.1, ← Category.assoc, cancel_mono]`. Establish `hφ : χ = ψ.comp φ ↔ χ' = ψ.comp φ'` using `by rw [hg.1, h.1]`. Establish `key (h1 : y = spMap ψ ≫ x) (h2 : χ = ψ.comp φ) : ∃ (k : EigFrame Z χ y) (k' : EigFrame Z χ' y'), f.IsMap ψ k ∧ f'.IsMap ψ k' ∧ ∀ τ, k'.co g' τ = (k.co g (T.emb τ)).submatrix T.ix T.ix`. Take `⟨k, hk⟩` from `f.exists_isMap ψ h2 h1`.
+
+Take `⟨k', hk'⟩` from `f'.exists_isMap ψ (hφ.1 h2) (hx.1 h1)`. Conclude with `⟨k, k', hk, hk', (h.map hk hk' hg.1 hg.2.1).co hg⟩`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Take `⟨k, k', hk, hk', e⟩` from `key a.1 a.2.1`.
+
+Use `⟨hx.1 a.1, hφ.1 a.2.1, fun τ i => ⟨fun j => k'.co g' τ j i, ?_, fun j hj => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, ← ht]`. Conclude with `(a.co _ hk).2 _`. Rewrite using `[e]`. Conclude with `(a.co _ hk).1 _ _ hj`.
+
+Rewrite using `[← funext (hk' τ)]`. Conclude with `k'.co_spec g' τ i`. Introduce `a`. Take `⟨k, k', hk, hk', e⟩` from `key (hx.2 a.1) (hφ.2 a.2.1)`. Use `⟨hx.2 a.1, hφ.2 a.2.1, fun τ i => ⟨fun j => k.co g τ j i, ?_, fun j hj => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨τ, rfl⟩` from `T.embEquiv.surjective τ`. Take `⟨i, rfl⟩` from `(finCongr (T.mult_emb τ)).surjective i`. Conclude with `((congrFun (congrFun (e τ) i) i).symm.trans ((a.co _ hk').2 i)).trans (congrArg _ (ht τ i).symm)`. Take `⟨τ, rfl⟩` from `T.embEquiv.surjective τ`. Take `⟨i, rfl⟩` from `(finCongr (T.mult_emb τ)).surjective i`.
+
+Take `⟨j, rfl⟩` from `(finCongr (T.mult_emb τ)).surjective j`. Conclude with `(congrFun (congrFun (e τ) j) i).symm.trans ((a.co _ hk').1 _ _ hj)`. Rewrite using `[← funext (hk τ)]`. Conclude with `k.co_spec g τ i`.
+-/
 theorem Push.tri_iff {T : Tw Z} {f : EigFrame Z φ x} {f' : EigFrame Z φ' x'} (h : T.Push f f') {R' : Type} [CommRing R']
     {ψ : R →+* R'} {χ χ' : c.F →+* R'} {y y' : Sp R' ⟶ Z.X} {g : EigFrame Z χ y} {g' : EigFrame Z χ' y'}
     (hg : T.Push g g') {t t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ} (ht : ∀ τ i, t (T.emb τ) (T.ix i) = t' τ i) :
@@ -301,6 +395,9 @@ theorem Push.tri_iff {T : Tw Z} {f : EigFrame Z φ x} {f' : EigFrame Z φ' x'} (
       exact (congrFun (congrFun (e τ) j) i).symm.trans ((a.co _ hk').1 _ _ hj)
     · rw [← funext (hk τ)]; exact k.co_spec g τ i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ i => t' (T.letter.symm ⟨τ, i⟩).1 (T.letter.symm ⟨τ, i⟩).2, fun τ i => by beta_reduce rw [← T.letter_mk, Equiv.symm_apply_apply]⟩`.
+-/
 theorem exists_relab {G : Type} (t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → G) :
     ∃ t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → G, ∀ τ i, t (T.emb τ) (T.ix i) = t' τ i :=
   ⟨fun τ i => t' (T.letter.symm ⟨τ, i⟩).1 (T.letter.symm ⟨τ, i⟩).2, fun τ i => by
@@ -309,12 +406,20 @@ theorem exists_relab {G : Type} (t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) →
 
 end Frames
 
+/- English proof (translation)
+Distinguish the cases in `h : k < Dw.mult τ`. Rewrite using `[letterOf, letterOf, dif_pos h, dif_pos (T.mult_emb τ ▸ h)]`. Both sides reduce to the same expression. Rewrite using `[letterOf, letterOf, dif_neg h, dif_neg (T.mult_emb τ ▸ h)]`. Both sides reduce to the same expression.
+-/
 theorem letterOf_emb (τ : E →+* ℂ) (k : ℕ) :
     letterOf Dw (.inl (T.emb τ, k)) = (letterOf Dw (.inl (τ, k))).map T.letter := by
   by_cases h : k < Dw.mult τ
   · rw [letterOf, letterOf, dif_pos h, dif_pos (T.mult_emb τ ▸ h)]; rfl
   · rw [letterOf, letterOf, dif_neg h, dif_neg (T.mult_emb τ ▸ h)]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rw [expo, expo, Finsupp.sum_mapDomain_index (by simp) (fun _ _ _ => by split_ifs <;> simp)]`. Use `Finsupp.sum_congr fun a ha => ?_` and prove the remaining obligations. Take `⟨b, R, ⟨τ, k⟩ | k⟩` from `a`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `letterOf Dw (.inl (T.emb τ, k)) = _ ↔ _`.
+
+Rewrite using `[T.letterOf_emb]`. Conclude with `(Option.map_injective T.letter.injective).eq_iff (b := some z)`. Conclude with `absurd (hw _ ha) (by simp)`.
+-/
 theorem expo_sym {w : Sym E →₀ ℤ} (hw : ∀ a ∈ w.support, a.2.2.isLeft = true) (z : Letter Dw) :
     expo Dw (w.mapDomain T.sym) (T.letter z) = expo Dw w z := by
   classical
@@ -337,6 +442,9 @@ variable {σ : c.F →+* ℂ}
 
 def pt (y : CxPts (genStr Z) σ) : CxPts (genStr Z) σ := ⟨y.1 ≫ T.g.hom, by rw [Category.assoc, T.g_str, y.2]⟩
 
+/- English proof (translation)
+Rewrite using `[pt, Category.assoc, T.g_ι, Category.assoc]`.
+-/
 theorem pt_ι (y : CxPts (genStr Z) σ) : (T.pt y).1 ≫ genι Z = (y.1 ≫ genι Z) ≫ T.ρ.hom := by
   rw [pt, Category.assoc, T.g_ι, Category.assoc]
 

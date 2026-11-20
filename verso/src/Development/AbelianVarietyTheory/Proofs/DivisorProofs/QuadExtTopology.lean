@@ -8,6 +8,21 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE`. Take `⟨b, -, -⟩` from `hE.basis`. Use `haveI hfd : FiniteDimensional F E := Module.Finite.of_basis b`. Use `haveI : IsTopologicalRing E := IsModuleTopology.isTopologicalRing F E`. Use `haveI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero`.
+
+Establish `hc : Continuous c` using `IsModuleTopology.continuous_of_linearMap c.toLinearMap`. Establish `htr : Continuous (Algebra.trace F E)` using `IsModuleTopology.continuous_of_linearMap (Algebra.trace F E)`. Establish `hN : ∀ z : E, Algebra.norm F z = (2 : F)⁻¹ * Algebra.trace F E (z * c z)`. Introduce `z`. Rewrite using `[← hE.algebraMap_norm z, Algebra.trace_algebraMap, Module.finrank_eq_card_basis b, Fintype.card_fin, nsmul_eq_mul]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hNc : Continuous (Algebra.norm F : E → F)`. Establish `: (Algebra.norm F : E → F) = fun z => (2 : F)⁻¹ * Algebra.trace F E (z * c z)` using `funext hN`. Rewrite using `[this]`.
+
+Conclude with `continuous_const.mul (htr.comp (continuous_id.mul hc))`. Establish `hT2 : T2Space E` using `(GlobalTheory.T.isSelfDualCompactOpenGroup_of_finiteDimensional F E).t2`. Establish `hinv : ∀ z : E, z⁻¹ = (Algebra.norm F z)⁻¹ • c z`. Introduce `z`. Distinguish the cases in `hz : z = 0`.
+
+Simplify using `[hz]`. Establish `hn : Algebra.norm F z ≠ 0` using `(Algebra.norm_ne_zero_iff).mpr hz`. Use `symm`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[Algebra.smul_def, mul_assoc, mul_comm (c z) z, ← hE.algebraMap_norm z, ← map_mul, inv_mul_cancel₀ hn, map_one]`.
+
+Establish `hI : ContinuousInv₀ E`. Use `⟨fun z hz => ?_⟩` and prove the remaining obligations. Establish `: (Inv.inv : E → E) = fun z => (Algebra.norm F z)⁻¹ • c z` using `funext hinv`. Rewrite using `[this]`. Establish `hn : Algebra.norm F z ≠ 0` using `(Algebra.norm_ne_zero_iff).mpr hz`.
+
+Conclude with `((continuousAt_inv₀ hn).comp hNc.continuousAt).smul hc.continuousAt`. Use `⟨hfd, inferInstance, hI, hT2, hc, hNc, htr, fun α ν _ _ => ?_⟩` and prove the remaining obligations. Use `haveI hM : IsModuleTopology F (Matrix α ν E) := inferInstanceAs (IsModuleTopology F (α → ν → E))`. Conclude with `⟨hM, GlobalTheory.T.isSelfDualCompactOpenGroup_of_finiteDimensional F (Matrix α ν E)⟩`.
+-/
 theorem quadExt_topology : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ), FiniteDimensional F E ∧ IsTopologicalRing E ∧ ContinuousInv₀ E ∧ T2Space E ∧ Continuous c ∧ Continuous (Algebra.norm F : E → F) ∧ Continuous (Algebra.trace F E) ∧ ∀ (α ν : Type) [Fintype α] [Fintype ν], IsModuleTopology F (Matrix α ν E) ∧ Good (Matrix α ν E) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE
   obtain ⟨b, -, -⟩ := hE.basis

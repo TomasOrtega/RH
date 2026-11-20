@@ -19,6 +19,13 @@ variable {G L : Type} [Group G] [Fintype G] [Group L] [Fintype L]
 def ind (P : G → Prop) (f : G → ℂ) (x : G) : ℂ :=
   ((Finset.univ.filter P).card : ℂ)⁻¹ * ∑ y : G, if P (y⁻¹ * x * y) then f (y⁻¹ * x * y) else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `ind`. Use `congr 1`. Use `congr 2`. Use `Finset.card_bijective (fun g => w⁻¹ * g * w) ?_ (by simpa using hP)` and prove the remaining obligations.
+
+Conclude with `((Equiv.mulLeft w⁻¹).trans (Equiv.mulRight w)).bijective`. Use `Fintype.sum_equiv (Equiv.mulRight w) _ _ fun y => ?_` and prove the remaining obligations. Establish `h : (Equiv.mulRight w y)⁻¹ * x * (Equiv.mulRight w y) = w⁻¹ * (y⁻¹ * x * y) * w`. Simplify using `only [Equiv.coe_mulRight]`. Use `group`.
+
+Rewrite using `[h]`. Distinguish the cases in `hy : P (y⁻¹ * x * y)`. Rewrite using `[if_pos hy, if_pos ((hP _).1 hy), hf _ hy]`. Rewrite using `[if_neg hy, if_neg fun h' => hy ((hP _).2 h')]`.
+-/
 theorem ind_congr {P P' : G → Prop} {f f' : G → ℂ} (w : G) (hP : ∀ g, P g ↔ P' (w⁻¹ * g * w))
     (hf : ∀ g, P g → f g = f' (w⁻¹ * g * w)) : ind P f = ind P' f' := by
   funext x
@@ -36,6 +43,11 @@ theorem ind_congr {P P' : G → Prop} {f f' : G → ℂ} (w : G) (hP : ∀ g, P 
     · rw [if_pos hy, if_pos ((hP _).1 hy), hf _ hy]
     · rw [if_neg hy, if_neg fun h' => hy ((hP _).2 h')]
 
+/- English proof (translation)
+Establish `h1 : ∀ l : L, ∑ q : Q, F (π q) = ∑ q : Q, F (π q * l)`. Introduce `l`. Take `⟨s, rfl⟩` from `hπ l`. Use `symm`. Conclude with `Fintype.sum_equiv (Equiv.mulRight s) _ _ fun q => by simp`.
+
+Establish `h2 : ∀ q : Q, ∑ l, F (π q * l) = ∑ l, F l` using `fun q => Fintype.sum_equiv (Equiv.mulLeft (π q)) _ _ fun l => by simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_comp_surj (Q : Subgroup G) (π : Q →* L) (hπ : Function.Surjective π) (F : L → ℂ) :
     (Fintype.card L : ℂ) * ∑ q : Q, F (π q) = (Fintype.card Q : ℂ) * ∑ l, F l := by
   have h1 : ∀ l : L, ∑ q : Q, F (π q) = ∑ q : Q, F (π q * l) := by
@@ -50,6 +62,33 @@ theorem sum_comp_surj (Q : Subgroup G) (π : Q →* L) (hπ : Function.Surjectiv
     _ = ∑ q : Q, ∑ l : L, F (π q * l) := Finset.sum_comm
     _ = _ := by simp [h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Set `φ : Q →* L` to `MonoidHom.mk' (fun q => π q) fun a b => hmul _ a.2 _ b.2`. Establish `hφ : Function.Surjective φ` using `fun l => by`. Take `⟨q, hq, rfl⟩` from `hπ l`. Conclude with `⟨⟨q, hq⟩, rfl⟩`.
+
+Establish `hL : (Fintype.card L : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hQ : (Fintype.card Q : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hcQ : (Finset.univ.filter fun g => g ∈ Q).card = Fintype.card Q`. Rewrite using `[Fintype.card_subtype]`. Establish `hc : (Fintype.card L : ℂ) * ((Finset.univ.filter fun g => g ∈ Q ∧ P' (π g)).card : ℂ) = (Fintype.card Q : ℂ) * ((Finset.univ.filter P').card : ℂ)`.
+
+Establish `h` using `sum_comp_surj Q φ hφ fun l => if P' l then 1 else 0`. Rewrite `h` using `[Finset.sum_boole, Finset.sum_boole]`. Rewrite using `[← h]`. Use `congr 2`. Use `symm`.
+
+Use `Finset.card_bij (fun q _ => (q : G)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `q hq`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, q.2, (Finset.mem_filter.1 hq).2⟩`. Introduce `a _ b _ h`. Conclude with `Subtype.ext h`.
+
+Introduce `g hg`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg`. Conclude with `⟨⟨g, hg.1⟩, Finset.mem_filter.2 ⟨Finset.mem_univ _, hg.2⟩, rfl⟩`. Use `set F : G → ℂ := fun g => if g ∈ Q ∧ P' (π g) then A g * f' (π g) else 0 with hF`. Establish `key : ∀ z : G, (Fintype.card Q : ℂ) * (if z ∈ Q then A z * ind P' f' (π z) else 0) = ((Finset.univ.filter P').card : ℂ)⁻¹ * (Fintype.card L : ℂ) * ∑ q : Q, F ((q : G)⁻¹ * z * q)`.
+
+Introduce `z`. Distinguish the cases in `hz : z ∈ Q`. Rewrite using `[if_pos hz]`. Establish `h` using `sum_comp_surj Q φ hφ fun l => if P' (l⁻¹ * π z * l) then f' (l⁻¹ * π z * l) else 0`. Establish `h2 : ∀ q : Q, F ((q : G)⁻¹ * z * q) = A z * if P' ((φ q)⁻¹ * π z * φ q) then f' ((φ q)⁻¹ * π z * φ q) else 0`.
+
+Introduce `q`. Establish `hm : (q : G)⁻¹ * z * q ∈ Q` using `Q.mul_mem (Q.mul_mem (Q.inv_mem q.2) hz) q.2`. Establish `e : π ((q : G)⁻¹ * z * q) = (φ q)⁻¹ * π z * φ q`. Use `map_mul φ (q⁻¹ * ⟨z, hz⟩) q` as an intermediate fact. Rewrite `this` using `[map_mul φ q⁻¹, map_inv]`.
+
+Conclude with `this`. Simplify using `only [hF, hm, true_and, e, hA z hz q q.2, mul_ite, mul_zero]`. Simplify using `only [h2, ← Finset.mul_sum]`. Unfold `ind`. Take the linear combination `(-(((Finset.univ.filter P').card : ℂ)⁻¹ * A z)) * h`.
+
+Rewrite using `[if_neg hz, mul_zero, Finset.sum_eq_zero, mul_zero]`. Introduce `q _`. Use `if_neg fun h => hz ?_` and prove the remaining obligations. Use `Q.mul_mem (Q.mul_mem q.2 h.1) (Q.inv_mem q.2)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `hs : ∀ q : Q, ∑ y : G, F ((q : G)⁻¹ * (y⁻¹ * x * y) * q) = ∑ y : G, F (y⁻¹ * x * y)` using `fun q => Fintype.sum_equiv (Equiv.mulRight (q : G)) _ _ fun y => by`. Use `congr 1`. Simplify using `only [Equiv.coe_mulRight]`. Use `group`. Establish `h3 : (Fintype.card Q : ℂ) * ∑ y : G, (if y⁻¹ * x * y ∈ Q then A (y⁻¹ * x * y) * ind P' f' (π (y⁻¹ * x * y)) else 0) = (Fintype.card Q : ℂ) * (((Finset.univ.filter P').card : ℂ)⁻¹ * (Fintype.card L : ℂ) * ∑ y : G, F (y⁻¹ * x * y))`.
+
+Rewrite using `[Finset.mul_sum]`. Simplify using `only [key]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [hs, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4` using `mul_left_cancel₀ hQ h3`. Establish `h5 : ((Finset.univ.filter fun g => g ∈ Q ∧ P' (π g)).card : ℂ) = (Fintype.card L : ℂ)⁻¹ * ((Fintype.card Q : ℂ) * ((Finset.univ.filter P').card : ℂ))`. Rewrite using `[← hc, inv_mul_cancel_left₀ hL]`. It suffices to establish `hh : ((Finset.univ.filter fun g => g ∈ Q).card : ℂ)⁻¹ * ∑ y : G, (if y⁻¹ * x * y ∈ Q then A (y⁻¹ * x * y) * ind P' f' (π (y⁻¹ * x * y)) else 0) = ((Finset.univ.filter fun g => g ∈ Q ∧ P' (π g)).card : ℂ)⁻¹ * ∑ y : G, F (y⁻¹ * x * y) by`. Rewrite using `[ind, ind]`.
+
+Use `hh` and compare the differences between its conclusion and the goal. Rewrite using `[h4, hcQ, h5, mul_inv, mul_inv, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ind_trans (Q : Subgroup G) (π : G → L) (hmul : ∀ a ∈ Q, ∀ b ∈ Q, π (a * b) = π a * π b)
     (hπ : ∀ l, ∃ q ∈ Q, π q = l) (A : G → ℂ) (hA : ∀ z ∈ Q, ∀ q ∈ Q, A (q⁻¹ * z * q) = A z)
     (P' : L → Prop) (f' : L → ℂ) :
@@ -131,6 +170,9 @@ end Abstract
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Unfold `toG`. Rewrite using `[dif_pos h]`. Conclude with `IsUnit.unit_spec _`.
+-/
 theorem coe_toG {n : ℕ} {M : Mt p n} (h : IsUnit M) : ((toG M : Gn p n) : Mt p n) = M := by
   unfold toG
   rw [dif_pos h]
@@ -144,6 +186,29 @@ def stdF (L : List (Pc p)) : (n : ℕ) → Mt p n → ℂ :=
   List.rec (motive := fun _ => (n : ℕ) → Mt p n → ℂ) (fun _ _ => 1)
     (fun q L ih _ M => q.2 (toG (tl q.1 M)) * ih (degL L) (br q.1 (degL L) M)) L
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Use function extensionality and compare the values at `x`. Establish `hG : (Fintype.card (Gn p (degL ([] : List (Pc p)))) : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `show 1 = ind (fun _ => True) (fun _ => 1) x`.
+
+Simplify using `only [ind, if_true, Finset.sum_const, Finset.filter_true, Finset.card_univ, nsmul_eq_mul, mul_one]`. Rewrite using `[inv_mul_cancel₀ hG]`. Consider the case `cons q L ih`. Take `⟨⟨Q, hQ⟩, -, hu, hm, hfib, -⟩` from `GlobalTheory.GLm.ParBasic.par_basic p q.1 (degL L) (degL (q :: L)) rfl`. Establish `htl : ∀ a ∈ Q, ∀ b ∈ Q, toG (tl q.1 (a * b).val) = toG (tl q.1 a.val) * toG (tl q.1 b.val)`.
+
+Introduce `a ha b hb`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul (toG _), coe_toG (hu _ ((hQ _).1 ha)).1, coe_toG (hu _ ((hQ _).1 hb)).1, coe_toG (hu _ ((hQ _).1 (Q.mul_mem ha hb))).1]`. Conclude with `(hm _ _ ((hQ _).1 ha) ((hQ _).1 hb)).1`. Establish `hbr : ∀ a ∈ Q, ∀ b ∈ Q, toG (br q.1 (degL L) (a * b).val) = toG (br q.1 (degL L) a.val) * toG (br q.1 (degL L) b.val)`.
+
+Introduce `a ha b hb`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul (toG _), coe_toG (hu _ ((hQ _).1 ha)).2, coe_toG (hu _ ((hQ _).1 hb)).2, coe_toG (hu _ ((hQ _).1 (Q.mul_mem ha hb))).2]`. Conclude with `(hm _ _ ((hQ _).1 ha) ((hQ _).1 hb)).2`. Establish `hsurj : ∀ l : Gn p (degL L), ∃ g ∈ Q, toG (br q.1 (degL L) g.val) = l`.
+
+Introduce `l`. Establish `h` using `hfib 1 l`. Establish `hpos : 0 < p ^ (q.1 * degL L)` using `pow_pos (Fact.out : p.Prime).pos _`. Rewrite `hpos` using `[← h]`. Take `⟨g, hg⟩` from `Finset.card_pos.1 hpos`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hg`. Use `⟨g, (hQ _).2 hg.1, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_toG (hu _ hg.1).2, hg.2.2]`. Establish `hA : ∀ z ∈ Q, ∀ y ∈ Q, q.2 (toG (tl q.1 (y⁻¹ * z * y).val)) = q.2 (toG (tl q.1 z.val))`. Introduce `z hz y hy`.
+
+Set `φ : Q →* Gn p q.1` to `MonoidHom.mk' (fun a : Q => toG (tl q.1 a.val.val)) fun a b => htl _ a.2 _ b.2`. Establish `h` using `map_mul φ (⟨y, hy⟩⁻¹ * ⟨z, hz⟩) ⟨y, hy⟩`. Rewrite `h` using `[map_mul φ _ ⟨z, hz⟩, map_inv]`. Establish `h2` using `hL q List.mem_cons_self (φ ⟨z, hz⟩) (φ ⟨y, hy⟩)⁻¹`. Rewrite `h2` using `[inv_inv, ← h]`.
+
+Conclude with `h2`. Establish `h` using `ind_trans (G := Gn p (degL (q :: L))) (L := Gn p (degL L)) Q (fun g : Gn p (degL (q :: L)) => toG (br q.1 (degL L) g.val)) hbr hsurj (fun g : Gn p (degL (q :: L)) => q.2 (toG (tl q.1 g.val))) hA (fun g : Gn p (degL L) => stdP L _ (g : Mt p (degL L))) (fun g => stdF L _ (g : Mt p …`. Rewrite `h` using `[← ih fun q' hq' => hL q' (List.mem_cons_of_mem _ hq')]`. Establish `e1 : hcL (q :: L) (degL (q :: L)) = ind (fun g : Gn p (degL (q :: L)) => InPar q.1 g.val) (fun g => q.2 (toG (tl q.1 g.val)) * hcL L (degL L) (toG (br q.1 (degL L) g.val)))`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[hcL_cons]`. Unfold `hc hcT ind`. Use `congr!`. Rewrite using `[e1]`. Use `(ind_congr 1 (fun g => ?_) fun g _ => ?_).trans (h.trans (ind_congr 1 (fun g => ?_) fun g hg => ?_))` and prove the remaining obligations.
+
+Simplify using `[hQ]`. Simplify using the standard rewrite rules. Rewrite using `[inv_one, one_mul, mul_one, hQ]`. Use `and_congr_right fun hg => ?_` and prove the remaining obligations. Rewrite using `[coe_toG (hu _ hg).2]`.
+
+Both sides reduce to the same expression. Rewrite using `[inv_one, one_mul, mul_one, coe_toG (hu _ ((hQ _).1 hg.1)).2]`. Both sides reduce to the same expression.
+-/
 theorem hcL_eq_ind (L : List (Pc p)) (hL : ∀ q ∈ L, IsClass q.2) :
     hcL L (degL L) = ind (fun g : Gn p (degL L) => stdP L _ (g : Mt p (degL L)))
       (fun g => stdF L _ (g : Mt p (degL L))) := by
@@ -213,6 +278,13 @@ theorem hcL_eq_ind (L : List (Pc p)) (hL : ∀ q ∈ L, IsClass q.2) :
     · rw [inv_one, one_mul, mul_one, coe_toG (hu _ ((hQ _).1 hg.1)).2]
       rfl
 
+/- English proof (translation)
+Establish `hn : degL L = n` using `by simpa using Fintype.card_of_bijective hσ`. Substitute `hn` using the available equality. Rewrite using `[hcL_eq_ind L hL]`. Set `e : Fin (degL L) ≃ Fin (degL L)` to `Equiv.ofBijective σ hσ`. Set `w : Gn p (degL L)` to `⟨e.symm.toPEquiv.toMatrix, e.toPEquiv.toMatrix, by rw [← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]; simp, by rw [← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans]; simp⟩`.
+
+Establish `hw : ∀ g : Gn p (degL L), (w⁻¹ * g * w).val = g.val.submatrix σ σ`. Introduce `g`. Use `show e.toPEquiv.toMatrix * g.val * e.symm.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression.
+
+Use `ind_congr w (fun g => ?_) fun g hg => ?_` and prove the remaining obligations. Rewrite using `[hw, hP]`. Rewrite using `[hw, hf g hg]`.
+-/
 theorem ind_eq_hcL (L : List (Pc p)) (hL : ∀ q ∈ L, IsClass q.2) (n : ℕ) (σ : Fin (degL L) → Fin n)
     (hσ : Function.Bijective σ) (P : Gn p n → Prop) (f : Gn p n → ℂ)
     (hP : ∀ g, P g ↔ stdP L _ ((g : Mt p n).submatrix σ σ))
@@ -233,6 +305,31 @@ theorem ind_eq_hcL (L : List (Pc p)) (hL : ∀ q ∈ L, IsClass q.2) (n : ℕ) (
   · rw [hw, hP]
   · rw [hw, hf g hg]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun t => Fin.elim0 t, fun t => Fin.elim0 t, fun t => Fin.elim0 t, by simp, fun M => ?_⟩` and prove the remaining obligations. Simplify using `[stdP, stdF]`. Consider the case `cons c l ih`.
+
+Rewrite `hl` using `[List.pairwise_cons]`. Take `⟨σ, h1, h2, h3, h4⟩` from `ih hl.2`. Set `τ : Fin (d c + degL (l.map fun c => (⟨d c, α c⟩ : Pc p))) → ι` to `Fin.append (j c) σ`. Use `⟨τ, ?_, ?_, ?_, fun M => ?_⟩` and prove the remaining obligations. Use `Fin.append_injective_iff.2 ⟨hj c, h1, fun s t h => ?_⟩` and prove the remaining obligations.
+
+Use `hl.1 _ (h2 t)` as an intermediate fact. Rewrite `this` using `[← h, hb]`. Conclude with `lt_irrefl _ this`. Introduce `t`. Use `Fin.addCases (motive := fun t => b (τ t) ∈ c :: l) (fun s => ?_) (fun s => ?_) t` and prove the remaining obligations.
+
+Simplify using `[τ, hb]`. Simplify using `[τ, h2]`. Introduce `i hi`. Break down `List.mem_cons.1 hi with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Take `⟨t, ht⟩` from `hs i`. Conclude with `⟨Fin.castAdd _ t, (Fin.append_left _ _ t).trans ht⟩`. Take `⟨t, ht⟩` from `h3 i h`. Conclude with `⟨Fin.natAdd _ t, (Fin.append_right _ _ t).trans ht⟩`. Establish `etl : tl (d c) (M.submatrix τ τ) = M.submatrix (j c) (j c)`.
+
+Use extensionality with `s t`. Rewrite using `[GlobalTheory.GLm.ParBasic.tl_apply]`. Simplify using `[τ]`. Establish `ebr : br (d c) _ (M.submatrix τ τ) = M.submatrix σ σ`. Use extensionality with `s t`.
+
+Rewrite using `[GlobalTheory.GLm.ParBasic.br_apply]`. Simplify using `[τ]`. Prove the components needed by the constructor for the conclusion. Use `show InPar (d c) (M.submatrix τ τ) ∧ stdP _ _ (br (d c) _ (M.submatrix τ τ)) ↔ _`. Rewrite using `[ebr, (h4 M).1, GlobalTheory.GLm.ParBasic.inPar_iff]`.
+
+Simplify using `only [τ, Matrix.submatrix_apply, Fin.append_left, Fin.append_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hB⟩ i k hi hk hik`. Break down `List.mem_cons.1 hi with hi' | hi'` into its components or cases. Break down `List.mem_cons.1 hk with hk' | hk'` into its components or cases.
+
+Rewrite `hik` using `[hi', hk']`. Conclude with `absurd hik (lt_irrefl _)`. Rewrite `hik` using `[hi']`. Conclude with `absurd hik (hl.1 _ hk').not_gt`. Break down `List.mem_cons.1 hk with hk' | hk'` into its components or cases.
+
+Substitute `hk'` using the available equality. Take `⟨s, rfl⟩` from `h3 i hi'`. Take `⟨t, ht⟩` from `hs k`. Rewrite using `[← ht]`. Conclude with `hA s t`.
+
+Conclude with `hB i k hi' hk' hik`. Introduce `h`. Use `⟨fun s t => h _ _ (List.mem_cons_of_mem _ (h2 s)) (by simp [hb]) ?_, fun i k hi hk => h i k (List.mem_cons_of_mem _ hi) (List.mem_cons_of_mem _ hk)⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `hl.1 _ (h2 s)`.
+
+Use `show α c (toG (tl (d c) (M.submatrix τ τ))) * stdF _ _ (br (d c) _ (M.submatrix τ τ)) = _`. Rewrite using `[etl, ebr, (h4 M).2, List.map_cons, List.prod_cons]`.
+-/
 theorem exists_enum {ι κ : Type} [LinearOrder κ] (b : ι → κ) (d : κ → ℕ) (α : ∀ c, Gn p (d c) → ℂ)
     (j : ∀ c, Fin (d c) → ι) (hj : ∀ c, Function.Injective (j c)) (hb : ∀ c t, b (j c t) = c)
     (hs : ∀ i, ∃ t, j (b i) t = i) (l : List κ) (hl : l.Pairwise (· < ·)) :
@@ -301,6 +398,11 @@ theorem exists_enum {ι κ : Type} [LinearOrder κ] (b : ι → κ) (d : κ → 
       · show α c (toG (tl (d c) (M.submatrix τ τ))) * stdF _ _ (br (d c) _ (M.submatrix τ τ)) = _
         rw [etl, ebr, (h4 M).2, List.map_cons, List.prod_cons]
 
+/- English proof (translation)
+Establish `hm : ∀ x ∈ Module.End.eigenspace (Matrix.toLin' h) z, Matrix.toLin' u x ∈ Module.End.eigenspace (Matrix.toLin' (u * h * v)) z`. Introduce `x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Simplify using `only [Matrix.toLin'_apply] at hx ⊢`. Rewrite using `[Matrix.mulVec_mulVec, mul_assoc, hvu, mul_one, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul]`.
+
+Use `LinearMap.finrank_le_finrank_of_injective (f := (Matrix.toLin' u).restrict hm) fun x y hxy => ?_` and prove the remaining obligations. Establish `h1 : u.mulVec x = u.mulVec y` using `congrArg Subtype.val hxy`. Establish `h2` using `congrArg v.mulVec h1`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hvu, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `Subtype.ext h2`.
+-/
 theorem finrank_eigenspace_le {k ι : Type} [Field k] [Fintype ι] [DecidableEq ι] (u v h : Matrix ι ι k)
     (hvu : v * u = 1) (z : k) :
     Module.finrank k (Module.End.eigenspace (Matrix.toLin' h) z) ≤
@@ -317,6 +419,9 @@ theorem finrank_eigenspace_le {k ι : Type} [Field k] [Fintype ι] [DecidableEq 
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hvu, Matrix.one_mulVec, Matrix.one_mulVec] at h2
   exact Subtype.ext h2
 
+/- English proof (translation)
+Use `le_antisymm ?_ (finrank_eigenspace_le u v h hvu z)` and prove the remaining obligations. Use `finrank_eigenspace_le v u (u * h * v) (mul_eq_one_comm.1 hvu) z` as an intermediate fact. Rewrite `this` using `[show v * (u * h * v) * u = (v * u) * h * (v * u) by simp only [mul_assoc], hvu, one_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem finrank_eigenspace_conj {k ι : Type} [Field k] [Fintype ι] [DecidableEq ι] (u v h : Matrix ι ι k)
     (hvu : v * u = 1) (z : k) :
     Module.finrank k (Module.End.eigenspace (Matrix.toLin' (u * h * v)) z) =
@@ -325,6 +430,11 @@ theorem finrank_eigenspace_conj {k ι : Type} [Field k] [Fintype ι] [DecidableE
   have := finrank_eigenspace_le v u (u * h * v) (mul_eq_one_comm.1 hvu) z
   rwa [show v * (u * h * v) * u = (v * u) * h * (v * u) by simp only [mul_assoc], hvu, one_mul, mul_one] at this
 
+/- English proof (translation)
+Establish `h1 : (u * h * v).charpoly = h.charpoly`. Rewrite using `[Matrix.charpoly_mul_comm, ← mul_assoc, hvu, one_mul]`. Establish `h2 : v.map (algebraMap (ZMod p) (Fbar p)) * u.map (algebraMap (ZMod p) (Fbar p)) = 1`. Rewrite using `[← Matrix.map_mul, hvu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : ∀ z, Module.finrank (Fbar p) (Module.End.eigenspace (Matrix.toLin' ((u * h * v).map (algebraMap (ZMod p) (Fbar p)))) z) = Module.finrank (Fbar p) (Module.End.eigenspace (Matrix.toLin' (h.map (algebraMap (ZMod p) (Fbar p)))) z)`.
+
+Introduce `z`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, finrank_eigenspace_conj _ _ _ h2]`. Unfold `cuspChar`. Simplify using `only [h1, h3]`.
+-/
 theorem cuspChar_conj {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fintype.card ι) →* ℂˣ)
     (u v h : Matrix ι ι (ZMod p)) (hvu : v * u = 1) : cuspChar θ (u * h * v) = cuspChar θ h := by
   have h1 : (u * h * v).charpoly = h.charpoly := by
@@ -339,6 +449,9 @@ theorem cuspChar_conj {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fin
   unfold cuspChar
   simp only [h1, h3]
 
+/- English proof (translation)
+Introduce `x y`. Unfold `cuspOn`. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ (Fintype.equivFin ι), ← Matrix.submatrix_mul_equiv _ _ _ (Fintype.equivFin ι)]`. Use `cuspChar_conj θ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.submatrix_one_equiv]`.
+-/
 theorem isClass_cuspOn {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fintype.card ι) →* ℂˣ) :
     IsClass (cuspOn θ) := by
   intro x y
@@ -348,6 +461,9 @@ theorem isClass_cuspOn {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fi
   refine cuspChar_conj θ _ _ _ ?_
   rw [Matrix.submatrix_mul_equiv, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Unfold `cuspOn`. Rewrite using `[coe_toG]`. Simplify using the standard rewrite rules. Use `IsUnit.of_mul_eq_one (h'.submatrix (Fintype.equivFin ι).symm (Fintype.equivFin ι).symm) ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_mul_equiv, hh, Matrix.submatrix_one_equiv]`.
+-/
 theorem cuspOn_toG {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fintype.card ι) →* ℂˣ)
     (h h' : Matrix ι ι (ZMod p)) (hh : h * h' = 1) :
     cuspOn θ (toG (h.submatrix (Fintype.equivFin ι).symm (Fintype.equivFin ι).symm)) = cuspChar θ h := by
@@ -357,6 +473,17 @@ theorem cuspOn_toG {ι : Type} [Fintype ι] [DecidableEq ι] (θ : Tor p (Fintyp
   · refine IsUnit.of_mul_eq_one (h'.submatrix (Fintype.equivFin ι).symm (Fintype.equivFin ι).symm) ?_
     rw [Matrix.submatrix_mul_equiv, hh, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Introduce `p _ r s`. Set `l : List (Cyc s.1)` to `Finset.univ.sort (· ≤ ·)`. Establish `hmem : ∀ c, c ∈ l` using `fun c => by simp [l]`. Establish `hnd : l.Nodup` using `Finset.sort_nodup _ _`. Establish `hl : l.Pairwise (· < ·)`.
+
+Establish `h : l.Pairwise (· ≤ ·)` using `Finset.pairwise_sort _ _`. Conclude with `(h.and hnd).imp fun h => lt_of_le_of_ne h.1 h.2`. Use `⟨l, hnd, hmem, ?_⟩` and prove the remaining obligations. Set `b : Fin r → Cyc s.1` to `fun i => ⟨s.1 i, i, rfl⟩`. Set `j : ∀ c : Cyc s.1, Fin (cycLen s.1 c) → Fin r` to `fun c t => ((Fintype.equivFin {i : Fin r // s.1 i = c.1}).symm t).1`.
+
+Take `⟨σ, h1, -, h3, h4⟩` from `exists_enum b (cycLen s.1) (fun c => cuspOn (s.2 c)) j (fun c => Subtype.val_injective.comp (Equiv.injective _)) (fun c t => Subtype.ext ((Fintype.equivFin {i : Fin r // s.1 i = c.1}).symm t).2) (fun i => ⟨Fintype.equivFin {k : Fin r // s.1 k = (b i).1} ⟨i, rfl⟩, by simp [j]⟩) l …`. Rewrite using `[← ind_eq_hcL _ (fun q hq => ?_) r σ ⟨h1, fun i => h3 i (hmem _)⟩ (fun g => (g : Mt p r).BlockTriangular s.1) (fun g => ∏ c : Cyc s.1, cuspChar (s.2 c) ((g : Mt p r).toSquareBlock s.1 c.1)) (fun g => ?_) fun g hg => ?_]`. Use function extensionality and compare the values at `x`. Unfold `typeChar ind`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+
+Use `congr!`. Take `⟨c, -, rfl⟩` from `List.mem_map.1 hq`. Conclude with `isClass_cuspOn (s.2 c)`. Rewrite using `[(h4 _).1]`. Conclude with `⟨fun h i k _ _ hik => h hik, fun h i k hik => h i k (hmem _) (hmem _) hik⟩`.
+
+Use `Eq.trans ?_ (h4 _).2.symm` and prove the remaining obligations. Rewrite using `[← List.prod_toFinset (l := l) _ hnd]`. Use `Finset.prod_congr (by ext c; simp [hmem]) fun c _ => ?_` and prove the remaining obligations. Conclude with `(cuspOn_toG (s.2 c) _ _ (GlobalTheory.TypeCharacterConjugateInverse.toSquareBlock_mul_inv g hg c.1)).symm`.
+-/
 theorem typeChar_eq_hcL : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ) (s : SSParam p ℂ r), ∃ l : List (Cyc s.1), l.Nodup ∧ (∀ c, c ∈ l) ∧
     typeChar s = GlobalTheory.GLq.hcL (l.map fun c => (⟨cycLen s.1 c, cuspOn (s.2 c)⟩ : GlobalTheory.GLq.Pc p)) r := by
   intro p _ r s

@@ -16,22 +16,38 @@ namespace GlobalTheory.SUtoU
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [rhoNh, sub_lt_sub_iff_right]`.
+-/
 theorem rhoNh_sub_const (ε : Fin n → Bool) (lam : Fin n → ℝ) (c : ℝ) :
     rhoNh ε (fun a => lam a - c) = rhoNh ε lam := by
   funext a
   simp only [rhoNh, sub_lt_sub_iff_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [rhoCh, sub_lt_sub_iff_right]`.
+-/
 theorem rhoCh_sub_const (ε : Fin n → Bool) (lam : Fin n → ℝ) (c : ℝ) :
     rhoCh ε (fun a => lam a - c) = rhoCh ε lam := by
   funext a
   simp only [rhoCh, sub_lt_sub_iff_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [lowCh, rhoNh_sub_const, rhoCh_sub_const, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lowCh_sub_const (ε : Fin n → Bool) (lam : Fin n → ℝ) (c : ℝ) :
     lowCh ε (fun a => lam a - c) = fun a => lowCh ε lam a - c := by
   funext a
   simp only [lowCh, rhoNh_sub_const, rhoCh_sub_const, Pi.add_apply, Pi.sub_apply]
   ring
 
+/- English proof (translation)
+Use `choose k hk using hU.2`. Take `⟨t, ht⟩` from `Nat.even_mul_pred_self n`. Use `⟨(t : ℤ) + ∑ a, k a, ?_⟩` and prove the remaining obligations. Establish `hlam : ∀ a, lam a = ((n : ℝ) - 1) / 2 + (k a : ℝ)` using `fun a => by linarith [hk a]`. Establish `hcast : (n : ℝ) * ((n : ℝ) - 1) = 2 * (t : ℝ)`.
+
+Use `congrArg (fun x : ℕ => (x : ℝ)) ht` as an intermediate fact. Simplify using `only [Nat.cast_mul, Nat.cast_add, Nat.cast_sub hn, Nat.cast_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hlam, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_sum_eq_int (hn : 1 ≤ n) (lam : Fin n → ℝ) (hU : IsParU lam) :
     ∃ m : ℤ, ∑ a, lam a = (m : ℝ) := by
   choose k hk using hU.2
@@ -47,6 +63,27 @@ theorem exists_sum_eq_int (hn : 1 ≤ n) (lam : Fin n → ℝ) (hU : IsParU lam)
   push_cast
   linarith
 
+/- English proof (translation)
+Introduce `n hn ε H _ _ π' lam hU`. Take `⟨m, hm⟩` from `exists_sum_eq_int hn lam hU`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Use `⟨m, hm, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, hm, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `a b h`. Conclude with `hU.1 (by simpa using h)`. Introduce `a b`.
+
+Take `⟨ka, hka⟩` from `hU.2 a`. Take `⟨kb, hkb⟩` from `hU.2 b`. Conclude with `⟨ka - kb, by push_cast; linarith⟩`. Introduce `hS`. Take `⟨⟨hcomp, hnt, hrep, hirr, hsq⟩, hinf, ⟨S0, hS0, huniq⟩, habove⟩` from `hS`.
+
+Establish `hcent` using `GlobalTheory.T.harish_chandra_central_action n hn ε H π' lam m hU hm ⟨⟨hcomp, hnt, hrep, hirr, hsq⟩, hinf, ⟨S0, hS0, huniq⟩, habove⟩`. Take `⟨π, hext, hrepU⟩` from `GlobalTheory.T.extend_special_unitary_rep n hn ε H m π' hrep hcent`. Use `⟨π, hext, ?_⟩` and prove the remaining obligations. Take `⟨-, hirrIff, -, -⟩` from `GlobalTheory.T.extension_preserves_properties n hn ε H m π' π hext`. Establish `hsqIff` using `GlobalTheory.T.square_integrable_iff_extension n hn ε H m π' π hext hrepU`.
+
+Establish `hinfU` using `GlobalTheory.T.infinitesimal_character_extension n hn ε H m π' π hext _ hinf`. Take `⟨-, hKT⟩` from `GlobalTheory.T.weights_of_extension n hn ε H m π' π hext`. Establish `hlow` using `lowCh_sub_const ε lam ((m : ℝ) / n)`. Establish `hsumLow : ∑ a, lowCh ε lam a = (m : ℝ)`. Establish `h0` using `hS0.1`.
+
+Rewrite `h0` using `[hlow, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Clear denominators, using `at h0` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKTlow : ∀ S : Submodule ℂ H, IsKTypeU ε lam π (lowCh ε lam) S ↔ IsKTypeS ε (fun a => lam a - (m : ℝ) / n) π' (lowCh ε (fun a => lam a - (m : ℝ) / n)) S`. Introduce `S`.
+
+Rewrite using `[hKT lam (lowCh ε lam) ((m : ℝ) / n) S, hlow]`. Conclude with `⟨fun h => h.2, fun h => ⟨hsumLow, h⟩⟩`. Use `⟨⟨hcomp, hnt, hrepU, hirrIff.2 hirr, hsqIff.2 hsq⟩, ?_, ⟨S0, (hKTlow S0).2 hS0, fun S hS => huniq S ((hKTlow S).1 hS)⟩, ?_⟩` and prove the remaining obligations. Use `hinfU using 2 with a` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `μ S hμS`. Take `⟨-, hμS'⟩` from `(hKT lam μ ((m : ℝ) / n) S).1 hμS`. Take `⟨c, hc, heq⟩` from `habove _ S hμS'`.
+
+Use `⟨c, fun a b hab => by simpa using hc a b hab, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `congrFun heq a` as an intermediate fact. Rewrite `this` using `[hlow]`. Simplify using `only [Pi.add_apply] at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem extension_main : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (π' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ), IsParU lam → ∃ m : ℤ, ∑ a, lam a = (m : ℝ) ∧ IsParS (fun a => lam a - (m : ℝ) / n) ∧ (IsHCS ε (fun a => lam a - (m : ℝ) / n) π' → ∃ π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H), Ext ε m π' π ∧ IsHCU ε lam π) := by
   intro n hn ε H _ _ π' lam hU
   obtain ⟨m, hm⟩ := exists_sum_eq_int hn lam hU

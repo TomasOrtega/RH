@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 section Gen
 
+/- English proof (translation)
+Establish `e : (Xᴴ * (Pᴴ * P) * X * (Q * Qᴴ)).trace = ((P * X * Q)ᴴ * (P * X * Q)).trace`. Rewrite using `[← Matrix.mul_assoc _ Q, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `e2 : ∀ Y : Matrix m' n' ℂ, (Yᴴ * Y).trace.re = ∑ j, ∑ i, Complex.normSq (Y i j)` using `fun Y => by`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Rewrite using `[e, e2]`. Use `⟨Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _, fun h => ?_⟩` and prove the remaining obligations. Establish `h0 : P * X * Q = 0`.
+
+Use extensionality with `i j`. Establish `a` using `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _).1 h j (Finset.mem_univ j)`. Conclude with `Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun _ _ => Complex.normSq_nonneg _).1 a i (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pos_trace {m n : ℕ} {m' n' : Type} [Fintype m'] [Fintype n'] (P : Matrix m' (Fin m) ℂ) (P' : Matrix (Fin m) m' ℂ)
     (hP : P' * P = 1) (Q : Matrix (Fin n) n' ℂ) (Q' : Matrix n' (Fin n) ℂ) (hQ : Q * Q' = 1) (X : Matrix (Fin m) (Fin n) ℂ) :
     0 ≤ (Xᴴ * (Pᴴ * P) * X * (Q * Qᴴ)).trace.re ∧ ((Xᴴ * (Pᴴ * P) * X * (Q * Qᴴ)).trace.re = 0 → X = 0) := by
@@ -35,6 +42,19 @@ theorem pos_trace {m n : ℕ} {m' n' : Type} [Fintype m'] [Fintype n'] (P : Matr
     _ = P' * (P * X * Q) * Q' := by simp only [Matrix.mul_assoc]
     _ = 0 := by rw [h0, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `J2 : Formalism.UG.Jpq p q * Formalism.UG.Jpq p q = 1` using `Formalism.MainNotions.DIV.Inh.Jm_sq p q`. Establish `Jh : (Formalism.UG.Jpq p q)ᴴ = Formalism.UG.Jpq p q` using `by simp [Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`. Establish `a1 : H⁻¹ * (Aᴴ * Formalism.UG.Jpq p q) * A = 1` using `by rw [Matrix.mul_assoc, hA, Matrix.nonsing_inv_mul _ hH]`. Establish `a2` using `(Matrix.mul_eq_one_comm_of_equiv e).1 a1`. Generalize the expression as in `H⁻¹ * (Aᴴ * Formalism.UG.Jpq p q) = A' at a1 a2`.
+
+Establish `b : A * (A' * Formalism.UG.Jpq p q * A) = Formalism.UG.Jpq p q * A`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, a2, Matrix.one_mul]`. Establish `canc : ∀ X Y : Matrix (Fin n) (Fin n) ℂ, A * X = A * Y → X = Y` using `fun X Y h => by`. Rewrite using `[← Matrix.one_mul X, ← Matrix.one_mul Y, ← a1, Matrix.mul_assoc, Matrix.mul_assoc, h]`. Use `⟨A' * Formalism.UG.Jpq p q * A, A', a1, ?_, ?_, canc _ _ ?_, fun c k hc h => canc _ _ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hA, Matrix.mul_assoc, b, Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.UG.Jpq p q), J2, Matrix.one_mul]`. Generalize the expression as in `A' * Formalism.UG.Jpq p q * A = s at b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hA]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Aᴴ * (Formalism.UG.Jpq p q * Formalism.UG.Jpq p q) * Formalism.UG.Jpq p q * A := by`. Rewrite using `[b, Matrix.conjTranspose_mul, Jh]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [J2, Matrix.mul_one, hA]`. Rewrite using `[← Matrix.mul_assoc, b, Matrix.mul_assoc, b, ← Matrix.mul_assoc, J2, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `hc' : Formalism.UG.Jpq p q * c = c * Formalism.UG.Jpq p q`. Use extensionality with `x y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply]`. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply, hc (Sum.inl x) (Sum.inr y) (fun h => h)]`.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply, hc (Sum.inr x) (Sum.inl y) (fun h => h)]`. Simplify using `[Formalism.UG.Jpq, Matrix.mul_apply, Matrix.one_apply]`. Generalize the expression as in `A' * Formalism.UG.Jpq p q * A = s at b`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, b, ← h, Matrix.mul_assoc, Matrix.mul_assoc, b, ← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hc']`.
+-/
 theorem cartan {n p q : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : IsUnit H.det) (e : Fin n ≃ Fin p ⊕ Fin q)
     (A : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) (hA : Aᴴ * Formalism.UG.Jpq p q * A = H) :
     ∃ (s : Matrix (Fin n) (Fin n) ℂ) (A' : Matrix (Fin n) (Fin p ⊕ Fin q) ℂ), A' * A = 1 ∧ H * s = Aᴴ * A ∧
@@ -68,15 +88,26 @@ theorem cartan {n p q : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : IsUnit H.det
     rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, b, ← h, Matrix.mul_assoc, Matrix.mul_assoc, b, ← h, ← Matrix.mul_assoc,
       ← Matrix.mul_assoc, hc']
 
+/- English proof (translation)
+The claim follows from `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).const_smul c`.
+-/
 theorem cont_act {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {m n : ℕ} (c : R)
     (A : Matrix (Fin m) (Fin m) R) (B : Matrix (Fin n) (Fin n) R) :
     Continuous fun x : Matrix (Fin m) (Fin n) R => c • (A * x * B) :=
   ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).const_smul c
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, h, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem quadruple_sum_map_zero {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m n : ℕ} (a : Fin m → Fin n → Fin m → Fin n → R)
     (y : Matrix (Fin m) (Fin n) R) (h : ∀ k l, f (y k l) = 0) : f (∑ i, ∑ j, ∑ k, ∑ l, a i j k l * y k l) = 0 := by
   simp only [map_sum, map_mul, h, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, add_add_add_comm]`. Consider the case `tmul a e`. Establish `h4 : (a ⊗ₜ[F] e : R ⊗[F] E) = a • inclR R e` using `by show _ = a • ((1 : R) ⊗ₜ[F] e)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h5 : sigR R σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `rfl`. Rewrite using `[h5, ← TensorProduct.tmul_add, ← h, h4, map_smul, trace_gen, smul_eq_mul, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.algebraMap_eq_smul_one (A := E), ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]`.
+-/
 theorem alg_trace_gen {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E] [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) (h : ∀ e, algebraMap F E (Algebra.trace F E e) = e + σ e) (z : R ⊗[F] E) :
     algebraMap R (R ⊗[F] E) (Algebra.trace R (R ⊗[F] E) z) = z + sigR R σ z := by
@@ -96,6 +127,15 @@ end Gen
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset D.what₂.Tau, ∃ h ∈ GinfC V, ∀ τ, (mt V h).map (cmpAt D τ) = if τ ∈ S then z τ else 1`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, fun τ => (infMat_one (th0 D τ) V).trans (if_neg (Finset.notMem_empty τ)).symm⟩`. Consider the case `insert σ S hσ ih`.
+
+Take `⟨h, a, b⟩` from `ih`. Establish `s` using `atTau_spec (atTauU D) (hz σ)`. Use `⟨atTau (th0 D) V σ (z σ) * h, mul_mem s.1 a, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← infMat_eq, infMat_mul, infMat_eq V τ h, b]`. Distinguish the cases in `e : τ = σ`.
+
+Substitute `e` using the available equality. Rewrite using `[s.2.1, if_neg hσ, if_pos (Finset.mem_insert_self _ _), Matrix.mul_one]`. Rewrite using `[s.2.2 τ e, Matrix.one_mul]`. Simplify using `[e]`. Take `⟨h, a, b⟩` from `key Finset.univ`.
+
+Conclude with `⟨h, a, fun τ => (b τ).trans (if_pos (Finset.mem_univ τ))⟩`.
+-/
 theorem real_pt (V : HSp D) (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hz : ∀ τ, (z τ)ᴴ * gramAt D V τ * z τ = gramAt D V τ) :
     ∃ h ∈ GinfC V, ∀ τ, (mt V h).map (cmpAt D τ) = z τ := by
@@ -117,6 +157,9 @@ theorem real_pt (V : HSp D) (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.ra
   obtain ⟨h, a, b⟩ := key Finset.univ
   exact ⟨h, a, fun τ => (b τ).trans (if_pos (Finset.mem_univ τ))⟩
 
+/- English proof (translation)
+Establish `a : finHom V g = 1` using `hg`. Establish `b : finHom V h = 1` using `hh`. Conclude with `Subtype.ext (Units.ext (mat_ext (M := mt V g) (N := mt V h) e ((congrArg Units.val a).trans (congrArg Units.val b).symm)))`.
+-/
 theorem inf_ext {V : HSp D} {g h : GA D V} (hg : g ∈ GinfC V) (hh : h ∈ GinfC V)
     (e : ∀ τ, (mt V g).map (cmpAt D τ) = (mt V h).map (cmpAt D τ)) : g = h := by
   have a : finHom V g = 1 := hg
@@ -124,6 +167,11 @@ theorem inf_ext {V : HSp D} {g h : GA D V} (hg : g ∈ GinfC V) (hh : h ∈ Ginf
   exact Subtype.ext (Units.ext (mat_ext (M := mt V g) (N := mt V h) e
     ((congrArg Units.val a).trans (congrArg Units.val b).symm)))
 
+/- English proof (translation)
+Use `choose z A' h1 h2 h3 h4 h5 using fun τ => cartan (gramAt D V τ) (gramAt_unit V τ) (hV (tauE D τ)).choose (cptC V τ) (cptC_gram V hV τ)`. Take `⟨s, a, b⟩` from `real_pt V z h3`. Use `⟨s, a, inf_ext (mul_mem a a) (one_mem _) fun τ => ?_, fun k hk => inf_ext (mul_mem a hk.1) (mul_mem hk.1 a) fun τ => ?_, fun τ => ⟨by rw [b, h2], A' τ, h1 τ⟩⟩` and prove the remaining obligations. Rewrite using `[mt_mul, Matrix.map_mul, b, h4]`. Conclude with `(infMat_one (th0 D τ) V).symm`.
+
+Take `⟨c, hc, e⟩` from `hk.2 τ`. Rewrite using `[mt_mul, mt_mul, Matrix.map_mul, Matrix.map_mul, b]`. Conclude with `h5 τ c _ hc e`.
+-/
 theorem cartan_pt (V : HSp D) (hV : V.SigOK) : ∃ s ∈ GinfC V, s * s = 1 ∧
     (∀ k, IsKinf (th0 D) V (cptC V) k → s * k = k * s) ∧
     ∀ τ, gramAt D V τ * (mt V s).map (cmpAt D τ) = (cptC V τ)ᴴ * cptC V τ ∧
@@ -141,11 +189,17 @@ theorem cartan_pt (V : HSp D) (hV : V.SigOK) : ∃ s ∈ GinfC V, s * s = 1 ∧
 
 variable {V W : HSp D}
 
+/- English proof (translation)
+Unfold `actHom cM`. Apply the tactic sequence `split_ifs <;> simp only [mt_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem actHom_mul (g g' : GA D V) (h h' : GA D W) (x : WA V W) :
     actHom V W g h (actHom V W g' h' x) = actHom V W (g * g') (h * h') x := by
   unfold actHom cM
   split_ifs <;> simp only [mt_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `a : mt V 1 = 1` using `rfl`. Establish `b : mt W 1 = 1` using `rfl`. Unfold `actHom cM`. Rewrite using `[a, b, Matrix.map_one _ (cA D).map_zero (cA D).map_one, Matrix.map_one _ (cA D).map_zero (cA D).map_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, ite_self]`.
+-/
 theorem actHom_one (x : WA V W) : actHom V W 1 1 x = x := by
   have a : mt V 1 = 1 := rfl
   have b : mt W 1 = 1 := rfl
@@ -153,15 +207,24 @@ theorem actHom_one (x : WA V W) : actHom V W 1 1 x = x := by
   rw [a, b, Matrix.map_one _ (cA D).map_zero (cA D).map_one, Matrix.map_one _ (cA D).map_zero (cA D).map_one,
     Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, ite_self]
 
+/- English proof (translation)
+Unfold `actHom`. Apply the tactic sequence `split_ifs <;> rw [Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem actHom_smul (g : GA D V) (h : GA D W) (c : AE D) (x : WA V W) : actHom V W g h (c • x) = c • actHom V W g h x := by
   unfold actHom
   split_ifs <;> rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Unfold `actHom`. Apply the tactic sequence `split_ifs <;> rw [Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actHom_add (g : GA D V) (h : GA D W) (x y : WA V W) :
     actHom V W g h (x + y) = actHom V W g h x + actHom V W g h y := by
   unfold actHom
   split_ifs <;> rw [Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `hHom`. Apply the tactic sequence `split_ifs <;>`. Simplify using `only [Finset.mul_sum, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hHom_smul (c c' : AE D) (x y : WA V W) : hHom V W (c • x) (c' • y) = cA D c * c' * hHom V W x y := by
   unfold hHom
   split_ifs <;>
@@ -170,11 +233,19 @@ theorem hHom_smul (c c' : AE D) (x y : WA V W) : hHom V W (c • x) (c' • y) =
       Finset.sum_congr rfl fun _ _ => ?_
     ring
 
+/- English proof (translation)
+Establish `e : ∀ k l, finPart D (y k l) = 0` using `fun k l => congrFun (congrFun hy k) l`. Unfold `hHom`. Apply the tactic sequence `split_ifs <;> exact quadruple_sum_map_zero (finPart D) _ y e`.
+-/
 theorem hHom_real {x y : WA V W} (hy : IsRealW V W y) : finPart D (hHom V W x y) = 0 := by
   have e : ∀ k l, finPart D (y k l) = 0 := fun k l => congrFun (congrFun hy k) l
   unfold hHom
   split_ifs <;> exact quadruple_sum_map_zero (finPart D) _ y e
 
+/- English proof (translation)
+Use `alg_trace_gen D.sp.cm.sig (fun e => ?_) z` and prove the remaining obligations. Take `⟨t, ht⟩` from `(D.sp.cm.fixed (e + star e)).1 (by rw [star_add, star_star, add_comm])`. Establish `h1 : Algebra.trace D.host.F D.host.E (star e) = Algebra.trace D.host.F D.host.E e` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective D.sp.cm.sig star_involutive.bijective) e`. Establish `h2` using `congrArg (Algebra.trace D.host.F D.host.E) ht`. Rewrite `h2` using `[Algebra.trace_algebraMap, D.sp.cm.deg2, LinearMap.map_add, h1, two_smul, ← two_mul, ← two_mul]`.
+
+Rewrite using `[← mul_left_cancel₀ two_ne_zero h2]`. Conclude with `ht`.
+-/
 theorem alg_trace (z : AE D) : algebraMap (AF D.host.F) (AE D) (Algebra.trace (AF D.host.F) (AE D) z) = z + cA D z := by
   refine alg_trace_gen D.sp.cm.sig (fun e => ?_) z
   obtain ⟨t, ht⟩ := (D.sp.cm.fixed (e + star e)).1 (by rw [star_add, star_star, add_comm])
@@ -185,11 +256,19 @@ theorem alg_trace (z : AE D) : algebraMap (AF D.host.F) (AE D) (Algebra.trace (A
   rw [← mul_left_cancel₀ two_ne_zero h2]
   exact ht
 
+/- English proof (translation)
+Unfold `Host.xi0`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, tauE_sqrtMinusD]`. Simplify using `[Complex.div_re]`.
+-/
 theorem realPlace_imaginaryGenerator_re_eq_zero (τ : D.what₂.Tau) : (tauE D τ D.host.xi0).re = 0 := by
   unfold Host.xi0
   rw [map_div₀, map_neg, map_one, map_mul, map_natCast, tauE_sqrtMinusD]
   simp [Complex.div_re]
 
+/- English proof (translation)
+Unfold `hHom`. Use `split_ifs`. Simplify using `only [map_sum, RingHom.map_mul, cmpAt_cA, cmpAt_incA]`. Conclude with `sum_eq_trace (starRingEnd ℂ) (gramAt D V τ) (gramAt D W τ) (x.map (cmpAt D τ)) (y.map (cmpAt D τ))`. Simplify using `only [map_sum, RingHom.map_mul, cmpAt_cA, cmpAt_incA]`.
+
+Conclude with `sum_eq_trace (starRingEnd ℂ) (gramAt D V τ)ᵀ (gramAt D W τ)ᵀ (x.map (cmpAt D τ)) (y.map (cmpAt D τ))`.
+-/
 theorem cmp_hHom (τ : D.what₂.Tau) (x y : WA V W) : cmpAt D τ (hHom V W x y) =
     if V.rank ≤ W.rank then ((x.map (cmpAt D τ))ᴴ * (gramAt D V τ)ᵀ * y.map (cmpAt D τ) * (gramAt D W τ)ᵀ).trace
     else ((x.map (cmpAt D τ))ᴴ * gramAt D V τ * y.map (cmpAt D τ) * gramAt D W τ).trace := by
@@ -200,6 +279,9 @@ theorem cmp_hHom (τ : D.what₂.Tau) (x y : WA V W) : cmpAt D τ (hHom V W x y)
   · simp only [map_sum, RingHom.map_mul, cmpAt_cA, cmpAt_incA]
     exact sum_eq_trace (starRingEnd ℂ) (gramAt D V τ)ᵀ (gramAt D W τ)ᵀ (x.map (cmpAt D τ)) (y.map (cmpAt D τ))
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `cmpAt_cA τ _`.
+-/
 theorem cmp_cM (τ : D.what₂.Tau) {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) :
     (cM M).map (cmpAt D τ) = ((M.map (cmpAt D τ))ᴴ)ᵀ := by
   ext i j
@@ -209,15 +291,39 @@ variable (D) in
 
 def iE : AE D := mkAE (fun _ => Complex.I) 0
 
+/- English proof (translation)
+The claim follows from `cmpAt_mkAE _ _ τ`.
+-/
 theorem iE_cmp (τ : D.what₂.Tau) : cmpAt D τ (iE D) = Complex.I := cmpAt_mkAE _ _ τ
 
+/- English proof (translation)
+The claim follows from `finPart_mkAE _ _`.
+-/
 theorem iE_fin : finPart D (iE D) = 0 := finPart_mkAE _ _
 
 def fockJ (s : GA D V) (t : GA D W) : WA V W →+ WA V W :=
   AddMonoidHom.mk' (fun x => iE D • actHom V W s t x) fun x y => by rw [actHom_add, smul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockJ_apply (s : GA D V) (t : GA D W) (x : WA V W) : fockJ s t x = iE D • actHom V W s t x := rfl
 
+/- English proof (translation)
+Take `⟨a, A', a'⟩` from `s4`. Take `⟨b, B', b'⟩` from `t4`. Establish `hv` using `gramAt_herm V τ`. Establish `hw` using `gramAt_herm W τ`. Rewrite using `[cmp_hHom]`.
+
+Unfold `actHom`. Use `split_ifs`. Use `pos_trace ((cptC V τ)ᴴ)ᵀ (A'ᴴ)ᵀ (by` as an intermediate fact. Rewrite using `[← Matrix.transpose_mul, ← Matrix.conjTranspose_mul, a']`. Use the proof step `simp) (cptC W τ)ᵀ B'ᵀ`.
+
+Use the proof step `(by rw [← Matrix.transpose_mul, b', Matrix.transpose_one]) (x.map (cmpAt D τ))`. Establish `e1 : (((cptC V τ)ᴴ)ᵀ)ᴴ * ((cptC V τ)ᴴ)ᵀ = (gramAt D V τ)ᵀ * (((mt V s).map (cmpAt D τ))ᴴ)ᵀ`. Establish `c` using `congrArg (fun M => (Mᴴ)ᵀ) a`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.transpose_mul, hv, Matrix.conjTranspose_conjTranspose] at c`. Rewrite using `[c]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `e2 : (cptC W τ)ᵀ * ((cptC W τ)ᵀ)ᴴ = ((mt W t).map (cmpAt D τ))ᵀ * (gramAt D W τ)ᵀ`. Rewrite using `[← Matrix.transpose_mul, b, Matrix.transpose_mul]`.
+
+Both sides reduce to the same expression. Rewrite `this` using `[e1, e2]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cmp_cM, Matrix.transpose_map]`. Simplify `this` using `only [Matrix.mul_assoc]`. Use `pos_trace (cptC V τ) A' a' (cptC W τ)ᴴ B'ᴴ (by rw [← Matrix.conjTranspose_mul, b', Matrix.conjTranspose_one]) (x.map (cmpAt D τ))` as an intermediate fact.
+
+Establish `e2 : (cptC W τ)ᴴ * ((cptC W τ)ᴴ)ᴴ = ((mt W t).map (cmpAt D τ))ᴴ * gramAt D W τ`. Establish `c` using `congrArg Matrix.conjTranspose b`. Rewrite `c` using `[Matrix.conjTranspose_mul, hw, Matrix.conjTranspose_mul]`. Conclude with `c.symm`. Rewrite `this` using `[← a, e2]`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, cmp_cM, Matrix.transpose_transpose]`. Simplify `this` using `only [Matrix.mul_assoc]`.
+-/
 theorem fock_pos {s : GA D V} {t : GA D W} (τ : D.what₂.Tau)
     (s4 : gramAt D V τ * (mt V s).map (cmpAt D τ) = (cptC V τ)ᴴ * cptC V τ ∧
       ∃ A' : Matrix (Fin V.rank) (Fin (V.sig (tauE D τ)).1 ⊕ Fin (V.sig (tauE D τ)).2) ℂ, A' * cptC V τ = 1)
@@ -258,6 +364,11 @@ theorem fock_pos {s : GA D V} {t : GA D W} (τ : D.what₂.Tau)
     rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, cmp_cM, Matrix.transpose_transpose]
     simpa only [Matrix.mul_assoc] using this
 
+/- English proof (translation)
+Establish `e` using `hHom_smul 1 (iE D) x (actHom V W s t x)`. Rewrite `e` using `[one_smul, RingHom.map_one, one_mul]`. Use `show (cmpAt D τ (algebraMap (AF D.host.F) (AE D) (sympl V W (fockJ s t x) x))).re = _`. Unfold `sympl`. Rewrite using `[alg_trace, RingHom.map_add, cmpAt_cA, fockJ_apply, e, RingHom.map_mul, RingHom.map_mul, cmpAt_incA, iE_cmp]`.
+
+Simplify using `only [Complex.add_re, Complex.conj_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, realPlace_imaginaryGenerator_re_eq_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fock_val (s : GA D V) (t : GA D W) (τ : D.what₂.Tau) (x : WA V W) : valTau (th0 D) τ (sympl V W (fockJ s t x) x) =
     -(2 * (tauE D τ D.host.xi0).im * (cmpAt D τ (hHom V W x (actHom V W s t x))).re) := by
   have e := hHom_smul 1 (iE D) x (actHom V W s t x)
@@ -268,6 +379,11 @@ theorem fock_val (s : GA D V) (t : GA D W) (τ : D.what₂.Tau) (x : WA V W) : v
   simp only [Complex.add_re, Complex.conj_re, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, realPlace_imaginaryGenerator_re_eq_zero]
   ring
 
+/- English proof (translation)
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)` as an intermediate fact. Use `show Continuous fun x => iE D • actHom V W s t x`. Unfold `actHom`. Distinguish the cases in `h : V.rank ≤ W.rank`. Simplify using `only [if_pos h]`.
+
+Conclude with `cont_act (iE D) (cM (mt V s)) (mt W t).transpose`. Simplify using `only [if_neg h]`. Conclude with `cont_act (iE D) (mt V s) (cM (mt W t)).transpose`.
+-/
 theorem fock_cont (s : GA D V) (t : GA D W) : Continuous (fockJ s t) := by
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)
   show Continuous fun x => iE D • actHom V W s t x
@@ -278,6 +394,11 @@ theorem fock_cont (s : GA D V) (t : GA D W) : Continuous (fockJ s t) := by
   · simp only [if_neg h]
     exact cont_act (iE D) (mt V s) (cM (mt W t)).transpose
 
+/- English proof (translation)
+Rewrite using `[fockJ_apply, fockJ_apply, actHom_smul, actHom_mul, s2, t2, actHom_one, smul_smul]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `e : finPart D (x i j) = 0` using `congrFun (congrFun hx i) j`. Use `show iE D * iE D * x i j = -x i j`. Use `ae_ext' (fun τ => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_mul, RingHom.map_mul, iE_cmp, Complex.I_mul_I, RingHom.map_neg, neg_one_mul]`. Rewrite using `[RingHom.map_mul, RingHom.map_neg, e, mul_zero, neg_zero]`.
+-/
 theorem fock_sq {s : GA D V} {t : GA D W} (s2 : s * s = 1) (t2 : t * t = 1) {x : WA V W} (hx : IsRealW V W x) :
     fockJ s t (fockJ s t x) = -x := by
   rw [fockJ_apply, fockJ_apply, actHom_smul, actHom_mul, s2, t2, actHom_one, smul_smul]
@@ -288,6 +409,11 @@ theorem fock_sq {s : GA D V} {t : GA D W} (s2 : s * s = 1) (t2 : t * t = 1) {x :
   · rw [RingHom.map_mul, RingHom.map_mul, iE_cmp, Complex.I_mul_I, RingHom.map_neg, neg_one_mul]
   · rw [RingHom.map_mul, RingHom.map_neg, e, mul_zero, neg_zero]
 
+/- English proof (translation)
+Establish `e : cA D (iE D) * iE D * hHom V W y x = hHom V W y x`. Use `ae_ext' (fun τ => ?_) ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_mul, cmpAt_cA, iE_cmp, Complex.conj_I, neg_mul, Complex.I_mul_I, neg_neg, one_mul]`. Rewrite using `[RingHom.map_mul, hHom_real hx, mul_zero]`. Unfold `sympl`.
+
+Rewrite using `[fockJ_apply, fockJ_apply, hHom_smul, hHom_actHom, e]`.
+-/
 theorem fock_symp (s : GA D V) (t : GA D W) {x : WA V W} (hx : IsRealW V W x) (y : WA V W) :
     sympl V W (fockJ s t x) (fockJ s t y) = sympl V W x y := by
   have e : cA D (iE D) * iE D * hHom V W y x = hHom V W y x := by
@@ -297,6 +423,13 @@ theorem fock_symp (s : GA D V) (t : GA D W) {x : WA V W} (hx : IsRealW V W x) (y
   unfold sympl
   rw [fockJ_apply, fockJ_apply, hHom_smul, hHom_actHom, e]
 
+/- English proof (translation)
+Introduce `V W _ hV hW`. Take `⟨s, s1, s2, s3, s4⟩` from `cartan_pt V hV`. Take `⟨t, t1, t2, t3, t4⟩` from `cartan_pt W hW`. Use `⟨fockJ s t, fock_cont s t, fun x _ => ?_, fun x hx => fock_sq s2 t2 hx, fun x y hx _ => fock_symp s t hx y, fun k k' hk hk' x _ => ?_, -1, Or.inr rfl, fun x hx => ⟨fun τ => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_ show finPart D (iE D * actHom V W s t x i j) = 0` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_mul, iE_fin, zero_mul]`. Rewrite using `[fockJ_apply, fockJ_apply, actHom_smul, actHom_mul, actHom_mul, s3 k hk, t3 k' hk']`. Rewrite using `[fock_val, neg_one_mul, neg_neg]`. Conclude with `mul_nonneg (mul_nonneg zero_le_two (xi_zero_im_pos D τ).le) (fock_pos τ (s4 τ) (t4 τ) x).1`. Use `mat_ext (fun τ => ?_) (hx.trans (Matrix.map_zero _ (RingHom.map_zero _)).symm)` and prove the remaining obligations.
+
+Establish `e` using `h τ`. Rewrite `e` using `[fock_val, neg_eq_zero, mul_eq_zero]`. Rewrite using `[(fock_pos τ (s4 τ) (t4 τ) x).2 (e.resolve_left (mul_pos two_pos (xi_zero_im_pos D τ)).ne'), Matrix.map_zero _ (RingHom.map_zero _)]`.
+-/
 theorem fockCxEx (D : D7) : FockCxEx D := by
   intro V W _ hV hW
   obtain ⟨s, s1, s2, s3, s4⟩ := cartan_pt V hV

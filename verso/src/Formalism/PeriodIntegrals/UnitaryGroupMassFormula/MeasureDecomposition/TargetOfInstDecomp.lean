@@ -11,6 +11,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MeasureDecomposition.Pr
 
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
+/- English proof (translation)
+The claim follows from `target_of_steps generic_haar_subgroup (genSemi_of generic_haar_subgroup) generic_weil_representation measure_subFacts (genModOne_of generic_haar_subgroup) hd proper_action_instance`.
+-/
 theorem target_of_instDecomp (hd : InstDecomp) : PI.ScMuExists.Target :=
   target_of_steps generic_haar_subgroup (genSemi_of generic_haar_subgroup) generic_weil_representation measure_subFacts
     (genModOne_of generic_haar_subgroup) hd proper_action_instance

@@ -34,6 +34,9 @@ structure ArcDatumAt (T : Core D) (j : ℕ) (K₁ : Type) [Field K₁] [Algebra 
   μ : ArcLt (T.Q.Dw j) →₀ ℕ
   jj : ℤ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d.arcDatum_isArc_point_basis, d.th, d.isArc3⟩`.
+-/
 theorem ArcDatumAt.isArc {T : Core D} {j : ℕ} {K₁ : Type} [Field K₁] [Algebra T.Q.c.F K₁]
     [Algebra T.Q.c.F (ArcS (T.Q.Dw j) K₁)] (d : ArcDatumAt T j K₁) :
     IsArcPt d.Y (d.a.restrict (T.Q.c.V d.Wp).subtype) d.χ d.W d.e d.yF :=

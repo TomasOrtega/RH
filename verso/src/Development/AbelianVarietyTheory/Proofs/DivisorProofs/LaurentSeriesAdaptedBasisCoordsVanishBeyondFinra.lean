@@ -3,6 +3,27 @@ open PowerSeries
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hr : Module.finrank K W ≤ n`. Use `Submodule.finrank_le W` as an intermediate fact. Simplify using `using this`. Use `set r := Module.finrank K W with hrdef`. Set `G : Matrix (Fin n) (Fin n) K` to `(g : Matrix (Fin n) (Fin n) R).map φ`.
+
+Set `H : Matrix (Fin n) (Fin n) K` to `((g⁻¹ : (Matrix (Fin n) (Fin n) R)ˣ) : Matrix (Fin n) (Fin n) R).map φ`. Establish `hHG : H * G = 1`. Combine the equalities or inequalities in the displayed calculation. Set `e : Fin r → (Fin n → K)` to `fun i => Pi.single (Fin.castLE hr i) 1`. Set `v : Fin r → (Fin n → K)` to `fun i => fun b => G b (Fin.castLE hr i)`.
+
+Establish `hHv : ∀ i, H.mulVec (v i) = e i`. Introduce `i`. Establish `: v i = G.mulVec (Pi.single (Fin.castLE hr i) 1)`. Use extensionality with `b`. Simplify using `[v, Matrix.mulVec_single]`.
+
+Rewrite using `[this, Matrix.mulVec_mulVec, hHG, Matrix.one_mulVec]`. Establish `hcomp : (Matrix.toLin' H) ∘ v = e`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Matrix.toLin'_apply, hHv]`. Establish `hli : LinearIndependent K v`.
+
+Apply `LinearIndependent.of_comp (Matrix.toLin' H)` to reduce the goal to its premises. Rewrite using `[hcomp]`. Conclude with `(Pi.linearIndependent_single_one (Fin n) K).comp _ (Fin.castLE_injective hr)`. Establish `hle : Submodule.span K (Set.range v) ≤ W`. Rewrite using `[Submodule.span_le, Set.range_subset_iff]`.
+
+Introduce `i`. Conclude with `hg (Fin.castLE hr i) (by simp)`. Establish `heq : Submodule.span K (Set.range v) = W`. Apply `Submodule.eq_of_le_of_finrank_eq hle` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`.
+
+Establish `hy' : (fun b => φ (y b)) ∈ Submodule.span K (Set.range v)` using `heq ▸ hy`. Establish `hmap : H.mulVec (fun b => φ (y b)) ∈ Submodule.span K (Set.range e)`. Use `Submodule.mem_map_of_mem (f := Matrix.toLin' H) hy'` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, hcomp, Matrix.toLin'_apply]`. Conclude with `this`.
+
+Establish `hker : Submodule.span K (Set.range e) ≤ LinearMap.ker (LinearMap.proj a)`. Rewrite using `[Submodule.span_le, Set.range_subset_iff]`. Introduce `i`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.proj_apply, e]`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises.
+
+Introduce `h`. Establish `: ((Fin.castLE hr i : Fin n) : ℕ) = a` using `by rw [h]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `h0 : (H.mulVec (fun b => φ (y b))) a = 0` using `hker hmap`.
+
+Establish `hcoe : φ ((((g⁻¹ : (Matrix (Fin n) (Fin n) R)ˣ) : Matrix (Fin n) (Fin n) R).mulVec y) a) = (H.mulVec (fun b => φ (y b))) a`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite `hcoe` using `[h0]`. Conclude with `(injective_iff_map_eq_zero φ).mp hφ _ hcoe`.
+-/
 theorem inv_mulVec_coord_eq_zero_of_adapted_columns_injective {R K : Type} [CommRing R] [Field K] (φ : R →+* K)
     (hφ : Function.Injective φ) (n : ℕ) (W : Submodule K (Fin n → K))
     (g : (Matrix (Fin n) (Fin n) R)ˣ)
@@ -64,6 +85,9 @@ theorem inv_mulVec_coord_eq_zero_of_adapted_columns_injective {R K : Type} [Comm
   rw [h0] at hcoe
   exact (injective_iff_map_eq_zero φ).mp hφ _ hcoe
 
+/- English proof (translation)
+The claim follows from `inv_mulVec_coord_eq_zero_of_adapted_columns_injective (HahnSeries.ofPowerSeries ℤ F) HahnSeries.ofPowerSeries_injective n W g hg y hy a ha`.
+-/
 theorem adapted_coords_vanish (F : Type) [Field F] (n : ℕ)
     (W : Submodule (LaurentSeries F) (Fin n → LaurentSeries F))
     (g : (Matrix (Fin n) (Fin n) (PowerSeries F))ˣ)
@@ -74,6 +98,9 @@ theorem adapted_coords_vanish (F : Type) [Field F] (n : ℕ)
     (((g⁻¹ : (Matrix (Fin n) (Fin n) (PowerSeries F))ˣ) : Matrix (Fin n) (Fin n) (PowerSeries F)).mulVec y) a = 0 :=
   inv_mulVec_coord_eq_zero_of_adapted_columns_injective (HahnSeries.ofPowerSeries ℤ F) HahnSeries.ofPowerSeries_injective n W g hg y hy a ha
 
+/- English proof (translation)
+Introduce `F _ n W g hg y hy a ha` and use `adapted_coords_vanish F n W g hg y hy a ha`.
+-/
 theorem adapted_coords_vanish_stmt : ∀ (F : Type) [Field F] (n : ℕ) (W : Submodule (LaurentSeries F) (Fin n → LaurentSeries F)) (g : (Matrix (Fin n) (Fin n) (PowerSeries F))ˣ), (∀ j : Fin n, (j : ℕ) < Module.finrank (LaurentSeries F) W → (fun a => (((g : Matrix (Fin n) (Fin n) (PowerSeries F)) a j : PowerSeries F) : LaurentSeries F)) ∈ W) → ∀ y : Fin n → PowerSeries F, (fun a => ((y a : PowerSeries F) : LaurentSeries F)) ∈ W → ∀ a : Fin n, Module.finrank (LaurentSeries F) W ≤ (a : ℕ) → (((g⁻¹ : (Matrix (Fin n) (Fin n) (PowerSeries F))ˣ) : Matrix (Fin n) (Fin n) (PowerSeries F)).mulVec y) a = 0 :=
   fun F _ n W g hg y hy a ha => adapted_coords_vanish F n W g hg y hy a ha
 

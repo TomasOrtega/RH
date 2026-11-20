@@ -13,11 +13,23 @@ namespace GlobalTheory.RealPar.KStabLie
 
 variable {p q n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem Jm_eq (p q : ℕ) : Jm p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
   ext a b
   rcases a with a | a <;> rcases b with b | b <;>
     simp [Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Jm_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using the standard rewrite rules. Simplify using `[h (.inl a) (.inr b) (by simp [sameBlock])]`. Simplify using `[h (.inr a) (.inl b) (by simp [sameBlock])]`. Simplify using the standard rewrite rules.
+
+Introduce `h a b hab`. Use `congrFun (congrFun h a) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `[sameBlock] at hab`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr] at this`. Take the linear combination `(-1 / 2 : ℂ) * this`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at this`. Take the linear combination `(1 / 2 : ℂ) * this`. Simplify using `[sameBlock] at hab`.
+-/
 theorem isKC_iff (X : Mat p q) : IsKC X ↔ X * Jm p q = Jm p q * X := by
   rw [Jm_eq]
   constructor
@@ -40,18 +52,31 @@ theorem isKC_iff (X : Mat p q) : IsKC X ↔ X * Jm p q = Jm p q * X := by
       linear_combination (1 / 2 : ℂ) * this
     · simp [sameBlock] at hab
 
+/- English proof (translation)
+Rewrite using `[Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases a <;> simp`.
+-/
 theorem Jm_sq (p q : ℕ) : Jm p q * Jm p q = 1 := by
   rw [Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext a
   cases a <;> simp
 
+/- English proof (translation)
+Rewrite using `[Jm_eq, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases a <;> simp`.
+-/
 theorem Jm_ct (p q : ℕ) : (Jm p q)ᴴ = Jm p q := by
   rw [Jm_eq, Matrix.diagonal_conjTranspose]
   congr 1
   funext a
   cases a <;> simp
 
+/- English proof (translation)
+Establish `h1 : Formalism.REAL.inUJ ε _` using `h.cov_mem T x`. Establish `h2` using `(isKC_iff _).1 hx`. Establish `h3 : Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q)`. Rewrite using `[← h.reindex_Jm]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, h2]`.
+
+Use `⟨?_, h3⟩` and prove the remaining obligations. Generalize the expression as in `Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = g at h1 h3`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Unfold `Formalism.REAL.inUJ at h1`. Rewrite `h1` using `[Matrix.mul_assoc, ← h3, ← Matrix.mul_assoc]`.
+
+Establish `h4` using `congrArg (· * Formalism.REAL.Jm ε) h1`. Simplify `h4` using `only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`.
+-/
 theorem mem_Kset {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) {x : T.G}
     (hx : x ∈ T.Kset) :
     Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) ∈ Formalism.REAL.Kset ε := by
@@ -69,11 +94,17 @@ theorem mem_Kset {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε
   have h4 := congrArg (· * Formalism.REAL.Jm ε) h1
   simpa only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one] using h4
 
+/- English proof (translation)
+Establish `h : Xᴴ * Jm p q + Jm p q * X = 0` using `hX`. Express the relevant statement in the definitionally equal form `(t • X)ᴴ * Jm p q + Jm p q * (t • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h, smul_zero]`.
+-/
 theorem smul_mem_upq {X : Mat p q} (hX : X ∈ upq p q) (t : ℝ) : t • X ∈ upq p q := by
   have h : Xᴴ * Jm p q + Jm p q * X = 0 := hX
   change (t • X)ᴴ * Jm p q + Jm p q * (t • X) = 0
   rw [Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h, smul_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsKC _`. Rewrite using `[T.expt_cov _ (smul_mem_upq hX t), isKC_iff]`. Establish `h : Commute (t • X) (Jm p q)` using `Commute.smul_left ((isKC_iff X).1 hK) t`. Conclude with `h.exp_left.eq`.
+-/
 theorem expt_mem (T : GrpData p q) {X : Mat p q} (hX : X ∈ upq p q) (hK : IsKC X) (t : ℝ) :
     T.expt (t • X) ∈ T.Kset := by
   change IsKC _
@@ -81,6 +112,9 @@ theorem expt_mem (T : GrpData p q) {X : Mat p q} (hX : X ∈ upq p q) (hK : IsKC
   have h : Commute (t • X) (Jm p q) := Commute.smul_left ((isKC_iff X).1 hK) t
   exact h.exp_left.eq
 
+/- English proof (translation)
+Establish `hc : IsClosed (S : Set H)` using `S.closed_of_finiteDimensional`. Use `hc.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.1 hf) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`. Conclude with `S.smul_of_tower_mem _ (S.sub_mem (hS t) (hS 0))`.
+-/
 theorem deriv_mem {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (S : Submodule ℂ H)
     [FiniteDimensional ℂ S] {f : ℝ → H} {y : H} (hf : HasDerivAt f y 0) (hS : ∀ t, f t ∈ S) : y ∈ S := by
   have hc : IsClosed (S : Set H) := S.closed_of_finiteDimensional
@@ -88,6 +122,17 @@ theorem deriv_mem {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (
   rw [slope_def_module]
   exact S.smul_of_tower_mem _ (S.sub_mem (hS t) (hS 0))
 
+/- English proof (translation)
+Establish `hc : IsKC Zᴴ`. Introduce `a b hab`. Apply the tactic sequence `rw [Matrix.conjTranspose_apply, hZ b a (by cases a <;> cases b <;> simp_all [sameBlock]), star_zero]`. Establish `h1` using `(isKC_iff _).1 hZ`. Establish `h2` using `(isKC_iff _).1 hc`.
+
+Use `⟨(1 / 2 : ℂ) • (Z - Zᴴ), (-Complex.I / 2) • (Z + Zᴴ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ + _ = 0`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2]`. Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_add]`. Simplify using the standard rewrite rules.
+
+Introduce `a b hab`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, hZ a b hab, hc a b hab, sub_zero, smul_zero]`. Express the relevant statement in the definitionally equal form `_ + _ = 0`. Simplify using `only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, h1, h2]`. Rewrite using `[show star (-Complex.I / 2) = Complex.I / 2 by simp]`.
+
+Use `module`. Introduce `a b hab`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, hZ a b hab, hc a b hab, add_zero, smul_zero]`. Rewrite using `[smul_smul, show Complex.I * (-Complex.I / 2) = 1 / 2 by`. Rewrite using `[← mul_div_assoc, mul_neg, Complex.I_mul_I, neg_neg]]`.
+
+Use `module`.
+-/
 theorem exists_decomp {Z : Mat p q} (hZ : IsKC Z) :
     ∃ X Y : Mat p q, X ∈ upq p q ∧ IsKC X ∧ Y ∈ upq p q ∧ IsKC Y ∧ Z = X + Complex.I • Y := by
   have hc : IsKC Zᴴ := by
@@ -114,6 +159,17 @@ theorem exists_decomp {Z : Mat p q} (hZ : IsKC Z) :
       rw [← mul_div_assoc, mul_neg, Complex.I_mul_I, neg_neg]]
     module
 
+/- English proof (translation)
+Introduce `p q n e ε T R σ h hσ`. Use `⟨fun S hS hK v hv => ?_, fun W hW hK => ?_⟩` and prove the remaining obligations. Establish `: KFin T R.U.π v`. Unfold `KFin`. Use `Submodule.finiteDimensional_of_le (S₂ := S) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `R.U.π k v ∈ S`. Rewrite using `[hσ]`. Conclude with `hK _ (mem_Kset h T k.2) v hv`. Conclude with `(R.ι_range v).2 this`.
+
+Establish `key : ∀ X ∈ upq p q, IsKC X → ∀ w ∈ W, R.HK.act X w ∈ W`. Introduce `X hX hXK w hw`. Establish `: R.ι (R.HK.act X w) ∈ W.map R.ι`. Use `deriv_mem _ (R.der X hX w) fun t => ?_` and prove the remaining obligations. Rewrite using `[hσ]`.
+
+Conclude with `hK _ (mem_Kset h T (expt_mem T hX hXK t)) _ (Submodule.mem_map_of_mem hw)`. Take `⟨u, hu, hu'⟩` from `this`. Rewrite using `[← R.ι_inj hu']`. Conclude with `hu`. Introduce `Z hZ w hw`.
+
+Take `⟨X, Y, hX, hXK, hY, hYK, rfl⟩` from `exists_decomp hZ`. Rewrite using `[map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `W.add_mem (key X hX hXK w hw) (W.smul_mem _ (key Y hY hYK w hw))`.
+-/
 theorem kstable_lie : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → (∀ S : Submodule ℂ R.U.H, FiniteDimensional ℂ S → IsKStableOn ε σ S → S ≤ LinearMap.range R.ι) ∧ ∀ W : Submodule ℂ R.HK.V, FiniteDimensional ℂ W → IsKStableOn ε σ (W.map R.ι) → KStable R.HK.act W := by
   intro p q n e ε T R σ h hσ
   refine ⟨fun S hS hK v hv => ?_, fun W hW hK => ?_⟩

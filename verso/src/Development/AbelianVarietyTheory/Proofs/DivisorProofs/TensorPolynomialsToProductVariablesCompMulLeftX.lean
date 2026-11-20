@@ -7,11 +7,23 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 
 namespace GlobalTheory.CCRFock
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.CCRFock.polMap]`.
+-/
 theorem polMap_tprod_eq_prod_rename_mulX (W Λ : Type) [Fintype W] [DecidableEq W] (q : W → MvPolynomial Λ ℂ) :
     GlobalTheory.CCRFock.polMap W Λ (PiTensorProduct.tprod ℂ q) =
       ∏ v, MvPolynomial.rename (Prod.mk v) (q v) := by
   simp [GlobalTheory.CCRFock.polMap]
 
+/- English proof (translation)
+Introduce `W Λ _ _ w l`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `p`. Establish `h : GlobalTheory.RealLift.atPl (V` using `fun _ : W => MvPolynomial Λ ℂ) w (LinearMap.mulLeft ℂ (MvPolynomial.X l)) (PiTensorProduct.tprod ℂ p) = PiTensorProduct.tprod ℂ (Function.update p w (MvPolynomial.X l * p w)) := by`.
+
+Unfold `GlobalTheory.RealLift.atPl`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`.
+
+Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hv]`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, h, polMap_tprod_eq_prod_rename_mulX, LinearMap.mulLeft_apply]`. Rewrite using `[Fintype.prod_eq_mul_prod_compl w, Fintype.prod_eq_mul_prod_compl w (fun v => MvPolynomial.rename (Prod.mk v) (p v)), ← mul_assoc]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v ≠ w` using `by simpa using hv`. Rewrite using `[Function.update_of_ne hv']`.
+-/
 theorem polMap_comp_atPl_mulLeft_X : ∀ (W Λ : Type) [Fintype W] [DecidableEq W] (w : W) (l : Λ),
     GlobalTheory.CCRFock.polMap W Λ ∘ₗ GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w
                  (LinearMap.mulLeft ℂ (MvPolynomial.X l)) =

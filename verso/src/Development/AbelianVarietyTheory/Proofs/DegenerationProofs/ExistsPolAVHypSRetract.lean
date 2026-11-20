@@ -29,6 +29,25 @@ namespace GlobalTheory.EighthPowerFactor
 
 open CechPic
 
+/- English proof (translation)
+Establish `hN : ((abelian₂ B M).pull (lift (𝟙 B) (𝟙 B)).left).IsLB` using `pull_isLB (LB.isLB_linComb hM _ _) _`. Establish `hι : (M.pull ((𝟙 B)⁻¹ : B ⟶ B).left).IsLB` using `pull_isLB hM _`. Establish `hD1 : (LB.div ((abelian₂ B M).pull (lift (𝟙 B) (𝟙 B)).left) M).IsLB` using `LB.isLB_div hN hM`. Establish `hD` using `LB.isLB_div hD1 hι`. Use `haveI : IsProper B.hom := IsAbelianScheme.proper`.
+
+Establish `hI : ((𝟙 B)⁻¹ : B ⟶ B) ≫ (𝟙 B)⁻¹ = 𝟙 B` using `by first`. Consider the case `rw [GrpObj.comp_inv, Category.comp_id, inv_inv]`. Consider the case `rw [GrpObj.inv_def, Category.id_comp, GrpObj.inv_inv]`. Consider the case `simp [GrpObj.comp_inv]`. Use `haveI : IsIso ((𝟙 B)⁻¹ : B ⟶ B) := ⟨⟨_, hI, hI⟩⟩`.
+
+Use `haveI : IsIso ((𝟙 B)⁻¹ : B ⟶ B).left := ⟨⟨((𝟙 B)⁻¹ : B ⟶ B).left, by rw [← Over.comp_left, hI, Over.id_left], by rw [← Over.comp_left, hI, Over.id_left]⟩⟩`. Establish `h0 : ∀ (L : LB (Sp k)), L.IsLB → ∃ t : LB.Gen L, t.IsGen`. Introduce `L hL`. Establish `hcov : ∀ y : Sp k, ∃ i, y ∈ L.U i` using `fun y => by`. Establish `hy : y ∈ (⨆ i, L.U i)` using `by rw [hL.1]; trivial`.
+
+Simplify `hy` using `[TopologicalSpace.Opens.mem_iSup]`. Establish `hs : ∀ y y' : Sp k, y = y'` using `fun y y' => Subsingleton.elim (α := PrimeSpectrum k) y y'`. Take `⟨y₀⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Take `⟨i₀, hi₀⟩` from `hcov y₀`. Conclude with `GlobalTheory.DescendedPrincipal.exists_gen_of_chart hL i₀ fun y => by rw [← hs y₀ y]; exact hi₀`.
+
+Use `set c := GlobalTheory.CechPic.cls M hM`. Establish `e1 : (1 : B ⟶ B).left = (toUnit B).left ≫ η[B].left` using `rfl`. Establish `h1 : GlobalTheory.CechPic.pull (1 : B ⟶ B).left c = 0`. Rewrite using `[e1, GlobalTheory.CechPic.pull_comp]`. Take `⟨L, hL, hLc⟩` from `GlobalTheory.CechPic.cls_surj (GlobalTheory.CechPic.pull η[B].left c)`.
+
+Rewrite using `[← hLc, (GlobalTheory.CechPic.cls_eq_zero_iff hL).2 (h0 L hL), map_zero]`. Establish `e5 : GlobalTheory.CechPic.lam c (𝟙 B)⁻¹ (𝟙 B) = -GlobalTheory.CechPic.pull ((𝟙 B)⁻¹ : B ⟶ B).left c - c`. Unfold `GlobalTheory.CechPic.lam`. Rewrite using `[inv_mul_cancel, Over.id_left, GlobalTheory.CechPic.pull_id, h1]`. Normalize the expressions using the abelian group laws.
+
+Establish `e3` using `GlobalTheory.CechPic.lam_mul_left hM hΘ (𝟙 B) (𝟙 B)⁻¹ (𝟙 B)`. Rewrite `e3` using `[mul_inv_cancel, GlobalTheory.CechPic.lam_one_left, e5]`. Establish `e2 : GlobalTheory.CechPic.cls (abelian₂ B M) (LB.isLB_linComb hM _ _) = GlobalTheory.CechPic.lam c (fst B B) (snd B B)` using `GlobalTheory.CechPic.cls_cube_two hM _ _ _`. Establish `hc : GlobalTheory.CechPic.cls _ hD = 0`. Rewrite using `[GlobalTheory.CechPic.cls_div hD1 hι hD, GlobalTheory.CechPic.cls_div hN hM hD1, GlobalTheory.CechPic.cls_pull (L := abelian₂ B M) (LB.isLB_linComb hM _ _) _ hN, GlobalTheory.CechPic.cls_pull hM _ hι, e2, GlobalTheory.CechPic.pull_lam, lift_fst, lift_snd]`.
+
+Rewrite `e3` using `[eq_comm, ← sub_eq_zero]`. Rewrite using `[← e3]`. Normalize the expressions using the abelian group laws. Establish `H` using `(GlobalTheory.CechPic.cls_eq_zero_iff hD).1 hc`. Establish `hMa` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine B hM).1 ha`.
+
+Conclude with `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine B hN).2 (hMa.tensor (hMa.pull_of_isFinite _) hN H)`.
+-/
 theorem relAmple_diag_lam {k : Type} [Field k] {B : Over (Sp k)} [GrpObj B] [IsCommMonObj B]
     (hB : IsAbelianScheme B) {M : LB B.left} (hM : M.IsLB) (hΘ : ∃ t : LB.Gen (Theta B M), t.IsGen)
     (ha : Out.RelAmple B M) : Out.RelAmple B ((abelian₂ B M).pull (lift (𝟙 B) (𝟙 B)).left) := by
@@ -80,6 +99,9 @@ theorem relAmple_diag_lam {k : Type} [Field k] {B : Over (Sp k)} [GrpObj B] [IsC
   have hMa := (GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine B hM).1 ha
   exact (GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine B hN).2 (hMa.tensor (hMa.pull_of_isFinite _) hN H)
 
+/- English proof (translation)
+Use `GlobalTheory.DescendedPrincipal.weilIs_one_right hG hA hM fun _ => ⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Conclude with `match GlobalTheory.DescendedPrincipal.exists_theta_one (A := A) hM _ with`. Consider the case `⟨θ, hθ, _⟩ => ⟨θ, hθ.trans (MonObj.comp_one _).symm⟩`.
+-/
 theorem weilIs_one_one (hG : Out.GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {M : LB A.left} (hM : M.IsLB) (T : Over S) : Out.WeilIs A M 1 (1 : T ⟶ A) 1 1 := by
   refine GlobalTheory.DescendedPrincipal.weilIs_one_right hG hA hM fun _ => ⟨⊤, trivial, ?_⟩
@@ -109,6 +131,9 @@ def siegOne (hG : Out.GlobalFnsSt) {k : Type} [Field k] {B : Over (Sp k)} [GrpOb
     rw [MonObj.comp_one, one_zpow, show unitOn (1 : Kˣ) = 1 from map_one _]
     exact weilIs_one_one hG hB (pull_isLB (LB.isLB_linComb hM _ _) _) _
 
+/- English proof (translation)
+Establish `hu : IsUnit (W + W.transpose).det` using `by rw [hW]; exact isUnit_one`. Use `⟨fun j => Sum.elim (fun p => Matrix.single p.1 p.2 1) (fun b => if b then (W + W.transpose)⁻¹ * W else (W + W.transpose)⁻¹ * W.transpose) j, Sum.inr true, Sum.inr false, ?_, ?_, fun u v => ⟨Sum.inl (u, v), rfl⟩⟩` and prove the remaining obligations. Simplify using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]`. Simplify using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]`.
+-/
 theorem exists_matrices {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : (W + W.transpose).det = 1) :
     ∃ (a : (Fin 8 × Fin 8) ⊕ Bool → Matrix (Fin 8) (Fin 8) ℤ) (w w' : (Fin 8 × Fin 8) ⊕ Bool),
       (W + W.transpose) * a w = W ∧ (W + W.transpose) * a w' = W.transpose ∧
@@ -120,6 +145,11 @@ theorem exists_matrices {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : (W + W.transpose)
   · simp [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]
   · simp [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]
 
+/- English proof (translation)
+Establish `ext : ∀ {T : Over S} (x x' : T ⟶ G), (∀ u, x ≫ pr u = x' ≫ pr u) → x = x'` using `fun x x' h => (hu _ (fun u => x' ≫ pr u)).unique h (fun _ => rfl)`. Prove the components needed by the constructor for the conclusion. Use `ext _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, IsMonHom.one_hom, IsMonHom.one_hom]`. Use `ext _ _ fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, IsMonHom.mul_hom, IsMonHom.mul_hom, ← Category.assoc, ← tensorHom_comp_tensorHom]`.
+-/
 theorem isMonHom_of_coord {S : Scheme.{0}} {A G X : Over S} [GrpObj A] [GrpObj G] [GrpObj X] {n : ℕ}
     {pr : Fin n → (G ⟶ A)} (hpr : ∀ u, IsMonHom (pr u))
     (hu : ∀ (T : Over S) (y : Fin n → (T ⟶ A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u) {f : X ⟶ G}
@@ -133,6 +163,15 @@ theorem isMonHom_of_coord {S : Scheme.{0}} {A G X : Over S} [GrpObj A] [GrpObj G
     rw [Category.assoc, Category.assoc, IsMonHom.mul_hom, IsMonHom.mul_hom, ← Category.assoc,
       ← tensorHom_comp_tensorHom]
 
+/- English proof (translation)
+Introduce `k _ _ B _ g hB hd M hM ha hK`. Take `⟨hL1, hL2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hG : Out.GlobalFnsSt` using `hL1.globalFns`. Use `letI : IsCommMonObj B := hB.comm`. Establish `hΘ : ∃ t : LB.Gen (Theta B M), t.IsGen` using `GlobalTheory.exists_gen_theta_of_isAbelianScheme k B hB M hM`.
+
+Set `b : GlobalTheory.ZM.TBase k 1` to `⟨1, by simp, fun K _ β => by simp [IsPrimitiveRoot.one]⟩`. Set `c` to `siegOne hG hB hM g`. Establish `hc : c.Principal` using `⟨relAmple_diag_lam hB hM hΘ ha, fun T x hx => GlobalTheory.SiegelOfPolarised.eq_one_of_lam hM hK x hx⟩`. Take `⟨W, hW, hbas⟩` from `GlobalTheory.ZM.exists_isE8_isSharpBasis`. Take `⟨bas, hb⟩` from `hbas g`.
+
+Take `⟨a, w, w', hw, hw', hs⟩` from `exists_matrices hW.2`. Take `⟨t, hsh, hp⟩` from `GlobalTheory.exists_isSharp_and_prim hL1 hL2 GlobalTheory.Moduli.cube_of_isLB g (8 * g) W _ a w w' bas hW hb hw hw' hs 1 k b (Sp k) (𝟙 _) c (show (1 : kˣ) ^ 1 = 1 from one_pow 1) odd_one hc hd`. Take `⟨pr, hpr, hu, -, -, -⟩` from `hsh`. Take `⟨i, hi, -⟩` from `hu B (fun _ => 𝟙 B)`. Use `letI := t.ab.comm`.
+
+Use `⟨t.pol, i, pr 0, ⟨t.act w, t.act w', t.hom w, t.hom w', hp.1, hp.2.2, hp.2.1⟩, ?_, hpr 0, hi 0⟩` and prove the remaining obligations. Conclude with `isMonHom_of_coord hpr hu (fun u => by rw [hi u]; exact (inferInstance : IsMonHom (𝟙 B)))`.
+-/
 theorem exists_polAV_hypS_retract : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ M : LB B.left, M.IsLB → Out.RelAmple B M → Out.KTriv B M → ∃ (Q : Out.PolAV (Sp k)) (i : B ⟶ Q.A) (r : Q.A ⟶ B), (letI := Q.isAb.comm; GlobalTheory.ZH.HypS Q.A Q.L) ∧ IsMonHom i ∧ IsMonHom r ∧ i ≫ r = 𝟙 B := by
   intro k _ _ B _ g hB hd M hM ha hK
   obtain ⟨hL1, hL2⟩ := GlobalTheory.abelianSchemeLaws_all

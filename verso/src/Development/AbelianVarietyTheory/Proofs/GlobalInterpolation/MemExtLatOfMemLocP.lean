@@ -15,6 +15,15 @@ open scoped Matrix in
 variable {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {L Γ : Type} [Field L]
   [LinearOrderedCommGroupWithZero Γ] {v : Valuation L Γ} {σ : K →+* L} in
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `(_root_.PI.LocGlobInclWork.mem_localization_iff w.asIdeal M x).1 hx`. Establish `hs0 : (s : K) ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Establish `hs' : s = 0` using `by exact_mod_cast h0`.
+
+Rewrite using `[hs']`. Conclude with `w.asIdeal.zero_mem`. Establish `hval : w.valuation K ((s : K)⁻¹) ≤ 1`. Rewrite using `[map_inv₀]`. Establish `h1 : w.valuation K (s : K) = 1`.
+
+Rewrite using `[show (s : K) = algebraMap (𝓞 K) K s from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl w s).2 hs`. Rewrite using `[h1, inv_one]`. Establish `hint : σ ((s : K)⁻¹) ∈ v.integer` using `(h _).2 hval`. Establish `hmem : (fun i => σ ((s • x) i)) ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.extLat v σ M` using `Submodule.subset_span ⟨s • x, hsx, rfl⟩`.
+
+Establish `hsm` using `Submodule.smul_mem _ (⟨σ ((s : K)⁻¹), hint⟩ : v.integer) hmem`. Use `hsm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Rewrite using `[Algebra.smul_def, map_mul, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hs0, map_one, one_mul]`.
+-/
 theorem _root_.GlobalTheory.ExtLatMatrix.mem_extLat_of_mem_locP (h : ∀ x : K, v (σ x) ≤ 1 ↔ w.valuation K x ≤ 1)
     {a : ℕ} (M : Submodule (𝓞 K) (Fin a → K)) (x : Fin a → K) (hx : x ∈ _root_.Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M) :
     (fun i => σ (x i)) ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.extLat v σ M := by
@@ -45,6 +54,35 @@ open scoped Matrix in
 variable {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {L Γ : Type} [Field L]
   [LinearOrderedCommGroupWithZero Γ] {v : Valuation L Γ} {σ : K →+* L} in
 
+/- English proof (translation)
+Introduce `K _ _ w L Γ _ _ v σ h`. Use `⟨fun a M x hx => _root_.GlobalTheory.ExtLatMatrix.mem_extLat_of_mem_locP h M x hx, ?_⟩` and prove the remaining obligations. Introduce `a b M MW B BW hB hBW ap hap i j`. Establish `hunit : ∀ t : 𝓞 K, t ∉ w.asIdeal → v (σ ((t : K)⁻¹)) ≤ 1`. Introduce `t ht`.
+
+Use `(h _).2 ?_` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Establish `h1 : w.valuation K (t : K) = 1`. Rewrite using `[show (t : K) = algebraMap (𝓞 K) K t from rfl, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl w t).2 ht`.
+
+Rewrite using `[h1, inv_one]`. Establish `hint : ∀ y ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.extLat v σ M, ∀ k, v (((((B⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K).map σ) *ᵥ y) k) ≤ 1`. Introduce `y hy`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.extLat at hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨m, hm, rfl⟩` from `hy`. Establish `hm' : m ∈ _root_.Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (_root_.Formalism.L2.DIV.colLat B)`. Unfold `_root_.Formalism.L2.DIV.IsBasisAt at hB`. Rewrite using `[← hB]`.
+
+Conclude with `_root_.Formalism.HermitianLatticesTheory.locBasic_le_locS _ _ hm`. Take `⟨t, ht, htm⟩` from `(_root_.PI.LocGlobInclWork.mem_localization_iff w.asIdeal _ m).1 hm'`. Unfold `_root_.Formalism.L2.DIV.colLat at htm`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 htm`. Establish `ht0 : (t : K) ≠ 0`.
+
+Introduce `h0`. Apply `ht` to reduce the goal to its premises. Establish `ht' : t = 0` using `by exact_mod_cast h0`. Rewrite using `[ht']`. Conclude with `w.asIdeal.zero_mem`.
+
+Establish `hBc : (B : Matrix (Fin a) (Fin a) K) *ᵥ (fun k => (c k : K)) = (t : K) • m`. Use function extensionality and compare the values at `r`. Establish `hr` using `congrFun hc r`. Simplify using `only [Finset.sum_apply, Pi.smul_apply] at hr`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite `*` using `[← Algebra.smul_def]`. Use `hr using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Apply the tactic sequence `try rfl`.
+
+Establish `hBm : ((B⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K) *ᵥ m = (t : K)⁻¹ • fun k => (c k : K)`. Establish `e : m = (t : K)⁻¹ • ((B : Matrix (Fin a) (Fin a) K) *ᵥ (fun k => (c k : K)))`. Rewrite using `[hBc, smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Rewrite using `[e, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules.
+
+Introduce `k`. Establish `e : ((((B⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K).map σ) *ᵥ (fun i => σ (m i))) k = σ ((((B⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K) *ᵥ m) k)`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[e, hBm, Pi.smul_apply, smul_eq_mul, map_mul, map_mul]`. Use `mul_le_one' (hunit t ht) ((h _).2 ?_)` and prove the remaining obligations.
+
+Conclude with `HeightOneSpectrum.valuation_le_one w (c k)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Introduce `k`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply]`.
+
+Conclude with `v.map_add_le (hy k) (hz k)`. Consider the case `smul c y _ hy`. Introduce `k`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' c.2 (hy k)`.
+
+Establish `hcol : (fun k => σ ((BW : Matrix (Fin b) (Fin b) K) k j)) ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionAdjoint.extLat v σ MW`. Use `_root_.GlobalTheory.ExtLatMatrix.mem_extLat_of_mem_locP h MW _ ?_` and prove the remaining obligations. Unfold `_root_.Formalism.L2.DIV.IsBasisAt at hBW`. Rewrite using `[hBW]`. Conclude with `_root_.Formalism.HermitianLatticesTheory.locBasic_le_locS _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Establish `key` using `hint _ (hap _ hcol) i`. Use `key using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem _root_.GlobalTheory.ExtLatMatrix.extLat_matrix_integral : ∀ (K : Type) [Field K] [NumberField K]
     (w : HeightOneSpectrum (𝓞 K)) (L Γ : Type) [Field L] [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation L Γ) (σ : K →+* L), (∀ x : K, v (σ x) ≤ 1 ↔ w.valuation K x ≤ 1) →

@@ -50,9 +50,15 @@ end Target
 def stdOp (g : Matrix (Fin n) (Fin n) ℂ) : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ) :=
   LinearMap.toContinuousLinearMap (Matrix.toLin' g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem stdOp_apply (g : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) : stdOp g v = g *ᵥ v := rfl
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `hE` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `hE` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] (Fin n → ℂ)` to `{ toFun := fun M => M *ᵥ v map_add' := fun A B => Matrix.add_mulVec A B v map_smul' := fun c A => by simp [Matrix.smul_mulVec] }`. Conclude with `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hE`.
+-/
 theorem hasDerivAt_exp_mulVec (X : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) *ᵥ v) (X *ᵥ v) 0 := by
 
@@ -64,6 +70,15 @@ theorem hasDerivAt_exp_mulVec (X : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → �
       map_smul' := fun c A => by simp [Matrix.smul_mulVec] }
   exact (LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hE
 
+/- English proof (translation)
+Establish `hs0 : 0 ≤ hs g`. Express the relevant statement in the definitionally equal form `0 ≤ ∑ a, ∑ b, ‖g a b‖ ^ 2`. Check the signs of the components of the expression. Establish `hent : ∀ i j, ‖g i j‖ ≤ 1 + hs g`. Introduce `i j`.
+
+Establish `hsq : ‖g i j‖ ^ 2 ≤ hs g`. Express the relevant statement in the definitionally equal form `‖g i j‖ ^ 2 ≤ ∑ a, ∑ b, ‖g a b‖ ^ 2`. Establish `hrow : ‖g i j‖ ^ 2 ≤ ∑ b, ‖g i b‖ ^ 2` using `Finset.single_le_sum (f := fun b => ‖g i b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ j)`. Conclude with `hrow.trans (Finset.single_le_sum (f := fun a => ∑ b, ‖g a b‖ ^ 2) (fun a _ => by positivity) (Finset.mem_univ i))`. Use polynomial arithmetic with `[sq_nonneg (‖g i j‖ - 1), norm_nonneg (g i j)]`.
+
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖∑ j, g i j * v j‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hent i j) (norm_le_pi_norm v j) (norm_nonneg _) (by linarith)`.
+
+Use `_ = (1 + hs g) * (n * ‖v‖) := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_mulVec_le (g : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     ‖g *ᵥ v‖ ≤ (1 + hs g) * (n * ‖v‖) := by
   have hs0 : 0 ≤ hs g := by

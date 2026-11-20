@@ -2,6 +2,9 @@ import Mathlib
 
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval₂_eq_sum_range, Polynomial.eval₂_eq_sum_range, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `h` using `he.pow_succ_eq i`. Rewrite using `[mul_pow]`. Take the linear combination `(a (p.coeff i) * b ^ i) * h`.
+-/
 private theorem idempotent_mul_eval₂_mul_eq {A B : Type} [CommRing A] [CommRing B] (a : A →+* B) (e b : B)
     (he : IsIdempotentElem e) (p : Polynomial A) :
     e * p.eval₂ a (e * b) = e * p.eval₂ a b := by
@@ -11,6 +14,31 @@ private theorem idempotent_mul_eval₂_mul_eq {A B : Type} [CommRing A] [CommRin
   rw [mul_pow]
   linear_combination (a (p.coeff i) * b ^ i) * h
 
+/- English proof (translation)
+Introduce `A B B' C C' _ _ _ _ _ a jB t t' mC ht ht' hC hC' hcomm S hS hloc`. Use `letI := jB.toAlgebra`. Establish `h1 : ∀ s ∈ S, jB s = 1`. Introduce `s hs`. Establish `hu : IsUnit (jB s)` using `IsLocalization.map_units B' (⟨s, hs⟩ : S)`.
+
+Establish `hid : jB s * jB s = jB s * 1` using `by rw [← map_mul, (hS s hs).eq, mul_one]`. Conclude with `hu.mul_left_cancel hid`. Establish `hint : ∀ s ∈ S, s ∈ t.range`. Introduce `s hs`. Rewrite using `[hC]`.
+
+Use `⟨Polynomial.X * (Polynomial.X - Polynomial.C 1), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C 1), ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C, map_one, mul_sub, mul_one, (hS s hs).eq, sub_self]`. Establish `hsurj : Function.Surjective mC`. Introduce `z`. Take `⟨⟨b, s⟩, hbs⟩` from `IsLocalization.surj S (t' z)`.
+
+Establish `hbs' : t' z = jB b`. Establish `h : t' z * jB s = jB b` using `hbs`. Rewrite `h` using `[h1 _ s.2, mul_one]`. Conclude with `h`. Take `⟨p, hp, hpz⟩` from `(hC' (t' z)).mp ⟨z, rfl⟩`.
+
+Establish `hj : jB (Polynomial.eval₂ a b p) = jB 0`. Rewrite using `[map_zero, Polynomial.hom_eval₂, ← hbs']`. Conclude with `hpz`. Take `⟨⟨s', hs'⟩, hs'e⟩` from `(IsLocalization.eq_iff_exists S B').mp hj`. Establish `hs'0 : s' * Polynomial.eval₂ a b p = 0` using `by simpa using hs'e`.
+
+Establish `hsb : s' * b ∈ t.range`. Rewrite using `[hC]`. Use `⟨Polynomial.X * p, Polynomial.monic_X.mul hp, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_X]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨c0, hc0⟩` from `hsb`. Use `⟨c0, ht' ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomm, hc0, map_mul, h1 _ hs', one_mul, hbs']`. Use `letI := mC.toAlgebra`. Establish `hloc' : IsLocalization (S.comap t) C'`.
+
+Rewrite using `[isLocalization_iff]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Establish `: mC c = 1` using `ht' (by rw [← hcomm, map_one]; exact h1 _ hc)`. Use `show IsUnit (mC c)`.
+
+Rewrite using `[this]`. Conclude with `isUnit_one`. Introduce `z`. Take `⟨c, rfl⟩` from `hsurj z`. Use `⟨(c, 1), ?_⟩` and prove the remaining obligations.
+
+Use `show mC c * mC ((1 : S.comap t) : C) = mC c`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Establish `hj : jB (t x) = jB (t y)`. Rewrite using `[hcomm, hcomm]`.
+
+Conclude with `congrArg t' hxy`. Take `⟨⟨s, hs⟩, e⟩` from `(IsLocalization.eq_iff_exists S B').mp hj`. Take `⟨cs, hcs⟩` from `hint s hs`. Use `⟨⟨cs, show t cs ∈ S by rw [hcs]; exact hs⟩, ht ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`.
+
+Rewrite using `[hcs]`. Conclude with `e`. Conclude with `⟨IsLocalization.flat C' (S.comap t), ConcreteCategory.epi_of_surjective _ hsurj⟩`.
+-/
 theorem UpperTheory.integralClosure_range_isLocalization_idempotent :
     ∀ {A B B' C C' : Type} [CommRing A] [CommRing B] [CommRing B'] [CommRing C] [CommRing C']
         (a : A →+* B) (jB : B →+* B') (t : C →+* B) (t' : C' →+* B') (mC : C →+* C'),

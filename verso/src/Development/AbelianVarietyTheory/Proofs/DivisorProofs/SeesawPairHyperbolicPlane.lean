@@ -12,6 +12,9 @@ namespace GlobalTheory.HermEichler
 
 variable {R : Type} [CommRing R] {c : R →+* R} {n m : ℕ} {J : Matrix (Fin n) (Fin n) R}
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [eich, Matrix.add_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `fun_prop`.
+-/
 private theorem continuous_eich [TopologicalSpace R] [IsTopologicalRing R] (hcc : Continuous c) (x : Fin n → R)
     (ι : Matrix (Fin n) (Fin m) R) {T : Type} [TopologicalSpace T] {a : T → R} {v : T → Fin m → R}
     (ha : Continuous a) (hv : Continuous v) : Continuous fun t => eich c J x ι (a t) (v t) := by
@@ -20,11 +23,27 @@ private theorem continuous_eich [TopologicalSpace R] [IsTopologicalRing R] (hcc 
     Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   fun_prop
 
+/- English proof (translation)
+Simplify using `only [hf, Matrix.mulVec, dotProduct]`. Use `fun_prop`.
+-/
 private theorem continuous_hf [TopologicalSpace R] [IsTopologicalRing R] (hcc : Continuous c)
     (ι : Matrix (Fin n) (Fin m) R) : Continuous fun v : Fin m → R => hf c J (ι *ᵥ v) (ι *ᵥ v) := by
   simp only [hf, Matrix.mulVec, dotProduct]
   fun_prop
 
+/- English proof (translation)
+Establish `hyx : hf c J y x = 1` using `by rw [hf_herm c J hc hJ, hxy, map_one]`. Establish `hxι : ∀ z, hf c J x (ι *ᵥ z) = 0` using `fun z => by rw [hf_herm c J hc hJ, hιx, map_zero]`. Establish `hyι : ∀ z, hf c J y (ι *ᵥ z) = 0` using `fun z => by rw [hf_herm c J hc hJ, hιy, map_zero]`. Establish `hu : ∀ s t, hf c J (g *ᵥ s) (g *ᵥ t) = hf c J s t` using `fun s t => by rw [hf_mulVec_mulVec, hg]`. Take `⟨a, r, v, hy⟩` from `hdec (g *ᵥ y)`.
+
+Establish `hr : r = 1`. Use `hu y x` as an intermediate fact. Rewrite `this` using `[hgx, hy]`. Simplify `this` using `[hf_add_left, hf_smul_left, hxx, hιx, hyx]`. Substitute `hr` using the available equality.
+
+Rewrite `hy` using `[one_smul]`. Use `⟨a, v, ?_, ?_⟩` and prove the remaining obligations. Use `hu y y` as an intermediate fact. Rewrite `this` using `[hy]`. Simplify using `only [hf_add_left, hf_smul_left, hf_add_right, hf_smul_right, hxx, hιx, hyx, hxι, hyι, hxy, hyy, hιy] at this`.
+
+Take the linear combination `this`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Take `⟨s, r, z, ht⟩` from `hdec (Pi.single k 1)`. Take `⟨b, hb⟩` from `hgι z`. Establish `hb' : b = -hf c J (ι *ᵥ z) (ι *ᵥ v)`.
+
+Use `hu (ι *ᵥ z) y` as an intermediate fact. Rewrite `this` using `[hy, hb]`. Simplify using `only [hf_add_left, hf_smul_left, hf_add_right, hf_smul_right, hxx, hιx, hyx, hxι, hyι, hxy, hyy, hιy] at this`. Take the linear combination `this`. Rewrite using `[ht]`.
+
+Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul]`. Rewrite using `[hgx, hb, hy, eich_mulVec_x_eq_x hc hJ hxx hιx, eich_mulVec_ι hιx, eich_mulVec_y hyx hyι, hb']`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+-/
 private theorem eq_eich (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j) {x y : Fin n → R}
     {ι : Matrix (Fin n) (Fin m) R} (hxx : hf c J x x = 0) (hyy : hf c J y y = 0) (hxy : hf c J x y = 1)
     (hιx : ∀ z, hf c J (ι *ᵥ z) x = 0) (hιy : ∀ z, hf c J (ι *ᵥ z) y = 0)
@@ -62,15 +81,26 @@ private theorem eq_eich (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i
     congr 2
     abel
 
+/- English proof (translation)
+Simplify using `[hf, dotProduct, Matrix.mulVec, hf']`.
+-/
 private theorem hf_map {K : Type} [CommRing K] (f : K →+* R) (c₀ : K →+* K) (hf' : ∀ r, f (c₀ r) = c (f r))
     (J₀ : Matrix (Fin n) (Fin n) K) (s t : Fin n → K) :
     hf c (J₀.map f) (fun i => f (s i)) (fun i => f (t i)) = f (hf c₀ J₀ s t) := by
   simp [hf, dotProduct, Matrix.mulVec, hf']
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 private theorem mulVec_eq_sum (ι : Matrix (Fin n) (Fin m) R) (z : Fin m → R) :
     ι *ᵥ z = ∑ j, z j • fun i => ι i j := by
   ext i; simp [Matrix.mulVec, dotProduct, mul_comm]
 
+/- English proof (translation)
+Establish `h1 : ∀ j, hf c (J₀.map f) (fun i => ι.map f i j) (fun i => f (t i)) = 0` using `fun j => by`. Use `hf_map f c₀ hf' J₀ (ι *ᵥ Pi.single j 1) t` as an intermediate fact. Rewrite `this` using `[h, map_zero, Matrix.mulVec_single_one]`. Conclude with `this`. Rewrite using `[mulVec_eq_sum, hf, sum_dotProduct]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_dotProduct]`. Conclude with `smul_eq_zero_of_right _ (h1 j)`.
+-/
 private theorem hf_map_ι {K : Type} [CommRing K] (f : K →+* R) (c₀ : K →+* K) (hf' : ∀ r, f (c₀ r) = c (f r))
     (J₀ : Matrix (Fin n) (Fin n) K) (ι : Matrix (Fin n) (Fin m) K) (t : Fin n → K) (h : ∀ z, hf c₀ J₀ (ι *ᵥ z) t = 0)
     (z : Fin m → R) : hf c (J₀.map f) (ι.map f *ᵥ z) (fun i => f (t i)) = 0 := by
@@ -83,6 +113,13 @@ private theorem hf_map_ι {K : Type} [CommRing K] (f : K →+* R) (c₀ : K →+
   rw [smul_dotProduct]
   exact smul_eq_zero_of_right _ (h1 j)
 
+/- English proof (translation)
+Use `choose s r z h using fun k => hdec (Pi.single k 1)`. Use `⟨∑ k, t k * f (s k), ∑ k, t k * f (r k), fun j => ∑ k, t k * f (z k j), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Establish `h1 : t i = ∑ k, t k * f ((Pi.single k 1 : Fin n → K) i)`. Apply the tactic sequence `rw [Finset.sum_eq_single i] <;> simp +contextual [Pi.single_apply, eq_comm]`.
+
+Rewrite using `[h1]`. Simplify using `only [h, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, map_add, map_mul, map_sum, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul, mul_add, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin m)))]`. Use `congr 1`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 private theorem dec_map {K : Type} [CommRing K] (f : K →+* R) {x y : Fin n → K} {ι : Matrix (Fin n) (Fin m) K}
     (hdec : ∀ t : Fin n → K, ∃ (s r : K) (z : Fin m → K), t = s • x + ι *ᵥ z + r • y) (t : Fin n → R) :
     ∃ (s r : R) (z : Fin m → R), t = s • (fun i => f (x i)) + ι.map f *ᵥ z + r • fun i => f (y i) := by
@@ -107,6 +144,33 @@ private def eichGL (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j) {
   ⟨eich c J x ι a v, eich c J x ι (-a - hf c J (ι *ᵥ v) (ι *ᵥ v)) (-v), (eich_mul_inv hc hJ hxx hιx a v).1,
     (eich_mul_inv hc hJ hxx hιx a v).2⟩
 
+/- English proof (translation)
+Establish `hyx : hf c₀ J₀ y x = 1` using `by rw [hf_herm c₀ J₀ hc₀ hJ₀, hxy, map_one]`. Establish `hdec` using `dec_map f (decomp hn hxy hyx hxx hyy hιx hιy hinj)`. Establish `hJ : ∀ i j, c (J₀.map f j i) = J₀.map f i j` using `fun i j => by`. Rewrite using `[Matrix.map_apply, ← hf', hJ₀, Matrix.map_apply]`. Establish `Hxx` using `hf_map f c₀ hf' J₀ x x`.
+
+Establish `Hyy` using `hf_map f c₀ hf' J₀ y y`. Establish `Hxy` using `hf_map f c₀ hf' J₀ x y`. Rewrite `Hxx` using `[hxx, map_zero]`. Rewrite `Hyy` using `[hyy, map_zero]`. Rewrite `Hxy` using `[hxy, map_one]`.
+
+Establish `Hιx` using `hf_map_ι f c₀ hf' J₀ ι x hιx`. Establish `Hιy` using `hf_map_ι f c₀ hf' J₀ ι y hιy`. Establish `hPe : ∀ (g : GL (Fin n) R) a v, a + c a + hf c (J₀.map f) (ι.map f *ᵥ v) (ι.map f *ᵥ v) = 0 → g.1 = eich c (J₀.map f) (fun i => f (x i)) (ι.map f) a v → P g` using `fun g a v h1 h2 => by`. Rewrite using `[hP, h2]`. Conclude with `⟨eich_unitary hc hJ Hxx Hιx h1, eich_mulVec_x_eq_x hc hJ Hxx Hιx a v, fun z => ⟨_, eich_mulVec_ι Hιx a v z⟩⟩`.
+
+Use `set e : R := f (1 / 2) with he`. Establish `he2 : 2 * e = 1` using `by rw [he, ← map_ofNat f 2, ← map_mul]; simp`. Establish `hce : c e = e` using `by rw [he, ← hf']; simp [map_ofNat]`. Set `N : (Fin m → R) → R` to `fun v => hf c (J₀.map f) (ι.map f *ᵥ v) (ι.map f *ᵥ v)`. Establish `hN : ∀ v, c (N v) = N v` using `fun v => (hf_herm c _ hc hJ _ _).symm`.
+
+Establish `hNc : Continuous N` using `continuous_hf hcc _`. Set `A : R × (Fin m → R) → R` to `fun p => e * (p.1 - c p.1 - N p.2)`. Establish `hA : Continuous A` using `by fun_prop`. Set `Φ : R × (Fin m → R) → GL (Fin n) R` to `fun p => eichGL hc hJ Hxx Hιx (A p) p.2`. Establish `hΦ : Continuous Φ` using `Units.continuous_iff.2 ⟨continuous_eich hcc _ _ hA continuous_snd, continuous_eich hcc _ _ (hA.neg.sub (hNc.comp continuous_snd)) continuous_snd.neg⟩`.
+
+Use `⟨Φ '' (C ×ˢ Set.pi Set.univ fun _ => C), (hC.prod (isCompact_univ_pi fun _ => hC)).image hΦ, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, -, rfl⟩`. Use `hPe _ (A p) p.2 ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A p + c (A p) + N p.2 = 0`. Simplify using `only [A, map_mul, map_sub, hce, hc, hN]`.
+
+Take the linear combination `(-N p.2) * he2`. Take `⟨h1, h2, h3⟩` from `(hP g).1 hg`. Take `⟨a, v, ha, hga⟩` from `eq_eich hc hJ Hxx Hyy Hxy Hιx Hιy hdec h1 h2 h3`. Use `choose w hw using fun j => hCs (v j)`. Use `set N₀ := hf c₀ J₀ (ι *ᵥ (-w)) (ι *ᵥ (-w)) with hN₀`.
+
+Establish `hcN₀ : c₀ N₀ = N₀` using `(hf_herm c₀ _ hc₀ hJ₀ _ _).symm`. Establish `hfN₀ : f N₀ = N fun j => f ((-w) j)`. Rewrite using `[hN₀, ← hf_map f c₀ hf']`. Establish `: (fun i => f ((ι *ᵥ (-w)) i)) = ι.map f *ᵥ fun j => f ((-w) j)` using `funext fun i => RingHom.map_mulVec _ _ _ _`. Rewrite using `[this]`.
+
+Use `set B := hf c (J₀.map f) (ι.map f *ᵥ v) (ι.map f *ᵥ fun j => f ((-w) j)) with hB`. Take `⟨k, hk⟩` from `hCs (-(e * f N₀) + a - B)`. Use `set a₀ : K := 1 / 2 * (c₀ k - k - N₀) with ha₀`. Establish `hfa₀ : f a₀ = e * (c (f k) - f k - f N₀)` using `by rw [ha₀, map_mul, map_sub, map_sub, hf']`. Establish `hcf : c (f N₀) = f N₀` using `by rw [← hf', hcN₀]`.
+
+Establish `hγ : (Matrix.GeneralLinearGroup.map f (eichGL hc₀ hJ₀ hxx hιx a₀ (-w))).1 = eich c (J₀.map f) (fun i => f (x i)) (ι.map f) (f a₀) fun j => f ((-w) j)` using `eich_map f c hf' x ι a₀ (-w)`. Establish `hcon : f a₀ + c (f a₀) + N (fun j => f ((-w) j)) = 0`. Rewrite using `[← hfN₀, hfa₀]`. Simplify using `only [map_mul, map_sub, hce, hc, hcf]`. Take the linear combination `(-f N₀) * he2`.
+
+Use `⟨eichGL hc₀ hJ₀ hxx hιx a₀ (-w), hPe _ _ _ hcon hγ, (-(e * f N₀) + a - B - f k, fun j => v j - f (w j)), ⟨hk, fun j _ => hw j⟩, Units.ext ?_⟩` and prove the remaining obligations. Establish `hv : (fun j => v j - f (w j)) = (fun j => f ((-w) j)) + v`. Use function extensionality and compare the values at `j`. Simplify using `[sub_eq_neg_add]`. Establish `h5` using `con_mul hc hJ hcon ha`.
+
+Rewrite using `[Units.val_mul, hγ, hga, eich_mul hc hJ Hxx Hιx, ← hv]`. Rewrite `h5` using `[← hv, ← hB]`. Express the relevant statement in the definitionally equal form `eich _ _ _ _ (A _) _ = _`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ + _ + N _ = 0 at h5`.
+
+Rewrite using `[← hB]`. Simplify using `only [A]`. Generalize the expression as in `N (fun j => v j - f (w j)) = Z at h5 ⊢`. Simplify using `only [hfa₀, map_mul, map_sub, map_add, map_neg, hce, hc, hcf] at h5 ⊢`. Take the linear combination `(-e) * h5 + (e * (c (f k) - f k - f N₀) + a - B) * he2 + (e * (f k - c (f k))) * he2`.
+-/
 private theorem cocompact [TopologicalSpace R] [IsTopologicalRing R] (hcc : Continuous c) (hc : ∀ r, c (c r) = r)
     {K : Type} [Field K] [CharZero K] (f : K →+* R) (c₀ : K →+* K) (hc₀ : ∀ r, c₀ (c₀ r) = r)
     (hf' : ∀ r, f (c₀ r) = c (f r)) {J₀ : Matrix (Fin n) (Fin n) K} (hJ₀ : ∀ i j, c₀ (J₀ j i) = J₀ i j)
@@ -194,6 +258,15 @@ end
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Take `⟨K, hK, h⟩` from `GlobalTheory.T.exists_compact_adeleRing_mod_numberField F`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `b` to `Module.finBasis F E`.
+
+Set `e` to `(Algebra.TensorProduct.basis (AF F) b).equivFun`. Establish `he : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Use `⟨e.symm '' Set.pi Set.univ fun _ => K, (isCompact_univ_pi fun _ => hK).image he, fun z => ?_⟩` and prove the remaining obligations. Use `choose x hx using fun i => h (e z i)`. Use `⟨∑ i, x i • b i, fun i => e z i - algebraMap F _ (x i), fun i _ => hx i, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun i => e z i - algebraMap F (AF F) (x i)) = e z - fun i => algebraMap F (AF F) (x i)` using `rfl`. Rewrite using `[this, map_sub, LinearEquiv.symm_apply_apply, map_sum]`. Use `congr 1`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[algebraMap_smul, Algebra.TensorProduct.basis_apply, ← TensorProduct.tmul_smul]`. Both sides reduce to the same expression.
+-/
 private theorem tens_cocompact (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     ∃ K : Set (AF F ⊗[F] E), IsCompact K ∧ ∀ z, ∃ x : E, z - inclR (F := F) (AF F) x ∈ K := by
   obtain ⟨K, hK, h⟩ := GlobalTheory.T.exists_compact_adeleRing_mod_numberField F
@@ -214,6 +287,15 @@ private theorem tens_cocompact (F E : Type) [Field F] [NumberField F] [Field E] 
   rw [algebraMap_smul, Algebra.TensorProduct.basis_apply, ← TensorProduct.tmul_smul]
   rfl
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₂ H ⟨hn, hxx, hyy, hxy, hι, hinj⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hcA : Continuous (cA (F` using `F) σ) := IsModuleTopology.continuous_of_linearMap (cA (F := F) σ).toLinearMap`.
+
+Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hP.base.cm.2.2.2, hP.base.cm.2.2.2, star_star]`. Establish `hc : ∀ z : AE F E, cA σ (cA σ z) = z` using `fun z => by`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (hσ x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨C, hC, hCs⟩` from `tens_cocompact F E`.
+
+Take `⟨S, hS, h1, h2⟩` from `GlobalTheory.HermEichler.cocompact (c := (cA (F := F) σ : AE F E →+* AE F E)) hcA hc (inclR (F := F) (AF F)) (σ : E →+* E) hσ (fun _ => rfl) (J₀ := X.J) hP.herm.herm (x := H.x) (y := H.y) (ι := H.ι) hn hxx hyy hxy (fun z => (hι z).1) (fun z => (hι z).2) hinj hC hCs _ (fun _ => If …`. Rewrite using `[GlobalTheory.UnipCT.unip_eq]`. Use `⟨Subtype.val ⁻¹' S, Topology.IsInducing.subtypeVal.isCompact_preimage' hS fun g hg => ⟨⟨g, (h1 g hg).1⟩, rfl⟩, fun u hu => (h1 u.1 hu).2, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγu⟩` from `h2 u.1 ⟨u.2, hu⟩`. Conclude with `⟨⟨_, hγ.1⟩, ⟨γ, rfl⟩, hγ.2, hγu⟩`.
+-/
 theorem _root_.GlobalTheory.T.seesaw_pair_hyperbolic_plane : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

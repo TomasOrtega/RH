@@ -115,6 +115,9 @@ def latIn {K R : Type} [Field K] [NumberField K] [CommRing R] [Algebra K R] [Alg
     Submodule (𝓞 K) R :=
   (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨g, hg, e⟩ => e ▸ ⟨g.2, hg⟩, fun h => ⟨⟨f, h.1⟩, h.2, rfl⟩⟩`.
+-/
 theorem mem_latIn {K R : Type} [Field K] [NumberField K] [CommRing R] [Algebra K R] [Algebra (𝓞 K) R]
     [IsScalarTower (𝓞 K) K R] (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (f : R) : f ∈ latIn C Vs hV ↔ f ∈ C ∧ ∀ la, ∀ v ∈ Vs la, 0 ≤ v f :=
@@ -125,6 +128,11 @@ variable (Xo : Moduli Dw l) (c : Coeff l)
 def secZ (a : WZ E) : Submodule c.F (Rul Xo c) :=
   secWZ (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (exZ Dw a)
 
+/- English proof (translation)
+Establish `h : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ), (∏ i, ((t i ^ exZ Dw (fun x => (a x : ℤ)) i : Sˣ) : S)) = wchar (ex Dw a 0) t`. Introduce `S _ t`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp [exZ, ex]`. Use extensionality with `f`.
+
+Use `and_congr Iff.rfl (forall_congr' fun p => forall_congr' fun t => forall_congr' fun y => forall_congr' fun y' => forall_congr' fun _ => ?_)` and prove the remaining obligations. Rewrite using `[h]`.
+-/
 theorem secZ_nat (a : (E →+* ℂ) × ℕ → ℕ) : secZ Xo c (fun x => (a x : ℤ)) = sec Xo c a 0 := by
   have h : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ),
       (∏ i, ((t i ^ exZ Dw (fun x => (a x : ℤ)) i : Sˣ) : S)) = wchar (ex Dw a 0) t := by
@@ -143,6 +151,9 @@ def laZ {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (a : WZ E) (k : U.Com
   fun τ j => if (U.X k).p0 ≤ (j : ℕ) then a (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0)
     else -a (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k τ j`. Simplify using `[laZ, laU]`.
+-/
 theorem laZ_nat {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) :
     laZ U (fun x => (a x : ℤ)) = laU U a 0 := by
   funext k τ j
@@ -153,6 +164,9 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 def cuspZ (a : WZ E) : Submodule c.F (Rul Xo c) :=
   secZ Xo c a ⊓ ⨅ (σ : c.F →+* ℂ) (_ : GoodEmb c σ), (holSub (U σ).X (laZ (U σ) a)).comap (rdU (U σ))
 
+/- English proof (translation)
+Unfold `cuspZ cusp`. Simplify using `only [secZ_nat, laZ_nat]`.
+-/
 theorem cuspZ_nat (a : (E →+* ℂ) × ℕ → ℕ) : cuspZ Xo c U (fun x => (a x : ℤ)) = cusp Xo c U a 0 := by
   unfold cuspZ cusp
   simp only [secZ_nat, laZ_nat]
@@ -162,6 +176,9 @@ variable {Xo c}
 def evL (h : GenFrEx Xo c) (Z : Comp Xo c) : Rul Xo c →ₗ[c.F] Om Z :=
   evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (genFr h Z)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evL_apply (h : GenFrEx Xo c) (Z : Comp Xo c) (f : Rul Xo c) : evL h Z f = evC h Z f := rfl
 
 def cuspOn (h : GenFrEx Xo c) (a : WZ E) (Z : Comp Xo c) : Submodule c.F (Rul Xo c) :=
@@ -200,6 +217,9 @@ def jp : ℕ := D.R.m - ((i : ℕ) + 1)
 
 def pp : ℕ := (D.R.sigW ((i : ℕ) + 1)).1
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [pp, jp, Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pp_add_jp : pp D i + jp D i = D.R.r := by
   have := i.2
   have := D.R.m_add_three_le_k
@@ -232,6 +252,9 @@ def remR (τ : D.what₂.Tau) : Fin D.R.r → ℝ :=
 def uTR (τ : D.what₂.Tau) (n : Fin D.R.r) : ℝ :=
   MeansTie.kap D.R.r (pp D i) n + (u1R D P i τ n + remR D P i τ n) + ((Dn D : ℝ) + Tn D P) * u1R D P i τ n
 
+/- English proof (translation)
+Use `choose g hg using hG`. Unfold `anchored`. Use `split_ifs`. Conclude with `⟨∑ k ∈ Finset.Ico (n : ℕ) A, g k, by simp [hg]⟩`. Conclude with `⟨-∑ k ∈ Finset.Ico A (n : ℕ), g k, by simp [hg]⟩`.
+-/
 theorem anchored_int {N : ℕ} (G : ℕ → ℝ) (hG : ∀ k, ∃ z : ℤ, G k = z) (A : ℕ) (n : Fin N) :
     ∃ z : ℤ, anchored G A n = z := by
   choose g hg using hG
@@ -240,6 +263,21 @@ theorem anchored_int {N : ℕ} (G : ℕ → ℝ) (hG : ∀ k, ∃ z : ℤ, G k =
   · exact ⟨∑ k ∈ Finset.Ico (n : ℕ) A, g k, by simp [hg]⟩
   · exact ⟨-∑ k ∈ Finset.Ico A (n : ℕ), g k, by simp [hg]⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩ : ∃ z : ℤ, u1R D P i τ n = z` from `anchored_int _ (fun _ => ⟨_, rfl⟩) _ _`. Establish `hk : ∀ n : Fin D.R.r, ∃ z : ℤ, MeansTie.kap D.R.r (pp D i) n = z` using `fun n => by`. Unfold `MeansTie.kap`. Use `split_ifs`. Conclude with `⟨(D.R.r : ℤ) - 2 * (pp D i : ℤ) + 1 + 2 * ((n : ℕ) : ℤ), by push_cast; ring⟩`.
+
+Conclude with `⟨-(2 * (pp D i : ℤ)) - (D.R.r : ℤ) + 1 + 2 * ((n : ℕ) : ℤ), by push_cast; ring⟩`. Establish `hd : ∀ n : Fin D.R.r, ∃ z : ℤ, de D.R.r (pp D i) n = z` using `fun n => by`. Unfold `de`. Use `split_ifs`. Conclude with `⟨0, by simp⟩`.
+
+Conclude with `⟨-1, by simp⟩`. Use `choose kz hkz using hk`. Use `choose dz hdz using hd`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ z : ℤ, remR D P i τ n = z := by`. Use `anchored_int _ (fun k => ?_) _ _` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ z : ℤ, gap (fun n => uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) n - MeansTie.kap D.R.r (pp D i) n) k = z := by`. Unfold `gap`. Use `split_ifs with h`. Conclude with `⟨uZ D i τ ⟨k, by omega⟩ - (c0n D i : ℤ) * dz ⟨k, by omega⟩ - kz ⟨k, by omega⟩ - (uZ D i τ ⟨k + 1, h⟩ - (c0n D i : ℤ) * dz ⟨k + 1, h⟩ - kz ⟨k + 1, h⟩), by simp [uMinus, uR, hkz, hdz]⟩`. Conclude with `⟨0, by simp⟩`.
+
+Take `⟨w, hw⟩ : ∃ z : ℤ, firstVectorGaps D.R.r (pp D i) (Tn D P) (Dn D) (c0n D i) (uR D i τ) k = z` from `⟨_, rfl⟩`. Conclude with `⟨g - ((Tn D P : ℤ) + (Dn D : ℤ) + 1) * w, by rw [hg, hw]; push_cast; ring⟩`. Use `⟨⟨a, ha⟩, ⟨a - 3 * (D.R.r : ℤ) * dz n, ?_⟩, ⟨kz n + (a + b) + ((Dn D : ℤ) + (Tn D P : ℤ)) * a, ?_⟩⟩` and prove the remaining obligations. Use `show u1R D P i τ n - 3 * (D.R.r : ℝ) * de D.R.r (pp D i) n = _`. Rewrite using `[ha, hdz]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `uTR`. Rewrite using `[ha, hb, hkz]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weights_int (τ : D.what₂.Tau) (n : Fin D.R.r) :
     (∃ z : ℤ, u1R D P i τ n = z) ∧ (∃ z : ℤ, upR D P i τ n = z) ∧ ∃ z : ℤ, uTR D P i τ n = z := by
   obtain ⟨a, ha⟩ : ∃ z : ℤ, u1R D P i τ n = z := anchored_int _ (fun _ => ⟨_, rfl⟩) _ _
@@ -271,6 +309,11 @@ theorem weights_int (τ : D.what₂.Tau) (n : Fin D.R.r) :
   · unfold uTR
     rw [ha, hb, hkz]; push_cast; ring
 
+/- English proof (translation)
+Establish `h1 : u1R D P i τ ⟨k, by omega⟩ - u1R D P i τ ⟨k + 1, h⟩ = firstVectorGaps D.R.r (pp D i) (Tn D P) (Dn D) (c0n D i) (uR D i τ) k` using `anchored_gap _ _ _ h`. Establish `h2` using `anchored_gap (N := D.R.r) (fun k => gap (fun n => uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) n - MeansTie.kap D.R.r (pp D i) n) k - ((Tn D P : ℝ) + Dn D + 1) * firstVectorGaps D.R.r (pp D i) (Tn D P) (Dn D) (c0n D i) (uR D i τ) k) (anc D) k h`. Establish `h3 : gap (fun n => uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) n - MeansTie.kap D.R.r (pp D i) n) k = (uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) ⟨k, by omega⟩ - MeansTie.kap D.R.r (pp D i) ⟨k, by omega⟩) - (uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) ⟨k + 1, h⟩ - MeansTie.kap D.R. …`. Unfold `gap`. Rewrite using `[dif_pos h]`.
+
+Express the relevant statement in the definitionally equal form `remR D P i τ ⟨k, _⟩ - remR D P i τ ⟨k + 1, h⟩ = gap _ k - _ at h2`. Rewrite `h2` using `[h3]`. Unfold `uTR`. Take the linear combination `h2 + ((Tn D P : ℝ) + Dn D + 1) * h1`.
+-/
 theorem uTR_gap (τ : D.what₂.Tau) (k : ℕ) (h : k + 1 < D.R.r) :
     uTR D P i τ ⟨k, by omega⟩ - uTR D P i τ ⟨k + 1, h⟩ =
       uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) ⟨k, by omega⟩ - uMinus D.R.r (pp D i) (c0n D i) (uR D i τ) ⟨k + 1, h⟩ := by
@@ -303,6 +346,15 @@ def wtZ' (lam : D.what₂.Tau → Fin D.R.r → ℝ) : WZ D.host.E := fun x =>
 
 def Np : ℕ := 8 * ((max (D.R.f * (pp D i * (pp D i + 1) + jp D i * (jp D i + 1))) (8 * D.R.f * D.R.r + 4) + 7) / 8)
 
+/- English proof (translation)
+Establish `h` using `pp_add_jp D i`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Establish `hf : 1 ≤ D.R.f`. Use `And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity)` as an intermediate fact.
+
+Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `h1 : pp D i * (pp D i + 1) + jp D i * (jp D i + 1) ≤ 2 * D.R.r ^ 2` using `by rw [← h] at hr ⊢; nlinarith`. Establish `h2 : D.R.f * (pp D i * (pp D i + 1) + jp D i * (jp D i + 1)) ≤ D.R.f * (2 * D.R.r ^ 2)` using `Nat.mul_le_mul_left _ h1`. Establish `h3 : D.R.f * D.R.r ≤ D.R.f * D.R.r ^ 2` using `Nat.mul_le_mul_left _ (by nlinarith)`.
+
+Establish `h4 : 1 ≤ D.R.f * D.R.r` using `Nat.mul_pos hf hr`. Establish `e1 : D.R.f * (2 * D.R.r ^ 2) = 2 * (D.R.f * D.R.r ^ 2)` using `by ring`. Establish `e2 : 16 * D.R.f * D.R.r ^ 2 = 16 * (D.R.f * D.R.r ^ 2)` using `by ring`. Establish `e3 : 8 * D.R.f * D.R.r = 8 * (D.R.f * D.R.r)` using `by ring`. Unfold `Np`.
+
+Rewrite using `[e2, e3]`. Rewrite `h2` using `[e1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Np_bounds : 8 * D.R.f * D.R.r + 4 ≤ Np D i ∧ Np D i ≤ 16 * D.R.f * D.R.r ^ 2 + 8 := by
   have h := pp_add_jp D i
   have hk := D.R.m_add_three_le_k
@@ -377,6 +429,9 @@ def lvOf (lmu : ℝ) (eloc : ℕ → Finset ℝ) : Leaves D.what₂.Tau where
   A := anc D
   eloc := eloc
 
+/- English proof (translation)
+Establish `h2 : 2 ∣ D.host.QS` using `(dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd`. Use `show 2 * (D.host.QS / 2 * D.host.q) * D.host.d = _`. Rewrite using `[← mul_assoc 2, Nat.mul_div_cancel' h2]`.
+-/
 theorem lvOf_ram (lmu : ℝ) (eloc : ℕ → Finset ℝ) :
     2 * (lvOf D P i lmu eloc).q1 * (lvOf D P i lmu eloc).d = D.host.QS * D.host.q * D.host.d := by
   have h2 : 2 ∣ D.host.QS := (dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd
@@ -426,8 +481,14 @@ def Xn : ℝ := (pack0 D P i r4 (fun _ : Unit => 0)).X
 
 def Qccn (lmu : ℝ) : ℝ := (packOf D P i 0 (fun _ : Unit => 0) lmu (fun _ => ∅) 0).Qcc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem base_error_constant_eq : baseErrorConstant D P i = (D.R.f : ℝ) * D.R.r * ((c0n D i : ℝ) + 4 * D.R.r) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Xn_eq : Xn D P i r4 = (100 + 9 * |r4|) * P.LL0 * ∑ τ, ∑ n, |upR D P i τ n| := rfl
 
 end Numbers
@@ -475,6 +536,9 @@ structure SharpGeo (Q : Par D) (M : ℕ) : Type 1 where
   e_sec : ∀ i Z, e i Z ∈ sec (Xo i) c 0 0
   e_val : ∀ i Z, evC (gen i) Z (e i Z) = 1 ∧ ∀ Z', Z' ≠ Z → evC (gen i) Z' (e i Z) = 0
 
+/- English proof (translation)
+Rewrite using `[S.comps i]`. Conclude with `Fintype.card_pos_iff.mpr ⟨(S.dict i _ 1).1⟩`.
+-/
 theorem SharpGeo.card_pos {Q : Par D} {M : ℕ} (S : SharpGeo Q M) (i : Fin D.R.m) : 0 < Nat.card (Comp (S.Xo i) S.c) := by
   rw [S.comps i]
   exact Fintype.card_pos_iff.mpr ⟨(S.dict i _ 1).1⟩
@@ -517,6 +581,9 @@ structure MbarIn where
 def slC (B : MbarIn P S i) (Z : Cmp P S i) : ℝ :=
   limUnder (𝓝[>] (0 : ℚ)) fun s => B.top Z s / (((Dn D : ℝ) + 1) * B.dg Z s)
 
+/- English proof (translation)
+The claim follows from `tendsto_nhds_limUnder (B.conv Z)`.
+-/
 theorem slC_tendsto (B : MbarIn P S i) (Z : Cmp P S i) :
     Tendsto (fun s => B.top Z s / (((Dn D : ℝ) + 1) * B.dg Z s)) (𝓝[>] 0) (𝓝 (slC P S i B Z)) :=
   tendsto_nhds_limUnder (B.conv Z)
@@ -537,6 +604,9 @@ def eLa (q : ℕ) (la : HeightOneSpectrum (𝓞 S.c.F)) (Z : Cmp P S i) : ℝ :=
   if q = D.host.g 0 ∨ q = D.host.g 1 then DF D P i / ((q : ℝ) - 1) + 1
   else El.supNu la Z - rndDown la q (El.mEta la Z)
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((q : ℕ) : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hq.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun la hla => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hla`.
+-/
 theorem over_finite {K : Type} [Field K] [NumberField K] {q : ℕ} (hq : q.Prime) :
     {la : HeightOneSpectrum (𝓞 K) | ((q : ℕ) : 𝓞 K) ∈ la.asIdeal}.Finite := by
   have h0 : Ideal.span {((q : ℕ) : 𝓞 K)} ≠ ⊥ := by
@@ -549,6 +619,15 @@ open Classical in
 def elocOf (q : ℕ) : Finset ℝ :=
   if hq : q.Prime then ((over_finite (K := S.c.F) hq).toFinset ×ˢ Finset.univ).image fun x => eLa P S i El q x.1 x.2 else ∅
 
+/- English proof (translation)
+Establish `hu : Ideal.span {((q : ℕ) : 𝓞 S.c.F)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `h`. Establish `h1 : Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 S.c.F)}) = 1`. Rewrite using `[Ideal.span_singleton_eq_top.mpr h, Ideal.absNorm_top]`.
+
+Rewrite `h1` using `[Ideal.absNorm_span_natCast]`. Break down `Nat.pow_eq_one.mp h1 with h2 | h2` into its components or cases. Conclude with `hq.one_lt.ne' h2`. Conclude with `Module.finrank_pos.ne' h2`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hu`.
+
+Establish `hmem : ((q : ℕ) : 𝓞 S.c.F) ∈ m` using `hle (Ideal.subset_span rfl)`. Establish `hb : m ≠ ⊥` using `fun h => by`. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast hmem)`. Unfold `elocOf`.
+
+Rewrite using `[dif_pos hq]`. Use `Finset.Nonempty.image ⟨(⟨m, hm.isPrime, hb⟩, Classical.arbitrary _), Finset.mem_product.mpr ⟨?_, Finset.mem_univ _⟩⟩ _` and prove the remaining obligations. Simplify using `using hmem`.
+-/
 theorem elocOf_nonempty {q : ℕ} (hq : q.Prime) : (elocOf P S i El q).Nonempty := by
   classical
   have hu : Ideal.span {((q : ℕ) : 𝓞 S.c.F)} ≠ ⊤ := by
@@ -570,6 +649,9 @@ theorem elocOf_nonempty {q : ℕ} (hq : q.Prime) : (elocOf P S i El q).Nonempty 
   refine Finset.Nonempty.image ⟨(⟨m, hm.isPrime, hb⟩, Classical.arbitrary _), Finset.mem_product.mpr ⟨?_, Finset.mem_univ _⟩⟩ _
   simpa using hmem
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((q : ℕ) : 𝓞 K) ((q' : ℕ) : 𝓞 K)` using `((Nat.coprime_primes hq hq').mpr hne).cast`. Take `⟨a, b, hab⟩` from `hc`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr (hab ▸ la.asIdeal.add_mem (la.asIdeal.mul_mem_left a h) (la.asIdeal.mul_mem_left b h')))`.
+-/
 theorem prime_unique {K : Type} [Field K] (la : HeightOneSpectrum (𝓞 K)) {q q' : ℕ} (hq : q.Prime) (hq' : q'.Prime)
     (h : ((q : ℕ) : 𝓞 K) ∈ la.asIdeal) (h' : ((q' : ℕ) : 𝓞 K) ∈ la.asIdeal) : q = q' := by
   by_contra hne
@@ -578,11 +660,31 @@ theorem prime_unique {K : Type} [Field K] (la : HeightOneSpectrum (𝓞 K)) {q q
   exact la.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr (hab ▸ la.asIdeal.add_mem (la.asIdeal.mul_mem_left a h)
     (la.asIdeal.mul_mem_left b h')))
 
+/- English proof (translation)
+Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1` using `(D.host.g_prime 1).pos`. Unfold `Msh`. Check the signs of the components of the expression.
+-/
 theorem Msh_pos : 0 < Msh D P := by
   have h0 := (D.host.g_prime 0).pos
   have h1 := (D.host.g_prime 1).pos
   unfold Msh; positivity
 
+/- English proof (translation)
+Establish `hd : 0 < dE D` using `Int.natAbs_pos.mpr (discr_ne_zero _)`. Establish `hM` using `Msh_pos P (D := D)`. Establish `hq1 : 0 < D.host.q` using `by have := D.host.qd_big.1; omega`. Establish `hd1 : 0 < D.host.d` using `by have := D.host.qd_big.2; omega`. Establish `hS1 : 0 < D.host.QS` using `D.host.QS_pos`.
+
+Establish `hB : {q : ℕ | ∃ la ∈ El.fin.toFinset, q.Prime ∧ ((q : ℕ) : 𝓞 S.c.F) ∈ la.asIdeal}.Finite`. Establish `: {q : ℕ | ∃ la ∈ El.fin.toFinset, q.Prime ∧ ((q : ℕ) : 𝓞 S.c.F) ∈ la.asIdeal} = ⋃ la ∈ ((El.fin.toFinset : Finset (HeightOneSpectrum (𝓞 S.c.F))) : Set (HeightOneSpectrum (𝓞 S.c.F))), {q : ℕ | q.Prime ∧ ((q : ℕ) : 𝓞 S.c.F) ∈ la.asIdeal}`. Use extensionality with `q`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, Finset.mem_coe, exists_prop]`. Rewrite using `[this]`.
+
+Use `Set.Finite.biUnion (Finset.finite_toSet _) fun la _ => Set.Subsingleton.finite fun q hq q' hq' => ?_` and prove the remaining obligations. Conclude with `prime_unique la hq.1 hq'.1 hq.2 hq'.2`. Use `(((hB.union (Set.finite_le_nat (2 * dE D * Msh D P))).union (Set.finite_le_nat (D.host.QS * D.host.q * D.host.d))).union (Set.toFinite {D.host.g 0, D.host.g 1})).subset fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_singleton_iff, not_or, not_le] at hn`.
+
+Take `⟨⟨⟨h1, h2⟩, h3⟩, h4, h5⟩` from `hn`. Apply `hq` to reduce the goal to its premises. Establish `hr : (lvOf D P i lmu (elocOf P S i El)).rnd (pack0 D P i r4 sl) q = 0`. Establish `a1 : ¬ q ∣ 2 * dE D * Msh D P` using `fun h => absurd (Nat.le_of_dvd (by positivity) h) (by omega)`. Establish `a2 : ¬ q ∣ D.host.QS * D.host.q * D.host.d` using `fun h => absurd (Nat.le_of_dvd (by positivity) h) (by omega)`.
+
+Unfold `Leaves.rnd`. Rewrite using `[lvOf_ram, if_neg a2, add_zero]`. Conclude with `if_neg a1`. Use `le_antisymm ?_ ((Finset.le_fold_max (0 : ℝ)).mpr (Or.inl le_rfl))` and prove the remaining obligations. Use `(Finset.fold_max_le (0 : ℝ)).mpr ⟨le_rfl, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hr, add_zero]`. Express the relevant statement in the definitionally equal form `x ∈ elocOf P S i El q at hx`. Unfold `elocOf at hx`. Use `split_ifs at hx with hp`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hx`.
+
+Establish `hy1 : ((q : ℕ) : 𝓞 S.c.F) ∈ y.1.asIdeal`. Use `(Finset.mem_product.mp hy).1` as an intermediate fact. Simplify using `using this`. Unfold `eLa`. Rewrite using `[if_neg (not_or.mpr ⟨h4, h5⟩)]`.
+
+Assume the negation of the conclusion as `hpos`. Conclude with `h1 ⟨y.1, El.fin.mem_toFinset.mpr ⟨q, y.2, hp, hy1, not_le.mp hpos⟩, hp, hy1⟩`. Simplify using `at hx`.
+-/
 theorem e_finite (r4 lmu : ℝ) (sl : Cmp P S i → ℝ) :
     (Function.support ((lvOf D P i lmu (elocOf P S i El)).eDef (pack0 D P i r4 sl))).Finite := by
   classical
@@ -635,12 +737,24 @@ def packGeo : MeansPack D.what₂.Tau (Cmp P S i) :=
 
 def ccG : ℝ := (packGeo P S i El B r4 lmu).cc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => rfl, hrd, fun _ => rfl, fun _ => rfl, rfl, rfl, rfl, rfl, fun _ => rfl⟩`.
+-/
 theorem defTie (hrd : P.rd = (dE D : ℝ) ^ ((1 : ℝ) / (2 * (D.R.f : ℝ)))) :
     DefTie (packGeo P S i El B r4 lmu) (lvOf D P i lmu (elocOf P S i El)) :=
   ⟨fun _ => rfl, fun _ => rfl, hrd, fun _ => rfl, fun _ => rfl, rfl, rfl, rfl, rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem package_base_error_eq : (packGeo P S i El B r4 lmu).E0 = baseErrorConstant D P i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pack_X : (packGeo P S i El B r4 lmu).X = Xn D P i r4 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pack_Qcc : (packGeo P S i El B r4 lmu).Qcc = Qccn D P i lmu := rfl
 
 end Geo
@@ -682,29 +796,74 @@ variable (R : RealDat3 D A3 Ks) (F : Face3 D A3) (I : OnIn R.toRealDat) (J : Slo
 
 abbrev geoJ : SlopeArithmeticParameters R.toRealDat := withGeo J (faceLiftPage R F I J hd) Γ r4
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem page_geo : faceLiftPage R F I (geoJ R F I J hd Γ r4) hd = faceLiftPage R F I J hd := rfl
 
 variable (i : Fin D.R.m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_ι : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).ι = Cmp _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_h : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).h = htC _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_sl : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).sl = slC _ Γ.S i (Γ.B i) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_δc : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).δc = delC _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_dc : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).dc = rkC _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_degc : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).degc = degC _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_δ' : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).δ' = delP _ Γ.S i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_ρ : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).ρ = rhoB D (faceLiftPage R F I J hd) i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_cc : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).cc = ccG _ Γ.S i (Γ.El i) (Γ.B i) r4 (Real.log (Γ.mass i)) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_Qcc : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).Qcc = Qccn D (faceLiftPage R F I J hd) i (Real.log (Γ.mass i)) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_X : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).X = Xn D (faceLiftPage R F I J hd) i r4 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_data_base_error_eq : (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).E0 = baseErrorConstant D (faceLiftPage R F I J hd) i := rfl
 
+/- English proof (translation)
+Use `show ((⌈(faceLiftPage R F I J hd).PPT ^ 2 * J.DY i ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉ : ℤ) : ℝ) = ((⌈(faceLiftPage R F I J hd).PPT ^ 2 * (Dn D : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ : ℕ) : ℝ)`. Rewrite using `[hD, ← Int.natCast_ceil_eq_ceil (by positivity), Int.cast_natCast]`.
+-/
 theorem lift_data_time_eq_weight_time (hD : J.DY i = (Dn D : ℝ)) :
     (faceLiftFactor R F I (geoJ R F I J hd Γ r4) hd i).T = (Tn D (faceLiftPage R F I J hd) : ℝ) := by
   show ((⌈(faceLiftPage R F I J hd).PPT ^ 2 * J.DY i ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉ : ℤ) : ℝ) =
     ((⌈(faceLiftPage R F I J hd).PPT ^ 2 * (Dn D : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ : ℕ) : ℝ)
   rw [hD, ← Int.natCast_ceil_eq_ceil (by positivity), Int.cast_natCast]
 
+/- English proof (translation)
+The claim follows from `rfl hsl := rfl hT := lift_data_time_eq_weight_time R F I J hd Γ r4 i hD hLL := rfl hU := Finset.sum_congr rfl fun τ _ => hu τ hE := rfl hcc := rfl hQ := rfl`.
+-/
 theorem recTie (hD : J.DY i = (Dn D : ℝ)) (hu : ∀ τ, J.ua i τ = ∑ n, |uR D i τ n|) :
     RecTie R F I (geoJ R F I J hd Γ r4) hd i (packGeo _ Γ.S i (Γ.El i) (Γ.B i) r4 (Real.log (Γ.mass i))) where
   hX := rfl
@@ -716,6 +875,9 @@ theorem recTie (hD : J.DY i = (Dn D : ℝ)) (hu : ∀ τ, J.ua i τ = ∑ n, |uR
   hcc := rfl
   hQ := rfl
 
+/- English proof (translation)
+The claim follows from `rfl hf := rfl hm := rfl hjp := rfl hD := hD.symm hT := (lift_data_time_eq_weight_time R F I J hd Γ r4 i hD).symm hb := rfl hx := rfl hrd := rfl hLp := rfl hh0 := rfl hc0 := rfl hnc8 := Dvd.intro _ rfl hnc1 := (Np_bounds D i).1 hnc2 := (Np_bounds D i).2 fourth_root_eq := rfl`.
+-/
 theorem packPage (hD : J.DY i = (Dn D : ℝ)) :
     PackPage r4 (packGeo _ Γ.S i (Γ.El i) (Γ.B i) r4 (Real.log (Γ.mass i))) (pgOf R F I (geoJ R F I J hd Γ r4) hd i) where
   hN := rfl
@@ -735,6 +897,9 @@ theorem packPage (hD : J.DY i = (Dn D : ℝ)) :
   hnc2 := (Np_bounds D i).2
   fourth_root_eq := rfl
 
+/- English proof (translation)
+Introduce `_` and use `by show pp D i = D.R.r - jp D i have := pp_add_jp D i omega hA := by show ((D.R.k - 2 : ℕ) : ℝ) + 2 = (D.R.k : ℝ) have := D.R.m_add_three_le_k rw [Nat.cast_sub (by omega)]; push_cast; ring heloc := fun q hq => elocOf_nonempty _ Γ.S i (Γ.El i) hq heloc0 := fun q hq => by show eloc …`.
+-/
 theorem leafTie : LeafTie (packGeo _ Γ.S i (Γ.El i) (Γ.B i) r4 (Real.log (Γ.mass i)))
     (lvOf D (faceLiftPage R F I J hd) i (Real.log (Γ.mass i)) (elocOf _ Γ.S i (Γ.El i))) (pgOf R F I (geoJ R F I J hd Γ r4) hd i) where
   hbigp := fun _ => by

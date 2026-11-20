@@ -8,6 +8,13 @@ noncomputable def UpperTheory.Reformulated.B.LocalHeightDeterminant.locHeight.{u
               Max.max ‖(↑g : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊ ‖(↑g⁻¹ : Matrix (Fin n) (Fin n) E) p.1 p.2‖₊) :
           ℝ)
 
+/- English proof (translation)
+Introduce `R _ _ n g`. Establish `h1 : (1 : ℝ) ≤ UpperTheory.Reformulated.B.LocalHeightDeterminant.locHeight g` using `le_max_left _ _`. Establish `h0 : (0 : ℝ) ≤ UpperTheory.Reformulated.B.LocalHeightDeterminant.locHeight g` using `zero_le_one.trans h1`. Establish `hent : ∀ i j, ‖(↑g : Matrix (Fin n) (Fin n) R) i j‖ ≤ UpperTheory.Reformulated.B.LocalHeightDeterminant.locHeight g`. Introduce `i j`.
+
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Rewrite using `[← coe_nnnorm, NNReal.coe_le_coe]`. Conclude with `(le_max_left _ _).trans (Finset.le_sup (f := fun (p : Fin n × Fin n) ↦ Max.max ‖(↑g : Matrix (Fin n) (Fin n) R) p.1 p.2‖₊ ‖(↑g⁻¹ : Matrix (Fin n) (Fin n) R) p.1 p.2‖₊) (Finset.mem_univ (i, j)))`. Rewrite using `[Matrix.det_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg h0 n) ?_` and prove the remaining obligations.
+
+Introduce `σ _`. Establish `hs : ‖Equiv.Perm.sign σ • ∏ i, (↑g : Matrix (Fin n) (Fin n) R) (σ i) i‖ = ‖∏ i, (↑g : Matrix (Fin n) (Fin n) R) (σ i) i‖`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[hs, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.LocalHeightDeterminant.norm_det_le_pow.{u_1} :
     ∀ {R : Type u_1} [inst : NormedField R] [IsUltrametricDist R] {n : ℕ} (g : GL (Fin n) R),
       ‖(↑g : Matrix (Fin n) (Fin n) R).det‖ ≤ UpperTheory.Reformulated.B.LocalHeightDeterminant.locHeight g ^ n := by

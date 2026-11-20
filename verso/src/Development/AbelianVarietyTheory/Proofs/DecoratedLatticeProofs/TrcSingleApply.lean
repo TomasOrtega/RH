@@ -6,6 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdForm
 
+/- English proof (translation)
+Unfold `trc`. Distinguish the cases in `hε : ε = 0`. Simplify using `[hε]`. Rewrite using `[Finsupp.support_single_ne_zero _ hε]`. Simplify using `[GlobalTheory.MixPer.rTrans]`.
+-/
 theorem trc_single_apply {D : D7} {V : HSp D} (b : GA D V) (ε : ℂ) (f : GA D V → ℂ) (x : GA D V) :
     trc (Finsupp.single b ε) f x = ε * f (x * b) := by
   unfold trc
@@ -32,6 +35,9 @@ def ellTop (eW : (I.per l u a).Wrow ≃ₗ[ℂ] ((I.fm l u a).clsP → FrP (I.re
       LinearMap.single ℂ (fun _ : (I.fm l u a).clsP => FrP (I.rec7 l Z) → ℂ) c ∘ₗ
       LinearMap.funLeft ℂ ℂ (fun y : FrP (I.rec7 l Z) => (⟨y.1, y.2⟩ : FrN (I.rec7 l Z) (B.R.N B.R.m - 1))))
 
+/- English proof (translation)
+Simplify using `only [ellT, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, LinearMap.flip_apply, LinearEquiv.coe_coe, LinearMap.coe_single, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem ellTop_apply (eW : (I.per l u a).Wrow ≃ₗ[ℂ] ((I.fm l u a).clsP → FrP (I.rec7 l Z) → ℂ)) (ε : ℂ)
     (G' : CXP R P t → (I.per l u a).Mt) (c : (I.fm l u a).clsP) (f : CXP R P t) (φ : FrN (I.rec7 l Z) (B.R.N B.R.m - 1) → ℂ) :
     ellTop R P eW ε G' c f φ = ε * (Nat.card ((I.fm l u a).stabilizer₂ c) : ℂ) *

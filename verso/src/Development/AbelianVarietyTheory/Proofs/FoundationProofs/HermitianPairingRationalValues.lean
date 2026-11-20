@@ -8,6 +8,23 @@ open scoped BigOperators
 
 namespace GlobalTheory.NormSum.TraceInt
 
+/- English proof (translation)
+Take `⟨hLfg, hLspan, hLdual⟩` from `hL`. Take `⟨-, -, hL'dual⟩` from `hL'`. Take `⟨m, x, φ, hx, hφ, hxφ⟩` from `GlobalTheory.TauLat.exists_dual_family L ⟨hLfg, hLspan⟩`. Use `set ψ : Fin m → Fin N → E := fun k b => star (φ k b) with hψdef`. Establish `hψ : ∀ k, ψ k ∈ L`.
+
+Introduce `k`. Rewrite using `[hLdual]`. Introduce `y hy`. Rewrite using `[GlobalTheory.TauLat.mem_range_iff]`. Establish `h1 : ∑ i, star (y i) * ψ k i = starRingEnd E (φ k ⬝ᵥ y)`.
+
+Rewrite using `[starRingEnd_apply, dotProduct, star_sum]`. Simplify using `[hψdef, star_mul', mul_comm]`. Unfold `stdH`. Rewrite using `[h1]`. Conclude with `GlobalTheory.TauLat.integral_map _ (hφ k y hy)`.
+
+Establish `key : ∀ i, ∑ j, A i j * star (B i j) = ∑ k, (A.mulVec (x k)) i * star ((B.mulVec (ψ k)) i)`. Introduce `i`. Establish `e1 : ∑ j, A i j * star (B i j) = ∑ a, ∑ b, A i a * star (B i b) * ∑ k, x k a * φ k b`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[hxφ, mul_ite]`.
+
+Rewrite using `[e1]`. Simplify using `only [Matrix.mulVec, dotProduct, hψdef, star_sum, star_mul', star_star, Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => arg 2`. Use extensionality with `a`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun i _ => key i, Finset.sum_comm]`.
+
+Use `IsIntegral.sum _ fun k _ => ?_` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (∑ i, star ((A.mulVec (x k)) i) * (B.mulVec (ψ k)) i)`. Rewrite using `[← GlobalTheory.TauLat.mem_range_iff]`. Conclude with `(hL'dual _).1 (hB _ (hψ k)) _ (hA _ (hx k))`. Establish `h2 : ∑ i, (A.mulVec (x k)) i * star ((B.mulVec (ψ k)) i) = starRingEnd E (∑ i, star ((A.mulVec (x k)) i) * (B.mulVec (ψ k)) i)`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, starRingEnd_apply, starRingEnd_apply, star_star, mul_comm]`. Rewrite using `[h2]`. Conclude with `GlobalTheory.TauLat.integral_map _ hint`.
+-/
 theorem pair_integral {E : Type} [Field E] [NumberField E] [StarRing E] {N N' : ℕ}
     {L : Submodule (𝓞 E) (Fin N → E)} {L' : Submodule (𝓞 E) (Fin N' → E)}
     (hL : IsSDLat E N L) (hL' : IsSDLat E N' L') {A B : Matrix (Fin N') (Fin N) E}
@@ -58,6 +75,13 @@ theorem pair_integral {E : Type} [Field E] [NumberField E] [StarRing E] {N N' : 
   rw [h2]
   exact GlobalTheory.TauLat.integral_map _ hint
 
+/- English proof (translation)
+Unfold `homL at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem B hB => exact hB`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules.
+
+Consider the case `add B C _ _ hB hC`. Introduce `x hx`. Rewrite using `[Matrix.add_mulVec]`. Conclude with `L'.add_mem (hB x hx) (hC x hx)`. Consider the case `smul c B _ hB`.
+
+Introduce `x hx`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `L'.smul_mem c (hB x hx)`.
+-/
 theorem mulVec_mem_of_homL (D : D7) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} {A : Matrix (Fin N') (Fin N) D.host.E}
     (hA : A ∈ homL D L L') : ∀ x ∈ L, A.mulVec x ∈ L' := by
@@ -74,16 +98,31 @@ theorem mulVec_mem_of_homL (D : D7) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) 
     rw [Matrix.smul_mulVec]
     exact L'.smul_mem c (hB x hx)
 
+/- English proof (translation)
+Unfold `hYY`. Simplify using `only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add]`.
+-/
 theorem hYY_add_left (D : D7) {N N' : ℕ} (x x' y : Matrix (Fin N') (Fin N) D.host.E) :
     hYY D (x + x') y = hYY D x y + hYY D x' y := by
   unfold hYY
   simp only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Unfold `hYY`. Simplify using `only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hYY_add_right (D : D7) {N N' : ℕ} (x y y' : Matrix (Fin N') (Fin N) D.host.E) :
     hYY D x (y + y') = hYY D x y + hYY D x y' := by
   unfold hYY
   simp only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hs : IsIntegral ℤ (∑ i, ∑ j, A i j * D.host.conj (B i j))`. Set `_` to `D.host.cmStar`. Establish `h` using `pair_integral (E := D.host.E) hL hL' (mulVec_mem_of_homL D hA) (mulVec_mem_of_homL D hB)`. Simplify `h` using `only [bridge_star_holds _ D.host]`. Establish `hsum : ∑ i, ∑ j, (a • A) i j * D.host.conj ((a' • B) i j) = a * (∑ i, ∑ j, A i j * D.host.conj (B i j)) * D.host.conj a'`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `has : a * (∑ i, ∑ j, A i j * D.host.conj (B i j)) ∈ D.host.AA0`. Establish `h1 : ∀ c : 𝓞 D.host.E, (c : D.host.E) * a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `c`.
+
+Establish `h` using `(D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E).smul_mem c ha`. Rewrite `h` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Rewrite using `[mul_comm]`. Conclude with `h1 ⟨_, hs⟩`. Unfold `hYY`.
+
+Rewrite using `[hsum]`. Conclude with `(factMMUnimodular _ D.host _).1 has a' ha'`.
+-/
 theorem hYY_gen (D : D7) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hL : SD D L) (hL' : SD D L')
     {a a' : D.host.E} (ha : a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E))
@@ -109,15 +148,26 @@ theorem hYY_gen (D : D7) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → 
   rw [hsum]
   exact (factMMUnimodular _ D.host _).1 has a' ha'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨D.host.conj (c : D.host.E), GlobalTheory.TauLat.integral_map (D.host.conj : D.host.E →+* D.host.E) c.isIntegral_coe⟩, rfl⟩`.
+-/
 private theorem exists_ringOfIntegers_eq_conj (D : D7) (c : 𝓞 D.host.E) :
     ∃ c' : 𝓞 D.host.E, (c' : D.host.E) = D.host.conj (c : D.host.E) :=
   ⟨⟨D.host.conj (c : D.host.E),
     GlobalTheory.TauLat.integral_map (D.host.conj : D.host.E →+* D.host.E) c.isIntegral_coe⟩, rfl⟩
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Rewrite using `[← bridge_star_holds _ D.host z, ← bridge_star_holds _ D.host (star z), star_star]`.
+-/
 private theorem conjO_conjO_unimodular_class_representatives (D : D7) (z : D.host.E) : D.host.conj (D.host.conj z) = z := by
   let _ := D.host.cmStar
   rw [← bridge_star_holds _ D.host z, ← bridge_star_holds _ D.host (star z), star_star]
 
+/- English proof (translation)
+Unfold `hYY`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul]`. Express the relevant statement in the definitionally equal form `(c : D.host.E) * x i j * D.host.conj (y i j) = x i j * (D.host.conj (c' : D.host.E) * D.host.conj (y i j))`.
+
+Rewrite using `[hc, conjO_conjO_unimodular_class_representatives]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hYY_smul_left_eq_conj_smul_right (D : D7) {N N' : ℕ} (c c' : 𝓞 D.host.E)
     (hc : (c' : D.host.E) = D.host.conj (c : D.host.E)) (x y : Matrix (Fin N') (Fin N) D.host.E) :
     hYY D (c • x) y = hYY D x (c' • y) := by
@@ -130,12 +180,34 @@ private theorem hYY_smul_left_eq_conj_smul_right (D : D7) {N N' : ℕ} (c c' : �
   rw [hc, conjO_conjO_unimodular_class_representatives]
   ring
 
+/- English proof (translation)
+Establish `hc' : (c : D.host.E) = D.host.conj (c' : D.host.E)` using `by rw [hc, conjO_conjO_unimodular_class_representatives]`. Conclude with `(hYY_smul_left_eq_conj_smul_right D c' c hc' x y).symm`.
+-/
 private theorem hYY_smul_right_eq_conj_smul_left (D : D7) {N N' : ℕ} (c c' : 𝓞 D.host.E)
     (hc : (c' : D.host.E) = D.host.conj (c : D.host.E)) (x y : Matrix (Fin N') (Fin N) D.host.E) :
     hYY D x (c • y) = hYY D (c' • x) y := by
   have hc' : (c : D.host.E) = D.host.conj (c' : D.host.E) := by rw [hc, conjO_conjO_unimodular_class_representatives]
   exact (hYY_smul_left_eq_conj_smul_right D c' c hc' x y).symm
 
+/- English proof (translation)
+Introduce `D N N' L L' hL hL' x hx y hy`. Establish `hsub : ∀ (c : 𝓞 D.host.E) (a : D.host.E), a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) → (c : D.host.E) * a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `c a ha`. Establish `h` using `(D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E).smul_mem c ha`. Rewrite `h` using `[Algebra.smul_def]`. Then use the resulting hypothesis.
+
+Establish `hgen : ∀ y ∈ YYl D L L', ∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∀ A ∈ homL D L L', hYY D (a • A) y ∈ (algebraMap (𝓞 D.host.K) D.host.K).range`. Introduce `y hy`. Unfold `YYl at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨a', ha', B, hB, rfl⟩` from `hz`. Introduce `a ha A hA`. Conclude with `hYY_gen D hL hL' ha ha' hA hB`. Consider the case `zero`. Introduce `a _ A _`.
+
+Unfold `hYY`. Simplify using the standard rewrite rules. Consider the case `add z w _ _ hz hw`. Introduce `a ha A hA`. Rewrite using `[hYY_add_right]`.
+
+Conclude with `Subring.add_mem _ (hz a ha A hA) (hw a ha A hA)`. Consider the case `smul c z _ hz`. Introduce `a ha A hA`. Take `⟨c', hc'⟩` from `exists_ringOfIntegers_eq_conj D c`. Rewrite using `[hYY_smul_right_eq_conj_smul_left D c c' hc', ← smul_assoc, Algebra.smul_def]`.
+
+Conclude with `hz _ (hsub c' a ha) A hA`. Unfold `YYl at hx`. Proceed by induction on `hx using Submodule.span_induction generalizing y with`. Consider the case `mem z hz`. Take `⟨a, ha, A, hA, rfl⟩` from `hz`.
+
+Conclude with `hgen y hy a ha A hA`. Consider the case `zero`. Unfold `hYY`. Simplify using the standard rewrite rules. Consider the case `add z w _ _ hz hw`.
+
+Rewrite using `[hYY_add_left]`. Conclude with `Subring.add_mem _ (hz y hy) (hw y hy)`. Consider the case `smul c z _ hz`. Take `⟨c', hc'⟩` from `exists_ringOfIntegers_eq_conj D c`. Rewrite using `[hYY_smul_left_eq_conj_smul_right D c c' hc']`.
+
+Conclude with `hz _ ((YYl D L L').smul_mem c' hy)`.
+-/
 theorem hYY_integral : ∀ (D : D7) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), SD D L → SD D L' →
     ∀ x ∈ YYl D L L', ∀ y ∈ YYl D L L', hYY D x y ∈ (algebraMap (𝓞 D.host.K) D.host.K).range := by

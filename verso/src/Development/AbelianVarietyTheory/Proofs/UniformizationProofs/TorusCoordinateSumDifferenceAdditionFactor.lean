@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 namespace GlobalTheory.AddLevel
 
+/- English proof (translation)
+Establish `hk'` using `congrArg Units.val hk`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at hk'`. Establish `e₁ : ∑ α ∈ s, ∑ β ∈ s, (∑ i, F i α * F' i β) * ((tx α).val * (ty β).val) = ∑ i, (∑ α ∈ s, F i α * (tx α).val) * (∑ β ∈ s, F' i β * (ty β).val)`. Simplify using `only [Finset.sum_mul_sum]`. Simplify using `only [Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := Finset.univ)]`. Conclude with `Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `e₂ : ∑ a ∈ s₀, ∑ b ∈ s₀, r * (k a b).val * (p a * m b) * ((u a b).val * (v a b).val) = r * kM.val * ((∑ a ∈ s₀, p a * (tp a).val) * (∑ b ∈ s₀, m b * (tm b).val))`.
+
+Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h` using `congrArg Units.val (ht a b)`. Simplify using `only [Units.val_mul] at h`.
+
+Take the linear combination `(-(r * p a * m b)) * h`. Establish `e₃ : ∑ i, Wx.val ^ 2 * σ i * (Wy.val ^ 2 * σ' i) = Wx.val ^ 2 * Wy.val ^ 2 * ∑ i, σ i * σ' i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e₁, e₂, ← hp, ← hm]`.
+
+Simplify using `only [← hx, ← hy]`. Rewrite using `[e₃, hadd]`. Take the linear combination `(r * θp * θm) * hk'`.
+-/
 theorem expand_alg {S X : Type} [CommRing S] {n : ℕ} (s s₀ : Finset X) (F F' : Fin n → X → S) (σ σ' : Fin n → S)
     (p m : X → S) (θp θm r : S) (tx ty tp tm : X → Sˣ) (Wx Wy Wp Wm kL kM : Sˣ) (k u v : X → X → Sˣ)
     (hx : ∀ i, Wx.val ^ 2 * σ i = ∑ α ∈ s, F i α * (tx α).val)
@@ -53,6 +64,9 @@ theorem expand_alg {S X : Type} [CommRing S] {n : ℕ} (s s₀ : Finset X) (F F'
   rw [e₃, hadd]
   linear_combination (r * θp * θm) * hk'
 
+/- English proof (translation)
+Rewrite using `[eq_mul_inv_of_mul_eq h]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem unit_alg {U : Type} [CommGroup U] {k p m c₁ c₂ c₃ d₁ d₂ u v : U}
     (h : p * m * (c₁ * c₂ * c₃) = u * v * (d₁ * d₂)) :
     k * (p * m) = k * d₁ * d₂ * (c₁ * c₂ * c₃)⁻¹ * (u * v) := by
@@ -76,14 +90,23 @@ noncomputable def toB (g : GtCoord I D e G) (T : Over (Spec (CommRingCat.of (R �
     (T ⟶ thickObj R I e G) →* ((Over.map (thick R I e)).obj T ⟶ D.P.A) :=
   MonoidHom.mk' (fun x => (Over.map (thick R I e)).map x ≫ g.pG) (GlobalTheory.TorusCoord.im_mul g)
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, lift_snd]`.
+-/
 theorem lift_snd_left {S : Scheme.{0}} {T B : Over S} (x : T ⟶ B) :
     (lift (toUnit T) x).left ≫ (snd (𝟙_ _) B).left = x.left := by
   rw [← Over.comp_left, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, lift_fst]`.
+-/
 theorem lift_fst_left {S : Scheme.{0}} {T B : Over S} (x : T ⟶ B) :
     (lift (toUnit T) x).left ≫ (fst (𝟙_ _) B).left = (toUnit T).left := by
   rw [← Over.comp_left, lift_fst]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h e`. Use `⟨s, fun T x z JG J hG hJ => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `hs T.left x.left (lift (toUnit _) (toG G T x)).left (lift (toUnit _) (toB (U.gt e) T x)).left (lift_snd_left _) (lift_snd_left _) ((lift_fst_left _).trans (lift_fst_left _).symm) z JG J hG hJ`. Use `⟨h₁, fun s' hs' => h₂.trans (Finset.sum_subset hs' fun α _ hα => ?_)⟩` and prove the remaining obligations. Rewrite using `[h₁ α hα, zero_mul]`.
+-/
 theorem exp_at (U : PreU I D A G) {k : ℕ} {σ : U.SecGT (𝟙_ _) k} {f : ∀ α, SecBT D (𝟙_ _) k α}
     (h : U.ExpT (𝟙_ _) k σ f) (e : ℕ) : ∃ s : Finset D.X,
       ∀ (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (x : T ⟶ thickObj R I e G) (z : T.left) (JG) (J),
@@ -100,6 +123,11 @@ theorem exp_at (U : PreU I D A G) {k : ℕ} {σ : U.SecGT (𝟙_ _) k} {f : ∀ 
   refine ⟨h₁, fun s' hs' => h₂.trans (Finset.sum_subset hs' fun α _ hα => ?_)⟩
   rw [h₁ α hα, zero_mul]
 
+/- English proof (translation)
+Use `Eq.trans ?_ ((val_corr hJ (g.t_mul a b) x.left).trans (val_mul hJ _ _ _))` and prove the remaining obligations. Use `Eq.trans ?_ (val_mul hJ _ _ _).symm` and prove the remaining obligations. Use `congrArg (_ * ·) (Eq.trans ?_ (val_cub D.cub ((Over.map (thick R I e)).map x) hJ _ _ _).symm)` and prove the remaining obligations. Establish `e₁ : ∀ c : D.X, (Over.map (thick R I e)).map x ≫ toUnit _ ≫ D.c c = cT D _ c` using `fun c => by`. Rewrite using `[← Category.assoc, comp_toUnit]`.
+
+Rewrite using `[e₁, e₁]`. Both sides reduce to the same expression.
+-/
 theorem val_t_add (g : GtCoord I D e G) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} {z : T.left} {J}
     (hJ : Good D.P.L z J) (a b : D.X) (x : T ⟶ thickObj R I e G) :
     val (g.t (a + b)) x.left z J * @id (T.left.presheaf.stalk z)ˣ (cubV D.cub (T := (Over.map (thick R I e)).obj T) z J
@@ -118,6 +146,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
   {e : ℕ}
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `U.w_vals e T z JG J hG hJ W hW`. Establish `h` using `GlobalTheory.addition_factor_through_cubical_even_iso _ _ W _ _ (fun a b c => cubV U.P.c (T := (Over.map (thick R I e)).obj T) z JG (toG G T a) (toG G T b) (toG G T c)) (fun a b c => cubV D.cub (T := (Over.map (thick R I e)).obj T) z J (toB (U.gt e) T a) (toB (U.gt e) T b) (toB ( …`. Simplify using `only [map_inv] at h`. Conclude with `h`.
+-/
 theorem additionFormulaFactor_comparisonIso_value (U : PreU I D A G) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} {z : T.left} {JG} {J}
     (hG : Good U.P.L.L z JG) (hJ : Good D.P.L z J) (W : (T ⟶ thickObj R I e G) → (T.left.presheaf.stalk z)ˣ)
     (hW : ∀ x, W x = gw (U.w e) x.left z (J (x.left ≫ (U.gt e).pG.left)) (fun _ => JG (x.left ≫ (fstG I e G).left)))
@@ -135,6 +166,9 @@ theorem additionFormulaFactor_comparisonIso_value (U : PreU I D A G) {T : Over (
   simp only [map_inv] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `unit_alg (GlobalTheory.cub_coord_mul_mul_inv _ (T.left.presheaf.stalk z)ˣ D.X (cubV D.cub (T := (Over.map (thick R I e)).obj T) z J) (isCub_cubV D.cub (T := (Over.map (thick R I e)).obj T) hJ) _ (toB g T) (cT D _) (fun a b => (congrArg (toUnit _ ≫ ·) (D.c_add a b)).trans (MonObj. …`.
+-/
 theorem torusCoordinate_sum_difference_additionFactor (hGF : GlobalFnsSt) (g : GtCoord I D e G) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     {z : T.left} {J} (hJ : Good D.P.L z J) (x y : T ⟶ thickObj R I e G) (a b : D.X) :
     @id (T.left.presheaf.stalk z)ˣ
@@ -149,6 +183,13 @@ theorem torusCoordinate_sum_difference_additionFactor (hGF : GlobalFnsSt) (g : G
     (fun a x => val (g.t a) x.left z J) (val_t_add g hJ)
     (fun a x y => torus_coord_add hGF R I D e G g T x y a z J hJ) a b x y)
 
+/- English proof (translation)
+Take `⟨s₁, h₁⟩` from `exp_at U hθ e`. Use `choose s₂ h₂ using fun i => exp_at U (hσ i).1 e`. Use `choose s₃ h₃ using fun i => exp_at U (hσ i).2 e`. Take `⟨s₀, a₁, a₂, a₃⟩ : ∃ s₀ : Finset D.X, s₁ ⊆ s₀ ∧ (∀ i, s₂ i ⊆ s₀) ∧ ∀ i, s₃ i ⊆ s₀` from `⟨s₁ ∪ (Finset.univ.biUnion s₂ ∪ Finset.univ.biUnion s₃), Finset.subset_union_left, fun i => ((Finset.subset_biUnion_of_mem s₂ (Finset.mem_univ i)).trans Finset.subset_union_left).trans Finset.subset_union_right, fun i => ((Finset.subset_biUnion_of_mem s₃ (Finset.mem_univ i)).tran …`. Use `⟨s₀, fun T x y _ _ hx hy z J hJ => ?_⟩` and prove the remaining obligations.
+
+Substitute `hx hy` using the available equality. Take `⟨JG, hG⟩` from `exists_good_pt U.P.L.isLB z`. Establish `p` using `h₁ T (x * y) z JG J hG hJ`. Establish `m` using `h₁ T (x * y⁻¹) z JG J hG hJ`. Simplify using `only [map_mul, map_inv] at p m`.
+
+Use `⟨fun a ha => ⟨p.1 a fun h => ha (a₁ h), m.1 a fun h => ha (a₁ h)⟩, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `expand_alg s s₀ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (fun i => (h₂ i T x z JG J hG hJ).2 s ((a₂ i).trans hs)) (fun i => (h₃ i T y z JG J hG hJ).2 s ((a₃ i).trans hs)) (p.2 s₀ a₁) (m.2 s₀ a₁) (hA _ (toG G T x) (toG G T y) z JG hG) (additionFormulaFactor_comparisonIso_value …`.
+-/
 theorem at_points (hGF : GlobalFnsSt) (U : PreU I D A G) (θ : U.SecGT (𝟙_ _) 1) (f₀ : ∀ α, SecBT D (𝟙_ _) 1 α) (r : R)
     (n : ℕ) (σ σ' : Fin n → U.SecGT (𝟙_ _) 2) (f f' : Fin n → ∀ α, SecBT D (𝟙_ _) 2 α) (hA : U.AddG θ r σ σ')
     (hθ : U.ExpT (𝟙_ _) 1 θ f₀) (hσ : ∀ i, U.ExpT (𝟙_ _) 2 (σ i) (f i) ∧ U.ExpT (𝟙_ _) 2 (σ' i) (f' i)) (e : ℕ) :
@@ -190,6 +231,13 @@ end
 
 end GlobalTheory.AddLevel
 
+/- English proof (translation)
+Introduce `hGF V _ _ _ _ D A G _ _ U θ f₀ r n σ σ' f f' hA hθ hσ e`. Take `⟨s₀, H⟩` from `GlobalTheory.AddLevel.at_points hGF U θ f₀ r n σ σ' f f' hA hθ hσ e`. Use `⟨s₀, fun T x y xe ye hx hy hxy => ?_⟩` and prove the remaining obligations. Establish `hT : T.hom = (xe ≫ (thickObj V (IsLocalRing.maximalIdeal V) e G).hom) ≫ thick V (IsLocalRing.maximalIdeal V) e`. Rewrite using `[← Over.w x, ← hx, Category.assoc, Over.w, Category.assoc]`.
+
+Both sides reduce to the same expression. Take `⟨Z, ⟨⟨⟩⟩, h⟩` from `T`. Express the relevant statement in the definitionally equal form `Z ⟶ _ at xe ye`. Express the relevant statement in the definitionally equal form `h = (CategoryStruct.comp (X := Z) xe (thickObj V (IsLocalRing.maximalIdeal V) e G).hom ≫ thick V (IsLocalRing.maximalIdeal V) e : Z ⟶ _) at hT`. Substitute `hT` using the available equality.
+
+Conclude with `H (Over.mk (xe ≫ (thickObj V (IsLocalRing.maximalIdeal V) e G).hom)) (Over.homMk xe rfl) (Over.homMk ye hxy.symm) x y (Over.OverMorphism.ext hx.symm) (Over.OverMorphism.ext hy.symm)`.
+-/
 theorem GlobalTheory.addition_formula_expanded_at_level : GlobalFnsSt → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (θ : U.SecGT (𝟙_ _) 1) (f₀ : ∀ α, SecBT D (𝟙_ _) 1 α) (r : V) (n : ℕ) (σ σ' : Fin n → U.SecGT (𝟙_ _) 2) (f f' : Fin n → ∀ α, SecBT D (𝟙_ _) 2 α), U.AddG θ r σ σ' → U.ExpT (𝟙_ _) 1 θ f₀ → (∀ i, U.ExpT (𝟙_ _) 2 (σ i) (f i) ∧ U.ExpT (𝟙_ _) 2 (σ' i) (f' i)) → ∀ e : ℕ, ∃ s₀ : Finset D.X, ∀ (T : Over (Spec (CommRingCat.of V))) (x y : T ⟶ D.P.A) (xe ye : T.left ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left), xe ≫ (U.gt e).pG.left = x.left → ye ≫ (U.gt e).pG.left = y.left → xe ≫ (thickObj V (IsLocalRing.maximalIdeal V) e G).hom = ye ≫ (thickObj V (IsLocalRing.maximalIdeal V) e G).hom → ∀ (z : T.left) (J), Good D.P.L z J → (∀ a ∉ s₀, sval (f₀ a) (lift (toUnit T) (x * y)).left z J = 0 ∧ sval (f₀ a) (lift (toUnit T) (x * y⁻¹)).left z J = 0) ∧ ∀ s : Finset D.X, s₀ ⊆ s → ∑ α ∈ s, ∑ β ∈ s, (∑ i, sval (f i α) (lift (toUnit T) x).left z J * sval (f' i β) (lift (toUnit T) y).left z J) * ((val ((U.gt e).t α) xe z J).val * (val ((U.gt e).t β) ye z J).val) = ∑ a ∈ s₀, ∑ b ∈ s₀, gs (𝟙 _) z ⊤ (scal T.hom r) * (kapV D a b z J x y).val * (sval (f₀ a) (lift (toUnit T) (x * y)).left z J * sval (f₀ b) (lift (toUnit T) (x * y⁻¹)).left z J) * ((val ((U.gt e).t (a + b)) xe z J).val * (val ((U.gt e).t (a - b)) ye z J).val)) := by
   intro hGF V _ _ _ _ D A G _ _ U θ f₀ r n σ σ' f f' hA hθ hσ e
   obtain ⟨s₀, H⟩ := GlobalTheory.AddLevel.at_points hGF U θ f₀ r n σ σ' f f' hA hθ hσ e

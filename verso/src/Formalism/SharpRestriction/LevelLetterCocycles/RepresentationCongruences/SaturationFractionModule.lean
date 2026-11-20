@@ -21,19 +21,31 @@ variable [FiniteDimensional Qp LL]
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Take `⟨w, hw, h⟩` from `GS.gamma_pi0_eq_pi0_mul_unit (GS.ringData_of_caseA_of_p9 W hcase hP9)`. Conclude with `⟨w, hw, w.isUnit, h⟩`.
+-/
 theorem gamma_pi0_eq_pi0_mul_one_add_unit_mul_q (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) :
     ∃ κ ∈ W.AΔ, IsUnit κ ∧ W.γA W.gam W.π₀ = W.π₀ * (1 + κ * qA W) := by
   obtain ⟨w, hw, h⟩ := GS.gamma_pi0_eq_pi0_mul_unit (GS.ringData_of_caseA_of_p9 W hcase hP9)
   exact ⟨w, hw, w.isUnit, h⟩
 
+/- English proof (translation)
+The claim follows from `GS.gam_A_core (GS.ringData_of_caseA_of_p9 W hcase hP9) hf`.
+-/
 theorem gamma_sub_self_mem_pi0_q (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (f : LetA O n) (hf : f ∈ W.AΔ) :
     ∃ g ∈ W.AΔ, W.γA W.gam f - f = W.π₀ * qA W * g :=
   GS.gam_A_core (GS.ringData_of_caseA_of_p9 W hcase hP9) hf
 
+/- English proof (translation)
+The claim follows from `GS.gam_ps_core (GS.ringData_of_caseA_of_p9 W hcase hP9) s hs`.
+-/
 theorem gamma_level_eq_mul (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (s : ℕ) (hs : 1 ≤ s) :
     ∃ g ∈ W.AΔ, W.γA W.gam (ps W s) = ps W s * (1 + W.π₀ * qA W * g) :=
   GS.gam_ps_core (GS.ringData_of_caseA_of_p9 W hcase hP9) s hs
 
+/- English proof (translation)
+The claim follows from `GS.gam_frac_core (GS.ringData_of_caseA_of_p9 W hcase hP9) a e α f hf`.
+-/
 theorem gamma_fraction_in_ideal (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (a : ZMod n) (e : ℕ) (α : ℕ → ℤ)
     (f : W.EE) (hf : InId W a e α f) :
     InId W a e α (W.γE W.gam f) ∧
@@ -41,6 +53,9 @@ theorem gamma_fraction_in_ideal (hcase : Formalism.MainNotions.LiftingTheory.Cas
         (∏ s ∈ Finset.range e, ps W s ^ (-(α s)).toNat) (W.γE W.gam f - f) :=
   GS.gam_frac_core (GS.ringData_of_caseA_of_p9 W hcase hP9) a e α f hf
 
+/- English proof (translation)
+Establish `hx' : f' • (f₂ • x) ∈ W.NΔ T`. Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `GS.smul_mem_NΔ W T (GS.piPs_mem W h₂) hx`. Conclude with `hSat hcase T f₁ f' hT h₁ h' (f₂ • x) hx' hk`.
+-/
 theorem saturation_fraction_module (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hSat : SATcore W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ)
     (f₁ f₂ f' : LetA O n) (h₁ : f₁ ∈ PiPs W) (h₂ : f₂ ∈ PiPs W) (h' : f' ∈ PiPs W) (x : W.DD T)
     (hx : f' • x ∈ W.NΔ T) (hk : ∃ k : ℕ, InFN W T f₁ (lA W ^ k • (f₂ • x))) :
@@ -50,6 +65,9 @@ theorem saturation_fraction_module (hcase : Formalism.MainNotions.LiftingTheory.
     exact GS.smul_mem_NΔ W T (GS.piPs_mem W h₂) hx
   exact hSat hcase T f₁ f' hT h₁ h' (f₂ • x) hx' hk
 
+/- English proof (translation)
+Take `⟨k, y, hy, hky⟩` from `hk`. Conclude with `GS.sat_A_core (GS.ringData_of_caseA_of_p9 W hcase hP9) (GS.p_ne_zero W) h₁ hy k hky`.
+-/
 theorem saturation_fraction_ring [IsDomain O] [IsDiscreteValuationRing O] (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hinj : Function.Injective (algebraMap O LL)) (f₁ f₂ f' : LetA O n) (h₁ : f₁ ∈ PiPs W) (h₂ : f₂ ∈ PiPs W)
     (h' : f' ∈ PiPs W) (x : LetA O n) (hx : f' * x ∈ W.AΔ)

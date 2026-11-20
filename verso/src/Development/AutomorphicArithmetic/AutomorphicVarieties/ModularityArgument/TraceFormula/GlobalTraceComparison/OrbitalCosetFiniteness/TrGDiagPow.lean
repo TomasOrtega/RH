@@ -18,16 +18,28 @@ private def trG {F : Type} [Field F] {n : ℕ} (g : GL (Fin n) F) : GL (Fin n) F
     by rw [← Matrix.transpose_mul]; simp,
     by rw [← Matrix.transpose_mul]; simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem trG_val {F : Type} [Field F] {n : ℕ} (g : GL (Fin n) F) : (trG g).val = g.val.transpose := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [trG_val, Matrix.transpose_mul])`.
+-/
 private theorem trG_mul {F : Type} [Field F] {n : ℕ} (x y : GL (Fin n) F) : trG (x * y) = trG y * trG x :=
   Units.ext (by simp [trG_val, Matrix.transpose_mul])
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [trG_val])`.
+-/
 private theorem trG_trG {F : Type} [Field F] {n : ℕ} (x : GL (Fin n) F) : trG (trG x) = x :=
   Units.ext (by simp [trG_val])
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.StabInt.mem_integralGL_of_mem_KGL hk`. Rewrite `h` using `[GLnLocal.mem_integralGL_iff]`. Use `GlobalTheory.StabInt.mem_KGL_of_mem_integralGL ?_` and prove the remaining obligations. Rewrite using `[GLnLocal.mem_integralGL_iff]`. Conclude with `⟨fun i j => h.1 j i, fun i j => h.2 j i⟩`.
+-/
 private theorem trG_mem {w : HeightOneSpectrum (𝓞 E)} {k : GL (Fin n) (w.adicCompletion E)}
     (hk : k ∈ KGL w n) : trG k ∈ KGL w n := by
   have h := GlobalTheory.StabInt.mem_integralGL_of_mem_KGL hk
@@ -36,10 +48,18 @@ private theorem trG_mem {w : HeightOneSpectrum (𝓞 E)} {k : GL (Fin n) (w.adic
   rw [GLnLocal.mem_integralGL_iff]
   exact ⟨fun i j => h.1 j i, fun i j => h.2 j i⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [trG_val, Cartan.coe_diagPow, Matrix.diagonal_transpose])`.
+-/
 private theorem trG_diagPow (w : HeightOneSpectrum (𝓞 E)) (μ : Fin n → ℤ) :
     trG (Cartan.diagPow (w.adicCompletion E) n μ) = Cartan.diagPow (w.adicCompletion E) n μ :=
   Units.ext (by rw [trG_val, Cartan.coe_diagPow, Matrix.diagonal_transpose])
 
+/- English proof (translation)
+Take `⟨μ, -, k₁, h₁, k₂, h₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul (w.adicCompletion E) n x`. Establish `h₁'` using `GlobalTheory.StabInt.mem_KGL_of_mem_integralGL h₁`. Establish `h₂'` using `GlobalTheory.StabInt.mem_KGL_of_mem_integralGL h₂`. Use `⟨trG k₂ * k₁⁻¹, (KGL w n).mul_mem (trG_mem h₂') ((KGL w n).inv_mem h₁'), k₂⁻¹ * trG k₁, (KGL w n).mul_mem ((KGL w n).inv_mem h₂') (trG_mem h₁'), ?_⟩` and prove the remaining obligations. Rewrite using `[trG_mul, trG_mul, trG_diagPow]`.
+
+Use `group`.
+-/
 private theorem trG_double (w : HeightOneSpectrum (𝓞 E)) (x : GL (Fin n) (w.adicCompletion E)) :
     ∃ k ∈ KGL w n, ∃ k' ∈ KGL w n, trG x = k * x * k' := by
   obtain ⟨μ, -, k₁, h₁, k₂, h₂, rfl⟩ := Cartan.exists_eq_mul_diagPow_mul (w.adicCompletion E) n x
@@ -52,6 +72,13 @@ private theorem trG_double (w : HeightOneSpectrum (𝓞 E)) (x : GL (Fin n) (w.a
 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 
+/- English proof (translation)
+Introduce `h E _ _ _ a b w f g hf hg`. Take `⟨hoa, hca⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a`. Take `⟨hob, hcb⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b`. Use `h (GLw a w × GLw b w) (K2 a b w) (hoa.prod hob) (hca.prod hcb) (fun x => (trG x.1, trG x.2)) ?_ ?_ ?_ ?_ f g hf hg` and prove the remaining obligations. Introduce `x y`.
+
+Conclude with `Prod.ext (trG_mul _ _) (trG_mul _ _)`. Introduce `x`. Conclude with `Prod.ext (trG_trG _) (trG_trG _)`. Introduce `k hk`. Conclude with `⟨trG_mem hk.1, trG_mem hk.2⟩`.
+
+Introduce `x`. Take `⟨k₁, h₁, k₂, h₂, e⟩` from `trG_double w x.1`. Take `⟨l₁, i₁, l₂, i₂, e'⟩` from `trG_double w x.2`. Conclude with `⟨(k₁, l₁), ⟨h₁, i₁⟩, (k₂, l₂), ⟨h₂, i₂⟩, Prod.ext e e'⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.cvComm2 :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.CvGelfand → UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.CvComm2 := by
   intro h E _ _ _ a b w f g hf hg

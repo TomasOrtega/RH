@@ -20,6 +20,15 @@ def piS {I : Type} {M N : I → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module
   map_add' x y := funext fun i ↦ map_add (u i) _ _
   map_smul' r x := funext fun i ↦ (u i).map_smulₛₗ r (x i)
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite I`. Set `e` to `TensorProduct.piRight R S S M`. Establish `key : (liftSemi (piS u) : S ⊗[R] (∀ i, M i) → ∀ i, N i) = (Pi.map fun i ↦ liftSemi (u i)) ∘ e`. Use function extensionality and compare the values at `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`. Simplify using `only [map_add, Function.comp_apply] at ha hb ⊢`.
+
+Rewrite using `[ha, hb]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `tmul s x`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[e, liftSemi_tmul, piS]`. Rewrite using `[key]`. Conclude with `(Function.Bijective.piMap hu).comp e.bijective`.
+-/
 theorem liftSemi_piS_bijective {I : Type} [Finite I] {M N : I → Type} [∀ i, AddCommGroup (M i)]
     [∀ i, Module R (M i)] [∀ i, AddCommGroup (N i)] [∀ i, Module S (N i)]
     (u : ∀ i, M i →ₛₗ[algebraMap R S] N i) (hu : ∀ i, Function.Bijective (liftSemi (u i))) :
@@ -57,6 +66,13 @@ def cT (m : BC F F') (T : C) : F.obj T →ₛₗ[algebraMap R S] F'.obj T where
   map_add' := map_add (m.α T)
   map_smul' := m.smul T
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `m.bij T`. Establish `key : (liftSemi (cT m T) : S ⊗[R] F.obj T → F'.obj T) = e`. Use function extensionality and compare the values at `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s b`. Establish `h1 : s ⊗ₜ[R] b = s • ((1 : S) ⊗ₜ[R] b)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[liftSemi_tmul, h1, map_smul, he]`. Both sides reduce to the same expression.
+
+Rewrite using `[key]`. Conclude with `e.bijective`.
+-/
 theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSemi (cT m T)) := by
   obtain ⟨e, he⟩ := m.bij T
   have key : (liftSemi (cT m T) : S ⊗[R] F.obj T → F'.obj T) = e := by
@@ -71,14 +87,23 @@ theorem liftSemi_cT_bijective (m : BC F F') (T : C) : Function.Bijective (liftSe
   rw [key]
   exact e.bijective
 
+/- English proof (translation)
+The claim follows from `liftSemi_piS_bijective (fun T ↦ cT m T) fun T ↦ liftSemi_cT_bijective m T`.
+-/
 theorem comparison_degree_zero_bijective [Finite C] (m : BC F F') : Function.Bijective (th0 m) :=
   liftSemi_piS_bijective (fun T ↦ cT m T) fun T ↦ liftSemi_cT_bijective m T
 
+/- English proof (translation)
+The claim follows from `liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun _ : T ⟶ T' ↦ cT m T') fun _ ↦ liftSemi_piS_bijective _ fun T' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T'`.
+-/
 theorem comparison_degree_one_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th1 m) :=
   liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun _ : T ⟶ T' ↦ cT m T') fun _ ↦
     liftSemi_piS_bijective _ fun T' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T'
 
+/- English proof (translation)
+The claim follows from `liftSemi_piS_bijective (fun T ↦ piS fun T' ↦ piS fun T'' ↦ piS fun _ : T ⟶ T' ↦ piS fun _ : T' ⟶ T'' ↦ cT m T'') fun _ ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_piS_bijective _ fun T'' ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_piS_bijective _ fun _ ↦ liftSemi_cT_bijective m T …`.
+-/
 theorem comparison_degree_two_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (m : BC F F') :
     Function.Bijective (th2 m) :=
   liftSemi_piS_bijective
@@ -88,6 +113,9 @@ theorem comparison_degree_two_bijective [Finite C] [∀ T T' : C, Finite (T ⟶ 
 
 end Cochains
 
+/- English proof (translation)
+Use `haveI : Finite Pᵒᵖ := Finite.of_injective (Opposite.unop : Pᵒᵖ → P) Opposite.unop_injective`. Use `haveI : ∀ T T' : Pᵒᵖ, Finite (T ⟶ T') := fun T T' ↦ inferInstance`. Conclude with `⟨comparison_degree_zero_bijective m, comparison_degree_one_bijective m, comparison_degree_two_bijective m⟩`.
+-/
 theorem th_bijective (R S P : Type) [CommRing R] [CommRing S] [Algebra R S] [SemilatticeInf P]
     [Finite P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) (F' : Pᵒᵖ ⥤ CommAlgCat.{0} S) (m : BC F F') :
     Function.Bijective (th0 m) ∧ Function.Bijective (th1 m) ∧ Function.Bijective (th2 m) := by

@@ -19,6 +19,11 @@ open GlobalTheory.WpFam
 
 namespace GlobalTheory.HilbFam.GalFamily
 
+/- English proof (translation)
+Unfold `ch`. Break down `Nat.lt_or_ge 1 N with h | h` into its components or cases. Use `haveI : Fact (1 < N) := ⟨h⟩`. Rewrite using `[ZMod.val_one]`. Simplify using the standard rewrite rules.
+
+Establish `hN : N = 1` using `by have := NeZero.pos N; omega`. Substitute `hN` using the available equality. Establish `: (1 : ZMod 1).val = 0` using `rfl`. Rewrite using `[this]`. Simplify using `[Complex.exp_two_pi_mul_I]`.
+-/
 theorem ch_one (N : ℕ) [NeZero N] : ch N 1 = Complex.exp ((2 * Real.pi * Complex.I) / N) := by
   unfold ch
   rcases Nat.lt_or_ge 1 N with h | h
@@ -29,11 +34,21 @@ theorem ch_one (N : ℕ) [NeZero N] : ch N 1 = Complex.exp ((2 * Real.pi * Compl
     have : (1 : ZMod 1).val = 0 := rfl
     rw [this]; simp [Complex.exp_two_pi_mul_I]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg]`.
+-/
 theorem diag_eq {N : ℕ} [NeZero N] (a : (ZMod N)ˣ) :
     Matrix.diagonal ![1, ((((a : ZMod N).val : ℕ) : ℤ) : ZMod N)] = ((dg a : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg]
 
+/- English proof (translation)
+Introduce `hE F _ _ _ hf s N _ L hs hL z hz g a κ κ' y hg hκ hy α`. Establish `hact` using `GlobalTheory.WpFam.Act.rightActions N`. Establish `hy' : vmul y α ≠ 0` using `fun h ↦ hy ((hact.2.2.2.2.1 y α).1 h)`. Establish `hq` using `(GlobalTheory.T.qConj_torsion_points N g a hg (vmul y α)).2.2 hy'`. Rewrite `hq` using `[hact.2.2.1]`.
+
+Establish `hcop : IsCoprime (((a : ZMod N).val : ℕ) : ℤ) (N : ℤ)` using `Nat.isCoprime_iff_coprime.2 (ZMod.val_coe_unit_coprime a)`. Establish `hz1 : g (Complex.exp ((2 * Real.pi * Complex.I) / N)) = Complex.exp ((2 * Real.pi * Complex.I) * ((((a : ZMod N).val : ℕ) : ℤ) : ℂ) / N)`. Rewrite using `[← ch_one, hg 1, mul_one, ch, Int.cast_natCast]`. Establish `h` using `GlobalTheory.T.hilbert_eisenstein_jet_galois_conj_coefficients hE F hf s N (twist N L (α : Matrix (Fin 2) (Fin 2) (ZMod N))) hs (NeZero.pos N) (GlobalTheory.HilbFam.hasLevel_twist_of_hasLevel F N L _ hL) z hz g _ κ κ' _ _ hcop hz1 hκ hq`. Rewrite `h` using `[diag_eq, GlobalTheory.T.hilbertLatticeTwistByMatrixModN_mul F N L _ _ hL.2, ← Units.val_mul]`.
+
+Conclude with `h`.
+-/
 theorem qConj_family : EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) [NeZero N] (L : Lat F), 1 ≤ s → HasLevel N L → ∀ (z : ClassGroup (𝓞 F) → ℚ), ZetaVals (2 * s) z → ∀ (g : ℂ ≃+* ℂ) (a : (ZMod N)ˣ) (κ κ' : Emb F → ℕ) (y : Fin 2 → ZMod N), ZetaAct g N a → (∀ i j : Emb F, (∀ x : F, g ((i x : ℝ) : ℂ) = ((j x : ℝ) : ℂ)) → κ' j = κ i) → y ≠ 0 → ∀ α : GL (Fin 2) (ZMod N), QConj g N (hfun (2 * s) (twist N L ((α : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) κ (wB N (vmul y (α)))) (hfun (2 * s) (twist N L ((α * dg a : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) κ' (wB N (vmul y (α * dg a)))) := by
   intro hE F _ _ _ hf s N _ L hs hL z hz g a κ κ' y hg hκ hy α
   have hact := GlobalTheory.WpFam.Act.rightActions N

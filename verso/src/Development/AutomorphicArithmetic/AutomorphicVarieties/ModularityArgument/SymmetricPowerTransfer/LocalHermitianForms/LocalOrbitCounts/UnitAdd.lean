@@ -11,6 +11,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite k`. Establish `hodd : Fintype.card k % 2 = 1`. Establish `hc : ringChar k ≠ 2`. Introduce `hc`. Apply `h2` to reduce the goal to its premises.
+
+Establish `h0` using `ringChar.Nat.cast_ringChar (R := k)`. Rewrite `h0` using `[hc]`. Conclude with `h0` after adjusting the coercions. Use `(FiniteField.even_card_iff_char_two (F := k)).not.1 hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (f := Polynomial.X ^ 2 - Polynomial.C u) (g := Polynomial.C (-e) * Polynomial.X ^ 2) (Polynomial.degree_X_pow_sub_C (by norm_num) u) (Polynomial.degree_C_mul_X_pow 2 (neg_ne_zero.2 he)) hodd`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul] at hab`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hb : b ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hu` to reduce the goal to its premises. Take the linear combination `-hab`. Use `⟨e * b * (2 / (1 - e)), b * ((1 + e) / (1 - e)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero he hb) (div_ne_zero h2 he1)`.
+
+Establish `key : (e * b * (2 / (1 - e))) ^ 2 - e * (b * ((1 + e) / (1 - e))) ^ 2 = -e * b ^ 2 * ((1 - e) / (1 - e)) ^ 2` using `by ring`. Rewrite using `[key, div_self he1, one_pow, mul_one]`. Take the linear combination `hab`. Conclude with `⟨a, b, ha, by linear_combination hab⟩`.
+-/
 private theorem res_rep {k : Type} [Field k] [Finite k] (h2 : (2 : k) ≠ 0) {e u : k} (he : e ≠ 0) (he1 : 1 - e ≠ 0) (hu : u ≠ 0) :
     ∃ a b : k, a ≠ 0 ∧ a ^ 2 - e * b ^ 2 = u := by
   classical
@@ -43,6 +54,27 @@ private theorem res_rep {k : Type} [Field k] [Finite k] (h2 : (2 : k) ≠ 0) {e 
       linear_combination hab
   · exact ⟨a, b, ha, by linear_combination hab⟩
 
+/- English proof (translation)
+Use `haveI := L.fin`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal O) O := L.compl`. Establish `hu0 : IsLocalRing.residue O u ≠ 0` using `(u.isUnit.map (IsLocalRing.residue O)).ne_zero`. Establish `he0 : IsLocalRing.residue O e ≠ 0` using `(e.isUnit.map (IsLocalRing.residue O)).ne_zero`. Establish `he1 : 1 - IsLocalRing.residue O e ≠ 0`.
+
+Rewrite using `[← map_one (IsLocalRing.residue O), ← map_sub]`. Conclude with `(he.map (IsLocalRing.residue O)).ne_zero`. Establish `h2 : (2 : IsLocalRing.ResidueField O) ≠ 0`. Establish `h3` using `L.two.map (IsLocalRing.residue O)`. Rewrite `h3` using `[map_ofNat]`.
+
+Conclude with `h3.ne_zero`. Take `⟨a, b, ha, hab⟩` from `res_rep h2 he0 he1 hu0`. Take `⟨x0, rfl⟩` from `IsLocalRing.residue_surjective a`. Take `⟨y0, rfl⟩` from `IsLocalRing.residue_surjective b`. Establish `hx0 : IsUnit x0`.
+
+Assume the negation of the conclusion as `hx`. Apply `ha` to reduce the goal to its premises. Conclude with `(IsLocalRing.residue_eq_zero_iff x0).2 ((IsLocalRing.mem_maximalIdeal _).2 hx)`. Take `⟨c, hc⟩ : ∃ c : O, c = (u : O) + e * y0 ^ 2` from `⟨_, rfl⟩`. Set `P : Polynomial O` to `Polynomial.X ^ 2 - Polynomial.C c`.
+
+Establish `hPm : P.Monic` using `Polynomial.monic_X_pow_sub_C _ (by norm_num)`. Establish `hP0 : P.eval x0 ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Simplify using `only [P, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C]`. Rewrite using `[hc]`.
+
+Simplify using `only [map_sub, map_pow, map_add, map_mul]`. Take the linear combination `hab`. Establish `hd : P.derivative.eval x0 = 2 * x0`. Simplify using `only [P, Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_C, sub_zero, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Evaluate the numerical expressions.
+
+Establish `hP1 : IsUnit (P.derivative.eval x0)`. Rewrite using `[hd]`. Conclude with `L.two.mul hx0`. Take `⟨x, hx, hxx⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O) P hPm x0 hP0 (hP1.map _)`. Establish `hxu : IsUnit x`.
+
+Assume the negation of the conclusion as `hn`. Establish `h5 : x ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Establish `h6` using `Ideal.sub_mem _ h5 hxx`. Rewrite `h6` using `[sub_sub_cancel]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h6 hx0`.
+
+Use `⟨hxu.unit, y0, ?_⟩` and prove the remaining obligations. Establish `hx' : x ^ 2 - c = 0`. Establish `h4` using `hx.eq_zero`. Simplify `h4` using `[P]`. Rewrite using `[IsUnit.unit_spec]`.
+
+Take the linear combination `hx' + hc`.
+-/
 private theorem int_rep {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ : K} (L : IsLoc O Δ)
     (e u : Oˣ) (he : IsUnit (1 - (e : O))) : ∃ (x : Oˣ) (y : O), (x : O) ^ 2 - e * y ^ 2 = u := by
   classical
@@ -95,6 +127,17 @@ private theorem int_rep {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuat
   rw [IsUnit.unit_spec]
   linear_combination hx' + hc
 
+/- English proof (translation)
+Establish `hw : IsIntegral O (⟨0, s⟩ : Lsq K Δ)`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `hsq : (⟨0, s⟩ : Lsq K Δ) ^ 2 = algebraMap O (Lsq K Δ) e`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ) e]`. Use `ext`.
+
+Simplify using `only [pow_two, QuadraticAlgebra.re_mul, QuadraticAlgebra.algebraMap_re]`. Take the linear combination `h`. Simplify using `only [pow_two, QuadraticAlgebra.im_mul, QuadraticAlgebra.algebraMap_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsq]`.
+
+Conclude with `isIntegral_algebraMap`. Establish `he : (⟨algebraMap O K x, s * algebraMap O K y⟩ : Lsq K Δ) = algebraMap O (Lsq K Δ) x + algebraMap O (Lsq K Δ) y * ⟨0, s⟩`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ) x, IsScalarTower.algebraMap_apply O K (Lsq K Δ) y]`. Use `ext`. Simplify using `only [QuadraticAlgebra.re_add, QuadraticAlgebra.re_mul, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [QuadraticAlgebra.im_add, QuadraticAlgebra.im_mul, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im]`. Expand and normalize the polynomial expressions, which then agree. Use `show IsIntegral O _`. Rewrite using `[he]`.
+
+Conclude with `isIntegral_algebraMap.add (isIntegral_algebraMap.mul hw)`.
+-/
 private theorem int_co {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ s : K} {e : O} (h : Δ * s ^ 2 = algebraMap O K e) (x y : O) :
     IsInt O (⟨algebraMap O K x, s * algebraMap O K y⟩ : Lsq K Δ) := by
   have hw : IsIntegral O (⟨0, s⟩ : Lsq K Δ) := by
@@ -122,6 +165,11 @@ private theorem int_co {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ s :
   rw [he]
   exact isIntegral_algebraMap.add (isIntegral_algebraMap.mul hw)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1 : a + b ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 h`. Establish `h2 : a ∈ IsLocalRing.maximalIdeal O`. Establish `h3` using `Ideal.sub_mem _ h1 hb`. Rewrite `h3` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).1 h2 ha`.
+-/
 private theorem unit_add {O : Type} [CommRing O] [IsLocalRing O] {a b : O} (ha : IsUnit a) (hb : b ∈ IsLocalRing.maximalIdeal O) :
     IsUnit (a + b) := by
   by_contra h
@@ -131,6 +179,51 @@ private theorem unit_add {O : Type} [CommRing O] [IsLocalRing O] {a b : O} (ha :
     rwa [add_sub_cancel_right] at h3
   exact (IsLocalRing.mem_maximalIdeal _).1 h2 ha
 
+/- English proof (translation)
+Take `⟨u0, s0, hs00, hΔ⟩` from `L.even`. Establish `hL` using `hsLaw O K Δ L`. Establish `hre : Δ * (s0⁻¹) ^ 2 = algebraMap O K u0`. Rewrite using `[hΔ]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hN : ∀ x y : K, QuadraticAlgebra.norm (⟨x, s0⁻¹ * y⟩ : Lsq K Δ) = x ^ 2 - algebraMap O K u0 * y ^ 2`. Introduce `x y`. Rewrite using `[QuadraticAlgebra.norm_def]`. Simplify using `only`. Take the linear combination `(-(y ^ 2)) * hre`.
+
+Establish `hT : ∀ x1 y1 x2 y2 : K, QuadraticAlgebra.trace ((⟨x1, s0⁻¹ * y1⟩ : Lsq K Δ) * ⟨x2, s0⁻¹ * y2⟩) = 2 * (x1 * x2 + algebraMap O K u0 * y1 * y2)`. Introduce `x1 y1 x2 y2`. Use `show 2 * ((⟨x1, s0⁻¹ * y1⟩ : Lsq K Δ) * ⟨x2, s0⁻¹ * y2⟩).re + 0 * _ = _`. Simplify using `only [QuadraticAlgebra.re_mul]`. Take the linear combination `(2 * y1 * y2) * hre`.
+
+Establish `hS0 : (ε : O) * s ^ 2 ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hm 2 two_pos)`. Distinguish the cases in `hu1 : IsUnit (1 - (u0 : O))`. Establish `hinv1 : IsUnit (1 - ((u0⁻¹ : Oˣ) : O))`. Establish `e0 : 1 - ((u0⁻¹ : Oˣ) : O) = -((u0⁻¹ : Oˣ) : O) * (1 - u0)`. Take the linear combination `-(Units.inv_mul u0)`.
+
+Rewrite using `[e0]`. Conclude with `((u0⁻¹).isUnit.neg).mul hu1`. Take `⟨a2, a1, ha⟩` from `int_rep L u0⁻¹ (u0⁻¹ * ε) hinv1`. Take `⟨y, x, hxy⟩` from `int_rep L u0⁻¹ u0⁻¹ hinv1`. Rewrite `ha` using `[Units.val_mul]`.
+
+Establish `hu` using `Units.mul_inv u0`. Establish `ha' : a1 ^ 2 - (u0 : O) * (a2 : O) ^ 2 = -(ε : O)`. Take the linear combination `(-(u0 : O)) * ha - (a1 ^ 2 + ε) * hu`. Establish `hxy' : x ^ 2 - (u0 : O) * (y : O) ^ 2 = -1`. Take the linear combination `(-(u0 : O)) * hxy - (x ^ 2 + 1) * hu`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ, hσu⟩ : ∃ σ : O, σ ^ 2 = 1 ∧ IsUnit (x * a1 + u0 * (σ * y) * a2) := by`. Distinguish the cases in `h1 : IsUnit (x * a1 + u0 * y * a2)`. Conclude with `⟨1, one_pow _, by simpa using h1⟩`. Use `⟨-1, by ring, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h2`.
+
+Establish `m1` using `(IsLocalRing.mem_maximalIdeal _).2 h1`. Establish `m2` using `(IsLocalRing.mem_maximalIdeal _).2 h2`. Establish `m3` using `Ideal.sub_mem _ m1 m2`. Establish `e3 : x * a1 + (u0 : O) * y * a2 - (x * a1 + u0 * (-1 * y) * a2) = 2 * (u0 * (y * a2))` using `by ring`. Rewrite `m3` using `[e3]`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).1 m3 (L.two.mul (u0.isUnit.mul (y.isUnit.mul a2.isUnit)))`. Establish `hw` using `unit_add (L.two.mul hσu) (Ideal.mul_mem_left _ (ε : O) hm)`. Use `⟨s0⁻¹, u0, ⟨algebraMap O K x, s0⁻¹ * algebraMap O K (σ * y)⟩, ⟨algebraMap O K (s * a1), s0⁻¹ * algebraMap O K (s * a2)⟩, algebraMap O K s, a2, hw.unit, hre, int_co hre _ _, ?_, ?_, hs0, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Establish `k1 : (x : O) ^ 2 - u0 * (σ * y) ^ 2 = -1`.
+
+Take the linear combination `hxy' - ((u0 : O) * (y : O) ^ 2) * hσ`. Establish `k2` using `congrArg (algebraMap O K) k1`. Simplify using `only [map_sub, map_mul, map_pow, map_neg, map_one] at k2`. Simplify using `only [map_mul]`. Take the linear combination `k2`.
+
+Rewrite using `[hN]`. Establish `k1 : (s * a1) ^ 2 - (u0 : O) * (s * a2) ^ 2 = -(ε * s ^ 2)`. Take the linear combination `s ^ 2 * ha'`. Establish `k2` using `congrArg (algebraMap O K) k1`. Simplify using `only [map_sub, map_mul, map_pow, map_neg] at k2`.
+
+Simplify using `only [map_mul, map_pow, map_neg]`. Take the linear combination `k2`. Use `show s0⁻¹ * algebraMap O K (s * a2) = s0⁻¹ * (algebraMap O K a2 * algebraMap O K s)`. Rewrite using `[map_mul, mul_comm (algebraMap O K s)]`. Rewrite using `[hT, IsUnit.unit_spec]`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm1 : (u0 : O) - 1 ^ 2 ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `h`.
+
+Apply `hu1` to reduce the goal to its premises. Establish `h'` using `h.neg`. Rewrite `h'` using `[neg_sub, one_pow]`. Then use the resulting hypothesis. Take `⟨c, hc, hc1⟩` from `sqrtO O K Δ L u0 1 isUnit_one hm1`. Establish `hcu : IsUnit c` using `by simpa using unit_add isUnit_one hc1`.
+
+Establish `hΔ0 : Δ ≠ 0`. Rewrite using `[hΔ]`. Conclude with `mul_ne_zero (u0.isUnit.map (algebraMap O K)).ne_zero (pow_ne_zero _ hs00)`. Establish `hsq : IsSquare Δ` using `⟨algebraMap O K c * s0, by rw [hΔ, ← hc, map_pow]; ring⟩`. Establish `h1` using `unit_add isUnit_one hS0`.
+
+Establish `h12` using `unit_add isUnit_one (Ideal.mul_mem_left _ 2 hS0)`. Establish `hci` using `hcu.mul_val_inv`. Establish `h2` using `L.two.mul_val_inv`. Establish `h1i` using `h1.mul_val_inv`. Use `set ci : O := ((hcu.unit⁻¹ : Oˣ) : O)`.
+
+Use `set h2i : O := ((L.two.unit⁻¹ : Oˣ) : O)`. Use `set u1i : O := ((h1.unit⁻¹ : Oˣ) : O)`. Establish `hbu : IsUnit (ci * h2i * (1 + ε * s ^ 2))` using `((hcu.unit⁻¹).isUnit.mul (L.two.unit⁻¹).isUnit).mul h1`. Use `⟨s0⁻¹, u0, ⟨algebraMap O K 0, s0⁻¹ * algebraMap O K ci⟩, ⟨algebraMap O K (h2i * (1 - ε * s ^ 2)), s0⁻¹ * algebraMap O K (ci * h2i * (1 + ε * s ^ 2))⟩, algebraMap O K (ci * h2i * (1 + ε * s ^ 2)), 1, h12.unit * hcu.unit * L.two.unit * h1.unit⁻¹, hre, int_co hre _ _, ?_, ?_, (hbu.m …` and prove the remaining obligations. Rewrite using `[hN]`.
+
+Establish `k1 : (0 : O) ^ 2 - u0 * ci ^ 2 = -1`. Take the linear combination `(ci ^ 2) * hc - (c * ci + 1) * hci`. Establish `k2` using `congrArg (algebraMap O K) k1`. Simplify using `only [map_sub, map_mul, map_pow, map_neg, map_one] at k2`. Take the linear combination `k2`.
+
+Rewrite using `[hN]`. Establish `k1 : (h2i * (1 - ε * s ^ 2)) ^ 2 - (u0 : O) * (ci * h2i * (1 + ε * s ^ 2)) ^ 2 = -(ε * s ^ 2)`. Take the linear combination `(ci ^ 2 * h2i ^ 2 * (1 + ε * s ^ 2) ^ 2) * hc - ((c * ci + 1) * h2i ^ 2 * (1 + ε * s ^ 2) ^ 2) * hci - ((ε * s ^ 2) * (2 * h2i + 1)) * h2`. Establish `k2` using `congrArg (algebraMap O K) k1`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_neg, map_one] at k2`.
+
+Simplify using `only [map_sub, map_add, map_mul, map_pow, map_neg, map_one]`. Take the linear combination `k2`. Rewrite using `[hL.2.2.2 _ _ hΔ0 hsq, hL.2.2.2 _ _ hΔ0 hsq]`. Use `show s0⁻¹ * algebraMap O K (ci * h2i * (1 + ε * s ^ 2)) = s0⁻¹ * (algebraMap O K ((1 : Oˣ) : O) * algebraMap O K (ci * h2i * (1 + ε * s ^ 2)))`. Rewrite using `[Units.val_one, map_one, one_mul]`.
+
+Rewrite using `[hT]`. Simplify using `only [Units.val_mul, IsUnit.unit_spec]`. Establish `k1 : ε * s ^ 2 + 2 * (0 * (h2i * (1 - ε * s ^ 2)) + (u0 : O) * ci * (ci * h2i * (1 + ε * s ^ 2))) = (1 + 2 * (ε * s ^ 2)) * c * 2 * u1i * (ci * h2i * (1 + ε * s ^ 2))`. Take the linear combination `(-(2 * ci ^ 2 * h2i * (1 + ε * s ^ 2))) * hc + ((1 + ε * s ^ 2) * (c * ci + 1) * (2 * h2i) - (1 + 2 * (ε * s ^ 2)) * (2 * h2i) * ((1 + ε * s ^ 2) * u1i)) * hci + ((1 + ε * s ^ 2) - (1 + 2 * (ε * s ^ 2)) * ((1 + ε * s ^ 2) * u1i)) * h2 - (1 + 2 * (ε * s ^ 2)) * h1i`. Establish `k2` using `congrArg (algebraMap O K) k1`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_zero, map_ofNat, map_one] at k2`. Simplify using `only [map_add, map_mul, map_pow, map_zero, map_ofNat, map_one]`. Take the linear combination `k2`.
+-/
 private theorem choice {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ : K} (L : IsLoc O Δ)
     (s : O) (ε : Oˣ) (hs0 : algebraMap O K s ≠ 0) (hm : s ∈ IsLocalRing.maximalIdeal O) :
     ∃ (r : K) (e : Oˣ) (ν p : Lsq K Δ) (b : K) (v w : Oˣ), Δ * r ^ 2 = algebraMap O K e ∧ IsInt O ν ∧ QuadraticAlgebra.norm ν = -1 ∧
@@ -260,6 +353,11 @@ private theorem choice {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
       simp only [map_add, map_mul, map_pow, map_zero, map_ofNat, map_one]
       linear_combination k2
 
+/- English proof (translation)
+Take `⟨x, y⟩` from `u`. Establish `e1` using `congrArg QuadraticAlgebra.re hu`. Establish `e2` using `congrArg QuadraticAlgebra.im hu`. Simplify using `only [pow_two, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.omega_re, QuadraticAlgebra.omega_im] at e1 e2`. Simplify using `only [QuadraticAlgebra.norm_def] at hn`.
+
+Use `show (2 * x + τ * y) ^ 2 = 2 - τ`. Take the linear combination `2 * e1 + 2 * hn + τ * e2`.
+-/
 private theorem root_tr {K : Type} [Field K] {τ : K} {u : Etau K τ} (hu : u ^ 2 = -ω) (hn : QuadraticAlgebra.norm u = 1) :
     QuadraticAlgebra.trace u ^ 2 = 2 - τ := by
   obtain ⟨x, y⟩ := u
@@ -271,6 +369,49 @@ private theorem root_tr {K : Type} [Field K] {τ : K} {u : Etau K τ} (hu : u ^ 
   show (2 * x + τ * y) ^ 2 = 2 - τ
   linear_combination 2 * e1 + 2 * hn + τ * e2
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `u`. Establish `e1` using `congrArg QuadraticAlgebra.re hu`. Establish `e2` using `congrArg QuadraticAlgebra.im hu`. Simplify using `only [pow_two, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.omega_re, QuadraticAlgebra.omega_im] at e1 e2`. Simplify using `only [QuadraticAlgebra.norm_def] at hn`.
+
+Establish `h0 : (2 + τ) * (b * (a + b)) = 0` using `by linear_combination e2 + hn - e1`. Establish `hb0 : b ≠ 0`. Introduce `hb`. Substitute `hb` using the available equality. Establish `h3 : (1 : K) = 0` using `by linear_combination -hn + e1`.
+
+Conclude with `one_ne_zero h3`. Establish `hab : a = -b`. Establish `h4` using `(mul_eq_zero.1 h0).resolve_left hτ`. Establish `h5` using `(mul_eq_zero.1 h4).resolve_left hb0`. Take the linear combination `h5`.
+
+Substitute `hab` using the available equality. Establish `eb : (2 - τ) * b ^ 2 = 1` using `by linear_combination hn`. Take `⟨p1, p2⟩` from `p`. Simplify using `only [QuadraticAlgebra.norm_def] at hp`. Express the relevant statement in the definitionally equal form `p2 ≠ 0 at hi`.
+
+Express the relevant statement in the definitionally equal form `g * r * (2 * (-b) + τ * b) = 2 * p2 at hg`. Establish `hgr : g * r = -2 * b * p2` using `by linear_combination (-(g * r)) * eb - b * hg`. Establish `hc : (2 + τ)⁻¹ * (2 + τ) = 1` using `inv_mul_cancel₀ hτ`. Use `set c := (2 + τ)⁻¹ with hcdef`. Establish `hZi : star (((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) = (⟨c, c⟩ : Etau K τ)`.
+
+Establish `hz1 : star (z : Etau K τ) * (⟨c, c⟩ : Etau K τ) = 1`. Rewrite using `[hz]`. Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re_st …`. Take the linear combination `hc`.
+
+Simplify using `only [QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re_st …`. Expand and normalize the polynomial expressions, which then agree. Establish `hz2 : star (((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) * star (z : Etau K τ) = 1`. Rewrite using `[← star_mul', Units.inv_mul, star_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hz1, mul_one]`. Use `_ = ⟨c, c⟩ := by rw [← mul_assoc, hz2, one_mul]`. Establish `h2τ : 2 - τ ≠ 0`. Introduce `h`. Rewrite `eb` using `[h, zero_mul]`.
+
+Conclude with `zero_ne_one eb`. Establish `hD : τ ^ 2 - 4 ≠ 0`. Establish `h6 : τ ^ 2 - 4 = -((2 + τ) * (2 - τ))` using `by ring`. Rewrite using `[h6]`. Conclude with `neg_ne_zero.2 (mul_ne_zero hτ h2τ)`.
+
+Establish `h4 : (4 : K) ≠ 0`. Establish `h7 : (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[h7]`. Conclude with `mul_ne_zero h2 h2`. Set `y0 : EL Δ τ` to `⟨⟨p1 - τ * b, p2⟩, ⟨2 * b, 0⟩⟩`.
+
+Set `M : EL Δ τ` to `⟨⟨0, 2 * τ * b * p2⟩, ⟨0, -4 * b * p2⟩⟩`. Use `set κ : K := 4 * b ^ 2 * p2 ^ 2 * Δ * (τ ^ 2 - 4) with hκdef`. Establish `hκ : κ ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero h4 (pow_ne_zero _ hb0)) (pow_ne_zero _ hi)) hΔ) hD`. Establish `hM : y0 * star (sigL y0) = M`. Use `QuadraticAlgebra.ext (QuadraticAlgebra.ext ?_ ?_) (QuadraticAlgebra.ext ?_ ?_)` and prove the remaining obligations.
+
+Simplify using `only [y0, M, sigL, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadratic …`. Take the linear combination `hp + (2 + τ) * eb`. Simplify using `only [y0, M, sigL, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadratic …`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [y0, M, sigL, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadratic …`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [y0, M, sigL, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadratic …`. Expand and normalize the polynomial expressions, which then agree. Establish `hMM : M * M = κ • (1 : EL Δ τ)`. Use `QuadraticAlgebra.ext (QuadraticAlgebra.ext ?_ ?_) (QuadraticAlgebra.ext ?_ ?_)` and prove the remaining obligations.
+
+Simplify using `only [M, hκdef, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlg …`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [M, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re …`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [M, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re …`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [M, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re …`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : y0 * (star (sigL y0) * (κ⁻¹ • M)) = 1`. Rewrite using `[← mul_assoc, hM, mul_smul_comm, hMM, smul_smul, inv_mul_cancel₀ hκ, one_smul]`.
+
+Establish `hI3 : dLam (ν * (⟨p1, p2⟩ : Lsq K Δ)) z * sigL y0 = (ν • ofE Δ (⟨-b, b⟩ : Etau K τ)) * y0`. Unfold `dLam`. Rewrite using `[hZi]`. Take `⟨n1, n2⟩` from `ν`. Use `QuadraticAlgebra.ext (QuadraticAlgebra.ext ?_ ?_) (QuadraticAlgebra.ext ?_ ?_)` and prove the remaining obligations.
+
+Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `n1 * (c * hp - (1 + b * p1) * hc + eb) + Δ * n2 * ((-b * p2) * hc)`. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `n1 * ((-b * p2) * hc) + n2 * (c * hp - (1 + b * p1) * hc + eb)`. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`.
+
+Take the linear combination `n1 * (c * hp + (b * p1 - 1) * hc + eb) + Δ * n2 * ((b * p2) * hc)`. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `n1 * ((b * p2) * hc) + n2 * (c * hp + (b * p1 - 1) * hc + eb)`. Set `y : (EL Δ τ)ˣ` to `Units.mkOfMulEqOne y0 _ hinv`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show dLam (ν * (⟨p1, p2⟩ : Lsq K Δ)) z * sigL y0 * ((y⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = _`. Rewrite using `[hI3, mul_assoc]`. Establish `h8 : y0 * ((y⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = 1` using `Units.mul_inv y`. Rewrite using `[h8, mul_one]`. Introduce `t show (t • (1 : EL Δ τ)) * y0 * star (sigL y0) = _`.
+
+Use `QuadraticAlgebra.ext (QuadraticAlgebra.ext ?_ ?_) (QuadraticAlgebra.ext ?_ ?_)` and prove the remaining obligations. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `t * hp + t * (2 + τ) * eb`. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `t * τ * hgr`.
+
+Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, Quadrat …`. Take the linear combination `(-2 * t) * hgr`.
+-/
 private theorem move {K : Type} [Field K] {Δ τ : K} (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) (hτ : 2 + τ ≠ 0) {u : Etau K τ} (hu : u ^ 2 = -ω)
     (hn : QuadraticAlgebra.norm u = 1) (z : (Etau K τ)ˣ) (hz : (z : Etau K τ) = 1 + ω) (ν p : Lsq K Δ)
     (hp : QuadraticAlgebra.norm p = -(2 + τ)) (hi : p.im ≠ 0) (r g : K) (hg : g * r * QuadraticAlgebra.trace u = 2 * p.im) :
@@ -385,10 +526,70 @@ private theorem move {K : Type} [Field K] {Δ τ : K} (h2 : (2 : K) ≠ 0) (hΔ 
     · simp only [y0, sigL, ofE, QuadraticAlgebra.re_mul, QuadraticAlgebra.im_mul, QuadraticAlgebra.re_smul, QuadraticAlgebra.im_smul, QuadraticAlgebra.re_add, QuadraticAlgebra.im_add, QuadraticAlgebra.re_sub, QuadraticAlgebra.im_sub, QuadraticAlgebra.re_neg, QuadraticAlgebra.im_neg, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, QuadraticAlgebra.re_zero, QuadraticAlgebra.im_zero, QuadraticAlgebra.omega_re, QuadraticAlgebra.omega_im, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im, smul_eq_mul]
       linear_combination (-2 * t) * hgr
 
+/- English proof (translation)
+Unfold `hs`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private theorem hs_sq {K : Type} [Field K] (D x : K) : hs D x * hs D x = 1 := by
   unfold hs
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `UpperTheory.V.Z.Sym.Loc.KapM`. Introduce `O K _ _ _ _ _ Δ τ L hD hu0e s ε hm h2τ c hc z hz lam hlam hT`. Take `⟨u0, hu0⟩` from `hu0e`. Use `haveI := L.frac`. Establish `hinj` using `IsFractionRing.injective O K`.
+
+Establish `hunit : ∀ x : O, IsUnit x → algebraMap O K x ≠ 0` using `fun x hx => (hx.map (algebraMap O K)).ne_zero`. Establish `hevu : ∀ x : Oˣ, EvenVal O (algebraMap O K x)` using `fun x => ⟨x, 1, one_ne_zero, by simp⟩`. Establish `h2K : (2 : K) ≠ 0`. Establish `h3` using `hunit 2 L.two`. Rewrite `h3` using `[map_ofNat]`. Then use the resulting hypothesis.
+
+Establish `hΔ : Δ ≠ 0`. Take `⟨uu, ss, hss, hΔe⟩` from `L.even`. Rewrite using `[hΔe]`. Conclude with `mul_ne_zero (hunit _ uu.isUnit) (pow_ne_zero 2 hss)`. Establish `hc0 : c ≠ 0`.
+
+Take `⟨cu, cs, hcs, hce⟩` from `hc`. Rewrite using `[hce]`. Conclude with `mul_ne_zero (hunit _ cu.isUnit) (pow_ne_zero 2 hcs)`. Establish `h2t : (2 : K) + τ ≠ 0`. Introduce `h0`.
+
+Apply `hD` to reduce the goal to its premises. Take the linear combination `(τ - 2) * h0`. Establish `hs0 : algebraMap O K s ≠ 0`. Introduce `h0`. Apply `h2t` to reduce the goal to its premises.
+
+Rewrite using `[h2τ, map_mul, map_pow, h0]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2τ' : (2 : K) + τ = algebraMap O K ε * algebraMap O K s ^ 2`. Rewrite using `[h2τ, map_mul, map_pow]`. Establish `hDalg : τ ^ 2 - 4 = algebraMap O K (((-(u0 * ε) : Oˣ) : O) * s ^ 2)`.
+
+Simplify using `only [Units.val_neg, Units.val_mul, map_mul, map_neg, map_pow]`. Take the linear combination `(algebraMap O K ε * algebraMap O K s ^ 2) * hu0 - (2 - τ) * h2τ'`. Establish `hDv : EvenVal O (τ ^ 2 - 4)` using `⟨-(u0 * ε), algebraMap O K s, hs0, by rw [hDalg, map_mul, map_pow]⟩`. Establish `hL` using `hsLaw O K Δ L`. Establish `hτ0 : algebraMap O K ((ε : O) * s ^ 2 - 2) = τ`.
+
+Rewrite using `[map_sub, map_ofNat, ← h2τ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm0 : ((ε : O) * s ^ 2 - 2) + 2 ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[sub_add_cancel, pow_two, ← mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ hm`.
+
+Establish `hre : ((ε : O) * s ^ 2 - 2) - 2 * (((-1 : ℤˣ) : ℤ) : O) = ((ε : O) * s ^ 2 - 2) + 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨xr, yr, hyr, hsq, hnorm⟩` from `rootEx O K Δ τ L ((ε : O) * s ^ 2 - 2) (-1) hτ0 (by rw [hre]; exact hm0)`. Establish `hu2 : (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ) ^ 2 = -ω`.
+
+Rewrite using `[hsq]`. Simplify using the standard rewrite rules. Establish `htr : QuadraticAlgebra.trace (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ) = algebraMap O K (2 * xr + ((ε : O) * s ^ 2 - 2) * yr)` using `by show 2 * algebraMap O K xr + τ * algebraMap O K yr = _`. Rewrite using `[map_add, map_mul, map_mul, hτ0, map_ofNat]`. Establish `ht2` using `root_tr hu2 hnorm`.
+
+Establish `ht0u : IsUnit (2 * xr + ((ε : O) * s ^ 2 - 2) * yr)`. Establish `h5 : (2 * xr + ((ε : O) * s ^ 2 - 2) * yr) ^ 2 = u0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_pow, ← htr, ht2, hu0]`. Establish `h6 : IsUnit ((2 * xr + ((ε : O) * s ^ 2 - 2) * yr) ^ 2)`.
+
+Rewrite using `[h5]`. Conclude with `u0.isUnit`. Conclude with `(isUnit_pow_iff (by norm_num)).1 h6`. Take `⟨r, e, ν, p, b, v, w, hr, hν, hnν, hnp, hb0, hsb, hpim, hT2⟩` from `choice L s ε hs0 hm`. Establish `hr0 : r ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hunit _ e.isUnit` to reduce the goal to its premises. Rewrite using `[← hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr0 : QuadraticAlgebra.trace (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ) ≠ 0`.
+
+Rewrite using `[htr]`. Conclude with `hunit _ ht0u`. Establish `hpim0 : p.im ≠ 0`. Rewrite using `[hpim]`. Conclude with `mul_ne_zero hr0 (mul_ne_zero (hunit _ v.isUnit) hb0)`.
+
+Take `⟨g, hgdef⟩ : ∃ g : K, g = 2 * p.im / (r * QuadraticAlgebra.trace (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ))` from `⟨_, rfl⟩`. Establish `hg : g * r * QuadraticAlgebra.trace (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ) = 2 * p.im`. Rewrite using `[hgdef]`. Clear the denominators using the available nonvanishing facts. Establish `hg0 : g ≠ 0`.
+
+Rewrite using `[hgdef]`. Conclude with `div_ne_zero (mul_ne_zero h2K hpim0) (mul_ne_zero hr0 htr0)`. Establish `hnp' : QuadraticAlgebra.norm p = -(2 + τ)` using `by rw [hnp, h2τ]`. Take `⟨y, hy1, hy2⟩` from `move h2K hΔ h2t hu2 hnorm z hz ν p hnp' hpim0 r g hg`. Establish `hcase : ∀ t : Kˣ, lcount O c (ν • ofE Δ (⟨algebraMap O K xr, algebraMap O K yr⟩ : Etau K τ)) (((↑t * g) • r • (ω : Lsq K Δ)) • ofE Δ (ω - star ω : Etau K τ)) = pcount O τ (↑t * (g * (τ ^ 2 - 4)))`.
+
+Introduce `t`. Establish `h7` using `caseM O K Δ τ L hD ((ε : O) * s ^ 2 - 2) hτ0 hm0 c hc _ hu2 hnorm ν hν hnν r e hr (t * Units.mk0 g hg0)`. Rewrite `h7` using `[Units.val_mul, Units.val_mk0, mul_assoc]`. Conclude with `h7`. Establish `hK2 : kapSum O c (dLam (ν * p) z) 1 = ∑ᶠ t : Kˣ ⧸ NE τ, hs (τ ^ 2 - 4) ((Quotient.out t : Kˣ) : K) * pcount O τ (((Quotient.out t : Kˣ) : K) * (g * (τ ^ 2 - 4)))`.
+
+Unfold `UpperTheory.V.Z.Sym.Loc.kapSum`. Use `finsum_congr (fun t => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[(datIso O K Δ τ c (dLam (ν * p) z) (((Quotient.out t : Kˣ) : K) • (1 : EL Δ τ)) y).1, hy1, hy2, hcase]`. Establish `hinvf : ∀ t ∈ NE τ, ∀ x : Kˣ, (fun t : Kˣ => pcount O τ (t : K)) (t * x) = (fun t : Kˣ => pcount O τ (t : K)) x`.
+
+Introduce `t ht x`. Simplify using `only [Units.val_mul]`. Conclude with `pNorm O K Δ τ L t ht x`. Establish `hSS` using `(sumShift O K Δ τ L hD (fun t : Kˣ => pcount O τ (t : K)) hinvf (Units.mk0 g hg0 * Units.mk0 _ hD)).2.1`. Simplify using `only [Units.val_mul, Units.val_mk0] at hSS`.
+
+Establish `hPK` using `pKappa O K Δ τ L hD ⟨_, hτ0⟩ s (-(u0 * ε)) hDalg`. Rewrite `hSS` using `[hPK]`. Rewrite `hK2` using `[hSS]`. Establish `hsDD : hs (τ ^ 2 - 4) (τ ^ 2 - 4) = 1`. Establish `h8 : hs (τ ^ 2 - 4) (-(τ ^ 2 - 4)) = 1`.
+
+Unfold `UpperTheory.V.Z.Sym.Loc.hs`. Rewrite using `[if_pos ⟨0, 1, by ring⟩]`. Establish `h9 : hs (τ ^ 2 - 4) (-1) = 1` using `hL.2.1 _ _ hDv ⟨-1, 1, one_ne_zero, by simp⟩`. Establish `h10` using `hsMul O K Δ L (τ ^ 2 - 4) (-1) (-(τ ^ 2 - 4)) hD (by norm_num) (neg_ne_zero.2 hD)`. Rewrite `h10` using `[show (-1 : K) * -(τ ^ 2 - 4) = τ ^ 2 - 4 by ring, h9, h8, one_mul]`.
+
+Conclude with `h10`. Establish `e2v : EvenVal O (algebraMap O K (2 * v))`. Establish `h11` using `hevu (L.two.unit * v)`. Simplify using `using h11`. Establish `et0 : EvenVal O (algebraMap O K (2 * xr + ((ε : O) * s ^ 2 - 2) * yr))`.
+
+Establish `h11` using `hevu ht0u.unit`. Simplify using `using h11`. Establish `hgb : g / b = algebraMap O K (2 * v) * (algebraMap O K (2 * xr + ((ε : O) * s ^ 2 - 2) * yr))⁻¹`. Rewrite using `[hgdef, hpim, htr, map_mul, map_ofNat]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hevgb : EvenVal O (g / b)`. Rewrite using `[hgb]`. Conclude with `PS.even_mul e2v (PS.even_inv et0)`. Establish `hsDg : hs (τ ^ 2 - 4) (g * (τ ^ 2 - 4)) = hs (τ ^ 2 - 4) b`. Rewrite using `[hsMul O K Δ L _ _ _ hD hg0 hD, hsDD, mul_one, show g = g / b * b by field_simp, hsMul O K Δ L _ _ _ hD (div_ne_zero hg0 hb0) hb0, hL.2.1 _ _ hDv hevgb, one_mul]`.
+
+Establish `heps2 : eps τ (ν * p) = hs Δ (algebraMap O K s) * hs (τ ^ 2 - 4) b`. Unfold `UpperTheory.V.Z.Sym.Loc.eps`. Rewrite using `[show (2 : K) + τ + QuadraticAlgebra.trace (ν * p) = algebraMap O K w * b by rw [h2τ, hT2], hsMul O K Δ L _ _ _ hD (hunit _ w.isUnit) hb0, hsMul O K Δ L _ _ _ hΔ (hunit _ w.isUnit) hb0, hL.2.1 _ _ hDv (hevu w), hL.2.1 _ _ L.even (hevu w), hsb]`. Expand and normalize the polynomial expressions, which then agree. Establish `heps1 : eps τ lam * eps τ lam = 1`.
+
+Unfold `UpperTheory.V.Z.Sym.Loc.eps`. Take the linear combination `(hs Δ (2 + τ + QuadraticAlgebra.trace lam) * hs Δ (2 + τ + QuadraticAlgebra.trace lam)) * hs_sq (τ ^ 2 - 4) (2 + τ + QuadraticAlgebra.trace lam) + hs_sq Δ (2 + τ + QuadraticAlgebra.trace lam)`. Establish `hnνp : QuadraticAlgebra.norm (ν * p) = 2 + τ`. Rewrite using `[map_mul, hnν, hnp, ← h2τ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTνp : 2 + τ + QuadraticAlgebra.trace (ν * p) ≠ 0`. Rewrite using `[h2τ, hT2]`. Conclude with `mul_ne_zero (hunit _ w.isUnit) hb0`. Establish `hM` using `kapMove O K Δ τ L hD c hc0 z hz lam (ν * p) hlam hnνp hT hTνp`. Rewrite `hM` using `[hK2, heps2, hsDg]`.
+
+Take the linear combination `(-(kapSum O c (dLam lam z) 1)) * heps1 + eps τ lam * hM + (eps τ lam * hs Δ (algebraMap O K s) * (Nat.card (O ⧸ Ideal.span {s}) : ℂ)) * hs_sq (τ ^ 2 - 4) b`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.kapM :
     UpperTheory.V.Z.Sym.Loc.KapM := by
   unfold UpperTheory.V.Z.Sym.Loc.KapM

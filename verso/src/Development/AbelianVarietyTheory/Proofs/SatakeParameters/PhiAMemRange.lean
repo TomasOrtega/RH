@@ -12,6 +12,15 @@ namespace GlobalTheory.TwV.Xc.OrdA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n p : ℕ} {G : GAtP p}
 
+/- English proof (translation)
+Use `haveI := (G.P.setting v).frac_alt`. Establish `key : RInt F E ≤ (algebraMap (G.P.W v) (G.P.Qq v)).range.comap (phiA A v)` using `by show Subring.closure _ ≤ _`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨e, he⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩)`. Take `⟨a, rfl⟩` from `he show phiA A v ((algebraMap (𝓞 E) E a) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`.
+
+Rewrite using `[phiA_incl]`. Establish `hint : IsIntegral ℤ (A.iw v (algebraMap (𝓞 E) E a))` using `(RingOfIntegers.isIntegral_coe a).map (A.iw v).toIntAlgHom`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hint.tower_top (A := G.P.W v))`. Conclude with `⟨y, hy⟩`. Use `show phiA A v ((1 : E) ⊗ₜ[F] c) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`.
+
+Establish `h1 : phiA A v ((1 : E) ⊗ₜ[F] c) = (A.eQ v).symm (c (A.pl v).1)`. Establish `h2 : prV (E` using `E) (A.pl v).1 ((1 : E) ⊗ₜ[F] c) = (1 : E) ⊗ₜ[F] c (A.pl v).1 := rfl`. Establish `h3 : A.ph v ((1 : E) ⊗ₜ[F] c (A.pl v).1) = c (A.pl v).1` using `by show (A.spl v ((1 : E) ⊗ₜ[F] c (A.pl v).1)).1 = _`. Rewrite using `[hS v]`. Use `show (A.eQ v).symm (A.ph v (prV (E := E) (A.pl v).1 ((1 : E) ⊗ₜ[F] c))) = _`.
+
+Rewrite using `[h2, h3]`. Rewrite using `[h1]`. Conclude with `(hI v _).2 (by rw [RingEquiv.apply_symm_apply]; exact hc (A.pl v).1)`. Conclude with `key hx`.
+-/
 theorem phiA_mem_range (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G.P.nV)
     {x : AfE F E} (hx : x ∈ RInt F E) : phiA A v x ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range := by
   haveI := (G.P.setting v).frac_alt
@@ -38,6 +47,11 @@ theorem phiA_mem_range (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : 
       exact (hI v _).2 (by rw [RingEquiv.apply_symm_apply]; exact hc (A.pl v).1)
   exact key hx
 
+/- English proof (translation)
+Use `haveI := (G.P.setting v).frac_alt`. Take `⟨a, ha⟩` from `phiA_mem_range A hI hS v (x := (k : AfE F E)) hk.1`. Take `⟨b, hb⟩` from `phiA_mem_range A hI hS v (x := ((k⁻¹ : (AfE F E)ˣ) : AfE F E)) hk.2`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective (G.P.W v) (G.P.Qq v)` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ha, hb, ← map_mul, Units.mul_inv, map_one, map_one]`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩`.
+-/
 theorem phiA_intU (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G.P.nV) {k : (AfE F E)ˣ}
     (hk : k ∈ intU F E) : ∃ u : (G.P.W v)ˣ, phiA A v (k : AfE F E) = algebraMap (G.P.W v) (G.P.Qq v) u := by
   haveI := (G.P.setting v).frac_alt
@@ -48,6 +62,11 @@ theorem phiA_intU (A : LocAt F E n G) (hI : LocInt A) (hS : SplAlg A) (v : Fin G
     rw [map_mul, ha, hb, ← map_mul, Units.mul_inv, map_one, map_one]
   exact ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩
 
+/- English proof (translation)
+Use `haveI := (G.P.setting v).frac_alt`. Establish `hp` using `(G.P.setting v).p_unif`. Take `⟨a, u, ha⟩` from `exists_eq_unit_mul_zpow₂ hp (x.isUnit.map (phiA A v)).ne_zero`. Take `⟨b, u', hb⟩` from `exists_eq_unit_mul_zpow₂ hp (y.isUnit.map (phiA A v)).ne_zero`. Unfold `ordA`.
+
+Rewrite using `[Units.val_mul, map_mul, ha, hb, ordP_eq hp, ordP_eq hp, ← ordP_eq (Qq := G.P.Qq v) hp (a + b) (u * u')]`. Use `congr 1`. Rewrite using `[zpow_add₀ (pQ_ne hp), Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordA_mul (A : LocAt F E n G) (v : Fin G.P.nV) (x y : (AfE F E)ˣ) :
     ordA A v (x * y) = ordA A v x + ordA A v y := by
   haveI := (G.P.setting v).frac_alt
@@ -59,12 +78,22 @@ theorem ordA_mul (A : LocAt F E n G) (v : Fin G.P.nV) (x y : (AfE F E)ˣ) :
   congr 1
   rw [zpow_add₀ (pQ_ne hp), Units.val_mul, map_mul]; ring
 
+/- English proof (translation)
+Use `haveI := (G.P.setting v).frac_alt`. Use `ordP_eq (Qq := G.P.Qq v) (G.P.setting v).p_unif 0 u` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ordP_unit (v : Fin G.P.nV) (u : (G.P.W v)ˣ) :
     ordP (G.P.W v) p (algebraMap (G.P.W v) (G.P.Qq v) u) = 0 := by
   haveI := (G.P.setting v).frac_alt
   have := ordP_eq (Qq := G.P.Qq v) (G.P.setting v).p_unif 0 u
   simpa using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n p _ G A hI hS v`. Use `⟨ordA_mul A v, fun k hk => ?_, fun z => ?_, fun v' hv x hx => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `phiA_intU A hI hS v hk`. Unfold `ordA`. Rewrite using `[hu]`.
+
+Conclude with `ordP_unit v u`. Unfold `ordA`. Rewrite using `[← phiA_incl A v (z : E)]`. Both sides reduce to the same expression. Establish `hne : (A.pl v).1 ≠ (A.pl v').1` using `fun h => hv (A.pl.injective (Subtype.ext h)).symm`.
+
+Establish `h1 : phiA A v (x : AfE F E) = 1`. Simplify using `only [phiA, RingHom.comp_apply, hx _ hne, map_one]`. Unfold `ordA`. Rewrite using `[h1, ← map_one (algebraMap (G.P.W v) (G.P.Qq v)), ← Units.val_one]`. Conclude with `ordP_unit v 1`.
+-/
 theorem ordA_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n p : ℕ) [Fact p.Prime]
     (G : GAtP p) (A : LocAt F E n G), LocInt A → SplAlg A → ∀ v, (∀ x y, ordA A v (x * y) = ordA A v x + ordA A v y) ∧
     (∀ k ∈ intU F E, ordA A v k = 0) ∧ (∀ z : Eˣ, ordA A v (ratId F E z) = ordP (G.P.W v) p (A.iw v (z : E))) ∧

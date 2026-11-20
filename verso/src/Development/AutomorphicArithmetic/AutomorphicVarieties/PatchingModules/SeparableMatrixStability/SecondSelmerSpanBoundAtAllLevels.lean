@@ -16,37 +16,70 @@ namespace Glob.Hom
 
 variable {G G' : Glob l L} (h : G.Hom G')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_p₀ (g : G.G₀) : (h.p₀ g : G'.Γ) = h.p g := rfl
 
+/- English proof (translation)
+The claim follows from `(h.cont.comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem p₀_cont : Continuous h.p₀ := (h.cont.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨a, ha⟩ := h.surj g exact ⟨⟨a, by rw [MonoidHom.mem_ker, ← h.η, ha]; exact g.2⟩, Subtype.ext ha⟩`.
+-/
 theorem p₀_surj : Function.Surjective h.p₀ := fun g => by
   obtain ⟨a, ha⟩ := h.surj g
   exact ⟨⟨a, by rw [MonoidHom.mem_ker, ← h.η, ha]; exact g.2⟩, Subtype.ext ha⟩
 
+/- English proof (translation)
+The claim follows from `h.p₀_cont.isClosedMap.isQuotientMap h.p₀_cont h.p₀_surj`.
+-/
 theorem p₀_quot : Topology.IsQuotientMap h.p₀ := h.p₀_cont.isClosedMap.isQuotientMap h.p₀_cont h.p₀_surj
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change h.p (G.c * g * G.c⁻¹) = G'.c * h.p g * G'.c⁻¹ rw [map_mul, map_mul, map_inv, h.c])`.
+-/
 theorem p₀_conj (g : G.G₀) : h.p₀ (G.frame.conj g) = G'.frame.conj (h.p₀ g) :=
   Subtype.ext (by
     change h.p (G.c * g * G.c⁻¹) = G'.c * h.p g * G'.c⁻¹
     rw [map_mul, map_mul, map_inv, h.c])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (h.φ v g)`.
+-/
 theorem p₀_φ (v : L.Vl) (g : L.Gv v) : h.p₀ (G.φ v g) = G'.φ v g := Subtype.ext (h.φ v g)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (h.φu u g)`.
+-/
 theorem p₀_φu (u : L.St) (g : L.Gu u) : h.p₀ (G.φu u g) = G'.φu u g := Subtype.ext (h.φu u g)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `G'.ε (h.p g) = 1 ↔ G.ε g = 1`. Rewrite using `[h.ε]`.
+-/
 theorem p₀_mem_G' (g : G.G₀) : h.p₀ g ∈ G'.frame.G' ↔ g ∈ G.frame.G' := by
   change G'.ε (h.p g) = 1 ↔ G.ε g = 1
   rw [h.ε]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Units.map _ (G'.ε (h.p g)) = Units.map _ (G.ε g)`. Rewrite using `[h.ε]`.
+-/
 theorem eps_p₀ (O R : Type) [CommRing O] [Algebra ℤ_[l] O] [CommRing R] [Algebra O R] (g : G.G₀) :
     G'.frame.eps O R (h.p₀ g) = G.frame.eps O R g := by
   change Units.map _ (G'.ε (h.p g)) = Units.map _ (G.ε g)
   rw [h.ε]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H s => h.p₀_quot.isOpen_preimage.1 (H s), fun H => H.comp_continuous h.p₀_cont⟩`.
+-/
 theorem locConst_iff {Z : Type} (f : G'.G₀ → Z) : IsLocallyConstant (fun g => f (h.p₀ g)) ↔ IsLocallyConstant f :=
   ⟨fun H s => h.p₀_quot.isOpen_preimage.1 (H s), fun H => H.comp_continuous h.p₀_cont⟩
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun N => h.locConst_iff fun g => Ideal.Quotient.mk (I ^ N) (f g)`.
+-/
 theorem adicCont_iff {R : Type} [CommRing R] (I : Ideal R) (f : G'.G₀ → R) :
     AdicCont I (fun g => f (h.p₀ g)) ↔ AdicCont I f :=
   forall_congr' fun N => h.locConst_iff fun g => Ideal.Quotient.mk (I ^ N) (f g)
@@ -67,10 +100,16 @@ variable {n : ℕ} {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (t : A)
   (ρ : G'.G₀ → Matrix (Fin n) (Fin n) R) (w wi : L.Vl → Matrix (Fin n) (Fin n) R)
   (V : Submodule A (Matrix (Fin n) (Fin n) R)) (z : G'.G₀ → Matrix (Fin n) (Fin n) R)
 
+/- English proof (translation)
+Simplify using `only [dY, map_inv]`.
+-/
 theorem dY_comp (Y : Matrix (Fin n) (Fin n) R) (g : G.G₀) :
     dY G.frame (fun g => ρ (h.p₀ g)) Y g = dY G'.frame ρ Y (h.p₀ g) := by
   simp only [dY, map_inv]
 
+/- English proof (translation)
+Use `forall_congr' fun g => ?_` and prove the remaining obligations. Establish `e : h.p₀ (G.frame.φ v g) = G'.frame.φ v g` using `h.p₀_φ v g`. Simplify using `only [h.dY_comp, e]`. Both sides reduce to the same expression.
+-/
 theorem locAt_iff (v : L.Vl) (Y : Matrix (Fin n) (Fin n) R) :
     LocAt G.frame (fun g => ρ (h.p₀ g)) w wi (fun g => z (h.p₀ g)) v Y ↔ LocAt G'.frame ρ w wi z v Y := by
   refine forall_congr' fun g => ?_
@@ -78,6 +117,17 @@ theorem locAt_iff (v : L.Vl) (Y : Matrix (Fin n) (Fin n) R) :
   simp only [h.dY_comp, e]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5, h6⟩`. Use `⟨fun g => ?_, fun i j => (h.adicCont_iff _ fun g => z g i j).1 (h2 i j), fun g g' => ?_, fun g => ?_, ?_, fun v => (h6 v).imp fun Y hY => ⟨hY.1, (h.locAt_iff ρ w wi z v Y).1 hY.2⟩⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `h.p₀_surj g`. Conclude with `h1 g`.
+
+Take `⟨g, rfl⟩` from `h.p₀_surj g`. Take `⟨g', rfl⟩` from `h.p₀_surj g'`. Simplify `h3 g g'` using `only [map_mul, map_inv]`. Take `⟨g, rfl⟩` from `h.p₀_surj g`. Rewrite using `[← h.p₀_conj]`.
+
+Conclude with `h4 g`. Introduce and unpack `u _ ⟨g, hg, rfl⟩`. Rewrite using `[← h.p₀_φu]`. Conclude with `h5 u _ ⟨g, hg, rfl⟩`. Introduce and unpack `⟨h1, h2, h3, h4, h5, h6⟩`.
+
+Use `⟨fun g => h1 _, fun i j => (h.adicCont_iff _ fun g => z g i j).2 (h2 i j), fun g g' => ?_, fun g => ?_, ?_, fun v => (h6 v).imp fun Y hY => ⟨hY.1, (h.locAt_iff ρ w wi z v Y).2 hY.2⟩⟩` and prove the remaining obligations. Simplify `h3 (h.p₀ g) (h.p₀ g')` using `only [map_mul, map_inv]`. Use `show z (h.p₀ (G.frame.conj g)) = _`. Rewrite using `[h.p₀_conj]`. Conclude with `h4 _`.
+
+Introduce and unpack `u _ ⟨g, hg, rfl⟩ show z (h.p₀ (G.φu u g)) = 0`. Rewrite using `[h.p₀_φu]`. Conclude with `h5 u _ ⟨g, hg, rfl⟩`.
+-/
 theorem sel_iff : (fun g => z (h.p₀ g)) ∈ SelZ G.frame t (fun g => ρ (h.p₀ g)) w wi V ↔ z ∈ SelZ G'.frame t ρ w wi V := by
   constructor
   · rintro ⟨h1, h2, h3, h4, h5, h6⟩
@@ -101,6 +151,9 @@ theorem sel_iff : (fun g => z (h.p₀ g)) ∈ SelZ G.frame t (fun g => ρ (h.p�
       show z (h.p₀ (G.φu u g)) = 0
       rw [h.p₀_φu]; exact h5 u _ ⟨g, hg, rfl⟩
 
+/- English proof (translation)
+Use `exists_congr fun Y => and_congr_right fun _ => and_congr_right fun _ => ⟨fun e => funext fun g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `h.p₀_surj g`. Conclude with `(congrFun e g).trans (h.dY_comp ρ Y g)`. Introduce and unpack `rfl`. Conclude with `funext fun g => (h.dY_comp ρ Y g).symm`.
+-/
 theorem bd_iff : (fun g => z (h.p₀ g)) ∈ Bd G.frame (fun g => ρ (h.p₀ g)) V ↔ z ∈ Bd G'.frame ρ V := by
   refine exists_congr fun Y => and_congr_right fun _ => and_congr_right fun _ => ⟨fun e => funext fun g => ?_, ?_⟩
   · obtain ⟨g, rfl⟩ := h.p₀_surj g
@@ -117,6 +170,9 @@ variable {G0 : Glob l L} {T : TWGrp G0} (Λ : Lim T)
 
 abbrev Ph0 : Type := (Λ.G.η.comp Λ.πo).ker
 
+/- English proof (translation)
+Use `T.H_η _ (Λ.modH N g)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one, (T.h N).η, Λ.h.η]`. Conclude with `this`.
+-/
 theorem η_π (N : ℕ) (g : Λ.Ph) : (T.GN N).η (Λ.π N g) = Λ.G.η (Λ.πo g) := by
   have := T.H_η _ (Λ.modH N g)
   rw [map_mul, map_inv, mul_inv_eq_one, (T.h N).η, Λ.h.η] at this
@@ -127,22 +183,43 @@ def π0 (N : ℕ) : Λ.Ph0 →* (T.GN N).G₀ :=
 
 def πo0 : Λ.Ph0 →* Λ.G.G₀ := (Λ.πo.comp (Subgroup.subtype _)).codRestrict _ fun g => g.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_π0 (N : ℕ) (g : Λ.Ph0) : (Λ.π0 N g : (T.GN N).Γ) = Λ.π N g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_πo0 (g : Λ.Ph0) : (Λ.πo0 g : Λ.G.Γ) = Λ.πo g := rfl
 
+/- English proof (translation)
+The claim follows from `((Λ.π_cont N).comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem π0_cont (N : ℕ) : Continuous (Λ.π0 N) := ((Λ.π_cont N).comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+The claim follows from `(Λ.πo_cont.comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem πo0_cont : Continuous Λ.πo0 := (Λ.πo_cont.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨a, ha⟩ := Λ.π_surj N g exact ⟨⟨a, (Λ.η_π N a).symm.trans (by rw [ha]; exact g.2)⟩, Subtype.ext ha⟩`.
+-/
 theorem π0_surj (N : ℕ) : Function.Surjective (Λ.π0 N) := fun g => by
   obtain ⟨a, ha⟩ := Λ.π_surj N g
   exact ⟨⟨a, (Λ.η_π N a).symm.trans (by rw [ha]; exact g.2)⟩, Subtype.ext ha⟩
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨a, ha⟩ := Λ.πo_surj g exact ⟨⟨a, show Λ.G.η (Λ.πo a) = 1 by rw [ha]; exact g.2⟩, Subtype.ext ha⟩`.
+-/
 theorem πo0_surj : Function.Surjective Λ.πo0 := fun g => by
   obtain ⟨a, ha⟩ := Λ.πo_surj g
   exact ⟨⟨a, show Λ.G.η (Λ.πo a) = 1 by rw [ha]; exact g.2⟩, Subtype.ext ha⟩
 
+/- English proof (translation)
+The claim follows from `Λ.G.η_open.preimage Λ.πo_cont`.
+-/
 theorem Ph0_open : IsOpen ((Λ.G.η.comp Λ.πo).ker : Set Λ.Ph) := Λ.G.η_open.preimage Λ.πo_cont
 
 instance : CompactSpace Λ.Ph0 := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ Λ.Ph0_open).isCompact
@@ -209,6 +286,9 @@ variable {G G' : Glob l L} (g : G.Hom G') {n : ℕ} (x : NP G.frame n) (ρ' : G'
       exact congrArg _ (g.p₀_φ v a).symm
     rw [e]; exact x.N1 v
 
+/- English proof (translation)
+Use `show (mat ρ' (g.p₀ a)).map _ = (mat x.ρ a).map _`. Simplify using `only [mat, MonoidHom.comp_apply, hρ]`.
+-/
 theorem NP.desc_ρX (X : Type) [CommRing X] [Algebra x.A X] (a : G.G₀) :
     (x.desc g ρ' hρ).ρX X (g.p₀ a) = x.ρX X a := by
   show (mat ρ' (g.p₀ a)).map _ = (mat x.ρ a).map _
@@ -265,6 +345,9 @@ namespace TWQuot
 
 variable {G0 : Glob l L} {T : TWGrp G0} (Q : TWQuot T)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Q.comm N a)`.
+-/
 theorem comm₀ (N : ℕ) (a : (T.GN N).G₀) : (Q.h' N).p₀ ((Q.gN N).p₀ a) = Q.g0.p₀ ((T.h N).p₀ a) :=
   Subtype.ext (Q.comm N a)
 
@@ -306,6 +389,9 @@ theorem comm₀ (N : ℕ) (a : (T.GN N).G₀) : (Q.h' N).p₀ ((Q.gN N).p₀ a) 
   phiV := T.phiV
   phiU := T.phiU
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Q.pl0, Q.plN⟩`.
+-/
 theorem proL : Q.grp.ProL := ⟨Q.pl0, Q.plN⟩
 
 end TWQuot

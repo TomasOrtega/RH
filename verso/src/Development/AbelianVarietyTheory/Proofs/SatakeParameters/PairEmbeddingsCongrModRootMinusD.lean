@@ -18,6 +18,21 @@ noncomputable section
 
 namespace GlobalTheory.DFrame
 
+/- English proof (translation)
+Introduce `D p _ hpd ι cE s δ hcE hδ hsδ hss hpair hK`. Use `set th : ℂ_[p] := ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ)) with hth`. Establish `hp0 : (0 : ℝ) < ‖(p : ℂ_[p])‖` using `Formalism.L2.Th1.GD.norm_p_pos`. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1` using `Formalism.L2.Th1.GD.norm_p_lt_one`. Establish `hsq : th ^ 2 = -(p : ℂ_[p])`.
+
+Rewrite using `[hth, ← map_pow, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _), ← hpd]`. Simplify using the standard rewrite rules. Establish `hnorm2 : ‖th‖ ^ 2 = ‖(p : ℂ_[p])‖`. Rewrite using `[← norm_pow, hsq, norm_neg]`. Establish `hnth : ‖th‖ = ‖(p : ℂ_[p])‖ ^ (1 / 2 : ℝ)`.
+
+Rewrite using `[← Real.sqrt_eq_rpow, ← hnorm2, Real.sqrt_sq (norm_nonneg _)]`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h push_neg at h`. Establish `: 1 < ‖th‖ ^ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `h`. Rewrite `hnorm2` using `[h, norm_zero]`. Simplify using `at hnorm2`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t y`.
+
+Establish `hp2 : p ≠ 2`. Establish `h` using `hypOdd_of_hostHyp D.host.hyp`. Take `⟨-, -, h1, h2, h3⟩` from `h`. Use linear arithmetic over natural numbers and integers. Establish `hI` using `Formalism.L2.Th1.GD.InertiaRam_proof p hp2 D.host.E s δ (rho D ι (false, t)) hδ hsδ hss (fun y hy => hK _ y hy)`.
+
+Set `y' : 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv y`. Establish `hy' : ((y' : 𝓞 D.host.E) : D.host.E) = D.host.conj (y : D.host.E)` using `rfl`. Establish `h2` using `hI.2.1 y'`. Rewrite `h2` using `[hy']`. Establish `htrue : rho D ι (true, t) (y : D.host.E) = rho D ι (false, t) (s (D.host.conj (y : D.host.E)))` using `by show ι (TaylorLogMetric.embT D (tauPl D (true, t)) (y : D.host.E)) = ι (TaylorLogMetric.embT D (tauPl D (false, t)) _)`.
+
+Rewrite using `[hpair t, hcE]`. Rewrite using `[htrue, hnth]`. Conclude with `h2`.
+-/
 theorem congr_at_d : ∀ (D : D7) (p : ℕ) [Fact p.Prime], p = D.host.d → ∀ (ι : ℂ ≃+* ℂ_[p]) (cE s : D.host.E ≃+* D.host.E) (δ : D.host.E), (∀ y, cE y = D.host.conj y) → δ ^ 2 = -(p : D.host.E) → s δ = -δ → (∀ y, s (s y) = y) → (∀ (t : HH D) (y : D.host.E), TaylorLogMetric.embT D (tauPl D (true, t)) y = TaylorLogMetric.embT D (tauPl D (false, t)) (s (cE y))) → (∀ (τ : D.what₂.Tau) (y : D.host.E), s y = y → ι (TaylorLogMetric.embT D τ y) ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) → (‖ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ))‖ ≤ 1 ∧ ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ)) ≠ 0) ∧ ∀ (t : HH D) (y : 𝓞 D.host.E), ‖GlobalTheory.DFrame.rho D ι (false, t) (D.host.conj (y : D.host.E)) - GlobalTheory.DFrame.rho D ι (true, t) (y : D.host.E)‖ ≤ ‖ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ))‖ := by
   intro D p _ hpd ι cE s δ hcE hδ hsδ hss hpair hK
   set th : ℂ_[p] := ι (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ)) with hth

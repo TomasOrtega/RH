@@ -19,6 +19,9 @@ abbrev OMm (h : OL l O) (q : X ⟶ Spec (CommRingCat.of O)) (m : ℕ) : Thick (L
 def redO (m : ℕ) : Om l O (m + 1) →+* Om l O m :=
   Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ m.le_succ))
 
+/- English proof (translation)
+The claim follows from `RL.pd_mor _ _ _ _ _ _ (RingHom.id O) _ Ideal.Quotient.mk_surjective (pdI_l l h.unit) (isPdm h _) (isPdm h _) (fun _ hx => hx) fun _ => rfl`.
+-/
 theorem dp_redO (h : OL l O) (m : ℕ) : IsDPMorphism (pdm h (m + 1)) (pdm h m) (redO m) :=
   RL.pd_mor _ _ _ _ _ _ (RingHom.id O) _ Ideal.Quotient.mk_surjective (pdI_l l h.unit) (isPdm h _) (isPdm h _)
     (fun _ hx => hx) fun _ => rfl
@@ -47,6 +50,9 @@ def HSO (h : OL l O) (q : X ⟶ Spec (CommRingCat.of O)) (j : ℕ) : Sys.{1} O w
 
 variable {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `Ideal.mem_sup_right (Ideal.subset_span ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(l : T.obj.B) ^ m = T.obj.i ((l : O) ^ m)`. Rewrite using `[map_pow, map_natCast]`.
+-/
 theorem lm_le_std (Q : ObjectProperty (Thick (smFun X q))) (m : ℕ) (T : Q.FullSubcategory) :
     lm (l := l) T.obj m ≤ (stdI Q none ((l : O) ^ m)).S T := by
   rw [Ideal.span_le, Set.singleton_subset_iff]

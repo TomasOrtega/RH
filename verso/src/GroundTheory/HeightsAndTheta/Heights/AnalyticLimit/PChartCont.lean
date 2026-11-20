@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 
 open ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨m, hm⟩` from `A.cover x`. Use `set c := A.chart m`. Establish `hT : IsOpen (c.target ∩ c.symm ⁻¹' U)` using `c.isOpen_inter_preimage_symm hU`. Establish `hcx : c x ∈ c.target ∩ c.symm ⁻¹' U` using `⟨c.map_source hm, by simpa [c.left_inv hm] using hx⟩`.
+
+Establish `h1 : ContinuousAt (h ∘ c.symm) (c x)` using `(hc m).continuousAt (hT.mem_nhds hcx)`. Establish `h2 : ContinuousAt ((h ∘ c.symm) ∘ c) x`. Apply `ContinuousAt.comp (f := c)` to reduce the goal to its premises. Conclude with `h1`. Conclude with `c.continuousAt hm`.
+
+Establish `heq : (h ∘ c.symm) ∘ c =ᶠ[nhds x] h` using `by filter_upwards [c.open_source.mem_nhds hm] with y hy`. Simplify using `[c.left_inv hy]`. Conclude with `(h2.congr heq).continuousWithinAt`.
+-/
 theorem continuousOn_of_chart_continuousOn {X : Type} [TopologicalSpace X] {D : ℕ} (A : FinHolAtlas D X)
     {U : Set X} (hU : IsOpen U) {E : Type} [TopologicalSpace E] (h : X → E)
     (hc : ∀ j, ContinuousOn (h ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)) :
@@ -25,6 +32,9 @@ theorem continuousOn_of_chart_continuousOn {X : Type} [TopologicalSpace X] {D : 
     simp [c.left_inv hy]
   exact (h2.congr heq).continuousWithinAt
 
+/- English proof (translation)
+Introduce `X _ D A U hU`. Use `⟨fun f hf => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `continuousOn_of_chart_continuousOn A hU f fun j => (hf j).continuousOn`. Conclude with `continuousOn_of_chart_continuousOn A hU g fun j => (hg j).continuousOn`.
+-/
 theorem ChartCont.proof : ChartCont.Statement := by
   intro X _ D A U hU
   refine ⟨fun f hf => ?_, fun g hg => ?_⟩

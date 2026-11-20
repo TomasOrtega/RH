@@ -7,9 +7,61 @@ open IsLocalRing
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain R`.
+-/
 theorem isDomain_of_isRegularLocalRing [IsRegularLocalRing R] : IsDomain R :=
   ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain R
 
+/- English proof (translation)
+Establish `hreg : ((Submodule.spanFinrank (maximalIdeal R) : ℕ) : WithBot ℕ∞) = ringKrullDim R`. Take `⟨h⟩` from `‹IsRegularLocalRing R›`. Conclude with `h`. Use `set n := Submodule.spanFinrank (maximalIdeal R) with hn_def`. Establish `hxle : Ideal.span {x} ≤ maximalIdeal R` using `(Ideal.span_singleton_le_iff_mem _).mpr hx`.
+
+Establish `hxne : Ideal.span {x} ≠ ⊤` using `fun htop => (IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.mp (htop ▸ hxle))`. Use `haveI : Nontrivial (R ⧸ Ideal.span {x}) := by`. Use `⟨⟨0, 1, fun h => hxne ((Ideal.eq_top_iff_one _).mpr ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_one]`. Conclude with `h.symm`.
+
+Use `haveI : IsLocalRing (R ⧸ Ideal.span {x}) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `hFG : (maximalIdeal R).FG` using `IsNoetherian.noetherian _`. Take `⟨s, hs_card, hs_span⟩` from `Submodule.FG.exists_span_set_encard_eq_spanFinrank (p := maximalIdeal R) hFG`. Establish `hs_fin : s.Finite` using `Set.finite_of_encard_eq_coe hs_card`. Establish `hs_ncard : s.ncard = n`.
+
+Establish `h` using `hs_fin.cast_ncard_eq`. Rewrite `h` using `[hs_card]`. Conclude with `h` after adjusting the coercions. Use `haveI : Fintype s := hs_fin.fintype`. Establish `hxs : x ∈ Submodule.span R (Set.range ((↑) : s → R))`.
+
+Rewrite using `[Subtype.range_coe, hs_span]`. Conclude with `hx`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hxs`. Simplify using `only [Finsupp.sum] at hc`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, IsUnit (c i) := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx2` to reduce the goal to its premises. Rewrite using `[← hc, sq]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul]`. Use `Ideal.mul_mem_mul ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr (hcon i))) ?_` and prove the remaining obligations. Rewrite using `[← hs_span]`. Conclude with `Submodule.subset_span i.2`. Establish `hi0mem : i0 ∈ c.support` using `Finsupp.mem_support_iff.mpr hi0.ne_zero`.
+
+Establish `hrest : ∑ i ∈ c.support.erase i0, c i • (i : R) ∈ Ideal.span (s \ {(i0 : R)}) ⊔ Ideal.span {x}`. Use `Submodule.sum_mem _ (fun i hi => Submodule.smul_mem _ _ (Submodule.mem_sup_left (Ideal.subset_span ⟨i.2, fun h => Finset.ne_of_mem_erase hi (Subtype.ext h)⟩)))` and prove the remaining obligations. Establish `hsplit : c i0 • (i0 : R) + ∑ i ∈ c.support.erase i0, c i • (i : R) = x` using `(Finset.add_sum_erase _ (fun i => c i • (i : R)) hi0mem).trans hc`. Establish `hi0J : (i0 : R) ∈ Ideal.span (s \ {(i0 : R)}) ⊔ Ideal.span {x}`. Establish `h1 : c i0 • (i0 : R) = x - ∑ i ∈ c.support.erase i0, c i • (i : R)`.
+
+Rewrite using `[← hsplit, add_sub_cancel_right]`. Establish `h2 : c i0 • (i0 : R) ∈ Ideal.span (s \ {(i0 : R)}) ⊔ Ideal.span {x}`. Rewrite using `[h1]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right (Ideal.mem_span_singleton_self x)) hrest`. Establish `h3 : (i0 : R) = ↑hi0.unit⁻¹ * (c i0 • (i0 : R))`.
+
+Rewrite using `[smul_eq_mul, ← mul_assoc, hi0.val_inv_mul, one_mul]`. Establish `h4` using `Ideal.mul_mem_left _ (↑hi0.unit⁻¹ : R) h2`. Rewrite `h4` using `[← h3]`. Then use the resulting hypothesis. Establish `hmJ : maximalIdeal R ≤ Ideal.span (s \ {(i0 : R)}) ⊔ Ideal.span {x}`. Rewrite using `[← hs_span]`.
+
+Use `Submodule.span_le.mpr (fun y hy => ?_)` and prove the remaining obligations. Distinguish the cases in `hyi : y = (i0 : R)`. Rewrite using `[hyi]`. Conclude with `hi0J`. Conclude with `Submodule.mem_sup_left (Ideal.subset_span ⟨hy, hyi⟩)`.
+
+Establish `hmap : Ideal.map (Ideal.Quotient.mk (Ideal.span {x})) (Ideal.span (s \ {(i0 : R)}) ⊔ Ideal.span {x}) = Ideal.span ((Ideal.Quotient.mk (Ideal.span {x})) '' (s \ {(i0 : R)}))`. Rewrite using `[Ideal.map_sup, Ideal.map_quotient_self, sup_bot_eq, Ideal.map_span]`. Establish `hmQ : maximalIdeal (R ⧸ Ideal.span {x}) = Ideal.span ((Ideal.Quotient.mk (Ideal.span {x})) '' (s \ {(i0 : R)}))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hr : r ∈ maximalIdeal R`. Assume the negation of the conclusion as `hr`. Establish `hu : IsUnit r`. Assume the negation of the conclusion as `hu'`.
+
+Conclude with `hr ((IsLocalRing.mem_maximalIdeal r).mpr (mem_nonunits_iff.mpr hu'))`. Conclude with `((IsLocalRing.mem_maximalIdeal _).mp hy) (hu.map _)`. Rewrite using `[← hmap]`. Conclude with `Ideal.mem_map_of_mem _ (hmJ hr)`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hym : y ∈ maximalIdeal R`. Rewrite using `[← hs_span]`. Conclude with `Submodule.subset_span hy.1`. Use `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr (fun hu => ?_))` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {x}) (y * w - 1) = 0`. Rewrite using `[map_sub, map_mul, hv, map_one, sub_self]`. Establish `h2 : y * w - 1 ∈ maximalIdeal R` using `hxle (Ideal.Quotient.eq_zero_iff_mem.mp h1)`.
+
+Establish `h3 : (1 : R) ∈ maximalIdeal R`. Establish `h4` using `Ideal.sub_mem _ (Ideal.mul_mem_right w _ hym) h2`. Rewrite `h4` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h3)`. Establish `hk : Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span {x})) ≤ n - 1`.
+
+Establish `hfin : (s \ {(i0 : R)}).Finite` using `hs_fin.subset Set.diff_subset`. Rewrite using `[hmQ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hn1 : 1 ≤ n`. Rewrite using `[← hs_ncard]`.
+
+Conclude with `(Set.ncard_pos hs_fin).mpr ⟨_, i0.2⟩`. Establish `hdimQ` using `ringKrullDim_le_spanFinrank_maximalIdeal (R ⧸ Ideal.span {x})`. Establish `hkrull : ringKrullDim R ≤ ringKrullDim (R ⧸ Ideal.span {x}) + 1`. Establish `hsub : (↑({x} : Finset R) : Set R) ⊆ ↑(Ring.jacobson R)`. Rewrite using `[Finset.coe_singleton, Set.singleton_subset_iff, SetLike.mem_coe, ← Ideal.jacobson_bot, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`.
+
+Conclude with `hx`. Establish `h` using `ringKrullDim_le_ringKrullDim_quotient_add_card {x} hsub`. Rewrite `h` using `[Finset.coe_singleton, Finset.card_singleton, Nat.cast_one]`. Then use the resulting hypothesis. Generalize the expression as in `hk_def : Submodule.spanFinrank (maximalIdeal (R ⧸ Ideal.span {x})) = k at hk hdimQ`. Establish `hkn : k + 1 ≤ n` using `by omega`.
+
+Establish `hle1 : ((k : ℕ) : WithBot ℕ∞) + 1 ≤ ringKrullDim R`. Rewrite using `[← hreg]`. Conclude with `hkn` after adjusting the coercions. Establish `hle2 : ((k : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ Ideal.span {x})`. Establish `h5` using `hle1.trans hkrull`.
+
+Generalize the expression as in `ringKrullDim (R ⧸ Ideal.span {x}) = e at h5 ⊢`. Proceed by induction on `e using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h5 (by simp)`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`.
+
+Consider the case `top => exact le_top`. Consider the case `coe e`. Establish `h6 : k + 1 ≤ e + 1` using `by exact_mod_cast h5`. Conclude with `(by omega : k ≤ e)` after adjusting the coercions. Use `⟨IsRegularLocalRing.mk ?_, le_antisymm ?_ hkrull⟩` and prove the remaining obligations.
+
+Rewrite using `[hk_def]`. Conclude with `le_antisymm hle2 hdimQ`. Conclude with `(add_le_add hdimQ le_rfl).trans hle1`.
+-/
 theorem isRegularLocalRing_quotient_of_not_mem_sq [IsRegularLocalRing R] {x : R}
     (hx : x ∈ maximalIdeal R) (hx2 : x ∉ maximalIdeal R ^ 2) :
     IsRegularLocalRing (R ⧸ Ideal.span {x}) ∧
@@ -154,6 +206,11 @@ theorem isRegularLocalRing_quotient_of_not_mem_sq [IsRegularLocalRing R] {x : R}
     exact le_antisymm hle2 hdimQ
   · exact (add_le_add hdimQ le_rfl).trans hle1
 
+/- English proof (translation)
+Use `haveI hreg : IsRegularLocalRing (R ⧸ Ideal.span {x}) := (isRegularLocalRing_quotient_of_not_mem_sq hx hx2).1`. Establish `hdom : IsDomain (R ⧸ Ideal.span {x})` using `isDomain_of_isRegularLocalRing`. Establish `hprime : (Ideal.span {x}).IsPrime` using `(Ideal.Quotient.isDomain_iff_prime _).mp hdom`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hx2 (Submodule.zero_mem _)`. Conclude with `(Ideal.span_singleton_prime hx0).mp hprime`.
+-/
 theorem prime_of_not_mem_sq [IsRegularLocalRing R] {x : R}
     (hx : x ∈ maximalIdeal R) (hx2 : x ∉ maximalIdeal R ^ 2) : Prime x := by
 
@@ -166,6 +223,25 @@ theorem prime_of_not_mem_sq [IsRegularLocalRing R] {x : R}
     exact hx2 (Submodule.zero_mem _)
   exact (Ideal.span_singleton_prime hx0).mp hprime
 
+/- English proof (translation)
+Establish `key : Submodule.spanFinrank (maximalIdeal R) = n`. Establish `h : (Submodule.spanFinrank (maximalIdeal R) : WithBot ℕ∞) = ringKrullDim R`. Take `⟨h⟩` from `‹IsRegularLocalRing R›`. Conclude with `h`. Rewrite `h` using `[← hdim]`.
+
+Conclude with `h` after adjusting the coercions. Establish `main : ∀ j, f j ∈ Ideal.span (↑((Finset.univ.erase j).image f) : Set R) ⊔ maximalIdeal R ^ 2 → False`. Introduce `j hj`. Generalize the expression as in `hS : Ideal.span (↑((Finset.univ.erase j).image f) : Set R) = S at hj`. Establish `hle : maximalIdeal R ≤ S ⊔ maximalIdeal R • maximalIdeal R`.
+
+Rewrite using `[← hspan]`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = j`. Rewrite using `[hk, hspan, Ideal.smul_eq_mul, ← sq]`.
+
+Conclude with `hj`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Rewrite using `[← hS]`. Conclude with `Ideal.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem f (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩)))`. Establish `hFG : (maximalIdeal R).FG` using `IsNoetherian.noetherian _`.
+
+Establish `hJ : maximalIdeal R ≤ Ideal.jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `hmS : maximalIdeal R ≤ S` using `Submodule.le_of_le_smul_of_le_jacobson_bot hFG hJ hle`. Establish `hSm : S ≤ maximalIdeal R`. Rewrite using `[← hS, Ideal.span_le]`. Introduce `y hy`.
+
+Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hy)`. Rewrite using `[← hspan]`. Conclude with `Ideal.subset_span ⟨a, rfl⟩`. Establish `heq : maximalIdeal R = S` using `le_antisymm hmS hSm`. Establish `hcard : Submodule.spanFinrank (maximalIdeal R) ≤ n - 1`.
+
+Rewrite using `[heq, ← hS]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ j), Finset.card_univ, Fintype.card_fin]`. Establish `hn : 0 < n` using `Fin.pos j`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun i hi => main i (Submodule.mem_sup_right hi), fun i j hij hassoc => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hassoc`. Apply `main j` to reduce the goal to its premises. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Rewrite using `[← hu]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem f (Finset.mem_erase.mpr ⟨hij, Finset.mem_univ i⟩))))`.
+-/
 theorem regular_params_spec [IsRegularLocalRing R] {n : ℕ} (f : Fin n → R)
     (hspan : Ideal.span (Set.range f) = maximalIdeal R) (hdim : (n : WithBot ℕ∞) = ringKrullDim R) :
     (∀ i, f i ∉ maximalIdeal R ^ 2) ∧ ∀ i j, i ≠ j → ¬ Associated (f i) (f j) := by

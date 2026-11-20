@@ -19,11 +19,17 @@ section
 variable {κ β R : Type} [Fintype κ] [DecidableEq κ] [Fintype β] [DecidableEq β] [CommRing R] [Algebra ℚ R]
 
 omit [Fintype κ] [DecidableEq κ] [DecidableEq β] in
+/- English proof (translation)
+Simplify using `only [coordOf, gen, map_sum, map_mul, Matrix.of_apply, MvPolynomial.aeval_X, AlgHom.commutes]`.
+-/
 theorem aeval_coordOf (c : β → ℚ) (y : Matrix ((κ × β) ⊕ Unit) ((κ × β) ⊕ Unit) R) (i j : κ) (k : β) :
     MvPolynomial.aeval (fun ij : ((κ × β) ⊕ Unit) × ((κ × β) ⊕ Unit) => y ij.1 ij.2)
       (coordOf c (gen ((κ × β) ⊕ Unit)) i j k) = coordOf c y i j k := by
   simp only [coordOf, gen, map_sum, map_mul, Matrix.of_apply, MvPolynomial.aeval_X, AlgHom.commutes]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[gen, Matrix.toBlocks₁₁]`.
+-/
 theorem aeval_det (y : Matrix ((κ × β) ⊕ Unit) ((κ × β) ⊕ Unit) R) :
     MvPolynomial.aeval (fun ij : ((κ × β) ⊕ Unit) × ((κ × β) ⊕ Unit) => y ij.1 ij.2)
       ((gen ((κ × β) ⊕ Unit)).toBlocks₁₁.det) = y.toBlocks₁₁.det := by
@@ -33,6 +39,9 @@ theorem aeval_det (y : Matrix ((κ × β) ⊕ Unit) ((κ × β) ⊕ Unit) R) :
   simp [gen, Matrix.toBlocks₁₁]
 
 omit [Fintype κ] [DecidableEq κ] [DecidableEq β] in
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Simplify using `only [aeval_coordOf]`.
+-/
 theorem aeval_comp_coord (c : β → ℚ) (y : Matrix ((κ × β) ⊕ Unit) ((κ × β) ⊕ Unit) R)
     (Q : MvPolynomial ((κ × κ) × β) ℚ) :
     MvPolynomial.aeval (fun ij : ((κ × β) ⊕ Unit) × ((κ × β) ⊕ Unit) => y ij.1 ij.2)
@@ -43,11 +52,17 @@ theorem aeval_comp_coord (c : β → ℚ) (y : Matrix ((κ × β) ⊕ Unit) ((κ
 
 variable {A : Type} [CommRing A] [Algebra R A]
 
+/- English proof (translation)
+Establish `h` using `congrFun (Algebra.leftMulMatrix_mulVec_repr b x 1) k`. Simplify `h` using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem sum_leftMul_one (b : Module.Basis β R A) (x : A) (k : β) :
     ∑ l, Algebra.leftMulMatrix b x k l * b.repr 1 l = b.repr x k := by
   have h := congrFun (Algebra.leftMulMatrix_mulVec_repr b x 1) k
   simpa [Matrix.mulVec, dotProduct] using h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem leftMul_expand (b : Module.Basis β R A) (x : A) (k l : β) :
     Algebra.leftMulMatrix b x k l = ∑ m, b.repr x m * Algebra.leftMulMatrix b (b m) k l := by
   conv_lhs => rw [← b.sum_repr x]
@@ -55,6 +70,45 @@ theorem leftMul_expand (b : Module.Basis β R A) (x : A) (k l : β) :
 
 end
 
+/- English proof (translation)
+Introduce `F β _ _ _ _ ω n S`. Use `choose Q hQ using fun P : MvPolynomial (Fin n × Fin n) F => GlobalTheory.T.exists_rational_coord_polynomial_baseChange F β ω (Fin n × Fin n) P`. Set `c : β → ℚ` to `fun l => ω.repr 1 l`. Set `X` to `gen ((Fin n × β) ⊕ Unit)`. Use `⟨{f | (∃ p u, f = X (Sum.inl p) (Sum.inr u)) ∨ (∃ p u, f = X (Sum.inr u) (Sum.inl p)) ∨ (∃ i j k l, f = X (Sum.inl (i, k)) (Sum.inl (j, l)) - ∑ m, coordOf c X i j m * algebraMap ℚ _ (Algebra.leftMulMatrix ω (ω m) k l)) ∨ f = X.toBlocks₁₁.det * X (Sum.inr ()) (Sum.inr ()) - 1 ∨ ∃ …` and prove the remaining obligations.
+
+Introduce `R A _ _ _ _ _ b hb y`. Establish `hm` using `GlobalTheory.T.coords_leftMulMatrix_const_baseChange F β ω R A b hb`. Take `⟨h1, hmul, -, hunit⟩` from `GlobalTheory.T.restrictScalarsMatrixOfBasis_hom_injective_isUnit R A β (Fin n) b`. Establish `hc : ∀ l, algebraMap ℚ R (c l) = b.repr 1 l` using `fun l => by`. Use `(hm 1).1 l` as an intermediate fact.
+
+Rewrite `this` using `[map_one]`. Conclude with `this.symm`. Establish `hL : ∀ m k l, algebraMap ℚ R (Algebra.leftMulMatrix ω (ω m) k l) = Algebra.leftMulMatrix b (b m) k l` using `fun m k l => by`. Rewrite using `[hb m, (hm (ω m)).2, Matrix.map_apply]`. Establish `hX : ∀ p q, MvPolynomial.aeval (fun ij : ((Fin n × β) ⊕ Unit) × ((Fin n × β) ⊕ Unit) => y ij.1 ij.2) (X p q) = y p q` using `fun p q => by`.
+
+Simplify using `[X, gen]`. Establish `hinv : ∀ g : GL (Fin n) A, (res b (g : Matrix (Fin n) (Fin n) A)).det * (res b ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)).det = 1` using `fun g => by`. Rewrite using `[← Matrix.det_mul, ← hmul, Units.mul_inv, h1, Matrix.det_one]`. Establish `key : (∀ f ∈ {f | (∃ p u, f = X (Sum.inl p) (Sum.inr u)) ∨ (∃ p u, f = X (Sum.inr u) (Sum.inl p)) ∨ (∃ i j k l, f = X (Sum.inl (i, k)) (Sum.inl (j, l)) - ∑ m, coordOf c X i j m * algebraMap ℚ _ (Algebra.leftMulMatrix ω (ω m) k l)) ∨ f = X.toBlocks₁₁.det * X (Sum.inr ()) (Sum.inr …`. Establish `e3 : ∀ i j k l, ev (X (Sum.inl (i, k)) (Sum.inl (j, l)) - ∑ m, coordOf c X i j m * algebraMap ℚ _ (Algebra.leftMulMatrix ω (ω m) k l)) y = y (Sum.inl (i, k)) (Sum.inl (j, l)) - ∑ m, coordOf c y i j m * Algebra.leftMulMatrix b (b m) k l` using `fun i j k l => by`.
+
+Simplify using `only [ev, map_sub, map_sum, map_mul, hX, AlgHom.commutes, hL]`. Simplify using `only [X, aeval_coordOf]`. Establish `e4 : ev (X.toBlocks₁₁.det * X (Sum.inr ()) (Sum.inr ()) - 1) y = y.toBlocks₁₁.det * y (Sum.inr ()) (Sum.inr ()) - 1`. Simplify using `only [ev, map_sub, map_mul, hX, map_one]`. Simplify using `only [X, aeval_det]`.
+
+Establish `e5 : ∀ P k, ev (MvPolynomial.aeval (fun p : (Fin n × Fin n) × β => coordOf c X p.1.1 p.1.2 p.2) (Q P k)) y = MvPolynomial.aeval (fun p : (Fin n × Fin n) × β => coordOf c y p.1.1 p.1.2 p.2) (Q P k)` using `fun P k => aeval_comp_coord c y (Q P k)`. Establish `e1 : ∀ p q, ev (X p q) y = y p q` using `hX`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun p u => ?_, fun p u => ?_, fun i j k l => ?_, ?_, fun P hP k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e1]`. Conclude with `h _ (Or.inl ⟨p, u, rfl⟩)`. Rewrite using `[← e1]`. Conclude with `h _ (Or.inr (Or.inl ⟨p, u, rfl⟩))`. Rewrite using `[← sub_eq_zero, ← e3]`.
+
+Conclude with `h _ (Or.inr (Or.inr (Or.inl ⟨i, j, k, l, rfl⟩)))`. Rewrite using `[← sub_eq_zero, ← e4]`. Conclude with `h _ (Or.inr (Or.inr (Or.inr (Or.inl rfl))))`. Rewrite using `[← e5]`. Conclude with `h _ (Or.inr (Or.inr (Or.inr (Or.inr ⟨P, hP, k, rfl⟩))))`.
+
+Introduce and unpack `⟨a1, a2, a3, a4, a5⟩ f (⟨p, u, rfl⟩ | ⟨p, u, rfl⟩ | ⟨i, j, k, l, rfl⟩ | rfl | ⟨P, hP, k, rfl⟩)`. Rewrite using `[e1, a1]`. Rewrite using `[e1, a2]`. Rewrite using `[e3, ← a3, sub_self]`. Rewrite using `[e4, a4, sub_self]`.
+
+Rewrite using `[e5, a5 P hP]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a1, a2, a3, a4, a5⟩`. Set `G : Matrix (Fin n) (Fin n) A` to `Matrix.of fun i j => b.equivFun.symm (coordOf c y i j)`.
+
+Establish `hG : ∀ i j k, b.repr (G i j) k = coordOf c y i j k` using `fun i j k => by`. Use `congrFun (b.equivFun.apply_symm_apply (coordOf c y i j)) k` as an intermediate fact. Rewrite `this` using `[Module.Basis.equivFun_apply]`. Conclude with `this`. Establish `hres : res b G = y.toBlocks₁₁`.
+
+Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [res, Matrix.of_apply, Matrix.toBlocks₁₁]`. Rewrite using `[a3, leftMul_expand]`. Simplify using `only [hG]`. Establish `hu : IsUnit G` using `hunit G (by rw [hres]; exact IsUnit.of_mul_eq_one _ a4)`.
+
+Take `⟨g, hg⟩` from `hu`. Use `⟨g, fun P hP => ?_, ?_⟩` and prove the remaining obligations. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[hQ P R A b hb, hg]`.
+
+Simplify using `only [hG]`. Simplify using `using a5 P hP k`. Establish `hi` using `hinv g`. Rewrite `hi` using `[hg, hres]`. Establish `hcorner : y (Sum.inr ()) (Sum.inr ()) = (res b ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)).det`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hi, one_mul]`. Use `_ = (y.toBlocks₁₁.det * y (Sum.inr ()) (Sum.inr ())) * (res b ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)).det := by ring`. Use `_ = _ := by rw [a4, one_mul]`. Use extensionality with `(p | u) (q | v)`.
+
+Simplify using `only [emb, Matrix.fromBlocks_apply₁₁, hg, hres, Matrix.toBlocks₁₁, Matrix.of_apply]`. Simplify using `only [emb, Matrix.fromBlocks_apply₁₂, a1, Matrix.zero_apply]`. Simplify using `only [emb, Matrix.fromBlocks_apply₂₁, a2, Matrix.zero_apply]`. Simplify using `only [emb, Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Conclude with `hcorner`.
+
+Introduce and unpack `⟨g, hg, rfl⟩`. Establish `hco : ∀ i j k, coordOf c (emb b g) i j k = b.repr ((g : Matrix (Fin n) (Fin n) A) i j) k` using `fun i j k => by`. Simplify using `only [coordOf, emb, Matrix.fromBlocks_apply₁₁, res, Matrix.of_apply, hc]`. Conclude with `sum_leftMul_one b _ k`. Use `⟨fun p u => ?_, fun p u => ?_, fun i j k l => ?_, ?_, fun P hP k => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[emb]`. Simplify using `[emb]`. Simplify using `only [hco]`. Rewrite using `[← leftMul_expand]`. Simplify using `only [emb, Matrix.fromBlocks_apply₁₁, res, Matrix.of_apply]`.
+
+Simplify using `only [emb, Matrix.toBlocks_fromBlocks₁₁, Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Conclude with `hinv g`. Simplify using `only [hco]`. Rewrite using `[← hQ P R A b hb (fun ij : Fin n × Fin n => (g : Matrix (Fin n) (Fin n) A) ij.1 ij.2) k, hg P hP]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_equations : ∀ (F β : Type) [Field F] [Algebra ℚ F] [Fintype β] [DecidableEq β] (ω : Module.Basis β ℚ F) (n : ℕ) (S : Set (MvPolynomial (Fin n × Fin n) F)), ∃ S' : Set (MvPolynomial (((Fin n × β) ⊕ Unit) × ((Fin n × β) ⊕ Unit)) ℚ), ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra ℚ R] [Algebra R A] [Algebra F A] (b : Module.Basis β R A), (∀ i, b i = algebraMap F A (ω i)) → ∀ y : Matrix ((Fin n × β) ⊕ Unit) ((Fin n × β) ⊕ Unit) R, (∀ f ∈ S', ev f y = 0) ↔ ∃ g : GL (Fin n) A, (∀ P ∈ S, MvPolynomial.aeval (fun ij : Fin n × Fin n => (g : Matrix (Fin n) (Fin n) A) ij.1 ij.2) P = 0) ∧ y = emb b g := by
   intro F β _ _ _ _ ω n S
   choose Q hQ using fun P : MvPolynomial (Fin n × Fin n) F => GlobalTheory.T.exists_rational_coord_polynomial_baseChange F β ω (Fin n × Fin n) P

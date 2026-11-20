@@ -25,6 +25,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hU' : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj U)` using `hU`. Take `⟨W0⟩` from `nonempty_uw hU'`. Take `⟨hκ, hsd, -⟩` from `GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ _ _ hσ hU' h1 W0 k`. Establish `hκ : (U.X k).κ0 = 2 * (U.X k).ξ0` using `hκ`.
+
+Establish `hdom : Formalism.L2.Pj.Dom (fun _ : (E →+* ℂ) × ℕ => 0) 0` using `⟨fun _ => antitone_const, by simp⟩`. Take `⟨Dc, hDe, -⟩` from `GlobalTheory.Dict.exists_dic E H Dw l c σ _ Wt.g 0 (U.X k) (fun _ => 0) Wt.e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 hsd hdom`. Establish `hper : ∀ x v j, pv (U.X k) Dc.idx x v j = perFr (U.X k) x v (relab c σ (Wt.e j).1) (Wt.e j).2` using `fun x v j => by`. Rewrite using `[Dc.per_eq, hDe]`. Both sides reduce to the same expression.
+
+Establish `hty : ∀ j, rowType (U.X k) (Dc.idx j) = relab c σ (Wt.e j).1` using `fun j => by`. Rewrite using `[Dc.ty_eq, hDe]`. Both sides reduce to the same expression. Establish `hb` using `Dc.sympl`. Generalize the expression as in `Dc.bas = bas at hb`.
+
+Generalize the expression as in `Dc.idx = idx at hper hty`. Take `⟨-, -, -, -, -, -, huniq, -⟩` from `GlobalTheory.Dict.hx_laws E r (U.X k) Wt.g bas idx 0 hb (by simp) x.1 x.2`. Take `⟨ex, hl, e1, e2, e3, e4, -⟩` from `exists_ex_transport Wt.F (Wt.ik k) Wt.Pm Wt.per (unC (Formalism.L2.PjFree.Unf.ofPj U) k x).x Wt.pt`. Establish `hpv : ∀ a, Wt.Pm a = pv (U.X k) idx x.1 (Wt.φ k a : Fin r → E)` using `fun a => by`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Wt.pm_eq, hper]`. Establish `hsurj : ∀ v ∈ (U.X k).Λ, ∃ a, (Wt.φ k a : Fin r → E) = v` using `fun v hv => ⟨(Wt.φ k).symm ⟨v, hv⟩, by simp⟩`. Establish `hrange : ∀ z, z ∈ Wt.Pm.range ↔ ∃ v ∈ (U.X k).Λ, z = pv (U.X k) idx x.1 v` using `fun z => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨_, (Wt.φ k a).2, hpv a⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Take `⟨a, rfl⟩` from `hsurj v hv`. Conclude with `⟨a, hpv a⟩`. Establish `hEF : ∀ a b, (((Wt.F.Di (Wt.ik k)).EF a b : ℤ) : ℚ) = EF (U.X k) (Wt.φ k a : Fin r → E) (Wt.φ k b)`.
+
+Introduce `a b`. Rewrite using `[Wt.isom, EF_def, hκ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hhx : ∀ z w, hermForm Y.Hm z w = hx (U.X k) bas idx x.1 z w`.
+
+Use `(huniq _ (U.X k).Λ_span).2 Y.Hm Y.herm ?_` and prove the remaining obligations. Introduce `u hu v hv`. Take `⟨a, rfl⟩` from `hsurj u hu`. Take `⟨b, rfl⟩` from `hsurj v hv`. Rewrite using `[← hpv, ← hpv, Y.c1, ← hEF]`.
+
+Simplify using the standard rewrite rules. Establish `hl' : (fun z => (ex z).left) = fun z => (Wt.F.ex (Wt.ik k) Wt.Pm z).left` using `funext hl`. Use `⟨bas, idx, hb, ⟨hper, hty⟩, ⟨{ ex := ex ex_add := e1 ex_onto := e2 ex_ker := fun z => (e3 z).trans (hrange z) ex_lin := fun a z => by simp only [hty]; exact e4 a z hol := ?_ der := fun ℓ => by rw [hl']; exact Wt.der ℓ.1 ℓ.2 fr := Y.fr fr_hol := fun j => by simp only [hl]; exact Y …` and prove the remaining obligations. Rewrite using `[hl']`. Introduce `V f`.
+
+Use `ReciprocityTheory.ChartRestriction.G.TB.ValAt.famHol Wt.F (Wt.ik k) Wt.Pm Wt.per V f` as an intermediate fact. Simplify `this` using `only [Set.mem_univ, true_and]`. Introduce `v hv`. Take `⟨a, rfl⟩` from `hsurj v hv`. Rewrite using `[← hpv]`.
+
+Take `⟨j, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Xo.univ.t.PP.isLB.cover.ge (Set.mem_univ ((ex 0).left (IsLocalRing.closedPoint ℂ))))`. Conclude with `(Y.c6 a j 0).1`. Introduce `v hv j z`. Take `⟨a, rfl⟩` from `hsurj v hv`. Rewrite using `[hl, ← hpv, ← hhx, ← hhx]`.
+
+Conclude with `(Y.c6 a j z).2`. Introduce `j z pt show _ = (ex z).left → _ → ⊤ ≤ (ex z).left ⁻¹ᵁ _ → _ = Y.θ z * Y.fr j z ^ (1 : ℤ)`. Rewrite using `[hl, zpow_one]`. Conclude with `Y.c7 j z pt`.
+-/
 theorem exists_genReads_of_unitAt (hσ : GoodEmb c σ) (hU : IsUnf U) (h1 : 1 ≤ r) (Wt : UnfAt U k x) (Y : UnitAt Wt) :
     ∃ (bas : (Fin Wt.g ⊕ Fin Wt.g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin Wt.g ≃ (U.X k).Ψ × Fin r),
       IsSympl (U.X k) bas ∧ IdxIs c σ (U.X k) idx Wt.e ∧ GenReads U k bas idx Wt.e x Y.θ ∧
@@ -112,6 +137,15 @@ end Fibre
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hmul : ∀ g g' : GA D W, archM W t (g * g') = archM W t g * archM W t g'` using `fun g g' => by`. Unfold `archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`. Establish `h : archM W t γ = archM W t γ'`. Rewrite using `[← mul_inv_cancel_right γ h, ← mul_inv_cancel_right γ' h, hmul (γ * h), hmul (γ' * h), e]`.
+
+Establish `key : ∀ δ : GA D W, ∀ δ₀ : GL (Fin W.rank) D.host.E, (∀ i j, (matHom W δ).1 i j = (1 : AF D.host.F) ⊗ₜ δ₀.1 i j) → ∀ i j, archM W t δ i j = τ (δ₀.1 i j)`. Introduce `δ δ₀ he i j`. Express the relevant statement in the definitionally equal form `t (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom W δ).1 i j)) = _`. Rewrite using `[he, Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `ht.1 _`.
+
+Take `⟨δ₀, -, he⟩` from `hγ`. Take `⟨δ₁, -, he'⟩` from `hγ'`. Establish `h0 : ∀ i j, (matHom W γ).1 i j = (1 : AF D.host.F) ⊗ₜ δ₀.1 i j` using `fun i j => (congrArg (fun x : GL (Fin W.rank) (AF D.host.F ⊗[D.host.F] D.host.E) => x.1 i j) he).symm`. Establish `h1 : ∀ i j, (matHom W γ').1 i j = (1 : AF D.host.F) ⊗ₜ δ₁.1 i j` using `fun i j => (congrArg (fun x : GL (Fin W.rank) (AF D.host.F ⊗[D.host.F] D.host.E) => x.1 i j) he').symm`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations.
+
+Use `(h0 i j).trans (Eq.trans ?_ (h1 i j).symm)` and prove the remaining obligations. Rewrite using `[τ.injective ((key γ δ₀ h0 i j).symm.trans ((congrFun (congrFun h i) j).trans (key γ' δ₁ h1 i j)))]`.
+-/
 theorem rat_eq_of_archM {W : HSp D} {τ : D.host.E →+* ℂ} {t : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (ht : IsInfEmb τ t) {γ γ' h : GA D W} (hγ : γ ∈ GQ W) (hγ' : γ' ∈ GQ W)
     (e : archM W t (γ * h) = archM W t (γ' * h)) : γ = γ' := by
@@ -136,6 +170,15 @@ theorem rat_eq_of_archM {W : HSp D} {τ : D.host.E →+* ℂ} {t : Ainf D.host.F
   refine (h0 i j).trans (Eq.trans ?_ (h1 i j).symm)
   rw [τ.injective ((key γ δ₀ h0 i j).symm.trans ((congrFun (congrFun h i) j).trans (key γ' δ₁ h1 i j)))]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ (X (dict h).1).Ψ := by`. Take `⟨τ₀⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h' : ComplexEmbedding.conjugate τ₀ ∈ (X (dict h).1).Ψ`. Conclude with `⟨_, h'⟩`. Conclude with `⟨τ₀, ((X (dict h).1).cmType τ₀).2 h'⟩`.
+
+Take `⟨ρ, rfl⟩` from `hΨ _ τ hτ`. Establish `hm` using `hf ρ ⟨_, hτ⟩ rfl`. Rewrite `hm` using `[← h0.mul]`. Establish `hm' : mat (dict h).2 ⟨_, hτ⟩ = Matrix.reindex (finCongr hr) (finCongr hr) (archM W (θ ρ) (γ₀ * h)) * x₀ (tauE D ρ)`. Rewrite using `[← CcModel.realM_mt hθ W (γ₀ * h) (tauE D ρ) ⟨ρ, rfl⟩ _ (hθ ρ)]`.
+
+Conclude with `congrFun ha.2.2 ⟨_, hτ⟩`. Establish `hd : (mat (dict h).2 ⟨_, hτ⟩).det ≠ 0` using `(hx ⟨_, hτ⟩).1`. Rewrite `hd` using `[hm, Matrix.det_mul]`. Establish `hu : IsUnit (x₀ (tauE D ρ))` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hd))`. Take `rfl : γ = γ₀` from `rat_eq_of_archM (hθ ρ) hγ ha.1 ((Matrix.reindex _ _).injective (hu.mul_right_cancel (hm.symm.trans hm')))`.
+
+Conclude with `ha`.
+-/
 theorem atComp_of_frAt {W : HSp D} {S : D.what₂.Tau → Finset (ℚ × Bool)} (M : Formalism.IndefR.Mult.DSModel W S) {θ : InfFam D}
     (hθ : IsInfFam θ) {r : ℕ} (hr : W.rank = r) {Comp : Type} {X : Comp → Data D.host.E r}
     {dict : GA D W → Σ k, Frame (X k).Ψ r} {x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ} (h0 : IsModelBaseFrameFamily M hr x₀)
@@ -161,6 +204,9 @@ theorem atComp_of_frAt {W : HSp D} {S : D.what₂.Tau → Finset (ℚ × Bool)} 
     (hu.mul_right_cancel (hm.symm.trans hm')))
   exact ha
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 1 0 ⊗ₜ X i j) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem realPt_fin (S T : HSp D) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T X).map (finPart D) = 0 := by
   ext i j
@@ -168,6 +214,11 @@ theorem realPt_fin (S T : HSp D) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E)
   rw [Algebra.TensorProduct.map_tmul]
   exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Rewrite using `[realM, dif_pos hτ]`. Express the relevant statement in the definitionally equal form `θ hτ.choose (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (pairA D.host.F 1 0 ⊗ₜ X i j)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Use `(hθ hτ.choose).1 (X i j)` as an intermediate fact. Rewrite `this` using `[← hτ.choose_spec]`.
+
+Conclude with `this`.
+-/
 theorem realM_realPt {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E)
     {τ : D.host.E →+* ℂ} (hτ : ∃ ρ, τ = tauE D ρ) (i j) :
     realM θ (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt S T X) τ i j = τ (X i j) := by
@@ -179,6 +230,15 @@ theorem realM_realPt {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (X : Matr
   rw [← hτ.choose_spec] at this
   exact this
 
+/- English proof (translation)
+Use `⟨fun a a' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.1]`. Simplify using `[Matrix.one_apply, apply_ite, eq_comm]`. Rewrite using `[← GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice, h.2, SetLike.coe_set_eq]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `x hx choose y hy using fun a => Submodule.mem_one.1 (hx a trivial)`. Rewrite using `[show x = ∑ a, y a • fun i' => (1 : Matrix _ _ D.host.E) i' a from funext fun b => by`. Simplify using `[Matrix.one_apply, ← hy, Algebra.smul_def]]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, rfl⟩ b -`. Use `show (1 : Matrix _ _ D.host.E) b a ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`.
+
+Conclude with `zero_mem _`.
+-/
 theorem isONLatBasis_one {i : Fin D.R.m} (h : VStd D i) : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.IsONLatBasis (Vc D i) 1 := by
   refine ⟨fun a a' => ?_, ?_⟩
   · rw [h.1]
@@ -198,6 +258,9 @@ theorem isONLatBasis_one {i : Fin D.R.m} (h : VStd D i) : GlobalTheory.Indefinit
       · exact Submodule.mem_one.2 ⟨1, map_one _⟩
       · exact zero_mem _
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `⟨_, g, e, F, ik, φ, th, -, -, h3, h4⟩` from `hL.adPin j hj σ hσ`. Conclude with `CcModel.exists_atComp hθ hr (T.U j σ) (T.dict j σ) _ e F ik φ th _ hΨ h3 h4 h`.
+-/
 theorem exists_atComp_cast (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ)
     (W : HSp D) (hV : T.V j σ = W) (hr : W.rank = D.R.r) {θ : InfFam D} (hθ : IsInfFam θ)
     (hΨ : ∀ k, ∀ τ ∈ ((T.U j σ).X k).Ψ, ∃ ρ, τ = tauE D ρ) (h : GA D W) :
@@ -208,6 +271,19 @@ theorem exists_atComp_cast (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R i σ hV hσ hL hθ hS h0 hcc`. Establish `hj` using `inR i`. Establish `hg : GoodEmb T.Q.c σ` using `hσ ▸ T.toCore.good_σ₀`. Establish `hU` using `hL.unf _ hj _ hg`. Establish `hr1 : 1 ≤ D.R.r`.
+
+Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_add_three_le_k`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hΨ : ∀ k, ∀ τ ∈ ((T.U ((i : ℕ) + 1) σ).X k).Ψ, ∃ ρ, τ = tauE D ρ` using `fun k τ hτ => ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hL.pins.1 τ (((hU.2.1 k).2 τ).1 hτ)`.
+
+Use `⟨1, 1, norm_one, isONLatBasis_one hS, fun h γ hγ hf hx Wt Y X z hz => ?_⟩` and prove the remaining obligations. Take `⟨γ₀, ha⟩` from `exists_atComp_cast T hL _ hj σ hg _ hV (rank_Wc i) hθ hΨ h`. Establish `ha'` using `atComp_of_frAt _ hθ (rank_Wc i) h0 hΨ hγ hf hx ha`. Take `⟨bas, idx, hb, hi, hgr, hH⟩` from `exists_genReads_of_unitAt hg hU hr1 Wt Y`. Establish `key` using `hcc.2 h γ ha' hx Wt.g bas idx Wt.e hb hi Y.θ hgr _ (realPt_fin (Vc D i) (Wc D i) X)`.
+
+Establish `hzz : AdTh.zOf R.θ (Vc D i) (Wc D i) (rank_Wc i) _ idx (castDict hV (T.dict ((i : ℕ) + 1) σ) h).2 (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) X) = z`. Use function extensionality and compare the values at `a j`. Rewrite using `[hz a, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.perVec, ← hi.1, pv, Function.comp_apply, ← perC_emb, AdTh.zOf]`. Use `congr 1`. Use function extensionality and compare the values at `τ m`.
+
+Rewrite using `[realM_realPt hθ _ _ _ (hΨ _ _ τ.2)]`. Simplify using `[Matrix.one_apply, Data.emb]`. Rewrite `key` using `[hzz]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.thetaAt_eq, key]`. Simplify using `only [hH]`.
+
+Rewrite using `[neg_mul, Complex.exp_neg]`. Use `Complex.exp_ne_zero ((Real.pi / 2 : ℂ) * ∑ a, GlobalTheory.Dict.hx _ bas idx (castDict hV (T.dict ((i : ℕ) + 1) σ) h).2 (z a) (z a))` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem framePin_of_ccIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i), σ = T.σ₀ → LawsJ T → R.models_inf → VStd D i → IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) σ) → GlobalTheory.AdTh.CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) σ) (castDict hV (T.dict ((i : ℕ) + 1) σ)) (castDict hV (T.mu ((i : ℕ) + 1) σ)) (T.x₀ ((i : ℕ) + 1) σ) (R.ωP i A.μ0) (R.vacP i) (T.cE ((i : ℕ) + 1) σ) → GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i σ hV := by
   intro D G _ _ Pl0 T0 A T _ R i σ hV hσ hL hθ hS h0 hcc
   have hj := inR i

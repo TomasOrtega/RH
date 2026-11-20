@@ -22,6 +22,17 @@ noncomputable section
 namespace GlobalTheory.TraceDescent
 open GlobalTheory.AbLaw.PowVanish
 
+/- English proof (translation)
+Establish `dφ : ∀ q (x : Cube.Term A q), Cube.d B q (fun s => φ s.1 (x s)) = fun t => φ t.1 (Cube.d A q x t)` using `fun q x => funext fun t => by`. Simplify using `only [Cube.d_apply, map_sum, map_zsmul, hφ]`. Establish `dT : ∀ q (x : Cube.Term B q), Cube.d B q (fun s => T s.1 (x s)) = fun t => T t.1 (Cube.d B q x t)` using `fun q x => funext fun t => by`. Simplify using `only [Cube.d_apply, map_sum, map_zsmul, hT]`. Break down `p with _ | p` into its components or cases.
+
+Rewrite `H`, the goal using `[cubeComplex_exactAt_zero_iff']`. Introduce `x y hxy`. Establish `: (fun s => φ s.1 (x s) : Cube.Term B 0) = fun s => φ s.1 (y s)` using `H (by rw [dφ, dφ, hxy])`. Conclude with `funext fun s => inj _ (congrFun this s)`. Rewrite `H`, the goal using `[cubeComplex_exactAt_succ_iff]`.
+
+Introduce `x`. Use `⟨fun hx => ?_, fun ⟨y, hy⟩ => hy ▸ Cube.d_d A p y⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(H (fun s => φ s.1 (x s))).1 (by`. Rewrite using `[dφ, hx]`. Conclude with `funext fun t => map_zero _)`.
+
+Use `choose z hz using fun s : {s : Finset κ // s.card = p} => himg s.1 (y s)`. Establish `key : Cube.d A p z = (n : R) • x` using `funext fun t => inj _ (by`. Establish `e` using `congrFun (dφ p z) t`. Establish `e'` using `congrFun (dT p y) t`. Simplify using `only [hz] at e`.
+
+Rewrite using `[← e, e', hy, htr, Pi.smul_apply, Nat.cast_smul_eq_nsmul, map_nsmul])`. Take `⟨u, hu⟩` from `hn.exists_left_inv`. Conclude with `⟨u • z, by rw [map_smul, key, smul_smul, hu, one_smul]⟩`.
+-/
 theorem exactAt_of_trace {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (A B : GlobalTheory.Cube.{0} κ R)
     (φ : ∀ s, A.obj s →+ B.obj s) (T : ∀ s, B.obj s →+ B.obj s)
     (hφ : ∀ {s t : Finset κ} (h : s ⊆ t) x, φ t (Cube.res A h x) = Cube.res B h (φ s x))
@@ -56,6 +67,9 @@ theorem exactAt_of_trace {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (A
 
 variable {X Y : Scheme.{0}} (f : Y ⟶ X) (M : LB X)
 
+/- English proof (translation)
+Introduce `y hy` and use `⟨e hy.1, mem_pull.2 (by have := mem_pull.1 hy.2 rwa [← hτ] at this)⟩`.
+-/
 theorem le_deck {τ : Y ⟶ Y} (hτ : τ ≫ f = f) {W W' : Y.Opens} (e : W' ≤ τ ⁻¹ᵁ W) (j : (M.pull f).ι) :
     W' ⊓ (M.pull f).U j ≤ τ ⁻¹ᵁ (W ⊓ (M.pull f).U j) := fun y hy =>
   ⟨e hy.1, mem_pull.2 (by
@@ -78,27 +92,42 @@ def act {τ : Y ⟶ Y} (hτ : τ ≫ f = f) {W W' : Y.Opens} (e : W' ≤ τ ⁻�
   map_zero' := GlobalTheory.LB.sec_ext fun j => map_zero (pb τ _)
   map_add' s t := GlobalTheory.LB.sec_ext fun j => map_add (pb τ _) _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_act {τ : Y ⟶ Y} (hτ : τ ≫ f = f) {W W' : Y.Opens} (e : W' ≤ τ ⁻¹ᵁ W)
     (s : SecOn (M.pull f) W) (j : (M.pull f).ι) :
     GlobalTheory.LB.coord (act f M hτ e s) j = pb τ (le_deck f M hτ e j) (GlobalTheory.LB.coord s j) := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LB.sec_ext fun j => by rw [coord_act, SecOn.coord_restrict, SecOn.coord_restrict, coord_act, pb_rs, rs_pb]`.
+-/
 theorem act_restrict {τ : Y ⟶ Y} (hτ : τ ≫ f = f) {W W' : Y.Opens} (e : W ≤ τ ⁻¹ᵁ W) (e' : W' ≤ τ ⁻¹ᵁ W')
     (h : W' ≤ W) (s : SecOn (M.pull f) W) :
     act f M hτ e' (SecOn.restrict _ h s) = SecOn.restrict _ h (act f M hτ e s) :=
   GlobalTheory.LB.sec_ext fun j => by
     rw [coord_act, SecOn.coord_restrict, SecOn.coord_restrict, coord_act, pb_rs, rs_pb]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LB.sec_ext fun j => by rw [coord_act, coord_act, coord_act, pb_pb, pb_congr H]`.
+-/
 theorem act_act {τ σ ρ : Y ⟶ Y} (hτ : τ ≫ f = f) (hσ : σ ≫ f = f) (hρ : ρ ≫ f = f) (H : τ ≫ σ = ρ)
     {W : Y.Opens} (e : W ≤ τ ⁻¹ᵁ W) (e' : W ≤ σ ⁻¹ᵁ W) (e'' : W ≤ ρ ⁻¹ᵁ W) (s : SecOn (M.pull f) W) :
     act f M hτ e (act f M hσ e' s) = act f M hρ e'' s :=
   GlobalTheory.LB.sec_ext fun j => by
     rw [coord_act, coord_act, coord_act, pb_pb, pb_congr H]
 
+/- English proof (translation)
+The claim follows from `SecOn.coord_pullLE f e s j`.
+-/
 theorem coord_pullLE {V : X.Opens} {W : Y.Opens} (e : W ≤ f ⁻¹ᵁ V) (s : SecOn M V) (j : (M.pull f).ι) :
     GlobalTheory.LB.coord (SecOn.pullLE M f V W e s) j =
       pb f ((inf_le_inf_right _ e).trans (GlobalTheory.LB.pull_inf_le f V j)) (GlobalTheory.LB.coord s (j PUnit.unit)) :=
   SecOn.coord_pullLE f e s j
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LB.sec_ext fun j => by rw [coord_act, coord_pullLE, pb_pb, pb_congr hτ]`.
+-/
 theorem act_pullLE {τ : Y ⟶ Y} (hτ : τ ≫ f = f) {V : X.Opens} {W : Y.Opens} (e : W ≤ τ ⁻¹ᵁ W)
     (h : W ≤ f ⁻¹ᵁ V) (s : SecOn M V) :
     act f M hτ e (SecOn.pullLE M f V W h s) = SecOn.pullLE M f V W h s :=
@@ -112,15 +141,24 @@ include hτ hgal
 
 omit hτ in
 
+/- English proof (translation)
+Take `rfl` from `le_antisymm e e'`. Simplify `hgal U s hs` using `only [app_eq_pb]`.
+-/
 theorem exists_fun (U : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ U) (e' : f ⁻¹ᵁ U ≤ W) (s : Γ(Y, W))
     (hs : ∀ y (e : W ≤ τ y ⁻¹ᵁ W), pb (τ y) e s = s) : ∃! g : Γ(X, U), pb f e g = s := by
   obtain rfl := le_antisymm e e'
   simpa only [app_eq_pb] using hgal U s hs
 
+/- English proof (translation)
+Introduce `a _ hab` and use `(exists_fun f τ hgal U W e e' (pb f e a) (fun y _ => by rw [pb_pb, pb_congr (hτ y)])).unique rfl hab.symm`.
+-/
 theorem pb_injective (U : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ U) (e' : f ⁻¹ᵁ U ≤ W) :
     Function.Injective (pb f e) := fun a _ hab =>
   (exists_fun f τ hgal U W e e' (pb f e a) (fun y _ => by rw [pb_pb, pb_congr (hτ y)])).unique rfl hab.symm
 
+/- English proof (translation)
+Introduce `a b hab` and use `GlobalTheory.LB.sec_ext fun i => by have h := (coord_pullLE f M e a (fun _ => i)).symm.trans ((congrArg (GlobalTheory.LB.coord · (fun _ => i : (M.pull f).ι)) hab).trans (coord_pullLE f M e b (fun _ => i))) exact pb_injective f τ hτ hgal (V ⊓ M.U i) (W ⊓ (M.pull f).U (fun _ => i)) …`.
+-/
 theorem pullLE_injective (V : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ V) (e' : f ⁻¹ᵁ V ≤ W) :
     Function.Injective (SecOn.pullLE M f V W e) := fun a b hab => GlobalTheory.LB.sec_ext fun i => by
   have h := (coord_pullLE f M e a (fun _ => i)).symm.trans
@@ -128,6 +166,13 @@ theorem pullLE_injective (V : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ V) (e
   exact pb_injective f τ hτ hgal (V ⊓ M.U i) (W ⊓ (M.pull f).U (fun _ => i)) _
     (fun y hy => ⟨e' hy.1, mem_pull.2 hy.2⟩) h
 
+/- English proof (translation)
+Establish `inv : ∀ y, W ≤ τ y ⁻¹ᵁ W` using `fun y => by`. Take `rfl` from `le_antisymm e e'`. Rewrite using `[← Scheme.Hom.comp_preimage, hτ]`. Establish `H : ∀ i : M.ι, ∃ g : Γ(X, V ⊓ M.U i), pb f ((inf_le_inf_right _ e).trans (GlobalTheory.LB.pull_inf_le f V (fun _ => i))) g = GlobalTheory.LB.coord s (fun _ => i)` using `fun i => (exists_fun f τ hgal (V ⊓ M.U i) (W ⊓ (M.pull f).U (fun _ => i)) _ (fun y hy => ⟨e' hy.1, mem_pull.2 hy.2⟩) _ fun y _ => congrArg (GlobalTheory.LB.coord · (fun _ => i : (M.pull f).ι)) (hs y (inv y))).exists`. Use `choose g hg using H`.
+
+Use `⟨GlobalTheory.LB.mkSec g fun i j => ?_, GlobalTheory.LB.sec_ext fun j => (coord_pullLE f M e _ j).trans (hg _)⟩` and prove the remaining obligations. Establish `e₀ : W ⊓ (M.pull f).U (fun _ => i) ⊓ (M.pull f).U (fun _ => j) ≤ f ⁻¹ᵁ (V ⊓ M.U i ⊓ M.U j)` using `fun y hy => ⟨⟨e hy.1.1, mem_pull.1 hy.1.2⟩, mem_pull.1 hy.2⟩`. Apply `pb_injective f τ hτ hgal (V ⊓ M.U i ⊓ M.U j) _ e₀ (fun y hy => ⟨⟨e' hy.1.1, mem_pull.2 hy.1.2⟩, mem_pull.2 hy.2⟩)` to reduce the goal to its premises. Establish `h` using `GlobalTheory.LB.coord_mem s (fun _ => i) (fun _ => j)`. Rewrite `h` using `[← hg, ← hg]`.
+
+Conclude with `(pb_rs f e₀ _ _).trans ((rs_pb f _ _ _).symm.trans (h.trans ((congrArg₂ (· * ·) ((rs_pull_g M f i j _).trans (pb_rs f e₀ _ _).symm) ((rs_pb f _ _ _).trans (pb_rs f e₀ _ _).symm)).trans (map_mul _ _ _).symm)))`.
+-/
 theorem exists_pullLE (V : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ V) (e' : f ⁻¹ᵁ V ≤ W)
     (s : SecOn (M.pull f) W) (hs : ∀ y (e : W ≤ τ y ⁻¹ᵁ W), act f M (hτ y) e s = s) :
     ∃ x, SecOn.pullLE M f V W e x = s := by
@@ -152,6 +197,15 @@ theorem exists_pullLE (V : X.Opens) (W : Y.Opens) (e : W ≤ f ⁻¹ᵁ V) (e' :
     ((rs_pull_g M f i j _).trans (pb_rs f e₀ _ _).symm)
     ((rs_pb f _ _ _).trans (pb_rs f e₀ _ _).symm)).trans (map_mul _ _ _).symm)))
 
+/- English proof (translation)
+Establish `inv : ∀ y (s : Finset I), (⨅ i ∈ s, f ⁻¹ᵁ D i) ≤ τ y ⁻¹ᵁ (⨅ i ∈ s, f ⁻¹ᵁ D i)` using `fun y s => by`. Rewrite using `[← preimage_biInf, ← Scheme.Hom.comp_preimage, hτ]`. Set `φ : ∀ s : Finset I, SecOn M (⨅ i ∈ s, D i) →+ SecOn (M.pull f) (⨅ i ∈ s, f ⁻¹ᵁ D i)` to `fun s => (SecOn.pullLE M f _ _ (preimage_biInf D f s).ge).toAddMonoidHom`. Set `T : ∀ s : Finset I, SecOn (M.pull f) (⨅ i ∈ s, f ⁻¹ᵁ D i) →+ SecOn (M.pull f) (⨅ i ∈ s, f ⁻¹ᵁ D i)` to `fun s => ∑ y, act f M (hτ y) (inv y s)`. Establish `hT : ∀ s x, T s x = ∑ y, act f M (hτ y) (inv y s) x` using `fun s x => AddMonoidHom.finset_sum_apply _ _ _`.
+
+Use `exactAt_of_trace _ _ φ T (fun {s t} h x => ?_) (fun {s t} h x => ?_) (fun s => pullLE_injective f M τ hτ hgal _ _ (preimage_biInf D f s).ge (preimage_biInf D f s).le) _ hu (fun s y => ?_) (fun s x => ?_) p H` and prove the remaining obligations. Conclude with `(SecOn.pullLE_restrict f (iInf_le_iInf_of_subset D h) (preimage_biInf D f t).ge _).trans (SecOn.restrict_pullLE f (preimage_biInf D f s).ge (iInf_le_iInf_of_subset (fun i => f ⁻¹ᵁ D i) h) _).symm`. Express the relevant statement in the definitionally equal form `T t (SecOn.restrict _ (iInf_le_iInf_of_subset (fun i => f ⁻¹ᵁ D i) h) x) = SecOn.restrict _ (iInf_le_iInf_of_subset (fun i => f ⁻¹ᵁ D i) h) (T s x)`. Rewrite using `[hT t, hT s x, map_sum]`. Conclude with `Finset.sum_congr rfl fun y _ => act_restrict f M (hτ y) (inv y s) (inv y t) _ x`.
+
+Use `exists_pullLE f M τ hτ hgal _ _ (preimage_biInf D f s).ge (preimage_biInf D f s).le (T s y) fun z e => ?_` and prove the remaining obligations. Rewrite using `[hT s y, map_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft z) _ _ fun w => act_act f M (hτ z) (hτ w) (hτ (z * w)) (hmul z w) e (inv w s) (inv (z * w) s) y`. Use `(hT s _).trans ((Finset.sum_congr rfl fun y _ => act_pullLE f M (hτ y) (inv y s) (preimage_biInf D f s).ge x).trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exactAt_of_pull [Group G] [Fintype G] (hmul : ∀ y z, τ y ≫ τ z = τ (y * z))
     {R : Type} [CommRing R] (a : X ⟶ Spec (CommRingCat.of R)) (b : Y ⟶ Spec (CommRingCat.of R))
     (hu : IsUnit ((Fintype.card G : ℕ) : R)) {I : Type} [LinearOrder I] (D : I → X.Opens) (p : ℕ)
@@ -185,6 +239,15 @@ theorem exactAt_of_pull [Group G] [Fintype G] (hmul : ∀ y z, τ y ≫ τ z = �
 
 end GlobalTheory.TraceDescent
 
+/- English proof (translation)
+Introduce `L K _ _ P m N I _ _ D p hm _ H`. Use `haveI := P.isAb.comm`. Establish `hm1 : 1 ≤ m` using `Nat.one_le_iff_ne_zero.mpr fun h => hm (by rw [h, Nat.cast_zero])`. Set `G : Subgroup (𝟙_ (Over (Sp K)) ⟶ P.A)` to `(powMonoidHom m).ker`. Establish `hc : Nat.card G = m ^ (2 * P.g)` using `(L.mulN _ P m hm1).2.2.2.2 K (𝟙 _) hm`.
+
+Use `haveI : Finite G := Nat.finite_of_card_ne_zero (hc ▸ pow_ne_zero _ (by omega))`. Use `haveI : Fintype G := Fintype.ofFinite G`. Establish `hgal` using `GlobalTheory.torsion_invariant_descends (fun S _ P n hn =>`. Establish `h` using `L.mulN S P n hn`. Use the proof step `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1⟩) K P m hm`.
+
+Use `GlobalTheory.TraceDescent.exactAt_of_pull (Out.mulA P.A m).left N (G := G) (fun y => ((toUnit P.A ≫ y.1) * 𝟙 P.A).left) (fun y => ?_) (fun U f hf => hgal U f fun y hy e => hf ⟨y, hy⟩ e) (fun y z => ?_) _ _ ?_ D p H` and prove the remaining obligations. Establish `hy : y.1 ^ m = 1` using `y.2`. Rewrite using `[← Over.comp_left, Out.mulA, MonObj.comp_pow, Category.comp_id, mul_pow, ← MonObj.comp_pow, hy, MonObj.comp_one, _root_.one_mul]`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, Subgroup.coe_mul, MonObj.comp_mul, ← _root_.mul_assoc, _root_.mul_comm (toUnit P.A ≫ z.1)]`. Rewrite using `[← Nat.card_eq_fintype_card, hc, Nat.cast_pow]`.
+
+Conclude with `(IsUnit.mk0 _ hm).pow _`.
+-/
 theorem GlobalTheory.exactAt_secCube_of_mul_pull : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (m : ℕ) (N : LB P.A.left) (I : Type) [LinearOrder I] [Fintype I] (D : I → P.A.left.Opens) (p : ℕ), (m : K) ≠ 0 → N.IsLB → (cubeComplex (secCube P.A.hom (N.pull (Out.mulA P.A m).left) (fun i => (Out.mulA P.A m).left ⁻¹ᵁ D i))).ExactAt p → (cubeComplex (secCube P.A.hom N D)).ExactAt p := by
   intro L K _ _ P m N I _ _ D p hm _ H
   classical

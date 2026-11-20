@@ -35,6 +35,13 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MiTop
+/- English proof (translation)
+Introduce `hCD hDS hHC hSA B X I l Z L hT Gi Gl Kc Yd cX ex W hA hr ho`. Establish `hpk` using `hA.pk`. Take `⟨z, hzC, hzZ, hz⟩` from `_root_.GlobalTheory.T.exists_botDat_of_placedP_framed W hpk hr`. Use `⟨z, hzC, hzZ, fun u => ?_⟩` and prove the remaining obligations. Take `⟨a, haI, haT, haO, haF⟩` from `_root_.GlobalTheory.T.all_true_family_datum_alt hDS hHC hSA W hA u`.
+
+Take `⟨row, hrI, hrS⟩` from `_root_.GlobalTheory.T.exists_pairwise_same_choices_at_geo hCD W u hpk a.g`. Establish `hcol` using `fun k => _root_.GlobalTheory.T.true_geometry_family_invariance_alt hDS hHC W hA u a haI haT haO k row hrI hrS`. Take `⟨col, hOK, hLaws, hCZ, hTail, hComm, hRat⟩` from `_root_.GlobalTheory.T.true_geometry_family_column_data_alt hDS hHC hSA W hA u a haI haT row hrI hrS hcol`. Establish `hc : (a.fam row col).c.Is` using `(_root_.GlobalTheory.T.famCh_is_and_tuples_is_of_colOK hDS hHC W u hpk (a.fam row col) hOK).1`. Apply the tactic sequence `have hPl := _root_.GlobalTheory.T.placed_p_of_true_geometry W hA u a haI haT row col hc`.
+
+Take `⟨d, hdB, hdb, hdz⟩` from `hz u (a.fam row col) a.d.B hPl haF`. Use `⟨a.fam row col, d, hdz, hLaws, ?_, hTail, _root_.GlobalTheory.T.linkDown_of_famCh W u hpk _ hOK, _root_.GlobalTheory.T.linkOnto_of_ontoAll' W u hpk ho _ hOK, hComm, hRat⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.T.linkZero_of_chartZero' W u (a.fam row col) d hCZ (fun h₀ => ?_) hdb` and prove the remaining obligations. Rewrite using `[hdB]`. Conclude with `haI.bot.1 h₀`.
+-/
 theorem famAllQ_of_allTrue_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.StrongApproxSU → ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → 1 ≤ B.R.rS → GlobalTheory.ChainOnto.OntoAll (I.rec7 l Z) → _root_.GlobalTheory.MiTop.FamilyAllConditions W := by
   intro hCD hDS hHC hSA B X I l Z L hT Gi Gl Kc Yd cX ex W hA hr ho
   have hpk := hA.pk

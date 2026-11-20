@@ -13,6 +13,11 @@ section Rename
 variable {K : Type*} [DecidableEq K] {ι : K → Type*}
   {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Unfold `classNum`. Rewrite using `[support_rename_of_injective he, Finset.sum_image]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he]`. Use `congr 2`.
+
+Unfold `classList`. Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`. Introduce `a _ b _ h`. Conclude with `Finsupp.mapDomain_injective he h`.
+-/
 theorem classNum_rename {σ τ : Type*} (e : σ → τ) (he : Function.Injective e) (cls : τ → K → ℤ)
     (H : MvPolynomial σ ℤ) (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
     classNum cls (rename e H) Q W = classNum (cls ∘ e) H Q W := by
@@ -27,10 +32,24 @@ theorem classNum_rename {σ τ : Type*} (e : σ → τ) (he : Function.Injective
   · intro a _ b _ h
     exact Finsupp.mapDomain_injective he h
 
+/- English proof (translation)
+Simplify using `[psumExpansion, map_sum, rename_X]`.
+-/
 theorem rename_psumExpansion {M N : ℕ} (e : Fin M → Fin N) (k : ℕ) (i : Fin M) :
     rename (Sum.map e e) (psumExpansion M k i) = psumExpansion N k (e i) := by
   simp [psumExpansion, map_sum, rename_X]
 
+/- English proof (translation)
+Unfold `pairNum`. Rewrite using `[← e.sum_comp, Fintype.sum_sum_type]`. Establish `hl : Function.Injective (fun a : Fin r => e (Sum.inl a))` using `e.injective.comp Sum.inl_injective`. Establish `hr : Function.Injective (fun b : Fin m => e (Sum.inr b))` using `e.injective.comp Sum.inr_injective`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Rewrite using `[← rename_psumExpansion (fun a : Fin r => e (Sum.inl a)) k a, classNum_rename _ (hl.sumMap hl)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `rcases t with a' | a' <;> simp`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inr]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `W`. Rewrite using `[← rename_psumExpansion (fun b : Fin m => e (Sum.inr b)) k b, classNum_rename _ (hr.sumMap hr)]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Apply the tactic sequence `rcases t with b' | b' <;> simp`.
+-/
 theorem pairNum_join {r m N : ℕ} (P : Ideal (MRing ι O)) (e : Fin r ⊕ Fin m ≃ Fin N)
     (xU xU' : Fin r → K → ℤ) (xV xV' : Fin m → K → ℤ) (fU gU : Fin r → MRing ι O)
     (fV gV : Fin m → MRing ι O) (k : ℕ) (Q : List (K → ℤ)) :
@@ -72,6 +91,29 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} {Ω : Type*} [Field Ω] {O :
   [Algebra O Ω] {N r m : ℕ} {E U V : Type*} [AddCommGroup E] [Module Ω E] [AddCommGroup U]
   [Module Ω U] [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `e.surjective i`. Break down `t with a | b` into its components or cases. Rewrite using `[Equiv.symm_apply_apply, Sum.elim_inl, ← hfU.graded c hc a]`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, hhi, rfl⟩`. Establish `h2 : (φ.symm v).2 = 0`. Use `wV.repr.injective (Finsupp.ext fun b => ?_)` and prove the remaining obligations. Use `hhi (e (Sum.inr b)) (by` as an intermediate fact. Rewrite using `[Fin.lt_def, he, he]`.
+
+Use `a.isLt` as an intermediate fact. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Use the proof step `omega)`. Simplify using `using this`. Establish `hv' : φ ((φ.symm v).1, 0) = v`.
+
+Rewrite using `[← h2]`. Simplify using the standard rewrite rules. Use `⟨(φ.symm v).1, (hU c hc _).2 (hv'.symm ▸ hv), fun a' ha' => ?_, ?_⟩` and prove the remaining obligations. Use `hhi (e (Sum.inl a')) (by` as an intermediate fact. Rewrite using `[Fin.lt_def, he, he]`.
+
+Simplify using `using Fin.lt_def.1 ha')`. Simplify using `using this`. Simplify using the standard rewrite rules. Introduce and unpack `⟨u, hu, hhi, rfl⟩`. Use `⟨φ (u, 0), (hU c hc u).1 hu, fun i' hi' => ?_, by simp⟩` and prove the remaining obligations.
+
+Take `⟨t', rfl⟩` from `e.surjective i'`. Rewrite `hi'` using `[Fin.lt_def, he, he]`. Break down `t' with a' | b'` into its components or cases. Simplify using `only [Sum.elim_inl] at hi'`. Simplify using `[hhi a' (Fin.lt_def.2 hi')]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Equiv.symm_apply_apply, Sum.elim_inr, ← hfV.graded c hc b]`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hhi, rfl⟩`.
+
+Use `⟨(φ.symm v).2, (hV c hc _).2 ⟨v, hv, rfl⟩, fun b' hb' => ?_, by simp⟩` and prove the remaining obligations. Use `hhi (e (Sum.inr b')) (by` as an intermediate fact. Rewrite using `[Fin.lt_def, he, he]`. Use `Fin.lt_def.1 hb'` as an intermediate fact. Simplify using `only [Sum.elim_inr]`.
+
+Use the proof step `omega)`. Simplify using `using this`. Introduce and unpack `⟨q, hq, hhi, rfl⟩`. Take `⟨z, hz, rfl⟩` from `(hV c hc q).1 hq`. Use `⟨z, hz, fun i' hi' => ?_, by simp⟩` and prove the remaining obligations.
+
+Take `⟨t', rfl⟩` from `e.surjective i'`. Rewrite `hi'` using `[Fin.lt_def, he, he]`. Break down `t' with a' | b'` into its components or cases. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hi'`. Use `a'.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Sum.elim_inr] at hi'`. Simplify using `[hhi b' (Fin.lt_def.2 (by omega))]`.
+-/
 theorem isFlagFrame_join (y : (Σ k, ι k) → Ω) (B : ChartBundle O (segreVec y) N E)
     (BU : ChartBundle O (segreVec y) r U) (BV : ChartBundle O (segreVec y) m V)
     (φ : (U × V) ≃ₗ[Ω] E) (e : Fin r ⊕ Fin m ≃ Fin N)
@@ -138,6 +180,9 @@ theorem isFlagFrame_join (y : (Σ k, ι k) → Ω) (B : ChartBundle O (segreVec 
 
 variable [DecidableEq K]
 
+/- English proof (translation)
+The claim follows from `isFlagFrame_join y B BU BV φ e he (fun c hc u => (hU c hc u).1) (fun c hc q => (hV c hc q).1) hpU.flag hpV.flag flag' := isFlagFrame_join y B' BU' BV' φ e he (fun c hc u => (hU c hc u).2) (fun c hc q => (hV c hc q).2) hpU.flag' hpV.flag' sameFlag i i' hii' := by obtain ⟨t, rfl⟩ : …`.
+-/
 theorem isFlagPair_join (ϖ : O) (y : (Σ k, ι k) → Ω) (B B' : ChartBundle O (segreVec y) N E)
     (BU BU' : ChartBundle O (segreVec y) r U) (BV BV' : ChartBundle O (segreVec y) m V)
     (φ : (U × V) ≃ₗ[Ω] E) (e : Fin r ⊕ Fin m ≃ Fin N)
@@ -182,6 +227,35 @@ theorem isFlagPair_join (ϖ : O) (y : (Σ k, ι k) → Ω) (B B' : ChartBundle O
 
 end Join
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hmod N r E U V _ _ _ _ _ _ B B' BU BU' BV BV' j π hj hπ hjπ hsame hlat w w' x x' f g hfl wU wU' xU xU' fU gU hflU wV wV' xV xV' fV gV hflV k Gs GsU GsV hGs hGsU hGsV Q hQ`. Establish `hrN : r ≤ N`. Establish `: FiniteDimensional Ω E` using `Module.Finite.of_basis w`. Establish `h1` using `Module.finrank_eq_card_basis wU`. Establish `h2` using `Module.finrank_eq_card_basis w`.
+
+Establish `h3` using `LinearMap.finrank_le_finrank_of_injective hj`. Simplify using `only [Fintype.card_fin] at h1 h2`. Use linear arithmetic over natural numbers and integers. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective π (LinearMap.range_eq_top.mpr hπ)`. Establish `hπs : ∀ v, π (s v) = v` using `fun v => LinearMap.congr_fun hs v`.
+
+Establish `hπj : ∀ u, π (j u) = 0` using `fun u => LinearMap.mem_ker.1 (hjπ ▸ LinearMap.mem_range_self j u)`. Establish `hbij : Function.Bijective (LinearMap.coprod j s)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v⟩ ⟨u', v'⟩ h`. Simplify using `only [LinearMap.coprod_apply] at h`.
+
+Establish `hv : v = v'` using `by simpa [hπs, hπj] using congrArg π h`. Substitute `hv` using the available equality. Establish `hu : u = u'` using `hj (add_right_cancel h)`. Rewrite using `[hu]`. Introduce `z`.
+
+Establish `hz : z - s (π z) ∈ LinearMap.range j`. Rewrite using `[hjπ, LinearMap.mem_ker, map_sub, hπs, sub_self]`. Take `⟨u, hu⟩` from `hz`. Conclude with `⟨(u, π z), by simp [LinearMap.coprod_apply, hu]⟩`. Use `set φ : (U × V) ≃ₗ[Ω] E := LinearEquiv.ofBijective _ hbij with hφdef`.
+
+Establish `hφ : ∀ p : U × V, φ p = j p.1 + s p.2` using `fun p => rfl`. Establish `hφu : ∀ u, φ (u, 0) = j u` using `fun u => by simp [hφ]`. Establish `hφπ : ∀ z, (φ.symm z).2 = π z` using `fun z => by conv_rhs => rw [← φ.apply_symm_apply z, hφ]`. Simplify using `[hπs, hπj]`. Establish `hN : r + (N - r) = N` using `by omega`.
+
+Use `set e : Fin r ⊕ Fin (N - r) ≃ Fin N := finSumFinEquiv.trans (finCongr hN) with hedef`. Establish `he : ∀ t, ((e t : Fin N) : ℕ) = Sum.elim (fun a : Fin r => (a : ℕ)) (fun b : Fin (N - r) => r + b) t`. Introduce `t`. Apply the tactic sequence `rcases t with a | b <;> simp [hedef]`. Establish `hU : ∀ c, segreVec y c ≠ 0 → ∀ u, (u ∈ BU.lat c ↔ φ (u, 0) ∈ B.lat c) ∧ (u ∈ BU'.lat c ↔ φ (u, 0) ∈ B'.lat c)`.
+
+Introduce `c hc u`. Rewrite using `[hφu]`. Conclude with `⟨(hlat c hc).1 u, (hlat c hc).2.1 u⟩`. Establish `hV : ∀ c, segreVec y c ≠ 0 → ∀ q, (q ∈ BV.lat c ↔ ∃ z ∈ B.lat c, (φ.symm z).2 = q) ∧ (q ∈ BV'.lat c ↔ ∃ z ∈ B'.lat c, (φ.symm z).2 = q)`. Introduce `c hc q`.
+
+Simplify using `only [hφπ]`. Conclude with `⟨(hlat c hc).2.2.1 q, (hlat c hc).2.2.2 q⟩`. Establish `hsU : SameGenericFibre ϖ BU BU'`. Introduce `c hc`. Take `⟨h1, h2⟩` from `hsame c hc`.
+
+Take `⟨hu, hu', -, -⟩` from `hlat c hc`. Use `⟨fun u hu0 => ?_, fun u hu0 => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `h1 (j u) ((hu u).1 hu0)`. Conclude with `⟨n, (hu' _).2 (by rwa [map_smul])⟩`. Take `⟨n, hn⟩` from `h2 (j u) ((hu' u).1 hu0)`.
+
+Conclude with `⟨n, (hu _).2 (by rwa [map_smul])⟩`. Establish `hsV : SameGenericFibre ϖ BV BV'`. Introduce `c hc`. Take `⟨h1, h2⟩` from `hsame c hc`. Take `⟨-, -, hv, hv'⟩` from `hlat c hc`.
+
+Use `⟨fun q hq => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `(hv q).1 hq`. Take `⟨n, hn⟩` from `h1 z hz`. Conclude with `⟨n, (hv' _).2 ⟨_, hn, map_smul π _ z⟩⟩`. Take `⟨z, hz, rfl⟩` from `(hv' q).1 hq`.
+
+Take `⟨n, hn⟩` from `h2 z hz`. Conclude with `⟨n, (hv _).2 ⟨_, hn, map_smul π _ z⟩⟩`. Establish `hpc` using `isFlagPair_join ϖ y B B' BU BU' BV BV' φ e he hU hV hflU hflV`. Establish `hE` using `hF O ϖ hϖ Ω K ι y d hmod N E B B' hsame w w' _ _ x x' _ _ f g _ _ hfl hpc k (psum (Fin N) ℤ k) (isHomogeneous_psum N k) (psum_isSymmetric (Fin N) ℤ k) Gs _ hGs (isPairExpansion_psum N k) Q hQ`. Establish `hEU` using `hF O ϖ hϖ Ω K ι y d hmod r U BU BU' hsU wU wU' wU wU' xU xU' xU xU' fU gU fU gU hflU hflU k (psum (Fin r) ℤ k) (isHomogeneous_psum r k) (psum_isSymmetric (Fin r) ℤ k) GsU _ hGsU (isPairExpansion_psum r k) Q hQ`.
+
+Establish `hEV` using `hF O ϖ hϖ Ω K ι y d hmod (N - r) V BV BV' hsV wV wV' wV wV' xV xV' xV xV' fV gV fV gV hflV hflV k (psum (Fin (N - r)) ℤ k) (isHomogeneous_psum (N - r) k) (psum_isSymmetric (Fin (N - r)) ℤ k) GsV _ hGsV (isPairExpansion_psum (N - r) k) Q hQ`. Rewrite using `[hE, pairNum_join, hEU, hEV]`.
+-/
 theorem SubQuotient.proof (hF : FlagIndependence.Statement) : SubQuotient.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hmod N r E U V _ _ _ _ _ _ B B' BU BU' BV BV' j π hj hπ
     hjπ hsame hlat w w' x x' f g hfl wU wU' xU xU' fU gU hflU wV wV' xV xV' fV gV hflV k Gs GsU GsV

@@ -20,6 +20,9 @@ section Gen
 
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G]
 
+/- English proof (translation)
+Use `choose j hj using fun e => M'.onto _ (isTanAt_base φ h (M.tan e))`. Use `⟨AddMonoidHom.mk' j fun a b => M'.inj ?_, hj, fun a e => M'.inj ?_⟩` and prove the remaining obligations. Rewrite using `[M'.add, hj, hj, hj, M.add, MonObj.comp_mul]`. Use `show M'.pt (j (a • e)) = M'.pt (φ a • j e)`. Rewrite using `[M'.pt_smul, hj, hj, M.pt_smul, ← Category.assoc, base_scale, Category.assoc]`.
+-/
 theorem exists_bc {R R' : Type} [CommRing R] [CommRing R'] {x : Spec (CommRingCat.of R) ⟶ X}
     {x' : Spec (CommRingCat.of R') ⟶ X} (φ : R →+* R') (h : Spec.map (CommRingCat.ofHom φ) ≫ x = x')
     {E E' : Type} [AddCommGroup E] [Module R E] [AddCommGroup E'] [Module R' E'] (M : LieModel G x E)
@@ -31,6 +34,9 @@ theorem exists_bc {R R' : Type} [CommRing R] [CommRing R'] {x : Spec (CommRingCa
   · show M'.pt (j (a • e)) = M'.pt (φ a • j e)
     rw [M'.pt_smul, hj, hj, M.pt_smul, ← Category.assoc, base_scale, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[spec_comp]`. Use `congr 2`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (dualMap g)) ≫ Spec.map (CommRingCat.ofHom (dualMap f)) =
       Spec.map (CommRingCat.ofHom (dualMap (g.comp f))) := by
@@ -41,6 +47,13 @@ theorem dual_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B �
 
 variable {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {Em : Type} [AddCommGroup Em] [Module Ω Em]
 
+/- English proof (translation)
+Establish `hs` using `centre_specializes φ z`. Set `s : X.presheaf.stalk (centre z) →+* X.presheaf.stalk (centre (Spec.map (CommRingCat.ofHom φ) ≫ z))` to `(X.presheaf.stalkSpecializes hs).hom`. Establish `h1 : Spec.map (CommRingCat.ofHom s) ≫ X.fromSpecStalk (centre z) = X.fromSpecStalk (centre (Spec.map (CommRingCat.ofHom φ) ≫ z))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs`. Use `⟨hall _, epsBase s h1 ≫ v, ⟨isTanAt_base s h1 hv.1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hv.2.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = _ ≫ Spec.map (CommRingCat.ofHom (dualMap s)) ≫ v.left`. Rewrite using `[← Category.assoc, dual_comp]`. Use `congr 4`. Conclude with `RingHom.ext fun a => (genMap_specializes ⟨centre z, hall _⟩ (hall _) hs a).symm`. Use `hw.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = _ ≫ Spec.map (CommRingCat.ofHom (dualMap s)) ≫ v.left`. Rewrite using `[← Category.assoc, dual_comp]`. Use `congr 4`. Conclude with `(congrArg (fun t => t.hom) (stalk_base φ z)).symm`.
+-/
 theorem valAt_of_extends (M : LieModel G ξ Em) (hall : ∀ q : X, genPt ξ ⤳ q) {V L : Type} [CommRing V] [IsLocalRing V]
     [CommRing L] [IsLocalRing L] (φ : V →+* L) (z : Spec (CommRingCat.of V) ⟶ X) {e : Em}
     {v : epsAt (R := X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) ⟶ G}
@@ -70,6 +83,29 @@ end Gen
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Set `R : Type` to `X.presheaf.stalk (centre z)`. Set `fV : R →+* V` to `(Scheme.stalkClosedPointTo z).hom`. Take `⟨g, MR, ρR, -, hbc⟩` from `GlobalTheory.T.lie_model_action_base_change E H X t R (X.fromSpecStalk (centre z))`. Establish `hz : spMap fV ≫ X.fromSpecStalk (centre z) = z` using `spec_centre z`. Take `⟨MV, ρV, aV, hV, -⟩` from `hbc V fV z hz.symm`.
+
+Take `⟨MC, ρC, aC, hC, -⟩` from `hbc L ((algebraMap V L).comp fV) (Spec.map (CommRingCat.ofHom (algebraMap V L)) ≫ z) ((congrArg (Spec.map (CommRingCat.ofHom (algebraMap V L)) ≫ ·) hz.symm).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ X.fromSpecStalk (centre z)) (spec_comp fV (algebraMap V L)))))`. Take `⟨j, hj, hjs⟩` from `exists_bc (algebraMap V L) rfl MV MC`. Establish `sV : ∀ i : Fin g, (fV ∘ (Pi.single i 1 : Fin g → R)) = Pi.single i 1` using `fun i => by`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [Pi.single_apply, h]`. Establish `sC : ∀ i : Fin g, (((algebraMap V L).comp fV) ∘ (Pi.single i 1 : Fin g → R)) = Pi.single i 1` using `fun i => by`.
+
+Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [Pi.single_apply, h]`. Establish `hj1 : ∀ i : Fin g, j (Pi.single i 1) = Pi.single i 1` using `fun i => MC.inj (Over.OverMorphism.ext (by`. Rewrite using `[hj, ← sC, hC, ← sV]`. Use `(congrArg (Spec.map (CommRingCat.ofHom (dualMap (algebraMap V L))) ≫ ·) (hV (Pi.single i 1))).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (MR.pt (Pi.single i 1)).left) (dual_comp _ _))))`.
+
+Establish `hju : ∀ u, j u = algebraMap V L ∘ u` using `fun u => by`. Establish `e : u = ∑ i, u i • (Pi.single i 1 : Fin g → V)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [e]`.
+
+Rewrite using `[map_sum]`. Simplify using `only [hjs, hj1]`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Establish `hpt : ∀ u, MC.pt (algebraMap V L ∘ u) = epsBase (algebraMap V L) rfl ≫ MV.pt u` using `fun u => by`.
+
+Rewrite using `[← hju, hj]`. Use `⟨g, MV, ρV, MC, ρC, aV, aC, fun u => congrArg (fun q => q.left) (hpt u), fun a u => MC.inj ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[aC a, hpt, hpt, aV a, Category.assoc]`. Set `Λ : Submodule V (Fin g → L)` to `{ carrier := {x | ∀ k, x k ∈ (algebraMap V L).range} add_mem' := fun ha hb k => add_mem (ha k) (hb k) zero_mem' := fun k => zero_mem _ smul_mem' := fun a x hx k => by show a • x k ∈ _`. Rewrite using `[Algebra.smul_def]`.
+
+Conclude with `mul_mem ⟨a, rfl⟩ (hx k) }`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `(Submodule.span_le (p := Λ)).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `w ⟨h, e, he, hv⟩`.
+
+Take `⟨v, hv₀⟩` from `(M.mem_lat_iff _ e).1 he`. Take `⟨r, rfl⟩` from `MR.onto v hv₀.1`. Establish `h3` using `valAt_of_extends M hall (algebraMap V L) z hv₀ (hC r)`. Establish `e2` using `MC.inj (LieModel.ValAt.unique hξ hv h3)`. Introduce `k`.
+
+Rewrite using `[e2]`. Conclude with `⟨_, rfl⟩`. Introduce `hx choose v hv using hx`. Establish `hsum : x = ∑ i, v i • (Pi.single i 1 : Fin g → L)`. Use extensionality with `k`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hv]`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `M.onto _ (isTanAt_base (genMap ξ ⟨centre z, hall _⟩) (spec_genMap ξ ⟨centre z, hall _⟩) (MR.tan (Pi.single i 1)))`. Establish `hex : M.Extends ⟨centre z, hall _⟩ e (MR.pt (Pi.single i 1))` using `(M.extends_iff _ _ _).2 ⟨MR.tan _, he⟩`.
+
+Use `Submodule.subset_span ⟨hall _, e, (M.mem_lat_iff _ e).2 ⟨_, hex⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← sC]`. Conclude with `valAt_of_extends M hall (algebraMap V L) z hex (hC _)`.
+-/
 theorem exists_coords {X : Scheme.{0}} (t : SAB H X) {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {Em : Type} [AddCommGroup Em] [Module Ω Em] (M : LieModel t.G ξ Em) (hall : ∀ q : X, genPt ξ ⤳ q)
     (hξ : IsCptGen ξ) (V L : Type) [CommRing V] [IsLocalRing V] [Field L] [Algebra V L]
@@ -143,14 +179,25 @@ theorem exists_coords {X : Scheme.{0}} (t : SAB H X) {Ω : Type} [Field Ω] {ξ 
       rw [← sC]
       exact valAt_of_extends M hall (algebraMap V L) z hex (hC _)
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull Out.proved_CubePullSt f t`. Conclude with `⟨_, ⟨m₁⟩⟩`.
+-/
 theorem exists_sab {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨PP', cub, sym, adj, prim, m₁, -⟩ := sabPull Out.proved_CubePullSt f t
   exact ⟨_, ⟨m₁⟩⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+-/
 theorem transport {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (h : f = f')
     (m : SABMap t' t f) : ∃ m' : SABMap t' t f', m'.φ = m.φ := by
   subst h; exact ⟨m, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ a e, (M₀.pt e ≫ t₀.act.act a).left ≫ m.φ = (M.pt e ≫ t.act.act a).left` using `fun a e => by`. Rewrite using `[Over.comp_left, Over.comp_left, ← h, Category.assoc, Category.assoc, m.act]`. Use `⟨fun h₀ a e => Over.OverMorphism.ext ?_, fun h₁ a e => Over.OverMorphism.ext (m.cart.1.hom_ext ?_ ?_)⟩` and prove the remaining obligations. Rewrite using `[← h, h₀ a e, key]`. Rewrite using `[key, h, h₁ a e]`.
+
+Rewrite using `[Over.w, Over.w]`.
+-/
 theorem act_iff {R : Type} [CommRing R] {X : Scheme.{0}} {t : SAB H X} {t₀ : SAB H (Sp R)} {x : Sp R ⟶ X}
     (m : SABMap t₀ t x) {W : Type} [AddCommGroup W] [Module R W] (M₀ : LieModel t₀.G (𝟙 _) W) (M : LieModel t.G x W)
     (h : ∀ e, (M₀.pt e).left ≫ m.φ = (M.pt e).left) (ρ : 𝓞 E →+* Module.End R W) :
@@ -168,6 +215,33 @@ namespace RootFieldNumerics.RF
 
 open IntFr
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ Y S Ω _ K _ J _ y 𝔐 V L _ _ _ _ _ _ _ z y₀ hz`. Take `⟨g, MV, ρV, MC, ρC, aV, aC, hVC, hρ, hfib⟩` from `exists_coords 𝔐.t 𝔐.M 𝔐.all 𝔐.tie.gen V L z`. Take `⟨T, ⟨mT⟩⟩` from `IntFr.exists_sab z 𝔐.t`. Take `⟨tK, ⟨m'⟩⟩` from `IntFr.exists_sab (spMap (algebraMap V L)) T`. Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mT m'`.
+
+Take `⟨n₂, hn₂⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ 𝔐.m n₁`. Take `⟨n₃, hn₃⟩` from `IntFr.transport hz n₂`. Take `⟨m₃, hm₃⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n₃`. Take `⟨m, hm⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m0.toSABMap m₃`. Take `⟨MK, hK⟩` from `(LieMove.main L _ _ _ _ _ (Fin g → L) n₁.cart).1 MC`.
+
+Take `⟨MU, hU⟩` from `(LieMove.main L _ _ _ _ _ (Fin g → L) m.cart).2 MK`. Take `⟨MT, hT⟩` from `(LieMove.main V _ _ _ _ _ (Fin g → V) mT.cart).1 MV`. Establish `aK` using `(act_iff n₁ MK MC hK ρC).2 aC`. Establish `aT` using `(act_iff mT MT MV hT ρV).2 aV`. Use `⟨T, tK, m, m', g, MC, MU, ρC, aC, (act_iff m MK MU hU ρC).1 aK, fun e => ?_, hfib, ?_⟩` and prove the remaining obligations.
+
+Establish `w` using `Over.w (MK.pt e)`. Use `⟨Over.homMk ((MK.pt e).left ≫ n₃.φ) ?_, ⟨(MK.pt e).left ≫ m₃.φ, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, n₃.cart.1.w, ← Category.assoc, w]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, m₃.cart.1.w, ← Category.assoc, w]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, ← hm]`. Conclude with `hU e`. Rewrite using `[Category.assoc]`. Conclude with `congrArg ((MK.pt e).left ≫ ·) hm₃.symm`.
+
+Use `show _ = (MK.pt e).left ≫ n₃.φ`. Rewrite using `[hn₃, hn₂, ← Category.assoc]`. Conclude with `congrArg (· ≫ 𝔐.m.φ) (hK e).symm`. Introduce `σ n x hx hspan`. Establish `hinj : Function.Injective (algebraMap V L)` using `IsFractionRing.injective V L`.
+
+Establish `hmem : ∀ k, x k ∈ 𝔐.M.fibAt 𝔐.M.lat z MC ⊓ (eigSp ρC ((algebraMap V L).comp σ)).restrictScalars V` using `fun k => hspan ▸ Submodule.subset_span ⟨k, rfl⟩`. Use `choose xV hxV using fun k => (hfib _).1 (hmem k).1`. Establish `hxe : ∀ k, x k = algebraMap V L ∘ xV k` using `fun k => funext fun i => (hxV k i).symm`. Establish `cinj : ∀ u u' : Fin g → V, algebraMap V L ∘ u = algebraMap V L ∘ u' → u = u'` using `fun u u' h => funext fun i => hinj (congrFun h i)`. Establish `heig : ∀ u : Fin g → V, u ∈ eigSp ρV σ ↔ algebraMap V L ∘ u ∈ eigSp ρC ((algebraMap V L).comp σ)` using `fun u => by`.
+
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, hρ]`. Use `forall_congr' fun a => ⟨fun h => ?_, fun h => cinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h]`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hsum : ∀ cf : Fin n → V, algebraMap V L ∘ (∑ k, cf k • xV k) = ∑ k, cf k • x k` using `fun cf => by`. Use extensionality with `i`.
+
+Simplify using `[Finset.sum_apply, hxe, Algebra.smul_def]`. Use `⟨σ, fun k => MT.pt (xV k), rfl, ?_, fun k => ⟨(MK.pt (x k)).left, hU _, ?_⟩⟩` and prove the remaining obligations. Use `(GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ V T.G (𝟙 _) _ MT _ T.act ρV σ n xV aT).2 ⟨fun k => (heig _).2 (hxe k ▸ (hmem k).2), ?_⟩` and prove the remaining obligations. Introduce `e he`. Establish `h1 : algebraMap V L ∘ e ∈ Submodule.span V (Set.range x)`.
+
+Rewrite using `[hspan]`. Conclude with `⟨(hfib _).2 fun i => ⟨_, rfl⟩, (heig e).1 he⟩`. Take `⟨cf, hcf⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 h1`. Use `⟨cf, cinj _ _ (by rw [hsum, hcf]), fun cf' h => ?_⟩` and prove the remaining obligations. Establish `h2 : ∑ k, (algebraMap V L (cf' k) - algebraMap V L (cf k)) • x k = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, algebraMap_smul]`. Rewrite using `[← hsum, ← h, hcf, sub_self]`. Conclude with `funext fun k => hinj (sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hx _ h2 k))`. Use `mT.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hn₁, Category.assoc]`.
+
+Use `(hK _).trans ?_` and prove the remaining obligations. Rewrite using `[hxe, hVC]`. Conclude with `congrArg (_ ≫ ·) (hT _).symm`. Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Simplify using `using (spec_dual_alg (algebraMap V L)).symm`.
+-/
 theorem intFrames : IntFrames := by
   intro E _ _ _ H D l Xo c _ Y S Ω _ K _ J _ y 𝔐 V L _ _ _ _ _ _ _ z y₀ hz
   obtain ⟨g, MV, ρV, MC, ρC, aV, aC, hVC, hρ, hfib⟩ := exists_coords 𝔐.t 𝔐.M 𝔐.all 𝔐.tie.gen V L z

@@ -11,6 +11,11 @@ namespace GlobalTheory.Cartier.CommonEqn
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Take `⟨g, hg, a, ha, e⟩` from `h`. Take `⟨b, hb, e'⟩` from `hg.vanishesAt_iff.1 h'`. Use `⟨g, hg, a + b, ?_, by rw [map_add, e, e', add_mul]⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `: a + b ∈ IsLocalRing.maximalIdeal _` using `hu`.
+
+Conclude with `(show a ∈ IsLocalRing.maximalIdeal _ from by simpa using sub_mem this hb) ha`.
+-/
 theorem generatesAt_add {D : CartierDiv X} {x : X} {f f' : X.functionField}
     (h : D.GeneratesAt x f) (h' : D.VanishesAt x f') : D.GeneratesAt x (f + f') := by
   obtain ⟨g, hg, a, ha, e⟩ := h
@@ -20,6 +25,11 @@ theorem generatesAt_add {D : CartierDiv X} {x : X} {f f' : X.functionField}
   have : a + b ∈ IsLocalRing.maximalIdeal _ := hu
   exact (show a ∈ IsLocalRing.maximalIdeal _ from by simpa using sub_mem this hb) ha
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `exists_fnOf_eq ht h`. Use `(isAffineOpen_top X).isLocalization_basicOpen t` as an intermediate fact. Take `⟨n, a, e⟩` from `IsLocalization.Away.surj t b`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fnOf _ ht) e`.
+
+Rewrite `e'` using `[map_mul, map_pow]`. Establish `k (c : Γ(X, ⊤)) : fnOf _ ht (algebraMap Γ(X, ⊤) Γ(X, X.basicOpen t) c) = fnOf ⊤ trivial c` using `fnOf_resG le_top ht c`. Rewrite `e'` using `[k, k]`. Rewrite using `[← e', mul_comm]`.
+-/
 theorem exists_pow_mul_eq [IsAffine X] (t : Γ(X, ⊤)) (ht : genericPoint X ∈ X.basicOpen t)
     {f : X.functionField} (h : ∀ x ∈ X.basicOpen t, RegAt x f) :
     ∃ (n : ℕ) (a : Γ(X, ⊤)), fnOf ⊤ trivial t ^ n * f = fnOf ⊤ trivial a := by
@@ -34,6 +44,17 @@ theorem exists_pow_mul_eq [IsAffine X] (t : Γ(X, ⊤)) (ht : genericPoint X ∈
   rw [k, k] at e'
   rw [← e', mul_comm]
 
+/- English proof (translation)
+Take `⟨U, hU, hgU⟩` from `hg.exists_nhds`. Take `⟨V, hV, g', hgV⟩` from `D.exists_isEqn_nhds y`. Take `⟨t, htU, ht⟩` from `(isAffineOpen_top X).exists_basicOpen_le ⟨x, hU⟩ trivial`. Take `⟨t', htV, ht'⟩` from `(isAffineOpen_top X).exists_basicOpen_le ⟨y, hV⟩ trivial`. Establish `hgen : genericPoint X ∈ X.basicOpen (t * t')`.
+
+Rewrite using `[X.basicOpen_mul]`. Conclude with `⟨gen_mem ht, gen_mem ht'⟩`. Take `⟨n, a, e⟩` from `exists_pow_mul_eq (t * t') hgen (f := (g' : X.functionField) / g) fun z hz => by`. Rewrite `hz` using `[X.basicOpen_mul]`. Conclude with `((hgU z (htU hz.1)).iff_unitAt.1 (hgV z (htV hz.2))).regAt`.
+
+Establish `hu : UnitAt y (fnOf ⊤ trivial (t' ^ n))`. Use `(unitAt_fnOf_iff (U := ⊤) trivial _ _).2 ?_` and prove the remaining obligations. Rewrite using `[X.mem_basicOpen_top, map_pow]`. Conclude with `((X.mem_basicOpen_top _ _).1 ht').pow n`. Use `⟨t ^ n, ?_, g', hgV y hV, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[X.mem_basicOpen_top, map_pow]`. Conclude with `((X.mem_basicOpen_top _ _).1 ht).pow n`. Use `(regAt_fnOf (U := ⊤) (x := y) trivial trivial a).mul hu.inv.regAt` as an intermediate fact. Rewrite `this` using `[← e]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Establish `h0` using `hu.ne_zero`. Rewrite `h0` using `[map_pow]`. Rewrite using `[map_mul, map_pow, map_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_regularAt [IsAffine X] {D : CartierDiv X} {x : X} {g : X.functionFieldˣ}
     (hg : D.IsEqn x g) (y : X) : ∃ s : Γ(X, ⊤), x ∈ X.basicOpen s ∧
       D.RegularAt y (fnOf ⊤ trivial s * (g : X.functionField)⁻¹) := by
@@ -62,6 +83,11 @@ theorem exists_regularAt [IsAffine X] {D : CartierDiv X} {x : X} {g : X.function
     rw [map_mul, map_pow, map_pow, mul_pow]
     field_simp
 
+/- English proof (translation)
+Take `⟨s, hs, hreg⟩` from `exists_regularAt hg y`. Take `⟨t, htU, ht⟩` from `(isAffineOpen_top X).exists_basicOpen_le (V := ⟨{y}ᶜ, hy.isOpen_compl⟩) ⟨x, hxy.symm⟩ trivial`. Establish `hz : ZeroAt y (fnOf ⊤ trivial t)` using `zeroAt_iff.2 ⟨regAt_fnOf (U := ⊤) trivial _ _, fun h => htU ((unitAt_fnOf_iff (U := ⊤) trivial _ _).1 h) rfl⟩`. Use `⟨t * s, by rw [X.basicOpen_mul]; exact ⟨ht, hs⟩, ?_⟩` and prove the remaining obligations. Take `⟨g', hg', hr⟩` from `hreg`.
+
+Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, mul_assoc, ← mul_assoc (fnOf ⊤ trivial s)]`. Conclude with `hz.mul hr`.
+-/
 theorem exists_vanishesAt [IsAffine X] {D : CartierDiv X} {x : X} {g : X.functionFieldˣ}
     (hg : D.IsEqn x g) {y : X} (hy : IsClosed ({y} : Set X)) (hxy : y ≠ x) :
     ∃ s : Γ(X, ⊤), x ∈ X.basicOpen s ∧
@@ -77,6 +103,19 @@ theorem exists_vanishesAt [IsAffine X] {D : CartierDiv X} {x : X} {g : X.functio
   rw [map_mul, mul_assoc, mul_assoc, ← mul_assoc (fnOf ⊤ trivial s)]
   exact hz.mul hr
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `D.exists_isEqn x`. It suffices to establish `∃ s : Γ(X, ⊤), x ∈ X.basicOpen s ∧ ∀ y ∈ T, y ≠ x → D.VanishesAt y (fnOf ⊤ trivial s * (g : X.functionField)⁻¹) by`. Take `⟨s, hs, h⟩` from `this`. Use `⟨_, ⟨g, hg, ?_⟩, h⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, inv_mul_cancel₀ g.ne_zero, mul_one]`.
+
+Conclude with `(unitAt_fnOf_iff (U := ⊤) trivial _ _).2 hs`. Establish `key (y : X) (s t : Γ(X, ⊤)) (h : D.VanishesAt y (fnOf ⊤ trivial s * (g : X.functionField)⁻¹)) : D.VanishesAt y (fnOf ⊤ trivial (s * t) * (g : X.functionField)⁻¹)`. Take `⟨g', hg', hr⟩` from `h`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Use `hr.mul (regAt_fnOf (U := ⊤) (x := y) trivial trivial t)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, by simp⟩`.
+
+Consider the case `insert y T _ ih`. Take `⟨s, hs, h⟩` from `ih fun z hz => hT z (Finset.mem_insert_of_mem hz)`. Distinguish the cases in `hyx : y = x`. Use `⟨s, hs, fun z hz hzx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases.
+
+Conclude with `(hzx hyx).elim`. Conclude with `h z hz hzx`. Take `⟨t, ht, h'⟩` from `exists_vanishesAt hg (hT y (Finset.mem_insert_self _ _)) hyx`. Use `⟨s * t, by rw [X.basicOpen_mul]; exact ⟨hs, ht⟩, fun z hz hzx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases.
+
+Rewrite using `[mul_comm s]`. Conclude with `key _ _ _ h'`. Conclude with `key _ _ _ (h z hz hzx)`.
+-/
 theorem exists_generatesAt_vanishesAt [IsAffine X] (D : CartierDiv X) (x : X) (T : Finset X)
     (hT : ∀ y ∈ T, IsClosed ({y} : Set X)) :
     ∃ f, D.GeneratesAt x f ∧ ∀ y ∈ T, y ≠ x → D.VanishesAt y f := by
@@ -111,6 +150,9 @@ theorem exists_generatesAt_vanishesAt [IsAffine X] (D : CartierDiv X) (x : X) (T
     · rw [mul_comm s]; exact key _ _ _ h'
     · exact key _ _ _ (h z hz hzx)
 
+/- English proof (translation)
+Use `choose F hF hF' using fun x => exists_generatesAt_vanishesAt D x T hT`. Use `⟨∑ x ∈ T, F x, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.add_sum_erase T F hx]`. Use `generatesAt_add (hF x) (Finset.sum_induction _ (D.VanishesAt x) (fun _ _ h h' => h.add h') (D.vanishesAt_zero x) fun y hy => hF' y x hx (Finset.ne_of_mem_erase hy).symm)` and prove the remaining obligations.
+-/
 theorem exists_generatesAt [IsAffine X] (D : CartierDiv X) (T : Finset X)
     (hT : ∀ y ∈ T, IsClosed ({y} : Set X)) : ∃ f, ∀ x ∈ T, D.GeneratesAt x f := by
   classical
@@ -120,6 +162,13 @@ theorem exists_generatesAt [IsAffine X] (D : CartierDiv X) (T : Finset X)
   refine generatesAt_add (hF x) (Finset.sum_induction _ (D.VanishesAt x) (fun _ _ h h' => h.add h')
     (D.vanishesAt_zero x) fun y hy => hF' y x hx (Finset.ne_of_mem_erase hy).symm)
 
+/- English proof (translation)
+Break down `S.eq_empty_or_nonempty with rfl | ⟨z₀, hz₀⟩` into its components or cases. Conclude with `⟨1, by simp⟩`. Establish `hc (z : X) : ∃ c : X, c ∈ closure ({z} : Set X) ∧ IsClosed ({c} : Set X)` using `isClosed_closure.exists_closed_singleton ⟨z, subset_closure rfl⟩`. Use `choose c hc hc' using hc`. Take `⟨f, hf⟩` from `exists_generatesAt D (hS.toFinset.image c) fun y hy => by`.
+
+Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hc' z`. Establish `hf' (z : X) (hz : z ∈ S) : D.GeneratesAt (c z) f` using `hf _ (Finset.mem_image_of_mem c (hS.mem_toFinset.2 hz))`. Establish `h0` using `(hf' z₀ hz₀).ne_zero`. Use `⟨(Units.mk0 f h0)⁻¹, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : D.IsEqn (c z) (Units.mk0 f h0)⁻¹` using `CartierDiv.isEqn_iff_generatesAt_inv.2 (by simpa using hf' z hz)`. Take `⟨U, hU, h⟩` from `h1.exists_nhds`. Conclude with `h z ((specializes_iff_mem_closure.2 (hc z)).mem_open U.isOpen hU)`.
+-/
 theorem exists_isEqn_of_finite [IsAffine X] (D : CartierDiv X) (S : Set X) (hS : S.Finite) :
     ∃ g : X.functionFieldˣ, ∀ z ∈ S, D.IsEqn z g := by
   classical
@@ -140,6 +189,9 @@ theorem exists_isEqn_of_finite [IsAffine X] (D : CartierDiv X) (S : Set X) (hS :
   obtain ⟨U, hU, h⟩ := h1.exists_nhds
   exact h z ((specializes_iff_mem_closure.2 (hc z)).mem_open U.isOpen hU)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ D S hS` and use `exists_isEqn_of_finite D S hS`.
+-/
 theorem exists_isEqn_curve : ∀ (Z : Scheme.{0}) [IsIntegral Z] [IsLocallyNoetherian Z] [IsAffine Z], topologicalKrullDim Z ≤ 1 → ∀ (D : CartierDiv Z) (S : Set Z), S.Finite → ∃ g : Z.functionFieldˣ, ∀ z ∈ S, D.IsEqn z g :=
   fun _ _ _ _ _ D S hS => exists_isEqn_of_finite D S hS
 

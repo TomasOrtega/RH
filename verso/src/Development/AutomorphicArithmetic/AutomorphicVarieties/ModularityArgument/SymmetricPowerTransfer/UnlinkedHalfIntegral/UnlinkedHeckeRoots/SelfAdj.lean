@@ -29,6 +29,25 @@ open Ad3 Ad3.R
 
 namespace UpperTheory.V.Z.Sym.Unl
 
+/- English proof (translation)
+Introduce `k N _ hk χ hχ g p hp hpN`. Establish `hB` using `GlobalTheory.T.global_rankin_selberg_basic_facts`. Establish `hE` using `Ad3P.sEig k N hk χ g`. Take `⟨hF, hEig⟩` from `hE`. Take `⟨ω, hω⟩` from `GlobalTheory.T.newform_lift_existence hB N χ`.
+
+Take `⟨hsign, φ, hL⟩` from `GlobalTheory.T.newform_lift_level hB k N χ g.f g.a hF hEig.2.1 ω hω`. Establish `hOmL` using `GlobalTheory.T.newform_lift_conductor hB k N χ hχ hsign ω hω`. Establish `hHk` using `GlobalTheory.T.newform_lift_hecke_eigenvalues hB GlobalTheory.T.hecke_coset_representatives GlobalTheory.T.congruence_subgroup_coset_decomposition (GlobalTheory.T.newform_lift_conductor hB) (GlobalTheory.T.newform_lift_level hB) (GlobalTheory.T.newform_lift_level_character hB) (G …`. Establish `hW` using `GlobalTheory.T.newform_lift_whittaker_expansion k N hk χ hχ g.f g.a hF hEig ω φ hω hL`. Establish `hb` using `GlobalTheory.T.newform_lift_rapid_decay hB k N hk χ hχ g.f g.a hF hEig ω φ hω hL`.
+
+Take `⟨μ, 𝓕, mK, 𝓓, hS⟩` from `GlobalTheory.T.fundamental_domain_invariance_of_description GlobalTheory.T.fundamental_domain_description`. Establish `hG1` using `GlobalTheory.T.central_character_integral_properties GlobalTheory.T.fundamental_domain_integral_central_invariance`. Take `⟨v, hv⟩` from `hB.2.2.1 p hp`. Establish `hnd : ¬pOf v ∣ N` using `by rwa [hv]`. Take `⟨C, hC⟩` from `hb.1`.
+
+Establish `hφ0 : φ ≠ 0`. Introduce `h0`. Establish `h1` using `hW.2.2.2 (-1)`. Rewrite `h1` using `[h0, GlobalTheory.CompanionTheory.RSEigen.wh_zero]`. Conclude with `GlobalTheory.CompanionTheory.RSEigen.wr_ne k h1.symm`.
+
+Establish `hpr` using `GlobalTheory.CompanionTheory.RSEigen.pr_self_ne hS hG1 (ω := ω) hL.cont hb.1 hL.left hL.cen hφ0`. Establish `hone : ∀ x : G2, cdet 1 x = 1`. Introduce `x`. Simplify using `[Ad3.R.cdet, GroundTheory.Global.HeckeCharacter.toIdele_apply]`. Establish `hPr : GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection.Pr μ 𝓕 φ 1 1 1 ≠ 0`.
+
+Simplify `hpr` using `[GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection.Pr, GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection.Fn, hone, GlobalTheory.CompanionTheory.RSEigen.pr]`. Establish `hloc1 : ∀ u, localChar (1 : HeckeCharacter ℚ) v u = 1`. Introduce `u`. Use `ext`. Simplify using `[GroundTheory.Automorphic.GodementSection.coe_localChar, GroundTheory.Global.HeckeCharacter.localComponent_apply, GroundTheory.Global.HeckeCharacter.toIdele_apply]`.
+
+Establish `hunr1 : IsUnramifiedChar (localChar (1 : HeckeCharacter ℚ) v)` using `isUnramifiedChar_iff.2 (fun u _ => hloc1 u)`. Establish `hstd` using `(hB.1 v).1`. Take `⟨ϖ, B, hR⟩` from `(GlobalTheory.T.congruence_subgroup_coset_decomposition (Qv v) (localAdelicChar ℚ v) hstd).1`. Establish `key` using `GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection.eig_relation (φ := φ) (ω := ω) (c := 1) (μ := μ) (𝓕 := 𝓕) (C := C) hL.cont hC hL.left hL.cen (by simp) (fun F hF hFb hFL hFC h => (hG1 μ 𝓕 mK 𝓓 hS F hF hFb hFL).1 hFC h) hS.vol (v := v) (hB.1 v).2.2.2.2.2.1 hB.2.2.2.1 (hB. …`. Establish `hω1 : ((localChar ω v ϖ : ℂˣ) : ℂ) = χ p`.
+
+Rewrite using `[quasiChar_apply_eq_of_isUnramified (hOmL.good v hnd).1 hR.1, (hOmL.good v hnd).2, hv]`. Rewrite `key` using `[hloc1, hω1]`. Simplify using `only [lamOf, hv, Units.val_one, one_mul, map_mul, Complex.conj_ofReal] at key`. Establish `hr : (((p : ℝ) ^ (1 - (k : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos (by exact_mod_cast hp.pos) _).ne'` after adjusting the coercions.
+
+Establish `h : g.a p * (((p : ℝ) ^ (1 - (k : ℝ) / 2) : ℝ) : ℂ) = (χ p * (starRingEnd ℂ) (g.a p)) * (((p : ℝ) ^ (1 - (k : ℝ) / 2) : ℝ) : ℂ)` using `key.trans (by ring)`. Establish `h2` using `mul_right_cancel₀ hr h`. Take the linear combination `-h2`.
+-/
 theorem selfAdj : SelfAdj := by
   intro k N _ hk χ hχ g p hp hpN
   have hB := GlobalTheory.T.global_rankin_selberg_basic_facts

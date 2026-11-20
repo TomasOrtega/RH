@@ -18,6 +18,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.Amp in
 
+/- English proof (translation)
+Establish `hr : 1 ≤ r` using `hj.trans hjr`. Establish `hC : C' + 2 ≤ ((⌈C'⌉₊ + 2 : ℕ) : ℝ)` using `by push_cast; linarith [Nat.le_ceil C']`. Establish `hP : (1 : ℝ) ≤ (2 * H₁) ^ (2 * r)` using `one_le_pow₀ (by linarith)`. Establish `hs1 : ∀ v, 1 ≤ sg v` using `fun v => by rw [hsg v]; exact (Finset.le_fold_max _).2 (Or.inl le_rfl)`. Establish `hs0 : ∀ v, 0 < sg v` using `fun v => lt_of_lt_of_le one_pos (hs1 v)`.
+
+Establish `hDe0 : ∀ v, 0 ≤ De v` using `fun v => by`. Rewrite using `[hDe v]`. Conclude with `(Finset.le_fold_max _).2 (Or.inl zero_le_one)`. Establish `hprod` using `prod_fold_inv_le _ hP Dm De sg hD hDe hsg`. Establish `hprod2 : ∏ v, De v ^ (8 * r ^ 2 + 2) ≤ ∏ v, ((2 * H₁) ^ (2 * r) * sg v) ^ ((r + 1) * (8 * r ^ 2 + 2))`.
+
+Simplify using `only [pow_mul _ (r + 1)]`. Rewrite using `[Finset.prod_pow, Finset.prod_pow _ (8 * r ^ 2 + 2)]`. Conclude with `pow_le_pow_left₀ (Finset.prod_nonneg fun v _ => hDe0 v) hprod _`. Establish `hB : 8 * Real.pi * Real.exp 1 / ((k - 1 - j : ℕ) : ℝ) ≤ 16 * Real.pi * Real.exp 1 / k`. Establish `h1 : k ≤ 2 * (k - 1 - j)` using `by omega`.
+
+Establish `h2 : 0 < k - 1 - j` using `by omega`. Establish `h1' : (k : ℝ) ≤ 2 * ((k - 1 - j : ℕ) : ℝ)` using `by exact_mod_cast h1`. Establish `h2' : (0 : ℝ) < ((k - 1 - j : ℕ) : ℝ)` using `by exact_mod_cast h2`. Establish `h3 : (0 : ℝ) < k` using `by exact_mod_cast (show 0 < k by omega)`. Establish `h4 : 0 < Real.pi * Real.exp 1` using `by positivity`.
+
+Rewrite using `[div_le_div_iff₀ h2' h3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA` using `const_loss_le r hr H₁ hH`. Use `set A : ℝ := 16 * (4 * r + 4 : ℝ) * (4 * r : ℝ) ^ (4 * r ^ 2) * (2 * H₁) ^ (16 * r ^ 3 + 4 * r) with hAdef`. Establish `hA0 : 0 ≤ A` using `by rw [hAdef]; positivity`.
+
+Use `set B : ℝ := 8 * Real.pi * Real.exp 1 / ((k - 1 - j : ℕ) : ℝ) with hBdef`. Establish `hB0 : 0 ≤ B` using `by rw [hBdef]; positivity`. Use `set e : ℝ := -(((q : ℝ) - 16 * r ^ 3 - 4 * r - 1) / r) with he`. Establish `hrest : ∀ v, 0 ≤ A * B ^ (j * (k - 1 - j)) * (D v ^ (k - 1 - j))⁻¹ * sg v ^ e` using `fun v => by`. Use `hD0 v` as an intermediate fact.
+
+Use `hs0 v` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Unfold `degBd`. Rewrite using `[← hAdef, ← hBdef, ← he]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∏ v, ((2 * H₁) ^ (2 * r) * sg v) ^ ((r + 1) * (8 * r ^ 2 + 2))) * ∏ v, A * B ^ (j * (k - 1 - j)) * (D v ^ (k - 1 - j))⁻¹ * sg v ^ e := mul_le_mul_of_nonneg_right hprod2 (Finset.prod_nonneg fun v _ => hrest v)`. Use `_ = ∏ v, B ^ (j * (k - 1 - j)) * (D v ^ (k - 1 - j))⁻¹ * (A * ((2 * H₁) ^ (2 * r)) ^ ((r + 1) * (8 * r ^ 2 + 2))) * (sg v ^ ((r + 1) * (8 * r ^ 2 + 2)) * sg v ^ e) := by`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow ((2 * H₁) ^ (2 * r))]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∏ v, (16 * Real.pi * Real.exp 1 / k) ^ (j * (k - 1 - j)) * (D v ^ (k - 1 - j))⁻¹ * (8 * r * H₁) ^ (80 * r ^ 4) * sg v ^ (-(C' * k)) := by`.
+
+Use `Finset.prod_le_prod (fun v _ => ?_) fun v _ => ?_` and prove the remaining obligations. Use `hD0 v` as an intermediate fact. Use `hs0 v` as an intermediate fact. Check the signs of the components of the expression. Establish `h1` using `hD0 v`.
+
+Establish `h2` using `hs0 v`. Establish `h3 : sg v ^ ((r + 1) * (8 * r ^ 2 + 2)) * sg v ^ e ≤ sg v ^ (-(C' * k))`. Rewrite using `[he, hq]`. Conclude with `size_loss_le C' _ k r hC hr hk _ (hs1 v)`. Establish `h4 : B ^ (j * (k - 1 - j)) ≤ (16 * Real.pi * Real.exp 1 / k) ^ (j * (k - 1 - j))` using `pow_le_pow_left₀ hB0 hB _`.
+
+Use `mul_le_mul (mul_le_mul (mul_le_mul_of_nonneg_right h4 (by positivity)) hA (by positivity) (by positivity)) h3 (by positivity) (by positivity)` and prove the remaining obligations. Use `_ = _ := by`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul, Finset.prod_inv_distrib, Finset.prod_pow]`.
+-/
 theorem prod_degBd_le_explicit (C' : ℝ) (ι : Type) [Fintype ι] (k r j q : ℕ) (H₁ : ℝ) (Dm : ι → Fin (r + 1) → ℝ)
     (De D sg : ι → ℝ) (hj : 1 ≤ j) (hjr : j ≤ r) (hk5 : 5 * r ≤ k) (hk : 40 * r ^ 4 ≤ k)
     (hq : q = (⌈C'⌉₊ + 2) * k * r) (hH : 1 ≤ H₁)
@@ -86,6 +111,11 @@ theorem prod_degBd_le_explicit (C' : ℝ) (ι : Type) [Fintype ι] (k r j q : �
         simp only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← pow_mul, Finset.prod_inv_distrib,
           Finset.prod_pow]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `zero => simp [frameExp]`. Consider the case `succ l ih`. Establish `h1 : frameExp r (l + 1) = frameExp r l + (r + 1 - (l + 1))`. Unfold `frameExp`.
+
+Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `h2 : ((r + 1 - (l + 1) : ℕ) : ℤ) = (r : ℤ) - l` using `by omega`. Rewrite using `[h1, Nat.cast_add, ih (by omega), Finset.sum_range_succ, h2]`.
+-/
 theorem frameExp_int (r l : ℕ) (hl : l ≤ r + 1) :
     ((frameExp r l : ℕ) : ℤ) = ∑ a ∈ Finset.range l, ((r : ℤ) - a) := by
   induction l with
@@ -97,6 +127,9 @@ theorem frameExp_int (r l : ℕ) (hl : l ≤ r + 1) :
     have h2 : ((r + 1 - (l + 1) : ℕ) : ℤ) = (r : ℤ) - l := by omega
     rw [h1, Nat.cast_add, ih (by omega), Finset.sum_range_succ, h2]
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ x : ℚ) : ℝ)| * (Ideal.absNorm (dI D) : ℝ) ^ (-(2 * (frameExp r l : ℤ))) := by unfold Nloc rw [map_mul, FractionalIdeal.absNorm_span_singleton (𝓞 D.host.E), map_zpow₀, show ddS D = ((dI D : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.ho …`.
+-/
 theorem nloc_norm (D : D7) (r l : ℕ) (x : D.host.E) :
     ((Nloc (ddS D) r l x : ℚ) : ℝ) =
       |((Algebra.norm ℚ x : ℚ) : ℝ)| * (Ideal.absNorm (dI D) : ℝ) ^ (-(2 * (frameExp r l : ℤ))) := by
@@ -107,10 +140,26 @@ theorem nloc_norm (D : D7) (r l : ℕ) (x : D.host.E) :
   push_cast
   rfl
 
+/- English proof (translation)
+Use `Algebra.norm_eq_of_algEquiv ((starRingAut : D.host.E ≃+* D.host.E).toRatAlgEquiv) x` as an intermediate fact. Simplify using `using this`.
+-/
 theorem norm_of_star (D : D7) (x : D.host.E) : Algebra.norm ℚ (star x) = Algebra.norm ℚ x := by
   have := Algebra.norm_eq_of_algEquiv ((starRingAut : D.host.E ≃+* D.host.E).toRatAlgEquiv) x
   simpa using this
 
+/- English proof (translation)
+Establish `hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E`. Take `⟨C', Cl, Cg, cb, Cw, cT, CT, C0, hH⟩` from `hS`. Conclude with `hH.2.2.2.2.2.2.2`. Take `⟨N, hN, -, -⟩` from `GlobalTheory.T.exists_adaptedNormalForm_relevantTerm D large₂ X Y u hS t ht`. Establish `hT : N.IsTerm (gS D) t.lam` using `GlobalTheory.T.rowLattice_term_adaptedNormalForm D large₂ X Y u hS t N hN`.
+
+Take `⟨-, -, -, -, -, hDl, hz, -, -⟩` from `GlobalTheory.DegAsm.adapt_invariants D.host.E (VS D).V (HV D) hK D.R.rS (F0 X u) (Ft t) (dI D) N hN`. Establish `hl' : l ≤ D.R.rS + 1` using `by omega`. Establish `hnf : Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l = star (Formalism.HermitianLatticeCounting.S6.Dl (F0 X u) (Ft t) l hl')` using `nf_Dl _ _ _ _ l hl'`. Establish `hlj : l ≤ N.j`. Assume the negation of the conclusion as `hlt`.
+
+Apply `h0` to reduce the goal to its premises. Rewrite using `[hnf, hz l hl' (by omega) hl, star_zero]`. Establish `hd : N.𝔡 = dI D` using `hN.1`. Establish `hdne : dI D ≠ ⊥` using `hd ▸ N.𝔡_ne`. Establish `key : N.nD l = ((Nloc (ddS D) D.R.rS l (Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l) : ℚ) : ℝ)`.
+
+Unfold `GlobalTheory.DegCnt.NF.nD`. Rewrite using `[dif_pos hl', hDl l hl', nloc_norm, hnf, norm_of_star, hd, frameExp_int _ _ hl']`. Establish `hne : N.nD l ≠ 0`. Rewrite using `[key, nloc_norm]`. Establish `hA : (Ideal.absNorm (dI D) : ℝ) ≠ 0`.
+
+Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 hdne)` after adjusting the coercions. Use `mul_ne_zero ?_ (zpow_ne_zero _ hA)` and prove the remaining obligations. Rewrite using `[abs_ne_zero, Rat.cast_ne_zero, Algebra.norm_ne_zero_iff]`. Conclude with `h0`. Rewrite using `[← key]`.
+
+Conclude with `(GlobalTheory.DegCnt.FlagDisc.main D.host.E (VS D).V (HV D) hK D.R.rS N (gS D) t.lam (Formalism.MainNotions.LatticeGluingRadicals.d_gS_pos D) hT l hlj hne).2`.
+-/
 theorem one_le_nloc {D : D7} {large₂ : SizeData₂ D} {X : HidaSetting D} {Y : Full X} {u : D.what₂.Word} (hS : Std D large₂)
     {t : GTu Y u} (ht : t ∈ relSet Y u) (l : ℕ) (hl : l ≤ D.R.rS)
     (h0 : Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l ≠ 0) :
@@ -151,6 +200,47 @@ namespace GlobalTheory.TypeAsm
 open GlobalTheory.TypeAsm.CompatibleChartOperations
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cs hCs`. Use `⟨⌈Cs⌉₊ + 2, by omega, ?_⟩` and prove the remaining obligations. Introduce `D large₂ X Y u C CH hS hCH hk4 hk5 t ht hj hj1`. Take `⟨C', Cl, Cg, cb, Cw, cT, CT, C0, hH⟩` from `id hS`. Establish `hPF : PFHost D` using `PFHost_of_data D hH.1.2.1`.
+
+Establish `hrd` using `pf_rd_pos D`. Establish `hb` using `two_le_scale_b D large₂`. Establish `hH1 : 1 ≤ H1C large₂ CH`. Unfold `H1C`. Conclude with `Real.one_le_rpow (by linarith) (by positivity)`.
+
+Take `⟨Dm, hDm⟩ : ∃ Dm : D.what₂.Tau → Fin (D.R.rS + 1) → ℝ, ∀ τ l, Dm τ l = ‖Formalism.QuantumDeterminants.Dmin D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ) l.castSucc‖` from `⟨fun τ l => _, fun _ _ => rfl⟩`. Establish `hgram : ∀ τ (l : Fin (D.R.rS + 1)), Dm τ l = absReal D.host.rdE (embS D τ) D.R.rS l.val (Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l.val)`. Introduce `τ l`. Rewrite using `[hDm]`. Conclude with `((GlobalTheory.T.realPointGramMinorsAgree_proof D X Y u C τ).2 t).2.2 l`.
+
+Establish `hD : ∀ l : Fin (D.R.rS + 1), (∀ v, Dm v l = 0) ∨ ((∀ v, 0 < Dm v l) ∧ 1 ≤ ∏ v, Dm v l)`. Introduce `l`. Distinguish the cases in `h0 : Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l.val = 0`. Use `left`. Introduce `v`.
+
+Rewrite using `[hgram, h0]`. Simplify using `[absReal]`. Use `right`. Establish `hpos : ∀ v, 0 < Dm v l` using `fun v => by`. Rewrite using `[hgram]`.
+
+Unfold `absReal`. Conclude with `mul_pos (norm_pos_iff.2 ((map_ne_zero _).2 h0)) (Real.rpow_pos_of_pos hrd _)`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Establish `h1` using `one_le_nloc hS ht l.val (by omega) h0`. Rewrite `h1` using `[hPF]`.
+
+Establish `h2 : (∏ v, Dm v l) ^ 2 = ∏ v, absReal D.host.rdE (embS D v) D.R.rS l.val (Dl (lf D (X.Fu u)).fl (frq X t.rep).fl l.val) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hgram]`. Establish `h3 : 0 ≤ ∏ v, Dm v l` using `Finset.prod_nonneg fun v _ => (hpos v).le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨hr, hG, -⟩` from `relevantSet_zeroG_not_identity ht`. Take `⟨j, hj', c, hN⟩` from `exists_nfFull_of_relevant_of_G_eq_zero Y t hr hG`. Establish `hjT` using `index_eq_normalForm t hN`. Establish `hDj0 : Dl (lf D (X.Fu u)).fl (frq X t.rep).fl (jT t) ≠ 0`. Rewrite using `[hjT]`.
+
+Conclude with `(nf_gen _ _ _ _ j hj' c hN).2.2.2.1`. Establish `hjr : jT t < D.R.rS + 1` using `by omega`. Establish `hDjpos : ∀ τ, 0 < Dm τ ⟨jT t, hjr⟩` using `fun τ => by`. Rewrite using `[hgram]`. Unfold `absReal`.
+
+Conclude with `mul_pos (norm_pos_iff.2 ((map_ne_zero _).2 hDj0)) (Real.rpow_pos_of_pos hrd _)`. Establish `hDjEq : ∀ τ, GlobalTheory.Amp.Dj D.R.k D.R.rS hj (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ) = Dm τ ⟨jT t, hjr⟩`. Introduce `τ`. Rewrite using `[hDm]`. Both sides reduce to the same expression.
+
+Take `⟨P, hPdef⟩ : ∃ P : ℝ, P = ∏ τ, Dm τ ⟨jT t, hjr⟩` from `⟨_, rfl⟩`. Establish `hP : 0 < P` using `by rw [hPdef]; exact Finset.prod_pos fun τ _ => hDjpos τ`. Establish `hdel : k2Del D (jT t) (labT t) = P ^ 2`. Unfold `k2Del`. Rewrite using `[hPF, hPdef, ← Finset.prod_pow]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hgram τ ⟨jT t, hjr⟩]`. Simplify using `only [labT, if_pos le_rfl]`. Use `set De : D.what₂.Tau → ℝ := fun τ => Finset.univ.fold max 1 fun l => (Dm τ l)⁻¹ with hDedef`. Establish `hDeOK : ∀ τ, GlobalTheory.Amp.DeOK D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ) (De τ)`.
+
+Introduce `τ`. Use `⟨(Finset.le_fold_max _).2 (Or.inl le_rfl), fun l hl hne => ?_⟩` and prove the remaining obligations. Establish `hl' : l = (⟨l.val, by omega⟩ : Fin (D.R.rS + 1)).castSucc` using `Fin.ext rfl`. Use `(Finset.le_fold_max _).2 (Or.inr ⟨⟨l.val, by omega⟩, Finset.mem_univ _, le_of_eq ?_⟩)` and prove the remaining obligations. Rewrite using `[hDm, ← hl']`.
+
+Establish `hmain` using `prod_degBd_le_explicit Cs D.what₂.Tau D.R.k D.R.rS (jT t) ((⌈Cs⌉₊ + 2) * D.R.k * D.R.rS) (H1C large₂ CH) Dm De (fun τ => GlobalTheory.Amp.Dj D.R.k D.R.rS hj (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ)) (fun τ => GlobalTheory.Amp.sgV D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X …`. Establish `hcard` using `Formalism.MainNotions.BridgeLemma.szf_card_Tau D`. Establish `hprodD : ∏ τ, GlobalTheory.Amp.Dj D.R.k D.R.rS hj (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ) = P`. Rewrite using `[hPdef]`. Conclude with `Finset.prod_congr rfl fun τ _ => hDjEq τ`.
+
+Rewrite `hmain` using `[hcard, hprodD]`. Use `⟨De, P, hP, hdel, hDeOK, hmain.trans ?_⟩` and prove the remaining obligations. Establish `hsgle : ∏ τ, GlobalTheory.Amp.sgV D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u τ) (gamT C t τ) (H1C large₂ CH) ^ (-(Cs * D.R.k)) ≤ k2S D (H1C large₂ CH) (jT t) (labT t) ^ (-(Cs * (D.R.k : ℝ)))`. Unfold `k2S`. Rewrite using `[← Real.finset_prod_rpow _ _ (fun τ _ => zero_le_one.trans (one_le_minor_sigma _ _ _ τ))]`.
+
+Use `Finset.prod_le_prod (fun τ _ => ?_) fun τ _ => ?_` and prove the remaining obligations. Use `Real.rpow_nonneg ?_ _` and prove the remaining obligations. Unfold `GlobalTheory.Amp.sgV`. Conclude with `(Finset.le_fold_max _).2 (Or.inl zero_le_one)`. Use `Real.rpow_le_rpow_of_nonpos (lt_of_lt_of_le one_pos (one_le_minor_sigma _ _ _ τ)) ?_ (neg_nonpos.2 (mul_nonneg hCs (Nat.cast_nonneg _)))` and prove the remaining obligations.
+
+Unfold `k2sg`. Use `(Finset.fold_max_le _).2 ⟨?_, fun l hl => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Amp.sgV`. Conclude with `(Finset.le_fold_max _).2 (Or.inl le_rfl)`. Establish `hlj : l ≤ jT t`.
+
+Unfold `k2ends at hl`. Conclude with `(Finset.mem_Icc.1 (Finset.mem_filter.1 hl).1).2`. Establish `hlr : l < D.R.rS + 1` using `by omega`. Unfold `GlobalTheory.Amp.sgV`. Use `(Finset.le_fold_max _).2 (Or.inr ⟨⟨l, hlr⟩, Finset.mem_univ _, le_of_eq ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[← hDm, hgram τ ⟨l, hlr⟩]`. Simplify using `only [labT, if_pos hlj]`. Establish `hA : 0 ≤ (16 * Real.pi * Real.exp 1 / D.R.k) ^ (jT t * (D.R.k - 1 - jT t) * D.R.f) * (P ^ (D.R.k - 1 - jT t))⁻¹ * (8 * D.R.rS * H1C large₂ CH) ^ (80 * D.R.rS ^ 4 * D.R.f)`. Use `hP.le` as an intermediate fact. Establish `: 0 ≤ H1C large₂ CH` using `by linarith`.
+
+Check the signs of the components of the expression. Conclude with `mul_le_mul_of_nonneg_left hsgle hA`.
+-/
 theorem prodC_holds : ProdC := by
   intro Cs hCs
   refine ⟨⌈Cs⌉₊ + 2, by omega, ?_⟩

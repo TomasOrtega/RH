@@ -14,17 +14,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TraceIncl.KernLaws
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `q`. Take `⟨h1, h2⟩` from `GlobalTheory.Mass.parts_spec D.sp.cm.sig V.gram`. Take `⟨k, k1, k2⟩` from `h2 1 (finHom V g)`. Conclude with `⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ ((h1 _).1 g.2).2⟩⟩, k1, Subtype.ext k2⟩`.
+-/
 theorem exists_finite_lift {D : D7} (V : HSp D) (q : Bridge.Gf V) : ∃ κ ∈ GfC V, fin V κ = q := by
   obtain ⟨_, g, rfl⟩ := q
   obtain ⟨h1, h2⟩ := GlobalTheory.Mass.parts_spec D.sp.cm.sig V.gram
   obtain ⟨k, k1, k2⟩ := h2 1 (finHom V g)
   exact ⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ ((h1 _).1 g.2).2⟩⟩, k1, Subtype.ext k2⟩
 
+/- English proof (translation)
+The claim follows from `(map_mul (finHom V).rangeRestrict a b).symm`.
+-/
 theorem fin_mul {D : D7} (V : HSp D) (a b : GA D V) : fin V a * fin V b = fin V (a * b) :=
   (map_mul (finHom V).rangeRestrict a b).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratF_eq {D : D7} (V : HSp D) (γ : GQ V) : Bridge.ratF V γ = fin V γ := rfl
 
+/- English proof (translation)
+Use `⟨⟨hκ, hk.1, Subgroup.mem_bot.1 hk.2⟩, ?_⟩` and prove the remaining obligations. Unfold `levChi`. Rewrite using `[← levFn_flag1, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+-/
 theorem lift_of_mem_J {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) {κ : GA D V}
     (hκ : κ ∈ GfC V) (hk : fin V κ ∈ (levEnv V β L).J) :
     IsLevelLift V β L 1 κ ∧ ((((levEnv V β L).χ ⟨_, hk⟩)⁻¹ : ℂˣ) : ℂ) = (levChi V β (flagL L) κ)⁻¹ := by
@@ -33,6 +45,9 @@ theorem lift_of_mem_J {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L
   rw [← levFn_flag1, Units.val_inv_eq_inv_val]
   rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `k`. Take `⟨κ, hκ, rfl⟩` from `exists_finite_lift V k`. Conclude with `⟨κ, rfl, lift_of_mem_J V β L hκ hk⟩`.
+-/
 theorem exists_lift_J {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).J) : ∃ κ, fin V κ = k ∧
     IsLevelLift V β L 1 κ ∧ ((((levEnv V β L).χ k)⁻¹ : ℂˣ) : ℂ) = (levChi V β (flagL L) κ)⁻¹ := by
@@ -40,11 +55,19 @@ theorem exists_lift_J {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L
   obtain ⟨κ, hκ, rfl⟩ := exists_finite_lift V k
   exact ⟨κ, rfl, lift_of_mem_J V β L hκ hk⟩
 
+/- English proof (translation)
+Establish `: finHom V κ = x.1` using `congrArg Subtype.val e`. Rewrite using `[finE_eq, this]`.
+-/
 theorem finE_of_fin {D : D7} (V : HSp D) {κ : GA D V} {x : Bridge.Gf V} (e : fin V κ = x) :
     finE V κ = Formalism.UG.bc (swapAE D) (x : GL _ _) := by
   have : finHom V κ = x.1 := congrArg Subtype.val e
   rw [finE_eq, this]
 
+/- English proof (translation)
+Take `⟨κ, hκ, e⟩` from `exists_finite_lift V k.1`. Establish `e'` using `finE_of_fin V e`. Use `⟨κ, e, ⟨hκ, ?_, congrArg (rTup β L) e'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `k.2.1`.
+
+Establish `e2 : (levEnv V β L).ch k = levFn β (flagL L) (finE V κ)` using `(congrArg (levFn β (flagL L)) e').symm`. Rewrite using `[Units.val_inv_eq_inv_val, e2, levChi]`.
+-/
 theorem exists_lift_Q {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).Q) : ∃ κ, fin V κ = k ∧
     IsLevelLift V β L (rTup β L (Formalism.UG.bc (swapAE D) ((k : Bridge.Gf V) : GL _ _))) κ ∧
@@ -57,10 +80,16 @@ theorem exists_lift_Q {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L
   · have e2 : (levEnv V β L).ch k = levFn β (flagL L) (finE V κ) := (congrArg (levFn β (flagL L)) e').symm
     rw [Units.val_inv_eq_inv_val, e2, levChi]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩`.
+-/
 theorem lift_one {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     IsLevelLift V β L 1 1 :=
   ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩
 
+/- English proof (translation)
+Use `⟨hex.choose, hex.choose_spec, fun F h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `actG0 V β L g0 F h = _`. Unfold `actG0`. Rewrite using `[dif_pos hex]`.
+-/
 theorem exists_actL {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (g0 : G0 L.Pg L.r) (hex : ∃ κ, IsLevelLift V β L g0 κ) : ∃ κ, IsLevelLift V β L g0 κ ∧
       ∀ F h, actL V β L g0 F h = (levChi V β (flagL L) κ)⁻¹ * F (h * κ) := by
@@ -72,10 +101,16 @@ theorem exists_actL {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L :
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kernA_apply (h : GA D (Vc D i)) (w : (R.cV i).W) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
     kernA R i t h w v g =
       Datum.thetaKO (R.ωP i t) h g (R.ptP i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w))) := rfl
 
+/- English proof (translation)
+Use extensionality with `w v g`. Rewrite using `[kernA_apply, kernA_apply]`. Unfold `Datum.thetaKO`. Rewrite using `[show ((h * u, g) : GA D (Vc D i) × GA D (Wc D i)) = (h, g) * (u, 1) from Prod.ext rfl (mul_one g).symm, map_mul, Module.End.mul_apply, (hio i t).1 u hu, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, mul_inv_cancel_left]`.
+-/
 theorem kernA_mul_real (hio : R.thP_ioP) (h : GA D (Vc D i)) {u : GA D (Vc D i)} (hu : u ∈ GinfC (Vc D i)) :
     kernA R i t (h * u) = kernA R i t h := by
   ext w v g
@@ -85,6 +120,11 @@ theorem kernA_mul_real (hio : R.thP_ioP) (h : GA D (Vc D i)) {u : GA D (Vc D i)}
     map_mul, Module.End.mul_apply, (hio i t).1 u hu, ← Module.End.mul_apply, ← map_mul, mul_inv_rev,
     mul_inv_cancel_left]
 
+/- English proof (translation)
+Unfold `kern`. Establish `e` using `(MonoidHom.mem_range.1 (fin (Vc D i) h).2).choose_spec`. Generalize the expression as in `(MonoidHom.mem_range.1 (fin (Vc D i) h).2).choose = h' at e`. Establish `hu : h⁻¹ * h' ∈ GinfC (Vc D i)`. Express the relevant statement in the definitionally equal form `finHom (Vc D i) (h⁻¹ * h') = 1`.
+
+Rewrite using `[map_mul, map_inv, e]`. Conclude with `inv_mul_cancel _`. Rewrite using `[← kernA_mul_real R i t hio h hu, mul_inv_cancel_left]`.
+-/
 theorem kern_fin (hio : R.thP_ioP) (h : GA D (Vc D i)) : kern R i t (fin (Vc D i) h) = kernA R i t h := by
   unfold kern
   have e := (MonoidHom.mem_range.1 (fin (Vc D i) h).2).choose_spec
@@ -95,6 +135,9 @@ theorem kern_fin (hio : R.thP_ioP) (h : GA D (Vc D i)) : kern R i t (fin (Vc D i
     exact inv_mul_cancel _
   rw [← kernA_mul_real R i t hio h hu, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v g`. Rewrite using `[kernA_apply, kernA_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_mul_cancel_right]`. Use `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ _ (hω i t) _ (hpt i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w)))).1 γ γ.2 1 (one_mem _) h g` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem kernA_rat (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (γ : GQ (Vc D i)) (h : GA D (Vc D i)) (w : (R.cV i).W) :
     kernA R i t (γ * h) ((R.cV i).ρ γ w) = kernA R i t h w := by
   funext v g
@@ -103,6 +146,9 @@ theorem kernA_rat (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (γ : GQ (Vc D i)) (h
     (hpt i t (R.ioP i (PiTensorProduct.tprod ℂ v) ((R.cV i).ρ h⁻¹ w)))).1 γ γ.2 1 (one_mem _) h g
   rwa [one_mul] at this
 
+/- English proof (translation)
+Rewrite using `[kernA_apply, kernA_apply, mul_inv_rev, map_mul, (hc i).1 _ (inv_mem hκ), one_mul]`. Conclude with `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ _ (hω i t) _ (hpt i t _)).2 κ κ' c (GlobalTheory.FiniteFock.om_pureTensorO_of_finite _ _ _ _ _ _ _ hθ (hω i t) _ _ _ _ _ (hpt i t) κ hκ κ' hκ' c e _) h g`.
+-/
 theorem kernA_eigen (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hpt : R.thP_pt_theta)
     {κ : GA D (Vc D i)} (hκ : κ ∈ GfC (Vc D i)) {κ' : GA D (Wc D i)} (hκ' : κ' ∈ GfC (Wc D i)) {c : ℂ}
     (e : R.ωP i t (κ, κ') (R.vP i t) = c • R.vP i t) (h : GA D (Vc D i)) (w : (R.cV i).W)
@@ -112,6 +158,9 @@ theorem kernA_eigen (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (h
   exact (GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ _ (hω i t) _ (hpt i t _)).2 κ κ' c
     (GlobalTheory.FiniteFock.om_pureTensorO_of_finite _ _ _ _ _ _ _ hθ (hω i t) _ _ _ _ _ (hpt i t) κ hκ κ' hκ' c e _) h g
 
+/- English proof (translation)
+Establish `h2 : ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi (rTup (R.βW i) (flagL (R.datWp i R.triv)) (finE (Wc D i) κ')) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `levChi levFn`. Rewrite using `[h2, show (flagL (R.datWp i R.triv)).s = 0 from rfl, Finset.range_zero, show (flagL (R.datWp i R.triv)).Q = ∅ from rfl, Finset.prod_empty]`. Simplify using `only [Finset.prod_empty, Finset.prod_const_one, mul_one, Units.val_one]`.
+-/
 theorem levChi_flag_datWp (κ' : GA D (Wc D i)) : levChi (Wc D i) (R.βW i) (flagL (R.datWp i R.triv)) κ' = 1 := by
   have h2 : ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi
       (rTup (R.βW i) (flagL (R.datWp i R.triv)) (finE (Wc D i) κ')) = 1 := subgroupCharExtension_one_apply _ _
@@ -120,6 +169,11 @@ theorem levChi_flag_datWp (κ' : GA D (Wc D i)) : levChi (Wc D i) (R.βW i) (fla
     show (flagL (R.datWp i R.triv)).Q = ∅ from rfl, Finset.prod_empty]
   simp only [Finset.prod_empty, Finset.prod_const_one, mul_one, Units.val_one]
 
+/- English proof (translation)
+Take `⟨h', -, e⟩` from `exists_finite_lift (Vc D i) h`. Establish `e1 : kern R i t (Bridge.ratF (Vc D i) γ * h) = kernA R i t (γ * h')`. Rewrite using `[← e, ratF_eq, fin_mul, kern_fin R i t hio]`. Establish `e2 : kern R i t h = kernA R i t h'` using `by rw [← e, kern_fin R i t hio]`. Rewrite using `[e1, e2]`.
+
+Conclude with `kernA_rat R i t hω hpt γ h' w`.
+-/
 theorem kern_rat (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (hio : R.thP_ioP) (γ : GQ (Vc D i)) (h : Bridge.Gf (Vc D i))
     (w : (R.cV i).W) : kern R i t (Bridge.ratF (Vc D i) γ * h) ((R.cV i).coef.ρ γ w) = kern R i t h w := by
   obtain ⟨h', -, e⟩ := exists_finite_lift (Vc D i) h
@@ -129,6 +183,11 @@ theorem kern_rat (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (hio : R.thP_ioP) (γ 
   rw [e1, e2]
   exact kernA_rat R i t hω hpt γ h' w
 
+/- English proof (translation)
+Take `⟨h', -, e0⟩` from `exists_finite_lift (Vc D i) h`. Establish `e1 : kern R i t (h * fin (Vc D i) κ) = kernA R i t (h' * κ)`. Rewrite using `[← e0, fin_mul, kern_fin R i t hio]`. Establish `e2 : kern R i t h = kernA R i t h'` using `by rw [← e0, kern_fin R i t hio]`. Rewrite using `[e1, e2]`.
+
+Conclude with `kernA_eigen R i t hθ hc hω hpt hκ hκ' e h' w v g`.
+-/
 theorem kern_eigen (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (hio : R.thP_ioP)
     {κ : GA D (Vc D i)} (hκ : κ ∈ GfC (Vc D i)) {κ' : GA D (Wc D i)} (hκ' : κ' ∈ GfC (Wc D i)) {c : ℂ}
     (e : R.ωP i t (κ, κ') (R.vP i t) = c • R.vP i t) (h : Bridge.Gf (Vc D i)) (w : (R.cV i).W)
@@ -141,18 +200,27 @@ theorem kern_eigen (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hp
   rw [e1, e2]
   exact kernA_eigen R i t hθ hc hω hpt hκ hκ' e h' w v g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v g`. Rewrite using `[← mul_one g, h, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem eq_smul_of_mul_one {X Y : Type} [Monoid Y] (F F' : X → Y → ℂ) (c : ℂ) (h : ∀ v g, F v (g * 1) = c * F' v g) :
     F = c • F' := by
   funext v g
   rw [← mul_one g, h, mul_one]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[h1, ha, inv_one, one_mul, h]`. Both sides reduce to the same expression.
+-/
 theorem eq_smul_of_mul {Y : Type} [Monoid Y] (B F F' : Y → ℂ) (a c : ℂ) (y : Y) (ha : a = 1) (h1 : ∀ g, B g = a⁻¹ * F (g * y))
     (h : ∀ g, F (g * y) = c * F' g) : B = c • F' := by
   funext g
   rw [h1, ha, inv_one, one_mul, h]
   rfl
 
+/- English proof (translation)
+Take `⟨κ, e1, l1, e2⟩` from `exists_lift_J (Vc D i) (R.βV i) (R.datVt i t) k`. Rewrite using `[e2, ← e1]`. Conclude with `eq_smul_of_mul_one _ _ _ (kern_eigen R i t hθ hc hω hpt hio l1.1 (GfC (Wc D i)).one_mem (hD 1 κ 1 l1 (lift_one _ (R.βW i) (R.datWp i R.triv))) h w)`.
+-/
 theorem kern_level (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (hio : R.thP_ioP)
     (hD : DatumType R i t) (h : Bridge.Gf (Vc D i)) (k : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J) (w : (R.cV i).W) :
     kern R i t (h * k) w = ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ k)⁻¹ : ℂˣ) : ℂ) • kern R i t h w := by
@@ -161,6 +229,11 @@ theorem kern_level (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hp
   exact eq_smul_of_mul_one _ _ _ (kern_eigen R i t hθ hc hω hpt hio l1.1 (GfC (Wc D i)).one_mem
     (hD 1 κ 1 l1 (lift_one _ (R.βW i) (R.datWp i R.triv))) h w)
 
+/- English proof (translation)
+Use `(exists_lift_Q (Vc D i) (R.βV i) (R.datVt i t) q).elim fun κ H => ?_` and prove the remaining obligations. Use `(exists_actL (Wc D i) (R.βW i) (R.datWp i R.triv) g0 hex).elim fun κ' H' => ?_` and prove the remaining obligations. Establish `l1 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) g0 κ` using `⟨H.2.1.1, H.2.1.2.1, H.2.1.2.2.trans hg.symm⟩`. Use `kern_eigen R i t hθ hc hω hpt hio l1.1 H'.1.1 (hD g0 κ κ' l1 H'.1) h w v` as an intermediate fact. Rewrite using `[H.2.2, ← H.1]`.
+
+Conclude with `eq_smul_of_mul _ _ _ _ _ κ' (levChi_flag_datWp R i κ') (H'.2 _) this`.
+-/
 theorem kern_act (hθ : R.models_inf) (hc : R.models_cV) (hω : R.thP_ωP) (hpt : R.thP_pt_theta) (hio : R.thP_ioP)
     (hD : DatumType R i t) (g0 : G0 R.Pg D.R.r) (q : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q)
     (hg : g0 = rTup (R.βV i) (R.datVt i t) (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf (Vc D i)) : GL _ _)))
@@ -181,6 +254,9 @@ namespace GlobalTheory.TraceIncl
 
 open KernLaws
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R i t hθ hc hω hpt hio hD`. Conclude with `⟨kern_fin R i t hio, kern_rat R i t hω hpt hio, kern_level R i t hθ hc hω hpt hio hD, kern_act R i t hθ hc hω hpt hio hD⟩`.
+-/
 theorem kern_laws : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T0), R.models_inf → R.models_cV → R.thP_ωP → R.thP_pt_theta → R.thP_ioP → GlobalTheory.TraceIncl.DatumType R i t → (∀ h, GlobalTheory.TraceIncl.kern R i t (fin (Vc D i) h) = GlobalTheory.TraceIncl.kernA R i t h) ∧ (∀ (γ : GQ (Vc D i)) h w, GlobalTheory.TraceIncl.kern R i t (Bridge.ratF (Vc D i) γ * h) ((R.cV i).coef.ρ γ w) = GlobalTheory.TraceIncl.kern R i t h w) ∧ (∀ h (k : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J) w, GlobalTheory.TraceIncl.kern R i t (h * k) w = ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ k)⁻¹ : ℂˣ) : ℂ) • GlobalTheory.TraceIncl.kern R i t h w) ∧ ∀ (g0 : G0 R.Pg D.R.r) (q : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q), g0 = rTup (R.βV i) (R.datVt i t) (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf (Vc D i)) : GL _ _)) → (∃ κ', IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ') → ∀ h w v, actL (Wc D i) (R.βW i) (R.datWp i R.triv) g0 (GlobalTheory.TraceIncl.kern R i t (h * q) w v) = ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch q)⁻¹ : ℂˣ) : ℂ) • GlobalTheory.TraceIncl.kern R i t h w v := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R i t hθ hc hω hpt hio hD
   exact ⟨kern_fin R i t hio, kern_rat R i t hω hpt hio, kern_level R i t hθ hc hω hpt hio hD,

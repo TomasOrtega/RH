@@ -8,6 +8,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAPRSSnRep
 
 namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
+/- English proof (translation)
+The claim follows from `jfSmoothBuilt_of_rest nilpotent_derivative group_equations_post_holds smooth_of_coefficients_holds hE hR`.
+-/
 theorem jfSmoothBuilt_of_chart (hE : ChartEqs) (hR : EllRegW) : JfSmoothBuilt :=
   jfSmoothBuilt_of_rest nilpotent_derivative group_equations_post_holds smooth_of_coefficients_holds hE hR
 

@@ -20,6 +20,9 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
 def flO (w0 : ι → Y → ℂ) (i : ι) : Set (V n) :=
   (A.chart i).target ∩ (A.chart i).symm ⁻¹' {y | w0 i y ≠ 0}
 
+/- English proof (translation)
+Establish `hw` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw`. Rewrite using `[hw.2 i (A.pick x) x trivial hi (A.mem_pick x)]`. Conclude with `mul_ne_zero (A.g_ne L i (A.pick x) x hi (A.mem_pick x)) hx.1`.
+-/
 theorem denominator_ne_zero_on_chart (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) : w0 i x ≠ 0 := by
 
@@ -28,6 +31,9 @@ theorem denominator_ne_zero_on_chart (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.
   rw [hw.2 i (A.pick x) x trivial hi (A.mem_pick x)]
   exact mul_ne_zero (A.g_ne L i (A.pick x) x hi (A.mem_pick x)) hx.1
 
+/- English proof (translation)
+Establish `hw` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw`. Rewrite using `[hw.2 i j y trivial hi hj]`. Conclude with `mul_ne_zero (A.g_ne L i j y hi hj) h`.
+-/
 theorem denominator_ne_zero_of_overlap (hD : A.D0 L w w0 s) {y : Y} {i j : ι} (hi : y ∈ (A.chart i).source)
     (hj : y ∈ (A.chart j).source) (h : w0 j y ≠ 0) : w0 i y ≠ 0 := by
 
@@ -36,6 +42,11 @@ theorem denominator_ne_zero_of_overlap (hD : A.D0 L w w0 s) {y : Y} {i j : ι} (
   rw [hw.2 i j y trivial hi hj]
   exact mul_ne_zero (A.g_ne L i j y hi hj) h
 
+/- English proof (translation)
+Establish `hp` using `A.mem_pick y`. Unfold `WeightedAtlas.zLoc WeightedAtlas.zmap`. Rewrite using `[(A.chart i).left_inv hi]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Establish `hw` using `hD.isSection_denom`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw hs`. Rewrite using `[hw.2 i (A.pick y) y trivial hi hp, hs.2 i (A.pick y) y trivial hi hp]`. Conclude with `mul_div_mul_left _ _ (A.g_ne L i (A.pick y) y hi hp)`.
+-/
 theorem flL_zLoc_chart (hD : A.D0 L w w0 s) {y : Y} {i : ι} (hi : y ∈ (A.chart i).source)
     (_hne : w0 i y ≠ 0) : A.zLoc w0 s i (A.chart i y) = A.zmap w0 s y := by
 
@@ -50,6 +61,11 @@ theorem flL_zLoc_chart (hD : A.D0 L w w0 s) {y : Y} {i : ι} (hi : y ∈ (A.char
   rw [hw.2 i (A.pick y) y trivial hi hp, hs.2 i (A.pick y) y trivial hi hp]
   exact mul_div_mul_left _ _ (A.g_ne L i (A.pick y) y hi hp)
 
+/- English proof (translation)
+Establish `hw` using `hD.isSection_denom`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw`. Establish `hc : ContinuousOn (w0 i ∘ (A.chart i).symm) (A.chart i).target`. Use `(hw.1 i).continuousOn` as an intermediate fact. Simplify using `using this`.
+
+Unfold `flO`. Conclude with `hc.isOpen_inter_preimage (A.chart i).open_target (isOpen_ne (x := (0 : ℂ)))`.
+-/
 theorem flL_isOpen_O (hD : A.D0 L w w0 s) (i : ι) : IsOpen (flO A w0 i) := by
 
   have hw := hD.isSection_denom
@@ -60,6 +76,11 @@ theorem flL_isOpen_O (hD : A.D0 L w w0 s) (i : ι) : IsOpen (flO A w0 i) := by
   unfold flO
   exact hc.isOpen_inter_preimage (A.chart i).open_target (isOpen_ne (x := (0 : ℂ)))
 
+/- English proof (translation)
+Establish `hw` using `hD.isSection_denom`. Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw hs`. Establish `h1 : DifferentiableOn ℂ (s k i ∘ (A.chart i).symm) (flO A w0 i)` using `(hs.1 i).mono (fun v hv => ⟨hv.1, Set.mem_univ _⟩)`. Establish `h2 : DifferentiableOn ℂ (w0 i ∘ (A.chart i).symm) (flO A w0 i)` using `(hw.1 i).mono (fun v hv => ⟨hv.1, Set.mem_univ _⟩)`.
+
+Establish `h3 : DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v) * (w0 i ((A.chart i).symm v))⁻¹) (flO A w0 i)` using `DifferentiableOn.mul h1 (DifferentiableOn.inv h2 (fun v (hv : v ∈ flO A w0 i) => hv.2))`. Simplify `h3` using `only [div_eq_mul_inv]`.
+-/
 theorem flL_comp_diff (hD : A.D0 L w w0 s) (i : ι) (k : Fin n) :
     DifferentiableOn ℂ (fun v => s k i ((A.chart i).symm v) / w0 i ((A.chart i).symm v))
       (flO A w0 i) := by
@@ -75,6 +96,9 @@ theorem flL_comp_diff (hD : A.D0 L w w0 s) (i : ι) (k : Fin n) :
       (flO A w0 i) := DifferentiableOn.mul h1 (DifferentiableOn.inv h2 (fun v (hv : v ∈ flO A w0 i) => hv.2))
   simpa only [div_eq_mul_inv] using h3
 
+/- English proof (translation)
+Unfold `WeightedAtlas.zLoc`. Rewrite using `[contDiffOn_piLp]`. Introduce `k`. Simplify using `only [WithLp.ofLp_toLp]`. Conclude with `ReciprocityTheory.L2DbarEstimates.C.holo_contDiffOn_complex (flL_isOpen_O A hD i) (flL_comp_diff A hD i k)`.
+-/
 theorem flL_zLoc_contDiffOn (hD : A.D0 L w w0 s) (i : ι) :
     ContDiffOn ℂ ∞ (A.zLoc w0 s i) (flO A w0 i) := by
 
@@ -84,6 +108,9 @@ theorem flL_zLoc_contDiffOn (hD : A.D0 L w w0 s) (i : ι) :
   simp only [WithLp.ofLp_toLp]
   exact ReciprocityTheory.L2DbarEstimates.C.holo_contDiffOn_complex (flL_isOpen_O A hD i) (flL_comp_diff A hD i k)
 
+/- English proof (translation)
+Use `⟨(A.chart i).map_source hi, ?_⟩` and prove the remaining obligations. Use `show w0 i ((A.chart i).symm (A.chart i x)) ≠ 0`. Rewrite using `[(A.chart i).left_inv hi]`. Conclude with `denominator_ne_zero_on_chart A hD hx hi`.
+-/
 theorem flL_mem_O (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) : A.chart i x ∈ flO A w0 i := by
   refine ⟨(A.chart i).map_source hi, ?_⟩
@@ -91,9 +118,23 @@ theorem flL_mem_O (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : 
   rw [(A.chart i).left_inv hi]
   exact denominator_ne_zero_on_chart A hD hx hi
 
+/- English proof (translation)
+The claim follows from `(flL_zLoc_contDiffOn A hD i).contDiffAt ((flL_isOpen_O A hD i).mem_nhds (flL_mem_O A hD hx hi))`.
+-/
 theorem flL_zLoc_contDiffAt (hD : A.D0 L w w0 s) {x : Y} (hx : x ∈ A.Mset w0 s De) {i : ι}
     (hi : x ∈ (A.chart i).source) : ContDiffAt ℂ ∞ (A.zLoc w0 s i) (A.chart i x) := (flL_zLoc_contDiffOn A hD i).contDiffAt ((flL_isOpen_O A hD i).mem_nhds (flL_mem_O A hD hx hi))
 
+/- English proof (translation)
+Unfold `jz`. Establish `hp : A.chart i ((A.chart j).symm (A.chart j y)) = A.chart i y`. Rewrite using `[(A.chart j).left_inv hj]`. Establish `hO : IsOpen (ovl A.chart j i)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (A.chart i).open_source`. Establish `hm : A.chart j y ∈ ovl A.chart j i`.
+
+Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j y) ∈ (A.chart i).source`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hi`. Establish `hT : DifferentiableAt ℂ (A.chart i ∘ (A.chart j).symm) (A.chart j y)` using `(A.holo_trans j i).differentiableAt (hO.mem_nhds hm)`.
+
+Establish `hZ : DifferentiableAt ℂ (A.zLoc w0 s i) ((A.chart i ∘ (A.chart j).symm) (A.chart j y))`. Rewrite using `[Function.comp_apply, hp]`. Conclude with `(flL_zLoc_contDiffAt A hD hy hi).differentiableAt (by simp)`. Establish `hE : A.zLoc w0 s j =ᶠ[𝓝 (A.chart j y)] A.zLoc w0 s i ∘ (A.chart i ∘ (A.chart j).symm)` using `by filter_upwards [hO.mem_nhds hm] with v hv`. Establish `hpj : (A.chart j).symm v ∈ (A.chart j).source` using `(A.chart j).map_target hv.1`.
+
+Establish `hpi : (A.chart j).symm v ∈ (A.chart i).source` using `hv.2`. Simplify using `only [WeightedAtlas.zLoc, Function.comp_apply, (A.chart i).left_inv hpi]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hw` using `hD.isSection_denom`.
+
+Establish `hs` using `hD.sec_s k`. Unfold `WeightedAtlas.IsSec WeightedAtlas.IsSecOn at hw hs`. Rewrite using `[hw.2 j i _ trivial hpj hpi, hs.2 j i _ trivial hpj hpi]`. Conclude with `mul_div_mul_left _ _ (A.g_ne L j i _ hpj hpi)`. Rewrite using `[hE.fderiv_eq, fderiv_comp _ hZ hT, Function.comp_apply, hp]`.
+-/
 theorem flL_jz_trans (hD : A.D0 L w w0 s) {y : Y} (hy : y ∈ A.Mset w0 s De) {i j : ι}
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
     jz A w0 s j y = (jz A w0 s i y).comp
@@ -128,6 +169,9 @@ theorem flL_jz_trans (hD : A.D0 L w w0 s) {y : Y} (hy : y ∈ A.Mset w0 s De) {i
     exact mul_div_mul_left _ _ (A.g_ne L j i _ hpj hpi)
   rw [hE.fderiv_eq, fderiv_comp _ hZ hT, Function.comp_apply, hp]
 
+/- English proof (translation)
+Rewrite using `[flL_jz_trans A hD hy hj hi, A.g_kap i j y hi hj]`. Simplify using `only [ContinuousLinearMap.det]`. Conclude with `LinearMap.det_comp _ _`.
+-/
 theorem flL_det_trans (hD : A.D0 L w w0 s) {y : Y} (hy : y ∈ A.Mset w0 s De) {i j : ι}
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
     (jz A w0 s i y).det = (jz A w0 s j y).det * A.g A.kap i j y := by
@@ -142,6 +186,9 @@ section Det
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [ContinuousLinearMap.det]`. Rewrite using `[← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `[LinearMap.toMatrix_apply, bas, Units.smul_def, zsmul_eq_mul]`.
+-/
 theorem flL_det_eq (f : V n →L[ℂ] V n) :
     f.det = ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * ∏ c, f (bas n c) (σ c) := by
 
@@ -150,6 +197,9 @@ theorem flL_det_eq (f : V n →L[ℂ] V n) :
   refine Finset.sum_congr rfl fun σ _ => ?_
   simp [LinearMap.toMatrix_apply, bas, Units.smul_def, zsmul_eq_mul]
 
+/- English proof (translation)
+Establish `e : (fun v => (G v).det) = fun v => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * ∏ c, G v (bas n c) (σ c)` using `funext fun v => flL_det_eq (G v)`. Rewrite using `[e]`. Use `ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun c _ => ?_)` and prove the remaining obligations. Conclude with `((EuclideanSpace.proj (σ c)).comp (ContinuousLinearMap.apply ℂ (V n) (bas n c))).contDiff.contDiffAt.comp y hG`.
+-/
 theorem flL_det_contDiffAt {G : V n → V n →L[ℂ] V n} {y : V n} (hG : ContDiffAt ℂ ∞ G y) :
     ContDiffAt ℂ ∞ (fun v => (G v).det) y := by
 
@@ -162,27 +212,42 @@ theorem flL_det_contDiffAt {G : V n → V n →L[ℂ] V n} {y : V n} (hG : ContD
 
 end Det
 
+/- English proof (translation)
+Rewrite using `[flL_det_trans A hD hx hi (A.mem_pick x)]`. Conclude with `mul_ne_zero (hF.deriv_ne x hx) (A.g_ne _ _ _ x hi (A.mem_pick x))`.
+-/
 theorem jz_det_ne {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (x : Y) (hx : x ∈ A.Mset w0 s De) (i : ι)
     (hi : x ∈ (A.chart i).source) : (jz A w0 s i x).det ≠ 0 := by
 
   rw [flL_det_trans A hD hx hi (A.mem_pick x)]
   exact mul_ne_zero (hF.deriv_ne x hx) (A.g_ne _ _ _ x hi (A.mem_pick x))
 
+/- English proof (translation)
+The claim follows from `flL_det_trans A hD hy hi hj`.
+-/
 theorem jz_det_trans {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (y : Y) (hy : y ∈ A.Mset w0 s De) (i j : ι)
     (hi : y ∈ (A.chart i).source) (hj : y ∈ (A.chart j).source) :
     (jz A w0 s i y).det = (jz A w0 s j y).det * A.g A.kap i j y := flL_det_trans A hD hy hi hj
 
+/- English proof (translation)
+Establish `h` using `(flL_zLoc_contDiffOn A hD i).contDiffAt ((flL_isOpen_O A hD i).mem_nhds hv)`. Conclude with `flL_det_contDiffAt (h.fderiv_right (by simp))`.
+-/
 private theorem contDiffAt_det_fderiv_zLoc_of_mem_flO {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} (hD : A.D0 L w w0 s) (i : ι) {v : V n} (hv : v ∈ flO A w0 i) :
     ContDiffAt ℂ ∞ (fun v => (fderiv ℂ (A.zLoc w0 s i) v).det) v := by
   have h := (flL_zLoc_contDiffOn A hD i).contDiffAt ((flL_isOpen_O A hD i).mem_nhds hv)
   exact flL_det_contDiffAt (h.fderiv_right (by simp))
 
+/- English proof (translation)
+Conclude with `contDiffAt_det_fderiv_zLoc_of_mem_flO A hD i (flL_mem_O A hD hy hi)`.
+-/
 theorem contDiffAt_det_jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (y : Y) (hy : y ∈ A.Mset w0 s De) (i : ι)
     (hi : y ∈ (A.chart i).source) :
     ContDiffAt ℂ ∞ (fun v => (fderiv ℂ (A.zLoc w0 s i) v).det) (A.chart i y) := by
 
   exact contDiffAt_det_fderiv_zLoc_of_mem_flO A hD i (flL_mem_O A hD hy hi)
 
+/- English proof (translation)
+Use `filter_upwards [(flL_isOpen_O A hD i).mem_nhds (flL_mem_O A hD hy hi)] with v hv`. Conclude with `(contDiffAt_det_fderiv_zLoc_of_mem_flO A hD i hv).differentiableAt (by simp)`.
+-/
 theorem differentiableAt_det_jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (y : Y) (hy : y ∈ A.Mset w0 s De) (i : ι)
     (hi : y ∈ (A.chart i).source) :
     ∀ᶠ v in 𝓝 (A.chart i y), DifferentiableAt ℂ (fun v => (fderiv ℂ (A.zLoc w0 s i) v).det) v := by
@@ -190,6 +255,21 @@ theorem differentiableAt_det_jz {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2S
   filter_upwards [(flL_isOpen_O A hD i).mem_nhds (flL_mem_O A hD hy hi)] with v hv
   exact (contDiffAt_det_fderiv_zLoc_of_mem_flO A hD i hv).differentiableAt (by simp)
 
+/- English proof (translation)
+Use `set x : Y := ((e.symm v : A.Mset w0 s De) : Y) with hxdef`. Establish `hxM : x ∈ A.Mset w0 s De` using `(e.symm v).2`. Establish `hOt : e.target ∈ 𝓝 v` using `e.open_target.mem_nhds hv`. Establish `hcs : ContinuousAt (fun v' => ((e.symm v' : A.Mset w0 s De) : Y)) v` using `continuous_subtype_val.continuousAt.comp (e.continuousAt_symm hv)`. Establish `hsrc : ∀ᶠ v' in 𝓝 v, ((e.symm v' : A.Mset w0 s De) : Y) ∈ (A.chart i).source` using `hcs.preimage_mem_nhds ((A.chart i).open_source.mem_nhds hi)`.
+
+Establish `hg : ContinuousAt (fun v' => A.chart i (e.symm v' : Y)) v` using `((A.chart i).continuousAt hi).comp hcs`. Establish `hfg : ∀ᶠ v' in 𝓝 v, A.zLoc w0 s i (A.chart i (e.symm v' : Y)) = v'` using `by filter_upwards [hsrc, hOt] with v' h1 h2`. Rewrite using `[flL_zLoc_chart A hD h1 (denominator_ne_zero_on_chart A hD (e.symm v').2 h1)]`. Establish `h3 : e.symm v' ∈ e.source` using `e.map_target h2`. Establish `h4` using `he h3`.
+
+Rewrite `h4` using `[e.right_inv h2]`. Conclude with `h4`. Establish `hdet : (jz A w0 s i x).det ≠ 0` using `jz_det_ne A hD hF x hxM i hi`. Set `f' : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (jz A w0 s i x : V n →ₗ[ℂ] V n) hdet).toContinuousLinearEquiv`. Establish `hcoe : (f' : V n →L[ℂ] V n) = jz A w0 s i x` using `ContinuousLinearMap.ext fun ξ => rfl`.
+
+Establish `hZ : ContDiffAt ℂ ∞ (A.zLoc w0 s i) (A.chart i x)` using `flL_zLoc_contDiffAt A hD hxM hi`. Establish `hf : HasFDerivAt (A.zLoc w0 s i) (f' : V n →L[ℂ] V n) (A.chart i x)`. Rewrite using `[hcoe]`. Conclude with `(hZ.differentiableAt (by simp)).hasFDerivAt`. Establish `hG : HasFDerivAt (fun v' => A.chart i (e.symm v' : Y)) (f'.symm : V n →L[ℂ] V n) v` using `HasFDerivAt.of_local_left_inverse hg hf hfg`.
+
+Use `⟨?_, hsrc, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hfa : A.zLoc w0 s i (A.chart i x) = v` using `hfg.self_of_nhds`. Establish `hL` using `hZ.to_localInverse hf (by simp)`. Rewrite `hL` using `[hfa]`. Use `hL.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Establish `hli` using `(hZ.hasStrictFDerivAt' hf (by simp)).eventually_left_inverse`. Establish `hli'` using `Filter.Tendsto.eventually hg hli`. Use `filter_upwards [hli', hfg] with v' h1 h2`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+
+Rewrite using `[hG.fderiv]`. Conclude with `f'.symm_apply_apply ξ`.
+-/
 theorem flL_inverse {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (e : OpenPartialHomeomorph (A.Mset w0 s De) (V n))
     (he : IsChart n (flatStein A hD hF).z e) (v : V n) (hv : v ∈ e.target) (i : ι)
     (hi : ((e.symm v : A.Mset w0 s De) : Y) ∈ (A.chart i).source) :
@@ -237,6 +317,11 @@ theorem flL_inverse {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Sec
   · rw [hG.fderiv]
     exact f'.symm_apply_apply ξ
 
+/- English proof (translation)
+Introduce `e he v hv`. Take `⟨i, hi, hu'⟩` from `hu ((e.symm v : A.Mset w0 s De) : Y) (e.symm v).2`. Take `⟨hG, hsrc, -⟩` from `flL_inverse A hD hF e he v hv i hi`. Establish `hc : ContDiffAt ℝ ∞ ((u ∘ (A.chart i).symm) ∘ fun v' => A.chart i (e.symm v' : Y)) v` using `hu'.comp v (hG.restrict_scalars ℝ)`. Use `(hc.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations.
+
+Use `filter_upwards [hsrc] with v' h`. Simplify using `[Function.comp_apply, (A.chart i).left_inv h]`.
+-/
 theorem smooth_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (u : Y → ℂ)
     (hu : ∀ x ∈ A.Mset w0 s De, ∃ i, x ∈ (A.chart i).source ∧
       ContDiffAt ℝ ∞ (u ∘ (A.chart i).symm) (A.chart i x)) :
@@ -251,6 +336,9 @@ theorem smooth_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Sec
   filter_upwards [hsrc] with v' h
   simp [Function.comp_apply, (A.chart i).left_inv h]
 
+/- English proof (translation)
+Unfold `SmoothR`. Conclude with `smooth_flat A hD hF (fun y => (φ y : ℂ)) fun x hx => by`. Take `⟨i, hi, h⟩` from `hφ x hx`. Conclude with `⟨i, hi, Complex.ofRealCLM.contDiff.contDiffAt.comp _ h⟩`.
+-/
 theorem smoothR_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (φ : Y → ℝ)
     (hφ : ∀ x ∈ A.Mset w0 s De, ∃ i, x ∈ (A.chart i).source ∧
       ContDiffAt ℝ ∞ (φ ∘ (A.chart i).symm) (A.chart i x)) :
@@ -261,6 +349,13 @@ theorem smoothR_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Se
     obtain ⟨i, hi, h⟩ := hφ x hx
     exact ⟨i, hi, Complex.ofRealCLM.contDiff.contDiffAt.comp _ h⟩
 
+/- English proof (translation)
+Establish `h1 : z q = E q` using `hE hq`. Establish `h2 : z q = E' q` using `hE' hq'`. Establish `hW : IsOpen (E.source ∩ E'.source)` using `E.open_source.inter E'.open_source`. Establish `hc` using `E.continuousAt_symm (E.map_source hq)`. Rewrite `hc` using `[ContinuousAt, E.left_inv hq]`.
+
+Establish `ha : ∀ᶠ v in 𝓝 (E q), E.symm v ∈ E.source ∩ E'.source` using `hc.eventually_mem (hW.mem_nhds ⟨hq, hq'⟩)`. Establish `hb : E'.target ∈ 𝓝 (E q)`. Rewrite using `[← h1, h2]`. Conclude with `E'.open_target.mem_nhds (E'.map_source hq')`. Rewrite using `[h1]`.
+
+Use `filter_upwards [ha, E.open_target.mem_nhds (E.map_source hq), hb] with v h3 h4 h5`. Apply `E'.injOn h3.2 (E'.map_target h5)` to reduce the goal to its premises. Rewrite using `[E'.right_inv h5, ← hE' h3.2, hE h3.1, E.right_inv h4]`.
+-/
 private theorem chart_symm_eventuallyEq_of_isChart' {n : ℕ} {M : Type*} [TopologicalSpace M] {z : M → V n} {E E' : OpenPartialHomeomorph M (V n)}
     (hE : IsChart n z E) (hE' : IsChart n z E') {q : M} (hq : q ∈ E.source) (hq' : q ∈ E'.source) :
     (E.symm : V n → M) =ᶠ[𝓝 (z q)] E'.symm := by
@@ -279,6 +374,11 @@ private theorem chart_symm_eventuallyEq_of_isChart' {n : ℕ} {M : Type*} [Topol
   apply E'.injOn h3.2 (E'.map_target h5)
   rw [E'.right_inv h5, ← hE' h3.2, hE h3.1, E.right_inv h4]
 
+/- English proof (translation)
+Unfold `d`. Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨E, hE, hx⟩`. Rewrite using `[dif_pos h]`. Take `⟨hc, hxc⟩` from `Classical.choose_spec h`. Apply `wd_congr` to reduce the goal to its premises.
+
+Use `filter_upwards [chart_symm_eventuallyEq_of_isChart' hc hE hxc hx] with v hv`. Simplify using `only [Function.comp_apply, hv]`.
+-/
 private theorem d_eq_wd_comp_chart_symm' {n : ℕ} {M : Type*} [TopologicalSpace M] {z : M → V n} {E : OpenPartialHomeomorph M (V n)} (hE : IsChart n z E)
     {x : M} (hx : x ∈ E.source) (j : Fin n) (G : M → ℂ) :
     d n z j G x = wd n j (G ∘ E.symm) (z x) := by
@@ -290,6 +390,11 @@ private theorem d_eq_wd_comp_chart_symm' {n : ℕ} {M : Type*} [TopologicalSpace
   filter_upwards [chart_symm_eventuallyEq_of_isChart' hc hE hxc hx] with v hv
   simp only [Function.comp_apply, hv]
 
+/- English proof (translation)
+Unfold `db`. Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨E, hE, hx⟩`. Rewrite using `[dif_pos h]`. Take `⟨hc, hxc⟩` from `Classical.choose_spec h`. Apply `wdb_congr` to reduce the goal to its premises.
+
+Use `filter_upwards [chart_symm_eventuallyEq_of_isChart' hc hE hxc hx] with v hv`. Simplify using `only [Function.comp_apply, hv]`.
+-/
 private theorem db_eq_wdb_comp_chart_symm' {n : ℕ} {M : Type*} [TopologicalSpace M] {z : M → V n} {E : OpenPartialHomeomorph M (V n)} (hE : IsChart n z E)
     {x : M} (hx : x ∈ E.source) (j : Fin n) (G : M → ℂ) :
     db n z j G x = wdb n j (G ∘ E.symm) (z x) := by
@@ -301,6 +406,19 @@ private theorem db_eq_wdb_comp_chart_symm' {n : ℕ} {M : Type*} [TopologicalSpa
   filter_upwards [chart_symm_eventuallyEq_of_isChart' hc hE hxc hx] with v hv
   simp only [Function.comp_apply, hv]
 
+/- English proof (translation)
+Take `⟨E, hxE, hfE⟩` from `hF.localHomeo x`. Establish `hE : IsChart n (flatStein A hD hF).z E` using `fun q _ => congrFun hfE q`. Establish `hEx : E.symm (E x) = x` using `E.left_inv hxE`. Establish `hi : ((E.symm (E x) : A.Mset w0 s De) : Y) ∈ (A.chart i).source`. Rewrite using `[hEx]`.
+
+Conclude with `hx`. Take `⟨hG, hsrc, hJ⟩` from `flL_inverse A hD hF E hE (E x) (E.map_source hxE) i hi`. Rewrite `hJ` using `[hEx]`. Establish `hzx : (flatStein A hD hF).z x = E x` using `hE hxE`. Establish `hL : ∀ η : Fin n → ℂ, Levi n (flatStein A hD hF).z (fun y : A.Mset w0 s De => φ y) x η = leviV n ((fun y : A.Mset w0 s De => ((φ y : ℝ) : ℂ)) ∘ E.symm) (E x) η`.
+
+Introduce `η`. Unfold `Levi leviV`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[d_eq_wd_comp_chart_symm' hE hxE, hzx]`. Use `congr 2`.
+
+Apply `wd_congr` to reduce the goal to its premises. Use `filter_upwards [E.open_target.mem_nhds (E.map_source hxE)] with v hv`. Simplify using `only [Function.comp_apply]`. Rewrite using `[db_eq_wdb_comp_chart_symm' hE (E.map_target hv), hE (E.map_target hv), E.right_inv hv]`. Establish `hU : ContDiffAt ℝ 2 (fun p => ((φ ((A.chart i).symm p) : ℝ) : ℂ)) (A.chart i ((E.symm (E x) : A.Mset w0 s De) : Y))`.
+
+Rewrite using `[hEx]`. Apply the tactic sequence `exact (Complex.ofRealCLM.contDiff.contDiffAt.comp _ hφ).of_le (by first | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤) | decide | norm_num | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤))`. Apply the tactic sequence `have hG2 : ContDiffAt ℂ 2 (fun v' => A.chart i (E.symm v' : Y)) (E x) := hG.of_le (by first | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤) | decide | norm_num | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤))`. Establish `hcomp : (fun y : A.Mset w0 s De => ((φ y : ℝ) : ℂ)) ∘ E.symm =ᶠ[𝓝 (E x)] (fun p => ((φ ((A.chart i).symm p) : ℝ) : ℂ)) ∘ (fun v' => A.chart i (E.symm v' : Y))` using `by filter_upwards [hsrc] with v' h`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv h]`.
+
+Establish `hJ' : fderiv ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x) (WithLp.toLp 2 (fun k => jz A w0 s i x (WithLp.toLp 2 ξ) k)) = WithLp.toLp 2 ξ` using `hJ _`. Rewrite using `[hL, leviV_congr hcomp, flA_leviV_comp (U := fun p => ((φ ((A.chart i).symm p) : ℝ) : ℂ)) (G := fun v' => A.chart i (E.symm v' : Y)) (y := E x) hU hG2, hJ']`. Unfold `WeightedAtlas.leviAt`. Simplify using `only [hEx]`.
+-/
 theorem levi_flat_loc {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (φ : Y → ℝ) (i : ι) (x : A.Mset w0 s De)
     (hx : (x : Y) ∈ (A.chart i).source)
     (hφ : ContDiffAt ℝ ∞ (φ ∘ (A.chart i).symm) (A.chart i x)) (ξ : Fin n → ℂ) :
@@ -343,6 +461,13 @@ theorem levi_flat_loc {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [S
   unfold WeightedAtlas.leviAt
   simp only [hEx]
 
+/- English proof (translation)
+Introduce `x ξ`. Take `⟨i, hi, hφi, hpos⟩` from `hφ x x.2`. Establish `hdet` using `jz_det_ne A hD hF x x.2 i hi`. Set `f' : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (jz A w0 s i x : V n →ₗ[ℂ] V n) hdet).toContinuousLinearEquiv`. Establish `key` using `levi_flat_loc A hD hF φ i x hi hφi (f'.symm (WithLp.toLp 2 ξ)).ofLp`.
+
+Establish `h1 : jz A w0 s i x (f'.symm (WithLp.toLp 2 ξ)) = WithLp.toLp 2 ξ` using `f'.apply_symm_apply _`. Establish `h2 : (fun k => jz A w0 s i x (WithLp.toLp 2 (f'.symm (WithLp.toLp 2 ξ)).ofLp) k) = ξ`. Use function extensionality and compare the values at `k`. Rewrite using `[WithLp.toLp_ofLp, h1]`. Rewrite `key` using `[h2]`.
+
+Rewrite using `[← key]`. Conclude with `hpos _`.
+-/
 theorem leviNonneg_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (φ : Y → ℝ)
     (hφ : ∀ x ∈ A.Mset w0 s De, ∃ i, x ∈ (A.chart i).source ∧
       ContDiffAt ℝ ∞ (φ ∘ (A.chart i).symm) (A.chart i x) ∧
@@ -363,6 +488,9 @@ theorem leviNonneg_flat {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] 
   rw [← key]
   exact hpos _
 
+/- English proof (translation)
+Establish `h` using `(EuclideanSpace.basisFun (Fin n) ℂ).sum_repr (WithLp.toLp 2 η)`. Simplify using `only [EuclideanSpace.basisFun_repr, EuclideanSpace.basisFun_apply] at h`. Use `conv_lhs => rw [← h]`. Simplify using `[map_sum, bas, smul_eq_mul]`.
+-/
 private theorem ofLp_apply_toLp_eq_sum_mul_basis {n : ℕ} (T : V n →L[ℂ] V n) (η : Fin n → ℂ) (b : Fin n) :
     (T (WithLp.toLp 2 η)).ofLp b = ∑ j, η j * (T (bas n j)).ofLp b := by
   have h := (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr (WithLp.toLp 2 η)
@@ -370,6 +498,21 @@ private theorem ofLp_apply_toLp_eq_sum_mul_basis {n : ℕ} (T : V n →L[ℂ] V 
   conv_lhs => rw [← h]
   simp [map_sum, bas, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨E, hxE, hfE⟩` from `hF.localHomeo x`. Establish `hE : IsChart n (flatStein A hD hF).z E` using `fun q _ => congrFun hfE q`. Establish `hEx : E.symm (E x) = x` using `E.left_inv hxE`. Establish `hi : ((E.symm (E x) : A.Mset w0 s De) : Y) ∈ (A.chart i).source`. Rewrite using `[hEx]`.
+
+Conclude with `hx`. Take `⟨hG, hsrc, hJ⟩` from `flL_inverse A hD hF E hE (E x) (E.map_source hxE) i hi`. Rewrite `hJ` using `[hEx]`. Establish `hzx : (flatStein A hD hF).z x = E x` using `hE hxE`. Establish `hU1 : DifferentiableAt ℝ (u ∘ (A.chart i).symm) (A.chart i ((E.symm (E x) : A.Mset w0 s De) : Y))`.
+
+Rewrite using `[hEx]; exact hu.differentiableAt (by simp)`. Establish `hG1 : DifferentiableAt ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x)` using `hG.differentiableAt (by simp)`. Establish `hcomp : (fun y : A.Mset w0 s De => u y) ∘ E.symm =ᶠ[𝓝 (E x)] (u ∘ (A.chart i).symm) ∘ (fun v' => A.chart i (E.symm v' : Y))` using `by filter_upwards [hsrc] with v' h`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv h]`. Establish `step : ∀ j, db n (flatStein A hD hF).z j (fun y : A.Mset w0 s De => u y) x = ∑ b, wdb n b (u ∘ (A.chart i).symm) (A.chart i x) * (starRingEnd ℂ) ((fderiv ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x) (bas n j)).ofLp b)`.
+
+Introduce `j`. Rewrite using `[db_eq_wdb_comp_chart_symm' hE hxE, hzx, wdb_congr hcomp, flA_wdb_comp (U := u ∘ (A.chart i).symm) (G := fun v' => A.chart i (E.symm v' : Y)) (y := E x) hU1 hG1]`. Simplify using `only [hEx]`. Establish `hJ' : fderiv ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x) (WithLp.toLp 2 (fun k => jz A w0 s i x (WithLp.toLp 2 ξ) k)) = WithLp.toLp 2 ξ` using `hJ _`. Unfold `dbarDot WeightedAtlas.dbarAt`.
+
+Simplify using `only [step, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hb : ξ b = ∑ j, jz A w0 s i x (WithLp.toLp 2 ξ) j * (fderiv ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x) (bas n j)).ofLp b`. Establish `h1` using `ofLp_apply_toLp_eq_sum_mul_basis (fderiv ℂ (fun v' => A.chart i (E.symm v' : Y)) (E x)) (fun k => jz A w0 s i x (WithLp.toLp 2 ξ) k) b`.
+
+Rewrite `h1` using `[hJ']`. Conclude with `h1`. Rewrite using `[hb, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbar_flat_loc {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (u : Y → ℂ) (i : ι) (x : A.Mset w0 s De)
     (hx : (x : Y) ∈ (A.chart i).source)
     (hu : ContDiffAt ℝ ∞ (u ∘ (A.chart i).symm) (A.chart i x)) (ξ : Fin n → ℂ) :
@@ -418,6 +561,11 @@ theorem dbar_flat_loc {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [S
   rw [map_mul]
   ring
 
+/- English proof (translation)
+Unfold `WeightedAtlas.leviAt`. Use `congr 1`. Apply `leviV_congr` to reduce the goal to its premises. Establish `hc` using `(A.chart i).continuousAt_symm ((A.chart i).map_source hy)`. Rewrite `hc` using `[ContinuousAt, (A.chart i).left_inv hy]`.
+
+Use `filter_upwards [hc.eventually h] with v hv`. Simplify using `only [hv]`.
+-/
 theorem leviAt_congr {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) (i : ι) (f g : Y → ℝ) (y : Y) (hy : y ∈ (A.chart i).source)
     (h : f =ᶠ[𝓝 y] g) (ξ : Fin n → ℂ) : A.leviAt i f y ξ = A.leviAt i g y ξ := by
 
@@ -429,6 +577,13 @@ theorem leviAt_congr {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Se
   filter_upwards [hc.eventually h] with v hv
   simp only [hv]
 
+/- English proof (translation)
+Unfold `WeightedAtlas.leviAt`. Rewrite using `[← Complex.add_re]`. Use `congr 1`. Simplify using `only [Complex.ofReal_add]`. Establish `hf1 : ContDiffAt ℝ 2 (fun v => ((f ((A.chart i).symm v) : ℝ) : ℂ)) (A.chart i y)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hf`.
+
+Establish `hg1 : ContDiffAt ℝ 2 (fun v => ((g ((A.chart i).symm v) : ℝ) : ℂ)) (A.chart i y)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hg`. Unfold `leviV`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hw : wdb n k (fun v => ((f ((A.chart i).symm v) : ℝ) : ℂ) + ((g ((A.chart i).symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (A.chart i y)] fun v => wdb n k (fun v => ((f ((A.chart i).symm v) : ℝ) : ℂ)) v + wdb n k (fun v => ((g ((A.chart i).symm v) : ℝ) : ℂ)) v` using `by filter_upwards [hf1.eventually (by simp), hg1.eventually (by simp)] with v a b`. Conclude with `wdb_add (a.differentiableAt (by simp)) (b.differentiableAt (by simp))`. Rewrite using `[wd_congr hw, wd_add (differentiableAt_wdb hf1) (differentiableAt_wdb hg1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviAt_add {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) (i : ι) (f g : Y → ℝ) (y : Y)
     (hf : ContDiffAt ℝ 2 (f ∘ (A.chart i).symm) (A.chart i y))
     (hg : ContDiffAt ℝ 2 (g ∘ (A.chart i).symm) (A.chart i y)) (ξ : Fin n → ℂ) :
@@ -455,6 +610,19 @@ theorem leviAt_add {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [Seco
   rw [wd_congr hw, wd_add (differentiableAt_wdb hf1) (differentiableAt_wdb hg1)]
   ring
 
+/- English proof (translation)
+Establish `hp0 : h ((A.chart i).symm (A.chart i y)) ≠ 0` using `by rw [(A.chart i).left_inv hy]; exact hne`. Establish `hH' : ∀ᶠ v in 𝓝 (A.chart i y), DifferentiableAt ℂ (fun v => h ((A.chart i).symm v)) v` using `hh`. Take `⟨t, ht, hto, hpt⟩` from `eventually_nhds_iff.1 hH'`. Establish `hHt : DifferentiableOn ℂ (fun v => h ((A.chart i).symm v)) t` using `fun v hv => (ht v hv).differentiableWithinAt`. Establish `hne' : ∀ᶠ v in 𝓝 (A.chart i y), h ((A.chart i).symm v) ≠ 0` using `(hH'.self_of_nhds).continuousAt.eventually_ne hp0`.
+
+Establish `key : ∀ j k, wd n j (wdb n k (fun v => ((Real.log (‖h ((A.chart i).symm v)‖ ^ 2) : ℝ) : ℂ))) (A.chart i y) = 0`. Introduce `j k`. Establish `hQd : DifferentiableAt ℂ (fun v => fderiv ℂ (fun v => h ((A.chart i).symm v)) v (bas n k) * (h ((A.chart i).symm v))⁻¹) (A.chart i y)` using `((ReciprocityTheory.L2DbarEstimates.C.holoDeriv n t _ hto hHt (bas n k)).differentiableAt (hto.mem_nhds hpt)).mul ((hH'.self_of_nhds).inv hp0)`. Establish `hev : wdb n k (fun v => ((Real.log (‖h ((A.chart i).symm v)‖ ^ 2) : ℝ) : ℂ)) =ᶠ[𝓝 (A.chart i y)] fun v => (starRingEnd ℂ) (fderiv ℂ (fun v => h ((A.chart i).symm v)) v (bas n k) * (h ((A.chart i).symm v))⁻¹)` using `by filter_upwards [hto.mem_nhds hpt, hne'] with v hvt hv0`. Establish `hd : DifferentiableAt ℂ (fun v => h ((A.chart i).symm v)) v` using `ht v hvt`.
+
+Establish `hdR` using `hd.restrictScalars ℝ`. Establish `hN : ‖h ((A.chart i).symm v)‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.2 hv0)`. Apply the tactic sequence `rw [wdb_ofReal_comp (k := Real.log) (v := fun v => ‖h ((A.chart i).symm v)‖ ^ 2) (Real.differentiableAt_log hN) (by first | exact DifferentiableAt.norm_sq ℝ hdR | exact hdR.norm_sq (𝕜 := ℝ) | exact hdR.norm_sq ℂ)]`. Establish `hsq : (fun y => (((‖h ((A.chart i).symm y)‖ ^ 2 : ℝ)) : ℂ)) = fun y => h ((A.chart i).symm y) * (starRingEnd ℂ) (h ((A.chart i).symm y))`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try ring`. Establish `hcR : DifferentiableAt ℝ (fun y => (starRingEnd ℂ) (h ((A.chart i).symm y))) v` using `Complex.conjCLE.differentiable.differentiableAt.comp v hdR`. Establish `hc : ((‖h ((A.chart i).symm v)‖ ^ 2 : ℝ) : ℂ) = h ((A.chart i).symm v) * (starRingEnd ℂ) (h ((A.chart i).symm v))` using `congrFun hsq v`.
+
+Establish `hca : (starRingEnd ℂ) (h ((A.chart i).symm v)) ≠ 0` using `(map_ne_zero _).2 hv0`. Rewrite using `[hsq, wdb_mul hdR hcR, wdb_of_differentiableAt hd, wdb_conj hdR, wd_of_differentiableAt hd]`. Simplify using `only [Real.deriv_log, Complex.ofReal_inv, hc, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[wd_congr hev, wd_conj (hQd.restrictScalars ℝ), wdb_of_differentiableAt hQd, map_zero]`. Unfold `WeightedAtlas.leviAt leviV`. Simplify using `only [key, zero_mul, Finset.sum_const_zero, Complex.zero_re]`.
+-/
 theorem leviAt_log_normSq {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) (i : ι) (h : Y → ℂ) (y : Y) (hy : y ∈ (A.chart i).source)
     (hh : ∀ᶠ v in 𝓝 (A.chart i y), DifferentiableAt ℂ (h ∘ (A.chart i).symm) v)
     (hne : h y ≠ 0) (ξ : Fin n → ℂ) :

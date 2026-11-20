@@ -29,6 +29,17 @@ noncomputable section
 
 namespace GlobalTheory.PosThrough
 
+/- English proof (translation)
+Introduce `hNN k _ X q hq`. Use `letI := algebraΓOfHom q`. Introduce `N N₁ N₂ hN h₁ h₂ a x hNef ha hcls hamp hN₂ Z e hZ hx he hdim`. Establish `hBig : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q →`. Use `letI := algebraΓOfHom q`.
+
+Use the proof step `∀ (N N₁ N₂ : LB X) (hN : N.IsLB) (h₁ : N₁.IsLB) (h₂ : N₂.IsLB) (a : ℕ) (x : X),`. Use `IsNef k N → 0 < a → a • cls N hN = cls N₁ h₁ + cls N₂ h₂ → AmpleAt N₁ x → IsNef k N₂ → IsBig k N :=`. Use the proof step `GlobalTheory.T.isBigLineBundle_of_smul_class_eq_ampleAt_add_nef hNN`. Establish `hAmp : ∀ (Y X : Scheme.{0}) (π : X ⟶ Y) [IsAffineHom π] (N : LB Y), N.IsLB → ∀ x : X, AmpleAt N (π x) → AmpleAt (N.pull π) x` using `GlobalTheory.T.ampleModuloEffectiveAwayFromPoint_pull_affine`. Establish `: IsIntegral (Scheme.IdealSheafData.vanishingIdeal Z).subscheme` using `isIntegral_red hZ`.
+
+Use `set q' := redι Z ≫ q with hq'`. Use `letI := algebraΓOfHom q'`. Establish `hi : ∀ r : k, (redι Z).appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) r` using `fun r => rfl`. Establish `hpq : IsProjOver q'`. Take `⟨n, f, hf, hs⟩` from `hq`.
+
+Conclude with `⟨n, redι Z ≫ f, inferInstance, by rw [Category.assoc, hs]⟩`. Take `⟨w, rfl⟩ : x ∈ Set.range (redι Z)` from `by rw [range_redι]; exact hx`. Establish `hb` using `hBig k _ q' hpq (N.pull (redι Z)) (N₁.pull (redι Z)) (N₂.pull (redι Z)) (LB.isLB_pull hN _) (LB.isLB_pull h₁ _) (LB.isLB_pull h₂ _) a w (hNef.pull_of_isClosedImmersion _ hi) ha (by rw [cls_pull hN, cls_pull h₁, cls_pull h₂, ← map_nsmul, hcls, map_add]) (hAmp _ _ _ N₁ h₁ w hamp) ( …`. Establish `hstr : strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme = q'` using `strHom_eq (f := q') fun _ => rfl`. Establish `hD : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal Z).subscheme = e` using `(topologicalKrullDim_red Z).trans hdim`.
+
+Establish `hpos` using `((hNN.2.2.isBig_iff (hstr ▸ hpq) hD (hNef.pull_of_isClosedImmersion _ hi)).1 hb)`. Establish `heq : interNumRed k Z (fun _ : Fin e => N) = topSelfIntersection k (N.pull (redι Z)) e` using `interNumOn_const_eq_topSelf hi hN e`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_interNumRed : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N₁ N₂ : LB X) (hN : N.IsLB) (h₁ : N₁.IsLB) (h₂ : N₂.IsLB) (a : ℕ) (x : X), IsNef k N → 0 < a → a • cls N hN = cls N₁ h₁ + cls N₂ h₂ → AmpleAt N₁ x → IsNef k N₂ → ∀ (Z : Closeds X) (e : ℕ), IsIrreducible (Z : Set X) → x ∈ Z → 1 ≤ e → topologicalKrullDim (Z : Set X) = e → 1 ≤ interNumRed k Z (fun _ : Fin e => N) := by
   intro hNN k _ X q hq
   letI := algebraΓOfHom q

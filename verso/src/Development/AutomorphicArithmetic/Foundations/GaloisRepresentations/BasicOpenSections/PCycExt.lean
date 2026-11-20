@@ -6,6 +6,9 @@ open UpperTheory.Gal.TranscendenceTraces (gp pt Wt fib IsWt nwt LocNml)
 open UpperTheory.Gal.crystallineComparison (resPt twist PtId)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
+/- English proof (translation)
+Establish `h : sp a ≫ sp φ = sp φ' ≫ sp a`. Simplify using `only [UpperTheory.Gal.Mod.sp, ← AlgebraicGeometry.Spec.map_comp, ← CommRingCat.ofHom_comp, hc]`. Express the relevant statement in the definitionally equal form `sp a ≫ sp φ ≫ u = sp φ' ≫ sp a ≫ u`. Rewrite using `[← Category.assoc, h, Category.assoc]`.
+-/
 private lemma sp_twist {Ω Ω' : Type} [Field Ω] [Field Ω'] {Y : Scheme.{0}} (a : Ω →+* Ω')
     (φ : Ω →+* Ω) (φ' : Ω' →+* Ω') (hc : a.comp φ = φ'.comp a) (u : gp Ω ⟶ Y) :
     sp a ≫ twist φ Y u = twist φ' Y (sp a ≫ u) := by
@@ -14,6 +17,9 @@ private lemma sp_twist {Ω Ω' : Type} [Field Ω] [Field Ω'] {Y : Scheme.{0}} (
   change sp a ≫ sp φ ≫ u = sp φ' ≫ sp a ≫ u
   rw [← Category.assoc, h, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing u with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih, sp_twist a φ φ' hc]`.
+-/
 private lemma sp_iter {Ω Ω' : Type} [Field Ω] [Field Ω'] {Y : Scheme.{0}} (a : Ω →+* Ω')
     (φ : Ω →+* Ω) (φ' : Ω' →+* Ω') (hc : a.comp φ = φ'.comp a) (m : ℕ) (u : gp Ω ⟶ Y) :
     sp a ≫ (twist φ Y)^[m] u = (twist φ' Y)^[m] (sp a ≫ u) := by
@@ -21,11 +27,21 @@ private lemma sp_iter {Ω Ω' : Type} [Field Ω] [Field Ω'] {Y : Scheme.{0}} (a
   | zero => rfl
   | succ m ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih, sp_twist a φ φ' hc]
 
+/- English proof (translation)
+Establish `h : ∀ c : gp Ω', (sp a ≫ z) c = z (sp a c)` using `fun c => Scheme.Hom.comp_apply _ _ _`. Conclude with `(h _).trans (congrArg (fun t : gp Ω => z t) (Subsingleton.elim (α := PrimeSpectrum Ω) _ _))`.
+-/
 private lemma pt_sp {Ω Ω' : Type} [Field Ω] [Field Ω'] {Z : Scheme.{0}} (a : Ω →+* Ω') (z : gp Ω ⟶ Z) :
     pt (sp a ≫ z) = pt z := by
   have h : ∀ c : gp Ω', (sp a ≫ z) c = z (sp a c) := fun c => Scheme.Hom.comp_apply _ _ _
   exact (h _).trans (congrArg (fun t : gp Ω => z t) (Subsingleton.elim (α := PrimeSpectrum Ω) _ _))
 
+/- English proof (translation)
+Use `haveI : IsFinite T.p := T.fin`. Take `⟨-, hb, hinj⟩` from `hF T.p Ω Ω' a x`. Use `finsum_mem_eq_of_bijOn (fun z => sp a ≫ z) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `z ⟨h1, h2⟩`. Use `⟨by simp only [Category.assoc, h1], ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← sp_iter a φ φ' hc, h2]`. Introduce `z hz z' hz' h`. Conclude with `hb.injOn (show z ∈ fib T.p x from hz.1) (show z' ∈ fib T.p x from hz'.1) h`. Introduce and unpack `z' ⟨h1, h2⟩`. Take `⟨z, hz, rfl⟩` from `hb.surjOn (show z' ∈ fib T.p (sp a ≫ x) from h1)`.
+
+Use `⟨z, ⟨hz, hinj _ _ ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite `*` using `[sp_iter a φ φ' hc, ← Category.assoc]`. Simplify `h2` using `[Category.assoc]`. Introduce `z _`. Conclude with `hWt T.p w hw Ω Ω' z (sp a ≫ z) (pt_sp a z).symm`.
+-/
 private lemma sum_eq (hF : FibExt) (hWt : TranscendenceTraces.WtPt) {p : ℕ} {Y : Scheme.{0}} (T : crystallineComparison.Corr p Y) (w : Wt T.Z)
     (hw : IsWt T.p w) (m : ℕ) {Ω Ω' : Type} [Field Ω] [IsAlgClosed Ω] [Field Ω'] [IsAlgClosed Ω'] (a : Ω →+* Ω')
     (φ : Ω →+* Ω) (φ' : Ω' →+* Ω') (hc : a.comp φ = φ'.comp a) (x y : gp Ω ⟶ Y) :
@@ -47,6 +63,17 @@ private lemma sum_eq (hF : FibExt) (hWt : TranscendenceTraces.WtPt) {p : ℕ} {Y
   · intro z _
     exact hWt T.p w hw Ω Ω' z (sp a ≫ z) (pt_sp a z).symm
 
+/- English proof (translation)
+Introduce `hF p q n Y T w hw Ω Ω' _ _ _ _ a φ φ' hc x`. Establish `hWt : TranscendenceTraces.WtPt` using `TranscendenceTraces.all_holds.1.2.2.2.2.1`. Establish `hs` using `fun (j : Fin (n + 1)) y => sum_eq hF hWt (T j) (w j) (hw j) (n - j) a φ φ' hc x y`. Prove the components needed by the constructor for the conclusion. Introduce `h y'`.
+
+Distinguish the cases in `hy : ∃ y : gp Ω ⟶ Y, y' = sp a ≫ y`. Take `⟨y, rfl⟩` from `hy`. Use `h y` as an intermediate fact. Simplify using `only [hs] at this`. Conclude with `this`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: {z : gp Ω' ⟶ (T j).Z | z ≫ (T j).p = sp a ≫ x ∧ (twist φ' Y)^[n - j] (z ≫ (T j).r) = y'} = ∅`. Use extensionality with `z'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `h1 h2`.
+
+Use `haveI : IsFinite (T j).p := (T j).fin`. Take `⟨z, -, rfl⟩` from `(hF (T j).p Ω Ω' a x).2.1.surjOn (show z' ∈ fib (T j).p (sp a ≫ x) from h1)`. Use `hy ⟨(twist φ Y)^[n - j] (z ≫ (T j).r), ?_⟩` and prove the remaining obligations. Rewrite using `[sp_iter a φ φ' hc, ← h2, Category.assoc]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Introduce `h y`. Use `h (sp a ≫ y)` as an intermediate fact. Simplify using `only [← hs] at this`. Conclude with `this`.
+-/
 theorem UpperTheory.Gal.Mod.cycExt :
     FibExt → CycExt := by
   intro hF p q n Y T w hw Ω Ω' _ _ _ _ a φ φ' hc x

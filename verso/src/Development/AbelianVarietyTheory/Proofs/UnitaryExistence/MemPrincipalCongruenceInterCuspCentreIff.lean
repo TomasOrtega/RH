@@ -18,6 +18,13 @@ namespace GlobalTheory.CuspCentre
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
+/- English proof (translation)
+Introduce `v hv`. Use `choose z hz hz' using fun a b => hβ a b _ (hd v hv b)`. Use `⟨∑ a, (∑ b, -z a b) • cu.e a, (hc _).2 fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(c a : Submodule (𝓞 E) E).sum_mem fun b _ => (c a : Submodule (𝓞 E) E).neg_mem (hz a b)`. Rewrite using `[zMatE_mulVec, Finset.smul_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Establish `h` using `hz' a b`. Establish `h0` using `X.ξ0_ne`. Rewrite using `[mul_neg, ← h]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem zMatE_congr_of_entries (X : Data E r) (N : ℕ) (cu : FJ.CuspFD X ρ)
     (c : Fin ρ → FractionalIdeal (𝓞 E)⁰ E)
     (hd : ∀ v ∈ X.Λ, ∀ b, ∀ a' ∈ c b, ∃ n : ℤ,
@@ -42,6 +49,35 @@ theorem zMatE_congr_of_entries (X : Data E r) (N : ℕ) (cu : FJ.CuspFD X ρ)
     rw [mul_neg, ← h]
     field_simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H r ρ X N D φ cu c hΛ hφ hΓ hc β`. Establish `hsd` using `GlobalTheory.SatDual.pairing_pseudoBasis E H D r (-X.ξ0) X.Gm φ ρ cu.e c (by rw [cc_neg', X.ξ0_im]) hφ cu.ind (by rw [hΛ]; exact hc)`. Establish `hd : ∀ v ∈ X.Λ, ∀ b, ∀ a' ∈ c b, ∃ n : ℤ, Algebra.trace ℚ E (-X.ξ0 * herm X.Gm v (cu.e b) * cc a') = n`. Introduce `v hv`. Rewrite `hv` using `[← hΛ]`.
+
+Take `⟨x, rfl⟩` from `hv`. Conclude with `(hsd fun b => -X.ξ0 * herm X.Gm (φ x) (cu.e b)).1 ⟨x, fun _ => rfl⟩`. Establish `h0` using `X.ξ0_ne`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, γ, hγ, e⟩`.
+
+Use `⟨hs, fun a b y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(hsd (Pi.single b y)).2 (by`. Introduce `b' a' ha'`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality.
+
+Simplify using `using hy a' ha'`. Conclude with `⟨0, by simp [Pi.single_eq_of_ne hb]⟩)`. Take `⟨w, hw, hw'⟩` from `((hΓ γ).1 hγ).2 (φ x) (hΛ ▸ ⟨x, rfl⟩)`. Rewrite `hw'` using `[e, zMatE_mulVec, add_right_inj]`. Establish `h1 : ∀ a, ∑ b', β a b' * herm X.Gm (φ x) (cu.e b') = -(β a b / X.ξ0 * y)`.
+
+Introduce `a`. Rewrite using `[Finset.sum_eq_single b]`. Establish `h2` using `hx b`. Rewrite `h2` using `[Pi.single_eq_same]`. Rewrite using `[← h2]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `b' _ hb'`. Establish `h2` using `hx b'`. Rewrite `h2` using `[Pi.single_eq_of_ne hb', mul_eq_zero, neg_eq_zero]`. Rewrite using `[h2.resolve_left h0, mul_zero]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [h1] at hw'`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Rewrite `hw'` using `[zero_smul]`.
+
+Establish `h3` using `Fintype.linearIndependent_iff.1 cu.ind _ hw' a`. Conclude with `⟨0, FractionalIdeal.zero_mem _, by rw [mul_zero]; exact neg_eq_zero.1 h3⟩`. Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h3 : ∑ a, ((N : E)⁻¹ * (β a b / X.ξ0 * y)) • cu.e a = -w`. Establish `h4 : w = (N : E)⁻¹ • (N • w)`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hN', one_smul]`. Rewrite using `[h4, ← hw', Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← neg_smul, mul_neg, neg_neg]`. Use `⟨_, (hc _).1 (h3 ▸ X.Λ.neg_mem hw) a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_inv_cancel_left₀ hN']`. Introduce and unpack `⟨hs, hβ⟩`. Establish `h1` using `zMatE_congr_of_entries X N cu c hd hc β hβ`. Establish `h2` using `zMatE_congr_of_entries X N cu c hd hc (-β) (by`. Introduce `a b y hy`.
+
+Take `⟨z, hz, hz'⟩` from `hβ a b y hy`. Use `⟨-z, (c a : Submodule (𝓞 E) E).neg_mem hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, neg_div, neg_mul, hz', mul_neg])`. Establish `hm : FJ.zMatE X cu.e β * FJ.zMatE X cu.e (-β) = 1`. Rewrite using `[← zMatE_add, add_neg_cancel, zMatE_zero]`.
+
+Establish `hm' : FJ.zMatE X cu.e (-β) * FJ.zMatE X cu.e β = 1`. Rewrite using `[← zMatE_add, neg_add_cancel, zMatE_zero]`. Use `⟨hs, ⟨_, _, hm, hm'⟩, (hΓ _).2 ⟨⟨zMatE_unitary X cu β hs, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩, h1⟩, rfl⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `h1 x hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e β *ᵥ x ∈ X.Λ`.
+
+Rewrite using `[hw']`. Conclude with `X.Λ.add_mem hx (nsmul_mem hw N)`. Take `⟨w, hw, hw'⟩` from `h2 _ hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e β *ᵥ x ∈ X.Λ at hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e (-β) *ᵥ (FJ.zMatE X cu.e β *ᵥ x) = FJ.zMatE X cu.e β *ᵥ x + _ at hw'`.
+
+Rewrite `hw'` using `[Matrix.mulVec_mulVec, hm', Matrix.one_mulVec]`. Rewrite using `[hw']`. Conclude with `X.Λ.add_mem hx (nsmul_mem hw N)`.
+-/
 theorem mem_zGam_principal_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (r ρ : ℕ) (X : Data E r) (N : ℕ) (D : Datum H) (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (cu : FJ.CuspFD X ρ) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E), LinearMap.range φ = X.Λ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc (X.Gm a b) = X.Gm b a) ∧ X.Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-X.ξ0 * herm X.Gm (φ x) (φ y))) → (∀ γ : GL (Fin r) E, γ ∈ X.Γ ↔ IsUStab X.Gm X.Λ γ ∧ ∀ v ∈ X.Λ, ∃ w ∈ X.Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ v = v + N • w) → (∀ a : Fin ρ → E, (∑ b, a b • cu.e b) ∈ X.Λ ↔ ∀ b, a b ∈ cc' b) → ∀ β, β ∈ FJ.zGam X cu ↔ FJ.IsSkew β ∧ ∀ a b (y : E), (∀ a' ∈ cc' b, ∃ n : ℤ, Algebra.trace ℚ E (y * cc a') = n) → ∃ z ∈ cc' a, β a b / X.ξ0 * y = (N : E) * z := by
   intro E _ _ _ H r ρ X N D φ cu c hΛ hφ hΓ hc β
   have hsd := GlobalTheory.SatDual.pairing_pseudoBasis E H D r (-X.ξ0) X.Gm φ ρ cu.e c

@@ -91,6 +91,11 @@ def Rigid : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
       GlobalTheory.SmGL.IsSubquotient P.ρ (locProd D.h w (D.σ · w))) ∧
     ∀ B, SatAt D w B → ∃ B', SatAt D' w B' ∧ ∑ i, B i = ∑ i, B' i
 
+/- English proof (translation)
+Take `⟨D, hD, -, hsph⟩` from `hS E hE n hn π hπ ∅ (by simp)`. Use `⟨D, hD.1, fun w hw => ?_, fun w hu hw => ?_⟩` and prove the remaining obligations. Take `⟨D', hD', h1, -⟩` from `hS E hE n hn π hπ {w} (by simp)`. Take `⟨P, hP, hc⟩` from `h1 w (Finset.mem_singleton_self w) hw`. Conclude with `⟨P, (hR E n hn π hπ D D' hD hD' w).1 P hP, hc⟩`.
+
+Take `⟨B, hB⟩` from `hsph w hu hw`. Take `⟨D', hD', h1⟩` from `hI E hE n hn π hπ w hu hw`. Take `⟨B', hB', e⟩` from `(hR E n hn π hπ D D' hD hD' w).2 B hB`. Conclude with `⟨B, hB, fun s ϖ q a b α hα => e.trans (h1 B' hB' s ϖ q a b α hα)⟩`.
+-/
 theorem core_of (hS : RunSplit) (hI : RunInert) (hR : Rigid) (hE : Unr E) (hn : 1 ≤ n)
     (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π) :
     ∃ D : Datum E n, (∀ τ lam, HasWeightAt π τ lam → ∑ i, D.m i τ = infOfWeight lam) ∧
@@ -110,6 +115,15 @@ theorem core_of (hS : RunSplit) (hI : RunInert) (hR : Rigid) (hE : Unr E) (hn : 
     exact ⟨B, hB, fun s ϖ q a b α hα => e.trans (h1 B' hB' s ϖ q a b α hα)⟩
 
 open GlobalTheory.PfBCI in
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ`. Take `⟨D, hwt, hS', hU⟩` from `core_of hS hI hR hE hn π hπ`. Establish `hex : ∀ w, ∃ P, AtPlace π D.h D.σ w P`. Introduce `w`. Distinguish the cases in `hs : IsSplitAt w`.
+
+Take `⟨P, hsub, hc⟩` from `hS' w hs`. Conclude with `⟨P, split_component D.h D.σ hs P hsub (split_spherical hπ hs P hc) hc⟩`. Distinguish the cases in `hu : IsUnramU π w`. Take `⟨B, hB, hsum⟩` from `hU w hu hs`. Take `⟨P, hsub, hsph, hsat⟩` from `unram_component D.h w (D.σ · w) B hB`.
+
+Use `⟨P, hsub, fun _ => hsph, fun s' ϖ q hc hinv α hα => ?_, fun h' => absurd h' hs⟩` and prove the remaining obligations. Rewrite using `[← hsum s' ϖ q hc hinv α hα]`. Conclude with `hsat`. Take `⟨P, hP'⟩` from `local_subquotient D.h w (D.σ · w)`. Conclude with `⟨P, hP', fun h' => absurd h' hu, inert_of_not_unram hu P, fun h' => absurd h' hs⟩`.
+
+Use `choose P hPw using hex`. Conclude with `⟨D.c, D.N, D.h, D.V, D.σ, D.m, P, D.pos, D.discrete, D.csd, D.loc, D.inf, fun w => (hPw w).1, fun w => (hPw w).2.1, fun w => (hPw w).2.2.1, fun w => (hPw w).2.2.2, hwt⟩`.
+-/
 theorem baseChangeIsobaricN_of (hS : RunSplit) (hI : RunInert) (hR : Rigid) : BaseChangeIsobaricN := by
   intro E _ _ _ hE n hn π hπ
   obtain ⟨D, hwt, hS', hU⟩ := core_of hS hI hR hE hn π hπ

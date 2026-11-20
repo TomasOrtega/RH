@@ -39,6 +39,9 @@ namespace GlobalTheory.LatMoveGen
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D)` using `(g : HR (AF D.host.F) D.sp.cm.sig V.gram).2`. Establish `h2 : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1`. Rewrite using `[← GlobalTheory.LatMoveStd.mt_mul'', mul_inv_cancel, GlobalTheory.LatMoveStd.mt_one'']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gram_mul_inv (V : HSp D) (g : Formalism.L2.Theta.GA D V) :
     V.gram.map (incA D) * Formalism.L2.Theta.mt V g⁻¹ =
       ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) := by
@@ -50,6 +53,11 @@ theorem gram_mul_inv (V : HSp D) (g : Formalism.L2.Theta.GA D V) :
       = (((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g) * Formalism.L2.Theta.mt V g⁻¹ := by rw [h]
     _ = _ := by rw [Matrix.mul_assoc _ (Formalism.L2.Theta.mt V g), h2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `e1 : (fun m => incA D (∑ k, star (s k) * V.gram k m)) = (fun k => cA D (incA D (s k))) ᵥ* V.gram.map (incA D)`. Use function extensionality and compare the values at `m`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, Matrix.map_apply, GlobalTheory.FinPl.FrameLat.cA_incA]`. Establish `e2 : (fun m => cA D ((Formalism.L2.Theta.mt V g *ᵥ fun k => incA D (s k)) m)) = (Formalism.L2.Theta.mt V g).map (cA D) *ᵥ fun k => cA D (incA D (s k))`. Use function extensionality and compare the values at `m`.
+
+Conclude with `RingHom.map_mulVec (cA D) _ _ m`. Establish `lhs : ∑ m, incA D (∑ k, star (s k) * V.gram k m) * Formalism.L2.Theta.mt V g⁻¹ m j = ((fun m => incA D (∑ k, star (s k) * V.gram k m)) ᵥ* Formalism.L2.Theta.mt V g⁻¹) j` using `rfl`. Establish `rhs : ∑ m, cA D ((Formalism.L2.Theta.mt V g *ᵥ fun k => incA D (s k)) m) * incA D (V.gram m j) = ((fun m => cA D ((Formalism.L2.Theta.mt V g *ᵥ fun k => incA D (s k)) m)) ᵥ* V.gram.map (incA D)) j` using `rfl`. Rewrite using `[lhs, rhs, e1, e2, Matrix.vecMul_vecMul, gram_mul_inv, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose]`.
+-/
 theorem row_move (V : HSp D) (g : Formalism.L2.Theta.GA D V) (s : Fin V.rank → D.host.E) (j : Fin V.rank) :
     ∑ m, incA D (∑ k, star (s k) * V.gram k m) * Formalism.L2.Theta.mt V g⁻¹ m j =
       ∑ m, cA D ((Formalism.L2.Theta.mt V g *ᵥ fun k => incA D (s k)) m) * incA D (V.gram m j) := by
@@ -73,6 +81,9 @@ namespace GlobalTheory.LatMoveGen
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← row_move]`. Simplify using `only [actO, Matrix.mul_apply, Matrix.of_apply, GlobalTheory.LatMoveStd.gen_eq]`. Simplify using `only [ Matrix.mul_apply, Matrix.of_apply, GlobalTheory.LatMoveStd.gen_eq, Matrix.mulVec, dotProduct, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem act_gen_apply (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (h : Formalism.L2.Theta.GA D T) (α : Af D.host.F) (a : D.host.E)
     (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) (i : Fin T.rank) (j : Fin S.rank) :
     actO S T g h (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) i j =
@@ -85,6 +96,11 @@ theorem act_gen_apply (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (h : Formali
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, GlobalTheory.LatMoveStd.gen_eq]`. Simplify using `only [map_sum, map_mul, GlobalTheory.FinPl.FrameLat.cA_incA, Finset.mul_sum, Finset.sum_mul]`. Use `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb_apply (S T : HSp D) (α : Af D.host.F) (a : D.host.E) {m m' : ℕ} (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin T.rank → D.host.E)
     (β' : Fin m' → Formalism.L2.Theta.AE D) (b' : Fin m' → Fin S.rank → D.host.E) (i : Fin T.rank) (j : Fin S.rank) :
     (∑ p, ∑ q, (β p * cA D (β' q)) • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F]
@@ -105,6 +121,15 @@ namespace GlobalTheory.LatMoveGen
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D S T g h AS BS AT BT hS hT w hw`. Set `Ψ : WO S T →+ WO S T` to `{ toFun := actO S T g h map_zero' := by simp only [actO, Matrix.mul_zero, Matrix.zero_mul] map_add' := fun x y => by simp only [actO, Matrix.mul_add, Matrix.add_mul] }`. Establish `key : latO S T (AS : Set (Fin S.rank → D.host.E)) (AT : Set (Fin T.rank → D.host.E)) (fun _ => True) ≤ (latO S T (BS : Set (Fin S.rank → D.host.E)) (BT : Set (Fin T.rank → D.host.E)) (fun _ => True)).comap Ψ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`.
+
+Take `⟨m', β', b', hβ', hb', hu⟩` from `hS s hs`. Take `⟨m, β, b, hβ, hb, hv⟩` from `hT t ht`. Establish `e : actO S T g h (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) = ∑ p, ∑ q, (β p * cA D (β' q)) • (Matrix.of fun i j => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * b p i * ∑ k, star (b' q k) * S.gram k j) : WO S T)`. Use extensionality with `i j`. Rewrite using `[act_gen_apply, comb_apply, mul_comm, mul_comm (pairA D.host.F 0 α ⊗ₜ[D.host.F] a), GlobalTheory.LatticeStable.mul_pair_tmul, GlobalTheory.LatticeStable.mul_pair_tmul]`.
+
+Use `congr 2`. Simplify using `only [map_mul, map_sum, GlobalTheory.FinPl.FrameLat.finPart_cA, hv, hu]`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Use `show actO S T g h _ ∈ latO S T (BS : Set (Fin S.rank → D.host.E)) (BT : Set (Fin T.rank → D.host.E)) (fun _ => True)`. Rewrite using `[e]`.
+
+Use `sum_mem fun p _ => sum_mem fun q _ => ?_` and prove the remaining obligations. Use `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ ?_ _ (AddSubgroup.subset_closure ⟨α, hα, fun _ h => absurd trivial h, a, ha, b' q, hb' q, b p, hb p, rfl⟩)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE (hβ p) ((GlobalTheory.FinPl.FrameLat.cA_int_iff _).2 (hβ' q))`. Conclude with `key hw`.
+-/
 theorem actO_mem_latO : ∀ {D : D7} (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (h : Formalism.L2.Theta.GA D T)
     (AS BS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (AT BT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
     (∀ s ∈ AS, ∃ (m : ℕ) (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin S.rank → D.host.E),

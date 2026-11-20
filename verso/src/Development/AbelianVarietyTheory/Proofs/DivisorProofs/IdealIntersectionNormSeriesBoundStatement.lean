@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RegroupDenom.tsum_regroup_by_denominator_le | exact GlobalTheory.RegroupDenom.tsum_regroup_by_denominator_le | (intros; apply GlobalTheory.RegroupDenom.tsum_regroup_by_denominator_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ideal_intersection_norm_series_bound : ∀ (K : Type) [Field K] [NumberField K] (I₀ I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K), I₀ ≠ 0 → I ≠ 0 →
     ∀ (t : ℝ) (g : K → ENNReal),
     ∑' c : {c : K // c ≠ 0}, ENNReal.ofReal ((FractionalIdeal.absNorm

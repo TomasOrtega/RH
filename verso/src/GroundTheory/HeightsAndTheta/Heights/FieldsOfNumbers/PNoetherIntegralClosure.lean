@@ -6,6 +6,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.FieldNumbers
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ K _ _ _ L _ _ _ _ _`. Use `finite_integralClosure_of_forall_mvPolynomial k A K L fun s L' _ _ _ _ _ => ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `CharP.exists k`. Break down `CharP.char_is_prime_or_zero k p with hp' | rfl` into its components or cases. Establish `: Fact p.Prime` using `⟨hp'⟩`.
+
+Conclude with `finite_integralClosure_mvPolynomial_of_charP k p s L'`. Establish `: CharZero k` using `CharP.charP_to_charZero k`. Conclude with `finite_integralClosure_mvPolynomial_of_charZero k s L'`.
+-/
 theorem NoetherIntegralClosureFinite.proof : NoetherIntegralClosureFinite.Statement := by
   intro k A _ _ _ _ _ K _ _ _ L _ _ _ _ _
   refine finite_integralClosure_of_forall_mvPolynomial k A K L fun s L' _ _ _ _ _ => ?_

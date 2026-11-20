@@ -8,6 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.XScov
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Take `⟨N, i, hi, hq, he⟩` from `Xo.qproj`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (KA l) N` as an intermediate fact. Use `haveI : QuasiCompact Xo.s := he ▸ inferInstance`. Use `haveI : LocallyOfFiniteType Xo.s := he ▸ inferInstance`.
+
+Use `haveI : QuasiCompact (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) := inferInstance`. Use `haveI : LocallyOfFiniteType (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) := inferInstance`. Use `haveI : IsLocallyNoetherian (Xo.XF c) := LocallyOfFiniteType.isLocallyNoetherian (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Use `haveI : CompactSpace (Xo.XF c) := QuasiCompact.compactSpace_of_compactSpace (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))`. Use `haveI : IsNoetherian (Xo.XF c) := {}`.
+
+Conclude with `genericPoints.finite finite_irreducibleComponents_of_isNoetherian`.
+-/
 theorem genericPoints_XF_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), (genericPoints (Xo.XF c)).Finite := by
   intro E _ _ _ H Dw l Xo c
   obtain ⟨N, i, hi, hq, he⟩ := Xo.qproj

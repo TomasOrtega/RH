@@ -46,6 +46,11 @@ structure NumTie (F : Face D A) (b : ℝ) : Prop where
 
 variable {R}
 
+/- English proof (translation)
+Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `PP hPP`. Use `(h.Q_ram A.μ0 PP).2 (Or.inl hPP) ?_` and prove the remaining obligations. Rewrite using `[h.xi_base]`. Introduce `x _`.
+
+Both sides reduce to the same expression.
+-/
 theorem Q_base (h : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   rw [Finset.eq_empty_iff_forall_notMem]
   intro PP hPP
@@ -54,6 +59,11 @@ theorem Q_base (h : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ := by
   intro x _
   rfl
 
+/- English proof (translation)
+Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.finS R A.μ0 = GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF R`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.finS GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.badF`. Rewrite using `[Q_base h]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart partH`. Rewrite using `[e]`.
+-/
 theorem typePart_base (h : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (c : GlobalTheory.IndefiniteRowSideFullHecke.PolarisedDualSystem.Sys D) :
     GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart R i σ A.μ0 R.triv c = partH R i σ c := by
   classical
@@ -65,6 +75,9 @@ theorem typePart_base (h : R.toLevCh.Is A.μ0) (i : Fin D.R.m) (σ : D.what₂.L
   unfold GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.typePart partH
   rw [e]
 
+/- English proof (translation)
+Unfold `projH RealDat.eWf gaL`. Rewrite using `[LinearMap.sum_apply, map_sum]`. Use extensionality with `v g`. Simplify using `only [LinearMap.smul_apply, map_smul, h i σ, postOn_apply, LinearMap.sum_apply, MultilinearMap.sum_apply, MultilinearMap.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem e_projH (h : R.models_gW) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (x : (R.HW i σ).H) :
     (R.HW i σ).e (projH R i σ x) = postOn _ (R.eWf i σ) ((R.HW i σ).e x) := by
   unfold projH RealDat.eWf gaL

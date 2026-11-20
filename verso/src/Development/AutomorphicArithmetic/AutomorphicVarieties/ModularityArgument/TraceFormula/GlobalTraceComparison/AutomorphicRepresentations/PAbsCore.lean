@@ -9,6 +9,11 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.AC
 section
 variable {Y : Type} [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Proceed by induction on `p using FreeAlgebra.induction with`. Consider the case `grade0 r => rw [AlgHom.commutes]`. Conclude with `Algebra.commutes r z`. Consider the case `grade1 x => simpa using h x`. Consider the case `mul a b ha hb => rw [map_mul]`.
+
+Conclude with `ha.mul_left hb`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add_left hb`.
+-/
 private lemma lift_comm1 {X : Type} (u : X → Module.End ℂ Y) (z : Module.End ℂ Y)
     (h : ∀ x, Commute (u x) z) (p : FreeAlgebra ℂ X) : Commute (FreeAlgebra.lift ℂ u p) z := by
   induction p using FreeAlgebra.induction with
@@ -17,11 +22,17 @@ private lemma lift_comm1 {X : Type} (u : X → Module.End ℂ Y) (z : Module.End
   | mul a b ha hb => rw [map_mul]; exact ha.mul_left hb
   | add a b ha hb => rw [map_add]; exact ha.add_left hb
 
+/- English proof (translation)
+The claim follows from `lift_comm1 u _ (fun x => (lift_comm1 v (u x) (fun y => (h x y).symm) q).symm) p`.
+-/
 private lemma lift_comm2 {X X' : Type} (u : X → Module.End ℂ Y) (v : X' → Module.End ℂ Y)
     (h : ∀ x y, Commute (u x) (v y)) (p : FreeAlgebra ℂ X) (q : FreeAlgebra ℂ X') :
     Commute (FreeAlgebra.lift ℂ u p) (FreeAlgebra.lift ℂ v q) :=
   lift_comm1 u _ (fun x => (lift_comm1 v (u x) (fun y => (h x y).symm) q).symm) p
 
+/- English proof (translation)
+Proceed by induction on `p using FreeAlgebra.induction with`. Consider the case `grade0 r => simpa using (Algebra.commutes r A).symm`. Consider the case `grade1 x => simpa using h x`. Consider the case `mul a b ha hb => rw [map_mul, map_mul, ← mul_assoc, ha, mul_assoc, hb, mul_assoc]`. Consider the case `add a b ha hb => rw [map_add, map_add, mul_add, add_mul, ha, hb]`.
+-/
 private lemma lift_conj {X : Type} (u v : X → Module.End ℂ Y) (A : Module.End ℂ Y)
     (h : ∀ x, A * u x = v x * A) (p : FreeAlgebra ℂ X) :
     A * FreeAlgebra.lift ℂ u p = FreeAlgebra.lift ℂ v p * A := by
@@ -31,6 +42,11 @@ private lemma lift_conj {X : Type} (u v : X → Module.End ℂ Y) (A : Module.En
   | mul a b ha hb => rw [map_mul, map_mul, ← mul_assoc, ha, mul_assoc, hb, mul_assoc]
   | add a b ha hb => rw [map_add, map_add, mul_add, add_mul, ha, hb]
 
+/- English proof (translation)
+Establish `hA' : x' * A = A * y`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : x * x' * (c * A) = (x * c * A) * y`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : y * (x * c * A) = (x * c * A) * x'`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, LinearMap.trace_mul_comm, e2, LinearMap.trace_mul_comm]`. Simplify using `only [mul_assoc]`.
+-/
 private lemma pullbackSymmetry_lift_map_comm (x x' y c A : Module.End ℂ Y) (hA : A * x' = y * A) (hAA : A * A = 1)
     (h1 : Commute x' c) (h2 : Commute y x) (h3 : Commute y c) :
     LinearMap.trace ℂ Y (x * x' * (c * A)) = LinearMap.trace ℂ Y (x' * x * (c * A)) := by
@@ -54,6 +70,9 @@ private lemma pullbackSymmetry_lift_map_comm (x x' y c A : Module.End ℂ Y) (hA
   rw [e1, LinearMap.trace_mul_comm, e2, LinearMap.trace_mul_comm]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[mul_assoc, ih, ← mul_assoc, h, mul_assoc]`.
+-/
 private lemma conj_list {I : Type} (u v : I → Module.End ℂ Y) (A : Module.End ℂ Y)
     (h : ∀ i, v i * A = A * u i) (l : List I) :
     (l.map v).prod * A = A * (l.map u).prod := by
@@ -64,6 +83,13 @@ private lemma conj_list {I : Type} (u v : I → Module.End ℂ Y) (A : Module.En
     rw [mul_assoc, ih, ← mul_assoc, h, mul_assoc]
 end
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Establish `hn` using `List.nodup_cons.1 hl`. Establish `hc : Commute (v i) (l.map u).prod` using `Commute.list_prod_right _ _ (by`.
+
+Introduce `x hx`. Take `⟨k, hk, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h i k (fun e => hn.1 (e ▸ hk)))`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[← ih hn.2]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma prod_mul_prod {I R : Type} [Monoid R] (u v : I → R) (l : List I) (hl : l.Nodup)
     (h : ∀ i k, i ≠ k → Commute (v i) (u k)) :
     (l.map u).prod * (l.map v).prod = (l.map fun i => u i * v i).prod := by
@@ -82,6 +108,13 @@ private lemma prod_mul_prod {I R : Type} [Monoid R] (u v : I → R) (l : List I)
       _ = u i * (v i * (l.map u).prod) * (l.map v).prod := by rw [hc.eq]
       _ = _ := by simp only [mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp at hi`. Consider the case `cons j l ih`. Establish `hn` using `List.nodup_cons.1 hl`. Simplify using `only [List.map_cons, List.prod_cons]`.
+
+Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Establish `: (l.map u).prod = 1` using `List.prod_eq_one (by`. Introduce `x hx`. Take `⟨k, hk, rfl⟩` from `List.mem_map.1 hx`.
+
+Conclude with `h k (fun e => hn.1 (e ▸ hk)))`. Rewrite using `[this, mul_one]`. Rewrite using `[h j e, one_mul]`. Conclude with `ih hn.2 ((List.mem_cons.1 hi).resolve_left (Ne.symm e))`.
+-/
 private lemma prod_single {I R : Type} [Monoid R] (u : I → R) (i : I) (l : List I) (hl : l.Nodup)
     (hi : i ∈ l) (h : ∀ k, k ≠ i → u k = 1) : (l.map u).prod = u i := by
   induction l with
@@ -102,6 +135,75 @@ private lemma prod_single {I R : Type} [Monoid R] (u : I → R) (i : I) (l : Lis
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.AC
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.AC in
+/- English proof (translation)
+Introduce `hT I _ J M _ _ _ Y _ _ _ _ α a b A hM hrel haa hab hAA hAb hY`. Establish `hA : ∀ i p, A * FreeAlgebra.lift ℂ (a i) p = FreeAlgebra.lift ℂ (b i) p * A` using `fun i p => lift_conj _ _ A (hAb i) p`. Establish `hAB : ∀ i k p q, Commute (FreeAlgebra.lift ℂ (a i) p) (FreeAlgebra.lift ℂ (b k) q)` using `fun i k p q => lift_comm2 _ _ (hab i k) p q`. Establish `hAC : ∀ i k, i ≠ k → ∀ p q, Commute (FreeAlgebra.lift ℂ (a i) p) (FreeAlgebra.lift ℂ (a k) q)` using `fun i k h p q => lift_comm2 _ _ (haa i k h) p q`. Establish `hnt : ∀ i, Nontrivial (M i)`.
+
+Introduce `i`. Assume the negation of the conclusion as `hn`. Establish `hs : Subsingleton (M i)` using `not_nontrivial_iff_subsingleton.1 hn`. Establish `h0 : FreeAlgebra.lift ℂ (α i) (1 : FreeAlgebra ℂ (J i)) = 0`. Use extensionality with `x`.
+
+Conclude with `Subsingleton.elim _ _`. Establish `h1` using `hrel i 1 h0`. Rewrite `h1` using `[map_one]`. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Conclude with `hy (by simpa using LinearMap.congr_fun h1 y)`.
+
+Establish `key : ∀ (x : ∀ i, FreeAlgebra ℂ (J i)) (l : List I), l.Nodup → (l.map fun i => (Module.finrank ℂ (M i) : ℂ)).prod * LinearMap.trace ℂ Y ((l.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod * A) = (l.map fun i => LinearMap.trace ℂ (M i) (FreeAlgebra.lift ℂ (α i) (x i))).prod * Li …`. Introduce `x l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules.
+
+Consider the case `cons i l ih`. Introduce `hl`. Establish `hn` using `List.nodup_cons.1 hl`. Establish `ihl` using `ih hn.2`. Establish `c1 : ∀ p, Commute (FreeAlgebra.lift ℂ (a i) p) (l.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod` using `fun p => Commute.list_prod_right _ _ (by`.
+
+Introduce `z hz`. Take `⟨k, hk, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hAC i k (fun e => hn.1 (e ▸ hk)) p _)`. Establish `c2 : ∀ p, Commute (FreeAlgebra.lift ℂ (b i) p) (l.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod` using `fun p => Commute.list_prod_right _ _ (by`. Introduce `z hz`.
+
+Take `⟨k, hk, rfl⟩` from `List.mem_map.1 hz`. Conclude with `(hAB k i _ p).symm)`. Use `haveI := hnt i`. Establish `t` using `hT (J i) (M i) Y (α i) (a i) ((l.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod * A) (hM i) (hrel i) (fun p p' => pullbackSymmetry_lift_map_comm _ _ (FreeAlgebra.lift ℂ (b i) p') _ A (hA i p') hAA (c1 p') (hAB i i p p').symm (c2 p')) (x i)`. Simplify using `only [List.map_cons, List.prod_cons]`.
+
+Rewrite using `[mul_assoc (FreeAlgebra.lift ℂ (a i) (x i))]`. Generalize the expression as in `(l.map fun i => (Module.finrank ℂ (M i) : ℂ)).prod = D at *`. Generalize the expression as in `(l.map fun i => LinearMap.trace ℂ (M i) (FreeAlgebra.lift ℂ (α i) (x i))).prod = T at *`. Combine the equalities or inequalities in the displayed calculation. Establish `hDne : (∏ i, (Module.finrank ℂ (M i) : ℂ)) ≠ 0`.
+
+Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Use `haveI := hnt i`. Conclude with `(Module.finrank_pos (R := ℂ) (M := M i)).ne'` after adjusting the coercions. Establish `key' : ∀ x : ∀ i, FreeAlgebra ℂ (J i), (∏ i, (Module.finrank ℂ (M i) : ℂ)) * LinearMap.trace ℂ Y (((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod * A) = (∏ i, LinearMap.trace ℂ (M i) (FreeAlgebra.lift ℂ (α i) (x i))) * LinearMap.trace ℂ Y A`. Introduce `x`.
+
+Use `key x (Finset.univ : Finset I).toList (Finset.nodup_toList _)` as an intermediate fact. Simplify `this` using `only [Finset.prod_map_toList]`. Establish `hPm : ∀ x y : ∀ i, FreeAlgebra ℂ (J i), ((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod * ((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) (y i)).prod = ((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) …`. Introduce `x y`. Rewrite using `[prod_mul_prod _ _ _ (Finset.nodup_toList _) (fun i k h => hAC i k h _ _)]`.
+
+Simplify using `only [Pi.mul_apply, map_mul]`. Establish `hP1 : ((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) ((1 : ∀ i, FreeAlgebra ℂ (J i)) i)).prod = 1` using `List.prod_eq_one (by`. Introduce `z hz`. Take `⟨k, _, rfl⟩` from `List.mem_map.1 hz`. Use the proof step `simp)`.
+
+Establish `hPs : ∀ i f, ((Finset.univ : Finset I).toList.map fun k => FreeAlgebra.lift ℂ (a k) ((Pi.mulSingle i (FreeAlgebra.ι ℂ f) : ∀ i, FreeAlgebra ℂ (J i)) k)).prod = a i f`. Introduce `i f`. Rewrite using `[prod_single _ i _ (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ i)) (fun k hk => by simp [Pi.mulSingle_eq_of_ne hk])]`. Simplify using the standard rewrite rules. Establish `hbl : ∀ i f, a i f = FreeAlgebra.lift ℂ (a i) (FreeAlgebra.ι ℂ f)` using `fun i f => by simp`.
+
+Establish `hbl' : ∀ i f, b i f = FreeAlgebra.lift ℂ (b i) (FreeAlgebra.ι ℂ f)` using `fun i f => by simp`. Set `P : (∀ i, FreeAlgebra ℂ (J i)) → Module.End ℂ Y` to `fun x => ((Finset.univ : Finset I).toList.map fun i => FreeAlgebra.lift ℂ (a i) (x i)).prod`. Establish `hbP : ∀ i f x, Commute (b i f) (P x)` using `fun i f x => Commute.list_prod_right _ _ (by`. Introduce `z hz`. Take `⟨k, _, rfl⟩` from `List.mem_map.1 hz`.
+
+Rewrite using `[hbl' i f]`. Conclude with `(hAB k i _ _).symm)`. Set `Lin : Submodule ℂ (Module.End ℂ Y)` to `Submodule.span ℂ (Set.range fun xy : (∀ i, FreeAlgebra ℂ (J i)) × (∀ i, FreeAlgebra ℂ (J i)) => P xy.1 * (A * P xy.2 * A))`. Set `Sg : Set (Module.End ℂ Y)` to `{z | ∃ i f, z = a i f ∨ z = b i f}`. Establish `hgen : ∀ g ∈ Sg, ∀ w ∈ Lin, g * w ∈ Lin`.
+
+Introduce `g hg w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨⟨x, y⟩, rfl⟩` from `hw`. Take `⟨i, f, rfl | rfl⟩` from `hg`.
+
+Use `Submodule.subset_span ⟨(Pi.mulSingle i (FreeAlgebra.ι ℂ f) * x, y), ?_⟩ show P _ * (A * P y * A) = a i f * (P x * (A * P y * A))` and prove the remaining obligations. Establish `: P (Pi.mulSingle i (FreeAlgebra.ι ℂ f) * x) = a i f * P x`. Rewrite using `[← hPs i f]`. Conclude with `(hPm _ _).symm`. Rewrite using `[this, mul_assoc]`.
+
+Use `Submodule.subset_span ⟨(x, Pi.mulSingle i (FreeAlgebra.ι ℂ f) * y), ?_⟩ show P x * (A * P _ * A) = b i f * (P x * (A * P y * A))` and prove the remaining obligations. Establish `: P (Pi.mulSingle i (FreeAlgebra.ι ℂ f) * y) = a i f * P y`. Rewrite using `[← hPs i f]`. Conclude with `(hPm _ _).symm`. Rewrite using `[this, ← mul_assoc (b i f), (hbP i f x).eq, mul_assoc (P x)]`.
+
+Use `congr 1`. Rewrite using `[← mul_assoc (b i f), ← mul_assoc (b i f), ← hAb i f]`. Simplify using `only [mul_assoc]`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [mul_add]`.
+
+Conclude with `add_mem hu hv`. Consider the case `smul r u _ hu => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hu`. Establish `hsurj` using `DiscreteGroups.T1.Desc.Swap3.burnside (Algebra.adjoin ℂ Sg).val (by`. Introduce `W hW`.
+
+Use `hY W fun i f x hx => ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hW ⟨a i f, Algebra.subset_adjoin ⟨i, f, Or.inl rfl⟩⟩ x hx`. Conclude with `hW ⟨b i f, Algebra.subset_adjoin ⟨i, f, Or.inr rfl⟩⟩ x hx)`. Establish `hall : ∀ z ∈ Algebra.adjoin ℂ Sg, ∀ w ∈ Lin, z * w ∈ Lin`. Introduce `z hz`.
+
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem g hg => exact hgen g hg`. Consider the case `algebraMap r`. Introduce `w hw`. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ hw`. Consider the case `add u v _ _ hu hv`. Introduce `w hw`. Rewrite using `[add_mul]`. Conclude with `add_mem (hu w hw) (hv w hw)`.
+
+Consider the case `mul u v _ _ hu hv`. Introduce `w hw`. Rewrite using `[mul_assoc]`. Conclude with `hu _ (hv w hw)`. Establish `h1 : (1 : Module.End ℂ Y) ∈ Lin` using `Submodule.subset_span ⟨(1, 1), by show P 1 * (A * P 1 * A) = 1`.
+
+Establish `: P 1 = 1` using `hP1`. Rewrite using `[this, one_mul, mul_one, hAA]⟩`. Establish `hLin : ∀ z, z ∈ Lin` using `fun z => by`. Take `⟨⟨z', hz'⟩, rfl⟩` from `hsurj z`. Simplify using `using hall z' hz' 1 h1`.
+
+Establish `htr : LinearMap.trace ℂ Y A ≠ 0`. Introduce `h0`. Establish `hz : ∀ z ∈ Lin, LinearMap.trace ℂ Y (z * A) = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem w hw`. Take `⟨⟨x, y⟩, rfl⟩` from `hw`. Use `show LinearMap.trace ℂ Y (P x * (A * P y * A) * A) = 0`. Establish `e : P x * (A * P y * A) * A = (P x * A) * P y`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e, LinearMap.trace_mul_comm, ← mul_assoc]`. Establish `e2 : P y * P x = P (y * x)` using `hPm y x`. Rewrite using `[e2]`. Use `key' (y * x)` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left hDne`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [add_mul, map_add, hu, hv, add_zero]`. Consider the case `smul r u _ hu => rw [smul_mul_assoc, map_smul, hu, smul_zero]`. Use `hz A (hLin A)` as an intermediate fact.
+
+Rewrite `this` using `[hAA, LinearMap.trace_one]`. Conclude with `(Nat.cast_ne_zero.2 (Module.finrank_pos (R := ℂ) (M := Y)).ne') this`. Use `⟨LinearMap.trace ℂ Y A / ∏ i, (Module.finrank ℂ (M i) : ℂ), div_ne_zero htr hDne, fun f g => ?_⟩` and prove the remaining obligations. Set `fi : ∀ i, FreeAlgebra ℂ (J i)` to `fun i => FreeAlgebra.ι ℂ (f i)`. Set `gi : ∀ i, FreeAlgebra ℂ (J i)` to `fun i => FreeAlgebra.ι ℂ (g i)`.
+
+Establish `e1 : ((Finset.univ : Finset I).toList.map fun i => a i (f i) * b i (g i)).prod = P fi * ((Finset.univ : Finset I).toList.map fun i => b i (g i)).prod`. Rewrite using `[← show ((Finset.univ : Finset I).toList.map fun i => a i (f i)).prod = P fi by`. Simplify using `only [P, fi, FreeAlgebra.lift_ι_apply]]`. Conclude with `(prod_mul_prod _ _ _ (Finset.nodup_toList _) (fun i k _ => (hab k i _ _).symm)).symm`. Establish `e2 : ((Finset.univ : Finset I).toList.map fun i => b i (g i)).prod * A = A * P gi`.
+
+Establish `: P gi = ((Finset.univ : Finset I).toList.map fun i => a i (g i)).prod`. Simplify using `only [P, gi, FreeAlgebra.lift_ι_apply]`. Rewrite using `[this]`. Conclude with `conj_list _ _ A (fun i => (hAb i (g i)).symm) _`. Establish `e3 : LinearMap.trace ℂ Y (((Finset.univ : Finset I).toList.map fun i => a i (f i) * b i (g i)).prod * A) = LinearMap.trace ℂ Y (P (gi * fi) * A)`.
+
+Rewrite using `[e1, mul_assoc, e2, ← mul_assoc, LinearMap.trace_mul_comm, ← mul_assoc]`. Establish `: P gi * P fi = P (gi * fi)` using `hPm gi fi`. Rewrite using `[this]`. Establish `e4` using `key' (gi * fi)`. Establish `e5 : ∀ i, LinearMap.trace ℂ (M i) (FreeAlgebra.lift ℂ (α i) ((gi * fi) i)) = LinearMap.trace ℂ (M i) (α i (f i) * α i (g i))`.
+
+Introduce `i`. Simplify using `only [gi, fi, Pi.mul_apply, map_mul, FreeAlgebra.lift_ι_apply]`. Conclude with `LinearMap.trace_mul_comm _ _ _`. Simplify using `only [e5] at e4`. Rewrite using `[e3]`.
+
+Express the relevant statement in the definitionally equal form `_ * LinearMap.trace ℂ Y (P (gi * fi) * A) = _ at e4`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm, e4, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.absCore_pf :
     TraceForm → AbsCore := by
   intro hT I _ J M _ _ _ Y _ _ _ _ α a b A hM hrel haa hab hAA hAb hY

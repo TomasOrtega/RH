@@ -19,6 +19,9 @@ section hs
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply, PiLp.toLp_apply]; done)`. Consider the case `(unfold Formalism.FourierDecayAlt.B.hsInner Formalism.FourierDecayAlt.B.hsVec; rw [PiLp.inner_apply]; rfl)`. Consider the case `(simp [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]; done)`.
+-/
 theorem hsInner_eq [FiniteDimensional ℂ Wq] (X Y : Wq →L[ℂ] Wp) :
     Formalism.FourierDecayAlt.B.hsInner X Y = ∑ i, inner ℂ (Y (stdOrthonormalBasis ℂ Wq i)) (X (stdOrthonormalBasis ℂ Wq i)) := by
   first
@@ -26,6 +29,9 @@ theorem hsInner_eq [FiniteDimensional ℂ Wq] (X Y : Wq →L[ℂ] Wp) :
     | (unfold Formalism.FourierDecayAlt.B.hsInner Formalism.FourierDecayAlt.B.hsVec; rw [PiLp.inner_apply]; rfl)
     | (simp [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]; done)
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [hsInner_eq, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)`. Consider the case `(simp only [hsInner_eq, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)`. Consider the case `(simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)`. Consider the case `(simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum, Finset.sum_comm]; done)`.
+-/
 theorem hsInner_sum_smul_left [FiniteDimensional ℂ Wq] {ι : Type} (s : Finset ι) (a : ι → ℂ)
     (X : ι → Wq →L[ℂ] Wp) (Y : Wq →L[ℂ] Wp) :
     Formalism.FourierDecayAlt.B.hsInner (∑ j ∈ s, a j • X j) Y = ∑ j ∈ s, a j * Formalism.FourierDecayAlt.B.hsInner (X j) Y := by
@@ -35,6 +41,9 @@ theorem hsInner_sum_smul_left [FiniteDimensional ℂ Wq] {ι : Type} (s : Finset
     | (simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)
     | (simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum, Finset.sum_comm]; done)
 
+/- English proof (translation)
+Rewrite using `[hsInner_eq, hsInner_eq]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hsa, ← ContinuousLinearMap.comp_apply E E, hidem]`.
+-/
 theorem hsInner_proj (E : Wp →L[ℂ] Wp) (hidem : E.comp E = E) (hsa : ∀ v v' : Wp, inner ℂ (E v) v' = inner ℂ v (E v'))
     [FiniteDimensional ℂ Wq] (X Y : Wq →L[ℂ] Wp) :
     Formalism.FourierDecayAlt.B.hsInner (E.comp X) (E.comp Y) = Formalism.FourierDecayAlt.B.hsInner (E.comp X) Y := by
@@ -45,6 +54,11 @@ theorem hsInner_proj (E : Wp →L[ℂ] Wp) (hidem : E.comp E = E) (hsa : ∀ v v
 
 end hs
 
+/- English proof (translation)
+Establish `hs : D.positionted ([] : List C.Letter) = []` using `by first`. Consider the case `rfl`. Consider the case `(unfold D.positionted; simp)`. Unfold `Top.dH Top.cW`. Rewrite using `[hs]`.
+
+Use `first`. Consider the case `(simp only [Fr.cs, List.length_nil, pow_zero, Complex.one_re, one_mul, Real.sqrt_one]; done)`. Consider the case `(simp [Fr.cs]; done)`.
+-/
 theorem dH_nil (P : M.Par) (l0 : ℕ) (TT : ℝ) (p : C.LPt) (e : Wd.Ix (Fin ([] : List C.Letter).length))
     (ρ : M.Ty P) : Top.dH P l0 TT [] p e ρ = 1 := by
   have hs : D.positionted ([] : List C.Letter) = [] := by
@@ -57,6 +71,9 @@ theorem dH_nil (P : M.Par) (l0 : ℕ) (TT : ℝ) (p : C.LPt) (e : Wd.Ix (Fin ([]
     | (simp only [Fr.cs, List.length_nil, pow_zero, Complex.one_re, one_mul, Real.sqrt_one]; done)
     | (simp [Fr.cs]; done)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsInner_sum_smul_left]`. Simplify using the standard rewrite rules. Use `_ = B.hsInner X Y := by simp only [one_smul, hX]`.
+-/
 theorem hsInner_types {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : B.Mat P.k P.r → (Wp →L[ℂ] Wp)} {z e : Fin (2 * P.r + P.k + 1) → ℂ} (TP : Top.TypeProj P π z e)
@@ -70,6 +87,11 @@ theorem hsInner_types {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerP
         simp
     _ = B.hsInner X Y := by simp only [one_smul, hX]
 
+/- English proof (translation)
+Introduce `hVT Wp Wq _ _ _ _ _ _ P l0 T ν' m₀ Θ TP F p q hpl hbf hp hq _ _`. Unfold `Top.topOf`. Simplify using `only [dH_nil, mul_one, Complex.ofReal_one, one_mul, Θ.nil]`. Establish `hU : Unique (Wd.Ix (Fin ([] : List C.Letter).length))` using `⟨⟨fun i => Fin.elim0 i⟩, fun f => funext fun i => Fin.elim0 i⟩`. Rewrite using `[Fintype.sum_unique]`.
+
+Conclude with `hsInner_types TP _ _ (hVT Wp Wq P T.base ν' m₀ TP F p hpl hbf hp)`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.top_of_empty : Top.TopOfEmpty := by
   intro hVT Wp Wq _ _ _ _ _ _ P l0 T ν' m₀ Θ TP F p q hpl hbf hp hq _ _
   unfold Top.topOf
@@ -78,6 +100,13 @@ theorem _root_.Formalism.FourierDecayAlt.P.top_of_empty : Top.TopOfEmpty := by
   rw [Fintype.sum_unique]
   exact hsInner_types TP _ _ (hVT Wp Wq P T.base ν' m₀ TP F p hpl hbf hp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [P5.act, Matrix.mul_apply, map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `key : ∀ s : Finset (Wd.Ix S), (∑ j ∈ s, M a j * N j b).1 (x b) = ∑ j ∈ s, (M a j).1 ((N j b).1 (x b))`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, ← ih]`.
+
+Both sides reduce to the same expression. Conclude with `key Finset.univ`.
+-/
 theorem act_mul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
@@ -95,6 +124,13 @@ theorem act_mul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} 
     | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, ← ih]; rfl
   exact key Finset.univ
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P l0 T ν' m₀ Θ TP X μ L st hD hTL w A ε F hA hcl Φ hΦ p c g e' TP' τ hp hcg hτ hint hV hex hd`. Unfold `Top.topOf P5.topDens`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Use `set x := P5.act (P5.bTall L (D.positionted w)) (Top.firstStateVector Φ) with hx`. Use `set y := P5.act (Fr.ofWord L st (D.positionted w)).F x with hy`.
+
+Establish `hVe : D.vecV T.base ν' m₀ (Θ.Θ w e F) p = τ ((y e : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g)`. Rewrite using `[hV e, act_mul]`. Rewrite using `[hVe, act_mul, hd y e, hsInner_sum_smul_left]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[hint, hτ, hsInner_proj (TP'.E ρ) (TP'.idem ρ) (TP'.selfAdj ρ)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.top_of_radial : Top.TopOfRadial := by
   intro Wp Wq _ _ _ _ _ _ P l0 T ν' m₀ Θ TP X μ L st hD hTL w A ε F hA hcl Φ hΦ p c g e' TP' τ hp hcg hτ hint
     hV hex hd
@@ -110,6 +146,11 @@ theorem _root_.Formalism.FourierDecayAlt.P.top_of_radial : Top.TopOfRadial := by
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `Top.IsBuiltPlaceT JCT.IsBuiltPlace at h ⊢`. Take `⟨⟨g1, g2, hU, hB, hl1, hl2, hG, hL, hCA, hCk, hk2, hA, hOn⟩, hT⟩` from `h`. Use `⟨⟨g1, g2, hU, hB, hl1, hl2, hG, ?_, le_trans hc hCA, hCk, hk2, ?_, hOn⟩, hT⟩` and prove the remaining obligations. Introduce `v`. Establish `h1` using `hL v`.
+
+Establish `hY : (0 : ℝ) ≤ (S.G.k : ℝ) * S.Ntop * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 2 * ((S.G.r : ℝ) + 1) ^ 2 + (S.Ntop : ℝ) ^ 3` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc hY]`. Establish `hY : (0 : ℝ) ≤ ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc hY]`.
+-/
 theorem isBuiltPlaceT_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
     [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
@@ -132,6 +173,11 @@ theorem isBuiltPlaceT_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {W
         ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3) := by positivity
     nlinarith [mul_le_mul_of_nonneg_right hc hY]
 
+/- English proof (translation)
+Introduce `hW hL hS hP hI`. Take `⟨c1, hW⟩` from `hW`. Take `⟨c2, hL⟩` from `hL`. Take `⟨c3, C₄, hC₄, hS⟩` from `hS`. Use `⟨max c1 (max c2 c3), C₄, hC₄, ?_⟩` and prove the remaining obligations.
+
+Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ Θ TP A₀ hBP`. Use `⟨hW E Wp Wq S T f χ ν' m₀ Θ TP A₀ (isBuiltPlaceT_mono (by simp) hBP), hL E Wp Wq S T f χ ν' m₀ Θ TP A₀ (isBuiltPlaceT_mono (by simp) hBP), hS E Wp Wq S T f χ ν' m₀ Θ TP A₀ (isBuiltPlaceT_mono (by simp) hBP), fun v => ?_, hI E Wp Wq S T f χ ν' m₀ Θ TP A₀ hBP.1.1 hBP.1.2.1 hBP.1.2. …` and prove the remaining obligations. Conclude with `hP (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (S.l + 1) (T v) (ν' v) (m₀ v) (Θ v) (TP v) (f v) χ (D.AdmAt S v)`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.typed_inputs_of_inputs : Top.InputsTOfInputs := by
   intro hW hL hS hP hI
   obtain ⟨c1, hW⟩ := hW
@@ -145,6 +191,23 @@ theorem _root_.Formalism.FourierDecayAlt.P.typed_inputs_of_inputs : Top.InputsTO
     hI E Wp Wq S T f χ ν' m₀ Θ TP A₀ hBP.1.1 hBP.1.2.1 hBP.1.2.2.1 hBP.2⟩
   exact hP (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (S.l + 1) (T v) (ν' v) (m₀ v) (Θ v) (TP v) (f v) χ (D.AdmAt S v)
 
+/- English proof (translation)
+Introduce `hPA hRMF hPD hFS hMA hIB hMu hLEM hLA hSL hWv hLB hLT hSF hMP hTP`. Take `⟨C₆, hC₆, hLE⟩` from `lemma_E_of_model lemma_E_of_residue level_zero_holds good_of_admissible hLEM`. Take `⟨c1, hLA⟩` from `hLA`. Take `⟨c2, hSL⟩` from `hSL`. Take `⟨c3, hWv⟩` from `hWv`.
+
+Take `⟨c4, hLB⟩` from `hLB`. Take `⟨c5, hLT⟩` from `hLT`. Take `⟨c6, C₄, hC₄, hSF⟩` from `hSF`. Take `⟨c7, hMP⟩` from `hMP`. Use `⟨C₆, max c1 (max c2 (max c3 (max c4 (max c5 (max c6 c7))))), C₄, hC₆, hC₄, ?_⟩` and prove the remaining obligations.
+
+Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ Θ TP A₀ c H _ _ Vt hBPT hSB hc hcut hVt`. Use `set top := Top.topsOf S T ν' m₀ Θ TP with htopdef`. Establish `hBP : JCT.IsBuiltPlace (max c1 (max c2 (max c3 (max c4 (max c5 (max c6 c7)))))) S T f χ ν' m₀ top A₀` using `hBPT.1`. Establish `m1` using `jct_isBuiltPlace_mono (by simp) hBP (c := c1)`. Establish `m2` using `jct_isBuiltPlace_mono (by simp) hBP (c := c2)`.
+
+Establish `m3` using `isBuiltPlaceT_mono (by simp) hBPT (c := c3)`. Establish `m4` using `jct_isBuiltPlace_mono (by simp) hBP (c := c4)`. Establish `m5` using `isBuiltPlaceT_mono (by simp) hBPT (c := c5)`. Establish `m6` using `isBuiltPlaceT_mono (by simp) hBPT (c := c6)`. Establish `m7` using `jct_isBuiltPlace_mono (by simp) hBP (c := c7)`.
+
+Establish `htop : ∀ v, D.TopPSD (T v) (f v) χ (D.AdmAt S v) (top v)` using `fun v => hTP (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (S.l + 1) (T v) (ν' v) (m₀ v) (Θ v) (TP v) (f v) χ (D.AdmAt S v)`. Take `⟨hg1, hg2, hU, hB, hl1, hl2, hGr, -, -, hsm, -, -⟩` from `hBP`. Use `choose L j lam Cm σ hmod using hMP E Wp Wq S T f χ ν' m₀ top A₀ m7 c hc`. Take `⟨Lw, hW, hTW⟩` from `hWv E Wp Wq S T f χ ν' m₀ Θ TP A₀ m3`. Take `⟨Ll, hLB1, hTL1⟩` from `hLB E Wp Wq S T f χ ν' m₀ top A₀ m4`.
+
+Take `⟨Ll', hLT1, hTL2⟩` from `hLT E Wp Wq S T f χ ν' m₀ Θ TP A₀ m5`. Establish `hTL : JC.ThresholdsLift S Ll Ll'`. Unfold `JC.ThresholdsLift`. Conclude with `⟨hTL1, hTL2⟩`. Establish `hIn : JCT.BuiltInputs C₄ C₆ S T f χ ν' m₀ top L j lam c Cm σ Lw Ll Ll' Vt`.
+
+Unfold `JCT.BuiltInputs`. Conclude with `⟨hl1, hl2, hLA E Wp Wq S T f χ ν' m₀ top A₀ m1, hSL E Wp Wq S T f χ ν' m₀ top A₀ m2 hSB, htop, hGr, hW, hTW, hLB1, hLT1, hTL, hSF E Wp Wq S T f χ ν' m₀ Θ TP A₀ m6, hsm, hcut, hmod, hVt⟩`. Use `⟨L, j, lam, Cm, σ, hmod, ?_⟩` and prove the remaining obligations. Introduce `Kr hK0 Th e`. Take `⟨hPos, hGr', hInt, hP1, hP23, hT, hPG⟩` from `jct_parts_loc hPA hRMF hPD hFS hMA hMu C₄ C₆ E Wp Wq S T f χ ν' m₀ top A₀ L j lam c Cm σ Lw Ll Ll' H Vt hg1 hg2 hU hB (hIB E Wp Wq S T f χ ν' m₀ Θ TP A₀ hg1 hg2 hU hBPT.2) hIn`.
+
+Establish `hE : C.LemmaE S (JCT.jvModel S j Cm)` using `hLE E Wp Wq S T f χ ν' m₀ top A₀ L j lam c Cm σ hB (fun v ε hε => cutoff_smooth _ _ _ _ (T v).base χ (f v) ε hB.1 (hsm v) hε) hcut hmod`. Conclude with `real_inputs_concrete_holds E Wp Wq S (JCT.jvModel S j Cm) H Vt C₄ hg1 hg2 hPos hGr' hInt hP1 hP23 hT hE hPG Kr hK0 Th e`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.real_inputs_closed_typed : Top.RealInputsBuiltClosedT := by
   intro hPA hRMF hPD hFS hMA hIB hMu hLEM hLA hSL hWv hLB hLT hSF hMP hTP
   obtain ⟨C₆, hC₆, hLE⟩ := lemma_E_of_model lemma_E_of_residue level_zero_holds good_of_admissible hLEM
@@ -211,6 +274,9 @@ section adj
 variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
   {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (⟨(π h).toLinearMap, hu h hh⟩ : W →ₗᵢ[ℂ] W).inner_map_map v v'`. Consider the case `(have key := (⟨(π h).toLinearMap, hu h hh⟩ : W →ₗᵢ[ℂ] W).inner_map_map v v'; simpa using key)`. Consider the case `(rw [inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]; simp only [← map_add, ← map_sub, ← map_smul, hu h hh]; done)`.
+-/
 theorem typ_inner_pres (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {h : Mx k r} (hh : h ∈ UWset k r z)
     (v v' : W) : inner ℂ (π h v) (π h v') = inner ℂ v v' := by
   first
@@ -218,6 +284,13 @@ theorem typ_inner_pres (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v�
     | (have key := (⟨(π h).toLinearMap, hu h hh⟩ : W →ₗᵢ[ℂ] W).inner_map_map v v'; simpa using key)
     | (rw [inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]; simp only [← map_add, ← map_sub, ← map_smul, hu h hh]; done)
 
+/- English proof (translation)
+Establish `hd` using `QrD.dOp_hasDeriv hπ hc hX`. Establish `hv : HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) v) (QrD.dOp π X v) 0` using `((ContinuousLinearMap.apply ℂ W v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `hv' : HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) v') (QrD.dOp π X v') 0` using `((ContinuousLinearMap.apply ℂ W v').restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `hi` using `hv.inner ℂ hv'`. Establish `hconst : HasDerivAt (fun t : ℝ => inner ℂ (π (NormedSpace.exp ((t : ℂ) • X)) v) (π (NormedSpace.exp ((t : ℂ) • X)) v')) 0 0`.
+
+Establish `: (fun t : ℝ => inner ℂ (π (NormedSpace.exp ((t : ℂ) • X)) v) (π (NormedSpace.exp ((t : ℂ) • X)) v')) = fun _ => inner ℂ v v'`. Use function extensionality and compare the values at `t`. Conclude with `typ_inner_pres hu (QrD.exp_uw hX t) v v'`. Rewrite using `[this]`. Conclude with `hasDerivAt_const _ _`.
+
+Establish `h0` using `hi.unique hconst`. Establish `he : π (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) = 1`. Simplify using `[NormedSpace.exp_zero, hπ.1]`. Simplify using `only [he, ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`.
+-/
 theorem typ_dOp_skew (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {X : Mx k r} (hX : QrD.InLieW k r z X) (v v' : W) :
     inner ℂ (QrD.dOp π X v) v' = - inner ℂ v (QrD.dOp π X v') := by
@@ -241,6 +314,15 @@ theorem typ_dOp_skew (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UW
   simp only [he, ContinuousLinearMap.one_apply] at h0
   linear_combination h0
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `QrD.frame_lie hB a b`. Establish `e1 : hpart1 (Hpk k r) (unitB (Hpk k r) Bs b a) = ((-1 : ℝ) : ℂ) • hpart1 (Hpk k r) (unitB (Hpk k r) Bs a b)`. Rewrite using `[Qx8.hpart1_unitB, Qx8.hpart1_unitB, smul_smul, ← neg_sub, smul_neg, ← neg_smul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : hpart2 (Hpk k r) (unitB (Hpk k r) Bs b a) = hpart2 (Hpk k r) (unitB (Hpk k r) Bs a b)`. Rewrite using `[Qx8.hpart2_unitB, Qx8.hpart2_unitB]`. Use `congr 1`. Conclude with `add_comm _ _`.
+
+Establish `hlin` using `(differential_operator_linear W k r z π ⟨hπ, hc⟩ _ _ h1 h1).2 (-1)`. Use `show inner ℂ (QrD.ecOp π (unitB (Hpk k r) Bs a b) v) v' = inner ℂ v (QrD.ecOp π (unitB (Hpk k r) Bs b a) v')`. Unfold `QrD.ecOp`. Rewrite using `[e1, e2, hlin]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, Complex.conj_I]`.
+
+Rewrite using `[typ_dOp_skew hπ hc hu h1, typ_dOp_skew hπ hc hu h2]`. Simplify using `only [neg_smul, one_smul, ContinuousLinearMap.neg_apply, inner_neg_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem typ_EB_adj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {m : ℕ} {Bs : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hB : IsFrameOf k r [z] Bs) (a b : Fin m) (v v' : W) :
@@ -272,12 +354,22 @@ section proj
 
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem (fun w hw => by rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)`. Consider the case `(apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)`. Consider the case `(apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; simpa using (Submodule.mem_orthogonal' K u).mp hu w hw)`.
+-/
 theorem typ_proj_orth (K : Submodule ℂ W) {u : W} (hu : u ∈ Kᗮ) : K.starProjection u = 0 := by
   first
     | exact Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem (fun w hw => by rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)
     | (apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)
     | (apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; simpa using (Submodule.mem_orthogonal' K u).mp hu w hw)
 
+/- English proof (translation)
+Establish `hP : K.starProjection x ∈ K` using `by first`. Consider the case `exact K.starProjection_apply_mem x`. Consider the case `exact (K.orthogonalProjection x).2`. Establish `hQ : x - K.starProjection x ∈ Kᗮ` using `by first`. Consider the case `exact K.sub_starProjection_mem_orthogonal x`.
+
+Consider the case `exact Submodule.sub_starProjection_mem_orthogonal x`. Consider the case `exact Submodule.sub_orthogonalProjection_mem_orthogonal x`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hst a b _ hP)` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[show E a b x - E a b (K.starProjection x) = E a b (x - K.starProjection x) from (map_sub _ _ _).symm, hadj]`.
+
+Conclude with `Submodule.inner_left_of_mem_orthogonal (hst b a w hw) hQ`.
+-/
 theorem typ_proj_comm {n : ℕ} (E : Fin n → Fin n → Module.End ℂ W) (K : Submodule ℂ W)
     (hst : ∀ a b, ∀ v ∈ K, E a b v ∈ K) (hadj : ∀ a b (v v' : W), inner ℂ (E a b v) v' = inner ℂ v (E b a v'))
     (a b : Fin n) (x : W) : K.starProjection (E a b x) = E a b (K.starProjection x) := by
@@ -295,6 +387,15 @@ theorem typ_proj_comm {n : ℕ} (E : Fin n → Fin n → Module.End ℂ W) (K : 
   rw [show E a b x - E a b (K.starProjection x) = E a b (x - K.starProjection x) from (map_sub _ _ _).symm, hadj]
   exact Submodule.inner_left_of_mem_orthogonal (hst b a w hw) hQ
 
+/- English proof (translation)
+Use `set K := Qr.CapSp E m' with hK`. Establish `hst` using `(capelli_stabilizer W n E m' hE).1`. Establish `hcomm : ∀ a b, (K.starProjection : W →L[ℂ] W).toLinearMap * E a b = E a b * (K.starProjection).toLinearMap`. Introduce `a b`. Use extensionality with `x`.
+
+Conclude with `typ_proj_comm E K hst hadj a b x`. Establish `h1 : K.starProjection v ∈ Qr.CapSp E m` using `(capelli_stabilizer W n E m hE).2 _ hcomm v hv`. Establish `h2 : K.starProjection v ∈ K` using `K.starProjection_apply_mem v`. Take `⟨w, hw⟩` from `hne`. Establish `e1` using `(Qr.mem_CapSp.1 h1) w`.
+
+Establish `e2` using `(Qr.mem_CapSp.1 h2) w`. Establish `h0 : (Qr.cpol m w - Qr.cpol m' w) • K.starProjection v = 0`. Rewrite using `[sub_smul, ← e1, ← e2, sub_self]`. Establish `hz : K.starProjection v = 0` using `(smul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hw)`. Use `Submodule.sub_starProjection_mem_orthogonal (K := K) v` as an intermediate fact.
+
+Rewrite `this` using `[hz, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem typ_capSp_orth {n : ℕ} (E : Fin n → Fin n → Module.End ℂ W) (hE : GlRel E)
     (hadj : ∀ a b (v v' : W), inner ℂ (E a b v) v' = inner ℂ v (E b a v')) (m m' : Fin n → ℂ)
     (hne : ∃ w, Qr.cpol m w ≠ Qr.cpol m' w) {v : W} (hv : v ∈ Qr.CapSp E m) : v ∈ (Qr.CapSp E m')ᗮ := by
@@ -319,12 +420,18 @@ end proj
 
 section frames
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Conclude with `exists_frame_two n r z e hz hT he hez hee`.
+-/
 theorem typ_frame_exists (k r : ℕ) (hk : 1 ≤ k) (z e : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     (hT : 0 < Tz k r z) (he : inWb k r e) (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) :
     ∃ Bs : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ, IsFrameOf k r [z, e] Bs := by
   obtain ⟨n, rfl⟩ : ∃ n, k = n + 1 := ⟨k - 1, by omega⟩
   exact exists_frame_two n r z e hz hT he hez hee
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[(frame_general_linear W (n + 1) r n z π Bs hπ (HermitianFormSums.frame_sub hB)).2 w v, (frame_general_linear W (n + 1) r n z π Bs' hπ (HermitianFormSums.frame_sub hB')).2 w v, qr_frameChange_proof W n r z e π Bs Bs' hz hT he hez hee hπ hB hB' w]`.
+-/
 theorem typ_frame_change {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W] (k r : ℕ)
     (hk : 1 ≤ k) (z e : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (W →L[ℂ] W))
     (Bs Bs' : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z) (he : inWb k r e)
@@ -343,6 +450,11 @@ section types
 def typM (P : M.Par) (ρ : M.Ty P) : Fin (P.k - 1) → ℂ :=
   fun j => (M.rho P ρ ((j : ℕ) + 1) : ℂ) - ((P.k : ℂ) - 2) / 2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => first | simp | rfl`. Consider the case `succ n ih => first`. Consider the case `(rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; simp)`. Consider the case `(rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; rfl)`.
+
+Consider the case `(rw [← Nat.Ico_succ_right, Finset.prod_Ico_eq_prod_range, Finset.prod_range]; simp [add_comm])`.
+-/
 theorem typ_prod_Icc (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Finset.Icc 1 n, f i = ∏ j : Fin n, f ((j : ℕ) + 1) := by
   induction n with
   | zero => first | simp | rfl
@@ -352,6 +464,9 @@ theorem typ_prod_Icc (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Finset.Icc 1 n, f i
     | (rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; rfl)
     | (rw [← Nat.Ico_succ_right, Finset.prod_Ico_eq_prod_range, Finset.prod_range]; simp [add_comm])
 
+/- English proof (translation)
+Unfold `M.xC Qr.cpol`. Rewrite using `[typ_prod_Icc]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [typM]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem typ_xC (P : M.Par) (ρ : M.Ty P) (w : ℂ) :
     M.xC P ρ (w - ((P.k : ℂ) - 2) / 2) = Qr.cpol (typM P ρ) w := by
   unfold M.xC Qr.cpol
@@ -360,6 +475,9 @@ theorem typ_xC (P : M.Par) (ρ : M.Ty P) (w : ℂ) :
   simp only [typM]
   ring
 
+/- English proof (translation)
+Establish `hj` using `j.isLt`. Unfold `M.rho`. Rewrite using `[dif_pos (show 1 ≤ (j : ℕ) + 1 ∧ (j : ℕ) + 1 ≤ P.k - 1 by omega)]`. Apply the tactic sequence `all_goals first | rfl | simp`.
+-/
 theorem typ_rho_succ (P : M.Par) (ρ : M.Ty P) (j : Fin (P.k - 1)) :
     M.rho P ρ ((j : ℕ) + 1) = P.lo ((j : ℕ) + 1) + ((ρ j : ℕ) : ℝ) := by
   have hj := j.isLt
@@ -367,6 +485,13 @@ theorem typ_rho_succ (P : M.Par) (ρ : M.Ty P) (j : Fin (P.k - 1)) :
   rw [dif_pos (show 1 ≤ (j : ℕ) + 1 ∧ (j : ℕ) + 1 ≤ P.k - 1 by omega)]
   all_goals first | rfl | simp
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+
+Introduce `hd`. Establish `h2 : max (Q.u (i + d + 1)) (Q.u' (i + d + 1)) + 1 / 2 ≤ min (Q.u (i + d)) (Q.u' (i + d)) - 1 / 2` using `h.gap (i + d) (Finset.mem_Icc.mpr ⟨by omega, by omega⟩)`. Establish `a1` using `le_max_left (Q.u (i + d + 1)) (Q.u' (i + d + 1))`. Establish `a2` using `min_le_left (Q.u (i + d)) (Q.u' (i + d))`. Establish `h3` using `ih (by omega)`.
+
+Use `show Q.u (i + d + 1) ≤ Q.u i`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem u_add_le_u_of_ok {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i) :
     ∀ d : ℕ, i + d ≤ Q.k - 1 → Q.u (i + d) ≤ Q.u i := by
   intro d
@@ -382,6 +507,11 @@ private theorem u_add_le_u_of_ok {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i
     show Q.u (i + d + 1) ≤ Q.u i
     linarith
 
+/- English proof (translation)
+Rewrite using `[typ_rho_succ]`. Establish `hj` using `j.isLt`. Establish `hg : Q.lo ((j : ℕ) + 1) ≤ Q.hi ((j : ℕ) + 1)` using `h.gap _ (Finset.mem_Icc.mpr ⟨by omega, by omega⟩)`. Establish `h1` using `(π j).isLt`. Establish `hw : (Q.wid ((j : ℕ) + 1) : ℝ) ≤ Q.hi ((j : ℕ) + 1) - Q.lo ((j : ℕ) + 1)` using `by first`.
+
+Consider the case `exact Nat.floor_le (by linarith)`. Consider the case `(unfold M.Par.wid; exact Nat.floor_le (by linarith))`. Establish `h2 : ((π j : Fin _) : ℕ) ≤ Q.wid ((j : ℕ) + 1)` using `by omega`. Establish `h3 : (((π j : Fin _) : ℕ) : ℝ) ≤ Q.wid ((j : ℕ) + 1)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem rho_succ_le_hi_of_ok {Q : M.Par} (h : Q.OK) (π : M.Ty Q) (j : Fin (Q.k - 1)) :
     M.rho Q π ((j : ℕ) + 1) ≤ Q.hi ((j : ℕ) + 1) := by
   rw [typ_rho_succ]
@@ -396,6 +526,23 @@ private theorem rho_succ_le_hi_of_ok {Q : M.Par} (h : Q.OK) (π : M.Ty Q) (j : F
   have h3 : (((π j : Fin _) : ℕ) : ℝ) ≤ Q.wid ((j : ℕ) + 1) := by exact_mod_cast h2
   linarith
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hlt : (a : ℕ) < b` using `hab`. Establish `r1` using `typ_rho_succ P ρ a`. Establish `r3` using `typ_rho_succ P ρ b`.
+
+Establish `r2` using `rho_succ_le_hi_of_ok hOK ρ b`. Establish `hlo : P.lo ((a : ℕ) + 1) = max (P.u ((a : ℕ) + 1 + 1)) (P.u' ((a : ℕ) + 1 + 1)) + 1 / 2` using `rfl`. Establish `hloB : P.lo ((b : ℕ) + 1) = max (P.u ((b : ℕ) + 1 + 1)) (P.u' ((b : ℕ) + 1 + 1)) + 1 / 2` using `rfl`. Establish `hhi : P.hi ((b : ℕ) + 1) = min (P.u ((b : ℕ) + 1)) (P.u' ((b : ℕ) + 1)) - 1 / 2` using `rfl`. Establish `hmono` using `u_add_le_u_of_ok hOK (i := (a : ℕ) + 1 + 1) (by omega) ((b : ℕ) - a - 1) (by omega)`.
+
+Establish `he : (a : ℕ) + 1 + 1 + ((b : ℕ) - a - 1) = (b : ℕ) + 1` using `by omega`. Rewrite `hmono` using `[he]`. Establish `hmemA : (a : ℕ) + 1 + 1 ∈ Finset.Icc 1 P.k` using `Finset.mem_Icc.mpr ⟨by omega, by omega⟩`. Establish `hmemB : (b : ℕ) + 1 + 1 ∈ Finset.Icc 1 P.k` using `Finset.mem_Icc.mpr ⟨by omega, by omega⟩`. Take `⟨x1, hx1⟩` from `hOK.int_u _ hmemA`.
+
+Take `⟨x2, hx2⟩` from `hOK.int_u' _ hmemA`. Take `⟨y1, hy1⟩` from `hOK.int_u _ hmemB`. Take `⟨y2, hy2⟩` from `hOK.int_u' _ hmemB`. Choose the witnesses or unpack the hypotheses as in `⟨c1, hc1⟩ : ∃ c : ℤ, max (P.u ((a : ℕ) + 1 + 1)) (P.u' ((a : ℕ) + 1 + 1)) - P.u 1 = c := by`. Break down `max_choice (P.u ((a : ℕ) + 1 + 1)) (P.u' ((a : ℕ) + 1 + 1)) with hm | hm` into its components or cases.
+
+Conclude with `⟨x1, by rw [hm]; exact hx1⟩`. Conclude with `⟨x2, by rw [hm]; exact hx2⟩`. Choose the witnesses or unpack the hypotheses as in `⟨c2, hc2⟩ : ∃ c : ℤ, max (P.u ((b : ℕ) + 1 + 1)) (P.u' ((b : ℕ) + 1 + 1)) - P.u 1 = c := by`. Break down `max_choice (P.u ((b : ℕ) + 1 + 1)) (P.u' ((b : ℕ) + 1 + 1)) with hm | hm` into its components or cases. Conclude with `⟨y1, by rw [hm]; exact hy1⟩`.
+
+Conclude with `⟨y2, by rw [hm]; exact hy2⟩`. Take `⟨z, hz⟩ : ∃ z : ℤ, M.rho P ρ ((a : ℕ) + 1) - M.rho P ρ ((b : ℕ) + 1) = z` from `⟨c1 - c2 + ((ρ a : ℕ) : ℤ) - ((ρ b : ℕ) : ℤ), by rw [r1, r3, hlo, hloB]; push_cast; linarith⟩`. Establish `m1` using `le_max_left (P.u ((a : ℕ) + 1 + 1)) (P.u' ((a : ℕ) + 1 + 1))`. Establish `m2` using `min_le_left (P.u ((b : ℕ) + 1)) (P.u' ((b : ℕ) + 1))`. Establish `n0 : (0 : ℝ) ≤ ((ρ a : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hge : (1 : ℝ) ≤ M.rho P ρ ((a : ℕ) + 1) - M.rho P ρ ((b : ℕ) + 1)` using `by linarith`. Establish `hd : (1 : ℝ) ≤ (z : ℝ)` using `by rw [← hz]; exact hge`. Establish `hd' : (1 : ℤ) ≤ z` using `by exact_mod_cast hd`. Use `⟨(z - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `e1 : ((z - 1).toNat : ℤ) = z - 1` using `Int.toNat_of_nonneg (by omega)`.
+
+Establish `e2 : (((z - 1).toNat : ℕ) : ℝ) = (z : ℝ) - 1` using `by exact_mod_cast e1`. Rewrite using `[e2, hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem typ_rho_gap (P : M.Par) (hOK : P.OK) (ρ : M.Ty P) (a b : Fin (P.k - 1)) (hab : a < b) :
     ∃ N : ℕ, M.rho P ρ ((a : ℕ) + 1) - M.rho P ρ ((b : ℕ) + 1) = (N : ℝ) + 1 := by
   have ha := a.isLt
@@ -438,6 +585,11 @@ theorem typ_rho_gap (P : M.Par) (hOK : P.OK) (ρ : M.Ty P) (a b : Fin (P.k - 1))
   rw [e2, hz]
   ring
 
+/- English proof (translation)
+Introduce `a b hab`. Take `⟨N, hN⟩` from `typ_rho_gap P hOK ρ a b hab`. Use `⟨N, ?_⟩` and prove the remaining obligations. Simplify using `only [typM]`. Establish `h2 : ((M.rho P ρ ((a : ℕ) + 1) : ℝ) : ℂ) - ((M.rho P ρ ((b : ℕ) + 1) : ℝ) : ℂ) = (N : ℂ) + 1`.
+
+Conclude with `hN` after adjusting the coercions. Take the linear combination `h2`.
+-/
 theorem typ_sdec (P : M.Par) (hOK : P.OK) (ρ : M.Ty P) : Qr.SDec (typM P ρ) := by
   intro a b hab
   obtain ⟨N, hN⟩ := typ_rho_gap P hOK ρ a b hab
@@ -447,6 +599,9 @@ theorem typ_sdec (P : M.Par) (hOK : P.OK) (ρ : M.Ty P) : Qr.SDec (typM P ρ) :=
     exact_mod_cast hN
   linear_combination h2
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ha x y hxy`. Establish `h1` using `congrArg Complex.re hN`. Simplify using `at h1`. Establish `h0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem re_add_one_le_re_of_sDec_of_lt {n : ℕ} {a : Fin n → ℂ} (ha : Qr.SDec a) {x y : Fin n} (hxy : x < y) :
     (a y).re + 1 ≤ (a x).re := by
   obtain ⟨N, hN⟩ := ha x y hxy
@@ -455,6 +610,27 @@ private theorem re_add_one_le_re_of_sDec_of_lt {n : ℕ} {a : Fin n → ℂ} (ha
   have h0 : (0 : ℝ) ≤ N := Nat.cast_nonneg N
   linarith
 
+/- English proof (translation)
+Establish `root : ∀ (c d : Fin n → ℂ), (∀ w, Qr.cpol c w = Qr.cpol d w) → ∀ i, ∃ j, d j = c i`. Introduce `c d hcd i`. Establish `h0 : Qr.cpol d (-c i) = 0`. Rewrite using `[← hcd]`. Unfold `Qr.cpol`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by ring)`. Unfold `Qr.cpol at h0`. Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.mp h0`. Conclude with `⟨j, by linear_combination hj⟩`. Establish `hba` using `root a b h`.
+
+Establish `hab` using `root b a (fun w => (h w).symm)`. It suffices to establish `H : ∀ m : ℕ, ∀ i : Fin n, (i : ℕ) = m → a i = b i from funext fun i => H _ i rfl`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`.
+
+Introduce `i hi`. Take `⟨j, hj⟩` from `hba i`. Take `⟨j', hj'⟩` from `hab i`. Establish `hij : i ≤ j`. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Establish `hlt' : (j : ℕ) < i` using `hlt`. Establish `e` using `ih j (by omega) j rfl`. Establish `h1` using `re_add_one_le_re_of_sDec_of_lt ha hlt`. Rewrite `h1` using `[← hj, ← e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hij' : i ≤ j'`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hlt' : (j' : ℕ) < i` using `hlt`.
+
+Establish `e` using `ih j' (by omega) j' rfl`. Establish `h1` using `re_add_one_le_re_of_sDec_of_lt hb hlt`. Rewrite `h1` using `[← hj', e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `le1 : (b j).re ≤ (b i).re`.
+
+Break down `eq_or_lt_of_le hij with e | lt` into its components or cases. Rewrite using `[e]`. Establish `h1` using `re_add_one_le_re_of_sDec_of_lt hb lt`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `eq_or_lt_of_le hij' with e | lt` into its components or cases.
+
+Substitute `e` using the available equality. Conclude with `hj'`. It suffices to derive a contradiction. Establish `h1` using `re_add_one_le_re_of_sDec_of_lt ha lt`. Establish `h2 : (a i).re = (b j).re` using `by rw [hj]`.
+
+Establish `h3 : (b i).re = (a j').re` using `by rw [hj']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem eq_of_cpol_eq_of_sDec {n : ℕ} (a b : Fin n → ℂ) (ha : Qr.SDec a) (hb : Qr.SDec b)
     (h : ∀ w, Qr.cpol a w = Qr.cpol b w) : a = b := by
   have root : ∀ (c d : Fin n → ℂ), (∀ w, Qr.cpol c w = Qr.cpol d w) → ∀ i, ∃ j, d j = c i := by
@@ -505,6 +681,13 @@ private theorem eq_of_cpol_eq_of_sDec {n : ℕ} (a b : Fin n → ℂ) (ha : Qr.S
       have h3 : (b i).re = (a j').re := by rw [hj']
       linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `h` to reduce the goal to its premises. Establish `e` using `eq_of_cpol_eq_of_sDec _ _ (typ_sdec P hOK ρ) (typ_sdec P hOK ρ') hcon`. Use function extensionality and compare the values at `j`.
+
+Establish `ej` using `congrFun e j`. Simplify using `only [typM] at ej`. Establish `ej2 : M.rho P ρ ((j : ℕ) + 1) = M.rho P ρ' ((j : ℕ) + 1)`. Establish `h3 : ((M.rho P ρ ((j : ℕ) + 1) : ℝ) : ℂ) = ((M.rho P ρ' ((j : ℕ) + 1) : ℝ) : ℂ)`. Take the linear combination `ej`.
+
+Conclude with `h3` after adjusting the coercions. Rewrite `ej2` using `[typ_rho_succ, typ_rho_succ]`. Establish `ej3 : ((ρ j : ℕ) : ℝ) = ((ρ' j : ℕ) : ℝ)` using `by linarith`. Conclude with `Fin.ext (by exact_mod_cast ej3)`.
+-/
 theorem typ_poly_ne (P : M.Par) (hOK : P.OK) (ρ ρ' : M.Ty P) (h : ρ ≠ ρ') :
     ∃ w, Qr.cpol (typM P ρ) w ≠ Qr.cpol (typM P ρ') w := by
   by_contra hcon
@@ -530,6 +713,23 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.Topx1
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' e hPl he hez hee`. Take `⟨hOK, hz, -, hTz, -, hT, -⟩` from `hPl`. Take `⟨-, hrep, hcont, hunit, -, -⟩` from `hT`. Establish `hTpos : 0 < Tz P.k P.r z` using `hTz ▸ hOK.T_pos`. Take `⟨Bs₀, hB₀⟩` from `typ_frame_exists P.k P.r hOK.k_pos z e hz hTpos he hez hee`.
+
+Establish `hB₀'` using `HermitianFormSums.frame_sub hB₀`. Take `⟨hGl, hcap⟩` from `frame_general_linear Wp P.k P.r (P.k - 1) z π Bs₀ ⟨hrep, hcont⟩ hB₀'`. Establish `hadj` using `typ_EB_adj hrep hcont hunit hB₀'`. Set `J : M.Ty P → Submodule ℂ Wp` to `fun ρ => Qr.CapSp (Qr.EB π Bs₀) (typM P ρ)`. Establish `hch : ∀ Bs, IsFrameOf P.k P.r [z, e] Bs → ∀ w v, capRep P.k P.r π Bs w v = capRep P.k P.r π Bs₀ w v` using `fun Bs hB w v => typ_frame_change P.k P.r hOK.k_pos z e π Bs Bs₀ hz hTpos he hez hee ⟨hrep, hcont⟩ hB hB₀ w v`.
+
+Establish `hJ : ∀ ρ v, v ∈ J ρ ↔ ∀ w, capRep P.k P.r π Bs₀ w v = M.xC P ρ (w - ((P.k : ℂ) - 2) / 2) • v`. Introduce `ρ v`. Rewrite using `[Qr.mem_CapSp]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[hcap w v, typ_xC]`.
+
+Establish `horth : ∀ ρ ρ', ρ ≠ ρ' → ∀ v ∈ J ρ, v ∈ (J ρ')ᗮ` using `fun ρ ρ' h v hv => typ_capSp_orth (Qr.EB π Bs₀) hGl hadj _ _ (typ_poly_ne P hOK ρ ρ' h) hv`. Use `⟨{ E := fun ρ => (J ρ).starProjection, idem := ?_, orth := ?_, selfAdj := ?_, eigen := ?_, full := ?_ }⟩` and prove the remaining obligations. Introduce `ρ`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+
+Conclude with `Submodule.starProjection_eq_self_iff.mpr ((J ρ).starProjection_apply_mem v)`. Introduce `ρ ρ' h`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply]`. Conclude with `typ_proj_orth _ (horth ρ' ρ (Ne.symm h) _ ((J ρ').starProjection_apply_mem v))`.
+
+Introduce `ρ v v'`. Conclude with `Submodule.inner_starProjection_left_eq_right _ v v'`. Introduce `Bs hB ρ w v`. Rewrite using `[hch Bs hB]`. Conclude with `(hJ ρ _).1 ((J ρ).starProjection_apply_mem v) w`.
+
+Introduce `Bs hB ρ v hv`. Apply `Submodule.starProjection_eq_self_iff.mpr` to reduce the goal to its premises. Rewrite using `[hJ]`. Introduce `w`. Rewrite using `[← hch Bs hB]`.
+
+Conclude with `hv w`.
+-/
 theorem type_projectors_exist : Formalism.FourierDecayAlt.Top.TypeProjExists := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' e hPl he hez hee
   obtain ⟨hOK, hz, -, hTz, -, hT, -⟩ := hPl
@@ -584,11 +784,25 @@ section group
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem vecw_fix_of_fix {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hu : IsUnit g.det)
     {v : Fin (2 * r + k + 1) → ℂ} (h : g *ᵥ v = v) : g⁻¹ *ᵥ v = v := by
   calc g⁻¹ *ᵥ v = g⁻¹ *ᵥ (g *ᵥ v) := by rw [h]
     _ = v := by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩` from `hbase`. Establish `um` using `WeylGroupFacts.isUnit_of_uh hmU`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hmU hhB.1) (WeylGroupFacts.uh_inv hmU), fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hmfix a a.isLt`. Establish `i1` using `vecw_fix_of_fix um h1.1`.
+
+Establish `i2` using `vecw_fix_of_fix um h1.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, i1, (hhB.2.1 a).1, h1.1]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, i2, (hhB.2.1 a).2, h1.2]`. Establish `hμ : ((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ) ≠ 0`.
+
+Use `Real.sqrt_pos.2 (div_pos S.T'_pos S.T_pos)` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions. Establish `hz : S.z = (((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ))⁻¹ • (m₀ *ᵥ S.z')`. Rewrite using `[hmz, smul_smul, inv_mul_cancel₀ hμ, one_smul]`. Establish `hmi : m₀⁻¹ *ᵥ (m₀ *ᵥ S.z') = S.z'`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ um, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hz]`. Use `_ = (((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ))⁻¹ • (m₀ *ᵥ S.z') := by`. Rewrite using `[Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hmi, hhB.2.2]`.
+
+Use `_ = S.z := hz.symm`.
+-/
 theorem vecw_conj_mem (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) {hB : B.Mat k r} (hhB : hB ∈ UWset k r S.z') :
     m₀ * hB * m₀⁻¹ ∈ UWset k r S.z := by
@@ -615,6 +829,19 @@ theorem vecw_conj_mem (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1)
           rw [Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hmi, hhB.2.2]
       _ = S.z := hz.symm
 
+/- English proof (translation)
+Distinguish the cases in `h : D.IsLocPt p (r + 1) ∧ 0 < D.ptG (Tz k r S.z * Tz k r S.z') r p`. Take `⟨σ, hE⟩` from `Dx2.VV.exE S ν' m₀ hbase p h.1 h.2`. Take `⟨hγe, hZe, hDe, hσU, hE3, hE2⟩` from `hE`. Rewrite using `[isotropic_vectors_linear_indep k r Wp Wq S ν' m₀ F p h.1 (m₀ * σ) hbase h.2 hγe hZe hDe]`. Establish `hpos : 0 < Gf k r S.z S.z' (m₀ * σ)`.
+
+Rewrite using `[← ptG_spec k r S.z S.z' p _ h.1 hZe]`. Conclude with `h.2`. Establish `hA` using `vecw_conj_mem S hbase hhB`. Establish `h1` using `Dx2.VV.orbJ_pt S p h.1 hγe hZe hpos hA WeylGroupFacts.mem_n_one (fun b => Matrix.one_mulVec _) hhB WeylGroupFacts.mem_n_one (fun b => Matrix.one_mulVec _) F`. Establish `hcomm : σ * hB = hB * σ` using `hE2 hB hhB.1 (fun a => hhB.2.1 a) hhB.2.2 hBν`.
+
+Establish `um` using `WeylGroupFacts.isUnit_of_uh hbase.2.2.2.1.1`. Establish `uB` using `WeylGroupFacts.isUnit_of_uh hhB.1`. Establish `hfix : (m₀ * hB * m₀⁻¹ * 1)⁻¹ * (m₀ * σ) * (hB * 1) = m₀ * σ`. Rewrite using `[Matrix.mul_one, Matrix.mul_one, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ um]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = m₀ * (hB⁻¹ * hB) * σ := by`. Rewrite using `[Matrix.nonsing_inv_mul _ um, hcomm]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = m₀ * σ := by rw [Matrix.nonsing_inv_mul _ uB, Matrix.mul_one]`.
+
+Rewrite `h1` using `[hfix]`. Conclude with `h1`. Unfold `D.vecV`. Rewrite using `[dif_neg h]`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem vecw_vec_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (p : C.LPt)
     {hB : B.Mat k r} (hhB : hB ∈ UWset k r S.z') (hBν : hB *ᵥ ν' = ν') :
@@ -651,6 +878,11 @@ end group
 section lie
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hB`. Use `⟨fun a => hgW _ (h1 a), fun a b => ?_, fun a v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Dx2.DF.herm_m0_mulVec_invariant g hgU]`. Conclude with `h2 a b`. Take `⟨c, v0, hv0, rfl⟩` from `hvs v hv`.
+
+Rewrite using `[Qx8.herm_smul_right', Dx2.DF.herm_m0_mulVec_invariant g hgU, h3 a v0 hv0, mul_zero]`.
+-/
 theorem vecw_frame_map {g : B.Mat k r} (hgU : g ∈ UH (Hpk k r))
     (hgW : ∀ w, inWb k r w → inWb k r (g *ᵥ w)) {m : ℕ} {vs vs' : List (Fin (2 * r + k + 1) → ℂ)}
     (hvs : ∀ v ∈ vs', ∃ c : ℂ, ∃ v0 ∈ vs, v = c • (g *ᵥ v0))
@@ -662,6 +894,9 @@ theorem vecw_frame_map {g : B.Mat k r} (hgU : g ∈ UH (Hpk k r))
   · obtain ⟨c, v0, hv0, rfl⟩ := hvs v hv
     rw [Qx8.herm_smul_right', Dx2.DF.herm_m0_mulVec_invariant g hgU, h3 a v0 hv0, mul_zero]
 
+/- English proof (translation)
+Unfold `Q.IsFrameOf at hB ⊢`. Conclude with `⟨hB.1, hB.2.1, fun a v hv => hB.2.2 a v (hsub v hv)⟩`.
+-/
 theorem vecw_frame_sub {m : ℕ} {vs vs' : List (Fin (2 * r + k + 1) → ℂ)} (hsub : ∀ v ∈ vs', v ∈ vs)
     {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r vs Bs) : Q.IsFrameOf k r vs' Bs := by
   unfold Q.IsFrameOf at hB ⊢
@@ -670,6 +905,15 @@ theorem vecw_frame_sub {m : ℕ} {vs vs' : List (Fin (2 * r + k + 1) → ℂ)} (
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Take `⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩` from `hbase`. Establish `um` using `WeylGroupFacts.isUnit_of_uh hmU`. Establish `hme : ∀ a : Fin r, m₀ *ᵥ Dx2.DF.ee k r a = Dx2.DF.ee k r a` using `fun a => (hmfix a a.isLt).1`. Establish `hms : ∀ a : Fin r, m₀ *ᵥ Dx2.DF.es k r a = Dx2.DF.es k r a` using `fun a => (hmfix a a.isLt).2`. Establish `hiU` using `WeylGroupFacts.uh_inv hmU`.
+
+Establish `hie : ∀ a : Fin r, m₀⁻¹ *ᵥ Dx2.DF.ee k r a = Dx2.DF.ee k r a` using `fun a => vecw_fix_of_fix um (hme a)`. Establish `his : ∀ a : Fin r, m₀⁻¹ *ᵥ Dx2.DF.es k r a = Dx2.DF.es k r a` using `fun a => vecw_fix_of_fix um (hms a)`. Establish `hμ : ((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ) ≠ 0`. Use `Real.sqrt_pos.2 (div_pos S.T'_pos S.T_pos)` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `hz : S.z = (((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ))⁻¹ • (m₀ *ᵥ S.z')`. Rewrite using `[hmz, smul_smul, inv_mul_cancel₀ hμ, one_smul]`. Use `⟨hmU, fun w hw => Dx2.DF.m0_mulVec_mem_orthogonal m₀ hmU hme hms hw, hiU, fun w hw => Dx2.DF.m0_mulVec_mem_orthogonal m₀⁻¹ hiU hie his hw, um, hz, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ um, Matrix.one_mulVec]`.
+
+Use `_ = m₀⁻¹ *ᵥ ((((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ)) • S.z) := by rw [hmz]`. Use `_ = (((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ)) • (m₀⁻¹ *ᵥ S.z) := Matrix.mulVec_smul _ _ _`.
+-/
 theorem vecw_base_parts (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) :
     m₀ ∈ UH (Hpk k r) ∧ (∀ w, inWb k r w → inWb k r (m₀ *ᵥ w)) ∧
@@ -695,6 +939,11 @@ theorem vecw_base_parts (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 
     _ = m₀⁻¹ *ᵥ ((((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ)) • S.z) := by rw [hmz]
     _ = (((√(Tz k r S.z' / Tz k r S.z) : ℝ) : ℂ)) • (m₀⁻¹ *ᵥ S.z) := Matrix.mulVec_smul _ _ _
 
+/- English proof (translation)
+Take `⟨hmU, hmW, -, -, -, hz, -⟩` from `vecw_base_parts S hbase`. Use `vecw_frame_map hmU hmW (fun v hv => ?_) hB` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Conclude with `⟨_, S.z', by simp, hz⟩`.
+
+Conclude with `⟨1, ν', by simp, by rw [one_smul]⟩`.
+-/
 theorem vecw_frame_fwd (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) {m : ℕ} {Bs' : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hB : Q.IsFrameOf k r [S.z', ν'] Bs') : Q.IsFrameOf k r [S.z, m₀ *ᵥ ν'] (fun a => m₀ *ᵥ Bs' a) := by
@@ -705,6 +954,11 @@ theorem vecw_frame_fwd (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1
   · exact ⟨_, S.z', by simp, hz⟩
   · exact ⟨1, ν', by simp, by rw [one_smul]⟩
 
+/- English proof (translation)
+Establish `hiU` using `WeylGroupFacts.uh_inv hmU`. Establish `hii : (m₀⁻¹)⁻¹ = m₀` using `Matrix.nonsing_inv_nonsing_inv _ um`. Establish `e1` using `LeftDerivativeCurves.unitB_conj hiU Bs' a b`. Establish `e2` using `LeftDerivativeCurves.hpart1_conj hiU (Q.unitB (Hpk k r) Bs' a b)`. Establish `e3` using `LeftDerivativeCurves.hpart2_conj hiU (Q.unitB (Hpk k r) Bs' a b)`.
+
+Rewrite `e1`, `e2`, `e3` using `[hii]`. Conclude with `⟨e1, e2, e3⟩`.
+-/
 theorem vecw_conj_eq {m₀ : B.Mat k r} (hmU : m₀ ∈ UH (Hpk k r)) (um : IsUnit m₀.det) {m : ℕ}
     (Bs' : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m) :
     Q.unitB (Hpk k r) (fun a => m₀ *ᵥ Bs' a) a b = m₀ * Q.unitB (Hpk k r) Bs' a b * m₀⁻¹ ∧
@@ -720,6 +974,21 @@ theorem vecw_conj_eq {m₀ : B.Mat k r} (hmU : m₀ ∈ UH (Hpk k r)) (um : IsUn
 
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `set V := D.vecV S ν' m₀ F p with hV`. Take `⟨hmU, -, hiU, -, um, -, -⟩` from `vecw_base_parts S hbase`. Establish `key : ∀ t : ℝ, (S.π (NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)))).comp V = V.comp (S.π' (NormedSpace.exp ((t : ℂ) • X)))`. Introduce `t`. Establish `hhB` using `QrD.exp_uw hX t`.
+
+Establish `hBν` using `Qx8.exp_fix hXν t`. Use `set hB := NormedSpace.exp ((t : ℂ) • X) with hhBdef`. Establish `hconj : NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)) = m₀ * hB * m₀⁻¹`. Establish `h` using `LeftDerivativeCurves.exp_swap hiU X t`. Rewrite `h` using `[Matrix.nonsing_inv_nonsing_inv _ um]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ um, Matrix.one_mul]`. Use `_ = m₀ * hB * m₀⁻¹ := by rw [h, Matrix.mul_assoc]`. Establish `h` using `vecw_vec_intertwine S hbase F p hhB hBν`. Establish `hinv` using `WeylGroupFacts.uw_inv hhB`.
+
+Establish `uB` using `WeylGroupFacts.isUnit_of_uh hhB.1`. Rewrite using `[hconj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.comp_assoc, ContinuousLinearMap.comp_assoc, ← S.π'_rep.2 _ hinv _ hhB, Matrix.nonsing_inv_mul _ uB, S.π'_rep.1]`. Both sides reduce to the same expression.
+
+Use `_ = V.comp (S.π' hB) := by rw [h]`. Establish `hd1` using `QrD.dOp_hasDeriv S.π'_rep S.π'_cont hX`. Establish `hd2` using `QrD.dOp_hasDeriv S.π_rep S.π_cont hY`. Set `L1 : (Wq →L[ℂ] Wq) →L[ℂ] (Wq →L[ℂ] Wp)` to `ContinuousLinearMap.compL ℂ Wq Wq Wp V`. Set `L2 : (Wp →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)` to `(ContinuousLinearMap.compL ℂ Wq Wp Wp).flip V`.
+
+Establish `h1` using `(L1.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd1`. Establish `h2` using `(L2.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd2`. Establish `hfun : ((L2.restrictScalars ℝ) ∘ fun t : ℝ => S.π (NormedSpace.exp ((t : ℂ) • (m₀ * X * m₀⁻¹)))) = ((L1.restrictScalars ℝ) ∘ fun t : ℝ => S.π' (NormedSpace.exp ((t : ℂ) • X)))`. Use function extensionality and compare the values at `t`. Conclude with `key t`.
+
+Rewrite `h2` using `[hfun]`. Conclude with `h2.unique h1`.
+-/
 theorem vecw_dOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (p : C.LPt) {X : B.Mat k r}
     (hX : QrD.InLieW k r S.z' X) (hXν : X *ᵥ ν' = 0) (hY : QrD.InLieW k r S.z (m₀ * X * m₀⁻¹)) :
@@ -767,6 +1036,9 @@ end lie
 
 section cap
 
+/- English proof (translation)
+The claim follows from `| 0, f, g, _, x => by simp | t + 1, f, g, h, x => by rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons, vecw_fold V (fun i => f i.succ) (fun i => g i.succ) (fun i y => h i.succ y) x, h]`.
+-/
 theorem vecw_fold {X Y : Type*} (V : X → Y) :
     ∀ {t : ℕ} (f : Fin t → X → X) (g : Fin t → Y → Y), (∀ i x, g i (V x) = V (f i x)) → ∀ x : X,
       (List.ofFn g).foldr (fun T h => T h) (V x) = V ((List.ofFn f).foldr (fun T h => T h) x)
@@ -775,6 +1047,11 @@ theorem vecw_fold {X Y : Type*} (V : X → Y) :
     rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons,
       vecw_fold V (fun i => f i.succ) (fun i => g i.succ) (fun i y => h i.succ y) x, h]
 
+/- English proof (translation)
+Unfold `Q.qmF`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`.
+
+Apply the tactic sequence `exact vecw_fold V _ _ (fun k y => by split_ifs <;> simp [hE]) x`.
+-/
 theorem vecw_qmF {X Y : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (V : X →ₗ[ℂ] Y)
     {n t : ℕ} (E : Fin n → Fin n → X → X) (E' : Fin n → Fin n → Y → Y)
     (hE : ∀ i j x, E' i j (V x) = V (E i j x)) (a b : Fin t → Fin n) (u : ℂ) (x : X) :
@@ -789,6 +1066,13 @@ theorem vecw_qmF {X Y : Type*} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] 
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Take `⟨hmU, -, -, -, um, -, -⟩` from `vecw_base_parts S hbase`. Establish `hBz : Q.IsFrameOf k r [S.z] (fun a => m₀ *ᵥ Bs' a)` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) (vecw_frame_fwd S hbase hB)`. Establish `hBz' : Q.IsFrameOf k r [S.z'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Establish `hBν : Q.IsFrameOf k r [ν'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Take `⟨e1, e2, e3⟩` from `vecw_conj_eq hmU um Bs' a b`.
+
+Establish `lY` using `QrD.frame_lie hBz a b`. Establish `lX` using `QrD.frame_lie hBz' a b`. Establish `lν` using `QrD.frame_lie hBν a b`. Rewrite `lY` using `[e1, e2, e3]`. Unfold `QrD.ecOp`.
+
+Rewrite using `[e1, e2, e3, ContinuousLinearMap.add_comp, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_add, ContinuousLinearMap.comp_smul, vecw_dOp_intertwine S hbase F p lX.1 lν.1.2 lY.1, vecw_dOp_intertwine S hbase F p lX.2 lν.2.2 lY.2]`.
+-/
 theorem vecw_ecOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (p : C.LPt) {m : ℕ}
     {Bs' : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [S.z', ν'] Bs') (a b : Fin m) :
@@ -809,6 +1093,11 @@ theorem vecw_ecOp_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r +
     ContinuousLinearMap.comp_smul, vecw_dOp_intertwine S hbase F p lX.1 lν.1.2 lY.1,
     vecw_dOp_intertwine S hbase F p lX.2 lν.2.2 lY.2]
 
+/- English proof (translation)
+Establish `hBz : Q.IsFrameOf k r [S.z] (fun a => m₀ *ᵥ Bs' a)` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) (vecw_frame_fwd S hbase hB)`. Establish `hBz' : Q.IsFrameOf k r [S.z'] Bs'` using `vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB`. Unfold `Q.capRep`. Use `vecw_qmF (D.vecV S ν' m₀ F p).toLinearMap _ _ (fun i j y => ?_) id id w v` and prove the remaining obligations. Establish `lY` using `QrD.frame_lie hBz i j`.
+
+Establish `lX` using `QrD.frame_lie hBz' i j`. Simplify using `only [ContinuousLinearMap.coe_coe]`. Rewrite using `[QrD.ecRep_eq S.π_rep S.π_cont lY.1 lY.2, QrD.ecRep_eq S.π'_rep S.π'_cont lX.1 lX.2]`. Establish `h` using `congrArg (fun L : Wq →L[ℂ] Wp => L y) (vecw_ecOp_intertwine S hbase F p hB i j)`. Simplify using `using h`.
+-/
 theorem vecw_capRep_intertwine (S : B.RealPlaceData k r Wp Wq) {ν' : Fin (2 * r + k + 1) → ℂ} {m₀ : B.Mat k r}
     (hbase : D.IsBaseFrame S ν' m₀) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (p : C.LPt) {m : ℕ}
     {Bs' : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [S.z', ν'] Bs') (w : ℂ) (v : Wq) :
@@ -835,6 +1124,9 @@ def parametersUForUPrime (P : M.Par) : M.Par := { P with u' := P.u }
 
 def parametersUPrimeForU (P : M.Par) : M.Par := { P with u := P.u' }
 
+/- English proof (translation)
+The claim follows from `h.k_pos T_pos := h.T_pos T'_pos := h.T'_pos int_u := h.int_u int_u' := h.int_u gap := by intro i hi have g := h.gap i hi simp only [M.Par.lo, M.Par.hi, parametersUForUPrime, max_self, min_self] at g ⊢ have a1 := le_max_left (P.u (i + 1)) (P.u' (i + 1)) have a2 := min_le_left (P.u …`.
+-/
 theorem parameters_u_for_u_prime_ok {P : M.Par} (h : P.OK) : (parametersUForUPrime P).OK where
   k_pos := h.k_pos
   T_pos := h.T_pos
@@ -849,6 +1141,9 @@ theorem parameters_u_for_u_prime_ok {P : M.Par} (h : P.OK) : (parametersUForUPri
     have a2 := min_le_left (P.u i) (P.u' i)
     linarith
 
+/- English proof (translation)
+The claim follows from `h.k_pos T_pos := h.T_pos T'_pos := h.T'_pos int_u := by intro i hi obtain ⟨a, ha⟩ := h.int_u' i hi obtain ⟨b, hb⟩ := h.int_u' 1 (by simp [Finset.mem_Icc]; exact h.k_pos) exact ⟨a - b, by simp only [parametersUPrimeForU]; push_cast; linarith⟩ int_u' := by intro i hi obtain ⟨a, ha⟩ …`.
+-/
 theorem parameters_u_prime_for_u_ok {P : M.Par} (h : P.OK) : (parametersUPrimeForU P).OK where
   k_pos := h.k_pos
   T_pos := h.T_pos
@@ -871,6 +1166,11 @@ theorem parameters_u_prime_for_u_ok {P : M.Par} (h : P.OK) : (parametersUPrimeFo
     have a2 := min_le_right (P.u i) (P.u' i)
     linarith
 
+/- English proof (translation)
+Rewrite `hi` using `[Finset.mem_Icc]`. Use `⟨((π ⟨i - 1, by omega⟩ : Fin _) : ℕ), ?_, ?_⟩` and prove the remaining obligations. Use `(π ⟨i - 1, by omega⟩).isLt` as an intermediate fact. Establish `e : i - 1 + 1 = i` using `by omega`. Simplify using `only [e] at this`.
+
+Use linear arithmetic over natural numbers and integers. Unfold `M.rho`. Rewrite using `[dif_pos hi]`.
+-/
 theorem vecw_rho_eq {Q : M.Par} (π : M.Ty Q) {i : ℕ} (hi : i ∈ Icc 1 (Q.k - 1)) :
     ∃ n : ℕ, n ≤ Q.wid i ∧ M.rho Q π i = Q.lo i + n := by
   rw [Finset.mem_Icc] at hi
@@ -882,9 +1182,17 @@ theorem vecw_rho_eq {Q : M.Par} (π : M.Ty Q) {i : ℕ} (hi : i ∈ Icc 1 (Q.k -
   · unfold M.rho
     rw [dif_pos hi]
 
+/- English proof (translation)
+Conclude with `h.gap i hi`.
+-/
 theorem vecw_lo_le_hi {Q : M.Par} (h : Q.OK) {i : ℕ} (hi : i ∈ Icc 1 (Q.k - 1)) : Q.lo i ≤ Q.hi i := by
   exact h.gap i hi
 
+/- English proof (translation)
+Take `⟨n, hn, he⟩` from `vecw_rho_eq π hi`. Establish `g` using `vecw_lo_le_hi h hi`. Establish `hf : (n : ℝ) ≤ Q.hi i - Q.lo i`. Use `Nat.floor_le (sub_nonneg.2 g)` as an intermediate fact. Establish `h2 : (n : ℝ) ≤ (Q.wid i : ℝ)` using `by exact_mod_cast hn`.
+
+Unfold `M.Par.wid at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `constructor <;> [ (rw [he]; have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith) ; (rw [he]; linarith) ]`.
+-/
 theorem vecw_rho_bounds {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i : ℕ} (hi : i ∈ Icc 1 (Q.k - 1)) :
     Q.lo i ≤ M.rho Q π i ∧ M.rho Q π i ≤ Q.hi i := by
   obtain ⟨n, hn, he⟩ := vecw_rho_eq π hi
@@ -896,12 +1204,18 @@ theorem vecw_rho_bounds {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i : ℕ} (hi : i �
     linarith
   constructor <;> [ (rw [he]; have : (0 : ℝ) ≤ n := Nat.cast_nonneg n; linarith) ; (rw [he]; linarith) ]
 
+/- English proof (translation)
+Establish `h2 : max (Q.u (l + 1)) (Q.u' (l + 1)) + 1 / 2 ≤ min (Q.u l) (Q.u' l) - 1 / 2` using `h.gap l hl`. Establish `a1` using `le_max_left (Q.u (l + 1)) (Q.u' (l + 1))`. Establish `a2` using `min_le_left (Q.u l) (Q.u' l)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vecw_u_step {Q : M.Par} (h : Q.OK) {l : ℕ} (hl : l ∈ Icc 1 (Q.k - 1)) : Q.u (l + 1) + 1 ≤ Q.u l := by
   have h2 : max (Q.u (l + 1)) (Q.u' (l + 1)) + 1 / 2 ≤ min (Q.u l) (Q.u' l) - 1 / 2 := h.gap l hl
   have a1 := le_max_left (Q.u (l + 1)) (Q.u' (l + 1))
   have a2 := min_le_left (Q.u l) (Q.u' l)
   linarith
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp | d + 1, hd => by have s := vecw_u_step h (l := i + d) (by rw [Finset.mem_Icc]; omega) have ih := vecw_u_mono h hi1 d (by omega) rw [show i + (d + 1) = i + d + 1 by omega] linarith`.
+-/
 theorem vecw_u_mono {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i) :
     ∀ d : ℕ, i + d ≤ Q.k - 1 → Q.u (i + d) ≤ Q.u i
   | 0, _ => by simp
@@ -911,6 +1225,11 @@ theorem vecw_u_mono {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i) :
     rw [show i + (d + 1) = i + d + 1 by omega]
     linarith
 
+/- English proof (translation)
+Take `⟨N, -, he⟩` from `vecw_rho_eq π hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Establish `hi1 : i + 1 ∈ Icc 1 Q.k` using `by rw [Finset.mem_Icc]; omega`. Rewrite using `[he]`. Unfold `M.Par.lo`.
+
+Break down `max_choice (Q.u (i + 1)) (Q.u' (i + 1)) with hm | hm` into its components or cases. Take `⟨a, ha⟩` from `h.int_u (i + 1) hi1`. Conclude with `⟨a + N, by rw [hm]; push_cast; linarith⟩`. Take `⟨a, ha⟩` from `h.int_u' (i + 1) hi1`. Conclude with `⟨a + N, by rw [hm]; push_cast; linarith⟩`.
+-/
 theorem vecw_rho_int {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i : ℕ} (hi : i ∈ Icc 1 (Q.k - 1)) :
     ∃ n : ℤ, M.rho Q π i - Q.u 1 - 1 / 2 = n := by
   obtain ⟨N, -, he⟩ := vecw_rho_eq π hi
@@ -924,6 +1243,15 @@ theorem vecw_rho_int {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i : ℕ} (hi : i ∈ 
   · obtain ⟨a, ha⟩ := h.int_u' (i + 1) hi1
     exact ⟨a + N, by rw [hm]; push_cast; linarith⟩
 
+/- English proof (translation)
+Establish `hi'` using `Finset.mem_Icc.mp hi`. Establish `hj'` using `Finset.mem_Icc.mp hj`. Take `⟨a, ha⟩` from `vecw_rho_int h π hi`. Take `⟨b, hb⟩` from `vecw_rho_int h π hj`. Establish `b1` using `(vecw_rho_bounds h π hi).1`.
+
+Establish `b2` using `(vecw_rho_bounds h π hj).2`. Establish `hlo : Q.lo i = max (Q.u (i + 1)) (Q.u' (i + 1)) + 1 / 2` using `rfl`. Establish `hhi : Q.hi j = min (Q.u j) (Q.u' j) - 1 / 2` using `rfl`. Establish `m1` using `le_max_left (Q.u (i + 1)) (Q.u' (i + 1))`. Establish `m2` using `min_le_left (Q.u j) (Q.u' j)`.
+
+Establish `hmono : Q.u (i + 1 + (j - (i + 1))) ≤ Q.u (i + 1)` using `vecw_u_mono h (by omega) (j - (i + 1)) (by omega)`. Establish `hj2 : i + 1 + (j - (i + 1)) = j` using `by omega`. Rewrite `hmono` using `[hj2]`. Establish `hd : (1 : ℝ) ≤ (a : ℝ) - b` using `by linarith`. Establish `hd' : (1 : ℤ) ≤ a - b` using `by exact_mod_cast hd`.
+
+Use `⟨(a - b - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `e1 : ((a - b - 1).toNat : ℤ) = a - b - 1` using `Int.toNat_of_nonneg (by omega)`. Establish `e2 : (((a - b - 1).toNat : ℕ) : ℝ) = (a : ℝ) - b - 1` using `by exact_mod_cast e1`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vecw_rho_gap {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i j : ℕ} (hi : i ∈ Icc 1 (Q.k - 1))
     (hj : j ∈ Icc 1 (Q.k - 1)) (hij : i < j) : ∃ N : ℕ, M.rho Q π i - M.rho Q π j = N + 1 := by
   have hi' := Finset.mem_Icc.mp hi
@@ -949,11 +1277,19 @@ theorem vecw_rho_gap {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i j : ℕ} (hi : i �
 
 def vecwM (Q : M.Par) (π : M.Ty Q) : Fin (Q.k - 1) → ℂ := fun j => ((M.rho Q π ((j : ℕ) + 1) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `M.xC Qr.cpol`. Rewrite using `[typ_prod_Icc]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem vecw_xC_cpol (Q : M.Par) (π : M.Ty Q) (Y : ℂ) : M.xC Q π Y = Qr.cpol (vecwM Q π) Y := by
   unfold M.xC Qr.cpol
   rw [typ_prod_Icc]
   all_goals rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hlt : (a : ℕ) < b` using `hab`. Take `⟨N, hN⟩` from `vecw_rho_gap h π (i := (a : ℕ) + 1) (j := (b : ℕ) + 1) (Finset.mem_Icc.mpr ⟨by omega, by omega⟩) (Finset.mem_Icc.mpr ⟨by omega, by omega⟩) (by omega)`.
+
+Use `⟨N, ?_⟩` and prove the remaining obligations. Simplify using `only [vecwM]`. Use `first`. Consider the case `exact_mod_cast hN`. Consider the case `(rw [← Complex.ofReal_sub, hN]; push_cast; ring)`.
+-/
 theorem vecw_sdec {Q : M.Par} (h : Q.OK) (π : M.Ty Q) : Qr.SDec (vecwM Q π) := by
   intro a b hab
   have ha := a.isLt
@@ -967,6 +1303,11 @@ theorem vecw_sdec {Q : M.Par} (h : Q.OK) (π : M.Ty Q) : Qr.SDec (vecwM Q π) :=
     | exact_mod_cast hN
     | (rw [← Complex.ofReal_sub, hN]; push_cast; ring)
 
+/- English proof (translation)
+Establish `e` using `eq_of_cpol_eq_of_sDec _ _ (vecw_sdec (parameters_u_for_u_prime_ok h) τ) (vecw_sdec (parameters_u_prime_for_u_ok h) σ) (fun w => (vecw_xC_cpol (parametersUForUPrime P) τ w).symm.trans ((he w).trans (vecw_xC_cpol (parametersUPrimeForU P) σ w)))`. Introduce `i hi`. Establish `hi'` using `Finset.mem_Icc.mp hi`. Take `⟨j, rfl⟩ : ∃ j : Fin (P.k - 1), (j : ℕ) + 1 = i` from `⟨⟨i - 1, by omega⟩, by show i - 1 + 1 = i; omega⟩`. Establish `ej` using `congrFun e j`.
+
+Simplify using `only [vecwM] at ej`. Conclude with `ej` after adjusting the coercions.
+-/
 theorem vecw_rho_match {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P)) (σ : M.Ty (parametersUPrimeForU P))
     (he : ∀ Y, M.xC (parametersUForUPrime P) τ Y = M.xC (parametersUPrimeForU P) σ Y) :
     ∀ i ∈ Icc 1 (P.k - 1), M.rho (parametersUForUPrime P) τ i = M.rho (parametersUPrimeForU P) σ i := by
@@ -979,23 +1320,58 @@ theorem vecw_rho_match {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P
   simp only [vecwM] at ej
   exact_mod_cast ej
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [parametersUForUPrime, M.Par.lo, max_self]; done)`. Consider the case `(show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 = P.u (i + 1) + 1 / 2; rw [max_self])`.
+-/
 theorem parameters_u_for_u_prime_lower (P : M.Par) (i : ℕ) : (parametersUForUPrime P).lo i = P.u (i + 1) + 1 / 2 := by
   first
     | (simp only [parametersUForUPrime, M.Par.lo, max_self]; done)
     | (show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 = P.u (i + 1) + 1 / 2; rw [max_self])
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [parametersUForUPrime, M.Par.hi, min_self]; done)`. Consider the case `(show min (P.u i) (P.u i) - 1 / 2 = P.u i - 1 / 2; rw [min_self])`.
+-/
 theorem parameters_u_for_u_prime_upper (P : M.Par) (i : ℕ) : (parametersUForUPrime P).hi i = P.u i - 1 / 2 := by
   first
     | (simp only [parametersUForUPrime, M.Par.hi, min_self]; done)
     | (show min (P.u i) (P.u i) - 1 / 2 = P.u i - 1 / 2; rw [min_self])
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [parametersUPrimeForU, M.Par.lo, max_self]; done)`. Consider the case `(show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 = P.u' (i + 1) + 1 / 2; rw [max_self])`.
+-/
 theorem parameters_u_prime_for_u_lower (P : M.Par) (i : ℕ) : (parametersUPrimeForU P).lo i = P.u' (i + 1) + 1 / 2 := by
   first
     | (simp only [parametersUPrimeForU, M.Par.lo, max_self]; done)
     | (show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 = P.u' (i + 1) + 1 / 2; rw [max_self])
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [parametersUPrimeForU, M.Par.hi, min_self]; done)`. Consider the case `(show min (P.u' i) (P.u' i) - 1 / 2 = P.u' i - 1 / 2; rw [min_self])`.
+-/
 theorem parameters_u_prime_for_u_upper (P : M.Par) (i : ℕ) : (parametersUPrimeForU P).hi i = P.u' i - 1 / 2 := by
   first
     | (simp only [parametersUPrimeForU, M.Par.hi, min_self]; done)
     | (show min (P.u' i) (P.u' i) - 1 / 2 = P.u' i - 1 / 2; rw [min_self])
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin (P.k - 1), ∃ n : Fin (P.wid ((j : ℕ) + 1) + 1), P.lo ((j : ℕ) + 1) + ((n : ℕ) : ℝ) = M.rho (parametersUForUPrime P) τ ((j : ℕ) + 1)`. Introduce `j`. Establish `hj` using `j.isLt`. Establish `hmem : (j : ℕ) + 1 ∈ Finset.Icc 1 (P.k - 1)` using `Finset.mem_Icc.mpr ⟨by omega, by omega⟩`. Establish `e1` using `he _ hmem`.
+
+Establish `t1` using `typ_rho_succ (parametersUForUPrime P) τ j`. Establish `t2` using `typ_rho_succ (parametersUPrimeForU P) σ j`. Establish `b1` using `vecw_rho_bounds (parameters_u_for_u_prime_ok h) τ hmem`. Establish `b2` using `vecw_rho_bounds (parameters_u_prime_for_u_ok h) σ hmem`. Establish `hlo1 : (parametersUForUPrime P).lo ((j : ℕ) + 1) = P.u ((j : ℕ) + 1 + 1) + 1 / 2` using `parameters_u_for_u_prime_lower P _`.
+
+Establish `hlo2 : (parametersUPrimeForU P).lo ((j : ℕ) + 1) = P.u' ((j : ℕ) + 1 + 1) + 1 / 2` using `parameters_u_prime_for_u_lower P _`. Establish `hhi1 : (parametersUForUPrime P).hi ((j : ℕ) + 1) = P.u ((j : ℕ) + 1) - 1 / 2` using `parameters_u_for_u_prime_upper P _`. Establish `hhi2 : (parametersUPrimeForU P).hi ((j : ℕ) + 1) = P.u' ((j : ℕ) + 1) - 1 / 2` using `parameters_u_prime_for_u_upper P _`. Establish `hPlo : P.lo ((j : ℕ) + 1) = max (P.u ((j : ℕ) + 1 + 1)) (P.u' ((j : ℕ) + 1 + 1)) + 1 / 2` using `rfl`. Establish `hPhi : P.hi ((j : ℕ) + 1) = min (P.u ((j : ℕ) + 1)) (P.u' ((j : ℕ) + 1)) - 1 / 2` using `rfl`.
+
+Establish `hx : M.rho (parametersUForUPrime P) τ ((j : ℕ) + 1) ≤ P.hi ((j : ℕ) + 1)`. Rewrite using `[hPhi]`. Apply the tactic sequence `rcases min_choice (P.u ((j : ℕ) + 1)) (P.u' ((j : ℕ) + 1)) with hm | hm <;> rw [hm] <;>`. Combine the linear relations using `[b1.2, b2.2, e1, hhi1, hhi2]`. Break down `le_total (P.u' ((j : ℕ) + 1 + 1)) (P.u ((j : ℕ) + 1 + 1)) with hc | hc` into its components or cases.
+
+Establish `hm : max (P.u ((j : ℕ) + 1 + 1)) (P.u' ((j : ℕ) + 1 + 1)) = P.u ((j : ℕ) + 1 + 1)` using `max_eq_left hc`. Establish `ht : M.rho (parametersUForUPrime P) τ ((j : ℕ) + 1) = P.u ((j : ℕ) + 1 + 1) + 1 / 2 + ((τ j : ℕ) : ℝ)`. Rewrite using `[t1, hlo1]`. Use `⟨⟨(τ j : ℕ), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hw : ((τ j : ℕ) : ℝ) ≤ P.hi ((j : ℕ) + 1) - P.lo ((j : ℕ) + 1)`.
+
+Rewrite using `[hPlo, hm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : (τ j : ℕ) ≤ P.wid ((j : ℕ) + 1)` using `by first`. Consider the case `exact Nat.le_floor hw`. Consider the case `(unfold M.Par.wid; exact Nat.le_floor hw)`.
+
+Use linear arithmetic over natural numbers and integers. Use `show P.lo ((j : ℕ) + 1) + ((τ j : ℕ) : ℝ) = _`. Rewrite using `[hPlo, hm, ht]`. Establish `hm : max (P.u ((j : ℕ) + 1 + 1)) (P.u' ((j : ℕ) + 1 + 1)) = P.u' ((j : ℕ) + 1 + 1)` using `max_eq_right hc`. Establish `ht : M.rho (parametersUPrimeForU P) σ ((j : ℕ) + 1) = P.u' ((j : ℕ) + 1 + 1) + 1 / 2 + ((σ j : ℕ) : ℝ)`.
+
+Rewrite using `[t2, hlo2]`. Use `⟨⟨(σ j : ℕ), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hw : ((σ j : ℕ) : ℝ) ≤ P.hi ((j : ℕ) + 1) - P.lo ((j : ℕ) + 1)`. Rewrite using `[hPlo, hm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hn : (σ j : ℕ) ≤ P.wid ((j : ℕ) + 1)` using `by first`. Consider the case `exact Nat.le_floor hw`. Consider the case `(unfold M.Par.wid; exact Nat.le_floor hw)`. Use linear arithmetic over natural numbers and integers. Use `show P.lo ((j : ℕ) + 1) + ((σ j : ℕ) : ℝ) = _`.
+
+Rewrite using `[hPlo, hm, e1, ht]`. Use `choose f hf using key`. Use `⟨f, fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi'` using `Finset.mem_Icc.mp hi`. Take `⟨j, rfl⟩ : ∃ j : Fin (P.k - 1), (j : ℕ) + 1 = i` from `⟨⟨i - 1, by omega⟩, by show i - 1 + 1 = i; omega⟩`.
+
+Rewrite using `[typ_rho_succ P f j, hf j]`.
+-/
 theorem vecw_ty_exists {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P)) (σ : M.Ty (parametersUPrimeForU P))
     (he : ∀ i ∈ Icc 1 (P.k - 1), M.rho (parametersUForUPrime P) τ i = M.rho (parametersUPrimeForU P) σ i) :
     ∃ ρ : M.Ty P, ∀ i ∈ Icc 1 (P.k - 1), M.rho P ρ i = M.rho (parametersUForUPrime P) τ i := by
@@ -1054,6 +1430,9 @@ theorem vecw_ty_exists {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P
   obtain ⟨j, rfl⟩ : ∃ j : Fin (P.k - 1), (j : ℕ) + 1 = i := ⟨⟨i - 1, by omega⟩, by show i - 1 + 1 = i; omega⟩
   rw [typ_rho_succ P f j, hf j]
 
+/- English proof (translation)
+Unfold `M.xC`. Conclude with `Finset.prod_congr rfl (fun i hi => by rw [hρ i hi])`.
+-/
 theorem vecw_xC_match {P : M.Par} (τ : M.Ty (parametersUForUPrime P)) (ρ : M.Ty P)
     (hρ : ∀ i ∈ Icc 1 (P.k - 1), M.rho P ρ i = M.rho (parametersUForUPrime P) τ i) (Y : ℂ) :
     M.xC P ρ Y = M.xC (parametersUForUPrime P) τ Y := by
@@ -1065,6 +1444,9 @@ end par
 section final
 open Finset
 
+/- English proof (translation)
+Conclude with `typ_frame_exists k r hk z e hz hT he hez hee`.
+-/
 theorem vecw_frame_exists (k r : ℕ) (hk : 1 ≤ k) (z e : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     (hT : 0 < Tz k r z) (he : inWb k r e) (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) :
     ∃ Bs : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ, Q.IsFrameOf k r [z, e] Bs := by
@@ -1072,6 +1454,11 @@ theorem vecw_frame_exists (k r : ℕ) (hk : 1 ≤ k) (z e : Fin (2 * r + k + 1) 
 
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Establish `h0 : TP.E ρ0 x = x` using `TP.full Bs₀ hB₀ ρ0 x hx`. Rewrite using `[Finset.sum_eq_single ρ0]`. Conclude with `h0`. Introduce `ρ _ hne`. Establish `h1 : (TP.E ρ).comp (TP.E ρ0) = 0` using `TP.orth ρ ρ0 hne`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `hn`. Conclude with `absurd (Finset.mem_univ ρ0) hn`.
+-/
 theorem vecw_good_of_type {P : M.Par} {π : B.Mat P.k P.r → (Wp →L[ℂ] Wp)} {z e : Fin (2 * P.r + P.k + 1) → ℂ}
     (TP : Formalism.FourierDecayAlt.Top.TypeProj P π z e) {Bs₀ : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ}
     (hB₀ : Q.IsFrameOf P.k P.r [z, e] Bs₀) (ρ0 : M.Ty P) (x : Wp)
@@ -1088,6 +1475,23 @@ theorem vecw_good_of_type {P : M.Par} {π : B.Mat P.k P.r → (Wp →L[ℂ] Wp)}
   · intro hn
     exact absurd (Finset.mem_univ ρ0) hn
 
+/- English proof (translation)
+Take `⟨S, hInt, -, heig⟩` from `branching_proof Wp (parametersUForUPrime P) (parameters_u_for_u_prime_ok hOK) rfl z e π hz hT hty he hez hee`. Establish `heig' : ∀ (τ : M.Ty (parametersUForUPrime P)) (w : ℂ), ∀ v ∈ S τ, Q.capRep P.k P.r π Bs₀ w v = M.xC (parametersUForUPrime P) τ (w - ((P.k : ℂ) - 2) / 2) • v` using `fun τ w v hv => heig Bs₀ hB₀ τ w v hv`. Establish `hgl` using `frame_general_linear Wp P.k P.r (P.k - 1) z π Bs₀ ⟨hty.2.1, hty.2.2.1⟩ (vecw_frame_sub (fun v hv => by simp at hv; simp [hv]) hB₀)`. Establish `hx_mem : x ∈ ⨆ τ ∈ (Finset.univ : Finset (M.Ty (parametersUForUPrime P))), S τ`. Simplify using `only [Finset.mem_univ, iSup_pos]`.
+
+Rewrite using `[hInt.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum S x).1 hx_mem`. Establish `hcomp : ∀ τ, ∑ ρ, TP.E ρ (μ τ : Wp) = μ τ`. Introduce `τ`.
+
+Distinguish the cases in `hpoly : ∀ Y, M.xC (parametersUForUPrime P) τ Y = M.xC (parametersUPrimeForU P) σ Y`. Take `⟨ρ, hρ⟩` from `vecw_ty_exists hOK τ σ (vecw_rho_match hOK τ σ hpoly)`. Use `vecw_good_of_type TP hB₀ ρ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[heig' τ w _ (μ τ).2, vecw_xC_match τ ρ hρ]`. Simplify using `only [not_forall] at hpoly`.
+
+Take `⟨Y, hY⟩` from `hpoly`. Establish `hw : Y + ((P.k : ℂ) - 2) / 2 - ((P.k : ℂ) - 2) / 2 = Y` using `by ring`. Establish `hsum : ∑ τ' ∈ Finset.univ, (M.xC (parametersUForUPrime P) τ' Y - M.xC (parametersUPrimeForU P) σ Y) • (μ τ' : Wp) = 0`. Establish `h1` using `hx (Y + ((P.k : ℂ) - 2) / 2)`. Rewrite `h1` using `[hw, hgl.2]`.
+
+Establish `h2 : ∀ τ', qdet (Qr.EB π Bs₀) (Y + ((P.k : ℂ) - 2) / 2) (μ τ' : Wp) = M.xC (parametersUForUPrime P) τ' Y • (μ τ' : Wp)`. Introduce `τ'`. Rewrite using `[← hgl.2, heig' τ' _ _ (μ τ').2, hw]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← Finset.smul_sum, hμ]`.
+
+Simplify using `only [← h2]`. Rewrite using `[← map_sum, hμ, h1, sub_self]`. Establish `hind` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero S).1 hInt.submodule_iSupIndep Finset.univ (fun τ' => (M.xC (parametersUForUPrime P) τ' Y - M.xC (parametersUPrimeForU P) σ Y) • (μ τ' : Wp)) (fun τ' _ => Submodule.smul_mem _ _ (μ τ').2) hsum τ (Finset.mem_univ τ)`. Establish `hz0 : (μ τ : Wp) = 0`. Break down `smul_eq_zero.1 hind with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h) hY`. Conclude with `h`. Rewrite using `[hz0]`. Simplify using the standard rewrite rules. Rewrite using `[← hμ]`.
+
+Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun τ _ => hcomp τ`.
+-/
 theorem vecw_good_of_eig {P : M.Par} (hOK : P.OK) {π : B.Mat P.k P.r → (Wp →L[ℂ] Wp)}
     {z e : Fin (2 * P.r + P.k + 1) → ℂ} (hz : inWb P.k P.r z) (hT : 0 < Tz P.k P.r z)
     (hty : Q.IsType P.k P.r z π P.u) (he : inWb P.k P.r e) (hez : herm (Hpk P.k P.r) e z = 0)
@@ -1143,6 +1547,17 @@ theorem vecw_good_of_eig {P : M.Par} (hOK : P.OK) {π : B.Mat P.k P.r → (Wp �
 
 end final
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P S ν' m₀ TP F p hPl hbase hp`. Take `⟨hOK, hz, hz', -, -, hty, hty'⟩` from `hPl`. Take `⟨hmU, hmW, -, -, -, hzeq, -⟩` from `vecw_base_parts S hbase`. Take `⟨hν, hνz, hνν, -, -⟩` from `id hbase`. Establish `he : inWb P.k P.r (m₀ *ᵥ ν')` using `hmW ν' hν`.
+
+Establish `hee : herm (Hpk P.k P.r) (m₀ *ᵥ ν') (m₀ *ᵥ ν') = 1` using `by rw [Dx2.DF.herm_m0_mulVec_invariant m₀ hmU]; exact hνν`. Establish `hez : herm (Hpk P.k P.r) (m₀ *ᵥ ν') S.z = 0`. Rewrite using `[hzeq, Qx8.herm_smul_right', Dx2.DF.herm_m0_mulVec_invariant m₀ hmU, hνz, mul_zero]`. Take `⟨Bs₀', hB₀'⟩` from `vecw_frame_exists P.k P.r hOK.k_pos S.z' ν' hz' S.T'_pos hν hνz hνν`. Establish `hB₀` using `vecw_frame_fwd S hbase hB₀'`.
+
+Take `⟨S', hInt', -, heig⟩` from `branching_proof Wq (parametersUPrimeForU P) (parameters_u_prime_for_u_ok hOK) rfl S.z' ν' S.π' hz' S.T'_pos hty' hν hνz hνν`. Establish `heig' : ∀ (σ : M.Ty (parametersUPrimeForU P)) (w : ℂ), ∀ v ∈ S' σ, Q.capRep P.k P.r S.π' Bs₀' w v = M.xC (parametersUPrimeForU P) σ (w - ((P.k : ℂ) - 2) / 2) • v` using `fun σ w v hv => heig Bs₀' hB₀' σ w v hv`. Use `ContinuousLinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[_root_.sum_apply]`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+
+Establish `hf : f ∈ ⨆ σ, S' σ` using `by rw [hInt'.submodule_iSup_eq_top]; exact Submodule.mem_top`. Use `Submodule.iSup_induction S' (motive := fun f => ∑ ρ, TP.E ρ (D.vecV S ν' m₀ F p f) = D.vecV S ν' m₀ F p f) hf ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ v hv`. Use `vecw_good_of_eig hOK hz S.T_pos hty he hez hee TP hB₀ σ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[vecw_capRep_intertwine S hbase F p hB₀' w v, heig' σ w v hv, map_smul]`.
+
+Simplify using the standard rewrite rules. Introduce `a b ha hb`. Simplify using `only [map_add, Finset.sum_add_distrib, ha, hb]`.
+-/
 theorem vecw_main : Formalism.FourierDecayAlt.Top.VecVTypes := by
   intro Wp Wq _ _ _ _ _ _ P S ν' m₀ TP F p hPl hbase hp
   obtain ⟨hOK, hz, hz', -, -, hty, hty'⟩ := hPl
@@ -1174,6 +1589,9 @@ theorem vecw_main : Formalism.FourierDecayAlt.Top.VecVTypes := by
 
 end Formalism.FourierDecayAlt.P.Topx1
 
+/- English proof (translation)
+Conclude with `Formalism.FourierDecayAlt.P.Topx1.vecw_main`.
+-/
 theorem Formalism.FourierDecayAlt.P.vector_valued_types : Formalism.FourierDecayAlt.Top.VecVTypes := by
   exact Formalism.FourierDecayAlt.P.Topx1.vecw_main
 

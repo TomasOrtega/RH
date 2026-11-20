@@ -6,6 +6,11 @@ open Module
 
 namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FS
 
+/- English proof (translation)
+Take `⟨x, y, z, w, hs⟩` from `Nat.sum_four_squares (p.num.toNat * p.den)`. Use `⟨x / p.den, y / p.den, z / p.den, w / p.den, ?_⟩` and prove the remaining obligations. Establish `hnum : (0 : ℤ) ≤ p.num` using `Rat.num_nonneg.mpr hp`. Establish `hd : (p.den : ℚ) ≠ 0` using `by positivity`. Establish `hn : ((p.num.toNat : ℕ) : ℚ) = (p.num : ℚ)` using `by exact_mod_cast Int.toNat_of_nonneg hnum`.
+
+Establish `key : (x : ℚ) ^ 2 + (y : ℚ) ^ 2 + (z : ℚ) ^ 2 + (w : ℚ) ^ 2 = (p.num : ℚ) * p.den`. Establish `h1 : ((x ^ 2 + y ^ 2 + z ^ 2 + w ^ 2 : ℕ) : ℚ) = ((p.num.toNat * p.den : ℕ) : ℚ)` using `by rw [hs]`. Move the coercions through the operations in `at h1`. Rewrite using `[h1, hn]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rat_four_sq (p : ℚ) (hp : 0 ≤ p) : ∃ a b c d : ℚ, p = a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 := by
   obtain ⟨x, y, z, w, hs⟩ := Nat.sum_four_squares (p.num.toNat * p.den)
   refine ⟨x / p.den, y / p.den, z / p.den, w / p.den, ?_⟩
@@ -25,12 +30,18 @@ variable {K : Type} [Field K]
 def qM (p q r s : K) : Matrix (Fin 4) (Fin 4) K :=
   !![p, -q, -r, -s; q, p, -s, r; r, s, p, -q; s, -r, q, p]
 
+/- English proof (translation)
+Simplify using `[qM, Fin.sum_univ_four]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qM_form (p q r s : K) (u v : Fin 4 → K) :
     ∑ β, (∑ a, qM p q r s β a * u a) * (∑ a, qM p q r s β a * v a)
       = (p ^ 2 + q ^ 2 + r ^ 2 + s ^ 2) * ∑ a, u a * v a := by
   simp [qM, Fin.sum_univ_four]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases β <;> fin_cases a <;> simp [qM, hp, hq, hr, hs, map_neg]`.
+-/
 theorem qM_fix (c : K →+* K) {p q r s : K} (hp : c p = p) (hq : c q = q) (hr : c r = r) (hs : c s = s) (β a : Fin 4) :
     c (qM p q r s β a) = qM p q r s β a := by
   fin_cases β <;> fin_cases a <;> simp [qM, hp, hq, hr, hs, map_neg]
@@ -52,9 +63,27 @@ def Herm4.hl (H : Herm4 c h) (y : V) : V →ₗ[K] K where
   map_add' x x' := H.add_left x x' y
   map_smul' k x := H.smul_left k x y
 
+/- English proof (translation)
+Rewrite using `[H.symm x y, e, map_zero]`.
+-/
 theorem Herm4.ortho_symm (H : Herm4 c h) {x y : V} (e : h x y = 0) : h y x = 0 := by
   rw [H.symm x y, e, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ m ih`. Take `⟨v, hv0, hv⟩` from `ih (by omega)`. Set `L : V →ₗ[K] (Fin m → K)` to `LinearMap.pi (fun i => H.hl (v i))`.
+
+Establish `hrank` using `LinearMap.finrank_range_add_finrank_ker L`. Establish `hr : finrank K (LinearMap.range L) ≤ m`. Combine the equalities or inequalities in the displayed calculation. Establish `hker : LinearMap.ker L ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hrank` using `[hb, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hxk, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Establish `hx : ∀ i, h x (v i) = 0` using `fun i => by`. Establish `h1` using `congrFun (LinearMap.mem_ker.mp hxk) i`.
+
+Simplify `h1` using `[L, Herm4.hl]`. Use `⟨Fin.snoc (α := fun _ => V) v x, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simpa using hx0`. Consider the case `cast i => simpa using hv0 i`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd rfl hij`. Consider the case `cast j => simpa using hx j`.
+
+Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simpa using H.ortho_symm (hx i)`. Consider the case `cast j`. Simplify using `only [Fin.snoc_castSucc]`.
+
+Conclude with `hv i j (fun e => hij (by rw [e]))`.
+-/
 theorem Herm4.ortho_fam (H : Herm4 c h) (m : ℕ) (hm : m ≤ finrank K V) :
     ∃ v : Fin m → V, (∀ i, v i ≠ 0) ∧ ∀ i j, i ≠ j → h (v i) (v j) = 0 := by
   induction m with
@@ -90,6 +119,13 @@ theorem Herm4.ortho_fam (H : Herm4 c h) (m : ℕ) (hm : m ≤ finrank K V) :
           simp only [Fin.snoc_castSucc]
           exact hv i j (fun e => hij (by rw [e]))
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `h1 : H.hl (v i) (∑ j ∈ s, g j • v j) = 0` using `by rw [hg, map_zero]`. Rewrite `h1` using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at h1`.
+
+Rewrite `h1` using `[Finset.sum_eq_single i]`. Conclude with `(mul_eq_zero.mp h1).resolve_right (H.pos (v i) (hv0 i)).1`. Introduce `j _ hji show g j * h (v j) (v i) = 0`. Rewrite using `[hv j i hji, mul_zero]`. Introduce `his`.
+
+Conclude with `absurd hi his`.
+-/
 theorem Herm4.linInd (H : Herm4 c h) {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → V) (hv0 : ∀ i, v i ≠ 0)
     (hv : ∀ i j, i ≠ j → h (v i) (v j) = 0) : LinearIndependent K v := by
   rw [linearIndependent_iff']
@@ -105,6 +141,11 @@ theorem Herm4.linInd (H : Herm4 c h) {ι : Type} [Fintype ι] [DecidableEq ι] (
   · intro his
     exact absurd hi his
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty n with hne | hne` into its components or cases. Establish `h0 : finrank K V = 0` using `by rw [← hn, Fintype.card_eq_zero]`. Conclude with `⟨basisOfFinrankZero h0, fun i => isEmptyElim i⟩`. Take `⟨v, hv0, hv⟩` from `H.ortho_fam (finrank K V) le_rfl`. Set `e : n ≃ Fin (finrank K V)` to `Fintype.equivFinOfCardEq hn`.
+
+Establish `hli : LinearIndependent K (v ∘ e)` using `H.linInd (v ∘ e) (fun i => hv0 _) (fun i j hij => hv _ _ (fun h' => hij (e.injective h')))`. Use `⟨basisOfLinearIndependentOfCardEqFinrank hli hn, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `only [coe_basisOfLinearIndependentOfCardEqFinrank, Function.comp_apply]`. Conclude with `hv _ _ (fun h' => hij (e.injective h'))`.
+-/
 theorem Herm4.ortho_basis (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (hn : Fintype.card n = finrank K V) :
     ∃ b : Basis n K V, ∀ i j, i ≠ j → h (b i) (b j) = 0 := by
   rcases isEmpty_or_nonempty n with hne | hne
@@ -118,6 +159,13 @@ theorem Herm4.ortho_basis (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n]
     simp only [coe_basisOfLinearIndependentOfCardEqFinrank, Function.comp_apply]
     exact hv _ _ (fun h' => hij (e.injective h'))
 
+/- English proof (translation)
+Establish `e : h v (b i) = H.hl (b i) (∑ j, b.repr v j • b j)`. Rewrite using `[b.sum_repr v]`. Both sides reduce to the same expression. Rewrite using `[e, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Both sides reduce to the same expression. Introduce `j _ hj show b.repr v j * h (b j) (b i) = 0`. Rewrite using `[hb j i hj, mul_zero]`. Introduce `hi`.
+
+Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 private theorem coord_lemma (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (b : Basis n K V)
     (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0) (v : V) (i : n) : h v (b i) = b.repr v i * h (b i) (b i) := by
   have e : h v (b i) = H.hl (b i) (∑ j, b.repr v j • b j) := by
@@ -133,6 +181,11 @@ private theorem coord_lemma (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq 
   · intro hi
     exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Establish `e : h u v = H.hl v (∑ i, b.repr u i • b i)`. Rewrite using `[b.sum_repr u]`. Both sides reduce to the same expression. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul]`. Use `show b.repr u i * h (b i) v = _`. Establish `hbb : c (h (b i) (b i)) = h (b i) (b i)` using `(H.symm (b i) (b i)).symm`. Rewrite using `[H.symm v (b i), coord_lemma H b hb v i, map_mul, hbb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Herm4.form_repr (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (b : Basis n K V)
     (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0) (u v : V) :
     h u v = ∑ i, h (b i) (b i) * (b.repr u i * c (b.repr v i)) := by
@@ -147,6 +200,27 @@ theorem Herm4.form_repr (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (
   rw [H.symm v (b i), coord_lemma H b hb v i, map_mul, hbb]
   ring
 
+/- English proof (translation)
+Set `Φ : (Fin 4 → V) →ₗ[K] (Fin 4 × n → K)` to `{ toFun := fun x w => ∑ a, qM (p w.2) (q w.2) (r w.2) (s w.2) w.1 a * b.repr (x a) w.2 map_add' := by`. Introduce `x y`. Use function extensionality and compare the values at `w`. Simplify using `[Finset.sum_add_distrib, mul_add]`. Use the proof step `map_smul' := by`.
+
+Introduce `k x`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul, Finset.mul_sum, RingHom.id_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring }`. Establish `hinj : Function.Injective Φ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use function extensionality and compare the values at `a`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Establish `hN : h (b i) (b i) ≠ 0` using `(H.pos (b i) (b.ne_zero i)).1`. Establish `hzero : ∀ β, ∑ a', qM (p i) (q i) (r i) (s i) β a' * b.repr (x a') i = 0` using `fun β => by`. Establish `h1` using `congrFun hx (β, i)`. Simplify `h1` using `[Φ]`. Establish `hf` using `qM_form (p i) (q i) (r i) (s i) (fun a' => b.repr (x a') i) (Pi.single a 1)`.
+
+Simplify using `only [hzero, zero_mul, Finset.sum_const_zero] at hf`. Rewrite `hf` using `[← hsq i]`. Simplify using `[Pi.single_apply] at hf`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `hf.resolve_left hN`.
+
+Establish `hdim : finrank K (Fin 4 → V) = finrank K (Fin 4 × n → K)`. Establish `e` using `((LinearEquiv.piCongrRight fun _ : Fin 4 => b.equivFun).finrank_eq)`. Rewrite using `[e]`. Simplify using `only [Module.finrank_eq_card_basis b, Module.finrank_fintype_fun_eq_card, Fintype.card_prod, Fintype.card_fin]`. Use `first`.
+
+Consider the case `(rw [Module.finrank_pi_fintype]; simp)`. Consider the case `(rw [FiniteDimensional.finrank_pi_fintype]; simp)`. Consider the case `simp [Module.finrank_pi_fintype]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hinj`. Use `⟨LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩, fun x y => ?_, fun x w => rfl⟩` and prove the remaining obligations.
+
+Use `show ∑ w, Φ x w * c (Φ y w) = _`. Establish `hc : ∀ (i : n) β, c (∑ a, qM (p i) (q i) (r i) (s i) β a * b.repr (y a) i) = ∑ a, qM (p i) (q i) (r i) (s i) β a * c (b.repr (y a) i)`. Introduce `i β`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, qM_fix c (hp i) (hq i) (hr i) (hs i)]`. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `only [hc]`. Repeatedly rewrite using `[qM_form, ← hsq, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_congr rfl fun a _ => H.form_repr b hb (x a) (y a)]`. Conclude with `Finset.sum_comm`.
+-/
 theorem Herm4.iso_of (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (b : Basis n K V)
     (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0) (p q r s : n → K) (hp : ∀ i, c (p i) = p i) (hq : ∀ i, c (q i) = q i)
     (hr : ∀ i, c (r i) = r i) (hs : ∀ i, c (s i) = s i)
@@ -204,6 +278,11 @@ theorem Herm4.iso_of (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (b :
   rw [Finset.sum_congr rfl fun a _ => H.form_repr b hb (x a) (y a)]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `H.ortho_basis hn`. Establish `hpos : ∀ i, ∃ P : K × K × K × K, c P.1 = P.1 ∧ c P.2.1 = P.2.1 ∧ c P.2.2.1 = P.2.2.1 ∧ c P.2.2.2 = P.2.2.2 ∧ h (b i) (b i) = P.1 ^ 2 + P.2.1 ^ 2 + P.2.2.1 ^ 2 + P.2.2.2 ^ 2` using `fun i => by`. Take `⟨-, p, q, r, s, h1, h2, h3, h4, h5⟩` from `H.pos (b i) (b.ne_zero i)`. Conclude with `⟨(p, q, r, s), h1, h2, h3, h4, h5⟩`. Use `choose P hP using hpos`.
+
+Take `⟨g, hg, -⟩` from `H.iso_of b hb (fun i => (P i).1) (fun i => (P i).2.1) (fun i => (P i).2.2.1) (fun i => (P i).2.2.2) (fun i => (hP i).1) (fun i => (hP i).2.1) (fun i => (hP i).2.2.1) (fun i => (hP i).2.2.2.1) (fun i => (hP i).2.2.2.2)`. Conclude with `⟨g, hg⟩`.
+-/
 theorem Herm4.iso (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (hn : Fintype.card n = finrank K V) :
     ∃ g : (Fin 4 → V) ≃ₗ[K] (Fin 4 × n → K), ∀ x y, ∑ w, g x w * c (g y w) = ∑ a, h (x a) (y a) := by
   obtain ⟨b, hb⟩ := H.ortho_basis hn
@@ -217,6 +296,9 @@ theorem Herm4.iso (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (hn : F
     (fun i => (hP i).2.2.2.1) (fun i => (hP i).2.2.2.2)
   exact ⟨g, hg⟩
 
+/- English proof (translation)
+The claim follows from `coord_lemma H b hb v i`.
+-/
 theorem Herm4.coord (H : Herm4 c h) {n : Type} [Fintype n] [DecidableEq n] (b : Basis n K V)
     (hb : ∀ i j, i ≠ j → h (b i) (b j) = 0) (v : V) (i : n) : h v (b i) = b.repr v i * h (b i) (b i) :=
   coord_lemma H b hb v i

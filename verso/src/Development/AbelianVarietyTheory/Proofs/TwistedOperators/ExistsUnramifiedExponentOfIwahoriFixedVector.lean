@@ -9,6 +9,11 @@ open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Glo
 
 namespace GlobalTheory.SmGL
 
+/- English proof (translation)
+Use `haveI := hπ.2 _ (IwahoriOnto.isOpen_iwahori k (Fin n)) (IwahoriOnto.isCompact_iwahori k (Fin n))`. Establish `hb` using `GlobalTheory.Published.BorelCasselman_holds k (Fin n) V π hπ`. Use `haveI : FiniteDimensional ℂ (fixed (jacBU π) (torusO k (Fin n))) := Module.Finite.of_surjective _ hb.2`. Use `haveI : Nontrivial (fixed π (iwahori k (Fin n))) := Submodule.nontrivial_iff_ne_bot.2 h`. Use `haveI : Nontrivial (fixed (jacBU π) (torusO k (Fin n))) := hb.1.nontrivial`.
+
+Take `⟨ψ, v, hv, hψ⟩` from `GlobalTheory.exists_character_eigenvector_of_commute ℂ (Fin n → kˣ) _ (jacBUFixed π) fun a b => by rw [← map_mul, mul_comm, map_mul]`. Set `ι : (ofChar ψ).IntertwiningMap (jacBUFixed π)` to `⟨LinearMap.toSpanSingleton ℂ _ v, fun g => by`. Use `LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[hψ]⟩`. Conclude with `⟨ψ, JHMult.jhMult_ne_zero_iff.2 (IsSubquotient.of_injective ι (smul_left_injective ℂ hv))⟩`.
+-/
 theorem exists_expMult_ne_zero_of_fixed_iwahori (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (hπ : IsAdmissible π)

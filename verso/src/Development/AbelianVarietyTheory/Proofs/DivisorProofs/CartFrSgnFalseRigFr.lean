@@ -26,6 +26,11 @@ open GlobalTheory.ChainFr Matrix
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Use `congr 1`. Use function extensionality and compare the values at `a`. Break down `h a with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Simplify using `[h1, h2]`.
+
+Establish `: ¬ a.val < p` using `by omega`. Simplify using `[h1, this]`.
+-/
 theorem jm_eq_diag {k p : ℕ} {ε : Fin k → ℝ} (h : ∀ a : Fin k, (ε a = 1 ∧ a.val < p) ∨ (ε a = -1 ∧ p ≤ a.val)) :
     Formalism.REAL.Jm (fun a : Fin k => decide (a.val < p)) = Matrix.diagonal (fun a => (ε a : ℂ)) := by
   unfold Formalism.REAL.Jm
@@ -36,6 +41,11 @@ theorem jm_eq_diag {k p : ℕ} {ε : Fin k → ℝ} (h : ∀ a : Fin k, (ε a = 
   · have : ¬ a.val < p := by omega
     simp [h1, this]
 
+/- English proof (translation)
+Take `⟨ε, hε, h1, -⟩` from `h`. Establish `hd : IsUnit (Matrix.diagonal fun a => (ε a : ℂ)).det`. Rewrite using `[Matrix.det_diagonal]`. Use `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun a _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases hε a with ⟨e, -⟩ | ⟨e, -⟩ <;> simp [e]`.
+
+Rewrite `hd` using `[← h1, Matrix.det_mul, Matrix.det_mul]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Conclude with `isUnit_of_mul_isUnit_right hd`.
+-/
 theorem isUnit_of_isONBasis {k p : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G s B p) : IsUnit B := by
   obtain ⟨ε, hε, h1, -⟩ := h
   have hd : IsUnit (Matrix.diagonal fun a => (ε a : ℂ)).det := by
@@ -48,6 +58,9 @@ theorem isUnit_of_isONBasis {k p : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} (h 
 
 def sigIdx {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) : ℕ := Classical.choose (h.2.2 τ).2
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (h.2.2 τ).2`.
+-/
 theorem sigIdx_spec {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) :
     IsONBasis (gramAt D V τ) (r.s τ) (r.B τ) (sigIdx r h τ) := Classical.choose_spec (h.2.2 τ).2
 
@@ -67,17 +80,28 @@ def rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTrian
     rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu0, Matrix.mul_one, ← Matrix.mul_assoc,
       Matrix.nonsing_inv_mul _ hu', Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hu0 : IsUnit (r.B τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_isONBasis (sigIdx_spec r h τ))`. Simplify using `only [Fr.onb, rigFr]`. Conclude with `Matrix.nonsing_inv_nonsing_inv _ hu0`.
+-/
 theorem onb_rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) : (rigFr r h).onb τ = r.B τ := by
   have hu0 : IsUnit (r.B τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_isONBasis (sigIdx_spec r h τ))
   simp only [Fr.onb, rigFr]
   exact Matrix.nonsing_inv_nonsing_inv _ hu0
 
+/- English proof (translation)
+Establish `hu0 : IsUnit (r.B τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_isONBasis (sigIdx_spec r h τ))`. Take `⟨ε, hε, -, h2⟩` from `sigIdx_spec r h τ`. Simplify using `only [Fr.cart, rigFr]`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu0, jm_eq_diag hε, ← h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu0, Matrix.mul_one]`.
+-/
 theorem cart_rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) : (rigFr r h).cart τ = r.s τ := by
   have hu0 : IsUnit (r.B τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_isONBasis (sigIdx_spec r h τ))
   obtain ⟨ε, hε, -, h2⟩ := sigIdx_spec r h τ
   simp only [Fr.cart, rigFr]
   rw [Matrix.nonsing_inv_nonsing_inv _ hu0, jm_eq_diag hε, ← h2, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu0, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← cart_rigFr r h τ]`. Simplify using `only [Fr.cart, GlobalTheory.SquareComm.frSgn]`. Establish `e' : Formalism.REAL.Jm (fun a => xor true ((rigFr r h).ε τ a)) = -Formalism.REAL.Jm ((rigFr r h).ε τ)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+
+Apply the tactic sequence `subst hab; cases h' : (rigFr r h).ε τ a <;> simp [Formalism.REAL.Jm, h']`. Simplify using `[Formalism.REAL.Jm, hab]`. Rewrite using `[e', Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem cart_frSgn_true_rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) :
     (GlobalTheory.SquareComm.frSgn true (rigFr r h)).cart τ = -r.s τ := by
   rw [← cart_rigFr r h τ]
@@ -89,11 +113,21 @@ theorem cart_frSgn_true_rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFul
     · simp [Formalism.REAL.Jm, hab]
   rw [e', Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Rewrite using `[← cart_rigFr r h τ]`. Simplify using `[Fr.cart, GlobalTheory.SquareComm.frSgn]`.
+-/
 theorem cart_frSgn_false_rigFr {V : HSp D} (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V) (h : r.Is) (τ : D.what₂.Tau) :
     (GlobalTheory.SquareComm.frSgn false (rigFr r h)).cart τ = r.s τ := by
   rw [← cart_rigFr r h τ]
   simp [Fr.cart, GlobalTheory.SquareComm.frSgn]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `D.R.t_odd`. Take `⟨v, hv⟩` from `D.R.m_even`. Take `⟨w, hw⟩` from `D.R.k_even`. Establish `e : rankV D (i + 1) (j + 1) = rankV D i j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Establish `r1 : rankV D i j = D.R.r + j.1 * D.R.t + i.1 * sLen D` using `rfl`.
+
+Establish `r3 : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `r4 : sLen D = D.R.r + 6` using `rfl`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.three_m_lt_t`. Establish `h3` using `D.R.two_le_m`.
+
+Establish `hj` using `j.2`. Simplify using `only [pp, qq] at hp hq ha ha'`. Use `⟨Nat.even_iff.2 (by omega), by omega, by omega, by omega⟩` and prove the remaining obligations.
+-/
 theorem stage_sizes (i j : Fin D.R.m) {p q a a' : ℕ} (hp : p ≤ pp D j) (hq : q ≤ qq D j)
     (ha : a + 2 * pp D j = rankV D (i + 1) (j + 1) + 2 * p) (ha' : a' + 2 * qq D j = rankV D i j + 2 * q) :
     Even (a + a') ∧ a' + 2 * (2 * (p + q) + 1) < a ∧ 2 * (p + q) + 1 < a' ∧

@@ -10,6 +10,19 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ ι P _ 𝒲 h𝒲 x hx`. Use `set φ : MRing ι F →+* FractionRing (MRing ι F ⧸ P) := (algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P))).comp (Ideal.Quotient.mk P) with hφ`. Establish `hne : ∀ g : MRing ι F, g ∉ P → φ g ≠ 0` using `fun g hg => by`. Rewrite using `[hφ, RingHom.comp_apply, Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg`.
+
+Set `Q : FractionRing (MRing ι F ⧸ P) → Prop` to `fun y => ∃ (b : K → ℕ) (f g : MRing ι F), IsMultiHomog f b ∧ IsMultiHomog g b ∧ g ∉ P ∧ (∀ W ∈ 𝒲, g ∉ W) ∧ y = φ f / φ g`. Establish `key : Q x`. Use `Algebra.adjoin_induction (p := fun y _ => Q y) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩`. Conclude with `⟨b, f, g, hf, hg, hgP, hgW, rfl⟩`.
+
+Introduce `c`. Use `⟨0, C c, 1, isWeightedHomogeneous_C _ c, isWeightedHomogeneous_one F _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Ideal.ne_top_iff_one P).mp (Ideal.IsPrime.ne_top inferInstance)`. Introduce `W hW`. Conclude with `(Ideal.ne_top_iff_one W).mp (h𝒲 W hW).ne_top`.
+
+Rewrite using `[map_one, div_one, hφ, RingHom.comp_apply, IsScalarTower.algebraMap_apply F (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P))]`. Both sides reduce to the same expression. Introduce and unpack `y z - - ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩ ⟨b', f', g', hf', hg', hgP', hgW', rfl⟩`. Use `⟨b + b', f * g' + g * f', g * g', (hf.mul hg').add (hg.mul hf'), hg.mul hg', ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun h => ((Ideal.IsPrime.mem_or_mem inferInstance h).elim hgP hgP')`.
+
+Introduce `W hW h`. Conclude with `((h𝒲 W hW).mem_or_mem h).elim (hgW W hW) (hgW' W hW)`. Rewrite using `[div_add_div _ _ (hne g hgP) (hne g' hgP'), map_add, map_mul, map_mul, map_mul]`. Introduce and unpack `y z - - ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩ ⟨b', f', g', hf', hg', hgP', hgW', rfl⟩`. Use `⟨b + b', f * f', g * g', hf.mul hf', hg.mul hg', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `fun h => ((Ideal.IsPrime.mem_or_mem inferInstance h).elim hgP hgP')`. Introduce `W hW h`. Conclude with `((h𝒲 W hW).mem_or_mem h).elim (hgW W hW) (hgW' W hW)`. Rewrite using `[div_mul_div_comm, map_mul, map_mul]`. Conclude with `key`.
+-/
 theorem DegZeroLocQuot.proof : DegZeroLocQuot.Statement := by
   intro F _ K _ ι P _ 𝒲 h𝒲 x hx
 

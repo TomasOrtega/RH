@@ -19,6 +19,17 @@ def Keeps (U V : Matrix (Fin ρ) (Fin ρ) R) : Prop :=
   ∀ i j : Fin ρ, i < j → (∀ p q : Fin ρ, q ≤ p → U p i * V j q = 0) ∧
     ∑ p : Fin ρ, ∑ q : Fin ρ, (if q.1 = p.1 + 1 then U p i * V j q else 0) = if j.1 = i.1 + 1 then 1 else 0
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hij : i < j` using `by rw [Fin.lt_def]; rw [Fin.le_def] at hi; omega`. Take `⟨h1, h2⟩` from `h i j hij`. Establish `hjj : V j j = 1` using `by simpa using hV j le_rfl`. Establish `hU : ∀ p, j ≤ p → U p i = 0` using `fun p hp => by simpa [hjj] using h1 p j hp`.
+
+Rewrite `h2` using `[Finset.sum_eq_single j', Finset.sum_eq_single j, if_pos hj, hjj, mul_one]`. Rewrite using `[h2]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `q _ hq`. Rewrite using `[if_neg fun e => hq (Fin.ext (by omega))]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with e`. Break down `lt_or_ge p j with hp' | hp'` into its components or cases. Establish `hq : q < j`. Establish `: p.1 ≠ j'.1` using `fun e' => hp (Fin.ext e')`. Rewrite `hp'`, the goal using `[Fin.lt_def]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hV q hq.le, if_neg hq.ne, mul_zero]`. Rewrite using `[hU p hp', zero_mul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem uniRow_step {U V : Matrix (Fin ρ) (Fin ρ) R} (h : Keeps U V) {j j' : Fin ρ} (hj : j.1 = j'.1 + 1) (hV : UniRow V j) :
     UniRow U j' := by
   intro i hi
@@ -45,6 +56,11 @@ theorem uniRow_step {U V : Matrix (Fin ρ) (Fin ρ) R} (h : Keeps U V) {j j' : F
     · rfl
   · simp
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∀ j : Fin ρ, j.1 + 1 + m = ρ → UniRow U j ∧ UniRow V j`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun j hj => ⟨hU j hj, hV j hj⟩`. Consider the case `succ m ih`.
+
+Introduce `j hj`. Take `⟨a, b⟩` from `ih ⟨j.1 + 1, by omega⟩ (by simp only; omega)`. Conclude with `⟨uniRow_step h rfl b, uniRow_step h' rfl a⟩`. Conclude with `(key (ρ - (j.1 + 1)) j (by omega)).1`.
+-/
 theorem uniRow_all {U V : Matrix (Fin ρ) (Fin ρ) R} (h : Keeps U V) (h' : Keeps V U)
     (hU : ∀ j : Fin ρ, j.1 + 1 = ρ → UniRow U j) (hV : ∀ j : Fin ρ, j.1 + 1 = ρ → UniRow V j) (j : Fin ρ) : UniRow U j := by
   have key : ∀ m : ℕ, ∀ j : Fin ρ, j.1 + 1 + m = ρ → UniRow U j ∧ UniRow V j := by
@@ -57,6 +73,9 @@ theorem uniRow_all {U V : Matrix (Fin ρ) (Fin ρ) R} (h : Keeps U V) (h' : Keep
       exact ⟨uniRow_step h rfl b, uniRow_step h' rfl a⟩
   exact (key (ρ - (j.1 + 1)) j (by omega)).1
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[← Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_single_mul (U V : Matrix (Fin ρ) (Fin ρ) R) (i j : Fin ρ) (s : R) :
     U * (Matrix.single i j s * V) = Matrix.of fun p q => s * (U p i * V j q) := by
   ext p q
@@ -64,6 +83,11 @@ theorem mul_single_mul (U V : Matrix (Fin ρ) (Fin ρ) R) (i j : Fin ρ) (s : R)
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and]
   ring
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[hq.symm]`. Simplify using the standard rewrite rules.
+
+Introduce `p _ hp`. Simplify using `[hp.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_single (i j : Fin ρ) (s : R) :
     ∑ p : Fin ρ, ∑ q : Fin ρ, (if q.1 = p.1 + 1 then Matrix.single i j s p q else 0) = s * if j.1 = i.1 + 1 then 1 else 0 := by
   rw [Finset.sum_eq_single i, Finset.sum_eq_single j]
@@ -75,11 +99,17 @@ theorem sum_single (i j : Fin ρ) (s : R) :
     simp [hp.symm]
   · simp
 
+/- English proof (translation)
+Simplify using `[Finset.mul_sum]`.
+-/
 theorem sum_scal (f : Fin ρ → Fin ρ → R) (s : R) :
     ∑ p : Fin ρ, ∑ q : Fin ρ, (if q.1 = p.1 + 1 then Matrix.of (fun p q => s * f p q) p q else 0) =
       s * ∑ p : Fin ρ, ∑ q : Fin ρ, (if q.1 = p.1 + 1 then f p q else 0) := by
   simp [Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[dotProduct, Finset.sum_eq_single j]`. Simplify using `[hj]`. Introduce `p _ hp`. Rewrite using `[if_neg fun e => hp (Fin.ext (by omega)), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem last_dot (w : Fin ρ → R) (j : Fin ρ) (hj : j.1 + 1 = ρ) : (fun i : Fin ρ => if i.1 + 1 = ρ then (1 : R) else 0) ⬝ᵥ w = w j := by
   rw [dotProduct, Finset.sum_eq_single j]
   · simp [hj]
@@ -87,16 +117,31 @@ theorem last_dot (w : Fin ρ → R) (j : Fin ρ) (hj : j.1 + 1 = ρ) : (fun i : 
     rw [if_neg fun e => hp (Fin.ext (by omega)), zero_mul]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using `[mul_comm]`.
+-/
 theorem mulVec_single_at {n : ℕ} (P : Matrix (Fin ρ) (Fin n) R) (J : Matrix (Fin n) (Fin ρ) R) (i j : Fin ρ) (s : R) :
     (0 : R) + ((0 : Fin ρ → R) + P *ᵥ (J *ᵥ Pi.single i s)) j = s * (P * J) j i := by
   rw [Matrix.mulVec_mulVec]; simp [mul_comm]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem zero_tidy (a : R) (l : Fin ρ → R) : 0 + a + l ⬝ᵥ 0 = a := by simp
 
 end Mat
 
 variable {D : D7} {S S₀ S₁ : HSp D} {ρ : ℕ} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `sub_mem hx hy`. Assume the negation of the conclusion as `hne`. Establish `ht0 : t ≠ 0` using `fun e => hne (by rw [← sub_eq_zero, ← ht, e, map_zero])`. Take `⟨s, hs⟩` from `hψ`. Establish `hadd : ∀ a b, psiE ψ (a + b) = psiE ψ a * psiE ψ b` using `fun a b => by`.
+
+Unfold `psiE`. Rewrite using `[map_add, AddChar.map_add_eq_mul]`. Establish `h0 : psiE ψ (0 : AE D) = 1` using `by unfold psiE; rw [map_zero, AddChar.map_zero_eq_one]`. Apply `hs` to reduce the goal to its premises. Establish `e1 : s * incA D t⁻¹ * x = s + s * incA D t⁻¹ * y`.
+
+Establish `: x = incA D t + y` using `by rw [ht]; ring`. Rewrite using `[this, mul_add, mul_assoc s _ (incA D t), ← map_mul, inv_mul_cancel₀ ht0, map_one, mul_one]`. Establish `e2` using `h (s * incA D t⁻¹)`. Rewrite `e2` using `[e1, hadd]`. Establish `e3` using `hadd (s * incA D t⁻¹ * y) (-(s * incA D t⁻¹ * y))`.
+
+Rewrite `e3` using `[add_neg_cancel, h0]`. Conclude with `(mul_eq_right₀ (left_ne_zero_of_mul_eq_one e3.symm)).1 e2`.
+-/
 theorem eq_of_psiE (hψ : ∃ s, psiE ψ s ≠ 1) {x y : AE D} (hx : x ∈ (incA D).range) (hy : y ∈ (incA D).range)
     (h : ∀ s, psiE ψ (s * x) = psiE ψ (s * y)) : x = y := by
   obtain ⟨t, ht⟩ := sub_mem hx hy
@@ -116,18 +161,32 @@ theorem eq_of_psiE (hψ : ∃ s, psiE ψ s ≠ 1) {x y : AE D} (hx : x ∈ (incA
   rw [add_neg_cancel, h0] at e3
   exact (mul_eq_right₀ (left_ne_zero_of_mul_eq_one e3.symm)).1 e2
 
+/- English proof (translation)
+Unfold `simpleSum blockX coefX`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem simpleSum_eq (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E) (n : GA D S) :
     simpleSum d z n = upSum (d.pX ⬝ (mt S n ⬝ d.jX)) + ell D ρ ⬝ᵥ (d.pX *ᵥ (mt S n *ᵥ (d.j0 *ᵥ ratV z))) := by
   unfold simpleSum blockX coefX
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `congrArg (psiE ψ) ((congrArg (· * simpleSum d z n) (incA D).map_one).trans (one_mul _))`.
+-/
 theorem psiBes_one (d : HypDec S S₀ ρ) (z : Fin S₀.rank → D.host.E) (n : GA D S) :
     psiBes ψ d 1 z n = psiE ψ (simpleSum d z n) :=
   congrArg (psiE ψ) ((congrArg (· * simpleSum d z n) (incA D).map_one).trans (one_mul _))
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]`.
+-/
 theorem pX_Z (d : HypDec S S₀ ρ) (y : Fin S₀.rank → AE D) : d.pX *ᵥ (d.j0 *ᵥ y) = 0 := by
   rw [Matrix.mulVec_mulVec, d.pX_j0, Matrix.zero_mulVec]
 
+/- English proof (translation)
+Take `⟨u, hu, b, c, rfl⟩` from `Decomp.flag_decomp d hn`. Use `⟨fun p q hpq => ?_, (u.1 ⬝ b) *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Decomp.mt_flag_jX, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Take `⟨h1, h2⟩` from `(GlobalTheory.UniIndexPrime.mem_uniSub u).1 hu`. Break down `hpq.eq_or_lt with e | e` into its components or cases.
+
+Substitute `e` using the available equality. Rewrite using `[h2, Matrix.one_apply_eq]`. Rewrite using `[h1 p q e, Matrix.one_apply_ne e.ne']`. Rewrite using `[Matrix.mulVec_mulVec, Decomp.flag_unipotent_product_anisotropic_action, Matrix.add_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem flag_act (d : HypDec S S₀ ρ) (y : Fin S₀.rank → AE D) {n : GA D S} (hn : n ∈ flagN d) :
     (∀ p q : Fin ρ, q ≤ p → (d.pX ⬝ (mt S n ⬝ d.jX)) p q = (1 : Mx D ρ ρ) p q) ∧
       ∃ β, mt S n *ᵥ (d.j0 *ᵥ y) = d.j0 *ᵥ y + d.jX *ᵥ β := by
@@ -140,6 +199,13 @@ theorem flag_act (d : HypDec S S₀ ρ) (y : Fin S₀.rank → AE D) {n : GA D S
     · rw [h1 p q e, Matrix.one_apply_ne e.ne']
   · rw [Matrix.mulVec_mulVec, Decomp.flag_unipotent_product_anisotropic_action, Matrix.add_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `Function.ne_iff.1 hz`. Set `b : Mx D ρ S₀.rank` to `Matrix.vecMulVec β (Pi.single l (incA D (z l)⁻¹))`. Use `⟨d.levi 1 * (d.nB b * d.nC 0), (Decomp.mem_flag_iff d).2 ⟨1, one_mem _, b, 0, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Decomp.mt_flag_jX]`. Conclude with `Matrix.mul_one _`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Decomp.flag_unipotent_product_anisotropic_action, Matrix.add_mulVec, ← Matrix.mulVec_mulVec]`. Use `congr 2`. Rewrite using `[Units.val_one, Matrix.one_mul, Matrix.vecMulVec_mulVec, single_dotProduct]`. Establish `: incA D (z l)⁻¹ * ratV z l = 1`. Express the relevant statement in the definitionally equal form `incA D _ * incA D (z l) = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ hl, map_one]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_transl (d : HypDec S S₀ ρ) {z : Fin S₀.rank → D.host.E} (hz : z ≠ 0) (β : Fin ρ → AE D) :
     ∃ n ∈ flagN d, mt S n ⬝ d.jX = d.jX ∧ mt S n *ᵥ (d.j0 *ᵥ ratV z) = d.j0 *ᵥ ratV z + d.jX *ᵥ β := by
   obtain ⟨l, hl⟩ := Function.ne_iff.1 hz
@@ -154,6 +220,11 @@ theorem exists_transl (d : HypDec S S₀ ρ) {z : Fin S₀.rank → D.host.E} (h
       rw [← map_mul, inv_mul_cancel₀ hl, map_one]
     rw [this]; simp
 
+/- English proof (translation)
+Take `⟨u, hu, hu1⟩` from `Decomp.exists_unit (D := D) (T := Matrix.single i j s) (fun p q hpq => by`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hij (not_lt.2 hpq))`. Use `⟨d.levi u * (d.nB 0 * d.nC 0), (Decomp.mem_flag_iff d).2 ⟨u, hu, 0, 0, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Decomp.mt_flag_jX, hu1]`. Rewrite using `[Matrix.mulVec_mulVec, Decomp.flag_unipotent_product_anisotropic_action, Matrix.mul_zero, Matrix.mul_zero, add_zero]`.
+-/
 theorem exists_elem (d : HypDec S S₀ ρ) (y : Fin S₀.rank → AE D) {i j : Fin ρ} (hij : i < j) (s : AE D) :
     ∃ n ∈ flagN d, mt S n ⬝ d.jX = d.jX ⬝ (1 + Matrix.single i j s) ∧ mt S n *ᵥ (d.j0 *ᵥ y) = d.j0 *ᵥ y := by
   obtain ⟨u, hu, hu1⟩ := Decomp.exists_unit (D := D) (T := Matrix.single i j s) (fun p q hpq => by
@@ -164,6 +235,9 @@ theorem exists_elem (d : HypDec S S₀ ρ) (y : Fin S₀.rank → AE D) {i j : F
   · rw [Decomp.mt_flag_jX, hu1]
   · rw [Matrix.mulVec_mulVec, Decomp.flag_unipotent_product_anisotropic_action, Matrix.mul_zero, Matrix.mul_zero, add_zero]
 
+/- English proof (translation)
+Unfold `upSum`. Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Use `split_ifs with e`. Conclude with `Matrix.one_apply_ne fun e' => by subst e'; omega`. Both sides reduce to the same expression.
+-/
 theorem upSum_one : upSum (1 : Mx D ρ ρ) = 0 := by
   unfold upSum
   refine Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => ?_
@@ -171,6 +245,11 @@ theorem upSum_one : upSum (1 : Mx D ρ ρ) = 0 := by
   · exact Matrix.one_apply_ne fun e' => by subst e'; omega
   · rfl
 
+/- English proof (translation)
+Unfold `upSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem upSum_add (A B : Mx D ρ ρ) : upSum (A + B) = upSum A + upSum B := by
   unfold upSum
   rw [← Finset.sum_add_distrib]
@@ -179,6 +258,9 @@ theorem upSum_add (A B : Mx D ρ ρ) : upSum (A + B) = upSum A + upSum B := by
   refine Finset.sum_congr rfl fun q _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem ⟨_, rfl⟩ ⟨_, rfl⟩`.
+-/
 theorem entry_rat (d : HypDec S S₀ ρ) (d' : HypDec S S₁ ρ) (p q : Fin ρ) : (d'.pX ⬝ d.jX) p q ∈ (incA D).range := by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem ⟨_, rfl⟩ ⟨_, rfl⟩
@@ -187,6 +269,11 @@ section Two
 
 variable {d : HypDec S S₀ ρ} {d' : HypDec S S₁ ρ} {z : Fin S₀.rank → D.host.E} {z' : Fin S₁.rank → D.host.E}
 
+/- English proof (translation)
+Use extensionality with `r i`. Take `⟨n, hn, -, h2⟩` from `exists_transl d hz (Pi.single i 1)`. Take `⟨β, hβ⟩` from `(flag_act d' (ratV z') (hN ▸ hn)).2`. Rewrite `hβ` using `[← hZ, h2, add_right_inj]`. Establish `e : d'.jX *ᵥ (d'.pX *ᵥ (d.jX *ᵥ Pi.single i 1)) = d.jX *ᵥ Pi.single i 1`.
+
+Rewrite using `[hβ, Matrix.mulVec_mulVec β, d'.pX_jX, Matrix.one_mulVec]`. Rewrite `e` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Conclude with `(congrFun e r).symm`.
+-/
 theorem jX_eq (hz : z ≠ 0) (hZ : d.j0 *ᵥ ratV z = d'.j0 *ᵥ ratV z') (hN : flagN d = flagN d') :
     d.jX = d'.jX ⬝ (d'.pX ⬝ d.jX) := by
   ext r i
@@ -198,6 +285,13 @@ theorem jX_eq (hz : z ≠ 0) (hZ : d.j0 *ᵥ ratV z = d'.j0 *ᵥ ratV z') (hN : 
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mulVec_single_one, Matrix.mulVec_single_one] at e
   exact (congrFun e r).symm
 
+/- English proof (translation)
+Introduce `i _`. Establish `hl : ∀ w : Fin ρ → AE D, ell D ρ ⬝ᵥ w = w j` using `fun w => last_dot w j hj`. Use `eq_of_psiE hψ (entry_rat d d' j i) (by split_ifs; exacts [one_mem _, zero_mem _]) fun s => ?_` and prove the remaining obligations. Take `⟨n, hn, h1, h2⟩` from `exists_transl d hz (Pi.single i s)`. Establish `h` using `hc n hn`.
+
+Establish `h1' : mt S n ⬝ d'.jX = d'.jX` using `by conv_lhs => rw [jX_eq hz' hZ.symm hN.symm, ← Matrix.mul_assoc, h1, ← jX_eq hz' hZ.symm hN.symm]`. Establish `e1 : simpleSum d z n = s * if i = j then 1 else 0`. Rewrite using `[simpleSum_eq, h1, h2, Matrix.mulVec_add, pX_Z, hl, d.pX_jX, upSum_one, mulVec_single_at, d.pX_jX, Matrix.one_apply]`. Conclude with `congrArg (s * ·) (if_congr eq_comm rfl rfl)`. Establish `e2 : simpleSum d' z' n = s * (d'.pX ⬝ d.jX) j i`.
+
+Rewrite using `[simpleSum_eq, h1', ← hZ, h2, Matrix.mulVec_add, hZ, pX_Z, hl, d'.pX_jX, upSum_one, mulVec_single_at]`. Rewrite `h` using `[psiBes_one, psiBes_one, e1, e2]`. Conclude with `h.symm`.
+-/
 theorem last_row (hψ : ∃ s, psiE ψ s ≠ 1) (hz : z ≠ 0) (hz' : z' ≠ 0) (hZ : d.j0 *ᵥ ratV z = d'.j0 *ᵥ ratV z')
     (hN : flagN d = flagN d') (hc : ∀ n ∈ flagN d, psiBes ψ d 1 z n = psiBes ψ d' 1 z' n) (j : Fin ρ) (hj : j.1 + 1 = ρ) :
     UniRow (d'.pX ⬝ d.jX) j := by
@@ -217,6 +311,17 @@ theorem last_row (hψ : ∃ s, psiE ψ s ≠ 1) (hz : z ≠ 0) (hz' : z' ≠ 0) 
   exact h.symm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `i j hij`. Establish `hV` using `jX_eq hz' hZ.symm hN.symm`. Establish `key : ∀ (s : AE D) (n : GA D S), mt S n ⬝ d.jX = d.jX ⬝ (1 + Matrix.single i j s) → d'.pX ⬝ (mt S n ⬝ d'.jX) = 1 + Matrix.of fun p q => s * ((d'.pX ⬝ d.jX) p i * (d.pX ⬝ d'.jX) j q)` using `fun s n h1 => by conv_lhs => rw [hV, ← Matrix.mul_assoc (mt S n), h1, Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, ← hV, Matrix.mul_add, d'.pX_jX, Matrix.mul_assoc, ← Matrix.mul_assoc d'.pX, mul_single_mul]`. Use `⟨fun p q hpq => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h1, -⟩` from `exists_elem d (ratV z) hij 1`.
+
+Use `(flag_act d' (ratV z') (hN ▸ hn)).1 p q hpq` as an intermediate fact. Rewrite `this` using `[key 1 n h1]`. Rewrite `this` using `[Matrix.add_apply, add_eq_left, Matrix.of_apply, one_mul]`. Conclude with `this`. Use `eq_of_psiE hψ (sum_mem fun p _ => sum_mem fun q _ => ?_) (by split_ifs; exacts [one_mem _, zero_mem _]) fun s => ?_` and prove the remaining obligations.
+
+Use `split_ifs exacts [mul_mem (entry_rat d d' _ _) (entry_rat d' d _ _), zero_mem _]`. Take `⟨n, hn, h1, h2⟩` from `exists_elem d (ratV z) hij s`. Establish `h` using `hc n hn`. Establish `e1 : simpleSum d z n = s * if j.1 = i.1 + 1 then 1 else 0`. Rewrite using `[simpleSum_eq, h1, h2, pX_Z, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul, upSum_add, upSum_one, zero_tidy]`.
+
+Conclude with `sum_single i j s`. Establish `e2 : simpleSum d' z' n = s * ∑ p : Fin ρ, ∑ q : Fin ρ, (if q.1 = p.1 + 1 then (d'.pX ⬝ d.jX) p i * (d.pX ⬝ d'.jX) j q else 0)`. Rewrite using `[simpleSum_eq, key s n h1, ← hZ, h2, hZ, pX_Z, upSum_add, upSum_one, zero_tidy]`. Conclude with `sum_scal _ s`. Rewrite `h` using `[psiBes_one, psiBes_one, e1, e2]`.
+
+Conclude with `h.symm`.
+-/
 theorem keeps (hψ : ∃ s, psiE ψ s ≠ 1) (hz' : z' ≠ 0) (hZ : d.j0 *ᵥ ratV z = d'.j0 *ᵥ ratV z')
     (hN : flagN d = flagN d') (hc : ∀ n ∈ flagN d, psiBes ψ d 1 z n = psiBes ψ d' 1 z' n) :
     Keeps (d'.pX ⬝ d.jX) (d.pX ⬝ d'.jX) := by
@@ -247,6 +352,11 @@ theorem keeps (hψ : ∃ s, psiE ψ s ≠ 1) (hz' : z' ≠ 0) (hZ : d.j0 *ᵥ ra
     rw [psiBes_one, psiBes_one, e1, e2] at h
     exact h.symm
 
+/- English proof (translation)
+Establish `hc' : ∀ n ∈ flagN d', psiBes ψ d' 1 z' n = psiBes ψ d 1 z n` using `fun n hn => (hc n (hN ▸ hn)).symm`. Establish `hU` using `uniRow_all (keeps hψ hz' hZ hN hc) (keeps hψ hz hZ.symm hN.symm hc') (last_row hψ hz hz' hZ hN hc) (last_row hψ hz' hz hZ.symm hN.symm hc')`. Rewrite using `[jX_eq hz hZ hN, Matrix.mul_apply, Finset.sum_eq_single ⟨0, h0⟩]`. Rewrite using `[hU _ _ le_rfl, if_pos rfl, mul_one]`. Introduce `p _ hp`.
+
+Rewrite using `[hU p ⟨0, h0⟩ (Nat.zero_le _), if_neg hp.symm, mul_zero]`. Conclude with `fun e => absurd (Finset.mem_univ _) e`.
+-/
 theorem first_eq (hψ : ∃ s, psiE ψ s ≠ 1) (hz : z ≠ 0) (hz' : z' ≠ 0) (hZ : d.j0 *ᵥ ratV z = d'.j0 *ᵥ ratV z')
     (hN : flagN d = flagN d') (hc : ∀ n ∈ flagN d, psiBes ψ d 1 z n = psiBes ψ d' 1 z' n) (h0 : 0 < ρ) (r : Fin S.rank) :
     d.jX r ⟨0, h0⟩ = d'.jX r ⟨0, h0⟩ := by

@@ -14,6 +14,9 @@ noncomputable section
 
 namespace ProjSpace
 
+/- English proof (translation)
+Establish `h1 : f.appTop = f.appLE ⊤ ⊤ (f.preimage_top).ge` using `(Scheme.Hom.appLE_eq_app _).symm`. Rewrite using `[h1]`. Conclude with `congr($(Scheme.Hom.appLE_comp_appLE f g U ⊤ ⊤ _ _) s)`.
+-/
 lemma appTop_appLE {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) {U : Z.Opens}
     (e : ⊤ ≤ g ⁻¹ᵁ U) (e' : ⊤ ≤ (f ≫ g) ⁻¹ᵁ U) (s : Γ(Z, U)) :
     f.appTop (g.appLE U ⊤ e s) = (f ≫ g).appLE U ⊤ e' s := by
@@ -23,6 +26,13 @@ lemma appTop_appLE {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z) {U : Z.Opens
 
 variable {A : Type u} [CommRing A]
 
+/- English proof (translation)
+Establish `hV : O.basicOpen (φ (X z)) = ⊤`. Rewrite using `[hz]`. Conclude with `Scheme.basicOpen_of_isUnit _ isUnit_one`. Establish `ha' : a ∈ grading A N (t • 1)` using `by rwa [smul_eq_mul, mul_one]`. Establish `key` using `ProjHom.corr_fromOfGlobalSections' (grading A N) φ hφ one_pos (X_mem z) ⊤ hV h t a ha'`.
+
+Rewrite `key` using `[hz, map_one, one_pow, mul_one, ProjHom.corr_apply, ProjHom.ι_appTop_eq]`. Establish `key'` using `(⊤ : O.Opens).topIso.commRingCatIsoToRingEquiv.symm.injective key`. Rewrite using `[chartHom_of_mem z ha]`. Use `key'.trans ?_` and prove the remaining obligations. Rewrite using `[show (homOfLE (le_top : (⊤ : O.Opens) ≤ ⊤)).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`.
+
+Both sides reduce to the same expression.
+-/
 lemma appLE_fromOfGlobalSections_chartHom {N : ℕ} {O : Scheme.{u}}
     (φ : MvPolynomial (Fin (N + 1)) A →+* Γ(O, ⊤))
     (hφ : (HomogeneousIdeal.irrelevant (grading A N)).toIdeal.map φ = ⊤) (z : Fin (N + 1))
@@ -42,6 +52,9 @@ lemma appLE_fromOfGlobalSections_chartHom {N : ℕ} {O : Scheme.{u}}
   rw [show (homOfLE (le_top : (⊤ : O.Opens) ≤ ⊤)).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Both sides reduce to the same expression.
+-/
 lemma appLE_congr_hom {X Z : Scheme.{u}} {g g' : X ⟶ Z} (hg : g = g') {U : Z.Opens}
     (e : ⊤ ≤ g ⁻¹ᵁ U) (e' : ⊤ ≤ g' ⁻¹ᵁ U) (s : Γ(Z, U)) :
     g.appLE U ⊤ e s = g'.appLE U ⊤ e' s := by
@@ -60,6 +73,9 @@ def segreZeta (k : Fin (n + 1)) (l : Fin (m + 1)) (a : Fin (n + 1)) (b : Fin (m 
   (segreChart A k l).ι.appLE (segreChart A k l) ⊤ (Scheme.Opens.ι_preimage_self _).ge
     (chartHom (segreIndex n m (k, l)) (X (segreIndex n m (a, b))))
 
+/- English proof (translation)
+Rewrite using `[segreZeta, chartHom_X_self, map_one]`.
+-/
 lemma segreZeta_self (k : Fin (n + 1)) (l : Fin (m + 1)) : segreZeta A k l k l = 1 := by
   rw [segreZeta, chartHom_X_self, map_one]
 
@@ -75,10 +91,16 @@ def retrRing₂ (k : Fin (n + 1)) (l : Fin (m + 1)) :
     MvPolynomial (Fin (m + 1)) A →+* Γ(segreChart A k l, ⊤) :=
   eval₂Hom (segreChartConst A k l) fun b => segreZeta A k l k b
 
+/- English proof (translation)
+The claim follows from `map_irrelevant_eq_top _ k (by rw [retrRing₁, eval₂Hom_X', segreZeta_self]; exact isUnit_one)`.
+-/
 lemma retrRing₁_irrelevant (k : Fin (n + 1)) (l : Fin (m + 1)) :
     (HomogeneousIdeal.irrelevant (grading A n)).toIdeal.map (retrRing₁ A k l) = ⊤ :=
   map_irrelevant_eq_top _ k (by rw [retrRing₁, eval₂Hom_X', segreZeta_self]; exact isUnit_one)
 
+/- English proof (translation)
+The claim follows from `map_irrelevant_eq_top _ l (by rw [retrRing₂, eval₂Hom_X', segreZeta_self]; exact isUnit_one)`.
+-/
 lemma retrRing₂_irrelevant (k : Fin (n + 1)) (l : Fin (m + 1)) :
     (HomogeneousIdeal.irrelevant (grading A m)).toIdeal.map (retrRing₂ A k l) = ⊤ :=
   map_irrelevant_eq_top _ l (by rw [retrRing₂, eval₂Hom_X', segreZeta_self]; exact isUnit_one)
@@ -92,6 +114,9 @@ def segreRetr (k : Fin (n + 1)) (l : Fin (m + 1)) : (segreChart A k l).toScheme 
       ext r
       simp [retrRing₁, retrRing₂])
 
+/- English proof (translation)
+Rewrite using `[segreOpen, Scheme.Hom.preimage_inf, ← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, segreRetr, pullback.lift_fst, pullback.lift_snd, Proj.fromOfGlobalSections_preimage_basicOpen _ _ _ one_pos (X_mem k), Proj.fromOfGlobalSections_preimage_basicOpen _ _ _ one_pos (X_mem l) …`.
+-/
 lemma segreRetr_preimage (k : Fin (n + 1)) (l : Fin (m + 1)) :
     segreRetr A k l ⁻¹ᵁ segreOpen A k l = ⊤ := by
   rw [segreOpen, Scheme.Hom.preimage_inf, ← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage,
@@ -101,12 +126,22 @@ lemma segreRetr_preimage (k : Fin (n + 1)) (l : Fin (m + 1)) :
     retrRing₁, retrRing₂, eval₂Hom_X', eval₂Hom_X', segreZeta_self,
     Scheme.basicOpen_of_isUnit _ isUnit_one, top_inf_eq]
 
+/- English proof (translation)
+Rewrite using `[ι_segre, segreLocal, Proj.fromOfGlobalSections_preimage_basicOpen _ _ _ one_pos (X_mem _), segreRing_X, segreU_self, segreV_self, mul_one]`. Conclude with `Scheme.basicOpen_of_isUnit _ isUnit_one`.
+-/
 lemma ι_segre_preimage_segreChart (k : Fin (n + 1)) (l : Fin (m + 1)) :
     ((segreOpen A k l).ι ≫ segre A n m) ⁻¹ᵁ segreChart A k l = ⊤ := by
   rw [ι_segre, segreLocal, Proj.fromOfGlobalSections_preimage_basicOpen _ _ _ one_pos (X_mem _),
     segreRing_X, segreU_self, segreV_self, mul_one]
   exact Scheme.basicOpen_of_isUnit _ isUnit_one
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨⟨i, j⟩, hij⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show x ∈ ⨆ c : Fin (n + 1) × Fin (m + 1), segreOpen A c.1 c.2 by`. Rewrite using `[iSup_segreOpen]`. Use the proof step `trivial)`. Establish `hx' : (⟨x, hij⟩ : segreOpen A i j) ∈ (segreOpen A i j).toScheme.basicOpen (segreRing A i j (X (segreIndex n m (k, l))))`.
+
+Rewrite using `[← Proj.fromOfGlobalSections_preimage_basicOpen _ _ (segreRing_irrelevant A i j) one_pos (X_mem _), ← segreLocal, ← ι_segre]`. Conclude with `hx`. Rewrite `hx'` using `[segreRing_X, Scheme.basicOpen_mul, segreU, segreV, Scheme.basicOpen_appLE, Scheme.basicOpen_appLE, basicOpen_chartHom_X, basicOpen_chartHom_X]`. Conclude with `⟨hx'.1.2.2, hx'.2.2.2⟩`. Establish `: (⟨x, hx⟩ : segreOpen A k l) ∈ ((segreOpen A k l).ι ≫ segre A n m) ⁻¹ᵁ segreChart A k l`.
+
+Rewrite using `[ι_segre_preimage_segreChart]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `this`.
+-/
 lemma preimage_segreChart (k : Fin (n + 1)) (l : Fin (m + 1)) :
     segre A n m ⁻¹ᵁ segreChart A k l = segreOpen A k l := by
   refine le_antisymm (fun x hx => ?_) (fun x hx => ?_)
@@ -127,6 +162,13 @@ lemma preimage_segreChart (k : Fin (n + 1)) (l : Fin (m + 1)) :
       trivial
     exact this
 
+/- English proof (translation)
+Establish `e₁` using `eq_fromOfGlobalSections_of_preimage_eq_top (V.ι ≫ pullback.fst (toSpecBase A n) (toSpecBase A m)) k (top_unique (top_le_preimage_ι_comp _ _ hk))`. Establish `e₂` using `eq_fromOfGlobalSections_of_preimage_eq_top (V.ι ≫ pullback.snd (toSpecBase A n) (toSpecBase A m)) l (top_unique (top_le_preimage_ι_comp _ _ hl))`. Establish `h : (V.ι ≫ pullback.fst (toSpecBase A n) (toSpecBase A m)) ≫ toSpecBase A n = (V.ι ≫ pullback.snd (toSpecBase A n) (toSpecBase A m)) ≫ toSpecBase A m`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Use `conv_lhs at h => rw [e₁]`.
+
+Use `conv_rhs at h => rw [e₂]`. Rewrite `h` using `[fromOfGlobalSections_toSpecBase, fromOfGlobalSections_toSpecBase]`. Establish `key : ∀ φ : A →+* Γ(V, ⊤), (Scheme.ΓSpecIso (.of A)).inv ≫ (V.toScheme.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop = CommRingCat.ofHom φ`. Introduce `φ`. Use `ProjHom.specCorr_comp V.toScheme.toSpecΓ (CommRingCat.ofHom φ : CommRingCat.of A ⟶ Γ(V.toScheme, ⊤))` as an intermediate fact.
+
+Rewrite `this` using `[Scheme.toSpecΓ_appTop, Iso.inv_hom_id]`. Conclude with `this.trans (Category.comp_id _)`. Establish `h'` using `congrArg (fun g => (Scheme.ΓSpecIso (.of A)).inv ≫ Scheme.Hom.appTop g) h`. Establish `hφ` using `(key _).symm.trans (h'.trans (key _))`. Conclude with `congr(($hφ).hom r)`.
+-/
 lemma const_compat (k : Fin (n + 1)) (l : Fin (m + 1)) (V : (prodP A n m).Opens)
     (hk : V ≤ pullback.fst (toSpecBase A n) (toSpecBase A m) ⁻¹ᵁ Proj.basicOpen (grading A n) (X k))
     (hl : V ≤ pullback.snd (toSpecBase A n) (toSpecBase A m) ⁻¹ᵁ Proj.basicOpen (grading A m) (X l))
@@ -158,6 +200,11 @@ lemma const_compat (k : Fin (n + 1)) (l : Fin (m + 1)) (V : (prodP A n m).Opens)
   have hφ := (key _).symm.trans (h'.trans (key _))
   exact congr(($hφ).hom r)
 
+/- English proof (translation)
+Establish `hσ : (segre A n m).resLE (segreChart A k l) (segreOpen A k l) (preimage_segreChart A k l).ge ≫ (segreChart A k l).ι = segreLocal A k l`. Rewrite using `[Scheme.Hom.resLE_comp_ι, ι_segre]`. Establish `hL : ⊤ ≤ segreLocal A k l ⁻¹ᵁ segreChart A k l`. Rewrite using `[← ι_segre]`. Conclude with `(ι_segre_preimage_segreChart A k l).ge`.
+
+Rewrite using `[appTop_appLE _ _ _ (by rw [hσ]; exact hL), appLE_congr_hom hσ _ hL]`. Use `appLE_fromOfGlobalSections_chartHom (segreRing A k l) (segreRing_irrelevant A k l) _ ?_ hL hp` and prove the remaining obligations. Rewrite using `[segreRing_X, segreU_self, segreV_self, mul_one]`.
+-/
 lemma segre_resLE_appTop_chart (k : Fin (n + 1)) (l : Fin (m + 1))
     {t : ℕ} {p : MvPolynomial (Fin (n * m + n + m + 1)) A} (hp : p ∈ grading A _ t) :
     ((segre A n m).resLE (segreChart A k l) (segreOpen A k l) (preimage_segreChart A k l).ge).appTop
@@ -173,6 +220,15 @@ lemma segre_resLE_appTop_chart (k : Fin (n + 1)) (l : Fin (m + 1))
   refine appLE_fromOfGlobalSections_chartHom (segreRing A k l) (segreRing_irrelevant A k l) _ ?_ hL hp
   rw [segreRing_X, segreU_self, segreV_self, mul_one]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, segreRetr, pullback.lift_fst, ProjHom.comp_fromOfGlobalSections _ _ (fun a => X a) (fun _ => 1) (fun _ => one_pos) (fun a => X_mem a) iSup_basicOpen_X, eq_fromOfGlobalSections_of_preimage_eq_top ((segreOpen A k l).ι ≫ pullback.fst (toSpecBase A n) (toSpecBase A m …`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, retrRing₁, eval₂Hom_C, segreChartConst]`.
+
+Rewrite using `[segre_resLE_appTop_chart A k l (isHomogeneous_C _ r), segreRing, eval₂Hom_C]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, retrRing₁, eval₂Hom_X', segreZeta]`. Rewrite using `[segre_resLE_appTop_chart A k l (X_mem _), segreRing_X, segreV_self, mul_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[Category.assoc, segreRetr, pullback.lift_snd, ProjHom.comp_fromOfGlobalSections _ _ (fun b => X b) (fun _ => 1) (fun _ => one_pos) (fun b => X_mem b) iSup_basicOpen_X, eq_fromOfGlobalSections_of_preimage_eq_top ((segreOpen A k l).ι ≫ pullback.snd (toSpecBase A n) (toSpecBase A m …`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, retrRing₂, eval₂Hom_C, segreChartConst]`. Rewrite using `[segre_resLE_appTop_chart A k l (isHomogeneous_C _ r), segreRing, eval₂Hom_C]`.
+
+Conclude with `const_compat A k l _ inf_le_left inf_le_right r`. Simplify using `only [RingHom.comp_apply, retrRing₂, eval₂Hom_X', segreZeta]`. Rewrite using `[segre_resLE_appTop_chart A k l (X_mem _), segreRing_X, segreU_self, one_mul]`. Both sides reduce to the same expression.
+-/
 lemma segre_resLE_comp_segreRetr (k : Fin (n + 1)) (l : Fin (m + 1)) :
     (segre A n m).resLE (segreChart A k l) (segreOpen A k l) (preimage_segreChart A k l).ge ≫
       segreRetr A k l = (segreOpen A k l).ι := by

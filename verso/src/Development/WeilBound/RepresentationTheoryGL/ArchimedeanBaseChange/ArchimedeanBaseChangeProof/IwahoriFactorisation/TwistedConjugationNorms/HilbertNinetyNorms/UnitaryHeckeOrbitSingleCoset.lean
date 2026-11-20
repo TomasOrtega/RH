@@ -16,6 +16,11 @@ namespace PositivityTheory.Rg.Bc.ArchbcB.B.M4
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨p₀, u, h1, -, h3, h4, h5⟩` from `s2raw hU w hw n b hb ϖ hϖ l hl γ hP`. Take `⟨-, hKc, hI, -, -⟩` from `GlobalTheory.T.unitary_level_subgroup_properties E hU w hw n b hb ϖ l hϖ hl`. Establish `hIc : IsCompact (iwU n w b : Set (UL n w))` using `(GlobalTheory.T.unitary_iwahori_facts E hU w hw n b hb).2.2.1`. Establish `hC : IsCompact (((iwU n w b).map (MulAut.conj p₀).toMonoidHom : Subgroup (UL n w)) : Set (UL n w))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hIc.image ((continuous_const.mul continuous_id).mul continuous_const)`. Use `⟨⟨p₀, h3, h4.le.trans inf_le_right⟩, GlobalTheory.T.twisted_centralizer_compact_part (UL n w) (MonoidHom.id _) continuous_id _ _ _ γ hKc hI.1 hC h4, fun i => (u i : w.adicCompletion E), h5, fun i => ⟨(u i).ne_zero, h1 i⟩⟩` and prove the remaining obligations.
+-/
 theorem unitary_hecke_orbit_single_coset (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n w) (hb : IsWitt n w b)
     (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (l : Fin (n / 2) → ℤ) (hl : Cone l) (γ : UL n w)
     (hP : ∃ p : UL n w, fU n w b ϖ l (p⁻¹ * γ * p) ≠ 0) :

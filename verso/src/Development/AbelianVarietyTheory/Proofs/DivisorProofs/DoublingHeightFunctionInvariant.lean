@@ -16,6 +16,9 @@ namespace GlobalTheory.ThK.Bot.HgtMul
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hp : e ^ (n + 1) = e` using `IsIdempotentElem.pow_succ_eq n he`. Establish `h1` using `congrArg (fun Y => e * Matrix.det Y) h`. Simplify using `only [Matrix.det_smul, Fintype.card_fin] at h1`. Rewrite `h1` using `[← mul_assoc, ← mul_assoc, ← pow_succ', hp]`. Then use the resulting hypothesis.
+-/
 theorem idem_mul_det {A : Type} [CommRing A] {n : ℕ} {e : A} (he : e * e = e) {M N : Matrix (Fin n) (Fin n) A}
     (h : e • M = e • N) : e * M.det = e * N.det := by
   have hp : e ^ (n + 1) = e := IsIdempotentElem.pow_succ_eq n he
@@ -23,6 +26,11 @@ theorem idem_mul_det {A : Type} [CommRing A] {n : ℕ} {e : A} (he : e * e = e) 
   simp only [Matrix.det_smul, Fintype.card_fin] at h1
   rwa [← mul_assoc, ← mul_assoc, ← pow_succ', hp] at h1
 
+/- English proof (translation)
+Establish `h1` using `idem_mul_one_sub hε`. Establish `h2` using `one_sub_idem hε`. Establish `e1` using `idem_mul_det (e := algebraMap (AF F) A ε) (by rw [← map_mul, hε]) (M := ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) A)) (N := G) (by simp only [algebraMap_smul, smul_add, smul_smul, hε, h1, zero_smul, add_zero])`. Establish `e2` using `idem_mul_det (e := algebraMap (AF F) A (1 - ε)) (by rw [← map_mul, h2]) (M := ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) A)) (N := 1) (by simp only [algebraMap_smul, smul_add, smul_smul, mul_comm (1 - ε) ε, h2, h1, zero_smul, zero_add])`. Rewrite `e2` using `[Matrix.det_one]`.
+
+Rewrite using `[Algebra.smul_def ε G.det, Algebra.smul_def (1 - ε) (1 : A), ← e1, ← e2, ← add_mul, ← map_add, add_sub_cancel, map_one, one_mul]`.
+-/
 theorem det_idem {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} {ε : AF F} (hε : ε * ε = ε)
     (G : Matrix (Fin n) (Fin n) A) :
     (ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) A)).det = ε • G.det + (1 - ε) • (1 : A) := by
@@ -38,6 +46,9 @@ theorem det_idem {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} {ε : AF F
   rw [Algebra.smul_def ε G.det, Algebra.smul_def (1 - ε) (1 : A), ← e1, ← e2, ← add_mul, ← map_add, add_sub_cancel,
     map_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← blkMat_one (finSumFinEquiv (m := n) (n := n))]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := finSumFinEquiv.surjective a <;> obtain ⟨b | b, rfl⟩ := finSumFinEquiv.surjective b <;>`. Simplify using `only [blkMat, Matrix.add_apply, Matrix.smul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, smul_zero, add_zero]`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem blkMat_idem {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (ε : AF F) (G : Matrix (Fin n) (Fin n) A) :
     ε • blkMat finSumFinEquiv G (1 : Matrix (Fin n) (Fin n) A) + (1 - ε) • (1 : Matrix (Fin (n + n)) (Fin (n + n)) A) =
       blkMat finSumFinEquiv (ε • G + (1 - ε) • 1) 1 := by
@@ -49,6 +60,9 @@ theorem blkMat_idem {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (ε : A
       Matrix.zero_apply, smul_zero, add_zero]
   rw [← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [leviMat, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.submatrix_apply, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem leviMat_lin {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (a b : AF F)
     (M N : Matrix (Fin (n + n)) (Fin (n + n)) A) :
     leviMat finSumFinEquiv (a • M + b • N) = a • leviMat finSumFinEquiv M + b • leviMat finSumFinEquiv N := by
@@ -57,6 +71,9 @@ theorem leviMat_lin {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (a b : 
     Matrix.submatrix_apply, smul_add]
   abel
 
+/- English proof (translation)
+Rewrite `hM`, `hN`, the goal using `[keepsDiag_iff]`. Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply]`. Rewrite using `[add_add_add_comm, ← smul_add, ← smul_add, hM, hN, smul_add, smul_add, add_add_add_comm]`.
+-/
 theorem keepsDiag_lin {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (a b : AF F)
     {M N : Matrix (Fin (n + n)) (Fin (n + n)) A} (hM : KeepsDiag finSumFinEquiv M) (hN : KeepsDiag finSumFinEquiv N) :
     KeepsDiag finSumFinEquiv (a • M + b • N) := by
@@ -65,6 +82,13 @@ theorem keepsDiag_lin {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} (a b 
   simp only [Matrix.add_apply, Matrix.smul_apply]
   rw [add_add_add_comm, ← smul_add, ← smul_add, hM, hN, smul_add, smul_add, add_add_add_comm]
 
+/- English proof (translation)
+Establish `h1 : KeepsDiag finSumFinEquiv (1 : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E))`. Rewrite using `[← blkMat_one (finSumFinEquiv (m := n) (n := n))]`. Conclude with `(keepsDiag_blkMat _).2 rfl`. Establish `h2 : leviMat finSumFinEquiv (1 : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)) = 1`. Rewrite using `[← blkMat_one (finSumFinEquiv (m := n) (n := n))]`.
+
+Conclude with `leviMat_blkMat _ _ _`. Establish `hp : idemU σ J ε hε p ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F J)).subtype` using `mem_siegelOf.2 (keepsDiag_lin ε (1 - ε) (mem_siegelOf.1 p.2) h1)`. Rewrite using `[map_mul]`. Use `(hI.hgtOf_mul ⟨_, hp⟩ hk).trans (congrArg _ (Units.ext ?_))` and prove the remaining obligations. Rewrite using `[val_idemUnit, val_aOf, val_aOf, ← det_idem hε, ← h2, ← leviMat_lin]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hgt_idemU {n : ℕ} {J : Matrix (Fin (n + n)) (Fin (n + n)) E} {K₂ : Subgroup (UA σ J)}
     (hI : IwasawaOf finSumFinEquiv (UG (cA σ) (incM F J)).subtype (absE F E) K₂) {ε : AF F} (hε : ε * ε = ε)
     (p : siegelOf finSumFinEquiv (UG (cA σ) (incM F J)).subtype) {k : UA σ J} (hk : idemU σ J ε hε k ∈ K₂) :
@@ -81,6 +105,9 @@ theorem hgt_idemU {n : ℕ} {J : Matrix (Fin (n + n)) (Fin (n + n)) E} {K₂ : S
   rw [val_idemUnit, val_aOf, val_aOf, ← det_idem hε, ← h2, ← leviMat_lin]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mat (i (idemU σ X.J ε hε g, 1)) = ε • mat (i (g, 1)) + (1 - ε) • 1`. Rewrite using `[hD.emb, hD.emb]`. Conclude with `(blkMat_idem ε (mat g)).symm`.
+-/
 theorem idemU_emb {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + n)}
     {i : UA σ X.J × UA σ X.J →* UA σ X₂.J} {K₂ : Subgroup (UA σ X₂.J)} (hD : IsDbl B X X₂ i K₂) {ε : AF F}
     (hε : ε * ε = ε) (g : UA σ X.J) : i (idemU σ X.J ε hε g, 1) = idemU σ X₂.J ε hε (i (g, 1)) := by
@@ -89,6 +116,11 @@ theorem idemU_emb {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + 
   rw [hD.emb, hD.emb]
   exact (blkMat_idem ε (mat g)).symm
 
+/- English proof (translation)
+Establish `hk'` using `(hK k).1 hk`. Establish `e1 : mat (i (k, 1)) = blkMat finSumFinEquiv (mat k) 1` using `hD.emb k 1`. Establish `e2 : mat (i (k, 1))⁻¹ = blkMat finSumFinEquiv (mat k⁻¹) 1`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Conclude with `hD.emb k⁻¹ 1`.
+
+Use `(hD.stab _).2 ⟨fun w => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, hD.maj, blkMat_map _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)] show _ * _ = _ * _`. Rewrite using `[blkMat_mul, blkMat_mul, (hk'.1 w).eq, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[e1, e2]`. Conclude with `⟨GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).1) hz, GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).2) hz⟩`.
+-/
 theorem emb_mem {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + n)}
     {i : UA σ X.J × UA σ X.J →* UA σ X₂.J} {K₂ : Subgroup (UA σ X₂.J)} (hD : IsDbl B X X₂ i K₂)
     {K : Subgroup (UA σ X.J)} (hK : IsStab B K) {k : UA σ X.J} (hk : k ∈ K) : i (k, 1) ∈ K₂ := by
@@ -104,6 +136,11 @@ theorem emb_mem {B : Base F E} {n : ℕ} {X : Spc F E n} {X₂ : Spc F E (n + n)
     exact ⟨GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).1) hz,
       GlobalTheory.DefSkewStab.blkMat_mulVec_mem hD.lat (fun y hy => (hk'.2 y hy).2) hz⟩
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.ThK.ConeEulerChr.chr_abs_eq_finprod (1 : Chr F E) continuous_const l 1).2`. Simplify using `only [MonoidHom.one_apply, Circle.coe_one, one_mul, pow_one] at h1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := T) _ (fun v hv => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv (by simp only [h v hc]; simp))] at h1`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem absE_eq_prod (l : (AE F E)ˣ) (T : Finset (Pl F)) (h : ∀ v ∉ T, absE F E (unitAt E v l) = 1) :
     absE F E l = absE F E (unitArch F E l) * ∏ v ∈ T, absE F E (unitAt E v l) := by
   have h1 := (GlobalTheory.ThK.ConeEulerChr.chr_abs_eq_finprod (1 : Chr F E) continuous_const l 1).2
@@ -113,6 +150,13 @@ theorem absE_eq_prod (l : (AE F E)ˣ) (T : Finset (Pl F)) (h : ∀ v ∉ T, absE
     exact hv (by simp only [h v hc]; simp))] at h1
   exact_mod_cast h1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n r s' X _ _ X₂ i K₂ hD K hK`. Establish `h1 : ∀ k ∈ K, hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (k, 1)) = 1` using `fun k hk => IsIwasawa.iwAbs_of_mem hD.iwa (emb_mem hD hK hk)`. Use `⟨h1, fun T g hg => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, e⟩` from `hD.iwa.1 (i (g, 1))`. Take `⟨hkv, hki⟩` from `StabComp.comp_mem_of_isStab F E σ B _ X₂ K₂ hD.stab k hk`.
+
+Establish `hv : ∀ v, hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (compAt σ X.J v g, 1)) = absE F E (unitAt E v (aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype p))` using `fun v => by`. Rewrite using `[compAt, idemU_emb hD, e]`. Conclude with `hgt_idemU hD.iwa _ p (hkv v)`. Establish `hi : hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (compArch σ X.J g, 1)) = absE F E (unitArch F E (aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype p))`. Rewrite using `[compArch, idemU_emb hD, e]`.
+
+Conclude with `hgt_idemU hD.iwa _ p hki`. Rewrite using `[hi, Finset.prod_congr rfl fun v _ => hv v, e, hD.iwa.hgtOf_mul p hk]`. Conclude with `absE_eq_prod _ T fun v hT => (hv v).symm.trans (h1 _ (hg v hT))`.
+-/
 theorem hgt_one_and_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n r s' : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s' →
     ∀ (X₂ : Spc F E (n + n)) (i : UA σ X.J × UA σ X.J →* UA σ X₂.J) (K₂ : Subgroup (UA σ X₂.J)), IsDbl B X X₂ i K₂ →
     ∀ K : Subgroup (UA σ X.J), IsStab B K → (∀ k ∈ K, hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (k, 1)) = 1) ∧

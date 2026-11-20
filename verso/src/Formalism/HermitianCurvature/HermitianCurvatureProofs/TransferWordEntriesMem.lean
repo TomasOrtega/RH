@@ -39,8 +39,18 @@ section Words
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
 variable {𝒜 : StarSubalgebra ℂ A}
 
+/- English proof (translation)
+Introduce `i j` and use `h j i`.
+-/
 theorem entries_mem_transpose {M : M2 (SlopeTestRemainingChoices S A)} (h : E2 𝒜 M) : E2 𝒜 Mᵀ := fun i j => h j i
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Introduce `a b`. Use `show io (QQ Y a b) ∈ entSub 𝒜`. Conclude with `io_mem (hQ Y hY a b)`.
+
+Consider the case `cons l w ih`. Distinguish the cases in `hp : l.plus`. Rewrite using `[TTw, if_pos hp]`. Conclude with `entries_mem_mul ih (reflection_entries_mem _ _)`. Rewrite using `[TTw, if_neg hp]`.
+
+Conclude with `entries_mem_mul (reflection_transpose_entries_mem _ _) ih`.
+-/
 theorem transfer_word_entries_mem (QQ : ℂ → M2 A) (hQ : ∀ Y : ℂ, star Y = Y → ∀ a b, QQ Y a b ∈ 𝒜) (w : List (Letter ℂ S)) (Y : ℂ)
     (hY : star Y = Y) : E2 𝒜 (TTw QQ w Y) := by
   induction w with
@@ -53,6 +63,11 @@ theorem transfer_word_entries_mem (QQ : ℂ → M2 A) (hQ : ∀ Y : ℂ, star Y 
     · rw [TTw, if_pos hp]; exact entries_mem_mul ih (reflection_entries_mem _ _)
     · rw [TTw, if_neg hp]; exact entries_mem_mul (reflection_transpose_entries_mem _ _) ih
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l w ih`. Rewrite using `[RRw]`. Use `(entSub 𝒜).mul_mem (ih fun l' hl' => hw l' (by simp [hl'])) (ins_mem _ ?_)` and prove the remaining obligations.
+
+Establish `hT` using `transfer_word_entries_mem QQ hQ w l.pt (hw l (by simp))`. Use `split_ifs`. Conclude with `hT`. Conclude with `entries_mem_transpose hT`.
+-/
 theorem rrw_mem (QQ : ℂ → M2 A) (hQ : ∀ Y : ℂ, star Y = Y → ∀ a b, QQ Y a b ∈ 𝒜) (w : List (Letter ℂ S))
     (hw : ∀ l ∈ w, star l.pt = l.pt) : RRw QQ w ∈ entSub 𝒜 := by
   induction w with
@@ -73,11 +88,23 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ha, hb, hc, hd]`.
+-/
 theorem matrix_two_entries_mem {𝒜 : StarSubalgebra ℂ (Pr (RadSp k r z z' π π'))} {a b c d : Pr (RadSp k r z z' π π')}
     (ha : a ∈ 𝒜) (hb : b ∈ 𝒜) (hc : c ∈ 𝒜) (hd : d ∈ 𝒜) : ∀ i j, (!![a, b; c, d] : M2 _) i j ∈ 𝒜 := by
   intro i j
   fin_cases i <;> fin_cases j <;> simp [ha, hb, hc, hd]
 
+/- English proof (translation)
+It suffices to establish `H : ∀ n i, r - i = n → (∀ l : Fin r, i ≤ l.val → L.p l ∈ 𝒜 ∧ L.c l ∈ 𝒜 ∧ L.ci l ∈ 𝒜) → ∀ a b, tprod L Y i a b ∈ 𝒜 from H _ i rfl hS a b`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi _ a b`.
+
+Unfold `tprod`. Rewrite using `[dif_neg (by omega), Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Consider the case `succ n ih`. Introduce `i hi hS a b`. Unfold `tprod`. Rewrite using `[dif_pos (by omega), Matrix.mul_apply]`. Use `sum_mem fun e _ => mul_mem (ih (i + 1) (by omega) (fun l hl => hS l (by omega)) a e) ?_` and prove the remaining obligations.
+
+Take `⟨hp, hc, hci⟩` from `hS ⟨i, by omega⟩ le_rfl`. Establish `h00 : algebraMap ℂ _ Y + L.p ⟨i, by omega⟩ ∈ 𝒜` using `add_mem (𝒜.algebraMap_mem Y) hp`. Apply the tactic sequence `fin_cases e <;> fin_cases b <;> simp [Ts, Formalism.YangianSpanCharacter.T.Tm, site, h00, hc, hci]`.
+-/
 theorem tprod_mem (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (𝒜 : StarSubalgebra ℂ (Pr (RadSp k r z z' π π')))
     (Y : ℂ) (i : ℕ) (hS : ∀ l : Fin r, i ≤ l.val → L.p l ∈ 𝒜 ∧ L.c l ∈ 𝒜 ∧ L.ci l ∈ 𝒜) (a b : Fin 2) :
     tprod L Y i a b ∈ 𝒜 := by
@@ -101,6 +128,11 @@ theorem tprod_mem (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (𝒜 : StarS
     have h00 : algebraMap ℂ _ Y + L.p ⟨i, by omega⟩ ∈ 𝒜 := add_mem (𝒜.algebraMap_mem Y) hp
     fin_cases e <;> fin_cases b <;> simp [Ts, Formalism.YangianSpanCharacter.T.Tm, site, h00, hc, hci]
 
+/- English proof (translation)
+Introduce `Y hY a b`. Unfold `QQi`. Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun e _ => mul_mem ?_ (tprod_mem L 𝒜 Y i.val hS e b)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Use `sum_mem fun f _ => mul_mem ?_ (hQ Y hY f e)` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply]`. Conclude with `star_mem (tprod_mem L 𝒜 (star Y) i.val hS f a)`.
+-/
 theorem QQi_mem (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (𝒜 : StarSubalgebra ℂ (Pr (RadSp k r z z' π π'))) (i : Fin (r + 1))
     (hQ : ∀ Y : ℂ, star Y = Y → ∀ a b, st.QQ Y a b ∈ 𝒜)
@@ -129,6 +161,11 @@ section Top
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Introduce `w hw i c hc x y hx hy`. Establish `hRR : RRi L st i w ∈ entSub (presAlg (U i))` using `rrw_mem (QQi L st i) (QQi_mem L st _ i (hQ i) (hS i)) w hw.1.2.1`. Establish `hu : ∀ a, act (RRi L st i w) x a ∈ U i` using `fun a => (U i).sum_mem fun b _ => (hRR a b).1 _ (hK i (hx b))`. Establish `hv : ∀ a, y a ∈ U i` using `fun a => hK i (hy a)`. Use `⟨fun c' a => ((hI i) c hc _ (hu a) _ (hv a)).1 c', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.mul_sum]`. Conclude with `integrable_finsetSum _ fun a _ => ((hI i) c hc _ (hu a) _ (hv a)).2`.
+-/
 theorem formInt_of_cls (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (μ : Measure (Mt P.k P.r))
     (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π')))

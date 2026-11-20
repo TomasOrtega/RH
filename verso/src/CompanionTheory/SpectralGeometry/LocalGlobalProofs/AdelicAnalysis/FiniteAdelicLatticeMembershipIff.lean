@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.SW.BB.Lat
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.BB NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map_evalV {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (y : Af F ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis (Fv F v) b).repr
@@ -21,12 +24,24 @@ theorem repr_map_evalV {F E : Type} [Field F] [NumberField F] [Field E] [Algebra
       smul_eq_mul, map_mul, AlgHom.commutes]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← nsmul_eq_mul, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`.
+-/
 theorem repr_natCast_mul {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (a : ℕ) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr ((a : R ⊗[F] E) * y) k =
       (a : R) * (Algebra.TensorProduct.basis R b).repr y k := by
   rw [← nsmul_eq_mul, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ d M b a X`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 F)) (p : Fin 1) (i : Fin M) (k : Fin d), (Algebra.TensorProduct.basis (Fv F v) b).repr ((a : Fv F v ⊗[F] E) * projV v X p i) k = ((a : Af F) * cv (Af F) b (X 0) (i, k)) v`. Introduce `v p i k`. Take `rfl : p = 0` from `Subsingleton.elim _ _`. Rewrite using `[repr_natCast_mul]`.
+
+Establish `h` using `repr_map_evalV b v (X 0 i) k`. Simplify using `only [projV, h, cv]`. Establish `h2 : ((a : Af F) * (Algebra.TensorProduct.basis (Af F) b).repr (X 0 i) k) v = evalV F v ((a : Af F) * (Algebra.TensorProduct.basis (Af F) b).repr (X 0 i) k)` using `rfl`. Rewrite using `[h2, map_mul, map_natCast]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `h ⟨i, k⟩ v`. Rewrite using `[← key v 0 i k]`. Conclude with `h v 0 i k`. Introduce `h v p i k`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.basis (Fv F v) b).repr ((a : Fv F v ⊗[F] E) * projV v X p i) k ∈ _`.
+
+Rewrite using `[key v p i k]`. Conclude with `h (i, k) v`.
+-/
 theorem natCast_mul_mem_latV_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     (d M : ℕ) (b : Module.Basis (Fin d) F E) (a : ℕ) (X : Fin 1 → Fin M → Af F ⊗[F] E),
     (∀ v, (fun p i => (a : Fv F v ⊗[F] E) * projV v X p i) ∈ latV b v) ↔

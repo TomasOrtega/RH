@@ -20,6 +20,9 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def blockSizes₂ (N i : ℕ) (j : Fin (i + 2)) : ℕ := if (j : ℕ) ≤ i then 1 else N - (i + 1)
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [blockSizes₂, Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[Finset.sum_congr rfl fun j _ => if_pos (Nat.le_of_lt_succ j.2), if_neg (by omega)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blockSizes_sum {N i : ℕ} (h : i + 1 ≤ N) : ∑ j, blockSizes₂ N i j = N := by
   rw [Fin.sum_univ_castSucc]
   simp only [blockSizes₂, Fin.coe_castSucc, Fin.val_last]

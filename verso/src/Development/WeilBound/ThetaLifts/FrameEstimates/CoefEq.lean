@@ -10,12 +10,18 @@ open scoped TensorProduct NNReal ENNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using h.lt_top`.
+-/
 theorem memLp_two_of_lintegral {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ}
     (hm : AEStronglyMeasurable f μ) (h : ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ ≠ ⊤) : MemLp f 2 μ := by
   refine ⟨hm, ?_⟩
   rw [eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]
   simpa using h.lt_top
 
+/- English proof (translation)
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x‖ ^ 2) (Eventually.of_forall fun x => by positivity) (hm.norm.pow 2)]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+-/
 theorem integral_sq_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ} (hm : AEStronglyMeasurable f μ) :
     ∫ x, ‖f x‖ ^ 2 ∂μ = (∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ).toReal := by
   rw [integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x‖ ^ 2) (Eventually.of_forall fun x => by positivity)
@@ -24,12 +30,20 @@ theorem integral_sq_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X �
   refine lintegral_congr fun x => ?_
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
+/- English proof (translation)
+Simplify using `only [← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, map_add, map_sub, map_mul, Complex.conj_I]`. Take the linear combination `(a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / 2 * Complex.I_mul_I`.
+-/
 theorem polar_pt (a b : ℂ) : a * (starRingEnd ℂ) b =
     (1 / 4 : ℂ) * (((‖a + b‖ ^ 2 : ℝ) : ℂ) - ((‖a - b‖ ^ 2 : ℝ) : ℂ) +
       (Complex.I * ((‖a + Complex.I * b‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖a - Complex.I * b‖ ^ 2 : ℝ) : ℂ))) := by
   simp only [← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, map_add, map_sub, map_mul, Complex.conj_I]
   linear_combination (a * (starRingEnd ℂ) b - b * (starRingEnd ℂ) a) / 2 * Complex.I_mul_I
 
+/- English proof (translation)
+Establish `h1` using `hf.add hg`. Establish `h2` using `hf.sub hg`. Establish `h3` using `hf.add (hg.const_smul Complex.I)`. Establish `h4` using `hf.sub (hg.const_smul Complex.I)`. Establish `I : ∀ {k : X → ℂ}, MemLp k 2 μ → Integrable (fun x => ((‖k x‖ ^ 2 : ℝ) : ℂ)) μ` using `fun hk => ((memLp_two_iff_integrable_sq_norm hk.1).1 hk).ofReal`.
+
+Rewrite using `[← integral_sq_eq h1.1, ← integral_sq_eq h2.1, ← integral_sq_eq h3.1, ← integral_sq_eq h4.1, ← integral_complex_ofReal, ← integral_complex_ofReal, ← integral_complex_ofReal, ← integral_complex_ofReal, ← integral_const_mul, ← integral_const_mul, ← integral_sub (I h1) (I h2), ← int …`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => polar_pt (f x) (g x))`. Conclude with `(I h1).sub (I h2)`. Conclude with `((I h3).const_mul _).sub ((I h4).const_mul _)`.
+-/
 theorem polar_int {X : Type} [MeasurableSpace X] {μ : Measure X} {f g : X → ℂ} (hf : MemLp f 2 μ) (hg : MemLp g 2 μ) :
     ∫ x, f x * (starRingEnd ℂ) (g x) ∂μ =
     (1 / 4 : ℂ) * (((∫⁻ x, ‖(f + g) x‖ₑ ^ 2 ∂μ).toReal : ℂ) - ((∫⁻ x, ‖(f - g) x‖ₑ ^ 2 ∂μ).toReal : ℂ) +
@@ -52,11 +66,17 @@ theorem polar_int {X : Type} [MeasurableSpace X] {μ : Measure X} {f g : X → �
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `(GlobalTheory.WeilAdm.HaarSplit.continuous_comp_splitE F κ Φ hΦ).comp (GlobalTheory.WeilAdm.HaarSplit.continuous_splitE_symm F κ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem continuous_schA {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : Continuous Φ := by
   have := (GlobalTheory.WeilAdm.HaarSplit.continuous_comp_splitE F κ Φ hΦ).comp
     (GlobalTheory.WeilAdm.HaarSplit.continuous_splitE_symm F κ)
   simpa [Function.comp_def] using this
 
+/- English proof (translation)
+Use `(f.memLp 2 μ).2` as an intermediate fact. Rewrite `this` using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using this.ne`.
+-/
 theorem lintegral_sq_schwartz_gen {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {m : MeasurableSpace V} (hB : BorelSpace V) (μ : Measure V) (hμ : μ.IsAddHaarMeasure) (f : SchwartzMap V ℂ) :
     ∫⁻ z, ‖f z‖ₑ ^ 2 ∂μ ≠ ⊤ := by
@@ -65,12 +85,22 @@ theorem lintegral_sq_schwartz_gen {V : Type} [NormedAddCommGroup V] [NormedSpace
   simpa using this.ne
 
 open scoped Classical in
+/- English proof (translation)
+Establish `h0 : BorelSpace (mixedEmbedding.mixedSpace F)` using `Prod.borelSpace`. Conclude with `lintegral_sq_schwartz_gen Pi.borelSpace _ (GlobalTheory.WeilAdm.HaarSplit.volume_isAddHaar F κ) f`.
+-/
 theorem lintegral_sq_schwartz (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) : ∫⁻ z, ‖f z‖ₑ ^ 2 ≠ ⊤ := by
   have h0 : BorelSpace (mixedEmbedding.mixedSpace F) := Prod.borelSpace
   exact lintegral_sq_schwartz_gen Pi.borelSpace _ (GlobalTheory.WeilAdm.HaarSplit.volume_isAddHaar F κ) f
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (AF F)` using `GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`.
+
+Establish `hc : Continuous (pureA F f g)` using `continuous_schA (Submodule.subset_span ⟨f, g, hg, rfl⟩)`. Take `⟨ν, hν, C, -, hC, -, -, h, -⟩` from `GlobalTheory.WeilAdm.HaarSplit.haar_pure_slice_bounds F κ g hg ⊤ isOpen_univ`. Establish `hf` using `lintegral_sq_schwartz f`. Establish `h0 : MemLp (pureA F f g) 2 ν` using `memLp_two_of_lintegral hc.aestronglyMeasurable (ne_top_of_le_ne_top (ENNReal.mul_ne_top hC hf) (h f))`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul μ ν]`.
+
+Conclude with `h0.smul_measure ENNReal.coe_ne_top`. Consider the case `zero => exact MemLp.zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.const_smul c`.
+-/
 theorem memLp_two_schA (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     MemLp Φ 2 μ := by
   have : BorelSpace (κ → AF F) := ⟨rfl⟩
@@ -89,6 +119,9 @@ theorem memLp_two_schA (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] {Φ : 
   | add x y _ _ hx hy => exact hx.add hy
   | smul c x _ hx => exact hx.const_smul c
 
+/- English proof (translation)
+Establish `hI` using `(schA F κ).smul_mem Complex.I hΨ`. Rewrite using `[polar_int (memLp_two_schA μ (hp _ hΦ)) (memLp_two_schA μ (hp _ hΨ)), polar_int (memLp_two_schA μ hΦ) (memLp_two_schA μ hΨ), ← map_smul, ← map_add, ← map_sub, ← map_add, ← map_sub, hu _ (add_mem hΦ hΨ), hu _ (sub_mem hΦ hΨ), hu _ (add_mem hΦ hI), hu _ (sub_mem hΦ hI)]`.
+-/
 theorem inner_eq_of_unit (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] (T : Module.End ℂ ((κ → AF F) → ℂ))
     (hp : ∀ φ ∈ schA F κ, T φ ∈ schA F κ) (hu : ∀ φ ∈ schA F κ, ∫⁻ x, ‖T φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ)
     {Φ Ψ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) (hΨ : Ψ ∈ schA F κ) :
@@ -98,6 +131,13 @@ theorem inner_eq_of_unit (μ : Measure (κ → AF F)) [μ.IsAddHaarMeasure] (T :
     polar_int (memLp_two_schA μ hΦ) (memLp_two_schA μ hΨ), ← map_smul, ← map_add, ← map_sub, ← map_add, ← map_sub,
     hu _ (add_mem hΦ hΨ), hu _ (sub_mem hΦ hΨ), hu _ (add_mem hΦ hI), hu _ (sub_mem hΦ hI)]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ Φ₁ h₁ Φ₂ h₂ g h z`. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Use `set w := mat g⁻¹ * z * (mat h⁻¹)ᵀ with hw`. Establish `e : actAB (cA σ) (g, h) w = z`. Establish `a : mat g * mat g⁻¹ = 1` using `Units.mul_inv g.1`.
+
+Establish `b : (mat h⁻¹)ᵀ * (mat h)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, show mat h * mat h⁻¹ = 1 from Units.mul_inv h.1, Matrix.transpose_one]`. Express the relevant statement in the definitionally equal form `mat g * w * (mat h)ᵀ = z`. Rewrite using `[hw, Matrix.mul_assoc (mat g⁻¹), ← Matrix.mul_assoc (mat g), a, Matrix.one_mul, Matrix.mul_assoc, b, Matrix.mul_one]`. Establish `i` using `hs.impl (g, h) w Φ₁ h₁`.
+
+Rewrite `i` using `[e]`. Establish `k` using `inner_eq_of_unit μ (om (g, h)) (hs.pres _) (hs.unit μ hμ _) (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std w Φ₁ h₁) h₂`. Rewrite `k` using `[i]`. Conclude with `k`.
+-/
 theorem coefEq_of : CoefEq := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ Φ₁ h₁ Φ₂ h₂ g h z
   have hs := IsUWeilPair.isUSplitting hP.weil

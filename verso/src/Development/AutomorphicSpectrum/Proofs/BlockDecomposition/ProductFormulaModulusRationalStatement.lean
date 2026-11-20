@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half | exact GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half | (intros; apply GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.product_formula_modulus_rational : ∀ α : ℚˣ, (Function.mulSupport fun v : Pl => mp (Ad3.R.lc v (pri α)) (1 / 2)).Finite ∧
   (∏ᶠ v : Pl, mp (Ad3.R.lc v (pri α)) (1 / 2)) * ((|(α : ℝ)| : ℝ) : ℂ) ^ (1 / 2 : ℂ) = 1 := by
   first | exact @GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half | exact GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half | (intros; apply GlobalTheory.CompanionTheory.RatProdFormula.product_formula_half <;> assumption)

@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.KS
 
+/- English proof (translation)
+Introduce `R _ _ X s hs A _ _ hA L hL hamp k`. Take `⟨hsp, H, hH⟩` from `(GlobalTheory.isProjOver_iff_isProper_and_exists_isAmpleLB s).1 hs`. Establish `p` using `Out.powIsPowGrp A k`. Establish `hrel : Out.RelAmple (Out.powObj A k) (Out.boxLB L p.pr)` using `GlobalTheory.relAmple_boxLB X (Out.powObj A k) A k p L hL hamp`. Take `⟨-, N, hN⟩` from `GlobalTheory.RelAmpleQProj.isProper_and_exists_isAmpleLB (Out.powObj A k) (LB.isLB_linComb hL _ _) hrel hH`.
+
+Set `e : GlobalTheory.KS.pow A k ≅ Out.powObj A k` to `IsLimit.conePointUniqueUpToIso (limit.isLimit _) (Out.powIsLimit A k)`. Establish `hpA : IsProper A.hom` using `hA.proper`. Establish `: IsProper (GlobalTheory.KS.pow A k).hom` using `GlobalTheory.KS.Leray.isProper_pow_hom A hpA k`. Establish `: IsIso e.hom.left` using `((Over.forget X).mapIso e).isIso_hom`. Use `hsp` as an intermediate fact.
+
+Conclude with `(hN.pull_of_isAffineHom e.hom.left).isProjOver _`.
+-/
 theorem isProjOver_pow : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R),
     IsProjOver s → ∀ (A : Over X) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB →
     Out.RelAmple A L → ∀ k : ℕ, IsProjOver ((GlobalTheory.KS.pow A k).hom ≫ s) := by

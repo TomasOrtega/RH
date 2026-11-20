@@ -12,12 +12,18 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk.Semisimple
 
+/- English proof (translation)
+Unfold `GlobalTheory.Hk.dia`. Rewrite using `[sub_eq_add_neg, SlashAction.add_slash, ← _root_.neg_smul, ModularForm.SL_smul_slash, _root_.neg_smul, ← sub_eq_add_neg]`.
+-/
 theorem dia_sub_smul (k : ℤ) (σ : SL(2, ℤ)) (f g : ℍ → ℂ) (c : ℂ) :
     GlobalTheory.Hk.dia k σ (f - c • g) = GlobalTheory.Hk.dia k σ f - c • GlobalTheory.Hk.dia k σ g := by
   unfold GlobalTheory.Hk.dia
   rw [sub_eq_add_neg, SlashAction.add_slash, ← _root_.neg_smul, ModularForm.SL_smul_slash, _root_.neg_smul,
     ← sub_eq_add_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `[GlobalTheory.Hk.heckeT, GlobalTheory.Hk.uOp, GlobalTheory.Hk.vOp]`.
+-/
 theorem heckeT_zero (k : ℤ) (q : ℕ) (σ : SL(2, ℤ)) : GlobalTheory.Hk.heckeT k q σ 0 = 0 := by
   funext τ
   simp [GlobalTheory.Hk.heckeT, GlobalTheory.Hk.uOp, GlobalTheory.Hk.vOp]
@@ -27,18 +33,27 @@ variable {N l : ℕ} {k : ℤ}
 
 local notation "P" => GlobalTheory.Hk.pet (GlobalTheory.Hk.lev N l) k
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f 0 0 1).1`. Simplify using `only [CuspForm.coe_zero, smul_zero, add_zero, one_mul] at h`. Take the linear combination `-h`.
+-/
 theorem pet_zero_right (hN : 0 < N) (hl : 0 < l) (f : CuspForm (GlobalTheory.Hk.lev N l) k) :
     P ⇑f 0 = 0 := by
   have h := (GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f 0 0 1).1
   simp only [CuspForm.coe_zero, smul_zero, add_zero, one_mul] at h
   linear_combination -h
 
+/- English proof (translation)
+Establish `e` using `(GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f 0 h c).1`. Simplify using `only [CuspForm.coe_zero, zero_add] at e`. Rewrite using `[e, pet_zero_right hN hl f, zero_add]`.
+-/
 theorem pet_smul_right (hN : 0 < N) (hl : 0 < l) (f h : CuspForm (GlobalTheory.Hk.lev N l) k) (c : ℂ) :
     P ⇑f (c • ⇑h) = c * P ⇑f ⇑h := by
   have e := (GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f 0 h c).1
   simp only [CuspForm.coe_zero, zero_add] at e
   rw [e, pet_zero_right hN hl f, zero_add]
 
+/- English proof (translation)
+Establish `e` using `(GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f (a • g) h (-b)).1`. Rewrite `e` using `[CuspForm.coe_smul, _root_.neg_smul, ← sub_eq_add_neg]`. Rewrite using `[e, pet_smul_right hN hl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pet_lin_right (hN : 0 < N) (hl : 0 < l) (f g h : CuspForm (GlobalTheory.Hk.lev N l) k) (a b : ℂ) :
     P ⇑f (a • ⇑g - b • ⇑h) = a * P ⇑f ⇑g - b * P ⇑f ⇑h := by
   have e := (GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f (a • g) h (-b)).1
@@ -46,10 +61,16 @@ theorem pet_lin_right (hN : 0 < N) (hl : 0 < l) (f g h : CuspForm (GlobalTheory.
   rw [e, pet_smul_right hN hl]
   ring
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f g 0 0).2`.
+-/
 theorem pet_conj (hN : 0 < N) (hl : 0 < l) (f g : CuspForm (GlobalTheory.Hk.lev N l) k) :
     P ⇑g ⇑f = (starRingEnd ℂ) (P ⇑f ⇑g) :=
   (GlobalTheory.T.peterssonCosetIntegralSum_sesquilinear_hermitian N l k hN hl f g 0 0).2
 
+/- English proof (translation)
+Establish `e : a • ⇑g - b • ⇑h = ⇑(a • g - b • h)`. Rewrite using `[CuspForm.coe_sub, CuspForm.coe_smul, CuspForm.coe_smul]`. Rewrite using `[e, pet_conj hN hl, CuspForm.coe_sub, CuspForm.coe_smul, CuspForm.coe_smul, pet_lin_right hN hl, map_sub, map_mul, map_mul, ← pet_conj hN hl, ← pet_conj hN hl]`.
+-/
 theorem pet_lin_left (hN : 0 < N) (hl : 0 < l) (f g h : CuspForm (GlobalTheory.Hk.lev N l) k) (a b : ℂ) :
     P (a • ⇑g - b • ⇑h) ⇑f = (starRingEnd ℂ) a * P ⇑g ⇑f - (starRingEnd ℂ) b * P ⇑h ⇑f := by
   have e : a • ⇑g - b • ⇑h = ⇑(a • g - b • h) := by
@@ -57,6 +78,9 @@ theorem pet_lin_left (hN : 0 < N) (hl : 0 < l) (f g h : CuspForm (GlobalTheory.H
   rw [e, pet_conj hN hl, CuspForm.coe_sub, CuspForm.coe_smul, CuspForm.coe_smul,
     pet_lin_right hN hl, map_sub, map_mul, map_mul, ← pet_conj hN hl, ← pet_conj hN hl]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf`. Use `(GlobalTheory.T.peterssonCosetIntegralSum_self_pos_gamma1InterGamma0 N l k hN hl f hf).1` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem eq_zero_of_pet_self (hN : 0 < N) (hl : 0 < l) (f : CuspForm (GlobalTheory.Hk.lev N l) k)
     (h : P ⇑f ⇑f = 0) : f = 0 := by
   by_contra hf
@@ -64,6 +88,17 @@ theorem eq_zero_of_pet_self (hN : 0 < N) (hl : 0 < l) (f : CuspForm (GlobalTheor
   rw [h] at this
   simp at this
 
+/- English proof (translation)
+Establish `h1 : P ⇑v ⇑v = P ⇑u ⇑u`. Rewrite using `[hv]`. Conclude with `GlobalTheory.T.peterssonCosetIntegralSum_diamondOperator_unitary N l k q σ hN hl hσ u u`. Establish `h2 : (starRingEnd ℂ) c * P ⇑u ⇑v = c * P ⇑u ⇑u`. Establish `h` using `GlobalTheory.T.peterssonCosetIntegralSum_heckeT_adjoint N l q k σ σ hN hl hq hqN hσ hσ u u`.
+
+Rewrite `h` using `[hu, ← hv, pet_smul_right hN hl, ← CuspForm.coe_smul, pet_conj hN hl, CuspForm.coe_smul, pet_smul_right hN hl, map_mul, ← pet_conj hN hl]`. Conclude with `h`. Establish `h3 : c * P ⇑v ⇑u = (starRingEnd ℂ) c * P ⇑u ⇑u`. Establish `h` using `congrArg (starRingEnd ℂ) h2`. Rewrite `h` using `[map_mul, map_mul, ← pet_conj hN hl, ← pet_conj hN hl, Complex.conj_conj]`.
+
+Conclude with `h`. Establish `e : ⇑(c • u - (starRingEnd ℂ) c • v) = c • ⇑u - (starRingEnd ℂ) c • ⇑v`. Rewrite using `[CuspForm.coe_sub, CuspForm.coe_smul, CuspForm.coe_smul]`. Establish `hw : c • u - (starRingEnd ℂ) c • v = 0`. Apply `eq_zero_of_pet_self hN hl` to reduce the goal to its premises.
+
+Use `pet_lin_left hN hl (c • u - (starRingEnd ℂ) c • v) u v c ((starRingEnd ℂ) c)` as an intermediate fact. Rewrite `this` using `[← e]`. Rewrite using `[this, e, pet_lin_right hN hl, pet_lin_right hN hl, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[hw, CuspForm.coe_zero]`.
+
+Conclude with `(sub_eq_zero.mp e.symm)`.
+-/
 theorem eigen_dia (hN : 0 < N) (hl : 0 < l) {q : ℕ} {σ : SL(2, ℤ)} (hq : q.Prime)
     (hqN : ¬ q ∣ N * l) (hσ : GlobalTheory.Hk.IsDia N l q σ) (c : ℂ) (u v : CuspForm (GlobalTheory.Hk.lev N l) k)
     (hv : ⇑v = GlobalTheory.Hk.dia k σ ⇑u) (hu : GlobalTheory.Hk.heckeT k q σ ⇑u = c • ⇑u) :
@@ -90,6 +125,15 @@ theorem eigen_dia (hN : 0 < N) (hl : 0 < l) {q : ℕ} {σ : SL(2, ℤ)} (hq : q.
   rw [hw, CuspForm.coe_zero] at e
   exact (sub_eq_zero.mp e.symm)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `GlobalTheory.T.diamondOperatorOfMatrix_cuspForm_gamma1InterGamma0 N l k q σ hN hσ u`. Take `⟨dg, hdg⟩` from `GlobalTheory.T.diamondOperatorOfMatrix_cuspForm_gamma1InterGamma0 N l k q σ hN hσ g`. Take `⟨sdg, hsdg⟩` from `GlobalTheory.T.heckeTOperatorExplicit_cuspForm N l q k σ hN hq hqN hσ dg`. Establish `hw` using `eigen_dia hN hl hq hqN hσ c u v hv hu`. Establish `hcomm : GlobalTheory.Hk.heckeT k q σ (GlobalTheory.Hk.dia k σ ⇑g) = GlobalTheory.Hk.dia k σ (GlobalTheory.Hk.heckeT k q σ ⇑g)` using `GlobalTheory.T.hecke_operator_commutes_diamond N l q k q σ σ hN hq hqN hσ hσ (CuspForm.toModularFormₗ g)`.
+
+Establish `hv' : ⇑v = (1 : ℂ) • ⇑sdg - c • ⇑dg`. Rewrite using `[hv, hg, dia_sub_smul, ← hcomm, hsdg, hdg, one_smul]`. Establish `h1 : P ⇑v ⇑v = P ⇑u ⇑u`. Rewrite using `[hv]`. Conclude with `GlobalTheory.T.peterssonCosetIntegralSum_diamondOperator_unitary N l k q σ hN hl hσ u u`.
+
+Establish `h2 : P ⇑sdg ⇑v = (starRingEnd ℂ) c * P ⇑dg ⇑v`. Establish `h` using `GlobalTheory.T.peterssonCosetIntegralSum_heckeT_adjoint N l q k σ σ hN hl hq hqN hσ hσ dg u`. Rewrite `h` using `[← hsdg, ← hv, hu, hw, pet_smul_right hN hl]`. Conclude with `h`. Apply `eq_zero_of_pet_self hN hl` to reduce the goal to its premises.
+
+Establish `h3` using `pet_lin_left hN hl v sdg dg 1 c`. Rewrite `h3` using `[← hv', h1, h2]`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+-/
 theorem ker_sq (hN : 0 < N) (hl : 0 < l) {q : ℕ} {σ : SL(2, ℤ)} (hq : q.Prime)
     (hqN : ¬ q ∣ N * l) (hσ : GlobalTheory.Hk.IsDia N l q σ) (c : ℂ) (g u : CuspForm (GlobalTheory.Hk.lev N l) k)
     (hg : ⇑u = GlobalTheory.Hk.heckeT k q σ ⇑g - c • ⇑g) (hu : GlobalTheory.Hk.heckeT k q σ ⇑u = c • ⇑u) :
@@ -117,6 +161,15 @@ theorem ker_sq (hN : 0 < N) (hl : 0 < l) {q : ℕ} {σ : SL(2, ℤ)} (hq : q.Pri
 
 end
 
+/- English proof (translation)
+Introduce `N l q k σ c n hN hl hq hqN hσ`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf`. Establish `hf' : ⇑f = 0` using `hf`.
+
+Rewrite using `[hf', heckeT_zero, smul_zero]`. Consider the case `succ n ih`. Introduce `f hf`. Take `⟨sf, hsf⟩` from `GlobalTheory.T.heckeTOperatorExplicit_cuspForm N l q k σ hN hq hqN hσ f`. Establish `e : ⇑(sf - c • f) = GlobalTheory.Hk.heckeT k q σ ⇑f - c • ⇑f`.
+
+Rewrite using `[CuspForm.coe_sub, CuspForm.coe_smul, hsf]`. Rewrite `hf` using `[Function.iterate_succ_apply]`. Establish `hu` using `ih (sf - c • f) (by rw [e]; exact hf)`. Establish `h0` using `ker_sq hN hl hq hqN hσ c f (sf - c • f) e hu`. Rewrite `e` using `[h0, CuspForm.coe_zero]`.
+
+Conclude with `sub_eq_zero.mp e.symm`.
+-/
 theorem heckeT_semisimple : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)) (c : ℂ) (n : ℕ), 0 < N → 0 < l → q.Prime → ¬ q ∣ N * l → GlobalTheory.Hk.IsDia N l q σ → ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k, (fun h => GlobalTheory.Hk.heckeT k q σ h - c • h)^[n] ⇑f = 0 → GlobalTheory.Hk.heckeT k q σ ⇑f = c • ⇑f := by
   intro N l q k σ c n hN hl hq hqN hσ
   induction n with

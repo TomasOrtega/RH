@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.Vert GlobalTheory.TriFrame Global
 open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TriFrame.isIso_of_isSubbundle_comp | exact GlobalTheory.TriFrame.isIso_of_isSubbundle_comp | (intros; apply GlobalTheory.TriFrame.isIso_of_isSubbundle_comp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iso_of_subbundle_same_rank : ∀ (X : Scheme.{0}) [IsIntegral X] (G G' E : X.Modules) (n : ℕ) (i : G ⟶ E) (a : G' ⟶ G), IsVB G n → IsVB G' n → Mono i → IsSubbundle (a ≫ i) → IsIso a := by
   first | exact @GlobalTheory.TriFrame.isIso_of_isSubbundle_comp | exact GlobalTheory.TriFrame.isIso_of_isSubbundle_comp | (intros; apply GlobalTheory.TriFrame.isIso_of_isSubbundle_comp <;> assumption)

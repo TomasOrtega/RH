@@ -24,12 +24,20 @@ variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {L : _root_.Pos
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 namespace N
+/- English proof (translation)
+Introduce `k`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply]`. Repeatedly rewrite using `[hc]`. Rewrite using `[← Matrix.mul_apply, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, inv_mul_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`.
+-/
 theorem fix_of_col_k {w x : d.G}
     (hc : ∀ r, inFrame d.b x r (Sum.inl L.i₀) = inFrame d.b w r (Sum.inl L.i₀)) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (w⁻¹ * x) := by
   intro k
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply]
   simp_rw [hc]
   rw [← Matrix.mul_apply, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, inv_mul_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]
+/- English proof (translation)
+Take `⟨a, b, -, hb, hw⟩` from `h.wf`. Use `⟨b, hb, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Apply the tactic sequence `rcases r with i | i <;> by_cases hi : i = L.i₀`. Substitute `hi` using the available equality.
+
+Simplify using `[Matrix.single_apply, Matrix.one_apply, Pi.single_apply]`. Simplify using `[Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]`. Substitute `hi` using the available equality. Simplify using `[Matrix.single_apply, Matrix.one_apply, Pi.single_apply]`. Simplify using `[Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]`.
+-/
 theorem weyl_base_column (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) : ∃ b₀ : E, b₀ ≠ 0 ∧ ∀ r, inFrame d.b w₁ r (Sum.inl L.i₀) =
     inclR (F := F) (AF F) ((Pi.single (Sum.inr L.i₀) b₀ : Fin d.n ⊕ Fin d.n → E) r) := by
   obtain ⟨a, b, -, hb, hw⟩ := h.wf
@@ -40,6 +48,19 @@ theorem weyl_base_column (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.H
   · simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]
   · subst hi; simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply]
   · simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]
+/- English proof (translation)
+Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Take `⟨G0, hG0⟩` from `Afc.rat_frame (b := d.b) γ hγ`. Establish `hform` using `Bq.form_E hε γ hG0`. Take `⟨b₀, hb₀, hw1⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C6.N.weyl_base_column h`.
+
+Establish `hy : (fun k => G0 (Sum.inr k) (Sum.inl L.i₀)) ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises. Introduce `i`. Rewrite using `[hG0]`.
+
+Use `show inclR (F := F) (AF F) (G0 (Sum.inr i) (Sum.inl L.i₀)) = 0`. Rewrite using `[congrFun h0 i, Pi.zero_apply, map_zero]`. Take `⟨A, β0, hβ, hcol⟩` from `exists_E L.i₀ hσ ε hform hb₀ hy`. Take `⟨pm, hpmr, hpm⟩` from `Afc.levi_ex hσ d.ok.frame A`. Establish `hpmP : pm ∈ par2 σ d.Y` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame pm).2 (by rw [hpm, Matrix.toBlocks_fromBlocks₂₁])`.
+
+Establish `hβA : incM F β0 ∈ nA σ d.Y d.b` using `(kfour.mem_nA_iff hσ hε _).2 (nCond_of_E ε hβ)`. Use `set pn := nb ⟨incM F β0, hβA⟩ with hpn_def`. Establish `hpn : inFrame d.b pn = Matrix.fromBlocks 1 (incM F β0) 0 1` using `h.nb _`. Establish `hpnP : pn ∈ par2 σ d.Y` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame pn).2 (by rw [hpn, Matrix.toBlocks_fromBlocks₂₁])`. Establish `hpnr : pn ∈ rat2 σ d.Y` using `kunf.rat_of_inFrame (M := Matrix.fromBlocks 1 β0 0 1) (by rw [hpn, kfour.incM_nM]; rfl)`.
+
+Use `⟨pn * pm, mul_mem hpnP hpmP, mul_mem hpnr hpmr, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.N.fix_of_col_k fun r => ?_⟩` and prove the remaining obligations. Establish `hF : inFrame d.b (pn * pm * γ) = incM F (Matrix.fromBlocks 1 β0 0 1 * Matrix.fromBlocks A.1 0 0 (((A⁻¹).1)ᵀ.map σ) * G0)`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hpn, hpm, hG0, kfour.incM_mul', kfour.incM_mul', kfour.incM_nM, Afc.incM_fromBlocks, kfour.incM_zero]`. Both sides reduce to the same expression. Rewrite using `[hF, hw1 r]`.
+
+Use `show inclR (F := F) (AF F) _ = _`. Rewrite using `[hcol r]`.
+-/
 theorem normalize_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {γ : d.G} (hγ : γ ∈ rat2 σ d.Y) (hn : ¬ _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L γ) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (w₁⁻¹ * (p * γ)) := by
   have hσ := _root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good

@@ -22,6 +22,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.BdDim.UnivExt
 
+/- English proof (translation)
+The claim follows from `| 0 => ⟨𝟙_ _, Fin.elim0, inferInstanceAs (IsProper (𝟙 S)), fun T _ => ⟨toUnit T, fun i => i.elim0⟩⟩ | n + 1 => by obtain ⟨Y, p, hY, H⟩ := exists_pow A hA n refine ⟨A ⊗ Y, Fin.cons (fst A Y) fun i => snd A Y ≫ p i, inferInstanceAs (IsProper (pullback.fst A.hom Y.hom ≫ A.hom)), fun …`.
+-/
 theorem exists_pow {S : Scheme.{0}} (A : Over S) (hA : IsProper A.hom) : ∀ n : ℕ,
     ∃ (Y : Over S) (p : Fin n → (Y ⟶ A)), IsProper Y.hom ∧
       ∀ (T : Over S) (c : Fin n → (T ⟶ A)), ∃ x : T ⟶ Y, ∀ i, x ≫ p i = c i
@@ -36,10 +39,16 @@ theorem exists_pow {S : Scheme.{0}} (A : Over S) (hA : IsProper A.hom) : ∀ n :
     · simp
     · simp [hx]
 
+/- English proof (translation)
+The claim follows from `congrArg (· ≫ x.left) ((Category.comp_id _).symm.trans (Over.w (toUnit T)))`.
+-/
 theorem const_left {S : Scheme.{0}} {G : Over S} (T : Over S) (x : 𝟙_ _ ⟶ G) :
     (toUnit T ≫ x).left = T.hom ≫ x.left :=
   congrArg (· ≫ x.left) ((Category.comp_id _).symm.trans (Over.w (toUnit T)))
 
+/- English proof (translation)
+Set `u : T' ⟶ T` to `Over.homMk g (by rw [← Over.w a, ← Category.assoc, ha, Over.w])`. Establish `e₁ : u ≫ a = a'` using `Over.OverMorphism.ext ha`. Establish `e₂ : u ≫ b = b'` using `Over.OverMorphism.ext hb`. Rewrite using `[← e₁, ← e₂]`. Conclude with `pull_lam u l a b`.
+-/
 theorem pull_lam_of_eq {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (l : Pic G.left) (g : T'.left ⟶ T.left)
     {a b : T ⟶ G} {a' b' : T' ⟶ G} (ha : g ≫ a.left = a'.left) (hb : g ≫ b.left = b'.left) :
     pull g (lam l a b) = lam l a' b' := by
@@ -49,6 +58,13 @@ theorem pull_lam_of_eq {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (l : Pic G.
   rw [← e₁, ← e₂]
   exact pull_lam u l a b
 
+/- English proof (translation)
+Use `choose M hM eM using fun χ : X => cls_surj (lam l (toUnit B ≫ c (Multiplicative.ofAdd χ)) (𝟙 B))`. Establish `pt : ∀ (χ : X) (T : Over S) (y : T ⟶ B), pull y.left (cls _ (hM χ)) = lam l y (toUnit T ≫ c (Multiplicative.ofAdd χ))` using `fun χ T y => by`. Rewrite using `[eM, pull_lam, Category.comp_id, ← Category.assoc, comp_toUnit, lam_comm]`. Establish `rig : ∀ χ, ∃ t : LB.Gen ((M χ).pull (eSec B)), t.IsGen` using `fun χ => by`. Use `(cls_eq_zero_iff (pull_isLB (hM χ) _)).1 ((pt χ _ η[B]).trans ?_)` and prove the remaining obligations.
+
+Establish `e : (η[B] : 𝟙_ _ ⟶ B) = 1` using `by simp [Hom.one_def]`. Rewrite using `[e, lam_one_left]`. Use `⟨fun χ => ⟨M χ, (rig χ).choose, hM χ, (rig χ).choose_spec⟩, fun χ χ' => ?_, ?_, fun χ => ?_, eM⟩` and prove the remaining obligations. Use `(cls_eq_iff (hM χ') (LB.isLB_div (hM _) (hM _))).1 ?_` and prove the remaining obligations. Rewrite using `[cls_div (hM _) (hM _), eM, eM, eM, ofAdd_add, map_mul, MonObj.comp_mul, hl, add_sub_cancel_left]`.
+
+Use `(cls_eq_zero_iff (hM 0)).1 ?_` and prove the remaining obligations. Rewrite using `[eM, ofAdd_zero, map_one, MonObj.comp_one, lam_one_left]`. Use `(cls_eq_zero_iff (LB.isLB_linComb (hM χ) _ _)).1 ((cls_cube_two (hM χ) (fst B B) (snd B B) (LB.isLB_linComb (hM χ) _ _)).trans ?_)` and prove the remaining obligations. Rewrite using `[lam, pt, pt, pt, pt, hl, lam_one_left]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_bundles {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] (l : Pic B.left)
     (hl : ∀ (T : Over S) (x y z : T ⟶ B), lam l (x * y) z = lam l x z + lam l y z)
     (X : Type) [AddCommGroup X] (c : Multiplicative X →* (𝟙_ (Over S) ⟶ B)) :
@@ -74,6 +90,21 @@ theorem exists_bundles {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B]
     rw [lam, pt, pt, pt, pt, hl, lam_one_left]
     abel
 
+/- English proof (translation)
+Take `⟨Q, φ, hφ, -, hm, hL⟩` from `abelianSchemeLaws_all.1.polBaseChange _ _ f P`. Establish `hQ : IsGrpPullback Q.A P.A f φ` using `⟨hφ, fun T x y x₀ y₀ hx hy => by`. Take `rfl : x₀ = Out.toBase hφ.w x` from `Over.OverMorphism.ext hx`. Take `rfl : y₀ = Out.toBase hφ.w y` from `Over.OverMorphism.ext hy`. Conclude with `congrArg (fun q => q.left) (hm T x y).symm⟩`.
+
+Establish `eL : cls Q.L Q.isLB = pull φ (cls P.L P.isLB)` using `((cls_eq_iff (pull_isLB P.isLB φ) Q.isLB).2 hL).symm`. Take `⟨e, he, heβ⟩` from `grpPullback_iso h hQ`. Take `⟨M, hM, eM⟩` from `cls_surj (pull e.inv.left o)`. Establish `hp : ∃ u : LB.Gen (abelian₂ Q.A M), u.IsGen`. Use `(cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ((cls_cube_two hM (fst Q.A Q.A) (snd Q.A Q.A) (LB.isLB_linComb hM _ _)).trans ?_)` and prove the remaining obligations.
+
+Establish `j` using `pull_lam (lift (fst Q.A Q.A ≫ e.inv) (snd Q.A Q.A ≫ e.inv)) o (fst B B) (snd B B)`. Rewrite `j` using `[ho, map_zero, lift_fst, lift_snd]`. Rewrite using `[eM, lam_pull]`. Conclude with `j.symm`. Take `⟨x, hx⟩` from `PrimitiveOverField.exists_point_translate abelianSchemeLaws_all.1 k Q M hM hp`.
+
+Establish `e₁ : pull e.inv.left o = lam (cls Q.L Q.isLB) (toUnit Q.A ≫ x) (𝟙 Q.A)`. Rewrite using `[← eM, (cls_eq_iff hM (LB.isLB_linComb Q.isLB _ _)).2 hx, PrimitiveOverField.lam_const]`. Use `(cls_linComb Q.isLB _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two, sub_eq_add_neg]`. Conclude with `congrArg₂ (· + ·) (one_zsmul _) (neg_one_zsmul _)`.
+
+Establish `hxw : x.left ≫ Q.A.hom = 𝟙 _` using `Over.w x`. Use `⟨Over.homMk (x.left ≫ φ) ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (x.left ≫ ·) hφ.w).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f) hxw).trans (Category.id_comp _))))`. Establish `e₂ : o = pull e.hom.left (pull e.inv.left o)`. Rewrite using `[← pull_comp, ← Over.comp_left, e.hom_inv_id, Over.id_left, pull_id]`.
+
+Rewrite `e₂` using `[e₁, eL, lam_pull_of_isGrpPullback hQ]`. Use `e₂.trans (pull_lam_of_eq (T := Over.mk (Q.A.hom ≫ f)) (T' := Over.mk (B.hom ≫ f)) (cls P.L P.isLB) e.hom.left ?_ ?_)` and prove the remaining obligations. Establish `w : e.hom.left ≫ (toUnit Q.A ≫ x).left ≫ φ = B.hom ≫ x.left ≫ φ`. Rewrite using `[const_left, ← Over.w e.hom]`. Simplify using `only [Category.assoc]`.
+
+Establish `w₁ : (pushHom hQ Q.A (toUnit Q.A ≫ x)).left = (toUnit Q.A ≫ x).left ≫ φ` using `rfl`. Conclude with `((congrArg (e.hom.left ≫ ·) w₁).trans w).trans ha.symm`. Rewrite using `[hb, ← heβ]`. Express the relevant statement in the definitionally equal form `e.hom.left ≫ 𝟙 _ ≫ φ = _`. Rewrite using `[Category.id_comp]`.
+-/
 theorem exists_point {S : Scheme.{0}} (P : Out.PolAV S) {k : Type} [Field k] [IsAlgClosed k] {f : Sp k ⟶ S}
     {B : Over (Sp k)} [GrpObj B] {β : B.left ⟶ P.A.left} (h : IsGrpPullback B P.A f β) (o : Pic B.left)
     (ho : lam o (fst B B) (snd B B) = 0) :
@@ -124,6 +155,33 @@ def clsHom {S : Scheme.{0}} (E : SplitExt S) : E.X →+ Pic E.B.left :=
     rw [cls_div (E.O _).isLB (E.O _).isLB] at h
     rw [h, add_sub_cancel]
 
+/- English proof (translation)
+Introduce and unpack `k₀ k _ _ _ κ P₀ X G _ x hG ⟨A, _, φ, t, β, hA, hβ⟩`. Establish `laws` using `abelianSchemeLaws_all.1`. Use `letI := t.addCommGroup`. Use `letI := t.free`. Use `letI := t.finite`.
+
+Use `letI := t.grpB`. Use `haveI := hG.comm`. Use `haveI := P₀.isAb.comm`. Use `haveI : IsCommMonObj A := PolPull.isCommMonObj_of_isGrpPullback hA`. Establish `hAs : IsSemiAbelian A` using `SiegLoc.TraitOrd.isSemiAbelian_of_isGrpPullback hA hG`.
+
+Take `⟨O₁, h₁, h₂, h₃, h⟩` from `GlobalTheory.T.exists_splitExtDatum_of_splitTorus_extension (Sp k) t.X A t.B t.isAbelian t.q t.i t.q_hom t.i_hom t.q_flat t.q_surjective t.q_quasiCompact t.isKernel`. Take `⟨d₁, -, -⟩` from `h t.isAbelian`. Set `E₁ : SplitExt (Sp k)` to `SplitExt.mk t.B t.isAbelian t.X O₁ h₁ h₂ h₃`. Establish `hΘ : ∃ t : LB.Gen (Theta P₀.A P₀.L), t.IsGen`. Take `⟨r, hr⟩` from `P₀.rigid`.
+
+Take `⟨c⟩` from `(laws.cube _ P₀ ⟨P₀.L, r, P₀.isLB, hr⟩ rfl).1`. Conclude with `⟨c.t, c.isGen⟩`. Set `b` to `Module.finBasis ℤ t.X`. Use `choose c hc using fun i => exists_point P₀ hβ (cls (O₁ (b i)).L (O₁ (b i)).isLB) ((cls_cube_two (O₁ (b i)).isLB _ _ (LB.isLB_linComb (O₁ (b i)).isLB _ _)).symm.trans ((cls_eq_zero_iff _).2 (h₃ (b i))))`. Take `⟨Y, p, hY, hp⟩` from `exists_pow P₀.A P₀.isAb.proper (Module.finrank ℤ t.X)`.
+
+Take `⟨y, hy⟩` from `hp _ c`. Set `B : Over Y.left` to `(Over.pullback Y.hom).obj P₀.A`. Set `π : B.left ⟶ P₀.A.left` to `pullback.fst P₀.A.hom Y.hom`. Establish `hB : IsGrpPullback B P₀.A Y.hom π` using `isGrpPullback_pullback P₀.A Y.hom`. Establish `hBa` using `PolPull.isAbelianScheme_of_isGrpPullback P₀.isAb hB`.
+
+Use `haveI := hBa.comm`. Use `choose s hs using fun i => (GenericKTriv.pushHom_bijective hB (𝟙_ _)).2 (Over.homMk (p i).left ((Over.w (p i)).trans (Category.id_comp _).symm))`. Establish `hs' : ∀ i, (s i).left ≫ π = (p i).left` using `fun i => congrArg (fun q => q.left) (hs i)`. Set `σ : Multiplicative t.X →* (𝟙_ (Over Y.left) ⟶ B)` to `AddMonoidHom.toMultiplicativeLeft (b.constr ℤ (fun i => Additive.ofMul (s i))).toAddMonoidHom`. Establish `hσ : ∀ i, σ (Multiplicative.ofAdd (b i)) = s i` using `fun i => congrArg Additive.toMul (b.constr_basis ℤ (fun i => Additive.ofMul (s i)) i)`.
+
+Take `⟨O, g₁, g₂, g₃, hO⟩` from `exists_bundles B (pull π (cls P₀.L P₀.isLB)) (fun T u v w => by`. Simplify using `only [lam_pull_of_isGrpPullback hB, map_mul, lam_mul_left P₀.isLB hΘ]) t.X σ`. Set `E : SplitExt Y.left` to `SplitExt.mk B hBa t.X O g₁ g₂ g₃`. Take `⟨G', _, hG', ⟨d⟩⟩` from `exists_isSemiAbelian_isGt laws.globalFns _ E`. Establish `hyw : y.left ≫ Y.hom = spMap κ` using `Over.w y`.
+
+Use `⟨Y.left, Y.hom, E, G', _, y.left, π, hY, hyw, hB, hG', ⟨d⟩, ?_⟩` and prove the remaining obligations. Take `⟨E', xe, d', π', hπ', -, hiso, -⟩` from `GlobalTheory.T.exists_gtDatum_baseChange_maps' _ _ y.left E G' d`. Establish `hF` using `isGrpPullback_pullback G' y.left`. Use `haveI := hG'.comm`. Use `haveI := PolPull.isCommMonObj_of_isGrpPullback hF`.
+
+Establish `hFs` using `SiegLoc.TraitOrd.isSemiAbelian_of_isGrpPullback hF hG'`. Take `⟨e, he, heβ⟩` from `grpPullback_iso hβ ((hπ'.comp hB).congr hyw rfl)`. Establish `key : (clsHom E₁).toIntLinearMap = ((pull (e.hom.left ≫ π')).comp (clsHom E)).toIntLinearMap`. Use `b.ext fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cls (O₁ (b i)).L (O₁ (b i)).isLB = pull (e.hom.left ≫ π') (cls (O (b i)).L (O (b i)).isLB)`.
+
+Rewrite using `[hO, hσ, lam_pull_of_isGrpPullback hB]`. Use `(hc i (Over.homMk (U := Over.mk (t.B.hom ≫ spMap κ)) (V := Over.mk (spMap κ)) t.B.hom rfl ≫ c i) (pushHom hβ _ (𝟙 _)) rfl (Category.id_comp _)).trans (pull_lam_of_eq _ _ ?_ ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e.hom.left ≫ π') ≫ (toUnit B ≫ s i).left ≫ π = t.B.hom ≫ (c i).left`. Establish `w : π' ≫ B.hom = E'.B.hom ≫ y.left` using `hπ'.1.w`. Rewrite using `[const_left, ← hy, Over.comp_left, ← Over.w e.hom]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[hs', reassoc_of% w]`. Express the relevant statement in the definitionally equal form `(e.hom.left ≫ π') ≫ 𝟙 _ ≫ π = 𝟙 _ ≫ β`. Rewrite using `[Category.id_comp, Category.id_comp, Category.assoc]`. Conclude with `heβ`.
+
+Take `⟨i, hi⟩` from `GlobalTheory.T.semiabelian_iso_of_extension_iso k E₁ E' A ((Over.pullback y.left).obj G') e xe.symm he hAs hFs (fun χ => by`. Use `(cls_eq_iff (E₁.O χ).isLB (pull_isLB (E'.O _).isLB _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (E'.O _).isLB, (cls_eq_iff (E'.O _).isLB (pull_isLB (E.O _).isLB _)).2 (hiso _), cls_pull (E.O _).isLB, ← pull_comp]`. Use `(LinearMap.congr_fun key χ).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun χ => pull (e.hom.left ≫ π') (clsHom E χ)) (xe.apply_symm_apply χ).symm) ⟨d₁⟩ ⟨d'⟩`.
+
+Conclude with `⟨A, _, φ, _, hA, ((isGrpPullback_of_iso i).comp hF).congr (Category.id_comp _) rfl⟩`.
+-/
 theorem exists_universal : ∀ (k₀ k : Type) [Field k₀] [Field k] [IsAlgClosed k] (κ : k₀ →+* k) (P₀ : Out.PolAV (Sp k₀)) (X : Scheme.{0}) (G : Over X) [GrpObj G] (x : Sp k ⟶ X), IsSemiAbelian G → IsAbPart G x P₀.A (spMap κ) → ∃ (X' : Scheme.{0}) (s' : X' ⟶ Sp k₀) (E : SplitExt X') (G' : Over X') (_ : GrpObj G') (x' : Sp k ⟶ X') (π : E.B.left ⟶ P₀.A.left), IsProper s' ∧ x' ≫ s' = spMap κ ∧ IsGrpPullback E.B P₀.A s' π ∧ IsSemiAbelian G' ∧ E.IsGt G' ∧ SameFibre G x G' x' := by
   rintro k₀ k _ _ _ κ P₀ X G _ x hG ⟨A, _, φ, t, β, hA, hβ⟩
   have laws := abelianSchemeLaws_all.1

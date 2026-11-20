@@ -12,6 +12,15 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 
 namespace GlobalTheory.CompanionTheory.RealCountG
 
+/- English proof (translation)
+Introduce `n E`. Take `⟨e, ρ', hc, hiso, hint⟩` from `GlobalTheory.T.unitary_euclidean_model E`. Take `⟨F, hgl, -, hder⟩` from `GlobalTheory.T.exists_compact_lie_action _ ρ' hc hiso`. Use `⟨fun a b => e.symm.toLinearMap ∘ₗ F a b ∘ₗ e.toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d ext1 ξ`.
+
+Establish `h` using `LinearMap.congr_fun (hgl a b c d) (e ξ)`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [Module.End.mul_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_sub] at h ⊢`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `X γ hX hγ ξ`. Set `eL : EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) →L[ℂ] (E.V →L[ℂ] ℂ)` to `LinearMap.toContinuousLinearMap e.symm.toLinearMap`. Establish `heL : ∀ w, eL w = e.symm w` using `fun _ => rfl`. Establish `h` using `(eL.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hder X γ hX hγ (e ξ))`. Establish `hf : (fun t : ℝ => ξ ∘L E.ρ (γ t)⁻¹) = (eL.restrictScalars ℝ) ∘ fun t : ℝ => ρ' (γ t) (e ξ)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', heL, ← hint, LinearEquiv.symm_apply_apply]`. Rewrite using `[hf]`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_sum, map_smul, heL, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+-/
 theorem dualFam_exists : ∀ {n : ℕ} (E : KMod n), ∃ G : Fin n → Fin n → Module.End ℂ (E.V →L[ℂ] ℂ), IsDualFam E G := by
   intro n E
   obtain ⟨e, ρ', hc, hiso, hint⟩ := GlobalTheory.T.unitary_euclidean_model E

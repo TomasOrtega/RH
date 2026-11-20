@@ -13,6 +13,11 @@ variable {n : ℕ}
 
 local notation "𝔼" => EuclideanSpace ℝ (Fin n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h` using `((hf.differentiable (by simp) y).hasFDerivAt).mul ((hg.differentiable (by simp) y).hasFDerivAt)`. Rewrite using `[pd]`. Express the relevant statement in the definitionally equal form `(fderiv ℝ (f * g) y) (ev i) = _`. Rewrite using `[h.fderiv]`.
+
+Simplify using `only [add_apply, smul_apply, smul_eq_mul, pd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pd_mul {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (i : Fin n) :
     pd i (fun y ↦ f y * g y) = fun y ↦ pd i f y * g y + f y * pd i g y := by
   funext y
@@ -24,6 +29,23 @@ theorem pd_mul {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ
   simp only [add_apply, smul_apply, smul_eq_mul, pd]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `f g hf hg x`. Simplify using `[hsD_zero]`. Consider the case `succ k ih`.
+
+Introduce `f g hf hg x`. Establish `hfg : ContDiff ℝ ∞ (fun y ↦ f y * g y)` using `hf.mul hg`. Use `set S : ℕ × ℕ → Fin n → ℝ := fun ij i ↦ (k.choose ij.1 : ℝ) * (hsD ij.2 g x * hsD ij.1 (pd i f) x + hsD ij.1 f x * hsD ij.2 (pd i g) x) with hS`. Establish `hi : ∀ i, |hsD k (pd i (fun y ↦ f y * g y)) x| ≤ ∑ ij ∈ antidiagonal k, 1 * S ij i`. Introduce `i`.
+
+Rewrite using `[abs_of_nonneg (hsD_nonneg _ _ _), pd_mul hf hg i]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sum_add_distrib]`. Use `sum_congr rfl fun ij _ ↦ ?_` and prove the remaining obligations. Simplify using `only [hS]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsucc : ∀ h : 𝔼 → ℂ, ContDiff ℝ ∞ h → ∀ j, Real.sqrt (∑ i, hsD j (pd i h) x ^ 2) = hsD (j + 1) h x` using `fun h hh j ↦ by rw [← hsD_succ_sq hh, Real.sqrt_sq (hsD_nonneg _ _ _)]`. Rewrite using `[← hsucc _ hfg k]`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun ij _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[one_mul]`. Simplify using `only [hS]`. Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg (by positivity)]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sqrt_sum_sq_const_mul, sqrt_sum_sq_const_mul, hsucc f hf, hsucc g hg, abs_of_nonneg (hsD_nonneg _ _ _), abs_of_nonneg (hsD_nonneg _ _ _)]`. Use `_ = ∑ ij ∈ antidiagonal (k + 1), ((k + 1).choose ij.1 : ℝ) * hsD ij.1 f x * hsD ij.2 g x := by`. Establish `e` using `sum_antidiagonal_choose_succ_mul (R := ℝ) (fun i j ↦ hsD i f x * hsD j g x) k`. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[e]`.
+
+Establish `e2 : ∀ ij ∈ antidiagonal k, (k.choose ij.2 : ℝ) = (k.choose ij.1 : ℝ)`. Introduce `ij hij`. Rewrite `hij` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hij, Nat.choose_symm_add]`. Establish `e3 : ∑ ij ∈ antidiagonal k, (k.choose ij.2 : ℝ) * (hsD (ij.1 + 1) f x * hsD ij.2 g x) = ∑ ij ∈ antidiagonal k, (k.choose ij.1 : ℝ) * (hsD (ij.1 + 1) f x * hsD ij.2 g x)` using `sum_congr rfl fun ij hij ↦ by rw [e2 ij hij]`.
+
+Rewrite using `[e3, ← sum_add_distrib]`. Use `sum_congr rfl fun ij _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hsD_mul_le (k : ℕ) : ∀ {f g : 𝔼 → ℂ}, ContDiff ℝ ∞ f → ContDiff ℝ ∞ g → ∀ x : 𝔼,
     hsD k (fun y ↦ f y * g y) x ≤
       ∑ ij ∈ antidiagonal k, (k.choose ij.1 : ℝ) * hsD ij.1 f x * hsD ij.2 g x := by
@@ -88,6 +110,9 @@ theorem hsD_mul_le (k : ℕ) : ∀ {f g : 𝔼 → ℂ}, ContDiff ℝ ∞ f → 
           refine sum_congr rfl fun ij _ ↦ ?_
           ring
 
+/- English proof (translation)
+Establish `h : ∀ J : Fin k → Fin n, pdT J (fun y ↦ f y - c) x = pdT J f x` using `fun J ↦ by`. Rewrite using `[pdT, pdT, dT_sub hf contDiff_const]`. Simplify using `[dT, iteratedFDeriv_const_of_ne hk.ne']`. Simplify using `only [hsD, h]`.
+-/
 theorem hsD_sub_const {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) {k : ℕ} (hk : 0 < k)
     (x : 𝔼) : hsD k (fun y ↦ f y - c) x = hsD k f x := by
   have h : ∀ J : Fin k → Fin n, pdT J (fun y ↦ f y - c) x = pdT J f x := fun J ↦ by
@@ -95,6 +120,13 @@ theorem hsD_sub_const {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) {k 
     simp [dT, iteratedFDeriv_const_of_ne hk.ne']
   simp only [hsD, h]
 
+/- English proof (translation)
+Establish `hf' : ContDiff ℝ ∞ (fun y ↦ f y - f x)` using `hf.sub contDiff_const`. Establish `e : (fun y ↦ f y * g y - f x * g y) = fun y ↦ (f y - f x) * g y`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `(hsD_mul_le k hf' hg x).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[sum_filter]`. Use `sum_congr rfl fun ij _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hsD_sub_const hf _ h]`.
+
+Establish `h0 : ij.1 = 0` using `by omega`. Rewrite using `[h0, hsD_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem hsD_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : ℕ)
     (x : 𝔼) :
     hsD k (fun y ↦ f y * g y - f x * g y) x ≤
@@ -114,6 +146,11 @@ theorem hsD_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : Cont
     rw [h0, hsD_zero]
     simp
 
+/- English proof (translation)
+Establish `hfg : ContDiff ℝ ∞ (fun y ↦ f y * g y)` using `hf.mul hg`. Establish `hr : ContDiff ℝ ∞ (fun y ↦ f y * g y - f x * g y)` using `hfg.sub (contDiff_const.mul hg)`. Establish `e : (fun y ↦ f x * g y) = fun y ↦ f y * g y - (f y * g y - f x * g y)`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hsD_const_mul hg, e]`. Conclude with `(hsD_sub_le hfg hr k x).trans (add_le_add le_rfl (hsD_mul_sub_le hf hg k x))`.
+-/
 theorem norm_mul_hsD_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : ℕ)
     (x : 𝔼) :
     ‖f x‖ * hsD k g x ≤ hsD k (fun y ↦ f y * g y) x +
@@ -127,6 +164,11 @@ theorem norm_mul_hsD_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : Con
   rw [← hsD_const_mul hg, e]
   exact (hsD_sub_le hfg hr k x).trans (add_le_add le_rfl (hsD_mul_sub_le hf hg k x))
 
+/- English proof (translation)
+Establish `hr : ContDiff ℝ ∞ (fun y ↦ f y * g y - f x * g y)` using `(hf.mul hg).sub (contDiff_const.mul hg)`. Establish `e : (fun y ↦ f y * g y) = fun y ↦ f x * g y + (f y * g y - f x * g y)`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `(hsD_add_le (contDiff_const.mul hg) hr k x).trans ?_` and prove the remaining obligations. Rewrite using `[hsD_const_mul hg]`. Conclude with `add_le_add le_rfl (hsD_mul_sub_le hf hg k x)`.
+-/
 theorem hsD_mul_le' {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (k : ℕ) (x : 𝔼) :
     hsD k (fun y ↦ f y * g y) x ≤ ‖f x‖ * hsD k g x +
       ∑ ij ∈ (antidiagonal k).filter (fun ij ↦ 0 < ij.1),
@@ -141,6 +183,9 @@ theorem hsD_mul_le' {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDif
   rw [hsD_const_mul hg]
   exact add_le_add le_rfl (hsD_mul_sub_le hf hg k x)
 
+/- English proof (translation)
+Establish `e : pderiv α (fun y ↦ f y * g y) x - f x * pderiv α g x = pderiv α (fun y ↦ f y * g y - f x * g y) x`. Rewrite using `[pderiv_eq_dT', pderiv_eq_dT', pderiv_eq_dT', dT_sub (hf.mul hg) (contDiff_const.mul hg), dT_const_mul hg]`. Rewrite using `[e]`. Conclude with `((norm_pderiv_le _ α x).trans (norm_iteratedFDeriv_le_hsD _ _ x)).trans (hsD_mul_sub_le hf hg _ x)`.
+-/
 theorem norm_pderiv_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
     (α : Fin n → ℕ) (x : 𝔼) :
     ‖pderiv α (fun y ↦ f y * g y) x - f x * pderiv α g x‖ ≤
@@ -154,6 +199,9 @@ theorem norm_pderiv_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (h
   exact ((norm_pderiv_le _ α x).trans (norm_iteratedFDeriv_le_hsD _ _ x)).trans
     (hsD_mul_sub_le hf hg _ x)
 
+/- English proof (translation)
+Establish `e : ∀ I : Fin k → Fin n, pdT I (fun y ↦ f y * g y) x - f x * pdT I g x = pdT I (fun y ↦ f y * g y - f x * g y) x` using `fun I ↦ by`. Rewrite using `[pdT, pdT, pdT, dT_sub (hf.mul hg) (contDiff_const.mul hg), dT_const_mul hg]`. Repeatedly rewrite using `[e]`. Conclude with `hsD_mul_sub_le hf hg k x`.
+-/
 theorem sqrt_sum_pdT_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g)
     (k : ℕ) (x : 𝔼) :
     Real.sqrt (∑ I : Fin k → Fin n, ‖pdT I (fun y ↦ f y * g y) x - f x * pdT I g x‖ ^ 2) ≤
@@ -165,6 +213,9 @@ theorem sqrt_sum_pdT_mul_sub_le {f g : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (
   simp_rw [e]
   exact hsD_mul_sub_le hf hg k x
 
+/- English proof (translation)
+Use `(pow_le_pow_iff_left₀ (hsD_nonneg _ _ _) (hsD_nonneg _ _ _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[hsD_sq, hsD_add_sq hf]`. Use `sum_le_sum fun J _ ↦ pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations. Rewrite using `[pdT_pderiv_comm hf]`. Conclude with `(norm_pderiv_le _ α x).trans (norm_iteratedFDeriv_le_hsD _ _ x)`.
+-/
 theorem hsD_pderiv_le {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) (α : Fin n → ℕ) (j : ℕ) (x : 𝔼) :
     hsD j (pderiv α f) x ≤ hsD (mabs α + j) f x := by
   refine (pow_le_pow_iff_left₀ (hsD_nonneg _ _ _) (hsD_nonneg _ _ _) two_ne_zero).1 ?_

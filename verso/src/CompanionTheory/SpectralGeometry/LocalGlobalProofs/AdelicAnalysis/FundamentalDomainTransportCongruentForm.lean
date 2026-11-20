@@ -12,6 +12,9 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Establish `h` using `RingHom.map_mulVec (inclR (F := F) R) (g : Matrix (Fin M) (Fin M) E) (X a) i`. Conclude with `h.symm`.
+-/
 theorem actTup_ratTup {M n : ℕ} (g : GL (Fin M) E) (X : Fin n → Fin M → E) :
     actTup R (bc (inclR (F := F) R) g) (ratTup R X) =
       ratTup R (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X a) := by
@@ -19,6 +22,9 @@ theorem actTup_ratTup {M n : ℕ} (g : GL (Fin M) E) (X : Fin n → Fin M → E)
   have h := RingHom.map_mulVec (inclR (F := F) R) (g : Matrix (Fin M) (Fin M) E) (X a) i
   exact h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `[actTup, Matrix.mulVec_mulVec]`.
+-/
 theorem actTup_mul {M n : ℕ} (a b : GL (Fin M) (R ⊗[F] E)) (X : Fin n → Fin M → R ⊗[F] E) :
     actTup R (a * b) X = actTup R a (actTup R b X) := by
   funext c
@@ -31,11 +37,17 @@ section Group
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   [TopologicalSpace R]
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (R ⊗[F] E) := GlobalTheory.CompanionTheory.SW.HIsom.isTopologicalRing_tens F E R`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR R σ J))`.
+-/
 theorem isTopologicalGroup_HA [IsTopologicalRing R] [Module.Finite F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) : IsTopologicalGroup (HA R σ J) := by
   haveI : IsTopologicalRing (R ⊗[F] E) := GlobalTheory.CompanionTheory.SW.HIsom.isTopologicalRing_tens F E R
   exact inferInstanceAs (IsTopologicalGroup (HR R σ J))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelSpace_HA (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     BorelSpace (HA R σ J) := ⟨rfl⟩
 
@@ -45,6 +57,39 @@ end GlobalTheory.CompanionTheory.SW.FTransfer
 
 open GlobalTheory.CompanionTheory.SW.FTransfer in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ g J' hJ' μ 𝓕 hμ h𝓕`. Apply the tactic sequence `obtain ⟨e, he1, he2⟩ := GlobalTheory.CompanionTheory.SW.HIsom.unitaryIsom_of_isometry F E σ hCM M J hJ g J' hJ' (AF F)`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `haveI := isTopologicalGroup_HA (F := F) (E := E) (AF F) σ J`. Use `haveI := isTopologicalGroup_HA (F := F) (E := E) (AF F) σ J'`.
+
+Use `haveI := borelSpace_HA (F := F) (E := E) (AF F) σ J`. Use `haveI := borelSpace_HA (F := F) (E := E) (AF F) σ J'`. Use `haveI : μ.IsHaarMeasure := hμ`. Set `em : HA (AF F) σ J' ≃ᵐ HA (AF F) σ J` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hmp : MeasurePreserving em (μ.map em.symm) μ`.
+
+Use `⟨em.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map em.measurable em.symm.measurable]`. Simplify using the standard rewrite rules. Use `⟨μ.map em.symm, em ⁻¹' 𝓕, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ContinuousMulEquiv.isHaarMeasure_map μ e.symm`.
+
+Establish `hq : Measure.QuasiMeasurePreserving em (μ.map em.symm) μ` using `hmp.quasiMeasurePreserving`. Establish `hin₀ : ∀ x : HA (AF F) σ J, HA.mat (AF F) σ J x ∈ HFin (AF F) σ J → HA.mat (AF F) σ J' (e.symm x) ∈ HFin (AF F) σ J'`. Introduce `x hx`. Apply `(he2 _).1` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply]`.
+
+Conclude with `hx`. Establish `hin : ∀ a : HFinIn (AF F) σ J, HA.mat (AF F) σ J' (e.symm (a.1 : HA (AF F) σ J)) ∈ HFin (AF F) σ J'` using `fun a => hin₀ a.1 a.2`. Establish `hmulx : ∀ (y : HA (AF F) σ J) (x : HA (AF F) σ J'), e (e.symm y * x) = y * e x`. Introduce `y x`. Rewrite using `[map_mul, e.apply_symm_apply]`.
+
+Set `e' : HFinIn (AF F) σ J → HFinIn (AF F) σ J'` to `fun a => ⟨(e.symm (a.1 : HA (AF F) σ J) : HA (AF F) σ J'), Subgroup.mem_subgroupOf.2 (hin a)⟩`. Use `IsFundamentalDomain.preimage_of_equiv h𝓕 hq (e := e') ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h1 : e.symm (a.1 : HA (AF F) σ J) = e.symm (b.1 : HA (AF F) σ J)` using `congrArg (fun x : HFinIn (AF F) σ J' => (x.1 : HA (AF F) σ J')) hab`. Conclude with `Subtype.ext (e.symm.injective h1)`.
+
+Introduce `b`. Establish `hb : HA.mat (AF F) σ J (e (b.1 : HA (AF F) σ J')) ∈ HFin (AF F) σ J` using `(he2 _).2 b.2`. Use `⟨⟨(e (b.1 : HA (AF F) σ J') : HA (AF F) σ J), Subgroup.mem_subgroupOf.2 hb⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (e.symm_apply_apply (b.1 : HA (AF F) σ J'))`. Introduce `a x`.
+
+Conclude with `hmulx a.1 x`. Rewrite using `[em.symm.map_apply]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Introduce `n S Φ`. Establish `hrest : (μ.map em.symm).restrict (em ⁻¹' 𝓕) = (μ.restrict 𝓕).map em.symm`. Rewrite using `[MeasurableEquiv.restrict_map]`. Use `congr 2`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Unfold `cntI`. Rewrite using `[hrest, lintegral_map_equiv]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Establish `key : ∀ X : Fin n → Fin M → E, actTup (AF F) (bc (inclR (AF F)) g) (actW (AF F) σ J' (em.symm h)⁻¹ (ratTup (AF F) X)) = actW (AF F) σ J h⁻¹ (ratTup (AF F) (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X a))`.
+
+Introduce `X`. Establish `hu : e (em.symm h) = h` using `e.apply_symm_apply h`. Establish `h1` using `he1 (em.symm h)⁻¹`. Rewrite `h1` using `[map_inv, hu]`. Simplify using `only [actW]`.
+
+Rewrite using `[← actTup_ratTup, h1, ← actTup_mul, ← actTup_mul]`. Use `congr 1`. Use `group`. Set `T : {X : Fin n → Fin M → E | (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X a) ∈ S} ≃ S` to `{ toFun := fun X => ⟨fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X.1 a, X.2⟩ invFun := fun Y => ⟨fun a => ((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ Y.1 a, by`. Establish `: (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ (((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ Y.1 a)) = Y.1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `(fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ (((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ Y.1 a)) ∈ S`. Rewrite using `[this]`. Conclude with `Y.2⟩`.
+
+Use `left_inv := fun X => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ ((g : Matrix (Fin M) (Fin M) E) *ᵥ X.1 a) = X.1 a`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Use `right_inv := fun Y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `(g : Matrix (Fin M) (Fin M) E) *ᵥ (((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ Y.1 a) = Y.1 a`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec] }`.
+
+Use `(T.tsum_eq (fun X : S => Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))))).symm.trans (tsum_congr fun X => ?_)` and prove the remaining obligations. Conclude with `congrArg Φ (key X.1).symm`.
+-/
 theorem GlobalTheory.CompanionTheory.SW.FTransfer.cntI_transfer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (g : GL (Fin M) E) (J' : Matrix (Fin M) (Fin M) E), J' = cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∃ (μ' : Measure (HA (AF F) σ J')) (𝓕' : Set (HA (AF F) σ J')), IsHaarH F E σ M J' μ' ∧ IsFDH F E σ M J' μ' 𝓕' ∧ μ' 𝓕' = μ 𝓕 ∧ ∀ (n : ℕ) (S : Set (Fin n → Fin M → E)) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞), cntI σ J μ 𝓕 S Φ = cntI σ J' μ' 𝓕' {X | (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X a) ∈ S} (fun Y => Φ (actTup (AF F) (bc (inclR (AF F)) g) Y)) := by
   intro F E _ _ _ _ _ σ hCM M J hJ g J' hJ' μ 𝓕 hμ h𝓕
   obtain ⟨e, he1, he2⟩ := GlobalTheory.CompanionTheory.SW.HIsom.unitaryIsom_of_isometry F E σ hCM M J hJ g J' hJ' (AF F)

@@ -10,6 +10,15 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Establish `hpi` using `Real.pi_pos`. Establish `hs0 : 0 ≤ s` using `by linarith`. Establish `h1 : s ≤ s / S`. Rewrite using `[le_div_iff₀ hS0]`. Use polynomial arithmetic with `[mul_nonneg hs0 (sub_nonneg.2 hS1.le)]`.
+
+Establish `h2 : c / S ≤ s / S`. Rewrite using `[div_le_div_iff₀ hS0 hS0]`. Conclude with `mul_le_mul_of_nonneg_right hcs.le hS0.le`. Establish `h3 : Real.pi * c / L ≤ 3 / 2 * Real.pi * (c / S)`. Rewrite using `[mul_div_assoc', div_le_div_iff₀ hL hS0]`.
+
+Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hpi.le hc) (sub_nonneg.2 hSL.le)]`. Establish `hexp1 : Real.exp (-4 * Real.pi * (1 - 1 / 4) * T) ≤ Real.exp (-(Real.pi * c / L)) * Real.exp (-(3 * Real.pi / 2) * s)`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `k1` using `mul_le_mul_of_nonneg_left hT hpi.le`.
+
+Establish `k2` using `mul_le_mul_of_nonneg_left h1 hpi.le`. Establish `k3` using `mul_le_mul_of_nonneg_left h2 hpi.le`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma le_max_mul_exp_mul_exp_of_le_exp {N Cη c L S s T : ℝ} (hc : 0 ≤ c) (hL : 0 < L) (hS0 : 0 < S)
     (hS1 : S < 1) (hSL : S < 3 / 2 * L) (hcs : c < s) (hT : s / S ≤ T)
     (hb : N ≤ Cη * Real.exp (-4 * Real.pi * (1 - 1 / 4) * T)) :
@@ -40,6 +49,65 @@ private lemma le_max_mul_exp_mul_exp_of_le_exp {N Cη c L S s T : ℝ} (hc : 0 �
       mul_le_mul_of_nonneg_left hexp1 (le_max_right _ _)
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `r X la P c hc hP`. Simplify using `only [Data.SSgt, Data.SS, Data.IsBddSec, Set.mem_setOf_eq] at hP`. Take `⟨⟨⟨hsec, B, hB⟩, -⟩, hgt⟩` from `hP`. Establish `h3d` using `(moderateCoefficientPositivity_holds (E := E)) r X la P B 0 hsec (by`. Introduce `x hx`.
+
+Simplify `hB x hx)` using `only [neg_zero, Real.rpow_zero, mul_one]`. Take `⟨hnn, hdec⟩` from `h3d`. Take `⟨Cη, hCη⟩` from `hdec (1 / 4) (by norm_num) (by norm_num)`. Take `⟨Kf, hKf⟩` from `FrequencySumBounds.freq_sum_bound X la (3 * Real.pi / 2) (by positivity)`. Take `⟨δ0, hδ0, hiso0⟩` from `IsotropicThreshold.iso_threshold X`.
+
+Take `⟨δ, hδpos, hδ1, hδ2⟩ : ∃ δ : ℝ, 0 < δ ∧ 3 / 2 * δ < δ0 ∧ 3 / 2 * δ < 1` from `⟨min δ0 1 / 2, half_pos (lt_min hδ0 one_pos), by linarith [min_le_left δ0 1, lt_min hδ0 one_pos], by linarith [min_le_right δ0 1, lt_min hδ0 one_pos]⟩`. Establish `hC10 : 0 ≤ max Cη 0` using `le_max_right _ _`. Establish `hK0 : 0 ≤ Kf` using `by simpa using hKf ∅ (by simp)`. Establish `h2pc : 0 ≤ 2 * Real.pi * c` using `mul_nonneg (mul_nonneg zero_le_two Real.pi_pos.le) hc`. Use `⟨B ^ 2 * Real.exp (2 * Real.pi * c / δ) + (max Cη 0 * Kf) ^ 2, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hpn : X.pnorm la P x = ‖P x‖ * X.nfac la x` using `rfl`. Establish `hnf : 0 ≤ X.nfac la x`. Unfold `Data.nfac`. Conclude with `Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (norm_nonneg _) _`.
+
+Establish `hp0 : 0 ≤ X.pnorm la P x`. Rewrite using `[hpn]`. Conclude with `mul_nonneg (norm_nonneg _) hnf`. Establish `hexp : 0 < Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)` using `Real.exp_pos _`. Distinguish the cases in `hL : 0 < X.firstMinimumSq x ∧ X.firstMinimumSq x < δ`.
+
+Take `⟨hL0, hLδ⟩` from `hL`. Establish `hLs : X.firstMinimumSq x = sInf {t | ∃ w ∈ X.Λ, w ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 w)}` using `rfl`. Establish `hne : ({t | ∃ w ∈ X.Λ, w ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 w)} : Set ℝ).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`.
+
+Rewrite `hL0` using `[hLs, h, Real.sInf_empty]`. Conclude with `lt_irrefl _ hL0`. Establish `hlt : sInf {t | ∃ w ∈ X.Λ, w ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 w)} < 3 / 2 * X.firstMinimumSq x`. Rewrite using `[← hLs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨S, ⟨v, hvΛ, hv0, hSdef⟩, hS⟩` from `exists_lt_of_csInf_lt hne hlt`. Establish `hSδ0 : S < δ0` using `by linarith`. Establish `hS1 : S < 1` using `by linarith`. Establish `hherm : herm X.Gm v v = 0` using `hiso0 x hx v hvΛ (by rw [← hSdef]; exact hSδ0)`. Establish `hiso : X.IsIso v`.
+
+Unfold `Data.IsIso`. Conclude with `⟨hvΛ, hherm, hv0⟩`. Establish `hterm_pos : ∀ τ, 0 < X.c τ * X.maj x τ (Data.emb τ.1 v)` using `fun τ => mul_pos (IsotropicThreshold.c_pos X τ) (Data.maj_pos (X := X) hx τ (emb_ne_zero τ.1 hv0))`. Establish `hterm_le : ∀ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) ≤ S` using `fun τ => by`. Rewrite using `[hSdef]`.
+
+Conclude with `Finset.single_le_sum (fun τ _ => (hterm_pos τ).le) (Finset.mem_univ τ)`. Establish `hcond : ∀ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) ≤ 1` using `fun τ => by`. Combine the linear relations using `[hterm_le τ]`. Establish `htt : ∀ τ, 1 / S ≤ X.tt v x τ` using `fun τ => by`. Unfold `Data.tt`.
+
+Conclude with `one_div_le_one_div_of_le (hterm_pos τ) (hterm_le τ)`. Establish `hsum : HasSum (fun ν : X.Ψ → ℝ => X.fj la v ν P x) (P x)`. Establish `h` using `(m3bExp_holds (E := E)) r X la P hsec v hiso x hx 0 (by rw [EmbeddingHermitianPairs.flow_zero]; exact hx)`. Simplify `h` using `[EmbeddingHermitianPairs.flow_zero]`. Establish `hper : ∀ ν : X.Ψ → ℝ, X.fj la v ν P x ≠ 0 → ‖X.fj la v ν P x‖ * X.nfac la x ≤ max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Real.exp (-(3 * Real.pi / 2) * ∑ τ, ν τ)`.
+
+Introduce `ν hν`. Establish `hν0 : ∀ τ, 0 ≤ ν τ` using `hnn v hiso ν x hx hν`. Establish `hνc : c < ∑ τ, ν τ`. Assume the negation of the conclusion as `h`. Conclude with `hν (hgt v hiso ν (not_lt.1 h) x hx)`.
+
+Establish `hΨ : (Finset.univ : Finset X.Ψ).Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`. Rewrite `hνc` using `[h, Finset.sum_empty]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hSpos : 0 < S`. Rewrite using `[hSdef]`. Conclude with `Finset.sum_pos (fun τ _ => hterm_pos τ) hΨ`. Establish `hT : (∑ τ, ν τ) / S ≤ ∑ τ, ν τ * X.tt v x τ`. Rewrite using `[div_eq_mul_one_div, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_le_sum fun τ _ => mul_le_mul_of_nonneg_left (htt τ) (hν0 τ)`. Establish `hb` using `hCη v hiso ν x hx hcond`. Rewrite `hb` using `[neg_zero, Real.rpow_zero, mul_one]`. Conclude with `le_max_mul_exp_mul_exp_of_le_exp hc hL0 hSpos hS1 hS hνc hT hb`. Establish `hfin : ∀ F : Finset (X.Ψ → ℝ), ∑ ν ∈ F, ‖X.fj la v ν P x‖ * X.nfac la x ≤ max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Kf`.
+
+Introduce `F`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `ν _`. Use `split_ifs with h`.
+
+Conclude with `hper ν h`. Simplify using `only [not_not] at h`. Simplify using `[h]`. Use `_ = ∑ ν ∈ F.filter (fun ν => X.fj la v ν P x ≠ 0), max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Real.exp (-(3 * Real.pi / 2) * ∑ τ, ν τ) := by`. Rewrite using `[Finset.sum_filter]`.
+
+Use `_ = max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * ∑ ν ∈ F.filter (fun ν => X.fj la v ν P x ≠ 0), Real.exp (-(3 * Real.pi / 2) * ∑ τ, ν τ) := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Kf := by`. Apply `mul_le_mul_of_nonneg_left _ (mul_nonneg hC10 (Real.exp_pos _).le)` to reduce the goal to its premises. Apply `hKf` to reduce the goal to its premises.
+
+Introduce `ν hν`. Rewrite `hν` using `[Finset.mem_filter]`. Unfold `FrequencySumBounds.IsFreq`. Use `⟨hnn v hiso ν x hx hν.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcnd`.
+
+Apply `hν.2` to reduce the goal to its premises. Rewrite using `[Data.fj, if_neg hcnd]`. Establish `hPx : ‖P x‖ * X.nfac la x ≤ max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Kf`. Break down `hnf.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, mul_zero]`.
+
+Conclude with `mul_nonneg (mul_nonneg hC10 (Real.exp_pos _).le) hK0`. Establish `hsumm : Summable (fun ν : X.Ψ → ℝ => ‖X.fj la v ν P x‖)`. Use `summable_of_sum_le (c := max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Kf / X.nfac la x) (fun ν => norm_nonneg _) fun F => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hpos, Finset.sum_mul]`. Conclude with `hfin F`.
+
+Establish `htle : ∑' ν, ‖X.fj la v ν P x‖ ≤ max Cη 0 * Real.exp (-(Real.pi * c / X.firstMinimumSq x)) * Kf / X.nfac la x`. Use `Real.tsum_le_of_sum_le (fun ν => norm_nonneg _) fun F => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hpos, Finset.sum_mul]`. Conclude with `hfin F`. Rewrite using `[← le_div_iff₀ hpos, ← hsum.tsum_eq]`.
+
+Conclude with `(norm_tsum_le_tsum_norm hsumm).trans htle`. Establish `hle : X.pnorm la P x ≤ max Cη 0 * Kf * Real.exp (-(Real.pi * c / X.firstMinimumSq x))`. Rewrite using `[hpn]`. Combine the linear relations using `[hPx]`. Establish `he2 : Real.exp (-(Real.pi * c / X.firstMinimumSq x)) ^ 2 = Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)`.
+
+Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hP2 : X.pnorm la P x ^ 2 ≤ (max Cη 0 * Kf) ^ 2 * Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, he2]`. Establish `hB2 : 0 ≤ B ^ 2 * Real.exp (2 * Real.pi * c / δ) * Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)` using `mul_nonneg (mul_nonneg (sq_nonneg B) (Real.exp_pos _).le) hexp.le`. Use polynomial arithmetic with `[hP2, hB2]`. Establish `hpB : X.pnorm la P x ^ 2 ≤ B ^ 2` using `pow_le_pow_left₀ hp0 (hB x hx) 2`.
+
+Establish `hcmp : 2 * Real.pi * c / X.firstMinimumSq x ≤ 2 * Real.pi * c / δ`. Break down `le_or_gt (X.firstMinimumSq x) 0 with h | h` into its components or cases. Establish `hinv : (X.firstMinimumSq x)⁻¹ ≤ 0` using `inv_nonpos.mpr h`. Rewrite using `[div_eq_mul_inv]`. Use polynomial arithmetic with `[mul_nonneg h2pc (neg_nonneg.2 hinv), div_nonneg h2pc hδpos.le]`.
+
+Establish `hδL : δ ≤ X.firstMinimumSq x`. Assume the negation of the conclusion as `h'`. Conclude with `hL ⟨h, not_le.1 h'⟩`. Rewrite using `[div_le_div_iff₀ h hδpos]`. Conclude with `mul_le_mul_of_nonneg_left hδL h2pc`.
+
+Establish `hE : 1 ≤ Real.exp (2 * Real.pi * c / δ) * Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)`. Rewrite using `[← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises. Establish `: -2 * Real.pi * c / X.firstMinimumSq x = -(2 * Real.pi * c / X.firstMinimumSq x)` using `by ring`. Rewrite using `[this]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK2 : 0 ≤ (max Cη 0 * Kf) ^ 2 * Real.exp (-2 * Real.pi * c / X.firstMinimumSq x)` using `mul_nonneg (sq_nonneg _) hexp.le`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[hK2]`.
+-/
 theorem cuspidalDecay_holds : CuspidalExponentialDecay (E := E) := by
   intro r X la P c hc hP
   simp only [Data.SSgt, Data.SS, Data.IsBddSec, Set.mem_setOf_eq] at hP

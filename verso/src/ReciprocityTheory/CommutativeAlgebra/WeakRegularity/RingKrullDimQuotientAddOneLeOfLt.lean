@@ -7,6 +7,9 @@ open IsLocalRing
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Take `⟨r, hrp, hrq⟩` from `SetLike.exists_of_lt h`. Establish `hr : Ideal.Quotient.mk q r ∈ nonZeroDivisors (R ⧸ q)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.Quotient.eq_zero_iff_mem])`. Conclude with `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor h.le) (Ideal.Quotient.factor_surjective h.le) hr (by rw [Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]; exact hrp)`.
+-/
 theorem ringKrullDim_quotient_add_one_le_of_lt {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (h : q < p) : ringKrullDim (R ⧸ p) + 1 ≤ ringKrullDim (R ⧸ q) := by
   obtain ⟨r, hrp, hrq⟩ := SetLike.exists_of_lt h

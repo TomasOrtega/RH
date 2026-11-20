@@ -17,6 +17,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.IsChartAffineSection
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundTheory.FunctionField UpperTheory.Et.Sel LateralTheory.E.E4
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `letI : Algebra k M := (g.comp (algebraMap k K)).toAlgebra`. Set `f' : L →ₐ[k] M` to `{ f with commutes' := fun r => h r }`. Set `g' : K →ₐ[k] M` to `{ g with commutes' := fun r => rfl }`. Conclude with `⟨(Algebra.TensorProduct.productMap f' g').toRingHom, fun l a => by simp [f', g']⟩`.
+-/
 private theorem exists_tensor_lift {k L K M : Type} [Field k] [Field L] [Field K] [CommRing M] [Algebra k L] [Algebra k K]
     (f : L →+* M) (g : K →+* M) (h : ∀ r : k, f (algebraMap k L r) = g (algebraMap k K r)) :
     ∃ θ : L ⊗[k] K →+* M, ∀ l a, θ (l ⊗ₜ[k] a) = f l * g a := by
@@ -25,6 +28,37 @@ private theorem exists_tensor_lift {k L K M : Type} [Field k] [Field L] [Field K
   let g' : K →ₐ[k] M := { g with commutes' := fun r => rfl }
   exact ⟨(Algebra.TensorProduct.productMap f' g').toRingHom, fun l a => by simp [f', g']⟩
 
+/- English proof (translation)
+Establish `hsurj` using `UpperTheory.surjective_of_isPullback_spec_field_ext k L c u x hpb`. Take `⟨φ, hφgen, hφgerm⟩` from `UpperTheory.exists_functionField_hom_germ_of_surjective u hsurj`. Take `⟨f, hfk, hfx⟩` from `UpperTheory.baseChange_functionField_hom_genericPoint_comp k L c u x hpb hK φ hφgen`. Take `⟨θ, hθ⟩` from `exists_tensor_lift f φ hfk`. Establish `hne' : ∀ i, Nonempty (u ⁻¹ᵁ U i)`.
+
+Introduce `i`. Take `⟨⟨z, hz⟩⟩` from `hne i`. Take `⟨y, rfl⟩` from `hsurj.surj z`. Conclude with `⟨⟨y, hz⟩⟩`. Establish `chart : ∀ i, IsAffineOpen (u ⁻¹ᵁ U i) ∧ ∃ e : L ⊗[k] B i ≃+* Γ(X, u ⁻¹ᵁ U i), ∀ s, θ (inc L (B i) s) = X.germToFunctionField (u ⁻¹ᵁ U i) (e s)`.
+
+Introduce `i`. Use `haveI := hne' i`. Take `⟨hV, e, he1, he2⟩` from `UpperTheory.baseChange_affine_sections_subalgebra_tensor k L c u x hpb hK (U i) (hUa i) (B i) (hB i)`. Use `⟨hV, e, fun s => ?_⟩` and prove the remaining obligations. Proceed by induction on `s using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul l b`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : (b : C.functionField) ∈ Set.range (C.germToFunctionField (U i)) := by`. Rewrite using `[← hB i]`. Conclude with `b.2`.
+
+Establish `hsplit : l ⊗ₜ[k] b = (l ⊗ₜ[k] (1 : B i)) * ((1 : L) ⊗ₜ[k] b)`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[show inc L (B i) (l ⊗ₜ[k] b) = l ⊗ₜ[k] (b : C.functionField) from rfl, hθ, hsplit, map_mul, map_mul, he1 a b ha.symm, he2 l, hfx, ← hφgerm (U i) a, ha]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Establish `hcomp : θ.comp Algebra.TensorProduct.includeRight.toRingHom = φ`.
+
+Use extensionality with `a`. Simplify using `[Algebra.TensorProduct.includeRight_apply, hθ]`. Establish `hinj : Function.Injective θ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`.
+
+Take `⟨hV0, e0, he0⟩` from `chart ⟨0, hn⟩`. Use `haveI := hne' ⟨0, hn⟩`. Take `⟨s, β, hβ, hs⟩` from `UpperTheory.tensor_fractionRing_exists_mul_eq_of_denominator k L C.functionField (B ⟨0, hn⟩) (hfr _) t`. Establish `h1 : θ (inc L (B ⟨0, hn⟩) s) = 0` using `by rw [← hs, map_mul, ht, zero_mul]`. Rewrite `h1` using `[he0]`.
+
+Establish `h2 : e0 s = 0` using `X.germToFunctionField_injective _ (h1.trans (map_zero _).symm)`. Establish `h3 : s = 0` using `e0.injective (h2.trans (map_zero e0).symm)`. Rewrite `hs` using `[h3, map_zero]`. Establish `hβ' : (β : C.functionField) ≠ 0` using `fun h => hβ (Subtype.ext h)`. Establish `hu : IsUnit ((1 : L) ⊗ₜ[k] (β : C.functionField))`.
+
+Use `⟨⟨1 ⊗ₜ[k] (β : C.functionField), 1 ⊗ₜ[k] (β : C.functionField)⁻¹, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hβ']`. Both sides reduce to the same expression. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, inv_mul_cancel₀ hβ']`. Both sides reduce to the same expression.
+
+Conclude with `hu.mul_left_eq_zero.mp hs`. Use `⟨θ, by rw [hcomp]; exact hφgen, hinj, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Take `⟨hV, e, he⟩` from `chart ⟨0, hn⟩`. Use `haveI := hne' ⟨0, hn⟩`.
+
+Use `haveI := functionField_isFractionRing_of_isAffineOpen X _ hV`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors Γ(X, u ⁻¹ᵁ U ⟨0, hn⟩)) h`. Use `⟨inc L (B ⟨0, hn⟩) (e.symm p), inc L (B ⟨0, hn⟩) (e.symm q), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h4` using `congrArg θ h0`.
+
+Rewrite `h4` using `[he, map_zero, e.apply_symm_apply]`. Establish `h5 : (q : Γ(X, u ⁻¹ᵁ U ⟨0, hn⟩)) = 0` using `X.germToFunctionField_injective _ (h4.trans (map_zero _).symm)`. Conclude with `nonZeroDivisors.coe_ne_zero q h5`. Rewrite using `[he, he, e.apply_symm_apply, e.apply_symm_apply]`. Conclude with `hpq`.
+
+Introduce `y`. Take `⟨i, hi⟩` from `hUc (u y)`. Use `haveI := hne' i`. Take `⟨hV, e, he⟩` from `chart i`. Establish `hy : y ∈ u ⁻¹ᵁ U i` using `hi`.
+
+Use `⟨i, (hV.primeIdealOf ⟨y, hy⟩).asIdeal.comap e.toRingHom, inferInstance, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hsP : e s ∉ (hV.primeIdealOf ⟨y, hy⟩).asIdeal` using `hs`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨y, hy⟩`. Use `haveI := hV.isLocalization_stalk ⟨y, hy⟩`. Use `⟨(IsLocalization.map_units (X.presheaf.stalk y) (⟨e s, hsP⟩ : (hV.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl)).unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he]`. Conclude with `Scheme.algebraMap_germ_eq_germToFunctionField X hy (e s)`.
+-/
 private theorem core (k L : Type) [Field k] [Field L] [Algebra k L] {C X : Scheme.{0}} [IsIntegral C] [IsIntegral X]
     (c : C ⟶ Sp k) (u : X ⟶ C) (x : X ⟶ Sp L)
     (hpb : IsPullback u x c (Spec.map (CommRingCat.ofHom (algebraMap k L))))
@@ -115,6 +149,15 @@ private theorem core (k L : Type) [Field k] [Field L] [Algebra k L] {C X : Schem
     rw [he]
     exact Scheme.algebraMap_germ_eq_germToFunctionField X hy (e s)
 
+/- English proof (translation)
+Introduce `k _ _ C _ c hcurve _ hK`. Establish `hprop : IsProper c` using `hcurve.2.1`. Use `haveI : CompactSpace C := QuasiCompact.compactSpace_of_compactSpace c`. Take `⟨n, U, hUa, hUne, hn, hUc⟩` from `UpperTheory.exists_finite_nonempty_affine_cover_of_integral C`. Use `haveI : ∀ i, Nonempty (U i) := hUne`.
+
+Establish `hex : ∀ i, ∃ B : Subalgebra k C.functionField, (B : Set C.functionField) = Set.range (C.germToFunctionField (U i))` using `fun i => UpperTheory.exists_subalgebra_eq_range_germToFunctionField k c hK (U i)`. Use `choose B hB using hex`. Establish `hchart : ∀ i, IsChart (B i)` using `fun i => UpperTheory.isChart_affine_sections_of_isCurve k c hcurve hK (U i) (hUa i) (B i) (hB i)`. Use `⟨UpperTheory.isFunctionField_of_dedekind_finiteType_fractionRing k C.functionField (B ⟨0, hn⟩) (hchart _).2.1 (hchart _).1 (hchart _).2.2.1 (hchart _).2.2.2.1, n, B, hchart, ?_⟩` and prove the remaining obligations. Introduce `L _ _ _`.
+
+Set `g` to `Spec.map (CommRingCat.ofHom (algebraMap k L))`. Establish `hpb : IsPullback (pullback.fst c g) (pullback.snd c g) c g` using `IsPullback.of_hasPullback c g`. Establish `hcurve'` using `UpperTheory.isCurve_pullback_of_isCurve_baseChange k L c hcurve`. Use `haveI hXint : IsIntegral (pullback c g) := hcurve'.1`. Establish `hstalk` using `(UpperTheory.isDedekindDomain_affine_sections_of_isCurve L (pullback.snd c g) hcurve').2`.
+
+Take `⟨θ, h1, h2, h3, h4⟩` from `core k L c (pullback.fst c g) (pullback.snd c g) hpb hK U hUa hUc hn B hB (fun i => (hchart i).2.2.2.1)`. Conclude with `⟨pullback c g, hXint, pullback.fst c g, pullback.snd c g, θ, hpb, hstalk, h1, h2, h3, h4⟩`.
+-/
 theorem UpperTheory.isFunctionField_and_chart_cover_of_isCurve :
     ∀ (k : Type) [Field k] [IsAlgClosed k] {C : Scheme.{0}} [IsIntegral C] (c : C ⟶ Sp k), IsCurve c → ∀ [Algebra k C.functionField], Spec.map (CommRingCat.ofHom (algebraMap k C.functionField)) = (C.fromSpecStalk (genericPoint C)) ≫ c → IsFunctionField k C.functionField ∧ ∃ (n : ℕ) (B : Fin n → Subalgebra k C.functionField), (∀ i, IsChart (B i)) ∧ ∀ (L : Type) [Field L] [IsAlgClosed L] [Algebra k L], ∃ (X : Scheme.{0}) (_ : IsIntegral X) (u : X ⟶ C) (x : X ⟶ Sp L) (θ : L ⊗[k] C.functionField →+* X.functionField), IsPullback u x c (Spec.map (CommRingCat.ofHom (algebraMap k L))) ∧ (∀ y : X, IsIntegrallyClosed (X.presheaf.stalk y)) ∧ Spec.map (CommRingCat.ofHom (θ.comp Algebra.TensorProduct.includeRight.toRingHom)) ≫ (C.fromSpecStalk (genericPoint C)) = (X.fromSpecStalk (genericPoint X)) ≫ u ∧ Function.Injective θ ∧ (∀ h : X.functionField, ∃ a b, b ≠ 0 ∧ h * θ b = θ a) ∧ ∀ y : X, ∃ (i : Fin n) (m : Ideal (L ⊗[k] B i)), m.IsPrime ∧ ∀ s ∉ m, ∃ w : (X.presheaf.stalk y)ˣ, algebraMap (X.presheaf.stalk y) X.functionField w = θ (inc L (B i) s) := by
   intro k _ _ C _ c hcurve _ hK

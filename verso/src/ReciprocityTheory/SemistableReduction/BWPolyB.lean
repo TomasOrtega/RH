@@ -4,6 +4,31 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hw'` using `fun y => hL y w (hw y)`. Use `choose Qw hQd hQ using hw'`. Establish `hv'` using `fun (y v : σ → ℂ) (h : D y ≠ 0) => hL y v (hD y v h)`. Use `choose P hPd hP using hv'`. Set `G : (σ → ℂ) → ℂ` to `fun y => (Qw y).eval 0`.
+
+Establish `hsep : ∀ y m, ∃ Q : ℂ[X], Q.natDegree ≤ k ∧ ∀ t, G (Function.update y m t) = Q.eval t`. Introduce `y m`. Use `set z : σ → ℂ := Function.update y m 0`. Use `set e : σ → ℂ := Pi.single m 1`. Establish `hupd : ∀ t, Function.update y m t = z + t • e`.
+
+Introduce `t`. Use extensionality with `i`. Distinguish the cases in `hi : i = m`. Substitute `hi` using the available equality. Simplify using `[z, e]`.
+
+Simplify using `[z, e, Function.update_apply, hi, Pi.single_apply]`. Set `Pc : ℂ → ℂ[X]` to `fun c => if h : D (z + c • w) = 0 then 0 else P (z + c • w) e h`. Set `R : Finset ℂ → ℂ[X]` to `fun S => ∑ c ∈ S, Polynomial.C ((Lagrange.basis S id c).eval 0) * Pc c`. Establish `hRdeg : ∀ S, (R S).natDegree ≤ k`. Introduce `S`.
+
+Use `Polynomial.natDegree_sum_le_of_forall_le _ _ (fun c _ => ?_)` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Simplify using `only [Pc]`. Use `split_ifs with h`. Simplify using the standard rewrite rules.
+
+Conclude with `hPd _ _ h`. Establish `key : ∀ S : Finset ℂ, S.card = k + 1 → (∀ c ∈ S, D (z + c • w) ≠ 0) → ∀ t, (∀ c ∈ S, D ((z + t • e) + c • w) ≠ 0) → G (z + t • e) = (R S).eval t`. Introduce `S hS hSz t ht`. Simplify using `only [G, R]`. Rewrite using `[bwp_eval_eq_lagrange S (Qw (z + t • e)) k hS (hQd _) 0, Polynomial.eval_finset_sum]`.
+
+Use `Finset.sum_congr rfl (fun c hc => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, ← hQ _ c (ht c hc)]`. Use `congr 1`. Simplify using `only [Pc, dif_neg (hSz c hc)]`. Rewrite using `[← hP _ _ (hSz c hc) t (by rw [add_right_comm]; exact ht c hc), add_right_comm]`.
+
+Establish `hbad : ∀ S : Finset ℂ, (∀ c ∈ S, D (z + c • w) ≠ 0) → {t : ℂ | ∃ c ∈ S, D ((z + t • e) + c • w) = 0}.Finite`. Introduce `S hSz`. Establish `: {t : ℂ | ∃ c ∈ S, D ((z + t • e) + c • w) = 0} = ⋃ c ∈ S, {t : ℂ | D ((z + c • w) + t • e) = 0}`. Use extensionality with `t`. Simplify using `[add_right_comm]`.
+
+Rewrite using `[this]`. Conclude with `Set.Finite.biUnion S.finite_toSet (fun c hc => hD _ e (hSz c hc))`. Take `⟨S0, hS0, hS0z⟩` from `bwp_exists_nodes {s | D (z + s • w) = 0} (hw z) k`. Use `⟨R S0, hRdeg S0, fun t0 => ?_⟩` and prove the remaining obligations. Rewrite using `[hupd]`.
+
+Take `⟨S1, hS1, hS1z⟩` from `bwp_exists_nodes ({s | D (z + s • w) = 0} ∪ {s | D ((z + t0 • e) + s • w) = 0}) ((hw z).union (hw (z + t0 • e))) k`. Establish `hS1a : ∀ c ∈ S1, D (z + c • w) ≠ 0` using `fun c hc h => hS1z c hc (Or.inl h)`. Establish `hS1b : ∀ c ∈ S1, D ((z + t0 • e) + c • w) ≠ 0` using `fun c hc h => hS1z c hc (Or.inr h)`. Establish `hS0a : ∀ c ∈ S0, D (z + c • w) ≠ 0` using `fun c hc h => hS0z c hc h`. Establish `hRR : R S0 = R S1`.
+
+Use `bwp_poly_eq_of_eval_eq_off _ _ _ ((hbad S0 hS0a).union (hbad S1 hS1a)) (fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_exists, not_and] at ht`. Rewrite using `[← key S0 hS0 hS0a t ht.1, ← key S1 hS1 hS1a t ht.2]`. Rewrite using `[hRR, key S1 hS1 hS1a t0 hS1b]`. Take `⟨F, hF⟩` from `bwp_sepPoly k G hsep`.
+
+Use `⟨F, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF]`. Use `hQ z 0 (by simpa using hz)` as an intermediate fact. Simplify `this` using `[G]`.
+-/
 theorem bwp_ext_poly {σ : Type*} [Fintype σ] [DecidableEq σ] (k : ℕ) (g D : (σ → ℂ) → ℂ)
     (w : σ → ℂ) (hw : ∀ z, {s : ℂ | D (z + s • w) = 0}.Finite)
     (hD : ∀ z v, D z ≠ 0 → {t : ℂ | D (z + t • v) = 0}.Finite)

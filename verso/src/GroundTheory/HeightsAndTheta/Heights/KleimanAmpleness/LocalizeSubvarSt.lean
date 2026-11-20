@@ -18,12 +18,18 @@ instance LocalizeSubvar.exLoc (k : Type) [Field k] : IsLocalization.AtPrime k (�
   IsLocalization.of_le_isUnit fun a ha =>
     (IsUnit.mem_submonoid_iff a).mpr (isUnit_iff_ne_zero.mpr fun h => ha (h ▸ Ideal.zero_mem _))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Ideal.map_bot, Ideal.map_bot]; exact bot_le, Kleiman.isSubvar_genericPt k N⟩`.
+-/
 theorem LocalizeSubvar.hyps (k : Type) [Field k] (N : ℕ) :
     ((⊥ : Ideal k).map (algebraMap k k)).map (C : k →+* Kleiman.Poly k N) ≤
         Kleiman.primeOf (S := k) (Kleiman.genericPt k N) ∧
       Kleiman.IsSubvar (Kleiman.genericPt k N) (Kleiman.primeOf (S := k) (Kleiman.genericPt k N)) N :=
   ⟨by rw [Ideal.map_bot, Ideal.map_bot]; exact bot_le, Kleiman.isSubvar_genericPt k N⟩
 
+/- English proof (translation)
+The claim follows from `h k ⊥ k (FractionRing (Kleiman.Poly k 1)) 1 (Kleiman.genericPt k 1) _ 1 (LocalizeSubvar.hyps k 1).1 (LocalizeSubvar.hyps k 1).2`.
+-/
 example (k : Type) [Field k] (h : LocalizeSubvar.Statement) :=
   h k ⊥ k (FractionRing (Kleiman.Poly k 1)) 1 (Kleiman.genericPt k 1) _ 1 (LocalizeSubvar.hyps k 1).1
     (LocalizeSubvar.hyps k 1).2

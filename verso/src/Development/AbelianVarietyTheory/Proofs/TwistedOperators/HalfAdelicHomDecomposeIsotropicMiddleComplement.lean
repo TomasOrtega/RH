@@ -9,21 +9,36 @@ namespace GlobalTheory.HalfDecomp
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [adj, Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem adj_mul {a b c : ℕ} (A : Matrix (Fin a) (Fin b) D.host.E) (B : Matrix (Fin b) (Fin c) D.host.E) :
     adj D (A * B) = adj D B * adj D A := by
   simp only [adj, Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [adj, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `star_star (A i j)`.
+-/
 theorem adj_adj {a b : ℕ} (A : Matrix (Fin a) (Fin b) D.host.E) : adj D (adj D A) = A := by
   refine Matrix.ext fun i j => ?_
   simp only [adj, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]
   exact star_star (A i j)
 
+/- English proof (translation)
+Simplify using `[adj, Formalism.UG.cT]`.
+-/
 theorem adj_one {a : ℕ} : adj D (1 : Matrix (Fin a) (Fin a) D.host.E) = 1 := by
   simp [adj, Formalism.UG.cT]
 
+/- English proof (translation)
+Simplify using `[adj, Formalism.UG.cT]`.
+-/
 theorem adj_zero {a b : ℕ} : adj D (0 : Matrix (Fin a) (Fin b) D.host.E) = 0 := by
   simp [adj, Formalism.UG.cT]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [adj, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `GlobalTheory.LatVac.gram_star V j i`.
+-/
 theorem adj_gram (V : HSp D) : adj D V.gram = V.gram := by
   refine Matrix.ext fun i j => ?_
   simp only [adj, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]
@@ -35,6 +50,23 @@ namespace GlobalTheory.HalfDecomp
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set G := V.gram`. Use `set Pi := adj D C * G`. Use `set Pm := V'.gram⁻¹ * adj D B * G`. Use `set N := G⁻¹ * adj D K`. Use `set N' := N - C * (K * N) - B * (Pm * N)`.
+
+Establish `hG` using `GlobalTheory.LatVac.gram_det_isUnit V`. Establish `hG'` using `GlobalTheory.LatVac.gram_det_isUnit V'`. Establish `hPiC : Pi * C = 0` using `hs.frame.2.2`. Establish `hPiB : Pi * B = 0` using `hs.orth`. Establish `hBC : adj D B * G * C = 0`.
+
+Establish `h` using `congrArg (adj D) hs.orth`. Rewrite `h` using `[adj_mul, adj_mul, adj_adj, adj_gram, adj_zero, ← Matrix.mul_assoc]`. Conclude with `h`. Establish `hPmC : Pm * C = 0`. Simplify using `only [Pm, Matrix.mul_assoc] at hBC ⊢`.
+
+Rewrite using `[hBC, Matrix.mul_zero]`. Establish `hPmB : Pm * B = 1`. Simplify using `only [Pm, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (adj D B), hs.isom, Matrix.nonsing_inv_mul _ hG']`. Establish `hPiN : Pi * N = 1`.
+
+Simplify using `only [Pi, N, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc G, Matrix.mul_nonsing_inv _ hG, Matrix.one_mul, ← adj_mul, hKC, adj_one]`. Establish `hKN' : K * N' = 0`. Simplify using `only [N', Matrix.mul_sub, ← Matrix.mul_assoc, hKC, hKB, Matrix.one_mul, Matrix.zero_mul, sub_self, sub_zero]`. Establish `hPmN' : Pm * N' = 0`.
+
+Simplify using `only [N', Matrix.mul_sub, ← Matrix.mul_assoc, hPmC, hPmB, Matrix.one_mul, Matrix.zero_mul, sub_zero, sub_self]`. Establish `hPiN' : Pi * N' = 1`. Simplify using `only [N', Matrix.mul_sub, ← Matrix.mul_assoc, hPiC, hPiB, Matrix.zero_mul, sub_zero]`. Simplify `hPiN` using `only [Pi, N, Matrix.mul_assoc]`. Set `M : Matrix (Fin r ⊕ (Fin V'.rank ⊕ Fin r)) (Fin V.rank) D.host.E` to `Matrix.fromRows K (Matrix.fromRows Pm Pi)`.
+
+Set `Q : Matrix (Fin V.rank) (Fin r ⊕ (Fin V'.rank ⊕ Fin r)) D.host.E` to `Matrix.fromCols C (Matrix.fromCols B N')`. Establish `hMQ : M * Q = 1`. Simplify using `only [M, Q, Matrix.fromRows_mul, Matrix.mul_fromCols, hKC, hKB, hKN', hPmC, hPmB, hPmN', hPiC, hPiB, hPiN']`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a | a <;> rcases b with b | b | b <;> simp [Matrix.one_apply]`.
+
+Establish `e : Fin r ⊕ (Fin V'.rank ⊕ Fin r) ≃ Fin V.rank` using `Fintype.equivOfCardEq (by simp [hs.rank]; ring)`. Establish `hQM : Q * M = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 hMQ`. Use `⟨N', ?_⟩` and prove the remaining obligations. Simplify `hQM` using `only [M, Q, Matrix.fromCols_mul_fromRows]`.
+-/
 theorem exists_decomp_one (V V' : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (hs : IsIsoSplit V V' C B)
     (K : Matrix (Fin r) (Fin V.rank) D.host.E) (hKC : K * C = 1) (hKB : K * B = 0) :
@@ -87,6 +119,11 @@ end GlobalTheory.HalfDecomp
 
 namespace GlobalTheory.HalfDecomp
 
+/- English proof (translation)
+Introduce `D V V' W r C B hs K hKC hKB a u hu`. Take `⟨N', hN'⟩` from `exists_decomp_one V V' C B hs K hKC hKB`. Use `⟨HMul.hMul (u : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (N'.map (incA D)), HMul.hMul (u : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (B.map (incA D)), HMul.hMul (u : Matrix (Fin W.rank) (Fin V.rank) (AE D)) (C.map (incA D)), isHalf_mul hu _, isHalf_mul hu _, isHalf_mul hu _, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun M : Matrix (Fin V.rank) (Fin V.rank) D.host.E => M.map (incA D)) hN'`. Simplify using `only [Matrix.map_add, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h1`.
+
+Simplify using `only [isoPart, midPart, restEmb, Matrix.map_mul, Matrix.mul_assoc]`. Use `conv_lhs => rw [← Matrix.mul_one u, ← h1]`. Simplify using `only [Matrix.map_add _ (map_add (incA D)), Matrix.map_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem half_decomp : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ K : Matrix (Fin r) (Fin V.rank) D.host.E, K * C = 1 → K * B = 0 → ∀ (a : AE D) (u : WO V W), IsHalf a u → ∃ (y : Mx D W.rank r) (x : WO V' W) (t : Mx D W.rank r), IsHalf a y ∧ IsHalf a x ∧ IsHalf a t ∧ u = isoPart V W C y + midPart V V' W B x + restEmb V W K t := by
   intro D V V' W r C B hs K hKC hKB a u hu
   obtain ⟨N', hN'⟩ := exists_decomp_one V V' C B hs K hKC hKB

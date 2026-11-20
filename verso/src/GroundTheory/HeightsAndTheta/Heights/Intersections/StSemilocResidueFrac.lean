@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Establish `hc : (c : E) ∈ Subfield.closure (∅ : Set E)`. Rewrite using `[Subfield.closure_empty]`. Conclude with `c.2`. Take `⟨y, hy, z, hz, h⟩` from `Subfield.mem_closure_iff.1 hc`. Rewrite `hy`, `hz` using `[Subring.closure_empty, Subring.mem_bot]`.
+
+Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Distinguish the cases in `hb : (b : E) = 0`. Use `⟨0, 1, by simp, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[← h, hb]`.
+
+Use `⟨a, b, fun h0 => hb ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val h0`. Simplify using `[← h]`.
+-/
 theorem primeSubfield_exists_div {E : Type*} [Field E] (c : (⊥ : Subfield E)) :
     ∃ a b : ℤ, (b : (⊥ : Subfield E)) ≠ 0 ∧ c = a / b := by
   have hc : (c : E) ∈ Subfield.closure (∅ : Set E) := by

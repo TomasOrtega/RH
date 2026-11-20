@@ -23,6 +23,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto.SplitTransfer
 
+/- English proof (translation)
+Establish `hr : (Finset.range t).image (fun i => t - 1 - i) = Finset.range t`. Use extensionality with `i`. Simplify using `only [Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hi; exact ⟨t - 1 - i, by omega, by omega⟩`. Establish `hinj : Set.InjOn (fun i => t - 1 - i) (Finset.range t : Set ℕ)` using `fun a ha b hb e => by`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Simplify using `only at e`.
+
+Use linear arithmetic over natural numbers and integers. Unfold `GlobalTheory.LFun.seg`. Use `conv_rhs => rw [← hr, Finset.image_val_of_injOn hinj, Multiset.map_map]`. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hi' : i < t` using `Finset.mem_range.1 hi`. Simplify using `only [Function.comp_apply, mul_inv]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_inv_eq_inv_val, GlobalTheory.LFun.coe_npowU, GlobalTheory.LFun.npow]`.
+
+Rewrite using `[← Complex.cpow_neg]`. Use `congr 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seg_map_inv {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) (x : ℂˣ) (t : ℕ) :
     (GlobalTheory.LFun.seg w x t).map (·⁻¹) = GlobalTheory.LFun.seg w x⁻¹ t := by
   have hr : (Finset.range t).image (fun i => t - 1 - i) = Finset.range t := by
@@ -52,6 +63,41 @@ theorem seg_map_inv {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW t ht v hv hunr w h U hU f hf X _ _ ρ x B hx X' _ _ ρ' b hb hne`. Take `⟨eS, heS⟩` from `(GlobalTheory.T.exists_unitaryCharts_allFinitePlaces_frameLattice D S v w h).1 hv`. Take `⟨eT, heT⟩` from `(GlobalTheory.T.exists_unitaryCharts_allFinitePlaces_frameLattice D T v w h).1 hv`. Establish `hxS` using `hx.isSatVecGL hv heS`. Take `⟨hfix, hH⟩` from `GlobalTheory.T.latticeVacuum_heckeIdentity_splitPlace_charts D ψ S T χS χT om hW t ht v w h hv hunr eS eT heS heT (f : WO S T → ℂ) hf`.
+
+Take `⟨hcS, hsS⟩` from `GlobalTheory.T.integral_GL_commensurated_doubleCosetCardInvSymm D.host.E w S.rank`. Take `⟨hcT, hsT⟩` from `GlobalTheory.T.integral_GL_commensurated_doubleCosetCardInvSymm D.host.E w T.rank`. Set `σF : Representation ℂ (GL (Fin S.rank) (w.adicCompletion D.host.E)) (WO S T → ℂ)` to `((om.comp (MonoidHom.inl _ _)).comp (embV S v)).comp eS.symm.toMonoidHom`. Set `πF : Representation ℂ (GL (Fin T.rank) (w.adicCompletion D.host.E)) (WO S T → ℂ)` to `((om.comp (MonoidHom.inr _ _)).comp (embV T v)).comp eT.symm.toMonoidHom`. Establish `eσ : ∀ g, σF g = om (embV S v (eS.symm g), embV T v 1)` using `fun g => by simp [σF]`.
+
+Establish `eπ : ∀ g, πF g = om (embV S v 1, embV T v (eT.symm g))` using `fun g => by simp [πF]`. Set `σU` to `σF.subrepresentation U fun g u hu => by rw [Submodule.mem_comap, eσ]; exact hU _ _ u hu`. Set `πU` to `πF.subrepresentation U fun g u hu => by rw [Submodule.mem_comap, eπ]; exact hU _ _ u hu`. Set `ρS` to `ρ.comp eS.symm.toMonoidHom`. Set `ρT` to `ρ'.comp eT.symm.toMonoidHom`.
+
+Establish `hKS : ∀ k ∈ KGL w S.rank, eS.symm k ∈ Kv S v` using `fun k hk => (heS.2 (eS.symm k)).2 (by simpa using hk)`. Establish `hKT : ∀ k ∈ KGL w T.rank, eT.symm k ∈ Kv T v` using `fun k hk => (heT.2 (eT.symm k)).2 (by simpa using hk)`. Establish `hfS : f ∈ fixed σU (KGL w S.rank)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `σF k (f : WO S T → ℂ) = f`. Rewrite using `[eσ]`.
+
+Conclude with `hfix _ (hKS k hk) _ (one_mem _))`. Establish `hfT : f ∈ fixed πU (KGL w T.rank)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `πF k (f : WO S T → ℂ) = f`. Rewrite using `[eπ]`. Conclude with `hfix _ (one_mem _) _ (hKT k hk))`.
+
+Establish `hequiv : ∀ g (u : U), (b.flip x) (πU g u) = ρT g ((b.flip x) u)` using `fun g u => by`. Establish `e` using `hb 1 (eT.symm g) u x`. Rewrite `e` using `[show ρ 1 x = x by simp]`. Rewrite using `[LinearMap.flip_apply, LinearMap.flip_apply]`. Express the relevant statement in the definitionally equal form `b (πU g u) x = ρ' (eT.symm g) (b u x)`.
+
+Rewrite using `[← e]`. Use `congr 2`. Conclude with `Subtype.ext (by change πF g (u : WO S T → ℂ) = _; rw [eπ])`. Establish `hinv : ∀ g (u : U) y, b (σU g u) (ρS g y) = b u y` using `fun g u y => by`. Establish `e` using `hb (eS.symm g) 1 u y`.
+
+Rewrite `e` using `[show ρ' 1 (b u y) = b u y by simp]`. Rewrite using `[← e]`. Use `congr 2`. Conclude with `Subtype.ext (by change σF g (u : WO S T → ℂ) = _; rw [eσ])`. Establish `hbfix : b f x ∈ fixed ρT (KGL w T.rank)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`.
+
+Establish `e` using `hequiv k f`. Rewrite `e` using `[GlobalTheory.LGrp.mem_fixed.1 hfT k hk]`. Conclude with `e.symm`. Establish `hcard : (stepPar χS χT t (fun _ => B) w).card = T.rank`. Simplify using `[stepPar, GlobalTheory.LFun.seg, hxS.2.2.1, ht]`.
+
+Establish `hB'inv : (stepPar χS χT t (fun _ => B) w).map (·⁻¹) = (B.map (·⁻¹)).map ((val (F` using `D.host.F) χS w)⁻¹ * ((val (F := D.host.F) χT w)⁻¹)⁻¹ * ·) + GlobalTheory.LFun.seg w (val (F := D.host.F) χS w)⁻¹ t := by`. Rewrite using `[stepPar, Multiset.map_add, seg_map_inv, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, mul_inv]`.
+
+Use `Or.inl ⟨hv, eT, heT, (GlobalTheory.T.satake_vector_iff_inverse_doubleCosets D.host.E w T.rank X' ρT (b f x) _ hne hbfix hcard).2 fun ϖ hϖ k hk => ?_⟩` and prove the remaining obligations. Establish `hsubT : ∀ g (y : U), U.subtype (πU g y) = πF g (U.subtype y)` using `fun g y => rfl`. Establish `hsubS : ∀ g (y : U), U.subtype (σU g y) = σF g (U.subtype y)` using `fun g y => rfl`. Establish `hInvT : (fun g => Tj ℂ T.rank (Ov D.host.E w) ϖ k g⁻¹) ∈ Hecke ℂ (KGL w T.rank)` using `(GlobalTheory.T.hecke_operator_move_across_invariant_bilinear _ (KGL w T.rank) hcT hsT ℂ ℂ ℂ 1 1 0 (fun _ _ _ => by simp) 0 (zero_mem _) 0 (zero_mem _) _ (Tj_mem_hecke hϖ k)).1`. Set `cf : ℕ → ℂ` to `fun j => if j ≤ k then (qV D.host.E w : ℂ) ^ ((S.rank - j) * (k - j)) * (Formalism.L2.Col.gaussBin (qV D.host.E w) t (k - j) : ℂ) * (((val (F := D.host.F) χS w : ℂˣ) : ℂ) * (Real.sqrt (qV D.host.E w) : ℂ) ^ S.rank)⁻¹ ^ k * (((val (F := D.host.F) χT w : ℂˣ) : ℂ) * (Real.sqrt (qV D …`.
+
+Establish `hH' : heckeVec πF (KGL w T.rank) (fun g => Tj ℂ T.rank (Ov D.host.E w) ϖ k g⁻¹) (U.subtype f) = ∑ j ∈ Finset.range (S.rank + 1), cf j • heckeVec σF (KGL w S.rank) (Tj ℂ S.rank (Ov D.host.E w) ϖ j) (U.subtype f)` using `hH ϖ hϖ k hk`. Establish `e1 : U.subtype (heckeVec πU (KGL w T.rank) (fun g => Tj ℂ T.rank (Ov D.host.E w) ϖ k g⁻¹) f) = heckeVec πF (KGL w T.rank) (fun g => Tj ℂ T.rank (Ov D.host.E w) ϖ k g⁻¹) (U.subtype f)` using `map_heckeVec hcT hInvT U.subtype hsubT f`. Establish `e2 : ∀ j, U.subtype (heckeVec σU (KGL w S.rank) (Tj ℂ S.rank (Ov D.host.E w) ϖ j) f) = heckeVec σF (KGL w S.rank) (Tj ℂ S.rank (Ov D.host.E w) ϖ j) (U.subtype f)` using `fun j => map_heckeVec hcS (Tj_mem_hecke hϖ j) U.subtype hsubS f`. Establish `hT : heckeVec πU (KGL w T.rank) (fun g => Tj ℂ T.rank (Ov D.host.E w) ϖ k g⁻¹) f = ∑ j ∈ Finset.range (S.rank + 1), cf j • heckeVec σU (KGL w S.rank) (Tj ℂ S.rank (Ov D.host.E w) ϖ j) f`. Apply `U.injective_subtype` to reduce the goal to its premises.
+
+Rewrite using `[e1, hH', map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, e2 j]`. Establish `hmove : ∀ j ∈ Finset.range (S.rank + 1), b (heckeVec σU (KGL w S.rank) (Tj ℂ S.rank (Ov D.host.E w) ϖ j) f) x = satEig (qV D.host.E w) S.rank (B.map (·⁻¹)) j • b f x`. Introduce `j hj`.
+
+Rewrite using `[(GlobalTheory.T.hecke_operator_move_across_invariant_bilinear _ _ hcS hsS U X X' σU ρS b hinv f hfS x hxS.2.1 _ (Tj_mem_hecke hϖ j)).2, (GlobalTheory.T.satake_vector_iff_inverse_doubleCosets D.host.E w S.rank X ρS x B hxS.1 hxS.2.1 hxS.2.2.1).1 hxS ϖ hϖ j (Nat.lt_succ_iff.1 (Fin …`. Establish `hsym` using `GlobalTheory.T.satake_esymm_scaled_multiset_add_segment D.host.E w S.rank t k (B.map (·⁻¹)) (val (F := D.host.F) χS w)⁻¹ (val (F := D.host.F) χT w)⁻¹ (by rw [Multiset.card_map, hxS.2.2.1]) (ht ▸ hk)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, hmove j hj]`. Use `_ = satEig (qV D.host.E w) T.rank ((stepPar χS χT t (fun _ => B) w).map (·⁻¹)) k • b f x := by`. Repeatedly rewrite using `[smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+
+Rewrite using `[hB'inv, ht, hsym]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [cf]`. Use `split_ifs`.
+
+Rewrite using `[ht]`. Simplify using `only [Units.val_inv_eq_inv_val, inv_inv, mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem transferOn_isSplit : ∀ D : D7, TransferOn D fun v => IsSplit (E := D.host.E) v := by
   intro D ψ S T χS χT om hW t ht v hv hunr w h U hU f hf X _ _ ρ x B hx X' _ _ ρ' b hb hne
   obtain ⟨eS, heS⟩ := (GlobalTheory.T.exists_unitaryCharts_allFinitePlaces_frameLattice D S v w h).1 hv

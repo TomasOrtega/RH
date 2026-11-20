@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
 
+/- English proof (translation)
+Use `⟨s.map (fun a => algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ * a), fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[mul_left_comm, hs i j]`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.map_apply, nsmul_eq_mul, ← mul_assoc]`.
+
+Establish `h1 : (k : AE D) * algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ = 1`. Rewrite using `[show (k : AE D) = algebraMap D.host.F (AE D) (k : D.host.F) by simp, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]`. Rewrite using `[h1, one_mul]`.
+-/
 theorem half_div {e : AE D} {k : ℕ} (hk : 0 < k) {s : WO S T} (hs : IsHalf e s) :
     ∃ t, IsHalf e t ∧ k • t = s := by
   refine ⟨s.map (fun a => algebraMap D.host.F (AE D) (k : D.host.F)⁻¹ * a), fun i j => ?_, ?_⟩
@@ -26,6 +31,11 @@ theorem half_div {e : AE D} {k : ℕ} (hk : 0 < k) {s : WO S T} (hs : IsHalf e s
         mul_inv_cancel₀ (Nat.cast_ne_zero.2 hk.ne'), map_one]
     rw [h1, one_mul]
 
+/- English proof (translation)
+Establish `hz : ∀ i j c d, incA D (S.gram⁻¹ i j) * cA D (a c j) * incA D (T.gram c d) * u d i = 0`. Introduce `i j c d`. Establish `h1 : cA D (a c j) = cA D e * cA D (a c j)` using `by rw [← map_mul, ha c j]`. Establish `h2 : cA D e * u d i + e * u d i = 0`. Rewrite using `[← add_mul, add_comm]`.
+
+Conclude with `hu d i`. Take the linear combination `(incA D (S.gram⁻¹ i j) * incA D (T.gram c d) * u d i - incA D (S.gram⁻¹ i j) * incA D (T.gram c d) * e * u d i) * h1 + (incA D (S.gram⁻¹ i j) * cA D (a c j) * incA D (T.gram c d)) * h2 - (incA D (S.gram⁻¹ i j) * cA D (a c j) * incA D (T.gram c d) * u d i) * he`. Simplify using `[symplO, hO, hz]`.
+-/
 theorem symplO_off {e : AE D} (he : e * cA D e = 0) {u a : WO S T} (hu : ∀ i j, (e + cA D e) * u i j = 0)
     (ha : IsHalf e a) : symplO S T u a = 0 := by
   have hz : ∀ i j c d, incA D (S.gram⁻¹ i j) * cA D (a c j) * incA D (T.gram c d) * u d i = 0 := by
@@ -40,6 +50,9 @@ theorem symplO_off {e : AE D} (he : e * cA D e = 0) {u a : WO S T} (hu : ∀ i j
       (incA D (S.gram⁻¹ i j) * cA D (a c j) * incA D (T.gram c d) * u d i) * he
   simp [symplO, hO, hz]
 
+/- English proof (translation)
+Use `congrArg (fun Tm : Module.End ℂ (WO S T → ℂ) => Tm f) (heisL_comm ψ S T u a)` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply, heisL_apply, h]`.
+-/
 theorem heisO_comm_of {u a : WO S T} (h : symplO S T u a = 0) (f : WO S T → ℂ) :
     heisO ψ S T u (heisO ψ S T a f) = heisO ψ S T a (heisO ψ S T u f) := by
   have := congrArg (fun Tm : Module.End ℂ (WO S T → ℂ) => Tm f) (heisL_comm ψ S T u a)
@@ -47,6 +60,35 @@ theorem heisO_comm_of {u a : WO S T} (h : symplO S T u a = 0) (f : WO S T → �
 
 open Classical in
 
+/- English proof (translation)
+Establish `mi` using `fun {x : WO S T} {H K : AddSubgroup (WO S T)} (h : x ∈ H ⊓ K) => AddSubgroup.mem_inf.1 h`. Take `⟨Tm, hTm, -⟩` from `exists_placeModel ψ S T e₁ he Λ f₀ hLL hdY hfX hfY hoX hoY hvX hvY`. Establish `hχl : ∀ t t' y : WO S T, ψ (symplO S T (t + t') y) = ψ (symplO S T t y) * ψ (symplO S T t' y)` using `fun t t' y => by`. Simplify using `only [symplO_add_left, AddChar.map_add_eq_mul]`. Establish `hχr : ∀ t y y' : WO S T, ψ (symplO S T t (y + y')) = ψ (symplO S T t y) * ψ (symplO S T t y')` using `fun t y y' => by`.
+
+Simplify using `only [symplO_add_right, AddChar.map_add_eq_mul]`. Establish `hχ0 : ∀ t y : WO S T, ψ (symplO S T t y) ≠ 0` using `fun t y => psi_ne_zero ψ _`. Establish `hLL' : ∀ x ∈ Λ ⊓ halfSub S T e₁, ∀ y ∈ Λ ⊓ halfSub S T (cA D e₁), ψ (symplO S T x y) = 1` using `fun x hx y hy => hLL x (mi hx).1 (mi hx).2 y (mi hy).1 (mi hy).2`. Establish `hdX' : ∀ x ∈ halfSub S T e₁, (∀ y ∈ Λ ⊓ halfSub S T (cA D e₁), ψ (symplO S T x y) = 1) → x ∈ Λ` using `fun x hx h => hdX x hx fun y hy hye => h y (AddSubgroup.mem_inf.2 ⟨hy, hye⟩)`. Establish `hdivX : ∀ k : ℕ, 0 < k → ∀ s ∈ halfSub S T e₁, ∃ t ∈ halfSub S T e₁, k • t = s` using `fun k hk s hs => by`.
+
+Take `⟨t, ht, hts⟩` from `half_div S T hk hs`. Conclude with `⟨t, ht, hts⟩`. Establish `hdivY : ∀ k : ℕ, 0 < k → ∀ s ∈ halfSub S T (cA D e₁), ∃ t ∈ halfSub S T (cA D e₁), k • t = s` using `fun k hk s hs => by`. Take `⟨t, ht, hts⟩` from `half_div S T hk hs`. Conclude with `⟨t, ht, hts⟩`.
+
+Establish `hfinX : ∀ k, 0 < k → Finite (Four.Qt k (Λ ⊓ halfSub S T e₁))` using `fun k hk => by`. Take `⟨R, hR⟩` from `hfX k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`. Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩`.
+
+Establish `hfinY : ∀ k, 0 < k → Finite (Four.Qt k (Λ ⊓ halfSub S T (cA D e₁)))` using `fun k hk => by`. Take `⟨R, hR⟩` from `hfY k hk`. Conclude with `finite_qt_of S T R fun u hu => by`. Take `⟨r, hr, v, hv, hve, huv⟩` from `hR u (mi hu).1 (mi hu).2`. Conclude with `⟨r, hr, v, AddSubgroup.mem_inf.2 ⟨hv, hve⟩, huv⟩`.
+
+Establish `htf : ∀ k : ℕ, 0 < k → ∀ t : WO S T, k • t = 0 → t = 0` using `fun k hk t h => nsmul_eq_zero_WO S T hk h`. Establish `abs : ∀ Tm', IsPlaceModel ψ (symplO S T) (heisO ψ S T) e₁ Λ 1 f₀ Tm' → (∀ Φ, Four.IsSB Λ (halfSub S T e₁) Φ → ∀ x ∈ halfSub S T e₁, Tm' (fun t => Φ (t + x)) = heisL ψ S T x (Tm' Φ)) ∧ (∀ Φ, Four.IsSB Λ (halfSub S T e₁) Φ → ∀ y ∈ halfSub S T (cA D e₁), Tm' (fun t => ψ (symplO S T …`. Introduce `Tm' h'`. Use `⟨fun Φ hΦ x hx => h'.trans Φ ((isSBHalf_iff S T).2 hΦ) x hx, fun Φ hΦ y hy => h'.modul Φ ((isSBHalf_iff S T).2 hΦ) y hy, ?_⟩` and prove the remaining obligations. Use `h'.vac` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this`. Take `⟨htr, hmo, hva⟩` from `abs Tm hTm`. Establish `hspan : ∀ Φ, IsSBHalf e₁ Λ Φ → Tm Φ ∈ Submodule.span ℂ {v | ∃ a ∈ halfSub S T e₁, ∃ y ∈ halfSub S T (cA D e₁), v = heisL ψ S T a (heisL ψ S T y f₀)}` using `fun Φ hΦ => Four.model_mem_span hχl hχr hχ0 hLL' hdX' hdivX hdivY hfinX hfinY htf Tm htr hmo hva ((isSBHalf_iff S T).1 hΦ)`. Use `⟨Tm, hTm, fun Tm' h' Φ hΦ => ?_, fun Φ hΦ => ?_, fun Φ hΦ u hua huy hu0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨htr', hmo', hva'⟩` from `abs Tm' h'`. Conclude with `Four.model_unique hχl hχr hχ0 hLL' hdX' hdivX hdivY hfinX hfinY htf Tm Tm' htr hmo hva htr' hmo' hva' ((isSBHalf_iff S T).1 hΦ)`. Establish `hzero : IsThetaFunO ψ S T 0`. Use `Formalism.IndefR.Eqv.thetaO_smul (0 : ℂ) hf₀` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis.
+
+Establish `hmem` using `hspan Φ hΦ`. Generalize the expression as in `Tm Φ = v₀ at hmem ⊢`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, -, y, -, rfl⟩` from `hv`.
+
+Conclude with `heisStable ψ hψ S T a _ (heisStable ψ hψ S T y f₀ hf₀)`. Consider the case `zero => exact hzero`. Consider the case `add v w _ _ hv hw => exact Formalism.IndefR.Eqv.thetaO_add hv hw`. Consider the case `smul c v _ hv => exact Formalism.IndefR.Eqv.thetaO_smul c hv`. Establish `hmem` using `hspan Φ hΦ`.
+
+Generalize the expression as in `Tm Φ = v₀ at hmem ⊢`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, y, hy, rfl⟩` from `hv`. Simplify using `only [heisL_apply]`.
+
+Rewrite using `[heisO_comm_of ψ S T (hua a ha), heisO_comm_of ψ S T (huy y hy), hu0]`. Consider the case `zero`. Use function extensionality and compare the values at `w`. Simplify using `[heisO]`. Consider the case `add v w _ _ hv hw`.
+
+Use `(heisL ψ S T u).map_add v w` as an intermediate fact. Rewrite `this` using `[heisL_apply, heisL_apply, heisL_apply]`. Rewrite using `[this, hv, hw]`. Consider the case `smul c v _ hv`. Use `(heisL ψ S T u).map_smul c v` as an intermediate fact.
+
+Rewrite `this` using `[heisL_apply, heisL_apply]`. Rewrite using `[this, hv]`.
+-/
 theorem placeModel_core (hψ : IsStdChar D ψ (-1)) (e₁ : AE D) (he : e₁ * cA D e₁ = 0) (Λ : AddSubgroup (WO S T))
     (f₀ : WO S T → ℂ) (hf₀ : IsThetaFunO ψ S T f₀)
     (hLL : ∀ x ∈ Λ, IsHalf e₁ x → ∀ y ∈ Λ, IsHalf (cA D e₁) y → ψ (symplO S T x y) = 1)
@@ -148,6 +190,23 @@ theorem placeModel_core (hψ : IsStdChar D ψ (-1)) (e₁ : AE D) (he : e₁ * c
       rw [heisL_apply, heisL_apply] at this
       rw [this, hv]
 
+/- English proof (translation)
+Introduce `ψ hψ S T ΛS ΛT hS hT P e he f₀ hf₀ hvac e₁ he₁`. Take `⟨-, -, hP⟩` from `h ψ hψ S T ΛS ΛT hS hT`. Take `⟨hd2, hd3, hfin, hop⟩` from `hP P e he`. Establish `hcc : cA D (cA D e) = e` using `cA_cA e`. Establish `vacE : ∀ u ∈ latAll S T ΛS ΛT, IsHalf e u → heisO ψ S T u f₀ = f₀` using `fun u hu h' => hvac u hu (Or.inl h')`.
+
+Establish `vacC : ∀ u ∈ latAll S T ΛS ΛT, IsHalf (cA D e) u → heisO ψ S T u f₀ = f₀` using `fun u hu h' => hvac u hu (Or.inr h')`. Establish `offE : ∀ u : WO S T, (∀ i j, (e + cA D e) * u i j = 0) → ∀ a, IsHalf e a → symplO S T u a = 0` using `fun u hu a ha => symplO_off S T he.2 hu ha`. Establish `offC : ∀ u : WO S T, (∀ i j, (e + cA D e) * u i j = 0) → ∀ a, IsHalf (cA D e) a → symplO S T u a = 0` using `fun u hu a ha => symplO_off S T (cA_half_orth he.2) (fun i j => by rw [hcc, add_comm]; exact hu i j) ha`. Break down `he₁ with rfl | rfl` into its components or cases. Take `⟨Tm, h1, h2, h3, h4⟩` from `placeModel_core ψ S T hψ e₁ he.2 (latAll S T ΛS ΛT) f₀ hf₀ (fun x hx hxe y hy hye => (hd2 y hye).2 hy x hx hxe) (fun y hye h' => (hd2 y hye).1 h') (fun x hxe h' => (hd3 x hxe).1 h') (fun k hk => hfin k hk e₁ (Or.inl rfl)) (fun k hk => hfin k hk (cA D e₁) (Or.inr rfl)) (fun x hx = …`.
+
+Conclude with `⟨Tm, h1, h2, h3, fun Φ hΦ u hu hu0 => h4 Φ hΦ u (offE u hu) (offC u hu) hu0⟩`. Take `⟨Tm, h1, h2, h3, h4⟩` from `placeModel_core ψ S T hψ (cA D e) (cA_half_orth he.2) (latAll S T ΛS ΛT) f₀ hf₀ (by`. Rewrite using `[hcc]`. Introduce `x hx hxe y hy hye`. Rewrite using `[symplO_swap S T y x]`.
+
+Conclude with `psi_neg_one ψ ((hd2 x hxe).2 hx y hy hye))`. Use the proof step `(by`. Rewrite using `[hcc]`. Introduce `y hye h'`. Use `(hd3 y hye).1 fun y' hy' hy'e => ?_` and prove the remaining obligations.
+
+Use `psi_neg_one ψ (h' y' hy' hy'e)` as an intermediate fact. Rewrite using `[symplO_swap S T y y', neg_neg] at this)` and apply the resulting hypothesis. Use the proof step `(by`. Rewrite using `[hcc]`. Introduce `x hxe h'`.
+
+Use `(hd2 x hxe).1 fun y hy hye => ?_` and prove the remaining obligations. Use `psi_neg_one ψ (h' y hy hye)` as an intermediate fact. Rewrite using `[← symplO_swap S T x y] at this)` and apply the resulting hypothesis. Use the proof step `(fun k hk => hfin k hk (cA D e) (Or.inr rfl))`. Use the proof step `(by rw [hcc]; exact fun k hk => hfin k hk e (Or.inl rfl))`.
+
+Use the proof step `(fun x hx => hop (cA D e) (Or.inr rfl) x hx)`. Use the proof step `(by rw [hcc]; exact fun y hy => hop e (Or.inl rfl) y hy)`. Use `vacC`. Use the proof step `(by rw [hcc]; exact vacE)`. Use `⟨Tm, h1, h2, h3, fun Φ hΦ u hu hu0 => h4 Φ hΦ u (offC u hu) ?_ hu0⟩` and prove the remaining obligations.
+
+Rewrite using `[hcc]`. Conclude with `offE u hu`.
+-/
 theorem placeModelAt_of {D : D7} (h : PlaceLatDual D) : PlaceModelAt D := by
   intro ψ hψ S T ΛS ΛT hS hT P e he f₀ hf₀ hvac e₁ he₁
   obtain ⟨-, -, hP⟩ := h ψ hψ S T ΛS ΛT hS hT

@@ -12,6 +12,9 @@ namespace GlobalTheory.SmoothComponents
 
 open Topology TopologicalSpace
 
+/- English proof (translation)
+The claim follows from `hdom x C = closure {Z.fromSpecStalk x (genericPoint (Spec (Z.presheaf.stalk x)))} := by haveI := hdom x set ξ := Z.fromSpecStalk x (genericPoint (Spec (Z.presheaf.stalk x))) have hCc : IsClosed C := isClosed_of_mem_irreducibleComponents C hC have hgen : IsGenericPoint hC.1.generi …`.
+-/
 theorem irreducibleComponent_eq_closure (Z : Scheme.{0})
     (hdom : ∀ x : Z, IsDomain (Z.presheaf.stalk x)) {C : Set Z} (hC : C ∈ irreducibleComponents Z)
     {x : Z} (hx : x ∈ C) :
@@ -42,6 +45,25 @@ namespace GlobalTheory.SmoothComponents
 
 open Topology TopologicalSpace
 
+/- English proof (translation)
+Introduce `Z s d _ _`. Establish `hs : Smooth s` using `SmoothOfRelativeDimension.smooth d s`. Take `⟨hred, -, hln⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field ℂ Z s hs`. Establish `hdom : ∀ x : Z, IsDomain (Z.presheaf.stalk x)` using `fun x ↦ (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth s (isDomain_and_isIntegrallyClosed_stalk_Sp ℂ) x).1`. Use `haveI : IsNoetherian Z := ⟨⟩`.
+
+Establish `hfin : (irreducibleComponents Z).Finite` using `finite_irreducibleComponents_of_isNoetherian`. Establish `disj : ∀ C ∈ irreducibleComponents Z, ∀ D ∈ irreducibleComponents Z, C ≠ D → Disjoint C D`. Introduce `C hC D hD hne`. Rewrite using `[Set.disjoint_left]`. Introduce `x hxC hxD`.
+
+Conclude with `hne ((irreducibleComponent_eq_closure Z hdom hC hxC).trans (irreducibleComponent_eq_closure Z hdom hD hxD).symm)`. Establish `cover : ∀ x : Z, ∃ C ∈ irreducibleComponents Z, x ∈ C` using `fun x ↦ ⟨irreducibleComponent x, irreducibleComponent_mem_irreducibleComponents x, mem_irreducibleComponent⟩`. Establish `hopen : ∀ C ∈ irreducibleComponents Z, IsOpen C`. Introduce `C hC`. Establish `hc : Cᶜ = ⋃ D ∈ irreducibleComponents Z \ {C}, D`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_diff, Set.mem_singleton_iff, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨D, hD, hxD⟩` from `cover x`.
+
+Conclude with `⟨D, ⟨hD, fun h ↦ hx (h ▸ hxD)⟩, hxD⟩`. Introduce and unpack `⟨D, ⟨hD, hne⟩, hxD⟩ hxC`. Conclude with `Set.disjoint_left.mp (disj D hD C hC hne) hxD hxC`. Rewrite using `[← isClosed_compl_iff, hc]`. Conclude with `(hfin.subset Set.diff_subset).isClosed_biUnion fun D hD ↦ isClosed_of_mem_irreducibleComponents D hD.1`.
+
+Use `letI : Fintype (irreducibleComponents Z) := hfin.fintype`. Use `⟨irreducibleComponents Z, inferInstance, fun C ↦ ⟨C.1, hopen C.1 C.2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Apply `Opens.ext` to reduce the goal to its premises. Simplify using `only [Opens.coe_inf, Opens.coe_bot]`.
+
+Conclude with `Set.disjoint_iff_inter_eq_empty.mp (disj i.1 i.2 j.1 j.2 fun h ↦ hij (Subtype.ext h))`. Use `eq_top_iff.mpr fun x _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Opens.mem_iSup]`. Take `⟨C, hC, hxC⟩` from `cover x`. Conclude with `⟨⟨C, hC⟩, hxC⟩`.
+
+Introduce `C`. Establish `hirr : IsIrreducible C.1` using `C.2.1`. Use `haveI : IrreducibleSpace (C.1 : Set Z) := Subtype.irreducibleSpace hirr`. Set `U : Z.Opens` to `⟨C.1, hopen C.1 C.2⟩`. Express the relevant statement in the definitionally equal form `IsIntegral U.toScheme`.
+
+Use `haveI : IrreducibleSpace U.toScheme := this`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem main : ∀ (Z : Scheme.{0}) (s : Z ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d s]
     [CompactSpace Z], ∃ (J : Type) (_ : Fintype J) (V : J → Z.Opens),
       (∀ i j, i ≠ j → V i ⊓ V j = ⊥) ∧ iSup V = ⊤ ∧ ∀ j, IsIntegral (V j).toScheme := by

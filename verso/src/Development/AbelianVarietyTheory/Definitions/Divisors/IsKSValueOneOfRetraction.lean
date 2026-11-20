@@ -33,10 +33,18 @@ def prim (A : Over S) [GrpObj A] : Submodule R (Cris.H1 κ (A.hom ≫ t)) where
   zero_mem' Y f g := by simp
   smul_mem' r c hc Y f g := by rw [map_smul, hc, map_smul, map_smul, smul_add]
 
+/- English proof (translation)
+The claim follows from `IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) rfl c`.
+-/
 theorem pullOver_pullOver {Z Y X : Over S} (g : Z ⟶ Y) (f : Y ⟶ X) (c : Cris.H1 κ (X.hom ≫ t)) :
     pullOver κ t g (pullOver κ t f c) = pullOver κ t (g ≫ f) c :=
   IsMor.pullback1_comp _ _ _ (fun _ ↦ rfl) rfl c
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `hc' : ∀ (Y : Over S) (f g : Y ⟶ A), pullOver κ t (f * g) c = pullOver κ t f c + pullOver κ t g c` using `hc`. Establish `h` using `hc' (A ⊗ A) (fst A A) (snd A A)`. Rewrite `h` using `[← MonObj.mul_eq_mul]`. Then use the resulting hypothesis.
+
+Introduce `hc show ∀ (Y : Over S) (f g : Y ⟶ A), pullOver κ t (f * g) c = pullOver κ t f c + pullOver κ t g c`. Introduce `Y f g`. Establish `e : f * g = lift f g ≫ μ[A]`. Rewrite using `[MonObj.mul_eq_mul, MonObj.comp_mul, lift_fst, lift_snd]`. Rewrite using `[e, ← pullOver_pullOver, hc, map_add, pullOver_pullOver, pullOver_pullOver, lift_fst, lift_snd]`.
+-/
 theorem mem_prim_iff (A : Over S) [GrpObj A] (c : Cris.H1 κ (A.hom ≫ t)) :
     c ∈ prim κ t A ↔ pullOver κ t μ[A] c = pullOver κ t (fst A A) c + pullOver κ t (snd A A) c := by
   constructor
@@ -79,14 +87,23 @@ variable {κ : DividedPowers I} {t : S ⟶ Sp R} {A : Over S} [GrpObj A]
   {κ'' : DividedPowers I''} {t'' : S'' ⟶ Sp R''} {A'' : Over S''} [GrpObj A'']
   {σ : R →+* R'} {b : S' ⟶ S} {φ : A'.left ⟶ A.left}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hσ, hb, h.1.w, h.2⟩`.
+-/
 theorem of_isGrpPullback (hσ : IsDPMorphism κ κ' σ) (hb : b ≫ t = t' ≫ spMap σ)
     (h : IsGrpPullback A' A b φ) : GrpMor κ t A κ' t' A' σ b φ :=
   ⟨hσ, hb, h.1.w, h.2⟩
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Over.comp_left, Over.lift_left]`.
+-/
 private theorem mul_left_eq_lift_comp_mu {X : Scheme.{0}} {G : Over X} [GrpObj G] {T : Over X} (x y : T ⟶ G) :
     (x * y).left = pullback.lift x.left y.left ((Over.w x).trans (Over.w y).symm) ≫ μ[G].left := by
   rw [Hom.mul_def, Over.comp_left, Over.lift_left]
 
+/- English proof (translation)
+The claim follows from `hσ base := by rw [Category.id_comp]; exact hb w := by rw [Category.comp_id]; exact Over.w f mul T x y x₀ y₀ hx hy := by rw [← Over.comp_left, MonObj.mul_comp, mul_left_eq_lift_comp_mu, mul_left_eq_lift_comp_mu] congr 1 apply pullback.hom_ext · simp only [pullback.lift_fst]; exact …`.
+-/
 theorem of_hom {u : S ⟶ Sp R'} {B : Over S} [GrpObj B] (hσ : IsDPMorphism κ κ' σ)
     (hb : t = u ≫ spMap σ) (f : B ⟶ A) [IsMonHom f] : GrpMor κ t A κ' u B σ (𝟙 S) f.left where
   dp := hσ
@@ -99,13 +116,26 @@ theorem of_hom {u : S ⟶ Sp R'} {B : Over S} [GrpObj B] (hσ : IsDPMorphism κ 
     · simp only [pullback.lift_fst]; exact hx
     · simp only [pullback.lift_snd]; exact hy
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m.dp, by rw [← Category.assoc, m.w, Category.assoc, m.base, Category.assoc]⟩`.
+-/
 theorem isMor (m : GrpMor κ t A κ' t' A' σ b φ) : IsMor κ (A.hom ≫ t) κ' (A'.hom ≫ t') σ φ :=
   ⟨m.dp, by rw [← Category.assoc, m.w, Category.assoc, m.base, Category.assoc]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m.dp, by simp only [Category.assoc]; rw [reassoc_of% m.w, reassoc_of% (Over.w f), m.base]⟩`.
+-/
 private theorem grpMor_isMor_comp (m : GrpMor κ t A κ' t' A' σ b φ) {Y : Over S'} (f : Y ⟶ A') :
     IsMor κ (A.hom ≫ t) κ' (Y.hom ≫ t') σ (f.left ≫ φ) :=
   ⟨m.dp, by simp only [Category.assoc]; rw [reassoc_of% m.w, reassoc_of% (Over.w f), m.base]⟩
 
+/- English proof (translation)
+Establish `hc' : ∀ (Y : Over S) (f g : Y ⟶ A), pullOver κ t (f * g) c = pullOver κ t f c + pullOver κ t g c` using `hc`. Use `show ∀ (Y : Over S') (f g : Y ⟶ A'), pullOver κ' t' (f * g) (m.isMor.pull1 c) = pullOver κ' t' f (m.isMor.pull1 c) + pullOver κ' t' g (m.isMor.pull1 c)`. Introduce `Y f g`. Establish `k : IsMor κ ((Over.mk (Y.hom ≫ b)).hom ≫ t) κ' (Y.hom ≫ t') σ (𝟙 Y.left)` using `⟨m.dp, by simp only [Over.mk_hom, Category.id_comp, Category.assoc, m.base]⟩`. Establish `key : ∀ (f₀ : Over.mk (Y.hom ≫ b) ⟶ A) (f : Y ⟶ A'), f₀.left = f.left ≫ φ → pullOver κ' t' f (m.isMor.pull1 c) = k.pull1 (pullOver κ t f₀ c)`.
+
+Introduce `f₀ f hf`. Conclude with `(IsMor.pullback1_comp m.isMor (IsMor.of_over κ' (φ := f.left) (by rw [← Category.assoc, Over.w f])) (grpMor_isMor_comp m f) (fun _ ↦ rfl) rfl c).trans (IsMor.pullback1_comp (IsMor.of_over κ (φ := f₀.left) (by rw [← Category.assoc, Over.w f₀])) k (grpMor_isMor_comp m f) (fun _ ↦ r …`. Establish `pt : ∀ f : Y ⟶ A', (f.left ≫ φ) ≫ A.hom = (Over.mk (Y.hom ≫ b)).hom` using `fun f ↦ by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[m.w, reassoc_of% (Over.w f)]`.
+
+Set `f₀ : Over.mk (Y.hom ≫ b) ⟶ A` to `Over.homMk (f.left ≫ φ) (pt f)`. Set `g₀ : Over.mk (Y.hom ≫ b) ⟶ A` to `Over.homMk (g.left ≫ φ) (pt g)`. Establish `hfg : (f₀ * g₀).left = (f * g).left ≫ φ` using `m.mul Y f g f₀ g₀ rfl rfl`. Rewrite using `[key f₀ f rfl, key g₀ g rfl, key (f₀ * g₀) (f * g) hfg, hc' _ f₀ g₀, map_add]`.
+-/
 theorem pullback_mem_primitive (m : GrpMor κ t A κ' t' A' σ b φ) {c : Cris.H1 κ (A.hom ≫ t)} (hc : c ∈ prim κ t A) :
     m.isMor.pull1 c ∈ prim κ' t' A' := by
   have hc' : ∀ (Y : Over S) (f g : Y ⟶ A),
@@ -132,15 +162,24 @@ theorem pullback_mem_primitive (m : GrpMor κ t A κ' t' A' σ b φ) {c : Cris.H
 def pull (m : GrpMor κ t A κ' t' A' σ b φ) : prim κ t A →ₛₗ[σ] prim κ' t' A' :=
   (m.isMor.pull1.domRestrict _).codRestrict _ fun c ↦ m.pullback_mem_primitive c.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_pull (m : GrpMor κ t A κ' t' A' σ b φ) (c : prim κ t A) :
     (m.pull c : Cris.H1 κ' (A'.hom ≫ t')) = m.isMor.pull1 c := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (IsMor.pullback1_comp m.isMor m'.isMor m''.isMor e e' c.1)`.
+-/
 theorem pull_pull {τ : R' →+* R''} {b' : S'' ⟶ S'} {ψ : A''.left ⟶ A'.left} {ρ : R →+* R''}
     {b'' : S'' ⟶ S} {χ : A''.left ⟶ A.left} (m : GrpMor κ t A κ' t' A' σ b φ)
     (m' : GrpMor κ' t' A' κ'' t'' A'' τ b' ψ) (m'' : GrpMor κ t A κ'' t'' A'' ρ b'' χ)
     (e : ∀ r, τ (σ r) = ρ r) (e' : ψ ≫ φ = χ) (c : prim κ t A) : m'.pull (m.pull c) = m''.pull c :=
   Subtype.ext (IsMor.pullback1_comp m.isMor m'.isMor m''.isMor e e' c.1)
 
+/- English proof (translation)
+The claim follows from `IsDPMorphism.comp _ m'.dp m.dp base := by rw [Category.assoc, m.base, ← Category.assoc, m'.base, Category.assoc, Cris.spMap_comp] w := by rw [Category.assoc, m.w, ← Category.assoc, m'.w, Category.assoc] mul T x y x₀ y₀ hx hy := by let x₁ : Over.mk (T.hom ≫ b') ⟶ A' := Over.homMk …`.
+-/
 theorem comp {τ : R' →+* R''} {b' : S'' ⟶ S'} {ψ : A''.left ⟶ A'.left}
     (m : GrpMor κ t A κ' t' A' σ b φ) (m' : GrpMor κ' t' A' κ'' t'' A'' τ b' ψ) :
     GrpMor κ t A κ'' t'' A'' (τ.comp σ) (b' ≫ b) (ψ ≫ φ) where
@@ -172,6 +211,9 @@ section Push
 
 variable (κ : DividedPowers I) (t : S ⟶ Sp R) {A B C : Over S} [GrpObj A] [GrpObj B] [GrpObj C]
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_hom (σ := RingHom.id R) (DPMorphism.id κ).isDPMorphism (by rw [Cris.spMap_id, Category.comp_id]) f`.
+-/
 theorem homMor (f : A ⟶ B) [IsMonHom f] : GrpMor κ t B κ t A (RingHom.id R) (𝟙 S) f.left :=
   GrpMor.of_hom (σ := RingHom.id R) (DPMorphism.id κ).isDPMorphism (by rw [Cris.spMap_id, Category.comp_id]) f
 
@@ -179,14 +221,23 @@ def primPull (f : A ⟶ B) [IsMonHom f] : prim κ t B →ₗ[R] prim κ t A := (
 
 def push (f : A ⟶ B) [IsMonHom f] : Crys κ t A →ₗ[R] Crys κ t B := (primPull κ t f).dualMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem push_apply (f : A ⟶ B) [IsMonHom f] (h : Crys κ t A) (c : prim κ t B) :
     push κ t f h c = h (primPull κ t f c) := rfl
 
+/- English proof (translation)
+Use extensionality with `h c`. Use `show h (primPull κ t (𝟙 A) c) = h c`. Conclude with `congrArg h (Subtype.ext (IsMor.pullCohomologyOne_id (homMor κ t (𝟙 A)).isMor c.1))`.
+-/
 theorem push_id : push κ t (𝟙 A) = LinearMap.id := by
   ext h c
   show h (primPull κ t (𝟙 A) c) = h c
   exact congrArg h (Subtype.ext (IsMor.pullCohomologyOne_id (homMor κ t (𝟙 A)).isMor c.1))
 
+/- English proof (translation)
+Use extensionality with `h c`. Use `show h (primPull κ t (f ≫ g) c) = h (primPull κ t f (primPull κ t g c))`. Conclude with `congrArg h (Subtype.ext (IsMor.pullback1_comp (homMor κ t g).isMor (homMor κ t f).isMor (homMor κ t (f ≫ g)).isMor (fun _ ↦ rfl) rfl c.1).symm)`.
+-/
 theorem push_comp (f : A ⟶ B) (g : B ⟶ C) [IsMonHom f] [IsMonHom g] :
     push κ t (f ≫ g) = push κ t g ∘ₗ push κ t f := by
   ext h c
@@ -194,6 +245,9 @@ theorem push_comp (f : A ⟶ B) (g : B ⟶ C) [IsMonHom f] [IsMonHom g] :
   exact congrArg h (Subtype.ext (IsMor.pullback1_comp (homMor κ t g).isMor (homMor κ t f).isMor
     (homMor κ t (f ≫ g)).isMor (fun _ ↦ rfl) rfl c.1).symm)
 
+/- English proof (translation)
+Use extensionality with `h c`. Establish `hc : ∀ (Y : Over S) (f g : Y ⟶ B), pullOver κ t (f * g) c.1 = pullOver κ t f c.1 + pullOver κ t g c.1` using `c.2`. Use `show h (primPull κ t (f * g) c) = h (primPull κ t f c) + h (primPull κ t g c)`. Rewrite using `[← map_add]`. Conclude with `congrArg h (Subtype.ext (hc A f g))`.
+-/
 theorem push_mul (f g : A ⟶ B) [IsMonHom f] [IsMonHom g] [IsMonHom (f * g)] :
     push κ t (f * g) = push κ t f + push κ t g := by
   ext h c
@@ -203,6 +257,9 @@ theorem push_mul (f g : A ⟶ B) [IsMonHom f] [IsMonHom g] [IsMonHom (f * g)] :
   rw [← map_add]
   exact congrArg h (Subtype.ext (hc A f g))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem push_congr {f g : A ⟶ B} [IsMonHom f] [IsMonHom g] (e : f = g) : push κ t f = push κ t g := by
   subst e; rfl
 
@@ -235,18 +292,27 @@ def act : O →+* Module.End R (Crys κ t A) :=
       haveI : IsMonHom (a.act x * a.act y) := a.add x y ▸ a.hom _
       exact (push_congr κ t (a.add x y)).trans (push_mul κ t _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_apply (x : O) [IsMonHom (a.act x)] : act κ t a x = push κ t (a.act x) := rfl
 
 def actAlg : R ⊗[ℤ] O →ₐ[R] Module.End R (Crys κ t A) :=
   Algebra.TensorProduct.lift (Algebra.ofId _ _) (act κ t a).toIntAlgHom
     fun r _ ↦ Algebra.commutes r _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actAlg_tmul (r : R) (x : O) (h : Crys κ t A) :
     actAlg κ t a (r ⊗ₜ x) h = r • act κ t a x h := rfl
 
 @[reducible] def tensorModule : Module (R ⊗[ℤ] O) (Crys κ t A) :=
   Module.compHom _ (actAlg κ t a).toRingHom
 
+/- English proof (translation)
+Use `letI := tensorModule κ t a`. Conclude with `⟨fun r z h ↦ show actAlg κ t a (r • z) h = r • actAlg κ t a z h by rw [map_smul]; rfl⟩`.
+-/
 theorem isScalarTower_tensorModule :
     letI := tensorModule κ t a
     IsScalarTower R (R ⊗[ℤ] O) (Crys κ t A) := by
@@ -265,6 +331,9 @@ def liftSemi {M M' : Type*} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Mod
   haveI : IsScalarTower R R' M' := ⟨fun r x m ↦ by rw [Algebra.smul_def, mul_smul]; rfl⟩
   LinearMap.liftBaseChange R' ({ f with } : M →ₗ[R] M')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem liftSemi_tmul {M M' : Type*} [AddCommGroup M] [Module R M] [AddCommGroup M']
     [Module R' M'] (f : M →ₛₗ[algebraMap R R'] M') (x : R') (m : M) :
     liftSemi f (x ⊗ₜ m) = x • f m := rfl
@@ -277,6 +346,11 @@ def GrpMor.IsBC : Prop := Function.Bijective (liftSemi m.pull)
 
 variable {m}
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨z, rfl⟩` from `hm.2 y`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x c => rw [liftSemi_tmul, map_smul, map_smul, e₁ c, e₂ c]`.
+
+Consider the case `add z w hz hw => rw [map_add, map_add, map_add, hz, hw]`.
+-/
 theorem GrpMor.IsBC.unique (hm : m.IsBC) {h : Crys κ t A} {h₁ h₂ : Crys κ' t' A'} (e₁ : m.Corr h h₁)
     (e₂ : m.Corr h h₂) : h₁ = h₂ := by
   ext y
@@ -286,6 +360,13 @@ theorem GrpMor.IsBC.unique (hm : m.IsBC) {h : Crys κ t A} {h₁ h₂ : Crys κ'
   | tmul x c => rw [liftSemi_tmul, map_smul, map_smul, e₁ c, e₂ c]
   | add z w hz hw => rw [map_add, map_add, map_add, hz, hw]
 
+/- English proof (translation)
+Set `g : prim κ t A →ₛₗ[algebraMap R R'] R'` to `{ toFun := fun c ↦ algebraMap R R' (h c) map_add' := fun c d ↦ by simp map_smul' := fun r c ↦ by simp }`. Set `E` to `LinearEquiv.ofBijective (liftSemi m.pull) hm`. Use `⟨liftSemi g ∘ₗ E.symm.toLinearMap, fun c ↦ ?_⟩` and prove the remaining obligations. Establish `hE : E.symm (m.pull c) = 1 ⊗ₜ c`. Apply `E.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `show m.pull c = liftSemi m.pull (1 ⊗ₜ c)`. Rewrite using `[liftSemi_tmul, one_smul]`. Use `show liftSemi g (E.symm (m.pull c)) = algebraMap R R' (h c)`. Rewrite using `[hE, liftSemi_tmul, one_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem GrpMor.IsBC.exists (hm : m.IsBC) (h : Crys κ t A) : ∃ h', m.Corr h h' := by
   let g : prim κ t A →ₛₗ[algebraMap R R'] R' :=
     { toFun := fun c ↦ algebraMap R R' (h c)
@@ -311,6 +392,9 @@ def GrpMor.IsBC.bcMap (hm : m.IsBC) : Crys κ t A →ₛₗ[algebraMap R R'] Cry
     rw [LinearMap.smul_apply, (hm.exists h).choose_spec, LinearMap.smul_apply, smul_eq_mul,
       smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun e ↦ hm.unique (hm.exists h).choose_spec e`. Introduce and unpack `rfl`. Conclude with `(hm.exists h).choose_spec`.
+-/
 theorem GrpMor.IsBC.corr_iff (hm : m.IsBC) {h : Crys κ t A} {h' : Crys κ' t' A'} :
     m.Corr h h' ↔ hm.bcMap h = h' := by
   constructor
@@ -320,6 +404,11 @@ theorem GrpMor.IsBC.corr_iff (hm : m.IsBC) {h : Crys κ t A} {h' : Crys κ' t' A
 
 end BaseChange
 
+/- English proof (translation)
+Introduce `c`. Establish `H : IsMor κ (B.hom ≫ t) κ' (A'.hom ≫ t') σ (f'.left ≫ ψ)` using `⟨n.dp, by simp only [Category.assoc]; rw [reassoc_of% n.w, reassoc_of% (Over.w f'), n.base]⟩`. Use `show h' (primPull κ' t' f' (n.pull c)) = σ (h (primPull κ t f c))`. Establish `e' : primPull κ' t' f' (n.pull c) = m.pull (primPull κ t f c)` using `Subtype.ext ((IsMor.pullback1_comp n.isMor (homMor κ' t' f').isMor H (fun _ ↦ rfl) rfl c.1).trans (IsMor.pullback1_comp (homMor κ t f).isMor m.isMor H (fun _ ↦ rfl) e c.1).symm)`. Rewrite using `[e']`.
+
+Conclude with `hh _`.
+-/
 theorem GrpMor.Corr.push {κ : DividedPowers I} {t : S ⟶ Sp R} {A B : Over S} [GrpObj A] [GrpObj B]
     {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'} {A' B' : Over S'} [GrpObj A'] [GrpObj B']
     {σ : R →+* R'} {b : S' ⟶ S} {φ : A'.left ⟶ A.left} {ψ : B'.left ⟶ B.left}
@@ -350,6 +439,11 @@ def Fil : Submodule R (HdR A) := (PrimitiveSubmodule A).dualAnnihilator
 
 variable {A B}
 
+/- English proof (translation)
+Rewrite using `[Fil, Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `H f hf`. Conclude with `H _ (by rw [PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range]; exact ⟨f, rfl⟩)`. Introduce and unpack `H ⟨w, hw⟩ hw'`.
+
+Rewrite `hw'` using `[PrimitiveSubmodule, Submodule.mem_comap, hodgeFiltration_eq_range]`. Take `⟨f, hf⟩` from `hw'`. Establish `e : w = Form.cl _ f` using `hf.symm`. Substitute `e` using the available equality. Conclude with `H f hw`.
+-/
 theorem mem_Fil {h : HdR A} :
     h ∈ Fil A ↔ ∀ (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A), h ⟨_, hf⟩ = 0 := by
   rw [Fil, Submodule.mem_dualAnnihilator]
@@ -363,6 +457,11 @@ theorem mem_Fil {h : HdR A} :
     subst e
     exact H f hw
 
+/- English proof (translation)
+Rewrite `hh`, the goal using `[mem_Fil]`. Introduce `g hg`. Establish `e` using `(homMor (dp0 R) (𝟙 _) f).isMor.cl_pullForm g`. Establish `hg' : Form.cl _ ((homMor (dp0 R) (𝟙 _) f).isMor.pullForm g) ∈ primDR A`. Rewrite using `[e]`.
+
+Conclude with `(homMor (dp0 R) (𝟙 _) f).pullback_mem_primitive hg`. Establish `e' : primPull (dp0 R) (𝟙 _) f ⟨_, hg⟩ = ⟨_, hg'⟩` using `Subtype.ext e.symm`. Use `show h (primPull (dp0 R) (𝟙 _) f ⟨_, hg⟩) = 0`. Rewrite using `[e']`. Conclude with `hh _ hg'`.
+-/
 theorem push_mem_Fil (f : A ⟶ B) [IsMonHom f] {h : HdR A} (hh : h ∈ Fil A) :
     push (dp0 R) (𝟙 _) f h ∈ Fil B := by
   rw [mem_Fil] at hh ⊢
@@ -377,6 +476,9 @@ theorem push_mem_Fil (f : A ⟶ B) [IsMonHom f] {h : HdR A} (hh : h ∈ Fil A) :
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Rewrite using `[Category.comp_id]`. Conclude with `Over.w v`.
+-/
 theorem pt_w {D : Type} [CommRing D] [Algebra R D] (v : Over.mk (spMap (algebraMap R D)) ⟶ A) :
     v.left ≫ A.hom ≫ 𝟙 _ = spMap (algebraMap R D) := by
   rw [Category.comp_id]
@@ -387,11 +489,17 @@ def tanVal {A : Over (Sp R)} (v : epsR R ⟶ A) : Form (A.hom ≫ 𝟙 _) →ₗ
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tanVal_apply (v : epsR R ⟶ A) (f : Form (A.hom ≫ 𝟙 _)) :
     tanVal v f = TrivSqZeroExt.snd (R := R) ((SqExt.dual R).val v.left (pt_w v) f.1) := rfl
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Establish `hl : (epsScale r).left = spMap (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))).toRingHom`. Both sides reduce to the same expression. Establish `e` using `SqExt.val_map (SqExt.dual R) (SqExt.dual R) (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))) (AlgHom.id R R) (fun c ↦ by simp) (fun b ↦ by simp) v.left (pt_w v) (epsScale r ≫ v).left (pt_w _) (by rw [Over.comp_left, hl]; rfl) f`. Rewrite using `[tanVal_apply, tanVal_apply, e]`. Simplify using the standard rewrite rules.
+-/
 theorem tanVal_epsScale (r : R) (v : epsR R ⟶ A) (f : Form (A.hom ≫ 𝟙 _)) :
     tanVal (epsScale r ≫ v) f = r * tanVal v f := by
   have hl : (epsScale r).left = spMap (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))).toRingHom :=
@@ -403,6 +511,11 @@ theorem tanVal_epsScale (r : R) (v : epsR R ⟶ A) (f : Form (A.hom ≫ 𝟙 _))
   rw [tanVal_apply, tanVal_apply, e]
   simp
 
+/- English proof (translation)
+Establish `hx : η[A].left ≫ A.hom ≫ 𝟙 _ = spMap (algebraMap R (SqExt.dual R).B)`. Rewrite using `[Category.comp_id, Over.w η[A]]`. Conclude with `(Cris.spMap_id R).symm`. Establish `hy : spMap ((SqExt.dual R).i : (SqExt.dual R).B →+* (SqExt.dual R).C) ≫ η[A].left = (1 : epsR R ⟶ A).left`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[tanVal_apply, SqExt.val_const (SqExt.dual R) η[A].left hx _ _ hy f]`. Both sides reduce to the same expression.
+-/
 theorem tanVal_one (f : Form (A.hom ≫ 𝟙 _)) : tanVal (1 : epsR R ⟶ A) f = 0 := by
   have hx : η[A].left ≫ A.hom ≫ 𝟙 _ = spMap (algebraMap R (SqExt.dual R).B) := by
     rw [Category.comp_id, Over.w η[A]]
@@ -416,6 +529,9 @@ theorem tanVal_one (f : Form (A.hom ≫ 𝟙 _)) : tanVal (1 : epsR R ⟶ A) f =
 
 omit [GrpObj A] [GrpObj B] in
 
+/- English proof (translation)
+Rewrite using `[tanVal_apply, tanVal_apply, SqExt.val_pull (SqExt.dual R) m v.left (pt_w v) (pt_w (v ≫ g)) f]`. Both sides reduce to the same expression.
+-/
 theorem tanVal_comp (v : epsR R ⟶ A) (g : A ⟶ B)
     (m : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) (A.hom ≫ 𝟙 _) (RingHom.id R) g.left)
     (f : Form (B.hom ≫ 𝟙 _)) : tanVal (v ≫ g) f = tanVal v (m.pullForm f) := by
@@ -428,6 +544,9 @@ def spOver {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     change spMap _ ≫ spMap _ = spMap _
     rw [← Cris.spMap_comp, φ.comp_algebraMap])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [spOver, Over.comp_left, Over.homMk_left]`. Rewrite using `[← Cris.spMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem spOver_comp {D D' D'' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     [CommRing D''] [Algebra R D''] (φ : D →ₐ[R] D') (ψ : D' →ₐ[R] D'') :
     spOver ψ ≫ spOver φ = spOver (ψ.comp φ) := by
@@ -436,6 +555,23 @@ theorem spOver_comp {D D' D'' : Type} [CommRing D] [Algebra R D] [CommRing D'] [
   rw [← Cris.spMap_comp]
   rfl
 
+/- English proof (translation)
+Set `E` to `SqExt.ofModule R R (R × R)`. Set `p₁ : DualNumber R →ₐ[R] TrivSqZeroExt R (R × R)` to `TrivSqZeroExt.map (LinearMap.inl R R R)`. Set `p₂ : DualNumber R →ₐ[R] TrivSqZeroExt R (R × R)` to `TrivSqZeroExt.map (LinearMap.inr R R R)`. Set `q₁ : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R` to `TrivSqZeroExt.map (LinearMap.fst R R R)`. Set `q₂ : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R` to `TrivSqZeroExt.map (LinearMap.snd R R R)`.
+
+Set `dg : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R` to `TrivSqZeroExt.map (LinearMap.fst R R R + LinearMap.snd R R R)`. Set `Z : Over.mk (spMap (algebraMap R (TrivSqZeroExt R (R × R)))) ⟶ A` to `(spOver p₁ ≫ v) * (spOver p₂ ≫ w)`. Establish `specMap_id₂ : ∀ (D : Type) [CommRing D] [Algebra R D], spOver (AlgHom.id R D) = 𝟙 (Over.mk (spMap (algebraMap R D)))` using `fun D _ _ ↦ Over.OverMorphism.ext (Cris.spMap_id D)`. Establish `kill : ∀ u : epsR R ⟶ A, IsTangent u → spOver (TrivSqZeroExt.map (0 : R →ₗ[R] R)) ≫ u = 1`. Introduce `u hu`.
+
+Establish `hk : ((TrivSqZeroExt.map (0 : R →ₗ[R] R) : DualNumber R →ₐ[R] DualNumber R) : DualNumber R →+* DualNumber R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom` using `RingHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [TrivSqZeroExt.fst_map, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [TrivSqZeroExt.snd_map, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `hu' : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ u.left = η[A].left` using `hu`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Hom.one_def, Over.comp_left, Over.toUnit_left]`. Use `show spMap ((TrivSqZeroExt.map (0 : R →ₗ[R] R) : DualNumber R →ₐ[R] DualNumber R) : DualNumber R →+* DualNumber R) ≫ u.left = spMap (algebraMap R (DualNumber R)) ≫ η[A].left`.
+
+Rewrite using `[hk, Cris.spMap_comp, Category.assoc, hu']`. Establish `e1 : dg.comp p₁ = AlgHom.id R _` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [dg, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [dg, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`. Establish `e2 : dg.comp p₂ = AlgHom.id R _` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [dg, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [dg, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`. Establish `e3 : q₁.comp p₁ = AlgHom.id R _` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [q₁, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [q₁, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`. Establish `e4 : q₁.comp p₂ = TrivSqZeroExt.map (0 : R →ₗ[R] R)` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [q₁, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [q₁, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`.
+
+Establish `e5 : q₂.comp p₁ = TrivSqZeroExt.map (0 : R →ₗ[R] R)` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [q₂, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [q₂, p₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`. Establish `e6 : q₂.comp p₂ = AlgHom.id R _` using `AlgHom.ext fun x ↦ TrivSqZeroExt.ext (by simp [q₂, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (by simp [q₂, p₂, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map])`. Establish `hZd : spOver dg ≫ Z = v * w` using `by show spOver dg ≫ ((spOver p₁ ≫ v) * (spOver p₂ ≫ w)) = v * w`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e1, e2, specMap_id₂, Category.id_comp, Category.id_comp]`. Establish `hZ1 : spOver q₁ ≫ Z = v` using `by show spOver q₁ ≫ ((spOver p₁ ≫ v) * (spOver p₂ ≫ w)) = v`.
+
+Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e3, e4, specMap_id₂, Category.id_comp, kill w hw, _root_.mul_one]`. Establish `hZ2 : spOver q₂ ≫ Z = w` using `by show spOver q₂ ≫ ((spOver p₁ ≫ v) * (spOver p₂ ≫ w)) = w`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e5, e6, specMap_id₂, Category.id_comp, kill v hv, _root_.one_mul]`. Establish `key : ∀ (φ : TrivSqZeroExt R (R × R) →ₐ[R] DualNumber R) (u : epsR R ⟶ A), (∀ c, (AlgHom.id R R) (E.π c) = (SqExt.dual R).π (φ c)) → (∀ b, φ (E.i b) = (SqExt.dual R).i ((AlgHom.id R R) b)) → spOver φ ≫ Z = u → tanVal u f = TrivSqZeroExt.snd (R` using `R) (φ (E.val Z.left (pt_w Z) f.1)) := by`. Introduce `φ u hπ hi hu`.
+
+Rewrite using `[tanVal_apply, SqExt.val_map E (SqExt.dual R) φ (AlgHom.id R R) hπ hi Z.left (pt_w Z) u.left (pt_w u) (congrArg Over.Hom.left hu) f]`. Rewrite using `[key dg (v * w) (fun c ↦ by simp [E, dg, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (fun b ↦ by simp [E, dg, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) hZd, key q₁ v (fun c ↦ by simp [E, q₁, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]) (fun b ↦ by simp [E, q₁, TrivSqZer …`. Take `⟨V, hV⟩ : ∃ V : TrivSqZeroExt R (R × R), E.val Z.left (pt_w Z) f.1 = V` from `⟨_, rfl⟩`. Rewrite using `[hV]`. Use `show TrivSqZeroExt.snd (TrivSqZeroExt.map (LinearMap.fst R R R + LinearMap.snd R R R) V) = TrivSqZeroExt.snd (TrivSqZeroExt.map (LinearMap.fst R R R) V) + TrivSqZeroExt.snd (TrivSqZeroExt.map (LinearMap.snd R R R) V)`.
+
+Rewrite using `[TrivSqZeroExt.snd_map, TrivSqZeroExt.snd_map, TrivSqZeroExt.snd_map]`. Conclude with `LinearMap.add_apply _ _ _`.
+-/
 theorem tanVal_mul {v w : epsR R ⟶ A} (hv : IsTangent v) (hw : IsTangent w)
     (f : Form (A.hom ≫ 𝟙 _)) : tanVal (v * w) f = tanVal v f + tanVal w f := by
   let E := SqExt.ofModule R R (R × R)
@@ -507,6 +643,11 @@ theorem tanVal_mul {v w : epsR R ⟶ A} (hv : IsTangent v) (hw : IsTangent w)
 def IsLieImage (h : HdR A) (v : epsR R ⟶ A) : Prop :=
   IsTangent v ∧ ∀ (f : Form (A.hom ≫ 𝟙 _)) (hf : Form.cl _ f ∈ primDR A), h ⟨_, hf⟩ = tanVal v f
 
+/- English proof (translation)
+Establish `e : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R` using `RingHom.ext fun _ ↦ rfl`. Establish `ht : IsTangent (1 : epsR R ⟶ A)` using `by show spMap _ ≫ (1 : epsR R ⟶ A).left = η[A].left`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) ≫ η[A].left = η[A].left`. Rewrite using `[← Category.assoc, ← Cris.spMap_comp, e, Cris.spMap_id, Category.id_comp]`.
+
+Rewrite using `[mem_Fil]`. Unfold `IsLieImage`. Conclude with `⟨fun H f hf ↦ (H.2 f hf).trans (tanVal_one f), fun H ↦ ⟨ht, fun f hf ↦ (H f hf).trans (tanVal_one f).symm⟩⟩`.
+-/
 theorem isLieImage_one_iff {h : HdR A} : IsLieImage h 1 ↔ h ∈ Fil A := by
   have e : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R :=
     RingHom.ext fun _ ↦ rfl
@@ -521,10 +662,20 @@ theorem isLieImage_one_iff {h : HdR A} : IsLieImage h 1 ↔ h ∈ Fil A := by
   exact ⟨fun H f hf ↦ (H.2 f hf).trans (tanVal_one f),
     fun H ↦ ⟨ht, fun f hf ↦ (H f hf).trans (tanVal_one f).symm⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Over.comp_left, Over.lift_left]`.
+-/
 private theorem mul_left_eq_lift_comp_mu' {X : Scheme.{0}} {G : Over X} [GrpObj G] {T : Over X} (x y : T ⟶ G) :
     (x * y).left = pullback.lift x.left y.left ((Over.w x).trans (Over.w y).symm) ≫ μ[G].left := by
   rw [Hom.mul_def, Over.comp_left, Over.lift_left]
 
+/- English proof (translation)
+Establish `t1 : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ v.left = η[A].left` using `e.1`. Establish `t2 : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ v'.left = η[A].left` using `e'.1`. Establish `ht : IsTangent (v * v')` using `by show spMap _ ≫ (v * v').left = η[A].left`. Establish `e1 : (η[A] * η[A]).left = η[A].left` using `by rw [MonObj.one_eq_one, _root_.mul_one]`. Rewrite using `[mul_left_eq_lift_comp_mu', ← Category.assoc, ← e1, mul_left_eq_lift_comp_mu']`.
+
+Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst, t1]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, t2]`. Unfold `IsLieImage`.
+
+Use `⟨ht, fun f hf ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, e.2 f hf, e'.2 f hf, tanVal_mul e.1 e'.1 f]`.
+-/
 theorem IsLieImage.add {h h' : HdR A} {v v' : epsR R ⟶ A} (e : IsLieImage h v)
     (e' : IsLieImage h' v') : IsLieImage (h + h') (v * v') := by
   have t1 : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ v.left = η[A].left := e.1
@@ -541,6 +692,11 @@ theorem IsLieImage.add {h h' : HdR A} {v v' : epsR R ⟶ A} (e : IsLieImage h v)
   refine ⟨ht, fun f hf ↦ ?_⟩
   rw [LinearMap.add_apply, e.2 f hf, e'.2 f hf, tanVal_mul e.1 e'.1 f]
 
+/- English proof (translation)
+Establish `hl : (epsScale r).left = spMap (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))).toRingHom`. Both sides reduce to the same expression. Establish `t1 : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ v.left = η[A].left` using `e.1`. Establish `ee : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))).toRingHom = (TrivSqZeroExt.fstHom R R R).toRingHom` using `RingHom.ext fun x ↦ by simp`. Unfold `IsLieImage`.
+
+Use `⟨?_, fun f hf ↦ ?_⟩` and prove the remaining obligations. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (epsScale r ≫ v).left = η[A].left`. Rewrite using `[Over.comp_left, hl, ← Category.assoc, ← Cris.spMap_comp, ee]`. Conclude with `t1`. Rewrite using `[LinearMap.smul_apply, e.2 f hf, tanVal_epsScale, smul_eq_mul]`.
+-/
 theorem IsLieImage.smul {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (r : R) :
     IsLieImage (r • h) (epsScale r ≫ v) := by
   have hl : (epsScale r).left = spMap (TrivSqZeroExt.map (r • (LinearMap.id : R →ₗ[R] R))).toRingHom :=
@@ -556,6 +712,13 @@ theorem IsLieImage.smul {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (r :
     exact t1
   · rw [LinearMap.smul_apply, e.2 f hf, tanVal_epsScale, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `IsLieImage`. Use `⟨?_, fun f hf ↦ ?_⟩` and prove the remaining obligations. Use `show spMap _ ≫ (v ≫ g).left = η[B].left`. Rewrite using `[Over.comp_left, ← Category.assoc, e.1, ← Over.comp_left, IsMonHom.one_hom]`. Establish `m` using `(homMor (dp0 R) (𝟙 _) g).isMor`.
+
+Establish `hf' : Form.cl _ (m.pullForm f) ∈ primDR A`. Rewrite using `[m.cl_pullForm]`. Conclude with `(homMor (dp0 R) (𝟙 _) g).pullback_mem_primitive hf`. Establish `e' : primPull (dp0 R) (𝟙 _) g ⟨_, hf⟩ = ⟨_, hf'⟩` using `Subtype.ext (m.cl_pullForm f).symm`. Use `show h (primPull (dp0 R) (𝟙 _) g ⟨_, hf⟩) = _`.
+
+Rewrite using `[e', e.2 _ hf', tanVal_comp v g m f]`.
+-/
 theorem IsLieImage.push {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (g : A ⟶ B) [IsMonHom g] :
     IsLieImage (push (dp0 R) (𝟙 _) g h) (v ≫ g) := by
   unfold IsLieImage
@@ -569,6 +732,9 @@ theorem IsLieImage.push {h : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v) (g :
     show h (primPull (dp0 R) (𝟙 _) g ⟨_, hf⟩) = _
     rw [e', e.2 _ hf', tanVal_comp v g m f]
 
+/- English proof (translation)
+Rewrite using `[mem_Fil]`. Introduce `f hf`. Rewrite using `[LinearMap.sub_apply, e.2 f hf, e'.2 f hf, sub_self]`.
+-/
 theorem IsLieImage.sub_mem {h h' : HdR A} {v : epsR R ⟶ A} (e : IsLieImage h v)
     (e' : IsLieImage h' v) : h - h' ∈ Fil A := by
   rw [mem_Fil]
@@ -589,6 +755,11 @@ def LieExact.toLie (H : LieExact A) (a : OAct O A) : HdR A →ₗ[R] Serre.Lie a
   map_smul' r h := Serre.Lie.ext ((H.1 _).unique (H.1 _).choose_spec.1
     ((H.1 h).choose_spec.1.smul r))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl show IsLieImage h (Serre.Lie.mk a _ _).hom`. Rewrite using `[Serre.Lie.hom_mk]`. Conclude with `(H.1 h).choose_spec.1`. Introduce `e`.
+
+Apply `Serre.Lie.ext` to reduce the goal to its premises. Use `show (Serre.Lie.mk a _ _).hom = _`. Rewrite using `[Serre.Lie.hom_mk]`. Conclude with `(H.1 h).unique (H.1 h).choose_spec.1 e`.
+-/
 theorem LieExact.toLie_eq_iff (H : LieExact A) (a : OAct O A) {h : HdR A} {v : Serre.Lie a} :
     H.toLie a h = v ↔ IsLieImage h v.hom := by
   constructor
@@ -602,10 +773,16 @@ theorem LieExact.toLie_eq_iff (H : LieExact A) (a : OAct O A) {h : HdR A} {v : S
     rw [Serre.Lie.hom_mk]
     exact (H.1 h).unique (H.1 h).choose_spec.1 e
 
+/- English proof (translation)
+Use extensionality with `h`. Rewrite using `[LinearMap.mem_ker, H.toLie_eq_iff, Serre.Lie.hom_zero, isLieImage_one_iff]`.
+-/
 theorem LieExact.ker_toLie (H : LieExact A) (a : OAct O A) : LinearMap.ker (H.toLie a) = Fil A := by
   ext h
   rw [LinearMap.mem_ker, H.toLie_eq_iff, Serre.Lie.hom_zero, isLieImage_one_iff]
 
+/- English proof (translation)
+Introduce `v`. Take `⟨h, e⟩` from `H.2 v.hom (Serre.Lie.isTangent v)`. Conclude with `⟨h, (H.toLie_eq_iff a).2 e⟩`.
+-/
 theorem LieExact.toLie_surjective (H : LieExact A) (a : OAct O A) :
     Function.Surjective (H.toLie a) := by
   intro v
@@ -616,15 +793,24 @@ def LieExact.quotEquiv (H : LieExact A) (a : OAct O A) : (HdR A ⧸ Fil A) ≃�
   (Submodule.quotEquivOfEq _ _ (H.ker_toLie a).symm).trans
     ((H.toLie a).quotKerEquivOfSurjective (H.toLie_surjective a))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem LieExact.quotEquiv_mk (H : LieExact A) (a : OAct O A) (h : HdR A) :
     H.quotEquiv a (Submodule.Quotient.mk h) = H.toLie a h := rfl
 
+/- English proof (translation)
+Rewrite using `[H'.toLie_eq_iff, Serre.Lie.hom_map]`. Conclude with `((H.toLie_eq_iff a).1 rfl).push g`.
+-/
 theorem LieExact.toLie_push (H : LieExact A) (H' : LieExact B) (a : OAct O A) (b : OAct O' B)
     (g : A ⟶ B) [IsMonHom g] (h : HdR A) :
     H'.toLie b (push (dp0 R) (𝟙 _) g h) = Serre.Lie.map a b g (H.toLie a h) := by
   rw [H'.toLie_eq_iff, Serre.Lie.hom_map]
   exact ((H.toLie_eq_iff a).1 rfl).push g
 
+/- English proof (translation)
+Use `haveI := a.hom x`. Rewrite using `[act_apply (dp0 R) (𝟙 _) a x, H.toLie_push H a a (a.act x) h, Serre.Lie.map_act]`.
+-/
 theorem LieExact.toLie_act (H : LieExact A) (a : OAct O A) (x : O) (h : HdR A) :
     H.toLie a (act (dp0 R) (𝟙 _) a x h) = x • H.toLie a h := by
   haveI := a.hom x
@@ -638,16 +824,25 @@ variable (κ : DividedPowers I) {t : S ⟶ Sp R} {A₀ B₀ : Over S} [GrpObj A�
   {A A' A'' B : Over (Sp R)} [GrpObj A] [GrpObj A'] [GrpObj A''] [GrpObj B]
   {i : A₀.left ⟶ A.left} {i' : A₀.left ⟶ A'.left} {i'' : A₀.left ⟶ A''.left} {j : B₀.left ⟶ B.left}
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_isGrpPullback (Cris.isDPMorphism_of_eq_bot _ rfl _ _) (by rw [Cris.spMap_id]) h`.
+-/
 theorem liftMor (h : IsGrpPullback A₀ A t i) : GrpMor (dp0 R) (𝟙 _) A κ t A₀ (RingHom.id R) t i :=
   GrpMor.of_isGrpPullback (Cris.isDPMorphism_of_eq_bot _ rfl _ _) (by rw [Cris.spMap_id]) h
 
 def crysToDR (h : IsGrpPullback A₀ A t i) : Crys κ t A₀ →ₗ[R] HdR A := (liftMor κ h).pull.dualMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crysToDR_apply (h : IsGrpPullback A₀ A t i) (d : Crys κ t A₀) (c : primDR A) :
     crysToDR κ h d c = d ((liftMor κ h).pull c) := rfl
 
 def liftFil (h : IsGrpPullback A₀ A t i) : Submodule R (Crys κ t A₀) := (Fil A).comap (crysToDR κ h)
 
+/- English proof (translation)
+Use extensionality with `c`. Use `show d (primPull κ t f₀ ((liftMor κ k).pull c)) = d ((liftMor κ h).pull (primPull (dp0 R) (𝟙 _) f c))`. Establish `H` using `(liftMor κ k).isMor.comp (homMor κ t f₀).isMor`. Conclude with `congrArg d (Subtype.ext ((IsMor.pullback1_comp (liftMor κ k).isMor (homMor κ t f₀).isMor H (fun _ ↦ rfl) rfl c.1).trans (IsMor.pullback1_comp (homMor (dp0 R) (𝟙 _) f).isMor (liftMor κ h).isMor H (fun _ ↦ rfl) e c.1).symm))`.
+-/
 theorem crysToDR_push (h : IsGrpPullback A₀ A t i) (k : IsGrpPullback B₀ B t j) (f₀ : A₀ ⟶ B₀)
     (f : A ⟶ B) [IsMonHom f₀] [IsMonHom f] (e : i ≫ f.left = f₀.left ≫ j) (d : Crys κ t A₀) :
     crysToDR κ k (push κ t f₀ d) = push (dp0 R) (𝟙 _) f (crysToDR κ h d) := by
@@ -659,6 +854,9 @@ theorem crysToDR_push (h : IsGrpPullback A₀ A t i) (k : IsGrpPullback B₀ B t
     ((IsMor.pullback1_comp (liftMor κ k).isMor (homMor κ t f₀).isMor H (fun _ ↦ rfl) rfl c.1).trans
       (IsMor.pullback1_comp (homMor (dp0 R) (𝟙 _) f).isMor (liftMor κ h).isMor H (fun _ ↦ rfl) e c.1).symm))
 
+/- English proof (translation)
+Use `show crysToDR κ k (push κ t f₀ d) ∈ Fil B`. Rewrite using `[crysToDR_push κ h k f₀ f e d]`. Conclude with `push_mem_Fil f hd`.
+-/
 theorem push_mem_liftFil (h : IsGrpPullback A₀ A t i) (k : IsGrpPullback B₀ B t j) (f₀ : A₀ ⟶ B₀)
     (f : A ⟶ B) [IsMonHom f₀] [IsMonHom f] (e : i ≫ f.left = f₀.left ≫ j) {d : Crys κ t A₀}
     (hd : d ∈ liftFil κ h) : push κ t f₀ d ∈ liftFil κ k := by
@@ -666,6 +864,9 @@ theorem push_mem_liftFil (h : IsGrpPullback A₀ A t i) (k : IsGrpPullback B₀ 
   rw [crysToDR_push κ h k f₀ f e d]
   exact push_mem_Fil f hd
 
+/- English proof (translation)
+Introduce `c`. Use `show d' ((liftMor κ' h').pull (n.pull c)) = σ (d ((liftMor κ h).pull c))`. Rewrite using `[← hd ((liftMor κ h).pull c)]`. Establish `H` using `n.isMor.comp (liftMor κ' h').isMor`. Conclude with `congrArg d' (Subtype.ext ((IsMor.pullback1_comp n.isMor (liftMor κ' h').isMor H (fun _ ↦ rfl) rfl c.1).trans (IsMor.pullback1_comp (liftMor κ h).isMor m.isMor H (fun _ ↦ rfl) e.symm c.1).symm))`.
+-/
 theorem crysToDR_corr (h : IsGrpPullback A₀ A t i) {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'}
     {C₀ : Over S'} [GrpObj C₀] {C : Over (Sp R')} [GrpObj C] {l : C₀.left ⟶ C.left}
     (h' : IsGrpPullback C₀ C t' l) {σ : R →+* R'} {b₀ : S' ⟶ S} {b : Sp R' ⟶ Sp R}
@@ -683,6 +884,9 @@ theorem crysToDR_corr (h : IsGrpPullback A₀ A t i) {κ' : DividedPowers I'} {t
 def IsGM (h : IsGrpPullback A₀ A t i) (h' : IsGrpPullback A₀ A' t i') (x : HdR A) (x' : HdR A') : Prop :=
   ∃ d : Crys κ t A₀, crysToDR κ h d = x ∧ crysToDR κ h' d = x'
 
+/- English proof (translation)
+Take `⟨d, h₁, h₂⟩` from `e`. Conclude with `⟨d, h₂, h₁⟩`.
+-/
 theorem IsGM.symm {h : IsGrpPullback A₀ A t i} {h' : IsGrpPullback A₀ A' t i'} {x : HdR A}
     {x' : HdR A'} (e : IsGM κ h h' x x') : IsGM κ h' h x' x := by
   obtain ⟨d, h₁, h₂⟩ := e
@@ -711,6 +915,9 @@ variable {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp (DualNumber R))} [GrpObj A'
 
 variable (A) in
 
+/- English proof (translation)
+The claim follows from `{ dp := Cris.isDPMorphism_of_eq_bot _ rfl _ _ base := by have e : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := RingHom.ext fun _ ↦ rfl show 𝟙 _ ≫ 𝟙 _ = spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R) …`.
+-/
 theorem constMor : GrpMor (dp0 R) (𝟙 _) A (epsDP R) (epsRed R) A (algebraMap R (DualNumber R)) (𝟙 _)
     (Over.Hom.left (𝟙 A)) :=
   { dp := Cris.isDPMorphism_of_eq_bot _ rfl _ _
@@ -737,6 +944,11 @@ def IsKSValue (h : IsGrpPullback A A' (epsRed R) i) (f : HdR A) (v : epsR R ⟶ 
 
 variable {h : IsGrpPullback A A' (epsRed R) i}
 
+/- English proof (translation)
+Take `⟨k, ⟨d, hd, hdk⟩, hk⟩` from `e`. Take `⟨k', ⟨d', hd', hdk'⟩, hk'⟩` from `e'`. Unfold `IsKSValue IsFilLift`. Use `⟨k + k', ⟨d + d', add_mem hd hd', fun c ↦ ?_⟩, hk.add hk'⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hdk, hdk', LinearMap.add_apply, LinearMap.add_apply, TrivSqZeroExt.inl_add, TrivSqZeroExt.inr_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem IsKSValue.add {f f' : HdR A} {v v' : epsR R ⟶ A} (e : IsKSValue h f v)
     (e' : IsKSValue h f' v') : IsKSValue h (f + f') (v * v') := by
   obtain ⟨k, ⟨d, hd, hdk⟩, hk⟩ := e
@@ -747,6 +959,9 @@ theorem IsKSValue.add {f f' : HdR A} {v v' : epsR R ⟶ A} (e : IsKSValue h f v)
     TrivSqZeroExt.inl_add, TrivSqZeroExt.inr_add]
   abel
 
+/- English proof (translation)
+Take `⟨k, ⟨d, hd, hdk⟩, hk⟩` from `e`. Unfold `IsKSValue IsFilLift`. Use `⟨r • k, ⟨TrivSqZeroExt.inl r • d, Submodule.smul_mem _ _ hd, fun c ↦ ?_⟩, hk.smul r⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hdk, LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem IsKSValue.smul {f : HdR A} {v : epsR R ⟶ A} (e : IsKSValue h f v) (r : R) :
     IsKSValue h (r • f) (epsScale r ≫ v) := by
   obtain ⟨k, ⟨d, hd, hdk⟩, hk⟩ := e
@@ -773,6 +988,9 @@ end KS
 
 section Pairing
 
+/- English proof (translation)
+Establish `e : (x ≫ φ).appLE U ⊤ h = φ.app U ≫ X'.presheaf.map (homOfLE hV).op ≫ x.appLE V ⊤ h'`. Rewrite using `[Scheme.Hom.comp_appLE, Scheme.Hom.map_appLE]`. Unfold `Cris.evalAt pullU res`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem evalAt_pull {X X' : Scheme.{0}} (φ : X' ⟶ X) {B : Type} [CommRing B] (x : Sp B ⟶ X')
     {U : X.Opens} {V : X'.Opens} (hV : V ≤ φ ⁻¹ᵁ U) (h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V)
     (f : Γ(X, U)ˣ) : evalAt (x ≫ φ) U h f.val = evalAt x V h' (res hV (pullU φ U f)).val := by
@@ -782,6 +1000,9 @@ theorem evalAt_pull {X X' : Scheme.{0}} (φ : X' ⟶ X) {B : Type} [CommRing B] 
   rw [e]
   rfl
 
+/- English proof (translation)
+Unfold `LB.pull LB.LinComb`. Simplify using `only [Fintype.prod_unique, zpow_one, pow_one]`. Conclude with `evalAt_pull φ x _ h h' _`.
+-/
 theorem evalAt_pull_g {X X' : Scheme.{0}} (L : LB X) (φ : X' ⟶ X) {B : Type} [CommRing B]
     (x : Sp B ⟶ X') (j j' : PUnit → L.ι)
     (h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)))
@@ -792,6 +1013,15 @@ theorem evalAt_pull_g {X X' : Scheme.{0}} (L : LB X) (φ : X' ⟶ X) {B : Type} 
   simp only [Fintype.prod_unique, zpow_one, pow_one]
   exact evalAt_pull φ x _ h h' _
 
+/- English proof (translation)
+Take `⟨i, hi, u, ℓ, h1, h2, h3⟩` from `hz`. Establish `hsm : ∀ T : (Cris.IsSmall κ' s' (L.pull φ).U).FullSubcategory, Cris.IsSmall κ s L.U (m.functor.obj T.obj)`. Introduce and unpack `⟨T, j, hj⟩`. Use `⟨j PUnit.unit, fun p hp ↦ ?_⟩` and prove the remaining obligations. Establish `hq : T.x p ∈ ⋂ k : PUnit.{1}, ⇑φ ⁻¹' (L.U (j k) : Set X)` using `hj hp`.
+
+Conclude with `Set.mem_iInter.1 hq PUnit.unit`. Set `F` to `ObjectProperty.lift (Cris.IsSmall κ s L.U) ((Cris.IsSmall κ' s' (L.pull φ).U).ι ⋙ m.functor) hsm`. Set `cm : CatCoh.CoefMap σ ((Cris.IsSmall κ s L.U).ι ⋙ Cris.O κ s) ((Cris.IsSmall κ' s' (L.pull φ).U).ι ⋙ Cris.O κ' s')` to `{ G := F α := fun T ↦ RingHom.id _ naturality := fun _ _ ↦ rfl smul := fun T r b ↦ (Algebra.smul_def (A := T.obj.B) (σ r) b).symm }`. Unfold `Cris.IsChern`. Use `⟨fun T _ ↦ i (F.obj T), fun T p hp ↦ show T.obj.x p ∈ ⋂ k : PUnit.{1}, ⇑φ ⁻¹' (L.U (i (F.obj T)) : Set X) from Set.mem_iInter.2 fun _ ↦ hi (F.obj T) hp, fun T T' f ↦ u (F.obj T) (F.obj T') (F.map f), cm.pullbackTwoCocycle ℓ, fun T T' f ↦ ?_, fun T T' T'' f g ↦ ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(h1 (F.obj T) (F.obj T') (F.map f)).trans (evalAt_pull_g L φ T'.obj.x (fun _ ↦ i (F.obj T')) (fun _ ↦ i (F.obj T)) _ _)`. Establish `h` using `h2 (F.obj T) (F.obj T') (F.obj T'') (F.map f) (F.map g)`. Rewrite `h` using `[← F.map_comp]`. Conclude with `h`. Establish `a1` using `CatCoh.CoefMap.pullCohomologyTwo_comp m.coef (CatCoh.CoefMap.restrict (Cris.O κ' s') (Cris.IsSmall κ' s' (L.pull φ).U).ι) z`.
+
+Establish `a2` using `CatCoh.CoefMap.pullCohomologyTwo_comp (CatCoh.CoefMap.restrict (Cris.O κ s) (Cris.IsSmall κ s L.U).ι) cm z`. Establish `a3` using `CatCoh.CoefMap.pullCohomologyTwo_eq_of_natTrans (m.coef.comp (CatCoh.CoefMap.restrict (Cris.O κ' s') (Cris.IsSmall κ' s' (L.pull φ).U).ι)) ((CatCoh.CoefMap.restrict (Cris.O κ s) (Cris.IsSmall κ s L.U).ι).comp cm) (𝟙 ((Cris.IsSmall κ' s' (L.pull φ).U).ι ⋙ m.functor)) (fun _ _ ↦ rf …`. Rewrite using `[← CatCoh.CoefMap.pullCohomologyTwo_class, ← h3]`. Conclude with `a1.symm.trans (a3.trans a2)`.
+-/
 theorem isChern_pull {X X' : Scheme.{0}} {κ : DividedPowers I} {κ' : DividedPowers I'} {s : X ⟶ Sp R}
     {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X} (m : IsMor κ s κ' s' σ φ) {L : LB X}
     {z : Cris.H2 κ s} (hz : IsChern κ s L z) : IsChern κ' s' (L.pull φ) (m.pull2 z) := by
@@ -836,6 +1066,9 @@ def wedgeForm {n : ℕ} (a b : Fin n → prim κ t A) : LinearMap.BilinForm R (C
   ∑ k, ((LinearMap.mul R R).compl₁₂ (Module.Dual.eval R _ (a k)) (Module.Dual.eval R _ (b k)) -
     (LinearMap.mul R R).compl₁₂ (Module.Dual.eval R _ (b k)) (Module.Dual.eval R _ (a k)))
 
+/- English proof (translation)
+Simplify using `[wedgeForm, LinearMap.sum_apply]`.
+-/
 theorem wedgeForm_apply {n : ℕ} (a b : Fin n → prim κ t A) (x y : Crys κ t A) :
     wedgeForm κ t A a b x y = ∑ k, (x (a k) * y (b k) - x (b k) * y (a k)) := by
   simp [wedgeForm, LinearMap.sum_apply]
@@ -846,6 +1079,9 @@ def IsPolForm (L : LB A.left) (ψ : LinearMap.BilinForm R (Crys κ t A)) : Prop 
 
 variable {κ t A}
 
+/- English proof (translation)
+Take `⟨n, a, b, -, rfl⟩` from `h`. Introduce `x`. Rewrite using `[wedgeForm_apply]`. Conclude with `Finset.sum_eq_zero fun k _ ↦ by ring`.
+-/
 theorem IsPolForm.isAlt {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A)}
     (h : IsPolForm κ t A L ψ) : ψ.IsAlt := by
   obtain ⟨n, a, b, -, rfl⟩ := h
@@ -853,6 +1089,13 @@ theorem IsPolForm.isAlt {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A
   rw [wedgeForm_apply]
   exact Finset.sum_eq_zero fun k _ ↦ by ring
 
+/- English proof (translation)
+Take `⟨n, a, b, hL, rfl⟩` from `h`. Use `⟨wedgeForm κ' t' A' (fun k ↦ m.pull (a k)) (fun k ↦ m.pull (b k)), ?_, ?_⟩` and prove the remaining obligations. Unfold `IsPolForm`. Use `⟨n, fun k ↦ m.pull (a k), fun k ↦ m.pull (b k), ?_, rfl⟩` and prove the remaining obligations. Establish `hc` using `isChern_pull m.isMor hL`.
+
+Simplify using `only [map_sum, IsMor.pullCohomologyTwo_cup] at hc`. Conclude with `hc`. Introduce `x x' y y' hx hy`. Rewrite using `[wedgeForm_apply, wedgeForm_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[hx (a k), hy (b k), hx (b k), hy (a k), map_sub, map_mul, map_mul]`.
+-/
 theorem IsPolForm.pull {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A)}
     (h : IsPolForm κ t A L ψ) {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'} {A' : Over S'} [GrpObj A']
     {σ : R →+* R'} {b : S' ⟶ S} {φ : A'.left ⟶ A.left} (m : GrpMor κ t A κ' t' A' σ b φ) :
@@ -870,6 +1113,9 @@ theorem IsPolForm.pull {L : LB A.left} {ψ : LinearMap.BilinForm R (Crys κ t A)
     refine Finset.sum_congr rfl fun k _ ↦ ?_
     rw [hx (a k), hy (b k), hx (b k), hy (a k), map_sub, map_mul, map_mul]
 
+/- English proof (translation)
+Unfold `IsPolForm`. Use `⟨0, Fin.elim0, Fin.elim0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using Cris.isChern_zero κ (A.hom ≫ t) L h`. Use extensionality with `x y`. Simplify using `[wedgeForm_apply]`.
+-/
 theorem isPolForm_zero (L : LB A.left) (h : ∀ i j, L.g i j = 1) : IsPolForm κ t A L 0 := by
   unfold IsPolForm
   refine ⟨0, Fin.elim0, Fin.elim0, ?_, ?_⟩
@@ -881,6 +1127,9 @@ def eig {O : Type} [CommRing O] (κ : DividedPowers I) (t : S ⟶ Sp R) {A : Ove
     (a : OAct O A) (τ : O →+* R) : Submodule R (Crys κ t A) :=
   ⨅ x : O, LinearMap.ker (act κ t a x - τ x • (1 : Module.End R (Crys κ t A)))
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+-/
 theorem mem_eig {O : Type} [CommRing O] {a : OAct O A} {τ : O →+* R} {h : Crys κ t A} :
     h ∈ eig κ t a τ ↔ ∀ x, act κ t a x h = τ x • h := by
   simp only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
@@ -896,6 +1145,9 @@ def LieExact.filToDual {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A] {O : Type} 
   (((Fil A).liftQ (ψ ∘ₗ (Fil A).subtype).flip fun g hg ↦ LinearMap.ext fun f ↦ hψ f.1 f.2 g hg) ∘ₗ
     (H.quotEquiv a).symm.toLinearMap).flip
 
+/- English proof (translation)
+Rewrite using `[← H.quotEquiv_mk a x]`. Simplify using `[LieExact.filToDual]`. Both sides reduce to the same expression.
+-/
 theorem LieExact.filToDual_toLie {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A] {O : Type}
     [CommRing O] (H : LieExact A) (a : OAct O A) (ψ : LinearMap.BilinForm R (HdR A))
     (hψ : ∀ f ∈ Fil A, ∀ g ∈ Fil A, ψ f g = 0) (f : Fil A) (x : HdR A) :
@@ -908,16 +1160,27 @@ end Pairing
 
 section Zero
 
+/- English proof (translation)
+Use `haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by`. Simplify using `only [Over.tensorUnit_hom, Category.comp_id]`. Conclude with `IsIso.id _`. Conclude with `Subtype.ext (Cris.firstDeRham_base_eq_zero _ c.1)`.
+-/
 theorem primDR_unit (c : primDR (𝟙_ (Over (Sp R)))) : c = 0 := by
   haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by
     simp only [Over.tensorUnit_hom, Category.comp_id]; exact IsIso.id _
   exact Subtype.ext (Cris.firstDeRham_base_eq_zero _ c.1)
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[primDR_unit c, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem HdR_unit (h : HdR (𝟙_ (Over (Sp R)))) : h = 0 := by
   ext c
   rw [primDR_unit c, map_zero]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ (h : HdR (𝟙_ (Over (Sp R)))) (v : epsR R ⟶ 𝟙_ (Over (Sp R))), IsLieImage h v`. Introduce `h v`. Establish `hv : v = 1` using `toUnit_unique _ _`. Substitute `hv` using the available equality. Rewrite using `[HdR_unit h, isLieImage_one_iff]`.
+
+Conclude with `Submodule.zero_mem _`. Unfold `LieExact`. Conclude with `⟨fun h ↦ ⟨1, key h 1, fun v _ ↦ toUnit_unique _ _⟩, fun v _ ↦ ⟨0, key 0 v⟩⟩`.
+-/
 theorem lieExact_unit : LieExact (𝟙_ (Over (Sp R))) := by
   have key : ∀ (h : HdR (𝟙_ (Over (Sp R)))) (v : epsR R ⟶ 𝟙_ (Over (Sp R))), IsLieImage h v := by
     intro h v
@@ -928,6 +1191,11 @@ theorem lieExact_unit : LieExact (𝟙_ (Over (Sp R))) := by
   unfold LieExact
   exact ⟨fun h ↦ ⟨1, key h 1, fun v _ ↦ toUnit_unique _ _⟩, fun v _ ↦ ⟨0, key 0 v⟩⟩
 
+/- English proof (translation)
+Use `haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by`. Simplify using `only [Over.tensorUnit_hom, Category.comp_id]`. Conclude with `IsIso.id _`. Rewrite using `[AllPrim, eq_top_iff]`. Introduce `c _`.
+
+Rewrite using `[Cris.firstDeRham_base_eq_zero _ c]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem allPrim_unit : AllPrim (dp0 R) (𝟙 _) (𝟙_ (Over (Sp R))) := by
   haveI : IsIso ((𝟙_ (Over (Sp R))).hom ≫ 𝟙 (Sp R)) := by
     simp only [Over.tensorUnit_hom, Category.comp_id]; exact IsIso.id _

@@ -11,6 +11,9 @@ namespace GlobalTheory.RatPointSum
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_apply]`. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => AbsoluteValue.nonneg _ _) (Finset.mem_univ w)`.
+-/
 theorem norm_mixedEmbedding_le_sum (x : F) : ‖mixedEmbedding F x‖ ≤ ∑ w : InfinitePlace F, w x := by
   rw [mixedEmbedding.norm_eq_sup'_normAtPlace]
   refine Finset.sup'_le _ _ fun w _ => ?_
@@ -18,6 +21,11 @@ theorem norm_mixedEmbedding_le_sum (x : F) : ‖mixedEmbedding F x‖ ≤ ∑ w 
   exact Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => AbsoluteValue.nonneg _ _)
     (Finset.mem_univ w)
 
+/- English proof (translation)
+Establish `h0 : ∀ i, 0 ≤ ∑ w : InfinitePlace F, w (ξ i)` using `fun i => Finset.sum_nonneg fun w _ => AbsoluteValue.nonneg _ _`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast, ← nsmul_eq_mul]`. Use `norm_nsmul_le.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ((norm_mixedEmbedding_le_sum (ξ i)).trans ?_) (Nat.cast_nonneg M)` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun i => ∑ w : InfinitePlace F, w (ξ i)) (fun i _ => h0 i) (Finset.mem_univ i)`.
+-/
 theorem norm_mixedEmbedding_nat_mul_le {κ : Type} [Fintype κ] (M : ℕ) (ξ : κ → F) :
     ‖(fun i => mixedEmbedding F ((M : F) * ξ i))‖ ≤ (M : ℝ) * ∑ i, ∑ w : InfinitePlace F, w (ξ i) := by
   have h0 : ∀ i, 0 ≤ ∑ w : InfinitePlace F, w (ξ i) := fun i => Finset.sum_nonneg fun w _ => AbsoluteValue.nonneg _ _
@@ -31,6 +39,27 @@ end GlobalTheory.RatPointSum
 
 open GlobalTheory.RatPointSum in
 
+/- English proof (translation)
+Introduce `F _ _ κ _`. Use `haveI := GlobalTheory.WeilM.discreteTopology_denomLattice F κ one_pos`. Use `set L := GlobalTheory.WeilM.denomLattice F κ 1 with hLdef`. Use `set r := Module.finrank ℤ L + 1 with hr`. Establish `hL` using `GlobalTheory.SchwartzMajorant.summable_one_add_norm_pow_inv L`.
+
+Establish `hLn : ∀ z : L, 0 ≤ ((1 + ‖z‖) ^ r)⁻¹` using `fun z => inv_nonneg.2 (by positivity)`. Use `⟨r, ∑' z : L, ((1 + ‖z‖) ^ r)⁻¹, tsum_nonneg hLn, ?_⟩` and prove the remaining obligations. Introduce `M B Ψ hM hsupp hdec`. Establish `hB : 0 ≤ B` using `le_trans (by positivity) (hdec 0)`. Set `S : Set (κ → F)` to `{ξ | ∀ i, ∃ o : 𝓞 F, (M : F) * ξ i = o}`.
+
+Set `v : (κ → F) → (κ → mixedEmbedding.mixedSpace F)` to `fun ξ i => mixedEmbedding F ((M : F) * ξ i)`. Establish `hmem : ∀ ξ ∈ S, v ξ ∈ L`. Introduce `ξ hξ i`. Take `⟨o, ho⟩` from `hξ i`. Rewrite using `[Nat.cast_one, one_smul]`.
+
+Use `show mixedEmbedding F ((M : F) * ξ i) ∈ mixedEmbedding.integerLattice F`. Rewrite using `[ho]`. Conclude with `⟨o, rfl⟩`. Set `j : S → L` to `fun ξ => ⟨v ξ.1, hmem ξ.1 ξ.2⟩`. Establish `hMF : (M : F) ≠ 0` using `by exact_mod_cast (show M ≠ 0 by omega)`.
+
+Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mul_left_cancel₀ hMF (mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i)))`. Set `G : (κ → F) → ℝ` to `S.indicator fun ξ => B * (M : ℝ) ^ r * ((1 + ‖v ξ‖) ^ r)⁻¹`. Establish `hGs : Summable G`. Rewrite using `[← summable_subtype_iff_indicator]`. Conclude with `(hL.comp_injective hj).mul_left _`.
+
+Establish `hbound : ∀ ξ : κ → F, ‖Ψ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))‖ ≤ G ξ`. Introduce `ξ`. Distinguish the cases in `h0 : Ψ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `Set.indicator_nonneg (fun ξ _ => by positivity) ξ`.
+
+Establish `hξ : ξ ∈ S` using `hsupp ξ h0`. Rewrite using `[show G ξ = B * (M : ℝ) ^ r * ((1 + ‖v ξ‖) ^ r)⁻¹ from Set.indicator_of_mem hξ _]`. Use `set s := ∑ i, ∑ w : InfinitePlace F, w (ξ i) with hs`. Establish `hs0 : 0 ≤ s` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun w _ => AbsoluteValue.nonneg _ _`. Establish `hv` using `norm_mixedEmbedding_nat_mul_le M ξ`.
+
+Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `h1 : 1 + ‖v ξ‖ ≤ (M : ℝ) * (1 + s)` using `by show 1 + ‖(fun i => mixedEmbedding F ((M : F) * ξ i))‖ ≤ _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < (1 + s) ^ r` using `by positivity`. Establish `hvpos : 0 < (1 + ‖v ξ‖) ^ r` using `by positivity`.
+
+Establish `h2 : ‖Ψ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))‖ ≤ B / (1 + s) ^ r`. Rewrite using `[le_div_iff₀ hpos]`. Conclude with `hdec ξ`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ hB` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hvpos, inv_mul_eq_div, div_le_iff₀ hpos]`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) h1 r`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.RatPointSum.norm_thetaSum_le : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ (N : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ (M : ℕ) (B : ℝ) (Ψ : (κ → AdeleRing (𝓞 F) F) → ℂ), 1 ≤ M →
       (∀ ξ : κ → F, Ψ (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) ≠ 0 → ∀ i, ∃ o : 𝓞 F, (M : F) * ξ i = o) →

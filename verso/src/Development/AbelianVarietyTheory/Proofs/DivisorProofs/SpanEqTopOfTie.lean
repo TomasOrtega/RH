@@ -10,6 +10,33 @@ section General
 
 open Formalism.IndefR.Bridge Formalism.L2.DIV
 
+/- English proof (translation)
+Establish `hinj : Function.Injective c₀`. Introduce `v v' h`. Take `⟨x, rfl⟩` from `e.surjective v`. Take `⟨x', rfl⟩` from `e.surjective v'`. Rewrite `h` using `[← he, ← he]`.
+
+Rewrite using `[PresBasic.coef_injective P h]`. Establish `hval : ∀ (x : S.Forms) c, E (j x) (P.y c) = c₁ (e ((x : S.Cl → S.V) c))`. Introduce `x c`. Take `⟨v, h1, h2⟩` from `hj x (P.y c)`. Rewrite `h1` using `[ClassPres.extL_apply, PresBasic.ext_y, he]`.
+
+Rewrite using `[h2, hinj h1]`. Establish `hρ : ∀ c (g : S.Gam c) (x : S.V), c₁ (e (S.ρ c g x)) = (χ' (stabK ι (P.stabI c g)) : ℂ) • ρ' (P.stabI c g : Γ) (c₁ (e x))`. Introduce `c g x`. Take `⟨a, ha, ha'⟩` from `hχ (stabK ι (P.stabI c g))`. Take `⟨v', h1, h2⟩` from `hact (P.stabI c g : Γ) (e x)`.
+
+Establish `h3 : e (S.ρ c g x) = a • v'`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← he, P.coef_act, map_smulₛₗ, ha, h1, he]`. Rewrite using `[h3, map_smulₛₗ, ha', h2]`. Establish `hmem : ∀ w, E w ∈ AdForms ι ρ' J χ'` using `fun w => hr ▸ LinearMap.mem_range_self E w`.
+
+Establish `hone : ∀ c (u : W'), ∃ w ∈ Submodule.span ℂ (Set.range j), ∀ c', E w (P.y c') = (Pi.single c (∑ g : S.Gam c, (χ' (stabK ι (P.stabI c g)) : ℂ) • ρ' (P.stabI c g : Γ) u) : S.Cl → W') c'`. Introduce `c u`. Establish `hu : u ∈ Submodule.span ℂ (Set.range c₁)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`.
+
+Take `⟨v, rfl⟩` from `hu`. Take `⟨x, rfl⟩` from `e.surjective v`. Use `⟨j (PresBasic.avgForm S c x), Submodule.subset_span ⟨_, rfl⟩, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Distinguish the cases in `h : c' = c`.
+
+Substitute `h` using the available equality. Simplify using `only [PresBasic.avgForm, Pi.single_eq_same, map_sum, hρ]`. Simplify using `[PresBasic.avgForm, Pi.single_eq_of_ne h]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun c' => by simp⟩`. Consider the case `add u u' _ _ h h'`.
+
+Take `⟨w, hw, h⟩` from `h`. Take `⟨w', hw', h'⟩` from `h'`. Use `⟨w + w', Submodule.add_mem _ hw hw', fun c' => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, h, h', smul_add, Finset.sum_add_distrib, Pi.single_add]`. Consider the case `smul a u _ h`.
+
+Take `⟨w, hw, h⟩` from `h`. Use `⟨a • w, Submodule.smul_mem _ _ hw, fun c' => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, h, smul_comm _ a, ← Finset.smul_sum, Pi.single_smul]`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+
+Use `choose f hf hf' using fun c => hone c ((Fintype.card (S.Gam c) : ℂ)⁻¹ • E w (P.y c))`. Establish `key : w = ∑ c, f c`. Apply `hE` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨c, ⟨γ, k, rfl⟩, -⟩` from `P.reps g`.
+
+Rewrite using `[hmem w γ _ k, hmem _ γ _ k]`. Use `congr 2`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [hf']`. Rewrite using `[Finset.sum_eq_single c (fun c' _ hc => Pi.single_eq_of_ne (Ne.symm hc) _) (by simp), Pi.single_eq_same]`.
+
+Establish `hg : ∀ g : S.Gam c, (χ' (stabK ι (P.stabI c g)) : ℂ) • ρ' (P.stabI c g : Γ) ((Fintype.card (S.Gam c) : ℂ)⁻¹ • E w (P.y c)) = (Fintype.card (S.Gam c) : ℂ)⁻¹ • E w (P.y c)`. Introduce `g`. Establish `h1` using `hmem w (P.stabI c g : Γ) (P.y c) (stabK ι (P.stabI c g))`. Rewrite `h1` using `[stabK_spec]`. Rewrite using `[map_smul, smul_comm, ← h1]`.
+
+Simplify using `only [hg, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀, one_smul]`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun c _ => hf c`.
+-/
 theorem span_eq_top {G Γ W W' K V₀ H : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [NormedAddCommGroup W'] [InnerProductSpace ℂ W'] [Field K] [NumberField K] [StarRing K] [AddCommGroup V₀] [Module K V₀]
     [AddCommGroup H] [Module ℂ H] {ι : Γ →* G} {S : CSD K} {τ σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W}
@@ -99,6 +126,11 @@ open scoped TensorProduct InnerProductSpace Matrix
 open GlobalTheory.LiftLower
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨e, -, he, -⟩` from `hP`. Establish `hspan' : Submodule.span ℂ (Set.range c₁) = ⊤` using `eq_top_iff.2 (hspan.ge.trans (Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨_, rfl⟩)))`. Use `span_eq_top (ρ' := c.coef.ρ) P c₀ c₁ e he hspan' (fun γ v => ?_) hχ H.e hH.1 hH.2.1 j hj` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨γE, h⟩ : ∃ γE, Bridge.IsRatMat V γ γE := by`. Take `⟨g, hg⟩` from `γ.2`.
+
+Conclude with `⟨g, hg.2.symm⟩`. Conclude with `⟨_, hM.1 γ γE h v, hact γ γE h v⟩`.
+-/
 theorem span_eq_top_of_tie {D : D7} {V : HSp D} {C : Bridge.CoefDat D V} {S : CSD D.what₂.LL} {J : Subgroup (Bridge.Gf V)}
     {χ χ' : J →* ℂˣ} (P : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL C.ρ J χ) {lam : D.what₂.Tau → DomWeight V.rank}
     {c₀ : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] C.W} {pair nab del}
@@ -123,6 +155,11 @@ theorem span_eq_top_of_tie {D : D7} {V : HSp D} {C : Bridge.CoefDat D V} {S : CS
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hjV gramR c0R c0L hT i σ c c₁ H j hC`. Take `⟨χ', hχ, hH⟩` from `hC.model`. Establish `h1` using `hT.coefL i A.μ0`. Establish `h2` using `hT.mapL i`. Use `span_eq_top_of_tie (V := Vc D i) (R.B.L i A.μ0).pres h1 h2 c c₁ hC.act hC.span hχ H hH j fun x h => ?_` and prove the remaining obligations.
+
+Establish `h0` using `congrFun (hjV i A.μ0 x) h`. Conclude with `(hC.base x h).imp fun v hv => ⟨h0.symm.trans hv.1, hv.2⟩`.
+-/
 theorem span_conjForms : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_jV → ∀ gramR c0R c0L, Bridge.FamTie R.B R.pl (R.Sb : Set (Pl D.host.E)) R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ) (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) c c₁ H j, GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsConjForms R i σ (c0L i) c c₁ H j → Submodule.span ℂ (Set.range j) = ⊤ := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hjV gramR c0R c0L hT i σ c c₁ H j hC
   obtain ⟨χ', hχ, hH⟩ := hC.model

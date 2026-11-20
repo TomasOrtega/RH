@@ -16,6 +16,9 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h : ∃ ξ' : kˣ →* ℂˣ, ∃ hξ', (IrrGL.ofChar ξ hξ : IrrGL k) = IrrGL.ofChar ξ' hξ'` using `⟨ξ, hξ, rfl⟩`. Rewrite using `[dif_pos h]`. Take `⟨_, h2⟩` from `h.choose_spec`. Conclude with `congrArg some (IrrGL.ofChar_inj.1 h2).symm`.
+-/
 private theorem opt_ofChar (ξ : kˣ →* ℂˣ) (hξ) :
     (if h : ∃ ξ' : kˣ →* ℂˣ, ∃ hξ', (IrrGL.ofChar ξ hξ : IrrGL k) = IrrGL.ofChar ξ' hξ' then some h.choose else none)
       = some ξ := by
@@ -24,14 +27,27 @@ private theorem opt_ofChar (ξ : kˣ →* ℂˣ) (hξ) :
   obtain ⟨_, h2⟩ := h.choose_spec
   exact congrArg some (IrrGL.ofChar_inj.1 h2).symm
 
+/- English proof (translation)
+The claim follows from `Multiset.filterMap_cons_some _ _ _ (opt_ofChar ξ hξ)`.
+-/
 private theorem chs_cons_ofChar (ξ : kˣ →* ℂˣ) (hξ) (s : Multiset (IrrGL k)) :
     chs (IrrGL.ofChar ξ hξ ::ₘ s) = ξ ::ₘ chs s :=
   Multiset.filterMap_cons_some _ _ _ (opt_ofChar ξ hξ)
 
+/- English proof (translation)
+The claim follows from `Multiset.filterMap_cons_none _ _ (dif_neg hy)`.
+-/
 private theorem chs_cons_none {y : IrrGL k} (hy : ¬ ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ)
     (s : Multiset (IrrGL k)) : chs (y ::ₘ s) = chs s :=
   Multiset.filterMap_cons_none _ _ (dif_neg hy)
 
+/- English proof (translation)
+Unfold `chs`. Rewrite using `[Multiset.mem_filterMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Distinguish the cases in `h : ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ`.
+
+Take `⟨ξ', hξ', rfl⟩` from `h`. Rewrite `e` using `[opt_ofChar]`. Take `rfl` from `Option.some.inj e`. Conclude with `⟨hξ', hy⟩`. Rewrite `e` using `[dif_neg h]`.
+
+Consider the cases of `e`. Introduce and unpack `⟨hξ, h⟩`. Conclude with `⟨_, h, opt_ofChar ξ hξ⟩`.
+-/
 private theorem mem_chs_iff (s : Multiset (IrrGL k)) (ξ : kˣ →* ℂˣ) :
     ξ ∈ chs s ↔ ∃ hξ, IrrGL.ofChar ξ hξ ∈ s := by
   unfold chs
@@ -48,16 +64,35 @@ private theorem mem_chs_iff (s : Multiset (IrrGL k)) (ξ : kˣ →* ℂˣ) :
   · rintro ⟨hξ, h⟩
     exact ⟨_, h, opt_ofChar ξ hξ⟩
 
+/- English proof (translation)
+Unfold `pol`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons]`.
+-/
 private theorem pol_cons (y : IrrGL k) (s : Multiset (IrrGL k)) (θ : kˣ →* ℂˣ) :
     pol (y ::ₘ s) θ = (if h : ∃ ξ : kˣ →* ℂˣ, (∃ hξ, y = IrrGL.ofChar ξ hξ) ∧ IsUnram (ξ * θ) then
       1 - C (((h.choose * θ) (unif k) : ℂˣ) : ℂ) * X else 1) * pol s θ := by
   unfold pol
   rw [Multiset.map_cons, Multiset.prod_cons]
 
+/- English proof (translation)
+Unfold `lp`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons]`.
+-/
 private theorem lp_cons (a : ℂˣ) (A : Multiset ℂˣ) : lp (a ::ₘ A) = (1 - C ((a : ℂˣ) : ℂ) * X) * lp A := by
   unfold lp
   rw [Multiset.map_cons, Multiset.prod_cons]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction with`. Consider the case `empty => simp [pol, lp, vals, chs_zero]`. Consider the case `cons y s ih`. Rewrite using `[pol_cons, ih]`. Distinguish the cases in `hy : ∃ ξ : kˣ →* ℂˣ, ∃ hξ, y = IrrGL.ofChar ξ hξ`.
+
+Take `⟨ξ, hξ, rfl⟩` from `hy`. Rewrite using `[chs_cons_ofChar]`. Distinguish the cases in `hu : IsUnram (ξ * θ)`. Establish `h : ∃ ξ' : kˣ →* ℂˣ, (∃ hξ', (IrrGL.ofChar ξ hξ : IrrGL k) = IrrGL.ofChar ξ' hξ') ∧ IsUnram (ξ' * θ)` using `⟨ξ, ⟨hξ, rfl⟩, hu⟩`. Rewrite using `[dif_pos h]`.
+
+Take `⟨⟨_, h2⟩, _⟩` from `h.choose_spec`. Establish `e : h.choose = ξ` using `(IrrGL.ofChar_inj.1 h2).symm`. Rewrite using `[e]`. Unfold `vals`. Rewrite using `[Multiset.filter_cons_of_pos (p := fun ξ => IsUnram (ξ * θ)) _ hu, Multiset.map_cons, lp_cons]`.
+
+Establish `h : ¬ ∃ ξ' : kˣ →* ℂˣ, (∃ hξ', (IrrGL.ofChar ξ hξ : IrrGL k) = IrrGL.ofChar ξ' hξ') ∧ IsUnram (ξ' * θ)`. Introduce and unpack `⟨ξ', ⟨_, h2⟩, h3⟩`. Take `rfl` from `IrrGL.ofChar_inj.1 h2`. Conclude with `hu h3`. Rewrite using `[dif_neg h, one_mul]`.
+
+Unfold `vals`. Rewrite using `[Multiset.filter_cons_of_neg (p := fun ξ => IsUnram (ξ * θ)) _ hu]`. Establish `h : ¬ ∃ ξ : kˣ →* ℂˣ, (∃ hξ, y = IrrGL.ofChar ξ hξ) ∧ IsUnram (ξ * θ)`. Introduce and unpack `⟨ξ, h2, _⟩`. Conclude with `hy ⟨ξ, h2⟩`.
+
+Rewrite using `[dif_neg h, one_mul, chs_cons_none hy]`.
+-/
 private theorem pol_eq_lp (s : Multiset (IrrGL k)) (θ : kˣ →* ℂˣ) : pol s θ = lp (vals (chs s) θ) := by
   induction s using Multiset.induction with
   | empty => simp [pol, lp, vals, chs_zero]
@@ -89,6 +124,11 @@ private theorem pol_eq_lp (s : Multiset (IrrGL k)) (θ : kˣ →* ℂˣ) : pol s
 
 end Loc
 
+/- English proof (translation)
+Unfold `ChsFacts`. Introduce `k _ _ _ _ s`. Use `⟨fun ξ => ?_, fun ξ hξ => ?_, fun θ => pol_eq_lp s θ⟩` and prove the remaining obligations. Rewrite using `[mem_chs_iff]`. Both sides reduce to the same expression.
+
+Take `⟨h, _⟩` from `(mem_chs_iff s ξ).1 hξ`. Conclude with `h`.
+-/
 theorem chsFacts : ChsFacts := by
   unfold ChsFacts
   intro k _ _ _ _ s

@@ -17,6 +17,31 @@ open GlobalTheory.TorusExt GlobalTheory.UnramTorsion ReciprocityTheory.ChartRest
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Introduce `R _ _ D hB F _ _ O φ hφ k hk σ hσ p`. Establish `memO : ∀ x : O, σ (x : F) ∈ O` using `fun x => by`. Establish `h1 : σ (x : F) - x ∈ O` using `(O.valuation_le_one_iff _).1 (hσ x x.2).le`. Use `O.add_mem _ _ h1 x.2` as an intermediate fact. Simplify using `using this`.
+
+Set `σO : O →+* O` to `(σ.toRingHom.comp O.subtype).codRestrict O.toSubring memO`. Establish `hσO : ∀ x : O, ((σO x : O) : F) = σ x` using `fun _ => rfl`. Establish `hσφ : σO.comp φ = φ` using `RingHom.ext fun r => Subtype.ext (by show σ ((φ r : O) : F) = (φ r : F)`. Rewrite using `[hφ]`. Conclude with `σ.commutes _)`.
+
+Establish `hres : (IsLocalRing.residue O).comp σO = IsLocalRing.residue O` using `RingHom.ext fun x => by show IsLocalRing.residue O (σO x) = IsLocalRing.residue O x`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Apply `(ValuationSubring.valuation_lt_one_iff O _).2` to reduce the goal to its premises. Establish `: ((σO x - x : O) : F) = σ (x : F) - x` using `by push_cast; rfl`. Rewrite using `[this]`.
+
+Conclude with `hσ x x.2`. Establish `hsub : σ.toRingHom.comp O.subtype = O.subtype.comp σO` using `rfl`. Set `ρ : TF (R` to `R) F ⟶ Over.mk (spMap φ) := Over.homMk (spMap O.subtype) (by show spMap O.subtype ≫ spMap φ = jFK (R := R) F ≫ jK R`. Rewrite using `[jFK, jK, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Conclude with `RingHom.ext hφ)`. Take `⟨b', hb'⟩` from `exists_extend O φ ρ rfl p.g.b`. Set `σ' : Over.mk (spMap φ) ⟶ Over.mk (spMap φ)` to `Over.homMk (spMap σO) (by show spMap σO ≫ spMap φ = spMap φ`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hσφ])`. Use `D.P.isAb.proper` as an intermediate fact.
+
+Establish `: D.P.A.left.IsSeparated` using `⟨by rw [← terminal.comp_from D.P.A.hom]; infer_instance⟩`. Use `haveI := D.P.isAb.comm`. Establish `hd : IsDominant (spMap O.subtype)`. Prove the components needed by the constructor for the conclusion. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical O.subtype).2 (by rw [(RingHom.injective_iff_ker_eq_bot O.subtype).1 Subtype.val_injective]; exact bot_le)`.
+
+Establish `hpk : p.g.b ^ k = cP D _ p.y`. Rewrite using `[← nsmul_b, qk_nsmul hB, iota_b]`. Establish `hpow : b' ^ k = cP D _ p.y`. Establish `e : ρ ≫ b' ^ k = ρ ≫ cP D _ p.y`. Rewrite using `[comp_cP, ← hpk, ← hb']`.
+
+Conclude with `map_pow (preHom ρ) _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `haveI : IsReduced (Over.mk (spMap φ)).left := (inferInstance : IsReduced (Sp O))`. Conclude with `ext_of_isDominant (spMap O.subtype) (congrArg CommaMorphism.left e)`. Establish `hpow' : b' ^ k = (σ' ≫ b') ^ k`.
+
+Establish `e2 : σ' ≫ b' ^ k = (σ' ≫ b') ^ k` using `map_pow (preHom σ') b' k`. Rewrite using `[← e2, hpow, comp_cP]`. Establish `hcl : spMap (IsLocalRing.residue O) ≫ b'.left = spMap (IsLocalRing.residue O) ≫ (σ' ≫ b').left`. Rewrite using `[Over.comp_left, ← Category.assoc]`. Use `congr 1`.
+
+Use `show _ = spMap (IsLocalRing.residue O) ≫ spMap σO`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hres]`. Establish `heq : b' = σ' ≫ b'` using `GlobalTheory.T.smoothCommGroupScheme_eq_of_pow_eq_of_closedPoint (Sp R) D.P.A D.P.isAb.smooth O (spMap φ) k hk b' (σ' ≫ b') hpow' (IsLocalRing.ResidueField O) (IsLocalRing.residue O) inferInstance hcl`. Rewrite using `[← hb', Over.comp_left]`. Use `show spMap σ.toRingHom ≫ spMap O.subtype ≫ b'.left = spMap O.subtype ≫ b'.left`.
+
+Use `conv_rhs => rw [heq]`. Rewrite using `[← Category.assoc, Over.comp_left, ← Category.assoc]`. Use `congr 1`. Use `show spMap σ.toRingHom ≫ spMap O.subtype = spMap O.subtype ≫ spMap σO`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sigma_fixes_abelianPart : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult →
     ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (O : ValuationSubring F) (φ : R →+* O),
     (∀ r, (φ r : F) = algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r)) →

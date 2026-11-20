@@ -21,11 +21,17 @@ def tensorReindex {α β : Type} (e : β ≃ α) (X : α → Type) [∀ a, AddCo
     [∀ a, Module ℂ (X a)] : (⨂[ℂ] a, X a) ≃ₗ[ℂ] ⨂[ℂ] j, X (e j) :=
   PiTensorProduct.reindex ℂ X e.symm
 
+/- English proof (translation)
+Conclude with `PiTensorProduct.reindex_tprod e.symm z`.
+-/
 theorem tensorReindex_tprod {α β : Type} (e : β ≃ α) (X : α → Type) [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (z : ∀ a, X a) :
     tensorReindex e X (PiTensorProduct.tprod ℂ z) = PiTensorProduct.tprod ℂ fun j => z (e j) := by
   exact PiTensorProduct.reindex_tprod e.symm z
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r z`. Simplify using `only [map_smul, piTensor_tprod, tensorReindex_tprod, h]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+-/
 theorem tensorReindex_piTensor {α β : Type} (e : β ≃ α) {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
     (γ : ∀ a, Γ a) (p : ∀ j, Γ (e j)) (h : ∀ j, γ (e j) = p j) (y : ⨂[ℂ] a, X a) :
@@ -38,6 +44,25 @@ theorem tensorReindex_piTensor {α β : Type} (e : β ≃ α) {Γ X : α → Typ
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨S, T, hTS, hST, hq⟩` from `h`. Set `e : V₁ ≃ₗ[ℂ] V₂` to `E.toLinearEquiv`. Establish `he : ∀ (g : G) (v : V₁), e (ρ₁ g v) = ρ₂ g (e v)`. Introduce `g v`. Simplify using `only [e, Representation.Equiv.toLinearEquiv_apply]`.
+
+Conclude with `Representation.IntertwiningMap.isIntertwining ρ₁ ρ₂ E.toIntertwiningMap g v`. Establish `he' : ∀ (g : G) (w : V₂), e.symm (ρ₂ g w) = ρ₁ g (e.symm w)`. Introduce `g w`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+
+Set `mp : Subrepresentation ρ₁ → Subrepresentation ρ₂` to `fun A => { toSubmodule := A.toSubmodule.map (e : V₁ →ₗ[ℂ] V₂) apply_mem_toSubmodule := by`. Introduce `g w hw`. Rewrite `hw`, the goal using `[Submodule.mem_map_equiv]`. Rewrite using `[he']`. Conclude with `A.apply_mem_toSubmodule g hw }`.
+
+Establish `hmono : ∀ {A B : Subrepresentation ρ₁}, A ≤ B → mp A ≤ mp B`. Introduce `A B hAB x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `Submodule.mem_map_of_mem (hAB hy)`. Establish `hQ : ∀ A B : Subrepresentation ρ₁, Nonempty ((subQuot A B).Equiv (subQuot (mp A) (mp B)))`.
+
+Introduce `A B`. Set `e1 : A.toSubmodule ≃ₗ[ℂ] (mp A).toSubmodule` to `LinearEquiv.ofSubmodules e A.toSubmodule (mp A).toSubmodule rfl`. Establish `hP : Submodule.map (e1 : A.toSubmodule →ₗ[ℂ] (mp A).toSubmodule) (Submodule.comap A.toSubmodule.subtype B.toSubmodule) = Submodule.comap (mp A).toSubmodule.subtype (mp B).toSubmodule`. Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv, Submodule.mem_comap, Submodule.mem_comap]`.
+
+Use `show (((e1.symm x) : A.toSubmodule) : V₁) ∈ B.toSubmodule ↔ (x : V₂) ∈ B.toSubmodule.map (e : V₁ →ₗ[ℂ] V₂)`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.ofSubmodules_symm_apply]`. Set `qe` to `Submodule.Quotient.equiv _ _ e1 hP`. Use `⟨Representation.Equiv.mk qe ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Use `Submodule.Quotient.induction_on _ q fun x => ?_` and prove the remaining obligations. Use `show Submodule.Quotient.mk (e1 ((A.toRepresentation g) x)) = Submodule.Quotient.mk (((mp A).toRepresentation g) (e1 x))`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show e (ρ₁ g (x : V₁)) = ρ₂ g (e (x : V₁))`. Conclude with `he g x`. Use `Exists.intro (fun i => mp (S i)) (Exists.intro (fun i => mp (T i)) ⟨fun i => hmono (hTS i), fun i j hij => hmono (hST i j hij), fun i => ?_⟩)` and prove the remaining obligations. Take `⟨q⟩` from `hQ (S i) (T i)`. Take `⟨f⟩` from `hq i`.
+
+Conclude with `⟨q.symm.trans f⟩`.
+-/
 private theorem occursTimes_of_equiv_lemma {G V₁ V₂ Y : Type} [Group G] [AddCommGroup V₁] [Module ℂ V₁]
     [AddCommGroup V₂] [Module ℂ V₂] [AddCommGroup Y] [Module ℂ Y] (σ : Representation ℂ G Y)
     {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂} (E : ρ₁.Equiv ρ₂) (r : ℕ)
@@ -92,6 +117,9 @@ private theorem occursTimes_of_equiv_lemma {G V₁ V₂ Y : Type} [Group G] [Add
   obtain ⟨f⟩ := hq i
   exact ⟨q.symm.trans f⟩
 
+/- English proof (translation)
+Take `⟨E⟩` from `h`. Use `show (⨆ r, ⨆ (_ : OccursTimes σ ρ r), (r : ℕ∞)) = ⨆ r, ⨆ (_ : OccursTimes σ ρ' r), (r : ℕ∞)`. Use `congr 1`. Use function extensionality and compare the values at `r`. Rewrite using `[show OccursTimes σ ρ r = OccursTimes σ ρ' r from propext ⟨occursTimes_of_equiv_lemma σ E r, occursTimes_of_equiv_lemma σ E.symm r⟩]`.
+-/
 theorem jhMult_of_nonempty {G V W Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup Y] [Module ℂ Y] (σ : Representation ℂ G Y)
     {ρ : Representation ℂ G V} {ρ' : Representation ℂ G W} (h : Nonempty (ρ.Equiv ρ')) :
@@ -103,6 +131,39 @@ theorem jhMult_of_nonempty {G V W Y : Type} [Group G] [AddCommGroup V] [Module �
   rw [show OccursTimes σ ρ r = OccursTimes σ ρ' r from
     propext ⟨occursTimes_of_equiv_lemma σ E r, occursTimes_of_equiv_lemma σ E.symm r⟩]
 
+/- English proof (translation)
+Establish `hrz : ∀ i j, j ≠ e.symm i → b.1 i j = 0`. Introduce `i j hj`. Rewrite using `[hb, if_neg fun h => hj (by rw [← h, Equiv.symm_apply_apply])]`. Establish `hcz : ∀ j i, i ≠ e j → b.1 i j = 0`. Introduce `j i hi`.
+
+Rewrite using `[hb, if_neg fun h => hi h.symm]`. Establish `hrf : ∀ i, b.1 i (e.symm i) = d i`. Introduce `i`. Rewrite using `[hb, if_pos (e.apply_symm_apply i)]`. Establish `hcf : ∀ j, b.1 (e j) j = d (e j)`.
+
+Introduce `j`. Rewrite using `[hb, if_pos rfl]`. Set `f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin (d i)` to `fun i => GlobalTheory.OneBlockCell.valEquiv (e.symm i) (hrf i) (fun j hj => hrz i j hj)`. Set `g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin (d (e j))` to `fun j => GlobalTheory.OneBlockCell.valEquiv (e j) (hcf j) (fun i hi => hcz j i hi)`. Use `⟨f, g, ?_⟩` and prove the remaining obligations.
+
+Establish `hbot : twKer (piTensor ρ) (relUnip k f) 1 = ⊥`. Use `eq_bot_iff.2 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Establish `: (n : Levi k (fun i => Fin (d i))) = 1` using `funext fun i => GlobalTheory.OneBlockCell.eq_one_of_mem_unipRad_single (f i) (e.symm i) (fun j hj => hrz i j hj) (n.2 i trivial)`. Simplify using `[this]`.
+
+Establish `hδ : ∀ z, relDeltaHalf k (fun i j => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`. Conclude with `Finset.prod_eq_one fun i _ => GlobalTheory.OneBlockCell.deltaHalf_eq_one_of_single (e.symm i) (fun j hj => hrz i j hj) (z i)`. Establish `hδ' : ∀ z, relDeltaHalf k (fun j i => Fin (b.1 i j)) z = 1` using `fun z => by`. Rewrite using `[relDeltaHalf_apply]`.
+
+Conclude with `Finset.prod_eq_one fun j _ => GlobalTheory.OneBlockCell.deltaHalf_eq_one_of_single (e j) (fun i hi => hcz j i hi) (z j)`. Establish `hP : ∀ x, x ∈ relParab k g` using `fun x j _ => GlobalTheory.OneBlockCell.mem_parab_of_single (g j) (e j) (fun i hi => hcz j i hi) (x j)`. Establish `hγ : ∀ (p : relParab k g) j, relEmb k f (swapBlocks k (fun i j => Fin (b.1 i j)) (relProj k g p)) (e j) = (p : Levi k (fun j => Fin (d (e j)))) j`. Introduce `p j`. Rewrite using `[relEmb_apply]`.
+
+Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, t⟩, rfl⟩` from `(f (e j)).surjective x`. Take `⟨⟨a', s⟩, rfl⟩` from `(f (e j)).surjective y`. Establish `ha : a = j`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1` using `hrz (e j) a (by rwa [Equiv.symm_apply_apply])`. Establish `h2` using `t.2`. Use linear arithmetic over natural numbers and integers. Establish `ha' : a' = j`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1` using `hrz (e j) a' (by rwa [Equiv.symm_apply_apply])`. Establish `h2` using `s.2`. Use linear arithmetic over natural numbers and integers. Substitute `ha` using the available equality. Substitute `ha'` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Both sides reduce to the same expression. Establish `hsm : IsSmooth (piTensor fun j => ρ (e j))` using `isSmooth_piTensor fun j => hρ (e j)`. Set `R` to `tensorReindex e X`. Set `Ψ : (⨂[ℂ] j, X (e j)) ≃ₗ[ℂ] Jacquet (piTensor ρ) (relUnip k f)` to `R.symm.trans (Submodule.quotEquivOfEqBot _ hbot).symm`.
+
+Establish `hΨ : ∀ u, Ψ u = Submodule.Quotient.mk (R.symm u)` using `fun u => rfl`. Set `τ` to `(twist ((relJac f (piTensor ρ)).comp (swapBlocks k (fun i j => Fin (b.1 i j)))) (relDeltaHalf k (fun j i => Fin (b.1 i j)))).comp (relProj k g)`. Establish `law : ∀ (p : relParab k g) u, τ p (Ψ u) = Ψ ((piTensor fun j => ρ (e j)) p u)`. Introduce `p u`. Rewrite using `[MonoidHom.comp_apply, twist_apply, MonoidHom.comp_apply, hΨ, relJac_mk, hδ, hδ', hΨ]`.
+
+Simplify using `only [inv_one, Units.val_one, one_smul]`. Use `congr 1`. Apply `R.injective` to reduce the goal to its premises. Rewrite using `[tensorReindex_piTensor e ρ _ (p : Levi k (fun j => Fin (d (e j)))) (hγ p)]`. Conclude with `(congrArg (fun w => (piTensor fun j => ρ (e j)) (p : Levi k (fun j => Fin (d (e j)))) w) (R.apply_symm_apply u)).trans (R.apply_symm_apply _).symm`.
+
+Set `F : (piTensor fun j => ρ (e j)).IntertwiningMap (cellFunctor f g (piTensor ρ))` to `{ toFun := fun u => ⟨⟨fun x => Ψ ((piTensor fun j => ρ (e j)) x u), fun p x => by show Ψ ((piTensor fun j => ρ (e j)) (↑p * x) u) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(law p _).symm⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hsm u).mem_nhds (by simp)) fun x hx => by`. Establish `hx' : (piTensor fun j => ρ (e j)) x u = u` using `hx`.
+
+Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show Ψ ((piTensor fun j => ρ (e j)) (y * x) u) = Ψ ((piTensor fun j => ρ (e j)) y u)`. Rewrite using `[map_mul, Module.End.mul_apply, hx'])⟩`. Use the proof step `map_add' := fun u w => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `map_smul' := fun c u => Subtype.ext (Subtype.ext (funext fun x => by simp))`.
+
+Use the proof step `isIntertwining' := fun h => LinearMap.ext fun u => Subtype.ext (Subtype.ext (funext fun x => by show Ψ ((piTensor fun j => ρ (e j)) x ((piTensor fun j => ρ (e j)) h u)) = Ψ ((piTensor fun j => ρ (e j)) (x * h) u)`. Rewrite using `[map_mul, Module.End.mul_apply])) }`. Use `⟨(LocGL.equivOfBijective F ⟨fun u w hw => ?_, fun φ => ⟨Ψ.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩).symm⟩` and prove the remaining obligations. Establish `h1 : Ψ ((piTensor fun j => ρ (e j)) 1 u) = Ψ ((piTensor fun j => ρ (e j)) 1 w)` using `congrArg (fun φ => φ.1.1 1) hw`. Simplify using `using h1`.
+
+Use `show Ψ ((piTensor fun j => ρ (e j)) x (Ψ.symm (φ.1.1 1))) = φ.1.1 x`. Use `(law ⟨x, hP x⟩ (Ψ.symm (φ.1.1 1))).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (τ ⟨x, hP x⟩) (Ψ.apply_symm_apply (φ.1.1 1))).trans ?_` and prove the remaining obligations. Use `(φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg φ.1.1 (mul_one x)`.
+-/
 theorem cell_bij {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] (e : β ≃ α)
     (d : α → ℕ) {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     (ρ : ∀ i, Representation ℂ (GL (Fin (d i)) k) (X i)) (hρ : ∀ i, IsSmooth (ρ i))
@@ -210,11 +271,19 @@ theorem cell_bij {α β : Type} [Fintype α] [LinearOrder α] [Fintype β] [Line
     refine (φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_
     exact congrArg φ.1.1 (mul_one x)
 
+/- English proof (translation)
+Conclude with `GlobalTheory.ExtTensorIrr.piTensor_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k β (fun j => Fin (x j).1) (fun j => (x j).2.rep)`.
+-/
 theorem isIrreducible_piTensor (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {β : Type} [Fintype β]
     (x : β → IrrGL k) : (piTensor fun j => (x j).rep).IsIrreducible := by
   exact GlobalTheory.ExtTensorIrr.piTensor_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k β
     (fun j => Fin (x j).1) (fun j => (x j).2.rep)
 
+/- English proof (translation)
+Establish `T4` using `@cell_bij k _ _ _ _ (Fin l) (Fin c) _ _ _ _ e (fun i => (x i).1) (fun i => (x i).2.rep.V) _ _ (fun i => (x i).rep) (fun i => (x i).2.rep.smooth) b hb`. Take `⟨f, hf⟩` from `T4`. Take `⟨g, hg⟩` from `hf`. Use `⟨f, g, ?_⟩` and prove the remaining obligations. Establish `h1` using `jhMult_self (isIrreducible_piTensor hA fun j => x (e j))`.
+
+Establish `h2` using `jhMult_of_nonempty (piTensor fun j => (x (e j)).rep) hg`. Conclude with `h2.trans h1`.
+-/
 theorem jhMult_cell_comp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l c : ℕ} (x : Fin l → IrrGL k)
     (e : Fin c ≃ Fin l)
     (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (x (e j)).1))
@@ -230,6 +299,9 @@ theorem jhMult_cell_comp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {
   have h2 := jhMult_of_nonempty (piTensor fun j => (x (e j)).rep) hg
   exact h2.trans h1
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA l c x y e hy b hb`. Take `rfl : y = fun a => x (e a)` from `funext hy`. Conclude with `jhMult_cell_comp hA x e b hb`.
+-/
 theorem jhMult_cell_bij : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL →
     ∀ {l c : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k) (e : Fin c ≃ Fin l),

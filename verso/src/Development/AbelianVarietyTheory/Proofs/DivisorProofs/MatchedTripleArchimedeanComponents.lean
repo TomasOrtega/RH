@@ -16,6 +16,21 @@ namespace GlobalTheory.ThKPolFin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `h1 : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)`. Introduce `u _`. Use `show u • (mat (1 : UA σ X.J) - 1) = 0`. Establish `: mat (1 : UA σ X.J) = 1` using `rfl`. Rewrite using `[this, sub_self, smul_zero]`.
+
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, hf, φ, hSB, hev, rfl⟩` from `hΨ`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hev.and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Take `⟨φ₁, ⟨hφ₁, hact⟩, -⟩` from `(hA F E σ B n d X W M χX χW om r s r' s' hP v).1 1 h1 h hh (φ v) (hSB v)`.
+
+Take `⟨ρ, hρ, hρt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Establish `hpure : tens (evFin F v) (φ v) ρ = pure f φ`. Rewrite using `[hρt, Function.update_eq_self]`. Establish `hRest : Rest (evFin F v) (φ v) ρ` using `⟨hρ, by rw [hpure]; exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩`. Establish `hmap : om (1, h) (pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ v φ₁)`.
+
+Rewrite using `[← hpure, hact ρ hRest, hρt]`. Rewrite using `[hmap]`. Use `Submodule.subset_span ⟨f, hf, Function.update φ v φ₁, fun w => ?_, ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hφ₁`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Use `filter_upwards [hev, Filter.eventually_cofinite_ne v] with w hw hne`.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem polData_stable (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W)
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (v : Pl F)
     (h : UA σ W.J) (hh : h ∈ UAt σ W (evFin F v)) (Φ : Fn F n d) (hΦ : Φ ∈ PolData B M) :
@@ -49,6 +64,9 @@ theorem polData_stable (hA : ActsEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v h hh Φ hΦ`. Establish `hT` using `hM.triple`. Establish `hV' : IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV', skew := hT.geo.hW, good := hT.geo.hM', hX := hT.chars.heckeα, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeα hT.chars.heckeβ, resX := hT.chars.resα, resW := by rw [add_comm a a']; exact GlobalTheory.ThKRatInv.resEtaPow_div hT.chars …`. Conclude with `polData_stable (GlobalTheory.T.theta_action_exists hK.base) B G.M' hV' v h hh Φ hΦ`.
+-/
 theorem polFin : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (v : Pl F), ∀ h ∈ UAt σ G.W (evFin F v), ∀ Φ ∈ PolData B G.M', om' (1, h) Φ ∈ PolData B G.M' := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v h hh Φ hΦ
   have hT := hM.triple

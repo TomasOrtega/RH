@@ -20,6 +20,13 @@ variable {B : Base} {X : PreX B.toPre} {I : TC B X} {u : B.Word} {j : ℕ} {Ch :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hxU`. Take `⟨q, hq⟩` from `OneLevel.pt_exists I.twistPrimes_reference_tuple_eq_empty (OneLevel.reads_base H (chOf c)) (OneLevel.reads_pt H c) hx`. Take `⟨κ, h1, h2, h3⟩` from `(H.lev c x q hq).1 hxU`. Substitute `h2` using the available equality.
+
+Take `⟨γ, h, θ⟩` from `κ`. Take `rfl : γ = 1` from `Subtype.ext ((toGLm B.fields.E (B.R.N j)).injective (h1.trans (map_one _).symm))`. Take `⟨hJ, hr⟩` from `OneLevel.pt_read I.twistPrimes_reference_tuple_eq_empty (OneLevel.reads_base H (chOf c)) (OneLevel.reads_pt H c) h.1 θ.1 hq`. Take `rfl : θ = 1` from `Subtype.ext (funext fun P => (Finset.eq_empty_iff_forall_notMem.1 I.twistPrimes_reference_tuple_eq_empty P.1 P.2).elim)`. Use `⟨hJ, hr ▸ h.2, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (⟨_, hr ▸ h.2⟩ : (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) j c.1).grp) = h` using `Subtype.ext hr`. Rewrite using `[e]`. Conclude with `h3`. Introduce and unpack `⟨hJ, hm, hc⟩`. Conclude with `OneLevel.mem_of_read H c x hJ hm hc`.
+-/
 theorem mem_iff_read (H : I.Reads u I.mu0 j chOf Lb U chi y st k) (c : (I.stp u I.mu0 j).Cl) (x : GA B (B.R.N j))
     (hx : x ∈ UAd B.sp.cm (B.R.N j)) :
     x ∈ U (chOf c) ↔ ∃ (hJ : x ∈ J0 B.sp.cm (B.R.N j) ((B.primes X).vT u))
@@ -53,6 +60,11 @@ section Put
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E))
 
+/- English proof (translation)
+Establish `hxU : x ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F)` using `hx.1`. Establish `hxS : x ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n))`. Rewrite using `[← rll_locL_base n ST v hT]`. Conclude with `hx.2`. Establish `hS` using `rll_put_mem_St n v hxS`.
+
+Use `(mem_mirabolicLevel_iff_reduction hc n ST).2 ⟨rll_put_mem_UAd hc n v hxU, hS, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[rll_put_red n v x hS P (fun h => hT ⟨P, hP, h⟩)]`. Conclude with `Subgroup.one_mem _`.
+-/
 theorem put_mem_J0 (v : HeightOneSpectrum (𝓞 F)) (hT : v ∉ plUnder F ST) (x : GL (Fin n) (E ⊗[F] v.adicCompletion F))
     (hx : x ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST)) : rll_put n v x ∈ J0 hc n ST := by
   have hxU : x ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) := hx.1
@@ -63,10 +75,20 @@ theorem put_mem_J0 (v : HeightOneSpectrum (𝓞 F)) (hT : v ∉ plUnder F ST) (x
   rw [rll_put_red n v x hS P (fun h => hT ⟨P, hP, h⟩)]
   exact Subgroup.one_mem _
 
+/- English proof (translation)
+The claim follows from `rll_put_red n v x (congruence_subgroup_le_stabilizer hc n ST hJ) w.1 hw`.
+-/
 theorem red_put_off (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (hJ : rll_put n v x ∈ J0 hc n ST)
     (w : SG) (hw : ¬ IsOver v w.1) : redG hc n ST SG ⟨rll_put n v x, hJ⟩ w = 1 :=
   rll_put_red n v x (congruence_subgroup_le_stabilizer hc n ST hJ) w.1 hw
 
+/- English proof (translation)
+Establish `hcomp' : ∀ (z : Formalism.L2.Herm.intAf F E), ∃ hz : gloPhi v (G.sp a v h) (prV (E` using `E) v z.1) ∈ v.adicCompletionIntegers F, IsLocalRing.residue (v.adicCompletionIntegers F) ⟨_, hz⟩ = e (resS F w.1 z) := hcomp`. Establish `hw` using `GlobalTheory.Mem.LevStd.gloRho_zero_of_compat v (G.sp a v h) (G.sp_alg a v h) w.1 e hcomp'`. Establish `hgE` using `GlobalTheory.Mem.LevStd.gloE_eq_of_compat v (G.sp a v h) (G.sp_alg a v h) w.1 e hcomp'`. Establish `h1` using `gco_red_map n v (G.sp a v h) (G.sp_alg a v h) w.1 hw (congruence_subgroup_le_stabilizer hc n ST hJ)`. Establish `hG : G.mat a v h 1 x = ((bc (gloPhi v (G.sp a v h)) (bc (prV (E` using `E) v) (rll_put n v x)) : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) := by`.
+
+Rewrite using `[rll_put_self]`. Simplify using `only [GLoc.mat, inv_one, one_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[hG, ← h1]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply, hgE]`. Both sides reduce to the same expression.
+-/
 theorem red_put_at {gp : Fin 2 → ℕ} (G : GLoc F E hc.sig gp) (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)) (h : (gp a : 𝓞 F) ∈ v.asIdeal)
     (w : SG) (e : (𝓞 E ⧸ w.1.asIdeal) ≃+* kv F v)
     (hcomp : ∀ z : Formalism.L2.Herm.intAf F E, ∃ hz : G.phi a v h (prV (E := E) v z.1) ∈ v.adicCompletionIntegers F,
@@ -111,6 +133,9 @@ section Fix
 
 variable {K L : Type} [CommRing K] [CommRing L] {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Introduce `h conv_lhs => rw [← h]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem fix_inv_iff (M : GL (Fin n) K) (c : Fin n → K) :
     ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ c = c ↔ (M : Matrix (Fin n) (Fin n) K) *ᵥ c = c := by
   constructor
@@ -121,6 +146,13 @@ theorem fix_inv_iff (M : GL (Fin n) K) (c : Fin n → K) :
     conv_lhs => rw [← h]
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `h : M.map e *ᵥ (fun i => e (c i)) = fun i => e ((M *ᵥ c) i)`. Use `RingHom.map_mulVec (e : K →+* L) M c` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `(this i).symm`. Rewrite using `[h]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h'`. Use function extensionality and compare the values at `i`. Conclude with `e.injective (congrFun h' i)`. Introduce `h'`.
+
+Rewrite using `[h']`.
+-/
 theorem fix_map_iff (e : K ≃+* L) (M : Matrix (Fin n) (Fin n) K) (c : Fin n → K) :
     M.map e *ᵥ (fun i => e (c i)) = (fun i => e (c i)) ↔ M *ᵥ c = c := by
   have h : M.map e *ᵥ (fun i => e (c i)) = fun i => e ((M *ᵥ c) i) := by

@@ -16,6 +16,13 @@ section General
 variable {F G H M V W U : Type} [Field F] [Group G] [Group H] [Group M] [AddCommGroup V] [Module F V]
   [AddCommGroup W] [Module F W] [AddCommGroup U] [Module F U]
 
+/- English proof (translation)
+Set `E : Subrepresentation ρ ≃o Subrepresentation σ` to `{ toFun := fun S => ⟨S.toSubmodule.comap κ.symm.toLinearMap, fun g w hw => by`. Take `⟨g, rfl⟩` from `hφ g`. Take `⟨v, rfl⟩` from `κ.surjective w`. Establish `hv : v ∈ S.toSubmodule` using `κ.symm_apply_apply v ▸ hw`. Simplify `S.apply_mem_toSubmodule g hv⟩` using `[← h]`.
+
+Use `invFun := fun T => ⟨T.toSubmodule.comap κ.toLinearMap, fun g v hv => by show κ (ρ g v) ∈ T.toSubmodule`. Rewrite using `[h]`. Conclude with `T.apply_mem_toSubmodule _ hv⟩`. Use `left_inv := fun S => Subrepresentation.toSubmodule_injective (by ext v; simp)`. Use `right_inv := fun T => Subrepresentation.toSubmodule_injective (by ext v; simp)`.
+
+Use the proof step `map_rel_iff' := fun {S T} => ⟨fun hh v hv => by`. Establish `: κ.symm (κ v) ∈ S.toSubmodule` using `(κ.symm_apply_apply v).symm ▸ hv`. Establish `h2 : κ.symm (κ v) ∈ T.toSubmodule` using `hh this`. Conclude with `κ.symm_apply_apply v ▸ h2, fun hh v hv => hh hv⟩ }`. Conclude with `E.isSimpleOrder_iff`.
+-/
 theorem isIrreducible_iff_of_linearEquiv {ρ : Representation F G V} {σ : Representation F H W} (φ : G → H)
     (hφ : Function.Surjective φ) (κ : V ≃ₗ[F] W) (h : ∀ g v, κ (ρ g v) = σ (φ g) (κ v)) :
     ρ.IsIrreducible ↔ σ.IsIrreducible := by
@@ -37,6 +44,9 @@ theorem isIrreducible_iff_of_linearEquiv {ρ : Representation F G V} {σ : Repre
         exact κ.symm_apply_apply v ▸ h2, fun hh v hv => hh hv⟩ }
   exact E.isSimpleOrder_iff
 
+/- English proof (translation)
+The claim follows from `isIrreducible_iff_of_linearEquiv id Function.surjective_id E.toLinearEquiv fun g v => E.toIntertwiningMap.isIntertwining _ _ g v`.
+-/
 theorem isIrreducible_iff_of_equiv {ρ : Representation F G V} {σ : Representation F G W} (E : ρ.Equiv σ) :
     ρ.IsIrreducible ↔ σ.IsIrreducible :=
   isIrreducible_iff_of_linearEquiv id Function.surjective_id E.toLinearEquiv
@@ -44,10 +54,16 @@ theorem isIrreducible_iff_of_equiv {ρ : Representation F G V} {σ : Representat
 
 variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace H] [IsTopologicalGroup H]
 
+/- English proof (translation)
+The claim follows from `mem_smoothPart_of_nhds (h.mono fun _ hu => Subtype.ext (funext hu))`.
+-/
 theorem mem_smooth_of_eventually {P : Subgroup G} {σ : Representation F P W} (f : indSpace P σ)
     (h : ∀ᶠ u in nhds (1 : G), ∀ x, f.1 (x * u) = f.1 x) : f ∈ smoothPart (ind P σ) :=
   mem_smoothPart_of_nhds (h.mono fun _ hu => Subtype.ext (funext hu))
 
+/- English proof (translation)
+The claim follows from `Filter.mem_of_superset (IsOpen.mem_nhds f.2 (by simp)) fun _ hu x => congrFun (congrArg Subtype.val hu) x`.
+-/
 theorem eventually_of_smooth {P : Subgroup G} {σ : Representation F P W} (f : smoothPart (ind P σ)) :
     ∀ᶠ u in nhds (1 : G), ∀ x, f.1.1 (x * u) = f.1.1 x :=
   Filter.mem_of_superset (IsOpen.mem_nhds f.2 (by simp)) fun _ hu x =>
@@ -68,6 +84,11 @@ def indPull {P : Subgroup G} {Q : Subgroup H} {σ : Representation F P V} {τ : 
   map_add' _ _ := Subtype.ext (Subtype.ext (funext fun _ => map_add κ _ _))
   map_smul' _ _ := Subtype.ext (Subtype.ext (funext fun _ => map_smul κ _ _))
 
+/- English proof (translation)
+Use `isIrreducible_iff_of_linearEquiv φ φ.surjective (LinearEquiv.ofLinear (indPull (σ := τ) (τ := σ) φ.symm.toMonoidHom hφ' κ.toLinearMap fun q => ⟨⟨φ.symm q, (hP _).2 (by simp)⟩, rfl, fun w => by simp [h]⟩) (indPull (σ := σ) (τ := τ) φ.toMonoidHom hφ κ.symm.toLinearMap fun p => ⟨⟨φ …` and prove the remaining obligations. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show κ (κ.symm (f.1.1 (φ (φ.symm x)))) = f.1.1 x` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show κ.symm (κ (f.1.1 (φ.symm (φ x)))) = f.1.1 x` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `Subtype.ext (Subtype.ext (funext fun x => ?_)) show κ (f.1.1 (φ.symm x * g)) = κ (f.1.1 (φ.symm (x * φ g)))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem isIrreducible_smInd_iff {P : Subgroup G} {Q : Subgroup H} {σ : Representation F P V}
     {τ : Representation F Q W} (φ : G ≃* H) (hφ : Continuous φ) (hφ' : Continuous φ.symm) (κ : V ≃ₗ[F] W)
     (hP : ∀ g, g ∈ P ↔ φ g ∈ Q) (h : ∀ (p : P) v, κ (σ p v) = τ ⟨φ p, (hP p).1 p.2⟩ (κ v)) :
@@ -97,6 +118,9 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace H] [IsTopolog
 def coord (l : V →ₗ[F] F) (W : Type) [AddCommGroup W] [Module F W] : V ⊗[F] W →ₗ[F] W :=
   (TensorProduct.lid F W).toLinearMap ∘ₗ l.rTensor W
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul v w => simp [coord]`.
+-/
 theorem coord_lTensor (l : V →ₗ[F] F) (A : W →ₗ[F] U) (x : V ⊗[F] W) :
     coord l U (A.lTensor V x) = A (coord l W x) := by
   induction x with
@@ -104,6 +128,13 @@ theorem coord_lTensor (l : V →ₗ[F] F) (A : W →ₗ[F] U) (x : V ⊗[F] W) :
   | add x y hx hy => simp [hx, hy]
   | tmul v w => simp [coord]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => exact ⟨∅, by simp, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨s, h1, h2⟩` from `hx`. Take `⟨s', h1', h2'⟩` from `hy`.
+
+Use `⟨s ∪ s', fun i hi => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_union, not_or]`. Rewrite using `[map_add, h1 i hi.1, h1' i hi.2, add_zero]`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`. Rewrite using `[← h2 t (Finset.union_subset_left ht), ← h2' t (Finset.union_subset_right ht)]`.
+
+Consider the case `tmul v w`. Use `⟨(b.repr v).support, fun i hi => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `[coord, Finsupp.notMem_support_iff.1 hi]`. Establish `: v = ∑ i ∈ t, b.repr v i • b i` using `by conv_lhs => rw [← b.linearCombination_repr v, Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ ht _ (by simp)] conv_lhs => rw [this, TensorProduct.sum_tmul]`. Simplify using `[coord, TensorProduct.smul_tmul]`.
+-/
 theorem exists_sum_coord {ι : Type} (b : Module.Basis ι F V) (x : V ⊗[F] W) :
     ∃ s : Finset ι, (∀ i ∉ s, coord (b.coord i) W x = 0) ∧
       ∀ t : Finset ι, s ⊆ t → x = ∑ i ∈ t, b i ⊗ₜ coord (b.coord i) W x := by
@@ -129,6 +160,11 @@ theorem exists_sum_coord {ι : Type} (b : Module.Basis ι F V) (x : V ⊗[F] W) 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Take `⟨s, -, h2⟩` from `exists_sum_coord (Module.Basis.ofVectorSpace F V) t`. Rewrite using `[h2 s le_rfl]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: coord ((Module.Basis.ofVectorSpace F V).coord i) _ t = 0` using `Subtype.ext (Subtype.ext (funext fun x => by`. Use `coord_lTensor ((Module.Basis.ofVectorSpace F V).coord i) (ev ρ x) t` as an intermediate fact.
+
+Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm))`. Rewrite using `[this, TensorProduct.tmul_zero]`.
+-/
 theorem eq_zero_of_ev {P : Subgroup H} (ρ : Representation F P W) (t : V ⊗[F] smoothPart (ind P ρ))
     (h : ∀ x, (ev ρ x).lTensor V t = 0) : t = 0 := by
   obtain ⟨s, -, h2⟩ := exists_sum_coord (Module.Basis.ofVectorSpace F V) t
@@ -143,6 +179,17 @@ theorem eq_zero_of_ev {P : Subgroup H} (ρ : Representation F P W) (t : V ⊗[F]
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace F V`. Establish `hlc : IsLocallyConstant f`. Use `(IsLocallyConstant.iff_eventually_eq f).2 fun x => ?_` and prove the remaining obligations. Establish `: Filter.Tendsto (fun y => x⁻¹ * y) (nhds x) (nhds 1)` using `(continuous_const.mul continuous_id).tendsto' _ _ (by simp)`. Use `filter_upwards [this.eventually hs] with y hy`.
+
+Simplify using `using hy x`. Establish `hfin : (f '' K).Finite` using `by haveI := isCompact_iff_compactSpace.1 hK`. Rewrite using `[Set.image_eq_range]`. Conclude with `(hlc.comp_continuous continuous_subtype_val).range_finite`. Use `choose s h1 h2 using exists_sum_coord (W := W) b`.
+
+Set `S` to `hfin.toFinset.biUnion s`. Set `c : ∀ i, smoothPart (ind P ρ)` to `fun i => ⟨⟨fun x => coord (b.coord i) W (f x), fun p x => by show coord _ W (f (p * x)) = _`. Rewrite using `[hf, coord_lTensor]⟩, mem_smooth_of_eventually _ (hs.mono fun u hu x => by`. Use `show coord _ W (f (x * u)) = _`. Rewrite using `[hu])⟩`.
+
+Use `⟨∑ i ∈ S, b i ⊗ₜ c i, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, w, hw, rfl⟩` from `hPK x`. Rewrite using `[hf, h2 (f w) S (Finset.subset_biUnion_of_mem s (hfin.mem_toFinset.2 ⟨w, hw, rfl⟩)), map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, LinearMap.lTensor_tmul]`.
+
+Conclude with `congrArg _ ((c i).1.2 p w)`.
+-/
 theorem exists_tensor {P : Subgroup H} (ρ : Representation F P W) {K : Set H} (hK : IsCompact K)
     (hPK : ∀ x, ∃ p : P, ∃ w ∈ K, x = p * w) (f : H → V ⊗[F] W)
     (hf : ∀ (p : P) x, f (p * x) = (ρ p).lTensor V (f x))
@@ -174,6 +221,35 @@ theorem exists_tensor {P : Subgroup H} (ρ : Representation F P W) {K : Set H} (
   rw [LinearMap.lTensor_tmul, LinearMap.lTensor_tmul]
   exact congrArg _ ((c i).1.2 p w)
 
+/- English proof (translation)
+Set `ε : V ⊗[F] smoothPart (ind P' ρ) →ₗ[F] U` to `κ.toLinearMap ∘ₗ (ev ρ 1).lTensor V`. Establish `hε : ∀ (q : Q) (h1 : (q : G) ∈ P) t, σ ⟨q, h1⟩ (ε t) = ε (τ q t)`. Introduce `q h1 t`. Use `show σ _ (κ _) = κ _`. Rewrite using `[hσ q h1 ((hP q).1 h1), hτ, map_smul, map_smul]`.
+
+Use `congr 2`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v f`.
+
+Simplify using `only [LinearMap.lTensor_tmul, TensorProduct.map_tmul]`. Use `congr 1`. Use `show _ = f.1.1 (1 * (π q).2)`. Conclude with `(f.1.2 ⟨_, (hP q).1 h1⟩ 1).symm.trans (by rw [one_mul, mul_one])`. Establish `hεj : ∀ x t, ε (τ (j x) t) = (D (1, x) : F) • κ ((ev ρ x).lTensor V t)`.
+
+Introduce `x t`. Use `show κ _ = _`. Rewrite using `[hτ, hπj, map_smul, map_smul]`. Use `congr 2`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v f`. Simplify using `only [LinearMap.lTensor_tmul, TensorProduct.map_tmul, map_one, Module.End.one_apply]`. Use `congr 1`.
+
+Use `show f.1.1 (1 * x) = f.1.1 x`. Rewrite using `[one_mul]`. Establish `inj : ∀ t t', (∀ q, ε (τ q t) = ε (τ q t')) → t = t'` using `fun t t' h => sub_eq_zero.1 (eq_zero_of_ev ρ _ fun x => by`. Use `h (j x)` as an intermediate fact. Rewrite `this` using `[hεj, hεj]`.
+
+Rewrite using `[map_sub, κ.injective (smul_right_injective U (D (1, x)).ne_zero this), sub_self])`. Establish `surj : ∀ f : smoothPart (ind P σ), ∃ t, ∀ q : Q, ε (τ q t) = f.1.1 q`. Introduce `f`. Take `⟨t, ht⟩` from `exists_tensor ρ hK hPK (fun x => (D (1, x) : F)⁻¹ • κ.symm (f.1.1 (j x))) (fun p x => by`. Establish `h2 : (π (j p)).2 ∈ P'` using `by rw [hπj]; exact p.2`.
+
+Establish `h3` using `f.1.2 ⟨j p, (hP _).2 h2⟩ (j x)`. Establish `h4` using `hσ (j p) ((hP _).2 h2) h2 (κ.symm (f.1.1 (j x)))`. Simplify using `only [hπj, map_one, LinearEquiv.apply_symm_apply] at h4`. Establish `h5 : D (1, (p : H) * x) = D (1, (p : H)) * D (1, x)` using `by rw [← map_mul]; simp`. Simplify using `only [map_mul, Subgroup.coe_mul, h5]`.
+
+Rewrite using `[h3, h4, map_smul, map_smul, κ.symm_apply_apply, smul_smul]`. Use `congr 1`. Simplify using `only [Units.val_mul]`. Use the proof step `field_simp)`. Use the proof step `(by filter_upwards [hD, (hj.tendsto' 1 1 (by simp)).eventually (eventually_of_smooth f)] with u h1 h2 x`.
+
+Establish `h5 : D (1, x * u) = D (1, x) * D (1, u)` using `by rw [← map_mul]; simp`. Simplify using `only [map_mul, Subgroup.coe_mul, h5, h1, mul_one, h2])`. Use `⟨t, fun q => ?_⟩` and prove the remaining obligations. Establish `hp : ((q * (j (π q).2)⁻¹ : Q) : G) ∈ P` using `(hP _).2 (by simp [hπj])`. Establish `hq : q = (q * (j (π q).2)⁻¹) * j (π q).2` using `by simp`.
+
+Use `conv_lhs => rw [hq, map_mul, Module.End.mul_apply, ← hε _ hp, hεj, ht]`. Use `conv_rhs => rw [hq, Subgroup.coe_mul]`. Rewrite using `[f.1.2 ⟨_, hp⟩]`. Simplify using `[smul_smul]`. Set `Ψ : smoothPart (ind Q τ) →ₗ[F] smoothPart (ind P σ)` to `indPull (MonoidHom.id G) continuous_id ε fun p => ⟨⟨p, hPQ p.2⟩, rfl, hε ⟨p, hPQ p.2⟩ p.2⟩`.
+
+Use `⟨Representation.IntertwiningMap.ofBijective ⟨Ψ, fun g => rfl⟩ ⟨?_, fun f => ?_⟩⟩` and prove the remaining obligations. Introduce `f f' h`. Use `Subtype.ext (Subtype.ext (funext fun x => inj _ _ fun q => ?_))` and prove the remaining obligations. Rewrite using `[← f.1.2, ← f'.1.2]`. Conclude with `congrFun (congrArg (fun φ => φ.1.1) h) (q * x)`.
+
+Use `choose t ht using fun g => surj (smInd P σ g f)`. Establish `ht' : ∀ g (q : Q), ε (τ q (t g)) = f.1.1 (q * g)` using `ht`. Use `⟨⟨⟨t, fun q g => inj _ _ fun q' => ?_⟩, mem_smooth_of_eventually _ ((eventually_of_smooth f).mono fun u hu x => inj _ _ fun q => ?_)⟩, Subtype.ext (Subtype.ext (funext fun x => ?_))⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ht', ht', Subgroup.coe_mul, mul_assoc]`. Use `show ε (τ q (t (x * u))) = ε (τ q (t x))`.
+
+Rewrite using `[ht', ht', ← mul_assoc, hu]`. Use `show ε (t x) = _`. Simplify using `using ht' x 1`.
+-/
 theorem smInd_stages {P Q : Subgroup G} (hPQ : P ≤ Q) {P' : Subgroup H} (π : Q →* M × H) (j : H →* Q)
     (hj : Continuous fun x => (j x : G)) (hπj : ∀ x, π (j x) = (1, x))
     (hP : ∀ q : Q, (q : G) ∈ P ↔ (π q).2 ∈ P') {K : Set H} (hK : IsCompact K)
@@ -273,20 +349,40 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def relabel (R : Type) [CommRing R] (e : a ≃ b) : GL a R ≃* GL b R :=
   Units.mapEquiv (Matrix.reindexAlgEquiv R R e).toMulEquiv
 
+/- English proof (translation)
+Use `show g.val (e.symm (e i)) (e.symm (e j)) = _`. Rewrite using `[e.symm_apply_apply, e.symm_apply_apply]`.
+-/
 theorem relabel_apply {R : Type} [CommRing R] (e : a ≃ b) (g : GL a R) (i j : a) :
     (relabel R e g).val (e i) (e j) = g.val i j := by
   show g.val (e.symm (e i)) (e.symm (e j)) = _
   rw [e.symm_apply_apply, e.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_submatrix _ _, Units.continuous_coe_inv.matrix_submatrix _ _⟩`.
+-/
 theorem continuous_relabel {R : Type} [CommRing R] [TopologicalSpace R] (e : a ≃ b) :
     Continuous (relabel R e) :=
   Units.continuous_iff.2 ⟨Units.continuous_val.matrix_submatrix _ _,
     Units.continuous_coe_inv.matrix_submatrix _ _⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (det_reindex_self e g.val)`.
+-/
 theorem det_relabel {R : Type} [CommRing R] (e : a ≃ b) (g : GL a R) :
     GeneralLinearGroup.det (relabel R e g) = GeneralLinearGroup.det g :=
   Units.ext (det_reindex_self e g.val)
 
+/- English proof (translation)
+Set `en : n ≃ n'` to `e.symm.trans ((ea.sumCongr eb).trans e')`. Establish `hen : ∀ (g : GL n k) x y, (relabel k en g).val (e' (Sum.map ea eb x)) (e' (Sum.map ea eb y)) = g.val (e x) (e y)` using `fun g x y => by`. Rewrite using `[← relabel_apply en]`. Simplify using `[en]`. Establish `hP : ∀ g, g ∈ parab k (two e) ↔ relabel k en g ∈ parab k (two e')` using `fun g => by`.
+
+Rewrite using `[mem_parab_two, mem_parab_two, eb.surjective.forall]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[ea.surjective.forall]`. Conclude with `forall_congr' fun i => by rw [← hen g (.inr j) (.inl i)]; rfl`. Use `isIrreducible_smInd_iff (relabel k en) (continuous_relabel en) (continuous_relabel en.symm) κ hP fun p v => ?_` and prove the remaining obligations.
+
+Take `⟨x, h1⟩` from `(leviTwo k a b).surjective (leviProj k (two e) p)`. Establish `h2 : leviProj k (two e') ⟨_, (hP p).1 p.2⟩ = leviTwo k a' b' (relabel k ea x.1, relabel k eb x.2)`. Use function extensionality and compare the values at `y`. Consider the cases of `y`. Use extensionality with `i j`.
+
+Take `⟨i, rfl⟩` from `ea.surjective i`. Take `⟨j, rfl⟩` from `ea.surjective j`. Conclude with `(hen p (.inl i) (.inl j)).trans ((congrArg (fun g : Levi k (Two a b) => (g false).val i j) h1).symm.trans (relabel_apply ea x.1 i j).symm)`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `eb.surjective i`.
+
+Take `⟨j, rfl⟩` from `eb.surjective j`. Conclude with `(hen p (.inr i) (.inr j)).trans ((congrArg (fun g : Levi k (Two a b) => (g true).val i j) h1).symm.trans (relabel_apply eb x.2 i j).symm)`. Use `show κ ((deltaHalf k _ (leviProj k (two e) p) : ℂ) • ρ ((leviTwo k a b).symm (leviProj k (two e) p)) v) = (deltaHalf k _ (leviProj k (two e') ⟨_, (hP p).1 p.2⟩) : ℂ) • ρ' ((leviTwo k a' b').symm (leviProj k (two e') ⟨_, (hP p).1 p.2⟩)) (κ v)`. Rewrite using `[h2, ← h1, deltaHalf_two, deltaHalf_two, MulEquiv.symm_apply_apply, MulEquiv.symm_apply_apply, map_smul, h, det_relabel, det_relabel, Fintype.card_congr ea, Fintype.card_congr eb]`.
+-/
 theorem isIrreducible_ind₂_iff (e : a ⊕ b ≃ n) (e' : a' ⊕ b' ≃ n') (ea : a ≃ a') (eb : b ≃ b')
     {ρ : Representation ℂ (GL a k × GL b k) V} {ρ' : Representation ℂ (GL a' k × GL b' k) W} (κ : V ≃ₗ[ℂ] W)
     (h : ∀ g v, κ (ρ g v) = ρ' (relabel k ea g.1, relabel k eb g.2) (κ v)) :
@@ -323,6 +419,9 @@ theorem isIrreducible_ind₂_iff (e : a ⊕ b ≃ n) (e' : a' ⊕ b' ≃ n') (ea
   rw [h2, ← h1, deltaHalf_two, deltaHalf_two, MulEquiv.symm_apply_apply, MulEquiv.symm_apply_apply, map_smul, h,
     det_relabel, det_relabel, Fintype.card_congr ea, Fintype.card_congr eb]
 
+/- English proof (translation)
+Set `ea` to `(Fintype.equivFin a).symm`. Set `eb` to `(Fintype.equivFin b).symm`. Use `H k _ _ V W (π₁.comp (relabel k ea).toMonoidHom) (π₂.comp (relabel k eb).toMonoidHom) (isSmooth_comp s₁ _ (continuous_relabel ea)) ((isIrreducible_iff_of_linearEquiv _ (relabel k ea).surjective (.refl ℂ V) fun _ _ => rfl).2 i₁) (UnitInd.isUnitarisable_comp u₁ _) (isSmooth_comp s₂ …` as an intermediate fact. Conclude with `(isIrreducible_ind₂_iff _ e ea eb (.refl ℂ _) fun _ _ => rfl).1 this`.
+-/
 theorem isIrreducible_ind₂ (H : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (e : a ⊕ b ≃ n)
     {π₁ : Representation ℂ (GL a k) V} {π₂ : Representation ℂ (GL b k) W}
     (s₁ : IsSmooth π₁) (i₁ : π₁.IsIrreducible) (u₁ : IsUnitarisable π₁)
@@ -338,6 +437,11 @@ theorem isIrreducible_ind₂ (H : GlobalTheory.Published.BernsteinUnitaryProduct
     (UnitInd.isUnitarisable_comp u₂ _)
   exact (isIrreducible_ind₂_iff _ e ea eb (.refl ℂ _) fun _ _ => rfl).1 this
 
+/- English proof (translation)
+Take `⟨E⟩` from `(SwapBlocks.lower_equiv_upper_swap k a b n e _).1 (extTensor π₁ π₂)`. Use `(isIrreducible_iff_of_equiv E).2 ((isIrreducible_ind₂_iff _ _ (.refl b) (.refl a) (TensorProduct.comm ℂ W V) fun g x => ?_).1 (isIrreducible_ind₂ H ((Equiv.sumComm b a).trans e) s₂ i₂ u₂ s₁ i₁ u₁))` and prove the remaining obligations. Use `show _ = extTensor π₁ π₂ (g.2, g.1) _`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v w => simp`.
+-/
 theorem isIrreducible_ind₂Lower (H : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (e : a ⊕ b ≃ n)
     {π₁ : Representation ℂ (GL a k) V} {π₂ : Representation ℂ (GL b k) W}
     (s₁ : IsSmooth π₁) (i₁ : π₁.IsIrreducible) (u₁ : IsUnitarisable π₁)
@@ -353,6 +457,9 @@ theorem isIrreducible_ind₂Lower (H : GlobalTheory.Published.BernsteinUnitaryPr
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul v w => simp
 
+/- English proof (translation)
+Take `⟨u, g, w, hw, rfl⟩` from `UnitInd.exists_iwasawa e x`. Conclude with `⟨⟨u * leviEmb k e g, mul_mem (unipRad_le_parab k _ u.2) (leviEmb_mem_parab k _ g)⟩, w, hw, rfl⟩`.
+-/
 theorem exists_parab_mul {α : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ i, Fintype (m i)]
     [∀ i, DecidableEq (m i)] (e : (Σ i, m i) ≃ n) (x : GL n k) :
     ∃ p : parab k e, ∃ w ∈ (KO k n : Set (GL n k)), x = p * w := by
@@ -376,16 +483,37 @@ def headTail (m : Fin (s + 1) → Type) : m 0 ⊕ (Σ i : Fin s, m i.succ) ≃ �
 
 omit [∀ i, DecidableEq (m i)] in
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_succ]`.
+-/
 theorem modExp_zero : modExp m 0 = Fintype.card (Σ i : Fin s, m i.succ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_succ]
 
 omit [∀ i, DecidableEq (m i)] in
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modExp_succ (i : Fin s) :
     modExp m i.succ = -Fintype.card (m 0) + modExp (fun i : Fin s => m i.succ) i := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_succ]
   ring
 
+/- English proof (translation)
+Set `e'` to `(headTail m).trans e`. Set `π` to `(leviTwo k (m 0) (Σ i : Fin s, m i.succ)).symm.toMonoidHom.comp (leviProj k (two e'))`. Set `j` to `((emb₂ k e').comp (MonoidHom.inr _ _)).codRestrict (parab k (two e')) fun _ => leviEmb_mem_parab k _ _`. Use `smInd_stages (P' := parab k (Equiv.refl (Σ i : Fin s, m i.succ))) (fun g hg => ?_) π j ?_ (fun x => ?_) (fun q => ?_) SplitFlip.isCompact_KO (fun x => ?_) ((deltaHalf k _).comp (leviTwo k _ _).toMonoidHom) ?_ σ₀ _ _ κ (fun q h1 h2 x => ?_) _ fun q x => rfl` and prove the remaining obligations. Conclude with `(mem_parab_two k).2 fun y x => mem_parab_iff.1 hg y.1.succ 0 y.2 x (Fin.succ_pos _)`.
+
+Conclude with `(continuous_leviEmb k _).comp ((continuous_leviTwo k).comp (Continuous.prodMk_right 1))`. Conclude with `(leviTwo k _ _).symm_apply_eq.2 (leviProj_leviEmb k _ _)`. Rewrite using `[mem_parab_iff, mem_parab_iff]`. Use `⟨fun hq x y u v hxy => hq x.succ y.succ u v (Fin.succ_lt_succ_iff.2 hxy), fun hq x y u v hxy => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Fin.cases with`.
+
+Consider the case `zero => exact absurd hxy (Fin.not_lt_zero _)`. Consider the case `succ x`. Proceed by induction on `y using Fin.cases with`. Consider the case `zero => exact (mem_parab_two k).1 q.2 ⟨x, u⟩ v`. Consider the case `succ y => exact hq x y u v (Fin.succ_lt_succ_iff.1 hxy)`.
+
+Conclude with `exists_parab_mul _ x`. Establish `h1 : IsSmoothChar (((deltaHalf k _).comp (leviTwo k (m 0) (Σ i : Fin s, m i.succ)).toMonoidHom).comp (MonoidHom.inr _ _))` using `((isSmoothChar_deltaHalf k).comp _ (continuous_leviTwo k)).comp _ (Continuous.prodMk_right 1) filter_upwards [h1.mem_nhds (one_mem _)] with u hu`. Conclude with `MonoidHom.mem_ker.1 hu`. Set `g` to `leviProj k e ⟨q, h1⟩`. Establish `e1 : (π q).1 = g 0` using `Units.ext rfl`.
+
+Establish `e2 : leviProj k _ ⟨(π q).2, h2⟩ = fun i : Fin s => g i.succ` using `funext fun _ => Units.ext rfl`. Establish `e3 : GeneralLinearGroup.det (π q).2 = ∏ i : Fin s, GeneralLinearGroup.det (g i.succ)`. Use `det_parab k _ ⟨(π q).2, h2⟩` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Establish `e4 : deltaHalf k m g = deltaHalf k _ (leviTwo k _ _ (π q)) * deltaHalf k (fun i : Fin s => m i.succ) fun i => g i.succ`.
+
+Rewrite using `[deltaHalf_two, deltaHalf_apply, deltaHalf_apply, Fin.prod_univ_succ, e1, e3, map_prod, modExp_zero, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congrArg₂ _ (by simp) (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[modExp_succ, ← MonoidHom.mul_apply, ← absPow_add]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show (deltaHalf k m g : ℂ) • σ g (κ x) = (deltaHalf k _ (leviTwo k _ _ (π q)) : ℂ) • κ (TensorProduct.map (σ₀ (π q).1) ((deltaHalf k _ (leviProj k _ ⟨(π q).2, h2⟩) : ℂ) • ρ (leviProj k _ ⟨(π q).2, h2⟩)) x)`. Rewrite using `[h, e4, e2, e1, TensorProduct.map_smul_right, LinearMap.smul_apply, map_smul, smul_smul, Units.val_mul]`.
+-/
 theorem ind₂_parInd_equiv (e : (Σ i, m i) ≃ n) (σ₀ : Representation ℂ (GL (m 0) k) V)
     (ρ : Representation ℂ (Levi k fun i : Fin s => m i.succ) W) (σ : Representation ℂ (Levi k m) U)
     (κ : V ⊗[ℂ] W ≃ₗ[ℂ] U)
@@ -445,11 +573,21 @@ def tensorCons (X : Fin (s + 1) → Type) [∀ i, AddCommGroup (X i)] [∀ i, Mo
         map_smul' := fun c x => by ext; simp [TensorProduct.smul_tmul'] }))
     (by ext x; simp) (by ext x y; simp)
 
+/- English proof (translation)
+Simplify using `[tensorCons]`.
+-/
 theorem tensorCons_tmul {X : Fin (s + 1) → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
     (x : X 0) (y : ∀ i : Fin s, X i.succ) :
     tensorCons X (x ⊗ₜ PiTensorProduct.tprod ℂ y) = PiTensorProduct.tprod ℂ (Fin.cons x y) := by
   simp [tensorCons]
 
+/- English proof (translation)
+Use `ind₂_parInd_equiv e (σ 0) _ _ (tensorCons X) fun g x => ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v w`.
+
+Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => simp only [TensorProduct.tmul_add, map_add, hx, hy]`. Consider the case `smul_tprod c y`. Simplify using `only [TensorProduct.tmul_smul, map_smul, TensorProduct.map_tmul, piTensor_tprod, tensorCons_tmul]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `induction i using Fin.cases <;> rfl`.
+-/
 theorem multiProd_succ_equiv (e : (Σ i, m i) ≃ n) {X : Fin (s + 1) → Type} [∀ i, AddCommGroup (X i)]
     [∀ i, Module ℂ (X i)] (σ : ∀ i, Representation ℂ (GL (m i) k) (X i)) :
     Nonempty ((ind₂ ((headTail m).trans e)
@@ -467,6 +605,11 @@ theorem multiProd_succ_equiv (e : (Σ i, m i) ≃ n) {X : Fin (s + 1) → Type} 
       funext i
       induction i using Fin.cases <;> rfl
 
+/- English proof (translation)
+Use `haveI : IsEmpty n := ⟨fun x => (e.symm x).1.elim0⟩`. Use `haveI : Subsingleton (GL n k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩`. Set `κ : IndSp e (piTensor σ) ≃ₗ[ℂ] ⨂[ℂ] i, X i` to `LinearEquiv.ofBijective (ev _ 1) ⟨fun f g h => Subtype.ext (Subtype.ext (funext fun x => by rw [Subsingleton.elim x 1]; exact h)), fun v => ⟨⟨⟨fun _ => v, fun p _ => by rw [Subsingleton.elim p 1, map_one]; rfl⟩, mem_smooth_of_eventually _ (.of_forall fun _ _ => rfl)⟩, rfl⟩⟩`. Use `(isIrreducible_iff_of_linearEquiv (σ := ofChar (1 : GL n k →* ℂˣ)) id Function.surjective_id (κ.trans (PiTensorProduct.isEmptyEquiv _)) fun g v => ?_).2 (isIrreducible_ofChar _)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim g 1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isIrreducible_multiProd_zero {m : Fin 0 → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
     (e : (Σ i, m i) ≃ n) {X : Fin 0 → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
     (σ : ∀ i, Representation ℂ (GL (m i) k) (X i)) : (multiProd e σ).IsIrreducible := by
@@ -481,6 +624,11 @@ theorem isIrreducible_multiProd_zero {m : Fin 0 → Type} [∀ i, Fintype (m i)]
   rw [Subsingleton.elim g 1]
   simp
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => exact fun e _ _ _ σ _ _ _ => isIrreducible_multiProd_zero e σ`. Consider the case `succ s ih`. Introduce `m _ _ n _ _ e X _ _ σ hs hi hu`. Take `⟨E⟩` from `multiProd_succ_equiv e σ`.
+
+Conclude with `(isIrreducible_iff_of_equiv E).1 (isIrreducible_ind₂ H _ (hs 0) (hi 0) (hu 0) (isSmooth_parInd _ _) (ih _ (fun i => hs i.succ) (fun i => hi i.succ) fun i => hu i.succ) (UnitInd.isUnitarisable_multiProd _ fun i => hu i.succ))`.
+-/
 theorem isIrreducible_multiProd (H : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {s : ℕ} :
     ∀ {m : Fin s → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {n : Type} [Fintype n] [DecidableEq n]
     (e : (Σ i, m i) ≃ n) {X : Fin s → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
@@ -497,6 +645,9 @@ theorem isIrreducible_multiProd (H : GlobalTheory.Published.BernsteinUnitaryProd
 
 end Local
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ e _ _ _ _ hs hi hu => ⟨isSmooth_parInd _ _, isIrreducible_multiProd H e hs hi hu, UnitInd.isUnitarisable_multiProd e hu⟩, fun _ _ _ _ _ _ _ _ _ e _ _ _ _ _ _ _ _ s₁ i₁ u₁ s₂ i₂ u₂ => ⟨isIrreducible_ind₂ H e s₁ i₁ u₁ s₂ i₂ u₂, isIrreducible_ind₂Lower H e s₁ i₁ u₁ s₂ …`.
+-/
 theorem products_irreducible (H : GlobalTheory.Published.BernsteinUnitaryProductIrreducible)
     (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     (∀ (s : ℕ) (d : Fin s → ℕ) (n : Type) [Fintype n] [DecidableEq n] (e : (Σ a, Fin (d a)) ≃ n)

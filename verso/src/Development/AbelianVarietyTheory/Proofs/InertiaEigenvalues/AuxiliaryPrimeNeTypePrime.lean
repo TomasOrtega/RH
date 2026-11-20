@@ -15,11 +15,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Host GlobalTheory
 
 namespace GlobalTheory.TwInputs.SmallField
 
+/- English proof (translation)
+Establish `h` using `(IntermediateField.normal_iff_forall_map_le (K := M)).1 hM.to_normal (starRingEnd L).toRatAlgHom`. Conclude with `h ⟨x, hx, rfl⟩`.
+-/
 theorem star_mem_of_normal {L : Type} [Field L] [CharZero L] [StarRing L] [IsGalois ℚ L] (M : IntermediateField ℚ L) (hM : IsGalois ℚ M)
     (x : L) (hx : x ∈ M) : star x ∈ M := by
   have h := (IntermediateField.normal_iff_forall_map_le (K := M)).1 hM.to_normal (starRingEnd L).toRatAlgHom
   exact h ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.HeightOnePrimeMembership.exists_heightOne_mem E hp`.
+-/
 theorem exists_over (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     ∃ w : HeightOneSpectrum (𝓞 E), ((p : ℕ) : 𝓞 E) ∈ w.asIdeal :=
   _root_.GlobalTheory.HeightOnePrimeMembership.exists_heightOne_mem E hp
@@ -28,6 +34,17 @@ end GlobalTheory.TwInputs.SmallField
 
 namespace GlobalTheory.TwInputs.SmallField
 
+/- English proof (translation)
+Set `φK : P.host.K →+* ℂ` to `P.host.φ₀.comp (algebraMap P.host.K P.host.E)`. Take `⟨Rf, hRf⟩` from `Fld.exists_isRayFieldIn φK hR (Fld.natIdeal_ne_bot (E := P.host.K) (Fld.modulus_ne_zero P))`. Use `haveI : NumberField Rf := hRf.numberField`. Set `b` to `Module.finBasis ℚ Rf`. Use `⟨Finset.univ.image (fun i => (b i : ℂ)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Establish `h : IsAlgebraic ℚ (b i)` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `h.algHom Rf.val`. Introduce `B hB hS C W V S' N G`.
+
+Substitute `hB` using the available equality. Establish `hle : Rf ≤ B.fixedCoefficientFieldInComplex`. Introduce `z hz`. Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨z, hz⟩)`. Rewrite `hsum` using `[IntermediateField.coe_sum]`.
+
+Simplify using `only [IntermediateField.coe_smul] at hsum`. Rewrite using `[← hsum]`. Conclude with `sum_mem fun i _ => IntermediateField.smul_mem _ (hS _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩))`. Take `⟨hm, hNF, hray⟩` from `hRf`. Use `letI := Fld.algOf φK Rf hm`.
+
+Use `⟨Rf, inferInstance, hNF, Fld.algOf φK Rf hm, hray.1, hray.2, Rf.val.toRingHom, ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `Fld.algOf_apply φK Rf hm x`. Take `⟨y, hy, e⟩` from `hle x.2`. Conclude with `⟨⟨y, hy⟩, e⟩`.
+-/
 theorem exists_finset_rayIn (hR : GlobalTheory.NT.RayField) (P : Pre) : ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧
     ∀ B : Base, B.toPre = P → (∀ z ∈ S, z ∈ B.fixedCoefficientFieldInComplex) → ∀ C W V S' N G,
       GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.RayIn (assemble B C W V S' N G) (B.host.g 0 * B.host.g 1 * B.host.pde * B.host.pde')
@@ -62,9 +79,27 @@ end GlobalTheory.TwInputs.SmallField
 
 namespace GlobalTheory.TwInputs.SmallField
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero P.host.condN_ne_zero) P.host.sixteen_dvd_condN)`.
+-/
 theorem one_lt_cond (P : Pre) : 1 < P.host.QS * P.host.q * P.host.d :=
   lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero P.host.condN_ne_zero) P.host.sixteen_dvd_condN)
 
+/- English proof (translation)
+Distinguish the cases in `hq : ∀ k, GlobalTheory.EX.DC.q0H P.host ≠ P.host.g k`. Use `swap`. Use `⟨∅, by simp, fun B hB _ C W V S' N G h => ?_⟩` and prove the remaining obligations. Substitute `hB` using the available equality. Conclude with `absurd h hq`.
+
+Establish `hqp` using `(GlobalTheory.EX.DC.globalTwisting_spec_fact P.host).1`. Take `⟨w0, hw0⟩` from `exists_over P.host.E hqp`. Establish `hmod : ∀ p ∈ [P.host.g 0, P.host.g 1, P.host.pde, P.host.pde', GlobalTheory.EX.DC.q0H P.host], p ≡ 1 [MOD P.host.QS * P.host.q * P.host.d]`. Introduce `p hp`. Rewrite using `[Nat.ModEq, Nat.mod_eq_of_lt (one_lt_cond P)]`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hp`. Break down `hp with rfl | rfl | rfl | rfl | rfl` into its components or cases. Use `exacts [P.g_cond 0, P.g_cond 1, P.pde_cond.1, P.pde_cond.2, GlobalTheory.EX.DC.mod_cond _]`. Take `⟨hPl, -⟩` from `GlobalTheory.LamTie.placesOk_of_modEq_one P.R P.host _ w0 hqp hmod (fun k => hq k) (GlobalTheory.EX.DC.q0H_ne_pde_and_ne_pde' _).1 (GlobalTheory.EX.DC.q0H_ne_pde_and_ne_pde' _).2 hw0`. Take `⟨χ, hχ, hT⟩` from `GlobalTheory.LamTie.TeichEx.exists_auxiliaryHeckeCharacter_trivial_tame_part P.R P.host _ w0 (fun g => (BlochKatoReduction.Gen.NFun P.R : ℤ) + 2 + ∑ j : Fin P.R.m, ⌈|(P.hc g).e j|⌉) hPl (UpperTheory.Mu.w_add_one_lt P.host hqp.one_lt 1 (by rw [one_mul]; exact GlobalTheory.EX.DC.mo …`.
+
+Take `⟨n, hn, hinf⟩` from `hχ.inf`. Take `⟨cc, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm P.R P.host`. Take `⟨M, hM, hv⟩` from `GlobalTheory.Mem.ValAlg.values_in_numberField P.host.F P.host.E cc P.R.Psi (embPsi P.host) hcm χ n 0 hinf (fun g => by`. Establish `h1 : (n g : ℚ) = 2 * (((BlochKatoReduction.Gen.NFun P.R : ℤ) + 2 + ∑ j : Fin P.R.m, ⌈|(P.hc g).e j|⌉ : ℤ) : ℚ)` using `hn g`. Establish `h2 : n g = 2 * ((BlochKatoReduction.Gen.NFun P.R : ℤ) + 2 + ∑ j : Fin P.R.m, ⌈|(P.hc g).e j|⌉)` using `by exact_mod_cast h1`.
+
+Conclude with `⟨(BlochKatoReduction.Gen.NFun P.R : ℤ) + 2 + ∑ j : Fin P.R.m, ⌈|(P.hc g).e j|⌉, by omega⟩)`. Rewrite `hv` using `[Int.cast_zero, zero_div]`. Use `haveI := hM`. Take `⟨α, hα, gα⟩` from `GlobalTheory.Mem.DatHecke.exists_gen M`. Use `⟨{α}, by simpa using hα, fun B hB hS C W V S' N G _ cf => ?_⟩` and prove the remaining obligations.
+
+Substitute `hB` using the available equality. Take `⟨x, hx, ex⟩` from `hS α (Finset.mem_singleton_self _)`. Establish `hM' : ∀ z ∈ M, ∃ y, embLL0 (assemble B C W V S' N G) y = z` using `gα B.LL0 (embLL0 (assemble B C W V S' N G)) ⟨⟨x, hx⟩, by exact ex⟩`. Use `⟨⟨cf, _, w0, fun _ g => (BlochKatoReduction.Gen.NFun B.R : ℤ) + 2 + ∑ j : Fin B.R.m, ⌈|(B.hc g).e j|⌉, fun _ => χ⟩, ⟨hPl, fun _ => hχ, fun j a g => ?_⟩, fun _ => hT, rfl, rfl, fun _ => GlobalTheory.Mem.Col2.InEx.valuesIn_of hv _ hM'⟩` and prove the remaining obligations. Use `show (BlochKatoReduction.Gen.NFun B.R : ℚ) + 1 < (B.hc g).e j + (((BlochKatoReduction.Gen.NFun B.R : ℤ) + 2 + ∑ j : Fin B.R.m, ⌈|(B.hc g).e j|⌉ : ℤ) : ℚ)`.
+
+Establish `h1 : ⌈|(B.hc g).e j|⌉ ≤ ∑ j' : Fin B.R.m, ⌈|(B.hc g).e j'|⌉` using `Finset.single_le_sum (f := fun j' => ⌈|(B.hc g).e j'|⌉) (fun j' _ => Int.ceil_nonneg (abs_nonneg _)) (Finset.mem_univ j)`. Establish `h2 : -(B.hc g).e j ≤ ((⌈|(B.hc g).e j|⌉ : ℤ) : ℚ)` using `(neg_le_abs _).trans (Int.le_ceil _)`. Establish `h3 : ((⌈|(B.hc g).e j|⌉ : ℤ) : ℚ) ≤ ((∑ j' : Fin B.R.m, ⌈|(B.hc g).e j'|⌉ : ℤ) : ℚ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at h3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_finset_lam (P : Pre) : ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧
     ∀ B : Base, B.toPre = P → (∀ z ∈ S, z ∈ B.fixedCoefficientFieldInComplex) → ∀ C W V S' N G,
       (∀ k, AbsolutelyIrreducibleSpan.q0 (assemble B C W V S' N G) ≠ B.host.g k) → ∀ cf : CharFrame (assemble B C W V S' N G),
@@ -118,6 +153,9 @@ end GlobalTheory.TwInputs.SmallField
 
 namespace GlobalTheory.TwInputs.SmallField
 
+/- English proof (translation)
+Use `choose S hS gS using exists_finset_rayIn hR`. Conclude with `⟨fun B _ _ => S B, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ => hS B, by simp, fun B _ _ _ hH _ _ => gS B.toPre B rfl hH.1⟩`.
+-/
 theorem lg_rayIn (hR : GlobalTheory.NT.RayField) (K : Ctx) : large₂ K fun B _ _ => ∀ C W V S' N G,
     GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.RayIn (assemble B C W V S' N G) (B.host.g 0 * B.host.g 1 * B.host.pde * B.host.pde')
       (embLL0 (assemble B C W V S' N G)).fieldRange := by
@@ -125,6 +163,9 @@ theorem lg_rayIn (hR : GlobalTheory.NT.RayField) (K : Ctx) : large₂ K fun B _ 
   exact ⟨fun B _ _ => S B, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ => hS B, by simp,
     fun B _ _ _ hH _ _ => gS B.toPre B rfl hH.1⟩
 
+/- English proof (translation)
+Use `choose S hS gS using exists_finset_lam`. Conclude with `⟨fun B _ _ => S B, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ => hS B, by simp, fun B _ _ _ hH _ _ => gS B.toPre B rfl hH.1⟩`.
+-/
 theorem lg_lam (K : Ctx) : large₂ K fun B _ _ => ∀ C W V S' N G,
     (∀ k, AbsolutelyIrreducibleSpan.q0 (assemble B C W V S' N G) ≠ B.host.g k) → ∀ cf : CharFrame (assemble B C W V S' N G),
       ∃ Z : GlobalTheory.LamTie.LamDat (assemble B C W V S' N G), Z.Ok ∧ Z.Teich ∧ Z.C = cf ∧
@@ -133,6 +174,11 @@ theorem lg_lam (K : Ctx) : large₂ K fun B _ _ => ∀ C W V S' N G,
   exact ⟨fun B _ _ => S B, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ => hS B, by simp,
     fun B _ _ _ hH _ _ => gS B.toPre B rfl hH.1⟩
 
+/- English proof (translation)
+Use `(((GlobalTheory.Mem.Col2.InEx.lg_colIn K).inter (lg_rayIn hR K)).inter (lg_lam K)).imp fun B f T _ h C W V S' N G => ?_` and prove the remaining obligations. Take `⟨⟨⟨-, hval, -⟩, hray⟩, hlam⟩` from `h`. Use `⟨hval C W V S' N G, fun X hX => ⟨B.coeffGaloisSubfield_isGalois, fun x => star_mem_of_normal B.LL0 B.coeffGaloisSubfield_isGalois _ x.2, ?_, hray C W V S' N G, fun k z hz => ?_, ⟨B.toPre.level_split _ B.host.pde_level.1, B.toPre.level_split _ B.host.pde_level.2⟩⟩, fun hq => hlam …` and prove the remaining obligations. Rewrite using `[hX]`. Conclude with `hval C W V S' N G`.
+
+Establish `h0 : B.host.g k * (B.host.g k - 1) ≠ 0` using `mul_ne_zero (B.host.g_prime k).ne_zero (by have := (B.host.g_prime k).two_le; omega)`. Apply the tactic sequence `obtain ⟨x, hx, e⟩ := B.roots_Ks (B.host.g k * (B.host.g k - 1)) (by fin_cases k <;> simp)`. Take `⟨y, hy⟩` from `GlobalTheory.Mem.Col2.InEx.root_mem (embLL0 (assemble B C W V S' N G)) h0 ⟨⟨x, B.Ks_le hx⟩, e⟩ hz`. Conclude with `⟨y, hy⟩`.
+-/
 theorem lg_fieldOk (hR : GlobalTheory.NT.RayField) (K : Ctx) : large₂ K fun B f _ => ∀ C W V S' N G,
     ValLL0 (assemble B C W V S' N G) (Fr.at ⟨B, C, W, V, S', N, G⟩ f) ∧
     (∀ X : RealSide (assemble B C W V S' N G), X.R.C = Fr.at ⟨B, C, W, V, S', N, G⟩ f → FieldOk X) ∧
@@ -160,16 +206,27 @@ open Formalism.MainNotions.N Formalism.L2 Formalism.L2.NT Formalism.IndefR.NX Gl
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, rfl, -⟩` from `hP`. Conclude with `h.ok.small.2.2.2.1 k`.
+-/
 theorem auxiliary_prime_ne_type_prime (K : Ctx) (C5 c6 Cb : ℝ) (h : K.Good C5 c6 Cb) (P : Pre) (hP : K.Over P) (k : Fin 2) :
     GlobalTheory.EX.DC.q0H P.host ≠ P.host.g k := by
   obtain ⟨sp, hT, hY, hA, hV, hz, rfl, -⟩ := hP
   exact h.ok.small.2.2.2.1 k
 
+/- English proof (translation)
+Take `⟨px, I, ok, rfl, S_eq, xr, pins, l, l0, δ, ex, fld, val⟩` from `w`. Both sides reduce to the same expression.
+-/
 theorem cf_eq_at (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) :
     TC.cf w.I w.l Z = Fr.at (w.st Z) f := by
   obtain ⟨px, I, ok, rfl, S_eq, xr, pins, l, l0, δ, ex, fld, val⟩ := w
   rfl
 
+/- English proof (translation)
+Introduce `hP`. Use `evG_good.imp fun K C5 c6 Cb hG _ => ?_` and prove the remaining obligations. Use `(lg_fieldOk hP.rayF K).imp fun B f _ hO h _ T w Z => ?_` and prove the remaining obligations. Take `⟨-, h1, h2⟩` from `h w.C Z.W Z.V Z.S Z.N Z.G`. Rewrite using `[cf_eq_at]`.
+
+Take `⟨L, a, b, c, d, e⟩` from `h2 (auxiliary_prime_ne_type_prime K C5 c6 Cb hG B.toPre hO)`. Conclude with `⟨h1, L, c, a, b, d, e⟩`.
+-/
 theorem evLgG_fieldOk : PrN → EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt),
     (∀ X : GlobalTheory.TwInputs.RealSide (w.st Z).toD7, X.R.C = (TC.cf w.I w.l Z) → GlobalTheory.TwInputs.FieldOk X) ∧
     ∃ L : GlobalTheory.LamTie.LamDat (w.st Z).toD7, L.C = (TC.cf w.I w.l Z) ∧ L.Ok ∧ L.Teich ∧ L.q0 = AbsolutelyIrreducibleSpan.q0 (w.st Z).toD7 ∧

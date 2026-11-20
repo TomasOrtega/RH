@@ -5,6 +5,11 @@ local notation "PT" => LateralTheory.E.PartDiagCut.Part
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Distinguish the cases in `hac : a = c`. Establish `hbd : b ≠ d`. Introduce `h; exact hne (by rw [hac, h])`. Use `Q.orth b hb d hd hbd` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Use `P.orth a ha c hc hac` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_eq_zero_of_ne {a b c d : A} (P : PT A) (Q : PT A)
     (ha : a ∈ P.blocks) (hb : b ∈ Q.blocks) (hc : c ∈ P.blocks) (hd : d ∈ Q.blocks)
     (hne : (a, b) ≠ (c, d)) : (a * b) * (c * d) = 0 := by
@@ -49,6 +54,9 @@ noncomputable def meet (P Q : PT A) : PT A where
       have hid : IsIdempotentElem (x.1 * x.2) := (P.idem _ hx.1.1).1.mul (Q.idem _ hx.1.2).1
       exact hx.2 (by rw [← hid.eq]; exact h0)
 
+/- English proof (translation)
+Introduce `e he`. Simplify using `only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he`. Take `⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩` from `he`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_meet_left (P Q : PT A) : P ≤ meet P Q := by
   intro e he
   simp only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he
@@ -57,6 +65,9 @@ theorem le_meet_left (P Q : PT A) : P ≤ meet P Q := by
   calc a * b * a = a * a * b := by ring
     _ = a * b := by rw [(P.idem a ha).1.eq]
 
+/- English proof (translation)
+Introduce `e he`. Simplify using `only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he`. Take `⟨⟨a, b⟩, ⟨⟨ha, hb⟩, _⟩, rfl⟩` from `he`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_meet_right (P Q : PT A) : Q ≤ meet P Q := by
   intro e he
   simp only [meet, Finset.mem_image, Finset.mem_filter, Finset.mem_product] at he
@@ -65,6 +76,9 @@ theorem le_meet_right (P Q : PT A) : Q ≤ meet P Q := by
   calc a * b * b = a * (b * b) := by ring
     _ = a * b := by rw [(Q.idem b hb).1.eq]
 
+/- English proof (translation)
+Distinguish the cases in `h : Nontrivial A`. Conclude with `⟨{ blocks := {1} idem := by intro e he; rw [Finset.mem_singleton] at he; subst he; exact ⟨IsIdempotentElem.one, one_ne_zero⟩ orth := by intro e he e' he' hne; rw [Finset.mem_singleton] at he he'; exact absurd (he.trans he'.symm) hne sum_eq := by simp }⟩`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `⟨{ blocks := ∅ idem := by simp orth := by simp sum_eq := Subsingleton.elim _ _ }⟩`.
+-/
 theorem part_nonempty (A : Type) [CommRing A] : Nonempty (PT A) := by
   by_cases h : Nontrivial A
   · exact ⟨{ blocks := {1}
@@ -77,6 +91,9 @@ theorem part_nonempty (A : Type) [CommRing A] : Nonempty (PT A) := by
              orth := by simp
              sum_eq := Subsingleton.elim _ _ }⟩
 
+/- English proof (translation)
+Introduce `A _`. Conclude with `⟨⟨fun P Q => ⟨meet P Q, le_meet_left P Q, le_meet_right P Q⟩⟩, part_nonempty A⟩`.
+-/
 theorem PartDirected_of : LateralTheory.E.PartDiagCut.PartDirected := by
   intro A _
   exact ⟨⟨fun P Q => ⟨meet P Q, le_meet_left P Q, le_meet_right P Q⟩⟩, part_nonempty A⟩

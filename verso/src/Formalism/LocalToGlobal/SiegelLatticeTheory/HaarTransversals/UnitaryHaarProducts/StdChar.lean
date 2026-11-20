@@ -15,6 +15,11 @@ def psiA (x : Ainf F) : ℂ :=
   Complex.exp (2 * Real.pi * Complex.I *
     ((∑ w : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding w (x w)).re : ℝ) : ℂ))
 
+/- English proof (translation)
+Establish `h : ∀ w : InfinitePlace F, (x + y) w = x w + y w` using `fun w => rfl`. Simplify using `only [psiA, h, map_add, Complex.add_re, Finset.sum_add_distrib]`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psiA_add (x y : Ainf F) : psiA F (x + y) = psiA F x * psiA F y := by
   have h : ∀ w : InfinitePlace F, (x + y) w = x w + y w := fun w => rfl
   simp only [psiA, h, map_add, Complex.add_re, Finset.sum_add_distrib]
@@ -23,10 +28,16 @@ theorem psiA_add (x y : Ainf F) : psiA F (x + y) = psiA F x * psiA F y := by
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : ∀ w : InfinitePlace F, (0 : Ainf F) w = 0` using `fun w => rfl`. Simplify using `[psiA, h]`.
+-/
 theorem psiA_zero : psiA F 0 = 1 := by
   have h : ∀ w : InfinitePlace F, (0 : Ainf F) w = 0 := fun w => rfl
   simp [psiA, h]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [Complex.norm_exp]; simp)`. Consider the case `simp [Complex.norm_exp]`. Consider the case `(rw [(show (2 * Real.pi * Complex.I * (t : ℂ)) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I by push_cast; ring)]`. Conclude with `Complex.norm_exp_ofReal_mul_I _)`.
+-/
 theorem norm_exp_real (t : ℝ) : ‖Complex.exp (2 * Real.pi * Complex.I * (t : ℂ))‖ = 1 := by
   first
     | (rw [Complex.norm_exp]; simp)
@@ -34,6 +45,11 @@ theorem norm_exp_real (t : ℝ) : ‖Complex.exp (2 * Real.pi * Complex.I * (t :
     | (rw [(show (2 * Real.pi * Complex.I * (t : ℂ)) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I by push_cast; ring)]
        exact Complex.norm_exp_ofReal_mul_I _)
 
+/- English proof (translation)
+Establish `hp : ∀ w : InfinitePlace F, Continuous (fun x : Ainf F => x w)` using `fun w => continuous_apply w`. Establish `hc : ∀ w : InfinitePlace F, Continuous (InfinitePlace.Completion.extensionEmbedding w)`. Introduce `w`. Use `first`. Consider the case `exact (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous`.
+
+Consider the case `exact UniformSpace.Completion.continuous_extension`. Establish `hs : Continuous (fun x : Ainf F => (∑ w : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding w (x w)).re : ℝ))` using `continuous_finset_sum _ (fun w _ => Complex.continuous_re.comp ((hc w).comp (hp w)))`. Unfold `psiA`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hs))`.
+-/
 theorem continuous_psiA : Continuous (psiA F) := by
   have hp : ∀ w : InfinitePlace F, Continuous (fun x : Ainf F => x w) := fun w => continuous_apply w
   have hc : ∀ w : InfinitePlace F, Continuous (InfinitePlace.Completion.extensionEmbedding w) := by
@@ -52,6 +68,21 @@ def trR : F →+ ℝ :=
     intro a b
     simp only [map_add, Complex.add_re, Finset.sum_add_distrib])
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (InfinitePlace.mk : (F →+* ℂ) → InfinitePlace F)` using `fun w => ⟨w.embedding, InfinitePlace.mk_embedding w⟩`. Establish `hreal : ∀ φ : F →+* ℂ, ComplexEmbedding.IsReal φ` using `fun φ => InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal _)`. Establish `hinj : Function.Injective (InfinitePlace.mk : (F →+* ℂ) → InfinitePlace F)`. Introduce `φ ψ h`. Break down `InfinitePlace.mk_eq_iff.mp h with h' | h'` into its components or cases.
+
+Conclude with `h'`. Conclude with `(ComplexEmbedding.isReal_iff.mp (hreal φ)).symm.trans h'`. Establish `hsum : ∀ a : F, trR F a = ∑ φ : F →+* ℂ, (φ a).re`. Introduce `a`. Use `show (∑ w : InfinitePlace F, (w.embedding a).re) = _`.
+
+Use `symm`. Use `Fintype.sum_bijective _ ⟨hinj, hsurj⟩ _ _ (fun φ => ?_)` and prove the remaining obligations. Rewrite using `[InfinitePlace.embedding_mk_eq_of_isReal (hreal φ)]`. Establish `htr : ∀ a : F, trR F a = ((Algebra.trace ℚ F a : ℚ) : ℝ)`. Introduce `a`.
+
+Rewrite using `[hsum, ← Complex.re_sum]`. Establish `h' : (∑ φ : F →+* ℂ, φ a) = ∑ σ : F →ₐ[ℚ] ℂ, σ a` using `Fintype.sum_equiv (RingHom.equivRatAlgHom F ℂ) _ _ (fun φ => rfl)`. Rewrite using `[h']`. Use `first`. Consider the case `rw [← trace_eq_sum_embeddings (E := ℂ) (x := a)]`.
+
+Consider the case `rw [← Algebra.trace_eq_sum_embeddings (E := ℂ) (x := a)]`. Use `first`. Consider the case `rw [eq_ratCast (algebraMap ℚ ℂ), Complex.ratCast_re]`. Consider the case `simp`. Establish `hint : IsIntegral ℤ (Algebra.trace ℚ F (algebraMap (𝓞 F) F d))`.
+
+Apply `Algebra.isIntegral_trace` to reduce the goal to its premises. Use `first`. Consider the case `exact RingOfIntegers.isIntegral_coe d`. Consider the case `exact d.2`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[htr, ← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem trR_int [IsTotallyReal F] (d : 𝓞 F) : ∃ n : ℤ, trR F (algebraMap (𝓞 F) F d) = n := by
   have hsurj : Function.Surjective (InfinitePlace.mk : (F →+* ℂ) → InfinitePlace F) :=
     fun w => ⟨w.embedding, InfinitePlace.mk_embedding w⟩
@@ -90,6 +121,21 @@ theorem trR_int [IsTotallyReal F] (d : 𝓞 F) : ∃ n : ℤ, trR F (algebraMap 
   rw [htr, ← hn]
   simp
 
+/- English proof (translation)
+Set `U : AddSubgroup (Af F)` to `(Formalism.UG.intAd F).toAddSubgroup`. Set `j : F →+ Af F ⧸ U` to `(QuotientAddGroup.mk' U).comp (algebraMap F (Af F)).toAddMonoidHom`. Set `h : F →+ AddCircle (1 : ℝ)` to `(QuotientAddGroup.mk' (AddSubgroup.zmultiples (1 : ℝ))).comp (trR F)`. Establish `hker : j.ker ≤ h.ker`. Introduce `a ha`.
+
+Rewrite `ha`, the goal using `[AddMonoidHom.mem_ker]`. Establish `hmem : algebraMap F (Af F) a ∈ Formalism.UG.intAd F` using `(QuotientAddGroup.eq_zero_iff (algebraMap F (Af F) a)).mp ha`. Establish `hmem' : ∀ v : HeightOneSpectrum (𝓞 F), (algebraMap F (Af F) a) v ∈ v.adicCompletionIntegers F` using `hmem`. Establish `hval : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F a ≤ 1`. Introduce `v`.
+
+Establish `h1 : (a : v.adicCompletion F) ∈ v.adicCompletionIntegers F` using `hmem' v`. Rewrite `h1` using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `h1`. Take `⟨d, rfl⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (K := F) (x := a) hval`. Take `⟨n, hn⟩` from `trR_int F d`.
+
+Use `show ((trR F (algebraMap (𝓞 F) F d) : ℝ) : AddCircle (1 : ℝ)) = 0`. Rewrite using `[hn]`. Use `first`. Consider the case `exact (QuotientAddGroup.eq_zero_iff _).mpr (AddSubgroup.intCast_mem_zmultiples_one n)`. Consider the case `(rw [AddCircle.coe_eq_zero_iff]; exact ⟨n, by simp⟩)`.
+
+Establish `hj : Function.Injective (QuotientAddGroup.kerLift j)` using `QuotientAddGroup.kerLift_injective j`. Establish `hB : Module.Baer ℤ (AddCircle (1 : ℝ))` using `by first`. Consider the case `exact Module.Baer.of_divisible _`. Consider the case `exact @Module.Baer.of_divisible _ _ (QuotientAddGroup.divisibleBy _)`. Take `⟨g, hg⟩` from `hB.extension_property (QuotientAddGroup.kerLift j).toIntLinearMap hj (QuotientAddGroup.lift j.ker h hker).toIntLinearMap`.
+
+Use `⟨g.toAddMonoidHom.comp (QuotientAddGroup.mk' U), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hz0 : (QuotientAddGroup.mk' U) z = 0` using `(QuotientAddGroup.eq_zero_iff z).mpr hz`. Use `show g.toAddMonoidHom ((QuotientAddGroup.mk' U) z) = 0`. Rewrite using `[hz0, map_zero]`.
+
+Introduce `a`. Conclude with `LinearMap.congr_fun hg (QuotientAddGroup.mk a)`.
+-/
 theorem exists_psiF [IsTotallyReal F] : ∃ f : Af F →+ AddCircle (1 : ℝ),
     (∀ z ∈ Formalism.UG.intAd F, f z = 0) ∧ ∀ a : F, f (algebraMap F (Af F) a) = ((trR F a : ℝ) : AddCircle (1 : ℝ)) := by
   let U : AddSubgroup (Af F) := (Formalism.UG.intAd F).toAddSubgroup
@@ -138,19 +184,33 @@ variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
 
 def psiFin (z : Af F) : ℂ := ((AddCircle.toCircle (-((exists_psiF F).choose z)) : Circle) : ℂ)
 
+/- English proof (translation)
+Unfold `psiFin`. Rewrite using `[map_add, neg_add, AddCircle.toCircle_add]`. Apply the tactic sequence `first | rfl | simp`.
+-/
 theorem psiFin_add (z w : Af F) : psiFin F (z + w) = psiFin F z * psiFin F w := by
   unfold psiFin
   rw [map_add, neg_add, AddCircle.toCircle_add]
   first | rfl | simp
 
+/- English proof (translation)
+Establish `h0` using `(exists_psiF F).choose_spec.1 z hz`. Use `first`. Consider the case `simp [psiFin, h0, AddCircle.toCircle_zero]`. Consider the case `simp [psiFin, h0]`.
+-/
 theorem psiFin_int (z : Af F) (hz : z ∈ Formalism.UG.intAd F) : psiFin F z = 1 := by
   have h0 := (exists_psiF F).choose_spec.1 z hz
   first
     | simp [psiFin, h0, AddCircle.toCircle_zero]
     | simp [psiFin, h0]
 
+/- English proof (translation)
+The claim follows from `psiFin_int F 0 (Formalism.UG.intAd F).zero_mem`.
+-/
 theorem psiFin_zero : psiFin F 0 = 1 := psiFin_int F 0 (Formalism.UG.intAd F).zero_mem
 
+/- English proof (translation)
+Establish `h` using `(exists_psiF F).choose_spec.2 a`. Unfold `psiFin`. Rewrite using `[h, ← AddCircle.coe_neg, AddCircle.toCircle_apply_mk, Circle.coe_exp]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psiFin_alg (a : F) :
     psiFin F (algebraMap F (Af F) a) = Complex.exp (-(2 * Real.pi * Complex.I * ((trR F a : ℝ) : ℂ))) := by
   have h := (exists_psiF F).choose_spec.2 a
@@ -160,6 +220,11 @@ theorem psiFin_alg (a : F) :
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `psiFin`. Use `first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`. Consider the case `exact mem_sphere_zero_iff_norm.mp (AddCircle.toCircle _).2`.
+
+Consider the case `simp [Circle.norm_coe]`.
+-/
 theorem norm_psiFin (z : Af F) : ‖psiFin F z‖ = 1 := by
   unfold psiFin
   first
@@ -168,6 +233,13 @@ theorem norm_psiFin (z : Af F) : ‖psiFin F z‖ = 1 := by
     | exact mem_sphere_zero_iff_norm.mp (AddCircle.toCircle _).2
     | simp [Circle.norm_coe]
 
+/- English proof (translation)
+Establish `hU : IsOpen ((Formalism.UG.intAd F : Set (Af F)))` using `by first`. Consider the case `exact RestrictedProduct.isOpen_forall_mem (fun v => IsDedekindDomain.HeightOneSpectrum.isOpen_adicCompletionIntegers F v)`. Consider the case `exact RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_integer _)`. Establish `hf : Continuous ((exists_psiF F).choose)`. Use `continuous_of_continuousAt_zero _ ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousAt, map_zero]`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds (Formalism.UG.intAd F).zero_mem] with z hz`. Conclude with `(exists_psiF F).choose_spec.1 z hz`. Establish `hc : Continuous (fun z : Af F => AddCircle.toCircle (-((exists_psiF F).choose z)))` using `AddCircle.continuous_toCircle.comp hf.neg`.
+
+Unfold `psiFin`. Use `first`. Consider the case `exact continuous_subtype_val.comp hc`. Consider the case `exact Circle.continuous_coe.comp hc`. Consider the case `fun_prop`.
+-/
 theorem continuous_psiFin : Continuous (psiFin F) := by
   have hU : IsOpen ((Formalism.UG.intAd F : Set (Af F))) := by
     first
@@ -197,8 +269,14 @@ def psiStd : AddChar (AF F) ℂ where
     rw [psiA_add, psiFin_add]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiStd_apply (x : AF F) : psiStd F x = psiA F x.1 * psiFin F x.2 := rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact InfinitePlace.Completion.extensionEmbedding_coe w a`. Consider the case `simp [InfinitePlace.Completion.extensionEmbedding_coe]`. Consider the case `rfl`.
+-/
 theorem ext_alg (w : InfinitePlace F) (a : F) :
     InfinitePlace.Completion.extensionEmbedding w ((algebraMap F (Ainf F) a) w) = w.embedding a := by
   first
@@ -206,6 +284,21 @@ theorem ext_alg (w : InfinitePlace F) (a : F) :
     | simp [InfinitePlace.Completion.extensionEmbedding_coe]
     | rfl
 
+/- English proof (translation)
+Establish `hfun : (⇑(psiStd F) : AF F → ℂ) = fun x => psiA F x.1 * psiFin F x.2` using `funext (psiStd_apply F)`. Establish `hnA : ∀ y, ‖psiA F y‖ = 1` using `fun y => by unfold psiA; exact norm_exp_real _`. Establish `h3 : ∀ a : F, psiA F (algebraMap F (Ainf F) a) = Complex.exp (2 * Real.pi * Complex.I * ((trR F a : ℝ) : ℂ))`. Introduce `a`. Simplify using `only [psiA, ext_alg]`.
+
+Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `((continuous_psiA F).comp continuous_fst).mul ((continuous_psiFin F).comp continuous_snd)`. Introduce `x`.
+
+Rewrite using `[psiStd_apply, norm_mul, hnA, norm_psiFin, one_mul]`. Introduce `a`. Rewrite using `[psiStd_apply]`. Establish `h1 : (algebraMap F (AF F) a).1 = algebraMap F (Ainf F) a` using `rfl`. Establish `h2 : (algebraMap F (AF F) a).2 = algebraMap F (Af F) a` using `rfl`.
+
+Rewrite using `[h1, h2, psiFin_alg, h3, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Use `set q : ℚ := 1 / (2 * (Fintype.card (InfinitePlace F) : ℚ)) with hqdef`. Use `⟨pairA F (algebraMap F (Ainf F) ((q : ℚ) : F)) 0, ?_⟩` and prove the remaining obligations. Use `show psiA F (algebraMap F (Ainf F) ((q : ℚ) : F)) * psiFin F 0 ≠ 1`.
+
+Rewrite using `[psiFin_zero, mul_one, h3]`. Establish `hN : (Fintype.card (InfinitePlace F) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `hq : trR F ((q : ℚ) : F) = 1 / 2` using `by show (∑ w : InfinitePlace F, (w.embedding ((q : ℚ) : F)).re) = 1 / 2`. Simplify using `only [map_ratCast, Complex.ratCast_re, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[hqdef]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hq]`. Establish `he : (2 * Real.pi * Complex.I * (((1 / 2 : ℝ)) : ℂ)) = Real.pi * Complex.I`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+-/
 theorem psiStd_isChar : IsCharAF F (psiStd F) := by
   have hfun : (⇑(psiStd F) : AF F → ℂ) = fun x => psiA F x.1 * psiFin F x.2 := funext (psiStd_apply F)
   have hnA : ∀ y, ‖psiA F y‖ = 1 := fun y => by unfold psiA; exact norm_exp_real _
@@ -247,6 +340,11 @@ end Formalism.L2.SG.Pf.StdChar
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+Introduce `F _ _ hF`. Use `haveI := hF`. Use `⟨StdChar.psiStd F, StdChar.psiStd_isChar F, fun x => ?_⟩` and prove the remaining obligations. Use `show StdChar.psiA F x * StdChar.psiFin F 0 = _`. Rewrite using `[StdChar.psiFin_zero, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem standard_character_exists : Formalism.L2.SG.Pf.MeasCore.StdCharExists := by
   intro F _ _ hF
   haveI := hF

@@ -10,5 +10,8 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.Cover.φ_eq_fnMap | exact GlobalTheory.Mean4O.Cover.φ_eq_fnMap | (intros; apply GlobalTheory.Mean4O.Cover.φ_eq_fnMap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cover_function_field_map_eq : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y), ∃ hη : V.π (genericPoint V.G) ⤳ genericPoint Y.X, V.φ = GlobalTheory.TrueGeo.SmallSec.fnMap V.π hη := by
   first | exact @GlobalTheory.Mean4O.Cover.φ_eq_fnMap | exact GlobalTheory.Mean4O.Cover.φ_eq_fnMap | (intros; apply GlobalTheory.Mean4O.Cover.φ_eq_fnMap <;> assumption)

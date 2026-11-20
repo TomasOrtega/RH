@@ -14,14 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+The claim follows from `((VS D).herm.eq x y).symm`.
+-/
 theorem h_symm (x y : (VS D).V) : (VS D).hT y x = star ((VS D).hT x y) := ((VS D).herm.eq x y).symm
 
+/- English proof (translation)
+Rewrite using `[h_symm, X.ef b a]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (Ne.symm h), star_zero]`.
+-/
 theorem h_fe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if a = b then 1 else 0 := by
   rw [h_symm, X.ef b a]
   by_cases h : b = a
   · subst h; simp
   · rw [if_neg h, if_neg (Ne.symm h), star_zero]
 
+/- English proof (translation)
+Introduce `c`. Unfold `pW`. Simplify using `only [map_sub, map_sum, map_smul, smul_eq_mul, X.ee, X.ef, h_fe, X.ff, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero, sub_zero]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+
+Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+-/
 theorem inW_pW (y : (VS D).V) : InW X (pW X y) := by
   intro c
   unfold pW
@@ -31,11 +42,17 @@ theorem inW_pW (y : (VS D).V) : InW X (pW X y) := by
   · simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
   · simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
 
+/- English proof (translation)
+Unfold `pW`. Normalize the expressions using the abelian group laws.
+-/
 theorem decomp (y : (VS D).V) :
     y = ∑ c, (VS D).hT (X.fY c) y • X.eX c + ∑ c, (VS D).hT (X.eX c) y • X.fY c + pW X y := by
   unfold pW
   abel
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h_symm, (hw a).1, star_zero]`. Rewrite using `[h_symm, (hw a).2, star_zero]`.
+-/
 theorem inW_left {w : (VS D).V} (hw : InW X w) (a : Fin D.R.rS) :
     (VS D).hT w (X.eX a) = 0 ∧ (VS D).hT w (X.fY a) = 0 := by
   refine ⟨?_, ?_⟩

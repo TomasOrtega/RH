@@ -20,6 +20,9 @@ def kForm (D : Datum H) (ε : ℤˣ) (x y : D.La) : OK H :=
 
 def IsPosSign (D : Datum H) (ε : ℤˣ) : Prop := ∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_ne (0 : D.La)`. Establish `h₁` using `h x hx`. Establish `h₂` using `h' x hx`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> rcases Int.units_eq_one_or ε' with rfl | rfl <;> first | rfl | (simp at h₁ h₂; omega)`.
+-/
 theorem IsPosSign.unique {D : Datum H} [Nontrivial D.La] {ε ε' : ℤˣ} (h : IsPosSign D ε) (h' : IsPosSign D ε') :
     ε = ε' := by
   obtain ⟨x, hx⟩ := exists_ne (0 : D.La)

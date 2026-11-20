@@ -14,6 +14,15 @@ namespace GlobalTheory.Mem.WtHomog
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' generalizing e with`. Consider the case `monomial u a`. Establish `h : (aeval (fun v => C (c v) * X v) (monomial u a) : MvPolynomial σ K) = monomial u ((u.prod fun v k => c v ^ k) * a)`. Rewrite using `[aeval_monomial]`. Simplify using `only [mul_pow, Finsupp.prod_mul, ← map_pow]`.
+
+Rewrite using `[show (u.prod fun v k => (C (c v ^ k) : MvPolynomial σ K)) = C (u.prod fun v k => c v ^ k) from (map_finsuppProd C _ _).symm]`. Rewrite using `[show (u.prod fun v k => (X v : MvPolynomial σ K) ^ k) = monomial u 1 from (monomial_eq (s := u) (a := (1 : K))).symm ▸ by simp]`. Rewrite using `[algebraMap_eq, ← mul_assoc, ← C_mul, C_mul_monomial]`. Simplify using `[mul_comm]`. Rewrite using `[h, coeff_monomial, coeff_monomial]`.
+
+Distinguish the cases in `hue : u = e`. Substitute `hue` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hue]`. Consider the case `add p q hp hq`.
+
+Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_aeval_diag {K : Type} [Field K] {σ : Type} (c : σ → K) (Q : MvPolynomial σ K)
     (e : σ →₀ ℕ) :
     MvPolynomial.coeff e (aeval (fun v => C (c v) * X v) Q : MvPolynomial σ K)
@@ -38,6 +47,25 @@ theorem coeff_aeval_diag {K : Type} [Field K] {σ : Type} (c : σ → K) (Q : Mv
   | add p q hp hq =>
     rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
+/- English proof (translation)
+Introduce `K _ _ ι _ n ν Q hQ e he τ`. Use `set c : ι → K := fun σ => if σ = τ then 2 else 1 with hc`. Use `set β : ι → Matrix (Fin n) (Fin n) K := fun σ => c σ • (1 : Matrix (Fin n) (Fin n) K) with hβ`. Establish `hc0 : ∀ σ, c σ ≠ 0`. Apply the tactic sequence `intro σ; simp only [hc]; split_ifs <;> norm_num`.
+
+Establish `hbor : IsBor β`. Introduce `σ`. Use `⟨fun r s hsr => ?_, fun r => ?_⟩` and prove the remaining obligations. Simplify using `[hβ, Matrix.one_apply, (ne_of_lt hsr).symm]`. Simplify `hc0 σ` using `[hβ]`.
+
+Establish `hsub : colSub β = aeval (fun v : ι × Fin n × Fin n => C (c v.1) * X v)`. Unfold `colSub`. Use `congr 1`. Use function extensionality and compare the values at `v`. Take `⟨σ, α, s⟩` from `v`.
+
+Simplify using `only [hβ, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+
+Simplify using the standard rewrite rules. Establish `hw` using `hQ β hbor`. Rewrite `hw` using `[hsub]`. Establish `hcoef` using `congrArg (MvPolynomial.coeff e) hw`. Rewrite `hcoef` using `[coeff_aeval_diag, coeff_smul]`.
+
+Establish `hne : MvPolynomial.coeff e Q ≠ 0` using `mem_support_iff.mp he`. Establish `hL : (e.prod fun v k => c v.1 ^ k) = (2 : K) ^ (∑ α, ∑ s, e (τ, α, s))`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type, Finset.prod_eq_single τ]`. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [hc, if_true, Finset.prod_pow_eq_pow_sum]`.
+
+Introduce `σ _ hσ`. Simplify using `[hc, hσ]`. Simplify using the standard rewrite rules. Establish `hR : (∏ σ, ∏ r, β σ r r ^ ν σ r) = (2 : K) ^ (∑ r, ν τ r)`. Rewrite using `[Finset.prod_eq_single τ]`.
+
+Simplify using `[hβ, hc, Finset.prod_pow_eq_pow_sum]`. Introduce `σ _ hσ`. Simplify using `[hβ, hc, hσ]`. Simplify using the standard rewrite rules. Rewrite `hcoef` using `[hL, hR, smul_eq_mul]`.
+
+Establish `heq` using `mul_right_cancel₀ hne hcoef`. Establish `h2 : ((2 : ℕ) ^ (∑ α, ∑ s, e (τ, α, s))) = (2 : ℕ) ^ (∑ r, ν τ r)`. Conclude with `heq` after adjusting the coercions. Conclude with `Nat.pow_right_injective (le_refl 2) h2`.
+-/
 theorem deg_eq_of_mem_wtPol : ∀ {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ} (ν : ι → Fin n → ℕ)
     (Q : MvPolynomial (ι × Fin n × Fin n) K) (hQ : Q ∈ WtPol K ν), ∀ e ∈ Q.support, ∀ τ, ∑ α, ∑ s, e (τ, α, s) = ∑ r, ν τ r := by
   intro K _ _ ι _ n ν Q hQ e he τ

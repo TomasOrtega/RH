@@ -13,6 +13,11 @@ namespace GlobalTheory.ThK.DescB.NextStep
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨t, m, hm, ht⟩` from `hlevi`. Use function extensionality and compare the values at `h`. Use `show T h = 0`. Assume the negation of the conclusion as `hne`. Establish `e1` using `ha t m hm h`.
+
+Establish `e2` using `hb t m hm h`. Establish `e : (χa t : ℂ) * (((absE F E t : ℝ) ^ za : ℝ) : ℂ) = (χb t : ℂ) * (((absE F E t : ℝ) ^ zb : ℝ) : ℂ)` using `mul_right_cancel₀ hne (e1.symm.trans e2)`. Establish `n` using `congrArg norm e`. Rewrite `n` using `[norm_mul, norm_mul, Circle.norm_coe, Circle.norm_coe, one_mul, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _), abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Conclude with `(Real.rpow_lt_rpow_of_exponent_lt ht hz).ne n`.
+-/
 theorem eq_zero_of_two_laws {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {χa χb : Chr F E}
     {za zb : ℝ} (hz : za < zb)
     (hlevi : ∃ (t : (AE F E)ˣ) (m : UA σ W.J), IsLevi (W₁ := W₁) H t 1 m ∧ 1 < (absE F E t : ℝ))
@@ -31,6 +36,11 @@ theorem eq_zero_of_two_laws {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁}
     abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)] at n
   exact (Real.rpow_lt_rpow_of_exponent_lt ht hz).ne n
 
+/- English proof (translation)
+Introduce `k l`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσ, Finset.sum_mul]`. Simplify using `only [hJ]`. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem skew_gram (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (ι : Matrix (Fin n) (Fin n₁) E) :
     ∀ k l, σ ((ιᵀ * J * ι.map σ) l k) = -(ιᵀ * J * ι.map σ) k l := by
@@ -52,6 +62,27 @@ open GlobalTheory.LeviLine Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `set c : AE F E →+* AE F E := (cA σ : AE F E →ₐ[AF F] AE F E).toRingHom with hcdef`. Establish `hc : ∀ r, c (c r) = r` using `cA_invol hcm`. Establish `hJ : ∀ i j, c (incM F Y.J j i) = -incM F Y.J i j`. Introduce `i j`. Express the relevant statement in the definitionally equal form `cA σ (inclR (F := F) (AF F) (Y.J j i)) = -inclR (F := F) (AF F) (Y.J i j)`.
+
+Rewrite using `[cA_inclR, hskew i j, map_neg]`. Establish `hxx : sf c (incM F Y.J) (incV F H.x) (incV F H.x) = 0` using `by rw [sf_inc, hxx', map_zero]`. Establish `hyy : sf c (incM F Y.J) (incV F H.y) (incV F H.y) = 0` using `by rw [sf_inc, hyy', map_zero]`. Establish `hxy : sf c (incM F Y.J) (incV F H.x) (incV F H.y) = 1` using `by rw [sf_inc, hxy', map_one]`. Establish `hyx : sf c (incM F Y.J) (incV F H.y) (incV F H.x) = -1` using `by rw [sf_skew c _ hc hJ, hxy, map_one]`.
+
+Use `set t : (AE F E)ˣ := (GlobalTheory.Eis.Conv.halfE F E)⁻¹ with htdef`. Establish `hts : (t : AE F E) * c (c (↑t⁻¹ : AE F E)) = 1` using `by rw [hc, Units.mul_inv]`. Establish `hst : c (↑t⁻¹ : AE F E) * c (t : AE F E) = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Set `L` to `levi c (incM F Y.J) (incV F H.x) (incV F H.y)`. Set `g : GL (Fin n) (AE F E)` to `⟨L t (c ↑t⁻¹), L ↑t⁻¹ (c t), by`.
+
+Rewrite using `[levi_mul hc hJ hxx hyy hxy, Units.mul_inv, ← map_mul, Units.inv_mul, map_one, levi_one],`. Use `by rw [levi_mul hc hJ hxx hyy hxy, Units.inv_mul, ← map_mul, Units.mul_inv, map_one, levi_one]⟩`. Establish `hg : g ∈ UG (cA σ) (incM F Y.J)` using `levi_unitary hc hJ hxx hyy hxy hts hst`. Use `⟨t, ⟨g, hg⟩, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) *ᵥ incV F H.x = _`.
+
+Rewrite using `[levi_mulVec, hxx, hxy]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) *ᵥ incV F H.y = c ↑t⁻¹ • incV F H.y`.
+
+Rewrite using `[levi_mulVec, hyy, hyx]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `L t (c ↑t⁻¹) * incM F H.ι = incM F H.ι * (1 : Matrix (Fin n₁) (Fin n₁) (AE F E))`.
+
+Rewrite using `[Matrix.mul_one]`. Use `ext_mulVec_single fun k => ?_` and prove the remaining obligations. Establish `hcol : incM F H.ι *ᵥ Pi.single k 1 = incV F (H.ι *ᵥ Pi.single k 1)`. Use extensionality with `i`. Simplify using `[mulVec_single_one, incM, incV]`.
+
+Rewrite using `[← mulVec_mulVec, hcol]`. Conclude with `levi_mulVec_of_orth _ _ _ _ (by rw [sf_inc, (horth _).1, map_zero]) (by rw [sf_inc, (horth _).2, map_zero])`. Establish `h1` using `GlobalTheory.Eis.Conv.absE_halfE F E σ hcm`. Establish `h2 : absE F E t * absE F E (GlobalTheory.Eis.Conv.halfE F E) = 1`. Rewrite using `[← map_mul, htdef, inv_mul_cancel, map_one]`.
+
+Rewrite `h2` using `[h1]`. Establish `h3 : absE F E t = (4 : ℝ≥0) ^ Fintype.card (InfinitePlace F)`. Rewrite using `[← mul_one (absE F E t), ← inv_mul_cancel₀ (pow_ne_zero _ (by norm_num : (4 : ℝ≥0) ≠ 0)), ← mul_assoc, h2, one_mul]`. Rewrite using `[h3]`. Establish `hpos : 0 < Fintype.card (InfinitePlace F)` using `Fintype.card_pos`.
+
+Use `push_cast`. Conclude with `one_lt_pow₀ (by norm_num) hpos.ne'`.
+-/
 theorem exists_levi_of {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁} (hcm : IsCMExt F E σ)
     (hskew : ∀ i j, σ (Y.J j i) = -Y.J i j) (hxx' : form σ Y.J H.x H.x = 0) (hyy' : form σ Y.J H.y H.y = 0)
     (hxy' : form σ Y.J H.x H.y = 1)
@@ -106,6 +137,11 @@ theorem exists_levi_of {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H :
     push_cast
     exact one_lt_pow₀ (by norm_num) hpos.ne'
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Rewrite using `[← hH.gram]`.
+
+Conclude with `skew_gram hσ hW H'.ι`. Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[← (hiso j (by omega)).2.2.2.2.2.1]`. Conclude with `skew_gram hσ (ih (by omega)) (pl j).ι`.
+-/
 theorem skew_sp (hσ : ∀ x, σ (σ x) = x) (B : Base F E) {d d₁ p : ℕ} {W : Spc F E d} (hW : ∀ i j, σ (W.J j i) = -W.J i j)
     {H' : Plane E d d₁} {i₀ i₁ : ℕ} {sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j)}
     {pl : ∀ j : ℕ, Plane E (d₁ - 2 * j) (d₁ - 2 * (j + 1))} (hH : H'.IsAdapted σ B W (sp 0) i₀ i₁)

@@ -3,6 +3,21 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hK` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal V) (maximalIdeal.isMaximal V).ne_top`. Establish `hex : ∃ n : ℕ, v ∉ Ideal.span {T ^ n}`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hv` to reduce the goal to its premises.
+
+Establish `: v ∈ ⨅ n : ℕ, maximalIdeal V ^ n`. Rewrite using `[Ideal.mem_iInf]`. Introduce `n`. Rewrite using `[hm, Ideal.span_singleton_pow]`. Conclude with `h n`.
+
+Rewrite `this` using `[hK]`. Conclude with `(Ideal.mem_bot).mp this`. Establish `hn₀ : v ∉ Ideal.span {T ^ Nat.find hex}` using `Nat.find_spec hex`. Establish `hpos : Nat.find hex ≠ 0`. Introduce `h0`.
+
+Apply `hn₀` to reduce the goal to its premises. Rewrite using `[h0, pow_zero, Ideal.span_singleton_one]`. Conclude with `Submodule.mem_top`. Take `⟨a, ha⟩` from `Nat.exists_eq_succ_of_ne_zero hpos`. Establish `hmem : v ∈ Ideal.span {T ^ a}`.
+
+Use `Nat.find_min hex (show a < Nat.find hex by omega)` as an intermediate fact. Conclude with `not_not.mp this`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨a, c, ?_, by rw [← hc, mul_comm]⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcu`.
+
+Establish `hcm : c ∈ maximalIdeal V`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hcu`. Rewrite `hcm` using `[hm]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp hcm`.
+
+Apply `hn₀` to reduce the goal to its premises. Rewrite using `[ha, Ideal.mem_span_singleton']`. Conclude with `⟨d, by rw [← hc, ← hd, pow_succ]; ring⟩`.
+-/
 theorem eq_pow_mul_unit_of_maximalIdeal_eq_span {V : Type} [CommRing V] [IsLocalRing V]
     [IsNoetherianRing V] (T : V) (hm : maximalIdeal V = Ideal.span {T}) (v : V) (hv : v ≠ 0) :
     ∃ (a : ℕ) (c : V), IsUnit c ∧ v = T ^ a * c := by
@@ -40,6 +55,29 @@ theorem eq_pow_mul_unit_of_maximalIdeal_eq_span {V : Type} [CommRing V] [IsLocal
   rw [ha, Ideal.mem_span_singleton']
   exact ⟨d, by rw [← hc, ← hd, pow_succ]; ring⟩
 
+/- English proof (translation)
+Establish `cancel : ∀ (n : ℕ) (y : W), φ T ^ n * y = 0 → y = 0` using `fun n y h => (mul_left_mem_nonZeroDivisors_eq_zero_iff (pow_mem hTn n)).mp h`. Establish `surj : ∀ w : W, ∃ v : V, φ v = w`. Introduce `w`. Take `⟨x, z, hz, hzw⟩` from `hfrac w`. Establish `hz0 : z ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hz` using `[map_zero]`. Establish `h1 : (1 : W) = 0` using `(mul_left_mem_nonZeroDivisors_eq_zero_iff hz).mp (zero_mul 1)`. Conclude with `one_ne_zero h1`. Distinguish the cases in `hx : x = 0`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite `hzw` using `[hx, map_zero]`. Rewrite using `[map_zero, eq_comm]`. Conclude with `(mul_left_mem_nonZeroDivisors_eq_zero_iff hz).mp hzw`. Take `⟨a, α, hα, rfl⟩` from `eq_pow_mul_unit_of_maximalIdeal_eq_span T hm x hx`.
+
+Take `⟨c, β, hβ, rfl⟩` from `eq_pow_mul_unit_of_maximalIdeal_eq_span T hm z hz0`. Take `⟨βi, hβi⟩` from `hβ.exists_right_inv`. Simplify using `only [map_mul, map_pow] at hzw`. Break down `le_or_gt c a with h | h` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`.
+
+Use `⟨βi * T ^ d * α, ?_⟩` and prove the remaining obligations. Establish `h1 : φ β * w = φ T ^ d * φ α`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `cancel c` to reduce the goal to its premises. Take the linear combination `hzw`.
+
+Establish `h2 : φ βi * φ β = 1` using `by rw [← map_mul, mul_comm, hβi, map_one]`. Combine the equalities or inequalities in the displayed calculation. It suffices to derive a contradiction. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt h`. Establish `h1 : φ T ^ (d + 1) * φ β * w = φ α`.
+
+Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `cancel a` to reduce the goal to its premises. Take the linear combination `hzw`. Establish `hmem : φ T ^ (d + 1) * φ β * w ∈ maximalIdeal W`. Rewrite using `[mul_assoc]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hTm _ (Nat.succ_pos d))`. Rewrite `hmem` using `[h1, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hmem (hα.map φ)`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hw`. Take `⟨v, rfl⟩` from `surj w`. Establish `hv : v ∈ maximalIdeal V`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Rewrite `hw` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hw (hu.map φ)`. Rewrite `hv` using `[hm]`. Take `⟨v', rfl⟩` from `Ideal.mem_span_singleton'.mp hv`. Rewrite using `[map_mul, Ideal.mem_span_singleton']`.
+
+Conclude with `⟨φ v', rfl⟩`. Introduce `hw`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.mp hw`. Conclude with `Ideal.mul_mem_left _ _ hTm`.
+-/
 theorem maximalIdeal_eq_span_map_of_fractions (V W : Type) [CommRing V] [IsLocalRing V]
     [IsNoetherianRing V] [CommRing W] [IsLocalRing W] (φ : V →+* W) (T : V)
     (hm : IsLocalRing.maximalIdeal V = Ideal.span {T})
@@ -105,6 +143,9 @@ theorem maximalIdeal_eq_span_map_of_fractions (V W : Type) [CommRing V] [IsLocal
     obtain ⟨u, rfl⟩ := Ideal.mem_span_singleton'.mp hw
     exact Ideal.mul_mem_left _ _ hTm
 
+/- English proof (translation)
+The claim follows from `maximalIdeal_eq_span_map_of_fractions`.
+-/
 example : ∀ (V W : Type) [CommRing V] [IsLocalRing V] [IsNoetherianRing V] [CommRing W] [IsLocalRing W] (φ : V →+* W) (T : V), IsLocalRing.maximalIdeal V = Ideal.span {T} → φ T ∈ IsLocalRing.maximalIdeal W → φ T ∈ nonZeroDivisors W → (∀ w : W, ∃ x z : V, φ z ∈ nonZeroDivisors W ∧ φ z * w = φ x) → IsLocalRing.maximalIdeal W = Ideal.span {φ T} :=
   maximalIdeal_eq_span_map_of_fractions
 

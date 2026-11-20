@@ -4,5 +4,8 @@ import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
 import Formalism.GaloisCohomology.LocalTateDualityK
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ratIso_of_localTateDuality | exact GlobalTheory.ratIso_of_localTateDuality | (intros; apply GlobalTheory.ratIso_of_localTateDuality <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationalLocalDuality_of_localTateDuality : Formalism.GaloisCohomology.LocalTateDualityK → ReciprocityTheory.ChartRestriction.T2.RatIso := by
   first | exact @GlobalTheory.ratIso_of_localTateDuality | exact GlobalTheory.ratIso_of_localTateDuality | (intros; apply GlobalTheory.ratIso_of_localTateDuality <;> assumption)

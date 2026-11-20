@@ -18,6 +18,9 @@ namespace GlobalTheory.CompanionTheory.LocalSignInert
 section Gram
 variable {K : Type} [Field K] (σ : K →+* K) {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hform, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_mul_right (H M : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
     hform σ (H * M) x y = hform σ H x (M *ᵥ y) := by
   simp only [hform, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]
@@ -26,6 +29,11 @@ theorem hform_mul_right (H M : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hform, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_sum_smul {ι : Type} [Fintype ι] (H : Matrix (Fin n) (Fin n) K) (x : Fin n → K)
     (c : ι → K) (f : ι → Fin n → K) :
     hform σ H x (∑ l, c l • f l) = ∑ l, hform σ H x (f l) * c l := by
@@ -40,10 +48,20 @@ theorem hform_sum_smul {ι : Type} [Fintype ι] (H : Matrix (Fin n) (Fin n) K) (
 def restr (M : Matrix (Fin n) (Fin n) K) (V : Submodule K (Fin n → K)) (hM : ∀ y ∈ V, M *ᵥ y ∈ V) : V →ₗ[K] V :=
   (Matrix.toLin' M).restrict fun y hy => by rw [Matrix.toLin'_apply]; exact hM y hy
 
+/- English proof (translation)
+Simplify using `[restr, Matrix.toLin'_apply]`.
+-/
 theorem restr_coe (M : Matrix (Fin n) (Fin n) K) (V : Submodule K (Fin n → K)) (hM : ∀ y ∈ V, M *ᵥ y ∈ V) (y : V) :
     (restr M V hM y : Fin n → K) = M *ᵥ (y : Fin n → K) := by
   simp [restr, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Use `set b := Module.finBasis K V`. Establish `hmat : gramOn σ (H * M) V = gramOn σ H V * LinearMap.toMatrix b b (restr M V hM)`. Use extensionality with `i j`. Establish `hT : M *ᵥ (b j : Fin n → K) = ∑ l, (LinearMap.toMatrix b b (restr M V hM) l j) • (b l : Fin n → K)`. Rewrite using `[← restr_coe M V hM]`.
+
+Establish `h` using `b.sum_repr (restr M V hM (b j))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Use `_ = _ := by simp only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, LinearMap.toMatrix_apply]`. Simplify using `only [gramOn, Matrix.of_apply, Matrix.mul_apply]`.
+
+Rewrite using `[hform_mul_right, hT, hform_sum_smul]`. Rewrite using `[hmat, Matrix.det_mul, LinearMap.det_toMatrix]`.
+-/
 theorem det_gramOn_mul (H M : Matrix (Fin n) (Fin n) K) (V : Submodule K (Fin n → K))
     (hM : ∀ y ∈ V, M *ᵥ y ∈ V) :
     (gramOn σ (H * M) V).det = (gramOn σ H V).det * LinearMap.det (restr M V hM) := by
@@ -89,8 +107,14 @@ def vecT : k ⊗[maximalRealSubfield E] Fld Q →+ (Fin n → K) :=
       rw [e2, e1, map_smul, Pi.smul_apply, smul_eq_mul, map_mul]
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecT_tmul (a : k) (y : Fld Q) : vecT Q φ cm hc ψ (a ⊗ₜ y) = cm a • (φ ∘ ψ y) := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b y => rw [TensorProduct.smul_tmul', vecT_tmul, vecT_tmul, smul_eq_mul, map_mul, mul_smul]`. Consider the case `add s t hs ht => rw [smul_add, map_add, map_add, hs, ht, smul_add]`.
+-/
 theorem vecT_smul (a : k) (t : k ⊗[maximalRealSubfield E] Fld Q) :
     vecT Q φ cm hc ψ (a • t) = cm a • vecT Q φ cm hc ψ t := by
   induction t using TensorProduct.induction_on with
@@ -102,6 +126,13 @@ variable (j : K ≃+* k ⊗[maximalRealSubfield E] E) (hj : ∀ a e, j.symm (a �
   (A₀ : Matrix (Fin n) (Fin n) E) (hψ : ∀ y, ψ (alpha Q * y) = A₀ *ᵥ ψ y)
 
 include hj in
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, add_mul, map_add, ha, hb, map_add, add_smul]`. Consider the case `tmul a e`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add s t hs ht => rw [mul_add, map_add, hs, ht, map_add, smul_add]`. Consider the case `tmul b y`. Establish `e1 : inclBase Q k (a ⊗ₜ e) = a ⊗ₜ algebraMap E (Fld Q) e` using `rfl`. Rewrite using `[e1, Algebra.TensorProduct.tmul_mul_tmul, vecT_tmul, vecT_tmul, hj, ← Algebra.smul_def, map_smul]`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecT_inclBase (u : k ⊗[maximalRealSubfield E] E) (t : k ⊗[maximalRealSubfield E] Fld Q) :
     vecT Q φ cm hc ψ (inclBase Q k u * t) = j.symm u • vecT Q φ cm hc ψ t := by
   induction u using TensorProduct.induction_on with
@@ -119,6 +150,11 @@ theorem vecT_inclBase (u : k ⊗[maximalRealSubfield E] E) (t : k ⊗[maximalRea
       ring
 
 include hψ in
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => rw [mul_add, map_add, hs, ht, map_add, Matrix.mulVec_add]`. Consider the case `tmul b y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, vecT_tmul, vecT_tmul, hψ, Matrix.mulVec_smul]`.
+
+Use `congr 1`. Use extensionality with `i`. Conclude with `RingHom.map_mulVec φ A₀ (ψ y) i`.
+-/
 theorem vecT_alpha (t : k ⊗[maximalRealSubfield E] Fld Q) :
     vecT Q φ cm hc ψ (((1 : k) ⊗ₜ alpha Q) * t) = (A₀.map φ) *ᵥ vecT Q φ cm hc ψ t := by
   induction t using TensorProduct.induction_on with
@@ -132,6 +168,15 @@ theorem vecT_alpha (t : k ⊗[maximalRealSubfield E] Fld Q) :
 
 include hj hψ in
 
+/- English proof (translation)
+Proceed by induction on `m using Polynomial.induction_on with`. Consider the case `C a`. Introduce `t`. Establish `e1 : eval₂RingHom ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) (C a) = inclBase Q k (j a)` using `by simp`. Rewrite using `[e1, vecT_inclBase Q φ cm hc ψ j hj, aeval_C, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec, RingEquiv.symm_apply_apply]`.
+
+Consider the case `add p q hp hq`. Introduce `t`. Rewrite using `[map_add, add_mul, map_add, hp, hq, map_add, Matrix.add_mulVec]`. Consider the case `monomial d a ih`. Introduce `t`.
+
+Establish `e1 : (C a * X ^ (d + 1) : K[X]) = (C a * X ^ d) * X` using `by rw [pow_succ, mul_assoc]`. Establish `e2 : eval₂RingHom ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) X = (1 : k) ⊗ₜ alpha Q`. Simplify using the standard rewrite rules. Establish `e3 : eval₂RingHom ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) ((C a * X ^ d) * X) * t = eval₂RingHom ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) (C a * X ^ d) * (((1 : k) ⊗ₜ alpha Q) * t)`. Rewrite using `[RingHom.map_mul _ (C a * X ^ d) X, e2, mul_assoc]`.
+
+Establish `e4 : aeval (A₀.map φ) ((C a * X ^ d) * X) = aeval (A₀.map φ) (C a * X ^ d) * A₀.map φ`. Rewrite using `[map_mul (aeval (A₀.map φ)) (C a * X ^ d) X, aeval_X]`. Rewrite using `[e1, e3, ih, e4, ← Matrix.mulVec_mulVec, vecT_alpha Q φ cm hc ψ A₀ hψ]`.
+-/
 theorem vecT_eval (m : K[X]) : ∀ t : k ⊗[maximalRealSubfield E] Fld Q,
     vecT Q φ cm hc ψ (eval₂RingHom ((inclBase Q k).toRingHom.comp j.toRingHom) ((1 : k) ⊗ₜ alpha Q) m * t) =
       aeval (A₀.map φ) m *ᵥ vecT Q φ cm hc ψ t := by
@@ -158,6 +203,19 @@ theorem vecT_eval (m : K[X]) : ∀ t : k ⊗[maximalRealSubfield E] Fld Q,
       rw [map_mul (aeval (A₀.map φ)) (C a * X ^ d) X, aeval_X]
     rw [e1, e3, ih, e4, ← Matrix.mulVec_mulVec, vecT_alpha Q φ cm hc ψ A₀ hψ]
 
+/- English proof (translation)
+Set `bb : Module.Basis (Fin r) k (k ⊗[maximalRealSubfield E] plus Q)` to `Algebra.TensorProduct.basis k b`. Set `L` to `Algebra.leftMulMatrix bb x`. Establish `h1 : ∀ i, bb i = (1 : k) ⊗ₜ b i` using `fun i => Algebra.TensorProduct.basis_apply b i`. Establish `h2 : ∀ j, x * ((1 : k) ⊗ₜ b j) = ∑ i, L i j • ((1 : k) ⊗ₜ[maximalRealSubfield E] b i)`. Introduce `j`.
+
+Simplify using `only [L, Algebra.leftMulMatrix_eq_repr_mul, ← h1]`. Conclude with `(bb.sum_repr _).symm`. Establish `h3 : ∀ i, inclPlus Q k ((1 : k) ⊗ₜ b i) = (1 : k) ⊗ₜ B i` using `fun i => by`. Rewrite using `[hB]`. Both sides reduce to the same expression.
+
+Establish `h4 : ∀ j, inclPlus Q k x * ((1 : k) ⊗ₜ B j) = ∑ i, L i j • ((1 : k) ⊗ₜ[maximalRealSubfield E] B i)`. Introduce `j`. Rewrite using `[← h3, ← map_mul, h2, map_sum]`. Simplify using `only [map_smul, h3]`. Establish `h5 : ∀ i, vecT Q φ cm hc ψ ((1 : k) ⊗ₜ B i) = (cB i : Fin n → K)`.
+
+Introduce `i`. Rewrite using `[vecT_tmul, map_one, one_smul, hcB]`. Establish `h6 : ∀ j, M *ᵥ (cB j : Fin n → K) = ∑ i, cm (L i j) • (cB i : Fin n → K)`. Introduce `j`. Rewrite using `[← h5, ← hMx, h4, map_sum]`.
+
+Simplify using `only [vecT_smul, h5]`. Establish `h7 : LinearMap.toMatrix cB cB (restr M V hM) = L.map cm`. Use extensionality with `i j`. Establish `e : restr M V hM (cB j) = ∑ l, cm (L l j) • cB l` using `Subtype.ext (by`. Rewrite using `[restr_coe, h6]`.
+
+Use the proof step `simp)`. Rewrite using `[LinearMap.toMatrix_apply, e, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression. Rewrite using `[← LinearMap.det_toMatrix cB, h7, Algebra.norm_eq_matrix_det bb, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_restr_eq (b : Module.Basis (Fin r) (maximalRealSubfield E) (plus Q)) (B : Module.Basis (Fin r) E (Fld Q))
     (hB : ∀ i, B i = b i) (V : Submodule K (Fin n → K)) (cB : Module.Basis (Fin r) K V)
     (hcB : ∀ i, (cB i : Fin n → K) = φ ∘ ψ (B i)) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ y ∈ V, M *ᵥ y ∈ V)
@@ -198,6 +256,35 @@ end Core
 section Psi
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (Q : SelfRecip E r)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `GlobalTheory.CompanionTheory.TorusCh.CyclicVector.exists_cyclic_vector E n A hs`. Establish `hann : ∀ h : E[X], aeval A h *ᵥ v = 0 → A.charpoly ∣ h`. Introduce `h hh`. Use `GlobalTheory.ClassParam.charpoly_dvd_of_aeval A hs h ?_` and prove the remaining obligations. Establish `h1 : ∀ y, aeval A h *ᵥ y = 0`.
+
+Introduce `y`. Take `⟨g, rfl⟩` from `hv y`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_comm, map_mul, ← Matrix.mulVec_mulVec, hh, Matrix.mulVec_zero]`. Establish `h2 : Matrix.toLin' (aeval A h) = 0` using `LinearMap.ext fun y => by`. Rewrite using `[Matrix.toLin'_apply, h1 y]`.
+
+Both sides reduce to the same expression. Conclude with `Matrix.toLin'.injective (by rw [h2, map_zero])`. Take `⟨R, hR⟩` from `hQ`. Establish `hP0 : A.charpoly ≠ 0` using `(Matrix.charpoly_monic A).ne_zero`. Establish `hQ0 : Q.1 ≠ 0` using `fun h => hP0 (by rw [hR, h, zero_mul])`.
+
+Establish `hR0 : R ≠ 0` using `fun h => hP0 (by rw [hR, h, mul_zero])`. Take `⟨e₀, he₀⟩ : ∃ e : Fin n → E, e = aeval A R *ᵥ v` from `⟨_, rfl⟩`. Establish `hkill : ∀ u : E[X], aeval A (Q.1 * u) *ᵥ e₀ = 0`. Introduce `u`. Rewrite using `[he₀, Matrix.mulVec_mulVec, ← map_mul, show Q.1 * u * R = u * (Q.1 * R) by ring, ← hR, map_mul, Matrix.aeval_self_charpoly, mul_zero, Matrix.zero_mulVec]`.
+
+Establish `hmk : ∀ g g' : E[X], AdjoinRoot.mk Q.1 g = AdjoinRoot.mk Q.1 g' → aeval A g *ᵥ e₀ = aeval A g' *ᵥ e₀`. Introduce `g g' h`. Take `⟨u, hu⟩ : Q.1 ∣ g - g'` from `AdjoinRoot.mk_eq_mk.1 h`. Establish `h1` using `hkill u`. Rewrite `h1` using `[← hu, map_sub, Matrix.sub_mulVec, sub_eq_zero]`.
+
+Conclude with `h1`. Set `rep : Fld Q → E[X]` to `fun y => (AdjoinRoot.mk_surjective (g := Q.1) y).choose`. Establish `hrep : ∀ y : Fld Q, AdjoinRoot.mk Q.1 (rep y) = y` using `fun y => (AdjoinRoot.mk_surjective (g := Q.1) y).choose_spec`. Establish `hsm : ∀ (c : E) (g : E[X]), AdjoinRoot.mk Q.1 (c • g) = (c • (AdjoinRoot.mk Q.1 g : Fld Q) : Fld Q)`. Introduce `c g`.
+
+Rewrite using `[Polynomial.smul_eq_C_mul, map_mul, AdjoinRoot.mk_C, Algebra.smul_def]`. Both sides reduce to the same expression. Set `ψ : Fld Q →ₗ[E] (Fin n → E)` to `{ toFun := fun y => aeval A (rep y) *ᵥ e₀ map_add' := fun y y' => by`. Rewrite using `[← Matrix.add_mulVec, ← map_add]`. Use `hmk _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_add, hrep, hrep, hrep]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c y => by`. Rewrite using `[RingHom.id_apply, ← Matrix.smul_mulVec, ← map_smul]`. Use `hmk _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hsm, hrep, hrep]`. Use `rfl }`. Establish `hψ : ∀ g : E[X], ψ (AdjoinRoot.mk Q.1 g) = aeval A g *ᵥ e₀` using `fun g => hmk _ _ (hrep _)`. Use `⟨ψ, (injective_iff_map_eq_zero _).2 fun y hy => ?_, fun y => ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective (g := Q.1) y`.
+
+Rewrite `hy` using `[hψ, he₀, Matrix.mulVec_mulVec, ← map_mul]`. Establish `h1 : A.charpoly ∣ g * R` using `hann _ hy`. Rewrite `h1` using `[hR]`. Conclude with `AdjoinRoot.mk_eq_zero.2 ((mul_dvd_mul_iff_right hR0).1 h1)`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective (g := Q.1) y`.
+
+Establish `h1 : ∀ z : Fld Q, z = AdjoinRoot.mk Q.1 g → alpha Q * z = AdjoinRoot.mk Q.1 (X * g)`. Introduce `z hz`. Rewrite using `[hz, map_mul, AdjoinRoot.mk_X]`. Both sides reduce to the same expression. Rewrite using `[h1 _ rfl, hψ, hψ, map_mul, aeval_X, ← Matrix.mulVec_mulVec]`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective (g := Q.1) z`. Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, hψ, Matrix.mulVec_mulVec, ← map_mul]`.
+
+Conclude with `hkill g`. Introduce `hy`. Take `⟨h, rfl⟩` from `hv y`. Rewrite `hy` using `[LinearMap.mem_ker, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← map_mul]`. Establish `h1 : A.charpoly ∣ Q.1 * h` using `hann _ hy`.
+
+Rewrite `h1` using `[hR]`. Take `⟨g, hg⟩` from `(mul_dvd_mul_iff_left hQ0).1 h1`. Use `⟨AdjoinRoot.mk Q.1 g, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, he₀, Matrix.mulVec_mulVec, ← map_mul, hg, mul_comm]`.
+-/
 theorem exists_psi {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (hs : A.charpoly.Separable) (hQ : Q.1 ∣ A.charpoly) :
     ∃ ψ : Fld Q →ₗ[E] (Fin n → E), Function.Injective ψ ∧ (∀ y, ψ (alpha Q * y) = A *ᵥ ψ y) ∧
       LinearMap.range ψ = LinearMap.ker (Matrix.toLin' (aeval A Q.1)) := by
@@ -274,6 +361,15 @@ theorem exists_psi {n : ℕ} (A : Matrix (Fin n) (Fin n) E) (hs : A.charpoly.Sep
       refine ⟨AdjoinRoot.mk Q.1 g, ?_⟩
       rw [hψ, he₀, Matrix.mulVec_mulVec, ← map_mul, hg, mul_comm]
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `haveI : FaithfulSMul E K := (faithfulSMul_iff_algebraMap_injective E K).2 φ.injective`. Use `set V' := LinearMap.ker (Matrix.toLin' (B₀.map φ)) with hV'`. Establish `hmem : ∀ i, φ ∘ ψ (B i) ∈ V'` using `fun i => GlobalTheory.UnitaryClasses.BaseChangeSign.mem_ker_map φ (hr ▸ LinearMap.mem_range_self ψ (B i))`. Establish `hfr : Module.finrank K V' = r`.
+
+Rewrite using `[hV', GlobalTheory.UnitaryClasses.BaseChangeSign.finrank_ker_map φ B₀, ← hr, LinearMap.finrank_range_of_inj hinj, finrank_fld]`. Establish `hr0 : 0 < r`. Establish `h1` using `Q.2.2.2.1`. Establish `h2` using `Irreducible.natDegree_pos Q.2.2.1`. Use linear arithmetic over natural numbers and integers.
+
+Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr0⟩⟩`. Set `u : Fin r → V'` to `fun i => ⟨φ ∘ ψ (B i), hmem i⟩`. Establish `hli : LinearIndependent K u`. Apply `LinearIndependent.of_comp V'.subtype` to reduce the goal to its premises. Establish `h0 : LinearIndependent E (fun i => ψ (B i))` using `B.linearIndependent.map' ψ (LinearMap.ker_eq_bot.2 hinj)`.
+
+Conclude with `linearIndependent_algebraMap_comp_iff.2 h0`. Set `c` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [hfr, Fintype.card_fin])`. Conclude with `⟨c, fun i => by simp [c, u]⟩`.
+-/
 theorem exists_basis_ker {K : Type} [Field K] (φ : E →+* K) {n : ℕ} (ψ : Fld Q →ₗ[E] (Fin n → E))
     (hinj : Function.Injective ψ) (B : Module.Basis (Fin r) E (Fld Q)) (B₀ : Matrix (Fin n) (Fin n) E)
     (hr : LinearMap.range ψ = LinearMap.ker (Matrix.toLin' B₀)) :
@@ -306,6 +402,11 @@ end Psi
 section Sign
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Rewrite using `[GlobalTheory.TotPosSign.eta_inert (GlobalTheory.TotPosSign.not_isSplit_under hw) (GlobalTheory.TotPosSign.isUnram_of_unr hU _), GlobalTheory.TotPosSign.neg_one_zpow_cast]`. Use `congr 1`. Use `GlobalTheory.TotPosSign.ordL_congr ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.LFun.valued_complMap (F := maximalRealSubfield E) (E := E) (w := w) rfl (a := (a : (w.under (𝓞 (maximalRealSubfield E))).adicCompletion (maximalRealSubfield E))) a.ne_zero`.
+
+Rewrite `e` using `[GlobalTheory.LFun.isUnram_iff.1 (GlobalTheory.TotPosSign.isUnram_of_unr hU _) w rfl, pow_one]`. Conclude with `e`.
+-/
 theorem sign_complMap (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (hv : w.under (𝓞 (maximalRealSubfield E)) = v) (a : (v.adicCompletion (maximalRealSubfield E))ˣ) :
     (-1 : ℂ) ^ ordL (GlobalTheory.LFun.complMap hv (a : v.adicCompletion (maximalRealSubfield E))) =
@@ -322,6 +423,23 @@ theorem sign_complMap (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightO
 
 end Sign
 
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw v hv n γ₀ hell H₀ _ _ _ hpos m r Q hQ x hx`. Establish `hsep : γ₀.val.charpoly.Separable` using `hell.2.2.1`. Take `⟨ψ, hinj, hαψ, hrange⟩` from `exists_psi Q γ₀.val hsep hQ`. Choose the witnesses or unpack the hypotheses as in `⟨θ, h0, hθ⟩ : ∃ θ : E, θ ≠ 0 ∧ IsCMField.complexConj E θ = -θ := by`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : E, IsCMField.complexConj E z ≠ z := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`. Conclude with `⟨z - IsCMField.complexConj E z, sub_ne_zero.mpr hz.symm, by simp⟩`. Take `⟨b, B, hB⟩` from `GlobalTheory.TraceClasses.exists_bases Q h0 hθ`.
+
+Establish `hcm : ∀ a : maximalRealSubfield E, GlobalTheory.LFun.complMap hv (algebraMap _ (v.adicCompletion (maximalRealSubfield E)) a) = algebraMap E (w.adicCompletion E) (algebraMap _ E a)` using `GlobalTheory.LFun.complMap_algebraMap hv`. Establish `hj : ∀ a e, (locJ hU w hw v hv).symm (a ⊗ₜ e) = GlobalTheory.LFun.complMap hv a * algebraMap E (w.adicCompletion E) e` using `fun a e => GlobalTheory.LFun.toCompl_tmul hv a e`. Establish `hval` using `aeval_map_mat w γ₀.val Q.1`. Unfold `sgnOn`. Rewrite using `[hval]`.
+
+Use `set A := γ₀.val.map (algebraMap E (w.adicCompletion E)) with hA`. Use `set V := LinearMap.ker (Matrix.toLin' ((aeval γ₀.val Q.1).map (algebraMap E (w.adicCompletion E)))) with hV`. Take `⟨cB, hcB⟩` from `exists_basis_ker Q (algebraMap E (w.adicCompletion E)) ψ hinj B (aeval γ₀.val Q.1) hrange`. Establish `hM : ∀ y ∈ V, aeval A m *ᵥ y ∈ V`. Introduce `y hy`.
+
+Rewrite `hy`, the goal using `[hV, LinearMap.mem_ker, Matrix.toLin'_apply]`. Rewrite `hy`, the goal using `[← hval]`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_comm, map_mul, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_zero]`. Establish `hdet : LinearMap.det (restr (aeval A m) V hM) = GlobalTheory.LFun.complMap hv (Algebra.norm (v.adicCompletion (maximalRealSubfield E)) (x : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] plus Q))`. Use `det_restr_eq Q (algebraMap E (w.adicCompletion E)) (GlobalTheory.LFun.complMap hv) hcm ψ b B hB V cB hcB (aeval A m) hM _ fun t => ?_` and prove the remaining obligations.
+
+Rewrite using `[hx]`. Conclude with `vecT_eval Q (algebraMap E (w.adicCompletion E)) (GlobalTheory.LFun.complMap hv) hcm ψ (locJ hU w hw v hv) hj γ₀.val hαψ m t`. Establish `hφ : ∀ y : E, cj w (algebraMap E (w.adicCompletion E) y) = algebraMap E (w.adicCompletion E) ((IsCMField.complexConj E).toRingEquiv.toRingHom y)` using `fun y => ((GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hw).1 y`. Take `⟨t, ht, hg⟩` from `GlobalTheory.UnitaryClasses.BaseChangeSign.gram_det_map (IsCMField.complexConj E).toRingEquiv.toRingHom (cj w) (algebraMap E (w.adicCompletion E)) hφ H₀ (aeval γ₀.val Q.1)`. Establish `hd0` using `(gramOn_det_totallyPositive_of_posDef H₀ hpos (LinearMap.ker (Matrix.toLin' (aeval γ₀.val Q.1)))).1`.
+
+Establish `hg0 : (gramOn (cj w) (H₀.map (algebraMap E (w.adicCompletion E))) V).det ≠ 0`. Rewrite using `[hV, hg]`. Conclude with `mul_ne_zero (mul_ne_zero ((_root_.map_ne_zero _).2 ht) ((_root_.map_ne_zero _).2 hd0)) ht`. Establish `hs` using `sign_complMap hU w hw v hv (Units.map (Algebra.norm (v.adicCompletion (maximalRealSubfield E)) : (v.adicCompletion (maximalRealSubfield E)) ⊗[maximalRealSubfield E] plus Q →* (v.adicCompletion (maximalRealSubfield E))) x)`. Establish `hn0 : GlobalTheory.LFun.complMap hv (Algebra.norm (v.adicCompletion (maximalRealSubfield E)) (x : v.adicCompletion (maximalRealSubfield E) ⊗[maximalRealSubfield E] plus Q)) ≠ 0` using `(_root_.map_ne_zero _).2 (Units.ne_zero (Units.map (Algebra.norm (v.adicCompletion (maximalRealSubfield E)) : (v.adicCompletion (maximalRealSubfield E)) ⊗[maximalRealSubfield E] plus Q →* (v.adicCompletion (maximalRealSubfield E))) x))`.
+
+Rewrite using `[det_gramOn_mul (cj w) _ (aeval A m) V hM, hdet, GlobalTheory.UnitaryClasses.BaseChangeSign.ordL_mul hg0 hn0, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), mul_comm, ← hs]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : w.under (𝓞 (maximalRealSubfield E)) = v), ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H₀ : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H₀ * γ₀.val = H₀ → (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H₀.map τ = cT (starRingEnd ℂ) Q * Q) → ∀ (m : (w.adicCompletion E)[X]) (r : ℕ) (Q : SelfRecip E r), Q.1 ∣ γ₀.val.charpoly → ∀ x : ((v.adicCompletion (maximalRealSubfield E)) ⊗[(maximalRealSubfield E)] plus Q)ˣ, inclPlus Q (v.adicCompletion (maximalRealSubfield E)) (x : (v.adicCompletion (maximalRealSubfield E)) ⊗[(maximalRealSubfield E)] plus Q) = locPhi hU w hw v hv Q m → sgnOn (cj w) ((H₀.map (algebraMap E (w.adicCompletion E))) * aeval (γ₀.val.map (algebraMap E (w.adicCompletion E))) m) (atPl w Q.1) (γ₀.val.map (algebraMap E (w.adicCompletion E))) = ((GlobalTheory.QuadSymbol.eta (maximalRealSubfield E) E (v.adicCompletion (maximalRealSubfield E)) (Units.map (Algebra.norm (v.adicCompletion (maximalRealSubfield E)) : (v.adicCompletion (maximalRealSubfield E)) ⊗[(maximalRealSubfield E)] plus Q →* (v.adicCompletion (maximalRealSubfield E))) x) : ℤ) : ℂ) * sgnOn (cj w) (H₀.map (algebraMap E (w.adicCompletion E))) (atPl w Q.1) (γ₀.val.map (algebraMap E (w.adicCompletion E))) := by
   intro E _ _ _ hU w hw v hv n γ₀ hell H₀ _ _ _ hpos m r Q hQ x hx
   have hsep : γ₀.val.charpoly.Separable := hell.2.2.1

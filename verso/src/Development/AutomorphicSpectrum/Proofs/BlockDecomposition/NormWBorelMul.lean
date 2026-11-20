@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.MajIwaK
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hb` using `Reduction.mem_adelicBorel.1 hβ`. Establish `z10 : (β : Matrix (Fin 3) (Fin 3) 𝔸[K]) 1 0 = 0` using `hb (by decide : (0 : Fin 3) < 1)`. Establish `z20 : (β : Matrix (Fin 3) (Fin 3) 𝔸[K]) 2 0 = 0` using `hb (by decide : (0 : Fin 3) < 2)`. Establish `z21 : (β : Matrix (Fin 3) (Fin 3) 𝔸[K]) 2 1 = 0` using `hb (by decide : (1 : Fin 3) < 2)`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni, dg, Matrix.mul_apply, Fin.sum_univ_three, h1, h2, h3, z10, z20, z21, mul_assoc]`.
+-/
 theorem eq_uni_mul_dg (β : Ad3.K.G3K K) (hβ : β ∈ (Reduction.adelicBorel : Subgroup (Ad3.K.G3K K)))
     (t1 t2 t3 : (𝔸[K])ˣ) (h1 : (β : Matrix (Fin 3) (Fin 3) 𝔸[K]) 0 0 = t1)
     (h2 : (β : Matrix (Fin 3) (Fin 3) 𝔸[K]) 1 1 = t2)
@@ -27,6 +32,11 @@ theorem eq_uni_mul_dg (β : Ad3.K.G3K K) (hβ : β ∈ (Reduction.adelicBorel : 
   fin_cases i <;> fin_cases j <;>
     simp [uni, dg, Matrix.mul_apply, Fin.sum_univ_three, h1, h2, h3, z10, z20, z21, mul_assoc]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e0 : t1 * t2⁻¹ * (t2 * t3⁻¹) = t1 * t3⁻¹` using `by group`. Establish `e1 : ((t3 : 𝔸[K])) * ((t1 * t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = t1`. Rewrite using `[← Units.val_mul, mul_comm t1, mul_inv_cancel_left]`. Establish `e2 : ((t3 : 𝔸[K])) * ((t2 * t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = t2`.
+
+Rewrite using `[← Units.val_mul, mul_comm t2, mul_inv_cancel_left]`. Rewrite using `[e0]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dg, Matrix.mul_apply, Fin.sum_univ_three, -Units.val_mul, e1, e2]`.
+-/
 theorem dg_eq_scalar_mul (t1 t2 t3 : (𝔸[K])ˣ) :
     (dg t1 t2 t3 : Ad3.K.G3K K) = dg t3 t3 t3 * dg (t1 * t2⁻¹ * (t2 * t3⁻¹)) (t2 * t3⁻¹) 1 := by
   apply Units.ext
@@ -40,6 +50,9 @@ theorem dg_eq_scalar_mul (t1 t2 t3 : (𝔸[K])ˣ) :
   fin_cases i <;> fin_cases j <;>
     simp [dg, Matrix.mul_apply, Fin.sum_univ_three, -Units.val_mul, e1, e2]
 
+/- English proof (translation)
+Introduce `K _ _ V hV W hW β hβ t1 t2 t3 h1 h2 h3 k`. Rewrite using `[eq_uni_mul_dg β hβ t1 t2 t3 h1 h2 h3, mul_assoc, hV.psi W hW, norm_mul, Circle.norm_coe, one_mul, dg_eq_scalar_mul t1 t2 t3, mul_assoc, hV.cen W hW]`.
+-/
 theorem norm_W_borel_mul : ∀ (K : Type) [Field K] [NumberField K] (V : Submodule ℂ (Ad3.K.G3K K → ℂ)),
     Ad3.K.WhAK V → ∀ W ∈ V,
     ∀ β ∈ (Reduction.adelicBorel : Subgroup (Ad3.K.G3K K)), ∀ t1 t2 t3 : (𝔸[K])ˣ,

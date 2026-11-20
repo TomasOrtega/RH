@@ -21,6 +21,21 @@ namespace GlobalTheory.BigOn
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hi` using `i.2`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `h1` using `(inR_succ i).1`. Establish `h2` using `(inR_succ i).2`. Establish `hs : ∀ τ, (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1)` using `fun τ => D.sp.W_sigval _ h1 h2 _`.
+
+Establish `hp : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hq : i + 1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.m`. Simplify using `only [Ranks.sigW]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `eP : w.aP = (kaR Tp hK ((i : ℕ) + 1)).aP`. Use function extensionality and compare the values at `τ a`. Establish `h` using `(hK _ h1 h2 τ).1 a`. Establish `h'` using `GlobalTheory.RecordWeightVec.aPl_eq_aPlusQ D i τ a (hp ▸ a.2)`.
+
+Establish `e` using `kaWt_big D hK (even_nV Tp) _ h1 h2 τ a`. Rewrite `h'` using `[← h, ← hp, ← e]`. Rewrite using `[hP τ a, hs τ]`. Conclude with `h'` after adjusting the coercions. Establish `eM : w.aM = (kaR Tp hK ((i : ℕ) + 1)).aM`.
+
+Use function extensionality and compare the values at `τ c`. Establish `h` using `(hK _ h1 h2 τ).2 (Fin.rev c)`. Establish `hc` using `c.2`. Establish `h'` using `GlobalTheory.RecordWeightVec.aMi_eq_aMinusQ D i τ _ c (Fin.rev c) hq (by rw [Fin.val_rev]; omega)`. Establish `e` using `kaWt_small D hK (even_nV Tp) _ h1 h2 τ c`.
+
+Rewrite `h'` using `[← hp, ← neg_neg (DV.aMinusQ _ _ _ _), ← h, ← Int.cast_neg, ← e]`. Rewrite using `[hM τ c, hs τ]`. Conclude with `h'` after adjusting the coercions. Establish `en : w.n = (kaR Tp hK ((i : ℕ) + 1)).n` using `hn.trans (kaWt_n _ _ _ _).symm`. Generalize the expression as in `kaR Tp hK ((i : ℕ) + 1) = u at eP eM en`.
+
+Consider the cases of `w`. Consider the cases of `u`. Simplify using `only at eP eM en`. Substitute `eP eM en` using the available equality. Both sides reduce to the same expression.
+-/
 theorem eq_kaR {D : D7} {L : SizeData₂ D} {Pm : ParameterChoice' D L} (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (i : Fin D.R.m)
     (w : WeightFamilies.Wt D ((i : ℕ) + 1))
     (hP : ∀ τ (k : Fin (D.R.sigW ((i : ℕ) + 1)).1), w.aP τ k = aPl D i ((Wc D i).sig (tauE D τ)).1 τ k)
@@ -60,6 +75,19 @@ theorem eq_kaR {D : D7} {L : SizeData₂ D} {Pm : ParameterChoice' D L} (Tp : Pa
   subst eP eM en
   rfl
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A J inst R F κ v₀ fw L Pm Tp hK EX r c _ hE ok`. Take `⟨v₁, -⟩` from `exists_place3 D.what₂.LL`. Establish `hc : LawsCore J.toCore` using `(ok.laws v₁).p.toLawsCore`. Establish `hinj : Function.Injective D.what₂.OtoLL` using `fun x y hxy => by`. Take `⟨x, rfl⟩` from `J.Q.eO.surjective x`.
+
+Take `⟨y, rfl⟩` from `J.Q.eO.surjective y`. Rewrite `hxy` using `[← fw.alg_eq, ← fw.alg_eq]`. Conclude with `congrArg _ (RingOfIntegers.ext ((algebraMap J.Q.c.F D.what₂.LL).injective hxy))`. Establish `hκ : ∀ i : Fin D.R.m, κ i = kaR Tp hK ((i : ℕ) + 1)` using `fun i => eq_kaR Tp hK i (κ i) (fun τ => (fw.kap i τ).1) (fun τ => (fw.kap i τ).2.1) (fw.kap i (plOf D (false, Classical.arbitrary _))).2.2`. Use `choose ρ hρ using fun i : Fin D.R.m => ActionPin.exists_rep (T := (r.used v₁).full) (inst := inst) (R := R) (ok.action v₁ i) (mirIncl R)`.
+
+Take `⟨O, z, act, y, ht⟩` from `exists_tiedObj (F := F) (fw := fw) (hc := hc) (run := r.used) (h := fun v => (ok.laws v).p) (hinj := hinj) (EX := EX) (p := ownAt D) (wL := fun _ i => lR Tp hK ((i : ℕ) + 1)) (wF := fun _ i => fR Tp hK ((i : ℕ) + 1)) (nT := Tp.TO) (ℓ := r.lev) (ph := fun _ => 1) (c := c) (mirIncl …`. Use `letI st : StarRing (𝓞 D.host.E) := J.Q.H.starRing`. Use `letI := hostAlg D`. Use `letI : ∀ s : GlobalTheory.RealIndexBound.RunData J, Algebra s.full.J.Q.c.F D.what₂.LL := fun _ => inst`. Establish `hφ : ∀ x : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.what₂.LL x = algebraMap J.Q.c.F D.what₂.LL ((iE D hinj (recB hc) x : 𝓞 J.Q.c.F) : J.Q.c.F)` using `fun x => by`.
+
+Use `Eq.trans ?_ (fw.alg_eq _).symm` and prove the remaining obligations. Use `(oEOsFun_spec D x).symm.trans (congrArg D.what₂.OtoLL ?_)` and prove the remaining obligations. Conclude with `(J.Q.eO.apply_symm_apply _).symm`. Establish `hσ : ∀ v (i : Fin D.R.m), O.σ v i = sigAt (Dw` using `J.Q.Dw ((i : ℕ) + 1)) (H := J.Q.H) (LL := D.what₂.LL) (depOf J.toCore EX Tp hK) ((i : ℕ) + 1) := fun v i => by`. Use `letI : Algebra (recB (ok.laws v).p.toLawsCore).KO D.what₂.LL := inst`.
+
+Use `(ht v i).1.toFormTieK.σ_eq.trans ?_` and prove the remaining obligations. Rewrite using `[hκ i]`. Conclude with `(GlobalTheory.ScalarOfRun.sigAt_eq_sigRec D L Pm Tp hK (r.used v).full.toTop (ok.laws v).p hinj EX _ (inR_succ i) hE D.what₂.LL (algebraMap J.Q.c.F D.what₂.LL) hφ).symm`. Use `⟨{ O with E := fun v (j : Fin D.R.m) => EAt (Xo := J.Q.Xo ((j : ℕ) + 1)) (c := J.Q.c) (LL := D.what₂.LL) (depOf J.toCore EX Tp hK) v ((j : ℕ) + 1) nnK := fun j : Fin D.R.m => nnKAt (H := J.Q.H) (LL := D.what₂.LL) (depOf J.toCore EX Tp hK) ((j : ℕ) + 1) T := (Tp.TO : ℝ) g1 := D.ho …` and prove the remaining obligations. Use `⟨fun j => inR_succ j, fun _ => rfl, fun a => ?_, fun _ _ => rfl, hσ, fun _ => rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `show star (D.embE (a : D.host.E)) = D.embE ((J.toCore.Q.H.bar a : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[bar_core, barE_eq_conj, D.embE_conj]`. Conclude with `Nat.cast_le.2 (Finset.le_sup (f := fun j : Fin D.R.m => WeightAlgebra.DF (lR Tp hK ((j : ℕ) + 1))) (Finset.mem_univ j))`.
+-/
 theorem exists_isRec : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (J : CoreJ D) [Algebra J.Q.c.F D.what₂.LL] (R : RealDat D A J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie J R κ v₀) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (EX : ErrX D) (r : TwoRuns J G) (c : OnConst), J.Q.Canon → HalfEX J.toCore EX → RunsOk fw r → ∃ O : OnObj ((R.toCx F).data F.cr false) (Mir R) c, IsRec Tp hK EX F fw r O := by
   intro D G _ _ Pl0 T0 A J inst R F κ v₀ fw L Pm Tp hK EX r c _ hE ok
   obtain ⟨v₁, -⟩ := exists_place3 D.what₂.LL

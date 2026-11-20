@@ -25,6 +25,25 @@ noncomputable section
 namespace GlobalTheory.PoinBase
 open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsAdmissibleConst)
 
+/- English proof (translation)
+Introduce `D A N j S κ s x σ _`. Use `isProper_genStr s.T.Z` as an intermediate fact. Use `letI : MeasurableSpace (CxPts (genStr s.T.Z) σ) := borel _`. Use `haveI : BorelSpace (CxPts (genStr s.T.Z) σ) := ⟨rfl⟩`. Take `⟨Λ, sg, hB, hn⟩` from `GlobalTheory.T.boundary_data_toroidal_section D A N j S κ s x σ`.
+
+Take `⟨α, hα, hαp⟩` from `GlobalTheory.T.exists_positive_potential_compact D A N j S κ s x σ`. Take `⟨cs, hcs, -, hS, hall, hmod⟩` from `GlobalTheory.T.poincare_form_statement _ _ (manifold s.T.Z σ).finAtlas α hα hαp _ Λ sg _ hB`. Take `⟨K, hK⟩` from `GlobalTheory.T.potentials_bounded_by_positive _ _ (manifold s.T.Z σ).finAtlas α x.m Λ hα hαp (fun i => (hB i).1)`. Establish `hKs : 0 ≤ ∑ i, K i` using `Finset.sum_nonneg fun i _ => (hK i).1`. Use `set t := min cs (Real.exp 1 / (2 * (∑ i, K i + 1))) with ht`.
+
+Establish `ht0 : 0 < t` using `lt_min hcs (by positivity)`. Establish `htc : t ≤ cs` using `min_le_left _ _`. Take `⟨hPot, hT, hG, -⟩` from `hall t ht0 htc`. Establish `hns : ∀ i y, normSec (Λ i) (sg i) y = x.nrm σ i y` using `fun i y => hn i y`. Establish `hadm : t * ∑ i, K i ≤ Real.exp 1 / 2`.
+
+Establish `h1 : t ≤ Real.exp 1 / (2 * (∑ i, K i + 1))` using `min_le_right _ _`. Establish `h2 : t * ∑ i, K i ≤ Real.exp 1 / (2 * (∑ i, K i + 1)) * ∑ i, K i` using `mul_le_mul_of_nonneg_right h1 hKs`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_le_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[Real.exp_pos 1]`.
+
+Establish `hadm' : IsAdmissibleConst (manifold s.T.Z σ).finAtlas α Λ t` using `⟨ht0, K, hK, hadm⟩`. Establish `hset : IsBoundarySetting (manifold s.T.Z σ).finAtlas α Λ sg t` using `⟨hα, hαp, fun i => ⟨(hB i).1, (hB i).2.1, GlobalTheory.T.boundary_section_diagonal_interior_empty _ _ _ _ _ _ _ hB i, fun y => (hB i).2.2.2 y⟩, hadm'⟩`. Take `⟨C, hC⟩` from `GlobalTheory.T.boundary_setting_of_positive_potential D A N j S κ s x σ α Λ sg t hα hαp hB hn ht0 hS hPot hT hG fun ψ σ' h => by`. Take `⟨ρ, h1, h2, h3, h4⟩` from `hmod ψ σ' h`. Conclude with `⟨ρ, h1, h2, h3, h4 t ht0 htc⟩`.
+
+Use `⟨α, Λ, sg, t, C, hset, hns, fun i => GlobalTheory.T.divisor_norm_continuous _ _ _ (x.nrm_div σ i), ?_, hC⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [boundary, Set.mem_ofPred_eq, GlobalTheory.ShFam.Hor.Inner, not_not]`. Express the relevant statement in the definitionally equal form `(∃ i, sg i y y = 0) ↔ LiesIn y (genBd s.T.Z)`. Rewrite using `[x.liesIn_genBd_iff]`.
+
+Use `exists_congr fun i => ?_` and prove the remaining obligations. Establish `e` using `hns i y`. Simplify using `only [normSec] at e`. Rewrite using `[← ((x.nrm_div σ i).pos_iff y).not_left, not_lt, ← e]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Introduce `h0`. Establish `h1 : ‖sg i y y‖ * Real.exp (-(Λ i).φ y y) = 0` using `le_antisymm h0 (mul_nonneg (norm_nonneg _) (Real.exp_pos _).le)`.
+
+Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `norm_eq_zero.1 h`. Conclude with `absurd h (Real.exp_pos _).ne'`.
+-/
 theorem poincare_curvBound : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)], ∃ (α : LocPot (CxPts (genStr s.T.Z) σ)) (Λ : Fin x.m → LocPot (CxPts (genStr s.T.Z) σ)) (sg : Fin x.m → CxPts (genStr s.T.Z) σ → CxPts (genStr s.T.Z) σ → ℂ) (t C : ℝ), IsBoundarySetting (manifold s.T.Z σ).finAtlas α Λ sg t ∧ (∀ i y, normSec (Λ i) (sg i) y = x.nrm σ i y) ∧ (∀ i, Continuous (x.nrm σ i)) ∧ boundary sg = {y | ¬ Inner y} ∧ CurvBound x σ (poincarePot α Λ sg t) C := by
   intro D A N j S κ s x σ _
   have := isProper_genStr s.T.Z

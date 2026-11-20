@@ -10,6 +10,11 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X Z f hf x hx`. Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `w hw`. Establish `h : x ⤳ w` using `specializes_iff_mem_closure.mpr hw`. Establish `e : f w = f x` using `(h.map f.continuous).mem_closed hx rfl`.
+
+Establish `hd` using `(f.isDiscrete_preimage_singleton (f x)).to_subtype`. Establish `hs : (⟨x, rfl⟩ : f ⁻¹' {f x}) ⤳ ⟨w, e⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.mp h`. Conclude with `congrArg Subtype.val hs.eq.symm`.
+-/
 theorem isClosed_singleton_of_isFinite : ∀ (X Z : Scheme.{0}) (f : X ⟶ Z), IsFinite f → ∀ x : X,
     IsClosed ({f x} : Set Z) → IsClosed ({x} : Set X) := by
   intro X Z f hf x hx

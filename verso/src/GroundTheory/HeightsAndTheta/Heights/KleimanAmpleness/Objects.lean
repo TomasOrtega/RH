@@ -22,13 +22,24 @@ variable {S N}
 def monos (I : Finset (Fin (N + 1))) : Submonoid (Poly S N) :=
   Submonoid.closure ((fun i => (X i : Poly S N)) '' (I : Set (Fin (N + 1))))
 
+/- English proof (translation)
+The claim follows from `Submonoid.closure_mono (Set.image_mono (by exact_mod_cast h))`.
+-/
 theorem monos_mono {I J : Finset (Fin (N + 1))} (h : I ⊆ J) : monos (S := S) I ≤ monos J :=
   Submonoid.closure_mono (Set.image_mono (by exact_mod_cast h))
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure ⟨i, by exact_mod_cast hi, rfl⟩`.
+-/
 theorem X_mem_monos {I : Finset (Fin (N + 1))} {i : Fin (N + 1)} (hi : i ∈ I) :
     (X i : Poly S N) ∈ monos I :=
   Submonoid.subset_closure ⟨i, by exact_mod_cast hi, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, -, rfl⟩` from `hx`. Conclude with `⟨1, isHomogeneous_X S i⟩`. Consider the case `one => exact ⟨0, isHomogeneous_one _ _⟩`.
+
+Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, ha.mul hb⟩`.
+-/
 theorem monos_isHomogeneous {I : Finset (Fin (N + 1))} {s : Poly S N} (hs : s ∈ monos I) :
     ∃ e : ℕ, s.IsHomogeneous e := by
   induction hs using Submonoid.closure_induction with
@@ -79,6 +90,9 @@ instance (I : Finset (Fin (N + 1))) : IsScalarTower S (Poly S N) (LocMod S N M I
 def locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) : LocMod S N M I →ₗ[Poly S N] LocMod S N M J :=
   LocalizedModule.liftOfLE (monos I) (monos J) (monos_mono h)
 
+/- English proof (translation)
+Rewrite using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.mk_eq_mk']`. Conclude with `IsLocalizedModule.liftOfLE_mk' (monos (S := S) I) (monos J) (monos_mono h) (LocalizedModule.mkLinearMap (monos (S := S) I) M) (LocalizedModule.mkLinearMap (monos J) M) m s`.
+-/
 theorem locRes_mk {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (m : M) (s : monos (S := S) I) :
     locRes (M := M) h (LocalizedModule.mk m s : LocalizedModule (monos (S := S) I) M) =
       (LocalizedModule.mk m ⟨(s : Poly S N), monos_mono h s.2⟩ : LocalizedModule (monos J) M) := by
@@ -103,6 +117,9 @@ def face {i : ℕ} (J : Idx U (i + 1)) (j : J.1.1) : Idx U i :=
     change (J.1.1.erase j).card = i + 1
     rw [Finset.card_erase_of_mem j.2, J.2]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `Finset.erase_subset _ _`.
+-/
 theorem face_subset {i : ℕ} (J : Idx U (i + 1)) (j : J.1.1) : (face J j).1.1 ⊆ J.1.1 :=
   Finset.erase_subset _ _
 
@@ -158,6 +175,19 @@ namespace Cech
 
 variable {n : ℕ} {U : Finset (Fin n)}
 
+/- English proof (translation)
+Take `⟨a, b, hab, rfl⟩` from `Finset.card_eq_two.mp hJ`. Rewrite using `[Finset.sum_pair hab]`. Break down `hab.lt_or_gt with h | h` into its components or cases. Establish `h1 : ({a, b} : Finset (Fin n)).filter (· < a) = ∅`. Use extensionality with `z`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, iff_false, not_and]`. Apply the tactic sequence `rintro (rfl | rfl) <;> omega`. Establish `h2 : ({a, b} : Finset (Fin n)).filter (· < b) = {a}`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨rfl | rfl, hz⟩ <;> [rfl; omega]`. Introduce and unpack `rfl`. Conclude with `⟨Or.inl rfl, h⟩`. Simplify using `[sgn, h1, h2]`.
+
+Establish `h1 : ({a, b} : Finset (Fin n)).filter (· < b) = ∅`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton, Finset.notMem_empty, iff_false, not_and]`. Apply the tactic sequence `rintro (rfl | rfl) <;> omega`. Establish `h2 : ({a, b} : Finset (Fin n)).filter (· < a) = {b}`.
+
+Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨rfl | rfl, hz⟩ <;> [omega; rfl]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨Or.inr rfl, h⟩`. Simplify using `[sgn, h1, h2]`.
+-/
 theorem sum_sgn_of_card_two {J : Finset (Fin n)} (hJ : J.card = 2) : ∑ j ∈ J, sgn J j = 0 := by
   obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp hJ
   rw [Finset.sum_pair hab]
@@ -186,6 +216,9 @@ theorem sum_sgn_of_card_two {J : Finset (Fin n)} (hJ : J.card = 2) : ∑ j ∈ J
 variable {R : Type u} [CommRing R] {G : Cell U → Type v} [∀ I, AddCommGroup (G I)]
   [∀ I, Module R (G I)] {ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∑ j : J.1.1, sgn J.1.1 j • ((ρ (face J j).1 J.1 (face_subset J j)).comp (LinearMap.proj (R := R) (φ := fun I : Idx U i => G I.1) (face J j)))) s = _`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem d_apply (i : ℕ) (s : Cochain G i) (J : Idx U (i + 1)) :
     d G ρ i s J = ∑ j : J.1.1, sgn J.1.1 j • ρ (face J j).1 J.1 (face_subset J j) (s (face J j)) := by
   change (∑ j : J.1.1, sgn J.1.1 j • ((ρ (face J j).1 J.1 (face_subset J j)).comp
@@ -193,6 +226,11 @@ theorem d_apply (i : ℕ) (s : Cochain G i) (J : Idx U (i + 1)) :
   rw [LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Establish `key : ∀ j : J.1.1, ρ (face J j).1 J.1 (face_subset J j) (v (face J j).1) = v J.1` using `fun j => hv _ _ _`. Rewrite using `[d_apply]`. Simplify using `only [key]`. Rewrite using `[← Finset.sum_smul, Finset.sum_coe_sort J.1.1 (fun j => sgn J.1.1 j), sum_sgn_of_card_two J.2, zero_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem d_zero_of_compat (v : ∀ I, G I) (hv : ∀ I J h, ρ I J h (v I) = v J) :
     d G ρ 0 (fun I => v I.1) = 0 := by
   funext J
@@ -212,6 +250,11 @@ variable {G' : Cell U → Type w} [∀ I, AddCommGroup (G' I)] [∀ I, Module R 
 def mapC (φ : ∀ I, G I →ₗ[R] G' I) (i : ℕ) : Cochain G i →ₗ[R] Cochain G' i :=
   LinearMap.pi fun I : Idx U i => (φ I.1).comp (LinearMap.proj (R := R) (φ := fun I : Idx U i => G I.1) I)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Rewrite using `[d_apply]`. Express the relevant statement in the definitionally equal form `φ J.1 (d G ρ i s J) = _`. Rewrite using `[d_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, hφ]`. Both sides reduce to the same expression.
+-/
 theorem mapC_d (φ : ∀ I, G I →ₗ[R] G' I) (hφ : ∀ I J h m, φ J (ρ I J h m) = ρ' I J h (φ I m))
     (i : ℕ) (s : Cochain G i) : mapC φ (i + 1) (d G ρ i s) = d G' ρ' i (mapC φ i s) := by
   funext J
@@ -287,6 +330,11 @@ def locMk (I : Finset (Fin (N + 1))) : M →ₗ[Poly S N] LocMod S N M I :=
 def constCochain : M →ₗ[S] Cech.Cochain (locSys S N M) 0 :=
   LinearMap.pi fun I => (locMk M I.1.1).restrictScalars S
 
+/- English proof (translation)
+Use `⟨?_, fun I _ => Submodule.subset_span ⟨m, 1, c, 0, hm, isHomogeneous_one _ _, by simp, by rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cech.d _ locResS 0 (fun I => (LocalizedModule.mk m 1 : LocalizedModule _ M)) = 0`. Use `Cech.d_zero_of_compat (G := locSys S N M) (v := fun I => (LocalizedModule.mk m 1 : LocalizedModule (monos (S := S) I.1) M)) ?_` and prove the remaining obligations. Introduce `I J h`. Express the relevant statement in the definitionally equal form `locRes h _ = _`.
+
+Rewrite using `[locRes_mk]`. Both sides reduce to the same expression.
+-/
 theorem constCochain_mem (𝓜 : GradedPMod S N M) (c : ℤ) (m : M) (hm : m ∈ 𝓜.piece c) :
     constCochain m ∈ Cech.cocyDeg (locSys S N M) (degLoc 𝓜 c) locResS 0 := by
   refine ⟨?_, fun I _ => Submodule.subset_span ⟨m, 1, c, 0, hm, isHomogeneous_one _ _, by simp, by rfl⟩⟩
@@ -318,6 +366,9 @@ def locMap (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) :
   IsLocalizedModule.map (monos I) (LocalizedModule.mkLinearMap (monos (S := S) I) M)
     (LocalizedModule.mkLinearMap (monos (S := S) I) M') f
 
+/- English proof (translation)
+The claim follows from `IsLocalizedModule.map_LocalizedModules _ _ _ _`.
+-/
 theorem locMap_mk (f : M →ₗ[Poly S N] M') (I : Finset (Fin (N + 1))) (m : M) (s : monos (S := S) I) :
     locMap f I (LocalizedModule.mk m s : LocalizedModule (monos (S := S) I) M) =
       (LocalizedModule.mk (f m) s : LocalizedModule (monos (S := S) I) M') :=
@@ -350,6 +401,11 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω]
 def coneGen {σ : Type*} (y : σ → Ω) : MvPolynomial σ S →ₐ[S] Polynomial Ω :=
   aeval fun v => Polynomial.C (y v) * Polynomial.X
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ s.support, s i = d`.
+
+Use `hg (mem_support_iff.mp hs)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[coneGen, aeval_monomial, aeval_monomial, Polynomial.algebraMap_apply, map_mul]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_prod, map_pow]`. Rewrite using `[hdeg, mul_assoc]`.
+-/
 theorem coneGen_of_isHomogeneous {σ : Type*} (y : σ → Ω) {g : MvPolynomial σ S} {d : ℕ}
     (hg : g.IsHomogeneous d) : coneGen y g = Polynomial.C (aeval y g) * Polynomial.X ^ d := by
   classical
@@ -365,6 +421,11 @@ theorem coneGen_of_isHomogeneous {σ : Type*} (y : σ → Ω) {g : MvPolynomial 
     map_prod, map_pow]
   rw [hdeg, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[coneGen_of_isHomogeneous y (homogeneousComponent_isHomogeneous d g)]`. Distinguish the cases in `hd : d < g.totalDegree + 1`. Establish `hsum : coneGen y g = ∑ i ∈ Finset.range (g.totalDegree + 1), Polynomial.C (aeval y (homogeneousComponent i g)) * Polynomial.X ^ i` using `by conv_lhs => rw [← sum_homogeneousComponent g]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => coneGen_of_isHomogeneous y (homogeneousComponent_isHomogeneous i g)`.
+
+Establish `hc` using `congrArg (fun p => Polynomial.coeff p d) hsum`. Simplify using `only [hg, Polynomial.coeff_zero, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, Finset.sum_ite_eq, Finset.mem_range, hd, if_true] at hc`. Rewrite using `[← hc, map_zero, zero_mul]`. Rewrite using `[homogeneousComponent_eq_zero d g (by omega), map_zero, map_zero, zero_mul]`.
+-/
 theorem coneGen_homogeneousComponent {σ : Type*} (y : σ → Ω) {g : MvPolynomial σ S}
     (hg : coneGen y g = 0) (d : ℕ) : coneGen y (homogeneousComponent d g) = 0 := by
   classical
@@ -386,22 +447,39 @@ variable {N : ℕ} (x : Fin (N + 1) → Ω)
 
 def cone : Poly S N →ₐ[S] Polynomial Ω := ReciprocityTheory.ChartRestriction.G.Geo.coneMap S x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cone_eq : cone (S := S) x = coneGen x := rfl
 
 def coordRing : Subalgebra S (Polynomial Ω) := ReciprocityTheory.ChartRestriction.G.Geo.coneRing S x
 
 def primeOf : Ideal (Poly S N) := ReciprocityTheory.ChartRestriction.G.Geo.coordIdeal S x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem primeOf_eq : primeOf (S := S) x = RingHom.ker (cone (S := S) x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordRing_eq : coordRing (S := S) x = (cone (S := S) x).range := rfl
 
 instance : (primeOf (S := S) x).IsPrime := by rw [primeOf_eq]; exact RingHom.ker_isPrime _
 
+/- English proof (translation)
+The claim follows from `coneGen_of_isHomogeneous x hf`.
+-/
 theorem cone_of_isHomogeneous {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) :
     cone x f = Polynomial.C (aeval x f) * Polynomial.X ^ d :=
   coneGen_of_isHomogeneous x hf
 
+/- English proof (translation)
+Rewrite using `[primeOf_eq, RingHom.mem_ker, cone_of_isHomogeneous x hf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (fun p => Polynomial.coeff p d) h` as an intermediate fact. Simplify `this` using `only [Polynomial.coeff_C_mul_X_pow, if_true, Polynomial.coeff_zero]`.
+
+Introduce `h`. Rewrite using `[h, map_zero, zero_mul]`.
+-/
 theorem mem_primeOf_of_isHomogeneous {f : Poly S N} {d : ℕ} (hf : f.IsHomogeneous d) :
     f ∈ primeOf x ↔ aeval x f = 0 := by
   rw [primeOf_eq, RingHom.mem_ker, cone_of_isHomogeneous x hf]
@@ -411,6 +489,9 @@ theorem mem_primeOf_of_isHomogeneous {f : Poly S N} {d : ℕ} (hf : f.IsHomogene
     simpa only [Polynomial.coeff_C_mul_X_pow, if_true, Polynomial.coeff_zero] using this
   · intro h; rw [h, map_zero, zero_mul]
 
+/- English proof (translation)
+The claim follows from `coneGen_homogeneousComponent x hf d`.
+-/
 theorem homogeneousComponent_mem_primeOf {f : Poly S N} (hf : f ∈ primeOf x) (d : ℕ) :
     homogeneousComponent d f ∈ primeOf x :=
   coneGen_homogeneousComponent x hf d
@@ -424,6 +505,9 @@ def primeOfOne : Ideal (NumbersDVR.MRing (fun _ : Unit => Fin (N + 1)) S) :=
 
 open NumbersDVR in
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_isPrime _ _ multiHomog := by classical intro f hf b have hw : ∀ d : (Σ _ : Unit, Fin (N + 1)) →₀ ℕ, Finsupp.weight (blockWeight (fun _ : Unit => Fin (N + 1))) d = fun _ => d.degree := by intro d funext u rw [Finsupp.weight_apply, Finsupp.degree, Finsupp.sum, Finset.su …`.
+-/
 theorem isMultiProjPrime_primeOfOne (hx : x ≠ 0) : IsMultiProjPrime (primeOfOne (S := S) x) where
   isPrime := Ideal.comap_isPrime _ _
   multiHomog := by
@@ -469,6 +553,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 def support : Finset (Fin (N + 1)) := by
   classical exact Finset.univ.filter fun i => x i ≠ 0
 
+/- English proof (translation)
+Simplify using `[support]`.
+-/
 theorem mem_support {i : Fin (N + 1)} : i ∈ support x ↔ x i ≠ 0 := by
   classical
   simp [support]
@@ -477,6 +564,11 @@ abbrev Chart : Type := Cell (support x)
 
 variable {x}
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[aeval_X]`. Conclude with `(mem_support x).mp (I.2.2 hi)`.
+
+Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_ne_zero ha hb`.
+-/
 theorem eval_ne_zero_of_mem_monos (I : Chart x) {s : Poly S N} (hs : s ∈ monos I.1) :
     aeval x s ≠ 0 := by
   induction hs using Submonoid.closure_induction with
@@ -533,6 +625,9 @@ section Families
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Introduce `_ ⟨f, s, e, hs, hf, hse, ha⟩` and use `⟨f, s, e, monos_mono h hs, hf, hse, ha⟩`.
+-/
 theorem chartRing_mono {I J : Chart x} (h : I.1 ⊆ J.1) : chartRing S x I ≤ chartRing S x J :=
   fun _ ⟨f, s, e, hs, hf, hse, ha⟩ => ⟨f, s, e, monos_mono h hs, hf, hse, ha⟩
 
@@ -685,6 +780,11 @@ section Examples
 
 variable {S : Type u} [CommRing S] {N : ℕ}
 
+/- English proof (translation)
+Introduce `s hs`. Use `hp hs` as an intermediate fact. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Pi.one_apply, smul_eq_mul, mul_one] at this ⊢`. Rewrite using `[← this]`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => nsmul_one _`.
+-/
 theorem isWeightedHomogeneous_int_of_isHomogeneous {p : Poly S N} {d : ℕ} (hp : p.IsHomogeneous d) :
     IsWeightedHomogeneous (fun _ => (1 : ℤ)) p (d : ℤ) := by
   intro s hs
@@ -713,8 +813,22 @@ section ChartFacts
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartRing_smul_def {I : Chart x} (a : chartRing S x I) (z : Ω) : a • z = (a : Ω) * z := rfl
 
+/- English proof (translation)
+Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[twistMod, Submodule.span_le]`. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, hc, rfl⟩`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Establish `he : e' = e + n` using `by omega`. Use `⟨⟨aeval x f / aeval x (s * X i ^ n), f, s * X i ^ n, e', mul_mem hs (pow_mem (X_mem_monos hi) n), hf, he ▸ hse.mul (isHomogeneous_X_pow i n), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def]`.
+
+Simplify using `only [map_mul, map_pow, aeval_X, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Establish `he : e = e' + n` using `by omega`. Use `⟨⟨aeval x (f * X i ^ n) / aeval x s, f * X i ^ n, s, e, hs, he ▸ hf.mul (isHomogeneous_X_pow i n), hse, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def]`.
+
+Simplify using `only [map_mul, map_pow, aeval_X, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Conclude with `Submodule.subset_span ⟨X i ^ n, 1, 0, n, one_mem _, isHomogeneous_X_pow i n, isHomogeneous_one _ _, by simp, by simp⟩`.
+
+Conclude with `Submodule.subset_span ⟨1, X i ^ n, n, 0, pow_mem (X_mem_monos hi) n, isHomogeneous_one _ _, isHomogeneous_X_pow i n, by simp, by simp [zpow_neg]⟩`.
+-/
 theorem twistMod_eq_span (c : ℤ) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) :
     twistMod S x c I = Submodule.span _ {x i ^ c} := by
   have hxi : x i ≠ 0 := (mem_support x).mp (I.2.2 hi)
@@ -743,6 +857,15 @@ theorem twistMod_eq_span (c : ℤ) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I
     · exact Submodule.subset_span ⟨1, X i ^ n, n, 0, pow_mem (X_mem_monos hi) n,
         isHomogeneous_one _ _, isHomogeneous_X_pow i n, by simp, by simp [zpow_neg]⟩
 
+/- English proof (translation)
+Take `⟨f, s, e, hs, hf, hse, hb⟩` from `b.2`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Establish `hs0` using `eval_ne_zero_of_mem_monos J hs`. Establish `hX0 : aeval x (X i ^ e : Poly S N) ≠ 0`.
+
+Rewrite using `[map_pow, aeval_X]`. Conclude with `pow_ne_zero _ hxi`. Use `⟨⟨aeval x s / aeval x (X i ^ e), s, X i ^ e, e, pow_mem (X_mem_monos hi) e, hse, isHomogeneous_X_pow i e, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_exists_inv]`. Use `⟨⟨aeval x (X i ^ e) / aeval x s, X i ^ e, s, e, hs, isHomogeneous_X_pow i e, hse, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `aeval x s / aeval x (X i ^ e) * (aeval x (X i ^ e) / aeval x s) = 1`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `aeval x s / aeval x (X i ^ e) * (b : Ω) ∈ chartRing S x I`. Rewrite using `[hb]`.
+
+Use `⟨f, X i ^ e, e, pow_mem (X_mem_monos hi) e, hf, isHomogeneous_X_pow i e, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_isUnit_mul_mem {I J : Chart x} (h : I.1 ⊆ J.1) (b : chartRing S x J) :
     ∃ a : chartRing S x I, IsUnit (chartIncl h a) ∧ (a : Ω) * b ∈ chartRing S x I := by
   obtain ⟨f, s, e, hs, hf, hse, hb⟩ := b.2
@@ -890,10 +1013,18 @@ section Inhabitants
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨X j, 1, 0, 1, one_mem _, isHomogeneous_X S j, isHomogeneous_one _ _, by simp, by simp⟩`.
+-/
 theorem mem_twistMod_one (I : Chart x) (j : Fin (N + 1)) : x j ∈ twistMod S x 1 I :=
   Submodule.subset_span ⟨X j, 1, 0, 1, one_mem _, isHomogeneous_X S j, isHomogeneous_one _ _,
     by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `mem_twistMod_one I j`.
+
+Rewrite using `[twistMod_eq_span 1 I hi, zpow_one, Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem span_range_eq_twistMod_one (I : Chart x) :
     Submodule.span (chartRing S x I) (Set.range x) = twistMod S x 1 I := by
   obtain ⟨i, hi⟩ := I.2.1
@@ -904,6 +1035,9 @@ theorem span_range_eq_twistMod_one (I : Chart x) :
   · rw [twistMod_eq_span 1 I hi, zpow_one, Submodule.span_le, Set.singleton_subset_iff]
     exact Submodule.subset_span ⟨i, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `I`. Conclude with `mem_twistMod_one I j`.
+-/
 theorem mem_secs_twistBundle_one (j : Fin (N + 1)) : x j ∈ (twistBundle S x 1).secs := by
   rw [SubSystem.secs, Submodule.mem_iInf]
   intro I
@@ -917,15 +1051,24 @@ variable (k : Type u) [Field k]
 
 def lineX : Fin (1 + 1) → RatFunc k := ![1, RatFunc.X]
 
+/- English proof (translation)
+Use `fin_cases i`. Simplify using `[lineX]`. Simplify using `[lineX, RatFunc.X_ne_zero]`.
+-/
 theorem lineX_ne_zero (i : Fin (1 + 1)) : lineX k i ≠ 0 := by
   fin_cases i
   · simp [lineX]
   · simp [lineX, RatFunc.X_ne_zero]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mem_support, lineX_ne_zero]`.
+-/
 theorem support_lineX : support (lineX k) = Finset.univ := by
   ext i
   simp [mem_support, lineX_ne_zero]
 
+/- English proof (translation)
+The claim follows from `isMultiProjPrime_primeOfOne _ fun h => lineX_ne_zero k 0 (congrFun h 0)`.
+-/
 theorem isMultiProjPrime_line :
     NumbersDVR.IsMultiProjPrime (primeOfOne (S := k) (lineX k)) :=
   isMultiProjPrime_primeOfOne _ fun h => lineX_ne_zero k 0 (congrFun h 0)
@@ -934,6 +1077,9 @@ def tautologicalLineBundle : LineBundle k (lineX k) := twistBundle k (lineX k) 1
 
 def lineChart0 : Chart (lineX k) := singleChart (lineX_ne_zero k 0)
 
+/- English proof (translation)
+Establish `h1 : (1 : RatFunc k) ∈ (tautologicalLineBundle k).sub (lineChart0 k)`. Use `mem_twistMod_one (S := k) (lineChart0 k) 0` as an intermediate fact. Express the relevant statement in the definitionally equal form `(1 : RatFunc k) ∈ twistMod k (lineX k) 1 (lineChart0 k)`. Simplify `this` using `[lineX]`. Conclude with `⟨⟨⟨1, h1⟩, 0, fun e => one_ne_zero (congrArg Subtype.val e)⟩⟩`.
+-/
 theorem lineO1_chart_nontrivial : Nontrivial ((tautologicalLineBundle k).toSubFamily.toFamily.F (lineChart0 k)) := by
   have h1 : (1 : RatFunc k) ∈ (tautologicalLineBundle k).sub (lineChart0 k) := by
     have := mem_twistMod_one (S := k) (lineChart0 k) 0
@@ -950,6 +1096,11 @@ variable (k : Type u) [Field k] (N : ℕ)
 def genericPt : Fin (N + 1) → FractionRing (Poly k N) :=
   fun i => algebraMap (Poly k N) (FractionRing (Poly k N)) (X i)
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, IsScalarTower.algebraMap_apply k (Poly k N) (FractionRing (Poly k N))]`. Both sides reduce to the same expression. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, genericPt]`.
+-/
 theorem aeval_genericPt (f : Poly k N) :
     aeval (genericPt k N) f = algebraMap (Poly k N) (FractionRing (Poly k N)) f := by
   induction f using MvPolynomial.induction_on with
@@ -959,6 +1110,11 @@ theorem aeval_genericPt (f : Poly k N) :
   | add p q hp hq => rw [map_add, map_add, hp, hq]
   | mul_X p i hp => rw [map_mul, map_mul, hp, aeval_X, genericPt]
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Rewrite using `[Submodule.mem_bot]`. Establish `hc : ∀ d, homogeneousComponent d f = 0`. Introduce `d`.
+
+Establish `h1` using `homogeneousComponent_mem_primeOf _ hf d`. Rewrite `h1` using `[mem_primeOf_of_isHomogeneous _ (homogeneousComponent_isHomogeneous d f), aeval_genericPt]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective (Poly k N) (FractionRing (Poly k N)))).mp h1`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Finset.sum_eq_zero fun d _ => hc d`.
+-/
 theorem primeOf_genericPt : primeOf (S := k) (genericPt k N) = ⊥ := by
   rw [eq_bot_iff]
   intro f hf
@@ -1007,10 +1163,22 @@ section AmpleExample
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, 1, 0, 0, one_mem _, isHomogeneous_one _ _, isHomogeneous_one _ _, by simp, by simp⟩`.
+-/
 theorem one_mem_twistMod_zero (I : Chart x) : (1 : Ω) ∈ twistMod S x 0 I :=
   Submodule.subset_span ⟨1, 1, 0, 0, one_mem _, isHomogeneous_one _ _, isHomogeneous_one _ _,
     by simp, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `twistMod S x 0 I ≤ _`. Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero, pow_zero]`. Consider the case `succ n ih`.
+
+Express the relevant statement in the definitionally equal form `Submodule.span _ _ ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `q ∈ twistMod S x 1 I at hq`. Rewrite `hq` using `[twistMod_eq_span 1 I hi, zpow_one, Submodule.mem_span_singleton]`.
+
+Take `⟨a, rfl⟩` from `hq`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.mp (ih hy)`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Use `⟨a * b, ?_⟩` and prove the remaining obligations. Simplify using `only [chartRing_smul_def, smul_eq_mul, Subalgebra.coe_mul, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_twistSys_one_le (n : ℕ) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) :
     ((twistSys S x 1).pow n).sub I ≤ Submodule.span _ {x i ^ n} := by
   induction n with
@@ -1030,6 +1198,9 @@ theorem pow_twistSys_one_le (n : ℕ) (I : Chart x) {i : Fin (N + 1)} (hi : i �
     simp only [chartRing_smul_def, smul_eq_mul, Subalgebra.coe_mul, pow_succ]
     ring
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact one_mem_twistMod_zero I`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha]`. Conclude with `Submodule.subset_span ⟨x a, mem_twistMod_one I a, _, ih, rfl⟩`.
+-/
 theorem prod_mem_pow_twistSys_one (I : Chart x) (T : Finset (Fin (N + 1))) :
     ∏ i ∈ T, x i ∈ ((twistSys S x 1).pow T.card).sub I := by
   classical
@@ -1039,11 +1210,19 @@ theorem prod_mem_pow_twistSys_one (I : Chart x) (T : Finset (Fin (N + 1))) :
     rw [Finset.prod_insert ha, Finset.card_insert_of_notMem ha]
     exact Submodule.subset_span ⟨x a, mem_twistMod_one I a, _, ih, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x j, mem_twistMod_one I j, 1, one_mem_twistMod_zero I, by rw [smul_eq_mul, mul_one]⟩`.
+-/
 theorem mem_pow_one_twistSys_one (I : Chart x) (j : Fin (N + 1)) :
     x j ∈ ((twistSys S x 1).pow 1).sub I :=
   Submodule.subset_span ⟨x j, mem_twistMod_one I j, 1, one_mem_twistMod_zero I, by
     rw [smul_eq_mul, mul_one]⟩
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Simplify using `only [map_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ s.support, s i = e`.
+
+Use `hf (mem_support_iff.mp hs)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite using `[aeval_monomial, aeval_monomial]`. Simplify using `only [Finsupp.prod, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_div_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (j : Fin (N + 1)) :
     aeval (fun l => x l / x j) f = aeval x f / x j ^ e := by
   classical
@@ -1058,6 +1237,13 @@ theorem aeval_div_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneou
   simp only [Finsupp.prod, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hdeg]
   ring
 
+/- English proof (translation)
+Use `(algebraMap S Ω).domain_nontrivial` as an intermediate fact. Take `⟨f, s, e, hs, hf, hse, rfl⟩` from `ha`. Establish `hs' : s ∈ Submonoid.closure {(X j : Poly S N)}`. Establish `: ((fun i => (X i : Poly S N)) '' ((({j} : Finset (Fin (N + 1))) : Set (Fin (N + 1))))) = {X j}` using `by simp`. Rewrite using `[← this]`.
+
+Conclude with `hs`. Take `⟨m, rfl⟩` from `Submonoid.mem_closure_singleton.mp hs'`. Establish `hme : e = m` using `hse.inj_right (isHomogeneous_X_pow j m) (by`. Rewrite using `[X_pow_eq_monomial, Ne, monomial_eq_zero]`. Conclude with `one_ne_zero)`.
+
+Substitute `hme` using the available equality. Rewrite using `[map_pow, aeval_X, ← aeval_div_of_isHomogeneous hf j, ampleBase, Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨f, rfl⟩`.
+-/
 theorem mem_ampleBase_of_mem_chartRing {j : Fin (N + 1)} (hj : x j ≠ 0) {a : Ω}
     (ha : a ∈ chartRing S x (singleChart hj)) : a ∈ ampleBase (S := S) x j := by
   have := (algebraMap S Ω).domain_nontrivial

@@ -591,8 +591,16 @@ def ThetaIntegralsAgree : Prop :=
   ∃ e₁ e₂ s : ℤˣ, ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     StepAlpha σ e₁ e₂ s
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : (List.range 4).map (skip 1 4) = [0, 2, 3, 5] := by decide
 
+/- English proof (translation)
+Use `⟨⟨rfl, Matrix.of fun _ _ => 1, ?_⟩, by simp, by simp, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`. Simplify using `[Matrix.mul_apply, Subsingleton.elim i j]`. Apply the tactic sequence `all_goals first | exact i.elim0 | exact j.elim0`. Establish `: x 0 ≠ 0` using `fun h => hx (funext fun i => by rw [Subsingleton.elim i 0]; exact h)`.
+
+Simplify `Complex.normSq_pos.2 this` using `[dotProduct, Complex.mul_conj, ← Complex.normSq_apply]`.
+-/
 example : HasSig (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 0 ∧ IsCartan (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 := by
   refine ⟨⟨rfl, Matrix.of fun _ _ => 1, ?_⟩, by simp, by simp, fun x hx => ?_⟩
   · ext (i | i) (j | j)

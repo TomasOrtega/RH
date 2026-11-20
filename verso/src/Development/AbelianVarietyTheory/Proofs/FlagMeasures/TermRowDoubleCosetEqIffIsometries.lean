@@ -13,11 +13,21 @@ namespace GlobalTheory.Unfold.KeyIff
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, fun j x _ => ?_, fun x _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem one_mem {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : (1 : GV D) ∈ NRat F := by
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, fun j x _ => ?_, fun x _ => ?_⟩
   · simp
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : γ₂ ∈ {δ | ∃ n ∈ NRat F, ∃ n' ∈ NRat F', δ = n * γ₂ * n'}` using `⟨1, one_mem F, 1, one_mem F', by simp⟩`. Rewrite `hm` using `[← h]`. Conclude with `hm`.
+
+Introduce and unpack `⟨n, hn, n', hn', rfl⟩`. Use extensionality with `δ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a * n⁻¹, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F ha (Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv F hn), n'⁻¹ * b, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F' (Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv F' hn') hb, ?_⟩` and prove the remaining obligations.
+
+Use `group`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a * n, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F ha hn, n' * b, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F' hn' hb, by group⟩`.
+-/
 theorem dcoset_eq_iff {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (γ₁ γ₂ : GV D) :
     ({δ | ∃ n ∈ NRat F, ∃ n' ∈ NRat F', δ = n * γ₁ * n'} : Set (GV D)) =
         {δ | ∃ n ∈ NRat F, ∃ n' ∈ NRat F', δ = n * γ₂ * n'} ↔
@@ -39,6 +49,13 @@ theorem dcoset_eq_iff {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag 
       exact ⟨a * n, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F ha hn, n' * b,
         Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul F' hn' hb, by group⟩
 
+/- English proof (translation)
+Introduce `D X Y u u' t t'`. Establish `hkey : key t = key t' ↔ (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' ∧ nmlOf Y u u' t = nmlOf Y u u' t'` using `Prod.ext_iff`. Establish `hrow : (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' ↔ t.lam = t'.lam ∧ t.lam' = t'.lam' ∧ iotaOf Y.TR (Y.cs u) (Y.cs u') t = iotaOf Y.TR (Y.cs u) (Y.cs u') t'` using `by show rowOf Y.TR (Y.cs u) (Y.cs u') t = rowOf Y.TR (Y.cs u) (Y.cs u') t' ↔ _`. Simplify using `only [rowOf, Prod.mk.injEq, Subtype.mk.injEq]`. Establish `hnml : nmlOf Y u u' t = nmlOf Y u u' t' ↔ ∃ n ∈ NRat (lf D (X.Fu u)), ∃ n' ∈ NRat (lf D (X.Fu u')), t'.lin = n * t.lin * n'` using `dcoset_eq_iff _ _ _ _`.
+
+Rewrite using `[hkey, hrow, hnml]`. Unfold `KeyEq`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hl, hl', hi⟩, hc⟩`. Conclude with `⟨hl, hl', hc, (Formalism.L2.SG.Pf.iotaDictAllC_holds D X Y u u' t t' hl hl').1 hi⟩`.
+
+Introduce and unpack `⟨hl, hl', hc, hi⟩`. Conclude with `⟨⟨hl, hl', (Formalism.L2.SG.Pf.iotaDictAllC_holds D X Y u u' t t' hl hl').2 hi⟩, hc⟩`.
+-/
 theorem key_eq_iff : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', key t = key t' ↔ t.lam = t'.lam ∧ t.lam' = t'.lam' ∧ KeyEq (lf D (X.Fu u)) (lf D (X.Fu u')) t.lam t.lin t'.lin := by
   intro D X Y u u' t t'
   have hkey : key t = key t' ↔

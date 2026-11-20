@@ -25,6 +25,9 @@ abbrev Iom (l : ℕ) (O : Type) [CommRing O] (m : ℕ) : Ideal (Om l O m) := (Id
 
 def pdm (h : OL l O) (m : ℕ) : DividedPowers (Iom l O m) := (exists_pd_l l h.unit h.tf m).choose
 
+/- English proof (translation)
+The claim follows from `(exists_pd_l l h.unit h.tf m).choose_spec`.
+-/
 theorem isPdm (h : OL l O) (m : ℕ) : R.IsPd (Ideal.Quotient.mk _) (Ideal.span {(l : O)}) (pdm h m) :=
   (exists_pd_l l h.unit h.tf m).choose_spec
 
@@ -44,6 +47,9 @@ abbrev GB (T : Thick (smFun X q)) (m : ℕ) : Type := T.B ⧸ lm (l := l) T m
 
 abbrev GJ (T : Thick (smFun X q)) (m : ℕ) : Ideal (GB (l := l) T m) := (GI (l := l) T).map (Ideal.Quotient.mk _)
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `T.i ((l : O) ^ m) ∈ lm (l := l) T m`. Rewrite using `[map_pow, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem lm_le (T : Thick (smFun X q)) (m : ℕ) : Ideal.span {(l : O) ^ m} ≤ (lm (l := l) T m).comap T.i := by
   rw [Ideal.span_le, Set.singleton_subset_iff]
   change T.i ((l : O) ^ m) ∈ lm (l := l) T m
@@ -62,6 +68,9 @@ def Good (T : Thick (smFun X q)) (m : ℕ) : Prop :=
 def GD (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) : DividedPowers (GJ (l := l) T m) :=
   (RL.pd_quot hT.1 (GI (l := l) T) (lm (l := l) T m) hT.2.1 hT.2.2).choose
 
+/- English proof (translation)
+The claim follows from `(RL.pd_quot hT.1 (GI (l := l) T) (lm (l := l) T m) hT.2.1 hT.2.2).choose_spec`.
+-/
 theorem GD_spec (T : Thick (smFun X q)) (m : ℕ) (hT : Good (l := l) T m) :
     R.IsPd (Ideal.Quotient.mk (lm (l := l) T m)) (GI (l := l) T) (GD T m hT) :=
   (RL.pd_quot hT.1 (GI (l := l) T) (lm (l := l) T m) hT.2.1 hT.2.2).choose_spec

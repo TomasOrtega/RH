@@ -34,6 +34,23 @@ def colR (p : Fin g ⊕ Fin g → Fin g → ℂ) : Matrix (Fin g) (Fin g) ℂ :=
 
 def colL (p : Fin g ⊕ Fin g → Fin g → ℂ) : Matrix (Fin g) (Fin g) ℂ := Matrix.of fun i j => p (.inl j) i
 
+/- English proof (translation)
+Use `set A := colR p with hA`. Use `set B := colL p with hB`. Establish `cA (k) : A *ᵥ Pi.single k 1 = p (.inr k)` using `RiemannRel.of_cols_mulVec (fun k => p (.inr k)) k`. Establish `cB (k) : B *ᵥ Pi.single k 1 = p (.inl k)` using `RiemannRel.of_cols_mulVec (fun k => p (.inl k)) k`. Establish `hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm G z z).re` using `fun z hz => (Complex.pos_iff.1 ((posDef_iff.1 hG).2 z hz)).1`.
+
+Establish `hM : ∀ j k, ((Aᵀ * G * A.map (starRingEnd ℂ)) j k).im = 0` using `fun j k => by`. Rewrite using `[← RiemannRel.hermForm_col, cA, cA]`. Conclude with `(h _ _).trans (by simp [Matrix.J])`. Establish `hN : ∀ j k, ((Aᵀ * G * B.map (starRingEnd ℂ)) j k).im = -(1 : Matrix (Fin g) (Fin g) ℝ) j k` using `fun j k => by`. Rewrite using `[← RiemannRel.hermForm_col, cA, cB]`.
+
+Conclude with `(h _ _).trans (by simp [Matrix.J])`. Establish `hK : ∀ j k, ((Bᵀ * G * B.map (starRingEnd ℂ)) j k).im = 0` using `fun j k => by`. Rewrite using `[← RiemannRel.hermForm_col, cB, cB]`. Conclude with `(h _ _).trans (by simp [Matrix.J])`. Establish `hdet` using `RiemannRel.det_ne_zero G A B hpos hM hN`.
+
+Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `set τ := A⁻¹ * B with hτ`. Establish `hAB : A * τ = B` using `by rw [hτ, ← Matrix.mul_assoc, mul_nonsing_inv A hu, Matrix.one_mul]`. Establish `hs` using `RiemannRel.symm_posDef G A τ hG.1 hdet hpos hM (by rw [hAB]; exact hN) (by rw [hAB]; exact hK)`. Use `⟨hu, hs, fun z w => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `set M := Aᵀ * G * A.map (starRingEnd ℂ) with hMd`. Establish `hRY : M.map Complex.re * τ.map Complex.im = 1`. Establish `hN' : Aᵀ * G * B.map (starRingEnd ℂ) = M * τ.map (starRingEnd ℂ)`. Rewrite using `[← hAB, Matrix.map_mul, hMd]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite `hN` using `[hN']`. Use extensionality with `j k`. Use `hN j k` as an intermediate fact. Simplify using `only [mul_apply, Complex.im_sum, map_apply, Complex.mul_im, hM, Complex.conj_im, zero_mul, add_zero, mul_neg, Finset.sum_neg_distrib, neg_inj] at this`. Rewrite using `[← this]`.
+
+Simplify using `[mul_apply]`. Establish `e : ((τ.map Complex.im)⁻¹).map (fun t : ℝ => (t : ℂ)) = M`. Rewrite using `[inv_eq_left_inv hRY]`. Use extensionality with `j k`. Conclude with `Complex.ext (by simp) (by simp [hM])`.
+
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.herm, e, ← dotProduct_mulVec]`. Conclude with `RiemannRel.hermForm_mulVec G A A z w`. Rewrite using `[per, ← hs.1.eq, vecMul_transpose, mulVec_add, mulVec_mulVec, hAB, Fintype.sum_sum_type]`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, hA, hB, colR, colL, mul_comm]`.
+-/
 theorem normalise {G : Matrix (Fin g) (Fin g) ℂ} (hG : G.PosDef) {p : Fin g ⊕ Fin g → Fin g → ℂ}
     (h : ∀ i j, (form G (p i) (p j)).im = -Matrix.J (Fin g) ℝ i j) :
     IsUnit (colR p).det ∧ IsSiegel ((colR p)⁻¹ * colL p) ∧
@@ -81,11 +98,27 @@ theorem normalise {G : Matrix (Fin g) (Fin g) ℂ} (hG : G.PosDef) {p : Fin g �
     funext i
     simp [mulVec, dotProduct, hA, hB, colR, colL, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[stdLat, Module.Basis.mem_span_iff_repr_mem]`. Simplify using `only [Pi.basisFun_repr, Set.mem_range, eq_intCast]`. Conclude with `⟨fun h => by choose m hm using h; exact ⟨m, funext fun i => (hm i).symm⟩, fun ⟨m, hm⟩ i => ⟨m i, by rw [hm]⟩⟩`.
+-/
 theorem mem_stdLat {l : Fl g} : l ∈ stdLat g ↔ ∃ m : Fin g ⊕ Fin g → ℤ, l = fun i => (m i : ℝ) := by
   rw [stdLat, Module.Basis.mem_span_iff_repr_mem]
   simp only [Pi.basisFun_repr, Set.mem_range, eq_intCast]
   exact ⟨fun h => by choose m hm using h; exact ⟨m, funext fun i => (hm i).symm⟩, fun ⟨m, hm⟩ i => ⟨m i, by rw [hm]⟩⟩
 
+/- English proof (translation)
+Use `haveI : IsZLattice ℝ Λ := ⟨hs⟩`. Establish `hr : Module.finrank ℤ Λ = 2 * g`. Rewrite using `[ZLattice.rank ℝ Λ, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Establish `halt : Ef.IsAlt` using `fun a => by`.
+
+Establish `h` using `(hE a a).trans (Complex.conj_eq_iff_im.1 (conj_form hH _ _))`. Conclude with `h` after adjusting the coercions. Take `⟨b, hb⟩` from `exists_isSymplecticBasis_of_finrank halt hb hr`. Use `⟨fun j => (b j : Fin g → ℂ), ?_, fun w => ⟨fun hw => ?_, ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `he : (fun j => (b j : Fin g → ℂ)) = ⇑(b.ofZLatticeBasis ℝ Λ)`.
+
+Use function extensionality and compare the values at `fun j => (Module.Basis.ofZLatticeBasis_apply ℝ Λ b j).symm`. Rewrite using `[he]`. Conclude with `(b.ofZLatticeBasis ℝ Λ).linearIndependent`. Use `⟨b.repr ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun x : Λ => (x : Fin g → ℂ)) (b.sum_repr ⟨w, hw⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h.symm`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `Λ.sum_mem fun j _ => Λ.smul_mem _ (b j).2`. Rewrite using `[← hE]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[hb.left_left, Matrix.J]`. Simplify using `[hb.left_right, Matrix.J, one_apply]`. Rewrite using `[hb.right_left halt]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.J, one_apply, e]`.
+
+Simplify using `[hb.right_right, Matrix.J]`.
+-/
 theorem exists_sympl (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) {H : Matrix (Fin g) (Fin g) ℂ} (hH : H.IsHermitian)
     (Ef : LinearMap.BilinForm ℤ Λ) (hE : ∀ a b : Λ, (Ef a b : ℝ) = (form H a b).im) (hb : Function.Bijective Ef) :
@@ -119,6 +152,19 @@ theorem exists_sympl (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
       by_cases e : i = j <;> simp [Matrix.J, one_apply, e]
     · simp [hb.right_right, Matrix.J]
 
+/- English proof (translation)
+Set `ε : Fin (2 * g) ≃ Fin g ⊕ Fin g` to `(finCongr (two_mul g)).trans finSumFinEquiv.symm`. Establish `tr (c : Fin g ⊕ Fin g → Fin g → ℂ) (w : Fin g → ℂ) : (∃ m : Fin (2 * g) → ℤ, w = ∑ j, m j • c (ε j)) ↔ ∃ m : Fin g ⊕ Fin g → ℤ, w = ∑ j, m j • c j` using `⟨fun ⟨m, hm⟩ => ⟨fun j => m (ε.symm j), by rw [hm, ← ε.sum_comp]; simp⟩, fun ⟨m, hm⟩ => ⟨fun j => m (ε j), by rw [hm, ← ε.sum_comp]⟩⟩`. Establish `hβK : ∀ j, β j ∈ K b₀` using `fun j => (hβ₂ (β j)).2 ⟨Pi.single j 1, by simp [Pi.single_apply]⟩`. Use `choose ζ hζ0 hζa hζ using fun j => hK.2.2.2 b₀ hb₀ (β j) (hβK j)`. Establish `hla : AnalyticAt ℂ (fun b j => ζ (ε j) b) b₀` using `AnalyticAt.pi fun j => hζa (ε j)`.
+
+Establish `hlc` using `hla.continuousAt`. Establish `hlK : ∀ᶠ b in 𝓝 b₀, ∀ j, ζ (ε j) b ∈ K b` using `Filter.eventually_all.2 fun j => IsLatFam.eventually_mem_of_graph (hζ0 _) (hζa _).continuousAt (hζ _)`. Establish `hβ' : IsLatBasis (K b₀) ((fun b j => ζ (ε j) b) b₀)`. Simplify using `only [hζ0]`. Conclude with `⟨hβ₁.comp ε ε.injective, fun w => (hβ₂ w).trans (tr β w).symm⟩`.
+
+Use `set R : ℝ := ∑ j, (‖β (ε j)‖ + 1) with hR`. Establish `hball` using `(isCompact_closedBall (0 : Fin g → ℂ) R).eventually_forall_of_forall_eventually (x₀ := b₀) (P := fun b w => w ∈ K b → ∃ m : Fin (2 * g) → ℤ, w = ∑ j, m j • ζ (ε j) b) fun y _ => IsLatFam.eventually_intComb hK hb₀ hlc hlK hβ' y`. Establish `hli : ∀ᶠ b in 𝓝 b₀, LinearIndependent ℝ (fun j => ζ (ε j) b)` using `hlc.tendsto.eventually hβ'.1.eventually`. Establish `hnorm : ∀ᶠ b in 𝓝 b₀, ∀ j, ‖ζ (ε j) b‖ ≤ ‖β (ε j)‖ + 1`. Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations.
+
+Establish `hc : ContinuousAt (fun b => ‖ζ (ε j) b‖) b₀` using `(hζa _).continuousAt.norm`. Establish `hlt : (fun b => ‖ζ (ε j) b‖) b₀ < (fun _ => ‖β (ε j)‖ + 1) b₀` using `by simp [hζ0]`. Use `filter_upwards [hc.eventually_lt continuousAt_const hlt] with b hb`. Conclude with `hb.le`. Use `⟨fun b j => ζ j b, funext hζ0, hζa, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hball, hli, hnorm, hlK, hK.1.mem_nhds hb₀] with b h1 h2 h3 h4 h5 w`. Take `⟨H, hH⟩` from `hK.2.1 b h5`. Rewrite using `[← hH, ← tr (fun j => ζ j b)]`. Use `(isLatBasis_of_ball H _ R h2 (fun j => ?_) (Finset.sum_le_sum fun j _ => h3 j) fun w hw hwH => ?_).2 w` and prove the remaining obligations. Use `show ζ (ε j) b ∈ (H : Set (Fin g → ℂ))`.
+
+Rewrite using `[hH]`. Conclude with `h4 j`. Conclude with `h1 w hw (by rw [← hH]; exact hwH)`.
+-/
 theorem exists_extend {n : ℕ} {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Set (Fin g → ℂ)} {b₀ : Fin n → ℂ}
     (hK : IsLatFam B K) (hb₀ : b₀ ∈ B) {β : Fin g ⊕ Fin g → Fin g → ℂ} (hβ₁ : LinearIndependent ℝ β)
     (hβ₂ : ∀ w, w ∈ K b₀ ↔ ∃ m : Fin g ⊕ Fin g → ℤ, w = ∑ j, m j • β j) :
@@ -168,6 +214,11 @@ variable {S : Scheme.{0}} {P : PPAS S} {y : Sp ℂ ⟶ S}
 
 variable (P y) in
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback P.A y`. Take `⟨L, hL, ha, hk, hc⟩` from `P.isPol.2.2 ℂ y`. Establish `hB : IsAbelianScheme ((Over.pullback y).obj P.A)` using `PolPull.isAbelianScheme_of_isGrpPullback P.isAb h`. Take `⟨L', hL', hr, hs, ha', hk', hl⟩` from `RiemannExists.exists_sym_translate ℂ _ hB L hL ha hk`. Set `Q' : Out.PolAV (Sp ℂ)` to `⟨(Over.pullback y).obj P.A, hB, P.g, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim, L', hL', hr, hs, ha', hk'⟩`.
+
+Take `⟨rig, hrg⟩` from `Q'.rigid`. Take `⟨u, H, χ, Ef, hH, -, -, -, -, -, h₁, h₂, -⟩` from `thetaUnifAV_all Q' rig hrg`. Conclude with `⟨⟨(Over.pullback y).obj P.A, _, h, L', hL', hc.trans hl.symm, u, H, χ, hH⟩, Ef, h₁, h₂⟩`.
+-/
 theorem exists_unimodular : ∃ (d : P.RiemannData y) (Ef : LinearMap.BilinForm ℤ d.u.Λ),
     (∀ a b : d.u.Λ, (Ef a b : ℝ) = (form d.H a b).im) ∧ Function.Bijective Ef := by
   have h := isGrpPullback_pullback P.A y
@@ -180,6 +231,15 @@ theorem exists_unimodular : ∃ (d : P.RiemannData y) (Ef : LinearMap.BilinForm 
   obtain ⟨u, H, χ, Ef, hH, -, -, -, -, -, h₁, h₂, -⟩ := thetaUnifAV_all Q' rig hrg
   exact ⟨⟨(Over.pullback y).obj P.A, _, h, L', hL', hc.trans hl.symm, u, H, χ, hH⟩, Ef, h₁, h₂⟩
 
+/- English proof (translation)
+Establish `hm {l} (hl : T l ∈ d.u.Λ) : T' l ∈ d'.u.Λ`. Rewrite using `[HodgeSmooth.mem_iff, ← hT', hT, ← HodgeSmooth.mem_iff]` and apply the resulting hypothesis. Set `D : (Fin 1 → ℂ) → (P.RiemannData y × ((Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ)))` to `fun b => if b = 0 then (d, T) else (d', T')`. Establish `hD (b) : D b = (d, T) ∨ D b = (d', T')`. Apply the tactic sequence `by_cases h : b = 0 <;> simp [D, h]`.
+
+Establish `key` using `RiemannConst.eventually_im_form_eq S P 1 univ (fun _ => y) 0 (fun b => (D b).1) (fun q => e q.2) (fun b => (D b).2) (fun _ => l) (fun _ => l') isOpen_univ trivial (by simpa using RiemannConst.isHolTo_comp_clm he (ContinuousLinearMap.snd ℂ (Fin 1 → ℂ) _)) (fun b _ z => by`. Apply the tactic sequence `rcases hD b with h | h <;> rw [h]`. Use `exacts [hT z, hT' z]) continuousOn_const continuousOn_const`. Use the proof step `(fun b _ => by`. Apply the tactic sequence `rcases hD b with h | h <;> rw [h]`.
+
+Use `exacts [⟨hl, hl'⟩, ⟨hm hl, hm hl'⟩])`. Take `⟨b, hb, hb0⟩` from `((key.filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ))).and self_mem_nhdsWithin).exists`. Establish `e₀ : D 0 = (d, T)` using `if_pos rfl`. Establish `e₁ : D b = (d', T')` using `if_neg hb0`. Rewrite `hb` using `[e₀, e₁]`.
+
+Conclude with `hb`.
+-/
 theorem im_form_eq (d d' : P.RiemannData y) (T T' : (Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ))
     {e : (Fin P.g → ℂ) → (Sp ℂ ⟶ P.A.left)} (he : IsHolTo univ e)
     (hT : ∀ z, e z = (d.u.ex (T z)).left ≫ d.φ) (hT' : ∀ z, e z = (d'.u.ex (T' z)).left ≫ d'.φ)
@@ -209,6 +269,15 @@ theorem im_form_eq (d d' : P.RiemannData y) (T T' : (Fin P.g → ℂ) ≃L[ℂ] 
 
 end Fibre
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Establish `hD` using `hB.prod (isOpen_univ (X := Fin g → ℂ))`. Establish `hzero : ∀ b ∈ B, e b 0 = 1` using `fun b hb => UnifPoint.map_zero_of_add (hadd b hb)`. Use `⟨hB, fun b hb => ?_, ?_, fun b₀ hb₀ w₀ hw₀ => ?_⟩` and prove the remaining obligations.
+
+Use `⟨{ carrier := {w | e b w = 1}, add_mem' := fun {u v} hu hv => ?_, zero_mem' := hzero b hb, neg_mem' := fun {u} hu => ?_ }, rfl⟩` and prove the remaining obligations. Use `show e b (u + v) = 1`. Rewrite using `[hadd b hb, show e b u = 1 from hu, show e b v = 1 from hv, _root_.one_mul]`. Use `show e b (-u) = 1`. Establish `h` using `hadd b hb (-u) u`.
+
+Rewrite `h` using `[neg_add_cancel, hzero b hb, show e b u = 1 from hu, _root_.mul_one]`. Conclude with `h.symm`. Establish `h` using `KerFam.isOpen_ne_one hD (y := fun q : (Fin m → ℂ) × (Fin g → ℂ) => y q.1) (fun q => e q.1 q.2) (fun q hq => by`. Use `RelExp.HolAt.comp (a := y) (φ := Prod.fst) (v₀ := q) ⟨B, hB, hq.1, hy⟩ analyticAt_fst` as an intermediate fact. Conclude with `this) fun q hq => ⟨_, hD, hq, hex⟩`.
+
+Use `(congrArg IsOpen (Set.ext fun q => ?_)).mpr h` and prove the remaining obligations. Conclude with `⟨fun hq => ⟨⟨hq.1, trivial⟩, hq.2⟩, fun hq => ⟨hq.1.1, hq.2⟩⟩`. Conclude with `KerFam.exists_graph P.isAb.smooth P.isAb.geomConnected e hB hy hex hb₀ hw₀ (hadd b₀ hb₀) fun v hv hv' => hd b₀ hb₀ (Over.homMk v hv) (by rw [hzero b₀ hb₀]; exact hv')`.
+-/
 theorem isLatFam_ker {S : Scheme.{0}} (P : PPAS S) {m g : ℕ} {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ S)}
     (e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ P.A)) (hB : IsOpen B) (hy : IsHolTo B y)
     (hex : IsHolTo (B ×ˢ univ) fun q : (Fin m → ℂ) × (Fin g → ℂ) => (e q.1 q.2).left)
@@ -239,6 +308,35 @@ theorem isLatFam_ker {S : Scheme.{0}} (P : PPAS S) {m g : ℕ} {B : Set (Fin m �
   · exact KerFam.exists_graph P.isAb.smooth P.isAb.geomConnected e hB hy hex hb₀ hw₀ (hadd b₀ hb₀)
       fun v hv hv' => hd b₀ hb₀ (Over.homMk v hv) (by rw [hzero b₀ hb₀]; exact hv')
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Take `⟨g, B₁, e, hB₁, hb₁, he, -⟩` from `RelExp.exists_relative_exp_of_smooth S P.A m B y b₀ P.isAb.smooth P.isAb.geomConnected hB hb₀ hy`. Establish `hcmp` using `fun b hb (d : P.RiemannData (y b)) => ExpCompare.exists_equiv_of_exp S P (y b) d g (e b) (he b hb).2.1 (he b hb).2.2.1 (he b hb).2.2.2.1 (he b hb).2.2.2.2.2 (he b hb).2.2.2.2.1`. Use `choose d Ef hEf hbij using fun b => exists_unimodular P (y b)`. Choose the witnesses or unpack the hypotheses as in `rfl : g = P.g := by`.
+
+Take `⟨T, -⟩` from `hcmp b₀ hb₁ (d b₀)`. Simplify using `using T.toLinearEquiv.finrank_eq`. Establish `: Nonempty ((Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ))` using `⟨.refl _ _⟩`. Use `choose! T hT using fun b hb => hcmp b hb (d b)`. Set `ε : (Fin m → ℂ) × (Fin P.g → ℂ) → (Sp ℂ ⟶ P.A.left)` to `fun q => (e q.1 q.2).left`.
+
+Establish `hol {C : Set (Fin m → ℂ)} (hC : IsOpen C) (h : C ⊆ B₁) : IsHolTo (C ×ˢ univ) ε` using `RelExp.isHolTo_of_holAt (hC.prod isOpen_univ) fun q hq => (he q.1 (h hq.1)).1 q.2`. Establish `hker : ∀ b ∈ B₁, ∀ z, e b z = 1 ↔ T b z ∈ (d b).u.Λ` using `fun b hb z => by`. Rewrite using `[HodgeSmooth.mem_iff, ← hT b hb, ← HodgeSmooth.one_left]`. Conclude with `⟨fun h => by rw [h], Over.OverMorphism.ext⟩`. Establish `hK` using `isLatFam_ker P e (hB₁.inter hB) (RelExp.isHolTo_of_holAt (hB₁.inter hB) fun b hb => ⟨B, hB, hb.2, hy⟩) (hol (hB₁.inter hB) inter_subset_left) (fun b hb => (he b hb.1).2.1) fun b hb => (he b hb.1).2.2.2.2.2`.
+
+Use `(d b₀).u.discrete` as an intermediate fact. Take `⟨β, hβ₁, hβ₂, hβ₃⟩` from `exists_sympl (d b₀).u.Λ (d b₀).u.full (d b₀).isAH.1 (Ef b₀) (hEf b₀) (hbij b₀)`. Take `⟨p, hp₀, hpa, hp⟩` from `exists_extend hK ⟨hb₁, hb₀⟩ (β := fun j => (T b₀).symm (β j)) (hβ₁.map' (((T b₀).symm : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)).restrictScalars ℝ) (LinearMap.ker_eq_bot.2 (T b₀).symm.injective)) fun w => by`. Rewrite using `[mem_setOf_eq, hker b₀ hb₁, hβ₂]`. Use `exists_congr fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[← (T b₀).symm.injective.eq_iff, (T b₀).symm_apply_apply, map_sum]`. Simplify using `only [map_zsmul]`. Take `⟨C₁, hC₁, hC₁o, hC₁b⟩` from `eventually_nhds_iff.1 ((eventually_all.2 fun j => (hpa j).eventually_analyticAt).and (hp.and (hB₁.mem_nhds hb₁)))`. Establish `hpΛ : ∀ b ∈ C₁, ∀ j, T b (p b j) ∈ (d b).u.Λ` using `fun b hb j => (hker b (hC₁ b hb).2.2 _).1 (((hC₁ b hb).2.1 _).2 ⟨Pi.single j 1, by simp [Pi.single_apply]⟩)`. Establish `hconst : ∀ᶠ b in 𝓝 b₀, ∀ i j, (form (d b).H (T b (p b i)) (T b (p b j))).im = -Matrix.J (Fin P.g) ℝ i j` using `eventually_all.2 fun i => eventually_all.2 fun j => by`.
+
+Use `RiemannConst.eventually_im_form_eq S P m C₁ y b₀ d ε T (fun b => p b i) (fun b => p b j) hC₁o hC₁b (hol hC₁o fun b hb => (hC₁ b hb).2.2) (fun b hb => hT b (hC₁ b hb).2.2) (fun b hb => ((hC₁ b hb).1 i).continuousAt.continuousWithinAt) (fun b hb => ((hC₁ b hb).1 j).continuousAt.con …` as an intermediate fact. Simplify `this` using `only [hp₀, ContinuousLinearEquiv.apply_symm_apply, hβ₃]`. Take `⟨C, hC, hCo, hCb⟩` from `eventually_nhds_iff.1 (hconst.and (hC₁o.mem_nhds hC₁b))`. Establish `hCB : C ⊆ B₁` using `fun b hb => (hC₁ b (hC b hb).2).2.2`. Establish `hnorm : ∀ b ∈ C, ∀ (d' : P.RiemannData (y b)) (T' : (Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ)), (∀ z, (e b z).left = (d'.u.ex (T' z)).left ≫ d'.φ) → IsUnit (colR (p b)).det ∧ IsSiegel ((colR (p b))⁻¹ * colL (p b)) ∧ (∀ z w, form d'.H (T' (colR (p b) *ᵥ z)) (T' (colR (p b) *ᵥ w)) = Global …` using `fun b hb d' T' hT' => by`.
+
+Establish `hH (v w) : form (chg (LinearMap.toMatrix' (T' : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ))) d'.H) v w = form d'.H (T' v) (T' w)`. Rewrite using `[form_chg, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Simplify using `only [← hH]`. Use `normalise (posDef_chg ?_ d'.posDef) fun i j => ?_` and prove the remaining obligations.
+
+Conclude with `(LinearMap.isUnit_toMatrix'_iff).2 ((Module.End.isUnit_iff _).2 T'.bijective)`. Rewrite using `[hH, im_form_eq (d b) d' (T b) T' (he b (hCB hb)).2.2.2.1 (hT b (hCB hb)) hT' (hpΛ b (hC b hb).2 i) (hpΛ b (hC b hb).2 j), (hC b hb).1]`. Establish `hn` using `fun b hb => hnorm b hb (d b) (T b) (hT b (hCB hb))`. Establish `hpc : ∀ b ∈ C, ∀ j i, AnalyticAt ℂ (fun b => p b j i) b` using `fun b hb j => analyticAt_pi_iff.1 ((hC₁ b (hC b hb).2).1 j)`. Establish `hpd (j i) : DifferentiableOn ℂ (fun b => p b j i) C` using `fun b hb => (hpc b hb j i).differentiableAt.differentiableWithinAt`.
+
+Use `⟨C, hCo, hCb, fun b => (colR (p b))⁻¹ * colL (p b), fun q => ε (q.1, colR (p q.1) *ᵥ q.2), ⟨hCo, fun i j => ?_, fun b hb => (hn b hb).2.1⟩, RelExp.isHolTo_of_holAt (hCo.prod isOpen_univ) fun q hq => ?_, fun b hb => ⟨fun z => Over.w _, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hh` using `RiemannRel.differentiableOn_left_inverse (B := C) (fun b => colR (p b)) (fun b => (colR (p b))⁻¹) (fun i j => hpd _ _) fun b hb => nonsing_inv_mul _ (hn b hb).1`. Simplify using `only [mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun l _ => (hh i l).mul (hpd _ _)`. Use `RelExp.HolAt.comp (a := ε) (φ := fun q : (Fin m → ℂ) × (Fin P.g → ℂ) => (q.1, colR (p q.1) *ᵥ q.2)) (v₀ := q) ((he q.1 (hCB hq.1)).1 _) (analyticAt_fst.prod (AnalyticAt.pi fun i => ?_))` and prove the remaining obligations.
+
+Simplify using `only [mulVec, dotProduct]`. Conclude with `Finset.analyticAt_fun_sum _ fun j _ => ((hpc q.1 hq.1 (.inr j) i).comp analyticAt_fst).mul (analyticAt_pi_iff.1 analyticAt_snd j)`. Introduce `z w x x' hx hx'`. Take `rfl : x = e b (colR (p b) *ᵥ z)` from `Over.OverMorphism.ext hx`. Take `rfl : x' = e b (colR (p b) *ᵥ w)` from `Over.OverMorphism.ext hx'`.
+
+Simplify using `only [ε, mulVec_add, (he b (hCB hb)).2.1]`. Introduce `x`. Take `⟨z, rfl⟩` from `(he b (hCB hb)).2.2.1 x`. Conclude with `⟨(colR (p b))⁻¹ *ᵥ z, by simp only [ε, mulVec_mulVec, mul_nonsing_inv _ (hn b hb).1, one_mulVec]⟩`. Introduce `z`.
+
+Establish `inj : Function.Injective (colR (p b)).mulVec` using `mulVec_injective_iff_isUnit.2 ((isUnit_iff_isUnit_det _).2 (hn b hb).1)`. Establish `k : ε (b, colR (p b) *ᵥ z) = y b ≫ unitSec P.A ↔ e b (colR (p b) *ᵥ z) = 1`. Rewrite using `[← HodgeSmooth.one_left]`. Conclude with `⟨Over.OverMorphism.ext, fun h => congrArg Over.Hom.left h⟩`. Use `k.trans (((hC₁ b (hC b hb).2).2.1 _).trans ?_)` and prove the remaining obligations.
+
+Simplify using `only [mem_stdLat, ← inj.eq_iff (a := z), (hn b hb).2.2.2]`. Use `⟨fun ⟨n, h⟩ => ⟨_, ⟨n, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `h` using `only [Int.cast_smul_eq_zsmul]`. Introduce and unpack `⟨_, ⟨n, rfl⟩, h⟩`. Conclude with `⟨n, by simpa only [Int.cast_smul_eq_zsmul] using h⟩`.
+
+Introduce `d'`. Take `⟨T', hT'⟩` from `hcmp b (hCB hb) d'`. Conclude with `⟨(T' : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)) ∘ₗ (colR (p b)).mulVecLin, fun z => (hT' _).symm, (hnorm b hb d' T' hT').2.2.1⟩`.
+-/
 theorem exists_family {S : Scheme.{0}} (P : PPAS S) {m : ℕ} {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ S)}
     {b₀ : Fin m → ℂ} (hB : IsOpen B) (hb₀ : b₀ ∈ B) (hy : IsHolTo B y) :
     ∃ C : Set (Fin m → ℂ), IsOpen C ∧ b₀ ∈ C ∧ ∃ (τ : (Fin m → ℂ) → Matrix (Fin P.g) (Fin P.g) ℂ)
@@ -351,6 +449,11 @@ theorem exists_family {S : Scheme.{0}} (P : PPAS S) {m : ℕ} {B : Set (Fin m �
     exact ⟨(T' : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)) ∘ₗ (colR (p b)).mulVecLin, fun z => (hT' _).symm,
       (hnorm b hb d' T' hT').2.2.1⟩
 
+/- English proof (translation)
+Introduce `S P B y v₀ hB hv₀ hy _`. Set `φ : V 1 ≃L[ℂ] (Fin 1 → ℂ)` to `EuclideanSpace.equiv (Fin 1) ℂ`. Take `⟨C, hC, hC₀, τ, ex, hτ, hex, H⟩` from `exists_family P (y := fun b => y (φ.symm b)) (b₀ := φ v₀) (hB.preimage φ.symm.continuous) hv₀ (RiemannConst.isHolTo_comp_clm hy (φ.symm : (Fin 1 → ℂ) →L[ℂ] V 1))`. Take `⟨r, hr, hrB⟩` from `Metric.isOpen_iff.1 (hB.inter (hC.preimage φ.continuous)) v₀ ⟨hv₀, hC₀⟩`. Use `⟨r, hr, fun v hv => (hrB hv).1, fun v => τ (φ v), fun q => ex (φ q.1, q.2), ⟨Metric.isOpen_ball, fun i j => (hτ.2.1 i j).comp φ.differentiable.differentiableOn fun v hv => (hrB hv).2, fun v hv => hτ.2.2 _ (hrB hv).2⟩, ?_, fun v hv => H (φ v) (hrB hv).2⟩` and prove the remaining obligations.
+
+Use `RelExp.isHolTo_of_holAt (Metric.isOpen_ball.prod isOpen_univ) fun q hq => ?_` and prove the remaining obligations. Conclude with `RelExp.HolAt.comp (a := ex) (φ := fun q : Pt (V 1) P.g => (φ q.1, q.2)) (v₀ := q) ⟨_, hC.prod isOpen_univ, ⟨(hrB hq.1).2, trivial⟩, hex⟩ ((((φ : V 1 →L[ℂ] (Fin 1 → ℂ)).analyticAt _).comp analyticAt_fst).prod analyticAt_snd)`.
+-/
 theorem exists_normalised_periods : ∀ (S : Scheme.{0}) (P : PPAS S) (B : Set (V 1)) (y : V 1 → (Sp ℂ ⟶ S)) (v₀ : V 1),
     IsOpen B → v₀ ∈ B → IsHolTo B y → (∀ v ∈ B, Nonempty (P.RiemannData (y v))) →
     ∃ r : ℝ, 0 < r ∧ Metric.ball v₀ r ⊆ B ∧ ∃ (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ)

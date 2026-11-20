@@ -16,6 +16,19 @@ noncomputable section
 namespace GlobalTheory.HaarR.UnitVolN
 open GlobalTheory.RootEx.VolN GlobalTheory.RootEx.Model
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩ i`. Use `congrFun (co_mkNel (k := k) p e) i` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `h1 _ _`. Introduce `he`. Establish `hent : ∀ r s, ((mkNel p e : N k n c p) : GL (n ⊕ Fin c) k).val r s ∈ 𝒪[k]`. Introduce `r s`. Express the relevant statement in the definitionally equal form `mkN p e r s ∈ 𝒪[k]`.
+
+Simplify using `only [mkN, Matrix.of_apply]`. Use `split_ifs with h`. Conclude with `he _`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `⟨hent, fun i j => ?_⟩` and prove the remaining obligations. Use `set g : GL (n ⊕ Fin c) k := ((mkNel p e : N k n c p) : GL (n ⊕ Fin c) k) with hg`. Establish `hdet : g.val.det = 1` using `det_mkN p e`.
+
+Establish `hinv : (g⁻¹).val = g.val.adjugate`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, hdet]`. Simplify using the standard rewrite rules. Set `A : Matrix (n ⊕ Fin c) (n ⊕ Fin c) 𝒪[k]` to `fun r s => ⟨g.val r s, hent r s⟩`. Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = g.val` using `rfl`.
+
+Rewrite using `[hinv, ← hA, ← RingHom.map_adjugate]`. Conclude with `(A.adjugate i j).2`.
+-/
 theorem mkNel_mem_KO_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (p : ℕ) (e : Ix n c p → k) :
     ((mkNel p e : N k n c p) : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c) ↔ ∀ i, e i ∈ 𝒪[k] := by
@@ -50,6 +63,11 @@ end
 
 open GlobalTheory.RootEx.VolN in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c p h1 hp ν hν`. Use `haveI : ν.IsAddHaarMeasure := hν.1`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite using `[volN_eq, MeasurableEquiv.map_apply]`. Establish `: (coEquiv (k` using `k) (n := n) (c := c) p) ⁻¹' {u : N k n c p | (u : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)} = Set.univ.pi fun _ => (𝒪[k] : Set k) := by`.
+
+Use extensionality with `e`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_univ_pi]`. Conclude with `GlobalTheory.HaarR.UnitVolN.mkNel_mem_KO_iff p e`. Rewrite using `[this, Measure.pi_pi]`. Simplify using `[hν.2]`.
+-/
 theorem GlobalTheory.HaarR.volN_KO_eq_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (ν : Measure k), IsUnitVol ν → volN ν n c p {u : N k n c p | (u : GL (n ⊕ Fin c) k) ∈ KO k (n ⊕ Fin c)} = 1 := by
   intro k _ _ _ _ _ _ n _ _ c p h1 hp ν hν
   haveI : ν.IsAddHaarMeasure := hν.1

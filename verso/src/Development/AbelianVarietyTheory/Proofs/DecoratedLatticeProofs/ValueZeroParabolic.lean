@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn.SiegelLaw
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hω Φ p hp a ha g`. Take `⟨m, v, b, e, hm, hv⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha`. Establish `e' : ω (p * g) Φ = ω m (ω v (ω g Φ))`. Rewrite using `[e, map_mul, map_mul]`. Both sides reduce to the same expression.
+
+Establish `z1 : ((0 : Mx D V.rank n) ⬝ a.1 : Mx D V.rank n) = 0` using `Matrix.zero_mul _`. Establish `z2 : GlobalTheory.StdUnn.inner V (0 : Mx D V.rank n) 0 = 0`. Rewrite using `[GlobalTheory.StdUnn.inner, adj_zero, Matrix.zero_mul]`. Establish `hs : s0 V n + (n : ℂ) / 2 = (V.rank : ℂ) / 2` using `by rw [s0]; ring`. Rewrite using `[e', hω.levi m _ hm, z1, hω.unip v b hv, z2, hs]`.
+
+Simplify using `[halfTr]`.
+-/
 theorem value_zero_parabolic : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D) (μ : Measure (Mx D V.rank n)) (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)), IsWeilSch ψ χ θ V μ ω → ∀ (Φ : schwartzA θ V.rank n), ∀ p ∈ P D n, ∀ a : GL (Fin n) (AE D), blkA (mat p) = a.1 → ∀ g : G D n, (ω (p * g) Φ).1 0 = (χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (s0 V n + (n : ℂ) / 2) * (ω g Φ).1 0 := by
   intro D n V ψ χ θ μ ω hω Φ p hp a ha g
   obtain ⟨m, v, b, e, hm, hv⟩ := GlobalTheory.StdUnn.LeftInvSect.exists_levi_unip hp a ha

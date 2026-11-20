@@ -11,13 +11,28 @@ def e1 (z : ℂ) : ℂ := Complex.exp (((-(‖z‖ ^ 2)) : ℝ) : ℂ)
 
 def hk (k l : ℕ) (z : ℂ) : ℂ := z ^ k * star z ^ l * e1 z
 
+/- English proof (translation)
+Unfold `hk e1`. Use `fun_prop`.
+-/
 theorem continuous_hk (k l : ℕ) : Continuous (hk k l) := by
   unfold hk e1
   fun_prop
 
+/- English proof (translation)
+Simplify using `only [hk, e1, norm_mul, norm_pow, norm_star, Complex.norm_exp_ofReal, pow_add]`.
+-/
 theorem norm_hk (k l : ℕ) (z : ℂ) : ‖hk k l z‖ = ‖z‖ ^ (k + l) * Real.exp (-(‖z‖ ^ 2)) := by
   simp only [hk, e1, norm_mul, norm_pow, norm_star, Complex.norm_exp_ofReal, pow_add]
 
+/- English proof (translation)
+Use `⟨((n + 3).factorial : ℝ) * Real.exp 2, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < 1 + t` using `by linarith`. Establish `hr : (1 + t) ^ (-(3 : ℝ)) = ((1 + t) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg h1.le]`. Use `norm_cast`.
+
+Rewrite using `[hr, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Establish `hA : t ^ n ≤ (1 + t) ^ n` using `pow_le_pow_left₀ ht (by linarith) n`. Establish `hB : (1 + t) ^ (n + 3) ≤ ((n + 3).factorial : ℝ) * Real.exp (1 + t)`. Establish `h` using `Real.pow_div_factorial_le_exp (1 + t) h1.le (n + 3)`. Rewrite `h` using `[div_le_iff₀ (by positivity), mul_comm]`. Then use the resulting hypothesis.
+
+Establish `hC : Real.exp (1 + t) * Real.exp (-(t ^ 2)) ≤ Real.exp 2`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by nlinarith [sq_nonneg (t - 1 / 2)])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`.
+
+Use `gcongr`.
+-/
 theorem pow_exp_le (n : ℕ) : ∃ C : ℝ, ∀ t : ℝ, 0 ≤ t →
     t ^ n * Real.exp (-(t ^ 2)) ≤ C * (1 + t) ^ (-(3 : ℝ)) := by
   refine ⟨((n + 3).factorial : ℝ) * Real.exp 2, fun t ht => ?_⟩
@@ -41,6 +56,9 @@ theorem pow_exp_le (n : ℕ) : ∃ C : ℝ, ∀ t : ℝ, 0 ≤ t →
       rw [mul_assoc]
       gcongr
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `pow_exp_le (k + l)`. Establish `hi : Integrable (fun z : ℂ => (1 + ‖z‖) ^ (-(3 : ℝ)))` using `integrable_one_add_norm (by norm_num [finrank_real_complex])`. Use `(hi.const_mul C).mono' (continuous_hk k l).aestronglyMeasurable (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Rewrite using `[norm_hk]`. Conclude with `hC _ (norm_nonneg _)`.
+-/
 theorem integrable_hk (k l : ℕ) : Integrable (hk k l) := by
   obtain ⟨C, hC⟩ := pow_exp_le (k + l)
   have hi : Integrable (fun z : ℂ => (1 + ‖z‖) ^ (-(3 : ℝ))) :=
@@ -49,6 +67,17 @@ theorem integrable_hk (k l : ℕ) : Integrable (hk k l) := by
   rw [norm_hk]
   exact hC _ (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hkl : ((k : ℂ) - l) ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast h)`. Use `set θ : ℝ := Real.pi / ((k : ℝ) - l) with hθ`. Establish `hfac : Complex.exp (θ * I) ^ k * star (Complex.exp (θ * I)) ^ l = -1`. Establish `hs : star (Complex.exp (θ * I)) = Complex.exp (-(θ * I))`. Rewrite using `[Complex.star_def, ← Complex.exp_conj]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hs, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Establish `h2 : (θ : ℂ) * ((k : ℂ) - l) = Real.pi`. Rewrite using `[hθ]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h3 : (k : ℂ) * (θ * I) + l * (-(θ * I)) = Real.pi * I`. Take the linear combination `I * h2`. Rewrite using `[h3, Complex.exp_pi_mul_I]`. Establish `hrot : ∀ z : ℂ, hk k l (Complex.exp (θ * I) * z) = -hk k l z`.
+
+Introduce `z`. Establish `he : e1 (Complex.exp (θ * I) * z) = e1 z`. Simplify using `only [e1, norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul]`. Simplify using `only [hk]`. Rewrite using `[he, star_mul', mul_pow, mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `key` using `(rotation (Circle.exp θ)).measurePreserving.integral_comp (rotation (Circle.exp θ)).toHomeomorph.measurableEmbedding (hk k l)`. Simplify using `only [LinearIsometryEquiv.coe_toHomeomorph, rotation_apply, Circle.coe_exp, hrot, integral_neg] at key`. Take the linear combination `(-1 / 2 : ℂ) * key`.
+-/
 theorem integral_hk_ne (k l : ℕ) (h : k ≠ l) : ∫ z, hk k l z = 0 := by
   have hkl : ((k : ℂ) - l) ≠ 0 := sub_ne_zero.2 (by exact_mod_cast h)
   set θ : ℝ := Real.pi / ((k : ℝ) - l) with hθ
@@ -80,16 +109,27 @@ theorem integral_hk_ne (k l : ℕ) (h : k ≠ l) : ∫ z, hk k l z = 0 := by
 
 def jr (k : ℕ) : ℝ := ∫ z : ℂ, (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2))
 
+/- English proof (translation)
+Simplify using `only [hk, e1]`. Rewrite using `[← mul_pow, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hk_diag (k : ℕ) (z : ℂ) : hk k k z = (((‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2)) : ℝ) : ℂ) := by
   simp only [hk, e1]
   rw [← mul_pow, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   push_cast
   ring
 
+/- English proof (translation)
+Repeatedly rewrite using `[hk_diag]`. Conclude with `integral_ofReal`.
+-/
 theorem integral_hk_diag (k : ℕ) : ∫ z, hk k k z = (jr k : ℂ) := by
   simp_rw [hk_diag]
   exact integral_ofReal
 
+/- English proof (translation)
+Establish `hint : Integrable (fun z : ℂ => (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2)))`. Use `(integrable_hk k k).norm.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [norm_hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ fun z : ℂ => (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2))` using `fun z => by positivity`.
+
+Unfold `jr`. Rewrite using `[integral_pos_iff_support_of_nonneg hnn hint]`. Establish `hc : Continuous fun z : ℂ => (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2))` using `by fun_prop`. Conclude with `hc.isOpen_support.measure_pos volume ⟨1, by simp⟩`.
+-/
 theorem jr_pos (k : ℕ) : 0 < jr k := by
   have hint : Integrable (fun z : ℂ => (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2))) := by
     refine (integrable_hk k k).norm.congr (ae_of_all _ fun z => ?_)

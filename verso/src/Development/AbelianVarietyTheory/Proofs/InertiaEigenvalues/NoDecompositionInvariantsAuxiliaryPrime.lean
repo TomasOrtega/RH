@@ -9,6 +9,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal.ScalarInvariants
 
+/- English proof (translation)
+Establish `e : (d • (1 : Matrix (Fin n) (Fin n) O)).map (algebraMap O (FractionRing O)) = algebraMap O (FractionRing O) d • (1 : Matrix (Fin n) (Fin n) (FractionRing O))`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Rewrite `h` using `[e, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `h1 : algebraMap O (FractionRing O) d - 1 ≠ 0` using `fun h0 => hd (IsFractionRing.injective O (FractionRing O) (by rw [map_one]; exact sub_eq_zero.1 h0))`.
+
+Establish `h2 : (algebraMap O (FractionRing O) d - 1) • x = 0` using `by rw [sub_smul, h, one_smul, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left h1`.
+-/
 theorem eq_zero_of_scalar {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (d : O) (hd : d ≠ 1)
     (x : Fin n → FractionRing O)
     (h : ((d • (1 : Matrix (Fin n) (Fin n) O)).map (algebraMap O (FractionRing O))).mulVec x = x) : x = 0 := by
@@ -22,11 +27,35 @@ theorem eq_zero_of_scalar {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (d : O)
   have h2 : (algebraMap O (FractionRing O) d - 1) • x = 0 := by rw [sub_smul, h, one_smul, sub_self]
   exact (smul_eq_zero.1 h2).resolve_left h1
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, smul_smul, Units.inv_mul, one_smul]`.
+-/
 theorem inv_unit_smul_one {O : Type} [CommRing O] {n : ℕ} (d : Oˣ) :
     ((d : O) • (1 : Matrix (Fin n) (Fin n) O))⁻¹ = ((d⁻¹ : Oˣ) : O) • (1 : Matrix (Fin n) (Fin n) O) := by
   apply Matrix.inv_eq_left_inv
   rw [Matrix.smul_mul, Matrix.one_mul, smul_smul, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+Introduce `D i s h v hv`. Establish `hlp : (D.ntw.l i).Prime` using `(D.ntw.lPrime i).out`. Establish `hv' : v ∈ placesOver D.host.E (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde)`. Rewrite using `[← D.ntw.pD_eq i]`. Conclude with `hv`.
+
+Establish `hp : (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs exacts [D.host.pde'_prime, D.host.pde_prime]`. Establish `hl : v ∉ placesOver D.host.E (D.ntw.l i)`. Use `GlobalTheory.TwSys.TameScalar.not_mem_placesOver hp hlp ?_ hv'` and prove the remaining obligations. Use `split_ifs with hh`. Rewrite using `[hh]`.
+
+Conclude with `D.host.pde_ne.symm`. Conclude with `fun e => hh e.symm`. Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k => by`. Use `GlobalTheory.TwSys.TameScalar.not_mem_placesOver hp (D.host.g_prime k) ?_ hv'` and prove the remaining obligations. Use `split_ifs`.
+
+Use `exacts [(D.host.pde_ne_g k).2, (D.host.pde_ne_g k).1]`. Establish `key : ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∃ z ∈ Dec (F` using `D.host.E) A, ∃ d : (D.ntw.O0 i)ˣ, d ≠ 1 ∧ Tmat i s z = (d : D.ntw.O0 i) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)) ∧ eps0 D.ntw i z = 1 := by`. Introduce `A hA`. Establish `h15` using `D.ntw.delta_15 i v hv A hA`. Take `⟨z, hzA, hz⟩ : ∃ z ∈ Ine (F` from `D.host.E) A, D.ntw.delta i z ≠ 1 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hb : (Ine (F` using `D.host.E) A).map (D.ntw.delta i) = ⊥ := (Subgroup.map_eq_bot_iff _).2 fun z hz => hc z hz`. Rewrite `h15` using `[hb, Subgroup.card_bot]`. Conclude with `absurd h15 (by norm_num)`.
+
+Establish `h1 : D.ntw.rhoS i s z = 1` using `h v hl hg A hA z hzA`. Establish `h2 : chiS i s z = if D.ntw.side i s then D.ntw.delta i z else (D.ntw.delta i z)⁻¹` using `D.ntw.twistCharacterFamily_at_auxiliaryPlaces i _ _ v hv A hA z hzA`. Use `⟨z, Ine_le_Dec A hzA, (chiS i s z)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2] split_ifs`. Conclude with `inv_ne_one.2 hz`.
+
+Rewrite using `[inv_inv]`. Conclude with `hz`. Rewrite using `[Tmat, h1, Units.val_one]`. Establish `h4 : cycZ D.host.E D.nd.Om (D.ntw.l i) z = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.1 fun n => ?_)` and prove the remaining obligations.
+
+Rewrite using `[ReciprocityTheory.Gal.cycZ_toZModPow_eq hl hA (q := 1) (fun x hx => by simpa using hzA.2 x hx) n]`. Simplify using the standard rewrite rules. Simplify using `[eps0, h4]`. Use `⟨fun A hA x hx => ?_, fun A hA x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, d, hd, hT, -⟩` from `key A hA`.
+
+Establish `e` using `hx z hz`. Rewrite `e` using `[hT]`. Conclude with `eq_zero_of_scalar _ (fun h0 => hd (Units.ext h0)) x e`. Take `⟨z, hz, d, hd, hT, he⟩` from `key A hA`. Establish `e` using `hx z hz`.
+
+Rewrite `e` using `[Tdual, hT, he, inv_unit_smul_one, Units.val_one, one_smul, Matrix.transpose_smul, Matrix.transpose_one]`. Conclude with `eq_zero_of_scalar _ (fun h0 => inv_ne_one.2 hd (Units.ext h0)) x e`.
+-/
 theorem noInv_pD : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i), UnrRho i s → ∀ v ∈ D.ntw.pD i,
     NoInv i (Tmat i s) v ∧ NoInv i (Tdual i s) v := by
   intro D i s h v hv

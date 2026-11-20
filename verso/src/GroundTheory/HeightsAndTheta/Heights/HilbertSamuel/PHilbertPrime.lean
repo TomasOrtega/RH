@@ -14,6 +14,9 @@ section Walk
 
 variable {K : Type*} [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+The claim follows from `|g a| ≤ |g (fun _ => a₀)| + B * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1) := by suffices H : ∀ N : ℕ, ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∑ k, (a k - a₀) = N → |g a| ≤ |g (fun _ => a₀)| + B * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1) from fun a ha => H _ a ha rfl intro N induction N with | zero => intr …`.
+-/
 theorem walk_bound (g : (K → ℕ) → ℝ) (a₀ : ℕ) (B : ℝ) (hB : 0 ≤ B) (n : ℕ)
     (hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b →
       |g a - g (Function.update a b (a b - 1))| ≤ B * ((∑ k, (a k : ℝ)) + 1) ^ n) :
@@ -86,6 +89,15 @@ section Multilinear
 
 variable {K : Type*} [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+Use `set E : K → K → ℤ := fun k j => if k = j then 1 else 0`. Use `⟨∑ r : Fin n → K, |f (fun i => E (r i))|, Finset.sum_nonneg (fun _ _ => abs_nonneg _), ?_⟩` and prove the remaining obligations. Introduce `m`. Establish `hm : m = fun i => ∑ k, m i k • E k`. Use function extensionality and compare the values at `i`.
+
+Conclude with `pi_eq_sum_univ (m i)`. Establish `hexp : f m = ∑ r : Fin n → K, (∏ i, m i (r i)) * f (fun i => E (r i))` using `by conv_lhs => rw [hm]`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl (fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`.
+
+Rewrite using `[hexp, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum (fun r _ => ?_))` and prove the remaining obligations. Rewrite using `[abs_mul, Finset.abs_prod]`. Use `(mul_comm _ _).trans_le (mul_le_mul_of_nonneg_left ?_ (abs_nonneg _))` and prove the remaining obligations. Use `Finset.prod_le_prod (fun i _ => abs_nonneg _) (fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun k => |m i k|) (fun k _ => abs_nonneg _) (Finset.mem_univ _)`.
+-/
 theorem multilinear_abs_le {n : ℕ} (f : MultilinearMap ℤ (fun _ : Fin n => K → ℤ) ℤ) :
     ∃ M : ℤ, 0 ≤ M ∧ ∀ m : Fin n → K → ℤ, |f m| ≤ M * ∏ i, ∑ k, |m i k| := by
   set E : K → K → ℤ := fun k j => if k = j then 1 else 0
@@ -128,11 +140,17 @@ def ofPositionAdditive {n : ℕ} (L : (Fin n → K → ℤ) → ℤ)
     exact φ.map_zsmul c x
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofPositionAdditive_apply {n : ℕ} (L : (Fin n → K → ℤ) → ℤ) (hadd) (m : Fin n → K → ℤ) :
     ofPositionAdditive L hadd m = L m := rfl
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Take `⟨k', rfl⟩` from `Fin.exists_succ_eq.mpr hk`. Simplify using the standard rewrite rules.
+-/
 theorem vecCons_const_of_ne_zero {d : ℕ} (y x : K → ℤ) (k : Fin (d + 1)) (hk : k ≠ 0) :
     Matrix.vecCons y (fun _ : Fin d => x) k = x := by
   obtain ⟨k', rfl⟩ := Fin.exists_succ_eq.mpr hk
@@ -140,6 +158,31 @@ theorem vecCons_const_of_ne_zero {d : ℕ} (y x : K → ℤ) (k : Fin (d + 1)) (
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Establish `hadd : f (fun _ => x - e) = ∑ s : Finset (Fin (d + 1)), f (s.piecewise (fun _ => x) (fun _ => -e))`. Rewrite using `[← MultilinearMap.map_add_univ]`. Use `congr 1`. Establish `hone : ∀ s : Finset (Fin (d + 1)), s.card = d → f (s.piecewise (fun _ => x) (fun _ => -e)) = -f (Matrix.vecCons e fun _ : Fin d => x)`. Introduce `s hs`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, j ∉ s := by`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_not] at hne`. Establish `: s = Finset.univ` using `Finset.eq_univ_of_forall hne`. Rewrite `hs` using `[this, Finset.card_univ, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsj : s = Finset.univ.erase j`. Use `Finset.eq_of_subset_of_card_le (fun i hi => ?_) ?_` and prove the remaining obligations. Conclude with `Finset.mem_erase.mpr ⟨fun h => hj (h ▸ hi), Finset.mem_univ _⟩`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, hs]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hpw : s.piecewise (fun _ => x) (fun _ => -e) = (Matrix.vecCons (-e) fun _ : Fin d => x) ∘ (Equiv.swap 0 j)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hj, Equiv.swap_apply_right]`. Simplify using the standard rewrite rules. Establish `hi : i ∈ s` using `by rw [hsj]; exact Finset.mem_erase.mpr ⟨hij, Finset.mem_univ _⟩`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hi]`.
+
+Use `(vecCons_const_of_ne_zero _ _ _ ?_).symm` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Conclude with `hij h0`. Rewrite using `[hpw, hsym]`.
+
+Establish `hupd : (Matrix.vecCons (-e) fun _ : Fin d => x) = Function.update (Matrix.vecCons e fun _ : Fin d => x) 0 (-e)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[hupd, MultilinearMap.map_update_neg]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`. Rewrite using `[hadd, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun s : Finset (Fin (d + 1)) => s.card + 2 ≤ d + 1), ← Finset.sum_filter_add_sum_filter_not (Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1) (fun s => s.card = d + 1)]`.
+
+Establish `hA : ((Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1).filter fun s => s.card = d + 1) = {Finset.univ}`. Use extensionality with `s`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`.
+
+Conclude with `Finset.eq_univ_of_card s (by rw [h, Fintype.card_fin])`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Establish `hB : ((Finset.univ.filter fun s : Finset (Fin (d + 1)) => ¬ s.card + 2 ≤ d + 1).filter fun s => ¬ s.card = d + 1) = Finset.powersetCard d Finset.univ`. Use extensionality with `s`.
+
+Establish `hle : s.card ≤ d + 1` using `by simpa using Finset.card_le_univ s`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_powersetCard, Finset.subset_univ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hA, hB, Finset.sum_singleton, Finset.piecewise_univ, Finset.sum_congr rfl (fun s hs => hone s (Finset.mem_powersetCard.mp hs).2), Finset.sum_const, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin, Nat.choose_succ_self_right]`. Simplify using `only [nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem multilinear_step {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) => K → ℤ) ℤ)
     (hsym : ∀ (σ : Equiv.Perm (Fin (d + 1))) (m : Fin (d + 1) → K → ℤ), f (m ∘ σ) = f m)
     (x e : K → ℤ) :
@@ -215,6 +258,9 @@ theorem multilinear_step {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) 
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `|f (fun _ => fun k => (a k : ℤ)) - f (fun _ => (fun k => (a k : ℤ)) - unitDeg b) - ((d + 1 : ℕ) : ℤ) * f (Matrix.vecCons (unitDeg b) fun _ : Fin d => fun k => (a k : ℤ))| ≤ M * ((∑ k, (a k : ℤ)) + 1) ^ (d - 1) := by obtain ⟨M₀, hM₀, hbd⟩ := multilinear_abs_le f refine ⟨(Fintype.c …`.
+-/
 theorem multilinear_step_le {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 1) => K → ℤ) ℤ)
     (hsym : ∀ (σ : Equiv.Perm (Fin (d + 1))) (m : Fin (d + 1) → K → ℤ), f (m ∘ σ) = f m) :
     ∃ M : ℤ, 0 ≤ M ∧ ∀ (a : K → ℕ) (b : K),
@@ -252,6 +298,13 @@ theorem multilinear_step_le {d : ℕ} (f : MultilinearMap ℤ (fun _ : Fin (d + 
 
 end Expansion
 
+/- English proof (translation)
+Rewrite `h` using `[Nat.cast_zero, zero_sub, Real.rpow_neg_one]`. Rewrite using `[← sub_eq_zero]`. Use `set z := z₁ - z₂`. Establish `hz : (z : ℝ) = (z₁ : ℝ) - (z₂ : ℝ)` using `by push_cast [z]; rfl`. Rewrite `h` using `[← hz]`.
+
+Establish `hpos : 0 < s + 1` using `by linarith`. Establish `h1 : c * (s + 1)⁻¹ < 1`. Rewrite using `[← div_eq_mul_inv, div_lt_one hpos]`. Conclude with `lt_of_le_of_lt (le_abs_self c) hc`. Establish `h2 : |(z : ℝ)| < 1` using `lt_of_le_of_lt h h1`.
+
+Rewrite `h2` using `[← Int.cast_abs]`. Establish `h3 : |z| < 1` using `by exact_mod_cast h2`. Conclude with `Int.abs_lt_one_iff.mp h3`.
+-/
 theorem int_eq_of_abs_sub_le {z₁ z₂ : ℤ} {c s : ℝ} (hs : 0 ≤ s) (hc : |c| < s + 1)
     (h : |(z₁ : ℝ) - (z₂ : ℝ)| ≤ c * (s + 1) ^ (((0 : ℕ) : ℝ) - 1)) : z₁ = z₂ := by
   rw [Nat.cast_zero, zero_sub, Real.rpow_neg_one] at h
@@ -268,6 +321,49 @@ theorem int_eq_of_abs_sub_le {z₁ z₂ : ℤ} {c s : ℝ} (hs : 0 ≤ s) (hc : 
   have h3 : |z| < 1 := by exact_mod_cast h2
   exact Int.abs_lt_one_iff.mp h3
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ q hq hdim`. Take `⟨hsym, hadd⟩` from `hM F K ι q (d + 1) hq hdim`. Take `⟨M, hM0, hE⟩` from `multilinear_step_le (ofPositionAdditive (intNum F q) hadd) hsym`. Simplify using `only [ofPositionAdditive_apply] at hE`. Use `choose A C hAC using hI d hmod F K ι q hq hdim`.
+
+Use `set Cs : ℝ := ∑ b, |C b| with hCs`. Use `set a₀ : ℕ := ∑ b, A b + ⌈Cs⌉₊ with ha₀`. Use `set g : (K → ℕ) → ℝ := fun a => (hilbFn q (fun k => (a k : ℤ)) : ℝ) - (intNum F q (fun _ : Fin (d + 1) => fun k => (a k : ℤ)) : ℝ) / ((d + 1).factorial : ℝ) with hg`. Establish `hAb : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, ∀ k, A b ≤ a k`. Introduce `a ha b k`.
+
+Use `le_trans ?_ (ha k)` and prove the remaining obligations. Conclude with `le_trans (Finset.single_le_sum (fun j _ => Nat.zero_le (A j)) (Finset.mem_univ b)) (Nat.le_add_right _ _)`. Establish `hCb : ∀ b, |C b| ≤ (a₀ : ℝ)`. Introduce `b`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hs0 : ∀ a : K → ℕ, 0 ≤ ∑ k, (a k : ℝ)` using `fun a => Finset.sum_nonneg (fun k _ => Nat.cast_nonneg _)`. Establish `key : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → g a - g (Function.update a b (a b - 1)) = ((((hilbFn q (fun k => (a k : ℤ)) - hilbFn q ((fun k => (a k : ℤ)) - unitDeg b) : ℤ) : ℝ) - (intNum F q (Matrix.vecCons (unitDeg b) fun _ : Fin d => fun k => (a k : ℤ)) : ℝ) / d.factori …`. Introduce `a ha b hb`. Establish `hcast : (fun k => ((Function.update a b (a b - 1) k : ℕ) : ℤ)) = (fun k => (a k : ℤ)) - unitDeg b`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Simplify using `only [Function.update_self, Pi.sub_apply, unitDeg, Pi.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unitDeg, hk]`.
+
+Establish `gfun : ∀ (c : K → ℕ) (y : K → ℤ), (fun k => (c k : ℤ)) = y → g c = (hilbFn q y : ℝ) - (intNum F q (fun _ : Fin (d + 1) => y) : ℝ) / ((d + 1).factorial : ℝ)`. Introduce `c y h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[gfun _ _ hcast, gfun a _ rfl]`.
+
+Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `d with`.
+
+Consider the case `zero`. Establish `hempty : (Finset.univ.filter fun s : Finset (Fin (0 + 1)) => s.card + 2 ≤ 0 + 1) = ∅`. Use extensionality with `s`. Simplify using the standard rewrite rules. Establish `hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → |g a - g (Function.update a b (a b - 1))| ≤ 0 * ((∑ k, (a k : ℝ)) + 1) ^ 0`.
+
+Introduce `a ha b hb`. Establish `hR` using `multilinear_step (ofPositionAdditive (intNum F q) hadd) hsym (fun k => (a k : ℤ)) (unitDeg b)`. Rewrite `hR` using `[hempty, Finset.sum_empty, neg_zero]`. Simplify using `only [ofPositionAdditive_apply] at hR`. Establish `hIb` using `hAC b a (hAb a ha b)`.
+
+Establish `hlt : |C b| < (∑ k, (a k : ℝ)) + 1`. Establish `h1 : (a₀ : ℝ) < a b` using `by exact_mod_cast hb`. Establish `h2 : (a b : ℝ) ≤ ∑ k, (a k : ℝ)` using `Finset.single_le_sum (f := fun k => (a k : ℝ)) (fun k _ => Nat.cast_nonneg _) (Finset.mem_univ b)`. Combine the linear relations using `[hCb b]`. Rewrite using `[key a ha b hb, hR]`.
+
+Simplify using `only [Nat.factorial_zero, Nat.cast_one, div_one, Int.cast_zero, zero_div, sub_zero] at hIb ⊢`. Establish `hz` using `int_eq_of_abs_sub_le (hs0 a) hlt hIb`. Rewrite using `[hz, sub_self]`. Simplify using the standard rewrite rules. Use `⟨a₀, |g (fun _ => a₀)|, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `hw` using `walk_bound g a₀ 0 le_rfl 0 hstep a ha`. Establish `hexp : (((0 + 1 : ℕ) : ℝ) - 1) = 0` using `by norm_num`. Rewrite using `[hexp, Real.rpow_zero, mul_one]`. Use `show |g a| ≤ _`. Simplify using `using hw`.
+
+Consider the case `succ n`. Establish `hstep : ∀ a : K → ℕ, (∀ k, a₀ ≤ a k) → ∀ b, a₀ < a b → |g a - g (Function.update a b (a b - 1))| ≤ (Cs + M) * ((∑ k, (a k : ℝ)) + 1) ^ n`. Introduce `a ha b hb`. Establish `hIb` using `hAC b a (hAb a ha b)`. Establish `hRb` using `hE a b`.
+
+Use `set s := ∑ k, (a k : ℝ) with hs`. Establish `hexp : (((n + 1 : ℕ) : ℝ) - 1) = (n : ℝ)` using `by push_cast; ring`. Rewrite `hIb` using `[hexp, Real.rpow_natCast]`. Establish `hRb' : |((intNum F q (fun _ : Fin (n + 1 + 1) => fun k => (a k : ℤ)) - intNum F q (fun _ : Fin (n + 1 + 1) => (fun k => (a k : ℤ)) - unitDeg b) - ((n + 1 + 1 : ℕ) : ℤ) * intNum F q (Matrix.vecCons (unitDeg b) fun _ : Fin (n + 1) => fun k => (a k : ℤ)) : ℤ) : ℝ)| ≤ (M : ℝ) * (s + …`. Rewrite using `[← Int.cast_abs]`.
+
+Establish `: ((M * ((∑ k, (a k : ℤ)) + 1) ^ (n + 1 - 1) : ℤ) : ℝ) = (M : ℝ) * (s + 1) ^ n`. Rewrite using `[hs]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← this]`.
+
+Conclude with `hRb` after adjusting the coercions. Rewrite using `[key a ha b hb]`. Establish `hpos : (1 : ℝ) ≤ ((n + 1 + 1).factorial : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `hdiv : ∀ x : ℝ, |x / ((n + 1 + 1).factorial : ℝ)| ≤ |x|`. Introduce `x`.
+
+Rewrite using `[abs_div, abs_of_pos (by linarith : (0 : ℝ) < ((n + 1 + 1).factorial : ℝ))]`. Conclude with `div_le_self (abs_nonneg _) hpos`. Establish `hCb' : C b * (s + 1) ^ n ≤ Cs * (s + 1) ^ n`. Establish `hp : 0 ≤ (s + 1) ^ n` using `by positivity`. Establish `: C b ≤ Cs` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun b => |C b|) (fun j _ => abs_nonneg _) (Finset.mem_univ b))`.
+
+Conclude with `mul_le_mul_of_nonneg_right this hp`. Use `(abs_sub _ _).trans ?_` and prove the remaining obligations. Use `(add_le_add hIb ((hdiv _).trans hRb')).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 0 ≤ Cs + (M : ℝ)`.
+
+Establish `: 0 ≤ Cs` using `Finset.sum_nonneg (fun j _ => abs_nonneg _)`. Establish `: (0 : ℝ) ≤ M` using `by exact_mod_cast hM0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨a₀, |g (fun _ => a₀)| + (Cs + M), fun a ha => ?_⟩` and prove the remaining obligations. Establish `hw` using `walk_bound g a₀ (Cs + M) hB n hstep a ha`.
+
+Establish `hexp : (((n + 1 + 1 : ℕ) : ℝ) - 1) = ((n + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[hexp, Real.rpow_natCast]`. Establish `h1 : (1 : ℝ) ≤ ((∑ k, (a k : ℝ)) + 1) ^ (n + 1)` using `one_le_pow₀ (by linarith [hs0 a])`. Establish `h2 : |g (fun _ => a₀)| ≤ |g (fun _ => a₀)| * ((∑ k, (a k : ℝ)) + 1) ^ (n + 1)` using `le_mul_of_one_le_right (abs_nonneg _) h1`. Use `show |g a| ≤ _`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hilbertPrime_succ (d : ℕ) (hM : MixedNumberPolynomial.Statement.{u})
     (hI : HilbertIncrement.Statement.{u}) (hmod : HilbertModule.AtDim.{u, u} d) :
     HilbertPrime.AtDim.{u} (d + 1) := by
@@ -396,6 +492,13 @@ theorem hilbertPrime_succ (d : ℕ) (hM : MixedNumberPolynomial.Statement.{u})
     show |g a| ≤ _
     nlinarith
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Consider the cases of `d with`. Consider the case `zero`.
+
+Introduce `F _ K _ _ ι _ q hq hdim`. Take `⟨a₀, ha₀⟩` from `hZ F K ι q hq (by simpa using hdim)`. Use `⟨a₀, 0, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hfun : (fun _ : Fin 0 => fun k => (a k : ℤ)) = (![] : Fin 0 → K → ℤ)` using `Subsingleton.elim _ _`. Rewrite using `[hfun, ha₀ a ha]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ d`. Conclude with `hilbertPrime_succ d hM hI (hMP d (fun e he => ih e (by omega)))`.
+-/
 theorem HilbertPrime.proof (hZ : HilbertDimZero.Statement.{u}) (hI : HilbertIncrement.Statement.{u})
     (hM : MixedNumberPolynomial.Statement.{u}) (hMP : ModulesFromPrimes.Statement.{u, u}) :
     HilbertPrime.Statement.{u} := by

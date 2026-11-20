@@ -16,25 +16,67 @@ noncomputable section
 
 namespace GlobalTheory.GenMass.Fibre
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   obtain ⟨a, ha⟩ := D.R.m_even
   have := D.R.two_le_m
   unfold Formalism.BasicNotions.Ranks.r Formalism.BasicNotions.Ranks.rS
   omega
 
+/- English proof (translation)
+Rewrite using `[finrank_Vp, rank_eq]`.
+-/
 theorem finrank_eq {D : D7} (p : PlF D) :
     Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
   rw [finrank_Vp, rank_eq]
 
+/- English proof (translation)
+Unfold `LocNG.theta`. Rewrite using `[h.1]`.
+-/
 theorem theta_eq_one {D : D7} {Z : LocDat D} {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {p : PlF D}
     (h : (FP p).PrimeTo) : LocNG.theta (Z.M p) = 1 := by
   unfold LocNG.theta
   rw [h.1]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localTermLattice_over_innerDatum_fg_span`.
+-/
 theorem isLat : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (p : PlF D) (d : LocNG.Datum (FP p)) (t : Loc.Term (Vp D p) (Z.M p) D.R.rS), LocNG.IsTermOver (FP p) d t → t.abelian₂.FG ∧ Submodule.span (D.s.atP p).Ep (t.abelian₂ : Set (Vp D p)) = ⊤ := GlobalTheory.T.localTermLattice_over_innerDatum_fg_span
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localTerm_noDefect_primeTo_invariants`.
+-/
 theorem noDefect : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (p : PlF D), (FP p).RelG (LocNG.theta (Z.M p)) → (FP p).PrimeTo → ∀ (d : LocNG.Datum (FP p)) (t : Loc.Term (Vp D p) (Z.M p) D.R.rS), LocNG.IsTermOver (FP p) d t → ¬ LocNG.BBne (H := locH Z p) t := GlobalTheory.T.localTerm_noDefect_primeTo_invariants
 
+/- English proof (translation)
+Introduce `D Z FP u u' F G F' G' P d0 hk hB hS y hrel hfin`. Take `⟨hBased, hRelG, hPrime, hTerm0, Λ₀, hΛ₀, hΛ₀t⟩` from `hB`. Take `⟨-, -, -, -, hloc⟩` from `hS`. Establish `hLG` using `LatLoc.lattices_local_global D Z`. Establish `single : ∀ p, p ∉ P → ∃! L, L ∈ locSet G G' p (y p)`.
+
+Introduce `p hp`. Take `⟨A, A', hA, hA', hint, hc, hc'⟩` from `hloc p hp`. Establish `key` using `GlobalTheory.T.hermitian_orbit_unique_lattice_integral_frames (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) hk (finrank_eq p) (hRelG p) (hPrime p hp) A A' (fun a b h => ⟨hA.1 a b h, hA'.1 a b h⟩) (fun a => ⟨hA.2 a, hA'.2 a⟩) hint (scaled Z p (frame G)) (scaled Z p (frame G …`. Conclude with `key.1 (hrel p hp)`. Establish `std : ∀ p, p ∉ P → y p = d0 p → lattice₂ D Z.M p Λ₀ ∈ locSet G G' p (y p)`.
+
+Introduce `p hp hy`. Rewrite using `[hy]`. Take `⟨A, A', hA, hA', hint, hc, hc'⟩` from `hloc p hp`. Establish `hT : LocNG.IsTermOver (FP p) (d0 p) (tm FP G G' p (lattice₂ D Z.M p Λ₀))` using `GlobalTheory.T.hermitian_frame_witness_integral_change (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_eq p) (hRelG p) (d0 p) (tm FP F F' p (lattice₂ D Z.M p Λ₀)) (hΛ₀t p hp) A A' (scaled Z p (frame G)) (scaled Z p (frame G')) hA hA' (fun a b => ⟨(hint a b).1, (hint …`. Rewrite using `[theta_eq_one (hPrime p hp), map_one]`.
+
+Use `Submodule.mem_span_singleton.2 ⟨⟨A a b - A' a b, (Z.M p).L.O.sub_mem (hint a b).1 (hint a b).2⟩, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(rw [Algebra.smul_def, mul_one]; rfl)`. Consider the case `(rw [Submodule.smul_def]; simp)`. Consider the case `(simp [Algebra.smul_def])`.
+
+Consider the case `(erw [smul_eq_mul, mul_one])`. Consider the case `(change (A a b - A' a b) * 1 = _; rw [mul_one])⟩) hc hc'`. Conclude with `⟨hT, noDefect D Z FP p (hRelG p) (hPrime p hp) (d0 p) _ hT⟩`. Set `Φ : LV D → ∀ q : P, Submodule (Z.M q).L.O (Vp D q)` to `fun Λ q => lattice₂ D Z.M q Λ`. Establish `hinj : Set.InjOn Φ (globSet G G' y)`.
+
+Introduce `Λ₁ h₁ Λ₂ h₂ e`. Use `(hLG.1 Λ₁ Λ₂ h₁.1 h₂.1).2 fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ P`. Conclude with `congrFun e ⟨p, hp⟩`. Conclude with `(single p hp).unique (h₁.2 p) (h₂.2 p)`.
+
+Establish `himg : Φ '' globSet G G' y = Set.univ.pi (fun q : P => locSet G G' q (y q))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Λ, hΛ, rfl⟩ q -`. Conclude with `hΛ.2 q`.
+
+Introduce `hg`. Set `Lp : ∀ p : PlF D, Submodule (Z.M p).L.O (Vp D p)` to `fun p => if h : p ∈ P then g ⟨p, h⟩ else (single p h).exists.choose`. Establish `hLp : ∀ p, Lp p ∈ locSet G G' p (y p)`. Introduce `p`. Distinguish the cases in `h : p ∈ P`.
+
+Simplify using `only [Lp, dif_pos h]`. Conclude with `hg ⟨p, h⟩ (Set.mem_univ _)`. Simplify using `only [Lp, dif_neg h]`. Conclude with `(single p h).exists.choose_spec`. Establish `hlat : ∀ p, (Lp p).FG ∧ Submodule.span (D.s.atP p).Ep (Lp p : Set (Vp D p)) = ⊤` using `fun p => isLat D Z FP p (y p) (tm FP G G' p (Lp p)) (hLp p).1`.
+
+Establish `hfin' : {p | Lp p ≠ lattice₂ D Z.M p Λ₀}.Finite`. Use `((P.finite_toSet).union hfin).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hn`. Conclude with `hp ((single p hn.1).unique (hLp p) (std p hn.1 hn.2))`.
+
+Take `⟨Λ, hΛ, hΛp⟩` from `hLG.2 Λ₀ hΛ₀ Lp hlat hfin'`. Use `⟨Λ, ⟨hΛ, fun p => by rw [hΛp p]; exact hLp p⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Use `show lattice₂ D Z.M q Λ = g q`. Rewrite using `[hΛp q]`.
+
+Use `show (if h : (q : PlF D) ∈ P then g ⟨q, h⟩ else (single q h).exists.choose) = g q`. Rewrite using `[dif_pos q.2]`. Establish `e1` using `hinj.encard_image`. Rewrite `e1` using `[himg, Set.encard_pi_eq_prod_encard]`. Rewrite using `[← e1]`.
+
+Conclude with `(map_prod ENat.toENNRealRingHom (fun i : P => (locSet G G' i (y i)).encard) Finset.univ).trans (Finset.prod_coe_sort P (fun p => ((locSet G G' p (y p)).encard : ℝ≥0∞)))`.
+-/
 theorem fibre : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (P : Finset (PlF D)) (d0 : Dat Z FP), 4 * D.R.rS + 7 ≤ D.R.k → BaseOK (Tu D u) (Tu D u') F F' P d0 → StdOff Z P F G F' G' → ∀ y : Dat Z FP, (∀ p, p ∉ P → LocNG.Datum.Rel (d0 p) (y p)) → {p | y p ≠ d0 p}.Finite → ((globSet G G' y).encard : ℝ≥0∞) = ∏ p ∈ P, ((locSet G G' p (y p)).encard : ℝ≥0∞) := by
   intro D Z FP u u' F G F' G' P d0 hk hB hS y hrel hfin
   obtain ⟨hBased, hRelG, hPrime, hTerm0, Λ₀, hΛ₀, hΛ₀t⟩ := hB

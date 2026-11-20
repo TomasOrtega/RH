@@ -32,6 +32,9 @@ end KernelCokernelKilling
 
 open KernelCokernelKilling
 
+/- English proof (translation)
+Introduce `R _ G _ _ _ _ N hN M _ hM n hn`. Proceed by induction on `n, hn using Nat.le_induction generalizing M with`. Consider the case `base => exact hN M hM`. Consider the case `succ n hNn ih`. Conclude with `KernelCokernelKilling.shift_step M n (ih (KernelCokernelKilling.shQ M) (KernelCokernelKilling.shQ_tors M hM))`.
+-/
 theorem shift_holds : ShiftStatement.{u} := by
   intro R _ G _ _ _ _ N hN M _ hM n hn
   induction n, hn using Nat.le_induction generalizing M with

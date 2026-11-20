@@ -12,6 +12,9 @@ open PowerSeries
 
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+-/
 theorem intSer_mul {f g : K⟦X⟧} (hf : IntSer f) (hg : IntSer g) : IntSer (f * g) := by
   intro n
   rw [coeff_mul]
@@ -20,6 +23,9 @@ theorem intSer_mul {f g : K⟦X⟧} (hf : IntSer f) (hg : IntSer g) : IntSer (f 
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `hc`. Simplify using the standard rewrite rules.
+-/
 theorem intSer_C {c : K} (hc : ‖c‖ ≤ 1) : IntSer (C c : K⟦X⟧) := by
   intro n
   rw [coeff_C]
@@ -27,11 +33,17 @@ theorem intSer_C {c : K} (hc : ‖c‖ ≤ 1) : IntSer (C c : K⟦X⟧) := by
   · exact hc
   · simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using intSer_C (K := K) (c := 1) (by simp)`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `intSer_mul ih hf`.
+-/
 theorem intSer_pow {f : K⟦X⟧} (hf : IntSer f) (n : ℕ) : IntSer (f ^ n) := by
   induction n with
   | zero => simpa using intSer_C (K := K) (c := 1) (by simp)
   | succ n ih => rw [pow_succ]; exact intSer_mul ih hf
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[Polynomial.aeval_eq_sum_range, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ (hP _) (norm_nonneg _) (intSer_pow hh i n)`.
+-/
 theorem intSer_aeval {h : K⟦X⟧} (hh : IntSer h) (P : Polynomial K) (hP : ∀ i, ‖P.coeff i‖ ≤ 1) :
     IntSer (Polynomial.aeval h P) := by
   intro n
@@ -40,6 +52,31 @@ theorem intSer_aeval {h : K⟦X⟧} (hh : IntSer h) (P : Polynomial K) (hP : ∀
   rw [coeff_smul, smul_eq_mul, norm_mul]
   exact mul_le_one₀ (hP _) (norm_nonneg _) (intSer_pow hh i n)
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[hf]`.
+
+Establish `hs : HasSubst h` using `HasSubst.of_constantCoeff_zero' hh0`. Use `set P : Polynomial K := trunc n f with hP`. Establish `hPi : ∀ i, ‖P.coeff i‖ ≤ 1`. Introduce `i`. Rewrite using `[hP, coeff_trunc]`.
+
+Use `split_ifs with hi`. Conclude with `ih i hi`. Simplify using the standard rewrite rules. Establish `hPs : IntSer (P : K⟦X⟧)` using `fun i => by rw [Polynomial.coeff_coe]; exact hPi i`. Establish `hP0 : constantCoeff (P : K⟦X⟧) = 1`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, Polynomial.coeff_coe, hP, coeff_trunc, if_pos hn, coeff_zero_eq_constantCoeff_apply, hf]`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ⟩ : (X : K⟦X⟧) ^ n ∣ f - P := by`. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, Polynomial.coeff_coe, hP, coeff_trunc, if_pos hm, sub_self]`.
+
+Establish `hX : ∀ g : K⟦X⟧, coeff n (X ^ n * g) = constantCoeff g` using `fun g => by`. Simplify using `using coeff_X_pow_mul g n 0`. Establish `hQ0 : constantCoeff Q = coeff n f`. Rewrite using `[← hX, ← hQ, map_sub, Polynomial.coeff_coe, hP, coeff_trunc, if_neg (lt_irrefl n), sub_zero]`. Take `⟨h', hh'⟩ : (X : K⟦X⟧) ∣ h` from `X_dvd_iff.2 hh0`.
+
+Establish `h'0 : constantCoeff h' = coeff 1 h`. Rewrite using `[hh', coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Establish `hfe : f = (P : K⟦X⟧) + X ^ n * Q` using `by rw [← hQ]; ring`. Establish `hsQ : constantCoeff (PowerSeries.subst h Q : K⟦X⟧) = constantCoeff Q`. Take `⟨Q', hQ'⟩ : (X : K⟦X⟧) ∣ Q - C (constantCoeff Q)` from `X_dvd_iff.2 (by simp)`.
+
+Establish `: Q = C (constantCoeff Q) + X * Q'` using `by rw [← hQ']; ring`. Use `conv_lhs => rw [this, subst_add hs, subst_mul hs, subst_X hs]`. Establish `hC : (PowerSeries.subst h (C (constantCoeff Q) : K⟦X⟧) : K⟦X⟧) = C (constantCoeff Q)`. Rewrite using `[← Polynomial.coe_C, subst_coe hs, Polynomial.aeval_C]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hC]`. Simplify using `[hh0]`. Establish `hL : (PowerSeries.subst h f : K⟦X⟧) * A = Polynomial.aeval h P * A + X ^ n * (h' ^ n * PowerSeries.subst h Q * A)` using `by conv_lhs => rw [hfe, subst_add hs, subst_mul hs, subst_pow hs, subst_X hs, subst_coe hs]`. Establish `: h ^ n = X ^ n * h' ^ n` using `by rw [hh', mul_pow]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hR : f ^ N * B = (P : K⟦X⟧) ^ N * B + X ^ n * (Q * (∑ i ∈ Finset.range N, f ^ i * (P : K⟦X⟧) ^ (N - 1 - i)) * B)`. Use `geom_sum₂_mul f (P : K⟦X⟧) N` as an intermediate fact. Rewrite `this` using `[hQ]`. Take the linear combination `(-B) * this`.
+
+Establish `key` using `congrArg (coeff n) e`. Rewrite `key` using `[hL, hR, map_add, map_add, hX, hX]`. Simplify using `only [map_mul, map_pow, map_sum, hA0, hB0, hf, hP0, hsQ, hQ0, h'0, one_pow, mul_one, Finset.sum_const, Finset.card_range, nsmul_eq_mul] at key`. Establish `h1` using `intSer_mul (intSer_aeval hh P hPi) hA n`. Establish `h2` using `intSer_mul (intSer_pow hPs N) hB n`.
+
+Establish `k2 : (coeff 1 h ^ n - N) * coeff n f = coeff n ((P : K⟦X⟧) ^ N * B) - coeff n (Polynomial.aeval h P * A)`. Take the linear combination `key`. Establish `hu : ‖coeff 1 h ^ n - (N : K)‖ = 1`. Establish `hp : ‖coeff 1 h ^ n‖ = 1` using `by rw [norm_pow, hh1, one_pow]`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hp, norm_neg]; exact hN.ne'), hp, norm_neg, max_eq_left hN.le]`.
+
+Use `congrArg norm k2` as an intermediate fact. Rewrite `this` using `[norm_mul, hu, one_mul]`. Rewrite using `[this, sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (by rwa [norm_neg]))`.
+-/
 theorem intSer_of_funEq (f h A B : K⟦X⟧) (N : ℕ) (hf : constantCoeff f = 1) (hh : IntSer h)
     (hh0 : constantCoeff h = 0) (hh1 : ‖coeff 1 h‖ = 1) (hN : ‖(N : K)‖ < 1) (hA : IntSer A)
     (hA0 : constantCoeff A = 1) (hB : IntSer B) (hB0 : constantCoeff B = 1)
@@ -109,6 +146,9 @@ theorem intSer_of_funEq (f h A B : K⟦X⟧) (N : ℕ) (hf : constantCoeff f = 1
   rw [this, sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 (by rwa [norm_neg]))
 
+/- English proof (translation)
+Introduce `_ _ f h A B N` and use `intSer_of_funEq f h A B N`.
+-/
 theorem intSer_of_funEq_padic : ∀ (p : ℕ) [Fact p.Prime] (f h A B : PowerSeries ℂ_[p]) (N : ℕ), PowerSeries.constantCoeff f = 1 → IntSer h → PowerSeries.constantCoeff h = 0 → ‖PowerSeries.coeff 1 h‖ = 1 → ‖(N : ℂ_[p])‖ < 1 → IntSer A → PowerSeries.constantCoeff A = 1 → IntSer B → PowerSeries.constantCoeff B = 1 → (PowerSeries.subst h f : PowerSeries ℂ_[p]) * A = f ^ N * B → IntSer f :=
   fun _ _ f h A B N => intSer_of_funEq f h A B N
 

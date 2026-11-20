@@ -19,6 +19,9 @@ noncomputable def transConn {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (ρ
   else if i = j then fun x => -((ρ x : ℂ) • (conn G₁ x (coordVec a) - conn G₀ x (coordVec a)))
   else fun x => -conn G₀ x (coordVec a)
 
+/- English proof (translation)
+Establish `h1 : (A + B) * w ≤ |c| + C` using `by nlinarith [le_abs_self c]`. Establish `hC : 0 ≤ C` using `hx0.trans hx`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul hx h1 (by positivity) hC`.
+-/
 theorem weighted_bound_cut_sum (x A B w C c : ℝ) (hx0 : 0 ≤ x) (hx : x ≤ C) (hA0 : 0 ≤ A) (hB0 : 0 ≤ B)
     (hw0 : 0 ≤ w) (hw1 : w ≤ 1) (hA : A * w ≤ c) (hB : B ≤ C) : x * (A + B) * w ≤ C * (|c| + C) := by
   have h1 : (A + B) * w ≤ |c| + C := by nlinarith [le_abs_self c]
@@ -26,6 +29,13 @@ theorem weighted_bound_cut_sum (x A B w C c : ℝ) (hx0 : 0 ≤ x) (hx : x ≤ C
   rw [mul_assoc]
   exact mul_le_mul hx h1 (by positivity) hC
 
+/- English proof (translation)
+Establish `hC : 0 ≤ C` using `(norm_nonneg _).trans hx`. Establish `e1` using `weighted_bound_cut_sum ‖x‖ ‖X₁‖ ‖X₀‖ (wa * wb) C c (norm_nonneg _) hx (norm_nonneg _) (norm_nonneg _) (by positivity) (by nlinarith) hX₁ hX₀`. Establish `e2` using `weighted_bound_cut_sum ‖d‖ ‖Y₁‖ ‖Y₀‖ wa C c (norm_nonneg _) hd (norm_nonneg _) (norm_nonneg _) hwa0 hwa1 hY₁ hY₀`. Establish `n1 : ‖x * (X₁ - X₀) - d * (Y₁ - Y₀)‖ ≤ ‖x‖ * (‖X₁‖ + ‖X₀‖) + ‖d‖ * (‖Y₁‖ + ‖Y₀‖)`. Apply the tactic sequence `refine (norm_sub_le _ _).trans (add_le_add ?_ ?_) <;> rw [norm_mul] <;>`.
+
+Conclude with `mul_le_mul_of_nonneg_left (norm_sub_le _ _) (norm_nonneg _)`. Establish `hww : 0 ≤ wa * wb` using `by positivity`. Establish `e2' : ‖d‖ * (‖Y₁‖ + ‖Y₀‖) * (wa * wb) ≤ C * (|c| + C)`. Establish `h0 : 0 ≤ ‖d‖ * (‖Y₁‖ + ‖Y₀‖) * wa` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem weighted_bound_cut_entry (x X₁ X₀ d Y₁ Y₀ : ℂ) (wa wb C c : ℝ) (hx : ‖x‖ ≤ C) (hd : ‖d‖ ≤ C)
     (hX₁ : ‖X₁‖ * (wa * wb) ≤ c) (hX₀ : ‖X₀‖ ≤ C) (hY₁ : ‖Y₁‖ * wa ≤ c) (hY₀ : ‖Y₀‖ ≤ C)
     (hwa0 : 0 ≤ wa) (hwa1 : wa ≤ 1) (hwb0 : 0 ≤ wb) (hwb1 : wb ≤ 1) :
@@ -50,6 +60,33 @@ theorem weighted_bound_cut_entry (x X₁ X₀ d Y₁ Y₀ : ℂ) (wa wb C c : �
     _ ≤ C * (|c| + C) + C * (|c| + C) := add_le_add e1 e2'
     _ = 2 * C * (|c| + C) := by ring
 
+/- English proof (translation)
+Introduce `n r _ _ S U K G₀ G₁ ρ c hU hK hKU hsmall hG₀ hG₁ hconn hcurv hρ hρK j`. Take `⟨C, hC0, hC⟩` from `exists_bound_smooth_data U K G₀ ρ hU hK hKU hG₀ hρ`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.2 le_top`. Establish `h3 : (2 : WithTop ℕ∞) + 1 ≤ ∞` using `WithTop.coe_le_coe.2 le_top`. Establish `hw : ∀ v ∈ U, ∀ a, 0 ≤ poinWt S v a ∧ poinWt S v a ≤ 1` using `fun v hv a => (GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv)).1 a`.
+
+Establish `hρd : ∀ v ∈ U, ContDiffAt ℝ ∞ ρ v` using `fun v hv => hρ.contDiffAt (hU.mem_nhds hv)`. Establish `hρc : ∀ v ∈ U, ContDiffAt ℝ 2 (fun x => (ρ x : ℂ)) v` using `fun v hv => Complex.ofRealCLM.contDiff.contDiffAt.comp v ((hρd v hv).of_le h2)`. Use `set θ := transConn ρ G₀ G₁ j with hθ`. Establish `hsm : ∀ i a, ∀ v ∈ offHyp S U, MContDiffAt 2 (θ i a) v`. Introduce `i a v hv`.
+
+Establish `h1` using `(hG₁ v hv).1.conn (j := 2) (hG₁ v hv).2 h3 (coordVec a)`. Establish `h0` using `(hG₀ v hv.1).1.conn (j := 2) (hG₀ v hv.1).2 h3 (coordVec a)`. Simplify using `only [hθ, transConn]`. Use `split_ifs`. Conclude with `h1.neg`.
+
+Conclude with `(MContDiffAt.smul (hρc v hv.1) (h1.sub h0)).neg`. Conclude with `h0.neg`. Establish `heq : ∀ v ∈ offHyp S U, (fun i a b => mdbar (θ i a) v (coordVec b)) = intersection_update_fsHerm_neg_one (curvAt G₁ v) ((ρ v : ℂ) • (curvAt G₁ v - curvAt G₀ v) - cutForm ρ G₀ G₁ v) (curvAt G₀ v) j`. Introduce `v hv`. Use function extensionality and compare the values at `i a b`.
+
+Simplify using `only [hθ, transConn, intersection_update_fsHerm_neg_one]`. Use `split_ifs with h h'`. Rewrite using `[mdbar_neg]`. Both sides reduce to the same expression. Conclude with `congrFun (congrFun (GlobalTheory.T.antiholomorphicDeriv_cutoff_connection_difference_eq ((hρd v hv.1).differentiableAt (by simp)) ((hG₀ v hv.1).1.of_le h2) (hG₀ v hv.1).2 ((hG₁ v hv).1.of_le h2) (hG₁ v hv).2) a) b`.
+
+Rewrite using `[mdbar_neg]`. Both sides reduce to the same expression. Establish `hzero : ∀ a, ∀ v ∈ offHyp S U, v ∉ K → θ j a v = 0`. Introduce `a v hv hvK`. Simplify using `[hθ, transConn, hρK v hv.1 hvK]`.
+
+Establish `hcC : 0 ≤ C * (|c| + C)` using `by positivity`. Establish `hbd1 : ∀ v ∈ offHyp S U, v ∈ K → ∀ a p q, ‖θ j a v p q‖ * poinWt S v a ≤ |c| + C + 2 * C * (|c| + C)`. Introduce `v hv hvK a p q`. Take `⟨hρv, -, hc0, -⟩` from `hC v hvK`. Simplify using `only [hθ, transConn, lt_irrefl, if_false, if_true, Matrix.neg_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, norm_neg, norm_mul, Complex.norm_real, Real.norm_eq_abs]`.
+
+Establish `e` using `weighted_bound_cut_sum |ρ v| ‖conn G₁ v (coordVec a) p q‖ ‖conn G₀ v (coordVec a) p q‖ (poinWt S v a) C c (abs_nonneg _) hρv (norm_nonneg _) (norm_nonneg _) (hw v hv.1 a).1 (hw v hv.1 a).2 (hconn v hv a p q) (hc0 a p q)`. Establish `n1` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (norm_sub_le (conn G₁ v (coordVec a) p q) (conn G₀ v (coordVec a) p q)) (abs_nonneg (ρ v))) (hw v hv.1 a).1`. Establish `: 0 ≤ |c|` using `abs_nonneg c`. Use the polynomial consequences of the given equalities and inequalities. Establish `hbd2 : ∀ v ∈ offHyp S U, v ∈ K → ∀ i a b p q, ‖mdbar (θ i a) v (coordVec b) p q‖ * (poinWt S v a * poinWt S v b) ≤ |c| + C + 2 * C * (|c| + C)`.
+
+Introduce `v hv hvK i a b p q`. Take `⟨hρv, hdv, hc0, hk0⟩` from `hC v hvK`. Take `⟨hwa0, hwa1⟩` from `hw v hv.1 a`. Take `⟨hwb0, hwb1⟩` from `hw v hv.1 b`. Establish `hww : 0 ≤ poinWt S v a * poinWt S v b` using `by positivity`.
+
+Establish `hww1 : poinWt S v a * poinWt S v b ≤ 1` using `by nlinarith`. Establish `hca : 0 ≤ |c|` using `abs_nonneg c`. Rewrite using `[show mdbar (θ i a) v (coordVec b) = _ from congrFun (congrFun (congrFun (heq v hv) i) a) b]`. Simplify using `only [intersection_update_fsHerm_neg_one]`. Use `split_ifs with h h'`.
+
+Use `hcurv v hv a b p q` as an intermediate fact. Simplify using `only [curvAt]`. Use polynomial arithmetic with `[le_abs_self c]`. Simplify using `only [curvAt, cutForm, Pi.sub_apply, Pi.smul_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `have e := weighted_bound_cut_entry (ρ v : ℂ) (curv G₁ v (coordVec a) (coordVec b) p q) (curv G₀ v (coordVec a) (coordVec b) p q) (dbar (fun x => (ρ x : ℂ)) v (coordVec b)) (conn G₁ v (coordVec a) p q) (conn G₀ v (coordVec a) p q) (poinWt S v a) (poinWt S v b) C c (by rw [Complex. …`.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [curvAt]`. Use `hk0 a b p q` as an intermediate fact. Use `mul_le_mul_of_nonneg_left hww1 (norm_nonneg (curv G₀ v (coordVec a) (coordVec b) p q))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨hi, hint⟩` from `GlobalTheory.T.integral_polarisedTopForm_dbarExact_eq_zero S U K θ j (|c| + C + 2 * C * (|c| + C)) hU hK hKU hsmall hsm hzero hbd1 hbd2`. Establish `hO : MeasurableSet (offHyp S U)` using `(isOpen_offHyp_of_isOpen S U hU).measurableSet`. Use `⟨hi.congr_fun (fun v hv => congrArg mixTop (heq v hv)) hO, ?_⟩` and prove the remaining obligations. Rewrite using `[← hint]`. Conclude with `setIntegral_congr_fun hO fun v hv => congrArg mixTop (heq v hv).symm`.
+-/
 theorem integral_mixTop_position_eq_zero : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (S : Finset (Fin n)) (U K : Set (V n)) (G₀ G₁ : V n → Matrix r r ℂ) (ρ : V n → ℝ) (c : ℝ), IsOpen U → IsCompact K → K ⊆ U → (∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2) → (∀ v ∈ U, MContDiffAt ∞ G₀ v ∧ IsUnit (G₀ v).det) → (∀ v ∈ offHyp S U, MContDiffAt ∞ G₁ v ∧ IsUnit (G₁ v).det) → (∀ v ∈ offHyp S U, ∀ a i j, ‖conn G₁ v (coordVec a) i j‖ * poinWt S v a ≤ c) → (∀ v ∈ offHyp S U, ∀ a b i j, ‖curv G₁ v (coordVec a) (coordVec b) i j‖ * (poinWt S v a * poinWt S v b) ≤ c) → ContDiffOn ℝ ∞ ρ U → (∀ v ∈ U, v ∉ K → ρ v = 0) → ∀ j : Fin n, IntegrableOn (fun v => mixTop (intersection_update_fsHerm_neg_one (curvAt G₁ v) ((ρ v : ℂ) • (curvAt G₁ v - curvAt G₀ v) - cutForm ρ G₀ G₁ v) (curvAt G₀ v) j)) (offHyp S U) ∧ ∫ v in offHyp S U, mixTop (intersection_update_fsHerm_neg_one (curvAt G₁ v) ((ρ v : ℂ) • (curvAt G₁ v - curvAt G₀ v) - cutForm ρ G₀ G₁ v) (curvAt G₀ v) j) = 0 := by
   intro n r _ _ S U K G₀ G₁ ρ c hU hK hKU hsmall hG₀ hG₁ hconn hcurv hρ hρK j
   obtain ⟨C, hC0, hC⟩ := exists_bound_smooth_data U K G₀ ρ hU hK hKU hG₀ hρ

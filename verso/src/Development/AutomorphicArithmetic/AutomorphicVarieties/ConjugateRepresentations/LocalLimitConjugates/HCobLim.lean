@@ -8,19 +8,33 @@ open UpperTheory.V.Cj UpperTheory.V.Cj.H
 private def Fty {I : Type} (f : (I → ℂ) → ℂ) : Prop :=
   ∃ L : I →₀ ℂ, ∀ b : I → ℂ, Finsupp.linearCombination ℂ b L = f b
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Finsupp.single i a, fun b => by rw [Finsupp.linearCombination_single, smul_eq_mul]⟩`.
+-/
 private theorem fty_ev {I : Type} (a : ℂ) (i : I) : Fty fun b : I → ℂ => a * b i :=
   ⟨Finsupp.single i a, fun b => by rw [Finsupp.linearCombination_single, smul_eq_mul]⟩
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `hf`. Take `⟨M, hM⟩` from `hg`. Conclude with `⟨L - M, fun b => by rw [map_sub, hL, hM]⟩`.
+-/
 private theorem fty_sub {I : Type} {f g : (I → ℂ) → ℂ} (hf : Fty f) (hg : Fty g) : Fty fun b => f b - g b := by
   obtain ⟨L, hL⟩ := hf
   obtain ⟨M, hM⟩ := hg
   exact ⟨L - M, fun b => by rw [map_sub, hL, hM]⟩
 
+/- English proof (translation)
+Use `choose L hL using hf`. Conclude with `⟨∑ k ∈ t, L k, fun b => by rw [map_sum]; exact Finset.sum_congr rfl fun k _ => hL k b⟩`.
+-/
 private theorem fty_sum {I K : Type} (t : Finset K) (f : K → (I → ℂ) → ℂ) (hf : ∀ k, Fty (f k)) :
     Fty fun b => ∑ k ∈ t, f k b := by
   choose L hL using hf
   exact ⟨∑ k ∈ t, L k, fun b => by rw [map_sum]; exact Finset.sum_congr rfl fun k _ => hL k b⟩
 
+/- English proof (translation)
+Use `choose L hL using hf`. Establish `hs : ∀ (b : I → ℂ) j, (L j).sum (fun i x => x * b i) = f j b`. Introduce `b j`. Rewrite using `[← hL, Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+
+Take `⟨b, hb⟩` from `absSolve I J L c cn (fun k => by`. Take `⟨b, hb⟩` from `h k`. Conclude with `⟨b, fun j => by rw [hs, hb]⟩) hl`. Conclude with `⟨b, fun j => by rw [← hs, hb]⟩`.
+-/
 private theorem fty_solve {I J : Type} (f : J → (I → ℂ) → ℂ) (hf : ∀ j, Fty (f j)) (c : J → ℂ) (cn : ℕ → J → ℂ)
     (h : ∀ k, ∃ b, ∀ j, f j b = cn k j) (hl : ∀ j, Tendsto (fun k => cn k j) atTop (𝓝 (c j))) :
     ∃ b, ∀ j, f j b = c j := by
@@ -34,6 +48,27 @@ private theorem fty_solve {I J : Type} (f : J → (I → ℂ) → ℂ) (hf : ∀
     exact ⟨b, fun j => by rw [hs, hb]⟩) hl
   exact ⟨b, fun j => by rw [← hs, hb]⟩
 
+/- English proof (translation)
+Introduce `Γ S _ d ρ hρ q c cn h hl`. Establish `hlim : ∀ x : List Γ, x.length = q + 1 → ∀ s i, Tendsto (fun k => (c - cn k) x s i) atTop (𝓝 (c x s i))`. Introduce `x hx s i`. Establish `h1 : Tendsto (fun k => cn k x s i) atTop (𝓝 0)` using `tendsto_pi_nhds.1 (hl x hx s) i`. Simplify using `using (tendsto_const_nhds (x := c x s i)).sub h1`.
+
+Consider the cases of `q with`. Consider the case `zero`. Introduce `x hx`. Use function extensionality and compare the values at `s i`. Establish `h1` using `hlim x hx s i`.
+
+Establish `h2 : (fun k => (c - cn k) x s i) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `k`. Rewrite using `[h k x hx]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+
+Conclude with `tendsto_nhds_unique h1 tendsto_const_nhds`. Consider the case `succ q`. Set `cur : (List Γ × S × Fin d → ℂ) → List Γ → S → Fin d → ℂ` to `fun b x s i => b (x, s, i)`. Set `f : (Γ × {x : List Γ // x.length = q + 1} × S × Fin d) ⊕ ({x : List Γ // x.length = q + 2} × S × Fin d) → (List Γ × S × Fin d → ℂ) → ℂ` to `Sum.elim (fun p b => cur b (p.2.1.1.map (p.1 * ·)) p.2.2.1 p.2.2.2 - ρ p.1 (cur b p.2.1.1) p.2.2.1 p.2.2.2) (fun p b => hd (cur b) p.1.1 p.2.1 p.2.2)`. Establish `hf : ∀ j, Fty (f j)`.
+
+Introduce and unpack `(⟨γ, x, s, i⟩ | ⟨x, s, i⟩)`. Take `⟨s', B, hB⟩` from `hρ γ s`. Establish `e : f (Sum.inl (γ, x, s, i)) = fun b => 1 * b (x.1.map (γ * ·), s, i) - ∑ j, B i j * b (x.1, s', j)`. Use function extensionality and compare the values at `b`. Simplify using `only [f, Sum.elim_inl, hB, one_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `fty_sub (fty_ev _ _) (fty_sum _ _ fun j => fty_ev _ _)`. Establish `e : f (Sum.inr (x, s, i)) = fun b => ∑ j ∈ Finset.range x.1.length, ((-1 : ℂ) ^ j) * b (x.1.eraseIdx j, s, i)`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[f, cur, hd, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `fty_sum _ _ fun j => fty_ev _ _`. Take `⟨b, hb⟩` from `fty_solve f hf (Sum.elim (fun _ => 0) fun p => c p.1.1 p.2.1 p.2.2) (fun k => Sum.elim (fun _ => 0) fun p => (c - cn k) p.1.1 p.2.1 p.2.2) (fun k => by`. Take `⟨b, h1, h2⟩` from `h k`.
+
+Use `⟨fun p => b p.1 p.2.1 p.2.2, ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨γ, x, s, i⟩ | ⟨x, s, i⟩)`. Express the relevant statement in the definitionally equal form `b (x.1.map (γ * ·)) s i - ρ γ (b x.1) s i = 0`. Rewrite using `[h1 γ x.1 x.2, sub_self]`. Express the relevant statement in the definitionally equal form `hd b x.1 s i = (c - cn k) x.1 s i`.
+
+Rewrite using `[h2 x.1 x.2]) (by`. Introduce and unpack `(p | ⟨x, s, i⟩)`. Conclude with `tendsto_const_nhds`. Conclude with `hlim x.1 x.2 s i)`. Use `⟨cur b, fun γ x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `s i`. Conclude with `sub_eq_zero.1 (hb (Sum.inl (γ, ⟨x, hx⟩, s, i)))`. Use function extensionality and compare the values at `s i`. Conclude with `(hb (Sum.inr (⟨x, hx⟩, s, i))).symm`.
+-/
 theorem UpperTheory.V.Cj.H.hCobLim :
     UpperTheory.V.Cj.H.HCobLim := by
   intro Γ S _ d ρ hρ q c cn h hl

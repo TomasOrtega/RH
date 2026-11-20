@@ -8,5 +8,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory.Mem GlobalTheory.Mem.R3
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CongConjugate.congConj | exact GlobalTheory.CongConjugate.congConj | (intros; apply GlobalTheory.CongConjugate.congConj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_congruence_conj_contains_congruence : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ), principalLevelFrame.CongConj L n := by
   first | exact @GlobalTheory.CongConjugate.congConj | exact GlobalTheory.CongConjugate.congConj | (intros; apply GlobalTheory.CongConjugate.congConj <;> assumption)

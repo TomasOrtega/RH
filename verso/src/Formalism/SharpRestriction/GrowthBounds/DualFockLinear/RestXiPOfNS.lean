@@ -31,6 +31,9 @@ def NSAt (CH CE C6 C18 : ℝ) (p : ℕ) {n' : ℕ} [NeZero n'] {O : Type} [CommR
             ValLe (Kf := KK O) (p : O) DX
               ((p : KK O) ^ κ * fock G (∑ q, sig q) / (((∏ s, (d s).factorial : ℕ) : ℕ) : KK O))
 
+/- English proof (translation)
+Take `⟨DX, hDX, hN⟩` from `hN`. Use `⟨DX, hDX, fun G h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, Dt, F2, a1, a2, a3, a4, a5⟩` from `hN G h1 h2 h3 h4`. Take `⟨Gp, R, b1, b2, b3, b4, b5, b6⟩` from `h14b r J Dt a1 a2 F2 a3 a4`. Conclude with `a5 Gp R b1 b2 b3 b4 b5 b6`.
+-/
 theorem xiAtP_of_NS {CH CE C6 C18 : ℝ} {p : ℕ} {n' : ℕ} [NeZero n'] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {w : O} {m : ℕ} {r : ℕ}
     {TT : Finset (Fin n')} {d deg : Fin n' → ℕ} {K : ℕ} [NeZero r] [NeZero K] {hk : m + 1 = r + K} {hrk : r ≤ m + 1}
@@ -70,6 +73,11 @@ def NSStep (C CD CLa CH CE C6 C18 : ℝ) : Prop :=
 def RestNS (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ CDf C₁ : ℝ, 0 < CDf ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → NSStep C CDf CLa CH CE C6 C18
 
+/- English proof (translation)
+Introduce `hA h14b`. Take `⟨CDf, C₁, h1, h2, h3⟩` from `hN hA`. Use `⟨CDf, C₁, h1, h2, fun C hC => ?_⟩` and prove the remaining obligations. Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H K _ _ hk hrk F hF E' hE' nb B hB hli hc`. Establish `hG1 : AdmissibleDVR p n' O` using `Formalism.MainNotions.flipOneThree.admissible_dvr_of_unramified_quadratic_setting hSet`.
+
+Establish `hK : CharZero (KK O)` using `Formalism.MainNotions.G.GLWeightTheory.dvr_fraction_field_charZero (dvrOfStd hSet) hG1.prime`. Establish `hO : CharZero O` using `(algebraMap O (KK O)).charZero`. Conclude with `xiAtP_of_NS (h14b p O ⟨⟨dvrOfStd hSet⟩, n', hG1⟩) (h3 C hC p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H K hk hrk F hF E' hE' nb B hB hli hc)`.
+-/
 theorem restXiP_of_NS (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hN : RestNS D CLa Ck Crk Cdeg CH CE C6 C18) : RestXiP D CLa Ck Crk Cdeg CH CE C6 C18 := by
   intro hA h14b
@@ -84,6 +92,9 @@ theorem restXiP_of_NS (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 
     (h3 C hC p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H K hk hrk F hF E' hE' nb B hB
       hli hc)
 
+/- English proof (translation)
+The claim follows from `restXi_of_P D CLa Ck Crk Cdeg CH CE C6 C18 (restXiP_of_NS D CLa Ck Crk Cdeg CH CE C6 C18 hN)`.
+-/
 theorem restXi_of_NS (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hN : RestNS D CLa Ck Crk Cdeg CH CE C6 C18) : RestXi D CLa Ck Crk Cdeg CH CE C6 C18 :=
   restXi_of_P D CLa Ck Crk Cdeg CH CE C6 C18 (restXiP_of_NS D CLa Ck Crk Cdeg CH CE C6 C18 hN)

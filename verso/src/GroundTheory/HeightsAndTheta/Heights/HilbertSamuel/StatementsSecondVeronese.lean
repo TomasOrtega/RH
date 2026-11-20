@@ -15,6 +15,9 @@ def SecondVeronese.Statement : Prop :=
       (∀ I : AllFam, I.IsFamily → top I d.x d.m D = 2 ^ (D + 1) * hhOf I D) ∧
       genDeg (ι := GlobalTheory κ) (coordIdeal ℤ d.x) D 1 = 2 ^ D
 
+/- English proof (translation)
+The claim follows from `le_rfl`.
+-/
 example : (1 : ℕ) ≤ 1 := le_rfl
 
 end

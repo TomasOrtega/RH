@@ -19,6 +19,9 @@ variable {V W : Type} [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower 
   [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W]
   [FiniteDimensional k V] [FiniteDimensional k W]
 
+/- English proof (translation)
+Unfold `cp`. Rewrite using `[← LinearEquiv.charpoly_conj (e.restrictScalars k) (Algebra.lsmul k k V a)]`. Use `congr 1`. Use extensionality with `w`. Simplify using `[LinearEquiv.conj_apply]`.
+-/
 theorem cp_congr (e : V ≃ₗ[A] W) (a : A) : cp k V a = cp k W a := by
   unfold cp
   rw [← LinearEquiv.charpoly_conj (e.restrictScalars k) (Algebra.lsmul k k V a)]
@@ -26,22 +29,48 @@ theorem cp_congr (e : V ≃ₗ[A] W) (a : A) : cp k V a = cp k W a := by
   ext w
   simp [LinearEquiv.conj_apply]
 
+/- English proof (translation)
+Unfold `cp`. Rewrite using `[← LinearMap.charpoly_prodMap]`. Use `congr 1`.
+-/
 theorem cp_prod (a : A) : cp k (V × W) a = cp k V a * cp k W a := by
   unfold cp
   rw [← LinearMap.charpoly_prodMap]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.finBasis k V), LinearMap.toMatrix_one, Matrix.charpoly_one]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_one_eq (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V] :
     LinearMap.charpoly (1 : V →ₗ[k] V) = (X - 1 : k[X]) ^ finrank k V := by
   rw [← LinearMap.charpoly_toMatrix _ (Module.finBasis k V), LinearMap.toMatrix_one,
     Matrix.charpoly_one]
   simp
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix _ (Module.finBasis k V), map_zero, Matrix.charpoly_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_zero_eq (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V] :
     LinearMap.charpoly (0 : V →ₗ[k] V) = (X : k[X]) ^ finrank k V := by
   rw [← LinearMap.charpoly_toMatrix _ (Module.finBasis k V), map_zero, Matrix.charpoly_zero]
   simp
 
+/- English proof (translation)
+Set `p : End A (V × W)` to `(LinearMap.inl A V W).comp (LinearMap.fst A V W)`. Set `F : End (End A (V × W)) (V × W)` to `{ toFun := p map_add' := p.map_add map_smul' := by`. Introduce and unpack `φ ⟨v, w⟩`. Establish `e₁` using `LinearMap.congr_fun (h₁ ((LinearMap.snd A V W).comp (φ.comp (LinearMap.inl A V W)))) v`. Establish `e₂` using `LinearMap.congr_fun (h₂ ((LinearMap.fst A V W).comp (φ.comp (LinearMap.inr A V W)))) w`.
+
+Establish `e₃ : φ (v, w) = φ (v, 0) + φ (0, w)` using `by rw [← map_add]; simp`. Simplify using `only [LinearMap.comp_apply, LinearMap.inl_apply, LinearMap.inr_apply, LinearMap.snd_apply, LinearMap.fst_apply, LinearMap.zero_apply] at e₁ e₂`. Express the relevant statement in the definitionally equal form `((φ (v, w)).1, (0 : W)) = φ (v, 0)`. Rewrite using `[e₃]`. Use `ext`.
+
+Simplify using `[e₂]`. Conclude with `e₁.symm }`. Set `b` to `Module.finBasis k (V × W)`. Use `haveI : IsSemisimpleModule A (V × W) := by`. Establish `hs` using `IsSemisimpleModule.sup (IsSemisimpleModule.range (LinearMap.inl A V W)) (IsSemisimpleModule.range (LinearMap.inr A V W))`.
+
+Rewrite `hs` using `[LinearMap.sup_range_inl_inr]`. Conclude with `IsSemisimpleModule.congr Submodule.topEquiv.symm`. Take `⟨r, hr⟩` from `jacobson_density F (Finset.univ.image b)`. Establish `hall : (p.restrictScalars k) = Algebra.lsmul k k (V × W) r` using `b.ext fun i => hr _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Establish `hV : Algebra.lsmul k k V r = 1`.
+
+Use extensionality with `v`. Conclude with `(congrArg Prod.fst (LinearMap.congr_fun hall (v, 0))).symm`. Establish `hW : Algebra.lsmul k k W r = 0`. Use extensionality with `w`. Conclude with `(congrArg Prod.snd (LinearMap.congr_fun hall (0, w))).symm`.
+
+Establish `key` using `h r`. Unfold `cp at key`. Rewrite `key` using `[hV, hW, charpoly_one_eq, charpoly_zero_eq]`. Establish `hdeg : finrank k V = finrank k W`. Use `congrArg natDegree key` as an intermediate fact.
+
+Establish `h1 : (X - 1 : k[X]).natDegree = 1`. Simplify using `using natDegree_X_sub_C (1 : k)`. Simplify `this` using `[natDegree_pow, h1]`. Establish `h0` using `congrArg (Polynomial.eval 0) key`. Simplify using `only [eval_pow, eval_sub, eval_X, eval_one, zero_sub] at h0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hW0 : finrank k W ≠ 0` using `hdeg ▸ hne`. Rewrite `h0` using `[zero_pow hW0]`. Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) h0`.
+-/
 theorem finrank_eq_zero_of_hom
     [IsSemisimpleModule A V] [IsSemisimpleModule A W] (h : ∀ a : A, cp k V a = cp k W a)
     (h₁ : ∀ f : V →ₗ[A] W, f = 0) (h₂ : ∀ f : W →ₗ[A] V, f = 0) : finrank k V = 0 := by
@@ -96,6 +125,19 @@ theorem finrank_eq_zero_of_hom
 
 end
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `step : ∀ (V W : Type) [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower k A V] [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W] [FiniteDimensional k V] [FiniteDimensional k W] [IsSemisimpleModule A V] [IsSemisimpleModule A W], finrank k V + finrank k W ≤ n …`. Introduce `V W _ _ _ _ _ _ _ _ _ _ _ _ hn h f hf`. Take `⟨P, Q, S, ⟨e₁⟩, ⟨e₂⟩, hP, hQ⟩` from `split_of_hom (k := k) f hf`.
+
+Use `haveI := finiteDimensional_sub (k := k) P`. Use `haveI := finiteDimensional_sub (k := k) Q`. Use `haveI := finiteDimensional_sub (k := k) S`. Take `⟨e⟩` from `ih (finrank k P + finrank k Q) (by omega) P Q le_rfl fun a => by`. Use `h a` as an intermediate fact.
+
+Rewrite `this` using `[cp_congr e₁, cp_congr e₂, cp_prod, cp_prod]`. Establish `hS : cp k S a ≠ 0` using `(LinearMap.charpoly_monic _).ne_zero`. Conclude with `mul_right_cancel₀ hS this`. Conclude with `⟨e₁.trans ((e.prodCongr (LinearEquiv.refl A _)).trans e₂.symm)⟩`. Introduce `V W _ _ _ _ _ _ _ _ _ _ _ _ hn h`.
+
+Distinguish the cases in `h₁ : ∀ f : V →ₗ[A] W, f = 0`. Distinguish the cases in `h₂ : ∀ f : W →ₗ[A] V, f = 0`. Use `haveI : Subsingleton V := Module.finrank_zero_iff.1 (finrank_eq_zero_of_hom h h₁ h₂) haveI : Subsingleton W := Module.finrank_zero_iff.1 (finrank_eq_zero_of_hom (fun a => (h a).symm) h₂ h₁)`. Conclude with `⟨LinearEquiv.ofSubsingleton V W⟩`. Use `push_neg at h₂`.
+
+Take `⟨f, hf⟩` from `h₂`. Take `⟨e⟩` from `step W V (by omega) (fun a => (h a).symm) f hf`. Conclude with `⟨e.symm⟩`. Use `push_neg at h₁`. Take `⟨f, hf⟩` from `h₁`.
+
+Conclude with `step V W hn h f hf`.
+-/
 theorem nonempty_linear_equiv_of_charpoly_eq (n : ℕ) : ∀ (V W : Type) [AddCommGroup V] [Module k V] [Module A V]
     [IsScalarTower k A V] [AddCommGroup W] [Module k W] [Module A W] [IsScalarTower k A W]
     [FiniteDimensional k V] [FiniteDimensional k W] [IsSemisimpleModule A V] [IsSemisimpleModule A W],
@@ -133,6 +175,9 @@ theorem nonempty_linear_equiv_of_charpoly_eq (n : ℕ) : ∀ (V W : Type) [AddCo
     obtain ⟨f, hf⟩ := h₁
     exact step V W hn h f hf
 
+/- English proof (translation)
+The claim follows from `ρ.asModuleEquiv.symm.finiteDimensional cp k ρ.asModule a = LinearMap.charpoly (ρ.asAlgebraHom a) := by haveI : FiniteDimensional k ρ.asModule := ρ.asModuleEquiv.symm.finiteDimensional unfold cp rw [← LinearEquiv.charpoly_conj ρ.asModuleEquiv.symm (ρ.asAlgebraHom a)] congr 1`.
+-/
 theorem cp_asModule {Γ V : Type} [Monoid Γ] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (ρ : Representation k Γ V) (a : MonoidAlgebra k Γ) :
     haveI : FiniteDimensional k ρ.asModule := ρ.asModuleEquiv.symm.finiteDimensional
@@ -142,6 +187,13 @@ theorem cp_asModule {Γ V : Type} [Monoid Γ] [AddCommGroup V] [Module k V] [Fin
   rw [← LinearEquiv.charpoly_conj ρ.asModuleEquiv.symm (ρ.asAlgebraHom a)]
   congr 1
 
+/- English proof (translation)
+Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule ρ).1 hρ`. Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule σ).1 hσ`. Use `haveI : FiniteDimensional k ρ.asModule := ρ.asModuleEquiv.symm.finiteDimensional`. Use `haveI : FiniteDimensional k σ.asModule := σ.asModuleEquiv.symm.finiteDimensional`. Establish `key : ∀ a : MonoidAlgebra k Γ, cp k ρ.asModule a = cp k σ.asModule a` using `fun a => by`.
+
+Rewrite using `[cp_asModule, cp_asModule, h]`. Take `⟨e⟩` from `nonempty_linear_equiv_of_charpoly_eq (k := k) (A := MonoidAlgebra k Γ) _ ρ.asModule σ.asModule le_rfl key`. Use `⟨ρ.asModuleEquiv.symm.trans ((e.restrictScalars k).trans σ.asModuleEquiv), fun g v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ.asModuleEquiv (e (ρ.asModuleEquiv.symm (ρ g v))) = σ g (σ.asModuleEquiv (e (ρ.asModuleEquiv.symm v)))`. Rewrite using `[Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_equiv_of_charpoly_eq {Γ V W : Type} [Monoid Γ] [AddCommGroup V] [Module k V]
     [AddCommGroup W] [Module k W] [FiniteDimensional k V] [FiniteDimensional k W]
     (ρ : Representation k Γ V) (σ : Representation k Γ W) (hρ : ρ.IsSemisimpleRepresentation)
@@ -162,6 +214,9 @@ theorem exists_equiv_of_charpoly_eq {Γ V W : Type} [Monoid Γ] [AddCommGroup V]
   rw [Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul]
   simp
 
+/- English proof (translation)
+Introduce `ρ σ hρ hσ h` and use `exists_equiv_of_charpoly_eq ρ σ hρ hσ h`.
+-/
 theorem exists_equiv_of_charpoly_eq' : ∀ {k Γ V W : Type} [Field k] [Monoid Γ] [AddCommGroup V] [Module k V] [AddCommGroup W]
     [Module k W] [FiniteDimensional k V] [FiniteDimensional k W] (ρ : Representation k Γ V)
     (σ : Representation k Γ W), ρ.IsSemisimpleRepresentation → σ.IsSemisimpleRepresentation →

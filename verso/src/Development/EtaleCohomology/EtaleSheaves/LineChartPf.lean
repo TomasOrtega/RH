@@ -37,11 +37,21 @@ instance : IsOpenImmersion projectiveLineAffineChartOverIntegers := by
 
 def zIso : Spec (CommRingCat.of ℤ) ≅ ⊤_ Scheme := specZIsTerminal.uniqueUpToIso terminalIsTerminal
 
+/- English proof (translation)
+Rewrite using `[polyEquivTensor_symm_apply_tmul, ← Polynomial.C_1, Polynomial.sum_C_index (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem tensor_C (R : Type) [CommRing R] (a : R) :
     (polyEquivTensor ℤ R).symm (a ⊗ₜ[ℤ] (1 : Polynomial ℤ)) = Polynomial.C a := by
   rw [polyEquivTensor_symm_apply_tmul, ← Polynomial.C_1, Polynomial.sum_C_index (by simp)]
   simp
 
+/- English proof (translation)
+Introduce `L S l hl R _ j0 hj0`. Take `⟨_, f, hsq⟩` from `hl`. Set `m` to `pullback.map (Spec.map (CommRingCat.ofHom (algebraMap ℤ R))) (Spec.map (CommRingCat.ofHom (algebraMap ℤ (Polynomial ℤ)))) (terminal.from S) (terminal.from P1) j0 projectiveLineAffineChartOverIntegers zIso.hom (terminal.hom_ext _ _) (terminal.hom_ext _ _)`. Set `E` to `(polyEquivTensor ℤ R).toRingEquiv.toCommRingCatIso`. Use `⟨Spec.map E.inv ≫ (pullbackSpecIso ℤ R (Polynomial ℤ)).inv ≫ m ≫ hsq.flip.isoPullback.inv, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc, IsPullback.isoPullback_inv_fst, m, pullback.lift_fst, pullbackSpecIso_inv_fst_assoc]`. Establish `key : CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R` using `ℤ) (A := R) (B := Polynomial ℤ)) ≫ E.inv = CommRingCat.ofHom Polynomial.C := by`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`.
+
+Conclude with `tensor_C R a`. Rewrite using `[← Spec.map_comp_assoc, key]`.
+-/
 theorem LineChart_of : LateralTheory.E.EmbedPf.LineChart := by
   intro L S l hl R _ j0 hj0
   obtain ⟨_, f, hsq⟩ := hl

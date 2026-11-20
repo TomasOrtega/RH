@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 R₀ _ k r₀ M U R _ _ X hX δ R' _ _ σ X' φ' δ' hX' hδ' W hW Y φY hY δY h hh ψ χ hψ δY' u hδY' hu`. Establish `hX'R : X'.IsRapoport` using `hX'.isRapoport (σ : R →+* R') hX`. Establish `e1` using `hh R' ψ X' χ hX'R δY' hψ hδY'`. Establish `e2` using `r₀.homog R' X' hX'R δ' δY' u hu`. Establish `e3` using `r₀.baseChange R R' σ X hX X' hX'R φ' δ δ' hX' hδ'`.
+
+Rewrite using `[← e3, ← e2, e1]`.
+-/
 theorem isModelVal_of_isRapoport : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
   (r₀ : Rule (rapObj 𝔠) R₀ k) (M : Scheme.{0}) (U : Obj F 𝔠 M) (R : Type) [CommRing R] [Algebra R₀ R]
   (X : Obj F 𝔠 (Sp R)) (hX : X.IsRapoport) (δ : X.DetGen), IsModelVal r₀ U X δ (r₀.val R X hX δ) := by
@@ -27,6 +32,11 @@ theorem isModelVal_of_isRapoport : ∀ (F : Type) [Field F] [NumberField F] (�
   have e3 := r₀.baseChange R R' σ X hX X' hX'R φ' δ δ' hX' hδ'
   rw [← e3, ← e2, e1]
 
+/- English proof (translation)
+Introduce `hDP F _ _ _ 𝔠 N hN R₀ R₁ _ _ _ hinj k r₀ r₁ H`. Take `⟨M, s, U, α, V, hM⟩` from `exists_isDPModel hDP F 𝔠 N hN`. Establish `hS1 : ∀ (N' : ℕ) (M' : Scheme.{0}) (s' : M' ⟶ Sp (Localization.Away (N' : ℤ))) (U' : Obj F 𝔠 M') (α' : U'.Level N') (V' : M'.Opens), 3 ≤ N' → IsDPModel N' s' U' α' V' → (∀ (W : M'.Opens) (hW : IsAffineOpen W) (Y : Obj F 𝔠 (Sp Γ(M', W))) (φY : Y.A.left ⟶ U'.A.left), Y.IsPullBy U' …` using `fun N' M' s' U' α' V' _ hM' ↦ GlobalTheory.RealMult.ChartFun.exists_isChartFun F 𝔠 N' M' s' U' α' V' hM' R₀ R₁ hinj k r₀ r₁ H`. Establish `key` using `GlobalTheory.RealMult.ModelValGlue.existsUnique_isModelVal F 𝔠 N M s U α V hM R₀ k r₀ (hS1 N M s U α V hN hM) (GlobalTheory.RealMult.ChartIndep.presVal_indep hDP F 𝔠 N hN M s U α V hM R₀ k r₀ hS1)`. Use `⟨{ val := fun R _ _ X hX δ ↦ (key R X hX δ).exists.choose homog := fun R _ _ X hX δ δ' c hc ↦ (key R X hX δ).unique (GlobalTheory.RealMult.isModelVal_homog F 𝔠 R₀ k r₀ M U R X δ δ' c _ hc (key R X hX δ').exists.choose_spec) (key R X hX δ).exists.choose_spec baseChange := fun R R' …` and prove the remaining obligations.
+
+Introduce `R _ _ X h hX δ`. Conclude with `(key R X h δ).unique (key R X h δ).exists.choose_spec (isModelVal_of_isRapoport F 𝔠 R₀ k r₀ M U R X hX δ)`.
+-/
 theorem exists_levObj_rule_eq_of_extend : GlobalTheory.Published.DelignePappasModel → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ),
   3 ≤ N → ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁], Function.Injective (algebraMap R₀ R₁) →
   ∀ (k : ℕ) (r₀ : Rule (rapObj 𝔠) R₀ k) (r₁ : Rule (trivialObjectCondition 𝔠) R₁ k),

@@ -7,8 +7,14 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F.BC
 
+/- English proof (translation)
+The claim follows from `FG.levReadOf_holds (levIdem slots)`.
+-/
 theorem level_reading_holds : FG.LevRead := FG.levReadOf_holds (levIdem slots)
 
+/- English proof (translation)
+The claim follows from `blockCand_of h1 h2 h3 (powNeOf_holds FA.convMul_holds) SpectralAccumulation.preOfTree_holds RS.joinEx_holds level_reading_holds (FG.frGood_of level_reading_holds) FG.frame_weight_holds`.
+-/
 theorem block_candidates_of_inputs (h1 : ChiTr) (h2 : LimAt) (h3 : Ident) : BlockCand :=
   blockCand_of h1 h2 h3 (powNeOf_holds FA.convMul_holds) SpectralAccumulation.preOfTree_holds RS.joinEx_holds level_reading_holds
     (FG.frGood_of level_reading_holds) FG.frame_weight_holds

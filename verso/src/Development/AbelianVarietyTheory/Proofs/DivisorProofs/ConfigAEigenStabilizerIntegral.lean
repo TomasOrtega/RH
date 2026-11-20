@@ -21,6 +21,19 @@ noncomputable section
 
 namespace GlobalTheory.ConeSupp
 
+/- English proof (translation)
+Introduce `F _ _ ψ hTR hψ κ _ U hUo`. Use `haveI : IsTotallyReal F := hTR`. Set `e` to `Fintype.equivFin κ`. Set `g : (Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F) → (κ → FiniteAdeleRing (𝓞 F) F)` to `fun u => u ∘ e`. Establish `hg : Continuous g` using `continuous_pi fun i => continuous_apply (e i)`.
+
+Set `gL : (Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F) →+ (κ → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := g, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hLo : IsOpen ((U.comap gL : AddSubgroup _) : Set (Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F))` using `hUo.preimage hg`. Establish `hA` using `GlobalTheory.SWQ.FinAnnih.isCompact_annihilator ψ (GlobalTheory.StdCharFromIsStd.isCharAF hψ) (fun _ => (2 : F)⁻¹) (fun _ => inv_ne_zero two_ne_zero) (U.comap gL) hLo`. Establish `hBd : ∀ u v : Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F, GlobalTheory.SWQ.Bd (FiniteAdeleRing (𝓞 F) F) (fun _ => (2 : F)⁻¹) u v = g u ⬝ᵥ g v`. Introduce `u v`.
+
+Simplify using `only [GlobalTheory.SWQ.Bd, mul_inv_cancel₀ (two_ne_zero' F), map_one, one_mul, dotProduct, g, Function.comp]`. Conclude with `(Equiv.sum_comp e (fun l => u l * v l)).symm`. Establish `hge : ∀ y : κ → FiniteAdeleRing (𝓞 F) F, g (y ∘ e.symm) = y` using `fun y => by`. Use function extensionality and compare the values at `i`. Simplify using `[g]`.
+
+Use `hA.image hg using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨y ∘ e.symm, fun v hv => ?_, hge y⟩` and prove the remaining obligations.
+
+Rewrite using `[hBd, hge]`. Conclude with `hy _ hv`. Introduce and unpack `⟨u, hu, rfl⟩ η hη`. Establish `hv : η ∘ e.symm ∈ U.comap gL` using `by show g (η ∘ e.symm) ∈ U`. Rewrite using `[hge]`.
+
+Conclude with `hη`. Use `hu _ hv` as an intermediate fact. Rewrite `this` using `[hBd, hge]`. Conclude with `this`.
+-/
 theorem annih_compact : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsTotallyReal F → IsStd ψ →
     ∀ (κ : Type) [Fintype κ] (U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)), IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) →
       IsCompact {y : κ → FiniteAdeleRing (𝓞 F) F | ∀ η ∈ U, ψ (pairA F 0 (y ⬝ᵥ η)) = 1} := by
@@ -58,15 +71,24 @@ theorem annih_compact : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (
     rw [hBd, hge] at this
     exact this
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_schrodinger_locally_trivial`.
+-/
 theorem schr_fin_inv : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ (κ : Type) [Fintype κ], ∀ Ψ ∈ schA F κ, ∃ N ∈ 𝓝 (0 : (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)),
       ∀ p ∈ N, schr ψ (fun i => pairA F 0 (p.1 i), fun i => pairA F 0 (p.2 i)) Ψ = Ψ := GlobalTheory.T.finite_schrodinger_locally_trivial
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.symplectic_form_block_vanishing`.
+-/
 theorem symp_shift : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')),
     CfgA B G G₁ H H' → ∀ (z : Matrix (Fin b) (Fin (b + a')) (AE F E)) (l : (AE F E)ˣ),
       symp (R := AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) (incM F H.ι * z * (incM F H'.ι)ᵀ) (shiftA H H' l) = 0 := GlobalTheory.T.symplectic_form_block_vanishing
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_open_finite_coords_mem_uniformly_on_compact`.
+-/
 theorem unif_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (K : Set (UA σ X.J)), IsCompact K →
@@ -75,6 +97,11 @@ theorem unif_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
         ∀ k ∈ K, ∀ η ∈ U, ∃ p ∈ N, M.co.e (mat k⁻¹ * (incM F ι * M₁.co.e.symm (0, fun i => pairA F 0 (η i)) * (incM F ι')ᵀ)) =
           (fun i => pairA F 0 (p.1 i), fun i => pairA F 0 (p.2 i)) := GlobalTheory.T.exists_open_finite_coords_mem_uniformly_on_compact
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, show x + a.1 + c.1 = x + c.1 + a.1 by abel]`. Use `congr 2`. Simplify using `only [add_dotProduct]`.
+
+Take the linear combination `h`.
+-/
 theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a c : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) (h : a.1 ⬝ᵥ c.2 = c.1 ⬝ᵥ a.2) :
     schr ψ a (schr ψ c φ) = schr ψ c (schr ψ a φ) := by
@@ -86,6 +113,13 @@ theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   simp only [add_dotProduct]
   linear_combination h
 
+/- English proof (translation)
+Establish `h1 : ∀ (s : Finset κ) (f : κ → AF F), (∑ i ∈ s, f i).1 = ∑ i ∈ s, (f i).1` using `fun s f => map_sum (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) f s`. Establish `h2 : ∀ (s : Finset κ) (f : κ → AF F), (∑ i ∈ s, f i).2 = ∑ i ∈ s, (f i).2` using `fun s f => map_sum (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) f s`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [dotProduct, pairA]`. Rewrite using `[h1]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x i).1 * (0 : InfiniteAdeleRing F) = 0`. Conclude with `mul_zero _`. Simplify using `only [dotProduct, pairA]`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dot_fe {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (x : κ → AF F) (η : κ → FiniteAdeleRing (𝓞 F) F) :
     x ⬝ᵥ (fun i => pairA F 0 (η i)) = pairA F 0 ((fun i => (x i).2) ⬝ᵥ η) := by
   have h1 : ∀ (s : Finset κ) (f : κ → AF F), (∑ i ∈ s, f i).1 = ∑ i ∈ s, (f i).1 := fun s f =>
@@ -106,6 +140,11 @@ end GlobalTheory.ConeSupp
 
 namespace GlobalTheory.ConeSupp
 
+/- English proof (translation)
+Establish `hKe : K = GlobalTheory.StabHaar.stabK B X`. Use extensionality with `g`. Conclude with `hK g`. Take `⟨C, hC, hsub⟩` from `GlobalTheory.StabBounded.exists_compact_superset_stabK F E σ B n X r s hB hX`. Rewrite using `[hKe]`.
+
+Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.LatHatClosed.isClosed_latHat F E n X hX.lat)) hsub`.
+-/
 theorem stab_compact {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n : ℕ} (X : Spc F E n) (r s : ℕ) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (K : Subgroup (UA σ X.J))
     (hK : IsStab B K) : IsCompact (K : Set (UA σ X.J)) := by
@@ -116,6 +155,27 @@ theorem stab_compact {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [hKe]
   exact hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.LatHatClosed.isClosed_latHat F E n X hX.lat)) hsub
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K hK X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hstd : IsStd B.ψ` using `hT.base.std`. Use `haveI : IsTotallyReal F := hT.base.cm.1`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))` using `stab_compact B G.V _ _ hT.base hT.geo.hV K hK`. Establish `hsplit` using `(hT.weil : IsUWeilPair _ _ _ _ _ _ _ _ _ _).isUSplitting`.
+
+Take `⟨N, hN, hNinv⟩` from `schr_fin_inv F B.ψ hstd.1 _ Ψ hΨ`. Take `⟨U, hUo, hU⟩` from `unif_fin F E σ G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι (K : Set (UA σ G.V.J)) hKc N hN`. Use `⟨{y | ∀ η ∈ U, B.ψ (pairA F 0 (y ⬝ᵥ η)) = 1}, annih_compact F B.ψ ‹_› hstd _ U hUo, ?_⟩` and prove the remaining obligations. Introduce `k l x hx`. Simplify using `only [Set.mem_setOf_eq, not_forall] at hx`.
+
+Take `⟨η, hηU, hne⟩` from `hx`. Use `set Ω := om (k.1, 1) Ψ with hΩ`. Establish `hΩs : Ω ∈ schA F _` using `hsplit.pres _ _ hΨ`. Use `set Φ := G.M.co.rho B.ψ (shiftA H H' l) Ω with hΦdef`. Establish `hΦ : Φ ∈ schA F _` using `GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΩs`.
+
+Use `set z := G₁.M.co.e.symm (0, fun i => pairA F 0 (η i)) with hz`. Use `set w := incM F H.ι * z * (incM F H'.ι)ᵀ with hw`. Take `⟨p, hpN, hp⟩` from `hU k.1 k.2 η hηU`. Establish `h1 : G.M.co.rho B.ψ (mat k.1⁻¹ * w) Ψ = Ψ` using `by show schr B.ψ (G.M.co.e _) Ψ = Ψ`. Rewrite using `[hp]`.
+
+Conclude with `hNinv p hpN`. Establish `h2 : G.M.co.rho B.ψ w Ω = Ω`. Use `hsplit.impl (k.1, 1) (mat k.1⁻¹ * w) Ψ hΨ` as an intermediate fact. Rewrite `this` using `[h1]`. Establish `hact : actAB (cA σ) (k.1, (1 : UA σ G.W.J)) (mat k.1⁻¹ * w) = w` using `by show mat k.1 * (mat k.1⁻¹ * w) * ((1 : GL (Fin (b + 2 + a')) (AE F E)) : Matrix _ _ (AE F E))ᵀ = w`.
+
+Rewrite using `[← Matrix.mul_assoc, GlobalTheory.StabHaar.mat_mul_inv, Units.val_one, Matrix.transpose_one]`. Use `first`. Consider the case `exact (congrArg (· * (1 : Matrix (Fin (b + 2 + a')) (Fin (b + 2 + a')) (AE F E))) (Matrix.one_mul w)).trans (Matrix.mul_one w)`. Consider the case `simp only [Matrix.one_mul, Matrix.mul_one]`. Consider the case `simp`.
+
+Rewrite `this` using `[hact]`. Conclude with `this.symm`. Establish `h3 : G.M.co.rho B.ψ w Φ = Φ`. Rewrite using `[hΦdef]`. Use `show schr B.ψ (G.M.co.e w) (schr B.ψ (G.M.co.e (shiftA H H' l)) Ω) = schr B.ψ (G.M.co.e (shiftA H H' l)) Ω`.
+
+Rewrite using `[schr_comm]`. Conclude with `congrArg _ h2`. Use `G.M.co.form w (shiftA H H' l)` as an intermediate fact. Rewrite `this` using `[symp_shift F E σ B b a' G G₁ H H' hC z l]`. Take the linear combination `-this`.
+
+Establish `h4` using `he.Heisenberg₂ z Φ hΦ`. Rewrite `h4` using `[h3]`. Establish `h5 : e Φ x = B.ψ (pairA F 0 ((fun i => (x i).2) ⬝ᵥ η)) * e Φ x` using `by conv_lhs => rw [h4] show schr B.ψ (G₁.M.co.e z) (e Φ) x = _`. Rewrite using `[hz, LinearEquiv.apply_symm_apply]`. Simplify using `only [schr, zero_dotProduct, mul_zero, add_zero, dot_fe]`.
+
+Establish `h6 : (1 - B.ψ (pairA F 0 ((fun i => (x i).2) ⬝ᵥ η))) * e Φ x = 0`. Take the linear combination `h5`. Conclude with `(mul_eq_zero.mp h6).resolve_left (sub_ne_zero.mpr (Ne.symm hne))`.
+-/
 theorem supp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →

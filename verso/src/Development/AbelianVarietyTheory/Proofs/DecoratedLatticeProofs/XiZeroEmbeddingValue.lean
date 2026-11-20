@@ -13,6 +13,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.AdForm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1 : tauE D τ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℝ)` using `((Formalism.BasicNotions.factEmb D.R D.host).2 _).2 (D.eTau τ).2`. Establish `hd : 0 < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 D.host.hyp.2.1.pos)`. Rewrite using `[Host.xi0, hc, Ideal.absNorm_top, map_div₀, map_mul, h1, map_natCast, map_neg, map_one]`. Establish `: ((Real.sqrt D.host.d : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hd.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem xi_zero_embedding_value (D : D7) (hc : D.host.ccK = ⊤) (τ : D.what₂.Tau) :
     tauE D τ D.host.xi0 = Complex.I * ((Real.sqrt D.host.d)⁻¹ : ℝ) := by
   have h1 : tauE D τ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℝ) :=
@@ -24,6 +29,23 @@ theorem xi_zero_embedding_value (D : D7) (hc : D.host.ccK = ⊤) (τ : D.what₂
   field_simp
   simp
 
+/- English proof (translation)
+Take `⟨hs, hX, -⟩` from `hI.spaces`. Establish `hg : ∀ j, ((I.rec7 l Z).sp.X j).gram = 1` using `fun j => by`. Establish `e : (I.rec7 l Z).sp.X j = Formalism.BasicNotions.Examples₂.posSpace hs (B.R.N j)` using `hX j`. Rewrite using `[e]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs (B.R.N j) (fun _ => false) (B.R.N j) 0 a b).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `(if_pos rfl).trans (by simp [Formalism.BasicNotions.Examples₂.sgn]; rfl)`.
+
+Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `if_neg h`. Establish `hr : ∀ j, ((I.rec7 l Z).sp.X j).rank = B.R.N j` using `fun j => by`. Establish `e : (I.rec7 l Z).sp.X j = Formalism.BasicNotions.Examples₂.posSpace hs (B.R.N j)` using `hX j`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Establish `hev : ∀ j, Even (B.R.N j)` using `fun j => B.R.k_even.add (Even.mul_left (B.R.t_odd.add_one) j)`. Establish `hδ : I.J.δ ≠ 0` using `I.J.δ_ne_zero`. Establish `hd : 0 < Real.sqrt B.host.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 B.host.hyp.2.1.pos)`. Use `⟨hψ, hθ, hg _, hg _, (I.rec7 l Z).sp.X_sig _, (I.rec7 l Z).sp.X_sig _, ?_, B.ccK_top, hδ, xi_zero_embedding_value _ B.ccK_top, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hr, hr]`. Use `⟨?_, ?_, hev _, hev _⟩` and prove the remaining obligations. Use `B.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Ranks.N`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA` using `Formalism.MainNotions.Ext.area_lamOf (I.rec7 l Z) ⊤ top_ne_bot I.J.δ hδ`. Rewrite `hA` using `[Formalism.MainNotions.Ext.discr_K (I.rec7 l Z).host, Ideal.absNorm_top]`. Establish `hA' : Formalism.MainNotions.TaylorLogMetric.area (Th.lamOf B.host ⊤ I.J.δ) = ‖I.J.δ‖ ^ 2 * Real.sqrt B.host.d / 2`.
+
+Use `hA.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `Or.inl rfl`. Use `show (Formalism.MainNotions.TaylorLogMetric.area (Th.lamOf B.host ⊤ I.J.δ))⁻¹ * ‖I.J.δ‖ ^ 2 = 2 * (Real.sqrt B.host.d)⁻¹`. Rewrite using `[hA']`.
+
+Establish `: ‖I.J.δ‖ ≠ 0` using `norm_ne_zero_iff.2 hδ`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem stdPair_world {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ) (θ : InfFam (I.rec7 l Z)) (hψ : IsStdChar (I.rec7 l Z) ψ (-1)) (hθ : IsInfFam θ)
     (i : ℕ) : StdPair θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) I.A.δ I.A.sc ψ := by

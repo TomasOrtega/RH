@@ -79,12 +79,18 @@ open Classical in
 def NLay0.eta (L : NLay0 R H what₂ LL0) (j : ℕ) (w : what₂.places.Pl) : ℚ :=
   if 1 ≤ j ∧ j ≤ R.m then ∑ i ∈ L.nd.locs j w, L.nd.etaLoc i else what₂.etaJ j w
 
+/- English proof (translation)
+Unfold `NLay0.eta`. Use `split_ifs`. Conclude with `Finset.sum_nonneg fun i _ => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Conclude with `what₂.etaJ_nonneg j w`.
+-/
 theorem NLay0.eta_nonneg (L : NLay0 R H what₂ LL0) (j : ℕ) (w : what₂.places.Pl) : 0 ≤ L.eta j w := by
   unfold NLay0.eta
   split_ifs
   · exact Finset.sum_nonneg fun i _ => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
   · exact what₂.etaJ_nonneg j w
 
+/- English proof (translation)
+Use `⟨fun i x => ?_, fun i x => ?_⟩` and prove the remaining obligations. Conclude with `((@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).trans (and_iff_right (Finset.mem_univ _)))`. Conclude with `((@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).trans (and_iff_right (Finset.mem_univ _)))`.
+-/
 theorem NLay0.zOk_fixZ (L : NLay0 R H what₂ LL0) : L.fixZ.ZOk := by
   classical
   refine ⟨fun i x => ?_, fun i x => ?_⟩
@@ -92,6 +98,9 @@ theorem NLay0.zOk_fixZ (L : NLay0 R H what₂ LL0) : L.fixZ.ZOk := by
   · exact ((@Finset.mem_filter _ _ (fun _ => Classical.propDecidable _) _ _).trans (and_iff_right (Finset.mem_univ _)))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem NLay0.ZOk.reEta {L : NLay0 R H what₂ LL0} (h : L.ZOk) (η : ℕ → what₂.places.Pl → ℚ) (hη : ∀ j w, 0 ≤ η j w) :
     @NLay0.ZOk R H (rowsEta what₂ η hη) ‹NumberField what₂.LL› ‹StarRing what₂.LL› LL0 (L.reEta η hη) := h
 
@@ -99,6 +108,9 @@ def NLay0.EtaOk (L : NLay0 R H what₂ LL0) : Prop :=
   ∀ j w, 1 ≤ j → j ≤ R.m → what₂.etaJ j w = ∑ i ∈ L.nd.locs j w, L.nd.etaLoc i
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ _ h1 h2` and use `if_pos ⟨h1, h2⟩`.
+-/
 theorem NLay0.etaOk_reEta (L : NLay0 R H what₂ LL0) :
     @NLay0.EtaOk R H (rowsEta what₂ L.eta L.eta_nonneg) ‹NumberField what₂.LL› ‹StarRing what₂.LL› LL0
       (L.reEta L.eta L.eta_nonneg) := fun _ _ h1 h2 => if_pos ⟨h1, h2⟩

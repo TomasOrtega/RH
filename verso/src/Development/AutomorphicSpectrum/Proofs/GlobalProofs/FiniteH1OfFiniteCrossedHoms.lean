@@ -12,6 +12,11 @@ noncomputable def oneCochainFun {k G : Type} [CommRing k] [Group G] [Topological
     (A : Rep.{0} k G) (c : locallyConstantCochains A 1) : G → A.V :=
   fun g => c.1 (fun _ => g)
 
+/- English proof (translation)
+Introduce `c c' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx : x = fun _ => x 0` using `funext fun i => congrArg x (Subsingleton.elim i 0)`. Rewrite using `[hx]`.
+
+Conclude with `congrFun h (x 0)`.
+-/
 theorem oneCochainFun_injective {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     (A : Rep.{0} k G) : Function.Injective (oneCochainFun A) := by
   intro c c' h
@@ -21,12 +26,26 @@ theorem oneCochainFun_injective {k G : Type} [CommRing k] [Group G] [Topological
   rw [hx]
   exact congrFun h (x 0)
 
+/- English proof (translation)
+Establish `hc : IsLocallyConstant (c : (Fin 1 → G) → A)` using `c.2`. Conclude with `hc.comp_continuous (continuous_pi fun _ => continuous_id)`.
+-/
 theorem oneCochainFun_isLocallyConstant {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     (A : Rep.{0} k G) (c : locallyConstantCochains A 1) :
     IsLocallyConstant (oneCochainFun A c) := by
   have hc : IsLocallyConstant (c : (Fin 1 → G) → A) := c.2
   exact hc.comp_continuous (continuous_pi fun _ => continuous_id)
 
+/- English proof (translation)
+Establish `key : A.ρ g ((c : (Fin 1 → G) → A) (fun i => ![g, h] i.succ)) + ∑ j : Fin 2, (-1 : k) ^ ((j : ℕ) + 1) • (c : (Fin 1 → G) → A) (Fin.contractNth j (· * ·) ![g, h]) = 0`. Establish `h1` using `congrFun (congrArg Subtype.val hc) ![g, h]`. Rewrite `h1` using `[dLocallyConstant_hom_apply]`. Conclude with `h1`. Rewrite `key` using `[Fin.sum_univ_two]`.
+
+Establish `e1 : (fun i : Fin 1 => ![g, h] i.succ) = fun _ => h` using `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Both sides reduce to the same expression. Establish `e2 : Fin.contractNth (0 : Fin 2) (· * ·) ![g, h] = fun _ => g * h` using `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Both sides reduce to the same expression. Establish `e3 : Fin.contractNth (1 : Fin 2) (· * ·) ![g, h] = fun _ => g` using `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Both sides reduce to the same expression. Establish `p0 : (-1 : k) ^ (((0 : Fin 2) : ℕ) + 1) = -1` using `by show (-1 : k) ^ 1 = -1`.
+
+Conclude with `pow_one _`. Establish `p1 : (-1 : k) ^ (((1 : Fin 2) : ℕ) + 1) = 1` using `by show (-1 : k) ^ 2 = 1`. Conclude with `neg_one_sq`. Rewrite `key` using `[e1, e2, e3, p0, p1, neg_one_smul, one_smul]`. Use `show (c : (Fin 1 → G) → A) (fun _ => g * h) = (c : (Fin 1 → G) → A) (fun _ => g) + A.ρ g ((c : (Fin 1 → G) → A) (fun _ => h))`.
+
+Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← key]`. Normalize the expressions using the abelian group laws.
+-/
 theorem oneCochainFun_cocycle {k G : Type} [CommRing k] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (A : Rep.{0} k G) [IsDiscreteRep A] (c : locallyConstantCochains A 1)
     (hc : (dLocallyConstant A 1).hom c = 0) (g h : G) :
@@ -59,6 +78,13 @@ theorem oneCochainFun_cocycle {k G : Type} [CommRing k] [Group G] [TopologicalSp
   rw [← sub_eq_zero, ← neg_eq_zero, ← key]
   abel
 
+/- English proof (translation)
+Introduce `k G _ _ _ _ A _ hfin`. Establish `hd : ∀ z : (cochainsComplex A).cycles 1, (dLocallyConstant A 1).hom (((cochainsComplex A).iCycles 1).hom z) = 0`. Introduce `z`. Establish `h1 : (cochainsComplex A).iCycles 1 ≫ (cochainsComplex A).d 1 (1 + 1) = 0` using `(cochainsComplex A).iCycles_d 1 (1 + 1)`. Rewrite `h1` using `[cochainsComplex_d]`.
+
+Conclude with `congrArg (fun φ => φ.hom z) h1`. Establish `hinj : Function.Injective ((cochainsComplex A).iCycles 1).hom` using `(ModuleCat.mono_iff_injective ((cochainsComplex A).iCycles 1)).1 inferInstance`. Establish `hS : ∀ z : (cochainsComplex A).cycles 1, oneCochainFun A (((cochainsComplex A).iCycles 1).hom z) ∈ {f : G → A.V | IsLocallyConstant f ∧ ∀ g h : G, f (g * h) = f g + A.ρ g (f h)}` using `fun z => ⟨oneCochainFun_isLocallyConstant A _, oneCochainFun_cocycle A _ (hd z)⟩`. Establish `hFin : Finite ((cochainsComplex A).cycles 1)` using `by haveI := hfin.to_subtype`. Conclude with `Finite.of_injective (fun z => (⟨_, hS z⟩ : {f : G → A.V | IsLocallyConstant f ∧ ∀ g h : G, f (g * h) = f g + A.ρ g (f h)})) (fun z₁ z₂ hz => hinj (oneCochainFun_injective A (congrArg Subtype.val hz)))`.
+
+Establish `hepi : Epi ((cochainsComplex A).homologyπ 1)` using `inferInstance`. Establish `hsurj : Function.Surjective ((cochainsComplex A).homologyπ 1).hom` using `(ModuleCat.epi_iff_surjective ((cochainsComplex A).homologyπ 1)).1 hepi`. Conclude with `Finite.of_surjective _ hsurj`.
+-/
 theorem finite_cohomology_one_of_finite_cocycles :
     ∀ (k G : Type) [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
       (A : Rep.{0} k G) [IsDiscreteRep A],

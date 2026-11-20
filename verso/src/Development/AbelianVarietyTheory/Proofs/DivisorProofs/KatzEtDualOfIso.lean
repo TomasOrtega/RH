@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Introduce `n a ha`. Take `⟨f, rfl⟩` from `c.presents.1 n a`. Establish `h0 : Coalgebra.counit (R` using `k) (Katz.evA k (c.x n) (c.nil n) f) = 0 := by`. Use `RingHom.mem_ker.1 ha` as an intermediate fact. Simplify using `using this`.
+
+Establish `hf : MvPowerSeries.constantCoeff f = 0`. Rewrite using `[← (Katz.counit_dUnit_evA k d (G.A n) (c.x n) (c.nil n) (c.aug n) f).1]`. Conclude with `h0`. Conclude with `mvPowerSeries_algHom_isNilpotent_of_constantCoeff_zero k (Fin d) (G.A n) (Katz.evA k (c.x n) (c.nil n)) (fun i => by rw [Katz.evA_X]; exact c.nil n i) f hf`.
+-/
 theorem isConn_of_chart {p : ℕ} {k : Type} [CommRing k] (G : PDivGroup p k) {d : ℕ}
     (c : Katz.Chart G d) : G.IsConn := by
   intro n a ha
@@ -30,6 +35,19 @@ end GlobalTheory.Dieu
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Introduce `p _ B C D hB hC ⟨eB, neB⟩ ⟨eC, neC⟩`. Take `⟨κ, hκ⟩` from `hB`. Take `⟨δ, hδ⟩` from `hC`. Establish `FB : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (h : G.IsConn) (t : True) (m : D.M G trivial), eB G h (D.F G t m) = B.F G h (eB G h m)` using `fun G h _ m => neB _ _ _ G G h h _ m`. Establish `FC : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (h : G.IsEt) (t : True) (m : D.M G trivial), eC G h (D.F G t m) = C.F G h (eC G h m)` using `fun G h _ m => neC _ _ _ G G h h _ m`.
+
+Establish `MB : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (h : G.IsConn) (h' : H.IsConn) (f : G ⟶ H) (t t' : True) (m : D.M H trivial), eB G h (D.map t t' f m) = B.map h h' f (eB H h' m)` using `fun G H h h' f _ _ m => neB _ _ _ G H h h' _ m`. Establish `MC : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (h : G.IsEt) (h' : H.IsEt) (f : G ⟶ H) (t t' : True) (m : D.M H trivial), eC G h (D.map t t' f m) = C.map h h' f (eC H h' m)` using `fun G H h h' f _ _ m => neC _ _ _ G H h h' _ m`. Use `⟨⟨fun {_} _ _ _ G _ {_} c {_} hμ hc => (eB G (isConn_of_chart G c)).trans (κ G _ c hμ hc), ?_⟩, ⟨fun G _ _ hG => (eC G hG).trans ((δ G hG (PDivGroup.dual_isConn_of_isEt p _ G hG) hG).trans (eB G.dual (PDivGroup.dual_isConn_of_isEt p _ G hG)).dualMap), ?_⟩⟩` and prove the remaining obligations. Introduce `k _ _ _ G _ d c μ hμ hc`. Take `⟨h1, h2⟩` from `hκ G (isConn_of_chart G c) c hμ hc`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_trans_apply, FB, LinearEquiv.apply_symm_apply]`. Introduce `H _ d' c' ν hν hc' f φ hφ hm`.
+
+Use `h2 H (isConn_of_chart H c') c' hν hc' f φ hφ hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_trans_apply, MB G H (isConn_of_chart G c) (isConn_of_chart H c'), LinearEquiv.apply_symm_apply]`. Introduce `k _ _ _ G _ _ hG`. Take `⟨h1, h2⟩` from `hδ G hG (PDivGroup.dual_isConn_of_isEt p _ G hG) hG`.
+
+Use `⟨fun x y => ?_, fun H _ _ hH f x y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.dualMap_apply, FB, FC]`. Conclude with `h1 _ _`. Take `⟨-, h3⟩` from `hδ H hH (PDivGroup.dual_isConn_of_isEt p _ H hH) hH`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.dualMap_apply]`.
+
+Rewrite using `[MC G H hG hH f, MB H.dual G.dual (PDivGroup.dual_isConn_of_isEt p _ H hH) (PDivGroup.dual_isConn_of_isEt p _ G hG) (G.dualHom H f)]`. Conclude with `h2 H hH _ hH f _ _`.
+-/
 theorem katz_etDual_of_iso : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn))
     (C : Base p (fun _ _ G => G.IsEt)) (D : Base p (fun _ _ _ => True)), B.Katz → C.EtDual B →
     (∃ e : ∀ {k : Type} [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) (h : G.IsConn),

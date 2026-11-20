@@ -9,6 +9,21 @@ open Filter
 
 universe u w
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x d Nb b hZ hN hb`. Take `⟨C₁, h₁⟩` from `hT k Ω N x d Nb hZ hN`. Take `⟨C₂, h₂⟩` from `hD k Ω N x d Nb b hZ hN hb`. Use `⟨C₁ + C₂, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h₁, h₂, eventually_ge_atTop 1] with n hn₁ hn₂ hn`.
+
+Use `set f : ℕ → ℝ := fun i => (Module.finrank k (twistMul Nb.toSubSystem n (-((i : ℤ) * b))).secs : ℝ) with hf`. Use `set Y : ℝ := (interNum (primeOf (S := k) x) (fun _ : Fin (d + 1) => Nb.toSubSystem) : ℝ) with hY`. Use `set X : ℝ := (interNum (primeOf (S := k) x) (Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem)) : ℝ) with hX`. Establish `h0 : f 0 = (Module.finrank k (twistMul Nb.toSubSystem n 0).secs : ℝ)` using `congrArg (fun m : ℤ => (Module.finrank k (twistMul Nb.toSubSystem n m).secs : ℝ)) (by simp)`. Establish `htel : f 0 - f n = ∑ i ∈ Finset.range n, (f i - f (i + 1))`.
+
+Rewrite using `[Finset.sum_range_sub']`. Establish `hsum : ∑ i ∈ Finset.range n, (f i - f (i + 1)) ≤ ∑ _i ∈ Finset.range n, (X * (n : ℝ) ^ d / (d.factorial : ℝ) + C₂ * (n : ℝ) ^ d / n)` using `Finset.sum_le_sum fun i hi => hn₂ i (Finset.mem_range.mp hi)`. Rewrite `hsum` using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hfac : ((d + 1).factorial : ℝ) = ((d : ℝ) + 1) * (d.factorial : ℝ)`.
+
+Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdf : (0 : ℝ) < (d.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos d`. Establish `key : (n : ℝ) * (X * (n : ℝ) ^ d / (d.factorial : ℝ) + C₂ * (n : ℝ) ^ d / n) = ((d : ℝ) + 1) * X * (n : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ) + C₂ * (n : ℝ) ^ d`.
+
+Rewrite using `[hfac]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[key]`. Rewrite `hn₁` using `[← h0]`.
+
+Establish `hgoal : f n = (Module.finrank k (twistMul Nb.toSubSystem n (-((n : ℤ) * b))).secs : ℝ)` using `rfl`. Rewrite using `[← hgoal]`. Use `push_cast`. Establish `e1 : (Y - ((d : ℝ) + 1) * X) * (n : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ) = Y * (n : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ) - ((d : ℝ) + 1) * X * (n : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ)` using `by ring`. Rewrite using `[e1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem SectionCount.proof (hT : SectionCount.Top.Statement.{u, w})
     (hD : SectionCount.Drop.Statement.{u, w}) : SectionCount.Statement.{u, w} := by
   intro k _ Ω _ _ N x d Nb b hZ hN hb

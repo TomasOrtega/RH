@@ -12,6 +12,19 @@ open MvPolynomial MeasureTheory ComplexSets
 
 namespace RatFibreAvoid
 
+/- English proof (translation)
+Distinguish the cases in `ht : AlgebraicIndependent ℂ t`. Establish `hgalg : IsAlgebraic (Algebra.adjoin ℂ (Set.range t)) g`. Assume the negation of the conclusion as `hna`. Establish `hind` using `(AlgebraicIndependent.option_iff (x := t) (a := g)).2 ⟨ht, hna⟩`. Establish `hle` using `le_trans hind.cardinalMk_le_trdeg htr`.
+
+Rewrite `hle` using `[Cardinal.mk_option, Cardinal.mk_fin]`. Establish `: ((d + 1 : ℕ) : Cardinal.{0}) ≤ d` using `by exact_mod_cast hle`. Use `Nat.cast_le.1 this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne` using `Ideal.comap_ne_bot_of_algebraic_mem (R := Algebra.adjoin ℂ (Set.range t)) hg (Ideal.mem_span_singleton_self g) hgalg`.
+
+Take `⟨s, hs, hs0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨h, hh⟩ : ∃ h, aeval (R` from `ℂ) t h = (s : L) := by`. Establish `key : ∀ v ∈ Algebra.adjoin ℂ (Set.range t), ∃ h, aeval (R` using `ℂ) t h = v := by`. Introduce `v hv`. Rewrite `hv` using `[Algebra.adjoin_range_eq_range_aeval]`.
+
+Conclude with `(AlgHom.mem_range _).1 hv`. Conclude with `key _ s.2`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hs0` to reduce the goal to its premises.
+
+Use `ext`. Simplify using `using hh.symm`. Rewrite using `[hh]`. Conclude with `Ideal.mem_comap.1 hs`. Rewrite `ht` using `[algebraicIndependent_iff] at ht push Not`.
+
+Take `⟨h, h0, hne⟩` from `ht`. Conclude with `⟨h, hne, by rw [h0]; exact zero_mem _⟩`.
+-/
 theorem exists_poly_mem_span {L : Type} [CommRing L] [IsDomain L] [Algebra ℂ L] {d : ℕ}
     (htr : Algebra.trdeg ℂ L ≤ d) (t : Fin d → L) {g : L} (hg : g ≠ 0) :
     ∃ h : MvPolynomial (Fin d) ℂ, h ≠ 0 ∧ aeval t h ∈ Ideal.span {g} := by
@@ -44,6 +57,29 @@ theorem exists_poly_mem_span {L : Type} [CommRing L] [IsDomain L] [Algebra ℂ L
     obtain ⟨h, h0, hne⟩ := ht
     exact ⟨h, hne, by rw [h0]; exact zero_mem _⟩
 
+/- English proof (translation)
+Introduce `n d J p q f hJ hdim hf`. Distinguish the cases in `hq : q ∈ J`. Conclude with `Filter.Eventually.of_forall fun y x hx => absurd (hx.1 q hq) hx.2.1`. Use `set A := MvPolynomial (Fin n) ℂ ⧸ J with hA`. Establish `hdom : IsDomain A` using `Ideal.Quotient.isDomain J`.
+
+Use `set a : A := Ideal.Quotient.mk J q with ha_def`. Establish `ha : a ≠ 0` using `fun h => hq (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Establish `hpow : Submonoid.powers a ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors ha`. Establish `hLdom : IsDomain (Localization.Away a)` using `IsLocalization.isDomain_localization hpow`. Establish `htrA : Algebra.trdeg ℂ A = d`.
+
+Take `⟨s, hs1, hs2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := A)`. Rewrite `hs1` using `[hdim]`. Establish `: s = d` using `by exact_mod_cast hs1.symm`. Rewrite using `[hs2, this]`. Establish `htrL : Algebra.trdeg ℂ (Localization.Away a) ≤ d`.
+
+Establish `: FaithfulSMul ℂ A` using `(faithfulSMul_iff_algebraMap_injective ℂ A).2 (algebraMap ℂ A).injective`. Establish `: FaithfulSMul A (Localization.Away a)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsLocalization.injective _ hpow)`. Establish `: Algebra.IsAlgebraic A (Localization.Away a)` using `IsLocalization.isAlgebraic (Localization.Away a) (Submonoid.powers a)`. Rewrite using `[← trdeg_add_eq ℂ A (A := Localization.Away a), trdeg_eq_zero (R := A) (A := Localization.Away a), add_zero, htrA]`. Use `set T : Fin d → Localization.Away a := fun r => algebraMap A _ (Ideal.Quotient.mk J (p r)) * IsLocalization.Away.invSelf a with hTdef`.
+
+Establish `hg : algebraMap A (Localization.Away a) (Ideal.Quotient.mk J f) ≠ 0`. Introduce `h0`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `IsLocalization.injective _ hpow (by rw [h0, map_zero])`.
+
+Take `⟨h, hne, hmem⟩` from `exists_poly_mem_span htrL T hg`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `key : ∀ x ∈ zeroSet J, eval x q ≠ 0 → eval x f = 0 → eval (RatChart.ratMap p q x) h = 0`. Introduce `x hx hqx hfx`. Set `ev : A →ₐ[ℂ] ℂ` to `Ideal.Quotient.liftₐ J (aeval x) (fun g hg => by simpa using hx g hg)`.
+
+Establish `hev : ∀ g, ev (Ideal.Quotient.mk J g) = eval x g` using `fun g => by`. Both sides reduce to the same expression. Establish `hea : ev a = eval x q` using `hev q`. Establish `hu : IsUnit (ev a)`. Rewrite using `[hea]`.
+
+Conclude with `hqx.isUnit`. Set `φ : Localization.Away a →ₐ[ℂ] ℂ` to `IsLocalization.Away.liftAlgHom a hu`. Establish `hφ : ∀ z, φ (algebraMap A _ z) = ev z` using `fun z => IsLocalization.Away.lift_eq (S := Localization.Away a) (g := (ev : A →+* ℂ)) a hu z`. Establish `hinv : φ (IsLocalization.Away.invSelf a) = (eval x q)⁻¹`. Use `congrArg φ (IsLocalization.Away.mul_invSelf (S := Localization.Away a) a)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_one, hφ, hea]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Establish `hT : (fun r => φ (T r)) = RatChart.ratMap p q x`. Use function extensionality and compare the values at `r`. Simplify using `only [hTdef, map_mul, hφ, hev, hinv, RatChart.ratMap, div_eq_mul_inv]`.
+
+Use `congrArg φ hc` as an intermediate fact. Rewrite `this` using `[comp_aeval_apply, hT, map_mul, hφ, hev, hfx, mul_zero]`. Conclude with `this.symm`. Establish `hnull` using `DiscriminantSheetCover.volume_zero_set h hne`. Establish `hae : ∀ᵐ y : Fin d → ℂ, eval y h ≠ 0`.
+
+Rewrite using `[ae_iff]`. Simplify using `using hnull`. Use `filter_upwards [hae] with y hy x hx hfx`. Take `⟨hxZ, hqx, hxy⟩` from `hx`. Conclude with `hy (hxy ▸ key x hxZ hqx hfx)`.
+-/
 theorem proof : RatFibreAvoid.Statement := by
   intro n d J p q f hJ hdim hf
   classical

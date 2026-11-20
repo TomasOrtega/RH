@@ -66,6 +66,9 @@ def SpanC (S : RatDat D.ntw) (Sb : Finset (PlE D.host)) (θ : ∀ kk : Fin 2, Mu
 
 def lowSet (D : D7) : Set (PlE D.host) := {v | ∃ p ∈ lowAll D, p ≠ 0 ∧ ((p : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal}
 
+/- English proof (translation)
+Use `Set.Finite.subset (Set.Finite.biUnion (s := (((lowAll D).filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (Finset.finite_toSet _) fun p hp => GlobalTheory.RowTie.placesOver_finite_of_ne_zero D.host.E p (Finset.mem_filter.1 hp).2) ?_` and prove the remaining obligations. Introduce and unpack `v ⟨p, hp, hp0, hv⟩`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hp, hp0⟩)) hv`.
+-/
 theorem lowSet_finite (D : D7) : (lowSet D).Finite := by
   refine Set.Finite.subset (Set.Finite.biUnion (s := (((lowAll D).filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (Finset.finite_toSet _)
     fun p hp => GlobalTheory.RowTie.placesOver_finite_of_ne_zero D.host.E p (Finset.mem_filter.1 hp).2) ?_
@@ -74,6 +77,9 @@ theorem lowSet_finite (D : D7) : (lowSet D).Finite := by
 
 def SbD (D : D7) : Finset (PlE D.host) := (lowSet_finite D).toFinset
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨p, hp, -, hv⟩` from `(lowSet_finite D).mem_toFinset.1 hv`. Conclude with `⟨p, hp, hv⟩`.
+-/
 theorem overSet_SbD (D : D7) : OverSet D (SbD D) (lowAll D) := by
   intro v hv
   obtain ⟨p, hp, -, hv⟩ := (lowSet_finite D).mem_toFinset.1 hv
@@ -88,6 +94,9 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P
 def kKsOf (x : St P) : x.m.z.core.Q.c.F →+* ↥(Dof x).LL0 :=
   (algebraMap x.m.z.core.Q.c.F (Dof x).what₂.LL).codRestrict (Dof x).LL0 x.m.z.fieldValues_mem_fixedField
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hkOf (x : St P) (y : x.m.z.core.Q.c.F) :
     ((kKsOf x y : ↥(Dof x).LL0) : (Dof x).what₂.LL) = algebraMap x.m.z.core.Q.c.F (Dof x).what₂.LL y := rfl
 

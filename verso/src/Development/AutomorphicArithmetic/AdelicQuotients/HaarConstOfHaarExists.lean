@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HaarCon
 open UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 open MeasureTheory Topology
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gla1.haar_const_of_haar_exists`.
+-/
 theorem UpperTheory.haar_const_of_haar_exists :
     HaarEx → HaarConst :=
   _root_.UpperTheory.Reformulated.B.Gla1.haar_const_of_haar_exists

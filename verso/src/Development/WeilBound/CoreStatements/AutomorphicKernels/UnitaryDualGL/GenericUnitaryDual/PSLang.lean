@@ -12,6 +12,9 @@ namespace PositivityTheory.Gud.Symm.Pf
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hirr : (prodIrr x hd).IsIrreducible` using `PositivityTheory.Exh.lUnlinkedIrr_of_seg PositivityTheory.RgGu.segmentRepresentation k h N Γ x hd (fun i j hl => (GlobalTheory.SmGL.Segment.linked_iff_precedes.mp hl).elim (hp i j) (hp j i)) hL`. Use `⟨hirr, ?_⟩` and prove the remaining obligations. Introduce `W _ _ σ e`. Take `⟨e⟩` from `e`. Conclude with `⟨h, x, hd, ⟨Γ, ⟨rfl, fun i j _ => hp i j⟩, hL⟩, GlobalTheory.LocGL.IsCosocle.of_equiv (GlobalTheory.LocGL.isCosocle_self hirr) e (Representation.Equiv.refl _)⟩`.
+-/
 theorem isL_of_noPrec {h N : ℕ} (Γ : Fin h → Segment k) (x : Fin h → IrrGL k) (hL : ∀ j, IsLSeg (Γ j) (x j).rep)
     (hp : ∀ i j, ¬ (Γ i).Precedes (Γ j)) (hd : ∑ j, (x j).1 = N) :
     (prodIrr x hd).IsIrreducible ∧ ∀ {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) W),
@@ -25,6 +28,11 @@ theorem isL_of_noPrec {h N : ℕ} (Γ : Fin h → Segment k) (x : Fin h → IrrG
   exact ⟨h, x, hd, ⟨Γ, ⟨rfl, fun i j _ => hp i j⟩, hL⟩,
     GlobalTheory.LocGL.IsCosocle.of_equiv (GlobalTheory.LocGL.isCosocle_self hirr) e (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨e⟩` from `e`. Take `⟨hi, hA⟩` from `isL_of_noPrec (fun j => (Γ j).nu (t j : ℂ)) (fun j => (y j).nu (t j)) (fun j => GlobalTheory.isLSeg_nu (hL j) _) hp hd`. Take `⟨-, hB⟩` from `isL_of_noPrec (fun j => (Γ j).nu (t' j : ℂ)) (fun j => (y j).nu (t' j)) (fun j => GlobalTheory.isLSeg_nu (hL j) _) hp' hd'`. Set `z` to `IrrGL.of _ (isSmooth_prodIrr _ hd) hi`. Establish `a : (prodIrr (fun j => (y j).nu (t j)) hd).Equiv z.rep` using `IrrGL.equivOf _ (isSmooth_prodIrr _ hd) hi`.
+
+Conclude with `(PositivityTheory.Exh.langlandsMultisegments_holds k).1 _ _ z (hA _ ⟨a⟩) (hB _ ⟨e.symm.trans a⟩)`.
+-/
 theorem multiset_of_equiv [CharZero k] {h N : ℕ} (Γ : Fin h → Segment k) (y : Fin h → IrrGL k) (t t' : Fin h → ℝ)
     (hL : ∀ j, IsLSeg (Γ j) (y j).rep)
     (hp : ∀ i j, ¬ ((Γ i).nu (t i : ℂ)).Precedes ((Γ j).nu (t j : ℂ)))

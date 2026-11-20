@@ -9,6 +9,37 @@ noncomputable section
 
 namespace GlobalTheory.RingChain
 
+/- English proof (translation)
+Introduce `A R _ _ _ a g hg hM M M' _ _ _ _ e`. Substitute `hg` using the available equality. Use `⟨fun z => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `key : ∀ t : R ⊗[A] M, ∃ y : M, t - 1 ⊗ₜ y ∈ algebraMap A R a • (⊤ : Submodule R (R ⊗[A] M))`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add s t hs ht`. Take `⟨y, hy⟩` from `hs`. Take `⟨y', hy'⟩` from `ht`.
+
+Use `⟨y + y', ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ hy hy'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `tmul r m`. Take `⟨x, c, hc⟩` from `hM.1 r`. Use `⟨x • m, ?_⟩` and prove the remaining obligations. Establish `: r ⊗ₜ[A] m - (1 : R) ⊗ₜ (x • m) = algebraMap A R a • (c ⊗ₜ m)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, ← hc, TensorProduct.sub_tmul, ← TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial`. Take `⟨y, hy⟩` from `key (e.symm z)`. Take `⟨w, -, hw⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Establish `: z - e (1 ⊗ₜ y) = algebraMap A R a • e w`. Rewrite using `[← map_smul, hw, map_sub, LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial`. Set `φ : A ⧸ Ideal.span {a} →+* R ⧸ Ideal.span {algebraMap A R a}` to `Ideal.quotientMap _ (algebraMap A R) (Ideal.span_le.2 (by`.
+
+Introduce and unpack `_ rfl`. Conclude with `Ideal.mem_span_singleton_self _))`. Establish `hφ : ∀ x, φ (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (algebraMap A R x)` using `fun _ => rfl`. Establish `bij : Function.Bijective φ`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun r => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[hφ, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 (hM.2 x hx))`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Take `⟨x, hx⟩` from `hM.1 r`.
+
+Use `⟨Ideal.Quotient.mk _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `hx`. Set `ε` to `RingEquiv.ofBijective φ bij`. Set `τ : R →+* A ⧸ Ideal.span {a}` to `ε.symm.toRingHom.comp (Ideal.Quotient.mk _)`.
+
+Establish `hτ : ∀ x, τ (algebraMap A R x) = Ideal.Quotient.mk _ x` using `fun x => ε.symm_apply_eq.2 (hφ x).symm`. Establish `hτa : τ (algebraMap A R a) = 0`. Rewrite using `[hτ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self a)`. Set `τA : R →ₗ[A] A ⧸ Ideal.span {a}` to `{ toFun := τ map_add' := map_add τ map_smul' := fun c r => by`.
+
+Rewrite using `[Algebra.smul_def, map_mul, hτ, RingHom.id_apply, Algebra.smul_def]`. Use `rfl }`. Establish `h0 : ∀ t : R ⊗[A] M, τA.rTensor M (algebraMap A R a • t) = 0` using `fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero]`.
+
+Consider the case `add s t hs ht => rw [smul_add, map_add, hs, ht, add_zero]`. Consider the case `tmul r m`. Rewrite using `[TensorProduct.smul_tmul', LinearMap.rTensor_tmul]`. Express the relevant statement in the definitionally equal form `τ (algebraMap A R a * r) ⊗ₜ[A] m = 0`. Rewrite using `[map_mul, hτa, zero_mul, TensorProduct.zero_tmul]`.
+
+Take `⟨w, -, hw⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Establish `h1 : (1 : R) ⊗ₜ[A] y = algebraMap A R a • e.symm w`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, hw]`. Establish `h2 : (Ideal.Quotient.mk (Ideal.span {a}) 1) ⊗ₜ[A] y = 0`.
+
+Use `h0 (e.symm w)` as an intermediate fact. Rewrite `this` using `[← h1, LinearMap.rTensor_tmul]`. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `_ = τ 1 ⊗ₜ[A] y`. Rewrite using `[map_one, map_one]`.
+
+Establish `h3` using `congrArg (TensorProduct.quotTensorEquivQuotSMul M (Ideal.span {a})) h2`. Rewrite `h3` using `[TensorProduct.quotTensorEquivQuotSMul_mk_tmul, map_zero, one_smul, Submodule.Quotient.mk_eq_zero, Submodule.ideal_span_singleton_smul]`. Conclude with `h3`.
+-/
 theorem modIso_tensor_mod : ∀ (A R : Type) [CommRing A] [CommRing R] [Algebra A R] (a : A) (g : R), algebraMap A R a = g →
     ModIso R a → ∀ (M M' : Type) [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module R M']
     (e : R ⊗[A] M ≃ₗ[R] M'), (∀ z : M', ∃ y : M, z - e (1 ⊗ₜ y) ∈ g • (⊤ : Submodule R M')) ∧

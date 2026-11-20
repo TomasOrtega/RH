@@ -18,6 +18,11 @@ def param {a t : ℕ} (J' : Subgroup (GL (Fin a) F)) (hJ : J' ≤ Formalism.Doub
   theta ((p.1 : GL (Fin a) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)) : Matrix _ _ _) p.2.1 0
     ((p.2.2 : GL (Fin t) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)) : Matrix _ _ _)
 
+/- English proof (translation)
+Introduce and unpack `⟨x, B, D⟩ ⟨x', B', D'⟩ h`. Take `⟨h1, h2, -, h4⟩` from `theta_injective h`. Establish `hx : x = x'` using `Subtype.ext (Units.ext h1)`. Establish `hD : D = D'` using `Units.ext h4`. Substitute `hx hD h2` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem param_injective {a t : ℕ} (J' : Subgroup (GL (Fin a) F)) (hJ : J' ≤ Formalism.DoubleCosetMeasures.GLint O a) :
     Function.Injective (param (t := t) O hϖ J' hJ) := by
   rintro ⟨x, B, D⟩ ⟨x', B', D'⟩ h
@@ -27,6 +32,37 @@ theorem param_injective {a t : ℕ} (J' : Subgroup (GL (Fin a) F)) (hJ : J' ≤ 
   subst hx hD h2
   rfl
 
+/- English proof (translation)
+Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Rewrite `hg` using `[SetLike.mem_coe, Subgroup.mem_map]`. Take `⟨h, hH, rfl⟩` from `hg`.
+
+Rewrite `hH` using `[Subgroup.mem_subgroupOf, hJ]`. Simplify using `only [blockCond] at hH`. Take `⟨⟨k, hk, hkv⟩, hB, hC, ⟨D, hD, hDv⟩⟩` from `hH`. Use `⟨⟨⟨redJ O ϖ hϖ J' hJint ⟨k, hk⟩, MonoidHom.mem_range.mpr ⟨_, rfl⟩⟩, fun i j => Ideal.Quotient.mk _ ⟨_, hB i j⟩, red O t ϖ hϖ ⟨D, hD⟩⟩, ?_⟩` and prove the remaining obligations. Use `symm`.
+
+Apply `red_eq_theta` to reduce the goal to its premises. Introduce and unpack `(x | x) (y | y)`. Conclude with `(mk_congr O ϖ hϖ _ ((hJint hk).1 x y) (by rw [hkv]; simp [Matrix.toBlocks₁₁, reindex_apply'])).trans rfl`. Conclude with `(mk_congr O ϖ hϖ _ (hB x y) (by simp [Matrix.toBlocks₁₂, reindex_apply'])).trans rfl`. Take `⟨o, ho, he⟩` from `hC x y`.
+
+Conclude with `(mk_eq_zero O ϖ hϖ _ o ho (by rw [← he]; simp [Matrix.toBlocks₂₁, reindex_apply'])).trans rfl`. Conclude with `(mk_congr O ϖ hϖ _ (hD.1 x y) (by rw [hDv]; simp [Matrix.toBlocks₂₂, reindex_apply'])).trans rfl`. Introduce and unpack `⟨⟨⟨xb, hxb⟩, Bb, Db⟩, rfl⟩`. Take `⟨k, rfl⟩` from `MonoidHom.mem_range.mp hxb`. Take `⟨D, rfl⟩` from `red_surj O t ϖ hϖ hloc Db`.
+
+Use `choose Bl hBl using fun i j => Ideal.Quotient.mk_surjective (I := Ideal.span {(⟨ϖ, hϖ⟩ : O)}) (Bb i j)`. Establish `hk` using `hJint k.2`. Use `set BF : Matrix (Fin a) (Fin t) F := fun i j => (Bl i j : F) with hBF`. Establish `hBFi : ∀ i j, BF i j ∈ O` using `fun i j => (Bl i j).2`. Use `set kM : Matrix (Fin a) (Fin a) F := ((k : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) with hkM`.
+
+Use `set kI : Matrix (Fin a) (Fin a) F := (((k : GL (Fin a) F)⁻¹ : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) with hkI`. Use `set DM : Matrix (Fin t) (Fin t) F := (((D : GL (Fin t) F)) : Matrix (Fin t) (Fin t) F) with hDM`. Use `set DI : Matrix (Fin t) (Fin t) F := (((D : GL (Fin t) F)⁻¹ : GL (Fin t) F) : Matrix (Fin t) (Fin t) F) with hDI`. Establish `hkk : kM * kI = 1` using `Units.mul_inv _`. Establish `hkk' : kI * kM = 1` using `Units.inv_mul _`.
+
+Establish `hDD : DM * DI = 1` using `Units.mul_inv _`. Establish `hDD' : DI * DM = 1` using `Units.inv_mul _`. Establish `h1 : theta kM BF 0 DM * theta kI (-(kI * BF * DI)) 0 DI = 1`. Rewrite using `[theta_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, ← Matrix.mul_assoc, hkk, hDD, Matrix.one_mul, neg_add_cancel, neg_zero, zero_add, theta_one]`.
+
+Establish `h2 : theta kI (-(kI * BF * DI)) 0 DI * theta kM BF 0 DM = 1`. Rewrite using `[theta_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.neg_mul, Matrix.mul_assoc, hkk', hDD', Matrix.mul_one, add_neg_cancel, neg_zero, zero_add, theta_one]`. Take `⟨hF, hFv, hFi⟩ : ∃ g : GL (Fin (a + t)) F, (g : Matrix (Fin (a + t)) (Fin (a + t)) F) = theta kM BF 0 DM ∧ ((g⁻¹ : GL (Fin (a + t)) F) : Matrix (Fin (a + t)) (Fin (a + t)) F) = theta kI (-(kI * BF * DI)) 0 DI` from `⟨⟨_, _, h1, h2⟩, rfl, rfl⟩`. Establish `hmem : hF ∈ Formalism.DoubleCosetMeasures.GLint O (a + t)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFv]`. Conclude with `theta_int O hk.1 hBFi (fun _ _ => O.zero_mem) D.2.1`. Rewrite using `[hFi]`. Use `theta_int O hk.2 (fun i j => ?_) (fun _ _ => O.zero_mem) D.2.2` and prove the remaining obligations.
+
+Rewrite using `[Matrix.neg_apply]`. Conclude with `O.neg_mem (intProd O (intProd O hk.2 hBFi) D.2.2 i j)`. Establish `hbc : blockCond O ϖ J' hF`. Simplify using `only [blockCond]`. Rewrite using `[hFv, reindex_theta]`.
+
+Use `⟨⟨k, k.2, ?_⟩, fun i j => ?_, fun i j => ⟨0, O.zero_mem, ?_⟩, ⟨D, D.2, ?_⟩⟩` and prove the remaining obligations. Simplify using `[hkM]`. Simplify using `using hBFi i j`. Simplify using the standard rewrite rules. Simplify using `[hDM]`.
+
+Use `⟨red O (a + t) ϖ hϖ ⟨hF, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subgroup.mem_map]`. Conclude with `⟨⟨hF, hmem⟩, by rw [Subgroup.mem_subgroupOf, hJ]; exact hbc, rfl⟩`. Apply `red_eq_theta` to reduce the goal to its premises. Introduce and unpack `(x | x) (y | y)`.
+
+Apply the tactic sequence `refine (mk_entry O ϖ hϖ ⟨hF, hmem⟩ hFv _ _ ?_).trans ?_`. Conclude with `hk.1 x y`. Both sides reduce to the same expression. Apply the tactic sequence `refine (mk_entry O ϖ hϖ ⟨hF, hmem⟩ hFv _ _ ?_).trans ?_`. Conclude with `hBFi x y`.
+
+Conclude with `hBl x y`. Apply the tactic sequence `refine (mk_entry O ϖ hϖ ⟨hF, hmem⟩ hFv _ _ ?_).trans ?_`. Conclude with `O.zero_mem`. Conclude with `map_zero _`. Apply the tactic sequence `refine (mk_entry O ϖ hϖ ⟨hF, hmem⟩ hFv _ _ ?_).trans ?_`.
+
+Conclude with `D.2.1 x y`. Both sides reduce to the same expression.
+-/
 theorem image_eq (hϖ0 : ϖ ≠ 0) (hloc : Formalism.DoubleCosetMeasures.IsLocalAt O ϖ) {a t : ℕ}
     (J' : Subgroup (GL (Fin a) F)) (hJint : J' ≤ Formalism.DoubleCosetMeasures.GLint O a)
     (J : Subgroup (GL (Fin (a + t)) F)) (hJ : ∀ A, A ∈ J ↔ blockCond O ϖ J' A) :

@@ -19,6 +19,9 @@ def zmodRep (n : ℕ) {G V : Type} [Group G] [AddCommGroup V] [Module (ZMod n) V
   map_one' := by ext x; simp <;> rfl
   map_mul' g h := by ext x; simp only [map_mul]; rfl
 
+/- English proof (translation)
+Set `f : A ≃ₗ[k] B` to `{ e with map_smul' := fun c x => by`. Take `⟨n, rfl⟩` from `hk c`. Use `show e ((n : k) • x) = (n : k) • e x`. Rewrite using `[Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul, map_zsmul] }`. Conclude with `⟨Rep.mkIso (Representation.Equiv.mk f fun g => LinearMap.ext fun x => h g x)⟩`.
+-/
 theorem nonempty_iso_of_addEquiv {k G : Type} [CommRing k] [Group G] (hk : Function.Surjective (Int.cast : ℤ → k))
     (A B : Rep.{0} k G) (e : A ≃+ B) (h : ∀ (g : G) (x : A), e (A.ρ g x) = B.ρ g (e x)) : Nonempty (A ≅ B) := by
   let f : A ≃ₗ[k] B :=
@@ -30,6 +33,13 @@ theorem nonempty_iso_of_addEquiv {k G : Type} [CommRing k] [Group G] (hk : Funct
   exact ⟨Rep.mkIso (Representation.Equiv.mk f fun g => LinearMap.ext fun x => h g x)⟩
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `hker : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) ≤ (zmodRep ℓ (addAct M)).ker` using `fun g hg => by`. Rewrite using `[MonoidHom.mem_ker]`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(M.ρ g) x = x`. Rewrite using `[htriv g hg]`.
+
+Both sides reduce to the same expression. Set `ρ : Representation (ZMod ℓ) (galUnramifiedOutside K.1 ℚ̄ S ⧸ (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) M` to `QuotientGroup.lift _ (zmodRep ℓ (addAct M)) hker`. Use `⟨ρ, fun g m => rfl, ?_⟩` and prove the remaining obligations. Use `haveI := isDiscreteRep_infl (gsOpenSubgroup S hL) ρ`. Take `⟨e⟩` from `nonempty_iso_of_addEquiv (k := ULift.{0} ℤ) (fun c => ⟨c.down, rfl⟩) M (infl (gsOpenSubgroup S hL) ρ) (AddEquiv.refl M) (fun _ _ => rfl)`.
+
+Conclude with `gsEulerRatio_eq_of_iso S M ιr e`.
+-/
 theorem quotient_representation_open (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (L : FiniteSubfield) [Fact (K ≤ L)]
@@ -54,6 +64,9 @@ theorem quotient_representation_open (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSub
     (AddEquiv.refl M) (fun _ _ => rfl)
   exact gsEulerRatio_eq_of_iso S M ιr e
 
+/- English proof (translation)
+Establish `: NeZero ℓ` using `⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Use `letI inst : Module (ZMod ℓ) M := AddCommGroup.zmodModule hℓ`. Conclude with `⟨inst, quotient_representation_open ℓ K S ιr L hL M htriv⟩`.
+-/
 theorem quot_rep (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (L : FiniteSubfield) [Fact (K ≤ L)]

@@ -18,6 +18,13 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hmp : m.IsPrime` using `hm.isPrime`. Establish `hx : hU.fromSpec.base (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U)) ∈ U`. Establish `hr : hU.fromSpec.base (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U)) ∈ Set.range hU.fromSpec.base` using `⟨_, rfl⟩`.
+
+Rewrite `hr` using `[hU.range_fromSpec]`. Conclude with `hr`. Take `⟨g, hgs, hg⟩` from `hcov _ hx`. Establish `hmem : (⟨m, hmp⟩ : PrimeSpectrum Γ(X, U)) ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen g` using `hg`. Rewrite `hmem` using `[hU.fromSpec_preimage_basicOpen]`.
+
+Establish `hnot : g ∉ m` using `hmem`. Conclude with `hnot (hle (Ideal.subset_span hgs))`.
+-/
 private theorem span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) (s : Set Γ(X, U)) (hcov : ∀ x ∈ U, ∃ g ∈ s, x ∈ X.basicOpen g) :
     Ideal.span s = ⊤ := by
@@ -35,6 +42,9 @@ private theorem span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen {X : Scheme.
   have hnot : g ∉ m := hmem
   exact hnot (hle (Ideal.subset_span hgs))
 
+/- English proof (translation)
+Establish `e : (W : X.Opens) ≤ (𝟙 X) ⁻¹ᵁ (V : X.Opens)` using `by simpa using h`. Establish `h1` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE I (𝟙 X) V W e`. Establish `h2` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE J (𝟙 X) V W e`. Rewrite `h1`, `h2` using `[Scheme.IdealSheafData.comap_id]`. Rewrite using `[h1, h2, hIJ]`.
+-/
 private theorem ideal_eq_of_le {X : Scheme.{u}} (I J : X.IdealSheafData)
     (V W : X.affineOpens) (h : (W : X.Opens) ≤ (V : X.Opens)) (hIJ : I.ideal V = J.ideal V) :
     I.ideal W = J.ideal W := by
@@ -44,6 +54,15 @@ private theorem ideal_eq_of_le {X : Scheme.{u}} (I J : X.IdealSheafData)
   rw [Scheme.IdealSheafData.comap_id] at h1 h2
   rw [h1, h2, hIJ]
 
+/- English proof (translation)
+Set `algUV : Algebra Γ(X, U.1) Γ(X, X.basicOpen g)` to `(X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom.toAlgebra`. Establish `hloc : IsLocalization.Away g Γ(X, X.basicOpen g)` using `U.2.isLocalization_basicOpen g`. Establish `hmem : algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) s ∈ Ideal.map (algebraMap Γ(X, U.1) Γ(X, X.basicOpen g)) Jid` using `hs`. Take `⟨⟨⟨y, hy⟩, mm⟩, hEq⟩` from `(IsLocalization.mem_map_algebraMap_iff (M := Submonoid.powers g) (S := Γ(X, X.basicOpen g))).mp hmem`. Establish `hEq' : algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) (s * (mm : Γ(X, U.1))) = algebraMap Γ(X, U.1) Γ(X, X.basicOpen g) y`.
+
+Rewrite using `[map_mul]`. Conclude with `hEq`. Take `⟨cc, hcc⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers g) Γ(X, X.basicOpen g)).mp hEq'`. Take `⟨n₁, hn₁⟩` from `(Submonoid.mem_powers_iff (cc : Γ(X, U.1)) g).mp cc.2`. Take `⟨n₂, hn₂⟩` from `(Submonoid.mem_powers_iff (mm : Γ(X, U.1)) g).mp mm.2`.
+
+Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations. Establish `hrw : g ^ (n₁ + n₂) * s = (cc : Γ(X, U.1)) * (s * (mm : Γ(X, U.1)))`. Rewrite using `[pow_add, hn₁, hn₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrw, hcc]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hy`.
+-/
 private theorem exists_pow_mul_mem_of_map_mem {X : Scheme.{u}} (U : X.affineOpens)
     (g : Γ(X, U.1)) (Jid : Ideal Γ(X, U.1)) (s : Γ(X, U.1))
     (hs : (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom s ∈
@@ -71,6 +90,19 @@ private theorem exists_pow_mul_mem_of_map_mem {X : Scheme.{u}} (U : X.affineOpen
   rw [hrw, hcc]
   exact Ideal.mul_mem_left _ _ hy
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hspan : Ideal.span {g : Γ(X, U.1) | ∃ n : ℕ, g ^ n * s ∈ J.ideal U} = ⊤`. Use `span_eq_top_of_isAffineOpen_of_forall_mem_basicOpen U.2 _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨V, hxV, hIJ⟩` from `h x`.
+
+Take `⟨g, hgV, hxg⟩` from `U.2.exists_basicOpen_le (⟨x, hxV⟩ : ↥(V : X.Opens)) hx`. Establish `hIJW : I.ideal (X.affineBasicOpen g) = J.ideal (X.affineBasicOpen g)` using `ideal_eq_of_le I J V (X.affineBasicOpen g) hgV hIJ`. Establish `hres : (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom s ∈ Ideal.map (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom (J.ideal U)`. Rewrite using `[J.map_ideal_basicOpen U g, ← hIJW, ← I.map_ideal_basicOpen U g]`. Conclude with `Ideal.mem_map_of_mem _ hs`.
+
+Take `⟨n, hn⟩` from `exists_pow_mul_mem_of_map_mem U g (J.ideal U) s hres`. Conclude with `⟨g, ⟨n, hn⟩, hxg⟩`. Choose the witnesses or unpack the hypotheses as in `⟨K, hK⟩ : ∃ K : Ideal Γ(X, U.1), ∀ a : Γ(X, U.1), a ∈ K ↔ a * s ∈ J.ideal U := by`. Use `⟨Submodule.comap (LinearMap.toSpanSingleton Γ(X, U.1) Γ(X, U.1) s) (J.ideal U), fun a => ?_⟩` and prove the remaining obligations. Simplify using `[Submodule.mem_comap, LinearMap.toSpanSingleton_apply, smul_eq_mul]`.
+
+Establish `hsub : Ideal.span {g : Γ(X, U.1) | ∃ n : ℕ, g ^ n * s ∈ J.ideal U} ≤ K.radical`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `g ⟨n, hn⟩`. Conclude with `Ideal.mem_radical_iff.mpr ⟨n, (hK _).mpr hn⟩`. Establish `htop : K.radical = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `hsub`. Establish `h1 : (1 : Γ(X, U.1)) ∈ K.radical`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨n, hn⟩` from `Ideal.mem_radical_iff.mp h1`. Establish `hone : (1 : Γ(X, U.1)) ∈ K` using `by simpa using hn`. Simplify using `using (hK 1).mp hone`.
+-/
 private theorem ideal_le_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (h : ∀ x : ↥X, ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ I.ideal V = J.ideal V)
     (U : X.affineOpens) : I.ideal U ≤ J.ideal U := by
@@ -106,6 +138,11 @@ private theorem ideal_le_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
   have hone : (1 : Γ(X, U.1)) ∈ K := by simpa using hn
   simpa using (hK 1).mp hone
 
+/- English proof (translation)
+Establish `h1 : ∀ U : X.affineOpens, I.ideal U ≤ J.ideal U` using `fun U => ideal_le_of_locally_eq I J h U`. Establish `h2 : ∀ U : X.affineOpens, J.ideal U ≤ I.ideal U`. Use `fun U => ideal_le_of_locally_eq J I (fun x => ?_) U` and prove the remaining obligations. Take `⟨V, hV, hIJ⟩` from `h x`. Conclude with `⟨V, hV, hIJ.symm⟩`.
+
+Conclude with `le_antisymm h1 h2`.
+-/
 private theorem idealSheafData_eq_of_locally_eq {X : Scheme.{u}} (I J : X.IdealSheafData)
     (h : ∀ x : ↥X, ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ I.ideal V = J.ideal V) : I = J := by
   have h1 : ∀ U : X.affineOpens, I.ideal U ≤ J.ideal U := fun U =>
@@ -116,6 +153,11 @@ private theorem idealSheafData_eq_of_locally_eq {X : Scheme.{u}} (I J : X.IdealS
     exact ⟨V, hV, hIJ.symm⟩
   exact le_antisymm h1 h2
 
+/- English proof (translation)
+Establish `h1 : (q ≫ Spec.map φ).appLE ⊤ W (le_preimage_top k (q ≫ Spec.map φ) W) = ((Spec.map φ).appTop ≫ q.appTop) ≫ Y.presheaf.map (homOfLE (le_preimage_top L q W)).op` using `rfl`. Establish `h2 : (Spec.map φ).appTop ≫ q.appLE ⊤ W (le_preimage_top L q W) = ((Spec.map φ).appTop ≫ q.appTop) ≫ Y.presheaf.map (homOfLE (le_preimage_top L q W)).op` using `(Category.assoc _ _ _).symm`. Establish `happ : (q ≫ Spec.map φ).appLE ⊤ W (le_preimage_top k (q ≫ Spec.map φ) W) = (Spec.map φ).appTop ≫ q.appLE ⊤ W (le_preimage_top L q W)` using `h1.trans h2.symm`. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (q ≫ Spec.map φ).appLE ⊤ W (le_preimage_top k (q ≫ Spec.map φ) W) = φ ≫ ((Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ q.appLE ⊤ W (le_preimage_top L q W))`. Rewrite using `[happ, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality φ, Category.assoc]`.
+
+Use extensionality with `a`. Conclude with `DFunLike.congr_fun (congrArg CommRingCat.Hom.hom key) a`.
+-/
 private theorem sectionsAlgebraMap_comp_specMap (k L : Type u) [Field k] [Field L]
     {Y : Scheme.{u}} (q : Y ⟶ Spec (CommRingCat.of L))
     (φ : CommRingCat.of k ⟶ CommRingCat.of L) (W : Y.Opens) :
@@ -137,6 +179,21 @@ private theorem sectionsAlgebraMap_comp_specMap (k L : Type u) [Field k] [Field 
   ext a
   exact DFunLike.congr_fun (congrArg CommRingCat.Hom.hom key) a
 
+/- English proof (translation)
+Take `⟨U, m, hxU, hU, ⟨c⟩⟩` from `exists_etaleChart p (f.base y)`. Take `⟨V, hVU, c', hVaff, hyV, hcoord⟩` from `exists_etaleChart_of_isPullback hsq c y hxU`. Use `⟨⟨V, hVaff⟩, hyV, ?_⟩` and prove the remaining obligations. Establish `hdec : DecidableEq (ULift.{u} (Fin m))` using `Classical.decEq _`. Set `instkL : Algebra k L` to `φ.hom.toAlgebra`.
+
+Set `instA : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`. Set `instPA : Algebra (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` to `c.algebra`. Set `instB : Algebra L Γ(Y, V)` to `sectionsAlgebra L q V`. Set `instPB : Algebra (MvPolynomial (ULift.{u} (Fin m)) L) Γ(Y, V)` to `c'.algebra`. Set `instAlgebra : Algebra k Γ(Y, V)` to `((sectionsAlgebraMap L q V).comp φ.hom).toAlgebra`.
+
+Establish `tA : IsScalarTower k (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` using `c.isScalarTower`. Establish `tB : IsScalarTower L (MvPolynomial (ULift.{u} (Fin m)) L) Γ(Y, V)` using `c'.isScalarTower`. Establish `feA : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Establish `feB : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) L) Γ(Y, V)` using `c'.algebra_formallyEtale hVaff`. Establish `tkL : IsScalarTower k L Γ(Y, V)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Establish `hcommutes : ∀ a : k, (f.appLE U V hVU).hom (algebraMap k Γ(X, U) a) = algebraMap k Γ(Y, V) a`. Introduce `a`. Use `show (f.appLE U V hVU).hom (sectionsAlgebraMap k p U a) = sectionsAlgebraMap L q V (φ.hom a)`. Rewrite using `[sectionsAlgebraMap_appLE_apply k p f U V hVU a, ← hsq.w, sectionsAlgebraMap_comp_specMap k L q φ V]`. Both sides reduce to the same expression.
+
+Set `ψ : Γ(X, U) →ₐ[k] Γ(Y, V)` to `AlgHom.mk (f.appLE U V hVU).hom hcommutes`. Establish `hψ : ∀ i : ULift.{u} (Fin m), ψ (EtaleCoordinates.coord k (ULift.{u} (Fin m)) Γ(X, U) i) = EtaleCoordinates.coord L (ULift.{u} (Fin m)) Γ(Y, V) i`. Introduce and unpack `⟨j⟩`. Establish `h1 : EtaleCoordinates.coord k (ULift.{u} (Fin m)) Γ(X, U) (ULift.up j) = c.coord j` using `c.etaleCoordinates_coord j`. Establish `h2 : EtaleCoordinates.coord L (ULift.{u} (Fin m)) Γ(Y, V) (ULift.up j) = c'.coord j` using `c'.etaleCoordinates_coord j`.
+
+Rewrite using `[h1, h2]`. Use `show (f.appLE U V hVU).hom (c.coord j) = c'.coord j`. Conclude with `(hcoord j).symm`. Establish `key` using `DerivIdealBaseChange.map_derivIdeal k L (ULift.{u} (Fin m)) Γ(X, U) Γ(Y, V) ψ hψ (I.ideal ⟨U, hU⟩)`. Establish `hcomapV : (I.comap f).ideal ⟨V, hVaff⟩ = Ideal.map (f.appLE U V hVU).hom (I.ideal ⟨U, hU⟩)` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE I f ⟨U, hU⟩ ⟨V, hVaff⟩ hVU`.
+
+Establish `hcomapD : ((derivIdealSheaf k p I).comap f).ideal ⟨V, hVaff⟩ = Ideal.map (f.appLE U V hVU).hom ((derivIdealSheaf k p I).ideal ⟨U, hU⟩)` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE (derivIdealSheaf k p I) f ⟨U, hU⟩ ⟨V, hVaff⟩ hVU`. Rewrite using `[derivIdealSheaf_ideal, hcomapV, hcomapD, derivIdealSheaf_ideal]`. Conclude with `key.symm`.
+-/
 private theorem exists_affineOpen_derivIdealSheaf_comap_eq {k L : Type u} [Field k] [Field L]
     {X Y : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
     {q : Y ⟶ Spec (CommRingCat.of L)} [AlgebraicGeometry.Smooth q] {f : Y ⟶ X}
@@ -195,6 +252,9 @@ private theorem exists_affineOpen_derivIdealSheaf_comap_eq {k L : Type u} [Field
   rw [derivIdealSheaf_ideal, hcomapV, hcomapD, derivIdealSheaf_ideal]
   exact key.symm
 
+/- English proof (translation)
+The claim follows from `idealSheafData_eq_of_locally_eq _ _ fun y => exists_affineOpen_derivIdealSheaf_comap_eq (isPullback_pullback_specMap p φ) I y`.
+-/
 theorem derivIdealSheaf_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (φ : CommRingCat.of k ⟶ CommRingCat.of L) (I : X.IdealSheafData) :
@@ -204,6 +264,9 @@ theorem derivIdealSheaf_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
   idealSheafData_eq_of_locally_eq _ _ fun y =>
     exists_affineOpen_derivIdealSheaf_comap_eq (isPullback_pullback_specMap p φ) I y
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[derivIdealSheafIterate_succ, derivIdealSheafIterate_succ, ih, derivIdealSheaf_comap_fieldBaseChange p φ (derivIdealSheafIterate k p n I)]`.
+-/
 theorem derivIdealSheafIterate_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (φ : CommRingCat.of k ⟶ CommRingCat.of L) (r : ℕ) (I : X.IdealSheafData) :
@@ -216,6 +279,9 @@ theorem derivIdealSheafIterate_comap_fieldBaseChange {k L : Type u} [Field k] [F
       rw [derivIdealSheafIterate_succ, derivIdealSheafIterate_succ, ih,
         derivIdealSheaf_comap_fieldBaseChange p φ (derivIdealSheafIterate k p n I)]
 
+/- English proof (translation)
+Rewrite using `[maxContactIdeal_eq_derivIdealSheafIterate, maxContactIdeal_eq_derivIdealSheafIterate, derivIdealSheafIterate_comap_fieldBaseChange]`.
+-/
 theorem maxContactIdeal_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (φ : CommRingCat.of k ⟶ CommRingCat.of L) (m : ℕ) (I : X.IdealSheafData) :
@@ -224,6 +290,9 @@ theorem maxContactIdeal_comap_fieldBaseChange {k L : Type u} [Field k] [Field L]
       (maxContactIdeal k p I m).comap (pullback.fst p (Spec.map φ)) := by
   rw [maxContactIdeal_eq_derivIdealSheafIterate, maxContactIdeal_eq_derivIdealSheafIterate, derivIdealSheafIterate_comap_fieldBaseChange]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Rewrite using `[orderAtLeastLocus_zero, orderAtLeastLocus_zero, Set.preimage_univ]`. Rewrite using `[← support_derivIdealSheafIterate_eq_orderAtLeastLocus L (pullback.snd p (Spec.map φ)) (I.comap (pullback.fst p (Spec.map φ))) hm, ← support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm, derivIdealSheafIterate_comap_fieldBaseChange p φ (m - 1) I]`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+-/
 theorem orderAtLeastLocus_comap_fieldBaseChange {k L : Type u} [Field k] [Field L] [CharZero k]
     [CharZero L] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (φ : CommRingCat.of k ⟶ CommRingCat.of L)
@@ -239,6 +308,9 @@ theorem orderAtLeastLocus_comap_fieldBaseChange {k L : Type u} [Field k] [Field 
     ext y
     simp
 
+/- English proof (translation)
+Use `ENat.eq_of_forall_natCast_le_iff ?_` and prove the remaining obligations. Introduce `n`. Establish `h` using `orderAtLeastLocus_comap_fieldBaseChange p φ I n`. Establish `hy` using `Set.ext_iff.mp h y`. Simplify `hy` using `[mem_orderAtLeastLocus_iff, Set.mem_preimage]`.
+-/
 theorem orderAt_comap_fieldBaseChange {k L : Type u} [Field k] [Field L] [CharZero k]
     [CharZero L] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (φ : CommRingCat.of k ⟶ CommRingCat.of L)

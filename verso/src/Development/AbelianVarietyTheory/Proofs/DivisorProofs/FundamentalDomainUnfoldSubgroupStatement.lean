@@ -4,6 +4,9 @@ import Mathlib
 open MeasureTheory
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.sum_integral_indicator_eq_setIntegral_count | exact GlobalTheory.sum_integral_indicator_eq_setIntegral_count | (intros; apply GlobalTheory.sum_integral_indicator_eq_setIntegral_count <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fundamental_domain_unfold_subgroup : ∀ {G G₁ : Type} [Group G] [MeasurableSpace G] [Group G₁] (N Q : Subgroup G) (Γ : Subgroup G₁)
     (μN : Measure N) (ι : G₁ → G) (𝓕 : Set N) (D : Set G) (h : G),
     Countable Q → Countable Γ → (∀ g : G, Measurable (g * ·)) →

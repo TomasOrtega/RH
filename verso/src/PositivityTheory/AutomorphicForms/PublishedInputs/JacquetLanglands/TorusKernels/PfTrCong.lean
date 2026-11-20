@@ -10,6 +10,15 @@ namespace UpperTheory.Esk.TraceCongruenceBounds
 
 open UpperTheory.Esk
 
+/- English proof (translation)
+Establish `hle : ∀ m : ℕ, nu ι (m : ℂ) ≤ 1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Nat.cast_succ]; exact (nu ι).map_add_le ih (by simp)`.
+
+Establish `hlt : nu ι (l : ℂ) < 1`. Rewrite using `[nu_apply, map_natCast, ← NNReal.coe_lt_coe, coe_nnnorm, NNReal.coe_one]`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l]`. Conclude with `lt_of_eq_of_lt (PadicAlgCl.norm_extends l _) Padic.norm_p_lt_one`. Take `⟨m, hm⟩` from `(Fact.out : l.Prime).odd_of_ne_two hl`.
+
+Use `le_antisymm (by simpa using hle 2) (not_lt.1 fun h2 => ?_)` and prove the remaining obligations. Establish `e : (1 : ℂ) = (l : ℂ) - 2 * (m : ℂ)` using `by rw [hm]; push_cast; ring`. Establish `: nu ι ((l : ℂ) - 2 * (m : ℂ)) < 1`. Use `(nu ι).map_sub_lt hlt ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hle m)) h2`. Rewrite `this` using `[← e, map_one]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem nu_two {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (ι : Qbar l ≃+* ℂ) : nu ι 2 = 1 := by
   have hle : ∀ m : ℕ, nu ι (m : ℂ) ≤ 1 := by
     intro m
@@ -30,6 +39,13 @@ theorem nu_two {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (ι : Qbar l ≃+* ℂ) :
   rw [← e, map_one] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `key : ∀ j ∈ s, ∀ (z : ℂ) (b : ℝ≥0), (u j ≠ 0 → ν z ≤ b) → ν (u j * z) ≤ b`. Introduce `j hj z b hz`. Distinguish the cases in `h0 : u j = 0`. Simplify using `[h0]`. Rewrite using `[map_mul]`.
+
+Conclude with `le_trans (mul_le_mul' (hu j hj) (hz h0)) (by simp)`. Use `⟨ν.map_sum_le fun j hj => key j hj _ _ fun h0 => (h j hj h0).1, ν.map_sum_le fun j hj => key j hj _ _ fun h0 => (h j hj h0).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `ν.map_sum_le fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`.
+
+Conclude with `key j hj _ _ fun h0 => (h j hj h0).2.2`.
+-/
 theorem sum_bound (ν : Valuation ℂ ℝ≥0) {β : Type*} (s : Finset β) (u x y : β → ℂ) (m : ℝ≥0)
     (hu : ∀ j ∈ s, ν (u j) ≤ 1)
     (h : ∀ j ∈ s, u j ≠ 0 → ν (x j) ≤ 1 ∧ ν (y j) ≤ 1 ∧ ν (x j - y j) ≤ m) :
@@ -48,6 +64,9 @@ theorem sum_bound (ν : Valuation ℂ ℝ≥0) {β : Type*} (s : Finset β) (u x
   rw [← mul_sub]
   exact key j hj _ _ fun h0 => (h j hj h0).2.2
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_product, geo, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Dat.Te, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem geo_expand {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf) (k : I → ℕ) {n : ℕ}
     (a : Fin n → Gf) (S : Finset (D.Cj × D.Om)) (z : ℂ) :
     z * geo D k a S = ∑ q ∈ S ×ˢ (Finset.univ : Finset (Fin n)),
@@ -60,10 +79,18 @@ theorem geo_expand {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Conclude with `h (by simp [Dat.ee, hx])`.
+-/
 theorem ee_mem {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf) {x : Gf} (h : D.ee x ≠ 0) : x ∈ D.H := by
   by_contra hx
   exact h (by simp [Dat.ee, hx])
 
+/- English proof (translation)
+Unfold `Dat.ee`. Use `split_ifs with hx`. Establish `e : (nu ι (D.χ ⟨x, hx⟩ : ℂ)) ^ m = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hm, Units.val_one, map_one]`. Conclude with `(pow_le_one_iff hm0.ne').1 e.le`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem nu_ee {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {F I Gf : Type} [Field F] [Group Gf] (D : Dat F I Gf)
     {m : ℕ} (hm0 : 0 < m) (hm : ∀ h, D.χ h ^ m = 1) (x : Gf) : nu ι (D.ee x) ≤ 1 := by
   unfold Dat.ee
@@ -73,16 +100,25 @@ theorem nu_ee {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {F I Gf : Type} [
     exact (pow_le_one_iff hm0.ne').1 e.le
   · simp
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hS`. Rewrite using `[map_inv₀, hn, Nat.cast_pow, map_pow, Nat.cast_ofNat, nu_two hl, one_pow, inv_one]`.
+-/
 theorem nu_card {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (ι : Qbar l ≃+* ℂ) {G : Type*} [Group G] (S : Subgroup G)
     (hS : ∃ n, Nat.card S = 2 ^ n) : nu ι ((Nat.card S : ℂ)⁻¹) = 1 := by
   obtain ⟨n, hn⟩ := hS
   rw [map_inv₀, hn, Nat.cast_pow, map_pow, Nat.cast_ofNat, nu_two hl, one_pow, inv_one]
 
+/- English proof (translation)
+Introduce `g hg` and use `by rw [MulAction.mem_stabilizer_iff] at hg ⊢ exact congrArg Prod.snd hg`.
+-/
 theorem stab_le {G A B : Type*} [Group G] [MulAction G A] [MulAction G B] (p : A × B) :
     MulAction.stabilizer G p ≤ MulAction.stabilizer G p.2 := fun g hg => by
   rw [MulAction.mem_stabilizer_iff] at hg ⊢
   exact congrArg Prod.snd hg
 
+/- English proof (translation)
+Rewrite using `[geo_expand, geo_expand]`. Use `sum_bound ν _ _ _ _ m (fun q hq => hu q.1 (Finset.mem_product.1 hq).1 q.2) fun q hq hne => ?_` and prove the remaining obligations. Conclude with `h q.1 (Finset.mem_product.1 hq).1 q.2 (right_ne_zero_of_mul hne)`.
+-/
 theorem geo_bound (ν : Valuation ℂ ℝ≥0) {F I Gf : Type} [Field F] [Group Gf] [Fintype I] (D : Dat F I Gf)
     (k k' : I → ℕ) {n : ℕ} (a : Fin n → Gf) (S : Finset (D.Cj × D.Om)) (z z' : ℂ) (m : ℝ≥0)
     (hu : ∀ p ∈ S, ∀ i, ν ((Nat.card (MulAction.stabilizer (PG F) p) : ℂ)⁻¹ *
@@ -98,6 +134,17 @@ theorem geo_bound (ν : Valuation ℂ ℝ≥0) {F I Gf : Type} [Field F] [Group 
 end UpperTheory.Esk.TraceCongruenceBounds
 
 open UpperTheory.Esk UpperTheory.Esk.TraceCongruenceBounds in
+/- English proof (translation)
+Introduce `hTF hDAx hTwo hGood hGT hH0b hFin`. Introduce `F _ _ _ hd l _ hl ι L k₀ hk₀ c hc hcL hu ω χ hω hχ hS N t ht W r hr hW n a hreps h h'`. Take `⟨⟨m, hm0, hm⟩, hsg⟩` from `hH0b F (fun _ => k₀) c ω χ hω hχ`. Establish `hS' : Sgn (fun v => k₀ + 2 * t v) ω` using `fun v => by`. Rewrite using `[hS v, pow_add, pow_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hax : (mkDat c χ).Ax` using `hDAx F hd c hc χ ⟨m, hm0, hm⟩`. Take `⟨hgood, hreg⟩` from `hGood F c ω χ hχ W n a hreps`. Establish `hreg' : (mkDat c χ).Reg a`. Apply `hreg` to reduce the goal to its premises.
+
+Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `⟨L.pl v, List.count_pos_iff.1 (le_trans hr (hW v)), by rw [hcL v]; exact one_ne_zero⟩`. Take `⟨S, hFam, hT⟩` from `hTF F (InfinitePlace F) (GF F) (mkDat c χ) hax (Fin n) a`. Establish `hyp0 : (mkDat c χ).Hyp (fun _ => k₀) a` using `⟨hax, fun _ => hk₀, (hsg hS).1, hgood, hreg'⟩`. Establish `hyp1 : (mkDat c χ).Hyp (fun v => k₀ + 2 * t v) a` using `⟨hax, fun _ => by omega, ((hH0b F _ c ω χ hω hχ).2 hS').1, hgood, hreg'⟩`.
+
+Establish `fd0 : FiniteDimensional ℂ ((mkDat c χ).M fun _ => k₀)` using `hFin F _ c hc ω χ hω hχ hS fun _ => by omega`. Establish `fd1 : FiniteDimensional ℂ ((mkDat c χ).M fun v => k₀ + 2 * t v)` using `hFin F _ c hc ω χ hω hχ hS' fun _ => by omega`. Rewrite using `[hT _ hyp0 fd0 h, hT _ hyp1 fd1 h']`. Use `geo_bound (nu ι) (mkDat c χ) _ _ a S _ _ _ ?_ ?_` and prove the remaining obligations. Introduce `p hp i`.
+
+Establish `hp'` using `hFam p hp`. Rewrite using `[map_mul, nu_card hl ι _ (hTwo F c χ hu p.2 _ (stab_le p) hp'.2), one_mul]`. Conclude with `nu_ee ι _ hm0 hm _`. Introduce `p hp i hne`. Conclude with `hGT F l ι L c χ hcL k₀ (by omega) N t ht W r hr hW n a hreps _ _ i (hFam p hp).1 (ee_mem _ hne)`.
+-/
 theorem UpperTheory.Esk.pf_TrCong : UpperTheory.Esk.TF → UpperTheory.Esk.DAx → UpperTheory.Esk.DTwo → UpperTheory.Esk.DGood → UpperTheory.Esk.GTerm → UpperTheory.Esk.H0b → UpperTheory.Esk.HFin → UpperTheory.Esk.TrCong := by
   intro hTF hDAx hTwo hGood hGT hH0b hFin
   intro F _ _ _ hd l _ hl ι L k₀ hk₀ c hc hcL hu ω χ hω hχ hS N t ht W r hr hW n a hreps h h'

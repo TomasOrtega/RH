@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealWeilF.HMF_herm_det_k | exact _root_.GlobalTheory.RealWeilF.HMF_herm_det_k | (intros; apply _root_.GlobalTheory.RealWeilF.HMF_herm_det_k <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_form_matrix_selfadjoint : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

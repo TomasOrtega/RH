@@ -23,30 +23,82 @@ namespace GlobalTheory.ContrKernel
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : Continuous fun z : Mx D S.rank T.rank => giA T ⬝ (adj z ⬝ gA S)` using `continuous_const.matrix_mul ((GlobalTheory.MixModel.continuous_adj (D := D) (m := S.rank) (n := T.rank)).matrix_mul continuous_const)`. Conclude with `h.const_smul (incA D (-D.host.xi0⁻¹))`.
+-/
 theorem continuous_ofAdj (S T : HSp D) : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj S T) := by
   have h : Continuous fun z : Mx D S.rank T.rank => giA T ⬝ (adj z ⬝ gA S) :=
     continuous_const.matrix_mul
       ((GlobalTheory.MixModel.continuous_adj (D := D) (m := S.rank) (n := T.rank)).matrix_mul continuous_const)
   exact h.const_smul (incA D (-D.host.xi0⁻¹))
 
+/- English proof (translation)
+The claim follows from `(continuous_ofAdj B.L S).comp (continuous_const.matrix_mul continuous_id)`.
+-/
 theorem continuous_kappa {ρ : ℕ} {B : BesLev D ρ} {L' : HSp D} {ζ' : Fin L'.rank → D.host.E} (l : Link B L' ζ')
     (S : HSp D) : Continuous (l.κ S) :=
   (continuous_ofAdj B.L S).comp (continuous_const.matrix_mul continuous_id)
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Take `⟨C, hC⟩` from `hb`. Conclude with `Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall hC)`.
+-/
 theorem integrable_of_cont_bdd {m n : ℕ} (μ : Measure (Mx D m n)) [IsFiniteMeasure μ] (f : Mx D m n → ℂ)
     (hc : Continuous f) (hb : ∃ C : ℝ, ∀ x, ‖f x‖ ≤ C) : Integrable f μ := by
   haveI : BorelSpace (Mx D m n) := ⟨rfl⟩
   obtain ⟨C, hC⟩ := hb
   exact Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall hC)
 
+/- English proof (translation)
+Rewrite using `[OrthDec.resS_symm_apply, OrthDec.resS_symm_apply, add_comm]`. Both sides reduce to the same expression.
+-/
 theorem symm_resS_symm {S A B : HSp D} (o : OrthDec S A B) (T : HSp D) (u : WO B T) (v : WO A T) :
     (o.symm.resS T).symm (u, v) = (o.resS T).symm (v, u) := by
   rw [OrthDec.resS_symm_apply, OrthDec.resS_symm_apply, add_comm]; rfl
 
+/- English proof (translation)
+Rewrite using `[OrthDec.resT_symm_apply, OrthDec.resT_symm_apply, add_comm]`. Both sides reduce to the same expression.
+-/
 theorem symm_resT_symm {T A B : HSp D} (o : OrthDec T A B) (S : HSp D) (u : WO S B) (v : WO S A) :
     (o.symm.resT S).symm (u, v) = (o.resT S).symm (v, u) := by
   rw [OrthDec.resT_symm_apply, OrthDec.resT_symm_apply, add_comm]; rfl
 
+/- English proof (translation)
+Introduce `D ψ σ B J B' s₁ s₂ l vL χA χA' χz oma omz omb omz' hV hW hoa hoz hob hoz' Ξ₁ Ξ₂ hΞ₁ hΞ₂ h₀ h₁ h₂`. Establish `hstd : IsStdChar D ψ (-1)` using `hoa.std`. Establish `TS` using `GlobalTheory.T.thetaTensorRule_orthogonalSum_source D ψ hstd B.V₀ B.A B.L B.o J.W₀`. Establish `TT` using `GlobalTheory.T.thetaTensorRule_targetOrthogonalSum D ψ hstd B'.V₀ B'.A B'.L B'.o J.W₀`. Establish `hw₁ : IsWeilDatumO ψ B.V₀ J.W₀ (χA * χz) s₁.χW s₁.om₀` using `hV ▸ s₁.weil₀`.
+
+Establish `hw₂ : IsWeilDatumO ψ J.W₀ B'.V₀ s₂.χV (χA' * χz) s₂.om₀` using `hW ▸ s₂.weil₀`. Use `haveI : IsFiniteMeasure (vL.μ.restrict vL.𝓕) := ⟨by rw [Measure.restrict_apply_univ, vL.covol.2.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : BorelSpace (WO J.W₀ B'.L) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO B.L J.W₀) := ⟨rfl⟩`. Establish `hS₁ : ∀ u, IsThetaFunO ψ B.L J.W₀ fun z => Ξ₁ ((B.o.resS J.W₀).symm (u, z))` using `(TS.slice_theta Ξ₁ hΞ₁).2`.
+
+Establish `hS₂ : ∀ v, IsThetaFunO ψ J.W₀ B'.L fun w => Ξ₂ ((B'.o.resT J.W₀).symm (v, w))` using `(TT.slice_theta Ξ₂ hΞ₂).2`. Take `⟨Hf, hHf⟩ : ∃ Hf : WO B.A J.W₀ → WO B.L J.W₀ → ℂ, Hf = fun u z => omz (1, h₁) (fun z' => Ξ₁ ((B.o.resS J.W₀).symm (u, z'))) z` from `⟨_, rfl⟩`. Take `⟨Gf, hGf⟩ : ∃ Gf : WO J.W₀ B'.A → WO J.W₀ B'.L → ℂ, Gf = fun v w => omz' (h₁, 1) (fun w' => Ξ₂ ((B'.o.resT J.W₀).symm (v, w'))) w` from `⟨_, rfl⟩`. Take `⟨F₁, hF₁d⟩ : ∃ F₁ : WO B.V₀ J.W₀ → ℂ, F₁ = fun x => Hf (B.o.resS J.W₀ x).1 (B.o.resS J.W₀ x).2` from `⟨_, rfl⟩`. Take `⟨F₂, hF₂d⟩ : ∃ F₂ : WO J.W₀ B'.V₀ → ℂ, F₂ = fun x => Gf (B'.o.resT J.W₀ x).1 (B'.o.resT J.W₀ x).2` from `⟨_, rfl⟩`.
+
+Establish `hF₁s : ∀ u z, F₁ ((B.o.resS J.W₀).symm (u, z)) = Hf u z`. Introduce `u z`. Rewrite using `[hF₁d]`. Simplify using `only [AddEquiv.apply_symm_apply]`. Establish `hF₂s : ∀ v w, F₂ ((B'.o.resT J.W₀).symm (v, w)) = Gf v w`.
+
+Introduce `v w`. Rewrite using `[hF₂d]`. Simplify using `only [AddEquiv.apply_symm_apply]`. Establish `hF₁ : IsThetaFunO ψ B.V₀ J.W₀ F₁`. Establish `h` using `(GlobalTheory.T.weil_operator_commutes_superposition_slices_source D ψ B.V₀ B.L B.A J.W₀ B.o.symm χz s₁.χW omz hoz Ξ₁ hΞ₁ Unit 0 (fun _ => 0) (fun _ => 0) measurable_const (integrable_zero _ _ _) (1, h₁)).1`.
+
+Establish `e : F₁ = fun x => omz (1, h₁) (fun u => Ξ₁ ((B.o.symm.resS J.W₀).symm (u, (B.o.symm.resS J.W₀ x).2))) (B.o.symm.resS J.W₀ x).1`. Use function extensionality and compare the values at `x`. Rewrite using `[hF₁d, hHf]`. Simplify using `only [symm_resS_symm]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `h`. Establish `hF₂ : IsThetaFunO ψ J.W₀ B'.V₀ F₂`. Establish `h` using `(GlobalTheory.T.weilRep_commutes_slice_superposition_target D ψ B'.V₀ B'.L B'.A J.W₀ B'.o.symm s₂.χV χz omz' hoz' Ξ₂ hΞ₂ Unit 0 (fun _ => 0) (fun _ => 0) measurable_const (integrable_zero _ _ _) (h₁, 1)).1`. Establish `e : F₂ = fun x => omz' (h₁, 1) (fun u => Ξ₂ ((B'.o.symm.resT J.W₀).symm (u, (B'.o.symm.resT J.W₀ x).2))) (B'.o.symm.resT J.W₀ x).1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hF₂d, hGf]`. Simplify using `only [symm_resT_symm]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `h`. Take `⟨b₁, hb₁d⟩ : ∃ b₁ : WO J.W₀ B'.L → ℂ, b₁ = fun w => oma (h₀, h₁) (fun u => Hf u (l.κ J.W₀ w)) 0` from `⟨_, rfl⟩`. Establish `hA : ∀ w, s₁.om₀ (B.o.emb (h₀, 1), h₁) Ξ₁ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w)) = b₁ w`. Introduce `w`. Rewrite using `[(TS.om_slice χA χz s₁.χW s₁.om₀ oma omz hw₁ hoa hoz h₀ 1 h₁ Ξ₁ hΞ₁ (l.κ J.W₀ w)).2 0, hb₁d, hHf]`.
+
+Establish `hB : ∀ w, s₂.om₀ (h₁, B'.o.emb (h₂, 1)) Ξ₂ ((B'.o.resT J.W₀).symm (0, w)) = omb (h₁, h₂) (fun v => Gf v w) 0`. Introduce `w`. Rewrite using `[(TT.om_slice s₂.χV χA' χz s₂.om₀ omb omz' hw₂ hob hoz' h₁ h₂ 1 Ξ₂ hΞ₂ w).2 0, hGf]`. Establish `hb₁int : Integrable b₁ (vL.μ.restrict vL.𝓕)`. Establish `th` using `hw₁.om_pres (B.o.emb (h₀, 1), h₁) Ξ₁ hΞ₁`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded B.V₀ J.W₀ ψ hstd _ th`. Establish `e : b₁ = fun w => s₁.om₀ (B.o.emb (h₀, 1), h₁) Ξ₁ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w))`. Use function extensionality and compare the values at `fun w => (hA w).symm`. Rewrite using `[e]`. Conclude with `integrable_of_cont_bdd _ _ (th.cont.comp ((B.o.continuous_resS_symm J.W₀).comp (continuous_const.prodMk (continuous_kappa l J.W₀)))) ⟨C, fun w => hC _⟩`.
+
+Establish `hGint : ∀ v, Integrable (Gf v) (vL.μ.restrict vL.𝓕)`. Introduce `v`. Establish `th` using `hoz'.om_pres (h₁, 1) _ (hS₂ v)`. Take `⟨C, hC⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded J.W₀ B'.L ψ hstd _ th`. Establish `e : Gf v = omz' (h₁, 1) (fun w' => Ξ₂ ((B'.o.resT J.W₀).symm (v, w')))` using `by rw [hGf]`.
+
+Rewrite using `[e]`. Conclude with `integrable_of_cont_bdd _ _ th.cont ⟨C, hC⟩`. Establish `hLine : ∀ u v, ∫ w, Gf v w * Hf u (l.κ J.W₀ w) ∂(vL.μ.restrict vL.𝓕) = contr l J.W₀ vL Ξ₁ Ξ₂ u v`. Introduce `u v`. Establish `hrank : B.L.rank = B'.L.rank` using `B.line.1.trans B'.line.1.symm`.
+
+Establish `hgram` using `(GlobalTheory.T.besselLineLink_gram_similitude_bijective D (σ + 1) B B'.L B'.ζ B'.line l).1`. Establish `CL` using `GlobalTheory.T.weilRep_conj_sourceLine_eq_targetLine D ψ B.L B'.L J.W₀ l.τ hrank hgram χz s₁.χW s₂.χV omz omz' hoz hoz' (fun z => Ξ₁ ((B.o.resS J.W₀).symm (u, z))) (hS₁ u)`. Establish `CU` using `GlobalTheory.T.weilDatum_preserves_thetaFundamentalDomainPairing D ψ J.W₀ B'.L s₂.χV χz omz' hoz' vL (h₁, 1) _ _ (hS₂ v) CL.1`. Rewrite `CU` using `[CL.2 h₁]`. Simplify using `only [thPair, star_star] at CU`.
+
+Rewrite using `[hGf, hHf]`. Conclude with `CU`. Establish `hInner : ∀ v, oma (h₀, h₁) (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) 0 = ∫ w, b₁ w * F₂ ((B'.o.resT J.W₀).symm (v, id w)) ∂(vL.μ.restrict vL.𝓕)`. Introduce `v`. Establish `e : (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) = fun u => ∫ w, Gf v w * F₁ ((B.o.resS J.W₀).symm (u, l.κ J.W₀ w)) ∂(vL.μ.restrict vL.𝓕)`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[← hLine u v]`. Simplify using `only [hF₁s]`. Rewrite using `[e, (GlobalTheory.T.weil_operator_commutes_superposition_slices_source D ψ B.V₀ B.A B.L J.W₀ B.o χA s₁.χW oma hoa F₁ hF₁ (WO J.W₀ B'.L) (vL.μ.restrict vL.𝓕) (l.κ J.W₀) (Gf v) (continuous_kappa l J.W₀).measurable (hGint v) (h₀, h₁)).2 0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hF₁s, hF₂s, id, hb₁d]`. Conclude with `mul_comm _ _`. Establish `hOuter` using `(GlobalTheory.T.weilRep_commutes_slice_superposition_target D ψ B'.V₀ B'.A B'.L J.W₀ B'.o s₂.χV χA' omb hob F₂ hF₂ (WO J.W₀ B'.L) (vL.μ.restrict vL.𝓕) id b₁ measurable_id hb₁int (h₁, h₂)).2 0`. Establish `e : (fun v => oma (h₀, h₁) (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) 0) = fun v => ∫ w, b₁ w * F₂ ((B'.o.resT J.W₀).symm (v, id w)) ∂(vL.μ.restrict vL.𝓕)` using `funext hInner`. Rewrite using `[e, hOuter]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [hA, hB, hF₂s, id]`. Conclude with `mul_comm _ _`.
+-/
 theorem kernel_doubleStep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (B : BesLev D (σ + 1)) (J : JacLev D (σ + 1)) (B' : BesLev D σ) (s₁ : StepBF ψ B J) (s₂ : StepFB ψ J B') (l : Link B B'.L B'.ζ) (vL : VolM D B'.L.rank J.W₀.rank) (χA χA' χz : ((AE D)ˣ →* Circle)) (oma : Om B.A J.W₀) (omz : Om B.L J.W₀) (omb : Om J.W₀ B'.A) (omz' : Om J.W₀ B'.L), s₁.χV = χA * χz → s₂.χW = χA' * χz → IsWeilDatumO ψ B.A J.W₀ χA s₁.χW oma → IsWeilDatumO ψ B.L J.W₀ χz s₁.χW omz → IsWeilDatumO ψ J.W₀ B'.A s₂.χV χA' omb → IsWeilDatumO ψ J.W₀ B'.L s₂.χV χz omz' → ∀ (Ξ₁ : WO B.V₀ J.W₀ → ℂ) (Ξ₂ : WO J.W₀ B'.V₀ → ℂ), IsThetaFunO ψ B.V₀ J.W₀ Ξ₁ → IsThetaFunO ψ J.W₀ B'.V₀ Ξ₂ → ∀ h₀ h₁ h₂, ∫ w in vL.𝓕, s₂.om₀ (h₁, B'.o.emb (h₂, 1)) Ξ₂ ((B'.o.resT J.W₀).symm (0, w)) * s₁.om₀ (B.o.emb (h₀, 1), h₁) Ξ₁ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w)) ∂vL.μ = omb (h₁, h₂) (fun v => oma (h₀, h₁) (fun u => contr l J.W₀ vL Ξ₁ Ξ₂ u v) 0) 0 := by
   intro D ψ σ B J B' s₁ s₂ l vL χA χA' χz oma omz omb omz' hV hW hoa hoz hob hoz' Ξ₁ Ξ₂ hΞ₁ hΞ₂ h₀ h₁ h₂
   have hstd : IsStdChar D ψ (-1) := hoa.std

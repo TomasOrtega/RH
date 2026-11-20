@@ -5,6 +5,33 @@ open Finset Module NumberField
 
 namespace Formalism.ExtensionFiltration
 
+/- English proof (translation)
+Introduce `Pl _ w c1 ua lcvD C Cc pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η hmain hc1 hua hw hkS hkη hcard hm hf hq0 hqm hx heps hL hb hrd hrdL hchi0 hchiL hlx hll hLL0 hB0 hC hCc`. Establish `hL1 : 1 ≤ L` using `by rw [hL]; exact Real.one_le_rpow hx heps.le`. Establish `hb1 : 1 ≤ b` using `by rw [hb]; exact Real.one_le_exp (by linarith)`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hrd0 : 0 ≤ Real.log rd` using `Real.log_nonneg hrd`.
+
+Establish `hlogb : Real.log (b * rd) = L + Real.log rd`. Rewrite using `[Real.log_mul (by positivity) (by positivity), hb, Real.log_exp]`. Establish `hB0' : B0 = f * m * b * L` using `by rw [hB0, hL]`. Establish `hfmb : 0 ≤ f * m * b` using `by positivity`. Establish `hn0 : (0 : ℝ) ≤ (Fintype.card Pl : ℝ)` using `by positivity`.
+
+Establish `hW : (∑ τ, w τ) ≤ 2 * (f * b)`. Combine the equalities or inequalities in the displayed calculation. Establish `hW0 : 0 ≤ ∑ τ, w τ` using `Finset.sum_nonneg (fun τ _ => (hw τ).1)`. Establish `hU0 : 0 ≤ ∑ τ, ua τ` using `Finset.sum_nonneg (fun τ _ => (hua τ).1)`. Establish `hU : (∑ τ, ua τ) ≤ 8 * (f * m * b)`.
+
+Establish `h1 : ∀ τ, ua τ ≤ 8 * (m * b)`. Introduce `τ`. Establish `h2` using `(hua τ).2`. Establish `h3 : m * w τ ≤ m * (2 * b)` using `mul_le_mul_of_nonneg_left (hw τ).2 (by linarith)`. Establish `h4 : b ≤ m * b` using `le_mul_of_one_le_left hb0.le hm`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `set E : ℝ := Cc * q' * (Real.log rd + Lchi) with hE`. Establish `hE0 : 0 ≤ E` using `by positivity`. Establish `hEle : E ≤ Cc * m * (2 * L)`.
+
+Establish `: Cc * q' ≤ Cc * m` using `mul_le_mul_of_nonneg_left hqm hCc`. Conclude with `mul_le_mul this (by linarith) (by linarith) (by positivity)`. Establish `hsum : -(2 * ∑ τ, w τ * c1 τ) ≤ (∑ ρ, pq * w ρ * logOm) + 2 * (E * ∑ τ, w τ)`. Establish `h1 : ∀ τ, -(pq * w τ * logOm) / 2 - E * w τ ≤ w τ * c1 τ`. Introduce `τ`.
+
+Establish `h2` using `(abs_le.mp (hc1 τ)).1`. Establish `h3 : w τ * (-E) ≤ w τ * (c1 τ + pq * logOm / 2)` using `mul_le_mul_of_nonneg_left h2 (hw τ).1`. Establish `e1 : w τ * (-E) = -(E * w τ)` using `by ring`. Establish `e2 : w τ * (c1 τ + pq * logOm / 2) = w τ * c1 τ + (pq * w τ * logOm) / 2` using `by ring`. Rewrite `h3` using `[e1, e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : ∑ τ, (-(pq * w τ * logOm) / 2 - E * w τ) ≤ ∑ τ, w τ * c1 τ` using `Finset.sum_le_sum (fun τ _ => h1 τ)`. Rewrite `h4` using `[Finset.sum_sub_distrib, ← Finset.sum_div, Finset.sum_neg_distrib, ← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEW : E * (∑ τ, w τ) ≤ Cc * m * (2 * L) * (2 * (f * b))` using `mul_le_mul hEle hW hW0 (by positivity)`.
+
+Establish `hLLle : LL0 ≤ 4 * (L * llx)`. Rewrite using `[hLL0, hlogb]`. Establish `h1 : (L + Real.log rd) * llx ≤ (2 * L) * llx` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h2 : L ≤ L * llx` using `le_mul_of_one_le_right (by linarith) hll`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hLU : LL0 * (∑ τ, ua τ) ≤ 4 * (L * llx) * (8 * (f * m * b))` using `mul_le_mul hLLle hU hU0 (by positivity)`. Establish `hCLU : C * (LL0 * (∑ τ, ua τ)) ≤ C * (4 * (L * llx) * (8 * (f * m * b)))` using `mul_le_mul_of_nonneg_left hLU hC`. Establish `hBll : B0 ≤ B0 * llx`. Establish `: 0 ≤ B0` using `by rw [hB0']; positivity`. Conclude with `le_mul_of_one_le_right this hll`.
+
+Establish `hbB : b ≤ B0`. Rewrite using `[hB0']`. Establish `h1 : 1 ≤ f * m` using `one_le_mul_of_one_le_of_one_le hf hm`. Establish `h2 : b ≤ f * m * b` using `le_mul_of_one_le_left hb0.le h1`. Conclude with `le_trans h2 (le_mul_of_one_le_right hfmb hL1)`.
+
+Establish `hCcB : Cc * B0 ≤ Cc * (B0 * llx)` using `mul_le_mul_of_nonneg_left hBll hCc`. Establish `e1 : Cc * m * (2 * L) * (2 * (f * b)) = 4 * (Cc * B0)` using `by rw [hB0']; ring`. Establish `e2 : C * (4 * (L * llx) * (8 * (f * m * b))) = 32 * (C * (B0 * llx))` using `by rw [hB0']; ring`. Rewrite `hEW` using `[e1]`. Rewrite `hCLU` using `[e2]`.
+
+Use `clear_value E`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem covolume_from_slope_holds : CovolumeFromSlope := by
   intro Pl _ w c1 ua lcvD C Cc pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η
     hmain hc1 hua hw hkS hkη hcard hm hf hq0 hqm hx heps hL hb hrd hrdL hchi0 hchiL hlx hll hLL0 hB0 hC hCc
@@ -85,6 +112,17 @@ theorem covolume_from_slope_holds : CovolumeFromSlope := by
   clear_value E
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w c1 ua muU muA muN muG mmax dA dB dN dg db C1 Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall hc1 hua hU1 hw hkS …`. Substitute `hdD` using the available equality. Establish `hL1 : 1 ≤ L` using `by rw [hL]; exact Real.one_le_rpow hx heps.le`. Establish `hb0 : 0 < b` using `by rw [hb]; exact Real.exp_pos _`. Establish `hrd0 : 0 ≤ Real.log rd` using `Real.log_nonneg hrd`.
+
+Establish `hlx0 : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `hlogb : Real.log (b * rd) = L + Real.log rd`. Rewrite using `[Real.log_mul (by positivity) (by positivity), hb, Real.log_exp]`. Establish `hLLge : L + Real.log rd ≤ LL0`. Rewrite using `[hLL0, hlogb]`.
+
+Establish `: L + Real.log rd ≤ (L + Real.log rd) * llx` using `le_mul_of_one_le_right (by linarith) hll`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hchain` using `slope_lower_chain_holds Pl w c1 ua muU muA muN muG (Formalism.HN.muDef (Pi.basisFun K (Fin d)) XW M) mmax dA dB dN dg db C1 Cf LL0 L b rd m q' cfl ε δ Q P Λ G P9 h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall hC1 hCf hq0 hqm (f …`. Establish `hlcv : Formalism.DivisionValues.lcv XW M / (d : ℝ) = -Formalism.HN.muDef (Pi.basisFun K (Fin d)) XW M`. Rewrite using `[hLM K d hD XW hXW M hM]`.
+
+Establish `: (d : ℝ) ≠ 0` using `by exact_mod_cast hD.ne'`. Clear the denominators using the available nonvanishing facts. Use `covolume_from_slope_holds Pl w c1 ua (Formalism.DivisionValues.lcv XW M / (d : ℝ)) (C1 + 3 * Cf) Cc pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η ?_ hc1 ?_ hw hkS hkη hcard hm hf hq0 hqm hx heps hL hb hrd hrdL hchi0 hchiL hlx hll hLL0 hB0 (by positivity) hCc` and prove the remaining obligations. Rewrite using `[hlcv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `τ`. Use `⟨?_, (hua τ).2⟩` and prove the remaining obligations. Establish `h1` using `(hua τ).1`. Establish `h2 : 0 ≤ m * w τ` using `mul_nonneg (by linarith) (hw τ).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem covolume_assembly_of_slope_mu (hLM : LcvMu) : CovolumeEstimateOfSlopeChain := by
   intro K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w c1 ua muU muA muN muG mmax dA dB dN dg db
     C1 Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η

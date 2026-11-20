@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre | exact GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre | (intros; apply GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.not_lcAt_add_of_isNkltCentre' : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Γ A : X → ℚ) (z x : X), IsNkltCentre p n Γ z → IsQCart A → ¬ Off A z → z ⤳ x → ¬ LcAt p n (Γ + A) x := by
   first | exact @GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre | exact GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre | (intros; apply GlobalTheory.PairStep.not_lcAt_add_of_isNkltCentre <;> assumption)

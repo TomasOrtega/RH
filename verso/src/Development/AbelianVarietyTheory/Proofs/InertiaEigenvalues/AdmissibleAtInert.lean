@@ -24,6 +24,19 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NLink.InertStep
 
+/- English proof (translation)
+Introduce `hP D L P nch HW F Cm X C₂ hS hC hconds2 hBCD i htw hg hR hin π hπ`. Take `⟨hG1, hG2, hG3, hG4, hG5, hG5x, hG6, hBK, hCont, hSS, hDec, hEps, hTie, hShape, hFont, hH2, hCFT⟩` from `GlobalTheory.T.set_point_good hP D L P nch HW F Cm X C₂ hS i hg π hπ`. Establish `hcB : ∀ i', GlobalTheory.HubLoc.cBnum (D.nd.l i') ⌊2 * L.sc.b⌋₊ D.R.t (4 * D.R.n * D.R.nV) ≤ X.cB i'`. Introduce `i'`. Rewrite using `[hS.canon.cB]`.
+
+Conclude with `le_rfl`. Establish `hX` using `GlobalTheory.closingFamilyX hP.font hP.fin D HW F L X (GlobalTheory.JumpStatement.holds_all D) (hS.facts.admJ L hS.par) hS.par67 hS.facts.Conclusion1.1 hS.facts.large.2.1 hS.canon.fam hcB`. Take `⟨M0, h0, hJ⟩` from `hX.2.1 i hR π`. Establish `hTB : TruncatedSeriesCountingIdentities.admTB i (X.r i) π (X.cB i)` using `GlobalTheory.T.localBlochKatoCondition_of_wachModules D HW F i (X.r i) (X.ρ i) π M0 h0 (X.cB i) (GlobalTheory.T.theorem_tb_of_local_blochKato_duality_euler hP.bk hP.tate hP.euler D HW F Cm) (GlobalTheory.T.crystallineLatticeWachModuleExists_proof D HW F Cm) (GlobalTheory.crysOnCo …`. Establish `h11 : 11 ≤ D.nd.l i`.
+
+Use `D.nd.lPrime i` as an intermediate fact. Conclude with `GlobalTheory.Survey.InertPlacesGoodSet.eleven_le this.out hin (le_trans (by norm_num) hS.split)`. Establish `hD` using `hS.canon.data`. Establish `hROW : TruncatedSeriesCountingIdentities.LengthBoundAtPlaces i (X.r i) (X.ρ i) π (X.dc i) (X.lenRow i)`. Distinguish the cases in `hB : KillingConditions.IsRowB L (D.nd.l i)`.
+
+Rewrite using `[hD.rowB i hin hB]`. Conclude with `GlobalTheory.T.longOrbits_rowColength_inertLocalisation D L P HW C₂ i (X.r i) (X.ρ i) π (X.dc i) hconds2 hC hS.par67 h11 ((hBCD i htw hin π hπ).1 hB)`. Establish `hband : X.band i = fun lam => bandOf L HW 320 i (X.r i) (X.ρ i) lam`. Use function extensionality and compare the values at `lam`. Conclude with `propext (hD.band i lam)`.
+
+Rewrite using `[hD.rowCD i hin hB, hband]`. Conclude with `GlobalTheory.T.rowsCD_rowCondition_localBounds D L P HW F C₂ i (X.r i) (X.ρ i) π (X.dc i) (GlobalTheory.T.localLiftingTheoremB_of_blochKato_tateDuality_eulerChar hP.bk hP.tate hP.euler D HW F Cm 320 le_rfl) (GlobalTheory.T.prv_twenty_five_of_blochKato_tateDuality_eulerChar hP.bk …`. Establish `hLIFT : TruncatedSeriesCountingIdentities.LiftExponentAtPlaces i (X.r i) (X.dc i) (X.e' i)`. Introduce `w hw hwc`. Rewrite `hwc` using `[hD.col i hin]`.
+
+Simplify using `at hwc`. Conclude with `⟨hG1, hG2, hG3, hG4, hG5, hG5x, hG6, hBK, hTB, hROW, hLIFT, hCont, hSS, hDec, hEps, hTie, hShape, hFont, hH2, hCFT⟩`.
+-/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → 1 ≤ C₂ → WachCoordinates.Conclusion2 D C₂ → KillingConditions.JointParametersHubConditions L HW X (rowC C₂) → ∀ i, TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D → KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.InertK D (D.nd.l i) → ∀ π ∈ D.nd.Zgood i, TruncatedSeriesCountingIdentities.admitted i (X.r i) (X.ρ i) π (X.dc i) (X.lenRow i) (X.e' i) (X.cB i) := by
   intro hP D L P nch HW F Cm X C₂ hS hC hconds2 hBCD i htw hg hR hin π hπ
   obtain ⟨hG1, hG2, hG3, hG4, hG5, hG5x, hG6, hBK, hCont, hSS, hDec, hEps, hTie, hShape, hFont, hH2, hCFT⟩ :=

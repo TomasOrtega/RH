@@ -13,6 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocLanglands
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
+/- English proof (translation)
+Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (H); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := H`. Introduce `n s π d σ hs g`. Establish `h1` using `(hasSupport_of_isCuspSupport hs).of_equiv (equivRep (toIrrRep π))`. Establish `h2` using `H.supp (cls (toIrrRep π)) _ h1 g`. Rewrite `h2` using `[Multiset.map_map]`.
+
+Conclude with `h2`.
+-/
 theorem _root_.UpperTheory.Zero.LLC.IsRecT.recSupp {rc : IrrGL (w.adicCompletion E) → WD h} (H : _root_.UpperTheory.Zero.LLC.IsRecT h rc) :
     RecSupp fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
   first | (have hOpn := UpperTheory.One.M.opn _ (H); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := H
@@ -21,6 +26,11 @@ theorem _root_.UpperTheory.Zero.LLC.IsRecT.recSupp {rc : IrrGL (w.adicCompletion
   have h2 := H.supp (cls (toIrrRep π)) _ h1 g
   rw [Multiset.map_map] at h2
   exact h2
+/- English proof (translation)
+Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (H); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := H`. Introduce `χ c hu hc g α hα`. Take `⟨hχ, e⟩` from `cls_eq_ofChar χ c hc`. Simplify using `only [e, H.one, eig_lpOfChar, Multiset.mem_singleton] at hα`. Rewrite using `[hα]`.
+
+Conclude with `hu _`.
+-/
 theorem _root_.UpperTheory.Zero.LLC.IsRecT.recUnit {rc : IrrGL (w.adicCompletion E) → WD h} (H : _root_.UpperTheory.Zero.LLC.IsRecT h rc) :
     RecUnit fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
   first | (have hOpn := UpperTheory.One.M.opn _ (H); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := H

@@ -30,6 +30,13 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace BlowupSequenceData
 
+/- English proof (translation)
+Establish `hIc : ∀ t : ℕ, d.controlledTransform I m t = d.controlledTransform I' m t` using `fun t => d.controlledTransform_congr I I' (by rw [d.projectionToBase_zero]; exact hI) m t`. Establish `hEc : ∀ t : ℕ, d.boundaryFrom E t = d.boundaryFrom E' t` using `fun t => d.boundary_congr E E' (by simp only [d.projectionToBase_zero]; exact hE) t`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[← hIc i]`.
+
+Conclude with `h.divisible i hi`. Introduce `i hi`. Rewrite using `[← hIc i]`. Conclude with `h.center_order i hi`. Conclude with `h.center_smooth`.
+
+Introduce `i hi`. Rewrite using `[← hEc i]`. Conclude with `h.center_snc i hi`.
+-/
 theorem IsMarked.of_comap_isoObjZero_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {d : BlowupSequenceData X} {p : X ⟶ Spec (CommRingCat.of k)} {m : ℕ}
     {I I' : X.IdealSheafData} {E E' : List X.IdealSheafData}
@@ -57,6 +64,9 @@ end BlowupSequenceData
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => exact goingUpInvariant_zero hres hno T j hj I₀ E₀ s hpr hE₀ hjE hget htrunc`. Consider the case `succ n ih`. Conclude with `GoingUpInvariant.succ (ih (Nat.le_of_succ_le ht)) hbal hm hV hlift (Nat.lt_of_succ_le ht)`.
+-/
 theorem goingUpInvariant_of_le (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -77,6 +87,13 @@ theorem goingUpInvariant_of_le (hres : FunctorialResolution.Blowup.StrictTransfo
   | succ n ih =>
       exact GoingUpInvariant.succ (ih (Nat.le_of_succ_le ht)) hbal hm hV hlift (Nat.lt_of_succ_le ht)
 
+/- English proof (translation)
+Establish `hlen : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).length = s.length` using `ambientBlowupSeq_length hres hno T j hj I₀ E₀ s hpr`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[hlen]`. Conclude with `(goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc (i + 1) hi).exists_exceptionalIdeal_pow_mul_eq_comap_controlledTransform i (Nat.lt_succ_self i)`.
+
+Introduce `i hi`. Rewrite `hi` using `[hlen]`. Conclude with `(goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc i (le_of_lt hi)).support_center_subset_orderAtLeastLocus hbal hm hV hi`. Introduce `i hi`. Rewrite `hi` using `[hlen]`.
+
+Conclude with `smooth_ambientBlowupSeq_center_comp hres hno T j hj I₀ E₀ s hpr i hi`. Introduce `i hi`. Rewrite `hi` using `[hlen]`. Conclude with `(goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc i (le_of_lt hi)).hasStrictNormalCrossingsWith_center_boundary hlift hi`.
+-/
 theorem isMarked_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -110,6 +127,9 @@ theorem isMarked_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTran
     exact (goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc
       i (le_of_lt hi)).hasStrictNormalCrossingsWith_center_boundary hlift hi
 
+/- English proof (translation)
+The claim follows from `(goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc t ht).comap_controlledTransform ht`.
+-/
 theorem comap_controlledTransform_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
@@ -129,10 +149,22 @@ theorem comap_controlledTransform_ambientBlowupSeq (hres : FunctorialResolution.
   (goingUpInvariant_of_le hres hno T j hj I₀ E₀ s hpr hbal hm hV hlift hE₀ hjE hget htrunc
     t ht).comap_controlledTransform ht
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.comap_id T.ideal`.
+-/
 private theorem lowerIdealWithoutBlowup_eq_ideal (T : MarkedIdealWithBoundary.{u}) :
     lowerIdealWithoutBlowup T = T.ideal :=
   Scheme.IdealSheafData.comap_id T.ideal
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `hbdry : lowerBoundaryWithoutBlowup T = T.boundary` using `lowerBoundaryWithoutBlowup_eq T`. Establish `hideal : lowerIdealWithoutBlowup T = T.ideal` using `lowerIdealWithoutBlowup_eq_ideal T`.
+
+Establish `hjE : j < (lowerBoundaryWithoutBlowup T).length` using `by rw [hbdry]; exact hj`. Establish `hE₀ : InStrictNormalCrossingPosition T.structMap (lowerBoundaryWithoutBlowup T)` using `by rw [hbdry]; exact hV.snc`. Establish `hgetAll : ∀ h : j < (lowerBoundaryWithoutBlowup T).length, (lowerBoundaryWithoutBlowup T)[j]'h = T.boundary[j]`. Rewrite using `[hbdry]`. Introduce `_`.
+
+Both sides reduce to the same expression. Establish `hlen1 : (T.boundary.eraseIdx j).length = T.boundary.length - 1`. Simplify using `[List.length_eraseIdx, hj]`. Establish `htrunc : List.take (T.boundary.length - 1) ((lowerBoundaryWithoutBlowup T).eraseIdx j) = (lowerBoundaryWithoutBlowup T).eraseIdx j`. Rewrite using `[hbdry, ← hlen1, List.take_length]`.
+
+Establish `hbal' : IsDerivBalanced T.base T.structMap (lowerIdealWithoutBlowup T) T.mult`. Rewrite using `[hideal]`. Conclude with `hbal`. Establish `main` using `isMarked_ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr hbal' hV.one_le_mult hVlow hlift hE₀ hjE (hgetAll hjE) htrunc`. Conclude with `BlowupSequenceData.IsMarked.of_comap_isoObjZero_eq (by simp only [hideal]) (by simp only [hbdry]) main`.
+-/
 theorem isMarked_ambientBlowupSeq_of_containedComponentsIdeal_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
@@ -170,6 +202,17 @@ theorem isMarked_ambientBlowupSeq_of_containedComponentsIdeal_eq_top
     hbal' hV.one_le_mult hVlow hlift hE₀ hjE (hgetAll hjE) htrunc
   exact BlowupSequenceData.IsMarked.of_comap_isoObjZero_eq (by simp only [hideal]) (by simp only [hbdry]) main
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `hbdry : lowerBoundaryWithoutBlowup T = T.boundary` using `lowerBoundaryWithoutBlowup_eq T`. Establish `hideal : lowerIdealWithoutBlowup T = T.ideal` using `lowerIdealWithoutBlowup_eq_ideal T`.
+
+Establish `hjE : j < (lowerBoundaryWithoutBlowup T).length` using `by rw [hbdry]; exact hj`. Establish `hE₀ : InStrictNormalCrossingPosition T.structMap (lowerBoundaryWithoutBlowup T)` using `by rw [hbdry]; exact hV.snc`. Establish `hgetAll : ∀ h : j < (lowerBoundaryWithoutBlowup T).length, (lowerBoundaryWithoutBlowup T)[j]'h = T.boundary[j]`. Rewrite using `[hbdry]`. Introduce `_`.
+
+Both sides reduce to the same expression. Establish `hlen1 : (T.boundary.eraseIdx j).length = T.boundary.length - 1`. Simplify using `[List.length_eraseIdx, hj]`. Establish `htrunc : List.take (T.boundary.length - 1) ((lowerBoundaryWithoutBlowup T).eraseIdx j) = (lowerBoundaryWithoutBlowup T).eraseIdx j`. Rewrite using `[hbdry, ← hlen1, List.take_length]`.
+
+Establish `hbal' : IsDerivBalanced T.base T.structMap (lowerIdealWithoutBlowup T) T.mult`. Rewrite using `[hideal]`. Conclude with `hbal`. Establish `main` using `comap_controlledTransform_ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr hbal' hV.one_le_mult hVlow hlift hE₀ hjE (hgetAll hjE) htrunc t ht`. Establish `hc` using `BlowupSequenceData.controlledTransform_congr (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr) (lowerIdealWithoutBlowup T) T.ideal (by simp only [hideal]) T.mult t`.
+
+Rewrite using `[← hc]`. Conclude with `main`.
+-/
 theorem comap_controlledTransform_of_containedComponentsIdeal_eq_top
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})

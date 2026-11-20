@@ -32,33 +32,60 @@ variable (L) in
 
 def finP : Ideles L →* FI L := Units.map (MonoidHom.snd (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_val (P : HeightOneSpectrum (𝓞 L)) (u : FI L) :
     (cmp P u : P.adicCompletion L) = (u : FiniteAdeleRing (𝓞 L) L) P := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_sing (P : HeightOneSpectrum (𝓞 L)) (x) : incl L (sing P x) = localIdele L P x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finitePart_incl (u : FI L) : finP L (incl L u) = u := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finitePart_localIdele (P : HeightOneSpectrum (𝓞 L)) (x) : finP L (localIdele L P x) = sing P x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finitePart_infIdele (w : InfinitePlace L) (x) : finP L (infIdele L w x) = 1 := rfl
 
 open Classical in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) P x P = x`. Conclude with `Function.update_self (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) P _ _`.
+-/
 theorem cmp_sing_self (P : HeightOneSpectrum (𝓞 L)) (x) : cmp P (sing P x) = x := by
   apply Units.ext
   show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) P x P = x
   exact Function.update_self (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) P _ _
 
 open Classical in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) Q x P = 1`. Conclude with `Function.update_of_ne (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) h _ _`.
+-/
 theorem cmp_sing_ne {P Q : HeightOneSpectrum (𝓞 L)} (h : P ≠ Q) (x) : cmp P (sing Q x) = 1 := by
   apply Units.ext
   show Function.update (fun w : HeightOneSpectrum (𝓞 L) => (1 : w.adicCompletion L)) Q x P = 1
   exact Function.update_of_ne (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) h _ _
 
+/- English proof (translation)
+The claim follows from `Units.ext (FiniteAdeleRing.ext _ fun P => congrArg Units.val (h P))`.
+-/
 theorem fi_ext {u u' : FI L} (h : ∀ P, cmp P u = cmp P u') : u = u' :=
   Units.ext (FiniteAdeleRing.ext _ fun P => congrArg Units.val (h P))
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[map_prod]`. Use `split_ifs with h`. Rewrite using `[Finset.prod_eq_single_of_mem P h fun Q _ hQ => cmp_sing_ne hQ.symm _, cmp_sing_self]`. Conclude with `Finset.prod_eq_one fun Q hQ => cmp_sing_ne (by rintro rfl; exact h hQ) _`.
+-/
 theorem cmp_prod (T : Finset (HeightOneSpectrum (𝓞 L))) (x : ∀ Q : HeightOneSpectrum (𝓞 L), (Q.adicCompletion L)ˣ)
     (P : HeightOneSpectrum (𝓞 L)) : cmp P (∏ Q ∈ T, sing Q (x Q)) = if P ∈ T then x P else 1 := by
   rw [map_prod]
@@ -66,6 +93,9 @@ theorem cmp_prod (T : Finset (HeightOneSpectrum (𝓞 L))) (x : ∀ Q : HeightOn
   · rw [Finset.prod_eq_single_of_mem P h fun Q _ hQ => cmp_sing_ne hQ.symm _, cmp_sing_self]
   · exact Finset.prod_eq_one fun Q hQ => cmp_sing_ne (by rintro rfl; exact h hQ) _
 
+/- English proof (translation)
+Use `le_antisymm h ?_` and prove the remaining obligations. Establish `e : Valued.v (x : P.adicCompletion L) * Valued.v ((x⁻¹ : (P.adicCompletion L)ˣ) : P.adicCompletion L) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Conclude with `e.symm.le.trans (mul_le_of_le_one_right' h')`.
+-/
 theorem valued_eq_one_of_le {P : HeightOneSpectrum (𝓞 L)} (x : (P.adicCompletion L)ˣ)
     (h : Valued.v (x : P.adicCompletion L) ≤ 1) (h' : Valued.v ((x⁻¹ : (P.adicCompletion L)ˣ) : P.adicCompletion L) ≤ 1) :
     Valued.v (x : P.adicCompletion L) = 1 := by
@@ -74,6 +104,11 @@ theorem valued_eq_one_of_le {P : HeightOneSpectrum (𝓞 L)} (x : (P.adicComplet
     rw [← map_mul, Units.mul_inv, map_one]
   exact e.symm.le.trans (mul_le_of_le_one_right' h')
 
+/- English proof (translation)
+Establish `h1` using `Filter.eventually_cofinite.1 (u : FiniteAdeleRing (𝓞 L) L).2`. Establish `h2` using `Filter.eventually_cofinite.1 ((u⁻¹ : FI L) : FiniteAdeleRing (𝓞 L) L).2`. Use `(h1.union h2).subset fun P hP => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn`.
+
+Conclude with `hP (valued_eq_one_of_le _ hn.1 hn.2)`.
+-/
 theorem finite_nonunit (u : FI L) : {P | ¬ IsUnitAt P (cmp P u)}.Finite := by
   have h1 := Filter.eventually_cofinite.1 (u : FiniteAdeleRing (𝓞 L) L).2
   have h2 := Filter.eventually_cofinite.1 ((u⁻¹ : FI L) : FiniteAdeleRing (𝓞 L) L).2
@@ -82,6 +117,9 @@ theorem finite_nonunit (u : FI L) : {P | ¬ IsUnitAt P (cmp P u)}.Finite := by
   simp only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn
   exact hP (valued_eq_one_of_le _ hn.1 hn.2)
 
+/- English proof (translation)
+Use `(finite_nonunit (Units.map (algebraMap L (FiniteAdeleRing (𝓞 L) L)).toMonoidHom (Units.mk0 (N : L) (Nat.cast_ne_zero.2 hN.ne')))).subset fun P hP h => hP ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap L (P.adicCompletion L))]`. Conclude with `h`.
+-/
 theorem finite_nat {N : ℕ} (hN : 0 < N) :
     {P : HeightOneSpectrum (𝓞 L) | Valued.v (N : P.adicCompletion L) ≠ 1}.Finite := by
   refine (finite_nonunit (Units.map (algebraMap L (FiniteAdeleRing (𝓞 L) L)).toMonoidHom
@@ -94,6 +132,11 @@ def Cong (N : ℕ) (u : FI L) : Prop :=
 
 variable {G : Type} [CommGroup G]
 
+/- English proof (translation)
+Use `set T := ((finite_nonunit u).union (finite_nat (L := L) hN)).toFinset with hT`. Establish `e : u = (∏ Q ∈ T, sing Q (cmp Q u)) * ((∏ Q ∈ T, sing Q (cmp Q u))⁻¹ * u)` using `by simp`. Rewrite using `[e, map_mul, map_prod, Finset.prod_eq_one fun Q _ => h Q, one_mul]`. Use `hψ _ fun P => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, cmp_prod]`.
+
+Use `split_ifs with hP`. Simplify using `[IsUnitAt]`. Simplify using `only [hT, Set.Finite.mem_toFinset, Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hP`. Rewrite using `[inv_one, one_mul, hP.2]`. Conclude with `⟨hP.1, Valuation.map_sub_le _ hP.1.le (by simp)⟩`.
+-/
 theorem eq_one_of_local {N : ℕ} (hN : 0 < N) (ψ : FI L →* G) (hψ : ∀ u, Cong N u → ψ u = 1) (u : FI L)
     (h : ∀ P, ψ (sing P (cmp P u)) = 1) : ψ u = 1 := by
   classical
@@ -108,6 +151,11 @@ theorem eq_one_of_local {N : ℕ} (hN : 0 < N) (ψ : FI L →* G) (hψ : ∀ u, 
     rw [inv_one, one_mul, hP.2]
     exact ⟨hP.1, Valuation.map_sub_le _ hP.1.le (by simp)⟩
 
+/- English proof (translation)
+Introduce `Q`. Distinguish the cases in `e : Q = P`. Substitute `e` using the available equality. Rewrite using `[cmp_sing_self]`. Conclude with `⟨h, h'⟩`.
+
+Rewrite using `[cmp_sing_ne e]`. Simplify using `[IsUnitAt]`.
+-/
 theorem cong_sing {N : ℕ} {P : HeightOneSpectrum (𝓞 L)} {x : (P.adicCompletion L)ˣ} (h : IsUnitAt P x)
     (h' : Valued.v ((x : P.adicCompletion L) - 1) ≤ Valued.v (N : P.adicCompletion L)) : Cong N (sing P x) := by
   intro Q
@@ -118,6 +166,17 @@ theorem cong_sing {N : ℕ} {P : HeightOneSpectrum (𝓞 L)} {x : (P.adicComplet
   · rw [cmp_sing_ne e]
     simp [IsUnitAt]
 
+/- English proof (translation)
+Establish `hx0 : Valued.v (x : P.adicCompletion L) ≠ 0` using `by simp`. Establish `hN0` using `GlobalTheory.AdLat.valued_natCast_ne_zero P hN`. Take `⟨n, hn⟩` from `GlobalTheory.Idele.exists_exp_neg_lt (mul_ne_zero hx0 hN0)`. Establish `hd : DenseRange (algebraMap L (P.adicCompletion L))` using `HeightOneSpectrum.denseRange_algebraMap (K := L) P`. Establish `ho : IsOpen ((fun y : P.adicCompletion L => (x : P.adicCompletion L) - y) ⁻¹' {z | Valued.v z ≤ WithZero.exp (-(n : ℤ))})` using `(GlobalTheory.Idele.isOpen_valued_le (K := L) P (-(n : ℤ))).preimage (by fun_prop)`.
+
+Take `⟨k, hk⟩` from `hd.exists_mem_open ho ⟨x, by simp⟩`. Establish `hk1 : Valued.v ((x : P.adicCompletion L) - algebraMap L _ k) < Valued.v (x : P.adicCompletion L) * Valued.v (N : P.adicCompletion L)` using `lt_of_le_of_lt hk hn`. Establish `hk2 : Valued.v (algebraMap L (P.adicCompletion L) k) = Valued.v (x : P.adicCompletion L)`. Use `Valuation.map_sub_eq_of_lt_left Valued.v (hk1.trans_le (mul_le_of_le_one_right' (GlobalTheory.AdLat.valued_natCast_le_one P N)))` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk2` using `[map_zero, map_zero]`. Conclude with `hx0 hk2.symm`. Establish `e : x = atFin P (Units.mk0 k hk0) * ((atFin P (Units.mk0 k hk0))⁻¹ * x)` using `by simp`.
+
+Establish `ev : ((atFin P (Units.mk0 k hk0) : (P.adicCompletion L)ˣ) : P.adicCompletion L) = algebraMap L _ k` using `rfl`. Establish `hk3 : algebraMap L (P.adicCompletion L) k ≠ 0` using `by simpa using hk0`. Rewrite using `[e, map_mul, map_mul, h, one_mul]`. Use `hψ _ (cong_sing ?_ ?_)` and prove the remaining obligations. Unfold `IsUnitAt`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, ev, map_mul, map_inv₀, hk2, inv_mul_cancel₀ hx0]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, ev]`. Establish `e2 : (algebraMap L (P.adicCompletion L) k)⁻¹ * x - 1 = (algebraMap L (P.adicCompletion L) k)⁻¹ * (x - algebraMap L _ k)` using `by field_simp`. Rewrite using `[e2, map_mul, map_inv₀, hk2, inv_mul_le_iff₀ (zero_lt_iff.2 hx0)]`. Conclude with `hk1.le`.
+-/
 theorem local_of_global {N : ℕ} (hN : 0 < N) (ψ : FI L →* G) (hψ : ∀ u, Cong N u → ψ u = 1)
     (P : HeightOneSpectrum (𝓞 L)) (h : ∀ k : Lˣ, ψ (sing P (atFin P k)) = 1) (x : (P.adicCompletion L)ˣ) :
     ψ (sing P x) = 1 := by
@@ -152,6 +211,15 @@ theorem local_of_global {N : ℕ} (hN : 0 < N) (ψ : FI L →* G) (hψ : ∀ u, 
     rw [e2, map_mul, map_inv₀, hk2, inv_mul_le_iff₀ (zero_lt_iff.2 hx0)]
     exact hk1.le
 
+/- English proof (translation)
+Take `⟨T, hT⟩ : ∃ T : Finset (HeightOneSpectrum (𝓞 L)), ∀ P, P ∉ T → Valued.v (N : P.adicCompletion L) = 1` from `⟨(finite_nat (L := L) hN).toFinset, fun P hP => by simpa using hP⟩`. Use `choose n hn using fun P : HeightOneSpectrum (𝓞 L) => GlobalTheory.Idele.exists_exp_neg_lt (GlobalTheory.AdLat.valued_natCast_ne_zero P hN)`. Establish `ho` using `(GlobalTheory.Mem.UnitOpen.unit_open_and_congr_open L).2 T (T.sup n)`. Establish `h1` using `ho.mem_nhds (x := (1 : Ideles L)) ⟨one_mem _, fun v _ => by`. Establish `: ((1 : Ideles L) : AdeleRing (𝓞 L) L).2 v = 1` using `rfl`.
+
+Rewrite using `[this, sub_self, map_zero]`. Conclude with `zero_le⟩`. Establish `h2 : (fun _ => (1 : ℂˣ)) =ᶠ[nhds (1 : Ideles L)] (ψ.comp (finP L))` using `by filter_upwards [h1] with a ha`. Establish `hu : ∀ P, IsUnitAt P (cmp P (finP L a))` using `ha.1`. Use `(hψ (finP L a) fun P => ⟨hu P, ?_⟩).symm` and prove the remaining obligations.
+
+Distinguish the cases in `hP : P ∈ T`. Use `le_trans (ha.2 P hP) (le_trans ?_ (hn P).le)` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use `Finset.le_sup (f := n) hP` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hT P hP]`. Conclude with `Valuation.map_sub_le _ (hu P).le (by simp)`. Conclude with `continuous_of_continuousAt_one _ (continuousAt_const.congr h2)`.
+-/
 theorem continuous_finP {N : ℕ} (hN : 0 < N) (ψ : FI L →* ℂˣ) (hψ : ∀ u, Cong N u → ψ u = 1) :
     Continuous (ψ.comp (finP L)) := by
   classical
@@ -177,6 +245,13 @@ theorem continuous_finP {N : ℕ} (hN : 0 < N) (ψ : FI L →* ℂˣ) (hψ : ∀
       exact Valuation.map_sub_le _ (hu P).le (by simp)
   exact continuous_of_continuousAt_one _ (continuousAt_const.congr h2)
 
+/- English proof (translation)
+Establish `hroot : ∀ (w : InfinitePlace L) (z : w.Completion), ∃ y, y ^ n = z` using `fun w z => by`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (e z) hn`. Conclude with `⟨e.symm y, by rw [← map_pow, hy, e.symm_apply_apply]⟩`. Use `choose y hy using fun w => hroot w ((a : AdeleRing (𝓞 L) L).1 w)`.
+
+Set `Y : AdeleRing (𝓞 L) L` to `(y, 1)`. Establish `e : Y ^ n = ((a * (incl L (finP L a))⁻¹ : Ideles L) : AdeleRing (𝓞 L) L)`. Use `Prod.ext (funext fun w => (hy w).trans (mul_one _).symm) ?_` and prove the remaining obligations. Conclude with `(one_pow n).trans (congrArg Prod.snd a.mul_inv).symm`. Establish `hu : IsUnit Y` using `(isUnit_pow_iff hn.ne').1 (e ▸ Units.isUnit _)`.
+
+Take `⟨b, hb⟩` from `hu`. Establish `e2 : b ^ n = a * (incl L (finP L a))⁻¹` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hb, e])`. Use `h b` as an intermediate fact. Rewrite `this` using `[← map_pow, e2, map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem apply_eq_apply_finitePart_of_pow_eq_one [IsTotallyComplex L] (ψ : Ideles L →* G) {n : ℕ} (hn : 0 < n) (h : ∀ a, ψ a ^ n = 1)
     (a : Ideles L) : ψ a = ψ (incl L (finP L a)) := by
   have hroot : ∀ (w : InfinitePlace L) (z : w.Completion), ∃ y, y ^ n = z := fun w z => by
@@ -194,6 +269,11 @@ theorem apply_eq_apply_finitePart_of_pow_eq_one [IsTotallyComplex L] (ψ : Idele
   have := h b
   rwa [← map_pow, e2, map_mul, map_inv, mul_inv_eq_one] at this
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(GlobalTheory.AdLat.integral_finiteAdele_complete_separated L).1 _ fun N hN => ?_` and prove the remaining obligations. Take `⟨x, a, ha, rfl⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat L N hN).1 z`. Use `⟨φ a - a, fun v => sub_mem (h2 a ha v) (ha v), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h1, map_nsmul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem eq_self_of_fix (φ : FiniteAdeleRing (𝓞 L) L →+* FiniteAdeleRing (𝓞 L) L)
     (h1 : ∀ x : L, φ (algebraMap L _ x) = algebraMap L _ x)
     (h2 : ∀ z : FiniteAdeleRing (𝓞 L) L, (∀ P, Valued.v (z P) ≤ 1) → ∀ P, Valued.v (φ z P) ≤ 1)

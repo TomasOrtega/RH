@@ -26,6 +26,17 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT.OrthoBound
 
+/- English proof (translation)
+Establish `h1 : Y.conjTranspose * ((κ : ℂ) • Y) = 1`. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Establish `hM : ((κ : ℂ) • Y).BlockTriangular id`. Introduce `a b hab`.
+
+Simplify using `[hY a b hab]`. Use `letI : Invertible ((κ : ℂ) • Y) := invertibleOfLeftInverse _ _ h1`. Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular hM`. Rewrite `hinv` using `[Matrix.inv_eq_left_inv h1]`. Establish `h2` using `congrFun (congrFun h1 i) i`.
+
+Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single i, Matrix.one_apply_eq]`. Establish `h3 : κ * ‖Y i i‖ ^ 2 = 1`. Establish `h4` using `congrArg (fun z : ℂ => ‖z‖) h2`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.smul_apply, smul_eq_mul, norm_mul, norm_star, norm_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hκ] at h4`. Take the linear combination `h4`.
+
+Rewrite using `[← Real.sqrt_inv]`. Use `symm`. Rewrite using `[Real.sqrt_eq_iff_mul_self_eq (inv_nonneg.2 hκ.le) (norm_nonneg _)]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h3`.
+
+Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with hlt | hgt` into its components or cases. Rewrite using `[hinv (show id j < id i from hlt), zero_mul]`. Simplify using `[hY j i hgt]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_diag_of_triangular {m : ℕ} (Y : Matrix (Fin m) (Fin m) ℂ) (κ : ℝ) (hκ : 0 < κ)
     (hY : ∀ i j, j < i → Y i j = 0) (h : Y.conjTranspose * ((κ : ℂ) • (1 : Matrix (Fin m) (Fin m) ℂ)) * Y = 1)
     (i : Fin m) : ‖Y i i‖ = (Real.sqrt κ)⁻¹ := by
@@ -55,6 +66,25 @@ theorem norm_diag_of_triangular {m : ℕ} (Y : Matrix (Fin m) (Fin m) ℂ) (κ :
     · simp [hY j i hgt]
   · simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U ξ hU hξ hpq a n hd F hF σ hσ y N hN`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Take `⟨-, -, -, -, -, -, hwt⟩` from `GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c`. Take `⟨k, x, t, hx, ht⟩` from `GlobalTheory.T.exists_orthonormalFrame_borelChange_complexFramedPoint E H Dw l Xo c σ r (U σ) (hU σ hσ) y`. Take `⟨g, hg0, hgd, hchg⟩` from `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) ((U σ).un k x) y y).1 t).1 ht`.
+
+Establish `hξ0 : 0 < ξ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Rewrite using `[← hξ σ hσ k τ]`. Conclude with `norm_pos_iff.2 ((map_ne_zero τ).2 ((U σ).X k).ξ0_ne)`. Establish `hκ : 0 < 2 * Real.pi * ξ` using `by positivity`.
+
+Establish `hm0` using `GlobalTheory.T.unif_metric_scalar E H Dw l Xo c σ r (U σ) ξ hσ (hU σ hσ) hpq k x (hξ σ hσ k) hx`. Establish `hm1` using `GlobalTheory.T.metric_change_of_frame E H Dw l Xo c σ ((U σ).un k x) y 1 _ (fun b => Matrix.transpose (show Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ from g b)) (show ℂ from (t none : CAt σ)) (Units.ne_zero (M₀ := ℂ) (t none)) hchg hm0`. Take `⟨hNN, hG⟩` from `GlobalTheory.T.metric_data_unique E H Dw l Xo c σ y _ _ _ _ hN hm1`. Establish `hnone : cabs (t none : CAt σ) = Real.sqrt N`. Rewrite using `[hNN, _root_.mul_one, Real.sqrt_sq (norm_nonneg _)]`.
+
+Both sides reduce to the same expression. Establish `hsome : ∀ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), cabs (t (some p) : CAt σ) = (Real.sqrt (2 * Real.pi * ξ))⁻¹`. Introduce and unpack `⟨τ, i⟩`. Rewrite using `[← hgd τ i]`. Conclude with `norm_diag_of_triangular (Matrix.transpose (show Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ from g τ)) _ hκ (fun i j hij => hg0 τ j i hij) (congrFun hG τ).symm i`.
+
+Establish `hev` using `hwt (CAt σ) (GlobalTheory.FrameNorm.Comparison₂.isReduced_cAt σ) a n F (cusp_le_sec Xo c U a n hF) t _ _ ht`. Establish `hlie : ∏ p : Σ τ : E →+* ℂ, Fin (Dw.mult τ), (Real.sqrt (2 * Real.pi * ξ))⁻¹ ^ a (p.1, p.2) = lieFac Dw ξ a`. Establish `hs : (Real.sqrt (2 * Real.pi * ξ))⁻¹ = Real.exp (-(1 / 2) * Real.log (2 * Real.pi * ξ))`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hκ, ← Real.exp_neg]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hs, ← Real.exp_nat_mul]`. Rewrite using `[← Real.exp_sum, lieFac, ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[Fintype.sum_sigma]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw : cabs (wchar (ex Dw a n) t) = Real.sqrt N ^ n * lieFac Dw ξ a`. Rewrite using `[GlobalTheory.FrameNorm.Comparison₂.cabs_wchar, Fintype.prod_option, hnone, ← hlie]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun p _ => by rw [hsome p]; rfl`.
+
+Establish `hrd : ‖rdU (U σ) F k x.1‖ = cabs (evR Xo c F ((U σ).un k x))`. Establish `e : rdU (U σ) F k x.1 = toC (evR Xo c F ((U σ).un k x))` using `dif_pos x.2`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hle` using `Formalism.L2.Pj.abelian₂.pnorm_le_supN (U σ).X (laU (U σ) a n) (rdU (U σ) F) (supE_cusp_ne_top hσ hF) k x.1 x.2`.
+
+Rewrite `hle` using `[PullbackSections.PfSupAtUnit.pnorm_unit _ _ _ (PullbackSections.PfSupAtUnit.dmin_ortho _ hx), hrd]`. Rewrite using `[hev, GlobalTheory.FrameNorm.Comparison₂.cabs_mul, hw, supC, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle (lieFac_pos _ _ _).le) (pow_nonneg (Real.sqrt_nonneg _) _)`.
+-/
 theorem cabs_evR_le_supC : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = ξ) → 1 ≤ Dw.p + Dw.q → ∀ a n, Dom a n → ∀ F ∈ cusp Xo c U a n, ∀ σ, GoodEmb c σ → ∀ (y : FrPt Xo c (CAt σ)) (N : ℝ), IsMetric y N (fun _ => 1) → cabs (evR Xo c F y) ≤ Real.sqrt N ^ n * supC Xo c U ξ σ a n F := by
   intro E _ _ _ H Dw l Xo c r U ξ hU hξ hpq a n hd F hF σ hσ y N hN
   have hB : Out.SecBaseChangeSt := GlobalTheory.lawsFieldsSeparately.2.1

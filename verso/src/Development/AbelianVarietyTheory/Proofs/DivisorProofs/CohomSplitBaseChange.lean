@@ -14,6 +14,17 @@ namespace GlobalTheory.AbCoh.SplitCx
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `Module.projective_lifting_property (LinearMap.range d).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Establish `hmem : ∀ y : N, y - t ((LinearMap.range d).mkQ y) ∈ LinearMap.range d`. Introduce `y`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sub]`. Use `LinearMap.congr_fun ht ((LinearMap.range d).mkQ y)` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[this, sub_self]`. Set `r : N →ₗ[R] LinearMap.range d` to `LinearMap.codRestrict _ (LinearMap.id - t ∘ₗ (LinearMap.range d).mkQ) hmem`. Establish `hr : ∀ y : LinearMap.range d, r y = y`. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [r, LinearMap.codRestrict_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 y.2, map_zero, sub_zero]`. Use `haveI : Module.Projective R (LinearMap.range d) := Module.Projective.of_split (LinearMap.range d).subtype r (LinearMap.ext hr)`. Take `⟨s, hs⟩` from `Module.projective_lifting_property d.rangeRestrict LinearMap.id (LinearMap.surjective_rangeRestrict d)`.
+
+Use `⟨s ∘ₗ r, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hs (r (d x))`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1`. Establish `h2` using `congrArg Subtype.val h1`. Establish `h3 : (r (d x) : N) = d x` using `congrArg Subtype.val (hr ⟨d x, LinearMap.mem_range_self d x⟩)`.
+
+Conclude with `h2.trans h3`.
+-/
 theorem exists_quasiInv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [Module.Projective R N] (d : M →ₗ[R] N) (hQ : Module.Projective R (N ⧸ LinearMap.range d)) :
     ∃ b : N →ₗ[R] M, ∀ x, d (b (d x)) = d x := by
@@ -44,6 +55,19 @@ theorem exists_quasiInv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup
   have h3 : (r (d x) : N) = d x := congrArg Subtype.val (hr ⟨d x, LinearMap.mem_range_self d x⟩)
   exact h2.trans h3
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `exists_quasiInv d1 hQ2`. Take `⟨b', hb'⟩` from `exists_quasiInv d0 hQ1`. Use `set a : M1 →ₗ[R] M0 := b' ∘ₗ (LinearMap.id - b ∘ₗ d1) with ha`. Use `set e : M1 →ₗ[R] M1 := LinearMap.id - d0 ∘ₗ a - b ∘ₗ d1 with he0`. Establish `he : ∀ y, e y = y - d0 (b' (y - b (d1 y))) - b (d1 y)` using `fun y => by`.
+
+Simplify using `[e, a]`. Establish `k1 : ∀ x, d1 (e x) = 0` using `fun x => by`. Rewrite using `[he]`. Simplify using `only [map_sub, h, hb]`. Normalize the expressions using the abelian group laws.
+
+Establish `k2 : ∀ x, d0 (b' (e x)) = 0` using `fun x => by`. Rewrite using `[he]`. Simplify using `only [map_sub, hb']`. Normalize the expressions using the abelian group laws. Use `⟨e, a, b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply]`. Simplify using `only [he (e x), k1, map_zero, sub_zero, k2]`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`.
+
+Simplify using `only [he, h, map_zero, sub_zero, hb', sub_self]`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, k1]`. Use extensionality with `x`. Simplify using `only [e, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_decomp {M0 M1 M2 : Type} [AddCommGroup M0] [Module R M0] [AddCommGroup M1] [Module R M1]
     [AddCommGroup M2] [Module R M2] [Module.Projective R M1] [Module.Projective R M2]
     (d0 : M0 →ₗ[R] M1) (d1 : M1 →ₗ[R] M2) (h : ∀ x, d1 (d0 x) = 0)
@@ -74,6 +98,17 @@ theorem exists_decomp {M0 M1 M2 : Type} [AddCommGroup M0] [Module R M0] [AddComm
     simp only [e, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]
     abel
 
+/- English proof (translation)
+Establish `e1 : ∀ y, π.baseChange S (σ.baseChange S y) = y` using `fun y => by`. Use `congrArg (LinearMap.baseChange S) hπσ` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_id]`. Conclude with `LinearMap.congr_fun this y`. Establish `e2 : ∀ y, π.baseChange S (d0.baseChange S y) = 0` using `fun y => by`.
+
+Use `congrArg (LinearMap.baseChange S) hπd` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_zero]`. Conclude with `LinearMap.congr_fun this y`. Establish `e3 : ∀ y, d1.baseChange S (σ.baseChange S y) = 0` using `fun y => by`. Use `congrArg (LinearMap.baseChange S) hdσ` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.baseChange_comp, LinearMap.baseChange_zero]`. Conclude with `LinearMap.congr_fun this y`. Establish `e4 : ∀ y, y = σ.baseChange S (π.baseChange S y) + d0.baseChange S (a.baseChange S y) + b.baseChange S (d1.baseChange S y)` using `fun y => by`. Use `congrArg (LinearMap.baseChange S) hid` as an intermediate fact. Rewrite `this` using `[LinearMap.baseChange_id, LinearMap.baseChange_add, LinearMap.baseChange_add, LinearMap.baseChange_comp, LinearMap.baseChange_comp, LinearMap.baseChange_comp]`.
+
+Conclude with `LinearMap.congr_fun this y`. Use `⟨fun y => ⟨⟨σ.baseChange S y, e3 y⟩, e1 y⟩, fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Use `⟨a.baseChange S z.1, ?_⟩` and prove the remaining obligations. Establish `h0 : d1.baseChange S z.1 = 0` using `z.2`. Use `e4 z.1` as an intermediate fact.
+
+Rewrite `this` using `[hz, h0, map_zero, map_zero, zero_add, add_zero]`. Conclude with `this.symm`. Introduce and unpack `⟨w, hw⟩`. Rewrite using `[← hw]`. Conclude with `e2 w`.
+-/
 theorem bc {M0 M1 M2 P : Type} [AddCommGroup M0] [Module R M0] [AddCommGroup M1] [Module R M1]
     [AddCommGroup M2] [Module R M2] [AddCommGroup P] [Module R P]
     (d0 : M0 →ₗ[R] M1) (d1 : M1 →ₗ[R] M2) (π : M1 →ₗ[R] P) (σ : P →ₗ[R] M1)
@@ -114,6 +149,27 @@ end GlobalTheory.AbCoh.SplitCx
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R _ K hK hQ i h1 h2 R' _ _`. Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Apply the tactic sequence `try simp only [Nat.add_sub_cancel, Nat.add_one_sub_one]`. Use `haveI : Module.Projective R (K.X (j + 1)) := (hK _).2`. Use `haveI : Module.Projective R (K.X (j + 1 + 1)) := (hK _).2`.
+
+Use `haveI : Module.Finite R (K.X (j + 1)) := (hK _).1`. Establish `hdd : ∀ x, (K.d (j + 1) (j + 1 + 1)).hom ((K.d j (j + 1)).hom x) = 0` using `fun x => by`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, K.d_comp_d]`. Both sides reduce to the same expression. Take `⟨e, a, b, hee, hed, hde, hid⟩` from `SplitCx.exists_decomp (K.d j (j + 1)).hom (K.d (j + 1) (j + 1 + 1)).hom hdd (hQ j (by omega)) (hQ (j + 1) (by omega))`.
+
+Set `π : K.X (j + 1) →ₗ[R] LinearMap.range e` to `e.rangeRestrict`. Set `σ : LinearMap.range e →ₗ[R] K.X (j + 1)` to `(LinearMap.range e).subtype`. Establish `hπσ : π ∘ₗ σ = LinearMap.id`. Use extensionality with `⟨y, w, rfl⟩`. Express the relevant statement in the definitionally equal form `e (e w) = e w`.
+
+Rewrite using `[← LinearMap.comp_apply, hee]`. Establish `hπd : π ∘ₗ (K.d j (j + 1)).hom = 0`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `e ((K.d j (j + 1)).hom x) = 0`. Rewrite using `[← LinearMap.comp_apply, hed]`.
+
+Both sides reduce to the same expression. Establish `hdσ : (K.d (j + 1) (j + 1 + 1)).hom ∘ₗ σ = 0`. Use extensionality with `⟨y, w, rfl⟩`. Express the relevant statement in the definitionally equal form `(K.d (j + 1) (j + 1 + 1)).hom (e w) = 0`. Rewrite using `[← LinearMap.comp_apply, hde]`.
+
+Both sides reduce to the same expression. Establish `hid' : LinearMap.id = σ ∘ₗ π + (K.d j (j + 1)).hom ∘ₗ a + b ∘ₗ (K.d (j + 1) (j + 1 + 1)).hom`. Rewrite using `[hid]`. Both sides reduce to the same expression. Use `haveI : Module.Projective R (LinearMap.range e) := Module.Projective.of_split σ π hπσ`.
+
+Take `⟨sR, kR⟩` from `SplitCx.bc _ _ π σ a b hπσ hπd hdσ hid' R`. Take `⟨sR', kR'⟩` from `SplitCx.bc _ _ π σ a b hπσ hπd hdσ hid' R'`. Use `⟨LinearMap.range e, inferInstance, inferInstance, inferInstance, inferInstance, (TensorProduct.lid R _).toLinearMap ∘ₗ (π.baseChange R ∘ₗ (LinearMap.ker _).subtype), π.baseChange R' ∘ₗ (LinearMap.ker _).subtype, ?_, sR', ?_, kR', ?_⟩` and prove the remaining obligations. Conclude with `(TensorProduct.lid R _).surjective.comp sR`. Introduce `z`.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.coe_subtype, LinearEquiv.map_eq_zero_iff]`. Conclude with `kR z`. Introduce `z z' hz`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.coe_subtype]`. Rewrite using `[hz]`.
+
+Use `clear hz`. Proceed by induction on `(z.1 : R ⊗[R] K.X (j + 1)) using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m`. Simplify using `only [ext, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply, Algebra.ofId_apply, LinearMap.baseChange_tmul, TensorProduct.lid_tmul]`.
+
+Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, _root_.mul_one]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, TensorProduct.tmul_add]`.
+-/
 theorem cohom_split_baseChange : ∀ (R : Type) [CommRing R] (K : CochainComplex (ModuleCat.{0} R) ℕ), (∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) → (∀ i, i ≤ 2 → Module.Projective R (K.X (i + 1) ⧸ LinearMap.range (K.d i (i + 1)).hom)) → ∀ i, 1 ≤ i → i ≤ 2 → ∀ (R' : Type) [CommRing R'] [Algebra R R'], ∃ (P : Type) (_ : AddCommGroup P) (_ : Module R P) (_ : Module.Finite R P) (_ : Module.Projective R P) (u : LinearMap.ker (dB K R i (i + 1)) →ₗ[R] P) (v : LinearMap.ker (dB K R' i (i + 1)) →ₗ[R'] R' ⊗[R] P), Function.Surjective u ∧ Function.Surjective v ∧ (∀ z, u z = 0 ↔ z.1 ∈ LinearMap.range (dB K R (i - 1) i)) ∧ (∀ z, v z = 0 ↔ z.1 ∈ LinearMap.range (dB K R' (i - 1) i)) ∧ ∀ z z', z'.1 = ext (Algebra.ofId R R') _ z.1 → v z' = 1 ⊗ₜ u z := by
   intro R _ K hK hQ i h1 h2 R' _ _
   obtain ⟨j, rfl⟩ : ∃ j, i = j + 1 := ⟨i - 1, by omega⟩

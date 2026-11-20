@@ -19,6 +19,13 @@ def muNv (v : InfinitePlace X.B.I.F) : Measure (Formalism.REAL.UJ (X.B.I.ε v)) 
 
 def muHv (v : InfinitePlace X.B.I.F) : Measure (Formalism.REAL.UJ (X.B.I.ε v)) := muHl C u (X.pl v) v
 
+/- English proof (translation)
+Establish `key : ∀ (τ : D.what₂.Tau) (w : InfinitePlace X.B.I.F), vOf X τ = w → SigmaFinite (muNl C τ w) ∧ SigmaFinite (muHl C u τ w) ∧ QPK.InvOn (muNl C τ w) (Nloc X u w) ∧ QPK.InvOn (muHl C u τ w) (Hloc X u w) ∧ muHl C u τ w Set.univ = 1 ∧ QPK.mulMap (muNl C τ w) (muHl C u τ w) (QPK.prodS …`. Introduce and unpack `τ w rfl`. Establish `hθ` using `Formalism.L2.SG.Pf.WuBL.theta_pos C u τ`. Establish `hH1 : muHl C u τ (vOf X τ) Set.univ = 1`. Establish `h : (muHl C u τ (vOf X τ)).map (eT C τ (vOf X τ)) Set.univ = C.muW u τ Set.univ`.
+
+Rewrite using `[map_muHl C u τ]`. Rewrite `h` using `[Measure.map_apply (eT_emb C τ (vOf X τ)).measurable MeasurableSet.univ, Set.preimage_univ, C.muW_one u τ]`. Conclude with `h`. Establish `hconc : QPK.mulMap (muNl C τ (vOf X τ)) (muHl C u τ (vOf X τ)) (QPK.prodSet (Nloc X u (vOf X τ)) (Hloc X u (vOf X τ)))ᶜ = 0`. Establish `hHH : Hloc X u (vOf X τ) = Hfix X u (vOf X τ)` using `Hloc_eq X u (vOf X τ)`.
+
+Rewrite using `[hHH]`. Conclude with `(invOn_mulMap C u τ).2.2.1`. Take `⟨β, hβm, hβ1, hid⟩` from `loc_main C u τ hLF hB`. Conclude with `⟨sf_muNl C τ hθ, sf_muHl C u τ, invOn_muNl C u τ, invOn_muHl C u τ, hH1, hconc, β, hβm, hβ1, hid⟩`. Conclude with `key (X.pl v) v (X.pl.symm_apply_apply v)`.
+-/
 theorem place_all (hLF : LocFactor C) (hB : WuBessel C) (v : InfinitePlace X.B.I.F) :
     SigmaFinite (muNv C v) ∧ SigmaFinite (muHv C u v) ∧ QPK.InvOn (muNv C v) (Nloc X u v) ∧
       QPK.InvOn (muHv C u v) (Hloc X u v) ∧ muHv C u v Set.univ = 1 ∧
@@ -51,6 +58,15 @@ theorem place_all (hLF : LocFactor C) (hB : WuBessel C) (v : InfinitePlace X.B.I
     exact ⟨sf_muNl C τ hθ, sf_muHl C u τ, invOn_muNl C u τ, invOn_muHl C u τ, hH1, hconc, β, hβm, hβ1, hid⟩
   exact key (X.pl v) v (X.pl.symm_apply_apply v)
 
+/- English proof (translation)
+Establish `hPemb : MeasurableEmbedding (Pi.map (fun τ => eT C τ (X.pl.symm τ)) : (∀ τ : D.what₂.Tau, Formalism.REAL.UJ (X.B.I.ε (X.pl.symm τ))) → _)` using `(Topology.IsClosedEmbedding.piMap fun τ => Formalism.L2.SG.Pf.BaseOf.trG_closedEmb (n_eq' X) (X.B.I.ε (X.pl.symm τ)) (C.isT τ).2.1).measurableEmbedding`. Establish `htr : Formalism.L2.SG.LoopTerm.trInf C = (Pi.map (fun τ => eT C τ (X.pl.symm τ)) : (∀ τ : D.what₂.Tau, Formalism.REAL.UJ (X.B.I.ε (X.pl.symm τ))) → _) ∘ (MeasurableEquiv.piCongrLeft (fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm).symm`. Use function extensionality and compare the values at `x τ`. Both sides reduce to the same expression. Use `⟨htr ▸ hPemb.comp (MeasurableEquiv.measurableEmbedding _), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htr, ← Measure.map_map hPemb.measurable (MeasurableEquiv.measurable _)]`. Establish `h1 : (Measure.pi (muNv C)).map (MeasurableEquiv.piCongrLeft (fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm).symm = Measure.pi (fun τ => muNv C (X.pl.symm τ))` using `((measurePreserving_piCongrLeft (muNv C) X.pl.symm).symm _).map_eq`. Establish `h2 : (fun τ => muNv C (X.pl.symm τ)) = fun τ => muNl C τ (X.pl.symm τ)`. Use function extensionality and compare the values at `τ`. Use `show muNl C (X.pl (X.pl.symm τ)) (X.pl.symm τ) = muNl C τ (X.pl.symm τ)`.
+
+Rewrite using `[Equiv.apply_symm_apply]`. Rewrite using `[h1, h2]`. Establish `hmap : ∀ τ, (muNl C τ (X.pl.symm τ)).map (eT C τ (X.pl.symm τ)) = muNB D θ` using `fun τ => map_muNl C τ hθ`. Establish `: ∀ τ, SigmaFinite ((muNl C τ (X.pl.symm τ)).map (eT C τ (X.pl.symm τ)))` using `fun τ => by`. Rewrite using `[hmap τ]`.
+
+Conclude with `(muNB_haar (D := D) hθ).1`. Use `(Measure.pi_map_pi (μ := fun τ => muNl C τ (X.pl.symm τ)) (f := fun τ => eT C τ (X.pl.symm τ)) (fun τ => (eT_emb C τ (X.pl.symm τ)).measurable.aemeasurable)).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[hmap]`. Both sides reduce to the same expression.
+-/
 theorem map_trInf (hsf : ∀ v, SigmaFinite (muNv C v)) (hθ : 0 < θ) :
     MeasurableEmbedding (Formalism.L2.SG.LoopTerm.trInf C) ∧
       (Measure.pi (muNv C)).map (Formalism.L2.SG.LoopTerm.trInf C) = Formalism.L2.SG.LoopTerm.dnB D θ := by
@@ -81,6 +97,35 @@ theorem map_trInf (hsf : ∀ v, SigmaFinite (muNv C v)) (hθ : 0 < θ) :
   simp_rw [hmap]
   rfl
 
+/- English proof (translation)
+Establish `hθ : 0 < θ`. Take `⟨τ⟩` from `Formalism.L2.SG.LoopTerm.tau_nonempty D`. Conclude with `Formalism.L2.SG.Pf.WuBL.theta_pos C u τ`. Use `choose hsfN hsfH hN hH hH1 hconc β hβm hβ1 hloc using place_all C u hLF hB`. Establish `hpiN : Set.pi Set.univ (Nloc X u) = X.NinfU u`.
+
+Use extensionality with `s`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies]`. Conclude with `Iff.rfl`. Establish `hpiH : Set.pi Set.univ (Hloc X u) = Hset X.B.I (Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) ∪ Set.range (fun a => crdOf X.B.I X.ιE X.bas (X.fY a)) ∪ {crdOf X.B.I X.ιE X.bas (X.zu u)})`. Use extensionality with `s`.
+
+Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3, h4⟩` from `X.muN_haar u`. Take `⟨k1, k2, k3, k4⟩` from `X.muH_haar u`. Establish `hHfix : ∀ v, Hloc X u v = Hfix X u v` using `fun v => Hloc_eq X u v`.
+
+Take `⟨cN, hcN0, hcNt, hcN⟩` from `QPK.haar_measure_uniqueness X.B.I.Ginf (Set.pi Set.univ (Nloc X u)) (isClosed_set_pi fun v _ => (place_facts X u v).1) (QPK.isGrp_pi _ fun v => (place_facts X u v).2.2.1) (X.muN u) (Measure.pi (muNv C)) ⟨h1, h2, by rw [hpiN]; exact h3, by rw [hpiN]; exact h4⟩ (QPK.invOn_pi _ _ hN …`. Take `⟨cH, hcH0, hcHt, hcH⟩` from `QPK.haar_measure_uniqueness X.B.I.Ginf (Set.pi Set.univ (Hloc X u)) (isClosed_set_pi fun v _ => by rw [hHfix]; exact (place_facts X u v).2.1.isClosed) (QPK.isGrp_pi _ fun v => by rw [hHfix]; exact (place_facts X u v).2.2.2.1) (X.muH u) (Measure.pi (muHv C u)) ⟨k1, k2, by rw [hpiH …`. Use `set F : ∀ v, Formalism.REAL.UJ (X.B.I.ε v) → ℝ≥0∞ := fun v y => ‖X.Wloc u v y‖ₑ ^ 2 with hF_def`. Establish `hFm : ∀ v, Measurable (F v)` using `fun v => (X.Wloc_cont u v).enorm.measurable.pow_const 2`. Establish `hFinv : ∀ v, ∀ m ∈ Nloc X u v, ∀ h ∈ Hloc X u v, ∀ x, F v (m * h * x) = F v x`.
+
+Introduce `v m hm h hh x`. Establish `hs` using `mul_mem_Sloc X u v (Nloc_sub X u v hm) (Hloc_sub X u v hh)`. Use `show ‖X.Wloc u v (m * h * x)‖ₑ ^ 2 = ‖X.Wloc u v x‖ₑ ^ 2`. Rewrite using `[← enorm_norm (X.Wloc u v (m * h * x)), norm_Wloc_inv X u v hs, enorm_norm]`. Use `set f : X.B.I.Ginf → ℝ≥0∞ := fun x => ∏ v, β v (x v) * F v (x v) with hf_def`.
+
+Establish `hfm : Measurable f` using `Finset.measurable_prod _ fun v _ => ((hβm v).comp (measurable_pi_apply v)).mul ((hFm v).comp (measurable_pi_apply v))`. Establish `key` using `X.nuQ_weil u f hfm`. Establish `hL1 : ∫⁻ x, f x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = ∏ v, ∫⁻ y, β v y * F v y ∂(Formalism.REAL.muG (X.B.I.ε v))` using `QPK.lintegral_fintype_prod (fun v y => β v y * F v y) (fun v => (hβm v).mul (hFm v))`. Establish `hin : ∀ x, ∫⁻ s, f (s * x) ∂(((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)) = (cN * cH) * ∏ v, F v (x v)`. Introduce `x`.
+
+Rewrite using `[lintegral_map (f := fun s => f (s * x)) (show Measurable (fun s => f (s * x)) from hfm.comp (measurable_mul_const x)) measurable_mul, hcN, hcH, Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, lintegral_smul_measure]`. Establish `e1 : ∀ p : X.B.I.Ginf × X.B.I.Ginf, f (p.1 * p.2 * x) = ∏ v, (fun v z => β v (z * x v) * F v (z * x v)) v (p.1 v * p.2 v)` using `fun p => rfl`. Repeatedly rewrite using `[e1]`. Rewrite using `[QPK.lintegral_pi_prod_mul (muNv C) (muHv C u) (fun v z => β v (z * x v) * F v (z * x v)) (fun v => ((hβm v).comp (measurable_mul_const _)).mul ((hFm v).comp (measurable_mul_const _)))]`. Establish `e2 : ∀ v, ∫⁻ s, β v (s * x v) * F v (s * x v) ∂(QPK.mulMap (muNv C v) (muHv C u v)) = F v (x v)`.
+
+Introduce `v`. Establish `hae : ∀ᵐ s ∂(QPK.mulMap (muNv C v) (muHv C u v)), s ∈ QPK.prodSet (Nloc X u v) (Hloc X u v)` using `mem_ae_iff.mpr (hconc v)`. Rewrite using `[lintegral_congr_ae (g := fun s => β v (s * x v) * F v (x v)) (hae.mono fun s hs => by`. Take `⟨m, hm, h, hh, rfl⟩` from `hs`. Simplify using `only [hFinv v m hm h hh])]`.
+
+Rewrite using `[lintegral_mul_const _ (show Measurable (fun s => β v (s * x v)) from (hβm v).comp (measurable_mul_const _)), hβ1 v, one_mul]`. Repeatedly rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hin]`. Establish `hPm : Measurable (fun x : X.B.I.Ginf => ∏ v, F v (x v))` using `Finset.measurable_prod _ fun v _ => (hFm v).comp (measurable_pi_apply v)`.
+
+Rewrite `key` using `[lintegral_const_mul _ hPm, hL1]`. Establish `hW1 : ∫⁻ x, ∏ v, F v (x v) ∂(X.nuQ u) = 1`. Rewrite using `[← (X.Wu_spec u).2.2.2.2]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.WuDec.enorm_Wu X u x, Finset.prod_pow]`.
+
+Rewrite `key` using `[hW1, mul_one]`. Establish `hprod : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) = cN * cH`. Rewrite using `[← key]`. Use `(Fintype.prod_equiv X.pl (fun v => l2SG (C.nuS u (X.pl v)) (phiOf hB u (X.pl v))) _ (fun v => rfl)).symm.trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun v _ => (hloc v).symm`.
+
+Take `⟨hemb, hmapT⟩` from `map_trInf C (fun v => hsfN v) hθ`. Establish `hcov : Measure.pi (muNv C) (Y.FN u) = Formalism.L2.SG.LoopTerm.dnB D θ (Formalism.L2.SG.LoopTerm.trInf C '' Y.FN u)`. Rewrite using `[← hmapT, hemb.map_apply, Set.preimage_image_eq _ hemb.injective]`. Establish `hNF : X.muN u (Y.FN u) = cN * Formalism.L2.SG.LoopTerm.dnB D θ (Formalism.L2.SG.LoopTerm.trInf C '' Y.FN u)`. Rewrite using `[hcN, Measure.smul_apply, smul_eq_mul, hcov]`.
+
+Establish `hHU : X.muH u Set.univ = cH`. Rewrite using `[hcH, Measure.smul_apply, smul_eq_mul, ← Set.pi_univ, Measure.pi_pi]`. Rewrite using `[Finset.prod_eq_one fun v _ => hH1 v, mul_one]`. Unfold `Formalism.L2.SG.Pf.AmpWin.MassU Formalism.L2.SG.LoopTerm.covN`. Rewrite using `[hNF, hHU, ← ENNReal.toReal_prod, hprod, ENNReal.toReal_mul, ENNReal.toReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem massU_of (Y : Formalism.L2.SG.Full.Full X) (hLF : LocFactor C) (hB : WuBessel C) :
     Formalism.L2.SG.Pf.AmpWin.MassU Y u C hB := by
   have hθ : 0 < θ := by
@@ -174,11 +219,17 @@ theorem massU_of (Y : Formalism.L2.SG.Full.Full X) (hLF : LocFactor C) (hB : WuB
   rw [hNF, hHU, ← ENNReal.toReal_prod, hprod, ENNReal.toReal_mul, ENNReal.toReal_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.AmpWin.ampWin_of Y u u' C hB (massU_of C u Y hLF hB) (massU_of C u' Y hLF hB) (fun τ => Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u τ) (fun τ => Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u' τ)`.
+-/
 theorem ampWin_of_loc (Y : Formalism.L2.SG.Full.Full X) (u' : D.what₂.Word) (hLF : LocFactor C) (hB : WuBessel C) :
     Formalism.L2.SG.Pf.AmpWin.AmpWinP Y u u' C hB :=
   Formalism.L2.SG.Pf.AmpWin.ampWin_of Y u u' C hB (massU_of C u Y hLF hB) (massU_of C u' Y hLF hB)
     (fun τ => Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u τ) (fun τ => Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty C hLF hB u' τ)
 
+/- English proof (translation)
+Establish `hA` using `ampWin_of_loc C u Y u' hLF hB`. Conclude with `⟨Formalism.L2.SG.Pf.AmpWin.minWeight_pos Y u u' C hB hA hV hc, Formalism.L2.SG.Pf.AmpWin.K0_mem_covWin_of_ampWin Y u u' C hB hA hV hW⟩`.
+-/
 theorem K0_mem_covWin_of_locFactor_wuBessel (Y : Formalism.L2.SG.Full.Full X) (u' : D.what₂.Word) (hLF : LocFactor C) (hB : WuBessel C)
     (hV : 0 < X.volK2)
     (hc : 0 < Formalism.L2.SG.LoopTerm.covN (Y := Y) C u * Formalism.L2.SG.LoopTerm.covN (Y := Y) C u') {large₂} {C1 : ℝ}

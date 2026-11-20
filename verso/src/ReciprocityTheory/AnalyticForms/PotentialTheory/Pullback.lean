@@ -8,6 +8,11 @@ open MeasureTheory FinHolAtlas Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hH : ∀ i, hessC (φ i) y = hessC (ψ i) y`. Introduce `i`. Establish `h2 : fderiv ℝ (fderiv ℝ (φ i)) y = fderiv ℝ (fderiv ℝ (ψ i)) y` using `(h i).fderiv.fderiv_eq`. Unfold `hessC`. Simplify using `only [h2]`.
+
+Both sides reduce to the same expression. Simplify using `only [maDens, hH]`.
+-/
 theorem maDens_congr_eventuallyEq {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : ∀ i, φ i =ᶠ[𝓝 y] ψ i) : maDens φ y = maDens ψ y := by
   have hH : ∀ i, hessC (φ i) y = hessC (ψ i) y := by
@@ -18,6 +23,9 @@ theorem maDens_congr_eventuallyEq {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) �
     rfl
   simp only [maDens, hH]
 
+/- English proof (translation)
+Establish `hs : IsOpen (h ⁻¹' (A.chart k).source)` using `(A.chart k).open_source.preimage hh.1`. Conclude with `((B.chart j).isOpen_inter_preimage_symm hs).mem_nhds ⟨hy, hk⟩`.
+-/
 theorem holoMap_preimage_mem_nhds {e e' : ℕ} {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {A : FinHolAtlas e' X} {B : FinHolAtlas e Y} {h : Y → X}
     (hh : HoloMap B A h) (j : Fin B.n) (k : Fin A.n) {y : Fin e → ℂ}
@@ -26,6 +34,9 @@ theorem holoMap_preimage_mem_nhds {e e' : ℕ} {X Y : Type} [TopologicalSpace X]
   have hs : IsOpen (h ⁻¹' (A.chart k).source) := (A.chart k).open_source.preimage hh.1
   exact ((B.chart j).isOpen_inter_preimage_symm hs).mem_nhds ⟨hy, hk⟩
 
+/- English proof (translation)
+Establish `hS : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' P.U x)` using `(A.chart k).isOpen_inter_preimage_symm (P.isOpen_U x)`. Use `((hP.1 x k).contDiffAt (hS.mem_nhds ⟨hz, hzU⟩)).of_le ?_` and prove the remaining obligations. Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)`.
+-/
 theorem potential_contDiffAt_chart {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {P : LocPot X} (hP : IsPotential A P) (x : X) (k : Fin A.n) {z : Fin e → ℂ}
     (hz : z ∈ (A.chart k).target) (hzU : (A.chart k).symm z ∈ P.U x) :
@@ -35,6 +46,9 @@ theorem potential_contDiffAt_chart {e : ℕ} {X : Type} [TopologicalSpace X] {A 
   refine ((hP.1 x k).contDiffAt (hS.mem_nhds ⟨hz, hzU⟩)).of_le ?_
   exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)
 
+/- English proof (translation)
+Use `filter_upwards [holoMap_preimage_mem_nhds hh j k hy hk] with y' hy'`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart k).left_inv hy'.2]`.
+-/
 theorem pullback_local_eq {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas e' X} {B : FinHolAtlas e Y} {h : Y → X} (hh : HoloMap B A h)
     (P : LocPot X) (j : Fin B.n) (k : Fin A.n) {y : Fin e → ℂ}
@@ -46,6 +60,15 @@ theorem pullback_local_eq {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [Topolo
   simp only [Function.comp_apply]
   rw [(A.chart k).left_inv hy'.2]
 
+/- English proof (translation)
+Introduce `e X Y _ _ A B h hh Φ hΦ j k y hy hk`. Use `set x0 := h ((B.chart j).symm y) with hx0`. Use `set τ := A.chart k ∘ h ∘ (B.chart j).symm with hτ`. Establish `hτa : AnalyticAt ℂ τ y` using `hh.2 j k y ⟨hy, hk⟩`. Establish `hτy : τ y = A.chart k x0` using `rfl`.
+
+Establish `hsymm : (A.chart k).symm (A.chart k x0) = x0` using `(A.chart k).left_inv hk`. Establish `hφ : ∀ i, ContDiffAt ℝ 2 ((Φ i).φ x0 ∘ (A.chart k).symm) (τ y)`. Introduce `i`. Rewrite using `[hτy]`. Conclude with `potential_contDiffAt_chart (hΦ i) x0 k ((A.chart k).map_source hk) (by rw [hsymm]; exact (Φ i).mem_U x0)`.
+
+Unfold `locDens`. Use `(maDens_congr_eventuallyEq (fun i => pullback_local_eq hh (Φ i) j k hy hk)).trans ?_` and prove the remaining obligations. Rewrite using `[hsymm]`. Use `(ReciprocityTheory.AnForm.A.maDens_comp (fun i => (Φ i).φ x0 ∘ (A.chart k).symm) τ y hτa hφ).trans ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, hτy]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locDensPullback : LocDensPullbackStatement := by
   intro e X Y _ _ A B h hh Φ hΦ j k y hy hk
   set x0 := h ((B.chart j).symm y) with hx0
@@ -65,6 +88,15 @@ theorem locDensPullback : LocDensPullbackStatement := by
   rw [ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq, hτy]
   rfl
 
+/- English proof (translation)
+Introduce `e e' X Y _ _ A B h hh hrk Φ hΦ g`. Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Use `setIntegral_eq_zero_of_forall_eq_zero fun y hy => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `A.cover (h ((B.chart j).symm y))`. Use `set x0 := h ((B.chart j).symm y) with hx0`. Establish `hsymm : (A.chart k).symm (A.chart k x0) = x0` using `(A.chart k).left_inv hk`. Establish `hφ : ∀ i, ContDiffAt ℝ 2 ((Φ i).φ x0 ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (B.chart j).symm) y)` using `fun i => potential_contDiffAt_chart (hΦ i) x0 k ((A.chart k).map_source hk) (by simp only [Function.comp_apply]; rw [hsymm]; exact (Φ i).mem_U x0)`.
+
+Establish `h0 : locDens B (fun i => (Φ i).pullback h hh.1) j y = 0`. Unfold `locDens`. Use `(maDens_congr_eventuallyEq (fun i => pullback_local_eq hh (Φ i) j k hy hk)).trans ?_` and prove the remaining obligations. Conclude with `maDens_comp_eq_zero_of_rank_lt _ _ y (hh.2 j k y ⟨hy, hk⟩) hφ (hrk j k y hy hk)`. Rewrite using `[h0, mul_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rankDrop : RankDropStatement := by
   intro e e' X Y _ _ A B h hh hrk Φ hΦ g
   unfold mInt

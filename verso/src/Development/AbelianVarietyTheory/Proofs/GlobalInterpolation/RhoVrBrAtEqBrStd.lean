@@ -11,6 +11,15 @@ namespace GlobalTheory.BranchBlock
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms GlobalTheory.Mem.Col2 Matrix
 
+/- English proof (translation)
+Establish `hne : ∀ a : Fin n, Br.iC hN a ≠ Br.iL hN` using `fun a h => absurd (congrArg Fin.val h) a.2.ne`. Use `⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (h1 (Pi.single (Br.iC hN b) 1)) a`. Establish `e : iniH hN (Pi.single (Br.iC hN b) (1 : E)) = Pi.single b 1` using `funext fun i => by`. Simplify using `only [iniH, Pi.single_apply, (Br.iC_inj hN).eq_iff]`.
+
+Rewrite `h` using `[e, mulVec_single_one, mulVec_single_one]`. Conclude with `h`. Establish `h` using `congrFun (h1 (Pi.single (Br.iL hN) 1)) a`. Establish `e : iniH hN (Pi.single (Br.iL hN) (1 : E)) = 0` using `funext fun i => Pi.single_eq_of_ne (hne i) _`. Rewrite `h` using `[e, mulVec_single_one, mulVec_zero]`.
+
+Conclude with `h`. Establish `h` using `h2 (Pi.single (Br.iC hN a) 1)`. Rewrite `h` using `[mulVec_single_one, Pi.single_eq_of_ne (hne a).symm, mul_zero]`. Conclude with `h`. Establish `h` using `h2 (Pi.single (Br.iL hN) 1)`.
+
+Rewrite `h` using `[mulVec_single_one, Pi.single_eq_same, mul_one]`. Conclude with `h`.
+-/
 theorem isBlock_of_mulVec' {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {A' : Matrix (Fin N) (Fin N) E}
     {A : Matrix (Fin n) (Fin n) E} {c : E} (h1 : ∀ x, iniH hN (A' *ᵥ x) = A *ᵥ iniH hN x)
     (h2 : ∀ x, (A' *ᵥ x) (Br.iL hN) = c * x (Br.iL hN)) : BranchFormula.IsBlock hN A' A c := by
@@ -32,6 +41,19 @@ theorem isBlock_of_mulVec' {E : Type} [Field E] {N n : ℕ} (hN : N = n + 1) {A'
     rw [mulVec_single_one, Pi.single_eq_same, mul_one] at h
     exact h
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ emb N n hN lam sg hI hS t B' B h1 h2 G`. Establish `ht : t ≠ 0`. Introduce `h0`. Establish `h` using `h2 (Pi.single (Br.iL hN) 1)`. Rewrite `h` using `[h0, zero_mul, Pi.single_eq_same]`.
+
+Conclude with `zero_ne_one h`. Establish `hBA : ∀ x, (B : Matrix (Fin N) (Fin N) E) *ᵥ (((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ x) = x`. Introduce `x`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Establish `hAB : ∀ y, ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ ((B' : Matrix (Fin n) (Fin n) E) *ᵥ y) = y`.
+
+Introduce `y`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`. Establish `hblk : BranchFormula.IsBlock hN ((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) ((B'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) t`. Use `isBlock_of_mulVec' hN (fun x => ?_) (fun x => ?_)` and prove the remaining obligations. Establish `h` using `h1 (((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ x)`.
+
+Rewrite `h` using `[hBA]`. Rewrite using `[h, hAB]`. Establish `h` using `h2 (((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ x)`. Rewrite `h` using `[hBA]`. Conclude with `h.symm`.
+
+Establish `e1 : ∀ {m : ℕ} (g : GL (Fin m) E) (τ : ι) (a b : Fin m), ((invTrK (embGL emb g) τ : GL (Fin m) K) : Matrix (Fin m) (Fin m) K) a b = emb τ (((g⁻¹ : GL (Fin m) E) : Matrix (Fin m) (Fin m) E) b a)` using `fun g τ a b => rfl`. Establish `key` using `BranchFormula.brAt_eq_pullback hN hI hS (invTrK (embGL emb B')) (invTrK (embGL emb B)) (fun τ => emb τ t) (fun τ => (map_ne_zero _).2 ht) (fun τ => by`. Apply the tactic sequence `refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> simp only [e1]`. Rewrite using `[hblk.1]`. Rewrite using `[(hblk.2.1 a).2, map_zero]`.
+
+Rewrite using `[(hblk.2.1 a).1, map_zero]`. Rewrite using `[hblk.2.2]) G`. Use `show rhoK sg (invTrK (embGL emb B'⁻¹)) _ = Br.brStd hN lam sg (rhoK lam (invTrK (embGL emb B⁻¹)) G)`. Rewrite using `[map_inv (embGL emb), map_inv (embGL emb), map_inv invTrK, map_inv invTrK]`. Conclude with `key.symm`.
+-/
 theorem rhoVr_brAt_eq_brStd : ∀ {E K ι : Type} [Field E] [Field K] [CharZero K] [Fintype ι] (emb : ι → E →+* K) {N n : ℕ}
     (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n), (∀ τ, Br.Interlace hN (lam τ) (sg τ)) →
     (∀ τ, Br.SameShift (lam τ) (sg τ)) → ∀ (t : E) (B' : GL (Fin n) E) (B : GL (Fin N) E),

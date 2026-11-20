@@ -20,6 +20,13 @@ section Chart
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
   {B B' : LB X} {φ : Weight p σ B} {ψ : Weight p σ B'}
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i ⊓ B'.U j))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨hi, hj⟩)`. Establish `hg` using `c.holo _ a.val`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U i ⊓ B'.U j), (ev p σ _ a.val ∘ c.e.symm) v ≠ 0` using `fun v hv => ev_ne_zero hv.2 a.isUnit`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (h i) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩) (contDiffOn_log_normSq ho hg h0) 1 hm`.
+
+Establish `e₀ : cHess D (fun w => ((Real.log (‖(ev p σ _ a.val ∘ c.e.symm) w‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `s t`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 s t`. Rewrite `e` using `[e₀, smul_zero, add_zero]`. Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) e` and prove the remaining obligations.
+
+Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[ha _ hv.2, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem hess_eq_of_unit (c : AlgChart p σ D) (h : φ.IsCInf) {y : CxPts p σ} (hy : y ∈ c.e.source)
     {i : B.ι} {j : B'.ι} (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B'.U j))
     (a : Γ(X, B.U i ⊓ B'.U j)ˣ)
@@ -44,6 +51,9 @@ theorem hess_eq_of_unit (c : AlgChart p σ D) (h : φ.IsCInf) {y : CxPts p σ} (
   rw [ha _ hv.2, one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hae : (ρ ∘ e.symm) =ᵐ[volume.restrict e.target] (ρ' ∘ e.symm)` using `(ae_restrict_iff' e.open_target.measurableSet).2 (Filter.Eventually.of_forall fun v hv => h _ (e.map_target hv))`. Use `show Measure.map e.symm ((volume.restrict e.target).withDensity (ρ ∘ e.symm)) = Measure.map e.symm ((volume.restrict e.target).withDensity (ρ' ∘ e.symm))`. Rewrite using `[withDensity_congr_ae hae]`.
+-/
 theorem chartMeas_congr_source {n : ℕ} {T : Type} [TopologicalSpace T] [MeasurableSpace T]
     (e : OpenPartialHomeomorph T (V n)) {ρ ρ' : T → ENNReal} (h : ∀ y ∈ e.source, ρ y = ρ' y) :
     chartMeas e ρ = chartMeas e ρ' := by
@@ -54,6 +64,9 @@ theorem chartMeas_congr_source {n : ℕ} {T : Type} [TopologicalSpace T] [Measur
     Measure.map e.symm ((volume.restrict e.target).withDensity (ρ' ∘ e.symm))
   rw [withDensity_congr_ae hae]
 
+/- English proof (translation)
+Use `show (⨆ c : AlgChart p σ D, chartMeas c.e fun y => ENNReal.ofReal (↑↑ε * c.chernDens ψ y)) = ⨆ c : AlgChart p σ D, chartMeas c.e fun y => ENNReal.ofReal (↑↑ε * c.chernDens φ y)`. Conclude with `iSup_congr fun c => chartMeas_congr_source _ fun y hy => by rw [h c y hy]`.
+-/
 theorem chernPart_eq_of_chernDens (h : ∀ (c : AlgChart p σ D), ∀ y ∈ c.e.source,
     c.chernDens ψ y = c.chernDens φ y) (ε : ℤˣ) : ψ.chernPart D ε = φ.chernPart D ε := by
   show (⨆ c : AlgChart p σ D, chartMeas c.e fun y => ENNReal.ofReal (↑↑ε * c.chernDens ψ y)) =
@@ -64,6 +77,9 @@ end Chart
 
 variable {Y : Var ℂ} {Δ : Y.Dv} {L L' : LB Y.X} {r : L.ι → Y.Fnˣ} {r' : L'.ι → Y.Fnˣ}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_unit_fnOf_eq (U := L.U i ⊓ L'.U j) (f := (r' j : Y.Fn) / (r i : Y.Fn)) fun x hx => (hp.isEqn i x hx.1).iff_unitAt.1 (hp'.isEqn j x hx.2)`. Use `⟨a, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hb` using `mem_ptsIn_iff.1 hz`. Rewrite using `[tv, ← ha (gen_mem hb), val_cx_fnOf hb]`.
+-/
 theorem exists_unit_tv (hp : Presents Δ L r) (hp' : Presents Δ L' r') (i : L.ι) (j : L'.ι) :
     ∃ a : Γ(Y.X, L.U i ⊓ L'.U j)ˣ, ∀ z ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i ⊓ L'.U j),
       tv (σ := RingHom.id ℂ) (r i) (r' j) z = ev Y.str (RingHom.id ℂ) _ a.val z := by
@@ -74,6 +90,15 @@ theorem exists_unit_tv (hp : Presents Δ L r) (hp' : Presents Δ L' r') (i : L.�
   have hb := mem_ptsIn_iff.1 hz
   rw [tv, ← ha (gen_mem hb), val_cx_fnOf hb]
 
+/- English proof (translation)
+Establish `hs : mSmooth Y (RingHom.id ℂ) Δ (ofWeight Y (RingHom.id ℂ) Δ L r hp φ)` using `(mSmooth_ofWeight_iff hp φ).2 ((Weight.isCInf_iff_isSmooth (Y.an _)).1 hφ)`. Use `set m := ofWeight Y (RingHom.id ℂ) Δ L r hp φ with hm`. Set `ψ : Weight Y.str (RingHom.id ℂ) L'` to `m.toWeight hs.posSet_eq hp'`. Establish `hψ : ψ.IsCInf` using `(Weight.isCInf_iff_isSmooth (Y.an _)).2 (hs.isSmooth_toWeight hp')`. Establish `key : ∀ (i : L.ι) (j : L'.ι) (a : Γ(Y.X, L.U i ⊓ L'.U j)ˣ), (∀ z ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i ⊓ L'.U j), tv (σ` using `RingHom.id ℂ) (r i) (r' j) z = ev Y.str (RingHom.id ℂ) _ a.val z) → ∀ z ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i ⊓ L'.U j), ψ.φ j z = φ.φ i z + Real.log (‖ev Y.str (RingHom.id ℂ) _ a.val z‖ ^ 2) := by`.
+
+Introduce `i j a ha z hz`. Take `⟨hi, hj⟩` from `mem_ptsIn_inf.1 hz`. Establish `hw : m.wt (r i) z = φ.φ i z`. Rewrite using `[Met.wt, hm, ofWeight_h hp φ hi, Real.log_exp, neg_neg]`. Use `Met.wt_trans (hs.posSet_eq ▸ mem_univ z) (ptsIn_subset_eqnSet hp i hi) (ptsIn_subset_eqnSet hp' j hj)` as an intermediate fact.
+
+Rewrite `this` using `[hw, ha z hz]`. Conclude with `this`. Establish `hd : ∀ (c : AlgChart Y.str (RingHom.id ℂ) Y.dim), ∀ y ∈ c.e.source, c.chernDens ψ y = c.chernDens φ y`. Introduce `c y hy`. Establish `hi` using `mem_pick φ.isLB y`.
+
+Establish `hj` using `mem_pick ψ.isLB y`. Take `⟨a, ha⟩` from `exists_unit_tv hp hp' _ _`. Rewrite using `[c.chernDens_eq hψ hy hj, c.chernDens_eq hφ hy hi, hess_eq_of_unit c hφ hy hi hj a (key _ _ a ha)]`. Use `⟨ψ, hψ, ?_⟩` and prove the remaining obligations. Rewrite using `[Weight.chernInt, Weight.chernInt, chernPart_eq_of_chernDens hd, chernPart_eq_of_chernDens hd]`.
+-/
 theorem exists_transport (hp : Presents Δ L r) (hp' : Presents Δ L' r')
     (φ : Weight Y.str (RingHom.id ℂ) L) (hφ : φ.IsCInf) :
     ∃ ψ : Weight Y.str (RingHom.id ℂ) L', ψ.IsCInf ∧
@@ -107,6 +132,9 @@ theorem exists_transport (hp : Presents Δ L r) (hp' : Presents Δ L' r')
   refine ⟨ψ, hψ, ?_⟩
   rw [Weight.chernInt, Weight.chernInt, chernPart_eq_of_chernDens hd, chernPart_eq_of_chernDens hd]
 
+/- English proof (translation)
+Introduce `Y Δ L L' r r' hp hp' φ hφ`. Conclude with `exists_transport hp hp' φ hφ`.
+-/
 theorem transport : ∀ (Y : Var ℂ) (Δ : Y.Dv) (L L' : LB Y.X) (r : L.ι → Y.Fnˣ) (r' : L'.ι → Y.Fnˣ),
     Presents Δ L r → Presents Δ L' r' → ∀ φ : Weight Y.str (RingHom.id ℂ) L, φ.IsCInf →
       ∃ ψ : Weight Y.str (RingHom.id ℂ) L', ψ.IsCInf ∧

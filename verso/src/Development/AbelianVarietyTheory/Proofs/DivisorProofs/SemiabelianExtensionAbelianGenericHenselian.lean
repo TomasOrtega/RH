@@ -28,17 +28,29 @@ def Agree {T : Over (Sp R)} (x : T ⟶ G) (y : T ⟶ Gt) : Prop :=
 
 variable {F Ft}
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := .monomorphisms _) h.flip (mono_thick I e)`.
+-/
 theorem mono_of_isPullback {e : ℕ} (h : IsPullback (F e) (H e).hom G.hom (thick R I e)) : Mono (F e) :=
   MorphismProperty.of_isPullback (P := .monomorphisms _) h.flip (mono_thick I e)
 
+/- English proof (translation)
+Introduce `e Y k s w` and use `(h e Y k s w).imp fun _ h => h.symm`.
+-/
 theorem Agree.symm {T : Over (Sp R)} {x : T ⟶ G} {y : T ⟶ Gt} (h : Agree F Ft x y) : Agree Ft F y x :=
   fun e Y k s w => (h e Y k s w).imp fun _ h => h.symm
 
+/- English proof (translation)
+Introduce `e Y k s w` and use `by obtain ⟨a, h₁, h₂⟩ := h e Y (k ≫ r.left) s (by rw [Category.assoc, Over.w, w]) exact ⟨a, h₁.trans (Category.assoc _ _ _), h₂.trans (Category.assoc _ _ _)⟩`.
+-/
 theorem Agree.comp {T T' : Over (Sp R)} {x : T ⟶ G} {y : T ⟶ Gt} (h : Agree F Ft x y) (r : T' ⟶ T) :
     Agree F Ft (r ≫ x) (r ≫ y) := fun e Y k s w => by
   obtain ⟨a, h₁, h₂⟩ := h e Y (k ≫ r.left) s (by rw [Category.assoc, Over.w, w])
   exact ⟨a, h₁.trans (Category.assoc _ _ _), h₂.trans (Category.assoc _ _ _)⟩
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext (hT.hom_ext fun e => ?_)` and prove the remaining obligations. Take `⟨a, h₁, h₂⟩` from `h e _ (thickι I e T) _ pullback.condition`. Take `⟨a', h₁', h₂'⟩` from `h' e _ (thickι I e T) _ pullback.condition`. Use `mono_of_isPullback (hF e)` as an intermediate fact. Rewrite using `[← h₂, ← h₂', (cancel_mono _).1 (h₁.trans h₁'.symm)]`.
+-/
 theorem Agree.unique (hF : ∀ e, IsPullback (F e) (H e).hom G.hom (thick R I e)) {T : Over (Sp R)}
     (hT : IsAdicColimit I T) {x : T ⟶ G} {y y' : T ⟶ Gt} (h : Agree F Ft x y) (h' : Agree F Ft x y') : y = y' := by
   refine Over.OverMorphism.ext (hT.hom_ext fun e => ?_)
@@ -47,6 +59,13 @@ theorem Agree.unique (hF : ∀ e, IsPullback (F e) (H e).hom G.hom (thick R I e)
   have := mono_of_isPullback (hF e)
   rw [← h₂, ← h₂', (cancel_mono _).1 (h₁.trans h₁'.symm)]
 
+/- English proof (translation)
+Establish `hm : ∀ e, Mono (F e)` using `fun e => mono_of_isPullback (hF e)`. Use `choose a ha ha' using fun e => (hF e).exists_lift (thickι I e T ≫ x.left) (pullback.snd T.hom (thick R I e)) (by rw [Category.assoc, Over.w]; exact pullback.condition)`. Take `⟨g, hg, -⟩` from `hT Gt.left (fun e => a e ≫ Ft e) fun e => by`. Establish `: thickMap R I e T ≫ a (e + 1) = a e ≫ τ e`. Rewrite using `[← cancel_mono (F (e + 1)), Category.assoc, Category.assoc, ha, h₁, ha, thickMap_ι_assoc]`.
+
+Rewrite using `[← Category.assoc, this, Category.assoc, h₂]`. Use `⟨Over.homMk g (hT.hom_ext fun e => ?_), fun e Y k s w => ⟨pullback.lift k s w ≫ a e, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg, Category.assoc, hFt, ← Category.assoc, ha']`. Conclude with `pullback.condition.symm`. Rewrite using `[Category.assoc, ha, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ x.left) (pullback.lift_fst _ _ _)`. Rewrite using `[Category.assoc, ← hg, ← Category.assoc]`. Conclude with `congrArg (· ≫ g) (pullback.lift_fst _ _ _)`.
+-/
 theorem exists_agree (hF : ∀ e, IsPullback (F e) (H e).hom G.hom (thick R I e))
     (hFt : ∀ e, Ft e ≫ Gt.hom = (H e).hom ≫ thick R I e) (τ : ∀ e, (H e).left ⟶ (H (e + 1)).left)
     (h₁ : ∀ e, τ e ≫ F (e + 1) = F e) (h₂ : ∀ e, τ e ≫ Ft (e + 1) = Ft e) {T : Over (Sp R)}
@@ -68,6 +87,9 @@ theorem exists_agree (hF : ∀ e, IsPullback (F e) (H e).hom G.hom (thick R I e)
 
 variable [GrpObj G] [GrpObj Gt] [∀ e, GrpObj (H e)]
 
+/- English proof (translation)
+Introduce `e Y k s w` and use `by obtain ⟨a, h₁, h₂⟩ := h e Y k s w obtain ⟨a', h₁', h₂'⟩ := h' e Y k s w have o : ∀ {b : Y ⟶ (H e).left} {z : T ⟶ G}, b ≫ F e = k ≫ z.left → b ≫ (H e).hom = s := fun {b z} hb => by rw [← cancel_mono (thick R I e), Category.assoc, ← (hF e).1.w, ← Category.assoc, hb, Category.ass …`.
+-/
 theorem Agree.mul (hF : ∀ e, IsGrpPullback (H e) G (thick R I e) (F e))
     (hFt : ∀ e, IsGrpPullback (H e) Gt (thick R I e) (Ft e)) {T : Over (Sp R)} {x x' : T ⟶ G} {y y' : T ⟶ Gt}
     (h : Agree F Ft x y) (h' : Agree F Ft x' y') : Agree F Ft (x * x') (y * y') := fun e Y k s w => by
@@ -82,6 +104,11 @@ theorem Agree.mul (hF : ∀ e, IsGrpPullback (H e) G (thick R I e) (F e))
   · rw [← (hF e).2 _ b b' (k' ≫ x) (k' ≫ x') h₁.symm h₁'.symm, ← MonObj.comp_mul]; rfl
   · rw [← (hFt e).2 _ b b' (k' ≫ y) (k' ≫ y') h₂.symm h₂'.symm, ← MonObj.comp_mul]; rfl
 
+/- English proof (translation)
+Establish `h'` using `Raynaud.isFormalIso_refl I G`. Use `choose j hj using fun T (hT : IsAdicColimit I T) (y : T ⟶ Gt) => exists_agree (fun e => (h.1 e).1) (fun e => (h'.1 e).1.w) _ h.2 h'.2 hT y`. Use `⟨fun T hT => MonoidHom.mk' (j T hT) fun y y' => (hj T hT _).unique (fun e => (h.1 e).1) hT ((hj T hT y).mul h.1 h'.1 (hj T hT y')), fun T hT => ⟨fun y y' e => ?_, fun x => ?_⟩, fun T hT T' hT' r y => (hj T' hT' _).unique (fun e => (h.1 e).1) hT' ((hj T hT y).comp r)⟩` and prove the remaining obligations. Establish `e' : j T hT y = j T hT y'` using `e`. Conclude with `(hj T hT y).symm.unique (fun e => (h'.1 e).1) hT (e' ▸ (hj T hT y').symm)`.
+
+Take `⟨y, hy⟩` from `exists_agree (fun e => (h'.1 e).1) (fun e => (h.1 e).1.w) _ h'.2 h.2 hT x`. Conclude with `⟨y, (hj T hT y).unique (fun e => (h.1 e).1) hT hy.symm⟩`.
+-/
 theorem exists_points {ψ : ∀ e : ℕ, (thickObj R I e G).left ⟶ Gt.left} (h : Raynaud.IsFormalIso I G Gt ψ) :
     ∃ J : ∀ T, IsAdicColimit I T → ((T ⟶ Gt) →* (T ⟶ G)), (∀ T hT, Function.Bijective (J T hT)) ∧
       ∀ T hT T' hT' (r : T' ⟶ T) (y : T ⟶ Gt), J T' hT' (r ≫ y) = r ≫ J T hT y := by
@@ -98,6 +125,11 @@ theorem exists_points {ψ : ∀ e : ℕ, (thickObj R I e G).left ⟶ Gt.left} (h
 
 end Formal
 
+/- English proof (translation)
+Establish `: IsAffine N.left` using `isAffine_of_isAffineHom N.hom`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (N.left.isoSpec.inv ≫ N.hom)`. Establish `hf : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Rewrite `hf` using `[IsFinite.SpecMap_iff]`. Use `letI : Algebra R Γ(N.left, ⊤) := φ.hom.toAlgebra`.
+
+Establish `: Module.Finite R Γ(N.left, ⊤)` using `hf`. Establish `: HenselianLocalRing R` using `Raynaud.henselianLocalRing_of_isAdicComplete`. Establish `H` using `isAdicColimit_finite_henselian_of_local isAdicColimit_spec_of_isLocalRing isAdicColimit_of_disjoint_cover R (maximalIdeal R) R Γ(N.left, ⊤) (algebraMap R _) (GlobalTheory.isAdicComplete_map_of_finite _ _)`. Conclude with `IsAdicColimit.of_iso (Over.isoMk N.left.isoSpec.symm hφ.symm) H`.
+-/
 theorem isAdicColimit_of_finite {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] (N : Over (Sp R)) [IsFinite N.hom] : IsAdicColimit (maximalIdeal R) N := by
   have : IsAffine N.left := isAffine_of_isAffineHom N.hom
@@ -112,6 +144,15 @@ theorem isAdicColimit_of_finite {R : Type} [CommRing R] [IsLocalRing R] [IsNoeth
     (GlobalTheory.isAdicComplete_map_of_finite _ _)
   exact IsAdicColimit.of_iso (Over.isoMk N.left.isoSpec.symm hφ.symm) H
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `AbTorsionAnyBase.isFinite_and_flat_torsion S D.B D.isAb N hN`. Use `D.q_hom` as an intermediate fact. Use `D.i_hom` as an intermediate fact. Use `D.q_flat` as an intermediate fact. Use `D.q_surj` as an intermediate fact.
+
+Use `D.q_affine` as an intermediate fact. Establish `hN' : N ≠ 0` using `by omega`. Establish `hf : IsFinite (mulN (splitTorus S X) N).left` using `Diag.isFinite_mulN S X hN'`. Establish `hl : Flat (mulN (splitTorus S X) N).left` using `Diag.flat_mulN S X hN'`. Use `flat_descendsAlong_fpqc` as an intermediate fact.
+
+Use `isAffineHom_descendsAlong_fpqc.{0}` as an intermediate fact. Establish `a1 : Flat (ExtensionTorsion.torsionHom D.q N).left` using `ExtensionTorsion.torsionHom_of_mulN @Flat D.i D.q D.isKernel N hl`. Establish `a2 : IsAffineHom (ExtensionTorsion.torsionHom D.q N).left` using `ExtensionTorsion.torsionHom_of_mulN @IsAffineHom D.i D.q D.isKernel N inferInstance`. Establish `a3 : UniversallyClosed (ExtensionTorsion.torsionHom D.q N).left` using `ExtensionTorsion.torsionHom_of_mulN @UniversallyClosed D.i D.q D.isKernel N inferInstance`. Establish `a4 : LocallyOfFiniteType (ExtensionTorsion.torsionHom D.q N).left` using `ExtensionTorsion.torsionHom_of_mulN @LocallyOfFiniteType D.i D.q D.isKernel N inferInstance`.
+
+Establish `a5 : IsFinite (ExtensionTorsion.torsionHom D.q N).left` using `(IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, a4⟩`. Rewrite using `[← Over.w (ExtensionTorsion.torsionHom D.q N)]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isFinite_flat_torsion {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {X : Type} [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (D : UU.TQ G X) (N : ℕ) (hN : 1 ≤ N) :
     IsFinite (torsion G N).hom ∧ Flat (torsion G N).hom := by
@@ -140,6 +181,11 @@ theorem isFinite_flat_torsion {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMo
   rw [← Over.w (ExtensionTorsion.torsionHom D.q N)]
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Establish `: IsFinite (y.left ≫ G.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsFinite y.left` using `IsFinite.of_comp _ G.hom`. Establish `P` using `IsPullback.of_hasPullback y y`. Establish `: IsFinite (pullback.fst y y).left` using `MorphismProperty.of_isPullback (P := @IsFinite) (P.map (Over.forget S)).flip ‹IsFinite y.left›`. Establish `: IsFinite (pullback y y).hom` using `by rw [← Over.w (pullback.fst y y)]; infer_instance`.
+
+Establish `e` using `h _ _ _ P.w`. Conclude with `⟨fun a b w => (P.lift_fst a b w).symm.trans ((congrArg (P.lift a b w ≫ ·) e).trans (P.lift_snd a b w))⟩`.
+-/
 theorem mono_of_finite {S : Scheme.{0}} {N G : Over S} [IsFinite N.hom] [IsSeparated G.hom] (y : N ⟶ G)
     (h : ∀ (T : Over S) [IsFinite T.hom] (a b : T ⟶ N), a ≫ y = b ≫ y → a = b) : Mono y := by
   have : IsFinite (y.left ≫ G.hom) := by rw [Over.w]; infer_instance
@@ -151,6 +197,15 @@ theorem mono_of_finite {S : Scheme.{0}} {N G : Over S} [IsFinite N.hom] [IsSepar
   have e := h _ _ _ P.w
   exact ⟨fun a b w => (P.lift_fst a b w).symm.trans ((congrArg (P.lift a b w ≫ ·) e).trans (P.lift_snd a b w))⟩
 
+/- English proof (translation)
+Establish `hf : ∀ (B : Type) [CommRing B] [Algebra R B] [Module.Finite R B], IsFinite (SpAlg R B).hom` using `fun B _ _ _ => (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`. Establish `hi : ∀ {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ ψ : B →ₐ[R] C), spOver φ = spOver ψ → φ = ψ` using `fun φ ψ e => AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom (Spec.map_injective (congrArg (fun z => z.left) e)))`. Use `⟨⟨fun n => J _ (hf _) (u.y n), fun n B _ _ φ ψ => ?_, fun n B _ _ φ ψ e => ?_, fun n B _ _ _ z hz => ?_, fun n => ?_⟩⟩` and prove the remaining obligations. Set `l : WithConv (Γ.A n →ₐ[R] Γ.A n ⊗[R] Γ.A n)` to `.toConv Algebra.TensorProduct.includeLeft`. Set `r : WithConv (Γ.A n →ₐ[R] Γ.A n ⊗[R] Γ.A n)` to `.toConv Algebra.TensorProduct.includeRight`.
+
+Set `c : Γ.A n ⊗[R] Γ.A n →ₐ[R] B` to `Algebra.TensorProduct.lift φ.ofConv ψ.ofConv fun _ _ => .all _ _`. Establish `c₁ : c.comp l.ofConv = φ.ofConv` using `Algebra.TensorProduct.lift_comp_includeLeft _ _ _`. Establish `c₂ : c.comp r.ofConv = ψ.ofConv` using `Algebra.TensorProduct.lift_comp_includeRight _ _ fun _ _ => .all _ _`. Establish `c₃ : c.comp (l * r).ofConv = (φ * ψ).ofConv` using `by rw [AlgHom.comp_convMul_distrib, c₁, c₂]`. Rewrite using `[← c₃, ← c₁, ← c₂, ← spOver_comp, ← spOver_comp, ← spOver_comp, Category.assoc, Category.assoc, Category.assoc, ← MonObj.comp_mul, ← hn _ _ _ (hf (Γ.A n ⊗[R] Γ.A n)) (spOver (l * r).ofConv), u.mul, map_mul, hn _ (hf _), hn _ (hf _)]`.
+
+Use `hf (Γ.A n)` as an intermediate fact. Establish `: Mono (u.y n)` using `⟨fun a b w => (TorsionTower.isPullback_y p R Γ Gt u n).hom_ext w (toUnit_unique _ _)⟩`. Establish `: Mono (J _ (hf _) (u.y n))` using `mono_of_finite _ fun T hT a b w => by`. Rewrite `w` using `[← hn _ _ _ hT, ← hn _ _ _ hT]`. Conclude with `(cancel_mono _).1 ((hJ T hT).1 w)`.
+
+Conclude with `hi _ _ ((cancel_mono _).1 e)`. Take `⟨w, rfl⟩` from `(hJ _ (hf B)).2 z`. Take `⟨φ, rfl⟩` from `u.surj n B w ((hJ _ (hf B)).1 (by rw [map_pow, hz, map_one]))`. Conclude with `⟨φ, (hn _ _ _ _ _ _).symm⟩`. Rewrite using `[← hn _ _ _ (hf _), u.res]`.
+-/
 theorem nonempty_finTower {p : ℕ} {R : Type} [CommRing R] {Γ : PDivGroup p R} {G Gt : Over (Sp R)} [GrpObj G]
     [GrpObj Gt] [IsSeparated G.hom] (u : Γ.TorsionTower Gt)
     (J : ∀ (T : Over (Sp R)), IsFinite T.hom → ((T ⟶ Gt) →* (T ⟶ G))) (hJ : ∀ T hT, Function.Bijective (J T hT))
@@ -182,6 +237,15 @@ theorem nonempty_finTower {p : ℕ} {R : Type} [CommRing R] {Γ : PDivGroup p R}
     exact ⟨φ, (hn _ _ _ _ _ _).symm⟩
   · rw [← hn _ _ _ (hf _), u.res]
 
+/- English proof (translation)
+Introduce `hR p _ R _ _ _ K _ _ _ _ _ G _ A _ φ hG hA hφ`. Establish `hp : IsProper (pullback.snd G.hom (jK R))`. Set `e` to `FractionRing.algEquiv R K`. Establish `he : spMap (e.symm : K →+* FractionRing R) ≫ spMap (algebraMap R K) = jK R`. Rewrite using `[← Cris.spMap_comp]`.
+
+Conclude with `congrArg spMap (RingHom.ext e.symm.commutes)`. Establish `P` using `(IsPullback.of_hasPullback A.hom (spMap (e.symm : K →+* FractionRing R))).paste_horiz hφ.1`. Rewrite `P` using `[he]`. Use `hA.proper` as an intermediate fact. Rewrite using `[← P.isoPullback_inv_snd]`.
+
+Use `infer_instance`. Take `⟨Gt, _, ψ, h₁, ⟨X, _, _, _, ⟨D⟩⟩, h₂⟩` from `hR.1 R ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩ G hG hp (hG.fibres _ _)`. Use `h₁.comm` as an intermediate fact. Use `hG.separated` as an intermediate fact. Take `⟨Γ, ⟨u⟩⟩` from `SemiAbelianTower.exists_tower p R Gt h₁ (isFinite_flat_torsion Gt D)`.
+
+Take `⟨J, hJ, hn⟩` from `exists_points h₂`. Conclude with `⟨Γ, nonempty_finTower u (fun T _ => J T (isAdicColimit_of_finite T)) (fun _ _ => hJ _ _) fun _ _ _ _ => hn _ _ _ _⟩`.
+-/
 theorem exists_finTower : GlobalTheory.Published.RaynaudExtension → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] [IsAlgClosed (IsLocalRing.ResidueField R)] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp K)) [GrpObj A] (φ : A.left ⟶ G.left), IsSemiAbelian G → IsAbelianScheme A → IsGrpPullback A G (spMap (algebraMap R K)) φ → ∃ Γ' : PDivGroup p R, Nonempty (FinTower Γ' G) := by
   intro hR p _ R _ _ _ K _ _ _ _ _ G _ A _ φ hG hA hφ
   have hp : IsProper (pullback.snd G.hom (jK R)) := by

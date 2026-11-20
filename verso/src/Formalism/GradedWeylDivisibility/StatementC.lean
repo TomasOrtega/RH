@@ -21,6 +21,9 @@ def colLex (r n : ℕ) : MonomialOrder (Fin r × Fin n) where
     (show Finsupp.domCongr (cmIdx r n) a ≤ Finsupp.domCongr (cmIdx r n) b from fun i => h _)
 
 open scoped MonomialOrder in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem colLex_lt_iff {r n : ℕ} {c d : Fin r × Fin n →₀ ℕ} :
     c ≺[colLex r n] d ↔ toLex (Finsupp.domCongr (cmIdx r n) c) < toLex (Finsupp.domCongr (cmIdx r n) d) := Iff.rfl
 
@@ -154,7 +157,13 @@ def SMSAssembly : Prop :=
 
 def StandardMonomialSpanOf : Prop := StandardMonomialSpanDomain → StandardMonomialSpan
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ((cmIdx 2 3 (1, 2) : Fin (3 * 2)) : ℕ) = 5 := by decide
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ((cmIdx 3 2 (2, 0) : Fin (2 * 3)) : ℕ) = 2 := by decide
 
 end Formalism.GradedWeylDivisibility

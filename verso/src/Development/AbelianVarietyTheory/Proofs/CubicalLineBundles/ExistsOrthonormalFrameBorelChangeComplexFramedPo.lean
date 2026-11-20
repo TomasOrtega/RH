@@ -17,12 +17,20 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `[FD.lact, FD.mat]`. Both sides reduce to the same expression.
+-/
 theorem lact_one_frame {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Ψ : Finset (E →+* ℂ)}
     (y : FD.Frame Ψ r) : FD.lact (1 : GL (Fin r) E) y = y := by
   funext τ
   simp [FD.lact, FD.mat]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hU y`. Take `⟨-, -, h3, h4, -⟩` from `hU`. Take `⟨k, x, t, ht⟩` from `h3 y`. Take `⟨b, hb, ho⟩` from `(FD.orthonormalFlagTranslate_holds r (U.X k)).1 x.1 x.2`. Establish `hd` using `FD.OrthogonalFrameDomain.rmul_mem_dom (U.X k) x.2 hb`.
+
+Take `⟨t', ht'⟩` from `(h4 k k x ⟨_, hd⟩).2 ⟨1, (U.X k).Γ.one_mem, b, hb, by rw [lact_one_frame]⟩`. Establish `hi` using `(frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) (U.un k ⟨_, hd⟩) y).2.2.2 t' ht'`. Conclude with `⟨k, ⟨_, hd⟩, t * t'⁻¹, ho, (frBor_calculus E H Dw l Xo c (CAt σ) (U.un k ⟨_, hd⟩) (U.un k x) y).2.2.1 _ _ hi ht⟩`.
+-/
 theorem exists_ortho_frBor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), IsUnf U → ∀ y : FrPt Xo c (CAt σ), ∃ (k : U.Comp) (x : (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), (U.X k).IsOrtho x.1 ∧ FrBor t (U.un k x) y := by
   intro E _ _ _ H Dw l Xo c σ r U hU y
   obtain ⟨-, -, h3, h4, -⟩ := hU

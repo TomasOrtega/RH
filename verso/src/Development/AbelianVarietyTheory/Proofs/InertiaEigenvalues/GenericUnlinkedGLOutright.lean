@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.GenericUnit
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds`.
+-/
 theorem genericUnlinkedGL_outright : GlobalTheory.Published.GenericUnlinkedGL :=
   GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds
 

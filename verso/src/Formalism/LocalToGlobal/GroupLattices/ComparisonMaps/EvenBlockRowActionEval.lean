@@ -11,6 +11,11 @@ section GlobalTheory
 
 variable {K : Type} [Field K] {k n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowAct]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp]`.
+
+Use `congr 1`. Simplify using `[rowAct, Matrix.mul_apply]`.
+-/
 theorem eval_rowAct (g : Matrix (Fin k) (Fin k) K) (f : MvPolynomial (Fin k × Fin n) K) (z : Matrix (Fin k) (Fin n) K) :
     eval (fun x => z x.1 x.2) (rowAct K g f) = eval (fun x => (g * z) x.1 x.2) f := by
   induction f using MvPolynomial.induction_on with
@@ -21,6 +26,9 @@ theorem eval_rowAct (g : Matrix (Fin k) (Fin k) K) (f : MvPolynomial (Fin k × F
     congr 1
     simp [rowAct, Matrix.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eval, eval_rowAct, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', mul_zpow, _root_.inv_zpow']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even_block_row_action_eval (g : Matrix (Fin k) (Fin k) K) (e : ℤ) (f : MvPolynomial (Fin k × Fin k) K)
     (z : Matrix (Fin k) (Fin k) K) :
     z.det ^ e * eval (fun x => z x.1 x.2) (g.det ^ (-e) • rowAct K g⁻¹ f) =
@@ -29,6 +37,11 @@ theorem even_block_row_action_eval (g : Matrix (Fin k) (Fin k) K) (e : ℤ) (f :
     mul_zpow, _root_.inv_zpow']
   ring
 
+/- English proof (translation)
+Rewrite `hF` using `[dw_eq hinj m lam hlam g hg]`. Take `⟨F0, hF0, rfl⟩` from `Submodule.mem_map.1 hF`. Take `⟨f, hf, hfeq⟩` from `Submodule.mem_map.1 (Submodule.mem_comap.1 hF0)`. Use `⟨f, hf, fun z => ?_⟩` and prove the remaining obligations. Establish `e1 : map (algebraMap O K) f = rowAct K g F0` using `hfeq`.
+
+Establish `key : eval (fun x => (g⁻¹ * z) x.1 x.2) (map (algebraMap O K) f) = eval (fun x => z x.1 x.2) F0`. Rewrite using `[e1, eval_rowAct, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg, Matrix.one_mul]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, MvPolynomial.smul_eval]`. Rewrite using `[key, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', mul_zpow, _root_.inv_zpow']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even_block_weyl_mem {O : Type} [CommRing O] [Algebra O K] (hinj : Function.Injective (algebraMap O K)) (m : ℕ)
     (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det)
     (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K) (hF : F ∈ Dl0 O m lam (colSpan O g)) :
@@ -69,6 +82,9 @@ section Prod
 variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   (P : Places p O Kf) {Tau : Type} [Fintype Tau] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [evC, LinearMap.coe_mk, AddHom.coe_mk, map_prod, blockEmb, MvPolynomial.eval_rename]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem evC_prod (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
     (M : Tau → Matrix (Fin n) (Fin n) ℂ) (F : ∀ v, Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℂ)
     (y : Formalism.L2.Forms.Frames G) :

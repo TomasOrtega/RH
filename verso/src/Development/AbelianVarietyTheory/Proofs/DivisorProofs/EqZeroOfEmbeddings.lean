@@ -5,6 +5,13 @@ open IsLocalRing
 
 namespace GlobalTheory.VandermondeEmbeddingVanishing
 
+/- English proof (translation)
+Establish `hcard : Fintype.card ι = Fintype.card (L →ₐ[K] Ω)`. Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis b]`. Set `e : ι ≃ (L →ₐ[K] Ω)` to `Fintype.equivOfCardEq hcard`. Establish `hdet : (Algebra.embeddingsMatrixReindex K Ω b e).det ≠ 0`. Introduce `h0`.
+
+Establish `hd` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two (K := K) (E := Ω) (b := ⇑b) e`. Rewrite `hd` using `[h0, zero_pow two_ne_zero, map_eq_zero_iff _ (algebraMap K Ω).injective]`. Conclude with `Algebra.discr_not_zero_of_basis K b hd`. Establish `hmul : Matrix.mulVec (Algebra.embeddingsMatrixReindex K Ω b e).transpose c = 0`. Use extensionality with `j`.
+
+Simplify `h (e j)` using `[Matrix.mulVec, dotProduct, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix_apply]`. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero (by rwa [Matrix.det_transpose]) hmul`.
+-/
 theorem eq_zero_of_embeddings {K L Ω : Type} [Field K] [Field L] [Field Ω] [IsAlgClosed Ω] [Algebra K L] [Algebra K Ω]
     [Module.Finite K L] [Algebra.IsSeparable K L] {ι : Type} [Fintype ι] (b : Module.Basis ι K L) (c : ι → Ω)
     (h : ∀ s : L →ₐ[K] Ω, ∑ t, s (b t) * c t = 0) : c = 0 := by
@@ -22,6 +29,15 @@ theorem eq_zero_of_embeddings {K L Ω : Type} [Field K] [Field L] [Field Ω] [Is
     simpa [Matrix.mulVec, dotProduct, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix_apply] using h (e j)
   exact Matrix.eq_zero_of_mulVec_eq_zero (by rwa [Matrix.det_transpose]) hmul
 
+/- English proof (translation)
+Set `N : Submodule T M` to `maximalIdeal T • ⊤`. Set `_ : Module (ResidueField T) (M ⧸ N)` to `Module.instQuotientIdealSubmoduleHSMulTop M (maximalIdeal T)`. Establish `hq : (Submodule.Quotient.mk z : M ⧸ N) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]`. Use `show z ∉ maximalIdeal T • (⊤ : Submodule T M)`.
+
+Rewrite using `[hϖ, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Introduce and unpack `⟨y, -, hy⟩`. Conclude with `hz ⟨y, hy.symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual (ResidueField T) (M ⧸ N), f (Submodule.Quotient.mk z) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hq ((Module.forall_dual_apply_eq_zero_iff (ResidueField T) _).mp hcon)`. Use `⟨LinearMap.mk (AddHom.mk (fun m => algebraMap (ResidueField T) Ω (f (Submodule.Quotient.mk m))) (fun a b => by simp only [Submodule.Quotient.mk_add, map_add])) (fun a m => ?_), ?_⟩` and prove the remaining obligations. Establish `hs : (Submodule.Quotient.mk (a • m) : M ⧸ N) = residue T a • Submodule.Quotient.mk m` using `rfl`. Simplify using `only [RingHom.id_apply]`.
+
+Rewrite using `[hs, map_smul, smul_eq_mul, map_mul, Algebra.smul_def, IsScalarTower.algebraMap_apply T (ResidueField T) Ω a]`. Both sides reduce to the same expression. Conclude with `(map_ne_zero (algebraMap (ResidueField T) Ω)).mpr hf`.
+-/
 theorem exists_functional {T M Ω : Type} [CommRing T] [IsLocalRing T] [AddCommGroup M] [Module T M] [Field Ω]
     [Algebra (ResidueField T) Ω] [Algebra T Ω] [IsScalarTower T (ResidueField T) Ω] (ϖ : T)
     (hϖ : maximalIdeal T = Ideal.span {ϖ}) (z : M) (hz : ¬ ∃ y : M, z = ϖ • y) : ∃ lam : M →ₗ[T] Ω, lam z ≠ 0 := by
@@ -46,6 +62,11 @@ theorem exists_functional {T M Ω : Type} [CommRing T] [IsLocalRing T] [AddCommG
     rfl
   · exact (map_ne_zero (algebraMap (ResidueField T) Ω)).mpr hf
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, r, t, ht, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (ht i))`.
+
+Introduce `hx`. Take `⟨n, f, g, hfg⟩` from `Submodule.mem_span_set'.mp hx`. Conclude with `⟨n, f, fun i => g i, fun i => (g i).2, by rw [← hfg]; simp only [Algebra.smul_def]⟩`.
+-/
 theorem mem_spanBy_iff {R F : Type} [CommRing R] [CommRing F] [Algebra R F] (S : Set F) (x : F) :
     x ∈ GlobalTheory.Desc.spanBy (algebraMap R F) S ↔ x ∈ Submodule.span R S := by
   constructor
@@ -70,6 +91,15 @@ def Van (Ω : Type) [Field Ω] [Algebra (ResidueField O) Ω] [Algebra T Ω] (θ 
     ∑ i : Fin n, algebraMap T F₁ (r i) * θ (w i) = algebraMap T F₁ (algebraMap O T π) * y →
       ∑ i : Fin n, s (residue T (r i)) * lam ⟨θ (w i), hw i⟩ = 0
 
+/- English proof (translation)
+Set `s : ResidueField T →ₐ[ResidueField O] Ω` to `IsAlgClosed.lift`. Establish `hco : ∀ x, θ (c₀ x) = algebraMap T F₁ (algebraMap O T x)` using `fun x => RingHom.congr_fun hc x`. Establish `hmem : ∀ x, θ (c₀ x) ∈ Subalgebra.toSubmodule W` using `fun x => by`. Rewrite using `[Subalgebra.mem_toSubmodule, hco]`. Conclude with `W.algebraMap_mem _`.
+
+Establish `hl : ∀ x, lam ⟨θ (c₀ x), hmem x⟩ = algebraMap T Ω (algebraMap O T x) * lam ⟨1, W.one_mem⟩`. Introduce `x`. Rewrite using `[← Algebra.smul_def, ← map_smul]`. Use `congr 1`. Use `ext`.
+
+Simplify using `only [hco, Submodule.coe_smul, Algebra.algebraMap_eq_smul_one]`. Apply the tactic sequence `have key := hV s lam 2 ![1, -algebraMap O T o] ![c₀ o, c₀ 1] (fun i => by fin_cases i <;> exact hmem _) 0 W.zero_mem (by simp [Fin.sum_univ_two, hco])`. Simplify using `only [Fin.sum_univ_two, Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one] at key`. Rewrite `key` using `[hl, hl, map_one, map_one, map_one, map_one, one_mul, map_neg, map_neg, ← IsLocalRing.ResidueField.algebraMap_residue, AlgHom.commutes]`. Establish `hsub : (algebraMap T Ω (algebraMap O T o) - algebraMap (ResidueField O) Ω (residue O o)) * lam ⟨1, W.one_mem⟩ = 0`.
+
+Take the linear combination `key`. Break down `mul_eq_zero.mp hsub with h | h` into its components or cases. Conclude with `(sub_eq_zero.mp h).symm`. Conclude with `absurd h h1`.
+-/
 theorem compat {c₀ : O →+* F} {θ : F →+* F₁} (hc : θ.comp c₀ = (algebraMap T F₁).comp (algebraMap O T)) {π : O}
     {W : Subalgebra T F₁} (hV : Van Ω θ π W) (lam : ↥(Subalgebra.toSubmodule W) →ₗ[T] Ω)
     (h1 : lam ⟨1, W.one_mem⟩ ≠ 0) (o : O) :
@@ -97,6 +127,21 @@ theorem compat {c₀ : O →+* F} {θ : F →+* F₁} (hc : θ.comp c₀ = (alge
   · exact (sub_eq_zero.mp h).symm
   · exact absurd h h1
 
+/- English proof (translation)
+Establish `hmax : maximalIdeal T = Ideal.span {algebraMap O T π}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp hπ`. Establish `hsum : ∑ i, algebraMap T F₁ (algebraMap O T (o t i)) * θ (w i) ∈ W` using `W.sum_mem fun i _ => W.mul_mem (W.algebraMap_mem _) (hw i)`. Distinguish the cases in `hone : ∃ y₁ ∈ W, (1 : F₁) = algebraMap T F₁ (algebraMap O T π) * y₁`. Take `⟨y₁, hy₁, e₁⟩` from `hone`. Conclude with `⟨y₁ * ∑ i, algebraMap T F₁ (algebraMap O T (o t i)) * θ (w i), W.mul_mem hy₁ hsum, by rw [← mul_assoc, ← e₁, one_mul]⟩`.
+
+Take `⟨lam₀, hl₀⟩` from `exists_functional (Ω := Ω) (M := Subalgebra.toSubmodule W) _ hmax ⟨1, W.one_mem⟩ (by`. Introduce and unpack `⟨y, hy⟩`. Conclude with `hone ⟨y, y.2, by simpa [Algebra.smul_def] using congrArg Subtype.val hy⟩)`. Establish `hcompat` using `compat hc hV lam₀ hl₀`. Assume the negation of the conclusion as `hno`.
+
+Take `⟨lam, hlam⟩` from `exists_functional (Ω := Ω) (M := Subalgebra.toSubmodule W) _ hmax ⟨_, hsum⟩ (by`. Introduce and unpack `⟨y, hy⟩`. Conclude with `hno ⟨y, y.2, by simpa [Algebra.smul_def] using congrArg Subtype.val hy⟩)`. Apply `hlam` to reduce the goal to its premises. Set `cc : ι → Ω` to `fun t => ∑ i, algebraMap (ResidueField O) Ω (residue O (o t i)) * lam ⟨θ (w i), hw i⟩`.
+
+Establish `hcc : cc = 0`. Use `eq_zero_of_embeddings b cc fun s => ?_` and prove the remaining obligations. Establish `hs` using `hV s lam n r w hw y hy hr`. Rewrite using `[← hs]`. Simplify using `only [cc, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr (residue T (r i)), map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← ho, Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `he : (⟨_, hsum⟩ : Subalgebra.toSubmodule W) = ∑ i, algebraMap O T (o t i) • ⟨θ (w i), hw i⟩`. Use `ext`. Simplify using `[Algebra.smul_def]`. Rewrite using `[he, map_sum]`.
+
+Establish `hct : cc t = 0` using `by rw [hcc]; rfl`. Rewrite using `[← hct]`. Simplify using `only [cc, map_smul, Algebra.smul_def, hcompat]`.
+-/
 theorem comp_div {c₀ : O →+* F} {θ : F →+* F₁} (hc : θ.comp c₀ = (algebraMap T F₁).comp (algebraMap O T)) {π : O}
     (hπ : Irreducible (algebraMap O T π)) {W : Subalgebra T F₁} (hV : Van Ω θ π W)
     {ι : Type} [Fintype ι] (b : Module.Basis ι (ResidueField O) (ResidueField T))
@@ -142,6 +187,25 @@ theorem comp_div {c₀ : O →+* F} {θ : F →+* F₁} (hc : θ.comp c₀ = (al
   rw [← hct]
   simp only [cc, map_smul, Algebra.smul_def, hcompat]
 
+/- English proof (translation)
+Introduce `r _ y hy hr`. Establish `hmax : maximalIdeal T = Ideal.span {algebraMap O T π}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp hπ`. Establish `hco : ∀ x, θ (c₀ x) = algebraMap T F₁ (algebraMap O T x)` using `fun x => RingHom.congr_fun hc x`. Establish `hϖ : algebraMap T F₁ (algebraMap O T π) ≠ 0` using `(map_ne_zero_iff _ hinj).mpr hπ.ne_zero`. Set `b` to `Module.finBasis (ResidueField O) (ResidueField T)`.
+
+Use `choose o ho using fun t (i : Fin n) => IsLocalRing.residue_surjective (b.repr (residue T (r i)) t)`. Use `choose β hβ using fun t => IsLocalRing.residue_surjective (b t)`. Establish `hdiff : ∀ i, ∃ r' : T, r i = ∑ t, algebraMap O T (o t i) * β t + algebraMap O T π * r'`. Introduce `i`. Establish `hm : r i - ∑ t, algebraMap O T (o t i) * β t ∈ maximalIdeal T`.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_sum]`. Simplify using `only [map_mul, ← IsLocalRing.ResidueField.algebraMap_residue, ho, hβ]`. Use `conv_lhs => enter [1]`. Rewrite using `[← b.sum_repr (residue T (r i))]`. Simplify using `[Algebra.smul_def]`.
+
+Rewrite `hm` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hm`. Conclude with `⟨a, by rw [mul_comm _ a, ha]; ring⟩`. Use `choose r' hr' using hdiff`. Use `choose y' hy' hyeq using fun t => comp_div hc hπ hV b r w (fun i => hw i) y hy hr o (fun t i => ho t i) t`.
+
+Establish `hmem' : ∀ t, y' t ∈ θ '' (θ ⁻¹' (W : Set F₁))`. Introduce `t`. Establish `hne : θ (c₀ π) ≠ 0` using `by rw [hco]; exact hϖ`. Establish `hval : θ ((∑ i, c₀ (o t i) * w i) * (c₀ π)⁻¹) = y' t`. Rewrite using `[map_mul, map_inv₀, map_sum]`.
+
+Simplify using `only [map_mul, hco]`. Rewrite using `[hyeq t, mul_comm, ← mul_assoc, inv_mul_cancel₀ hϖ, one_mul]`. Conclude with `⟨_, by rw [Set.mem_preimage, hval]; exact hy' t, hval⟩`. Establish `hyeq' : y = ∑ t, algebraMap T F₁ (β t) * y' t + ∑ i, algebraMap T F₁ (r' i) * θ (w i)`. Apply `mul_left_cancel₀ hϖ` to reduce the goal to its premises.
+
+Rewrite using `[← hr]`. Simplify using `only [hr', map_add, map_sum, map_mul, add_mul, Finset.sum_add_distrib, Finset.sum_mul, mul_add, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, ← hyeq t, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hyeq']`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun t _ => ?_) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hmem' t))`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨w i, hw i, rfl⟩)`.
+-/
 theorem div_span (hinj : Function.Injective (algebraMap T F₁)) {c₀ : O →+* F} {θ : F →+* F₁}
     (hc : θ.comp c₀ = (algebraMap T F₁).comp (algebraMap O T)) {π : O}
     (hπ : Irreducible (algebraMap O T π)) {W : Subalgebra T F₁} (hV : Van Ω θ π W)
@@ -196,6 +260,29 @@ theorem div_span (hinj : Function.Injective (algebraMap T F₁)) {c₀ : O →+*
   · rw [← Algebra.smul_def]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨w i, hw i, rfl⟩)
 
+/- English proof (translation)
+Establish `hϖ0 : algebraMap O T π ≠ 0` using `hπ.ne_zero`. Establish `hco : ∀ x, θ (c₀ x) = algebraMap T F₁ (algebraMap O T x)` using `fun x => RingHom.congr_fun hc x`. Establish `claim : ∀ (K : ℕ) (v : F₁), v ∈ W → ∀ (m : ℕ) (r : Fin m → T) (u : Fin m → F), (∀ i, θ (u i) ∈ W) → algebraMap T F₁ (algebraMap O T π) ^ K * v = ∑ i, algebraMap T F₁ (r i) * θ (u i) → v ∈ Submodule.span T (θ '' (θ ⁻¹' (W : Set F₁)))`. Introduce `K`. Proceed by induction on `K with`.
+
+Consider the case `zero`. Introduce `v _ m r u hu he`. Rewrite `he` using `[pow_zero, one_mul]`. Rewrite using `[he]`. Conclude with `Submodule.sum_mem _ fun i _ => by`.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨u i, hu i, rfl⟩)`. Consider the case `succ k ih`. Introduce `v hv m r u hu he`. Establish `hvk : algebraMap T F₁ (algebraMap O T π) ^ k * v ∈ W` using `W.mul_mem (W.pow_mem (W.algebraMap_mem _) _) hv`.
+
+Establish `hsp` using `div_span (Ω := Ω) hinj hc hπ hV u hu Finset.univ r (by simp) _ hvk (by rw [← he, pow_succ]; ring)`. Take `⟨m', f, g, hfg⟩` from `Submodule.mem_span_set'.mp hsp`. Use `choose u' hu' hgu using fun j => (g j).2`. Conclude with `ih v hv m' f u' hu' (by rw [← hfg]; simp only [Algebra.smul_def, hgu])`. Introduce and unpack `v ⟨d, hd0, hdv⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨1, (maximalIdeal.isMaximal T).ne_top ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one), ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul, mem_spanBy_iff]`. Take `⟨n, r, t, ht, hdv'⟩` from `hdv`.
+
+Use `choose u hu using ht`. Use `choose N hN using fun i => hW (θ (u i))`. Take `⟨K, e, he⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (mul_ne_zero (pow_ne_zero (∑ i, N i) hϖ0) hd0) hπ`. Use `claim K v hv n (fun i => ↑e⁻¹ * r i) (fun i => c₀ π ^ (∑ j, N j) * u i) (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hco, ← Nat.sub_add_cancel (Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i)), pow_add, mul_assoc]`.
+
+Conclude with `W.mul_mem (W.pow_mem (W.algebraMap_mem _) _) (hN i)`. Establish `h2 : algebraMap T F₁ (↑e * algebraMap O T π ^ K) * v = algebraMap T F₁ (algebraMap O T π ^ (∑ j, N j)) * ∑ i, algebraMap T F₁ (r i) * t i`. Rewrite using `[← he, map_mul, mul_assoc, hdv']`. Establish `hu' : ∀ i, t i = θ (u i)` using `fun i => (hu i).symm`. Simplify using `only [hu'] at h2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_pow, ← mul_assoc, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Use `_ = ∑ i, algebraMap T F₁ (↑e⁻¹ * r i) * θ (c₀ π ^ (∑ j, N j) * u i) := by`. Rewrite using `[h2, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_pow, hco]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨s, hs, hsv⟩`. Rewrite `hsv` using `[mem_spanBy_iff]`. Establish `hsW : algebraMap T F₁ s * v ∈ Subalgebra.toSubmodule W` using `Submodule.span_le.mpr (by rintro x ⟨a, ha, rfl⟩; exact ha) hsv`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, rfl⟩ : IsUnit s := by`. Assume the negation of the conclusion as `hnu`. Conclude with `hs ((IsLocalRing.mem_maximalIdeal s).mpr hnu)`. Establish `hv : v = algebraMap T F₁ ↑u⁻¹ * (algebraMap T F₁ ↑u * v)`. Rewrite using `[← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+
+Use `show v ∈ W`. Rewrite using `[hv]`. Conclude with `W.mul_mem (W.algebraMap_mem _) hsW`.
+-/
 theorem gaussAt (hinj : Function.Injective (algebraMap T F₁)) (c₀ : O →+* F) (θ : F →+* F₁)
     (hc : θ.comp c₀ = (algebraMap T F₁).comp (algebraMap O T)) (π : O)
     (hπ : Irreducible (algebraMap O T π)) (W : Subalgebra T F₁)

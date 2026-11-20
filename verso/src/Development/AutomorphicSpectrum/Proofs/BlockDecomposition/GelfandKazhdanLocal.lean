@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.GenGK
 
+/- English proof (translation)
+Introduce `hA` and use `GlobalTheory.CompanionTheory.GKLocalProof.gkLocal hA`.
+-/
 theorem gkLocal_gen : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → Zc.Cos.GKLocal k :=
   fun hA => GlobalTheory.CompanionTheory.GKLocalProof.gkLocal hA

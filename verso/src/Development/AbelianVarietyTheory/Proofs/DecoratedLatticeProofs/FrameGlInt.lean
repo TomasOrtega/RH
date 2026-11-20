@@ -20,6 +20,13 @@ namespace GlobalTheory.FrameGlInt
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hmem : ∀ x, x ∈ Λ ↔ ∀ r, (β.b *ᵥ x) r ∈ 𝒪[k]` using `fun x => by`. Rewrite using `[h x, GlobalTheory.SeeSaw.StdOff.mem_latV_int hL]`. Conclude with `forall_congr' fun r => ((p.int_iff _).trans (and_iff_right (GlobalTheory.SeeSaw.StdOff.sec_mem_idAt p _)).symm).symm`. Establish `h1 : β.b' *ᵥ Pi.single s 1 ∈ Λ` using `(hmem _).2 fun r => by`. Rewrite using `[Matrix.mulVec_mulVec, β.bb', Matrix.one_mulVec, Pi.single_apply]`.
+
+Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Establish `h2 : g • (β.b' *ᵥ Pi.single s 1) ∈ Λ` using `hg ▸ Submodule.smul_mem_pointwise_smul _ _ _ h1`. Establish `h3` using `(hmem _).1 h2 r`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[show g • (β.b' *ᵥ Pi.single s 1) = g.val *ᵥ (β.b' *ᵥ Pi.single s 1) from rfl, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem mat_int {p : SplitPt D k} {S : HSp D} {L : Lat S} (hL : ∀ z, z ∈ L ↔ z ∈ intVec D S.rank)
     (β : Frame p S (Fin S.rank)) {Λ : Submodule 𝒪[k] (Fin S.rank → k)} (h : β.IsLat L Λ) (g : GL (Fin S.rank) k)
     (hg : g • Λ = Λ) (r s : Fin S.rank) : (β.b * g.val * β.b') r s ∈ 𝒪[k] := by
@@ -38,15 +45,24 @@ theorem mat_int {p : SplitPt D k} {S : HSp D} {L : Lat S} (hL : ∀ z, z ∈ L �
     Matrix.mulVec_mulVec, Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.AdForm.finM, Formalism.L2.Theta.mt, Matrix.map_mul, Matrix.submatrix_mul_equiv]`.
+-/
 theorem finM_mul (V : HSp D) {n : ℕ} (hn : V.rank = n) (g h : GA D V) :
     GlobalTheory.AdForm.finM V hn (g * h) = GlobalTheory.AdForm.finM V hn g * GlobalTheory.AdForm.finM V hn h := by
   simp [GlobalTheory.AdForm.finM, Formalism.L2.Theta.mt, Matrix.map_mul, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.AdForm.finM, Matrix.reindex_apply, SplitPt.prF_toEAf]`.
+-/
 theorem prF_finM (q : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt q.e PP) (V : HSp D)
     {n : ℕ} (hn : V.rank = n) (g : GA D V) (r s : Fin n) :
     q.prF he (GlobalTheory.AdForm.finM V hn g r s) = (Formalism.L2.Theta.mt V g).map q.pr ((finCongr hn).symm r) ((finCongr hn).symm s) := by
   simp [GlobalTheory.AdForm.finM, Matrix.reindex_apply, SplitPt.prF_toEAf]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.AdForm.finM, Formalism.L2.Theta.mt]`.
+-/
 theorem finM_one (V : HSp D) {n : ℕ} (hn : V.rank = n) : GlobalTheory.AdForm.finM V hn 1 = 1 := by
   simp [GlobalTheory.AdForm.finM, Formalism.L2.Theta.mt]
 
@@ -58,6 +74,29 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨⟨x, hx0⟩, hx⟩` from `GlobalTheory.AdForm.RdVal.finM_mem S hn _ hgram.symm (β.gl g)`. Use `⟨x, hx, hx0, ?_⟩` and prove the remaining obligations. Establish `hgl' : g⁻¹ • Λ = Λ` using `by conv_lhs => rw [← hgl]`. Conclude with `inv_smul_smul g _`. Establish `hcomp : ∀ h : GL (Fin S.rank) k, h • Λ = Λ → ∀ r s, toEAf D p.e * GlobalTheory.AdForm.finM S hn (β.gl h) r s ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+
+Introduce `h hh r s`. Rewrite using `[← p.prF_mem_iff he]`. Establish `e1` using `prF_finM p he S hn (β.gl h) r s`. Rewrite `e1` using `[β.gl_mat h]`. Conclude with `e1 ▸ mat_int hL β hlat h hh _ _`.
+
+Use `set σ := Formalism.UG.sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) with hσ`. Establish `hu0 : Formalism.UG.cT σ x.1 * ((1 : Matrix (Fin n) (Fin n) D.host.E).map (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))) * x.1 = (1 : Matrix (Fin n) (Fin n) D.host.E).map (Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) := hx0`. Rewrite `hu0` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `hinvM : (x⁻¹).1 = Formalism.UG.cT σ x.1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hxi : (x⁻¹).1 = GlobalTheory.AdForm.finM S hn (β.gl g⁻¹)`. Establish `h1 : x.1 * GlobalTheory.AdForm.finM S hn (β.gl g⁻¹) = 1`. Rewrite using `[hx, ← finM_mul, ← map_mul, mul_inv_cancel, map_one, finM_one]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hf, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D p.e PP he`.
+
+Establish `hσmem : ∀ y ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, σ y ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun y hy => GlobalTheory.Mem.Col2.sigR_mem_rInt D.sp.cm hy`. Establish `hσσ : ∀ y, σ (σ y) = y` using `Formalism.L2.DIV.sigR_sigR D.sp.cm`. Establish `hcA : toEAf D (cA D p.e) = σ (toEAf D p.e)` using `GlobalTheory.AdForm.RdVal.toEAf_sig p.e`. Establish `hint : ∀ r r', x.1 r r' ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `r r'`.
+
+Establish `hs` using `congrArg (toEAf D) (β.gl_supp g ((finCongr hn).symm r) ((finCongr hn).symm r'))`. Establish `hxr : x.1 r r' = toEAf D (Formalism.L2.Theta.mt S (β.gl g) ((finCongr hn).symm r) ((finCongr hn).symm r'))`. Rewrite using `[hx]`. Both sides reduce to the same expression. Establish `hcm : toEAf D ((1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) ((finCongr hn).symm r) ((finCongr hn).symm r')) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[RingHom.map_one]`. Conclude with `one_mem _`. Rewrite using `[RingHom.map_zero]`.
+
+Conclude with `zero_mem _`. Rewrite `hs` using `[Matrix.sub_apply, RingHom.map_mul, RingHom.map_sub, RingHom.map_add, hcA, ← hxr]`. Establish `hdec : x.1 r r' = toEAf D p.e * x.1 r r' + σ (toEAf D p.e * (x⁻¹).1 r' r) + (1 - toEAf D p.e - σ (toEAf D p.e)) * toEAf D ((1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) ((finCongr hn).symm r) ((finCongr hn).symm r'))`. Establish `e2 : σ (toEAf D p.e * (x⁻¹).1 r' r) = σ (toEAf D p.e) * x.1 r r'`. Rewrite using `[hinvM, map_mul]`.
+
+Use `show σ (toEAf D p.e) * σ (σ (x.1 r r')) = _`. Rewrite using `[hσσ]`. Rewrite using `[e2]`. Take the linear combination `(-1 : GlobalTheory.AdForm.EF D) * hs`. Rewrite using `[hdec]`.
+
+Use `add_mem (add_mem ?_ ?_) (mul_mem (sub_mem (sub_mem (one_mem _) hf) (hσmem _ hf)) hcm)` and prove the remaining obligations. Conclude with `hx ▸ hcomp g hgl r r'`. Conclude with `hσmem _ (hxi ▸ hcomp g⁻¹ hgl' r' r)`. Conclude with `⟨hint, fun r r' => by`. Rewrite using `[hinvM]`.
+
+Conclude with `hσmem _ (hint r' r)⟩`.
+-/
 theorem exists_int (p : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt p.e PP) (S : HSp D)
     {n : ℕ} (hn : S.rank = n) (hgram : S.gram.reindex (finCongr hn) (finCongr hn) = 1) {L : Lat S}
     (hL : ∀ z, z ∈ L ↔ z ∈ intVec D S.rank) (β : Frame p S (Fin S.rank)) {Λ : Submodule 𝒪[k] (Fin S.rank → k)}
@@ -128,6 +167,11 @@ theorem exists_int (p : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (he : F
 
 end GlobalTheory.FrameGlInt
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a k _ _ _ _ ι p β Q L hStd j hj i v hIdem g s hgs`. Establish `hg1 : gramN (I.rec7 l Z) j hj = 1` using `((TC.spaces_in_coordinates I hOk hPins l Z).2.2.2 j hj).1`. Take `⟨-, hT⟩` from `hStd`. Take `⟨hL, hT'⟩` from `hT j hj`. Take `⟨hlat, -⟩` from `hT' i`.
+
+Establish `hgl : g • (Q j i).lat = (Q j i).lat`. Use `congrArg GlobalTheory.LatPair.Pair.lat hgs` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LatPair.Pair.smul_lat, GlobalTheory.LatPair.Pair.dia_lat]`. Then use the resulting hypothesis. Take `⟨δ, h1, h2, h3, h4⟩` from `GlobalTheory.FrameGlInt.exists_int (p i) hIdem _ (rankN (I.rec7 l Z) j hj) hg1 hL (β j i) hlat g hgl`. Conclude with `⟨δ, h1, h2, h3, h4⟩`.
+-/
 theorem GlobalTheory.AdForm.frameGl_int : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

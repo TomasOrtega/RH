@@ -113,6 +113,11 @@ end GlobalTheory.DvrAnyChar
 namespace GlobalTheory.DvrAnyChar
 open GlobalTheory.TorsionAnyChar
 
+/- English proof (translation)
+Introduce `hL R _ _ I hI D A G _ _ hG U F _ _ _ k n N hk hn hN p q x hy hg hx`. Establish `hN1 : 1 ≤ N` using `hN ▸ Nat.mul_pos hk hn`. Take `⟨x₀, h₀⟩` from `existsTransl_any hL R I hI D A G hG U F k hk p`. Establish `a` using `(indAtTransl_any hL R I hI D A G hG U F k hk p x₀).1 (h₀ 1 k le_rfl (Nat.mul_one k).symm p (one_nsmul _).symm rfl)`. Take `rfl` from `GlobalTheory.TorsionImage.qkToAkU_unique hL.1 hL.2.1 R I hI D A G hG U F k hk p x x₀ hx a`.
+
+Conclude with `(indAtTransl_any hL R I hI D A G hG U F N hN1 q x).1 (h₀ n N hn hN q hy hg)`.
+-/
 theorem qkToAkU_level_any : LL → AnyUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k n N : ℕ), 1 ≤ k → 1 ≤ n →
     N = k * n → ∀ (p : QkPt D.toPre F k) (q : QkPt D.toPre F N) x, q.y = n • p.y → q.g = p.g →
     QkToAkU U.toUnifPre F k p x → QkToAkU U.toUnifPre F N q x := by

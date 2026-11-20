@@ -12,6 +12,9 @@ set_option linter.unusedSectionVars false
 
 variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
+/- English proof (translation)
+Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(Set.finite_singleton n₀).compl_mem_cofinite] with n hn`. Simplify using `[Pi.single_apply, show n ≠ n₀ from hn]`. Use the proof step `@[ext]`.
+-/
 theorem Laurent.convergesAt_single {K : Type*} [NontriviallyNormedField K] (n₀ : ℤ) (k : K)
     (ρ : ℝ) : ConvergesAt (Pi.single n₀ k) ρ := by
   refine tendsto_const_nhds.congr' ?_
@@ -36,10 +39,16 @@ namespace AnnulusRing
 
 variable {I : Set ℝ}
 
+/- English proof (translation)
+The claim follows from `f.convergesAt' ρ hρ hρ0`.
+-/
 theorem convergesAt (f : AnnulusRing K I) {ρ : ℝ} (hρ : ρ ∈ I) (hρ0 : 0 < ρ) :
     ConvergesAt f.coeff ρ :=
   f.convergesAt' ρ hρ hρ0
 
+/- English proof (translation)
+Introduce `_ _ h` and use `AnnulusRing.ext h`.
+-/
 theorem coeff_injective : Function.Injective (coeff : AnnulusRing K I → ℤ → K) :=
   fun _ _ h => AnnulusRing.ext h
 
@@ -63,14 +72,41 @@ instance : SMul ℤ (AnnulusRing K I) :=
 instance : Mul (AnnulusRing K I) :=
   ⟨fun f g => ⟨cmul f.coeff g.coeff, fun ρ h h0 => (f.convergesAt h h0).cmul h0 (g.convergesAt h h0)⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_zero : (0 : AnnulusRing K I).coeff = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_one : (1 : AnnulusRing K I).coeff = Pi.single 0 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_add (f g : AnnulusRing K I) : (f + g).coeff = f.coeff + g.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_neg (f : AnnulusRing K I) : (-f).coeff = -f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_sub (f g : AnnulusRing K I) : (f - g).coeff = f.coeff - g.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_smul (k : K) (f : AnnulusRing K I) : (k • f).coeff = k • f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_nsmul (k : ℕ) (f : AnnulusRing K I) : (k • f).coeff = k • f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_zsmul (k : ℤ) (f : AnnulusRing K I) : (k • f).coeff = k • f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_mul (f g : AnnulusRing K I) : (f * g).coeff = cmul f.coeff g.coeff := rfl
 
 instance : AddCommGroup (AnnulusRing K I) :=
@@ -81,10 +117,19 @@ variable [hI : Fact (∃ ρ ∈ I, 0 < ρ)]
 
 def radius (I : Set ℝ) [hI : Fact (∃ ρ ∈ I, 0 < ρ)] : ℝ := hI.out.choose
 
+/- English proof (translation)
+The claim follows from `hI.out.choose_spec.1`.
+-/
 theorem radius_mem : radius I ∈ I := hI.out.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `hI.out.choose_spec.2`.
+-/
 theorem radius_pos : 0 < radius I := hI.out.choose_spec.2
 
+/- English proof (translation)
+The claim follows from `f.convergesAt radius_mem radius_pos`.
+-/
 theorem conv (f : AnnulusRing K I) : ConvergesAt f.coeff (radius I) :=
   f.convergesAt radius_mem radius_pos
 
@@ -121,6 +166,9 @@ def restrict {J : Set ℝ} [Fact (∃ ρ ∈ J, 0 < ρ)] (hJ : J ⊆ I) : Annulu
   map_add' _ _ := rfl
   commutes' _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_restrict {J : Set ℝ} [Fact (∃ ρ ∈ J, 0 < ρ)] (hJ : J ⊆ I)
     (f : AnnulusRing K I) : (restrict hJ f).coeff = f.coeff := rfl
 
@@ -135,9 +183,15 @@ instance AnnulusRing.fact_ico {r : ℝ} [hr : Fact (r < 1)] : Fact (∃ ρ ∈ S
 
 namespace Robba
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Robba.ext h`.
+-/
 theorem coeff_injective : Function.Injective (coeff : Robba K → ℤ → K) :=
   fun _ _ h => Robba.ext h
 
+/- English proof (translation)
+Take `⟨r₁, hr₁, h₁⟩` from `f.exists_convergesAt'`. Take `⟨r₂, hr₂, h₂⟩` from `g.exists_convergesAt'`. Use `⟨max (max r₁ r₂) (1 / 2), by positivity, max_lt (max_lt hr₁ hr₂) (by norm_num), fun ρ hρ hρ1 => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `lt_of_lt_of_le (by norm_num) ((le_max_right _ _).trans hρ)`. Conclude with `⟨h₁ ρ ((le_max_left _ _).trans ((le_max_left _ _).trans hρ)) hρ1 hρ0, h₂ ρ ((le_max_right _ _).trans ((le_max_left _ _).trans hρ)) hρ1 hρ0⟩`.
+-/
 theorem exists_common (f g : Robba K) : ∃ r, 0 < r ∧ r < 1 ∧ ∀ ρ, r ≤ ρ → ρ < 1 →
     ConvergesAt f.coeff ρ ∧ ConvergesAt g.coeff ρ := by
   obtain ⟨r₁, hr₁, h₁⟩ := f.exists_convergesAt'
@@ -148,6 +202,9 @@ theorem exists_common (f g : Robba K) : ∃ r, 0 < r ∧ r < 1 ∧ ∀ ρ, r ≤
   exact ⟨h₁ ρ ((le_max_left _ _).trans ((le_max_left _ _).trans hρ)) hρ1 hρ0,
     h₂ ρ ((le_max_right _ _).trans ((le_max_left _ _).trans hρ)) hρ1 hρ0⟩
 
+/- English proof (translation)
+Take `⟨r, hr0, hr1, hfg⟩` from `exists_common f g`. Take `⟨s, hs0, hs1, hgh⟩` from `exists_common g h`. Use `⟨max r s, lt_max_of_lt_left hr0, (hfg _ (le_max_left _ _) (max_lt hr1 hs1)).1, (hfg _ (le_max_left _ _) (max_lt hr1 hs1)).2, (hgh _ (le_max_right _ _) (max_lt hr1 hs1)).2⟩` and prove the remaining obligations.
+-/
 theorem exists_common₃ (f g h : Robba K) : ∃ ρ, 0 < ρ ∧ ConvergesAt f.coeff ρ ∧
     ConvergesAt g.coeff ρ ∧ ConvergesAt h.coeff ρ := by
   obtain ⟨r, hr0, hr1, hfg⟩ := exists_common f g
@@ -190,12 +247,33 @@ instance : Mul (Robba K) :=
     obtain ⟨r, hr0, hr1, h⟩ := exists_common f g
     exact ⟨r, hr1, fun ρ h1 h2 h3 => (h ρ h1 h2).1.cmul h3 (h ρ h1 h2).2⟩⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_zero : (0 : Robba K).coeff = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_one : (1 : Robba K).coeff = Pi.single 0 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_add (f g : Robba K) : (f + g).coeff = f.coeff + g.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_neg (f : Robba K) : (-f).coeff = -f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_sub (f g : Robba K) : (f - g).coeff = f.coeff - g.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_smul (k : K) (f : Robba K) : (k • f).coeff = k • f.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_mul (f g : Robba K) : (f * g).coeff = cmul f.coeff g.coeff := rfl
 
 instance : AddCommGroup (Robba K) :=
@@ -245,11 +323,20 @@ def toRobba : AnnulusRing.halfOpen K r →ₐ[K] Robba K where
   map_add' _ _ := rfl
   commutes' _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_toRobba (f : AnnulusRing.halfOpen K r) : (toRobba f).coeff = f.coeff := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `AnnulusRing.ext (congrArg Robba.coeff h)`.
+-/
 theorem toRobba_injective : Function.Injective (toRobba : AnnulusRing.halfOpen K r → Robba K) :=
   fun _ _ h => AnnulusRing.ext (congrArg Robba.coeff h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toRobba_restrict {s : ℝ} [Fact (s < 1)] (hrs : r ≤ s) (f : AnnulusRing.halfOpen K r) :
     toRobba (restrict (J := Set.Ico s 1) (Set.Ico_subset_Ico_left hrs) f) = toRobba f := rfl
 
@@ -257,6 +344,9 @@ end AnnulusRing
 
 namespace Robba
 
+/- English proof (translation)
+Take `⟨r, hr, h⟩` from `f.exists_convergesAt'`. Conclude with `⟨r, ⟨hr⟩, ⟨f.coeff, fun ρ hρ h0 => h ρ hρ.1 hρ.2 h0⟩, rfl⟩`.
+-/
 theorem exists_toRobba (f : Robba K) : ∃ (r : ℝ) (_ : Fact (r < 1)) (g : AnnulusRing.halfOpen K r),
     AnnulusRing.toRobba g = f := by
   obtain ⟨r, hr, h⟩ := f.exists_convergesAt'
@@ -266,6 +356,11 @@ end Robba
 
 namespace Laurent
 
+/- English proof (translation)
+Use `le_antisymm (gaussNorm_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hn]`.
+
+Simplify using `using (convergesAt_single 0 (1 : K) ρ).le_gaussNorm 0`.
+-/
 theorem gaussNorm_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
     gaussNorm (Pi.single 0 (1 : K)) ρ = 1 := by
   refine le_antisymm (gaussNorm_le fun n => ?_) ?_
@@ -274,6 +369,11 @@ theorem gaussNorm_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
     · simp [Pi.single_apply, hn]
   · simpa using (convergesAt_single 0 (1 : K) ρ).le_gaussNorm 0
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [domSet, Set.mem_setOf_eq, gaussNorm_single_zero_one hρ, Set.mem_singleton_iff]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hn]`.
+-/
 theorem domSet_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
     domSet (Pi.single 0 (1 : K)) ρ = {0} := by
   ext n
@@ -282,10 +382,16 @@ theorem domSet_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
   · subst hn; simp
   · simp [Pi.single_apply, hn]
 
+/- English proof (translation)
+Rewrite using `[lowIndex, domSet_single_zero_one hρ, csInf_singleton]`.
+-/
 theorem lowIndex_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
     lowIndex (Pi.single 0 (1 : K)) ρ = 0 := by
   rw [lowIndex, domSet_single_zero_one hρ, csInf_singleton]
 
+/- English proof (translation)
+Rewrite using `[highIndex, domSet_single_zero_one hρ, csSup_singleton]`.
+-/
 theorem highIndex_single_zero_one {ρ : ℝ} (hρ : 0 < ρ) :
     highIndex (Pi.single 0 (1 : K)) ρ = 0 := by
   rw [highIndex, domSet_single_zero_one hρ, csSup_singleton]
@@ -319,9 +425,33 @@ def bounded (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] [Compl
     obtain ⟨A, hA⟩ := hf
     exact ⟨A, Set.forall_mem_range.2 fun n => by simpa using hA ⟨n, rfl⟩⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_bounded {f : Robba K} :
     f ∈ bounded K ↔ BddAbove (Set.range fun n => ‖f.coeff n‖) := Iff.rfl
 
+/- English proof (translation)
+Take `⟨r, hr0, hr1, hc⟩` from `exists_common f g`. Establish `hfg : cmul f.coeff g.coeff = Pi.single 0 1` using `congrArg Robba.coeff h`. Establish `hne : (Pi.single 0 (1 : K) : ℤ → K) ≠ 0` using `fun h0 => by`. Simplify using `using congrFun h0 0`. Establish `hf0 : f.coeff ≠ 0` using `fun h0 => hne (by rw [← hfg, h0, zero_cmul])`.
+
+Establish `hg0 : g.coeff ≠ 0` using `fun h0 => hne (by rw [← hfg, h0, cmul_zero])`. Establish `pos : ∀ ρ, r ≤ ρ → 0 < ρ` using `fun ρ hρ => hr0.trans_le hρ`. Establish `key : ∀ ρ, r ≤ ρ → ρ < 1 → lowIndex f.coeff ρ = highIndex f.coeff ρ ∧ lowIndex g.coeff ρ = -lowIndex f.coeff ρ ∧ highIndex g.coeff ρ = -lowIndex f.coeff ρ`. Introduce `ρ h1 h2`. Establish `hρ` using `pos ρ h1`.
+
+Take `⟨cf, cg⟩` from `hc ρ h1 h2`. Establish `e1` using `lowIndex_cmul hρ cf cg hf0 hg0`. Establish `e2` using `highIndex_cmul hρ cf cg hf0 hg0`. Rewrite `e1` using `[hfg, lowIndex_single_zero_one hρ]`. Rewrite `e2` using `[hfg, highIndex_single_zero_one hρ]`.
+
+Establish `l1` using `lowIndex_le_highIndex hρ cf hf0`. Establish `l2` using `lowIndex_le_highIndex hρ cg hg0`. Use `⟨by omega, by omega, by omega⟩` and prove the remaining obligations. Establish `mono : ∀ ρ ρ', r ≤ ρ → ρ < ρ' → ρ' < 1 → lowIndex f.coeff ρ = lowIndex f.coeff ρ'`. Introduce `ρ ρ' h1 h12 h2`.
+
+Establish `h1' : r ≤ ρ'` using `h1.trans h12.le`. Establish `hρ1 : ρ < 1` using `h12.trans h2`. Establish `a1` using `highIndex_le_lowIndex (pos ρ h1) h12 (hc ρ h1 hρ1).1 (hc ρ' h1' h2).1 hf0`. Establish `a2` using `highIndex_le_lowIndex (pos ρ h1) h12 (hc ρ h1 hρ1).2 (hc ρ' h1' h2).2 hg0`. Take `⟨k1, k2, k3⟩` from `key ρ h1 hρ1`.
+
+Take `⟨k1', k2', k3'⟩` from `key ρ' h1' h2`. Use linear arithmetic over natural numbers and integers. Use `set N := lowIndex f.coeff r`. Establish `hN : ∀ ρ, r ≤ ρ → ρ < 1 → ∀ n, ‖f.coeff n‖ * ρ ^ n ≤ ‖f.coeff N‖ * ρ ^ N`. Introduce `ρ h1 h2 n`.
+
+Establish `hL : lowIndex f.coeff ρ = N`. Break down `h1.lt_or_eq with h | h` into its components or cases. Conclude with `(mono r ρ le_rfl h h2).symm`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Establish `hmem` using `lowIndex_mem (pos ρ h1) (hc ρ h1 h2).1 hf0`. Rewrite `hmem` using `[hL]`. Rewrite using `[show ‖f.coeff N‖ * ρ ^ N = gaussNorm f.coeff ρ from hmem]`. Conclude with `(hc ρ h1 h2).1.le_gaussNorm n`. Use `⟨‖f.coeff N‖, Set.forall_mem_range.2 fun n => ?_⟩` and prove the remaining obligations.
+
+Establish `hlim : Tendsto (fun ρ : ℝ => ‖f.coeff N‖ * ρ ^ (N - n)) (𝓝[<] 1) (𝓝 (‖f.coeff N‖ * (1 : ℝ) ^ (N - n)))` using `(((continuousAt_zpow₀ (1 : ℝ) (N - n) (Or.inl one_ne_zero)).tendsto).const_mul _).mono_left nhdsWithin_le_nhds`. Rewrite `hlim` using `[one_zpow, mul_one]`. Use `ge_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsLT hr1] with ρ hρ`. Establish `hρ0` using `pos ρ hρ.1.le`.
+
+Use `hN ρ hρ.1.le hρ.2 n` as an intermediate fact. Establish `hpos : 0 < ρ ^ n` using `zpow_pos hρ0 n`. Rewrite using `[show ρ ^ (N - n) = ρ ^ N / ρ ^ n by rw [zpow_sub₀ hρ0.ne'], mul_div_assoc', le_div_iff₀ hpos]`. Conclude with `this`.
+-/
 theorem mem_bounded_of_mul_eq_one {f g : Robba K} (h : f * g = 1) : f ∈ bounded K := by
   obtain ⟨r, hr0, hr1, hc⟩ := exists_common f g
   have hfg : cmul f.coeff g.coeff = Pi.single 0 1 := congrArg Robba.coeff h
@@ -379,6 +509,11 @@ theorem mem_bounded_of_mul_eq_one {f g : Robba K} (h : f * g = 1) : f ∈ bounde
     le_div_iff₀ hpos]
   exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : (u : Robba K) ∈ bounded K` using `mem_bounded_of_mul_eq_one u.mul_inv`. Establish `h2 : ((u⁻¹ : (Robba K)ˣ) : Robba K) ∈ bounded K` using `mem_bounded_of_mul_eq_one u.inv_mul`. Conclude with `⟨⟨⟨u, h1⟩, ⟨_, h2⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩, rfl⟩`.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `(Units.map (bounded K).subtype.toMonoidHom g).isUnit`.
+-/
 theorem isUnit_iff {f : Robba K} :
     IsUnit f ↔ ∃ g : (bounded K)ˣ, ((g : bounded K) : Robba K) = f := by
   constructor
@@ -389,6 +524,11 @@ theorem isUnit_iff {f : Robba K} :
   · rintro ⟨g, rfl⟩
     exact (Units.map (bounded K).subtype.toMonoidHom g).isUnit
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨(g : bounded K).2, g.isUnit⟩`. Introduce and unpack `⟨hf, u, hu⟩`.
+
+Conclude with `⟨u, by rw [hu]⟩`.
+-/
 theorem isUnit_iff_isUnit_bounded {f : Robba K} :
     IsUnit f ↔ ∃ hf : f ∈ bounded K, IsUnit (⟨f, hf⟩ : bounded K) := by
   rw [isUnit_iff]
@@ -402,6 +542,9 @@ end Robba
 
 namespace Laurent
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Unfold `cmul`. Rewrite using `[tsum_eq_single k fun i hi => by simp [Pi.single_apply, hi]]`. Simplify using the standard rewrite rules.
+-/
 theorem cmul_single_left (k : ℤ) (c : K) (x : ℤ → K) :
     cmul (Pi.single k c) x = fun n => c * x (n - k) := by
   funext n
@@ -416,20 +559,35 @@ namespace Robba
 def single (k : ℤ) (c : K) : Robba K :=
   ⟨Pi.single k c, ⟨0, one_pos, fun ρ _ _ _ => convergesAt_single k c ρ⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_single (k : ℤ) (c : K) : (single k c).coeff = Pi.single k c := rfl
 
+/- English proof (translation)
+The claim follows from `cmul_single_left k c f.coeff`.
+-/
 theorem coeff_single_mul (k : ℤ) (c : K) (f : Robba K) :
     (single k c * f).coeff = fun n => c * f.coeff (n - k) :=
   cmul_single_left k c f.coeff
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_single_mul]`. Simplify using `only [coeff_single, Pi.single_apply, sub_eq_iff_eq_add]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | (exfalso; omega) | simp`.
+-/
 theorem single_mul_single (k l : ℤ) (c d : K) : single k c * single l d = single (k + l) (c * d) := by
   ext n
   rw [coeff_single_mul]
   simp only [coeff_single, Pi.single_apply, sub_eq_iff_eq_add]
   split_ifs with h1 h2 h2 <;> first | (exfalso; omega) | simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem single_zero_one : single 0 (1 : K) = 1 := rfl
 
+/- English proof (translation)
+Establish `h : single k c * single (-k) c⁻¹ = 1`. Rewrite using `[single_mul_single, add_neg_cancel, mul_inv_cancel₀ hc, single_zero_one]`. Conclude with `⟨⟨single k c, single (-k) c⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩`.
+-/
 theorem isUnit_single (k : ℤ) {c : K} (hc : c ≠ 0) : IsUnit (single k c) := by
   have h : single k c * single (-k) c⁻¹ = 1 := by
     rw [single_mul_single, add_neg_cancel, mul_inv_cancel₀ hc, single_zero_one]
@@ -437,8 +595,14 @@ theorem isUnit_single (k : ℤ) {c : K} (hc : c ≠ 0) : IsUnit (single k c) := 
 
 def T : Robba K := single 1 1
 
+/- English proof (translation)
+The claim follows from `isUnit_single 1 one_ne_zero`.
+-/
 theorem isUnit_T : IsUnit (T : Robba K) := isUnit_single 1 one_ne_zero
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨‖c‖, Set.forall_mem_range.2 fun n => by by_cases hn : n = k · subst hn; simp · simp [Pi.single_apply, hn]⟩`.
+-/
 theorem single_mem_bounded (k : ℤ) (c : K) : single k c ∈ bounded K :=
   ⟨‖c‖, Set.forall_mem_range.2 fun n => by
     by_cases hn : n = k

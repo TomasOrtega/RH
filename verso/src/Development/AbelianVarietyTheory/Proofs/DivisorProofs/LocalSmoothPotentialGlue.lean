@@ -4,6 +4,17 @@ open Filter
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `e N c B hB hS hloc`. Use `choose! V hVo hzV F hF hNF using hloc`. Establish `key : ∀ a ∈ B, ∀ b ∈ B, ∀ z ∈ V a ∩ V b ∩ B, F a z = F b z`. Introduce `a ha b hb`. Establish `hU : IsOpen (V a ∩ V b ∩ B)` using `((hVo a ha).inter (hVo b hb)).inter hB`.
+
+Use `Set.EqOn.of_subset_closure (s := (V a ∩ V b ∩ B) ∩ {z | c z ≠ 0}) ?_ ((hF a ha).continuousOn.mono (fun y hy => hy.1.1)) ((hF b hb).continuousOn.mono (fun y hy => hy.1.2)) Set.inter_subset_left (hS.open_subset_closure_inter hU)` and prove the remaining obligations. Introduce `w hw`. Establish `h1` using `hNF a ha w ⟨hw.1.1.1, hw.1.2⟩`. Establish `h2` using `hNF b hb w ⟨hw.1.1.2, hw.1.2⟩`. Establish `hc : c w ≠ 0` using `hw.2`.
+
+Establish `: Real.exp (-F a w) = Real.exp (-F b w)`. Use `h1.symm.trans h2` as an intermediate fact. Conclude with `mul_left_cancel₀ hc this`. Use `Real.exp_injective this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨fun z => F z z, ?_, ?_⟩` and prove the remaining obligations. Use `contDiffOn_of_locally_contDiffOn ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨V x, hVo x hx, hzV x hx, ?_⟩` and prove the remaining obligations. Use `((hF x hx).mono Set.inter_subset_right).congr ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Conclude with `key y hy.1 x hx y ⟨⟨hzV y hy.1, hy.2⟩, hy.1⟩`. Introduce `z hz`. Conclude with `hNF z hz z ⟨hzV z hz, hz⟩`.
+-/
 theorem smooth_local_exp_glue : ∀ {e : ℕ} (N c : (Fin e → ℂ) → ℝ) (B : Set (Fin e → ℂ)), IsOpen B → Dense {z | c z ≠ 0} → (∀ z0 ∈ B, ∃ V : Set (Fin e → ℂ), IsOpen V ∧ z0 ∈ V ∧ ∃ F : (Fin e → ℂ) → ℝ, ContDiffOn ℝ ∞ F V ∧ ∀ z ∈ V ∩ B, N z = c z * Real.exp (-F z)) → ∃ f : (Fin e → ℂ) → ℝ, ContDiffOn ℝ ∞ f B ∧ ∀ z ∈ B, N z = c z * Real.exp (-f z) := by
   intro e N c B hB hS hloc
   classical

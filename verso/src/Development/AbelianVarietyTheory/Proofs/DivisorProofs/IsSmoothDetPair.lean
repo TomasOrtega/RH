@@ -26,6 +26,9 @@ def leviTgt {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (σ₁
     (ξ₁.comp (Matrix.GeneralLinearGroup.det.comp (Pi.evalMonoidHom (fun i : Fin 3 => GL (Fin (blk3 m i)) k) 0)) *
       ξ₂.comp (Matrix.GeneralLinearGroup.det.comp (Pi.evalMonoidHom (fun i : Fin 3 => GL (Fin (blk3 m i)) k) 2)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviTgt_apply {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (σ₁ : Representation ℂ (GL (Fin m) k) P₁)
     (ξ₁ ξ₂ : kˣ →* ℂˣ) (l : Levi k fun i : Fin 3 => Fin (blk3 m i)) (y : P₁) :
     leviTgt σ₁ ξ₁ ξ₂ l y = ((ξ₁ (Matrix.GeneralLinearGroup.det (l 0)) * ξ₂ (Matrix.GeneralLinearGroup.det (l 2)) : ℂˣ) : ℂ) •
@@ -42,6 +45,9 @@ variable (k) in
 def detPair (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) : Representation ℂ (Levi k (Two (Fin a) (Fin a'))) (ℂ ⊗[ℂ] ℂ) :=
   (extTensor (detRep (Fin a) α₀) (detRep (Fin a') β₀)).comp (leviTwo k (Fin a) (Fin a')).symm.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prod₂_detRep_eq (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) :
     prod₂ (detRep (Fin a) α₀) (detRep (Fin a') β₀) = parInd (two (stdSum rfl)) (detPair k a a' α₀ β₀) := rfl
 
@@ -69,6 +75,13 @@ section General
 variable {G V V' Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
   [AddCommGroup Y] [Module ℂ Y]
 
+/- English proof (translation)
+Introduce `μ μ'`. Establish `key : ∀ v : V, φ.symm (φ v) = v` using `fun v => φ.toLinearEquiv.symm_apply_apply v`. Break down `h (μ.comp φ.symm.toIntertwiningMap) (μ'.comp φ.symm.toIntertwiningMap) with h0 | ⟨c, hc⟩` into its components or cases. Use `left`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun h0 (φ v)` as an intermediate fact. Simplify `this` using `[key]`. Use `right`. Use `⟨c, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hc (φ v)` as an intermediate fact.
+
+Simplify `this` using `[key]`.
+-/
 theorem HomLeOne.of_equiv {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} {τ : Representation ℂ G Y}
     (φ : ρ.Equiv ρ') (h : HomLeOne ρ' τ) : HomLeOne ρ τ := by
   intro μ μ'
@@ -83,6 +96,9 @@ theorem HomLeOne.of_equiv {ρ : Representation ℂ G V} {ρ' : Representation �
     have := LinearMap.congr_fun hc (φ v)
     simpa [key] using this
 
+/- English proof (translation)
+Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap z x`. Rewrite using `[Representation.Equiv.toLinearEquiv_apply, h1, h, map_smul, Representation.Equiv.toLinearEquiv_apply]`.
+-/
 theorem smul_of_equiv {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} (φ : ρ.Equiv ρ') {z : G} {c : ℂ}
     (h : ∀ y, ρ' z y = c • y) (x : V) : ρ z x = c • x := by
   apply φ.toLinearEquiv.injective
@@ -93,20 +109,34 @@ end General
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 2), mul_one]`.
+-/
 theorem torusPt_zero (m : ℕ) (t₁ t₂ : kˣ) :
     torusPt k m t₁ t₂ 0 = Matrix.GeneralLinearGroup.scalar (Fin (blk3 m 0)) t₁ := by
   simp only [torusPt, Pi.mul_apply]
   rw [Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 3) ≠ 2), mul_one]
 
+/- English proof (translation)
+Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 0), Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 2), mul_one]`.
+-/
 theorem torusPt_one (m : ℕ) (t₁ t₂ : kˣ) : torusPt k m t₁ t₂ 1 = 1 := by
   simp only [torusPt, Pi.mul_apply]
   rw [Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 0), Pi.mulSingle_eq_of_ne (by decide : (1 : Fin 3) ≠ 2), mul_one]
 
+/- English proof (translation)
+Simplify using `only [torusPt, Pi.mul_apply]`. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 0), one_mul]`.
+-/
 theorem torusPt_two (m : ℕ) (t₁ t₂ : kˣ) :
     torusPt k m t₁ t₂ 2 = Matrix.GeneralLinearGroup.scalar (Fin (blk3 m 2)) t₂ := by
   simp only [torusPt, Pi.mul_apply]
   rw [Pi.mulSingle_eq_same, Pi.mulSingle_eq_of_ne (by decide : (2 : Fin 3) ≠ 0), one_mul]
 
+/- English proof (translation)
+Rewrite using `[leviTgt_apply, torusPt_zero, torusPt_one, torusPt_two, Matrix.GeneralLinearGroup.det_scalar, Matrix.GeneralLinearGroup.det_scalar]`. Establish `h1 : σ₁ (1 : GL (Fin m) k) y = y` using `by rw [map_one]; rfl`. Apply the tactic sequence `have hc0 : Fintype.card (Fin (blk3 m 0)) = 1 := by convert Fintype.card_fin (blk3 m 0) using 1 <;> rfl`. Apply the tactic sequence `have hc2 : Fintype.card (Fin (blk3 m 2)) = 1 := by convert Fintype.card_fin (blk3 m 2) using 1 <;> rfl`. Rewrite using `[hc0, hc2, pow_one, pow_one]`.
+
+Conclude with `congrArg _ h1`.
+-/
 theorem leviTgt_torusPt {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (σ₁ : Representation ℂ (GL (Fin m) k) P₁)
     (ξ₁ ξ₂ : kˣ →* ℂˣ) (t₁ t₂ : kˣ) (y : P₁) :
     leviTgt σ₁ ξ₁ ξ₂ (torusPt k m t₁ t₂) y = ((ξ₁ t₁ * ξ₂ t₂ : ℂˣ) : ℂ) • y := by
@@ -118,6 +148,9 @@ theorem leviTgt_torusPt {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ 
   rw [hc0, hc2, pow_one, pow_one]
   exact congrArg _ h1
 
+/- English proof (translation)
+The claim follows from `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff (detChar (Fin a) α₀)).2 hα.detChar) ((isSmooth_ofChar_iff (detChar (Fin a') β₀)).2 hβ.detChar)) _ (show Continuous fun g : Levi k (Two (Fin a) (Fin a')) => (g false, g true) from (continuous_apply false).prodMk (continuous_a …`.
+-/
 theorem isSmooth_detPair (a a' : ℕ) {α₀ β₀ : kˣ →* ℂˣ} (hα : IsSmoothChar α₀) (hβ : IsSmoothChar β₀) :
     IsSmooth (detPair k a a' α₀ β₀) :=
   isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff (detChar (Fin a) α₀)).2 hα.detChar)

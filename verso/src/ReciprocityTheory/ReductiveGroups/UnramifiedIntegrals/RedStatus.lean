@@ -10,6 +10,9 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Introduce `d L hsq hd4 hCM l _ h5 hld ι`. Establish `hJ` using `hU d L hsq hd4 hCM l h5 hld ι`. Establish `hJ1` using `hI d L hsq hd4 hCM l ι`. Conclude with `model_of_valDiv L l h5 ι hJ hJ1 (valDiv3 d L hsq hd4 hCM l h5 hld ι hJ hJ1) (valDiv2 d L hsq hd4 hCM l h5 hld ι hJ hJ1)`.
+-/
 theorem goodReduction_of_integral_unramified (hI : JInt) (hU : JUnram) : CM2 := by
   intro d L hsq hd4 hCM l _ h5 hld ι
   have hJ := hU d L hsq hd4 hCM l h5 hld ι

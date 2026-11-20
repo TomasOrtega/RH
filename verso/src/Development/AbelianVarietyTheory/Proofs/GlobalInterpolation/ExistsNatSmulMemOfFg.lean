@@ -6,6 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsSdLatTwOExp
 
 namespace GlobalTheory.FinitelyGeneratedNatMultiple
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hN`. Establish `hM' : ∀ x : W, ∃ n : ℕ, 0 < n ∧ (n : NumberField.RingOfIntegers E) • x ∈ M` using `hM`. Use `choose n hn0 hn using hM'`. Use `⟨∏ y ∈ s, n y, Finset.prod_pos fun y _ => hn0 y, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span (NumberField.RingOfIntegers E) (s : Set W) ≤ M.comap (LinearMap.lsmul (NumberField.RingOfIntegers E) W ((∏ y ∈ s, n y : ℕ) : NumberField.RingOfIntegers E))`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_coe.mp hy)`. Use `show ((∏ y ∈ s, n y : ℕ) : NumberField.RingOfIntegers E) • y ∈ M`. Rewrite using `[hk, mul_comm, Nat.cast_mul, mul_smul]`.
+
+Conclude with `M.smul_mem _ (hn y)`. Conclude with `hle hx`.
+-/
 theorem exists_nat_smul_mem_of_fg {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W]
     [Module (NumberField.RingOfIntegers E) W]
     {M N : Submodule (NumberField.RingOfIntegers E) W}

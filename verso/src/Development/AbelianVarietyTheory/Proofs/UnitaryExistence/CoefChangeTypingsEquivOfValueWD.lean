@@ -21,6 +21,17 @@ section Algebra
 
 variable {K K' : Type} [Field K] [Field K'] [CharZero K] [Algebra K K']
 
+/- English proof (translation)
+Take `⟨hft, hred⟩` from `(GlobalTheory.reduced_finiteType_iff_testRing K).2 p`. Establish `hred' : IsReduced (K' ⊗[K] p.R)` using `GlobalTheory.ReducedAlg.isReduced_field_tensor _ _`. Take `⟨q, ⟨e⟩⟩` from `(GlobalTheory.reduced_finiteType_iff_testRing K').1 (K' ⊗[K] p.R) inferInstance hred'`. Use `⟨q, e.symm.toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight (R := K) (A := K') (B := p.R)).toRingHom, fun a => ?_, fun S _ _ φ hφ => ?_, fun m b v hv lam => ?_⟩` and prove the remaining obligations. Use `show e.symm (Algebra.TensorProduct.includeRight (algebraMap K p.R a)) = _`.
+
+Rewrite using `[AlgHom.commutes, ← e.symm.commutes]`. Both sides reduce to the same expression. Use `letI : Algebra K S := ((algebraMap K' S).comp (algebraMap K K')).toAlgebra haveI : IsScalarTower K K' S := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `φ' : p.R →ₐ[K] S` to `{ φ with commutes' := hφ }`. Use `⟨(Algebra.TensorProduct.lift (Algebra.ofId K' S) φ' (fun _ _ => Commute.all _ _)).comp e.toAlgHom, fun v => ?_⟩` and prove the remaining obligations.
+
+Use `show Algebra.TensorProduct.lift (Algebra.ofId K' S) φ' (fun _ _ => Commute.all _ _) (e (e.symm ((1 : K') ⊗ₜ[K] v))) = _`. Rewrite using `[e.apply_symm_apply, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Establish `h1 : ∑ i, b i ⊗ₜ[K] v i = (0 : K' ⊗[K] p.R)`. Establish `h2` using `congrArg e hv`.
+
+Rewrite `h2` using `[map_zero, map_sum]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show _ = e (algebraMap K' q.R (b i) * e.symm ((1 : K') ⊗ₜ[K] v i))`. Rewrite using `[map_mul, e.commutes, e.apply_symm_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Simplify using the standard rewrite rules. Establish `h3` using `congrArg (fun w => TensorProduct.lid K p.R (lam.rTensor p.R w)) h1`. Simplify `h3` using `[map_sum]`.
+-/
 theorem exists_testRing_ext (p : TRing K) :
     ∃ (q : TRing K') (α : p.R →+* q.R), (∀ a, α (algebraMap K p.R a) = algebraMap K' q.R (algebraMap K K' a)) ∧
       (∀ (S : Type) [CommRing S] [Algebra K' S] (φ : p.R →+* S),
@@ -75,9 +86,17 @@ def Compat (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] : Prop :=
 
 variable {c c'}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem embK_inclF (τ : E →+* ℂ) (a : 𝓞 E) : inclF c c' hle (embK c τ a) = embK c' τ a :=
   Subtype.ext rfl
 
+/- English proof (translation)
+Unfold `sOf`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S) :
     sOf c' S = sOf c S := by
   unfold sOf
@@ -87,6 +106,9 @@ theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Co
   rw [← h]
   rfl
 
+/- English proof (translation)
+Establish `h' : ∀ a : c.F, algebraMap c'.F S (inclF c c' hle a) = algebraMap c.F S a` using `h`. Unfold `IsEigAt`. Simplify using `only [← embK_inclF hle τ, h']`.
+-/
 theorem isEigAt_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Compat c c' hle S)
     (τ : E →+* ℂ) (v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
     IsEigAt (Xo := Xo) c' τ v ↔ IsEigAt (Xo := Xo) c τ v := by
@@ -157,27 +179,45 @@ abbrev HasBC : Prop :=
   ∀ (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S), ∃ z : FrPt Xo c T, FrMap φ y z
 
+/- English proof (translation)
+The claim follows from `frMap_trans (Xo := Xo) (c := c) _ _ _ φ ψ y z w h₁ h₂`.
+-/
 theorem map_trans {S T U : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] [CommRing U]
     [Algebra c.F U] (φ : S →ₐ[c.F] T) (ψ : T →ₐ[c.F] U) {y : FrPt Xo c S} {z : FrPt Xo c T} {w : FrPt Xo c U}
     (h₁ : FrMap φ y z) (h₂ : FrMap ψ z w) : FrMap (ψ.comp φ) y w :=
   frMap_trans (Xo := Xo) (c := c) _ _ _ φ ψ y z w h₁ h₂
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c`.
+-/
 theorem hasBC_of (hS : Out.SecBaseChangeSt) : HasBC Xo c :=
   GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, _, hy.choose_spec.choose_spec.choose_spec, fun f => by unfold evR evalAt; rw [dif_pos hy]⟩`.
+-/
 theorem evR_spec {S : Type} [CommRing S] [Algebra c.F S] {y : FrPt Xo c S} (hy : FromT y) :
     ∃ (p : TRing c.F) (φ : p.R →ₐ[c.F] S) (y₀ : FrPt Xo c p.R), FrMap φ y₀ y ∧
       ∀ f : Rul Xo c, evR Xo c f y = φ (f p y₀) :=
   ⟨_, _, _, hy.choose_spec.choose_spec.choose_spec, fun f => by unfold evR evalAt; rw [dif_pos hy]⟩
 
+/- English proof (translation)
+Unfold `evR evalAt`. Rewrite using `[dif_neg hy]`.
+-/
 theorem evR_not {S : Type} [CommRing S] [Algebra c.F S] {y : FrPt Xo c S} (hy : ¬ FromT y) (f : Rul Xo c) :
     evR Xo c f y = 0 := by
   unfold evR evalAt; rw [dif_neg hy]
 
+/- English proof (translation)
+Take `⟨q, φ, y₀, h, e⟩` from `evR_spec (y := y) ⟨p, AlgHom.id _ _, y, GlobalTheory.Frames.frMapUniq_refl y⟩`. Rewrite using `[e, hf q p φ y₀ y h]`.
+-/
 theorem evR_test {f : Rul Xo c} (hf : Natural c f) (p : TRing c.F) (y : FrPt Xo c p.R) : evR Xo c f y = f p y := by
   obtain ⟨q, φ, y₀, h, e⟩ := evR_spec (y := y) ⟨p, AlgHom.id _ _, y, GlobalTheory.Frames.frMapUniq_refl y⟩
   rw [e, hf q p φ y₀ y h]
 
+/- English proof (translation)
+Take `⟨q, ψ, y₁, h₁, e⟩` from `evR_spec (y := y) ⟨p, φ, y₀, h⟩`. Rewrite using `[e]`. Conclude with `hWD f hf S q p ψ φ y₁ y₀ y h₁ h`.
+-/
 theorem evR_of_map (hWD : ValueWD Xo c) {f : Rul Xo c} (hf : Natural c f) {S : Type} [CommRing S] [Algebra c.F S]
     {p : TRing c.F} {φ : p.R →ₐ[c.F] S} {y₀ : FrPt Xo c p.R} {y : FrPt Xo c S} (h : FrMap φ y₀ y) :
     evR Xo c f y = φ (f p y₀) := by
@@ -185,6 +225,9 @@ theorem evR_of_map (hWD : ValueWD Xo c) {f : Rul Xo c} (hf : Natural c f) {S : T
   rw [e]
   exact hWD f hf S q p ψ φ y₁ y₀ y h₁ h
 
+/- English proof (translation)
+Take `⟨p, ψ, y₀, h₀, e⟩` from `evR_spec hy`. Rewrite using `[e, evR_of_map hWD hf (map_trans ψ φ h₀ h)]`. Both sides reduce to the same expression.
+-/
 theorem evR_map (hWD : ValueWD Xo c) {f : Rul Xo c} (hf : Natural c f) {S T : Type} [CommRing S] [Algebra c.F S]
     [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (hy : FromT y)
     (h : FrMap φ y z) : evR Xo c f z = φ (evR Xo c f y) := by
@@ -192,6 +235,9 @@ theorem evR_map (hWD : ValueWD Xo c) {f : Rul Xo c} (hf : Natural c f) {S T : Ty
   rw [e, evR_of_map hWD hf (map_trans ψ φ h₀ h)]
   rfl
 
+/- English proof (translation)
+Take `⟨w', hw'⟩` from `hBC S T β z`. Establish `h₃ : FrMap φ y w'` using `hc ▸ map_trans α β h₁ hw'`. Rewrite using `[(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c R T φ y).1 w w' h₂ h₃]` and apply the resulting hypothesis.
+-/
 theorem map_cancel (hBC : HasBC Xo c) {R S T : Type} [CommRing R] [Algebra c.F R] [CommRing S] [Algebra c.F S]
     [CommRing T] [Algebra c.F T] {α : R →ₐ[c.F] S} {β : S →ₐ[c.F] T} {φ : R →ₐ[c.F] T} (hc : β.comp α = φ)
     {y : FrPt Xo c R} {z : FrPt Xo c S} {w : FrPt Xo c T} (h₁ : FrMap α y z) (h₂ : FrMap φ y w) : FrMap β z w := by
@@ -199,6 +245,9 @@ theorem map_cancel (hBC : HasBC Xo c) {R S T : Type} [CommRing R] [Algebra c.F R
   have h₃ : FrMap φ y w' := hc ▸ map_trans α β h₁ hw'
   rwa [(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c R T φ y).1 w w' h₂ h₃]
 
+/- English proof (translation)
+Take `⟨g, g1, g2, hg⟩` from `(GlobalTheory.Frames.Model.frBor_iff t y y').1 hb`. Use `(GlobalTheory.Frames.Model.frBor_iff _ z z').2 ⟨fun τ => (g τ).map φ, fun τ i => ?_, fun τ i j hij => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[g1]`. Simplify using `[g2 τ i j hij]`. Conclude with `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c S T φ y y' z z' g _ hg h).1 h'`.
+-/
 theorem frBor_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] {φ : S →ₐ[c.F] T}
     {t : Ix Dw → Sˣ} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T} (hb : FrBor t y y') (h : FrMap φ y z)
     (h' : FrMap φ y' z') : FrBor (fun i => Units.map (φ : S →* T) (t i)) z z' := by
@@ -214,10 +263,16 @@ def resHom {S T : Type} [CommRing S] [Algebra c'.F S] [CommRing T] [Algebra c'.F
     Res hle S →ₐ[c.F] Res hle T :=
   { φ.toRingHom with commutes' := fun a => φ.commutes (incl hle a) }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem frMap_down {S T : Type} [CommRing S] [Algebra c'.F S] [CommRing T] [Algebra c'.F T] (φ : S →ₐ[c'.F] T)
     (y : FrPt Xo c' S) (z : FrPt Xo c' T) :
     FrMap (resHom hle φ) (ptDown hle y) (ptDown hle z) ↔ FrMap φ y z := Iff.rfl
 
+/- English proof (translation)
+Use `letI := (incl hle).toAlgebra`. Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ c'.F), eq_ratCast (algebraMap ℚ c.F), map_ratCast]`. Use `haveI := c'.fin`. Conclude with `Module.Finite.of_restrictScalars_finite ℚ c.F c'.F`.
+-/
 theorem finite_incl : letI := (incl hle).toAlgebra; Module.Finite c.F c'.F := by
   letI := (incl hle).toAlgebra
   haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by
@@ -225,6 +280,11 @@ theorem finite_incl : letI := (incl hle).toAlgebra; Module.Finite c.F c'.F := by
   haveI := c'.fin
   exact Module.Finite.of_restrictScalars_finite ℚ c.F c'.F
 
+/- English proof (translation)
+Take `⟨hft, hred⟩` from `(GlobalTheory.reduced_finiteType_iff_testRing c'.F).2 q`. Use `letI := (incl hle).toAlgebra`. Use `haveI := finite_incl hle`. Use `letI : Algebra c'.F (Res hle q.R) := inferInstanceAs (Algebra c'.F q.R)`. Use `haveI : IsScalarTower c.F c'.F (Res hle q.R) := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : Algebra.FiniteType c'.F (Res hle q.R) := hft`. Conclude with `(GlobalTheory.reduced_finiteType_iff_testRing c.F).1 _ (Algebra.FiniteType.trans (S := c'.F) inferInstance this) hred`.
+-/
 theorem exists_testRing_res (q : TRing c'.F) : ∃ p : TRing c.F, Nonempty (p.R ≃ₐ[c.F] Res hle q.R) := by
   obtain ⟨hft, hred⟩ := (GlobalTheory.reduced_finiteType_iff_testRing c'.F).2 q
   letI := (incl hle).toAlgebra
@@ -234,11 +294,21 @@ theorem exists_testRing_res (q : TRing c'.F) : ∃ p : TRing c.F, Nonempty (p.R 
   haveI : Algebra.FiniteType c'.F (Res hle q.R) := hft
   exact (GlobalTheory.reduced_finiteType_iff_testRing c.F).1 _ (Algebra.FiniteType.trans (S := c'.F) inferInstance this) hred
 
+/- English proof (translation)
+Take `⟨p, ⟨e⟩⟩` from `exists_testRing_res hle q`. Take `⟨z, hz⟩` from `hBC _ _ (e.symm : Res hle q.R →ₐ[c.F] p.R) (ptDown hle y)`. Conclude with `⟨p, e, z, map_cancel hBC (by ext; simp) hz (GlobalTheory.Frames.frMapUniq_refl _)⟩`.
+-/
 theorem fromT_down_test (hBC : HasBC Xo c) (q : TRing c'.F) (y : FrPt Xo c' q.R) : FromT (ptDown hle y) := by
   obtain ⟨p, ⟨e⟩⟩ := exists_testRing_res hle q
   obtain ⟨z, hz⟩ := hBC _ _ (e.symm : Res hle q.R →ₐ[c.F] p.R) (ptDown hle y)
   exact ⟨p, e, z, map_cancel hBC (by ext; simp) hz (GlobalTheory.Frames.frMapUniq_refl _)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, φ, y₀, h⟩`. Use `letI := (incl hle).toAlgebra`. Take `⟨q, α, hα, hu, -⟩` from `exists_testRing_ext (K' := c'.F) p`. Take `⟨β, hβ⟩` from `hu S φ.toRingHom φ.commutes`.
+
+Set `α' : p.R →ₐ[c.F] Res hle q.R` to `{ α with commutes' := hα }`. Take `⟨z, hz⟩` from `hBC _ _ α' y₀`. Conclude with `⟨q, β, ptUp hle z, map_cancel hBC (β := resHom hle β) (AlgHom.ext hβ) hz h⟩`. Introduce and unpack `⟨q, φ, y₀, h⟩`. Take `⟨p, ψ, z, hz⟩` from `fromT_down_test hle hBC q y₀`.
+
+Conclude with `⟨p, _, z, map_trans ψ (resHom hle φ) hz h⟩`.
+-/
 theorem fromT_down_iff (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c'.F S] (y : FrPt Xo c' S) :
     FromT (ptDown hle y) ↔ FromT y := by
   constructor
@@ -253,6 +323,9 @@ theorem fromT_down_iff (hBC : HasBC Xo c) {S : Type} [CommRing S] [Algebra c'.F 
     obtain ⟨p, ψ, z, hz⟩ := fromT_down_test hle hBC q y₀
     exact ⟨p, _, z, map_trans ψ (resHom hle φ) hz h⟩
 
+/- English proof (translation)
+Distinguish the cases in `hy : FromT y`. Take `⟨q, φ, y₀, h, e⟩` from `evR_spec hy`. Rewrite using `[e, evR_map hWD hf (fromT_down_test hle hBC q y₀) ((frMap_down hle φ y₀ y).2 h)]`. Both sides reduce to the same expression. Rewrite using `[evR_not hy, evR_not (fun h => hy ((fromT_down_iff hle hBC y).1 h)), map_zero]`.
+-/
 theorem evR_ruleUp (hWD : ValueWD Xo c) (hBC : HasBC Xo c) {f : Rul Xo c} (hf : Natural c f) {S : Type} [CommRing S]
     [Algebra c'.F S] (y : FrPt Xo c' S) : evR Xo c' (ruleUp hle f) y = unRes (evR Xo c f (ptDown hle y)) := by
   by_cases hy : FromT y
@@ -261,6 +334,15 @@ theorem evR_ruleUp (hWD : ValueWD Xo c) (hBC : HasBC Xo c) {f : Rul Xo c} (hf : 
     rfl
   · rw [evR_not hy, evR_not (fun h => hy ((fromT_down_iff hle hBC y).1 h)), map_zero]
 
+/- English proof (translation)
+Use `⟨fun p q φ y z h => ?_, fun q t y y' h => ?_⟩` and prove the remaining obligations. Conclude with `evR_map hWD hf.1 (fromT_down_test hle hBC p y) ((frMap_down hle φ y z).2 h)`. Take `⟨p, ⟨e⟩⟩` from `exists_testRing_res hle q`. Take `⟨z, hz⟩` from `hBC _ _ (e.symm : Res hle q.R →ₐ[c.F] p.R) (ptDown hle y)`. Take `⟨z', hz'⟩` from `hBC _ _ (e.symm : Res hle q.R →ₐ[c.F] p.R) (ptDown hle y')`.
+
+Establish `he : (e : p.R →ₐ[c.F] Res hle q.R).comp (e.symm : Res hle q.R →ₐ[c.F] p.R) = AlgHom.id _ _` using `by ext; simp`. Establish `hb : FrBor (c` using `c) (S := Res hle q.R) t (ptDown hle y) (ptDown hle y') := h`. Establish `hw` using `hf.2 p _ z z' (frBor_map hb hz hz')`. Establish `e1` using `evR_of_map hWD hf.1 (map_cancel hBC he hz (GlobalTheory.Frames.frMapUniq_refl _))`. Establish `e2` using `evR_of_map hWD hf.1 (map_cancel hBC he hz' (GlobalTheory.Frames.frMapUniq_refl _))`.
+
+Establish `e3 : evR Xo c f (ptDown hle y') = wchar (S` using `Res hle q.R) (ex Dw a n) t * evR Xo c f (ptDown hle y) := by`. Rewrite using `[e1, e2, hw, map_mul]`. Use `congr 1`. Unfold `wchar`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `congrArg (· ^ _) (e.apply_symm_apply _)`. Conclude with `e3`.
+-/
 theorem ruleUp_mem_sec (hWD : ValueWD Xo c) (hBC : HasBC Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hf : f ∈ sec Xo c a n) : ruleUp hle f ∈ sec Xo c' a n := by
   refine ⟨fun p q φ y z h => ?_, fun q t y y' h => ?_⟩

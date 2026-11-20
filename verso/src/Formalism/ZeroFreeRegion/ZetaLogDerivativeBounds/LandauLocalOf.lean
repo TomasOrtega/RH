@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.ZF
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun w : ℂ => w - a) 1 z`. Simplify using `using (hasDerivAt_id z).sub_const a`. Establish `h2 : HasDerivAt (fun w : ℂ => (w - a) ^ n) ((n : ℂ) * (z - a) ^ (n - 1) * 1) z` using `(hasDerivAt_pow n (z - a)).comp z h1`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Break down `n with _ | k` into its components or cases.
+
+Simplify using the standard rewrite rules. Rewrite using `[pow_succ, Nat.add_sub_cancel]`. Establish `hinv : (z - a) * (z - a)⁻¹ = 1` using `mul_inv_cancel₀ h`. Take the linear combination `(-((z - a) ^ k * ((k + 1 : ℕ) : ℂ))) * hinv`.
+-/
 private theorem hasDerivAt_sub_pow_of_sub_ne_zero (a z : ℂ) (n : ℕ) (h : z - a ≠ 0) :
     HasDerivAt (fun w => (w - a) ^ n) ((z - a) ^ n * ((n : ℂ) / (z - a))) z := by
   have h1 : HasDerivAt (fun w : ℂ => w - a) 1 z := by
@@ -19,6 +24,15 @@ private theorem hasDerivAt_sub_pow_of_sub_ne_zero (a z : ℂ) (n : ℕ) (h : z -
     have hinv : (z - a) * (z - a)⁻¹ = 1 := mul_inv_cancel₀ h
     linear_combination (-((z - a) ^ k * ((k + 1 : ℕ) : ℂ))) * hinv
 
+/- English proof (translation)
+Use `revert hz`. Proceed by induction on `Z using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `only [Finset.prod_empty, Finset.sum_empty, mul_zero]`.
+
+Conclude with `hasDerivAt_const z (1 : ℂ)`. Consider the case `insert`. Name the introduced variables `a s ha ih`. Introduce `hz`. Establish `hs : ∀ ρ ∈ s, z - ρ ≠ 0` using `fun ρ hρ => hz ρ (Finset.mem_insert_of_mem hρ)`.
+
+Establish `hza : z - a ≠ 0` using `hz a (Finset.mem_insert_self a s)`. Establish `hd` using `(hasDerivAt_sub_pow_of_sub_ne_zero a z (m a) hza).mul (ih hs)`. Use `beta_reduce at hd`. Simplify using `only [Finset.prod_insert ha, Finset.sum_insert ha]`. Use `hd.congr_deriv ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hasDerivAt_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ)
     (hz : ∀ ρ ∈ Z, z - ρ ≠ 0) :
     HasDerivAt (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ)
@@ -41,6 +55,9 @@ private theorem hasDerivAt_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) (z : 
     refine hd.congr_deriv ?_
     ring
 
+/- English proof (translation)
+Rewrite using `[logDeriv_apply, (hasDerivAt_prod_sub_pow Z m z hz).deriv]`. Establish `hP : (∏ ρ ∈ Z, (z - ρ) ^ m ρ) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun ρ hρ => pow_ne_zero _ (hz ρ hρ)`. Conclude with `(div_eq_iff hP).mpr (mul_comm _ _)`.
+-/
 lemma landauLocal_logDeriv_prod (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ)
     (hz : ∀ ρ ∈ Z, z - ρ ≠ 0) :
     logDeriv (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ) z = ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ) := by
@@ -49,6 +66,9 @@ lemma landauLocal_logDeriv_prod (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ)
     Finset.prod_ne_zero_iff.mpr fun ρ hρ => pow_ne_zero _ (hz ρ hρ)
   exact (div_eq_iff hP).mpr (mul_comm _ _)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `mul_le_mul ih hab ha (le_trans (pow_nonneg ha k) ih)`.
+-/
 private theorem pow_le_pow_left_of_nonneg_le {a b : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (n : ℕ) : a ^ n ≤ b ^ n := by
   induction n with
   | zero => simp
@@ -56,16 +76,67 @@ private theorem pow_le_pow_left_of_nonneg_le {a b : ℝ} (ha : 0 ≤ a) (hab : a
     rw [pow_succ, pow_succ]
     exact mul_le_mul ih hab ha (le_trans (pow_nonneg ha k) ih)
 
+/- English proof (translation)
+Simplify using `only [norm_prod, norm_pow]`.
+-/
 private theorem norm_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) (w : ℂ) :
     ‖∏ ρ ∈ Z, (w - ρ) ^ m ρ‖ = ∏ ρ ∈ Z, ‖w - ρ‖ ^ m ρ := by
   simp only [norm_prod, norm_pow]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_iff_eq_add, div_eq_iff (mul_ne_zero hP hH)]`. Establish `hHH : H⁻¹ * H = 1` using `inv_mul_cancel₀ hH`. Take the linear combination `(-(P * D)) * hHH`.
+-/
 private theorem div_add_div_sub_eq_div (P S H D : ℂ) (hP : P ≠ 0) (hH : H ≠ 0) :
     (P * S * H + P * D) / (P * H) - S = D / H := by
   rw [sub_eq_iff_eq_add, div_eq_iff (mul_ne_zero hP hH)]
   have hHH : H⁻¹ * H = 1 := inv_mul_cancel₀ hH
   linear_combination (-(P * D)) * hHH
 
+/- English proof (translation)
+Unfold `LandauLocalOf LandauLocal`. Introduce `hfac hlog f z₀ r M hr hM hf hf0 hbound`. Establish `hr3 : 0 < r / 3` using `by positivity`. Take `⟨Z, m, h, hZ, hm, hh, hh0, hfeq⟩` from `hfac f z₀ r (r / 3) hr3 (by linarith) hf hf0`. Establish `hZball : ∀ ρ ∈ Z, ‖ρ - z₀‖ ≤ r / 3` using `fun ρ hρ => by`.
+
+Use `((hZ ρ).1 hρ).1` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_eq_norm]`. Then use the resulting hypothesis. Establish `hZzero : ∀ ρ ∈ Z, f ρ = 0` using `fun ρ hρ => ((hZ ρ).1 hρ).2`. Establish `hz₀mem : z₀ ∈ Metric.closedBall z₀ r` using `Metric.mem_closedBall_self hr.le`. Establish `hfz₀` using `hfeq z₀ hz₀mem`.
+
+Establish `hhz₀ : h z₀ ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hfz₀, h0, mul_zero]`. Establish `hPz₀le : ‖∏ ρ ∈ Z, (z₀ - ρ) ^ m ρ‖ ≤ (r / 3) ^ (∑ ρ ∈ Z, m ρ)`.
+
+Rewrite using `[norm_prod_sub_pow, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun ρ _ => pow_nonneg (norm_nonneg _) _) ?_` and prove the remaining obligations. Introduce `ρ hρ`. Establish `h1 : ‖z₀ - ρ‖ ≤ r / 3` using `by rw [norm_sub_rev]; exact hZball ρ hρ`. Conclude with `pow_le_pow_left_of_nonneg_le (norm_nonneg _) h1 _`.
+
+Establish `hPw : ∀ w : ℂ, ‖w - z₀‖ = r → (2 * r / 3) ^ (∑ ρ ∈ Z, m ρ) ≤ ‖∏ ρ ∈ Z, (w - ρ) ^ m ρ‖`. Introduce `w hw`. Rewrite using `[norm_prod_sub_pow, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun ρ _ => pow_nonneg (by linarith) _) ?_` and prove the remaining obligations. Introduce `ρ hρ`.
+
+Establish `h2` using `hZball ρ hρ`. Establish `h3 : ‖w - z₀‖ ≤ ‖w - ρ‖ + ‖ρ - z₀‖`. Use `norm_add_le (w - ρ) (ρ - z₀)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `h1 : 2 * r / 3 ≤ ‖w - ρ‖` using `by linarith`.
+
+Conclude with `pow_le_pow_left_of_nonneg_le (by linarith) h1 _`. Establish `key_sphere : ∀ w : ℂ, ‖w - z₀‖ = r → (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) * ‖h w‖ ≤ M * ‖h z₀‖`. Introduce `w hw`. Establish `hwmem : w ∈ Metric.closedBall z₀ r` using `Metric.mem_closedBall.mpr (by rw [dist_eq_norm]; exact hw.le)`. Establish `e1` using `hbound w hwmem`.
+
+Rewrite `e1` using `[hfeq w hwmem, hfz₀, norm_mul, norm_mul]`. Establish `e2` using `hPw w hw`. Establish `hq : 0 < (r / 3) ^ (∑ ρ ∈ Z, m ρ)` using `by positivity`. Establish `e3 : (2 * r / 3) ^ (∑ ρ ∈ Z, m ρ) = (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) * (r / 3) ^ (∑ ρ ∈ Z, m ρ)`. Rewrite using `[mul_div_assoc, mul_pow]`.
+
+Establish `e4 : (r / 3) ^ (∑ ρ ∈ Z, m ρ) * ((2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) * ‖h w‖) ≤ (r / 3) ^ (∑ ρ ∈ Z, m ρ) * (M * ‖h z₀‖)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right hPz₀le (norm_nonneg _)`. Use `_ = (r / 3) ^ (∑ ρ ∈ Z, m ρ) * (M * ‖h z₀‖) := by ring`.
+
+Conclude with `le_of_mul_le_mul_left e4 hq`. Establish `hdc : DiffContOnCl ℂ h (Metric.ball z₀ r)`. Use `DifferentiableOn.diffContOnCl ?_` and prove the remaining obligations. Rewrite using `[closure_ball z₀ hr.ne']`. Conclude with `hh`.
+
+Establish `hmax : ∀ z ∈ Metric.closedBall z₀ r, ‖h z‖ ≤ M * ‖h z₀‖ / (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ)`. Introduce `z hz`. Establish `hz' : z ∈ closure (Metric.ball z₀ r)` using `by rwa [closure_ball z₀ hr.ne']`. Use `Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball hdc ?_ hz'` and prove the remaining obligations. Introduce `w hw`.
+
+Rewrite `hw` using `[frontier_ball z₀ hr.ne', mem_sphere_iff_norm]`. Rewrite using `[le_div_iff₀ (by positivity), mul_comm (‖h w‖)]`. Conclude with `key_sphere w hw`. Establish `h2N : (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) ≤ M`. Use `hmax z₀ hz₀mem` as an intermediate fact.
+
+Establish `hpos : 0 < ‖h z₀‖` using `norm_pos_iff.mpr hhz₀`. Rewrite `this` using `[le_div_iff₀ (by positivity), mul_comm M]`. Conclude with `le_of_mul_le_mul_left this hpos`. Establish `hsum : ((∑ ρ ∈ Z, m ρ : ℕ) : ℝ) ≤ Real.log M / Real.log 2`. Rewrite using `[le_div_iff₀ (Real.log_pos one_lt_two), ← Real.log_pow]`.
+
+Conclude with `Real.log_le_log (by positivity) h2N`. Establish `h2N1 : (1 : ℝ) ≤ (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ)`. Simplify using `using pow_le_pow_left_of_nonneg_le (a := 1) (b := 2) zero_le_one one_le_two (∑ ρ ∈ Z, m ρ)`. Establish `hhb : ∀ z ∈ Metric.closedBall z₀ (r / 3), ‖h z‖ ≤ M * ‖h z₀‖`. Introduce `z hz`.
+
+Establish `hz' : z ∈ Metric.closedBall z₀ r` using `Metric.closedBall_subset_closedBall (by linarith) hz`. Establish `h1` using `hmax z hz'`. Establish `h2 : M * ‖h z₀‖ / (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) ≤ M * ‖h z₀‖` using `div_le_self (mul_nonneg (by linarith) (norm_nonneg _)) h2N1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogb` using `hlog h z₀ (r / 3) M hr3 hM (hh.mono (Metric.closedBall_subset_closedBall (by linarith))) hh0 hhb`.
+
+Use `⟨Z, m, hZ, hm, hsum, ?_⟩` and prove the remaining obligations. Introduce `z hz hfz`. Establish `hzr : z ∈ Metric.ball z₀ r`. Rewrite `hz` using `[Metric.mem_closedBall]`. Rewrite using `[Metric.mem_ball]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnhds : Metric.closedBall z₀ r ∈ 𝓝 z` using `Filter.mem_of_superset (Metric.isOpen_ball.mem_nhds hzr) Metric.ball_subset_closedBall`. Establish `hev : f =ᶠ[𝓝 z] fun w => (∏ ρ ∈ Z, (w - ρ) ^ m ρ) * h w` using `Filter.mem_of_superset hnhds (fun w hw => hfeq w hw)`. Establish `hfeqz` using `hfeq z (Metric.ball_subset_closedBall hzr)`. Establish `hPz : (∏ ρ ∈ Z, (z - ρ) ^ m ρ) ≠ 0`.
+
+Introduce `h0`. Apply `hfz` to reduce the goal to its premises. Rewrite using `[hfeqz, h0, zero_mul]`. Establish `hhz : h z ≠ 0`. Introduce `h0`.
+
+Apply `hfz` to reduce the goal to its premises. Rewrite using `[hfeqz, h0, mul_zero]`. Establish `hzρ : ∀ ρ ∈ Z, z - ρ ≠ 0`. Introduce `ρ hρ h0`. Apply `hfz` to reduce the goal to its premises.
+
+Rewrite using `[sub_eq_zero.mp h0]`. Conclude with `hZzero ρ hρ`. Establish `hPd` using `hasDerivAt_prod_sub_pow Z m z hzρ`. Establish `hhd : HasDerivAt h (deriv h z) z` using `(hh.differentiableAt hnhds).hasDerivAt`. Establish `hd` using `(hPd.mul hhd).congr_of_eventuallyEq hev`.
+
+Establish `hsplit : deriv f z / f z - ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ) = deriv h z / h z`. Rewrite using `[hd.deriv, hfeqz]`. Conclude with `div_add_div_sub_eq_div _ _ _ _ hPz hhz`. Rewrite using `[hsplit]`. Establish `hz6 : z ∈ Metric.closedBall z₀ (r / 3 / 2)`.
+
+Rewrite `hz`, the goal using `[Metric.mem_closedBall]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem localZeroExpansionOfFactorization : LandauLocalOf := by
   unfold LandauLocalOf LandauLocal
   intro hfac hlog f z₀ r M hr hM hf hf0 hbound

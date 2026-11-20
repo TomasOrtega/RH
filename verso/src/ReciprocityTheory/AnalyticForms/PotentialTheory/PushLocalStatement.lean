@@ -20,6 +20,9 @@ def PushLocalStatement : Prop :=
     ∀ g : X → ℝ, tsupport g ⊆ V → MIntegrable A Φ g →
       mInt A Φ g = ∫ y in q '' V, ∑ᶠ x ∈ q ⁻¹' {y} ∩ V, g x * pushDens A Φ q x
 
+/- English proof (translation)
+The claim follows from `pushB_forward`.
+-/
 theorem pushForward : PushForwardStatement := pushB_forward
 
 end

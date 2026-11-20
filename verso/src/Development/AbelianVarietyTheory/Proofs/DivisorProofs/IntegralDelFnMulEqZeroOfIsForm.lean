@@ -19,8 +19,14 @@ open GlobalTheory.CxForm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[dens]`.
+-/
 theorem dens_zero : dens (0 : Alt n) = 0 := by simp [dens]
 
+/- English proof (translation)
+Establish `hS : ∀ S, GlobalTheory.del (fun x => (bas n).repr (F x) S) v = 0` using `fun S => by`. Establish `e : (fun x => (bas n).repr (F x) S) =ᶠ[𝓝 v] fun _ => 0` using `h.mono fun x hx => by simp [hx]`. Rewrite using `[GlobalTheory.del_congr e]`. Conclude with `GlobalTheory.del_const _ _`. Simplify using `[delAt, coefwise, hS]`.
+-/
 theorem delAt_eq_zero_of_eventually {F : V n → Alt n} {v : V n} (h : F =ᶠ[𝓝 v] fun _ => 0) : delAt F v = 0 := by
   have hS : ∀ S, GlobalTheory.del (fun x => (bas n).repr (F x) S) v = 0 := fun S => by
     have e : (fun x => (bas n).repr (F x) S) =ᶠ[𝓝 v] fun _ => 0 := h.mono fun x hx => by simp [hx]
@@ -28,6 +34,11 @@ theorem delAt_eq_zero_of_eventually {F : V n → Alt n} {v : V n} (h : F =ᶠ[�
     exact GlobalTheory.del_const _ _
   simp [delAt, coefwise, hS]
 
+/- English proof (translation)
+Establish `hint : ∀ w : V n, Integrable (fun y => fderiv ℝ f y w)` using `fun w => ((hf.continuous_fderiv (by norm_num)).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) w)`. Establish `hD : Integrable (fun v => GlobalTheory.del f v u)`. Simplify using `only [GlobalTheory.del_apply, smul_eq_mul]`. Conclude with `((hint _).sub ((hint _).const_mul _)).const_mul _`. Use `⟨hD, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.del_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, integral_sub (hint _) ((hint _).const_mul _), integral_const_mul, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n f hf hc, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n f hf hc]`. Simplify using the standard rewrite rules.
+-/
 theorem del_integral {f : V n → ℂ} (hf : ContDiff ℝ 1 f) (hc : HasCompactSupport f) (u : V n) :
     Integrable (fun v => GlobalTheory.del f v u) ∧ ∫ v, GlobalTheory.del f v u = 0 := by
   have hint : ∀ w : V n, Integrable (fun y => fderiv ℝ f y w) := fun w =>
@@ -42,12 +53,20 @@ theorem del_integral {f : V n → ℂ} (hf : ContDiff ℝ 1 f) (hc : HasCompactS
     ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n f hf hc, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n f hf hc]
   simp
 
+/- English proof (translation)
+Simplify using `only [dens, delAt, coefwise, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.sum_div, mul_div_assoc]`.
+-/
 theorem dens_delAt (F : V n → Alt n) (v : V n) : dens (delAt F v) =
     ∑ a, ∑ S, GlobalTheory.del (fun x => (bas n).repr (F x) S) v (coordVec a) *
       ((bas n).repr (dz a * bas n S) Finset.univ / (bas n).repr (vol n : Alt n) Finset.univ) := by
   simp only [dens, delAt, coefwise, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, Finsupp.coe_finset_sum,
     Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.sum_div, mul_div_assoc]
 
+/- English proof (translation)
+Establish `hi : ∀ a S, Integrable fun v => GlobalTheory.del (fun x => (bas n).repr (F x) S) v (coordVec a) * ((bas n).repr (dz a * bas n S) Finset.univ / (bas n).repr (vol n : Alt n) Finset.univ)` using `fun a S => (del_integral (hF S) (hc S) _).1.mul_const _`. Simplify using `only [dens_delAt]`. Use `⟨integrable_finset_sum _ fun a _ => integrable_finset_sum _ fun S _ => hi a S, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun a _ => integrable_finset_sum _ fun S _ => hi a S]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_finset_sum _ fun S _ => hi a S]`. Use `Finset.sum_eq_zero fun S _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, (del_integral (hF S) (hc S) _).2, zero_mul]`.
+-/
 theorem integral_dens_delAt {F : V n → Alt n} (hF : ∀ S, ContDiff ℝ 1 fun v => (bas n).repr (F v) S)
     (hc : ∀ S, HasCompactSupport fun v => (bas n).repr (F v) S) :
     Integrable (fun v => dens (delAt F v)) ∧ ∫ v, dens (delAt F v) = 0 := by
@@ -70,6 +89,23 @@ open GlobalTheory.CxForm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hl : ∀ j y (hy : y ∈ (A.e j).source), A.loc α j (A.e j y) = α ⟨(j, y), hy⟩` using `fun j y hy => A.loc_crd α ⟨(j, y), hy⟩`. Establish `hρ : ∀ (ε : ℤˣ) j k y, y ∈ (A.e j).source → y ∈ (A.e k).source → ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α j (A.e j y))).re) = ENNReal.ofReal (‖ChartGlue.transDet (A.e j) (A.e k) y‖ ^ 2) * ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α k (A.e k y))).re)`. Introduce `ε j k y hj hk`. Rewrite using `[hl j y hj, hl k y hk, hα.compat ⟨(j, y), hj⟩ ⟨(k, y), hk⟩ rfl, dens_pull, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Use `congr 1`.
+
+Simplify using `only [ChartGlue.transDet, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∀ (ε : ℤˣ) j y, y ∈ (A.e j).source → y ∉ K → ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α j (A.e j y))).re) = 0`. Introduce `ε j y hy hyK`. Rewrite using `[hl j y hy, h0 ⟨(j, y), hy⟩ hyK, dens_zero]`.
+
+Simplify using the standard rewrite rules. Establish `hc : ∀ ε : ℤˣ, A.part α ε Kᶜ = 0` using `fun ε => by`. Establish `key : A.part α ε ≤ (A.part α ε).restrict K` using `iSup_le fun j => by`. Establish `e : ChartGlue.chartMeas (A.e j) (fun y => ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α j (A.e j y))).re)) Kᶜ = 0`. Rewrite using `[ChartGlue.chartMeas_apply _ _ hKm.compl]`.
+
+Use `setLIntegral_eq_zero (ChartGlue.measurableSet_image _ ((A.e j).open_source.measurableSet.inter hKm.compl) Set.inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [(A.e j).left_inv hy.1]`. Conclude with `hz ε j y hy.1 hy.2`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := K) (mem_ae_iff.2 e)]`.
+
+Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun j => ChartGlue.chartMeas (A.e j) fun y => ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α j (A.e j y))).re)) j)`. Use `le_antisymm ((key Kᶜ).trans_eq ?_) bot_le` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hKm.compl, Set.compl_inter_self, measure_empty]`. Establish `hv : ∀ v, v ∉ (A.e i) '' K → (dens (A.loc α i v)).re = 0` using `fun v hv => by`. Distinguish the cases in `ht : v ∈ (A.e i).target`.
+
+Rewrite using `[HolAtlas.loc, dif_pos ht, h0 ⟨(i, (A.e i).symm v), (A.e i).map_target ht⟩ fun h => hv ⟨_, h, (A.e i).right_inv ht⟩, dens_zero, Complex.zero_re]`. Rewrite using `[HolAtlas.loc, dif_neg ht, dens_zero, Complex.zero_re]`. Establish `hp : ∀ ε : ℤˣ, A.part α ε univ = ∫⁻ v, ENNReal.ofReal ((ε : ℤ) * (dens (A.loc α i v)).re)` using `fun ε => by`. Rewrite using `[← measure_add_measure_compl hKm, hc ε, add_zero, HolAtlas.part, ChartGlue.glueMeas_apply A.e _ (fun j k => A.holo j k) (hρ ε) i hKm hKs, ChartGlue.chartMeas_apply_of_subset _ _ hKm hKs, ← lintegral_indicator (ChartGlue.measurableSet_image _ hKm hKs)]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hvK : v ∈ (A.e i) '' K`. Take `⟨y, hy, rfl⟩` from `hvK`. Rewrite using `[Set.indicator_of_mem (Set.mem_image_of_mem _ hy), (A.e i).left_inv (hKs hy)]`. Rewrite using `[Set.indicator_of_notMem hvK, hv v hvK, mul_zero, ENNReal.ofReal_zero]`. Rewrite using `[HolAtlas.integral, measureReal_def, measureReal_def, hp, hp, integral_eq_lintegral_pos_part_sub_lintegral_neg_part hI]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem integral_eq_of_vanish {M : Type} [TopologicalSpace M] [SecondCountableTopology M] [MeasurableSpace M]
     [BorelSpace M] (A : HolAtlas M n) {α : A.Fld} (hα : A.IsForm α) (i : A.ι) {K : Set M} (hKm : MeasurableSet K)
     (hKs : K ⊆ (A.e i).source) (h0 : ∀ x : A.Pt, x.pt ∉ K → α x = 0)
@@ -134,6 +170,25 @@ open GlobalTheory.CxForm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `set β : A.Fld := A.fn χ * γ with hβdef`. Use `set K : Set M := tsupport χ with hKdef`. Establish `hKc : IsCompact K` using `(isClosed_tsupport χ).isCompact`. Establish `hKm : MeasurableSet K` using `(isClosed_tsupport χ).measurableSet`. Establish `hβ : A.IsForm β` using `FormMul.isForm_mul A _ _ (A.isForm_fn hχ) hγ`.
+
+Establish `hβ0 : ∀ x : A.Pt, x.pt ∉ K → β x = 0` using `fun x hx => by`. Simplify using `[hβdef, HolAtlas.fn, image_eq_zero_of_notMem_tsupport hx]`. Establish `hβn : ∀ j, ∀ y ∈ (A.e j).source, y ∉ K → A.loc β j =ᶠ[𝓝 (A.e j y)] fun _ => 0` using `fun j y hy hyK => by filter_upwards [(ChartGlue.isOpen_over (A.e j) (isClosed_tsupport χ).isOpen_compl).mem_nhds (ChartGlue.mem_over (A.e j) (S := Kᶜ) hy hyK)] with w hw`. Rewrite using `[HolAtlas.loc, dif_pos hw.1]`. Conclude with `hβ0 _ hw.2`.
+
+Establish `hd0 : ∀ x : A.Pt, x.pt ∉ K → A.del β x = 0` using `fun x hx => delAt_eq_zero_of_eventually (hβn x.1.1 x.pt x.2 hx)`. Use `set F : V n → Alt n := A.loc β i with hFdef`. Use `set AK : Set (V n) := (A.e i) '' K with hAKdef`. Establish `hAK : IsCompact AK` using `hKc.image_of_continuousOn ((A.e i).continuousOn.mono hs)`. Establish `hAKt : AK ⊆ (A.e i).target`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(A.e i).map_source (hs hy)`. Establish `hF0 : ∀ v ∉ AK, F v = 0` using `fun v hv => by`. Distinguish the cases in `ht : v ∈ (A.e i).target`. Rewrite using `[hFdef, HolAtlas.loc, dif_pos ht]`.
+
+Conclude with `hβ0 _ fun h => hv ⟨_, h, (A.e i).right_inv ht⟩`. Rewrite using `[hFdef, HolAtlas.loc, dif_neg ht]`. Establish `hFA : ∀ v ∉ AK, F =ᶠ[𝓝 v] fun _ => 0` using `fun v hv => by filter_upwards [hAK.isClosed.isOpen_compl.mem_nhds hv] with w hw`. Conclude with `hF0 w hw`. Establish `hFS : ∀ S, ContDiff ℝ 1 fun v => (bas n).repr (F v) S` using `fun S => contDiff_iff_contDiffAt.2 fun v => by`.
+
+Distinguish the cases in `ht : v ∈ (A.e i).target`. Conclude with `((hβ.smooth i S).contDiffAt ((A.e i).open_target.mem_nhds ht)).of_le (by simp)`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ((hFA v fun h => ht (hAKt h)).mono fun w hw => ?_)` and prove the remaining obligations. Simplify using `[hw]`. Establish `hFc : ∀ S, HasCompactSupport fun v => (bas n).repr (F v) S` using `fun S => HasCompactSupport.intro hAK fun v hv => by simp [hF0 v hv]`.
+
+Establish `hloc : ∀ v, A.loc (A.del β) i v = delAt F v` using `fun v => by`. Distinguish the cases in `ht : v ∈ (A.e i).target`. Rewrite using `[HolAtlas.loc, dif_pos ht] show delAt (A.loc β i) ((A.e i) ((A.e i).symm v)) = _`. Rewrite using `[(A.e i).right_inv ht]`. Rewrite using `[HolAtlas.loc, dif_neg ht]`.
+
+Conclude with `(delAt_eq_zero_of_eventually (hFA v fun h => ht (hAKt h))).symm`. Take `⟨hI, h0⟩` from `integral_dens_delAt hFS hFc`. Establish `hIre : Integrable fun v => (dens (A.loc (A.del β) i v)).re`. Simplify using `only [hloc]`. Conclude with `Complex.reCLM.integrable_comp hI`.
+
+Rewrite using `[integral_eq_of_vanish A hd i hKm hs hd0 hIre]`. Simplify using `only [hloc]`. Use `Complex.reCLM.integral_comp_comm hI` as an intermediate fact. Simplify using `only [Complex.reCLM_apply] at this`. Rewrite using `[this, h0, Complex.zero_re]`.
+-/
 theorem integral_del_fn_mul_eq_zero_of_isForm {M : Type} [TopologicalSpace M] [CompactSpace M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (A : HolAtlas M n) (γ : A.Fld) (χ : M → ℝ)
     (i : A.ι) (hγ : A.IsForm γ) (hχ : A.SmoothOn univ (fun y => (χ y : ℂ))) (hs : tsupport χ ⊆ (A.e i).source)

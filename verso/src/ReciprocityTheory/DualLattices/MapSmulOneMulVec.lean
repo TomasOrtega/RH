@@ -4,11 +4,17 @@ namespace ReciprocityTheory.PGsh
 
 open Matrix
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+-/
 private theorem smul_one_mulVec_dual_lattices {D n : Type*} [CommRing D] [Fintype n] [DecidableEq n] (c : D)
     (v : n → D) : (c • (1 : Matrix n n D)) *ᵥ v = c • v := by
   funext i
   simp [Matrix.mulVec, dotProduct, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h : ((c • (1 : Matrix n n D)).map (algebraMap D K)) = (algebraMap D K c) • (1 : Matrix n n K)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Rewrite using `[h, smul_one_mulVec_dual_lattices, algebraMap_smul]`.
+-/
 private lemma map_smul_one_mulVec {D K n : Type*} [CommRing D] [Field K] [Algebra D K]
     [Fintype n] [DecidableEq n] (c : D) (v : n → K) :
     ((c • (1 : Matrix n n D)).map (algebraMap D K)) *ᵥ v = c • v := by
@@ -17,11 +23,17 @@ private lemma map_smul_one_mulVec {D K n : Type*} [CommRing D] [Field K] [Algebr
     by_cases hij : i = j <;> simp [hij]
   rw [h, smul_one_mulVec_dual_lattices, algebraMap_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨L *ᵥ f, by rw [Matrix.mulVec_mulVec, h, smul_one_mulVec_dual_lattices]⟩`.
+-/
 private theorem exists_mulVec_eq_smul_of_mul_eq_smul_one {D p n : Type*} [CommRing D] [Fintype n] [Fintype p]
     [DecidableEq p] (H : Matrix p n D) (L : Matrix n p D) (c : D) (h : H * L = c • 1) (f : p → D) :
     ∃ t : n → D, H *ᵥ t = c • f :=
   ⟨L *ᵥ f, by rw [Matrix.mulVec_mulVec, h, smul_one_mulVec_dual_lattices]⟩
 
+/- English proof (translation)
+Use `⟨B *ᵥ w, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul_one_mulVec c x, ← h, Matrix.map_mul, ← Matrix.mulVec_mulVec, hx]`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap D K) B w i).symm`.
+-/
 private theorem exists_integral_smul_of_mulVec_integral {D K p n : Type*} [CommRing D] [Field K] [Algebra D K]
     [Fintype n] [Fintype p] [DecidableEq p] (B : Matrix p n D) (W : Matrix n p D) (c : D)
     (h : B * W = c • 1) (x : p → K) (w : n → D)
@@ -32,6 +44,13 @@ private theorem exists_integral_smul_of_mulVec_integral {D K p n : Type*} [CommR
   funext i
   exact (RingHom.map_mulVec (algebraMap D K) B w i).symm
 
+/- English proof (translation)
+Establish `hc' : algebraMap D K c ≠ 0`. Introduce `h0`. Conclude with `hc (IsFractionRing.injective D K (h0.trans (map_zero _).symm))`. Establish `hmap : L.map (algebraMap D K) * H.map (algebraMap D K) + W.map (algebraMap D K) * B.map (algebraMap D K) = (c • (1 : Matrix n n D)).map (algebraMap D K)`. Rewrite using `[← h, Matrix.map_add _ (fun a b => map_add (algebraMap D K) a b), Matrix.map_mul, Matrix.map_mul]`.
+
+Establish `e1 : (L.map (algebraMap D K) * H.map (algebraMap D K)) *ᵥ t = 0`. Rewrite using `[← Matrix.mulVec_mulVec, ht, Matrix.mulVec_zero]`. Establish `hWB : c • t = (W.map (algebraMap D K) * B.map (algebraMap D K)) *ᵥ t`. Rewrite using `[← map_smul_one_mulVec c t, ← hmap, Matrix.add_mulVec, e1, zero_add]`. Use `⟨(algebraMap D K c)⁻¹ • (B.map (algebraMap D K) *ᵥ t), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hWB, ← algebraMap_smul K c t, inv_smul_smul₀ hc']`.
+-/
 private theorem exists_mulVec_eq_of_mulVec_eq_zero {D K p n : Type*} [CommRing D] [Field K] [Algebra D K]
     [IsFractionRing D K] [Fintype n] [DecidableEq n] [Fintype p] (H B : Matrix p n D)
     (L W : Matrix n p D) (c : D) (hc : c ≠ 0) (h : L * H + W * B = c • 1) (t : n → K)
@@ -53,6 +72,41 @@ private theorem exists_mulVec_eq_of_mulVec_eq_zero {D K p n : Type*} [CommRing D
   rw [Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hWB, ← algebraMap_smul K c t,
     inv_smul_smul₀ hc']
 
+/- English proof (translation)
+Unfold `ExistsPointLeviLogNormSqPos`. Introduce `D _ _ g E Φ c hE hdiag hdet hc hΦ`. Simplify using `only`. Establish `hEinv : E⁻¹ * E = 1` using `Matrix.nonsing_inv_mul E hdet`. Establish `hF : (Eᵀ)⁻¹ = -E⁻¹`.
+
+Rewrite using `[hE]`. Conclude with `Matrix.inv_eq_left_inv (by rw [neg_mul_neg, hEinv])`. Take `⟨N, hN⟩ : ∃ N, N = E⁻¹ * Φᵀ * stdJ D g` from `⟨_, rfl⟩`. Establish `hNΦ : N * Φ = c • (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) D)`. Rewrite using `[hN, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Φᵀ, hΦ, Matrix.mul_smul, hEinv]`.
+
+Establish `hdetΦ : Φ.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hNΦ`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hc h1.symm`.
+
+Establish `hΦN : Φ * N = c • (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) D)`. Establish `h2 : (Φ * N - c • 1) * Φ = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, hNΦ, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_self]`. Establish `h3 : Φ.det • (Φ * N - c • 1) = 0`. Rewrite using `[← Matrix.mul_one (Φ * N - c • 1), ← Matrix.mul_smul, ← Matrix.mul_adjugate Φ, ← Matrix.mul_assoc (Φ * N - c • 1) Φ (Matrix.adjugate Φ), h2, Matrix.zero_mul]`.
+
+Establish `h4 : Φ * N - c • 1 = 0`. Use extensionality with `i j`. Use `congrFun (congrFun h3 i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply, smul_eq_mul] at this`. Conclude with `(mul_eq_zero.mp this).resolve_left hdetΦ`.
+
+Conclude with `sub_eq_zero.mp h4`. Establish `hJJ : stdJ D g * stdJ D g = -1`. Rewrite using `[stdJ, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules. Establish `hG : Φ * E⁻¹ * Φᵀ = -(c • stdJ D g)`.
+
+Establish `h` using `congrArg (· * stdJ D g) hΦN`. Simplify using `only [hN, Matrix.mul_assoc, hJJ, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_neg, Matrix.mul_one] at h`. Rewrite using `[← h, neg_neg, Matrix.mul_assoc]`. Establish `hsub : ∀ r s : Fin g → Fin g ⊕ Fin g, Φ.submatrix r id * E⁻¹ * (Φ.submatrix s id)ᵀ = (-(c • stdJ D g)).submatrix r s`. Introduce `r s`.
+
+Rewrite using `[← hG]`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hHH : Φ.submatrix Sum.inl id * E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ = 0`. Rewrite using `[hsub]`.
+
+Use extensionality with `a b`. Simplify using `[stdJ]`. Establish `hBH : Φ.submatrix Sum.inr id * E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ = -(c • (1 : Matrix (Fin g) (Fin g) D))`. Apply the tactic sequence `rw [hsub]; ext a b; by_cases h : a = b <;> simp [stdJ, h]`. Establish `hHB : Φ.submatrix Sum.inl id * E⁻¹ * (Φ.submatrix Sum.inr id)ᵀ = c • (1 : Matrix (Fin g) (Fin g) D)`.
+
+Apply the tactic sequence `rw [hsub]; ext a b; by_cases h : a = b <;> simp [stdJ, h]`. Establish `hJΦ1 : ∀ a j, (stdJ D g * Φ) (Sum.inl a) j = -Φ (Sum.inr a) j`. Introduce `a j`. Simplify using `[stdJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `hJΦ2 : ∀ a j, (stdJ D g * Φ) (Sum.inr a) j = Φ (Sum.inl a) j`.
+
+Introduce `a j`. Simplify using `[stdJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`. Establish `hform : (Φ.submatrix Sum.inr id)ᵀ * Φ.submatrix Sum.inl id - (Φ.submatrix Sum.inl id)ᵀ * Φ.submatrix Sum.inr id = c • E`. Rewrite using `[← hΦ]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_assoc Φᵀ, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [hJΦ1, hJΦ2]`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id_eq, mul_neg, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : E⁻¹ * (Φ.submatrix Sum.inr id)ᵀ * Φ.submatrix Sum.inl id + (-E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ) * Φ.submatrix Sum.inr id = c • 1`.
+
+Establish `h` using `congrArg (E⁻¹ * ·) hform`. Simplify using `only [Matrix.mul_sub, Matrix.mul_smul, hEinv] at h`. Rewrite using `[Matrix.neg_mul, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← sub_eq_add_neg]`. Conclude with `h`. Establish `h2 : Φ.submatrix Sum.inl id * (-E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ) = 0`.
+
+Rewrite using `[Matrix.neg_mul, Matrix.mul_neg, ← Matrix.mul_assoc, hHH, neg_zero]`. Establish `h3 : Φ.submatrix Sum.inr id * (-E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ) = c • (1 : Matrix (Fin g) (Fin g) D)`. Rewrite using `[Matrix.neg_mul, Matrix.mul_neg, ← Matrix.mul_assoc, hBH, neg_neg]`. Establish `hT : (-E⁻¹ * (Φ.submatrix Sum.inl id)ᵀ)ᵀ = Φ.submatrix Sum.inl id * E⁻¹`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_neg, Matrix.transpose_nonsing_inv, hF, neg_neg]`.
+
+Rewrite using `[hF]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `exists_mulVec_eq_smul_of_mul_eq_smul_one _ (E⁻¹ * (Φ.submatrix Sum.inr id)ᵀ) c (by rw [← Matrix.mul_assoc]; exact hHB)`. Conclude with `h2`. Conclude with `h3`.
+
+Rewrite using `[hT, Matrix.mul_assoc (Φ.submatrix Sum.inl id) E⁻¹ E, hEinv, Matrix.mul_one]`. Conclude with `h2`. Introduce `t ht`. Conclude with `exists_mulVec_eq_of_mulVec_eq_zero _ _ _ _ c hc hkey t ht`. Introduce and unpack `x ⟨w, hw⟩`.
+
+Conclude with `exists_integral_smul_of_mulVec_integral _ _ c h3 x w hw`.
+-/
 theorem a1 : ExistsPointLeviLogNormSqPos := by
   unfold ExistsPointLeviLogNormSqPos
   intro D _ _ g E Φ c hE hdiag hdet hc hΦ

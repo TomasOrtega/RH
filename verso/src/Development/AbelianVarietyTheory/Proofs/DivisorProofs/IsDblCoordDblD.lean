@@ -21,6 +21,9 @@ section Gen
 variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.hTens GlobalTheory.WeilM.dbl`. Simplify using `only [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.toCols₁_apply, Matrix.toCols₂_apply, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, …`.
+-/
 theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (β ⊕ β) E) :
     GlobalTheory.WeilM.hTens c JA (GlobalTheory.WeilM.dbl JB) x y =
       GlobalTheory.WeilM.hTens c JA JB x.toCols₁ y.toCols₁ - GlobalTheory.WeilM.hTens c JA JB x.toCols₂ y.toCols₂ := by
@@ -30,15 +33,30 @@ theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (
     mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_neg, neg_mul, Finset.sum_neg_distrib,
     Finset.sum_add_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.symp`. Rewrite using `[hTens_dbl, mul_sub, map_sub]`.
+-/
 theorem symp_dbl (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α (β ⊕ β) E) :
     GlobalTheory.WeilM.symp c ξ JA (GlobalTheory.WeilM.dbl JB) x y =
       GlobalTheory.WeilM.symp c ξ JA JB x.toCols₁ y.toCols₁ - GlobalTheory.WeilM.symp c ξ JA JB x.toCols₂ y.toCols₂ := by
   unfold GlobalTheory.WeilM.symp
   rw [hTens_dbl, mul_sub, map_sub]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCols₁_add' (x y : Matrix α (β ⊕ β) E) : (x + y).toCols₁ = x.toCols₁ + y.toCols₁ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCols₂_add' (x y : Matrix α (β ⊕ β) E) : (x + y).toCols₂ = x.toCols₂ + y.toCols₂ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCols₁_smul' (r : R) (x : Matrix α (β ⊕ β) E) : (r • x).toCols₁ = r • x.toCols₁ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCols₂_smul' (r : R) (x : Matrix α (β ⊕ β) E) : (r • x).toCols₂ = r • x.toCols₂ := rfl
 
 variable [Invertible (2 : R)]
@@ -71,6 +89,9 @@ def dblD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Finty
       Sum.elim_inr, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
     ring
 
+/- English proof (translation)
+Introduce `w₁ w₂`. Simplify using `[dblD]`.
+-/
 theorem isDblCoord_dblD {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {κ : Type} [Fintype κ]
     (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) : GlobalTheory.WeilM.IsDblCoord c ξ JA JB d (dblD c d) := by
   intro w₁ w₂
@@ -83,6 +104,11 @@ section Reindex
 variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
 variable {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype γ] [DecidableEq γ]
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← e.symm.sum_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem symp_submatrix (e : γ ≃ β) (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α γ E) :
     GlobalTheory.WeilM.symp c ξ JA (JB.submatrix e e) x y =
       GlobalTheory.WeilM.symp c ξ JA JB (x.submatrix id e.symm) (y.submatrix id e.symm) := by
@@ -105,6 +131,9 @@ def reD (e : γ ≃ β) {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {J'
     rw [h, symp_submatrix, d.form]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_e (e : γ ≃ β) {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {J' : Matrix γ γ E} (h : J' = JB.submatrix e e)
     {κ : Type} [Fintype κ] (d : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp c ξ JA JB) κ) (x : Matrix α γ E) :
     (reD c e h d).e x = d.e (x.submatrix id e.symm) := rfl
@@ -124,6 +153,9 @@ def reG (e : γ ≃ β) {J : Matrix β β E} {J' : Matrix γ γ E} (h : J' = J.s
       show (((g : GL β E) : Matrix β β E).submatrix e e)ᵀ * J' * (((g : GL β E) : Matrix β β E).submatrix e e).map c = J'
       rw [h, Matrix.transpose_submatrix, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reG_val (e : γ ≃ β) {J : Matrix β β E} {J' : Matrix γ γ E} (h : J' = J.submatrix e e) (g : GlobalTheory.WeilM.UG c J) :
     ((reG c e h g : GL γ E) : Matrix γ γ E) = ((g : GL β E) : Matrix β β E).submatrix e e := rfl
 
@@ -137,6 +169,9 @@ def JBd (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) :
     Matrix (Fin (GlobalTheory.Doubling.dblSp S).rank) (Fin (GlobalTheory.Doubling.dblSp S).rank) D.host.E :=
   (GlobalTheory.WeilM.dbl JB).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with i' | i' <;> rcases h2 : finSumFinEquiv.symm j with j' | j' <;>`. Simplify using `[JBd, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.WeilM.dbl, h1, h2]`.
+-/
 theorem incM_JBd (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) :
     incM D.host.F (JBd S JB) =
       (GlobalTheory.WeilM.dbl (incM D.host.F JB)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm := by

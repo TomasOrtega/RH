@@ -22,10 +22,16 @@ variable {X : Scheme.{0}} {s : X ⟶ Sp R} (T : Thick (dp0 R) s)
 
 include hR in
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap R T.B), hR, map_zero]`.
+-/
 theorem cast_B : (p : T.B) = 0 := by rw [← map_natCast (algebraMap R T.B), hR, map_zero]
 
 include hR in
 
+/- English proof (translation)
+Rewrite using `[← map_natCast T.π, cast_B p hR T, map_zero]`.
+-/
 theorem cast_B₀ : (p : T.B₀) = 0 := by rw [← map_natCast T.π, cast_B p hR T, map_zero]
 
 def lft : T.B₀ →+* T.B :=
@@ -35,6 +41,9 @@ def lft : T.B₀ →+* T.B :=
     obtain ⟨c, hc⟩ := Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl
     rw [hc, Nat.cast_mul, cast_B p hR T, zero_mul, zero_mul]⟩
 
+/- English proof (translation)
+The claim follows from `(RingHom.liftOfRightInverse_comp_apply _ _ _ _ b).trans (frobR_apply p _ (cast_B p hR T) b)`.
+-/
 theorem lft_π (b : T.B) : lft p hR T (T.π b) = b ^ p :=
   (RingHom.liftOfRightInverse_comp_apply _ _ _ _ b).trans (frobR_apply p _ (cast_B p hR T) b)
 
@@ -68,6 +77,11 @@ def redMap {T' : Thick (dp0 R) s} (φ : T ⟶ T') : red T ⟶ red T' :=
   Thick.trivHom (hx := T.w) (T := Thick.triv T'.B₀ T'.x T'.w)
     { φ.φ₀ with commutes' := fun r ↦ (φ.comm _).trans (congrArg T'.π (φ.φ.commutes r)) } φ.pt
 
+/- English proof (translation)
+Rewrite `hc` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `hc`. Rewrite using `[← h.cl_pullForm]`. Use `H1.mk_eq_zero.2 ⟨fun T ↦ ev (T := red T) (T' := h.obj T) f.1 (eta p hR T h), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`.
+
+Establish `k` using `Form.ev_sq f (redMap φ) (eta p hR T' h) (eta p hR T h) (h.functor.map φ) rfl rfl fun b ↦ by`. Take `⟨b, rfl⟩` from `T.surj b`. Express the relevant statement in the definitionally equal form `lft p hR T' (φ.φ₀ (T.π b)) = φ.φ (lft p hR T (T.π b))`. Rewrite using `[φ.comm, lft_π, lft_π, map_pow]`. Conclude with `sub_eq_of_eq_add' k`.
+-/
 theorem frobenius_kills_hodge_filtration {c : FirstDeRham s} (hc : c ∈ F1 s) : h.pull1 c = 0 := by
   rw [hodgeFiltration_eq_range] at hc
   obtain ⟨f, rfl⟩ := hc
@@ -82,11 +96,17 @@ theorem frobenius_kills_hodge_filtration {c : FirstDeRham s} (hc : c ∈ F1 s) :
 
 end Kill
 
+/- English proof (translation)
+The claim follows from `fun _ hx ↦ Subtype.ext (frobenius_kills_hodge_filtration p hR m.isMor hx)`.
+-/
 theorem grpScheme_absoluteFrobenius_kills_hodgeFiltration (A : Over (Sp R)) [GrpObj A] (hA : (p : Γ(A.left, ⊤)) = 0)
     (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R) (𝟙 _) A (frobR p R hR) (spMap (frobR p R hR))
       (GlobalTheory.VB.frob A.left p hA)) : ∀ x ∈ PrimitiveSubmodule A, m.pull x = 0 :=
   fun _ hx ↦ Subtype.ext (frobenius_kills_hodge_filtration p hR m.isMor hx)
 
+/- English proof (translation)
+Establish `: Subsingleton (primDR (𝟙_ (Over (Sp R))))` using `⟨fun a b ↦ (primDR_unit a).trans (primDR_unit b).symm⟩`. Use `⟨⟨⊤, ?_⟩, fun P ↦ congrFun Module.rankAtStalk_eq_zero_of_subsingleton P, fun B _ φ x y ↦ by rw [HdR_unit x]; simp⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (Submodule.span R (Set.range Φ)) ⊥]`. Conclude with `isCompl_bot_top`.
+-/
 theorem unit_concl (Φ : primDR (𝟙_ (Over (Sp R))) → primDR (𝟙_ (Over (Sp R)))) :
     (∃ N : Submodule R (primDR (𝟙_ (Over (Sp R)))), IsCompl (Submodule.span R (Set.range Φ)) N) ∧
     (∀ P : PrimeSpectrum R, Module.rankAtStalk (Submodule.span R (Set.range Φ)) P = 0) ∧
@@ -99,6 +119,9 @@ theorem unit_concl (Φ : primDR (𝟙_ (Over (Sp R))) → primDR (𝟙_ (Over (S
 
 include hR in
 
+/- English proof (translation)
+Take `⟨B, _, P, φ, hB, hg', hP, hφ⟩` from `PoincareDeRhamDuality.Test.exists_hyp R D F A g hA hg`. Use `⟨B, _, P, φ, hP, hφ, fun x hx y hy ↦ ?_⟩` and prove the remaining obligations. Conclude with `(H p R hR A g hA hg _ (frobMor p R hR A (cast_left p R hR A))).2.2.2 B hB hg' _ (frobMor p R hR B (cast_left p R hR B)) P hP φ hφ x y (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hx _ (Submodule.subset_span ⟨c, rfl⟩)) (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hy _ (Submodule.s …`.
+-/
 theorem applies (H : ConjugateFiltration) (D : DualAbelianScheme) (F : AbelianDeRham.Free)
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     ∃ (B : Over (Sp R)) (_ : GrpObj B) (P : LB (A ⊗ B).left) (φ : HdR A →ₗ[R] HdR B →ₗ[R] R),
@@ -111,6 +134,11 @@ theorem applies (H : ConjugateFiltration) (D : DualAbelianScheme) (F : AbelianDe
     (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hx _ (Submodule.subset_span ⟨c, rfl⟩))
     (fun c ↦ (Submodule.mem_dualAnnihilator _).1 hy _ (Submodule.subset_span ⟨c, rfl⟩))
 
+/- English proof (translation)
+Set `E` to `GlobalTheory.WeierstrassCurve.ellPolAV W`. Establish `hg : SmoothOfRelativeDimension 1 E.A.hom` using `E.smoothDim`. Establish `h1 : ∀ P : PrimeSpectrum k, Module.rankAtStalk (conjDR p k hk E.A) P = 1` using `(H p k hk E.A 1 E.isAb hg _ (frobMor p k hk E.A (cast_left p k hk E.A))).2.2.1`. Use `⟨h1, fun e ↦ ?_, fun e ↦ ?_⟩` and prove the remaining obligations. Use `h1 ⊥` as an intermediate fact.
+
+Rewrite `this` using `[show conjDR p k hk E.A = ⊥ from e, Module.rankAtStalk_eq_zero_of_subsingleton]`. Simplify using `at this`. Use `h1 ⊥` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_of_equiv (LinearEquiv.ofTop _ e), (F.prim E.isAb hg).2.2 ⊥]`. Simplify using `at this`.
+-/
 theorem elliptic (H : ConjugateFiltration) (F : AbelianDeRham.Free) (k : Type) [Field k] (hk : (p : k) = 0)
     (W : WeierstrassCurve k) [W.IsElliptic] :
     (∀ P : PrimeSpectrum k, Module.rankAtStalk (conjDR p k hk (GlobalTheory.WeierstrassCurve.ellPolAV W).A) P = 1) ∧

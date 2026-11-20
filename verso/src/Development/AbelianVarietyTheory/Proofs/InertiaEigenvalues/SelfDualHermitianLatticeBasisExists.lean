@@ -31,6 +31,11 @@ end GlobalTheory.SelfDualLattice
 
 namespace GlobalTheory.SelfDualLattice
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitPairNorm.main`. Consider the case `exact _root_.GlobalTheory.UnitPairNorm.main`. Consider the case `(apply _root_.GlobalTheory.UnitPairNorm.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitPairNorm.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UnitPairNorm.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitPairNorm.main ..)`.
+-/
 theorem exists_orthonormal_family (K : UQ)
     (hN : ∀ u : K.Oˣ, K.c (algebraMap K.O K.E u) = algebraMap K.O K.E u →
       ∃ z : K.Oˣ, algebraMap K.O K.E u = algebraMap K.O K.E z * K.c (algebraMap K.O K.E z))
@@ -55,6 +60,15 @@ end GlobalTheory.SelfDualLattice
 
 namespace GlobalTheory.SelfDualLattice
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ h hadd hsmul hsym L hfg hspan hdual`. Take `⟨hN, hT, -, -⟩` from `GlobalTheory.T.unramifiedQuadratic_norms_trace_uniformizer_facts K`. Take `⟨m, v, hvo, hvs⟩` from `exists_orthonormal_family K hN hT _ V h rfl hadd hsmul hsym L hfg hspan hdual`. Establish `hli : LinearIndependent K.E v`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg i`. Use `congrArg (formL hadd hsmul (v i)) hg` as an intermediate fact. Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul] at this`. Express the relevant statement in the definitionally equal form `∑ j, g j * h (v j) (v i) = 0 at this`. Simplify `this` using `[hvo]`.
+
+Establish `hsp : ⊤ ≤ Submodule.span K.E (Set.range v)`. Rewrite using `[← hspan, ← hvs, Submodule.span_span_of_tower]`. Use `set b0 := Module.Basis.mk hli hsp with hb0`. Establish `hm : m = Module.finrank K.E V`. Rewrite using `[Module.finrank_eq_card_basis b0, Fintype.card_fin]`.
+
+Use `⟨b0.reindex (finCongr hm), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.range_reindex, hb0, Module.Basis.coe_mk, hvs]`. Introduce `i j`. Simplify using `only [Module.Basis.reindex_apply, hb0, Module.Basis.coe_mk, hvo]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_orthonormal_basis : ∀ (K : UQ) (V : Type) [AddCommGroup V] [Module K.E V] [Module K.O V]
     [IsScalarTower K.O K.E V] [Module.Finite K.E V] (h : V → V → K.E),
     (∀ x y z, h (x + y) z = h x z + h y z) → (∀ (c : K.E) x z, h (c • x) z = c * h x z) →

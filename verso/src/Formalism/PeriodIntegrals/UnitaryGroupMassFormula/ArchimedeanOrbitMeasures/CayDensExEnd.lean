@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasure
 
 namespace PI.AprimeInfW
 
+/- English proof (translation)
+The claim follows from `expProdU_of_hua cayDensEx_holds cayValId_holds`.
+-/
 theorem expProdU_holds : ExpProdU := expProdU_of_hua cayDensEx_holds cayValId_holds
 
 end PI.AprimeInfW

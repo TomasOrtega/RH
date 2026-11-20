@@ -14,5 +14,8 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UniColFrame.isFrame_pullCol_uniR | exact GlobalTheory.UniColFrame.isFrame_pullCol_uniR | (intros; apply GlobalTheory.UniColFrame.isFrame_pullCol_uniR <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pullback_unipotent_frame_isFrame : ∀ (X B : Scheme.{0}) (g : X ⟶ B) (E : B.Modules) (m : ℕ), IsVB E m → ∀ (U : B.Opens) (e : Fin m → Γ(E, U)), IsFrame e → ∀ (V : X.Opens) (hV : V ≤ g ⁻¹ᵁ U) (n : Low m → Γ(X, V)), IsFrame (pullCol g e hV (uniR n)) := by
   first | exact @GlobalTheory.UniColFrame.isFrame_pullCol_uniR | exact GlobalTheory.UniColFrame.isFrame_pullCol_uniR | (intros; apply GlobalTheory.UniColFrame.isFrame_pullCol_uniR <;> assumption)

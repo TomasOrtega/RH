@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.L
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `hP' : P ^ ((2 * N : ℕ) : ℤ) = A ^ ((2 * N : ℕ) : ℤ) * C ^ (2 * (N : ℤ) * m)`. Rewrite using `[zpow_natCast, zpow_natCast]`. Conclude with `hP`. Establish `hA' : A ^ (k : ℤ) = C ^ (a * k)`. Rewrite using `[zpow_natCast]`.
+
+Conclude with `hA`. Rewrite using `[← zpow_natCast, mul_zpow]`. Establish `e1 : P ^ ((2 * N * k : ℕ) : ℤ) = (P ^ ((2 * N : ℕ) : ℤ)) ^ (k : ℤ)`. Rewrite using `[← zpow_mul]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Establish `e2 : A ^ (((2 * N : ℕ) : ℤ) * k) = C ^ (a * k * (2 * N))`. Rewrite using `[mul_comm, zpow_mul, hA', ← zpow_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Rewrite using `[e1, hP', mul_zpow, ← zpow_mul A, ← zpow_mul C, ← zpow_mul C, e2, ← zpow_add, ← zpow_add]`. Use `zpow_zero C using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mul_zpow_pow_eq_one_of_pow_eqs {H : Type*} [CommGroup H] (P A C : H) (N k : ℕ) (m a : ℤ)
     (hP : P ^ (2 * N) = A ^ (2 * N) * C ^ (2 * (N : ℤ) * m)) (hA : A ^ k = C ^ (a * k)) :
     (P * C ^ (-(m + a))) ^ (2 * N * k) = 1 := by
@@ -28,6 +37,31 @@ private theorem mul_zpow_pow_eq_one_of_pow_eqs {H : Type*} [CommGroup H] (P A C 
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `hGAR Ω _ _ _ l _ c D T c' h K X B φ hφ y x hx hcont m hm hW`. Take `⟨U, hUo, hU⟩` from `hW`. Use `haveI : Finite (G T.F Ω ⧸ U) := Subgroup.quotient_finite_of_isOpen U hUo`. Use `haveI : U.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hpowU : ∀ g : G T.F Ω, g ^ U.normalCore.index ∈ U` using `fun g => Subgroup.normalCore_le U (U.normalCore.pow_index_mem g)`.
+
+Establish `hN0 : U.normalCore.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hl' : ∀ v : W.Vl l T.L, (K.s.A v).valuation (l : Ω) < 1`. Introduce `v`. Rewrite using `[K.hA v]`. Conclude with `T.ovl _`.
+
+Use `choose a b k hk hb hcyc using fun v : W.Vl l T.L => K.cyc (K.s.A v) (hl' v)`. Use `⟨fun v j _ => -(m j + a v), ?_, ?_⟩` and prove the remaining obligations. Introduce `v τ i j hij`. Use `hm hij` as an intermediate fact. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `v j`. Establish `hlw : ((l : ℕ) : 𝓞 T.L) ∈ (K.s.w v).asIdeal` using `(K.s.hw v (l : 𝓞 T.L)).1 (by simpa using hl' v)`. Use `UpperTheory.V.Loc.laArith hGAR (K.s.hw v) hlw (x.psi v j) (hcont v j) (m j + a v) (2 * U.normalCore.index * k v) ?_ ?_` and prove the remaining obligations. Conclude with `Nat.mul_pos (Nat.mul_pos two_pos (Nat.pos_of_ne_zero hN0)) (hk v)`.
+
+Introduce `g hg set N := U.normalCore.index set P := x.psi v j g set A := Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l) (K.κ ↑g) set C := cycBar T.L Ω l ↑g`. Apply `mul_zpow_pow_eq_one_of_pow_eqs P A C N (k v) (m j) (a v)` to reduce the goal to its premises. Take `⟨_, hIneF, hpsi⟩` from `UpperTheory.V.Ws.auPsi D T c' h K X B 0 φ hφ y x hx v j (g ^ N)`. Establish `hgN : ((g ^ N : Dec (K.s.A v)) : G T.L Ω) ∈ Ine (K.s.A v)`. Rewrite using `[Subgroup.coe_pow]`.
+
+Conclude with `Subgroup.pow_mem _ hg N`. Establish `hin` using `hU (K.e v) j _ ⟨by rw [Subgroup.coe_pow, map_pow]; exact hpowU _, hIneF hgN⟩`. Establish `e0 : x.psi v j (g ^ N) = P ^ N` using `map_pow _ _ _`. Establish `hκN : (algebraMap c'.O (PadicAlgCl l)) (↑(K.κ ↑(g ^ N)) * ↑(K.β ↑(g ^ N)) ^ 0) = ↑(A ^ N)`. Rewrite using `[pow_zero, mul_one, Subgroup.coe_pow, map_pow, Units.val_pow_eq_pow_val, map_pow, Units.val_pow_eq_pow_val]`.
+
+Both sides reduce to the same expression. Establish `hcN : cycBar T.F Ω l (resLe T.F_le ↑(g ^ N)) = C ^ N` using `by show cycBar T.L Ω l ↑(g ^ N) = _`. Rewrite using `[Subgroup.coe_pow, map_pow]`. Rewrite `hin` using `[hcN]`. Rewrite `hpsi` using `[e0, hκN]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Establish `e3 : (↑(P ^ (2 * N)) : PadicAlgCl l) = (↑(P ^ N)) ^ 2`. Rewrite using `[← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm]`. Rewrite using `[e3, hpsi, mul_pow]`. Use `erw [hin]`.
+
+Rewrite using `[Units.val_mul]`. Use `congr 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm]`. Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_mul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg (Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l)) (hcyc v ↑g hg).1`. Establish `h2 : Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l) (chiO T.L Ω l c'.O ↑g) = C`.
+
+Use `congrArg (fun f => f (↑g : G T.L Ω)) (UpperTheory.V.Ws.auChi T.L Ω c').1` as an intermediate fact. Conclude with `this`. Rewrite `h1` using `[map_one, map_pow, map_mul, map_zpow, h2, mul_pow, mul_eq_one_iff_eq_inv]`. Rewrite using `[h1, ← zpow_natCast, ← zpow_mul, ← zpow_neg]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.auArith :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (φ : B.B →ₐ[c'.O] X.B), K.IsPhi X 0 B φ → ∀ (y : X.A →ₐ[c'.O] PadicAlgCl l) (x : B.Pt), (∀ b, x b = y (algebraMap X.B X.A (φ b))) → (∀ (v : W.Vl l T.L) (i : Fin 4), Continuous (x.psi v i)) → ∀ m : Fin 4 → ℤ, StrictAnti m → T.Wts (fun i => 2 * m i) (X.P.map (y : X.A →+* PadicAlgCl l)) → ∃ w : K.s.Wt 4, x.Arith w := by
   intro hGAR Ω _ _ _ l _ c D T c' h K X B φ hφ y x hx hcont m hm hW

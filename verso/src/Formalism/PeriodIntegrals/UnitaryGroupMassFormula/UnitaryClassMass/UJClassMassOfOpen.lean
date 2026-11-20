@@ -3,6 +3,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryClassFiniteness.
 
 namespace PI.UnitaryGroupMassFormula.UJClassMass
 
+/- English proof (translation)
+The claim follows from `uJClassMass_of_deep' PI.UnitaryGroupMassFormula.UJClassFin.rational_points_dense s1 s4`.
+-/
 theorem uJClassMass_of_open (s1 : LatStep) (s4 : SurjStep) : PI.UJClassMass2.UJClassMass :=
   uJClassMass_of_deep' PI.UnitaryGroupMassFormula.UJClassFin.rational_points_dense s1 s4
 

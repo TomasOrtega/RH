@@ -11,6 +11,19 @@ open MeasureTheory Topology Filter Formalism.BasicNotions Formalism.L2.SG.HidaSe
   Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `D X`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (TupI X) := PI.AprimeInfT.borelSpace_tup (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Establish `hcont : ∀ a : MfI X, Continuous (rmulT X a)`. Introduce `a`.
+
+Unfold `rmulT`. Use `continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun c _ => continuous_const.mul ((continuous_apply i).comp (continuous_apply c))`. Use `⟨fun a => (hcont a).measurable, ?_, ?_, ?_, ?_, ?_, fun K hK => hK.isClosed.measurableSet, hcont⟩` and prove the remaining obligations. Introduce `a b Y`.
+
+Use function extensionality and compare the values at `b' i`. Simplify using `only [rmulT, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `g a Y`. Use function extensionality and compare the values at `b i`. Use `show ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g : GL _ _) : Matrix _ _ _).mulVec (rmulT X a Y b) i = ∑ c, a c b * ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g : GL _ _) : Matrix _ _ _).mulVec (Y c) i`. Simplify using `only [rmulT, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `a Y`. Conclude with `sq_gramR_rmul (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J a Y`. Introduce `a b`.
+
+Simplify using `only [cTI, Matrix.map_mul, Matrix.transpose_mul]`. Simplify using `only [cTI, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+-/
 theorem rmulFacts_holds : RmulFacts := by
   intro D X
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X

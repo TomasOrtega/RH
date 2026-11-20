@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRingEquivPowerSeriesOfComplete
 open Polynomial Matrix
 
+/- English proof (translation)
+Use `letI : Algebra (ZMod p) A := ZMod.algebra A p`. Use `haveI : Algebra.FormallySmooth (ZMod p) (IsLocalRing.ResidueField A) := by haveI : Module.Finite (ZMod p) (IsLocalRing.ResidueField A) := Module.Finite.of_finite haveI : Algebra.FormallyEtale (ZMod p) (IsLocalRing.ResidueField A) := Algebra.FormallyEtale.of_isSeparable _ _ infer_ …`. Take `⟨g, hg⟩` from `Algebra.FormallySmooth.exists_mkₐ_comp_eq_of_isAdicComplete (R := ZMod p) (A := IsLocalRing.ResidueField A) (I := IsLocalRing.maximalIdeal A) (AlgHom.id (ZMod p) (IsLocalRing.ResidueField A))`. Use `⟨g.toRingHom, fun y => ⟨y, ?_⟩⟩` and prove the remaining obligations. Conclude with `AlgHom.congr_fun hg y`.
+-/
 private theorem UpperTheory.V.Pr.T.curveNorm_coeffField {A : Type} [CommRing A] [IsLocalRing A]
     [IsAdicComplete (IsLocalRing.maximalIdeal A) A] [Finite (IsLocalRing.ResidueField A)]
     (p : ℕ) [Fact p.Prime] [CharP A p] :
@@ -20,6 +23,11 @@ private theorem UpperTheory.V.Pr.T.curveNorm_coeffField {A : Type} [CommRing A] 
   refine ⟨g.toRingHom, fun y => ⟨y, ?_⟩⟩
   exact AlgHom.congr_fun hg y
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ p _ _ hdim`. Take `⟨A, _, _, _, f, hc, hfin, hinj, hloc, hf⟩` from `UpperTheory.V.Pr.T.curveDVR (R := R) p hdim`. Use `haveI : CharP A p := charP_of_injective_ringHom hinj p`. Take `⟨ι, hι⟩` from `UpperTheory.V.Pr.T.curveNorm_coeffField (A := A) p`. Take `⟨e, -⟩` from `GlobalTheory.ArcAvoid.exists_ringEquiv_powerSeries_of_complete ι hι`.
+
+Use `⟨IsLocalRing.ResidueField A, inferInstance, hfin, (e.symm : A →+* PowerSeries _).comp f, e.symm.injective.comp hinj, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsLocalHom (e.symm : A →+* PowerSeries (IsLocalRing.ResidueField A)) := isLocalHom_equiv e.symm |>.1 |> fun h => ⟨h⟩`. Conclude with `RingHom.isLocalHom_comp _ _`. Conclude with `(RingHom.Finite.of_surjective _ e.symm.surjective).comp hf`.
+-/
 theorem UpperTheory.V.Pr.T.curveNorm :
     ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
       [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [Finite (IsLocalRing.ResidueField R)]

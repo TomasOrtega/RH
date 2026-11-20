@@ -8,6 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AltLattice.main | exact GlobalTheory.AltLattice.main | (intros; apply GlobalTheory.AltLattice.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.alternating_pairing_on_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →
     ∀ (𝔞 𝔟 : FracId (FR E)) (P : E → E → FR E),
     (∀ x ∈ lattice c y, ∀ x' ∈ lattice c y, P x x' = -P x' x) →

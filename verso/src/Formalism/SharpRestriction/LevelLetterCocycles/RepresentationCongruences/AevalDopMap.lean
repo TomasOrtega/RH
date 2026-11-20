@@ -17,6 +17,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hπ`. Establish `ha : W.π₀ • a = (u : W.EE) • a` using `by rw [hu, algebraMap_smul]`. Establish `hb : W.π₀ • b = (u : W.EE) • b` using `by rw [hu, algebraMap_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem π₀_cancel (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T : LocLat G Qp LL O}
     {a b : W.DD T} (h : W.π₀ • a = W.π₀ • b) : a = b := by
   obtain ⟨u, hu⟩ := hπ
@@ -26,11 +29,17 @@ private theorem π₀_cancel (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     _ = (↑u⁻¹ : W.EE) • ((u : W.EE) • b) := by rw [← ha, h, hb]
     _ = b := by rw [smul_smul, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+The claim follows from `π₀_cancel W hπ ((hd x).trans h)`.
+-/
 theorem dop_eq (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O)
     (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y) {x y : W.DD T}
     (h : W.γ T x - x = W.π₀ • y) : dop x = y :=
   π₀_cancel W hπ ((hd x).trans h)
 
+/- English proof (translation)
+Take `⟨y, hy, hxy⟩` from `hgN x hx`. Rewrite using `[dop_eq W hπ T dop hd hxy]`. Conclude with `hy`.
+-/
 theorem dop_pres (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O) (i : ZMod n)
     (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y)
     (hgN : ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T i x → ∃ y, Formalism.MainNotions.LiftingTheory.InNΔi W T i y ∧ W.γ T x - x = W.π₀ • y)
@@ -39,6 +48,11 @@ theorem dop_pres (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat
   rw [dop_eq W hπ T dop hd hxy]
   exact hy
 
+/- English proof (translation)
+Apply `π₀_cancel W hπ` to reduce the goal to its premises. Establish `hs : ∀ z : W.DD T₁, W.π₀ • W.map F z = W.map F (W.π₀ • z)` using `fun z => by`. Rewrite using `[← algebraMap_smul W.EE W.π₀ (W.map F z), ← map_smul, algebraMap_smul]`. Rewrite using `[hs, hd₁, hd₂, map_sub]`. Use `congr 1`.
+
+Conclude with `W.map_γ F W.gam y`.
+-/
 theorem dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L)
     (dop₁ : W.DD T₁ →ₗ[O] W.DD T₁) (hd₁ : ∀ y, W.π₀ • dop₁ y = W.γ T₁ y - y)
@@ -51,6 +65,13 @@ theorem dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ :
   congr 1
   exact W.map_γ F W.gam y
 
+/- English proof (translation)
+Establish `hO : ∀ (c : O) (v : W.DD T₁), W.map F (c • v) = c • W.map F v`. Introduce `c v`. Rewrite using `[← algebraMap_smul (LetA O n) c v, ← algebraMap_smul W.EE (algebraMap O (LetA O n) c) v, map_smul, algebraMap_smul, algebraMap_smul]`. Establish `hc : ∀ k : ℕ, ∀ y : W.DD T₁, W.map F ((dop₁ ^ k) y) = (dop₂ ^ k) (W.map F y)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y`.
+
+Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, dop_map W hπ F dop₁ hd₁ dop₂ hd₂, ih]`. Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hO, hc]`.
+-/
 theorem aeval_dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L)
     (dop₁ : W.DD T₁ →ₗ[O] W.DD T₁) (hd₁ : ∀ y, W.π₀ • dop₁ y = W.γ T₁ y - y)
@@ -72,6 +93,9 @@ theorem aeval_dop_map (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ 
   refine Finset.sum_congr rfl (fun k _ => ?_)
   rw [LinearMap.smul_apply, LinearMap.smul_apply, hO, hc]
 
+/- English proof (translation)
+Unfold `InImg at hz ⊢`. Take `⟨x₁, hx₁, rfl⟩` from `hz`. Conclude with `⟨dop₁ x₁, dop_pres W hπ T₁ i dop₁ hd₁ hgN₁ hx₁, dop_map W hπ F dop₁ hd₁ dop₂ hd₂ x₁⟩`.
+-/
 theorem dop_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n)
     (dop₁ : W.DD T₁ →ₗ[O] W.DD T₁) (hd₁ : ∀ y, W.π₀ • dop₁ y = W.γ T₁ y - y)
@@ -82,12 +106,18 @@ theorem dop_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂
   obtain ⟨x₁, hx₁, rfl⟩ := hz
   exact ⟨dop₁ x₁, dop_pres W hπ T₁ i dop₁ hd₁ hgN₁ hx₁, dop_map W hπ F dop₁ hd₁ dop₂ hd₂ x₁⟩
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.InNΔi at *`. Conclude with `⟨(W.NΔ T).add_mem hx.1 hy.1, (W.Nl T i).add_mem hx.2 hy.2⟩`.
+-/
 private theorem nΔi_add' {T : LocLat G Qp LL O} {i : ZMod n} {x y : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) (hy : Formalism.MainNotions.LiftingTheory.InNΔi W T i y) :
     Formalism.MainNotions.LiftingTheory.InNΔi W T i (x + y) := by
   unfold Formalism.MainNotions.LiftingTheory.InNΔi at *
   exact ⟨(W.NΔ T).add_mem hx.1 hy.1, (W.Nl T i).add_mem hx.2 hy.2⟩
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.InNΔi at *`. Use `⟨(W.NΔ T).smul_mem c hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) c x]`. Conclude with `(W.Nl T i).smul_mem _ hx.2`.
+-/
 private theorem nΔi_smulO' {T : LocLat G Qp LL O} {i : ZMod n} (c : O) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (c • x) := by
   unfold Formalism.MainNotions.LiftingTheory.InNΔi at *
@@ -95,6 +125,15 @@ private theorem nΔi_smulO' {T : LocLat G Qp LL O} {i : ZMod n} (c : O) {x : W.D
   rw [← algebraMap_smul (LetA O n) c x]
   exact (W.Nl T i).smul_mem _ hx.2
 
+/- English proof (translation)
+Establish `hpow : ∀ k : ℕ, ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T i x → Formalism.MainNotions.LiftingTheory.InNΔi W T i ((dop ^ k) x)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Rewrite using `[pow_zero, Module.End.one_apply]`.
+
+Conclude with `hx`. Consider the case `succ k ih`. Introduce `x hx`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `dop_pres W hπ T i dop hd hgN (ih x hx)`.
+
+Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `Finset.sum_induction _ (Formalism.MainNotions.LiftingTheory.InNΔi W T i) (fun a b ha hb => nΔi_add' W ha hb) ?_ ?_` and prove the remaining obligations. Unfold `Formalism.MainNotions.LiftingTheory.InNΔi`. Conclude with `⟨(W.NΔ T).zero_mem, (W.Nl T i).zero_mem⟩`. Introduce `k _`.
+
+Rewrite using `[LinearMap.smul_apply]`. Conclude with `nΔi_smulO' W _ (hpow k x hx)`.
+-/
 private theorem nΔi_aeval (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (T : LocLat G Qp LL O)
     (i : ZMod n) (dop : W.DD T →ₗ[O] W.DD T) (hd : ∀ y, W.π₀ • dop y = W.γ T y - y)
     (hgN : ∀ x, Formalism.MainNotions.LiftingTheory.InNΔi W T i x → ∃ y, Formalism.MainNotions.LiftingTheory.InNΔi W T i y ∧ W.γ T x - x = W.π₀ • y)
@@ -116,6 +155,9 @@ private theorem nΔi_aeval (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (
     rw [LinearMap.smul_apply]
     exact nΔi_smulO' W _ (hpow k x hx)
 
+/- English proof (translation)
+Unfold `InImg at hz ⊢`. Take `⟨x₁, hx₁, rfl⟩` from `hz`. Conclude with `⟨aeval dop₁ p x₁, nΔi_aeval W hπ T₁ i dop₁ hd₁ hgN₁ p hx₁, aeval_dop_map W hπ F dop₁ hd₁ dop₂ hd₂ p x₁⟩`.
+-/
 theorem aeval_inImg (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n)
     (dop₁ : W.DD T₁ →ₗ[O] W.DD T₁) (hd₁ : ∀ y, W.π₀ • dop₁ y = W.γ T₁ y - y)

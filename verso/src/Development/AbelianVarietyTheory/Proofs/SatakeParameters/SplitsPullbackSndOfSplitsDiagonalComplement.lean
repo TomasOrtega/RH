@@ -5,6 +5,57 @@ open CategoryTheory Limits AlgebraicGeometry
 noncomputable section
 namespace GlobalTheory.EtC.Tr
 
+/- English proof (translation)
+Take `⟨m, s, hs, hiso⟩` from `h`. Establish `hδs : pullback.diagonal f ≫ pullback.snd f f = 𝟙 Z` using `pullback.diagonal_snd f`. Set `t : Fin (m + 1) → (V ⟶ pullback f f)` to `Fin.cons (α := fun _ => V ⟶ pullback f f) (v ≫ pullback.diagonal f) (fun j => s j ≫ (diagCompl f).ι)`. Establish `ht0 : t 0 = v ≫ pullback.diagonal f` using `rfl`. Establish `hts : ∀ k : Fin m, t k.succ = s k ≫ (diagCompl f).ι` using `fun k => rfl`.
+
+Establish `ht : ∀ j, t j ≫ pullback.snd f f = v`. Introduce `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rw [ht0, Category.assoc, hδs, Category.comp_id]`. Consider the case `succ k => rw [hts, Category.assoc]`.
+
+Conclude with `hs k`. Use `⟨m + 1, t, ht, ?_⟩` and prove the remaining obligations. Set `d : Fin m → (V ⟶ pullback (diagComplHom f) v)` to `fun j => pullback.lift (s j) (𝟙 V) (by rw [hs j, Category.id_comp])`. Set `Φ : ∐ (fun _ : Fin m => V) ⟶ pullback (diagComplHom f) v` to `Sigma.desc d`. Establish `hΦ : IsIso Φ` using `hiso`.
+
+Establish `hdΦ : ∀ k, d k = Sigma.ι (fun _ : Fin m => V) k ≫ Φ` using `fun k => (Sigma.ι_desc _ _).symm`. Set `eU : pullback (diagComplHom f) v ⟶ pullback (pullback.snd f f) v` to `pullback.map (diagComplHom f) v (pullback.snd f f) v (diagCompl f).ι (𝟙 V) (𝟙 Z) (by simp [diagComplHom]) (by simp)`. Set `eD : pullback (pullback.diagonal f ≫ pullback.snd f f) v ⟶ pullback (pullback.snd f f) v` to `pullback.map _ v (pullback.snd f f) v (pullback.diagonal f) (𝟙 V) (𝟙 Z) (by simp) (by simp)`. Set `l : V ⟶ pullback (pullback.diagonal f ≫ pullback.snd f f) v` to `pullback.lift v (𝟙 V) (by rw [hδs]; simp)`. Establish `hl : IsIso l`.
+
+Establish `h1 : IsIso (pullback.diagonal f ≫ pullback.snd f f)` using `by rw [hδs]; infer_instance`. Establish `h2 : l ≫ pullback.snd _ _ = 𝟙 V` using `pullback.lift_snd _ _ _`. Establish `h3 : IsIso (l ≫ pullback.snd (pullback.diagonal f ≫ pullback.snd f f) v)`. Rewrite using `[h2]`. Use `infer_instance`.
+
+Conclude with `IsIso.of_isIso_comp_right l (pullback.snd _ _)`. Set `g : Fin (m + 1) → (V ⟶ pullback (pullback.snd f f) v)` to `Fin.cons (α := fun _ => V ⟶ pullback (pullback.snd f f) v) (l ≫ eD) (fun k => d k ≫ eU)`. Establish `hg : (Sigma.desc (fun j => pullback.lift (t j) (𝟙 V) (by rw [ht j, Category.id_comp])) : ∐ (fun _ : Fin (m + 1) => V) ⟶ pullback (pullback.snd f f) v) = Sigma.desc g`. Use `Sigma.hom_ext _ _ (fun j => ?_)` and prove the remaining obligations. Rewrite using `[Sigma.ι_desc, Sigma.ι_desc]`.
+
+Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst] show t 0 = (l ≫ eD) ≫ _`. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pullback.lift_fst, ht0]`.
+
+Rewrite using `[pullback.lift_snd] show 𝟙 V = (l ≫ eD) ≫ _`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, Category.id_comp]`. Consider the case `succ k`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst] show t k.succ = (d k ≫ eU) ≫ _`.
+
+Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pullback.lift_fst, hts]`. Rewrite using `[pullback.lift_snd] show 𝟙 V = (d k ≫ eU) ≫ _`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, Category.id_comp]`. Rewrite using `[hg]`. Establish `hΦi : IsOpenImmersion Φ` using `inferInstance`.
+
+Establish `hι : ∀ k, IsOpenImmersion (Sigma.ι (fun _ : Fin m => V) k)` using `fun k => inferInstance`. Establish `hδo : IsOpenImmersion (pullback.diagonal f)` using `inferInstance`. Establish `hUo : IsOpenImmersion eU` using `inferInstance`. Establish `hDo : IsOpenImmersion eD` using `inferInstance`. Establish `hgo : ∀ j, IsOpenImmersion (g j)`.
+
+Introduce `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => show IsOpenImmersion (l ≫ eD)`. Use `infer_instance`. Consider the case `succ k => show IsOpenImmersion (d k ≫ eU)`.
+
+Rewrite using `[hdΦ]`. Use `infer_instance`. Establish `hgπ' : ∀ j, g j ≫ pullback.fst (pullback.snd f f) v = t j`. Introduce `j`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => show (l ≫ eD) ≫ _ = t 0`. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pullback.lift_fst, ht0]`. Consider the case `succ k => show (d k ≫ eU) ≫ _ = t k.succ`. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, pullback.lift_fst, hts]`. Establish `hgπ : ∀ j y, pullback.fst (pullback.snd f f) v (g j y) = t j y`.
+
+Introduce `j y`. Rewrite using `[← Scheme.Hom.comp_apply, hgπ']`. Establish `hsep : ∀ a b, pullback.diagonal f a ≠ (diagCompl f).ι b`. Introduce `a b hab`. Establish `hb : (diagCompl f).ι b ∈ Set.range (diagCompl f).ι` using `⟨b, rfl⟩`.
+
+Rewrite `hb` using `[Scheme.Opens.range_ι]`. Conclude with `hb ⟨a, hab⟩`. Rewrite using `[isIso_iff_isOpenImmersion_and_surjective]`. Use `⟨isOpenImmersion_sigmaDesc _ g ?_, ⟨fun p => ?_⟩⟩` and prove the remaining obligations. Introduce `i j hij`.
+
+Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `_ ⟨x, rfl⟩ ⟨y, hy⟩`. Establish `hπ` using `congrArg (pullback.fst (pullback.snd f f) v) hy`. Rewrite `hπ` using `[hgπ, hgπ]`. Proceed by induction on `i using Fin.cases with`.
+
+Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact hij rfl`. Consider the case `succ k`. Rewrite `hπ` using `[ht0, hts, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+
+Conclude with `hsep _ _ hπ.symm`. Consider the case `succ k`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Rewrite `hπ` using `[ht0, hts, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+
+Conclude with `hsep _ _ hπ`. Consider the case `succ k'`. Establish `h1 : d k' y = d k x`. Apply `eU.isOpenEmbedding.injective` to reduce the goal to its premises. Establish `hy' : (d k' ≫ eU) y = (d k ≫ eU) x` using `hy`.
+
+Rewrite `hy'` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Then use the resulting hypothesis. Rewrite `h1` using `[hdΦ, hdΦ, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Establish `h2` using `(sigmaι_eq_iff _ _ _ _ _).mp (Φ.isOpenEmbedding.injective h1)`. Conclude with `hij (by rw [(Sigma.mk.inj_iff.mp h2).1])`. Distinguish the cases in `hp : pullback.fst (pullback.snd f f) v p ∈ Set.range (pullback.diagonal f)`.
+
+Establish `hpD : p ∈ Set.range eD`. Rewrite using `[Scheme.Pullback.range_map]`. Conclude with `⟨hp, ⟨pullback.snd (pullback.snd f f) v p, rfl⟩⟩`. Take `⟨q, rfl⟩` from `hpD`. Use `⟨Sigma.ι (fun _ : Fin (m + 1) => V) 0 (inv l q), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, Sigma.ι_desc]`. Use `show (l ≫ eD) (inv l q) = eD q`. Rewrite using `[Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply (inv l), IsIso.inv_hom_id]`. Both sides reduce to the same expression. Establish `hpU : p ∈ Set.range eU`.
+
+Rewrite using `[Scheme.Pullback.range_map]`. Use `⟨?_, ⟨pullback.snd (pullback.snd f f) v p, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Scheme.Opens.range_ι]`. Conclude with `hp`. Take `⟨q, rfl⟩` from `hpU`.
+
+Take `⟨⟨k, x⟩, hkx⟩` from `(sigmaMk (fun _ : Fin m => V)).surjective (inv Φ q)`. Rewrite `hkx` using `[sigmaMk_mk]`. Use `⟨Sigma.ι (fun _ : Fin (m + 1) => V) k.succ x, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Sigma.ι_desc]`. Use `show (d k ≫ eU) x = eU q`.
+
+Rewrite using `[hdΦ, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hkx, ← Scheme.Hom.comp_apply (inv Φ), IsIso.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 theorem splits_pullbackSnd_of_splits_diagComplHom {Z X V : Scheme.{0}} (f : Z ⟶ X) [IsFinite f] [Etale f]
     (v : V ⟶ Z) (h : Splits (diagComplHom f) v) : Splits (pullback.snd f f) v := by
   obtain ⟨m, s, hs, hiso⟩ := h

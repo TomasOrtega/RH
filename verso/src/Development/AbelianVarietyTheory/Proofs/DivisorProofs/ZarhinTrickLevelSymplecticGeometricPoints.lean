@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ZarhinFam
 
+/- English proof (translation)
+Establish `h0 : c.lev 0 = 1`. Use `c.lev_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [succ_nsmul, c.lev_add, ih, pow_succ]`.
+-/
 theorem siegPre_lev_nsmul {S : Scheme.{0}} {h M : ℕ} {Bs : Type} [CommRing Bs] {ζ : Bs} {s : S ⟶ Sp Bs}
     (c : SiegPre h M ζ s) (n : ℕ) (b : Fin h ⊕ Fin h → ℤ) : c.lev (n • b) = c.lev b ^ n := by
   have h0 : c.lev 0 = 1 := by
@@ -23,6 +28,33 @@ theorem siegPre_lev_nsmul {S : Scheme.{0}} {h M : ℕ} {Bs : Type} [CommRing Bs]
   | zero => simpa using h0
   | succ n ih => rw [succ_nsmul, c.lev_add, ih, pow_succ]
 
+/- English proof (translation)
+Introduce `h M d S t c B _ _ Q la mu hZ hh hM hMo hd hcop hdu hker κ hκ k _ _ x β z hx hz`. Establish `hla : IsMonHom la` using `hZ.2.2.2.1`. Establish `hmu : IsMonHom mu` using `hZ.2.2.2.2.1`. Establish `hlm : la ≫ mu = 𝟙 c.A ^ d` using `hZ.2.2.2.2.2.1`. Establish `hml : mu ≫ la = 𝟙 B ^ d` using `hZ.2.2.2.2.2.2.1`.
+
+Use `set X : Over.mk x ⟶ 𝟙_ (Over S) := toUnit (Over.mk x) with hXdef`. Establish `hpt : ∀ a, X ≫ levZ c.lev (incZ c.A B) (actZ c.A B d la mu) (oMat d) κ a = mkZ c.A B (fun i => X ≫ c.lev (κ (Fin.castAdd 4 i) a)) (fun j => X ≫ c.lev (κ (Fin.natAdd 4 j) a) ≫ la)`. Introduce `a`. Rewrite using `[GlobalTheory.T.zarhinProductLevelStructure_eq_mkPoint c.A B d h (8 * h) la mu c.lev κ a]`. Conclude with `(GlobalTheory.T.zarhinProductMkPoint_basic_facts c.A B X _ _ 1 1).1`.
+
+Establish `geo` using `c.geom k x β z hx hz`. Establish `geo1 : ∀ q, X ≫ c.lev q = 1 ↔ ∃ b, q = M • b` using `geo.1`. Establish `htA` using `GlobalTheory.T.isogeny_bijective_on_torsion_coprime_degree c.A B la mu d M (Over.mk x) hla hmu hlm hml hcop`. Establish `hK` using `GlobalTheory.T.zarhinSymplecticTransfer_bijective_mod h M d κ (by omega) hκ`. Establish `htor : ∀ q, (X ≫ c.lev q) ^ M = 1` using `fun q => by rw [← comp_pow, c.lev_tors, comp_one]`.
+
+Establish `hlev1 : ∀ q, (X ≫ c.lev q ≫ la = 1 ↔ X ≫ c.lev q = 1)` using `fun q => by`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `htA.1 _ (htor q) (by rw [Category.assoc]; exact e)`. Introduce `e`.
+
+Rewrite using `[← Category.assoc, e, one_comp]`. Establish `hlevM : ∀ q b, c.lev (q + M • b) = c.lev q` using `fun q b => by`. Rewrite using `[c.lev_add, siegPre_lev_nsmul, c.lev_tors, _root_.mul_one]`. Use `⟨fun a => ?_, fun g hg => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hpt a, (GlobalTheory.T.zarhinProductMkPoint_basic_facts c.A B (𝟙 _) (fun i => X ≫ c.lev (κ (Fin.castAdd 4 i) a)) (fun j => X ≫ c.lev (κ (Fin.natAdd 4 j) a) ≫ la) 1 1).2.2.1, ← (hK.1 a)]`.
+
+Simplify using `only [hlev1, geo1]`. Conclude with `(Fin.forall_fin_add (m := 4) (n := 4) (fun k : Fin 8 => ∃ b, κ k a = M • b)).symm`. Take `⟨-, hpow, hone, hg'⟩` from `GlobalTheory.T.zarhinProductMkPoint_basic_facts c.A B (𝟙 _) (fun i => g ≫ pa c.A B i) (fun j => g ≫ pb c.A B j) g M`. Establish `hgM : mkZ c.A B (fun i => (g ≫ pa c.A B i) ^ M) (fun j => (g ≫ pb c.A B j) ^ M) = 1`. Rewrite using `[← hpow, ← hg', hg]`.
+
+Take `⟨hu, hv⟩` from `(GlobalTheory.T.zarhinProductMkPoint_basic_facts c.A B (𝟙 _) (fun i => (g ≫ pa c.A B i) ^ M) (fun j => (g ≫ pb c.A B j) ^ M) g M).2.2.1.1 hgM`. Establish `eu : ∀ i, ∃ q, X ≫ c.lev q = g ≫ pa c.A B i` using `fun i => geo.2.1 _ (hu i)`. Establish `ev : ∀ j, ∃ q, X ≫ c.lev q ≫ la = g ≫ pb c.A B j` using `fun j => by`. Take `⟨y, hyM, hy⟩` from `htA.2 _ (hv j)`. Take `⟨q, hq⟩` from `geo.2.1 y hyM`.
+
+Conclude with `⟨q, by rw [← Category.assoc, hq, hy]⟩`. Use `choose qa hqa using eu`. Use `choose qb hqb using ev`. Set `cc : Fin 8 → (Fin h ⊕ Fin h → ℤ)` to `fun k => Fin.addCases (m := 4) (n := 4) (motive := fun _ => Fin h ⊕ Fin h → ℤ) qa qb k`. Take `⟨a, ha⟩` from `hK.2 cc`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hpt a, hg']`. Use `congr 1`. Use function extensionality and compare the values at `i`. Take `⟨b, hb⟩` from `ha (Fin.castAdd 4 i)`.
+
+Rewrite using `[hb, hlevM]`. Conclude with `(congrArg (X ≫ c.lev ·) (Fin.addCases_left (motive := fun _ => Fin h ⊕ Fin h → ℤ) (left := qa) (right := qb) i)).trans (hqa i)`. Use function extensionality and compare the values at `j`. Take `⟨b, hb⟩` from `ha (Fin.natAdd 4 j)`. Rewrite using `[hb, hlevM]`.
+
+Conclude with `(congrArg (fun q => X ≫ c.lev q ≫ la) (Fin.addCases_right (motive := fun _ => Fin h ⊕ Fin h → ℤ) (left := qa) (right := qb) j)).trans (hqb j)`. Rewrite using `[hpt a, hpt b]`. Establish `W` using `GlobalTheory.T.weilPairing_diagonal_zarhinBundle_eq_zeta_pow h M d S t c B Q la mu hZ hh hM hMo hd hcop hdu hker k x β z hx hz (fun k => κ k a) (fun k => κ k b)`. Establish `hzM : z ^ M = 1`. Use `ext`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, hz, ← map_pow, zetaAway_pow_self (by omega : M ≠ 0), map_one, Units.val_one]`. Take `⟨m, hm⟩` from `(hκ.1 a b).symm.dvd`. Establish `e : z ^ (2 * formZ d h (fun k => κ k a) (fun k => κ k b)) = z ^ (2 * omegaStd a b)`. Establish `: 2 * formZ d h (fun k => κ k a) (fun k => κ k b) = 2 * omegaStd a b + (M : ℤ) * (2 * m)`. Take the linear combination `2 * hm`.
+
+Rewrite using `[this, zpow_add, zpow_mul z (M : ℤ), zpow_natCast, hzM, one_zpow, _root_.mul_one]`. Rewrite `W` using `[e]`. Conclude with `W`.
+-/
 theorem geom_levZ : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A) (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → IsUnit ((d : ℕ) : Γ(S, ⊤)) → SiegKerBy c d → ∀ (κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ)), GlobalTheory.ZarhinFam.KappaOK h M d κ → ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (β : cycAway M →+* k) (z : kˣ), x ≫ t = spMap β → (z : k) = β (zetaAway M) → (∀ a, (toUnit (Over.mk x) ≫ (GlobalTheory.ZarhinFam.levZ c.lev (GlobalTheory.ZarhinFam.incZ c.A B) (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.oMat d) κ) a = 1 ↔ ∃ b, a = M • b)) ∧ (∀ g : Over.mk x ⟶ (GlobalTheory.ZarhinFam.Zob c.A B), g ^ M = 1 → ∃ a, toUnit _ ≫ (GlobalTheory.ZarhinFam.levZ c.lev (GlobalTheory.ZarhinFam.incZ c.A B) (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.oMat d) κ) a = g) ∧ ∀ a b, Out.WeilIs (GlobalTheory.ZarhinFam.Zob c.A B) ((GlobalTheory.ZarhinFam.zP c.A B c.isLB hZ.2.1.isLB d mu).pull (lift (𝟙 (GlobalTheory.ZarhinFam.Zob c.A B)) (𝟙 (GlobalTheory.ZarhinFam.Zob c.A B))).left) M (toUnit (Over.mk x) ≫ (GlobalTheory.ZarhinFam.levZ c.lev (GlobalTheory.ZarhinFam.incZ c.A B) (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.oMat d) κ) a) (toUnit _ ≫ (GlobalTheory.ZarhinFam.levZ c.lev (GlobalTheory.ZarhinFam.incZ c.A B) (GlobalTheory.ZarhinFam.actZ c.A B d la mu) (GlobalTheory.ZarhinFam.oMat d) κ) b) (unitOn (z ^ (2 * omegaStd a b))) := by
   intro h M d S t c B _ _ Q la mu hZ hh hM hMo hd hcop hdu hker κ hκ k _ _ x β z hx hz
   have hla : IsMonHom la := hZ.2.2.2.1

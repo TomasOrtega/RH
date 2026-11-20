@@ -21,6 +21,11 @@ def hermValue (x : ι → R ⊗[K] E) : R ⊗[K] E :=
 
 variable {K H R}
 
+/- English proof (translation)
+Establish `hg : ((unitaryMat g).map (conjBase K E R))ᵀ * baseMatrix K H R * unitaryMat g = baseMatrix K H R` using `g.2`. Establish `h1 : (fun i => conjBase K E R ((unitaryMat g *ᵥ x) i)) = (unitaryMat g).map (conjBase K E R) *ᵥ (fun i => conjBase K E R (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ i`. Unfold `hermValue`.
+
+Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg, Matrix.dotProduct_mulVec]`.
+-/
 theorem hermValue_mulVec (g : unitaryPoints K E H R) (x : ι → R ⊗[K] E) :
     hermValue K H R (unitaryMat g *ᵥ x) = hermValue K H R x := by
   have hg : ((unitaryMat g).map (conjBase K E R))ᵀ * baseMatrix K H R * unitaryMat g =
@@ -33,11 +38,17 @@ theorem hermValue_mulVec (g : unitaryPoints K E H R) (x : ι → R ⊗[K] E) :
   rw [h1, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose,
     Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+The claim follows from `map_smul (show R ⊗[K] E →ₐ[R] R ⊗[K] E from Algebra.TensorProduct.map (AlgHom.id R R) (conj K E).toAlgHom) c z`.
+-/
 theorem conjBase_smul (c : R) (z : R ⊗[K] E) :
     conjBase K E R (c • z) = c • conjBase K E R z :=
   map_smul (show R ⊗[K] E →ₐ[R] R ⊗[K] E from
     Algebra.TensorProduct.map (AlgHom.id R R) (conj K E).toAlgHom) c z
 
+/- English proof (translation)
+Unfold `hermValue`. Establish `: (fun i => conjBase K E R ((c • x) i)) = c • fun i => conjBase K E R (x i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, conjBase_smul]`. Rewrite using `[this, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_smul]`.
+-/
 theorem hermValue_smul (c : R) (x : ι → R ⊗[K] E) :
     hermValue K H R (c • x) = (c * c) • hermValue K H R x := by
   unfold hermValue

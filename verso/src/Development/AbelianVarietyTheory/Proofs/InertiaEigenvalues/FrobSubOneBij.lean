@@ -6,6 +6,27 @@ noncomputable section
 namespace GlobalTheory.PhiGam.TrivCocycle
 open scoped LaurentSeries PowerSeries
 
+/- English proof (translation)
+Establish `inj : Function.Injective (fun a : k⟦X⟧ => (a : k⸨X⸩))` using `HahnSeries.ofPowerSeries_injective (Γ := ℤ)`. Establish `hX` using `vv_eq_coe_X k`. Establish `hv` using `vv_ne_zero k`. Use `choose f hf using R.φ_int`. Take `⟨u, hu⟩` from `R.φ_v`.
+
+Take `⟨l', hl'⟩` from `Nat.exists_eq_add_of_le hl.out.two_le`. Set `T : (ZMod n → k⟦X⟧) →+ (ZMod n → k⟦X⟧)` to `{ toFun := fun m i => (u : k⟦X⟧) * PowerSeries.X ^ (l' + 1) * f (m (i - 1)) map_zero' := by`. Use function extensionality and compare the values at `i`. Apply `inj` to reduce the goal to its premises. Simplify using `[← hf]`.
+
+Use the proof step `map_add' := by`. Introduce `a b`. Use function extensionality and compare the values at `i`. Apply `inj` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, map_add, map_mul, ← hf, mul_add] }`.
+
+Establish `hT : ∀ m i, T m i = (u : k⟦X⟧) * PowerSeries.X ^ (l' + 1) * f (m (i - 1))` using `fun _ _ => rfl`. Establish `hT' : ∀ m i, vv k * (T m i : k⸨X⸩) = R.φ (vv k * (m (i - 1) : k⸨X⸩))`. Introduce `m i`. Rewrite using `[hT, map_mul R.φ, hu, hf, map_mul, map_mul, map_pow, ← hX, hl']`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `haveI : IsPrecomplete (Ideal.span {(PowerSeries.X : k⟦X⟧)}) (ZMod n → k⟦X⟧) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isPrecomplete_finite_module _ _`. Use `haveI : IsHausdorff (Ideal.span {(PowerSeries.X : k⟦X⟧)}) (ZMod n → k⟦X⟧) := by`. Rewrite using `[← PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Establish `key` using `sub_id_bij_of_contracting (Ideal.span {(PowerSeries.X : k⟦X⟧)}) T (contracting_of_semi PowerSeries.X ((u : k⟦X⟧) * PowerSeries.X ^ (l' + 1)) T ?_ ?_)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `s`. Take `⟨m, hm⟩` from `key.1 s`. Use `⟨m, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT', ← hm, Pi.sub_apply, map_sub, mul_sub]`.
+
+Introduce `m h`. Use `key.2 m ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `inj` to reduce the goal to its premises. Apply `mul_left_cancel₀ hv` to reduce the goal to its premises.
+
+Rewrite using `[hT', h]`. Introduce `m`. Use function extensionality and compare the values at `i`. Apply `inj` to reduce the goal to its premises. Simplify using `only [hT, Pi.smul_apply, smul_eq_mul, map_mul, map_pow, ← hf, ← hX, hu, hl']`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `m`. Use `⟨fun i => (u : k⟦X⟧) * PowerSeries.X ^ l' * f (m (i - 1)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [hT, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_sub_one_bij {k : Type} [Field k] {l : ℕ} [hl : Fact l.Prime] (R : RingPG k l) {n : ℕ} [NeZero n] :
     (∀ s : ZMod n → k⟦X⟧, ∃ m : ZMod n → k⟦X⟧,
       ∀ i, R.φ (vv k * (m (i - 1) : k⸨X⸩)) - vv k * (m i : k⸨X⸩) = vv k * (s i : k⸨X⸩)) ∧
@@ -60,6 +81,21 @@ theorem frob_sub_one_bij {k : Type} [Field k] {l : ℕ} [hl : Fact l.Prime] (R :
     simp only [hT, Pi.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Introduce `k _ l _ _ R n _ b g hg hc`. Establish `hX` using `vv_eq_coe_X k`. Take `⟨h1, h2⟩` from `frob_sub_one_bij R (n := n)`. Use `choose g' hg' using fun i => PowerSeries.X_dvd_iff.2 (hg i)`. Set `s : ZMod n → k⟦X⟧` to `fun i => PowerSeries.mk fun j => PowerSeries.coeff (j + 1) (b i)`.
+
+Establish `hb : ∀ i, (b i : k⸨X⸩) = vv k * (s i : k⸨X⸩) + algebraMap k k⸨X⸩ (PowerSeries.constantCoeff (b i))`. Introduce `i`. Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const (b i), map_add, map_mul, ← vv_eq_coe_X]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `h1 s`.
+
+Take `⟨κ, -, hκ⟩` from `R.γ_v`. Use `choose t ht using R.γ_int`. Establish `hd : ∀ i, vv k * ((g' i - ((1 - κ * PowerSeries.X) * t (m i) - m i) : k⟦X⟧) : k⸨X⸩) = (g i : k⸨X⸩) - (R.γ (vv k * (m i : k⸨X⸩)) - vv k * (m i : k⸨X⸩))`. Introduce `i`. Rewrite using `[hg' i, map_mul R.γ, hκ, ht]`.
+
+Simplify using `only [map_sub, map_mul, map_one, ← hX]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `h2 (fun i => g' i - ((1 - κ * PowerSeries.X) * t (m i) - m i)) (by`. Introduce `i`. Rewrite using `[hd, hd, map_sub, map_sub, R.comm]`.
+
+Establish `e` using `hc i`. Rewrite `e` using `[hb i, ← hm i, map_add R.γ, map_sub R.γ, AlgHom.commutes]`. Take the linear combination `-e)`. Use `⟨fun i => PowerSeries.X * m i, fun i => PowerSeries.constantCoeff (b i), fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ j, ((PowerSeries.X * m j : k⟦X⟧) : k⸨X⸩) = vv k * (m j : k⸨X⸩)` using `fun j => by`.
+
+Rewrite using `[map_mul, ← hX]`. Simplify using `only [e1]`. Use `⟨by rw [hm, ← hb], ?_⟩` and prove the remaining obligations. Establish `e` using `hd i`. Rewrite `e` using `[congrFun h0 i, Pi.zero_apply, map_zero, mul_zero]`.
+
+Conclude with `sub_eq_zero.1 e.symm`.
+-/
 theorem main : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {n : ℕ} [NeZero n] (b g : ZMod n → k⟦X⟧), (∀ i, PowerSeries.constantCoeff (g i) = 0) → (∀ i, R.γ (b i : k⸨X⸩) - (b i : k⸨X⸩) = R.φ (g (i - 1) : k⸨X⸩) - (g i : k⸨X⸩)) → ∃ (m : ZMod n → k⟦X⟧) (c : ZMod n → k), ∀ i, (b i : k⸨X⸩) = R.φ (m (i - 1) : k⸨X⸩) - (m i : k⸨X⸩) + algebraMap k k⸨X⸩ (c i) ∧ (g i : k⸨X⸩) = R.γ (m i : k⸨X⸩) - (m i : k⸨X⸩) := by
   intro k _ l _ _ R n _ b g hg hc
   have hX := vv_eq_coe_X k

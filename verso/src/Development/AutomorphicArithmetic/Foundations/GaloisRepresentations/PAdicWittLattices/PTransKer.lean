@@ -13,12 +13,31 @@ section
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {R : Type} [CommRing R] [Algebra ℚ R]
   {gb : GBase D.toG R} {S : Scheme.{0}} {s : S ⟶ Sp R}
 
+/- English proof (translation)
+The claim follows from `MonObj.comp_pow x n f`.
+-/
 private theorem comp_pow_overScheme_grpObj {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (x : T ⟶ A) (n : ℕ) :
     f ≫ x ^ n = (f ≫ x) ^ n := MonObj.comp_pow x n f
 
+/- English proof (translation)
+The claim follows from `MonObj.pow_comp x n φ`.
+-/
 private theorem pow_comp_monHom_overScheme_grpObj {A B T : Over S} [GrpObj A] [GrpObj B] (φ : A ⟶ B) [IsMonHom φ] (x : T ⟶ A) (n : ℕ) :
     (x ^ n) ≫ φ = (x ≫ φ) ^ n := MonObj.pow_comp x n φ
 
+/- English proof (translation)
+Use `haveI := hψ'`. Establish `hd0 : 0 < d`. Break down `Nat.eq_zero_or_pos d with rfl | h0` into its components or cases. Rewrite `hdp` using `[Nat.coprime_zero_left]`. Conclude with `absurd hdp (Fact.out : p.Prime).one_lt.ne'`.
+
+Conclude with `h0`. Establish `hn : 0 < N * d` using `Nat.mul_pos hN hd0`. Establish `hnp : (N * d).Coprime p` using `Nat.Coprime.mul hNp hdp`. Establish `h1 : (a ≫ ψ₁) ^ N = 1`. Rewrite using `[ha]`.
+
+Conclude with `(J₁.onto N hN _).mpr ⟨y, rfl⟩`. Establish `h2 : a ^ d = (a ≫ ψ₁) ≫ ψ'`. Rewrite using `[Category.assoc, hd, comp_pow_overScheme_grpObj, Category.comp_id]`. Establish `h3 : a ^ (N * d) = 1`. Rewrite using `[mul_comm, pow_mul, h2, ← pow_comp_monHom_overScheme_grpObj, h1, MonObj.one_comp]`.
+
+Take `⟨x, hx⟩` from `(I.onto (N * d) hn a).mp h3`. Set `y' : D.toG.La` to `y`. Establish `hJ₁ : J₁.ev N y' = J₁.ev (N * d) (d • y')`. Rewrite using `[HeckeRestrict.ev_nsmul, J₁.tower N d hN hd0]`. Establish `hJ₂ : J₂.ev N y' = J₂.ev (N * d) (d • y')`.
+
+Rewrite using `[HeckeRestrict.ev_nsmul, J₂.tower N d hN hd0]`. Express the relevant statement in the definitionally equal form `a ≫ ψ₁ = J₁.ev N y' at ha`. Express the relevant statement in the definitionally equal form `a ≫ ψ₂ = J₂.ev N y'`. Rewrite `ha`, the goal using `[← hx]`. Rewrite using `[hJ₂]`.
+
+Rewrite `ha` using `[hJ₁]`. Conclude with `(H₂ (N * d) hn hnp x (d • y')).mpr ((H₁ (N * d) hn hnp x (d • y')).mp ha)`.
+-/
 private theorem pt_transfer {N' N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) {o : GObj gb N' s} {o₁ o₂ : GObj gb N s}
     {ψ₁ : o.A ⟶ o₁.A} {ψ₂ : o.A ⟶ o₂.A} {ψ' : o₁.A ⟶ o.A} {d : ℕ} (hψ' : IsMonHom ψ')
     (hd : ψ₁ ≫ ψ' = (𝟙 o.A) ^ d) (hdp : d.Coprime p) {h : G.GAf} {k : Type} [Field k] {t : Sp k ⟶ S}
@@ -55,6 +74,19 @@ private theorem pt_transfer {N' N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) {o : G
 
 end
 
+/- English proof (translation)
+Introduce `RC TD TT p _ D G L R _ _ gb S s N' N o o₁ o₂ ψ₁ ψ₂ h hint hadm T₁ T₂ k _ _ t`. Set `β : R →+* k` to `(Spec.preimage (t ≫ s)).hom`. Establish `hβ : t ≫ s = spMap β`. Simplify using `[β, spMap, Spec.map_preimage]`. Establish `key : ∀ (q₁ q₂ : GObj gb (↑N) s) (φ₁ : o.A ⟶ q₁.A) (φ₂ : o.A ⟶ q₂.A), IsTrans L h o q₁ φ₁ → IsTrans L h o q₂ φ₂ → ∀ (a : Over.mk t ⟶ o.A) (y : D.La), a ≫ φ₁ = toUnit (Over.mk t) ≫ q₁.eta y → a ≫ φ₂ = toUnit (Over.mk t) ≫ q₂.eta y`.
+
+Introduce `q₁ q₂ φ₁ φ₂ U₁ U₂ a y ha`. Take `⟨-, -, ⟨φ', d, hφ', -, hd, -, hdp⟩, -, tate₁⟩` from `U₁`. Take `⟨hmon₂, -, -, -, tate₂⟩` from `U₂`. Take `⟨I₁, J₁, hI₁, hJ₁, R₁⟩` from `tate₁ k t β hβ`. Take `⟨I₂, J₂, hI₂, hJ₂, R₂⟩` from `tate₂ k t β hβ`.
+
+Take `⟨u, hu, hR⟩` from `TD p D G L R gb S s N' o k t I₁ I₂ hI₁ hI₂`. Establish `hc₁` using `(RC p D G L R gb S s (↑N') (↑N') (↑N) o o q₂ k t I₁ I₂ J₂ (𝟙 _) φ₂ u h inferInstance hmon₂ hint).2 hR R₂`. Establish `hw : h * u⁻¹ * h⁻¹ ∈ L.KN ↑N` using `hadm _ (Subgroup.inv_mem _ hu)`. Take `⟨J₃, hJ₃, hR₃⟩` from `TT p D G L R gb S s N q₂ k t J₂ hJ₂ _ hw`. Establish `hwi : Integ L (h * u⁻¹ * h⁻¹)` using `UpperTheory.Gal.Int.Geo.integ_of_mem (UpperTheory.Gal.Int.Geo.KN_anti (one_dvd _) hw)`.
+
+Establish `hc₂` using `(RC p D G L R gb S s (↑N') (↑N) (↑N) o q₂ q₂ k t I₁ J₂ J₃ (𝟙 _ ≫ φ₂) (𝟙 _) (h * u) _ inferInstance inferInstance hwi).2 hc₁ hR₃`. Establish `hg : h * u⁻¹ * h⁻¹ * (h * u) = h` using `by group`. Rewrite `hc₂` using `[hg, Category.id_comp, Category.comp_id]`. Establish `hN : 0 < (N : ℕ)` using `lt_of_lt_of_le (by norm_num) N.2.1`. Rewrite `ha` using `[hJ₁ y]`.
+
+Rewrite using `[hJ₃ y]`. Conclude with `pt_transfer hN N.2.2 hφ' hd hdp I₁ J₁ J₃ R₁ hc₂ a y ha`. Establish `hz : ∀ q : GObj gb (↑N) s, toUnit (Over.mk t) ≫ q.eta (0 : D.La) = 1`. Introduce `q`. Rewrite using `[show q.eta (0 : D.La) = 1 from q.eta_zero, MonObj.comp_one]`.
+
+Use `⟨fun a => ⟨fun h1 => ?_, fun h2 => ?_⟩, fun a y => ⟨key o₁ o₂ ψ₁ ψ₂ T₁ T₂ a y, key o₂ o₁ ψ₂ ψ₁ T₂ T₁ a y⟩⟩` and prove the remaining obligations. Use `key o₁ o₂ ψ₁ ψ₂ T₁ T₂ a 0 (by rw [h1, hz])` as an intermediate fact. Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Use `key o₂ o₁ ψ₂ ψ₁ T₂ T₁ a 0 (by rw [h2, hz])` as an intermediate fact. Rewrite `this` using `[hz]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.G3.pTransKer :
     RelComp → TateDiff → TateTwist → TransKer := by
   intro RC TD TT p _ D G L R _ _ gb S s N' N o o₁ o₂ ψ₁ ψ₂ h hint hadm T₁ T₂ k _ _ t

@@ -24,12 +24,25 @@ def dsum (Γ H : Subgroup G) (Φ : G → ℂ) : ℂ := if h : ∃ T, Reps Γ H T
 
 def cj (K : Subgroup G) (x : G) : Subgroup G := K.comap (MulAut.conj x⁻¹).toMonoidHom
 
+/- English proof (translation)
+Simplify using `[cj]`.
+-/
 theorem mem_cj {K : Subgroup G} {x κ : G} : κ ∈ cj K x ↔ x⁻¹ * κ * x ∈ K := by
   simp [cj]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T, fun g => by obtain ⟨t, ⟨ht, e⟩, -⟩ := h g; exact ⟨t, ht, e⟩⟩`.
+-/
 theorem Reps.cover {Γ H : Subgroup G} {T : Finset G} (h : Reps Γ H T) : Cover Γ H :=
   ⟨T, fun g => by obtain ⟨t, ⟨ht, e⟩, -⟩ := h g; exact ⟨t, ht, e⟩⟩
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h`. Set `q : G → DoubleCoset.Quotient (Γ : Set G) (H : Set G)` to `DoubleCoset.mk Γ H`. Establish `hq : ∀ a b, q a = q b ↔ ∃ (γ : Γ) (κ : G), κ ∈ H ∧ b = (γ : G) * a * κ` using `fun a b => by`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨fun ⟨h, hh, k, hk, e⟩ => ⟨⟨h, hh⟩, k, hk, e⟩, fun ⟨h, k, hk, e⟩ => ⟨h, h.2, k, hk, e⟩⟩`.
+
+Use `⟨S.image fun s => (q s).out, fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `hS g`. Establish `e1 : q s = q g` using `(hq _ _).2 e`. Establish `ho : ∀ c : DoubleCoset.Quotient (Γ : Set G) (H : Set G), q c.out = c` using `fun c => Quotient.out_eq c`. Use `⟨(q s).out, ⟨Finset.mem_image_of_mem _ hs, (hq _ _).1 ((ho _).trans e1)⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `t ⟨ht, h⟩`. Take `⟨s', -, rfl⟩` from `Finset.mem_image.1 ht`. Use `(hq _ _).2 h` as an intermediate fact. Rewrite `this` using `[ho]`. Rewrite using `[this, e1]`.
+-/
 theorem Cover.reps {Γ H : Subgroup G} (h : Cover Γ H) : ∃ T, Reps Γ H T := by
   obtain ⟨S, hS⟩ := h
   let q : G → DoubleCoset.Quotient (Γ : Set G) (H : Set G) := DoubleCoset.mk Γ H
@@ -47,10 +60,18 @@ theorem Cover.reps {Γ H : Subgroup G} (h : Cover Γ H) : ∃ T, Reps Γ H T := 
   rw [ho] at this
   rw [this, e1]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h`. Conclude with `⟨S, fun g => by obtain ⟨s, hs, γ, κ, hκ, e⟩ := hS g; exact ⟨s, hs, γ, κ, hle hκ, e⟩⟩`.
+-/
 theorem Cover.mono {Γ H H' : Subgroup G} (h : Cover Γ H') (hle : H' ≤ H) : Cover Γ H := by
   obtain ⟨S, hS⟩ := h
   exact ⟨S, fun g => by obtain ⟨s, hs, γ, κ, hκ, e⟩ := hS g; exact ⟨s, hs, γ, κ, hle hκ, e⟩⟩
 
+/- English proof (translation)
+Rewrite `hne` using `[← Subgroup.inf_relIndex_right]`. Take `⟨U, -, hU, -⟩` from `exists_cosetReps (inf_le_right : H' ⊓ H ≤ H) hne`. Take `⟨S, hS⟩` from `h`. Use `⟨(S ×ˢ U).image fun p => p.1 * p.2, fun g => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, γ, κ, hκ, e⟩` from `hS g`.
+
+Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hU κ hκ`. Conclude with `⟨t * u, Finset.mem_image.2 ⟨(t, u), Finset.mem_product.2 ⟨ht, hu⟩, rfl⟩, γ, u⁻¹ * κ, hu'.1, by rw [e]; group⟩`.
+-/
 theorem Cover.of_relIndex {Γ H H' : Subgroup G} (h : Cover Γ H) (hne : H'.relIndex H ≠ 0) : Cover Γ H' := by
   rw [← Subgroup.inf_relIndex_right] at hne
   obtain ⟨U, -, hU, -⟩ := exists_cosetReps (inf_le_right : H' ⊓ H ≤ H) hne
@@ -60,6 +81,9 @@ theorem Cover.of_relIndex {Γ H H' : Subgroup G} (h : Cover Γ H) (hne : H'.relI
   obtain ⟨u, ⟨hu, hu'⟩, -⟩ := hU κ hκ
   exact ⟨t * u, Finset.mem_image.2 ⟨(t, u), Finset.mem_product.2 ⟨ht, hu⟩, rfl⟩, γ, u⁻¹ * κ, hu'.1, by rw [e]; group⟩
 
+/- English proof (translation)
+Establish `h : ∃ T, Reps Γ H T` using `⟨T, hT⟩`. Rewrite using `[dsum, dif_pos h, wsum, sum_classReps_refine le_rfl hT h.choose_spec Φ hl hr (F := {1}) (by simp [H.one_mem]) (fun κ hκ => ⟨1, by simpa using hκ, fun u hu => by simpa using hu.1⟩)]`. Simplify using `[wsum]`.
+-/
 theorem dsum_eq {Γ H : Subgroup G} {T : Finset G} (hT : Reps Γ H T) {Φ : G → ℂ} (hl : ∀ (γ : Γ) g, Φ ((γ : G) * g) = Φ g)
     (hr : ∀ κ ∈ H, ∀ g, Φ (g * κ) = Φ g) : dsum Γ H Φ = wsum Γ H T Φ := by
   have h : ∃ T, Reps Γ H T := ⟨T, hT⟩
@@ -67,6 +91,9 @@ theorem dsum_eq {Γ H : Subgroup G} {T : Finset G} (hT : Reps Γ H T) {Φ : G �
     (fun κ hκ => ⟨1, by simpa using hκ, fun u hu => by simpa using hu.1⟩)]
   simp [wsum]
 
+/- English proof (translation)
+Establish `h` using `(hc.mono hle).reps`. Establish `h'` using `hc.reps`. Rewrite using `[dsum, dif_pos h', dsum, dif_pos h, wsum, wsum, sum_classReps_refine hle h.choose_spec h'.choose_spec Φ hl hr hF hFu]`.
+-/
 theorem dsum_refine {Γ H H' : Subgroup G} (hle : H' ≤ H) (hc : Cover Γ H') {Φ : G → ℂ}
     (hl : ∀ (γ : Γ) g, Φ ((γ : G) * g) = Φ g) (hr : ∀ κ ∈ H', ∀ g, Φ (g * κ) = Φ g) {F : Finset G} (hF : ∀ κ ∈ F, κ ∈ H)
     (hFu : ∀ κ ∈ H, ∃! u, u ∈ F ∧ u⁻¹ * κ ∈ H') : dsum Γ H' Φ = dsum Γ H fun g => ∑ u ∈ F, Φ (g * u) := by
@@ -74,6 +101,9 @@ theorem dsum_refine {Γ H H' : Subgroup G} (hle : H' ≤ H) (hc : Cover Γ H') {
   have h' := hc.reps
   rw [dsum, dif_pos h', dsum, dif_pos h, wsum, wsum, sum_classReps_refine hle h.choose_spec h'.choose_spec Φ hl hr hF hFu]
 
+/- English proof (translation)
+Unfold `dsum wsum`. Use `split_ifs`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Simplify using the standard rewrite rules.
+-/
 theorem dsum_mul (Γ H : Subgroup G) (c : ℂ) (Φ : G → ℂ) : dsum Γ H (fun g => c * Φ g) = c * dsum Γ H Φ := by
   unfold dsum wsum
   split_ifs
@@ -81,6 +111,9 @@ theorem dsum_mul (Γ H : Subgroup G) (c : ℂ) (Φ : G → ℂ) : dsum Γ H (fun
     exact Finset.sum_congr rfl fun _ _ => by ring
   · simp
 
+/- English proof (translation)
+Unfold `dsum wsum`. Use `split_ifs`. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Simplify using the standard rewrite rules.
+-/
 theorem dsum_sum (Γ H : Subgroup G) {ι : Type} (s : Finset ι) (Φ : ι → G → ℂ) :
     dsum Γ H (fun g => ∑ i ∈ s, Φ i g) = ∑ i ∈ s, dsum Γ H (Φ i) := by
   unfold dsum wsum
@@ -89,6 +122,9 @@ theorem dsum_sum (Γ H : Subgroup G) {ι : Type} (s : Finset ι) (Φ : ι → G 
     exact Finset.sum_comm
   · simp
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3⟩` from `exists_cosetReps hle hne`. Rewrite using `[dsum_refine hle hc hl (fun κ hκ => hr κ (hle hκ)) h1 h2, ← dsum_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_congr rfl fun u hu => hr u (h1 u hu) g, Finset.sum_const, h3, nsmul_eq_mul]`.
+-/
 theorem dsum_index {Γ H H' : Subgroup G} (hle : H' ≤ H) (hne : H'.relIndex H ≠ 0) (hc : Cover Γ H') {Φ : G → ℂ}
     (hl : ∀ (γ : Γ) g, Φ ((γ : G) * g) = Φ g) (hr : ∀ κ ∈ H, ∀ g, Φ (g * κ) = Φ g) :
     dsum Γ H' Φ = (H'.relIndex H : ℂ) * dsum Γ H Φ := by
@@ -98,6 +134,11 @@ theorem dsum_index {Γ H H' : Subgroup G} (hle : H' ≤ H) (hne : H'.relIndex H 
   funext g
   rw [Finset.sum_congr rfl fun u hu => hr u (h1 u hu) g, Finset.sum_const, h3, nsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `g`. Take `⟨t, ⟨ht, γ, κ, hκ, e⟩, hu⟩` from `hT (δ⁻¹ * g * x)`. Use `⟨δ * t * x⁻¹, ⟨Finset.mem_image_of_mem _ ht, ⟨δ * γ * δ⁻¹, mem_cj.2 (by simp [mul_assoc])⟩, x * κ * x⁻¹, mem_cj.2 (by simpa [mul_assoc] using hκ), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: g = δ * (δ⁻¹ * g * x) * x⁻¹` using `by group`. Rewrite using `[this, e]`.
+
+Simplify using `[mul_assoc]`. Introduce and unpack `s ⟨hs, γ', κ', hκ', e'⟩`. Take `⟨t', ht', rfl⟩` from `Finset.mem_image.1 hs`. Rewrite using `[hu t' ⟨ht', ⟨_, mem_cj.1 γ'.2⟩, _, mem_cj.1 hκ', by rw [e']; simp [mul_assoc]⟩]`.
+-/
 theorem reps_conj {Γ H : Subgroup G} {T : Finset G} (hT : Reps Γ H T) (δ x : G) :
     Reps (cj Γ δ) (cj H x) (T.image fun t => δ * t * x⁻¹) := by
   intro g
@@ -118,6 +159,13 @@ def stabConj (Γ H : Subgroup G) (δ x t : G) : stabQ (cj Γ δ) (cj H x) (δ * 
   left_inv γ := Subtype.ext (Subtype.ext (by simp [mul_assoc]))
   right_inv γ := Subtype.ext (Subtype.ext (by simp [mul_assoc]))
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hc.reps`. Rewrite using `[dsum_eq hT hl hr, dsum_eq (reps_conj hT δ x), wsum, wsum, Finset.sum_image (fun a _ b _ e => by simpa using e)]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr (stabConj Γ H δ x t)]`. Simplify using `[mul_assoc]`.
+
+Introduce `γ g`. Rewrite using `[← hl ⟨_, mem_cj.1 γ.2⟩ (δ⁻¹ * g * x)]`. Simplify using `[mul_assoc]`. Introduce `κ hκ g`. Rewrite using `[← hr _ (mem_cj.1 hκ) (δ⁻¹ * g * x)]`.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem dsum_conj {Γ H : Subgroup G} (hc : Cover Γ H) {Φ : G → ℂ} (hl : ∀ (γ : Γ) g, Φ ((γ : G) * g) = Φ g)
     (hr : ∀ κ ∈ H, ∀ g, Φ (g * κ) = Φ g) (δ x : G) :
     dsum (cj Γ δ) (cj H x) (fun g => Φ (δ⁻¹ * g * x)) = dsum Γ H Φ := by
@@ -133,9 +181,17 @@ theorem dsum_conj {Γ H : Subgroup G} (hc : Cover Γ H) {Φ : G → ℂ} (hl : �
     rw [← hr _ (mem_cj.1 hκ) (δ⁻¹ * g * x)]
     simp [mul_assoc]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[mem_cj]`.
+-/
 theorem cj_one (K : Subgroup G) : cj K 1 = K := by
   ext; simp [mem_cj]
 
+/- English proof (translation)
+Use `h x⁻¹` as an intermediate fact. Rewrite `this` using `[cj, Subgroup.relIndex_comap]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `κ`. Rewrite using `[mem_cj]`.
+
+Conclude with `⟨fun h => ⟨_, h, by simp [mul_assoc]⟩, by rintro ⟨k, hk, rfl⟩; simpa [mul_assoc] using hk⟩`.
+-/
 theorem relIndex_cj {K : Subgroup G} (h : ∀ x, (cj K x).relIndex K ≠ 0) (x : G) : K.relIndex (cj K x) ≠ 0 := by
   have := h x⁻¹
   rw [cj, Subgroup.relIndex_comap] at this
@@ -146,18 +202,39 @@ theorem relIndex_cj {K : Subgroup G} (h : ∀ x, (cj K x).relIndex K ≠ 0) (x :
 
 def ind (Δ H : Subgroup G) (x g : G) : ℂ := if ∃ δ ∈ Δ, ∃ κ ∈ H, g = δ * x * κ then 1 else 0
 
+/- English proof (translation)
+Unfold `ind`. Use `if_congr ⟨fun ⟨a, ha, k, hk, e⟩ => ⟨δ⁻¹ * a, Δ.mul_mem (Δ.inv_mem hδ) ha, k, hk, ?_⟩, fun ⟨a, ha, k, hk, e⟩ => ⟨δ * a, Δ.mul_mem hδ ha, k, hk, by rw [e]; group⟩⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc a, ← e]`. Use `group`.
+-/
 theorem ind_left {Δ H : Subgroup G} {x δ : G} (hδ : δ ∈ Δ) (g : G) : ind Δ H x (δ * g) = ind Δ H x g := by
   unfold ind
   refine if_congr ⟨fun ⟨a, ha, k, hk, e⟩ => ⟨δ⁻¹ * a, Δ.mul_mem (Δ.inv_mem hδ) ha, k, hk, ?_⟩,
     fun ⟨a, ha, k, hk, e⟩ => ⟨δ * a, Δ.mul_mem hδ ha, k, hk, by rw [e]; group⟩⟩ rfl rfl
   rw [mul_assoc, mul_assoc, ← mul_assoc a, ← e]; group
 
+/- English proof (translation)
+Unfold `ind`. Use `if_congr ⟨fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, k * κ⁻¹, H.mul_mem hk (H.inv_mem hκ), ?_⟩, fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, k * κ, H.mul_mem hk hκ, by rw [e]; group⟩⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+-/
 theorem ind_right {Δ H : Subgroup G} {x κ : G} (hκ : κ ∈ H) (g : G) : ind Δ H x (g * κ) = ind Δ H x g := by
   unfold ind
   refine if_congr ⟨fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, k * κ⁻¹, H.mul_mem hk (H.inv_mem hκ), ?_⟩,
     fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, k * κ, H.mul_mem hk hκ, by rw [e]; group⟩⟩ rfl rfl
   rw [← mul_assoc, ← e]; group
 
+/- English proof (translation)
+Take `⟨F, h1, h2, -⟩` from `exists_cosetReps hle hne`. Use `⟨(F.filter fun u => ∃ δ ∈ Δ, ∃ κ ∈ H', u = δ * 1 * κ).card, ?_, fun Γ hΓ hc => ?_⟩` and prove the remaining obligations. Take `⟨u, ⟨hu, hu'⟩, -⟩` from `h2 1 H.one_mem`. Conclude with `Finset.card_ne_zero_of_mem (Finset.mem_filter.2 ⟨hu, 1, Δ.one_mem, u, by simpa using hu', by simp⟩)`. Rewrite using `[dsum_refine hle hc (fun γ => ind_left (hΓ γ.2)) (fun κ hκ => ind_right hκ) h1 h2, ← dsum_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ∃ δ ∈ Δ, ∃ κ ∈ H, g = δ * 1 * κ`. Take `⟨δ, hδ, κ, hκ, rfl⟩` from `hg`. Establish `e : ∑ u ∈ F, ind Δ H' 1 (κ * u) = ∑ u ∈ F, ind Δ H' 1 u` using `by choose! r hr hru using fun u (hu : u ∈ H) => h2 u hu`.
+
+Establish `hm : ∀ u ∈ F, κ * u ∈ H` using `fun u hu => H.mul_mem hκ (h1 u hu)`. Use `Finset.sum_bij (fun u _ => r (κ * u)) (fun u hu => (hr _ (hm u hu)).1) (fun a ha b hb e => ?_) (fun b hb => ?_) (fun u hu => ?_)` and prove the remaining obligations. Establish `h3` using `(hr _ (hm a ha)).2`. Establish `h4` using `(hr _ (hm b hb)).2`. Rewrite `h3` using `[e]`.
+
+Use `H'.mul_mem (H'.inv_mem h3) h4` as an intermediate fact. Conclude with `(hru b (h1 b hb) a ⟨ha, by simpa [mul_assoc] using this⟩).trans (hru b (h1 b hb) b ⟨hb, by simp [H'.one_mem]⟩).symm`. Establish `hb' : κ⁻¹ * b ∈ H` using `H.mul_mem (H.inv_mem hκ) (h1 b hb)`. Use `⟨r (κ⁻¹ * b), (hr _ hb').1, (hru _ (hm _ (hr _ hb').1) b ⟨hb, ?_⟩).symm⟩` and prove the remaining obligations. Simplify `H'.inv_mem (hr _ hb').2` using `[mul_assoc]`.
+
+Rewrite using `[← ind_right (hr _ (hm u hu)).2 (r (κ * u))]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[mul_one, mul_assoc, ind_left hδ]`. Rewrite using `[e, ← one_mul κ, ind_right hκ]`. Simplify using `only [ind]`.
+
+Rewrite using `[if_pos ⟨1, Δ.one_mem, 1, H.one_mem, by simp⟩, Finset.sum_boole, mul_one]`. Simplify using `only [mul_one]`. Rewrite using `[ind, if_neg hg, mul_zero]`. Use `Finset.sum_eq_zero fun u hu => if_neg fun ⟨δ, hδ, κ, hκ, e⟩ => hg ⟨δ, hδ, κ * u⁻¹, H.mul_mem (hle hκ) (H.inv_mem (h1 u hu)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`.
+
+Use `group`.
+-/
 theorem mass_refine (Δ : Subgroup G) {H H' : Subgroup G} (hle : H' ≤ H) (hne : H'.relIndex H ≠ 0) :
     ∃ n : ℕ, n ≠ 0 ∧ ∀ Γ : Subgroup G, Γ ≤ Δ → Cover Γ H' → dsum Γ H' (ind Δ H' 1) = n * dsum Γ H (ind Δ H 1) := by
   obtain ⟨F, h1, h2, -⟩ := exists_cosetReps hle hne
@@ -194,6 +271,13 @@ theorem mass_refine (Δ : Subgroup G) {H H' : Subgroup G} (hle : H' ≤ H) (hne 
     refine Finset.sum_eq_zero fun u hu => if_neg fun ⟨δ, hδ, κ, hκ, e⟩ => hg ⟨δ, hδ, κ * u⁻¹, H.mul_mem (hle hκ) (H.inv_mem (h1 u hu)), ?_⟩
     rw [← mul_assoc, ← e]; group
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hc.reps`. Use `⟨∑ t ∈ T, ((Nat.card (stabQ Γ H t) : ℝ))⁻¹ * if ∃ δ ∈ Δ, ∃ κ ∈ H, t = δ * 1 * κ then 1 else 0, ?_, ?_⟩` and prove the remaining obligations. Take `⟨t, ⟨ht, γ, κ, hκ, e⟩, -⟩` from `hT 1`. Use `Finset.sum_pos' (fun s _ => by positivity) ⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e' : t = (γ : G)⁻¹ * 1 * κ⁻¹` using `by rw [e]; group`.
+
+Rewrite using `[if_pos ⟨(γ : G)⁻¹, Δ.inv_mem (hΓ γ.2), κ⁻¹, H.inv_mem hκ, e'⟩, mul_one]`. Use `haveI := hf t`. Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`. Rewrite using `[dsum_eq hT (fun γ => ind_left (hΓ γ.2)) (fun κ hκ => ind_right hκ), wsum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Unfold `ind`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mass_pos {Δ Γ H : Subgroup G} (hΓ : Γ ≤ Δ) (hc : Cover Γ H) (hf : ∀ t, Finite (stabQ Γ H t)) :
     ∃ m : ℝ, 0 < m ∧ dsum Γ H (ind Δ H 1) = m := by
   obtain ⟨T, hT⟩ := hc.reps
@@ -210,6 +294,23 @@ theorem mass_pos {Δ Γ H : Subgroup G} (hΓ : Γ ≤ Δ) (hc : Cover Γ H) (hf 
     unfold ind
     split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨m, hm, em⟩` from `mass_pos hΓ hc hf`. Take `⟨m', hm', em'⟩` from `mass_pos hΓ' hc' hf'`. Establish `key : ∀ x, ∃ q : ℂ, ∀ Γ : Subgroup G, Γ ≤ Δ → Cover Γ K → dsum Γ K (ind Δ K x) = q * dsum Γ K (ind Δ K 1)`. Introduce `x`. Establish `h1 : (cj K x ⊓ K).relIndex K ≠ 0` using `by rw [Subgroup.inf_relIndex_right]; exact hK x`.
+
+Establish `h2 : (cj K x ⊓ K).relIndex (cj K x) ≠ 0` using `by rw [Subgroup.inf_relIndex_left]; exact relIndex_cj hK x`. Take `⟨n, -, en⟩` from `mass_refine Δ inf_le_right h1`. Take `⟨n', hn', en'⟩` from `mass_refine Δ inf_le_left h2`. Use `⟨n / n', fun Γ hΓ hc => ?_⟩` and prove the remaining obligations. Establish `hn'' : (n' : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn'`.
+
+Rewrite using `[div_mul_eq_mul_div, ← en Γ hΓ (hc.of_relIndex h1), en' Γ hΓ (hc.of_relIndex h1), mul_div_cancel_left₀ _ hn'', ← dsum_conj hc (fun γ => ind_left (hΓ γ.2)) (fun κ hκ => ind_right hκ) 1 x, cj_one]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Unfold `ind`. Use `if_congr ⟨fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, x * k * x⁻¹, mem_cj.2 (by simpa [mul_assoc] using hk), ?_⟩, fun ⟨a, ha, k, hk, e⟩ => ⟨a, ha, _, mem_cj.1 hk, by rw [e]; group⟩⟩ rfl rfl` and prove the remaining obligations.
+
+Establish `: g = (1⁻¹ * g * x) * x⁻¹` using `by group`. Rewrite using `[this, e]`. Use `group`. Use `choose q hq using key`. Establish `hcΔ : Cover Δ K`.
+
+Take `⟨S, hS⟩` from `hc`. Conclude with `⟨S, fun g => by obtain ⟨s, hs, γ, e⟩ := hS g; exact ⟨s, hs, ⟨γ, hΓ γ.2⟩, e⟩⟩`. Take `⟨X, hX⟩` from `hcΔ.reps`. Use `⟨m / m', div_pos hm hm', fun Φ hl hr => ?_⟩` and prove the remaining obligations. Establish `hΦ : Φ = fun g => ∑ x ∈ X, Φ x * ind Δ K x g`.
+
+Use function extensionality and compare the values at `g`. Take `⟨x, ⟨hx, δ, κ, hκ, e⟩, hu⟩` from `hX g`. Rewrite using `[Finset.sum_eq_single_of_mem x hx fun y hy hne => ?_]`. Rewrite using `[ind, if_pos ⟨δ, δ.2, κ, hκ, e⟩, mul_one, e, hr κ hκ, hl _ δ.2]`. Rewrite using `[ind, if_neg fun ⟨a, ha, k, hk, e'⟩ => hne (hu y ⟨hy, ⟨a, ha⟩, k, hk, e'⟩), mul_zero]`.
+
+Establish `hm'' : (m' : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hm'.ne'`. Rewrite using `[hΦ, dsum_sum, dsum_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[dsum_mul, dsum_mul, hq x Γ hΓ hc, hq x Γ' hΓ' hc', em, em']`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem dsum_prop {Δ Γ Γ' K : Subgroup G} (hK : ∀ x, (cj K x).relIndex K ≠ 0) (hΓ : Γ ≤ Δ) (hΓ' : Γ' ≤ Δ)
     (hc : Cover Γ K) (hc' : Cover Γ' K) (hf : ∀ t, Finite (stabQ Γ K t)) (hf' : ∀ t, Finite (stabQ Γ' K t)) :
     ∃ c : ℝ, 0 < c ∧ ∀ Φ : G → ℂ, (∀ δ ∈ Δ, ∀ g, Φ (δ * g) = Φ g) → (∀ κ ∈ K, ∀ g, Φ (g * κ) = Φ g) →

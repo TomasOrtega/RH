@@ -21,12 +21,20 @@ def LineStabHaar.invUnits (b : InfinitePlace E → ℂ) : InfinitePlace E → �
   fun w => if hb : b w = 0 then 1 else (Units.mk0 (b w) hb)⁻¹
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[invUnits, hb w]`.
+-/
 theorem LineStabHaar.invUnits_of_ne {b : InfinitePlace E → ℂ} (hb : ∀ w, b w ≠ 0) :
     invUnits b = fun w => (Units.mk0 (b w) (hb w))⁻¹ := by
   funext w
   simp [invUnits, hb w]
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `h0 : Measurable fun z : ℂ => if hz : z = 0 then (1 : ℂˣ) else (Units.mk0 z hz)⁻¹`. Use `measurable_iff_comap_le.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MeasurableSpace.comap _ (MeasurableSpace.comap Units.val _) ≤ _`. Rewrite using `[MeasurableSpace.comap_comp]`. Establish `e : (Units.val ∘ fun z : ℂ => if hz : z = 0 then (1 : ℂˣ) else (Units.mk0 z hz)⁻¹) = fun z => if z = 0 then 1 else z⁻¹`.
+
+Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z = 0 <;> simp [hz]`. Rewrite using `[e]`. Conclude with `(Measurable.ite (measurableSet_singleton 0) measurable_const measurable_inv).comap_le`. Conclude with `measurable_pi_lambda _ fun w => h0.comp (measurable_pi_apply w)`.
+-/
 theorem LineStabHaar.measurable_invUnits : Measurable (invUnits (E := E)) := by
   have h0 : Measurable fun z : ℂ => if hz : z = 0 then (1 : ℂˣ) else (Units.mk0 z hz)⁻¹ := by
     refine measurable_iff_comap_le.2 ?_
@@ -42,6 +50,11 @@ theorem LineStabHaar.measurable_invUnits : Measurable (invUnits (E := E)) := by
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `: Module.Finite E W` using `Module.Finite.of_basis v`. Establish `hli : LinearIndependent E ![x₀, w₀]`. Use `LinearIndependent.pair_iff.2 fun s t hst => ?_` and prove the remaining obligations. Establish `e` using `congrArg (h.toSesq x₀) hst`. Rewrite `e` using `[map_add, map_smul, map_smul, hp.1, hp.2.2, map_zero, smul_zero, zero_add, smul_eq_mul, mul_one]`.
+
+Substitute `e` using the available equality. Rewrite `hst` using `[zero_smul, add_zero, smul_eq_zero]`. Conclude with `⟨hst.resolve_right hx₀, rfl⟩`. Simplify using `using hli.fintype_card_le_finrank`.
+-/
 theorem LineStabHaar.two_le_finrank {h : HermitianForm F E W} (v : Basis ι E W) {x₀ w₀ : W}
     (hx₀ : x₀ ≠ 0) (hp : IsHyperbolicPair h x₀ w₀) : 2 ≤ finrank E W := by
   have : Module.Finite E W := Module.Finite.of_basis v
@@ -57,6 +70,35 @@ theorem LineStabHaar.two_le_finrank {h : HermitianForm F E W} (v : Basis ι E W)
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Introduce `x₀ hx₀ hiso μP _`. Take `⟨w₀, hxw, hww⟩` from `h1 x₀ hx₀ hiso`. Establish `hp : IsHyperbolicPair h x₀ w₀` using `⟨hiso, hww, hxw⟩`. Take `⟨τ₀, hτc, hτ⟩` from `h3 x₀ w₀ hp`. Take `⟨β, hβc, hβ⟩` from `h4 x₀ hx₀`.
+
+Establish `hN` using `LineStabHaar.two_le_finrank v hx₀ hp`. Establish `hX` using `h2 x₀ hx₀`. Establish `act : ∀ (g k : archUnitary h v) w (z : ι → ℂ), (((g * k : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ z = ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ (((k : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ z)`. Introduce `g k w z`. Simplify using `[Matrix.mulVec_mulVec]`.
+
+Establish `τinv : ∀ a w, ((((τ₀ a)⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = (((a w)⁻¹ : ℂˣ) : ℂ) • vecAt v x₀ w`. Introduce `a w`. Rewrite using `[← map_inv, (hτ a⁻¹ w).1, Pi.inv_apply]`. Establish `hmemP : ∀ t, τ₀ t ∈ lineStab h v x₀` using `fun t w => ⟨t w, (hτ t w).1⟩`. Establish `hnorm : ∀ t, ∀ x ∈ vecFixGroup h v x₀, τ₀ t * x * (τ₀ t)⁻¹ ∈ vecFixGroup h v x₀`.
+
+Introduce `t x hx w`. Rewrite using `[act, act, τinv, Matrix.mulVec_smul, Matrix.mulVec_smul, hx w, (hτ t w).1, smul_smul, Units.inv_mul, one_smul]`. Establish `hinj : ∀ t, τ₀ t ∈ vecFixGroup h v x₀ → t = 1`. Introduce `t ht`. Use function extensionality and compare the values at `w`.
+
+Establish `e` using `ht w`. Rewrite `e` using `[(hτ t w).1]`. Establish `e' : ((t w : ℂ) - 1) • vecAt v x₀ w = 0` using `by rw [sub_smul, one_smul, e, sub_self]`. Conclude with `Units.ext (sub_eq_zero.mp ((smul_eq_zero.mp e').resolve_right (hX w)))`. Establish `hdec : ∀ p : lineStab h v x₀, (p : archUnitary h v) * (τ₀ (β p))⁻¹ ∈ vecFixGroup h v x₀`.
+
+Introduce `p w`. Rewrite using `[act, τinv, Matrix.mulVec_smul, hβ p w, smul_smul, Units.inv_mul, one_smul]`. Use `set N := finrank E W with hNdef`. Set `δ : (InfinitePlace E → ℂˣ) → ℝ≥0` to `fun t => ∏ w, ‖(((t w)⁻¹ : ℂˣ) : ℂ)‖₊ ^ (2 * (N - 1))`. Establish `hδc : Continuous δ` using `continuous_finsetProd _ fun w _ => ((Units.continuous_coe_inv.comp (continuous_apply w)).nnnorm).pow _`.
+
+Establish `hδcoe : ∀ t, (δ t : ℝ≥0∞) = ∏ w, ‖(t w : ℂ)‖ₑ⁻¹ ^ (2 * (N - 2 + 1))`. Introduce `t`. Rewrite using `[show N - 2 + 1 = N - 1 by omega, ENNReal.ofNNReal_finsetProd]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_pow, Units.val_inv_eq_inv_val, nnnorm_inv, ENNReal.coe_inv (nnnorm_ne_zero_iff.mpr (t w).ne_zero), enorm_eq_nnnorm]`.
+
+Set `ν₀ : Measure (vecFixGroup h v x₀)` to `Measure.haar`. Set `ρ : Measure (InfinitePlace E → ℂˣ)` to `Measure.haar`. Establish `hδ : ∀ (t : InfinitePlace E → ℂˣ) (f : archUnitary h v → ℝ≥0∞), Measurable f → ∫⁻ x, f (τ₀ t * x * (τ₀ t)⁻¹) ∂ν₀ = δ t * ∫⁻ x, f x ∂ν₀`. Introduce `t f hf`. Rewrite using `[hδcoe, show N - 2 + 1 = N - 1 by omega]`.
+
+Conclude with `h5 x₀ w₀ hp (τ₀ t) (fun w => (t w : ℂ)) (fun w => (hτ t w).1) (fun w => (hτ t w).2.1) (fun w z hz₁ hz₂ => (hτ t w).2.2 z hz₁ hz₂) ν₀ f hf`. Take `⟨c, hc0, hc⟩` from `h6 (lineStab h v x₀) (vecFixGroup h v x₀) (isClosed_lineStab h v x₀) (isClosed_vecFixGroup h v x₀) (vecFixGroup_le_lineStab h v x₀) τ₀ β δ hτc hβc hδc hmemP hnorm hinj hdec μP ν₀ ρ hδ`. Take `⟨c', hc'0, hc'⟩` from `h7 ρ`. Set `τ : (InfinitePlace E → ℂ) → archUnitary h v` to `fun b => if ∀ w, b w ≠ 0 then τ₀ (LineStabHaar.invUnits b) else 1`. Establish `hτb : ∀ b (hb : ∀ w, b w ≠ 0), τ b = τ₀ fun w => (Units.mk0 (b w) (hb w))⁻¹`.
+
+Introduce `b hb`. Simplify using `only [τ, if_pos hb, LineStabHaar.invUnits_of_ne hb]`. Establish `hset : MeasurableSet {b : InfinitePlace E → ℂ | ∀ w, b w ≠ 0}`. Rewrite using `[Set.ofPred_forall]`. Conclude with `MeasurableSet.iInter fun w => (measurableSet_singleton (0 : ℂ)).compl.preimage (measurable_pi_apply w)`.
+
+Use `⟨((c * c' : ℝ≥0) : ℝ≥0∞) • ν₀, τ, Measure.IsHaarMeasure.smul _ (by simp [hc0, hc'0]) ENNReal.coe_ne_top, Measurable.ite hset (hτc.measurable.comp LineStabHaar.measurable_invUnits) measurable_const, fun b => ?_, fun b hb => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : ∀ w, b w ≠ 0`. Rewrite using `[hτb b hb]`. Conclude with `hmemP _`. Simplify using `only [τ, if_neg hb]`.
+
+Conclude with `one_mem _`. Use function extensionality and compare the values at `w`. Rewrite using `[invApply, hτb b hb, ← map_inv, (hτ _ w).1]`. Simplify using the standard rewrite rules. Establish `hg : Measurable fun t => ∫⁻ x : vecFixGroup h v x₀, φ (x * τ₀ t) ∂ν₀` using `Measurable.lintegral_prod_right' (f := fun q : (InfinitePlace E → ℂˣ) × vecFixGroup h v x₀ => φ (q.2 * τ₀ q.1)) (hφ.comp ((continuous_subtype_val.comp continuous_snd).mul (hτc.comp continuous_fst)).measurable)`.
+
+Establish `key` using `hc' (N - 2) (fun t => ∫⁻ x : vecFixGroup h v x₀, φ (x * τ₀ t) ∂ν₀) (fun b => ∫⁻ x : vecFixGroup h v x₀, φ (x * τ b) ∂ν₀) hg (fun b hb => by rw [hτb b hb])`. Rewrite using `[hc φ hφ]`. Repeatedly rewrite using `[hδcoe]`. Rewrite using `[key]`. Establish `e2 : ∀ b : InfinitePlace E → ℂ, (∏ w, ‖b w‖ₑ ^ (2 * (N - 2))) * ∫⁻ x : vecFixGroup h v x₀, φ (x * τ b) ∂(((c * c' : ℝ≥0) : ℝ≥0∞) • ν₀) = ((c * c' : ℝ≥0) : ℝ≥0∞) * ((∏ w, ‖b w‖ₑ ^ (2 * (N - 2))) * ∫⁻ x : vecFixGroup h v x₀, φ (x * τ b) ∂ν₀)`.
+
+Introduce `b`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, mul_left_comm]`. Repeatedly rewrite using `[e2]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ENNReal.coe_mul, mul_assoc]`.
+-/
 theorem LineStabHaar.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h1 : WittPartner.Statement h) (h2 : VecAtNeZero.Statement v)
     (h3 : TorusEmbedding.Statement h v) (h4 : LineEigenvalue.Statement h v)

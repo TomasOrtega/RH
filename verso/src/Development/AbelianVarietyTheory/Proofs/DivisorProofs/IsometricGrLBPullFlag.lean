@@ -24,6 +24,21 @@ variable {k : Type} [CommRing k] {B Y B' : Scheme.{0}} {q : B ⟶ Sp k} {p : Y �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `h.isVB.isQuasicoherent` as an intermediate fact. Use `(h.isVB.pullback π).isQuasicoherent` as an intermediate fact. Use `(h.isVB.pullback g).isQuasicoherent` as an intermediate fact. Use `VMetric.ext (funext fun σ => Met.ext_of_exists fun z => ?_)` and prove the remaining obligations. Establish `hy : PtsOver.map π w _ (PtsOver.map (pullback.fst π g) rfl _ z) = PtsOver.map g rfl _ (PtsOver.map (pullback.snd π g) w' _ z)` using `Subtype.ext (by simp only [PtsOver.map_val, Category.assoc, pullback.condition])`.
+
+Set `c₀` to `h.isVB.pick (PtsOver.map g rfl _ (PtsOver.map (pullback.snd π g) w' _ z))`. Establish `hc₀` using `h.isVB.mem_pick (σ := σ) (PtsOver.map g rfl _ (PtsOver.map (pullback.snd π g) w' _ z))`. Set `c` to `(c₀.pull h.isVB g).pull (h.isVB.pullback g) (pullback.snd π g)`. Set `c'` to `((c₀.pull h.isVB π).pull (h.isVB.pullback π) (pullback.fst π g)).map (bcIso π g E)`. Establish `hz : z ∈ ptsIn _ σ c.U` using `hc₀`.
+
+Establish `hz' : z ∈ ptsIn _ σ c'.U`. Express the relevant statement in the definitionally equal form `PtsOver.map π w _ (PtsOver.map (pullback.fst π g) rfl _ z) ∈ ptsIn q σ c₀.U`. Rewrite using `[hy]`. Conclude with `hc₀`. Establish `hz'' : PtsOver.map π w _ (PtsOver.map (pullback.fst π g) rfl _ z) ∈ ptsIn q σ c₀.U` using `hz'`.
+
+Establish `key : ∀ b, resM _ (inf_le_left : c.U ⊓ c'.U ≤ c.U) (c.e b) = resM _ (inf_le_right : c.U ⊓ c'.U ≤ c'.U) (c'.e b)`. Introduce `b`. Use `(GlobalTheory.QCoh.res_pullbackSections _ _ _ _ _).trans (Eq.trans ?_ (GlobalTheory.Twist.app_resM _ _ _))` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (GlobalTheory.QCoh.res_pullbackSections _ _ _ _ _).symm)` and prove the remaining obligations. Conclude with `(GlobalTheory.Vert.DivPull.pullbackSquare_app pullback.condition E le_rfl _ le_rfl _ (c₀.e b)).symm`.
+
+Establish `hW : z ∈ ptsIn _ σ (c.U ⊓ c'.U)` using `mem_ptsIn_inf.2 ⟨hz, hz'⟩`. Establish `htr : c'.tr _ σ c z = 1`. Use extensionality with `a b`. Establish `e1` using `c'.crd_resM (σ := σ) (c.e b) inf_le_left hW`. Establish `e2` using `c'.crd_resM (σ := σ) (c'.e b) inf_le_right hW`.
+
+Rewrite `e1` using `[key]`. Rewrite using `[Chart.tr, Matrix.of_apply, ← e1, e2, c'.crd_frame hz', Pi.single_apply, Matrix.one_apply]`. Establish `L : (((h.pull g rfl).pull (pullback.snd π g) w').met σ).G c z = (h.met σ).G c₀ (PtsOver.map g rfl _ (PtsOver.map (pullback.snd π g) w' _ z))` using `(((h.met σ).pull g rfl).pull_G (pullback.snd π g) w' (c₀.pull h.isVB g) hc₀).trans ((h.met σ).pull_G g rfl c₀ hc₀)`. Establish `R1 : ((((h.pull π w).pull (pullback.fst π g) rfl).map (bcIso π g E)).met σ).G c z = ((((h.pull π w).pull (pullback.fst π g) rfl).map (bcIso π g E)).met σ).G c' z`. Use `((((((h.met σ).pull π w).pull (pullback.fst π g) rfl).map (bcIso π g E)).trans c' c z hz')).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[htr, chg_one]`. Both sides reduce to the same expression. Establish `R2 : ((((h.pull π w).pull (pullback.fst π g) rfl).map (bcIso π g E)).met σ).G c' z = (h.met σ).G c₀ (PtsOver.map π w _ (PtsOver.map (pullback.fst π g) rfl _ z))` using `((((h.met σ).pull π w).pull (pullback.fst π g) rfl).map_G (bcIso π g E) ((c₀.pull h.isVB π).pull (h.isVB.pullback π) (pullback.fst π g)) hz').trans ((((h.met σ).pull π w).pull_G (pullback.fst π g) rfl (c₀.pull h.isVB π) hz'').trans ((h.met σ).pull_G π w c₀ hz''))`. Use `⟨c, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[L, R1, R2, hy]`.
+-/
 theorem pull_snd_eq_map_bcIso (π : Y ⟶ B) (w : π ≫ q = p) (g : B' ⟶ B) {E : B.Modules} {n : ℕ}
     (h : VMetric q E n) (w' : pullback.snd π g ≫ g ≫ q = pullback.fst π g ≫ p) :
     (h.pull g rfl).pull (pullback.snd π g) w' =
@@ -78,6 +93,11 @@ end GlobalTheory.FlagBaseChange
 open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.MainNotions Formalism.DegreeFormula GlobalTheory.FlagPoly GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Published
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 
+/- English proof (translation)
+Introduce `k _ B Y B' q p π w g E n h H fl w' i`. Apply the tactic sequence `have hφ : ((h.pull π w).pull (Limits.pullback.fst π g) rfl).IsIsometry ((h.pull g rfl).pull (Limits.pullback.snd π g) w') (FlagBaseChange.bcIso π g E) := (VMetric.isIsometry_iff _).2 (FlagBaseChange.pull_snd_eq_map_bcIso π w g h w')`. Establish `e` using `VMetric.grLB_ofIso hφ ((H.pull π w).pull (Limits.pullback.fst π g) rfl) ((H.pull g rfl).pull (Limits.pullback.snd π g) w') (fl.pull (Limits.pullback.fst π g)) i`. Establish `A` using `VMetric.isometric_grLB_pull k Y (Limits.pullback π g) p (Limits.pullback.fst π g ≫ p) ((Scheme.Modules.pullback π).obj E) n (h.pull π w) (H.pull π w) fl (Limits.pullback.fst π g) rfl i`. Express the relevant statement in the definitionally equal form `HermLB.Isometric _ (VMetric.grLB ((fl.pull (Limits.pullback.fst π g)).ofIso (FlagBaseChange.bcIso π g E)) i _)`.
+
+Rewrite using `[e]`. Conclude with `A.symm`.
+-/
 theorem GlobalTheory.FlagBaseChange.isometric_grLB_pullFlag : ∀ (k : Type) [CommRing k] (B Y B' : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (g : B' ⟶ B) (E : B.Modules) (n : ℕ) (h : VMetric q E n) (H : h.IsCInf) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n) (w' : Limits.pullback.snd π g ≫ g ≫ q = Limits.pullback.fst π g ≫ p) (i : Fin n), ((VMetric.grLB fl i (H.pull π w)).pull (Limits.pullback.fst π g) rfl).Isometric (VMetric.grLB (FlagBaseChange.pullFlag π g fl) i ((H.pull g rfl).pull (Limits.pullback.snd π g) w')) := by
   intro k _ B Y B' q p π w g E n h H fl w' i
   have hφ : ((h.pull π w).pull (Limits.pullback.fst π g) rfl).IsIsometry

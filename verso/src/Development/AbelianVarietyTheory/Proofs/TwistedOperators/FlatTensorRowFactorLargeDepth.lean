@@ -17,6 +17,13 @@ open GlobalTheory.SplitFlip
 section General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h1 : ((List.range G.m).map fun i => φ (.ex i G.m) (G.moveArgs .one g z (.ex i G.m))) = (List.range G.m).map fun i => φ (.ex i G.m) (z (.ex i G.m))`. Use `List.map_congr_left fun i hi => ?_` and prove the remaining obligations. Take `⟨ha, hb⟩` from `hg i (List.mem_range.1 hi)`. Simplify using `only [Grid.moveArgs, Edge.src, Edge.tgt, ha, hb, map_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Establish `h2 : ((List.range G.m).map fun i => exOne φ (.ex i G.m) (G.moveArgs .one g z (.ex i G.m))).prod = 1`.
+
+Simplify using the standard rewrite rules. Simplify using `only [moved, Grid.pathAct, Grid.lines₂, oppositePath, List.map_append, List.prod_append, List.map_map, Function.comp_def]`. Rewrite using `[h1, h2]`. Use `show _ = _ * ((List.range G.m).map fun i => φ (.ex i G.m) (z (.ex i G.m))).prod`. Simplify using `only [exOne_theta, List.map_reverse]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem moved_pureTensor_eq_mul (G : Grid k) (keep : Bool) (g : G.VertexGroup)
     (hg : ∀ i < G.m, g (i, G.m) = 1 ∧ g (i + 1, G.m) = 1)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (z : G.Args) :
@@ -38,6 +45,9 @@ theorem moved_pureTensor_eq_mul (G : Grid k) (keep : Bool) (g : G.VertexGroup)
   simp only [exOne_theta, List.map_reverse]
   ring
 
+/- English proof (translation)
+Simplify using `only [moved, Grid.pathAct, Grid.lines₂]`. Use `congr 3`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem moved_exOne_fill (G : Grid k) (hs : 1 ≤ G.s) (keep : Bool) (g : G.VertexGroup) (γ : List Edge)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (x : ColArgs G) (y y' : RowArgs G)
     (e : Vars G) :
@@ -50,6 +60,11 @@ theorem moved_exOne_fill (G : Grid k) (hs : 1 ≤ G.s) (keep : Bool) (g : G.Vert
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Unfold `flatTensor flatIntegrand`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Rewrite using `[moved_pureTensor_eq_mul G keep g hg φ, moved_exOne_fill G hs keep g _ φ x y 0 e]`.
+
+Simplify using `only [fill_ex]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flatTensor_moved_pureTensor (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k) (keep : Bool)
     (g : G.VertexGroup) (hg : ∀ i < G.m, g (i, G.m) = 1 ∧ g (i + 1, G.m) = 1)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (x : ColArgs G) (y : RowArgs G) :
@@ -66,6 +81,13 @@ theorem flatTensor_moved_pureTensor (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar 
 
 end General
 
+/- English proof (translation)
+Introduce `i hi`. Use `⟨dif_neg (by simp only; omega), ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i + 1 = G.m`. Establish `key : ∀ j (hj : j = i + 1), ρ.elt β (G.m, j) = 1`. Introduce `j hj`.
+
+Substitute `hj` using the available equality. Rewrite using `[Reps.elt, onColumn_apply]`. Conclude with `dif_neg (by omega)`. Rewrite using `[h]`. Conclude with `key G.m h.symm`.
+
+Conclude with `dif_neg (by simp only; omega)`.
+-/
 theorem Reps.elt_row {k : Type} [Field k] {G : Grid k} {hs : 1 ≤ G.s} {J : G.Level} (ρ : Reps hs J)
     (β : Cosets hs J) : ∀ i < G.m, ρ.elt β (i, G.m) = 1 ∧ ρ.elt β (i + 1, G.m) = 1 := by
   intro i hi
@@ -80,6 +102,11 @@ theorem Reps.elt_row {k : Type} [Field k] {G : Grid k} {hs : 1 ≤ G.s} {J : G.L
     exact key G.m h.symm
   · exact dif_neg (by simp only; omega)
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ t β w φ _ u y`. Use `(flatTensor_moved_pureTensor (locGrid ch.G t w.1) one_le_sLen _ _ _ _ (Reps.elt_row _ _) φ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.prod_range]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [GridChoice.rowAt]`. Rewrite using `[dif_pos (show (i : ℕ) < D.R.m from i.2)]`. Both sides reduce to the same expression.
+-/
 theorem flatTensor_rowFactor : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (β : CosFam ch.G t) (w : locPl ch.G t) (φ : ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin ((locGrid ch.G t w.1).rank b.tgt)) (Fin ((locGrid ch.G t w.1).rank b.src)) (Kw w.1) → ℂ), (∀ b ∈ GlobalTheory.SplitFlip.oppositePath D.R.m, GlobalTheory.SplitFlip.IsNatDatum (unifAt w.1) (depthAt ch.G w.1) (φ b)) → ∀ (u : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1)))) (y : ∀ i : Fin D.R.m, WO (ch.G.pS (.chi i D.R.m : Pair T)) (ch.G.pT (.chi i D.R.m : Pair T))), flatTensor one_le_sLen (psiAt ch.W w.1) (unitVol w.1) (moved (locGrid ch.G t w.1) (keepAt ch.G w.1) ((repsAt ch.G t w.1).elt (β w)) ((locGrid ch.G t w.1).lines₂ (GlobalTheory.SplitFlip.oppositePath D.R.m) φ)) (ch.S.colAt t w.1 u) (ch.S.rowAt t w.1 y) = flatTensor one_le_sLen (psiAt ch.W w.1) (unitVol w.1) (moved (locGrid ch.G t w.1) (keepAt ch.G w.1) ((repsAt ch.G t w.1).elt (β w)) ((locGrid ch.G t w.1).lines₂ (GlobalTheory.SplitFlip.oppositePath D.R.m) (GlobalTheory.LocAsm.exOne φ))) (ch.S.colAt t w.1 u) 0 * ∏ i : Fin D.R.m, φ (.ex i D.R.m) (ch.S.B.coord t w.1 (X := (i, D.R.m)) (Y := (i + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩ ((y i).map fun a => cpt w.1 (toEAf D a))) := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩
   intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ t β w φ _ u y

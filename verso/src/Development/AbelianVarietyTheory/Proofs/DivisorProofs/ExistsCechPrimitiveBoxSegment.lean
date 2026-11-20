@@ -7,6 +7,23 @@ namespace GlobalTheory
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Take `⟨ρ, hρ, hρS⟩` from `Metric.isOpen_iff.1 hS x₀ hx₀`. Establish `hsub : closedBall x₀ (ρ/2) ⊆ S` using `(closedBall_subset_ball (by linarith)).trans hρS`. Use `set Kc : Set (E × ℂ) := closedBall x₀ (ρ/2) ×ˢ ((fun t : ℝ => (t:ℂ)) '' Icc 0 1) with hKc`. Establish `hKcomp : IsCompact Kc` using `(isCompact_closedBall _ _).prod (isCompact_Icc.image Complex.continuous_ofReal)`. Establish `hKO : Kc ⊆ O`.
+
+Introduce and unpack `⟨x, τ⟩ ⟨hx, t, ht, rfl⟩`. Conclude with `hSO x (hsub hx) t ht`. Establish `hcd : ContDiffOn ℂ 1 f O` using `hf.contDiffOn hO.uniqueDiffOn`. Establish `hcont : ContinuousOn (fderiv ℂ f) O` using `hcd.continuousOn_fderiv_of_isOpen hO le_rfl`. Take `⟨M, hM⟩` from `hKcomp.exists_bound_of_continuousOn (hcont.mono hKO)`.
+
+Establish `hγ : ∀ x : E, Continuous (fun t : ℝ => (x, (t:ℂ)))` using `fun x => continuous_const.prodMk Complex.continuous_ofReal`. Establish `hdiffAt : ∀ x ∈ S, ∀ t ∈ Icc (0:ℝ) 1, DifferentiableAt ℂ f (x, (t:ℂ))` using `fun x hx t ht => (hf _ (hSO x hx t ht)).differentiableAt`. Establish `hcontf : ∀ x ∈ S, ContinuousOn (fun t : ℝ => f (x, (t:ℂ))) (Icc 0 1)`. Introduce `x hx t ht`. Conclude with `((hdiffAt x hx t ht).continuousAt.comp (x := t) (hγ x).continuousAt).continuousWithinAt`.
+
+Establish `hIoc : uIoc (0:ℝ) 1 ⊆ Icc 0 1`. Rewrite using `[uIoc_of_le zero_le_one]`. Conclude with `Ioc_subset_Icc_self`. Establish `hCl : ContinuousOn (fun t : ℝ => (fderiv ℂ f (x₀, (t:ℂ))).comp (ContinuousLinearMap.inl ℂ E ℂ)) (Icc 0 1)`. Introduce `t ht`.
+
+Establish `h1 : ContinuousAt (fun t : ℝ => fderiv ℂ f (x₀, (t:ℂ))) t` using `(hcont.continuousAt (hO.mem_nhds (hSO x₀ hx₀ t ht))).comp (x := t) (hγ x₀).continuousAt`. Conclude with `(((ContinuousLinearMap.compL ℂ E (E × ℂ) ℂ).flip (ContinuousLinearMap.inl ℂ E ℂ)).continuous.continuousAt.comp (x := t) h1).continuousWithinAt`. Use `⟨?_, (hCl.mono (by rw [uIcc_of_le zero_le_one])).intervalIntegrable⟩` and prove the remaining obligations. Use `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℂ) (bound := fun _ => M) (F' := fun x t => (fderiv ℂ f (x, (t:ℂ))).comp (ContinuousLinearMap.inl ℂ E ℂ)) (ball_mem_nhds x₀ (half_pos hρ)) ?_ ?_ ?_ ?_ intervalIntegrable_const ?_` and prove the remaining obligations. Use `filter_upwards [hS.mem_nhds hx₀] with x hx`.
+
+Conclude with `((hcontf x hx).mono hIoc).aestronglyMeasurable measurableSet_uIoc`. Conclude with `((hcontf x₀ hx₀).mono (by rw [uIcc_of_le zero_le_one])).intervalIntegrable`. Conclude with `(hCl.mono hIoc).aestronglyMeasurable measurableSet_uIoc`. Use `Filter.Eventually.of_forall (fun t ht x hx => ?_)` and prove the remaining obligations. Establish `hxK : (x, (t:ℂ)) ∈ Kc` using `⟨ball_subset_closedBall hx, t, hIoc ht, rfl⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_nonneg _).trans (hM _ hxK)`. Conclude with `hM _ hxK`. Conclude with `ContinuousLinearMap.norm_inl_le_one ℂ E ℂ`. Use `_ = M := mul_one M`.
+
+Use `Filter.Eventually.of_forall (fun t ht x hx => ?_)` and prove the remaining obligations. Establish `hxS : x ∈ S` using `hsub (ball_subset_closedBall hx)`. Conclude with `(hdiffAt x hxS t (hIoc ht)).hasFDerivAt.comp x (hasFDerivAt_prodMk_left x (t:ℂ))`.
+-/
 private theorem hasFDerivAt_integral_unit_of_analytic {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     (f : E × ℂ → ℂ) (O : Set (E × ℂ)) (hO : IsOpen O) (hf : AnalyticOnNhd ℂ f O) (S : Set E) (hS : IsOpen S)
     (hSO : ∀ x ∈ S, ∀ t ∈ Icc (0:ℝ) 1, (x, (t:ℂ)) ∈ O) (x₀ : E) (hx₀ : x₀ ∈ S) :
@@ -60,6 +77,17 @@ private theorem hasFDerivAt_integral_unit_of_analytic {E : Type} [NormedAddCommG
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Establish `hcurve : ∀ t : ℝ, HasDerivAt (fun t : ℝ => ((x.1, w₁ + (t:ℂ) • (x.2 - w₁)) : P × (Fin g → ℂ))) ((0, x.2 - w₁) : P × (Fin g → ℂ)) t`. Introduce `t`. Use `(hasDerivAt_const _ _).prodMk ?_` and prove the remaining obligations. Use `((hasDerivAt_id t).ofReal_comp).smul_const (x.2 - w₁) |>.const_add w₁` as an intermediate fact. Simplify using `using this`.
+
+Establish `hd : ∀ t ∈ uIcc (0:ℝ) 1, HasDerivAt (fun t : ℝ => (t:ℂ) * ω a (x.1, w₁ + (t:ℂ) • (x.2 - w₁))) ((t:ℂ) * fderiv ℂ (ω a) (x.1, w₁ + (t:ℂ) • (x.2 - w₁)) (0, x.2 - w₁) + ω a (x.1, w₁ + (t:ℂ) • (x.2 - w₁))) t`. Introduce `t ht`. Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Establish `h1` using `((hω a _ (hx t ht)).differentiableAt.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt t (hcurve t)`. Establish `h2` using `((hasDerivAt_id t).ofReal_comp).mul h1`.
+
+Use `(h2.congr_deriv ?_ : _)` and prove the remaining obligations. Simplify using `only [id, Complex.ofReal_one, one_mul, Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']`. Conclude with `add_comm _ _`. Establish `hcont : ContinuousOn (fun t : ℝ => (t:ℂ) * fderiv ℂ (ω a) (x.1, w₁ + (t:ℂ) • (x.2 - w₁)) (0, x.2 - w₁) + ω a (x.1, w₁ + (t:ℂ) • (x.2 - w₁))) (uIcc 0 1)`. Establish `hfc : ContinuousOn (fderiv ℂ (ω a)) W` using `((hω a).contDiffOn hW.uniqueDiffOn (n := 1)).continuousOn_fderiv_of_isOpen hW le_rfl`.
+
+Establish `hγc : Continuous (fun t : ℝ => ((x.1, w₁ + (t:ℂ) • (x.2 - w₁)) : P × (Fin g → ℂ)))` using `continuous_const.prodMk (continuous_const.add (Complex.continuous_ofReal.smul continuous_const))`. Rewrite using `[uIcc_of_le zero_le_one]`. Introduce `t ht`. Establish `hA : ContinuousAt (fun t : ℝ => fderiv ℂ (ω a) (x.1, w₁ + (t:ℂ) • (x.2 - w₁))) t` using `(hfc.continuousAt (hW.mem_nhds (hx t ht))).comp (x := t) hγc.continuousAt`. Establish `hB : ContinuousAt (fun t : ℝ => ω a (x.1, w₁ + (t:ℂ) • (x.2 - w₁))) t` using `(hω a _ (hx t ht)).continuousAt.comp (x := t) hγc.continuousAt`.
+
+Conclude with `((Complex.continuous_ofReal.continuousAt.mul (hA.clm_apply continuousAt_const)).add hB).continuousWithinAt`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hcont.intervalIntegrable)]`. Simplify using the standard rewrite rules.
+-/
 private theorem integral_radial_derivative_eq {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] {g : ℕ}
     (W : Set (P × (Fin g → ℂ))) (hW : IsOpen W) (ω : Fin g → P × (Fin g → ℂ) → ℂ) (hω : ∀ a, AnalyticOnNhd ℂ (ω a) W)
     (w₁ : Fin g → ℂ) (x : P × (Fin g → ℂ)) (a : Fin g) (hx : ∀ t ∈ Icc (0:ℝ) 1, (x.1, w₁ + (t:ℂ) • (x.2 - w₁)) ∈ W) :
@@ -94,6 +122,23 @@ private theorem integral_radial_derivative_eq {P : Type} [NormedAddCommGroup P] 
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Use `set p := (x.1, w₁ + τ • (x.2 - w₁)) with hp`. Establish `hline : ∀ c : Fin g, HasDerivAt (fun s : ℂ => ω c (x.1, w₁ + τ • (x.2 + s • (Pi.single a 1 : Fin g → ℂ) - w₁))) (fderiv ℂ (ω c) p (0, τ • Pi.single a 1)) 0`. Introduce `c`. Establish `h1 : HasDerivAt (fun s : ℂ => ((x.1, w₁ + τ • (x.2 + s • (Pi.single a 1 : Fin g → ℂ) - w₁)) : P × (Fin g → ℂ))) ((0, τ • Pi.single a 1) : P × (Fin g → ℂ)) 0`. Use `(hasDerivAt_const _ _).prodMk ?_` and prove the remaining obligations.
+
+Use `((((hasDerivAt_id (0:ℂ)).smul_const (Pi.single a 1 : Fin g → ℂ)).const_add x.2).sub_const w₁).const_smul τ |>.const_add w₁` as an intermediate fact. Simplify using `using this`. Establish `h2` using `(hω c p hq).differentiableAt.hasFDerivAt`. Conclude with `h2.comp_hasDerivAt_of_eq (0:ℂ) h1 (by simp [hp])`. Establish `hcoord : ∀ c : Fin g, HasDerivAt (fun s : ℂ => ((x.2 + s • (Pi.single a 1 : Fin g → ℂ) - w₁ : Fin g → ℂ) c)) ((Pi.single a 1 : Fin g → ℂ) c) 0`.
+
+Introduce `c`. Use `((hasDerivAt_id (0:ℂ)).mul_const ((Pi.single a 1 : Fin g → ℂ) c)).const_add (x.2 c - w₁ c)` as an intermediate fact. Establish `hfun : (fun s : ℂ => ((x.2 + s • (Pi.single a 1 : Fin g → ℂ) - w₁ : Fin g → ℂ) c)) = fun s => x.2 c - w₁ c + id s * (Pi.single a 1 : Fin g → ℂ) c`. Use function extensionality and compare the values at `s`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, id]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Simplify using `using this`. Establish `hsum` using `HasDerivAt.fun_sum (u := Finset.univ) (fun c _ => (hline c).mul (hcoord c))`. Use `HasDerivAt.congr_deriv hsum ?_` and prove the remaining obligations.
+
+Use `symm`. Establish `hlin : fderiv ℂ (ω a) p (0, x.2 - w₁) = ∑ c, (x.2 - w₁) c * fderiv ℂ (ω a) p (0, Pi.single c 1)`. Establish `hv : ((0 : P), x.2 - w₁) = ∑ c, (x.2 - w₁) c • ((0 : P), (Pi.single c 1 : Fin g → ℂ))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Establish `hterm : ∀ c, fderiv ℂ (ω c) p (0, τ • Pi.single a 1) = τ * fderiv ℂ (ω a) p (0, Pi.single c 1)`.
+
+Introduce `c`. Establish `: ((0 : P), τ • (Pi.single a 1 : Fin g → ℂ)) = τ • ((0 : P), (Pi.single a 1 : Fin g → ℂ))` using `by simp`. Rewrite using `[this, map_smul, smul_eq_mul, hcl a c p hq]`. Simplify using `only [zero_smul, add_zero, hterm, Finset.sum_add_distrib, hlin, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl (fun c _ => by ring)`. Simplify using `[Pi.single_apply, mul_ite, hp]`.
+-/
 private theorem hasDerivAt_radial_integrand {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] {g : ℕ}
     (W : Set (P × (Fin g → ℂ))) (ω : Fin g → P × (Fin g → ℂ) → ℂ) (hω : ∀ a, AnalyticOnNhd ℂ (ω a) W)
     (hcl : ∀ a b, ∀ p ∈ W, fderiv ℂ (ω b) p (0, Pi.single a 1) = fderiv ℂ (ω a) p (0, Pi.single b 1))
@@ -140,6 +185,25 @@ private theorem hasDerivAt_radial_integrand {P : Type} [NormedAddCommGroup P] [N
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Set `γ : (P × (Fin g → ℂ)) × ℂ → P × (Fin g → ℂ)` to `fun q => (q.1.1, w₁ + q.2 • (q.1.2 - w₁))`. Establish `hγ : ∀ q, AnalyticAt ℂ γ q`. Introduce `q`. Use `(analyticAt_fst.comp analyticAt_fst).prod ?_` and prove the remaining obligations. Conclude with `analyticAt_const.add (analyticAt_snd.smul ((analyticAt_snd.comp analyticAt_fst).sub analyticAt_const))`.
+
+Set `f : (P × (Fin g → ℂ)) × ℂ → ℂ` to `fun q => ∑ c, ω c (γ q) * (q.1.2 - w₁) c`. Establish `hO : IsOpen (γ ⁻¹' W)` using `hW.preimage (continuous_iff_continuousAt.2 fun q => (hγ q).continuousAt)`. Establish `hf : AnalyticOnNhd ℂ f (γ ⁻¹' W)`. Introduce `q hq`. Establish `e : f = ∑ c, fun q : (P × (Fin g → ℂ)) × ℂ => ω c (γ q) * (q.1.2 - w₁) c`.
+
+Use function extensionality and compare the values at `q'`. Simplify using `[f, Finset.sum_apply]`. Rewrite using `[e]`. Use `Finset.analyticAt_sum Finset.univ (fun c _ => ?_)` and prove the remaining obligations. Use `((hω c _ hq).comp (hγ q)).mul ?_` and prove the remaining obligations.
+
+Establish `: AnalyticAt ℂ (fun q : (P × (Fin g → ℂ)) × ℂ => q.1.2 - w₁) q` using `(analyticAt_snd.comp analyticAt_fst).sub analyticAt_const`. Conclude with `((ContinuousLinearMap.proj c : (Fin g → ℂ) →L[ℂ] ℂ).analyticAt _).comp this`. Establish `hS : IsOpen (Z ×ˢ ball w₁ r)` using `hZ.prod isOpen_ball`. Establish `hSO : ∀ x ∈ Z ×ˢ ball w₁ r, ∀ t ∈ Icc (0:ℝ) 1, (x, (t:ℂ)) ∈ γ ⁻¹' W`. Introduce and unpack `⟨z, w⟩ ⟨hz, hw⟩ t ⟨h0, h1⟩`.
+
+Apply `hsub` to reduce the goal to its premises. Use `⟨hz, ?_⟩` and prove the remaining obligations. Use `show w₁ + (t:ℂ) • (w - w₁) ∈ ball w₁ r`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Complex.norm_real, Real.norm_of_nonneg h0]`. Rewrite `hw` using `[mem_ball, dist_eq_norm]`.
+
+Use polynomial arithmetic with `[norm_nonneg (w - w₁)]`. Establish `hA` using `fun x hx => hasFDerivAt_integral_unit_of_analytic f _ hO hf _ hS hSO x hx`. Use `⟨fun x => ∫ t in (0:ℝ)..1, f (x, (t:ℂ)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hS (fun x hx => (hA x hx).1.differentiableAt.differentiableWithinAt)`. Introduce `a x hx`.
+
+Rewrite using `[(hA x hx).1.fderiv, ContinuousLinearMap.intervalIntegral_apply (hA x hx).2]`. Rewrite using `[← integral_radial_derivative_eq W hW ω hω w₁ x a (fun t ht => hSO x hx t ht)]`. Use `intervalIntegral.integral_congr (fun t ht => ?_)` and prove the remaining obligations. Rewrite `ht` using `[uIcc_of_le zero_le_one]`. Establish `hq` using `hSO x hx t ht`.
+
+Establish `hC` using `hasDerivAt_radial_integrand W ω hω hcl w₁ x (t:ℂ) a hq`. Establish `hline : HasDerivAt (fun s : ℂ => (((x.1, x.2 + s • (Pi.single a 1 : Fin g → ℂ)), (t:ℂ)) : (P × (Fin g → ℂ)) × ℂ)) (((0, (Pi.single a 1 : Fin g → ℂ)), 0) : (P × (Fin g → ℂ)) × ℂ) 0`. Use `((hasDerivAt_const _ _).prodMk ?_).prodMk (hasDerivAt_const _ _)` and prove the remaining obligations. Simplify using `using ((hasDerivAt_id (0:ℂ)).smul_const (Pi.single a 1 : Fin g → ℂ)).const_add x.2`. Establish `hD` using `(hf _ hq).differentiableAt.hasFDerivAt.comp_hasDerivAt_of_eq (0:ℂ) hline (by simp)`.
+
+Conclude with `hD.unique hC`.
+-/
 private theorem exists_fibre_primitive_on_ball {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P] {g : ℕ}
     (W : Set (P × (Fin g → ℂ))) (hW : IsOpen W) (ω : Fin g → P × (Fin g → ℂ) → ℂ) (hω : ∀ a, AnalyticOnNhd ℂ (ω a) W)
     (hcl : ∀ a b, ∀ p ∈ W, fderiv ℂ (ω b) p (0, Pi.single a 1) = fderiv ℂ (ω a) p (0, Pi.single b 1))
@@ -190,6 +254,13 @@ private theorem exists_fibre_primitive_on_ball {P : Type} [NormedAddCommGroup P]
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Use `⟨fun k p hp => ?_, fun k a p hpk hpS => ?_, fun k l p hpk hpl hpS => ?_⟩` and prove the remaining obligations. Conclude with `(hF p hp.2).sub (hc j k p ⟨hSj hp.2, hp.1⟩)`. Establish `h1` using `(hF p hpS).differentiableAt`. Establish `h2` using `(hc j k p ⟨hSj hpS, hpk⟩).differentiableAt`. Establish `h3` using `hdiff j k a p (hSj hpS) hpk`.
+
+Simplify using `only`. Rewrite using `[show (fun q => F q - c j k q) = F - c j k from rfl, fderiv_sub h1 h2]`. Simplify using `only [ContinuousLinearMap.sub_apply, hFd a p hpS]`. Take the linear combination `h3`. Use `hcoc j k l p (hSj hpS) hpk hpl` as an intermediate fact.
+
+Simplify using `only`. Take the linear combination `this`.
+-/
 private theorem cech_shift_lemma_2 {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P] {g : ℕ} {K : Type} (W : K → Set (P × (Fin g → ℂ))) (c : K → K → P × (Fin g → ℂ) → ℂ) (ω : K → Fin g → P × (Fin g → ℂ) → ℂ) (S : Set (P × (Fin g → ℂ))) (j : K) (F : P × (Fin g → ℂ) → ℂ)
   (hW : ∀ k, IsOpen (W k)) (hS : IsOpen S) (hSj : S ⊆ W j)
   (hc : ∀ k l, AnalyticOnNhd ℂ (c k l) (W k ∩ W l))
@@ -212,6 +283,13 @@ private theorem cech_shift_lemma_2 {P : Type} [NormedAddCommGroup P] [NormedSpac
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Introduce `x hx y hy s t hs ht hst`. Simplify using `only [mem_iUnion, exists_prop] at hx hy ⊢`. Take `⟨u, hu, hxu⟩` from `hx`. Take `⟨v, hv, hyv⟩` from `hy`. Use `⟨s * u + t * v, convex_Icc a b hu hv hs ht hst, ?_⟩` and prove the remaining obligations.
+
+Establish `hx' : x - u • w₀ ∈ ball (0 : Fin g → ℂ) ρ` using `by rwa [mem_ball, dist_zero_right, ← dist_eq_norm]`. Establish `hy' : y - v • w₀ ∈ ball (0 : Fin g → ℂ) ρ` using `by rwa [mem_ball, dist_zero_right, ← dist_eq_norm]`. Establish `hc` using `convex_ball (0 : Fin g → ℂ) ρ hx' hy' hs ht hst`. Rewrite `hc` using `[mem_ball, dist_zero_right]`. Rewrite using `[mem_ball, dist_eq_norm]`.
+
+Establish `e : s • x + t • y - (s * u + t * v) • w₀ = s • (x - u • w₀) + t • (y - v • w₀)` using `by module`. Rewrite using `[e]`. Conclude with `hc`.
+-/
 private theorem convex_iUnion_ball_smul_Icc {g : ℕ} (w₀ : Fin g → ℂ) (ρ a b : ℝ) :
     Convex ℝ (⋃ u ∈ Icc a b, ball (u • w₀) ρ) := by
   intro x hx y hy s t hs ht hst
@@ -229,6 +307,11 @@ private theorem convex_iUnion_ball_smul_Icc {g : ℕ} (w₀ : Fin g → ℂ) (ρ
 
 set_option autoImplicit false in
 open Set Metric in
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `only [mem_union, mem_iUnion, exists_prop, mem_Icc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨u, ⟨h1, h2⟩, h⟩ | ⟨u, ⟨h1, h2⟩, h⟩)`. Conclude with `⟨u, ⟨h1, h2.trans hmb⟩, h⟩`.
+
+Conclude with `⟨u, ⟨ham.trans h1, h2⟩, h⟩`. Introduce and unpack `⟨u, ⟨h1, h2⟩, h⟩`. Break down `le_total u m with hum | hum` into its components or cases. Conclude with `Or.inl ⟨u, ⟨h1, hum⟩, h⟩`. Conclude with `Or.inr ⟨u, ⟨hum, h2⟩, h⟩`.
+-/
 private theorem iUnion_ball_smul_Icc_union {g : ℕ} (w₀ : Fin g → ℂ) (ρ a m b : ℝ) (ham : a ≤ m) (hmb : m ≤ b) :
     (⋃ u ∈ Icc a m, ball (u • w₀) ρ) ∪ (⋃ u ∈ Icc m b, ball (u • w₀) ρ) = ⋃ u ∈ Icc a b, ball (u • w₀) ρ := by
   ext w
@@ -245,6 +328,33 @@ private theorem iUnion_ball_smul_Icc_union {g : ℕ} (w₀ : Fin g → ℂ) (ρ 
 set_option autoImplicit false in
 open Set Metric in
 
+/- English proof (translation)
+Introduce `P _ _ _ g K W c ω V hV hW hcov hc hcoc hω hcl hdiff z₀ hz₀ w₀`. Establish `hloc : ∀ (Z : Set P), IsOpen Z → ∀ (w : Fin g → ℂ) (r : ℝ) (k₀ : K), Z ×ˢ ball w r ⊆ W k₀ → ∀ C' ⊆ ball w r, ∃ G : K → P × (Fin g → ℂ) → ℂ, (∀ k, AnalyticOnNhd ℂ (G k) (W k ∩ Z ×ˢ C')) ∧ (∀ k a, ∀ p ∈ W k, p ∈ Z ×ˢ C' → fderiv ℂ (G k) p (0, Pi.single a 1) = ω k a p) ∧ ∀ k l, ∀ p …`. Introduce `Z hZ w r k₀ hsub C' hC'`. Take `⟨F, hF, hFd⟩` from `exists_fibre_primitive_on_ball (W k₀) (hW k₀) (ω k₀) (hω k₀) (hcl k₀) Z hZ w r hsub`. Take `⟨h1, h2, h3⟩` from `cech_shift_lemma_2 W c ω (Z ×ˢ ball w r) k₀ F hW (hZ.prod isOpen_ball) hsub hc hcoc hdiff hF hFd`.
+
+Establish `hm : Z ×ˢ C' ⊆ Z ×ˢ ball w r` using `prod_mono subset_rfl hC'`. Conclude with `⟨fun k p => F p - c k₀ k p, fun k => (h1 k).mono (inter_subset_inter_right _ hm), fun k a p hp hq => h2 k a p hp (hm hq), fun k l p hk hl hq => h3 k l p hk hl (hm hq)⟩`. Take `⟨ε, hε, hεV⟩` from `Metric.isOpen_iff.1 hV z₀ hz₀`. Establish `hKc : IsCompact (({z₀} : Set P) ×ˢ ((fun u : ℝ => u • w₀) '' Icc 0 1))` using `isCompact_singleton.prod (isCompact_Icc.image (continuous_id.smul continuous_const))`. Establish `hKcov : ({z₀} : Set P) ×ˢ ((fun u : ℝ => u • w₀) '' Icc 0 1) ⊆ ⋃ k, W k`.
+
+Introduce and unpack `⟨z, w⟩ ⟨hz, -⟩`. Rewrite `hz` using `[mem_singleton_iff]`. Take `⟨k, hk⟩` from `hcov (z, w) (by rw [hz]; exact hz₀)`. Conclude with `mem_iUnion.2 ⟨k, hk⟩`. Take `⟨δ, hδ, hδW⟩` from `lebesgue_number_lemma_of_metric hKc hW hKcov`.
+
+Establish `hη : 0 < min ε δ` using `lt_min hε hδ`. Establish `hball : ∀ u ∈ Icc (0:ℝ) 1, ∃ k, ball z₀ (min ε δ) ×ˢ ball (u • w₀) (min ε δ) ⊆ W k`. Introduce `u hu`. Take `⟨k, hk⟩` from `hδW (z₀, u • w₀) ⟨rfl, u, hu, rfl⟩`. Use `⟨k, fun p hp => hk ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ball_prod_same]`. Conclude with `⟨ball_subset_ball (min_le_right _ _) hp.1, ball_subset_ball (min_le_right _ _) hp.2⟩`. Take `⟨N, hN⟩` from `exists_nat_gt (2 * ‖w₀‖ / min ε δ)`. Establish `hNpos : (0:ℝ) < N` using `lt_of_le_of_lt (by positivity) hN`. Establish `hstep : ‖w₀‖ / N ≤ min ε δ / 2`.
+
+Rewrite using `[div_le_iff₀ hNpos]`. Rewrite `hN` using `[div_lt_iff₀ hη]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hZV : ball z₀ (min ε δ) ⊆ V` using `(ball_subset_ball (min_le_left _ _)).trans hεV`. Establish `hpiece : ∀ a b : ℝ, a ∈ Icc (0:ℝ) 1 → b - a ≤ 1 / N → a ≤ b → ∃ G : K → P × (Fin g → ℂ) → ℂ, (∀ k, AnalyticOnNhd ℂ (G k) (W k ∩ ball z₀ (min ε δ) ×ˢ (⋃ u ∈ Icc a b, ball (u • w₀) (min ε δ / 2)))) ∧ (∀ k a', ∀ p ∈ W k, p ∈ ball z₀ (min ε δ) ×ˢ (⋃ u ∈ Icc a b, ball (u • w₀) (min ε …`.
+
+Introduce `a b ha hab hab'`. Take `⟨k, hk⟩` from `hball a ha`. Use `hloc _ isOpen_ball (a • w₀) (min ε δ) k hk _ ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [mem_iUnion, exists_prop, mem_Icc] at hw`.
+
+Take `⟨u, ⟨hu1, hu2⟩, hwu⟩` from `hw`. Rewrite `hwu`, the goal using `[mem_ball]`. Establish `hd : dist (u • w₀) (a • w₀) ≤ min ε δ / 2`. Rewrite using `[dist_eq_norm, ← sub_smul, norm_smul, Real.norm_of_nonneg (by linarith)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hind : ∀ n : ℕ, n ≤ N → ∃ G : K → P × (Fin g → ℂ) → ℂ, (∀ k, AnalyticOnNhd ℂ (G k) (W k ∩ ball z₀ (min ε δ) ×ˢ (⋃ u ∈ Icc 0 ((n:ℝ) / N), ball (u • w₀) (min ε δ / 2)))) ∧ (∀ k a', ∀ p ∈ W k, p ∈ ball z₀ (min ε δ) ×ˢ (⋃ u ∈ Icc 0 ((n:ℝ) / N), ball (u • w₀) (min ε δ / 2)) → fderiv ℂ …`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `_`. Simplify using `only [Nat.cast_zero, zero_div]`. Conclude with `hpiece 0 0 ⟨le_rfl, zero_le_one⟩ (by rw [sub_zero]; positivity) le_rfl`. Consider the case `succ n ih`. Introduce `hn`.
+
+Take `⟨G, hG⟩` from `ih (Nat.le_of_succ_le hn)`. Establish `hn0 : (0:ℝ) ≤ n / N` using `by positivity`. Establish `hn1 : (n:ℝ) / N ≤ 1`. Rewrite using `[div_le_one hNpos]`. Conclude with `Nat.le_of_succ_le hn` after adjusting the coercions.
+
+Establish `hnn : (n:ℝ) / N ≤ ((n + 1 : ℕ) : ℝ) / N` using `by gcongr; exact_mod_cast Nat.le_succ n`. Take `⟨G', hG'⟩` from `hpiece ((n:ℝ) / N) (((n + 1 : ℕ) : ℝ) / N) ⟨hn0, hn1⟩ (by push_cast; rw [add_div]; linarith) hnn`. Take `⟨G'', hG''⟩` from `_root_.GlobalTheory.exists_merge_fibre_primitives W c ω (ball z₀ (min ε δ)) (⋃ u ∈ Icc 0 ((n:ℝ) / N), ball (u • w₀) (min ε δ / 2)) (⋃ u ∈ Icc ((n:ℝ) / N) (((n + 1 : ℕ) : ℝ) / N), ball (u • w₀) (min ε δ / 2)) G G' hW isOpen_ball (isOpen_biUnion fun _ _ => isOpen_ball) (convex_iUni …`. Rewrite `hG''` using `[iUnion_ball_smul_Icc_union w₀ _ 0 ((n:ℝ) / N) (((n + 1 : ℕ) : ℝ) / N) hn0 hnn]`. Conclude with `⟨G'', hG''⟩`.
+
+Take `⟨G, hG⟩` from `hind N le_rfl`. Rewrite `hG` using `[div_self hNpos.ne']`. Use `⟨ball z₀ (min ε δ), ⋃ u ∈ Icc (0:ℝ) 1, ball (u • w₀) (min ε δ / 2), G, isOpen_ball, mem_ball_self hη, hZV, isOpen_biUnion fun _ _ => isOpen_ball, convex_iUnion_ball_smul_Icc w₀ _ 0 1, ?_, ?_, hG⟩` and prove the remaining obligations. Conclude with `mem_iUnion₂.2 ⟨0, ⟨le_rfl, zero_le_one⟩, by simpa using half_pos hη⟩`. Conclude with `mem_iUnion₂.2 ⟨1, ⟨zero_le_one, le_rfl⟩, by simpa using half_pos hη⟩`.
+-/
 theorem _root_.GlobalTheory.exists_cechPrimitive_box_segment : ∀ {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P] {g : ℕ} {K : Type} (W : K → Set (P × (Fin g → ℂ))) (c : K → K → P × (Fin g → ℂ) → ℂ) (ω : K → Fin g → P × (Fin g → ℂ) → ℂ) (V : Set P), IsOpen V → (∀ k, IsOpen (W k)) → (∀ p : P × (Fin g → ℂ), p.1 ∈ V → ∃ k, p ∈ W k) → (∀ k l, AnalyticOnNhd ℂ (c k l) (W k ∩ W l)) → (∀ k l m, ∀ p ∈ W k, p ∈ W l → p ∈ W m → c k m p = c k l p + c l m p) → (∀ k a, AnalyticOnNhd ℂ (ω k a) (W k)) → (∀ k a b, ∀ p ∈ W k, fderiv ℂ (ω k b) p (0, Pi.single a 1) = fderiv ℂ (ω k a) p (0, Pi.single b 1)) → (∀ k l a, ∀ p ∈ W k, p ∈ W l → ω k a p - ω l a p = fderiv ℂ (c k l) p (0, Pi.single a 1)) → ∀ z₀ ∈ V, ∀ w₀ : Fin g → ℂ, ∃ (Z : Set P) (C : Set (Fin g → ℂ)) (G : K → P × (Fin g → ℂ) → ℂ), IsOpen Z ∧ z₀ ∈ Z ∧ Z ⊆ V ∧ IsOpen C ∧ Convex ℝ C ∧ 0 ∈ C ∧ w₀ ∈ C ∧ ((∀ k, AnalyticOnNhd ℂ (G k) (W k ∩ Z ×ˢ C)) ∧ (∀ k a, ∀ p ∈ W k, p ∈ Z ×ˢ C → fderiv ℂ (G k) p (0, Pi.single a 1) = ω k a p) ∧ ∀ k l, ∀ p ∈ W k, p ∈ W l → p ∈ Z ×ˢ C → G k p - G l p = c k l p) := by
   intro P _ _ _ g K W c ω V hV hW hcov hc hcoc hω hcl hdiff z₀ hz₀ w₀
   have hloc : ∀ (Z : Set P), IsOpen Z → ∀ (w : Fin g → ℂ) (r : ℝ) (k₀ : K), Z ×ˢ ball w r ⊆ W k₀ →

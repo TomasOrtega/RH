@@ -5,6 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 
 open NumberField
 
+/- English proof (translation)
+The claim follows from `exists_small_saturating_vector K r k b hb hbL hk`.
+-/
 theorem mink_sat (K : Type) [Field K] [NumberField K] (r k : ℕ) (b : Fin k → Fin r → K)
     (hb : LinearIndependent K b) (hbL : ∀ j, b j ∈ stdLat K r) (hk : k < r) :
     ∃ q : Fin r → 𝓞 K, (fun i => (q i : K)) ∉ Submodule.span K (Set.range b) ∧

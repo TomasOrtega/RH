@@ -7,6 +7,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.CompanionTheory.PartialZeta
 
+/- English proof (translation)
+Establish `h : ∀ ψ : AddChar (Additive G) ℂ, ψ (Additive.ofMul a) * ψ (Additive.ofMul b⁻¹) = ψ (Additive.ofMul (a * b⁻¹))`. Introduce `ψ`. Rewrite using `[← AddChar.map_add_eq_mul, ← ofMul_mul]`. Repeatedly rewrite using `[h]`. Rewrite using `[AddChar.sum_apply_eq_ite]`.
+
+Establish `hc : Fintype.card (Additive G) = Fintype.card G` using `Fintype.card_congr Additive.ofMul.symm`. Simplify using `only [hc, ofMul_eq_zero, mul_inv_eq_one]`.
+-/
 theorem sum_addChar_ofMul_mul_ofMul_inv (G : Type) [CommGroup G] [Fintype G] [DecidableEq G]
     (a b : G) :
     ∑ ψ : AddChar (Additive G) ℂ, ψ (Additive.ofMul a) * ψ (Additive.ofMul b⁻¹) =

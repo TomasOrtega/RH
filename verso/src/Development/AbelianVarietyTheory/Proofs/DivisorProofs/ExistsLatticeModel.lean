@@ -23,6 +23,9 @@ def secGrp (M : X → AddSubgroup V) (U : X.Opens) : AddSubgroup V where
 
 variable (M : X → AddSubgroup V)
 
+/- English proof (translation)
+The claim follows from `s.2.2 h`.
+-/
 theorem val_eq_zero {U : X.Opens} (h : genericPoint X ∉ U) (s : secGrp M U) : (s : V) = 0 := s.2.2 h
 
 open Classical in
@@ -34,10 +37,16 @@ def resHom {U W : X.Opens} (e : W ≤ U) : secGrp M U →+ secGrp M W where
   map_add' s t := by split_ifs <;> first | rfl | simp
 
 open Classical in
+/- English proof (translation)
+Apply the tactic sequence `unfold resHom; simp only [AddMonoidHom.coe_mk, ZeroHom.coe_mk]; split_ifs <;> rfl`.
+-/
 theorem val_resHom {U W : X.Opens} (e : W ≤ U) (s : secGrp M U) :
     ((resHom M e s : secGrp M W) : V) = if genericPoint X ∈ W then (s : V) else 0 := by
   unfold resHom; simp only [AddMonoidHom.coe_mk, ZeroHom.coe_mk]; split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[val_resHom, if_pos h]`.
+-/
 theorem val_resHom_of_mem {U W : X.Opens} (e : W ≤ U) (h : genericPoint X ∈ W) (s : secGrp M U) :
     ((resHom M e s : secGrp M W) : V) = s := by rw [val_resHom, if_pos h]
 
@@ -57,6 +66,9 @@ def pre : TopCat.Presheaf Ab.{0} X where
     rw [val_resHom, val_resHom, val_resHom]
     split_ifs with h1 h2 <;> first | rfl | exact (h2 (leOfHom g.unop h1)).elim
 
+/- English proof (translation)
+Distinguish the cases in `hU : genericPoint X ∈ U`. Conclude with `Subtype.ext (h hU)`. Conclude with `Subtype.ext ((val_eq_zero M hU s).trans (val_eq_zero M hU t).symm)`.
+-/
 theorem sec_ext {U : X.Opens} {s t : secGrp M U} (h : genericPoint X ∈ U → (s : V) = t) : s = t := by
   by_cases hU : genericPoint X ∈ U
   · exact Subtype.ext (h hU)
@@ -64,9 +76,15 @@ theorem sec_ext {U : X.Opens} {s t : secGrp M U} (h : genericPoint X ∈ U → (
 
 def sv (U : (X.Opens)ᵒᵖ) (s : (pre M).obj U) : V := @Subtype.val V (· ∈ secGrp M U.unop) s
 
+/- English proof (translation)
+The claim follows from `@Subtype.property V (· ∈ secGrp M U.unop) s`.
+-/
 theorem sv_mem (U : (X.Opens)ᵒᵖ) (s : (pre M).obj U) : sv M U s ∈ secGrp M U.unop :=
   @Subtype.property V (· ∈ secGrp M U.unop) s
 
+/- English proof (translation)
+The claim follows from `sec_ext M (U := U.unop) (s := s) (t := t) h`.
+-/
 theorem sv_ext {U : (X.Opens)ᵒᵖ} {s t : (pre M).obj U} (h : genericPoint X ∈ U.unop → sv M U s = sv M U t) :
     s = t :=
   sec_ext M (U := U.unop) (s := s) (t := t) h
@@ -74,13 +92,30 @@ theorem sv_ext {U : (X.Opens)ᵒᵖ} {s t : (pre M).obj U} (h : genericPoint X �
 def mk (U : (X.Opens)ᵒᵖ) (v : V) (h : v ∈ secGrp M U.unop) : (pre M).obj U :=
   (⟨v, h⟩ : secGrp M U.unop)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sv_mk (U : (X.Opens)ᵒᵖ) (v : V) (h : v ∈ secGrp M U.unop) : sv M U (mk M U v h) = v := rfl
 
 open Classical in
+/- English proof (translation)
+The claim follows from `val_resHom M (leOfHom f.unop) s`.
+-/
 theorem sv_map {U W : (X.Opens)ᵒᵖ} (f : U ⟶ W) (s : (pre M).obj U) :
     sv M W ((pre M).map f s) = if genericPoint X ∈ W.unop then sv M U s else 0 :=
   val_resHom M (leOfHom f.unop) s
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Establish `key : ∀ k l, genericPoint X ∈ W k → genericPoint X ∈ W l → sv M _ (sf k) = sv M _ (sf l)` using `fun k l hk hl => by`. Use `congrArg (sv M _) (hsf k l)` as an intermediate fact. Rewrite `this` using `[sv_map, sv_map, if_pos (show genericPoint X ∈ W k ⊓ W l from ⟨hk, hl⟩), if_pos (show genericPoint X ∈ W k ⊓ W l from ⟨hk, hl⟩)]`.
+
+Conclude with `this`. Distinguish the cases in `hg : genericPoint X ∈ iSup W`. Take `⟨k₀, hk₀⟩` from `Opens.mem_iSup.1 hg`. Establish `mem : sv M _ (sf k₀) ∈ secGrp M (iSup W)`. Use `⟨fun y hy => ?_, fun h => (h hg).elim⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hy`. Rewrite using `[key k₀ k hk₀ (gen_mem hk)]`. Conclude with `(sv_mem M _ (sf k)).1 y hk`. Use `⟨mk M (Opposite.op (iSup W)) _ mem, fun k => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `sv_ext M fun hk => ?_` and prove the remaining obligations.
+
+Rewrite using `[sv_map, if_pos hk, sv_mk]`. Conclude with `key k₀ k hk₀ hk`. Use `sv_ext M fun _ => ?_` and prove the remaining obligations. Use `congrArg (sv M _) (ht k₀)` as an intermediate fact. Rewrite `this` using `[sv_map, if_pos hk₀]`.
+
+Rewrite using `[sv_mk]`. Conclude with `this`. Use `⟨mk M (Opposite.op (iSup W)) 0 (zero_mem _), fun k => ?_, fun t _ => ?_⟩` and prove the remaining obligations. Conclude with `sv_ext M fun hk => (hg (Opens.mem_iSup.2 ⟨k, hk⟩)).elim`. Conclude with `sv_ext M fun h => (hg h).elim`.
+-/
 theorem isSheaf_pre : (pre M).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
   intro κ W sf hsf
@@ -120,6 +155,9 @@ def smulSec (U : X.Opens) (r : Γ(X, U)) (s : secGrp M U) : secGrp M U :=
     ⟨fnOf U h r • (s : V), fun y hy => hM y _ _ (regAt_fnOf hy h r) (s.2.1 y hy), fun h' => (h' h).elim⟩
   else 0
 
+/- English proof (translation)
+Rewrite using `[smulSec, dif_pos h]`.
+-/
 theorem val_smulSec {U : X.Opens} (h : genericPoint X ∈ U) (r : Γ(X, U)) (s : secGrp M U) :
     (smulSec hM U r s : V) = fnOf U h r • (s : V) := by
   rw [smulSec, dif_pos h]
@@ -146,6 +184,9 @@ def secModule (U : X.Opens) : Module Γ(X, U) (secGrp M U) where
     change (smulSec hM U 0 s : V) = ((0 : secGrp M U) : V)
     rw [val_smulSec hM h, map_zero, zero_smul, ZeroMemClass.coe_zero]
 
+/- English proof (translation)
+The claim follows from `sec_ext M fun h => by rw [val_resHom_of_mem M e h, val_smulSec hM h, val_smulSec hM (e h), fnOf_resG, val_resHom_of_mem M e h]`.
+-/
 theorem resHom_smulSec {U W : X.Opens} (e : W ≤ U) (r : Γ(X, U)) (s : secGrp M U) :
     resHom M e (smulSec hM U r s) = smulSec hM W (resG X e r) (resHom M e s) :=
   sec_ext M fun h => by
@@ -175,6 +216,9 @@ def latModel : LatModel M (toMod hM) where
 
 end GlobalTheory.LogDR.LatSheaf
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hM` and use `⟨LatSheaf.toMod hM, ⟨LatSheaf.latModel hM⟩⟩`.
+-/
 theorem GlobalTheory.LogDR.exists_latModel : ∀ (X : Scheme.{0}) [IsIntegral X] {V : Type} [AddCommGroup V]
     [Module X.functionField V] (M : X → AddSubgroup V),
     (∀ y (f : X.functionField) (v : V), RegAt y f → v ∈ M y → f • v ∈ M y) →

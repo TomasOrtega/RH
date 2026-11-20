@@ -9,6 +9,9 @@ import Formalism.BehrendSets.BehrendVariance.CoeffPowEqZeroOfLt
 namespace Formalism.BehrendSets.FinalE
 open Formalism.BehrendSets
 
+/- English proof (translation)
+The claim follows from `Formalism.BehrendSets.trivStab`.
+-/
 theorem trivStab : TrivStab := Formalism.BehrendSets.trivStab
 
 end Formalism.BehrendSets.FinalE

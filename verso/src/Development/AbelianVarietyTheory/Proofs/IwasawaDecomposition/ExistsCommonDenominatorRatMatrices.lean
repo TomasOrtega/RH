@@ -16,6 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `a g b`. Set `D : ℕ` to `∏ k, ∏ i, ∏ j, (b k i j).den`. Establish `hdvd : ∀ k i j, (b k i j).den ∣ D` using `fun k i j => dvd_trans (Finset.dvd_prod_of_mem (fun j => (b k i j).den) (Finset.mem_univ j)) (dvd_trans (Finset.dvd_prod_of_mem (fun i => ∏ j, (b k i j).den) (Finset.mem_univ i)) (Finset.dvd_prod_of_mem (fun k => ∏ i, ∏ j, (b k i j).den) (Finset.mem_univ k)))`. Use `⟨D, fun k i j => ((D / (b k i j).den : ℕ) : ℤ) * (b k i j).num, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun k _ => Finset.prod_pos fun i _ => Finset.prod_pos fun j _ => (b k i j).den_pos`.
+
+Introduce `k i j`. Take `⟨m, hm⟩` from `hdvd k i j`. Establish `hD : D = (b k i j).den * m` using `hm`. Simplify using `only`. Rewrite using `[hD, Nat.mul_div_cancel_left _ (b k i j).den_pos]`.
+
+Use `push_cast`. Rewrite using `[mul_comm ((b k i j).den : ℚ) (m : ℚ), _root_.mul_assoc, Rat.den_mul_eq_num]`.
+-/
 theorem rat_matrix_common_denom : ∀ (a g : ℕ) (b : Fin a → Matrix (Fin g) (Fin g) ℚ), ∃ (D : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), 0 < D ∧ ∀ k i j, (B k i j : ℚ) = D * b k i j := by
   intro a g b
   classical

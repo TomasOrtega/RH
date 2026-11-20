@@ -20,19 +20,31 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 abbrev cPB (χ : D.toPre.X) : DegPre.BF D.toPre F ⟶ D.toPre.P.A := toUnit _ ≫ D.toPre.c χ
 
+/- English proof (translation)
+Unfold `aF`. Conclude with `lift_snd _ _`.
+-/
 lemma aF_prB (oa : D.toPre.OAct O) (a : O) :
     aF D F oa a ≫ DegPre.prB D.toPre F = DegPre.prB D.toPre F ≫ oa.onB.act a := by
   unfold aF
   exact lift_snd _ _
 
+/- English proof (translation)
+Unfold `cPB`. Rewrite using `[← Category.assoc, toUnit_unique (aF D F oa a ≫ toUnit _) (toUnit _)]`.
+-/
 lemma aF_cP (oa : D.toPre.OAct O) (a : O) (χ : D.toPre.X) : aF D F oa a ≫ cPB D F χ = cPB D F χ := by
   unfold cPB
   rw [← Category.assoc, toUnit_unique (aF D F oa a ≫ toUnit _) (toUnit _)]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, toUnit_unique (aF D F oa a ≫ toUnit _) (toUnit _)]`.
+-/
 lemma aF_one (oa : D.toPre.OAct O) (a : O) :
     aF D F oa a ≫ (toUnit _ ≫ η[D.toPre.P.A]) = toUnit _ ≫ η[D.toPre.P.A] := by
   rw [← Category.assoc, toUnit_unique (aF D F oa a ≫ toUnit _) (toUnit _)]
 
+/- English proof (translation)
+Simplify using `[fsum, lf, Fin.sum_univ_four, Finsupp.mapDomain_add, Finsupp.mapDomain_smul, Finsupp.smul_single]`.
+-/
 lemma fsum_four_left {S' : Scheme.{0}} {T A : Over S'} [GrpObj A] [IsCommMonObj A] (x₀ x₁ x₂ x₃ : T ⟶ A) (e : Fin 4 → ℤ) :
     fsum ![x₀.left, x₁.left, x₂.left, x₃.left] e =
       lf (e 0 • Finsupp.single x₀ 1 + e 1 • Finsupp.single x₁ 1 + e 2 • Finsupp.single x₂ 1 +
@@ -48,6 +60,17 @@ def pullSum (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X) :
       (-1 : ℤ) • Finsupp.single ((DegPre.prB D.toPre F ≫ oa.onB.act a) * cPB D F χ) 1 +
       (1 : ℤ) • Finsupp.single (cPB D F χ) 1 + (-1 : ℤ) • Finsupp.single 1 1)
 
+/- English proof (translation)
+Establish `h1 : (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F ≫ oa.onB.act a).left`. Rewrite using `[← Over.comp_left, aF_prB]`. Establish `h2 : (aF D F oa a).left ≫ (padd D.toPre.P.A (DegPre.prB D.toPre F) (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c χ)).left = ((DegPre.prB D.toPre F ≫ oa.onB.act a) * cPB D F χ).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+
+Unfold `padd`. Rewrite using `[← Category.assoc, comp_lift, aF_prB, aF_cP]`. Both sides reduce to the same expression. Establish `h3 : (aF D F oa a).left ≫ (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c χ).left = (cPB D F χ).left`. Rewrite using `[← Over.comp_left, aF_cP]`.
+
+Establish `h4 : (aF D F oa a).left ≫ (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left = (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left`. Rewrite using `[← Over.comp_left]`. Conclude with `congrArg Over.Hom.left (aF_one D F oa a)`. Establish `h5 : (padd D.toPre.P.A (DegPre.prB D.toPre F) (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c (star a • χ))).left = (DegPre.prB D.toPre F * cPB D F (star a • χ)).left` using `rfl`. Establish `h6 : (toUnit (DegPre.BF D.toPre F) ≫ η[D.toPre.P.A]).left = (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left` using `rfl`.
+
+Establish `h7 : (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c (star a • χ)).left = (cPB D F (star a • χ)).left` using `rfl`. Simplify using `only [fsum, lf, pullφ, pullε, DegPre.famφ, DegPre.famε, pullSum, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, add_zero, h1, h2, h3, h4, h5, h6, h7, neg_neg, Finsupp.mapDomain_add, Finsupp.mapDo …`. Use `clear h1 h2 h3 h4 h5 h6 h7`. Use `congr 1`. Simplify using `only [add_assoc]`.
+
+Simplify using `only [add_assoc]`.
+-/
 lemma fsum_pull (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X) :
     fsum (pullφ D F oa a χ) (pullε k N) = lf (pullSum D F oa a k N χ) := by
   have h1 : (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left =
@@ -82,10 +105,24 @@ lemma fsum_pull (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X) :
   · simp only [add_assoc]
   · simp only [add_assoc]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.mapDomain_smul]`.
+-/
 lemma mapDomain_zsmul' {α β : Type} (f : α → β) (n : ℤ) (F' : α →₀ ℤ) :
     Finsupp.mapDomain f (n • F') = n • Finsupp.mapDomain f F' := by
   rw [Finsupp.mapDomain_smul]
 
+/- English proof (translation)
+Establish `hA` using `oa.onB.rosati a`. Establish `hA'` using `oa.onB.rosati (star a)`. Rewrite `hA'` using `[star_star]`. Take `⟨uR, huR⟩` from `gen_of_local_base hL (Out.rosatiφ D.toPre.P.A (oa.onB.act a) (oa.onB.act (star a))) Out.rosatiε hA`. Take `⟨uR', huR'⟩` from `gen_of_local_base hL (Out.rosatiφ D.toPre.P.A (oa.onB.act (star a)) (oa.onB.act a)) Out.rosatiε hA'`.
+
+Establish `hPM` using `hasGen_pullMul oa.onB.toRingAct w0 a N hN uΨ huΨ uR huR D.toPre.cub.t D.toPre.cub.isGen`. Establish `h1` using `hPM.pull (DegPre.prB D.toPre F).left`. Rewrite `h1` using `[lf_pull]`. Establish `h2` using `hasGen_rosati (oa.onB.act (star a)) (oa.onB.act a) uR' huR' (cPB D F χ) (DegPre.prB D.toPre F)`. Establish `h3 : HasGen D.toPre.P.L (lf (Finsupp.single (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A) 1))`.
+
+Use `HasGen.of_gen (LB.pullGen D.toPre.P.L _ _ D.toPre.rig (toUnit (DegPre.BF D.toPre F)).left) (pullGen_isGen_of_isGen _ _ D.toPre.rig D.toPre.rig_gen _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [fsum, Fintype.univ_punit, Finset.sum_singleton, lf_single]`. Both sides reduce to the same expression. Establish `h` using `(h1.zsmul (-(k : ℤ))).add (h2.add (h3.zsmul ((k : ℤ) * ((N : ℤ) - 1))))`.
+
+Simplify using `only [← lf_smul, ← lf_add] at h`. Use `h using 2` and compare the differences between its conclusion and the goal. Establish `hc : cPB D F χ ≫ oa.onB.act (star a) = cPB D F (star a • χ)`. Simplify using `only [cPB, Category.assoc, oa.c_lin]`. Simplify using `only [pullSum, mapDomain_add', mapDomain_sub', mapDomain_zsmul', mapDomain_single', Category.comp_id, MonObj.comp_one, lamP, hc]`.
+
+Rewrite using `[mul_comm (cPB D F (star a • χ)), mul_comm (cPB D F χ)]`. Use `push_cast`. Use `module`.
+-/
 theorem hasGen_pull (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     (uΨ : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 4)
       ![(padd D.toPre.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.toPre.P.A.left, (oa.onB.act w0).left,
@@ -119,16 +156,27 @@ theorem hasGen_pull (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
   push_cast
   module
 
+/- English proof (translation)
+Unfold `DegPre.zF`. Conclude with `lift_snd _ _`.
+-/
 lemma zF_prB : DegPre.zF D.toPre F ≫ DegPre.prB D.toPre F = 1 := by
   unfold DegPre.zF
   exact lift_snd _ _
 
+/- English proof (translation)
+Use `show DegPre.zF D.toPre F ≫ (lift (DegPre.prB D.toPre F) x ≫ μ[D.toPre.P.A]) = _`. Rewrite using `[← Category.assoc, comp_lift, zF_prB]`. Conclude with `one_mul _`.
+-/
 lemma zF_prB_mul (x : DegPre.BF D.toPre F ⟶ D.toPre.P.A) :
     DegPre.zF D.toPre F ≫ (DegPre.prB D.toPre F * x) = DegPre.zF D.toPre F ≫ x := by
   show DegPre.zF D.toPre F ≫ (lift (DegPre.prB D.toPre F) x ≫ μ[D.toPre.P.A]) = _
   rw [← Category.assoc, comp_lift, zF_prB]
   exact one_mul _
 
+/- English proof (translation)
+Use `haveI := oa.onB.hom a`. Use `show DegPre.zF D.toPre F ≫ (lift (DegPre.prB D.toPre F ≫ oa.onB.act a) x ≫ μ[D.toPre.P.A]) = _`. Rewrite using `[← Category.assoc, comp_lift, ← Category.assoc, zF_prB]`. Rewrite using `[show (1 : TF (R := V) F ⟶ D.toPre.P.A) ≫ oa.onB.act a = 1 from ?_]`. Conclude with `one_mul _`.
+
+Use `show (toUnit _ ≫ η[D.toPre.P.A]) ≫ oa.onB.act a = toUnit _ ≫ η[D.toPre.P.A]`. Rewrite using `[Category.assoc, IsMonHom.one_hom]`.
+-/
 lemma zF_prB_mul' (oa : D.toPre.OAct O) (a : O) (x : DegPre.BF D.toPre F ⟶ D.toPre.P.A) :
     DegPre.zF D.toPre F ≫ ((DegPre.prB D.toPre F ≫ oa.onB.act a) * x) = DegPre.zF D.toPre F ≫ x := by
   haveI := oa.onB.hom a
@@ -139,14 +187,23 @@ lemma zF_prB_mul' (oa : D.toPre.OAct O) (a : O) (x : DegPre.BF D.toPre F ⟶ D.t
   · show (toUnit _ ≫ η[D.toPre.P.A]) ≫ oa.onB.act a = toUnit _ ≫ η[D.toPre.P.A]
     rw [Category.assoc, IsMonHom.one_hom]
 
+/- English proof (translation)
+Unfold `cPB`. Rewrite using `[← Category.assoc, toUnit_unique (DegPre.zF D.toPre F ≫ toUnit _) (toUnit _)]`.
+-/
 lemma zF_cP (χ : D.toPre.X) : DegPre.zF D.toPre F ≫ cPB D F χ = toUnit _ ≫ D.toPre.c χ := by
   unfold cPB
   rw [← Category.assoc, toUnit_unique (DegPre.zF D.toPre F ≫ toUnit _) (toUnit _)]
 
+/- English proof (translation)
+Unfold `DegPre.zF`. Conclude with `lift_fst _ _`.
+-/
 lemma zF_fst : DegPre.zF D.toPre F ≫ fst (TF (R := V) F) D.toPre.P.A = 𝟙 _ := by
   unfold DegPre.zF
   exact lift_fst _ _
 
+/- English proof (translation)
+Unfold `eSec`. Use `show (toUnit (TF (R := V) F) ≫ η[D.toPre.P.A]).left = _`. Rewrite using `[Over.comp_left, ← Category.assoc]`. Both sides reduce to the same expression.
+-/
 lemma one_left_TF : (1 : TF (R := V) F ⟶ D.toPre.P.A).left =
     jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A := by
   unfold eSec
@@ -154,6 +211,25 @@ lemma one_left_TF : (1 : TF (R := V) F ⟶ D.toPre.P.A).left =
   rw [Over.comp_left, ← Category.assoc]
   rfl
 
+/- English proof (translation)
+Use `haveI := oa.onB.hom a`. Establish `h1 : (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F ≫ oa.onB.act a).left`. Rewrite using `[← Over.comp_left, aF_prB]`. Establish `h2 : (aF D F oa a).left ≫ (padd D.toPre.P.A (DegPre.prB D.toPre F) (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c χ)).left = ((DegPre.prB D.toPre F ≫ oa.onB.act a) * cPB D F χ).left`. Rewrite using `[← Over.comp_left]`.
+
+Use `congr 1`. Unfold `padd`. Rewrite using `[← Category.assoc, comp_lift, aF_prB, aF_cP]`. Both sides reduce to the same expression. Establish `h3 : (aF D F oa a).left ≫ (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c χ).left = (cPB D F χ).left`.
+
+Rewrite using `[← Over.comp_left, aF_cP]`. Establish `h4 : (aF D F oa a).left ≫ (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left = (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left`. Rewrite using `[← Over.comp_left]`. Conclude with `congrArg Over.Hom.left (aF_one D F oa a)`. Establish `h5 : (padd D.toPre.P.A (DegPre.prB D.toPre F) (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c (star a • χ))).left = (DegPre.prB D.toPre F * cPB D F (star a • χ)).left` using `rfl`.
+
+Establish `h6 : (toUnit (DegPre.BF D.toPre F) ≫ η[D.toPre.P.A]).left = (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left` using `rfl`. Establish `h7 : (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c (star a • χ)).left = (cPB D F (star a • χ)).left` using `rfl`. Establish `g1 : (DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F).left = (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left := by`. Rewrite using `[← Over.comp_left, zF_prB]`. Establish `g2 : (DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F * cPB D F (star a • χ)).left = (toUnit (TF (R` using `V) F) ≫ D.toPre.c (star a • χ)).left := by`.
+
+Rewrite using `[← Over.comp_left, zF_prB_mul, zF_cP]`. Establish `g3 : ∀ y, (DegPre.zF D.toPre F).left ≫ (cPB D F y).left = (toUnit (TF (R` using `V) F) ≫ D.toPre.c y).left := by`. Introduce `y`. Rewrite using `[← Over.comp_left, zF_cP]`. Establish `g4 : (DegPre.zF D.toPre F).left ≫ (1 : DegPre.BF D.toPre F ⟶ D.toPre.P.A).left = (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left := by`.
+
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Use `show DegPre.zF D.toPre F ≫ (toUnit _ ≫ η[D.toPre.P.A]) = toUnit _ ≫ η[D.toPre.P.A]`. Rewrite using `[← Category.assoc, toUnit_unique (DegPre.zF D.toPre F ≫ toUnit _) (toUnit _)]`. Establish `g5 : (DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F ≫ oa.onB.act a).left = (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left := by`.
+
+Rewrite using `[← Over.comp_left, ← Category.assoc, zF_prB]`. Use `congr 1`. Use `show (toUnit _ ≫ η[D.toPre.P.A]) ≫ oa.onB.act a = toUnit _ ≫ η[D.toPre.P.A]`. Rewrite using `[Category.assoc, IsMonHom.one_hom]`. Establish `g6 : (DegPre.zF D.toPre F).left ≫ ((DegPre.prB D.toPre F ≫ oa.onB.act a) * cPB D F χ).left = (toUnit (TF (R` using `V) F) ≫ D.toPre.c χ).left := by`.
+
+Rewrite using `[← Over.comp_left, zF_prB_mul', zF_cP]`. Simplify using `only [fsum, pullφ, pullε, DegPre.famφ, DegPre.famε, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, add_zero, h1, h2, h3, h4, h5, h6, h7, neg_neg, g1, g2, g3, g4, g5, g6]`. Use `clear h1 h2 h3 h4 h5 h6 h7 g1 g2 g3 g4 g5 g6`. Use extensionality with `y`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, Finsupp.smul_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> (try push_cast [Nat.cast_sub hN1]) <;> ring`.
+-/
 lemma fsum_pull_zF (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (hN1 : 1 ≤ N) (χ : D.toPre.X) :
     fsum (fun i => (DegPre.zF D.toPre F).left ≫ pullφ D F oa a χ i) (pullε k N) =
       ((k * (N - 1) : ℕ) : ℤ) • Finsupp.single (1 : TF (R := V) F ⟶ D.toPre.P.A).left 1 := by
@@ -215,6 +291,23 @@ lemma fsum_pull_zF (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (hN1 : 1 ≤ N) (χ
   simp only [Finsupp.add_apply, Finsupp.single_apply, Finsupp.smul_apply, smul_eq_mul]
   split_ifs <;> (try push_cast [Nat.cast_sub hN1]) <;> ring
 
+/- English proof (translation)
+Use `set n := k * (N - 1)`. Use `set r := LB.pullGen D.toPre.P.L _ _ (GeneratorPullback.powGen D.toPre.P.L _ _ D.toPre.rigK n) (jFK (R := V) F)`. Establish `hrig : (D.toPre.rigK).IsGen` using `pullGen_isGen_of_isGen _ _ D.toPre.rig D.toPre.rig_gen _`. Establish `hr : r.IsGen` using `pullGen_isGen_of_isGen _ _ _ (powGen_isGen_of_isGen _ hrig n) _`. Use `set p := (fst (TF (R := V) F) D.toPre.P.A).left`.
+
+Use `set z := (DegPre.zF D.toPre F).left`. Establish `hzp : z ≫ p = 𝟙 _`. Simplify using `only [z, p]`. Rewrite using `[← Over.comp_left, zF_fst]`. Both sides reduce to the same expression.
+
+Use `set rT := LB.pullGen D.toPre.P.L _ _ r p`. Establish `hrT : rT.IsGen` using `pullGen_isGen_of_isGen _ _ r hr p`. Take `⟨u0, hu0⟩` from `(hasGen_pull D F hL oa w0 uΨ huΨ a N hN k χ).gen hL _ _ (fsum_pull D F oa a k N χ)`. Use `set v := LB.mulGen D.toPre.P.L _ _ _ _ u0 (LB.invGen D.toPre.P.L _ _ rT)`. Establish `hv : v.IsGen` using `mulGen_isGen_of_isGen _ hu0 _ (invGen_isGen_of_isGen _ hrT)`.
+
+Establish `hφr : fsum (fun _ : PUnit => jFK (R` using `V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A) (fun _ : PUnit => (n : ℤ) * 1) = (n : ℤ) • Finsupp.single (1 : TF (R := V) F ⟶ D.toPre.P.A).left 1 := by`. Rewrite using `[one_left_TF]`. Simplify using `[fsum, Finsupp.smul_single_one]`. Establish `h0 : fsum (fun i => z ≫ Sum.elim (pullφ D F oa a χ) (fun _ : PUnit => p ≫ jFK (R` using `V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A) i) (Sum.elim (pullε k N) (fun _ : PUnit => -((n : ℤ) * 1))) = 0 := by`. Rewrite using `[fsum_comp, fsum_sumElim, mapDomain_add', ← fsum_comp, fsum_pull_zF D F oa a k N hN1 χ, ← fsum_comp]`.
+
+Establish `e : (fun _ : PUnit => z ≫ p ≫ jFK (R` using `V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A) = fun _ => jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A := by`. Use function extensionality and compare the values at `_`. Rewrite using `[← Category.assoc, hzp, Category.id_comp]`. Rewrite using `[e, fsum_neg, hφr, add_neg_cancel]`. Take `⟨v', hv', hv1⟩` from `exists_normalized hL _ _ v hv p z hzp h0`.
+
+Establish `hW` using `mulGen_isGen_of_isGen _ hv' _ hrT`. Establish `hsW : LB.SameSum (Sum.elim (Sum.elim (pullφ D F oa a χ) (fun _ : PUnit => p ≫ jFK (R` using `V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A)) (fun _ : PUnit => p ≫ jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A)) (Sum.elim (Sum.elim (pullε k N) (fun _ : PUnit => -((n : ℤ) * 1))) (fun _ : PUnit => (n : ℤ) * 1)) (pullφ D F oa a χ) (pullε k N) := by`. Rewrite using `[sameSum_iff_fsum, fsum_sumElim, fsum_sumElim, fsum_neg]`. Normalize the expressions using the abelian group laws. Take `⟨u, hu, hcW⟩` from `gen_transport hL hsW _ hW`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `c1` using `corr_pullGen (corr_symm hcW) z`. Establish `c2` using `corr_pullGen_mulGen v' rT z`. Establish `c4` using `corr_trans hL (corr_pullGen_comp r p z) (corr_trans hL (corr_pullGen_of_eq r hr _ _ hzp) (corr_pullGen_id r))`. Establish `c3` using `corr_mulGen (corr_one_of (fun j hj => hv1 j hj)) c4`.
+
+Establish `c5` using `corr_mulGen_one r`. Conclude with `corr_trans hL c1 (corr_trans hL c2 (corr_trans hL c3 c5))`.
+-/
 theorem exists_pullGen (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     (uΨ : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 4)
       ![(padd D.toPre.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.toPre.P.A.left, (oa.onB.act w0).left,
@@ -274,6 +367,17 @@ theorem exists_pullGen (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
   have c5 := corr_mulGen_one r
   exact corr_trans hL c1 (corr_trans hL c2 (corr_trans hL c3 c5))
 
+/- English proof (translation)
+Take `⟨P', g, hg, -, -, -⟩` from `hBC _ _ (TF (R := V) F).hom D.toPre.P`. Establish `hbij` using `@hGF _ P'.A P'.grp P'.isAb`. Set `e : P'.A.left ≅ pullback (TF (R` to `V) F).hom D.toPre.P.A.hom := hg.flip.isoPullback`. Establish `he : e.hom ≫ pullback.fst _ _ = P'.A.hom` using `hg.flip.isoPullback_hom_fst`. Set `φ : P'.A.left ⟶ (DegPre.BF D.toPre F).left` to `e.hom`.
+
+Establish `hφinj : Function.Injective φ.appTop.hom`. Establish `key : ∀ x, e.inv.appTop.hom (φ.appTop.hom x) = x`. Introduce `x`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, e.inv_hom_id, Scheme.Hom.id_appTop]`. Both sides reduce to the same expression.
+
+Introduce `x y hxy`. Rewrite using `[← key x, ← key y, hxy]`. Establish `hcomp : ∀ c : Γ((TF (R` using `V) F).left, ⊤), φ.appTop.hom ((fst (TF (R := V) F) D.toPre.P.A).left.appTop.hom c) = P'.A.hom.appTop.hom c := by`. Introduce `c`. Rewrite using `[← he]`.
+
+Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Take `⟨c0, hc0⟩` from `hbij.2 (φ.appTop.hom (f : Γ((DegPre.BF D.toPre F).left, ⊤)))`. Take `⟨c1, hc1⟩` from `hbij.2 (φ.appTop.hom ((f⁻¹ : Γ((DegPre.BF D.toPre F).left, ⊤)ˣ) : Γ((DegPre.BF D.toPre F).left, ⊤)))`. Establish `h01 : c0 * c1 = 1` using `hbij.1 (by rw [map_mul, hc0, hc1, ← map_mul, Units.mul_inv, map_one, map_one])`.
+
+Use `⟨⟨c0, c1, h01, by rw [mul_comm]; exact h01⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Apply `hφinj` to reduce the goal to its premises. Use `show φ.appTop.hom (f : Γ((DegPre.BF D.toPre F).left, ⊤)) = φ.appTop.hom ((fst (TF (R := V) F) D.toPre.P.A).left.appTop.hom c0)`. Rewrite using `[hcomp, hc0]`.
+-/
 theorem bf_units_const (hGF : GlobalFnsSt) (hBC : PolBaseChangeSt) (f : Γ((DegPre.BF D.toPre F).left, ⊤)ˣ) :
     ∃ c : Γ((TF (R := V) F).left, ⊤)ˣ,
       f = Units.map ((fst (TF (R := V) F) D.toPre.P.A).left.appTop).hom.toMonoidHom c := by
@@ -305,6 +409,9 @@ theorem bf_units_const (hGF : GlobalFnsSt) (hBC : PolBaseChangeSt) (f : Γ((DegP
     φ.appTop.hom ((fst (TF (R := V) F) D.toPre.P.A).left.appTop.hom c0)
   rw [hcomp, hc0]
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma res_res_lemma {Y : Scheme.{0}} {U W Z : Y.Opens} (h₁ : W ≤ U) (h₂ : Z ≤ W) (x : Γ(Y, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
   ext
@@ -312,26 +419,41 @@ private lemma res_res_lemma {Y : Scheme.{0}} {U W Z : Y.Opens} (h₁ : W ≤ U) 
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[show (homOfLE h).op = 𝟙 (Opposite.op U) from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules.
+-/
 private lemma res_refl_le {Y : Scheme.{0}} {U : Y.Opens} (h : U ≤ U) (x : Γ(Y, U)ˣ) : res h x = x := by
   ext
   simp only [res, Units.coe_map, MonoidHom.coe_coe]
   rw [show (homOfLE h).op = 𝟙 (Opposite.op U) from Subsingleton.elim _ _]
   simp
 
+/- English proof (translation)
+Rewrite using `[res_res_lemma, res_refl_le]`.
+-/
 lemma res_back {Y : Scheme.{0}} {U W : Y.Opens} (h₁ : U ≤ W) (h₂ : W ≤ U) (x : Γ(Y, U)ˣ) :
     res h₁ (res h₂ x) = x := by
   rw [res_res_lemma, res_refl_le]
 
+/- English proof (translation)
+Rewrite using `[res_refl_le]`. Both sides reduce to the same expression.
+-/
 lemma units_map_eq_res {Y Z : Scheme.{0}} (g : Z ⟶ Y) (c : Γ(Y, ⊤)ˣ) :
     Units.map (g.appTop).hom.toMonoidHom c = res (le_refl (g ⁻¹ᵁ ⊤)) (pullU g ⊤ c) := by
   rw [res_refl_le]
   rfl
 
+/- English proof (translation)
+Substitute `hO` using the available equality. Rewrite `e` using `[res_refl_le]`. Then use the resulting hypothesis.
+-/
 lemma eq_one_of_res_top {Y : Scheme.{0}} (O : Y.Opens) (hO : O = ⊤) (c : Γ(Y, ⊤)ˣ) {h : O ≤ ⊤}
     (e : res h c = 1) : c = 1 := by
   subst hO
   rwa [res_refl_le] at e
 
+/- English proof (translation)
+Simplify using `only [map_one, map_mul, map_inv, res_res_lemma] at e`. Establish `e2` using `congrArg (fun z => res hO z) (mul_inv_eq_one.mp e)`. Simplify using `only [res_res_lemma] at e2`. Conclude with `e2`.
+-/
 lemma shape_ratio {Y : Scheme.{0}} {U₁ U₂ W O O' V₀ : Y.Opens} (p₁ : W ≤ U₁) (p₂ : W ≤ U₂) (a : O ≤ W)
     (x : Γ(Y, U₁)ˣ) (y : Γ(Y, U₂)ˣ) (b : O ≤ V₀) (e : res a (res p₁ x * res p₂ y⁻¹) = res b (1 : Γ(Y, V₀)ˣ))
     (o₁ : O' ≤ U₁) (o₂ : O' ≤ U₂) (hO : O' ≤ O) : res o₁ x = res o₂ y := by
@@ -342,6 +464,31 @@ lemma shape_ratio {Y : Scheme.{0}} {U₁ U₂ W O O' V₀ : Y.Opens} (p₁ : W �
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hs' : LB.SameSum φ' ε' φ ε` using `by rw [sameSum_iff_fsum] at hs ⊢; exact hs.symm`. Take `⟨t'', ht'', c1⟩` from `gen_transport hL hs' t' ht'`. Use `set ρ := LB.mulGen D.toPre.P.L _ _ _ _ t (LB.invGen D.toPre.P.L φ ε t'')`. Establish `hρ : ρ.IsGen` using `mulGen_isGen_of_isGen _ ht _ (invGen_isGen_of_isGen _ ht'')`. Establish `hs0 : LB.SameSum (Sum.elim φ φ) (Sum.elim ε (fun k => -ε k)) (K'` using `PEmpty) PEmpty.elim PEmpty.elim := by`.
+
+Rewrite using `[sameSum_iff_fsum, fsum_sumElim, fsum_neg, add_neg_cancel, fsum_empty]`. Take `⟨te, -, c2⟩` from `gen_transport hL hs0 ρ hρ`. Set `j0 : PEmpty → D.toPre.P.L.ι` to `PEmpty.elim`. Set `f : Γ((DegPre.BF D.toPre F).left, ⊤)ˣ` to `res (le_of_eq (wchart_empty j0).symm) (te.s j0)`. Take `⟨c, hc⟩` from `bf_units_const D F hGF hBC f`.
+
+Establish `hz1 : LB.Gen.Corr D.toPre.P.L _ _ (K'` using `PEmpty) PEmpty.elim PEmpty.elim (LB.pullGen D.toPre.P.L _ _ te (DegPre.zF D.toPre F).left) (LB.oneGen D.toPre.P.L) := by`. Establish `a1` using `corr_pullGen (corr_symm c2) (DegPre.zF D.toPre F).left`. Establish `a2` using `corr_pullGen_mulGen t (LB.invGen D.toPre.P.L φ ε t'') (DegPre.zF D.toPre F).left`. Establish `a3` using `corr_mulGen (corr_refl _ (pullGen_isGen_of_isGen _ _ t ht (DegPre.zF D.toPre F).left)) (corr_pullGen_invGen t'' (DegPre.zF D.toPre F).left)`. Establish `a4 : LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L φ ε t (DegPre.zF D.toPre F).left) (LB.pullGen D.toPre.P.L φ ε t'' (DegPre.zF D.toPre F).left)` using `corr_trans hL hval (corr_pullGen c1 _)`.
+
+Conclude with `corr_trans hL a1 (corr_trans hL a2 (corr_trans hL a3 (corr_ratio_one a4)))`. Establish `hte : te.s j0 = res (fun _ _ => trivial : (LB.LinComb D.toPre.P.L (Y` using `(DegPre.BF D.toPre F).left) (K := PEmpty) PEmpty.elim PEmpty.elim).U j0 ≤ (fst (TF (R := V) F) D.toPre.P.A).left ⁻¹ᵁ ⊤) (pullU (fst (TF (R := V) F) D.toPre.P.A).left ⊤ c) := by`. Establish `e1 : te.s j0 = res (le_of_eq (wchart_empty j0)) f`. Simplify using `only [f]`. Conclude with `(res_back _ _ _).symm`.
+
+Rewrite using `[e1, hc, units_map_eq_res]`. Use `erw [res_res']`. Both sides reduce to the same expression. Establish `hzp : (DegPre.zF D.toPre F).left ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, zF_fst]`.
+
+Both sides reduce to the same expression. Establish `key : (LB.pullGen D.toPre.P.L _ _ te (DegPre.zF D.toPre F).left).s j0 = res le_top c` using `by show res _ (pullU _ _ (te.s j0)) = _`. Rewrite using `[hte]`. Conclude with `pull_pull_id _ _ hzp _ _ c`. Establish `hc1 : c = 1`.
+
+Establish `e` using `hz1 j0 j0 (fun k => k.elim) (fun k => k.elim) (fun k => k.elim)`. Rewrite `e` using `[key]`. Express the relevant statement in the definitionally equal form `res _ (res _ c) = res _ (1 : Γ((TF (R := V) F).left, _)ˣ) at e`. Rewrite `e` using `[map_one]`. Use `erw [res_res'] at e`.
+
+Conclude with `eq_one_of_res_top _ (by ext y; simp [LB.wchart]) c e`. Establish `hf1 : f = 1` using `by rw [hc, hc1, map_one]`. Establish `hte1 : te.s j0 = 1`. Simplify using `only [f] at hf1`. Rewrite using `[← res_back (le_of_eq (wchart_empty j0)) (le_of_eq (wchart_empty j0).symm) (te.s j0), hf1, map_one]`.
+
+Both sides reduce to the same expression. Establish `hf1 : f = 1` using `by rw [hc, hc1, map_one]`. Establish `htt : LB.Gen.Corr D.toPre.P.L φ ε φ ε t t''`. Introduce `j j₂ hj hj₂ hm`. Set `J : K ⊕ K → D.toPre.P.L.ι` to `Sum.elim j j₂`.
+
+Establish `hJ : LB.Coh D.toPre.P.L (Sum.elim φ φ) J`. Introduce and unpack `(k₁ | k₁) (k₂ | k₂) e`. Conclude with `hj k₁ k₂ e`. Conclude with `hm k₁ k₂ e`. Conclude with `(hm k₂ k₁ e.symm).symm`.
+
+Conclude with `hj₂ k₁ k₂ e`. Establish `e` using `c2 J j0 hJ (fun k => k.elim) (fun _ k' => k'.elim)`. Establish `le : LB.wchart D.toPre.P.L φ j ⊓ LB.wchart D.toPre.P.L φ j₂ ≤ LB.wchart D.toPre.P.L (Sum.elim φ φ) J` using `fun y hy => Set.mem_iInter.2 fun k => by`. Break down `k with k | k` into its components or cases. Conclude with `Set.mem_iInter.1 hy.1 k`.
+
+Conclude with `Set.mem_iInter.1 hy.2 k`. Rewrite `e` using `[hte1]`. Conclude with `shape_ratio _ _ _ (t.s j) (t''.s j₂) _ e _ _ (le_inf le (fun _ _ => by rw [wchart_empty]; trivial))`. Conclude with `corr_trans hL htt (corr_symm c1)`.
+-/
 theorem corr_of_zF (hGF : GlobalFnsSt) (hBC : PolBaseChangeSt) (hL : D.toPre.P.L.IsLB)
     {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → ((DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left)} {ε : K → ℤ}
@@ -431,6 +578,9 @@ variable (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
 def uPull (χ : D.toPre.X) : LB.Gen (LB.LinComb D.toPre.P.L (pullφ D F oa a χ) (pullε k N)) :=
   Classical.choose (exists_pullGen D F hL oa w0 uΨ huΨ a N hN hN1 k χ)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_pullGen D F hL oa w0 uΨ huΨ a N hN hN1 k χ)`.
+-/
 lemma uPull_spec (χ : D.toPre.X) :
     (uPull D F hL oa w0 uΨ huΨ a N hN hN1 k χ).IsGen ∧
       LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ (uPull D F hL oa w0 uΨ huΨ a N hN hN1 k χ)
@@ -441,6 +591,11 @@ def pullProd (s : Fam D.toPre F k) (χ : D.toPre.X) :=
   mulSec D.toPre.P.L _ _ _ _ (genSec (uPull D F hL oa w0 uΨ huΨ a N hN hN1 k χ) (uPull_spec D F hL oa w0 uΨ huΨ a N hN hN1 k χ).1)
     (pullSec D.toPre.P.L _ _ (s.s χ) (aF D F oa a).left)
 
+/- English proof (translation)
+Substitute `hβ` using the available equality. Introduce `ψ`. Establish `hz : ∀ x : Fin 4, ((if (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ x = ψ then -DegPre.famε k x else 0) + if (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ x = ψ then DegPre.famε k x else 0) = 0`. Introduce `x`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, add_assoc, ← Finset.sum_add_distrib]`. Use `show (∑ x : Fin 4, if DegPre.famφ D.toPre F (star a • χ) x = ψ then DegPre.famε (k * N) x else 0) + ∑ x : Fin 4, ((if (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ x = ψ then -DegPre.famε k x else 0) + if (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ x = ψ then DegPre.famε k x else …`. Rewrite using `[Finset.sum_eq_zero (fun x _ => hz x), add_zero]`.
+-/
 lemma pullProd_sameSum (χ : D.toPre.X) (β : D.toPre.X) (hβ : star a • χ = β) :
     LB.SameSum (Sum.elim (pullφ D F oa a χ) (fun i => (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ i))
       (Sum.elim (pullε k N) (DegPre.famε k)) (DegPre.famφ D.toPre F β) (DegPre.famε (k * N)) := by
@@ -469,6 +624,9 @@ def pullSecs (s : Fam D.toPre F k) (β : D.toPre.X) :
 
 end PullFam
 
+/- English proof (translation)
+Establish `h2 : (a * star a) • χ₁ = (a * star a) • χ₂` using `by rw [mul_smul, mul_smul, h]`. Rewrite `h2` using `[hN, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `h3 : (N : ℤ) • χ₁ = (N : ℤ) • χ₂` using `by rw [natCast_zsmul, natCast_zsmul]; exact h2`. Conclude with `smul_right_injective X (by omega) h3`.
+-/
 lemma smul_star_inj {O : Type} [CommRing O] [StarRing O] {X : Type} [AddCommGroup X] [Module O X]
     [Module.Free ℤ X] (a : O) (N : ℕ) (hN : a * star a = (N : O)) (hN1 : 1 ≤ N) {χ₁ χ₂ : X}
     (h : star a • χ₁ = star a • χ₂) : χ₁ = χ₂ := by
@@ -477,15 +635,24 @@ lemma smul_star_inj {O : Type} [CommRing O] [StarRing O] {X : Type} [AddCommGrou
   have h3 : (N : ℤ) • χ₁ = (N : ℤ) • χ₂ := by rw [natCast_zsmul, natCast_zsmul]; exact h2
   exact smul_right_injective X (by omega) h3
 
+/- English proof (translation)
+Simplify using `only [rs]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma rs_rs_eq_rs_trans {Y : Scheme.{0}} {U W Z : Y.Opens} (h₁ : W ≤ U) (h₂ : Z ≤ W) (x : Γ(Y, U)) :
     rs h₂ (rs h₁ x) = rs (h₂.trans h₁) x := by
   simp only [rs]
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `map_mul _ _ _`.
+-/
 private lemma rs_mul' {Y : Scheme.{0}} {U W : Y.Opens} (h : W ≤ U) (x y : Γ(Y, U)) :
     rs h (x * y) = rs h x * rs h y := map_mul _ _ _
 
+/- English proof (translation)
+Establish `e2` using `congrArg (fun z => rs o z) e`. Simplify using `only [rs_rs_eq_rs_trans, rs_mul'] at e2`. Rewrite using `[mul_comm]`. Conclude with `e2.symm`.
+-/
 lemma shape_secRel {Y : Scheme.{0}} {U₁ U₂ U₃ W V₂ O : Y.Opens} (hW : W ≤ U₃) (hWV : W ≤ V₂) (hV : V₂ ≤ U₂)
     (o : O ≤ W ⊓ U₁) (o₁ : O ≤ U₁) (o₂ : O ≤ U₂) (o₃ : O ≤ U₃) (x : Γ(Y, U₁)) (y : Γ(Y, U₂)) (u : Γ(Y, U₃)ˣ)
     (e : rs (inf_le_left : W ⊓ U₁ ≤ W) (rs hW (u : Γ(Y, U₃)) * rs hWV (rs hV y)) =
@@ -498,6 +665,15 @@ lemma shape_secRel {Y : Scheme.{0}} {U₁ U₂ U₃ W V₂ O : Y.Opens} (hW : W 
 
 variable {D F} in
 
+/- English proof (translation)
+Introduce `χ₀ hβ e`. Substitute `χ₀` using the available equality. Introduce `j₁ j₂ j₃ hcoh`. Establish `spec` using `Classical.choose_spec (sec_transport hL (pullProd_sameSum D F oa a N k χ (star a • χ) hβ) (pullProd D F hL oa w0 uΨ huΨ a N hN hN1 k s χ))`. Establish `e` using `spec (Sum.elim j₃ j₂) j₁ (by`.
+
+Introduce and unpack `(k₁ | k₁) (k₂ | k₂) h`. Conclude with `hcoh (Sum.inr (Sum.inr k₁)) (Sum.inr (Sum.inr k₂)) h`. Conclude with `hcoh (Sum.inr (Sum.inr k₁)) (Sum.inr (Sum.inl k₂)) h`. Conclude with `hcoh (Sum.inr (Sum.inl k₁)) (Sum.inr (Sum.inr k₂)) h`. Conclude with `hcoh (Sum.inr (Sum.inl k₁)) (Sum.inr (Sum.inl k₂)) h)`.
+
+Use the proof step `(fun k₁ k₂ h => hcoh (Sum.inl k₁) (Sum.inl k₂) h)`. Use the proof step `(by`. Introduce and unpack `(k | k) k' h`. Conclude with `(hcoh (Sum.inl k') (Sum.inr (Sum.inr k)) h.symm).symm`. Conclude with `(hcoh (Sum.inl k') (Sum.inr (Sum.inl k)) h.symm).symm)`.
+
+Establish `ho : LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F (star a • χ)) j₁ ⊓ LB.wchart D.toPre.P.L (fun k => (aF D F oa a).left ≫ DegPre.famφ D.toPre F χ k) j₂ ⊓ LB.wchart D.toPre.P.L (pullφ D F oa a χ) j₃ ≤ LB.wchart D.toPre.P.L (Sum.elim (pullφ D F oa a χ) (fun k => (aF D F oa a).left …` using `fun _ hy => ⟨Set.mem_iInter.2 fun k => by`. Break down `k with k | k` into its components or cases. Conclude with `Set.mem_iInter.1 hy.2 k`. Conclude with `Set.mem_iInter.1 hy.1.2 k, hy.1.1⟩`. Conclude with `shape_secRel _ _ (wchart_comp_le _ _ j₂) ho _ _ _ _ _ _ e`.
+-/
 lemma secRel_pullSecs (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     (uΨ : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 4)
       ![(padd D.toPre.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.toPre.P.A.left, (oa.onB.act w0).left,
@@ -538,6 +714,11 @@ lemma secRel_pullSecs (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
         · exact Set.mem_iInter.1 hy.1.2 k, hy.1.1⟩
   exact shape_secRel _ _ (wchart_comp_le _ _ j₂) ho _ _ _ _ _ _ e
 
+/- English proof (translation)
+Use `⟨⟨pullSecs D F hL oa w0 uΨ huΨ a N hN hN1 k s, hfe⟩, fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Use `⟨uPull D F hL oa w0 uΨ huΨ a N hN hN1 k χ, (uPull_spec D F hL oa w0 uΨ huΨ a N hN hN1 k χ).1, (uPull_spec D F hL oa w0 uΨ huΨ a N hN hN1 k χ).2, ?_⟩` and prove the remaining obligations. Establish `hex : ∃ χ₀, star a • χ₀ = star a • χ` using `⟨χ, rfl⟩`. Use `show GeneratorPullback.SecRel _ _ _ (pullSecs D F hL oa w0 uΨ huΨ a N hN hN1 k s (star a • χ)) _ _ _ _ _ _ _`. Simplify using `only [pullSecs, dif_pos hex]`.
+
+Conclude with `secRel_pullSecs hL oa w0 uΨ huΨ a N hN hN1 k s χ hex.choose hex.choose_spec (smul_star_inj a N hN hN1 hex.choose_spec)`. Establish `: ¬ ∃ χ, star a • χ = β` using `fun ⟨χ, h⟩ => hβ χ h.symm show (pullSecs D F hL oa w0 uΨ huΨ a N hN hN1 k s β).f j = 0`. Simplify using `only [pullSecs, dif_neg this]`. Both sides reduce to the same expression.
+-/
 theorem exists_pullAl (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     (uΨ : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 4)
       ![(padd D.toPre.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.toPre.P.A.left, (oa.onB.act w0).left,
@@ -559,6 +740,21 @@ theorem exists_pullAl (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     simp only [pullSecs, dif_neg this]
     rfl
 
+/- English proof (translation)
+Establish `hA` using `oa.onB.rosati a`. Take `⟨uR, huR⟩` from `gen_of_local_base hL (Out.rosatiφ D.toPre.P.A (oa.onB.act a) (oa.onB.act (star a))) Out.rosatiε hA`. Establish `hPM` using `hasGen_pullMul oa.onB.toRingAct w0 a N hN uΨ huΨ uR huR D.toPre.cub.t D.toPre.cub.isGen`. Establish `hRig : HasGen D.toPre.P.L (lf (Finsupp.single (1 : D.toPre.P.A ⟶ D.toPre.P.A) 1))`. Use `HasGen.of_gen (LB.pullGen D.toPre.P.L _ _ D.toPre.rig (toUnit D.toPre.P.A).left) (pullGen_isGen_of_isGen _ _ D.toPre.rig D.toPre.rig_gen _)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [fsum, Fintype.univ_punit, Finset.sum_singleton, lf_single]`. Both sides reduce to the same expression. Establish `h` using `(hPM.zsmul (-(k : ℤ))).add (hRig.zsmul ((k : ℤ) * ((N : ℤ) - 1)))`. Simplify using `only [← lf_smul, ← lf_add] at h`.
+
+Establish `hf : fsum (K` using `Fin 2) ![𝟙 D.toPre.P.A.left, (oa.onB.act a).left] ![((k * N : ℕ) : ℤ), -(k : ℤ)] = lf (-(k : ℤ) • (Finsupp.single (oa.onB.act a) 1 - (N : ℤ) • Finsupp.single (𝟙 D.toPre.P.A) 1 + ((N : ℤ) - 1) • Finsupp.single (1 : D.toPre.P.A ⟶ D.toPre.P.A) 1) + ((k : ℤ) * ((N : ℤ) - 1)) • Finsup …`. Simplify using `only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Rewrite using `[← Over.id_left, ← lf_single, ← lf_single, ← lf_add]`. Use `congr 1`. Rewrite using `[← Finsupp.smul_single_one, ← Finsupp.smul_single_one _ (-(k : ℤ))]`.
+
+Use `push_cast`. Use `module`. Take `⟨X0, hX0⟩` from `h.gen hL _ _ hf`. Establish `hzp : eSec D.toPre.P.A ≫ (toUnit D.toPre.P.A).left = 𝟙 _`. Simplify using `only [eSec, ← Over.comp_left]`.
+
+Rewrite using `[show η[D.toPre.P.A] ≫ toUnit D.toPre.P.A = 𝟙 _ from toUnit_unique _ _]`. Both sides reduce to the same expression. Establish `hrig : (GeneratorPullback.powGen D.toPre.P.L _ _ D.toPre.rig (k * (N - 1))).IsGen` using `powGen_isGen_of_isGen _ D.toPre.rig_gen _`. Use `exists_normalized_to hL _ _ X0 hX0 (toUnit D.toPre.P.A).left (eSec D.toPre.P.A) hzp _ _ _ hrig ?_` and prove the remaining obligations. Establish `ha : eSec D.toPre.P.A ≫ (oa.onB.act a).left = eSec D.toPre.P.A` using `by haveI := oa.onB.hom a`.
+
+Simplify using `only [eSec, ← Over.comp_left, IsMonHom.one_hom]`. Simplify using `only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id, ha, Fintype.univ_punit, Finset.sum_singleton, ← Finsupp.single_add]`. Use `congr 1`. Rewrite using `[Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hN1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_XB (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
     (uΨ : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 4)
       ![(padd D.toPre.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.toPre.P.A.left, (oa.onB.act w0).left,

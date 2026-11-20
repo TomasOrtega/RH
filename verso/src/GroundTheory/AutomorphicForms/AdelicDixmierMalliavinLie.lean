@@ -30,6 +30,9 @@ open scoped Matrix.Norms.L2Operator
 def leftReg : RegNorm 𝔅 →ₐ[ℝ] Matrix (Fin (Module.finrank ℝ 𝔅)) (Fin (Module.finrank ℝ 𝔅)) ℝ :=
   Algebra.leftMulMatrix (Module.finBasis ℝ 𝔅)
 
+/- English proof (translation)
+The claim follows from `Algebra.leftMulMatrix_injective _`.
+-/
 theorem leftReg_injective : Function.Injective (leftReg 𝔅) :=
   Algebra.leftMulMatrix_injective _
 
@@ -64,6 +67,9 @@ def formGroup : Subgroup 𝔄ˣ where
       _ = (σ (a⁻¹ : 𝔄ˣ) * σ a) * J * (a * (a⁻¹ : 𝔄ˣ)) := by simp only [mul_assoc]
       _ = J := by rw [h1, Units.mul_inv, one_mul, mul_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_formGroup {g : 𝔄ˣ} : g ∈ formGroup σ hσ1 hσ J ↔ σ g * J * g = J := Iff.rfl
 
 def formLie : Submodule ℝ 𝔄 where

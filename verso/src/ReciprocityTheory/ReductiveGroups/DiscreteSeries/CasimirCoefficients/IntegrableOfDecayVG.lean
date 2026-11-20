@@ -11,6 +11,47 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Set `Q` to `SgIxV ε s`. Set `lam : Measure (REV n Q)` to `Measure.addHaar`. Set `O : Set (REV n Q)` to `{x | hsRV (Matrix.of x - signedIdentityColumns ε s) < 1 / 16}`. Set `r0 : ℝ` to `n + 2 * (5 / 2 * Real.sqrt n + 1 / 2) ^ 2`. Set `W : Set (UJ ε)` to `{k | hs (toM k) ≤ r0}`.
+
+Set `N : ℕ` to `2 * (n * Fintype.card Q)`. Establish `hof : Continuous (fun x : REV n Q => (Matrix.of x : Matrix (Fin n) Q ℂ))` using `continuous_id`. Establish `hofs : Continuous (fun x : Matrix (Fin n) Q ℂ => (Matrix.of.symm x : REV n Q))` using `continuous_id`. Establish `hO_open : IsOpen O` using `isOpen_lt (hsRV_cont.comp (hof.sub continuous_const)) continuous_const`. Establish `hO_pos : 0 < lam O` using `hO_open.measure_pos lam ⟨Matrix.of.symm (signedIdentityColumns ε s), by simp [O, hsRV]⟩`.
+
+Establish `hO_fin : lam O < ⊤` using `(measure_mono (fun x hx => O_bddRV hx)).trans_lt measure_closedBall_lt_top`. Establish `hW_fin : ν W < ⊤` using `ballFiniteVG ε ν r0`. Establish `hB_fin : lam (ball 0 1) < ⊤` using `measure_ball_lt_top`. Use `set K : ENNReal := ν W * lam (ball 0 1) / lam O with hK`. Establish `hK_fin : K ≠ ⊤`.
+
+Rewrite using `[hK]`. Conclude with `ENNReal.div_ne_top (ENNReal.mul_ne_top hW_fin.ne hB_fin.ne) hO_pos.ne'`. Use `⟨K.toReal * (Real.sqrt n + 1) ^ N, by positivity, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ R` using `by linarith`. Use `set ρ : ℝ := R * (Real.sqrt n + 1) with hρ`.
+
+Establish `hρ0 : 0 ≤ ρ` using `by positivity`. Use `set S : Set (UJ ε) := {g | hs (toM g) ≤ R ^ 2} with hS`. Establish `hS_meas : MeasurableSet S` using `(isClosed_le (hs_contVG.comp (continuous_toM ε)) continuous_const).measurableSet`. Set `Φ : UJ ε × REV n Q → REV n Q` to `fun p => RLV (toM p.1⁻¹) p.2`. Establish `hΦ : Continuous Φ` using `by show Continuous fun p : UJ ε × REV n Q => (Matrix.of.symm (toM p.1⁻¹ * Matrix.of p.2) : REV n Q)`.
+
+Conclude with `hofs.comp (((continuous_toM ε).comp (continuous_inv.comp continuous_fst)).matrix_mul (hof.comp continuous_snd))`. Set `T : Set (UJ ε × REV n Q)` to `{p | hs (toM p.1) ≤ R ^ 2} ∩ Φ ⁻¹' O`. Establish `hT : MeasurableSet T` using `(isClosed_le ((hs_contVG.comp (continuous_toM ε)).comp continuous_fst) continuous_const).measurableSet.inter (hO_open.preimage hΦ).measurableSet`. Establish `h1 : (ν.prod lam) T = ν S * lam O`. Rewrite using `[Measure.prod_apply hT]`.
+
+Establish `: ∀ g, lam (Prod.mk g ⁻¹' T) = S.indicator (fun _ => lam O) g`. Introduce `g`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `hdet : LinearMap.det (RLV (Q` using `Q) (toM g⁻¹)) = 1 := RLV_det (g⁻¹).2`.
+
+Establish `e : Prod.mk g ⁻¹' T = RLV (Q` using `Q) (toM g⁻¹) ⁻¹' O := by`. Use extensionality with `x`. Simplify using `only [T, Set.mem_preimage, Set.mem_inter_iff, Set.mem_ofPred_eq, Φ]`. Conclude with `⟨fun h => h.2, fun h => ⟨hg, h⟩⟩`. Rewrite using `[e, Measure.addHaar_preimage_linearMap lam (by rw [hdet]; exact one_ne_zero), hdet]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hg]`. Establish `e : Prod.mk g ⁻¹' T = ∅`. Use extensionality with `x`. Simplify using `only [T, Set.mem_preimage, Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and]`.
+
+Conclude with `fun h => absurd h hg`. Rewrite using `[e, measure_empty]`. Repeatedly rewrite using `[this]`. Rewrite using `[lintegral_indicator_const hS_meas, mul_comm]`. Establish `h2 : (ν.prod lam) T ≤ ν W * lam (closedBall 0 ρ)`.
+
+Rewrite using `[Measure.prod_apply_symm hT]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hne : ((fun g => (g, x)) ⁻¹' T).Nonempty`. Take `⟨h, hh⟩` from `hne`.
+
+Establish `hh1 : hs (toM h) ≤ R ^ 2` using `hh.1`. Establish `hh2 : hsRV (Matrix.of (RLV (toM h⁻¹) x) - signedIdentityColumns ε s) < 1 / 16` using `hh.2`. Rewrite `hh2` using `[of_RLV]`. Establish `hx : x ∈ closedBall (0 : REV n Q) ρ`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hρ0]`.
+
+Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg hρ0]`. Introduce `j`. Use `entryRV (g := toM h) hR0 hh1 hh2 i j` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, toM_mul_invVG, Matrix.one_mul]`.
+
+Conclude with `this`. Rewrite using `[Set.indicator_of_mem hx]`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun g hg => ?_` and prove the remaining obligations. Establish `hg2 : hsRV (Matrix.of (RLV (toM g⁻¹) x) - signedIdentityColumns ε s) < 1 / 16` using `hg.2`.
+
+Rewrite `hg2` using `[of_RLV]`. Use `show hs (toM (h⁻¹ * g)) ≤ r0`. Use `smallRV (h⁻¹ * g).2 hg2 hh2 ?_` and prove the remaining obligations. Rewrite using `[toM_mulVG, ← Matrix.mul_assoc, Matrix.mul_assoc (toM h⁻¹), toM_mul_invVG, Matrix.mul_one]`. Use `_ = ν W := measure_preimage_mul ν h⁻¹ W`.
+
+Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, measure_empty]`. Conclude with `bot_le`. Use `_ = ν W * lam (closedBall 0 ρ) := lintegral_indicator_const measurableSet_closedBall _`. Establish `hfr : Module.finrank ℝ (REV n Q) = N`. Simplify using `[REV, N, Module.finrank_pi_fintype, Complex.finrank_real_complex]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : lam (closedBall 0 ρ) = ENNReal.ofReal (ρ ^ N) * lam (ball 0 1)`. Rewrite using `[Measure.addHaar_closedBall lam _ hρ0, hfr]`. Establish `h4 : ν S * lam O ≤ K * ENNReal.ofReal (ρ ^ N) * lam O`. Rewrite using `[← h1]`.
+
+Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[h3, hK, div_eq_mul_inv]`. Establish `: (lam O)⁻¹ * lam O = 1` using `ENNReal.inv_mul_cancel hO_pos.ne' hO_fin.ne`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, mul_one]`.
+
+Use `_ = _ := by ring`. Establish `h5 : ν S ≤ K * ENNReal.ofReal (ρ ^ N)` using `(ENNReal.mul_le_mul_iff_left hO_pos.ne' hO_fin.ne).1 h4`. Use `h5.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hρ, mul_pow, ← ENNReal.ofReal_toReal hK_fin, ← ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.toReal_ofReal ENNReal.toReal_nonneg]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volGrowthVG (ε : Fin n → Bool) (s : Bool) (ν : Measure (UJ ε)) [ν.IsHaarMeasure] :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ R : ℝ, 1 ≤ R →
       ν {g | hs (toM g) ≤ R ^ 2} ≤ ENNReal.ofReal (C * R ^ (2 * (n * Fintype.card (SgIxV ε s)))) := by
@@ -125,6 +166,45 @@ theorem volGrowthVG (ε : Fin n → Bool) (s : Bool) (ν : Measure (UJ ε)) [ν.
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `volGrowthVG ε s ν`. Use `set N : ℕ := 2 * (n * Fintype.card (SgIxV ε s)) with hN`. Establish `ha0 : 0 < a` using `lt_of_le_of_lt (Nat.cast_nonneg N) ha`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hM0 : 0 ≤ M`.
+
+Use `(norm_nonneg _).trans (hM 1 ?_)` and prove the remaining obligations. Establish `e1 : hs (toM (1 : UJ ε)) = n` using `hs_oneVG n`. Establish `e2 : (1 : ℝ) ≤ Real.exp 2` using `Real.one_le_exp (by norm_num)`. Rewrite using `[e1]`. Use polynomial arithmetic with `[(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]`.
+
+Set `A0 : ℝ` to `Real.exp (a * Real.log n / 2)`. Set `y : ℝ` to `Real.exp (-(a * Real.log 2))`. Set `r : ℝ` to `2 ^ N * y`. Establish `hy0 : 0 < y` using `Real.exp_pos _`. Establish `hr0 : 0 ≤ r` using `by positivity`.
+
+Establish `hr1 : r < 1`. Establish `e : (2 : ℝ) ^ N = Real.exp (N * Real.log 2)`. Rewrite using `[Real.exp_nat_mul, Real.exp_log two_pos]`. Use `show 2 ^ N * Real.exp (-(a * Real.log 2)) < 1`. Rewrite using `[e, ← Real.exp_add, Real.exp_lt_one_iff]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Set `B0 : Set (UJ ε)` to `{g | hs (toM g) ≤ (n : ℝ) * Real.exp 2 + 1}`. Set `S : ℕ → Set (UJ ε)` to `fun j => {g | hs (toM g) ≤ ((2 : ℝ) ^ j) ^ 2}`. Establish `hcont : Continuous (fun g : UJ ε => hs (toM g))` using `hs_contVG.comp (continuous_toM ε)`. Establish `hB0m : MeasurableSet B0` using `(isClosed_le hcont continuous_const).measurableSet`.
+
+Establish `hSm : ∀ j, MeasurableSet (S j)` using `fun j => (isClosed_le hcont continuous_const).measurableSet`. Set `c : ℕ → ℝ≥0∞` to `fun j => ENNReal.ofReal (M * (A0 * y ^ j))`. Set `F : UJ ε → ℝ≥0∞` to `fun g => B0.indicator (fun _ => ENNReal.ofReal M) g + ∑' j, (S (j + 1)).indicator (fun _ => c j) g`. Establish `hpt : ∀ g, ‖f g‖ₑ ≤ F g`. Introduce `g`.
+
+Distinguish the cases in `hg : g ∈ B0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hM g hg)`. Use `_ = B0.indicator (fun _ => ENNReal.ofReal M) g := (Set.indicator_of_mem hg (fun _ => ENNReal.ofReal M)).symm`.
+
+Use `_ ≤ F g := le_self_add`. Establish `hg' : (n : ℝ) * Real.exp 2 + 1 < hs (toM g)` using `not_le.1 hg`. Take `⟨t, ht1, ht2⟩` from `hdec g hg'`. Establish `hpos : (1 : ℝ) ≤ hs (toM g)`. Establish `: 0 ≤ (n : ℝ) * Real.exp 2` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, hj1, hj2⟩` from `exists_nat_pow_near hpos (show (1 : ℝ) < 4 by norm_num)`. Establish `hn0 : (0 : ℝ) < n`. Assume the negation of the conclusion as `hcon`. Establish `: (n : ℝ) = 0` using `le_antisymm (not_lt.1 hcon) (Nat.cast_nonneg n)`.
+
+Rewrite `ht1` using `[this, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : g ∈ S (j + 1)` using `by show hs (toM g) ≤ ((2 : ℝ) ^ (j + 1)) ^ 2`. Establish `: ((2 : ℝ) ^ (j + 1)) ^ 2 = 4 ^ (j + 1)`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`.
+
+Evaluate the numerical expressions. Rewrite using `[this]`. Conclude with `hj2.le`. Establish `hlog : (j : ℝ) * Real.log 2 - Real.log n / 2 ≤ t`. Establish `h4 : (4 : ℝ) ^ j ≤ n * Real.exp (2 * t)` using `hj1.trans ht1`.
+
+Establish `h5` using `Real.log_le_log (by positivity) h4`. Rewrite `h5` using `[Real.log_pow, Real.log_mul hn0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `h6 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Rewrite `h5` using `[h6]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : Real.exp (-(a * t)) ≤ A0 * y ^ j` using `by show Real.exp (-(a * t)) ≤ Real.exp (a * Real.log n / 2) * Real.exp (-(a * Real.log 2)) ^ j`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, Real.exp_le_exp]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hb : ‖f g‖ ≤ M * (A0 * y ^ j)` using `ht2.trans (mul_le_mul_of_nonneg_left hexp hM0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal hb`. Use `_ = (S (j + 1)).indicator (fun _ => c j) g := (Set.indicator_of_mem hmem (fun _ => c j)).symm`. Use `_ ≤ ∑' j, (S (j + 1)).indicator (fun _ => c j) g := ENNReal.le_tsum (f := fun j => (S (j + 1)).indicator (fun _ => c j) g) j`.
+
+Use `_ ≤ F g := le_add_self`. Establish `hterm : ∀ j, c j * ν (S (j + 1)) ≤ ENNReal.ofReal (M * A0 * C * 2 ^ N * r ^ j)`. Introduce `j`. Establish `h2 : (1 : ℝ) ≤ 2 ^ (j + 1)` using `one_le_pow₀ (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hC _ h2`. Use `_ = ENNReal.ofReal (M * (A0 * y ^ j) * (C * (2 ^ (j + 1)) ^ N)) := (ENNReal.ofReal_mul (mul_nonneg hM0 (by positivity))).symm`. Use `_ = ENNReal.ofReal (M * A0 * C * 2 ^ N * r ^ j) := by`. Use `congr 1`. Use `show M * (A0 * y ^ j) * (C * (2 ^ (j + 1)) ^ N) = M * A0 * C * 2 ^ N * (2 ^ N * y) ^ j`.
+
+Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFint : ∫⁻ g, F g ∂ν < ⊤`. Establish `e1 : ∫⁻ g, F g ∂ν = ENNReal.ofReal M * ν B0 + ∑' j, c j * ν (S (j + 1))` using `by show ∫⁻ g, (B0.indicator (fun _ => ENNReal.ofReal M) g + ∑' j, (S (j + 1)).indicator (fun _ => c j) g) ∂ν = _`. Rewrite using `[lintegral_add_left (measurable_const.indicator hB0m), lintegral_indicator_const hB0m, lintegral_tsum (fun j => (measurable_const.indicator (hSm (j + 1))).aemeasurable)]`.
+
+Use `congr 1`. Conclude with `tsum_congr fun j => lintegral_indicator_const (hSm (j + 1)) _`. Rewrite using `[e1]`. Use `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ballFiniteVG ε ν _), ?_⟩` and prove the remaining obligations. Establish `hsum : Summable fun j : ℕ => M * A0 * C * 2 ^ N * r ^ j` using `(summable_geometric_of_lt_one hr0 hr1).mul_left _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_nonneg hM0 (by positivity : (0 : ℝ) ≤ A0 * C * 2 ^ N * r ^ j)` as an intermediate fact. Simplify `this) hsum).symm` using `only [mul_assoc]`. Use `_ < ⊤ := ENNReal.ofReal_lt_top`. Conclude with `⟨hf, lt_of_le_of_lt (lintegral_mono hpt) hFint⟩`.
+-/
 theorem integrable_of_decayVG {E : Type*} [NormedAddCommGroup E] (ε : Fin n → Bool) (s : Bool)
     (ν : Measure (UJ ε)) [ν.IsHaarMeasure] (f : UJ ε → E) (hf : AEStronglyMeasurable f ν) (M : ℝ)
     (hM : ∀ g, hs (toM g) ≤ (n : ℝ) * Real.exp 2 + 1 → ‖f g‖ ≤ M) (a : ℝ)
@@ -244,9 +324,21 @@ section ExpB
 
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
+/- English proof (translation)
+Rewrite using `[hs_eq_frobVG, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 lemma sqrt_hs_frobVG (A : Matrix (Fin n) (Fin n) ℂ) : Real.sqrt (hs A) = ‖A‖ := by
   rw [hs_eq_frobVG, Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: NormedSpace.exp X = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h1 : (1 : ℝ) ≤ Real.sqrt n`.
+
+Rewrite using `[Real.one_le_sqrt]`. Conclude with `hn` after adjusting the coercions. Establish `hsum` using `NormedSpace.norm_expSeries_summable' (𝕂 := ℂ) X`. Establish `hr : Summable fun k : ℕ => Real.sqrt n * (‖X‖ ^ k / (k.factorial : ℝ))` using `(Real.summable_pow_div_factorial ‖X‖).mul_left _`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `hsum.tsum_le_tsum (fun k => ?_) hr` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast]`. Establish `hk : ‖X ^ k‖ ≤ Real.sqrt n * ‖X‖ ^ k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases.
+
+Rewrite using `[pow_zero, pow_zero, mul_one, ← sqrt_hs_frobVG, hs_oneVG]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = Real.sqrt n * Real.exp ‖X‖ := by`. Rewrite using `[tsum_mul_left, Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum_div]`.
+-/
 lemma norm_exp_frobVG (X : Matrix (Fin n) (Fin n) ℂ) :
     ‖NormedSpace.exp X‖ ≤ Real.sqrt n * Real.exp ‖X‖ := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -275,6 +367,11 @@ lemma norm_exp_frobVG (X : Matrix (Fin n) (Fin n) ℂ) :
 
 end ExpB
 
+/- English proof (translation)
+Establish `h` using `norm_exp_frobVG X`. Rewrite `h` using `[← sqrt_hs_frobVG, ← sqrt_hs_frobVG]`. Establish `h0 : 0 ≤ hs (NormedSpace.exp X)` using `hs_nonnegVG _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, Real.sq_sqrt (Nat.cast_nonneg n), ← Real.exp_nat_mul]`.
+
+Evaluate the numerical expressions.
+-/
 theorem hs_exp_leVG (X : Matrix (Fin n) (Fin n) ℂ) :
     hs (NormedSpace.exp X) ≤ n * Real.exp (2 * Real.sqrt (hs X)) := by
   have h := norm_exp_frobVG X
@@ -286,6 +383,9 @@ theorem hs_exp_leVG (X : Matrix (Fin n) (Fin n) ℂ) :
         rw [mul_pow, Real.sq_sqrt (Nat.cast_nonneg n), ← Real.exp_nat_mul]
         norm_num
 
+/- English proof (translation)
+Establish `key : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2` using `fun z => by`. Simplify using `only [Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum, hs, key]`. Conclude with `Finset.sum_comm`.
+-/
 lemma hs_eq_traceVG (A : Matrix (Fin n) (Fin n) ℂ) : ((Aᴴ * A).trace).re = hs A := by
   have key : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2 := fun z => by
     simp only [Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.sq_norm,
@@ -295,6 +395,9 @@ lemma hs_eq_traceVG (A : Matrix (Fin n) (Fin n) ℂ) : ((Aᴴ * A).trace).re = h
     key]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hk : (toMK k)ᴴ * toMK k = 1` using `Matrix.mem_unitaryGroup_iff'.mp (k.2 : toMK k ∈ Kset ε).1`. Rewrite using `[← hs_eq_traceVG, ← hs_eq_traceVG, Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (toMK k)ᴴ, hk, Matrix.one_mul]`.
+-/
 theorem hs_kmulVG {ε : Fin n → Bool} (k : KG ε) (A : Matrix (Fin n) (Fin n) ℂ) : hs (toMK k * A) = hs A := by
   have hk : (toMK k)ᴴ * toMK k = 1 := Matrix.mem_unitaryGroup_iff'.mp (k.2 : toMK k ∈ Kset ε).1
   rw [← hs_eq_traceVG, ← hs_eq_traceVG, Matrix.conjTranspose_mul, Matrix.mul_assoc,

@@ -21,10 +21,18 @@ section Gen
 
 variable {X Y Z : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+The claim follows from `mul_eq_left.1 (gm_cocycle hL f y hi hi hi)`.
+-/
 theorem g_self (hL : L.IsLB) (f : Y ⟶ X) (y : Y) {i : L.ι} (hi : f y ∈ L.U i) :
     gm f y (L.U i ⊓ L.U i) (L.g i i) = 1 :=
   mul_eq_left.1 (gm_cocycle hL f y hi hi hi)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨Set.mem_iInter.1 h 0, Set.mem_iInter.1 h 1⟩`. Introduce and unpack `⟨h0, h1⟩`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Use `fin_cases k`. Use `exacts [h0, h1]`.
+-/
 theorem mem_twoPullbackChart_iff {φ : Fin 2 → (Y ⟶ X)} (r : Z ⟶ Y) (z : Z) (a b : L.ι) :
     r z ∈ LB.wchart L φ ![a, b] ↔ (r ≫ φ 0) z ∈ L.U a ∧ (r ≫ φ 1) z ∈ L.U b := by
   constructor
@@ -35,6 +43,9 @@ theorem mem_twoPullbackChart_iff {φ : Fin 2 → (Y ⟶ X)} (r : Z ⟶ Y) (z : Z
     fin_cases k
     exacts [h0, h1]
 
+/- English proof (translation)
+Rewrite using `[gen_trans ht r z h h', trF, Fin.prod_univ_two]`. Both sides reduce to the same expression.
+-/
 theorem gv_trans {φ : Fin 2 → (Y ⟶ X)} {ε : Fin 2 → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen)
     (r : Z ⟶ Y) (z : Z) {a b a' b' : L.ι} (h : r z ∈ LB.wchart L φ ![a, b])
     (h' : r z ∈ LB.wchart L φ ![a', b']) :
@@ -44,6 +55,9 @@ theorem gv_trans {φ : Fin 2 → (Y ⟶ X)} {ε : Fin 2 → ℤ} {t : LB.Gen (LB
   rw [gen_trans ht r z h h', trF, Fin.prod_univ_two]
   rfl
 
+/- English proof (translation)
+Use `(gen_trans ht r z (Set.mem_iInter.2 fun _ => h) (Set.mem_iInter.2 fun _ => h')).trans ?_` and prove the remaining obligations. Rewrite using `[trF, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem pullbackGenerator_chart_transition {f : Y ⟶ X} {t : LB.Gen (L.pull f)} (ht : t.IsGen) (r : Z ⟶ Y) (z : Z) {a a' : L.ι}
     (h : (r ≫ f) z ∈ L.U a) (h' : (r ≫ f) z ∈ L.U a') :
     gm r z ((L.pull f).U (fun _ => a)) (t.s (fun _ => a)) =
@@ -52,6 +66,9 @@ theorem pullbackGenerator_chart_transition {f : Y ⟶ X} {t : LB.Gen (L.pull f)}
   rw [trF, Fintype.prod_unique, zpow_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[sec_trans s r z (Set.mem_iInter.2 fun _ => h) (Set.mem_iInter.2 fun _ => h'), trF, Fin.prod_univ_one, zpow_one]`.
+-/
 theorem pullbackPowerSection_chart_transition {f : Y ⟶ X} (s : LB.Sec (LB.LinComb L (fun _ : Fin 1 => f) (fun _ => 1))) (r : Z ⟶ Y) (z : Z)
     {a a' : L.ι} (h : (r ≫ f) z ∈ L.U a) (h' : (r ≫ f) z ∈ L.U a') :
     gs r z (LB.wchart L (fun _ : Fin 1 => f) (fun _ => a)) (s.f (fun _ => a)) =
@@ -70,11 +87,20 @@ abbrev rpt (a : Over.mk x ⟶ A) : Sp ℂ ⟶ (Over.mk x ⊗ A).left := (lift (�
 
 abbrev pl (a : Over.mk x ⟶ A) : Sp ℂ ⟶ A.left := a.left
 
+/- English proof (translation)
+The claim follows from `lift_l_snd _ _`.
+-/
 theorem rpt_snd (a : Over.mk x ⟶ A) : rpt a ≫ (snd (Over.mk x) A).left = pl a := lift_l_snd _ _
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, mulT, comp_lift, lift_fst, MonObj.comp_pow, lift_snd]`.
+-/
 theorem rpt_mulT (a : Over.mk x ⟶ A) (p : ℕ) : rpt a ≫ (mulT A (Over.mk x) p).left = rpt (a ^ p) := by
   rw [← Over.comp_left, mulT, comp_lift, lift_fst, MonObj.comp_pow, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, lift_transl, Category.id_comp]`.
+-/
 theorem rpt_transl (a c : Over.mk x ⟶ A) : rpt a ≫ (translT A c).left = rpt (c * a) := by
   rw [← Over.comp_left, lift_transl, Category.id_comp]
 
@@ -88,6 +114,9 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] (L : RigLB A) {x x' : Sp ℂ �
 
 def kc (a : Over.mk x ⟶ A) : L.L.ι := (exists_chart L.isLB (a.left cpt)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_chart L.isLB (a.left cpt)).choose_spec`.
+-/
 theorem kc_mem (a : Over.mk x ⟶ A) : pl a cpt ∈ L.L.U (kc L a) := (exists_chart L.isLB (a.left cpt)).choose_spec
 
 def W (r : Sp ℂ ⟶ (Over.mk x ⊗ A).left) (k j i : L.L.ι) : ((Sp ℂ).presheaf.stalk cpt)ˣ :=
@@ -96,6 +125,11 @@ def W (r : Sp ℂ ⟶ (Over.mk x ⊗ A).left) (k j i : L.L.ι) : ((Sp ℂ).presh
 
 variable {L β β₀}
 
+/- English proof (translation)
+Use `(mem_twoPullbackChart_iff _ _ _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (rpt a ≫ (snd (Over.mk x) A).left) cpt ∈ _`. Rewrite using `[rpt_snd]`. Conclude with `hk`. Use `show (rpt a ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left) cpt ∈ _`.
+
+Rewrite using `[← Category.assoc, rpt_mulT, rpt_snd]`. Conclude with `hj`.
+-/
 theorem fiberComplexPoint_mem_thetaTraceChart_of_mem (a : Over.mk x ⟶ A) {k j : L.L.ι} (hk : pl a cpt ∈ L.L.U k) (hj : pl (a ^ p) cpt ∈ L.L.U j) :
     rpt a cpt ∈ LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![k, j] := by
   refine (mem_twoPullbackChart_iff _ _ _ _).2 ⟨?_, ?_⟩
@@ -104,6 +138,11 @@ theorem fiberComplexPoint_mem_thetaTraceChart_of_mem (a : Over.mk x ⟶ A) {k j 
   · show (rpt a ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left) cpt ∈ _
     rw [← Category.assoc, rpt_mulT, rpt_snd]; exact hj
 
+/- English proof (translation)
+Use `(mem_twoPullbackChart_iff _ _ _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show (rpt a ≫ (snd (Over.mk x) A).left) cpt ∈ _`. Rewrite using `[rpt_snd]`. Conclude with `hk`. Use `show (rpt a ≫ Ψ ≫ (snd (Over.mk x') A).left) cpt ∈ _`.
+
+Rewrite using `[← Category.assoc, ha, rpt_snd]`. Conclude with `hi`.
+-/
 theorem fiberComplexPoint_mem_thetaTraceIsoChart_of_comp (a : Over.mk x ⟶ A) (ψa : Over.mk x' ⟶ A) (ha : rpt a ≫ Ψ = rpt ψa) {k i : L.L.ι}
     (hk : pl a cpt ∈ L.L.U k) (hi : pl ψa cpt ∈ L.L.U i) :
     rpt a cpt ∈ LB.wchart L.L (isoφ A Ψ) ![k, i] := by
@@ -113,6 +152,13 @@ theorem fiberComplexPoint_mem_thetaTraceIsoChart_of_comp (a : Over.mk x ⟶ A) (
   · show (rpt a ≫ Ψ ≫ (snd (Over.mk x') A).left) cpt ∈ _
     rw [← Category.assoc, ha, rpt_snd]; exact hi
 
+/- English proof (translation)
+Establish `e0 : rpt a ≫ isoφ A (mulT A (Over.mk x) p).left 0 = pl a` using `rpt_snd a`. Establish `e0' : rpt a ≫ isoφ A Ψ 0 = pl a` using `rpt_snd a`. Establish `e1 : rpt a ≫ isoφ A (mulT A (Over.mk x) p).left 1 = pl (a ^ p)` using `by show rpt a ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left = _`. Rewrite using `[← Category.assoc, rpt_mulT, rpt_snd]`. Establish `f1 : rpt a ≫ isoφ A Ψ 1 = pl ψa` using `by show rpt a ≫ Ψ ≫ (snd (Over.mk x') A).left = _`.
+
+Rewrite using `[← Category.assoc, ha, rpt_snd]`. Unfold `W`. Rewrite using `[gv_trans hβ₀ (rpt a) cpt (fiberComplexPoint_mem_thetaTraceChart_of_mem a hk hj) (fiberComplexPoint_mem_thetaTraceChart_of_mem a hk' hj'), gv_trans hβ (rpt a) cpt (fiberComplexPoint_mem_thetaTraceIsoChart_of_comp a ψa ha hk hi) (fiberComplexPoint_mem_thetaTraceIsoChart_of_comp a …`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem W_trans (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (ψa : Over.mk x' ⟶ A) (ha : rpt a ≫ Ψ = rpt ψa)
     {k j i k' j' i' : L.L.ι} (hk : pl a cpt ∈ L.L.U k) (hk' : pl a cpt ∈ L.L.U k')
     (hj : pl (a ^ p) cpt ∈ L.L.U j) (hj' : pl (a ^ p) cpt ∈ L.L.U j')
@@ -146,15 +192,24 @@ def bv (i j : L.L.ι) (a : Over.mk x ⟶ A) : ℂ := ev (W L β β₀ (rpt a) (k
 
 variable {L β β₀}
 
+/- English proof (translation)
+The claim follows from `((W L β β₀ (rpt a) (kc L a) j i).isUnit.map ev).ne_zero`.
+-/
 theorem bv_ne (i j : L.L.ι) (a : Over.mk x ⟶ A) : bv L β β₀ i j a ≠ 0 :=
   ((W L β β₀ (rpt a) (kc L a) j i).isUnit.map ev).ne_zero
 
+/- English proof (translation)
+Establish `e` using `W_trans hβ hβ₀ a ψa ha hk (kc_mem L a) hj hj hi hi`. Rewrite `e` using `[g_self L.isLB _ _ hj, g_self L.isLB _ _ hi, _root_.mul_one, _root_.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem W_eq (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (ψa : Over.mk x' ⟶ A) (ha : rpt a ≫ Ψ = rpt ψa)
     {k j i : L.L.ι} (hk : pl a cpt ∈ L.L.U k) (hj : pl (a ^ p) cpt ∈ L.L.U j) (hi : pl ψa cpt ∈ L.L.U i) :
     W L β β₀ (rpt a) k j i = W L β β₀ (rpt a) (kc L a) j i := by
   have e := W_trans hβ hβ₀ a ψa ha hk (kc_mem L a) hj hj hi hi
   rwa [g_self L.isLB _ _ hj, g_self L.isLB _ _ hi, _root_.mul_one, _root_.one_mul] at e
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun u : ((Sp ℂ).presheaf.stalk cpt)ˣ => ev u.val) (W_trans hβ hβ₀ a ψa ha (kc_mem L a) (kc_mem L a) hj hj' hi hi')`. Simplify using `only [Units.val_mul, map_mul] at e`. Rewrite `e` using `[ev_gm (pl (a ^ p)) (L.L.U j ⊓ L.L.U j') ⟨hj, hj'⟩, ev_gm (pl ψa) (L.L.U i ⊓ L.L.U i') ⟨hi, hi'⟩]`. Conclude with `e`.
+-/
 theorem bv_trans (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (ψa : Over.mk x' ⟶ A) (ha : rpt a ≫ Ψ = rpt ψa)
     {i j i' j' : L.L.ι} (hi : pl ψa cpt ∈ L.L.U i) (hi' : pl ψa cpt ∈ L.L.U i')
     (hj : pl (a ^ p) cpt ∈ L.L.U j) (hj' : pl (a ^ p) cpt ∈ L.L.U j') :
@@ -174,6 +229,25 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x x' : Sp ℂ �
   {Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left} {p : ℕ}
   {β : LB.Gen (isoLB A L Ψ ((p : ℤ) ^ 2))} {β₀ : LB.Gen (isoLB A L (mulT A (Over.mk x) p).left ((p : ℤ) ^ 2))}
 
+/- English proof (translation)
+Take `⟨J, hJ, hJi⟩` from `exists_good L.L L.isLB cpt (fun _ : Unit => pl ψa) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Establish `H` using `hv _ (rpt a) cpt J hJ`. Rewrite `H` using `[ha]`. Establish `hl : sv A L s' (rpt ψa) cpt J = gs (rpt ψa) cpt ((LPow A L.L 1 (Over.mk x')).U (fun _ => i)) (s'.f (fun _ => i))` using `sval_of _ _ _ _ _ fun _ => (congrArg J (rpt_snd ψa)).trans (hJi ())`. Establish `ml : rpt ψa cpt ∈ (LPow A L.L 1 (Over.mk x')).U (fun _ => i)` using `Set.mem_iInter.2 fun _ => by show (rpt ψa ≫ (snd (Over.mk x') A).left) cpt ∈ L.L.U i`.
+
+Rewrite using `[rpt_snd]`. Conclude with `hi`. Rewrite using `[← ev_gs (rpt ψa) _ ml (s'.f fun _ => i), ← hl, H, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[rpt_transl]`.
+
+Use `set c := cr m * a with hc`. Establish `hcΨ : rpt c ≫ Ψ = rpt ψa`. Rewrite using `[hc, ← rpt_transl, Category.assoc, mem_transKer.1 (hcr m), ha]`. Establish `hmul : rpt c ≫ (mulT A (Over.mk x) p).left = rpt (c ^ p)` using `rpt_mulT c p`. Rewrite using `[hc₀.val _ cpt hJ, hmul]`.
+
+Establish `v0 : val β₀ (rpt c) cpt J = gm (rpt c) cpt (LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![J (pl c), J (pl (c ^ p))]) (β₀.s ![J (pl c), J (pl (c ^ p))])` using `val_of _ _ _ _ _ fun k => by fin_cases k`. Conclude with `congrArg J (rpt_snd c)`. Use `show J (rpt c ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left) = _`. Rewrite using `[← Category.assoc, hmul, rpt_snd]`. Both sides reduce to the same expression.
+
+Establish `v1 : val β (rpt c) cpt J = gm (rpt c) cpt (LB.wchart L.L (isoφ A Ψ) ![J (pl c), i]) (β.s ![J (pl c), i])` using `val_of _ _ _ _ _ fun k => by fin_cases k`. Conclude with `congrArg J (rpt_snd c)`. Use `show J (rpt c ≫ Ψ ≫ (snd (Over.mk x') A).left) = _`. Rewrite using `[← Category.assoc, hcΨ, rpt_snd]`. Conclude with `hJi ()`.
+
+Establish `s0 : sv A L s (rpt (c ^ p)) cpt J = gs (rpt (c ^ p)) cpt ((LPow A L.L 1 (Over.mk x)).U (fun _ => J (pl (c ^ p)))) (s.f (fun _ => J (pl (c ^ p))))` using `sval_of _ _ _ _ _ fun _ => congrArg J (rpt_snd _)`. Establish `hk : pl c cpt ∈ L.L.U (J (pl c))` using `hJ _`. Establish `hj' : pl (c ^ p) cpt ∈ L.L.U (J (pl (c ^ p)))` using `hJ _`. Establish `et` using `W_trans hβ hβ₀ c ψa hcΨ hk (kc_mem L c) hj' (hj m) hi hi`. Rewrite `et` using `[g_self L.isLB _ _ hi, _root_.one_mul]`.
+
+Establish `st : gs (rpt (c ^ p)) cpt ((LPow A L.L 1 (Over.mk x)).U (fun _ => J (pl (c ^ p)))) (s.f (fun _ => J (pl (c ^ p)))) = (gm (pl (c ^ p)) cpt (L.L.U (J (pl (c ^ p))) ⊓ L.L.U (jm m)) (L.L.g (J (pl (c ^ p))) (jm m))).val * gs (rpt (c ^ p)) cpt ((LPow A L.L 1 (Over.mk x)).U (fun _ => jm …`. Establish `e` using `pullbackPowerSection_chart_transition (f := (snd (Over.mk x) A).left) s (rpt (c ^ p)) cpt (a := J (pl (c ^ p))) (a' := jm m) (by rw [rpt_snd]; exact hj') (by rw [rpt_snd]; exact hj m)`. Rewrite `e` using `[rpt_snd]`. Conclude with `e`. Establish `mj : rpt (c ^ p) cpt ∈ (LPow A L.L 1 (Over.mk x)).U (fun _ => jm m)` using `Set.mem_iInter.2 fun _ => by show (rpt (c ^ p) ≫ (snd (Over.mk x) A).left) cpt ∈ L.L.U (jm m)`.
+
+Rewrite using `[rpt_snd]`. Conclude with `hj m`. Rewrite using `[s0, v0, v1, bv, ← ev_gs _ _ mj (s.f fun _ => jm m), ← map_mul, ← et]`. Unfold `W`. Simplify using `only [Units.val_mul]`.
+
+Rewrite using `[st]`. Put the polynomial expressions in normal form.
+-/
 theorem bv_values (hβ : β.IsGen) (hβ₀ : β₀.IsGen) {s : LB.Sec (LPow A L.L 1 (Over.mk x))}
     {s₁ : LB.Sec (LPow A L.L ((p : ℤ) ^ 2) (Over.mk x))} {s' : LB.Sec (LPow A L.L 1 (Over.mk x'))}
     (hc₀ : IsCarried A L (mulT A (Over.mk x) p).left _ β₀ s s₁) {n : ℕ} (cr : Fin n → (Over.mk x ⟶ A))
@@ -253,9 +327,25 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x x' : Sp ℂ �
   {Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left} {p : ℕ}
   {β : LB.Gen (isoLB A L Ψ ((p : ℤ) ^ 2))} {β₀ : LB.Gen (isoLB A L (mulT A (Over.mk x) p).left ((p : ℤ) ^ 2))}
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`.
+-/
 theorem ev_inv (u : ((Sp ℂ).presheaf.stalk cpt)ˣ) : ev (u⁻¹).val = (ev u.val)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])
 
+/- English proof (translation)
+Introduce `w₀ hw₀`. Take `⟨o₀, d₀⟩` from `he (LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![kc L (e w₀), j]) (β₀.s ![kc L (e w₀), j]).val`. Take `⟨o₁, d₁⟩` from `he (LB.wchart L.L (isoφ A Ψ) ![kc L (e w₀), i]) (β.s ![kc L (e w₀), i]).val`. Establish `hN` using `o₀.inter o₁`. Establish `key : ∀ w ∈ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ rpt (e b) ⁻¹ᵁ LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![kc L (e w₀), j]} ∩ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ rpt (e b) ⁻¹ᵁ LB.wchart L.L (isoφ A Ψ) ![kc L (e w₀), i]}, bv L β β₀ i j (e w) = valAt' (rpt (e w)) (L …`.
+
+Introduce and unpack `w ⟨⟨-, h0⟩, ⟨-, h1⟩⟩`. Establish `m0 : rpt (e w) cpt ∈ LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![kc L (e w₀), j]` using `(mem_iff _ _).2 h0`. Establish `m1 : rpt (e w) cpt ∈ LB.wchart L.L (isoφ A Ψ) ![kc L (e w₀), i]` using `(mem_iff _ _).2 h1`. Take `⟨a0, a1⟩` from `(mem_twoPullbackChart_iff _ _ _ _).1 m0`. Take `⟨-, b1⟩` from `(mem_twoPullbackChart_iff _ _ _ _).1 m1`.
+
+Establish `hk : pl (e w) cpt ∈ L.L.U (kc L (e w₀))`. Rewrite `a0` using `[show rpt (e w) ≫ isoφ A (mulT A (Over.mk x) p).left 0 = pl (e w) from rpt_snd _]`. Then use the resulting hypothesis. Establish `hj : pl (e w ^ p) cpt ∈ L.L.U j`. Rewrite using `[show rpt (e w) ≫ isoφ A (mulT A (Over.mk x) p).left 1 = pl (e w ^ p) by show rpt (e w) ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left = _` and apply the resulting hypothesis. Rewrite `a1` using `[← Category.assoc, rpt_mulT, rpt_snd]]`.
+
+Establish `hi : pl (ψp (e w)) cpt ∈ L.L.U i`. Rewrite using `[show rpt (e w) ≫ isoφ A Ψ 1 = pl (ψp (e w)) by show rpt (e w) ≫ Ψ ≫ (snd (Over.mk x') A).left = _` and apply the resulting hypothesis. Rewrite `b1` using `[← Category.assoc, hΨ, rpt_snd]]`. Rewrite using `[bv, ← W_eq hβ hβ₀ (e w) (ψp (e w)) (hΨ _) hk hj hi, W, Units.val_mul, map_mul, ev_gm _ _ m0 (β₀.s ![kc L (e w₀), j]), ev_inv, ev_gm _ _ m1 (β.s ![kc L (e w₀), i])]`. Establish `hf` using `(d₀.mono Set.inter_subset_left).mul ((d₁.mono Set.inter_subset_right).inv fun w hw => by`.
+
+Establish `m1 : rpt (e w) cpt ∈ LB.wchart L.L (isoφ A Ψ) ![kc L (e w₀), i]` using `(mem_iff _ _).2 hw.2.2`. Use `show valAt' (rpt (e w)) _ _ ≠ 0`. Rewrite using `[← ev_gm _ _ m1 (β.s ![kc L (e w₀), i])]`. Conclude with `((Units.isUnit _).map ev).ne_zero)`. Establish `hw : w₀ ∈ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ rpt (e b) ⁻¹ᵁ LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![kc L (e w₀), j]} ∩ {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ rpt (e b) ⁻¹ᵁ LB.wchart L.L (isoφ A Ψ) ![kc L (e w₀), i]}` using `⟨⟨trivial, (mem_iff _ _).1 (fiberComplexPoint_mem_thetaTraceChart_of_mem (e w₀) (kc_mem L _) ((mem_iff _ _).2 hw₀.2))⟩, ⟨trivial, (mem_iff _ _).1 (fiberComplexPoint_mem_thetaTraceIsoChart_of_comp (e w₀) (ψp (e w₀)) (hΨ _) (kc_mem L _) ((mem_iff _ _).2 hw₀.1))⟩⟩`.
+
+Conclude with `((hf.differentiableAt (hN.mem_nhds hw)).congr_of_eventuallyEq (Filter.eventually_of_mem (hN.mem_nhds hw) key)).differentiableWithinAt`.
+-/
 theorem bv_hol (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (ψp : (Over.mk x ⟶ A) → (Over.mk x' ⟶ A))
     (hΨ : ∀ a, rpt a ≫ Ψ = rpt (ψp a)) {g : ℕ} (e : (Fin g → ℂ) → (Over.mk x ⟶ A))
     (he : IsHolTo Set.univ (fun w => rpt (e w))) (i j : L.L.ι) :
@@ -312,6 +402,9 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x x' : Sp ℂ �
   {Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left} {p : ℕ}
   {β : LB.Gen (isoLB A L Ψ ((p : ℤ) ^ 2))} {β₀ : LB.Gen (isoLB A L (mulT A (Over.mk x) p).left ((p : ℤ) ^ 2))}
 
+/- English proof (translation)
+Establish `e : rpt (1 : Over.mk y ⟶ A) = 𝟙 (Sp ℂ) ≫ (ptSecT A (1 : Over.mk y ⟶ A)).left` using `(Category.id_comp _).symm`. Rewrite using `[e]`. Conclude with `(val_pull hJ _ _ _).symm.trans ((val_corr hJ h.2.2 (𝟙 _)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_rigT (Over.mk y) _ (𝟙 _) cpt hJ) (val_rigT (Over.mk y') _ (𝟙 _) cpt hJ))))`.
+-/
 theorem val_origin {y y' : Sp ℂ ⟶ S} {Φ : (Over.mk y ⊗ A).left ⟶ (Over.mk y' ⊗ A).left} {k : ℤ}
     {t : LB.Gen (isoLB A L Φ k)} (h : IsRigIso A L Φ k t) {J : (Sp ℂ ⟶ A.left) → L.L.ι} (hJ : Good L.L cpt J) :
     val t (rpt (1 : Over.mk y ⟶ A)) cpt J =
@@ -322,12 +415,18 @@ theorem val_origin {y y' : Sp ℂ ⟶ S} {Φ : (Over.mk y ⊗ A).left ⟶ (Over.
   exact (val_pull hJ _ _ _).symm.trans ((val_corr hJ h.2.2 (𝟙 _)).trans ((val_mul hJ _ _ _).trans
     (congrArg₂ (· * ·) (val_rigT (Over.mk y) _ (𝟙 _) cpt hJ) (val_rigT (Over.mk y') _ (𝟙 _) cpt hJ))))
 
+/- English proof (translation)
+Establish `m : y cpt ∈ LB.wchart L.L (fun _ : PUnit => eSec A) (fun _ => i)` using `Set.mem_iInter.2 fun _ => h`. Conclude with `ev_gm y _ m _`.
+-/
 theorem rig_ev (y : Sp ℂ ⟶ S) (i : L.L.ι) (h : (y ≫ eSec A) cpt ∈ L.L.U i) :
     ev (gm y cpt ((L.L.pull (eSec A)).U (fun _ => i)) (L.rig.s (fun _ => i))).val =
       valAt' y ((L.L.pull (eSec A)).U (fun _ => i)) (L.rig.s (fun _ => i)).val := by
   have m : y cpt ∈ LB.wchart L.L (fun _ : PUnit => eSec A) (fun _ => i) := Set.mem_iInter.2 fun _ => h
   exact ev_gm y _ m _
 
+/- English proof (translation)
+Rewrite using `[← rig_ev y i h, ← rig_ev y i' h', ← ev_gm (y ≫ eSec A) (L.L.U i ⊓ L.L.U i') ⟨h, h'⟩, ← map_mul, ← Units.val_mul, pullbackGenerator_chart_transition L.rigGen y cpt h h']`.
+-/
 theorem rig_trans (y : Sp ℂ ⟶ S) {i i' : L.L.ι} (h : (y ≫ eSec A) cpt ∈ L.L.U i) (h' : (y ≫ eSec A) cpt ∈ L.L.U i') :
     valAt' y ((L.L.pull (eSec A)).U (fun _ => i)) (L.rig.s (fun _ => i)).val =
       valAt' (y ≫ eSec A) (L.L.U i ⊓ L.L.U i') (L.L.g i i').val *
@@ -335,6 +434,23 @@ theorem rig_trans (y : Sp ℂ ⟶ S) {i i' : L.L.ι} (h : (y ≫ eSec A) cpt ∈
   rw [← rig_ev y i h, ← rig_ev y i' h', ← ev_gm (y ≫ eSec A) (L.L.U i ⊓ L.L.U i') ⟨h, h'⟩, ← map_mul,
     ← Units.val_mul, pullbackGenerator_chart_transition L.rigGen y cpt h h']
 
+/- English proof (translation)
+Use `choose J hJ using fun χ : Sp ℂ ⟶ A.left => exists_chart L.isLB (χ cpt)`. Establish `hG : Good L.L cpt J` using `hJ`. Establish `hp1 : (1 : Over.mk x ⟶ A) ^ p = 1` using `one_pow p`. Establish `r0` using `val_origin hβ₀ hG`. Establish `r1` using `val_origin hβ hG`.
+
+Establish `v0 : val β₀ (rpt (1 : Over.mk x ⟶ A)) cpt J = gm (rpt (1 : Over.mk x ⟶ A)) cpt (LB.wchart L.L (isoφ A (mulT A (Over.mk x) p).left) ![J (pl (1 : Over.mk x ⟶ A)), J (pl (1 : Over.mk x ⟶ A))]) (β₀.s ![J (pl (1 : Over.mk x ⟶ A)), J (pl (1 : Over.mk x ⟶ A))])` using `val_of _ _ _ _ _ fun k => by fin_cases k`. Conclude with `congrArg J (rpt_snd _)`. Use `show J (rpt _ ≫ (mulT A (Over.mk x) p).left ≫ (snd (Over.mk x) A).left) = _`. Rewrite using `[← Category.assoc, rpt_mulT, rpt_snd, hp1]`. Both sides reduce to the same expression.
+
+Establish `v1 : val β (rpt (1 : Over.mk x ⟶ A)) cpt J = gm (rpt (1 : Over.mk x ⟶ A)) cpt (LB.wchart L.L (isoφ A Ψ) ![J (pl (1 : Over.mk x ⟶ A)), J (pl (1 : Over.mk x' ⟶ A))]) (β.s ![J (pl (1 : Over.mk x ⟶ A)), J (pl (1 : Over.mk x' ⟶ A))])` using `val_of _ _ _ _ _ fun k => by fin_cases k`. Conclude with `congrArg J (rpt_snd _)`. Use `show J (rpt _ ≫ Ψ ≫ (snd (Over.mk x') A).left) = _`. Rewrite using `[← Category.assoc, h1, rpt_snd]`. Both sides reduce to the same expression.
+
+Establish `q0 : val (L` using `L.L) (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) L.rig (𝟙 (Sp ℂ) ≫ x) cpt J = gm x cpt ((L.L.pull (eSec A)).U (fun _ => J (pl (1 : Over.mk x ⟶ A)))) (L.rig.s (fun _ => J (pl (1 : Over.mk x ⟶ A)))) := by`. Rewrite using `[val_of _ _ _ _ (fun _ => J (pl (1 : Over.mk x ⟶ A))) fun _ => by rw [Category.id_comp]; rfl, Category.id_comp]`. Both sides reduce to the same expression. Establish `q1 : val (L` using `L.L) (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) L.rig (𝟙 (Sp ℂ) ≫ x') cpt J = gm x' cpt ((L.L.pull (eSec A)).U (fun _ => J (pl (1 : Over.mk x' ⟶ A)))) (L.rig.s (fun _ => J (pl (1 : Over.mk x' ⟶ A)))) := by`. Rewrite using `[val_of _ _ _ _ (fun _ => J (pl (1 : Over.mk x' ⟶ A))) fun _ => by rw [Category.id_comp]; rfl, Category.id_comp]`.
+
+Both sides reduce to the same expression. Establish `key : W L β β₀ (rpt (1 : Over.mk x ⟶ A)) (J (pl (1 : Over.mk x ⟶ A))) (J (pl (1 : Over.mk x ⟶ A))) (J (pl (1 : Over.mk x' ⟶ A))) * gm x cpt ((L.L.pull (eSec A)).U (fun _ => J (pl (1 : Over.mk x ⟶ A)))) (L.rig.s (fun _ => J (pl (1 : Over.mk x ⟶ A)))) = gm x' cpt ((L.L.pull (eSec A …`. Rewrite using `[W, ← v0, ← v1, r0, r1, q0, q1]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
+
+Normalize the expressions using the abelian group laws. Establish `hj1 : pl ((1 : Over.mk x ⟶ A) ^ p) cpt ∈ L.L.U (J (pl (1 : Over.mk x ⟶ A)))` using `by rw [hp1]; exact hJ _`. Rewrite `key` using `[W_eq hβ.2.1 hβ₀.2.1 1 1 h1 (hJ _) hj1 (hJ _)]`. Establish `e4` using `congrArg (fun u : ((Sp ℂ).presheaf.stalk cpt)ˣ => ev u.val) key`. Simplify using `only [Units.val_mul, map_mul] at e4`.
+
+Rewrite `e4` using `[rig_ev x _ (hJ (pl (1 : Over.mk x ⟶ A))), rig_ev x' _ (hJ (pl (1 : Over.mk x' ⟶ A)))]`. Use `replace e4 : bv L β β₀ (J (pl (1 : Over.mk x' ⟶ A))) (J (pl (1 : Over.mk x ⟶ A))) 1 * _ = _ := e4`. Establish `e1` using `rig_trans x' (i := i) (i' := J (pl (1 : Over.mk x' ⟶ A))) hi (hJ (pl (1 : Over.mk x' ⟶ A)))`. Establish `e2` using `rig_trans x (i := j) (i' := J (pl (1 : Over.mk x ⟶ A))) hj (hJ (pl (1 : Over.mk x ⟶ A)))`. Establish `e3` using `bv_trans (β := β) (β₀ := β₀) hβ.2.1 hβ₀.2.1 1 1 h1 hi (hJ (pl (1 : Over.mk x' ⟶ A))) (by rw [hp1]; exact hj) hj1`.
+
+Rewrite `e3` using `[hp1]`. Express the relevant statement in the definitionally equal form `bv L β β₀ i j 1 * valAt' (x ≫ eSec A) _ _ = valAt' (x' ≫ eSec A) _ _ * _ at e3`. Rewrite using `[e1, e2]`. Take the linear combination `(-(valAt' x ((L.L.pull (eSec A)).U (fun _ => J (pl (1 : Over.mk x ⟶ A)))) (L.rig.s (fun _ => J (pl (1 : Over.mk x ⟶ A)))).val)) * e3 - valAt' (x' ≫ eSec A) (L.L.U i ⊓ L.L.U (J (pl (1 : Over.mk x' ⟶ A)))) (L.L.g i (J (pl (1 : Over.mk x' ⟶ A)))).val * e4`.
+-/
 theorem bv_rig (hβ : IsRigIso A L Ψ _ β) (hβ₀ : IsRigIso A L (mulT A (Over.mk x) p).left _ β₀)
     (h1 : rpt (1 : Over.mk x ⟶ A) ≫ Ψ = rpt (1 : Over.mk x' ⟶ A)) (i j : L.L.ι)
     (hi : pl (1 : Over.mk x' ⟶ A) cpt ∈ L.L.U i) (hj : pl (1 : Over.mk x ⟶ A) cpt ∈ L.L.U j) :
@@ -403,6 +519,17 @@ theorem bv_rig (hβ : IsRigIso A L Ψ _ β) (hβ₀ : IsRigIso A L (mulT A (Over
 
 end Rig
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ p y z C hk`. Use `letI := fieldCAt σ`. Use `haveI := algClosedCAt σ`. Take `⟨ψ, ψp, hiso, -, htr⟩` from `hk`. Take `⟨β, s₁, n, cr, hβ, hs, hr, hv⟩` from `isThetaTrace_iff.1 htr`.
+
+Take `⟨β₀, hβ₀, hc₀⟩` from `hs.exists_isRigIso`. Establish `hK` using `transKer_of_isHkIsog hiso`. Establish `hΨ : ∀ a, rpt a ≫ conj y.x z.x ψ = rpt (ψp a)` using `fun a => (sends_conj_iff ψ _ _).2 (hiso.2.2.1 a)`. Use `⟨ψ, ψp, n, cr, fun i j a => bv Xo.univ.t.PP β β₀ i j a, hiso, hK ▸ hr, fun i j a _ _ => bv_ne i j a, fun i j i' j' a hi hj => ?_, fun i j hi hj => ?_, fun g e he i j => ?_, fun a i jm hi hj => ?_⟩` and prove the remaining obligations. Establish `mi` using `(mem_iff _ _).2 hi`.
+
+Establish `mj` using `(mem_iff _ _).2 hj`. Conclude with `bv_trans hβ.2.1 hβ₀.2.1 a (ψp a) (hΨ a) mi.1 mi.2 mj.1 mj.2`. Establish `h1 : rpt (1 : Over.mk y.x ⟶ Xo.univ.t.G) ≫ conj y.x z.x ψ = rpt (1 : Over.mk z.x ⟶ Xo.univ.t.G)`. Conclude with `(hΨ 1).trans (congrArg (fun q => rpt q) (map_one ψp))`. Conclude with `bv_rig hβ hβ₀ h1 i j ((mem_iff _ _).2 hi) ((mem_iff _ _).2 hj)`.
+
+Establish `hfun : (fun w => rpt (e w)) = fun w => fibPt Xo.univ.t.G (e w) ≫ (swap y.x).inv`. Use function extensionality and compare the values at `fun w => (Iso.eq_comp_inv _).2 (fibPt_swap (e w))`. Establish `hh : IsHolTo Set.univ (fun w => rpt (e w))`. Rewrite using `[hfun]`. Conclude with `(GlobalTheory.HolFibre.isHolTo_fibPt_and_comp _ Xo.univ.t.G y.x g e he).2 _ (swap y.x).inv`.
+
+Conclude with `bv_hol hβ.2.1 hβ₀.2.1 ψp hΨ e hh i j`. Conclude with `bv_values hβ.2.1 hβ₀.2.1 hc₀ cr (fun m => hr.1 m) hv a (ψp a) (hΨ a) i jm ((mem_iff _ _).2 hi) (fun m => (mem_iff _ _).2 (hj m))`.
+-/
 theorem hkPtC_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (p : ℕ) (y z : FrPt Xo c (CAt σ)) (C : Subgroup (Over.mk y.x ⟶ Xo.univ.t.G)),
   HkPtC p y C z →
   ∃ (ψ : pullback Xo.univ.t.G.hom y.x ⟶ pullback Xo.univ.t.G.hom z.x)

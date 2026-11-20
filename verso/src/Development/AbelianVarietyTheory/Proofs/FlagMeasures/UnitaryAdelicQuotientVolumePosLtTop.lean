@@ -11,6 +11,17 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagMeas
 
+/- English proof (translation)
+Introduce `hstep I μf _ _ fund hfund p q hsig hp`. Take `⟨hcov, hpos⟩` from `GlobalTheory.T.leftQuotientCovolume_eq_fundamentalDomain_inter I μf fund Set.univ hfund MeasurableSet.univ (fun _ _ _ _ => Set.mem_univ _)`. Rewrite `hcov` using `[Set.univ_inter]`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Take `⟨⟨I₀, hsame, hsig₀⟩, hratio⟩` from `GlobalTheory.T.hermVolumeRatioSameKind_of_volumeRatioInduction hstep I p q 2 0 hsig hp (Nat.zero_le _) le_rfl`.
+
+Use `choose c hc using fun v : InfinitePlace I.F => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique I.n (I.ε v)`. Use `choose c₀ hc₀ using fun v : InfinitePlace I₀.F => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique I₀.n (I₀.ε v)`. Take `⟨-, hlc, hsc, -⟩` from `GlobalTheory.CongTop.adelic_topology I₀`. Take `⟨-, -, -, hK, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Establish `hg : IsGaugeAll I c` using `fun v => (hc v).2.1`.
+
+Establish `hg₀ : IsGaugeAll I₀ c₀` using `fun v => (hc₀ v).2.1`. Set `μ₀ : Measure I₀.Gf` to `Measure.haar`. Establish `heq` using `hratio I₀ hsame hsig₀ c μf c₀ μ₀ hg hg₀`. Establish `hdef` using `GlobalTheory.T.unitaryGaugeVolume_le_classNumber_definite I₀ 2 hsig₀ c₀ μ₀ hg₀`. Establish `hcl` using `GlobalTheory.T.rank_two_definite_unimodular_hermitian_class_bound I₀.E I₀.cm.cmUnram`.
+
+Establish `h₀ : gaugeVol I₀ c₀ μ₀ < ⊤` using `hdef.trans_lt (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hcl.trans_lt ENNReal.ofReal_lt_top))`. Establish `hfin : gaugeVol I c μf < ⊤`. Rewrite using `[heq]`. Conclude with `ENNReal.mul_lt_top h₀ ENNReal.ofReal_lt_top`. Rewrite `hfin` using `[gaugeVol, hcov]`.
+
+Assume the negation of the conclusion as `htop`. Rewrite `htop` using `[not_lt, top_le_iff]`. Establish `hcpos : ENNReal.ofReal (∏ v, c v) ≠ 0` using `(ENNReal.ofReal_pos.2 (Finset.prod_pos fun v _ => (hc v).1)).ne'`. Rewrite `hfin` using `[htop, ENNReal.mul_top hcpos, ENNReal.top_div_of_ne_top hK.measure_lt_top.ne]`. Conclude with `lt_irrefl _ hfin`.
+-/
 theorem fundDom_volume_pos_lt_top : VolumeStep → ∀ (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf]
     [μf.IsHaarMeasure] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∀ p q : ℕ, HasSig I p q → 2 ≤ p →
     0 < I.muA μf fund ∧ I.muA μf fund < ⊤ := by

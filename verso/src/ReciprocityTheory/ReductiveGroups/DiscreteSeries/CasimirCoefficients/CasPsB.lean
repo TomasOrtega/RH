@@ -21,6 +21,13 @@ local notation "𝕄" => Fin n → Fin n → ℂ
 
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts (muK ε)` using `by unfold muK; infer_instance`. Establish `: IsFiniteMeasure (muK ε)` using `inferInstance`. Establish `hcont : ∀ x ∈ U, Continuous (F x)` using `fun x hx => hF.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hx, trivial⟩)`. Establish `hcont' : ∀ x ∈ U, Continuous (F' x)` using `fun x hx => hF'.comp_continuous (continuous_const.prodMk continuous_id) (fun _ => ⟨hx, trivial⟩)`. Establish `hU' : IsOpen (U : Set 𝕄)` using `hU`.
+
+Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hU' z hz`. Establish `hδ : (0 : ℝ) < r / 2` using `half_pos hr`. Establish `hcl : Metric.closedBall (z : 𝕄) (r / 2) ⊆ (U : Set 𝕄)` using `(Metric.closedBall_subset_ball (half_lt_self hr)).trans hball`. Establish `hK : IsCompact (Metric.closedBall (z : 𝕄) (r / 2) ×ˢ (Set.univ : Set (KG ε)))` using `(isCompact_closedBall _ _).prod isCompact_univ`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hF'.mono (Set.prod_mono hcl le_rfl))`.
+
+Establish `hin : ∀ x ∈ Metric.ball (z : 𝕄) (r / 2), x ∈ (U : Set 𝕄)` using `fun x hx => hcl (Metric.ball_subset_closedBall hx)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) (F' := fun x k => F' x k) (Metric.ball_mem_nhds (z : 𝕄) hδ) (Filter.eventually_of_mem (Metric.ball_mem_nhds (z : 𝕄) hδ) fun x hx => (hcont x (hin x hx)).aestronglyMeasurable) (integrableOn_univ.mp ((hcont z hz). …`.
+-/
 theorem hasFDerivAt_integral_K [CompactSpace (KG ε)] {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [CompleteSpace E] [SecondCountableTopologyEither (KG ε) E]
     [SecondCountableTopologyEither (KG ε) (𝕄 →L[ℂ] E)] {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U)
@@ -57,11 +64,21 @@ theorem hasFDerivAt_integral_K [CompactSpace (KG ε)] {E : Type*} [NormedAddComm
     (integrable_const C)
     (Filter.Eventually.of_forall fun k x hx => hd x (hin x hx) k)
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts (muK ε)` using `by unfold muK; infer_instance`. Conclude with `integrableOn_univ.mp (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+-/
 theorem integrable_K [CompactSpace (KG ε)] {E : Type*} [NormedAddCommGroup E]
     {f : KG ε → E} (hf : Continuous f) : Integrable f (muK ε) := by
   have : IsFiniteMeasureOnCompacts (muK ε) := by unfold muK; infer_instance
   exact integrableOn_univ.mp (hf.continuousOn.integrableOn_compact isCompact_univ)
 
+/- English proof (translation)
+Distinguish the cases in `h : i ≤ n`. Establish `e : (fun z : 𝕄 => lead i z) = fun z => ∑ σ : Equiv.Perm (Fin i), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ j, z (Fin.castLE h (σ j)) (Fin.castLE h j)`. Use function extensionality and compare the values at `z`. Simplify using `only [lead, dif_pos h, Matrix.det_apply']`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun j _ => contDiff_apply_apply ℂ ℂ _ _)`. Establish `e : (fun z : 𝕄 => lead i z) = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `only [lead, dif_neg h]`.
+
+Rewrite using `[e]`. Conclude with `contDiff_const`.
+-/
 theorem contDiff_lead' (i : ℕ) {m : ℕ∞ω} : ContDiff ℂ m (fun z : 𝕄 => lead i z) := by
   by_cases h : i ≤ n
   · have e : (fun z : 𝕄 => lead i z) = fun z =>
@@ -79,6 +96,9 @@ theorem contDiff_lead' (i : ℕ) {m : ℕ∞ω} : ContDiff ℂ m (fun z : 𝕄 =
     rw [e]
     exact contDiff_const
 
+/- English proof (translation)
+Take `⟨m', rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Simplify using `using hf.pow m'`. Establish `h1 : ContDiffAt ℂ m (fun y => (f y ^ m')⁻¹) x` using `(hf.pow m').inv (pow_ne_zero _ hx)`. Simplify using `using h1`.
+-/
 theorem contDiffAt_zpow' {f : 𝕄 → ℂ} {x : 𝕄} {m : ℕ∞ω}
     (hf : ContDiffAt ℂ m f x) (hx : f x ≠ 0) (k : ℤ) : ContDiffAt ℂ m (fun y => f y ^ k) x := by
   obtain ⟨m', rfl | rfl⟩ := Int.eq_nat_or_neg k
@@ -86,23 +106,38 @@ theorem contDiffAt_zpow' {f : 𝕄 → ℂ} {x : 𝕄} {m : ℕ∞ω}
   · have h1 : ContDiffAt ℂ m (fun y => (f y ^ m')⁻¹) x := (hf.pow m').inv (pow_ne_zero _ hx)
     simpa using h1
 
+/- English proof (translation)
+Use `show ContDiffAt ℂ 3 (fun y : 𝕄 => ∏ i : Fin n, lead ((i : ℕ) + 1) y ^ (-(μ i - muNext μ i))) z`. Conclude with `contDiffAt_prod fun i _ => contDiffAt_zpow' (contDiff_lead' _).contDiffAt (hz i) _`.
+-/
 theorem contDiffAt_phiP_three (μ : Fin n → ℤ) {z : 𝕄} (hz : z ∈ OmegaSet n) :
     ContDiffAt ℂ 3 (Ps1.PhiP μ) z := by
   show ContDiffAt ℂ 3 (fun y : 𝕄 => ∏ i : Fin n, lead ((i : ℕ) + 1) y ^ (-(μ i - muNext μ i))) z
   exact contDiffAt_prod fun i _ => contDiffAt_zpow' (contDiff_lead' _).contDiffAt (hz i) _
 
+/- English proof (translation)
+Establish `h : ContDiffOn ℂ 3 (Ps1.PhiP μ) (OmegaSet n : Set 𝕄)` using `fun z hz => (contDiffAt_phiP_three μ hz).contDiffWithinAt`. Conclude with `h.fderiv_of_isOpen (m := 2) Ps1.isOpen_omega' (by norm_num)`.
+-/
 theorem contDiffOn_DPhi (μ : Fin n → ℤ) :
     ContDiffOn ℂ 2 (fderiv ℂ (Ps1.PhiP μ)) (OmegaSet n : Set 𝕄) := by
   have h : ContDiffOn ℂ 3 (Ps1.PhiP μ) (OmegaSet n : Set 𝕄) :=
     fun z hz => (contDiffAt_phiP_three μ hz).contDiffWithinAt
   exact h.fderiv_of_isOpen (m := 2) Ps1.isOpen_omega' (by norm_num)
 
+/- English proof (translation)
+The claim follows from `(contDiffOn_DPhi μ).continuousOn`.
+-/
 theorem continuousOn_DPhi (μ : Fin n → ℤ) :
     ContinuousOn (fderiv ℂ (Ps1.PhiP μ)) (OmegaSet n : Set 𝕄) := (contDiffOn_DPhi μ).continuousOn
 
+/- English proof (translation)
+The claim follows from `(contDiffOn_DPhi μ).continuousOn_fderiv_of_isOpen isOpen_omega (by norm_num)`.
+-/
 theorem continuousOn_D2Phi (μ : Fin n → ℤ) :
     ContinuousOn (fderiv ℂ (fderiv ℂ (Ps1.PhiP μ))) (OmegaSet n : Set 𝕄) := (contDiffOn_DPhi μ).continuousOn_fderiv_of_isOpen isOpen_omega (by norm_num)
 
+/- English proof (translation)
+The claim follows from `(((contDiffOn_DPhi μ).differentiableOn (by norm_num) w hw).differentiableAt (isOpen_omega.mem_nhds hw)).hasFDerivAt`.
+-/
 theorem hasFDerivAt_DPhi (μ : Fin n → ℤ) {w : 𝕄} (hw : w ∈ OmegaSet n) :
     HasFDerivAt (fderiv ℂ (Ps1.PhiP μ)) (fderiv ℂ (fderiv ℂ (Ps1.PhiP μ)) w) w := (((contDiffOn_DPhi μ).differentiableOn (by norm_num) w hw).differentiableAt (isOpen_omega.mem_nhds hw)).hasFDerivAt
 
@@ -114,6 +149,11 @@ def FY' (T : KType ε Λ) (μ : Fin n → ℤ) (Y x : Matrix (Fin n) (Fin n) ℂ
     𝕄 →L[ℂ] (T.V →L[ℂ] T.V) :=
   fderiv ℂ (fun y : 𝕄 => FY T μ Y y k) x
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt (fun y : 𝕄 => toMK k⁻¹ * Matrix.of y * toMK k) (Ps1.conjCLM (toMK k⁻¹) (toMK k)) x` using `(Ps1.conjCLM (toMK k⁻¹) (toMK k)).hasFDerivAt`. Establish `h2 : HasFDerivAt (fderiv ℂ (Ps1.PhiP μ)) (fderiv ℂ (fderiv ℂ (Ps1.PhiP μ)) (toMK k⁻¹ * x * toMK k)) (toMK k⁻¹ * x * toMK k)` using `hasFDerivAt_DPhi μ hx`. Establish `h4 : HasFDerivAt (fun y : 𝕄 => toMK k⁻¹ * Y * Matrix.of y * toMK k) (Ps1.conjCLM (toMK k⁻¹ * Y) (toMK k)) x` using `(Ps1.conjCLM (toMK k⁻¹ * Y) (toMK k)).hasFDerivAt`. Establish `h` using `((h2.comp x h1).clm_apply h4).smul_const (T.op k * projW T * T.op k⁻¹)`. Establish `hd : HasFDerivAt (fun y : 𝕄 => FY T μ Y y k) _ x` using `h`.
+
+Use `⟨hd.differentiableAt.hasFDerivAt, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[FY', hd.fderiv]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem FY_facts (T : KType ε Λ) (μ : Fin n → ℤ) (Y : Matrix (Fin n) (Fin n) ℂ)
     {x : Matrix (Fin n) (Fin n) ℂ} (k : KG ε) (hx : toMK k⁻¹ * x * toMK k ∈ OmegaSet n) :
     HasFDerivAt (fun y : 𝕄 => FY T μ Y y k) (FY' T μ Y x k) x ∧
@@ -138,6 +178,13 @@ theorem FY_facts (T : KType ε Λ) (μ : Fin n → ℤ) (Y : Matrix (Fin n) (Fin
   rw [FY', hd.fderiv]
   all_goals rfl
 
+/- English proof (translation)
+Establish `hmaps : Set.MapsTo (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => toMK p.2⁻¹ * p.1 * toMK p.2) (U ×ˢ Set.univ) (OmegaSet n)` using `fun p hp => hΩ p.1 hp.1 p.2`. Establish `hA : ContinuousOn (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => fderiv ℂ (Ps1.PhiP μ) (toMK p.2⁻¹ * p.1 * toMK p.2)) (U ×ˢ Set.univ)` using `(continuousOn_DPhi μ).comp Ps1.continuous_conj.continuousOn hmaps`. Establish `hA2 : ContinuousOn (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => fderiv ℂ (fderiv ℂ (Ps1.PhiP μ)) (toMK p.2⁻¹ * p.1 * toMK p.2)) (U ×ˢ Set.univ)` using `(continuousOn_D2Phi μ).comp Ps1.continuous_conj.continuousOn hmaps`. Establish `hP : ContinuousOn (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => T.op p.2 * projW T * T.op p.2⁻¹) (U ×ˢ Set.univ)` using `((Ps1.continuous_P T).comp continuous_snd).continuousOn`. Establish `hcY : ∀ A : Matrix (Fin n) (Fin n) ℂ, Continuous (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => toMK p.2⁻¹ * Y * A * toMK p.2)` using `fun A => (((Ps1.continuous_toMK_inv.comp continuous_snd).matrix_mul continuous_const).matrix_mul continuous_const).matrix_mul (Ps1.continuous_toMK'.comp continuous_snd)`.
+
+Establish `hcYx : Continuous (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => toMK p.2⁻¹ * Y * p.1 * toMK p.2)` using `(((Ps1.continuous_toMK_inv.comp continuous_snd).matrix_mul continuous_const).matrix_mul continuous_fst).matrix_mul (Ps1.continuous_toMK'.comp continuous_snd)`. Establish `hcH : ∀ A : Matrix (Fin n) (Fin n) ℂ, Continuous (fun p : Matrix (Fin n) (Fin n) ℂ × KG ε => toMK p.2⁻¹ * A * toMK p.2)` using `fun A => ((Ps1.continuous_toMK_inv.comp continuous_snd).matrix_mul continuous_const).matrix_mul (Ps1.continuous_toMK'.comp continuous_snd)`. Use `⟨(hA.clm_apply hcYx.continuousOn).smul hP, ?_⟩` and prove the remaining obligations. Use `continuousOn_clm_apply.mpr fun H => ?_` and prove the remaining obligations. Use `(((hA.clm_apply (hcY (Matrix.of H)).continuousOn).add ((hA2.clm_apply (hcH (Matrix.of H)).continuousOn).clm_apply hcYx.continuousOn)).smul hP).congr ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Conclude with `(FY_facts T μ Y p.2 (hΩ p.1 hp.1 p.2)).2 H`.
+-/
 theorem contOn_FY (T : KType ε Λ) (μ : Fin n → ℤ) (Y : Matrix (Fin n) (Fin n) ℂ)
     {U : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hΩ : ∀ z ∈ U, ∀ k : KG ε, toMK k⁻¹ * z * toMK k ∈ OmegaSet n) :
@@ -177,6 +224,11 @@ section Lhol
 
 variable [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → ℤ) {U : Set (Matrix (Fin n) (Fin n) ℂ)}
 
+/- English proof (translation)
+Use `show fderiv ℂ (psM T μ) x (Y * x) = _`. Rewrite using `[hfd x hx]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show fderiv ℂ (PhiM μ) _ (toMK k⁻¹ * (Y * x) * toMK k) • _ = FY T μ Y x k`.
+
+Rewrite using `[← Matrix.mul_assoc (toMK k⁻¹) Y x]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem lhol_psM_eq
     (hfd : ∀ z ∈ U, ∀ H : Matrix (Fin n) (Fin n) ℂ, fderiv ℂ (psM T μ) z H =
       ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) •
@@ -200,6 +252,9 @@ variable (hU : IsOpen U) (hΩ : ∀ z ∈ U, ∀ k : KG ε, toMK k⁻¹ * z * to
           (T.op k * projW T * T.op k⁻¹) ∂(muK ε))
 include hU hΩ hfd
 
+/- English proof (translation)
+Take `⟨hF, hF'⟩` from `contOn_FY T μ Y hΩ`. Establish `hG` using `(hasFDerivAt_integral_K hU (FY T μ Y) (FY' T μ Y) hF hF' (fun x hx k => (FY_facts T μ Y k (hΩ x hx k)).1) hz).const_smul ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ))`. Establish `hU' : IsOpen (U : Set 𝕄)` using `hU`. Use `hG.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hU'.mem_nhds hz] with x hx using lhol_psM_eq T μ hfd Y hx`.
+-/
 theorem hasFDerivAt_lhol (Y : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ U) :
     HasFDerivAt (fun x : 𝕄 => Lhol Y (psM T μ) x)
       (((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) • ∫ k, FY' T μ Y z k ∂(muK ε)) z := by
@@ -211,18 +266,27 @@ theorem hasFDerivAt_lhol (Y : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (F
   refine hG.congr_of_eventuallyEq ?_
   filter_upwards [hU'.mem_nhds hz] with x hx using lhol_psM_eq T μ hfd Y hx
 
+/- English proof (translation)
+Introduce `z hz` and use `by have h : DifferentiableAt ℂ (Lhol Y (psM T μ)) z := (hasFDerivAt_lhol T μ hU hΩ hfd Y hz).differentiableAt exact h.differentiableWithinAt`.
+-/
 theorem differentiableOn_lhol (Y : Matrix (Fin n) (Fin n) ℂ) :
     DifferentiableOn ℂ (Lhol Y (psM T μ)) U := fun z hz => by
   have h : DifferentiableAt ℂ (Lhol Y (psM T μ)) z :=
     (hasFDerivAt_lhol T μ hU hΩ hfd Y hz).differentiableAt
   exact h.differentiableWithinAt
 
+/- English proof (translation)
+Establish `h` using `(contOn_FY T μ Y hΩ).2.comp_continuous (f := fun k : KG ε => (z, k)) (continuous_const.prodMk continuous_id) (fun _ => ⟨hz, trivial⟩)`. Conclude with `Continuous.congr h (fun _ => rfl)`.
+-/
 theorem continuous_FY' (Y : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ U) :
     Continuous (FY' T μ Y z) := by
   have h := (contOn_FY T μ Y hΩ).2.comp_continuous (f := fun k : KG ε => (z, k))
     (continuous_const.prodMk continuous_id) (fun _ => ⟨hz, trivial⟩)
   exact Continuous.congr h (fun _ => rfl)
 
+/- English proof (translation)
+Rewrite using `[show Lhol X (Lhol Y (psM T μ)) z = fderiv ℂ (fun x : 𝕄 => Lhol Y (psM T μ) x) z (Matrix.of.symm (X * z)) from rfl, (hasFDerivAt_lhol T μ hU hΩ hfd Y hz).fderiv, _root_.smul_apply, ContinuousLinearMap.integral_apply (integrable_K (continuous_FY' T μ hU hΩ hfd Y hz))]`.
+-/
 theorem lhol_lhol_psM (X Y : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ U) :
     Lhol X (Lhol Y (psM T μ)) z = ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) •
       ∫ k, FY' T μ Y z k (Matrix.of.symm (X * z)) ∂(muK ε) := by
@@ -233,6 +297,29 @@ theorem lhol_lhol_psM (X Y : Matrix (Fin n) (Fin n) ℂ) {z : Matrix (Fin n) (Fi
 
 end Lhol
 
+/- English proof (translation)
+Establish `huv : toMK k⁻¹ * toMK k = 1`. Rewrite using `[Ps1.toMK_inv_eq, ← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.star_mul_self_of_mem k.2.1`. Establish `hvu : toMK k * toMK k⁻¹ = 1`. Rewrite using `[Ps1.toMK_inv_eq, ← Matrix.star_eq_conjTranspose]`.
+
+Conclude with `Unitary.mul_star_self_of_mem k.2.1`. Establish `hvu' : ∀ A : Matrix (Fin n) (Fin n) ℂ, toMK k * (toMK k⁻¹ * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, hvu, Matrix.one_mul]`. Establish `hF` using `fun Y : Matrix (Fin n) (Fin n) ℂ => (FY_facts T μ Y k hz).2`. Simplify using `only [hF, Equiv.apply_symm_apply, ← Finset.sum_smul]`.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Use `set zq := toMK k⁻¹ * z * toMK k with hzq`. Use `set D := fderiv ℂ (Ps1.PhiP μ) (Matrix.of.symm zq) with hD`. Use `set D2 := fderiv ℂ (fderiv ℂ (Ps1.PhiP μ)) (Matrix.of.symm zq) with hD2`.
+
+Establish `hDadd : ∀ a b : Matrix (Fin n) (Fin n) ℂ, D (Matrix.of.symm (a + b)) = D (Matrix.of.symm a) + D (Matrix.of.symm b)` using `fun a b => D.map_add (Matrix.of.symm a) (Matrix.of.symm b)`. Establish `hDsmul : ∀ (c : ℂ) (a : Matrix (Fin n) (Fin n) ℂ), D (Matrix.of.symm (c • a)) = c * D (Matrix.of.symm a)` using `fun c a => D.map_smul c (Matrix.of.symm a)`. Establish `hD2add1 : ∀ (a b : Matrix (Fin n) (Fin n) ℂ) (y : 𝕄), D2 (Matrix.of.symm (a + b)) y = D2 (Matrix.of.symm a) y + D2 (Matrix.of.symm b) y` using `fun a b y => congrArg (fun L : 𝕄 →L[ℂ] ℂ => L y) (D2.map_add (Matrix.of.symm a) (Matrix.of.symm b))`. Establish `hD2smul1 : ∀ (c : ℂ) (a : Matrix (Fin n) (Fin n) ℂ) (y : 𝕄), D2 (Matrix.of.symm (c • a)) y = c * D2 (Matrix.of.symm a) y` using `fun c a y => congrArg (fun L : 𝕄 →L[ℂ] ℂ => L y) (D2.map_smul c (Matrix.of.symm a))`. Establish `hD2add2 : ∀ (x : 𝕄) (a b : Matrix (Fin n) (Fin n) ℂ), D2 x (Matrix.of.symm (a + b)) = D2 x (Matrix.of.symm a) + D2 x (Matrix.of.symm b)` using `fun x a b => (D2 x).map_add (Matrix.of.symm a) (Matrix.of.symm b)`.
+
+Establish `hD2smul2 : ∀ (x : 𝕄) (c : ℂ) (a : Matrix (Fin n) (Fin n) ℂ), D2 x (Matrix.of.symm (c • a)) = c * D2 x (Matrix.of.symm a)` using `fun x c a => (D2 x).map_smul c (Matrix.of.symm a)`. Set `B : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun X Y => D (Matrix.of.symm (Y * X * zq)) + D2 (Matrix.of.symm (X * zq)) (Matrix.of.symm (Y * zq))) (fun X X' Y => by`. Simplify using `only [Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[hDadd, hD2add1]`. Use the proof step `ring)`.
+
+Use the proof step `(fun c X Y => by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_eq_mul]`. Rewrite using `[hDsmul, hD2smul1]`. Use the proof step `ring)`. Use the proof step `(fun X Y Y' => by`.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[hDadd, hD2add2]`. Use the proof step `ring)`. Use the proof step `(fun c X Y => by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_eq_mul]`.
+
+Rewrite using `[hDsmul, hD2smul2]`. Use the proof step `ring)`. Establish `hB : ∀ X Y, B X Y = D (Matrix.of.symm (Y * X * zq)) + D2 (Matrix.of.symm (X * zq)) (Matrix.of.symm (Y * zq))` using `fun X Y => rfl`. Establish `hterm : ∀ a b : Fin n, D (Matrix.of.symm (toMK k⁻¹ * Matrix.single b a 1 * (Matrix.single a b 1 * z) * toMK k)) + D2 (Matrix.of.symm (toMK k⁻¹ * (Matrix.single a b 1 * z) * toMK k)) (Matrix.of.symm (toMK k⁻¹ * Matrix.single b a 1 * z * toMK k)) = B (toMK k⁻¹ * Matrix.single a b 1 …`. Introduce `a b`.
+
+Rewrite using `[hB, hzq]`. Simplify using `only [Matrix.mul_assoc, hvu']`. Establish `hLL : ∀ a b : Fin n, Lhol (Matrix.single a b 1) (Lhol (Matrix.single b a 1) (PhiM μ)) zq = D (Matrix.of.symm (Matrix.single b a 1 * (Matrix.single a b 1 * zq))) + D2 (Matrix.of.symm (Matrix.single a b 1 * zq)) (Matrix.of.symm (Matrix.single b a 1 * zq))` using `fun a b => lhol_lhol_eq (contDiffAt_phiM μ hz) _ _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hterm]`.
+
+Use `_ = ∑ a, ∑ b, B (Matrix.single a b 1) (Matrix.single b a 1) := CasPsA.sum_bilin_conj B _ _ huv`. Use `_ = ∑ a, ∑ b, Lhol (Matrix.single a b 1) (Lhol (Matrix.single b a 1) (PhiM μ)) zq := by`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hLL, hB, Matrix.mul_assoc]`. Use `_ = casL (PhiM μ) zq := rfl`.
+
+Use `_ = ((casVal lam : ℝ) : ℂ) * PhiM μ zq := casL_phiM μ lam hμ hz`.
+-/
 theorem sum_FY' (T : KType ε Λ) (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ)
     {z : Matrix (Fin n) (Fin n) ℂ} (k : KG ε) (hz : toMK k⁻¹ * z * toMK k ∈ OmegaSet n) :
     ∑ a, ∑ b, FY' T μ (Matrix.single b a 1) z k (Matrix.of.symm (Matrix.single a b 1 * z)) =

@@ -9,12 +9,20 @@ open UpperTheory.Gal.crystallineComparison
 section
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {K LL : FinExt l}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι K LL _ ρ hr]`. Simplify using the standard rewrite rules.
+-/
 private theorem fa (a : ℕ) (ρ : Representation ↥LL.1 ↥(GK K) (Fin a → ↥LL.1)) (hr : IsPst P ρ) :
     finrank ℂ (WDSpace P ι ρ) = a := by
   rw [GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι K LL _ ρ hr]
   simp
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Use `haveI : Nontrivial P.R.B := nontrivial_B P`. Use `haveI : Nontrivial (Bst P) := inferInstanceAs (Nontrivial (Polynomial P.R.B))`. Establish `hz : ∀ z : ℚ_[l], (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) (algebraMap ℚ_[l] ↥LL.1 z) = (urC ι) (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) z)`. Introduce `z`. Simplify using `only [urC, RingHom.comp_apply]`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `hRing ℚ_[l] ↥LL.1 ↥(MaximalUnramifiedExtension l) (Bst P) ℂ (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) (urC ι) hz`.
+-/
 private theorem ringS' (hRing : RingS) (LL : FinExt l) :
     ∃ (S : Type) (_ : CommRing S) (_ : Algebra ℂ S) (π : ↥LL.1 ⊗[ℚ_[l]] Bst P →+* S), Nontrivial S ∧
       (∀ x : ↥LL.1, π (x ⊗ₜ[ℚ_[l]] (1 : Bst P)) = algebraMap ℂ S (ι (x : Om l))) ∧
@@ -31,6 +39,13 @@ private theorem ringS' (hRing : RingS) (LL : FinExt l) :
     (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) (urC ι) hz
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `hc4` using `(hCo ℚ_[l] ↥LL.1 (Bst P) a).2.2.2.1`. Establish `hc4'` using `(hCo ℚ_[l] ↥LL.1 (Bst P) 1).2.2.2.1`. Use `hCore ℂ (↥LL.1 ⊗[ℚ_[l]] Bst P) S (WDSpace P ι ρ) (WDSpace P ι ρ') ↥(Dpst P ρ) ↥(Dpst P ρ') a π (wdMk P ι ρ) (wdMk P ι ρ') (fun x => co (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P)) (fun x => co (x : (Fin 1 → ↥LL.1) ⊗[ℚ_[l]] Bst P) 0) j ((LinearMap.proj 0).comp j1) M M' w w' (B.map (algeb …` and prove the remaining obligations. Introduce `x`. Rewrite using `[hw x]`.
+
+Conclude with `hc4 T B hT σ _`. Introduce `x`. Rewrite using `[hw' x, hc4' T' B' hT' σ _]`. Establish `e : (B.map (algebraMap ↥LL.1 (↥LL.1 ⊗[ℚ_[l]] Bst P))).det = algebraMap ↥LL.1 (↥LL.1 ⊗[ℚ_[l]] Bst P) (B' 0 0)`. Establish `e1` using `RingHom.map_det (algebraMap ↥LL.1 (↥LL.1 ⊗[ℚ_[l]] Bst P)) B`.
+
+Rewrite `e1` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e1, ← hB, Matrix.det_fin_one]`. Rewrite using `[e]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_one]`.
+-/
 private theorem core (hCo : CoFacts) (hCore : DetCore) (a : ℕ)
     (ρ : Representation ↥LL.1 ↥(GK K) (Fin a → ↥LL.1)) (ρ' : Representation ↥LL.1 ↥(GK K) (Fin 1 → ↥LL.1))
     [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ')]
@@ -78,6 +93,13 @@ private theorem core (hCo : CoFacts) (hCore : DetCore) (a : ℕ)
 end
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hCo hRing hCore hMem hWeil hSpan hLift l _ P AI hAI ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a LL r c hdet hsst hr hc g hg`. Use `haveI := hr.finite`. Use `haveI := hc.finite`. Take `⟨S, _, _, π, hS, hπL, hπU⟩` from `ringS' P ι hRing LL`. Use `(hLift l P ι Bw.Kw LL a (Bw.repE LL r) S π hπL hπU).elim ?_` and prove the remaining obligations.
+
+Introduce `j hj1`. Use `(hLift l P ι Bw.Kw LL 1 (Bw.repE LL c) S π hπL hπU).elim ?_` and prove the remaining obligations. Introduce `j1 hj2`. Establish `hdv : ∀ x, ((c x : GL (Fin 1) ↥LL.1) : Matrix (Fin 1) (Fin 1) ↥LL.1).det = ((r x : GL (Fin a) ↥LL.1) : Matrix (Fin a) (Fin a) ↥LL.1).det` using `fun x => by`. Establish `e` using `congrArg Units.val (hdet x)`.
+
+Rewrite `e` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Then use the resulting hypothesis. Conclude with `core P ι hCo hCore a (Bw.repE LL r) (Bw.repE LL c) S π (fa P ι a _ hr) (fa P ι 1 _ hc) j j1 hj1 hj2 (wdRho P ι Bw h hj (Bw.repE LL r) g) (wdRho P ι Bw h hj (Bw.repE LL c) g) (weilD Bw h P (Bw.repE LL r) g) (weilD Bw h P (Bw.repE LL c) g) (fun x => rfl) (fun x => rfl) (Bw.repE LL …`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.detOne_of :
     CoFacts → RingS → DetCore → DetMem → WeilCo → SpanS → CoLift → DetE := by
   intro hCo hRing hCore hMem hWeil hSpan hLift l _ P AI hAI ι E Ω _ _ _ _ _ A w h O _ _ _ Bw hj a LL r c

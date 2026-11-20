@@ -14,11 +14,73 @@ open GlobalTheory.KZ GlobalTheory.K4
 
 namespace UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Unfold `rt`. Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.map_mul, ← Matrix.SpecialLinearGroup.coe_mul, h]`. Simplify using the standard rewrite rules.
+-/
 private theorem rt_rt {M : ℕ} (x : Row M) (γ δ : SL(2, ℤ)) (h : γ * δ = 1) : rt (rt x γ) δ = x := by
   unfold rt
   rw [Matrix.vecMul_vecMul, ← Matrix.map_mul, ← Matrix.SpecialLinearGroup.coe_mul, h]
   simp
 
+/- English proof (translation)
+Unfold `PDist`. Introduce `Ω _ _ _ ε X m c d k M _ _ hm hc hd hc6 hd6 hLv t w' w hsec hsym' hsym`. Take `⟨hL, hcL, hdL⟩` from `hLv`. Establish `hM : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hk : 0 < k` using `Nat.pos_of_ne_zero (NeZero.ne k)`.
+
+Use `haveI : NeZero (k * M) := ⟨hL.ne'⟩`. Establish `hcM : c.Coprime M` using `(Nat.coprime_mul_iff_right.mp hcL).2`. Establish `hdM : d.Coprime M` using `(Nat.coprime_mul_iff_right.mp hdL).2`. Take `⟨hAslR, hAgal, -⟩` from `admB Ω ε X`. Take `⟨hgrM, hokM, -, hup⟩` from `rowB Ω M hM`.
+
+Take `⟨-, -, -, hokdn, hgrdn, hrtdn, hsurj⟩` from `hup k hk`. Take `⟨hgrL, hokL, -⟩` from `rowB Ω (k * M) hL`. Establish `hinvM : ∀ (s : Gal(Ω/ℚ)) (x : Row M), gr M s (gr M s⁻¹ x) = x`. Introduce `s x`. Rewrite using `[← (hgrM s s⁻¹ x).1, mul_inv_cancel, (hgrM 1 1 x).2]`.
+
+Establish `hinvL : ∀ (s : Gal(Ω/ℚ)) (x : Row (k * M)), gr (k * M) s (gr (k * M) s⁻¹ x) = x`. Introduce `s x`. Rewrite using `[← (hgrL s s⁻¹ x).1, mul_inv_cancel, (hgrL 1 1 x).2]`. Establish `hnz : ∀ (x' : Row (k * M)) (x : Row M), dn k M x' = x → x ≠ 0 → x' ≠ 0`. Introduce and unpack `x' x rfl hx rfl`.
+
+Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `[dn]`. Establish `sgc` using `sgB Ω ε X c (k * M) hc hc6 hL hcL`. Establish `sgd` using `sgB Ω ε X d (k * M) hd hd6 hL hdL`.
+
+Establish `sgcM` using `sgB Ω ε X c M hc hc6 hM hcM`. Establish `sgdM` using `sgB Ω ε X d M hd hd6 hM hdM`. Establish `key : ∀ x y : Row M, Ok x y → (Finset.univ.filter (fun x' => dn k M x' = x)).Nonempty ∧ (Finset.univ.filter (fun y' => dn k M y' = y)).Nonempty ∧ ∀ x' ∈ Finset.univ.filter (fun x' => dn k M x' = x), ∀ y' ∈ Finset.univ.filter (fun y' => dn k M y' = y), IsPt X m (sg X c (k * M) x') …`. Introduce `x y h`. Take `⟨x₀, hx₀⟩` from `hsurj x`.
+
+Take `⟨y₀, hy₀⟩` from `hsurj y`. Use `⟨⟨x₀, by simp [hx₀]⟩, ⟨y₀, by simp [hy₀]⟩, ?_⟩` and prove the remaining obligations. Introduce `x' hx' y' hy'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx' hy'`. Take `⟨hx0, hy0, -⟩` from `hokL x' y' (hokdn x' y' (by rw [hx', hy']; exact h))`.
+
+Conclude with `(hsec _ _ (sgc x' hx0).1 (sgd y' hy0).1).1`. Establish `hex : ∀ x y : Row M, ∃ R : Pt X m, Ok x y → IsSum X m (Finset.univ.filter (fun x' => dn k M x' = x)) (Finset.univ.filter (fun y' => dn k M y' = y)) (fun x' y' => t (sg X c (k * M) x') (sg X d (k * M) y')) R`. Introduce `x y`. Distinguish the cases in `h : Ok x y`. Take `⟨R, hR⟩` from `(sumB Ω ε X m hm _ _ _ _ (sg X c (k * M)) (sg X d (k * M)) _ (key x y h).1 (key x y h).2.1 (key x y h).2.2).1`.
+
+Conclude with `⟨R, fun _ => hR⟩`. Conclude with `⟨t (sg X c M x) (sg X d M y), fun h' => absurd h' h⟩`. Use `choose Qs hQs using hex`. Establish `hQpt : ∀ x y : Row M, Ok x y → IsPt X m (sg X c M x) (sg X d M y) (Qs x y)`. Introduce `x y h`.
+
+Take `⟨hx0, hy0, -⟩` from `hokM x y h`. Establish `hp` using `(sumB Ω ε X m hm _ _ _ _ (sg X c (k * M)) (sg X d (k * M)) _ (key x y h).1 (key x y h).2.1 (key x y h).2.2).2 _ (hQs x y h)`. Rewrite `hp` using `[sgDist Ω ε X c k M hc hc6 hcL x hx0, sgDist Ω ε X d k M hd hd6 hdL y hy0]`. Then use the resulting hypothesis. Establish `hfibgr : ∀ (s : Gal(Ω/ℚ)) (z : Row M), Set.BijOn (gr (k * M) s⁻¹) ↑(Finset.univ.filter (fun x' => dn k M x' = z)) ↑(Finset.univ.filter (fun x' => dn k M x' = gr M s⁻¹ z))`. Introduce `s z`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi ⊢`. Rewrite using `[hgrdn, hi]`. Introduce `i _ j _ hij`.
+
+Rewrite using `[← hinvL s i, hij, hinvL]`. Introduce `j hj`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hj`. Use `⟨gr (k * M) s j, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`.
+
+Rewrite using `[hgrdn, hj, hinvM]`. Establish `h1` using `hinvL s⁻¹ j`. Rewrite `h1` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hQmv : ∀ (s : Gal(Ω/ℚ)) (x y : Row M), Ok x y → Mv X m (X.gal s) s (Qs (gr M s⁻¹ x) (gr M s⁻¹ y)) (Qs x y) (pushD X k M (w' s) x y)`. Introduce `s x y h`.
+
+Establish `h1 : Ok (gr M s⁻¹ x) (gr M s⁻¹ y)` using `(hokM x y h).2.2.1 s⁻¹`. Take `⟨hx1, hy1, -⟩` from `hokM _ _ h1`. Establish `hu : ∀ i ∈ Finset.univ.filter (fun x' => dn k M x' = x), sg X c (k * M) i = X.gal s (sg X c (k * M) (gr (k * M) s⁻¹ i))`. Introduce `i hi`. Establish `hm'` using `(hfibgr s x).1 hi`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hm'`. Rewrite using `[(sgc _ (hnz _ _ hm' hx1)).2.2.1 s, hinvL]`. Establish `hv : ∀ j ∈ Finset.univ.filter (fun y' => dn k M y' = y), sg X d (k * M) j = X.gal s (sg X d (k * M) (gr (k * M) s⁻¹ j))`. Introduce `j hj`. Establish `hm'` using `(hfibgr s y).1 hj`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hm'`. Rewrite using `[(sgd _ (hnz _ _ hm' hy1)).2.2.1 s, hinvL]`. Establish `hf : ∀ i ∈ Finset.univ.filter (fun x' => dn k M x' = x), ∀ j ∈ Finset.univ.filter (fun y' => dn k M y' = y), Mv X m (X.gal s) s (t (sg X c (k * M) (gr (k * M) s⁻¹ i)) (sg X d (k * M) (gr (k * M) s⁻¹ j))) (t (sg X c (k * M) i) (sg X d (k * M) j)) (w' s i j)`. Introduce `i hi j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hi hj`.
+
+Conclude with `(hsym' s i j (hokdn i j (by rw [hi, hj]; exact h))).2`. Conclude with `sumMv Ω ε X m hm _ _ _ _ _ _ _ _ _ _ _ _ _ _ (gr (k * M) s⁻¹) (gr (k * M) s⁻¹) (X.gal s) s (hAgal s) (key _ _ h1).1 (key _ _ h1).2.1 (hfibgr s x) (hfibgr s y) (key _ _ h1).2.2 (key x y h).2.2 hu hv (hQs _ _ h1) (hQs x y h) (fun i j => w' s i j) hf`. Establish `hfibrt : ∀ (γ : SL(2, ℤ)) (z : Row M), Set.BijOn (fun i : Row (k * M) => rt i γ⁻¹) ↑(Finset.univ.filter (fun x' => dn k M x' = rt z γ)) ↑(Finset.univ.filter (fun x' => dn k M x' = z))`. Introduce `γ z`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i hi`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi ⊢`. Rewrite using `[hrtdn, hi, rt_rt _ _ _ (mul_inv_cancel γ)]`. Introduce `i _ j _ hij`. Establish `hij' : rt (rt i γ⁻¹) γ = rt (rt j γ⁻¹) γ`.
+
+Simplify using `only at hij`. Rewrite using `[hij]`. Rewrite `hij'` using `[rt_rt _ _ _ (inv_mul_cancel γ), rt_rt _ _ _ (inv_mul_cancel γ)]`. Then use the resulting hypothesis. Introduce `j hj`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hj`.
+
+Use `⟨rt j γ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Rewrite using `[hrtdn, hj]`. Conclude with `rt_rt _ _ _ (mul_inv_cancel γ)`. Establish `hQsl : ∀ (γ : SL(2, ℤ)) (x y : Row M), Ok x y → Mv X m (slR X (ofSL γ)) 1 (Qs x y) (Qs (rt x γ) (rt y γ)) 1`.
+
+Introduce `γ x y h`. Establish `h1 : Ok (rt x γ) (rt y γ)` using `(hokM x y h).2.2.2 γ`. Take `⟨hx0, hy0, -⟩` from `hokM _ _ h`. Establish `hu : ∀ i ∈ Finset.univ.filter (fun x' => dn k M x' = rt x γ), sg X c (k * M) i = slR X (ofSL γ) (sg X c (k * M) (rt i γ⁻¹))`. Introduce `i hi`.
+
+Establish `hm'` using `(hfibrt γ x).1 hi`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hm'`. Establish `e1` using `(sgc _ (hnz _ _ hm' hx0)).2.1 γ`. Rewrite `e1` using `[rt_rt _ _ _ (inv_mul_cancel γ)]`. Conclude with `e1.symm`.
+
+Establish `hv : ∀ j ∈ Finset.univ.filter (fun y' => dn k M y' = rt y γ), sg X d (k * M) j = slR X (ofSL γ) (sg X d (k * M) (rt j γ⁻¹))`. Introduce `j hj`. Establish `hm'` using `(hfibrt γ y).1 hj`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hm'`. Establish `e1` using `(sgd _ (hnz _ _ hm' hy0)).2.1 γ`.
+
+Rewrite `e1` using `[rt_rt _ _ _ (inv_mul_cancel γ)]`. Conclude with `e1.symm`. Establish `hf : ∀ i ∈ Finset.univ.filter (fun x' => dn k M x' = rt x γ), ∀ j ∈ Finset.univ.filter (fun y' => dn k M y' = rt y γ), Mv X m (slR X (ofSL γ)) 1 (t (sg X c (k * M) (rt i γ⁻¹)) (sg X d (k * M) (rt j γ⁻¹))) (t (sg X c (k * M) i) (sg X d (k * M) j)) ((fun _ _ => (1 : X.Kˣ)) i j)`. Introduce `i hi j hj`. Establish `hi'` using `(hfibrt γ x).1 hi`.
+
+Establish `hj'` using `(hfibrt γ y).1 hj`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi' hj'`. Establish `hi0` using `hnz _ _ hi' hx0`. Establish `hj0` using `hnz _ _ hj' hy0`. Establish `e` using `((hsec _ _ (sgc _ hi0).1 (sgd _ hj0).1).2 γ)`.
+
+Rewrite `e` using `[(sgc _ hi0).2.1 γ, (sgd _ hj0).2.1 γ, rt_rt _ _ _ (inv_mul_cancel γ), rt_rt _ _ _ (inv_mul_cancel γ)]`. Conclude with `e`. Establish `e` using `sumMv Ω ε X m hm _ _ _ _ _ _ _ _ _ _ _ _ _ _ (fun i : Row (k * M) => rt i γ⁻¹) (fun i : Row (k * M) => rt i γ⁻¹) (slR X (ofSL γ)) 1 (hAslR _) (key x y h).1 (key x y h).2.1 (hfibrt γ x) (hfibrt γ y) (key x y h).2.2 (key _ _ h1).2.2 hu hv (hQs x y h) (hQs _ _ h1) (fun _ _ => (1 : X …`. Simplify `e` using `only [Finset.prod_const_one]`. Take `⟨a, hcob, ha⟩` from `cmp Ω ε X m M hm hM (sg X c M) (sg X d M) Qs (fun x y => t (sg X c M x) (sg X d M y)) (fun s => pushD X k M (w' s)) w (fun x y h => by`.
+
+Take `⟨hx0, hy0, -⟩` from `hokM x y h`. Conclude with `⟨hQpt x y h, (hsec _ _ (sgcM x hx0).1 (sgdM y hy0).1).1⟩)`. Use the proof step `(fun s x y h => by`. Establish `h1 : Ok (gr M s⁻¹ x) (gr M s⁻¹ y)` using `(hokM x y h).2.2.1 s⁻¹`. Take `⟨hx1, hy1, -⟩` from `hokM _ _ h1`.
+
+Use `⟨?_, ?_, hQmv s x y h, (hsym s x y h).2⟩` and prove the remaining obligations. Rewrite using `[(sgcM _ hx1).2.2.1 s, hinvM]`. Rewrite using `[(sgdM _ hy1).2.2.1 s, hinvM])`. Use `⟨a, fun x y h => ⟨(ha x y h).1, fun γ => ?_⟩, hcob⟩` and prove the remaining obligations. Take `⟨hx0, hy0, -⟩` from `hokM x y h`.
+
+Establish `hT : Mv X m (slR X (ofSL γ)) 1 (t (sg X c M x) (sg X d M y)) (t (sg X c M (rt x γ)) (sg X d M (rt y γ))) 1`. Establish `e` using `(hsec _ _ (sgcM x hx0).1 (sgdM y hy0).1).2 γ`. Rewrite `e` using `[(sgcM x hx0).2.1 γ, (sgdM y hy0).2.1 γ]`. Then use the resulting hypothesis. Conclude with `(ha x y h).2 (slR X (ofSL γ)) (rt x γ) (rt y γ) (hAslR _) ((hokM x y h).2.2.2 γ) ((sgcM x hx0).2.1 γ) ((sgdM y hy0).2.1 γ) (hQsl γ x y h) hT`.
+-/
 theorem pDist : PDist := by
   unfold PDist
   intro Ω _ _ _ ε X m c d k M _ _ hm hc hd hc6 hd6 hLv t w' w hsec hsym' hsym

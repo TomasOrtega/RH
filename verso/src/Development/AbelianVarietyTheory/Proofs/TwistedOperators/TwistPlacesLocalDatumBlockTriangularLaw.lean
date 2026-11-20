@@ -11,6 +11,11 @@ namespace GlobalTheory.OmegaTwistLaw
 section Fin
 variable {κ : Type} [CommRing κ]
 
+/- English proof (translation)
+Introduce `i j hi hj`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `le_or_gt r l.val with hl | hl` into its components or cases. Rewrite using `[hB l j hl hj, mul_zero]`.
+
+Rewrite using `[hA i l hi hl, zero_mul]`.
+-/
 theorem lowZero_mul {a b c r : ℕ} {A : Matrix (Fin b) (Fin c) κ} {B : Matrix (Fin c) (Fin a) κ}
     (hA : LowZero r A) (hB : LowZero r B) : LowZero r (A * B) := by
   intro i j hi hj
@@ -20,6 +25,9 @@ theorem lowZero_mul {a b c r : ℕ} {A : Matrix (Fin b) (Fin c) κ} {B : Matrix 
   · rw [hB l j hl hj, mul_zero]
   · rw [hA i l hi hl, zero_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij : i.val < b ∧ j.val < a` using `⟨lt_of_lt_of_le i.isLt hb, lt_of_lt_of_le j.isLt ha⟩`. Use `show (if h : i.val < b ∧ j.val < a then A ⟨i.val, h.1⟩ ⟨j.val, h.2⟩ else 0) = A (Fin.castLE hb i) (Fin.castLE ha j)`. Rewrite using `[dif_pos hij]`. Both sides reduce to the same expression.
+-/
 theorem topL_eq {a b r : ℕ} (ha : r ≤ a) (hb : r ≤ b) (A : Matrix (Fin b) (Fin a) κ) :
     topL r A = A.submatrix (Fin.castLE hb) (Fin.castLE ha) := by
   ext i j
@@ -28,6 +36,11 @@ theorem topL_eq {a b r : ℕ} (ha : r ≤ a) (hb : r ≤ b) (A : Matrix (Fin b) 
   rw [dif_pos hij]
   rfl
 
+/- English proof (translation)
+Rewrite using `[topL_eq ha hb, topL_eq hc hb, topL_eq ha hc]`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hc) (Fin.castLE_injective hc) _ _ (fun l hl => ?_) (fun l => rfl)` and prove the remaining obligations.
+
+Establish `hlr : r ≤ l.val`. Assume the negation of the conclusion as `hlt`. Conclude with `hl ⟨⟨l.val, not_le.mp hlt⟩, Fin.ext rfl⟩`. Rewrite using `[hB l _ hlr (by simp), mul_zero]`.
+-/
 theorem topL_mul {a b c r : ℕ} (ha : r ≤ a) (hb : r ≤ b) (hc : r ≤ c) (A : Matrix (Fin b) (Fin c) κ)
     {B : Matrix (Fin c) (Fin a) κ} (hB : LowZero r B) : topL r (A * B) = topL r A * topL r B := by
   rw [topL_eq ha hb, topL_eq hc hb, topL_eq ha hc]
@@ -40,6 +53,11 @@ theorem topL_mul {a b c r : ℕ} (ha : r ≤ a) (hb : r ≤ b) (hc : r ≤ c) (A
     exact hl ⟨⟨l.val, not_le.mp hlt⟩, Fin.ext rfl⟩
   rw [hB l _ hlr (by simp), mul_zero]
 
+/- English proof (translation)
+Introduce `i j hi hj`. Use `mem_blockTri.mp h i j ?_` and prove the remaining obligations. Establish `h1 : blk2 r i = 1` using `if_neg (not_lt.mpr hi)`. Establish `h0 : blk2 r j = 0` using `if_pos hj`. Rewrite using `[h0, h1]`.
+
+Conclude with `Nat.zero_lt_one`.
+-/
 theorem lowZero_of_mem {n r : ℕ} {g : GL (Fin n) κ} (h : g ∈ blockTri (blk2 r)) : LowZero r g.val := by
   intro i j hi hj
   refine mem_blockTri.mp h i j ?_
@@ -48,6 +66,17 @@ theorem lowZero_of_mem {n r : ℕ} {g : GL (Fin n) κ} (h : g ∈ blockTri (blk2
   rw [h0, h1]
   exact Nat.zero_lt_one
 
+/- English proof (translation)
+Establish `hg : (g.val).BlockTriangular (blk2 r)` using `fun i j hij => mem_blockTri.mp h i j hij`. Set `e : Fin r ≃ {x : Fin n // blk2 r x = 0}` to `{ toFun := fun i => ⟨Fin.castLE hr i, if_pos (by simp)⟩ invFun := fun x => ⟨x.1.val, by`. Establish `hx` using `x.2`. Unfold `blk2 at hx`. Use `split_ifs at hx with hlt`.
+
+Conclude with `hlt⟩`. Use `left_inv := fun i => Fin.ext rfl`. Use `right_inv := fun x => Subtype.ext (Fin.ext rfl) }`. Establish `hsub : (g.val.toSquareBlock (blk2 r) 0).submatrix e e = g.val.submatrix (Fin.castLE hr) (Fin.castLE hr)`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Use `ext`. Rewrite using `[Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, upper_block_val_submatrix hr h, diag_block_det_val 1 h, hg.det, ← hsub, Matrix.det_submatrix_equiv_self]`. Establish `hsub2 : Finset.univ.image (blk2 (n` using `n) r) ⊆ {0, 1} := by`. Introduce `x hx`.
+
+Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hx`. Unfold `blk2`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.prod_subset hsub2 (fun x _ hx => ?_), Finset.prod_pair zero_ne_one]`. Both sides reduce to the same expression.
+
+Use `haveI : IsEmpty {y : Fin n // blk2 r y = x} := ⟨fun y => hx (Finset.mem_image.mpr ⟨y.1, Finset.mem_univ _, y.2⟩)⟩`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem det_eq {n r : ℕ} (hr : r ≤ n) {g : GL (Fin n) κ} (h : g ∈ blockTri (blk2 r)) :
     Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det (upperLeftBlock hr g) * dBlk (blk2 r) 1 g := by
   have hg : (g.val).BlockTriangular (blk2 r) := fun i j hij => mem_blockTri.mp h i j hij
@@ -77,6 +106,9 @@ theorem det_eq {n r : ℕ} (hr : r ≤ n) {g : GL (Fin n) κ} (h : g ∈ blockTr
       ⟨fun y => hx (Finset.mem_image.mpr ⟨y.1, Finset.mem_univ _, y.2⟩)⟩
     exact Matrix.det_isEmpty
 
+/- English proof (translation)
+Establish `hTi : gT⁻¹ ∈ blockTri (blk2 r)` using `inv_mem hT`. Establish `hinv : upperLeftBlock hb gT⁻¹ = (upperLeftBlock hb gT)⁻¹` using `extendOne_inv (blkR hb) hT`. Rewrite using `[topL_mul ha hb ha ((gT⁻¹).val * y) (lowZero_of_mem hS), topL_mul ha hb hb (gT⁻¹).val hy, Matrix.det_mul, Matrix.det_mul, topL_eq ha ha gS.val, topL_eq hb hb (gT⁻¹).val, ← upper_block_val_submatrix ha hS, ← upper_block_val_submatrix hb hTi, hinv, ← Matrix.GeneralLinearGroup.val_d …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_topL {a b r : ℕ} (ha : r ≤ a) (hb : r ≤ b) {gS : GL (Fin a) κ} {gT : GL (Fin b) κ}
     (hS : gS ∈ blockTri (blk2 r)) (hT : gT ∈ blockTri (blk2 r)) {y : Matrix (Fin b) (Fin a) κ} (hy : LowZero r y) :
     (topL r ((gT⁻¹).val * y * gS.val)).det =
@@ -90,6 +122,11 @@ theorem det_topL {a b r : ℕ} (ha : r ≤ a) (hb : r ≤ b) {gS : GL (Fin a) κ
     map_inv, Units.val_mul]
   ring
 
+/- English proof (translation)
+Establish `hS'` using `lowZero_of_mem hS`. Establish `hTi` using `lowZero_of_mem (inv_mem hT)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hy : y = gT.val * ((gT⁻¹).val * y * gS.val) * (gS⁻¹).val`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[hy]`. Conclude with `lowZero_mul (lowZero_mul (lowZero_of_mem hT) h) (lowZero_of_mem (inv_mem hS))`. Introduce `h`. Conclude with `lowZero_mul (lowZero_mul hTi h) hS'`.
+-/
 theorem lowZero_iff {a b r : ℕ} {gS : GL (Fin a) κ} {gT : GL (Fin b) κ}
     (hS : gS ∈ blockTri (blk2 r)) (hT : gT ∈ blockTri (blk2 r)) (y : Matrix (Fin b) (Fin a) κ) :
     LowZero r ((gT⁻¹).val * y * gS.val) ↔ LowZero r y := by
@@ -107,6 +144,21 @@ theorem lowZero_iff {a b r : ℕ} {gS : GL (Fin a) κ} {gT : GL (Fin b) κ}
 
 end Fin
 
+/- English proof (translation)
+Introduce `D a b r ha hb Q ξ k gS gT y y' hS hT hy'`. Establish `hdet : ∀ PP ∈ Q, LowZero r (y PP) → (topL r (y' PP)).det = (((Matrix.GeneralLinearGroup.det (upperLeftBlock hb (gT PP)))⁻¹ * Matrix.GeneralLinearGroup.det (upperLeftBlock ha (gS PP)) : (kP PP)ˣ) : kP PP) * (topL r (y PP)).det` using `fun PP hPP hl => by`. Rewrite using `[hy' PP hPP]`. Conclude with `det_topL ha hb (hS PP hPP) (hT PP hPP) hl`. Establish `hcond : (∀ PP ∈ Q, LowZero r (y' PP) ∧ IsUnit (topL r (y' PP)).det) ↔ (∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det)`.
+
+Use `forall₂_congr fun PP hPP => ?_` and prove the remaining obligations. Establish `hlz : LowZero r (y' PP) ↔ LowZero r (y PP)`. Rewrite using `[hy' PP hPP]`. Conclude with `lowZero_iff (hS PP hPP) (hT PP hPP) (y PP)`. Rewrite using `[hlz]`.
+
+Use `and_congr_right fun hl => ?_` and prove the remaining obligations. Rewrite using `[hdet PP hPP hl, Units.isUnit_units_mul]`. Establish `hsplit : ∀ (A : Pl D.host.E → ℂ) (U : Q → ℂ), (∏ PP ∈ Q, A PP) ^ k * ∏ PP ∈ Q.attach, U PP ^ k = ∏ PP ∈ Q.attach, (A PP.1 * U PP) ^ k`. Introduce `A U`. Rewrite using `[← Finset.prod_attach Q A, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`.
+
+Simplify using `only [mul_zpow]`. Unfold `omegaQ`. Distinguish the cases in `h : ∀ PP ∈ Q, LowZero r (y PP) ∧ IsUnit (topL r (y PP)).det`. Establish `h'` using `hcond.mpr h`. Rewrite using `[dif_pos h', dif_pos h, hsplit, hsplit]`.
+
+Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Use `congr 1`. Take `⟨P, hP⟩` from `PP`. Establish `eS` using `det_eq ha (hS P hP)`. Establish `eT` using `det_eq hb (hT P hP)`.
+
+Establish `eU : (h' P hP).2.unit = ((Matrix.GeneralLinearGroup.det (upperLeftBlock hb (gT P)))⁻¹ * Matrix.GeneralLinearGroup.det (upperLeftBlock ha (gS P))) * (h P hP).2.unit`. Use `ext`. Rewrite using `[IsUnit.unit_spec, Units.val_mul, IsUnit.unit_spec]`. Conclude with `hdet P hP (h P hP).1`. Simplify using `only []`.
+
+Rewrite using `[eS, eT, eU]`. Simplify using `only [map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `h' : ¬ ∀ PP ∈ Q, LowZero r (y' PP) ∧ IsUnit (topL r (y' PP)).det` using `fun h'' => h (hcond.mp h'')`. Rewrite using `[dif_neg h', dif_neg h, mul_zero, mul_zero]`.
+-/
 theorem omegaQ_blockTri : ∀ (D : D7) (a b r : ℕ), r ≤ a → r ≤ b → ∀ (Q : Finset (Pl D.host.E)) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (k : ℤ) (gS : ∀ PP : Pl D.host.E, GL (Fin a) (kP PP)) (gT : ∀ PP : Pl D.host.E, GL (Fin b) (kP PP)) (y y' : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)), (∀ PP ∈ Q, gS PP ∈ blockTri (blk2 r)) → (∀ PP ∈ Q, gT PP ∈ blockTri (blk2 r)) → (∀ PP ∈ Q, y' PP = ((gT PP)⁻¹).val * y PP * (gS PP).val) → (∏ PP ∈ Q, (((ξ PP (Matrix.GeneralLinearGroup.det (gS PP)) : ℂˣ) : ℂ)⁻¹ * ((ξ PP (Matrix.GeneralLinearGroup.det (gT PP)) : ℂˣ) : ℂ))) ^ k * omegaQ Q r ξ k y' = (∏ PP ∈ Q, (((ξ PP (dBlk (blk2 r) 1 (gS PP)) : ℂˣ) : ℂ)⁻¹ * ((ξ PP (dBlk (blk2 r) 1 (gT PP)) : ℂˣ) : ℂ))) ^ k * omegaQ Q r ξ k y := by
   intro D a b r ha hb Q ξ k gS gT y y' hS hT hy'
   have hdet : ∀ PP ∈ Q, LowZero r (y PP) → (topL r (y' PP)).det =

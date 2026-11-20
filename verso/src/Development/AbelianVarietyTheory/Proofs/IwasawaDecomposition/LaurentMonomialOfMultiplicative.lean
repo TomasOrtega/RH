@@ -4,6 +4,19 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n χ h1 hmul hk`. Use `choose k hk using hk`. Use `⟨k, fun d hd => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ (s : Finset (Fin n)) (i : Fin n), (∏ j ∈ s, Pi.mulSingle j (d j)) i ≠ 0`. Introduce `s i`.
+
+Rewrite using `[Finset.prod_apply]`. Use `Finset.prod_ne_zero_iff.mpr fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mulSingle_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `hd _`. Conclude with `one_ne_zero`. Establish `key : ∀ s : Finset (Fin n), χ (∏ i ∈ s, Pi.mulSingle i (d i)) = ∏ i ∈ s, d i ^ k i`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+
+Simplify using `using h1`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, hmul _ _ ?_ (hne s), hk a (d a) (hd a), ih]`. Introduce `i`. Rewrite using `[Pi.mulSingle_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hd _`. Conclude with `one_ne_zero`. Use `key Finset.univ` as an intermediate fact.
+
+Rewrite `this` using `[Finset.univ_prod_mulSingle]`. Then use the resulting hypothesis.
+-/
 theorem laurentMonomial_of_multiplicative :
     ∀ (n : ℕ) (χ : (Fin n → ℂ) → ℂ), χ 1 = 1 →
       (∀ s t : Fin n → ℂ, (∀ i, s i ≠ 0) → (∀ i, t i ≠ 0) → χ (s * t) = χ s * χ t) →

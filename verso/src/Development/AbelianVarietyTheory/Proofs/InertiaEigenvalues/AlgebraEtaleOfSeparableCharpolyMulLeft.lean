@@ -6,6 +6,21 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hd` using `GlobalTheory.UnitLemma.charpoly_dvd_minpoly_of_separable (LinearMap.mulLeft E g) h`. Establish `h2 : minpoly E (LinearMap.mulLeft E g) = minpoly E g` using `minpoly.algHom_eq (Algebra.lmul E A) (Algebra.lmul_injective) g`. Establish `hint : IsIntegral E g` using `Algebra.IsIntegral.isIntegral g`. Establish `hm : (minpoly E g).Monic` using `minpoly.monic hint`. Establish `hd' : minpoly E g ∣ (LinearMap.mulLeft E g).charpoly`.
+
+Rewrite using `[← h2]`. Conclude with `LinearMap.minpoly_dvd_charpoly _`. Rewrite `hd` using `[h2]`. Establish `heq : minpoly E g = (LinearMap.mulLeft E g).charpoly` using `eq_of_monic_of_associated hm (LinearMap.charpoly_monic _) (associated_of_dvd_dvd hd' hd)`. Establish `hsep : (minpoly E g).Separable` using `heq ▸ h`.
+
+Establish `hdeg : (minpoly E g).natDegree = Module.finrank E A`. Rewrite using `[heq, LinearMap.charpoly_natDegree]`. Use `haveI : Module.Finite E (AdjoinRoot (minpoly E g)) := hm.finite_adjoinRoot`. Set `φ : AdjoinRoot (minpoly E g) →ₐ[E] A` to `AdjoinRoot.liftAlgHom (minpoly E g) (Algebra.ofId E A) g (minpoly.aeval E g)`. Establish `hli : LinearIndependent E fun i : Fin (minpoly E g).natDegree => g ^ (i : ℕ)` using `linearIndependent_pow g`.
+
+Set `b` to `basisOfLinearIndependentOfCardEqFinrank' _ hli (by simp [hdeg])`. Establish `hsurj : Function.Surjective φ.toLinearMap`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨AdjoinRoot.root (minpoly E g) ^ (i : ℕ), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [b, coe_basisOfLinearIndependentOfCardEqFinrank', AlgHom.toLinearMap_apply, map_pow]`. Use `congr 1`. Conclude with `AdjoinRoot.liftAlgHom_root _ _ _ _`. Establish `hfr : Module.finrank E (AdjoinRoot (minpoly E g)) = Module.finrank E A`. Rewrite using `[(AdjoinRoot.powerBasis' hm).finrank]`.
+
+Simplify using `using hdeg`. Establish `hinj : Function.Injective φ.toLinearMap` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).2 hsurj`. Set `e : AdjoinRoot (minpoly E g) ≃ₐ[E] A` to `AlgEquiv.ofBijective φ ⟨hinj, hsurj⟩`. Establish `hu : IsUnit (AdjoinRoot.mk (minpoly E g) (minpoly E g).derivative)`. Take `⟨a, c, hac⟩` from `hsep`.
+
+Use `congrArg (AdjoinRoot.mk (minpoly E g)) hac` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, AdjoinRoot.mk_self, mul_zero, zero_add, map_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, by rw [mul_comm]; exact this⟩`. Use `GlobalTheory.etale_adjoinRoot_of_isUnit_derivative hm hu` as an intermediate fact. Conclude with `Algebra.Etale.of_equiv e`.
+-/
 theorem etale_of_separable_charpoly_mulLeft (E A : Type) [Field E] [CommRing A] [Algebra E A]
     [Module.Finite E A] (g : A) (h : (LinearMap.mulLeft E g).charpoly.Separable) :
     Algebra.Etale E A := by

@@ -14,6 +14,19 @@ namespace PI.PhNormUnits.UnitaryGroupMassFormula
 
 open PI.PhNormUnits
 
+/- English proof (translation)
+Introduce `p _ l ex ph S hS α hα h1 h2`. Take `⟨hex0, hinv, hp2, h22, hswap, -, -, hint_r, hIA, -, hprod, -, hB, hNorm⟩` from `hS`. Establish `hph : PowerSeries.constantCoeff ph = 0`. Establish `h2n : ‖(2 : ℂ_[p])‖ = 1` using `norm_two_of hp2`. Establish `h2'` using `hNorm ((2 : ℂ_[p]), (2 : ℂ_[p])) h22 h2n h2n`.
+
+Simplify using `only at h2'`. Conclude with `ph_const_of h2' hex0 hinv`. Take `⟨n, hn⟩` from `hprod α hα`. Establish `hU` using `hNorm α hα h1 h2`. Establish `hc : α.1 ≠ 0`.
+
+Introduce `h0`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hnorm : ‖PI.PhNormUnits.zc n‖ = 1` using `by rw [← hn, norm_mul, h1, h2, one_mul]`. Take `⟨m, hm⟩` from `zc_inv_of n hnorm`.
+
+Establish `hinvc : α.1⁻¹ = α.2 * PI.PhNormUnits.zc m`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hn, hm]`. Establish `h1v : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv (1 : Fin 2) : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var _`. Establish `hd : PI.PhNormUnits.IntegralMv (PI.PhNormUnits.mulBy l ex α.2 (PI.PhNormUnits.Xv ()) : MvPowerSeries Unit ℂ_[p])`.
+
+Establish `h` using `hint_r _ (hswap α hα)`. Rewrite `h` using `[Prod.fst_swap]`. Conclude with `h`. Establish `hw : PI.PhNormUnits.IntegralMv (PI.PhNormUnits.mulBy l ex α.1⁻¹ (PI.PhNormUnits.Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])`. Rewrite using `[hinvc, ← mulBy_mulBy hex0 hinv α.2 (PI.PhNormUnits.zc m) (PI.PhNormUnits.Xv (1 : Fin 2)) h1v]`.
+
+Conclude with `int_mulBy_of hSub hex0 hinv α.2 hd _ (constantCoeff_formalSMul hex0 hinv _ _ h1v) (int_mulBy_zp hSub hex0 hinv hC hD hIA _ h1v (int_X _) m)`. Establish `step1` using `units_i hE hSub hex0 hinv hIA α.1 (α.1 * α.2) hU`. Establish `step2` using `units_ii hE hSub hC hD hex0 hinv hph hIA hB α.1 α.2 n hn`. Conclude with `units_iv hE hSub hex0 hinv α.1 α.2 hc hw (sTrans hE step1 step2)`.
+-/
 theorem stepUnits_of (hE : CalcEquiv) (hSub : CalcSubst) (hC : CalcClosed) (hD : NatDense) : StepUnits := by
   intro p _ l ex ph S hS α hα h1 h2
   obtain ⟨hex0, hinv, hp2, h22, hswap, -, -, hint_r, hIA, -, hprod, -, hB, hNorm⟩ := hS
@@ -49,6 +62,15 @@ theorem stepUnits_of (hE : CalcEquiv) (hSub : CalcSubst) (hC : CalcClosed) (hD :
   have step2 := units_ii hE hSub hC hD hex0 hinv hph hIA hB α.1 α.2 n hn
   exact units_iv hE hSub hex0 hinv α.1 α.2 hc hw (sTrans hE step1 step2)
 
+/- English proof (translation)
+Introduce `p _ l ex ph S hS hU α hα`. Take `⟨hex0, hinv, -, -, hswap, -, -, hint_r, hIA, -, -, hdec, hB, -⟩` from `hS`. Take `⟨β, hβ, γ, hγ, hb1, hb2, hg1, hg2, rfl⟩` from `hdec α hα`. Establish `h0 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv (0 : Fin 2) : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var _`. Establish `h1 : MvPowerSeries.constantCoeff (PI.PhNormUnits.Xv (1 : Fin 2) : MvPowerSeries (Fin 2) ℂ_[p]) = 0` using `constantCoeff_var _`.
+
+Establish `i0 : PI.PhNormUnits.IntegralMv (PI.PhNormUnits.Xv (0 : Fin 2) : MvPowerSeries (Fin 2) ℂ_[p])` using `int_X _`. Establish `i1 : PI.PhNormUnits.IntegralMv (PI.PhNormUnits.Xv (1 : Fin 2) : MvPowerSeries (Fin 2) ℂ_[p])` using `int_X _`. Establish `hI1 : ∀ δ ∈ S, ∀ x : MvPowerSeries (Fin 2) ℂ_[p], MvPowerSeries.constantCoeff x = 0 → PI.PhNormUnits.IntegralMv x → PI.PhNormUnits.IntegralMv (PI.PhNormUnits.mulBy l ex δ.1 x)` using `fun δ hδ x hx0 hx => int_mulBy_of hSub hex0 hinv δ.1 (hint_r δ hδ) x hx0 hx`. Establish `hI2 : ∀ δ ∈ S, ∀ x : MvPowerSeries (Fin 2) ℂ_[p], MvPowerSeries.constantCoeff x = 0 → PI.PhNormUnits.IntegralMv x → PI.PhNormUnits.IntegralMv (PI.PhNormUnits.mulBy l ex δ.2 x)` using `fun δ hδ x hx0 hx => by`. Establish `h` using `hint_r _ (hswap δ hδ)`.
+
+Rewrite `h` using `[Prod.fst_swap]`. Conclude with `int_mulBy_of hSub hex0 hinv δ.2 h x hx0 hx`. Establish `c0 : ∀ (c : ℂ_[p]) (x : MvPowerSeries (Fin 2) ℂ_[p]), MvPowerSeries.constantCoeff x = 0 → MvPowerSeries.constantCoeff (PI.PhNormUnits.mulBy l ex c x) = 0` using `fun c x hx => constantCoeff_formalSMul hex0 hinv c x hx`. Use `show PI.PhNormUnits.Simeq (PI.PhNormUnits.be l ex ph (PI.PhNormUnits.mulBy l ex (β.1 + γ.1) (PI.PhNormUnits.Xv 0)) (PI.PhNormUnits.Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) (PI.PhNormUnits.be l ex ph (PI.PhNormUnits.Xv 0) (PI.PhNormUnits.mulBy l ex (β.2 + γ.2) (PI.PhNormUnits.Xv 1)))`. Rewrite using `[← add_mulBy hex0 hinv β.1 γ.1 _ h0, ← add_mulBy hex0 hinv β.2 γ.2 _ h1]`.
+
+Establish `L` using `be_add_left hSub hex0 hinv hB (PI.PhNormUnits.mulBy l ex β.1 (PI.PhNormUnits.Xv 0)) (PI.PhNormUnits.mulBy l ex γ.1 (PI.PhNormUnits.Xv 0)) (PI.PhNormUnits.Xv 1) (c0 _ _ h0) (c0 _ _ h0) h1 (hI1 β hβ _ h0 i0) (hI1 γ hγ _ h0 i0) i1`. Establish `R` using `be_add_right hSub hex0 hinv hB (PI.PhNormUnits.mulBy l ex β.2 (PI.PhNormUnits.Xv 1)) (PI.PhNormUnits.mulBy l ex γ.2 (PI.PhNormUnits.Xv 1)) (PI.PhNormUnits.Xv 0) (c0 _ _ h1) (c0 _ _ h1) h0 (hI2 β hβ _ h1 i1) (hI2 γ hγ _ h1 i1) i0`. Conclude with `sTrans hE L (sTrans hE (sAdd hE (hU β hβ hb1 hb2) (hU γ hγ hg1 hg2)) (sSymm hE R))`.
+-/
 theorem stepAll_of (hE : CalcEquiv) (hSub : CalcSubst) : StepAll := by
   intro p _ l ex ph S hS hU α hα
   obtain ⟨hex0, hinv, -, -, hswap, -, -, hint_r, hIA, -, -, hdec, hB, -⟩ := hS

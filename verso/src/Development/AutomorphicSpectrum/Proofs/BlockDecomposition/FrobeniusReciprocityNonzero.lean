@@ -13,6 +13,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
   [Fintype n] [DecidableEq n] {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Take `⟨u, hu, hp⟩` from `exists_levi_mul_unip k e p`. Establish `key : ∀ y : V, (Submodule.Quotient.mk (τ u y) : Jacquet τ (unipRad k e)) = Submodule.Quotient.mk y`. Introduce `y`. Rewrite using `[Submodule.Quotient.eq]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `Set.mem_ofPred.mpr ⟨⟨u, hu⟩, y, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hL : ∀ y : V, (Submodule.Quotient.mk (τ (leviEmb k e (leviProj k e p)) y) : Jacquet τ (unipRad k e)) = ((deltaHalf k m (leviProj k e p) : ℂˣ) : ℂ) • jac e τ (leviProj k e p) (Submodule.Quotient.mk y)`. Introduce `y`. Rewrite using `[jac_mk, smul_smul, Units.mul_inv, one_smul]`.
+
+Establish `e1 : τ (p : GL n k) w = τ (leviEmb k e (leviProj k e p)) (τ u w)` using `by first`. Consider the case `(rw [hp, map_mul]; rfl)`. Consider the case `rw [hp, map_mul]`. Rewrite using `[e1, hL, hL, key]`.
+-/
 theorem mk_parab (e : (Σ a, m a) ≃ n) (τ : Representation ℂ (GL n k) V) (p : parab k e) (w : V) :
     (Submodule.Quotient.mk (τ (p : GL n k) w) : Jacquet τ (unipRad k e)) =
       Submodule.Quotient.mk (τ (leviEmb k e (leviProj k e p)) w) := by
@@ -37,6 +44,11 @@ def frobFun (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} {ρ : R
     (f : (jac e τ).IntertwiningMap ρ) (v : V) : GL n k → W :=
   fun g => f (Submodule.Quotient.mk (τ g v))
 
+/- English proof (translation)
+Establish `h1 : frobFun e f v (p * g) = f (Submodule.Quotient.mk (τ (leviEmb k e (leviProj k e p)) (τ g v)))` using `by show f (Submodule.Quotient.mk (τ ((p : GL n k) * g) v)) = _`. Rewrite using `[map_mul]`. Conclude with `congrArg f (mk_parab e τ p (τ g v))`. Establish `h2` using `LinearMap.congr_fun (f.isIntertwining' (leviProj k e p)) (Submodule.Quotient.mk (τ g v))`. Simplify using `only [LinearMap.comp_apply] at h2`.
+
+Rewrite using `[h1]`. Use `show f.toLinearMap (Submodule.Quotient.mk (τ (leviEmb k e (leviProj k e p)) (τ g v))) = ((deltaHalf k m (leviProj k e p) : ℂˣ) : ℂ) • ρ (leviProj k e p) (f.toLinearMap (Submodule.Quotient.mk (τ g v)))`. Rewrite using `[← h2, jac_mk, map_smul, smul_smul, Units.mul_inv, one_smul]`.
+-/
 theorem frobFun_law (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} {ρ : Representation ℂ (Levi k m) W}
     (f : (jac e τ).IntertwiningMap ρ) (v : V) (p : parab k e) (g : GL n k) :
     frobFun e f v (p * g) = (deltaHalf k m (leviProj k e p) : ℂ) • ρ (leviProj k e p) (frobFun e f v g) := by
@@ -52,6 +64,9 @@ theorem frobFun_law (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V}
     ((deltaHalf k m (leviProj k e p) : ℂˣ) : ℂ) • ρ (leviProj k e p) (f.toLinearMap (Submodule.Quotient.mk (τ g v)))
   rw [← h2, jac_mk, map_smul, smul_smul, Units.mul_inv, one_smul]
 
+/- English proof (translation)
+Use `show ∀ (h : ↥(parab k e)) (g : GL n k), frobFun e f v (↑h * g) = ((twist ρ (deltaHalf k m)).comp (leviProj k e)) h (frobFun e f v g)`. Introduce `p x`. Rewrite using `[frobFun_law, MonoidHom.comp_apply, twist_apply]`.
+-/
 theorem frobFun_mem (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} {ρ : Representation ℂ (Levi k m) W}
     (f : (jac e τ).IntertwiningMap ρ) (v : V) :
     frobFun e f v ∈ indSpace (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e)) := by
@@ -60,6 +75,9 @@ theorem frobFun_mem (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V}
   intro p x
   rw [frobFun_law, MonoidHom.comp_apply, twist_apply]
 
+/- English proof (translation)
+Use `show f (Submodule.Quotient.mk (τ (x * h) v)) = f (Submodule.Quotient.mk (τ x (τ h v)))`. Use `first`. Consider the case `(rw [map_mul]; rfl)`. Consider the case `rw [map_mul]`.
+-/
 theorem frobFun_translate (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} {ρ : Representation ℂ (Levi k m) W}
     (f : (jac e τ).IntertwiningMap ρ) (v : V) (h x : GL n k) :
     frobFun e f v (x * h) = frobFun e f (τ h v) x := by
@@ -68,6 +86,17 @@ theorem frobFun_translate (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n
   | (rw [map_mul]; rfl)
   | rw [map_mul]
 
+/- English proof (translation)
+Use `show IsOpen {g : GL n k | (ind (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e))) g ⟨frobFun e f v, frobFun_mem e f v⟩ = ⟨frobFun e f v, frobFun_mem e f v⟩}`. Use `set F : indSpace (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e)) := ⟨frobFun e f v, frobFun_mem e f v⟩ with hF`. Use `set R := ind (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e)) with hR`. Establish `hstab : ∀ s, τ s v = v → R s F = F`. Introduce `s hs`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show frobFun e f v (x * s) = frobFun e f v x`. Rewrite using `[frobFun_translate, hs]`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+
+Introduce `g0 hg0`. Use `⟨(fun g => g0⁻¹ * g) ⁻¹' {g | τ g v = v}, ?_, IsOpen.preimage (continuous_const_mul g0⁻¹) (hτ v), ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `h1 : R (g0 * (g0⁻¹ * g)) F = R g0 (R (g0⁻¹ * g) F)` using `by first`. Consider the case `(rw [map_mul]; rfl)`.
+
+Consider the case `rw [map_mul]`. Rewrite `h1` using `[mul_inv_cancel_left]`. Use `show R g F = F`. Rewrite using `[h1, hstab _ hg]`. Conclude with `hg0`.
+
+Use `show τ (g0⁻¹ * g0) v = v`. Rewrite using `[inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem frobFun_smooth (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : IsSmooth τ)
     {ρ : Representation ℂ (Levi k m) W} (f : (jac e τ).IntertwiningMap ρ) (v : V) :
     (⟨frobFun e f v, frobFun_mem e f v⟩ : indSpace (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e))) ∈
@@ -116,6 +145,9 @@ def frobInv (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : 
     refine LinearMap.ext fun v => Subtype.ext (Subtype.ext (funext fun x => ?_))
     exact (frobFun_translate e f v g x).symm
 
+/- English proof (translation)
+Use `show f (Submodule.Quotient.mk (τ 1 v)) = f (Submodule.Quotient.mk v)`. Use `first`. Consider the case `(rw [map_one]; rfl)`. Consider the case `rw [map_one]`.
+-/
 theorem frobInv_one (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : IsSmooth τ)
     {ρ : Representation ℂ (Levi k m) W} (f : (jac e τ).IntertwiningMap ρ) (v : V) :
     (frobInv e hτ f v).1.1 1 = f (Submodule.Quotient.mk v) := by
@@ -124,6 +156,11 @@ theorem frobInv_one (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V}
   | (rw [map_one]; rfl)
   | rw [map_one]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hf`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Use `⟨v, fun h => hw ?_⟩` and prove the remaining obligations. Establish `h1` using `frobInv_one e hτ f v`. Rewrite `h1` using `[h]`.
+
+Conclude with `h1.symm`.
+-/
 theorem exists_frobInv_ne_zero (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : IsSmooth τ)
     {ρ : Representation ℂ (Levi k m) W} (f : (jac e τ).IntertwiningMap ρ) (hf : ∃ v, f v ≠ 0) :
     ∃ v, frobInv e hτ f v ≠ 0 := by
@@ -134,6 +171,9 @@ theorem exists_frobInv_ne_zero (e : (Σ a, m a) ≃ n) {τ : Representation ℂ 
   rw [h] at h1
   exact h1.symm
 
+/- English proof (translation)
+Conclude with `⟨frobInv (stdBlocks (fun a => (x a).1) hd) hτ f, exists_frobInv_ne_zero _ hτ f hf⟩`.
+-/
 theorem exists_map_prodIrr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (GL (Fin N) k) V) (hτ : IsSmooth τ)

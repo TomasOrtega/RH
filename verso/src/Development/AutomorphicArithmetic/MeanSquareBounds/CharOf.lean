@@ -8,12 +8,28 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Conclude with `⟨⟨M, ψ⟩, hψ, rfl, fun _ => rfl⟩`.
+-/
 private theorem sig_of (N : ℕ) (hN : 0 < N) (ψ : DirichletCharacter ℂ N) (hψ : ψ.IsPrimitive) :
     ∃ χ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), χ.2.IsPrimitive ∧ χ.1 + 1 = N ∧
       ∀ n : ℕ, χ.2 (n : ZMod (χ.1 + 1)) = ψ (n : ZMod N) := by
   obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := ⟨N - 1, by omega⟩
   exact ⟨⟨M, ψ⟩, hψ, rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `hqN : ¬ q ∣ N₀` using `fun h => absurd (Nat.le_of_dvd hN h) (by omega)`. Establish `hNq : 0 < N₀ * q` using `Nat.mul_pos hN hq.pos`. Distinguish the cases in `ha : a ≤ 1`. Use `haveI : NeZero N₀ := ⟨by omega⟩`. Establish `hfpos : 0 < ξ.conductor` using `Nat.pos_of_ne_zero ξ.conductor_ne_zero`.
+
+Establish `hfN : ξ.conductor ≤ N₀` using `Nat.le_of_dvd hN ξ.conductor_dvd_level`. Use `haveI : NeZero ξ.conductor := ⟨by omega⟩`. Establish `key : ∀ n : ℕ, n.Coprime N₀ → ξ.primitiveCharacter (n : ZMod ξ.conductor) = ξ (n : ZMod N₀)`. Introduce `n hn`. Establish `hc : IsCoprime (n : ℤ) N₀` using `Nat.isCoprime_iff_coprime.mpr hn`.
+
+Establish `h1` using `ξ.primitiveCharacter.changeLevel_eq_cast_of_dvd' ξ.conductor_dvd_level hc`. Rewrite `h1` using `[ξ.changeLevel_primitiveCharacter]`. Simplify using `using h1.symm`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp ha with rfl | rfl` into its components or cases. Take `⟨χ, hχ, h1, h3⟩` from `sig_of ξ.conductor hfpos ξ.primitiveCharacter ξ.primitiveCharacter_isPrimitive`.
+
+Use `⟨χ, hχ, ?_, fun _ n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `le_trans hfN (Nat.le_mul_of_pos_right N₀ hq.pos)`. Rewrite using `[h3, key n hn, pow_zero, mul_one]`. Establish `hqf : ¬ q ∣ ξ.conductor` using `fun h => absurd (Nat.le_of_dvd hfpos h) (by omega)`.
+
+Take `⟨ψ, hψ, -, hψn⟩` from `twist_prim ξ.conductor q ξ.primitiveCharacter ξ.primitiveCharacter_isPrimitive hq h2 hqf`. Take `⟨χ, hχ, h1, h3⟩` from `sig_of (ξ.conductor * q) (Nat.mul_pos hfpos hq.pos) ψ hψ`. Use `⟨χ, hχ, ?_, fun _ n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `Nat.mul_le_mul_right q hfN`.
+
+Rewrite using `[h3, hψn, key n hn, pow_one]`. Conclude with `⟨⟨0, 1⟩, DirichletCharacter.isPrimitive_one_level_one, hNq, fun h => absurd h ha⟩`.
+-/
 private theorem char_of (N₀ q : ℕ) (hN : 0 < N₀) (hq : q.Prime) (h2 : q ≠ 2) (hlt : N₀ < q)
     (ξ : DirichletCharacter ℂ N₀) (a : ℕ) :
     ∃ χ : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), χ.2.IsPrimitive ∧ χ.1 + 1 ≤ N₀ * q ∧
@@ -47,6 +63,9 @@ private theorem char_of (N₀ q : ℕ) (hN : 0 < N₀) (hq : q.Prime) (h2 : q �
       · rw [h3, hψn, key n hn, pow_one]
   · exact ⟨⟨0, 1⟩, DirichletCharacter.isPrimitive_one_level_one, hNq, fun h => absurd h ha⟩
 
+/- English proof (translation)
+Establish `h` using `(isLittleO_log_rpow_atTop (show 0 < ε / 5 by positivity)).bound (show (0 : ℝ) < 1 / (800 * K) by positivity)`. Use `filter_upwards [h, Filter.eventually_gt_atTop (0 : ℝ)] with Y hY hY0`. Rewrite `hY` using `[Real.norm_of_nonneg (Real.rpow_nonneg hY0.le _), Real.norm_eq_abs]`. Establish `h1 : Real.log Y ≤ 1 / (800 * K) * Y ^ (ε / 5)` using `(le_abs_self _).trans hY`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem ev_log {ε K : ℝ} (hε : 0 < ε) (hK : 1 ≤ K) :
     ∀ᶠ Y : ℝ in Filter.atTop, 800 * K * Real.log Y ≤ Y ^ (ε / 5) := by
   have h := (isLittleO_log_rpow_atTop (show 0 < ε / 5 by positivity)).bound
@@ -58,6 +77,63 @@ private theorem ev_log {ε K : ℝ} (hε : 0 < ε) (hK : 1 ≤ K) :
         mul_le_mul_of_nonneg_left h1 (by positivity)
     _ = _ := by field_simp
 
+/- English proof (translation)
+Take `⟨C, hC, hst⟩` from `stage`. Use `⟨C, hC, fun ε τ K η N₀ hε hε52 hτ hK hη hN₀ => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero N₀ := ⟨by omega⟩`. Use `letI : Fintype (DirichletCharacter ℂ N₀) := Fintype.ofFinite _`. Take `⟨Y₀, hY₀⟩` from `hst (6 * ε / 5) τ K η (Fintype.card (DirichletCharacter ℂ N₀) * 2) (by positivity) (by linarith) hτ hK hη`.
+
+Establish `e1` using `ev_log hε hK`. Establish `e2` using `(tendsto_rpow_atTop (by positivity : (0:ℝ) < ε / 5)).eventually_ge_atTop (2 * Real.log N₀ + 2)`. Establish `e3` using `(tendsto_rpow_atTop (by positivity : (0:ℝ) < ε / 25)).eventually_ge_atTop (K ^ 2)`. Establish `e4` using `Filter.eventually_ge_atTop (Real.exp 2)`. Take `⟨Y₁, hY₁⟩` from `Filter.eventually_atTop.mp (e1.and (e2.and (e3.and e4)))`.
+
+Use `⟨max Y₀ Y₁, fun Y hY z' hz1 hz2 q hq => ?_⟩` and prove the remaining obligations. Take `⟨hlog, hzN, hK2, hYe⟩` from `hY₁ Y (le_trans (le_max_right _ _) hY)`. Establish `hY0 : Y ≥ Y₀` using `le_trans (le_max_left _ _) hY`. Use `set z := Y ^ (ε / 5) with hz`. Establish `hYpos : 0 < Y` using `lt_of_lt_of_le (Real.exp_pos 2) hYe`.
+
+Establish `hY1 : 1 ≤ Y` using `le_trans (Real.one_le_exp (by norm_num)) hYe`. Establish `hlogY : 2 ≤ Real.log Y`. Establish `h1` using `Real.log_exp 2`. Establish `h2` using `Real.log_le_log (Real.exp_pos 2) hYe`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlogN : 0 ≤ Real.log (N₀:ℝ)` using `Real.log_nonneg (Nat.one_le_cast.mpr hN₀)`. Establish `hz2' : 2 ≤ z` using `by linarith`. Establish `hzpos : 0 < z` using `by linarith`. Establish `hlogY2 : 4 ≤ Real.log Y ^ 2` using `by nlinarith`. Establish `hz'4 : 4 * z ≤ z'` using `by nlinarith`.
+
+Simplify using `only [primePairSetFirst, PPset, Finset.mem_filter, Finset.mem_Icc] at hq`. Take `⟨⟨-, hqle⟩, hqp, hq8, hqlo⟩` from `hq`. Establish `hqle' : (q:ℝ) ≤ Real.exp z` using `le_trans (Nat.cast_le.mpr hqle) (Nat.floor_le (Real.exp_pos z).le)`. Establish `hq2 : q ≠ 2`. Introduce and unpack `rfl`.
+
+Evaluate the numerical expressions using `at hq8`. Establish `hhalf : Real.exp z ^ (1/2:ℝ) = Real.exp (z/2)`. Rewrite using `[← Real.exp_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hqbig : Real.exp (z/2) < q` using `by rw [← hhalf]; exact hqlo`. Establish `hNq : N₀ < q`. Establish `h : (N₀:ℝ) < q`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h` after adjusting the coercions.
+
+Establish `hqK : (Y ^ K) ^ 400 < (q:ℝ)`. Establish `h : (Y ^ K) ^ 400 = Real.exp (400 * (K * Real.log Y))`. Rewrite using `[Real.rpow_def_of_pos hYpos, ← Real.exp_nat_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Rewrite using `[h]`. Use `lt_of_le_of_lt (Real.exp_le_exp.mpr ?_) hqbig` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨a₀, hcop, hPP⟩` from `exists_coprime_primePairSetSecond_eq_PPset z z' q hqp hq2`. Rewrite using `[hPP]`.
+
+Establish `hodd : 0 < oddM z q`. Unfold `oddM`. Conclude with `Nat.mul_pos hqp.pos (Finset.prod_pos fun p hp => (Finset.mem_filter.mp hp).2.pos)`. Establish `hadm : admitted (6 * ε / 5) Y (Real.exp z') (16 * oddM z q) a₀`. Use `⟨by omega, Dvd.dvd.mul_right (by norm_num) _, hcop, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Real.log_exp]`. Establish `hlm` using `log_oddM z q hzpos.le hqp.pos`. Establish `hlq : Real.log q ≤ z`. Rewrite using `[Real.log_le_iff_le_exp (by exact_mod_cast hqp.pos)]`. Conclude with `hqle'`.
+
+Establish `h16 : Real.log 16 = 4 * Real.log 2`. Rewrite using `[show (16:ℝ) = 2 ^ 4 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4:ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`.
+
+Evaluate the numerical expressions. Establish `hl2` using `Real.log_two_lt_d9`. Establish `hl2' : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hm : Real.log ((16 * oddM z q : ℕ) : ℝ) ≤ 4 * z`. Rewrite `hlm` using `[h16, h4]`.
+
+Use polynomial arithmetic with `[mul_lt_mul_of_pos_right hl2 hzpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hm (sq_nonneg (Real.log Y))]`. Rewrite using `[Real.log_exp, show 6 * ε / 5 / 6 = ε / 5 by ring]`. Use polynomial arithmetic with `[hz]`. Rewrite using `[Real.log_exp, show 6 * ε / 5 / 5 = ε / 5 + ε / 25 by ring, Real.rpow_add hYpos]`.
+
+Establish `h` using `mul_le_mul_of_nonneg_right hK2 (by positivity : (0:ℝ) ≤ z * Real.log Y ^ 2)`. Rewrite using `[← hz]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hzle : z ≤ Y ^ (6 * ε / 5 / 5)`. Rewrite using `[hz]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le hY1 (by linarith)`. Establish `hprime : ∀ p : ℕ, p.Prime → p ∣ 16 * oddM z q → (p:ℝ) ≤ Y ^ (6 * ε / 5 / 5) ∨ (Y ^ K) ^ 400 < (p:ℝ)`. Introduce `p hp hpm`. Break down `(Nat.Prime.dvd_mul hp).mp hpm with h | h` into its components or cases. Establish `hp2 : p = 2` using `(Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp (hp.dvd_of_dvd_pow (show p ∣ 2 ^ 4 from h))`.
+
+Substitute `hp2` using the available equality. Use `left`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `oddM at h`.
+
+Break down `(Nat.Prime.dvd_mul hp).mp h with h | h` into its components or cases. Use `right`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hp hqp).mp h]`. Conclude with `hqK`. Use `left`.
+
+Take `⟨r, hr, hpr⟩` from `(Prime.dvd_finset_prod_iff hp.prime _).mp h`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hr`. Establish `hpr'` using `(Nat.prime_dvd_prime_iff_eq hp hr.2).mp hpr`. Substitute `hpr'` using the available equality. Establish `h' : (p:ℝ) ≤ z` using `le_trans (Nat.cast_le.mpr hr.1.2) (Nat.floor_le hzpos.le)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set F := (N₀:ℝ) * Real.exp z with hF`. Establish `hF1 : 1 ≤ F` using `one_le_mul_of_one_le_of_one_le (Nat.one_le_cast.mpr hN₀) (Real.one_le_exp hzpos.le)`. Establish `hFU : F ≤ Real.exp z' ^ (1/2:ℝ)`. Rewrite using `[← Real.exp_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_log (by exact_mod_cast hN₀)]`. Use `_ ≤ Real.exp (z' * (1/2)) := Real.exp_le_exp.mpr (by linarith)`. Use `choose g hg using fun p : DirichletCharacter ℂ N₀ × ℕ => char_of N₀ q hN₀ hqp hq2 hNq p.1 p.2`. Establish `hcard : ((Finset.univ ×ˢ Finset.range 2).image g).card ≤ Fintype.card (DirichletCharacter ℂ N₀) * 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hΞ : ∀ ξ ∈ (Finset.univ ×ˢ Finset.range 2).image g, ξ.snd.IsPrimitive ∧ ((ξ.fst + 1 : ℕ) : ℝ) ≤ F`. Introduce `ξ hξ`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.mp hξ`. Take `⟨h1, h2, -⟩` from `hg p`.
+
+Use `⟨h1, le_trans (Nat.cast_le.mpr h2) ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_left hqle' (Nat.cast_nonneg _)`. Establish `hst'` using `hY₀ Y hY0 (Real.exp z') F (16 * oddM z q) a₀ _ hadm hprime hF1 hFU hcard hΞ`. Use `⟨hst'.1, fun B hB hbad => hst'.2 B hB ?_⟩` and prove the remaining obligations.
+
+Introduce `d hd`. Establish `hdB` using `hB hd`. Simplify using `only [PPset, Finset.mem_filter] at hdB`. Take `⟨-, hdp, -⟩` from `hdB`. Establish `hnot` using `hbad d hd`.
+
+Simplify using `only [GoodD, not_forall] at hnot`. Take `⟨ξ, a, ha, hnb⟩` from `hnot`. Use `⟨g (ξ, a), Finset.mem_image.mpr ⟨(ξ, a), Finset.mem_product.mpr ⟨Finset.mem_univ _, Finset.mem_range.mpr (by omega)⟩, rfl⟩, N₀ * q * d, Nat.pos_iff_ne_zero.mp (Nat.mul_pos (Nat.mul_pos hN₀ hqp.pos) hdp.pos), ?_⟩` and prove the remaining obligations. Introduce `hall`. Apply `hnb` to reduce the goal to its premises.
+
+Introduce `N _ ψ hInd`. Establish `h` using `hall N ψ ⟨hInd.1, fun n hn => ?_⟩`. Rewrite `h` using `[hF, mul_assoc, ← Real.exp_add]`. Then use the resulting hypothesis. Establish `hn0 : n.Coprime N₀` using `Nat.Coprime.coprime_dvd_right ((Nat.dvd_mul_right N₀ q).mul_right d) hn`. Rewrite using `[hInd.2 n hn]`.
+
+Simplify using `only`. Rewrite using `[(hg (ξ, a)).2.2 ha n hn0]`.
+-/
 theorem stage2 :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,
       ∀ z' : ℝ, Y ^ (ε / 5) * Real.log Y ^ 2 ≤ z' → z' ≤ K ^ 2 * (Y ^ (ε / 5) * Real.log Y ^ 2) → ∀ q ∈ primePairSetFirst (Y ^ (ε / 5)),

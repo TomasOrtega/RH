@@ -19,17 +19,26 @@ variable {k r : ℕ}
 def pOf (a b c d : B.Mat k r) : B.SS k r :=
   ((Matrix.of.symm a, Matrix.of.symm b), (Matrix.of.symm c, Matrix.of.symm d))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Conclude with `fun h => ⟨h, fun a ha => absurd ha (Nat.not_lt_zero _)⟩`.
+-/
 theorem level_zero_iff (g : B.Mat k r) : g ∈ Q.Glev k r 0 ↔ g ∈ B.GV k r := by
   constructor
   · exact fun h => h.1
   · exact fun h => ⟨h, fun a ha => absurd ha (Nat.not_lt_zero _)⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem mat_inv_one : (1 : B.Mat k r)⁻¹ = 1 := by
   simp
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[B.rho, B.sgs, pOf]`.
+-/
 theorem rho_pOf (D : B.RealPlaceData k r Wp Wq) (a b c d : B.Mat k r) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     B.rho D (pOf a b c d) F = fun x => (D.π a).comp ((F (a⁻¹ * b⁻¹ * x * d * c)).comp (D.π' c⁻¹)) := by
   funext x
@@ -37,6 +46,61 @@ theorem rho_pOf (D : B.RealPlaceData k r Wp Wq) (a b c d : B.Mat k r) (F : B.Mat
 
 end aux
 
+/- English proof (translation)
+Introduce `hE k r Wp Wq _ _ _ _ _ D O P hDom hloc hsmul hsm hcomm J hJ`. Take `⟨hS, hL, hR, hU⟩` from `hJ`. Establish `hext : ∀ g₀ ∈ B.GV k r, g₀ ∈ O → ∃ (f : B.Mat k r → (Wq →L[ℂ] Wp)) (U : Set (B.Mat k r)), B.CkOn ⊤ (B.GV k r) f ∧ HasCompactSupport f ∧ tsupport f ⊆ O ∧ IsOpen U ∧ g₀ ∈ U ∧ ∀ x ∈ U, x ∈ B.GV k r → f x = J x` using `fun g₀ hg hO => hE k r (Wq →L[ℂ] Wp) O J hDom.1 hS g₀ hg hO`. Establish `one_N : (1 : B.Mat k r) ∈ Q.Nlev k r 0` using `⟨mem_n_one, (level_zero_iff _).2 uh_one⟩`. Establish `one_S : ∀ z, (1 : B.Mat k r) ∈ Q.Slev k r z 0` using `fun z => ⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r z, 1, one_N, by simp⟩`.
+
+Establish `hπ1 : D.π 1 = 1` using `D.π_rep.1`. Establish `hπ'1 : D.π' 1 = 1` using `D.π'_rep.1`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Establish `hgG` using `(level_zero_iff g₀).1 hg₀.1`.
+
+Take `⟨f, U, hf, _, hfO, hUo, hgU, hfJ⟩` from `hext g₀ hgG hg₀.2`. Take `⟨U', F, hU', hgU', hF, hFe⟩` from `hsm f hf hfO g₀ hg₀`. Use `⟨U ∩ U', F, hUo.inter hU', ⟨hgU, hgU'⟩, hF.mono Set.inter_subset_right, ?_⟩` and prove the remaining obligations. Introduce `x hx hxG`. Rewrite using `[← hFe x hx.2 hxG]`.
+
+Conclude with `hloc U J f hUo (fun y hy hyG => (hfJ y hy hyG).symm) x hx.1 ((level_zero_iff x).1 hxG)`. Introduce `g hg n hn`. Establish `hgG` using `(level_zero_iff g).1 hg.1`. Establish `hnN : n ∈ Formalism.QuantumDeterminants.Nset k r` using `hn.1`. Establish `hnG : n ∈ B.GV k r` using `hnN.1`.
+
+Establish `hng : n * g ∈ O`. Use `hDom.2 g hg n ⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z, n, hn, by simp⟩ 1 (one_S D.z')` as an intermediate fact. Simplify using `using this`. Establish `hngG : n * g ∈ B.GV k r` using `uh_mul hnG hgG`. Take `⟨f1, U1, hf1, hf1c, hf1O, hU1, hngU1, hf1J⟩` from `hext (n * g) hngG hng`.
+
+Establish `hp : D.inSS (pOf 1 n⁻¹ 1 1)`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [pOf, Equiv.apply_symm_apply]`. Conclude with `Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z`. Conclude with `mem_n_inv hnN`. Conclude with `Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z'`.
+
+Conclude with `mem_n_one`. Establish `hrho : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.rho D (pOf 1 n⁻¹ 1 1) F = fun x => F (n * x)`. Introduce `F`. Rewrite using `[rho_pOf]`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Matrix.nonsing_inv_nonsing_inv n (isUnit_of_uh hnG), mat_inv_one, hπ1, hπ'1]`. Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `hc` using `hcomm f1 hf1 hf1c hf1O _ hp g hg.2 hgG`. Rewrite `hc` using `[hrho, hrho]`.
+
+Use `beta_reduce at hc`. Establish `e1 : P f1 (n * g) = P J (n * g)` using `hloc U1 f1 J hU1 hf1J (n * g) hngU1 hngG`. Establish `hV : IsOpen ((fun x : B.Mat k r => n * x) ⁻¹' U1 ∩ O)` using `(hU1.preimage (continuous_const.matrix_mul continuous_id)).inter hDom.1`. Establish `e2 : P (fun x => f1 (n * x)) g = P (Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd n • J) g`. Use `hloc _ _ _ hV ?_ g ⟨hngU1, hg.2⟩ hgG` and prove the remaining obligations.
+
+Introduce `x hx hxG`. Rewrite using `[hf1J (n * x) hx.1 (uh_mul hnG hxG), Pi.smul_apply]`. Conclude with `hL x ⟨(level_zero_iff x).2 hxG, hx.2⟩ n hn`. Rewrite using `[← e1, ← hc, e2, hsmul _ J g hgG]`. Introduce `g hg n hn`.
+
+Establish `hgG` using `(level_zero_iff g).1 hg.1`. Establish `hnN : n ∈ Formalism.QuantumDeterminants.Nset k r` using `hn.1`. Establish `hnG : n ∈ B.GV k r` using `hnN.1`. Establish `hgn : g * n ∈ O`. Use `hDom.2 g hg 1 (one_S D.z) n ⟨1, Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z', n, hn, by simp⟩` as an intermediate fact.
+
+Simplify using `using this`. Establish `hgnG : g * n ∈ B.GV k r` using `uh_mul hgG hnG`. Take `⟨f1, U1, hf1, hf1c, hf1O, hU1, hgnU1, hf1J⟩` from `hext (g * n) hgnG hgn`. Establish `hp : D.inSS (pOf 1 1 1 n)`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [pOf, Equiv.apply_symm_apply]`.
+
+Conclude with `Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z`. Conclude with `mem_n_one`. Conclude with `Formalism.FourierDecayAlt.P.TBBx2.one_mem_UW k r D.z'`. Conclude with `hnN`. Establish `hrho : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.rho D (pOf 1 1 1 n) F = fun x => F (x * n)`.
+
+Introduce `F`. Rewrite using `[rho_pOf]`. Use function extensionality and compare the values at `x`. Rewrite using `[mat_inv_one, hπ1, hπ'1]`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Establish `hc` using `hcomm f1 hf1 hf1c hf1O _ hp g hg.2 hgG`. Rewrite `hc` using `[hrho, hrho]`. Use `beta_reduce at hc`. Establish `e1 : P f1 (g * n) = P J (g * n)` using `hloc U1 f1 J hU1 hf1J (g * n) hgnU1 hgnG`.
+
+Establish `hV : IsOpen ((fun x : B.Mat k r => x * n) ⁻¹' U1 ∩ O)` using `(hU1.preimage (continuous_id.matrix_mul continuous_const)).inter hDom.1`. Establish `e2 : P (fun x => f1 (x * n)) g = P (Formalism.QuantumDeterminants.psi k r D.z' Formalism.QuantumDeterminants.cStd n • J) g`. Use `hloc _ _ _ hV ?_ g ⟨hgnU1, hg.2⟩ hgG` and prove the remaining obligations. Introduce `x hx hxG`. Rewrite using `[hf1J (x * n) hx.1 (uh_mul hxG hnG), Pi.smul_apply]`.
+
+Conclude with `hR x ⟨(level_zero_iff x).2 hxG, hx.2⟩ n hn`. Rewrite using `[← e1, ← hc, e2, hsmul _ J g hgG]`. Introduce `g hg h hh h' hh'`. Establish `hgG` using `(level_zero_iff g).1 hg.1`. Establish `hhG : h ∈ B.GV k r` using `hh.1`.
+
+Establish `hh'G : h' ∈ B.GV k r` using `hh'.1`. Establish `hu` using `isUnit_of_uh hhG`. Establish `hu'` using `isUnit_of_uh hh'G`. Establish `hhg : h * g * h' ∈ O`. Use `hDom.2 g hg h ⟨h, hh, 1, one_N, by simp⟩ h' ⟨h', hh', 1, one_N, by simp⟩` as an intermediate fact.
+
+Simplify using `using this`. Establish `hhgG : h * g * h' ∈ B.GV k r` using `uh_mul (uh_mul hhG hgG) hh'G`. Take `⟨f1, U1, hf1, hf1c, hf1O, hU1, hhgU1, hf1J⟩` from `hext (h * g * h') hhgG hhg`. Establish `hp : D.inSS (pOf h⁻¹ 1 h' 1)`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [pOf, Equiv.apply_symm_apply]`.
+
+Conclude with `uw_inv hh`. Conclude with `mem_n_one`. Conclude with `hh'`. Conclude with `mem_n_one`. Establish `hrho : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.rho D (pOf h⁻¹ 1 h' 1) F = fun x => (D.π h⁻¹).comp ((F (h * x * h')).comp (D.π' h'⁻¹))`.
+
+Introduce `F`. Rewrite using `[rho_pOf]`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv h hu, mat_inv_one]`. Simplify using `[Matrix.mul_assoc]`.
+
+Establish `eL : (D.π h⁻¹).comp (D.π h) = 1`. Rewrite using `[← D.π_rep.2 _ (uw_inv hh) _ hh, Matrix.nonsing_inv_mul h hu, hπ1]`. Establish `eL' : (D.π h).comp (D.π h⁻¹) = 1`. Rewrite using `[← D.π_rep.2 _ hh _ (uw_inv hh), Matrix.mul_nonsing_inv h hu, hπ1]`. Establish `eR : (D.π' h').comp (D.π' h'⁻¹) = 1`.
+
+Rewrite using `[← D.π'_rep.2 _ hh' _ (uw_inv hh'), Matrix.mul_nonsing_inv h' hu', hπ'1]`. Establish `eR' : (D.π' h'⁻¹).comp (D.π' h') = 1`. Rewrite using `[← D.π'_rep.2 _ (uw_inv hh') _ hh', Matrix.nonsing_inv_mul h' hu', hπ'1]`. Establish `eLv : ∀ w, D.π h⁻¹ (D.π h w) = w` using `fun w => by simpa using congrArg (fun L => L w) eL`. Establish `eL'v : ∀ w, D.π h (D.π h⁻¹ w) = w` using `fun w => by simpa using congrArg (fun L => L w) eL'`.
+
+Establish `eRv : ∀ w, D.π' h' (D.π' h'⁻¹ w) = w` using `fun w => by simpa using congrArg (fun L => L w) eR`. Establish `eR'v : ∀ w, D.π' h'⁻¹ (D.π' h' w) = w` using `fun w => by simpa using congrArg (fun L => L w) eR'`. Establish `hc` using `hcomm f1 hf1 hf1c hf1O _ hp g hg.2 hgG`. Rewrite `hc` using `[hrho, hrho]`. Establish `e1 : P f1 (h * g * h') = P J (h * g * h')` using `hloc U1 f1 J hU1 hf1J _ hhgU1 hhgG`.
+
+Establish `hV : IsOpen ((fun x : B.Mat k r => h * x * h') ⁻¹' U1 ∩ O)` using `(hU1.preimage ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)).inter hDom.1`. Establish `e2 : P (fun x => (D.π h⁻¹).comp ((f1 (h * x * h')).comp (D.π' h'⁻¹))) g = P J g`. Use `hloc _ _ _ hV ?_ g ⟨hhgU1, hg.2⟩ hgG` and prove the remaining obligations. Introduce `x hx hxG`. Rewrite using `[hf1J _ hx.1 (uh_mul (uh_mul hhG hxG) hh'G), hU x ⟨(level_zero_iff x).2 hxG, hx.2⟩ h hh h' hh']`.
+
+Use extensionality with `v`. Simplify using `[eLv, eRv]`. Rewrite `hc` using `[e2]`. Use `beta_reduce at hc`. Rewrite `hc` using `[e1]`.
+
+Rewrite using `[hc]`. Use extensionality with `v`. Simplify using `[eL'v, eR'v]`.
+-/
 theorem equivariant_operators_holds : EquivOps := by
   intro hE k r Wp Wq _ _ _ _ _ D O P hDom hloc hsmul hsm hcomm J hJ
   obtain ⟨hS, hL, hR, hU⟩ := hJ

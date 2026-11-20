@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `haveI := hf.to_subtype`. Establish `h1 : dc ρ K K a v = ∑ᶠ q : MulAction.orbit K (a : G ⧸ K), ρ (q : G ⧸ K).out v` using `(LinearMap.applyₗ (R := ℂ) (M₂ := V) v).toAddMonoidHom.map_finsum (Set.toFinite _)`. Rewrite using `[h1, finsum_set_coe_eq_finsum_mem (f := fun c : G ⧸ K => ρ c.out v), finsum_mem_def, GlobalTheory.LFun.heckeVec]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Establish `h2 : c ∈ MulAction.orbit K (a : G ⧸ K) ↔ c.out ∈ S`.
+
+Rewrite using `[hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Establish `hx' : ((x.1 * a : G) : G ⧸ K) = (c.out : G ⧸ K)` using `hx.trans c.out_eq'.symm`. Conclude with `⟨x, x.2, _, QuotientGroup.eq.1 hx', by group⟩`.
+
+Introduce and unpack `⟨x, hx, y, hy, e⟩`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((x * a : G) : G ⧸ K) = c`. Rewrite using `[← c.out_eq', e]`. Conclude with `(QuotientGroup.mk_mul_of_mem _ hy).symm`.
+
+Distinguish the cases in `hc : c.out ∈ S`. Rewrite using `[Set.indicator_of_mem hc, Set.indicator_of_mem (h2.2 hc)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hc, Set.indicator_of_notMem (mt h2.1 hc)]`. Simplify using the standard rewrite rules.
+-/
 private theorem satT_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (K : Subgroup G) (a : G) (hf : (MulAction.orbit K (a : G ⧸ K)).Finite) (S : Set G)
     (hS : ∀ g, g ∈ S ↔ ∃ x ∈ K, ∃ y ∈ K, g = x * a * y) (v : V) :
@@ -28,6 +37,15 @@ private theorem satT_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (
   · rw [Set.indicator_of_mem hc, Set.indicator_of_mem (h2.2 hc)]; simp
   · rw [Set.indicator_of_notMem hc, Set.indicator_of_notMem (mt h2.1 hc)]; simp
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (valuation (w.adicCompletion L)) (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ)))`. Establish `hu : valuation (w.adicCompletion L) (unif (w.adicCompletion L) : w.adicCompletion L) = uniformizer (w.adicCompletion L)`. Use `Classical.epsilon_spec (p := fun x : (w.adicCompletion L)ˣ => valuation (w.adicCompletion L) (x : w.adicCompletion L) = uniformizer (w.adicCompletion L)) ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `valuation_surjective (uniformizer (w.adicCompletion L))`.
+
+Use `⟨Units.mk0 x ?_, hx⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(zero_lt_iff.2 (by simp) : 0 < uniformizer (w.adicCompletion L)).ne ((map_zero _).symm.trans hx)`. Take `⟨p, hp⟩` from `GlobalTheory.LFun.exists_isUnifV w`. Unfold `Formalism.UG.IsUnifV at hp ⊢`.
+
+Establish `h1 : Valued.v (unif (w.adicCompletion L) : w.adicCompletion L) < (1 : WithZero (Multiplicative ℤ))` using `he.lt_one_iff_lt_one.1 (hu.trans_lt uniformizer_lt_one)`. Establish `h2 : valuation (w.adicCompletion L) p < 1` using `he.lt_one_iff_lt_one.2 (by rw [hp]; decide)`. Establish `h3` using `(he _ _).1 ((le_uniformizer_iff.2 h2).trans_eq hu.symm)`. Rewrite `h3` using `[hp]`. Use `le_antisymm ?_ h3` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[← WithZero.lt_mul_exp_iff_le (by simp), ← WithZero.exp_add]`. Simplify using `using h1`.
+-/
 private theorem satT_unif (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) :
     Formalism.UG.IsUnifV L w (unif (w.adicCompletion L) : w.adicCompletion L) := by
   haveI : (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -54,6 +72,11 @@ private theorem satT_unif (L : Type) [Field L] [NumberField L] (w : HeightOneSpe
   rw [← WithZero.lt_mul_exp_iff_le (by simp), ← WithZero.exp_add]
   simpa using h1
 
+/- English proof (translation)
+Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `h2 : ((j * (j - 1) / 2 : ℕ) : ℂ) = (j : ℂ) * ((j : ℂ) - 1) / 2`. Rewrite using `[← Nat.choose_two_right, Nat.cast_choose_two]`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg q), ← Complex.cpow_nat_mul, ← Complex.cpow_natCast, h2]`. Use `push_cast`.
+
+Rewrite using `[← Complex.cpow_add _ _ hq']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem satT_num (q n j : ℕ) (hq : q ≠ 0) :
     ((((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ)) ^ j =
       (q : ℂ) ^ (j * (j - 1) / 2) * (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2) := by
@@ -66,6 +89,11 @@ private theorem satT_num (q n j : ℕ) (hq : q ≠ 0) :
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hc : (UpperTheory.V.Af.algSat n q B).card = n` using `by simp [UpperTheory.V.Af.algSat, hB]`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, hc, UpperTheory.V.Hi.heckePol]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `e : (UpperTheory.V.Af.algSat n q B).esymm j = ((((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ)) ^ j * (B.map fun b : ℂˣ => (b : ℂ)).esymm j`. Rewrite using `[← smul_eq_mul, Multiset.pow_smul_esymm, UpperTheory.V.Af.algSat]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules. Rewrite using `[ha j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)), e, satT_num q n j hq, GlobalTheory.LFun.satEig]`. Simplify using `only [map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem satT_pol (q n : ℕ) (hq : q ≠ 0) (B : Multiset ℂˣ) (hB : B.card = n) (a : ℕ → ℂ)
     (ha : ∀ j ≤ n, a j = GlobalTheory.LFun.satEig q n B j) :
     ((UpperTheory.V.Af.algSat n q B).map fun b => X - C b).prod = heckePol n q a := by
@@ -81,6 +109,15 @@ private theorem satT_pol (q n : ℕ) (hq : q ≠ 0) (B : Multiset ℂˣ) (hB : B
   simp only [map_mul, map_pow, map_neg, map_one]
   ring
 
+/- English proof (translation)
+Introduce `L _ _ n w σ B hB`. Establish `hK : KO (w.adicCompletion L) (Fin n) = GlobalTheory.LFun.KGL w n` using `GlobalTheory.SmGL.SphCompletion.KO_completion w n`. Use `⟨hK.symm, fun j => GlobalTheory.LFun.satEig (normV w) n B (min j n), by simp [GlobalTheory.LFun.satEig, Multiset.esymm], ?_, satT_pol _ n (GlobalTheory.LFun.qV_ne_zero w) B hB.card _ fun j hj => by rw [min_eq_left hj]; rfl⟩` and prove the remaining obligations. Introduce `j v hv`. Distinguish the cases in `h0 : v = 0`.
+
+Simplify using `[h0]`. Rewrite `hv` using `[hK]`. Establish `h1` using `(hB.2 v (GlobalTheory.LGrp.mem_fixed.2 hv) h0).2.2.2 _ (satT_unif L w) (min j n) (min_le_right _ _)`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Rewrite using `[sphOp, hK]`.
+
+Use `satT_dc σ.ρ _ _ (Formalism.UG.P.orbit_coset_finite _ (Formalism.UG.Final.GLintComm L w n) _) _ (fun g => ?_) v` and prove the remaining obligations. Establish `hal : (al (w.adicCompletion L) n j).val = Formalism.UG.diagJ n (unif (w.adicCompletion L) : w.adicCompletion L) (min j n)`. Rewrite using `[UpperTheory.V.Hi.al, upow, val_diagT, Formalism.UG.diagJ]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Use `i.2` as an intermediate fact. Distinguish the cases in `h : (i : ℕ) < j`. Simplify using `[h]`. Simplify using `[h]`. Simplify using `only [Set.mem_setOf_eq, ← hal, ← Units.val_mul, Units.val_inj]`.
+-/
 theorem UpperTheory.V.Hi.satT :
     ∀ (L : Type) [Field L] [NumberField L] (n : ℕ) (w : HeightOneSpectrum (𝓞 L)) (σ : SmIrr (GL (Fin n) (w.adicCompletion L))) (B : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ B → GlobalTheory.LFun.KGL w n = KO (w.adicCompletion L) (Fin n) ∧ ∃ a : ℕ → ℂ, a 0 = 1 ∧ (∀ j, ∀ v ∈ fixd σ.ρ (KO (w.adicCompletion L) (Fin n)), sphOp σ.ρ j v = a j • v) ∧ ((UpperTheory.V.Af.algSat n (normV w) B).map fun b => X - C b).prod = heckePol n (normV w) a := by
   intro L _ _ n w σ B hB

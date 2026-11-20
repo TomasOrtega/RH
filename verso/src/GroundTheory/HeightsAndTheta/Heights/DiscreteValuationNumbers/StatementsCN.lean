@@ -29,6 +29,9 @@ def idealCycle {R : Type*} [CommRing R] (J W : Ideal (MRing ι R)) : ℤ :=
     ((multAt J W).toNat : ℤ)
   else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divCycle_eq_idealCycle {R : Type*} [CommRing R] (P : Ideal (MRing ι R)) (f : MRing ι R) :
     divCycle P f = idealCycle (P ⊔ Ideal.span {f}) := rfl
 
@@ -284,6 +287,11 @@ end Fibres
 
 section Examples
 
+/- English proof (translation)
+Unfold `mixedDiff`. Proceed by induction on `List.ofFn bs with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Rewrite using `[List.foldr_cons, ih]`.
+
+Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`.
+-/
 theorem mixedDiff_zero {K : Type*} {n : ℕ} (bs : Fin n → K → ℤ) :
     mixedDiff bs (0 : (K → ℤ) → ℤ) = 0 := by
   unfold mixedDiff
@@ -294,9 +302,15 @@ theorem mixedDiff_zero {K : Type*} {n : ℕ} (bs : Fin n → K → ℤ) :
     funext m
     simp [diffStep]
 
+/- English proof (translation)
+Introduce `bs` and use `Filter.Eventually.of_forall fun m => by rw [mixedDiff_zero]; rfl`.
+-/
 theorem degLT_zero {K : Type*} (n : ℕ) : DegLT (0 : (K → ℤ) → ℤ) n := fun bs =>
   Filter.Eventually.of_forall fun m => by rw [mixedDiff_zero]; rfl
 
+/- English proof (translation)
+Unfold `hilbFn`. Use `split_ifs`. Establish `: Subsingleton (MRing ι F ⧸ (⊤ : Ideal (MRing ι F)))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Rewrite using `[Module.finrank_zero_of_subsingleton, Nat.cast_zero]`. Both sides reduce to the same expression.
+-/
 theorem hilbFn_top {F : Type*} [Field F] {K : Type*} [DecidableEq K] {ι : K → Type*}
     (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by
   unfold hilbFn

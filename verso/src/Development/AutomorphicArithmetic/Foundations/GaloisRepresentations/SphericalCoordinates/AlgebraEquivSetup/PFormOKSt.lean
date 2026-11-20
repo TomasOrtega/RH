@@ -3,26 +3,45 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.LKTrip GlobalTheory.LKGeo UpperTheory.Gal.W2.Seed
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) z`.
+-/
 private theorem trace_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (z : E) :
     Algebra.trace ℚ E (IsCMField.complexConj E z) = Algebra.trace ℚ E z :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) z
 
+/- English proof (translation)
+Unfold `Arith.hd Arith.dg`. Apply the tactic sequence `split_ifs <;> simp [A.c_real]`.
+-/
 private theorem hd_bar {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     A.bar (A.hd n i) = A.hd n i := by
   unfold Arith.hd Arith.dg
   split_ifs <;> simp [A.c_real]
 
+/- English proof (translation)
+Use `A.c_ne` as an intermediate fact. Unfold `Arith.hd Arith.dg`. Apply the tactic sequence `split_ifs <;> simp [this]`.
+-/
 private theorem hd_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) (i : Fin n) :
     ((A.hd n i : 𝓞 E) : E) ≠ 0 := by
   have := A.c_ne
   unfold Arith.hd Arith.dg
   split_ifs <;> simp [this]
 
+/- English proof (translation)
+Introduce `h`. Use `A.δ_sign A.τ₀ rfl` as an intermediate fact. Simplify using `[h] at this`.
+-/
 private theorem delta_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) : A.δ ≠ 0 := by
   intro h
   have := A.δ_sign A.τ₀ rfl
   simp [h] at this
 
+/- English proof (translation)
+Rewrite using `[Arith.EF_apply]`. Use `set s : 𝓞 E := ∑ i, A.hd n i * x i * A.bar (x i) with hs`. Establish `hbs : A.bar s = s`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hd_bar, A.bar_bar]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : IsCMField.complexConj E ((s : 𝓞 E) : E) = (s : E)`. Rewrite using `[← A.bar_eq, hbs]`. Establish `h1 : Algebra.trace ℚ E (A.δ * (s : E)) = - Algebra.trace ℚ E (A.δ * (s : E))` using `by conv_lhs => rw [← trace_cj, map_mul, A.δ_im, hc, neg_mul, map_neg]`.
+
+Establish `h2 : ((A.trd s : ℤ) : ℚ) = 0`. Rewrite using `[A.trd_spec]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2` after adjusting the coercions.
+-/
 private theorem alternatingMap_sub_base_eq_alternating_sum_removeNth {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ)
     (x : Fin n → 𝓞 E) : A.EF n x x = 0 := by
   rw [Arith.EF_apply]
@@ -41,6 +60,23 @@ private theorem alternatingMap_sub_base_eq_alternating_sum_removeNth {E : Type} 
     linarith
   exact_mod_cast h2
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero (A.EF n)).2 fun x hx => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Assume the negation of the conclusion as `hne`. Establish `hxi : ((x i : 𝓞 E) : E) ≠ 0`. Introduce `h`.
+
+Conclude with `hne (RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `hw : A.δ * ((A.hd n i : 𝓞 E) : E) * (x i : E) ≠ 0` using `mul_ne_zero (mul_ne_zero (delta_ne A) (hd_ne A n i)) hxi`. Establish `hint : ∀ b : 𝓞 E, Algebra.trace ℚ E (A.δ * ((A.hd n i : 𝓞 E) : E) * (x i : E) * (b : E)) = 0`. Introduce `b`. Establish `h0 : A.EF n x (Pi.single i (A.bar b)) = 0` using `by rw [hx]; rfl`.
+
+Rewrite `h0` using `[Arith.EF_apply]`. Establish `h1 : (∑ j, A.hd n j * x j * A.bar ((Pi.single i (A.bar b) : Fin n → 𝓞 E) j)) = A.hd n i * x i * b`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[A.bar_bar]`. Introduce `j _ hj`.
+
+Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[h1]`. Establish `h2` using `A.trd_spec (A.hd n i * x i * b)`. Rewrite `h2` using `[h0]`.
+
+Simplify using `only [Int.cast_zero] at h2`. Rewrite using `[h2]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b : E, Algebra.trace ℚ E (A.δ * ((A.hd n i : 𝓞 E) : E) * (x i : E) * b) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hw ((traceForm_nondegenerate ℚ E).1 _ fun b => by simpa [Algebra.traceForm_apply] using hall b)`. Take `⟨m, hm, hy⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic b))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : 𝓞 E, (c : E) = (m : ℚ) • b := by`. Use `⟨⟨m • b, hy⟩, ?_⟩` and prove the remaining obligations. Use `show m • b = (m : ℚ) • b`. Rewrite using `[zsmul_eq_mul, Algebra.smul_def]`. Simplify using the standard rewrite rules.
+
+Establish `h3` using `hint c`. Rewrite `h3` using `[hc, mul_smul_comm, map_smul, smul_eq_mul]`. Break down `mul_eq_zero.1 h3 with h5 | h5` into its components or cases. Conclude with `hm (by exact_mod_cast h5)`. Conclude with `hb h5`.
+-/
 private theorem laurent_adjoin_eq_of_image_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (A : Arith E) (n : ℕ) :
     Function.Injective (A.EF n) := by
   refine (injective_iff_map_eq_zero (A.EF n)).2 fun x hx => ?_
@@ -86,6 +122,11 @@ private theorem laurent_adjoin_eq_of_image_eq {E : Type} [Field E] [NumberField 
   · exact hm (by exact_mod_cast h5)
   · exact hb h5
 
+/- English proof (translation)
+Introduce `E _ _ _ A n`. Use `⟨alternatingMap_sub_base_eq_alternating_sum_removeNth A n, laurent_adjoin_eq_of_image_eq A n, fun b x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Arith.EF_apply, Arith.EF_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, A.bar_bar]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.W2.Seed.pFormOKSt :
     FormOKSt := by
   intro E _ _ _ A n

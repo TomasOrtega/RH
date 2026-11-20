@@ -15,6 +15,9 @@ namespace GlobalTheory.Per.DeRhamSpan
 open GlobalTheory.DeRhamCompare
 open GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual (mulPeriod)
 
+/- English proof (translation)
+Use `letI := hE.toField`. Establish `h` using `GlobalTheory.Per.linearIndependent_of_invariant G E M (Fin n) σ ρ hρ v hv hind`. Establish `h2` using `h.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin]; exact hn)`. Conclude with `(Submodule.mem_span_range_iff_exists_fun E).1 (h2 ▸ Submodule.mem_top)`.
+-/
 theorem span_of_invariant {G E M : Type} [CommRing E] (hE : IsField E) [AddCommGroup M]
     [Module E M] [Module.Finite E M] {n : ℕ} (hn : n = finrank E M)
     (σ : G → (E →+* E)) (ρ : G → (M →+ M))
@@ -39,6 +42,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Use `PD.finK` as an intermediate fact. Use `finite_DdR PD ρ h` as an intermediate fact. Establish `: FiniteDimensional Qp V` using `Module.Finite.trans LL V`. Establish `: FiniteDimensional Qp (DdR PD ρ)` using `Module.Finite.trans LL _`. Set `ε : DdR PD ρ ≃ₗ[Qp] DdRK PD ρ` to `{ toFun := fun x => toK PD ρ x x.2 invFun := fun y => ⟨(TensorProduct.comm Qp V BdR).symm y, y.2⟩ map_add' := fun x y => Subtype.ext (by simp [toK]) map_smul' := fun a x => Subtype.ext (by simp [toK]) left_inv := fun x => Subtype.ext (by simp [toK]) right_inv := fun x => Subtype. …`.
+
+Establish `: FiniteDimensional Qp (DdRK PD ρ)` using `ε.finiteDimensional`. Use `⟨Module.Finite.of_restrictScalars_finite Qp K _, ?_⟩` and prove the remaining obligations. Establish `h1` using `Module.finrank_mul_finrank Qp K (DdRK PD ρ)`. Establish `h2` using `Module.finrank_mul_finrank Qp LL (DdR PD ρ)`. Establish `h3` using `Module.finrank_mul_finrank Qp LL V`.
+
+Rewrite `h1` using `[← ε.finrank_eq, ← h2, h, mul_left_comm, h3]`. Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos h1`.
+-/
 theorem finrank_DdRK [FiniteDimensional Qp LL] [FiniteDimensional LL V] (h : IsDR PD ρ) :
     FiniteDimensional K (DdRK PD ρ) ∧ finrank K (DdRK PD ρ) = finrank Qp V := by
   have := PD.finK
@@ -60,6 +70,21 @@ theorem finrank_DdRK [FiniteDimensional Qp LL] [FiniteDimensional LL V] (h : IsD
   rw [← ε.finrank_eq, ← h2, h, mul_left_comm, h3] at h1
   exact Nat.eq_of_mul_eq_mul_left finrank_pos h1
 
+/- English proof (translation)
+Establish `: FiniteDimensional Qp V` using `Module.Finite.trans LL V`. Use `hF.nontrivial` as an intermediate fact. Take `⟨_, hr⟩` from `finrank_DdRK PD ρ h`. Set `e` to `Module.finBasisOfFinrankEq K _ hr`. Set `σ : G → BdR ⊗[Qp] V →ₗ[Qp] BdR ⊗[Qp] V` to `fun g => TensorProduct.map (((PD.actdR g).toAlgHom.toLinearMap).restrictScalars Qp) ((ρ g).restrictScalars Qp)`.
+
+Establish `hσ : ∀ g (b : BdR) w, σ g (b • w) = PD.actdR g b • σ g w`. Introduce `g b w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [σ, TensorProduct.smul_tmul']`.
+
+Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Establish `hc : ∀ g x, σ g (TensorProduct.comm Qp V BdR x) = TensorProduct.comm Qp V BdR (actVdR PD ρ g x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c v => simp [σ, actVdR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨b, hb⟩` from `span_of_invariant (M := BdR ⊗[Qp] V) hF (n := finrank Qp V) Module.finrank_baseChange.symm (fun g => (PD.actdR g : BdR →+* BdR)) (fun g => (σ g).toAddMonoidHom) hσ (fun k => (e k : BdR ⊗[Qp] V)) (fun g k => by`. Establish `h1` using `hc g ((TensorProduct.comm Qp V BdR).symm (e k))`. Rewrite `h1` using `[(mem_DdR PD ρ _).1 (e k).2 g, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `h1)`. Use the proof step `(fun c hcg hsum k => by choose a ha using fun p => PD.invdR (c p) fun g => hcg g p`. Establish `h1 : ∑ i, a i • e i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero, ← hsum]`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, ← ha, algebraMap_smul]`. Rewrite using `[← ha, Fintype.linearIndependent_iff.1 e.linearIndependent a h1 k, map_zero])`. Use the proof step `(TensorProduct.comm Qp V BdR y)`. Use `⟨_, b, fun k => (TensorProduct.comm Qp V BdR).symm (e k), fun k => (e k).2, ?_⟩` and prove the remaining obligations. Apply `(TensorProduct.comm Qp V BdR).injective` to reduce the goal to its premises.
+
+Simplify using `only [map_sum, comm_mp, LinearEquiv.apply_symm_apply, hb]`.
+-/
 theorem span_of_isField [FiniteDimensional Qp LL] [FiniteDimensional LL V] (hF : IsField BdR)
     (h : IsDR PD ρ) (y : V ⊗[Qp] BdR) :
     ∃ (m : ℕ) (b : Fin m → BdR) (d : Fin m → V ⊗[Qp] BdR), (∀ i, d i ∈ DdR PD ρ) ∧
@@ -105,6 +130,9 @@ theorem span_of_isField [FiniteDimensional Qp LL] [FiniteDimensional LL V] (hF :
 
 end General
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V _ _ _ _ _ ρ h y`. Use `haveI := LL.2`. Conclude with `span_of_isField (P.PD K) ρ (GlobalTheory.Per.TiedField.tied_field l P AI T).1 h y`.
+-/
 theorem tied_deRham_span : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsDR (P.PD K) ρ → ∀ y : V ⊗[ℚ_[l]] P.R.BdR, ∃ (m : ℕ) (b : Fin m → P.R.BdR) (d : Fin m → V ⊗[ℚ_[l]] P.R.BdR), (∀ i, d i ∈ DdR (P.PD K) ρ) ∧ y = ∑ i, AlgebraTensorModule.map (LinearMap.id : V →ₗ[↥LL.1] V) (LinearMap.mulLeft ℚ_[l] (b i)) (d i) := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ h y
   haveI := LL.2

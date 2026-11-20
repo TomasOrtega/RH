@@ -11,6 +11,11 @@ open MvPolynomial Filter
 
 universe u w
 
+/- English proof (translation)
+Introduce `pp _ hW`. Establish `h` using `interNum_nonneg_of_veryAmple hR 1 pp (fun _ => L) hW (fun _ => hL)`. Establish `he : (fun _ : Fin 1 => L.toSubSystem) = ![L.toSubSystem]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+-/
 theorem nef_of_isVeryAmple (hR : GenericPointSectionInput.Statement.{u, w}) {k : Type u} [Field k] {Ω : Type w} [Field Ω]
     [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω} (L : LineBundle k x) (hL : IsVeryAmple L.toSubSystem) :
     Nef L.toSubSystem := by
@@ -20,6 +25,25 @@ theorem nef_of_isVeryAmple (hR : GenericPointSectionInput.Statement.{u, w}) {k :
     funext i; fin_cases i; rfl
   rwa [he] at h
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x d M Nb q m b hZ hM hNb hva hb`. Set `L : Fin (d + 1) → LineBundle k x` to `fun _ => Nb`. Establish `hV : ((M.tpow q).tensor (twistBundle k x m)).toSubSystem = Nb.toSubSystem`. Rewrite using `[hNb, LineBundle.tensor_toSubSystem, LineBundle.tpow_toSubSystem]`. Both sides reduce to the same expression.
+
+Establish `hm0 : 0 ≤ m`. Establish `: (0 : ℤ) ≤ ((d + 1 : ℕ) : ℤ) * b` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨mn, hmn⟩` from `Int.eq_ofNat_of_zero_le hm0`. Establish `h1 : interNum (primeOf (S` using `k) x) (fun _ : Fin (d + 1) => Nb.toSubSystem) = q * bundleNum (primeOf (S := k) x) (Function.update L 0 M) + m * bundleNum (primeOf (S := k) x) (Function.update L 0 (twistBundle k x 1)) := by`.
+
+Establish `e1 : interNum (primeOf (S` using `k) x) (fun _ : Fin (d + 1) => Nb.toSubSystem) = bundleNum (primeOf (S := k) x) (Function.update L 0 ((M.tpow q).tensor (twistBundle k x m))) := by`. Unfold `bundleNum`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = 0`.
+
+Substitute `hj` using the available equality. Simplify using `only [Function.update_self, hV]`. Simplify using `only [Function.update_of_ne hj, L]`. Rewrite using `[e1, bundleNum_tensor hR hZ, bundleNum_tpow hR hZ, hmn, bundleNum_twist hR hZ]`. Establish `h2 : interNum (primeOf (S` using `k) x) (Fin.cons (α := fun _ => SubSystem k x Ω) (twistSys k x (b : ℤ)) (fun _ : Fin d => Nb.toSubSystem)) = b * bundleNum (primeOf (S := k) x) (Function.update L 0 (twistBundle k x 1)) := by`.
+
+Rewrite using `[← bundleNum_twist hR hZ]`. Unfold `bundleNum`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations.
+
+Simplify using `only [Fin.cons_zero, Function.update_self, twistBundle_toSubSystem]`. Simplify using `only [Fin.cons_succ, Function.update_of_ne (Fin.succ_ne_zero i), L]`. Establish `hX : 0 ≤ bundleNum (primeOf (S` using `k) x) (Function.update L 0 M) := by`. Use `hNef k Ω N x (d + 1) _ _ hZ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`.
+
+Substitute `hi` using the available equality. Simplify `hM` using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne hi, L]`. Conclude with `nef_of_isVeryAmple hR Nb hva`. Establish `hY : 0 < bundleNum (primeOf (S` using `k) x) (Function.update L 0 (twistBundle k x 1)) := by`.
+
+Use `hPos k Ω N x (d + 1) _ _ hZ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify `(isVeryAmple_twistSys_one (S := k) (x := x))` using `only [Function.update_self, twistBundle_toSubSystem]`. Simplify using `only [Function.update_of_ne hi, L]`.
+
+Conclude with `hva`. Rewrite using `[h1, h2]`. Establish `hc` using `mul_pos (sub_pos.mpr hb) hY`. Establish `hq` using `mul_nonneg (Int.natCast_nonneg q) hX`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem LeadingCoeffPos.proof (hR : GenericPointSectionInput.Statement.{u, w})
     (hNef : NefProductNonneg.Statement.{u, w}) (hPos : VeryAmpleProductPos.Statement.{u, w}) :
     LeadingCoeffPos.Statement.{u, w} := by

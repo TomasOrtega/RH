@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `N`. Establish `e : (fun g => (Ideal.Quotient.mk (I ^ N)) (c * f g + f' g)) = fun g => Ideal.Quotient.mk (I ^ N) c * Ideal.Quotient.mk (I ^ N) (f g) + Ideal.Quotient.mk (I ^ N) (f' g)`. Use function extensionality and compare the values at `g`. Simplify using `only [map_add, map_mul]`. Rewrite using `[e]`.
+
+Conclude with `((IsLocallyConstant.const _).mul (h N)).add (h' N)`.
+-/
 private theorem adic_lin {G R : Type} [TopologicalSpace G] [CommRing R] (I : Ideal R) (c : R) {f f' : G → R}
     (h : AdicCont I f) (h' : AdicCont I f') : AdicCont I fun g => c * f g + f' g := by
   intro N
@@ -12,6 +17,9 @@ private theorem adic_lin {G R : Type} [TopologicalSpace G] [CommRing R] (I : Ide
   rw [e]
   exact ((IsLocallyConstant.const _).mul (h N)).add (h' N)
 
+/- English proof (translation)
+Introduce `_` and use `IsLocallyConstant.const _`.
+-/
 private theorem adic_zero {G R : Type} [TopologicalSpace G] [CommRing R] (I : Ideal R) :
     AdicCont I fun _ : G => (0 : R) := fun _ => IsLocallyConstant.const _
 
@@ -20,13 +28,24 @@ section
 variable {l : ℕ} [Fact l.Prime] (F : GFrame l) {n : ℕ} {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
   (ρ : F.G₀ → Matrix (Fin n) (Fin n) R)
 
+/- English proof (translation)
+Simplify using `only [dY, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem dY_lin (c : A) (Y Y' : Matrix (Fin n) (Fin n) R) (g : F.G₀) :
     dY F ρ (c • Y + Y') g = c • dY F ρ Y g + dY F ρ Y' g := by
   simp only [dY, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]
   abel
 
+/- English proof (translation)
+Simplify using `[dY]`.
+-/
 private theorem dY_zero (g : F.G₀) : dY F ρ 0 g = 0 := by simp [dY]
 
+/- English proof (translation)
+Introduce `g`. Take `⟨h1, h2⟩` from `h g`. Take `⟨h1', h2'⟩` from `h' g`. Establish `key : wi v * ((c • z + z') ((F.φ v) g) - dY F ρ (c • Y + Y') ((F.φ v) g)) * w v = c • (wi v * (z ((F.φ v) g) - dY F ρ Y ((F.φ v) g)) * w v) + wi v * (z' ((F.φ v) g) - dY F ρ Y' ((F.φ v) g)) * w v`. Rewrite using `[dY_lin]`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, smul_sub]`. Normalize the expressions using the abelian group laws. Use `⟨fun i j hij => ?_, fun hg i => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.add_apply, Matrix.smul_apply, h1 i j hij, h1' i j hij, smul_zero, add_zero]`. Rewrite using `[key, Matrix.add_apply, Matrix.smul_apply, h2 hg i, h2' hg i, smul_zero, add_zero]`.
+-/
 private theorem locAt_lin (w wi : F.Vl → Matrix (Fin n) (Fin n) R) (c : A) {z z' : F.G₀ → Matrix (Fin n) (Fin n) R}
     {v : F.Vl} {Y Y' : Matrix (Fin n) (Fin n) R} (h : LocAt F ρ w wi z v Y) (h' : LocAt F ρ w wi z' v Y') :
     LocAt F ρ w wi (c • z + z') v (c • Y + Y') := by
@@ -46,6 +65,11 @@ private theorem locAt_lin (w wi : F.Vl → Matrix (Fin n) (Fin n) R) (c : A) {z 
 
 end
 
+/- English proof (translation)
+Use `⟨{ carrier := s, add_mem' := ?_, zero_mem' := h0, smul_mem' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce `x y hx hy`. Use `h 1 x y hx hy` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Introduce `c x hx`.
+
+Use `h c x 0 hx h0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 private theorem sub_of_lin {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (s : Set M) (h0 : (0 : M) ∈ s)
     (h : ∀ (c : A) x y, x ∈ s → y ∈ s → c • x + y ∈ s) : ∃ S : Submodule A M, (S : Set M) = s := by
   refine ⟨{ carrier := s, add_mem' := ?_, zero_mem' := h0, smul_mem' := ?_ }, rfl⟩
@@ -56,6 +80,21 @@ private theorem sub_of_lin {A M : Type} [CommRing A] [AddCommGroup M] [Module A 
     have := h c x 0 hx h0
     rwa [add_zero] at this
 
+/- English proof (translation)
+Introduce `l _ F n A R _ _ _ t ρ w wi V`. Prove the components needed by the constructor for the conclusion. Apply `sub_of_lin` to reduce the goal to its premises. Use `⟨fun _ => V.zero_mem, fun i j => ?_, fun g h => by simp, fun g => by simp, fun u g _ => rfl, fun v => ⟨0, V.zero_mem, fun g => ?_⟩⟩` and prove the remaining obligations. Conclude with `adic_zero _`.
+
+Simplify using `[dY_zero]`. Introduce `c x y hx hy`. Take `⟨x1, x2, x3, x4, x5, x6⟩` from `hx`. Take `⟨y1, y2, y3, y4, y5, y6⟩` from `hy`. Use `⟨fun g => V.add_mem (V.smul_mem c (x1 g)) (y1 g), fun i j => ?_, fun g h => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun g => (c • x + y) g i j) = fun g => algebraMap A R c * x g i j + y g i j`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, Pi.smul_apply, Matrix.add_apply, Matrix.smul_apply, Algebra.smul_def]`. Rewrite using `[e]`. Conclude with `adic_lin _ _ (x2 i j) (y2 i j)`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, x3 g h, y3 g h, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_add]`. Normalize the expressions using the abelian group laws. Simplify using `only [Pi.add_apply, Pi.smul_apply, x4 g, y4 g, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_neg, smul_neg]`. Normalize the expressions using the abelian group laws. Simplify using `[x5 u g hg, y5 u g hg]`.
+
+Take `⟨Y, hY, hYl⟩` from `x6 v`. Take `⟨Y', hY', hYl'⟩` from `y6 v`. Conclude with `⟨c • Y + Y', V.add_mem (V.smul_mem c hY) hY', locAt_lin F ρ w wi c hYl hYl'⟩`. Apply `sub_of_lin` to reduce the goal to its premises. Conclude with `⟨0, V.zero_mem, by simp, funext fun g => (dY_zero F ρ g).symm⟩`.
+
+Introduce and unpack `c x y ⟨Y, hY, hYt, rfl⟩ ⟨Y', hY', hYt', rfl⟩`. Use `⟨c • Y + Y', V.add_mem (V.smul_mem c hY) hY', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_add, Matrix.transpose_smul, hYt, hYt', smul_neg, neg_add]`. Use function extensionality and compare the values at `g`. Rewrite using `[dY_lin]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pa.sel_lin :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (A R : Type) [CommRing A] [CommRing R] [Algebra A R] (t : A) (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (w wi : F.Vl → Matrix (Fin n) (Fin n) R) (V : Submodule A (Matrix (Fin n) (Fin n) R)), (∃ S : Submodule A (F.G₀ → Matrix (Fin n) (Fin n) R), (S : Set _) = SelZ F t ρ w wi V) ∧ ∃ S : Submodule A (F.G₀ → Matrix (Fin n) (Fin n) R), (S : Set _) = Bd F ρ V := by
   intro l _ F n A R _ _ _ t ρ w wi V

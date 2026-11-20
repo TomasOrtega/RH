@@ -26,6 +26,9 @@ def EtModel.ofRepFam {b : Base D R} {N : ℕ} (F : RepFam b N) (w0 : Ideal (𝓞
     rw [e1, e2] at this
     rw [hy]; exact this
 
+/- English proof (translation)
+Use `⟨h, hw, fun i => ?_, fun k _ _ β φ _ => ?_⟩` and prove the remaining obligations. Use `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, hw, by simp⟩) hp` and prove the remaining obligations. It suffices to derive a contradiction. Use `hp.map β` as an intermediate fact. Simplify using `at this`.
+-/
 theorem isEtPlace_of_isUnit (b : Base D R) (hp : IsUnit (p : R)) (w0 : Ideal (𝓞 D.F)) (h : w0.IsMaximal)
     (hw : (p : 𝓞 D.F) ∈ w0) : IsEtPlace b w0 := by
   refine ⟨h, hw, fun i => ?_, fun k _ _ β φ _ => ?_⟩

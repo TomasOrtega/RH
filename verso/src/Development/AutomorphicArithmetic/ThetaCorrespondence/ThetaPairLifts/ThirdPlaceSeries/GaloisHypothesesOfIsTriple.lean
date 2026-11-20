@@ -32,6 +32,9 @@ variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D
   {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))} {ν : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* (D.ntw.O0 i)ˣ}
   {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
 end Triple
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.TripleGal.adm1_adm8_selfDual_noJump_of_tripleAttN D (bk0 D) hF (fun _ _ => ⟨_, ⟨D.locT _⟩⟩) h2 (_root_.GlobalTheory.TripleLocal.triple_att_n_of_is_triple S hF hG h)`.
+-/
 theorem adm1_adm8_selfDual_noJump_of_isTriple {D : D7} {T : WDTie D.nd D.naut} {C₀ : CharFrame D} (S : CharSide D C₀)
     (hF : FrobDense D) (hG : _root_.UpperTheory.GalS.GalHodgeN D T) (h2 : BlochKatoReduction.adm2 D) (h : _root_.GlobalTheory.Triple.IsGaloisTriple D) :
     BlochKatoReduction.adm1 (bk0 D) ∧ BlochKatoReduction.adm8 D ∧

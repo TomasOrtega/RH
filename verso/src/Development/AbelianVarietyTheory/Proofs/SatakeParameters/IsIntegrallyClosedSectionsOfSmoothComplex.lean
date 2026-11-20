@@ -6,6 +6,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Z _ s hsm U hU hg`. Establish `hs : (s.appLE ⊤ U le_top).hom.Smooth` using `HasRingHomProperty.appLE @Smooth s hsm ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Use `letI : Algebra Γ(Sp ℂ, ⊤) Γ(Z, U) := (s.appLE ⊤ U le_top).hom.toAlgebra`. Establish `: Algebra.Smooth Γ(Sp ℂ, ⊤) Γ(Z, U)` using `hs`. Set `e : Γ(Sp ℂ, ⊤) ≃+* ℂ` to `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv`.
+
+Use `letI : Field Γ(Sp ℂ, ⊤) := (e.toMulEquiv.isField (Field.toIsField ℂ)).toField`. Establish `: Nonempty U` using `⟨⟨_, hg⟩⟩`. Establish `: IsDomain Γ(Z, U)` using `inferInstance`. Conclude with `GlobalTheory.isIntegrallyClosed_of_smooth Γ(Sp ℂ, ⊤) Γ(Z, U)`.
+-/
 theorem isIntegrallyClosed_sections_of_smooth_complex :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (s : Z ⟶ Sp ℂ) [Smooth s] (U : Z.Opens), IsAffineOpen U → genericPoint Z ∈ U → IsIntegrallyClosed Γ(Z, U) := by
   intro Z _ s hsm U hU hg

@@ -32,6 +32,9 @@ noncomputable def maxContactPrincipalization (hinv : ComapIsoInvariance.{u}) (A 
     PrincipalizationAssignment.{u} :=
   fun T => MaxContactReduction.reduceOrder hinv T (lowerDimensionalFamily A T)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem maxContactPrincipalization_apply (hinv : ComapIsoInvariance.{u}) (A : ℕ → PrincipalizationAssignment.{u})
     (T : MarkedIdealWithBoundary.{u}) :
     maxContactPrincipalization hinv A T = MaxContactReduction.reduceOrder hinv T (lowerDimensionalFamily A T) := rfl
@@ -42,6 +45,9 @@ structure OrderReductionHypotheses (P : ℕ → Prop) (T : MarkedIdealWithBounda
   coSupport_nonempty : (orderAtLeastLocus T.ideal T.mult).Nonempty
   valid : T.IsAdmissible
 
+/- English proof (translation)
+The claim follows from `h.coSupport_nonempty.ne_empty`.
+-/
 theorem OrderReductionHypotheses.orderAtLeastLocus_ne_empty {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T) :
     orderAtLeastLocus T.ideal T.mult ≠ ∅ :=
   h.coSupport_nonempty.ne_empty

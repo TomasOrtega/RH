@@ -32,9 +32,15 @@ def βB (T : LocLat G Qp LL O) : TW RA T →+ T.V ⊗[Qp] B :=
         actS T.V B (β r) ((o • (t : T.V)) ⊗ₜ[Qp] (1 : B))
       rw [hβ, map_smul, LinearMap.smul_apply, ← map_smul, smul_tmul', algebraMap_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem βB_tmul (T : LocLat G Qp LL O) (r : RA) (t : ↥T.L.T) :
     βB β hβ T (r ⊗ₜ[O] t) = actS T.V B (β r) ((t : T.V) ⊗ₜ[Qp] (1 : B)) := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`. Consider the case `tmul a t => rw [smul_tmul', βB_tmul, βB_tmul, smul_eq_mul, map_mul, map_mul, Module.End.mul_apply]`.
+-/
 theorem βB_smul (T : LocLat G Qp LL O) (r : RA) (y : TW RA T) :
     βB β hβ T (r • y) = actS T.V B (β r) (βB β hβ T y) := by
   induction y using TensorProduct.induction_on with
@@ -42,6 +48,9 @@ theorem βB_smul (T : LocLat G Qp LL O) (r : RA) (y : TW RA T) :
   | add a b ha hb => simp only [smul_add, map_add, ha, hb]
   | tmul a t => rw [smul_tmul', βB_tmul, βB_tmul, smul_eq_mul, map_mul, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`. Consider the case `tmul a t => simp [smul_tmul']`.
+-/
 theorem map_smul_semi {M N : Type} [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]
     (σ : RA →ₐ[O] RW) (f : M →ₗ[O] N) (r : RA) (y : RA ⊗[O] M) :
     TensorProduct.map σ.toLinearMap f (r • y) = σ r • TensorProduct.map σ.toLinearMap f y := by
@@ -52,9 +61,15 @@ theorem map_smul_semi {M N : Type} [AddCommGroup M] [Module O M] [AddCommGroup N
 
 variable (inclR : RA →ₐ[O] RW)
 
+/- English proof (translation)
+The claim follows from `map_smul_semi _ _ _ _`.
+-/
 theorem incl_smul (T : LocLat G Qp LL O) (r : RA) (y : TW RA T) :
     TWincl inclR T (r • y) = inclR r • TWincl inclR T y := map_smul_semi _ _ _ _
 
+/- English proof (translation)
+Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) inclR.toLinearMap hinj`.
+-/
 theorem incl_inj (hinj : Function.Injective inclR) (T : LocLat G Qp LL O) :
     Function.Injective (TWincl inclR T) := by
   haveI : Module.Free O ↥T.L.T := T.L.free
@@ -66,19 +81,31 @@ def Val (T : LocLat G Qp LL O) (j : TW RW T) (z : T.V ⊗[Qp] B) : Prop :=
 
 variable {β hβ inclR}
 
+/- English proof (translation)
+The claim follows from `((Module.End.isUnit_iff _).mp (hu.map (actS T.V B))).1 h`.
+-/
 theorem act_inj (T : LocLat G Qp LL O) {u : LL ⊗[Qp] B} (hu : IsUnit u) {z z' : T.V ⊗[Qp] B}
     (h : actS T.V B u z = actS T.V B u z') : z = z' :=
   ((Module.End.isUnit_iff _).mp (hu.map (actS T.V B))).1 h
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`.
+-/
 theorem act_comm (T : LocLat G Qp LL O) (u u' : LL ⊗[Qp] B) (z : T.V ⊗[Qp] B) :
     actS T.V B u (actS T.V B u' z) = actS T.V B u' (actS T.V B u z) := by
   rw [← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `((Module.End.isUnit_iff _).mp (hr.map (actS T.V B))).2 (βB β hβ T y)`. Conclude with `⟨z, r, y, hr, hy, hz.symm⟩`.
+-/
 theorem Val.exists {T : LocLat G Qp LL O} {j : TW RW T} {r : RA} {y : TW RA T} (hr : IsUnit (β r))
     (hy : TWincl inclR T y = inclR r • j) : ∃ z, Val β hβ inclR T j z := by
   obtain ⟨z, hz⟩ := ((Module.End.isUnit_iff _).mp (hr.map (actS T.V B))).2 (βB β hβ T y)
   exact ⟨z, r, y, hr, hy, hz.symm⟩
 
+/- English proof (translation)
+Take `⟨r₀, y₀, hu, h1, h2⟩` from `h`. Establish `h3 : r₀ • y = r • y₀` using `incl_inj inclR hinj T (by`. Rewrite using `[incl_smul, incl_smul, hy, h1, smul_comm])`. Apply `act_inj T hu` to reduce the goal to its premises. Rewrite using `[← βB_smul, h3, βB_smul, h2, act_comm]`.
+-/
 theorem Val.spec (hinj : Function.Injective inclR) {T : LocLat G Qp LL O} {j : TW RW T} {z : T.V ⊗[Qp] B}
     (h : Val β hβ inclR T j z) {r : RA} {y : TW RA T} (hy : TWincl inclR T y = inclR r • j) :
     βB β hβ T y = actS T.V B (β r) z := by
@@ -88,12 +115,20 @@ theorem Val.spec (hinj : Function.Injective inclR) {T : LocLat G Qp LL O} {j : T
   apply act_inj T hu
   rw [← βB_smul, h3, βB_smul, h2, act_comm]
 
+/- English proof (translation)
+Take `⟨r₀, y₀, hu, h1, h2⟩` from `h'`. Apply `act_inj T hu` to reduce the goal to its premises. Rewrite using `[← h.spec hinj h1, h2]`.
+-/
 theorem Val.unique (hinj : Function.Injective inclR) {T : LocLat G Qp LL O} {j : TW RW T} {z z' : T.V ⊗[Qp] B}
     (h : Val β hβ inclR T j z) (h' : Val β hβ inclR T j z') : z = z' := by
   obtain ⟨r₀, y₀, hu, h1, h2⟩ := h'
   apply act_inj T hu
   rw [← h.spec hinj h1, h2]
 
+/- English proof (translation)
+Take `⟨r, y, hu, h1, h2⟩` from `h`. Take `⟨r', y', hu', h1', h2'⟩` from `h'`. Use `⟨r * r', r' • y + r • y', by rw [map_mul]; exact hu.mul hu', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, incl_smul, incl_smul, h1, h1', smul_smul, smul_smul, map_mul, smul_add, mul_comm (inclR r')]`. Rewrite using `[map_add, βB_smul, βB_smul, h2, h2', act_comm, map_mul, map_mul, map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem Val.add {T : LocLat G Qp LL O} {j j' : TW RW T} {z z' : T.V ⊗[Qp] B}
     (h : Val β hβ inclR T j z) (h' : Val β hβ inclR T j' z') : Val β hβ inclR T (j + j') (z + z') := by
   obtain ⟨r, y, hu, h1, h2⟩ := h
@@ -103,6 +138,9 @@ theorem Val.add {T : LocLat G Qp LL O} {j j' : TW RW T} {z z' : T.V ⊗[Qp] B}
   · rw [map_add, βB_smul, βB_smul, h2, h2', act_comm, map_mul, map_mul, map_add]
     rfl
 
+/- English proof (translation)
+Take `⟨r, y, hu, h1, h2⟩` from `h`. Use `⟨r, a • y, hu, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[incl_smul, h1, smul_comm]`. Rewrite using `[βB_smul, h2, act_comm]`.
+-/
 theorem Val.smul {T : LocLat G Qp LL O} {j : TW RW T} {z : T.V ⊗[Qp] B}
     (h : Val β hβ inclR T j z) (a : RA) : Val β hβ inclR T (inclR a • j) (actS T.V B (β a) z) := by
   obtain ⟨r, y, hu, h1, h2⟩ := h
@@ -110,6 +148,15 @@ theorem Val.smul {T : LocLat G Qp LL O} {j : TW RW T} {z : T.V ⊗[Qp] B}
   · rw [incl_smul, h1, smul_comm]
   · rw [βB_smul, h2, act_comm]
 
+/- English proof (translation)
+Take `⟨r, y, hu, h3, h4⟩` from `h`. Establish `e1 : ∀ y : TW RA T, TWincl inclR T' (TensorProduct.map σA.toLinearMap fT y) = TensorProduct.map σW.toLinearMap fT (TWincl inclR T y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a t => simp [TWincl, h1]`. Establish `e2 : ∀ y : TW RA T, βB β hβ T' (TensorProduct.map σA.toLinearMap fT y) = AlgebraTensorModule.map f hB.toLinearMap (βB β hβ T y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a t`. Rewrite using `[TensorProduct.map_tmul, βB_tmul, βB_tmul, map_actS, ← h2, hf]`. Simplify using the standard rewrite rules.
+
+Use `⟨σA r, TensorProduct.map σA.toLinearMap fT y, by rw [h2]; exact hu.map _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, h3, map_smul_semi, h1]`. Rewrite using `[e2, h4, map_actS, h2]`.
+-/
 theorem Val.map {T T' : LocLat G Qp LL O} (f : T.V →ₗ[LL] T'.V) (fT : ↥T.L.T →ₗ[O] ↥T'.L.T)
     (hf : ∀ t, (fT t : T'.V) = f t) (σA : RA →ₐ[O] RA) (σW : RW →ₐ[O] RW) (hB : B →ₐ[Qp] B)
     (h1 : ∀ r, inclR (σA r) = σW (inclR r))
@@ -154,6 +201,31 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
     {I : WIo R (O ⊗[Zl] Ai) RW inclR φR gR πA} {E : WEt I} {zl : PowerSeries Zl →+* LetA O n}
 
+/- English proof (translation)
+Establish `hβ : ∀ (o : O) (r : O ⊗[Zl] Ai), β (o • r) = algebraMap O LL o • β r`. Introduce `o r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+
+Consider the case `tmul a w => rw [smul_tmul', hβ₀, hβ₀, smul_tmul', smul_eq_mul, smul_eq_mul, map_mul]`. Establish `hex : ∀ T : LocLat G Qp LL O, ∀ x : ↥(Mo.N T), ∃ z, IsCrys PD T.ρ → Val β hβ inclR T (E.jD T x) z`. Introduce `T x`. Distinguish the cases in `hT : IsCrys PD T.ρ`. Take `⟨m, hm, -⟩` from `hS T hT`.
+
+Take `⟨y, hy⟩` from `hm x x.2`. Establish `hun : IsUnit (β ((1 : O) ⊗ₜ[Zl] (p1 ^ m)))`. Rewrite using `[hβ₀, map_one, map_pow]`. Conclude with `(hu.pow m).map (Algebra.TensorProduct.includeRight : B →ₐ[Qp] LL ⊗[Qp] B)`. Take `⟨z, hz⟩` from `Val.exists (hβ := hβ) hun hy`.
+
+Conclude with `⟨z, fun _ => hz⟩`. Conclude with `⟨0, fun h => absurd h hT⟩`. Use `choose b hb using hex`. Set `bT : ∀ T : LocLat G Qp LL O, ↥(Mo.N T) →+ T.V ⊗[Qp] B` to `fun T => if hT : IsCrys PD T.ρ then AddMonoidHom.mk' (b T) (fun x y => (hb T (x + y) hT).unique hinj (by`. Rewrite using `[Submodule.coe_add, map_add]`.
+
+Conclude with `(hb T x hT).add (hb T y hT)))`. Use `else 0`. Establish `hv : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ x : ↥(Mo.N T), Val β hβ inclR T (E.jD T x) (bT T x)`. Introduce `T hT x`. Simplify using `only [bT, dif_pos hT]`.
+
+Conclude with `hb T x hT`. Establish `hj : ∀ (T : LocLat G Qp LL O) (a : LetA O n) (x : E.DD T), E.jD T (a • x) = inclR (I.io a) • E.jD T x`. Introduce `T a x`. Rewrite using `[← algebraMap_smul R.EE a x, E.jD_smul, I.ioE_ext]`. Use `⟨fun T => (ιV PD (LL := LL) (V := T.V)).toAddMonoidHom.comp (βB β hβ T), bT, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `T a w t`. Express the relevant statement in the definitionally equal form `ιV PD (LL := LL) (V := T.V) (βB β hβ T _) = _`. Rewrite using `[βB_tmul, hβ₀, actS_tmul, hdR, mul_one, algebraMap_smul]`. Both sides reduce to the same expression. Introduce `T hT a x`.
+
+Use `(hv T hT (a • x)).unique hinj ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hj]`. Conclude with `(hv T hT x).smul _`. Introduce `T hT g x`. Use `(hv T hT _).unique hinj ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Val β hβ inclR T (E.jD T (E.γD T (Γ.resΓ g) x)) _`. Rewrite using `[E.jD_act]`. Conclude with `Val.map (T.ρ g) (T.actT g) (fun _ => rfl) (gA g) (gR g) _ (hg1 g) (hg2 g) (hv T hT x)`. Introduce `T hT x m hx`. Use `(hv T hT _).unique hinj ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Val β hβ inclR T (E.jD T (R.Q ^ m • E.φD T x)) _`. Rewrite using `[hj, E.jD_φ]`. Conclude with `(Val.map LinearMap.id LinearMap.id (fun _ => rfl) φA φR _ hφ1 hφ2 (hv T hT x)).smul _`. Introduce `T T' f hT hT' x hx`. Use `(hv T' hT' _).unique hinj ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Val β hβ inclR T' (E.jD T' (E.map f x)) _`. Rewrite using `[E.jD_map]`. Conclude with `Val.map (inclR := inclR) f.f _ (fun _ => rfl) (AlgHom.id O _) (AlgHom.id O _) (AlgHom.id Qp B) (fun _ => rfl) (fun r => by simp) (hv T hT x)`. Introduce `T hT x k y hy`. Rewrite `hy` using `[← map_pow]`.
+
+Express the relevant statement in the definitionally equal form `ιV PD (LL := LL) (V := T.V) (βB β hβ T _) = _`. Rewrite using `[(hv T hT x).spec hinj hy, Algebra.TensorProduct.tmul_pow, one_pow, hβ₀, map_one]`. Use `(map_actS (LinearMap.id : T.V →ₗ[LL] T.V) (PD.ι.restrictScalars Qp) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, actS_one_tmul, ← map_pow, hdR]`. Both sides reduce to the same expression.
+-/
 theorem exists_isPer (Mo : WN E zl) (β : O ⊗[Zl] Ai →+* LL ⊗[Qp] B) (ιA : Ai →+* B) (ιdR : Ai →+* BdR) (p1 : Ai)
     (hβ₀ : ∀ (o : O) (w : Ai), β (o ⊗ₜ[Zl] w) = algebraMap O LL o ⊗ₜ[Qp] ιA w)
     (hdR : ∀ w, ιdR w = PD.ι (ιA w)) (hinj : Function.Injective inclR) (hu : IsUnit (ιA p1))
@@ -230,6 +302,9 @@ theorem exists_isPer (Mo : WN E zl) (β : O ⊗[Zl] Ai →+* LL ⊗[Qp] B) (ιA 
     rfl
 
 omit [TopologicalSpace LL] in
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul o w => simp [hβ₀, hc]`.
+-/
 theorem beta_map (β : O ⊗[Zl] Ai →+* LL ⊗[Qp] B) (ιA : Ai →+* B)
     (hβ₀ : ∀ (o : O) (w : Ai), β (o ⊗ₜ[Zl] w) = algebraMap O LL o ⊗ₜ[Qp] ιA w)
     (a : Ai →ₐ[Zl] Ai) (h : B →ₐ[Qp] B) (hc : ∀ w, ιA (a w) = h (ιA w)) (r : O ⊗[Zl] Ai) :
@@ -239,6 +314,9 @@ theorem beta_map (β : O ⊗[Zl] Ai →+* LL ⊗[Qp] B) (ιA : Ai →+* B)
   | add a b ha hb => simp only [map_add, ha, hb]
   | tmul o w => simp [hβ₀, hc]
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul o w => simp [hc]`.
+-/
 theorem map_map_comm {Wc : Type} [CommRing Wc] [Algebra Zl Wc] (i : Ai →ₐ[Zl] Wc)
     (a : Ai →ₐ[Zl] Ai) (b : Wc →ₐ[Zl] Wc) (hc : ∀ w, i (a w) = b (i w)) (r : O ⊗[Zl] Ai) :
     Algebra.TensorProduct.map (AlgHom.id O O) i (Algebra.TensorProduct.map (AlgHom.id O O) a r) =
@@ -256,6 +334,13 @@ def frobA (l : ℕ) [Fact l.Prime] : Ainf l →ₐ[ℤ_[l]] Ainf l where
   toRingHom := WittVector.map (frobenius (OCb l) l)
   commutes' := fun x => map_zlW l _ x
 
+/- English proof (translation)
+Introduce `l _ P AI hT K s LL _ Γ R I _ β hβ E Mo hS`. Use `exists_isPer Mo β AI.ιA _ AI.π₁ hβ (fun w => (P.PD_ι K _).symm) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1 ((GlobalTheory.TiedMu.tied_mu_units l P AI hT).1 1) (fun g => Algebra.TensorProduct.map (AlgHom.id _ _) (AI.actWHom (g : GQ l)).toAlgHom) (fun g r => ?_) (fun g r => ?_) …` and prove the remaining obligations. Use `map_map_comm (inclWA l) _ _ (fun w => ?_) r` and prove the remaining obligations. Use extensionality with `k`. Conclude with `(autCb_alg l (AI.actT (g : GQ l)) (w.coeff k)).symm`.
+
+Conclude with `beta_map β AI.ιA hβ _ _ (fun w => (AI.ιA_act g w).trans (P.PD_actB K g _).symm) r`. Use `map_map_comm (inclWA l) _ _ (fun w => ?_) r` and prove the remaining obligations. Use extensionality with `k`. Conclude with `map_pow (algebraMap (OCb l) (Cb l)) (w.coeff k) l`. Use `beta_map β AI.ιA hβ _ _ (fun w => ?_) r` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((AI.ιA_φ w).trans (P.PD_φ K _).symm)` and prove the remaining obligations. Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R), IoW I → ∀ β : RA LL →+* ↥LL.1 ⊗[ℚ_[l]] P.R.B, IsBeta AI β → ∀ (E : WEt I) (Mo : NS E), (∀ T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL), IsCrys (P.PD K) T.ρ → ∃ m : ℕ, Sand Mo T ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (AI.π₁ ^ m) : RA LL)) → ∃ βdR bT, IsPer Mo (β.comp I.io.toRingHom) (P.ιB.toRingHom.comp AI.ιA) AI.π₁ βdR bT := by
   intro l _ P AI hT K s LL _ Γ R I _ β hβ E Mo hS
   refine exists_isPer Mo β AI.ιA _ AI.π₁ hβ (fun w => (P.PD_ι K _).symm) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1

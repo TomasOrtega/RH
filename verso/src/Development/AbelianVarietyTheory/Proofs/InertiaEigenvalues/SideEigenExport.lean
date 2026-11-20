@@ -23,6 +23,11 @@ open GlobalTheory.GalChar (IsGal toQ inQ)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf GalE)
 open GlobalTheory.TwistAbove (twGL)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g v hv`. Use `W.smul_mem (((χ g)⁻¹ : Kˣ) : K) (h g v hv)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.TwistAbove.twGL_val, Matrix.smul_mulVec, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Then use the resulting hypothesis. Introduce `h g v hv`.
+
+Rewrite using `[GlobalTheory.TwistAbove.twGL_val, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (h g v hv)`.
+-/
 theorem isInv_twGL_iff {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (χ : Γ →* Kˣ) (r : Γ →* GL (Fin a) K)
     (W : Submodule K (Fin a → K)) : IsInv (twGL χ r) W ↔ IsInv r W := by
   constructor
@@ -34,6 +39,9 @@ theorem isInv_twGL_iff {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (χ : Γ →
     rw [GlobalTheory.TwistAbove.twGL_val, Matrix.smul_mulVec]
     exact W.smul_mem _ (h g v hv)
 
+/- English proof (translation)
+Introduce `W hW` and use `let ⟨W', h1, h2⟩ := h W ((isInv_twGL_iff χ r W).1 hW) ⟨W', (isInv_twGL_iff χ r W').2 h1, h2⟩`.
+-/
 theorem isSSRep_twGL {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (χ : Γ →* Kˣ) (r : Γ →* GL (Fin a) K)
     (h : IsSSRep r) : IsSSRep (twGL χ r) := fun W hW =>
   let ⟨W', h1, h2⟩ := h W ((isInv_twGL_iff χ r W).1 hW)
@@ -41,6 +49,21 @@ theorem isSSRep_twGL {Γ K : Type} [Group Γ] [Field K] {a : ℕ} (χ : Γ →* 
 
 variable {D : D7} {C : CharFrame D} {art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E D.nd.Om}
 
+/- English proof (translation)
+Use `⟨(Units.continuous_val.comp (hν.cont (D.ntw.twistBaseCoefficientRing_isAdic i) ρ.κ_alg)).smul hr.1, isSSRep_twGL _ _ hr.2.1, ?_⟩` and prove the remaining obligations. Establish `hfin` using `Formalism.L2.NR.placesOver_finite D.host.E (D.ntw.l i) (D.ntw.lPrime i).out.ne_zero`. Use `filter_upwards [D.naut.locG_unr_ae π, hfin.compl_mem_cofinite] with w hu hwl`. Introduce `B σ hB hσ`. Establish `hl : w ∉ placesOver D.host.E (D.ntw.l i)` using `hwl`.
+
+Establish `e1` using `(hr.2.2 w hl).2.2 hu B σ hB hσ`. Rewrite `e1` using `[galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map]`. Establish `e2` using `hν.frob ha (Or.inl hl) (shiftChar_unr C w) hB hσ`. Establish `hue : D.naut.unr (D.naut.locG D.naut.etaTinv w)` using `(D.naut.etaTinv_def w).1`. Establish `hfe : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {((C.eta.val w : ℂˣ) : ℂ)}`.
+
+Rewrite using `[hCS.frob _ w ((hCS.unr_iff _ w).1 hue), hCS.etaTinv, HChar.val_inv, inv_inv]`. Establish `hd : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ w`. Establish `hM : ((((twGL (inQ ρ.κ ν) r σ : GL (Fin D.R.r) (Qbar (D.ntw.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.ntw.l i)))).map ρ.ι.toRingHom) = ρ.ι (toQ ρ.κ ((ν σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)) • ((r σ : GL (Fin D.R.r) (Qbar (D.ntw.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D. …`. Use extensionality with `x y`. Simplify using `[GlobalTheory.TwistAbove.twGL_val, GlobalTheory.GalChar.inQ_val]`.
+
+Rewrite using `[← Matrix.charpoly_map, hM, charpoly_smul_of_prod _ _ _ e1, galPol, D.naut.locG_tw, D.naut.frobEig_tw _ _ (D.naut.unr_char _ _ hd hu hue), D.naut.frobEig_char _ _ _ hu hue hd hfe]`. Simplify using `only [Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `congr 2`.
+
+Rewrite using `[e2, shiftChar_val]`. Establish `hq` using `normV_ne_zero (D := D) w`. Establish `h0` using `(C.eta.val w).ne_zero`. Establish `e3 : ((D.R.nV : ℕ) : ℝ) = (D.R.r : ℝ) + (D.R.t : ℝ)`. Rewrite using `[show D.R.nV = D.R.r + D.R.t from rfl]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : ((normV w : ℕ) : ℂ) ^ ((((1 - (D.R.nV : ℝ)) / 2 : ℝ)) : ℂ) = ((normV w : ℕ) : ℂ) ^ ((((1 - (D.R.r : ℝ)) / 2 : ℝ)) : ℂ) * (((normV w : ℕ) : ℂ) ^ ((((D.R.t : ℝ) / 2 : ℝ)) : ℂ))⁻¹`. Rewrite using `[← Complex.cpow_neg, ← Complex.cpow_add _ _ hq, e3]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, mul_inv, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isRepOf_twist (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) (hCS : CharSide D C) {i : D.ntw.Tw} {b : Bool}
     (ρ : Reading D.ntw i b) {π : D.naut.CG D.R.r} {r : GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))}
     (hr : IsGaloisRepOf D π (D.ntw.l i) ρ.ι r) {ν : GalE D →* (D.ntw.O0 i)ˣ} {n : _}
@@ -97,6 +120,15 @@ open GlobalTheory.GalChar (IsGal toQ inQ)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf GalE)
 open GlobalTheory.TwistAbove (twGL)
 
+/- English proof (translation)
+Introduce `hCheb hArt D cf Rw low Pq S hL eig θ Bs Sb hSb hks hT hG hCS hV hroot hstar hET hEO hRP hRT hGR hall`. Take `⟨art, ha⟩` from `hArt D.host.E D.nd.Om`. Use `⟨cf, art, ha, fun i hi b => ?_, fun i _ s => GlobalTheory.T.twistTriple_eigenvector_in_good_part D cf Rw low Pq S hL eig θ Bs Sb hSb hks hEO i s, hall⟩` and prove the remaining obligations. Take `⟨ρ, w, red, hind, hres⟩` from `hRT.exists_reading hstar hi b`. Establish `hc : IsChars cf art ρ` using `GlobalTheory.T.firstTwistCharacters_eq_ladic_characters_allReadings hCheb hArt D cf Rw low Pq S hL eig θ Bs hT hG hCS hV hroot art ha i b ρ`.
+
+Use `⟨ρ, hc, fun s hs => ?_⟩` and prove the remaining obligations. Substitute `hs` using the available equality. Take `⟨hocc, hgood, hspec⟩` from `Bs.rhoS i s`. Take `⟨π, hpar⟩` from `hRP _ (D.ntw.jS_range i s).1 (D.ntw.jS_range i s).2 _ hocc hgood`. Take `⟨r, hr⟩` from `hGR π hpar.1.csd hpar.1.ralg (D.ntw.l i) ρ.ι`.
+
+Take `⟨ν, n, hν⟩` from `exists_shift ha hV ρ`. Establish `hR1` using `hspec π hpar.1.csd hpar.1.ralg hpar.2 ρ.κ ρ.ι ρ.κ_alg (fun x => ρ.read x)`. Establish `hR2` using `isRepOf_twist ha hCS ρ hr hν`. Take `⟨A, hA⟩` from `GlobalTheory.HeightCounting.FitRho.conj_of_isRepOf D ρ.ι _ _ (GlobalTheory.ChebSplitDense.chebSplit_nd hCheb D) _ _ hR1 hR2`. Establish `hhk` using `GlobalTheory.TwInputs.HEig.hEig_eq_heckeVal D cf Rw low Pq S hL eig θ Bs Sb hSb hET i s ρ π hpar`.
+
+Use `isTripleAt_of_conj hgood hocc hpar.1 hr ⟨n, hν⟩ A (fun g => ?_) hhk hind (hres.2.2 _ π r hgood ⟨_, (D.ntw.jS_range i s).1, (D.ntw.jS_range i s).2, hocc⟩ hpar hr)` and prove the remaining obligations. Use `congrArg (fun M : GL (Fin D.R.r) (Qbar (D.ntw.l i)) => (M : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.ntw.l i)))) (hA g)` as an intermediate fact. Simplify using `only [Units.val_mul, GlobalTheory.TwistAbove.twGL_val, Matrix.mul_smul, Matrix.smul_mul] at this`. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `this`.
+-/
 theorem isTriple_of_sideB : GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ), ∀ Sb : Finset (PlE D.host), (∀ i, Sb ⊆ D.ntw.S0 i) → (∀ j, 1 ≤ j → j ≤ D.R.m → (S.A j).IsKsForm) → ChiTOk D cf → GrpSide D → CharSide D cf → ValLL0 D cf → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → EigTrue D cf Rw Sb eig → EigOcc D S θ hL Sb eig → RowParam D Rw → GlobalTheory.EigTie.ResTied D Rw → GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GaloisReps D → D.nexp.sig_all → GlobalTheory.Triple.IsTriple D := by
   intro hCheb hArt D cf Rw low Pq S hL eig θ Bs Sb hSb hks hT hG hCS hV hroot hstar hET hEO hRP hRT hGR hall
   obtain ⟨art, ha⟩ := hArt D.host.E D.nd.Om

@@ -13,6 +13,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField
 noncomputable section
 namespace GlobalTheory.CompanionTheory.FinSign
 
+/- English proof (translation)
+Unfold `ordL`. Rewrite using `[dif_neg (by rw [h]; exact one_ne_zero)]`. Simplify using `[h]`. Both sides reduce to the same expression.
+-/
 theorem ordL_eq_zero_of_v_eq_one {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x : L}
     (h : Valued.v x = 1) : ordL x = 0 := by
   unfold ordL
@@ -20,6 +23,13 @@ theorem ordL_eq_zero_of_v_eq_one {L : Type} [Field L] [Valued L (WithZero (Multi
   simp [h]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n γ₀ H₀ _ _ hpos P₁`. Take `⟨hd0, -⟩` from `gramOn_det_totallyPositive_of_posDef H₀ hpos (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))`. Use `(GlobalTheory.QNorm.finite_valuation_ne_one E (Units.mk0 _ hd0)).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hs⟩`. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0]`.
+
+Introduce `h1`. Apply `hs` to reduce the goal to its premises. Unfold `sgnOn`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))).det) = 1` using `(w.valuedAdicCompletion_eq_valuation' _).trans h1`. Rewrite using `[aeval_map_mat, GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq E hU w hw n H₀ (aeval γ₀.val P₁), ordL_eq_zero_of_v_eq_one hv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (γ₀ : GL (Fin n) E) (H₀ : Matrix (Fin n) (Fin n) E), IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H₀.map τ = cT (starRingEnd ℂ) Q * Q) → ∀ P₁ : E[X], {w : Pl E | ¬ IsSplitAt w ∧ sgnOn (cj w) (H₀.map (algebraMap E (w.adicCompletion E))) (atPl w P₁) (γ₀.val.map (algebraMap E (w.adicCompletion E))) ≠ 1}.Finite := by
   intro E _ _ _ hU n γ₀ H₀ _ _ hpos P₁
   obtain ⟨hd0, -⟩ := gramOn_det_totallyPositive_of_posDef H₀ hpos

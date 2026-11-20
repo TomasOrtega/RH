@@ -11,5 +11,8 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IntertwiningDense.intertwining_values_dense | exact GlobalTheory.IntertwiningDense.intertwining_values_dense | (intros; apply GlobalTheory.IntertwiningDense.intertwining_values_dense <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_intertwining_integral_nonzero : GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.LanglandsClassification → ∀ (n : ℕ) (ε : Fin n → Bool) (I : IndModule ε), I.Positive → ∀ ν : Measure (UJ ε), IsHaarSub I.Nbar ν → ∀ v : I.V, v ≠ 0 → ∃ f ∈ I.fns, IsKFinFun f ∧ ∃ h ∈ I.oppFns, I.IsIntegral ν f h ∧ ⟪v, h 1⟫_ℂ ≠ 0 := by
   first | exact @GlobalTheory.IntertwiningDense.intertwining_values_dense | exact GlobalTheory.IntertwiningDense.intertwining_values_dense | (intros; apply GlobalTheory.IntertwiningDense.intertwining_values_dense <;> assumption)

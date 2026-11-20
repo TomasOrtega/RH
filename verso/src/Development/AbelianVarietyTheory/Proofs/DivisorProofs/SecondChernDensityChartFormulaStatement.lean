@@ -12,5 +12,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens | exact GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens | (intros; apply GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.second_chern_density_chart_formula : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (E : X.Modules) (r : ℕ) (h : Met p σ E r) (L : LB X) (φ : Weight p σ L) (e : ℕ), h.IsCInf → φ.IsCInf → IsDens (secondChernDensityOfMetric h φ e) ∧ ∀ (c : AlgChart p σ (e + 2)) (cE : Chart E r), ∀ y ∈ c.e.source, y ∈ ptsIn p σ cE.U → secondChernDensityOfMetric h φ e c y = secondChernDensity e (chTwo (fun u => h.G cE (c.e.symm u)) (c.e y)) (chernMat φ c y) := by
   first | exact @GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens | exact GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens | (intros; apply GlobalTheory.ArchLim.ChTwoDens.isDens_ch2Dens <;> assumption)

@@ -14,8 +14,14 @@ def dbl.fold (P : Arrow Spc) : dbl P ⟶ P.right := pushout.desc (𝟙 _) (𝟙 
 def dbl.map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl P' ⟶ dbl P :=
   pushout.map _ _ _ _ φ.right φ.right φ.left (Arrow.w φ).symm (Arrow.w φ).symm
 
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem dbl.inr_fold (P : Arrow Spc) : dbl.inr P ≫ dbl.fold P = 𝟙 _ := pushout.inr_desc _ _ _
 
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem dbl.inr_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inr P' ≫ dbl.map φ = φ.right ≫ dbl.inr P :=
   pushout.inr_desc _ _ _
 

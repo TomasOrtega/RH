@@ -17,6 +17,11 @@ open GlobalTheory.QuadSymbol
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨δ, b, hδ, h0, h1⟩` from `AlmostNorm.exists_basis_sq (maximalRealSubfield E) E`. Rewrite using `[mem_normGroup_iff_form b h0 h1]`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)`. Establish `hy' : 0 < e y` using `hy`. Use `⟨e.symm (Real.sqrt (e y)), 0, e.injective ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_sub, map_pow, map_mul, map_zero, RingEquiv.apply_symm_apply]`. Rewrite using `[zero_pow two_ne_zero, mul_zero, sub_zero, Real.sq_sqrt hy'.le]`.
+-/
 theorem mem_normGroup_of_pos (v : InfinitePlace (maximalRealSubfield E)) (y : (v.Completion)ˣ)
     (hy : 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal v) (y : v.Completion)) :
     y ∈ normGroup (maximalRealSubfield E) E v.Completion := by
@@ -28,6 +33,13 @@ theorem mem_normGroup_of_pos (v : InfinitePlace (maximalRealSubfield E)) (y : (v
   simp only [map_sub, map_pow, map_mul, map_zero, RingEquiv.apply_symm_apply]
   rw [zero_pow two_ne_zero, mul_zero, sub_zero, Real.sq_sqrt hy'.le]
 
+/- English proof (translation)
+Introduce `hmem`. Establish `hneg : (-y) ∈ normGroup (maximalRealSubfield E) E v.Completion`. Use `mem_normGroup_of_pos E v (-y) ?_` and prove the remaining obligations. Rewrite using `[Units.val_neg, map_neg]`. Conclude with `neg_pos.2 hy`.
+
+Establish `h1 : (-1 : (v.Completion)ˣ) ∈ normGroup (maximalRealSubfield E) E v.Completion`. Establish `: (-1 : (v.Completion)ˣ) = y * (-y)⁻¹`. Rewrite using `[inv_neg, mul_neg, mul_inv_cancel]`. Rewrite using `[this]`. Conclude with `mul_mem hmem (inv_mem hneg)`.
+
+Conclude with `eta_eq_neg_one_iff.1 (GlobalTheory.GalOfCusp.eta_neg_one E v) h1`.
+-/
 theorem not_mem_normGroup_of_neg (v : InfinitePlace (maximalRealSubfield E)) (y : (v.Completion)ˣ)
     (hy : InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal v) (y : v.Completion) < 0) :
     y ∉ normGroup (maximalRealSubfield E) E v.Completion := by
@@ -43,6 +55,9 @@ theorem not_mem_normGroup_of_neg (v : InfinitePlace (maximalRealSubfield E)) (y 
     exact mul_mem hmem (inv_mem hneg)
   exact eta_eq_neg_one_iff.1 (GlobalTheory.GalOfCusp.eta_neg_one E v) h1
 
+/- English proof (translation)
+Use `split_ifs with h`. Conclude with `eta_eq_one_iff.2 (mem_normGroup_of_pos E v y h)`. Establish `h0 : InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal v) (y : v.Completion) ≠ 0` using `fun h' => y.ne_zero ((InfinitePlace.Completion.extensionEmbeddingOfIsReal _).injective (h'.trans (map_zero _).symm))`. Conclude with `eta_eq_neg_one_iff.2 (not_mem_normGroup_of_neg E v y (lt_of_le_of_ne (not_lt.1 h) h0))`.
+-/
 theorem eta_real (v : InfinitePlace (maximalRealSubfield E)) (y : (v.Completion)ˣ) :
     eta (maximalRealSubfield E) E v.Completion y =
       if 0 < InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal v) (y : v.Completion)
@@ -53,6 +68,11 @@ theorem eta_real (v : InfinitePlace (maximalRealSubfield E)) (y : (v.Completion)
       fun h' => y.ne_zero ((InfinitePlace.Completion.extensionEmbeddingOfIsReal _).injective (h'.trans (map_zero _).symm))
     exact eta_eq_neg_one_iff.2 (not_mem_normGroup_of_neg E v y (lt_of_le_of_ne (not_lt.1 h) h0))
 
+/- English proof (translation)
+Establish `hw : w.comap (algebraMap (maximalRealSubfield E) E) = InfinitePlace.mk (w.embedding.comp (algebraMap (maximalRealSubfield E) E))` using `by conv_lhs => rw [← InfinitePlace.mk_embedding w]`. Rewrite using `[InfinitePlace.comap_mk]`. Rewrite using `[hw]`. Break down `InfinitePlace.embedding_mk_eq (w.embedding.comp (algebraMap (maximalRealSubfield E) E)) with h | h` into its components or cases. Conclude with `h`.
+
+Rewrite using `[h]`. Conclude with `ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal _)`.
+-/
 theorem embedding_comp_algebraMap (w : InfinitePlace E) :
     (w.comap (algebraMap (maximalRealSubfield E) E)).embedding =
       w.embedding.comp (algebraMap (maximalRealSubfield E) E) := by
@@ -66,6 +86,11 @@ theorem embedding_comp_algebraMap (w : InfinitePlace E) :
   · rw [h]
     exact ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal _)
 
+/- English proof (translation)
+Proceed by induction on `x using InfinitePlace.Completion.induction_on with`. Consider the case `hp`. Conclude with `isClosed_eq ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp NumberField.LiesOver.continuous_completionMap) (Complex.continuous_ofReal.comp (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).continuous)`. Consider the case `ih a`. Rewrite using `[NumberField.LiesOver.completionMap_coe, InfinitePlace.Completion.extensionEmbedding_coe, InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe, InfinitePlace.embedding_of_isReal_apply, embedding_comp_algebraMap]`.
+
+Simplify using `[WithAbs.algebraMap_left_apply, WithAbs.algebraMap_right_apply]`.
+-/
 theorem extensionEmbedding_completionMap (w : InfinitePlace E)
     (x : (w.comap (algebraMap (maximalRealSubfield E) E)).Completion) :
     InfinitePlace.Completion.extensionEmbedding w
@@ -82,6 +107,11 @@ theorem extensionEmbedding_completionMap (w : InfinitePlace E)
       embedding_comp_algebraMap]
     simp [WithAbs.algebraMap_left_apply, WithAbs.algebraMap_right_apply]
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(u : ℂ) / (‖(u : ℂ)‖ : ℂ) = _`. Rewrite using `[hu, Complex.norm_real, Real.norm_eq_abs]`. Use `split_ifs with h`. Rewrite using `[abs_of_pos h, div_self (Complex.ofReal_ne_zero.2 hr)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.1 h) hr), Complex.ofReal_neg, div_neg, div_self (Complex.ofReal_ne_zero.2 hr)]`. Simplify using the standard rewrite rules.
+-/
 theorem unitDir_ofReal (r : ℝ) (hr : r ≠ 0) (u : ℂˣ) (hu : (u : ℂ) = r) :
     GlobalTheory.ConsEta.unitDir u = Units.map (Int.castRingHom ℂ).toMonoidHom (if 0 < r then 1 else -1) := by
   ext
@@ -97,6 +127,15 @@ end GlobalTheory.EtaInfSign
 
 open GlobalTheory.QuadSymbol in
 
+/- English proof (translation)
+Introduce `E _ _ _ b hb`. Establish `hfin : GlobalTheory.IdeleNormChar.finComp b = 1` using `funext fun v => Units.ext (hb v)`. Establish `hL : (GlobalTheory.GalOfCusp.quadChar E).1 b = Units.map (Int.castRingHom ℂ).toMonoidHom (∏ v : InfinitePlace (maximalRealSubfield E), eta (maximalRealSubfield E) E v.Completion (GlobalTheory.IdeleNormChar.infComp b v))`. Express the relevant statement in the definitionally equal form `Units.map _ (etaProd _ E (GlobalTheory.IdeleNormChar.finComp b) (GlobalTheory.IdeleNormChar.infComp b)) = _`. Unfold `etaProd`.
+
+Rewrite using `[hfin]`. Establish `h1 : (fun v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) => eta (maximalRealSubfield E) E (v.adicCompletion _) ((1 : FinFam (maximalRealSubfield E)) v)) = fun _ => 1`. Use function extensionality and compare the values at `fun v => eta_eq_one_iff.2 (one_mem _)`. Rewrite using `[h1, finprod_one, one_mul]`. Rewrite using `[hL, map_prod, GlobalTheory.ConsEta.infSign, MonoidHom.finset_prod_apply]`.
+
+Use `symm`. Use `Fintype.prod_equiv (IsCMField.equivInfinitePlace E) _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[IsCMField.equivInfinitePlace_apply, GlobalTheory.EtaInfSign.eta_real]`. Establish `hv` using `IsTotallyReal.isReal (w.comap (algebraMap (maximalRealSubfield E) E))`. Use `GlobalTheory.EtaInfSign.unitDir_ofReal _ ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `h'`. Conclude with `(GlobalTheory.IdeleNormChar.infComp b _).ne_zero ((InfinitePlace.Completion.extensionEmbeddingOfIsReal hv).injective (by rw [map_zero]; exact h'))`. Conclude with `GlobalTheory.EtaInfSign.extensionEmbedding_completionMap E w _`.
+-/
 theorem GlobalTheory.EtaInfSign.quadChar_eq_infSign : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (b : Neutral.B1.Ideles (maximalRealSubfield E)),
     (∀ v, (b : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).2 v = 1) →

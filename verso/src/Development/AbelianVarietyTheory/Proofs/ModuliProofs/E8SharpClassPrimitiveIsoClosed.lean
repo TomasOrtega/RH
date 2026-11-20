@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.SharpPrim
 
+/- English proof (translation)
+Use `set G := W + W.transpose with hG`. Establish `hu : IsUnit G.det` using `by rw [hd]; exact isUnit_one`. Establish `hT : G.transpose = G`. Rewrite using `[hG, Matrix.transpose_add, Matrix.transpose_transpose, add_comm]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `key : G * (m + m') = G` using `by rw [Matrix.mul_add, h, h']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul G hu, Matrix.one_mul]`. Use `_ = 1 := by rw [key, Matrix.nonsing_inv_mul G hu]`. Establish `ht` using `congrArg Matrix.transpose h`.
+
+Rewrite `ht` using `[Matrix.transpose_mul, hT]`. Rewrite using `[ht, h']`.
+-/
 theorem matrix_identities {n : Type} [Fintype n] [DecidableEq n] {W m m' : Matrix n n ℤ}
     (hd : (W + W.transpose).det = 1) (h : (W + W.transpose) * m = W) (h' : (W + W.transpose) * m' = W.transpose) :
     m + m' = 1 ∧ m.transpose * (W + W.transpose) = (W + W.transpose) * m' := by
@@ -33,6 +40,11 @@ theorem matrix_identities {n : Type} [Fintype n] [DecidableEq n] {W m m' : Matri
     rw [Matrix.transpose_mul, hT] at ht
     rw [ht, h']
 
+/- English proof (translation)
+Establish `hm : ∀ v, m u v + m' u v = if u = v then 1 else 0`. Introduce `v`. Establish `e` using `congrFun (congrFun h u) v`. Rewrite `e` using `[Matrix.add_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Rewrite using `[List.prod_ofFn, List.prod_ofFn, ← Finset.prod_mul_distrib]`.
+
+Repeatedly rewrite using `[← zpow_add, hm]`. Rewrite using `[Finset.prod_eq_single u (fun v _ hv => by rw [if_neg (Ne.symm hv), zpow_zero]) (fun hu => absurd (Finset.mem_univ u) hu), if_pos rfl, zpow_one]`.
+-/
 theorem prod_mul_prod {M : Type} [CommGroup M] {n : ℕ} (x : Fin n → M) {m m' : Matrix (Fin n) (Fin n) ℤ}
     (h : m + m' = 1) (u : Fin n) :
     (List.ofFn fun v => x v ^ m u v).prod * (List.ofFn fun v => x v ^ m' u v).prod = x u := by
@@ -47,6 +59,19 @@ theorem prod_mul_prod {M : Type} [CommGroup M] {n : ℕ} (x : Fin n → M) {m m'
 
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {g k h : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
 
+/- English proof (translation)
+Take `⟨φ, hpb, hLφ, hpt, hact⟩` from `m`. Take `⟨pr, hpr, huniv, hL, hpa, hlev⟩` from `H`. Establish `: IsMonHom (Iso.refl t.A).hom` using `inferInstanceAs (IsMonHom (𝟙 t.A))`. Take `⟨e, he, heφ'⟩` from `grpPullback_iso hpb (isGrpPullback_of_iso (Iso.refl t.A))`. Establish `heφ : e.hom.left = φ` using `by simpa using heφ'`.
+
+Establish `hcomm : ∀ j, t'.act j ≫ e.hom = e.hom ≫ t.act j`. Introduce `j`. Use `ext`. Simplify using `only [Over.comp_left, heφ, hact j]`. Use `⟨fun u => e.hom ≫ pr u, fun u => ?_, fun T y => ?_, ?_, fun j u => ?_, fun i u => ?_⟩` and prove the remaining obligations.
+
+Use `hpr u infer_instance` as an intermediate fact. Take `⟨x0, hx0, hu0⟩` from `huniv T y`. Use `⟨x0 ≫ e.inv, fun u => by simpa using hx0 u, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : x ≫ e.hom = x0` using `hu0 _ fun u => by simpa using hx u`. Rewrite using `[← hx']`.
+
+Simplify using the standard rewrite rules. Establish `hfun : (fun uv : Fin 8 × Fin 8 => (lift (e.hom ≫ pr uv.1) (e.hom ≫ pr uv.2)).left) = fun uv => φ ≫ (lift (pr uv.1) (pr uv.2)).left`. Use function extensionality and compare the values at `uv`. Rewrite using `[← comp_lift, Over.comp_left, heφ]`. Rewrite using `[hfun]`.
+
+Use `(CechPic.cls_eq_iff t'.isLB (LB.isLB_linComb c.isLB _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[(CechPic.cls_eq_iff t'.isLB (pull_isLB t.isLB φ)).2 hLφ, CechPic.cls_pull t.isLB, (CechPic.cls_eq_iff t.isLB (LB.isLB_linComb c.isLB _ _)).2 hL, CechPic.cls_linComb c.isLB, CechPic.cls_linComb c.isLB, map_sum]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← CechPic.pull_comp]`. Rewrite using `[← Category.assoc, hcomm j, Category.assoc, hpa j u, PowerAdjoint.comp_prod_zpow]`.
+
+Establish `hp` using `hpt i`. Rewrite `hp` using `[Category.id_comp]`. Rewrite using `[← hlev i u, Over.comp_left, Over.comp_left, heφ, ← Category.assoc, hp, Over.comp_left]`.
+-/
 theorem isSharp_of_tmap {W : Matrix (Fin 8) (Fin 8) ℤ} {a : J → Matrix (Fin 8) (Fin 8) ℤ}
     {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))} {t t' : TObj g k J b s}
     {c : SiegPre h k (b.ζ : o) s} (H : IsSharp W a bas t c) (m : TMap t' t (𝟙 _)) : IsSharp W a bas t' c := by
@@ -85,6 +110,13 @@ theorem isSharp_of_tmap {W : Matrix (Fin 8) (Fin 8) ℤ} {a : J → Matrix (Fin 
 
 end GlobalTheory.SharpPrim
 
+/- English proof (translation)
+Introduce `hΘ o _ g k J b em w w' h W a bas t ht`. Take `⟨c, hc, hs⟩` from `ht`. Use `⟨fun hE hw hw' => ?_, fun t' m => ⟨c, hc, SharpPrim.isSharp_of_tmap hs m⟩⟩` and prove the remaining obligations. Take `⟨pr, hpr, huniv, hL, hact, -⟩` from `hs`. Establish `hid` using `SharpPrim.matrix_identities hE.2 hw hw'`.
+
+Establish `key` using `PowerAdjoint.matrix_primitive_adjoint hΘ W ℂ o (spMap em) h k (b.ζ : o) c t.pol pr hpr huniv hL (a w) (t.act w) (hact w)`. Use `⟨?_, key.2 (a w') (t.act w') (hact w') hid.2, key.1 hw⟩` and prove the remaining obligations. Take `⟨x0, -, hu0⟩` from `huniv t.A pr`. Establish `h1 : ∀ u, (t.act w * t.act w') ≫ pr u = pr u`. Introduce `u`.
+
+Use `hpr u` as an intermediate fact. Rewrite using `[MonObj.mul_comp, hact w u, hact w' u]`. Conclude with `SharpPrim.prod_mul_prod pr hid.1 u`. Rewrite using `[hu0 _ h1, hu0 (𝟙 t.A) fun u => Category.id_comp _]`.
+-/
 theorem GlobalTheory.sharpClass_prim_and_iso : (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (h : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))) (t : TObj g k J b (spMap em)), SharpClass W a bas em t → (IsE8 W → (W + W.transpose) * a w = W → (W + W.transpose) * a w' = W.transpose → t.Prim w w') ∧ ∀ t' : TObj g k J b (spMap em), TMap t' t (𝟙 _) → SharpClass W a bas em t' := by
   intro hΘ o _ g k J b em w w' h W a bas t ht
   obtain ⟨c, hc, hs⟩ := ht

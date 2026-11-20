@@ -4,6 +4,49 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ r X m W hW hne _ hact`. Consider the cases of `r with`. Consider the case `zero => exact ⟨0, by ext i; exact i.elim0⟩`. Consider the case `succ n`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Establish `hτ : ∃ τ, τ ∈ X.Ψ`. Distinguish the cases in `h : σ ∈ X.Ψ`. Conclude with `⟨σ, h⟩`. Use `⟨ComplexEmbedding.conjugate σ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+
+Conclude with `h ((X.cmType σ).2 h')`. Take `⟨τ0, hτ0⟩` from `hτ`. Set `τ : X.Ψ` to `⟨τ0, hτ0⟩`. Set `M : Matrix (Fin (n+1)) (Fin (n+1)) ℂ` to `(m : Matrix (Fin (n+1)) (Fin (n+1)) E).map τ0`. Establish `key : ∀ y ∈ W, ∀ i j : Fin (n+1), (M *ᵥ (fun k => y τ k 0)) i * y τ j 0 = (M *ᵥ (fun k => y τ k 0)) j * y τ i 0`.
+
+Introduce `y hy i j`. Take `⟨b, hb, he⟩` from `hact y hy`. Establish `hcol : ∀ a : Fin (n+1), (M *ᵥ (fun k => y τ k 0)) a = y τ a 0 * b τ 0 0`. Introduce `a`. Use `congrFun (congrFun (congrFun he τ) a) 0` as an intermediate fact.
+
+Simplify using `only [lact, rmul, mat, Matrix.mul_apply, Matrix.of_apply] at this`. Establish `hs : ∑ k, y τ a k * b τ k 0 = y τ a 0 * b τ 0 0`. Rewrite using `[Finset.sum_eq_single (0 : Fin (n+1))]`. Introduce `k _ hk`. Rewrite using `[(hb τ).2 k 0 (Fin.pos_of_ne_zero hk), mul_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite `this` using `[hs]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `this`. Rewrite using `[hcol i, hcol j]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨x0, hx0⟩` from `hne`. Establish `hq : ∀ w : Fin (n+1) → ℂ, ∀ i j : Fin (n+1), (M *ᵥ w) i * w j = (M *ᵥ w) j * w i`. Introduce `w i j`. Set `pert : ℂ → Frame X.Ψ (n+1)` to `fun t σ a c => x0 σ a c + if σ = τ ∧ c = 0 then t * w a else 0`.
+
+Establish `hc : Continuous pert`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `σ`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `a`.
+
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `c`. Distinguish the cases in `h : σ = τ ∧ c = 0`. Simplify using `only [pert, h, and_self, if_true]`. Use `fun_prop`.
+
+Simplify using `only [pert, h, if_false]`. Use `fun_prop`. Establish `h0 : pert 0 = x0` using `by funext σ a c; simp [pert]`. Establish `hO : IsOpen (pert ⁻¹' W)` using `hW.preimage hc`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hO 0 (by simp [h0, hx0])`.
+
+Use `set t : ℂ := ((ε / 2 : ℝ) : ℂ) with ht_def`. Establish `htn : t ≠ 0`. Rewrite using `[ht_def]; exact_mod_cast (by positivity : ε / 2 ≠ 0)`. Establish `hnorm : ‖t‖ < ε`. Rewrite using `[ht_def, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]; linarith`.
+
+Establish `h1 : pert t ∈ W` using `hball (by simpa using hnorm)`. Establish `h2 : pert (-t) ∈ W` using `hball (by simpa using hnorm)`. Establish `hcolp : ∀ s : ℂ, (fun k => pert s τ k 0) = (fun k => x0 τ k 0) + s • w`. Introduce `s`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[pert]`. Establish `e1` using `key _ h1 i j`. Establish `e2` using `key _ h2 i j`. Establish `e0` using `key _ hx0 i j`. Establish `hpt : ∀ s : ℂ, ∀ k, pert s τ k 0 = x0 τ k 0 + s * w k`.
+
+Introduce `s k`. Simplify using `[pert]`. Rewrite `e1`, `e2` using `[hcolp]`. Simplify using `only [hpt, Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at e1 e2`. Establish `: t ^ 2 * ((M *ᵥ w) i * w j - (M *ᵥ w) j * w i) = 0`.
+
+Take the linear combination `(1/2 : ℂ) * e1 + (1/2 : ℂ) * e2 - e0`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `absurd (pow_eq_zero_iff (by norm_num) |>.mp h) htn`. Conclude with `sub_eq_zero.mp h`. Establish `hoff : ∀ i j : Fin (n+1), i ≠ j → M i j = 0`.
+
+Introduce `i j hij`. Use `hq (Pi.single j 1) i j` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply, hij]`. Establish `hsv : ∀ j k : Fin (n+1), (M *ᵥ Pi.single j (1:ℂ)) k = M k j`. Introduce `j k`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hdiag : ∀ i j : Fin (n+1), M i i = M j j`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`.
+
+Use `hq (Pi.single i 1 + Pi.single j 1) i j` as an intermediate fact. Establish `hji : j ≠ i` using `Ne.symm hij`. Rewrite `this` using `[Matrix.mulVec_add]`. Simplify using `only [Pi.add_apply, hsv, Pi.single_apply, hij, hji, if_true, if_false, mul_one, add_zero, zero_add, hoff i j hij, hoff j i hji] at this`. Conclude with `this`.
+
+Use `⟨(m : Matrix (Fin (n+1)) (Fin (n+1)) E) 0 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
+
+Apply `τ0.injective` to reduce the goal to its premises. Use `hdiag i 0` as an intermediate fact. Simplify `this` using `[M]`. Apply `τ0.injective` to reduce the goal to its premises. Use `hoff i j hij` as an intermediate fact.
+
+Simplify `this` using `[M]`.
+-/
 theorem scalar_of_triangular_moves_open :
   ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (m : GL (Fin r) E) (W : Set (Frame X.Ψ r)), IsOpen W → W.Nonempty → W ⊆ X.dom → (∀ x ∈ W, ∃ b ∈ Bor X.Ψ r, lact m x = rmul x b) → ∃ s : E, (m : Matrix (Fin r) (Fin r) E) = Matrix.scalar (Fin r) s := by
   intro E _ _ _ r X m W hW hne _ hact

@@ -15,6 +15,11 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.InertiaEigenvalues.LamParam
 
+/- English proof (translation)
+Introduce `D j hn t`. Establish `h` using `GlobalTheory.Mem.WtPar.infOf_lamLdef_eq_paramV D j t`. Rewrite using `[← h]`. Use `show NG.infOf (fun a : Fin D.R.nV => (Bridge.lamLdef (D := D) (Vc D j).rank ((j : ℕ) + 1) t).w (Fin.cast hn.symm a)) = _`. Use `revert hn`.
+
+Generalize the expression as in `(Vc D j).rank = n`. Introduce `hn`. Substitute `hn` using the available equality. Both sides reduce to the same expression.
+-/
 theorem infOf_lamV_eq_paramV : ∀ (D : D7) (j : Fin D.R.m) (hn : (Vc D j).rank = D.R.nV) (t : D.what₂.Tau), NG.infOf (fun a : Fin D.R.nV => (FWT.lamV D j t).w (Fin.cast hn.symm a)) = NG.paramV D.R (D.hc t) j (1 / 2) := by
   intro D j hn t
   have h := GlobalTheory.Mem.WtPar.infOf_lamLdef_eq_paramV D j t

@@ -4,8 +4,14 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.Toru
 
 namespace Formalism.MainNotions.G.ColumnFamilies
 
+/- English proof (translation)
+The claim follows from `restOne_of restWord restTop restSplit`.
+-/
 theorem restOne : RestOne := restOne_of restWord restTop restSplit
 
+/- English proof (translation)
+The claim follows from `firstLettersLowerSet_of_restWord_restOne D restWord restOne`.
+-/
 theorem admissible_word_basis (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.FirstLettersLowerSet D := firstLettersLowerSet_of_restWord_restOne D restWord restOne
 
 end Formalism.MainNotions.G.ColumnFamilies

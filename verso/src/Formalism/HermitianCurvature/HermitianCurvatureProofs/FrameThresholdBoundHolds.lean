@@ -19,6 +19,9 @@ def FrameThresholdBound : Prop :=
           J.supA G de de' T T' l false w * (√(T * T'))⁻¹) ≤
         J.thrP G C de de' T T' l b w)
 
+/- English proof (translation)
+Establish `he1 : (1 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hC28 : (28 : ℝ) ≤ C` using `by nlinarith`. Establish `heC : Real.exp 1 ≤ C` using `by nlinarith`. Establish `hpow : (28 * x) ^ n ≤ (C * x) ^ n` using `pow_le_pow_left₀ (by positivity) (by nlinarith) n`. Conclude with `mul_le_mul heC hpow (by positivity) (by linarith)`.
+-/
 theorem pow_bound (C x : ℝ) (n : ℕ) (hx : 0 ≤ x) (hC : 28 * Real.exp 1 ≤ C) :
     Real.exp 1 * (28 * x) ^ n ≤ C * (C * x) ^ n := by
   have he1 : (1 : ℝ) ≤ Real.exp 1 := by linarith [Real.add_one_le_exp (1 : ℝ)]
@@ -27,6 +30,21 @@ theorem pow_bound (C x : ℝ) (n : ℕ) (hx : 0 ≤ x) (hC : 28 * Real.exp 1 ≤
   have hpow : (28 * x) ^ n ≤ (C * x) ^ n := pow_le_pow_left₀ (by positivity) (by nlinarith) n
   exact mul_le_mul heC hpow (by positivity) (by linarith)
 
+/- English proof (translation)
+Introduce `ι _ G C de de' T T' l w hg hI hC hA`. Establish `hN : 0 ≤ G.N` using `by unfold Sz.Glob.N; positivity`. Establish `hkg : 0 < 2 * Real.pi / G.g` using `by positivity`. Establish `key : ∀ (n : ℕ) (Q cg : ℝ), 0 ≤ Q → Q ≤ Real.exp 1 → 0 ≤ cg → cg ≤ (28 * G.N / G.lenI) ^ n → Q * cg ≤ C * (C * (G.N / G.lenI)) ^ n`. Introduce `n Q cg h0 h1 h2 h3`.
+
+Establish `hx : 0 ≤ G.N / G.lenI` using `div_nonneg hN hI.le`. Rewrite `h3` using `[mul_div_assoc]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨fun b s Q cg hb h0 h1 h2 h3 => ?_, fun b Q cg hb h0 h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `hA'` using `hA (decide (b = 1 ∧ s + 1 = 1))`.
+
+Establish `hk` using `key (2 * (b - 1) + s) Q cg h0 h1 h2 h3`. Establish `hz : (2 * Real.pi / G.g) ^ (-(S6.nuBlock G.r b s)) = (2 * Real.pi / G.g) ^ (2 * (b - 1) + s) * ((2 * Real.pi / G.g) ^ (2 * G.r + 2 - 1))⁻¹`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ hkg.ne']`. Use `congr 1`. Unfold `S6.nuBlock`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hn : 2 * (b - 1) + (s + 1) - 1 = 2 * (b - 1) + s` using `by omega`. Unfold `J.thrS Sz.lamThreshold Sz.Glob.m`. Rewrite using `[hn, hz, show C * (2 * Real.pi / G.g) * G.N / G.lenI = (C * (G.N / G.lenI)) * (2 * Real.pi / G.g) by ring, mul_pow]`. Establish `hP : 0 ≤ (2 * Real.pi / G.g) ^ (2 * (b - 1) + s) * ((2 * Real.pi / G.g) ^ (2 * G.r + 2 - 1))⁻¹ * J.supA G de de' T T' l (decide (b = 1 ∧ s + 1 = 1)) w` using `mul_nonneg (by positivity) hA'`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA'` using `hA false`. Establish `hk` using `key (2 * (b - 1)) Q cg h0 h1 h2 h3`. Establish `hz : (2 * Real.pi / G.g) ^ (-(2 * S6.nuBlock G.r b ((G.r : ℤ) + 2 - b))) = (2 * Real.pi / G.g) ^ (2 * b - 1) * ((2 * Real.pi / G.g) ^ (2 * G.r + 2 - 1))⁻¹`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ hkg.ne']`.
+
+Use `congr 1`. Unfold `S6.nuBlock`. Use linear arithmetic over natural numbers and integers. Unfold `J.thrP Sz.lamPrimeSq Sz.Glob.m`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+
+Rewrite using `[hz, show C * G.N / G.lenI = C * (G.N / G.lenI) by ring]`. Establish `hP : 0 ≤ (2 * Real.pi / G.g) ^ (2 * b - 1) * ((2 * Real.pi / G.g) ^ (2 * G.r + 2 - 1))⁻¹ * J.supA G de de' T T' l false w * (√(T * T'))⁻¹` using `mul_nonneg (mul_nonneg (by positivity) hA') (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_threshold_bound : FrameThresholdBound := by
   intro ι _ G C de de' T T' l w hg hI hC hA
   have hN : 0 ≤ G.N := by unfold Sz.Glob.N; positivity
@@ -87,4 +105,7 @@ theorem frame_threshold_bound : FrameThresholdBound := by
 
 end Formalism.FourierDecayAlt.P.PBD
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBD.frame_threshold_bound`.
+-/
 theorem Formalism.FourierDecayAlt.P.frame_threshold_bound_holds : Formalism.FourierDecayAlt.P.PBD.FrameThresholdBound := Formalism.FourierDecayAlt.P.PBD.frame_threshold_bound

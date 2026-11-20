@@ -24,6 +24,11 @@ namespace GlobalTheory.Mem.R3.Rw.ExtBuild
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `StepW.trans (GlobalTheory.T.exists_extendedAdelicData_with_intertwiners_over_enlargedCore h1 h2 h3 h4 h5 h6 h7) (StepW.of_all fun K B' f' T' w' _ _ hq => ?_)` and prove the remaining obligations. Introduce `B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV`. Take `⟨core', alg', a1, a2, a3, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, l1, l2, l3, l4⟩` from `GlobalTheory.T.exists_adelicCore_transport_enlargedCoefficientBase_alt w w' Z Z' hX Wt z hE hf hF.2.2.1`. Take `⟨z', hc, hex, hin, hstd, hN⟩` from `hq B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' a1 a2 a3 ⟨c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14⟩ l1 l2 l3 l4`.
+
+Use `⟨z', ⟨hex, hin, ?_, hstd⟩, hN⟩` and prove the remaining obligations. Unfold `CoreP`. Rewrite using `[hc]`. Conclude with `⟨l1, l2, l3, l4⟩`.
+-/
 theorem exists_ext_build : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

@@ -21,6 +21,11 @@ def tensorSpan (B : Type) [AddCommGroup B] [Module Λ B] : Submodule Λ (X → Y
 
 variable [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Take `⟨x₁, hx₁⟩` from `Function.ne_iff.1 hc`. Take `⟨y₁, hy₁⟩` from `Function.ne_iff.1 hx₁`. Use `haveI : Nonempty (X × Y) := ⟨(x₁, y₁)⟩`. Set `p` to `Function.argmin fun p : X × Y => IsDiscreteValuationRing.addVal O (c p.1 p.2)`. Establish `hp : ∀ x y, c p.1 p.2 ∣ c x y` using `fun x y => IsDiscreteValuationRing.addVal_le_iff_dvd.1 (Function.argmin_le (fun p : X × Y => IsDiscreteValuationRing.addVal O (c p.1 p.2)) (x, y))`.
+
+Use `⟨p.1, p.2, fun h => hy₁ ?_, hp⟩` and prove the remaining obligations. Use `hp x₁ y₁` as an intermediate fact. Rewrite `this` using `[h, zero_dvd_iff]`. Then use the resulting hypothesis.
+-/
 theorem exists_dvd_all (c : X → Y → O) (hc : c ≠ 0) :
     ∃ x₀ y₀, c x₀ y₀ ≠ 0 ∧ ∀ x y, c x₀ y₀ ∣ c x y := by
   obtain ⟨x₁, hx₁⟩ := Function.ne_iff.1 hc
@@ -36,6 +41,21 @@ theorem exists_dvd_all (c : X → Y → O) (hc : c ≠ 0) :
 
 variable {B' B : Type} [AddCommGroup B'] [Module Λ B'] [AddCommGroup B] [Module Λ B]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `c b φ _ h`. Establish `: φ = 0`. Use function extensionality and compare the values at `x y`.
+
+Apply `hf` to reduce the goal to its premises. Simplify using `using h x y`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n ih`.
+
+Introduce `c b φ hc h`. Distinguish the cases in `h0 : c 0 = 0`. Use `ih (fun j => c j.succ) (fun j => b j.succ) φ (fun j => hc _) fun x y => ?_` and prove the remaining obligations. Rewrite using `[h, Fin.sum_univ_succ, h0]`. Simplify using the standard rewrite rules.
+
+Take `⟨x₀, y₀, hne, hdvd⟩` from `exists_dvd_all (c 0) h0 choose d hd using hdvd`. Establish `hdF : d ∈ F`. Use `hF _ d hne ?_` and prove the remaining obligations. Establish `: c 0 x₀ y₀ • d = c 0`. Use function extensionality and compare the values at `x y`.
+
+Conclude with `(hd x y).symm`. Rewrite using `[this]`. Conclude with `hc 0`. Establish `h1 : (fun x y => ι (d x y) • φ x₀ y₀) ∈ tensorSpan ι F B'` using `Submodule.subset_span ⟨d, hdF, φ x₀ y₀, fun _ _ => rfl⟩`. Establish `h2 : φ - (fun x y => ι (d x y) • φ x₀ y₀) ∈ tensorSpan ι F B'`.
+
+Use `ih (fun j => c j.succ - c j.succ x₀ y₀ • d) (fun j => b j.succ) _ (fun j => F.sub_mem (hc _) (F.smul_mem _ hdF)) fun x y => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, map_sub, map_smul, h, Fin.sum_univ_succ, smul_eq_mul, map_mul, sub_smul, Finset.sum_sub_distrib, smul_add, Finset.smul_sum, smul_smul]`. Rewrite using `[hd x y, map_mul, mul_comm (ι (d x y))]`. Simplify using `only [mul_comm (ι (d x y))]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `using (tensorSpan ι F B').add_mem h2 h1`.
+-/
 theorem mem_tensorSpan_of_sum (hF : ∀ (a : O) (c : X → Y → O), a ≠ 0 → a • c ∈ F → c ∈ F)
     (f : B' →ₗ[Λ] B) (hf : Function.Injective f) (n : ℕ) :
     ∀ (c : Fin n → X → Y → O) (b : Fin n → B) (φ : X → Y → B'), (∀ j, c j ∈ F) →
@@ -76,6 +96,11 @@ theorem mem_tensorSpan_of_sum (hF : ∀ (a : O) (c : X → Y → O), a ≠ 0 →
         abel
       simpa using (tensorSpan ι F B').add_mem h2 h1
 
+/- English proof (translation)
+Take `⟨n, a, g, hg⟩` from `Submodule.mem_span_set'.1 h`. Use `choose c hc b hb using fun j => (g j).2`. Use `mem_tensorSpan_of_sum ι F hF f hf n c (fun j => a j • b j) φ hc fun x y => ?_` and prove the remaining obligations. Use `congrFun (congrFun hg x) y` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, hb] at this`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`.
+-/
 theorem mem_tensorSpan_of_map (hF : ∀ (a : O) (c : X → Y → O), a ≠ 0 → a • c ∈ F → c ∈ F)
     (f : B' →ₗ[Λ] B) (hf : Function.Injective f) (φ : X → Y → B')
     (h : (fun x y => f (φ x y)) ∈ tensorSpan ι F B) : φ ∈ tensorSpan ι F B' := by
@@ -118,6 +143,11 @@ def intCrys : Submodule O (↥Gw → Fin m → O) where
     funext g j
     simp
 
+/- English proof (translation)
+Establish `ha' : Bw.toLL a ≠ 0` using `(map_ne_zero_iff _ (toLL_injective Bw)).2 ha`. Use `(Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype))).smul_mem (Bw.toLL a)⁻¹ h` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsCrysCocycle Bw P T _`. Unfold `IsCrysCocycle`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g j`. Simplify using `[ha']`.
+-/
 theorem intCrys_saturated (a : O) (c : ↥Gw → Fin m → O) (ha : a ≠ 0) (h : a • c ∈ intCrys Bw P T) :
     c ∈ intCrys Bw P T := by
   have ha' : Bw.toLL a ≠ 0 := (map_ne_zero_iff _ (toLL_injective Bw)).2 ha
@@ -131,9 +161,19 @@ theorem intCrys_saturated (a : O) (c : ↥Gw → Fin m → O) (ha : a ≠ 0) (h 
 variable [IsTopologicalRing O]
 
 omit [IsTopologicalRing O] in
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp Bw.eO_cont`.
+-/
 theorem continuous_toLL : Continuous Bw.toLL :=
   continuous_subtype_val.comp Bw.eO_cont
 
+/- English proof (translation)
+Establish `hx : ∀ g j, Bw.toLL (((T (Bw.e.symm g : ↥Gw) : Matrix (Fin m) (Fin m) O) - 1) j a) = (Bw.rep (T.comp Gw.subtype) g (Pi.single a 1) - Pi.single a 1 : Fin m → ↥Bw.LL.1) j`. Introduce `g j`. Apply the tactic sequence `by_cases hj : j = a <;>`. Simplify using `[LocBridge.rep, Matrix.toLinAlgEquiv'_apply, Matrix.one_apply, Pi.single_apply, hj]`. Express the relevant statement in the definitionally equal form `(fun (g : ↥(Loc.GK Bw.Kw)) (j : Fin m) => Bw.toLL (((T (Bw.e.symm g : ↥Gw) : Matrix (Fin m) (Fin m) O) - 1) j a)) ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype))`.
+
+Use `⟨⟨?_, fun g h => ?_⟩, Pi.single a 1 ⊗ₜ 1, fun g => ?_⟩` and prove the remaining obligations. Use `continuous_pi fun j => (continuous_toLL Bw).comp ?_` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply]`. Conclude with `(((continuous_apply_apply j a).comp hT).comp (continuous_subtype_val.comp Bw.e_symm_cont)).sub continuous_const`. Simplify using `only [funext (hx _)]`.
+
+Rewrite using `[map_mul, map_sub, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Simplify using `only [funext (hx _)]`. Simplify using `[Formalism.WeaklyAdmissibleFiltrations.actVB, TensorProduct.sub_tmul]`.
+-/
 theorem cob_mem_intCrys (hT : Continuous fun g => (T g : Matrix (Fin m) (Fin m) O)) (a : Fin m) :
     (fun (g : ↥Gw) j => ((T g : Matrix (Fin m) (Fin m) O) - 1) j a) ∈ intCrys Bw P T := by
   have hx : ∀ g j, Bw.toLL (((T (Bw.e.symm g : ↥Gw) : Matrix (Fin m) (Fin m) O) - 1) j a) =
@@ -159,12 +199,20 @@ variable {Λ : Type} [CommRing Λ] [Algebra O Λ] (κ : (Ω ≃ₐ[E] Ω) →* �
   (B : Type) [AddCommGroup B] [Module Λ B] [TopologicalSpace B] [DiscreteTopology B]
 
 omit [TopologicalSpace O] [IsTopologicalRing O] [TopologicalSpace B] [DiscreteTopology B] in
+/- English proof (translation)
+Simplify using `[repOn, matAct, hκ g g.2]`.
+-/
 theorem repOn_apply (hκ : ∀ g ∈ Gw, κ g = 1) (g : ↥Gw) (x : Fin m → B) (j : Fin m) :
     ((repOn T κ B).comp Gw.subtype) g x j =
       ∑ a, algebraMap O Λ ((T g : Matrix (Fin m) (Fin m) O) j a) • x a := by
   simp [repOn, matAct, hκ g g.2]
 
 omit [TopologicalSpace B] [DiscreteTopology B] in
+/- English proof (translation)
+Establish `: (fun g => ((repOn T κ B).comp Gw.subtype) g x - x) = ∑ a, fun (g : ↥Gw) j => algebraMap O Λ (((T g : Matrix (Fin m) (Fin m) O) - 1) j a) • x a`. Use function extensionality and compare the values at `g j`. Rewrite using `[Pi.sub_apply, repOn_apply T κ B hκ]`. Simplify using `only [Finset.sum_apply, Matrix.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib]`. Simplify using `[Matrix.one_apply, apply_ite]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.subset_span ⟨_, cob_mem_intCrys Bw P T hT a, x a, fun _ _ => rfl⟩`.
+-/
 theorem cob_mem_tensorSpan (hT : Continuous fun g => (T g : Matrix (Fin m) (Fin m) O))
     (hκ : ∀ g ∈ Gw, κ g = 1) (x : Fin m → B) :
     (fun g => ((repOn T κ B).comp Gw.subtype) g x - x) ∈ tensorSpan (algebraMap O Λ) (intCrys Bw P T) B := by
@@ -178,6 +226,15 @@ theorem cob_mem_tensorSpan (hT : Continuous fun g => (T g : Matrix (Fin m) (Fin 
   exact Submodule.sum_mem _ fun a _ =>
     Submodule.subset_span ⟨_, cob_mem_intCrys Bw P T hT a, x a, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨continuous_pi fun j => ?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun x : O => algebraMap O Λ x • b`. Take `⟨n, hn⟩` from `hB b`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`.
+
+Introduce `x`. Use `⟨(fun y => y - x) ⁻¹' ((IsLocalRing.maximalIdeal O ^ n : Ideal O) : Set O), ((isAdic_iff.1 had).1 n).preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← sub_smul, ← map_sub]`. Use `hn _ ?_` and prove the remaining obligations. Establish `h1` using `Ideal.mem_map_of_mem (algebraMap O Λ) hy`.
+
+Rewrite `h1` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (IsLocalRing.map_maximalIdeal_le _) n h1`. Conclude with `hcont.comp (continuous_of_crys Bw P hc j)`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, repOn_apply T κ B hκ]`.
+
+Use `beta_reduce`. Rewrite using `[cocycle_of_crys Bw P hc g h j]`. Simplify using `[add_smul, Finset.sum_smul, mul_smul]`.
+-/
 theorem smul_mem_Z1 [IsLocalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
     [IsLocalRing Λ] [IsLocalHom (algebraMap O Λ)] (hB : Tors Λ B) (hκ : ∀ g ∈ Gw, κ g = 1)
     {c : ↥Gw → Fin m → O} (hc : c ∈ intCrys Bw P T) (b : B) :
@@ -204,6 +261,9 @@ theorem smul_mem_Z1 [IsLocalRing O] (had : IsAdic (IsLocalRing.maximalIdeal O))
 
 end Bridge
 
+/- English proof (translation)
+Establish `h : Continuous fun g : GE N => (((chiS i s g)⁻¹ : (X.O0 i)ˣ) : X.O0 i)`. Simplify using `only [← map_inv]`. Conclude with `(X.twistCharacterFamily_continuous i _ _).comp continuous_inv`. Simplify using `only [Tgl_coe]`. Conclude with `h.smul (X.rhoS_cont i s)`.
+-/
 theorem continuous_Tgl {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
     (i : X.Tw) (s : X.Sig i) :
     Continuous fun g => (Tgl i s g : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) := by
@@ -213,6 +273,19 @@ theorem continuous_Tgl {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.w
   simp only [Tgl_coe]
   exact h.smul (X.rhoS_cont i s)
 
+/- English proof (translation)
+Introduce `v hv B' B _ _ _ _ _ _ _ _ hB f hf y hy`. Establish `hκ : ∀ g ∈ DecV N v, κ g = 1` using `htriv v hv _ (N.plOm.2 v)`. Establish `hB' : Tors Λ B'` using `fun b => by`. Take `⟨n, hn⟩` from `hB (f b)`. Conclude with `⟨n, fun x hx => hf (by rw [map_smul, hn x hx, map_zero])⟩`.
+
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Unfold `bkOn at hy ⊢`. Rewrite `hy`, the goal using `[dif_pos hv]`. Establish `h1 : (fun g j => f (z.1 g j)) ∈ tensorSpan (algebraMap (X.O0 i) Λ) (intCrys (bkP.br i v hv) (D.loc (X.l i)) (Tgl i s)) B`. Use `GlobalTheory.BlochKatoIntegralScalars.mem_of_mk_mem_span ((repOn (Tgl i s) κ B).comp (DecV N v).subtype) _ (cob_mem_tensorSpan _ _ _ κ B (continuous_Tgl i s) hκ) _ ?_ (cocycles1MapOfEquivariant _ _ (f.compLeft (Fin D.R.r)) continuous_of_discreteTopology (fun g m => repOn_map (Tgl …` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨w, c, y, b, hc, hcy, hw, rfl⟩`. Use `⟨w, Submodule.subset_span ⟨y, ?_, b, hw⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.SelmerCrystallineCocycles.IsCrysCocycle _ _ _ _`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SelmerCrystallineCocycles.IsCrysCocycle`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g j`. Rewrite using `[← hcy, MulEquiv.apply_symm_apply]`. Establish `h2` using `mem_tensorSpan_of_map _ _ (intCrys_saturated _ _ _) f hf z.1 h1`. Establish `h3 : ∀ L : Submodule Λ (H1 ((repOn (Tgl i s) κ B').comp (DecV N v).subtype)), tensorSpan (algebraMap (X.O0 i) Λ) (intCrys (bkP.br i v hv) (D.loc (X.l i)) (Tgl i s)) B' ≤ (L.comap (Submodule.mkQ _)).map (Z1 ((repOn (Tgl i s) κ B').comp (DecV N v).subtype)).subtype → Submodule.Quot …`. Introduce `L hL`.
+
+Take `⟨u, hu, h⟩` from `hL h2`. Take `rfl : u = z` from `Subtype.ext h`. Conclude with `hu`. Use `h3 _ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `φ ⟨c, hc, b, hφ⟩`.
+
+Use `⟨⟨_, smul_mem_Z1 _ _ _ κ B' (X.twistBaseCoefficientRing_isAdic i) hB' hκ hc b⟩, Submodule.subset_span ⟨_, _, c, b, hc, fun g a => ?_, fun _ _ => rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `g j`. Conclude with `(hφ g j).symm`.
+-/
 theorem locSat (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X)
     (i : X.Tw) (s : X.Sig i) (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Algebra (X.O0 i) Λ]
     [IsLocalHom (algebraMap (X.O0 i) Λ)] (κ : GE N →* Λˣ) (htriv : TrivAbove κ (X.l i)) : LocSat bkP i s κ := by
@@ -254,6 +327,9 @@ theorem locSat (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) 
   · funext g j
     exact (hφ g j).symm
 
+/- English proof (translation)
+Introduce `_ _ _ _ D N X bkP i s Λ _ _ _ κ Q h`. Use `haveI := h.2.1`. Conclude with `locSat D N X bkP i s Λ κ h.2.2.2.2.2.1`.
+-/
 theorem main : LocalFiniteness → LocalTateDuality → LocalEulerChar → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Algebra (X.O0 i) Λ] (κ : GE N →* Λˣ) (Q : Finset (PlE D.host)), Setup bkP i s κ Q → LocSat bkP i s κ := by
   intro _ _ _ _ D N X bkP i s Λ _ _ _ κ Q h
   haveI := h.2.1

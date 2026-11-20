@@ -7,16 +7,29 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Host GlobalTheory.CuspRep 
 open UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V.Cj
 open scoped TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist _ _ _ χ w B hχ h`.
+-/
 private theorem sat_twist {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CG E a)
     {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (h : π.HasSat w B) {χ : HChar E} (hχ : χ.UnrAt w) :
     (π.twist χ).HasSat w (B.map (· * χ.val w)) := by
   induction π using Quotient.inductionOn
   exact GlobalTheory.SphGal.hasSatGL_twist _ _ _ χ w B hχ h
 
+/- English proof (translation)
+Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+-/
 private theorem algSat_eq (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
+/- English proof (translation)
+Establish `h` using `hχ.2.1 w`. Establish `hq : (0 : ℝ) < (Formalism.ConjugateSelfDual.normV w : ℕ)`. Conclude with `Nat.pos_of_ne_zero (GlobalTheory.LFun.qV_ne_zero w : Formalism.ConjugateSelfDual.normV w ≠ 0)` after adjusting the coercions. Rewrite using `[algSat_eq, algSat_eq, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Units.val_mul]`. Rewrite using `[h]`. Apply the tactic sequence `have e : Ideal.absNorm w.asIdeal = Formalism.ConjugateSelfDual.normV w := by first | rfl | exact Ideal.absNorm_apply _ | simp [Formalism.ConjugateSelfDual.normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `e2 : ((a : ℝ) - 1) / 2 = ((n : ℝ) - 1) / 2 + -(((n : ℝ) - a) / 2)` using `by ring`. Rewrite using `[e, e2, Real.rpow_add hq, Complex.ofReal_mul, Complex.ofReal_cpow hq.le (-_), Complex.ofReal_neg, Complex.ofReal_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem algSat_shift {E : Type} [Field E] [NumberField E] (a n : ℕ) (w : HeightOneSpectrum (𝓞 E))
     {χ : HChar E} (hχ : χ.IsAbsPow (((n : ℝ) - a) / 2)) (B : Multiset ℂˣ) :
     algSat n (Formalism.ConjugateSelfDual.normV w) (B.map (· * χ.val w)) = algSat a (Formalism.ConjugateSelfDual.normV w) B := by
@@ -34,6 +47,11 @@ private theorem algSat_shift {E : Type} [Field E] [NumberField E] (a n : ℕ) (w
     Complex.ofReal_natCast]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ a n hC π μ m h1 h2 h3 σ`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (((n : ℝ) - a) / 2)`. Establish `hν'` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E (((a : ℝ) - n) / 2)`. Take `⟨π', hπ'⟩` from `satConj E n hC _ (twReg E a n π μ m h1 h2 h3 _ hν) σ`. Use `⟨π'.twist (GlobalTheory.HeckeGal.Model.absPow E (((a : ℝ) - n) / 2)), fun w B hB => ?_⟩` and prove the remaining obligations.
+
+Take `⟨B', b1, b2⟩` from `hπ' w _ (sat_twist π hB (hν.1 w))`. Use `⟨_, sat_twist π' b1 (hν'.1 w), ?_⟩` and prove the remaining obligations. Rewrite using `[algSat_shift n a w hν', b2, algSat_shift a n w hν]`.
+-/
 theorem UpperTheory.V.Cj.blockConj :
     UpperTheory.V.Cj.BlockConj := by
   intro E _ _ _ a n hC π μ m h1 h2 h3 σ

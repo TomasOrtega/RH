@@ -39,6 +39,9 @@ instance : IsScalarTower R Bᵐᵒᵖ (Tw R p M) := ⟨fun r b m ↦ by
   change p (r • b.unop) • (show M from m) = p (algebraMap R B r) • p b.unop • (show M from m)
   rw [Algebra.smul_def, map_mul, mul_smul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (b : B) (m : Tw R p M) : b • m = (p b • (show M from m) : M) := rfl
 
 end Tw
@@ -54,6 +57,13 @@ abbrev E : Type := TrivSqZeroExt (S.F.obj U) (M S U)
 
 def red : E S U →+* Sec s₀ U.unop.1 := (S.p U).comp (TrivSqZeroExt.fstHom R (S.F.obj U) (M S U) : E S U →+* S.F.obj U)
 
+/- English proof (translation)
+Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha' : S.p U a.fst = 0` using `ha`. Establish `hb' : S.p U b.fst = 0` using `hb`. Establish `h1 : a.fst * b.fst = 0`.
+
+Use `Ideal.mul_mem_mul ((S.ker U _).1 ha') ((S.ker U _).1 hb')` as an intermediate fact. Rewrite `this` using `[← pow_two, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[Ideal.mem_bot]`. Use `ext`. Conclude with `h1`.
+
+Express the relevant statement in the definitionally equal form `(S.p U a.fst • (show Ω[Sec s₀ U.unop.1⁄R₀] from b.snd) + S.p U b.fst • (show Ω[Sec s₀ U.unop.1⁄R₀] from a.snd) : Ω[Sec s₀ U.unop.1⁄R₀]) = 0`. Rewrite using `[ha', hb', zero_smul, zero_smul, add_zero]`.
+-/
 theorem red_sq (hI : I ^ 2 = 0) : RingHom.ker (red S U) ^ 2 = 0 := by
   rw [pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]
   intro a ha b hb
@@ -108,6 +118,9 @@ def derP : Derivation R (S.F.obj U) (M S U) :=
         S.p U a • D R₀ (Sec s₀ U.unop.1) (S.p U b) + S.p U b • D R₀ (Sec s₀ U.unop.1) (S.p U a)
       rw [map_mul, Derivation.leibniz]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem derP_apply (b : S.F.obj U) :
     (derP S U b : Ω[Sec s₀ U.unop.1⁄R₀]) = D R₀ (Sec s₀ U.unop.1) (S.p U b) := rfl
 
@@ -153,6 +166,9 @@ attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehle
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {X₀ : Scheme.{0}} {π : R →+* R₀}
   {s₀ : X₀ ⟶ Sp R₀} (S S' : Sys I π s₀) (hI : I ^ 2 = 0) (U V : AffOp X₀)
 
+/- English proof (translation)
+Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[← pow_two, hJ, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem mul_eq_zero_of_mem {B : Type} [CommRing B] {J : Ideal B} (hJ : J ^ 2 = 0) {a b : B} (ha : a ∈ J)
     (hb : b ∈ J) : a * b = 0 := by
   have := Ideal.mul_mem_mul ha hb
@@ -221,8 +237,14 @@ def chiRing : E S U →+* TrivSqZeroExt (Sec s₀ U.unop.1) Ω[Sec s₀ U.unop.1
     · exact map_mul (S.p U) _ _
     · rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_chiRing (c : E S U) : (chiRing S U c).fst = S.p U c.fst := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem snd_chiRing (c : E S U) : (chiRing S U c).snd = (show Ω[Sec s₀ U.unop.1⁄R₀] from c.snd) := rfl
 
 variable {hI}
@@ -265,6 +287,29 @@ section Main
 
 attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehler
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π _ hk X₀ s₀ S S' U V`. Use `⟨⟨redHom S U hk, fun _ ↦ rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `Q hQ α β θ hθ f`. Set `mi` to `(redMor hI hk s₀).functor.map ((diagExt R₀ (Sec s₀ U.unop.1)).secHom (affPt_w s₀ U.unop) (diagExt R₀ (Sec s₀ U.unop.1)).i fun _ ↦ rfl)`. Set `md` to `(redMor hI hk s₀).functor.map ((diagExt R₀ (Sec s₀ U.unop.1)).secHom (affPt_w s₀ U.unop) (diagSec R₀ (Sec s₀ U.unop.1)) (fst_derSec _))`.
+
+Set `ψ` to `psiHom α β θ hθ`. Establish `k1` using `ev_sq f (inlHom S hI U) (chiHom S U hk) Q mi fun c ↦ by`. Rewrite using `[hQ]`. Both sides reduce to the same expression. Establish `k2` using `ev_sq f (derHom S hI U) (chiHom S U hk) Q md fun c ↦ by`.
+
+Rewrite using `[hQ]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.p U (derSec (derP S U) c).fst = (diagSec R₀ (Sec s₀ U.unop.1) (S.p U c)).fst`. Rewrite using `[fst_derSec, fst_derSec]`. Express the relevant statement in the definitionally equal form `(show Ω[Sec s₀ U.unop.1⁄R₀] from (derSec (derP S U) c).snd) = (diagSec R₀ (Sec s₀ U.unop.1) (S.p U c)).snd`.
+
+Rewrite using `[snd_derSec, snd_derSec]`. Both sides reduce to the same expression. Establish `k3` using `ev_sq f (inlHom S hI U) (fstHom S hI U) (derHom S hI U) (fstHom S hI U) fun c ↦ (fst_derSec (derP S U) c).symm`. Establish `e1 : ev f β = ψ.φ (ev f (inlHom S hI U)) + ev f ψ`. Rewrite using `[← ev_comp]`.
+
+Use `congr 1`. Use `Thick.hom_ext fun b ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `β.φ b = β.φ b + θ 0`. Rewrite using `[map_zero, add_zero]`. Establish `e2 : ev f α = ψ.φ (ev f (derHom S hI U)) + ev f ψ`.
+
+Rewrite using `[← ev_comp]`. Use `congr 1`. Use `Thick.hom_ext fun b ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α.φ b = β.φ (derSec (derP S U) b).fst + θ (show Ω[Sec s₀ U.unop.1⁄R₀] from (derSec (derP S U) b).snd)`. Rewrite using `[fst_derSec, snd_derSec, derP_apply, hθ.der]`.
+
+Normalize the expressions using the abelian group laws. Establish `hc : connForm ((redMor hI hk s₀).coef.pullbackOneCocycle f) (affPt s₀ U.unop) (affPt_w s₀ U.unop) = (ev f mi - ev f md).snd` using `rfl`. Establish `hA : ev f (inlHom S hI U) - ev f (derHom S hI U) = TrivSqZeroExt.inr (show M S U from connForm ((redMor hI hk s₀).coef.pullbackOneCocycle f) (affPt s₀ U.unop) (affPt_w s₀ U.unop) - D R₀ (Sec s₀ U.unop.1) (ev f Q : Sec s₀ U.unop.1))`. Use `ext`. Express the relevant statement in the definitionally equal form `(ev f (inlHom S hI U)).fst - (ev f (derHom S hI U)).fst = 0`.
+
+Express the relevant statement in the definitionally equal form `(ev f (inlHom S hI U)).fst + ev f (fstHom S hI U) = (ev f (derHom S hI U)).fst + ev f (fstHom S hI U) at k3`. Rewrite `k3` using `[add_left_inj]`. Rewrite using `[k3, sub_self]`. Establish `l1` using `congrArg TrivSqZeroExt.snd k1`. Establish `l2` using `congrArg TrivSqZeroExt.snd k2`.
+
+Express the relevant statement in the definitionally equal form `(show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (inlHom S hI U)).snd) + TrivSqZeroExt.snd (ev f (chiHom S U hk)) = (0 : Ω[Sec s₀ U.unop.1⁄R₀]) + TrivSqZeroExt.snd (ev f mi) at l1`. Express the relevant statement in the definitionally equal form `(show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (derHom S hI U)).snd) + TrivSqZeroExt.snd (ev f (chiHom S U hk)) = (diagSec R₀ (Sec s₀ U.unop.1) (ev f Q : Sec s₀ U.unop.1)).snd + TrivSqZeroExt.snd (ev f md) at l2`. Rewrite `l2` using `[show (diagSec R₀ (Sec s₀ U.unop.1) (ev f Q : Sec s₀ U.unop.1)).snd = D R₀ (Sec s₀ U.unop.1) (ev f Q : Sec s₀ U.unop.1) from snd_derSec _ _]`. Express the relevant statement in the definitionally equal form `(show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (inlHom S hI U)).snd) - (show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (derHom S hI U)).snd) = _`. Rewrite using `[hc]`.
+
+Express the relevant statement in the definitionally equal form `(show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (inlHom S hI U)).snd) - (show Ω[Sec s₀ U.unop.1⁄R₀] from (ev f (derHom S hI U)).snd) = (TrivSqZeroExt.snd (ev f mi) - TrivSqZeroExt.snd (ev f md)) - D R₀ (Sec s₀ U.unop.1) (ev f Q : Sec s₀ U.unop.1)`. Establish `key : ∀ a b c d e q : Ω[Sec s₀ U.unop.1⁄R₀], a + e = 0 + c → b + e = q + d → a - b = c - d - q` using `fun a b c d e q h1 h2 ↦ by linear_combination (norm := abel1) h1 - h2`. Conclude with `key _ _ _ _ _ _ l1 l2`. Rewrite using `[e1, e2, add_sub_add_right_eq_sub, ← map_sub, hA]`. Express the relevant statement in the definitionally equal form `β.φ 0 + θ _ = _`.
+
+Rewrite using `[map_zero, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem ev_sub_ev_eq : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀)
     (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀),
     ∀ (S S' : Sys I π s₀) (U V : AffOp X₀),

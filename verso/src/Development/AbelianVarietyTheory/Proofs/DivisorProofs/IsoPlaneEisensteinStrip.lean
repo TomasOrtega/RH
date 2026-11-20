@@ -20,6 +20,21 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 
+/- English proof (translation)
+Introduce `kp F E _ _ _ _ _ σ hσ B hB n n₁ Y Y₁ P hsk hI χa χb za zb hz c hc hcc f hf fa fb hs h hh hex g hg K₁ hK₁`. Take `⟨⟨t, m, hm, ht⟩, hdom, hrat⟩` from `GlobalTheory.ThK.DescB.LevRatInv.plane_facts B hB hsk hI`. Establish `h1K : (1 : UA σ Y.J) ∈ KInf σ Y B.emb`. Conclude with `⟨fun u _ => by simp [mat], fun w => by simp [mat]⟩`. Establish `hf' : ∀ γ ∈ ratU σ Y.J, ∀ x, f (γ * x) = f x`.
+
+Introduce `γ hγ x`. Establish `hK : ∀ x ∈ (⊥ : Subgroup (GAd σ (c • Y.J.map σ))), (toGAd hσ Y.J hc).symm x ∈ KInf σ Y B.emb`. Introduce `x hx`. Rewrite `hx` using `[Subgroup.mem_bot]`. Substitute `hx` using the available equality.
+
+Simplify using `using h1K`. Use `(hf ⊥ hK).mod.left (toGAd hσ Y.J hc γ) ((GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ Y.J hc γ).2 hγ) (toGAd hσ Y.J hc x)` as an intermediate fact. Simplify `this` using `only [map_mul, MulEquiv.symm_apply_apply]`. Use `set la := GlobalTheory.ThK.DescB.PrimeSplit.lawFn χa za t`. Use `set lb := GlobalTheory.ThK.DescB.PrimeSplit.lawFn χb zb t`.
+
+Establish `hne : la - lb ≠ 0` using `sub_ne_zero.2 (GlobalTheory.ThK.DescB.PrimeSplit.lawFn_ne χa χb hz ht)`. Establish `hform : ∀ x, fa x = (la - lb)⁻¹ * (fa + fb) (m * x) + (-(lb * (la - lb)⁻¹)) * (fa + fb) x`. Introduce `x`. Establish `ea` using `hs.2.1 t m hm x`. Establish `eb` using `hs.2.2 t m hm x`.
+
+Simplify using `only [Pi.add_apply, ea, eb]`. Express the relevant statement in the definitionally equal form `fa x = (la - lb)⁻¹ * (la * fa x + lb * fb x) + -(lb * (la - lb)⁻¹) * (fa x + fb x)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hFA : ∀ K : Subgroup (GAd σ (c • Y.J.map σ)), (∀ x ∈ K, (toGAd hσ Y.J hc).symm x ∈ KInf σ Y B.emb) → IsAutOn σ (c • Y.J.map σ) ((unip σ Y P).map (toGAd hσ Y.J hc).toMonoidHom) K (fun x => fa ((toGAd hσ Y.J hc).symm x))`.
+
+Introduce `K hK`. Use `GlobalTheory.T.levi_translate_automorphic_constant_term F E σ hσ n n₁ Y Y₁ P c hc t m hm (fa + fb) (la - lb)⁻¹ (-(lb * (la - lb)⁻¹)) K (GlobalTheory.T.isotropic_plane_constant_term_formula F E σ hσ B hB n n₁ Y Y₁ P hsk hI c hc hcc χa χb za zb f hf fa fb hs K hK)` as an intermediate fact. Use `this using 2 with x` and compare the differences between its conclusion and the goal. Conclude with `hform _`. Use `⟨⟨?_, GlobalTheory.T.isotropic_plane_constant_term_level F E σ hσ B hB n n₁ Y Y₁ P hsk hI c hc hcc fa hFA h hh hex g hg, GlobalTheory.T.isotropic_plane_constant_term_vanishing F E σ hσ B hB n n₁ Y Y₁ P hsk hI c hc hcc fa hFA h hh hex g hg, GlobalTheory.T.isotropic_plane_constant_ …` and prove the remaining obligations.
+
+Introduce `γ hγ x`. Establish `hγ' : (toGAd hσ Y₁.J hc).symm γ ∈ ratU σ Y₁.J` using `(GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ Y₁.J hc _).1 (by simpa using hγ)`. Use `GlobalTheory.ThK.DescB.LevRatInv.gen_inv hz ⟨t, m, hm, ht⟩ hdom hrat hf' hs h hex hg _ hγ' ((toGAd hσ Y₁.J hc).symm x)` as an intermediate fact. Simplify `this` using `only [map_mul]`.
+-/
 theorem _root_.GlobalTheory.T.iso_plane_eisenstein_strip : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →
     ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (P : Plane E n n₁), (∀ i j, σ (Y.J j i) = -Y.J i j) →

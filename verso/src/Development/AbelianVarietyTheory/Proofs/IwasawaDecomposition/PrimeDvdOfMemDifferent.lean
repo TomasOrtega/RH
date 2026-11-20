@@ -11,6 +11,9 @@ open scoped nonZeroDivisors IntermediateField
 
 namespace GlobalTheory.Mem.KPsiRam
 
+/- English proof (translation)
+Establish `h1` using `NumberField.natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) L (𝓞 L)`. Establish `h2 : Ideal.absNorm (differentIdeal (𝓞 K) (𝓞 L)) ∣ Ideal.absNorm (Ideal.span {(N : 𝓞 L)})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hmem)`. Rewrite `h2` using `[Ideal.absNorm_span_natCast]`. Rewrite `h` using `[h1]`. Conclude with `((Nat.Prime.dvd_mul hp).1 h).imp (fun h => hp.dvd_of_dvd_pow (h.trans h2)) hp.dvd_of_dvd_pow`.
+-/
 theorem prime_dvd_of_mem_different (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (N : ℕ) (hmem : (N : 𝓞 L) ∈ differentIdeal (𝓞 K) (𝓞 L)) {p : ℕ} (hp : p.Prime) (h : p ∣ (discr L).natAbs) :
     p ∣ N ∨ p ∣ (discr K).natAbs := by
@@ -21,6 +24,19 @@ theorem prime_dvd_of_mem_different (K L : Type) [Field K] [NumberField K] [Field
   rw [h1] at h
   exact ((Nat.Prime.dvd_mul hp).1 h).imp (fun h => hp.dvd_of_dvd_pow (h.trans h2)) hp.dvd_of_dvd_pow
 
+/- English proof (translation)
+Take `⟨hy, I, hI⟩` from `hy`. Establish `hI' : (I : Submodule (𝓞 F) F) ^ k = Submodule.span (𝓞 F) {y}`. Rewrite using `[← FractionalIdeal.coe_pow, ← hI, FractionalIdeal.coe_spanSingleton]`. Use `set L : IntermediateField ℚ ℂ := F ⊔ ℚ⟮z⟯ with hLdef`. Establish `hzL : z ∈ L` using `(le_sup_right : ℚ⟮z⟯ ≤ L) (IntermediateField.mem_adjoin_simple_self ℚ z)`.
+
+Establish `hzF : IsIntegral F z` using `IsIntegral.of_pow hk (by rw [hz]; exact isIntegral_algebraMap (x := y))`. Establish `hzQ : IsIntegral ℚ z` using `isIntegral_trans z hzF`. Use `haveI : FiniteDimensional ℚ ℚ⟮z⟯ := IntermediateField.adjoin.finiteDimensional hzQ`. Establish `hLfin : FiniteDimensional ℚ L` using `IntermediateField.finiteDimensional_sup F ℚ⟮z⟯`. Use `letI : NumberField L := NumberField.mk`.
+
+Use `letI : Algebra F L := (IntermediateField.inclusion (le_sup_left : F ≤ L)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower F L ℂ := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hz' : (⟨z, hzL⟩ : L) ^ k = algebraMap F L y` using `Subtype.ext hz`. Establish `hzi : IsIntegral F (⟨z, hzL⟩ : L)` using `Algebra.IsIntegral.isIntegral _`. Establish `htop : F⟮(⟨z, hzL⟩ : L)⟯ = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨w, hw⟩ -`. Set `M : IntermediateField ℚ ℂ` to `((F⟮(⟨z, hzL⟩ : L)⟯).map (IsScalarTower.toAlgHom F L ℂ)).restrictScalars ℚ`. Establish `hM : L ≤ M`. Use `sup_le (fun v hv => ?_) (IntermediateField.adjoin_simple_le_iff.mpr ?_)` and prove the remaining obligations.
+
+Conclude with `((F⟮(⟨z, hzL⟩ : L)⟯).map (IsScalarTower.toAlgHom F L ℂ)).algebraMap_mem ⟨v, hv⟩`. Conclude with `⟨_, IntermediateField.mem_adjoin_simple_self F _, rfl⟩`. Take `⟨w', hw', hww⟩` from `hM hw`. Establish `: w' = ⟨w, hw⟩` using `Subtype.ext hww`. Rewrite `hw'` using `[this]`. Then use the resulting hypothesis.
+
+Establish `htop' : Algebra.adjoin F {(⟨z, hzL⟩ : L)} = ⊤`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hzi.isAlgebraic, htop, IntermediateField.top_toSubalgebra]`. Establish `hD` using `GlobalTheory.FieldSize.natCast_mem_differentIdeal_of_root k hk y hy _ hI' _ hz' htop'`. Conclude with `⟨inferInstance, fun p hp h => prime_dvd_of_mem_different F L k hD hp h⟩`.
+-/
 theorem sup_adjoin_root (F : IntermediateField ℚ ℂ) [NumberField F] {k : ℕ} (hk : 0 < k) {y : F}
     (hy : y ∈ powIdealElts F k) {z : ℂ} (hz : z ^ k = (y : ℂ)) :
     ∃ _ : NumberField ↥(F ⊔ ℚ⟮z⟯), ∀ p : ℕ, p.Prime → p ∣ (discr ↥(F ⊔ ℚ⟮z⟯)).natAbs →
@@ -57,6 +73,13 @@ theorem sup_adjoin_root (F : IntermediateField ℚ ℂ) [NumberField F] {k : ℕ
   have hD := GlobalTheory.FieldSize.natCast_mem_differentIdeal_of_root k hk y hy _ hI' _ hz' htop'
   exact ⟨inferInstance, fun p hp h => prime_dvd_of_mem_different F L k hD hp h⟩
 
+/- English proof (translation)
+Proceed by induction on `S, hS using Set.Finite.induction_on with`. Consider the case `empty`. Rewrite using `[IntermediateField.adjoin_empty, sup_bot_eq]`. Set `e₀ : E ≃ₐ[ℚ] imField φ` to `AlgEquiv.ofInjectiveField φ.toRatAlgHom`. Establish `: FiniteDimensional ℚ (imField φ)` using `e₀.toLinearEquiv.finiteDimensional`.
+
+Establish `hN : NumberField (imField φ)` using `NumberField.of_module_finite ℚ _`. Conclude with `⟨hN, fun p _ hp => Or.inr (by rwa [discr_eq_discr_of_algEquiv _ e₀])⟩`. Consider the case `@insert z S _ _ ih`. Take `⟨_, ih⟩` from `ih fun w hw => hS' w (Set.mem_insert_of_mem _ hw)`. Take `⟨y, hy, hz⟩` from `hS' z (Set.mem_insert _ _)`.
+
+Establish `hE : ∀ x, φ x ∈ imField φ ⊔ IntermediateField.adjoin ℚ S` using `(imField_le_iff φ).1 le_sup_left`. Take `⟨hN, H⟩` from `sup_adjoin_root _ hh (map_mem_pow (φ.codRestrict _ hE) hy) hz`. Rewrite using `[Set.insert_eq, Set.union_comm, IntermediateField.adjoin_union, ← sup_assoc]`. Conclude with `⟨hN, fun p hp hd => (H p hp hd).elim Or.inl (ih p hp)⟩`.
+-/
 theorem sup_adjoin_roots {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ) {h : ℕ} (hh : 0 < h) (S : Set ℂ)
     (hS : S.Finite) (hS' : ∀ z ∈ S, ∃ y ∈ powIdealElts E h, z ^ h = φ y) :
     ∃ _ : NumberField ↥(imField φ ⊔ IntermediateField.adjoin ℚ S), ∀ p : ℕ, p.Prime →
@@ -76,12 +99,30 @@ theorem sup_adjoin_roots {E : Type} [Field E] [NumberField E] (φ : E →+* ℂ)
     rw [Set.insert_eq, Set.union_comm, IntermediateField.adjoin_union, ← sup_assoc]
     exact ⟨hN, fun p hp hd => (H p hp hd).elim Or.inl (ih p hp)⟩
 
+/- English proof (translation)
+Establish `hσ : ∀ (σ : H.E ≃ₐ[ℚ] H.E) {x}, x ∈ powIdealElts H.E h → σ x ∈ powIdealElts H.E h` using `fun σ _ hx => map_mem_pow (σ : H.E →+* H.E) hx`. Conclude with `prod_mem_pow _ _ fun g _ => mul_mem_pow (npow_mem_pow (hσ _ hγ) _) (npow_mem_pow (hσ _ (hσ _ hγ)) _)`.
+-/
 theorem typeNorm_mem {R : Ranks} (H : Host R) (p q : ℕ) {h : ℕ} {γ : H.E} (hγ : γ ∈ powIdealElts H.E h) :
     typeNorm H p q γ ∈ powIdealElts H.E h := by
   have hσ : ∀ (σ : H.E ≃ₐ[ℚ] H.E) {x}, x ∈ powIdealElts H.E h → σ x ∈ powIdealElts H.E h :=
     fun σ _ hx => map_mem_pow (σ : H.E →+* H.E) hx
   exact prod_mem_pow _ _ fun g _ => mul_mem_pow (npow_mem_pow (hσ _ hγ) _) (npow_mem_pow (hσ _ (hσ _ hγ)) _)
 
+/- English proof (translation)
+Introduce `P δ`. Set `S : Set ℂ` to `{rootOne (classNumber P.host.E)} ∪ ⋃ j ∈ Set.Icc 1 P.R.m, ⋃ i, {z | z ^ δ.basis.h i = P.host.φ₀ (typeNorm P.host (P.R.sigW j).1 (P.R.sigW j).2 (δ.basis.γ i : P.host.E))}`. Establish `hS : S.Finite`. Use `(Set.finite_singleton _).union ((Set.finite_Icc _ _).biUnion fun j _ => Set.finite_iUnion fun i => ?_)` and prove the remaining obligations. Use `Set.Finite.subset (Polynomial.nthRoots (δ.basis.h i) (P.host.φ₀ (typeNorm P.host (P.R.sigW j).1 (P.R.sigW j).2 (δ.basis.γ i : P.host.E)))).toFinset.finite_toSet fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_nthRoots (δ.basis.h_pos i)]`. Conclude with `hz`. Establish `hS' : ∀ z ∈ S, ∃ y ∈ powIdealElts P.host.E (classNumber P.host.E), z ^ classNumber P.host.E = P.host.φ₀ y`. Introduce and unpack `z (rfl | hz)`. Conclude with `⟨1, one_mem_pow, by`.
+
+Rewrite using `[map_one]`. Conclude with `(Complex.isPrimitiveRoot_exp _ (classNumber_ne_zero _)).pow_eq_one⟩`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨j, -, i, hz⟩` from `hz`. Establish `hγ : (δ.basis.γ i : P.host.E) ∈ powIdealElts P.host.E (δ.basis.h i)` using `⟨(δ.basis.γ i).ne_zero, δ.basis.c i, by`.
+
+Rewrite using `[← coe_toPrincipalIdeal, ← δ.basis.pow_eq i, Units.val_pow_eq_pow_val]`. Use the proof step `rfl⟩`. Take `⟨k, hk⟩ : δ.basis.h i ∣ classNumber P.host.E` from `orderOf_dvd_card`. Use `⟨_, hk ▸ pow_mem_powIdealElts (typeNorm_mem P.host (P.R.sigW j).1 (P.R.sigW j).2 hγ) k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, pow_mul, map_pow]`.
+
+Conclude with `congrArg (· ^ k) hz`. Take `⟨_, H⟩` from `sup_adjoin_roots P.host.φ₀ (classNumber_pos P.host.E) S hS hS'`. Establish `hle : (⨆ j ∈ Set.Icc 1 P.R.m, δ.KPsi j) ≤ imField P.host.φ₀ ⊔ IntermediateField.adjoin ℚ S`. Use `iSup₂_le fun j hj => sup_le (sup_le le_sup_left (le_sup_of_le_right ?_)) (le_sup_of_le_right ?_)` and prove the remaining obligations. Conclude with `IntermediateField.adjoin.mono _ _ _ Set.subset_union_left`.
+
+Use `IntermediateField.adjoin.mono _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `z ⟨i, hz⟩`. Conclude with `Or.inr (Set.mem_iUnion₂.2 ⟨j, hj, Set.mem_iUnion.2 ⟨i, hz⟩⟩)`. Establish `: FiniteDimensional ℚ ↥(⨆ j ∈ Set.Icc 1 P.R.m, δ.KPsi j)` using `Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion hle).injective`. Establish `hN : NumberField ↥(⨆ j ∈ Set.Icc 1 P.R.m, δ.KPsi j)` using `NumberField.mk`.
+
+Use `letI := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `⟨hN, fun p hp hd => (Nat.Prime.dvd_mul hp).2 (H p hp (hd.trans ?_))⟩` and prove the remaining obligations. Conclude with `Int.natAbs_dvd_natAbs.2 (discr_dvd_discr _ _)`.
+-/
 theorem prime_dvd_discr_iSup_kPsi : ∀ (P : Pre) (δ : FieldDat P),
     ∃ _ : NumberField ↥(⨆ j ∈ Set.Icc 1 P.R.m, δ.KPsi j), ∀ p : ℕ, p.Prime →
       p ∣ (discr ↥(⨆ j ∈ Set.Icc 1 P.R.m, δ.KPsi j)).natAbs → p ∣ classNumber P.host.E * (discr P.host.E).natAbs := by

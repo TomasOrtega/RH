@@ -8,12 +8,20 @@ open Formalism.MainNotions.G Formalism.BasicNotions Finset
 
 namespace Gen
 
+/- English proof (translation)
+Unfold `fac`. Rewrite using `[Finsupp.support_embDomain, Finset.prod_map]`. Simplify using `[Finsupp.embDomain_apply]`.
+-/
 theorem fac_embDomain {σ τ : Type} (e : σ ↪ τ) (κ : σ →₀ ℕ) : fac (Finsupp.embDomain e κ) = fac κ := by
   classical
   unfold fac
   rw [Finsupp.support_embDomain, Finset.prod_map]
   simp [Finsupp.embDomain_apply]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Sigma.mk v : ι v → Σ v, ι v)` using `sigma_mk_injective`. Unfold `jp atP`. Rewrite using `[MvPolynomial.support_rename_of_injective hinj, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hinj h)]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Establish `he : Finsupp.mapDomain (Sigma.mk v) κ = Finsupp.embDomain (Function.Embedding.sigmaMk v) κ` using `by rw [Finsupp.embDomain_eq_mapDomain]; rfl`.
+
+Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ hinj, he, fac_embDomain, MvPowerSeries.coeff_embDomain_rename]`.
+-/
 theorem jp_rename {K A Pl : Type} [CommRing K] [CommRing A] [Algebra K A] {ι : Pl → Type} (v : Pl)
     (P : MvPolynomial (ι v) A) (g : MvPowerSeries (ι v) K) :
     jp (MvPolynomial.rename (Sigma.mk v) P) (atP v g) = jp P g := by
@@ -36,6 +44,13 @@ def en_mapP (Kc σ τ : Type) [Field Kc] :
     MvPolynomial σ (MvPolynomial τ ℤ) →+* MvPolynomial σ (MvPolynomial τ Kc) :=
   MvPolynomial.map (MvPolynomial.map (Int.castRingHom Kc))
 
+/- English proof (translation)
+Unfold `applyD Gen.jp en_mapP`. Use `symm`. Use `(Finset.sum_subset (MvPolynomial.support_map_subset _ P) ?_).trans ?_` and prove the remaining obligations. Introduce `n _ hn`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hn`.
+
+Rewrite using `[hn, smul_zero]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`. Unfold `Gen.fac`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem en_applyD_eq {σ τ Kc : Type} [Field Kc] (P : MvPolynomial σ (MvPolynomial τ ℤ)) (f : MvPowerSeries σ Kc) :
     applyD P f = Gen.jp (en_mapP Kc σ τ P) f := by
   classical
@@ -64,6 +79,11 @@ def en_Ploc (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
           MvPolynomial.X ((s, a, I v s c i'.val) :
             Zidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))))
 
+/- English proof (translation)
+Unfold `en_mapP PIvS en_Ploc Sys.colFac`. Simplify using `only [map_prod, map_mul, map_pow, map_natCast, RingHom.map_det, AlgHom.map_det]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 2`. Use extensionality with `i i'`.
+
+Simplify using `[Matrix.of_apply, map_sum, RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply]`.
+-/
 theorem en_mapP_PIvS (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
     en_mapP Y.Kc (X.ZA j) (X.FrI j) (PIvS X j I i0 v) =
       MvPolynomial.rename (Sigma.mk v) (en_Ploc X Y j I i0 v) := by

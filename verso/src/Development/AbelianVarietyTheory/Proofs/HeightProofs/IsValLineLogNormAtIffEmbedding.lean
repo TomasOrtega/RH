@@ -20,11 +20,19 @@ section Values
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun a => valAt' x _ (Units.val a)) (hL.g_self i)`. Conclude with `(valAt'_res x (le_inf le_rfl le_rfl) _ h).symm.trans (e.trans (valAt'_one x h))`.
+-/
 theorem val_g_self {L : LB X} (hL : L.IsLB) (x : Sp ℂ ⟶ X) (i : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ L.U i) :
     valAt' x (L.U i ⊓ L.U i) (L.g i i).val = 1 := by
   have e := congrArg (fun a => valAt' x _ (Units.val a)) (hL.g_self i)
   exact (valAt'_res x (le_inf le_rfl le_rfl) _ h).symm.trans (e.trans (valAt'_one x h))
 
+/- English proof (translation)
+Establish `hm : ⊤ ≤ x ⁻¹ᵁ (M.U j ⊓ L.U i ⊓ (M.U j' ⊓ L.U i'))`. Simplify using `only [top_le_preimage_inf]`. Conclude with `⟨⟨hj, hi⟩, hj', hi'⟩`. Establish `e` using `congrArg (fun a => valAt' x _ (Units.val a)) (hw (j, i) (j', i'))`. Use `(valAt'_res x inf_le_left _ hm).symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)) (valAt'_res x inf_le_right _ hm))))` and prove the remaining obligations.
+
+Conclude with `valAt'_res x _ _ hm`. Conclude with `(valAt'_units_inv x hm _).trans (congrArg _ (valAt'_res x _ _ hm))`.
+-/
 theorem val_iso {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (x : Sp ℂ ⟶ X) (j j' : M.ι) (i i' : L.ι)
     (hj : ⊤ ≤ x ⁻¹ᵁ M.U j) (hj' : ⊤ ≤ x ⁻¹ᵁ M.U j') (hi : ⊤ ≤ x ⁻¹ᵁ L.U i) (hi' : ⊤ ≤ x ⁻¹ᵁ L.U i') :
     valAt' x (M.U j ⊓ L.U i) (w.s (j, i)).val =
@@ -38,11 +46,17 @@ theorem val_iso {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (x : Sp ℂ ⟶ X) 
   · exact valAt'_res x _ _ hm
   · exact (valAt'_units_inv x hm _).trans (congrArg _ (valAt'_res x _ _ hm))
 
+/- English proof (translation)
+Rewrite using `[top_le_preimage_iff_mem, top_le_preimage_iff_mem]`. Conclude with `mem_pull`.
+-/
 theorem le_pull_iff (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (j : (L.pull φ).ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull φ).U j ↔ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U (j PUnit.unit) := by
   rw [top_le_preimage_iff_mem, top_le_preimage_iff_mem]
   exact mem_pull
 
+/- English proof (translation)
+Use `(valAt'_units_prod x h _ _).trans ((Fintype.prod_unique _).trans ((valAt'_zpow x h _ _).trans ((zpow_one _).trans ?_)))` and prove the remaining obligations. Conclude with `(valAt'_res x _ _ h).trans (valAt'_comp x φ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) (L.g (j PUnit.unit) (j' PUnit.unit)).val)`.
+-/
 theorem val_pull_g (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (j j' : (L.pull φ).ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull φ).U j ⊓ (L.pull φ).U j')) :
     valAt' x ((L.pull φ).U j ⊓ (L.pull φ).U j') ((L.pull φ).g j j').val =
@@ -52,6 +66,9 @@ theorem val_pull_g (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (j j' : (L.pull 
   exact (valAt'_res x _ _ h).trans (valAt'_comp x φ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit))
     (L.g (j PUnit.unit) (j' PUnit.unit)).val)
 
+/- English proof (translation)
+Establish `e` using `congrArg (valAt' p _) (h (fun _ => j) i (inf_le_left.trans (LB.wchart_le L (fun _ => φ) _ PUnit.unit)))`. Rewrite `e` using `[valAt'_appLE _ _ _ _ _ _ hp, valAt'_mul, valAt'_res _ _ _ hp]`. Conclude with `e`.
+-/
 theorem val_via {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pull φ)) (s : L.Sec) (s' : L'.Sec)
     (h : ∀ (j : (L.pull φ).ι) (i : L'.ι) (h : (L.pull φ).U j ⊓ L'.U i ≤ φ ⁻¹ᵁ L.U (j PUnit.unit)),
       (φ.appLE _ _ h).hom (s.f (j PUnit.unit)) =
@@ -63,6 +80,9 @@ theorem val_via {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pull φ)
   rw [valAt'_appLE _ _ _ _ _ _ hp, valAt'_mul, valAt'_res _ _ _ hp] at e
   exact e
 
+/- English proof (translation)
+Use `(valAt'_res _ _ _ h).trans ((valAt'_comp (𝟙 (Sp ℂ)) y _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem val_rigPull {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over (Sp ℂ)} [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {φ : G'.left ⟶ G.left}
     {y : Sp ℂ ⟶ X} (he : eSec G' ≫ φ = y ≫ eSec G) (r : LB.Gen (L.pull (eSec G))) (j : L.ι)
@@ -73,6 +93,11 @@ theorem val_rigPull {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over (Sp ℂ)
   rw [Category.id_comp]
   rfl
 
+/- English proof (translation)
+Establish `hm : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ _) ⁻¹ᵁ (((L.pull φ).pull (eSec G')).U (fun _ _ => j) ⊓ (L'.pull (eSec G')).U fun _ => i)` using `fun p hq => ⟨mem_pull.2 (hp hq).1, mem_pull.2 (hp hq).2⟩`. Establish `e` using `congrArg (fun q => valAt' (𝟙 (Sp ℂ)) _ q.val) (h (fun _ _ => j, fun _ => i))`. Use `((valAt'_res _ inf_le_left _ hm).trans (val_rigPull he r j (top_le_preimage_mono _ inf_le_left hm))).symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) ?_ (valAt'_res _ inf_le_right _ hm))))` and prove the remaining obligations. Simplify using `only [LB.linCombIso, id]`. Use `erw [Fintype.prod_unique, zpow_one]`.
+
+Use `(valAt'_res _ _ _ hm).trans ((valAt'_comp (𝟙 (Sp ℂ)) (show Sp ℂ ⟶ _ from eSec G') (((L.pull φ).div L').U (fun _ => j, i)) (w.s (fun _ => j, i)).val).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem val_rig {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over (Sp ℂ)} [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {L' : LB G'.left} {φ : G'.left ⟶ G.left} {y : Sp ℂ ⟶ X}
     (he : eSec G' ≫ φ = y ≫ eSec G) (w : LB.Iso L' (L.pull φ)) (r' : LB.Gen (L'.pull (eSec G')))
@@ -97,12 +122,18 @@ theorem val_rig {G : Over X} [GrpObj G] [IsCommMonObj G] {G' : Over (Sp ℂ)} [G
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Rewrite using `[top_le_preimage_iff_mem]`. Use `⟨fun h p _ => ?_, fun h => h trivial⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) p (spMap σ (default : PrimeSpectrum ℂ))]`. Conclude with `h`.
+-/
 theorem le_spMap_iff (σ : K →+* ℂ) (V : (Sp K).Opens) : ⊤ ≤ spMap σ ⁻¹ᵁ V ↔ ⊤ ≤ V := by
   rw [top_le_preimage_iff_mem]
   refine ⟨fun h p _ => ?_, fun h => h trivial⟩
   rw [Subsingleton.elim (α := PrimeSpectrum K) p (spMap σ (default : PrimeSpectrum ℂ))]
   exact h
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (spMap σ ≫ 𝟙 (Sp K)) ⁻¹ᵁ V` using `by rw [Category.comp_id]; exact (le_spMap_iff σ V).2 h`. Establish `e` using `TangentOrigin.evalPt_spMap_comp σ (𝟙 (Sp K)) V h h' f`. Rewrite `e` using `[← TangentOrigin.valAt'_eq_evalPt, Category.comp_id]`. Rewrite using `[e, valR, dif_pos (show ⊤ ≤ 𝟙 (Sp K) ⁻¹ᵁ V from h)]`. Both sides reduce to the same expression.
+-/
 theorem val_spMap (σ : K →+* ℂ) (V : (Sp K).Opens) (h : ⊤ ≤ V) (f : Γ(Sp K, V)) :
     valAt' (spMap σ) V f = σ (valR (A := K) (𝟙 (Sp K)) V f) := by
   have h' : ⊤ ≤ (spMap σ ≫ 𝟙 (Sp K)) ⁻¹ᵁ V := by rw [Category.comp_id]; exact (le_spMap_iff σ V).2 h
@@ -111,6 +142,13 @@ theorem val_spMap (σ : K →+* ℂ) (V : (Sp K).Opens) (h : ⊤ ≤ V) (f : Γ(
   rw [e, valR, dif_pos (show ⊤ ≤ 𝟙 (Sp K) ⁻¹ᵁ V from h)]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hV : ⊤ ≤ V`. Take `rfl : V = ⊤` from `top_le_iff.1 hV`. Take `⟨a, rfl⟩` from `(Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.surjective f`. Take `⟨b, rfl⟩` from `(Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.surjective g`. Establish `e` using `h le_rfl`.
+
+Rewrite `e` using `[TangentOrigin.valAt'_eq_evalPt _ _ le_rfl, TangentOrigin.valAt'_eq_evalPt _ _ le_rfl]`. Establish `e' : σ a = σ b` using `(TangentOrigin.evalPt_spMap σ a).symm.trans (e.trans (TangentOrigin.evalPt_spMap σ b))`. Rewrite using `[σ.injective e']`. Choose the witnesses or unpack the hypotheses as in `rfl : V = ⊥ := by`. Use `eq_bot_iff.2 fun p hp => (hV fun q _ => ?_).elim` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) q p]`. Conclude with `hp`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem fn_ext_spMap (σ : K →+* ℂ) (V : (Sp K).Opens) (f g : Γ(Sp K, V))
     (h : ⊤ ≤ V → valAt' (spMap σ) V f = valAt' (spMap σ) V g) : f = g := by
   by_cases hV : ⊤ ≤ V
@@ -133,9 +171,17 @@ section Unif
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L M : LB A.left} {g : ℕ}
 
+/- English proof (translation)
+The claim follows from `(exists_chart hL (x (default : PrimeSpectrum ℂ))).imp fun _ h => (top_le_preimage_iff_mem _ _).2 h`.
+-/
 theorem exists_chart_at (hL : L.IsLB) (x : Sp ℂ ⟶ A.left) : ∃ i, ⊤ ≤ x ⁻¹ᵁ L.U i :=
   (exists_chart hL (x (default : PrimeSpectrum ℂ))).imp fun _ h => (top_le_preimage_iff_mem _ _).2 h
 
+/- English proof (translation)
+Use `choose c hc using fun z => exists_chart_at hL (u.ex z).left`. Use `⟨fun j z => valAt' (u.ex z).left (M.U j ⊓ L.U (c z)) (w.s (j, c z)).val * u.fr (c z) z, fun j i z hj hi => ?_⟩` and prove the remaining obligations. Establish `hm` using `(top_le_preimage_inf _ _ _).2 ⟨hi, hc z⟩`. Use `valAt'_unit_ne_zero _ hm (L.g i (c z))` as an intermediate fact. Rewrite using `[val_iso hw _ j j i (c z) hj hj hi (hc z), val_g_self hM _ j hj, u.fr_compat i (c z) z hm]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_frame (u : HolUnif A L g) (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen) :
     ∃ fr : M.ι → (Fin g → ℂ) → ℂ, ∀ j i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U j → ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i →
       fr j z = valAt' (u.ex z).left (M.U j ⊓ L.U i) (w.s (j, i)).val * u.fr i z := by
@@ -175,14 +221,23 @@ def carry (u : HolUnif A L g) (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw :
     rw [(exists_frame u hL hM hw).choose_spec j i z hj hi, (exists_frame u hL hM hw).choose_spec j' i z hj' hi,
       val_iso hw _ j j' i i hj hj' hi hi, val_g_self hL _ i hi, inv_one, _root_.mul_one, _root_.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `(exists_frame u hL hM hw).choose_spec j i z hj hi`.
+-/
 theorem carry_fr (u : HolUnif A L g) (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen) (j : M.ι) (i : L.ι)
     (z : Fin g → ℂ) (hj : ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U j) (hi : ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i) :
     (carry u hL hM hw).fr j z = valAt' (u.ex z).left (M.U j ⊓ L.U i) (w.s (j, i)).val * u.fr i z :=
   (exists_frame u hL hM hw).choose_spec j i z hj hi
 
+/- English proof (translation)
+Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`.
+-/
 theorem ex_add_period (u : HolUnif A L g) (z : Fin g → ℂ) (l : u.Λ) : u.ex (z + l) = u.ex z := by
   rw [u.ex_add, (u.ker l).2 l.2, _root_.mul_one]
 
+/- English proof (translation)
+Use `⟨h.1, h.2.1, h.2.2.1, fun (l : u.Λ) j z hj => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart_at hL (u.ex z).left`. Establish `e` using `ex_add_period u z l`. Rewrite using `[carry_fr u hL hM hw j i z hj hi, carry_fr u hL hM hw j i (z + l) (by rw [e]; exact hj) (by rw [e]; exact hi), e, h.2.2.2 l i z hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem carry_isAH {u : HolUnif A L g} (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L M} (hw : w.IsGen)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) : (carry u hL hM hw).IsAH Hm χ := by
   refine ⟨h.1, h.2.1, h.2.2.1, fun (l : u.Λ) j z hj => ?_⟩
@@ -192,6 +247,9 @@ theorem carry_isAH {u : HolUnif A L g} (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso L
     h.2.2.2 l i z hi]
   ring
 
+/- English proof (translation)
+Use `u.discrete` as an intermediate fact. Establish `: IsZLattice ℝ u.Λ` using `⟨u.full⟩`. Establish `p` using `ZLattice.covolume_pos u.Λ volume`. Rewrite `p` using `[ZLattice.covolume_eq_measure_fundamentalDomain u.Λ volume h]`. Conclude with `ENNReal.toReal_ne_zero.1 p.ne'`.
+-/
 theorem volume_ne (u : HolUnif A L g) {Fd : Set (Fin g → ℂ)} (h : IsAddFundamentalDomain u.Λ Fd volume) :
     volume Fd ≠ 0 ∧ volume Fd ≠ ⊤ := by
   have := u.discrete
@@ -200,6 +258,11 @@ theorem volume_ne (u : HolUnif A L g) {Fd : Set (Fin g → ℂ)} (h : IsAddFunda
   rw [ZLattice.covolume_eq_measure_fundamentalDomain u.Λ volume h] at p
   exact ENNReal.toReal_ne_zero.1 p.ne'
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart_at hL (u.ex z).left`. Establish `hn` using `(u.hol (L.U i) 0).1.mem_nhds hi`. Use `((((u.hol _ (s.f i)).2.differentiableAt hn).continuousAt).div ((u.fr_hol i).differentiableAt hn).continuousAt (u.fr_ne i z hi)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hn] with y hy`.
+
+Conclude with `(div_eq_iff (u.fr_ne i y hy)).2 (hs i y hy)`.
+-/
 theorem continuous_of_isFn {u : HolUnif A L g} (hL : L.IsLB) {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (hs : u.IsFn s θ) :
     Continuous θ := by
   refine continuous_iff_continuousAt.2 fun z => ?_
@@ -210,6 +273,9 @@ theorem continuous_of_isFn {u : HolUnif A L g} (hL : L.IsLB) {s : L.Sec} {θ : (
   filter_upwards [hn] with y hy
   exact (div_eq_iff (u.fr_ne i y hy)).2 (hs i y hy)
 
+/- English proof (translation)
+Establish `h : l ⬝ᵥ Hm.mulVec (star z) = star (z ⬝ᵥ Hm.mulVec (star l))`. Rewrite using `[← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, hH.eq, Matrix.dotProduct_mulVec]`. Simplify using `only [hermSq, star_add, Matrix.mulVec_add, dotProduct_add, add_dotProduct, h, Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermSq_add {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z l : Fin g → ℂ) :
     hermSq Hm (z + l) = hermSq Hm z + 2 * (z ⬝ᵥ Hm.mulVec (star l)).re + hermSq Hm l := by
   have h : l ⬝ᵥ Hm.mulVec (star z) = star (z ⬝ᵥ Hm.mulVec (star l)) := by
@@ -218,6 +284,13 @@ theorem hermSq_add {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z l 
     Complex.conj_re]
   ring
 
+/- English proof (translation)
+Take `⟨i, hz⟩` from `exists_chart_at hL (u.ex z).left`. Establish `e` using `ex_add_period u z l`. Establish `hz' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i` using `by rw [e]; exact hz`. Establish `a` using `hs i _ hz'`. Rewrite `a` using `[e, hs i _ hz, h.2.2.2 l i z hz, ← _root_.mul_assoc]`.
+
+Rewrite using `[← mul_right_cancel₀ (u.fr_ne i _ hz') a, norm_mul, norm_mul, h.2.2.1, Complex.norm_exp, hermSq_add h.1, _root_.one_mul, mul_pow, _root_.mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 2`. Establish `: ((Real.pi : ℂ) / 2) = ((Real.pi / 2 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Simplify using `only [hermSq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weight_periodic {u : HolUnif A L g} (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (hs : u.IsFn s θ) (l : u.Λ) (z : Fin g → ℂ) :
     ‖θ (z + l)‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm (z + l)) = ‖θ z‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm z) := by
@@ -235,6 +308,11 @@ theorem weight_periodic {u : HolUnif A L g} (hL : L.IsLB) {Hm : Matrix (Fin g) (
   push_cast
   ring
 
+/- English proof (translation)
+Use `u.discrete` as an intermediate fact. Establish `: IsZLattice ℝ u.Λ` using `⟨u.full⟩`. Establish `hθ` using `continuous_of_isFn hL hs`. Establish `hc : Continuous fun z => ‖θ z‖ ^ 2 * Real.exp (-Real.pi * hermSq Hm z)`. Simplify using `only [hermSq, dotProduct, Matrix.mulVec]`.
+
+Use `fun_prop`. Take `⟨C, hC⟩` from `(IsZLattice.isCompact_range_of_periodic u.Λ _ hc (fun z l hl => weight_periodic hL h hs ⟨l, hl⟩ z)).isBounded.exists_norm_le`. Conclude with `Measure.integrableOn_of_bounded (volume_ne u hF).2 hc.aestronglyMeasurable (Eventually.of_forall fun z => hC _ ⟨z, rfl⟩)`.
+-/
 theorem integrableOn_weight {u : HolUnif A L g} (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (hs : u.IsFn s θ) {Fd : Set (Fin g → ℂ)}
     (hF : IsAddFundamentalDomain u.Λ Fd volume) :
@@ -254,6 +332,11 @@ end Unif
 
 section Tangent
 
+/- English proof (translation)
+Establish `s : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 (Sp R)`. Rewrite using `[← Spec.map_comp]`. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of R))` and prove the remaining obligations. Use `congr 1`. Establish `e : (toUnit (epsR R) ≫ η[G]).left = spMap (algebraMap R (DualNumber R)) ≫ (show Sp R ⟶ G.left from η[G].left)`.
+
+Rewrite using `[Over.comp_left]`. Use `congr 1`. Unfold `IsTangent`. Rewrite using `[e, ← Category.assoc]`. Use `erw [s, Category.id_comp]`.
+-/
 theorem isTangent_zero {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] :
     IsTangent (toUnit (epsR R) ≫ η[G]) := by
   have s : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 (Sp R) := by
@@ -270,6 +353,13 @@ theorem isTangent_zero {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] :
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := A.left) (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hx`. Establish `ht` using `isTangent_zero A`. Establish `h₁` using `(TangentOrigin.tangent_mem_iff (u := u) ht U).2 h0`. Use `(TangentOrigin.isDiff_iff ht hU h₁ h0 0).2 (RingHom.ext fun f => TrivSqZeroExt.ext (TangentOrigin.tangent_fst ht h₁ h0 f) ?_)` and prove the remaining obligations.
+
+Rewrite using `[TangentOrigin.jet_snd, map_zero]`. Establish `k : ∀ (y : Sp (DualNumber ℂ) ⟶ A.left) (hy : ⊤ ≤ y ⁻¹ᵁ U), y = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (show Sp ℂ ⟶ A.left from (u.ex 0).left) → (TangentOrigin.evalPt (R` using `DualNumber ℂ) y U hy f).snd = 0 := by`. Introduce and unpack `_ hy rfl`. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ _ h0]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Use `k _ h₁ ?_` and prove the remaining obligations. Rewrite using `[TangentOrigin.ex_zero_left, Over.comp_left]`. Use `congr 1`.
+-/
 theorem isDiff_zero : u.IsDiff 0 (toUnit (epsR ℂ) ≫ η[A]) := by
   obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (X := A.left)
     (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial
@@ -289,6 +379,11 @@ theorem isDiff_zero : u.IsDiff 0 (toUnit (epsR ℂ) ≫ η[A]) := by
   rw [TangentOrigin.ex_zero_left, Over.comp_left]
   congr 1
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := A.left) (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hx`. Establish `h₁` using `(TangentOrigin.tangent_mem_iff (u := u) hv U).2 h0`. Establish `h₂` using `(TangentOrigin.tangent_mem_iff (u := u) hv' U).2 h0`. Rewrite `h` using `[TangentOrigin.isDiff_iff hv hU h₁ h0]`.
+
+Rewrite `h'` using `[TangentOrigin.isDiff_iff hv' hU h₂ h0]`. Conclude with `Over.OverMorphism.ext (TangentOrigin.ext_evalPt hU h₁ h₂ (h.trans h'.symm))`.
+-/
 theorem eq_of_isDiff {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTangent v) (hv' : IsTangent v')
     (h : u.IsDiff w v) (h' : u.IsDiff w v') : v = v' := by
   obtain ⟨U, hU, hx, -⟩ := exists_isAffineOpen_mem_and_subset (X := A.left)
@@ -300,11 +395,29 @@ theorem eq_of_isDiff {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTangent
   rw [TangentOrigin.isDiff_iff hv' hU h₂ h0] at h'
   exact Over.OverMorphism.ext (TangentOrigin.ext_evalPt hU h₁ h₂ (h.trans h'.symm))
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, u.ex_add, toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]`.
+-/
 theorem ex_translate (z w : Fin g → ℂ) :
     (u.ex w).left ≫ ((toUnit A ≫ u.ex z) * 𝟙 A).left = (u.ex (z + w)).left := by
   rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit, u.ex_add,
     toUnit_unique (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]
 
+/- English proof (translation)
+Establish `h₀ : ∀ (U : A.left.Opens), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U → ∀ f : Γ(A.left, U), fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0` using `fun U hU f => by`. Establish `h₁` using `(TangentOrigin.tangent_mem_iff (u := u) (isTangent_zero A) U).2 hU`. Rewrite using `[← h U h₁ f, isDiff_zero u U h₁ f, map_zero]`. Establish `h₁ : ∀ (U : A.left.Opens) (f : Γ(A.left, U)) (z : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ U → fderiv ℂ (fun y => valAt' (u.ex y).left U f) z w = 0` using `fun U f z hz => by`. Establish `e` using `h₀ (((toUnit A ≫ u.ex z) * 𝟙 A).left ⁻¹ᵁ U) (by rw [← top_le_preimage_comp, ex_translate, add_zero]; exact hz) ((((toUnit A ≫ u.ex z) * 𝟙 A).left.app U).hom f)`.
+
+Simplify using `only [valAt'_comp, ex_translate] at e`. Rewrite `e` using `[fderiv_comp_add_left (f := fun y => valAt' (u.ex y).left U f), add_zero]`. Conclude with `e`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := A.left) (x := (u.ex 0).left (default : PrimeSpectrum ℂ)) (U := ⊤) trivial`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `(top_le_preimage_iff_mem _ _).2 hx`.
+
+Establish `hl : Continuous fun s : ℂ => s • w` using `by fun_prop`. Establish `ht : Tendsto (fun s : ℂ => s • w) (𝓝 0) (𝓝 0)` using `by simpa using hl.tendsto 0`. Take `⟨r, hr, hb⟩` from `Metric.eventually_nhds_iff_ball.1 (ht.eventually (TangentOrigin.eventually_mem u h0))`. Establish `hd : ∀ (f : Γ(A.left, U)), ∀ s ∈ Metric.ball (0 : ℂ) r, HasDerivAt (fun s : ℂ => valAt' (u.ex (s • w)).left U f) 0 s` using `fun f s hs => by`. Establish `d` using `((u.hol U f).2.differentiableAt ((u.hol U f).1.mem_nhds (hb s hs))).hasFDerivAt.comp_hasDerivAt s ((hasDerivAt_id s).smul_const w)`.
+
+Rewrite `d` using `[one_smul, h₁ U f _ (hb s hs)]`. Conclude with `d`. Establish `hm : ∀ s ∈ Metric.ball (0 : ℂ) r, s • w ∈ u.Λ` using `fun s hs => by`. Rewrite using `[← u.ker, ← TangentOrigin.ex_zero u]`. Use `Over.OverMorphism.ext (TangentOrigin.ext_evalPt hU (hb s hs) h0 (RingHom.ext fun f => ?_))` and prove the remaining obligations.
+
+Rewrite using `[← TangentOrigin.valAt'_eq_evalPt, ← TangentOrigin.valAt'_eq_evalPt]`. Use `Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball (0 : ℂ) r).isPreconnected (fun s hs => (hd f s hs).differentiableAt.differentiableWithinAt) (fun s hs => (hd f s hs).deriv) hs (Metric.mem_ball_self hr)` as an intermediate fact. Simplify using `using this`. Use `u.discrete` as an intermediate fact. Take `⟨V, hV, hV'⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({0} : Set u.Λ))`.
+
+Establish `hV0 : (0 : Fin g → ℂ) ∈ V`. Establish `: (0 : u.Λ) ∈ Subtype.val ⁻¹' V` using `by rw [hV']; rfl`. Conclude with `this`. Establish `he : ∀ᶠ s in 𝓝[≠] (0 : ℂ), s • w ∈ V ∧ s ∈ Metric.ball (0 : ℂ) r` using `((ht.eventually (hV.mem_nhds hV0)).and (Metric.ball_mem_nhds _ hr)).filter_mono nhdsWithin_le_nhds`. Take `⟨s, ⟨hs, hs'⟩, hs0⟩` from `(he.and self_mem_nhdsWithin).exists`.
+
+Establish `: (⟨s • w, hm s hs'⟩ : u.Λ) ∈ ({0} : Set u.Λ)` using `by rw [← hV']; exact hs`. Conclude with `(smul_eq_zero.1 (congrArg Subtype.val this)).resolve_left hs0`.
+-/
 theorem eq_zero_of_isDiff {w : Fin g → ℂ} (h : u.IsDiff w (toUnit (epsR ℂ) ≫ η[A])) : w = 0 := by
   have h₀ : ∀ (U : A.left.Opens), ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U → ∀ f : Γ(A.left, U),
       fderiv ℂ (fun z => valAt' (u.ex z).left U f) 0 w = 0 := fun U hU f => by
@@ -349,6 +462,9 @@ theorem eq_zero_of_isDiff {w : Fin g → ℂ} (h : u.IsDiff w (toUnit (epsR ℂ)
   have : (⟨s • w, hm s hs'⟩ : u.Λ) ∈ ({0} : Set u.Λ) := by rw [← hV']; exact hs
   exact (smul_eq_zero.1 (congrArg Subtype.val this)).resolve_left hs0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => eq_of_isDiff u hv (isTangent_zero A) (e ▸ h) (isDiff_zero u), fun e => eq_zero_of_isDiff u (e ▸ h)⟩`.
+-/
 theorem isDiff_ne_iff {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} (hv : IsTangent v) (h : u.IsDiff w v) :
     w = 0 ↔ v = toUnit (epsR ℂ) ≫ η[A] :=
   ⟨fun e => eq_of_isDiff u hv (isTangent_zero A) (e ▸ h) (isDiff_zero u), fun e => eq_zero_of_isDiff u (e ▸ h)⟩
@@ -358,6 +474,13 @@ variable {K : Type} [Field K] {σ : K →+* ℂ} {G : Over (Sp K)} [GrpObj G] {�
 
 omit u
 
+/- English proof (translation)
+Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e]`. Use `Eq.trans ?_ (PolBaseChange.eSec_comm h).symm` and prove the remaining obligations. Unfold `IsTangent at ht`. Unfold `eSec`.
+
+Rewrite using `[← ht, ← Category.assoc]`. Use `Eq.trans ?_ (Category.assoc _ _ _)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `z` using `congrArg (· ≫ A.hom) (isTangent_zero A)`. Rewrite using `[← z, Category.assoc, Category.assoc, Over.w, Over.w]`.
+-/
 theorem isTangent_of_pull (h : IsGrpPullback A G (spMap σ) φ) (ht : IsTangent t)
     (e : t'.left ≫ φ = spMap (dualMap σ) ≫ t.left) : IsTangent t' := by
   refine h.1.hom_ext ?_ ?_
@@ -374,6 +497,11 @@ theorem isTangent_of_pull (h : IsGrpPullback A G (spMap σ) φ) (ht : IsTangent 
   · have z := congrArg (· ≫ A.hom) (isTangent_zero A)
     rw [← z, Category.assoc, Category.assoc, Over.w, Over.w]
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc]`. Use `(congrArg _ (PolBaseChange.eSec_comm h)).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap σ = spMap (dualMap σ) ≫ spMap (algebraMap K (DualNumber K))`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem zero_pull (h : IsGrpPullback A G (spMap σ) φ) :
     (toUnit (epsR ℂ) ≫ η[A]).left ≫ φ = spMap (dualMap σ) ≫ (toUnit (epsR K) ≫ η[G]).left := by
   rw [Over.comp_left, Over.comp_left, Category.assoc]
@@ -385,12 +513,20 @@ theorem zero_pull (h : IsGrpPullback A G (spMap σ) φ) :
   congr 2
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Introduce `a b e` and use `by have e₁ := congrArg TrivSqZeroExt.fst e have e₂ := congrArg TrivSqZeroExt.snd e simp [dualMap] at e₁ e₂ exact TrivSqZeroExt.ext (σ.injective e₁) (σ.injective e₂)`.
+-/
 theorem dualMap_injective (σ : K →+* ℂ) : Function.Injective (dualMap σ) := fun a b e => by
   have e₁ := congrArg TrivSqZeroExt.fst e
   have e₂ := congrArg TrivSqZeroExt.snd e
   simp [dualMap] at e₁ e₂
   exact TrivSqZeroExt.ext (σ.injective e₁) (σ.injective e₂)
 
+/- English proof (translation)
+Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hn : ∀ c : PrimeSpectrum (DualNumber K), c.asIdeal = IsLocalRing.maximalIdeal _` using `fun c => by`. Use `le_antisymm (IsLocalRing.le_maximalIdeal c.isPrime.ne_top) ?_` and prove the remaining obligations. Rewrite using `[DualNumber.maximalIdeal_eq_span_singleton_eps, Ideal.span_singleton_le_iff_mem]`. Conclude with `c.isPrime.mem_of_pow_mem 2 (by rw [sq, DualNumber.eps_mul_eps]; exact zero_mem _)`.
+
+Conclude with `PrimeSpectrum.ext ((hn a).trans (hn b).symm)`.
+-/
 theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (DualNumber K)) := by
   refine ⟨fun a b => ?_⟩
   have hn : ∀ c : PrimeSpectrum (DualNumber K), c.asIdeal = IsLocalRing.maximalIdeal _ := fun c => by
@@ -399,6 +535,13 @@ theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (Du
     exact c.isPrime.mem_of_pow_mem 2 (by rw [sq, DualNumber.eps_mul_eps]; exact zero_mem _)
   exact PrimeSpectrum.ext ((hn a).trans (hn b).symm)
 
+/- English proof (translation)
+Use `subsingleton_dual K` as an intermediate fact. Take `⟨p⟩ : Nonempty (PrimeSpectrum (DualNumber ℂ))` from `inferInstance`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := (spMap (dualMap σ) ≫ x) p) (U := ⊤) trivial`. Establish `k : ∀ z : Sp (DualNumber K) ⟶ X, (spMap (dualMap σ) ≫ z) p ∈ U → ⊤ ≤ z ⁻¹ᵁ U` using `fun z hz q _ => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (DualNumber K)) q (spMap (dualMap σ) p)]`.
+
+Conclude with `hz`. Establish `h₁` using `k x hx`. Establish `h₂` using `k y (e ▸ hx)`. Use `TangentOrigin.ext_evalPt hU h₁ h₂ (RingHom.ext fun f => dualMap_injective σ ?_)` and prove the remaining obligations. Establish `c : ∀ (a b : Sp (DualNumber ℂ) ⟶ X) (ha : ⊤ ≤ a ⁻¹ᵁ U) (hb : ⊤ ≤ b ⁻¹ᵁ U), a = b → TangentOrigin.evalPt a U ha f = TangentOrigin.evalPt b U hb f`.
+
+Introduce and unpack `a _ _ _ rfl`. Both sides reduce to the same expression. Establish `l : ∀ z : Sp (DualNumber K) ⟶ X, ⊤ ≤ z ⁻¹ᵁ U → ⊤ ≤ (spMap (dualMap σ) ≫ z) ⁻¹ᵁ U` using `fun z hz q _ => hz (show spMap (dualMap σ) q ∈ (⊤ : (Sp (DualNumber K)).Opens) from trivial)`. Conclude with `(TangentOrigin.evalPt_spMap_comp _ x U h₁ (l x h₁) f).symm.trans ((c _ _ _ _ e).trans (TangentOrigin.evalPt_spMap_comp _ y U h₂ (l y h₂) f))`.
+-/
 theorem dual_cancel (σ : K →+* ℂ) {X : Scheme.{0}} {x y : Sp (DualNumber K) ⟶ X}
     (e : spMap (dualMap σ) ≫ x = spMap (dualMap σ) ≫ y) : x = y := by
   have := subsingleton_dual K
@@ -420,6 +563,9 @@ theorem dual_cancel (σ : K →+* ℂ) {X : Scheme.{0}} {x y : Sp (DualNumber K)
   exact (TangentOrigin.evalPt_spMap_comp _ x U h₁ (l x h₁) f).symm.trans ((c _ _ _ _ e).trans
     (TangentOrigin.evalPt_spMap_comp _ y U h₂ (l y h₂) f))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `Over.OverMorphism.ext (dual_cancel σ (e.symm.trans (zero_pull h)))`. Introduce and unpack `rfl`. Conclude with `Over.OverMorphism.ext (h.1.hom_ext (e.trans (zero_pull h).symm) (by rw [Over.w, Over.w]))`.
+-/
 theorem zero_pull_iff (h : IsGrpPullback A G (spMap σ) φ) (e : t'.left ≫ φ = spMap (dualMap σ) ≫ t.left) :
     t' = toUnit (epsR ℂ) ≫ η[A] ↔ t = toUnit (epsR K) ≫ η[G] := by
   constructor
@@ -448,12 +594,22 @@ def pullPol (P : Out.PolAV (Sp K₁)) {σ : K₁ →+* ℂ} {A' : Over (Sp ℂ)}
     (isAffineOpen_top _) (fun _ => trivial) P.ample
   ktriv := kTriv_pull h P.isLB (pull_isLB P.isLB φ) ((isGen_iff _).1 (idIso_isGen (pull_isLB P.isLB φ))) P.ktriv
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.H1.dim_unique P'.A.hom P'.smoothDim ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim) (eSec P'.A (default : PrimeSpectrum ℂ))`.
+-/
 theorem g_eq {P : Out.PolAV (Sp K₁)} {P' : Out.PolAV (Sp ℂ)} {σ : K₁ →+* ℂ} {φ : P'.A.left ⟶ P.A.left}
     (h : IsGrpPullback P'.A P.A (spMap σ) φ) : P'.g = P.g :=
   ReciprocityTheory.ChartRestriction.G.H1.dim_unique P'.A.hom P'.smoothDim
     ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim)
     (eSec P'.A (default : PrimeSpectrum ℂ))
 
+/- English proof (translation)
+Introduce `i j`. Use `Units.ext (fn_ext_spMap σ _ _ _ fun hV => ?_)` and prove the remaining obligations. Establish `hV'` using `(le_spMap_iff σ _).2 hV`. Take `⟨hi, hj⟩` from `(top_le_preimage_inf _ _ _).1 hV'`. Take `⟨k, hk⟩` from `exists_chart_at P'.isLB (show Sp ℂ ⟶ _ from eSec P'.A)`.
+
+Establish `c : ∀ i : (P.L.pull (eSec P.A)).ι, ⊤ ≤ spMap σ ⁻¹ᵁ (P.L.pull (eSec P.A)).U i → ⊤ ≤ (show Sp ℂ ⟶ _ from eSec P'.A) ⁻¹ᵁ (P.L.pull φ).U fun _ => i PUnit.unit` using `fun i hi => (le_pull_iff _ _ _ _).2 (he ▸ (le_pull_iff _ _ _ _).1 hi)`. Establish `ei` using `val_rig he w rig' rig hm (i PUnit.unit) k ((top_le_preimage_inf _ _ _).2 ⟨c i hi, hk⟩)`. Establish `ej` using `val_rig he w rig' rig hm (j PUnit.unit) k ((top_le_preimage_inf _ _ _).2 ⟨c j hj, hk⟩)`. Rewrite `ei` using `[val_iso hw _ _ (fun _ => j PUnit.unit) k k (c i hi) (c j hj) hk hk, val_g_self P'.isLB _ k hk, inv_one, _root_.mul_one, _root_.mul_assoc, ← ej, val_pull_g _ _ _ _ _ ((top_le_preimage_inf _ _ _).2 ⟨c i hi, c j hj⟩)]`. Use `(valAt'_res _ inf_le_left _ hV').trans (ei.trans (Eq.trans ?_ (valAt'_mul _ _ _ _).symm))` and prove the remaining obligations.
+
+Use `congrArg₂ (· * ·) ?_ (valAt'_res _ inf_le_right _ hV').symm` and prove the remaining obligations. Conclude with `(congrArg (fun x => valAt' x _ _) he).trans (val_pull_g P.L (eSec P.A) (spMap σ) i j hV').symm`.
+-/
 theorem isGen_of_maps {P : Out.PolAV (Sp K₁)} {rig : LB.Gen (P.L.pull (eSec P.A))} {σ : K₁ →+* ℂ}
     {P' : Out.PolAV (Sp ℂ)} {rig' : LB.Gen (P'.L.pull (eSec P'.A))} {φ : P'.A.left ⟶ P.A.left}
     (he : eSec P'.A ≫ φ = spMap σ ≫ eSec P.A) {w : LB.Iso P'.L (P.L.pull φ)} (hw : w.IsGen)
@@ -476,6 +632,21 @@ theorem isGen_of_maps {P : Out.PolAV (Sp K₁)} {rig : LB.Gen (P.L.pull (eSec P.
   refine congrArg₂ (· * ·) ?_ (valAt'_res _ inf_le_right _ hV').symm
   exact (congrArg (fun x => valAt' x _ _) he).trans (val_pull_g P.L (eSec P.A) (spMap σ) i j hV').symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hr, A', _, φ, u, Hm, χ, θ, Fd, h, hAH, h0, hθ, hF, -, -, -, rfl⟩`. Establish `hL'` using `pull_isLB P.isLB φ`. Use `haveI : IsCommMonObj A' := (pullPol P h).isAb.comm`. Establish `he : eSec A' ≫ φ = spMap σ ≫ eSec P.A` using `PolBaseChange.eSec_comm h`.
+
+Establish `hr' : (rigPullOf φ (spMap σ) he P.L rig).IsGen` using `Out.LBxP.isGen_pullAlong P.L φ (spMap σ) (fun _ : PUnit => eSec P.A) (fun _ => 1) (fun _ => eSec A') (fun _ => he) rig hr`. Take `⟨th', hth'⟩` from `sec_pull_down ((isGen_iff _).1 (idIso_isGen hL')) P.isLB hL' s`. Establish `hth` using `KeyPow.appLE_eq_of_stalk _ s th' (hth' _ (𝟙 _))`. Use `⟨pullPol P h, _, th', φ, he, idIso _, h, idIso_isGen hL', fun p => hr' p.1 p.2, hth, u, Hm, χ, θ, Fd, hAH, fun j hj => ?_, fun j z hz => ?_, hF, rfl⟩` and prove the remaining obligations. Establish `hj' : ⊤ ≤ (P.L.pull (eSec P.A)).U fun _ => j PUnit.unit PUnit.unit` using `(le_spMap_iff σ _).1 (hj.trans (rigPull_le φ (spMap σ) he P.L j))`.
+
+Conclude with `(h0 _ hj').trans ((val_spMap σ _ hj' _).symm.trans (val_rigPull he rig (j PUnit.unit PUnit.unit) hj).symm)`. Establish `e` using `val_via _ s th' hth (u.ex z).left (j PUnit.unit) j ((top_le_preimage_inf _ _ _).2 ⟨hz, hz⟩)`. Use `Eq.trans ?_ (hθ (j PUnit.unit) z ((le_pull_iff _ _ _ _).1 hz))` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `((congrArg (· * _) (val_g_self hL' _ j hz)).trans (_root_.one_mul _)).symm`.
+
+Introduce and unpack `⟨P', rig', th', φ, he, w, h, hw, hm, hth, u, Hm, χ, θ, Fd, hAH, hR, hfn, hF, rfl⟩`. Use `⟨isGen_of_maps he hw hm, ?_⟩` and prove the remaining obligations. Establish `hg` using `g_eq h`. Establish `hM` using `pull_isLB P.isLB φ`. Establish `h0 : ∀ i : P.L.ι, ⊤ ≤ (P.L.pull (eSec P.A)).U (fun _ => i) → (carry u P'.isLB hM hw).fr (fun _ => i) 0 = σ (valR (A` using `K₁) (𝟙 (Sp K₁)) ((P.L.pull (eSec P.A)).U (fun _ => i)) (rig.s (fun _ => i)).val) := by`.
+
+Introduce `i hi`. Establish `z : (u.ex 0).left = eSec P'.A` using `TangentOrigin.ex_zero_left u`. Take `⟨k, hk⟩` from `exists_chart_at P'.isLB (show Sp ℂ ⟶ _ from eSec P'.A)`. Establish `c : ⊤ ≤ (show Sp ℂ ⟶ _ from eSec P'.A) ⁻¹ᵁ (P.L.pull φ).U fun _ => i` using `(le_pull_iff _ _ _ _).2 (he ▸ (le_pull_iff _ _ _ _).1 ((le_spMap_iff σ _).2 hi))`. Rewrite using `[← val_spMap σ _ hi, val_rig he w rig' rig hm i k ((top_le_preimage_inf _ _ _).2 ⟨c, hk⟩), carry_fr u P'.isLB hM hw (fun _ => i) k 0 (by rw [z]; exact c) (by rw [z]; exact hk), z, hR (fun _ => k) fun p hp => mem_pull.2 (hk hp)]`.
+
+Establish `h1 : ∀ (i : P.L.ι) (z : Fin P'.g → ℂ), ⊤ ≤ ((u.ex z).left ≫ φ) ⁻¹ᵁ P.L.U i → valAt' ((u.ex z).left ≫ φ) (P.L.U i) (s.f i) = θ z * (carry u P'.isLB hM hw).fr (fun _ => i) z`. Introduce `i z hi`. Take `⟨k, hk⟩` from `exists_chart_at P'.isLB (u.ex z).left`. Establish `c : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (P.L.pull φ).U fun _ => i` using `(le_pull_iff _ _ _ _).2 hi`. Rewrite using `[val_via w s th' hth _ i k ((top_le_preimage_inf _ _ _).2 ⟨c, hk⟩), carry_fr u P'.isLB hM hw (fun _ => i) k z c hk, hfn k z hk, mul_left_comm]`.
+
+Take `⟨A, isAb, g, sm, L, isLB, rigid, sym, ample, ktriv⟩` from `P`. Take `rfl : P'.g = g` from `hg`. Conclude with `⟨P'.A, inferInstance, φ, carry u P'.isLB hM hw, Hm, χ, θ, Fd, h, carry_isAH _ _ hw hAH, h0, h1, hF, (volume_ne u hF).1, (volume_ne u hF).2, integrableOn_weight P'.isLB hAH hfn hF, rfl⟩`.
+-/
 theorem isL2Sq_iff_isThNormAt (P : Out.PolAV (Sp K₁)) (rig : LB.Gen (P.L.pull (eSec P.A))) (σ : K₁ →+* ℂ) (s : P.L.Sec)
     (v : ℝ) : IsL2SquareIntegralProblem P rig σ s v ↔ IsThNormAt P rig s σ v := by
   constructor
@@ -537,6 +708,9 @@ section Conj
 
 abbrev cj : Sp ℂ ⟶ Sp ℂ := spMap (starRingEnd ℂ)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of ℂ))` and prove the remaining obligations. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem cj_cj : cj ≫ cj = 𝟙 (Sp ℂ) := by
   rw [← Spec.map_comp]
   refine Eq.trans ?_ (Spec.map_id (CommRingCat.of ℂ))
@@ -546,9 +720,15 @@ theorem cj_cj : cj ≫ cj = 𝟙 (Sp ℂ) := by
 
 instance : IsIso cj := ⟨cj, cj_cj, cj_cj⟩
 
+/- English proof (translation)
+The claim follows from `(top_le_preimage_comp _ _ _).trans (le_spMap_iff _ _)`.
+-/
 theorem le_cj_iff {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) : ⊤ ≤ (cj ≫ x) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U :=
   (top_le_preimage_comp _ _ _).trans (le_spMap_iff _ _)
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Rewrite using `[TangentOrigin.valAt'_eq_evalPt _ _ ((le_cj_iff x U).2 h), TangentOrigin.valAt'_eq_evalPt _ _ h]`. Conclude with `TangentOrigin.evalPt_spMap_comp _ x U h _ f`. Rewrite using `[valAt'_of_not_le _ h, valAt'_of_not_le _ fun h' => h ((le_cj_iff x U).1 h'), star_zero]`.
+-/
 theorem val_cj {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     valAt' (cj ≫ x) U f = star (valAt' x U f) := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
@@ -563,13 +743,22 @@ def cjPt (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) : 𝟙_ (Over (Sp ℂ)) ⟶ A' :=
     rw [Category.assoc, show (show Sp ℂ ⟶ _ from x.left) ≫ A.hom = 𝟙 _ from Over.w x]
     simp)) (h.1.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `h.1.lift_fst _ _ _`.
+-/
 theorem cjPt_comp (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) : (cjPt h x).left ≫ ψ = cj ≫ (show Sp ℂ ⟶ _ from x.left) :=
   h.1.lift_fst _ _ _
 
 include h in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (h.1.hom_ext e (by rw [Over.w, Over.w]))`.
+-/
 theorem pt_ext {x y : 𝟙_ (Over (Sp ℂ)) ⟶ A'} (e : x.left ≫ ψ = y.left ≫ ψ) : x = y :=
   Over.OverMorphism.ext (h.1.hom_ext e (by rw [Over.w, Over.w]))
 
+/- English proof (translation)
+Set `k : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ cj) ⟶ 𝟙_ (Over (Sp ℂ))` to `Over.homMk cj ((Category.comp_id _).trans (Category.id_comp _).symm)`. Use `pt_ext h ((cjPt_comp h _).trans ?_)` and prove the remaining obligations. Rewrite using `[← h.2 _ (cjPt h x) (cjPt h y) (k ≫ x) (k ≫ y) (cjPt_comp h x).symm (cjPt_comp h y).symm, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem cjPt_mul (x y : 𝟙_ (Over (Sp ℂ)) ⟶ A) : cjPt h (x * y) = cjPt h x * cjPt h y := by
   let k : Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ cj) ⟶ 𝟙_ (Over (Sp ℂ)) :=
     Over.homMk cj ((Category.comp_id _).trans (Category.id_comp _).symm)
@@ -577,10 +766,16 @@ theorem cjPt_mul (x y : 𝟙_ (Over (Sp ℂ)) ⟶ A) : cjPt h (x * y) = cjPt h x
   rw [← h.2 _ (cjPt h x) (cjPt h y) (k ≫ x) (k ≫ y) (cjPt_comp h x).symm (cjPt_comp h y).symm, ← MonObj.comp_mul]
   rfl
 
+/- English proof (translation)
+Introduce `x y e` and use `by have := (cjPt_comp h x).symm.trans ((congrArg (·.left ≫ ψ) e).trans (cjPt_comp h y)) exact Over.OverMorphism.ext ((cancel_epi cj).1 this)`.
+-/
 theorem cjPt_injective : Function.Injective (cjPt h) := fun x y e => by
   have := (cjPt_comp h x).symm.trans ((congrArg (·.left ≫ ψ) e).trans (cjPt_comp h y))
   exact Over.OverMorphism.ext ((cancel_epi cj).1 this)
 
+/- English proof (translation)
+Introduce `y` and use `by refine ⟨Over.homMk (cj ≫ (show Sp ℂ ⟶ _ from y.left) ≫ ψ) ?_, pt_ext h ((cjPt_comp h _).trans ?_)⟩ · rw [Category.assoc, Category.assoc, h.1.w, ← Category.assoc (show Sp ℂ ⟶ _ from y.left), show (show Sp ℂ ⟶ _ from y.left) ≫ A'.hom = 𝟙 _ from Over.w y, Category.id_comp] exact …`.
+-/
 theorem cjPt_surjective : Function.Surjective (cjPt h) := fun y => by
   refine ⟨Over.homMk (cj ≫ (show Sp ℂ ⟶ _ from y.left) ≫ ψ) ?_, pt_ext h ((cjPt_comp h _).trans ?_)⟩
   · rw [Category.assoc, Category.assoc, h.1.w, ← Category.assoc (show Sp ℂ ⟶ _ from y.left),
@@ -589,14 +784,23 @@ theorem cjPt_surjective : Function.Surjective (cjPt h) := fun y => by
   · change cj ≫ cj ≫ _ = _
     rw [← Category.assoc, cj_cj, Category.id_comp]
 
+/- English proof (translation)
+Use `cjPt_mul h 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem cjPt_one : cjPt h 1 = 1 := by
   have := cjPt_mul h 1 1
   rw [_root_.mul_one] at this
   exact left_eq_mul.1 this
 
 include h in
+/- English proof (translation)
+The claim follows from `h.1.isIso_fst_of_isIso`.
+-/
 theorem isIso_of_cj : IsIso ψ := h.1.isIso_fst_of_isIso
 
+/- English proof (translation)
+The claim follows from `isIso_of_cj h (cjPt h x).left = cj ≫ (show Sp ℂ ⟶ _ from x.left) ≫ inv ψ := by haveI := isIso_of_cj h rw [← Category.assoc, ← cjPt_comp h x] exact ((Category.assoc _ _ _).trans (by rw [IsIso.hom_inv_id, Category.comp_id])).symm`.
+-/
 theorem cjPt_left (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     haveI := isIso_of_cj h
     (cjPt h x).left = cj ≫ (show Sp ℂ ⟶ _ from x.left) ≫ inv ψ := by
@@ -606,28 +810,43 @@ theorem cjPt_left (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
 
 variable {X : Scheme.{0}} {L : LB X} {φ : A.left ⟶ X} {g : ℕ} (u : HolUnif A (L.pull φ) g)
 
+/- English proof (translation)
+Introduce `z hz` and use `by have := (hF.differentiableAt (hS.mem_nhds hz)).star_star rw [star_star] at this exact this.differentiableWithinAt`.
+-/
 theorem differentiableOn_star {F : (Fin g → ℂ) → ℂ} {S : Set (Fin g → ℂ)} (hS : IsOpen S) (hF : DifferentiableOn ℂ F S) :
     DifferentiableOn ℂ (fun z => star (F (star z))) {z | star z ∈ S} := fun z hz => by
   have := (hF.differentiableAt (hS.mem_nhds hz)).star_star
   rw [star_star] at this
   exact this.differentiableWithinAt
 
+/- English proof (translation)
+The claim follows from `isIso_of_cj h ⊤ ≤ (cjPt h x).left ⁻¹ᵁ U ↔ ⊤ ≤ x.left ⁻¹ᵁ (inv ψ ⁻¹ᵁ U) := by rw [cjPt_left] exact (le_cj_iff _ _).trans (top_le_preimage_comp _ _ _)`.
+-/
 theorem cj_le_iff (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (U : A'.left.Opens) :
     haveI := isIso_of_cj h
     ⊤ ≤ (cjPt h x).left ⁻¹ᵁ U ↔ ⊤ ≤ x.left ⁻¹ᵁ (inv ψ ⁻¹ᵁ U) := by
   rw [cjPt_left]
   exact (le_cj_iff _ _).trans (top_le_preimage_comp _ _ _)
 
+/- English proof (translation)
+The claim follows from `isIso_of_cj h valAt' (cjPt h x).left U f = star (valAt' x.left (inv ψ ⁻¹ᵁ U) (((inv ψ).app U).hom f)) := by rw [cjPt_left] exact (val_cj _ _ _).trans (congrArg _ (valAt'_comp _ _ _ _).symm)`.
+-/
 theorem cj_val (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (U : A'.left.Opens) (f : Γ(A'.left, U)) :
     haveI := isIso_of_cj h
     valAt' (cjPt h x).left U f = star (valAt' x.left (inv ψ ⁻¹ᵁ U) (((inv ψ).app U).hom f)) := by
   rw [cjPt_left]
   exact (val_cj _ _ _).trans (congrArg _ (valAt'_comp _ _ _ _).symm)
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, cjPt_comp, Category.assoc]`.
+-/
 theorem cjPt_comp' (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) :
     (cjPt h x).left ≫ ψ ≫ φ = cj ≫ (show Sp ℂ ⟶ _ from x.left) ≫ φ := by
   rw [← Category.assoc, cjPt_comp, Category.assoc]
 
+/- English proof (translation)
+Use `(le_pull_iff L _ _ j).trans (Iff.trans ?_ (le_pull_iff L φ x.left j).symm)` and prove the remaining obligations. Rewrite using `[cjPt_comp']`. Conclude with `le_cj_iff _ _`.
+-/
 theorem cj_le_pull (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (j : PUnit → L.ι) :
     ⊤ ≤ (cjPt h x).left ⁻¹ᵁ (L.pull (ψ ≫ φ)).U j ↔ ⊤ ≤ x.left ⁻¹ᵁ (L.pull φ).U j := by
   refine (le_pull_iff L _ _ j).trans (Iff.trans ?_ (le_pull_iff L φ x.left j).symm)
@@ -664,15 +883,26 @@ def cjUnif : HolUnif A' (L.pull (ψ ≫ φ)) g where
     have hm := (top_le_preimage_inf _ _ _).2 ⟨(cj_le_pull h _ j).1 hj, (cj_le_pull h _ j').1 hj'⟩
     rw [u.fr_compat j j' _ hm, val_pull_g L _ _ j j' hz, val_pull_g L φ _ j j' hm, star_mul', cjPt_comp', val_cj]
 
+/- English proof (translation)
+Simplify using `[dotProduct, Matrix.mulVec]`.
+-/
 theorem star_form (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     star (star z ⬝ᵥ Hm.mulVec (star (star w))) = z ⬝ᵥ (Hm.map star).mulVec (star w) := by
   simp [dotProduct, Matrix.mulVec]
 
+/- English proof (translation)
+Rewrite using `[hermSq, ← star_form]`. Both sides reduce to the same expression.
+-/
 theorem hermSq_star (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) :
     hermSq (Hm.map star) z = hermSq Hm (star z) := by
   rw [hermSq, ← star_form]
   rfl
 
+/- English proof (translation)
+Use `⟨hA.1.map star fun _ => rfl, fun z hz => (hA.2.1 _ (star_ne_zero.2 hz)).trans_eq (hermSq_star Hm z).symm, fun l => (norm_star _).trans (hA.2.2.1 _), fun l j z hj => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg star (hA.2.2.2 ⟨star l.1, l.2⟩ j (star z) ((cj_le_pull h _ j).1 hj))`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[star_mul', star_mul', ← star_form, ← star_form, ← star_add z]`. Use `congr 2`.
+
+Rewrite using `[Complex.star_def, ← Complex.exp_conj]`. Simplify using `only [map_add, map_mul, map_div₀, Complex.conj_ofReal, map_ofNat]`.
+-/
 theorem cj_isAH {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hA : u.IsAH Hm χ) :
     (cjUnif h u).IsAH (Hm.map star) fun l => star (χ ⟨star l.1, l.2⟩) := by
   refine ⟨hA.1.map star fun _ => rfl, fun z hz => (hA.2.1 _ (star_ne_zero.2 hz)).trans_eq (hermSq_star Hm z).symm,
@@ -684,9 +914,15 @@ theorem cj_isAH {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hA : u.Is
   rw [Complex.star_def, ← Complex.exp_conj]
   simp only [map_add, map_mul, map_div₀, Complex.conj_ofReal, map_ofNat]
 
+/- English proof (translation)
+The claim follows from `volume_preserving_pi fun _ => Complex.conjLIE.measurePreserving`.
+-/
 theorem measurePreserving_star : MeasurePreserving (star : (Fin g → ℂ) → Fin g → ℂ) volume volume :=
   volume_preserving_pi fun _ => Complex.conjLIE.measurePreserving
 
+/- English proof (translation)
+Use `hF.preimage_of_equiv measurePreserving_star.quasiMeasurePreserving (e := fun l => ⟨star l.1, show star (star l.1) ∈ u.Λ by rw [star_star]; exact l.2⟩) ⟨fun a b e => ?_, fun l => ?_⟩ fun l z => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (star_injective (congrArg Subtype.val e))`. Conclude with `⟨⟨star l.1, l.2⟩, Subtype.ext (star_star _)⟩`. Express the relevant statement in the definitionally equal form `star (star l.1 + z) = l.1 + star z`. Rewrite using `[star_add, star_star]`.
+-/
 theorem cj_domain {Fd : Set (Fin g → ℂ)} (hF : IsAddFundamentalDomain u.Λ Fd volume) :
     IsAddFundamentalDomain (cjUnif h u).Λ (star ⁻¹' Fd) volume := by
   refine hF.preimage_of_equiv measurePreserving_star.quasiMeasurePreserving
@@ -697,6 +933,17 @@ theorem cj_domain {Fd : Set (Fin g → ℂ)} (hF : IsAddFundamentalDomain u.Λ F
   · change star (star l.1 + z) = l.1 + star z
     rw [star_add, star_star]
 
+/- English proof (translation)
+Use `haveI := isIso_of_cj h`. Introduce `U hU f`. Establish `h0` using `(TangentOrigin.tangent_mem_iff (u := cjUnif h u) (isTangent_of_pull h ht e) U).1 hU`. Establish `h1 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (inv ψ ⁻¹ᵁ U)`. Use `(cj_le_iff h _ U).1 h0` as an intermediate fact.
+
+Rewrite `this` using `[star_zero]`. Then use the resulting hypothesis. Establish `h2` using `(TangentOrigin.tangent_mem_iff (u := u) ht _).2 h1`. Establish `d` using `(TangentOrigin.differentiableAt_val u h1 (((inv ψ).app U).hom f)).hasFDerivAt.star_star`. Rewrite `d` using `[star_zero]`. Establish `e1 : (fun z => valAt' ((cjUnif h u).ex z).left U f) = star ∘ (fun z => valAt' (u.ex z).left (inv ψ ⁻¹ᵁ U) (((inv ψ).app U).hom f)) ∘ star`.
+
+Use function extensionality and compare the values at `fun z => cj_val h _ U f`. Rewrite using `[e1, d.fderiv]`. Establish `e2 : t'.left = spMap (dualMap (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ`. Rewrite using `[← Category.assoc]`. Conclude with `(IsIso.eq_comp_inv ψ).2 e`.
+
+Establish `k : ∀ (y : Sp (DualNumber ℂ) ⟶ A'.left) (hy : ⊤ ≤ y ⁻¹ᵁ U), y = spMap (dualMap (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ → TangentOrigin.evalPt y U hy f = dualMap (starRingEnd ℂ) (TangentOrigin.evalPt (R` using `DualNumber ℂ) t.left _ h2 (((inv ψ).app U).hom f)) := by`. Introduce and unpack `_ hy rfl`. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ U h2]`. Use `congr 1`. Use `(congrArg TrivSqZeroExt.snd (k _ hU e2)).trans ?_` and prove the remaining obligations.
+
+Establish `e3` using `hd _ h2 (((inv ψ).app U).hom f)`. Simplify using `only [dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Use `(congrArg (starRingEnd ℂ) e3).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem cj_isDiff {t : epsR ℂ ⟶ A} {t' : epsR ℂ ⟶ A'} (ht : IsTangent t)
     (e : t'.left ≫ ψ = spMap (dualMap (starRingEnd ℂ)) ≫ t.left) {w : Fin g → ℂ} (hd : u.IsDiff w t) :
     (cjUnif h u).IsDiff (star w) t' := by
@@ -732,10 +979,20 @@ theorem cj_isDiff {t : epsR ℂ ⟶ A} {t' : epsR ℂ ⟶ A'} (ht : IsTangent t)
 
 variable {K₁ : Type} [Field K₁]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_conjugate (σ : K₁ →+* ℂ) : cj ≫ spMap σ = spMap (ComplexEmbedding.conjugate σ) := by
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨hr, A, _, φ, u, Hm, χ, θ, Fd, h, hAH, h0, hθ, hF, hv0, hv, hI, rfl⟩` from `H`. Take `⟨A', _, ψ, hc⟩ : ∃ (A' : Over (Sp ℂ)) (_ : GrpObj A') (ψ : A'.left ⟶ A.left), IsGrpPullback A' A cj ψ` from `⟨_, _, _, isGrpPullback_pullback A cj⟩`. Establish `me : MeasurableEmbedding (star : (Fin P.g → ℂ) → Fin P.g → ℂ)` using `(starL' ℝ (A := Fin P.g → ℂ)).toHomeomorph.measurableEmbedding`. Establish `hvol : volume (star ⁻¹' Fd) = volume Fd` using `measurePreserving_star.measure_preimage_emb me Fd`. Use `⟨hr, _, inferInstance, _, cjUnif hc u, _, _, fun z => star (θ (star z)), star ⁻¹' Fd, (hc.comp h).congr (spMap_conjugate σ) rfl, cj_isAH hc u hAH, fun i hi => ?_, fun i z hz => ?_, cj_domain hc u hF, hvol ▸ hv0, hvol ▸ hv, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `star (u.fr _ (star 0)) = _`. Rewrite using `[star_zero, h0 i hi]`. Both sides reduce to the same expression. Establish `e` using `cjPt_comp' (φ := φ) hc (u.ex (star z))`. Use `(congrArg (fun x => valAt' x _ _) e).trans ((val_cj _ _ _).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(congrArg star (hθ i (star z) ((le_cj_iff _ _).1 (e ▸ hz)))).trans (star_mul' _ _)`. Simplify using `only [hermSq_star, norm_star]`. Conclude with `(measurePreserving_star.integrableOn_comp_preimage me).2 hI`. Simplify using `only [hermSq_star, norm_star, hvol]`. Rewrite using `[← measurePreserving_star.setIntegral_preimage_emb me]`.
+-/
 theorem isL2Sq_conjugate_embedding {P : Out.PolAV (Sp K₁)} {rig : LB.Gen (P.L.pull (eSec P.A))} {σ : K₁ →+* ℂ}
     {s : P.L.Sec} {v : ℝ} (H : IsL2SquareIntegralProblem P rig σ s v) : IsL2SquareIntegralProblem P rig (ComplexEmbedding.conjugate σ) s v := by
   obtain ⟨hr, A, _, φ, u, Hm, χ, θ, Fd, h, hAH, h0, hθ, hF, hv0, hv, hI, rfl⟩ := H

@@ -11,6 +11,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `⟨fun i => Pi.single i (1 : K), Pi.linearIndependent_single_one (Fin j) K, ?_, rfl, ?_⟩` and prove the remaining obligations. Establish `h` using `(Pi.basisFun K (Fin j)).span_eq`. Establish `e : (fun i : Fin j => Pi.single i (1 : K)) = ⇑(Pi.basisFun K (Fin j))`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply]`.
+
+Rewrite using `[e]`. Conclude with `h`. Introduce `a c`. Simplify using `[Cnt.stdH, LinearMap.mk₂'ₛₗ_apply, Pi.single_apply, apply_ite star, eq_comm]`.
+-/
 theorem frm_stdLat_isOrtho (K : Type) [Field K] [NumberField K] [StarRing K] (j : ℕ) :
     Formalism.HermitianLatticesTheory.IsOrthoLattice (Cnt.stdH K j) (stdLat K j) j := by
   classical
@@ -24,12 +29,20 @@ theorem frm_stdLat_isOrtho (K : Type) [Field K] [NumberField K] [StarRing K] (j 
   · intro a c
     simp [Cnt.stdH, LinearMap.mk₂'ₛₗ_apply, Pi.single_apply, apply_ite star, eq_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y`. Simplify using `only [Cnt.stdH, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]`. Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`.
+-/
 theorem frm_stdH_isSymm (K : Type) [Field K] [NumberField K] [StarRing K] (j : ℕ) : (Cnt.stdH K j).IsSymm := by
   constructor
   intro x y
   simp only [Cnt.stdH, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]
   exact Finset.sum_congr rfl (fun i _ => mul_comm _ _)
 
+/- English proof (translation)
+Introduce `F0 he hz what₂ hrows`. Establish `h1` using `(hL (D.mem u).A.T_prime h3 hs F0 he hz what₂ hrows).1`. Establish `h2` using `(hR (Fin D.R.k → D.host.E) (Cnt.stdH D.host.E D.R.k) (stdLat D.host.E D.R.k) (frm_stdH_isSymm D.host.E D.R.k)).1 (frm_stdLat_isOrtho D.host.E D.R.k) u`. Establish `h4 : dimPi (hc` using `D.hcW) u = ∏ τ, vand (uS D u τ) / ∏ i ∈ Finset.range D.R.k, (i.factorial : ℝ) := Finset.prod_congr rfl (fun τ _ => hW τ)`. Rewrite using `[h1, h2, h4]`.
+
+Simplify using `only [massS, massU, Tr, Tu]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formAt_of (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) (hL : UnitaryVolumeMass.stLem3L0 D u)
     (hW : ∀ τ, (dimPiU D.R.k (uS D u τ) : ℝ) = vand (uS D u τ) / ∏ i ∈ Finset.range D.R.k, (i.factorial : ℝ))
     (h3 : 3 ≤ Tu D u) (hs : SplitsE D (D.mem u).A.T) : UnitaryVolumeMass.FormAt D u := by
@@ -44,6 +57,19 @@ theorem formAt_of (D : D7) (u : D.what₂.Word) (hR : LocalBesselAndTopKernel.Fa
   simp only [massS, massU, Tr, Tu]
   ring
 
+/- English proof (translation)
+Take `⟨hH, hD, _⟩` from `h`. Establish `hg1 : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ (D.host.g 0 : ℝ)` using `hH.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hg2 : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ (D.host.g 1 : ℝ)` using `hH.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hmod` using `(hD.2.2.2.2.2.2.2.2.1 u).2`. Establish `hk : (1 : ℝ) ≤ D.R.k`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hb : (1 : ℝ) < large₂.sc.b`. Unfold `Scale.b Scale.L`. Conclude with `Real.one_lt_exp_iff.2 (Real.rpow_pos_of_pos (lt_trans one_pos large₂.sc.one_lt_alt) _)`.
+
+Establish `hkb : (1 : ℝ) < ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Apply `one_lt_pow₀ _ (by norm_num)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : 2 ≤ D.host.g 0`. Establish `: (1 : ℝ) < (D.host.g 0 : ℝ)` using `lt_of_lt_of_le hkb hg1`.
+
+Conclude with `this` after adjusting the coercions. Establish `h1 : 2 ≤ D.host.g 1`. Establish `: (1 : ℝ) < (D.host.g 1 : ℝ)` using `lt_of_lt_of_le hkb hg2`. Conclude with `this` after adjusting the coercions. Establish `hM : 16 ≤ (D.host.g 0 * D.host.g 1) ^ 2`.
+
+Establish `: 4 ≤ D.host.g 0 * D.host.g 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp` using `(D.mem u).A.T_prime.two_le`. Unfold `Tu`. Assume the negation of the conclusion as `hlt`.
+
+Establish `h2 : (D.mem u).A.T = 2` using `by omega`. Rewrite `hmod` using `[h2, Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem three_le_Tu (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (h : Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u : D.what₂.Word) : 3 ≤ Tu D u := by
   obtain ⟨hH, hD, _⟩ := h
@@ -75,6 +101,9 @@ theorem three_le_Tu (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0
   rw [h2, Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)] at hmod
   omega
 
+/- English proof (translation)
+The claim follows from `formAt_of D u hR (hL u) (fun τ => hW h u τ) (three_le_Tu D large₂ h u) (h.2.1.2.2.2.2.2.2.2.2.1 u).1`.
+-/
 theorem local_form_of_hypotheses (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (h : Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hR : LocalBesselAndTopKernel.FamilyMidVolume D) (hL : ∀ u, UnitaryVolumeMass.stLem3L0 D u)
     (hW : VanishingOnXAndXPlus.PlaneWaveIsometry D large₂ C' Cl Cg cb Cu cT CT C0) (u : D.what₂.Word) : UnitaryVolumeMass.FormAt D u :=
@@ -84,6 +113,9 @@ section Family
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hR`. Take `⟨b, hb⟩` from `hW`. Use `ownEv_intro Fm (max a b) (fun x hx hx1 i h u => ?_)` and prove the remaining obligations. Conclude with `local_form_of_hypotheses _ _ h (ha x (le_trans (le_max_left _ _) hx) i ⟨h.2.1, h.1, h.2.2⟩) (fun u => hL x hx1 i u) (hb x (le_trans (le_max_right _ _) hx) i) u`.
+-/
 theorem formAt_family (Cg cb Cu cT CT C0 : ℝ) (hR : PX.RanksF Fm C0 Cg cb Cu cT CT) (hL : VanishingOnXAndXPlusMass.Conclusion3Family Fm)
     (hW : VanishingOnXAndXPlus.FamilyWeylDimensionVandermondeQuotient Fm Cg cb Cu cT CT C0) :
     OwnEv Fm fun C' Cl x i => Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 →

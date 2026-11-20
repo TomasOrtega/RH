@@ -7,6 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ResidueUnit
 
+/- English proof (translation)
+Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Use `letI : Field (kP PP) := Ideal.Quotient.field PP.asIdeal`. Use `haveI : Finite (kP PP) := PP.asIdeal.finiteQuotientOfFreeOfNeBot PP.ne_bot`. Use `letI : Fintype (kP PP) := Fintype.ofFinite _`. Take `⟨n, hp, hcard⟩` from `FiniteField.card (kP PP) (ringChar (kP PP))`.
+
+Rewrite using `[Nat.card_eq_fintype_card, hcard]`. Use `Nat.Coprime.pow_left _ ((Nat.coprime_primes hp hl).2 ?_)` and prove the remaining obligations. Introduce `hpl`. Apply `hPP` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h0 : ((ringChar (kP PP) : ℕ) : kP PP) = 0` using `ringChar.Nat.cast_ringChar`. Rewrite `h0` using `[hpl]`. Simplify using `using h0`.
+-/
 theorem card_residueField_coprime {E : Type} [Field E] [NumberField E] (PP : Pl E) (l : ℕ) (hl : l.Prime)
     (hPP : ((l : ℕ) : 𝓞 E) ∉ PP.asIdeal) : Nat.Coprime (Nat.card (kP PP)) l := by
   haveI : PP.asIdeal.IsMaximal := PP.isMaximal
@@ -23,6 +30,9 @@ theorem card_residueField_coprime {E : Type} [Field E] [NumberField E] (PP : Pl 
   rw [hpl] at h0
   simpa using h0
 
+/- English proof (translation)
+Use `haveI : Algebra.IsIntegral O A := Algebra.IsIntegral.of_finite O A`. Establish `hmax : ((IsLocalRing.maximalIdeal A).comap (algebraMap O A)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (IsLocalRing.maximalIdeal A)`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `: ((l : ℕ) : O) ∈ (IsLocalRing.maximalIdeal A).comap (algebraMap O A)` using `heq ▸ hl`. Simplify using `using this`.
+-/
 theorem natCast_mem_maximalIdeal_of_finite {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A]
     [IsLocalRing A] [Algebra O A] [Module.Finite O A] (l : ℕ) (hl : ((l : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) :
     ((l : ℕ) : A) ∈ IsLocalRing.maximalIdeal A := by
@@ -33,6 +43,13 @@ theorem natCast_mem_maximalIdeal_of_finite {O A : Type} [CommRing O] [IsLocalRin
   have : ((l : ℕ) : O) ∈ (IsLocalRing.maximalIdeal A).comap (algebraMap O A) := heq ▸ hl
   simpa using this
 
+/- English proof (translation)
+Establish `hc : IsCoprime ((q : ℤ)) ((l : ℤ))` using `Nat.isCoprime_iff_coprime.2 h`. Take `⟨a, b, hab⟩` from `hc`. Assume the negation of the conclusion as `hq`. Establish `hq' : ((q : ℕ) : A) ∈ IsLocalRing.maximalIdeal A` using `(IsLocalRing.mem_maximalIdeal _).2 hq`. Apply `(IsLocalRing.maximalIdeal.isMaximal A).ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : ((a : A) * ((q : ℕ) : A) + (b : A) * ((l : ℕ) : A)) = 1`. Use `congrArg (Int.cast : ℤ → A) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Rewrite using `[← h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hq') (Ideal.mul_mem_left _ _ hl)`.
+-/
 theorem isUnit_of_coprime {A : Type} [CommRing A] [IsLocalRing A] (q l : ℕ) (h : Nat.Coprime q l)
     (hl : ((l : ℕ) : A) ∈ IsLocalRing.maximalIdeal A) : IsUnit ((q : ℕ) : A) := by
   have hc : IsCoprime ((q : ℤ)) ((l : ℤ)) := Nat.isCoprime_iff_coprime.2 h
@@ -52,6 +69,9 @@ end GlobalTheory.ResidueUnit
 
 open GlobalTheory.ResidueUnit in
 
+/- English proof (translation)
+Introduce `hP`. Establish `hl : ((X.l i : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal` using `fun h => hP (X.twistExcludedPlaces_contains_residueChar i h)`. Use `haveI := X.Ok_fin i k`. Conclude with `isUnit_of_coprime _ _ (card_residueField_coprime PP (X.l i) (X.lPrime i).out hl) (natCast_mem_maximalIdeal_of_finite (O := X.O i) (X.l i) (X.O_l i))`.
+-/
 theorem GlobalTheory.ResidueUnit.isUnit_card_residueField_Ok {D : D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N)
     (i : X.Tw) (k : ℕ) (PP : Pl D.host.E) :
     PP ∉ X.S0 i → IsUnit ((Nat.card (kP PP) : ℕ) : X.Ok i k) := by

@@ -11,14 +11,25 @@ variable {R : Type*} [CommRing R]
 abbrev subsetEnum {n : Type*} [LinearOrder n] {i : ℕ} (S : Set.powersetCard n i) : Fin i → n :=
   S.1.orderEmbOfFin S.2
 
+/- English proof (translation)
+The claim follows from `Finset.range_orderEmbOfFin _ _`.
+-/
 theorem range_subsetEnum {n : Type*} [LinearOrder n] {i : ℕ} (S : Set.powersetCard n i) :
     Set.range (subsetEnum S) = (S.1 : Set n) :=
   Finset.range_orderEmbOfFin _ _
 
+/- English proof (translation)
+The claim follows from `(S.1.orderEmbOfFin S.2).injective`.
+-/
 theorem subsetEnum_injective {n : Type*} [LinearOrder n] {i : ℕ} (S : Set.powersetCard n i) :
     Function.Injective (subsetEnum S) :=
   (S.1.orderEmbOfFin S.2).injective
 
+/- English proof (translation)
+Set `b` to `Pi.basisFun R n`. Establish `h` using `(b.exteriorPower i).sum_repr (exteriorPower.ιMulti R i A)`. Rewrite using `[← exteriorPower.alternatingMapLinearEquiv_apply_ιMulti f A, ← h, map_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti, exteriorPower.basis_apply, exteriorPower.ιMulti_family, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `a`. Simplify using `only [b, Function.comp_apply, Pi.basisFun_apply]`. Both sides reduce to the same expression.
+-/
 theorem alternatingMap_apply_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
     {M : Type*} [AddCommGroup M] [Module R M] (f : (n → R) [⋀^Fin i]→ₗ[R] M)
     (A : Fin i → n → R) :
@@ -37,6 +48,13 @@ theorem alternatingMap_apply_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder 
   simp only [b, Function.comp_apply, Pi.basisFun_apply]
   rfl
 
+/- English proof (translation)
+Establish `h` using `alternatingMap_apply_eq_sum_minors ((Matrix.detRowAlternating (n := Fin i) (R := R)).compLinearMap B.vecMulLinear) A`. Establish `h0 : (A * B).det = ((Matrix.detRowAlternating (n` using `Fin i) (R := R)).compLinearMap B.vecMulLinear) A := rfl`. Rewrite using `[h0, h]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+
+Use `congr 1`. Rewrite using `[AlternatingMap.compLinearMap_apply]`. Express the relevant statement in the definitionally equal form `Matrix.det _ = _`. Use `congr 1`. Use extensionality with `a c`.
+
+Simplify using `[Matrix.vecMulLinear_apply, Matrix.single_one_vecMul]`.
+-/
 theorem det_mul_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
     (A : Matrix (Fin i) n R) (B : Matrix n (Fin i) R) :
     (A * B).det = ∑ S : Set.powersetCard n i,
@@ -56,6 +74,17 @@ theorem det_mul_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
   ext a c
   simp [Matrix.vecMulLinear_apply, Matrix.single_one_vecMul]
 
+/- English proof (translation)
+Establish `h1 : ∀ a : k, ∃ c : m, e c = g a` using `fun a => by`. Establish `: g a ∈ Set.range e` using `h ▸ Set.mem_range_self a`. Conclude with `this`. Use `choose s hs using h1`. Establish `hinj : Function.Injective (φ.symm ∘ s)`.
+
+Introduce `a a' haa`. Establish `: s a = s a'` using `φ.symm.injective haa`. Conclude with `hg (by rw [← hs a, ← hs a', this])`. Set `σ : Equiv.Perm k` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.mp hinj)`. Establish `hσ : ∀ a, e (φ (σ a)) = g a` using `fun a => by simp [σ, hs]`.
+
+Establish `hA : A.submatrix φ g = ((A.submatrix id e).submatrix φ φ).submatrix id σ`. Use extensionality with `a c`. Simplify using `[hσ]`. Establish `hB : B.submatrix g φ = ((B.submatrix e id).submatrix φ φ).submatrix σ id`. Use extensionality with `a c`.
+
+Simplify using `[hσ]`. Rewrite using `[hA, hB, det_permute, det_permute', det_submatrix_equiv_self, det_submatrix_equiv_self]`. Establish `: ((Equiv.Perm.sign σ : ℤ) : R) * ((Equiv.Perm.sign σ : ℤ) : R) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+
+Take the linear combination `(-(A.submatrix id e).det * (B.submatrix e id).det) * this`.
+-/
 theorem det_mul_det_eq_of_range_eq {m k n : Type*} [Fintype m] [DecidableEq m] [Fintype k]
     [DecidableEq k] (A : Matrix m n R) (B : Matrix n m R) (φ : k ≃ m) (e : m → n) (g : k → n)
     (hg : Function.Injective g) (h : Set.range e = Set.range g) :
@@ -80,6 +109,11 @@ theorem det_mul_det_eq_of_range_eq {m k n : Type*} [Fintype m] [DecidableEq m] [
     rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
   linear_combination (-(A.submatrix id e).det * (B.submatrix e id).det) * this
 
+/- English proof (translation)
+Use `letI : LinearOrder n := linearOrderOfSTO WellOrderingRel`. Set `φ : Fin (Fintype.card m) ≃ m` to `(Fintype.equivFin m).symm`. Rewrite using `[← det_submatrix_equiv_self φ (A * B), submatrix_mul A B φ id φ Function.bijective_id, det_mul_eq_sum_minors]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[det_mul_det_eq_of_range_eq A B φ (e S) (subsetEnum S) (subsetEnum_injective S) ((he S).trans (range_subsetEnum S).symm)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem det_mul_eq_sum_minors_of_enum {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n]
     (e : Set.powersetCard n (Fintype.card m) → m → n)
     (he : ∀ S, Set.range (e S) = (S.1 : Set n)) (A : Matrix m n R) (B : Matrix n m R) :
@@ -95,6 +129,9 @@ theorem det_mul_eq_sum_minors_of_enum {m n : Type*} [Fintype m] [DecidableEq m] 
     ((he S).trans (range_subsetEnum S).symm)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[submatrix_mul A B r id c Function.bijective_id, det_mul_eq_sum_minors]`. Both sides reduce to the same expression.
+-/
 theorem det_submatrix_mul_eq_sum_minors {l n o : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
     (A : Matrix l n R) (B : Matrix n o R) (r : Fin i → l) (c : Fin i → o) :
     ((A * B).submatrix r c).det = ∑ S : Set.powersetCard n i,
@@ -102,6 +139,13 @@ theorem det_submatrix_mul_eq_sum_minors {l n o : Type*} [Fintype n] [LinearOrder
   rw [submatrix_mul A B r id c Function.bijective_id, det_mul_eq_sum_minors]
   rfl
 
+/- English proof (translation)
+Rewrite using `[det_mul_eq_sum_minors]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Establish `h1 : (A * diagonal d).submatrix id (subsetEnum S) = A.submatrix id (subsetEnum S) * diagonal (d ∘ subsetEnum S)`. Use extensionality with `a c`. Simplify using the standard rewrite rules.
+
+Establish `h2 : ∏ a, d (subsetEnum S a) = ∏ s ∈ S.1, d s`. Use `Finset.prod_bij (fun a _ => subsetEnum S a) (fun a _ => Finset.orderEmbOfFin_mem _ _ _) (fun a _ b _ h => subsetEnum_injective S h) (fun s hs => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Establish `: s ∈ Set.range (subsetEnum S)` using `by rw [range_subsetEnum]; exact hs`. Take `⟨a, ha⟩` from `this`. Conclude with `⟨a, Finset.mem_univ _, ha⟩`.
+
+Rewrite using `[h1, det_mul, det_diagonal, ← h2]`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_mul_diagonal_mul_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
     (A : Matrix (Fin i) n R) (d : n → R) (B : Matrix n (Fin i) R) :
     (A * diagonal d * B).det = ∑ S : Set.powersetCard n i,
@@ -128,6 +172,9 @@ section Normed
 
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
 
+/- English proof (translation)
+Rewrite using `[det_mul_eq_sum_minors]`. Use `push_cast`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[← conjTranspose_submatrix, det_conjTranspose, RCLike.star_def, RCLike.mul_conj]`.
+-/
 theorem det_mul_conjTranspose_eq_sum_norm_sq (A : Matrix (Fin i) n 𝕜) :
     (A * Aᴴ).det =
       ((∑ S : Set.powersetCard n i, ‖(A.submatrix id (subsetEnum S)).det‖ ^ 2 : ℝ) : 𝕜) := by
@@ -136,12 +183,20 @@ theorem det_mul_conjTranspose_eq_sum_norm_sq (A : Matrix (Fin i) n 𝕜) :
   refine Finset.sum_congr rfl fun S _ => ?_
   rw [← conjTranspose_submatrix, det_conjTranspose, RCLike.star_def, RCLike.mul_conj]
 
+/- English proof (translation)
+Establish `h` using `det_mul_conjTranspose_eq_sum_norm_sq A`. Rewrite `h` using `[hA, det_one]`. Conclude with `h.symm` after adjusting the coercions.
+-/
 theorem sum_norm_sq_minors_eq_one (A : Matrix (Fin i) n 𝕜) (hA : A * Aᴴ = 1) :
     ∑ S : Set.powersetCard n i, ‖(A.submatrix id (subsetEnum S)).det‖ ^ 2 = 1 := by
   have h := det_mul_conjTranspose_eq_sum_norm_sq A
   rw [hA, det_one] at h
   exact_mod_cast h.symm
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < N.choose i` using `by exact_mod_cast Nat.choose_pos hi`. Establish `hle : (N.choose i : ℝ) ≤ (2 : ℝ) ^ (r : ℝ)`. Rewrite using `[Real.rpow_natCast]`. Conclude with `(Nat.choose_le_two_pow N i).trans (Nat.pow_le_pow_right two_pos hr)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Real.rpow_mul zero_le_two]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Real.rpow_le_rpow_of_nonpos hpos hle (by norm_num)`.
+-/
 theorem two_rpow_neg_half_le_choose_rpow {i N r : ℕ} (hi : i ≤ N) (hr : N ≤ r) :
     (2 : ℝ) ^ (-(r : ℝ) / 2) ≤ (N.choose i : ℝ) ^ (-(1 : ℝ) / 2) := by
   have hpos : (0 : ℝ) < N.choose i := by exact_mod_cast Nat.choose_pos hi
@@ -152,6 +207,15 @@ theorem two_rpow_neg_half_le_choose_rpow {i N r : ℕ} (hi : i ≤ N) (hr : N �
         rw [← Real.rpow_mul zero_le_two]; congr 1; ring
     _ ≤ _ := Real.rpow_le_rpow_of_nonpos hpos hle (by norm_num)
 
+/- English proof (translation)
+Establish `h` using `sum_norm_sq_minors_eq_one A hA`. Establish `hne : (Finset.univ : Finset (Set.powersetCard n i)).Nonempty`. Break down `(Finset.univ : Finset (Set.powersetCard n i)).eq_empty_or_nonempty with h0 | h0` into its components or cases. Rewrite `h` using `[h0]`. Simplify using `at h`.
+
+Conclude with `h0`. Establish `hi : i ≤ Fintype.card n`. Take `⟨S, -⟩` from `hne`. Conclude with `S.2 ▸ Finset.card_le_univ S.1`. Establish `hcard : Fintype.card (Set.powersetCard n i) = (Fintype.card n).choose i`.
+
+Rewrite using `[Fintype.card_eq_nat_card, Set.powersetCard.card, Nat.card_eq_fintype_card]`. Establish `hpos : (0 : ℝ) < (Fintype.card n).choose i` using `by exact_mod_cast Nat.choose_pos hi`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Take `⟨S, -, hS⟩` from `Finset.exists_le_of_sum_le hne (f := fun _ => (((Fintype.card n).choose i : ℝ))⁻¹) (g := fun S => ‖(A.submatrix id (subsetEnum S)).det‖ ^ 2) (by`. Rewrite using `[h, Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul, mul_inv_cancel₀ hpos.ne'])`.
+
+Use `⟨S, (pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).mp ?_⟩` and prove the remaining obligations. Use `le_of_eq_of_le ?_ hS` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hpos.le, ← Real.rpow_neg_one]`. Evaluate the numerical expressions.
+-/
 theorem exists_choose_rpow_le_norm_minor (A : Matrix (Fin i) n 𝕜) (hA : A * Aᴴ = 1) :
     i ≤ Fintype.card n ∧ ∃ S : Set.powersetCard n i,
       ((Fintype.card n).choose i : ℝ) ^ (-(1 : ℝ) / 2) ≤
@@ -177,6 +241,9 @@ theorem exists_choose_rpow_le_norm_minor (A : Matrix (Fin i) n 𝕜) (hA : A * A
   rw [← Real.rpow_natCast, ← Real.rpow_mul hpos.le, ← Real.rpow_neg_one]
   norm_num
 
+/- English proof (translation)
+Take `⟨hi, S, hS⟩` from `exists_choose_rpow_le_norm_minor A hA`. Conclude with `⟨S, (two_rpow_neg_half_le_choose_rpow hi hr).trans hS⟩`.
+-/
 theorem exists_two_rpow_le_norm_minor (A : Matrix (Fin i) n 𝕜) (hA : A * Aᴴ = 1) {r : ℕ}
     (hr : Fintype.card n ≤ r) :
     ∃ S : Set.powersetCard n i,

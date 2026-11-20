@@ -28,11 +28,17 @@ def IsInfLoc (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+*
 
 variable {D}
 
+/- English proof (translation)
+Unfold `locE`. Rewrite using `[map_mul]`. Take the linear combination `((incA D k - 1) * (incA D l - 1)) * he`.
+-/
 theorem locE_mul_locE {e : AE D} (he : e * e = e) (k l : D.host.E) : locE D e k * locE D e l = locE D e (k * l) := by
   unfold locE
   rw [map_mul]
   linear_combination ((incA D k - 1) * (incA D l - 1)) * he
 
+/- English proof (translation)
+Use `isUnit_iff_exists_inv.mpr ⟨locE D e ((k⁻¹ : D.host.Eˣ) : D.host.E), ?_⟩` and prove the remaining obligations. Rewrite using `[locE_mul_locE he]`. Simplify using `[locE]`.
+-/
 theorem isUnit_locE {e : AE D} (he : e * e = e) (k : D.host.Eˣ) : IsUnit (locE D e k) := by
   refine isUnit_iff_exists_inv.mpr ⟨locE D e ((k⁻¹ : D.host.Eˣ) : D.host.E), ?_⟩
   rw [locE_mul_locE he]
@@ -40,6 +46,9 @@ theorem isUnit_locE {e : AE D} (he : e * e = e) (k : D.host.Eˣ) : IsUnit (locE 
 
 def locU {e : AE D} (he : e * e = e) (k : D.host.Eˣ) : (AE D)ˣ := (isUnit_locE he k).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locU_val {e : AE D} (he : e * e = e) (k : D.host.Eˣ) : ((locU he k : (AE D)ˣ) : AE D) = locE D e k := rfl
 
 end Formalism.L2.JoinChr

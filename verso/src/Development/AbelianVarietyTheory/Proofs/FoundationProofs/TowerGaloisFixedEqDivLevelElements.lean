@@ -36,10 +36,28 @@ def fracField (T : Tower p Ω) : Subfield Ω where
     · exact ⟨0, 0, zero_mem _, 1, one_mem _, one_ne_zero, by simp [ha0]⟩
     · exact ⟨m, b, hb, a, ha, ha0, inv_div a b⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨m, a, ha, 1, one_mem _, one_ne_zero, (div_one a).symm⟩`.
+-/
 theorem mem_fracField_of_mem (T : Tower p Ω) {m : ℕ} {a : Ω} (ha : a ∈ Lev T m) :
     a ∈ fracField T :=
   ⟨m, a, ha, 1, one_mem _, one_ne_zero, (div_one a).symm⟩
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ hC T x hx`. Use `haveI : FaithfulSMul (O0 p) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hC.inj`. Use `letI : Algebra (FractionRing (O0 p)) Ω := FractionRing.liftAlgebra (O0 p) Ω`. Use `haveI : IsScalarTower (O0 p) (FractionRing (O0 p)) Ω := FractionRing.isScalarTower_liftAlgebra _ _`. Use `haveI : Algebra.IsAlgebraic (O0 p) Ω := hC.alg`.
+
+Use `haveI : Algebra.IsAlgebraic (FractionRing (O0 p)) Ω := Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective (O0 p) (FractionRing (O0 p)))`. Use `haveI : IsAlgClosed Ω := hC.clo`. Use `haveI : IsAlgClosure (FractionRing (O0 p)) Ω := ⟨hC.clo, inferInstance⟩`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo hC`. Use `haveI : CharZero (FractionRing (O0 p)) := charZero_of_injective_algebraMap (IsFractionRing.injective (O0 p) (FractionRing (O0 p)))`.
+
+Use `haveI : IsGalois (FractionRing (O0 p)) Ω := IsAlgClosure.isGalois _ _`. Set `E` to `IntermediateField.adjoin (FractionRing (O0 p)) (Set.range T.ζ ∪ Set.range T.qq)`. Establish `hxE : x ∈ E`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup E, IntermediateField.mem_fixedField_iff]`. Introduce `σ hσ`.
+
+Establish `hfix : ∀ y ∈ E, σ y = y` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ`. Establish `hmem : σ.restrictScalars (O0 p) ∈ Hinf T`. Rewrite using `[mem_Hinf]`. Introduce `n`. Conclude with `⟨hfix _ (IntermediateField.subset_adjoin _ _ (Or.inl ⟨n, rfl⟩)), hfix _ (IntermediateField.subset_adjoin _ _ (Or.inr ⟨n, rfl⟩))⟩`.
+
+Conclude with `hx _ hmem`. Establish `halg : ∀ c : FractionRing (O0 p), algebraMap (FractionRing (O0 p)) Ω c ∈ fracField T`. Introduce `c`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors (O0 p)) c`. Simplify using `only`.
+
+Rewrite using `[IsFractionRing.mk'_eq_div, map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `⟨0, _, Subalgebra.algebraMap_mem _ a, _, Subalgebra.algebraMap_mem _ (s : O0 p), (map_ne_zero_iff _ hC.inj).2 (nonZeroDivisors.ne_zero s.2), rfl⟩`. Establish `hle : E ≤ (fracField T).toIntermediateField halg`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ (⟨n, rfl⟩ | ⟨n, rfl⟩)`.
+
+Conclude with `mem_fracField_of_mem T (zeta_mem_Lev T n)`. Conclude with `mem_fracField_of_mem T (qq_mem_Lev T n)`. Conclude with `hle hxE`.
+-/
 theorem fixed_eq_div : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (x : Ω), (∀ h ∈ Hinf T, h x = x) →
     ∃ m : ℕ, ∃ a ∈ Lev T m, ∃ b ∈ Lev T m, b ≠ 0 ∧ x = a / b := by

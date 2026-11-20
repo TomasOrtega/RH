@@ -6,6 +6,15 @@ namespace GlobalTheory.SymResCount
 
 open Formalism.L2.DIV
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hl, hd⟩, hc⟩ a b hab`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Rewrite using `[hd a, Matrix.one_apply_eq]`.
+
+Rewrite using `[Matrix.one_apply_ne e]`. Establish `hne : a.val ≠ b.val` using `fun h => e (Fin.ext h)`. Distinguish the cases in `h1 : b.val < a.val`. Conclude with `hl (show b.val < a.val from h1)`. Conclude with `hc a b (by omega) (by omega) (by omega)`.
+
+Introduce `h`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j h0 h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij`. Rewrite using `[h i j (by omega), Matrix.one_apply_ne (fun e => by rw [e] at hij'; omega)]`. Rewrite using `[h i i (by omega), Matrix.one_apply_eq]`.
+
+Rewrite using `[h i j (by omega), Matrix.one_apply_ne (fun e => by rw [e] at h1; omega)]`.
+-/
 theorem mem_unipSym_iff {K : Type} [CommRing K] {r : ℕ} (ρ κ : ℕ) (g : GL (Fin r) K) :
     g ∈ unipSym K r ρ κ ↔ ∀ a b : Fin r, ¬ (a.val < b.val ∧ ¬ (ρ ≤ a.val ∧ a.val < ρ + κ ∧ b.val = ρ + κ)) →
       (g : Matrix (Fin r) (Fin r) K) a b = (1 : Matrix (Fin r) (Fin r) K) a b := by
@@ -37,8 +46,14 @@ def perm (r ρ κ : ℕ) (hr : κ + ρ ≤ r) : Fin r ≃ Fin r where
   right_inv a := by
     apply Fin.ext; simp only; unfold permFn permInv; split_ifs <;> omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perm_val {r ρ κ : ℕ} (hr : κ + ρ ≤ r) (i : Fin r) : (perm r ρ κ hr i).val = permFn ρ κ i.val := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `unfold GlobalTheory.SymRes.FreePos permFn; split_ifs <;> omega`.
+-/
 theorem freePos_iff (ρ κ i j : ℕ) :
     GlobalTheory.SymRes.FreePos ρ κ i j ↔ (permFn ρ κ i < permFn ρ κ j ∧
       ¬ (ρ ≤ permFn ρ κ i ∧ permFn ρ κ i < ρ + κ ∧ permFn ρ κ j = ρ + κ)) := by
@@ -47,11 +62,23 @@ theorem freePos_iff (ρ κ i j : ℕ) :
 def reidx {K : Type} [CommRing K] (r ρ κ : ℕ) (hr : κ + ρ ≤ r) : GL (Fin r) K ≃* GL (Fin r) K :=
   Units.mapEquiv (Matrix.reindexAlgEquiv K K (perm r ρ κ hr)).toMulEquiv
 
+/- English proof (translation)
+Simplify using `[reidx, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`.
+-/
 theorem reidx_apply {K : Type} [CommRing K] {r ρ κ : ℕ} (hr : κ + ρ ≤ r) (g : GL (Fin r) K) (i j : Fin r) :
     ((reidx r ρ κ hr g : GL (Fin r) K) : Matrix (Fin r) (Fin r) K) (perm r ρ κ hr i) (perm r ρ κ hr j) =
       (g : Matrix (Fin r) (Fin r) K) i j := by
   simp [reidx, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_unipSym_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hf`. Use `h (perm r ρ κ hr i) (perm r ρ κ hr j) (by rw [perm_val, perm_val, ← freePos_iff]; exact hf)` as an intermediate fact. Rewrite `this` using `[reidx_apply]`.
+
+Rewrite using `[this]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne (fun e' => e ((perm r ρ κ hr).injective e'))]`.
+
+Introduce `h a b hab`. Take `⟨i, rfl⟩` from `(perm r ρ κ hr).surjective a`. Take `⟨j, rfl⟩` from `(perm r ρ κ hr).surjective b`. Rewrite using `[reidx_apply, h i j (by rw [freePos_iff, ← perm_val hr, ← perm_val hr]; exact hab)]`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne (fun e' => e ((perm r ρ κ hr).injective e'))]`.
+-/
 theorem reidx_mem_iff {K : Type} [CommRing K] {r ρ κ : ℕ} (hr : κ + ρ ≤ r) (g : GL (Fin r) K) :
     reidx r ρ κ hr g ∈ unipSym K r ρ κ ↔ GlobalTheory.SymRes.IsPat ρ κ g := by
   rw [mem_unipSym_iff]
@@ -76,6 +103,17 @@ end GlobalTheory.SymResCount
 namespace GlobalTheory.SymResCount
 open Formalism.L2.DIV
 
+/- English proof (translation)
+Introduce `K _ _ r ρ κ hr m hm g hg`. Establish `hr' : κ + ρ ≤ r` using `by omega`. Use `haveI : Finite (GL (Fin r) K) := Finite.of_injective (fun u : GL (Fin r) K => (u : Matrix (Fin r) (Fin r) K)) Units.val_injective`. Use `set S : Set (GL (Fin r) K) := {g | GlobalTheory.SymRes.IsPat ρ κ g} with hS`. Use `set U : Set (GL (Fin r) K) := (unipSym K r ρ κ : Set (GL (Fin r) K)) with hU`.
+
+Establish `hSU : (reidx (K` using `K) r ρ κ hr') '' S = U := by`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(reidx_mem_iff hr' x).2 hx`.
+
+Introduce `hh`. Use `⟨(reidx r ρ κ hr').symm h, (reidx_mem_iff hr' _).1 (by rw [MulEquiv.apply_symm_apply]; exact hh), by simp⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun x : GL (Fin r) K => m * x * m⁻¹)` using `fun x y h => mul_left_cancel (mul_right_cancel h)`. Establish `hc : (fun x : GL (Fin r) K => m * x * m⁻¹) '' S = U`. Apply `Set.eq_of_subset_of_ncard_le` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hm x hx`. Rewrite using `[Set.ncard_image_of_injective S hinj, ← hSU, Set.ncard_image_of_injective S (reidx r ρ κ hr').injective]`. Conclude with `Set.toFinite U`. Establish `hg' : m * g * m⁻¹ ∈ U` using `hg`.
+
+Rewrite `hg'` using `[← hc]`. Take `⟨x, hx, he⟩` from `hg'`. Establish `: x = g` using `hinj he`. Rewrite using `[← this]`. Conclude with `hx`.
+-/
 theorem conj_pat_onto : ∀ (K : Type) [CommRing K] [Finite K] (r ρ κ : ℕ), r = κ + (2 * ρ + 1) →
     ∀ m : GL (Fin r) K, (∀ g : GL (Fin r) K, GlobalTheory.SymRes.IsPat ρ κ g → m * g * m⁻¹ ∈ Formalism.L2.DIV.unipSym K r ρ κ) →
     ∀ g : GL (Fin r) K, m * g * m⁻¹ ∈ Formalism.L2.DIV.unipSym K r ρ κ → GlobalTheory.SymRes.IsPat ρ κ g := by

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCountMultipl
 import Mathlib
 open NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.card_primaryTorsion_mul_blocks | exact GlobalTheory.card_primaryTorsion_mul_blocks | (intros; apply GlobalTheory.card_primaryTorsion_mul_blocks <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_count_multiplicative_prime_powers : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N →
     (∀ j : ℕ, Finite {x : M // (N ^ j) • x = 0}) →
     (∀ j : ℕ, ∀ y : M, (N ^ j) • y = 0 → ∃ z : M, (N ^ (j + 1)) • z = 0 ∧ N • z = y) →

@@ -16,11 +16,23 @@ section SlopeTestRemainingChoices
 
 variable {C : Type} [Field C] {V : VF C} {d : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]`.
+-/
 theorem v_prod (V : VF C) {α : Type} (s : Finset α) (x : α → C) : V.v (∏ o ∈ s, x o) = ∑ o ∈ s, V.v (x o) := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]
 
+/- English proof (translation)
+Take `⟨S, -⟩` from `sysExists X (fun c x => if c = x then 1 else 0) (by`. Introduce `c x`. Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0)`.
+
+Use the proof step `(by`. Introduce `c x h`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `h rfl)`.
+
+Use the proof step `(by`. Establish `: (Matrix.of fun c x : I => if c = x then (1 : C) else 0) = 1`. Use extensionality with `c x`. Simplify using `[Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one, V.v.map_one])`.
+
+Take `⟨t, ht, -⟩` from `tExistsUnique X S`. Conclude with `⟨S, t, ht⟩`.
+-/
 theorem exists_sys_isT {I J : Type} [Fintype I] [Fintype J] (X : Cart V d I J) :
     ∃ (S : Sys X) (t : I → MvPowerSeries I C), S.IsT t := by
   obtain ⟨S, -⟩ := sysExists X (fun c x => if c = x then 1 else 0)
@@ -42,6 +54,11 @@ theorem exists_sys_isT {I J : Type} [Fintype I] [Fintype J] (X : Cart V d I J) :
   obtain ⟨t, ht, -⟩ := tExistsUnique X S
   exact ⟨S, t, ht⟩
 
+/- English proof (translation)
+Use `⟨1, fun μ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hμ : μ = 0`. Substitute `hμ` using the available equality. Simplify using `[VF.Ge]`. Simplify using `[VF.Ge, MvPowerSeries.coeff_one, hμ]`.
+
+Rewrite using `[← map_one (MvPowerSeries.C (σ := WV I) (R := C)), MvPowerSeries.subst_C]`.
+-/
 theorem one_mem_intGerm {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t : ∀ g, I g → MvPowerSeries (I g) C) :
     (1 : MvPowerSeries (WV I) C) ∈ IntGerm V t := by
   refine ⟨1, fun μ => ?_, ?_⟩
@@ -51,6 +68,9 @@ theorem one_mem_intGerm {I : Fin 2 → Type} [∀ g, Fintype (I g)] (t : ∀ g, 
     · simp [VF.Ge, MvPowerSeries.coeff_one, hμ]
   · rw [← map_one (MvPowerSeries.C (σ := WV I) (R := C)), MvPowerSeries.subst_C]
 
+/- English proof (translation)
+Rewrite using `[← List.sum_ofFn]`. Use `congr 1`. Establish `h : (fun i : Fin l.length => f (l.get i)) = f ∘ l.get` using `rfl`. Rewrite using `[h, ← List.map_ofFn, List.ofFn_get]`.
+-/
 theorem sum_get {α M : Type} [AddCommMonoid M] (l : List α) (f : α → M) :
     ∑ i : Fin l.length, f (l.get i) = (l.map f).sum := by
   rw [← List.sum_ofFn]
@@ -73,6 +93,9 @@ def ValO (FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)) (ν : ℝ) : 
 def plAt {K : Orb → ℕ} {what₂ : ∀ o, Fin (K o) → ℕ} (pl : (Σ o, Σ i : Fin (K o), Fin (what₂ o i)) → Fin n) (o : Orb) :
     (Σ i : Fin (K o), Fin (what₂ o i)) → Fin n := fun s => pl ⟨o, s⟩
 
+/- English proof (translation)
+Introduce `s s' hs`. Establish `h1` using `h hs`. Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, true_and] at h1`. Conclude with `h1`.
+-/
 theorem plAt_inj {K : Orb → ℕ} {what₂ : ∀ o, Fin (K o) → ℕ} {pl : (Σ o, Σ i : Fin (K o), Fin (what₂ o i)) → Fin n}
     (h : Function.Injective pl) (o : Orb) : Function.Injective (plAt n pl o) := by
   intro s s' hs
@@ -82,6 +105,17 @@ theorem plAt_inj {K : Orb → ℕ} {what₂ : ∀ o, Fin (K o) → ℕ} {pl : (�
 
 variable {X n}
 
+/- English proof (translation)
+Use `choose S₁ t₁ ht₁ gr₁ hg₁ hc₁ using hatt`. Establish `hsys : ∀ o g, ∃ (S : Sys ((X o).G g)) (t : I o g → MvPowerSeries (I o g) C), S.IsT t` using `fun o g => exists_sys_isT _`. Use `choose S₀ t₀ ht₀ using hsys`. Establish `hG : ∀ o i, IntGerm V (t₁ o i) = IntGerm V (t₀ o)` using `fun o i => (X o).G0 (S₁ o i) (S₀ o) (t₁ o i) (t₀ o) (ht₁ o i) (ht₀ o)`. Establish `hgr : ∀ o ρ, grAll (plAt n pl o) (gr₁ o) ρ ∈ IntGerm V (t₀ o)`.
+
+Introduce `o ρ`. Unfold `grAll`. Use `split_ifs with h`. Rewrite using `[← hG o h.choose.1]`. Conclude with `hg₁ o _ _`.
+
+Conclude with `one_mem_intGerm _`. Establish `h1` using `hV _ hmem (fun o => kindAll (plAt n pl o) (kind o)) (fun o => rowsOK_prodAll _ _ (plAt_inj n hpl o) _ _ (hrow o)) S₀ t₀ ht₀ (fun o => grAll (plAt n pl o) (gr₁ o)) hgr`. Establish `h2 : ∑ o, V.v (ValOf (X o).hL (prodAll (plAt n pl o) (Pc o)) (kindAll (plAt n pl o) (kind o)) (grAll (plAt n pl o) (gr₁ o))) = ∑ o, ∑ i, V.v (ValOf (X o).hL (Pc o i) (kind o i) (gr₁ o i))`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[hJ C d (I o) _ n (K o) (what₂ o) (plAt n pl o) (plAt_inj n hpl o) (Pc o) (kind o) (gr₁ o), v_prod]`.
+
+Establish `h3 : (ν : WithTop ℝ) ≤ ((∑ o, ∑ i, c o i : ℝ) : WithTop ℝ)`. Rewrite `h1` using `[h2]`. Use `h1.trans ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `Finset.sum_le_sum fun o _ => Finset.sum_le_sum fun i _ => hc₁ o i`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem val_pieces {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν) (hJ : JetProdSt)
     (K : Orb → ℕ) (what₂ : ∀ o, Fin (K o) → ℕ) (pl : (Σ o, Σ i : Fin (K o), Fin (what₂ o i)) → Fin n)
     (hpl : Function.Injective pl)
@@ -139,6 +173,13 @@ def ProdMem (F : ∀ o, Flag (X o)) (FFimg : Set (∀ o, MvPolynomial (Fin n × 
   ∀ pl : (Σ o, Σ i : Fin (L o).length, Fin (rowsAt X L o i)) → Fin n, Function.Injective pl →
     (fun o => prodAll (plAt n pl o) fun i => (blkAt L o i).poly (X o) (F o)) ∈ FFimg
 
+/- English proof (translation)
+Establish `hOK' : ∀ o (i : Fin (L o).length), (blkAt L o i).AttainsOK (X o) (F o) ((L o).get i).2` using `fun o i => hOK o _ (List.get_mem _ _)`. Establish `hcard : Fintype.card (Σ o, Σ i : Fin (L o).length, Fin (rowsAt X L o i)) ≤ Fintype.card (Fin n)`. Rewrite using `[Fintype.card_sigma, Fintype.card_fin]`. Use `le_trans (le_of_eq ?_) hrows` and prove the remaining obligations. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Conclude with `sum_get (L o) fun q => q.1.what₂ (X o).n`. Take `⟨pl⟩` from `Function.Embedding.nonempty_of_card_le hcard`. Use `choose kind hrow hatt' using hOK'`.
+
+Establish `key` using `val_pieces hV hJ (fun o => (L o).length) (fun o i => rowsAt X L o i) pl pl.injective (fun o i => (blkAt L o i).poly (X o) (F o)) kind (fun o i => ((L o).get i).2) hrow hatt' (hmem pl pl.injective)`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun o _ => sum_get (L o) Prod.snd`.
+-/
 theorem val_lists {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν) (hJ : JetProdSt)
     (F : ∀ o, Flag (X o)) (L : Orb → List (GlobalTheory d × ℝ))
     (hOK : ∀ o, ∀ q ∈ L o, q.1.AttainsOK (X o) (F o) q.2)
@@ -174,6 +215,19 @@ def BlockAdmissible (F : ∀ o, Flag (X o)) (Z : Finset Orb) (ga : Orb → Fin 2
 
 variable {X n}
 
+/- English proof (translation)
+Introduce `L hatt hrows hwt`. Use `set L' : Orb → List (GlobalTheory d × ℝ) := fun o => if o ∈ Z then L o else [] with hL'`. Establish `hLZ : ∀ o ∈ Z, L' o = L o` using `fun o ho => by simp [hL', ho]`. Establish `hLn : ∀ o, o ∉ Z → L' o = []` using `fun o ho => by simp [hL', ho]`. Establish `hwt' : ∀ o ∈ Z, ∀ g a k, ((L' o).map fun q => q.1.wt (X o) g a k).sum = ga o g a k`.
+
+Introduce `o ho g a k`. Rewrite using `[hLZ o ho]`. Conclude with `hwt o ho g a k`. Establish `hOK : ∀ o, ∀ q ∈ L' o, q.1.AttainsOK (X o) (F o) q.2`. Introduce `o q hq`.
+
+Distinguish the cases in `ho : o ∈ Z`. Conclude with `hA L' hwt' o ho q hq (hatt o ho q (by rwa [hLZ o ho] at hq))`. Rewrite `hq` using `[hLn o ho]`. Conclude with `absurd hq (by simp)`. Establish `hsum : ∀ f : Orb → List (GlobalTheory d × ℝ) → ℕ, (∀ o, f o [] = 0) → ∑ o, f o (L' o) = ∑ o ∈ Z, f o (L o)`.
+
+Introduce `f hf`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ Z)]`. Conclude with `Finset.sum_congr rfl fun o ho => by rw [hLZ o ho]`. Introduce `o _ ho`. Rewrite using `[hLn o ho, hf]`.
+
+Establish `hsumR : ∑ o, ((L' o).map Prod.snd).sum = ∑ o ∈ Z, ((L o).map Prod.snd).sum`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ Z)]`. Conclude with `Finset.sum_congr rfl fun o ho => by rw [hLZ o ho]`. Introduce `o _ ho`. Rewrite using `[hLn o ho]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hsumR]`. Use `val_lists hV hJ F L' hOK ?_ (hM L' hLn hwt')` and prove the remaining obligations. Rewrite using `[hsum (fun o l => (l.map fun q => q.1.what₂ (X o).n).sum) (fun o => by simp)]`. Conclude with `hrows`.
+-/
 theorem valBlocks_G {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν) (hJ : JetProdSt)
     (F : ∀ o, Flag (X o)) (Z : Finset Orb) (ga : Orb → Fin 2 → ZMod d → ℕ → ℕ)
     (hM : BlockMembership X n F FFimg Z ga) (hA : BlockAdmissible X F Z ga) : ValBlocks X F Z n ga ν := by
@@ -231,6 +285,9 @@ def BlockAdmissibleSelfConjugate (F : ∀ o, Flag (X o)) (gaC : Orb → ZMod 2 �
 
 variable {X n}
 
+/- English proof (translation)
+Introduce `L hatt hmon hrows hwt`. Conclude with `val_lists hV hJ F L (fun o q hq => hA L hwt o q hq (hatt o q hq)) (by omega) (hM L hmon hwt)`.
+-/
 theorem valBlocksC_G {FFimg : Set (∀ o, MvPolynomial (Fin n × WV (I o)) C)} {ν : ℝ} (hV : ValO X n FFimg ν) (hJ : JetProdSt)
     (F : ∀ o, Flag (X o)) (nW : ℕ) (hn : nW ≤ 2 * n + 1) (gaC : Orb → ZMod 2 → ℕ → ℕ)
     (hM : BlockMembershipSelfConjugate X n F FFimg gaC) (hA : BlockAdmissibleSelfConjugate X F gaC) : ValBlocksC X F nW gaC ν := by

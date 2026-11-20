@@ -29,6 +29,11 @@ noncomputable def displ (X : Data E r) (cu : FJ.CuspFD X ρ) (s : Finset (Fin r 
       add_smul]
     abel
 
+/- English proof (translation)
+Introduce `β β' h`. Apply `zMatE_injective X cu` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext_on hs fun v hv => ?_` and prove the remaining obligations. Establish `h1 : FJ.zMatE X cu.e β *ᵥ v - v = FJ.zMatE X cu.e β' *ᵥ v - v` using `congrFun h ⟨v, hv⟩`.
+
+Simplify `h1` using `[Matrix.toLin'_apply]`.
+-/
 theorem displ_injective (X : Data E r) (cu : FJ.CuspFD X ρ) (s : Finset (Fin r → E))
     (hs : Submodule.span E (s : Set (Fin r → E)) = ⊤) : Function.Injective (displ X cu s) := by
   intro β β' h
@@ -38,6 +43,15 @@ theorem displ_injective (X : Data E r) (cu : FJ.CuspFD X ρ) (s : Finset (Fin r 
   have h1 : FJ.zMatE X cu.e β *ᵥ v - v = FJ.zMatE X cu.e β' *ᵥ v - v := congrFun h ⟨v, hv⟩
   simpa [Matrix.toLin'_apply] using h1
 
+/- English proof (translation)
+Introduce `E _ _ _ r ρ X cu`. Take `⟨s, hs⟩` from `X.Λ_fg`. Establish `hsE : Submodule.span E (s : Set (Fin r → E)) = ⊤`. Rewrite using `[← X.Λ_span, ← hs, Submodule.span_span_of_tower]`. Establish `hΛ : (X.Λ.restrictScalars ℤ).FG`.
+
+Establish `: Module.Finite (𝓞 E) X.Λ` using `Module.Finite.iff_fg.2 X.Λ_fg`. Establish `h2 : Module.Finite ℤ X.Λ` using `Module.Finite.trans (𝓞 E) X.Λ`. Conclude with `Module.Finite.iff_fg.1 h2`. Establish `hN : (Submodule.pi Set.univ fun _ : s => X.Λ.restrictScalars ℤ).FG` using `Submodule.fg_pi fun _ => hΛ`. Use `Submodule.fg_of_fg_map_injective (displ X cu s).toIntLinearMap (displ_injective X cu s hsE) (hN.of_le ?_)` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce and unpack `β ⟨-, γ, hγ, e⟩ v -`. Establish `hv : v.1 ∈ X.Λ` using `hs ▸ Submodule.subset_span v.2`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e β *ᵥ v.1 - v.1 ∈ X.Λ`. Rewrite using `[← e]`.
+
+Conclude with `X.Λ.sub_mem (((X.Γ_stab γ hγ).2 _).1 hv) hv`.
+-/
 theorem span_zGam_fg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : FJ.CuspFD X ρ), (Submodule.span ℤ (FJ.zGam X cu)).FG := by
   intro E _ _ _ r ρ X cu
   obtain ⟨s, hs⟩ := X.Λ_fg

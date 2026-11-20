@@ -10,22 +10,36 @@ namespace Formalism.FourierDecayAlt.P.CutSE.JSW
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5
 
+/- English proof (translation)
+The claim follows from `(hg.fderiv_of_isOpen hU (by simp)).clm_apply contDiffOn_const`.
+-/
 theorem fderiv_apply_sm {g : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hg : ContDiffOn ℝ ∞ g U) (v : ℂ) :
     ContDiffOn ℝ ∞ (fun ζ => fderiv ℝ g ζ v) U :=
   (hg.fderiv_of_isOpen hU (by simp)).clm_apply contDiffOn_const
 
+/- English proof (translation)
+Unfold `NF.dZ`. Conclude with `contDiffOn_const.mul ((fderiv_apply_sm hU hg 1).sub (contDiffOn_const.mul (fderiv_apply_sm hU hg Complex.I)))`.
+-/
 theorem dZ_sm {g : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hg : ContDiffOn ℝ ∞ g U) :
     ContDiffOn ℝ ∞ (NF.dZ g) U := by
   unfold NF.dZ
   exact contDiffOn_const.mul ((fderiv_apply_sm hU hg 1).sub
     (contDiffOn_const.mul (fderiv_apply_sm hU hg Complex.I)))
 
+/- English proof (translation)
+Unfold `NF.dZb`. Conclude with `contDiffOn_const.mul ((fderiv_apply_sm hU hg 1).add (contDiffOn_const.mul (fderiv_apply_sm hU hg Complex.I)))`.
+-/
 theorem dZb_sm {g : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hg : ContDiffOn ℝ ∞ g U) :
     ContDiffOn ℝ ∞ (NF.dZb g) U := by
   unfold NF.dZb
   exact contDiffOn_const.mul ((fderiv_apply_sm hU hg 1).add
     (contDiffOn_const.mul (fderiv_apply_sm hU hg Complex.I)))
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt (fun t' : ℂ => t') (ContinuousLinearMap.id ℝ ℂ) t` using `hasFDerivAt_id t`. Establish `h2 : HasFDerivAt (fun t' : ℂ => conj t') Complex.conjCLE.toContinuousLinearMap t` using `Complex.conjCLE.hasFDerivAt`. Establish `h3` using `((h1.const_mul s).sub (h2.const_mul (conj s))).cexp`. Use `⟨_, h3, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[fsv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[fsv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasFDerivAt_exponential_character (s t : ℂ) :
     ∃ D : ℂ →L[ℝ] ℂ, HasFDerivAt (fsv s) D t ∧ D 1 = (s - conj s) * fsv s t ∧
       D Complex.I = Complex.I * (s + conj s) * fsv s t := by
@@ -37,19 +51,31 @@ theorem hasFDerivAt_exponential_character (s t : ℂ) :
   · simp [fsv]; ring
   · simp [fsv]; ring
 
+/- English proof (translation)
+Take `⟨D, hD, h1, hI⟩` from `hasFDerivAt_exponential_character s t`. Simplify using `only [NF.dZ, hD.fderiv, h1, hI]`. Take the linear combination `(-(1 / 2) * (s + conj s) * fsv s t) * Complex.I_sq`.
+-/
 theorem dZ_exponential_character (s t : ℂ) : NF.dZ (fsv s) t = s * fsv s t := by
   obtain ⟨D, hD, h1, hI⟩ := hasFDerivAt_exponential_character s t
   simp only [NF.dZ, hD.fderiv, h1, hI]
   linear_combination (-(1 / 2) * (s + conj s) * fsv s t) * Complex.I_sq
 
+/- English proof (translation)
+Take `⟨D, hD, h1, hI⟩` from `hasFDerivAt_exponential_character s t`. Simplify using `only [NF.dZb, hD.fderiv, h1, hI]`. Take the linear combination `((1 / 2) * (s + conj s) * fsv s t) * Complex.I_sq`.
+-/
 theorem dZbar_exponential_character (s t : ℂ) : NF.dZb (fsv s) t = -conj s * fsv s t := by
   obtain ⟨D, hD, h1, hI⟩ := hasFDerivAt_exponential_character s t
   simp only [NF.dZb, hD.fderiv, h1, hI]
   linear_combination ((1 / 2) * (s + conj s) * fsv s t) * Complex.I_sq
 
+/- English proof (translation)
+The claim follows from `(hasFDerivAt_exponential_character s t).choose_spec.1.differentiableAt`.
+-/
 theorem fsv_diff (s t : ℂ) : DifferentiableAt ℝ (fsv s) t :=
   (hasFDerivAt_exponential_character s t).choose_spec.1.differentiableAt
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => φ w * f w) _ c` using `hφ.hasFDerivAt.mul hf.hasFDerivAt`. Unfold `NF.dZ`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZ_mul_leibniz {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt ℝ φ c) (hf : DifferentiableAt ℝ f c) :
     NF.dZ (fun w => φ w * f w) c = NF.dZ φ c * f c + φ c * NF.dZ f c := by
   have h : HasFDerivAt (fun w => φ w * f w) _ c := hφ.hasFDerivAt.mul hf.hasFDerivAt
@@ -58,6 +84,9 @@ theorem dZ_mul_leibniz {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt �
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => φ w * f w) _ c` using `hφ.hasFDerivAt.mul hf.hasFDerivAt`. Unfold `NF.dZb`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZbar_mul_leibniz {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt ℝ φ c) (hf : DifferentiableAt ℝ f c) :
     NF.dZb (fun w => φ w * f w) c = NF.dZb φ c * f c + φ c * NF.dZb f c := by
   have h : HasFDerivAt (fun w => φ w * f w) _ c := hφ.hasFDerivAt.mul hf.hasFDerivAt
@@ -66,14 +95,23 @@ theorem dZbar_mul_leibniz {φ f : ℂ → ℂ} {c : ℂ} (hφ : DifferentiableAt
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[dZ_mul_leibniz hm (fsv_diff s t), dZ_exponential_character]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mfs_dZ {m : ℂ → ℂ} {t : ℂ} (s : ℂ) (hm : DifferentiableAt ℝ m t) :
     NF.dZ (fun w => m w * fsv s w) t = (NF.dZ m t + s * m t) * fsv s t := by
   rw [dZ_mul_leibniz hm (fsv_diff s t), dZ_exponential_character]; ring
 
+/- English proof (translation)
+Rewrite using `[dZbar_mul_leibniz hm (fsv_diff s t), dZbar_exponential_character]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mfs_dZb {m : ℂ → ℂ} {t : ℂ} (s : ℂ) (hm : DifferentiableAt ℝ m t) :
     NF.dZb (fun w => m w * fsv s w) t = (NF.dZb m t + -conj s * m t) * fsv s t := by
   rw [dZbar_mul_leibniz hm (fsv_diff s t), dZbar_exponential_character]; ring
 
+/- English proof (translation)
+The claim follows from `(hm.contDiffAt (isOpen_compl_singleton.mem_nhds ht)).differentiableAt (by simp)`.
+-/
 theorem sm_diff {m : ℂ → ℂ} (hm : ContDiffOn ℝ ∞ m {0}ᶜ) {t : ℂ} (ht : t ≠ 0) : DifferentiableAt ℝ m t :=
   (hm.contDiffAt (isOpen_compl_singleton.mem_nhds ht)).differentiableAt (by simp)
 
@@ -81,6 +119,11 @@ section Wirt
 
 variable {m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt (fun c' : Fin m → ℂ => c' l) (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin m => ℂ) l) c := hasFDerivAt_apply l c`. Establish `h2 : HasFDerivAt (fun c' : Fin m → ℂ => φ (c' l)) ((fderiv ℝ φ (c l)).comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin m => ℂ) l)) c := hφ.hasFDerivAt.comp c h1`. Establish `hp` using `h2.fun_smul hv.hasFDerivAt`. Unfold `Formalism.QuantumDeterminants.wirt Formalism.QuantumDeterminants.wirtBar NF.dZ NF.dZb`. Rewrite using `[hp.fderiv]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, Pi.single_eq_same]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `match_scalars <;> ring`. Apply the tactic sequence `match_scalars <;> ring`.
+-/
 theorem wirt_comp_smul (l : Fin m) (φ : ℂ → ℂ) (v : (Fin m → ℂ) → E) (c : Fin m → ℂ)
     (hφ : DifferentiableAt ℝ φ (c l)) (hv : DifferentiableAt ℝ v c) :
     Formalism.QuantumDeterminants.wirt l (fun c' => φ (c' l) • v c') c = φ (c l) • Formalism.QuantumDeterminants.wirt l v c + NF.dZ φ (c l) • v c ∧
@@ -100,6 +143,11 @@ theorem wirt_comp_smul (l : Fin m) (φ : ℂ → ℂ) (v : (Fin m → ℂ) → E
   · match_scalars <;> ring
   · match_scalars <;> ring
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun c' => ∑ i ∈ u, F i c') (∑ i ∈ u, fderiv ℝ (F i) c) c` using `HasFDerivAt.fun_sum fun i hi => (hF i hi).hasFDerivAt`. Unfold `Formalism.QuantumDeterminants.wirt Formalism.QuantumDeterminants.wirtBar`. Rewrite using `[h.fderiv]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.smul_sum]`.
+
+Rewrite using `[← Finset.sum_sub_distrib, Finset.smul_sum]`. Simplify using `[Finset.smul_sum, Finset.sum_add_distrib]`.
+-/
 theorem wirt_fsum {ι : Type*} (u : Finset ι) (l : Fin m) (F : ι → (Fin m → ℂ) → E) (c : Fin m → ℂ)
     (hF : ∀ i ∈ u, DifferentiableAt ℝ (F i) c) :
     Formalism.QuantumDeterminants.wirt l (fun c' => ∑ i ∈ u, F i c') c = ∑ i ∈ u, Formalism.QuantumDeterminants.wirt l (F i) c ∧
@@ -121,22 +169,37 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Rewrite using `[X.op_apply]`. Both sides reduce to the same expression.
+-/
 theorem op_pt (X : ActualOps k r z z' π π') (l : Fin r) (i : Fin 6) (Ψ : RadSp k r z z' π π') (p : Fin r → ℂ)
     (g : Mx k r) : (X.op l i Ψ : Fn k r (Wq →L[ℂ] Wp)) p g =
       opL l i (fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' g) p := by
   rw [X.op_apply]; rfl
 
+/- English proof (translation)
+Simplify using `[wOp, List.map_cons, List.prod_cons, Module.End.mul_apply]`.
+-/
 theorem wOp_cons (X : ActualOps k r z z' π π') (l : Fin r) (j : Fin 6) (js : List (Fin 6))
     (Ψ : RadSp k r z z' π π') : wOp X l (j :: js) Ψ = X.op l j (wOp X l js Ψ) := by
   simp [wOp, List.map_cons, List.prod_cons, Module.End.mul_apply]
 
+/- English proof (translation)
+Simplify using `[wOp]`.
+-/
 theorem wOp_nil (X : ActualOps k r z z' π π') (l : Fin r) (Ψ : RadSp k r z z' π π') : wOp X l [] Ψ = Ψ := by
   simp [wOp]
 
+/- English proof (translation)
+The claim follows from `(radSp_regular Ψ g p).1 hp`.
+-/
 theorem slice_diffAt (Ψ : RadSp k r z z' π π') (g : Mx k r) {p : Fin r → ℂ} (hp : p ∈ OmX r) :
     DifferentiableAt ℝ (fun c' => (Ψ : Fn k r (Wq →L[ℂ] Wp)) c' g) p :=
   (radSp_regular Ψ g p).1 hp
 
+/- English proof (translation)
+Establish `: OmX m = ⋂ l : Fin m, (fun x : Fin m → ℂ => x l) ⁻¹' {0}ᶜ`. Use extensionality with `x`. Simplify using `[OmX]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_compl_singleton.preimage (continuous_apply l)`.
+-/
 theorem isOpen_OmX' (m : ℕ) : IsOpen (OmX m) := by
   have : OmX m = ⋂ l : Fin m, (fun x : Fin m → ℂ => x l) ⁻¹' {0}ᶜ := by
     ext x; simp [OmX]
@@ -153,12 +216,20 @@ def NFP (X : ActualOps k r z z' π π') (l : Fin r) (s : ℂ) (Wv : Module.End �
 
 variable (X : ActualOps k r z z' π π') (l : Fin r) (s : ℂ) (Wv : Module.End ℂ (RadSp k r z z' π π'))
 
+/- English proof (translation)
+Use `⟨1, fun _ _ => 1, fun _ => [], fun _ => contDiffOn_const, fun _ j hj => by simp at hj, ?_⟩` and prove the remaining obligations. Introduce `Φ p _ g`. Simplify using `only [wOp_nil, Fin.sum_univ_one, one_mul]`. Conclude with `hW Φ p g`.
+-/
 theorem nfp_nil (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) : NFP X l s Wv [] := by
   refine ⟨1, fun _ _ => 1, fun _ => [], fun _ => contDiffOn_const, fun _ j hj => by simp at hj, ?_⟩
   intro Φ p _ g
   simp only [wOp_nil, Fin.sum_univ_one, one_mul]
   exact hW Φ p g
 
+/- English proof (translation)
+Take `⟨K, m, ab, hm, hab, hE⟩` from `h`. Use `⟨K, fun i t => a t * m i t, ab, fun i => ha.mul (hm i), hab, ?_⟩` and prove the remaining obligations. Introduce `Φ p hp g`. Rewrite using `[wOp_cons, hop, hE Φ p hp g, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Put the polynomial expressions in normal form.
+-/
 theorem nfp_mul (j : Fin 6) (a : ℂ → ℂ) (ha : ContDiffOn ℝ ∞ a {0}ᶜ)
     (hop : ∀ (Ψ : RadSp k r z z' π π') (p : Fin r → ℂ) (g : Mx k r),
       (X.op l j Ψ : Fn k r (Wq →L[ℂ] Wp)) p g = a (p l) • (Ψ : Fn k r (Wq →L[ℂ] Wp)) p g)
@@ -170,6 +241,37 @@ theorem nfp_mul (j : Fin 6) (a : ℂ → ℂ) (ha : ContDiffOn ℝ ∞ a {0}ᶜ)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_smul]; ring_nf
 
+/- English proof (translation)
+Take `⟨K, m, ab, hm, hab, hE⟩` from `h`. Set `mL : Fin K → ℂ → ℂ` to `fun i t => if b then t * (NF.dZ (m i) t + s * m i t) else star t * (NF.dZb (m i) t + -conj s * m i t)`. Establish `hmL : ∀ i, ContDiffOn ℝ ∞ (mL i) {0}ᶜ`. Introduce `i`. Consider the cases of `b`.
+
+Conclude with `(Complex.conjCLE.contDiff.contDiffOn).mul ((dZb_sm isOpen_compl_singleton (hm i)).add (contDiffOn_const.mul (hm i)))`. Conclude with `contDiffOn_id.mul ((dZ_sm isOpen_compl_singleton (hm i)).add (contDiffOn_const.mul (hm i)))`. Use `⟨K + K, Fin.append mL m, Fin.append ab (fun i => (if b then (0 : Fin 6) else 3) :: ab i), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hmL i`. Rewrite using `[Fin.append_right]`. Conclude with `hm i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hab i`. Rewrite using `[Fin.append_right]`. Introduce `j hj`. Break down `List.mem_cons.1 hj with hj | hj` into its components or cases. Apply the tactic sequence `subst hj; cases b <;> simp`.
+
+Conclude with `hab i j hj`. Introduce `Φ p hp g`. Use `set v : Fin K → (Fin r → ℂ) → (Wq →L[ℂ] Wp) := fun i c' => (wOp X l (ab i) Φ : Fn k r (Wq →L[ℂ] Wp)) c' g with hv`. Establish `hvd : ∀ i, DifferentiableAt ℝ (v i) p` using `fun i => slice_diffAt _ g hp`. Establish `hmd : ∀ i, DifferentiableAt ℝ (m i) (p l)` using `fun i => sm_diff (hm i) (hp l)`.
+
+Establish `hqd : ∀ i, DifferentiableAt ℝ (fun t => m i t * fsv s t) (p l)` using `fun i => (hmd i).mul (fsv_diff s (p l))`. Establish `hev : (fun c' => (wOp X l js (Wv Φ) : Fn k r (Wq →L[ℂ] Wp)) c' g) =ᶠ[𝓝 p] fun c' => ∑ i, (fun t => m i t * fsv s t) (c' l) • v i c'` using `by filter_upwards [(isOpen_OmX' r).mem_nhds hp] with c' hc'`. Conclude with `hE Φ c' hc' g`. Establish `hsd : ∀ i ∈ (Finset.univ : Finset (Fin K)), DifferentiableAt ℝ (fun c' => (fun t => m i t * fsv s t) (c' l) • v i c') p`. Introduce `i _`.
+
+Establish `h1 : DifferentiableAt ℝ (fun c' : Fin r → ℂ => (fun t => m i t * fsv s t) (c' l)) p` using `DifferentiableAt.comp (g := fun t => m i t * fsv s t) (f := fun c' : Fin r → ℂ => c' l) p (hqd i) (differentiableAt_apply l p)`. Conclude with `h1.smul (hvd i)`. Establish `hW1 : Formalism.QuantumDeterminants.wirt l (fun c' => (wOp X l js (Wv Φ) : Fn k r (Wq →L[ℂ] Wp)) c' g) p = ∑ i, ((m i (p l) * fsv s (p l)) • Formalism.QuantumDeterminants.wirt l (v i) p + ((NF.dZ (m i) (p l) + s * m i (p l)) * fsv s (p l)) • v i p)`. Establish `e1 : Formalism.QuantumDeterminants.wirt l (fun c' => (wOp X l js (Wv Φ) : Fn k r (Wq →L[ℂ] Wp)) c' g) p = Formalism.QuantumDeterminants.wirt l (fun c' => ∑ i, (fun t => m i t * fsv s t) (c' l) • v i c') p`. Unfold `Formalism.QuantumDeterminants.wirt`.
+
+Rewrite using `[hev.fderiv_eq]`. Rewrite using `[e1, (wirt_fsum Finset.univ l _ p hsd).1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(wirt_comp_smul l _ (v i) p (hqd i) (hvd i)).1, mfs_dZ s (hmd i)]`. Establish `hW2 : Formalism.QuantumDeterminants.wirtBar l (fun c' => (wOp X l js (Wv Φ) : Fn k r (Wq →L[ℂ] Wp)) c' g) p = ∑ i, ((m i (p l) * fsv s (p l)) • Formalism.QuantumDeterminants.wirtBar l (v i) p + ((NF.dZb (m i) (p l) + -conj s * m i (p l)) * fsv s (p l)) • v i p)`.
+
+Establish `e1 : Formalism.QuantumDeterminants.wirtBar l (fun c' => (wOp X l js (Wv Φ) : Fn k r (Wq →L[ℂ] Wp)) c' g) p = Formalism.QuantumDeterminants.wirtBar l (fun c' => ∑ i, (fun t => m i t * fsv s t) (c' l) • v i c') p`. Unfold `Formalism.QuantumDeterminants.wirtBar`. Rewrite using `[hev.fderiv_eq]`. Rewrite using `[e1, (wirt_fsum Finset.univ l _ p hsd).2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(wirt_comp_smul l _ (v i) p (hqd i) (hvd i)).2, mfs_dZb s (hmd i)]`. Rewrite using `[wOp_cons, op_pt, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Establish `hR : ∀ i, (wOp X l ((if b then (0 : Fin 6) else 3) :: ab i) Φ : Fn k r (Wq →L[ℂ] Wp)) p g = if b then p l • Formalism.QuantumDeterminants.wirt l (v i) p else star (p l) • Formalism.QuantumDeterminants.wirtBar l (v i) p`. Introduce `i`.
+
+Rewrite using `[wOp_cons, op_pt]`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false] show Formalism.QuantumDeterminants.pbOp l _ p = _`. Unfold `Formalism.QuantumDeterminants.pbOp`. Rewrite using `[if_pos hp]`.
+
+Simplify using `only [if_true] show Formalism.QuantumDeterminants.pOp l _ p = _`. Unfold `Formalism.QuantumDeterminants.pOp`. Rewrite using `[if_pos hp]`. Simplify using `only [hR]`. Consider the cases of `b`.
+
+Simplify using `only [Bool.false_eq_true, if_false, mL] show Formalism.QuantumDeterminants.pbOp l _ p = _`. Unfold `Formalism.QuantumDeterminants.pbOp`. Rewrite using `[if_pos hp, hW2, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [v]`.
+
+Use `module`. Simplify using `only [if_true, mL] show Formalism.QuantumDeterminants.pOp l _ p = _`. Unfold `Formalism.QuantumDeterminants.pOp`. Rewrite using `[if_pos hp, hW1, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [v]`. Use `module`.
+-/
 theorem nfp_der (b : Bool) (js : List (Fin 6)) (h : NFP X l s Wv js) :
     NFP X l s Wv ((if b then (0 : Fin 6) else 3) :: js) := by
   obtain ⟨K, m, ab, hm, hab, hE⟩ := h
@@ -258,6 +360,11 @@ theorem nfp_der (b : Bool) (js : List (Fin 6)) (h : NFP X l s Wv js) :
     simp only [v]
     module
 
+/- English proof (translation)
+Introduce `js`. Proceed by induction on `js with`. Consider the case `nil => exact nfp_nil X l s Wv hW`. Consider the case `cons j js ih => fin_cases j`. Conclude with `nfp_der X l s Wv true js ih`.
+
+Conclude with `nfp_mul X l s Wv 1 (fun t => t) contDiffOn_id (fun Ψ p g => by rw [op_pt]; rfl) js ih`. Conclude with `nfp_mul X l s Wv 2 (fun t => t⁻¹) (contDiffOn_id.inv fun x hx => hx) (fun Ψ p g => by rw [op_pt]; rfl) js ih`. Conclude with `nfp_der X l s Wv false js ih`. Conclude with `nfp_mul X l s Wv 4 (fun t => star t) Complex.conjCLE.contDiff.contDiffOn (fun Ψ p g => by rw [op_pt]; rfl) js ih`. Conclude with `nfp_mul X l s Wv 5 (fun t => (star t)⁻¹) (Complex.conjCLE.contDiff.contDiffOn.inv fun x hx => by simpa using hx) (fun Ψ p g => by rw [op_pt]; rfl) js ih`.
+-/
 theorem nfp_all (hW : multiplicationOperator Wv (fun c _ => fsv s (c l))) : ∀ js, NFP X l s Wv js := by
   intro js
   induction js with
@@ -281,6 +388,9 @@ end Formalism.FourierDecayAlt.P.CutSE.JSW
 
 namespace Formalism.FourierDecayAlt.P.CutSE
 
+/- English proof (translation)
+Introduce `k r z z' Wp Wq _ _ _ _ _ _ π π' X l s Wv hW js`. Take `⟨K, m, ab, hm, hab, hE⟩` from `JSW.nfp_all X l s Wv hW js`. Conclude with `⟨K, m, ab, fun i => (hm i).continuousOn, hab, hE⟩`.
+-/
 theorem spectral_word_normal_form : JSWordNF := by
   intro k r z z' Wp Wq _ _ _ _ _ _ π π' X l s Wv hW js
   obtain ⟨K, m, ab, hm, hab, hE⟩ := JSW.nfp_all X l s Wv hW js

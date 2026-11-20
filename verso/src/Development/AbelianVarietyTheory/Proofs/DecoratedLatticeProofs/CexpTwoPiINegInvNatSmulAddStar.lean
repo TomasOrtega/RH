@@ -31,9 +31,17 @@ section Generic
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+The claim follows from `I.cm.cmUnram.2.1 (I.φ v) x`.
+-/
 theorem phi_star (v : InfinitePlace I.F) (x : I.E) : I.φ v (star x) = star (I.φ v x) :=
   I.cm.cmUnram.2.1 (I.φ v) x
 
+/- English proof (translation)
+Establish `hd : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `h1 : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `h2 : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `h3 : ((I.P v)⁻¹)ᴴ * (Formalism.REAL.Jm (I.ε v) * ((I.P v)⁻¹ * N * I.P v * (I.P v)⁻¹)) = I.J.map (I.φ v) * N`. Rewrite using `[← I.P_spec v, Matrix.mul_assoc _ (I.P v) (I.P v)⁻¹, h1, Matrix.mul_one, Matrix.mul_assoc _ (I.P v), ← Matrix.mul_assoc (I.P v), h1, Matrix.one_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+
+Rewrite using `[hJ, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← h3]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hJ_frame (v : InfinitePlace I.F) (x y : Fin I.n → ℂ) (N : Matrix (Fin I.n) (Fin I.n) ℂ) :
     hJ (I.ε v) ((I.P v)⁻¹ *ᵥ x) (((I.P v)⁻¹ * N * I.P v) *ᵥ ((I.P v)⁻¹ *ᵥ y)) =
       star x ⬝ᵥ (I.J.map (I.φ v) *ᵥ (N *ᵥ y)) := by
@@ -47,6 +55,9 @@ theorem hJ_frame (v : InfinitePlace I.F) (x y : Fin I.n → ℂ) (N : Matrix (Fi
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← h3]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[rv, rv, hJ_frame]`. Simplify using `only [map_sum, map_mul, thetaV_inclR, phi_star, Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.star_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem theta_form (v : InfinitePlace I.F) (M : Matrix (Fin I.n) (Fin I.n) (AF I.F ⊗[I.F] I.E)) (p q : Fin I.n → I.E) :
     thetaV I v (∑ i, ∑ j, inclR (AF I.F) (star (p i) * I.J i j) * (M *ᵥ fun k => inclR (AF I.F) (q k)) j) =
       hJ (I.ε v) (rv I v p) (((I.P v)⁻¹ * M.map (thetaV I v) * I.P v) *ᵥ rv I v q) := by
@@ -54,17 +65,26 @@ theorem theta_form (v : InfinitePlace I.F) (M : Matrix (Fin I.n) (Fin I.n) (AF I
   simp only [map_sum, map_mul, thetaV_inclR, phi_star, Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.star_apply,
     Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.includeLeftRingHom_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem sig_inclE (x : I.E) : Formalism.UG.sigR I.cm.sig (Formalism.MainNotions.S.Af I.F) (Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) x) =
     Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (star x) := by
   simp only [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.includeLeftRingHom_apply,
     AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
   rfl
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_mul, tauF_inclR, Matrix.mulVec, dotProduct, Matrix.map_apply, hA, Formalism.UG.hform, incl, sig_inclE]`.
+-/
 theorem tau_form (M : Matrix (Fin I.n) (Fin I.n) (AF I.F ⊗[I.F] I.E)) (p q : Fin I.n → I.E) :
     tauF I (∑ i, ∑ j, inclR (AF I.F) (star (p i) * I.J i j) * (M *ᵥ fun k => inclR (AF I.F) (q k)) j) =
       hA I (incl I p) (M.map (tauF I) *ᵥ incl I q) := by
   simp only [map_sum, map_mul, tauF_inclR, Matrix.mulVec, dotProduct, Matrix.map_apply, hA, Formalism.UG.hform, incl, sig_inclE]
 
+/- English proof (translation)
+Establish `e : a ⊗ₜ[I.F] x = a • ((1 : AF I.F) ⊗ₜ[I.F] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, smul_eq_mul]`.
+-/
 theorem trace_tmul' (a : AF I.F) (x : I.E) :
     Algebra.trace (AF I.F) (AF I.F ⊗[I.F] I.E) (a ⊗ₜ[I.F] x) = a * algebraMap I.F (AF I.F) (Algebra.trace I.F I.E x) := by
   have e : a ⊗ₜ[I.F] x = a • ((1 : AF I.F) ⊗ₜ[I.F] x) := by
@@ -72,6 +92,13 @@ theorem trace_tmul' (a : AF I.F) (x : I.E) :
   rw [e, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange,
     smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Establish `h1` using `thetaV_sigR I v (a ⊗ₜ[I.F] x)`. Establish `hs : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF I.F) I.cm.sig (a ⊗ₜ[I.F] x) = a ⊗ₜ[I.F] (star x)`.
+
+Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Both sides reduce to the same expression. Rewrite `h1` using `[hs]`. Rewrite using `[trace_tmul', map_mul, evV_algebraMap, ← I.φ_over, GlobalTheory.St.G.trace_cm_eq_add_star I.cm, map_add, mul_add, ← thetaV_tmul, ← thetaV_tmul, h1]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evV_trace (v : InfinitePlace I.F) (y : AF I.F ⊗[I.F] I.E) :
     evV I v (Algebra.trace (AF I.F) (AF I.F ⊗[I.F] I.E) y) = thetaV I v y + star (thetaV I v y) := by
   induction y using TensorProduct.induction_on with
@@ -87,6 +114,9 @@ theorem evV_trace (v : InfinitePlace I.F) (y : AF I.F ⊗[I.F] I.E) :
     rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]; ring
 
+/- English proof (translation)
+Establish `e : x ⊗ₜ[I.F] b = (x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F)) * ((1 : I.E) ⊗ₜ[I.F] b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨x, ⟨⟨x, hx⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, rfl⟩))`.
+-/
 theorem tmul_mem_int {x : I.E} (hx : IsIntegral ℤ x) {b : Formalism.MainNotions.S.Af I.F} (hb : b ∈ Formalism.UG.intAd I.F) :
     x ⊗ₜ[I.F] b ∈ IntAf I.F I.E := by
   have e : x ⊗ₜ[I.F] b = (x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F)) * ((1 : I.E) ⊗ₜ[I.F] b) := by
@@ -95,6 +125,21 @@ theorem tmul_mem_int {x : I.E} (hx : IsIntegral ℤ x) {b : Formalism.MainNotion
   exact mul_mem (Subring.subset_closure (Or.inl ⟨⟨x, ⟨⟨x, hx⟩, rfl⟩⟩, rfl⟩))
     (Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, rfl⟩))
 
+/- English proof (translation)
+Establish `padd : ∀ α β : Formalism.MainNotions.S.Af I.F, ψ (pairA I.F 0 (α + β)) = ψ (pairA I.F 0 α) * ψ (pairA I.F 0 β)`. Introduce `α β`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm rfl`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero, neg_zero, map_zero, hint 0 (zero_mem _)]`. Conclude with `hψi 0 (zero_mem _)`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, neg_add, map_add, hadd, ← hx, ← hy, ← padd]`. Both sides reduce to the same expression. Consider the case `tmul a x`. Take `⟨N, s, hN0, hs⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ I.E).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x)).exists_nsmul_eq (𝓞 I.E)`. Establish `hN : IsIntegral ℤ (N • x)` using `by rw [hs]; exact s.2`.
+
+Take `⟨a0, β, hβ, hab⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat I.F N (Nat.pos_of_ne_zero hN0)).1 a.2`. Establish `hβ' : β ∈ Formalism.UG.intAd I.F` using `hβ`. Establish `e1 : (Algebra.trace (AF I.F) (AF I.F ⊗[I.F] I.E) (a ⊗ₜ[I.F] x)).2 = algebraMap I.F (Formalism.MainNotions.S.Af I.F) (Algebra.trace I.F I.E (a0 • x)) + β * algebraMap I.F (Formalism.MainNotions.S.Af I.F) (Algebra.trace I.F I.E (N • x))`. Rewrite using `[trace_tmul']`. Use `show a.2 * algebraMap I.F (Formalism.MainNotions.S.Af I.F) (Algebra.trace I.F I.E x) = _`.
+
+Rewrite using `[hab, map_smul, map_nsmul, map_nsmul, smul_eq_mul, map_mul, add_mul, smul_mul_assoc, mul_smul_comm]`. Establish `e2 : tauF I (-(a ⊗ₜ[I.F] x)) = Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (-(a0 • x)) + -((N • x) ⊗ₜ[I.F] β) := by`. Rewrite using `[map_neg, tauF_tmul, hab, TensorProduct.tmul_add, neg_add, map_neg]`. Use `congr 2`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Nat.cast_smul_eq_nsmul I.F, ← Nat.cast_smul_eq_nsmul I.F, TensorProduct.smul_tmul]`. Establish `hti : algebraMap I.F (Formalism.MainNotions.S.Af I.F) (Algebra.trace I.F I.E (N • x)) ∈ Formalism.UG.intAd I.F`. Establish `h` using `Algebra.isIntegral_trace (L := I.F) hN`. Introduce `v`.
+
+Conclude with `IsDedekindDomain.HeightOneSpectrum.coe_mem_adicCompletionIntegers (K := I.F) v (⟨_, h⟩ : 𝓞 I.F)`. Rewrite using `[e1, e2, padd, hadd, hψi _ (mul_mem hβ' hti), hint _ (neg_mem (tmul_mem_int I hN hβ')), hψr, Algebra.trace_trace, eq_inv_of_mul_eq_one_left (hrat _), GlobalTheory.St.G.psiEinf_eq_exp_trace, ← Complex.exp_neg, map_neg]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fin_char (ψ : AddChar (AF I.F) ℂ)
     (hψr : ∀ x : I.F, ψ (pairA I.F 0 (algebraMap I.F (Formalism.MainNotions.S.Af I.F) x)) =
       Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ I.F x : ℚ) : ℂ)))
@@ -154,11 +199,17 @@ noncomputable section
 namespace GlobalTheory.Core.TieSign
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.InstExistsPf
 
+/- English proof (translation)
+Simplify using `only [hN, Matrix.mulVec, dotProduct, ratV, Pi.smul_apply, smul_eq_mul, star_mul', map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+-/
 theorem hN_smul {D : D7} (n : GA D (D.sp.Y 0)) (a b : D.host.E) (p q : Fin (D.sp.Y 0).rank → D.host.E) :
     hN n (a • p) (b • q) = incA D (star a * b) * hN n p q := by
   simp only [hN, Matrix.mulVec, dotProduct, ratV, Pi.smul_apply, smul_eq_mul, star_mul', map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Rewrite using `[hN, Finset.sum_comm, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum (incA D)]`. Both sides reduce to the same expression.
+-/
 theorem pX_mulVec {D : D7} {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V₀ ρ) (n : GA D (D.sp.Y 0))
     (q : Fin (D.sp.Y 0).rank → D.host.E) (a : Fin ρ) :
     (d.pX *ᵥ (mt (D.sp.Y 0) n *ᵥ ratV q)) a = hN n (fun k => d.e' k a) q := by
@@ -167,16 +218,25 @@ theorem pX_mulVec {D : D7} {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V₀
   rw [← Finset.sum_mul, ← map_sum (incA D)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← pX_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem blockX_eq {D : D7} {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V₀ ρ) (n : GA D (D.sp.Y 0)) (a b : Fin ρ) :
     blockX d n a b = hN n (fun k => d.e' k a) (fun k => d.e k b) := by
   rw [← pX_mulVec]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← pX_mulVec, ratV_mulVec, coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem coefX_eq {D : D7} {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V₀ ρ) (z : Fin V₀.rank → D.host.E)
     (n : GA D (D.sp.Y 0)) (a : Fin ρ) : coefX d z n a = hN n (fun k => d.e' k a) (d.i₀ *ᵥ z) := by
   rw [← pX_mulVec, ratV_mulVec, coefX, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
   rfl
 
+/- English proof (translation)
+Establish `hb` using `Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (Formalism.IndefR.RationalEmbedding.iota D g)`. Establish `key : (Formalism.IndefR.RationalEmbedding.iota D).symm (Formalism.IndefR.RationalEmbedding.iota D g) = g` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply g`. Conclude with `⟨fun v => (hb.1 v).trans (congrArg (fun q => ofHAInf (instOf D) q v) key), hb.2.trans (congrArg (fun q => ofHAFin (instOf D) q) key)⟩`.
+-/
 theorem bridge_comp (D : D7) (g : GA D (D.sp.Y 0)) :
     (∀ v, uMat ((Formalism.IndefR.RationalEmbedding.iota D g).1 v) = ofHAInf (instOf D) g v) ∧
       (instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D g).2 = ofHAFin (instOf D) g := by
@@ -186,6 +246,15 @@ theorem bridge_comp (D : D7) (g : GA D (D.sp.Y 0)) :
   exact ⟨fun v => (hb.1 v).trans (congrArg (fun q => ofHAInf (instOf D) q v) key),
     hb.2.trans (congrArg (fun q => ofHAFin (instOf D) q) key)⟩
 
+/- English proof (translation)
+Establish `hF : ∀ a : Fin ρ, (fun k => d.e' k a) = (star (t * lam ^ (ρ - (a : ℕ))))⁻¹ • F a` using `fun a => by rw [he']; rfl`. Establish `hE : ∀ a : Fin ρ, (fun k => d.e k a) = (t * lam ^ (ρ - (a : ℕ))) • E a` using `fun a => by rw [he]; rfl`. Rewrite using `[simpleSum, upSum, dotProduct, ← Finset.sum_add_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.2`.
+
+Distinguish the cases in `h1 : a.1 + 1 < ρ`. Establish `h2 : ¬ (a.1 + 1 = ρ)` using `by omega`. Rewrite using `[Finset.sum_eq_single (⟨a.1 + 1, h1⟩ : Fin ρ) (fun b _ hb => if_neg fun e => hb (Fin.ext e)) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, ell, if_neg h2, zero_mul, add_zero, blockX_eq, hF, hE, hN_smul, nxt, dif_pos h1]`. Use `congr 2`. Establish `e : ρ - (a : ℕ) = (ρ - (a.1 + 1)) + 1` using `by omega`.
+
+Rewrite using `[star_inv₀, star_star, e, pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : a.1 + 1 = ρ` using `by omega`. Rewrite using `[Finset.sum_eq_zero (fun b _ => if_neg (by have := b.2; omega)), zero_add, ell, if_pos h2, one_mul, coefX_eq, hF, hz, hN_smul, nxt, dif_neg h1]`. Use `congr 2`.
+
+Establish `e : ρ - (a : ℕ) = 1` using `by omega`. Rewrite using `[star_inv₀, star_star, e, pow_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem simpleSum_eq (D : D7) {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V₀ ρ)
     (E F : Fin ρ → Fin (D.sp.Y 0).rank → D.host.E) (Z : Fin (D.sp.Y 0).rank → D.host.E)
     (z : Fin V₀.rank → D.host.E) (t lam : D.host.E) (ht : t ≠ 0) (hl : lam ≠ 0)
@@ -215,6 +284,9 @@ theorem simpleSum_eq (D : D7) {V₀ : HSp D} {ρ : ℕ} (d : HypDec (D.sp.Y 0) V
     rw [star_inv₀, star_star, e, pow_one]
     field_simp
 
+/- English proof (translation)
+Rewrite using `[(bridge_comp D n).1 v]`. Conclude with `theta_form (instOf D) v (hmat (instOf D) n) p q`.
+-/
 theorem thetaV_hN (D : D7) (n : GA D (D.sp.Y 0)) (v : InfinitePlace (instOf D).F)
     (p q : Fin (D.sp.Y 0).rank → D.host.E) :
     thetaV (instOf D) v (hN n p q) =
@@ -222,12 +294,20 @@ theorem thetaV_hN (D : D7) (n : GA D (D.sp.Y 0)) (v : InfinitePlace (instOf D).F
   rw [(bridge_comp D n).1 v]
   exact theta_form (instOf D) v (hmat (instOf D) n) p q
 
+/- English proof (translation)
+Rewrite using `[(bridge_comp D n).2]`. Conclude with `tau_form (instOf D) (hmat (instOf D) n) p q`.
+-/
 theorem tauF_hN (D : D7) (n : GA D (D.sp.Y 0)) (p q : Fin (D.sp.Y 0).rank → D.host.E) :
     tauF (instOf D) (hN n p q) =
       hA (instOf D) (incl (instOf D) p) ((instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D n).2 *ᵥ incl (instOf D) q) := by
   rw [(bridge_comp D n).2]
   exact tau_form (instOf D) (hmat (instOf D) n) p q
 
+/- English proof (translation)
+Establish `h` using `hψ.2.2 _ (Formalism.IndefR.Eqv.isInfFam_thetaC D) (Algebra.trace (AF D.host.F) (AE D) y).1`. Establish `hs : ∑ ρ, Formalism.IndefR.Eqv.thetaC D ρ ((Algebra.trace (AF D.host.F) (AE D) y).1 ⊗ₜ[D.host.F] (1 : D.host.E)) = ∑ v : InfinitePlace (instOf D).F, (thetaV (instOf D) v y + star (thetaV (instOf D) v y))`. Use `Fintype.sum_equiv (Formalism.L2.Host.tauPl D) _ _ fun ρ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.IndefR.Eqv.thetaC_tmul, map_one, mul_one]`. Conclude with `evV_trace (instOf D) (Formalism.L2.Host.tauPl D ρ) y`.
+
+Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[hs, ← Complex.exp_sum, ← Finset.mul_sum, Finset.sum_neg_distrib]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_inf_trace (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (y : AE D) :
     ψ (pairA D.host.F (Algebra.trace (AF D.host.F) (AE D) y).1 0) =
       ∏ v, Complex.exp (2 * Real.pi * Complex.I *
@@ -244,6 +324,9 @@ theorem psi_inf_trace (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `fin_char (instOf D) ψ (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) (fun _ hβ => GlobalTheory.SplitCharCond.char_int hψ hβ) psiEf hadd hint hrat y`.
+-/
 theorem psi_fin_trace (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (psiEf : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af (instOf D).F → ℂ)
     (hadd : ∀ x y, psiEf (x + y) = psiEf x * psiEf y)
@@ -261,42 +344,72 @@ noncomputable section
 namespace GlobalTheory.Core.TieSign
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.InstExistsPf
 
+/- English proof (translation)
+Use `thetaV_tmul (instOf D) v 1 y` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Conclude with `this`.
+-/
 theorem thetaV_incA' (D : D7) (v : InfinitePlace (instOf D).F) (y : D.host.E) :
     thetaV (instOf D) v (incA D y) = (instOf D).φ v y := by
   have := thetaV_tmul (instOf D) v 1 y
   rw [map_one, one_mul] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `tauF_tmul (instOf D) 1 y`.
+-/
 theorem tauF_incA' (D : D7) (y : D.host.E) :
     tauF (instOf D) (incA D y) = Formalism.UG.inclE (F := D.host.F) (Formalism.MainNotions.S.Af D.host.F) y :=
   tauF_tmul (instOf D) 1 y
 
+/- English proof (translation)
+The claim follows from `map_mul _ a b`.
+-/
 theorem thetaV_mulAE (D : D7) (v : InfinitePlace (instOf D).F) (a b : AE D) :
     thetaV (instOf D) v (a * b) = thetaV (instOf D) v a * thetaV (instOf D) v b := map_mul _ a b
 
+/- English proof (translation)
+The claim follows from `map_neg _ a`.
+-/
 theorem thetaV_negAE (D : D7) (v : InfinitePlace (instOf D).F) (a : AE D) :
     thetaV (instOf D) v (-a) = -thetaV (instOf D) v a := map_neg _ a
 
+/- English proof (translation)
+The claim follows from `map_sum _ x _`.
+-/
 theorem thetaV_sumAE (D : D7) (v : InfinitePlace (instOf D).F) {ρ : ℕ} (x : Fin ρ → AE D) :
     thetaV (instOf D) v (∑ a, x a) = ∑ a, thetaV (instOf D) v (x a) := map_sum _ x _
 
+/- English proof (translation)
+The claim follows from `map_mul _ a b`.
+-/
 theorem tauF_mulAE (D : D7) (a b : AE D) :
     tauF (instOf D) (a * b) = tauF (instOf D) a * tauF (instOf D) b := map_mul _ a b
 
+/- English proof (translation)
+The claim follows from `map_sum _ x _`.
+-/
 theorem tauF_sumAE (D : D7) {ρ : ℕ} (x : Fin ρ → AE D) :
     tauF (instOf D) (∑ a, x a) = ∑ a, tauF (instOf D) (x a) := map_sum _ x _
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.2.1 a]`. Simplify using the standard rewrite rules.
+-/
 theorem star_psi_eq {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (a : AF F) :
     star (ψ a) = ψ (-a) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ.2.1 a]
   simp
 
+/- English proof (translation)
+Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`.
+-/
 theorem psi_split {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (a : AF F) :
     ψ a = ψ (pairA F a.1 0) * ψ (pairA F 0 a.2) := by
   rw [← AddChar.map_add_eq_mul]
   congr 1
   exact Prod.ext (add_zero _).symm (zero_add _).symm
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `congr 1`. Simplify using `only [star_neg, star_mul', star_inv₀, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cexp_two_pi_I_neg_inv_nat_smul_add_star {g : ℕ} (c x : ℂ) (hc : c = ((g : ℂ))⁻¹) :
     Complex.exp (2 * Real.pi * Complex.I * -(-(c * x) + star (-(c * x)))) =
       Complex.exp (2 * Real.pi * Complex.I * ((x + star x) / (g : ℂ))) := by
@@ -305,6 +418,13 @@ theorem cexp_two_pi_I_neg_inv_nat_smul_add_star {g : ℕ} (c x : ℂ) (hc : c = 
   simp only [star_neg, star_mul', star_inv₀, star_natCast]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ v : InfinitePlace (instOf D).F, (instOf D).φ v ((g : D.host.E)⁻¹) = ((g : ℂ))⁻¹`. Introduce `v`. Use `show (instOf D).φ v ((g : (instOf D).E)⁻¹) = _`. Rewrite using `[map_inv₀, map_natCast]`. Establish `h1 : ∀ v : InfinitePlace (instOf D).F, Complex.exp (2 * Real.pi * Complex.I * -(thetaV (instOf D) v (-(incA D ((g : D.host.E)⁻¹) * S)) + star (thetaV (instOf D) v (-(incA D ((g : D.host.E)⁻¹) * S))))) = Complex.exp (2 * Real.pi * Complex.I * ((thetaV (instOf D) v S + star (thetaV …`.
+
+Introduce `v`. Rewrite using `[thetaV_negAE, thetaV_mulAE, thetaV_incA']`. Conclude with `cexp_two_pi_I_neg_inv_nat_smul_add_star _ _ (key v)`. Establish `h2 : tauF (instOf D) (incA D ((g : D.host.E)⁻¹) * S) = divN (instOf D) g (tauF (instOf D) S)`. Rewrite using `[tauF_mulAE, tauF_incA', divN]`.
+
+Use `congr 1`. Rewrite using `[psiE, star_psi_eq ψ hψ.1, ← map_neg, psi_split, psi_inf_trace D ψ hψ, psi_fin_trace D ψ hψ psiEf hadd hint hrat, neg_neg]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => h1 v`. Conclude with `congrArg psiEf h2`.
+-/
 theorem star_psiE_div (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (psiEf : (instOf D).E ⊗[(instOf D).F] Formalism.MainNotions.S.Af (instOf D).F → ℂ)
     (hadd : ∀ x y, psiEf (x + y) = psiEf x * psiEf y)
@@ -333,17 +453,37 @@ theorem star_psiE_div (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar
   · exact Finset.prod_congr rfl fun v _ => h1 v
   · exact congrArg psiEf h2
 
+/- English proof (translation)
+Rewrite using `[h, star_sum, ← Finset.sum_add_distrib]`.
+-/
 theorem sum_add_star_eq_of_eq_fin_sum {ρ : ℕ} (s : ℂ) (c : Fin ρ → ℂ) (h : s = ∑ a, c a) :
     s + star s = ∑ a, (c a + star (c a)) := by
   rw [h, star_sum, ← Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `nxt`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem rv_nxt (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) {ρ : ℕ} (e : Fin ρ → Fin I.n → I.E) (z : Fin I.n → I.E)
     (a : Fin ρ) : rv I v (nxt e z a) = nxt (fun b => rv I v (e b)) (rv I v z) a := by
   unfold nxt
   split_ifs <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castGA_self' {I : Formalism.MainNotions.S.AutInst} (e : I = I) (x : I.GA) : castGA e x = x := rfl
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Establish `hid : ∀ y, ιE y = y` using `fun y => eq_of_heq (hId y)`. Simplify using `only [castGA_self']`. Establish `hs : ∀ v, thetaV (instOf D) v (∑ a, hN n (fun k => ιE (f a (Fin.cast hr k))) (nxt (fun b k => ιE (e b (Fin.cast hr k))) (fun k => ιE (z (Fin.cast hr k))) a)) = ∑ a, hJ ((instOf D).ε v) (rv (instOf D) v (f a)) (uMat ((Formalism.IndefR.RationalEmbedding.iota D n).1 v) *ᵥ nxt (fun b …`. Introduce `v`.
+
+Rewrite using `[thetaV_sumAE]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[thetaV_hN]`. Simplify using `only [hid]`. Conclude with `congrArg (fun w => hJ ((instOf D).ε v) (rv (instOf D) v (f a)) (uMat ((Formalism.IndefR.RationalEmbedding.iota D n).1 v) *ᵥ w)) (rv_nxt (instOf D) v e z a)`.
+
+Establish `ht : tauF (instOf D) (∑ a, hN n (fun k => ιE (f a (Fin.cast hr k))) (nxt (fun b k => ιE (e b (Fin.cast hr k))) (fun k => ιE (z (Fin.cast hr k))) a)) = ∑ a, hA (instOf D) (incl (instOf D) (f a)) ((instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D n).2 *ᵥ incl (instOf D) (n …`. Rewrite using `[tauF_sumAE]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[tauF_hN]`. Simplify using `only [hid]`.
+
+Both sides reduce to the same expression. Rewrite using `[star_psiE_div D ψ hψ psiEf hadd hint hrat g hg]`. Use `congr 1`. Unfold `Formalism.L2.SG.HidaSetting.psiInf`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Unfold `psiR rootCoord`. Conclude with `congrArg (fun w => Complex.exp (2 * Real.pi * Complex.I * (w / (g : ℂ)))) (sum_add_star_eq_of_eq_fin_sum _ _ (hs v))`. Unfold `psiFin`. Conclude with `congrArg (fun w => psiEf (divN (instOf D) g w)) ht`.
+-/
 theorem core (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (I : Formalism.MainNotions.S.AutInst)
     (hI : I = instOf D) (ιE : I.E ≃+* D.host.E) (hId : ∀ y, HEq (ιE y) y) (hr : (D.sp.Y 0).rank = I.n)
     (psiEf : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F → ℂ)
@@ -392,6 +532,11 @@ end
 
 open GlobalTheory.Core.TieSign GlobalTheory.Core.SBesEx in
 
+/- English proof (translation)
+Introduce `D X h u ψ hE hψ`. Establish `hg : X.B.g ≠ 0` using `Formalism.L2.SG.Pf.modulus_g_ne_zero X`. Establish `hg' : ((X.B.g : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Use `⟨(X.B.g : D.host.E), Or.inl rfl, ?_⟩` and prove the remaining obligations. Introduce `t ht V₀ L d o ζ hde hde' hz n _hn`.
+
+Establish `hA` using `simpleSum_eq D d (fun a => cY X h (X.eX a)) (fun a => cY X h (X.fY a)) (cY X h (X.zu u)) (vecB o ζ) t (X.B.g : D.host.E) ht hg' (by rw [hde]; rfl) (by rw [hde']; rfl) hz n`. Rewrite using `[psiBes, map_one, one_mul, hA]`. Conclude with `core D ψ hψ X.B.I h X.ιE hE (rank_eq X h) X.psiEf X.psiEf_add X.psiEf_int X.psiEf_rat X.B.g hg X.eR X.fR (X.zR u) n`.
+-/
 theorem GlobalTheory.Core.Mi.tiepsi_sign : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ), IdE X → IsStdChar D ψ (-1) → ∃ lam : D.host.E, (lam = (X.B.g : D.host.E) ∨ lam = -(X.B.g : D.host.E)) ∧ ∀ t : D.host.E, t ≠ 0 → ∀ (V₀ L : HSp D) (d : HypDec (D.sp.Y 0) V₀ D.R.rS) (o : OrthDec V₀ (D.sp.X 0) L) (ζ : Fin L.rank → D.host.E), d.e = GlobalTheory.Core.SBesEx.eM X h t lam → d.e' = GlobalTheory.Core.SBesEx.e'M X h t lam → d.i₀ *ᵥ vecB o ζ = t • GlobalTheory.Core.SBesEx.cY X h (X.zu u) → ∀ n ∈ flagN d, star (psiBes ψ d 1 (vecB o ζ) n) = X.psiInfU u (iotaX X h n).1 * X.psiFinU u (iotaX X h n).2 := by
   intro D X h u ψ hE hψ
   have hg : X.B.g ≠ 0 := Formalism.L2.SG.Pf.modulus_g_ne_zero X

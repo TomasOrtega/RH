@@ -7,5 +7,8 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.CM
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CM.GenFib.nonempty_of_baseChange | exact GlobalTheory.CM.GenFib.nonempty_of_baseChange | (intros; apply GlobalTheory.CM.GenFib.nonempty_of_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_polAVGenericFibreWithLieBasis : Out.PolBaseChangeSt → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))), Nonempty (GenFib P) := by
   first | exact @GlobalTheory.CM.GenFib.nonempty_of_baseChange | exact GlobalTheory.CM.GenFib.nonempty_of_baseChange | (intros; apply GlobalTheory.CM.GenFib.nonempty_of_baseChange <;> assumption)

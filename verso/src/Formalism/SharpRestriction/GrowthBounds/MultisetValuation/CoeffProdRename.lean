@@ -11,6 +11,9 @@ def fac {σ : Type} (κ : σ →₀ ℕ) : ℕ := ∏ x ∈ κ.support, (κ x).f
 def jp {K A σ : Type} [CommRing K] [CommRing A] [Algebra K A] (P : MvPolynomial σ A) (f : MvPowerSeries σ K) : A :=
   ∑ κ ∈ P.support, (((fac κ : ℕ) : K) * MvPowerSeries.coeff κ f) • MvPolynomial.coeff κ P
 
+/- English proof (translation)
+Unfold `jp`. Use `Finset.sum_subset hS ?_` and prove the remaining obligations. Introduce `κ _ hκ`. Establish `h0 : MvPolynomial.coeff κ P = 0` using `by simpa [MvPolynomial.mem_support_iff] using hκ`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem jp_eq_sum {K A σ : Type} [CommRing K] [CommRing A] [Algebra K A] (P : MvPolynomial σ A)
     (f : MvPowerSeries σ K) (S : Finset (σ →₀ ℕ)) (hS : P.support ⊆ S) :
     jp P f = ∑ κ ∈ S, (((fac κ : ℕ) : K) * MvPowerSeries.coeff κ f) • MvPolynomial.coeff κ P := by
@@ -27,6 +30,9 @@ variable {K Pl : Type} [CommRing K] {ι : Pl → Type}
 def atP (v : Pl) (f : MvPowerSeries (ι v) K) : MvPowerSeries (Σ v, ι v) K :=
   MvPowerSeries.rename (Function.Embedding.sigmaMk v) f
 
+/- English proof (translation)
+Unfold `atP`. Conclude with `map_mul _ f g`.
+-/
 theorem memLocalization_mul (v : Pl) (f g : MvPowerSeries (ι v) K) : atP v (f * g) = atP v f * atP v g := by
   unfold atP
   exact map_mul _ f g
@@ -37,6 +43,11 @@ abbrev eqv : ((Σ v, ι v) →₀ ℕ) ≃+ (∀ v, ι v →₀ ℕ) := Finsupp.
 
 variable [DecidableEq Pl]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use extensionality with `i`. Rewrite using `[Finsupp.sigmaFinsuppAddEquivPiFinsupp_apply]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `Finsupp.embDomain_apply_self (Function.Embedding.sigmaMk w) m i`. Rewrite using `[Pi.single_eq_of_ne h, Finsupp.coe_zero, Pi.zero_apply, Finsupp.embDomain_notin_range]`. Introduce and unpack `⟨j, hj⟩`. Conclude with `h (congrArg Sigma.fst hj).symm`.
+-/
 theorem eqv_embDomain (v : Pl) (m : ι v →₀ ℕ) :
     eqv (Finsupp.embDomain (Function.Embedding.sigmaMk v) m) = Pi.single v m := by
   funext w
@@ -50,6 +61,9 @@ theorem eqv_embDomain (v : Pl) (m : ι v →₀ ℕ) :
     rintro ⟨j, hj⟩
     exact h (congrArg Sigma.fst hj).symm
 
+/- English proof (translation)
+Establish `h : eqv.symm (Pi.single v m) = Finsupp.embDomain (Function.Embedding.sigmaMk v) m`. Rewrite using `[AddEquiv.symm_apply_eq, eqv_embDomain]`. Rewrite using `[h]`. Conclude with `MvPowerSeries.coeff_embDomain_rename _ _ _`.
+-/
 theorem coeff_atP_single (v : Pl) (f : MvPowerSeries (ι v) K) (m : ι v →₀ ℕ) :
     MvPowerSeries.coeff (eqv.symm (Pi.single v m)) (atP v f) = MvPowerSeries.coeff m f := by
   have h : eqv.symm (Pi.single v m) = Finsupp.embDomain (Function.Embedding.sigmaMk v) m := by
@@ -57,6 +71,9 @@ theorem coeff_atP_single (v : Pl) (f : MvPowerSeries (ι v) K) (m : ι v →₀ 
   rw [h]
   exact MvPowerSeries.coeff_embDomain_rename _ _ _
 
+/- English proof (translation)
+Apply `MvPowerSeries.coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨u, hu⟩`. Use `h u ?_` and prove the remaining obligations. Rewrite using `[← hu, eq_comm, AddEquiv.symm_apply_eq, ← eqv_embDomain v u]`. Conclude with `congrArg eqv (Finsupp.embDomain_eq_mapDomain (Function.Embedding.sigmaMk v) u)`.
+-/
 theorem coeff_atP_eq_zero (v : Pl) (f : MvPowerSeries (ι v) K) (n : (Σ v, ι v) →₀ ℕ)
     (h : ∀ m, n ≠ eqv.symm (Pi.single v m)) : MvPowerSeries.coeff n (atP v f) = 0 := by
   apply MvPowerSeries.coeff_rename_eq_zero
@@ -65,6 +82,17 @@ theorem coeff_atP_eq_zero (v : Pl) (f : MvPowerSeries (ι v) K) (n : (Σ v, ι v
   rw [← hu, eq_comm, AddEquiv.symm_apply_eq, ← eqv_embDomain v u]
   exact congrArg eqv (Finsupp.embDomain_eq_mapDomain (Function.Embedding.sigmaMk v) u)
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_prod]`. Set `l0 : Pl →₀ ((Σ v, ι v) →₀ ℕ)` to `Finsupp.equivFunOnFinite.symm fun v => eqv.symm (Pi.single v (eqv n v))`. Establish `hl0 : ∀ v, l0 v = eqv.symm (Pi.single v (eqv n v))` using `fun v => rfl`. Establish `hmem : l0 ∈ Finset.finsuppAntidiag Finset.univ n`. Rewrite using `[Finset.mem_finsuppAntidiag]`.
+
+Use `⟨?_, Finset.subset_univ _⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_eq_single_of_mem l0 hmem]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hl0]; exact coeff_atP_single v (g v) (eqv n v)`. Introduce `l hl hne`.
+
+Rewrite `hl` using `[Finset.mem_finsuppAntidiag]`. Assume the negation of the conclusion as `hprod`. Apply `hne` to reduce the goal to its premises. Establish `hall : ∀ v, ∃ m, l v = eqv.symm (Pi.single v m)`. Introduce `v`.
+
+Assume the negation of the conclusion as `hv`. Use `push_neg at hv`. Conclude with `hprod (Finset.prod_eq_zero (Finset.mem_univ v) (coeff_atP_eq_zero v (g v) (l v) hv))`. Use `choose m hm using hall`. Establish `hn : n = eqv.symm m`.
+
+Rewrite using `[← hl.1]`. Combine the equalities or inequalities in the displayed calculation. Use `ext1 v`. Rewrite using `[hm v, hl0, hn, AddEquiv.apply_symm_apply]`.
+-/
 theorem coeff_prod_atP (g : ∀ v, MvPowerSeries (ι v) K) (n : (Σ v, ι v) →₀ ℕ) :
     MvPowerSeries.coeff n (∏ v, atP v (g v)) = ∏ v, MvPowerSeries.coeff (eqv n v) (g v) := by
   classical
@@ -98,6 +126,15 @@ theorem coeff_prod_atP (g : ∀ v, MvPowerSeries (ι v) K) (n : (Σ v, ι v) →
     ext1 v
     rw [hm v, hl0, hn, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[MvPolynomial.coeff_coe]`. Distinguish the cases in `h : ∃ m, d = eqv.symm (Pi.single v m)`. Take `⟨m, rfl⟩` from `h`. Rewrite using `[coeff_atP_single, MvPolynomial.coeff_coe]`.
+
+Establish `h2 : eqv.symm (Pi.single v m) = Finsupp.embDomain (Function.Embedding.sigmaMk v) m`. Rewrite using `[AddEquiv.symm_apply_eq, eqv_embDomain]`. Rewrite using `[h2]`. Conclude with `MvPolynomial.coeff_rename_embDomain (Function.Embedding.sigmaMk v) p m`. Use `push_neg at h`.
+
+Rewrite using `[coeff_atP_eq_zero v _ d h]`. Apply `MvPolynomial.coeff_rename_eq_zero` to reduce the goal to its premises. Introduce `u hu`. It suffices to derive a contradiction. Use `h u ?_` and prove the remaining obligations.
+
+Rewrite using `[← hu, eq_comm, AddEquiv.symm_apply_eq, ← eqv_embDomain v u]`. Conclude with `congrArg eqv (Finsupp.embDomain_eq_mapDomain (Function.Embedding.sigmaMk v) u)`.
+-/
 private theorem coe_rename_sigma_mk_eq_atP (v : Pl) (p : MvPolynomial (ι v) K) :
     ((MvPolynomial.rename (Sigma.mk v) p : MvPolynomial (Σ v, ι v) K) : MvPowerSeries (Σ v, ι v) K) =
       atP v (p : MvPowerSeries (ι v) K) := by
@@ -119,6 +156,9 @@ private theorem coe_rename_sigma_mk_eq_atP (v : Pl) (p : MvPolynomial (ι v) K) 
     rw [← hu, eq_comm, AddEquiv.symm_apply_eq, ← eqv_embDomain v u]
     exact congrArg eqv (Finsupp.embDomain_eq_mapDomain (Function.Embedding.sigmaMk v) u)
 
+/- English proof (translation)
+Establish `h1 : ((∏ v, MvPolynomial.rename (Sigma.mk v) (P v) : MvPolynomial (Σ v, ι v) K) : MvPowerSeries (Σ v, ι v) K) = ∏ v, atP v (P v : MvPowerSeries (ι v) K)`. Rewrite using `[← Finset.prod_congr rfl fun v _ => coe_rename_sigma_mk_eq_atP v (P v)]`. Conclude with `map_prod (MvPolynomial.coeToMvPowerSeries.ringHom (R := K)) _ _`. Rewrite using `[← MvPolynomial.coeff_coe, h1, coeff_prod_atP]`. Simplify using `only [MvPolynomial.coeff_coe]`.
+-/
 theorem coeff_prod_rename (P : ∀ v, MvPolynomial (ι v) K) (n : (Σ v, ι v) →₀ ℕ) :
     MvPolynomial.coeff n (∏ v, MvPolynomial.rename (Sigma.mk v) (P v)) =
       ∏ v, MvPolynomial.coeff (eqv n v) (P v) := by
@@ -129,6 +169,13 @@ theorem coeff_prod_rename (P : ∀ v, MvPolynomial (ι v) K) (n : (Σ v, ι v) �
   rw [← MvPolynomial.coeff_coe, h1, coeff_prod_atP]
   simp only [MvPolynomial.coeff_coe]
 
+/- English proof (translation)
+Establish `h1 : ∀ {τ : Type} [Fintype τ] (m : τ →₀ ℕ), fac m = ∏ x, (m x).factorial`. Introduce `τ _ m`. Unfold `fac`. Use `Finset.prod_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `x _ hx`.
+
+Establish `h0 : m x = 0` using `by simpa using hx`. Rewrite using `[h0, Nat.factorial_zero]`. Rewrite using `[h1, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by rw [Finsupp.sigmaFinsuppAddEquivPiFinsupp_apply]`.
+-/
 theorem fac_eq [∀ v, Fintype (ι v)] (n : (Σ v, ι v) →₀ ℕ) : fac n = ∏ v, fac (eqv n v) := by
   classical
   have h1 : ∀ {τ : Type} [Fintype τ] (m : τ →₀ ℕ), fac m = ∏ x, (m x).factorial := by
@@ -145,6 +192,13 @@ theorem fac_eq [∀ v, Fintype (ι v)] (n : (Σ v, ι v) →₀ ℕ) : fac n = �
 
 end Alg
 
+/- English proof (translation)
+Establish `hsub : (∏ v, MvPolynomial.rename (Sigma.mk v) (P v)).support ⊆ (Fintype.piFinset fun v => (P v).support).image eqv.symm`. Introduce `n hn`. Rewrite `hn` using `[MvPolynomial.mem_support_iff, coeff_prod_rename]`. Rewrite using `[Finset.mem_image]`. Use `⟨eqv n, ?_, AddEquiv.symm_apply_apply _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.mem_piFinset]`. Introduce `v`. Rewrite using `[MvPolynomial.mem_support_iff]`. Conclude with `fun h0 => hn (Finset.prod_eq_zero (Finset.mem_univ v) h0)`. Rewrite using `[jp_eq_sum _ _ _ hsub, Finset.sum_image (fun x _ y _ h => eqv.symm.injective h)]`.
+
+Unfold `jp`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_prod_atP, coeff_prod_rename, fac_eq]`. Simplify using `only [AddEquiv.apply_symm_apply, Algebra.smul_def, Nat.cast_prod, map_mul, map_prod, Finset.prod_mul_distrib]`.
+-/
 theorem jp_prod {K A Pl : Type} [CommRing K] [CommRing A] [Algebra K A] [Fintype Pl] [DecidableEq Pl] {ι : Pl → Type}
     [∀ v, Fintype (ι v)] (P : ∀ v, MvPolynomial (ι v) A) (g : ∀ v, MvPowerSeries (ι v) K) :
     jp (∏ v, MvPolynomial.rename (Sigma.mk v) (P v)) (∏ v, atP v (g v)) = ∏ v, jp (P v) (g v) := by

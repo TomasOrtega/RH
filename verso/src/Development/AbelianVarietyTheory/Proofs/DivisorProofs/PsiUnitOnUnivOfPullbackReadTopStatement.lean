@@ -20,5 +20,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PullTopUnit.psiUnitOn_pull_top | exact GlobalTheory.PullTopUnit.psiUnitOn_pull_top | (intros; apply GlobalTheory.PullTopUnit.psiUnitOn_pull_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.psiUnitOn_univ_of_pullback_read_top : ∀ {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'} {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D'), hD.W = ⊤ → ∀ x : D'.X, PsiUnitOn D' x Set.univ := by
   first | exact @GlobalTheory.PullTopUnit.psiUnitOn_pull_top | exact GlobalTheory.PullTopUnit.psiUnitOn_pull_top | (intros; apply GlobalTheory.PullTopUnit.psiUnitOn_pull_top <;> assumption)

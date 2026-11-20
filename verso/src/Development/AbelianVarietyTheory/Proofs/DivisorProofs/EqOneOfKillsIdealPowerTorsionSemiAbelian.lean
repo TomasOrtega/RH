@@ -12,6 +12,15 @@ namespace GlobalTheory.IdealTorsion
 open RationalPoint GlobalTheory.TorsionDense
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `hmem : I ∈ (Ideal (𝓞 E))⁰` using `mem_nonZeroDivisors_of_ne_zero hI`. Set `c` to `ClassGroup.mk0 ⟨I, hmem⟩`. Establish `hc : c ^ Fintype.card (ClassGroup (𝓞 E)) = 1` using `pow_card_eq_one`. Establish `hmem' : I ^ Fintype.card (ClassGroup (𝓞 E)) ∈ (Ideal (𝓞 E))⁰` using `pow_mem hmem _`. Establish `hp : (I ^ Fintype.card (ClassGroup (𝓞 E))).IsPrincipal`.
+
+Rewrite using `[← ClassGroup.mk0_eq_one_iff hmem']`. Rewrite using `[← hc, ← map_pow]`. Both sides reduce to the same expression. Take `⟨π, hπ⟩` from `hp`. Establish `hpos : 0 < Fintype.card (ClassGroup (𝓞 E))` using `Fintype.card_pos`.
+
+Use `⟨_, π, hpos, by rw [hπ], ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `: I ^ Fintype.card (ClassGroup (𝓞 E)) = ⊥` using `by rw [hπ]; simp`. Conclude with `hI (pow_eq_zero_iff hpos.ne' |>.1 this)`. Introduce `hu`.
+
+Establish `: I ^ Fintype.card (ClassGroup (𝓞 E)) = ⊤`. Rewrite using `[hπ]`. Conclude with `Ideal.span_singleton_eq_top.2 hu`. Conclude with `hI' (eq_top_iff.2 (this ▸ Ideal.pow_le_self hpos.ne'))`.
+-/
 theorem exists_pow_eq_span (E : Type) [Field E] [NumberField E] (I : Ideal (𝓞 E)) (hI : I ≠ ⊥)
     (hI' : I ≠ ⊤) : ∃ (h : ℕ) (π : 𝓞 E), 0 < h ∧ I ^ h = Ideal.span {π} ∧ π ≠ 0 ∧ ¬ IsUnit π := by
   have hmem : I ∈ (Ideal (𝓞 E))⁰ := mem_nonZeroDivisors_of_ne_zero hI
@@ -33,6 +42,17 @@ theorem exists_pow_eq_span (E : Type) [Field E] [NumberField E] (I : Ideal (𝓞
       rw [hπ]; exact Ideal.span_singleton_eq_top.2 hu
     exact hI' (eq_top_iff.2 (this ▸ Ideal.pow_le_self hpos.ne'))
 
+/- English proof (translation)
+Use `letI := zariski G`. Use `haveI := noetherianSpace_zariski G`. Establish `hcl : ∀ n : ℕ, IsClosed {z : 𝟙_ (Over (Sp k)) ⟶ G | ∃ y ∈ K, y ≫ act.act (π ^ n) = z}` using `fun n => by`. Take `⟨Z', hZ', h⟩` from `exists_isClosed_image_of_isClosed_subgroup k G G (act.act (π ^ n)) (act.hom _) inferInstance inferInstance inferInstance inferInstance K Z hZ hK`. Use `isClosed_induced_iff.2 ⟨Z', hZ', ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Rewrite using `[Set.mem_preimage, ← range_left_subset_iff, ← h]`. Both sides reduce to the same expression. Set `F : ℕ → Closeds (𝟙_ (Over (Sp k)) ⟶ G)` to `fun a => ⟨_, hcl a⟩`. Take `⟨_, ⟨a, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Closeds (𝟙_ (Over (Sp k)) ⟶ G))).has_min (Set.range F) ⟨_, 0, rfl⟩`.
+
+Establish `hle : F (a + 1) ≤ F a`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `haveI := act.hom π`. Use `⟨y ≫ act.act π, ?_, by rw [Category.assoc, ← act.mul, ← pow_succ']⟩` and prove the remaining obligations. Conclude with `hKs y hy`.
+
+Establish `heq : F (a + 1) = F a` using `hle.eq_of_not_lt (hmin _ ⟨_, rfl⟩)`. Use `⟨a, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: x ≫ act.act (π ^ a) ∈ F (a + 1)`. Rewrite using `[heq]`. Conclude with `⟨x, hx, rfl⟩`.
+
+Conclude with `this`.
+-/
 theorem exists_act_pow_stable {k : Type} [Field k] [IsAlgClosed k] {O : Type} [CommRing O]
     (G : Over (Sp k)) [GrpObj G]
     [IsCommMonObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] (act : OAct O G) (π : O)
@@ -70,6 +90,31 @@ namespace GlobalTheory.IdealTorsion
 
 open RationalPoint GlobalTheory.TorsionDense
 
+/- English proof (translation)
+Introduce `E _ _ k _ _ _ G _ act u I hG hu hcomm hI hkill`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `isIntegral_left_of_isSemiAbelian G` as an intermediate fact.
+
+Use `haveI := hu`. Establish `hact : ∀ a, IsMonHom (act.act a)` using `act.hom`. Establish `h0 : act.act 0 = 1`. Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `(mul_eq_left.1 h.symm)`. Set `φ : (𝟙_ (Over (Sp k)) ⟶ G) →* (𝟙_ (Over (Sp k)) ⟶ G)` to `MonoidHom.mk' (fun x => x ≫ u) fun x y => MonObj.mul_comp x y u`. Distinguish the cases in `hbot : I = ⊥`. Substitute `hbot` using the available equality. Use `eq_one_of_finite_range u ?_` and prove the remaining obligations.
+
+Establish `: (Set.range fun x : 𝟙_ (Over (Sp k)) ⟶ G => x ≫ u) ⊆ {1}`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `hkill 1 x fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[pow_one, Ideal.mem_bot]`. Rewrite using `[ha, h0, MonObj.comp_one]`.
+
+Conclude with `(Set.finite_singleton _).subset this`. Take `⟨h, π, hh, hπ, hπ0, hπu⟩` from `exists_pow_eq_span E I hbot hI`. Establish `htors : ∀ (n : ℕ) (x : 𝟙_ (Over (Sp k)) ⟶ G), x ≫ act.act (π ^ n) = 1 → x ≫ u = 1`. Introduce `n x hx`. Use `hkill (h * n) x fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite `ha` using `[pow_mul, hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Rewrite using `[mul_comm, act.mul, ← Category.assoc, hx, MonObj.one_comp]`. Take `⟨a, ha⟩` from `exists_act_pow_stable G act π φ.ker (u.left ⁻¹' {pt (1 : 𝟙_ (Over (Sp k)) ⟶ G)}) ((isClosed_pt _).preimage u.left.continuous) (fun x => by`. Rewrite using `[range_left_subset_iff, Set.mem_preimage, ← pt_comp, Set.mem_singleton_iff, pt_injective.eq_iff]`.
+
+Use the proof step `rfl) (fun x hx => by`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `x ≫ act.act π ≫ u = 1`. Rewrite using `[hcomm, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(x ≫ u) ≫ act.act π = 1`.
+
+Rewrite using `[show x ≫ u = 1 from hx, MonObj.one_comp])`. Take `⟨Z', hZ', h'⟩` from `exists_isClosed_image_of_isClosed_subgroup k G G u hu inferInstance inferInstance inferInstance inferInstance ⊤ Set.univ isClosed_univ (by simp)`. Establish `hfin : Finite φ.range`. Use `GlobalTheory.T.finite_closed_stable_subgroup_semiAbelian_no_torsion E k G act π hG hπ0 hπu _ Z' hZ' (fun y => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[← h']`.
+
+Conclude with `⟨fun ⟨x, hx⟩ => ⟨x, trivial, hx⟩, fun ⟨x, _, hx⟩ => ⟨x, hx⟩⟩`. Introduce and unpack `b _ ⟨g, rfl⟩`. Use `⟨g ≫ act.act b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g ≫ act.act b) ≫ u = (g ≫ u) ≫ act.act b`. Rewrite using `[Category.assoc, hcomm, Category.assoc]`.
+
+Introduce and unpack `_ ⟨g, rfl⟩ hg`. Establish `hgk : g ≫ act.act π ∈ φ.ker`. Rewrite using `[MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `(g ≫ act.act π) ≫ u = 1`. Rewrite using `[Category.assoc, hcomm, ← Category.assoc]`.
+
+Conclude with `hg`. Take `⟨y, hy, hyg⟩` from `ha _ hgk`. Set `ψ : (𝟙_ (Over (Sp k)) ⟶ G) →* (𝟙_ (Over (Sp k)) ⟶ G)` to `MonoidHom.mk' (fun x => x ≫ act.act (π ^ (a + 1))) fun x y => MonObj.mul_comp x y _`. Establish `h1 : φ (g / y) = 1` using `htors (a + 1) (g / y) (by`. Express the relevant statement in the definitionally equal form `ψ (g / y) = 1`.
+
+Rewrite using `[map_div, div_eq_one]`. Express the relevant statement in the definitionally equal form `g ≫ act.act (π ^ (a + 1)) = y ≫ act.act (π ^ (a + 1))`. Rewrite using `[hyg, pow_succ', act.mul, Category.assoc])`. Rewrite `h1` using `[map_div, MonoidHom.mem_ker.1 hy, div_one]`. Then use the resulting hypothesis. Conclude with `eq_one_of_finite_range u hfin`.
+-/
 theorem eq_one_of_idealTorsion_comp_eq_one : ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (G : Over (Sp k)) [GrpObj G] (act : OAct (𝓞 E) G) (u : G ⟶ G) (I : Ideal (𝓞 E)), IsSemiAbelian G → IsMonHom u → (∀ a, act.act a ≫ u = u ≫ act.act a) → I ≠ ⊤ → (∀ (j : ℕ) (x : 𝟙_ (Over (Sp k)) ⟶ G), (∀ a ∈ I ^ j, x ≫ act.act a = 1) → x ≫ u = 1) → u = 1 := by
   intro E _ _ k _ _ _ G _ act u I hG hu hcomm hI hkill
   have := hG.comm

@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `L _ _ _ N A hA`. Take `⟨hpos, B, hAB, _⟩` from `scinv L N A hA`. Take `⟨hSf, hSc⟩` from `cntconj L (RR L N)`. Set `T : Finset (Fin N → 𝓞 L)` to `Fintype.piFinset fun _ => hSf.toFinset`. Establish `hmaps : ∀ y ∈ nearVec A, (fun v : Fin N → 𝓞 L => B *ᵥ v) y ∈ (T : Set (Fin N → 𝓞 L))`.
+
+Introduce `y hy`. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `a`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `fun w => nearcoord L N A B hA hAB y hy w a`.
+
+Establish `hc : ((nrmDet A : ℕ) : 𝓞 L) ≠ 0` using `Nat.cast_ne_zero.mpr hpos.ne'`. Establish `hinj : Function.Injective (fun v : Fin N → 𝓞 L => B *ᵥ v)`. Introduce `y y' h`. Establish `h'` using `congrArg (fun v => A *ᵥ v) h`. Simplify using `only [Matrix.mulVec_mulVec, hAB, Matrix.smul_mulVec, Matrix.one_mulVec] at h'`.
+
+Conclude with `smul_right_injective _ hc h'`. Use `⟨(T.finite_toSet.preimage hinj.injOn).subset hmaps, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.ncard_coe_finset, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ ((2 * RR L N + 1) ^ Module.finrank ℚ L) ^ N := by`.
+
+Apply `Nat.pow_le_pow_left` to reduce the goal to its premises. Rewrite using `[← Set.ncard_eq_toFinset_card _ hSf]`. Conclude with `hSc`. Use `_ = (2 * RR L N + 1) ^ dd L N := by rw [← pow_mul]`.
+-/
 theorem UpperTheory.V.KT.nearvec :
     ∀ (L : Type) [Field L] [NumberField L] [IsTotallyComplex L] (N : ℕ) (A : Matrix (Fin N) (Fin N) (𝓞 L)), A.det ≠ 0 →
     (nearVec A).Finite ∧ (nearVec A).ncard ≤ (2 * RR L N + 1) ^ dd L N := by

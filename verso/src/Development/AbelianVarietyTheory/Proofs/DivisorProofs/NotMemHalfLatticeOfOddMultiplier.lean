@@ -9,6 +9,13 @@ open scoped IntermediateField BigOperators Topology ComplexConjugate
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `L α a S hα hst hS hev h1 h2`. Take `⟨m, hm⟩` from `hev`. Establish `hc` using `kerRepsCard L α S hα hst hS`. Take `⟨t, n, ht, -, -⟩` from `mulStableIntegral L α hst`. Establish `hN : α * conj α = 2 * (m : ℂ) + 1`.
+
+Rewrite using `[Complex.mul_conj, ← hc, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : a = t • (α * a) - α * (α * a) - m • (2 * a)`. Rewrite using `[zsmul_eq_mul, nsmul_eq_mul, ← ht]`.
+
+Take the linear combination `(-a) * hN`. Rewrite using `[key]`. Conclude with `sub_mem (sub_mem (zsmul_mem h1 t) (hst _ h1)) (nsmul_mem h2 m)`.
+-/
 theorem mem_lattice_of_even_kerReps :
     ∀ (L : PeriodPair) (α a : ℂ) (S : Finset ℂ), α ≠ 0 → MulStable L α → IsKerReps L α S →
       Even S.card → α * a ∈ L.lattice → 2 * a ∈ L.lattice → a ∈ L.lattice := by

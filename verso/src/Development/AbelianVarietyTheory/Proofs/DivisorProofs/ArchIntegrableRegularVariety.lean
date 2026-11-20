@@ -16,6 +16,15 @@ open scoped ENNReal
 
 namespace GlobalTheory.LogNormInt
 
+/- English proof (translation)
+Establish `hm` using `measurableSet_image e hA hAs`. Establish `hsub : e '' A ⊆ e.target` using `fun _ ⟨y, hy, h⟩ => h ▸ e.map_source (hAs hy)`. Establish `hs : AEMeasurable e.symm (volume.restrict (e '' A))` using `(e.continuousOn_symm.mono hsub).aemeasurable hm`. Establish `hle : μ.restrict A ≤ C • Measure.map e.symm (volume.restrict (e '' A))`. Use `Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations.
+
+Establish `hBA` using `hB.inter hA`. Establish `hm'` using `measurableSet_image e hBA (inter_subset_right.trans hAs)`. Rewrite using `[Measure.restrict_apply hB, hμ _ hBA (inter_subset_right.trans hAs), Measure.smul_apply, Measure.map_apply_of_aemeasurable hs hB, Measure.restrict_apply' hm, smul_eq_mul]`. Use `(setLIntegral_mono' hm' fun v hv => hρ v (image_mono inter_subset_right hv)).trans ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_const]`.
+
+Use `gcongr`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨by rw [mem_preimage, e.left_inv (hAs hy.2)]; exact hy.1, mem_image_of_mem _ hy.2⟩`. Use `⟨hf.aestronglyMeasurable hA, ?_⟩` and prove the remaining obligations. Use `(lintegral_mono' hle le_rfl).trans_lt ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top hC.lt_top ((lintegral_map_le _ _).trans_lt hi.2)`.
+-/
 theorem integrableOn_of_chart {M : Type} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M] {n : ℕ}
     (e : OpenPartialHomeomorph M (V n)) {μ : Measure M} {ρ : V n → ℝ≥0∞}
     (hμ : ∀ A, MeasurableSet A → A ⊆ e.source → μ A = ∫⁻ v in e '' A, ρ v)
@@ -44,6 +53,9 @@ theorem integrableOn_of_chart {M : Type} [TopologicalSpace M] [MeasurableSpace M
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Establish `hn` using `(isOpen_ptsIn (p := p) (σ := σ) U).mem_nhds (mem_ptsIn.2 hU)`. Use `((continuousOn_ev a).continuousAt hn).congr ?_` and prove the remaining obligations. Use `filter_upwards [hn] with z hz`. Conclude with `(ratVal_fnOf hz _ a).symm`.
+-/
 theorem continuousAt_ratVal {f : X.functionField} {y : CxPts p σ} (hf : RegAt (under y) f) :
     ContinuousAt (fun z : CxPts p σ => ratVal f z) y := by
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
@@ -52,6 +64,11 @@ theorem continuousAt_ratVal {f : X.functionField} {y : CxPts p σ} (hf : RegAt (
   filter_upwards [hn] with z hz
   exact (ratVal_fnOf hz _ a).symm
 
+/- English proof (translation)
+Establish `: IsDomain k` using `hσ.isDomain σ`. Establish `hg` using `gen_mem (mem_ptsIn.1 hU)`. Establish `hb : genericPoint X ∈ X.basicOpen a` using `(unitAt_fnOf_iff hg hg a).1 (unitAt_genericPoint ((map_ne_zero_iff _ (fnOf_injective U hg)).2 ha))`. Establish `h` using `Measure.dense_of_ae (SemiPosBir.ae_mem hσ c (U := X.basicOpen a) ⟨_, hb⟩)`. Establish `h₁` using `mem_closure_iff_frequently.1 (h (c.e y))`.
+
+Use `(h₁.and_eventually ((isOpen_over c.e (isOpen_ptsIn U)).mem_nhds (mem_over c.e hy hU))).mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨h₂, h₃⟩`. Conclude with `(mem_ptsIn_basicOpen h₃.2 a).1 (h₂ h₃.1)`.
+-/
 theorem frequently_ne_zero (hσ : Function.Injective σ) (c : AlgChart p σ D) {U : X.Opens}
     {a : Γ(X, U)} (ha : a ≠ 0) {y : CxPts p σ} (hy : y ∈ c.e.source) (hU : y ∈ ptsIn p σ U) :
     ∃ᶠ v in 𝓝 (c.e y), (ev p σ U a ∘ c.e.symm) v ≠ 0 := by
@@ -65,6 +82,29 @@ theorem frequently_ne_zero (hσ : Function.Injective σ) (c : AlgChart p σ D) {
   rintro v ⟨h₂, h₃⟩
   exact (mem_ptsIn_basicOpen h₃.2 a).1 (h₂ h₃.1)
 
+/- English proof (translation)
+Use `set i := pick φ.isLB y`. Establish `hi : y ∈ ptsIn p σ (B.U i)` using `mem_pick _ y`. Establish `hyU` using `c.source_subset hy`. Establish `hg` using `gen_mem (mem_ptsIn.1 hyU)`. Establish `: Nonempty c.U` using `⟨⟨_, hg⟩⟩`.
+
+Use `functionField_isFractionRing_of_isAffineOpen X c.U c.affine` as an intermediate fact. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(X, c.U)) (r i : X.functionField)`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Express the relevant statement in the definitionally equal form `fnOf c.U hg a / fnOf c.U hg b = _ at hab`. Establish `hb1 : fnOf c.U hg b ≠ 0` using `(map_ne_zero_iff _ (fnOf_injective _ hg)).2 hb0`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[map_zero, zero_div]`. Conclude with `(r i).ne_zero hab.symm`. Establish `hT` using `(isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) c.U)).mem_nhds (mem_over c.e hy hyU)`.
+
+Establish `hd (s : Γ(X, c.U)) : ∀ᶠ v in 𝓝 (c.e y), DifferentiableAt ℂ (ev p σ c.U s ∘ c.e.symm) v` using `(c.holo _ s).eventually_differentiableAt hT`. Take `⟨δ, hδ, hae, hint⟩` from `exists_integrableOn_log_norm_div volume (hd a) (hd b) (frequently_ne_zero hσ c ha0 hy hyU) (frequently_ne_zero hσ c hb0 hy hyU)`. Establish `hT'` using `(isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i))).mem_nhds (mem_over c.e hy hi)`. Take `⟨η, hη, hηs⟩` from `nhds_basis_closedBall.mem_iff.1 (inter_mem hT' (ball_mem_nhds _ hδ))`. Establish `hcont : ContinuousOn (fun v => c.chernDens ψ (c.e.symm v)) c.e.target` using `continuousOn_const.mul (Complex.continuous_re.comp_continuousOn ((Continuous.matrix_det continuous_id).comp_continuousOn ((GlobalTheory.MixDens.chernMat_isForm k X p σ D _ ψ hψ).2.1 c)))`.
+
+Take `⟨C, hC⟩` from `(isCompact_closedBall (c.e y) η).exists_bound_of_continuousOn (hcont.mono fun v hv => (hηs hv).1.1)`. Use `set O := c.e.source ∩ c.e ⁻¹' ball (c.e y) η`. Establish `hO : IsOpen O` using `c.e.continuousOn.isOpen_inter_preimage c.e.open_source isOpen_ball`. Use `set S := offSupp p σ (divOfRatSec φ.isLB hr) ∩ O`. Establish `hS : IsOpen S` using `(isOpen_offSupp _).inter hO`.
+
+Establish `hSs : S ⊆ c.e.source` using `fun z hz => hz.2.1`. Establish `him : c.e '' S ⊆ closedBall (c.e y) η`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `ball_subset_closedBall hz.2.2`. Establish `hSi (z) (hz : z ∈ S) : z ∈ ptsIn p σ (B.U i)`.
+
+Use `(hηs (him (mem_image_of_mem _ hz))).1.2` as an intermediate fact. Rewrite `this` using `[mem_preimage, c.e.left_inv (hSs hz)]`. Then use the resulting hypothesis. Establish `hm` using `measurableSet_image c.e hS.measurableSet hSs`. Use `⟨O, hO.mem_nhds ⟨hy, mem_ball_self hη⟩, integrableOn_of_chart c.e (fun A hA hAs => Weight.chernPart_apply hψ ε c hA hAs) hS.measurableSet hSs (C := ENNReal.ofReal C) ENNReal.ofReal_ne_top (fun v hv => ENNReal.ofReal_le_ofReal ?_) ?_ ?_⟩` and prove the remaining obligations. Establish `h` using `hC v (him hv)`.
+
+Rewrite `h` using `[Real.norm_eq_abs, abs_le]`. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Simplify using `using h.2`. Simplify `h.1` using `[neg_le]`. Use `ContinuousOn.congr (f := fun z => Real.log ‖ratVal (r i : X.functionField) z‖ - φ.φ i z / 2) (fun z hz => ContinuousAt.continuousWithinAt ?_) fun z hz => logNorm_eq φ hr hz.1 (hSi z hz)` and prove the remaining obligations.
+
+Establish `hu` using `hr.unitAt φ.isLB hz.1 (hSi z hz)`. Conclude with `((continuousAt_ratVal hu.regAt).norm.log (norm_ne_zero_iff.2 (ratVal_ne_zero hu))).sub ((hφ i z (hSi z hz)).continuousAt.div_const 2)`. Establish `hsub : c.e '' S ⊆ ball (c.e y) δ` using `fun v hv => (hηs (him hv)).2`. Establish `h₁ : IntegrableOn (fun v => (φ.φ i ∘ c.e.symm) v / 2) (c.e '' S)` using `(((((contDiffOn_chart (hφ i) c).continuousOn.mono fun v hv => (hηs hv).1).div_const 2).integrableOn_compact (isCompact_closedBall _ _)).mono_set him)`. Use `((hint.mono_set hsub).sub h₁).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_restrict_of_ae_restrict_of_subset hsub hae, ae_restrict_mem hm] with v hv hv'`. Take `⟨z, hz, rfl⟩` from `hv'`. Establish `hzU` using `c.source_subset (hSs hz)`. Establish `hu` using `hr.unitAt φ.isLB hz.1 (hSi z hz)`. Establish `e` using `ratVal_mul hu.regAt (regAt_fnOf (mem_ptsIn.1 hzU) hg b)`.
+
+Rewrite `e` using `[← hab, div_mul_cancel₀ _ hb1, hab, ratVal_fnOf hzU, ratVal_fnOf hzU]`. Simplify using `only [Function.comp_apply, Pi.sub_apply, c.e.left_inv (hSs hz)] at hv ⊢`. Rewrite using `[logNorm_eq φ hr hz.1 (hSi z hz), e, mul_div_cancel_right₀ _ hv.2]`.
+-/
 theorem exists_integrableOn [SecondCountableTopology (CxPts p σ)] (hσ : Function.Injective σ)
     {A B : LB X} {ψ : Weight p σ A} (hψ : ψ.IsCInf) {φ : Weight p σ B} (hφ : φ.IsCInf)
     {r : B.ι → X.functionFieldˣ} (hr : IsRatSec B r) (ε : ℤˣ) (c : AlgChart p σ D) {y : CxPts p σ}
@@ -136,6 +176,13 @@ theorem exists_integrableOn [SecondCountableTopology (CxPts p σ)] (hσ : Functi
     simp only [Function.comp_apply, Pi.sub_apply, c.e.left_inv (hSs hz)] at hv ⊢
     rw [logNorm_eq φ hr hz.1 (hSi z hz), e, mul_div_cancel_right₀ _ hv.2]
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX M N r hr σ`. Use `hX.toIsArithVar.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Take `⟨R⟩` from `RegGenSmooth.genSmooth hX.toIsArithVar hX.regular σ`. Establish `hσ : Function.Injective σ` using `ChernNull.injective_of_arithVar hX.toIsArithVar σ`.
+
+Establish `key (ε : ℤˣ) : IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr)) ((M.φ σ).chernPart D ε)`. Establish `h (y : CxPts p σ) : ∃ O ∈ 𝓝 y, IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr) ∩ O) ((M.φ σ).chernPart D ε)`. Establish `⟨_, hi⟩` using `R.cover y`. Use `exists_integrableOn hσ (M.cInf σ) (N.cInf σ) hr ε _ hi`. Use `choose O hO hint using h`.
+
+Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover O fun y _ => hO y`. Use `((integrableOn_finset_iUnion (s := t)).2 fun y _ => hint y).mono_set fun z hz => ?_` and prove the remaining obligations. Take `⟨y, hy, hz'⟩` from `mem_iUnion₂.1 (ht (mem_univ z))`. Conclude with `mem_iUnion₂.2 ⟨y, hy, hz, hz'⟩`. Conclude with `⟨key 1, key (-1)⟩`.
+-/
 theorem archIntegrable : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {D : ℕ}, GlobalTheory.CxForm.IsRegVar p D → ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ} (hr : IsRatSec N.B r),
       M.ArchIntegrable N D hr := by

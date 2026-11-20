@@ -16,6 +16,15 @@ namespace GlobalTheory.RowChiVac
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Introduce `D T L sc G W U S i hi x y hlat`. Establish `hp : DefPair D.R.m (Pair.chi i D.R.m : Pair T)` using `⟨hi, rfl⟩`. Establish `hom` using `W.om_is (.chi i D.R.m) (by simp only [Pair.InRange, Pair.big, Node.InRange]; omega)`. Establish `m1 : (G.toPair (.chi i D.R.m) x y).1 ∈ GfC _` using `GlobalTheory.LastRowVac.negGA_mem _ y.2`. Establish `m2 : (G.toPair (.chi i D.R.m) x y).2 ∈ GfC _` using `x.2`.
+
+Establish `hΛ : ∀ u, u ∈ latO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m) : Set _) (S.N.latT (.chi i D.R.m) : Set _) (fun _ => True) ↔ ∃ u₀ ∈ latO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m) : Set _) (S.N. …`. Introduce `u`. Establish `e` using `GlobalTheory.WeilVacMove.actO_inv_actO (G.toPair (.chi i D.R.m) x y).1⁻¹ (G.toPair (.chi i D.R.m) x y).2⁻¹ u`. Rewrite `e` using `[inv_inv, inv_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Use `⟨actO _ _ (G.toPair (.chi i D.R.m) x y).1⁻¹ (G.toPair (.chi i D.R.m) x y).2⁻¹ u, (hlat _).2 ?_, e.symm⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hu`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`.
+
+Conclude with `(hlat u₀).1 hu₀`. Establish `hv'` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ (W.om _) hom W.θ_is _ _ _ _ _ _ _ _ (G.toPair (.chi i D.R.m) x y).1 (G.toPair (.chi i D.R.m) x y).2 (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ _ m1, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [Glo …`. Take `⟨c, -, hc⟩` from `GlobalTheory.LastRowVac.eq_smul_vac S hp _ hv'`. Conclude with `⟨c, hc⟩`.
+-/
 theorem vac_chi_scalar : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {i : ℕ}, i + 1 ≤ D.R.m → ∀ (x : FinPt G (.grid i D.R.m)) (y : FinPt G (.grid (i + 1) D.R.m)), (∀ u, u ∈ latO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m) : Set _) (S.N.latT (.chi i D.R.m) : Set _) (fun _ => True) ↔ actO _ _ (G.toPair (.chi i D.R.m) x y).1 (G.toPair (.chi i D.R.m) x y).2 u ∈ latO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) (S.N.latS (.chi i D.R.m) : Set _) (S.N.latT (.chi i D.R.m) : Set _) (fun _ => True)) → ∃ c : ℂ, W.om (.chi i D.R.m) (G.toPair (.chi i D.R.m) x y) (S.Z.vac (.chi i D.R.m)) = c • S.Z.vac (.chi i D.R.m) := by
   intro D T L sc G W U S i hi x y hlat
   have hp : DefPair D.R.m (Pair.chi i D.R.m : Pair T) := ⟨hi, rfl⟩

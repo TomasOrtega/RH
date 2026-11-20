@@ -22,11 +22,19 @@ def twist (χ : G →* ℂ) (σ : Representation ℂ G W) : Representation ℂ G
   map_mul' g h := by rw [map_mul, map_mul, smul_mul_smul_comm]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twist_apply (χ : G →* ℂ) (σ : Representation ℂ G W) (g : G) (w : W) :
     twist χ σ g w = χ g • σ g w := rfl
 
 end Twist
 
+/- English proof (translation)
+Introduce `v`. Establish `: (stabilizerOf (π.comp H.subtype) v : Set H) = Subtype.val ⁻¹' (stabilizerOf π v : Set G)`. Use extensionality with `h`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `(hπ v).preimage continuous_subtype_val`.
+-/
 theorem isSmooth_comp_subtype {G : Type*} [Group G] [TopologicalSpace G] {V : Type*}
     [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V} (hπ : IsSmooth π)
     (H : Subgroup G) : IsSmooth (π.comp H.subtype) := by
@@ -53,18 +61,27 @@ def invSqrtModular : blockUpper F n β →* ℂ where
 
 variable {F n β}
 
+/- English proof (translation)
+Establish `h : sqrtModular F n β p * sqrtModular F n β p⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Conclude with `mul_inv_cancel₀ (left_ne_zero_of_mul_eq_one h)`.
+-/
 theorem sqrtModular_mul_invSqrtModular (p : blockUpper F n β) :
     sqrtModular F n β p * invSqrtModular F n β p = 1 := by
   have h : sqrtModular F n β p * sqrtModular F n β p⁻¹ = 1 := by
     rw [← map_mul, mul_inv_cancel, map_one]
   exact mul_inv_cancel₀ (left_ne_zero_of_mul_eq_one h)
 
+/- English proof (translation)
+Use `show ((NNReal.sqrt (modularCharacter u) : ℝ) : ℂ) = 1`. Rewrite using `[modularCharacter_eq_one_of_mem u hu]`. Simplify using the standard rewrite rules.
+-/
 theorem sqrtModular_of_mem (u : blockUpper F n β)
     (hu : (u : GL (Fin n) F) ∈ unipotentRadical F n β) : sqrtModular F n β u = 1 := by
   show ((NNReal.sqrt (modularCharacter u) : ℝ) : ℂ) = 1
   rw [modularCharacter_eq_one_of_mem u hu]
   simp
 
+/- English proof (translation)
+Establish `h` using `sqrtModular_of_mem _ (leviProj_inv_mul_mem p)`. Rewrite `h` using `[map_mul, map_inv]`. Conclude with `(inv_mul_eq_one₀ (left_ne_zero_of_mul_eq_one (sqrtModular_mul_invSqrtModular (leviIncl (leviProj F n β p))))).1 h`.
+-/
 theorem sqrtModular_leviProj (p : blockUpper F n β) :
     sqrtModular F n β (leviIncl (leviProj F n β p)) = sqrtModular F n β p := by
   have h := sqrtModular_of_mem _ (leviProj_inv_mul_mem p)
@@ -82,6 +99,9 @@ def inflateTwist (σ : Representation ℂ (levi F n β) W) : Representation ℂ 
   twist (sqrtModular F n β) (σ.comp (leviProj F n β))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inflateTwist_apply (σ : Representation ℂ (levi F n β) W) (p : blockUpper F n β) (w : W) :
     inflateTwist F n β σ p w = sqrtModular F n β p • σ (leviProj F n β p) w := rfl
 
@@ -96,6 +116,9 @@ abbrev parabolicInd (σ : Representation ℂ (levi F n β) W) :
     Representation ℂ (GL (Fin n) F) (parabolicIndSpace F n β σ) :=
   indRep (blockUpper F n β) (inflateTwist F n β σ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_parabolicIndSpace (σ : Representation ℂ (levi F n β) W) {f : GL (Fin n) F → W} :
     f ∈ parabolicIndSpace F n β σ ↔
       (∀ p : blockUpper F n β, ∀ g, f (p * g) = sqrtModular F n β p • σ (leviProj F n β p) (f g)) ∧
@@ -103,6 +126,9 @@ theorem mem_parabolicIndSpace (σ : Representation ℂ (levi F n β) W) {f : GL 
           ∀ k ∈ K, ∀ g, f (g * k) = f g :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `isSmooth_indRep _ _`.
+-/
 theorem isSmooth_parabolicInd (σ : Representation ℂ (levi F n β) W) :
     IsSmooth (parabolicInd F n β σ) :=
   isSmooth_indRep _ _
@@ -119,6 +145,9 @@ abbrev JacquetModule : Type _ :=
   Representation.Coinvariants (π.comp (unipotentRadical F n β).subtype)
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Introduce `_ hu` and use `conj_mem_unipotentRadical (levi_le_blockUpper m.2) hu`.
+-/
 theorem levi_conj_mem (m : levi F n β) :
     ∀ u ∈ unipotentRadical F n β,
       (m : GL (Fin n) F) * u * (m : GL (Fin n) F)⁻¹ ∈ unipotentRadical F n β :=
@@ -134,6 +163,9 @@ def jacquetAction : Representation ℂ (levi F n β) (JacquetModule F n β π) w
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jacquetAction_mk (m : levi F n β) (v : V) :
     jacquetAction F n β π m (Representation.Coinvariants.mk _ v) =
       Representation.Coinvariants.mk _ (π m v) := rfl
@@ -143,10 +175,16 @@ variable (F n β) in
 def jacquetRep : Representation ℂ (levi F n β) (JacquetModule F n β π) :=
   twist ((invSqrtModular F n β).comp leviIncl) (jacquetAction F n β π)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jacquetRep_mk (m : levi F n β) (v : V) :
     jacquetRep F n β π m (Representation.Coinvariants.mk _ v) =
       invSqrtModular F n β (leviIncl m) • Representation.Coinvariants.mk _ (π m v) := rfl
 
+/- English proof (translation)
+Use `show (sqrtModular F n β (leviIncl m))⁻¹ = 1`. Establish `: sqrtModular F n β (leviIncl m) = 1` using `by show ((NNReal.sqrt (modularCharacter (leviIncl m)) : ℝ) : ℂ) = 1`. Rewrite using `[Measures.modularCharacter_eq_one_of_mem_integralGL (leviIncl m) hm]`. Simplify using the standard rewrite rules. Rewrite using `[this, inv_one]`.
+-/
 theorem invSqrtModular_leviIncl_of_mem (m : levi F n β)
     (hm : (m : GL (Fin n) F) ∈ integralGL F n) : invSqrtModular F n β (leviIncl m) = 1 := by
   show (sqrtModular F n β (leviIncl m))⁻¹ = 1
@@ -156,6 +194,11 @@ theorem invSqrtModular_leviIncl_of_mem (m : levi F n β)
     simp
   rw [this, inv_one]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ x`. Use `Subgroup.isOpen_mono (H₁ := (stabilizerOf π v ⊓ integralGL F n).subgroupOf (levi F n β)) (fun m hm => ?_) ?_` and prove the remaining obligations. Rewrite `hm` using `[Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Rewrite using `[mem_stabilizerOf, jacquetRep_mk, mem_stabilizerOf.1 hm.1, invSqrtModular_leviIncl_of_mem m hm.2, one_smul]`.
+
+Rewrite using `[Subgroup.coe_subgroupOf, Subgroup.coe_inf]`. Conclude with `((hπ v).inter (isOpen_integralGL F n)).preimage continuous_subtype_val`.
+-/
 theorem isSmooth_jacquetRep (hπ : IsSmooth π) : IsSmooth (jacquetRep F n β π) := by
   intro x
   obtain ⟨v, rfl⟩ := Representation.Coinvariants.mk_surjective _ x
@@ -167,6 +210,9 @@ theorem isSmooth_jacquetRep (hπ : IsSmooth π) : IsSmooth (jacquetRep F n β π
   · rw [Subgroup.coe_subgroupOf, Subgroup.coe_inf]
     exact ((hπ v).inter (isOpen_integralGL F n)).preimage continuous_subtype_val
 
+/- English proof (translation)
+Rewrite using `[jacquetRep_mk, smul_smul, sqrtModular_mul_invSqrtModular, one_smul]`.
+-/
 theorem mk_apply_levi (m : levi F n β) (v : V) :
     Representation.Coinvariants.mk (π.comp (unipotentRadical F n β).subtype) (π m v) =
       sqrtModular F n β (leviIncl m) • jacquetRep F n β π m (Representation.Coinvariants.mk _ v) := by
@@ -193,10 +239,16 @@ def jacquetMap (f : Representation.IntertwiningMap π π') :
       congr 2
       exact Representation.IntertwiningMap.isIntertwining _ _ f (m : GL (Fin n) F) v)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jacquetMap_mk (f : Representation.IntertwiningMap π π') (v : V) :
     jacquetMap F n β f (Representation.Coinvariants.mk _ v) =
       Representation.Coinvariants.mk _ (f v) := rfl
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (unipotentRadical F n β)` using `isClosed_unipotentRadical.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `exact_coinvariantsMap exists_compactOpen_unipotentRadical (isSmooth_comp_subtype hπ' _) (isSmooth_comp_subtype hπ'' _) (restrictN F n β f) (restrictN F n β g) hfg`.
+-/
 theorem exact_jacquetMap (hπ' : IsSmooth π') (hπ'' : IsSmooth π'')
     (f : Representation.IntertwiningMap π π') (g : Representation.IntertwiningMap π' π'')
     (hfg : Function.Exact f g) :
@@ -210,6 +262,9 @@ theorem exact_jacquetMap (hπ' : IsSmooth π') (hπ'' : IsSmooth π'')
 variable {W : Type*} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (levi F n β) W)
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviIncl_coe (m : levi F n β) :
     ((leviIncl m : blockUpper F n β) : GL (Fin n) F) = m := rfl
 
@@ -260,6 +315,9 @@ def frobeniusParabolic (hπ : IsSmooth π) :
       Representation.IntertwiningMap (jacquetRep F n β π) σ :=
   (frobenius (blockUpper F n β) (inflateTwist F n β σ) hπ).trans (jacquetAdjunction F n β π σ)
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, rankTorus, coe_torusPow, diagonal_mul, mul_diagonal]`. Distinguish the cases in `h : β i = β j`. Rewrite using `[blockRank_eq h, mul_comm]`. Rewrite using `[mem_levi.1 hy i j h, mul_zero, zero_mul]`.
+-/
 theorem rankTorus_commute (e : ℕ) {y : GL (Fin n) F}
     (hy : y ∈ levi F n β) : rankTorus F n β e * y = y * rankTorus F n β e := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -278,6 +336,17 @@ def jacquetFixedMap (K : Subgroup (GL (Fin n) F)) :
         jacquetAction_mk]
       rw [x.2 m (Subgroup.mem_subgroupOf.1 hm)]
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y`. Establish `hv : ∀ k ∈ K ⊓ levi F n β, Representation.Coinvariants.mk (π.comp (unipotentRadical F n β).subtype) (π k v) = Representation.Coinvariants.mk _ v` using `fun k hk => hy ⟨k, (Subgroup.mem_inf.1 hk).2⟩ (Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 hk).1)`. Take `⟨t₀, -, ht₀⟩` from `(hasBasis_nhds_one F n).mem_iff.1 (hKo.mem_nhds K.one_mem)`. Take `⟨m₀, hm₀⟩` from `exists_conj_mem_congruenceSubgroup (β := β) hKc t₀`.
+
+Use `set c := m₀ + 1 with hc`. Use `set a := rankTorus F n β c with ha`. Establish `haP : a ∈ blockUpper F n β` using `rankTorus_mem_blockUpper c`. Establish `haN : ∀ u ∈ unipotentRadical F n β, a * u * a⁻¹ ∈ unipotentRadical F n β` using `fun u hu => conj_mem_unipotentRadical haP hu`. Establish `haN' : ∀ u ∈ unipotentRadical F n β, a⁻¹ * u * a ∈ unipotentRadical F n β` using `fun u hu => by`.
+
+Simplify using `using conj_mem_unipotentRadical ((blockUpper F n β).inv_mem haP) hu`. Establish `haM : ∀ y ∈ K ⊓ levi F n β, a * y = y * a` using `fun y hy => rankTorus_commute c (Subgroup.mem_inf.1 hy).2`. Establish `haK : ∀ z ∈ K ⊓ oppositeUnipotentRadical F n β, a⁻¹ * z * a ∈ K` using `fun z hz => ht₀ (hm₀ c (by omega) z (Subgroup.mem_inf.1 hz).1 (Subgroup.mem_inf.1 hz).2 (K.inv_mem (Subgroup.mem_inf.1 hz).1))`. Establish `hlim : ∀ U ∈ 𝓝 (1 : GL (Fin n) F), ∃ m : ℕ, ∀ z ∈ K ⊓ oppositeUnipotentRadical F n β, (a ^ m)⁻¹ * z * a ^ m ∈ U`. Introduce `U hU`.
+
+Take `⟨t, -, ht⟩` from `(hasBasis_nhds_one F n).mem_iff.1 hU`. Take `⟨m₁, hm₁⟩` from `exists_conj_mem_congruenceSubgroup (β := β) hKc t`. Use `⟨m₁, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, rankTorus_pow]`. Conclude with `ht (hm₁ (c * m₁) (by nlinarith) z (Subgroup.mem_inf.1 hz).1 (Subgroup.mem_inf.1 hz).2 (K.inv_mem (Subgroup.mem_inf.1 hz).1))`.
+
+Take `⟨x, hx, hxq⟩` from `exists_fixedVectors_mk_eq hπ hKc hKo hfact a haN haN' haM haK hlim hv`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxq⟩`.
+-/
 theorem jacquetFixedMap_surjective (hπ : IsAdmissible π) {K : Subgroup (GL (Fin n) F)}
     (hKc : IsCompact (K : Set (GL (Fin n) F))) (hKo : IsOpen (K : Set (GL (Fin n) F)))
     (hfact : ∀ k ∈ K, ∃ z ∈ K ⊓ oppositeUnipotentRadical F n β, ∃ y ∈ K ⊓ levi F n β,

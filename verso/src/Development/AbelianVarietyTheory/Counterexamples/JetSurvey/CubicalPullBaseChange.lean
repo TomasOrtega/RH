@@ -22,6 +22,9 @@ variable {X Y : Scheme.{0}} {A B C : LB X}
 
 end General
 
+/- English proof (translation)
+Introduce `S S' G' G _ _ _ _ F e he L r _ hr`. Conclude with `Out.LBxP.isGen_pullAlong L F e (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => eSec G') (fun _ => he) r hr`.
+-/
 theorem rigPullIsGen : RigPullIsGenSt.{0} := by
   intro S S' G' G _ _ _ _ F e he L r _ hr
   exact Out.LBxP.isGen_pullAlong L F e (fun _ : PUnit => eSec G) (fun _ => 1)

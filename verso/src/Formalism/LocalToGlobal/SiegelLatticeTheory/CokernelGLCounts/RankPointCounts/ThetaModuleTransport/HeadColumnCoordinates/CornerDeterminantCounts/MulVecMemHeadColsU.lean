@@ -15,6 +15,13 @@ section Cols
 
 variable {R : Type} [CommRing R] {r : ℕ}
 
+/- English proof (translation)
+Establish `hw' : w = ∑ j, w j • Pi.single j (1 : R)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hsum : Z.mulVec w = ∑ j, w j • Z.mulVec (Pi.single j 1)` using `by conv_lhs => rw [hw']`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`.
+
+Simplify using `only [map_smul, Matrix.mulVecLin_apply]`. Rewrite using `[hsum, Fin.sum_univ_castSucc, hw, zero_smul, add_zero]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hc : Z.mulVec (Pi.single a.castSucc 1) = fun i => Z i a.castSucc`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hc]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem mulVec_mem_headColsU (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (w : Fin (r + 1) → R)
     (hw : w (Fin.last r) = 0) : Z.mulVec w ∈ headCols Z := by
   have hw' : w = ∑ j, w j • Pi.single j (1 : R) := by
@@ -38,6 +45,11 @@ section Schur
 
 variable {E : Type} [CommRing E] {r : ℕ}
 
+/- English proof (translation)
+Use `set Y := A.submatrix Fin.castSucc Fin.castSucc with hY`. Use `letI := Matrix.invertibleOfIsUnitDet Y hA`. Establish `hB : A = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks Y (Matrix.of fun i (_ : Fin 1) => A i.castSucc (Fin.last r)) (Matrix.of fun (_ : Fin 1) j => A (Fin.last r) j.castSucc) (Matrix.of fun _ _ => A (Fin.last r) (Fin.last r)))`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) i <;> refine Fin.lastCases ?_ (fun b => ?_) j <;>`.
+
+Simplify using `[Matrix.reindex_apply, hY, finSumFinEquiv_symm_last, finSumFinEquiv_symm_apply_castSucc]`. Use `conv_lhs => rw [hB]`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_fromBlocks₁₁, Matrix.det_fin_one, Matrix.invOf_eq_nonsing_inv, Matrix.mul_assoc]`. Use `congr 1`.
+-/
 theorem det_schur (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hA : IsUnit (A.submatrix Fin.castSucc Fin.castSucc).det) :
     A.det = (A.submatrix Fin.castSucc Fin.castSucc).det *
@@ -71,9 +83,15 @@ def lamE (Y : M.Mat r) (al : Fin r → M.R) : (Fin r → M.R) →ₗ[M.R] E :=
         ((Y.Z.map M.R.subtype)⁻¹.mulVecLin.restrictScalars M.R)) ∘ₗ
     (LinearMap.compLeft (Algebra.linearMap M.R E) (Fin r))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linQ_mk (Y : M.Mat r) (al : Fin r → M.R) (u : Fin r → M.R) :
     M.linQ Y al (Submodule.Quotient.mk u) = M.Rsub.mkQ (lamE Y al u) := rfl
 
+/- English proof (translation)
+Simplify using `only [lamE, LinearMap.coe_comp, Function.comp_apply, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, LinearMap.proj_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Both sides reduce to the same expression.
+-/
 theorem lamE_apply (Y : M.Mat r) (al : Fin r → M.R) (u : Fin r → M.R) :
     lamE Y al u = ∑ j, (al j : E) * ((Y.Z.map M.R.subtype)⁻¹ *ᵥ fun i => (u i : E)) j := by
   simp only [lamE, LinearMap.coe_comp, Function.comp_apply,
@@ -81,6 +99,9 @@ theorem lamE_apply (Y : M.Mat r) (al : Fin r → M.R) (u : Fin r → M.R) :
   simp only [Matrix.mulVec, dotProduct, Matrix.of_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[lamE_apply]`. Establish `h : (fun i => ((Y.Z *ᵥ w) i : E)) = (Y.Z.map M.R.subtype) *ᵥ (fun i => (w i : E))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ Y.unit, Matrix.one_mulVec]`.
+-/
 theorem lamE_mulVec (Y : M.Mat r) (al : Fin r → M.R) (w : Fin r → M.R) :
     lamE Y al (Y.Z *ᵥ w) = ∑ j, (al j : E) * (w j : E) := by
   rw [lamE_apply]
@@ -98,12 +119,21 @@ def extL (r : ℕ) : (Fin r → M.R) →ₗ[M.R] (Fin (r + 1) → M.R) where
     funext i
     refine Fin.lastCases ?_ (fun j => ?_) i <;> simp
 
+/- English proof (translation)
+Simplify using `[extL]`.
+-/
 theorem extL_castSucc (u : Fin r → M.R) (i : Fin r) : extL (M := M) r u i.castSucc = u i := by
   simp [extL]
 
+/- English proof (translation)
+Simplify using `[extL]`.
+-/
 theorem extL_last (u : Fin r → M.R) : extL (M := M) r u (Fin.last r) = 0 := by
   simp [extL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, extL_castSucc, extL_last, hal]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, extL_castSucc, extL_last, hY]`.
+-/
 theorem mulVec_extL (Z : M.Mat (r + 1)) (Y : M.Mat r) (al : Fin r → M.R)
     (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc) (hal : ∀ a : Fin r, al a = Z.Z (Fin.last r) a.castSucc)
     (w : Fin r → M.R) :
@@ -123,14 +153,27 @@ def ellRawU : (Fin (r + 1) → M.R) →ₗ[M.R] E :=
 def piRawU : (Fin (r + 1) → M.R) →ₗ[M.R] M.Cok Y :=
   (LinearMap.range Y.Z.mulVecLin).mkQ ∘ₗ LinearMap.funLeft M.R M.R Fin.castSucc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellRawU_apply (v : Fin (r + 1) → M.R) :
     ellRawU Y al v = (v (Fin.last r) : E) - lamE Y al (fun i => v i.castSucc) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piRawU_apply (v : Fin (r + 1) → M.R) :
     piRawU Y v = Submodule.Quotient.mk (fun i => v i.castSucc) := rfl
 
 variable {Z Y al}
 
+/- English proof (translation)
+Unfold `headCols`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[ellRawU_apply]`.
+
+Establish `hc : (fun i : Fin r => Z.Z i.castSucc a.castSucc) = Y.Z *ᵥ Pi.single a 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, hY]`. Rewrite using `[hc, lamE_mulVec, Finset.sum_eq_single a]`. Simplify using `[hal]`.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem headCols_le_ker_ell (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc)
     (hal : ∀ a : Fin r, al a = Z.Z (Fin.last r) a.castSucc) :
     headCols Z.Z ≤ LinearMap.ker (ellRawU Y al) := by
@@ -149,6 +192,11 @@ theorem headCols_le_ker_ell (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.ca
   · intro h
     exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Unfold `headCols`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[piRawU_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Use `⟨Pi.single a 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Pi.single_apply, hY]`.
+-/
 theorem headCols_le_ker_pi (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc) :
     headCols Z.Z ≤ LinearMap.ker (piRawU Y) := by
   unfold headCols
@@ -178,17 +226,34 @@ variable (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc)
 
 def PhiU : MbMod Z.Z →ₗ[M.R] M.Cok Y × E := (piU hY).prod (ellU hY hal)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PhiU_apply (m : MbMod Z.Z) : PhiU hY hal m = (piU hY m, ellU hY hal m) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellU_mk (v : Fin (r + 1) → M.R) :
     ellU hY hal (Submodule.Quotient.mk v) = (v (Fin.last r) : E) - lamE Y al (fun i => v i.castSucc) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piU_mk (v : Fin (r + 1) → M.R) :
     piU hY (Submodule.Quotient.mk v) = Submodule.Quotient.mk (fun i => v i.castSucc) := rfl
 
+/- English proof (translation)
+Rewrite using `[map_smul, Subring.smul_def, smul_eq_mul]`.
+-/
 theorem ellU_smul (c : M.R) (m : MbMod Z.Z) : ellU hY hal (c • m) = (c : E) * ellU hY hal m := by
   rw [map_smul, Subring.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+Unfold `eCl`. Rewrite using `[ellU_mk]`. Establish `h0 : (fun i : Fin r => (Pi.single (Fin.last r) (1 : M.R) : Fin (r + 1) → M.R) i.castSucc) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.single_apply, (Fin.castSucc_lt_last i).ne]`.
+
+Rewrite using `[h0, map_zero, sub_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem ellU_e : ellU hY hal (eCl Z.Z) = 1 := by
   unfold eCl
   rw [ellU_mk]
@@ -198,6 +263,9 @@ theorem ellU_e : ellU hY hal (eCl Z.Z) = 1 := by
   rw [h0, map_zero, sub_zero]
   simp
 
+/- English proof (translation)
+Unfold `eCl`. Establish `h0 : (fun i : Fin r => (Pi.single (Fin.last r) (1 : M.R) : Fin (r + 1) → M.R) i.castSucc) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.single_apply, (Fin.castSucc_lt_last i).ne]`. Rewrite using `[piU_mk, h0, Submodule.Quotient.mk_zero]`.
+-/
 theorem piU_e : piU hY (eCl Z.Z) = 0 := by
   unfold eCl
   have h0 : (fun i : Fin r => (Pi.single (Fin.last r) (1 : M.R) : Fin (r + 1) → M.R) i.castSucc) = 0 := by
@@ -205,6 +273,11 @@ theorem piU_e : piU hY (eCl Z.Z) = 0 := by
     simp [Pi.single_apply, (Fin.castSucc_lt_last i).ne]
   rw [piU_mk, h0, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `⟨Submodule.Quotient.mk (extL r u), ?_⟩` and prove the remaining obligations. Rewrite using `[piU_mk]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `extL_castSucc u i`.
+-/
 theorem piU_surj : Function.Surjective (piU hY) := by
   intro x
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -214,9 +287,21 @@ theorem piU_surj : Function.Surjective (piU hY) := by
   funext i
   exact extL_castSucc u i
 
+/- English proof (translation)
+The claim follows from `(Fin.snoc_init_self v).symm`.
+-/
 theorem eq_snoc (v : Fin (r + 1) → M.R) :
     v = Fin.snoc (α := fun _ => M.R) (fun i => v i.castSucc) (v (Fin.last r)) := (Fin.snoc_init_self v).symm
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite `hm` using `[PhiU_apply, Prod.mk_eq_zero, piU_mk, ellU_mk, Submodule.Quotient.mk_eq_zero]`. Take `⟨⟨w, hw⟩, h2⟩` from `hm`.
+
+Rewrite `hw` using `[Matrix.mulVecLin_apply]`. Rewrite `h2` using `[← hw, lamE_mulVec, sub_eq_zero]`. Establish `h3 : v (Fin.last r) = ∑ j, al j * w j`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `h4 : v = Z.Z *ᵥ extL r w`. Rewrite using `[mulVec_extL Z Y al hY hal, hw, ← h3]`. Conclude with `eq_snoc v`.
+
+Rewrite using `[h4]`. Conclude with `mulVec_mem_headColsU _ _ (extL_last w)`.
+-/
 theorem PhiU_inj : Function.Injective (PhiU hY hal) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro m hm
@@ -236,6 +321,9 @@ theorem PhiU_inj : Function.Injective (PhiU hY hal) := by
   rw [h4]
   exact mulVec_mem_headColsU _ _ (extL_last w)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h0 : M.Rsub.mkQ ((v (Fin.last r) : M.R) : E) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_range.mpr ⟨v (Fin.last r), rfl⟩`. Rewrite using `[piU_mk, linQ_mk, ellU_mk, map_sub, h0, zero_sub, neg_neg]`.
+-/
 private theorem linQ_piU_eq_neg_mkQ_ellU (m : MbMod Z.Z) :
     M.linQ Y al (piU hY m) = -M.Rsub.mkQ (ellU hY hal m) := by
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ m
@@ -244,6 +332,13 @@ private theorem linQ_piU_eq_neg_mkQ_ellU (m : MbMod Z.Z) :
     exact LinearMap.mem_range.mpr ⟨v (Fin.last r), rfl⟩
   rw [piU_mk, linQ_mk, ellU_mk, map_sub, h0, zero_sub, neg_neg]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Rewrite using `[PhiU_apply, linQ_piU_eq_neg_mkQ_ellU hY hal, add_neg_cancel]`. Introduce `h`. Take `⟨c, x⟩` from `p`.
+
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Simplify using `only at h`. Rewrite `h` using `[linQ_mk, ← map_add, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Simplify using `only [Model.Rsub, LinearMap.mem_range] at h`. Take `⟨s, hs⟩` from `h`.
+
+Establish `hs' : (s : E) = x + lamE Y al u` using `hs`. Use `⟨Submodule.Quotient.mk (Fin.snoc (α := fun _ => M.R) u s), ?_⟩` and prove the remaining obligations. Rewrite using `[PhiU_apply, piU_mk, ellU_mk]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last, hs']`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp`.
+-/
 theorem mem_range_PhiU (p : M.Cok Y × E) :
     p ∈ LinearMap.range (PhiU hY hal) ↔ M.Rsub.mkQ p.2 + M.linQ Y al p.1 = 0 := by
   constructor
@@ -262,13 +357,26 @@ theorem mem_range_PhiU (p : M.Cok Y × E) :
     simp only [Fin.snoc_castSucc, Fin.snoc_last, hs']
     refine Prod.ext ?_ ?_ <;> simp
 
+/- English proof (translation)
+The claim follows from `linQ_piU_eq_neg_mkQ_ellU hY hal m`.
+-/
 theorem linQ_piU (m : MbMod Z.Z) : M.linQ Y al (piU hY m) = -M.Rsub.mkQ (ellU hY hal m) := linQ_piU_eq_neg_mkQ_ellU hY hal m
 
 def ePhiU : MbMod Z.Z ≃ₗ[M.R] LinearMap.range (PhiU hY hal) :=
   LinearEquiv.ofInjective (PhiU hY hal) (PhiU_inj hY hal)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ePhiU_coe (m : MbMod Z.Z) : (ePhiU hY hal m : M.Cok Y × E) = PhiU hY hal m := rfl
 
+/- English proof (translation)
+Establish `h1 : Z.Z *ᵥ extL r w = extL r (Y.Z *ᵥ w) + (∑ j, al j * w j) • Pi.single (Fin.last r) 1`. Rewrite using `[mulVec_extL Z Y al hY' hal']`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Simplify using `[extL_last]`.
+
+Simplify using `[extL_castSucc, (Fin.castSucc_lt_last a).ne]`. Establish `h2 : (Submodule.Quotient.mk (Z.Z *ᵥ extL r w) : MbMod Z.Z) = 0` using `(Submodule.Quotient.mk_eq_zero _).mpr (mulVec_mem_headColsU _ _ (extL_last w))`. Rewrite `h2` using `[h1, Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul]`. Unfold `eCl`. Rewrite using `[neg_smul, eq_neg_iff_add_eq_zero]`.
+
+Conclude with `h2`.
+-/
 private theorem mk_extL_mulVec_eq_neg_sum_smul_eCl (hY' : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc)
     (hal' : ∀ a : Fin r, al a = Z.Z (Fin.last r) a.castSucc) (w : Fin r → M.R) :
     (Submodule.Quotient.mk (extL r (Y.Z *ᵥ w)) : MbMod Z.Z) = (-(∑ j, al j * w j)) • eCl Z.Z := by
@@ -285,6 +393,11 @@ private theorem mk_extL_mulVec_eq_neg_sum_smul_eCl (hY' : ∀ a b : Fin r, Y.Z a
   rw [neg_smul, eq_neg_iff_add_eq_zero]
   exact h2
 
+/- English proof (translation)
+Establish `h : v = extL r (fun i => v i.castSucc) + v (Fin.last r) • Pi.single (Fin.last r) 1`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun a => ?_) i` and prove the remaining obligations. Simplify using `[extL_last]`. Simplify using `[extL_castSucc, (Fin.castSucc_lt_last a).ne]`.
+
+Unfold `eCl`. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add, ← h]`.
+-/
 private theorem mk_eq_mk_extL_add_last_smul_eCl (Z : M.Mat (r + 1)) (v : Fin (r + 1) → M.R) :
     (Submodule.Quotient.mk v : MbMod Z.Z) =
       Submodule.Quotient.mk (extL r (fun i => v i.castSucc)) + v (Fin.last r) • eCl Z.Z := by
@@ -296,12 +409,20 @@ private theorem mk_eq_mk_extL_add_last_smul_eCl (Z : M.Mat (r + 1)) (v : Fin (r 
   unfold eCl
   rw [← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add, ← h]
 
+/- English proof (translation)
+Establish `h` using `Y.unit`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `h`.
+-/
 theorem det_unit_r (Y : M.Mat r) : IsUnit ((Y.Z.det : M.R) : E) := by
   have h := Y.unit
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det] at h
   exact h
 
 include hY hal in
+/- English proof (translation)
+Establish `hu : Y.Z.det • (fun i : Fin r => v i.castSucc) = Y.Z *ᵥ (Y.Z.adjugate *ᵥ fun i => v i.castSucc)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_adjugate]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`. Rewrite using `[mk_eq_mk_extL_add_last_smul_eCl Z v, smul_add, ← Submodule.Quotient.mk_smul, ← map_smul, hu, mk_extL_mulVec_eq_neg_sum_smul_eCl hY hal, smul_smul, ← add_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_smul_mk (v : Fin (r + 1) → M.R) :
     Y.Z.det • (Submodule.Quotient.mk v : MbMod Z.Z) =
       (Y.Z.det * v (Fin.last r) - ∑ j, al j * (Y.Z.adjugate *ᵥ fun i => v i.castSucc) j) • eCl Z.Z := by
@@ -324,6 +445,11 @@ variable {Z₁ Z₂ : M.Mat (r + 1)} {Y₁ Y₂ : M.Mat r} {al₁ al₂ : Fin r 
   (hY₂ : ∀ a b : Fin r, Y₂.Z a b = Z₂.Z a.castSucc b.castSucc)
   (hal₂ : ∀ a : Fin r, al₂ a = Z₂.Z (Fin.last r) a.castSucc)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h1` using `det_smul_mk hY₁ hal₁ v`. Establish `h2 : ellU hY₂ hal₂ (g (Y₁.Z.det • Submodule.Quotient.mk v)) = ellU hY₁ hal₁ (Y₁.Z.det • (Submodule.Quotient.mk v : MbMod Z₁.Z))`. Rewrite using `[h1, map_smul, he, ellU_smul, ellU_smul, ellU_e, ellU_e]`. Rewrite `h2` using `[map_smul, ellU_smul, ellU_smul]`.
+
+Conclude with `(det_unit_r Y₁).mul_left_cancel h2`.
+-/
 theorem ellU_comp (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z) = eCl Z₂.Z) (m : MbMod Z₁.Z) :
     ellU hY₂ hal₂ (g m) = ellU hY₁ hal₁ m := by
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ m
@@ -334,21 +460,33 @@ theorem ellU_comp (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.
   rw [map_smul, ellU_smul, ellU_smul] at h2
   exact (det_unit_r Y₁).mul_left_cancel h2
 
+/- English proof (translation)
+The claim follows from `ellU_comp hY₁ hal₁ hY₂ hal₂ γ.toLinearMap he m`.
+-/
 theorem ellU_equiv (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (he : γ (eCl Z₁.Z) = eCl Z₂.Z) (m : MbMod Z₁.Z) :
     ellU hY₂ hal₂ (γ m) = ellU hY₁ hal₁ m := ellU_comp hY₁ hal₁ hY₂ hal₂ γ.toLinearMap he m
 
 include hY₁ hal₁ in
+/- English proof (translation)
+Conclude with `mk_extL_mulVec_eq_neg_sum_smul_eCl hY₁ hal₁ w`.
+-/
 theorem mk_extL_mulVec (w : Fin r → M.R) :
     (Submodule.Quotient.mk (extL r (Y₁.Z *ᵥ w)) : MbMod Z₁.Z) = (-(∑ j, al₁ j * w j)) • eCl Z₁.Z := by
   exact mk_extL_mulVec_eq_neg_sum_smul_eCl hY₁ hal₁ w
 
 include hY₁ hal₁ in
+/- English proof (translation)
+Conclude with `mk_eq_mk_extL_add_last_smul_eCl Z₁ v`.
+-/
 theorem mk_sub_extL (v : Fin (r + 1) → M.R) :
     (Submodule.Quotient.mk v : MbMod Z₁.Z) =
       Submodule.Quotient.mk (extL r (fun i => v i.castSucc)) + v (Fin.last r) • eCl Z₁.Z := by
   exact mk_eq_mk_extL_add_last_smul_eCl Z₁ v
 
 include hY₁ hal₁ in
+/- English proof (translation)
+Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Matrix.mulVecLin_apply, mk_extL_mulVec_eq_neg_sum_smul_eCl hY₁ hal₁, map_smul, he, map_smul, piU_e, smul_zero]`.
+-/
 theorem range_le_ker_indU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z) = eCl Z₂.Z) :
     LinearMap.range Y₁.Z.mulVecLin ≤
       LinearMap.ker (piU hY₂ ∘ₗ g ∘ₗ (headCols Z₁.Z).mkQ ∘ₗ extL (M := M) r) := by
@@ -360,6 +498,9 @@ theorem range_le_ker_indU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (e
 def indU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z) = eCl Z₂.Z) : M.Cok Y₁ →ₗ[M.R] M.Cok Y₂ :=
   (LinearMap.range Y₁.Z.mulVecLin).liftQ _ (range_le_ker_indU hY₁ hal₁ hY₂ g he)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[piU_mk]`. Use `show piU hY₂ (g (Submodule.Quotient.mk (extL r fun i => v i.castSucc))) = _`. Rewrite using `[mk_eq_mk_extL_add_last_smul_eCl Z₁ v, map_add, map_smul, he, map_add, map_smul, piU_e, smul_zero, add_zero]`.
+-/
 theorem indU_piU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z) = eCl Z₂.Z) (m : MbMod Z₁.Z) :
     indU hY₁ hal₁ hY₂ g he (piU hY₁ m) = piU hY₂ (g m) := by
   obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ m
@@ -367,6 +508,9 @@ theorem indU_piU (g : MbMod Z₁.Z →ₗ[M.R] MbMod Z₂.Z) (he : g (eCl Z₁.Z
   show piU hY₂ (g (Submodule.Quotient.mk (extL r fun i => v i.castSucc))) = _
   rw [mk_eq_mk_extL_add_last_smul_eCl Z₁ v, map_add, map_smul, he, map_add, map_smul, piU_e, smul_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[← he]`. Conclude with `γ.symm_apply_apply _`.
+-/
 theorem symm_e (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (he : γ (eCl Z₁.Z) = eCl Z₂.Z) :
     γ.symm.toLinearMap (eCl Z₂.Z) = eCl Z₁.Z := by
   rw [← he]
@@ -385,15 +529,28 @@ def psiOfU (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (he : γ (eCl Z₁.Z) = 
       rw [LinearMap.comp_apply, indU_piU, indU_piU, LinearMap.id_apply, LinearEquiv.coe_coe,
         LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply])
 
+/- English proof (translation)
+The claim follows from `indU_piU hY₁ hal₁ hY₂ γ.toLinearMap he m`.
+-/
 theorem psiOfU_piU (γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z) (he : γ (eCl Z₁.Z) = eCl Z₂.Z) (m : MbMod Z₁.Z) :
     psiOfU hY₁ hal₁ hY₂ hal₂ γ he (piU hY₁ m) = piU hY₂ (γ m) := indU_piU hY₁ hal₁ hY₂ γ.toLinearMap he m
 
 def sigU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) : (M.Cok Y₁ × E) ≃ₗ[M.R] (M.Cok Y₂ × E) :=
   ψ.prodCongr (LinearEquiv.refl M.R E)
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.prodCongr_apply _ _ p`.
+-/
 theorem sigU_apply (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (p : M.Cok Y₁ × E) : sigU ψ p = (ψ p.1, p.2) :=
   LinearEquiv.prodCongr_apply _ _ p
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[Submodule.mem_map, mem_range_PhiU hY₂ hal₂ p]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Rewrite `hq` using `[mem_range_PhiU hY₁ hal₁]`.
+
+Simplify using `only [LinearEquiv.coe_coe, sigU_apply, hl]`. Conclude with `hq`. Introduce `hp`. Use `⟨(ψ.symm p.1, p.2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_PhiU hY₁ hal₁] dsimp only`.
+
+Rewrite using `[← hl (ψ.symm p.1), LinearEquiv.apply_symm_apply]`. Conclude with `hp`. Rewrite using `[LinearEquiv.coe_coe, sigU_apply] dsimp only`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+-/
 theorem map_sigU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ Y₂ al₂ (ψ v) = M.linQ Y₁ al₁ v) :
     (LinearMap.range (PhiU hY₁ hal₁)).map (sigU ψ : (M.Cok Y₁ × E) →ₗ[M.R] (M.Cok Y₂ × E)) =
       LinearMap.range (PhiU hY₂ hal₂) := by
@@ -419,6 +576,9 @@ def gamOfU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ Y₂ al�
   ((ePhiU hY₁ hal₁).trans ((sigU ψ).ofSubmodules _ _ (map_sigU hY₁ hal₁ hY₂ hal₂ ψ hl))).trans
     (ePhiU hY₂ hal₂).symm
 
+/- English proof (translation)
+Establish `h1 : ∀ y : LinearMap.range (PhiU hY₂ hal₂), PhiU hY₂ hal₂ ((ePhiU hY₂ hal₂).symm y) = y`. Introduce `y`. Rewrite using `[← ePhiU_coe, LinearEquiv.apply_symm_apply]`. Unfold `gamOfU`. Rewrite using `[LinearEquiv.trans_apply, h1, LinearEquiv.trans_apply, LinearEquiv.ofSubmodules_apply, ePhiU_coe]`.
+-/
 theorem PhiU_gamOfU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ Y₂ al₂ (ψ v) = M.linQ Y₁ al₁ v)
     (m : MbMod Z₁.Z) : PhiU hY₂ hal₂ (gamOfU hY₁ hal₁ hY₂ hal₂ ψ hl m) = sigU ψ (PhiU hY₁ hal₁ m) := by
   have h1 : ∀ y : LinearMap.range (PhiU hY₂ hal₂), PhiU hY₂ hal₂ ((ePhiU hY₂ hal₂).symm y) = y := by
@@ -427,6 +587,9 @@ theorem PhiU_gamOfU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ
   unfold gamOfU
   rw [LinearEquiv.trans_apply, h1, LinearEquiv.trans_apply, LinearEquiv.ofSubmodules_apply, ePhiU_coe]
 
+/- English proof (translation)
+Unfold `bCls`. Rewrite using `[piU_mk]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hbe i).symm`.
+-/
 theorem piU_b {be : Fin r → M.R} (hbe : ∀ a : Fin r, be a = Z₁.Z a.castSucc (Fin.last r)) :
     piU hY₁ (bCls Z₁.Z) = Submodule.Quotient.mk be := by
   unfold bCls
@@ -435,6 +598,11 @@ theorem piU_b {be : Fin r → M.R} (hbe : ∀ a : Fin r, be a = Z₁.Z a.castSuc
   funext i
   exact (hbe i).symm
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨m, rfl⟩` from `piU_surj hY₁ x`. Use `congrArg Prod.fst (PhiU_gamOfU hY₁ hal₁ hY₂ hal₂ ψ hl m)` as an intermediate fact. Simplify using `only [PhiU_apply, sigU_apply] at this`.
+
+Conclude with `(psiOfU_piU hY₁ hal₁ hY₂ hal₂ _ _ m).trans this`.
+-/
 theorem psiOfU_gamOfU (ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂) (hl : ∀ v, M.linQ Y₂ al₂ (ψ v) = M.linQ Y₁ al₁ v)
     (he : gamOfU hY₁ hal₁ hY₂ hal₂ ψ hl (eCl Z₁.Z) = eCl Z₂.Z) :
     psiOfU hY₁ hal₁ hY₂ hal₂ (gamOfU hY₁ hal₁ hY₂ hal₂ ψ hl) he = ψ := by

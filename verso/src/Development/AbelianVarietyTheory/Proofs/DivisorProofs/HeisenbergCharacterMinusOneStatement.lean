@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchHalfTurn.halfturn | exact GlobalTheory.ArchHalfTurn.halfturn | (intros; apply GlobalTheory.ArchHalfTurn.halfturn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heisenberg_character_minus_one : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (ι : Type) [Fintype ι], ∃ C : ℝ,
     ∀ x : ι → AF F, 0 < ∑ i, ∑ v : InfinitePlace F, ‖(x i).1 v‖ → ∃ (i : ι) (a : Ainf F), ψ (x i * GlobalTheory.HeisSchA.mk a 0) = -1 ∧
       ‖InfiniteAdeleRing.ringEquiv_mixedSpace F a‖ * ∑ i, ∑ v : InfinitePlace F, ‖(x i).1 v‖ ≤ C := by

@@ -18,6 +18,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalCohomolog
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.decomposition_group_equiv_local_galois_group inv := GlobalTheory.T.invIso_of_localTateDuality hT fin := GlobalTheory.T.finIso_dualLattice_of_localTateDuality hT rat := GlobalTheory.T.rationalLocalDuality_of_localTateDuality hT int := GlobalTheory.T.integral_localDu …`.
+-/
 theorem langRecCore_of_artinReciprocity (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hT : Formalism.GaloisCohomology.LocalTateDualityK)
     (hE : Formalism.GaloisCohomology.LocalEulerCharK) : ReciprocityTheory.ChartRestriction.T2.Core where
   dec := GlobalTheory.T.decomposition_group_equiv_local_galois_group

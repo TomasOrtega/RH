@@ -8,6 +8,27 @@ open Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M V _ _ H ι _ _ Λ hΛ m hm hdet v hv hvE`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hvE`. Establish `hG : ∀ a b, H.gram m a b ∈ M.L.O` using `fun a b => hΛ _ (hm b) _ (hm a)`. Set `G' : Matrix ι ι M.L.O` to `Matrix.of fun a b => ⟨H.gram m a b, hG a b⟩`. Establish `hmap : M.L.O.subtype.mapMatrix G' = H.gram m`.
+
+Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hadj : ∀ a b, (H.gram m).adjugate a b ∈ M.L.O`. Introduce `a b`. Rewrite using `[← hmap, ← RingHom.map_adjugate]`.
+
+Conclude with `(G'.adjugate a b).2`. Establish `hpair : ∀ a, (Matrix.mulVec (H.gram m) c) a ∈ M.L.O`. Introduce `a`. Establish `hsum : H.h (∑ i, c i • m i) (m a) = (Matrix.mulVec (H.gram m) c) a`. Set `φ : V →+ E` to `AddMonoidHom.mk' (fun x => H.h x (m a)) (fun x x' => H.h_add_left x x' (m a))`.
+
+Establish `hφ : H.h (∑ i, c i • m i) (m a) = φ (∑ i, c i • m i)` using `rfl`. Rewrite using `[hφ, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, HermSp.gram, Matrix.of_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show H.h (c i • m i) (m a) = _`.
+
+Rewrite using `[H.h_smul_left, mul_comm]`. Rewrite using `[← hsum]`. Conclude with `hΛ _ hv _ (hm a)`. Establish `hdc : ∀ i, (H.gram m).det * c i ∈ M.L.O`. Introduce `i`.
+
+Establish `key : Matrix.mulVec (H.gram m).adjugate (Matrix.mulVec (H.gram m) c) = (H.gram m).det • c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `hi` using `congrFun key i`. Rewrite `hi` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hmem : ∀ w : ι → E, (∀ j, w j ∈ M.L.O) → (Matrix.mulVec (H.gram m).adjugate w) i ∈ M.L.O`.
+
+Introduce `w hw`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hadj i j) (hw j)`. Rewrite using `[← hi]`. Conclude with `hmem _ hpair`.
+
+Take `⟨_, y, hy, hdy⟩` from `hdet`. Establish `hc : ∀ i, c i ∈ M.L.O`. Introduce `i`. Establish `hci : c i = y * ((H.gram m).det * c i)`. Rewrite using `[← mul_assoc, mul_comm y, hdy, one_mul]`.
+
+Rewrite using `[hci]`. Conclude with `Subring.mul_mem _ hy (hdc i)`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hsm : c i • m i = (⟨c i, hc i⟩ : M.L.O) • m i` using `rfl`. Rewrite using `[hsm]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem satur_of_gram_det_unit : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {ι : Type} [Fintype ι] [DecidableEq ι] (Λ : Submodule M.L.O V) (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, H.h x y ∈ M.L.O) (m : ι → V) (hm : ∀ i, m i ∈ Λ) (hdet : IsUnitO M (H.gram m).det), ∀ v ∈ Λ, v ∈ Submodule.span E (Set.range m) → v ∈ Submodule.span M.L.O (Set.range m) := by
   intro F _ _ _ E _ _ _ _ M V _ _ H ι _ _ Λ hΛ m hm hdet v hv hvE
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun E).1 hvE

@@ -12,6 +12,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.HeightOneHom
 
+/- English proof (translation)
+Rewrite `hφ` using `[cobOne_apply, sub_sub, sub_eq_zero, CartierDual.comul_eq_iff]`. Establish `h` using `hφ a b`. Rewrite `h` using `[map_add, LinearMap.add_apply, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, CartierDual.one_apply]`. Express the relevant statement in the definitionally equal form `φ (a * b) = _`. Rewrite using `[← h]`.
+
+Simplify using `only [counitAlgHom_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem primitive_apply_mul {k C : Type} [Field k] [CommRing C] [HopfAlgebra k C]
     [IsCocomm k C] [Module.Finite k C] {φ : CartierDual k C} (hφ : cobOne k (CartierDual k C) φ = 0) (a b : C) :
     φ.ofConv (a * b) = counitAlgHom k C a • φ.ofConv b + counitAlgHom k C b • φ.ofConv a := by
@@ -24,6 +29,21 @@ theorem primitive_apply_mul {k C : Type} [Field k] [CommRing C] [HopfAlgebra k C
   simp only [counitAlgHom_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `p _ k _ _ C _ _ _ _ D _ _ _ _ f hpow hcot d`. Establish `hgen` using `GlobalTheory.HeightOneDual.adjoin_primitive_eq_top p k C hpow`. Establish `hzero : ∀ φ : CartierDual k C, cobOne k (CartierDual k C) φ = 0 → ∀ x, φ (f x) = 0`. Introduce `φ hφ x`. Establish `h1` using `AugCot.lift_d (counitAlgHom k C) φ.ofConv (primitive_apply_mul hφ) (f x)`.
+
+Establish `h2 : dUnit k (f x) = 0`. Rewrite using `[← cotMap_d f x, hcot, LinearMap.zero_apply]`. Express the relevant statement in the definitionally equal form `φ.ofConv (f x) = 0`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `AugCot.lift (counitAlgHom k C) φ.ofConv (primitive_apply_mul hφ) (dUnit k (f x)) = 0`.
+
+Rewrite using `[h2, map_zero]`. Establish `hone : ∀ φ : CartierDual k C, cobOne k (CartierDual k C) φ = 0 → φ 1 = 0`. Introduce `φ hφ`. Use `AugCot.pointDer_algebraMap (primitive_apply_mul hφ) (1 : k)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+
+Set `T : CartierDual k C →ₐ[k] CartierDual k D` to `(Algebra.ofId k _).comp (counitAlgHom k (CartierDual k C))`. Establish `hT : ∀ φ : CartierDual k C, ∀ x : D, T φ x = φ 1 * counit (R` using `k) x := by`. Introduce `φ x`. Express the relevant statement in the definitionally equal form `(algebraMap k (CartierDual k D) (counit (R := k) φ)) x = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, CartierDual.counit_apply]`.
+
+Express the relevant statement in the definitionally equal form `φ 1 • (1 : CartierDual k D) x = _`. Rewrite using `[CartierDual.one_apply, smul_eq_mul]`. Establish `hM : (CartierDual.map f : CartierDual k C →ₐ[k] CartierDual k D) = T`. Use `AlgHom.ext_of_adjoin_eq_top hgen fun φ hφ => ?_` and prove the remaining obligations. Use `CartierDual.ext_apply fun x => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `CartierDual.map f φ x = T φ x`. Rewrite using `[CartierDual.map_apply, hT, hzero φ hφ x, hone φ hφ, zero_mul]`. Use `CartierDual.eq_of_forall_apply (R := k) fun φ => ?_` and prove the remaining obligations. Establish `h1 : CartierDual.map f φ d = T φ d`. Rewrite using `[← hM]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[CartierDual.map_apply, hT]`. Rewrite using `[h1, Algebra.algebraMap_eq_smul_one, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem eq_algebraMap_counit_of_cotMap_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [CharP k p] (C : Type) [CommRing C] [HopfAlgebra k C] [IsCocomm k C] [Module.Finite k C]
     (D : Type) [CommRing D] [HopfAlgebra k D] [IsCocomm k D] [Module.Finite k D]

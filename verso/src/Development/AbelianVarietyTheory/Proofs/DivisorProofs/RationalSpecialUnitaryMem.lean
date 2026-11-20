@@ -8,6 +8,19 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 
 namespace GlobalTheory.TamUnf.RatIn
 
+/- English proof (translation)
+Introduce `E _ _ _ r G Ψ θ _ hθ γ hγ`. Take `⟨δ, hδ, hδγ⟩` from `(Subgroup.mem_subgroupOf.1 hγ).2`. Establish `hm : ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) = (δ : Matrix (Fin r) (Fin r) E).map (inclR …` using `maximalRealSubfield E) (AF (maximalRealSubfield E))) := (congrArg Units.val hδγ).symm`. Establish `hdet : ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)).det = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 γ.2)`. Establish `hfin : finMat (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 = GlobalTheory.UCls.ratM (maximalRealSubfield E) (δ : Matrix (Fin r) (Fin r) E)`.
+
+Unfold `finMat`. Rewrite using `[hm]`. Use extensionality with `a b`. Simplify using `[inclR, GlobalTheory.UCls.ratM]`. Use `⟨δ, ⟨GlobalTheory.RatUnit.isUA_ratM E r G _ δ.det_ne_zero fun x y => ?_, ?_⟩, fun ρ => ?_, hfin⟩` and prove the remaining obligations.
+
+Establish `hu : Formalism.UG.cT ((IsCMField.complexConj E).toAlgHom : E →+* E) (δ : Matrix (Fin r) (Fin r) E) * Gᵀ * (δ : Matrix (Fin r) (Fin r) E) = Gᵀ` using `hδ`. Establish `hG : (δ : Matrix (Fin r) (Fin r) E)ᵀ * G * (δ : Matrix (Fin r) (Fin r) E).map ((IsCMField.complexConj E).toAlgHom : E →+* E) = G`. Use `congrArg Matrix.transpose hu` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `GlobalTheory.RatUnit.dot_mulVec ((IsCMField.complexConj E).toAlgHom : E →+* E) G δ x y` as an intermediate fact.
+
+Rewrite `this` using `[hG, ← GlobalTheory.RatUnit.sum_eq_dot, ← GlobalTheory.RatUnit.sum_eq_dot]`. Conclude with `this`. Rewrite using `[← hfin]`. Unfold `finMat`. Use `(Algebra.TensorProduct.map (sndA (maximalRealSubfield E)) (AlgHom.id (maximalRealSubfield E) E)).map_det ((HA.mat (AF (maximalRealSubfield E)) (IsCMField.complexConj E).toAlgHom Gᵀ γ.1 : GL (Fin r) (AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) …` as an intermediate fact.
+
+Rewrite `this` using `[hdet, map_one]`. Conclude with `this.symm`. Unfold `infMat`. Rewrite using `[hm]`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply]`. Rewrite using `[← (hθ ρ).1]`. Simplify using `[inclR]`.
+-/
 theorem exists_rat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),
     (∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) → (∀ ρ : Ψ, IsInfEmb ρ.1 (θ ρ)) →

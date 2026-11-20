@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OneOnSingl
 
 namespace GlobalTheory.Core.Diag
 
+/- English proof (translation)
+Introduce `h` and use `oneOn_singleton_of_siegelWeil_of_stepChoice h (GlobalTheory.St.stepChoiceDataC_of_siegelWeil_inInfinity h (fun _ X u u' hg => Formalism.L2.SG.RealObj.EnergyConvJ.BM.realObj_inInfinityX_jsz CompanionTheory.Lime.BM.uniqGap_holds hg X u u' 1 one_pos)) Formalism.MainStatements.RowRes …`.
+-/
 theorem oneOn_singleton_of_siegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent →
       ∀ c : ℝ, GlobalTheory.Core.Diag.OneOn {c} true ∧ GlobalTheory.Core.Diag.OneOn {c} false :=

@@ -27,6 +27,13 @@ noncomputable def HasAlgebraicCharts.chartedSpace (h : HasAlgebraicCharts 𝕜 A
   mem_chart_source p := (h p).choose_spec.2
   chart_mem_atlas p := (h p).choose_spec.1
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨x', s', hx'⟩` from `he'.exists_eq_div`. Establish `hzt : z ∈ e.target` using `hz.1`. Establish `hzs : e.symm z ∈ e'.source` using `hz.2`. Establish `hev : ∀ᶠ w in 𝓝 z, e.symm w ∈ e'.source` using `(e.continuousAt_symm hzt).preimage_mem_nhds (e'.open_source.mem_nhds hzs)`.
+
+Establish `hq : AnalyticAt 𝕜 (fun w i => e.symm w (x' i) / e.symm w s') z`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `(he.analyticOnNhd _ z hzt).div (he.analyticOnNhd _ z hzt) (hx' _ hzs).1`. Use `hq.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hev] with w hw`. Use function extensionality and compare the values at `i`. Simplify using `[(hx' _ hw).2 i]`.
+-/
 theorem IsAlgebraicChart.analyticOnNhd_trans
     {e e' : OpenPartialHomeomorph (A →ₐ[𝕜] 𝕜) (Fin d → 𝕜)} (he : IsAlgebraicChart e)
     (he' : IsAlgebraicChart e') : AnalyticOnNhd 𝕜 (e.symm ≫ₕ e') (e.symm ≫ₕ e').source := by
@@ -47,6 +54,9 @@ theorem IsAlgebraicChart.analyticOnNhd_trans
 
 variable [CompleteSpace 𝕜]
 
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Use `isManifold_of_contDiffOn _ _ _ fun e e' he he' => ?_` and prove the remaining obligations. Simplify using `only [modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Set.range_id, Function.id_comp, Function.comp_id, Set.preimage_id, Set.inter_univ]`. Conclude with `(IsAlgebraicChart.analyticOnNhd_trans he he').contDiffOn (e.symm ≫ₕ e').open_source.uniqueDiffOn`.
+-/
 theorem HasAlgebraicCharts.isManifold (h : HasAlgebraicCharts 𝕜 A d) :
     letI := h.chartedSpace
     IsManifold 𝓘(𝕜, Fin d → 𝕜) ω (A →ₐ[𝕜] 𝕜) := by
@@ -57,6 +67,11 @@ theorem HasAlgebraicCharts.isManifold (h : HasAlgebraicCharts 𝕜 A d) :
   exact (IsAlgebraicChart.analyticOnNhd_trans he he').contDiffOn
     (e.symm ≫ₕ e').open_source.uniqueDiffOn
 
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Introduce `p`. Establish `hc : IsAlgebraicChart (chartAt (Fin d → 𝕜) p)` using `chart_mem_atlas (Fin d → 𝕜) p`. Rewrite using `[contMDiffAt_iff_source]`. Simplify using `only [mfld_simps]`.
+
+Rewrite using `[contMDiffWithinAt_univ, contMDiffAt_iff_contDiffAt]`. Conclude with `(hc.analyticOnNhd a _ (mem_chart_target _ p)).contDiffAt`.
+-/
 theorem HasAlgebraicCharts.contMDiff_eval (h : HasAlgebraicCharts 𝕜 A d) (a : A) :
     letI := h.chartedSpace
     ContMDiff 𝓘(𝕜, Fin d → 𝕜) 𝓘(𝕜) ω fun p : A →ₐ[𝕜] 𝕜 => p a := by
@@ -74,6 +89,11 @@ variable {E H M : Type*} [NormedAddCommGroup E] [NormedSpace 𝕜 E] [Topologica
   {I : ModelWithCorners 𝕜 E H} [TopologicalSpace M] [ChartedSpace H M]
 
 omit [CompleteSpace 𝕜] in
+/- English proof (translation)
+Establish `h'` using `fun i => (mdifferentiableAt_iff _ _).1 (hf i)`. Rewrite using `[mdifferentiableAt_iff]`. Use `⟨continuousAt_pi.2 fun i => (h' i).1, ?_⟩` and prove the remaining obligations. Rewrite using `[differentiableWithinAt_pi]`. Introduce `i`.
+
+Conclude with `(h' i).2`.
+-/
 theorem mdifferentiableAt_pi_of_forall {ι : Type*} [Fintype ι] {f : M → ι → 𝕜} {x : M}
     (hf : ∀ i, MDifferentiableAt I 𝓘(𝕜) (fun m => f m i) x) :
     MDifferentiableAt I 𝓘(𝕜, ι → 𝕜) f x := by
@@ -85,6 +105,11 @@ theorem mdifferentiableAt_pi_of_forall {ι : Type*} [Fintype ι] {f : M → ι �
   exact (h' i).2
 
 omit [CompleteSpace 𝕜] in
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Establish `hc : IsAlgebraicChart (chartAt (Fin d → 𝕜) (φ m))` using `chart_mem_atlas (Fin d → 𝕜) (φ m)`. Take `⟨x, s, hxs⟩` from `hc.exists_eq_div`. Establish `hev : ∀ᶠ m' in 𝓝 m, φ m' ∈ (chartAt (Fin d → 𝕜) (φ m)).source` using `hφ.preimage_mem_nhds ((chartAt (Fin d → 𝕜) (φ m)).open_source.mem_nhds (mem_chart_source _ _))`. Use `⟨x, s, (hxs _ (mem_chart_source _ _)).1, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hev] with m' hm'`. Use function extensionality and compare the values at `i`. Simplify using `[(hxs _ hm').2 i]`.
+-/
 theorem HasAlgebraicCharts.exists_extChartAt_eventuallyEq (h : HasAlgebraicCharts 𝕜 A d)
     {φ : M → (A →ₐ[𝕜] 𝕜)} {m : M} (hφ : ContinuousAt φ m) :
     letI := h.chartedSpace
@@ -100,6 +125,11 @@ theorem HasAlgebraicCharts.exists_extChartAt_eventuallyEq (h : HasAlgebraicChart
   funext i
   simp [(hxs _ hm').2 i]
 
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Use `⟨fun hφ a => ((h.contMDiff_eval a).mdifferentiable (by simp)).comp hφ, fun hφ m => ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous φ` using `GlobalTheory.AffinePoints.continuous_iff.2 fun a => (hφ a).continuous`. Take `⟨x, s, hs, hev⟩` from `h.exists_extChartAt_eventuallyEq (m := m) hcont.continuousAt`. Rewrite using `[mdifferentiableAt_iff_target]`.
+
+Use `⟨hcont.continuousAt, ?_⟩` and prove the remaining obligations. Establish `hq : MDifferentiableAt I 𝓘(𝕜, Fin d → 𝕜) (fun m' i => φ m' (x i) / φ m' s) m` using `mdifferentiableAt_pi_of_forall fun i => ((hφ (x i)) m).div ((hφ s) m) hs`. Conclude with `hq.congr_of_eventuallyEq hev`.
+-/
 theorem HasAlgebraicCharts.mdifferentiable_iff (h : HasAlgebraicCharts 𝕜 A d)
     {φ : M → (A →ₐ[𝕜] 𝕜)} :
     letI := h.chartedSpace
@@ -116,6 +146,9 @@ theorem HasAlgebraicCharts.mdifferentiable_iff (h : HasAlgebraicCharts 𝕜 A d)
 
 end Detect
 
+/- English proof (translation)
+Take `⟨e, hp, he, ha⟩` from `exists_chart_of_etale g hg p`. Use `⟨e, ⟨⟨fun i => g (X i), 1, fun q _ => ⟨by simp, fun i => ?_⟩⟩, ha⟩, hp, he⟩` and prove the remaining obligations. Rewrite using `[he]`. Simplify using `[coords]`.
+-/
 theorem exists_isAlgebraicChart_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg : g.Etale)
     (p : A →ₐ[𝕜] 𝕜) :
     ∃ e : OpenPartialHomeomorph (A →ₐ[𝕜] 𝕜) (Fin d → 𝕜), IsAlgebraicChart e ∧ p ∈ e.source ∧
@@ -125,6 +158,27 @@ theorem exists_isAlgebraicChart_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[�
   rw [he]
   simp [coords]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial d 𝕜 B`. Establish `hj : IsOpenEmbedding (comap (IsScalarTower.toAlgHom 𝕜 A B) : (B →ₐ[𝕜] 𝕜) → (A →ₐ[𝕜] 𝕜))` using `isOpenEmbedding_comap_away s`. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : p ∈ range (comap (IsScalarTower.toAlgHom 𝕜 A B) : (B →ₐ[𝕜] 𝕜) → (A →ₐ[𝕜] 𝕜)) := by`. Rewrite using `[range_comap_away s]`. Conclude with `hp`.
+
+Establish `: Nonempty (B →ₐ[𝕜] 𝕜)` using `⟨q⟩`. Take `⟨F, hFs, hFt, hFc⟩ : ∃ F : OpenPartialHomeomorph (B →ₐ[𝕜] 𝕜) (A →ₐ[𝕜] 𝕜), F.source = univ ∧ F.target = range (comap (IsScalarTower.toAlgHom 𝕜 A B)) ∧ ⇑F = comap (IsScalarTower.toAlgHom 𝕜 A B)` from `⟨IsOpenEmbedding.toOpenPartialHomeomorph _ hj, by simp, by simp, by simp⟩`. Establish `hinv : ∀ q', F.symm (comap (IsScalarTower.toAlgHom 𝕜 A B) q') = q'` using `fun q' => by`. Use `F.left_inv (x := q') (by rw [hFs]; trivial)` as an intermediate fact. Rewrite `this` using `[hFc]`. Then use the resulting hypothesis.
+
+Take `⟨eB, heB, hqB, -⟩` from `exists_isAlgebraicChart_of_etale g hg q`. Take `⟨xB, sB, hB⟩` from `heB.exists_eq_div`. Take `⟨⟨b, hb⟩, hxb⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers s) xB`. Take `⟨⟨c, ⟨u, hu⟩⟩, hcu⟩` from `IsLocalization.surj (Submonoid.powers s) sB`. Establish `hxb' : ∀ i, ∃ a, algebraMap A B a = b • xB i` using `fun i => hxb i`.
+
+Use `choose a ha using hxb'`. Establish `hbu : IsUnit (algebraMap A B b)` using `IsLocalization.map_units B (⟨b, hb⟩ : Submonoid.powers s)`. Establish `huu : IsUnit (algebraMap A B u)` using `IsLocalization.map_units B (⟨u, hu⟩ : Submonoid.powers s)`. Use `⟨F.symm.trans eB, ⟨⟨fun i => a i * u, c * b, ?_⟩, fun a' => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p' ⟨hp'1, hp'2⟩`.
+
+Establish `hp'3 : p' ∈ F.target` using `hp'1`. Rewrite `hp'3` using `[hFt]`. Take `⟨q', rfl⟩` from `hp'3`. Establish `hp'4 : F.symm (comap (IsScalarTower.toAlgHom 𝕜 A B) q') ∈ eB.source` using `hp'2`. Rewrite `hp'4` using `[hinv]`.
+
+Establish `h1 : ∀ i, q' (xB i) = q' (algebraMap A B (a i)) / q' (algebraMap A B b)` using `fun i => apply_eq_div_of_mul_eq q' hbu (by rw [ha i, Algebra.smul_def, mul_comm])`. Establish `h2 : q' sB = q' (algebraMap A B c) / q' (algebraMap A B u)` using `apply_eq_div_of_mul_eq q' huu hcu`. Establish `hb0 : q' (algebraMap A B b) ≠ 0` using `(hbu.map q').ne_zero`. Establish `hu0 : q' (algebraMap A B u) ≠ 0` using `(huu.map q').ne_zero`. Establish `hs0 : q' sB ≠ 0` using `(hB q' hp'4).1`.
+
+Establish `hc0 : q' (algebraMap A B c) ≠ 0`. Introduce `h0`. Rewrite `hs0` using `[h2, h0, zero_div]`. Conclude with `hs0 rfl`. Simplify using `only [OpenPartialHomeomorph.coe_trans, Function.comp_apply, hinv, comap_apply, IsScalarTower.toAlgHom_apply, map_mul]`.
+
+Use `⟨mul_ne_zero hc0 hb0, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[(hB q' hp'4).2 i, h1 i, h2]`. Clear the denominators using the available nonvanishing facts. Establish `hfun : (fun z => (F.symm.trans eB).symm z a') = fun z => eB.symm z (algebraMap A B a')`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[hFc, comap_apply]`. Rewrite using `[hfun]`. Conclude with `(heB.analyticOnNhd _).mono fun z hz => hz.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ F.target`.
+
+Rewrite using `[hFt]`. Conclude with `mem_range_self q`. Use `show F.symm _ ∈ eB.source`. Rewrite using `[hinv]`. Conclude with `hqB`.
+-/
 theorem exists_isAlgebraicChart_of_away (s : A) (B : Type*) [CommRing B] [Algebra 𝕜 B]
     [Algebra A B] [IsScalarTower 𝕜 A B] [IsLocalization.Away s B]
     [Algebra.IsStandardSmoothOfRelativeDimension d 𝕜 B] (p : A →ₐ[𝕜] 𝕜) (hp : p s ≠ 0) :
@@ -187,6 +241,9 @@ theorem exists_isAlgebraicChart_of_away (s : A) (B : Type*) [CommRing B] [Algebr
       rw [hinv]
       exact hqB
 
+/- English proof (translation)
+Introduce `p`. Use `haveI : IsLocalization.Away (1 : A) A := IsLocalization.away_of_isUnit_of_bijective A isUnit_one Function.bijective_id`. Conclude with `exists_isAlgebraicChart_of_away (1 : A) A p (by simp)`.
+-/
 theorem hasAlgebraicCharts_of_isStandardSmooth
     [Algebra.IsStandardSmoothOfRelativeDimension d 𝕜 A] : HasAlgebraicCharts 𝕜 A d := by
   intro p

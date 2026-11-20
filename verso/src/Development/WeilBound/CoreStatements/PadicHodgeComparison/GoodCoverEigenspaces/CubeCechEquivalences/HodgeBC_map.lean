@@ -12,12 +12,18 @@ namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8.HBC
 variable {k k' : Type} [CommRing k] [CommRing k'] {φ : k →+* k'} {X X' : Scheme.{0}}
   {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {g : X' ⟶ X}
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+-/
 theorem algΓ_comp_spMap (t : X' ⟶ Sp k') (r : k) :
     ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (t ≫ spMap φ).appTop).hom r =
       ((Scheme.ΓSpecIso (CommRingCat.of k')).inv ≫ t.appTop).hom (φ r) := by
   rw [Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X'.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (t ≫ spMap φ).appTop).hom r) = (X'.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (((Scheme.ΓSpecIso (CommRingCat.of k')).inv ≫ t.appTop).hom (φ r))`. Rewrite using `[algΓ_comp_spMap]`.
+-/
 theorem secMap_comp_spMap (t : X' ⟶ Sp k') (W : X'.Opens) (r : k) :
     (secMap (t ≫ spMap φ) W).hom r = (secMap t W).hom (φ r) := by
   change (X'.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom
@@ -30,6 +36,9 @@ variable (s s' g) in
 
 def appSecS (U : X.Opens) : Sec s U →+* Sec s' (g ⁻¹ᵁ U) := (g.app U).hom
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ by refine (semiHom_appSec (s' := s' ≫ spMap φ) hg U r b).trans ?_ change (secMap (s' ≫ spMap φ) (g ⁻¹ᵁ U)).hom r * (g.app U).hom b = (secMap s' (g ⁻¹ᵁ U)).hom (φ r) * (g.app U).hom b rw [secMap_comp_spMap]`.
+-/
 theorem semiHom_appSecS (hg : g ≫ s = s' ≫ spMap φ) (U : X.Opens) :
     SemiHom φ (appSecS s s' g U) := fun r b ↦ by
   refine (semiHom_appSec (s' := s' ≫ spMap φ) hg U r b).trans ?_
@@ -37,6 +46,9 @@ theorem semiHom_appSecS (hg : g ≫ s = s' ≫ spMap φ) (U : X.Opens) :
     (secMap s' (g ⁻¹ᵁ U)).hom (φ r) * (g.app U).hom b
   rw [secMap_comp_spMap]
 
+/- English proof (translation)
+The claim follows from `(appTop_algebraMap (s' := s' ≫ spMap φ) hg r).trans (algΓ_comp_spMap s' r)`.
+-/
 theorem appTop_algebraMapS (hg : g ≫ s = s' ≫ spMap φ) (r : k) :
     letI := algΓ s; letI := algΓ s'
     g.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k' Γ(X', ⊤) (φ r) :=
@@ -46,10 +58,18 @@ def formPullS (hg : g ≫ s = s' ≫ spMap φ) (U : X.Opens) (j : ℕ) :
     OmU s U j →ₛₗ[φ] OmU s' (g ⁻¹ᵁ U) j :=
   (semiHom_appSecS hg U).mOm j
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_smul _ b x`.
+-/
 theorem formPullS_smul (hg : g ≫ s = s' ≫ spMap φ) (U : X.Opens) {j : ℕ} (b : Sec s U)
     (x : OmU s U j) : formPullS hg U j (b • x) = appSecS s s' g U b • formPullS hg U j x :=
   SemiHom.mOm_smul _ b x
 
+/- English proof (translation)
+Establish `e : ∀ b : Sec s U, Sec.res s' (g.preimage_mono h) (appSecS s s' g U b) = appSecS s s' g V (Sec.res s h b)` using `fun b ↦ by`. Express the relevant statement in the definitionally equal form `(g.app U ≫ X'.presheaf.map (homOfLE (g.preimage_mono h)).op).hom b = (X.presheaf.map (homOfLE h).op ≫ g.app V).hom b`. Rewrite using `[g.naturality]`. Both sides reduce to the same expression. Establish `hγ : SemiHom φ ((appSecS s s' g V).comp (Sec.res s h : Sec s U →+* Sec s V))` using `(SemiHom.of_algHom (Sec.res s h)).comp (semiHom_appSecS hg V)`.
+
+Conclude with `(SemiHom.mOm_mOm (semiHom_appSecS hg U) (SemiHom.of_algHom (Sec.res s' (g.preimage_mono h))) hγ e x).trans (SemiHom.mOm_mOm (SemiHom.of_algHom (Sec.res s h)) (semiHom_appSecS hg V) hγ (fun _ ↦ rfl) x).symm`.
+-/
 theorem formRes_formPullS (hg : g ≫ s = s' ≫ spMap φ) {U V : X.Opens} (h : V ≤ U) {j : ℕ}
     (x : OmU s U j) :
     formRes s' (g.preimage_mono h) j (formPullS hg U j x) = formPullS hg V j (formRes s h j x) := by
@@ -85,6 +105,9 @@ def omegaPullS (hg : g ≫ s = s' ≫ spMap φ) (j : ℕ) :
   ((PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv _ _).symm
     (pullPreS hg j)
 
+/- English proof (translation)
+Establish `h` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) ((Scheme.Modules.pushforward g).obj (Omega s' j)) (omegaPullS hg j)`. Rewrite `h` using `[omegaPullS, Equiv.apply_symm_apply]`. Establish `h2` using `congrArg (fun ψ ↦ (ψ.app (op U)).hom x) h`. Conclude with `h2.symm`.
+-/
 theorem omegaPullS_toOmega (hg : g ≫ s = s' ≫ spMap φ) (j : ℕ) (U : X.Opens) (x : OmU s U j) :
     (omegaPullS hg j).val.app (op U) ((toOmega s j).app (op U) x) =
       (toOmega s' j).app (op (g ⁻¹ᵁ U)) (formPullS hg U j x) := by
@@ -98,6 +121,9 @@ def hodgePullS (hg : g ≫ s = s' ≫ spMap φ) (j q : ℕ) : hodgeH s j q →�
   letI := algΓ s; letI := algΓ s'
   cohOn.pull (appTop_algebraMapS hg) (omegaPullS hg j) (le_refl (g ⁻¹ᵁ ⊤)) q
 
+/- English proof (translation)
+The claim follows from `map_smulₛₗ _ r x`.
+-/
 example (hg : g ≫ s = s' ≫ spMap φ) (x : hodgeH s 1 1) (r : k) :
     hodgePullS hg 1 1 (r • x) = φ r • hodgePullS hg 1 1 x :=
   map_smulₛₗ _ r x

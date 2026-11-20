@@ -6,5 +6,8 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PowBddInt
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TensCpctDen
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DefPosDef
 
+/- English proof (translation)
+The claim follows from `PI.finOrdAd_of unit_kronecker power_bounded_integral tensor_compact_dense positive_definite_form`.
+-/
 theorem finite_order_adelic : PI.FinOrdAd :=
   PI.finOrdAd_of unit_kronecker power_bounded_integral tensor_compact_dense positive_definite_form

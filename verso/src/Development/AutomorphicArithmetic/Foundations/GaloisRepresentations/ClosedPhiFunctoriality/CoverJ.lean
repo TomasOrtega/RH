@@ -20,6 +20,35 @@ open scoped Formalism.Per NNReal
 
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ a L₀ r hr hss Cl hCl p θ hap`. Take `⟨d, ρ, b, e, hρ, hreads, hind, hbr⟩` from `GlobalTheory.T.exists_padicInt_span_image_lattice_regular l Γ a r hr`. Take `⟨c, hc⟩` from `GlobalTheory.T.small_traces_dvd_span_image l Γ a r hr hss`. Take `⟨K, hK⟩` from `traceL l a d b`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`.
+
+Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hch : ∀ ρ' : Γ →* GL (Fin a) (Om l), ∃ (L : FinExt l) (t : Finset (Matrix (Fin a) (Fin a) (Om l))), Continuous ρ' → (L₀.1 ≤ L.1 ∧ (∀ g i j, ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1) ∧ (∀ x ∈ t, ∀ i j, x i j ∈ L.1) ∧ (∀ x : Matrix (Fin a) (Fin a) (Om …`. Introduce `ρ'`. Distinguish the cases in `h : Continuous ρ'`. Take `⟨L, hLf, hL⟩` from `GlobalTheory.T.exists_finiteExtension_entries_of_compact_rep l Γ a ρ' h haveI := hLf haveI := L₀.2`.
+
+Set `L' : FinExt l` to `⟨L ⊔ L₀.1, inferInstance⟩`. Establish `hL' : ∀ g i j, ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L'.1` using `fun g i j => (le_sup_left : L ≤ L ⊔ L₀.1) (hL g i j)`. Take `⟨t, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_stable_spanning_finset_matrices l Γ a ρ' L' h hL'`. Conclude with `⟨L', t, fun _ => ⟨le_sup_right, hL', h1, h2, h3, h4⟩⟩`. Conclude with `⟨L₀, ∅, fun h' => absurd h' h⟩`.
+
+Use `choose Lf tf htf using hch`. Establish `hap' : ∀ n : ℕ, ∃ (s : Finset (Γ →* GL (Fin a) (Om l))) (cc : (Γ →* GL (Fin a) (Om l)) → Om l), (s : Set (Γ →* GL (Fin a) (Om l))) ⊆ Cl ∧ (∀ g, ‖trc r g - ∑ ρ' ∈ s, cc ρ' * trc ρ' g‖ ≤ ((l : ℝ)⁻¹) ^ (n + K + c)) ∧ ‖θ - ∑ ρ' ∈ s, cc ρ' * p ρ'‖ ≤ ((l : ℝ)⁻¹) ^ (n + K + c)` using `fun n => hap _ (by positivity)`. Use `choose s cc hsCl hscc hth using hap'`. Set `U : ℕ → Finset (Γ →* GL (Fin a) (Om l))` to `fun n => (Finset.range (n + 1)).biUnion s`. Establish `hUmono : ∀ n, U n ⊆ U (n + 1)` using `fun n => Finset.biUnion_subset_biUnion_of_subset_left _ (fun x hx => by simp only [Finset.mem_range] at hx ⊢; omega)`.
+
+Establish `hsU : ∀ n, s n ⊆ U n` using `fun n => Finset.subset_biUnion_of_mem s (Finset.mem_range.2 (Nat.lt_succ_self n))`. Establish `hUCl : ∀ n, ∀ ρ' ∈ U n, ρ' ∈ Cl`. Introduce `n ρ' h`. Take `⟨j, _, hj⟩` from `Finset.mem_biUnion.1 h`. Conclude with `hsCl j hj`.
+
+Set `m : ℕ → ℕ` to `fun n => (U n).card`. Set `ρs : ∀ n, Fin (m n) → (Γ →* GL (Fin a) (Om l))` to `fun n k => ((U n).equivFin.symm k).1`. Establish `hρsU : ∀ n k, ρs n k ∈ U n` using `fun n k => ((U n).equivFin.symm k).2`. Establish `hρsC : ∀ n k, Continuous (ρs n k)` using `fun n k => hCl _ (hUCl n _ (hρsU n k))`. Set `cs : ∀ n, Fin (m n) → Om l` to `fun n k => if ρs n k ∈ s n then cc n (ρs n k) else 0`.
+
+Establish `hcs : ∀ n (q : (Γ →* GL (Fin a) (Om l)) → Om l), ∑ k, cs n k * q (ρs n k) = ∑ ρ' ∈ s n, cc n ρ' * q ρ'`. Introduce `n q`. Establish `e1 : ∑ k, cs n k * q (ρs n k) = ∑ x : (U n), (if x.1 ∈ s n then cc n x.1 else 0) * q x.1` using `Fintype.sum_equiv (U n).equivFin.symm _ _ (fun k => rfl)`. Rewrite using `[e1, Finset.sum_coe_sort (U n) (fun x => (if x ∈ s n then cc n x else 0) * q x)]`. Simplify using `only [ite_mul, zero_mul]`.
+
+Rewrite using `[← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.inter_eq_right.2 (hsU n)]`. Establish `hK' : ∀ n, ∀ w : Fin d → ℤ_[l], ‖((l : Om l) ^ (n + K) • ∑ i, zOm l (w i) • b i).trace‖ ≤ ((l : ℝ) ^ n)⁻¹`. Introduce `n w`. Rewrite using `[Matrix.trace_smul, smul_eq_mul, norm_mul, norm_pow, norm_l]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[pow_add, inv_pow, inv_pow, mul_assoc, inv_mul_cancel₀ (by positivity), mul_one]`. Establish `hlay : ∀ n, ∃ M₀ : ℕ, ∀ M, M₀ ≤ M → ∃ (d' : ℕ) (ρ' : Γ →* GL (Fin d') ℤ_[l]) (bb : Fin d' → Fin (m n) → Matrix (Fin a) (Fin a) (Om l)) (e' : Fin d' → ℤ_[l]) (P : Matrix (Fin d) (Fin d') ℤ_[l]), Continuous ρ' ∧ (∀ s k i j, bb s k i j ∈ (Lf (ρs n k)).1) ∧ LinearIndependent ℚ_[l] bb …`. Introduce `n`. Conclude with `GlobalTheory.T.exists_lattice_layer_cover_basis_mod_pow l Γ a r d ρ b e hreads hind hbr c hc n (n + K) (by omega) (hK' n) (m n) (ρs n) (fun k => Lf (ρs n k)) (fun k => tf (ρs n k)) (hρsC n) (fun k => (htf _ (hρsC n k)).2.1) (fun k => (htf _ (hρsC n k)).2.2.1) (fun k => (htf _ (hρ …`. Use `choose M₀ hM₀ using hlay`.
+
+Set `M : ℕ → ℕ` to `fun n => ∑ j ∈ Finset.range (n + 1), M₀ j`. Establish `hMle : ∀ n, M₀ n ≤ M n` using `fun n => Finset.single_le_sum (f := M₀) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (Nat.lt_succ_self n))`. Establish `hMmono : ∀ n, M n ≤ M (n + 1)` using `fun n => by`. Simplify using `only [M]`. Rewrite using `[Finset.sum_range_succ _ (n + 1)]`.
+
+Conclude with `Nat.le_add_right _ _`. Establish `hL` using `fun n => hM₀ n (M n) (hMle n)`. Use `choose d' ρ' bb e' P hcont hbbL hind' hspan' hreads' hmem hcoord hcar honto hunit htr using hL`. Set `ι : ∀ n, Fin (m n) → Fin (m (n + 1))` to `fun n k => (U (n + 1)).equivFin ⟨((U n).equivFin.symm k).1, hUmono n ((U n).equivFin.symm k).2⟩`. Establish `hι : ∀ n k, ρs (n + 1) (ι n k) = ρs n k`.
+
+Introduce `n k`. Simplify using `[ρs, ι]`. Establish `htrans : ∀ n, ∃ f : Matrix (Fin (d' n)) (Fin (d' (n + 1))) ℤ_[l], (∀ g, f * ((ρ' (n + 1) g : GL (Fin (d' (n + 1))) ℤ_[l]) : Matrix (Fin (d' (n + 1))) (Fin (d' (n + 1))) ℤ_[l]) = ((ρ' n g : GL (Fin (d' n)) ℤ_[l]) : Matrix (Fin (d' n)) (Fin (d' n)) ℤ_[l]) * f) ∧ ∀ i j, (l : ℤ_[l]) …`. Introduce `n`. Conclude with `GlobalTheory.T.exists_equivariant_transition_matrix_cover l Γ a r d b hind (m n) (m (n + 1)) (ρs n) (ρs (n + 1)) (ι n) (hι n) (fun k => tf (ρs n k)) (fun k => tf (ρs (n + 1) k)) (fun k => by rw [hι n k]) (M n) (M (n + 1)) (hMmono n) (d' n) (d' (n + 1)) (ρ' n) (ρ' (n + 1)) (bb n) …`.
+
+Use `choose f hfe hfP using htrans`. Set `tw : Tower ρ` to `{ d' := d', ρ' := ρ', Pi := P, onto := honto, f := f, f_equi := hfe, f_Pi := hfP }`. Set `lay : ∀ n, Layer L₀ Cl (tw.ρ' n)` to `fun n => { m := m n, rep := ρs n, mem := fun k => hUCl n _ (hρsU n k), L := fun k => Lf (ρs n k), le := fun k => (htf _ (hρsC n k)).1, rep_mem := fun k => (htf _ (hρsC n k)).2.1, b := bb n, b_mem := hbbL n, indep := hind' n, span := hspan' n, e := e' n, reads := hreads' n, c := c …`. Use `⟨{ d := d, ρ := ρ, cont := hρ, b := b, e := e, reads := hreads, tw := tw, cont' := hcont, lay := lay, unit := hunit, trace := htr }, fun n => ?_⟩` and prove the remaining obligations. Use `show ‖θ - ∑ k, cs n k * p (ρs n k)‖ ≤ _`.
+
+Rewrite using `[hcs n p]`. Use `(hth n).trans ?_` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `pow_le_pow_of_le_one (by positivity) (inv_le_one_of_one_le₀ hl1.le) (by omega)`.
+-/
 theorem coverJ_holds : CoverJ := by
   intro l _ Γ _ _ _ _ a L₀ r hr hss Cl hCl p θ hap
   classical

@@ -13,6 +13,55 @@ open scoped Formalism.Per NNReal
 
 namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ N k d ρ F hcr Q Q' hsec g`. Take `⟨hQQ, hQu₀, hQ'u₀, hQφ₀⟩` from `hsec`. Take `⟨Y, Y', hY, hYY⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d (fun g => (ρ g).val) F.toPre`. Take `⟨-, -, hE2⟩` from `GlobalTheory.T.frame_ainf_matrix_frobenius_galois_eqs l K bk τ hτ N d (fun g => (ρ g).val) F Y Y' hY hYY`. Take `⟨htf, -, ⟨v, hv⟩, hφι, hσι⟩` from `GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk`.
+
+Use `set ι := algebraMap (Ainf l) (Per.Acris l) with hι`. Establish `hQu : ∀ i j, ι (bk.ev X) ∣ (Q - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j` using `hQu₀`. Establish `hQ'u : ∀ i j, ι (bk.ev X) ∣ (Q' - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j` using `hQ'u₀`. Express the relevant statement in the definitionally equal form `(F.ε g).map (fun a => ι (WittVector.frobenius a)) * Q.map (sigA (g : GQ l)) = Q`. Use `set σ := sigA (g : GQ l) with hσdef`.
+
+Use `set fA : bk.S →+* Per.Acris l := (ι.comp bk.ev).comp (frobS l bk.a) with hfA`. Use `set f0 : bk.S →+* Per.Acris l := fA.comp ((PowerSeries.C).comp PowerSeries.constantCoeff) with hf0`. Establish `hQφ : fA bk.E ^ N • (Q * F.A.map f0) = f0 bk.E ^ N • (F.A.map fA * Q.map (phiA l))` using `hQφ₀`. Use `set ε' := (F.ε g).map (fun a => ι (WittVector.frobenius a)) with hε'`. Establish `hfr : ∀ s : bk.S, fA s = ι (WittVector.frobenius (bk.ev s))` using `fun s => by`.
+
+Simplify using `only [hfA, RingHom.comp_apply, bk.ev_frob]`. Establish `hfix : ∀ c : Wq l bk.a, σ (fA (PowerSeries.C c)) = fA (PowerSeries.C c)` using `fun c => by`. Rewrite using `[hfr, hσdef, hσι, ← GlobalTheory.RingBasics.φA_apply, ← ActLaws.φA_σA, bk.ev_C, bk.gal_w g c]`. Establish `hcomm : ∀ x, phiA l (σ x) = σ (phiA l x)` using `fun x => GlobalTheory.CrisMaps.phiA_sigA (g : GQ l) x`. Establish `he₀ : ∃ w : (Per.Acris l)ˣ, f0 bk.E = (l : Per.Acris l) * w`.
+
+Take `⟨w, hw⟩` from `bk.coeff_zero`. Establish `hc : PowerSeries.constantCoeff bk.E = (l : Wq l bk.a) * w`. Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Use `⟨((Units.map (PowerSeries.C (R := Wq l bk.a)).toMonoidHom w).map fA.toMonoidHom), ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hf0, hc]`. Establish `hBB : F.A.map fA * F.A'.map fA = fA bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))`. Rewrite using `[← Matrix.map_mul, F.A_mul, map_smul_ring, map_pow, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hAA : F.A.map f0 * F.A'.map f0 = f0 bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))`. Rewrite using `[← Matrix.map_mul, F.A_mul, map_smul_ring, map_pow, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hσA₀ : (F.A.map f0).map σ = F.A.map f0`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, hf0, RingHom.comp_apply]`. Conclude with `hfix _`. Establish `hσe₀ : σ (f0 bk.E) = f0 bk.E` using `by simp only [hf0, RingHom.comp_apply]; exact hfix _`.
+
+Establish `hσf : ∀ s : bk.S, ι (WittVector.frobenius (Per.σA (g : GQ l) (bk.ev s))) = σ (fA s)` using `fun s => by`. Rewrite using `[hfr, hσdef, hσι, ← GlobalTheory.RingBasics.φA_apply, ← GlobalTheory.RingBasics.φA_apply, ActLaws.φA_σA]`. Establish `h2 : fA bk.E ^ N • (ε' * (F.A.map fA).map σ) = σ (fA bk.E) ^ N • (F.A.map fA * ε'.map (phiA l))`. Establish `e` using `congrArg (fun M => M.map (ι.comp WittVector.frobenius)) (hE2 g)`. Simplify using `only [map_smul_ring, Matrix.map_mul, Matrix.map_map, map_pow, RingHom.comp_apply] at e`.
+
+Use `e using 3` and compare the differences between its conclusion and the goal. Rewrite using `[hfr]`. Use extensionality with `i j`. Simplify using `[hε']`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Function.comp_apply, RingHom.comp_apply]`. Rewrite using `[hσf]`. Rewrite using `[hσf]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Function.comp_apply, RingHom.comp_apply]`.
+
+Rewrite using `[hfr]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Function.comp_apply, RingHom.comp_apply, hε']`. Rewrite using `[hφι]`. Establish `hL1` using `GlobalTheory.T.frobenius_equation_of_twisted_cocycle_defect (Per.Acris l) (phiA l) σ d N k (l : Per.Acris l) (fA bk.E) (f0 bk.E) Q Q' (F.A.map fA) (F.A'.map fA) (F.A.map f0) (F.A'.map f0) ε' htf ⟨v, hv⟩ he₀ hcomm (map_natCast _ _) (map_natCast _ _) hσe₀ hσA₀ hQQ hBB hAA hQφ h2`.
+
+Take `⟨w₀, hw₀⟩` from `he₀`. Use `set D := Q' * ε' * Q.map σ - (l : Per.Acris l) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) with hD`. Establish `hDeq : (l : Per.Acris l) ^ (2 * N) • D = F.A.map f0 * D.map (phiA l) * (((w₀⁻¹ : (Per.Acris l)ˣ) : Per.Acris l) ^ (2 * N) • F.A'.map f0)`. Rewrite using `[Matrix.mul_smul, ← hL1, smul_smul, hw₀]`. Use `congr 1`.
+
+Rewrite using `[mul_pow, mul_left_comm, ← mul_pow, Units.inv_mul, one_pow, mul_one]`. Use `set u := ι (bk.ev X) with hu`. Use `set π := Ideal.Quotient.mk (Ideal.span {u}) with hπ`. Establish `hz : ∀ M : Matrix (Fin d) (Fin d) (Per.Acris l), (∀ i j, u ∣ M i j) ↔ M.map π = 0` using `fun M => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use extensionality with `i j`. Simplify `h i j` using `[hπ, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact.
+
+Simplify `this` using `[hπ, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Establish `hQ1 : Q.map π = ((l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))).map π`. Rewrite using `[← sub_eq_zero, ← Matrix.map_sub _ (map_sub π)]`. Conclude with `(hz _).1 hQu`. Establish `hQ'1 : Q'.map π = ((l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))).map π`.
+
+Rewrite using `[← sub_eq_zero, ← Matrix.map_sub _ (map_sub π)]`. Conclude with `(hz _).1 hQ'u`. Establish `hdvdφ : bk.ev X ∣ WittVector.frobenius (bk.ev X)`. Rewrite using `[bk.ev_X, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Conclude with `dvd_pow_self _ (Fact.out : l.Prime).ne_zero`.
+
+Establish `hε1 : ε'.map π = 1`. Establish `: ∀ i j, u ∣ (ε' - 1) i j` using `fun i j => by`. Take `⟨c, hc⟩` from `hcr g i j`. Establish `e1 : (ε' - 1) i j = ι (WittVector.frobenius ((F.ε g - 1) i j))`. Simplify using `only [hε', Matrix.sub_apply, Matrix.map_apply, map_sub]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite using `[e1, hc, map_mul, map_mul]`.
+
+Conclude with `dvd_mul_of_dvd_left (map_dvd ι hdvdφ) _`. Rewrite using `[← sub_eq_zero, ← Matrix.map_one π (map_zero _) (map_one _), ← Matrix.map_sub _ (map_sub π)]`. Conclude with `(hz _).1 this`. Establish `hQσ : (Q.map σ).map π = ((l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))).map π`. Establish `hdσ : u ∣ σ u`.
+
+Rewrite using `[hu, hσdef, hσι]`. Conclude with `map_dvd ι ((galois_discMap l K bk).1 (g : GQ l))`. Establish `: ∀ i j, u ∣ (Q.map σ - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j` using `fun i j => by`. Establish `e1 : (Q.map σ - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j = σ ((Q - (l : Per.Acris l) ^ k • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))) i j)`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Take `⟨c, hc⟩` from `hQu i j`. Rewrite using `[e1, hc, map_mul]`.
+
+Conclude with `dvd_mul_of_dvd_left hdσ _`. Rewrite using `[← sub_eq_zero, ← Matrix.map_sub _ (map_sub π)]`. Conclude with `(hz _).1 this`. Establish `hdiv : ∀ i j, ι (bk.ev X) ∣ D i j`. Use `(hz D).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hD, Matrix.map_sub _ (map_sub π), Matrix.map_mul, Matrix.map_mul, hQ'1, hε1, hQσ]`. Simplify using `only [map_smul_ring, Matrix.map_one _ (map_zero _) (map_one _), mul_one, smul_mul_smul_comm, map_pow]`. Rewrite using `[← pow_add, ← two_mul, sub_self]`. Establish `hD0` using `GlobalTheory.T.acris_frobenius_matrix_eq_zero_of_dvd l K bk d (2 * N) D (F.A.map f0) _ hdiv hDeq`. Establish `hM : Q' * ε' * Q.map σ = (l : Per.Acris l) ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))` using `sub_eq_zero.1 hD0`.
+
+Use `smul_cancel (pow_cancel htf (2 * k)) ?_` and prove the remaining obligations. Use `congrArg (fun M => Q * M) hM` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hQQ, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one] at this`. Conclude with `this`.
+-/
 theorem invQ_holds : InvQ := by
   intro l _ K bk τ hτ N k d ρ F hcr Q Q' hsec g
   obtain ⟨hQQ, hQu₀, hQ'u₀, hQφ₀⟩ := hsec

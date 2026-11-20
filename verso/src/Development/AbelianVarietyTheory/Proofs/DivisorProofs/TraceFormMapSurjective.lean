@@ -15,11 +15,23 @@ def traceFormMap (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     (fun Y X₁ X₂ => by simp [add_mul, Finset.sum_add_distrib, mul_add]; ring)
     (fun c Y X => by simp [Finset.mul_sum, mul_left_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceFormMap_apply (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (Y X : κ → mixedEmbedding.mixedSpace F) :
     traceFormMap F κ Y X = -(2 * Real.pi) *
       ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X i * Y i) := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `Y hY`. Establish `h0` using `LinearMap.congr_fun hY (fun i => GlobalTheory.VacLn.TrNondeg.conjM (Y i))`. Rewrite `h0` using `[traceFormMap_apply, LinearMap.zero_apply]`. Establish `hpi : (2 * Real.pi) ≠ 0` using `by positivity`.
+
+Establish `h1 : ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (GlobalTheory.VacLn.TrNondeg.conjM (Y i) * Y i) = 0`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (neg_eq_zero.1 h) hpi`. Conclude with `h`. Establish `hnn : ∀ i, 0 ≤ Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (GlobalTheory.VacLn.TrNondeg.conjM (Y i) * Y i)`.
+
+Introduce `i`. Rewrite using `[GlobalTheory.VacLn.TrNondeg.trace_conjM_mul]`. Conclude with `add_nonneg (Finset.sum_nonneg fun w _ => sq_nonneg _) (Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _))`. Establish `e` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `GlobalTheory.VacLn.TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))`.
+-/
 theorem traceFormMap_injective (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Function.Injective (traceFormMap F κ) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -42,12 +54,18 @@ theorem traceFormMap_injective (F : Type) [Field F] [NumberField F] (κ : Type) 
   funext i
   exact GlobalTheory.VacLn.TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))
 
+/- English proof (translation)
+Establish `h` using `Subspace.dual_finrank_eq (K := ℝ) (V := κ → mixedEmbedding.mixedSpace F)`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank h.symm).1 (traceFormMap_injective F κ)`.
+-/
 theorem traceFormMap_surjective (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Function.Surjective (traceFormMap F κ) := by
   have h := Subspace.dual_finrank_eq (K := ℝ) (V := κ → mixedEmbedding.mixedSpace F)
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank h.symm).1
     (traceFormMap_injective F κ)
 
+/- English proof (translation)
+Introduce `F _ _ κ _ L`. Take `⟨Y, hY⟩` from `traceFormMap_surjective F κ L.toLinearMap`. Conclude with `⟨Y, fun X => by rw [← traceFormMap_apply, hY]; rfl⟩`.
+-/
 theorem exists_trace_rep : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (L : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ), ∃ Y : κ → mixedEmbedding.mixedSpace F,
       ∀ X, L X = -(2 * Real.pi) * ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X i * Y i) := by

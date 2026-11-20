@@ -9,6 +9,9 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol F
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `volTypV_of_box X u u' ψ (volUHermBox_holds X ψ)`.
+-/
 theorem volTypV_holds {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) :
     VolTypV X u u' ψ :=
   volTypV_of_box X u u' ψ (volUHermBox_holds X ψ)

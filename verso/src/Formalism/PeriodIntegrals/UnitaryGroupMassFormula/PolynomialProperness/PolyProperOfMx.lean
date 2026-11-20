@@ -12,6 +12,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVe
 
 namespace PI.PolynomialProperness
 
+/- English proof (translation)
+Establish `hT` using `tauMem_of hMX TauN.neFacts`. Establish `hU` using `Formalism.FourierDecayAlt.P.unipotent_map_frame`. Conclude with `polyProper_of_steps gvGroup normInv gnFacts fmulBound zhatMove (frameS_of hU gvGroup) (frameSg_of hU hT gvGroup) (frameSg'_of hU hT gvGroup) (unitriangular_inverse_bound second_order_norm_bound) (coreInst_of isoCore hpkInvol gnFacts frameInd)`.
+-/
 theorem polyProper_of_mx (hMX : MXFacts) : Formalism.FourierDecayAlt.C2.PolyProper := by
   have hT := tauMem_of hMX TauN.neFacts
   have hU := Formalism.FourierDecayAlt.P.unipotent_map_frame

@@ -12,12 +12,18 @@ variable (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [N
 def conjAlg [h : Unram F E] : E →ₐ[F] E :=
   { starRingEnd E with commutes' := fun x => h.star_fix x }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjAlg_apply [Unram F E] (y : E) : conjAlg F E y = star y := rfl
 
 variable (K : Type) [CommRing K] [Algebra F K]
 
 def conjT [Unram F E] : E ⊗[F] K →ₐ[F] E ⊗[F] K := Algebra.TensorProduct.map (conjAlg F E) (AlgHom.id F K)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [conjT, conjAlg_apply]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+-/
 theorem conjT_conjT [Unram F E] (z : E ⊗[F] K) : conjT F E K (conjT F E K z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -32,6 +38,11 @@ theorem conjT_conjT [Unram F E] (z : E ⊗[F] K) : conjT F E K (conjT F E K z) =
     rw [map_mul, mul_comm]
   star_add a b := map_add (conjT F E K) a b
 
+/- English proof (translation)
+Use `letI : TopologicalSpace K := moduleTopology F K`. Use `haveI : IsModuleTopology F K := ⟨rfl⟩`. Set `b` to `(Module.finBasis F K).equivFun`. Establish `h1 : Continuous b` using `IsModuleTopology.continuous_of_linearMap b.toLinearMap`. Use `haveI : ContinuousAdd K := IsModuleTopology.toContinuousAdd F K`.
+
+Establish `h2 : Continuous b.symm` using `IsModuleTopology.continuous_of_linearMap b.symm.toLinearMap`. Set `e : K ≃ₜ (Fin (Module.finrank F K) → F)` to `{ b.toEquiv with continuous_toFun := h1, continuous_invFun := h2 }`. Conclude with `e.isClosedEmbedding.locallyCompactSpace`.
+-/
 theorem locallyCompact_moduleTopology [LocallyCompactSpace F] [Module.Finite F K] :
     @LocallyCompactSpace K (moduleTopology F K) := by
   letI : TopologicalSpace K := moduleTopology F K
@@ -66,6 +77,9 @@ def ofAlgebra [h : Unram F E] [Module.Finite F K] [IsReduced K] : Et F E :=
       change conjT F E K (y ⊗ₜ 1) = star y ⊗ₜ 1
       simp [conjT, conjAlg_apply] }
 
+/- English proof (translation)
+Use `haveI := h.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h.finrank_eq]; norm_num)`. Conclude with `⟨{ K := F, L := E, mK := borel F, bK := @BorelSpace.mk _ _ (borel F) rfl, mL := borel E, bL := @BorelSpace.mk _ _ (borel E) rfl, mtL := isModuleTopologyOfFiniteDimensional, push := inferInstance, star_K := h.star_fix, star_E := fun _ => rfl }, Field.toIsField F, Field.toIsField E …`.
+-/
 theorem exists_field [h : Unram F E] : ∃ A : Et F E, IsField A.K ∧ IsField A.L ∧ Module.finrank F A.K = 1 := by
   haveI := h.lcF
   haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F
@@ -75,6 +89,19 @@ theorem exists_field [h : Unram F E] : ∃ A : Et F E, IsField A.K ∧ IsField A
            push := inferInstance, star_K := h.star_fix, star_E := fun _ => rfl },
     Field.toIsField F, Field.toIsField E, Module.finrank_self F⟩
 
+/- English proof (translation)
+Use `set P : F[X] := X ^ r + ∑ i, C (p i) * X ^ (i : ℕ) with hP`. Establish `hlt : (∑ i, C (p i) * X ^ (i : ℕ) : F[X]).degree < r` using `degree_sum_fin_lt p`. Establish `hm : P.Monic` using `monic_X_pow_add hlt`. Establish `hd : P.natDegree = r`. Establish `: P.degree = r`.
+
+Rewrite using `[hP, degree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), degree_X_pow]`. Conclude with `natDegree_eq_of_degree_eq_some this`. Set `pb` to `AdjoinRoot.powerBasis' hm`. Use `haveI : Module.Finite F (AdjoinRoot P) := pb.finite`. Use `haveI : IsReduced (AdjoinRoot P) := (Ideal.isRadical_iff_quotient_reduced _).1 ((isRadical_iff_span_singleton).1 hs.squarefree.isRadical)`.
+
+Use `⟨ofAlgebra F E (AdjoinRoot P), AdjoinRoot.root P, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LinearIndependent F (fun i : Fin r => AdjoinRoot.root P ^ (i : ℕ))`. Use `pb.basis.linearIndependent.comp (Fin.cast (show r = pb.dim from hd.symm)) (Fin.cast_injective _)` as an intermediate fact. Establish `e : (fun i : Fin r => AdjoinRoot.root P ^ (i : ℕ)) = pb.basis ∘ Fin.cast (show r = pb.dim from hd.symm)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Function.comp_apply, pb.basis_eq_pow]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `Module.finrank F (AdjoinRoot P) = r`.
+
+Rewrite using `[pb.finrank]`. Conclude with `hd`. Express the relevant statement in the definitionally equal form `AdjoinRoot.root P ^ r + ∑ i, p i • AdjoinRoot.root P ^ (i : ℕ) = 0`. Use `AdjoinRoot.aeval_eq (f := P) P` as an intermediate fact. Rewrite `this` using `[AdjoinRoot.mk_self]`.
+
+Establish `h2 : aeval (AdjoinRoot.root P) (X ^ r + ∑ i, C (p i) * X ^ (i : ℕ) : F[X]) = 0` using `this`. Simplify using `only [map_add, map_pow, map_sum, map_mul, aeval_X, aeval_C] at h2`. Simplify `h2` using `only [Algebra.smul_def]`.
+-/
 theorem exists_isGen [Unram F E] (r : ℕ) (p : Fin r → F)
     (hs : (X ^ r + ∑ i, C (p i) * X ^ (i : ℕ) : F[X]).Separable) : ∃ (A : Et F E) (τ : A.K), A.IsGen τ p := by
   set P : F[X] := X ^ r + ∑ i, C (p i) * X ^ (i : ℕ) with hP
@@ -106,6 +133,9 @@ theorem exists_isGen [Unram F E] (r : ℕ) (p : Fin r → F)
     simp only [map_add, map_pow, map_sum, map_mul, aeval_X, aeval_C] at h2
     simpa only [Algebra.smul_def] using h2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _` and use `⟨exists_field F E, exists_isGen F E⟩`.
+-/
 theorem exists_et : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [GlobalTheory.JR.Unram F E],
     (∃ A : GlobalTheory.JR.Et F E, IsField A.K ∧ IsField A.L ∧ Module.finrank F A.K = 1) ∧

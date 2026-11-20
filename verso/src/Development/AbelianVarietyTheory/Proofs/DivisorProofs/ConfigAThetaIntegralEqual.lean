@@ -14,6 +14,13 @@ open Classical
 
 namespace GlobalTheory.BumpMult
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK μK μ hμK hμ l hl hinv f₀ O hO hSig`. Take `⟨m, Λ₁, Λ₂, π, W', hπc, hW'o, h1W, hprop, hSg, hℓ⟩` from `GlobalTheory.T.seesaw_type_a_triple_fourth hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hCfg hT hT₁ e he ei ev hei hev hpure K hK f₀`. Take `⟨φ, C, hφr, hφ1, hC, hCO, hCz⟩` from `GlobalTheory.T.proper_map_bump_function_exists π hπc W' hW'o hprop (1, 1) h1W O hO (by`. Introduce `p hp`. Conclude with `hSig p.1 p.2 (hSg p hp))`.
+
+Take `⟨f, hf⟩` from `GlobalTheory.T.schrodinger_partial_fourier_intertwine (GlobalTheory.ArchUniq.trP F (Fin (b + 2) × Fin (b + 2 + a'))) (GlobalTheory.ArchUniq.Coord.isPairing_trP _) Λ₁ Λ₂ φ f₀`. Use `⟨f, fun p => (φ (π p)).re, C, Complex.continuous_re.comp (φ.continuous.comp hπc), fun p => (hφr _).2, hφ1, hC, hCO, fun p hp => by simp [hCz p hp], fun p => ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨ℓ, hℓ1, hℓ2⟩` from `hℓ p y`. Establish `key` using `hf ℓ (π p) hℓ2`.
+
+Rewrite `key` using `[hℓ1, hℓ1]`. Establish `hre : (((φ (π p)).re : ℝ) : ℂ) = φ (π p)` using `Complex.ext (by simp) (by simp [(hφr _).1])`. Simplify using `only [coneInfInt, SchwartzMap.smul_apply, smul_eq_mul, hre]`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_multiplier : ∀ (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W)

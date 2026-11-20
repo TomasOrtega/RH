@@ -4,6 +4,13 @@ import Mathlib.FieldTheory.KummerExtension
 
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `key : ∀ g : Module.End O N, g = 1 → Module.length O (LinearMap.ker g) = 0 ∧ Module.length O (N ⧸ LinearMap.range g) = 0`. Introduce and unpack `g rfl`. Rewrite using `[Module.End.one_eq_id, LinearMap.ker_id, LinearMap.range_id]`.
+
+Apply the tactic sequence `constructor <;> rw [Module.length_eq_zero_iff] <;> infer_instance`. Take `⟨k1, k2⟩` from `key (Polynomial.aeval f (∏ i ∈ (∅ : Finset ℕ), p i)) (by rw [Finset.prod_empty, map_one])`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `⟨k1.le, k2.le⟩`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.sum_insert ha, map_mul]`. Take `⟨h1, h2⟩` from `lenComp O N (Polynomial.aeval f (p a)) (Polynomial.aeval f (∏ i ∈ s, p i))`. Conclude with `⟨h1.trans (add_le_add le_rfl ih.1), h2.trans (add_le_add le_rfl ih.2)⟩`.
+-/
 private theorem length_product_polynomial_le (O N : Type) [CommRing O] [AddCommGroup N] [Module O N]
     (f : Module.End O N) (p : ℕ → Polynomial O) (s : Finset ℕ) :
     Module.length O (LinearMap.ker (Polynomial.aeval f (∏ i ∈ s, p i))) ≤
@@ -27,6 +34,17 @@ private theorem length_product_polynomial_le (O N : Type) [CommRing O] [AddCommG
     obtain ⟨h1, h2⟩ := lenComp O N (Polynomial.aeval f (p a)) (Polynomial.aeval f (∏ i ∈ s, p i))
     exact ⟨h1.trans (add_le_add le_rfl ih.1), h2.trans (add_le_add le_rfl ih.2)⟩
 
+/- English proof (translation)
+Introduce `O N _ _ _ _ n ζ hn hζ f hf`. Establish `hprod` using `X_pow_sub_C_eq_prod hζ hn (one_pow n)`. Establish `hterm : ∀ i, Polynomial.aeval f (Polynomial.X - Polynomial.C (ζ ^ i * 1)) = f - ζ ^ i • (1 : Module.End O N)`. Introduce `i`. Simplify using `[Algebra.algebraMap_eq_smul_one, smul_pow]`.
+
+Establish `e : Polynomial.aeval f (∏ i ∈ Finset.range n, (Polynomial.X - Polynomial.C (ζ ^ i * 1))) = 0`. Rewrite using `[← hprod]`. Simplify using `[hf]`. Establish `key : ∀ g : Module.End O N, g = 0 → Module.length O (LinearMap.ker g) = Module.length O N ∧ Module.length O (N ⧸ LinearMap.range g) = Module.length O N`. Introduce and unpack `g rfl`.
+
+Rewrite using `[LinearMap.ker_zero, LinearMap.range_zero, Module.length_top, (Submodule.quotEquivOfEqBot (⊥ : Submodule O N) rfl).length_eq]`. Conclude with `⟨rfl, rfl⟩`. Establish `cong : ∀ g h : Module.End O N, g = h → Module.length O (LinearMap.ker g) = Module.length O (LinearMap.ker h) ∧ Module.length O (N ⧸ LinearMap.range g) = Module.length O (N ⧸ LinearMap.range h)`. Introduce and unpack `g h rfl`. Conclude with `⟨rfl, rfl⟩`.
+
+Take `⟨h1, h2⟩` from `length_product_polynomial_le O N f (fun i => Polynomial.X - Polynomial.C (ζ ^ i * 1)) (Finset.range n)`. Take `⟨k1, k2⟩` from `key _ e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← k1]`. Use `h1.trans (le_of_eq (Finset.sum_congr rfl fun i _ => (cong _ _ (hterm i)).1))` and prove the remaining obligations.
+
+Rewrite using `[← k2]`. Use `h2.trans (le_of_eq (Finset.sum_congr rfl fun i _ => (cong _ _ (hterm i)).2))` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Base.lenRoots :
     ∀ (O N : Type) [CommRing O] [IsDomain O] [AddCommGroup N] [Module O N] (n : ℕ) (ζ : O), 0 < n → IsPrimitiveRoot ζ n →
       ∀ f : Module.End O N, f ^ n = 1 →

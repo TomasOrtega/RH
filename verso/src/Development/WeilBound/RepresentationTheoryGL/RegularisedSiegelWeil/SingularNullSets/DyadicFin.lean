@@ -13,6 +13,11 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 
 namespace PositivityTheory.Rg.Rsw.L.LGenK
 
+/- English proof (translation)
+Establish `h2 : Ideal.span {(2 : 𝓞 D.host.F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `two_ne_zero`. Take `hfin` from `Ideal.finite_factors h2`. Use `⟨hfin.toFinset, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+-/
 theorem dyadic_fin (D : D7) : ∃ S₀ : Finset (Pl D), ∀ v : Pl D, (2 : 𝓞 D.host.F) ∈ v.asIdeal → v ∈ S₀ := by
   have h2 : Ideal.span {(2 : 𝓞 D.host.F)} ≠ ⊥ := by
     rw [Ne, Ideal.span_singleton_eq_bot]

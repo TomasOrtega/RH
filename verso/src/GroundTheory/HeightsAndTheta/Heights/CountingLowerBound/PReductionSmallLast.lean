@@ -6,6 +6,15 @@ namespace GroundTheory.Heights₂.Heights.LowerBound
 
 open Real
 
+/- English proof (translation)
+Establish `hfj : 0 < f * j'` using `mul_pos h.f_pos h.j'_pos`. Establish `hden : 0 < (n + 1) * vol * J` using `mul_pos (mul_pos h.n_succ_pos h.vol_pos) h.J_pos`. Establish `hrest : rest / ((n + 1) * vol * J) ≤ Cc * (f * j')`. Rewrite using `[div_le_iff₀ hden]`. Use `(le_abs_self rest).trans h.rest_bound` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hhh : hh / ((n + 1) * J) ≤ f * j' / 2 * La` using `h.hh_upper.trans (mul_le_mul_of_nonneg_left h.log_le_La (by positivity))`. Establish `hCc : 0 ≤ Cc`. Establish `h0 : 0 ≤ Cc * (f * j' * ((n + 1) * vol * J))`. Use `(abs_nonneg rest).trans h.rest_bound` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `nonneg_of_mul_nonneg_left h0 (mul_pos hfj hden)`. Establish `hCcLa : Cc * (f * j') ≤ Cc * (f * j') * La` using `le_mul_of_one_le_right (mul_nonneg hCc hfj.le) h.one_le_La`. Establish `key : f * j' * b0 ≤ f * j' * ((1 / 2 + Ca + Cc) * La)`. Rewrite using `[h.identity]`.
+
+Use polynomial arithmetic with `[h.sl_lower]`. Conclude with `le_of_mul_le_mul_left key hfj`.
+-/
 theorem ReductionSmallLast.b0_le_small_block_last {K1 Ca Cc A0 b0 hh sl rest vol J f j' n N j La : ℝ}
     (h : ReductionSmallLast.Hyp K1 Ca Cc A0 b0 hh sl rest vol J f j' n N j La) :
     b0 ≤ (1 / 2 + Ca + Cc) * La := by
@@ -29,6 +38,15 @@ theorem ReductionSmallLast.b0_le_small_block_last {K1 Ca Cc A0 b0 hh sl rest vol
     nlinarith [h.sl_lower]
   exact le_of_mul_le_mul_left key hfj
 
+/- English proof (translation)
+Introduce `K1 Ca Cc hK1 hCa hCc`. Use `⟨2 * (K1 + (1 / 2 + Ca + Cc)), ?_⟩` and prove the remaining obligations. Introduce `A0 b0 hh sl rest vol J f j' n N j La h`. Establish `hb0` using `ReductionSmallLast.b0_le_small_block_last h`. Establish `hN : 0 < N` using `lt_of_lt_of_le one_pos h.one_le_N`.
+
+Establish `hLa : 0 < La` using `lt_of_lt_of_le one_pos h.one_le_La`. Establish `hsum : -(K1 * N * La) ≤ j * A0 + N * b0` using `(abs_le.mp h.bound_sum).1`. Establish `hNb0 : N * b0 ≤ N * ((1 / 2 + Ca + Cc) * La)` using `mul_le_mul_of_nonneg_left hb0 hN.le`. Use `set K := K1 + (1 / 2 + Ca + Cc) with hKdef`. Establish `hK : 0 ≤ K` using `by positivity`.
+
+Establish `hexp : N * (K * La) = K1 * N * La + N * ((1 / 2 + Ca + Cc) * La)`. Rewrite using `[hKdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hjA : -(N * (K * La)) ≤ j * A0` using `by linarith`. Establish `hNj : N * (K * La) ≤ j * (2 * K * La)`.
+
+Establish `hKLa : 0 ≤ K * La` using `mul_nonneg hK hLa.le`. Use polynomial arithmetic with `[h.half_N_le_j]`. Establish `: j * (-(2 * K * La)) ≤ j * A0` using `by linarith`. Use `le_of_mul_le_mul_left this h.j_pos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ReductionSmallLast.proof : ReductionSmallLast.Statement := by
   intro K1 Ca Cc hK1 hCa hCc
   refine ⟨2 * (K1 + (1 / 2 + Ca + Cc)), ?_⟩

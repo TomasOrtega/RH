@@ -15,6 +15,9 @@ variable {𝒪 : Type u} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRin
   (F : Type u) [Field F] [Algebra 𝒪 F] [IsFractionRing 𝒪 F] {W W' : WeierstrassCurve 𝒪}
   [W.IsElliptic] [W'.IsElliptic]
 
+/- English proof (translation)
+Take `⟨c', h1, h2⟩` from `exists_invConst_reduceIsogeny F W W' φ`. Establish `e : c' = c` using `IsFractionRing.injective 𝒪 F (h1.trans hφ.symm)`. Rewrite using `[← h2, e]`. Conclude with `(residue_eq_zero_iff c).2 hc`.
+-/
 theorem invConst_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'.baseChange F)) {c : 𝒪}
     (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
     invConst (reduceIsogeny F W W' φ) = 0 := by
@@ -23,6 +26,9 @@ theorem invConst_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'.baseCh
   rw [← h2, e]
   exact (residue_eq_zero_iff c).2 hc
 
+/- English proof (translation)
+Rewrite using `[isogenyPullback_eq_invConst_smul, invConst_reduceIsogeny_eq_zero F φ hc hφ, zero_smul]`.
+-/
 theorem isogenyPullback_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'.baseChange F))
     {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
     isogenyPullback (reduceIsogeny F W W' φ) (invariantDifferential (W'.map (residue 𝒪))) = 0 := by
@@ -30,6 +36,9 @@ theorem isogenyPullback_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'
 
 variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField 𝒪) p] [PerfectRing (ResidueField 𝒪) p]
 
+/- English proof (translation)
+The claim follows from `exists_isomorphism_of_degree_eq p _ (isogenyPullback_reduceIsogeny_eq_zero F φ hc hφ) (by rw [degree_reduceIsogeny, hdeg])`.
+-/
 theorem reduceIsogeny_eq_comp_frobeniusIsogeny (φ : Isogeny (W.baseChange F) (W'.baseChange F))
     (hdeg : φ.degree = p) {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
     ∃ ψ : Isogeny (frobeniusTwist (W.map (residue 𝒪)) p) (W'.map (residue 𝒪)),
@@ -40,6 +49,9 @@ theorem reduceIsogeny_eq_comp_frobeniusIsogeny (φ : Isogeny (W.baseChange F) (W
   exists_isomorphism_of_degree_eq p _ (isogenyPullback_reduceIsogeny_eq_zero F φ hc hφ)
     (by rw [degree_reduceIsogeny, hdeg])
 
+/- English proof (translation)
+Rewrite using `[← j_map_residue, ← j_map_residue]`. Conclude with `j_eq_pow_of_isogenyPullback_eq_zero p _ (isogenyPullback_reduceIsogeny_eq_zero F φ hc hφ) (by rw [degree_reduceIsogeny, hdeg])`.
+-/
 theorem residue_j_eq_pow (φ : Isogeny (W.baseChange F) (W'.baseChange F)) (hdeg : φ.degree = p)
     {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
     residue 𝒪 W'.j = residue 𝒪 W.j ^ p := by

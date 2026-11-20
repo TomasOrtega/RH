@@ -17,14 +17,29 @@ def cutRows (A : Matrix (Fin N) (Fin N) ℂ) (b : Fin N) : Matrix (Fin N) (Fin N
 def upT (A : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ :=
   Matrix.of fun c b => ((cutRows A b)⁻¹ *ᵥ Pi.single b 1) c
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `[cutRows]`.
+-/
 theorem cutRows_one (b : Fin N) : cutRows (1 : Matrix (Fin N) (Fin N) ℂ) b = 1 := by
   ext a c
   simp [cutRows]
 
+/- English proof (translation)
+Use extensionality with `c b`. Simplify using `[upT, cutRows_one, Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem upT_one : upT (1 : Matrix (Fin N) (Fin N) ℂ) = 1 := by
   ext c b
   simp [upT, cutRows_one, Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Establish `k : cutRows A b *ᵥ ((cutRows A b)⁻¹ *ᵥ Pi.single b 1) = Pi.single b 1`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ (h b)), Matrix.one_mulVec]`. Establish `k1` using `congrFun k a`. Prove the components needed by the constructor for the conclusion. Introduce `hba`.
+
+Establish `e1 : (cutRows A b *ᵥ ((cutRows A b)⁻¹ *ᵥ Pi.single b 1)) a = ((1 : Matrix (Fin N) (Fin N) ℂ) *ᵥ ((cutRows A b)⁻¹ *ᵥ Pi.single b 1)) a`. Generalize the expression as in `(cutRows A b)⁻¹ *ᵥ Pi.single b 1 = w`. Simplify using `only [Matrix.mulVec, dotProduct, cutRows, Matrix.of_apply, if_neg (not_le.2 hba)]`. Rewrite `k1` using `[e1, Matrix.one_mulVec, Pi.single_eq_of_ne hba.ne']`. Conclude with `k1`.
+
+Introduce `hab`. Establish `e1 : (cutRows A b *ᵥ ((cutRows A b)⁻¹ *ᵥ Pi.single b 1)) a = (A * upT A) a b`. Simplify using `only [Matrix.mul_apply, upT, Matrix.of_apply]`. Generalize the expression as in `(cutRows A b)⁻¹ *ᵥ Pi.single b 1 = w`. Simplify using `only [Matrix.mulVec, dotProduct, cutRows, Matrix.of_apply, if_pos hab]`.
+
+Rewrite using `[← e1, k1, Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem upT_spec {A : Matrix (Fin N) (Fin N) ℂ} (h : ∀ b, (cutRows A b).det ≠ 0) (a b : Fin N) :
     (b < a → upT A a b = 0) ∧ (a ≤ b → (A * upT A) a b = (1 : Matrix (Fin N) (Fin N) ℂ) a b) := by
   have k : cutRows A b *ᵥ ((cutRows A b)⁻¹ *ᵥ Pi.single b 1) = Pi.single b 1 := by
@@ -45,18 +60,27 @@ theorem upT_spec {A : Matrix (Fin N) (Fin N) ℂ} (h : ∀ b, (cutRows A b).det 
       simp only [Matrix.mulVec, dotProduct, cutRows, Matrix.of_apply, if_pos hab]
     rw [← e1, k1, Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.analyticAt_fun_sum _ fun c _ => (hf a c).mul (hg c b)`.
+-/
 theorem an_mul {f g : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e → ℂ}
     (hf : ∀ a b, AnalyticAt ℂ (fun z => f z a b) t) (hg : ∀ a b, AnalyticAt ℂ (fun z => g z a b) t) (a b : Fin N) :
     AnalyticAt ℂ (fun z => (f z * g z) a b) t := by
   simp only [Matrix.mul_apply]
   exact Finset.analyticAt_fun_sum _ fun c _ => (hf a c).mul (hg c b)
 
+/- English proof (translation)
+Distinguish the cases in `h : a ≤ b`. Simplify `hf a c` using `only [cutRows, Matrix.of_apply, if_pos h]`. Simplify `analyticAt_const` using `only [cutRows, Matrix.of_apply, if_neg h]`.
+-/
 theorem an_cut {f : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e → ℂ}
     (hf : ∀ a b, AnalyticAt ℂ (fun z => f z a b) t) (b a c : Fin N) : AnalyticAt ℂ (fun z => cutRows (f z) b a c) t := by
   by_cases h : a ≤ b
   · simpa only [cutRows, Matrix.of_apply, if_pos h] using hf a c
   · simpa only [cutRows, Matrix.of_apply, if_neg h] using analyticAt_const
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) c).analyticAt _).comp (SheetDecomposition.vecInvAn (h := fun z => cutRows (f z) b) (w := fun _ => Pi.single b 1) (an_cut hf b) (h b) analyticAt_const)`.
+-/
 theorem an_upT {f : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e → ℂ}
     (hf : ∀ a b, AnalyticAt ℂ (fun z => f z a b) t) (h : ∀ b, (cutRows (f t) b).det ≠ 0) (c b : Fin N) :
     AnalyticAt ℂ (fun z => upT (f z) c b) t :=
@@ -66,6 +90,11 @@ theorem an_upT {f : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e �
 def dM (f : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ) (t v : Fin e → ℂ) : Matrix (Fin N) (Fin N) ℂ :=
   Matrix.of fun a b => fderiv ℂ (fun z => f z a b) t v
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h : HasFDerivAt (fun z => ∑ c, f z a c * g z c b) (∑ c, (f t a c • fderiv ℂ (fun z => g z c b) t + g t c b • fderiv ℂ (fun z => f z a c) t)) t` using `HasFDerivAt.fun_sum fun c _ => (hf a c).differentiableAt.hasFDerivAt.fun_mul (hg c b).differentiableAt.hasFDerivAt`. Simplify using `only [dM, Matrix.of_apply, Matrix.add_apply, Matrix.mul_apply]`. Rewrite using `[h.fderiv, ← Finset.sum_add_distrib]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+-/
 theorem dM_mul {f g : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e → ℂ}
     (hf : ∀ a b, AnalyticAt ℂ (fun z => f z a b) t) (hg : ∀ a b, AnalyticAt ℂ (fun z => g z a b) t) (v : Fin e → ℂ) :
     dM (fun z => f z * g z) t v = dM f t v * g t + f t * dM g t v := by
@@ -79,15 +108,28 @@ theorem dM_mul {f g : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e
   simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[dM]`.
+-/
 theorem dM_const (A : Matrix (Fin N) (Fin N) ℂ) (t v : Fin e → ℂ) : dM (fun _ => A) t v = 0 := by
   ext a b
   simp [dM]
 
+/- English proof (translation)
+Establish `k : (fun z => f z a b) =ᶠ[𝓝 t] fun _ => c` using `h`. Simplify using `[dM, k.fderiv_eq]`.
+-/
 theorem dM_zero {f : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ} {t : Fin e → ℂ} (v : Fin e → ℂ) {a b : Fin N} {c : ℂ}
     (h : ∀ᶠ z in 𝓝 t, f z a b = c) : dM f t v a b = 0 := by
   have k : (fun z => f z a b) =ᶠ[𝓝 t] fun _ => c := h
   simp [dM, k.fderiv_eq]
 
+/- English proof (translation)
+Use `letI := L.invertibleOfIsUnitDet hd`. Establish `hL' : L.BlockTriangular OrderDual.toDual` using `fun a b hab => hL a b hab`. Establish `hI` using `Matrix.blockTriangular_inv_of_blockTriangular hL'`. Use extensionality with `a b`. Break down `lt_or_ge b a with hab | hab` into its components or cases.
+
+Conclude with `hW hab`. Establish `e1 : W = L⁻¹ * (L * W)` using `by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`. Rewrite using `[e1, Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `le_or_gt c b with hc | hc` into its components or cases.
+
+Rewrite using `[h c b hc, mul_zero]`. Establish `hac : a < c` using `lt_of_le_of_lt hab hc`. Rewrite using `[hI (OrderDual.toDual_lt_toDual.2 hac), zero_mul]`.
+-/
 theorem eq_zero_of_tri {L W : Matrix (Fin N) (Fin N) ℂ} (hd : IsUnit L.det) (hL : ∀ a b, a < b → L a b = 0)
     (hW : W.BlockTriangular id) (h : ∀ a b, a ≤ b → (L * W) a b = 0) : W = 0 := by
   letI := L.invertibleOfIsUnitDet hd
@@ -108,6 +150,37 @@ end FlImm
 
 open FlImm
 
+/- English proof (translation)
+Introduce `hR Ψ _ N e V gm hV hne han hdet hc`. Take `⟨t₀, ht₀⟩` from `hne`. Set `A : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ` to `fun τ t => (gm τ t₀)⁻¹ * gm τ t`. Set `T : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ` to `fun τ t => upT (A τ t)`. Set `L : Ψ → (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ` to `fun τ t => A τ t * T τ t`.
+
+Establish `hA0 : ∀ τ, A τ t₀ = 1` using `fun τ => Matrix.nonsing_inv_mul _ (hdet t₀ ht₀ τ)`. Establish `hA : ∀ t ∈ V, ∀ τ a b, AnalyticAt ℂ (fun z => A τ z a b) t` using `fun t ht τ => an_mul (f := fun _ => (gm τ t₀)⁻¹) (fun _ _ => analyticAt_const) fun a b => han τ a b t ht`. Establish `hc0 : ∀ τ b, (cutRows (A τ t₀) b).det ≠ 0` using `fun τ b => by simp [hA0, cutRows_one]`. Establish `hev : ∀ᶠ t in 𝓝 t₀, t ∈ V ∧ (∀ τ b, (cutRows (A τ t) b).det ≠ 0) ∧ ∀ τ, (T τ t).det ≠ 0`. Use `(hV.eventually_mem ht₀).and (Filter.Eventually.and ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `Filter.eventually_all.2 fun τ => Filter.eventually_all.2 fun b => (SheetDecomposition.vecDetAn (h := fun z => cutRows (A τ z) b) (an_cut (hA t₀ ht₀ τ) b)).continuousAt.eventually_ne (hc0 τ b)`. Use `Filter.eventually_all.2 fun τ => ?_` and prove the remaining obligations. Use `(SheetDecomposition.vecDetAn (h := T τ) (an_upT (hA t₀ ht₀ τ) (hc0 τ))).continuousAt.eventually_ne ?_` and prove the remaining obligations. Use `show (upT (A τ t₀)).det ≠ 0`. Simplify using `[hA0, upT_one]`.
+
+Take `⟨W, hW, hWo, hW0⟩` from `eventually_nhds_iff.1 hev`. Establish `hT : ∀ t ∈ W, ∀ τ a b, AnalyticAt ℂ (fun z => T τ z a b) t` using `fun t ht τ => an_upT (hA t (hW t ht).1 τ) ((hW t ht).2.1 τ)`. Establish `hL : ∀ t ∈ W, ∀ τ a b, AnalyticAt ℂ (fun z => L τ z a b) t` using `fun t ht τ => an_mul (hA t (hW t ht).1 τ) (hT t ht τ)`. Establish `hTt : ∀ t ∈ W, ∀ τ, (T τ t).BlockTriangular id` using `fun t ht τ a b hab => (upT_spec ((hW t ht).2.1 τ) a b).1 hab`. Establish `hLs : ∀ t ∈ W, ∀ τ a b, a ≤ b → L τ t a b = (1 : Matrix (Fin N) (Fin N) ℂ) a b` using `fun t ht τ a b hab => (upT_spec ((hW t ht).2.1 τ) a b).2 hab`.
+
+Establish `hgL : ∀ τ t, gm τ t₀ * L τ t = gm τ t * T τ t` using `fun τ t => by`. Simplify using `only [L, A, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hdet t₀ ht₀ τ), Matrix.one_mul]`. Set `q` to `(Fintype.equivFin (Ψ × Fin N × Fin N)).symm`. Set `Φ : (Fin e → ℂ) → Fin (Fintype.card (Ψ × Fin N × Fin N)) → ℂ` to `fun t i => L (q i).1 t (q i).2.1 (q i).2.2`. Take `⟨t, ht, hinj⟩` from `hR e _ W Φ hWo ⟨t₀, hW0⟩ (fun t ht => analyticAt_pi_iff.2 fun i => hL t ht _ _ _) (by`.
+
+Introduce `t ht`. Use `(hc t (hW t ht).1).mono fun t' ht' => ?_` and prove the remaining obligations. Use `And.intro (hW t' ht'.1).1 fun τ => ?_` and prove the remaining obligations. Establish `e1 : L τ t' = L τ t`. Use extensionality with `a b`.
+
+Simplify `congrFun ht'.2 (q.symm (τ, a, b))` using `[Φ]`. Establish `hu : IsUnit (T τ t').det` using `IsUnit.mk0 _ ((hW t' ht'.1).2.2 τ)`. Use `letI := (T τ t').invertibleOfIsUnitDet hu`. Use `⟨T τ t * (T τ t')⁻¹, (hTt t ht τ).mul (Matrix.blockTriangular_inv_of_blockTriangular (hTt t' ht'.1 τ)), ?_⟩` and prove the remaining obligations. Use `show gm τ t' = gm τ t * (T τ t * (T τ t')⁻¹)`.
+
+Rewrite using `[← Matrix.mul_assoc, ← hgL, ← e1, hgL, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one])`. Use `⟨t, (hW t ht).1, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hWn : ∀ᶠ z in 𝓝 t, z ∈ W` using `hWo.eventually_mem ht`. Establish `hdL : ∀ τ, dM (L τ) t v = 0` using `fun τ => by`. Establish `hu : IsUnit (T τ t).det` using `IsUnit.mk0 _ ((hW t ht).2.2 τ)`.
+
+Establish `hg` using `hdet t (hW t ht).1 τ`. Establish `hg0` using `hdet t₀ ht₀ τ`. Use `letI := (T τ t).invertibleOfIsUnitDet hu`. Establish `e1 : dM (fun z => gm τ t₀ * L τ z) t v = dM (fun z => gm τ z * T τ z) t v` using `by simp only [hgL]`. Rewrite `e1` using `[dM_mul (f := fun _ => gm τ t₀) (fun _ _ => analyticAt_const) (hL t ht τ), dM_const, Matrix.zero_mul, zero_add, dM_mul (fun a b => han τ a b t (hW t ht).1) (hT t ht τ)]`.
+
+Set `X` to `(T τ t)⁻¹ * (((gm τ t)⁻¹ * dM (gm τ) t v) * T τ t + dM (T τ) t v)`. Establish `hX : X.BlockTriangular id`. Use `(Matrix.blockTriangular_inv_of_blockTriangular (hTt t ht τ)).mul (((hv τ).mul (hTt t ht τ)).add ?_)` and prove the remaining obligations. Introduce `a b hab`. Conclude with `dM_zero v (hWn.mono fun z hz => hTt z hz τ hab)`.
+
+Establish `e2 : L τ t * X = dM (L τ) t v`. Establish `e3 : gm τ t₀ * (L τ t * X) = gm τ t₀ * dM (L τ) t v`. Rewrite using `[e1, ← Matrix.mul_assoc, hgL]`. Simplify using `only [X, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, Matrix.mul_add, Matrix.mul_nonsing_inv_cancel_left _ _ hg]`. Establish `e4` using `congrArg (fun Z => (gm τ t₀)⁻¹ * Z) e3`.
+
+Simplify `e4` using `only [Matrix.nonsing_inv_mul_cancel_left _ _ hg0]`. Establish `hLu : IsUnit (L τ t).det`. Establish `e5 : (gm τ t₀).det * (L τ t).det = (gm τ t).det * (T τ t).det`. Rewrite using `[← Matrix.det_mul (gm τ t₀), hgL, Matrix.det_mul]`. Establish `e6` using `hg.mul hu`.
+
+Rewrite `e6` using `[← e5]`. Conclude with `isUnit_of_mul_isUnit_right e6`. Establish `hX0 : X = 0` using `eq_zero_of_tri hLu (fun a b hab => by rw [hLs t ht τ a b hab.le, Matrix.one_apply_ne hab.ne]) hX fun a b hab => by`. Rewrite using `[e2]`. Conclude with `dM_zero v (hWn.mono fun z hz => hLs z hz τ a b hab)`.
+
+Rewrite using `[← e2, hX0, Matrix.mul_zero]`. Use `hinj (?_ : fderiv ℂ Φ t v = fderiv ℂ Φ t 0)` and prove the remaining obligations. Rewrite using `[map_zero]`. Use extensionality with `i`. Establish `k` using `fderiv_pi (𝕜 := ℂ) (φ := fun i z => L (q i).1 z (q i).2.1 (q i).2.2) (x := t) fun i => (hL t ht _ _ _).differentiableAt`.
+
+Use `show fderiv ℂ (fun z i => L (q i).1 z (q i).2.1 (q i).2.2) t v i = 0`. Rewrite using `[k]`. Conclude with `congrFun (congrFun (hdL (q i).1) (q i).2.1) (q i).2.2`.
+-/
 theorem flagImm_of : RankLem → FlagImm := by
   intro hR Ψ _ N e V gm hV hne han hdet hc
   classical

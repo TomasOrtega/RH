@@ -29,36 +29,57 @@ def monomialBlowupStep (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleC
     (centerAtLast s) h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_length h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_length (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).length = 1 :=
   ofSingleBlowup_length h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_schemeAt_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_schemeAt_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).obj 0 = s.obj s.length :=
   ofSingleBlowup_schemeAt_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_schemeAt_succ h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 i @[simp]`.
+-/
 theorem monomialBlowupStep_schemeAt_succ (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) (i : ℕ) :
     (monomialBlowupStep s h).obj (i + 1) = Blowup.blowup (centerAtLast s) :=
   ofSingleBlowup_schemeAt_succ h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 i
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_center_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_center_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).center 0 = centerAtLast s :=
   ofSingleBlowup_center_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_blowupMorphism_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_blowupMorphism_zero (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).map 0 = Blowup.blowup.proj (centerAtLast s) :=
   ofSingleBlowup_blowupMorphism_zero h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_projectionToBase_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_projectionToBase_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).proj 1 = Blowup.blowup.proj (centerAtLast s) :=
   ofSingleBlowup_projectionToBase_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_ideal_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 @[simp]`.
+-/
 theorem monomialBlowupStep_ideal_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).ideal 1 =
       residualByPow ((s.ideal s.length).comap (Blowup.blowup.proj (centerAtLast s)))
@@ -66,6 +87,9 @@ theorem monomialBlowupStep_ideal_one (s : MarkedBlowupSequenceData p I m E) (h :
   ofSingleBlowup_ideal_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ofSingleBlowup_boundary_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2`.
+-/
 theorem monomialBlowupStep_boundary_one (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).boundary 1 =
       List.map (Blowup.strictTransform (Blowup.blowup.proj (centerAtLast s)) (centerAtLast s))
@@ -73,21 +97,35 @@ theorem monomialBlowupStep_boundary_one (s : MarkedBlowupSequenceData p I m E) (
         [Blowup.exceptionalIdeal (Blowup.blowup.proj (centerAtLast s)) (centerAtLast s)] :=
   ofSingleBlowup_boundary_one h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialBlowupStep_isoObjZero_inv (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) :
     (monomialBlowupStep s h).isoZero.inv = eqToHom (monomialBlowupStep_schemeAt_zero s h).symm :=
   rfl
 
+/- English proof (translation)
+Unfold `blowupAtCenter monomialBlowupStep`. Rewrite using `[dif_pos h]`.
+-/
 theorem blowupAtCenter_eq_append (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     blowupAtCenter hinv s = s.append (monomialBlowupStep s h) hinv := by
   unfold blowupAtCenter monomialBlowupStep
   rw [dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[blowupAtCenter_eq_append hinv s h, append_length, monomialBlowupStep_length]`.
+-/
 theorem blowupAtCenter_length (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).length = s.length + 1 := by
   rw [blowupAtCenter_eq_append hinv s h, append_length, monomialBlowupStep_length]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hstep`. Establish `hl` using `blowupAtCenter_length hinv (monomialBlowupIterate hinv s n) hstep`. Establish `h' : (blowupAtCenter hinv (monomialBlowupIterate hinv s n)).length = (monomialBlowupIterate hinv s n).length` using `h`. Rewrite `h'` using `[hl]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h show (blowupAtCenter hinv (monomialBlowupIterate hinv s n)).length = (monomialBlowupIterate hinv s n).length`. Unfold `blowupAtCenter`. Rewrite using `[dif_neg h]`.
+-/
 theorem isStationaryAt_iff_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) (n : ℕ) :
     IsStationaryAt hinv s n ↔ ¬ IsAdmissibleCenter (monomialBlowupIterate hinv s n) := by
   constructor
@@ -103,6 +141,9 @@ theorem isStationaryAt_iff_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u}
     unfold blowupAtCenter
     rw [dif_neg h]
 
+/- English proof (translation)
+Establish `hlt : s.length < s.length + 1` using `Nat.lt_succ_self s.length`. Rewrite using `[blowupAtCenter_eq_append hinv s h, append_schemeAt_of_length_lt s (monomialBlowupStep s h) hinv hlt]`. Establish `he : s.length + 1 - s.length = 0 + 1` using `by omega`. Rewrite using `[he, monomialBlowupStep_schemeAt_succ s h 0]`.
+-/
 theorem blowupAtCenter_schemeAt_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).obj (s.length + 1) = Blowup.blowup (centerAtLast s) := by
@@ -111,6 +152,9 @@ theorem blowupAtCenter_schemeAt_succ (hinv : ComapIsoInvariance.{u}) (s : Marked
   have he : s.length + 1 - s.length = 0 + 1 := by omega
   rw [he, monomialBlowupStep_schemeAt_succ s h 0]
 
+/- English proof (translation)
+Establish `key : ∀ d : MarkedBlowupSequenceData p I m E, d = s.append (monomialBlowupStep s h) hinv → ∀ hobj : d.obj (s.length + 1) = Blowup.blowup (centerAtLast s), d.ideal (s.length + 1) = (residualByPow ((s.ideal s.length).comap (Blowup.blowup.proj (centerAtLast s))) ((centerAtLast s).co …`. Introduce and unpack `d rfl hobj`. Use `rewrite [append_ideal, appendIdeal_length_succ, monomialBlowupStep_ideal_one]`. Both sides reduce to the same expression. Conclude with `key (blowupAtCenter hinv s) (blowupAtCenter_eq_append hinv s h) (blowupAtCenter_schemeAt_succ hinv s h)`.
+-/
 theorem blowupAtCenter_ideal_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).ideal (s.length + 1) =
@@ -128,6 +172,9 @@ theorem blowupAtCenter_ideal_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlo
   exact key (blowupAtCenter hinv s) (blowupAtCenter_eq_append hinv s h)
     (blowupAtCenter_schemeAt_succ hinv s h)
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Use `Eq.trans (append_boundary s (monomialBlowupStep s h) hinv (s.length + 1)) ?_` and prove the remaining obligations. Use `Eq.trans (appendBoundary_length_succ s (monomialBlowupStep s h)) ?_` and prove the remaining obligations. Conclude with `congrArg (List.map (fun D : (Blowup.blowup (centerAtLast s)).IdealSheafData => D.comap (eqToHom e))) (monomialBlowupStep_boundary_one s h)`.
+-/
 private theorem boundary_succ_of_eq_append (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (h : IsAdmissibleCenter s) (d : MarkedBlowupSequenceData p I m E)
     (hd : d = s.append (monomialBlowupStep s h) hinv)
@@ -144,6 +191,9 @@ private theorem boundary_succ_of_eq_append (hinv : ComapIsoInvariance.{u})
     (List.map (fun D : (Blowup.blowup (centerAtLast s)).IdealSheafData => D.comap (eqToHom e)))
     (monomialBlowupStep_boundary_one s h)
 
+/- English proof (translation)
+The claim follows from `boundary_succ_of_eq_append hinv s h (blowupAtCenter hinv s) (blowupAtCenter_eq_append hinv s h) (blowupAtCenter_schemeAt_succ hinv s h)`.
+-/
 theorem blowupAtCenter_boundary_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).boundary (s.length + 1) =
@@ -154,6 +204,9 @@ theorem blowupAtCenter_boundary_succ (hinv : ComapIsoInvariance.{u}) (s : Marked
   boundary_succ_of_eq_append hinv s h (blowupAtCenter hinv s)
     (blowupAtCenter_eq_append hinv s h) (blowupAtCenter_schemeAt_succ hinv s h)
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Conclude with `appendProjectionToBase_of_length_lt s t hi`.
+-/
 private theorem appendProjectionToBase_of_lt (s : MarkedBlowupSequenceData p I m E)
     (t : MarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length))
     (i j : ℕ) (hi : s.length < i) (hj : i - s.length = j)
@@ -162,6 +215,9 @@ private theorem appendProjectionToBase_of_lt (s : MarkedBlowupSequenceData p I m
   subst hj
   exact appendProjectionToBase_of_length_lt s t hi
 
+/- English proof (translation)
+Establish `key : ∀ d : MarkedBlowupSequenceData p I m E, d = s.append (monomialBlowupStep s h) hinv → ∀ hobj : d.obj (s.length + 1) = Blowup.blowup (centerAtLast s), d.proj (s.length + 1) = eqToHom hobj ≫ Blowup.blowup.proj (centerAtLast s) ≫ s.proj s.length`. Introduce and unpack `d rfl hobj`. Use `rewrite [append_projectionToBase, appendProjectionToBase_of_lt s (monomialBlowupStep s h) (s.length + 1) 1 (by omega) (by omega) (appendToBlowupSequenceData_schemeAt_length_succ s (monomialBlowupStep s h)), monomialBlowupStep_projectionToBase_one]`. Both sides reduce to the same expression. Conclude with `key (blowupAtCenter hinv s) (blowupAtCenter_eq_append hinv s h) (blowupAtCenter_schemeAt_succ hinv s h)`.
+-/
 theorem blowupAtCenter_projectionToBase_succ (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (h : IsAdmissibleCenter s) :
     (blowupAtCenter hinv s).proj (s.length + 1) =
@@ -189,12 +245,20 @@ def monomialStallIndex (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRing
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) : ℕ :=
   sInf {n : ℕ | MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) n}
 
+/- English proof (translation)
+Conclude with `Nat.sInf_mem hex`.
+-/
 theorem isStationaryAt_monomialStallIndex (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData)
     (hex : ∃ n : ℕ, MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) n) :
     MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) (monomialStallIndex hinv p I m E) := by
   exact Nat.sInf_mem hex
 
+/- English proof (translation)
+Establish `hn' : n < sInf {j : ℕ | MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) j}` using `hn`. Establish `hstall : ¬ MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) n`. Introduce `hmem`. Establish `hle : sInf {j : ℕ | MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) j} ≤ n` using `Nat.sInf_le hmem`. Conclude with `absurd hle (not_le.mpr hn')`.
+
+Assume the negation of the conclusion as `hstep`. Conclude with `hstall ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv (emptyMarkedBlowupSequenceData p I m E) n).mpr hstep)`.
+-/
 theorem isAdmissibleCenter_of_lt_monomialStallIndex (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (n : ℕ) (hn : n < monomialStallIndex hinv p I m E) :
@@ -210,6 +274,11 @@ theorem isAdmissibleCenter_of_lt_monomialStallIndex (hinv : ComapIsoInvariance.{
   exact hstall
     ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv (emptyMarkedBlowupSequenceData p I m E) n).mpr hstep)
 
+/- English proof (translation)
+Establish `hne : ∃ j : ℕ, MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) j` using `⟨n, hstall⟩`. Establish `h1 : monomialStallIndex hinv p I m E ≤ n` using `Nat.sInf_le hstall`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `hlt' : monomialStallIndex hinv p I m E < n` using `lt_of_not_ge hlt`.
+
+Establish `hmem : MarkedBlowupSequenceData.IsStationaryAt hinv (emptyMarkedBlowupSequenceData p I m E) (monomialStallIndex hinv p I m E)` using `Nat.sInf_mem hne`. Conclude with `((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv _ _).mp hmem) (hstep _ hlt')`.
+-/
 theorem monomialStallIndex_eq_of_isStationaryAt (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (n : ℕ)
@@ -226,6 +295,9 @@ theorem monomialStallIndex_eq_of_isStationaryAt (hinv : ComapIsoInvariance.{u})
       (monomialStallIndex hinv p I m E) := Nat.sInf_mem hne
   exact ((MarkedBlowupSequenceData.isStationaryAt_iff_not_isAdmissibleCenter hinv _ _).mp hmem) (hstep _ hlt')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialBlowupSeq_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) :
     monomialBlowupSeq hinv p I m E =
@@ -233,6 +305,13 @@ theorem monomialBlowupSeq_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u
         (monomialStallIndex hinv p I m E) :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `_`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_zero, Nat.add_zero]`. Consider the case `succ n ih`.
+
+Introduce `hstep`. Establish `h2 : MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv s n)` using `hstep n (Nat.lt_succ_self n)`. Establish `h1` using `ih (fun j hj => hstep j (Nat.lt_succ_of_lt hj))`. Establish `e1 : (MarkedBlowupSequenceData.monomialBlowupIterate hinv s (n + 1)).length = (MarkedBlowupSequenceData.monomialBlowupIterate hinv s n).length + 1`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_succ, MarkedBlowupSequenceData.blowupAtCenter_length hinv _ h2]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem monomialBlowupIterate_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (n : ℕ) :
@@ -253,6 +332,9 @@ private theorem monomialBlowupIterate_length {p : X ⟶ Spec (CommRingCat.of k)}
           MarkedBlowupSequenceData.blowupAtCenter_length hinv _ h2]
       omega
 
+/- English proof (translation)
+Establish `h` using `monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) (monomialStallIndex hinv p I m E) (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j hj)`. Rewrite using `[monomialBlowupSeq_eq_monomialBlowupIterate, h, emptyMarkedBlowupSequenceData_length, Nat.zero_add]`.
+-/
 theorem monomialBlowupSeq_length (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) :
     (monomialBlowupSeq hinv p I m E).length = monomialStallIndex hinv p I m E := by
@@ -261,6 +343,11 @@ theorem monomialBlowupSeq_length (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec
     (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j hj)
   rw [monomialBlowupSeq_eq_monomialBlowupIterate, h, emptyMarkedBlowupSequenceData_length, Nat.zero_add]
 
+/- English proof (translation)
+Distinguish the cases in `h : MarkedBlowupSequenceData.IsAdmissibleCenter d`. Rewrite using `[MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv d h]`. Conclude with `MarkedBlowupSequenceData.append_schemeAt_of_le_length d (MarkedBlowupSequenceData.monomialBlowupStep d h) hinv hi`. Establish `hs : MarkedBlowupSequenceData.blowupAtCenter hinv d = d`. Unfold `MarkedBlowupSequenceData.blowupAtCenter`.
+
+Rewrite using `[dif_neg h]`. Rewrite using `[hs]`.
+-/
 private theorem blowupAtCenter_schemeAt_of_le {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i ≤ d.length) :
@@ -273,6 +360,11 @@ private theorem blowupAtCenter_schemeAt_of_le {p : X ⟶ Spec (CommRingCat.of k)
       rw [dif_neg h]
     rw [hs]
 
+/- English proof (translation)
+Distinguish the cases in `h : MarkedBlowupSequenceData.IsAdmissibleCenter d`. Rewrite using `[MarkedBlowupSequenceData.blowupAtCenter_length hinv d h]`. Use linear arithmetic over natural numbers and integers. Establish `hs : MarkedBlowupSequenceData.blowupAtCenter hinv d = d`. Unfold `MarkedBlowupSequenceData.blowupAtCenter`.
+
+Rewrite using `[dif_neg h]`. Conclude with `le_of_eq (by rw [hs])`.
+-/
 private theorem length_le_blowupAtCenter_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) :
@@ -285,6 +377,13 @@ private theorem length_le_blowupAtCenter_length {p : X ⟶ Spec (CommRingCat.of 
       rw [dif_neg h]
     exact le_of_eq (by rw [hs])
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `le_of_eq (by rw [MarkedBlowupSequenceData.monomialBlowupIterate_zero])`. Introduce `i _`.
+
+Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_zero]`. Consider the case `succ j ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `le_trans ih.1 ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_succ]`.
+
+Conclude with `length_le_blowupAtCenter_length hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j)`. Introduce `i hi`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_succ, blowupAtCenter_schemeAt_of_le hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j) i (le_trans hi ih.1)]`. Conclude with `ih.2 i hi`.
+-/
 private theorem monomialBlowupIterate_length_le_and_schemeAt_eq {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (j : ℕ) :
@@ -307,6 +406,9 @@ private theorem monomialBlowupIterate_length_le_and_schemeAt_eq {p : X ⟶ Spec 
             (le_trans hi ih.1)]
         exact ih.2 i hi
 
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `zero => rw [Nat.add_zero, MarkedBlowupSequenceData.monomialBlowupIterate_zero]`. Consider the case `succ b ih`. Rewrite using `[← Nat.add_assoc, MarkedBlowupSequenceData.monomialBlowupIterate_succ, MarkedBlowupSequenceData.monomialBlowupIterate_succ, ih]`.
+-/
 private theorem monomialBlowupIterate_add {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (a b : ℕ) :
@@ -318,6 +420,11 @@ private theorem monomialBlowupIterate_add {p : X ⟶ Spec (CommRingCat.of k)}
       rw [← Nat.add_assoc, MarkedBlowupSequenceData.monomialBlowupIterate_succ,
         MarkedBlowupSequenceData.monomialBlowupIterate_succ, ih]
 
+/- English proof (translation)
+Establish `hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n`. Establish `h` using `monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_of_lt_of_le hj hn))`. Rewrite `h` using `[emptyMarkedBlowupSequenceData_length, Nat.zero_add]`. Conclude with `h`. Rewrite using `[hlen]`.
+
+Establish `hsplit : monomialStallIndex hinv p I m E = n + (monomialStallIndex hinv p I m E - n)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[monomialBlowupSeq_eq_monomialBlowupIterate, hsplit, monomialBlowupIterate_add hinv (emptyMarkedBlowupSequenceData p I m E) n (monomialStallIndex hinv p I m E - n)]`. Conclude with `(monomialBlowupIterate_length_le_and_schemeAt_eq hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) (monomialStallIndex hinv p I m E - n)).2 n (le_of_eq hlen.symm)`.
+-/
 theorem monomialBlowupSeq_schemeAt (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
     (hn : n ≤ monomialStallIndex hinv p I m E) :
@@ -338,12 +445,20 @@ theorem monomialBlowupSeq_schemeAt (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Sp
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)
     (monomialStallIndex hinv p I m E - n)).2 n (le_of_eq hlen.symm)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem comap_eqToHom_comap_eqToHom_symm {V W : Scheme.{u}} (h : V = W)
     (J : W.IdealSheafData) :
     (J.comap (eqToHom h)).comap (eqToHom h.symm) = J := by
   subst h
   simp
 
+/- English proof (translation)
+Distinguish the cases in `h : MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv s j)`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_succ, MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv _ h]`. Conclude with `MarkedBlowupSequenceData.isPrefix_append _ _ hinv`. Establish `hs : MarkedBlowupSequenceData.blowupAtCenter hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv s j) = MarkedBlowupSequenceData.monomialBlowupIterate hinv s j`. Unfold `MarkedBlowupSequenceData.blowupAtCenter`.
+
+Rewrite using `[dif_neg h]`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupIterate_succ, hs]`. Conclude with `MarkedBlowupSequenceData.IsPrefix.refl _`.
+-/
 private theorem isPrefix_monomialBlowupIterate_succ {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) (j : ℕ) :
@@ -360,6 +475,11 @@ private theorem isPrefix_monomialBlowupIterate_succ {p : X ⟶ Spec (CommRingCat
     rw [MarkedBlowupSequenceData.monomialBlowupIterate_succ, hs]
     exact MarkedBlowupSequenceData.IsPrefix.refl _
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Take `rfl : i = 0` from `Nat.le_zero.mp hij`. Conclude with `MarkedBlowupSequenceData.IsPrefix.refl _`. Consider the case `succ n ih`.
+
+Break down `Nat.eq_or_lt_of_le hij with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `MarkedBlowupSequenceData.IsPrefix.refl _`. Conclude with `(ih (Nat.lt_succ_iff.mp h)).trans (isPrefix_monomialBlowupIterate_succ hinv s n)`.
+-/
 private theorem isPrefix_monomialBlowupIterate_of_le {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) {i j : ℕ} (hij : i ≤ j) :
@@ -375,6 +495,9 @@ private theorem isPrefix_monomialBlowupIterate_of_le {p : X ⟶ Spec (CommRingCa
         exact MarkedBlowupSequenceData.IsPrefix.refl _
       · exact (ih (Nat.lt_succ_iff.mp h)).trans (isPrefix_monomialBlowupIterate_succ hinv s n)
 
+/- English proof (translation)
+Substitute `hlen` using the available equality. Rewrite using `[hpre.ideal_eq A.length le_rfl]`. Conclude with `(comap_eqToHom_comap_eqToHom_symm (hpre.obj_eq A.length le_rfl) (B.ideal A.length)).symm`.
+-/
 private theorem ideal_eq_comap_of_isPrefix {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (A B : MarkedBlowupSequenceData p I m E) (n : ℕ) (hlen : A.length = n)
@@ -384,6 +507,11 @@ private theorem ideal_eq_comap_of_isPrefix {p : X ⟶ Spec (CommRingCat.of k)}
   rw [hpre.ideal_eq A.length le_rfl]
   exact (comap_eqToHom_comap_eqToHom_symm (hpre.obj_eq A.length le_rfl) (B.ideal A.length)).symm
 
+/- English proof (translation)
+Establish `hstep : ∀ j < n, MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) j)` using `fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_of_lt_of_le hj hn)`. Establish `hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n`. Rewrite using `[monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n hstep, emptyMarkedBlowupSequenceData_length, Nat.zero_add]`. Establish `hpre : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).IsPrefix (monomialBlowupSeq hinv p I m E)`. Rewrite using `[monomialBlowupSeq_eq_monomialBlowupIterate]`.
+
+Conclude with `isPrefix_monomialBlowupIterate_of_le hinv (emptyMarkedBlowupSequenceData p I m E) hn`. Conclude with `ideal_eq_comap_of_isPrefix (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) (monomialBlowupSeq hinv p I m E) n hlen hpre (monomialBlowupSeq_schemeAt hinv p I m E n hn)`.
+-/
 theorem monomialBlowupSeq_ideal (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
     (hn : n ≤ monomialStallIndex hinv p I m E) :
@@ -405,16 +533,25 @@ theorem monomialBlowupSeq_ideal (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec 
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)
     (monomialBlowupSeq hinv p I m E) n hlen hpre (monomialBlowupSeq_schemeAt hinv p I m E n hn)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem comap_eqToHom_self {Y : Scheme.{u}} (q : Y = Y) (Z : Y.IdealSheafData) :
     Z.comap (eqToHom q) = Z := by
   simp
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]`.
+-/
 private theorem map_comap_eqToHom_self {Y : Scheme.{u}} (q : Y = Y) (L : List Y.IdealSheafData) :
     List.map (fun D => D.comap (eqToHom q)) L = L := by
   induction L with
   | nil => rfl
   | cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]
 
+/- English proof (translation)
+Consider the cases of `hAB`. Consider the cases of `hBC`. Simplify using `only [comap_eqToHom_self]`.
+-/
 private theorem comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B = C) (hAC : A = C)
     (D : C.IdealSheafData) :
     (D.comap (eqToHom hBC)).comap (eqToHom hAB) = D.comap (eqToHom hAC) := by
@@ -422,6 +559,9 @@ private theorem comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B =
   cases hBC
   simp only [comap_eqToHom_self]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp only [List.map_cons, ih, comap_eqToHom_comp hAB hBC hAC]`.
+-/
 private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC : B = C)
     (hAC : A = C) (L : List C.IdealSheafData) :
     List.map (fun D : B.IdealSheafData => D.comap (eqToHom hAB))
@@ -431,6 +571,9 @@ private theorem map_comap_eqToHom_comp {A B C : Scheme.{u}} (hAB : A = B) (hBC :
   | nil => rfl
   | cons a l ih => simp only [List.map_cons, ih, comap_eqToHom_comp hAB hBC hAC]
 
+/- English proof (translation)
+Establish `key : ∀ d : MarkedBlowupSequenceData p I m E, d = s.append (MarkedBlowupSequenceData.monomialBlowupStep s h) hinv → ∀ ho' : d.obj i = s.obj i, d.boundary i = List.map (fun D => D.comap (eqToHom ho')) (s.boundary i)`. Introduce and unpack `d rfl ho'`. Use `Eq.trans (MarkedBlowupSequenceData.append_boundary s (MarkedBlowupSequenceData.monomialBlowupStep s h) hinv i) ?_` and prove the remaining obligations. Conclude with `MarkedBlowupSequenceData.appendBoundary_of_le_length s (MarkedBlowupSequenceData.monomialBlowupStep s h) hi`. Conclude with `key (MarkedBlowupSequenceData.blowupAtCenter hinv s) (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv s h) ho`.
+-/
 private theorem blowupAtCenter_boundary_of_le (hinv : ComapIsoInvariance.{u})
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (h : MarkedBlowupSequenceData.IsAdmissibleCenter s) (i : ℕ) (hi : i ≤ s.length)
@@ -448,6 +591,13 @@ private theorem blowupAtCenter_boundary_of_le (hinv : ComapIsoInvariance.{u})
   exact key (MarkedBlowupSequenceData.blowupAtCenter hinv s)
     (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv s h) ho
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `_ ho`. Conclude with `(map_comap_eqToHom_self ho (s.boundary i)).symm`. Consider the case `succ d ih`.
+
+Introduce `hstep ho`. Establish `h2 : MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d)` using `hstep d (Nat.lt_succ_self d)`. Establish `hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d).length = s.length + d` using `monomialBlowupIterate_length hinv s d (fun j hj => hstep j (Nat.lt_succ_of_lt hj))`. Establish `hi' : i ≤ (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d).length` using `by omega`. Establish `hobj1 : (MarkedBlowupSequenceData.blowupAtCenter hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d)).obj i = (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d).obj i` using `blowupAtCenter_schemeAt_of_le hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d) i hi'`.
+
+Establish `hobj2 : (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d).obj i = s.obj i` using `Eq.trans hobj1.symm ho`. Establish `hstep1` using `blowupAtCenter_boundary_of_le hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv s d) h2 i hi' hobj1`. Establish `hprev` using `ih (fun j hj => hstep j (Nat.lt_succ_of_lt hj)) hobj2`. Conclude with `Eq.trans hstep1 (Eq.trans (congrArg (List.map (fun D => D.comap (eqToHom hobj1))) hprev) (map_comap_eqToHom_comp hobj1 hobj2 ho (s.boundary i)))`.
+-/
 private theorem monomialBlowupIterate_boundary_of_le (hinv : ComapIsoInvariance.{u})
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i ≤ s.length) (d : ℕ) :
@@ -479,6 +629,9 @@ private theorem monomialBlowupIterate_boundary_of_le (hinv : ComapIsoInvariance.
         (Eq.trans (congrArg (List.map (fun D => D.comap (eqToHom hobj1))) hprev)
           (map_comap_eqToHom_comp hobj1 hobj2 ho (s.boundary i)))
 
+/- English proof (translation)
+Substitute `hL` using the available equality. Conclude with `hb H`.
+-/
 private theorem boundary_eq_map_comap_of_index_eq
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (d t : MarkedBlowupSequenceData p I m E) (n L : ℕ) (hL : L = n)
@@ -489,6 +642,15 @@ private theorem boundary_eq_map_comap_of_index_eq
   subst hL
   exact hb H
 
+/- English proof (translation)
+Establish `hsteps0 : ∀ j < n, MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) j)` using `fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_of_lt_of_le hj hn)`. Establish `hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n`. Rewrite using `[monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n hsteps0, emptyMarkedBlowupSequenceData_length, Nat.zero_add]`. Establish `h1 : n + (monomialStallIndex hinv p I m E - n) = monomialStallIndex hinv p I m E` using `by omega`. Establish `hseq : monomialBlowupSeq hinv p I m E = MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) (monomialStallIndex hinv p I m E - n)`.
+
+Establish `h2 : MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) (n + (monomialStallIndex hinv p I m E - n)) = MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p …` using `monomialBlowupIterate_add hinv (emptyMarkedBlowupSequenceData p I m E) n (monomialStallIndex hinv p I m E - n)`. Rewrite `h2` using `[h1]`. Conclude with `Eq.trans (monomialBlowupSeq_eq_monomialBlowupIterate hinv p I m E) h2`. Establish `hstepsn : ∀ j < monomialStallIndex hinv p I m E - n, MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) j)`. Introduce `j hj`.
+
+Establish `h3 : MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) j = MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) (n + j)` using `(monomialBlowupIterate_add hinv (emptyMarkedBlowupSequenceData p I m E) n j).symm`. Rewrite using `[h3]`. Conclude with `isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E (n + j) (by omega)`. Establish `key : ∀ d : MarkedBlowupSequenceData p I m E, d = MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) (monomialStallIndex hinv p I m E - n) → ∀ ho : d.obj n = (MarkedBlowupSequenceData …`. Introduce and unpack `d rfl ho`.
+
+Conclude with `monomialBlowupIterate_boundary_of_le hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) n (by omega) (monomialStallIndex hinv p I m E - n) hstepsn ho`. Conclude with `boundary_eq_map_comap_of_index_eq (monomialBlowupSeq hinv p I m E) (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) n (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length hlen (key (m …`.
+-/
 theorem monomialBlowupSeq_boundary (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
     (hn : n ≤ monomialStallIndex hinv p I m E) :
@@ -541,6 +703,9 @@ theorem monomialBlowupSeq_boundary (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Sp
     (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length hlen
     (key (monomialBlowupSeq hinv p I m E) hseq) (monomialBlowupSeq_schemeAt hinv p I m E n hn)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem append_center_eq_appendToBlowupSequenceData_center {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (s : MarkedBlowupSequenceData p I m E)
     (t : MarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length))
@@ -548,6 +713,13 @@ private theorem append_center_eq_appendToBlowupSequenceData_center {p : X ⟶ Sp
     (s.append t hinv).center i = (s.appendToBlowupSequenceData t).center i :=
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : MarkedBlowupSequenceData.IsAdmissibleCenter d`. Establish `key : ∀ D : MarkedBlowupSequenceData p I m E, D = d.append (MarkedBlowupSequenceData.monomialBlowupStep d h) hinv → ∀ eD : D.obj i = d.obj i, D.center i = (d.center i).comap (eqToHom eD)`. Introduce and unpack `D rfl eD`. Use `Eq.trans (append_center_eq_appendToBlowupSequenceData_center d (MarkedBlowupSequenceData.monomialBlowupStep d h) hinv i) ?_` and prove the remaining obligations. Conclude with `MarkedBlowupSequenceData.appendToBlowupSequenceData_center_of_lt_length d (MarkedBlowupSequenceData.monomialBlowupStep d h) hi`.
+
+Conclude with `key (MarkedBlowupSequenceData.blowupAtCenter hinv d) (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv d h) e`. Establish `hs : MarkedBlowupSequenceData.blowupAtCenter hinv d = d`. Unfold `MarkedBlowupSequenceData.blowupAtCenter`. Rewrite using `[dif_neg h]`. Establish `key : ∀ D : MarkedBlowupSequenceData p I m E, D = d → ∀ eD : D.obj i = d.obj i, D.center i = (d.center i).comap (eqToHom eD)`.
+
+Introduce and unpack `D rfl eD`. Conclude with `(comap_eqToHom_self eD _).symm`. Conclude with `key (MarkedBlowupSequenceData.blowupAtCenter hinv d) hs e`.
+-/
 private theorem blowupAtCenter_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i < d.length)
@@ -572,6 +744,13 @@ private theorem blowupAtCenter_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
       exact (comap_eqToHom_self eD _).symm
     exact key (MarkedBlowupSequenceData.blowupAtCenter hinv d) hs e
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `e`. Conclude with `(comap_eqToHom_self e (d.center i)).symm`. Consider the case `succ j ih`.
+
+Introduce `e`. Establish `e2 : (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j).obj i = d.obj i` using `(monomialBlowupIterate_length_le_and_schemeAt_eq hinv d j).2 i (le_of_lt hi)`. Establish `hij : i < (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j).length` using `lt_of_lt_of_le hi (monomialBlowupIterate_length_le_and_schemeAt_eq hinv d j).1`. Establish `e1 : (MarkedBlowupSequenceData.blowupAtCenter hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j)).obj i = (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j).obj i` using `blowupAtCenter_schemeAt_of_le hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j) i (le_of_lt hij)`. Use `Eq.trans (blowupAtCenter_center_of_lt hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv d j) i hij e1) ?_` and prove the remaining obligations.
+
+Rewrite using `[ih e2]`. Conclude with `comap_eqToHom_comp e1 e2 e (d.center i)`.
+-/
 private theorem monomialBlowupIterate_center_of_lt {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i < d.length) (j : ℕ) :
@@ -596,6 +775,13 @@ private theorem monomialBlowupIterate_center_of_lt {p : X ⟶ Spec (CommRingCat.
       rw [ih e2]
       exact comap_eqToHom_comp e1 e2 e (d.center i)
 
+/- English proof (translation)
+Substitute `hi` using the available equality. Establish `key : ∀ D : MarkedBlowupSequenceData p I m E, D = d.append (MarkedBlowupSequenceData.monomialBlowupStep d h) hinv → ∀ eD : D.obj d.length = d.obj d.length, D.center d.length = (MarkedBlowupSequenceData.centerAtLast d).comap (eqToHom eD)`. Introduce and unpack `D rfl eD`. Establish `hc : (d.appendToBlowupSequenceData (MarkedBlowupSequenceData.monomialBlowupStep d h)).obj d.length = d.obj d.length` using `MarkedBlowupSequenceData.appendToBlowupSequenceData_schemeAt_of_le_length d (MarkedBlowupSequenceData.monomialBlowupStep d h) (le_refl d.length)`. Establish `e3 : (d.appendToBlowupSequenceData (MarkedBlowupSequenceData.monomialBlowupStep d h)).obj d.length = (MarkedBlowupSequenceData.monomialBlowupStep d h).obj 0` using `hc.trans (MarkedBlowupSequenceData.monomialBlowupStep_schemeAt_zero d h).symm`.
+
+Establish `s1 : (d.append (MarkedBlowupSequenceData.monomialBlowupStep d h) hinv).center d.length = (((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (MarkedBlowupSequenceData.monomialBlowupStep d h).isoZero.inv).comap (eqToHom hc)` using `MarkedBlowupSequenceData.appendToBlowupSequenceData_center_length d (MarkedBlowupSequenceData.monomialBlowupStep d h)`. Establish `s2 : (((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (MarkedBlowupSequenceData.monomialBlowupStep d h).isoZero.inv).comap (eqToHom hc) = (((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (eqToHom (MarkedBlowupSequenceData.monomialBlowupStep_s …`. Rewrite using `[MarkedBlowupSequenceData.monomialBlowupStep_isoObjZero_inv]`. Establish `s3 : (((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (eqToHom (MarkedBlowupSequenceData.monomialBlowupStep_schemeAt_zero d h).symm)).comap (eqToHom hc) = ((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (eqToHom e3)` using `comap_eqToHom_comp hc (MarkedBlowupSequenceData.monomialBlowupStep_schemeAt_zero d h).symm e3 ((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0)`. Establish `s4 : ((MarkedBlowupSequenceData.monomialBlowupStep d h).center 0).comap (eqToHom e3) = (MarkedBlowupSequenceData.centerAtLast d).comap (eqToHom eD)`.
+
+Rewrite using `[MarkedBlowupSequenceData.monomialBlowupStep_center_zero]`. Both sides reduce to the same expression. Conclude with `s1.trans (s2.trans (s3.trans s4))`. Conclude with `key (MarkedBlowupSequenceData.blowupAtCenter hinv d) (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv d h) e`.
+-/
 private theorem blowupAtCenter_center_of_eq_length {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (h : MarkedBlowupSequenceData.IsAdmissibleCenter d) (i : ℕ) (hi : i = d.length)
@@ -636,6 +822,11 @@ private theorem blowupAtCenter_center_of_eq_length {p : X ⟶ Spec (CommRingCat.
   exact key (MarkedBlowupSequenceData.blowupAtCenter hinv d)
     (MarkedBlowupSequenceData.blowupAtCenter_eq_append hinv d h) e
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Establish `hl1 : (MarkedBlowupSequenceData.blowupAtCenter hinv d).length = n + 1`. Rewrite using `[MarkedBlowupSequenceData.blowupAtCenter_length hinv d h, hlen]`. Establish `hn1 : n < (MarkedBlowupSequenceData.blowupAtCenter hinv d).length` using `by omega`. Establish `e1 : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.blowupAtCenter hinv d) r).obj n = (MarkedBlowupSequenceData.blowupAtCenter hinv d).obj n` using `(monomialBlowupIterate_length_le_and_schemeAt_eq hinv (MarkedBlowupSequenceData.blowupAtCenter hinv d) r).2 n (le_of_lt hn1)`.
+
+Establish `ejunc : (MarkedBlowupSequenceData.blowupAtCenter hinv d).obj n = d.obj d.length` using `(blowupAtCenter_schemeAt_of_le hinv d n (le_of_eq hlen.symm)).trans (congrArg d.obj hlen.symm)`. Rewrite using `[monomialBlowupIterate_center_of_lt hinv (MarkedBlowupSequenceData.blowupAtCenter hinv d) n hn1 r e1, blowupAtCenter_center_of_eq_length hinv d h n hlen.symm ejunc]`. Conclude with `comap_eqToHom_comp e1 ejunc eD (MarkedBlowupSequenceData.centerAtLast d)`.
+-/
 private theorem center_monomialBlowupIterate_blowupAtCenter_eq {p : X ⟶ Spec (CommRingCat.of k)}
     {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData} (hinv : ComapIsoInvariance.{u})
     (d : MarkedBlowupSequenceData p I m E) (n : ℕ) (hlen : d.length = n)
@@ -658,6 +849,13 @@ private theorem center_monomialBlowupIterate_blowupAtCenter_eq {p : X ⟶ Spec (
     blowupAtCenter_center_of_eq_length hinv d h n hlen.symm ejunc]
   exact comap_eqToHom_comp e1 ejunc eD (MarkedBlowupSequenceData.centerAtLast d)
 
+/- English proof (translation)
+Establish `hlen : (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n).length = n`. Establish `h` using `monomialBlowupIterate_length hinv (emptyMarkedBlowupSequenceData p I m E) n (fun j hj => isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E j (lt_trans hj hn))`. Rewrite `h` using `[emptyMarkedBlowupSequenceData_length, Nat.zero_add]`. Conclude with `h`. Establish `hstep : MarkedBlowupSequenceData.IsAdmissibleCenter (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)` using `isAdmissibleCenter_of_lt_monomialStallIndex hinv p I m E n hn`.
+
+Establish `hsplit : monomialStallIndex hinv p I m E = (n + 1) + (monomialStallIndex hinv p I m E - (n + 1))`. Use linear arithmetic over natural numbers and integers. Establish `h1 : MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) (monomialStallIndex hinv p I m E) = MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) ((n + 1) + (monomialStallIndex hinv p I m E - (n + 1)))`. Rewrite using `[← hsplit]`. Establish `hseq : monomialBlowupSeq hinv p I m E = MarkedBlowupSequenceData.monomialBlowupIterate hinv (MarkedBlowupSequenceData.blowupAtCenter hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n)) (monomialStallIndex hinv p I m E - (n + 1))`.
+
+Rewrite using `[monomialBlowupSeq_eq_monomialBlowupIterate, h1, monomialBlowupIterate_add hinv (emptyMarkedBlowupSequenceData p I m E) (n + 1) (monomialStallIndex hinv p I m E - (n + 1)), MarkedBlowupSequenceData.monomialBlowupIterate_succ]`. Conclude with `center_monomialBlowupIterate_blowupAtCenter_eq hinv (MarkedBlowupSequenceData.monomialBlowupIterate hinv (emptyMarkedBlowupSequenceData p I m E) n) n hlen hstep (monomialStallIndex hinv p I m E - (n + 1)) (monomialBlowupSeq hinv p I m E) hseq (monomialBlowupSeq_schemeAt hinv p I …`.
+-/
 theorem monomialBlowupSeq_center (hinv : ComapIsoInvariance.{u}) (p : X ⟶ Spec (CommRingCat.of k))
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (n : ℕ)
     (hn : n < monomialStallIndex hinv p I m E) :
@@ -707,6 +905,9 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 def monomialStallIndex (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) : ℕ :=
   sInf {n : ℕ | IsStationaryAt hinv s n}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialStallIndex_eq_sInf (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) :
     monomialStallIndex hinv s = sInf {n : ℕ | IsStationaryAt hinv s n} :=
   rfl
@@ -715,10 +916,16 @@ def monomialIterateUntilStall (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupS
     MarkedBlowupSequenceData p I m E :=
   monomialBlowupIterate hinv s (monomialStallIndex hinv s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialIterateUntilStall_eq_monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E) :
     monomialIterateUntilStall hinv s = monomialBlowupIterate hinv s (monomialStallIndex hinv s) :=
   rfl
 
+/- English proof (translation)
+Establish `h0 : IsStationaryAt hinv s 0` using `(isStationaryAt_iff_not_isAdmissibleCenter hinv s 0).mpr h`. Use `show sInf {n : ℕ | IsStationaryAt hinv s n} = 0`. Conclude with `Nat.le_zero.mp (Nat.sInf_le h0)`.
+-/
 theorem monomialStallIndex_eq_zero_of_not_isAdmissibleCenter (hinv : ComapIsoInvariance.{u})
     (s : MarkedBlowupSequenceData p I m E) (h : ¬ IsAdmissibleCenter s) : monomialStallIndex hinv s = 0 := by
   have h0 : IsStationaryAt hinv s 0 := (isStationaryAt_iff_not_isAdmissibleCenter hinv s 0).mpr h
@@ -733,6 +940,9 @@ section
 
 variable {k : Type u} [Field k] {X : Scheme.{u}}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialStallIndex_eq_monomialStallIndex_empty (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :
@@ -740,6 +950,9 @@ theorem monomialStallIndex_eq_monomialStallIndex_empty (hinv : ComapIsoInvarianc
       MarkedBlowupSequenceData.monomialStallIndex hinv (emptyMarkedBlowupSequenceData p I m E) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialBlowupSeq_eq_monomialIterateUntilStall (hinv : ComapIsoInvariance.{u})
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :

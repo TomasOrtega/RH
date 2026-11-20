@@ -6,6 +6,17 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open Finset Comb
 
+/- English proof (translation)
+Introduce `m lam _hlam w hw`. Establish `hL : IsLattice w`. Simplify using `only [latticeWords, mem_filter] at hw`. Conclude with `hw.2.1`. Set `f : Fin (youngCells lam).card → youngCells lam` to `fun t => ⟨cellOfWord w t, h1 m lam w hw t⟩`.
+
+Establish `hinj : Function.Injective f`. Introduce `s t hst`. Conclude with `h2 m _ w (congrArg Subtype.val hst)`. Establish `hbij : Function.Bijective f`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`.
+
+Conclude with `⟨hinj, by simp⟩`. Set `T : youngCells lam ≃ Fin (youngCells lam).card` to `(Equiv.ofBijective f hbij).symm`. Establish `hT : ∀ p : youngCells lam, cellOfWord w (T p) = p.1`. Introduce `p`. Establish `: f (T p) = p` using `(Equiv.ofBijective f hbij).apply_symm_apply p`.
+
+Conclude with `congrArg Subtype.val this`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq1 hpq2`. Apply `h3 m _ w hL` to reduce the goal to its premises. Rewrite using `[hT p, hT q]`.
+
+Conclude with `hpq1`. Rewrite using `[hT p, hT q]`. Conclude with `hpq2`. Use function extensionality and compare the values at `t show (T.symm t).1.1 = w t`. Both sides reduce to the same expression.
+-/
 theorem CombTableauOfWord.proof (h1 : CombCellOfWordMem.Statement)
     (h2 : CombCellOfWordInj.Statement) (h3 : CombCellOfWordMono.Statement) :
     CombTableauOfWord.Statement := by

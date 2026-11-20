@@ -24,9 +24,15 @@ def imForm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) :
     (fun c y a => by
       simp [hermForm, star_smul, Matrix.mulVec_smul, dotProduct_smul, Complex.smul_im])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem imForm_apply {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     imForm Hm z w = (hermForm Hm z w).im := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [imForm_apply, stdR, hermForm, Pi.basis_apply]`.
+-/
 theorem entry_eq {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (p q : Fin g) :
     Hm p q = ((imForm Hm (stdR g ⟨p, 1⟩) (stdR g ⟨q, 0⟩) : ℝ) : ℂ) +
       ((imForm Hm (stdR g ⟨p, 0⟩) (stdR g ⟨q, 0⟩) : ℝ) : ℂ) * Complex.I := by
@@ -40,6 +46,11 @@ def coordMat {g : ℕ} (u : (Σ _ : Fin g, Fin 2) → (Fin g → ℂ)) :
     Matrix (Σ _ : Fin g, Fin 2) (Σ _ : Fin g, Fin 2) ℝ :=
   Matrix.of fun a k => (stdR g).repr (u k) a
 
+/- English proof (translation)
+Apply `(stdR g).repr.injective` to reduce the goal to its premises. Use extensionality with `a'`. Establish `h1 : coordMat u * (coordMat u)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hM)`. Establish `h2 : ∑ k, coordMat u a' k * (coordMat u)⁻¹ k a = if a = a' then 1 else 0`. Rewrite using `[← Matrix.mul_apply, h1, Matrix.one_apply]`.
+
+Conclude with `if_congr eq_comm rfl rfl`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finsupp.smul_apply, Finset.sum_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply]`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem std_eq_sum {g : ℕ} (u : (Σ _ : Fin g, Fin 2) → (Fin g → ℂ)) (hM : (coordMat u).det ≠ 0)
     (a : Σ _ : Fin g, Fin 2) :
     stdR g a = ∑ k, ((coordMat u)⁻¹ k a) • u k := by
@@ -54,6 +65,9 @@ theorem std_eq_sum {g : ℕ} (u : (Σ _ : Fin g, Fin 2) → (Fin g → ℂ)) (hM
   rw [← h2]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[std_eq_sum u hM a, std_eq_sum u hM c]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, imForm_apply, hF]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem imForm_std {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (u : (Σ _ : Fin g, Fin 2) → (Fin g → ℂ))
     (hM : (coordMat u).det ≠ 0) (F : (Σ _ : Fin g, Fin 2) → (Σ _ : Fin g, Fin 2) → ℝ)
     (hF : ∀ k l, (hermForm Hm (u k) (u l)).im = F k l) (a c : Σ _ : Fin g, Fin 2) :
@@ -66,12 +80,20 @@ theorem imForm_std {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (u : (Σ _ : Fin 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)`.
+-/
 theorem contDiffOn_det_real {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {ι : Type} [Fintype ι]
     [DecidableEq ι] {M : X → Matrix ι ι ℝ} {s : Set X} (h : ∀ a b, ContDiffOn ℝ ∞ (fun x => M x a b) s) :
     ContDiffOn ℝ ∞ (fun x => (M x).det) s := by
   simp only [Matrix.det_apply']
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)
 
+/- English proof (translation)
+Establish `hadj : ContDiffOn ℝ ∞ (fun x => (M x).adjugate k a) s`. Simplify using `only [Matrix.adjugate_apply]`. Use `contDiffOn_det_real fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Simplify `contDiffOn_const` using `[Matrix.updateRow_apply]`. Simplify `h i j` using `[Matrix.updateRow_apply, hi]`. Use `((contDiffOn_det_real h).inv hdet |>.mul hadj).congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Simplify using `[smul_eq_mul]`.
+-/
 theorem contDiffOn_inv_entry {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {ι : Type} [Fintype ι]
     [DecidableEq ι] {M : X → Matrix ι ι ℝ} {s : Set X} (h : ∀ a b, ContDiffOn ℝ ∞ (fun x => M x a b) s)
     (hdet : ∀ x ∈ s, (M x).det ≠ 0) (k a : ι) :
@@ -90,6 +112,19 @@ end GlobalTheory.RiemSmooth
 
 namespace GlobalTheory.RiemSmooth
 
+/- English proof (translation)
+Use `contDiffOn_of_locally_contDiffOn fun b₀ hb₀ => ?_` and prove the remaining obligations. Take `⟨t, ht, hts, hli⟩` from `exists_linearIndependent ℝ (Set.range (P b₀))`. Rewrite `hts` using `[hspan b₀ hb₀]`. Set `bt : Module.Basis t ℝ (Fin g → ℂ)` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hts])`. Set `e` to `bt.indexEquiv (stdR g)`.
+
+Establish `hv : ∀ k, ∃ v, P b₀ v = bt (e.symm k)` using `fun k => by`. Take `⟨v, hv⟩` from `ht (e.symm k).2`. Conclude with `⟨v, by rw [hv, Module.Basis.mk_apply]⟩`. Use `choose v hv using hv`. Set `M : X → Matrix (Σ _ : Fin g, Fin 2) (Σ _ : Fin g, Fin 2) ℝ` to `fun b => coordMat fun k => P b (v k)`.
+
+Establish `hMs : ∀ a k, ContDiffOn ℝ ∞ (fun b => M b a k) B` using `fun a k => by`. Set `ℓ : (Fin g → ℂ) →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((Finsupp.lapply a).comp (stdR g).repr.toLinearMap)`. Conclude with `ℓ.contDiff.comp_contDiffOn (hP (v k))`. Establish `hdet0 : (M b₀).det ≠ 0`. Establish `: M b₀ = (stdR g).toMatrix (bt.reindex e)`.
+
+Use extensionality with `a k`. Simplify using `[M, coordMat, Module.Basis.toMatrix_apply, hv]`. Rewrite using `[this, ← Module.Basis.det_apply]`. Conclude with `((stdR g).isUnit_det _).ne_zero`. Establish `hcont : ContinuousAt (fun b => (M b).det) b₀` using `(contDiffOn_det_real hMs).continuousOn.continuousAt (hB.mem_nhds hb₀)`.
+
+Take `⟨U, hU, hUo, hb₀U⟩` from `eventually_nhds_iff.1 (hcont.eventually_ne hdet0)`. Use `⟨U, hUo, hb₀U, ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ b ∈ B ∩ U, (M b).det ≠ 0` using `fun b hb => hU b hb.2`. Apply the tactic sequence `have hN := contDiffOn_inv_entry (fun a k => (hMs a k).mono Set.inter_subset_left) hdet`. Establish `hsum : ∀ a c, ContDiffOn ℝ ∞ (fun b => ∑ k, ∑ l, (M b)⁻¹ k a * (M b)⁻¹ l c * F (v k) (v l)) (B ∩ U)` using `fun a c => ContDiffOn.sum fun k _ => ContDiffOn.sum fun l _ => ((hN k a).mul (hN l c)).mul contDiffOn_const`.
+
+Use `((Complex.ofRealCLM.contDiff.comp_contDiffOn (hsum ⟨p, 1⟩ ⟨q, 0⟩)).add ((Complex.ofRealCLM.contDiff.comp_contDiffOn (hsum ⟨p, 0⟩ ⟨q, 0⟩)).mul (contDiffOn_const (c := Complex.I)))).congr fun b hb => ?_` and prove the remaining obligations. Establish `hF : ∀ k l, (hermForm (Hm b) (P b (v k)) (P b (v l))).im = F (v k) (v l)` using `fun k l => hH b hb.1 _ _`. Establish `h1` using `entry_eq (Hm b) p q`. Rewrite `h1` using `[imForm_std (Hm b) _ (hdet b hb) _ hF, imForm_std (Hm b) _ (hdet b hb) _ hF]`. Conclude with `h1`.
+-/
 theorem contDiffOn_of_im_eq {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {L : Type} [AddCommGroup L] {g : ℕ}
     {B : Set X} (hB : IsOpen B) (P : X → (L →+ (Fin g → ℂ))) (F : L → L → ℝ)
     (hP : ∀ v, ContDiffOn ℝ ∞ (fun b => P b v) B)
@@ -135,6 +170,11 @@ theorem contDiffOn_of_im_eq {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X
   rw [imForm_std (Hm b) _ (hdet b hb) _ hF, imForm_std (Hm b) _ (hdet b hb) _ hF] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g ty Fu i d B P hB hper hhol`. Set `Hm : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin g) (Fin g) ℂ` to `fun b => if h : b ∈ B then Classical.choose (hper b h).2.2.2.2 else 0`. Establish `hHm : ∀ b (h : b ∈ B), Hm b = Classical.choose (hper b h).2.2.2.2` using `fun b h => dif_pos h`. Establish `hR : ∀ b ∈ B, IsRiem Fu i (P b) (Hm b)` using `fun b h => by`. Rewrite using `[hHm b h]`.
+
+Conclude with `Classical.choose_spec (hper b h).2.2.2.2`. Use `⟨Hm, hR, fun p q => ?_⟩` and prove the remaining obligations. Use `contDiffOn_of_im_eq hB P (fun x y => ((Fu.Di i).EF x y : ℝ)) (fun v => ?_) (fun b h => (hper b h).2.2.2.1) Hm (fun b h x y => (hR b h).2.2 x y) p q` and prove the remaining obligations. Conclude with `contDiffOn_pi.2 fun j => GlobalTheory.ChartGlue.contDiffOn_real hB ((differentiableOn_pi.1 (hhol v)) j)`.
+-/
 theorem exists_riem_contDiffOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (i : Fin Fu.n) (d : ℕ) (B : Set (ReciprocityTheory.L2DbarEstimates.V d)) (P : ReciprocityTheory.L2DbarEstimates.V d → ((Fu.Di i).La →+ (Fin g → ℂ))), IsOpen B → (∀ b ∈ B, IsPeriod (Fu.Di i) ty (P b)) → (∀ v, DifferentiableOn ℂ (fun b => P b v) B) → ∃ Hm : ReciprocityTheory.L2DbarEstimates.V d → Matrix (Fin g) (Fin g) ℂ, (∀ b ∈ B, IsRiem Fu i (P b) (Hm b)) ∧ ∀ p q, ContDiffOn ℝ ∞ (fun b => Hm b p q) B := by
   intro E _ _ _ H Dw l Xo c σ g ty Fu i d B P hB hper hhol
   classical

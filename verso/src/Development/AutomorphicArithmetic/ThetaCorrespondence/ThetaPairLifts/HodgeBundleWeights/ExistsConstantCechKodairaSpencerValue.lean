@@ -25,6 +25,13 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
+/- English proof (translation)
+Introduce `P`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `K _ _ A _ A' _ i h g hA hg hA' hg' L hL ψ hψ n u θ hu H hb hhb f hf w hw`. Take `⟨u', hu', rfl⟩` from `hw`. Use `GlobalTheory.CechKS.isKSValue_of_isCechKS P.p5 h hA hg hA' hg' L hL ψ hψ u θ hu H hb hhb hf` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[GlobalTheory.FlagTan.lieComb]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Use `Over.OverMorphism.ext ((hu' a).trans ?_)` and prove the remaining obligations.
+
+Simplify using `only [Rat.cast_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value : _root_.GlobalTheory.CovTop.Hypotheses'' → ∃ s : ℚ, s ≠ 0 ∧ ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left) (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i) (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm K (GlobalTheory.DeRham.HdR A), GlobalTheory.DeRham.IsPolForm (GlobalTheory.Cris.dp0 K) (𝟙 _) A L ψ → ∀ (n : ℕ) (u : Fin n → (epsR K ⟶ A)) (θ : Matrix (Fin n) (Fin n) K), (∀ a, IsTangent (u a)) → GlobalTheory.CechKS.IsCechKS A A' i L u θ → ∀ (hb : Fin n → GlobalTheory.DeRham.HdR A), (∀ b, GlobalTheory.DeRham.IsLieImage (hb b) (u b)) → ∀ f ∈ GlobalTheory.DeRham.Fil A, ∀ w : epsR K ⟶ A, IsLieComb (fun a => (s : K) * ∑ b, θ a b * ψ f (hb b)) u w → GlobalTheory.DeRham.IsKSValue h f w := by
   intro P
   refine ⟨1, one_ne_zero, ?_⟩
@@ -53,6 +60,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value | exact _root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value | (intros; apply _root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cech_kodaira_spencer_class_constant : _root_.GlobalTheory.CovTop.Hypotheses'' → ∃ s : ℚ, s ≠ 0 ∧ ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A'] (i : A.left ⟶ A'.left) (h : IsGrpPullback A A' (GlobalTheory.DeRham.epsRed K) i) (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → ∀ (L : LB A.left), L.IsLB → ∀ ψ : LinearMap.BilinForm K (GlobalTheory.DeRham.HdR A), GlobalTheory.DeRham.IsPolForm (GlobalTheory.Cris.dp0 K) (𝟙 _) A L ψ → ∀ (n : ℕ) (u : Fin n → (epsR K ⟶ A)) (θ : Matrix (Fin n) (Fin n) K), (∀ a, IsTangent (u a)) → GlobalTheory.CechKS.IsCechKS A A' i L u θ → ∀ (hb : Fin n → GlobalTheory.DeRham.HdR A), (∀ b, GlobalTheory.DeRham.IsLieImage (hb b) (u b)) → ∀ f ∈ GlobalTheory.DeRham.Fil A, ∀ w : epsR K ⟶ A, IsLieComb (fun a => (s : K) * ∑ b, θ a b * ψ f (hb b)) u w → GlobalTheory.DeRham.IsKSValue h f w := by
   first | exact @_root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value | exact _root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value | (intros; apply _root_.GlobalTheory.CechKS.exists_constant_cech_kodaira_spencer_value <;> assumption)
 end

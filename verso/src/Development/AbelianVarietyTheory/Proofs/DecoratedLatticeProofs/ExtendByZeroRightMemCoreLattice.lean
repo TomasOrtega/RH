@@ -11,6 +11,11 @@ namespace GlobalTheory.ContrComb.LatT
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, -, hβ, c, -, x, -, rfl⟩` from `hz`. Conclude with `GlobalTheory.FinPl.LatMem.tmul_mem_idAt hβ _`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => exact add_mem hz hz'`. Consider the case `neg z _ hz => exact neg_mem hz`.
+-/
 theorem latV_entry_mem {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
     (hy : y ∈ latV S L P) (i : Fin S.rank) : y i ∈ idAt D P := by
   induction hy using AddSubgroup.closure_induction with
@@ -21,6 +26,13 @@ theorem latV_entry_mem {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.ra
   | add z z' _ _ hz hz' => exact add_mem hz hz'
   | neg z _ hz => exact neg_mem hz
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P`. Establish `hy'` using `((hG.2 A).2.2.2 LA y hLA.1).1 hy`. Use `((hG.2 V₀).2.2.2 M _ hM.1).2 ⟨fun i => ?_, fun v hv e he => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy'.1 j)`.
+
+Take `⟨LL, hLL⟩` from `hloc v hv`. Establish `hz` using `hy'.2 v hv e he`. Rewrite using `[← Matrix.mulVec_smul]`. Use `(hLL _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, o.pA_jA, Matrix.one_mulVec]`.
+
+Conclude with `hz`. Rewrite using `[Matrix.mulVec_mulVec, o.pB_jA, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
+-/
 theorem jA_latV {V₀ A L : HSp D} (o : OrthDec V₀ A L) {P : Pl D → Prop} {LA : Lat A} {M : Lat V₀}
     (hLA : IsSelfDualC A LA) (hM : IsSelfDualC V₀ M) (hloc : ∀ v, P v → ∃ LL, OrthAt o M LA LL v)
     {y : Fin A.rank → AE D} (hy : y ∈ latV A LA P) : o.jA *ᵥ y ∈ latV V₀ M P := by
@@ -36,6 +48,13 @@ theorem jA_latV {V₀ A L : HSp D} (o : OrthDec V₀ A L) {P : Pl D → Prop} {L
     · rw [Matrix.mulVec_mulVec, o.pA_jA, Matrix.one_mulVec]; exact hz
     · rw [Matrix.mulVec_mulVec, o.pB_jA, Matrix.zero_mulVec]; exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+
+Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, a, ha, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => rw [smul_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [smul_neg]`. Conclude with `neg_mem hz`.
+-/
 theorem smul_latV_mem_latA {S : HSp D} {L : Lat S} {P : Pl D → Prop} {a : D.host.E} (ha : a ∈ D.host.AA)
     {w : Fin S.rank → AE D} (hw : w ∈ latV S L P) :
     ((1 : AF D.host.F) ⊗ₜ[D.host.F] a : AE D) • w ∈ latA S L P := by
@@ -51,6 +70,13 @@ theorem smul_latV_mem_latA {S : HSp D} {L : Lat S} {P : Pl D → Prop} {a : D.ho
   | add z z' _ _ hz hz' => rw [smul_add]; exact add_mem hz hz'
   | neg z _ hz => rw [smul_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hg`. Establish `hsplit : (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * x i) : Fin A.rank → AE D) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a : AE D) • (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hsplit, Matrix.mulVec_smul]`. Conclude with `smul_latV_mem_latA ha (jA_latV o hLA hM hloc (AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, x, hx, rfl⟩))`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+-/
 theorem jA_latA {V₀ A L : HSp D} (o : OrthDec V₀ A L) {P : Pl D → Prop} {LA : Lat A} {M : Lat V₀}
     (hLA : IsSelfDualC A LA) (hM : IsSelfDualC V₀ M) (hloc : ∀ v, P v → ∃ LL, OrthAt o M LA LL v)
     {z : Fin A.rank → AE D} (hz : z ∈ latA A LA P) : o.jA *ᵥ z ∈ latA V₀ M P := by
@@ -68,6 +94,11 @@ theorem jA_latA {V₀ A L : HSp D} (o : OrthDec V₀ A L) {P : Pl D → Prop} {L
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Introduce `D V₀ A L S o P LA LS M hLA hLS hM hloc u hu`. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero]`. Establish `hu'` using `(GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D S A LS LA hLS hLA P u).1 hu`. Use `(GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D S V₀ LS M hLS hM P _).2 ⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `sum_mem fun k _ => Ideal.mul_mem_left _ _ (hu'.1 k j)`. Use `show (o.jA * u) *ᵥ y ∈ _`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `jA_latA o hLA hM hloc (hu'.2 y hy)`.
+-/
 theorem latO_extR : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (P : Pl D → Prop) (LA : Lat A) (LS : Lat S)
     (M : Lat V₀), IsSelfDualC A LA → IsSelfDualC S LS → IsSelfDualC V₀ M → (∀ v, P v → ∃ LL, OrthAt o M LA LL v) →
     ∀ u ∈ latO S A (LS : Set _) (LA : Set _) P, (o.resT S).symm (u, 0) ∈ latO S V₀ (LS : Set _) (M : Set _) P := by

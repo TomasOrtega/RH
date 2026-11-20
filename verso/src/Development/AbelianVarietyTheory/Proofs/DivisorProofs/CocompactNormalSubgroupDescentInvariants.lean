@@ -11,6 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.Cusp.Shear
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ Γ N _ V _ _ _ _ Λ s π hsc hmul hs hπs hsΓ`. Set `s' : V → N` to `fun v => ⟨s v, hs v⟩`. Establish `hπs' : ∀ v, π (s' v) = v` using `fun v => hπs _ v rfl`. Establish `hs'add : ∀ v w, s' (v + w) = s' v * s' w` using `fun v w => Subtype.ext (hmul v w)`. Establish `hs0 : s' 0 = 1`.
+
+Establish `h` using `hs'add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one _).symm)`. Set `H : Subgroup N` to `{ carrier := {n | n = s' (π n) ∧ π n ∈ Λ} one_mem' := by`. Establish `h1 : π 1 = 0` using `by rw [← hs0, hπs']`.
+
+Conclude with `⟨by rw [h1, hs0], by rw [h1]; exact Λ.zero_mem⟩`. Use the proof step `mul_mem' := fun {a b} ha hb => by`. Establish `e : a * b = s' (π a + π b)` using `by rw [hs'add, ← ha.1, ← hb.1]`. Establish `hp : π (a * b) = π a + π b` using `by rw [e, hπs']`. Conclude with `⟨by rw [hp]; exact e, by rw [hp]; exact Λ.add_mem ha.2 hb.2⟩`.
+
+Use the proof step `inv_mem' := fun {a} ha => by`. Establish `h1 : s' (π a) * s' (-π a) = 1` using `by rw [← hs'add, add_neg_cancel, hs0]`. Establish `e : a⁻¹ = s' (-π a)` using `(congrArg (·⁻¹) ha.1).trans (eq_inv_of_mul_eq_one_right h1).symm`. Establish `hp : π a⁻¹ = -π a` using `by rw [e, hπs']`. Conclude with `⟨by rw [hp]; exact e, by rw [hp]; exact Λ.neg_mem ha.2⟩ }`.
+
+Establish `hH : ∀ h : H, ((h : N) : G) ∈ Γ` using `fun h => by`. Establish `e : ((h : N) : G) = s (π h)` using `congrArg Subtype.val h.2.1`. Rewrite using `[e]`. Conclude with `hsΓ _ h.2.2`. Use `haveI : DiscreteTopology H := .of_continuous_injective (f := fun h : H => (⟨((h : N) : G), hH h⟩ : Γ)) ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) fun a b e => Subtype.ext (Subtype.ext (congrArg (fun z : Γ => (z : G)) e))`.
+
+Use `⟨s' ⁻¹' stdDom H, (hsc.subtype_mk hs).measurable (measurableSet_stdDom H), fun v => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, hu⟩` from `existsUnique_stdDom H (s' v)`. Use `⟨⟨π h, h.2.2⟩, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `show s' (π h + v) ∈ stdDom H`. Rewrite using `[hs'add, ← h.2.1]`.
+
+Conclude with `hh`. Establish `hmem : s' w ∈ H` using `⟨by rw [hπs'], by rw [hπs']; exact w.2⟩`. Establish `e` using `hu ⟨s' w, hmem⟩ (by show s' w * s' v ∈ stdDom H`. Rewrite using `[← hs'add]`. Conclude with `hw)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (w : V) = π h`. Rewrite using `[← e]`. Conclude with `(hπs' w).symm`.
+-/
 theorem exists_measurable_addSection : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (Γ N : Subgroup G) [DiscreteTopology Γ]
     (V : Type) [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
@@ -64,6 +81,25 @@ theorem exists_measurable_addSection : ∀ (G : Type) [Group G] [TopologicalSpac
     rw [← e]
     exact (hπs' w).symm
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ N N' _ _ _ hle hn hc hc' V _ _ _ _ _ _ Λ s π hsc hmul hs hπc hπmul hπs hker hsΓ hπΓ φ hφ hφc hN' μ 𝓕 hμ h𝓕 x`. Set `s' : V → N` to `fun v => ⟨s v, hs v⟩`. Establish `hs'c : Continuous s'` using `hsc.subtype_mk _`. Establish `hleft : Function.LeftInverse π s'` using `fun v => hπs _ v rfl`. Establish `hemb : Topology.IsEmbedding s'` using `hleft.isEmbedding hπc hs'c`.
+
+Use `haveI : SecondCountableTopology V := hemb.secondCountableTopology`. Use `haveI : T2Space V := hemb.t2Space`. Use `haveI : Countable Λ := Function.Injective.countable (f := fun w : Λ => (⟨s w, hsΓ _ w.2⟩ : Γ)) fun a b h => Subtype.ext (hleft.injective (Subtype.ext (congrArg Subtype.val h : s a = s b)))`. Set `e` to `prodHomeo hle hs hsc hπc hπmul hπs hker`. Set `ν : Measure N` to `((Measure.haar : Measure N').prod μ).map e`.
+
+Use `haveI : ν.IsHaarMeasure := GlobalTheory.T.cocompact_normal_subgroup_fibration G Γ N N' hle hn hc hc' V s π hs hsc hπc hπmul hπs hker hmul μ hμ`. Take `⟨B, hBm, hB⟩` from `exists_measurable_addSection G Γ N V Λ s π hsc hmul hs hπs hsΓ`. Set `A` to `stdDom (Γ.subgroupOf N')`. Establish `hAm : MeasurableSet A` using `measurableSet_stdDom _`. Establish `hD : IsFundamentalDomain (Γ.subgroupOf N) (e '' (A ×ˢ B)) ν` using `GlobalTheory.T.cocompact_fibration_section_measure G Γ N N' hle hn V Λ s π hs hsc hπc hπmul hπs hker hmul hsΓ hπΓ A B hAm hBm (existsUnique_stdDom _) hB ν`.
+
+Establish `hep : MeasurePreserving e ((Measure.haar : Measure N').prod μ) ν` using `⟨e.continuous.measurable, rfl⟩`. Establish `hemb' : MeasurableEmbedding e` using `e.toMeasurableEquiv.measurableEmbedding`. Establish `hI : ∫ n in e '' (A ×ˢ B), φ (n * x) ∂ν = (Measure.haar : Measure N').real A • ∫ v in B, φ (s v * x) ∂μ`. Rewrite using `[hep.setIntegral_image_emb hemb', ← Measure.prod_restrict]`. Establish `h1 : ∀ z : N' × V, φ ((e z : G) * x) = φ (s z.2 * x)` using `fun z => by`.
+
+Rewrite using `[prodHomeo_apply, mul_assoc]`. Conclude with `hN' _ z.1.2 _`. Simplify using `only [h1]`. Rewrite using `[integral_fun_snd (fun v => φ (s v * x)), measureReal_restrict_apply_univ]`. Establish `hM : ν (e '' (A ×ˢ B)) = Measure.haar A * μ B`.
+
+Express the relevant statement in the definitionally equal form `((Measure.haar : Measure N').prod μ).map e _ = _`. Rewrite using `[hemb'.map_apply, e.preimage_image, Measure.prod_prod]`. Establish `hA0 : (Measure.haar : Measure N') A ≠ 0` using `(isFundamentalDomain_stdDom _ _).measure_ne_zero (NeZero.ne _)`. Establish `hAt : (Measure.haar : Measure N') A ≠ ⊤` using `hc'.measure_ne_top (isFundamentalDomain_stdDom _ _)`. Establish `hDt` using `hc.measure_ne_top hD`.
+
+Establish `hD0` using `hD.measure_ne_zero (NeZero.ne ν)`. Rewrite `hDt`, `hD0` using `[hM]`. Establish `hBt : μ B ≠ ⊤` using `fun h => hDt (by rw [h, ENNReal.mul_top hA0])`. Establish `hB0 : μ B ≠ 0` using `fun h => hD0 (by rw [h, mul_zero])`. Establish `hBF : IsAddFundamentalDomain Λ B μ` using `.mk' hBm.nullMeasurableSet fun v => by`.
+
+Simplify `hB v` using `[AddSubgroup.vadd_def, vadd_eq_add]`. Establish `hf : ∀ (w : Λ) (v : V), φ (s ((w : V) + v) * x) = φ (s v * x)` using `fun w v => by`. Rewrite using `[hmul, mul_assoc]`. Conclude with `hφ _ (hsΓ _ w.2) _`. Rewrite using `[h𝓕.setIntegral_eq hBF (fun w v => hf w v), measureReal_def, h𝓕.measure_eq hBF, constTermOn_eq hD hφ x, hI, measureReal_def, hM, measureReal_def, ENNReal.toReal_mul, smul_smul, smul_smul]`.
+
+Establish `ha : ((Measure.haar : Measure N') A).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hA0, hAt⟩`. Establish `hb : (μ B).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hB0, hBt⟩`. Rewrite using `[show (μ B).toReal * (((Measure.haar : Measure N') A).toReal * (μ B).toReal)⁻¹ * ((Measure.haar : Measure N') A).toReal = 1 by field_simp, one_smul]`.
+-/
 theorem integral_section_eq_constTermOn : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [T2Space G]
     [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G] (Γ N N' : Subgroup G) [DiscreteTopology Γ]
     [LocallyCompactSpace N] [LocallyCompactSpace N'], N' ≤ N → (∀ p ∈ N, ∀ m ∈ N', p * m * p⁻¹ ∈ N') →

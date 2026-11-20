@@ -5,6 +5,13 @@ open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta
 
 namespace UpperTheory.Lit.Bur.SobConj
 
+/- English proof (translation)
+Establish `back : ∀ a : Matrix (Fin n) (Fin n) ℂ, Q * (Qi * a * Q) * Qi = a` using `fun a => by`. Combine the equalities or inequalities in the displayed calculation. Establish `lie : ∀ X ∈ lieG J, Qi * X * Q ∈ lieG G` using `fun X hX => GlobalTheory.SmoothCyclic.conj_lie h2 hg hX`. Establish `e : ∀ X w, dRep (fun g => σ (Q * g * Qi)) (Qi * X * Q) w = dRep σ X w` using `fun X w => by`. Simplify using `only [dRep, GlobalTheory.SmoothCyclic.exp_conj_of_mul h2, back]`.
+
+Establish `hsm : ∀ w, SmoothVec (lieG G) (fun g => σ (Q * g * Qi)) w → SmoothVec (lieG J) σ w` using `fun w hw k Xs hX => by`. Simplify `hw k (fun i => Qi * Xs i * Q) fun i => lie _ (hX i)` using `only [GlobalTheory.SmoothCyclic.expProd_conj h2, back]`. Take `⟨S, C, hS, hb⟩` from `hl`. Use `⟨S.map fun L => L.map fun X => Qi * X * Q, C, fun L hL X hX => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨L', hL', rfl⟩` from `List.mem_map.1 hL`.
+
+Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `lie Y (hS L' hL' Y hY)`. Simplify `hb w (hsm w hw)` using `only [e, List.map_map, Function.comp_def, List.foldr_map]`.
+-/
 theorem sobCont_conj {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1)
     (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = G) {l : H →ₗ[ℂ] ℂ} (hl : Sobolev₂ (lieG J) σ l) :
@@ -31,5 +38,8 @@ end UpperTheory.Lit.Bur.SobConj
 
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.SobConj.sobCont_conj | exact UpperTheory.Lit.Bur.SobConj.sobCont_conj | (intros; apply UpperTheory.Lit.Bur.SobConj.sobCont_conj <;> assumption)`.
+-/
 theorem _root_.UpperTheory.Lit.Bur.sobolevCont_of_conj_gram_form : ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = G) {l : H →ₗ[ℂ] ℂ} (hl : Sobolev₂ (lieG J) σ l), Sobolev₂ (lieG G) (fun g => σ (Q * g * Qi)) l := by
   first | exact @UpperTheory.Lit.Bur.SobConj.sobCont_conj | exact UpperTheory.Lit.Bur.SobConj.sobCont_conj | (intros; apply UpperTheory.Lit.Bur.SobConj.sobCont_conj <;> assumption)

@@ -11,6 +11,11 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Take `⟨t⟩` from `‹Nonempty (Spec Ω)›`. Establish `e : p = q`. Use `congrArg (fun f => f t) h` as an intermediate fact. Simplify `this` using `only [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Substitute `e` using the available equality.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[cancel_mono, Spec.map_inj]`. Simplify using `using h`.
+-/
 theorem residue_embedding_unique {X : Scheme.{0}} {Ω : CommRingCat.{0}} [Nonempty (Spec Ω)]
     {p q : X} (φ : X.residueField p ⟶ Ω) (ψ : X.residueField q ⟶ Ω)
     (h : Spec.map φ ≫ X.fromSpecResidueField p = Spec.map ψ ≫ X.fromSpecResidueField q) :
@@ -24,6 +29,9 @@ theorem residue_embedding_unique {X : Scheme.{0}} {Ω : CommRingCat.{0}} [Nonemp
   rw [cancel_mono, Spec.map_inj] at h
   simpa using h
 
+/- English proof (translation)
+Use `haveI : (s p).asIdeal.IsPrime := PrimeSpectrum.isPrime _`. Establish `e : ψ = CommRingCat.ofHom (algebraMap R (s p).asIdeal.ResidueField) ≫ (Scheme.Spec.residueFieldIso R (s p)).inv ≫ s.residueFieldMap p`. Rewrite using `[← Spec.map_inj, h, Spec.map_comp, Spec.map_comp, Category.assoc, Scheme.Spec.map_residueFieldIso_inv_eq_fromSpecResidueField, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Rewrite using `[e]`. Use `.comp (RingHom.essFiniteType_algebraMap.mpr inferInstance) (.comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.Spec.residueFieldIso R (s p)).inv).2).essFiniteType (RingHom.EssFiniteType.residueFieldMap (LocallyOfFiniteType.stalkMap s p)))` and prove the remaining obligations.
+-/
 theorem essFiniteType_residueField_of_locallyOfFiniteType {X : Scheme.{0}} {R : CommRingCat.{0}}
     (s : X ⟶ Spec R) [LocallyOfFiniteType s] (p : X) (ψ : R ⟶ X.residueField p)
     (h : Spec.map ψ = X.fromSpecResidueField p ≫ s) : ψ.hom.EssFiniteType := by
@@ -39,6 +47,23 @@ theorem essFiniteType_residueField_of_locallyOfFiniteType {X : Scheme.{0}} {R : 
       (ConcreteCategory.bijective_of_isIso (Scheme.Spec.residueFieldIso R (s p)).inv).2).essFiniteType
     (RingHom.EssFiniteType.residueFieldMap (LocallyOfFiniteType.stalkMap s p)))
 
+/- English proof (translation)
+Introduce `X Ω _ x`. Take `⟨⟨p, φ⟩, hx⟩` from `(Scheme.SpecToEquivOfField Ω X).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hx`. Substitute `hx` using the available equality. Set `f : X.residueField p →+* Ω` to `φ.hom`.
+
+Use `⟨f.fieldRange, fun τ τ' => ?_, fun K' _ j => ⟨fun h => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, cancel_mono, ← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨c, rfl⟩`. Conclude with `congrArg (fun g => g.hom c) h`.
+
+Introduce `h`. Use extensionality with `c`. Conclude with `h _ ⟨c, rfl⟩`. Set `e : K' ≃+* j.fieldRange` to `j.rangeRestrictFieldEquiv`. Set `g : X.residueField p →+* K'` to `e.symm.toRingHom.comp (f.codRestrict j.fieldRange fun c => h ⟨c, rfl⟩)`.
+
+Use `⟨Spec.map (CommRingCat.ofHom g) ≫ X.fromSpecResidueField p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `c`. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨f c, h ⟨c, rfl⟩⟩)`.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨⟨q, ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K' X).symm.surjective y`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hy`. Rewrite `hy` using `[← Category.assoc, ← Spec.map_comp]`. Take `⟨e, he⟩` from `residue_embedding_unique _ _ hy.symm`.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨ψ.hom ((X.residueFieldCongr e).hom.hom c), (congrArg (fun g => g.hom c) he).symm⟩`. Introduce `K _ _ s hs hxs halg`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (X.fromSpecResidueField p ≫ s)`. Establish `hess` using `essFiniteType_residueField_of_locallyOfFiniteType s p ψ hψ`.
+
+Rewrite `hxs` using `[Category.assoc, ← hψ, ← Spec.map_comp, Spec.map_inj]`. Use `letI : Algebra K (X.residueField p) := ψ.hom.toAlgebra`. Set `fa : X.residueField p →ₐ[K] Ω` to `{ f with commutes' := fun c => congrArg (fun g => g.hom c) hxs }`. Use `haveI : Algebra.EssFiniteType K (X.residueField p) := hess`. Use `haveI : Algebra.IsAlgebraic K (X.residueField p) := Algebra.IsAlgebraic.of_injective fa f.injective`.
+
+Use `haveI : Module.Finite K (X.residueField p) := Algebra.finite_of_essFiniteType_of_isAlgebraic`. Use `⟨fa.fieldRange, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Module.Finite.equiv (AlgEquiv.ofInjectiveField fa).toLinearEquiv`.
+-/
 theorem exists_fieldOfValues : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (x : Sp Ω ⟶ X), ∃ E : Subfield Ω, (∀ τ τ' : Ω →+* Ω, spMap τ ≫ x = spMap τ' ≫ x ↔ ∀ c ∈ E, τ c = τ' c) ∧ (∀ (K' : Type) [Field K'] (j : K' →+* Ω), E ≤ j.fieldRange ↔ ∃ y : Sp K' ⟶ X, spMap j ≫ y = x) ∧ ∀ (K : Type) [Field K] [Algebra K Ω] (s : X ⟶ Sp K), LocallyOfFiniteType s → x ≫ s = spMap (algebraMap K Ω) → Algebra.IsAlgebraic K Ω → ∃ L : IntermediateField K Ω, FiniteDimensional K L ∧ L.toSubfield = E := by
   intro X Ω _ x
   obtain ⟨⟨p, φ⟩, hx⟩ := (Scheme.SpecToEquivOfField Ω X).symm.surjective x

@@ -20,12 +20,20 @@ noncomputable section
 
 abbrev coverFSPot (e : ℕ) (z : Fin e → ℂ) : ℝ := (1 / 2) * Real.log (1 + ∑ i, ‖z i‖ ^ 2)
 
+/- English proof (translation)
+Unfold `coverFSPot`. Use `contDiff_const.mul (ContDiff.log (contDiff_const.add (ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i))) fun z => ?_)` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 theorem coverFSPot_contDiff (e : ℕ) {n : WithTop ℕ∞} : ContDiff ℝ n (coverFSPot e) := by
   unfold coverFSPot
   refine contDiff_const.mul (ContDiff.log (contDiff_const.add
     (ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ i))) fun z => ?_)
   positivity
 
+/- English proof (translation)
+Take `⟨-, hM, -, -, hq, -, -, -, -, hloc⟩` from `hH`. Use `⟨analyticAt_pi_iff.2 fun i => hq i j y ⟨hy, hm⟩, ?_⟩` and prove the remaining obligations. Take `⟨W, hWo, hyW, G, hG, heq⟩` from `hloc x _ ⟨hx, hm⟩`. Use `⟨G ∘ (A.chart j).symm, hG j y ⟨hy, hyW⟩, ?_⟩` and prove the remaining obligations. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (W ∩ P.U x ∩ M₀))` using `(A.chart j).isOpen_inter_preimage_symm ((hWo.inter (P.isOpen_U x)).inter hM)`.
+
+Use `filter_upwards [hO.mem_nhds ⟨hy, ⟨hyW, hx⟩, hm⟩] with y' hy'`. Conclude with `heq _ hy'.2`.
+-/
 theorem coverFS_local {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {P : LocPot X} {q : X → Fin e → ℂ} {M₀ : Set X} {Δ : Set (Fin e → ℂ)} {d : ℕ}
     (hH : FubiniStudyCoverMass.Hyp A P q M₀ Δ d) (x : X) (j : Fin A.n) {y : Fin e → ℂ}
@@ -43,10 +51,18 @@ theorem coverFS_local {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas
   filter_upwards [hO.mem_nhds ⟨hy, ⟨hyW, hx⟩, hm⟩] with y' hy'
   exact heq _ hy'.2
 
+/- English proof (translation)
+The claim follows from `(coverFSPot_contDiff e).contDiffAt.comp y hτ.restrictScalars.contDiffAt`.
+-/
 theorem coverFS_contDiffAt {e : ℕ} {τ : (Fin e → ℂ) → (Fin e → ℂ)} {y : Fin e → ℂ}
     (hτ : AnalyticAt ℂ τ y) : ContDiffAt ℝ 2 (coverFSPot e ∘ τ) y :=
   (coverFSPot_contDiff e).contDiffAt.comp y hτ.restrictScalars.contDiffAt
 
+/- English proof (translation)
+Take `⟨hτ, G, hG, hev⟩` from `coverFS_local hH x j hy hx hm`. Establish `hg : ContDiffAt ℝ 2 (fun y' => (G y').re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y hG.restrictScalars.contDiffAt`. Establish `hsum : (fun y' => (coverFSPot e ∘ (q ∘ (A.chart j).symm)) y' + (G y').re) = fun y' => (coverFSPot e ∘ (q ∘ (A.chart j).symm)) y' + 1 * (G y').re`. Use function extensionality and compare the values at `y'`. Rewrite using `[one_mul]`.
+
+Rewrite using `[levi_congr hev, hsum, levi_add_smul 1 (coverFS_contDiffAt hτ) hg, levi_re_analytic hG, mul_zero, add_zero, levi_comp w hτ (coverFSPot_contDiff e).contDiffAt]`. Conclude with `(hFS e _ _).1`.
+-/
 theorem fubiniStudyCover_levi_nonneg (hFS : FubiniStudyChartDensity.Statement) {e : ℕ} {X : Type}
     [TopologicalSpace X] {A : FinHolAtlas e X} {P : LocPot X} {q : X → Fin e → ℂ} {M₀ : Set X}
     {Δ : Set (Fin e → ℂ)} {d : ℕ} (hH : FubiniStudyCoverMass.Hyp A P q M₀ Δ d) (x : X)
@@ -63,6 +79,11 @@ theorem fubiniStudyCover_levi_nonneg (hFS : FubiniStudyChartDensity.Statement) {
     mul_zero, add_zero, levi_comp w hτ (coverFSPot_contDiff e).contDiffAt]
   exact (hFS e _ _).1
 
+/- English proof (translation)
+Take `⟨hτ, G, hG, hev⟩` from `coverFS_local hH ((A.chart j).symm y) j hy (P.mem_U _) hm`. Establish `h1 : locDens A (fun _ => P) j y = maDens (fun _ => P.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y` using `rfl`. Establish `h2 : maDens (fun _ => P.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y = maDens (fun _ => coverFSPot e ∘ (q ∘ (A.chart j).symm)) y`. Rewrite using `[maDens_congr_eventuallyEq (fun _ => hev)]`. Conclude with `maDens_congr_hessC _ _ y fun _ => ReciprocityTheory.AnForm.A.hessC_add_re_analytic _ G y (coverFS_contDiffAt hτ) hG`.
+
+Establish `h3` using `ReciprocityTheory.AnForm.A.maDens_comp (fun _ => coverFSPot e) (q ∘ (A.chart j).symm) y hτ fun _ => (coverFSPot_contDiff e).contDiffAt`. Rewrite using `[h1, h2, h3, ReciprocityTheory.AnForm.A.det_jacC, Complex.normSq_eq_norm_sq]`. Use `congr 1`. Conclude with `(hFS e _ 0).2`.
+-/
 theorem coverFS_locDens (hFS : FubiniStudyChartDensity.Statement) {e : ℕ} {X : Type}
     [TopologicalSpace X] {A : FinHolAtlas e X} {P : LocPot X} {q : X → Fin e → ℂ} {M₀ : Set X}
     {Δ : Set (Fin e → ℂ)} {d : ℕ} (hH : FubiniStudyCoverMass.Hyp A P q M₀ Δ d) (j : Fin A.n)
@@ -85,6 +106,25 @@ theorem coverFS_locDens (hFS : FubiniStudyChartDensity.Statement) {e : ℕ} {X :
   congr 1
   exact (hFS e _ 0).2
 
+/- English proof (translation)
+Introduce `e X _ _ _ _ A P q M₀ Δ d hH`. Establish `hH'` using `hH`. Take `⟨hP, hM, hAn, hInt, hq, hΔc, hΔ0, hcov, hdeg, -⟩` from `hH'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x j y hy w`.
+
+Assume the negation of the conclusion as `hneg`. Establish `hneg'` using `not_le.1 hneg`. Establish `hU : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `hc : ContinuousAt (fun y' => levi (P.φ x ∘ (A.chart j).symm) y' w) y`. Establish `h` using `(continuousOn_levi hU (potSmoothOn A P hP x j)).continuousAt ((hU.prod isOpen_univ).mem_nhds (Set.mk_mem_prod hy (Set.mem_univ w)))`.
+
+Establish `hpair : ContinuousAt (fun y' : Fin e → ℂ => (y', w)) y` using `continuousAt_id.prodMk continuousAt_const`. Conclude with `ContinuousAt.comp (f := fun y' : Fin e → ℂ => (y', w)) h hpair`. Establish `hev : ∀ᶠ y' in 𝓝 y, levi (P.φ x ∘ (A.chart j).symm) y' w < 0 ∧ y' ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x` using `(hc.eventually (gt_mem_nhds hneg')).and (hU.mem_nhds hy)`. Establish `hfr : ∃ᶠ y' in 𝓝 y, (A.chart j).symm y' ∈ M₀`. Introduce `hno`.
+
+Take `⟨N, hNsub, hNo, hyN⟩` from `mem_nhds_iff.1 (hno.and ((A.chart j).open_target.mem_nhds hy.1))`. Establish `himg : IsOpen ((A.chart j).symm '' N)` using `(A.chart j).isOpen_image_symm_of_subset_target hNo fun z hz => (hNsub hz).2`. Establish `hsub : (A.chart j).symm '' N ⊆ interior M₀ᶜ` using `interior_maximal (by rintro _ ⟨z, hz, rfl⟩; exact (hNsub hz).1) himg`. Rewrite `hsub` using `[hInt]`. Conclude with `hsub ⟨y, hyN, rfl⟩`.
+
+Take `⟨y', hm, hlt, hyU⟩` from `(hfr.and_eventually hev).exists`. Conclude with `absurd (fubiniStudyCover_levi_nonneg hFS hH x j hyU.1 hyU.2 hm w) (not_le.2 hlt)`. Establish `hχ : Nonempty (ChartPartition A)` using `hPart A`. Use `set χ := hχ.some with hχdef`. Establish `hmass : maMeasure A (fun _ => P) Set.univ = ∑ j, ∫⁻ y in (A.chart j).target, ENNReal.ofReal (χ.χ j ((A.chart j).symm y) * locDens A (fun _ => P) j y)`.
+
+Rewrite using `[maMeasure, dif_pos hχ, Measure.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply_of_aemeasurable ?_ MeasurableSet.univ, Set.preimage_univ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]`. Conclude with `((A.chart j).continuousOn_symm.aemeasurable (A.chart j).open_target.measurableSet).mono_ac (withDensity_absolutelyContinuous _ _)`. Establish `hpiece : ∀ j, ∫⁻ y in (A.chart j).target, ENNReal.ofReal (χ.χ j ((A.chart j).symm y) * locDens A (fun _ => P) j y) = ∫⁻ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' M₀, ENNReal.ofReal (χ.χ j ((A.chart j).symm y)) * ENNReal.ofReal (‖LinearMap.det (fderiv ℂ (q ∘ (A.chart j).symm) …` using `e) 0 z)) (q ((A.chart j).symm y)) := by`.
+
+Introduce `j`. Establish `hae : ((A.chart j).target : Set (Fin e → ℂ)) =ᵐ[volume] ((A.chart j).target ∩ (A.chart j).symm ⁻¹' M₀ : Set (Fin e → ℂ))`. Use `ae_eq_set.2 ⟨measure_mono_null ?_ (analyticNull A M₀ᶜ hAn hInt j), ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hyV⟩`. Conclude with `⟨(A.chart j).symm y, ⟨fun hm => hyV ⟨hy, hm⟩, (A.chart j).map_target hy⟩, (A.chart j).right_inv hy⟩`.
+
+Rewrite using `[Set.sdiff_eq_empty.2 Set.inter_subset_left, measure_empty]`. Rewrite using `[setLIntegral_congr hae]`. Use `setLIntegral_congr_fun ((A.chart j).isOpen_inter_preimage_symm hM).measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[coverFS_locDens hFS hH j hy.1 hy.2]`. Use `beta_reduce`.
+
+Rewrite using `[CP.fsVolumeDensity_eq, ENNReal.ofReal_mul (χ.nonneg j _), ENNReal.ofReal_mul (by positivity)]`. Simplify using `only [normSqSum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmeas : Measurable fun z => ENNReal.ofReal (CP.fsVolumeDensity (N` using `e) 0 z) := (CP.measurable_fsVolumeDensity 0).ennreal_ofReal`. Rewrite using `[hmass, Finset.sum_congr rfl fun j _ => hpiece j, hCov A χ q M₀ Δ d ⟨hM, hq, hΔc, hcov, hdeg⟩ _ hmeas, setLIntegral_congr (ae_eq_univ.2 (by rwa [compl_compl])), Measure.restrict_univ, CP.lintegral_fsVolumeDensity, mul_one]`.
+-/
 theorem FubiniStudyCoverMass.proof (hFS : FubiniStudyChartDensity.Statement)
     (hPart : ChartPartitionExists.Statement) (hCov : CoverChartLIntegral.Statement) :
     FubiniStudyCoverMass.Statement := by

@@ -5,10 +5,16 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.GaussHerm
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (V n), Complex.finrank_real_complex, finrank_euclideanSpace, Fintype.card_fin]`.
+-/
 lemma finrank_V (n : ℕ) : Module.finrank ℝ (V n) = 2 * n := by
   rw [← Module.finrank_mul_finrank ℝ ℂ (V n), Complex.finrank_real_complex, finrank_euclideanSpace,
     Fintype.card_fin]
 
+/- English proof (translation)
+Establish `: Matrix.toEuclideanLin C = Matrix.toLin (EuclideanSpace.basisFun (Fin n) ℂ).toBasis (EuclideanSpace.basisFun (Fin n) ℂ).toBasis C`. Use extensionality with `v i : 2`. Simplify using `[Matrix.toLin_apply, Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct, EuclideanSpace.single_apply, Pi.single_apply]`. Rewrite using `[this, LinearMap.det_toLin]`.
+-/
 lemma det_toEuclideanLin {n : ℕ} (C : Matrix (Fin n) (Fin n) ℂ) :
     LinearMap.det (Matrix.toEuclideanLin C) = C.det := by
   have : Matrix.toEuclideanLin C = Matrix.toLin (EuclideanSpace.basisFun (Fin n) ℂ).toBasis
@@ -18,6 +24,13 @@ lemma det_toEuclideanLin {n : ℕ} (C : Matrix (Fin n) (Fin n) ℂ) :
       EuclideanSpace.single_apply, Pi.single_apply]
   rw [this, LinearMap.det_toLin]
 
+/- English proof (translation)
+Establish `hH : ∀ j l, H j l = ∑ k, (starRingEnd ℂ) (C k l) * C k j`. Introduce `j l`. Use `congrFun (congrFun hC l) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `hc : (∑ j, ∑ l, H j l * w j * (starRingEnd ℂ) (w l)) = ∑ k, (∑ j, C k j * w j) * (starRingEnd ℂ) (∑ l, C k l * w l)`.
+
+Simplify using `only [hH, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Conclude with `(Finset.sum_congr rfl fun j _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun k _ => Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => by ring)))`. Rewrite using `[hc, EuclideanSpace.norm_sq_eq, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re]`.
+
+Simplify using `[Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct]`.
+-/
 lemma quad_eq {n : ℕ} (H C : Matrix (Fin n) (Fin n) ℂ) (hC : H.transpose = C.conjTranspose * C)
     (w : V n) :
     (∑ j, ∑ l, H j l * w j * (starRingEnd ℂ) (w l)).re = ‖Matrix.toEuclideanLin C w‖ ^ 2 := by
@@ -36,6 +49,9 @@ lemma quad_eq {n : ℕ} (H C : Matrix (Fin n) (Fin n) ℂ) (hC : H.transpose = C
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re]
   simp [Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use `open scoped MatrixOrder in`. Establish `h0 : 0 ≤ T` using `Matrix.nonneg_iff_posSemidef.mpr hT`. Establish `hs : (CFC.sqrt T).PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg T)`. Conclude with `⟨CFC.sqrt T, by rw [hs.1.eq, CFC.sqrt_mul_sqrt_self T h0]⟩`.
+-/
 theorem exists_eq_conjTranspose_mul_self {n : ℕ} {T : Matrix (Fin n) (Fin n) ℂ}
     (hT : T.PosSemidef) : ∃ B : Matrix (Fin n) (Fin n) ℂ, T = B.conjTranspose * B := by
   open scoped MatrixOrder in
@@ -43,6 +59,19 @@ theorem exists_eq_conjTranspose_mul_self {n : ℕ} {T : Matrix (Fin n) (Fin n) �
   have hs : (CFC.sqrt T).PosSemidef := Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg T)
   exact ⟨CFC.sqrt T, by rw [hs.1.eq, CFC.sqrt_mul_sqrt_self T h0]⟩
 
+/- English proof (translation)
+Introduce `n H hH`. Establish `hT : H.transpose.PosDef` using `Matrix.PosDef.transpose_iff.mpr hH`. Take `⟨C, hC⟩` from `exists_eq_conjTranspose_mul_self hT.posSemidef`. Use `set L : V n →ₗ[ℝ] V n := (Matrix.toEuclideanLin C).restrictScalars ℝ with hL`. Establish `hdetL : LinearMap.det L = Complex.normSq C.det`.
+
+Rewrite using `[hL, LinearMap.det_restrictScalars, det_toEuclideanLin, Algebra.norm_complex_apply]`. Establish `hdetC : H.det = (Complex.normSq C.det : ℂ)`. Rewrite using `[← Matrix.det_transpose H, hC, Matrix.det_mul, Matrix.det_conjTranspose, Complex.star_def, mul_comm, Complex.mul_conj]`. Establish `hdetH : H.det.re = Complex.normSq C.det` using `by rw [hdetC, Complex.ofReal_re]`. Establish `hpos : 0 < Complex.normSq C.det`.
+
+Use `hH.det_pos` as an intermediate fact. Rewrite `this` using `[hdetC, Complex.zero_lt_real]`. Then use the resulting hypothesis. Use `set g : V n → ℝ := fun v => Real.exp (-1 * ‖v‖ ^ 2) with hg`. Establish `hf : (fun w : V n => Real.exp (-(∑ j, ∑ l, H j l * w j * (starRingEnd ℂ) (w l)).re)) = fun w => g (L w)`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[quad_eq H C hC w, hg]`. Simplify using `[hL]`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (V n)) (f := L) (by rw [hdetL]; exact hpos.ne')`. Establish `hG : ∫ v : V n, g v = Real.pi ^ n`. Rewrite using `[hg, GaussianFourier.integral_rexp_neg_mul_sq_norm one_pos, finrank_V, div_one]`.
+
+Rewrite using `[show ((2 * n : ℕ) : ℝ) / 2 = (n : ℝ) by push_cast; ring, Real.rpow_natCast]`. Establish `hgc : Continuous g` using `by rw [hg]; fun_prop`. Establish `hI : ∫ w : V n, g (L w) = Real.pi ^ n / H.det.re`. Rewrite using `[← integral_map (L.continuous_of_finiteDimensional.aemeasurable) hgc.aestronglyMeasurable, hmap, integral_smul_measure, hG, hdetL, hdetH, ENNReal.toReal_ofReal (abs_nonneg _), abs_of_pos (inv_pos.mpr hpos), smul_eq_mul, div_eq_inv_mul]`. Rewrite using `[hf]`.
+
+Use `⟨Integrable.of_integral_ne_zero ?_, hI⟩` and prove the remaining obligations. Rewrite using `[hI, hdetH]`. Conclude with `(div_pos (pow_pos Real.pi_pos n) hpos).ne'`.
+-/
 theorem integral_exp_neg_herm : ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ), H.PosDef →
     Integrable (fun w : V n => Real.exp (-(∑ j, ∑ l, H j l * w j * (starRingEnd ℂ) (w l)).re)) ∧
     ∫ w : V n, Real.exp (-(∑ j, ∑ l, H j l * w j * (starRingEnd ℂ) (w l)).re) =

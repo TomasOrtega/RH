@@ -16,6 +16,11 @@ namespace Cx2
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `S6.idl`. Use `mul_ne_zero (zpow_ne_zero _ ?_) ?_` and prove the remaining obligations. Unfold `S6.dd`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`.
+
+Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `zpow_ne_zero _ (Nat.cast_ne_zero.mpr hg.ne')`.
+-/
 theorem idl_ne_zero (g : ℕ) (hg : 0 < g) (k ν : ℤ) : S6.idl E g k ν ≠ 0 := by
   unfold S6.idl
   refine mul_ne_zero (zpow_ne_zero _ ?_) ?_
@@ -25,6 +30,15 @@ theorem idl_ne_zero (g : ℕ) (hg : 0 < g) (k ν : ℤ) : S6.idl E g k ν ≠ 0 
   · rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
     exact zpow_ne_zero _ (Nat.cast_ne_zero.mpr hg.ne')
 
+/- English proof (translation)
+Unfold `S6.idl`. Establish `hg1 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (g : E) ≤ 1`. Rewrite using `[FractionalIdeal.spanSingleton_le_iff_mem, FractionalIdeal.mem_one_iff]`. Conclude with `⟨(g : 𝓞 E), by simp⟩`. Establish `h2 : ((g : E) ^ (2 : ℤ)) = (g : E) * (g : E) ^ (1 : ℤ)`.
+
+Rewrite using `[zpow_one, zpow_two]`. Establish `key : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) ((g : E) ^ (2 : ℤ)) ≤ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) ((g : E) ^ (1 : ℤ))`. Rewrite using `[h2, ← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact FractionalIdeal.mul_right_mono _ hg1`.
+
+Consider the case `exact FractionalIdeal.mul_le_mul_right hg1 _`. Consider the case `gcongr`. Use `_ = _ := one_mul _`. Use `first`. Consider the case `exact FractionalIdeal.mul_left_mono _ key`.
+
+Consider the case `exact FractionalIdeal.mul_le_mul_left key _`. Consider the case `gcongr`.
+-/
 theorem idl_two_le_one (g : ℕ) (ν : ℤ) : S6.idl E g 2 ν ≤ S6.idl E g 1 ν := by
   unfold S6.idl
   have hg1 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) (g : E) ≤ 1 := by
@@ -46,6 +60,17 @@ theorem idl_two_le_one (g : ℕ) (ν : ℤ) : S6.idl E g 2 ν ≤ S6.idl E g 1 �
     | exact FractionalIdeal.mul_le_mul_left key _
     | gcongr
 
+/- English proof (translation)
+Establish `hA : S6.idl E g 1 ν ≠ 0` using `idl_ne_zero g hg 1 ν`. Establish `hB : S6.idl E g 2 ν ≠ 0` using `idl_ne_zero g hg 2 ν`. Take `⟨hBL, hLA⟩` from `twistedLatticeBetween E (S6.idl E g 1 ν) (S6.idl E g 2 ν) 1 (idl_two_le_one g ν) (different_power_conj_stable E g 2 ν)`. Establish `hmem : ∀ x, x ∈ S6.frameLat E (S6.perLat E g ν 1) 1 ↔ ∃ t ∈ S6.perLat E g ν 1, mixedEmbedding E t = x`. Introduce `x`.
+
+Simplify using `[S6.frameLat]`. Prove the components needed by the constructor for the conclusion. Establish `hsub : (S6.frameLat E (S6.perLat E g ν 1) 1 : Set (mixedEmbedding.mixedSpace E)) ⊆ (mixedEmbedding.idealLattice E (Units.mk0 _ hA) : Set (mixedEmbedding.mixedSpace E))`. Introduce `x hx`. Take `⟨t, ht, rfl⟩` from `(hmem x).1 hx`.
+
+Conclude with `(mixedEmbedding.mem_idealLattice E _).2 ⟨t, hLA ht, rfl⟩`. Conclude with `DiscreteTopology.of_subset (inferInstanceAs (DiscreteTopology (mixedEmbedding.idealLattice E (Units.mk0 _ hA)))) hsub`. Establish `hsub : (mixedEmbedding.idealLattice E (Units.mk0 _ hB) : Set (mixedEmbedding.mixedSpace E)) ⊆ (S6.frameLat E (S6.perLat E g ν 1) 1 : Set (mixedEmbedding.mixedSpace E))`. Introduce `x hx`. Take `⟨t, ht, rfl⟩` from `(mixedEmbedding.mem_idealLattice E _).1 hx`.
+
+Conclude with `(hmem _).2 ⟨t, hBL ht, rfl⟩`. Establish `hr : Set.range (mixedEmbedding.fractionalIdealLatticeBasis E (Units.mk0 _ hB)) ⊆ (S6.frameLat E (S6.perLat E g ν 1) 1 : Set (mixedEmbedding.mixedSpace E))`. Introduce `x hx`. Establish `hx' : x ∈ mixedEmbedding.idealLattice E (Units.mk0 _ hB)`. Rewrite using `[← mixedEmbedding.span_idealLatticeBasis]`.
+
+Conclude with `Submodule.subset_span hx`. Conclude with `hsub hx'`. Rewrite using `[eq_top_iff, ← (mixedEmbedding.fractionalIdealLatticeBasis E (Units.mk0 _ hB)).span_eq]`. Conclude with `Submodule.span_mono hr`.
+-/
 theorem frame_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) :
     DiscreteTopology (S6.frameLat E (S6.perLat E g ν 1) 1) ∧
     Submodule.span ℝ (S6.frameLat E (S6.perLat E g ν 1) 1 : Set (mixedEmbedding.mixedSpace E)) = ⊤ := by
@@ -81,12 +106,20 @@ theorem frame_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) :
     rw [eq_top_iff, ← (mixedEmbedding.fractionalIdealLatticeBasis E (Units.mk0 _ hB)).span_eq]
     exact Submodule.span_mono hr
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `frame_facts (E := E) g hg ν`. Take `⟨hd', hs', -⟩` from `hEF E (S6.perLat E g ν 1) 1 hd hs`. Conclude with `⟨hd', { span_top := hs' }⟩`.
+-/
 theorem eLat_facts (hEF : J.EuclidFrame) (g : ℕ) (hg : 0 < g) (ν : ℤ) :
     ∃ _ : DiscreteTopology (J.eLat E (S6.perLat E g ν 1) 1), IsZLattice ℝ (J.eLat E (S6.perLat E g ν 1) 1) := by
   obtain ⟨hd, hs⟩ := frame_facts (E := E) g hg ν
   obtain ⟨hd', hs', -⟩ := hEF E (S6.perLat E g ν 1) 1 hd hs
   exact ⟨hd', { span_top := hs' }⟩
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply, Finset.sum_div, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hd : (J.dm E g 1 (-l)) w = ((2 / ((g : ℝ) * 1) : ℝ) : ℂ) * conj (w.embedding (-l))` using `rfl`. Rewrite using `[hd, Complex.inner]`. Simplify using `only [map_neg, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_dm (g : ℕ) (l : E) (c : J.CV E) :
     inner ℝ c (J.dm E g 1 (-l)) = -((∑ w : InfinitePlace E, 2 * (w.embedding l * c w).re) / g) := by
   rw [PiLp.inner_apply, Finset.sum_div, ← Finset.sum_neg_distrib]
@@ -100,6 +133,9 @@ theorem inner_dm (g : ℕ) (l : E) (c : J.CV E) :
 variable {Wp Wq : InfinitePlace E → Type} [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Establish `h` using `NumberField.InfinitePlace.embedding_mk_eq (S.emb v)`. Rewrite `h` using `[S.hemb v]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl h.symm`. Conclude with `Or.inr h.symm`.
+-/
 theorem σ_or (S : HidaSetting E Wp Wq) (v : Fin S.f) :
     S.σ v = (S.pl v).embedding ∨ ComplexEmbedding.conjugate (S.σ v) = (S.pl v).embedding := by
   have h := NumberField.InfinitePlace.embedding_mk_eq (S.emb v)
@@ -108,6 +144,9 @@ theorem σ_or (S : HidaSetting E Wp Wq) (v : Fin S.f) :
   · exact Or.inl h.symm
   · exact Or.inr h.symm
 
+/- English proof (translation)
+Rewrite using `[← S.hemb v]`. Conclude with `(NumberField.InfinitePlace.apply (S.emb v) t).symm`.
+-/
 theorem norm_σ (S : HidaSetting E Wp Wq) (v : Fin S.f) (t : E) : ‖S.σ v t‖ = S.pl v t := by
   rw [← S.hemb v]
   exact (NumberField.InfinitePlace.apply (S.emb v) t).symm
@@ -118,6 +157,9 @@ def cj (S : HidaSetting E Wp Wq) : J.CV E ≃ₗᵢ[ℝ] J.CV E :=
   LinearIsometryEquiv.piLpCongrRight 2 fun w =>
     if S.σ (S.pl.symm w) = w.embedding then LinearIsometryEquiv.refl ℝ ℂ else Complex.conjLIE
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `[cj, h]`. Introduce `h`. Simplify using `[cj, h]`.
+-/
 theorem cj_apply (S : HidaSetting E Wp Wq) (c : J.CV E) (v : Fin S.f) :
     (S.σ v = (S.pl v).embedding → cj S c (S.pl v) = c (S.pl v)) ∧
       (S.σ v ≠ (S.pl v).embedding → cj S c (S.pl v) = conj (c (S.pl v))) := by
@@ -127,6 +169,11 @@ theorem cj_apply (S : HidaSetting E Wp Wq) (c : J.CV E) (v : Fin S.f) :
   · intro h
     simp [cj, h]
 
+/- English proof (translation)
+Establish `hc : J.cemb E t (S.pl v) = (S.pl v).embedding t` using `rfl`. Distinguish the cases in `h : S.σ v = (S.pl v).embedding`. Rewrite using `[(cj_apply S _ v).1 h, hc, h]`. Rewrite using `[(cj_apply S _ v).2 h, hc]`. Break down `σ_or S v with h' | h'` into its components or cases.
+
+Conclude with `absurd h' h`. Rewrite using `[← h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+-/
 theorem cj_cemb (S : HidaSetting E Wp Wq) (t : E) (v : Fin S.f) : cj S (J.cemb E t) (S.pl v) = S.σ v t := by
   have hc : J.cemb E t (S.pl v) = (S.pl v).embedding t := rfl
   by_cases h : S.σ v = (S.pl v).embedding
@@ -136,11 +183,19 @@ theorem cj_cemb (S : HidaSetting E Wp Wq) (t : E) (v : Fin S.f) : cj S (J.cemb E
     · exact absurd h' h
     · rw [← h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]
 
+/- English proof (translation)
+Distinguish the cases in `h : S.σ v = (S.pl v).embedding`. Rewrite using `[(cj_apply S c v).1 h]`. Rewrite using `[(cj_apply S c v).2 h, Complex.norm_conj]`.
+-/
 theorem norm_cj (S : HidaSetting E Wp Wq) (c : J.CV E) (v : Fin S.f) : ‖cj S c (S.pl v)‖ = ‖c (S.pl v)‖ := by
   by_cases h : S.σ v = (S.pl v).embedding
   · rw [(cj_apply S c v).1 h]
   · rw [(cj_apply S c v).2 h, Complex.norm_conj]
 
+/- English proof (translation)
+Distinguish the cases in `h : S.σ v = (S.pl v).embedding`. Rewrite using `[(cj_apply S c v).1 h, h]`. Rewrite using `[(cj_apply S c v).2 h]`. Break down `σ_or S v with h' | h'` into its components or cases. Conclude with `absurd h' h`.
+
+Rewrite using `[← h', ComplexEmbedding.conjugate_coe_eq]`. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_cj (S : HidaSetting E Wp Wq) (c : J.CV E) (l : E) (v : Fin S.f) :
     (S.σ v l * cj S c (S.pl v)).re = ((S.pl v).embedding l * c (S.pl v)).re := by
   by_cases h : S.σ v = (S.pl v).embedding
@@ -152,8 +207,22 @@ theorem re_cj (S : HidaSetting E Wp Wq) (c : J.CV E) (l : E) (v : Fin S.f) :
       simp only [Complex.mul_re, Complex.conj_re, Complex.conj_im]
       ring
 
+/- English proof (translation)
+The claim follows from `(cj S).measurePreserving`.
+-/
 theorem cj_mp (S : HidaSetting E Wp Wq) : MeasurePreserving (cj S) := (cj S).measurePreserving
 
+/- English proof (translation)
+Establish `hinv : ∀ c : J.CV E, cj S (cj S c) = c`. Introduce `c`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `S.pl.surjective w`. Distinguish the cases in `h : S.σ v = (S.pl v).embedding`.
+
+Rewrite using `[(cj_apply S _ v).1 h, (cj_apply S _ v).1 h]`. Rewrite using `[(cj_apply S _ v).2 h, (cj_apply S _ v).2 h, Complex.conj_conj]`. Establish `hs : ∀ t : E, (J.semb E 1).toIntLinearMap t = J.cemb E t` using `fun t => by`. Simplify using `[J.semb]`. Express the relevant statement in the definitionally equal form `cj S x ∈ J.eLat E L 1 ↔ _`.
+
+Simplify using `only [J.eLat, Submodule.mem_map, hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, he⟩`. Use `⟨t, ht, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hinv x, ← he, cj_cemb]`.
+
+Introduce and unpack `⟨t, ht, he⟩`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinv (J.cemb E t)]`. Use `congr 1`. Use extensionality with `w`.
+
+Take `⟨v, rfl⟩` from `S.pl.surjective w`. Rewrite using `[cj_cemb, he]`.
+-/
 theorem mem_comap_cj (S : HidaSetting E Wp Wq) (L : Submodule ℤ E) (x : J.CV E) :
     x ∈ ZLattice.comap ℝ (J.eLat E L 1) (cj S).toLinearEquiv.toLinearMap ↔
       ∃ t ∈ L, ∀ v, x (S.pl v) = S.σ v t := by
@@ -180,12 +249,28 @@ theorem mem_comap_cj (S : HidaSetting E Wp Wq) (L : Submodule ℤ E) (x : J.CV E
     obtain ⟨v, rfl⟩ := S.pl.surjective w
     rw [cj_cemb, he]
 
+/- English proof (translation)
+The claim follows from `ZLattice.covolume_comap (J.eLat E L 1) volume volume (e := (cj S).toContinuousLinearEquiv) (cj_mp S)`.
+-/
 theorem covolume_comap_cj (S : HidaSetting E Wp Wq) (L : Submodule ℤ E) [DiscreteTopology (J.eLat E L 1)]
     [IsZLattice ℝ (J.eLat E L 1)] :
     ZLattice.covolume (ZLattice.comap ℝ (J.eLat E L 1) (cj S).toLinearEquiv.toLinearMap) =
       ZLattice.covolume (J.eLat E L 1) :=
   ZLattice.covolume_comap (J.eLat E L 1) volume volume (e := (cj S).toContinuousLinearEquiv) (cj_mp S)
 
+/- English proof (translation)
+Set `k : Option (Fin S.f) → TB.Pt E → TB.Pt E → ℂ` to `fun o => match o with`. Consider the case `none => κ`. Consider the case `some v => fun h h' => S.gramLoc v ε i (w.1 v) (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))])`. Establish `hk : ∀ o, TB.PSDOn Y (k o)`. Introduce `o`.
+
+Consider the cases of `o with`. Consider the case `none => exact hκ`. Consider the case `some v`. Conclude with `Cx1.psd_pullback Y (fun h => loc (S.σ v) h ++ [(1, c (S.pl v))]) _ _ (fun x hx => Finset.mem_image_of_mem _ hx) (hP v ε hε i hi w _)`. Establish `hM` using `schur_product (TB.Pt E) (Option (Fin S.f)) Y k hk`.
+
+Establish `hsum : 0 ≤ ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))])`. Establish `h3 : ∀ F : TB.Pt E → TB.Pt E → ℂ, ∑ a ∈ Y.attach, ∑ b ∈ Y.attach, F a b = ∑ a ∈ Y, ∑ b ∈ Y, F a b`. Introduce `F`. Rewrite using `[← Finset.sum_attach Y (fun a => ∑ b ∈ Y, F a b)]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_attach Y (F a)`.
+
+Use `hM.dotProduct_mulVec_nonneg (fun _ => 1)` as an intermediate fact. Simplify using `[dotProduct, Matrix.mulVec, Fintype.prod_option, k] at this`. Conclude with `this.trans_eq (h3 (fun h h' => κ h h' * ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))])))`. Establish `hsize : 0 ≤ Word.size S.P w.1` using `Finset.prod_nonneg fun v _ => List.prod_nonneg (fun x hx => by`. Rewrite `hx` using `[List.mem_map]`.
+
+Take `⟨a, _, rfl⟩` from `hx`. Conclude with `abs_nonneg _)`. Take `⟨hre, him⟩` from `Complex.nonneg_iff.mp hsum`. Use `⟨(∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))])).re / Word.size S.P w.1, div_nonneg hre hsize, ?_⟩` and prove the remaining obligations. Use `show (∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))])) / (Word.size S.P w.1 : ℂ) = _`.
+
+Rewrite using `[Complex.ofReal_div]`. Use `congr 1`. Conclude with `Complex.ext (by simp) (by simp [← him])`.
+-/
 theorem first_norm_real_nonneg (S : HidaSetting E Wp Wq) (hP : ThmPPos S) (ε : ℝ) (hε : 0 < ε) (i : ℕ)
     (hi : i ≤ S.G.r + 1) (w : S.W) (Y : Finset (TB.Pt E)) (κ : TB.Pt E → TB.Pt E → ℂ)
     (hκ : TB.PSDOn Y κ) (c : J.CV E) :
@@ -230,6 +315,13 @@ theorem first_norm_real_nonneg (S : HidaSetting E Wp Wq) (hP : ThmPPos S) (ε : 
   congr 1
   exact Complex.ext (by simp) (by simp [← him])
 
+/- English proof (translation)
+Rewrite using `[ae_all_iff]`. Introduce `v`. Set `p : J.CV E →ₗ[ℝ] ℂ` to `((EuclideanSpace.proj (S.pl v) : J.CV E →L[ℂ] ℂ) : J.CV E →ₗ[ℂ] ℂ).restrictScalars ℝ`. Establish `hne : LinearMap.ker p ≠ ⊤`. Introduce `htop`.
+
+Establish `hm : EuclideanSpace.single (S.pl v) (1 : ℂ) ∈ LinearMap.ker p` using `htop ▸ Submodule.mem_top`. Simplify using `[p] at hm`. Establish `h0` using `MeasureTheory.Measure.addHaar_submodule volume (LinearMap.ker p) hne`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun c hc => ?_) h0` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_setOf_eq, not_not] at hc`. Simplify using `[p, hc]`.
+-/
 theorem ae_allNe (S : HidaSetting E Wp Wq) : ∀ᵐ c : J.CV E, ∀ v, c (S.pl v) ≠ 0 := by
   classical
   rw [ae_all_iff]
@@ -246,10 +338,44 @@ theorem ae_allNe (S : HidaSetting E Wp Wq) : ∀ᵐ c : J.CV E, ∀ v, c (S.pl v
   simp only [Set.mem_setOf_eq, not_not] at hc
   simp [p, hc]
 
+/- English proof (translation)
+The claim follows from `MeasureTheory.Measure.dense_of_ae (ae_allNe S)`.
+-/
 theorem dense_allNe (S : HidaSetting E Wp Wq) : Dense {c : J.CV E | ∀ v, c (S.pl v) ≠ 0} := MeasureTheory.Measure.dense_of_ae (ae_allNe S)
 
 end Cx2
 
+/- English proof (translation)
+Introduce `hEmb hEF hTD _ E _ _ _ Wp Wq _ _ _ _ S hg1 hg2 hP _ hI Kr hK0 Th e`. Establish `hg : 0 < S.g` using `Nat.mul_pos hg1 hg2`. Establish `hD : ∀ i : ℕ, DiscreteTopology (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1)` using `fun i => (Cx2.eLat_facts (E := E) hEF S.g hg _).fst`. Establish `hZ : ∀ i : ℕ, IsZLattice ℝ (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1)`. Introduce `i`.
+
+Take `⟨_, h⟩` from `Cx2.eLat_facts (E := E) hEF S.g hg (S6.nuBlock S.G.r i 1)`. Conclude with `h`. Take `⟨hinj, hbij, _, hsemb, _⟩` from `hEmb E`. Use `⟨J.CV E, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, InfinitePlace E, inferInstance, J.coord E, fun i => J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1, hD, hZ, fun _ => J.cemb E, fun _ l => J.dm E S.g 1 (-l), hbij, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ _`.
+
+Use `⟨hinj, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `h1 : J.cemb E t = J.semb E 1 t` using `by rw [hsemb, one_smul]`. Rewrite using `[h1]`. Conclude with `Submodule.mem_map_of_mem (f := (J.semb E 1).toIntLinearMap) ht`.
+
+Use extensionality with `w`. Simplify using `[J.dm]`. Introduce `μ hμ`. Establish `hfl` using `twistedIsRealOrderLattice E (S6.idl E S.g 1 (S6.nuBlock S.G.r i 1)) (S6.idl E S.g 2 (S6.nuBlock S.G.r i 1)) 1 (Cx2.idl_ne_zero S.g hg 2 _) (Cx2.idl_two_le_one S.g _) (different_power_conj_stable E S.g 2 _)`. Take `⟨l, hl, hlμ⟩` from `(hTD E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) S.g 1 hg one_ne_zero hfl.2 μ).1 hμ`.
+
+Use `⟨-l, ?_, ?_⟩` and prove the remaining obligations. Conclude with `neg_mem hl`. Simplify using `using hlμ`. Introduce `ε hε i hi1 hi2 w Y hY κ hκ`. Establish `hi2' : i ≤ S.G.r + 1` using `hi2`.
+
+Take `⟨⟨φ, hcont, hext, Cφ, hdec⟩, _⟩` from `hI ε hε i hi1 hi2 w Y hY κ hκ`. Establish `hreal : ∀ c, ((φ c).re : ℂ) = φ c ∧ 0 ≤ (φ c).re`. Establish `hcl : IsClosed {c : J.CV E | 0 ≤ (φ c).re ∧ (φ c).im = 0}` using `(isClosed_le continuous_const (Complex.continuous_re.comp hcont)).inter (isClosed_eq (Complex.continuous_im.comp hcont) continuous_const)`. Establish `hsub : {c : J.CV E | ∀ v, c (S.pl v) ≠ 0} ⊆ {c : J.CV E | 0 ≤ (φ c).re ∧ (φ c).im = 0}`. Introduce `c hc`.
+
+Take `⟨x, hx, hxe⟩` from `Cx2.first_norm_real_nonneg S hP ε hε i hi2 w Y κ hκ c`. Rewrite using `[Set.mem_ofPred_eq, hext c hc, hxe, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨hx, rfl⟩`. Establish `hall : ∀ c, 0 ≤ (φ c).re ∧ (φ c).im = 0`. Introduce `c`.
+
+Establish `h` using `closure_minimal hsub hcl`. Rewrite `h` using `[(Cx2.dense_allNe S).closure_eq]`. Conclude with `h (Set.mem_univ c)`. Introduce `c`. Conclude with `⟨Complex.ext (by simp) (by simp [(hall c).2]), (hall c).1⟩`.
+
+Use `⟨fun c => (φ (Cx2.cj S c)).re, Cφ, Complex.continuous_re.comp (hcont.comp (Cx2.cj S).continuous), ?_, fun c => (hreal _).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`. Use `(Complex.abs_re_le_norm _).trans ((hdec _).trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 1`. Conclude with `Fintype.prod_equiv S.pl _ _ (fun v => by simp [J.coord, Cx2.norm_cj])`.
+
+Introduce `t ht`. Establish `hne : ∀ v, (Cx2.cj S (J.cemb E t)) (S.pl v) ≠ 0`. Introduce `v`. Rewrite using `[Cx2.cj_cemb]`. Conclude with `(map_ne_zero (S.σ v)).mpr ht`.
+
+Establish `h1 : S.N1 ε i w.1 Y κ (Cx2.cj S (J.cemb E t)) = (S.mkData Kr hK0 Th e).Nst ε i 1 w Y κ t t`. Simplify using `[HidaSetting.N1, TB.Data.Nst, HidaSetting.mkData, HidaSetting.gram, loc, TB.join, Cx2.cj_cemb, hi2']`. Use `show _ = (φ (Cx2.cj S (J.cemb E t))).re`. Rewrite using `[hext _ hne, h1]`. Introduce `l show S.Nhat ε i w.1 Y κ l = _`.
+
+Unfold `HidaSetting.Nhat`. Use `congr 1`. Rewrite using `[integral_congr_ae (g := fun c => φ c * S.psiInf l c) ((Cx2.ae_allNe S).mono fun c hc => by simp only [hext c hc])]`. Rewrite using `[← (Cx2.cj_mp S).integral_comp (Cx2.cj S).toHomeomorph.measurableEmbedding (fun c => φ c * S.psiInf l c)]`. Rewrite using `[Real.fourier_eq]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[(hreal (Cx2.cj S c)).1, Circle.smul_def, smul_eq_mul, mul_comm]`. Use `congr 1`. Unfold `HidaSetting.psiInf`.
+
+Rewrite using `[Real.fourierChar_apply, Cx2.inner_dm]`. Establish `hs : (∑ v : Fin S.f, 2 * (S.σ v l * (Cx2.cj S c) (S.pl v)).re) = ∑ w : InfinitePlace E, 2 * (w.embedding l * c w).re` using `Fintype.sum_equiv S.pl _ _ (fun v => by rw [Cx2.re_cj])`. Rewrite using `[hs]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poisson_input_of_parts : C.PoissonInputOfParts := by
   intro hEmb hEF hTD _ E _ _ _ Wp Wq _ _ _ _ S hg1 hg2 hP _ hI Kr hK0 Th e
   have hg : 0 < S.g := Nat.mul_pos hg1 hg2

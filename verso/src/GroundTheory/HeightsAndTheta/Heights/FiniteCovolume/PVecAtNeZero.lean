@@ -7,6 +7,11 @@ open Module NumberField
 
 variable {E : Type*} [Field E] {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*}
 
+/- English proof (translation)
+Introduce `x hx w hw`. Apply `hx` to reduce the goal to its premises. Apply `v.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h` using `congrFun hw i`.
+
+Simplify using `only [vecAt, Pi.zero_apply] at h`. Simplify using `using (map_eq_zero_iff w.embedding w.embedding.injective).mp h`.
+-/
 theorem VecAtNeZero.proof (v : Basis ι E W) : VecAtNeZero.Statement v := by
   intro x hx w hw
   apply hx

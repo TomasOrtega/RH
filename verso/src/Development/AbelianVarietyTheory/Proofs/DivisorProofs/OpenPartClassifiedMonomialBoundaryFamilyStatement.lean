@@ -7,5 +7,8 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UCanon.OpenPart.openCls | exact GlobalTheory.UCanon.OpenPart.openCls | (intros; apply GlobalTheory.UCanon.OpenPart.openCls <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.openPart_classified_monomialBoundaryFamily : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ C : MonoFam Xo c φ R, OpenCls C := by
   first | exact @GlobalTheory.UCanon.OpenPart.openCls | exact GlobalTheory.UCanon.OpenPart.openCls | (intros; apply GlobalTheory.UCanon.OpenPart.openCls <;> assumption)

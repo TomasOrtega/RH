@@ -3,6 +3,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockJointMultiplicity.D
 
 namespace PI.FJMB
 
+/- English proof (translation)
+The claim follows from `cauchy_highest_weight_of_shape hS diagonal_hypothesis diagonal_image_block_free`.
+-/
 theorem cauchyHW_of_shape (hS : HypShape) : PI.FJM.CauchyHW :=
   cauchy_highest_weight_of_shape hS diagonal_hypothesis diagonal_image_block_free
 

@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `hmm : ∀ Y : M4 R, m * (adj m * Y) = Y` using `fun Y => by`. Rewrite using `[← mul_assoc, sp_mul_adj hm, one_mul]`. Establish `hn : n = adj m * u * adj b`. Rewrite using `[e, mul_assoc, sp_mul_adj hb, mul_one]`. Rewrite using `[hn, adj_mul, adj_mul, adj_adj, adj_adj]`.
+
+Simplify using `only [mul_assoc, hmm]`.
+-/
 private theorem conj_flag {R : Type} [CommRing R] {m u n b : M4 R} (hm : IsGSp 1 m) (hb : IsGSp 1 b)
     (e : adj m * u = n * b) (X : M4 R) : adj n * (adj m * X * m) * n = b * (adj u * X * u) * adj b := by
   have hmm : ∀ Y : M4 R, m * (adj m * Y) = Y := fun Y => by
@@ -12,6 +17,15 @@ private theorem conj_flag {R : Type} [CommRing R] {m u n b : M4 R} (hm : IsGSp 1
   rw [hn, adj_mul, adj_mul, adj_adj, adj_adj]
   simp only [mul_assoc, hmm]
 
+/- English proof (translation)
+Introduce `i j hij hw`. Establish `hup : ∀ i j : Fin 4, i < j → n i j ∈ I` using `fun i j h => by`. Rewrite using `[hn.2.2 i j h]`. Conclude with `I.zero_mem`. Establish `hsp` using `congrFun (congrFun (sp_adj_mul hn.1) 1) 0`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, hn.2.1, hn.2.2, UpperTheory.V.GradeZeroInterpolatingElement.sgn] at hsp`. Establish `h32 : n 3 2 ∈ I`. Establish `: n 3 2 = -n 1 0` using `by linear_combination hsp`. Rewrite using `[this]`. Conclude with `I.neg_mem h10`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Apply the tactic sequence `all_goals first`. Consider the case `exact absurd rfl hij`. Consider the case `exact hup _ _ (by decide)`. Consider the case `exact h10`.
+
+Consider the case `exact h30`. Consider the case `exact h21`. Consider the case `exact h32`. Consider the case `exact absurd (by simp [UpperTheory.V.GradeZeroInterpolatingElement.wt, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.lamW, UpperTheory.V.GradeZeroInterpolatingElement.muW]) hw`.
+-/
 private theorem low_mem {R : Type} [CommRing R] {I : Ideal R} {n : M4 R} (hn : IsLow n) (h10 : n 1 0 ∈ I) (h30 : n 3 0 ∈ I)
     (h21 : n 2 1 ∈ I) : ∀ i j, i ≠ j → wt i j ≠ -wPs → n i j ∈ I := by
   intro i j hij hw
@@ -34,6 +48,25 @@ private theorem low_mem {R : Type} [CommRing R] {I : Ideal R} {n : M4 R} (hn : I
     | exact h32
     | exact absurd (by simp [UpperTheory.V.GradeZeroInterpolatingElement.wt, UpperTheory.V.GradeZeroInterpolatingElement.wPs, UpperTheory.V.GradeZeroInterpolatingElement.lamW, UpperTheory.V.GradeZeroInterpolatingElement.muW]) hw
 
+/- English proof (translation)
+Use `haveI := 𝔞.loc c`. Consider the cases of `pr with`. Consider the case `false`. Establish `: chi D false i s = D.ps i s` using `rfl`. Rewrite using `[this, sub_self]`.
+
+Conclude with `Ideal.zero_mem _`. Consider the case `true`. Establish `hbar : Raw.bar D.Psi s = 1` using `h rfl s hs`. Establish `hP : (↑(D.Psi s) : c.O) - 1 ∈ maximalIdeal c.O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_one]`.
+
+Establish `hb : residue c.O ↑(D.Psi s) = 1` using `hbar`. Rewrite using `[hb, sub_self]`. Establish `hPm` using `map_nonunit (𝔞.a c) _ hP`. Establish `key : ∀ x : (c.O)ˣ, 𝔞.a c ↑(x * D.Psi s) - 𝔞.a c ↑x ∈ maximalIdeal 𝔞.V`. Introduce `x`.
+
+Establish `e : 𝔞.a c (↑x * ↑(D.Psi s)) - 𝔞.a c ↑x = 𝔞.a c ↑x * 𝔞.a c (↑(D.Psi s) - 1)`. Rewrite using `[map_mul, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Units.val_mul, e]`. Conclude with `Ideal.mul_mem_left _ _ hPm`.
+
+Establish `key' : ∀ x : (c.O)ˣ, 𝔞.a c ↑x - 𝔞.a c ↑(x * D.Psi s) ∈ maximalIdeal 𝔞.V`. Introduce `x`. Rewrite using `[← neg_sub]`. Conclude with `(Ideal.neg_mem_iff _).2 (key x)`. Use `fin_cases i`.
+
+Use `show 𝔞.a c ↑(D.th s) - 𝔞.a c ↑(D.al s) ∈ _`. Establish `: D.th s = D.al s * D.Psi s` using `rfl`. Rewrite using `[this]`. Conclude with `key _`. Use `show 𝔞.a c ↑(D.Psi s) - 𝔞.a c ↑((1 : G ℚ Ω →* (c.O)ˣ) s) ∈ _`.
+
+Establish `: D.Psi s = (1 : G ℚ Ω →* (c.O)ˣ) s * D.Psi s` using `by simp`. Rewrite using `[this]`. Conclude with `key _`. Use `show 𝔞.a c ↑(D.al s) - 𝔞.a c ↑(D.th s) ∈ _`. Establish `: D.th s = D.al s * D.Psi s` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `key' _`. Use `show 𝔞.a c ↑((1 : G ℚ Ω →* (c.O)ˣ) s) - 𝔞.a c ↑(D.Psi s) ∈ _`. Establish `: D.Psi s = (1 : G ℚ Ω →* (c.O)ˣ) s * D.Psi s` using `by simp`. Rewrite using `[this]`.
+
+Conclude with `key' _`.
+-/
 private theorem ps_chi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
     (𝔞 : Amb l) {pr : Bool} (h : LabOk D pr) {s : G ℚ Ω} (hs : s ∈ D.Gp l) (i : Fin 4) :
     𝔞.a c (D.ps i s) - 𝔞.a c (chi D pr i s) ∈ maximalIdeal 𝔞.V := by
@@ -79,6 +112,39 @@ private theorem ps_chi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
       rw [this]
       exact key' _
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hG 𝔞 r u hK pr g0 P v b hlab hsmall hv hvc hPr hdiag hlow hb hbup e`. Establish `hMsp : IsGSp 1 (wM 𝔞.V pr * v)` using `sp_mul (wM_sp pr) hv`. Establish `hwM : ∀ d : Fin 4 → 𝔞.V, adj (wM 𝔞.V pr) * Matrix.diagonal d * wM 𝔞.V pr = Matrix.diagonal (fun i => d (lab pr i))`. Introduce `d`. Consider the cases of `pr`.
+
+Simplify using `[UpperTheory.V.Ws.wM, UpperTheory.V.Ws.lab, adj_one]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [UpperTheory.V.Ws.wM, UpperTheory.V.Ws.lab, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, UpperTheory.V.GradeZeroInterpolatingElement.sgn, Matrix.diagonal, Fin.rev]`. Establish `hflag : ∀ s ∈ D.Gp l, IsUp (adj (P.n ()) * P.r s * P.n ()) ∧ ∀ i, (adj (P.n ()) * P.r s * P.n ()) i i = (adj u * r s * u) i i`. Introduce `s hs`. Rewrite using `[hPr s, conj_flag hMsp hb e (r s)]`.
+
+Conclude with `upConj 𝔞.V b _ hb hbup (hK.flag s hs)`. Establish `hdr : ∀ (f : Fin 4 → G ℚ Ω →* (c.O)ˣ) (g : G ℚ Ω) (i j : Fin 4), 𝔞.a c (diagRep f g i j) = Matrix.diagonal (fun i => 𝔞.a c ↑(f i g)) i j`. Introduce `f g i j`. Unfold `UpperTheory.V.GradeZeroInterpolatingElement.diagRep`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Establish `hred : ∀ g i j, P.r g i j - 𝔞.a c (diagRep (chi D pr) g i j) ∈ maximalIdeal 𝔞.V`. Introduce `g`.
+
+Establish `hw : Cg (maximalIdeal 𝔞.V) (wM 𝔞.V pr) (wM 𝔞.V pr)` using `fun i j => by`. Rewrite using `[sub_self]`. Conclude with `Ideal.zero_mem _`. Establish `hM : Cg (maximalIdeal 𝔞.V) (wM 𝔞.V pr * v) (wM 𝔞.V pr * 1)` using `Cg.mul hw hvc`. Rewrite `hM` using `[mul_one]`.
+
+Establish `hR : Cg (maximalIdeal 𝔞.V) (r g) (Matrix.diagonal fun i => 𝔞.a c ↑(D.ps i g))`. Introduce `i j`. Establish `h1` using `hK.red g i j`. Establish `h2 : 𝔞.a c (D.r0 g i j) = Matrix.diagonal (fun i => 𝔞.a c ↑(D.ps i g)) i j`. Unfold `UpperTheory.V.GradeZeroInterpolatingElement.Raw.r0`.
+
+Conclude with `hdr D.ps g i j`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hC` using `Cg.mul (Cg.mul (Cg.adj hM) hR) hM`. Rewrite `hC` using `[hwM]`. Introduce `i j`.
+
+Rewrite using `[hdr, hPr g]`. Conclude with `hC i j`. Take `⟨hs, hsep⟩` from `sg_sep hG 𝔞 pr`. Establish `hX : Cg (maximalIdeal 𝔞.V) (P.r (D.sg l)) (Matrix.diagonal fun i => 𝔞.a c ↑(chi D pr i (D.sg l)))`. Introduce `i j`.
+
+Use `hred (D.sg l) i j` as an intermediate fact. Rewrite `this` using `[hdr]`. Then use the resulting hypothesis. Take `⟨hfl, hdg⟩` from `hflag (D.sg l) hs`. Establish `hdiag' : ∀ i, (adj (P.n ()) * P.r (D.sg l) * P.n ()) i i - 𝔞.a c ↑(D.ps i (D.sg l)) ∈ maximalIdeal 𝔞.V`. Introduce `i`.
+
+Rewrite using `[hdg i]`. Conclude with `hK.char _ hs i`. Take `⟨h10, h30, -, h4⟩` from `resFlag 𝔞.V (P.r (D.sg l)) (P.n ()) (fun i => 𝔞.a c ↑(chi D pr i (D.sg l))) (fun i => 𝔞.a c ↑(D.ps i (D.sg l))) hX hlow.1 hfl hdiag' (fun i j h => hsep i j h)`. Establish `h00 : P.n () 0 0 = 1` using `hlow.2.1 0`. Establish `h01 : P.n () 0 1 = 0` using `hlow.2.2 0 1 (by decide)`.
+
+Establish `h21 : P.n () 2 1 ∈ maximalIdeal 𝔞.V`. Use `(h4 (by rw [h00]; exact isUnit_one)).2` as an intermediate fact. Rewrite `this` using `[h00, h01, one_mul, zero_mul, sub_zero]`. Then use the resulting hypothesis. Use `⟨⟨hsmall, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩, ⟨hred, low_mem hlow h10 h30 h21, ?_⟩⟩` and prove the remaining obligations. Introduce `g show IsGSp (𝔞.a c ↑(D.th g)) (P.r g)`.
+
+Rewrite using `[hPr g]`. Conclude with `gsp_conj hMsp (hK.mult g)`. Introduce `g hg`. Break down `hg with ⟨A, hA, hgA, hr⟩ | ⟨p, hp, hgp⟩` into its components or cases. Rewrite using `[hPr g, hK.unr A hA g hgA hr, mul_one, sp_adj_mul hMsp]`.
+
+Rewrite using `[hPr g, hK.atP p hp g hgp, mul_one, sp_adj_mul hMsp]`. Conclude with `hdiag`. Introduce `w`. Conclude with `hlow`. Introduce `w s hs'`.
+
+Conclude with `(hflag s hs').1`. Introduce `w s hs'`. Conclude with `absurd hs' (Set.notMem_empty s)`. Introduce `s hs' i`. Establish `hs'' : s ∈ D.Gp l` using `Ine_le_Dec (F := ℚ) (D.pl l) hs'`.
+
+Use `show (adj (P.n ()) * P.r s * P.n ()) i i = _`. Rewrite using `[(hflag s hs'').2 i]`. Conclude with `hK.inert s hs' i`. Introduce `s hs' i show (adj (P.n ()) * P.r s * P.n ()) i i - _ ∈ _`. Rewrite using `[(hflag s hs').2 i]`.
+
+Establish `h1` using `hK.char s hs' i`. Establish `h2` using `ps_chi 𝔞 hlab hs' i`. Establish `h3` using `Ideal.add_mem _ h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.Lab.pairOf :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r u, KPair D 𝔞 r u →
       ∀ (pr : Bool) (g0 : G ℚ Ω) (P : PD Unit (G ℚ Ω) 𝔞.V) (v b : M4 𝔞.V), LabOk D pr → 𝔞.Small P → IsGSp 1 v → Cg (maximalIdeal 𝔞.V) v 1 →

@@ -31,6 +31,13 @@ def colPart (u v : ℕ) : ∀ j, (Σ i, Fin (sz u v i j)) ≃ Two (Fin 1) (Fin (
   | false => (sigTwo (fun i => sz u v i false) 0 1 rfl rfl).trans (two (stdSum (Nat.zero_add 1)))
   | true => (sigTwo (fun i => sz u v i true) u v rfl rfl).trans (two (stdSum rfl))
 
+/- English proof (translation)
+Establish `r0` using `hb.1 false`. Establish `r1` using `hb.1 true`. Establish `c0` using `hb.2 false`. Establish `c1` using `hb.2 true`. Simplify using `only [Fintype.sum_bool] at r0 r1 c0 c1`.
+
+Establish `e0 : Fintype.card (Two (Fin u) (Fin (v + 1)) false) = u` using `Fintype.card_fin u`. Establish `e1 : Fintype.card (Two (Fin u) (Fin (v + 1)) true) = v + 1` using `Fintype.card_fin _`. Establish `e2 : Fintype.card (Two (Fin 1) (Fin (u + v)) false) = 1` using `Fintype.card_fin _`. Establish `e3 : Fintype.card (Two (Fin 1) (Fin (u + v)) true) = u + v` using `Fintype.card_fin _`. Rewrite `r0` using `[e0]`.
+
+Rewrite `r1` using `[e1]`. Rewrite `c0` using `[e2]`. Rewrite `c1` using `[e3]`. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `cases i <;> cases j <;> simp only [sz, cond_true, cond_false] <;> omega`.
+-/
 theorem eq_sz {u v : ℕ} (b : Bool → Bool → ℕ)
     (hb : (∀ i, ∑ j, b i j = Fintype.card (Two (Fin u) (Fin (v + 1)) i)) ∧
       ∀ j, ∑ i, b i j = Fintype.card (Two (Fin 1) (Fin (u + v)) j)) (h : b true false = 1) :
@@ -72,6 +79,9 @@ def colRep (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (j : Bool) :
     ((Pi.evalMonoidHom (fun i => GL (Fin (sz u v i j)) k) false).prod
       (Pi.evalMonoidHom (fun i => GL (Fin (sz u v i j)) k) true))
 
+/- English proof (translation)
+Use `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 h₁.detChar) ((isSmooth_ofChar_iff _).2 (h₂.mul (GlobalTheory.LocGL.isSmoothChar_absPow _)).detChar)) _ ?_` and prove the remaining obligations. Conclude with `(continuous_apply false).prodMk (continuous_apply true)`.
+-/
 theorem isSmooth_colRep {χ₁ χ₂ : kˣ →* ℂˣ} (h₁ : IsSmoothChar χ₁) (h₂ : IsSmoothChar χ₂) (u v : ℕ) (j : Bool) :
     IsSmooth (colRep χ₁ χ₂ u v j) := by
   refine isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 h₁.detChar)

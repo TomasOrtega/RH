@@ -8,6 +8,9 @@ open IsDedekindDomain NumberField
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilL2Words.dS_adeleJoin_eq | exact GlobalTheory.WeilL2Words.dS_adeleJoin_eq | (intros; apply GlobalTheory.WeilL2Words.dS_adeleJoin_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schroedingerDerivative_slice_directional_add_phase : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ),
     (∀ z, ψ (GlobalTheory.WeilL2Words.arch1 F z) = Complex.exp (2 * Real.pi * Complex.I * ℓ z)) →

@@ -19,6 +19,17 @@ section Adeles
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Set `S` to `⋃ k, {v : HeightOneSpectrum (𝓞 F) | a k v ∉ v.adicCompletionIntegers F}`. Establish `hS : S.Finite` using `Set.finite_iUnion fun k => Filter.eventually_cofinite.1 (a k).2`. Use `haveI : Finite S := hS.to_subtype`. Set `p : Af F →ₐ[F] (∀ v : S, v.1.adicCompletion F)` to `{ toFun := fun x v => x v.1 map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Set `s : (∀ v : S, v.1.adicCompletion F) → Af F` to `fun y => ⟨fun v => if h : v ∈ S then y ⟨v, h⟩ else 0, by filter_upwards [hS.compl_mem_cofinite] with v hv`.
+
+Rewrite using `[dif_neg hv]`. Conclude with `zero_mem _⟩`. Establish `hs : ∀ y, p (s y) = y` using `fun y => funext fun v => dif_pos v.2`. Apply the tactic sequence `have hs1 : ∀ v, s 1 v = if v ∈ S then 1 else 0 := fun v => by show dite _ _ _ = _ split_ifs <;> rfl`. Use `⟨_, inferInstance, inferInstance, p, s 1, inferInstance, fun y => ⟨_, hs y⟩, hs 1, fun x hx => ?_, fun k v => ?_⟩` and prove the remaining obligations.
+
+Use `FiniteAdeleRing.ext _ fun v => ?_ show s 1 v * x v = 0` and prove the remaining obligations. Rewrite using `[hs1]`. Use `split_ifs with h`. Rewrite using `[one_mul]`. Conclude with `congrFun hx ⟨v, h⟩`.
+
+Conclude with `zero_mul _`. Use `show (1 - s 1 v) * a k v ∈ _`. Rewrite using `[hs1]`. Use `split_ifs with h`. Rewrite using `[sub_self, zero_mul]`.
+
+Conclude with `zero_mem _`. Rewrite using `[sub_zero, one_mul]`. Conclude with `not_not.1 fun h' => h (Set.mem_iUnion.2 ⟨k, h'⟩)`.
+-/
 theorem exists_split_finiteAdele {κ : Type} [Finite κ] (a : κ → Af F) :
     ∃ (R : Type) (_ : CommRing R) (_ : Algebra F R) (p : Af F →ₐ[F] R) (e : Af F),
     IsArtinianRing R ∧ Function.Surjective p ∧ p e = 1 ∧ (∀ x, p x = 0 → e * x = 0) ∧
@@ -66,6 +77,19 @@ section Tensor
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `choose a ha using fun k => exists_sum_tmul (x k)`. Take `⟨R, _, _, p, e, hR, hp, hpe, hker, hint⟩` from `exists_split_finiteAdele (κ := κ × _) fun q => a q.1 q.2`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsArtinianRing (R ⊗[F] E) := IsArtinianRing.of_finite R _`. Use `letI : Algebra ℚ (R ⊗[F] E) := ((inclR (F := F) R).comp (algebraMap ℚ E)).toAlgebra`.
+
+Use `⟨R ⊗[F] E, inferInstance, sigR R σ, (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom, e ⊗ₜ 1, fun y => ?_, Algebra.TensorProduct.map_surjective _ _ hp Function.surjective_id, ?_, fun y hy => ?_, ?_, generic_of_semilocal (δ := inclR R δ) (hδ.isUnit.map _) ?_, fun k => ?_⟩` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Simplify using `[hpe, Algebra.TensorProduct.one_def]`. Establish `hy' : y ∈ RingHom.ker (Algebra.TensorProduct.map p (AlgHom.id F E))` using `hy`. Rewrite `hy'` using `[Algebra.TensorProduct.rTensor_ker _ hp]`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`. Simplify using `[hker z hz]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`.
+
+Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]`. Simplify using `[sigR]`. Simplify using `[sigR, inclR, hσδ, TensorProduct.tmul_neg]`. Rewrite using `[ha k, Finset.mul_sum, Algebra.TensorProduct.one_def, ← TensorProduct.sub_tmul]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `hC _ (hint (k, i)) _`.
+-/
 theorem exists_split_tensor (σ : E →ₐ[F] E) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ) {κ : Type} [Finite κ]
     (C : NonUnitalSubring (Af F ⊗[F] E)) (hC : ∀ r ∈ intAd F, ∀ β : 𝓞 E, r ⊗ₜ[F] (β : E) ∈ C)
     (x : κ → Af F ⊗[F] E) : ∃ (B : Type) (_ : CommRing B) (σ' : B →+* B) (π : Af F ⊗[F] E →+* B)
@@ -103,6 +127,19 @@ theorem exists_split_tensor (σ : E →ₐ[F] E) {δ : E} (hδ : δ ≠ 0) (hσ�
     rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
     exact hC _ (hint (k, i)) _
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Take `⟨h⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Af F)`. Use `haveI : T2Space (Af F ⊗[F] E) := h.isEmbedding.t2Space`. Take `⟨_, _, _⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_HA (Af F) σ n J`. Use `haveI : BorelSpace (HA (Af F) σ J) := ⟨rfl⟩`.
+
+Use `haveI : IsTopologicalGroup (HA (Af F) σ J) := inferInstanceAs (IsTopologicalGroup (HR (Af F) σ J))`. Use `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ⟨Measure.haar, inferInstance⟩, fun μ _ => ?_⟩` and prove the remaining obligations. Establish `hσ` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR (Af F) σ`. Take `⟨C, hCc, hC⟩` from `exists_compact_subring (F := F) (E := E) (intAd F).toNonUnitalSubring (isCompact_intAd F)`. Take `⟨M, hM⟩` from `exists_framed (σ := (σ : E →+* E)) hss (J := J) (by ext i j; exact hJ.1 i j) hJ.2`.
+
+Establish `hF : Framed (sigR (Af F) σ) (JR (Af F) J) (M.map (inclR (Af F)))` using `hM.map fun x => by simp [sigR, inclR]`. Establish `hss'` using `GlobalTheory.AdelicPointsUnimod.sigR_sigR (R := Af F) hss`. Take `⟨T, hTc, hT, hT'⟩` from `exists_involution hσ hss' hF`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Take `⟨B, _, σ', π, e, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_split_tensor σ hδ hσδ (κ := Bool × Fin n × Fin n) C hC fun p => (mat (σ := sigR (Af F) σ) (J := JR (Af F) J) (bif p.1 then g else g⁻¹) - 1) p.2.1 p.2.2`.
+
+Set `χ : HA (Af F) σ J →* ℝ≥0` to `Measure.modularCharacter`. Establish `hχ` using `modular_involution (G := HA (Af F) σ J) T hTc hT`. Take `⟨k, hk, hk', hkg⟩` from `exists_char_eq h1 h2 h3 h4 h5 hss' hF h6 χ (fun x x' h => by`. Rewrite using `[hT' x x' h]`. Conclude with `hχ x) g`.
+
+Establish `hkK : k ∈ congSub (sigR (Af F) σ) (JR (Af F) J) C` using `⟨fun i j => by rw [hk]; exact h7 (true, i, j), fun i j => by rw [hk']; exact h7 (false, i, j)⟩`. Set `K : Subgroup (HA (Af F) σ J)` to `congSub (sigR (Af F) σ) (JR (Af F) J) C`. Establish `hKc : IsCompact (K : Set (HA (Af F) σ J))` using `isCompact_congSub hσ _ C hCc`. Establish `h8` using `modular_of_mem_compact K hKc (k := k) hkK`. Rewrite using `[map_mul_right_eq, show Measure.modularCharacter g = 1 from hkg.symm.trans h8, one_smul]`.
+-/
 theorem isUnimodularLC_finiteAdele (σ : E →ₐ[F] E) (hss : ∀ x, σ (σ x) = x) {δ : E} (hδ : δ ≠ 0)
     (hσδ : σ δ = -δ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) :
     IsUnimodularLC (HA (Af F) σ J) := by
@@ -146,6 +183,9 @@ theorem isUnimodularLC_finiteAdele (σ : E →ₐ[F] E) (hss : ∀ x, σ (σ x) 
 
 end Tensor
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Establish `hss` using `GlobalTheory.HermLineZeros.conj_invol hσ`. Take `⟨d, hd⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne hσ`. Conclude with `GlobalTheory.ArchUnitaryUnimod.unimodularOver_of_forall (Af F) hss (fun _ _ h => isUnimodularLC_finiteAdele σ hss (sub_ne_zero.2 hd) (by rw [map_sub, hss, neg_sub]) h) hJ`.
+-/
 theorem unimodularOver_finiteAdele : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
       UnimodularOver (Af F) σ J := by

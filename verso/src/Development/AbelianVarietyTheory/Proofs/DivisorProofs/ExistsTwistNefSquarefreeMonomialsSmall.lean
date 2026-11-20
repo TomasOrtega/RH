@@ -27,18 +27,33 @@ namespace GlobalTheory.HSNef.BoxTwist
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+The claim follows from `HermLB.isometric_of_chart id (fun _ => le_rfl) (fun _ _ _ _ _ => rfl) fun _ _ _ _ => (add_assoc _ _ _).symm`.
+-/
 theorem isometric_shift_tens (N M : HermLB p) (u : ℝ) :
     ((N.tens M).shift (fun _ => u) fun _ => rfl).Isometric (N.tens (M.shift (fun _ => u) fun _ => rfl)) :=
   HermLB.isometric_of_chart id (fun _ => le_rfl) (fun _ _ _ _ _ => rfl) fun _ _ _ _ => (add_assoc _ _ _).symm
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+Introduce `a b h` and use `by beta_reduce rw [Units.val_mul, Units.val_mul, hr a b h] ring`.
+-/
 theorem isRatSec_const_mul {B : LB X} {r : B.ι → X.functionFieldˣ} (hr : IsRatSec B r) (g : X.functionFieldˣ) :
     IsRatSec B fun i => g * r i := fun a b h => by
   beta_reduce
   rw [Units.val_mul, Units.val_mul, hr a b h]
   ring
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_isRatSec W.isLB`. Set `P : Pair p` to `⟨W, Q.A.shift (fun _ => u) (fun _ => rfl), r, fun j => Units.mk0 g hg * Q.r' j, hr, isRatSec_const_mul Q.hr' _⟩`. Establish `e (f i i' j) : P.loc 0 1 f i j = Q.loc 0 1 (g * f) i' j`. Simplify using `only [Pair.loc, P, zpow_zero, zpow_one, Units.val_mul, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨P, rfl, rfl, fun f hf => ⟨fun x i j _ hj => ?_, fun σ y => ?_⟩⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `exists_chart Q.L.isLB x`. Rewrite using `[e f i i' j]`. Conclude with `hf.1 x i' j hi' hj`. Establish `h` using `hf.2 σ y`.
+
+Establish `e' : P.nu 0 1 σ y f = Q.nu 0 1 σ y (g * f) * Real.exp (-u)`. Rewrite using `[Pair.nu, Pair.nu, e f _ (pick (Q.L.φ σ).isLB y), mul_assoc, ← Real.exp_add]`. Use `congr 2`. Establish `: (P.A.φ σ).φ (pick (P.A.φ σ).isLB y) y = (Q.A.φ σ).φ (pick (Q.A.φ σ).isLB y) y + 2 * u` using `rfl`. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pair_small (Q : Pair p) (W : HermLB p) (g : X.functionField) (hg : g ≠ 0) (u : ℝ) :
     ∃ P : Pair p, P.L = W ∧ P.A = Q.A.shift (fun _ => u) (fun _ => rfl) ∧
       ∀ f, g * f ∈ Q.Bl 0 1 (Real.exp u) → f ∈ P.Bl 0 1 1 := by
@@ -64,6 +79,17 @@ theorem exists_pair_small (Q : Pair p) (W : HermLB p) (g : X.functionField) (hg 
     calc _ ≤ Real.exp u * Real.exp (-u) := mul_le_mul_of_nonneg_right h (Real.exp_pos _).le
       _ = 1 := by rw [← Real.exp_add, add_neg_cancel, Real.exp_zero]
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX N x`. Take `⟨A, hA, hAn, -⟩` from `GlobalTheory.AmpleNefSmall.exists_ample_nef_smallSec hC k X p D hX`. Take `⟨P, rfl, rfl⟩` from `exists_pair N A`. Take `⟨c, g, -, hg, -, hgf⟩` from `GlobalTheory.T.exists_clear_denominators_ampleHermLineBundle k X p D hX P hA (-1) (Finset (Fin D)) fun S => ∏ i ∈ S, x i`. Use `choose v hv0 hv using fun S => GlobalTheory.T.pairSection_mem_ball_exp_of_projArithVariety k X p D hX P (-1) c _ (hgf S)`.
+
+Set `u : ℝ` to `∑ S, v S`. Establish `hu : 0 ≤ u` using `Finset.sum_nonneg fun S _ => hv0 S`. Establish `hvu (S) : v S ≤ u` using `Finset.single_le_sum (fun S _ => hv0 S) (Finset.mem_univ S)`. Set `M : HermLB p` to `P.L.dual.tens (P.A.pow c)`. Take `⟨h₁, h₂, -⟩` from `Pair.rep_base k X p P`.
+
+Establish `hM : P.Rep (-1) c M`. Simplify using `using Pair.rep_tens k X p P _ _ _ _ _ _ (Pair.rep_dual k X p P _ _ _ h₁) (Pair.rep_pow k X p P _ _ _ c h₂)`. Take `⟨Q, -, hQ, hB⟩` from `GlobalTheory.T.exists_hermPairSections_change_of_isometric_combinations k X p P _ _ _ _ M M hM hM`. Establish `hi : (P.A.pow c).Isometric (P.L.tens M)` using `HermLB.icls_eq_iff.1 (by simp only [M, HermLB.icls_tens, HermLB.icls_dual]; abel)`. Establish `hn : (P.L.tens M).IsNef D` using `(GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric hC k X p D hX _ _ hi).2.1 (GlobalTheory.NefPow.isNef_pow hC k X p D hX _ c hAn)`.
+
+Use `⟨M.shift (fun _ => u) fun _ => rfl, (GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric hC k X p D hX _ _ (isometric_shift_tens _ _ u)).2.1 (GlobalTheory.NefShift.isNef_shift_nonneg k X p D hX _ u hu hn), fun W => ?_⟩` and prove the remaining obligations. Take `⟨R, hR, hR', h⟩` from `exists_pair_small Q W g hg u`. Use `⟨R, hR, by rw [hR', hQ], fun S => h _ ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`. Simplify using `only [zero_mul, one_mul, zero_add]`.
+
+Conclude with `⟨(hv S).1, fun σ y => ((hv S).2 σ y).trans (Real.exp_le_exp.2 (hvu S))⟩`.
+-/
 theorem exists_twist : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (N : HermLB p) (x : Fin D → X.functionField), ∃ H : HermLB p, (N.tens H).IsNef D ∧ ∀ W : HermLB p, ∃ P : Pair p, P.L = W ∧ P.A = H ∧ ∀ S : Finset (Fin D), ∏ i ∈ S, x i ∈ P.Bl 0 1 1 := by
   intro hC k _ X _ p D hX N x
   obtain ⟨A, hA, hAn, -⟩ := GlobalTheory.AmpleNefSmall.exists_ample_nef_smallSec hC k X p D hX

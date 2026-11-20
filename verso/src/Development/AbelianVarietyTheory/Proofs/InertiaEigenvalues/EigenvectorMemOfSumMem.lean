@@ -2,6 +2,21 @@ import Mathlib
 
 namespace GlobalTheory.EigenvectorOfSum
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.strongInduction generalizing y with`. Consider the case `H S ih`. Introduce `a ha`. Distinguish the cases in `hex : ∃ b ∈ S, b ≠ a`. Take `⟨b, hb, hba⟩` from `hex`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, χ a g ≠ χ b g := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [ne_eq, not_exists, not_not] at hcon`. Conclude with `hba (hχ (funext hcon)).symm`. Use `set y' : α → Y := fun c => (χ c g - χ b g) • y c with hyq`.
+
+Establish `hy' : ∀ c ∈ S.erase b, ∀ g', (T g' : Y → Y) (y' c) = χ c g' • y' c`. Introduce `c hc g'`. Rewrite using `[hyq, map_smul, hy c (Finset.mem_of_mem_erase hc) g', smul_comm]`. Establish `hs' : ∑ c ∈ S.erase b, y' c ∈ U`. Establish `h1 : (T g : Y → Y) (∑ c ∈ S, y c) - χ b g • ∑ c ∈ S, y c ∈ U` using `U.sub_mem (hU g _ hs) (U.smul_mem _ hs)`.
+
+Establish `h2 : (T g : Y → Y) (∑ c ∈ S, y c) - χ b g • ∑ c ∈ S, y c = ∑ c ∈ S.erase b, y' c`. Rewrite using `[map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_erase_add _ _ hb]`. Establish `hb0 : (T g : Y → Y) (y b) - χ b g • y b = 0` using `by rw [hy b hb g, sub_self]`. Rewrite using `[hb0, add_zero]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+
+Rewrite using `[hyq]`. Simplify using `only`. Rewrite using `[sub_smul, hy c (Finset.mem_of_mem_erase hc) g]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hmem` using `ih (S.erase b) (Finset.erase_ssubset hb) y' hy' hs' a (Finset.mem_erase.2 ⟨hba.symm, ha⟩)`.
+
+Establish `hne : χ a g - χ b g ≠ 0` using `sub_ne_zero.2 hg`. Establish `h3` using `U.smul_mem (χ a g - χ b g)⁻¹ hmem`. Rewrite `h3` using `[hyq, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Simplify using `only [ne_eq, not_exists, not_and, not_not] at hex`. Establish `hS : S = {a}` using `Finset.eq_singleton_iff_unique_mem.2 ⟨ha, hex⟩`.
+
+Substitute `hS` using the available equality. Simplify using `using hs`.
+-/
 theorem eigenvector_mem_of_sum_mem {L Y I α : Type} [Field L] [AddCommGroup Y] [Module L Y]
     (T : I → Y →ₗ[L] Y) (χ : α → I → L) (hχ : Function.Injective χ) (U : Submodule L Y)
     (hU : ∀ (g : I), ∀ y ∈ U, (T g : Y → Y) y ∈ U) (S : Finset α) (y : α → Y)

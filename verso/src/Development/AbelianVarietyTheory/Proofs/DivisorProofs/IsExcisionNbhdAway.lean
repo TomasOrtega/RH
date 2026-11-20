@@ -3,6 +3,31 @@ open GlobalTheory.EtC
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `A A' _ _ _ h ⟨hE, hS, hI⟩ a b hab`. Establish `hpow : ∀ n : ℕ, a ^ n * b ^ n - 1 ∈ Ideal.span {algebraMap A A' h}`. Introduce `n`. Establish `hd : a * b - 1 ∣ (a * b) ^ n - 1 ^ n` using `sub_dvd_pow_sub_pow _ _ _`. Rewrite `hd` using `[one_pow, mul_pow]`.
+
+Take `⟨c, hc⟩` from `hd`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ hab`. Establish `hH : algebraMap A (Localization.Away a) h = algebraMap A' (Localization.Away a) (algebraMap A A' h)` using `IsScalarTower.algebraMap_apply _ _ _ _`. Establish `hmap : ∀ x : A', x ∈ Ideal.span {algebraMap A A' h} → algebraMap A' (Localization.Away a) x ∈ Ideal.span {algebraMap A (Localization.Away a) h}`.
+
+Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[hH, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hE haveI : Algebra.Etale A' (Localization.Away a) := inferInstance`. Conclude with `Algebra.Etale.comp A A' (Localization.Away a)`. Introduce `z`. Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers a) z`. Take `⟨n, hn⟩` from `s.2`.
+
+Take `⟨c, hc⟩` from `hS (y * b ^ n)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hs : IsLocalization.mk' (Localization.Away a) y s * algebraMap A' (Localization.Away a) (a ^ n) = algebraMap A' (Localization.Away a) y`. Establish `hn' : a ^ n = (s : A')` using `hn`. Rewrite using `[hn']`.
+
+Conclude with `IsLocalization.mk'_spec _ _ _`. Establish `e1 : IsLocalization.mk' (Localization.Away a) y s - algebraMap A (Localization.Away a) c = -(IsLocalization.mk' (Localization.Away a) y s * algebraMap A' (Localization.Away a) (a ^ n * b ^ n - 1)) + algebraMap A' (Localization.Away a) (y * b ^ n - algebraMap A A' c)`. Rewrite using `[map_sub, map_sub, map_mul, map_mul, map_one, ← hs, ← IsScalarTower.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `Ideal.add_mem _ ((Ideal.neg_mem_iff _).2 (Ideal.mul_mem_left _ _ (hmap _ (hpow n)))) (hmap _ hc)`. Introduce `x hx`. Apply `hI` to reduce the goal to its premises. Rewrite `hx` using `[hH]`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 hx`.
+
+Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers a) w`. Take `⟨n, hn⟩` from `s.2`. Simplify using `only at hw`. Establish `hs : IsLocalization.mk' (Localization.Away a) y s * algebraMap A' (Localization.Away a) (a ^ n) = algebraMap A' (Localization.Away a) y`. Establish `hn' : a ^ n = (s : A')` using `hn`.
+
+Rewrite using `[hn']`. Conclude with `IsLocalization.mk'_spec _ _ _`. Establish `key : algebraMap A' (Localization.Away a) (algebraMap A A' x * a ^ n - y * algebraMap A A' h) = 0`. Rewrite using `[map_sub, map_mul, map_mul, ← hs, ← IsScalarTower.algebraMap_apply A A' (Localization.Away a) x, ← hw, ← IsScalarTower.algebraMap_apply A A' (Localization.Away a) h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers a) _ _).1 key`. Take `⟨N, hN⟩` from `m.2`. Establish `h1 : algebraMap A A' x * a ^ (N + n) ∈ Ideal.span {algebraMap A A' h}`. Establish `e : algebraMap A A' x * a ^ (N + n) = (a ^ N * y) * algebraMap A A' h`. Rewrite `hm` using `[← hN]`.
+
+Rewrite using `[pow_add]`. Take the linear combination `hm`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Establish `e2 : algebraMap A A' x = algebraMap A A' x * a ^ (N + n) * b ^ (N + n) - algebraMap A A' x * (a ^ (N + n) * b ^ (N + n) - 1)` using `by ring`.
+
+Rewrite using `[e2]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ h1) (Ideal.mul_mem_left _ _ (hpow _))`.
+-/
 theorem isExcisionNbhd_away : ∀ (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (h : A),
     IsExcisionNbhd A A' h → ∀ a b : A', a * b - 1 ∈ Ideal.span {algebraMap A A' h} →
       IsExcisionNbhd A (Localization.Away a) h := by

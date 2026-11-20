@@ -11,6 +11,9 @@ namespace GlobalTheory.QLog.KLift
 section Alg
 variable {R S : Type} [CommRing R] [CommRing S] {d : ℕ}
 
+/- English proof (translation)
+Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, map_subst (hasSubst_of_constantCoeff_zero hμ), map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _), map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]`. Simplify using `only [map_X]`.
+-/
 theorem map_formalGroupLawCoboundaryOne_eq (φ : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (f : MvPowerSeries (Fin d) R) :
     map φ (cob1 μ f) = cob1 (fun i => map φ (μ i)) (map φ f) := by
@@ -20,6 +23,9 @@ theorem map_formalGroupLawCoboundaryOne_eq (φ : R →+* S) (μ : Fin d → MvPo
     map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]
   simp only [map_X]
 
+/- English proof (translation)
+Unfold `at2`. Apply the tactic sequence `rw [map_subst (hasSubst_of_constantCoeff_zero (fun i => by cases i <;> simp [hu, hv]))]`. Use `congr 1`. Apply the tactic sequence `funext i; cases i <;> rfl`.
+-/
 theorem mvPowerSeriesMap_evalTwoGroups (φ : R →+* S) {τ : Type} (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -29,26 +35,43 @@ theorem mvPowerSeriesMap_evalTwoGroups (φ : R →+* S) {τ : Type} (c : MvPower
   congr 1
   funext i; cases i <;> rfl
 
+/- English proof (translation)
+Unfold `swap`. Rewrite using `[mvPowerSeriesMap_evalTwoGroups φ c _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)]`. Simplify using `only [map_X]`.
+-/
 theorem map_swap (φ : R →+* S) (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     map φ (swap c) = swap (map φ c) := by
   unfold swap
   rw [mvPowerSeriesMap_evalTwoGroups φ c _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)]
   simp only [map_X]
 
+/- English proof (translation)
+The claim follows from `subst_sub (hasSubst_of_constantCoeff_zero (fun i => by cases i <;> simp [hu, hv])) a b`.
+-/
 theorem powerSeriesEvalTwoGroups_sub {τ : Type} (a b : MvPowerSeries (Fin d ⊕ Fin d) R)
     (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) : at2 (a - b) u v = at2 a u v - at2 b u v :=
   subst_sub (hasSubst_of_constantCoeff_zero (fun i => by cases i <;> simp [hu, hv])) a b
 
+/- English proof (translation)
+The claim follows from `powerSeriesEvalTwoGroups_sub a b _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)`.
+-/
 theorem swap_sub (a b : MvPowerSeries (Fin d ⊕ Fin d) R) : swap (a - b) = swap a - swap b :=
   powerSeriesEvalTwoGroups_sub a b _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (fun j => by cases j <;> simp [hu, hv])) (fun j => by cases j <;> simp [hu, hv]) (hμ i)`.
+-/
 theorem const_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
     {τ : Type} (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) (i : Fin d) : constantCoeff (op μ u v i) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (fun j => by cases j <;> simp [hu, hv]))
     (fun j => by cases j <;> simp [hu, hv]) (hμ i)
 
+/- English proof (translation)
+Establish `h1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h2 : ∀ i, constantCoeff ((x2 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Unfold `cob2`. Rewrite using `[powerSeriesEvalTwoGroups_sub a b _ _ h2 h3, powerSeriesEvalTwoGroups_sub a b _ _ (const_op μ hμ _ _ h1 h2) h3, powerSeriesEvalTwoGroups_sub a b _ _ h1 (const_op μ hμ _ _ h2 h3), powerSeriesEvalTwoGroups_sub a b _ _ h1 h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formalGroupLawCoboundaryTwo_sub (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
     (a b : MvPowerSeries (Fin d ⊕ Fin d) R) : cob2 μ (a - b) = cob2 μ a - cob2 μ b := by
   have h1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0 :=
@@ -62,6 +85,13 @@ theorem formalGroupLawCoboundaryTwo_sub (μ : Fin d → MvPowerSeries (Fin d ⊕
     powerSeriesEvalTwoGroups_sub a b _ _ h1 (const_op μ hμ _ _ h2 h3), powerSeriesEvalTwoGroups_sub a b _ _ h1 h2]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h2 : ∀ i, constantCoeff ((x2 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `m1 : (fun i => map φ ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i)) = x1`. Use function extensionality and compare the values at `fun _ => map_X _ _`.
+
+Establish `m2 : (fun i => map φ ((x2 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i)) = x2`. Use function extensionality and compare the values at `fun _ => map_X _ _`. Establish `m3 : (fun i => map φ ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i)) = x3`. Use function extensionality and compare the values at `fun _ => map_X _ _`. Establish `mop : ∀ (u v : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) → (fun i => map φ (op μ u v i)) = op (fun i => map φ (μ i)) (fun i => map φ (u i)) (fun i => map φ (v i))` using `fun u v hu hv => funext fun i => mvPowerSeriesMap_evalTwoGroups φ (μ i) u v hu hv`.
+
+Unfold `cob2`. Rewrite using `[map_sub, map_add, map_sub, mvPowerSeriesMap_evalTwoGroups φ c _ _ h2 h3, mvPowerSeriesMap_evalTwoGroups φ c _ _ (const_op μ hμ _ _ h1 h2) h3, mvPowerSeriesMap_evalTwoGroups φ c _ _ h1 (const_op μ hμ _ _ h2 h3), mvPowerSeriesMap_evalTwoGroups φ c _ _ h1 h2, mop _ _ h1 h2, mop _ _ …`.
+-/
 theorem map_formalGroupLawCoboundaryTwo (φ : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
     map φ (cob2 μ c) = cob2 (fun i => map φ (μ i)) (map φ c) := by
@@ -87,6 +117,9 @@ theorem map_formalGroupLawCoboundaryTwo (φ : R →+* S) (μ : Fin d → MvPower
     mvPowerSeriesMap_evalTwoGroups φ c _ _ h1 (const_op μ hμ _ _ h2 h3), mvPowerSeriesMap_evalTwoGroups φ c _ _ h1 h2, mop _ _ h1 h2, mop _ _ h2 h3,
     m1, m2, m3]
 
+/- English proof (translation)
+Unfold `cob1 inL inR`. Rewrite using `[map_sub, map_sub, constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hμ) hμ hf, constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _) hf, constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero fun _ => …`.
+-/
 theorem constantCoeff_coboundaryOne_zero_of_constCoeff (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
     (f : MvPowerSeries (Fin d) R) (hf : constantCoeff f = 0) : constantCoeff (cob1 μ f) = 0 := by
   unfold cob1 inL inR
@@ -105,26 +138,41 @@ namespace GlobalTheory.QLog.KLift
 section Ideal
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {σ : Type}
 
+/- English proof (translation)
+Introduce `α`. Take `⟨a, ha, ea⟩` from `hf α`. Take `⟨b, hb, eb⟩` from `hg α`. Conclude with `⟨a - b, N.sub_mem ha hb, by rw [map_sub, ea, eb, map_sub]⟩`.
+-/
 theorem in_sub {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) : In N (f - g) := by
   intro α
   obtain ⟨a, ha, ea⟩ := hf α
   obtain ⟨b, hb, eb⟩ := hg α
   exact ⟨a - b, N.sub_mem ha hb, by rw [map_sub, ea, eb, map_sub]⟩
 
+/- English proof (translation)
+Introduce `α`. Take `⟨a, ha, ea⟩` from `hf α`. Take `⟨b, hb, eb⟩` from `hg α`. Conclude with `⟨a + b, N.add_mem ha hb, by rw [map_add, ea, eb, map_add]⟩`.
+-/
 theorem in_add {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) : In N (f + g) := by
   intro α
   obtain ⟨a, ha, ea⟩ := hf α
   obtain ⟨b, hb, eb⟩ := hg α
   exact ⟨a + b, N.add_mem ha hb, by rw [map_add, ea, eb, map_add]⟩
 
+/- English proof (translation)
+Introduce `α`. Take `⟨a, ha, ea⟩` from `hf α`. Conclude with `⟨a, h ha, ea⟩`.
+-/
 theorem in_mono {N N' : Ideal B} (h : N ≤ N') {f : MvPowerSeries σ Q} (hf : In N f) : In N' f := by
   intro α
   obtain ⟨a, ha, ea⟩ := hf α
   exact ⟨a, h ha, ea⟩
 
+/- English proof (translation)
+Introduce `α` and use `⟨coeff α K, trivial, coeff_map _ _ _⟩`.
+-/
 theorem in_map (K : MvPowerSeries σ B) : In (⊤ : Ideal B) (map (algebraMap B Q) K) :=
   fun α => ⟨coeff α K, trivial, coeff_map _ _ _⟩
 
+/- English proof (translation)
+Introduce `α i`. Take `⟨a, ha, ea⟩` from `hf α i`. Take `⟨b, hb, eb⟩` from `hg α i`. Conclude with `⟨a - b, N.sub_mem ha hb, by rw [map_sub, mul_sub, ea, eb, map_sub]⟩`.
+-/
 theorem dIn_sub {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : DIn N f) (hg : DIn N g) :
     DIn N (f - g) := by
   intro α i
@@ -132,6 +180,9 @@ theorem dIn_sub {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : DIn N f) (hg : DI
   obtain ⟨b, hb, eb⟩ := hg α i
   exact ⟨a - b, N.sub_mem ha hb, by rw [map_sub, mul_sub, ea, eb, map_sub]⟩
 
+/- English proof (translation)
+Introduce `α i` and use `⟨(α i : B) * coeff α K, trivial, by rw [coeff_map, map_mul, map_natCast]⟩`.
+-/
 theorem dIn_map (K : MvPowerSeries σ B) : DIn (⊤ : Ideal B) (map (algebraMap B Q) K) :=
   fun α i => ⟨(α i : B) * coeff α K, trivial, by rw [coeff_map, map_mul, map_natCast]⟩
 
@@ -148,11 +199,17 @@ variable {p : ℕ} [hp : Fact p.Prime] {B O Q C : Type} [CommRing B] [CommRing Q
   (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
 
 include G hΘ in
+/- English proof (translation)
+Rewrite `h` using `[hΘ]`. Conclude with `(injective_iff_map_eq_zero (algebraMap O C)).1 G.inj _ h`.
+-/
 theorem ker_of_alg (b : B) (h : Θ (algebraMap B Q b) = 0) : θ b = 0 := by
   rw [hΘ] at h
   exact (injective_iff_map_eq_zero (algebraMap O C)).1 G.inj _ h
 
 include F G hΘ in
+/- English proof (translation)
+Take `⟨k, b, e⟩` from `F.denom q`. Use `⟨k, b, RingHom.mem_ker.2 (ker_of_alg G hΘ b ?_), e⟩` and prove the remaining obligations. Rewrite using `[← e, map_mul, h, mul_zero]`.
+-/
 theorem kerQ (q : Q) (h : Θ q = 0) :
     ∃ k : ℕ, ∃ b ∈ RingHom.ker θ, (p : Q) ^ k * q = algebraMap B Q b := by
   obtain ⟨k, b, e⟩ := F.denom q
@@ -160,6 +217,9 @@ theorem kerQ (q : Q) (h : Θ q = 0) :
   rw [← e, map_mul, h, mul_zero]
 
 include G hΘ in
+/- English proof (translation)
+Use `congrArg Θ e` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_natCast, hΘ, hb, map_zero]`. Conclude with `(G.unit_p.pow k).mul_right_eq_zero.1 this`.
+-/
 theorem zero_of (q : Q) (k : ℕ) (b : B) (e : (p : Q) ^ k * q = algebraMap B Q b) (hb : θ b = 0) :
     Θ q = 0 := by
   have := congrArg Θ e
@@ -167,6 +227,9 @@ theorem zero_of (q : Q) (k : ℕ) (b : B) (e : (p : Q) ^ k * q = algebraMap B Q 
   exact (G.unit_p.pow k).mul_right_eq_zero.1 this
 
 include G hΘ in
+/- English proof (translation)
+Introduce `α`. Take `⟨b, -, e⟩` from `hi α`. Use `⟨b, RingHom.mem_ker.2 (ker_of_alg G hΘ b ?_), e⟩` and prove the remaining obligations. Rewrite using `[← e, ← coeff_map, h0, map_zero]`.
+-/
 theorem in_ker {σ : Type} (h : MvPowerSeries σ Q) (hi : In (⊤ : Ideal B) h) (h0 : map Θ h = 0) :
     In (RingHom.ker θ) h := by
   intro α
@@ -175,6 +238,21 @@ theorem in_ker {σ : Type} (h : MvPowerSeries σ Q) (hi : In (⊤ : Ideal B) h) 
   rw [← e, ← coeff_map, h0, map_zero]
 
 include F G hΘ in
+/- English proof (translation)
+Establish `hpp` using `hp.out`. Take `⟨j₀, hj₀, hmin⟩` from `α.support.exists_min_image (fun j => (α j).factorization p) (Finsupp.support_nonempty_iff.2 hα)`. Establish `hne : α j₀ ≠ 0` using `Finsupp.mem_support_iff.1 hj₀`. Use `set k := (α j₀).factorization p with hk`. Establish `hdvd : ∀ j, p ^ k ∣ α j`.
+
+Introduce `j`. Distinguish the cases in `hj : α j = 0`. Rewrite using `[hj]`. Conclude with `dvd_zero _`. Conclude with `(hpp.pow_dvd_iff_le_factorization hj).2 (hmin j (Finsupp.mem_support_iff.2 hj))`.
+
+Use `set m := α j₀ / p ^ k with hmdef`. Establish `hm : α j₀ = p ^ k * m` using `(Nat.mul_div_cancel' (hdvd j₀)).symm`. Establish `hcop : Nat.Coprime m p` using `(Nat.coprime_ordCompl hpp hne).symm`. Take `⟨u, hu⟩` from `G.unit_coprime m hcop`. Take `⟨o, ho⟩` from `hc j₀`.
+
+Take `⟨b, hb⟩` from `F.surj (o * ↑u⁻¹)`. Take `⟨v, hv⟩` from `F.unit_p.pow k`. Use `⟨↑v⁻¹ * algebraMap B Q b, ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `e1 : (p : C) ^ k * c = algebraMap O C (o * ↑u⁻¹)`. Establish `hmC : (m : C) = algebraMap O C ↑u` using `by rw [hu, map_natCast]`.
+
+Establish `hui : algebraMap O C ↑u * algebraMap O C ↑u⁻¹ = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_mul, ← ho, hm, Nat.cast_mul, Nat.cast_pow, hmC]`. Take the linear combination `(-((p : C) ^ k * c)) * hui`. Establish `e2 : (p : C) ^ k * Θ (↑v⁻¹ * algebraMap B Q b) = algebraMap O C (o * ↑u⁻¹)`.
+
+Rewrite using `[← hb, ← hΘ, ← map_natCast Θ p, ← map_pow, ← map_mul, ← hv, Units.mul_inv_cancel_left]`. Conclude with `(G.unit_p.pow k).mul_left_cancel (e2.trans e1.symm)`. Take `⟨n, hn⟩` from `hdvd j`. Use `⟨(n : B) * b, ?_⟩` and prove the remaining obligations. Establish `hvv : (↑v : Q) * ↑v⁻¹ = 1` using `Units.mul_inv v`.
+
+Rewrite using `[hn, Nat.cast_mul, Nat.cast_pow, map_mul, map_natCast, ← hv]`. Take the linear combination `((n : Q) * algebraMap B Q b) * hvv`.
+-/
 theorem gen {σ : Type} (α : σ →₀ ℕ) (hα : α ≠ 0) (c : C)
     (hc : ∀ j, ∃ o : O, (α j : C) * c = algebraMap O C o) :
     ∃ q : Q, Θ q = c ∧ ∀ j, ∃ b : B, (α j : Q) * q = algebraMap B Q b := by
@@ -212,6 +290,19 @@ theorem gen {σ : Type} (α : σ →₀ ℕ) (hα : α ≠ 0) (c : C)
     linear_combination ((n : Q) * algebraMap B Q b) * hvv
 
 include F G hΘ in
+/- English proof (translation)
+Establish `ex : ∀ α : Fin d →₀ ℕ, ∃ q : Q, Θ q = coeff α g ∧ (∀ j, ∃ b : B, (α j : Q) * q = algebraMap B Q b) ∧ (α = 0 → q = 0) ∧ ∀ i, α = Finsupp.single i 1 → q = algebraMap B Q (w i)`. Introduce `α`. Distinguish the cases in `h0 : α = 0`. Substitute `h0` using the available equality. Use `⟨0, ?_, fun j => ⟨0, by simp⟩, fun _ => rfl, fun i h => absurd h.symm (Finsupp.single_ne_zero.2 one_ne_zero)⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zero, coeff_zero_eq_constantCoeff_apply, hg0]`. Distinguish the cases in `h1 : ∃ i, α = Finsupp.single i 1`. Take `⟨i, rfl⟩` from `h1`. Use `⟨algebraMap B Q (w i), ?_, fun j => ⟨(((Finsupp.single i 1 : Fin d →₀ ℕ) j : ℕ) : B) * w i, by rw [map_mul, map_natCast]⟩, fun h => absurd h h0, fun i' h => ?_⟩` and prove the remaining obligations. Rewrite using `[hΘ, ← hw]`.
+
+Both sides reduce to the same expression. Rewrite using `[(Finsupp.single_left_inj one_ne_zero).1 h]`. Take `⟨q, hq, hqD⟩` from `gen F G hΘ α h0 (coeff α g) (fun j => by obtain ⟨o, -, e⟩ := hgD α j; exact ⟨o, e⟩)`. Conclude with `⟨q, hq, hqD, fun h => absurd h h0, fun i h => absurd ⟨i, h⟩ h1⟩`. Use `choose q hqΘ hqD hq0 hq1 using ex`.
+
+Set `f₀ : MvPowerSeries (Fin d) Q` to `q`. Establish `hc : ∀ α, coeff α f₀ = q α` using `fun _ => rfl`. Use `⟨f₀, ?_, fun α j => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hc]`. Conclude with `hq0 0 rfl`.
+
+Take `⟨b, e⟩` from `hqD α j; exact ⟨b, trivial, by rw [hc]; exact e⟩`. Use extensionality with `α`. Rewrite using `[coeff_map, hc]`. Conclude with `hqΘ α`. Use `show coeff _ f₀ = _`.
+
+Rewrite using `[hc]`. Conclude with `hq1 _ i rfl`.
+-/
 theorem lift_coeffs {d : ℕ} (g : MvPowerSeries (Fin d) C) (w : Fin d → B)
     (hgD : DIn (⊤ : Ideal O) g) (hg0 : constantCoeff g = 0)
     (hw : ∀ i, lin g i = algebraMap O C (θ (w i))) :
@@ -252,18 +343,62 @@ end GlobalTheory.QLog.KLift
 
 namespace GlobalTheory.QLog.KLift
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ i, map_zero]`.
+-/
 theorem const_map {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (φ : R →+* S)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0) (i : Fin d) :
     constantCoeff (map φ (μ i)) = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ i, map_zero]
 
+/- English proof (translation)
+Simplify using `using formalGroupLawCoboundaryTwo_sub μ hμ 0 0`.
+-/
 theorem formalGroupLawCoboundaryTwo_zero {R : Type} [CommRing R] {d : ℕ} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) : cob2 μ 0 = 0 := by
   simpa using formalGroupLawCoboundaryTwo_sub μ hμ 0 0
 
+/- English proof (translation)
+Simplify using `using swap_sub (0 : MvPowerSeries (Fin d ⊕ Fin d) R) 0`.
+-/
 theorem swap_zero {R : Type} [CommRing R] {d : ℕ} : swap (0 : MvPowerSeries (Fin d ⊕ Fin d) R) = 0 := by
   simpa using swap_sub (0 : MvPowerSeries (Fin d ⊕ Fin d) R) 0
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ F d μ hμ C _ _ G Θ hΘ g w hg hw`. Establish `hμ' : IsLift (RingHom.id O) (fun i => map θ (μ i))` using `⟨hμ.law.const, hμ.law.unit, hμ.law.comm, by simpa only [map_id, RingHom.id_apply] using hμ.law⟩`. Establish `hgD : DIn (⊤ : Ideal O) g` using `GlobalTheory.T.divided_in_of_quasi_logarithm p O O C (RingHom.id O) G d _ hμ' ⊤ g hg`. Take `⟨f₀, hf0c, hf0D, hf0Θ, hf0l⟩` from `lift_coeffs F G hΘ g w hgD hg.1 hw`. Establish `hμQ : ∀ i, constantCoeff (up Q μ i) = 0` using `const_map _ μ hμ.const`.
+
+Establish `hμC : ∀ i, constantCoeff (up C (fun i => map θ (μ i)) i) = 0` using `const_map _ _ (const_map θ μ hμ.const)`. Establish `hΘμ : (fun i => map Θ (up Q μ i)) = up C (fun i => map θ (μ i))`. Establish `hc : Θ.comp (algebraMap B Q) = (algebraMap O C).comp θ` using `RingHom.ext hΘ`. Use function extensionality and compare the values at `i`. Unfold `up`.
+
+Rewrite using `[← RingHom.comp_apply (map Θ), ← map_comp, ← RingHom.comp_apply (map (algebraMap O C)), ← map_comp, hc]`. Use `set κ := cob1 (up Q μ) f₀ with hκ`. Establish `hκΘ : map Θ κ = cob1 (up C (fun i => map θ (μ i))) g`. Rewrite using `[hκ, map_formalGroupLawCoboundaryOne_eq Θ _ hμQ, hΘμ, hf0Θ]`. Establish `hκD : DIn (⊤ : Ideal B) κ`.
+
+Establish `hX : ∀ s : Fin d → Fin d ⊕ Fin d, (fun i => (X (s i) : MvPowerSeries (Fin d ⊕ Fin d) Q)) = up Q (fun i => (X (s i) : MvPowerSeries (Fin d ⊕ Fin d) B))` using `fun s => funext fun i => (map_X _ _).symm`. Establish `h1` using `(dIn_subst_up p B O Q θ F (Fin d) (Fin d ⊕ Fin d) ⊤ f₀ μ hf0D hμ.const).1`. Establish `h2` using `(dIn_subst_up p B O Q θ F (Fin d) (Fin d ⊕ Fin d) ⊤ f₀ (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) B)) hf0D (fun i => constantCoeff_X _)).1`. Establish `h3` using `(dIn_subst_up p B O Q θ F (Fin d) (Fin d ⊕ Fin d) ⊤ f₀ (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) B)) hf0D (fun i => constantCoeff_X _)).1`. Rewrite `h2` using `[← hX Sum.inl]`.
+
+Rewrite `h3` using `[← hX Sum.inr]`. Conclude with `dIn_sub (dIn_sub h1 h2) h3`. Establish `dec : ∀ α, ∃ b : B, Θ (coeff α κ) = algebraMap O C (θ b)`. Introduce `α`. Take `⟨o, -, e⟩` from `hg.2.2 α`.
+
+Take `⟨b, rfl⟩` from `F.surj o`. Conclude with `⟨b, by rw [← coeff_map, hκΘ, e]⟩`. Use `choose b hb using dec`. Set `K : MvPowerSeries (Fin d ⊕ Fin d) B` to `fun α => if α = 0 then 0 else b α`. Establish `hK : ∀ α, coeff α K = if α = 0 then 0 else b α` using `fun _ => rfl`.
+
+Establish `hκ0 : constantCoeff κ = 0` using `constantCoeff_coboundaryOne_zero_of_constCoeff _ hμQ f₀ hf0c`. Use `set κ₁ := κ - map (algebraMap B Q) K with hκ1`. Establish `hκ1Θ : map Θ κ₁ = 0`. Use extensionality with `α`. Rewrite using `[coeff_map, hκ1, map_sub, coeff_map, map_sub, hΘ, hK]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hκ0]`. Simplify using the standard rewrite rules. Rewrite using `[hb α, sub_self, map_zero]`.
+
+Take `⟨hcob2, hsym⟩` from `GlobalTheory.T.formalGroupLawCoboundary_symmCocycle_mod p B O Q θ F d μ hμ ⊤ f₀ hf0D`. Establish `hD1 : DIn (RingHom.ker θ) κ₁`. Introduce `α i`. Take `⟨c, -, e⟩` from `dIn_sub hκD (dIn_map K) α i`. Use `⟨c, RingHom.mem_ker.2 (ker_of_alg G hΘ c ?_), e⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, map_mul, map_natCast, ← coeff_map, hκ1Θ, map_zero, mul_zero]`. Establish `hc1 : constantCoeff κ₁ = 0`. Rewrite using `[hκ1, map_sub, hκ0, ← coeff_zero_eq_constantCoeff_apply, coeff_map, hK, if_pos rfl, map_zero, sub_zero]`. Establish `hJ : ∀ α, ∃ k : ℕ, ∃ c ∈ RingHom.ker θ, (p : Q) ^ k * coeff α κ₁ = algebraMap B Q c` using `fun α => kerQ F G hΘ _ (by rw [← coeff_map, hκ1Θ, map_zero])`. Establish `hupK2 : cob2 (up Q μ) (map (algebraMap B Q) K) = map (algebraMap B Q) (cob2 μ K)` using `(map_formalGroupLawCoboundaryTwo _ μ hμ.const K).symm`.
+
+Establish `hcob : In (RingHom.ker θ) (cob2 (up Q μ) κ₁)`. Apply `in_ker G hΘ` to reduce the goal to its premises. Rewrite using `[hκ1, formalGroupLawCoboundaryTwo_sub _ hμQ, hupK2]`. Conclude with `in_sub (in_mono le_top hcob2) (in_map _)`. Rewrite using `[map_formalGroupLawCoboundaryTwo Θ _ hμQ, hΘμ, hκ1Θ, formalGroupLawCoboundaryTwo_zero _ hμC]`.
+
+Establish `hsw : In (RingHom.ker θ) (swap κ₁ - κ₁)`. Apply `in_ker G hΘ` to reduce the goal to its premises. Establish `: swap κ₁ - κ₁ = map (algebraMap B Q) (K - swap K)`. Rewrite using `[hκ1, swap_sub, hsym, map_sub, ← map_swap]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `in_map _`. Rewrite using `[map_sub, map_swap, hκ1Θ, swap_zero, sub_zero]`. Take `⟨e, he0, hel, heJ, heN⟩` from `GlobalTheory.T.swap_sub_in_of_cob2_in p B O Q θ F d μ hμ (RingHom.ker θ) (RingHom.ker θ) le_rfl κ₁ (Or.inr hD1) hc1 hJ hcob hsw`. Establish `heΘ : map Θ e = 0`.
+
+Use extensionality with `α`. Take `⟨k, c, hc, e'⟩` from `heJ α`. Rewrite using `[coeff_map, zero_of G hΘ _ k c e' (RingHom.mem_ker.1 hc), map_zero]`. Establish `hl : ∀ i, lin (f₀ - e) i = algebraMap B Q (w i)` using `fun i => by`. Establish `h2 : lin e i = 0` using `congrFun hel i`.
+
+Establish `h1` using `hf0l i`. Simplify using `only [lin] at h1 h2 ⊢`. Rewrite using `[map_sub, h1, h2, sub_zero]`. Establish `hsub : cob1 (up Q μ) (f₀ - e) = map (algebraMap B Q) K + (κ₁ - cob1 (up Q μ) e)`. Use `formalCoboundary_add hμQ (f₀ - e) e` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[hκ1]`. Take the linear combination `(-1 : MvPowerSeries (Fin d ⊕ Fin d) Q) * this`. Use `⟨f₀ - e, ⟨?_, fun i => ⟨w i, trivial, hl i⟩, ?_⟩, ?_, hl⟩` and prove the remaining obligations. Rewrite using `[map_sub, hf0c, he0, sub_zero]`.
+
+Rewrite using `[hsub]`. Conclude with `in_add (in_map K) (in_mono le_top heN)`. Rewrite using `[map_sub, hf0Θ, heΘ, sub_zero]`.
+-/
 theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (C : Type) [CommRing C] [Algebra O C], IsFrame p C (RingHom.id O) → ∀ Θ : Q →+* C, (∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b)) → ∀ (g : MvPowerSeries (Fin d) C) (w : Fin d → B), QL (fun i => map θ (μ i)) ⊤ g → (∀ i, lin g i = algebraMap O C (θ (w i))) → ∃ f : MvPowerSeries (Fin d) Q, QL μ ⊤ f ∧ map Θ f = g ∧ ∀ i, lin f i = algebraMap B Q (w i) := by
   intro p _ B O Q _ _ _ _ θ F d μ hμ C _ _ G Θ hΘ g w hg hw
   have hμ' : IsLift (RingHom.id O) (fun i => map θ (μ i)) :=

@@ -46,10 +46,16 @@ def trivUnif {L : LB A.left} {g : ℕ} (u : HolUnif A L g) : HolUnif A (LB.triv 
   fr_compat := fun i j z h => by
     simp [valAt', valAt, h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Matrix.isHermitian_zero, fun _ => by simp, fun l i z hz => by simp [trivUnif]⟩`.
+-/
 theorem trivUnif_factor {L : LB A.left} {g : ℕ} (u : HolUnif A L g) :
     IsFactorAH (trivUnif u) 0 (fun _ => 1) :=
   ⟨Matrix.isHermitian_zero, fun _ => by simp, fun l i z hz => by simp [trivUnif]⟩
 
+/- English proof (translation)
+Establish `keyl : (ex z).left ≫ φ.left = (ex' z).left` using `by rw [← Over.comp_left, hφ]`. Conclude with `(chart_pull_iff' _ L _ j).trans (iff_of_eq (by rw [keyl]))`.
+-/
 theorem pull_chart_iff (φ : A ⟶ B) {L : LB B.left} {g : ℕ} (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ A))
     (ex' : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ B)) (hφ : ∀ z, ex z ≫ φ = ex' z)
     (j : (L.pull φ.left).ι) (z : Fin g → ℂ) :
@@ -79,6 +85,9 @@ def pullUnif (φ : A ⟶ B) {L : LB B.left} {M : LB A.left} {g : ℕ} (u : HolUn
     rw [valAt'_pull_g' _ L _ i j h, keyl]
     exact u'.fr_compat _ _ _ (inf_of _ hi hj)
 
+/- English proof (translation)
+Take `⟨h1, h3, h4⟩` from `h`. Conclude with `⟨h1, fun l => h3 _, fun l i z hz => h4 ⟨l.1, hΛ l.2⟩ (i PUnit.unit) z ((pull_chart_iff φ u.ex u'.ex hφ i z).1 hz)⟩`.
+-/
 theorem pullUnif_factor (φ : A ⟶ B) {L : LB B.left} {M : LB A.left} {g : ℕ} (u : HolUnif A M g)
     (u' : HolUnif B L g) (hφ : ∀ z, u.ex z ≫ φ = u'.ex z) (hΛ : u.Λ ≤ u'.Λ)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (χ' : u'.Λ → ℂ) (h : IsFactorAH u' Hm χ') :
@@ -87,6 +96,9 @@ theorem pullUnif_factor (φ : A ⟶ B) {L : LB B.left} {M : LB A.left} {g : ℕ}
   exact ⟨h1, fun l => h3 _, fun l i z hz =>
     h4 ⟨l.1, hΛ l.2⟩ (i PUnit.unit) z ((pull_chart_iff φ u.ex u'.ex hφ i z).1 hz)⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [he0]`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, he, ih, pow_succ]`.
+-/
 theorem ex_nsmul {G : Over (Sp ℂ)} [GrpObj G] {g : ℕ} (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ G))
     (he : ∀ z w, e (z + w) = e z * e w) (he0 : e 0 = 1) (w : Fin g → ℂ) (n : ℕ) :
     e ((n : ℂ) • w) = e w ^ n := by
@@ -94,6 +106,9 @@ theorem ex_nsmul {G : Over (Sp ℂ)} [GrpObj G] {g : ℕ} (e : (Fin g → ℂ) �
   | zero => simp [he0]
   | succ n ih => rw [Nat.cast_succ, add_smul, one_smul, he, ih, pow_succ]
 
+/- English proof (translation)
+The claim follows from `(u.ker 0).2 (zero_mem _)`.
+-/
 theorem unif_ex_zero {G : Over (Sp ℂ)} [GrpObj G] {L : LB G.left} {g : ℕ} (u : HolUnif G L g) : u.ex 0 = 1 :=
   (u.ker 0).2 (zero_mem _)
 
@@ -103,6 +118,25 @@ namespace GlobalTheory.PosAHIsog
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `g A _ hA M u Hm χ hM hAH`. Use `haveI := hA.comm`. Use `haveI := hA.smooth`. Use `haveI := hA.proper`. Use `haveI : IsReduced A.left := GlobalTheory.isReduced_of_smooth_complex _ A.hom hA.smooth`.
+
+Establish `hint` using `GlobalTheory.TorusRM.ahFactor_im_int g A M u Hm χ hM (isFactorAH_of_isAH hAH)`. Take `⟨Λ₁, N, Ef, hle, hN, hNΛ, hd1, hf1, hEf, hbij⟩` from `GlobalTheory.UnimodOver.exists_unimodular_overlattice g u.Λ Hm u.discrete u.full hAH.1 hAH.2.1 hint`. Take `⟨P, uB, χB, -, hΛB, hAHB, -, -⟩` from `GlobalTheory.principalTorus_algebraic g Λ₁ Hm Ef hd1 hf1 hAH.1 hAH.2.1 hEf hbij`. Use `haveI := P.isAb.comm`. Use `haveI := P.isAb.smooth`.
+
+Use `haveI := P.isAb.proper`. Use `haveI : IsReduced P.A.left := GlobalTheory.isReduced_of_smooth_complex _ P.A.hom P.isAb.smooth`. Establish `hsA` using `GlobalTheory.TorusAction.smoothOfRelativeDimension_of_holUnif A hA u`. Establish `hsP` using `GlobalTheory.TorusAction.smoothOfRelativeDimension_of_holUnif P.A P.isAb uB`. Establish `hle' : u.Λ ≤ uB.Λ` using `hΛB ▸ hle`.
+
+Take `⟨ψ, hψ, hψe⟩` from `GlobalTheory.HolUnifHom.exists_isMonHom_of_map_lattice A P.A g hA P.isAb hsA hsP M P.L u uB LinearMap.id (fun x hx => hle' hx)`. Take `⟨ρ, hρ, hρe⟩` from `GlobalTheory.HolUnifHom.exists_isMonHom_of_map_lattice P.A A g P.isAb hA hsP hsA P.L M uB u ((N : ℂ) • LinearMap.id) (fun x hx => by simpa using hNΛ x (hΛB ▸ hx))`. Establish `hψe' : ∀ w, u.ex w ≫ ψ = uB.ex w` using `fun w => (hψe w).symm`. Establish `hρe' : ∀ w, uB.ex w ≫ ρ = u.ex ((N : ℂ) • w)` using `fun w => by simpa using (hρe w).symm`. Use `⟨P, ψ, ρ, N, hN, hψ, hρ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.ComplexPoints.over_hom_ext_of_complexPoints fun x => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `u.ex_onto x`. Rewrite using `[← Category.assoc, hψe', hρe', comp_pow, Category.comp_id, ex_nsmul u.ex u.ex_add (unif_ex_zero u)]`. Use `GlobalTheory.ComplexPoints.over_hom_ext_of_complexPoints fun x => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `uB.ex_onto x`.
+
+Rewrite using `[← Category.assoc, hρe', hψe', comp_pow, Category.comp_id, ex_nsmul uB.ex uB.ex_add (unif_ex_zero uB)]`. Use `haveI := hψ`. Establish `hM' : (P.L.pull ψ.left).IsLB` using `pull_isLB P.isLB _`. Establish `hF₃` using `pullUnif_factor ψ u uB hψe' hle' Hm χB (isFactorAH_of_isAH hAHB)`. Take `⟨H, m, s, hH, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple ℂ A hA`.
+
+Establish `hamp : Out.RelAmple A H` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A hH).2 (GlobalTheory.isAmpleLB_of_veryAmpleBy hs)`. Establish `hadd` using `GlobalTheory.T.hermitian_forms_add_of_factor_product g A hA (GlobalTheory.ProjSpace.isProjOver_of_relAmple hamp) (LB.triv A.left) M (P.L.pull ψ.left) (trivUnif u) u (pullUnif ψ u uB hψe') 0 Hm Hm (fun _ => 1) χ _ (LB.isLB_triv _) hM hM' rfl rfl (trivUnif_factor u) (isFactorAH_of_ …`. Establish `hLM : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hLM' : (abelian₂ A (P.L.pull ψ.left)).IsLB` using `LB.isLB_linComb hM' _ _`. Establish `hLT : (abelian₂ A (LB.triv A.left)).IsLB` using `LB.isLB_linComb (LB.isLB_triv _) _ _`.
+
+Establish `hD : (LB.div (abelian₂ A (P.L.pull ψ.left)) (abelian₂ A (LB.triv A.left))).IsLB` using `LB.isLB_div hLM' hLT`. Establish `hR : ((abelian₂ P.A P.L).pull (lift (fst A A ≫ ψ) (snd A A ≫ ψ)).left).IsLB` using `pull_isLB (LB.isLB_linComb P.isLB _ _) _`. Use `(cls_eq_iff hLM hR).1 ?_` and prove the remaining obligations. Establish `e₁ : cls _ hLM' = lam (cls _ hM') (fst A A) (snd A A)` using `cls_cube_two hM' _ _ hLM'`. Establish `e₂ : cls _ hLT = lam (cls _ (LB.isLB_triv A.left)) (fst A A) (snd A A)` using `cls_cube_two (LB.isLB_triv _) _ _ hLT`.
+
+Rewrite using `[(cls_eq_iff hLM hD).2 hadd, cls_div hLM' hLT hD, GlobalTheory.RealMult.Elliptic.cls_pull_lam P.isLB _ _ hR, e₁, e₂, cls_pull P.isLB, lam_pull]`. Establish `h0 : cls (LB.triv A.left) (LB.isLB_triv _) = 0` using `rfl`. Rewrite using `[h0]`. Simplify using `[lam]`.
+-/
 theorem exists_isog_principal_lam :
     ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), M.IsLB → u.IsAH Hm χ →

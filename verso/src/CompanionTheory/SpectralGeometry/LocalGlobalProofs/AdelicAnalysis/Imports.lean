@@ -7,6 +7,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ` and use `⟨finVol_unitaryGroup F E σ hσ M J hJ, GlobalTheory.T.siegel_densities_of_hermitian_form F E σ hσ M J hJ⟩`.
+-/
 theorem siegelWeilUnitaryConvergent : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent :=
   fun F E _ _ _ _ _ σ hσ M J hJ =>
     ⟨finVol_unitaryGroup F E σ hσ M J hJ, GlobalTheory.T.siegel_densities_of_hermitian_form F E σ hσ M J hJ⟩

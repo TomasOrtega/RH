@@ -23,6 +23,13 @@ def IsRepSet (C : Matrix (Fin n) (Fin j) E) (T : Set (ratPts σ J)) : Prop :=
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `hD' : adMat F D * adMat F C = 1`. Rewrite using `[← Matrix.map_mul, hD, Matrix.map_one _ (map_zero _) (map_one _)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨A, -, eA⟩, A', -, eA'⟩`. Establish `e : A * A' = 1`.
+
+Establish `: adMat F C * (A * A') = adMat F C`. Rewrite using `[← Matrix.mul_assoc, ← eA, Matrix.mul_assoc, ← eA', ← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]`. Establish `h2` using `congrArg (adMat F D * ·) this`. Simplify `h2` using `only [← Matrix.mul_assoc, hD', Matrix.one_mul]`. Conclude with `⟨⟨A, A', e, mul_eq_one_comm.1 e⟩, eA⟩`.
+
+Introduce and unpack `⟨B, e⟩`. Use `⟨⟨B.1, fun _ _ h => absurd h (lt_irrefl _), e⟩, (B⁻¹).1, fun _ _ h => absurd h (lt_irrefl _), ?_⟩` and prove the remaining obligations. Establish `: (matHom _ σ J p⁻¹).1 * ((matHom _ σ J p).1 * adMat F C) * (B⁻¹).1 = adMat F C * (B⁻¹).1`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`. Rewrite using `[← this, e, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 theorem mem_parFlag_iff {C : Matrix (Fin n) (Fin j) E} {D : Matrix (Fin j) (Fin n) E} (hD : D * C = 1) (p : GAd σ J) :
     p ∈ parFlag σ J C (fun _ => 0) ↔
       ∃ B : GL (Fin j) (AF F ⊗[F] E), (matHom _ σ J p).1 * adMat F C = adMat F C * B.1 := by
@@ -43,6 +50,9 @@ theorem mem_parFlag_iff {C : Matrix (Fin n) (Fin j) E} {D : Matrix (Fin j) (Fin 
       rw [← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]
     rw [← this, e, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `_ B _ _ _` and use `by rw [Subsingleton.elim B 1, map_one, map_one, NNReal.coe_one]`.
+-/
 example (C : Matrix (Fin n) (Fin 0) E) (K : Subgroup (GAd σ J)) : IsDetHeight σ J C K fun _ => 1 := fun _ B _ _ _ => by
   rw [Subsingleton.elim B 1, map_one, map_one, NNReal.coe_one]
 

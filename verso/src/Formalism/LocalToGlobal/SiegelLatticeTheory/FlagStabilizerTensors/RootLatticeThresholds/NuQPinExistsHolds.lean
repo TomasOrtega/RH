@@ -29,6 +29,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.L2.SG.DataInst Formalism.L2.SG.CntLocal Formalism.L2.SG.RowsConc Formalism.L2.SG.RealObj
 
+/- English proof (translation)
+Establish `h1` using `Formalism.L2.SG.MassDataConc.ttC_of_split T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0 T.ψ (T.Y.tO u u') sd C Th vR Q T.Y.M T.Y.δ i0 i0' νq (Formalism.L2.SG.Pf.gSplitX_holds T.X)`. Unfold `Formalism.L2.SG.MassDataConc.ttC at h1`. Rewrite using `[h1, PgC, Formalism.L2.SG.Pf.tt_eq_holds T.X T.Y.TR]`. Establish `hS` using `Formalism.L2.SG.Pf.gSplitX_holds T.X`. Establish `e : ∀ p : Formalism.L2.SG.TypedSets.TypX T.X, (1 + 3 / ((Ideal.absNorm p.1.asIdeal : ℕ) : ℝ)) = (fun q : ℕ => 1 + 3 / (q : ℝ)) (Formalism.L2.SG.TypedSets.gOf p)`.
+
+Introduce `p`. Rewrite using `[(hS p).1]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl fun p _ => e p]`. Establish `hq : ∀ p : Formalism.L2.SG.TypedSets.TypX T.X, Formalism.L2.SG.TypedSets.gOf p = D.host.g 0 ∨ Formalism.L2.SG.TypedSets.gOf p = D.host.g 1`.
+
+Apply the tactic sequence `intro p; unfold Formalism.L2.SG.TypedSets.gOf; split_ifs <;> simp`. Establish `h2` using `Formalism.L2.SG.Pf.SatGram.prod_two (M := ℝ) (fun p : Formalism.L2.SG.TypedSets.TypX T.X => Formalism.L2.SG.TypedSets.gOf p) (D.host.g 0) (D.host.g 1) D.host.g_ne hq (fun q : ℕ => 1 + 3 / (q : ℝ))`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.SatGram.card_typ (Formalism.L2.SG.Pf.SatGram.gCount_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds) 0, Formalism.L2.SG.Pf.SatGram.card_typ (Formalism.L2.SG.Pf.SatGram.gCount_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds) 1]`.
+-/
 theorem massDataY_tt {D : D7} (T : STies D) (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin T.X.B.I.n → T.X.B.I.E)
     (sd C Th : ℝ) (vR : Formalism.L2.SG.TermDef.Term D u u' (T.X.Fu u) (T.Y.what₂ u) → ℝ)
     (Q : Formalism.L2.SG.PairVal.PairSys D u u' (T.X.Fu u) (T.Y.what₂ u))
@@ -54,6 +61,11 @@ theorem massDataY_tt {D : D7} (T : STies D) (u u' : D.what₂.Word) (X0 : Fin (2
   rw [Formalism.L2.SG.Pf.SatGram.card_typ (Formalism.L2.SG.Pf.SatGram.gCount_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds) 0,
     Formalism.L2.SG.Pf.SatGram.card_typ (Formalism.L2.SG.Pf.SatGram.gCount_of Formalism.L2.SG.Pf.SatGramLoc.split_prime_local_holds) 1]
 
+/- English proof (translation)
+Establish `hF` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u'`. Establish `hO` using `Formalism.L2.SG.Pf.KernelOfEmbedding.ooIntAll_of (Y := Y) hWD u u'`. Establish `hI` using `Formalism.L2.SG.Pf.idCellOffC_holds_of_vol Formalism.L2.SG.Closed.VolPosC_holds D X Y u u' hF hO hne`. Establish `hc : Continuous (Formalism.L2.SG.PackageTie.hsEmb (Wq` using `Formalism.L2.SG.TermOp.CM (Y.cs u')) (Wp := Formalism.L2.SG.TermOp.CM (Y.cs u))) := LinearMap.continuous_of_finiteDimensional _`. Establish `h2` using `hI.map (Formalism.L2.SG.PackageTie.hsEmb (Wq := Formalism.L2.SG.TermOp.CM (Y.cs u')) (Wp := Formalism.L2.SG.TermOp.CM (Y.cs u))).toAddMonoidHom hc`.
+
+Simplify using `only [LinearMap.toAddMonoidHom_coe, map_zero] at h2`. Unfold `Formalism.FourierDecayAlt.PB.Terms.IdZero Formalism.FourierDecayAlt.PB.Terms.part`. Rewrite using `[← tsum_subtype]`. Conclude with `h2.tsum_eq`.
+-/
 theorem idZero_tO {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) (hne : u ≠ u')
     (hWD : Formalism.L2.SG.WuDecay.WuDecay X) : (Y.tO u u').IdZero := by
   have hF := Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u'
@@ -68,6 +80,11 @@ theorem idZero_tO {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Wo
   rw [← tsum_subtype]
   exact h2.tsum_eq
 
+/- English proof (translation)
+Introduce `D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hg3`. Establish `hWD : Formalism.L2.SG.WuDecay.WuDecay T.X` using `hCT.2.2.2.2.1`. Establish `hAbs : (T.Y.tO u u').AbsConv` using `Formalism.L2.SG.Pf.absConvC_outright D T.X T.Y u u' (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u' (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD) ( …`. Establish `hq : ∀ v, 3 ≤ Fintype.card (T.Y.TR.Fq v)` using `fun v => by`. Apply the tactic sequence `rcases T.Y.TR.card_q v with h | h <;> rw [h] <;> exact hg3 _`.
+
+Rewrite using `[massDataY_tt]`. Conclude with `⟨hAbs, Formalism.L2.SG.RowsConc.normExpSatTied_holds D T.X T.Y u u' hCT, Formalism.L2.SG.TermOp.ggBound T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') Formalism.L2.SG.Closed.TermsGGBound_holds T.Y.psi_ne hq, Formalism.L2.SG.TermOp.rowOrth T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y. …`.
+-/
 theorem splitAll_holds : SplitAll := by
   intro D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hg3
   have hWD : Formalism.L2.SG.WuDecay.WuDecay T.X := hCT.2.2.2.2.1
@@ -96,6 +113,17 @@ def KppVolAll : Prop :=
     Formalism.L2.SG.TypedSets.KppVolAt T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0
       (Formalism.L2.SG.LocVol.locOf T.X u u' T.ψ) (Formalism.L2.SG.NGAnalytic.MassDataLemmas.canonicalAnalyticData T.X T.Y u u' T.ψ)
 
+/- English proof (translation)
+Use `set q : Formalism.L2.SG.TypedSets.TypX X → Prop := fun p => Formalism.L2.SG.TypedSets.gOf p = D.host.g 0 with hq`. Establish `hcE : Fintype.card (InfinitePlace D.host.E) = D.R.f` using `Formalism.MainNotions.InterlacingSignCuts.card_places D`. Establish `hc : ∀ i : Fin 2, Fintype.card {p : Formalism.L2.SG.TypedSets.TypX X // Formalism.L2.SG.TypedSets.gOf p = D.host.g i} = D.R.f`. Introduce `i`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr (Formalism.L2.SG.Pf.DstarIdxPf.typEquiv X i), Formalism.L2.SG.Pf.DstarIdxPf.card_over X i]`.
+
+Establish `hneg : ∀ p : Formalism.L2.SG.TypedSets.TypX X, ¬ q p ↔ Formalism.L2.SG.TypedSets.gOf p = D.host.g 1`. Introduce `p`. Simplify using `only [hq]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro h; unfold Formalism.L2.SG.TypedSets.gOf at h ⊢; split_ifs at h ⊢ <;> simp_all`.
+
+Introduce `h e`. Conclude with `D.host.g_ne (e.symm.trans h)`. Establish `e0 : {p // q p} ≃ InfinitePlace D.host.E` using `Fintype.equivOfCardEq (by rw [hc 0, hcE])`. Establish `e1 : {p // ¬ q p} ≃ InfinitePlace D.host.E` using `Fintype.equivOfCardEq (by rw [Fintype.card_congr (Equiv.subtypeEquivRight hneg), hc 1, hcE])`. Set `typ : Formalism.L2.SG.TypedSets.TypX X ≃ Bool × InfinitePlace D.host.E` to `(Equiv.sumCompl q).symm.trans ((Equiv.sumComm _ _).trans ((Equiv.sumCongr e1 e0).trans (Equiv.boolProdEquivSum (InfinitePlace D.host.E)).symm))`.
+
+Use `⟨typ, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q p`. Establish `: (typ p).1 = true`. Simplify using `[typ, Equiv.sumCompl_symm_apply_of_pos h, Equiv.boolProdEquivSum]`. Rewrite using `[this, if_pos rfl]`.
+
+Conclude with `h` after adjusting the coercions. Establish `: (typ p).1 = false`. Simplify using `[typ, Equiv.sumCompl_symm_apply_of_neg h, Equiv.boolProdEquivSum]`. Rewrite using `[this, if_neg (by simp)]`. Conclude with `(hneg p).1 h` after adjusting the coercions.
+-/
 theorem exists_typ {D : D7} (X : HidaSetting D) :
     ∃ typ : Formalism.L2.SG.TypedSets.TypX X ≃ Bool × InfinitePlace D.host.E, ∀ p,
       (Formalism.L2.SG.TypedSets.gOf p : ℝ) = if (typ p).1 then (D.host.g 0 : ℝ) else (D.host.g 1 : ℝ) := by
@@ -129,6 +157,11 @@ theorem exists_typ {D : D7} (X : HidaSetting D) :
     rw [this, if_neg (by simp)]
     exact_mod_cast (hneg p).1 h
 
+/- English proof (translation)
+Introduce `D T u u' e τ X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hdet hDst`. Establish `hH : Formalism.L2.SG.TypedSets.HypX T.X T.hb (T.Y.FN u) (T.Y.FN u') u u'` using `⟨T.measTie, Formalism.L2.SG.Closed.level_subgroup_properties T.X, T.Y.FN_fund u, T.Y.FN_fund u'⟩`. Establish `hG` using `Formalism.L2.SG.IntegralApproximation.Gam1TieC_holds T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0 T.ψ (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q T.Y.M T.Y.δ i0 i0' νq …`. Establish `hD` using `Formalism.L2.SG.IntegralApproximation.MassDataDstarX_holds T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0 T.ψ (T.Y.tO u u') (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th (Formalism.L2.SG.PairVal.vRdef D u u' (T.X.Fu u) (T.Y.what₂ u) T.Y.δ T.Y.M) Q T …`. Take `⟨typ, htyp⟩` from `exists_typ T.X`.
+
+Use `⟨hG, Formalism.L2.SG.MassDataConc.pairSum_eq _ hG, ⟨typ, htyp⟩, hCT.2.2.1 u, hCT.2.2.1 u', ?_⟩` and prove the remaining obligations. Rewrite using `[hDst]`. Conclude with `hD.trans hCT.2.2.2.1`.
+-/
 theorem linkAll_of (hKpp : KppVolAll) : LinkAll := by
   intro D T u u' e τ X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hdet hDst
   have hH : Formalism.L2.SG.TypedSets.HypX T.X T.hb (T.Y.FN u) (T.Y.FN u') u u' :=
@@ -158,6 +191,11 @@ def NuQPinExists : Prop :=
 
 def LocSpExists : Prop := ∀ (D : D7) (T : STies D), Nonempty (LocSp D T.Y.M)
 
+/- English proof (translation)
+Introduce `D T u u' hne hSt _ hk`. Take `⟨νq, hνq⟩` from `hNu D T u u' hne hSt`. Take `⟨X0, hX0⟩` from `Formalism.L2.SG.NGLeaves.nondegenerate_gram_tuple D T.X`. Take `⟨Lsp⟩` from `hL D T`. Establish `hϖ : ∀ p : PlF D, ∃ x : 𝒪[(D.s.atP p).Fp], Irreducible x` using `fun p => by haveI := (D.s.atP p).lf`.
+
+Conclude with `IsDiscreteValuationRing.exists_irreducible _`. Use `choose ϖ hϖ' using hϖ`. Take `⟨κ, hκ⟩` from `Formalism.L2.SG.DataCut.rowLabelExists_holds D u u' (T.X.Fu u) (T.Y.what₂ u) (T.Y.rowsOK u)`. Set `i0 : ∀ _ : InfinitePlace T.X.B.I.F, Fin D.R.k` to `fun _ => ⟨0, by omega⟩`. Conclude with `⟨i0, i0, νq, X0, Lsp, ϖ, κ, Formalism.L2.SG.NGAnalytic.MassDataLemmas.pairSys0 u u' (T.X.Fu u) (T.Y.what₂ u), fun _ => rfl, Formalism.L2.SG.RealObj.InfCut.real_point_representative_exists D T.X u u' 1 one_pos i0, hνq, hX0, hϖ', hκ⟩`.
+-/
 theorem choicesC_of (hNu : NuQPinExists) (hL : LocSpExists) : ChoicesC := by
   intro D T u u' hne hSt _ hk
   obtain ⟨νq, hνq⟩ := hNu D T u u' hne hSt
@@ -176,11 +214,20 @@ end Choices
 
 section Leaves
 
+/- English proof (translation)
+Introduce `_ T u u' X0 _ _ _ _` and use `kpp_volume_at_instance T.X T.hb T.Y.hK _ _ u u' X0 _ _`.
+-/
 theorem kppVolAll_holds : KppVolAll :=
   fun _ T u u' X0 _ _ _ _ => kpp_volume_at_instance T.X T.hb T.Y.hK _ _ u u' X0 _ _
 
+/- English proof (translation)
+The claim follows from `linkAll_of kppVolAll_holds`.
+-/
 theorem linkAll_holds : LinkAll := linkAll_of kppVolAll_holds
 
+/- English proof (translation)
+Introduce `D T u u' _ _`. Establish `hP : Formalism.L2.SG.NGPin.PinHaarEx` using `Formalism.L2.SG.NGPin.pinHaarEx_of_place (Formalism.L2.SG.RootPatterns.placeHaar_of_loc Formalism.L2.SG.NGPin.locRootHaar_holds)`. Conclude with `⟨fun γ => (Formalism.L2.SG.NGPin.exists_at T.X u u' hP γ).choose, fun γ h => (Formalism.L2.SG.NGPin.exists_at T.X u u' hP γ).choose_spec.1 h, fun w hw => (Formalism.L2.SG.NGPin.exists_at T.X u u' hP (gamW T.X u u' w)).choose_spec.2.2 w hw rfl⟩`.
+-/
 theorem nuQPinExists_holds : NuQPinExists := by
   intro D T u u' _ _
   have hP : Formalism.L2.SG.NGPin.PinHaarEx := Formalism.L2.SG.NGPin.pinHaarEx_of_place
@@ -189,6 +236,9 @@ theorem nuQPinExists_holds : NuQPinExists := by
     fun γ h => (Formalism.L2.SG.NGPin.exists_at T.X u u' hP γ).choose_spec.1 h,
     fun w hw => (Formalism.L2.SG.NGPin.exists_at T.X u u' hP (gamW T.X u u' w)).choose_spec.2.2 w hw rfl⟩
 
+/- English proof (translation)
+Introduce `D T` and use `⟨{ V := Formalism.L2.SG.TermLoc.Vp D H := fun p => Formalism.L2.SG.TermLoc.locHerm T.Y.M p (T.Y.agree p).2.2.1 rank := Formalism.L2.SG.TermLoc.finrank_Vp bc := Formalism.L2.SG.TermLoc.baseChange₂ D bc_smul := Formalism.L2.SG.TermLoc.baseChange_smul₂ bc_span := Formalism.L2.SG.Ter …`.
+-/
 theorem locSpExists_holds : LocSpExists := fun D T =>
   ⟨{ V := Formalism.L2.SG.TermLoc.Vp D
      H := fun p => Formalism.L2.SG.TermLoc.locHerm T.Y.M p (T.Y.agree p).2.2.1
@@ -198,6 +248,9 @@ theorem locSpExists_holds : LocSpExists := fun D T =>
      bc_span := Formalism.L2.SG.TermLoc.span_baseChange_eq_top
      bc_form := fun p x y => Formalism.L2.SG.TermLoc.baseChangeAt_form T.Y.M p (T.Y.agree p).2.2.1 x y }⟩
 
+/- English proof (translation)
+The claim follows from `choicesC_of nuQPinExists_holds locSpExists_holds`.
+-/
 theorem choicesC_holds : ChoicesC := choicesC_of nuQPinExists_holds locSpExists_holds
 
 end Leaves

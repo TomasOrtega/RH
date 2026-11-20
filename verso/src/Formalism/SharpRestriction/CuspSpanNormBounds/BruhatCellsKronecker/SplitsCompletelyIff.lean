@@ -9,10 +9,16 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S NumberField IsDedekindDomain
 
+/- English proof (translation)
+Use `dimS_eq D.R` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   have := dimS_eq D.R
   omega
 
+/- English proof (translation)
+Unfold `LocalBesselAndTopKernel.idxRows`. Rewrite using `[finprod_typedPl D h0 h1 (fun q => LocalBesselAndTopKernel.cardGL q D.R.r / (q ^ LocalBesselAndTopKernel.dimNS D * q ^ (D.R.k * (D.R.k - 1) / 2)))]`. Unfold `Formalism.FourierDecayAlt.Sz.rowIdx Formalism.FourierDecayAlt.Sz.glCard Formalism.FourierDecayAlt.Sz.dimN LocalBesselAndTopKernel.cardGL LocalBesselAndTopKernel.dimNS`. Rewrite using `[rank_eq D]`.
+-/
 theorem idxRows_eq (D : D7) (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) :
     LocalBesselAndTopKernel.idxRows D = Formalism.FourierDecayAlt.Sz.rowIdx D.R.k D.R.rS (D.host.g 0 : ℝ) ^ D.R.f *
       Formalism.FourierDecayAlt.Sz.rowIdx D.R.k D.R.rS (D.host.g 1 : ℝ) ^ D.R.f := by

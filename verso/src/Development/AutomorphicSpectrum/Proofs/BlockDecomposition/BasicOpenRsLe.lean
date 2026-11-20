@@ -26,9 +26,19 @@ variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 def edge {m : ℕ} (k : Fin m) (i : Fin 2) : Fin (m + 1) := ⟨k + i, by omega⟩
 
+/- English proof (translation)
+Introduce `a b hab` and use `show (k : ℕ) + a ≤ k + b from Nat.add_le_add_left hab _`.
+-/
 theorem edge_mono {m : ℕ} (k : Fin m) : Monotone (edge k) := fun a b hab =>
   show (k : ℕ) + a ≤ k + b from Nat.add_le_add_left hab _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Fin.prod_univ_castSucc]`. Establish `hm : m + 1 = m + 1` using `rfl`.
+
+Express the relevant statement in the definitionally equal form `(show A.obj (u.obj (Fin.last (m + 1))) from CH.term (CH.modF A) u (cupListC A fun i => ℓ (Fin.castSucc i)) (CH.front hm) (CH.front_mono hm)) * (show A.obj (u.obj (Fin.last (m + 1))) from CH.term (CH.modF A) u (ℓ (Fin.last m)) (CH.back hm) (CH.back_mono hm)) = _`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(A.map (u.map (homOfLE (Fin.le_last (CH.front hm (Fin.last m)))))).hom (show A.obj (((CH.front_mono hm).functor ⋙ u).obj (Fin.last m)) from cupListC A (fun i => ℓ (Fin.castSucc i)) ((CH.front_mono hm).functor ⋙ u)) = _`. Rewrite using `[ih (fun i => ℓ (Fin.castSucc i)) ((CH.front_mono hm).functor ⋙ u), map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `(Auxff.term_comp (CH.modF A) u (ℓ k.castSucc) (CH.front hm) (CH.front_mono hm) (edge k) (edge_mono k)).trans ?_` and prove the remaining obligations. Conclude with `CH.term_congr _ _ _ _ _ (funext fun i => Fin.ext rfl)`.
+-/
 theorem cupList_val (A : C ⥤ CommAlgCat.{0} R) {m : ℕ} (ℓ : Fin m → CH.Cn (CH.modF A) 1) (u : ComposableArrows C m) :
     (show A.obj (u.obj (Fin.last m)) from cupListC A ℓ u) =
       ∏ k, (show A.obj (u.obj (Fin.last m)) from CH.term (CH.modF A) u (ℓ k) (edge k) (edge_mono k)) := by
@@ -53,10 +63,16 @@ end Cup
 section Frame
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {d : ℕ}
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem map_self {T : C} (f : T ⟶ T) (hf : f = 𝟙 T) (y : Φ.A.obj T) : (Φ.A.map f).hom y = y := by
   subst hf
   simp
 
+/- English proof (translation)
+Unfold `Frame.form`. Rewrite using `[Fin.prod_univ_one]`. Use `congr 1`. Establish `e : v.map (homOfLE (Fin.le_last (Fin.succ (0 : Fin 1)))) = 𝟙 (v.obj (Fin.last 1))` using `(congrArg v.map (Subsingleton.elim _ (𝟙 (Fin.last 1)))).trans (v.map_id _)`. Conclude with `(map_self _ e _).trans rfl`.
+-/
 theorem form_one (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (i : Fin d) (x : Φ.A.obj E.D) (v : ComposableArrows C 1) :
     E.form σ ![i] x v = E.a σ i (v.map (homOfLE (Fin.zero_le (Fin.last 1)))) * (Φ.A.map (σ _)).hom x := by
   unfold Frame.form
@@ -66,11 +82,23 @@ theorem form_one (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (i : Fin d) (x : �
     (congrArg v.map (Subsingleton.elim _ (𝟙 (Fin.last 1)))).trans (v.map_id _)
   exact (map_self _ e _).trans rfl
 
+/- English proof (translation)
+Unfold `Frame.form`. Rewrite using `[map_sub, mul_sub]`.
+-/
 theorem form_sub (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) {j : ℕ} (I : Fin j → Fin d) (x y : Φ.A.obj E.D)
     (s : ComposableArrows C j) : E.form σ I (x - y) s = E.form σ I x s - E.form σ I y s := by
   unfold Frame.form
   rw [map_sub, mul_sub]
 
+/- English proof (translation)
+Use `set φ := u.map (homOfLE (Fin.zero_le (Fin.last 1))) with hφ`. Establish `h1` using `hT _ (σ (u.obj (Fin.last 1))) (σ (u.obj 0) ≫ φ) x`. Establish `e0 : ∀ y, (Φ.A.map (σ (u.obj 0) ≫ φ)).hom y = (Φ.A.map φ).hom ((Φ.A.map (σ (u.obj 0))).hom y)` using `fun y => by simp`. Establish `h2 : ∀ i ∈ (Finset.univ : Finset (Fin d)), E.τ i (σ (u.obj 0) ≫ φ) (σ (u.obj (Fin.last 1))) * ((Φ.A.map (σ (u.obj 0) ≫ φ)).hom (P i x) - (Φ.A.map (σ (u.obj (Fin.last 1)))).hom (P i x)) ∈ (Fil 2).S (u.obj (Fin.last 1))`. Introduce `i _`.
+
+Establish `a1 : E.τ i (σ (u.obj 0) ≫ φ) (σ (u.obj (Fin.last 1))) ∈ (Fil ((1 : ℕ) : ℤ)).S (u.obj (Fin.last 1))`. Use `E.mem i (σ (u.obj 0) ≫ φ) (σ (u.obj (Fin.last 1)))` as an intermediate fact. Rewrite `this` using `[← hF.one]`. Simplify using `using this`. Establish `a2` using `hc 0 (σ (u.obj 0) ≫ φ) (σ (u.obj (Fin.last 1))) (x := P i x) (by`.
+
+Rewrite using `[hF.top _ (by simp)]; trivial)`. Establish `a3` using `hF.mul 1 1 _ a1 (by simpa using a2)`. Simplify using `using a3`. Establish `h3` using `Ideal.add_mem _ h1 (Ideal.sum_mem _ h2)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← e0]`. Simplify using `only [form_one, mul_sub, Finset.sum_sub_distrib]`. Unfold `Frame.a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem taylor_form {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ d) (hc : E.GrConst Fil)
     (P : Fin d → Φ.A.obj E.D → Φ.A.obj E.D) (hT : Taylor Fil E P) (σ : ∀ T : C, E.D ⟶ T) (x : Φ.A.obj E.D)
     (u : ComposableArrows C 1) :
@@ -101,6 +129,13 @@ end Frame
 
 section Sign
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Unfold `sgn`. Simplify using `only [Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single (I.1 ∘ π)]`. Simplify using `only [if_true, Matrix.of_apply, Function.comp_apply]`. Rewrite using `[Units.smul_def]`. Introduce `J _ hJ`. Rewrite using `[if_neg hJ, zero_smul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem sum_sgn {B : Type} [CommRing B] {m d : ℕ} (I : Idx m d) (a : Fin d → Fin m → B) :
     ∑ J : Fin m → Fin d, sgn I J • ∏ l, a (J l) l = (Matrix.of fun k l => a (I.1 k) l).det := by
   classical
@@ -125,12 +160,18 @@ variable {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q)
 
 def lc (i : Fin e) : CH.Cn (CH.modF (sP Q').A) 1 := fun v => E.form σ ![i] 1 (v ⋙ ObjectProperty.ιOfLE h)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `E.form σ ![i] 1 (v ⋙ ObjectProperty.ιOfLE h) = _`. Rewrite using `[form_one, map_one, mul_one]`.
+-/
 theorem lc_val (i : Fin e) (v : ComposableArrows Q'.FullSubcategory 1) :
     (show (sP Q').A.obj (v.obj (Fin.last 1)) from lc h E σ i v) =
       E.a σ i ((v ⋙ ObjectProperty.ιOfLE h).map (homOfLE (Fin.zero_le (Fin.last 1)))) := by
   change E.form σ ![i] 1 (v ⋙ ObjectProperty.ιOfLE h) = _
   rw [form_one, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[cupList_val]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((sP Q').A.map (u.map (homOfLE (Fin.le_last (edge k (Fin.last 1)))))).hom (show (sP Q').A.obj (((edge_mono k).functor ⋙ u).obj (Fin.last 1)) from lc h E σ (I k) ((edge_mono k).functor ⋙ u)) = _`. Rewrite using `[lc_val]`. Both sides reduce to the same expression.
+-/
 theorem cup_lc {m : ℕ} (I : Fin m → Fin e) (u : ComposableArrows Q'.FullSubcategory m) :
     (show (sP Q').A.obj (u.obj (Fin.last m)) from cupListC (sP Q').A (fun k => lc h E σ (I k)) u) =
       ∏ k : Fin m, ((sP Q).A.map ((u ⋙ ObjectProperty.ιOfLE h).map (homOfLE (Fin.le_last k.succ)))).hom
@@ -142,6 +183,9 @@ theorem cup_lc {m : ℕ} (I : Fin m → Fin e) (u : ComposableArrows Q'.FullSubc
   rw [lc_val]
   rfl
 
+/- English proof (translation)
+Rewrite using `[cup_lc]`. Both sides reduce to the same expression.
+-/
 theorem form_cup {m : ℕ} (I : Fin m → Fin e) (x : (sP Q).A.obj E.D) (u : ComposableArrows Q'.FullSubcategory m) :
     E.form σ I x (u ⋙ ObjectProperty.ιOfLE h) =
       (show (sP Q').A.obj (u.obj (Fin.last m)) from cupListC (sP Q').A (fun k => lc h E σ (I k)) u) *
@@ -155,6 +199,9 @@ section Main
 variable {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (s : ℕ) {W U : X.Opens}
   (hWU : W ≤ U) {d e : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `hU.2.2.2.1 ((ObjectProperty.ιOfLE (ks_le q s hWU)).obj T) (σU _) g`. Establish `h2` using `hW.2.2.2.1 T (σW T) (rs hWU g)`. Establish `h3` using `GlobalTheory.CompanionTheory.GrForm.ev_res hWU T.obj (ks_in q s U _ (ks_le q s hWU _ T.property)) (ks_in q s W _ T.property) g`. Conclude with `Ideal.Quotient.eq.1 (h1.symm.trans (h3.symm.trans h2))`.
+-/
 theorem lift_diff {tW : Fin d → Γ(X, W)} {tU : Fin e → Γ(X, U)} {EW : Frame (sP (KS q s {W})) d}
     {εW : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj EW.D} (hW : IsLoc q s tW EW εW)
     {EU : Frame (sP (KS q s {U})) e} {εU : Γ(X, U) ≃+* (sP (KS q s {U})).A.obj EU.D} (hU : IsLoc q s tU EU εU)
@@ -167,6 +214,19 @@ theorem lift_diff {tW : Fin d → Γ(X, W)} {tU : Fin e → Γ(X, U)} {EW : Fram
   have h3 := GlobalTheory.CompanionTheory.GrForm.ev_res hWU T.obj (ks_in q s U _ (ks_le q s hWU _ T.property)) (ks_in q s W _ T.property) g
   exact Ideal.Quotient.eq.1 (h1.symm.trans (h3.symm.trans h2))
 
+/- English proof (translation)
+Establish `hF : IsFil (sP (KS q s {W})) (sFil (KS q s {W}))` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil _`. Use `GlobalTheory.CompanionTheory.CupRep.cup_rep hF EW σW hW.1 m (fun k => lc (ks_le q s hWU) EU σU (L k)) (fun k i => εW (p i (rs hWU (tU (L k))))) (fun k T => (show (sP (KS q s {W})).A.obj T from ((sP (KS q s {U})).A.map (σU ((ObjectProperty.ιOfLE (ks_le q s hWU)).obj T))).hom (εU ( …` and prove the remaining obligations. Conclude with `fun k T => lift_diff q s hWU hW hU σW σU _ T`. Introduce `k u`. Establish `t` using `taylor_form hF EW hW.1 _ hT σW (εW (rs hWU (tU (L k)))) u`.
+
+Simplify using `only [RingEquiv.symm_apply_apply] at t`. Establish `e1 : (show (sP (KS q s {W})).A.obj (u.obj (Fin.last 1)) from lc (ks_le q s hWU) EU σU (L k) u) = (show (sP (KS q s {W})).A.obj (u.obj (Fin.last 1)) from ((sP (KS q s {U})).A.map (σU ((ObjectProperty.ιOfLE (ks_le q s hWU)).obj (u.obj (Fin.last 1))))).hom (εU (tU (L k)))) - ((sP (K …`. Rewrite using `[lc_val]`. Unfold `Frame.a`. Rewrite using `[hU.2.2.2.2]`.
+
+Conclude with `congrArg₂ (· - ·) rfl (GlobalTheory.CompanionTheory.CocProd.map_map _ _ _).symm`. Use `t using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e1]`. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `rep_congr hc fun u => ?_` and prove the remaining obligations. Substitute `hr` using the available equality. Rewrite using `[form_cup]`. Establish `hf : ∀ k : Fin m, ((sP (KS q s {U})).A.map ((u ⋙ ObjectProperty.ιOfLE (ks_le q s hWU)).map (homOfLE (Fin.le_last k.succ)))).hom (EU.a σU (L k) ((u ⋙ ObjectProperty.ιOfLE (ks_le q s hWU)).map (homOfLE (Fin.castSucc_lt_succ (i` using `k)).le))) ∈ (sFil (KS q s {W}) ((1 : ℕ) : ℤ)).S (u.obj (Fin.last m)) := fun k => by`. Rewrite using `[Nat.cast_one, hF.one]`.
+
+Establish `a : EU.a σU (L k) ((u ⋙ ObjectProperty.ιOfLE (ks_le q s hWU)).map (homOfLE (Fin.castSucc_lt_succ (i` using `k)).le)) ∈ (sP (KS q s {U})).J.S _ := EU.mem _ _ _`. Conclude with `(sP (KS q s {U})).J.map_mem ((u ⋙ ObjectProperty.ιOfLE (ks_le q s hWU)).map (homOfLE (Fin.le_last k.succ))) a`. Establish `hx` using `lift_diff q s hWU hW hU σW σU z (u.obj (Fin.last m))`. Rewrite `hx` using `[← hF.one]`. Establish `h1` using `GlobalTheory.CompanionTheory.CocProd.prod_mem hF _ hf (q := 1) (by simpa using hx)`.
+
+Rewrite `h1` using `[← cup_lc]`. Rewrite using `[← mul_sub]`. Simplify using `using h1`.
+-/
 theorem rep_one {tW : Fin d → Γ(X, W)} {tU : Fin e → Γ(X, U)} {EW : Frame (sP (KS q s {W})) d}
     {εW : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj EW.D} (hW : IsLoc q s tW EW εW)
     {EU : Frame (sP (KS q s {U})) e} {εU : Γ(X, U) ≃+* (sP (KS q s {U})).A.obj EU.D} (hU : IsLoc q s tU EU εU)
@@ -221,6 +281,11 @@ end Main
 section Sum
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset ι, CrystallineSemistableComparison.Pb.Rep a b (fun s => ∑ i ∈ S, z i s) (∑ i ∈ S, c i)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`.
+
+Conclude with `rep_zero fun s => Ideal.zero_mem _`. Consider the case `insert i S hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `rep_add (h i) ih`. Conclude with `key Finset.univ`.
+-/
 theorem rep_sum {a b : IdF A} {j : ℕ} {ι : Type} [Fintype ι]
     {z : ι → ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c : ι → CH.H (sq a b) j}
     (h : ∀ i, CrystallineSemistableComparison.Pb.Rep a b (z i) (c i)) : CrystallineSemistableComparison.Pb.Rep a b (fun s => ∑ i, z i s) (∑ i, c i) := by
@@ -238,6 +303,25 @@ theorem rep_sum {a b : IdF A} {j : ℕ} {ι : Type} [Fintype ι]
 
 end Sum
 
+/- English proof (translation)
+Introduce `K _ _ X q s W U hWU d e tW tU EW εW hW EU εU hU p hT σW σU m r hr hm ξ y z hy hz I`. Establish `hF : IsFil (sP (KS q s {W})) (sFil (KS q s {W}))` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil _`. Establish `hF' : IsFil (sP (KS q s {U})) (sFil (KS q s {U}))` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil _`. Establish `hL : ∀ L : Idx m e, ∃ c, CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => EU.form σU L.1 (εU (z L)) (u ⋙ ObjectProperty.ιOfLE (ks_le q s hWU))) c`. Introduce `L`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.CompanionTheory.CocProd.rep_form hF' EU σU hU.1 m 0 r (by simpa using hr) L.1 (εU (z L)) (by rw [hF'.top _ (by simp)]; trivial)`. Conclude with `⟨_, rep_res (ks_le q s hWU) r (r + 1) hc⟩`. Use `choose c hc using hL`. Establish `e1 : ∑ L, c L = ξ` using `rep_unique (rep_sum hc) hz`. Establish `h1 : ∀ L : Idx m e, CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ J : Fin m → Fin d, EW.form σW J (εW (rs hWU (z L)) * ∏ k, εW (p (J k) (rs hWU (tU (L.1 k))))) u) (c L)` using `fun L => rep_one q s hWU hW hU p hT σW σU m r hr L.1 (z L) (c L) (hc L)`.
+
+Establish `h2 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ L : Idx m e, ∑ J : Fin m → Fin d, EW.form σW J (εW (rs hWU (z L)) * ∏ k, εW (p (J k) (rs hWU (tU (L.1 k))))) u) ξ` using `e1 ▸ rep_sum h1`. Establish `h3 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ i : Idx m e × (Fin m → Fin d), EW.form σW i.2 (εW (rs hWU (z i.1)) * ∏ k, εW (p (i.2 k) (rs hWU (tU (i.1.1 k))))) u) ξ`. Use `rep_congr h2 fun u => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, sub_self]`. Conclude with `Ideal.zero_mem _`.
+
+Establish `h4` using `GlobalTheory.CompanionTheory.ConeLocal.rep_collapse hF EW σW hW.1 m r hr (fun i : Idx m e × (Fin m → Fin d) => i.2) (fun i => εW (rs hWU (z i.1)) * ∏ k, εW (p (i.2 k) (rs hWU (tU (i.1.1 k))))) ξ h3`. Set `y' : Idx m d → Γ(X, W)` to `fun I => ∑ L : Idx m e, rs hWU (z L) * (Matrix.of fun k l => p (I.1 k) (rs hWU (tU (L.1 l)))).det`. Establish `e2 : ∀ I : Idx m d, ∑ i : Idx m e × (Fin m → Fin d), sgn I i.2 • (εW (rs hWU (z i.1)) * ∏ k, εW (p (i.2 k) (rs hWU (tU (i.1.1 k))))) = εW (y' I)`. Introduce `I`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Simplify using `only [y', map_sum, map_mul]`. Use `Finset.sum_congr rfl fun L _ => ?_` and prove the remaining obligations. Establish `e3 : ∀ J : Fin m → Fin d, sgn I J • (εW (rs hWU (z L)) * ∏ k, εW (p (J k) (rs hWU (tU (L.1 k))))) = εW (rs hWU (z L)) * sgn I J • ∏ k, εW (p (J k) (rs hWU (tU (L.1 k))))` using `fun J => by`. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun J _ => e3 J, ← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[sum_sgn I (fun i l => εW (p i (rs hWU (tU (L.1 l)))))]`. Conclude with `(RingHom.map_det εW.toRingHom (Matrix.of fun k l => p (I.1 k) (rs hWU (tU (L.1 l))))).symm`. Establish `h5 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ I : Idx m d, EW.form σW I.1 (εW (y' I)) u) ξ`.
+
+Use `rep_congr h4 fun u => ?_` and prove the remaining obligations. Simplify using `only [e2, sub_self]`. Conclude with `Ideal.zero_mem _`. Establish `h6 : CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ I : Idx m d, EW.form σW I.1 (εW (y I - y' I)) u) 0`. Establish `h` using `rep_add hy (rep_smul (-1 : K) h5)`.
+
+Rewrite `h` using `[neg_one_smul, add_neg_cancel]`. Use `rep_congr h fun u => ?_` and prove the remaining obligations. Simplify using `only [map_sub, form_sub, Finset.sum_sub_distrib, neg_one_smul]`. Use `Ideal.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h7` using `(GlobalTheory.CompanionTheory.ConeLocal.loc_coef q tW s EW εW hW σW m r hr hm).2 _ h6`. Conclude with `sub_eq_zero.1 (congrFun h7 I)`.
+-/
 theorem cmp_coef : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (s : ℕ) {W U : X.Opens} (hWU : W ≤ U) {d e : ℕ}
     (tW : Fin d → Γ(X, W)) (tU : Fin e → Γ(X, U)) (EW : Frame (sP (KS q s {W})) d) (εW : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj EW.D),
     IsLoc q s tW EW εW → ∀ (EU : Frame (sP (KS q s {U})) e) (εU : Γ(X, U) ≃+* (sP (KS q s {U})).A.obj EU.D), IsLoc q s tU EU εU →
@@ -309,6 +393,9 @@ end GlobalTheory.CompanionTheory.ConeLocal.CoefMemCmp
 
 namespace GlobalTheory.CompanionTheory.ConeLocal.CoefMemLoc
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (CH.cx _) j).1 x`. Both sides reduce to the same expression.
+-/
 theorem resKS_resKS {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (s : ℕ)
     {W V U V' : X.Opens} (h₁ : W ≤ V) (h₂ : V ≤ V') (h₃ : W ≤ U) (h₄ : U ≤ V') (r r' : ℤ) (j : ℕ)
     (x : HQ (KS q s {V'}) r r' j) :
@@ -316,12 +403,28 @@ theorem resKS_resKS {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (Co
   obtain ⟨f, hf, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj (CH.cx _) j).1 x
   rfl
 
+/- English proof (translation)
+Simplify using `only [rs]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem rs_rs {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (h₃ : W ≤ U) (x : Γ(X, U)) :
     rs h₂ (rs h₁ x) = rs h₃ x := by
   simp only [rs]
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : I = L`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Establish `e : (Matrix.of fun k l => if I.1 k = I.1 l then (1 : R) else 0) = 1`. Use extensionality with `k l`.
+
+Simplify using `[Matrix.one_apply, I.2.injective.eq_iff]`. Rewrite using `[e, Matrix.det_one]`. Rewrite using `[if_neg h]`. Establish `hk : ∃ k, ∀ l, I.1 k ≠ L.1 l`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `hsub : Finset.univ.image I.1 ⊆ Finset.univ.image L.1`. Introduce `x hx`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨l, hl⟩` from `hc k`. Conclude with `Finset.mem_image.2 ⟨l, Finset.mem_univ _, hl.symm⟩`. Establish `hcard : (Finset.univ.image L.1).card ≤ (Finset.univ.image I.1).card`. Rewrite using `[Finset.card_image_of_injective _ I.2.injective, Finset.card_image_of_injective _ L.2.injective]`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hcard`.
+
+Establish `hr : Set.range I.1 = Set.range L.1`. Use `congrArg (fun S : Finset (Fin d) => (S : Set (Fin d))) heq` as an intermediate fact. Simplify using `using this`. Conclude with `Subtype.ext ((StrictMono.range_inj I.2 L.2).1 hr)`. Take `⟨k, hk⟩` from `hk`.
+
+Conclude with `Matrix.det_eq_zero_of_row_eq_zero k fun l => by simp [hk l]`.
+-/
 theorem det_delta {R : Type} [CommRing R] {m d : ℕ} (I L : Idx m d) :
     (Matrix.of fun k l => if I.1 k = L.1 l then (1 : R) else 0).det = if I = L then 1 else 0 := by
   by_cases h : I = L
@@ -351,11 +454,17 @@ theorem det_delta {R : Type} [CommRing R] {m d : ℕ} (I L : Idx m d) :
     obtain ⟨k, hk⟩ := hk
     exact Matrix.det_eq_zero_of_row_eq_zero k fun l => by simp [hk l]
 
+/- English proof (translation)
+Simplify using `only [det_delta]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_delta {R : Type} [CommRing R] {m d : ℕ} (y : Idx m d → R) (I : Idx m d) :
     ∑ L : Idx m d, y L * (Matrix.of fun k l => if I.1 k = L.1 l then (1 : R) else 0).det = y I := by
   simp only [det_delta]
   simp
 
+/- English proof (translation)
+Use `Scheme.basicOpen_res X f (homOfLE hVV).op` as an intermediate fact. Simplify using `only [rs]`. Express the relevant statement in the definitionally equal form `X.basicOpen ((X.presheaf.map (homOfLE hVV).op) f) ≤ _`. Rewrite using `[this]`. Conclude with `inf_le_right`.
+-/
 theorem basicOpen_rs_le {X : Scheme.{0}} {V V' : X.Opens} (hVV : V ≤ V') (f : Γ(X, V')) :
     X.basicOpen (rs hVV f) ≤ X.basicOpen f := by
   have := Scheme.basicOpen_res X f (homOfLE hVV).op
@@ -364,6 +473,27 @@ theorem basicOpen_rs_le {X : Scheme.{0}} {V V' : X.Opens} (hVV : V ≤ V') (f : 
   rw [this]
   exact inf_le_right
 
+/- English proof (translation)
+Introduce `K _ _ X q _ s V V' hVV hV' d c`. Use `letI := (strV q V).toAlgebra`. Introduce `D hD E ε hloc σ m r hr hs f e cu ξ y hy I`. Establish `hWV : X.basicOpen (rs hVV f) ≤ V` using `X.basicOpen_le _`. Establish `hUf : X.basicOpen f ≤ V'` using `X.basicOpen_le f`.
+
+Establish `hWU : X.basicOpen (rs hVV f) ≤ X.basicOpen f` using `basicOpen_rs_le hVV f`. Establish `hW : IsAffineOpen (X.basicOpen (rs hVV f))` using `c.affine.basicOpen _`. Take `⟨cW, hcW⟩` from `GlobalTheory.CompanionTheory.CoordRes.main c hWV hW`. Use `letI := (strV q (X.basicOpen (rs hVV f))).toAlgebra`. Take `⟨p, hp⟩` from `GlobalTheory.CompanionTheory.ConeLocal.DerivExt.main q c.affine (rs hVV f) D`.
+
+Establish `hs1 : 1 ≤ s` using `by omega`. Take `⟨EW, εW, lW⟩` from `GlobalTheory.CompanionTheory.ConeLocal.exists_loc q cW s hs1`. Take `⟨EU, εU, lU⟩` from `GlobalTheory.CompanionTheory.ConeLocal.exists_loc q cu s hs1`. Establish `hpδ : ∀ k j, p k (rs hWV (c.t j)) = if k = j then 1 else 0`. Introduce `k j`.
+
+Rewrite using `[hp, hD]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hδ : ∀ k j, p k (cW.t j) = if k = j then 1 else 0`. Introduce `k j`. Rewrite using `[hcW, hpδ]`.
+
+Establish `hT` using `GlobalTheory.CompanionTheory.ConeLocal.taylor_loc q cW s EW εW lW p hδ`. Set `σW : ∀ T, EW.D ⟶ T` to `fun T => (EW.ne T).some`. Set `σU : ∀ T, EU.D ⟶ T` to `fun T => (EU.ne T).some`. Take `⟨z, hz⟩` from `(GlobalTheory.CompanionTheory.ConeLocal.loc_coef q cu.t s EU εU lU σU m r hr hs).1 (resKS q s hUf _ _ _ ξ)`. Take `⟨yW, hyW⟩` from `(GlobalTheory.CompanionTheory.ConeLocal.loc_coef q cW.t s EW εW lW σW m r hr hs).1 (resKS q s hWV _ _ _ (resKS q s hVV _ _ _ ξ))`.
+
+Establish `h1` using `rep_res (ks_le q s hWV) r (r + 1) hy`. Establish `h2` using `rep_res (ks_le q s hWU) r (r + 1) hz`. Establish `e1` using `GlobalTheory.CompanionTheory.ConeLocal.CoefMemCmp.cmp_coef q s hWV cW.t c.t EW εW lW E ε hloc (fun k => p k) hT σW σ m r hr hs _ yW y hyW h1 I`. Establish `hyW'` using `hyW`. Rewrite `hyW'` using `[resKS_resKS q s hWV hVV hWU hUf]`.
+
+Establish `e2` using `GlobalTheory.CompanionTheory.ConeLocal.CoefMemCmp.cmp_coef q s hWU cW.t cu.t EW εW lW EU εU lU (fun k => p k) hT σW σU m r hr hs _ yW z hyW' h2 I`. Establish `e3 : yW I = rs hWV (y I)`. Rewrite using `[e1]`. Simplify using `only [hpδ]`. Conclude with `sum_delta (fun L => rs hWV (y L)) I`.
+
+Establish `hcomp : (rs hWU).comp (rs hUf) = (rs hWV).comp (rs hVV)`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[rs_rs hUf hWU (hWV.trans hVV), rs_rs hVV hWV (hWV.trans hVV)]`. Establish `hsurj : ∀ a : Γ(X, X.basicOpen f), ∃ (b : Γ(X, V')) (N : ℕ), rs hUf f ^ N * a = rs hUf b`.
+
+Introduce `a`. Take `⟨n, b, hb⟩` from `exists_eq_pow_mul_of_isAffineOpen X V' hV' f a`. Conclude with `⟨b, n, hb.symm⟩`. Establish `hinj : ∀ x : Γ(X, V), rs hWV x = 0 → ∃ N : ℕ, rs hVV f ^ N * x = 0`. Introduce `x hx`.
+
+Conclude with `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen X c.affine x (rs hVV f) hx`. Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.ConeLocal.JacAlg.clear_sum (rs hVV) (rs hWV) (rs hUf) (rs hWU) f hcomp hsurj hinj (fun k => D k) (fun k => p k) (fun k x y => map_add _ _ _) (fun k x y => by simpa using (p k).leibniz x y) (fun k x => hp k x) I.1 z (fun L l => cu.t (L.1 l)) (y I) (by …`. Use `⟨M, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `hM`.
+-/
 theorem main : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (s : ℕ) {V V' : X.Opens} (hVV : V ≤ V'), IsAffineOpen V' → ∀ {d : ℕ} (c : Coord q V d),
     letI := (strV q V).toAlgebra
     ∀ (D : Fin d → Derivation K Γ(X, V) Γ(X, V)), (∀ k j, D k (c.t j) = if k = j then 1 else 0) →

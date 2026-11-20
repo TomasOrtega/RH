@@ -7,6 +7,23 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l hl R _ B d hI`. Assume the negation of the conclusion as `hu`. Take `⟨m, hm, hdm⟩` from `Ideal.exists_le_maximal (Ideal.span {B.D.δ d}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hδd : B.D.δ d ∈ m` using `hdm (Ideal.mem_span_singleton_self _)`. Establish `hJ : JJ B ≤ m`.
+
+Establish `h1 : JJ B ≤ (⊥ : Ideal B.A).jacobson` using `@IsAdicComplete.le_jacobson_bot _ _ _ B.complete`. Conclude with `h1.trans (sInf_le ⟨bot_le, hm⟩)`. Establish `hlm : (l : B.A) ∈ m` using `hJ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`. Establish `hdm' : d ∈ m` using `hJ (Ideal.mem_sup_right (by rw [hI]; exact Ideal.mem_span_singleton_self _))`. Establish `hmem` using `B.l_mem`.
+
+Rewrite `hmem` using `[hI, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton_sup]`. Take `⟨a, y, hy, hle⟩` from `hmem`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hl2 : 2 ≤ l` using `hl.out.two_le`. Establish `hφ : B.D.φ d ∈ m ^ 2`.
+
+Rewrite using `[B.D.φ_eq]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `: d ^ l = d ^ 2 * d ^ (l - 2)` using `by rw [← pow_add]; congr 1; omega`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hdm' 2)`.
+
+Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul hlm hδd`. Establish `hy2 : c * B.D.φ d ∈ m ^ (1 + 1)` using `Ideal.mul_mem_left _ _ hφ`. Establish `hδy : B.D.δ (c * B.D.φ d) ∈ m`. Simplify using `using GlobalTheory.T.delta_mem_ideal_pow_of_mem_pow_succ l B.A B.D m hlm 1 _ hy2`.
+
+Establish `hδad : B.D.δ (a * d) ∈ m`. Rewrite using `[B.D.δ_mul]`. Use `Ideal.add_mem _ (Ideal.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ hδd`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hdm' _ hl.out.pos)`.
+
+Conclude with `Ideal.mul_mem_left _ _ hδd`. Establish `hsum : ∑ k ∈ Finset.Ioo 0 l, ((l.choose k / l : ℕ) : B.A) * (a * d) ^ k * (c * B.D.φ d) ^ (l - k) ∈ m` using `Ideal.sum_mem _ fun k hk => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ (Ideal.mul_mem_left _ _ hdm') _ (Finset.mem_Ioo.1 hk).1))`. Establish `hδl : B.D.δ (l : B.A) ∈ m`. Rewrite using `[← hle, B.D.δ_add]`. Conclude with `Ideal.sub_mem _ (Ideal.add_mem _ hδad hδy) hsum`.
+
+Conclude with `(GlobalTheory.T.prime_not_mem_sq_and_delta_not_mem l B.A B.D m hm.ne_top hlm).2 hδl`.
+-/
 theorem isUnit_δ_of_I_eq_span : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B : Obj l R) (d : B.A),
     B.I = Ideal.span {d} → IsUnit (B.D.δ d) := by
   intro l hl R _ B d hI

@@ -14,6 +14,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open GlobalTheory.DblScal in
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c ι hι κ hκ h hh`. Take `⟨⟨-, dd, omd, hdc, hws, hbox⟩, -, -⟩` from `hP.weil`. Establish `hspl` using `hws.2.1`. Establish `hloc` using `GlobalTheory.T.double_splitting_pair_identity hPr F E σ B n d X W M χX χW om r s r' s' hP dd omd hspl v`. Take `⟨ιd, hιd, hprod⟩` from `GlobalTheory.T.linear_model_double_splitting hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c ι hι dd hdc`.
+
+Take `⟨cd, hcd⟩` from `GlobalTheory.T.double_scaling_local_identity hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hspl hloc ιd hιd`. Take `⟨χd, hχd⟩` from `GlobalTheory.T.double_scaling_local_equivariance hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hspl hloc ιd hιd cd hcd`. Take `⟨gd, hgd⟩` from `exists_diag_one h`. Establish `hgdAt : gd ∈ UDAt σ W.J (evFin F v)`. Introduce `u hu`.
+
+Express the relevant statement in the definitionally equal form `u • (((gd : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) - 1) = 0`. Establish `h1 : u • (mat h - 1) = 0` using `hh u hu`. Rewrite using `[hgd, fromBlocks_sub_one, Matrix.fromBlocks_smul, h1]`. Simplify using the standard rewrite rules. Establish `e1 : κ h = cd gd` using `GlobalTheory.T.linear_model_compact_equivariance hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c ι hι κ hκ dd omd hdc hspl (fun g gd' hg φ₁ hφ₁ φ₂ hφ₂ => hbox g gd' hg φ₁ hφ₁ φ₂ hφ₂) hloc ιd hιd hprod cd hcd h hh gd hgd`.
+
+Take `⟨p, hpAt, hp⟩` from `GlobalTheory.T.double_scaling_iwasawa_decomposition F E σ B n d X W M χX χW om r s r' s' hP v t c (fixDiag (locMat t c h))`. Establish `e5` using `GlobalTheory.T.double_scaling_local_vanishing hPr F E σ B n d X W M χX χW om r s r' s' hP v t b c dd omd hdc hws hloc ιd hιd cd hcd p hpAt ⟨1, by rw [hp]; exact fixDiag_diag _⟩`. Rewrite `e5` using `[hp, gdet_fixDiag]`. Establish `f1 : cd gd = χd (GlobalTheory.SplitFlip.gdet (locMat t c h))` using `by rw [hχd gd hgdAt, gdet_locMatD_diag t c h gd hgd]`. Establish `f2 : cd p = χd (GlobalTheory.SplitFlip.gdet (locMat t c h))` using `by rw [hχd p hpAt, hp, gdet_fixDiag]`.
+
+Rewrite using `[e1, f1, ← f2]`. Conclude with `e5`.
+-/
 theorem GlobalTheory.DblScal.scalW_main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinW B.ψ t b c ι →

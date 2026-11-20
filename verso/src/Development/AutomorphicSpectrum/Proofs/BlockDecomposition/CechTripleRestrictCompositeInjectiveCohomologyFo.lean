@@ -15,10 +15,42 @@ def secA {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ : X' ⟶ X}
     (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (p : Pair φ) : Sec s p.1.2.1 →ₐ[R] Sec s' p.1.1.1 :=
   { secPull s s' p with commutes' := (semiHom_secPull h p).map_algebraMap }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secA_apply {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ : X' ⟶ X}
     (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (p : Pair φ) (x : Sec s p.1.2.1) :
     secA h p x = secPull s s' p x := rfl
 
+/- English proof (translation)
+Set `Sa` to `Sec A.hom U.1`. Set `Sb` to `Sec B.hom V.1`. Set `iU` to `affPt A.hom U`. Set `iV` to `affPt B.hom V`. Establish `eU : iU ≫ A.hom = spMap (algebraMap R Sa)` using `affPt_w _ _`.
+
+Establish `eV : iV ≫ B.hom = spMap (algebraMap R Sb)` using `affPt_w _ _`. Set `ma : pullback (spMap (algebraMap R Sa)) (spMap (algebraMap R Sb)) ⟶ pullback A.hom B.hom` to `pullback.map _ _ _ _ iU iV (𝟙 _) (by rw [Category.comp_id, eU]) (by rw [Category.comp_id, eV])`. Use `haveI hma : IsOpenImmersion ma := MorphismProperty.pullback_map (P := @IsOpenImmersion) (f := spMap (algebraMap R Sa)) (g := spMap (algebraMap R Sb)) (IsAffineOpen.isOpenImmersion_fromSpec U.2) (IsAffineOpen.isOpenImmersion_fromSpec V.2) eU.symm eV.symm`. Set `j : Spec (CommRingCat.of (Sa ⊗[R] Sb)) ⟶ pullback A.hom B.hom` to `(pullbackSpecIso R Sa Sb).inv ≫ ma`. Establish `hj : j.opensRange = (fst A B).left ⁻¹ᵁ U.1 ⊓ (snd A B).left ⁻¹ᵁ V.1`.
+
+Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Establish `e1 : Set.range j = Set.range ma`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨(pullbackSpecIso R Sa Sb).inv y, (Scheme.Hom.comp_apply _ _ y).symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨(pullbackSpecIso R Sa Sb).hom y, ?_⟩` and prove the remaining obligations. Simplify using `[j, ← Scheme.Hom.comp_apply]`. Establish `e2` using `Scheme.Pullback.range_map (spMap (algebraMap R Sa)) (spMap (algebraMap R Sb)) A.hom B.hom iU iV (𝟙 _) (by rw [Category.comp_id, eU]) (by rw [Category.comp_id, eV])`.
+
+Simplify using `only [Scheme.Hom.coe_opensRange, e1]`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[show Set.range iU = (U.1 : Set A.left) from U.2.range_fromSpec, show Set.range iV = (V.1 : Set B.left) from V.2.range_fromSpec]`. Both sides reduce to the same expression. Establish `hV : IsAffineOpen ((fst A B).left ⁻¹ᵁ U.1 ⊓ (snd A B).left ⁻¹ᵁ V.1)` using `hj ▸ isAffineOpen_opensRange j`.
+
+Use `⟨hV, ?_⟩` and prove the remaining obligations. Set `κ : Sa ⊗[R] Sb →ₐ[R] Sec (A ⊗ B).hom ((fst A B).left ⁻¹ᵁ U.1 ⊓ (snd A B).left ⁻¹ᵁ V.1)` to `Algebra.TensorProduct.lift (secA (wOver (fst A B)) ⟨(⟨_, hV⟩, U), inf_le_left⟩) (secA (wOver (snd A B)) ⟨(⟨_, hV⟩, V), inf_le_right⟩) (fun _ _ ↦ Commute.all _ _)`. Establish `hk : spMap κ.toRingHom ≫ j = hV.fromSpec`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `s1` using `secPull_affPt (φ := (fst A B).left) A.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, U), inf_le_left⟩`.
+
+Establish `l : κ.toRingHom.comp Algebra.TensorProduct.includeLeftRingHom = secPull A.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, U), inf_le_left⟩` using `RingHom.ext fun x ↦ by`. Express the relevant statement in the definitionally equal form `κ (x ⊗ₜ 1) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, _root_.mul_one]`. Both sides reduce to the same expression. Establish `m1 : ma ≫ pullback.fst A.hom B.hom = pullback.fst _ _ ≫ iU` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[Category.assoc, Category.assoc, m1, ← Category.assoc (pullbackSpecIso R Sa Sb).inv, pullbackSpecIso_inv_fst]`. Establish `m2 : spMap κ.toRingHom ≫ Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) = spMap (secPull A.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, U), inf_le_left⟩)`. Rewrite using `[← l, spMap_comp]`. Rewrite using `[← Category.assoc, m2]`. Conclude with `s1`.
+
+Establish `s1` using `secPull_affPt (φ := (snd A B).left) B.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, V), inf_le_right⟩`. Establish `l : κ.toRingHom.comp (Algebra.TensorProduct.includeRight : Sb →ₐ[R] Sa ⊗[R] Sb).toRingHom = secPull B.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, V), inf_le_right⟩` using `RingHom.ext fun x ↦ by`. Express the relevant statement in the definitionally equal form `κ (1 ⊗ₜ x) = _`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, _root_.one_mul]`. Both sides reduce to the same expression.
+
+Establish `m1 : ma ≫ pullback.snd A.hom B.hom = pullback.snd _ _ ≫ iV` using `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, Category.assoc, m1, ← Category.assoc (pullbackSpecIso R Sa Sb).inv, pullbackSpecIso_inv_snd]`. Establish `m2 : spMap κ.toRingHom ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : Sb →ₐ[R] Sa ⊗[R] Sb).toRingHom) = spMap (secPull B.hom (A ⊗ B).hom ⟨(⟨_, hV⟩, V), inf_le_right⟩)`. Rewrite using `[← l, spMap_comp]`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ iV) m2).trans s1`. Use `haveI hj1 : IsOpenImmersion j := inferInstance`. Use `haveI h2 : IsOpenImmersion (spMap κ.toRingHom ≫ j) := hk ▸ IsAffineOpen.isOpenImmersion_fromSpec hV`. Use `haveI h3 : IsOpenImmersion (spMap κ.toRingHom) := IsOpenImmersion.of_comp _ j`. Establish `hs : Function.Surjective (spMap κ.toRingHom)`.
+
+Introduce `t`. Establish `ht : j t ∈ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec, ← hj]`. Conclude with `⟨t, rfl⟩`. Take `⟨y, hy⟩` from `ht`.
+
+Use `⟨y, j.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← hk]`. Both sides reduce to the same expression. Use `haveI : Epi (spMap κ.toRingHom).base := (TopCat.epi_iff_surjective _).2 hs`. Use `haveI hi : IsIso (spMap κ.toRingHom) := IsOpenImmersion.isIso (spMap κ.toRingHom)`.
+
+Use `haveI : IsIso (CommRingCat.ofHom κ.toRingHom) := by`. Set `g` to `Spec.preimage (inv (Spec.map (CommRingCat.ofHom κ.toRingHom)))`. Apply the tactic sequence `refine ⟨g, Spec.map_injective ?_, Spec.map_injective ?_⟩ <;> simp [g]`. Conclude with `ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom κ.toRingHom)`.
+-/
 theorem kunneth_open (A B : Over (Sp R)) (U : A.left.affineOpens) (V : B.left.affineOpens) :
     ∃ hV : IsAffineOpen ((fst A B).left ⁻¹ᵁ U.1 ⊓ (snd A B).left ⁻¹ᵁ V.1),
       Function.Bijective (Algebra.TensorProduct.lift
@@ -107,12 +139,20 @@ variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' :
   {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R →+* R'} {τ : R' →+* R''}
   {φ : X' ⟶ X} {ψ : X'' ⟶ X'}
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c`.
+-/
 theorem cechTripleRestrictComposite_comp_pairRestrict (ψ : X'' ⟶ X') (φ : X' ⟶ X) (s'' : X'' ⟶ Sp R'') (c : HO1 s'') :
     (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 c) =
       (CoefMap.restrict (OAff s'') (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ))).pull1 c := by
   rw [← CoefMap.pullCohomologyOne_comp]
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) c
 
+/- English proof (translation)
+Introduce `x y e`. Take `⟨x0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 x`. Take `⟨y0, rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 y`. Rewrite `e` using `[cechTripleRestrictComposite_comp_pairRestrict, cechTripleRestrictComposite_comp_pairRestrict]`. Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s''`.
+
+Establish `hcov` using `triple_cover_affine ψ φ s''`. Establish `hdir` using `exists_triple_below_two ψ φ s''`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s'') _ H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s'') _ H hcov hdir`. Rewrite using `[_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg e]`.
+-/
 theorem cechTripleRestrictComposite_injective_cohomology_forms (ψ : X'' ⟶ X') (φ : X' ⟶ X) (s'' : X'' ⟶ Sp R'') :
     Function.Injective (cechTripleRestrictComposite ψ φ s'').pull1 := by
   intro x y e
@@ -126,6 +166,13 @@ theorem cechTripleRestrictComposite_injective_cohomology_forms (ψ : X'' ⟶ X')
   have hg := _root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s'') _ H hcov hdir
   rw [_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg e]
 
+/- English proof (translation)
+Use `cechTripleRestrictComposite_injective_cohomology_forms ψ φ s'' ?_` and prove the remaining obligations. Establish `p0 : (pairPull h).pull1 a = (pairRes φ s').pull1 a'` using `p`. Establish `p1 : (pairPull h').pull1 a' = (pairRes ψ s'').pull1 a''` using `p'`. Establish `t1 : (cechTripleRestrictComposite ψ φ s'').pull1 ((pairPull h'').pull1 a) = (cechTriplePullbackSecond h').pull1 ((pairPull h).pull1 a)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`.
+
+Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]`. Conclude with `congrArg (fun q ↦ q.hom b) (Scheme.Hom.appLE_comp_appLE ψ φ U.unop.1.2.2.1 U.unop.1.2.1.1 U.unop.1.1.1 U.unop.2.2 U.unop.2.1)) a`. Establish `t2 : (cechTriplePullbackSecond (φ` using `φ) h').pull1 ((pairRes φ s').pull1 a') = (cechTripleRestrictFirst ψ φ s'').pull1 ((pairPull h').pull1 a') := by`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) a'`.
+
+Establish `t3 : (cechTripleRestrictFirst ψ φ s'').pull1 ((pairRes ψ s'').pull1 a'') = (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 a'')`. Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) a''`. Rewrite using `[t1, p0, t2, p1, t3]`.
+-/
 theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) {a : HO1 s} {a' : HO1 s'} {a'' : HO1 s''}
     (p : IsPullO h a a') (p' : IsPullO h' a' a'') : IsPullO h'' a a'' := by
@@ -154,24 +201,39 @@ end Comp
 section Over
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `isPullO_comp (wOver g) (wOver f) (wOver (f ≫ g)) p p'`.
+-/
 theorem isPullO_over_comp {Y Z T : Over (Sp R)} (f : Y ⟶ Z) (g : Z ⟶ T) {a : HO1 T.hom} {a' : HO1 Z.hom}
     {a'' : HO1 Y.hom} (p : IsPullO (wOver g) a a') (p' : IsPullO (wOver f) a' a'') :
     IsPullO (wOver (f ≫ g)) a a'' :=
   isPullO_comp (wOver g) (wOver f) (wOver (f ≫ g)) p p'
 
+/- English proof (translation)
+The claim follows from `CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull (wOver (𝟙 Y))) (pairRes _ Y.hom) (pairIdTrans Y.left) (fun _ _ ↦ rfl) c`.
+-/
 theorem isPullO_over_id (Y : Over (Sp R)) (c : HO1 Y.hom) : IsPullO (wOver (𝟙 Y)) c c :=
   CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull (wOver (𝟙 Y))) (pairRes _ Y.hom) (pairIdTrans Y.left) (fun _ _ ↦ rfl) c
 
+/- English proof (translation)
+Unfold `IsPullO at *`. Rewrite using `[map_sub, map_sub, ha, hb]`.
+-/
 theorem isPullO_sub {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R} {φ : X' ⟶ X}
     {h : φ ≫ s = s' ≫ spMap (RingHom.id R)} {a b : HO1 s} {a' b' : HO1 s'} (ha : IsPullO h a a')
     (hb : IsPullO h b b') : IsPullO h (a - b) (a' - b') := by
   unfold IsPullO at *; rw [map_sub, map_sub, ha, hb]
 
+/- English proof (translation)
+The claim follows from `H1.eq_zero_of_isInitial (OAff s) (T₀ := op ⟨⊤, isAffineOpen_top _⟩) (Limits.IsInitial.ofUniqueHom (fun U ↦ (homOfLE (show U.unop ≤ ⟨⊤, isAffineOpen_top _⟩ from le_top (a := U.unop.1))).op) fun _ _ ↦ rfl) c`.
+-/
 theorem eq_zero_of_isAffine {X : Scheme.{0}} [IsAffine X] (s : X ⟶ Sp R) (c : HO1 s) : c = 0 :=
   H1.eq_zero_of_isInitial (OAff s) (T₀ := op ⟨⊤, isAffineOpen_top _⟩)
     (Limits.IsInitial.ofUniqueHom (fun U ↦ (homOfLE (show U.unop ≤ ⟨⊤, isAffineOpen_top _⟩ from
         le_top (a := U.unop.1))).op) fun _ _ ↦ rfl) c
 
+/- English proof (translation)
+Use `haveI : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Sp R))`. Take `⟨c', hc', -⟩` from `existsUnique_isPullO (wOver e) c`. Rewrite `hc'` using `[eq_zero_of_isAffine _ c']`. Conclude with `isPullO_over_comp g e hc' ((map_zero _).trans (map_zero _).symm)`.
+-/
 theorem isPullO_through_unit {Y Z : Over (Sp R)} (g : Y ⟶ 𝟙_ (Over (Sp R))) (e : 𝟙_ (Over (Sp R)) ⟶ Z)
     (c : HO1 Z.hom) : IsPullO (wOver (g ≫ e)) c 0 := by
   haveI : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Sp R))
@@ -181,6 +243,17 @@ theorem isPullO_through_unit {Y Z : Over (Sp R)} (g : Y ⟶ 𝟙_ (Over (Sp R)))
 
 variable (A : Over (Sp R)) [GrpObj A]
 
+/- English proof (translation)
+Establish `hm` using `isPullO_pullHO1 (wOver μ[A]) c`. Establish `hp` using `isPullO_pullHO1 (wOver (fst A A)) c`. Establish `hq` using `isPullO_pullHO1 (wOver (snd A A)) c`. Establish `one_def : (1 : A ⟶ A) = toUnit A ≫ η[A]` using `rfl`. Establish `e1 : lift (𝟙 A) (1 : A ⟶ A) ≫ μ[A] = 𝟙 A`.
+
+Rewrite using `[← Hom.mul_def, _root_.mul_one]`. Establish `e2 : lift (1 : A ⟶ A) (𝟙 A) ≫ μ[A] = 𝟙 A`. Rewrite using `[← Hom.mul_def, _root_.one_mul]`. Establish `key : ∀ (f : A ⟶ A ⊗ A) {a b : HO1 A.hom}, f ≫ μ[A] = 𝟙 A → IsPullO (wOver (f ≫ fst A A)) c a → IsPullO (wOver (f ≫ snd A A)) c b → c - a - b = 0 → IsPullO (wOver f) (pullHO1 (wOver μ[A]) c - pullHO1 (wOver (fst A A)) c - pullHO1 (wOver (snd A A)) c) 0`. Introduce `f a b hμ ha hb hab`.
+
+Establish `hcomp : ∀ (g : A ⊗ A ⟶ A) {w : HO1 A.hom}, IsPullO (wOver (f ≫ g)) c w → IsPullO (wOver f) (pullHO1 (wOver g) c) w` using `fun g w hw ↦ by`. Establish `h1` using `isPullO_pullHO1 (wOver f) (pullHO1 (wOver g) c)`. Establish `h2` using `isPullO_over_comp f g (isPullO_pullHO1 (wOver g) c) h1`. Rewrite using `[hw.eq_pullHO1.trans h2.eq_pullHO1.symm]` and apply the resulting hypothesis. Establish `h0 : IsPullO (wOver (f ≫ μ[A])) c c` using `by rw [hμ]; exact isPullO_over_id _ c`.
+
+Use `isPullO_sub (isPullO_sub (hcomp μ[A] h0) (hcomp (fst A A) ha)) (hcomp (snd A A) hb)` as an intermediate fact. Rewrite `this` using `[hab]`. Then use the resulting hypothesis. Establish `z1` using `key (lift (𝟙 A) (1 : A ⟶ A)) (a := c) (b := 0) e1 (by rw [lift_fst]; exact isPullO_over_id _ c) (by rw [lift_snd, one_def]; exact isPullO_through_unit _ _ c) (by simp)`. Establish `z2` using `key (lift (1 : A ⟶ A) (𝟙 A)) (a := 0) (b := c) e2 (by rw [lift_fst, one_def]; exact isPullO_through_unit _ _ c) (by rw [lift_snd]; exact isPullO_over_id _ c) (by simp)`. Establish `z` using `hAx _ z1 z2`.
+
+Rewrite `z` using `[sub_sub, sub_eq_zero]`. Conclude with `z`.
+-/
 theorem primitive_structure_sheaf_cohomology_class
     (hAx : ∀ c : HO1 (A ⊗ A).hom, IsPullO (wOver (lift (𝟙 A) (1 : A ⟶ A))) c 0 →
       IsPullO (wOver (lift (1 : A ⟶ A) (𝟙 A))) c 0 → c = 0) (c : HO1 A.hom) :
@@ -239,6 +312,11 @@ def liftAlong (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (u : C ⥤ AffOp X) (
   naturality a b := (pairPull h).naturality ((pairFn φ u t fb hle).map a) b
   smul d := (pairPull h).smul ((pairFn φ u t fb hle).obj d)
 
+/- English proof (translation)
+Set `r : CoefMap (RingHom.id R) (OPair φ s') (fb ⋙ OAff s')` to `{ G := pairFn φ u t fb hle α _ := RingHom.id _ naturality _ _ := rfl smul _ _ _ := rfl }`. Establish `t1 : (liftAlong h u t fb hle).pull1 ((CoefMap.restrict (OAff s) u).pull1 c) = r.pull1 ((pairPull h).pull1 c)`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression. Establish `t2 : ∀ x : HO1 s', r.pull1 ((pairRes φ s').pull1 x) = (CoefMap.restrict (OAff s') fb).pull1 x`.
+
+Introduce `x`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ x`. Both sides reduce to the same expression. Rewrite using `[t1, (isPullO_pullHO1 h c : _ = _), t2]`.
+-/
 theorem liftAlong_pull1 (h : φ ≫ s = s' ≫ spMap (RingHom.id R)) (u : C ⥤ AffOp X) (t : D ⥤ C)
     (fb : D ⥤ AffOp X') (hle : ∀ d, (fb.obj d).unop.1 ≤ φ ⁻¹ᵁ (u.obj (t.obj d)).unop.1) (c : HO1 s) :
     (liftAlong h u t fb hle).pull1 ((CoefMap.restrict (OAff s) u).pull1 c) =
@@ -261,6 +339,9 @@ end GlobalTheory.CompanionTheory.HopfSys
 namespace GlobalTheory.CompanionTheory.HopfSys
 section Aff
 
+/- English proof (translation)
+Use `haveI : IsAffine V := hV`. Use `haveI : IsAffineHom (V.ι ≫ f) := by haveI : IsAffineHom ((V.ι ≫ f) ≫ s) := inferInstance`. Conclude with `IsAffineHom.of_comp _ s`. Use `(hU.preimage (V.ι ≫ f)).image_of_isOpenImmersion V.ι` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_preimage, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Then use the resulting hypothesis.
+-/
 theorem aff_inf_preimage {X Y T : Scheme.{0}} (s : Y ⟶ T) [IsSeparated s] [IsAffine T] (f : X ⟶ Y) {V : X.Opens}
     (hV : IsAffineOpen V) {U : Y.Opens} (hU : IsAffineOpen U) : IsAffineOpen (V ⊓ f ⁻¹ᵁ U) := by
   haveI : IsAffine V := hV
@@ -280,11 +361,20 @@ def Vop (a b : P) : (A ⊗ A).left.Opens := (fst A A).left ⁻¹ᵁ (S.u a).1 �
 
 def Wop (a b c : P) : (A ⊗ A).left.Opens := Vop A S a b ⊓ μ[A].left ⁻¹ᵁ (S.u c).1
 
+/- English proof (translation)
+The claim follows from `(kunneth_open A A (S.u a) (S.u b)).choose`.
+-/
 theorem Vop_aff (a b : P) : IsAffineOpen (Vop A S a b) := (kunneth_open A A (S.u a) (S.u b)).choose
 
+/- English proof (translation)
+The claim follows from `aff_inf_preimage A.hom _ (Vop_aff A S a b) (S.u c).2`.
+-/
 theorem Wop_aff [IsSeparated A.hom] (a b c : P) : IsAffineOpen (Wop A S a b c) :=
   aff_inf_preimage A.hom _ (Vop_aff A S a b) (S.u c).2
 
+/- English proof (translation)
+The claim follows from `fun _ hx ↦ ⟨⟨S.mono ha hx.1.1, S.mono hb hx.1.2⟩, S.mono hc hx.2⟩`.
+-/
 theorem Wop_mono {a a' b b' c c' : P} (ha : a' ≤ a) (hb : b' ≤ b) (hc : c' ≤ c) :
     Wop A S a' b' c' ≤ Wop A S a b c := fun _ hx ↦
   ⟨⟨S.mono ha hx.1.1, S.mono hb hx.1.2⟩, S.mono hc hx.2⟩
@@ -325,6 +415,9 @@ def toAlg (m : CoefMap (RingHom.id R) F G) (T : D) : F.obj (m.G.obj T) →ₐ[R]
       rw [Algebra.algebraMap_eq_smul_one, m.smul, map_one, ← Algebra.algebraMap_eq_smul_one]
       rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAlg_apply (m : CoefMap (RingHom.id R) F G) (T : D) (x : F.obj (m.G.obj T)) :
     toAlg m T x = m.α T x := rfl
 end
@@ -340,6 +433,9 @@ def qA (T : (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ) : (OSys A.hom S).obj T.1.2 →ₐ[R
 def pjAlg (T : (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ) : (box (OSys A.hom S)).obj T.1 →ₐ[R] (GG A S).obj T :=
   Algebra.TensorProduct.lift (pA A S T) (qA A S T) fun _ _ ↦ Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+-/
 theorem pjAlg_tmul (T : (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ) (x : (OSys A.hom S).obj T.1.1) (y : (OSys A.hom S).obj T.1.2) :
     pjAlg A S T (x ⊗ₜ[R] y) = pA A S T x * qA A S T y :=
   Algebra.TensorProduct.lift_tmul _ _ _ _ _
@@ -366,11 +462,21 @@ def kap (a b : P) : Sec A.hom (S.u a).1 ⊗[R] Sec A.hom (S.u b).1 →ₐ[R] Sec
   Algebra.TensorProduct.lift (secA (wOver (fst A A)) ⟨(⟨_, Vop_aff A S a b⟩, S.u a), inf_le_left⟩)
     (secA (wOver (snd A A)) ⟨(⟨_, Vop_aff A S a b⟩, S.u b), inf_le_right⟩) fun _ _ ↦ Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `(kunneth_open A A (S.u a) (S.u b)).choose_spec`.
+-/
 theorem kap_bijective (a b : P) : Function.Bijective (kap A S a b) :=
   (kunneth_open A A (S.u a) (S.u b)).choose_spec
 
 variable [IsSeparated A.hom]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans ((congrArg _ (map_zero _)).trans (map_zero _)).symm`. Consider the case `add x y hx hy`. Conclude with `(map_add _ _ _).trans ((congrArg₂ (· + ·) hx hy).trans ((congrArg _ (map_add _ _ _)).trans (map_add _ _ _)).symm)`. Consider the case `tmul x y`.
+
+Rewrite using `[pjAlg_tmul]`. Use `Eq.trans ?_ (congrArg _ (Algebra.TensorProduct.lift_tmul _ _ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Conclude with `congrArg (fun t ↦ t.hom x) ((fst A A).left.appLE_map (U := (S.u T.1.1.unop).1) (V := Vop A S T.1.1.unop T.1.2.unop) inf_le_left (homOfLE (inf_le_left : Wop A S T.1.1.unop T.1.2.unop T.2.unop ≤ Vop A S T.1.1.unop T.1.2.unop)).op).symm`.
+
+Conclude with `congrArg (fun t ↦ t.hom y) ((snd A A).left.appLE_map (U := (S.u T.1.2.unop).1) (V := Vop A S T.1.1.unop T.1.2.unop) inf_le_right (homOfLE (inf_le_left : Wop A S T.1.1.unop T.1.2.unop T.2.unop ≤ Vop A S T.1.1.unop T.1.2.unop)).op).symm`.
+-/
 theorem pjAlg_apply (T : (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ)
     (z : (OSys A.hom S).obj T.1.1 ⊗[R] (OSys A.hom S).obj T.1.2) :
     pjAlg A S T z = Sec.res (A ⊗ A).hom
@@ -390,6 +496,11 @@ theorem pjAlg_apply (T : (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ)
     · exact congrArg (fun t ↦ t.hom y) ((snd A A).left.appLE_map (U := (S.u T.1.2.unop).1) (V := Vop A S T.1.1.unop T.1.2.unop) inf_le_right
         (homOfLE (inf_le_left : Wop A S T.1.1.unop T.1.2.unop T.2.unop ≤ Vop A S T.1.1.unop T.1.2.unop)).op).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (Wop_mono A S le_rfl le_rfl inf_le_left) (Wop_mono A S le_rfl le_rfl inf_le_right)`. Introduce `x hx`. Use `⟨hx.1.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μ[A].left x ∈ (S.u (c ⊓ c')).1`.
+
+Rewrite using `[S.map_inf]`. Conclude with `⟨hx.1.2, hx.2.2⟩`.
+-/
 theorem Wop_inf (a b c c' : P) : Wop A S a b (c ⊓ c') = Wop A S a b c ⊓ Wop A S a b c' := by
   apply le_antisymm
   · exact le_inf (Wop_mono A S le_rfl le_rfl inf_le_left) (Wop_mono A S le_rfl le_rfl inf_le_right)
@@ -399,6 +510,9 @@ theorem Wop_inf (a b c c' : P) : Wop A S a b (c ⊓ c') = Wop A S a b c ⊓ Wop 
     rw [S.map_inf]
     exact ⟨hx.1.2, hx.2.2⟩
 
+/- English proof (translation)
+Apply `le_antisymm (iSup_le fun c ↦ inf_le_left)` to reduce the goal to its premises. Introduce `x hx`. Establish `h1 : μ[A].left x ∈ ⨆ c, (S.u c).1` using `by rw [S.cover]; trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 h1`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨c, hx, hc⟩`.
+-/
 theorem Wop_iSup (a b : P) : ⨆ c, Wop A S a b c = Vop A S a b := by
   apply le_antisymm (iSup_le fun c ↦ inf_le_left)
   intro x hx
@@ -406,6 +520,13 @@ theorem Wop_iSup (a b : P) : ⨆ c, Wop A S a b c = Vop A S a b := by
   obtain ⟨c, hc⟩ := TopologicalSpace.Opens.mem_iSup.1 h1
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨c, hx, hc⟩
 
+/- English proof (translation)
+Use `haveI : Quiver.IsThin (Pᵒᵖ × Pᵒᵖ) := fun _ _ ↦ ⟨fun f g ↦ Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _)⟩`. Use `hF R (Pᵒᵖ × Pᵒᵖ) (box (OSys A.hom S)) Pᵒᵖ (GG A S) (pj A S) fun T ↦ ?_` and prove the remaining obligations. Set `u : P →o (A ⊗ A).left.affineOpens` to `⟨fun c ↦ ⟨Wop A S T.1.unop T.2.unop c, Wop_aff A S _ _ _⟩, fun c c' h ↦ Wop_mono A S le_rfl le_rfl h⟩`. Take `⟨h1, h2, h3⟩` from `hA R (A ⊗ A).left (A ⊗ A).hom ⟨Vop A S T.1.unop T.2.unop, Vop_aff A S _ _⟩ P u (fun c ↦ inf_le_left) (fun c c' ↦ Wop_inf A S _ _ c c') (Wop_iSup A S _ _)`. Set `aug : Sec (A ⊗ A).hom (Vop A S T.1.unop T.2.unop) →ₗ[R] Cn (u.monotone.functor.op ⋙ OAff (A ⊗ A).hom) 0` to `LinearMap.pi fun c ↦ (Sec.res (A ⊗ A).hom (show (u (c.obj (Fin.last 0)).unop).1 ≤ Vop A S T.1.unop T.2.unop from inf_le_left)).toLinearMap`.
+
+Establish `hf : ∀ z c, ((pj A S).fib T z) c = aug (kap A S T.1.unop T.2.unop z) c` using `fun z c ↦ pjAlg_apply A S (T, c.obj (Fin.last 0)) z`. Establish `hb` using `kap_bijective A S T.1.unop T.2.unop`. Use `⟨fun x y e ↦ hb.1 (h1 (funext fun c ↦ ?_)), fun y ↦ (h2 y).trans ?_, h3⟩` and prove the remaining obligations. Conclude with `((hf x c).symm.trans (congrFun e c)).trans (hf y c)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, rfl⟩`. Take `⟨z, rfl⟩` from `hb.2 w`. Conclude with `⟨z, funext fun c ↦ hf z c⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨kap A S T.1.unop T.2.unop z, funext fun c ↦ (hf z c).symm⟩`.
+-/
 theorem pj_qiso [Finite P] (hF : FubiniSt) (hA : AffAcycSt) : AllQIso (pj A S).coef := by
   haveI : Quiver.IsThin (Pᵒᵖ × Pᵒᵖ) := fun _ _ ↦ ⟨fun f g ↦ Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _)⟩
   refine hF R (Pᵒᵖ × Pᵒᵖ) (box (OSys A.hom S)) Pᵒᵖ (GG A S) (pj A S) fun T ↦ ?_
@@ -434,6 +555,11 @@ section AutomorphyRankFourMain
 variable {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] {P : Type} [SemilatticeInf P] (S : Sys A.left P)
   [IsSeparated A.hom]
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Use `CoefMap.pullCohomologyOne_eq_of_natTrans (pMap A S) ((boxL (OSys A.hom S)).comp (pj A S).coef) { app _ := 𝟙 _ } (fun T b ↦ ?_) x` and prove the remaining obligations. Use `erw [mp_id]`. Use `(pjAlg_tmul A S T b 1).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pMap_pull1 (x : H1 (OSys A.hom S)) :
     (pMap A S).pull1 x = (pj A S).coef.pull1 ((boxL (OSys A.hom S)).pull1 x) := by
   rw [← CoefMap.pullCohomologyOne_comp]
@@ -443,6 +569,11 @@ theorem pMap_pull1 (x : H1 (OSys A.hom S)) :
   rw [map_one, _root_.mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Use `CoefMap.pullCohomologyOne_eq_of_natTrans (qMap A S) ((boxR (OSys A.hom S)).comp (pj A S).coef) { app _ := 𝟙 _ } (fun T b ↦ ?_) x` and prove the remaining obligations. Use `erw [mp_id]`. Use `(pjAlg_tmul A S T 1 b).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem qMap_pull1 (x : H1 (OSys A.hom S)) :
     (qMap A S).pull1 x = (pj A S).coef.pull1 ((boxR (OSys A.hom S)).pull1 x) := by
   rw [← CoefMap.pullCohomologyOne_comp]
@@ -452,6 +583,11 @@ theorem qMap_pull1 (x : H1 (OSys A.hom S)) :
   rw [map_one, _root_.one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hs c`. Rewrite using `[map_add, ← pMap_pull1, ← qMap_pull1]`. Establish `hm : (mMap A S).pull1 ((resSys A.hom S).pull1 c) = _` using `liftAlong_pull1 (wOver μ[A]) S.fn _ (wFn A S) _ c`. Establish `hp : (pMap A S).pull1 ((resSys A.hom S).pull1 c) = _` using `liftAlong_pull1 (wOver (fst A A)) S.fn _ (wFn A S) _ c`. Establish `hq : (qMap A S).pull1 ((resSys A.hom S).pull1 c) = _` using `liftAlong_pull1 (wOver (snd A A)) S.fn _ (wFn A S) _ c`.
+
+Rewrite using `[hm, hp, hq, ← map_add, primitive_structure_sheaf_cohomology_class A hAx]`.
+-/
 theorem primitive
     (hAx : ∀ c : HO1 (A ⊗ A).hom, IsPullO (wOver (lift (𝟙 A) (1 : A ⟶ A))) c 0 →
       IsPullO (wOver (lift (1 : A ⟶ A) (𝟙 A))) c 0 → c = 0)
@@ -464,6 +600,11 @@ theorem primitive
   have hq : (qMap A S).pull1 ((resSys A.hom S).pull1 c) = _ := liftAlong_pull1 (wOver (snd A A)) S.fn _ (wFn A S) _ c
   rw [hm, hp, hq, ← map_add, primitive_structure_sheaf_cohomology_class A hAx]
 
+/- English proof (translation)
+Use `letI := hR.toField`. Use `haveI hu : Unique (𝟙_ (Over (Sp R))).left := inferInstanceAs (Unique (PrimeSpectrum R))`. Establish `h1 : η[A].left default ∈ ⨆ a, (S.u a).1` using `by rw [S.cover]; trivial`. Take `⟨a₀, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 h1`. Use `⟨a₀, top_le_iff.1 fun x _ ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim x default]`. Conclude with `ha`.
+-/
 theorem exists_unit_mem (hR : IsField R) : ∃ a₀, η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤ := by
   letI := hR.toField
   haveI hu : Unique (𝟙_ (Over (Sp R))).left := inferInstanceAs (Unique (PrimeSpectrum R))
@@ -473,12 +614,20 @@ theorem exists_unit_mem (hR : IsField R) : ∃ a₀, η[A].left ⁻¹ᵁ (S.u a�
   rw [Subsingleton.elim x default]
   exact ha
 
+/- English proof (translation)
+Substitute `hχ` using the available equality. Conclude with `congrArg (fun t ↦ t.hom x) (Scheme.Hom.appLE_comp_appLE ψ φ U V W e1 e2)`.
+-/
 theorem appLE_chain {X Y Z : Scheme.{0}} (ψ : X ⟶ Y) (φ : Y ⟶ Z) (χ : X ⟶ Z) (hχ : ψ ≫ φ = χ) {U : Z.Opens}
     {V : Y.Opens} {W : X.Opens} (e1 : V ≤ φ ⁻¹ᵁ U) (e2 : W ≤ ψ ⁻¹ᵁ V) (e3 : W ≤ χ ⁻¹ᵁ U) (x : Γ(Z, U)) :
     (ψ.appLE V W e2).hom ((φ.appLE U V e1).hom x) = (χ.appLE U W e3).hom x := by
   subst hχ
   exact congrArg (fun t ↦ t.hom x) (Scheme.Hom.appLE_comp_appLE ψ φ U V W e1 e2)
 
+/- English proof (translation)
+Establish `h : X.presheaf.map (homOfLE e).op = 𝟙 _`. Rewrite using `[show (homOfLE e).op = 𝟙 (op U) from Subsingleton.elim _ _]`. Conclude with `X.presheaf.map_id _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `erw [h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem appLE_id {X : Scheme.{0}} (U : X.Opens) (e : U ≤ (𝟙 X) ⁻¹ᵁ U) (x : Γ(X, U)) :
     ((𝟙 X : X ⟶ X).appLE U U e).hom x = x := by
   have h : X.presheaf.map (homOfLE e).op = 𝟙 _ := by
@@ -501,17 +650,35 @@ def tK (a₀ : P) : Pᵒᵖ ⥤ (Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ where
   obj b := ((op a₀, b), b)
   map f := ((𝟙 _, f), f)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f ↦ f.left) (lift_fst (1 : A ⟶ A) (𝟙 A))`.
+-/
 theorem iota_fst : (iota A).left ≫ (fst A A).left = A.hom ≫ η[A].left :=
   congrArg (fun f ↦ f.left) (lift_fst (1 : A ⟶ A) (𝟙 A))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f ↦ f.left) (lift_snd (1 : A ⟶ A) (𝟙 A))`.
+-/
 theorem iota_snd : (iota A).left ≫ (snd A A).left = 𝟙 _ :=
   congrArg (fun f ↦ f.left) (lift_snd (1 : A ⟶ A) (𝟙 A))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f ↦ f.left) ((Hom.mul_def (1 : A ⟶ A) (𝟙 A)).symm.trans (_root_.one_mul (𝟙 A)))`.
+-/
 theorem iota_mul : (iota A).left ≫ μ[A].left = 𝟙 _ :=
   congrArg (fun f ↦ f.left) ((Hom.mul_def (1 : A ⟶ A) (𝟙 A)).symm.trans (_root_.one_mul (𝟙 A)))
 
 variable {A S}
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : (fst A A).left ((iota A).left x) ∈ (S.u a₀).1`. Establish `: (fst A A).left ((iota A).left x) = η[A].left (A.hom x)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, iota_fst]`. Rewrite using `[this]`.
+
+Establish `h2 : A.hom x ∈ η[A].left ⁻¹ᵁ (S.u a₀).1` using `by rw [ha]; trivial`. Conclude with `h2`. Establish `h2 : (snd A A).left ((iota A).left x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, iota_snd]`. Both sides reduce to the same expression.
+
+Establish `h3 : μ[A].left ((iota A).left x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, iota_mul]`. Both sides reduce to the same expression. Use `⟨⟨h1, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(snd A A).left ((iota A).left x) ∈ (S.u b.unop).1`.
+
+Rewrite using `[h2]`. Conclude with `hx`. Express the relevant statement in the definitionally equal form `μ[A].left ((iota A).left x) ∈ (S.u b.unop).1`. Rewrite using `[h3]`. Conclude with `hx`.
+-/
 theorem kle {a₀ : P} (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ) :
     (S.fn.obj b).unop.1 ≤ (iota A).left ⁻¹ᵁ ((wFn A S).obj ((tK a₀).obj b)).unop.1 := by
   intro x hx
@@ -541,10 +708,16 @@ section Main6
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {P : Type} [SemilatticeInf P] {S : Sys A.left P}
   [IsSeparated A.hom] {a₀ : P}
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsAffine (Sp R))`.
+-/
 theorem unit_isAffine : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Sp R))
 
 attribute [local instance] unit_isAffine
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv`.
+-/
 theorem unit_bijective (R : Type) [CommRing R] : Function.Bijective (algebraMap R (Sec (𝟙_ (Over (Sp R))).hom ⊤)) :=
   ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv
 
@@ -554,19 +727,33 @@ def epsA (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) : (OSys A.hom S).obj (op 
   (AlgEquiv.ofBijective (Algebra.ofId R (Sec (𝟙_ (Over (Sp R))).hom ⊤)) (unit_bijective R)).symm.toAlgHom.comp
     (secA (wOver η[A]) (ptPair ha) : Sec A.hom (S.u a₀).1 →ₐ[R] Sec (𝟙_ (Over (Sp R))).hom ⊤)
 
+/- English proof (translation)
+The claim follows from `(AlgEquiv.ofBijective (Algebra.ofId R (Sec (𝟙_ (Over (Sp R))).hom ⊤)) (unit_bijective R)).apply_symm_apply (secA (wOver η[A]) (ptPair ha) x)`.
+-/
 theorem algebraMap_epsA (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (x : (OSys A.hom S).obj (op a₀)) :
     algebraMap R (Sec (𝟙_ (Over (Sp R))).hom ⊤) (epsA ha x) = secA (wOver η[A]) (ptPair ha) x :=
   (AlgEquiv.ofBijective (Algebra.ofId R (Sec (𝟙_ (Over (Sp R))).hom ⊤)) (unit_bijective R)).apply_symm_apply
     (secA (wOver η[A]) (ptPair ha) x)
 
+/- English proof (translation)
+The claim follows from `(appLE_chain (iota A).left (snd A A).left (𝟙 _) (iota_snd A) _ _ le_rfl y).trans (appLE_id _ _ y)`.
+-/
 theorem kMap_qA (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ) (y : (OSys A.hom S).obj b) :
     (kMap ha).α b (qA A S ((tK a₀).obj b) y) = y :=
   (appLE_chain (iota A).left (snd A A).left (𝟙 _) (iota_snd A) _ _ le_rfl y).trans (appLE_id _ _ y)
 
+/- English proof (translation)
+The claim follows from `(appLE_chain (iota A).left μ[A].left (𝟙 _) (iota_mul A) _ _ le_rfl y).trans (appLE_id _ _ y)`.
+-/
 theorem kMap_mMap (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ) (y : (OSys A.hom S).obj b) :
     (kMap ha).α b ((mMap A S).α ((tK a₀).obj b) y) = y :=
   (appLE_chain (iota A).left μ[A].left (𝟙 _) (iota_mul A) _ _ le_rfl y).trans (appLE_id _ _ y)
 
+/- English proof (translation)
+Set `tU` to `secA (wOver (toUnit A)) (⟨(S.u b.unop, ⟨⊤, isAffineOpen_top _⟩), le_top⟩ : Pair (toUnit A).left)`. Establish `h1 : algebraMap R ((OSys A.hom S).obj b) (epsA ha x) = tU (secA (wOver η[A]) (ptPair ha) x)`. Rewrite using `[← algebraMap_epsA]`. Conclude with `(tU.commutes _).symm`. Rewrite using `[h1]`.
+
+Establish `hE : ∀ W : A.left.Opens, W ≤ (A.hom ≫ η[A].left) ⁻¹ᵁ (S.u a₀).1` using `fun W x _ ↦ by`. Establish `h2 : A.hom x ∈ η[A].left ⁻¹ᵁ (S.u a₀).1` using `by rw [ha]; trivial`. Conclude with `h2`. Conclude with `(appLE_chain (iota A).left (fst A A).left (A.hom ≫ η[A].left) (iota_fst A) _ _ (hE _) x).trans (appLE_chain A.hom η[A].left (A.hom ≫ η[A].left) rfl _ _ (hE _) x).symm`.
+-/
 theorem kMap_pA (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ) (x : (OSys A.hom S).obj (op a₀)) :
     (kMap ha).α b (pA A S ((tK a₀).obj b) x) = algebraMap R ((OSys A.hom S).obj b) (epsA ha x) := by
   let tU := secA (wOver (toUnit A)) (⟨(S.u b.unop, ⟨⊤, isAffineOpen_top _⟩), le_top⟩ : Pair (toUnit A).left)
@@ -580,6 +767,11 @@ theorem kMap_pA (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ) (x :
   exact (appLE_chain (iota A).left (fst A A).left (A.hom ≫ η[A].left) (iota_fst A) _ _ (hE _) x).trans
     (appLE_chain A.hom η[A].left (A.hom ≫ η[A].left) rfl _ _ (hE _) x).symm
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans ((congrArg _ (map_zero _)).trans (map_zero _)).symm`. Consider the case `add x y hx hy`. Conclude with `(map_add _ _ _).trans ((congrArg₂ (· + ·) hx hy).trans ((congrArg _ (map_add _ _ _)).trans (map_add _ _ _)).symm)`. Consider the case `tmul x y`.
+
+Use `(Algebra.TensorProduct.lift_tmul _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (pjAlg_tmul A S ((tK a₀).obj b) x y).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Rewrite using `[kMap_pA, kMap_qA]`. Both sides reduce to the same expression.
+-/
 theorem evL_eq (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ)
     (z : (OSys A.hom S).obj (op a₀) ⊗[R] (OSys A.hom S).obj b) :
     evL (OSys A.hom S) (op a₀) b (epsA ha) z = (kMap ha).α b (pjAlg A S ((tK a₀).obj b) z) := by
@@ -594,6 +786,13 @@ theorem evL_eq (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (b : Pᵒᵖ)
     rw [kMap_pA, kMap_qA]
     rfl
 
+/- English proof (translation)
+Establish `e'` using `congrArg (kMap ha).pull2 e`. Rewrite `e'` using `[← CoefMap.pullCohomologyTwo_comp, ← CoefMap.pullCohomologyTwo_comp]`. Establish `l1 : ((pj A S).coef.comp (kMap ha)).pull2 w = (boxE (OSys A.hom S) (op a₀) (epsA ha)).pull2 w`. Set `θ : ((pj A S).coef.comp (kMap ha)).G ⟶ (boxE (OSys A.hom S) (op a₀) (epsA ha)).G` to `{ app := fun b ↦ 𝟙 ((CategoryTheory.Prod.sectR (op a₀) Pᵒᵖ).obj b) naturality := fun _ _ f ↦ Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _) }`. Use `CoefMap.pullCohomologyTwo_eq_of_natTrans ((pj A S).coef.comp (kMap ha)) (boxE (OSys A.hom S) (op a₀) (epsA ha)) θ (fun b z ↦ ?_) w` and prove the remaining obligations.
+
+Use `erw [mp_id]`. Conclude with `evL_eq ha b z`. Establish `l2 : ((mMap A S).comp (kMap ha)).pull2 y = (CoefMap.id (OSys A.hom S)).pull2 y`. Set `θ : ((mMap A S).comp (kMap ha)).G ⟶ (CoefMap.id (OSys A.hom S)).G` to `{ app := fun b ↦ 𝟙 b naturality := fun _ _ f ↦ Subsingleton.elim _ _ }`. Use `CoefMap.pullCohomologyTwo_eq_of_natTrans ((mMap A S).comp (kMap ha)) (CoefMap.id (OSys A.hom S)) θ (fun b z ↦ ?_) y` and prove the remaining obligations.
+
+Use `erw [mp_id]`. Conclude with `(kMap_mMap ha b z).symm`. Rewrite using `[← l1, e', l2, CoefMap.pullCohomologyTwo_id]`.
+-/
 theorem counit (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (y : H2 (OSys A.hom S)) (w : H2 (box (OSys A.hom S)))
     (e : (pj A S).coef.pull2 w = (mMap A S).pull2 y) :
     (boxE (OSys A.hom S) (op a₀) (epsA ha)).pull2 w = y := by
@@ -616,6 +815,11 @@ theorem counit (ha : η[A].left ⁻¹ᵁ (S.u a₀).1 = ⊤) (y : H2 (OSys A.hom
   rw [← l1, e', l2, CoefMap.pullCohomologyTwo_id]
 end Main6
 
+/- English proof (translation)
+Introduce `_ _ hF hA hD hL hX R _ A _ g hab hsm P _ _ S`. Use `haveI := hab.proper`. Use `haveI : IsSeparated A.hom := inferInstance`. Use `⟨(Pᵒᵖ × Pᵒᵖ) × Pᵒᵖ, inferInstance, GG A S, (pj A S).coef, mMap A S, pj_qiso A S hF hA, primitive A S (hX R A g hab hsm) (hL R _ _ _ _ (resSys A.hom S) (hD R A.left A.hom inferInstance P S)).1.2, fun hR ↦ ?_⟩` and prove the remaining obligations. Take `⟨a₀, ha⟩` from `exists_unit_mem A S hR`.
+
+Conclude with `⟨op a₀, epsA ha, fun y w e ↦ counit ha y w e⟩`.
+-/
 theorem hopfSt : HtpySt → QCalcSt → FubiniSt → AffAcycSt → DescentSt → LowSt → AxOSt → HopfSt := by
   intro _ _ hF hA hD hL hX R _ A _ g hab hsm P _ _ S
   haveI := hab.proper

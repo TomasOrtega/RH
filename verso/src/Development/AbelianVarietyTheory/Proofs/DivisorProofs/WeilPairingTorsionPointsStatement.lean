@@ -9,5 +9,8 @@ open scoped ComplexOrder ContDiff
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm | exact GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm | (intros; apply GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.curvature_off_diagonal_block : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U) (ξ η : V), blockSQ (H z) (curv H z ξ η) = covDelAnti (gramQ H) (gramS H) (extForm H) z ξ η := by
   first | exact @GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm | exact GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm | (intros; apply GlobalTheory.CurvSQ.blockSQ_curv_eq_covDelAnti_extForm <;> assumption)

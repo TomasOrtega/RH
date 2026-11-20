@@ -22,15 +22,36 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SepPer
 
+/- English proof (translation)
+Unfold `dualPar`. Rewrite using `[Finset.image_image]`. Simplify using `[Function.comp_def]`.
+-/
 private theorem dualPar_dualPar' (S : SPar) : dualPar (dualPar S) = S := by
   unfold dualPar
   rw [Finset.image_image]
   simp [Function.comp_def]
 
+/- English proof (translation)
+Unfold `GlobalTheory.SignedHC.shift`. Simplify using the standard rewrite rules.
+-/
 private theorem shift_zero_lemma_2 (S : SPar) : GlobalTheory.SignedHC.shift 0 S = S := by
   unfold GlobalTheory.SignedHC.shift
   simp
 
+/- English proof (translation)
+Establish `hga0 : 0 < G.ga`. Establish `h0 : (0 : ℝ) < 1000 * ((n : ℝ) + 1) ^ 3` using `by positivity`. Conclude with `h0.trans_le hga` after adjusting the coercions. Establish `hH : (2 : ℝ) ≤ 1000 * ((n : ℝ) + 1) ^ 3`. Establish `h1 : (1 : ℝ) ≤ ((n : ℝ) + 1) ^ 3` using `one_le_pow₀ (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvk1 : 1 ≤ G.v G.k + G.b 1` using `by omega`. Take `⟨hc, hc'⟩` from `GlobalTheory.T.card_minus_signs_half_of_even hme hga0 hl hm`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_signsMatchBranchingCoordinate_equiv ε ε' (hc.trans hc'.symm)`. Take `⟨hHl, hHm⟩` from `GlobalTheory.T.harish_chandra_param_of_even hke hme hn hl hm`.
+
+Establish `hw` using `GlobalTheory.T.interlaced_signed_parameters hga0 hvk1 hl hm`. Take `⟨hs1, hs2⟩` from `GlobalTheory.T.parameters_separated_by_one hga0 hv (by omega) hl hm`. Take `⟨hwl, hwm, hgl, hgm⟩` from `GlobalTheory.T.parameters_spacing_and_gap hH hga hv hvk hb hl hm`. Establish `habs : ∀ a c, a ≠ c → 2 ≤ |lam a - lam c|`. Introduce `a c hac`.
+
+Break down `lt_or_gt_of_ne hac with h | h` into its components or cases. Conclude with `(hwl a c h).trans (le_abs_self _)`. Rewrite using `[abs_sub_comm]`. Conclude with `(hwl c a h).trans (le_abs_self _)`. Establish `hB` using `GlobalTheory.T.signed_parameters_bounded hvk0 hb1 ha0 hbm hl hm`.
+
+Establish `hk2` using `G.two_le_k`. Establish `hsum` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin n))) (fun i => ε' i = false)`. Establish `hneg : ∃ i, ε' i = false`. Establish `hpos : 0 < (Finset.univ.filter fun i => ε' i = false).card`. Rewrite using `[hc']`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `Finset.card_pos.mp hpos`. Conclude with `⟨i, (Finset.mem_filter.mp hi).2⟩`. Establish `hpos : (Finset.univ.filter fun i => ε' i = false).card ≤ (Finset.univ.filter fun i => ε' i = true).card`. Establish `heq : (Finset.univ.filter fun i => ¬ ε' i = false) = Finset.univ.filter fun i => ε' i = true`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite `hsum` using `[heq, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨e, he, h3, hHl, hHm, hw, GlobalTheory.T.isInterlaced_sub_single_of_spread hw habs hs1 hs2, hwl, hwm, hgl, hgm, hneg, hpos, hB⟩`.
+-/
 private theorem exists_par_of_gridData_bounds {G : GlobalTheory.SignedHC.GridData} {n : ℕ} {ε : Fin (n + 1) → Bool}
     {lam : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {mu : Fin n → ℝ} {B : ℝ}
     (hke : Even G.k) (hme : Even G.m) (hm2 : 2 ≤ G.m) (hn : n + 1 = G.k + G.m) (h3 : 3 ≤ n)
@@ -77,6 +98,17 @@ private theorem exists_par_of_gridData_bounds {G : GlobalTheory.SignedHC.GridDat
     omega
   exact ⟨e, he, h3, hHl, hHm, hw, GlobalTheory.T.isInterlaced_sub_single_of_spread hw habs hs1 hs2, hwl, hwm, hgl, hgm, hneg, hpos, hB⟩
 
+/- English proof (translation)
+Introduce `_ _ _`. Use `⟨0, fun D large₂ _ _ hS T L μ0 _ Gr W M _ => ?_⟩` and prove the remaining obligations. Introduce `τ ε lam ε' mu hlam hmu`. Take `⟨hv, hvk, hb, hga, hvk0, hb1, ha0, hbm, hb1', hb4⟩` from `GlobalTheory.T.chiGridNumericalData_realPlace_gap_size_bounds D large₂ hS τ`. Establish `hl : IsEnum ((GlobalTheory.ChiGrid.num D 1 τ).parPi 0) lam ε` using `hlam`.
+
+Establish `hD : dualPar (parB (Ptw D) 0 τ) = (GlobalTheory.ChiGrid.num D 1 τ).parD0`. Rewrite using `[← GlobalTheory.SignedHC.GridData.parD_zero_zero, parB, ← parV_zero D 1 (Nat.zero_le _) τ, dualPar_dualPar']`. Use `show GlobalTheory.SignedHC.shift (if Odd (0 + 0) then -(1 / 2) else 0) _ = _`. Rewrite using `[if_neg (by decide), shift_zero_lemma_2]`. Establish `hm' : IsEnum (GlobalTheory.ChiGrid.num D 1 τ).parD0 mu ε'` using `hD ▸ hmu`.
+
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `h2m` using `D.R.two_le_m`. Establish `hmk` using `D.R.m_add_three_le_k`. Use `⟨exists_par_of_gridData_bounds (n := D.R.r) D.R.k_even D.R.m_even h2m (by show D.R.r + 1 = D.R.k + D.R.m; omega) (by omega) hv hvk hb hga hvk0 hb1 ha0 hbm hl hm', ?_, Real.log_nonneg hb1'⟩` and prove the remaining obligations. Establish `hbpos : 0 < large₂.sc.b` using `by linarith`.
+
+Use `show Real.log (8 * ((D.R.r : ℝ) + 1) * large₂.sc.b ^ 2) ≤ 6 * Real.log large₂.sc.b`. Establish `h6` using `Real.log_pow large₂.sc.b 6`. Move the coercions through the operations in `at h6`. Rewrite using `[← h6]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realInputPar : Ev fun {D} _ _ {sc} _ _ _ => ∀ (τ : D.what₂.Tau) (ε : Fin (D.R.r + 1) → Bool) (lam : Fin (D.R.r + 1) → ℝ)
     (ε' : Fin D.R.r → Bool) (mu : Fin D.R.r → ℝ), IsEnum (Node.par D sc.cGap (.core 0) τ) lam ε →
     IsEnum (dualPar (parB (Ptw D) 0 τ)) mu ε' → (∃ e, GlobalTheory.SepReal.Par e ε lam ε' mu (sc.b ^ 2)) ∧

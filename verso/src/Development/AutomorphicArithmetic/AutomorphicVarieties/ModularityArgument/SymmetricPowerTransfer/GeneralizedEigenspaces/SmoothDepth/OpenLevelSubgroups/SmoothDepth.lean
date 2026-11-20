@@ -8,6 +8,15 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Introduce `k _ _ _ _ χ hχ`. Establish `hopen : IsOpen (χ.ker : Set kˣ)` using `hχ`. Take `⟨U, hU, hUe⟩` from `Units.isEmbedding_val₀.isInducing.isOpen_iff.mp hopen`. Establish `h1U : (1 : k) ∈ U`. Establish `h : (1 : kˣ) ∈ Units.val ⁻¹' U`.
+
+Rewrite using `[hUe]`. Conclude with `χ.ker.one_mem`. Conclude with `h`. Take `⟨γ, hγ⟩` from `IsValuativeTopology.mem_nhds_iff.mp (hU.mem_nhds h1U)`. Establish `hu1 : uniformizer k < 1` using `uniformizer_lt_one`.
+
+Take `⟨c₀, hc₀⟩` from `exists_pow_lt₀ hu1 γ`. Use `⟨c₀, fun c hc u hu => ?_⟩` and prove the remaining obligations. Take `⟨-, hv⟩` from `Sig.mem_Uc.mp hu`. Establish `hlt : valuation k ((u : k) - 1) < γ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmem : (u : k) ∈ U` using `hγ ⟨(u : k) - 1, hlt, by ring⟩`. Establish `h : u ∈ Units.val ⁻¹' U` using `hmem`. Rewrite `h` using `[hUe]`. Conclude with `h`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.smoothDepth :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (χ : kˣ →* ℂˣ), IsSmoothChar χ → ∃ c₀ : ℕ, ∀ c ≥ c₀, ∀ u ∈ Hi.Uc k (c + 1), χ u = 1 := by
   intro k _ _ _ _ χ hχ

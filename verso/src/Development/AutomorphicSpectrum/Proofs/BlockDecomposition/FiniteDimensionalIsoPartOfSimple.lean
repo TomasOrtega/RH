@@ -12,6 +12,9 @@ def isoPart (π : K →* (H →L[ℂ] H)) {W : Type} [AddCommGroup W] [Module �
     Submodule ℂ H :=
   ⨆ (T : W →ₗ[ℂ] H) (_ : ∀ k w, T (ρ k w) = π k (T w)), LinearMap.range T
 
+/- English proof (translation)
+Unfold `isoPart`. Conclude with `le_iSup₂_of_le (f := fun (T : W →ₗ[ℂ] H) (_ : ∀ k w, T (ρ k w) = π k (T w)) => LinearMap.range T) T hT le_rfl`.
+-/
 theorem range_le_isoPart (π : K →* (H →L[ℂ] H)) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ K W) {T : W →ₗ[ℂ] H} (hT : ∀ k w, T (ρ k w) = π k (T w)) :
     LinearMap.range T ≤ isoPart π ρ := by
@@ -19,6 +22,13 @@ theorem range_le_isoPart (π : K →* (H →L[ℂ] H)) {W : Type} [AddCommGroup 
   exact le_iSup₂_of_le (f := fun (T : W →ₗ[ℂ] H) (_ : ∀ k w, T (ρ k w) = π k (T w)) => LinearMap.range T)
     T hT le_rfl
 
+/- English proof (translation)
+Establish `hinner : ∀ u v, ⟪π k u, π k v⟫_ℂ = ⟪u, v⟫_ℂ` using `fun u v => (⟨(π k : H →ₗ[ℂ] H), hπ k⟩ : H →ₗᵢ[ℂ] H).inner_map_map u v`. Establish `hsurj : ∀ w ∈ R, ∃ w' ∈ R, π k w' = w`. Introduce `w hw`. Use `⟨π k⁻¹ w, hR _ w hw, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(π k * π k⁻¹) w = w`.
+
+Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hR k _ (R.starProjection_apply_mem x))` to reduce the goal to its premises. Introduce `w hw`. Take `⟨w', hw', rfl⟩` from `hsurj w hw`.
+
+Rewrite using `[← map_sub, hinner]`. Conclude with `(Submodule.mem_orthogonal' _ _).1 (R.sub_starProjection_mem_orthogonal x) w' hw'`.
+-/
 theorem starProjection_comm {π : K →* (H →L[ℂ] H)} (hπ : ∀ k v, ‖π k v‖ = ‖v‖) (R : Submodule ℂ H)
     [FiniteDimensional ℂ R] (hR : ∀ k, ∀ w ∈ R, π k w ∈ R) (k : K) (x : H) :
     R.starProjection (π k x) = π k (R.starProjection x) := by
@@ -38,6 +48,19 @@ theorem starProjection_comm {π : K →* (H →L[ℂ] H)} (hπ : ∀ k v, ‖π 
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Set `R : Submodule ℂ H` to `W'.map T`. Establish `hRinv : ∀ k, ∀ w ∈ R, π k w ∈ R`. Introduce and unpack `k _ ⟨v, hv, rfl⟩`. Conclude with `⟨ρ k v, hW k hv, hT k v⟩`.
+
+Establish `hP : ∀ k x, R.starProjection (π k x) = π k (R.starProjection x)` using `starProjection_comm hπ R hRinv`. Establish `h1 : LinearMap.range (T ∘ₗ W'.subtype) ≤ isoPart π (ρ.subrepresentation W' hW)` using `range_le_isoPart π _ (fun k w => by simp [hT])`. Establish `hRle : R ≤ LinearMap.range (T ∘ₗ W'.subtype)`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+
+Establish `hker : W' ≤ LinearMap.ker ((LinearMap.id - (R.starProjection : H →ₗ[ℂ] H)) ∘ₗ T)`. Introduce `v hv`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[sub_eq_zero, eq_comm, Submodule.starProjection_eq_self_iff]`. Conclude with `⟨v, hv, rfl⟩`.
+
+Set `Q` to `W'.liftQ ((LinearMap.id - (R.starProjection : H →ₗ[ℂ] H)) ∘ₗ T) hker`. Establish `hQmk : ∀ v, Q (Submodule.Quotient.mk v) = T v - R.starProjection (T v)`. Introduce `v`. Simplify using `[Q]`. Establish `hQ : ∀ k w, Q (ρ.quotient W' hW k w) = π k (Q w)`.
+
+Introduce `k w`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `H v`. Rewrite using `[Representation.quotient_apply, Submodule.mapQ_apply, hQmk, hQmk, hT, hP, map_sub]`. Establish `h2` using `range_le_isoPart π (ρ.quotient W' hW) hQ`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[show T v = R.starProjection (T v) + (T v - R.starProjection (T v)) by abel]`. Conclude with `Submodule.add_mem_sup (h1 (hRle (R.starProjection_apply_mem (T v)))) (h2 ⟨Submodule.Quotient.mk v, hQmk v⟩)`.
+-/
 theorem isoPart_le_sup {π : K →* (H →L[ℂ] H)} (hπ : ∀ k v, ‖π k v‖ = ‖v‖) {W : Type} [AddCommGroup W]
     [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ K W) (W' : Submodule ℂ W)
     (hW : ∀ k, W' ≤ W'.comap (ρ k)) :
@@ -75,6 +98,29 @@ theorem isoPart_le_sup {π : K →* (H →L[ℂ] H)} (hπ : ∀ k v, ‖π k v�
   exact Submodule.add_mem_sup (h1 (hRle (R.starProjection_apply_mem (T v))))
     (h2 ⟨Submodule.Quotient.mk v, hQmk v⟩)
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∀ T : W →ₗ[ℂ] H, (∀ k w, T (ρ k w) = π k (T w)) → T = 0`. Establish `hbot : isoPart π ρ = ⊥`. Use `le_bot_iff.1 (iSup₂_le fun T hT => ?_)` and prove the remaining obligations. Rewrite using `[h0 T hT, LinearMap.range_zero]`. Rewrite using `[hbot]`.
+
+Use `infer_instance`. Use `push Not at h0`. Take `⟨T₀, hT₀, hne⟩` from `h0`. Establish `hinj : Function.Injective T₀`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Break down `hs (LinearMap.ker T₀) (fun k v hv => by` into its components or cases. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hv ⊢`. Rewrite using `[hT₀, hv, map_zero]) with h | h`. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hne`.
+
+Set `S : Submodule ℂ H` to `LinearMap.range T₀`. Establish `hSinv : ∀ k, ∀ w ∈ S, π k w ∈ S`. Introduce and unpack `k _ ⟨v, rfl⟩`. Conclude with `⟨ρ k v, hT₀ k v⟩`. Establish `hSirr : ∀ S' : Submodule ℂ H, S' ≤ S → (∀ k, ∀ w ∈ S', π k w ∈ S') → S' = ⊥ ∨ S' = S`.
+
+Introduce `S' hle hinv`. Break down `hs (S'.comap T₀) (fun k v hv => by` into its components or cases. Simplify using `only [Submodule.mem_comap] at hv ⊢`. Rewrite using `[hT₀]`. Conclude with `hinv k _ hv) with h | h`.
+
+Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Take `⟨v, rfl⟩` from `hle hw`. Establish `hv : v ∈ S'.comap T₀` using `hw`.
+
+Rewrite `hv` using `[h, Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Establish `hv : v ∈ S'.comap T₀` using `by rw [h]; trivial`. Conclude with `hv`. Establish `hfin` using `hadm S inferInstance hSinv hSirr`. Set `e : W ≃ₗ[ℂ] S` to `LinearEquiv.ofInjective T₀ hinj`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := sSup {S' | ∃ T : H →ₗ[ℂ] H, S' = S.map T ∧ ∀ k, ∀ w ∈ S, T (π k w) = π k (T w)}) (iSup₂_le fun T hT => ?_)` and prove the remaining obligations. Set `T' : H →ₗ[ℂ] H` to `T ∘ₗ (e.symm : S →ₗ[ℂ] W) ∘ₗ (S.orthogonalProjectionOnto : H →ₗ[ℂ] S)`. Establish `hT' : ∀ v, T' (T₀ v) = T v`. Introduce `v`. Establish `he : ((e v : S) : H) = T₀ v` using `LinearEquiv.ofInjective_apply _ v`.
+
+Simplify using `only [T', LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[← he, Submodule.orthogonalProjectionOnto_mem_subspace_eq_self, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Use `le_sSup ⟨T', ?_, ?_⟩` and prove the remaining obligations. Establish `hc : T' ∘ₗ T₀ = T` using `LinearMap.ext hT'`. Rewrite using `[← hc, LinearMap.range_comp]`.
+
+Introduce and unpack `k _ ⟨v, rfl⟩`. Rewrite using `[← hT₀, hT', hT', hT]`.
+-/
 theorem finiteDimensional_isoPart_of_simple {π : K →* (H →L[ℂ] H)}
     (hadm : ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → (∀ k, ∀ w ∈ S, π k w ∈ S) →
       (∀ S' : Submodule ℂ H, S' ≤ S → (∀ k, ∀ w ∈ S', π k w ∈ S') → S' = ⊥ ∨ S' = S) →
@@ -140,6 +186,13 @@ theorem finiteDimensional_isoPart_of_simple {π : K →* (H →L[ℂ] H)}
   · rintro k _ ⟨v, rfl⟩
     rw [← hT₀, hT', hT', hT]
 
+/- English proof (translation)
+Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `W _ _ _ ρ hd`. Distinguish the cases in `hs : ∀ W' : Submodule ℂ W, (∀ k, W' ≤ W'.comap (ρ k)) → W' = ⊥ ∨ W' = ⊤`. Conclude with `finiteDimensional_isoPart_of_simple hadm ρ hs`.
+
+Use `push Not at hs`. Take `⟨W', hW, hbot, htop⟩` from `hs`. Establish `h1 : Module.finrank ℂ W' < d` using `hd ▸ Submodule.finrank_lt htop`. Establish `h2 : Module.finrank ℂ (W ⧸ W') < d`. Establish `hsum` using `Submodule.finrank_quotient_add_finrank W'`.
+
+Establish `hpos : 0 < Module.finrank ℂ W'` using `Nat.pos_of_ne_zero fun h => hbot (Submodule.finrank_eq_zero.1 h)`. Use linear arithmetic over natural numbers and integers. Use `ih _ h1 W' (ρ.subrepresentation W' hW) rfl` as an intermediate fact. Use `ih _ h2 (W ⧸ W') (ρ.quotient W' hW) rfl` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (isoPart_le_sup hπ ρ W' hW)`.
+-/
 theorem finiteDimensional_isoPart {π : K →* (H →L[ℂ] H)} (hπ : ∀ k v, ‖π k v‖ = ‖v‖)
     (hadm : ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → (∀ k, ∀ w ∈ S, π k w ∈ S) →
       (∀ S' : Submodule ℂ H, S' ≤ S → (∀ k, ∀ w ∈ S', π k w ∈ S') → S' = ⊥ ∨ S' = S) →

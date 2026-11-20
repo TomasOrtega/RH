@@ -24,6 +24,9 @@ instance heckeCommRing (Y : Submodule A M) (op : ι → Module.End A M) [h : Fac
 def heckeGen (Y : Submodule A M) (op : ι → Module.End A M) [h : Fact (CommOn Y op)] (i : ι) : heckeAlg Y op :=
   ⟨(op i).restrict (h.out.1 i), Algebra.subset_adjoin ⟨i, fun _ => rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance finite := Finite.of_surjective _ (Alg.resMap_bijective O R).2`.
+-/
 theorem IsCNL.ofCO (O R : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing R] [Algebra O R]
     [Alg.IsCO O R] : IsCNL R where
   complete := inferInstance

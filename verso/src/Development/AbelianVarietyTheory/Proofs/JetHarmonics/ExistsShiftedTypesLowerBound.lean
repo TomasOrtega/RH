@@ -16,6 +16,23 @@ open Formalism.REAL (qdet GlRel IsHW)
 
 namespace GlobalTheory.WigSh
 
+/- English proof (translation)
+Introduce `V _ _ _ k r z π u l n₀ b hz hT hπ hreg hl1 hlk hgap hb hn hb1`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Take `⟨m, rfl⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`. Establish `hm : m < n` using `by omega`. Set `i : Fin n` to `⟨m, hm⟩`.
+
+Take `⟨β, L, hL, hu, hd⟩` from `GlobalTheory.exists_int_coords_of_regular_param n u (by simpa using hreg)`. Take `⟨B, hB⟩` from `(GlobalTheory.frame_exists_and_vector_eq_smul_translate n r z hz hT).1`. Establish `hgapZ : L i.succ + 2 * (n₀ : ℤ) + 1 ≤ L i.castSucc`. Establish `h` using `hd i.castSucc i.succ`. Simplify using `only [Fin.val_succ, Fin.val_castSucc, i] at h`.
+
+Establish `: ((L i.succ + 2 * (n₀ : ℤ) + 1 : ℤ) : ℝ) ≤ ((L i.castSucc : ℤ) : ℝ)`. Use `push_cast`. Simplify using `only [i]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+
+Establish `hwide : (L 0 : ℝ) - (L (Fin.last n) : ℝ) ≤ 2 * b`. Rewrite using `[hd]`. Establish `h1` using `abs_le.mp (hb (((0 : Fin (n + 1)) : ℕ) + 1) (by simp))`. Establish `h2` using `abs_le.mp (hb (((Fin.last n : Fin (n + 1)) : ℕ) + 1) (by simp))`. Combine the linear relations using `[h1.2, h2.1]`.
+
+Take `⟨Vp, iP1, iP2, iP3, πp, Ap, hπp, hAp, hwp⟩` from `GlobalTheory.T.exists_wignerContraction_chain_raising V n r z π u β L B i.succ n₀ hz hT hπ hL hu hB (by`. Introduce `j hj`. Establish `hj' : j ≤ i.castSucc` using `Fin.le_castSucc_iff.mpr hj`. Use `hL.antitone hj'` as an intermediate fact. Use the proof step `omega)`.
+
+Take `⟨Vm, familyMassRatio, familyMassSecondLine, iM3, πm, Am, hπm, hAm, hwm⟩` from `GlobalTheory.T.exists_wignerContraction_chain_lowering V n r z π u β L B i.castSucc n₀ hz hT hπ hL hu hB (by`. Introduce `j hj`. Establish `hj' : i.succ ≤ j` using `Fin.castSucc_lt_iff_succ_le.mp hj`. Use `hL.antitone hj'` as an intermediate fact. Use the proof step `omega)`.
+
+Use `⟨Vp, iP1, iP2, iP3, Vm, familyMassRatio, familyMassSecondLine, iM3, πp, πm, Ap, Am, hπp, hπm, hAp, hAm, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WigSh.lower_bound_spreads V Vp Vm n r z π πp πm B Ap Am n₀ b hz hT hπ.2.2.2.1 hπp.2.2.2.1 hπm.2.2.2.1 hB hAp hAm ?_` and prove the remaining obligations. Introduce `v`. Establish `hyp` using `(GlobalTheory.TypeGlModule.hyp_and_adj V n r z π u β L B hz hT hπ hL hu hB).1`. Establish `hdec` using `(Formalism.FourierDecayAlt.P.branching_decomposition V n (EB π B) β L hyp).2`.
+
+Establish `hspan : ⨆ M : {M : Fin n → ℤ // Box L M}, CapSp (subA (EB π B)) (shf β M.1) = ⊤`. Rewrite using `[← hdec, iSup_subtype]`. Establish `key` using `GlobalTheory.norm_sq_adjoint_add_ge_of_joint_eigenspaces V Vp Vm {M : Fin n → ℤ // Box L M} (fun M => CapSp (subA (EB π B)) (shf β M.1)) (Ap (B (Fin.last n))) (Am (B (Fin.last n))) _ _ ((3 * b) ^ (2 * n₀))⁻¹ hspan (fun M w hw => ⟨hwp M.1 w hw, hwm M.1 w hw⟩) (fun M => GlobalTheor …`. Establish `hpos : 0 < (3 * b) ^ (2 * n₀)` using `by positivity`. Rewrite `key` using `[inv_mul_le_iff₀ hpos]`. Then use the resulting hypothesis.
+-/
 theorem exists_shifted_types_lower_bound : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (u : ℕ → ℝ) (l n₀ : ℕ) (b : ℝ), inWb k r z → 0 < Tz k r z → IsType k r z π u → (∀ i ∈ Finset.Icc 1 (k - 1), ∃ N : ℕ, u i - u (i + 1) = (N : ℝ) + 1) → 1 ≤ l → l < k → 2 * (n₀ : ℝ) + 1 ≤ u l - u (l + 1) → (∀ i ∈ Finset.Icc 1 k, |u i| ≤ b) → (n₀ : ℝ) ≤ b → 1 ≤ b → ∃ (Vp : Type) (_ : NormedAddCommGroup Vp) (_ : InnerProductSpace ℂ Vp) (_ : FiniteDimensional ℂ Vp) (Vm : Type) (_ : NormedAddCommGroup Vm) (_ : InnerProductSpace ℂ Vm) (_ : FiniteDimensional ℂ Vm) (πp : Mx k r → (Vp →L[ℂ] Vp)) (πm : Mx k r → (Vm →L[ℂ] Vm)) (Ap : (Fin (2 * r + k + 1) → ℂ) → (Vp →L[ℂ] V)) (Am : (Fin (2 * r + k + 1) → ℂ) → (Vm →L[ℂ] V)), IsType k r z πp (Function.update u (l + 1) (u (l + 1) + (n₀ : ℝ))) ∧ IsType k r z πm (Function.update u l (u l - (n₀ : ℝ))) ∧ GlobalTheory.WigSh.WigMap k r z πp π n₀ Ap ∧ GlobalTheory.WigSh.WigMap k r z πm π n₀ Am ∧ ∀ ω, inWb k r ω → herm (Hpk k r) ω z = 0 → ∀ v : V, (herm (Hpk k r) ω ω).re ^ n₀ * ‖v‖ ^ 2 ≤ (3 * b) ^ (2 * n₀) * (‖ContinuousLinearMap.adjoint (Ap ω) v‖ ^ 2 + ‖ContinuousLinearMap.adjoint (Am ω) v‖ ^ 2) := by
   intro V _ _ _ k r z π u l n₀ b hz hT hπ hreg hl1 hlk hgap hb hn hb1
   obtain ⟨n, rfl⟩ : ∃ n, k = n + 1 := ⟨k - 1, by omega⟩

@@ -17,6 +17,27 @@ open Filter Topology
 noncomputable section
 namespace GlobalTheory.ChiCont
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `κ _ hb`. Conclude with `S.chi_triv κ (fun v hv => hb v hv (Finset.notMem_empty v))`. Consider the case `@insert v s hvs ih`.
+
+Introduce `κ hu hb`. Establish `hκ` using `(S.U_eq κ.1).1 κ.2`. Use `set x0 := Formalism.UG.P.afsplitU v (bc (prV (E := E) v) κ.1) 1 with hx0`. Establish `hx0v : bc (prV (E` using `E) v) x0 = bc (prV (E := E) v) κ.1 := Formalism.UG.P.afsplit_right1 _ _ _`. Establish `hx0w : ∀ w, w ≠ v → bc (prV (E` using `E) w) x0 = 1 := by`.
+
+Introduce `w hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_prV_ne v w hw]`. Simplify using the standard rewrite rules. Establish `hx0U : x0 ∈ S.U`.
+
+Rewrite using `[S.U_eq]`. Use `⟨Formalism.UG.P.afsplitU_mem v _ _ _ _ (Formalism.UG.P.afsplit_bc_mem _ _ v κ.1 hκ.1) (one_mem _), fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hx0v]`.
+
+Conclude with `hκ.2 w`. Rewrite using `[hx0w w hw]`. Conclude with `one_mem _`. Set `x : S.U` to `⟨x0, hx0U⟩`. Establish `hchix : S.chi x = 1` using `H v (Finset.mem_insert_self v s) x hx0w (by rw [hx0v]; exact hu v (Finset.mem_insert_self v s))`.
+
+Set `κ' : S.U` to `x⁻¹ * κ`. Establish `hκ'w : ∀ w, w ≠ v → bc (prV (E` using `E) w) κ'.1 = bc (prV (E := E) w) κ.1 := by`. Introduce `w hw`. Use `show bc (prV (E := E) w) (x0⁻¹ * κ.1) = _`. Rewrite using `[map_mul, map_inv, hx0w w hw, inv_one, one_mul]`.
+
+Establish `hκ'v : bc (prV (E` using `E) v) κ'.1 = 1 := by show bc (prV (E := E) v) (x0⁻¹ * κ.1) = _`. Rewrite using `[map_mul, map_inv, hx0v, inv_mul_cancel]`. Establish `hchi' : S.chi κ' = 1`. Use `ih (fun w hw => H w (Finset.mem_insert_of_mem hw)) κ' ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Establish `hwv : w ≠ v` using `fun h => hvs (h ▸ hw)`. Rewrite using `[hκ'w w hwv]`. Conclude with `hu w (Finset.mem_insert_of_mem hw)`. Introduce `w hw hws`. Distinguish the cases in `hwv : w = v`.
+
+Substitute `hwv` using the available equality. Conclude with `hκ'v`. Rewrite using `[hκ'w w hwv]`. Conclude with `hb w hw (by simp [hwv, hws])`. Establish `hk : κ = x * κ'` using `by rw [mul_inv_cancel_left]`.
+
+Rewrite using `[hk, map_mul, hchix, hchi', one_mul]`.
+-/
 theorem chi_eq_one_of_split {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F)))
     (S : StepLevel F E σ J T f bad) (u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -73,6 +94,11 @@ theorem chi_eq_one_of_split {F E : Type} [Field F] [NumberField F] [Field E] [Nu
     have hk : κ = x * κ' := by rw [mul_inv_cancel_left]
     rw [hk, map_mul, hchix, hchi', one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J T f bad S Vs hVs hbad hloc`. Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Establish `hall : ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ v ∈ Vs, ∀ x : S.U, (∀ v', v' ≠ v → bc (prV (E` using `E) v') x.1 = 1) → bc (prV (E := E) v) x.1 = bc (prV (E := E) v) u → S.chi x = 1 := (Filter.eventually_all_finite hVs).2 hloc`. Use `filter_upwards [hall] with u hu κ hκu`. Use `chi_eq_one_of_split σ J T f bad S u hVs.toFinset (fun v hv => hu v (hVs.mem_toFinset.1 hv)) κ (fun v _ => by rw [hκu]) ?_` and prove the remaining obligations.
+
+Introduce `v hv hvs`. Conclude with `absurd (hVs.mem_toFinset.2 (hbad v hv)) hvs`.
+-/
 theorem main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E σ J T f bad) (Vs : Set (HeightOneSpectrum (𝓞 F))), Vs.Finite → (∀ v ∈ bad, v ∈ Vs) → (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); ∀ v ∈ Vs, ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ x : S.U, (∀ v', v' ≠ v → bc (prV (E := E) v') x.1 = 1) → bc (prV (E := E) v) x.1 = bc (prV (E := E) v) u → S.chi x = 1) → (letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ κ : S.U, κ.1 = u → S.chi κ = 1) := by
   intro F E _ _ _ _ _ σ n J T f bad S Vs hVs hbad hloc
   letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)

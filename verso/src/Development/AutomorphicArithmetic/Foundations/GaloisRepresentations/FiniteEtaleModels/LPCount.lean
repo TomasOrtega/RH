@@ -6,6 +6,29 @@ open UpperTheory.Gal.Int.Geo
 open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `hpt hfin I B _ _ W Z Y Y' cls f kc π s m hf he hs hes hm h`. Take `⟨hsF, hsE⟩` from `hfin B Y' Y s hs hes`. Take `⟨hdF, hdE⟩` from `hfin I W Z f hf he`. Use `set sB : (∐ fun _ : B => Y') ⟶ Y := Sigma.desc fun _ : B => s with hsB`. Use `set ℓ := pullback.lift _ _ h with hℓ`.
+
+Establish `hℓ1 : ℓ ≫ pullback.fst π sB = Sigma.desc fun _ : I => f` using `pullback.lift_fst _ _ h`. Establish `hℓ2 : ℓ ≫ pullback.snd π sB = Sigma.desc fun c : I => kc c ≫ Sigma.ι (fun _ : B => Y') (cls c)` using `pullback.lift_snd _ _ h`. Use `haveI := hsF`. Use `haveI := hsE`. Use `haveI : IsFinite (pullback.fst π sB) := inferInstance`.
+
+Use `haveI : Etale (pullback.fst π sB) := inferInstance`. Use `haveI : IsFinite (ℓ ≫ pullback.fst π sB) := by rw [hℓ1]; exact hdF`. Use `haveI : Etale (ℓ ≫ pullback.fst π sB) := by rw [hℓ1]; exact hdE`. Use `⟨IsFinite.of_comp ℓ (pullback.fst π sB), Etale.of_comp ℓ (pullback.fst π sB), ?_⟩` and prove the remaining obligations. Introduce `K _ _ x`.
+
+Take `⟨⟨b, y'⟩, hb⟩` from `(hpt B Y' K).2 (x ≫ pullback.snd π sB)`. Use `replace hb : y' ≫ Sigma.ι (fun _ : B => Y') b = x ≫ pullback.snd π sB := hb`. Establish `hy : y' ≫ s = (x ≫ pullback.fst π sB) ≫ π`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, Category.assoc, Category.assoc, pullback.condition]`.
+
+Establish `key : ∀ (c : I) (v : sp K ⟶ W), (v ≫ Sigma.ι (fun _ : I => W) c) ≫ ℓ = x ↔ v ≫ f = x ≫ pullback.fst π sB ∧ cls c = b ∧ v ≫ kc c = y'`. Introduce `c v`. Establish `e1 : ((v ≫ Sigma.ι (fun _ : I => W) c) ≫ ℓ) ≫ pullback.fst π sB = v ≫ f`. Rewrite using `[Category.assoc, hℓ1]`. Simplify using the standard rewrite rules.
+
+Establish `e2 : ((v ≫ Sigma.ι (fun _ : I => W) c) ≫ ℓ) ≫ pullback.snd π sB = (v ≫ kc c) ≫ Sigma.ι (fun _ : B => Y') (cls c)`. Rewrite using `[Category.assoc, hℓ2]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Rewrite `e1`, `e2` using `[hx]`. Establish `h2 : (fun p : B × (sp K ⟶ Y') => p.2 ≫ Sigma.ι (fun _ : B => Y') p.1) (cls c, v ≫ kc c) = (fun p : B × (sp K ⟶ Y') => p.2 ≫ Sigma.ι (fun _ : B => Y') p.1) (b, y')` using `by show (v ≫ kc c) ≫ Sigma.ι (fun _ : B => Y') (cls c) = y' ≫ Sigma.ι (fun _ : B => Y') b`. Rewrite using `[← e2, hb]`. Take `⟨h3, h4⟩` from `Prod.mk.inj ((hpt B Y' K).1 h2)`. Conclude with `⟨e1.symm, h3, h4⟩`.
+
+Introduce and unpack `⟨h1, h3, h4⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[e1, h1]`. Rewrite using `[e2, h3, h4, hb]`. Rewrite using `[← hm K (x ≫ pullback.fst π sB) b y' hy]`.
+
+Set `F : {cx : I × (sp K ⟶ W) // cx.2 ≫ f = x ≫ pullback.fst π sB ∧ cls cx.1 = b ∧ cx.2 ≫ kc cx.1 = y'} → {y : sp K ⟶ ∐ (fun _ : I => W) // y ≫ ℓ = x}` to `fun p => ⟨p.1.2 ≫ Sigma.ι (fun _ : I => W) p.1.1, (key _ _).2 p.2⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, v⟩, hv⟩ ⟨⟨c', v'⟩, hv'⟩ e`. Establish `e' : (fun p : I × (sp K ⟶ W) => p.2 ≫ Sigma.ι (fun _ : I => W) p.1) (c, v) = (fun p : I × (sp K ⟶ W) => p.2 ≫ Sigma.ι (fun _ : I => W) p.1) (c', v')` using `congrArg Subtype.val e`.
+
+Conclude with `Subtype.ext ((hpt I W K).1 e')`. Introduce and unpack `⟨y, hy'⟩`. Take `⟨⟨c, v⟩, hv⟩` from `(hpt I W K).2 y`. Use `replace hv : v ≫ Sigma.ι (fun _ : I => W) c = y := hv`. Substitute `hv` using the available equality.
+
+Conclude with `⟨⟨(c, v), (key c v).1 hy'⟩, rfl⟩`. Conclude with `(Nat.card_congr (Equiv.ofBijective F hF)).symm`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.lCount_holds :
     LSigPt → LSigFin → LCount := by
   intro hpt hfin I B _ _ W Z Y Y' cls f kc π s m hf he hs hes hm h

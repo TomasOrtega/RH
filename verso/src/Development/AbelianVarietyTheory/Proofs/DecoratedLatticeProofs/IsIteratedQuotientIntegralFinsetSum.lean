@@ -33,6 +33,11 @@ variable {G₁ G₂ : Type} [Group G₁] [MeasurableSpace G₁] [TopologicalSpac
     [TopologicalSpace G₂] {R₁ : Subgroup G₁} {R₂ : Subgroup G₂} {ρ₁ : Measure R₁} {μ₁ : Measure G₁} {ρ₂ : Measure R₂}
     {μ₂ : Measure G₂}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨0, IsQuotIntL1.zero, fun q => IsQuotIntL1.zero⟩`. Consider the case `insert a s ha ih`.
+
+Take `⟨g, hg, hq⟩` from `hF a (Finset.mem_insert_self a s)`. Take `⟨g', hg', hq'⟩` from `ih fun i hi => hF i (Finset.mem_insert_of_mem hi)`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `⟨g + g', hg.add hg', fun q => (hq q).add (hq' q)⟩`.
+-/
 theorem isIteratedQuotientIntegral_finset_sum {ι : Type} (s : Finset ι) (F : ι → G₁ → G₂ → ℂ) (z : ι → ℂ)
     (hF : ∀ i ∈ s, Iter2 ρ₁ μ₁ ρ₂ μ₂ (F i) (z i)) :
     Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => ∑ i ∈ s, F i x y) (∑ i ∈ s, z i) := by
@@ -47,6 +52,9 @@ theorem isIteratedQuotientIntegral_finset_sum {ι : Type} (s : Finset ι) (F : �
     simp only [Finset.sum_insert ha]
     exact ⟨g + g', hg.add hg', fun q => (hq q).add (hq' q)⟩
 
+/- English proof (translation)
+Take `⟨g, hg, hq⟩` from `hF`. Conclude with `⟨a • g, hg.smul a, fun q => (hq q).smul a⟩`.
+-/
 theorem isIteratedQuotientIntegral_const_mul {F : G₁ → G₂ → ℂ} {z : ℂ} (a : ℂ) (hF : Iter2 ρ₁ μ₁ ρ₂ μ₂ F z) :
     Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => a * F x y) (a * z) := by
   obtain ⟨g, hg, hq⟩ := hF
@@ -56,6 +64,23 @@ end Iter
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hP` using `fun z => ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S).2.2.2 L z hL.1`. Establish `hmv` using `fun (R : Pl D → Prop) (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D R) => GlobalTheory.FinPl.PlacesAdeles.supp_mulVec S R g hy`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv y hy`. Establish `key : ∀ z : Fin S.rank → AE D, (∀ i, z i ∈ idAt D (· = v)) → (z ∈ latV S L P ↔ z ∈ latV S L (· = v))`.
+
+Introduce `z hz`. Rewrite using `[hP, ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.2.2 L z hL.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `⟨hz, fun w hw e he => h w (hw ▸ hv) e he⟩`.
+
+Introduce and unpack `⟨_, h⟩`. Use `⟨fun i => GlobalTheory.FinPl.PlacesAdeles.idAt_single_le hv (hz i), fun w _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Conclude with `h w hwv e he`. Take `⟨ε, -, -, -, hAt, hOff⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).1`.
+
+Establish `hzero : e • z = 0`. Use function extensionality and compare the values at `i`. Establish `h1 : ε * e = e` using `(hAt e).1 he.1`. Establish `h2 : ε * z i = 0` using `(hOff (z i)).1 (GlobalTheory.FinPl.PlacesAdeles.idAt_le_idOff hwv (hz i))`. Use `show e * z i = 0`.
+
+Rewrite using `[← h1, mul_comm ε e, mul_assoc, h2, mul_zero]`. Rewrite using `[hzero]`. Conclude with `(latV S L (· = w)).zero_mem`. Rewrite using `[← key y hy, ← key _ (hmv _ y hy)]`. Conclude with `h y fun i => GlobalTheory.FinPl.PlacesAdeles.idAt_single_le hv (hy i)`.
+
+Introduce `h y hy`. Rewrite using `[hP y, hP (mt S g *ᵥ y)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hy'⟩`. Use `⟨hmv _ y hy, fun w hw e he => ?_⟩` and prove the remaining obligations.
+
+Establish `hey : ∀ i, (e • y) i ∈ idAt D (· = w)` using `fun i => Ideal.mul_mem_right _ _ he.1`. Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `(h w hw (e • y) hey).1 (hy' w hw e he)`. Introduce and unpack `⟨_, hy'⟩`. Use `⟨hy, fun w hw e he => ?_⟩` and prove the remaining obligations.
+
+Establish `hey : ∀ i, (e • y) i ∈ idAt D (· = w)` using `fun i => Ideal.mul_mem_right _ _ he.1`. Use `(h w hw (e • y) hey).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `hy' w hw e he`.
+-/
 theorem moves_iff_forall {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (P : Pl D → Prop) (g : GA D S) :
     Moves S g L L P ↔ ∀ v, P v → Moves S g L L (· = v) := by
   have hP := fun z => ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S).2.2.2 L z hL.1
@@ -99,6 +124,11 @@ theorem moves_iff_forall {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (P : Pl 
       rw [Matrix.mulVec_smul]
       exact hy' w hw e he
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, hy⟩`. Use `GlobalTheory.FinPl.PlacesAdeles.moves_mul (GlobalTheory.FinPl.PlacesAdeles.moves_off (L := L) hy) ((hK κ).1 hκ).2` as an intermediate fact. Simplify using `using this`. Introduce `h`.
+
+Take `⟨g, hg, -⟩` from `hx x`. Use `⟨g, (hK g).2 ⟨hr ▸ ⟨g, rfl⟩, ?_⟩, hg⟩` and prove the remaining obligations. Use `GlobalTheory.FinPl.PlacesAdeles.moves_mul (GlobalTheory.FinPl.PlacesAdeles.moves_off (L := L) (inv_mem hg)) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem intAt_iff_moves {V : HSp D} {L : Lat V} {k Y : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Fintype Y] [DecidableEq Y] (v : Pl D) (gl : GL Y k →* GA D V)
     (hr : gl.range = grpAt V (· = v)) (hx : ∀ x : GA D V, ∃! g, x * (gl g)⁻¹ ∈ grpOff V (· = v))
@@ -115,6 +145,9 @@ theorem intAt_iff_moves {V : HSp D} {L : Lat V} {k Y : Type} [Field k] [Valuativ
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `key` using `(GlobalTheory.T.heisenbergCombination_disjoint_places_commute_vacua D ψ hψ S T (· = v) (fun p => P p ∧ p ≠ v) (fun p hp hn => hn.2 hp)).2.2.2.2 LS LT f hS hT`. Establish `e : (fun p => p = v ∨ (P p ∧ p ≠ v)) = P` using `funext fun p => propext ⟨fun h => h.elim (fun h => h ▸ hv) (·.1), fun h => (em (p = v)).imp id fun h' => ⟨h, h'⟩⟩`. Rewrite `key` using `[e]`. Conclude with `(key.1 hf).1`.
+-/
 theorem vac_single (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : Lat T} (hS : IsSelfDualC S LS)
     (hT : IsSelfDualC T LT) {P : Pl D → Prop} {v : Pl D} (hv : P v) {f : WO S T → ℂ} (hf : Vac ψ S T LS LT P f) :
     Vac ψ S T LS LT (· = v) f := by
@@ -124,12 +157,26 @@ theorem vac_single (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : 
   rw [e] at key
   exact (key.1 hf).1
 
+/- English proof (translation)
+Introduce `u hu`. Use extensionality with `i j`. Conclude with `(RingHom.mem_ker).1 (Ideal.mem_inf.1 (GlobalTheory.FinPl.SplitHalfSupp.mxAt_of_isHalf_above D k q _ _ u (hc u hu) i j)).1`.
+-/
 theorem isFinComb_of_half {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : SplitPt D k) {S T : HSp D} {c : WO S T →₀ ℂ} (hc : ∀ u ∈ c.support, IsHalf (q.e + cA D q.e) u) : IsFinComb c := by
   intro u hu
   ext i j
   exact (RingHom.mem_ker).1 (Ideal.mem_inf.1 (GlobalTheory.FinPl.SplitHalfSupp.mxAt_of_isHalf_above D k q _ _ u (hc u hu) i j)).1
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `u hu`. Establish `: u = 0` using `by simpa [aconv] using hu`. Substitute `this` using the available equality.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Consider the case `cons c l ih`. Introduce `u hu`. Establish `e1 : aconv [aconv l] = aconv l` using `by show (aconv l).sum (fun g a => (Finsupp.single (0 : WO S T) (1 : ℂ)).sum fun h b => Finsupp.single (g + h) (a * b)) = aconv l`.
+
+Establish `: ∀ (g : WO S T) (a : ℂ), ((Finsupp.single (0 : WO S T) (1 : ℂ)).sum fun h b => Finsupp.single (g + h) (a * b)) = Finsupp.single g a` using `fun g a => by rw [Finsupp.sum_single_index (by simp), add_zero, mul_one]`. Simplify using `only [this, Finsupp.sum_single]`. Establish `e2 : aconv (c :: l) = aconv [c, aconv l]` using `by show _ = c.sum fun g a => (aconv [aconv l]).sum fun h b => Finsupp.single (g + h) (a * b)`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+
+Rewrite `hu` using `[e2]`. Take `⟨a, ha, b, hb, rfl⟩` from `GlobalTheory.QValOuter.mem_support_aconv_pair _ _ hu`. Establish `h1` using `hl c List.mem_cons_self a ha`. Establish `h2` using `ih (fun c hc => hl c (List.mem_cons_of_mem _ hc)) b hb`. Use extensionality with `i j`.
+
+Establish `h3 : infPart D (a i j) = 0` using `congrFun (congrFun h1 i) j`. Establish `h4 : infPart D (b i j) = 0` using `congrFun (congrFun h2 i) j`. Use `show infPart D (a i j + b i j) = 0`. Rewrite using `[RingHom.map_add, h3, h4, add_zero]`.
+-/
 theorem isFinComb_aconv {S T : HSp D} (l : List (WO S T →₀ ℂ)) (hl : ∀ c ∈ l, IsFinComb c) : IsFinComb (aconv l) := by
   induction l with
   | nil =>
@@ -158,31 +205,52 @@ theorem isFinComb_aconv {S T : HSp D} (l : List (WO S T →₀ ℂ)) (hl : ∀ c
     show infPart D (a i j + b i j) = 0
     rw [RingHom.map_add, h3, h4, add_zero]
 
+/- English proof (translation)
+Use `show (Finsupp.single (0 : G) (1 : ℂ)).sum (fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)) = aconv l`. Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem aconv_single_cons {G : Type} [AddMonoid G] (l : List (G →₀ ℂ)) : aconv (Finsupp.single 0 1 :: l) = aconv l := by
   show (Finsupp.single (0 : G) (1 : ℂ)).sum (fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)) = aconv l
   rw [Finsupp.sum_single_index (by simp)]
   simp
 
+/- English proof (translation)
+Simplify using `[comb, Finsupp.support_single_ne_zero, GlobalTheory.BoxSlice.heisO_zero']`.
+-/
 theorem comb_single_zero (S T : HSp D) (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
   simp [comb, Finsupp.support_single_ne_zero, GlobalTheory.BoxSlice.heisO_zero']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, comb_single_zero]`.
+-/
 theorem biComb_single_zero (A S A' : HSp D) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' (Finsupp.single 0 1) (Finsupp.single 0 1) C = C := by
   funext u v
   simp only [biComb, comb_single_zero]
 
+/- English proof (translation)
+Use `show (a • e).sum (fun g b => b • F g) = _`. Rewrite using `[Finsupp.sum_smul_index' (h := fun g b => b • F g) (fun _ => zero_smul _ _), Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by simp [mul_smul]`.
+-/
 theorem sum_support_smul {G M : Type} [AddCommMonoid M] [Module ℂ M] (a : ℂ) (e : G →₀ ℂ) (F : G → M) :
     ∑ g ∈ (a • e).support, (a • e) g • F g = a • ∑ g ∈ e.support, e g • F g := by
   show (a • e).sum (fun g b => b • F g) = _
   rw [Finsupp.sum_smul_index' (h := fun g b => b • F g) (fun _ => zero_smul _ _), Finset.smul_sum]
   exact Finset.sum_congr rfl fun g _ => by simp [mul_smul]
 
+/- English proof (translation)
+The claim follows from `sum_support_smul a c fun u => heisO ψ S T u f`.
+-/
 theorem comb_smul_left (S T : HSp D) (a : ℂ) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) : comb ψ S T (a • c) f = a • comb ψ S T c f :=
   sum_support_smul a c fun u => heisO ψ S T u f
 
+/- English proof (translation)
+The claim follows from `sum_support_smul a e fun g => rTrans g f`.
+-/
 theorem trc_smul_left {V : HSp D} (a : ℂ) (e : GA D V →₀ ℂ) (f : GA D V → ℂ) : trc (a • e) f = a • trc e f :=
   sum_support_smul a e fun g => rTrans g f
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [biComb, comb_smul_left]`. Establish `: (fun u' => (b • comb ψ S A' c' (C u')) v) = b • fun u' => comb ψ S A' c' (C u') v` using `rfl`. Rewrite using `[this, GlobalTheory.AvgMid.comb_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, biComb]`.
+-/
 theorem biComb_smul_left (A S A' : HSp D) (a b : ℂ) (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' (a • c) (b • c') C = (a * b) • biComb ψ A S A' c c' C := by
   funext u v
@@ -191,6 +259,9 @@ theorem biComb_smul_left (A S A' : HSp D) (a b : ℂ) (c : WO A S →₀ ℂ) (c
   rw [this, GlobalTheory.AvgMid.comb_smul]
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, biComb]
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hu)`. Express the relevant statement in the definitionally equal form `(w ⬝ o.pA + (0 : WO L T) ⬝ o.pB).map (infPart D) = 0`. Rewrite using `[Matrix.zero_mul, add_zero, Matrix.map_mul, hc w hw, Matrix.zero_mul]`.
+-/
 theorem isFinComb_extS {S A L : HSp D} (o : OrthDec S A L) (T : HSp D) {c : WO A T →₀ ℂ} (hc : IsFinComb c) :
     IsFinComb (extS o T c) := by
   intro u hu
@@ -199,6 +270,9 @@ theorem isFinComb_extS {S A L : HSp D} (o : OrthDec S A L) (T : HSp D) {c : WO A
   change (w ⬝ o.pA + (0 : WO L T) ⬝ o.pB).map (infPart D) = 0
   rw [Matrix.zero_mul, add_zero, Matrix.map_mul, hc w hw, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hu)`. Express the relevant statement in the definitionally equal form `(o.jA ⬝ w + o.jB ⬝ (0 : WO S L)).map (infPart D) = 0`. Rewrite using `[Matrix.mul_zero, add_zero, Matrix.map_mul, hc w hw, Matrix.mul_zero]`.
+-/
 theorem isFinComb_extT {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) {c : WO S A →₀ ℂ} (hc : IsFinComb c) :
     IsFinComb (extT o S c) := by
   intro u hu
@@ -207,6 +281,9 @@ theorem isFinComb_extT {T A L : HSp D} (o : OrthDec T A L) (S : HSp D) {c : WO S
   change (o.jA ⬝ w + o.jB ⬝ (0 : WO S L)).map (infPart D) = 0
   rw [Matrix.mul_zero, add_zero, Matrix.map_mul, hc w hw, Matrix.mul_zero]
 
+/- English proof (translation)
+Simplify using `using perSum_all D ψ hψ ρ B f hf I Finset.univ (fun _ => 1) φ fun i _ => hφ i`.
+-/
 theorem per_sum (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} (B : BesLev D ρ) {f : GA D B.V → ℂ} (hf : IsContAut B.V f) {I : Type}
     [Fintype I] (φ : I → GA D B.A → ℂ) (hφ : ∀ i, IsContAut B.A (φ i)) : B.per ψ (∑ i, φ i) f = ∑ i, B.per ψ (φ i) f := by
   simpa using perSum_all D ψ hψ ρ B f hf I Finset.univ (fun _ => 1) φ fun i _ => hφ i
@@ -221,12 +298,21 @@ def HandIsLift : Prop :=
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).1 _ _ _ S.s₁ f hf`.
+-/
 theorem theta_flatBF {f : WO S.B.V S.J.W → ℂ} (hf : IsThetaFunO ψ _ _ f) : IsThetaFunO ψ _ _ (flatBF S.s₁ f) :=
   (GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).1 _ _ _ S.s₁ f hf
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).2 _ _ _ S.s₂ f hf`.
+-/
 theorem theta_flatFB {f : WO S.J.W S.B'.V → ℂ} (hf : IsThetaFunO ψ _ _ f) : IsThetaFunO ψ _ _ (flatFB S.s₂ f) :=
   (GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ).2 _ _ _ S.s₂ f hf
 
+/- English proof (translation)
+Unfold `Dbl2.val Dbl2.con`. Rewrite using `[biComb_single_zero, ← hS φ _ _ hφ (theta_flatBF (S.s₁.weil.om_pres _ _ h₁)) (theta_flatFB (S.s₂.weil.om_pres _ _ h₂))]`. Both sides reduce to the same expression.
+-/
 theorem val_eq_hand (hS : HandIsLift S) {Φ₁ : WO S.B.V S.J.W → ℂ} {Φ₂ : WO S.J.W S.B'.V → ℂ} (h₁ : IsThetaFunO ψ _ _ Φ₁)
     (h₂ : IsThetaFunO ψ _ _ Φ₂) {φ : GA D S.B.A → ℂ} (hφ : IsContAut _ φ) (f : GA D S.B'.V → ℂ) (g x y) :
     S.val (Finsupp.single 0 1) (Finsupp.single 0 1) Φ₁ Φ₂ φ f g x y =
@@ -235,6 +321,9 @@ theorem val_eq_hand (hS : HandIsLift S) {Φ₁ : WO S.B.V S.J.W → ℂ} {Φ₂ 
   rw [biComb_single_zero, ← hS φ _ _ hφ (theta_flatBF (S.s₁.weil.om_pres _ _ h₁)) (theta_flatFB (S.s₂.weil.om_pres _ _ h₂))]
   rfl
 
+/- English proof (translation)
+Unfold `Dbl2.val Dbl2.con`. Establish `e1 : S.s₁.om (1, 1) Φ₁ = Φ₁` using `by rw [Prod.mk_one_one, map_one]; rfl`. Establish `e2 : S.s₂.om (1, 1) Φ₂ = Φ₂` using `by rw [Prod.mk_one_one, map_one]; rfl`. Establish `e3 : rTrans 1 f = f` using `by funext z; simp [rTrans]`. Rewrite using `[e1, e2, e3]`.
+-/
 theorem val_one (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c₂ : WO S.J.W₀ S.B'.A →₀ ℂ) (Φ₁ : WO S.B.V S.J.W → ℂ) (Φ₂ : WO S.J.W S.B'.V → ℂ)
     (φ : GA D S.B.A → ℂ) (f : GA D S.B'.V → ℂ) :
     S.val c₁ c₂ Φ₁ Φ₂ φ f 1 1 1 = S.B'.per ψ (biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ _ _ _ c₁ c₂
@@ -245,6 +334,9 @@ theorem val_one (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c₂ : WO S.J.W₀ S.B'.A
   have e3 : rTrans 1 f = f := by funext z; simp [rTrans]
   rw [e1, e2, e3]
 
+/- English proof (translation)
+Establish `t₁` using `GlobalTheory.AvgMid.theta_comb hψ (isFinComb_extS S.B.o S.J.W₀ hc₁) (theta_flatBF h₁)`. Establish `t₂` using `GlobalTheory.AvgMid.theta_comb hψ (isFinComb_extT S.B'.o S.J.W₀ hc₂) (theta_flatFB h₂)`. Rewrite using `[← (GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D ψ hψ _ _ S.B S.B' S.l S.J.W₀ S.vL _ _ (theta_flatBF h₁) (theta_flatFB h₂)).2.1, ← hS φ _ _ hφ t₁ t₂]`. Conclude with `GlobalTheory.FinPl.Comm.contAut_hand0 _ _ _ _ hφ t₁ t₂`.
+-/
 theorem contAut_lift (hψ : IsStdChar D ψ (-1)) (hS : HandIsLift S) {c₁ : WO S.B.A S.J.W₀ →₀ ℂ} {c₂ : WO S.J.W₀ S.B'.A →₀ ℂ}
     (hc₁ : IsFinComb c₁) (hc₂ : IsFinComb c₂) {Φ₁ : WO S.B.V S.J.W → ℂ} {Φ₂ : WO S.J.W S.B'.V → ℂ} (h₁ : IsThetaFunO ψ _ _ Φ₁)
     (h₂ : IsThetaFunO ψ _ _ Φ₂) {φ : GA D S.B.A → ℂ} (hφ : IsContAut _ φ) :

@@ -22,11 +22,19 @@ noncomputable def bcIso {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) :
         (by rw [Category.assoc, ← sch.map_comp, Over.w g, pullback.condition])
     apply pullback.hom_ext <;> simp [pullback.map, pullback.lift_fst, pullback.lift_snd])
 
+/- English proof (translation)
+Establish `: PreservesLimitsOfShape J (Over.post sch ⋙ Over.pullback p ⋙ Over.forget E : Over S ⥤ _)` using `inferInstance`. Conclude with `preservesLimitsOfShape_of_natIso (bcIso p).symm`.
+-/
 theorem bc_preserves {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) (J : Type) [SmallCategory J] [IsConnected J]
     [FinCategory J] : PreservesLimitsOfShape J (bc p) := by
   have : PreservesLimitsOfShape J (Over.post sch ⋙ Over.pullback p ⋙ Over.forget E : Over S ⥤ _) := inferInstance
   exact preservesLimitsOfShape_of_natIso (bcIso p).symm
 
+/- English proof (translation)
+Use `IsPullback.flip (IsPullback.of_right (h₁₂ := pullback.fst p (sch.map V.hom)) (h₂₂ := sch.map V.hom) (v₁₃ := p) ?_ ?_ (IsPullback.of_hasPullback p (sch.map V.hom)))` and prove the remaining obligations. Establish `h1 : (bc p).map g ≫ pullback.fst p (sch.map V.hom) = pullback.fst p (sch.map U.hom)`. Simplify using `[bc, pullback.map, pullback.lift_fst]`. Establish `h2 : sch.map g.left ≫ sch.map V.hom = sch.map U.hom` using `by rw [← sch.map_comp, Over.w g]`. Establish `h3` using `IsPullback.of_hasPullback p (sch.map U.hom)`.
+
+Rewrite using `[h2]`. Conclude with `h1 ▸ h3`. Simplify using `[bc, pullback.map, pullback.lift_snd]`.
+-/
 theorem bc_isPullback {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {U V : Over S} (g : U ⟶ V) :
     IsPullback (pullback.snd p (sch.map U.hom)) ((bc p).map g) (sch.map g.left) (pullback.snd p (sch.map V.hom)) := by
   refine IsPullback.flip (IsPullback.of_right (h₁₂ := pullback.fst p (sch.map V.hom)) (h₂₂ := sch.map V.hom) (v₁₃ := p) ?_ ?_
@@ -39,6 +47,13 @@ theorem bc_isPullback {E : Spc} {S : Scheme.{0}} (p : E ⟶ sch.obj S) {U V : Ov
     exact h1 ▸ h3
   · simp [bc, pullback.map, pullback.lift_snd]
 
+/- English proof (translation)
+Introduce `R _ S E p _ U V g hg k`. Use `GlobalTheory.T.cechConerve_chains_quasiIso_of_locallySurjective R _ _ (fun n => ?_) U V g ?_` and prove the remaining obligations. Establish `h1` using `bc_preserves p (WidePullbackShape (Fin (n + 1)))`. Establish `h2 : PreservesLimitsOfShape (WidePullbackShape (Fin (n + 1))) ((Scheme.Etale.forget S ⋙ bc p) ⋙ (evaluation _ PSh).obj k)` using `inferInstance`. Establish `h3` using `preservesLimitsOfShape_of_equiv (widePushoutShapeOpEquiv (Fin (n + 1))).symm ((Scheme.Etale.forget S ⋙ bc p) ⋙ (evaluation _ PSh).obj k)`.
+
+Conclude with `preservesColimitsOfShape_op _ ((Scheme.Etale.forget S ⋙ bc p) ⋙ (evaluation _ PSh).obj k)`. Establish `he : Etale g.unop.left`. Establish `h1 : Etale V.unop.hom` using `V.unop.prop`. Establish `h2 : Etale U.unop.hom` using `U.unop.prop`. Establish `h3 : Etale (g.unop.left ≫ U.unop.hom)`.
+
+Rewrite using `[MorphismProperty.Over.w g.unop]`. Conclude with `h1`. Conclude with `Etale.of_comp _ U.unop.hom`. Conclude with `isLocallySurjective_of_isPullback _ _ _ _ ((bc_isPullback p ((Scheme.Etale.forget S).map g.unop)).map ((evaluation _ PSh).obj k)) (yoneda_map_isLocallySurjective_of_etale_surjective _ _ g.unop.left he hg)`.
+-/
 theorem hyp_coAug : ∀ (R : Type) [CommRing R] (S : Scheme.{0}) (E : Spc) (p : E ⟶ sch.obj S) [HasFiniteWidePushouts (S.Etale)ᵒᵖ] (U V : (S.Etale)ᵒᵖ) (g : U ⟶ V), Surjective g.unop.left → Hyp R ((Scheme.Etale.forget S ⋙ bc p).op) (coAug g) := by
   intro R _ S E p _ U V g hg k
   refine GlobalTheory.T.cechConerve_chains_quasiIso_of_locallySurjective R _ _ (fun n => ?_) U V g ?_

@@ -5,12 +5,26 @@ namespace PositivityTheory.Xgn.MonogenicSeparating
 
 open Polynomial TensorProduct
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+-/
 private theorem ringHom_aeval_int_eq_eval_map_lemma {O B : Type} [CommRing O] [CommRing B] (φ : O →+* B)
     (a : O) (h : ℤ[X]) : φ (aeval a h) = (h.map (Int.castRingHom B)).eval (φ a) := by
   rw [Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval_map]
   congr 1
   exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Set `L : V ⊗[ℤ] O →ₐ[V] (S → V)` to `Algebra.TensorProduct.lift (Algebra.ofId V (S → V)) F.toIntAlgHom (fun _ _ => Commute.all _ _)`. Use `⟨L.range, Module.Finite.of_surjective L.rangeRestrict.toLinearMap L.rangeRestrict_surjective, fun a => (AlgHom.mem_range L).mpr ⟨1 ⊗ₜ[ℤ] a, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [L]`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Apply the tactic sequence `all_goals rfl`.
+
+Introduce `x hx`. Take `⟨t, rfl⟩` from `(AlgHom.mem_range L).mp hx`. Use `clear hx`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`.
+
+Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v a`. Simplify using `only [L]`. Rewrite using `[Algebra.TensorProduct.lift_tmul]`.
+
+Use `show algebraMap V (S → V) v * F a ∈ _`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ v (Submodule.subset_span ⟨a, rfl⟩)`. Consider the case `add t₁ t₂ h₁ h₂`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ h₁ h₂`.
+-/
 private theorem exists_finite_subalgebra_pi_of_ringHom_lemma_2 {O V S : Type} [CommRing O] [Module.Finite ℤ O]
     [CommRing V] (F : O →+* (S → V)) :
     ∃ R : Subalgebra V (S → V), Module.Finite V R ∧ (∀ a, F a ∈ R) ∧
@@ -39,6 +53,17 @@ private theorem exists_finite_subalgebra_pi_of_ringHom_lemma_2 {O V S : Type} [C
       rw [map_add]
       exact Submodule.add_mem _ h₁ h₂
 
+/- English proof (translation)
+Distinguish the cases in `hbot : P = ⊥`. Substitute `hbot` using the available equality. Establish `hint : IsIntegral ℤ a` using `Algebra.IsIntegral.isIntegral (R := ℤ) a`. Use `⟨minpoly ℤ a, by rw [minpoly.aeval]; exact Ideal.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`.
+
+Introduce `h0`. Establish `hdvd` using `minpoly.isIntegrallyClosed_dvd hint h0`. Establish `hpos` using `minpoly.natDegree_pos hint`. Establish `hne : derivative (minpoly ℤ a) ≠ 0`. Introduce `hd`.
+
+Use `Polynomial.natDegree_eq_zero_of_derivative_eq_zero hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hle` using `Polynomial.natDegree_le_of_dvd hdvd hne`. Establish `hlt` using `Polynomial.natDegree_derivative_lt (p := minpoly ℤ a) (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Use `haveI : P.IsMaximal := hP.isMaximal hbot`. Use `letI : Field (𝓞 E ⧸ P) := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 E ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hbot`. Use `letI : Fintype (𝓞 E ⧸ P) := Fintype.ofFinite _`. Use `⟨X ^ Fintype.card (𝓞 E ⧸ P) - X, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, Polynomial.aeval_X_pow, Polynomial.aeval_X, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, FiniteField.pow_card, sub_self]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_X]`. Simplify using `only [map_sub, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, map_one, map_natCast]`. Rewrite using `[FiniteField.cast_card_eq_zero, zero_mul, zero_sub, neg_eq_zero]`. Conclude with `one_ne_zero`.
+-/
 theorem sep_poly (E : Type) [Field E] [NumberField E] (P : Ideal (𝓞 E)) (hP : P.IsPrime)
     (a : 𝓞 E) : ∃ h : ℤ[X], aeval a h ∈ P ∧ aeval a (derivative h) ∉ P := by
   by_cases hbot : P = ⊥
@@ -70,6 +95,19 @@ theorem sep_poly (E : Type) [Field E] [NumberField E] (P : Ideal (𝓞 E)) (hP :
       rw [FiniteField.cast_card_eq_zero, zero_mul, zero_sub, neg_eq_zero]
       exact one_ne_zero
 
+/- English proof (translation)
+Distinguish the cases in `hbot : P = ⊥`. Substitute `hbot` using the available equality. Use `⟨0, Ideal.zero_mem _, fun b hb => ⟨1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `one_ne_zero`.
+
+Rewrite `hb` using `[Ideal.mem_bot]`. Rewrite using `[hb, mul_zero]`. Take `⟨π, hπ1, hπ2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ P hbot hP.ne_top 1`. Rewrite `hπ1` using `[pow_one]`. Establish `hle : Ideal.span {π} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).mpr hπ1`.
+
+Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hJP : ¬ J ≤ P`. Introduce `hJ'`. Apply `hπ2` to reduce the goal to its premises. Establish `h2 : P ^ (1 + 1) = P * P` using `by rw [pow_succ, pow_one]`.
+
+Establish `hmem : π ∈ Ideal.span {π}` using `Ideal.mem_span_singleton_self π`. Rewrite `hmem` using `[hJ]`. Rewrite using `[h2]`. Conclude with `Ideal.mul_mono_right hJ' hmem`. Take `⟨t, htJ, htP⟩` from `SetLike.not_le_iff_exists.mp hJP`.
+
+Use `⟨π, hπ1, fun b hb => ⟨t, htP, ?_⟩⟩` and prove the remaining obligations. Establish `hbt : b * t ∈ Ideal.span {π}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hb htJ`. Rewrite `hbt` using `[Ideal.mem_span_singleton, mul_comm]`.
+
+Conclude with `hbt`.
+-/
 theorem ex_unif (E : Type) [Field E] [NumberField E] (P : Ideal (𝓞 E)) (hP : P.IsPrime) :
     ∃ π ∈ P, ∀ b ∈ P, ∃ t, t ∉ P ∧ π ∣ t * b := by
   by_cases hbot : P = ⊥
@@ -99,6 +137,21 @@ theorem ex_unif (E : Type) [Field E] [NumberField E] (P : Ideal (𝓞 E)) (hP : 
     rw [Ideal.mem_span_singleton, mul_comm] at hbt
     exact hbt
 
+/- English proof (translation)
+Establish `hunit : ∀ b, b ∉ P → IsUnit (φ b)`. Introduce `b hb`. Use `(h3 b).isUnit_add_left_of_commute (h2 b hb) (Commute.all _ _)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hP : ∀ b ∈ P, φ b = 0`.
+
+Introduce `b hb`. Take `⟨t, ht, s, hs⟩` from `hπ b hb`. Establish `hts : φ t * φ b = 0` using `by rw [← map_mul, hs, map_mul, h0, zero_mul]`. Conclude with `((hunit t ht).mul_right_eq_zero).mp hts`. Take `⟨h, hha, hhd⟩` from `hsep a`.
+
+Establish `e1 : (h.map (Int.castRingHom B)).eval (φ a) = 0`. Rewrite using `[← ringHom_aeval_int_eq_eval_map_lemma]`. Conclude with `hP _ hha`. Establish `e2 : (h.map (Int.castRingHom B)).eval (ψ a) = 0`. Rewrite using `[← ringHom_aeval_int_eq_eval_map_lemma]`.
+
+Conclude with `h1 _ hha`. Establish `hu : IsUnit ((derivative (h.map (Int.castRingHom B))).eval (ψ a))`. Rewrite using `[Polynomial.derivative_map, ← ringHom_aeval_int_eq_eval_map_lemma]`. Conclude with `h2 _ hhd`. Take `⟨v, hv⟩` from `hu.exists_left_inv`.
+
+Take `⟨w, hw⟩` from `Polynomial.binomExpansion (h.map (Int.castRingHom B)) (ψ a) (φ a - ψ a)`. Rewrite `hw` using `[add_sub_cancel, e1, e2, zero_add]`. Establish `hδ : φ a - ψ a = (φ a - ψ a) * (-(v * w) * (φ a - ψ a))`. Take the linear combination `(-v) * hw - (φ a - ψ a) * hv`. Establish `key : ∀ k : ℕ, φ a - ψ a = (φ a - ψ a) * (-(v * w) * (φ a - ψ a)) ^ k`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, mul_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← mul_assoc, ← ih]`.
+
+Conclude with `hδ`. Take `⟨n, hn⟩` from `h3 a`. Establish `hkey` using `key n`. Rewrite `hkey` using `[mul_pow, hn, mul_zero, mul_zero]`. Conclude with `sub_eq_zero.mp hkey`.
+-/
 theorem hom_eq {O B : Type} [CommRing O] [CommRing B] (P : Ideal O) (π : O)
     (hsep : ∀ a : O, ∃ h : ℤ[X], aeval a h ∈ P ∧ aeval a (derivative h) ∉ P)
     (hπ : ∀ b ∈ P, ∃ t, t ∉ P ∧ π ∣ t * b)
@@ -140,6 +193,51 @@ theorem hom_eq {O B : Type} [CommRing O] [CommRing B] (P : Ideal O) (π : O)
   rw [mul_pow, hn, mul_zero, mul_zero] at hkey
   exact sub_eq_zero.mp hkey
 
+/- English proof (translation)
+Establish `hgen1 : ∀ a : O, ∃ z : R, φ a - algebraMap V R (c a) - φ π * z ∈ (IsLocalRing.maximalIdeal V).map (algebraMap V R)`. Take `⟨I, hIdef⟩ : ∃ I : Ideal R, I = (IsLocalRing.maximalIdeal V).map (algebraMap V R) ⊔ Ideal.span {φ π}` from `⟨_, rfl⟩`. Establish `hJI : (IsLocalRing.maximalIdeal V).map (algebraMap V R) ≤ I`. Rewrite using `[hIdef]`. Conclude with `le_sup_left`.
+
+Establish `hπI : φ π ∈ I`. Rewrite using `[hIdef]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hC0 : ((Ideal.Quotient.mk I).comp φ) π = 0`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hπI`. Establish `hC1 : ∀ b ∈ (IsLocalRing.maximalIdeal V).comap c, ((Ideal.Quotient.mk I).comp ((algebraMap V R).comp c)) b = 0`. Introduce `b hb`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hJI (Ideal.mem_map_of_mem _ (Ideal.mem_comap.mp hb))`.
+
+Establish `hC2 : ∀ b, b ∉ (IsLocalRing.maximalIdeal V).comap c → IsUnit (((Ideal.Quotient.mk I).comp ((algebraMap V R).comp c)) b)`. Introduce `b hb`. Establish `hcb : IsUnit (c b)`. Assume the negation of the conclusion as `hcon`. Conclude with `hb (Ideal.mem_comap.mpr ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr hcon)))`.
+
+Conclude with `hcb.map ((Ideal.Quotient.mk I).comp (algebraMap V R))`. Establish `hC3 : ∀ a, IsNilpotent (((Ideal.Quotient.mk I).comp φ) a - ((Ideal.Quotient.mk I).comp ((algebraMap V R).comp c)) a)`. Introduce `a`. Take `⟨n, hn⟩` from `hnil a`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← map_sub, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hJI hn`. Introduce `a`. Establish `hI` using `PositivityTheory.Xgn.MonogenicSeparating.hom_eq ((IsLocalRing.maximalIdeal V).comap c) π hsep hπ _ _ hC0 hC1 hC2 hC3 a`.
+
+Simplify using `only [RingHom.comp_apply] at hI`. Rewrite `hI` using `[Ideal.Quotient.eq, hIdef]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hI`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Establish `hw : φ a - algebraMap V R (c a) - φ π * w = y`. Rewrite using `[← hyz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw]`. Conclude with `hy`.
+
+Establish `hdecomp : ∀ y : R, ∃ v : V, ∃ z : R, y - algebraMap V R v - φ π * z ∈ (IsLocalRing.maximalIdeal V).map (algebraMap V R)`. Introduce `y`. Establish `hy : y ∈ Submodule.span V (Set.range φ)`. Rewrite using `[hgen]`. Conclude with `Submodule.mem_top`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Take `⟨z, hz⟩` from `hgen1 a`. Conclude with `⟨c a, z, hz⟩`.
+
+Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `add x₁ x₂ _ _ hx₁ hx₂`. Take `⟨v₁, z₁, h₁⟩` from `hx₁`. Take `⟨v₂, z₂, h₂⟩` from `hx₂`. Use `⟨v₁ + v₂, z₁ + z₂, ?_⟩` and prove the remaining obligations.
+
+Establish `h₁₂` using `Ideal.add_mem _ h₁ h₂`. Use `h₁₂ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`.
+
+Take `⟨v, z, h⟩` from `hx`. Use `⟨r * v, algebraMap V R r * z, ?_⟩` and prove the remaining obligations. Establish `h'` using `Ideal.mul_mem_left _ (algebraMap V R r) h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Algebra.smul_def, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `hnil π`. Establish `hπn : (φ π) ^ n ∈ (IsLocalRing.maximalIdeal V).map (algebraMap V R)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_pow]`. Establish `he : Ideal.Quotient.mk ((IsLocalRing.maximalIdeal V).map (algebraMap V R)) (φ π) = Ideal.Quotient.mk ((IsLocalRing.maximalIdeal V).map (algebraMap V R)) (φ π - algebraMap V R (c π))`.
+
+Rewrite using `[map_sub, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hπ0), sub_zero]`. Rewrite using `[he, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hn`. Take `⟨S, hSdef⟩ : ∃ S : Submodule V R, S = Subalgebra.toSubmodule (Algebra.adjoin V {φ π}) ⊔ (IsLocalRing.maximalIdeal V) • (⊤ : Submodule V R)` from `⟨_, rfl⟩`. Establish `hJS : ∀ x ∈ (IsLocalRing.maximalIdeal V).map (algebraMap V R), x ∈ S`.
+
+Introduce `x hx`. Rewrite using `[hSdef]`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hx`.
+
+Establish `hAS : ∀ x ∈ Algebra.adjoin V {φ π}, x ∈ S`. Introduce `x hx`. Rewrite using `[hSdef]`. Conclude with `Submodule.mem_sup_left ((Subalgebra.mem_toSubmodule _).mpr hx)`. Establish `hstep : ∀ k : ℕ, ∀ x : R, ∃ s ∈ S, ∃ y : R, x = s + (φ π) ^ k * y`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x`. Conclude with `⟨0, S.zero_mem, x, by rw [pow_zero, one_mul, zero_add]⟩`.
+
+Consider the case `succ k ih`. Introduce `x`. Take `⟨s, hs, y, rfl⟩` from `ih x`. Take `⟨v, z, hvz⟩` from `hdecomp y`. Use `⟨s + (φ π) ^ k * algebraMap V R v + (φ π) ^ k * (y - algebraMap V R v - φ π * z), ?_, z, by ring⟩` and prove the remaining obligations.
+
+Use `S.add_mem (S.add_mem hs (hAS _ ?_)) (hJS _ (Ideal.mul_mem_left _ _ hvz))` and prove the remaining obligations. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton V _) _) (Subalgebra.algebraMap_mem _ _)`. Establish `htop : (⊤ : Submodule V R) ≤ Subalgebra.toSubmodule (Algebra.adjoin V {φ π}) ⊔ (IsLocalRing.maximalIdeal V) • (⊤ : Submodule V R)`. Rewrite using `[← hSdef]`. Introduce `x _`.
+
+Take `⟨s, hs, y, rfl⟩` from `hstep n x`. Conclude with `S.add_mem hs (hJS _ (Ideal.mul_mem_right _ _ hπn))`. Establish `hjac : IsLocalRing.maximalIdeal V ≤ Ideal.jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `hle` using `Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top hjac htop`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Conclude with `(Subalgebra.mem_toSubmodule _).mp (hle Submodule.mem_top)`.
+-/
 theorem adjoin_top {O V R : Type} [CommRing O] [CommRing V] [IsLocalRing V] [CommRing R]
     [Algebra V R] [Module.Finite V R] (c : O →+* V) (φ : O →+* R)
     (hgen : Submodule.span V (Set.range φ) = ⊤) (π : O)
@@ -275,6 +373,31 @@ theorem adjoin_top {O V R : Type} [CommRing O] [CommRing V] [IsLocalRing V] [Com
   intro x _
   exact (Subalgebra.mem_toSubmodule _).mp (hle Submodule.mem_top)
 
+/- English proof (translation)
+Establish `hP : ((IsLocalRing.maximalIdeal V).comap c).IsPrime` using `Ideal.comap_isPrime c _`. Take `⟨π, hπP, hπ⟩` from `PositivityTheory.Xgn.MonogenicSeparating.ex_unif E _ hP`. Take `⟨R, hRfin, hFR, hRspan⟩` from `exists_finite_subalgebra_pi_of_ringHom_lemma_2 (Pi.ringHom e)`. Use `haveI := hRfin`. Take `⟨φ, hφ⟩ : ∃ φ : 𝓞 E →+* R, ∀ a s, (φ a : S → V) s = e s a` from `⟨(Pi.ringHom e).codRestrict R hFR, fun a s => rfl⟩`.
+
+Establish `hgen : Submodule.span V (Set.range φ) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Establish `key : ∀ y (hy : y ∈ Submodule.span V (Set.range (Pi.ringHom e))), ∃ h : y ∈ R, (⟨y, h⟩ : R) ∈ Submodule.span V (Set.range φ)`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `⟨hFR a, Submodule.subset_span ⟨a, Subtype.ext (funext fun s => hφ a s)⟩⟩`. Consider the case `zero => exact ⟨R.zero_mem, Submodule.zero_mem _⟩`.
+
+Consider the case `add y₁ y₂ _ _ h₁ h₂`. Take `⟨m₁, s₁⟩` from `h₁`. Take `⟨m₂, s₂⟩` from `h₂`. Conclude with `⟨R.add_mem m₁ m₂, Submodule.add_mem _ s₁ s₂⟩`. Consider the case `smul r y _ h`.
+
+Take `⟨m, s⟩` from `h`. Conclude with `⟨R.smul_mem m r, Submodule.smul_mem _ r s⟩`. Take `⟨_, h⟩` from `key x (hRspan x hx)`. Conclude with `h`. Establish `hprod : ∀ a, ∏ s', (φ a - algebraMap V R (e s' a)) = 0`.
+
+Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ s) (by simp [hφ])`.
+
+Establish `hnil : ∀ a, ∃ n, (φ a - algebraMap V R (c a)) ^ n ∈ (IsLocalRing.maximalIdeal V).map (algebraMap V R)`. Introduce `a`. Use `⟨Fintype.card S, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Finset.card_univ, ← Finset.prod_const, map_prod, ← map_zero (Ideal.Quotient.mk ((IsLocalRing.maximalIdeal V).map (algebraMap V R))), ← hprod a, map_prod]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `s _`. Rewrite using `[Ideal.Quotient.eq]`. Establish `hd : φ a - algebraMap V R (c a) - (φ a - algebraMap V R (e s a)) = algebraMap V R (e s a - c a)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hd]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hS s a`. Establish `hadj` using `PositivityTheory.Xgn.MonogenicSeparating.adjoin_top c φ hgen π (Ideal.mem_comap.mp hπP) (fun a => PositivityTheory.Xgn.MonogenicSeparating.sep_poly E _ hP a) hπ hnil`.
+
+Use `⟨π, fun a => ?_⟩` and prove the remaining obligations. Establish `ha : φ a ∈ Algebra.adjoin V {φ π}`. Rewrite using `[hadj]`. Conclude with `Algebra.mem_top`. Rewrite `ha` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Take `⟨g, hg⟩` from `(AlgHom.mem_range _).mp ha`. Use `⟨g, fun s => ?_⟩` and prove the remaining obligations. Establish `key` using `Polynomial.aeval_algHom_apply ((Pi.evalAlgHom V (fun _ : S => V) s).comp R.val) (φ π) g`. Rewrite `key` using `[hg]`. Simplify using `only [AlgHom.comp_apply, Subalgebra.coe_val, Pi.evalAlgHom_apply, hφ, Polynomial.coe_aeval_eq_eval] at key`.
+
+Conclude with `key.symm`.
+-/
 theorem ex_poly (E : Type) [Field E] [NumberField E] (V : Type) [CommRing V] [IsLocalRing V]
     (S : Type) [Fintype S] (e : S → (𝓞 E →+* V)) (c : 𝓞 E →+* V)
     (hS : ∀ s a, ¬ IsUnit (e s a - c a)) :
@@ -346,6 +469,25 @@ theorem ex_poly (E : Type) [Field E] [NumberField E] (V : Type) [CommRing V] [Is
     Polynomial.coe_aeval_eq_eval] at key
   exact key.symm
 
+/- English proof (translation)
+Establish `hA0 : ∀ s, ∃ a, (∃ b, IsUnit (e s b - e σ b)) → IsUnit (e s a - e σ a)`. Introduce `s`. Distinguish the cases in `h : ∃ b, IsUnit (e s b - e σ b)`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨b, fun _ => hb⟩`.
+
+Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose A hA using hA0`. Take `⟨K, hK⟩ : ∃ K : Finset ι, ∀ t, t ∈ K ↔ ∀ a, ¬ IsUnit (e t a - e σ a)` from `⟨Finset.univ.filter (fun t => ∀ a, ¬ IsUnit (e t a - e σ a)), fun t => by simp⟩`. Take `⟨y, hyT, hy⟩ : ∃ y : ι → (ι → V), (∀ s, y s ∈ T) ∧ ∀ s r, y s r = ∏ t ∈ K, (e r (A s) - e t (A s))` from `⟨fun s => ∏ t ∈ K, ((fun r => e r (A s)) - algebraMap V (ι → V) (e t (A s))), fun s => prod_mem fun t _ => T.sub_mem (hT (A s)) (T.algebraMap_mem _), fun s r => by simp [Finset.prod_apply]⟩`. Establish `hy0 : ∀ s r, r ∈ K → y s r = 0`.
+
+Introduce `s r hr`. Rewrite using `[hy]`. Conclude with `Finset.prod_eq_zero hr (sub_self _)`. Establish `hyu : ∀ r, r ∉ K → IsUnit (y r r)`. Introduce `r hr`.
+
+Establish `hex : ∃ a, IsUnit (e r a - e σ a)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hr ((hK r).mpr hcon)`. Establish `hu` using `hA r hex`.
+
+Rewrite using `[hy, IsUnit.prod_iff]`. Introduce `t ht`. Establish `htK` using `(hK t).mp ht (A r)`. Establish `hsum : (e r (A r) - e t (A r)) + (e t (A r) - e σ (A r)) = e r (A r) - e σ (A r)`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hu` using `[← hsum]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h htK`. Use `⟨∏ s ∈ Finset.univ.filter (fun s => s ∉ K), (1 - Ring.inverse (y s s) • y s), prod_mem fun s _ => T.sub_mem T.one_mem (T.smul_mem (hyT s) _), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `r hr`. Establish `hrK : r ∈ K` using `(hK r).mpr hr`. Rewrite using `[Finset.prod_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `s _`.
+
+Simplify using `[hy0 s r hrK]`. Introduce `r hr`. Establish `hrK : r ∉ K` using `fun h => by`. Take `⟨a, ha⟩` from `hr`. Conclude with `(hK r).mp h a ha`.
+
+Rewrite using `[Finset.prod_apply]`. Apply `Finset.prod_eq_zero (i := r) (by simp [hrK])` to reduce the goal to its premises. Simplify using `[Ring.inverse_mul_cancel _ (hyu r hrK)]`.
+-/
 theorem ex_idem {O V ι : Type} [CommRing O] [CommRing V] [IsLocalRing V] [Fintype ι]
     (e : ι → (O →+* V)) (σ : ι) (T : Subalgebra V (ι → V)) (hT : ∀ a, (fun s => e s a) ∈ T) :
     ∃ u ∈ T, (∀ s, (∀ a, ¬ IsUnit (e s a - e σ a)) → u s = 1) ∧
@@ -403,6 +545,35 @@ theorem ex_idem {O V ι : Type} [CommRing O] [CommRing V] [IsLocalRing V] [Finty
 
 end PositivityTheory.Xgn.MonogenicSeparating
 
+/- English proof (translation)
+Introduce `E _ _ V C _ _ _ _ _ _ _ emb hemb hcard σ`. Use `haveI : IsLocalRing V := ValuationRing.isLocalRing V`. Use `haveI : Finite (E →+* C) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcard]`. Conclude with `(Module.finrank_pos (R := ℚ) (M := E)).ne')`.
+
+Use `letI : Fintype (E →+* C) := Fintype.ofFinite _`. Take `⟨π, hπ⟩` from `PositivityTheory.Xgn.MonogenicSeparating.ex_poly E V {s : E →+* C // ∀ a, ¬ IsUnit (emb s a - emb σ a)} (fun s => emb s.1) (emb σ) (fun s a => s.2 a)`. Use `⟨π, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s' hs hs' heq`. Establish `hagree : ∀ a : 𝓞 E, s (a : E) = s' (a : E)`.
+
+Introduce `a`. Take `⟨g, hg⟩` from `hπ a`. Establish `h₁` using `hg ⟨s, hs⟩`. Establish `h₂` using `hg ⟨s', hs'⟩`. Simplify using `only at h₁ h₂`.
+
+Rewrite using `[← hemb, ← hemb, h₁, h₂, heq]`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => hagree a)`. Introduce `f hf`. Establish `hTspan : ∀ x ∈ Algebra.adjoin V (Set.range fun a : 𝓞 E => fun s => emb s a), x ∈ Submodule.span V (Set.range fun a : 𝓞 E => fun s => emb s a)`. Introduce `x hx`.
+
+Establish `hx' : x ∈ Subalgebra.toSubmodule (Algebra.adjoin V (Set.range fun a : 𝓞 E => fun s => emb s a))` using `hx`. Rewrite `hx'` using `[Algebra.adjoin_eq_span]`. Establish `hcl : ∀ y ∈ Submonoid.closure (Set.range fun a : 𝓞 E => fun s => emb s a), y ∈ Set.range fun a : 𝓞 E => fun s => emb s a`. Introduce `y hy`. Proceed by induction on `hy using Submonoid.closure_induction with`.
+
+Consider the case `mem z hz => exact hz`. Consider the case `one => exact ⟨1, funext fun s => map_one (emb s)⟩`. Consider the case `mul z w _ _ hz hw`. Take `⟨a, rfl⟩` from `hz`. Take `⟨b, rfl⟩` from `hw`.
+
+Conclude with `⟨a * b, funext fun s => map_mul (emb s) a b⟩`. Conclude with `Submodule.span_mono (fun y hy => hcl y hy) hx'`. Establish `haeval : ∀ (g : Polynomial V) (s : E →+* C), (Polynomial.aeval (fun s => emb s π) g) s = g.eval (emb s π)`. Introduce `g s`. Establish `h` using `Polynomial.aeval_algHom_apply (Pi.evalAlgHom V (fun _ : E →+* C => V) s) (fun s => emb s π) g`.
+
+Simplify using `only [Pi.evalAlgHom_apply, Polynomial.coe_aeval_eq_eval] at h`. Conclude with `h.symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Take `⟨u, huT, hu1, hu0⟩` from `PositivityTheory.Xgn.MonogenicSeparating.ex_idem emb σ (Algebra.adjoin V (Set.range fun a : 𝓞 E => fun s => emb s a)) (fun a => Algebra.subset_adjoin ⟨a, rfl⟩)`.
+
+Establish `hxπ : (fun s => emb s π) ∈ Algebra.adjoin V (Set.range fun a : 𝓞 E => fun s => emb s a)` using `Algebra.subset_adjoin ⟨π, rfl⟩`. Establish `hgT : Polynomial.aeval (fun s => emb s π) g ∈ Algebra.adjoin V (Set.range fun a : 𝓞 E => fun s => emb s a)` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hxπ) (Polynomial.aeval_mem_adjoin_singleton V _)`. Establish `hfu : f = u * Polynomial.aeval (fun s => emb s π) g`. Use function extensionality and compare the values at `s`. Rewrite using `[Pi.mul_apply]`.
+
+Distinguish the cases in `hs : ∀ a, ¬ IsUnit (emb s a - emb σ a)`. Rewrite using `[hu1 s hs, one_mul, hg s hs, haeval]`. Use `push_neg at hs`. Rewrite using `[hu0 s hs, zero_mul, hf s hs]`. Rewrite using `[hfu]`.
+
+Conclude with `hTspan _ (Subalgebra.mul_mem _ huT hgT)`. Introduce `hfspan`. Establish `key : ∀ x (hx : x ∈ Submodule.span V (Set.range fun a : 𝓞 E => fun s => emb s a)), ∃ g : Polynomial V, ∀ s, (∀ a, ¬ IsUnit (emb s a - emb σ a)) → x s = g.eval (emb s π)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Take `⟨g, hg⟩` from `hπ a`. Conclude with `⟨g, fun s hs => hg ⟨s, hs⟩⟩`. Consider the case `zero => exact ⟨0, fun s _ => by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨g₁, h₁⟩` from `hx`. Take `⟨g₂, h₂⟩` from `hy`. Conclude with `⟨g₁ + g₂, fun s hs => by rw [Pi.add_apply, h₁ s hs, h₂ s hs, Polynomial.eval_add]⟩`. Consider the case `smul r x _ hx`.
+
+Take `⟨g, hg⟩` from `hx`. Conclude with `⟨r • g, fun s hs => by rw [Pi.smul_apply, hg s hs, Polynomial.eval_smul]⟩`. Conclude with `key f hfspan`.
+-/
 theorem PositivityTheory.Xgn.exists_monogenic_separating : ∀ (E : Type) [Field E] [NumberField E] (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [CharZero C] [Algebra V C] [IsFractionRing V C] (emb : (E →+* C) → (𝓞 E →+* V)), (∀ s (a : 𝓞 E), algebraMap V C (emb s a) = s (a : E)) → Nat.card (E →+* C) = Module.finrank ℚ E → ∀ σ : E →+* C, ∃ π : 𝓞 E, (∀ s s' : E →+* C, (∀ a, ¬ IsUnit (emb s a - emb σ a)) → (∀ a, ¬ IsUnit (emb s' a - emb σ a)) → emb s π = emb s' π → s = s') ∧ ∀ f : (E →+* C) → V, (∀ s, (∃ a, IsUnit (emb s a - emb σ a)) → f s = 0) → ((∃ g : Polynomial V, ∀ s, (∀ a, ¬ IsUnit (emb s a - emb σ a)) → f s = g.eval (emb s π)) ↔ f ∈ Submodule.span V (Set.range fun a : 𝓞 E => fun s => emb s a)) := by
   intro E _ _ V C _ _ _ _ _ _ _ emb hemb hcard σ
   classical

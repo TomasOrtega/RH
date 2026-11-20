@@ -9,28 +9,50 @@ open scoped TensorProduct Matrix NNReal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[show A * B * C * D = A * (B * C * D) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm A]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem tr4 {n : ℕ} (A B C D : Matrix (Fin n) (Fin n) ℂ) : (B * (C * D * A)).trace = (A * B * C * D).trace := by
   rw [show A * B * C * D = A * (B * C * D) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm A]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+-/
 theorem gl_mul_inv {n : ℕ} (g : GL (Fin n) ℂ) : g.1 * (g⁻¹).1 = 1 := by
   rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+-/
 theorem gl_inv_mul {n : ℕ} (g : GL (Fin n) ℂ) : (g⁻¹).1 * g.1 = 1 := by
   rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
 
+/- English proof (translation)
+Establish `h1 : (g.1)ᴴ * ((g⁻¹).1)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, gl_inv_mul, Matrix.conjTranspose_one]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.one_mul, Matrix.mul_assoc, gl_inv_mul, Matrix.mul_one]`.
+-/
 theorem gl_conj_cancel {n : ℕ} (g : GL (Fin n) ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) :
     (g.1)ᴴ * ((((g⁻¹).1)ᴴ * Q * (g⁻¹).1)) * g.1 = Q := by
   have h1 : (g.1)ᴴ * ((g⁻¹).1)ᴴ = 1 := by rw [← Matrix.conjTranspose_mul, gl_inv_mul, Matrix.conjTranspose_one]
   simp only [← Matrix.mul_assoc]
   rw [h1, Matrix.one_mul, Matrix.mul_assoc, gl_inv_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `: (∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) = ((∑ a, ∑ b, x a b * y a b : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`.
+-/
 theorem re_sum_cast {n : ℕ} (x y : WR.E n) :
     ((((∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) : ℂ).re : ℝ) : ℂ) =
       ∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ) := by
   have : (∑ a, ∑ b, ((x a b : ℝ) : ℂ) * ((y a b : ℝ) : ℂ)) = ((∑ a, ∑ b, x a b * y a b : ℝ) : ℂ) := by push_cast; rfl
   rw [this, Complex.ofReal_re]
 
+/- English proof (translation)
+Introduce `a b`. Apply `hP.bij.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show θ i (sigR _ σ (gramR (Ainf F) σ J Y b a)) = θ i (gramR (Ainf F) σ J Y a b)`. Rewrite using `[hP.conj]`.
+
+Establish `h` using `map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i`. Establish `hh : ((gramR (Ainf F) σ J Y).map (θ i)).IsHermitian`. Rewrite using `[h]`. Conclude with `Matrix.isHermitian_conjTranspose_mul_mul _ (gramX_isHerm _ _)`. Use `congrFun (congrFun hh a) b` as an intermediate fact.
+
+Simplify `this` using `[Matrix.conjTranspose_apply]`.
+-/
 theorem gram_mem (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (ε : ι → Fin M → Bool) (fr : ι → GL (Fin M) ℂ) (hfr : IsFrames J θ ε fr) (g : ι → GL (Fin n) ℂ)
@@ -46,6 +68,13 @@ theorem gram_mem (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fin
   have := congrFun (congrFun hh a) b
   simpa [Matrix.conjTranspose_apply] using this
 
+/- English proof (translation)
+Rewrite using `[psi_trPair_gen σ hCM ψ θ l hP, Finset.mul_sum, Complex.exp_sum]`. Unfold `phiInf`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `htr : ((((b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (gramR (Ainf F) σ J Y).map (θ i)).trace.re : ℝ) : ℂ) = (herm (ybAll σ θ g b i) * gramX (ε i) (crdAll θ fr g Y i)).trace`.
+
+Rewrite using `[map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, tr4, ← herm_ybAll σ ψ θ l hP g b i]`. Conclude with `trace_re_of_herm (WR.I.herm_isHermitian _) (gramX_isHerm _ _)`. Rewrite using `[htr]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_mul_psi (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (ε : ι → Fin M → Bool) (fr : ι → GL (Fin M) ℂ) (hfr : IsFrames J θ ε fr) (g : ι → GL (Fin n) ℂ) (P : ι → PX M n)
@@ -67,6 +96,15 @@ theorem phi_mul_psi (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (A
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[psi_neg_trPair_gen σ hCM ψ θ l hP, Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (herm (ygAll σ θ g T i) * herm (ybAll σ θ g b i)).trace = ((T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).trace`. Rewrite using `[herm_ygAll σ ψ θ l hP g T i, herm_ybAll σ ψ θ l hP g b i]`. Establish `h1 : (((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, gl_mul_inv, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (g i).1, gl_mul_inv, Matrix.one_mul]`.
+
+Use `_ = ((T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ)).trace := by`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one]`. Rewrite using `[← e, trace_herm_mul, re_sum_cast, WR.chr]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_neg_trPair (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (T b : HermR (Ainf F) σ n) :
@@ -96,6 +134,9 @@ theorem psi_neg_trPair (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `nuInf`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[WR.dP, herm_ybAll σ ψ θ l hP g b i]`.
+-/
 theorem nuInf_eq (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (b : HermR (Ainf F) σ n) :
@@ -104,6 +145,15 @@ theorem nuInf_eq (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [WR.dP, herm_ybAll σ ψ θ l hP g b i]
 
+/- English proof (translation)
+Use extensionality with `Y`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_univ_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsY⟩ i`. Use `⟨ygAll σ θ g s i, hs i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[herm_ygAll σ ψ θ l hP g s i, hsY, map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, gl_conj_cancel]`. Introduce `h`. Use `⟨⟨gramR (Ainf F) σ J Y, gram_mem σ ψ θ l hP J ε fr hfr g Y⟩, fun i => ?_, rfl⟩` and prove the remaining obligations. Take `⟨k, hk, hkQ⟩` from `h i`. Establish `: ygAll σ θ g ⟨gramR (Ainf F) σ J Y, gram_mem σ ψ θ l hP J ε fr hfr g Y⟩ i = k`.
+
+Rewrite using `[← hinv_herm k, hkQ]`. Use `show hinv _ = _`. Use `congr 1`. Use `show ((g i).1)ᴴ * (gramR (Ainf F) σ J Y).map (θ i) * (g i).1 = _`. Rewrite using `[map_gramR_crd σ ψ θ l hP J ε fr hfr g Y i, gl_conj_cancel]`.
+
+Rewrite using `[this]`. Conclude with `hk`.
+-/
 theorem gram_preimage_box (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (ε : ι → Fin M → Bool) (fr : ι → GL (Fin M) ℂ) (hfr : IsFrames J θ ε fr)
@@ -128,6 +178,15 @@ theorem gram_preimage_box (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddC
     rw [this]
     exact hk
 
+/- English proof (translation)
+Establish `e0 : pairHerm (Ainf F) σ n S T = trPair (Ainf F) (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))` using `rfl`. Rewrite using `[e0, psi_trPair_gen σ hCM ψ θ l hP]`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `e : (herm (ybAll σ θ g S i) * herm (ygAll σ θ g T i)).trace = ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).trace`. Rewrite using `[herm_ygAll σ ψ θ l hP g T i, herm_ybAll σ ψ θ l hP g S i]`. Establish `h1 : (((g i)⁻¹).1)ᴴ * ((g i).1)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, gl_mul_inv, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (((g i)⁻¹).1)ᴴ, h1, Matrix.one_mul]`. Use `_ = ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * (T : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i) * ((g i).1 * ((g i)⁻¹).1)).trace := by`. Rewrite using `[Matrix.trace_mul_comm]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [gl_mul_inv, Matrix.mul_one]`. Rewrite using `[← e, trace_herm_mul, re_sum_cast]`.
+-/
 theorem psi_pairHerm (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (S T : HermR (Ainf F) σ n) :
@@ -158,6 +217,9 @@ theorem psi_pairHerm (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (
       _ = _ := by rw [gl_mul_inv, Matrix.mul_one]
   rw [← e, trace_herm_mul, re_sum_cast]
 
+/- English proof (translation)
+Simplify using `only [pairHerm]`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem pairHerm_comm (σ : E →ₐ[F] E) {n : ℕ} (S T : HermR (Ainf F) σ n) :
     pairHerm (Ainf F) σ n S T = pairHerm (Ainf F) σ n T S := by
   simp only [pairHerm]
@@ -165,6 +227,11 @@ theorem pairHerm_comm (σ : E →ₐ[F] E) {n : ℕ} (S T : HermR (Ainf F) σ n)
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[herm_ygAll σ ψ θ l hP g S i, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h1 : ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).det ≠ 0`. Rewrite using `[show ((S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).map (θ i)).det = θ i (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det from (RingHom.map_det _ _).symm]`. Conclude with `(hS.map (θ i)).ne_zero`. Establish `h2 : ((g i).1).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (g i).isUnit).ne_zero`.
+
+Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.mpr h2) h1) h2`.
+-/
 theorem det_herm_ygAll (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι]
     (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (hP : IsPlaces σ ψ θ l) {n : ℕ} (g : ι → GL (Fin n) ℂ)
     (S : HermR (Ainf F) σ n) (hS : IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det) (i : ι) :

@@ -7,6 +7,11 @@ namespace LateralTheory.E.E8.TwSec.FieldZ
 
 variable {q : ℕ} [NeZero q] {K : Type} [CommRing K] [IsDomain K]
 
+/- English proof (translation)
+Establish `: NeZero (q : K)` using `⟨ξ.2.1.ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic q (Int.castRingHom K)]`. Establish `h` using `ξ.2.2`. Rewrite `h` using `[Polynomial.aeval_def]`. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map]`.
+
+Simplify `h` using `[Polynomial.eval₂_eq_eval_map]`.
+-/
 theorem prim_isPrim (ξ : Prim q K) : IsPrimitiveRoot ξ.1 q := by
   have : NeZero (q : K) := ⟨ξ.2.1.ne_zero⟩
   rw [← Polynomial.isRoot_cyclotomic_iff, ← Polynomial.map_cyclotomic q (Int.castRingHom K)]
@@ -15,16 +20,25 @@ theorem prim_isPrim (ξ : Prim q K) : IsPrimitiveRoot ξ.1 q := by
   rw [Polynomial.IsRoot, Polynomial.eval_map]
   simpa [Polynomial.eval₂_eq_eval_map] using h
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_natCast]`. Use `conv_lhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, (prim_isPrim ζ).pow_eq_one, one_pow, mul_one]`.
+-/
 theorem pow_val (ζ : Prim q K) (n : ℕ) : ζ.1 ^ n = ζ.1 ^ ((n : ZMod q).val) := by
   rw [ZMod.val_natCast]
   conv_lhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, (prim_isPrim ζ).pow_eq_one, one_pow, mul_one]
 
+/- English proof (translation)
+Take `⟨i, hi, h⟩` from `(prim_isPrim ζ).eq_pow_of_pow_eq_one (prim_isPrim ξ).pow_eq_one`. Establish `hc : i.Coprime q` using `((prim_isPrim ζ).pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (h ▸ prim_isPrim ξ)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, h]`.
+-/
 theorem exists_unit (ζ ξ : Prim q K) : ∃ u : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (u : ZMod q).val := by
   obtain ⟨i, hi, h⟩ := (prim_isPrim ζ).eq_pow_of_pow_eq_one (prim_isPrim ξ).pow_eq_one
   have hc : i.Coprime q := ((prim_isPrim ζ).pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (h ▸ prim_isPrim ξ)
   refine ⟨ZMod.unitOfCoprime i hc, ?_⟩
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, h]
 
+/- English proof (translation)
+The claim follows from `Units.ext (ZMod.val_injective q ((prim_isPrim ζ).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h))`.
+-/
 theorem unit_unique (ζ : Prim q K) {u v : (ZMod q)ˣ} (h : ζ.1 ^ (u : ZMod q).val = ζ.1 ^ (v : ZMod q).val) : u = v :=
   Units.ext (ZMod.val_injective q ((prim_isPrim ζ).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h))
 
@@ -33,6 +47,9 @@ open Classical in
 def ex (j : ℤ) (ζ : Prim q K) (ξ : Prim q K) : ZMod q :=
   if h : ∃ u : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (u : ZMod q).val then (((h.choose) ^ j : (ZMod q)ˣ) : ZMod q) else 0
 
+/- English proof (translation)
+Establish `he : ∃ u : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (u : ZMod q).val` using `⟨u, h⟩`. Unfold `ex`. Rewrite using `[dif_pos he, unit_unique ζ (he.choose_spec.symm.trans h)]`.
+-/
 theorem ex_spec (j : ℤ) (ζ ξ : Prim q K) (u : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^ (u : ZMod q).val) :
     ex j ζ ξ = ((u ^ j : (ZMod q)ˣ) : ZMod q) := by
   have he : ∃ u : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (u : ZMod q).val := ⟨u, h⟩
@@ -42,6 +59,11 @@ theorem ex_spec (j : ℤ) (ζ ξ : Prim q K) (u : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^
 def Φ (j : ℤ) (ζ : Prim q K) : (Prim q K →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1} (ZMod q)] ULift.{1} (ZMod q) :=
   Finsupp.linearCombination (ULift.{1} (ZMod q)) (fun ξ => ULift.up (ex j ζ ξ))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ', ξ, a, h, rfl⟩`. Take `⟨u, hu⟩` from `exists_unit ζ ζ'`. Establish `hξ : ξ.1 = ζ.1 ^ ((u * a : (ZMod q)ˣ) : ZMod q).val`. Rewrite using `[h, hu, ← pow_mul, pow_val ζ, Units.val_mul, Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`.
+
+Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, Φ, map_sub, Finsupp.linearCombination_single]`. Rewrite using `[ex_spec j ζ ξ _ hξ, ex_spec j ζ ζ' _ hu, mul_zpow]`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `[mul_comm]`.
+-/
 theorem rel_le (j : ℤ) (ζ : Prim q K) : twRel q j K ≤ LinearMap.ker (Φ j ζ) := by
   refine Submodule.span_le.2 ?_
   rintro x ⟨ζ', ξ, a, h, rfl⟩
@@ -53,6 +75,9 @@ theorem rel_le (j : ℤ) (ζ : Prim q K) : twRel q j K ≤ LinearMap.ker (Φ j �
   apply ULift.ext
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `h2` using `congrArg ((twRel q j K).liftQ (Φ j ζ) (rel_le j ζ)) h`. Rewrite `h2` using `[LinearMap.map_smul, Submodule.liftQ_apply, map_zero, Φ, Finsupp.linearCombination_single, ex_spec j ζ ζ 1 ((pow_one ζ.1).symm.trans (by rw [pow_val ζ 1, Nat.cast_one, Units.val_one]))]`. Establish `h3` using `congrArg ULift.down h2`. Simplify using `using h3`.
+-/
 theorem key (j : ℤ) (ζ : Prim q K) (c : ZMod q)
     (h : (ULift.up.{1} c • Submodule.Quotient.mk (Finsupp.single ζ (1 : ULift.{1} (ZMod q))) :
       (Prim q K →₀ ULift.{1} (ZMod q)) ⧸ twRel q j K) = 0) : c = 0 := by
@@ -64,6 +89,9 @@ theorem key (j : ℤ) (ζ : Prim q K) (c : ZMod q)
 
 end FieldZ
 
+/- English proof (translation)
+Introduce `q _ j K hK ζ c h`. Establish `: IsDomain K` using `hK.isDomain`. Conclude with `FieldZ.key j ζ c h`.
+-/
 theorem LeafTwFieldZ_of : LeafTwFieldZ := by
   intro q _ j K hK ζ c h
   have : IsDomain K := hK.isDomain

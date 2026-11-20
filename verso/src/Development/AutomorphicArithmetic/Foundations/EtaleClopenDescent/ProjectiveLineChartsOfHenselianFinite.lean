@@ -11,6 +11,9 @@ section General
 variable {σ : Type*} {R : Type} [CommRing R] [SetLike σ R] [AddSubgroupClass σ R]
 variable (𝒜 : ℕ → σ) [GradedRing 𝒜]
 
+/- English proof (translation)
+Establish `h : (Proj.basicOpenIsoSpec 𝒜 f hf hm).hom = (Proj.isAffineOpen_basicOpen 𝒜 f hf hm).isoSpec.hom ≫ Spec.map (Proj.awayToSection 𝒜 f)`. Rewrite using `[IsAffineOpen.isoSpec_hom, Proj.basicOpenIsoSpec_hom]`. Both sides reduce to the same expression. Rewrite using `[IsAffineOpen.fromSpec, Iso.inv_comp_eq, Proj.awayι, ← Category.assoc, ← Category.assoc, ← h, Iso.hom_inv_id, Category.id_comp]`.
+-/
 private theorem fromSpec_fac {f : R} {m : ℕ} (hf : f ∈ 𝒜 m) (hm : 0 < m) :
     (Proj.isAffineOpen_basicOpen 𝒜 f hf hm).fromSpec =
       Spec.map (Proj.awayToSection 𝒜 f) ≫ Proj.awayι 𝒜 f hf hm := by
@@ -21,6 +24,11 @@ private theorem fromSpec_fac {f : R} {m : ℕ} (hf : f ∈ 𝒜 m) (hm : 0 < m) 
   rw [IsAffineOpen.fromSpec, Iso.inv_comp_eq, Proj.awayι, ← Category.assoc, ← Category.assoc, ← h,
     Iso.hom_inv_id, Category.id_comp]
 
+/- English proof (translation)
+Establish `hU` using `Proj.isAffineOpen_basicOpen 𝒜 f hf hm`. Establish `h1 : hU.fromSpec ⁻¹ᵁ (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)) = hU.fromSpec ⁻¹ᵁ Proj.basicOpen 𝒜 g`. Rewrite using `[hU.fromSpec_preimage_basicOpen, show hU.fromSpec = _ from fromSpec_fac 𝒜 hf hm, Scheme.Hom.comp_preimage, Proj.awayι_preimage_basicOpen 𝒜 hf hm hg he, SpecMap_preimage_basicOpen]`. Establish `key` using `congrArg (fun W => hU.fromSpec ''ᵁ W) h1`. Simplify using `only [Scheme.Hom.image_preimage_eq_opensRange_inf, hU.opensRange_fromSpec] at key`.
+
+Rewrite using `[← key]`. Conclude with `(inf_eq_right.mpr (Scheme.basicOpen_le _ _)).symm`.
+-/
 private theorem basicOpen_section {f g : R} {m e : ℕ} (hf : f ∈ 𝒜 m) (hg : g ∈ 𝒜 e) (hm : 0 < m)
     (he : 0 < e) :
     (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)) =
@@ -36,6 +44,9 @@ private theorem basicOpen_section {f g : R} {m e : ℕ} (hf : f ∈ 𝒜 m) (hg 
   rw [← key]
   exact (inf_eq_right.mpr (Scheme.basicOpen_le _ _)).symm
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Conclude with `h`.
+-/
 private theorem res_inf {X : Scheme.{0}} {U V W : X.Opens} (hU : W ≤ U) (hV : W ≤ V) (hW : W = U ⊓ V)
     (x : Γ(X, U)) (y : Γ(X, V))
     (h : X.presheaf.map (homOfLE hU).op x * X.presheaf.map (homOfLE hV).op y = 1) :
@@ -44,6 +55,11 @@ private theorem res_inf {X : Scheme.{0}} {U V W : X.Opens} (hU : W ≤ U) (hV : 
   subst hW
   exact h
 
+/- English proof (translation)
+Rewrite using `[awayMap_mk, awayMap_mk]`. Apply `val_injective` to reduce the goal to its premises. Rewrite using `[val_mul, Away.val_mk, Away.val_mk, val_one, Localization.mk_mul, ← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem away_mul_one {f g : R} (hf : f ∈ 𝒜 1) (hg : g ∈ 𝒜 1) :
     awayMap 𝒜 hg (rfl : f * g = f * g) (Away.isLocalizationElem hf hg) *
       awayMap 𝒜 hf (mul_comm f g : f * g = g * f) (Away.isLocalizationElem hg hf) = 1 := by
@@ -54,6 +70,11 @@ private theorem away_mul_one {f g : R} (hf : f ∈ 𝒜 1) (hg : g ∈ 𝒜 1) :
   simp
   ring
 
+/- English proof (translation)
+Establish `e1` using `congrArg (fun φ => φ.hom (Away.isLocalizationElem hf hg)) (Proj.awayMap_awayToSection 𝒜 hg (rfl : f * g = f * g))`. Establish `e2` using `congrArg (fun φ => φ.hom (Away.isLocalizationElem hg hf)) (Proj.awayMap_awayToSection 𝒜 hf (mul_comm f g : f * g = g * f))`. Use `res_inf (Proj.basicOpen_mono 𝒜 _ _ ⟨_, rfl⟩) (Proj.basicOpen_mono 𝒜 _ _ ⟨_, mul_comm f g⟩) (Proj.basicOpen_mul 𝒜 f g) _ _ ?_` and prove the remaining obligations. Establish `e3` using `congrArg (Proj.awayToSection 𝒜 (f * g)) (away_mul_one 𝒜 hf hg)`. Rewrite `e3` using `[map_mul, map_one]`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e1 e2`. Use `Eq.trans ?_ e3` and prove the remaining obligations. Conclude with `congrArg₂ _ e1.symm e2.symm`.
+-/
 private theorem sections_mul_one {f g : R} (hf : f ∈ 𝒜 1) (hg : g ∈ 𝒜 1) :
     (Proj 𝒜).presheaf.map (homOfLE (inf_le_left :
         Proj.basicOpen 𝒜 f ⊓ Proj.basicOpen 𝒜 g ≤ Proj.basicOpen 𝒜 f)).op
@@ -73,6 +94,11 @@ private theorem sections_mul_one {f g : R} (hf : f ∈ 𝒜 1) (hg : g ∈ 𝒜 
   refine Eq.trans ?_ e3
   exact congrArg₂ _ e1.symm e2.symm
 
+/- English proof (translation)
+Introduce `y`. Take `⟨p, hp⟩` from `h ((Proj.basicOpenIsoAway 𝒜 f hf hm).inv y)`. Use `⟨p, ?_⟩` and prove the remaining obligations. Establish `hy : Proj.awayToSection 𝒜 f ((Proj.basicOpenIsoAway 𝒜 f hf hm).inv y) = y` using `(Proj.basicOpenIsoAway 𝒜 f hf hm).inv_hom_id_apply y`. Rewrite using `[← hy, ← hp]`.
+
+Simplify using `only [Polynomial.coe_eval₂RingHom]`. Use `Polynomial.hom_eval₂ p (Int.castRingHom (Away 𝒜 f)) (Proj.awayToSection 𝒜 f).hom (Away.isLocalizationElem hf hg)` as an intermediate fact. Rewrite `this` using `[show ((Proj.awayToSection 𝒜 f).hom).comp (Int.castRingHom (Away 𝒜 f)) = Int.castRingHom _ from RingHom.ext_int _ _]`. Conclude with `this.symm`.
+-/
 private theorem section_surjective {f g : R} {m e : ℕ} (hf : f ∈ 𝒜 m) (hg : g ∈ 𝒜 e) (hm : 0 < m)
     (h : Function.Surjective (Polynomial.eval₂RingHom (Int.castRingHom (Away 𝒜 f))
       (Away.isLocalizationElem hf hg))) :
@@ -91,6 +117,9 @@ private theorem section_surjective {f g : R} {m e : ℕ} (hf : f ∈ 𝒜 m) (hg
     RingHom.ext_int _ _] at this
   exact this.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg), Proj.awayToSection 𝒜 g (Away.isLocalizationElem hg hf), Proj.isAffineOpen_basicOpen 𝒜 f hf one_pos, Proj.isAffineOpen_basicOpen 𝒜 g hg one_pos, hcov, basicOpen_section 𝒜 hf hg one_pos one_pos, (basicOpen_section 𝒜 hg …`.
+-/
 private theorem charts_gen {f g : R} (hf : f ∈ 𝒜 1) (hg : g ∈ 𝒜 1)
     (hcov : Proj.basicOpen 𝒜 f ⊔ Proj.basicOpen 𝒜 g = ⊤)
     (h1 : Function.Surjective (Polynomial.eval₂RingHom (Int.castRingHom (Away 𝒜 f))
@@ -119,6 +148,13 @@ open MvPolynomial
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Establish `hC : ∀ r : ℤ, ψ (C r) = φ (C r)` using `fun r => by`. Rewrite using `[show (C r : MvPolynomial (Fin 2) ℤ) = (r : MvPolynomial (Fin 2) ℤ) from eq_intCast C r, map_intCast, map_intCast]`. Rewrite using `[a.as_sum, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = n`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hd) (ha.coeff_eq_zero hne)`. Rewrite using `[monomial_eq, map_mul, map_mul, hC, Finsupp.prod, map_prod, map_prod]`. Simplify using `only [map_pow, h, mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem scale {S : Type} [CommRing S] (φ ψ : MvPolynomial (Fin 2) ℤ →+* S) (c : S)
     (h : ∀ k, ψ (X k) = c * φ (X k)) {n : ℕ} {a : MvPolynomial (Fin 2) ℤ} (ha : a.IsHomogeneous n) :
     ψ a = c ^ n * φ a := by
@@ -137,9 +173,27 @@ private theorem scale {S : Type} [CommRing S] (φ ψ : MvPolynomial (Fin 2) ℤ 
 
 private abbrev G : ℕ → Submodule ℤ (MvPolynomial (Fin 2) ℤ) := homogeneousSubmodule (Fin 2) ℤ
 
+/- English proof (translation)
+The claim follows from `(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X ℤ i)`.
+-/
 private theorem X_mem (i : Fin 2) : (X i : MvPolynomial (Fin 2) ℤ) ∈ G 1 :=
   (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X ℤ i)
 
+/- English proof (translation)
+Introduce `z`. Take `⟨n, a, ha, rfl⟩` from `Away.mk_surjective G (X_mem i) z`. Establish `ha' : a.IsHomogeneous n`. Use `(mem_homogeneousSubmodule _ _).mp ha` as an intermediate fact. Simplify using `using this`.
+
+Set `q` to `Polynomial.eval₂RingHom (Int.castRingHom (Away G (X i))) (Away.isLocalizationElem (X_mem i) (X_mem j))`. Set `D : MvPolynomial (Fin 2) ℤ →+* Polynomial ℤ` to `(aeval (fun k => if k = i then (1 : Polynomial ℤ) else Polynomial.X)).toRingHom`. Set `ι : Away G (X i) →+* Localization.Away (X i : MvPolynomial (Fin 2) ℤ)` to `algebraMap _ _`. Set `α : MvPolynomial (Fin 2) ℤ →+* Localization.Away (X i : MvPolynomial (Fin 2) ℤ)` to `algebraMap _ _`. Establish `hX : ∀ k, α (X k) = α (X i) * (ι.comp (q.comp D)) (X k)`.
+
+Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[D]`. Establish `hkj : k = j` using `by omega`.
+
+Substitute `hkj` using the available equality. Establish `hD : D (X k) = Polynomial.X` using `by simp [D, hk]`. Establish `hq : (ι.comp (q.comp D)) (X k) = ι (Away.isLocalizationElem (X_mem i) (X_mem k))`. Simplify using `[hD, q]`. Establish `hsp` using `IsLocalization.mk'_spec' (Localization.Away (X i : MvPolynomial (Fin 2) ℤ)) (X k ^ 1 : MvPolynomial (Fin 2) ℤ) (⟨X i ^ 1, ⟨1, rfl⟩⟩ : Submonoid.powers (X i : MvPolynomial (Fin 2) ℤ))`.
+
+Establish `hι : ι (Away.isLocalizationElem (X_mem i) (X_mem k)) = IsLocalization.mk' (Localization.Away (X i : MvPolynomial (Fin 2) ℤ)) (X k ^ 1 : MvPolynomial (Fin 2) ℤ) (⟨X i ^ 1, ⟨1, rfl⟩⟩ : Submonoid.powers (X i : MvPolynomial (Fin 2) ℤ))`. Rewrite using `[← Localization.mk_eq_mk']`. Both sides reduce to the same expression. Rewrite using `[hq, hι, ← pow_one (α (X k)), ← pow_one (α (X i)), ← map_pow, ← map_pow]`. Conclude with `hsp.symm`.
+
+Establish `hs` using `scale (ι.comp (q.comp D)) α (α (X i)) hX ha'`. Use `⟨D a, ?_⟩` and prove the remaining obligations. Apply `val_injective` to reduce the goal to its premises. Rewrite using `[Away.val_mk, Localization.mk_eq_mk', IsLocalization.eq_mk'_iff_mul_eq]`. Express the relevant statement in the definitionally equal form `ι (q (D a)) * α (X i ^ n) = α a`.
+
+Rewrite using `[hs, map_pow, mul_comm]`. Both sides reduce to the same expression.
+-/
 private theorem surj_away {i j : Fin 2} (hij : j ≠ i) :
     Function.Surjective (Polynomial.eval₂RingHom (Int.castRingHom (Away G (X i)))
       (Away.isLocalizationElem (X_mem i) (X_mem j))) := by
@@ -183,6 +237,13 @@ private theorem surj_away {i j : Fin 2} (hij : j ≠ i) :
   rw [hs, map_pow, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Proj.iSup_basicOpen_eq_top' G (X : Fin 2 → MvPolynomial (Fin 2) ℤ) (fun i => ⟨1, X_mem i⟩) (by`. Rewrite using `[eq_top_iff]`. Introduce `p _`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact Subalgebra.algebraMap_mem _ (⟨C a, (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_C _ a)⟩ : G 0)`.
+
+Consider the case `add p q hp hq => exact add_mem (hp trivial) (hq trivial)`. Consider the case `mul_X p i hp => exact mul_mem (hp trivial) (Algebra.subset_adjoin ⟨i, rfl⟩))`. Rewrite using `[eq_top_iff, ← h]`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+
+Conclude with `le_sup_left`. Conclude with `le_sup_right`.
+-/
 private theorem cover : Proj.basicOpen G (X 0) ⊔ Proj.basicOpen G (X 1) = ⊤ := by
   have h := Proj.iSup_basicOpen_eq_top' G (X : Fin 2 → MvPolynomial (Fin 2) ℤ)
     (fun i => ⟨1, X_mem i⟩) (by
@@ -198,6 +259,9 @@ private theorem cover : Proj.basicOpen G (X 0) ⊔ Proj.basicOpen G (X 1) = ⊤ 
   · exact le_sup_left
   · exact le_sup_right
 
+/- English proof (translation)
+The claim follows from `charts_gen G (X_mem 0) (X_mem 1) cover (surj_away (by decide)) (surj_away (by decide))`.
+-/
 private theorem intersectionNumber_baseChange : LateralTheory.E.ProjectiveLineCharts₂.ProjectiveLineTwoAffineChartsPolynomialGenerated :=
   charts_gen G (X_mem 0) (X_mem 1) cover (surj_away (by decide)) (surj_away (by decide))
 
@@ -205,6 +269,9 @@ end Line
 
 end UpperTheory.Cb.ChartsOfProjectiveLine
 
+/- English proof (translation)
+Introduce `_` and use `UpperTheory.Cb.ChartsOfProjectiveLine.intersectionNumber_baseChange`.
+-/
 theorem UpperTheory.Cb.projectiveLineCharts_of_henselianFinite :
     LateralTheory.E.LZProperCut.LZHensFinite → LateralTheory.E.ProjectiveLineCharts₂.ProjectiveLineTwoAffineChartsPolynomialGenerated := fun _ =>
   UpperTheory.Cb.ChartsOfProjectiveLine.intersectionNumber_baseChange

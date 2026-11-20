@@ -9,6 +9,13 @@ import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.GermComa
 
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Proceed by induction on `w using ExteriorAlgebra.induction with`. Consider the case `algebraMap r`. Rewrite using `[SemiHom.mDR_algebraMap, AlgHom.commutes]`. Both sides reduce to the same expression. Consider the case `ι x`.
+
+Establish `h1` using `SemiHom.mDR_ι (semiHom_algebraMap k K L) x`. Simplify using `only [ι1] at h1`. Rewrite using `[h1, SemiHom.oneFormMap_eq_kaehlerDifferential_map _ (fun _ => rfl)]`. Simplify using `only [GlobalTheory.W1.mapDR, ExteriorAlgebra.lift_ι_apply, GlobalTheory.W1.map1, LinearMap.coe_comp, LinearMap.coe_restrictScalars, Function.comp_apply, ι1]`. Consider the case `mul a b ha hb => rw [map_mul, map_mul, ha, hb]`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 private theorem mDR_alg_eq_mapDR (k K L : Type) [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L]
     [Algebra K L] [IsScalarTower k K L] (w : DR k K) :
     (semiHom_algebraMap k K L).mDR w = GlobalTheory.W1.mapDR k K L w := by
@@ -25,6 +32,9 @@ private theorem mDR_alg_eq_mapDR (k K L : Type) [Field k] [Field K] [Field L] [A
   | mul a b ha hb => rw [map_mul, map_mul, ha, hb]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[← SemiHom.coe_mOm hβ, ← SemiHom.coe_mOm hγ, ← mDR_alg_eq_mapDR, ← SemiHom.coe_mOm hα, ← SemiHom.coe_mOm (semiHom_algebraMap k K L), SemiHom.mOm_mOm hβ hγ (hβ.comp hγ) (fun _ => rfl), SemiHom.mOm_mOm hα (semiHom_algebraMap k K L) (hβ.comp hγ) (fun b => (h b).symm)]`.
+-/
 private theorem mDR_square {k B B' K L : Type} [Field k] [Field K] [Field L] [CommRing B] [CommRing B']
     [Algebra k K] [Algebra k L] [Algebra K L] [IsScalarTower k K L] [Algebra k B] [Algebra k B']
     {α : B →+* K} {β : B →+* B'} {γ : B' →+* L} (hα : SemiHom (RingHom.id k) α)
@@ -36,6 +46,9 @@ private theorem mDR_square {k B B' K L : Type} [Field k] [Field K] [Field L] [Co
     SemiHom.mOm_mOm hβ hγ (hβ.comp hγ) (fun _ => rfl),
     SemiHom.mOm_mOm hα (semiHom_algebraMap k K L) (hβ.comp hγ) (fun b => (h b).symm)]
 
+/- English proof (translation)
+Use `letI := algΓ s`. Use `letI := ffAlg s`. Express the relevant statement in the definitionally equal form `(semiHom_germSec s hη).mDR (((toOmEquiv s j hV).symm (toOm s j V x) : OmU s V j) : DR k (Sec s V)) = _`. Rewrite using `[← toOmEquiv_apply s j hV, LinearEquiv.symm_apply_apply]`.
+-/
 private theorem formGerm_toOm {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (s : X ⟶ Sp k) (j : ℕ)
     {V : X.Opens} (hV : IsAffineOpen V) (hη : genericPoint X ∈ V) (x : OmU s V j) :
     letI := algΓ s; letI := ffAlg s
@@ -44,6 +57,17 @@ private theorem formGerm_toOm {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral 
   change (semiHom_germSec s hη).mDR (((toOmEquiv s j hV).symm (toOm s j V x) : OmU s V j) : DR k (Sec s V)) = _
   rw [← toOmEquiv_apply s j hV, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `Z Y _ _ p p' c hc _ _ inst inst' _ _ hinst hinst' hg hfd a V hV hη hη' y`. Substitute `hinst hinst'` using the available equality. Use `letI := ffAlg p`. Use `letI := ffAlg p'`. Use `haveI : CharZero Z.functionField := charZero_of_injective_algebraMap (algebraMap ℂ Z.functionField).injective`.
+
+Use `haveI : Algebra.IsSeparable Z.functionField Y.functionField := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Establish `hT` using `UpperTheory.exists_deRhamTrace_of_separable ℂ Z.functionField Y.functionField`. Establish `hspec : GlobalTheory.W1.IsTrDR ℂ Z.functionField Y.functionField (GlobalTheory.W1.trDR ℂ Z.functionField Y.functionField)`. Unfold `GlobalTheory.W1.trDR`. Rewrite using `[dif_pos hT]`.
+
+Conclude with `hT.choose_spec`. Take `⟨z, rfl⟩` from `toOm_surjective (s := p') (j := a) (hV.preimage c) y`. Express the relevant statement in the definitionally equal form `formGerm p a hV hη _ = GlobalTheory.W1.trDR ℂ _ _ (formGerm p' a (hV.preimage c) hη' _)`. Rewrite using `[omegaTrace_app_toOm hc a hV, formGerm_toOm, formGerm_toOm]`. Use `formOm_induction (P := fun z ↦ (semiHom_germSec p hη).mDR ((formTraceU hc hV a z : OmU p V a) : DR ℂ (Sec p V)) = GlobalTheory.W1.trDR ℂ _ _ ((semiHom_germSec p' hη').mDR (z : DR ℂ (Sec p' (c ⁻¹ᵁ V))))) hc hV ?_ ?_ ?_ z` and prove the remaining obligations.
+
+Simplify using `only [map_zero, ZeroMemClass.coe_zero]`. Introduce `y z hy hz`. Simplify using `only [map_add, Submodule.coe_add, hy, hz]`. Introduce `b' x`. Establish `e : ((formPull hc V a x : OmU p' (c ⁻¹ᵁ V) a) : DR ℂ (Sec p' (c ⁻¹ᵁ V))) = (semiHom_appSec hc V).mDR (x : DR ℂ (Sec p V))` using `SemiHom.coe_mOm _ x`.
+
+Rewrite using `[formTraceU_smul_formPull, Submodule.coe_smul, Submodule.coe_smul, SemiHom.mDR_smul, SemiHom.mDR_smul, e, mDR_square (semiHom_germSec p hη) (semiHom_appSec hc V) (semiHom_germSec p' hη') (fun b ↦ hg V hη hη' b), hspec]`. Conclude with `congrArg (· • _) (UpperTheory.Cb.germ_comap_eq_algebraMap_germ_of_finite_etale Z Y p p' c hc hg V hV hη hη' b')`.
+-/
 theorem UpperTheory.functionField_of_finite_etale_cover :
     ∀ (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (p : Z ⟶ Sp ℂ) (p' : Y ⟶ Sp ℂ) (c : Y ⟶ Z) (hc : c ≫ p = p') [IsFinite c] [Etale c] [inst : Algebra ℂ Z.functionField] [inst' : Algebra ℂ Y.functionField] [Algebra Z.functionField Y.functionField] [IsScalarTower ℂ Z.functionField Y.functionField] (hinst : inst = ffAlg p) (hinst' : inst' = ffAlg p'), (∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c ⁻¹ᵁ V) (g : Γ(Z, V)), (Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c.app V).hom g) = algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom g)) → FiniteDimensional Z.functionField Y.functionField → ∀ (a : ℕ) (V : Z.Opens) (hV : IsAffineOpen V) (hη : genericPoint Z ∈ V) (hη' : genericPoint Y ∈ c ⁻¹ᵁ V) (y : Γ(Omega p' a, c ⁻¹ᵁ V)), letI := algΓ p; letI := algΓ p'; formGermI p a hV hη hinst ((omegaTrace hc a).app V y) = GlobalTheory.W1.trDR ℂ Z.functionField Y.functionField (formGermI p' a (hV.preimage c) hη' hinst' y) := by
   intro Z Y _ _ p p' c hc _ _ inst inst' _ _ hinst hinst' hg hfd a V hV hη hη' y

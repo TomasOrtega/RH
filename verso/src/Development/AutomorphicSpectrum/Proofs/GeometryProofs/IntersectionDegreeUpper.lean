@@ -22,6 +22,11 @@ open ReciprocityTheory.AnForm (levi)
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 
+/- English proof (translation)
+Substitute `hU` using the available equality. Use `haveI : FiniteDimensional Ω (Submodule.span Ω (Set.range b)) := FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hm k`.
+
+Rewrite using `[finrank_span_eq_card hs, finrank_span_eq_card hb]`. Simplify using `[h]`.
+-/
 theorem span_eq_of_card_nef {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {m r : ℕ} {s : Fin m → V} {b : Fin r → V}
     {U : Submodule Ω V} (hs : LinearIndependent Ω s) (hb : LinearIndependent Ω b)
     (hU : Submodule.span Ω (Set.range b) = U) (hm : ∀ k, s k ∈ U) (h : r = m) :
@@ -37,6 +42,25 @@ theorem span_eq_of_card_nef {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω
 end GlobalTheory.CompanionTheory.Ar.Cusp
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hG hW E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ B hA hB`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨hY, hgood, hS₀, -, hB₁, hS, -⟩` from `hA`. Take `⟨v1, v2, v3, v4⟩` from `GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B`. Set `g : Cpt Or.𝔐.ξ` to `⟨genPt Or.𝔐.ξ, specializes_rfl⟩`.
+
+Take `⟨ch, hch⟩` from `Or.𝔐.tie.cover g`. Take `⟨m, f, cc, -, -, hsum, hl⟩` from `Hd.locally ch hch.1`. Establish `hm : Nonempty (Fin m)`. Assume the negation of the conclusion as `h0`. Rewrite `h0` using `[not_nonempty_iff]`.
+
+Simplify using `at hsum`. Take `⟨bb, -, u, -, hΛ⟩` from `hl hm.some`. Establish `hs : ∀ τ k, ∃ s : Or.𝔐.Li, s ∈ Or.𝔐.Vgen (Or.sm τ) ∧ Or.i τ (bb τ (tailIdx Dc.j_le_N k)) - s ∈ Or.𝔐.Vgen (Or.bg τ)` using `fun τ k => by`. Establish `h1 : Or.i τ (bb τ (tailIdx Dc.j_le_N k)) ∈ Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ)`. Rewrite using `[← Or.i_range τ]`.
+
+Conclude with `LinearMap.mem_range_self _ _`. Take `⟨x, hx, z, hz, hxz⟩` from `Submodule.mem_sup.1 h1`. Conclude with `⟨z, hz, by rw [← hxz, add_sub_cancel_right]; exact hx⟩`. Use `choose s hs using hs`. Take `⟨w1, w2⟩` from `GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B bb s _ hs hΛ`.
+
+Establish `hspan : ∀ τ, LinearIndependent Ω (s τ) ∧ Submodule.span Ω (Set.range (s τ)) = Or.𝔐.Vgen (Or.sm τ)` using `fun τ => by`. Take `⟨U, hU, b, hb, hfr⟩` from `v4 (Or.sm τ) g trivial`. Conclude with `⟨w1 τ, GlobalTheory.CompanionTheory.Ar.Cusp.span_eq_of_card_nef (w1 τ) (hfr g trivial hU).1 hb (fun k => (hs τ k).1) (Or.rk_sm τ)⟩`. Establish `hj1` using `Dc.one_le_j`. Establish `hj2` using `Dc.j_le`.
+
+Establish `hj3` using `Dc.two_le_N`. Establish `hN` using `Or.N_eq`. Establish `hpq : 1 ≤ D.p ∧ 1 ≤ D.q`. Apply the tactic sequence `rcases Or.side with ⟨-, -, h⟩ | ⟨-, -, h⟩ <;> omega`. Establish `hside : Or.sm = Sum.inl ∨ Or.sm = Sum.inr`.
+
+Break down `Or.side with ⟨-, h, -⟩ | ⟨-, h, -⟩` into its components or cases. Conclude with `.inr h`. Conclude with `.inl h`. Use `GlobalTheory.T.hodge_comp_cover_cm_signs hG hW E H D Xo l c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS _ v1 v2 v3 v4) Or.deg Or.sm _ s _ _ hY hpq.1 hpq.2 Or.cover (fun p hp => ?_) (fun p hp hpS => ?_) hside hspan w2` and prove the remaining obligations. Break down `Finset.mem_union.1 hp with h | h` into its components or cases.
+
+Conclude with `hgood.1 p h`. Conclude with `hgood.2 p (Finset.mem_filter.1 h).1`. Rewrite `hpS` using `[Finset.mem_union, not_or]`. Establish `h1 : ¬ (p : ℤ) ∣ 2 * discr E * l.M'` using `fun h => hpS.1 ((hS₀ p).2 ⟨hp, h⟩)`. Establish `h2 : 4 * Dc.f + 2 ≤ p`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hpS.2 (Finset.mem_filter.2 ⟨(hS p).2 ⟨hp, by omega, hpS.1⟩, by omega⟩)`. Use `⟨fun h => h1 ((h.mul_left 2).mul_right _), h2, lt_of_le_of_ne hp.two_le ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h1 ((Dvd.intro _ rfl : ((2 : ℕ) : ℤ) ∣ ((2 : ℕ) : ℤ) * discr E).mul_right _)`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.intersection_degree_upper : Top.Given → Out.WeilSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ B : ℕ), admitted Xo l c Y Or B₁ → 4 * Dc.f + 2 ≤ B → NefOnFibres (mCoordIdeal Dc.y) (muTwDeg Hd B) := by
   intro hG hW E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ B hA hB
   haveI : CharZero Ω := algebraRat.charZero Ω

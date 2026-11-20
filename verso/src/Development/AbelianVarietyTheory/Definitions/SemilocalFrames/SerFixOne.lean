@@ -77,6 +77,9 @@ def SerFix (π : Formalism.L2.NG.FinTyp L n) (s : SplitPlace L) {g : ℕ} (a : M
   ∀ ℓ : GL (Fin n) (ZMod g) → GAf L n, (∀ γ, IsLift s (ℓ γ) γ) → ∀ φ ∈ π.S,
     (∀ x, IsLift s x (1 : GL (Fin n) (ZMod g)) → Formalism.L2.NG.rt L n x φ = φ) → ∑ᶠ γ, a.coeff γ • Formalism.L2.NG.rt L n (ℓ γ) φ = φ
 
+/- English proof (translation)
+Introduce `ℓ hℓ φ _ h`. Rewrite using `[finsum_eq_single _ 1]`. Simplify using `using h _ (hℓ 1)`. Introduce `γ hγ`. Simplify using `[MonoidAlgebra.one_def, Finsupp.single_apply, Ne.symm hγ]`.
+-/
 theorem serFix_one (π : Formalism.L2.NG.FinTyp L n) (s : SplitPlace L) {g : ℕ} :
     SerFix π s (1 : MonoidAlgebra ℂ (GL (Fin n) (ZMod g))) := by
   classical

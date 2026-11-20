@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T`. Use `haveI := T.nF`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Algebra.IsAlgebraic T.F Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) T.F`.
+
+Use `haveI : IsAlgClosure T.F Ω := ⟨inferInstance, inferInstance⟩`. Take `⟨_, hex, hne, _⟩` from `UpperTheory.V.Kum.placeDict T.F Ω`. Establish `hpl : ∀ v, ∃ w : HeightOneSpectrum (𝓞 T.F), IsPlaceOver (T.pl v) w` using `fun v => hex _ (hne _ l (Fact.out : l.Prime).ne_zero (T.ovl v))`. Use `choose pl hpl using hpl`. Use `⟨pl, ?_, fun v => ⟨hpl v, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `v w hvw`. Establish `h1` using `hpl v`. Establish `h2` using `hpl w`. Rewrite `h1` using `[hvw]`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver h1 h2`.
+
+Take `⟨u, _, huniq⟩` from `T.cover (T.pl w) (T.ovl w)`. Establish `hv : v = u`. Apply `huniq v` to reduce the goal to its premises. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ]`.
+
+Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`. Establish `hw : w = u`. Apply `huniq w` to reduce the goal to its premises. Conclude with `⟨1, fun x => Iff.rfl⟩`. Rewrite using `[hv, hw]`.
+
+Apply `(hpl v (l : 𝓞 T.F)).1` to reduce the goal to its premises. Simplify using `using T.ovl v`.
+-/
 theorem UpperTheory.V.Ws.exists_injective_places_above_l_of_tower :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), ∃ pl : T.ι → HeightOneSpectrum (𝓞 T.F), Function.Injective pl ∧ ∀ v, IsPlaceOver (T.pl v) (pl v) ∧ ((l : ℕ) : 𝓞 T.F) ∈ (pl v).asIdeal := by
   intro Ω _ _ _ l _ c D T

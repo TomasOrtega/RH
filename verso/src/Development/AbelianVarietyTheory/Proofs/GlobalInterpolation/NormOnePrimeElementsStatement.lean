@@ -9,5 +9,8 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ThinScalesIff
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LogCondLeThree
 open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EX.normOne_host | exact GlobalTheory.EX.normOne_host | (intros; apply GlobalTheory.EX.normOne_host <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_one_prime_elements : ∀ (R : Ranks) (H : Host R) (M p : ℕ), 1 ≤ M → NormOne H.d M p → (∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (p : H.E) ∧ (π - 1) ∈ Ideal.span {((M : ℕ) : 𝓞 H.E)}) ∧ p % M = 1 % M := by
   first | exact @GlobalTheory.EX.normOne_host | exact GlobalTheory.EX.normOne_host | (intros; apply GlobalTheory.EX.normOne_host <;> assumption)

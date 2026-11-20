@@ -11,16 +11,27 @@ namespace GlobalTheory.UnitLemma.Unr.Dual
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
     val K.O (x * y) = val K.O x + val K.O y := by
   unfold val
   rw [map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy)]
   ring
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[map_inv₀, WithZero.log_inv]`.
+-/
 theorem val_inv (K : UQ) (x : K.E) : val K.O x⁻¹ = - val K.O x := by
   unfold val
   rw [map_inv₀, WithZero.log_inv]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos d with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1` using `K'.card_res`. Rewrite `h1` using `[hU.1, h, pow_zero, one_pow]`. Establish `: 1 < Nat.card (IsLocalRing.ResidueField K'.O)` using `Finite.one_lt_card`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+-/
 theorem deg_pos {K K' : UQ} {d : ℕ} {φ : K.E →+* K'.E} (hU : IsUnrExt K K' d φ) : 0 < d := by
   rcases Nat.eq_zero_or_pos d with h | h
   · exfalso
@@ -30,6 +41,11 @@ theorem deg_pos {K K' : UQ} {d : ℕ} {φ : K.E →+* K'.E} (hU : IsUnrExt K K' 
     omega
   · exact h
 
+/- English proof (translation)
+Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Use `letI : Algebra K'.E B.A := ψ.toAlgebra`. Use `haveI : IsScalarTower K.E K'.E B.A := IsScalarTower.of_algebraMap_eq fun e => (hψ e).symm`. Use `haveI : Module.Finite K.E K'.E := Module.finite_of_finrank_pos (by rw [show Module.finrank K.E K'.E = d from hU.2.2.2.2]; exact deg_pos hU)`. Use `haveI : Module.Finite K'.E B.A := Module.Finite.of_restrictScalars_finite K.E K'.E B.A`.
+
+Use `show Algebra.trace K.E B.A (x * y * B.σ z) = Algebra.trace K.E K'.E (Algebra.trace K'.E B.A (x * y * B.σ z))`. Conclude with `(Algebra.trace_trace _).symm`.
+-/
 theorem herm_eq_trace {K K' : UQ} {d : ℕ} {φ : K.E →+* K'.E} (hU : IsUnrExt K K' d φ) (B : InvAlg K)
     (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e))
     (x y z : B.A) :
@@ -43,6 +59,11 @@ theorem herm_eq_trace {K K' : UQ} {d : ℕ} {φ : K.E →+* K'.E} (hU : IsUnrExt
   show Algebra.trace K.E B.A (x * y * B.σ z) = Algebra.trace K.E K'.E (Algebra.trace K'.E B.A (x * y * B.σ z))
   exact (Algebra.trace_trace _).symm
 
+/- English proof (translation)
+Use `letI : Algebra K'.E B.A := ψ.toAlgebra`. Establish `hs : B.σ (ψ (algebraMap K'.O K'.E y₀) * z) = ψ m * B.σ z`. Rewrite using `[map_mul, hσ, hcm]`. Use `show Algebra.trace K'.E B.A (x * y * B.σ (ψ (algebraMap K'.O K'.E y₀) * z)) = m * Algebra.trace K'.E B.A (x * y * B.σ z)`. Rewrite using `[hs, show x * y * (ψ m * B.σ z) = m • (x * y * B.σ z) by`.
+
+Rewrite using `[Algebra.smul_def]`. Use `show _ = ψ m * _`. Use the proof step `ring, LinearMap.map_smul, smul_eq_mul]`.
+-/
 theorem herm_smul {K K' : UQ} {φ : K.E →+* K'.E} (B : InvAlg K)
     (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e))
     (x y z : B.A) (m : K'.E) (y₀ : K'.O) (hcm : K'.c (algebraMap K'.O K'.E y₀) = m) :
@@ -60,6 +81,31 @@ end GlobalTheory.UnitLemma.Unr.Dual
 
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr GlobalTheory.UnitLemma.Unr.Dual in
 
+/- English proof (translation)
+Introduce `K K' d φ hU B ψ hψ hσ L x y`. Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Establish `hT : ∀ z, B.herm x y z = Algebra.trace K.E K'.E ((overExt φ B ψ hψ hσ).herm x y z)` using `fun z => herm_eq_trace hU B ψ hψ hσ x y z`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`.
+
+Take `⟨b, hb⟩` from `h z hz`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_integral_trace_unramifiedQuadraticLocalExt K K' d φ hU b`. Use `⟨a, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `h z₀ hz₀`.
+
+Assume the negation of the conclusion as `hw`. Establish `hv : val K'.O ((overExt φ B ψ hψ hσ).herm x y z₀) < 0`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Take `⟨b, hb⟩` from `mem_range_of_val_nonneg K' _ hle`.
+
+Conclude with `hw ⟨b, hb⟩`. Establish `hw0 : (overExt φ B ψ hψ hσ).herm x y z₀ ≠ 0`. Introduce `h0`. Conclude with `hw ⟨0, by rw [h0, map_zero]⟩`. Take `⟨u, a, ha, hua⟩` from `GlobalTheory.T.exists_unit_trace_unramifiedInvolutionFieldExt K K' d φ hU`.
+
+Take `⟨π, hπ⟩` from `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_exists_uniformizer K.E`. Establish `hπv : val K.O π = 1`. Unfold `val`. Rewrite using `[hπ, WithZero.log_exp]`. Evaluate the numerical expressions.
+
+Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Simplify using `[val] at hπv`. Establish `hφπ : φ π ≠ 0` using `(map_ne_zero φ).2 hπ0`. Use `set w := (overExt φ B ψ hψ hσ).herm x y z₀ with hwdef`.
+
+Use `set m : K'.E := algebraMap K'.O K'.E u * w⁻¹ * (φ π)⁻¹ with hm`. Establish `hm_int : 0 ≤ val K'.O m`. Distinguish the cases in `hu0 : algebraMap K'.O K'.E u = 0`. Rewrite using `[hm, hu0, zero_mul, zero_mul]`. Simplify using `[val]`.
+
+Rewrite using `[hm, val_mul K' (mul_ne_zero hu0 (inv_ne_zero hw0)) (inv_ne_zero hφπ), val_mul K' hu0 (inv_ne_zero hw0), val_inv, val_inv, hU.2.2.1, hπv]`. Use `val_algebraMap_nonneg K' u` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨m₀, hm₀⟩` from `mem_range_of_val_nonneg K' m hm_int`. Take `⟨y₀, hy₀⟩` from `K'.c_int m₀`.
+
+Establish `hz₁ : y₀ • z₀ ∈ L` using `L.smul_mem y₀ hz₀`. Establish `key : (overExt φ B ψ hψ hσ).herm x y (y₀ • z₀) = m * w` using `herm_smul B ψ hψ hσ x y z₀ m y₀ (by rw [← hy₀, K'.c_c, hm₀])`. Take `⟨b, hb⟩` from `h _ hz₁`. Establish `hb'` using `hb.trans (hT _)`. Rewrite `hb'` using `[key]`.
+
+Establish `hmw : m * w = π⁻¹ • algebraMap K'.O K'.E u`. Rewrite using `[Algebra.smul_def, hm]`. Use `show _ = φ π⁻¹ * _`. Rewrite using `[map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hb'` using `[hmw, LinearMap.map_smul, hua, smul_eq_mul]`. Establish `ha0 : algebraMap K.O K.E a ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap K.O K.E), (IsFractionRing.injective K.O K.E).eq_iff]`. Conclude with `ha.ne_zero`. Establish `h1` using `val_algebraMap_nonneg K b`.
+
+Rewrite `h1` using `[hb', val_mul K (inv_ne_zero hπ0) ha0, val_inv, hπv, GlobalTheory.UnitLemma.Orbit.val_unit a ha]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.UnitLemma.Unr.dual_iff : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ (B : InvAlg K) (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e)) (L : Submodule K'.O (overExt φ B ψ hψ hσ).A) (x y : B.A), (∀ z ∈ L, (overExt φ B ψ hψ hσ).herm x y z ∈ (algebraMap K'.O K'.E).range) ↔ (∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) := by
   intro K K' d φ hU B ψ hψ hσ L x y
   letI : Algebra K.E K'.E := φ.toAlgebra

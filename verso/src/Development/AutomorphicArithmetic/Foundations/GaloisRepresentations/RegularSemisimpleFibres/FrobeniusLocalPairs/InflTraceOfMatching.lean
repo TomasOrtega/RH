@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 
 namespace UpperTheory.Gal.InertialTypesAlt.L
 
+/- English proof (translation)
+The claim follows from `finTrace_holds h G.varEx_holds G.varTrace_holds G.normInt_holds`.
+-/
 theorem finTrace_of_matching (h : GlobalTheory.DZA.InflMatching) : FinTrace :=
   finTrace_holds h G.varEx_holds G.varTrace_holds G.normInt_holds
 

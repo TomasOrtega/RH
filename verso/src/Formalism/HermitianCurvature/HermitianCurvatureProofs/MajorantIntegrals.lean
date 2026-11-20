@@ -8,6 +8,11 @@ namespace Formalism.FourierDecayAlt.P.MajorantIntegrals
 
 open Formalism.FourierDecayAlt.crystallineComparison
 
+/- English proof (translation)
+Rewrite using `[Complex.finrank_real_complex]`. Simplify using `only [mfac, hy.ne', if_false, smul_eq_mul, show 2 - 1 = 1 from rfl, pow_one]`. Use `split_ifs with hxy`. Rewrite using `[min_eq_left (one_le_pow₀ ((one_le_div hy).mpr hxy)), mul_one]`. Use `push Not at hxy`.
+
+Establish `h1 : (x / y) ^ K ≤ 1` using `pow_le_one₀ (div_nonneg hx.le hy.le) ((div_le_one hy).mpr hxy.le)`. Rewrite using `[min_eq_right h1, Real.rpow_sub hy, Real.rpow_one, Real.rpow_natCast, div_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem radial_eq (K : ℕ) (x : ℝ) (hx : 0 < x) (y : ℝ) (hy : 0 < y) :
     y ^ (Module.finrank ℝ ℂ - 1) • mfac K x y =
       if y ≤ x then y else x ^ K * y ^ ((1 : ℝ) - K) := by
@@ -21,9 +26,23 @@ theorem radial_eq (K : ℕ) (x : ℝ) (hx : 0 < x) (y : ℝ) (hy : 0 < y) :
     rw [min_eq_right h1, Real.rpow_sub hy, Real.rpow_one, Real.rpow_natCast, div_pow]
     field_simp
 
+/- English proof (translation)
+Simplify using `[Measure.real, Complex.volume_ball]`.
+-/
 theorem volC : (volume : Measure ℂ).real (Metric.ball 0 1) = Real.pi := by
   simp [Measure.real, Complex.volume_ball]
 
+/- English proof (translation)
+Introduce `K x hK hx`. Establish `hK' : (2 : ℝ) < K` using `by exact_mod_cast hK`. Establish `hcongr : EqOn (fun y : ℝ => y ^ (Module.finrank ℝ ℂ - 1) • mfac K x y) (fun y => if y ≤ x then y else x ^ K * y ^ ((1 : ℝ) - K)) (Ioi 0)` using `fun y hy => radial_eq K x hx y hy`. Establish `hIoc : IntegrableOn (fun y : ℝ => y) (Ioc 0 x)` using `(continuous_id.integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Establish `hIoi : IntegrableOn (fun y : ℝ => x ^ K * y ^ ((1 : ℝ) - K)) (Ioi x)` using `(integrableOn_Ioi_rpow_of_lt (by linarith) hx).const_mul _`.
+
+Establish `hA : IntegrableOn (fun y : ℝ => if y ≤ x then y else x ^ K * y ^ ((1 : ℝ) - K)) (Ioc 0 x)` using `hIoc.congr_fun (fun y hy => by simp [hy.2]) measurableSet_Ioc`. Establish `hB : IntegrableOn (fun y : ℝ => if y ≤ x then y else x ^ K * y ^ ((1 : ℝ) - K)) (Ioi x)` using `hIoi.congr_fun (fun y hy => by simp [not_le.mpr (mem_Ioi.mp hy)]) measurableSet_Ioi`. Establish `hint : IntegrableOn (fun y : ℝ => y ^ (Module.finrank ℝ ℂ - 1) • mfac K x y) (Ioi 0)`. Use `IntegrableOn.congr_fun ?_ hcongr.symm measurableSet_Ioi` and prove the remaining obligations. Rewrite using `[← Ioc_union_Ioi_eq_Ioi hx.le]`.
+
+Conclude with `hA.union hB`. Use `⟨(integrable_fun_norm_addHaar volume (f := mfac K x)).mpr hint, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_fun_norm_addHaar volume (mfac K x), setIntegral_congr_fun measurableSet_Ioi hcongr, ← Ioc_union_Ioi_eq_Ioi hx.le, setIntegral_union (Ioc_disjoint_Ioi le_rfl) measurableSet_Ioi hA hB, setIntegral_congr_fun measurableSet_Ioc (fun y hy => if_pos hy.2), setIntegral_congr_fu …`. Establish `e : x ^ K * x ^ ((1 : ℝ) - K + 1) = x ^ 2`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hx]`.
+
+Rewrite using `[show (K : ℝ) + (1 - K + 1) = ((2 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Establish `hK2 : (K : ℝ) - 2 ≠ 0` using `by linarith`. Establish `hK3 : (1 : ℝ) - K + 1 ≠ 0` using `by linarith`. Simplify using `only [nsmul_eq_mul, smul_eq_mul, Nat.cast_ofNat]`. Rewrite using `[neg_div, mul_neg, ← mul_div_assoc, e]`.
+
+Establish `hK4 : (1 : ℝ) - K + 1 = -((K : ℝ) - 2)` using `by ring`. Rewrite using `[hK4]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem majIntegral_ok : MajIntegral := by
   intro K x hK hx
   have hK' : (2 : ℝ) < K := by exact_mod_cast hK
@@ -62,6 +81,9 @@ theorem majIntegral_ok : MajIntegral := by
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `f K x hK hx`. Establish `h1` using `fun v => (majIntegral_ok K (x v) hK (hx v))`. Use `⟨Integrable.fintype_prod (f := fun v (l : ℂ) => mfac K (x v) ‖l‖) (μ := fun _ => volume) (fun v => (h1 v).1), ?_⟩` and prove the remaining obligations. Establish `h2` using `integral_fintype_prod_volume_eq_prod (ι := Fin f) (E := fun _ => ℂ) (fun v (l : ℂ) => mfac K (x v) ‖l‖)`. Conclude with `h2.trans (Finset.prod_congr rfl (fun v _ => (h1 v).2))`.
+-/
 theorem majIntegralProd_ok : MajIntegralProd := by
   intro f K x hK hx
   have h1 := fun v => (majIntegral_ok K (x v) hK (hx v))
@@ -73,6 +95,12 @@ theorem majIntegralProd_ok : MajIntegralProd := by
 
 end Formalism.FourierDecayAlt.P.MajorantIntegrals
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegral_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.majorantIntegral : Formalism.FourierDecayAlt.crystallineComparison.MajIntegral := Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegral_ok
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegralProd_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.majorantIntegralProd : Formalism.FourierDecayAlt.crystallineComparison.MajIntegralProd :=
   Formalism.FourierDecayAlt.P.MajorantIntegrals.majIntegralProd_ok

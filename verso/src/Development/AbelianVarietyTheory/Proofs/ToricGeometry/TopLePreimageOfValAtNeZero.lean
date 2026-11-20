@@ -12,6 +12,11 @@ namespace GlobalTheory
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (Set.mem_univ (default : PrimeSpectrum ℂ))`. Introduce `h p _`. Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+
+Substitute `this` using the available equality. Conclude with `h`.
+-/
 theorem top_le_preimage_iff_mem (x : Sp ℂ ⟶ X) (U : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U := by
   constructor
@@ -22,14 +27,23 @@ theorem top_le_preimage_iff_mem (x : Sp ℂ ⟶ X) (U : X.Opens) :
     subst this
     exact h
 
+/- English proof (translation)
+Introduce `_ hp` and use `h (hV hp)`.
+-/
 theorem top_le_preimage_mono (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ U :=
   fun _ hp => h (hV hp)
 
+/- English proof (translation)
+Simplify using `only [top_le_preimage_iff_mem]`. Conclude with `Iff.rfl`.
+-/
 theorem top_le_preimage_inf (x : Sp ℂ ⟶ X) (U V : X.Opens) :
     ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) ↔ ⊤ ≤ x ⁻¹ᵁ U ∧ ⊤ ≤ x ⁻¹ᵁ V := by
   simp only [top_le_preimage_iff_mem]
   exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_preimage]`.
+-/
 theorem top_le_preimage_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) :
     ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U) := by
   rw [Scheme.Hom.comp_preimage]
@@ -37,83 +51,137 @@ theorem top_le_preimage_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) :
 def valAtHom (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+* ℂ :=
   (x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAtHom_apply (x : Sp ℂ ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAtHom x U h f = valAt x U h f := rfl
 
+/- English proof (translation)
+Rewrite using `[valAt', dif_pos h]`.
+-/
 theorem valAt'_eq_valAt (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAt' x U f = valAt x U h f := by
   rw [valAt', dif_pos h]
 
+/- English proof (translation)
+The claim follows from `valAt'_eq_valAt x h f`.
+-/
 theorem valAt'_eq_valAtHom (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAt' x U f = valAtHom x U h f := valAt'_eq_valAt x h f
 
+/- English proof (translation)
+Rewrite using `[valAt', dif_neg h]`.
+-/
 theorem valAt'_of_not_le (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ¬ ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valAt' x U f = 0 := by
   rw [valAt', dif_neg h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hU`. Conclude with `h (valAt'_of_not_le x hU f)`.
+-/
 theorem top_le_preimage_of_valAt'_ne_zero (x : Sp ℂ ⟶ X) {U : X.Opens} {f : Γ(X, U)} (h : valAt' x U f ≠ 0) :
     ⊤ ≤ x ⁻¹ᵁ U := by
   by_contra hU
   exact h (valAt'_of_not_le x hU f)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨valAtHom x U h, valAt'_eq_valAtHom x h⟩`.
+-/
 theorem valAt'_ringHom (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) :
     ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f :=
   ⟨valAtHom x U h, valAt'_eq_valAtHom x h⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_mul]`. Simplify using `only [valAt'_of_not_le x h, mul_zero]`.
+-/
 theorem valAt'_mul (x : Sp ℂ ⟶ X) (U : X.Opens) (f g : Γ(X, U)) :
     valAt' x U (f * g) = valAt' x U f * valAt' x U g := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_mul]
   · simp only [valAt'_of_not_le x h, mul_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_add]`. Simplify using `only [valAt'_of_not_le x h, add_zero]`.
+-/
 theorem valAt'_add (x : Sp ℂ ⟶ X) (U : X.Opens) (f g : Γ(X, U)) :
     valAt' x U (f + g) = valAt' x U f + valAt' x U g := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_add]
   · simp only [valAt'_of_not_le x h, add_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_zero]`. Simplify using `only [valAt'_of_not_le x h]`.
+-/
 theorem valAt'_zero (x : Sp ℂ ⟶ X) (U : X.Opens) : valAt' x U 0 = 0 := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_zero]
   · simp only [valAt'_of_not_le x h]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_neg]`. Simplify using `only [valAt'_of_not_le x h, neg_zero]`.
+-/
 theorem valAt'_neg (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valAt' x U (-f) = - valAt' x U f := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_neg]
   · simp only [valAt'_of_not_le x h, neg_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_sub]`. Simplify using `only [valAt'_of_not_le x h, sub_zero]`.
+-/
 theorem valAt'_sub (x : Sp ℂ ⟶ X) (U : X.Opens) (f g : Γ(X, U)) :
     valAt' x U (f - g) = valAt' x U f - valAt' x U g := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_sub]
   · simp only [valAt'_of_not_le x h, sub_zero]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify using `only [valAt'_eq_valAtHom x h, map_sum]`. Simplify using `only [valAt'_of_not_le x h, Finset.sum_const_zero]`.
+-/
 theorem valAt'_sum {κ : Type*} (x : Sp ℂ ⟶ X) (U : X.Opens) (s : Finset κ) (f : κ → Γ(X, U)) :
     valAt' x U (∑ i ∈ s, f i) = ∑ i ∈ s, valAt' x U (f i) := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · simp only [valAt'_eq_valAtHom x h, map_sum]
   · simp only [valAt'_of_not_le x h, Finset.sum_const_zero]
 
+/- English proof (translation)
+Simplify using `only [valAt'_eq_valAtHom x h, map_one]`.
+-/
 theorem valAt'_one (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U 1 = 1 := by
   simp only [valAt'_eq_valAtHom x h, map_one]
 
+/- English proof (translation)
+Simplify using `only [valAt'_eq_valAtHom x h, map_prod]`.
+-/
 theorem valAt'_prod {κ : Type*} (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Finset κ) (f : κ → Γ(X, U)) :
     valAt' x U (∏ i ∈ s, f i) = ∏ i ∈ s, valAt' x U (f i) := by
   simp only [valAt'_eq_valAtHom x h, map_prod]
 
+/- English proof (translation)
+Simplify using `only [valAt'_eq_valAtHom x h, map_pow]`.
+-/
 theorem valAt'_pow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) (n : ℕ) :
     valAt' x U (f ^ n) = valAt' x U f ^ n := by
   simp only [valAt'_eq_valAtHom x h, map_pow]
 
+/- English proof (translation)
+Rewrite using `[valAt'_eq_valAtHom x h]`. Conclude with `(hf.map _).ne_zero`.
+-/
 theorem valAt'_isUnit_ne_zero (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) {f : Γ(X, U)} (hf : IsUnit f) :
     valAt' x U f ≠ 0 := by
   rw [valAt'_eq_valAtHom x h]
   exact (hf.map _).ne_zero
 
+/- English proof (translation)
+The claim follows from `valAt'_isUnit_ne_zero x h u.isUnit`.
+-/
 theorem valAt'_unit_ne_zero (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valAt' x U u.val ≠ 0 :=
   valAt'_isUnit_ne_zero x h u.isUnit
 
+/- English proof (translation)
+Simplify using `only [valAt'_eq_valAtHom x h]`. Use `congrArg Units.val (map_zpow (Units.map (valAtHom x U h : Γ(X, U) →* ℂ)) u n)` as an intermediate fact. Rewrite `this` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `this`.
+-/
 theorem valAt'_units_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
     valAt' x U (u ^ n).val = valAt' x U u.val ^ n := by
   simp only [valAt'_eq_valAtHom x h]
@@ -121,34 +189,55 @@ theorem valAt'_units_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹�
   rw [Units.val_zpow_eq_zpow_val] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `valAt'_units_zpow x h u n`.
+-/
 theorem valAt'_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
     valAt' x U (u ^ n).val = valAt' x U u.val ^ n :=
   valAt'_units_zpow x h u n
 
+/- English proof (translation)
+Simplify using `using valAt'_units_zpow x h u (-1)`.
+-/
 theorem valAt'_units_inv (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valAt' x U (u⁻¹).val = (valAt' x U u.val)⁻¹ := by
   simpa using valAt'_units_zpow x h u (-1)
 
+/- English proof (translation)
+Rewrite using `[Units.coe_prod, valAt'_prod x h]`.
+-/
 theorem valAt'_units_prod {κ : Type*} (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Finset κ)
     (u : κ → Γ(X, U)ˣ) : valAt' x U (∏ i ∈ s, u i).val = ∏ i ∈ s, valAt' x U (u i).val := by
   rw [Units.coe_prod, valAt'_prod x h]
 
+/- English proof (translation)
+Establish `hU : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `(top_le_preimage_comp x φ U).2 (top_le_preimage_mono x e hV)`. Rewrite using `[valAt'_eq_valAt x hV, valAt'_eq_valAt _ hU, valAt, valAt, ← CommRingCat.comp_apply (φ.appLE U V e), Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem valAt'_appLE (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (e : V ≤ φ ⁻¹ᵁ U) (f : Γ(Y, U))
     (hV : ⊤ ≤ x ⁻¹ᵁ V) : valAt' x V ((φ.appLE U V e).hom f) = valAt' (x ≫ φ) U f := by
   have hU : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := (top_le_preimage_comp x φ U).2 (top_le_preimage_mono x e hV)
   rw [valAt'_eq_valAt x hV, valAt'_eq_valAt _ hU, valAt, valAt, ← CommRingCat.comp_apply (φ.appLE U V e),
     Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `top_le_preimage_mono x i.unop.le hV`. Rewrite using `[valAt'_eq_valAt x hV, valAt'_eq_valAt _ hU, valAt, valAt, ← CommRingCat.comp_apply (X.presheaf.map i), Scheme.Hom.map_appLE]`.
+-/
 theorem valAt'_map (x : Sp ℂ ⟶ X) {U V : X.Opens} (i : Opposite.op U ⟶ Opposite.op V) (f : Γ(X, U))
     (hV : ⊤ ≤ x ⁻¹ᵁ V) : valAt' x V ((X.presheaf.map i).hom f) = valAt' x U f := by
   have hU : ⊤ ≤ x ⁻¹ᵁ U := top_le_preimage_mono x i.unop.le hV
   rw [valAt'_eq_valAt x hV, valAt'_eq_valAt _ hU, valAt, valAt, ← CommRingCat.comp_apply (X.presheaf.map i),
     Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+The claim follows from `valAt'_map x (homOfLE h).op f hV`.
+-/
 theorem valAt'_res (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (hV : ⊤ ≤ x ⁻¹ᵁ V) :
     valAt' x V (resG X h f) = valAt' x U f :=
   valAt'_map x (homOfLE h).op f hV
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `valAt'_appLE x φ U _ _ f h`. Rewrite using `[valAt'_of_not_le x h, valAt'_of_not_le _ (fun h' => h ((top_le_preimage_comp x φ U).1 h'))]`.
+-/
 theorem valAt'_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)
@@ -156,6 +245,15 @@ theorem valAt'_comp (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U
     exact valAt'_appLE x φ U _ _ f h
   · rw [valAt'_of_not_le x h, valAt'_of_not_le _ (fun h' => h ((top_le_preimage_comp x φ U).1 h'))]
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Establish `h1 : (Sp ℂ).basicOpen ((x.appLE U ⊤ h).hom f) = x ⁻¹ᵁ X.basicOpen f`. Use `Scheme.basicOpen_appLE x ⊤ U h f` as an intermediate fact. Rewrite `this` using `[top_inf_eq]`. Conclude with `this`.
+
+Rewrite using `[← h1, valAt'_eq_valAt x h, valAt, top_le_iff]`. Generalize the expression as in `(x.appLE U ⊤ h).hom f = g`. Rewrite using `[← isUnit_iff_ne_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Establish `: IsUnit g` using `(Sp ℂ).toRingedSpace.isUnit_of_isUnit_germ ⊤ g fun p hp => ((Sp ℂ).mem_basicOpen g p hp).1 (by rw [hg]; exact hp)`. Conclude with `this.map _`. Introduce `hg`. Establish `: IsUnit g`. Establish `h2` using `hg.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`.
+
+Simplify using `using h2`. Conclude with `(Sp ℂ).basicOpen_of_isUnit this`. Use `⟨fun h' => (h (top_le_preimage_mono x (X.basicOpen_le f) h')).elim, fun h' => ?_⟩` and prove the remaining obligations. Conclude with `(h' (valAt'_of_not_le x h f)).elim`.
+-/
 theorem top_le_preimage_basicOpen_iff (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) :
     ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0 := by
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
@@ -179,17 +277,26 @@ theorem top_le_preimage_basicOpen_iff (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X
   · refine ⟨fun h' => (h (top_le_preimage_mono x (X.basicOpen_le f) h')).elim, fun h' => ?_⟩
     exact (h' (valAt'_of_not_le x h f)).elim
 
+/- English proof (translation)
+Rewrite using `[valAt'_eq_valAt (𝟙 (Sp ℂ)) (U := ⊤) le_top]`. Unfold `valAt`. Simplify using `[Scheme.Hom.appLE]`.
+-/
 theorem valAt'_id_top (a : ℂ) :
     valAt' (𝟙 (Sp ℂ)) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a) = a := by
   rw [valAt'_eq_valAt (𝟙 (Sp ℂ)) (U := ⊤) le_top]
   unfold valAt
   simp [Scheme.Hom.appLE]
 
+/- English proof (translation)
+Use `(valAt'_appLE x p ⊤ U le_top _ h).trans ?_` and prove the remaining obligations. Rewrite using `[hp, valAt'_id_top]`.
+-/
 theorem valAt'_constFn (x : Sp ℂ ⟶ X) (p : X ⟶ Sp ℂ) (hp : x ≫ p = 𝟙 _) (U : X.Opens) (a : ℂ)
     (h : ⊤ ≤ x ⁻¹ᵁ U) : valAt' x U (constFn p U a) = a := by
   refine (valAt'_appLE x p ⊤ U le_top _ h).trans ?_
   rw [hp, valAt'_id_top]
 
+/- English proof (translation)
+Introduce `_ x` and use `⟨top_le_preimage_iff_mem x, fun _ h => valAt'_ringHom x h, fun _ _ h f hV => valAt'_res x h f hV, fun _ φ U f => valAt'_comp x φ U f, top_le_preimage_basicOpen_iff x, fun p hp U a h => valAt'_constFn x p hp U a h⟩`.
+-/
 theorem valAt'_rules : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) :=
   fun _ x => ⟨top_le_preimage_iff_mem x, fun _ h => valAt'_ringHom x h, fun _ _ h f hV => valAt'_res x h f hV,
     fun _ φ U f => valAt'_comp x φ U f, top_le_preimage_basicOpen_iff x, fun p hp U a h => valAt'_constFn x p hp U a h⟩

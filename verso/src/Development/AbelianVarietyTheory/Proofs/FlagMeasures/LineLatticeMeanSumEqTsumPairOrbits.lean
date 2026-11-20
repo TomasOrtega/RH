@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.PairOrbit
 
+/- English proof (translation)
+Set `A : I → J → G → Set X` to `fun i j γ => {x | R i j γ ∧ x ∈ D i ∧ t γ x ∈ D' j}`. Establish `hA : ∀ i j γ, MeasurableSet (A i j γ)` using `fun i j γ => (MeasurableSet.const _).inter ((hD i).inter ((he γ).measurable (hD' j)))`. Establish `h1 : ∀ i, ∫⁻ x in D i, f i x ∂μ ≤ ∑' j, ∑' γ, ∫⁻ x in t γ '' A i j γ, f' j x ∂μ`. Introduce `i`. Establish `hsub : D i ⊆ ⋃ j, ⋃ γ, A i j γ` using `fun x hx => by`.
+
+Take `⟨j, γ, h, h'⟩` from `hc i x hx`. Conclude with `Set.mem_iUnion₂.2 ⟨j, γ, h, hx, h'⟩`. Use `(lintegral_mono_set hsub).trans ((lintegral_iUnion_le _ _).trans (ENNReal.tsum_le_tsum fun j => (lintegral_iUnion_le _ _).trans (ENNReal.tsum_le_tsum fun γ => ?_)))` and prove the remaining obligations. Rewrite using `[← (ht γ).setLIntegral_comp_emb (he γ)]`. Conclude with `(setLIntegral_congr_fun (hA i j γ) fun x hx => hf i j γ hx.1 x hx.2.1).le`.
+
+Use `(ENNReal.tsum_le_tsum h1).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_comm]`. Use `ENNReal.tsum_le_tsum fun j => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_prod (f := fun i γ => ∫⁻ x in t γ '' A i j γ, f' j x ∂μ), ← lintegral_iUnion (s := fun p : I × G => t p.2 '' A p.1 j p.2) (fun p => (he p.2).measurableSet_image.2 (hA _ _ _))]`. Use `lintegral_mono_set (Set.iUnion_subset fun p => ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx.2.2`. Introduce `p q hpq`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ ⟨x', hx', h⟩`.
+
+Take `⟨h1, h2⟩` from `hu j p.1 q.1 p.2 q.2 x x' hx.1 hx'.1 hx.2.1 hx'.2.1 h.symm`. Conclude with `hpq (Prod.ext h1 h2)`.
+-/
 theorem tsum_lintegral_le {X G I J : Type} [MeasurableSpace X] [Countable G] [Countable I] [Countable J]
     (μ : Measure X) (t : G → X → X) (D : I → Set X) (D' : J → Set X) (f : I → X → ENNReal) (f' : J → X → ENNReal)
     (R : I → J → G → Prop) (ht : ∀ γ, MeasurePreserving (t γ) μ μ) (he : ∀ γ, MeasurableEmbedding (t γ))
@@ -57,57 +68,92 @@ def Carries (γ : GL (Fin j) E) (L L' : Submodule (𝓞 E) (Fin j → E)) : Prop
   ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ L' ↔ y ∈ L
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `y` and use `by simp`.
+-/
 theorem carries_one (L : Submodule (𝓞 E) (Fin j → E)) : Carries 1 L L := fun y => by simp
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `y` and use `by rw [Units.val_mul, ← Matrix.mulVec_mulVec, h', h]`.
+-/
 theorem Carries.mul {γ δ : GL (Fin j) E} {L L' L'' : Submodule (𝓞 E) (Fin j → E)} (h' : Carries δ L' L'')
     (h : Carries γ L L') : Carries (δ * γ) L L'' := fun y => by
   rw [Units.val_mul, ← Matrix.mulVec_mulVec, h', h]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem mul_mulVec (γ δ : GL (Fin j) E) (y : Fin j → E) :
     ((γ * δ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ y =
       (γ : Matrix (Fin j) (Fin j) E) *ᵥ ((δ : Matrix (Fin j) (Fin j) E) *ᵥ y) := by
   rw [Units.val_mul, Matrix.mulVec_mulVec]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← mul_mulVec, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec (γ : GL (Fin j) E) (y : Fin j → E) :
     ((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ ((γ : Matrix (Fin j) (Fin j) E) *ᵥ y) = y := by
   rw [← mul_mulVec, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← mul_mulVec, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv (γ : GL (Fin j) E) (y : Fin j → E) :
     (γ : Matrix (Fin j) (Fin j) E) *ᵥ (((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ y) = y := by
   rw [← mul_mulVec, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `y` and use `by rw [← h, mulVec_inv]`.
+-/
 theorem Carries.inv {γ : GL (Fin j) E} {L L' : Submodule (𝓞 E) (Fin j → E)} (h : Carries γ L L') :
     Carries γ⁻¹ L' L := fun y => by
   rw [← h, mulVec_inv]
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_emb_mul (γ : GL (Fin j) E) (g : MatInf E j) (w : InfinitePlace E) :
     Matrix.of ((emb γ * g) w) = (γ : Matrix (Fin j) (Fin j) E).map w.embedding * Matrix.of (g w) := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[of_emb_mul, of_emb_mul, of_emb_mul, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem emb_mul_mul (γ δ : GL (Fin j) E) (g : MatInf E j) : emb (γ * δ) * g = emb γ * (emb δ * g) := by
   funext w
   apply Matrix.of.injective
   rw [of_emb_mul, of_emb_mul, of_emb_mul, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[of_emb_mul, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem emb_one_mul (g : MatInf E j) : emb (1 : GL (Fin j) E) * g = g := by
   funext w
   apply Matrix.of.injective
   rw [of_emb_mul, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `(IsUnit.mk0 _ (Matrix.GeneralLinearGroup.det_ne_zero γ)).map w.embedding` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this.ne_zero`.
+-/
 theorem det_map_ne_zero (γ : GL (Fin j) E) (w : InfinitePlace E) :
     ((γ : Matrix (Fin j) (Fin j) E).map w.embedding).det ≠ 0 := by
   have := (IsUnit.mk0 _ (Matrix.GeneralLinearGroup.det_ne_zero γ)).map w.embedding
   rw [RingHom.map_det] at this
   exact this.ne_zero
 
+/- English proof (translation)
+Unfold `detNorm`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Rewrite `h` using `[Finset.prod_eq_zero (Finset.mem_univ w) (by simp [hw])]`. Conclude with `lt_irrefl _ h`.
+
+Introduce `h`. Conclude with `Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (h w)) 2`.
+-/
 theorem detNorm_pos_iff (g : MatInf E j) : 0 < detNorm E j g ↔ ∀ w, (Matrix.of (g w)).det ≠ 0 := by
   unfold detNorm
   constructor
@@ -117,9 +163,15 @@ theorem detNorm_pos_iff (g : MatInf E j) : 0 < detNorm E j g ↔ ∀ w, (Matrix.
   · intro h
     exact Finset.prod_pos fun w _ => pow_pos (norm_pos_iff.2 (h w)) 2
 
+/- English proof (translation)
+The claim follows from `(detNorm_pos_iff _).2 fun w => det_map_ne_zero γ w`.
+-/
 theorem detNorm_emb_pos (γ : GL (Fin j) E) : 0 < detNorm E j (emb γ) :=
   (detNorm_pos_iff _).2 fun w => det_map_ne_zero γ w
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[detNorm_pos_iff]`. Introduce `w`. Rewrite using `[of_emb_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (det_map_ne_zero γ w) (hg w)`.
+-/
 theorem detNorm_emb_mul_pos (γ : GL (Fin j) E) {g : MatInf E j} (hg : 0 < detNorm E j g) :
     0 < detNorm E j (emb γ * g) := by
   rw [detNorm_pos_iff] at hg ⊢
@@ -127,6 +179,11 @@ theorem detNorm_emb_mul_pos (γ : GL (Fin j) E) {g : MatInf E j} (hg : 0 < detNo
   rw [of_emb_mul, Matrix.det_mul]
   exact mul_ne_zero (det_map_ne_zero γ w) (hg w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Establish `h2 : (fun a => w.embedding (((γ : Matrix (Fin j) (Fin j) E) *ᵥ y) a)) = (γ : Matrix (Fin j) (Fin j) E).map w.embedding *ᵥ fun a => w.embedding (y a)`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct]`. Unfold `vecAt`.
+
+Rewrite using `[of_emb_mul, h2, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (IsUnit.mk0 _ (det_map_ne_zero γ w)), Matrix.mul_one]`.
+-/
 theorem vecAt_emb (γ : GL (Fin j) E) (y : Fin j → E) (g : MatInf E j) :
     vecAt ((γ : Matrix (Fin j) (Fin j) E) *ᵥ y) (emb γ * g) = vecAt y g := by
   funext w
@@ -137,6 +194,13 @@ theorem vecAt_emb (γ : GL (Fin j) E) (y : Fin j → E) (g : MatInf E j) :
   rw [of_emb_mul, h2, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc,
     Matrix.nonsing_inv_mul _ (IsUnit.mk0 _ (det_map_ne_zero γ w)), Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `latAt`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Use `⟨_, (h.inv y).2 hy, ?_⟩` and prove the remaining obligations. Use `vecAt_emb γ (((γ⁻¹ : GL (Fin j) E) : Matrix (Fin j) (Fin j) E) *ᵥ y) g` as an intermediate fact. Rewrite `this` using `[mulVec_inv]`. Conclude with `this.symm`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨_, (h y).2 hy, vecAt_emb γ y g⟩`.
+-/
 theorem latAt_emb {γ : GL (Fin j) E} {L L' : Submodule (𝓞 E) (Fin j → E)} (h : Carries γ L L') (g : MatInf E j) :
     latAt E j L' (emb γ * g) = latAt E j L g := by
   unfold latAt
@@ -162,6 +226,13 @@ def vecHom (g : MatInf E j) : (Fin j → E) →+ VecInf E j where
     simp only [vecAt, Pi.add_apply, map_add]
     exact Matrix.mulVec_add _ _ _
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, fun ⟨y, hy, h⟩ => Submodule.subset_span ⟨y, hy, h⟩⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y h => exact h`. Consider the case `zero => exact ⟨0, zero_mem _, (vecHom g).map_zero⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨p, hp, rfl⟩` from `ha`. Take `⟨q, hq, rfl⟩` from `hb`. Conclude with `⟨p + q, add_mem hp hq, (vecHom g).map_add p q⟩`. Consider the case `smul n a _ ha`. Take `⟨p, hp, rfl⟩` from `ha`.
+
+Conclude with `⟨n • p, zsmul_mem hp n, (vecHom g).map_zsmul n p⟩`.
+-/
 theorem mem_latAt (L : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) (x : VecInf E j) :
     x ∈ latAt E j L g ↔ ∃ y ∈ L, vecAt y g = x := by
   refine ⟨fun hx => ?_, fun ⟨y, hy, h⟩ => Submodule.subset_span ⟨y, hy, h⟩⟩
@@ -176,6 +247,11 @@ theorem mem_latAt (L : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) (x : V
     obtain ⟨p, hp, rfl⟩ := ha
     exact ⟨n • p, zsmul_mem hp n, (vecHom g).map_zsmul n p⟩
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `h1 : (Matrix.of (g w))⁻¹ *ᵥ (fun a => w.embedding (y a)) = 0` using `congrFun hy w`. Establish `h2` using `congrArg (fun v => Matrix.of (g w) *ᵥ v) h1`.
+
+Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero] at h2`. Rewrite `h2` using `[Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ ((detNorm_pos_iff g).1 hg w)), Matrix.one_mulVec]`. Use function extensionality and compare the values at `a`. Conclude with `(map_eq_zero w.embedding).1 (congrFun h2 a)`.
+-/
 theorem vecHom_injective {g : MatInf E j} (hg : 0 < detNorm E j g) : Function.Injective (vecHom g) := by
   rw [injective_iff_map_eq_zero]
   intro y hy
@@ -187,6 +263,11 @@ theorem vecHom_injective {g : MatInf E j} (hg : 0 < detNorm E j g) : Function.In
   funext a
   exact (map_eq_zero w.embedding).1 (congrFun h2 a)
 
+/- English proof (translation)
+Set `φ : {y : Fin j → E // y ∈ L ∧ y ≠ 0} → {x : VecInf E j // x ∈ latAt E j L g ∧ x ≠ 0}` to `fun y => ⟨vecAt y.1 g, (mem_latAt L g _).2 ⟨y.1, y.2.1, rfl⟩, fun h => y.2.2 (vecHom_injective hg (h.trans (vecHom g).map_zero.symm))⟩`. Establish `hφ : Function.Bijective φ`. Use `⟨fun a b h => Subtype.ext (vecHom_injective hg (congrArg Subtype.val h)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `(mem_latAt L g _).1 x.2.1`. Use `⟨⟨y, hy, ?_⟩, Subtype.ext h⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `x.2.2 (h.symm.trans (vecHom g).map_zero)`. Conclude with `((Equiv.ofBijective φ hφ).tsum_eq fun x => Φ x.1).symm`.
+-/
 theorem tsum_latAt (L : Submodule (𝓞 E) (Fin j → E)) {g : MatInf E j} (hg : 0 < detNorm E j g)
     (Φ : VecInf E j → ENNReal) :
     ∑' x : {x : VecInf E j // x ∈ latAt E j L g ∧ x ≠ 0}, Φ x.1 =
@@ -202,6 +283,11 @@ theorem tsum_latAt (L : Submodule (𝓞 E) (Fin j → E)) {g : MatInf E j} (hg :
     exact x.2.2 (h.symm.trans (vecHom g).map_zero)
   exact ((Equiv.ofBijective φ hφ).tsum_eq fun x => Φ x.1).symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Measurable fun g : InfinitePlace E → Fin j → Fin j → ℂ => vecAt y g`. Use `measurable_pi_lambda _ fun w => measurable_pi_lambda _ fun a => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : InfinitePlace E → Fin j → Fin j → ℂ => (Matrix.of (g w) : Matrix (Fin j) (Fin j) ℂ)` using `continuous_apply w`. Simplify using `only [vecAt, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul]`. Use `hc.matrix_det.measurable.inv.mul (Continuous.measurable ?_)` and prove the remaining obligations.
+
+Conclude with `(continuous_apply a).comp (hc.matrix_adjugate.matrix_mulVec continuous_const)`.
+-/
 theorem measurable_vecAt (y : Fin j → E) : Measurable fun g : MatInf E j => vecAt y g := by
   change Measurable fun g : InfinitePlace E → Fin j → Fin j → ℂ => vecAt y g
   refine measurable_pi_lambda _ fun w => measurable_pi_lambda _ fun a => ?_
@@ -216,6 +302,15 @@ local instance countable_GL : Countable (GL (Fin j) E) := by
   have : Countable (Matrix (Fin j) (Fin j) E) := inferInstanceAs (Countable (Fin j → Fin j → E))
   exact Units.val_injective.countable
 
+/- English proof (translation)
+Unfold `covol`. Apply `le_antisymm` to reduce the goal to its premises. Use `iInf_le_of_le D (iInf_le_of_le hD (iInf_le_of_le ?_ (withDensity_apply _ hD).le))` and prove the remaining obligations. Introduce `g hg`. Take `⟨γ, ⟨h1, h2⟩, -⟩` from `hs g hg`.
+
+Conclude with `⟨emb γ, (hΓ _).2 ⟨γ, h1, rfl⟩, h2⟩`. Use `le_iInf fun D' => le_iInf fun hD' => le_iInf fun hc => ?_` and prove the remaining obligations. Rewrite using `[withDensity_apply _ hD']`. Use `tsum_lintegral_le (I := Unit) (J := Unit) (haarGL E j) (fun (γ : GL (Fin j) E) g => emb γ * g) (fun _ => D) (fun _ => D') (fun _ => F) (fun _ => F) (fun _ _ γ => γ ∈ S) (fun γ => (GlobalTheory.HaarLeftInv.measurePreserving_mul_left E j _ (detNorm_emb_pos γ)).2) (fun γ => (GlobalT …` as an intermediate fact. Simplify using `using this`.
+
+Introduce `_ g hg`. Take `⟨x, hx, h⟩` from `hc g (hDU hg)`. Take `⟨γ, hγ, rfl⟩` from `(hΓ x).1 hx`. Conclude with `⟨(), γ, hγ, h⟩`. Introduce `_ _ _ γ γ' g g' hγ hγ' hg hg' h`.
+
+Use `⟨rfl, inv_injective ((hs _ (detNorm_emb_mul_pos γ (hDU hg))).unique ⟨S.inv_mem hγ, ?_⟩ ⟨S.inv_mem hγ', ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[← emb_mul_mul, inv_mul_cancel, emb_one_mul]` and apply the resulting hypothesis. Rewrite using `[h, ← emb_mul_mul, inv_mul_cancel, emb_one_mul]` and apply the resulting hypothesis.
+-/
 theorem covol_eq_lintegral (S : Subgroup (GL (Fin j) E)) (Γ : Set (MatInf E j))
     (hΓ : ∀ x, x ∈ Γ ↔ ∃ γ ∈ S, emb γ = x) (D : Set (MatInf E j)) (hD : MeasurableSet D)
     (hDU : D ⊆ {g | 0 < detNorm E j g})
@@ -245,6 +340,11 @@ theorem covol_eq_lintegral (S : Subgroup (GL (Fin j) E)) (Γ : Set (MatInf E j))
       · rwa [← emb_mul_mul, inv_mul_cancel, emb_one_mul]
       · rwa [h, ← emb_mul_mul, inv_mul_cancel, emb_one_mul]
 
+/- English proof (translation)
+Use `tsum_lintegral_le (haarGL E j) (fun (γ : GL (Fin j) E) g => emb γ * g) D D' _ _ (fun i i' γ => Carries γ (Λ i) (Λ' i') ∧ (γ : Matrix (Fin j) (Fin j) E) *ᵥ x i = x' i') (fun γ => (GlobalTheory.HaarLeftInv.measurePreserving_mul_left E j _ (detNorm_emb_pos γ)).2) (fun γ => (GlobalTh …` and prove the remaining obligations. Introduce and unpack `i i' γ ⟨h1, h2⟩ g -`. Rewrite using `[latAt_emb h1, ← h2, vecAt_emb]`. Introduce and unpack `l i i' γ γ' g g' ⟨h1, h2⟩ ⟨h1', h2'⟩ hg hg' h`. Take `⟨e1, e2⟩` from `hu i i' (γ'⁻¹ * γ) g hg (h1'.inv.mul h1) (by rw [mul_mulVec, h2, ← h2', inv_mulVec]) (by rwa [emb_mul_mul, h, ← emb_mul_mul, inv_mul_cancel, emb_one_mul])`.
+
+Conclude with `⟨e1, (inv_mul_eq_one.1 e2).symm⟩`.
+-/
 theorem pair_le {I J : Type} [Countable I] [Countable J]
     (Λ : I → Submodule (𝓞 E) (Fin j → E)) (x : I → Fin j → E) (D : I → Set (MatInf E j))
     (Λ' : J → Submodule (𝓞 E) (Fin j → E)) (x' : J → Fin j → E) (D' : J → Set (MatInf E j))
@@ -274,6 +374,9 @@ abbrev Cls : Type :=
       ∃ γ : GL (Fin j) E, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1)
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `he : Equivalence (fun Λ Λ' : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} => ∃ γ : GL (Fin j) E, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1)` using `⟨fun Λ => ⟨1, carries_one _⟩, fun ⟨γ, h⟩ => ⟨γ⁻¹, Carries.inv h⟩, fun ⟨γ, h⟩ ⟨δ, h'⟩ => ⟨δ * γ, Carries.mul h' h⟩⟩`. Set `c : Cls E j` to `Quot.mk _ ⟨L, hL⟩`. Establish `h : (Quot.mk _ ⟨L, hL⟩ : Cls E j) = Quot.mk _ (Quot.out c)` using `(Quot.out_eq c).symm`. Conclude with `⟨c, he.eqvGen_iff.1 (Quot.eqvGen_exact h)⟩`.
+-/
 theorem cls_exists (L : Submodule (𝓞 E) (Fin j → E)) (hL : Submodule.IsLattice E L) :
     ∃ (c : Cls E j) (γ : GL (Fin j) E), Carries γ L (Quot.out c).1 := by
   have he : Equivalence (fun Λ Λ' : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} =>
@@ -285,6 +388,9 @@ theorem cls_exists (L : Submodule (𝓞 E) (Fin j → E)) (hL : Submodule.IsLatt
   exact ⟨c, he.eqvGen_iff.1 (Quot.eqvGen_exact h)⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← Quot.out_eq c, ← Quot.out_eq c']`. Conclude with `Quot.sound ⟨γ, h⟩`.
+-/
 theorem cls_eq {c c' : Cls E j} {γ : GL (Fin j) E} (h : Carries γ (Quot.out c).1 (Quot.out c').1) : c = c' := by
   rw [← Quot.out_eq c, ← Quot.out_eq c']
   exact Quot.sound ⟨γ, h⟩
@@ -321,11 +427,21 @@ def stabSub (L : Submodule (𝓞 E) (Fin j → E)) (x : Fin j → E) : Subgroup 
     rwa [ha.2] at this⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨γ, h, h'⟩ => ⟨γ, h, funext fun w => funext fun a => funext fun b => (h' w a b).symm⟩, fun ⟨γ, h, h'⟩ => ⟨γ, h, fun w a b => by rw [← h']; rfl⟩⟩`.
+-/
 theorem mem_autGL (L : Submodule (𝓞 E) (Fin j → E)) (x : MatInf E j) :
     x ∈ autGL E j L ↔ ∃ γ ∈ autSub L, emb γ = x :=
   ⟨fun ⟨γ, h, h'⟩ => ⟨γ, h, funext fun w => funext fun a => funext fun b => (h' w a b).symm⟩,
     fun ⟨γ, h, h'⟩ => ⟨γ, h, fun w a b => by rw [← h']; rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩`. Take `⟨γ, hγ, rfl⟩` from `(mem_autGL L x).1 h`. Use `⟨γ, ⟨hγ, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Apply `w.embedding.injective` to reduce the goal to its premises. Use `h' w a` as an intermediate fact. Simplify using `only [emb] at this`. Simplify using `[this, Pi.single_apply, apply_ite w.embedding]`.
+
+Introduce and unpack `⟨γ, ⟨h, h'⟩, rfl⟩`. Use `⟨(mem_autGL L _).2 ⟨γ, h, rfl⟩, fun w a => ?_⟩` and prove the remaining obligations. Use `congrFun h' a` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply] at this`. Simplify using `[emb, this, apply_ite w.embedding]`.
+-/
 theorem mem_stab {k : ℕ} (L : Submodule (𝓞 E) (Fin (k + 1) → E)) (x : MatInf E (k + 1)) :
     x ∈ {x | x ∈ autGL E (k + 1) L ∧ ∀ w a, x w a 0 = if a = 0 then 1 else 0} ↔
       ∃ γ ∈ stabSub L (Pi.single 0 1), emb γ = x := by
@@ -346,12 +462,20 @@ theorem mem_stab {k : ℕ} (L : Submodule (𝓞 E) (Fin (k + 1) → E)) (x : Mat
     simp [emb, this, apply_ite w.embedding]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `u a`. Simplify using `[vecAt, Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite u.embedding]`.
+-/
 theorem vecAt_single {k : ℕ} (g : MatInf E (k + 1)) :
     (fun u a => (Matrix.of (g u))⁻¹ a 0) = vecAt (Pi.single 0 1 : Fin (k + 1) → E) g := by
   funext u a
   simp [vecAt, Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite u.embedding]
 
 omit [NumberField E] in
+/- English proof (translation)
+Set `M : Matrix (Fin (k + 1)) (Fin (k + 1)) E` to `Matrix.of (Fin.cons (Fin.cons 1 0) fun a => Fin.cons 0 ((δ : Matrix (Fin k) (Fin k) E) a))`. Establish `h1 : M.submatrix Fin.succ Fin.succ = δ` using `by ext a b; simp [M]`. Establish `hd : M.det ≠ 0`. Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Rewrite using `[Fin.succAbove_zero, h1]`.
+
+Simplify `Matrix.GeneralLinearGroup.det_ne_zero δ` using `[M]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hd, ?_, h1, fun b => by simp [M]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> simp [M]`.
+-/
 theorem exists_block {k : ℕ} (δ : GL (Fin k) E) : ∃ γ : GL (Fin (k + 1)) E,
     (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Pi.single 0 1 = Pi.single 0 1 ∧
     (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).submatrix Fin.succ Fin.succ = δ ∧
@@ -368,6 +492,11 @@ theorem exists_block {k : ℕ} (δ : GL (Fin k) E) : ∃ γ : GL (Fin (k + 1)) E
   refine Fin.cases ?_ (fun a => ?_) a <;> simp [M]
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `h0 : ∀ a, (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) a 0 = if a = 0 then 1 else 0` using `fun a => by`. Use `congrFun h a` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply]`. Establish `hd` using `Matrix.GeneralLinearGroup.det_ne_zero γ`. Rewrite `hd` using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`.
+
+Establish `hd' : ((γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).submatrix Fin.succ Fin.succ).det ≠ 0`. Simplify `hd` using `[h0]`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd', rfl⟩`.
+-/
 theorem exists_sub {k : ℕ} (γ : GL (Fin (k + 1)) E)
     (h : (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E) *ᵥ Pi.single 0 1 = Pi.single 0 1) : ∃ δ : GL (Fin k) E,
     (γ : Matrix (Fin (k + 1)) (Fin (k + 1)) E).submatrix Fin.succ Fin.succ = δ := by
@@ -380,6 +509,31 @@ theorem exists_sub {k : ℕ} (γ : GL (Fin (k + 1)) E)
     simpa [h0] using hd
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd', rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ hE k Lf hLf w Φ hw hΦ`. Take `⟨hA1, hA2, hA3⟩` from `GlobalTheory.LatVecPair.classes E k Lf hLf`. Use `choose D hD hDU hs using fun c : Cls E (k + 1) => GlobalTheory.StrictDom.exists_strictDomain E (k + 1) (Quot.out c).1 (Quot.out c).2 emb (fun _ _ _ _ => rfl) (autSub (Quot.out c).1) fun _ h => h`. Use `choose D' hD' hDU' hs' using fun p : {𝔞 : Ideal (𝓞 E) // 𝔞 ≠ ⊥} × Cls E k => GlobalTheory.StrictDom.exists_strictDomain E (k + 1) (Lf p.1.1 (Quot.out p.2).1) (hA1 _ _ p.1.2 (Quot.out p.2).2).1 emb (fun _ _ _ _ => rfl) (stabSub (Lf p.1.1 (Quot.out p.2).1) (Pi.single 0 1)) fun _ h …`. Set `F : Submodule ℤ (VecInf E (k + 1)) → VecInf E (k + 1) → ENNReal` to `fun L x => w (covAt E (k + 1) L) * Φ x`.
+
+Establish `hL : latMean E (k + 1) (fun L => w (covAt E (k + 1) L) * ∑' x : {x : VecInf E (k + 1) // x ∈ L ∧ x ≠ 0}, Φ x.1) = ∑' i : (Σ c : Cls E (k + 1), {y : Fin (k + 1) → E // y ∈ (Quot.out c).1 ∧ y ≠ 0}), ∫⁻ g in D i.1, F (latAt E (k + 1) (Quot.out i.1).1 g) (vecAt i.2.1 g) ∂(haarGL E (k …`. Rewrite using `[ENNReal.tsum_sigma']`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[covol_eq_lintegral (autSub (Quot.out c).1) _ (mem_autGL _) (D c) (hD c) (hDU c) (hs c) _ (fun γ hγ g => by rw [latAt_emb (show Carries γ _ _ from hγ) g])]`. Simplify using `only`.
+
+Rewrite using `[← lintegral_tsum]`. Use `setLIntegral_congr_fun (hD c) fun g hg => ?_` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[tsum_latAt _ (hDU c hg), ENNReal.tsum_mul_left]`. Introduce `y`.
+
+Use `AEMeasurable.mul ?_ (hΦ.comp (measurable_vecAt _)).aemeasurable` and prove the remaining obligations. Use `(GlobalTheory.T.measurable_translatedLattice_functions E hE (k + 1) w Φ hw hΦ _ (Quot.out c).2).1.aemeasurable.congr ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem (hD c)] with g hg`. Conclude with `Set.indicator_of_mem (hDU c hg) _`. Rewrite using `[hL, ← ENNReal.tsum_prod]`.
+
+Establish `hR : ∀ p : {𝔞 : Ideal (𝓞 E) // 𝔞 ≠ ⊥} × Cls E k, covol {x | x ∈ autGL E (k + 1) (Lf p.1.1 (Quot.out p.2).1) ∧ ∀ w a, x w a 0 = if a = 0 then 1 else 0} ((haarGL E (k + 1)).withDensity fun g => w (covAt E (k + 1) (latAt E (k + 1) (Lf p.1.1 (Quot.out p.2).1) g)) * Φ (fun u a => (Mat …`. Introduce `p`. Simplify using `only [vecAt_single]`. Use `covol_eq_lintegral _ _ (mem_stab _) (D' p) (hD' p) (hDU' p) (hs' p) _ fun γ hγ g => ?_` and prove the remaining obligations. Use `vecAt_emb γ (Pi.single 0 1) g` as an intermediate fact.
+
+Rewrite `this` using `[hγ.2]`. Rewrite using `[latAt_emb hγ.1, this]`. Rewrite using `[tsum_congr hR]`. Apply `le_antisymm` to reduce the goal to its premises. Use `pair_le (I := Σ c : Cls E (k + 1), {y : Fin (k + 1) → E // y ∈ (Quot.out c).1 ∧ y ≠ 0}) _ _ _ _ _ _ (fun i => hD i.1) hD' ?_ ?_ F` and prove the remaining obligations.
+
+Introduce and unpack `⟨c, y⟩ ⟨c', y'⟩ γ g hg h1 h2 h3`. Take `rfl : c = c'` from `cls_eq h1`. Take `rfl : γ = 1` from `(hs c g (hDU c hg)).unique ⟨h1, h3⟩ ⟨one_mem _, by rwa [emb_one_mul]⟩`. Take `rfl : y = y'` from `Subtype.ext (by simpa using h2)`. Conclude with `⟨rfl, rfl⟩`.
+
+Introduce and unpack `⟨c, y⟩ g hg`. Take `⟨γ, 𝔞, Λ', h𝔞, hΛ', h1, h2⟩` from `hA2 _ (Quot.out c).2 y.1 y.2.1 y.2.2`. Take `⟨c', δ, hδ⟩` from `cls_exists Λ' hΛ'`. Take `⟨β, b1, b2, b3⟩` from `exists_block δ`. Establish `hβ : Carries β (Lf 𝔞 Λ') (Lf 𝔞 (Quot.out c').1)` using `(hA3 𝔞 𝔞 Λ' _ h𝔞 h𝔞 hΛ' (Quot.out c').2 β b1).2 ⟨rfl, by rw [b2]; exact hδ, fun y _ t _ => ⟨0, by simp [b3, dotProduct]⟩⟩`.
+
+Take `⟨σ, ⟨s1, s2⟩, -⟩` from `hs' (⟨𝔞, h𝔞⟩, c') _ (detNorm_emb_mul_pos (β * γ) (hDU c hg))`. Use `⟨(⟨𝔞, h𝔞⟩, c'), σ * (β * γ), ⟨Carries.mul s1.1 (hβ.mul h2), ?_⟩, by rwa [emb_mul_mul]⟩` and prove the remaining obligations. Rewrite using `[mul_mulVec, mul_mulVec, h1, b1, s1.2]`. Use `pair_le (J := Σ c : Cls E (k + 1), {y : Fin (k + 1) → E // y ∈ (Quot.out c).1 ∧ y ≠ 0}) _ _ _ _ _ _ hD' (fun i => hD i.1) ?_ ?_ F` and prove the remaining obligations. Introduce and unpack `⟨𝔞, c⟩ ⟨𝔟, c'⟩ γ g hg h1 h2 h3`.
+
+Take `⟨e1, e2, -⟩` from `(hA3 𝔞.1 𝔟.1 _ _ 𝔞.2 𝔟.2 (Quot.out c).2 (Quot.out c').2 γ h2).1 h1`. Take `⟨δ, hδ⟩` from `exists_sub γ h2`. Rewrite `e2` using `[hδ]`. Take `rfl : c = c'` from `cls_eq e2`. Take `rfl : 𝔞 = 𝔟` from `Subtype.ext e1`.
+
+Conclude with `⟨rfl, (hs' (𝔞, c) g (hDU' _ hg)).unique ⟨⟨h1, h2⟩, h3⟩ ⟨one_mem _, by rwa [emb_one_mul]⟩⟩`. Introduce and unpack `⟨𝔞, c⟩ g hg`. Take `⟨h1, h2⟩` from `hA1 𝔞.1 _ 𝔞.2 (Quot.out c).2`. Take `⟨c', δ, hδ⟩` from `cls_exists _ h1`. Take `⟨σ, ⟨s1, s2⟩, -⟩` from `hs c' _ (detNorm_emb_mul_pos δ (hDU' _ hg))`.
+
+Establish `hc : Carries (σ * δ) _ _` using `Carries.mul s1 hδ`. Use `⟨⟨c', ⟨_, (hc _).2 h2, fun h0 => ?_⟩⟩, σ * δ, ⟨hc, rfl⟩, by rwa [emb_mul_mul]⟩` and prove the remaining obligations. Use `inv_mulVec (σ * δ) (Pi.single 0 1)` as an intermediate fact. Rewrite `this` using `[h0, Matrix.mulVec_zero]`. Simplify using `using congrFun this 0`.
+-/
 theorem latMean_sum_eq_tsum_orbits : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ k : ℕ, ∀ Lf : Ideal (𝓞 E) → Submodule (𝓞 E) (Fin k → E) → Submodule (𝓞 E) (Fin (k + 1) → E), (∀ 𝔞 Λ' y, y ∈ Lf 𝔞 Λ' ↔ (∀ t ∈ 𝔞, (t : E) * y 0 ∈ (algebraMap (𝓞 E) E).range) ∧ Fin.tail y ∈ Λ') → ∀ (w : ℝ → ENNReal) (Φ : VecInf E (k + 1) → ENNReal), Measurable w → Measurable Φ → latMean E (k + 1) (fun L => w (covAt E (k + 1) L) * ∑' x : {x : VecInf E (k + 1) // x ∈ L ∧ x ≠ 0}, Φ x.1) = ∑' 𝔞 : {𝔞 : Ideal (𝓞 E) // 𝔞 ≠ ⊥}, ∑' c : Quot (fun Λ Λ' : {Λ : Submodule (𝓞 E) (Fin k → E) // Submodule.IsLattice E Λ} => ∃ γ : GL (Fin k) E, ∀ y, (γ : Matrix (Fin k) (Fin k) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1), covol {x | x ∈ autGL E (k + 1) (Lf 𝔞.1 (Quot.out c).1) ∧ ∀ w a, x w a 0 = if a = 0 then 1 else 0} ((haarGL E (k + 1)).withDensity fun g => w (covAt E (k + 1) (latAt E (k + 1) (Lf 𝔞.1 (Quot.out c).1) g)) * Φ (fun u a => (Matrix.of (g u))⁻¹ a 0)) {g | 0 < detNorm E (k + 1) g} := by
   intro E _ _ hE k Lf hLf w Φ hw hΦ
   obtain ⟨hA1, hA2, hA3⟩ := GlobalTheory.LatVecPair.classes E k Lf hLf

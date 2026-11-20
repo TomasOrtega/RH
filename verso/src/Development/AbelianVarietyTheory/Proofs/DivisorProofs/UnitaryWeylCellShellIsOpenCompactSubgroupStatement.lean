@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeylCell.WeylUnipotentShell.shellU_open_compact_subgroup | exact GlobalTheory.WeylCell.WeylUnipotentShell.shellU_open_compact_subgroup | (intros; apply GlobalTheory.WeylCell.WeylUnipotentShell.shellU_open_compact_subgroup <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →
     ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → ¬ Even n →

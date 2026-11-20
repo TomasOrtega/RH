@@ -18,11 +18,21 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
   (b : Module.Basis ι K V) (X X' : InfinitePlace K → Matrix ι ι ℂ)
   (Φ : Submodule (𝓞 K) V ≃o Submodule (𝓞 K) V)
 
+/- English proof (translation)
+Simplify using `only [sizeQ, htQ, hz, hr]`.
+-/
 theorem sizeQ_eq (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize b X') (Φ N) = zl (Formalism.HermitianLatticesTheory.realize b X) N)
     (hr : ∀ N, rkK (Φ N) = rkK N) (A B : Submodule (𝓞 K) V) :
     sizeQ b X' (Φ A) (Φ B) = sizeQ b X A B := by
   simp only [sizeQ, htQ, hz, hr]
 
+/- English proof (translation)
+Establish `hs : ∀ N, size b X' (Φ N) = size b X N`. Introduce `N`. Simplify using `only [size, ht, hz, hr]`. Unfold `leastSize`. Use `congr 1`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, hR, h0, rfl⟩`. Use `⟨Φ.symm R, Φ.symm_apply_le.2 hR, fun h => h0 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Φ.apply_symm_apply R, h, Φ.map_bot]`.
+
+Rewrite using `[← hs, Φ.apply_symm_apply]`. Introduce and unpack `⟨R, hR, h0, rfl⟩`. Use `⟨Φ R, Φ.le_iff_le.2 hR, fun h => h0 ?_, hs R⟩` and prove the remaining obligations. Rewrite `h` using `[← Φ.map_bot]`. Conclude with `Φ.injective h`.
+-/
 theorem leastSize_eq (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize b X') (Φ N) = zl (Formalism.HermitianLatticesTheory.realize b X) N)
     (hr : ∀ N, rkK (Φ N) = rkK N) (A : Submodule (𝓞 K) V) :
     leastSize b X' (Φ A) = leastSize b X A := by
@@ -42,6 +52,13 @@ theorem leastSize_eq (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize 
     rw [← Φ.map_bot] at h
     exact Φ.injective h
 
+/- English proof (translation)
+Establish `hsat : ∀ S, IsSat (Formalism.HermitianLatticesTheory.realize b X') (Φ A) (Φ S) ↔ IsSat (Formalism.HermitianLatticesTheory.realize b X) A S`. Introduce `S`. Simplify using `only [IsSat, hz, Φ.le_iff_le]`. Unfold `largestSize`. Use `congr 1`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hne, rfl⟩`. Use `⟨Φ.symm S, ?_, fun h => hne ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsat, Φ.apply_symm_apply]`.
+
+Conclude with `hS`. Rewrite using `[← h, Φ.apply_symm_apply]`. Rewrite using `[← sizeQ_eq b X X' Φ hz hr, Φ.apply_symm_apply]`. Introduce and unpack `⟨S, hS, hne, rfl⟩`. Conclude with `⟨Φ S, (hsat S).2 hS, fun h => hne (Φ.injective h), sizeQ_eq b X X' Φ hz hr A S⟩`.
+-/
 theorem largestSize_eq (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize b X') (Φ N) = zl (Formalism.HermitianLatticesTheory.realize b X) N)
     (hr : ∀ N, rkK (Φ N) = rkK N) (A : Submodule (𝓞 K) V) :
     largestSize b X' (Φ A) = largestSize b X A := by
@@ -63,6 +80,13 @@ theorem largestSize_eq (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realiz
 
 omit [NumberField K] [StarRing K] [Module K V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Rewrite using `[OrderIso.map_sSup Φ, ← sSup_image]`. Use `congr 1`. Use extensionality with `N`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, h0, hpN⟩`.
+
+Use `⟨Φ.symm N, ⟨Φ.symm_apply_le.2 hN, fun h => h0 ?_, ?_⟩, Φ.apply_symm_apply N⟩` and prove the remaining obligations. Rewrite using `[← Φ.apply_symm_apply N, h, Φ.map_bot]`. Rewrite using `[← hp, Φ.apply_symm_apply]`. Conclude with `hpN`. Introduce and unpack `⟨M, ⟨hM, h0, hpM⟩, rfl⟩`.
+
+Use `⟨Φ.le_iff_le.2 hM, fun h => h0 ?_, (hp M).2 hpM⟩` and prove the remaining obligations. Rewrite `h` using `[← Φ.map_bot]`. Conclude with `Φ.injective h`.
+-/
 theorem sSup_eq (A : Submodule (𝓞 K) V) (p p' : Submodule (𝓞 K) V → Prop) (hp : ∀ N, p' (Φ N) ↔ p N) :
     sSup {N | N ≤ Φ A ∧ N ≠ ⊥ ∧ p' N} = Φ (sSup {N | N ≤ A ∧ N ≠ ⊥ ∧ p N}) := by
   rw [OrderIso.map_sSup Φ, ← sSup_image]
@@ -86,6 +110,11 @@ section Points
 variable (I : AutInst) (x x' : I.GA)
   (Φ : Submodule (𝓞 I.E) (Fin I.n → I.E) ≃o Submodule (𝓞 I.E) (Fin I.n → I.E))
 
+/- English proof (translation)
+Establish `hls : ∀ N, Formalism.HN.largestSize (bas I) (frm I x') (Φ N) = Formalism.HN.largestSize (bas I) (frm I x) N` using `largestSize_eq (bas I) (frm I x) (frm I x') Φ hz hr`. Prove the components needed by the constructor for the conclusion. Unfold `stepLe`. Rewrite using `[hl]`. Conclude with `sSup_eq Φ (lamX I x) _ _ (fun N => by rw [hls])`.
+
+Unfold `stepLt`. Rewrite using `[hl]`. Conclude with `sSup_eq Φ (lamX I x) _ _ (fun N => by rw [hls])`.
+-/
 theorem step_eq (hl : lamX I x' = Φ (lamX I x))
     (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x')) (Φ N) = zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) N)
     (hr : ∀ N, rkK (Φ N) = rkK N) (t : ℝ) :
@@ -100,6 +129,15 @@ theorem step_eq (hl : lamX I x' = Φ (lamX I x))
     rw [hl]
     exact sSup_eq Φ (lamX I x) _ _ (fun N => by rw [hls])
 
+/- English proof (translation)
+Take `⟨S, ⟨h0, hmono, hlast, hτ, hi, hall⟩, hrk⟩` from `h`. Establish `hst` using `fun t => step_eq I x x' Φ hl hz hr t`. Use `⟨fun i => Φ (S i), ⟨?_, Φ.strictMono.comp hmono, ?_, hτ, fun i => ?_, fun t ht => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h0, Φ.map_bot]`.
+
+Simplify using `only`. Rewrite using `[hlast, (hst _).2]`. Take `⟨h1, h2, h3, h4⟩` from `hi i`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[h3, (hst _).1]`. Simplify using `only`. Rewrite using `[sizeQ_eq (bas I) (frm I x) (frm I x') Φ hz hr]`. Conclude with `h4`. Take `⟨k, hk⟩` from `hall t ht`.
+
+Conclude with `⟨k, by dsimp only; rw [hk, (hst t).1]⟩`. Simplify using `only`. Rewrite using `[hr, hr]`. Conclude with `hrk i`.
+-/
 theorem hasType_of (hl : lamX I x' = Φ (lamX I x))
     (hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x')) (Φ N) = zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) N)
     (hr : ∀ N, rkK (Φ N) = rkK N) {m : ℕ} (j : Fin m → ℕ) (τ : Fin m → ℝ) (h : HasType I x j τ) :
@@ -124,6 +162,11 @@ theorem hasType_of (hl : lamX I x' = Φ (lamX I x))
     rw [hr, hr]
     exact hrk i
 
+/- English proof (translation)
+Establish `hL : I.Lf = Formalism.UG.latS (F` using `I.F) (Af I.F) (IntAf I.F I.E) I.L := by`. Rewrite using `[AutInst.Lf, lamAf, Formalism.UG.latS, Set.image_eq_range]`. Both sides reduce to the same expression. Establish `hset : {y : Fin I.n → I.E | I.fmat x.2⁻¹ *ᵥ (fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) (y i)) ∈ I.Lf} = (Formalism.UG.CS.globLat (F := I.F) (x.2 : GL (Fin I.n) _) I.L : Set (Fin I.n → I.E)) := by`. Use extensionality with `y`.
+
+Rewrite using `[hL]`. Both sides reduce to the same expression. Rewrite using `[lamX, hset, Submodule.span_eq]`.
+-/
 theorem lamX_eq : lamX I x = Formalism.UG.CS.globLat (F := I.F) (x.2 : GL (Fin I.n) _) I.L := by
   have hL : I.Lf = Formalism.UG.latS (F := I.F) (Af I.F) (IntAf I.F I.E) I.L := by
     rw [AutInst.Lf, lamAf, Formalism.UG.latS, Set.image_eq_range]
@@ -135,6 +178,29 @@ theorem lamX_eq : lamX I x = Formalism.UG.CS.globLat (F := I.F) (x.2 : GL (Fin I
     rfl
   rw [lamX, hset, Submodule.span_eq]
 
+/- English proof (translation)
+Establish `hcm` using `I.cm`. Establish `hconj : ∀ (ψ : I.E →+* ℂ) (e : I.E), ψ (star e) = starRingEnd ℂ (ψ e)` using `hcm.cmUnram.2.1`. Establish `hF : ∀ c : I.F, w.embedding (algebraMap I.F I.E c) = I.φ (w.comap (algebraMap I.F I.E)) (algebraMap I.F I.E c)`. Introduce `c`. Rewrite using `[I.φ_over]`.
+
+Establish `hmk : w.comap (algebraMap I.F I.E) = InfinitePlace.mk (w.embedding.comp (algebraMap I.F I.E))` using `by conv_lhs => rw [← InfinitePlace.mk_embedding w]`. Conclude with `InfinitePlace.comap_mk _ _`. Establish `hre : ComplexEmbedding.IsReal (w.embedding.comp (algebraMap I.F I.E))`. Use `hcm.totReal` as an intermediate fact. Rewrite using `[← InfinitePlace.isReal_mk_iff, ← hmk]`.
+
+Conclude with `IsTotallyReal.isReal _`. Rewrite using `[hmk]`. Break down `InfinitePlace.embedding_mk_eq (w.embedding.comp (algebraMap I.F I.E)) with h | h` into its components or cases. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, ComplexEmbedding.isReal_iff.1 hre]`. Both sides reduce to the same expression. Generalize the expression as in `I.φ (w.comap (algebraMap I.F I.E)) = ψ at hF ⊢`. Establish `hpt : ∀ e : I.E, ψ e = w.embedding e ∨ ψ e = starRingEnd ℂ (w.embedding e)`. Introduce `e`.
+
+Take `⟨s, hs⟩` from `(hcm.fixed (e + star e)).1 (by rw [star_add, star_star, add_comm])`. Take `⟨p, hp⟩` from `(hcm.fixed (e * star e)).1 (by rw [star_mul, star_star, mul_comm])`. Establish `ht : ψ e + ψ (star e) = w.embedding e + w.embedding (star e)`. Rewrite using `[← map_add, ← map_add, ← hs]`. Conclude with `(hF s).symm`.
+
+Establish `hn : ψ e * ψ (star e) = w.embedding e * w.embedding (star e)`. Rewrite using `[← map_mul, ← map_mul, ← hp]`. Conclude with `(hF p).symm`. Establish `h0 : (ψ e - w.embedding e) * (ψ e - w.embedding (star e)) = 0`. Take the linear combination `(ψ e) * ht - hn`.
+
+Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`. Rewrite using `[← hconj]`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Distinguish the cases in `h1 : ψ = w.embedding`.
+
+Conclude with `Or.inl h1.symm`. Use `right`. Distinguish the cases in `h2 : ψ = (starRingEnd ℂ).comp w.embedding`. Use extensionality with `e`. Rewrite using `[RingHom.comp_apply, h2, RingHom.comp_apply, Complex.conj_conj]`.
+
+It suffices to derive a contradiction. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 h1`. Take `⟨b, hb⟩` from `DFunLike.ne_iff.1 h2`. Rewrite `hb` using `[RingHom.comp_apply]`. Establish `ha'` using `(hpt a).resolve_left ha`.
+
+Establish `hb'` using `(hpt b).resolve_right hb`. Break down `hpt (a + b) with h | h` into its components or cases. Rewrite `h` using `[map_add, map_add, hb']`. Conclude with `ha (add_right_cancel h)`. Rewrite `h` using `[map_add, map_add, map_add, ha']`.
+
+Conclude with `hb (add_left_cancel h)`.
+-/
 theorem embedding_eq (w : InfinitePlace I.E) :
     w.embedding = I.φ (w.comap (algebraMap I.F I.E)) ∨
       w.embedding = (starRingEnd ℂ).comp (I.φ (w.comap (algebraMap I.F I.E))) := by
@@ -198,6 +264,11 @@ section Rational
 
 variable (I : AutInst) (x a : I.GA) (γ : GL (Fin I.n) I.E)
 
+/- English proof (translation)
+Establish `h1 : IsUnit (I.P (w.comap (algebraMap I.F I.E)) * uMat (x.1 (w.comap (algebraMap I.F I.E)))).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit _)).mul ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _))`. Simplify using `only [frm]`. Use `split_ifs`.
+
+Conclude with `h1`. Establish `e` using `RingHom.map_det (starRingEnd ℂ) (I.P (w.comap (algebraMap I.F I.E)) * uMat (x.1 (w.comap (algebraMap I.F I.E))))`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e]`. Conclude with `h1.map _`.
+-/
 theorem frm_det (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
   have h1 : IsUnit (I.P (w.comap (algebraMap I.F I.E)) * uMat (x.1 (w.comap (algebraMap I.F I.E)))).det := by
     rw [Matrix.det_mul]
@@ -212,6 +283,11 @@ theorem frm_det (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
     rw [← e]
     exact h1.map _
 
+/- English proof (translation)
+Establish `hm : uMat ((x * k).1 (w.comap (algebraMap I.F I.E))) = uMat (x.1 (w.comap (algebraMap I.F I.E))) * uMat (k.1 (w.comap (algebraMap I.F I.E)))` using `rfl`. Simplify using `only [frm]`. Distinguish the cases in `h : w.embedding = I.φ (w.comap (algebraMap I.F I.E))`. Use `left`. Rewrite using `[if_pos h, if_pos h, hm, Matrix.mul_assoc]`.
+
+Use `right`. Rewrite using `[if_neg h, if_neg h, hm, ← Matrix.mul_assoc, Matrix.map_mul]`.
+-/
 theorem frm_mul (k : I.GA) (w : InfinitePlace I.E) :
     frm I (x * k) w = frm I x w * uMat (k.1 (w.comap (algebraMap I.F I.E))) ∨
       frm I (x * k) w = frm I x w * (uMat (k.1 (w.comap (algebraMap I.F I.E)))).map (starRingEnd ℂ) := by
@@ -224,6 +300,13 @@ theorem frm_mul (k : I.GA) (w : InfinitePlace I.E) :
   · right
     rw [if_neg h, if_neg h, hm, ← Matrix.mul_assoc, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `hP : I.P (w.comap (algebraMap I.F I.E)) * (I.P (w.comap (algebraMap I.F I.E)))⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit _))`. Establish `hm : uMat ((a * x).1 (w.comap (algebraMap I.F I.E))) = uMat (a.1 (w.comap (algebraMap I.F I.E))) * uMat (x.1 (w.comap (algebraMap I.F I.E)))` using `rfl`. Establish `key : I.P (w.comap (algebraMap I.F I.E)) * uMat ((a * x).1 (w.comap (algebraMap I.F I.E))) = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ (w.comap (algebraMap I.F I.E))) * (I.P (w.comap (algebraMap I.F I.E)) * uMat (x.1 (w.comap (algebraMap I.F I.E))))`. Rewrite using `[hm, h]`. Simplify using `only [← Matrix.mul_assoc, hP, Matrix.one_mul]`.
+
+Simplify using `only [frm]`. Distinguish the cases in `h' : w.embedding = I.φ (w.comap (algebraMap I.F I.E))`. Rewrite using `[if_pos h', if_pos h', key, h']`. Establish `he` using `(embedding_eq I w).resolve_left h'`. Rewrite using `[if_neg h', if_neg h', key, Matrix.map_mul, he, Matrix.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frm_rat
     (h : ∀ v, uMat (a.1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v)
     (w : InfinitePlace I.E) :
@@ -244,6 +327,11 @@ theorem frm_rat
     rw [if_neg h', if_neg h', key, Matrix.map_mul, he, Matrix.map_map]
     rfl
 
+/- English proof (translation)
+Establish `hvec : Formalism.HermitianLatticesTheory.vecAt (bas I) w ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y) = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map w.embedding *ᵥ Formalism.HermitianLatticesTheory.vecAt (bas I) w y`. Use extensionality with `i`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, Pi.basisFun_repr]`. Conclude with `RingHom.map_mulVec _ _ _ _`. Establish `hγ : IsUnit ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map w.embedding).det`.
+
+Establish `e` using `RingHom.map_det w.embedding (γ : Matrix (Fin I.n) (Fin I.n) I.E)`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).map _`. Simplify using `only [Formalism.HermitianLatticesTheory.fcoord, hvec, frm_rat I x a γ h w, Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγ, Matrix.mul_one]`.
+-/
 theorem fcoord_rat
     (h : ∀ v, uMat (a.1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v)
     (w : InfinitePlace I.E) (y : Fin I.n → I.E) :
@@ -271,10 +359,16 @@ def ratEquiv : (Fin I.n → I.E) ≃ₗ[I.E] (Fin I.n → I.E) :=
 def ratIso : Submodule (𝓞 I.E) (Fin I.n → I.E) ≃o Submodule (𝓞 I.E) (Fin I.n → I.E) :=
   Submodule.orderIsoMapComap ((ratEquiv I γ).restrictScalars (𝓞 I.E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratIso_apply (N : Submodule (𝓞 I.E) (Fin I.n → I.E)) :
     ratIso I γ N =
       N.map ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E)) := rfl
 
+/- English proof (translation)
+Unfold `Formalism.HN.rkK`. Rewrite using `[ratIso_apply, Submodule.map_coe, LinearMap.coe_restrictScalars]`. Establish `e : Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E) = ((ratEquiv I γ : (Fin I.n → I.E) ≃ₗ[I.E] (Fin I.n → I.E)) : (Fin I.n → I.E) →ₗ[I.E] (Fin I.n → I.E))` using `rfl`. Rewrite using `[e, Submodule.span_image, LinearEquiv.finrank_map_eq]`.
+-/
 theorem rkK_ratIso (N : Submodule (𝓞 I.E) (Fin I.n → I.E)) : rkK (ratIso I γ N) = rkK N := by
   unfold Formalism.HN.rkK
   rw [ratIso_apply, Submodule.map_coe, LinearMap.coe_restrictScalars]
@@ -282,6 +376,13 @@ theorem rkK_ratIso (N : Submodule (𝓞 I.E) (Fin I.n → I.E)) : rkK (ratIso I 
       ((ratEquiv I γ : (Fin I.n → I.E) ≃ₗ[I.E] (Fin I.n → I.E)) : (Fin I.n → I.E) →ₗ[I.E] (Fin I.n → I.E)) := rfl
   rw [e, Submodule.span_image, LinearEquiv.finrank_map_eq]
 
+/- English proof (translation)
+Establish `hr : ∀ y, Formalism.HermitianLatticesTheory.realize (bas I) (frm I (a * x)) ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y) = Formalism.HermitianLatticesTheory.realize (bas I) (frm I x) y`. Introduce `y`. Establish `hraw : Formalism.HermitianLatticesTheory.realizeRaw (bas I) (frm I (a * x)) ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y) = Formalism.HermitianLatticesTheory.realizeRaw (bas I) (frm I x) y`. Use function extensionality and compare the values at `p`. Simplify using `only [Formalism.HermitianLatticesTheory.realizeRaw, AddMonoidHom.coe_mk, ZeroHom.coe_mk, fcoord_rat I x a γ h]`.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.realize, AddMonoidHom.coe_comp, Function.comp_apply, hraw]`. Rewrite using `[ratIso_apply]`. Unfold `zl`. Use extensionality with `z`. Use `show z ∈ AddSubgroup.map _ _ ↔ z ∈ AddSubgroup.map _ _`.
+
+Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.toLin'_apply, exists_exists_and_eq_and, hr]`.
+-/
 theorem zl_ratIso
     (h : ∀ v, uMat (a.1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v)
     (N : Submodule (𝓞 I.E) (Fin I.n → I.E)) :
@@ -302,6 +403,19 @@ theorem zl_ratIso
   simp only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_map,
     LinearMap.coe_restrictScalars, Matrix.toLin'_apply, exists_exists_and_eq_and, hr]
 
+/- English proof (translation)
+Establish `hinv : I.fmat a.2⁻¹ = ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) := by`. Establish `h1 : I.fmat a.2 * ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) = 1 := by`. Rewrite using `[h, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : I.fmat a.2⁻¹ * I.fmat a.2 = 1` using `Units.inv_mul (a.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F)))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `hmem : ∀ y : Fin I.n → I.E, (I.fmat (a * x).2⁻¹ *ᵥ fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) (y i)) = I.fmat x.2⁻¹ *ᵥ fun i => Formalism.UG.inclE (F := I.F) (Af I.F) ((((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y) i) := by`. Introduce `y`. Establish `e1 : I.fmat (a * x).2⁻¹ = I.fmat x.2⁻¹ * I.fmat a.2⁻¹` using `by show ((((a.2 * x.2)⁻¹ : I.Gf) : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) = _`.
+
+Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Rewrite using `[e1, ← Matrix.mulVec_mulVec, hinv]`. Use `congr 1`. Use extensionality with `i`.
+
+Conclude with `(RingHom.map_mulVec _ _ _ i).symm`. Establish `hS : {y : Fin I.n → I.E | I.fmat (a * x).2⁻¹ *ᵥ (fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) (y i)) ∈ I.Lf} = ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E)) '' {y : Fin I.n → I.E | I.fmat x.2⁻¹ *ᵥ (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (y i)) ∈ I.Lf} := by`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, hmem, LinearMap.coe_restrictScalars, Matrix.toLin'_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite `*` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Conclude with `hz`. Rewrite using `[ratIso_apply]`. Unfold `lamX`. Rewrite using `[hS, Submodule.span_image]`.
+-/
 theorem lamX_rat
     (h : I.fmat a.2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F))) :
     lamX I (a * x) = ratIso I γ (lamX I x) := by
@@ -345,6 +459,19 @@ theorem lamX_rat
   unfold lamX
   rw [hS, Submodule.span_image]
 
+/- English proof (translation)
+Establish `hL : I.Lf = Formalism.UG.latS (F` using `I.F) (Af I.F) (IntAf I.F I.E) I.L := by`. Rewrite using `[AutInst.Lf, lamAf, Formalism.UG.latS, Set.image_eq_range]`. Both sides reduce to the same expression. Establish `hmem : ∀ (G : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) (y : Fin I.n → I.E), y ∈ Formalism.UG.CS.globLat (F` using `I.F) G I.L ↔ ((G⁻¹ : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ (fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (y i)) ∈ I.Lf := by`. Introduce `G y`.
+
+Rewrite using `[hL]`. Both sides reduce to the same expression. Establish `hK : k.2 ∈ I.Kset ↔ ∀ v, v ∈ I.Lf ↔ ((k.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ v ∈ I.Lf` using `Iff.rfl`. Establish `hxk : ((x * k).2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) = (x.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) * (k.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F)))` using `rfl`. Rewrite using `[hK, lamX_eq, lamX_eq, hxk]`.
+
+Generalize the expression as in `(x.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) = g`. Generalize the expression as in `(k.2 : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) = u`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Use extensionality with `y`.
+
+Rewrite using `[hmem, hmem, _root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, hk, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Introduce `he v`. Establish `hrec` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds I.F I.E (Fin I.n) I.L (Module.Finite.iff_fg.2 I.L_fg) I.L_span`. Establish `h1` using `hrec (g * u) ((g : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((u : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ v))`. Establish `h2` using `hrec g ((g : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((u : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ v))`.
+
+Rewrite `h1` using `[he]`. Establish `h3` using `h1.symm.trans h2`. Establish `e1 : (((g * u)⁻¹ : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((g : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((u : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ v)) = v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, mul_assoc, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `e2 : ((g⁻¹ : GL (Fin I.n) (TensorProduct I.F I.E (Af I.F))) : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((g : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ ((u : Matrix (Fin I.n) (Fin I.n) (TensorProduct I.F I.E (Af I.F))) *ᵥ v)) = (u : Mat …`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite `h3` using `[e1, e2]`. Rewrite using `[hL]`. Conclude with `h3`.
+-/
 theorem lamX_mul_eq_iff (k : I.GA) : k.2 ∈ I.Kset ↔ lamX I (x * k) = lamX I x := by
   have hL : I.Lf = Formalism.UG.latS (F := I.F) (Af I.F) (IntAf I.F I.E) I.L := by
     rw [AutInst.Lf, lamAf, Formalism.UG.latS, Set.image_eq_range]
@@ -398,6 +525,19 @@ theorem lamX_mul_eq_iff (k : I.GA) : k.2 ∈ I.Kset ↔ lamX I (x * k) = lamX I 
 
 end Rational
 
+/- English proof (translation)
+Introduce `I x γ a _hγ h1 h2`. Establish `hl : lamX I (a * x) = ratIso I γ (lamX I x)` using `lamX_rat I x a γ h2`. Establish `hz : ∀ N, zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I (a * x))) (ratIso I γ N) = zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) N` using `zl_ratIso I x a γ h1`. Establish `hr : ∀ N, rkK (ratIso I γ N) = rkK N` using `rkK_ratIso I γ`. Establish `hl' : lamX I x = (ratIso I γ).symm (lamX I (a * x))`.
+
+Rewrite using `[hl, OrderIso.symm_apply_apply]`. Establish `hz' : ∀ N, zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) ((ratIso I γ).symm N) = zl (Formalism.HermitianLatticesTheory.realize (bas I) (frm I (a * x))) N`. Introduce `N`. Rewrite using `[← hz, OrderIso.apply_symm_apply]`. Establish `hr' : ∀ N, rkK ((ratIso I γ).symm N) = rkK N`.
+
+Introduce `N`. Rewrite using `[← hr, OrderIso.apply_symm_apply]`. Establish `hxk : x * (x⁻¹ * a * x) = a * x`. Rewrite using `[mul_assoc x⁻¹, mul_inv_cancel_left]`. Use `⟨by rw [hl, ratIso_apply], fun w y => ?_, ?_, fun t => ?_, fun m j τ => ⟨hasType_of I (a * x) x (ratIso I γ).symm hl' hz' hr' j τ, hasType_of I x (a * x) (ratIso I γ) hl hz hr j τ⟩, ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.normAt, fcoord_rat I x a γ h1]`. Unfold `least`. Rewrite using `[hl]`. Conclude with `leastSize_eq (bas I) (frm I x) (frm I (a * x)) (ratIso I γ) hz hr (lamX I x)`. Rewrite using `[(step_eq I x (a * x) (ratIso I γ) hl hz hr t).1, (step_eq I x (a * x) (ratIso I γ) hl hz hr t).2, ratIso_apply, ratIso_apply]`.
+
+Conclude with `⟨rfl, rfl⟩`. Rewrite using `[lamX_mul_eq_iff I x (x⁻¹ * a * x), hxk, hl, ratIso_apply]`. Establish `e1` using `frm_mul I x (x⁻¹ * a * x) w`. Rewrite `e1` using `[hxk, frm_rat I x a γ h1 w]`. Establish `hF` using `frm_det I x w`.
+
+Break down `e1 with e | e` into its components or cases. Use `left`. Rewrite using `[Matrix.mul_assoc, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hF, Matrix.one_mul]`. Use `right`. Rewrite using `[Matrix.mul_assoc, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hF, Matrix.one_mul]`.
+-/
 theorem equivariance : ∀ (I : AutInst) (x : I.GA) (γ : GL (Fin I.n) I.E) (a : I.GA), γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J → (∀ v, uMat (a.1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v) → I.fmat a.2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) → lamX I (a * x) = (lamX I x).map ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E)) ∧ (∀ w y, Formalism.HermitianLatticesTheory.normAt (bas I) (frm I (a * x)) w ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ y) = Formalism.HermitianLatticesTheory.normAt (bas I) (frm I x) w y) ∧ least I (a * x) = least I x ∧ (∀ t, stepLe I (a * x) t = (stepLe I x t).map ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E)) ∧ stepLt I (a * x) t = (stepLt I x t).map ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E))) ∧ (∀ (m : ℕ) (j : Fin m → ℕ) (τ : Fin m → ℝ), HasType I (a * x) j τ ↔ HasType I x j τ) ∧ ((x⁻¹ * a * x).2 ∈ I.Kset ↔ (lamX I x).map ((Matrix.toLin' (γ : Matrix (Fin I.n) (Fin I.n) I.E)).restrictScalars (𝓞 I.E)) = lamX I x) ∧ ∀ w, (frm I x w)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map w.embedding * frm I x w = uMat ((x⁻¹ * a * x).1 (w.comap (algebraMap I.F I.E))) ∨ (frm I x w)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map w.embedding * frm I x w = (uMat ((x⁻¹ * a * x).1 (w.comap (algebraMap I.F I.E)))).map (starRingEnd ℂ) := by
   intro I x γ a _hγ h1 h2
   have hl : lamX I (a * x) = ratIso I γ (lamX I x) := lamX_rat I x a γ h2

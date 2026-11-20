@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SiegelKlin
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.AbelContinuation
 open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.TwoRelations.continuation_of_two_relations | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.TwoRelations.continuation_of_two_relations | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.TwoR …`.
+-/
 theorem _root_.GlobalTheory.T.partial_zeta_meromorphic_from_twists : ∀ (G : Type) [Fintype G] (D T T' : G → ℂ → ℂ) (l l' : ℕ) (τ τ' : Equiv.Perm G), l.Prime → l'.Prime → l ≠ l' →
   (∀ c, Differentiable ℂ (T c)) → (∀ c, Differentiable ℂ (T' c)) →
   (∀ c s, 1 < s.re → (l : ℂ) ^ (1 - s) * D (τ c) s - D c s = T c s) →

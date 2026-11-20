@@ -9,6 +9,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.PerQ
 
+/- English proof (translation)
+Introduce `B X I hI l Z l0 u μ _ _`. Conclude with `Formalism.MainNotions.DIV.HookProducts.AdmPtTw.lowerTieTwAt_integral (GlobalTheory.T.lowerTwistedCompatible_of_evaluationBranching _ _ u μ (GlobalTheory.T.twistedEvaluation_branching_all_tuples_trueColumns I hI l Z l0 u μ))`.
+-/
 theorem twistedPointIntegral_of_TC_ok : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l), Formalism.L2.G.Adm2InU.TwistedPointIntegral (I.rec7 l Z) (I.tw l l0 Z) := by
   intro B X I hI l Z l0 u μ _ _
   exact Formalism.MainNotions.DIV.HookProducts.AdmPtTw.lowerTieTwAt_integral

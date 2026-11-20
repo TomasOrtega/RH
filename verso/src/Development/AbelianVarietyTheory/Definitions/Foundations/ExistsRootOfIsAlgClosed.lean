@@ -35,59 +35,101 @@ def IsLat (N : ℕ) (φ : HahnSeries ℚ R) : Prop := ∀ r : ℚ, φ.coeff r �
 
 namespace Api
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[local simp] theorem coeff_cm (c : ℚ → R) (φ : HahnSeries ℚ R) (r : ℚ) : (cm c φ).coeff r = c r * φ.coeff r := rfl
 
+/- English proof (translation)
+Use extensionality with `r`. Simplify using `[mul_add]`.
+-/
 theorem cm_add (c : ℚ → R) (φ ψ : HahnSeries ℚ R) : cm c (φ + ψ) = cm c φ + cm c ψ := by
   ext r; simp [mul_add]
 
+/- English proof (translation)
+Use extensionality with `r`. Simplify using `[mul_left_comm]`.
+-/
 theorem cm_smul (c : ℚ → R) (t : R) (φ : HahnSeries ℚ R) : cm c (t • φ) = t • cm c φ := by
   ext r; simp [mul_left_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[local simp] theorem coeff_qD [Algebra ℚ R] (φ : HahnSeries ℚ R) (r : ℚ) :
     (qD φ).coeff r = algebraMap ℚ R r * φ.coeff r := rfl
 
+/- English proof (translation)
+Unfold `scale`. Rewrite using `[dif_pos ha]`. Conclude with `HahnSeries.embDomain_coeff (f := (OrderIso.mulLeft₀ a ha).toOrderEmbedding) (x := φ) (a := r)`.
+-/
 theorem coeff_scale_mul {a : ℚ} (ha : 0 < a) (φ : HahnSeries ℚ R) (r : ℚ) :
     (scale a φ).coeff (a * r) = φ.coeff r := by
   unfold scale
   rw [dif_pos ha]
   exact HahnSeries.embDomain_coeff (f := (OrderIso.mulLeft₀ a ha).toOrderEmbedding) (x := φ) (a := r)
 
+/- English proof (translation)
+Rewrite using `[← coeff_scale_mul ha φ (r / a), mul_div_cancel₀ _ ha.ne']`.
+-/
 theorem coeff_scale {a : ℚ} (ha : 0 < a) (φ : HahnSeries ℚ R) (r : ℚ) :
     (scale a φ).coeff r = φ.coeff (r / a) := by
   rw [← coeff_scale_mul ha φ (r / a), mul_div_cancel₀ _ ha.ne']
 
+/- English proof (translation)
+Distinguish the cases in `ha : 0 < a`. Use extensionality with `r`. Simplify using `[coeff_scale ha]`. Simplify using `[scale, ha]`.
+-/
 theorem scale_add (a : ℚ) (φ ψ : HahnSeries ℚ R) : scale a (φ + ψ) = scale a φ + scale a ψ := by
   by_cases ha : 0 < a
   · ext r; simp [coeff_scale ha]
   · simp [scale, ha]
 
+/- English proof (translation)
+Distinguish the cases in `ha : 0 < a`. Use extensionality with `r`. Simplify using `[coeff_scale ha]`. Simplify using `[scale, ha]`.
+-/
 theorem scale_smul (a : ℚ) (t : R) (φ : HahnSeries ℚ R) : scale a (t • φ) = t • scale a φ := by
   by_cases ha : 0 < a
   · ext r; simp [coeff_scale ha]
   · simp [scale, ha]
 
+/- English proof (translation)
+Distinguish the cases in `ha : 0 < a`. Simplify using `only [scale, dif_pos ha]`. Conclude with `HahnSeries.embDomain_mul _ (fun x y => mul_add a x y) φ ψ`. Simplify using `[scale, ha]`.
+-/
 theorem scale_mul (a : ℚ) (φ ψ : HahnSeries ℚ R) : scale a (φ * ψ) = scale a φ * scale a ψ := by
   by_cases ha : 0 < a
   · simp only [scale, dif_pos ha]
     exact HahnSeries.embDomain_mul _ (fun x y => mul_add a x y) φ ψ
   · simp [scale, ha]
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[coeff_scale one_pos, div_one]`.
+-/
 @[local simp] theorem scale_one (φ : HahnSeries ℚ R) : scale 1 φ = φ := by
   ext r; rw [coeff_scale one_pos, div_one]
 
+/- English proof (translation)
+Simplify using `[latPart]`.
+-/
 theorem coeff_latPart (N : ℕ) (φ : HahnSeries ℚ R) (r : ℚ) :
     (latPart N φ).coeff r = if ((N : ℚ) * r).den = 1 then φ.coeff r else 0 := by
   simp [latPart]
 
+/- English proof (translation)
+Establish `h : (0 : ℚ) < (q : ℚ)⁻¹` using `by positivity`. Rewrite using `[uqN, coeff_latPart, coeff_scale h, div_inv_eq_mul, mul_comm r]`.
+-/
 theorem coeff_uqN (N : ℕ) {q : ℕ} (hq : 0 < q) (φ : HahnSeries ℚ R) (r : ℚ) :
     (uqN N q φ).coeff r = if ((N : ℚ) * r).den = 1 then φ.coeff (q * r) else 0 := by
   have h : (0 : ℚ) < (q : ℚ)⁻¹ := by positivity
   rw [uqN, coeff_latPart, coeff_scale h, div_inv_eq_mul, mul_comm r]
 
+/- English proof (translation)
+Rewrite using `[uq, coeff_uqN 1 hq]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_uq {q : ℕ} (hq : 0 < q) (φ : HahnSeries ℚ R) (r : ℚ) :
     (uq q φ).coeff r = if r.den = 1 then φ.coeff (q * r) else 0 := by
   rw [uq, coeff_uqN 1 hq]; simp
 
+/- English proof (translation)
+The claim follows from `coeff_scale (by exact_mod_cast hq) φ r`.
+-/
 theorem coeff_vq {q : ℕ} (hq : 0 < q) (φ : HahnSeries ℚ R) (r : ℚ) : (vq q φ).coeff r = φ.coeff (r / q) :=
   coeff_scale (by exact_mod_cast hq) φ r
 
@@ -111,20 +153,32 @@ attribute [local simp] coeff_cm coeff_qD
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Rewrite using `[sub, mul_div_assoc, mul_comm r, coeff_scale_mul h, coeff_cm]`.
+-/
 theorem coeff_sub_upper {a d : ℚ} (h : 0 < a / d) (b : ℚ) (φ : HahnSeries ℚ Ω) (r : ℚ) :
     (sub ε a b d φ).coeff (r * a / d) = eOm ε (r * b / d) * φ.coeff r := by
   rw [sub, mul_div_assoc, mul_comm r, coeff_scale_mul h, coeff_cm]
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Simplify using `only [sub, cm_add, scale_add]`.
+-/
 theorem sub_map_add (a b d : ℚ) (φ ψ : HahnSeries ℚ Ω) : sub ε a b d (φ + ψ) = sub ε a b d φ + sub ε a b d ψ := by
   simp only [sub, cm_add, scale_add]
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Simplify using `only [sub, cm_smul, scale_smul]`.
+-/
 theorem sub_map_smul (a b d : ℚ) (t : Ω) (φ : HahnSeries ℚ Ω) : sub ε a b d (t • φ) = t • sub ε a b d φ := by
   simp only [sub, cm_smul, scale_smul]
 
+/- English proof (translation)
+Establish `h : 0 < ((g : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ).det` using `g.2`. Rewrite `h` using `[Matrix.det_fin_two]`. Express the relevant statement in the definitionally equal form `0 < ent g 0 0 * ent g 1 1 - ent g 0 1 * ent g 1 0 at h`. Rewrite `h` using `[hg, mul_zero, sub_zero]`. Conclude with `div_pos_iff.2 (mul_pos_iff.1 h)`.
+-/
 theorem ent_div_pos (g : GQ) (hg : ent g 1 0 = 0) : 0 < ent g 0 0 / ent g 1 1 := by
   have h : 0 < ((g : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ).det := g.2
   rw [Matrix.det_fin_two] at h
@@ -132,6 +186,9 @@ theorem ent_div_pos (g : GQ) (hg : ent g 1 0 = 0) : 0 < ent g 0 0 / ent g 1 1 :=
   rw [hg, mul_zero, sub_zero] at h
   exact div_pos_iff.2 (mul_pos_iff.1 h)
 
+/- English proof (translation)
+Establish `h` using `ent_div_pos g hg`. Use extensionality with `s`. Take `⟨r, rfl⟩ : ∃ r, s = r * ent g 0 0 / ent g 1 1` from `⟨s / (ent g 0 0 / ent g 1 1), by rw [mul_div_assoc, div_mul_cancel₀ _ h.ne']⟩`. Rewrite using `[X.exp_upper g hg, coeff_sub_upper h]`.
+-/
 theorem exp_sl_upper (X : Tower Ω ε) (g : GQ) (hg : ent g 1 0 = 0) (f : X.K) :
     X.exp (X.sl g f) = sub ε (ent g 0 0) (ent g 0 1) (ent g 1 1) (X.exp f) := by
   have h := ent_div_pos g hg
@@ -142,11 +199,17 @@ theorem exp_sl_upper (X : Tower Ω ε) (g : GQ) (hg : ent g 1 0 = 0) (f : X.K) :
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Rewrite using `[eOm, ← h]`. Conclude with `Function.leftInverse_invFun ε.injective c`.
+-/
 theorem eOm_eq_of {x : ℚ} {c : Ω} (h : ε c = Complex.exp (2 * Real.pi * Complex.I * (x : ℂ))) : eOm ε x = c := by
   rw [eOm, ← h]; exact Function.leftInverse_invFun ε.injective c
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Apply `eOm_eq_of` to reduce the goal to its premises. Rewrite using `[map_zpow₀, hζ, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eOm_intCast_div {q : ℕ} {ζ : Ω} (hζ : ε ζ = Complex.exp (2 * Real.pi * Complex.I / q)) (n : ℤ) :
     eOm ε ((n : ℚ) / q) = ζ ^ n := by
   apply eOm_eq_of
@@ -155,6 +218,9 @@ theorem eOm_intCast_div {q : ℕ} {ζ : Ω} (hζ : ε ζ = Complex.exp (2 * Real
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := ε.charZero`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω q`. Take `⟨i, -, hi⟩` from `(hξ.map_of_injective ε.injective).eq_pow_of_pow_eq_one (Complex.isPrimitiveRoot_exp q hq.ne').pow_eq_one`. Conclude with `⟨ξ ^ i, by rw [map_pow, hi]⟩`.
+-/
 theorem exists_root_of_isAlgClosed [IsAlgClosed Ω] (ε : Ω →+* ℂ) {q : ℕ} (hq : 0 < q) :
     ∃ ζ : Ω, ε ζ = Complex.exp (2 * Real.pi * Complex.I / q) := by
   haveI : CharZero Ω := ε.charZero
@@ -166,6 +232,11 @@ theorem exists_root_of_isAlgClosed [IsAlgClosed Ω] (ε : Ω →+* ℂ) {q : ℕ
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Establish `h0 : (0 : ℚ) < q` using `by exact_mod_cast hq0`. Rewrite using `[hq, HahnSeries.coeff_smul, HahnSeries.coeff_sum, smul_eq_mul, mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `coeff_sub_upper (ε := ε) (a := 1) (d := q) (by positivity) j φ (q * r)` as an intermediate fact.
+
+Rewrite `this` using `[show (q : ℚ) * r * 1 / q = r by field_simp, show (q : ℚ) * r * j / q = r * j by field_simp]`. Conclude with `this`.
+-/
 theorem coeff_hq {q : ℕ} (hq0 : 0 < q) (φ : HahnSeries ℚ Ω) (r : ℚ) :
     (hq ε q φ).coeff r = (q : Ω)⁻¹ * (∑ j ∈ Finset.range q, eOm ε (r * j)) * φ.coeff (q * r) := by
   have h0 : (0 : ℚ) < q := by exact_mod_cast hq0
@@ -178,6 +249,23 @@ theorem coeff_hq {q : ℕ} (hq0 : 0 < q) (φ : HahnSeries ℚ Ω) (r : ℚ) :
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `hζ`. Use `haveI : CharZero Ω := ε.charZero`. Establish `h0 : (q : ℚ) ≠ 0` using `by exact_mod_cast hq0.ne'`. Establish `h1 : (q : Ω) ≠ 0` using `by exact_mod_cast hq0.ne'`. Establish `hp : IsPrimitiveRoot ζ q` using `IsPrimitiveRoot.of_map_of_injective (f := ε) (hζ ▸ Complex.isPrimitiveRoot_exp q hq0.ne') ε.injective`.
+
+Use extensionality with `r`. Rewrite using `[coeff_hq hq0, coeff_uq hq0]`. Distinguish the cases in `hc : φ.coeff (q * r) = 0`. Simplify using `[hc]`. Establish `hd` using `hφ _ hc`.
+
+Rewrite `hd` using `[Nat.cast_one, one_mul]`. Take `⟨n, hn⟩ : ∃ n : ℤ, (q : ℚ) * r = n` from `⟨_, (Rat.coe_int_num_of_den_eq_one hd).symm⟩`. Establish `hr : r = n / q` using `by rw [← hn]; field_simp`. Establish `he : ∀ j : ℕ, eOm ε (r * j) = (ζ ^ n) ^ j` using `fun j => by`. Rewrite using `[← zpow_natCast, ← zpow_mul, ← eOm_intCast_div hζ, hr]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [he]`. Use `split_ifs with hr1`.
+
+Establish `: ζ ^ n = 1`. Rewrite using `[hp.zpow_eq_one_iff_dvd]`. Use `⟨r.num, ?_⟩` and prove the remaining obligations. Establish `: (n : ℚ) = q * r.num` using `by rw [Rat.coe_int_num_of_den_eq_one hr1, hn]`. Conclude with `this` after adjusting the coercions.
+
+Simplify using `[this, h1]`. Establish `hne : ζ ^ n ≠ 1`. Rewrite using `[Ne, hp.zpow_eq_one_iff_dvd]`. Introduce and unpack `⟨m, rfl⟩`. Apply `hr1` to reduce the goal to its premises.
+
+Establish `: r = m` using `by rw [hr]; push_cast; field_simp`. Rewrite using `[this, Rat.den_intCast]`. Establish `hq1 : (ζ ^ n) ^ q = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hp.pow_eq_one, one_zpow]`. Rewrite using `[geom_sum_eq hne, hq1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hq_eq_uq {q : ℕ} (hq0 : 0 < q) (hζ : ∃ ζ : Ω, ε ζ = Complex.exp (2 * Real.pi * Complex.I / q))
     {φ : HahnSeries ℚ Ω} (hφ : IsLat 1 φ) : hq ε q φ = uq q φ := by
   obtain ⟨ζ, hζ⟩ := hζ
@@ -216,9 +304,17 @@ theorem hq_eq_uq {q : ℕ} (hq0 : 0 < q) (hζ : ∃ ζ : Ω, ε ζ = Complex.exp
 
 omit [Algebra ℚ Ω] in
 
+/- English proof (translation)
+The claim follows from `hq_eq_uq hq0 (exists_root_of_isAlgClosed ε hq0) hφ`.
+-/
 theorem hq_eq_uq_of_isAlgClosed [IsAlgClosed Ω] {q : ℕ} (hq0 : 0 < q) {φ : HahnSeries ℚ Ω} (hφ : IsLat 1 φ) :
     hq ε q φ = uq q φ := hq_eq_uq hq0 (exists_root_of_isAlgClosed ε hq0) hφ
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[coeff_uq two_pos, HahnSeries.coeff_zero]`. Use `split_ifs with h`. Use `HahnSeries.coeff_single_of_ne fun h2 => ?_` and prove the remaining obligations. Establish `: r = 1 / 2` using `by push_cast at h2; linarith`.
+
+Substitute `this` using the available equality. Evaluate the numerical expressions using `at h`. Both sides reduce to the same expression.
+-/
 example : uq 2 (HahnSeries.single (1 : ℚ) (1 : ℤ)) = 0 := by
   ext r
   rw [coeff_uq two_pos, HahnSeries.coeff_zero]
@@ -228,14 +324,28 @@ example : uq 2 (HahnSeries.single (1 : ℚ) (1 : ℤ)) = 0 := by
     subst this; norm_num at h
   · rfl
 
+/- English proof (translation)
+Rewrite using `[coeff_uq two_pos]`. Evaluate the numerical expressions.
+-/
 example : (uq 2 (HahnSeries.single (6 : ℚ) (5 : ℤ))).coeff 3 = 5 := by
   rw [coeff_uq two_pos]; norm_num
 
+/- English proof (translation)
+Rewrite using `[coeff_vq two_pos]`. Evaluate the numerical expressions.
+-/
 example : (vq 2 (HahnSeries.single (3 : ℚ) (5 : ℤ))).coeff 6 = 5 := by
   rw [coeff_vq two_pos]; norm_num
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : (qD (HahnSeries.single (-1 / 2 : ℚ) (1 : ℚ))).coeff (-1 / 2) = -1 / 2 := by simp
 
+/- English proof (translation)
+Rewrite using `[hq_eq_uq two_pos ⟨-1, ?_⟩, coeff_uq two_pos]`. Evaluate the numerical expressions. Introduce `r hr`. Establish `: r = 1` using `by by_contra h; exact hr (HahnSeries.coeff_single_of_ne h)`. Substitute `this` using the available equality.
+
+Evaluate the numerical expressions. Rewrite using `[show (2 * Real.pi * Complex.I / ((2 : ℕ) : ℂ)) = Real.pi * Complex.I by push_cast; ring, Complex.exp_pi_mul_I]; simp`.
+-/
 example : (hq (Rat.castHom ℂ) 2 (HahnSeries.single (1 : ℚ) (1 : ℚ))).coeff (1 / 2) = 0 := by
   rw [hq_eq_uq two_pos ⟨-1, ?_⟩, coeff_uq two_pos]
   · norm_num

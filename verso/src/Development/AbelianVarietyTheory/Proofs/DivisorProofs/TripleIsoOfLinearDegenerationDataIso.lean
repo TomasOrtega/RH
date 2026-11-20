@@ -16,6 +16,25 @@ namespace GlobalTheory.LinDataTriple
 
 open GlobalTheory.LinearUnifIso in
 
+/- English proof (translation)
+Introduce `hG R _ _ _ _ I hI D D' A A' G G' _ _ _ _ sG' U U' hD bc hbc hU O _ _ _ _ ιD ιD' ιA ιA' ιG ιG' lin lin' hx hB a`. Establish `hs : specOf (RingHom.id R) = 𝟙 _` using `specOf_id R`. Use `hD.e_hom` as an intermediate fact. Take `⟨φ, hφ, eφ⟩` from `exists_hom_of_pullback_id hs bc`. Take `⟨ψ, hψ, eψ⟩` from `exists_hom_of_pullback_id hs hD.e`.
+
+Take `⟨wL, -, he, -, H⟩` from `(isPullUnif_iff_stalks R R I I _ D D' hD A A' G G' bc U U').1 hU`. Establish `P : ∀ (e : ℕ) {X Y : Over (Spec (CommRingCat.of R))} (c : X ⟶ Y), ((Over.pullback (thick R I e)).map c).left ≫ pullback.fst Y.hom (thick R I e) = pullback.fst X.hom (thick R I e) ≫ c.left` using `fun e _ _ c => pullback.lift_fst _ _ _`. Establish `hψa : ιD'.onB.act a ≫ ψ = ψ ≫ ιD.onB.act a` using `Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, Over.comp_left, eψ]`. Conclude with `hB a)`.
+
+Establish `key : ιG'.act a ≫ φ = φ ≫ ιG.act a`. Use `sG'.smooth` as an intermediate fact. Use `sG'.geomConnected` as an intermediate fact. Use `U.separated` as an intermediate fact. Use `(sec_eq_zero_and_hom_eq_of_thickenings R I (hI ▸ IsLocalRing.maximalIdeal_le_jacobson ⊥) G').2 G _ _ fun e => ?_` and prove the remaining obligations.
+
+Take `⟨h, hf, ⟨hp, ht⟩, -⟩` from `H e`. Choose the witnesses or unpack the hypotheses as in `rfl : h = ((Over.pullback (thick R I e)).map φ).left := by`. Rewrite using `[← cancel_mono (pullback.fst G.hom (thick R I e)), P, eφ]`. Conclude with `hf`. Establish `hq : (Over.pullback (thick R I e)).map φ ≫ (U.gt e).q = (U'.gt e).q ≫ (Over.pullback (thick R I e)).map ψ`.
+
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (pullback.fst D.toPre.P.A.hom (thick R I e)), Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, P, eψ]`. Conclude with `hp.symm.trans (Category.assoc _ _ _)`. Take `⟨s, hsi, hsx⟩` from `exists_torus_map (U.gt e) (U'.gt e) _ _ hq hD.w hD.xe (fun x => (ht x).1) (fun x => (ht x).2)`. Take `⟨t, tc, ti⟩` from `lin.i_lin e a`.
+
+Take `⟨t', tc', ti'⟩` from `lin'.i_lin e a`. Use `ιG.hom a` as an intermediate fact. Use `ιG'.hom a` as an intermediate fact. Establish `hts : t' ≫ s = s ≫ t`. Use `PowTorus.torus_ext _ _ fun χ z => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `hD.xe.surjective χ`. Rewrite using `[Over.comp_left, Over.comp_left, gm_torusEnd tc, ← hx, hsx, gm_comp_of_id _ _ _ (hsx x), ← gm_torusEnd tc', Category.id_comp]`. Establish `E : (Over.pullback (thick R I e)).map (ιG'.act a) ≫ (Over.pullback (thick R I e)).map φ = (Over.pullback (thick R I e)).map φ ≫ (Over.pullback (thick R I e)).map (ιG.act a)`. Use `hom_ext_torus (U.gt e) (U'.gt e) hG _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, lin.q_lin, hq, reassoc_of% hq, reassoc_of% (lin'.q_lin e a), ← Functor.map_comp, ← Functor.map_comp, hψa]`.
+
+Rewrite using `[reassoc_of% ti', ← hsi, ← reassoc_of% hsi, ti, reassoc_of% hts]`. Rewrite `E` using `[← Functor.map_comp, ← Functor.map_comp]`. Conclude with `(P e _).symm.trans ((congrArg (fun c => c.left ≫ pullback.fst G.hom (thick R I e)) E).trans (P e _))`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `a₂ : ((Over.pullback (specOf (RingHom.id R))).map (ιG.act a)).left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = pullback.fst _ _ ≫ (ιG.act a).left` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, a₂, ← eφ, ← Category.assoc, ← eφ, ← Over.comp_left, key, Over.comp_left]`.
+-/
 theorem act_comm_noeth : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I = IsLocalRing.maximalIdeal R → ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G G' : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U : Unif I D A G) (U' : Unif I D' A' G') (hD : IsPullDeg (RingHom.id R) D.toPre D'.toPre) (bc : G' ≅ (Over.pullback (specOf (RingHom.id R))).obj G), IsMonHom bc.hom → IsPullUnif (RingHom.id R) hD bc U U' → ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] [Module O D'.toPre.X] (ιD : D.toPre.OAct O) (ιD' : D'.toPre.OAct O) (ιA : A.OAct O) (ιA' : A'.OAct O) (ιG : RingAct G O) (ιG' : RingAct G' O), U.OLinear O ιD ιA ιG → U'.OLinear O ιD' ιA' ιG' → (∀ (x : O) (y : D'.toPre.X), hD.xe (x • y) = x • hD.xe y) → (∀ x, (ιD'.onB.act x).left ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R))) = (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R))) ≫ (ιD.onB.act x).left) → ∀ x, ιG'.act x ≫ bc.hom = bc.hom ≫ (Over.pullback (specOf (RingHom.id R))).map (ιG.act x) := by
   intro hG R _ _ _ _ I hI D D' A A' G G' _ _ _ _ sG' U U' hD bc hbc hU O _ _ _ _ ιD ιD' ιA ιA' ιG ιG'
     lin lin' hx hB a
@@ -73,6 +92,19 @@ theorem act_comm_noeth : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R
 
 end GlobalTheory.LinDataTriple
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ hB t t' P P' hD hx hB'`. Use `letI := H.starRing`. Establish `hR : AdmBase V (maximalIdeal V)` using `hB.1`. Use `hR.1` as an intermediate fact. Take `⟨ψ, bc, -, hψm, hbcm, hbc', hP, -⟩` from `GlobalTheory.unif_determined_by_data_normal V hR P.D P.A t.G t.semi P.U P'.D P'.A t'.G t'.semi P'.U hD`.
+
+Establish `hL` using `GlobalTheory.firstFiveLaws.1`. Establish `hBl : ∀ x, (P'.oD.onB.act x).left ≫ (hD.e.hom.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf (RingHom.id V))) = (hD.e.hom.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf (RingHom.id V))) ≫ (P.oD.onB.act x).left`. Introduce `x`. Establish `e` using `congrArg (fun c => c.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf (RingHom.id V))) (hB' x)`. Simplify using `only [Over.comp_left, Category.assoc] at e`.
+
+Rewrite using `[e]`. Conclude with `congrArg (hD.e.hom.left ≫ ·) (pullback.lift_fst _ _ _)`. Establish `hact` using `GlobalTheory.LinDataTriple.act_comm_noeth hL.globalFns V (maximalIdeal V) rfl P.D P'.D P.A P'.A t.G t'.G t'.semi P.U P'.U hD bc hbcm hP (𝓞 E) P.oD P'.oD P.oA P'.oA t.act.toRingAct t'.act.toRingAct P.lin P'.lin hx hBl`. Establish `hact' : ∀ a, (t'.act.act a).left ≫ ψ.hom.left = ψ.hom.left ≫ (t.act.act a).left`. Introduce `a`.
+
+Establish `e` using `congrArg (fun c => c.left ≫ pullback.fst t.G.hom (specOf (RingHom.id V))) (hact a)`. Simplify using `only [Over.comp_left, Category.assoc] at e`. Rewrite using `[← hbc', Category.assoc]`. Conclude with `e.trans (congrArg (bc.hom.left ≫ ·) (pullback.lift_fst _ _ _))`. Establish `hLB : LBIso t'.PP.L (t.PP.L.pull ψ.hom.left)`.
+
+Take `⟨w, hw, -⟩` from `hP.lg`. Rewrite using `[← P.bundle, ← P'.bundle, ← hbc']`. Conclude with `⟨w, hw⟩`. Use `P'.U.gen_hom` as an intermediate fact. Establish `hp : IsProper (pullback.snd t'.G.hom (jK V))` using `MorphismProperty.of_isPullback (P := @IsProper) (isGrpPullback_of_iso P'.U.gen).1 P'.A.isAb.proper`.
+
+Establish `hab` using `GlobalTheory.RigCube.genericPoints_subset_abLocus t'.G t'.semi hp`. Take `⟨ν, -⟩` from `GlobalTheory.exists_sabMap_of_lbIso E H (Sp V) (Sp V) t t' (𝟙 _) ψ.hom.left ⟨inferInstance, hab⟩ (isGrpPullback_of_iso ψ) hact' hLB`. Conclude with `⟨ν⟩`.
+-/
 theorem GlobalTheory.triple_iso_of_linear_data_iso : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → ∀ (t t' : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (P' : PELUnif (maximalIdeal V) t') (hD : IsPullDeg (RingHom.id V) P.D.toPre P'.D.toPre), (∀ (x : 𝓞 E) y, hD.xe (x • y) = x • hD.xe y) → (letI := H.starRing; ∀ x, P'.oD.onB.act x ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf (RingHom.id V))).map (P.oD.onB.act x)) → Nonempty (SABMap t' t (𝟙 _)) := by
   intro E _ _ _ H V _ _ _ hB t t' P P' hD hx hB'
   letI := H.starRing

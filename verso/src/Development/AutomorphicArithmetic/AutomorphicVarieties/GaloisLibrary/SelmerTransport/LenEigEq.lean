@@ -9,10 +9,18 @@ variable {O Q N : Type} [CommRing O] [CommGroup Q] [Fintype Q] [AddCommGroup N] 
 private noncomputable def prj (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) : N →ₗ[O] N :=
   c • ∑ g : Q, ((ψ g⁻¹ : Oˣ) : O) • π g
 
+/- English proof (translation)
+Simplify using `only [prj, LinearMap.smul_apply, LinearMap.sum_apply]`.
+-/
 private theorem prj_apply (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) (x : N) :
     prj π c ψ x = c • ∑ g : Q, ((ψ g⁻¹ : Oˣ) : O) • π g x := by
   simp only [prj, LinearMap.smul_apply, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_eig]`. Introduce `h`. Rewrite using `[prj_apply, map_smul, smul_comm, map_sum, Finset.smul_sum (r := ((ψ h : Oˣ) : O))]`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_smul, Equiv.coe_mulLeft, ← Units.val_mul, ← map_mul, map_mul π, Module.End.mul_apply]`. Use `congr 3`. Rewrite using `[mul_inv, mul_inv_cancel_left]`.
+-/
 private theorem prj_mem (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) (x : N) :
     prj π c ψ x ∈ eig π ψ := by
   rw [mem_eig]
@@ -24,6 +32,9 @@ private theorem prj_mem (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) (x
   congr 3
   rw [mul_inv, mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[← mem_eig.1 (prj_mem π c ψ x) h, prj_apply, prj_apply, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`.
+-/
 private theorem prj_act (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) (h : Q) (x : N) :
     prj π c ψ (π h x) = ((ψ h : Oˣ) : O) • prj π c ψ x := by
   rw [← mem_eig.1 (prj_mem π c ψ x) h, prj_apply, prj_apply, map_smul, map_sum]
@@ -31,6 +42,9 @@ private theorem prj_act (π : Representation O Q N) (c : O) (ψ : Q →* Oˣ) (h
   refine Finset.sum_congr rfl fun g _ => ?_
   rw [map_smul, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Establish `: ∀ g : Q, ((ψ g⁻¹ : Oˣ) : O) • π g x = x` using `fun g => by`. Rewrite using `[mem_eig.1 hx, smul_smul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_smul]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul O, smul_smul, hc, one_smul]`.
+-/
 private theorem prj_self (π : Representation O Q N) {c : O} (hc : c * (Fintype.card Q : O) = 1) (ψ : Q →* Oˣ)
     {x : N} (hx : x ∈ eig π ψ) : prj π c ψ x = x := by
   rw [prj_apply]
@@ -39,6 +53,13 @@ private theorem prj_self (π : Representation O Q N) {c : O} (hc : c * (Fintype.
   simp only [this]
   rw [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul O, smul_smul, hc, one_smul]
 
+/- English proof (translation)
+Rewrite using `[prj_apply]`. Establish `: ∀ g : Q, ((ψ g⁻¹ : Oˣ) : O) • π g x = ((Units.coeHom O).comp (ψ⁻¹ * χ) g) • x` using `fun g => by`. Rewrite using `[mem_eig.1 hx, smul_smul]`. Simplify using the standard rewrite rules. Simplify using `only [this]`.
+
+Rewrite using `[← Finset.sum_smul, sum_hom_units_eq_zero, zero_smul, smul_zero]`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use extensionality with `g`. Establish `h1` using `DFunLike.congr_fun h g`.
+
+Establish `h2 : (ψ g)⁻¹ * χ g = 1` using `Units.ext (by simpa using h1)`. Rewrite using `[inv_mul_eq_one.1 h2]`.
+-/
 private theorem prj_ne [IsDomain O] (π : Representation O Q N) (c : O) {ψ χ : Q →* Oˣ} (hne : ψ ≠ χ)
     {x : N} (hx : x ∈ eig π χ) : prj π c ψ x = 0 := by
   rw [prj_apply]
@@ -54,6 +75,13 @@ private theorem prj_ne [IsDomain O] (π : Representation O Q N) (c : O) {ψ χ :
   have h2 : (ψ g)⁻¹ * χ g = 1 := Units.ext (by simpa using h1)
   rw [inv_mul_eq_one.1 h2]
 
+/- English proof (translation)
+Establish `hx : x = c • ∑ g : Q, ((ψ g⁻¹ : Oˣ) : O) • ((ψ g : Oˣ) : O) • x`. Establish `: ∀ g : Q, ((ψ g⁻¹ : Oˣ) : O) • ((ψ g : Oˣ) : O) • x = x` using `fun g => by`. Rewrite using `[smul_smul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_smul]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul O, smul_smul, hc, one_smul]`.
+
+Establish `: prj π c ψ x - x = c • ∑ g : Q, ((ψ g⁻¹ : Oˣ) : O) • (π g x - ((ψ g : Oˣ) : O) • x)`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← hx, prj_apply]`. Rewrite using `[this]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations.
+
+Conclude with `Submodule.mem_iSup_of_mem g ⟨x, rfl⟩`.
+-/
 private theorem sub_prj_mem (π : Representation O Q N) {c : O} (hc : c * (Fintype.card Q : O) = 1) (ψ : Q →* Oˣ)
     (x : N) : prj π c ψ x - x ∈ coeig π ψ := by
   have hx : x = c • ∑ g : Q, ((ψ g⁻¹ : Oˣ) : O) • ((ψ g : Oˣ) : O) • x := by
@@ -68,6 +96,13 @@ private theorem sub_prj_mem (π : Representation O Q N) {c : O} (hc : c * (Finty
   refine Submodule.smul_mem _ _ (Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ ?_)
   exact Submodule.mem_iSup_of_mem g ⟨x, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [prj_apply]`. Rewrite using `[← Finset.smul_sum, Finset.sum_comm, Finset.sum_eq_single (1 : Q)]`. Simplify using `only [inv_one, map_one, Units.val_one, one_smul, Module.End.one_apply]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity, Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul O, smul_smul, hc, one_smul]`. Introduce `g _ hg`.
+
+Rewrite using `[← Finset.sum_smul]`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Q O (inv_ne_one.2 hg)`. Use `sum_hom_units_eq_zero ((Units.coeHom O).comp (MonoidHom.eval g⁻¹ : (Q →* Oˣ) →* Oˣ)) (by` as an intermediate fact. Introduce `h`. Conclude with `hφ (Units.ext (DFunLike.congr_fun h φ)))`.
+
+Establish `h2 : ∑ ψ : Q →* Oˣ, ((ψ g⁻¹ : Oˣ) : O) = 0` using `this`. Rewrite using `[h2, zero_smul]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_prj [IsDomain O] [HasEnoughRootsOfUnity O (Monoid.exponent Q)] [Fintype (Q →* Oˣ)]
     (π : Representation O Q N) {c : O} (hc : c * (Fintype.card Q : O) = 1) (x : N) :
     ∑ ψ : Q →* Oˣ, prj π c ψ x = x := by
@@ -89,6 +124,21 @@ private theorem sum_prj [IsDomain O] [HasEnoughRootsOfUnity O (Monoid.exponent Q
 
 end
 
+/- English proof (translation)
+Introduce `O Q N _ _ _ _ _ _ _ _ π hu`. Use `letI := Fintype.ofFinite Q`. Rewrite `hu` using `[Nat.card_eq_fintype_card]`. Take `⟨c, hc⟩` from `hu.exists_left_inv`. Use `⟨?_, fun ψ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← Module.length_pi_of_fintype]`. Set `f : N →ₗ[O] (∀ ψ : Q →* Oˣ, eig π ψ)` to `LinearMap.pi fun ψ => (prj π c ψ).codRestrict (eig π ψ) (prj_mem π c ψ)`. Establish `hf : ∀ x ψ, ((f x ψ : eig π ψ) : N) = prj π c ψ x` using `fun _ _ => rfl`. Use `(LinearEquiv.ofBijective f ⟨?_, ?_⟩).length_eq` and prove the remaining obligations. Introduce `x y hxy`.
+
+Rewrite using `[← sum_prj π hc x, ← sum_prj π hc y]`. Conclude with `Finset.sum_congr rfl fun ψ _ => by rw [← hf, ← hf, hxy]`. Introduce `y`. Use `⟨∑ χ, (y χ : N), funext fun ψ => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hf, map_sum, Finset.sum_eq_single ψ, prj_self π hc ψ (y ψ).2]`.
+
+Introduce `χ _ hχ`. Conclude with `prj_ne π c hχ.symm (y χ).2`. Simplify using the standard rewrite rules. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hy`.
+
+Establish `hle : coeig π ψ ≤ LinearMap.ker (prj π c ψ)`. Use `iSup_le fun g => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Simplify using `[prj_act]`. Rewrite using `[← prj_self π hc ψ hx]`.
+
+Conclude with `hle hy`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Establish `: x = prj π c ψ x - (prj π c ψ x - x)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (prj_mem π c ψ x)) (Submodule.mem_sup_right (sub_prj_mem π hc ψ x))`.
+-/
 theorem UpperTheory.V.Base.lenEigEq :
     ∀ (O Q N : Type) [CommRing O] [IsDomain O] [CommGroup Q] [Finite Q] [HasEnoughRootsOfUnity O (Monoid.exponent Q)]
       [Fintype (Q →* Oˣ)] [AddCommGroup N] [Module O N] (π : Representation O Q N), IsUnit (Nat.card Q : O) →

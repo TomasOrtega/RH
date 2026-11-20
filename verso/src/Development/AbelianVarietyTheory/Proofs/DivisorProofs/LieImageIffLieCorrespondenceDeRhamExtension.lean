@@ -25,6 +25,21 @@ namespace GlobalTheory.PtExt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hHdR p _ R _ hnil A _ g hA hsm G t E hE h v`. Take `⟨N, hN⟩` from `hnil`. Use `haveI := isAdicComplete_span_natCast_of_isNilpotent p R ⟨N, hN⟩`. Establish `key : ∀ (β : Form (A.hom ≫ 𝟙 _)) (hβ : Form.cl _ β ∈ primDR A) (w : G.omega), IsCan t ⟨_, hβ⟩ (G.rigOfOmega w) → G.lieUnivToLie (E.symm.dualMap h) w = h ⟨_, hβ⟩`. Introduce `β hβ w hw`.
+
+Establish `e : E ⟨_, hβ⟩ = G.rigOfOmega w` using `isCan_unique R A p G t _ hA _ _ (hE _) hw`. Express the relevant statement in the definitionally equal form `(E.symm.dualMap h) (G.rigOfOmega w) = _`. Rewrite using `[LinearEquiv.dualMap_apply, ← e, LinearEquiv.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hh⟩`.
+
+Take `⟨x', hx', -⟩` from `t.existsUnique_lieCorr hv`. Take `⟨ψ, hψ⟩` from `T.exists_hodgeFiltration_to_pDivOmega_linearMap p R N hN A hA G t`. Use `haveI : Module.Finite R G.omega := .equiv (LinearEquiv.ofBijective _ (PDivGroup.omegaLevel_bijective_of_pow_eq_zero p R N hN G N le_rfl)).symm`. Establish `hs` using `surjective_of_range_sup_smul_top_eq_top R _ _ ψ (T.primitive_hodge_to_omega_span_mod_maximal hHdR p R N hN A g hA hsm G t ψ hψ)`. It suffices to establish `e : x' = G.lieUnivToLie (E.symm.dualMap h) by rw [← e]; exact hx'`.
+
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hs w`. Take `⟨c, hF⟩` from `c`. Establish `hF'` using `hF`. Express the relevant statement in the definitionally equal form `c.1 ∈ F1 _ at hF'`.
+
+Rewrite `hF'` using `[hodgeFiltration_eq_range]`. Take `⟨c, hc⟩` from `c`. Take `⟨β, rfl⟩` from `hF'`. Take `⟨w, hw1, hw2⟩` from `isCan_form R A p G t β hc`. Establish `hw : ψ ⟨_, hF⟩ = w` using `PDivGroup.rigOfOmega_injective_of_pow p R N hN G (isCan_unique R A p G t _ hA _ _ (hψ _) hw2)`.
+
+Rewrite using `[key β hc _ (hψ ⟨_, hF⟩), hw, lie_cotVal_eq_tanVal R A p G t ⟨N, hN⟩ β w hw1 x' v hx', hh β hc]`. Introduce `hx`. Use `⟨hx.1, fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨w, hw1, hw2⟩` from `isCan_form R A p G t β hβ`. Rewrite using `[← key β hβ w hw2]`.
+
+Conclude with `lie_cotVal_eq_tanVal R A p G t ⟨N, hN⟩ β w hw1 _ v hx`.
+-/
 theorem isLieImage_iff_lieCorr : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R], IsNilpotent (p : R) → ∀ (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (G : PDivGroup p R) (t : G.TorsionTower A) (E : primDR A ≃ₗ[R] G.RigExt), (∀ c, IsCan t c (E c)) → ∀ (h : HdR A) (v : epsR R ⟶ A), IsLieImage h v ↔ t.LieCorr (G.lieUnivToLie (E.symm.dualMap h)) v := by
   intro hHdR p _ R _ hnil A _ g hA hsm G t E hE h v
   obtain ⟨N, hN⟩ := hnil

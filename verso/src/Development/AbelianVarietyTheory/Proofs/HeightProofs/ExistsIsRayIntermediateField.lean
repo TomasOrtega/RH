@@ -16,6 +16,11 @@ open scoped IntermediateField
 
 namespace GlobalTheory.FieldSize.SmallField
 
+/- English proof (translation)
+Take `⟨M, _, _, _, hM⟩` from `GlobalTheory.Mem.Fld.rayField_iff.1 hR K 𝔮 h𝔮`. Use `hM.1` as an intermediate fact. Set `f : M →ₐ[K] ℂ` to `IsAlgClosed.lift`. Set `e : M ≃ₐ[K] f.fieldRange` to `AlgEquiv.ofInjectiveField f`. Establish `: FiniteDimensional K f.fieldRange` using `e.toLinearEquiv.finiteDimensional`.
+
+Establish `: NumberField f.fieldRange` using `NumberField.of_module_finite K f.fieldRange`. Establish `h` using `hM.of_algEquiv e`. Conclude with `⟨f.fieldRange, inferInstance, h.1, h.2⟩`.
+-/
 theorem exists_isRay_intermediateField (hR : GlobalTheory.NT.RayField) (K : IntermediateField ℚ ℂ) [NumberField K]
     (𝔮 : Ideal (𝓞 K)) (h𝔮 : 𝔮 ≠ ⊥) :
     ∃ (R : IntermediateField K ℂ) (_ : NumberField R) (_ : IsAbelianGalois K R), IsRay R 𝔮 := by
@@ -28,6 +33,15 @@ theorem exists_isRay_intermediateField (hR : GlobalTheory.NT.RayField) (K : Inte
   have h := hM.of_algEquiv e
   exact ⟨f.fieldRange, inferInstance, h.1, h.2⟩
 
+/- English proof (translation)
+Establish `hd1 : (1 : ℝ) ≤ |(discr K : ℝ)|`. Establish `: ((discr K : ℤ) : ℝ) < -4` using `by exact_mod_cast hd`. Rewrite using `[abs_of_neg (by linarith)]; linarith`. Establish `hd0` using `Real.log_nonneg hd1`. Establish `hn0 : 0 ≤ Real.log n` using `Real.log_natCast_nonneg n`.
+
+Establish `hn : 0 < n` using `by omega`. Establish `hq : Ideal.span {(n : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hn.ne'` after adjusting the coercions. Take `⟨R, i1, i2, hRay⟩` from `exists_isRay_intermediateField hR K _ hq`.
+
+Establish `h` using `log_sizes_of_isRay_natCast K R h2 n hn hRay`. Establish `hs : Sz (R.restrictScalars ℚ) _ _` using `⟨i1.to_finiteDimensional, h⟩`. Use `⟨R.restrictScalars ℚ, sz_mono hs ?_ ?_, fun L hL => GlobalTheory.T.weber_set_subset_ray_field K h2 hd L hL n hodd h3 R hRay⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul (by norm_num) (by linarith)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 8 by norm_num)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_mul (by norm_num) (by linarith)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 4 by norm_num)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_weber_of_rayField (hR : GlobalTheory.NT.RayField) (K : IntermediateField ℚ ℂ) [NumberField K] [IsTotallyComplex K]
     (h2 : Module.finrank ℚ K = 2) (hd : discr K < -4) (n : ℕ) (hodd : Odd n) (h3 : 3 ≤ n) :
     ∃ W : IntermediateField ℚ ℂ, Sz W (7 + 3 / 2 * Real.log |(discr K : ℝ)| + 3 * Real.log n)
@@ -53,6 +67,11 @@ theorem exists_weber_of_rayField (hR : GlobalTheory.NT.RayField) (K : Intermedia
     have := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 4 by norm_num)
     linarith
 
+/- English proof (translation)
+Establish `ho : ∀ q ∈ P.host.levelPrimes, Odd q` using `fun q hq => by`. Use `P.level_mod_four q hq` as an intermediate fact. Rewrite using `[Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers. Use `⟨((ho _ (P.host.g_level 0)).mul (ho _ (P.host.g_level 1))).mul (ho p hp), ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `(P.level_prime p hp).two_le`. Establish `h4` using `P.level_mod_four p hp`. Establish `h0 : 0 < P.host.g 0 * P.host.g 1` using `Nat.mul_pos (P.host.g_prime 0).pos (P.host.g_prime 1).pos`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem odd_level (P : Pre) {p : ℕ} (hp : p ∈ P.host.levelPrimes) :
     Odd (P.host.g 0 * P.host.g 1 * p) ∧ 3 ≤ P.host.g 0 * P.host.g 1 * p := by
   have ho : ∀ q ∈ P.host.levelPrimes, Odd q := fun q hq => by
@@ -71,6 +90,45 @@ namespace GlobalTheory.FieldSize
 
 open SmallField GlobalTheory.Mem.BaseExt
 
+/- English proof (translation)
+Introduce `hW P`. Establish `hcm : IsCMField P.host.E` using `P.host.isCMField_hostE`. Establish `hgal : IsGalois ℚ P.host.E` using `P.host.hostE_isGalois`. Take `⟨K, _, _, hK2, -, hKd, hKE, hlat, hdeg⟩` from `GlobalTheory.T.exists_imag_quadratic_host P.R P.host`. Establish `hg0` using `(P.host.g_prime 0).pos`.
+
+Establish `hg1` using `(P.host.g_prime 1).pos`. Establish `hp` using `(P.level_prime _ P.host.pde_level.1).pos`. Establish `hp'` using `(P.level_prime _ P.host.pde_level.2).pos`. Establish `hE` using `sz_fieldRange_embedding P.host.E P.host.φ₀`. Use `set lE : ℝ := Real.log |((discr P.host.E : ℤ) : ℝ)| / Module.finrank ℚ P.host.E with hlE`.
+
+Use `set lh : ℝ := Real.log (classNumber P.host.E) with hlh`. Establish `hlE0 : 0 ≤ lE`. Use `div_nonneg (Real.log_nonneg ?_) (Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `Int.one_le_abs (discr_ne_zero P.host.E)` after adjusting the coercions. Establish `hdeg0 : 0 ≤ Real.log (Module.finrank ℚ P.host.E)` using `Real.log_natCast_nonneg _`.
+
+Establish `hdK : Real.log |(discr K : ℝ)| ≤ 2 * lE`. Take `⟨_, -, h⟩` from `GlobalTheory.T.field_size_monotone.2 _ _ _ _ hKE hE`. Establish `h' : Real.log |(discr K : ℝ)| / Module.finrank ℚ K ≤ lE` using `h`. Rewrite `h'` using `[hK2]`. Move the coercions through the operations in `at h'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE'` using `sz_mono hE (le_add_of_nonneg_right hlE0) (le_add_of_nonneg_left hdeg0)`. Take `⟨W, hWs, hWc⟩` from `exists_weber_of_rayField hW K hK2 hKd (P.host.g 0 * P.host.g 1 * P.host.pde) (odd_level P P.host.pde_level.1).1 (odd_level P P.host.pde_level.1).2`. Take `⟨W', hWs', hWc'⟩` from `exists_weber_of_rayField hW K hK2 hKd (P.host.g 0 * P.host.g 1 * P.host.pde') (odd_level P P.host.pde_level.2).1 (odd_level P P.host.pde_level.2).2`. Establish `h0` using `GlobalTheory.T.field_size_sup_add _ _ _ _ _ _ (GlobalTheory.T.field_size_sup_add _ _ _ _ _ _ hE' hWs) hWs'`.
+
+Take `⟨F₁, l1, s1, r1⟩` from `exists_roots [P.restRowsFiniteGroupCard, P.host.g 0 * (P.host.g 0 - 1), P.host.g 1 * (P.host.g 1 - 1), 3 ^ 4, 5 ^ 4, P.host.pde, P.host.pde', classNumber P.host.E, xiOrd P.host (P.host.g 0 * P.host.g 1 * P.host.pde), xiOrd P.host (P.host.g 0 * P.host.g 1 * P.host.pde')] _ _ h0`. Establish `hφ : ∀ x, P.host.φ₀ x ∈ F₁` using `fun x => l1 ((le_sup_left : _ ≤ _ ⊔ W') ((le_sup_left : _ ≤ _ ⊔ W) ⟨x, rfl⟩))`. Take `⟨F₂, l2, s2, c2⟩` from `GlobalTheory.T.exists_field_ideals_principal P.host.E P.host.φ₀ F₁ _ _ s1 hφ`. Establish `hτ : ∀ (τ : P.host.E →+* ℂ) x, τ x ∈ F₂` using `fun τ x => by`. Take `⟨g, rfl⟩` from `(factEmb P.R P.host).1.2 τ`.
+
+Conclude with `l2 (hφ (P.host.sigmaOf g x))`. Take `⟨F, l3, s3, c3⟩` from `exists_chain (fun j K => ∀ 𝔞 : Ideal (𝓞 P.host.E), 𝔞 ≠ ⊥ → ∃ β : K, β ≠ 0 ∧ Submodule.span (𝓞 K) {β} = ∏ τ : P.host.E →+* ℂ, Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, (x : ℂ) = τ (a : P.host.E)} ^ typeExp P.host (P.R.sigW j).1 (P.R.sigW j).2 τ ∧ ∀ σ : K →+* ℂ, ‖σ β‖ ^ 2 = (Ideal.abs …`. Take `⟨G', g1, g2, g3⟩` from `GlobalTheory.T.exists_capitulation_field_size P.host.E _ _ (typeExp_add P.host (P.R.sigW j).1 (P.R.sigW j).2) G b b hs fun τ x => hG (hτ τ x)`. Conclude with `⟨G', g1, g2, fun K hK h => g3 K h⟩) P.R.m`. Establish `hfd` using `finiteDimensional_of_sz s3`.
+
+Establish `l : F₁ ≤ F` using `l2.trans l3`. Use `⟨F, hfd, ⟨fun x => l (hφ x), fun N hN => l (r1 N hN), c2 F l3, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `j j1 j2 𝔞 h𝔞`. Take `⟨β, hβ, hsp, hn⟩` from `c3 F hfd le_rfl j j1 j2 𝔞 h𝔞`. Use `⟨β, hβ, ?_, hn⟩` and prove the remaining obligations.
+
+Rewrite using `[hsp, prod_typeExp]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [conjugate_emb_apply]`. Both sides reduce to the same expression. Introduce `L hL p hpm z hz`.
+
+Establish `hL' : ∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, ((a : K) : ℂ) = z` using `fun z => (hL z).trans (hlat z)`. Use `l (l1 ?_)` and prove the remaining obligations. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hpm`. Break down `hpm with rfl | rfl` into its components or cases. Conclude with `(le_sup_left : _ ≤ _ ⊔ W') ((le_sup_right : W ≤ _ ⊔ W) (hWc L hL' hz))`.
+
+Conclude with `(le_sup_right : W' ≤ _ ⊔ W') (hWc' L hL' hz)`. Introduce `L hL`. Take `⟨hG, hxi, hf8, hm⟩` from `GlobalTheory.T.host_xi_order_bounds P L hL`. Establish `hx` using `(hxi P.host.pde (by simp)).2`. Establish `hx'` using `(hxi P.host.pde' (by simp)).2`.
+
+Establish `hcl` using `GlobalTheory.log_classNumber_le_log_abs_discr_div P.host.E P.R.f hdeg`. Establish `hlE' : lE = Real.log |((discr P.host.E : ℤ) : ℝ)| / (2 * P.R.f)` using `by rw [hlE, hdeg]; push_cast; rfl`. Rewrite `hcl` using `[← hlE']`. Establish `hrd` using `hL.rd`. Rewrite `hrd` using `[← hlE']`.
+
+Establish `hL4` using `hL.len`. Establish `hnum` using `GlobalTheory.sum_sizes_le_ring_polynomial P.R.f P.R.r P.R.m L lE lh (Real.log P.restRowsFiniteGroupCard) (by exact_mod_cast hf8) (by exact_mod_cast hL.rank) (by exact_mod_cast hm) (Nat.cast_nonneg _) hL4 hrd hlE0 hL.deg hcl hG`. Establish `hlh0 : 0 ≤ lh` using `Real.log_natCast_nonneg _`. Establish `a0` using `hL.g 0`. Establish `a1` using `hL.g 1`.
+
+Take `⟨a2, a3⟩` from `hL.p`. Establish `b0` using `log_mul_pred_le (P.host.g 0)`. Establish `b1` using `log_mul_pred_le (P.host.g 1)`. Establish `hn : ∀ p : ℕ, 0 < p → Real.log ((P.host.g 0 * P.host.g 1 * p : ℕ) : ℝ) = Real.log (P.host.g 0) + Real.log (P.host.g 1) + Real.log p` using `fun p h => by`. Use `push_cast`.
+
+Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`. Establish `n1` using `hn _ hp`. Establish `n2` using `hn _ hp'`. Establish `d1 : Real.log (Module.finrank ℚ P.host.E) ≤ 1 + L`. Rewrite using `[hdeg]`.
+
+Use `push_cast`. Rewrite using `[Real.log_mul (by norm_num) (by positivity)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)` as an intermediate fact. Use `hL.deg` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e3 : Real.log ((3 ^ 4 : ℕ) : ℝ) ≤ 8`. Use `push_cast`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 3 by norm_num)` as an intermediate fact. Rewrite using `[show (81 : ℝ) = 3 ^ 4 by norm_num, Real.log_pow]; push_cast; linarith`. Establish `e5 : Real.log ((5 ^ 4 : ℕ) : ℝ) ≤ 16`.
+
+Use `push_cast`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 5 by norm_num)` as an intermediate fact. Rewrite using `[show (625 : ℝ) = 5 ^ 4 by norm_num, Real.log_pow]; push_cast; linarith`. Apply the tactic sequence `refine sz_mono s3 ?_ ?_ <;>`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, poR]`.
+
+Rewrite `hx`, `hx'`, the goal using `[← hlh]`. Rewrite using `[n1, n2]`. Generalize the expression as in `Real.log ((3 ^ 4 : ℕ) : ℝ) = x3 at e3 ⊢`. Generalize the expression as in `Real.log ((5 ^ 4 : ℕ) : ℝ) = x5 at e5 ⊢`. Combine the linear relations using `only [hx, hx', hnum, hlh0, a0, a1, a2, a3, b0, b1, d1, e3, e5, hdK, hrd, hL4]`.
+-/
 theorem exists_rich_small_of_rayField : GlobalTheory.NT.RayField → ∀ P : Pre, ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧
     Rich P F ∧ ∀ L : ℝ, HostSz P.host L → Sz F (poR P.R L) (poR P.R L) := by
   intro hW P

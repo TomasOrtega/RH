@@ -24,6 +24,11 @@ def bz (s : ℕ) (bt : ℂ → H) (z : ℂ) : H := (((s : ℝ) * ‖z‖ ^ (s - 
 def pairD (s : ℕ) (β ε : ℂ) (bt bt' : ℂ → H) (x x' ρ : ℂ) : ℂ :=
   ∫ D, ⟪mainD s β ε bt x D, ((‖ρ‖ ^ s : ℝ) : ℂ) • mainD s β ε bt' x' (ρ ^ s * D)⟫_ℂ
 
+/- English proof (translation)
+Unfold `G.psi`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, mul_sub, Complex.sub_re]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_conj_mul (β a b : ℂ) : conj (G.psi β a) * G.psi β b = G.psi β (b - a) := by
   unfold G.psi
   rw [← Complex.exp_conj, ← Complex.exp_add]
@@ -35,6 +40,9 @@ theorem psi_conj_mul (β a b : ℂ) : conj (G.psi β a) * G.psi β b = G.psi β 
 def termZ (s : ℕ) (β : ℂ) (bt bt' : ℂ → H) (x x' ρ ζ z : ℂ) : ℂ :=
   G.psi β ((s : ℂ) * (ζ * ρ * x' - x) * z) • ⟪bz s bt z, ((‖ρ‖ : ℝ) : ℂ) • bz s bt' (ζ * ρ * z)⟫_ℂ
 
+/- English proof (translation)
+Establish `hd : MemLp (fun z => ((‖ρ‖ : ℝ) : ℂ) • bz s bt' (ζ * ρ * z)) 2 volume` using `(memLp_comp_mul hb' (ζ * ρ) (mul_ne_zero hζ hρ)).const_smul _`. Establish `hi` using `integrable_inner_of_memLp hb hd`. Use `hi.bdd_smul 1 ?_ (Eventually.of_forall fun z => (norm_psi β _).le)` and prove the remaining obligations. Conclude with `((continuous_psi β).comp (continuous_const.mul continuous_id)).aestronglyMeasurable`.
+-/
 theorem integrable_termZ {s : ℕ} (_hs : s ≠ 0) (β : ℂ) {bt bt' : ℂ → H} (hb : MemLp (bz s bt) 2 volume)
     (hb' : MemLp (bz s bt') 2 volume) (x x' ρ ζ : ℂ) (hρ : ρ ≠ 0) (hζ : ζ ≠ 0) :
     Integrable (termZ s β bt bt' x x' ρ ζ) := by
@@ -44,6 +52,27 @@ theorem integrable_termZ {s : ℕ} (_hs : s ≠ 0) (β : ℂ) {bt bt' : ℂ → 
   refine hi.bdd_smul 1 ?_ (Eventually.of_forall fun z => (norm_psi β _).le)
   exact ((continuous_psi β).comp (continuous_const.mul continuous_id)).aestronglyMeasurable
 
+/- English proof (translation)
+Establish `hε0 : ε ≠ 0` using `by rintro rfl; simp at hε`. Establish `hζ0 : ∀ ζ ∈ G.rootSet s 1, ζ ≠ 0` using `fun ζ hζ h0 => by`. Use `norm_of_mem_rootSet_one hs hζ` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Use `set Φ : ℂ → ℂ := fun z => ∑ ζ ∈ G.rootSet s 1, (conj (G.psi β ((s : ℂ) * z * x)) * G.psi β ((s : ℂ) * (ζ * ρ * z) * x')) * (((‖ρ‖ ^ s : ℝ) : ℂ) * ⟪bt z, bt' (ζ * ρ * z)⟫_ℂ) with hΦ`. Establish `hjac : ∀ z : ℂ, ‖ε⁻¹ * ((s : ℂ) * z ^ (s - 1))‖ ^ 2 • Φ z = ∑ ζ ∈ G.rootSet s 1, termZ s β bt bt' x x' ρ ζ z`. Introduce `z`. Rewrite using `[hΦ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ζ hζ => ?_` and prove the remaining obligations.
+
+Establish `hζn` using `norm_of_mem_rootSet_one hs hζ`. Establish `hn : ‖ζ * ρ * z‖ = ‖ρ‖ * ‖z‖` using `by rw [norm_mul, norm_mul, hζn, one_mul]`. Establish `hj : ‖ε⁻¹ * ((s : ℂ) * z ^ (s - 1))‖ ^ 2 = ((s : ℝ) * ‖z‖ ^ (s - 1)) ^ 2`. Rewrite using `[norm_mul, norm_inv, hε, inv_one, one_mul, norm_mul, norm_pow, Complex.norm_natCast]`. Establish `hps : conj (G.psi β ((s : ℂ) * z * x)) * G.psi β ((s : ℂ) * (ζ * ρ * z) * x') = G.psi β ((s : ℂ) * (ζ * ρ * x' - x) * z)`.
+
+Rewrite using `[psi_conj_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hρs : ‖ρ‖ ^ s = ‖ρ‖ * ‖ρ‖ ^ (s - 1)`. Rewrite using `[← pow_succ']`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hj, hps]`. Simplify using `only [termZ, bz, inner_smul_left, inner_smul_right, Complex.conj_ofReal, smul_eq_mul, hn, hρs, mul_pow, Complex.real_smul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable (fun z => ‖ε⁻¹ * ((s : ℂ) * z ^ (s - 1))‖ ^ 2 • Φ z)`. Repeatedly rewrite using `[hjac]`. Conclude with `integrable_finsetSum _ fun ζ hζ => integrable_termZ hs β hb hb' x x' ρ ζ hρ (hζ0 ζ hζ)`. Take `⟨-, hch⟩` from `integral_sum_rootSet s hs ε hε0 Φ hint`.
+
+Establish `hD : ∀ D : ℂ, D ≠ 0 → ⟪mainD s β ε bt x D, ((‖ρ‖ ^ s : ℝ) : ℂ) • mainD s β ε bt' x' (ρ ^ s * D)⟫_ℂ = ∑ z ∈ G.rootSet s (ε * D), Φ z`. Introduce `D hD0`. Rewrite using `[inner_smul_right, mainD, sum_inner, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations. Establish `hzs : z ^ s = ε * D` using `(mem_rootSet' hs).1 hz`.
+
+Establish `hw : ε * D ≠ 0` using `mul_ne_zero hε0 hD0`. Establish `hrD : ε * (ρ ^ s * D) = ρ ^ s * (ε * D)` using `by ring`. Rewrite using `[mainD, hrD, sum_rootSet_mul hs hw hzs rfl (pow_ne_zero _ hρ), inner_sum, Finset.mul_sum, hΦ]`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hDae : (fun D => ⟪mainD s β ε bt x D, ((‖ρ‖ ^ s : ℝ) : ℂ) • mainD s β ε bt' x' (ρ ^ s * D)⟫_ℂ) =ᵐ[volume] fun D => ∑ z ∈ G.rootSet s (ε * D), Φ z` using `by filter_upwards [Measure.ae_ne volume (0 : ℂ)] with D hD0`. Conclude with `hD D hD0`. Rewrite using `[pairD, integral_congr_ae hDae, hch]`. Repeatedly rewrite using `[hjac]`.
+
+Conclude with `integral_finsetSum _ fun ζ hζ => integrable_termZ hs β hb hb' x x' ρ ζ hρ (hζ0 ζ hζ)`.
+-/
 theorem pairD_eq {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ‖ε‖ = 1) {bt bt' : ℂ → H}
     (hb : MemLp (bz s bt) 2 volume) (hb' : MemLp (bz s bt') 2 volume) (x x' ρ : ℂ) (hρ : ρ ≠ 0) :
     pairD s β ε bt bt' x x' ρ = ∑ ζ ∈ G.rootSet s 1, ∫ z, termZ s β bt bt' x x' ρ ζ z := by
@@ -98,12 +127,28 @@ theorem pairD_eq {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ‖ε‖ 
   simp_rw [hjac]
   exact integral_finsetSum _ fun ζ hζ => integrable_termZ hs β hb hb' x x' ρ ζ hρ (hζ0 ζ hζ)
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[← Metric.cobounded_eq_cocompact, ← tendsto_norm_atTop_iff_cobounded]`. Simplify using `only [norm_mul]`. Conclude with `hy.const_mul_atTop (norm_pos_iff.mpr hc)`.
+-/
 theorem tendsto_smul_cocompact {α : Type} {l : Filter α} (c : ℂ) (hc : c ≠ 0) (y : α → ℂ)
     (hy : Tendsto y l (cocompact ℂ)) : Tendsto (fun a => c * y a) l (cocompact ℂ) := by
   rw [← Metric.cobounded_eq_cocompact, ← tendsto_norm_atTop_iff_cobounded] at hy ⊢
   simp only [norm_mul]
   exact hy.const_mul_atTop (norm_pos_iff.mpr hc)
 
+/- English proof (translation)
+Use `set L : ℂ := ∫ z, G.psi β (σ * z) • ⟪bz s bt z, bz s bt' z⟫_ℂ with hL`. Establish `hs0 : (s : ℂ) ≠ 0` using `by exact_mod_cast hs`. Establish `hlim : ∀ ζ ∈ G.rootSet s 1, Tendsto (fun a => ∫ z, termZ s β bt bt' (x a) (x' a) (ρ a) ζ z) l (𝓝 (if ζ = 1 then L else 0))`. Introduce `ζ hζ`. Establish `hζn` using `norm_of_mem_rootSet_one hs hζ`.
+
+Establish `hζ0 : ζ ≠ 0` using `fun h0 => by rw [h0, norm_zero] at hζn; exact zero_ne_one hζn`. Establish `hf0 : Integrable (fun z => ⟪bz s bt z, bz s bt' (ζ * z)⟫_ℂ)` using `integrable_inner_of_memLp hb (memLp_comp_mul hb' ζ hζ0)`. Establish `hfi : ∀ᶠ a in l, Integrable (fun z => ⟪bz s bt z, ((‖ρ a‖ : ℝ) : ℂ) • bz s bt' (ζ * ρ a * z)⟫_ℂ)` using `by filter_upwards [hρ0] with a ha`. Conclude with `integrable_inner_of_memLp hb ((memLp_comp_mul hb' (ζ * ρ a) (mul_ne_zero hζ0 ha)).const_smul _)`. Establish `hL1 : Tendsto (fun a => ∫ z, ‖⟪bz s bt z, ((‖ρ a‖ : ℝ) : ℂ) • bz s bt' (ζ * ρ a * z)⟫_ℂ - ⟪bz s bt z, bz s bt' (ζ * z)⟫_ℂ‖) l (𝓝 0)`.
+
+Establish `hζρ : Tendsto (fun a => ζ * ρ a) l (𝓝 ζ)`. Simplify using `using (tendsto_const_nhds (x := ζ)).mul hρ`. Establish `h1` using `(tendsto_inner_dil (bz s bt) (bz s bt') hb hb' ζ hζ0).comp hζρ`. Use `h1.congr fun a => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, norm_mul, hζn, one_mul, Complex.ofReal_one, one_smul]`.
+
+Distinguish the cases in `h1 : ζ = 1`. Substitute `h1` using the available equality. Rewrite using `[if_pos rfl]`. Establish `hw : Tendsto (fun a => (s : ℂ) * (1 * ρ a * x' a - x a)) l (𝓝 σ)` using `by simpa using hsh`. Use `tendsto_integral_psi_conv β _ _ hf0 hfi hL1 _ σ hw` as an intermediate fact.
+
+Simplify `this` using `[termZ, hL]`. Rewrite using `[if_neg h1]`. Establish `hw` using `tendsto_smul_cocompact (s : ℂ) hs0 _ (hne ζ hζ h1)`. Use `tendsto_integral_psi_moving β hβ _ _ hf0 hfi hL1 _ hw` as an intermediate fact. Simplify `this` using `[termZ, mul_assoc]`.
+
+Establish `hsum` using `tendsto_finsetSum (G.rootSet s 1) hlim`. Rewrite `hsum` using `[Finset.sum_ite_eq' (G.rootSet s 1) 1 (fun _ => L), if_pos (one_mem_rootSet_one hs)]`. Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hρ0] with a ha`. Conclude with `(pairD_eq hs β hε hb hb' (x a) (x' a) (ρ a) ha).symm`.
+-/
 theorem tendsto_pairD {s : ℕ} (hs : s ≠ 0) {β : ℂ} (hβ : β ≠ 0) {ε : ℂ} (hε : ‖ε‖ = 1) {bt bt' : ℂ → H}
     (hb : MemLp (bz s bt) 2 volume) (hb' : MemLp (bz s bt') 2 volume) {α : Type} {l : Filter α}
     (x x' ρ : α → ℂ) (σ : ℂ) (hρ0 : ∀ᶠ a in l, ρ a ≠ 0) (hρ : Tendsto ρ l (𝓝 1))

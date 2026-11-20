@@ -20,6 +20,11 @@ def cst1 (a : GeoAll W u) : Cst a := ⟨fun _ _ => 1, fun _ => ⟨0, Fin.elim0, 
 variable {k : Cst a} {row : ∀ t, RowCh (pk W) (lvP W) u a.g t} {col : ∀ t : W.P.T, ColCh u (D.chTw u (W.P.I.tup t))}
   {w₀ w : ∀ t, VTup ((a.fam row col).t t)} {F : ∀ t, GlobalTheory.QPl.QFam a.v ((a.fam row col).t t)}
 
+/- English proof (translation)
+Take `⟨pl, hp⟩` from `(h.lev t).places`. Rewrite using `[(h.same t).1, (h.pins t).places]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨(pl i).1, (pl i).2, (hp i).2⟩`.
+
+Introduce and unpack `⟨PP, hP, rfl⟩`. Use `⟨pl.symm ⟨PP, hP⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(hp _).2, Equiv.apply_symm_apply]`.
+-/
 theorem places (h : ColOut k w₀ w F) (t) (p) : p ∈ (w t).Q ↔ ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F) := by
   obtain ⟨pl, hp⟩ := (h.lev t).places
   rw [(h.same t).1, (h.pins t).places]

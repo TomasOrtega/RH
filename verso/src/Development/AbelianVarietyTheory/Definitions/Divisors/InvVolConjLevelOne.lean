@@ -40,6 +40,15 @@ def prodLev {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {
   (⨅ w : P, (K w).comap (inBasis (h w) β w)) ⊓
     ⨅ (w' : Pl D.host.E) (_ : ∀ w ∈ P, w'.under (𝓞 D.host.F) ≠ w.under (𝓞 D.host.F)), (KO (Kw w') _).comap (inBasis rfl β w')
 
+/- English proof (translation)
+Take `⟨g, hg, -⟩` from `GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom y.1`. Use `⟨⟨g, Units.ext ?_⟩, hg⟩` and prove the remaining obligations. Set `π` to `(Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hy : (matHom A y.1).1.map π = 1` using `congrArg Units.val y.2`. Use `set P := frameMat B A d.ι`.
+
+Use `set C := Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) P * B.gram`. Establish `hG : C * P = A.gram` using `GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom`. Use `set N : Matrix (Fin B.rank) (Fin B.rank) D.host.E := 1 - P * (A.gram⁻¹ * C) with hN`. Establish `hC : C * N = 0`. Rewrite using `[hN, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hG, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GlobalTheory.AutFunCounterexample.gram_det_ne A).isUnit, Matrix.one_mul, sub_self]`.
+
+Establish `h1 : (matHom B g).1 * N.map (incA D) = N.map (incA D)`. Use extensionality with `i j`. Conclude with `congr_fun (hg.2 (fun k => N k j) (by funext k; exact congr_fun (congr_fun hC k) j)) i`. Use `GlobalTheory.AutFunCounterexample.split_gen (π.comp (incA D)) P (A.gram⁻¹ * C) ((matHom B g).1.map π) 1 ?_ ?_` and prove the remaining obligations. Use `congrArg (·.map π) h1` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul] at this`. Conclude with `this.trans (Matrix.one_mul _).symm`. Use `congrArg (·.map π) hg.1` as an intermediate fact. Simplify using `only [Matrix.map_mul, hy, Matrix.mul_one] at this`. Conclude with `this.trans (Matrix.one_mul _).symm`.
+-/
 theorem exists_finEmb {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (y : GfC A) :
     ∃ x : GfC B, EmbRel B A d.ι x.1 y.1 := by
   obtain ⟨g, hg, -⟩ := GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom y.1
@@ -66,6 +75,9 @@ theorem exists_finEmb {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrth
 
 def finEmb {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (y : GfC A) : GfC B := (exists_finEmb d y).choose
 
+/- English proof (translation)
+The claim follows from `(exists_finEmb d y).choose_spec`.
+-/
 theorem finEmb_rel {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (y : GfC A) :
     EmbRel B A d.ι (finEmb d y).1 y.1 := (exists_finEmb d y).choose_spec
 
@@ -77,6 +89,9 @@ def IsSumFrame {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalE
 
 def frameSign (R : Type) [Ring R] (c : ℕ) (p : Fin c) : R := if c < 2 * p.1 + 1 then -1 else 1
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : frameSign ℤ 3 = ![1, 1, -1] ∧ frameSign ℤ 2 = ![1, -1] := by decide
 
 section Wt
@@ -95,6 +110,9 @@ def covOf : (VV ℂ fun τ => (σ τ).dual) →ₗ[ℂ] VV ℂ σ :=
 
 def ReadOK : Prop := (∀ F, IsFunForm σ F (funOf σ F)) ∧ ∀ f, IsFunForm σ (covOf σ f) f
 
+/- English proof (translation)
+Establish `h1 : ∃ φ : VV ℂ σ →ₗ[ℂ] VV ℂ fun τ => (σ τ).dual, ∀ F, IsFunForm σ F (φ F)` using `⟨φ, h⟩`. Establish `h2 : ∃ φ : (VV ℂ fun τ => (σ τ).dual) →ₗ[ℂ] VV ℂ σ, ∀ f, IsFunForm σ (φ f) f` using `⟨φ.symm, fun f => by simpa using h (φ.symm f)⟩`. Rewrite using `[ReadOK, funOf, covOf, dif_pos h1, dif_pos h2]`. Conclude with `⟨h1.choose_spec, h2.choose_spec⟩`.
+-/
 theorem readOK_of_equiv (φ : VV ℂ σ ≃ₗ[ℂ] VV ℂ fun τ => (σ τ).dual) (h : ∀ F, IsFunForm σ F (φ F)) : ReadOK σ := by
   have h1 : ∃ φ : VV ℂ σ →ₗ[ℂ] VV ℂ fun τ => (σ τ).dual, ∀ F, IsFunForm σ F (φ F) := ⟨φ, h⟩
   have h2 : ∃ φ : (VV ℂ fun τ => (σ τ).dual) →ₗ[ℂ] VV ℂ σ, ∀ f, IsFunForm σ (φ f) f :=
@@ -112,13 +130,22 @@ noncomputable def chainTo {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j,
   | 0 => LinearMap.id
   | n + 1 => k n ∘ₗ chainTo k n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (k : ∀ j, V j →ₗ[ℂ] V (j + 1)) (v : V 0) :
     chainTo k 2 v = k 1 (k 0 v) := rfl
 
+/- English proof (translation)
+The claim follows from `(odd_sLen D).pos`.
+-/
 theorem one_le_sLen : 1 ≤ sLen D := (odd_sLen D).pos
 
 def unitVol (w : Pl D.host.E) : Measure (Kw w) := GlobalTheory.SplitWeil.Model.exists_isUnitVol.choose
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitWeil.Model.exists_isUnitVol.choose_spec`.
+-/
 theorem isUnitVol_unitVol (w : Pl D.host.E) : IsUnitVol (unitVol w) := GlobalTheory.SplitWeil.Model.exists_isUnitVol.choose_spec
 
 def bareGrid (w : Pl D.host.E) : Grid (Kw w) := ⟨D.R.m, D.R.r, D.R.t, sLen D, 1, 1, 1⟩
@@ -143,6 +170,11 @@ def aaScalar (w : Pl D.host.E) : ℂ :=
   (aaTerm W w).coef * (aaTerm W w).datum 0 0 * ((oppositePath D.R.m).map fun b =>
     apow (genAt w D.host.AAbar / genAt w D.host.AA) (((bareGrid w).rank b.src * (bareGrid w).rank b.tgt : ℕ) / 4)).prod
 
+/- English proof (translation)
+Rewrite using `[← invVol_KO (k := k) (n := Fin (topRank Γ j)) (c := Γ.m - 1 - j), conjLevel]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[Pi.one_apply, map_one, Subgroup.map_equiv_eq_comap_symm', Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap, Subgroup.mem_comap, mem_KO_iff, mem_KO_iff, ← map_inv, ← map_inv]`. Establish `h : topRank Γ j + (Γ.m - 1 - j) = Γ.rank (Γ.m, j)` using `by have := topRank_add hs j; omega`.
+
+Conclude with `and_congr ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl) ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)`.
+-/
 theorem invVol_conjLevel_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {Γ : Grid k}
     (hs : 1 ≤ Γ.s) {j : ℕ} (hj : j < Γ.m) : invVol (conjLevel hs (fun _ => KO k _) 1 hj) = 1 := by
   rw [← invVol_KO (k := k) (n := Fin (topRank Γ j)) (c := Γ.m - 1 - j), conjLevel]
@@ -154,11 +186,21 @@ theorem invVol_conjLevel_one {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   exact and_congr ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)
     ((frame h).symm.forall_congr fun _ => (frame h).symm.forall_congr fun _ => Iff.rfl)
 
+/- English proof (translation)
+Simplify using `only [unfTerm, UnfModel.elt_one, invVol_conjLevel_one, Finset.prod_const_one]`.
+-/
 theorem unfTerm_coef_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k]
     [BorelSpace k] {Γ : Grid k} (hs : 1 ≤ Γ.s) (ψ : AddChar k Circle) (ν : Measure k) (keep : Bool) (S : Γ.Args → ℂ) :
     (unfTerm ψ ν keep (Reps.through hs (fun _ => KO k _) fun _ => 1) S fun _ => DoubleCoset.mk _ _ 1).coef = 1 := by
   simp only [unfTerm, UnfModel.elt_one, invVol_conjLevel_one, Finset.prod_const_one]
 
+/- English proof (translation)
+Establish `e1 : genAt w D.host.AA = 1` using `by rw [genAt, h, zpow_zero]`. Establish `e2 : genAt w D.host.AAbar = 1` using `by rw [genAt, h', zpow_zero]`. Establish `e3 : aaElt w = fun _ => 1` using `funext fun j => Units.ext (by simp [aaElt, e1, e2, diagGL_val])`. Establish `key : ∀ g : ∀ j, GL (Fin ((bareGrid w).rank ((bareGrid w).m, j))) (Kw w), (g = fun _ => 1) →`. Set `u` to `unfTerm (psiAt W w) (unitVol w) false (Reps.through (G := bareGrid w) one_le_sLen (fun _ => KO _ _) g) (aaVac w) fun i => DoubleCoset.mk _ _ (g (i + 1))`.
+
+Use the proof step `u.datum 0 0 = 1 ∧ u.coef = 1 := by`. Introduce and unpack `_ rfl`. Conclude with `⟨(UnfModel.vacuum_term (G := bareGrid w) one_le_sLen _ _ hψ (isUnitVol_unitVol w) (aaVac w) (fun z hz => Set.indicator_of_mem (by simpa [e1] using hz) _) (fun z hz => Set.indicator_of_notMem (by simpa [e1] using hz) _) _ _).1, unfTerm_coef_one (Γ := bareGrid w) one_le_sLen _ _ _ …`. Take `⟨e4, e5⟩ : (aaTerm W w).datum 0 0 = 1 ∧ (aaTerm W w).coef = 1` from `key _ e3`. Establish `e6 : ∀ z, apow (1 : (Kw w)ˣ) z = 1` using `apow_of_valuation_eq_one (map_one _)`.
+
+Simplify using `only [aaScalar, e1, e2, e4, e5, div_one, e6, List.map_const', List.prod_replicate, one_pow, Rat.cast_one, mul_one]`.
+-/
 theorem aaScalar_eq_one {w : Pl D.host.E} (h : FractionalIdeal.count D.host.E w D.host.AA = 0)
     (h' : FractionalIdeal.count D.host.E w D.host.AAbar = 0) (hψ : ∀ a ∈ 𝒪[Kw w], psiAt W w a = 1) : aaScalar W w = 1 := by
   have e1 : genAt w D.host.AA = 1 := by rw [genAt, h, zpow_zero]
@@ -179,6 +221,9 @@ theorem aaScalar_eq_one {w : Pl D.host.E} (h : FractionalIdeal.count D.host.E w 
 
 variable (G) in
 
+/- English proof (translation)
+The claim follows from `(G.isV (X := .top j) h fun _ e => by cases e).rank.symm`.
+-/
 theorem topRank_eq (t : T) (w : Pl D.host.E) {j : ℕ} (h : j ≤ D.R.m) : topRank (locGrid G t w) j = (G.V (.top j)).rank :=
   (G.isV (X := .top j) h fun _ e => by cases e).rank.symm
 
@@ -326,6 +371,11 @@ structure SumOK : Prop where
 
   read : ReadOK (listedWt G (.grid 0 D.R.m)) ∧ ReadOK (listedWt G (.grid D.R.m D.R.m))
 
+/- English proof (translation)
+Establish `h : ∀ (β : CosFam G t) τ, S.classSum Φ β τ (a • Ψ) (b • F) = a * b * S.classSum Φ β τ Ψ F` using `fun β τ => by`. Simplify using `only [classSum, Pi.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_finsum]`. Conclude with `finsum_congr fun c => by ring`. Unfold `vCore`. Rewrite using `[mul_finsum]`.
+
+Use `finsum_congr fun β => ?_` and prove the remaining obligations. Distinguish the cases in `hβ : β ∈ S.supp t Φ`. Rewrite using `[finsum_eq_if, finsum_eq_if, if_pos hβ, if_pos hβ, h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[finsum_eq_if, finsum_eq_if, if_neg hβ, if_neg hβ, mul_zero]`.
+-/
 theorem vCore_smul (a b : ℂ) (Ψ F) : S.vCore t Φ (a • Ψ) (b • F) = a * b * S.vCore t Φ Ψ F := by
   have h : ∀ (β : CosFam G t) τ, S.classSum Φ β τ (a • Ψ) (b • F) = a * b * S.classSum Φ β τ Ψ F := fun β τ => by
     simp only [classSum, Pi.smul_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, mul_finsum]
@@ -340,6 +390,9 @@ theorem vCore_smul (a b : ℂ) (Ψ F) : S.vCore t Φ (a • Ψ) (b • F) = a * 
 
 variable {S t Φ}
 
+/- English proof (translation)
+Rewrite using `[vCore, vCore, vCore, ← finsum_mem_add_distrib h.fin]`. Use `finsum_mem_congr rfl fun β _ => ?_` and prove the remaining obligations. Use `h.cls β` as an intermediate fact. Rewrite using `[← mul_add, classSum, classSum, classSum, ← finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`. Simplify using `only [Pi.add_apply, map_add, mul_add]`.
+-/
 theorem SumOK.vCore_add (h : S.SumOK t Φ) (Ψ F F') : S.vCore t Φ Ψ (F + F') = S.vCore t Φ Ψ F + S.vCore t Φ Ψ F' := by
   rw [vCore, vCore, vCore, ← finsum_mem_add_distrib h.fin]
   refine finsum_mem_congr rfl fun β _ => ?_
@@ -347,6 +400,9 @@ theorem SumOK.vCore_add (h : S.SumOK t Φ) (Ψ F F') : S.vCore t Φ Ψ (F + F') 
   rw [← mul_add, classSum, classSum, classSum, ← finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]
   simp only [Pi.add_apply, map_add, mul_add]
 
+/- English proof (translation)
+Rewrite using `[vCore, ← finsum_mem_eq_finite_toFinset_sum _ h.fin]`. Use `finsum_mem_congr rfl fun β hβ => ?_` and prove the remaining obligations. Simplify using `only [classSum, h.indep β _ _ (Classical.epsilon_spec ⟨_, hτ β hβ⟩) (hτ β hβ)]`.
+-/
 theorem SumOK.vCore_eq (h : S.SumOK t Φ) (τ : CosFam G t → PureDat G t →₀ ℂ) (hτ : ∀ β ∈ S.supp t Φ, S.IsExpansion t Φ β (τ β))
     (Ψ F) : S.vCore t Φ Ψ F = ∑ β ∈ h.fin.toFinset, (∏ w, ((S.term t Φ β w).coef : ℂ)) * S.classSum Φ β (τ β) Ψ F := by
   rw [vCore, ← finsum_mem_eq_finite_toFinset_sum _ h.fin]
@@ -357,6 +413,9 @@ end GridChoice
 
 variable (G) in
 
+/- English proof (translation)
+The claim follows from `funext fun τ => by have h : (wt G (.top 0) τ).w = (LaP G τ).w := funext (wt_top_zero G (rank_Xp G) τ) generalize wt G (.top 0) τ = a at h generalize LaP G τ = b at h cases a; cases b; cases h; rfl`.
+-/
 theorem wt_top_eq : wt G (.top 0) = LaP G := funext fun τ => by
   have h : (wt G (.top 0) τ).w = (LaP G τ).w := funext (wt_top_zero G (rank_Xp G) τ)
   generalize wt G (.top 0) τ = a at h
@@ -368,6 +427,9 @@ def psiC (Ψ : GLf G → WtSp G) (x : FinPt G (.top 0)) : VV ℂ (wt G (.top 0))
 
 variable (G) in
 
+/- English proof (translation)
+The claim follows from `(congrArg (·.sp.rank) (colY_m L)).symm`.
+-/
 theorem rank_zero_m : D.sp.X'.rank = (G.V (.grid 0 D.R.m)).rank := (congrArg (·.sp.rank) (colY_m L)).symm
 
 def toXf (y : FinPt G (.grid 0 D.R.m)) : Bridge.Gf D.sp.X' :=
@@ -409,6 +471,11 @@ def vSum (rp : ClassReps G) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) 
 
 variable (rp : ClassReps G) {n : ℕ} (e : Fin n ≃ TestIx G × VVIdx (LaP G)) (t : T)
 
+/- English proof (translation)
+Establish `h : S.formC t (c • u) = c • S.formC t u` using `funext fun y => by simp [SumChoice.formC]`. Use `S.vCore_smul t Φ 1 c (psiC Ψ) (S.formC t u)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Unfold `vPair`. Rewrite using `[h, this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vPair_smul (c : ℂ) (u : (R.HX t).H) (Ψ Φ) : vPair W S t (c • u) Ψ Φ = c * vPair W S t u Ψ Φ := by
   have h : S.formC t (c • u) = c • S.formC t u := funext fun y => by simp [SumChoice.formC]
   have := S.vCore_smul t Φ 1 c (psiC Ψ) (S.formC t u)
@@ -416,16 +483,25 @@ theorem vPair_smul (c : ℂ) (u : (R.HX t).H) (Ψ Φ) : vPair W S t (c • u) Ψ
   unfold vPair
   rw [h, this]; ring
 
+/- English proof (translation)
+Establish `e : S.formC t (u + u') = S.formC t u + S.formC t u'` using `funext fun y => by simp [SumChoice.formC]`. Unfold `vPair`. Rewrite using `[e, h.vCore_add, mul_add]`.
+-/
 theorem vPair_add {Φ : G.Datum} (h : S.SumOK t Φ) (u u' : (R.HX t).H) (Ψ) :
     vPair W S t (u + u') Ψ Φ = vPair W S t u Ψ Φ + vPair W S t u' Ψ Φ := by
   have e : S.formC t (u + u') = S.formC t u + S.formC t u' := funext fun y => by simp [SumChoice.formC]
   unfold vPair
   rw [e, h.vCore_add, mul_add]
 
+/- English proof (translation)
+The claim follows from `(congrArg (vPair W S t · _ _) ((R.jX t).map_smulₛₗ c F)).trans (vPair_smul W S t _ _ _ _)`.
+-/
 theorem vSum_smul (c : D.what₂.LL) (F : A.fam.amb.FR t) (a : Fin n) :
     vSum W S rp e t (c • F) a = D.what₂.embLL c * vSum W S rp e t F a :=
   (congrArg (vPair W S t · _ _) ((R.jX t).map_smulₛₗ c F)).trans (vPair_smul W S t _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `(congrArg (vPair W S t · _ _) ((R.jX t).map_add F F')).trans (vPair_add W S t h _ _ _)`.
+-/
 theorem vSum_add {a : Fin n} (h : S.SumOK t (datumOf e a)) (F F' : A.fam.amb.FR t) :
     vSum W S rp e t (F + F') a = vSum W S rp e t F a + vSum W S rp e t F' a :=
   (congrArg (vPair W S t · _ _) ((R.jX t).map_add F F')).trans (vPair_add W S t h _ _ _)

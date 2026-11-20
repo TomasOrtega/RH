@@ -11,6 +11,11 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 namespace GlobalTheory.CompanionTheory.MM.KUnitary
 
+/- English proof (translation)
+Introduce `D n θ hθ k hk τ`. Establish `e1 : (mat k).map ((θ τ).comp (infPart D)) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k` using `rfl`. Establish `e2 : θ τ = AdelicU.infProj (embOverOf D τ)` using `AdelicU.eq_infProj hθ (embOverOf D τ) rfl`. Establish `hk' : k ∈ AdelicU.levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1` using `hk`. Establish `hw` using `(AdelicU.mem_levelAll.1 hk').2 (placeOf D τ)`.
+
+Establish `hunit` using `(GlobalTheory.Doubling.mem_stabArch_iff_unitary (isCMExt_host D) (embOverOf D τ) (Jst D n) 1 k).1 hw`. Rewrite `hunit` using `[inv_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one] at hunit`. Rewrite `hunit` using `[← e2, ← e1]`. Conclude with `mul_eq_one_comm.1 hunit`.
+-/
 theorem map_mul_conjTranspose_eq_one : ∀ (D : D7) (n : ℕ) (θ : InfFam D), IsInfFam θ → ∀ k ∈ K D n, ∀ τ, (mat k).map ((θ τ).comp (infPart D)) * ((mat k).map ((θ τ).comp (infPart D)))ᴴ = 1 := by
   intro D n θ hθ k hk τ
   have e1 : (mat k).map ((θ τ).comp (infPart D)) = Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig (Jst D n) (θ τ) k := rfl

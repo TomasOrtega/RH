@@ -38,6 +38,11 @@ def BoxMeas : Prop :=
     (n a : ℕ) (C : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin a → Fin n → Fv F v ⊗[F] E)),
     (∀ v, MeasurableSet (C v)) → MeasurableSet {x : Fin a → Fin n → Af F ⊗[F] E | ∀ v, projV v x ∈ C v}
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `hm`. Establish `hclosed : IsClosed (Set.range ((↑) : ℝ → ℂ))` using `Complex.isometry_ofReal.isClosedEmbedding.isClosed_range`. Establish `hmem : L ∈ Set.range ((↑) : ℝ → ℂ)` using `hclosed.mem_of_tendsto hL (Filter.Eventually.of_forall fun s => ⟨∏ i ∈ s, r i, by rw [Complex.ofReal_prod]⟩)`. Take `⟨l, rfl⟩` from `hmem`. Establish `hr : HasProd r l` using `(Complex.isometry_ofReal.isEmbedding.isInducing.hasProd_iff (g := Complex.ofRealHom) (f := r) (a := l)).mp hL`.
+
+Rewrite using `[hL.tprod_eq, hr.tprod_eq]`.
+-/
 theorem BoxVolSk_tprod_ofReal {ι : Type} (r : ι → ℝ) (hm : Multipliable (fun i => (r i : ℂ))) :
     ∏' i, (r i : ℂ) = ((∏' i, r i : ℝ) : ℂ) := by
   obtain ⟨L, hL⟩ := hm

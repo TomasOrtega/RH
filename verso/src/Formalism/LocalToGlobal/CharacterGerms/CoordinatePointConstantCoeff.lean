@@ -14,6 +14,13 @@ namespace LMulP
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ MvPowerSeries PartialDerivEval
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_pderiv, coeff_pderiv, coeff_pderiv, coeff_pderiv]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Establish `e1 : ((n + Finsupp.single i 1 : σ →₀ ℕ) : σ → ℕ) j = n j`. Simplify using `[h]`. Establish `e2 : ((n + Finsupp.single j 1 : σ →₀ ℕ) : σ → ℕ) i = n i`. Simplify using `[Ne.symm h]`. Rewrite using `[add_right_comm n (Finsupp.single i 1), e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_comm' {σ K : Type} [CommRing K] (i j : σ) (f : MvPowerSeries σ K) :
     pderiv K i (pderiv K j f) = pderiv K j (pderiv K i f) := by
   ext n

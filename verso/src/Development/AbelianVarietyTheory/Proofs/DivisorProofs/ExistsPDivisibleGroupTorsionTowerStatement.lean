@@ -17,5 +17,8 @@ open GlobalTheory GlobalTheory.GroupBplus GlobalTheory.GroupBplus.Closed
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Closed.exists_torsionTower | exact GlobalTheory.GroupBplus.Closed.exists_torsionTower | (intros; apply GlobalTheory.GroupBplus.Closed.exists_torsionTower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_p_divisible_group_torsion_tower : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] (t : SAB H (Sp k)) (p : ℕ) [Fact p.Prime], IsProper t.G.hom → ∃ GG : PDivGroup p k, Nonempty (GG.TorsionTower t.G) := by
   first | exact @GlobalTheory.GroupBplus.Closed.exists_torsionTower | exact GlobalTheory.GroupBplus.Closed.exists_torsionTower | (intros; apply GlobalTheory.GroupBplus.Closed.exists_torsionTower <;> assumption)

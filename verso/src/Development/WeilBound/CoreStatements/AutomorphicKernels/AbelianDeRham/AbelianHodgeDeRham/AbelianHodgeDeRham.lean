@@ -55,6 +55,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FirstCohomology
 
 namespace MainStatements.Hodge.Free
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Dict.dictSt cx := GlobalTheory.CompanionTheory.HodgeCx.cxSt low := GlobalTheory.CompanionTheory.HodgeLow.lowSt_of_dictSt htpy := GlobalTheory.CompanionTheory.Hodge.htpySt_of_cxSt qcalc := GlobalTheory.CompanionTheory.QCalc.qCalcSt fubini := GlobalTheo …`.
+-/
 theorem abelianHodgeDeRham' : Chapters where
   dict := GlobalTheory.CompanionTheory.Dict.dictSt
   cx := GlobalTheory.CompanionTheory.HodgeCx.cxSt
@@ -104,6 +107,9 @@ theorem abelianHodgeDeRham' : Chapters where
   h1ge := GlobalTheory.CompanionTheory.FirstCohomologyLowerBound.first_cohomology_dimension_lower_bound
   h1field := GlobalTheory.CompanionTheory.AbelianFirstCohomologyOverField.first_cohomology_rank_over_field
 
+/- English proof (translation)
+The claim follows from `abelianHodgeDeRham'.print GlobalTheory.CompanionTheory.NoethApprox.schemeModels GlobalTheory.CompanionTheory.SmoothSpread.smooth_spreads GlobalTheory.CompanionTheory.SpreadingModels.properSpreads GlobalTheory.CompanionTheory.TrivLoc.trivLocus GlobalTheory.CompanionTheory.KLFinite …`.
+-/
 theorem abelianHodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham :=
   abelianHodgeDeRham'.print GlobalTheory.CompanionTheory.NoethApprox.schemeModels GlobalTheory.CompanionTheory.SmoothSpread.smooth_spreads GlobalTheory.CompanionTheory.SpreadingModels.properSpreads
     GlobalTheory.CompanionTheory.TrivLoc.trivLocus GlobalTheory.CompanionTheory.KLFinite.kFinite

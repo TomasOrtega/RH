@@ -8,6 +8,9 @@ open scoped ENNReal NNReal
 
 namespace PositivityTheory.KB.LocalOverlapAverage
 
+/- English proof (translation)
+Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq (μ.restrict K) Real.HolderConjugate.two_two hf (aemeasurable_const (b := (1 : ℝ≥0∞)))`. Simplify `h` using `[ENNReal.rpow_two, Measure.restrict_apply_univ]`.
+-/
 theorem cs_bound {α : Type} [MeasurableSpace α] (μ : Measure α) (K : Set α) (f : α → ℝ≥0∞)
     (hf : AEMeasurable f (μ.restrict K)) :
     ∫⁻ x in K, f x ∂μ ≤ (∫⁻ x in K, f x ^ 2 ∂μ) ^ (1 / 2 : ℝ) * (μ K) ^ (1 / 2 : ℝ) := by
@@ -15,6 +18,9 @@ theorem cs_bound {α : Type} [MeasurableSpace α] (μ : Measure α) (K : Set α)
     (aemeasurable_const (b := (1 : ℝ≥0∞)))
   simpa [ENNReal.rpow_two, Measure.restrict_apply_univ] using h
 
+/- English proof (translation)
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg v)]`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, coe_nnnorm]`.
+-/
 theorem ofReal_norm_sq {E : Type} [NormedAddCommGroup E] (v : E) :
     ENNReal.ofReal (‖v‖ ^ 2) = (‖v‖₊ : ℝ≥0∞) ^ 2 := by
   rw [ENNReal.ofReal_pow (norm_nonneg v)]
@@ -34,6 +40,25 @@ instance countable_latS (L : Type) [Field L] [NumberField L] (N : ℕ) : Countab
   unfold latS
   exact (MonoidHom.rangeRestrict_surjective _).countable
 
+/- English proof (translation)
+Take `⟨C₁, hC₁⟩` from `hS (HS L N) μ (k + 1) (fun j => actEq (h j)) B hB`. Establish `hKeq : Kset (fun j => ((actEq (h j) : HS L N ≃L[ℝ] HS L N) : HS L N →L[ℝ] HS L N)) B = Kset (fun j => actL (h j)) B`. Use `congr 1`. Establish `hKP : Kset (fun j => actL (h j)) B ⊆ Pos L N` using `kset_sub h hBP`. Establish `hKc : IsCompact (Kset (fun j => actL (h j)) B)` using `isCompact_kset _ hB`.
+
+Take `⟨C₂, K', hC₂, hK'c, hC₂b⟩` from `hU L N (k + 1) hN d μ _ hKc hKP`. Use `haveI := d.haar`. Take `⟨M, hM⟩` from `hO (Sp L N) (latS L N) d.μ d.D d.fund (hDi L N) K' hK'c`. Use `⟨max C₁ 0 * C₂.toReal * M * ((d.μ d.D) ^ (1 / 2 : ℝ)).toReal, ?_⟩` and prove the remaining obligations. Introduce `ω hωc hΓ hsc hint`.
+
+Establish `hωK : ContinuousOn ω (Kset (fun j => actL (h j)) B)` using `hωc.mono hKP`. Take `⟨-, hbd⟩` from `hC₁ ω (hKeq ▸ hωK)`. Rewrite `hbd` using `[hKeq]`. Simplify using `only [actEq_apply] at hbd`. Establish `hfc : Continuous fun x : Sp L N => fr ω (ofS L N x)` using `(cont_fr ω hωc).comp cont_ofS`.
+
+Use `set f : Sp L N → ℝ≥0∞ := fun x => (‖fr ω (ofS L N x)‖₊ : ℝ≥0∞) with hf`. Establish `hfm : Measurable f` using `(ENNReal.continuous_coe.comp hfc.nnnorm).measurable`. Establish `hfinv : ∀ γ ∈ latS L N, ∀ x : Sp L N, f (γ * x) = f x`. Introduce `γ hγ x`. Take `⟨A, hA⟩` from `ofS_lat hγ`.
+
+Simplify using `only [hf, map_mul, hA, fr_mul ω _ _ (hΓ A)]`. Establish `hOv` using `hM f hfm hfinv`. Establish `hUn` using `hC₂b ω hωc hsc`. Establish `hcs` using `cs_bound d.μ d.D f hfm.aemeasurable`. Establish `hsq : ∫⁻ x in d.D, f x ^ 2 ∂d.μ = ENNReal.ofReal (∫ x in d.D, ‖fr ω (ofS L N x)‖ ^ 2 ∂d.μ)`.
+
+Rewrite using `[ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun x => by positivity)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ofReal_norm_sq]`. Use `set I := ∫ x in d.D, ‖fr ω (ofS L N x)‖ ^ 2 ∂d.μ with hI`.
+
+Establish `hI0 : 0 ≤ I` using `integral_nonneg fun x => by positivity`. Establish `hμD : d.μ d.D ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) d.fin.ne`. Establish `hchain : ENNReal.ofReal (∫ y : Fin (k + 2) → HS L N, |intS ω (fun j => actL (h j) (y j))| ∂(Measure.pi fun _ => nrm μ B)) ≤ ENNReal.ofReal (max C₁ 0) * (C₂ * (M * (ENNReal.ofReal I ^ (1 / 2 : ℝ) * d.μ d.D ^ (1 / 2 : ℝ))))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`.
+
+Use `_ ≤ ENNReal.ofReal (max C₁ 0) * (C₂ * (M * ∫⁻ x in d.D, f x ∂d.μ)) := by gcongr`. Use `_ ≤ _ := by gcongr`. Rewrite using `[← hsq]`. Conclude with `hcs`. Establish `hR : ENNReal.ofReal (max C₁ 0) * (C₂ * (M * (ENNReal.ofReal I ^ (1 / 2 : ℝ) * d.μ d.D ^ (1 / 2 : ℝ)))) = ENNReal.ofReal (max C₁ 0 * C₂.toReal * M * ((d.μ d.D) ^ (1 / 2 : ℝ)).toReal * √I)`.
+
+Rewrite using `[ENNReal.ofReal_rpow_of_nonneg hI0 (by norm_num), ← Real.sqrt_eq_rpow]`. Rewrite using `[ENNReal.ofReal_mul, ENNReal.ofReal_mul, ENNReal.ofReal_mul, ENNReal.ofReal_mul, ENNReal.ofReal_toReal hC₂, ENNReal.ofReal_natCast, ENNReal.ofReal_toReal hμD]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals positivity`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 (hchain.trans_eq hR)`.
+-/
 private theorem integral_abs_intS_actL_le_mul_sqrt_integral (hS : SimpBd) (hU : Unfold) (hDi : Discr) (hO : OverlapG)
     {L : Type} [Field L] [NumberField L] {N k : ℕ} (hN : 1 ≤ N) (d : Dom L N)
     (μ : Measure (HS L N)) [μ.IsAddHaarMeasure] (B : Set (HS L N)) (hB : IsCompact B)
@@ -102,6 +127,33 @@ private theorem integral_abs_intS_actL_le_mul_sqrt_integral (hS : SimpBd) (hU : 
     all_goals positivity
   exact (ENNReal.ofReal_le_ofReal_iff (by positivity)).1 (hchain.trans_eq hR)
 
+/- English proof (translation)
+Introduce `L _ _ N k hN d z hz`. Take `⟨r, hr, hrP⟩` from `ball_pos (L := L) (N := N)`. Use `set B : Set (HS L N) := Metric.closedBall ((one L N : HS L N)) r with hBdef`. Establish `hB : IsCompact B` using `isCompact_closedBall _ _`. Use `set μ : Measure (HS L N) := Measure.addHaar with hμ`.
+
+Establish `hμB0 : μ B ≠ 0` using `(Metric.measure_closedBall_pos μ _ hr).ne'`. Establish `hμBt : μ B ≠ ⊤` using `hB.measure_lt_top.ne`. Use `haveI hP : IsProbabilityMeasure (nrm μ B) := ⟨by simp [nrm, ENNReal.inv_mul_cancel hμB0 hμBt]⟩`. Establish `h1B : ((one L N : HS L N)) ∈ B` using `Metric.mem_closedBall_self hr.le`. Set `e : HS L N → ↑(Pos L N)` to `fun x => if hx : x ∈ Pos L N then ⟨x, hx⟩ else one L N`.
+
+Establish `hcoe : ∀ x ∈ Pos L N, ((e x : ↑(Pos L N)) : HS L N) = x`. Introduce `x hx`. Simplify using `[e, hx]`. Establish `hae : ∀ᵐ x ∂(Measure.pi fun _ : Fin (k + 2) => nrm μ B), ∀ j, x j ∈ B`. Rewrite using `[Filter.eventually_all]`.
+
+Introduce `j`. Establish `h0 : ∀ᵐ y ∂(nrm μ B), y ∈ B`. Unfold `nrm`. Conclude with `Measure.ae_smul_measure (ae_restrict_mem hB.measurableSet) _`. Conclude with `(Measure.tendsto_eval_ae_ae (i := j)).eventually h0`.
+
+Establish `hKeq : ∀ h : Fin (k + 2) → Gp L N, Kset (fun j => ((actEq (h j) : HS L N ≃L[ℝ] HS L N) : HS L N →L[ℝ] HS L N)) B = Kset (fun j => actL (h j)) B`. Introduce `h`. Use `congr 1`. Use `choose C hC using fun g : Fin (k + 1) → Gm L N => integral_abs_intS_actL_le_mul_sqrt_integral hS hU hDi hO hN d μ B hB hrP (fun j => emb L N (Fin.partialProd g j))`. Use `⟨∑ g ∈ z.support, |z g| * C g, ?_⟩` and prove the remaining obligations.
+
+Introduce `ω hgood hΓ hsc hint`. Establish `hInv : Inv (emb L N) (intP ω)` using `fun g y => intP_inv ω (emb L N g) (hΓ g) y`. Establish `hintg : ∀ (h : Fin (k + 2) → Gp L N) (b : Fin (k + 2) → Bool), Integrable (fun x : Fin (k + 2) → HS L N => intP ω fun j => h j • if b j = true then e (x j) else one L N) (Measure.pi fun _ => nrm μ B)`. Introduce `h b`. Take `⟨C₁, hC₁⟩` from `hS (HS L N) μ (k + 1) (fun j => actEq (h j)) B hB`.
+
+Take `⟨hi, -⟩` from `hC₁ ω ((hKeq h) ▸ hgood.1.mono (kset_sub h hrP))`. Use `(hi b _ h1B).congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Use `show intS ω _ = intS ω _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[actEq_apply]`. Use `show _ = actL (h j) ((if b j = true then e (x j) else one L N : ↑(Pos L N)) : HS L N)`. Distinguish the cases in `hb : b j = true`. Simplify using `only [hb, if_true, hcoe _ (hrP (hx j))]`.
+
+Simplify using `only [hb]`. Both sides reduce to the same expression. Establish `hev` using `hA (Gm L N) (Gp L N) ↑(Pos L N) (HS L N) (emb L N) k (intP ω) (nrm μ B) e (one L N) hInv hgood.2 hintg z hz`. Rewrite using `[hev]`. Establish `key : ∀ g : Fin (k + 1) → Gm L N, |∫ x : Fin (k + 2) → HS L N, intP ω (fun j => emb L N (Fin.partialProd g j) • e (x j)) ∂(Measure.pi fun _ => nrm μ B)| ≤ C g * √(∫ x in d.D, ‖fr ω (ofS L N x)‖ ^ 2 ∂d.μ)`.
+
+Introduce `g`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Use `show |intS ω _| = |intS ω _|`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Use `show actL _ ((e (x j) : ↑(Pos L N)) : HS L N) = _`. Rewrite using `[hcoe _ (hrP (hx j))]`. Use `_ ≤ _ := hC g ω hgood.1 hΓ hsc hint`.
+
+Unfold `Finsupp.sum`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`. Use `gcongr`. Conclude with `key g`.
+
+Use `_ = _ := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sLoc_of_parts (hA : AvgS) (hS : SimpBd) (hU : Unfold) (hDi : Discr) (hO : OverlapG) : SLoc := by
   intro L _ _ N k hN d z hz
   classical

@@ -26,5 +26,8 @@ open GlobalTheory.CompanionTheory.WcB
 open scoped Topology
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS | exact GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS | (intros; apply GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_whittaker_continuous_quadratic : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → Continuous (algebraMap F E) → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ) (c : Eˣ →* ℂˣ), IsUnit1 c → ∀ Φ : E → ℂ, IsLocallyConstant Φ → HasCompactSupport Φ → ContinuousOn (fun p : GL (Fin 2) F × Eˣ => wS χ σ μ lam c Φ p.1 p.2) {p | p.1.val 1 0 ≠ 0} := by
   first | exact @GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS | exact GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS | (intros; apply GlobalTheory.CompanionTheory.WcB.ContNe.continuousOn_wS <;> assumption)

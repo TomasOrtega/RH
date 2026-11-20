@@ -7,6 +7,17 @@ open scoped InnerProductSpace ContDiff Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k L`. Proceed by induction on `L using Finset.induction_on with`. Consider the case `empty`. Introduce `N _ _ hN _`. Conclude with `⟨N, hN, fun x => by simp⟩`.
+
+Consider the case `insert b0 L hb0 ih`. Introduce `N hne hdist hN hvan`. Take `⟨N1, hN1, hN1eq⟩` from `GlobalTheory.T.smooth_vanishing_hyperplane_factor b0 N (hne b0 (Finset.mem_insert_self _ _)) hN (hvan b0 (Finset.mem_insert_self _ _))`. Establish `hvan1 : ∀ b ∈ L, ∀ x, ⟪x, b⟫_ℝ = 0 → N1 x = 0`. Introduce `b hb`.
+
+Use `GlobalTheory.T.continuous_vanishing_hyperplane_extend b {b0} N1 hN1.continuous ?_ ?_` and prove the remaining obligations. Introduce `b' hb' r`. Rewrite `hb'` using `[Finset.mem_singleton]`. Substitute `hb'` using the available equality. Conclude with `hdist b (Finset.mem_insert_of_mem hb) b' (Finset.mem_insert_self _ _) (fun h => hb0 (h ▸ hb)) r`.
+
+Introduce `x hx hoff`. Establish `h1` using `hvan b (Finset.mem_insert_of_mem hb) x hx`. Rewrite `h1` using `[hN1eq x]`. Establish `h2 : (⟪x, b0⟫_ℝ : ℂ) ≠ 0`. Conclude with `hoff b0 (Finset.mem_singleton_self _)` after adjusting the coercions.
+
+Conclude with `(mul_eq_zero.mp h1).resolve_left h2`. Take `⟨F, hF, hFeq⟩` from `ih N1 (fun b hb => hne b (Finset.mem_insert_of_mem hb)) (fun b hb b' hb' => hdist b (Finset.mem_insert_of_mem hb) b' (Finset.mem_insert_of_mem hb')) hN1 hvan1`. Use `⟨F, hF, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hN1eq x, hFeq x, Finset.prod_insert hb0, mul_assoc]`.
+-/
 theorem smooth_div_prod_linear_forms : ∀ {k : ℕ} (L : Finset (A0 k)) (N : A0 k → ℂ), (∀ b ∈ L, b ≠ 0) →
     (∀ b ∈ L, ∀ b' ∈ L, b ≠ b' → ∀ r : ℝ, b' ≠ r • b) →
     ContDiff ℝ ∞ N → (∀ b ∈ L, ∀ x, ⟪x, b⟫_ℝ = 0 → N x = 0) →

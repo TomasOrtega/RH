@@ -42,6 +42,13 @@ def IsTransp (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (i : Fin D.R.m) (v : Hei
         Submodule.Quotient.mk (p := p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (lattice₂ D ((uAt r v i).X k').Λ))) ⟨_, hw⟩ =
           ψ k' (γ.symm ((ψ k).symm (Submodule.Quotient.mk w)))
 
+/- English proof (translation)
+Take `⟨-, -, m₁⟩` from `h₁`. Take `⟨-, -, m₂⟩` from `h₂`. Establish `hs : γ.symm = γ'.symm`. Use extensionality with `u`. Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (ψ k u)`.
+
+Take `⟨hw₁, e₁⟩` from `m₁ w`. Take `⟨hw₂, e₂⟩` from `m₂ w`. Use `e₁.symm.trans e₂` as an intermediate fact. Simplify using `only [hw, LinearEquiv.symm_apply_apply] at this`. Conclude with `(ψ k').injective this`.
+
+Use `congrArg LinearEquiv.symm hs` as an intermediate fact. Simplify using `using this`.
+-/
 theorem IsTransp.eq_of_eq {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} {p : PtAt ex Csz}
     {r : TwoRuns p.T p.P.Gp} {i : Fin D.R.m} {v : HeightOneSpectrum (𝓞 D.what₂.LL)}

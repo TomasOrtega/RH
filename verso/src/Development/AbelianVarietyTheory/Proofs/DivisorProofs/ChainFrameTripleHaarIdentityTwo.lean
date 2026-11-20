@@ -40,15 +40,24 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Filter Topology
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `[Model.I, theta, GlobalTheory.WeilM.thetaSum]`.
+-/
 theorem I_zero {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) (om : Rep σ Y Wd) (h : UA σ Wd.J) :
     M.I om 0 h = 0 := by
   simp [Model.I, theta, GlobalTheory.WeilM.thetaSum]
 
+/- English proof (translation)
+Simplify using `only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left, MeasureTheory.integral_const_mul]`.
+-/
 theorem I_smul' {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) (om : Rep σ Y Wd) (c : ℂ)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h : UA σ Wd.J) : M.I om (c • Φ) h = c * M.I om Φ h := by
   simp only [Model.I, theta, map_smul, GlobalTheory.WeilM.thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left,
     MeasureTheory.integral_const_mul]
 
+/- English proof (translation)
+Unfold `Model.I`. Rewrite using `[← MeasureTheory.integral_add hΦ hΨ]`. Use `MeasureTheory.integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show GlobalTheory.WeilM.thetaSum F (om (g, h) (Φ + Ψ)) = GlobalTheory.WeilM.thetaSum F (om (g, h) Φ) + GlobalTheory.WeilM.thetaSum F (om (g, h) Ψ)`. Rewrite using `[map_add, GlobalTheory.WeilM.thetaSum_add F (hs g).1 (hs g).2]`.
+-/
 theorem I_add' {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) (om : Rep σ Y Wd)
     {Φ Ψ : (Fin n × Fin d → AF F) → ℂ} {h : UA σ Wd.J}
     (hΦ : MeasureTheory.IntegrableOn (fun g => theta om Φ g h) M.dom M.μ)
@@ -61,6 +70,19 @@ theorem I_add' {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd) 
   show GlobalTheory.WeilM.thetaSum F (om (g, h) (Φ + Ψ)) = GlobalTheory.WeilM.thetaSum F (om (g, h) Φ) + GlobalTheory.WeilM.thetaSum F (om (g, h) Ψ)
   rw [map_add, GlobalTheory.WeilM.thetaSum_add F (hs g).1 (hs g).2]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use `clear hne`. Use function extensionality and compare the values at `h`.
+
+Establish `hPair` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Establish `hpres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a')), om' x Φ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))` using `hPair.weil.isUSplitting.pres`. Establish `hdense` using `GlobalTheory.T.polynomialFock_dense_archimedeanSchwartz F E σ B _ _ _ _ G.M' _ _ om' _ _ _ _ hPair`. Establish `hsch : ∀ Ψ ∈ G.M'.So B.ψ B.τ₁, Ψ ∈ GlobalTheory.WeilM.schA F (Fin a' × Fin (a + a'))`. Introduce `Ψ hΨ`.
+
+Use `(Submodule.span_le.2 ?_) hΨ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hSB, hvac, -, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ?_` and prove the remaining obligations. Use `filter_upwards [hvac, hT.geo.hM'.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+
+Use `show G.M'.I om' Φ' h = 0`. Proceed by induction on `hΦ' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hSB, hvac, hv₁, rfl⟩` from `hx`. Establish `hc` using `GlobalTheory.T.restricted_product_decay_vacuum hP F E σ B a a' G X om om' hT hDec φ hSB hvac hv₁ h`.
+
+Establish `hz : ∀ P ∈ (G.M'.Pol B.ψ B.emb : Set (SInf F (Fin a' × Fin (a + a')))), G.M'.I om' (pure P φ) h = 0` using `fun P hP' => congrFun (hall _ (Submodule.subset_span ⟨P, φ, hP', hSB, hvac, rfl⟩)) h`. Establish `hcl : IsClosed {f : SInf F (Fin a' × Fin (a + a')) | G.M'.I om' (pure f φ) h = 0}` using `isClosed_eq hc continuous_const`. Establish `hsub` using `hcl.closure_subset_iff.2 hz`. Rewrite `hsub` using `[hdense.closure_eq]`. Conclude with `hsub (Set.mem_univ f)`.
+
+Consider the case `zero => exact I_zero _ _ h`. Consider the case `add x y hx hy ihx ihy`. Rewrite using `[I_add' G.M' om' ((hDec.2 x hx).2.1 h) ((hDec.2 y hy).2.1 h) (fun g => ⟨hpres _ _ (hsch x hx), hpres _ _ (hsch y hy)⟩), ihx, ihy, add_zero]`. Consider the case `smul c x hx ihx => rw [I_smul', ihx, mul_zero]`.
+-/
 theorem exists_algD_ne (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') (hDec : Decay B G om om')
     {Φ' : (Fin a' × Fin (a + a') → AF F) → ℂ} (hΦ' : Φ' ∈ G.M'.So B.ψ B.τ₁) (hne : G.M'.I om' Φ' ≠ 0) :
@@ -106,6 +128,13 @@ namespace GlobalTheory.DefThetaNZ
 
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `hP hK hL D ψ θ _hψ hθ W W₁ X A A₁ B α β hT _hdef ν₁ 𝓕₁ hν₁ ωA ωB Pi rf rl p p' hM`. Take `⟨ν, 𝓕, hν⟩` from `GlobalTheory.Ker.HypModel.exists_haar_fundDom D W`. Take `⟨e, Bs, Γ, Xc, om, om', cA, cB, hO, hTD⟩` from `GlobalTheory.T.exists_placewise_seesaw_triple_over_hermitian D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB hM.weilA hM.weilB`. Take `⟨R, Rf, hR⟩` from `hL D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`. Take `⟨hDec, hK'⟩` from `hK.1 D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTD`.
+
+Take `⟨⟨⟨Φ', hΦ'So, hne⟩, -⟩, -⟩` from `hK' R Rf hR`. Take `⟨ΦD, hΦD, hneD⟩` from `exists_algD_ne hP hTD hDec hΦ'So hne`. Take `⟨Φ, hΦ, hDat⟩` from `hO.algB' ΦD hΦD`. Use `⟨Φ, hΦ, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨h', hh'⟩` from `Function.ne_iff.1 hneD`.
+
+Take `⟨h, rfl⟩` from `GlobalTheory.T.unitaryToTransposeGramGroupMap_surjective D X e hO.JX h'`. Use `GlobalTheory.SquareAgree.thetaInt_eq_modelI D W₁ X _ _ _ Γ.M' (-1) hO.JW₁ ν₁ 𝓕₁ ωB om' (GlobalTheory.SquareAgree.kapX X e hO.JX) ΦD Φ hO.measW₁ hO.domW₁ (hO.theta_eq_B hDat) h` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `hh' this.symm`.
+-/
 theorem exists_algF_thetaInt_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (W W₁ X : HSp D) (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁) (B : GlobalTheory.ChainFr.Fr X) (α β : (AE D)ˣ →* Circle),

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace Formalism.L2.SG.KappaOffDiagonal
 
+/- English proof (translation)
+The claim follows from `kloostermanDiagonal_of_typeCond Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.OOIntAllC_outright IrrVecC_holds JPosC_holds hTy DelC_holds Formalism.L2.SG.Pf.normExpDegC_holds`.
+-/
 theorem kloostermanDiagonal_of_type (hTy : TypeC) : Formalism.L2.SG.RowsConc.KppDiagC :=
   kloostermanDiagonal_of_typeCond Formalism.L2.SG.Closed.FoldOKC_outright Formalism.L2.SG.Closed.OOIntAllC_outright IrrVecC_holds JPosC_holds hTy
     DelC_holds Formalism.L2.SG.Pf.normExpDegC_holds

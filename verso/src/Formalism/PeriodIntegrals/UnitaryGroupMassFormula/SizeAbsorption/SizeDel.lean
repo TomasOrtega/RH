@@ -6,10 +6,36 @@ namespace PI.SzEatI.W
 
 open Formalism.BasicNotions Formalism.MainNotions.G
 
+/- English proof (translation)
+Establish `h` using `Real.rpow_le_rpow zero_le_one hx hz`. Rewrite `h` using `[Real.one_rpow]`. Then use the resulting hypothesis.
+-/
 private lemma one_le_rpow_of_one_le_of_nonneg (x z : ℝ) (hx : 1 ≤ x) (hz : 0 ≤ z) : 1 ≤ x ^ z := by
   have h := Real.rpow_le_rpow zero_le_one hx hz
   rwa [Real.one_rpow] at h
 
+/- English proof (translation)
+Establish `hε0 : ε ≠ 0` using `hε.ne'`. Take `⟨B, hB⟩ : ∃ B : ℝ, B = 6 / ε` from `⟨_, rfl⟩`. Establish `hB0 : 0 < B` using `by rw [hB]; exact div_pos (by norm_num) hε`. Establish `h3 : B * (ε / 6) = 1` using `by rw [hB]; field_simp`. Take `⟨M, hM⟩ : ∃ M : ℝ, M = |Real.log C| + 5 * B + 2` from `⟨_, rfl⟩`.
+
+Establish `hlC : Real.log C ≤ |Real.log C|` using `le_abs_self _`. Establish `hM1 : 1 ≤ M` using `by have := abs_nonneg (Real.log C); rw [hM]; linarith`. Establish `hBM : B ≤ M` using `by have := abs_nonneg (Real.log C); rw [hM]; linarith`. Use `⟨M ^ B, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Establish `hxpos : 0 < x` using `by linarith`.
+
+Take `⟨s, hs⟩ : ∃ s : ℝ, s = x ^ (ε / 6)` from `⟨_, rfl⟩`. Establish `hMs : M ≤ s`. Establish `h1 : (M ^ B) ^ (ε / 6) ≤ x ^ (ε / 6)` using `Real.rpow_le_rpow (Real.rpow_nonneg (by linarith) _) hx0 (by linarith)`. Establish `h2 : (M ^ B) ^ (ε / 6) = M`. Rewrite using `[← Real.rpow_mul (by linarith), h3, Real.rpow_one]`.
+
+Rewrite using `[hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1 : 1 ≤ s` using `le_trans hM1 hMs`. Establish `hlog : Real.log x ≤ B * s`. Establish `hsp : 0 < s` using `by linarith`.
+
+Establish `h2 : Real.log s ≤ s - 1` using `Real.log_le_sub_one_of_pos hsp`. Rewrite `h2` using `[hs, Real.log_rpow hxpos, ← hs]`. Combine the equalities or inequalities in the displayed calculation. Establish `ht : x ^ (ε / 3) = s ^ 2`. Rewrite using `[hs, ← Real.rpow_natCast, ← Real.rpow_mul hxpos.le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : x ^ ε = s ^ 6`. Rewrite using `[hs, ← Real.rpow_natCast, ← Real.rpow_mul hxpos.le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Rewrite using `[ht]`.
+
+Establish `h4 : B * s ≤ s * s` using `mul_le_mul_of_nonneg_right (le_trans hBM hMs) (by linarith)`. Use polynomial arithmetic with `[hlog, h4]`. Rewrite using `[ht, hu]`. Establish `h5 : Real.log (x ^ 5) = 5 * Real.log x` using `by rw [Real.log_pow]; norm_num`. Establish `hx5 : x ^ 5 = Real.exp (5 * Real.log x)`.
+
+Rewrite using `[← h5, Real.exp_log (pow_pos hxpos 5)]`. Establish `key : C * x ^ 5 * (Real.exp (s ^ 2) * Real.exp (s ^ 2)) = Real.exp (Real.log C + 5 * Real.log x + (s ^ 2 + s ^ 2))`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_add, Real.exp_log hC, ← hx5]`. Rewrite using `[key]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Establish `hs2 : 1 ≤ s ^ 2` using `by nlinarith [hs1]`. Establish `e2 : |Real.log C| ≤ |Real.log C| * s ^ 2`. Use polynomial arithmetic with `[mul_nonneg (abs_nonneg (Real.log C)) (sub_nonneg.2 hs2)]`. Establish `e3 : B * s ≤ B * s ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith [hs1]) hB0.le`. Establish `e4 : M * s ^ 2 ≤ s * s ^ 2` using `mul_le_mul_of_nonneg_right hMs (sq_nonneg s)`.
+
+Rewrite `e4` using `[hM]`. Establish `hs3 : 1 ≤ s ^ 3` using `by nlinarith [mul_nonneg (sub_nonneg.2 hs1) (sq_nonneg s), hs2]`. Establish `e5 : s * s ^ 2 ≤ s ^ 6`. Use polynomial arithmetic with `[mul_nonneg (pow_nonneg (by linarith : (0:ℝ) ≤ s) 3) (sub_nonneg.2 hs3)]`. Use polynomial arithmetic with `[hlC, hlog, e2, e3, e4, e5]`.
+-/
 private lemma exists_log_le_rpow_and_mul_exp_le_exp_rpow (ε C : ℝ) (hε : 0 < ε) (hC : 0 < C) :
     ∃ x0 : ℝ, ∀ x : ℝ, 1 < x → x0 ≤ x →
       Real.log x ≤ x ^ (ε / 3) ∧
@@ -67,12 +93,22 @@ private lemma exists_log_le_rpow_and_mul_exp_le_exp_rpow (ε C : ℝ) (hε : 0 <
       nlinarith [mul_nonneg (pow_nonneg (by linarith : (0:ℝ) ≤ s) 3) (sub_nonneg.2 hs3)]
     nlinarith [hlC, hlog, e2, e3, e4, e5]
 
+/- English proof (translation)
+The claim follows from `add_nonneg (add_nonneg (mul_nonneg (sq_nonneg N) (add_nonneg hA hB)) (mul_nonneg (mul_nonneg (abs_nonneg d1) (sq_nonneg N)) hC)) (mul_nonneg (mul_nonneg (by norm_num) (abs_nonneg d2)) (sq_nonneg C))`.
+-/
 private lemma sq_mul_add_abs_mul_nonneg (N A B C d1 d2 : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B) (hC : 0 ≤ C) :
     0 ≤ N ^ 2 * (A + B) + |d1| * N ^ 2 * C + 2 * |d2| * C ^ 2 :=
   add_nonneg (add_nonneg (mul_nonneg (sq_nonneg N) (add_nonneg hA hB))
     (mul_nonneg (mul_nonneg (abs_nonneg d1) (sq_nonneg N)) hC))
     (mul_nonneg (mul_nonneg (by norm_num) (abs_nonneg d2)) (sq_nonneg C))
 
+/- English proof (translation)
+Establish `hN0 : 0 ≤ N ^ 2` using `sq_nonneg N`. Establish `hV2 : V ≤ V ^ 2` using `by nlinarith`. Establish `hE0 : 0 ≤ E` using `by linarith`. Establish `e1 : N ^ 2 * (A + B) ≤ E * (18 * V)` using `mul_le_mul hN (by linarith) (by linarith) hE0`. Establish `e2 : |d1| * N ^ 2 * C ≤ |d1| * E * (3 * V)` using `mul_le_mul (mul_le_mul_of_nonneg_left hN (abs_nonneg _)) hC hC0 (mul_nonneg (abs_nonneg _) hE0)`.
+
+Establish `e3 : 2 * |d2| * C ^ 2 ≤ 2 * |d2| * (3 * V) ^ 2`. Apply `mul_le_mul_of_nonneg_left _ (mul_nonneg (by norm_num) (abs_nonneg _))` to reduce the goal to its premises. Rewrite using `[sq, sq]; exact mul_le_mul hC hC hC0 (by linarith)`. Establish `f1 : E * V ≤ E * V ^ 2` using `mul_le_mul_of_nonneg_left hV2 hE0`. Establish `f2 : |d1| * E * V ≤ |d1| * E * V ^ 2` using `mul_le_mul_of_nonneg_left hV2 (mul_nonneg (abs_nonneg _) hE0)`.
+
+Establish `f3 : |d2| * V ^ 2 * 1 ≤ |d2| * V ^ 2 * E` using `mul_le_mul_of_nonneg_left hE (mul_nonneg (abs_nonneg d2) (sq_nonneg V))`. Use polynomial arithmetic with `[e1, e2, e3, f1, f2, f3]`.
+-/
 private lemma sq_mul_add_abs_mul_le_mul_sq (N A B C d1 d2 E V : ℝ) (hA0 : 0 ≤ A) (hA : A ≤ 13 * V) (hB0 : 0 ≤ B)
     (hB : B ≤ 5 * V) (hC0 : 0 ≤ C) (hC : C ≤ 3 * V) (hN : N ^ 2 ≤ E) (hE : 1 ≤ E) (hV : 1 ≤ V) :
     N ^ 2 * (A + B) + |d1| * N ^ 2 * C + 2 * |d2| * C ^ 2 ≤
@@ -94,6 +130,13 @@ private lemma sq_mul_add_abs_mul_le_mul_sq (N A B C d1 d2 E V : ℝ) (hA0 : 0 �
     mul_le_mul_of_nonneg_left hE (mul_nonneg (abs_nonneg d2) (sq_nonneg V))
   nlinarith [e1, e2, e3, f1, f2, f3]
 
+/- English proof (translation)
+Establish `hxn : 0 ≤ x * n * T` using `mul_nonneg (mul_nonneg hx.le hn0) hT.le`. Establish `h1 : x * n * T * R ≤ x * n * T * (C0 * T * V ^ 2)` using `mul_le_mul_of_nonneg_left hR hxn`. Establish `hK : 0 ≤ C0 * T * V ^ 2` using `mul_nonneg (mul_nonneg hC0 hT.le) (sq_nonneg V)`. Establish `h2 : x * n * T * (C0 * T * V ^ 2) ≤ x * x ^ 3 * T * (C0 * T * V ^ 2)` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hn hx.le) hT.le) hK`. Establish `he2 : 0 < e ^ 2` using `pow_pos he 2`.
+
+Establish `h3 : V ^ 2 ≤ x / e ^ 2` using `by first`. Consider the case `(rw [le_div_iff₀ he2]; exact hV)`. Consider the case `(rw [le_div_iff he2]; exact hV)`. Consider the case `(calc V ^ 2 = V ^ 2 * e ^ 2 / e ^ 2 := by field_simp _ ≤ x / e ^ 2 := by gcongr)`. Establish `h4 : x * x ^ 3 * T * (C0 * T * V ^ 2) ≤ x * x ^ 3 * T * (C0 * T * (x / e ^ 2))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h3 (mul_nonneg hC0 hT.le)) (mul_nonneg (mul_nonneg hx.le (pow_nonneg hx.le 3)) hT.le)`.
+
+Establish `h5 : x * x ^ 3 * T * (C0 * T * (x / e ^ 2)) = C0 / e ^ 2 * x ^ 5 * (T * T)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma fin_lemma_5 (x n T R C0 V e : ℝ) (hx : 0 < x) (hn0 : 0 ≤ n) (hn : n ≤ x ^ 3)
     (hT : 0 < T) (hR : R ≤ C0 * T * V ^ 2) (he : 0 < e) (hV : V ^ 2 * e ^ 2 ≤ x)
     (hC0 : 0 ≤ C0) : x * n * T * R ≤ C0 / e ^ 2 * x ^ 5 * (T * T) := by
@@ -118,6 +161,85 @@ private lemma fin_lemma_5 (x n T R C0 V e : ℝ) (hx : 0 < x) (hn0 : 0 ≤ n) (h
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Unfold `StepA`. Introduce `K eps`. Distinguish the cases in `heps : 0 < eps`. Use `swap`. Conclude with `⟨0, fun D L hL _ _ => (heps (hL ▸ L.sc.eps_pos)).elim⟩`.
+
+Take `⟨x0, hx0⟩` from `exists_log_le_rpow_and_mul_exp_le_exp_rpow eps ((18 + 3 * |K.dl1| + 18 * |K.dl2|) / eps ^ 2) heps (by positivity)`. Use `⟨x0, fun D L hL hx hS => ?_⟩` and prove the remaining obligations. Substitute `hL` using the available equality. Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hxpos : 0 < L.sc.x` using `by linarith`.
+
+Establish `he0 : 0 < L.sc.eps` using `L.sc.eps_pos`. Establish `he1 : L.sc.eps < 1 / 52` using `L.sc.eps_lt`. Establish `he0' : L.sc.eps ≠ 0` using `he0.ne'`. Take `⟨hlt, hgrow⟩` from `hx0 L.sc.x hx1 hx`. Unfold `Formalism.MainNotions.SizesAt at hS`.
+
+Take `⟨hN, -, -, -, -, -, -, -, -, -, -, -, -, -, hNodes, -, hDel, -⟩` from `hS`. Unfold `Formalism.MainNotions.SizeN Formalism.MainNotions.szTh at hN`. Take `⟨hn_lo, hn_up⟩` from `hN`. Unfold `Formalism.MainNotions.SizeNodes at hNodes`. Take `⟨-, -, -, hNd4, -⟩` from `hNodes`.
+
+Unfold `Formalism.MainNotions.SizeDel at hDel`. Take `⟨hDel1, -, hDel3, -⟩` from `hDel`. Establish `hn1 : (1:ℝ) ≤ D.R.n` using `le_trans (one_le_rpow_of_one_le_of_nonneg _ _ hx1.le (by linarith)) hn_lo`. Establish `hnpos : (0:ℝ) < D.R.n` using `by linarith`. Establish `hn3 : (D.R.n : ℝ) ≤ L.sc.x ^ 3`.
+
+Establish `h` using `Real.rpow_le_rpow_of_exponent_le hx1.le (show 2 + 8 * L.sc.eps + L.sc.eps / 100 ≤ ((3:ℕ):ℝ) by push_cast; linarith)`. Rewrite `h` using `[Real.rpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (1:ℝ) ≤ D.R.m`. Break down `Nat.eq_zero_or_pos D.R.m with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Rewrite `hNd4` using `[h, Nat.cast_zero, div_zero]`. Establish `: (0:ℝ) ≤ 4 * (D.R.N 0 : ℝ) ^ 3 + 2 * D.R.t` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Nat.one_le_cast.mpr h`.
+
+Establish `hNm0 : (0:ℝ) ≤ Nm D` using `by unfold Nm; positivity`. Establish `hNmDel : Nm D ≤ (D.s.Del : ℝ)`. Establish `h10 : (1:ℝ) ≤ (D.R.m : ℝ) ^ 10` using `by first`. Consider the case `exact one_le_pow₀ hm`. Consider the case `exact one_le_pow_of_one_le' hm 10`.
+
+Consider the case `exact one_le_pow_of_one_le hm 10`. Consider the case `(have h := pow_le_pow_left zero_le_one hm 10; rwa [one_pow] at h)`. Combine the equalities or inequalities in the displayed calculation. Establish `hNmE : Nm D ≤ Real.exp (L.sc.x ^ (L.sc.eps / 4) / 2)`. Distinguish the cases in `h : (D.s.Del : ℝ) ≤ 0`.
+
+Conclude with `le_trans (le_trans hNmDel h) (Real.exp_pos _).le`. Use `push_neg at h`. Combine the equalities or inequalities in the displayed calculation. Establish `hu1 : 1 ≤ L.sc.x ^ L.sc.eps` using `one_le_rpow_of_one_le_of_nonneg _ _ hx1.le he0.le`. Establish `hup : 0 < L.sc.x ^ L.sc.eps` using `by linarith`.
+
+Establish `ht1 : 1 ≤ L.sc.x ^ (L.sc.eps / 3)` using `one_le_rpow_of_one_le_of_nonneg _ _ hx1.le (by linarith)`. Establish `hqt : L.sc.x ^ (L.sc.eps / 4) ≤ L.sc.x ^ (L.sc.eps / 3)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `htu : L.sc.x ^ (L.sc.eps / 3) ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Establish `hT1 : 1 ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Combine the linear relations using `[Real.add_one_le_exp (L.sc.x ^ (L.sc.eps / 3))]`.
+
+Establish `hNm2 : Nm D ^ 2 ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Establish `h1 : Nm D ^ 2 ≤ Real.exp (L.sc.x ^ (L.sc.eps / 4) / 2) ^ 2`. Rewrite using `[sq, sq]`. Conclude with `mul_le_mul hNmE hNmE hNm0 (le_trans hNm0 hNmE)`. Establish `h2 : Real.exp (L.sc.x ^ (L.sc.eps / 4) / 2) ^ 2 = Real.exp (L.sc.x ^ (L.sc.eps / 4))`.
+
+Rewrite using `[sq, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Conclude with `le_trans h1 (Real.exp_le_exp.mpr hqt)`.
+
+Establish `ha : L.sc.a = L.sc.x * Real.exp (L.sc.x ^ L.sc.eps)` using `rfl`. Establish `hb : L.sc.b = Real.exp (L.sc.x ^ L.sc.eps)` using `rfl`. Establish `hX' : L.sc.X' = Real.exp (L.sc.x ^ (L.sc.eps / 3))` using `rfl`. Establish `hb' : L.sc.b' = L.sc.a / L.sc.X'` using `rfl`. Establish `ha0 : L.sc.a ≠ 0` using `by rw [ha]; exact mul_ne_zero hxpos.ne' (Real.exp_pos _).ne'`.
+
+Establish `hXpp : L.sc.X'' D.R.n = L.sc.x * D.R.n * Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Establish `e1 : L.sc.X'' D.R.n = L.sc.a / (L.sc.a / L.sc.X' / (L.sc.x * D.R.n))` using `rfl`. Rewrite using `[e1, hX']`. Establish `hn0 : (D.R.n : ℝ) ≠ 0` using `hnpos.ne'`. Establish `hx0' : L.sc.x ≠ 0` using `hxpos.ne'`.
+
+Establish `hE0 : Real.exp (L.sc.x ^ (L.sc.eps / 3)) ≠ 0` using `(Real.exp_pos _).ne'`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Establish `g1 : L.sc.b' ≤ L.sc.b`.
+
+Establish `hxt : L.sc.x ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb', ha, hX', hb]`. Establish `hEp` using `Real.exp_pos (L.sc.x ^ L.sc.eps)`. Establish `hTp` using `Real.exp_pos (L.sc.x ^ (L.sc.eps / 3))`.
+
+Use `first`. Consider the case `(rw [div_le_iff₀ hTp]; linarith [mul_le_mul_of_nonneg_left hxt hEp.le])`. Consider the case `(rw [div_le_iff hTp]; linarith [mul_le_mul_of_nonneg_left hxt hEp.le])`. Establish `hlogXeq : Real.log (L.sc.X'' D.R.n) = Real.log L.sc.x + Real.log D.R.n + L.sc.x ^ (L.sc.eps / 3)`. Rewrite using `[hXpp, Real.log_mul (mul_pos hxpos hnpos).ne' (Real.exp_pos _).ne', Real.log_exp, Real.log_mul hxpos.ne' hnpos.ne']`.
+
+Establish `hlx0 : 0 < Real.log L.sc.x` using `Real.log_pos hx1`. Establish `hln0 : 0 ≤ Real.log (D.R.n : ℝ)` using `Real.log_nonneg hn1`. Establish `g4 : 1 < L.sc.X'' D.R.n`. Rewrite using `[hXpp]`. Establish `h1 : L.sc.x ≤ L.sc.x * D.R.n`.
+
+Combine the linear relations using `[mul_nonneg hxpos.le (sub_nonneg.2 hn1)]`. Establish `h2 : L.sc.x * D.R.n ≤ L.sc.x * D.R.n * Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Combine the linear relations using `[mul_nonneg (mul_pos hxpos hnpos).le (sub_nonneg.2 hT1)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `g5 : 1 ≤ Real.log (L.sc.X'' D.R.n)` using `by rw [hlogXeq]; linarith`.
+
+Establish `ha1 : 1 ≤ L.sc.a`. Rewrite using `[ha]`. Establish `hE1 : 1 ≤ Real.exp (L.sc.x ^ L.sc.eps)`. Combine the linear relations using `[Real.add_one_le_exp (L.sc.x ^ L.sc.eps)]`. Combine the linear relations using `[mul_nonneg (sub_nonneg.2 hx1.le) (sub_nonneg.2 hE1)]`.
+
+Establish `hloga : Real.log L.sc.a = Real.log L.sc.x + L.sc.x ^ L.sc.eps`. Rewrite using `[ha, Real.log_mul hxpos.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hl1 : 0 ≤ Real.log (8 * (D.R.n : ℝ) * Nm D * L.sc.a)`. Break down `eq_or_lt_of_le hNm0 with h | h` into its components or cases. Simplify using `[← h]`.
+
+Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `hNm1 : (1:ℝ) ≤ Nm D`. Establish `h' : (0:ℝ) < (D.R.N D.R.m : ℝ)` using `h`. Establish `h'' : 0 < D.R.N D.R.m` using `by exact_mod_cast h'`. Use `first`.
+
+Consider the case `exact Nat.one_le_cast.mpr h''`. Consider the case `(unfold Nm; exact_mod_cast h'')`. Establish `h8 : (1:ℝ) ≤ 8 * (D.R.n : ℝ)` using `by linarith`. Establish `h8N : (1:ℝ) ≤ 8 * (D.R.n : ℝ) * Nm D`. Combine the linear relations using `[mul_nonneg (sub_nonneg.2 h8) (sub_nonneg.2 hNm1)]`.
+
+Combine the linear relations using `[mul_nonneg (sub_nonneg.2 h8N) (sub_nonneg.2 ha1)]`. Establish `hl2 : 0 ≤ Real.log (L.sc.X'' D.R.n)` using `by linarith`. Establish `hl3 : 0 ≤ Real.log (2 * L.sc.a)` using `Real.log_nonneg (by linarith)`. Establish `g2 : 0 ≤ Rt L K` using `sq_mul_add_abs_mul_nonneg (Nm D) (Real.log (8 * (D.R.n : ℝ) * Nm D * L.sc.a)) (Real.log (L.sc.X'' D.R.n)) (Real.log (2 * L.sc.a)) K.dl1 K.dl2 hl1 hl2 hl3`. Establish `hlx : Real.log L.sc.x ≤ L.sc.x ^ L.sc.eps / L.sc.eps`.
+
+Establish `h2` using `Real.log_le_sub_one_of_pos hup`. Rewrite `h2` using `[Real.log_rpow hxpos]`. Establish `h3 : L.sc.eps * (L.sc.x ^ L.sc.eps / L.sc.eps) = L.sc.x ^ L.sc.eps` using `by first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h4` using `mul_lt_mul_of_pos_left hc he0`. Rewrite `h4` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨V, hV⟩ : ∃ V : ℝ, V = L.sc.x ^ L.sc.eps / L.sc.eps` from `⟨_, rfl⟩`. Rewrite `hlx` using `[← hV]`. Establish `hV0 : 0 < V` using `by rw [hV]; exact div_pos hup he0`. Establish `huV : L.sc.x ^ L.sc.eps ≤ V`. Establish `h3 : L.sc.eps * V = L.sc.x ^ L.sc.eps`.
+
+Rewrite using `[hV]`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Establish `h4 : L.sc.eps * V ≤ 1 * V` using `mul_le_mul_of_nonneg_right (by linarith) hV0.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hV1 : 1 ≤ V` using `le_trans hu1 huV`. Establish `hlogn : Real.log (D.R.n : ℝ) ≤ 3 * Real.log L.sc.x`. Establish `h : Real.log (D.R.n : ℝ) ≤ Real.log (L.sc.x ^ 3)` using `by first`. Consider the case `exact Real.log_le_log hnpos hn3`.
+
+Consider the case `exact Real.log_le_log_of_le hnpos hn3`. Consider the case `exact (Real.log_le_log_iff hnpos (lt_of_lt_of_le hnpos hn3)).2 hn3`. Rewrite `h` using `[Real.log_pow]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hl1' : Real.log (8 * (D.R.n : ℝ) * Nm D * L.sc.a) ≤ 13 * V`. Break down `eq_or_lt_of_le hNm0 with h | h` into its components or cases. Rewrite using `[← h, mul_zero, zero_mul, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0' : Nm D ≠ 0` using `h.ne'`.
+
+Rewrite using `[Real.log_mul (mul_ne_zero (mul_ne_zero (by norm_num) hnpos.ne') hN0') ha0, Real.log_mul (mul_ne_zero (by norm_num) hnpos.ne') hN0', Real.log_mul (by norm_num) hnpos.ne']`. Establish `h8 : Real.log 8 ≤ 8 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`. Establish `hlN : Real.log (Nm D) ≤ L.sc.x ^ (L.sc.eps / 4) / 2`. Establish `h' : Real.log (Nm D) ≤ Real.log (Real.exp (L.sc.x ^ (L.sc.eps / 4) / 2))` using `by first`. Consider the case `exact Real.log_le_log h hNmE`.
+
+Consider the case `exact Real.log_le_log_of_le h hNmE`. Consider the case `exact (Real.log_le_log_iff h (lt_of_lt_of_le h hNmE)).2 hNmE`. Rewrite `h'` using `[Real.log_exp]`. Then use the resulting hypothesis. Combine the linear relations using `[hlogn, hlx, hloga, hqt, htu, huV, hV1]`. Establish `hl2' : Real.log (L.sc.X'' D.R.n) ≤ 5 * V`.
+
+Rewrite using `[hlogXeq]`. Combine the linear relations using `[hlogn, hlx, htu, huV]`. Establish `hl3' : Real.log (2 * L.sc.a) ≤ 3 * V`. Rewrite using `[Real.log_mul (by norm_num) ha0, hloga]`. Establish `h2 : Real.log 2 ≤ 2 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : Rt L K ≤ (18 + 3 * |K.dl1| + 18 * |K.dl2|) * Real.exp (L.sc.x ^ (L.sc.eps / 3)) * V ^ 2` using `sq_mul_add_abs_mul_le_mul_sq (Nm D) (Real.log (8 * (D.R.n : ℝ) * Nm D * L.sc.a)) (Real.log (L.sc.X'' D.R.n)) (Real.log (2 * L.sc.a)) K.dl1 K.dl2 (Real.exp (L.sc.x ^ (L.sc.eps / 3))) V hl1 hl1' hl2 hl2' hl3 hl3' hNm2 hT1 hV1`. Establish `hu2 : (L.sc.x ^ L.sc.eps) ^ 2 ≤ L.sc.x`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hxpos.le]`. Establish `h` using `Real.rpow_le_rpow_of_exponent_le hx1.le (show L.sc.eps * ((2:ℕ):ℝ) ≤ 1 by push_cast; linarith)`.
+
+Rewrite `h` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hV2 : V ^ 2 * L.sc.eps ^ 2 ≤ L.sc.x`. Establish `h3 : V ^ 2 * L.sc.eps ^ 2 = (L.sc.x ^ L.sc.eps) ^ 2`. Rewrite using `[hV]`. Use `first`.
+
+Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Consider the case `ring`. Rewrite using `[h3]`. Conclude with `hu2`.
+
+Establish `hfin` using `fin_lemma_5 L.sc.x (D.R.n : ℝ) (Real.exp (L.sc.x ^ (L.sc.eps / 3))) (Rt L K) (18 + 3 * |K.dl1| + 18 * |K.dl2|) V L.sc.eps hxpos hnpos.le hn3 (Real.exp_pos _) hR he0 hV2 (by positivity)`. Use `⟨g1, g2, ?_, g4, g5⟩` and prove the remaining obligations. Rewrite using `[hXpp, hb]`. Conclude with `le_trans hfin hgrow`.
+-/
 theorem stepA : StepA := by
   unfold StepA
   intro K eps

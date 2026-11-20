@@ -27,6 +27,17 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'} {D : DegPre R}
   {D' : DegPre R'} {β : D'.P.A.left ⟶ D.P.A.left}
 
+/- English proof (translation)
+Take `⟨t, ht, hv⟩` from `exists_up ((isGen_iff v).1 hvg) D.P.isLB D'.P.isLB (φ' := thφ D'.P.A (x3 D'.P.A)) (ε := thε) D'.cub.t D'.cub.isGen`. Establish `hv' : ∀ (Z : Scheme.{0}) (r : Z ⟶ (G3 D'.P.A).left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' → val t r z J = (∏ I : thK.{0}, gw v (r ≫ thφ D'.P.A (x3 D'.P.A) I) z (J ((r ≫ thφ D'.P.A (x3 D'.P.A) I) ≫ β)) (J' (r ≫ thφ D'.P.A (x3 D'.P.A) I)) ^ thε I) * val (L` using `D'.P.L) (φ := thφ D'.P.A (x3 D'.P.A)) (ε := thε) D'.cub.t r z J' := fun Z r z J J' hJ hJ' => by`. Use `(hv Z r z _ _ (hJ.mem _ r) (hJ'.mem _ r)).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun I _ => ?_) rfl)` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Set `e : 𝟙_ (Over (Sp R')) ⟶ G3 D'.P.A` to `lift 1 (lift 1 1)`.
+
+Establish `sj : Function.Surjective ((snd D'.P.A (D'.P.A ⊗ D'.P.A)).left ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom).appTop.hom` using `surj_comp (surj_snd hG D'.P.isAb _) (surj_comp (surj_snd hG D'.P.isAb _) (hG _ _ D'.P.isAb).2)`. Establish `he : e.left ≫ (snd D'.P.A (D'.P.A ⊗ D'.P.A)).left ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom = 𝟙 _`. Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Establish `key` using `gen_unique' D.P.isLB (φ := fun I => (cubeMapOf gp).F3 ≫ thφ D.P.A (x3 D.P.A) I) (ε := thε) (fun V _ k => Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ thε I) ((cubeMapOf gp).psum_comm I.down)) _ e.left he sj (pullGen_isGen _ _ _ _ D.cub.isGen (cubeMapOf gp).F3) ht (fu …`.
+
+Establish `C' : IsCub (cubV D'.cub y I')` using `isCub_cubV D'.cub hI'`. Establish `p` using `prod_cub (1 : 𝟙_ (Over (Sp R')) ⟶ D'.P.A) 1 1 (fun q => gw v q y (I (q ≫ β)) (I' q))`. Rewrite `p` using `[_root_.mul_one, _root_.mul_one]`. Use `Eq.trans ?_ ((hv' _ e.left y I I' hI hI').trans (congrArg₂ (· * ·) p (C'.face 1 1))).symm` and prove the remaining obligations. Establish `o : pushPt gp.1.w (1 : 𝟙_ (Over (Sp R')) ⟶ D'.P.A) = 1` using `map_one (pushHom gp _)`.
+
+Establish `q : e.left ≫ (cubeMapOf gp).F3 = (lift (pushPt gp.1.w (1 : 𝟙_ (Over (Sp R')) ⟶ D'.P.A)) (lift (pushPt gp.1.w 1) (pushPt gp.1.w 1))).left` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [e, x3, pushPt, cubeMapOf]`. Use `(val_pull hI _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[q, o]`.
+
+Use `((isCub_cubV D.cub (T := Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap φ)) hI).face 1 1).trans ?_` and prove the remaining obligations. Use the proof step `simp) _ (lift x (lift x' y)).left z J hJ`. Conclude with `(val_pull hJ _ _ _).symm.trans (key.trans (hv' _ _ z J J' hJ hJ'))`.
+-/
 theorem cub_of_grpPullback (hG : GlobalFnsSt) (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β)
     (v : LB.Iso D'.P.L (D.P.L.pull β)) (hvg : v.IsGen) {T' : Over (Sp R')} {z : T'.left} {J J'}
     (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J') (x x' y : T' ⟶ D'.P.A) :
@@ -71,6 +82,33 @@ theorem cub_of_grpPullback (hG : GlobalFnsSt) (gp : IsGrpPullback D'.P.A D.P.A (
   exact (val_pull hJ _ _ _).symm.trans (key.trans (hv' _ _ z J J' hJ hJ'))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `a a' b`. Take `⟨a, rfl⟩` from `xe.surjective a`. Take `⟨a', rfl⟩` from `xe.surjective a'`. Take `⟨b, rfl⟩` from `xe.surjective b`. Establish `sep : D.P.A.left.IsSeparated`.
+
+Use `D.P.isAb.proper` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← terminal.comp_from D.P.A.hom]`. Use `infer_instance`. Take `⟨y⟩ : Nonempty (TK R').left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R')))`.
+
+Establish `red : IsReduced (TK R).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of (FractionRing R))))`. Establish `sub : Subsingleton (TK R).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`. Use `TauPull.corr_of_dense D.P.isLB gam y (fun V hV => ?_) fun J hJ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hV`. Rewrite using `[Subsingleton.elim (gam y) x]`.
+
+Conclude with `hx`. Use `choose J' hJ₀ using fun χ : (TK R').left ⟶ D'.P.A.left => exists_chart D'.P.isLB (χ y)`. Establish `hJ' : Good D'.P.L y J'` using `hJ₀`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk ((TK R').hom ≫ spMap φ)`. Set `κ : T ⟶ TK R` to `Over.homMk gam hgam`.
+
+Set `B : (TK R' ⟶ D'.P.A) → (T ⟶ D.P.A)` to `fun x => pushPt gp.1.w x`. Establish `βc : ∀ χ, B (cP D' _ χ) = cP D _ (xe χ)` using `fun χ => Over.OverMorphism.ext (by show ((TK R').hom ≫ (D'.c χ).left) ≫ β = ((TK R').hom ≫ spMap φ) ≫ (D.c (xe χ)).left`. Rewrite using `[Category.assoc, hc, Category.assoc])`. Set `Ω : (TK R' ⟶ D'.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `fun x => gw v x.left y (J (x.left ≫ β)) (J' x.left)`. Set `θ : (T ⟶ D.P.A) → (T ⟶ D.P.A) → (T ⟶ D.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `th D (T := T) y J`.
+
+Establish `cub : ∀ a b c : TK R' ⟶ D'.P.A, θ (B a) (B b) (B c) = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b * Ω c * (Ω 1)⁻¹ * th D' y J' a b c`. Introduce `a b c`. Establish `e` using `cub_of_grpPullback hG gp v hvg (T' := TK R') hJ hJ' a b c`. Establish `q : (lift a (lift b c)).left ≫ (cubeMapOf gp).F3 = (lift (B a) (lift (B b) (B c))).left` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+
+Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Rewrite `e` using `[q]`. Conclude with `e.trans (congrArg₂ (· * ·) (prod_cub a b c (fun q => gw v q y (J (q ≫ β)) (J' q))) rfl)`. Establish `vψ : ∀ χ, val (D.psi (xe χ)) gam y J = (Ω (cP D' _ χ))⁻¹ * val (D'.psi χ) (𝟙 _) y J'` using `fun χ => by`. Establish `h₁ : D'.xK χ ≫ β = gam ≫ D.xK (xe χ)` using `by show (jK R' ≫ (D'.c χ).left) ≫ β = gam ≫ jK R ≫ (D.c (xe χ)).left`.
+
+Rewrite using `[Category.assoc, hc, ← Category.assoc, ← hgam, Category.assoc]`. Establish `e` using `CubTransport.val_pmaps (fun _ => h₁) (hψ χ) (𝟙 _) hJ hJ'`. Rewrite `e` using `[Fintype.prod_unique, zpow_neg_one, Category.id_comp, Category.id_comp]`. Conclude with `e`. Establish `vρ : val D.rigK gam y J = Ω 1 * val D'.rigK (𝟙 _) y J'`.
+
+Establish `h₁ : eSec D'.P.A ≫ β = spMap φ ≫ eSec D.P.A`. Establish `o` using `congrArg (fun q => q.left) (map_one (pushHom gp (𝟙_ (Over (Sp R')))))`. Establish `o' : (toUnit (𝟙_ (Over (Sp R'))) ≫ η[D'.P.A]).left ≫ β = ((𝟙_ (Over (Sp R'))).hom ≫ spMap φ) ≫ eSec D.P.A` using `o`. Rewrite `o'` using `[toUnit_unit, Category.id_comp]`. Conclude with `o'.trans (congrArg (· ≫ eSec D.P.A) (Category.id_comp _))`.
+
+Establish `e` using `CubTransport.val_pmaps (fun _ => h₁) hρ (TK R').hom hJ hJ'`. Rewrite `e` using `[Fintype.prod_unique, zpow_one]`. Establish `b₁ : gam ≫ (toUnit (TK R)).left = (TK R').hom ≫ spMap φ` using `hgam`. Establish `b₂ : 𝟙 _ ≫ (toUnit (TK R')).left = (TK R').hom` using `Category.id_comp _`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))` and prove the remaining obligations.
+
+Rewrite using `[b₁, b₂]`. Conclude with `e`. Establish `key` using `(val_mul hJ' _ _ _).symm.trans ((val_corr hJ' (hB a a' b) (𝟙 _)).trans (val_mul hJ' _ _ _))`. Use `replace key := (congrArg₂ (· * ·) rfl (val_cub D'.cub (𝟙 (TK R')) hJ' (cP D' _ a) (cP D' _ a') (cP D' _ b))).symm.trans key`. Rewrite `key` using `[Category.id_comp, Category.id_comp, Category.id_comp, TauPull.val_tau _ hJ', TauPull.val_tau _ hJ', TauPull.val_tau _ hJ']`.
+
+Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Establish `cb : val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift (cP D (TK R) (xe a)) (lift (cP D (TK R) (xe a')) (cP D (TK R) (xe b)))).left) gam y J = θ (cP D T (xe a)) (cP D T (xe a')) (cP D T (xe b))`. Use `(val_cub D.cub κ hJ (cP D _ (xe a)) (cP D _ (xe a')) (cP D _ (xe b))).trans ?_` and prove the remaining obligations. Rewrite using `[comp_cP, comp_cP, comp_cP]`. Use `(congrArg₂ (· * ·) rfl cb).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← βc, ← βc, ← βc, cub, TauPull.val_tau _ hJ, TauPull.val_tau _ hJ, TauPull.val_tau _ hJ, ← map_add, ← map_add, ← map_add, ← map_add, vψ, vψ, vψ, vψ, vψ, vψ, vψ, vρ, cPoint_add, cPoint_add, cPoint_add, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+-/
 theorem tauBimult_down (hG : GlobalFnsSt) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X)
     (gp : IsGrpPullback D'.P.A D.P.A (spMap φ) β) (hvg : v.IsGen)
     (hc : ∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) (hρ : RigCmp φ D D' β v)
@@ -154,6 +192,9 @@ theorem tauBimult_down (hG : GlobalFnsSt) (v : LB.Iso D'.P.L (D.P.L.pull β)) (x
 
 end TauDescent
 
+/- English proof (translation)
+Introduce `hG _ _ _ _ _ _ _ _ _ _ v xe gp hv hc hρ gam hgam hψ hB` and use `TauDescent.tauBimult_down hG v xe gp hv hc hρ gam hgam hψ hB`.
+-/
 theorem tauBimult_of_baseChange : GlobalFnsSt → ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (φ : R →+* V) (D : DegPre R) (D' : DegPre V) (β : D'.P.A.left ⟶ D.P.A.left) (v : LB.Iso D'.P.L (D.P.L.pull β)) (xe : D'.X ≃+ D.X), IsGrpPullback D'.P.A D.P.A (spMap φ) β → v.IsGen → (∀ x, (D'.c x).left ≫ β = spMap φ ≫ (D.c (xe x)).left) → RigCmp φ D D' β v → ∀ gam : (TK V).left ⟶ (TK R).left, gam ≫ jK R = jK V ≫ spMap φ → PsiCmp D D' β v xe gam → D'.TauBimult → D.TauBimult :=
   fun hG _ _ _ _ _ _ _ _ _ _ v xe gp hv hc hρ gam hgam hψ hB =>
     TauDescent.tauBimult_down hG v xe gp hv hc hρ gam hgam hψ hB

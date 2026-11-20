@@ -6,6 +6,15 @@ open Matrix GlobalTheory.TorFin
 
 namespace GlobalTheory.TorFin
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hs : Submodule.span ℂ {a | ∃ k < N, ∃ z ∈ Z', a = (-H) ^ k * z} ≤ Submodule.span ℂ {a | ∃ k < N, ∃ z ∈ Z, a = H ^ k * z}`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `a ⟨k, hk, z, hz, rfl⟩`.
+
+Establish `hm : H ^ k * z ∈ Submodule.span ℂ {a | ∃ k < N, ∃ z ∈ Z, a = H ^ k * z}` using `Submodule.subset_span ⟨k, hk, z, hZ hz, rfl⟩`. Break down `neg_one_pow_eq_or A k with e | e` into its components or cases. Rewrite using `[SetLike.mem_coe, neg_pow, e, one_mul]`. Conclude with `hm`. Rewrite using `[SetLike.mem_coe, neg_pow, e, neg_one_mul, neg_mul]`.
+
+Conclude with `Submodule.neg_mem _ hm`. Establish `hN'` using `(sup_le_sup hI hs) hN`. Break down `neg_one_pow_eq_or A N with e | e` into its components or cases. Rewrite `hN'` using `[neg_pow, e, one_mul]`. Then use the resulting hypothesis. Rewrite `hN'` using `[neg_pow, e, neg_one_mul]`.
+
+Simplify using `using Submodule.neg_mem _ hN'`.
+-/
 theorem isIntMod_of_neg_of_le {A : Type} [Ring A] [Algebra ℂ A] {Z Z' : Subalgebra ℂ A} {I I' : Submodule ℂ A} {H : A}
     (hZ : Z' ≤ Z) (hI : I' ≤ I) (h : IsIntMod Z' I' (-H)) : IsIntMod Z I H := by
   obtain ⟨N, hN⟩ := h
@@ -24,6 +33,19 @@ theorem isIntMod_of_neg_of_le {A : Type} [Ring A] [Algebra ℂ A] {Z Z' : Subalg
   · rwa [neg_pow, e, one_mul] at hN'
   · rw [neg_pow, e, neg_one_mul] at hN'; simpa using Submodule.neg_mem _ hN'
 
+/- English proof (translation)
+Introduce `n A _ _ ρ hρ v φ hφ`. Take `⟨ρ', hρ'⟩ : ∃ ρ' : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A, ∀ Y, ρ' Y = -ρ Yᵀ` from `⟨-(ρ ∘ₗ (transposeLinearEquiv (Fin n) (Fin n) ℂ ℂ).toLinearMap), fun Y => rfl⟩`. Establish `hL : IsLieRep ρ'`. Introduce `X Y`. Rewrite using `[hρ', hρ', hρ', transpose_sub, transpose_mul, transpose_mul, ← map_neg, neg_sub, hρ Xᵀ Yᵀ]`.
+
+Simplify using `only [neg_mul_neg]`. Establish `h1` using `GlobalTheory.T.integral_module_rank_one_left n A ρ' hL φ v (by rw [dotProduct_comm]; exact hφ)`. Establish `e1 : ρ' (vecMulVec φ v) = -ρ (vecMulVec v φ)` using `by rw [hρ', transpose_vecMulVec]`. Rewrite `h1` using `[e1]`. Establish `hadj : Algebra.adjoin ℂ (Set.range ρ') = Algebra.adjoin ℂ (Set.range ρ)`.
+
+Use `congr 1`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, rfl⟩; exact ⟨-Yᵀ, by rw [hρ', map_neg]⟩`. Introduce and unpack `⟨Y, rfl⟩; exact ⟨-Yᵀ, by rw [hρ', transpose_neg, transpose_transpose, map_neg, neg_neg]⟩`.
+
+Establish `hZ : invAlg ρ' ≤ invAlg ρ`. Introduce `T hT`. Rewrite `hT`, the goal using `[mem_invAlg]`. Use `⟨hadj ▸ hT.1, fun r g g' hg hr => hT.2 r g'ᵀ gᵀ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← transpose_mul, hg, transpose_one]`.
+
+Introduce `Y`. Rewrite using `[hρ', hρ', mul_neg, neg_mul, hr, show (g'ᵀ * Y * gᵀ)ᵀ = g * Yᵀ * g' by simp [transpose_mul, Matrix.mul_assoc]]`. Establish `hI : leftIdl ρ' {Y | ∃ u, v ⬝ᵥ u = 0 ∧ Y = vecMulVec u v} ≤ leftIdl ρ {Y | ∃ ψ, ψ ⬝ᵥ v = 0 ∧ Y = vecMulVec v ψ}`. Unfold `leftIdl`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `a ⟨Y, ⟨u, hu, rfl⟩, w, hw, rfl⟩`. Rewrite using `[SetLike.mem_coe, hρ', transpose_vecMulVec, neg_mul]`. Conclude with `Submodule.neg_mem _ (Submodule.subset_span ⟨vecMulVec v u, ⟨u, by rw [dotProduct_comm]; exact hu, rfl⟩, w, hadj ▸ hw, rfl⟩)`. Conclude with `isIntMod_of_neg_of_le hZ hI h1`.
+-/
 theorem intMod_vecMulVec_row : ∀ (n : ℕ) (A : Type) [Ring A] [Algebra ℂ A] (ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] A),
     IsLieRep ρ → ∀ v φ : Fin n → ℂ, φ ⬝ᵥ v = 1 →
       IsIntMod (invAlg ρ) (leftIdl ρ {Y | ∃ ψ, ψ ⬝ᵥ v = 0 ∧ Y = vecMulVec v ψ}) (ρ (vecMulVec v φ)) := by

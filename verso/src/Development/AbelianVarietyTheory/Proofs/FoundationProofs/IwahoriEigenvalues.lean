@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IwahoriEigenvalu
 
 namespace GlobalTheory.IwahoriEigenObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IwahoriEigen.iwahoriEigenvalues`.
+-/
 theorem iwahoriEigenvalues : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues :=
   GlobalTheory.IwahoriEigen.iwahoriEigenvalues
 

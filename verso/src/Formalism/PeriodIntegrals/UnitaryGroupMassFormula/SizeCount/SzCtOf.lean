@@ -6,6 +6,31 @@ namespace PI.SzCt.UnitaryGroupMassFormula
 
 open Formalism.BasicNotions Formalism.MainNotions.G
 
+/- English proof (translation)
+Take `⟨hbT, hη, hkSc, hw'', hmη, hb1, hb'0⟩` from `hS D L hSz hx`. Take `⟨hP1, hP2, hP3, hP4⟩` from `hP D`. Establish `hj'` using `hj`. Simplify using `only [SizeData₂.lifts, Finset.mem_Icc] at hj'`. Take `⟨hj1, hj2⟩` from `hj'`.
+
+Establish `hk5 : (5 : ℝ) ≤ (D.R.k : ℝ)`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Conclude with `(by omega : 5 ≤ D.R.k)` after adjusting the coercions. Establish `hx0 : 0 < L.sc.x` using `by linarith`.
+
+Establish `hxne : L.sc.x ≠ 0` using `hx0.ne'`. Establish `hSc : 0 < L.Sc` using `L.Sc_pos`. Establish `hk0 : (0 : ℝ) ≤ (D.R.k : ℝ)` using `by linarith`. Establish `hq : L.sc.b' / L.sc.x * L.sc.x = L.sc.b'` using `by field_simp`. Establish `hq0 : 0 ≤ L.sc.b' / L.sc.x` using `div_nonneg hb'0 hx0.le`.
+
+Establish `hbx : 3 * (L.sc.b' / L.sc.x) ≤ L.sc.b'` using `by nlinarith`. Establish `hkSc0 : 0 ≤ (D.R.k : ℝ) * L.Sc` using `mul_nonneg hk0 hSc.le`. Establish `hw0 : 0 ≤ L.sc.w'' D.R.n` using `le_trans hkSc0 hkSc`. Establish `hr : L.sc.w'' D.R.n / L.sc.x * L.sc.x = L.sc.w'' D.R.n` using `by field_simp`. Establish `hr0 : 0 ≤ L.sc.w'' D.R.n / L.sc.x` using `div_nonneg hw0 hx0.le`.
+
+Establish `hwx : L.sc.w'' D.R.n / L.sc.x ≤ L.sc.w'' D.R.n` using `by nlinarith`. Establish `h3Sc : 3 * L.Sc ≤ (D.R.k : ℝ) * L.Sc` using `by nlinarith`. Establish `hkb' : 5 * L.sc.b' ≤ (D.R.k : ℝ) * L.sc.b'` using `mul_le_mul_of_nonneg_right hk5 hb'0`. Establish `hmη0 : 0 ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz`. Establish `: (0 : ℝ) ≤ L.etaSz`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hEta, -⟩` from `hSz`. Conclude with `le_trans (Nat.cast_nonneg _) hEta.1`. Check the signs of the components of the expression. Distinguish the cases in `ht : t ∈ D.host.TT`. Simplify using `only [ctD, if_pos ht]`.
+
+Establish `hRA` using `hA D L j hj u (tauPl D (false, t))`. Establish `hRC` using `hC D L P j hj u (tauPl D (true, t)) (hP3 t)`. Establish `hwF` using `L.win_top j hj1 hj2 (tauPl D (false, t)) ⟨t, ht⟩ (hP1 t)`. Establish `hbt` using `hbT ⟨t, ht⟩`. Establish `hwT : wj D j (tauPl D (true, t)) ≤ L.sc.b + L.etaSz + 1 ∨ wj D j (tauPl D (true, t)) ≤ L.sc.w'' D.R.n + L.etaSz`.
+
+Break down `hP4 t with h | h` into its components or cases. Conclude with `Or.inl (L.win_thick j hj1 hj2 _ h).2`. Conclude with `Or.inr (L.win_thin j hj1 hj2 _ h).2`. Establish `hkw : (D.R.k : ℝ) * wj D j (tauPl D (false, t)) ≤ (D.R.k : ℝ) * ((L.bT ⟨t, ht⟩ : ℝ) + L.sc.b' / L.sc.x + L.etaSz)` using `mul_le_mul_of_nonneg_left hwF.2 hk0`. Establish `e1 : (D.R.k : ℝ) * ((L.bT ⟨t, ht⟩ : ℝ) + L.sc.b' / L.sc.x + L.etaSz) = (D.R.k : ℝ) * (L.bT ⟨t, ht⟩ : ℝ) + (D.R.k : ℝ) * (L.sc.b' / L.sc.x) + (D.R.k : ℝ) * L.etaSz` using `by ring`.
+
+Establish `e2 : (D.R.k : ℝ) * (L.Sc + wj D j (tauPl D (false, t))) = (D.R.k : ℝ) * L.Sc + (D.R.k : ℝ) * wj D j (tauPl D (false, t))` using `by ring`. Establish `k1 : (D.R.k : ℝ) * (L.bT ⟨t, ht⟩ : ℝ) ≤ (D.R.k : ℝ) * (5 / 4 * L.sc.b')` using `mul_le_mul_of_nonneg_left hbt hk0`. Establish `k2 : (D.R.k : ℝ) * (L.sc.b' / L.sc.x) ≤ (D.R.k : ℝ) * (L.sc.b' / 3)` using `mul_le_mul_of_nonneg_left (by linarith) hk0`. Establish `k3 : (D.R.k : ℝ) * L.etaSz ≤ (D.R.k : ℝ) * (L.sc.b' / 3)` using `mul_le_mul_of_nonneg_left (by linarith) hk0`. Establish `e3 : (D.R.k : ℝ) * (5 / 4 * L.sc.b') + (D.R.k : ℝ) * (L.sc.b' / 3) + (D.R.k : ℝ) * (L.sc.b' / 3) = 23 / 12 * ((D.R.k : ℝ) * L.sc.b')` using `by ring`.
+
+Establish `e4 : 4 * (D.R.k : ℝ) * L.sc.b' = 4 * ((D.R.k : ℝ) * L.sc.b')` using `by ring`. Apply the tactic sequence `rcases hwT with hT | hT <;> linarith`. Simplify using `only [ctD, if_neg ht]`. Establish `hthin` using `hP2 t ht`. Establish `hRB` using `hB D L P j hj u (tauPl D (false, t)) hthin.2.1`.
+
+Establish `hwF` using `(L.win_thin j hj1 hj2 (tauPl D (false, t)) hthin).2`. Establish `hkw : (D.R.k : ℝ) * wj D j (tauPl D (false, t)) ≤ (D.R.k : ℝ) * (L.sc.w'' D.R.n + L.etaSz)` using `mul_le_mul_of_nonneg_left hwF hk0`. Establish `k1 : (D.R.k : ℝ) * (L.sc.w'' D.R.n + L.etaSz) ≤ (D.R.k : ℝ) * (2 * (L.sc.b' / 3))` using `mul_le_mul_of_nonneg_left (by linarith) hk0`. Establish `e1 : ((D.R.k : ℝ) + 2) * L.Sc = (D.R.k : ℝ) * L.Sc + 2 * L.Sc` using `by ring`. Establish `e2 : (D.R.k : ℝ) * (2 * (L.sc.b' / 3)) = 2 / 3 * ((D.R.k : ℝ) * L.sc.b')` using `by ring`.
+
+Establish `e4 : 4 * (D.R.k : ℝ) * L.sc.b' = 4 * ((D.R.k : ℝ) * L.sc.b')` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ct_le (hA : RowA) (hB : RowB) (hC : RowC) (hS : SizeFacts) (hP : PlaceFacts)
     (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (hx : 3 ≤ L.sc.x) (hSz : Formalism.MainNotions.SizesAt L)
     (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (u : D.what₂.Word) (t : HH D) :
@@ -82,6 +107,17 @@ theorem ct_le (hA : RowA) (hB : RowB) (hC : RowC) (hS : SizeFacts) (hP : PlaceFa
     have e4 : 4 * (D.R.k : ℝ) * L.sc.b' = 4 * ((D.R.k : ℝ) * L.sc.b') := by ring
     linarith
 
+/- English proof (translation)
+Unfold `PI.SzCt.SzCt`. Introduce `eps Ct CGam Cc CT2 PK`. Use `⟨3, ?_⟩` and prove the remaining obligations. Introduce `D L P _ hx hSz j hj u`. Establish `hsum : ∑ t : HH D, ctD D u j t ≤ ∑ t : HH D, ((if t ∈ D.host.TT then 2 * L.sc.b else 0) + 4 * (D.R.k : ℝ) * L.sc.b')` using `Finset.sum_le_sum (fun t _ => ct_le hA hB hC hS hP D L P hx hSz j hj u t)`.
+
+Use `le_trans hsum ?_` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, hb'0⟩` from `hS D L hSz hx`. Establish `hcard : Fintype.card (HH D) = D.R.n`. Rewrite using `[Fintype.card_eq_nat_card]`. Use `show Nat.card (Fin D.R.ord) = D.R.n`.
+
+Simplify using `[Nat.card_eq_fintype_card, Formalism.BasicNotions.Ranks.n]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul, Finset.card_univ, hcard]`. Establish `hf : (D.R.f : ℝ) = 2 * (D.R.n : ℝ)`. Unfold `Formalism.BasicNotions.Ranks.f`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Establish `e : (D.R.n : ℝ) * (4 * (D.R.k : ℝ) * L.sc.b') = 2 * (2 * (D.R.n : ℝ)) * (D.R.k : ℝ) * L.sc.b'`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (D.host.TT.card : ℝ) * (2 * L.sc.b) = 2 * (D.host.TT.card : ℝ) * L.sc.b` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szCt_of (hA : RowA) (hB : RowB) (hC : RowC) (hS : SizeFacts) (hP : PlaceFacts) :
     PI.SzCt.SzCt := by
   unfold PI.SzCt.SzCt

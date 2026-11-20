@@ -4,6 +4,13 @@ namespace GroundTheory.Automorphic.ArchWhittaker
 
 open Filter Topology Set
 
+/- English proof (translation)
+Establish `ht : Tendsto (fun y => Real.exp (b * y) / (b * y) ^ M) atTop atTop` using `(Real.tendsto_exp_div_pow_atTop M).comp (tendsto_id.const_mul_atTop hb)`. Establish `hbM : 0 < A * b ^ M` using `mul_pos hA (pow_pos hb M)`. Take `⟨y, hy1, hy2, hy3⟩` from `((ht.eventually_ge_atTop (K / (A * b ^ M) + 1)).and ((eventually_ge_atTop Y).and (eventually_gt_atTop 0))).exists`. Establish `hpos : 0 < (b * y) ^ M` using `pow_pos (mul_pos hb hy3) M`. Establish `h1 : (K / (A * b ^ M) + 1) * (b * y) ^ M ≤ Real.exp (b * y)`.
+
+Rewrite `hy1` using `[le_div_iff₀ hpos]`. Then use the resulting hypothesis. Establish `h2` using `h y hy2`. Establish `hyM : 0 < y ^ M` using `pow_pos hy3 M`. Establish `e : A * ((K / (A * b ^ M) + 1) * (b * y) ^ M) = K * y ^ M + A * b ^ M * y ^ M`. Rewrite using `[mul_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h3` using `mul_le_mul_of_nonneg_left h1 hA.le`. Rewrite `h3` using `[e]`. Use polynomial arithmetic with `[mul_pos hbM hyM]`.
+-/
 theorem exp_growth_false {A b K Y : ℝ} {M : ℕ} (hA : 0 < A) (hb : 0 < b)
     (h : ∀ y ≥ Y, A * Real.exp (b * y) ≤ K * y ^ M) : False := by
   have ht : Tendsto (fun y => Real.exp (b * y) / (b * y) ^ M) atTop atTop :=
@@ -22,6 +29,9 @@ theorem exp_growth_false {A b K Y : ℝ} {M : ℕ} (hA : 0 < A) (hb : 0 < b)
   rw [e] at h3
   nlinarith [mul_pos hbM hyM]
 
+/- English proof (translation)
+Rewrite using `[Complex.inner, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_mul_self (z q : ℂ) : inner ℝ z (q * z) = q.re * ‖z‖ ^ 2 := by
   rw [Complex.inner, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
   simp only [Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]
@@ -33,6 +43,9 @@ namespace GroundTheory.Automorphic.ArchWhittaker
 
 open Filter Topology Set
 
+/- English proof (translation)
+Use `monotoneOn_of_hasDerivWithinAt_nonneg (f' := u') (convex_Ici a) (fun y hy => (hu y hy).continuousAt.continuousWithinAt) (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Rewrite `hy` using `[interior_Ici]`. Conclude with `(hu y (le_of_lt hy)).hasDerivWithinAt`. Rewrite `hy` using `[interior_Ici]`. Conclude with `hpos y (le_of_lt hy)`.
+-/
 theorem monotoneOn_Ici_of_hasDerivAt {u u' : ℝ → ℝ} {a : ℝ}
     (hu : ∀ y ≥ a, HasDerivAt u (u' y) y) (hpos : ∀ y ≥ a, 0 ≤ u' y) : MonotoneOn u (Ici a) := by
   refine monotoneOn_of_hasDerivWithinAt_nonneg (f' := u') (convex_Ici a)
@@ -42,6 +55,9 @@ theorem monotoneOn_Ici_of_hasDerivAt {u u' : ℝ → ℝ} {a : ℝ}
   · rw [interior_Ici] at hy
     exact hpos y (le_of_lt hy)
 
+/- English proof (translation)
+Use `monotoneOn_Ici_of_hasDerivAt (u := fun y => -u y) (u' := fun y => -u' y) (fun y hy => (hu y hy).neg) (fun y hy => neg_nonneg.2 (hneg y hy))` as an intermediate fact. Introduce `x hx y hy hxy`. Use `this hx hy hxy` as an intermediate fact. Simplify using `using this`.
+-/
 theorem antitoneOn_Ici_of_hasDerivAt {u u' : ℝ → ℝ} {a : ℝ}
     (hu : ∀ y ≥ a, HasDerivAt u (u' y) y) (hneg : ∀ y ≥ a, u' y ≤ 0) : AntitoneOn u (Ici a) := by
   have := monotoneOn_Ici_of_hasDerivAt (u := fun y => -u y) (u' := fun y => -u' y)
@@ -50,6 +66,53 @@ theorem antitoneOn_Ici_of_hasDerivAt {u u' : ℝ → ℝ} {a : ℝ}
   have := this hx hy hxy
   simpa using this
 
+/- English proof (translation)
+Use `set u : ℝ → ℝ := fun y => ‖f y‖ ^ 2 with hudef`. Use `set u1 : ℝ → ℝ := fun y => 2 * inner ℝ (f y) (f' y) with hu1def`. Use `set w : ℝ → ℝ := fun y => 2 * (inner ℝ (f y) (q y * f y) + inner ℝ (f' y) (f' y)) with hwdef`. Establish `hu : ∀ y ≥ Y₀, HasDerivAt u (u1 y) y` using `fun y hy => (hf y hy).norm_sq`. Establish `hu1 : ∀ y ≥ Y₀, HasDerivAt u1 (w y) y` using `fun y hy => ((hf y hy).inner ℝ (hf' y hy)).const_mul 2`.
+
+Establish `hw : ∀ y ≥ Y₀, 2 * c ^ 2 * u y ≤ w y`. Introduce `y hy`. Simplify using `only [hwdef, hudef, inner_mul_self, real_inner_self_eq_norm_sq]`. Use `hq y hy` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖f y‖, sq_nonneg ‖f' y‖]`.
+
+Establish `hu0 : ∀ y, 0 ≤ u y` using `fun y => sq_nonneg _`. Establish `hwpos : ∀ y ≥ Y₀, 0 ≤ w y` using `fun y hy => le_trans (mul_nonneg (by positivity) (hu0 y)) (hw y hy)`. Establish `hug : ∀ y ≥ max Y₀ 0, u y ≤ C ^ 2 * y ^ (2 * N)`. Introduce `y hy`. Establish `h1` using `hgr y (le_trans (le_max_left _ _) hy)`.
+
+Establish `h0 : 0 ≤ ‖f y‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hpos : ∃ y₁ ≥ Y₀, 0 < u1 y₁`. It suffices to derive a contradiction. Take `⟨y₁, hy₁, hpos₁⟩` from `hpos`.
+
+Establish `hmono1 : MonotoneOn u1 (Ici y₁)` using `monotoneOn_Ici_of_hasDerivAt (fun y hy => hu1 y (le_trans hy₁ hy)) (fun y hy => hwpos y (le_trans hy₁ hy))`. Establish `hu1ge : ∀ y ≥ y₁, u1 y₁ ≤ u1 y` using `fun y hy => hmono1 (mem_Ici.2 le_rfl) hy hy`. Establish `hlin : ∀ y ≥ y₁, u y₁ + u1 y₁ * (y - y₁) ≤ u y`. Establish `hm : MonotoneOn (fun y => u y - u1 y₁ * y) (Ici y₁)` using `monotoneOn_Ici_of_hasDerivAt (fun y hy => ((hu y (le_trans hy₁ hy)).sub ((hasDerivAt_id y).const_mul (u1 y₁)))) (fun y hy => by simpa using hu1ge y hy)`. Introduce `y hy`.
+
+Use `hm (mem_Ici.2 le_rfl) hy hy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ : MonotoneOn (fun y => u1 y ^ 2 - 2 * c ^ 2 * u y ^ 2) (Ici y₁)`. Use `monotoneOn_Ici_of_hasDerivAt (u' := fun y => 2 * u1 y * w y - 2 * c ^ 2 * (2 * u y * u1 y)) (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Establish `h3` using `((hu1 y (le_trans hy₁ hy)).pow 2).sub (((hu y (le_trans hy₁ hy)).pow 2).const_mul (2 * c ^ 2))`.
+
+Use `h3.congr_deriv ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : 0 ≤ u1 y` using `le_trans hpos₁.le (hu1ge y hy)`. Establish `h2` using `hw y (le_trans hy₁ hy)`.
+
+Use polynomial arithmetic with `[mul_nonneg h1 (sub_nonneg.2 h2)]`. Use `set K₀ := u1 y₁ ^ 2 - 2 * c ^ 2 * u y₁ ^ 2 with hK₀`. Establish `hQge : ∀ y ≥ y₁, K₀ ≤ u1 y ^ 2 - 2 * c ^ 2 * u y ^ 2` using `fun y hy => hQ (mem_Ici.2 le_rfl) hy hy`. Use `set y₂ := y₁ + (|K₀| + 1) / (c * u1 y₁) with hy₂def`. Establish `hy₂ : y₁ ≤ y₂`.
+
+Rewrite using `[hy₂def]; have : 0 ≤ (|K₀| + 1) / (c * u1 y₁) := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmonou : MonotoneOn u (Ici y₁)` using `monotoneOn_Ici_of_hasDerivAt (fun y hy => hu y (le_trans hy₁ hy)) (fun y hy => le_trans hpos₁.le (hu1ge y hy))`. Establish `hcu₂ : |K₀| + 1 ≤ c * u y₂`. Use `hlin y₂ hy₂` as an intermediate fact.
+
+Establish `e : u1 y₁ * (y₂ - y₁) = (|K₀| + 1) / c`. Rewrite using `[hy₂def]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hu1 : 0 ≤ u y₁` using `hu0 y₁`.
+
+Rewrite `this` using `[e]`. Establish `: (|K₀| + 1) / c ≤ u y₂` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hc, mul_comm]`. Then use the resulting hypothesis. Establish `hcu : ∀ y ≥ y₂, |K₀| + 1 ≤ c * u y` using `fun y hy => le_trans hcu₂ (mul_le_mul_of_nonneg_left (hmonou (mem_Ici.2 hy₂) (mem_Ici.2 (le_trans hy₂ hy)) hy) hc.le)`. Establish `hu1cu : ∀ y ≥ y₂, c * u y ≤ u1 y`.
+
+Introduce `y hy`. Establish `h1` using `hQge y (le_trans hy₂ hy)`. Establish `h2` using `hcu y hy`. Establish `h3 : 0 ≤ u1 y` using `le_trans hpos₁.le (hu1ge y (le_trans hy₂ hy))`. Establish `h4 : 0 ≤ c * u y` using `le_trans (by positivity) h2`.
+
+Establish `h5 : (c * u y) ^ 2 ≤ u1 y ^ 2`. Establish `: |K₀| ≤ (c * u y) ^ 2` using `by nlinarith [abs_nonneg K₀]`. Use polynomial arithmetic with `[neg_abs_le K₀]`. Conclude with `(pow_le_pow_iff_left₀ h4 h3 (by norm_num : (2 : ℕ) ≠ 0)).1 h5`. Establish `hE : MonotoneOn (fun y => u y * Real.exp (-(c * y))) (Ici y₂)`.
+
+Use `monotoneOn_Ici_of_hasDerivAt (u' := fun y => u1 y * Real.exp (-(c * y)) + u y * (Real.exp (-(c * y)) * -(c * 1))) (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Conclude with `(hu y (le_trans hy₁ (le_trans hy₂ hy))).mul (((hasDerivAt_id y).const_mul c).neg.exp)`. Use `hu1cu y hy` as an intermediate fact. Establish `he` using `Real.exp_pos (-(c * y))`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hu₂pos : 0 < u y₂`. Establish `: 0 < c * u y₂` using `lt_of_lt_of_le (by positivity) hcu₂`. Conclude with `pos_of_mul_pos_right this hc.le`. Use `exp_growth_false (A := u y₂ * Real.exp (-(c * y₂))) (b := c) (K := C ^ 2) (M := 2 * N) (Y := max y₂ (max Y₀ 0)) (mul_pos hu₂pos (Real.exp_pos _)) hc fun y hy => ?_` and prove the remaining obligations. Establish `hy2 : y₂ ≤ y` using `le_trans (le_max_left _ _) hy`.
+
+Establish `h1` using `hE (mem_Ici.2 le_rfl) (mem_Ici.2 hy2) hy2`. Simplify using `only at h1`. Establish `h2` using `hug y (le_trans (le_max_right _ _) hy)`. Establish `e : u y * Real.exp (-(c * y)) * Real.exp (c * y) = u y`. Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `push Not at hpos`. Establish `hanti : AntitoneOn u (Ici Y₀)` using `antitoneOn_Ici_of_hasDerivAt hu hpos`. Establish `hu_lim : Tendsto u atTop (𝓝 0)`. Rewrite using `[Metric.tendsto_atTop]`.
+
+Introduce `ε hε`. Distinguish the cases in `hex : ∃ y₀ ≥ Y₀, u y₀ < ε`. Take `⟨y₀, hy₀, hlt⟩` from `hex`. Use `⟨y₀, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg (hu0 y)]`.
+
+Conclude with `lt_of_le_of_lt (hanti (mem_Ici.2 hy₀) (mem_Ici.2 (le_trans hy₀ hy)) hy) hlt`. Use `exfalso push Not at hex`. Establish `hm : MonotoneOn (fun y => u1 y - 2 * c ^ 2 * ε * y) (Ici Y₀)` using `monotoneOn_Ici_of_hasDerivAt (u' := fun y => w y - 2 * c ^ 2 * ε * 1) (fun y hy => (hu1 y hy).sub ((hasDerivAt_id y).const_mul _)) (fun y hy => by`. Establish `h1` using `hw y hy`. Establish `h2` using `hex y hy`.
+
+Establish `: 2 * c ^ 2 * ε ≤ 2 * c ^ 2 * u y` using `mul_le_mul_of_nonneg_left h2 (by positivity)`. Use the proof step `linarith)`. Use `set y₃ := Y₀ + (|u1 Y₀| + 1) / (2 * c ^ 2 * ε) with hy₃`. Establish `hy₃ge : Y₀ ≤ y₃`. Rewrite using `[hy₃]; have : 0 ≤ (|u1 Y₀| + 1) / (2 * c ^ 2 * ε) := by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hm (mem_Ici.2 le_rfl) (mem_Ici.2 hy₃ge) hy₃ge`. Simplify using `only at h1`. Establish `h2` using `hpos y₃ hy₃ge`. Establish `e : 2 * c ^ 2 * ε * (y₃ - Y₀) = |u1 Y₀| + 1`.
+
+Rewrite using `[hy₃]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[le_abs_self (u1 Y₀), neg_abs_le (u1 Y₀)]`. Establish `: Tendsto (fun y => ‖f y‖) atTop (𝓝 0)`.
+
+Establish `h` using `(Real.continuous_sqrt.tendsto 0).comp hu_lim`. Simplify using `only [Function.comp_def, Real.sqrt_zero] at h`. Use `h.congr fun y => ?_` and prove the remaining obligations. Simplify using `[hudef, Real.sqrt_sq (norm_nonneg _)]`. Conclude with `tendsto_zero_iff_norm_tendsto_zero.2 this`.
+-/
 theorem tendsto_zero_of_moderate {q f f' : ℝ → ℂ} {Y₀ c C : ℝ} {N : ℕ} (hc : 0 < c)
     (hq : ∀ y ≥ Y₀, c ^ 2 ≤ (q y).re)
     (hf : ∀ y ≥ Y₀, HasDerivAt f (f' y) y) (hf' : ∀ y ≥ Y₀, HasDerivAt f' (q y * f y) y)
@@ -204,6 +267,23 @@ namespace GroundTheory.Automorphic.ArchWhittaker
 
 open Filter Topology Set
 
+/- English proof (translation)
+Rewrite `hlim`, the goal using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Use `set δ := ε / (3 + |M|) with hδ`. Establish `hδpos : 0 < δ` using `div_pos hε (by positivity)`. Take `⟨Y₁, hY₁⟩` from `hlim δ hδpos`.
+
+Use `⟨max Y₀ Y₁, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyY₀ : Y₀ ≤ y` using `le_trans (le_max_left _ _) hy`. Establish `hyY₁ : Y₁ ≤ y` using `le_trans (le_max_right _ _) hy`. Establish `hfδ : ∀ s ≥ y, ‖f s‖ < δ` using `fun s hs => by`. Use `hY₁ s (le_trans hyY₁ hs)` as an intermediate fact.
+
+Rewrite `this` using `[dist_zero_right]`. Then use the resulting hypothesis. Establish `h1 : ∀ t ∈ Icc y (y + 1), ‖f' t - f' y‖ ≤ |M| * δ * (t - y)`. Use `norm_image_sub_le_of_norm_deriv_le_segment' (f' := fun t => q t * f t) (fun t ht => (hf' t (le_trans hyY₀ ht.1)).hasDerivWithinAt) (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (le_trans (hqM t (le_trans hyY₀ ht.1)) (le_abs_self M)) (hfδ t ht.1).le (norm_nonneg _) (abs_nonneg M)`.
+
+Establish `h2 : ‖(f (y + 1) - (y + 1) • f' y) - (f y - y • f' y)‖ ≤ |M| * δ * ((y + 1) - y)`. Use `norm_image_sub_le_of_norm_deriv_le_segment' (f := fun t => f t - t • f' y) (f' := fun t => f' t - f' y) (fun t ht => ?_) (fun t ht => ?_) (y + 1) ⟨by linarith, le_rfl⟩` and prove the remaining obligations. Use `((hf t (le_trans hyY₀ ht.1)).sub ((hasDerivAt_id t).smul_const (f' y)))` as an intermediate fact. Use `(this.congr_deriv ?_).hasDerivWithinAt` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `le_trans (h1 t (Ico_subset_Icc_self ht)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `e : (f (y + 1) - (y + 1) • f' y) - (f y - y • f' y) = f (y + 1) - f y - f' y`. Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h2` using `[e, add_sub_cancel_left, mul_one]`. Rewrite using `[dist_zero_right]`. Establish `h3 : ‖f' y‖ ≤ ‖f (y + 1)‖ + ‖f y‖ + |M| * δ`. Establish `: f' y = f (y + 1) - f y - (f (y + 1) - f y - f' y)` using `by abel`. Rewrite using `[this]`.
+
+Use `le_trans (norm_sub_le _ _) (add_le_add (norm_sub_le _ _) h2)` and prove the remaining obligations. Establish `h4 : ‖f (y + 1)‖ + ‖f y‖ + |M| * δ < (3 + |M|) * δ`. Use `hfδ (y + 1) (by linarith)` as an intermediate fact. Use `hfδ y le_rfl` as an intermediate fact. Use polynomial arithmetic with `[abs_nonneg M]`.
+
+Establish `h5 : (3 + |M|) * δ = ε` using `by rw [hδ]; field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_deriv_zero {q f f' : ℝ → ℂ} {Y₀ M : ℝ} (hqM : ∀ y ≥ Y₀, ‖q y‖ ≤ M)
     (hf : ∀ y ≥ Y₀, HasDerivAt f (f' y) y) (hf' : ∀ y ≥ Y₀, HasDerivAt f' (q y * f y) y)
     (hlim : Tendsto f atTop (𝓝 0)) : Tendsto f' atTop (𝓝 0) := by
@@ -251,6 +331,15 @@ theorem tendsto_deriv_zero {q f f' : ℝ → ℂ} {Y₀ M : ℝ} (hqM : ∀ y �
   have h5 : (3 + |M|) * δ = ε := by rw [hδ]; field_simp
   linarith
 
+/- English proof (translation)
+Use `set W : ℝ → ℂ := fun y => f y * g' y - f' y * g y with hW`. Establish `hWd : ∀ y > 0, HasDerivAt W 0 y`. Introduce `y hy`. Use `((hf y hy).mul (hg' y hy)).sub ((hf' y hy).mul (hg y hy))` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hconst : ∀ y > 0, W y = W 1`. Introduce `y hy`. Conclude with `isOpen_Ioi.is_const_of_deriv_eq_zero isPreconnected_Ioi (fun z hz => (hWd z hz).differentiableAt.differentiableWithinAt) (fun z hz => (hWd z hz).deriv) hy (mem_Ioi.2 one_pos)`. Establish `hlim : Tendsto W atTop (𝓝 0)`.
+
+Use `(hf0.mul hg0').sub (hf0'.mul hg0)` as an intermediate fact. Simplify using `using this`. Establish `hlim' : Tendsto W atTop (𝓝 (W 1))` using `tendsto_const_nhds.congr' (by filter_upwards [eventually_gt_atTop 0] with y hy`. Conclude with `(hconst y hy).symm)`. Establish `h1 : W 1 = 0` using `tendsto_nhds_unique hlim' hlim`.
+
+Introduce `y hy`. Use `show W y = 0`. Rewrite using `[hconst y hy, h1]`.
+-/
 theorem wronskian_eq_zero {q f f' g g' : ℝ → ℂ}
     (hf : ∀ y > 0, HasDerivAt f (f' y) y) (hf' : ∀ y > 0, HasDerivAt f' (q y * f y) y)
     (hg : ∀ y > 0, HasDerivAt g (g' y) y) (hg' : ∀ y > 0, HasDerivAt g' (q y * g y) y)
@@ -280,6 +369,25 @@ theorem wronskian_eq_zero {q f f' g g' : ℝ → ℂ}
   show W y = 0
   rw [hconst y hy, h1]
 
+/- English proof (translation)
+Introduce `y hy`. Use `set a := min y 1 / 2 with ha`. Use `set b := max y 1 + 1 with hb`. Establish `ha0 : 0 < a` using `by rw [ha]; positivity`. Establish `hab : Icc a b ⊆ Ioi 0` using `fun t ht => lt_of_lt_of_le ha0 ht.1`.
+
+Take `⟨M, hM⟩` from `(isCompact_Icc.exists_bound_of_continuousOn (hq.mono hab))`. Use `set K : NNReal := ⟨1 + |M|, by positivity⟩ with hK`. Use `set v : ℝ → ℂ × ℂ → ℂ × ℂ := fun t p => (p.2, q t * p.1) with hv`. Establish `hlip : ∀ t ∈ Ioo a b, LipschitzOnWith K (v t) univ`. Introduce `t ht`.
+
+Use `LipschitzWith.lipschitzOnWith (LipschitzWith.of_dist_le_mul fun p p' => ?_)` and prove the remaining obligations. Establish `hqt : ‖q t‖ ≤ |M|` using `le_trans (hM t (Ioo_subset_Icc_self ht)) (le_abs_self M)`. Simplify using `only [hv, Prod.dist_eq, hK]`. Use `max_le ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[abs_nonneg M, le_max_right (dist p.1 p'.1) (dist p.2 p'.2), dist_nonneg (x := p.2) (y := p'.2)]`. Rewrite using `[dist_eq_norm, ← mul_sub, norm_mul, ← dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[le_max_left (dist p.1 p'.1) (dist p.2 p'.2), dist_nonneg (x := p.1) (y := p'.1)]`. Establish `hsol : ∀ t ∈ Ioo a b, HasDerivAt (fun t => (f t, f' t)) (v t (f t, f' t)) t ∧ (f t, f' t) ∈ (univ : Set (ℂ × ℂ))` using `fun t ht => ⟨(hf t (hab (Ioo_subset_Icc_self ht))).prodMk (hf' t (hab (Ioo_subset_Icc_self ht))), mem_univ _⟩`.
+
+Establish `hzero : ∀ t ∈ Ioo a b, HasDerivAt (fun _ : ℝ => ((0 : ℂ), (0 : ℂ))) (v t (0, 0)) t ∧ ((0 : ℂ), (0 : ℂ)) ∈ (univ : Set (ℂ × ℂ))` using `fun t _ => by`. Use `⟨(hasDerivAt_const t ((0 : ℂ), (0 : ℂ))).congr_deriv ?_, mem_univ _⟩` and prove the remaining obligations. Simplify using `[hv]`. Both sides reduce to the same expression. Establish `h1mem : (1 : ℝ) ∈ Ioo a b`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[ha]`. Use `min_le_right y 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hb]`.
+
+Use `le_max_right y 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hymem : y ∈ Ioo a b`. Prove the components needed by the constructor for the conclusion. Rewrite using `[ha]`.
+
+Use `min_le_left y 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hb]`. Use `le_max_left y 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `ODE_solution_unique_of_mem_Ioo (s := fun _ => univ) hlip h1mem hsol hzero (by simp [h1, h1']) hymem` as an intermediate fact. Conclude with `congrArg Prod.fst this`.
+-/
 theorem eq_zero_of_ode {q f f' : ℝ → ℂ} (hq : ContinuousOn q (Ioi 0))
     (hf : ∀ y > 0, HasDerivAt f (f' y) y) (hf' : ∀ y > 0, HasDerivAt f' (q y * f y) y)
     (h1 : f 1 = 0) (h1' : f' 1 = 0) : ∀ y > 0, f y = 0 := by
@@ -331,6 +439,11 @@ namespace GroundTheory.Automorphic.ArchWhittaker
 
 open Filter Topology Set
 
+/- English proof (translation)
+Establish `pos : ∀ y ≥ Y₀, y > 0` using `fun y hy => lt_of_lt_of_le hY₀ hy`. Take `⟨Cf, Nf, hCf⟩` from `hfgr`. Take `⟨Cg, Ng, hCg⟩` from `hggr`. Establish `hf0` using `tendsto_zero_of_moderate hc hqre (fun y hy => hf y (pos y hy)) (fun y hy => hf' y (pos y hy)) hCf`. Establish `hg0` using `tendsto_zero_of_moderate hc hqre (fun y hy => hg y (pos y hy)) (fun y hy => hg' y (pos y hy)) hCg`.
+
+Establish `hf0'` using `tendsto_deriv_zero hqM (fun y hy => hf y (pos y hy)) (fun y hy => hf' y (pos y hy)) hf0`. Establish `hg0'` using `tendsto_deriv_zero hqM (fun y hy => hg y (pos y hy)) (fun y hy => hg' y (pos y hy)) hg0`. Conclude with `wronskian_eq_zero hf hf' hg hg' hf0 hf0' hg0 hg0' 1 one_pos`.
+-/
 theorem wronskian_eq_zero_of_moderate {q f f' g g' : ℝ → ℂ} {c M Y₀ : ℝ} (hY₀ : 0 < Y₀)
     (hc : 0 < c) (hqre : ∀ y ≥ Y₀, c ^ 2 ≤ (q y).re) (hqM : ∀ y ≥ Y₀, ‖q y‖ ≤ M)
     (hf : ∀ y > 0, HasDerivAt f (f' y) y) (hf' : ∀ y > 0, HasDerivAt f' (q y * f y) y)
@@ -349,6 +462,33 @@ theorem wronskian_eq_zero_of_moderate {q f f' g g' : ℝ → ℂ} {c M Y₀ : �
   have hg0' := tendsto_deriv_zero hqM (fun y hy => hg y (pos y hy)) (fun y hy => hg' y (pos y hy)) hg0
   exact wronskian_eq_zero hf hf' hg hg' hf0 hf0' hg0 hg0' 1 one_pos
 
+/- English proof (translation)
+Take `⟨C, N, hC⟩` from `hgr`. Use `set u : ℝ → ℝ := fun y => ‖F y‖ ^ 2 with hudef`. Use `set V : ℝ → ℝ := fun y => u y * (y ^ (-m) * Real.exp (-(2 * b * y))) with hVdef`. Establish `hu : ∀ y > 0, HasDerivAt u (2 * ((m : ℝ) / (2 * y) + b) * u y) y`. Introduce `y hy`.
+
+Use `(hF y hy).norm_sq` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[inner_mul_self, Complex.ofReal_re]`. Simplify using `only [hudef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hV : ∀ y > 0, HasDerivAt V 0 y`. Introduce `y hy`. Establish `h1 : HasDerivAt (fun y : ℝ => y ^ (-m)) (((-m : ℤ) : ℝ) * y ^ (-m - 1)) y` using `hasDerivAt_zpow (-m) y (Or.inl hy.ne')`. Establish `h2 : HasDerivAt (fun y : ℝ => Real.exp (-(2 * b * y))) (Real.exp (-(2 * b * y)) * -(2 * b * 1)) y` using `((hasDerivAt_id y).const_mul (2 * b)).neg.exp`. Use `(hu y hy).mul (h1.mul h2)` as an intermediate fact.
+
+Use `this.congr_deriv ?_` and prove the remaining obligations. Establish `hy0 : y ≠ 0` using `hy.ne'`. Establish `e : y ^ (-m - 1) = y ^ (-m) / y`. Rewrite using `[zpow_sub₀ hy0, zpow_one]`. Simplify using `only [Pi.mul_apply]`.
+
+Rewrite using `[e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hconst : ∀ y > 0, V y = V 1` using `fun y hy => isOpen_Ioi.is_const_of_deriv_eq_zero isPreconnected_Ioi (fun z hz => (hV z hz).differentiableAt.differentiableWithinAt) (fun z hz => (hV z hz).deriv) hy (mem_Ioi.2 one_pos)`.
+
+Establish `hV1 : 0 ≤ V 1`. Simplify using `only [hVdef]`. Check the signs of the components of the expression. Establish `hV10 : V 1 = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `hV1pos : 0 < V 1` using `lt_of_le_of_ne hV1 (Ne.symm hne)`. Use `exp_growth_false (A := V 1) (b := 2 * b) (K := C ^ 2) (M := 2 * N + m.natAbs) (Y := 1) hV1pos (by positivity) fun y hy => ?_` and prove the remaining obligations. Establish `hy0 : 0 < y` using `lt_of_lt_of_le one_pos hy`. Establish `h1 : u y * (y ^ (-m) * Real.exp (-(2 * b * y))) = V 1` using `hconst y hy0`. Establish `hu_le : u y ≤ C ^ 2 * y ^ (2 * N)`.
+
+Use `hC y hy` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : y ^ (-m) ≤ y ^ m.natAbs`. Establish `: y ^ (-m) ≤ y ^ ((m.natAbs : ℤ))` using `zpow_le_zpow_right₀ hy (by omega)`. Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis.
+
+Establish `hexp : Real.exp (2 * b * y) * Real.exp (-(2 * b * y)) = 1`. Rewrite using `[← Real.exp_add, add_neg_cancel, Real.exp_zero]`. Establish `hC2 : 0 ≤ C ^ 2 * y ^ (2 * N)` using `le_trans (by positivity) hu_le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ C ^ 2 * y ^ (2 * N) * y ^ m.natAbs := mul_le_mul hu_le hpow (zpow_nonneg hy0.le _) hC2`. Use `_ = C ^ 2 * y ^ (2 * N + m.natAbs) := by rw [pow_add, mul_assoc]`. Introduce `y hy`. Establish `h1` using `hconst y hy`.
+
+Rewrite `h1` using `[hV10]`. Simplify using `only [hVdef] at h1`. Establish `hpos : 0 < y ^ (-m) * Real.exp (-(2 * b * y))` using `mul_pos (zpow_pos hy _) (Real.exp_pos _)`. Establish `hu0 : u y = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hpos.ne'`. Establish `: ‖F y‖ = 0`. Establish `: ‖F y‖ ^ 2 = 0` using `hu0`. Conclude with `pow_eq_zero_iff (by norm_num) |>.1 this`.
+
+Conclude with `norm_eq_zero.1 this`.
+-/
 theorem eq_zero_of_first_order {F : ℝ → ℂ} {m : ℤ} {b : ℝ} (hb : 0 < b)
     (hF : ∀ y > 0, HasDerivAt F ((((m : ℝ) / (2 * y) + b : ℝ) : ℂ) * F y) y)
     (hgr : ∃ (C : ℝ) (N : ℕ), ∀ y ≥ 1, ‖F y‖ ≤ C * y ^ N) : ∀ y > 0, F y = 0 := by

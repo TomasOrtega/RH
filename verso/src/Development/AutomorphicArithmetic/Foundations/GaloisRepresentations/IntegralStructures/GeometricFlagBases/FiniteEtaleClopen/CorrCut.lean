@@ -6,6 +6,31 @@ open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 namespace UpperTheory.Gal.Int.Geo.Cut
 
+/- English proof (translation)
+Introduce `l Y' Y T' j T i s' t' hj hr hcond`. Use `haveI := hj.op`. Use `haveI := hr.op`. Establish `hcl : IsClosed (Set.range i)`. Rewrite using `[hr.rng]`.
+
+Conclude with `(hj.cl.preimage T.p.continuous).inter (hj.cl.preimage T.r.continuous)`. Use `haveI : IsClosedImmersion i := .of_isPreimmersion _ hcl`. Use `haveI := T.fin`. Use `haveI : IsFinite (s' ≫ j) := by rw [hr.es]; infer_instance`. Use `⟨IsFinite.of_comp s' j, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hV : j ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤)) = Y'.basicOpen (l : Γ(Y', ⊤))`. Rewrite using `[Scheme.Hom.preimage_basicOpen, map_natCast]`. Both sides reduce to the same expression. Set `a` to `(s' ⁻¹ᵁ Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ i`. Establish `ha : Set.range a ⊆ Set.range (T.p ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))).ι`.
+
+Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hu : s' ((s' ⁻¹ᵁ Y'.basicOpen (l : Γ(Y', ⊤))).ι u) ∈ j ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))`. Rewrite using `[hV]`. Conclude with `u.2`.
+
+Express the relevant statement in the definitionally equal form `T.p (i ((s' ⁻¹ᵁ Y'.basicOpen (l : Γ(Y', ⊤))).ι u)) ∈ Y.basicOpen (l : Γ(Y, ⊤))`. Rewrite using `[← Scheme.Hom.comp_apply, ← hr.es, Scheme.Hom.comp_apply]`. Conclude with `hu`. Use `haveI : Etale (IsOpenImmersion.lift _ a ha ≫ (T.p ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))).ι) := by`. Rewrite using `[IsOpenImmersion.lift_fac]`.
+
+Use `infer_instance`. Use `haveI : Etale (IsOpenImmersion.lift _ a ha) := Etale.of_comp _ (T.p ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))).ι`. Use `haveI := T.et`. Establish `e1 : (s' ∣_ Y'.basicOpen (l : Γ(Y', ⊤))) ≫ (Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ j = IsOpenImmersion.lift _ a ha ≫ (T.p ∣_ Y.basicOpen (l : Γ(Y, ⊤))) ≫ (Y.basicOpen (l : Γ(Y, ⊤))).ι`. Rewrite using `[morphismRestrict_ι, ← Category.assoc (IsOpenImmersion.lift _ a ha), IsOpenImmersion.lift_fac, ← Category.assoc, morphismRestrict_ι, Category.assoc, hr.es]`.
+
+Simplify using `only [a, Category.assoc]`. Use `haveI : Etale ((s' ∣_ Y'.basicOpen (l : Γ(Y', ⊤))) ≫ (Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ j) := by`. Rewrite using `[e1]`. Use `infer_instance`. Conclude with `Etale.of_comp _ ((Y'.basicOpen (l : Γ(Y', ⊤))).ι ≫ j)`.
+
+Introduce `K _ _ hl y`. Rewrite using `[← T.deg K hl (y ≫ j)]`. Establish `hbo : ∀ (f : Spec (CommRingCat.of K) ⟶ Y) (u : Spec (CommRingCat.of K)), f u ∈ Y.basicOpen (l : Γ(Y, ⊤))`. Introduce `f u`. Establish `htop : f ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤)) = ⊤`.
+
+Rewrite using `[Scheme.Hom.preimage_basicOpen, map_natCast]`. Apply `Scheme.basicOpen_of_isUnit` to reduce the goal to its premises. Establish `hu` using `(IsUnit.mk0 (l : K) hl).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Rewrite `hu` using `[map_natCast]`. Conclude with `hu`.
+
+Establish `hu' : u ∈ f ⁻¹ᵁ Y.basicOpen (l : Γ(Y, ⊤))`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hu'`. Establish `hw : ∀ w : { z // z ≫ T.p = y ≫ j }, Set.range w.1 ⊆ Set.range i`.
+
+Introduce and unpack `w _ ⟨u, rfl⟩`. Rewrite using `[hr.rng]`. Establish `h1 : T.p (w.1 u) = j (y u)`. Rewrite using `[← Scheme.Hom.comp_apply, w.2, Scheme.Hom.comp_apply]`. Conclude with `⟨⟨y u, h1.symm⟩, hcond _ ⟨y u, h1.symm⟩ (hbo (w.1 ≫ T.p) u)⟩`.
+
+Use `Nat.card_congr { toFun := fun z => ⟨z.1 ≫ i, by rw [Category.assoc, ← hr.es, ← Category.assoc, z.2]⟩ invFun := fun w => ⟨IsOpenImmersion.lift i w.1 (hw w), by` and prove the remaining obligations. Rewrite using `[← cancel_mono j, Category.assoc, hr.es, ← Category.assoc, IsOpenImmersion.lift_fac, w.2]⟩`. Use `left_inv := fun z => Subtype.ext ((cancel_mono i).mp (IsOpenImmersion.lift_fac _ _ _))`. Use `right_inv := fun w => Subtype.ext (IsOpenImmersion.lift_fac _ _ _) }`.
+-/
 theorem corrCut : CorrCut := by
   intro l Y' Y T' j T i s' t' hj hr hcond
   haveI := hj.op

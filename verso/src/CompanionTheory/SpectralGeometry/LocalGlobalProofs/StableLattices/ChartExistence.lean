@@ -11,6 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ProdExChart
 
+/- English proof (translation)
+Establish `: CompleteSpace V` using `FiniteDimensional.complete ℝ V`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective L.subtype (Submodule.ker_subtype L)`. Establish `hp' : ∀ y (hy : y ∈ L), (p y : V) = y` using `fun y hy => by`. Use `LinearMap.congr_fun hp ⟨y, hy⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at this`.
+
+Rewrite using `[this]`. Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective ((M 0 : F →ₗ[ℝ] V).codRestrict L (hL 0)) (by`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `y`. Take `⟨c, hc⟩` from `h0 y y.2`.
+
+Conclude with `⟨c, Subtype.ext hc⟩)`. Set `r : V →L[ℝ] F` to `LinearMap.toContinuousLinearMap (g ∘ₗ p)`. Set `π : V →L[ℝ] V` to `LinearMap.toContinuousLinearMap (L.subtype ∘ₗ p)`. Establish `hπ : ∀ v, π v = (p v : V)` using `fun v => rfl`. Establish `hr : ∀ v, M 0 (r v) = π v` using `fun v => congrArg Subtype.val (LinearMap.congr_fun hg (p v))`.
+
+Set `N : P → V →L[ℝ] V` to `fun t => (M t).comp r + (1 - π)`. Establish `hN : ContDiff ℝ ∞ N` using `(hM.clm_comp contDiff_const).add contDiff_const`. Establish `hN0 : N 0 = 1`. Use extensionality with `v`. Simplify using `[N, hr]`.
+
+Use `⟨N ⁻¹' {x | IsUnit x}, Units.isOpen.preimage hN.continuous, by simp [hN0], fun y hy hyL => ?_⟩` and prove the remaining obligations. Use `⟨fun t => r (Ring.inverse (N t) (y t)), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨u, hu⟩` from `(show IsUnit (N t) from ht)`. Establish `h1 : ContDiffAt ℝ ∞ (fun t => Ring.inverse (N t)) t`.
+
+Use `contDiffAt_ringInverse ℝ (n := ∞) u` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this.comp t hN.contDiffAt`. Conclude with `(r.contDiff.contDiffAt.comp t (h1.clm_apply hy.contDiffAt)).contDiffWithinAt`. Introduce `t ht`.
+
+Establish `ht' : IsUnit (N t)` using `ht`. Use `set v := Ring.inverse (N t) (y t) with hv`. Establish `h1 : N t v = y t`. Rewrite using `[hv, ← mul_apply_eq_comp, Ring.mul_inverse_cancel _ ht']`. Both sides reduce to the same expression.
+
+Establish `h2 : M t (r v) + (v - π v) = y t` using `h1`. Establish `h3` using `congrArg π h2`. Rewrite `h3` using `[map_add, map_sub, hπ (M t (r v)), hp' _ (hL _ _), hπ (π v), hp' (π v) (p v).2, hπ (y t), hp' _ (hyL t), sub_self, add_zero]`. Conclude with `h3`.
+-/
 theorem smooth_solve {P F V : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [NormedAddCommGroup F] [NormedSpace ℝ F]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
@@ -60,6 +77,15 @@ theorem smooth_solve {P F V : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
       hp' _ (hyL t), sub_self, add_zero] at h3
     exact h3
 
+/- English proof (translation)
+Set `A : Fin d → ((Fin d → ℝ) × (Fin e → ℝ) →L[ℝ] ℝ)` to `fun j => (ContinuousLinearMap.proj j).comp (ContinuousLinearMap.fst ℝ _ _)`. Set `B : Fin e → ((Fin d → ℝ) × (Fin e → ℝ) →L[ℝ] ℝ)` to `fun i => (ContinuousLinearMap.proj i).comp (ContinuousLinearMap.snd ℝ _ _)`. Set `M : P → ((Fin d → ℝ) × (Fin e → ℝ) →L[ℝ] V)` to `fun t => ∑ j, (A j).smulRight (Z j t) + ∑ i, (B i).smulRight (Q i)`. Establish `hM : ∀ t c, M t c = ∑ j, c.1 j • Z j t + ∑ i, c.2 i • Q i` using `fun t c => by`. Simplify using `[M, A, B]`.
+
+Establish `hsm : ContDiff ℝ ∞ M` using `(ContDiff.sum fun j _ => contDiff_const.smulRight (h3 j)).add contDiff_const`. Take `⟨U, hU, hU0, hsol⟩` from `smooth_solve L M hsm (fun t c => by`. Rewrite using `[hM]`. Conclude with `Submodule.add_mem _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (h1 j t)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hQ i)))`. Use the proof step `(fun y hy => by`.
+
+Take `⟨a, b, hab⟩` from `h0 y hy`. Conclude with `⟨(a, b), by rw [hM, hab]⟩)`. Use `⟨U, hU, hU0, fun y hy hyL => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hc'⟩` from `hsol y hy hyL`. Use `⟨fun j t => (c t).1 j, fun i t => (c t).2 i, fun j => (A j).contDiff.comp_contDiffOn hc, fun i => (B i).contDiff.comp_contDiffOn hc, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hM, hc' t ht]`.
+-/
 theorem smooth_coeffs {P V : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {d e : ℕ}
     (L : Submodule ℝ V) (Z : Fin d → P → V) (Q : Fin e → V) (h3 : ∀ j, ContDiff ℝ ∞ (Z j))
@@ -96,6 +122,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[contDiff_infty]`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact contDiff_zero.2 (continuous_iff_continuousAt.2 fun t => (hasDerivAt_ex X t).continuousAt)`. Consider the case `succ m ih`.
+
+Rewrite using `[Nat.cast_succ, contDiff_succ_iff_deriv]`. Use `⟨fun t => (hasDerivAt_ex X t).differentiableAt, by simp, ?_⟩` and prove the remaining obligations. Establish `hc : ContDiff ℝ m (fun t => ex X t * X)` using `(contDiff_mul.of_le (by exact_mod_cast le_top)).comp (ih.prodMk contDiff_const)`. Conclude with `contDiffOn_univ.1 ((contDiffOn_univ.2 hc).congr fun t _ => (hasDerivAt_ex X t).deriv)`.
+-/
 theorem contDiff_ex (X : Mat n) : ContDiff ℝ ∞ (ex X) := by
   rw [contDiff_infty]
   intro m
@@ -108,6 +139,9 @@ theorem contDiff_ex (X : Mat n) : ContDiff ℝ ∞ (ex X) := by
       (contDiff_mul.of_le (by exact_mod_cast le_top)).comp (ih.prodMk contDiff_const)
     exact contDiffOn_univ.1 ((contDiffOn_univ.2 hc).congr fun t _ => (hasDerivAt_ex X t).deriv)
 
+/- English proof (translation)
+Set `T : Mat n →ₗ[ℝ] Mat n` to `{ toFun := fun A => Aᴴ map_add' := fun A B => conjTranspose_add A B map_smul' := fun c A => by simp [conjTranspose_smul] }`. Conclude with `(LinearMap.toContinuousLinearMap T).contDiff`.
+-/
 theorem contDiff_conjT : ContDiff ℝ ∞ (fun A : Mat n => Aᴴ) := by
   let T : Mat n →ₗ[ℝ] Mat n :=
     { toFun := fun A => Aᴴ
@@ -115,18 +149,36 @@ theorem contDiff_conjT : ContDiff ℝ ∞ (fun A : Mat n => Aᴴ) := by
       map_smul' := fun c A => by simp [conjTranspose_smul] }
   exact (LinearMap.toContinuousLinearMap T).contDiff
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hm * g = Hm` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem left_inv_of_mem {Hm g : Mat n} (h : Hm * Hm = 1) (hg : g ∈ UH Hm) :
     Hm * gᴴ * Hm * g = 1 := by
   have hg' : gᴴ * Hm * g = Hm := hg
   calc Hm * gᴴ * Hm * g = Hm * (gᴴ * Hm * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg', h]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (left_inv_of_mem h hg)`.
+-/
 theorem inv_of_mem {Hm g : Mat n} (h : Hm * Hm = 1) (hg : g ∈ UH Hm) : g⁻¹ = Hm * gᴴ * Hm :=
   Matrix.inv_eq_left_inv (left_inv_of_mem h hg)
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse (left_inv_of_mem h hg))`.
+-/
 theorem isUnit_of_mem {Hm g : Mat n} (h : Hm * Hm = 1) (hg : g ∈ UH Hm) : IsUnit g :=
   (Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse (left_inv_of_mem h hg))
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hm * g = Hm` using `hg`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_mem h hg)`. Establish `e2 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `e3 : (g⁻¹)ᴴ * gᴴ = 1` using `by rw [← conjTranspose_mul, e2, conjTranspose_one]`. Establish `a1 : (g⁻¹)ᴴ * Hm = Hm * g`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `a2 : Hm * g⁻¹ = gᴴ * Hm`. Combine the equalities or inequalities in the displayed calculation. Establish `hY' : Yᴴ * Hm + Hm * Y = 0` using `hY`. Unfold `Lie`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gᴴ * (Yᴴ * Hm + Hm * Y) * g := by`. Rewrite using `[a1, a2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem lie_conj {Hm g Y : Mat n} (h : Hm * Hm = 1) (hg : g ∈ UH Hm) (hY : Lie Hm Y) :
     Lie Hm (g⁻¹ * Y * g) := by
   have hg' : gᴴ * Hm * g = Hm := hg
@@ -150,11 +202,17 @@ theorem lie_conj {Hm g Y : Mat n} (h : Hm * Hm = 1) (hg : g ∈ UH Hm) (hY : Lie
         rw [a1, a2]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hY', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Unfold `ex`. Rewrite using `[← Matrix.exp_conj' g _ hg, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem ex_conj {g : Mat n} (hg : IsUnit g) (Y : Mat n) (τ : ℝ) :
     ex (g⁻¹ * Y * g) τ = g⁻¹ * ex Y τ * g := by
   unfold ex
   rw [← Matrix.exp_conj' g _ hg, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `: (fun t => (s t)⁻¹ * Y * s t) = fun t => Hm * (s t)ᴴ * Hm * Y * s t`. Use function extensionality and compare the values at `fun t => by rw [inv_of_mem h (hm t)]`. Rewrite using `[this]`. Conclude with `contDiff_mul' (contDiff_mul' (contDiff_mul' (contDiff_mul' contDiff_const (contDiff_conjT.comp hs)) contDiff_const) contDiff_const) hs`.
+-/
 theorem contDiff_conj {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P] {Hm : Mat n}
     (h : Hm * Hm = 1) {s : P → Mat n} (hs : ContDiff ℝ ∞ s) (hm : ∀ t, s t ∈ UH Hm) (Y : Mat n) :
     ContDiff ℝ ∞ (fun t => (s t)⁻¹ * Y * s t) := by
@@ -164,16 +222,25 @@ theorem contDiff_conj {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P] {Hm
   exact contDiff_mul' (contDiff_mul' (contDiff_mul' (contDiff_mul' contDiff_const
     (contDiff_conjT.comp hs)) contDiff_const) contDiff_const) hs
 
+/- English proof (translation)
+Simplify using `only [prodEx, List.ofFn_succ, List.prod_cons]`.
+-/
 theorem prodEx_succ {d : ℕ} (X : Fin (d + 1) → Mat n) (t : Fin (d + 1) → ℝ) :
     prodEx X t = ex (X 0) (t 0) * prodEx (fun j => X j.succ) (fun j => t j.succ) := by
   simp only [prodEx, List.ofFn_succ, List.prod_cons]
 
+/- English proof (translation)
+Unfold `prodEx`. Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `ex_zero _`.
+-/
 theorem prodEx_zero {d : ℕ} (X : Fin d → Mat n) : prodEx X 0 = 1 := by
   unfold prodEx
   refine List.prod_eq_one fun x hx => ?_
   obtain ⟨j, rfl⟩ := List.mem_ofFn.1 hx
   exact ex_zero _
 
+/- English proof (translation)
+The claim follows from `| 0, X, _, t => by simp [prodEx, UH] | d + 1, X, hX, t => by rw [prodEx_succ] exact CCRuleCW.UH_mul Hm _ _ (ex_mem_of_lie (hX 0) _) (prodEx_mem _ (fun j => hX j.succ) _)`.
+-/
 theorem prodEx_mem {Hm : Mat n} : ∀ {d : ℕ} (X : Fin d → Mat n), (∀ j, Lie Hm (X j)) →
     ∀ t, prodEx X t ∈ UH Hm
   | 0, X, _, t => by simp [prodEx, UH]
@@ -181,10 +248,16 @@ theorem prodEx_mem {Hm : Mat n} : ∀ {d : ℕ} (X : Fin d → Mat n), (∀ j, L
     rw [prodEx_succ]
     exact CCRuleCW.UH_mul Hm _ _ (ex_mem_of_lie (hX 0) _) (prodEx_mem _ (fun j => hX j.succ) _)
 
+/- English proof (translation)
+The claim follows from `contDiff_pi.2 fun j => contDiff_apply ℝ ℝ j.succ`.
+-/
 theorem contDiff_tail {d : ℕ} :
     ContDiff ℝ ∞ (fun (t : Fin (d + 1) → ℝ) (j : Fin d) => t j.succ) :=
   contDiff_pi.2 fun j => contDiff_apply ℝ ℝ j.succ
 
+/- English proof (translation)
+The claim follows from `| 0, X => by have : prodEx X = fun _ => 1 := funext fun t => by simp [prodEx] rw [this]; exact contDiff_const | d + 1, X => by rw [show prodEx X = _ from funext (prodEx_succ X)] exact contDiff_mul' ((contDiff_ex (X 0)).comp (contDiff_apply ℝ ℝ 0)) ((contDiff_prodEx _).comp contDi …`.
+-/
 theorem contDiff_prodEx : ∀ {d : ℕ} (X : Fin d → Mat n), ContDiff ℝ ∞ (prodEx X)
   | 0, X => by
     have : prodEx X = fun _ => 1 := funext fun t => by simp [prodEx]
@@ -194,6 +267,9 @@ theorem contDiff_prodEx : ∀ {d : ℕ} (X : Fin d → Mat n), ContDiff ℝ ∞ 
     exact contDiff_mul' ((contDiff_ex (X 0)).comp (contDiff_apply ℝ ℝ 0))
       ((contDiff_prodEx _).comp contDiff_tail)
 
+/- English proof (translation)
+The claim follows from `| 0, X, _ => ⟨fun j => j.elim0, fun j => j.elim0, fun j => j.elim0, fun j => j.elim0, fun j => j.elim0⟩ | d + 1, X, hX => by obtain ⟨Z, h1, h2, h3, h4⟩ := exists_fields h (fun j : Fin d => X j.succ) (fun j => hX j.succ) have hm := prodEx_mem (fun j : Fin d => X j.succ) (fun j => …`.
+-/
 theorem exists_fields {Hm : Mat n} (h : Hm * Hm = 1) : ∀ {d : ℕ} (X : Fin d → Mat n),
     (∀ j, Lie Hm (X j)) → ∃ Z : Fin d → (Fin d → ℝ) → Mat n, (∀ j t, Lie Hm (Z j t)) ∧
       (∀ j t (τ : ℝ), prodEx X (t + τ • (Pi.single j 1 : Fin d → ℝ)) = prodEx X t * ex (Z j t) τ) ∧
@@ -250,6 +326,11 @@ def lieSub (Hm : Mat n) : Submodule ℝ (Mat n) where
     change (c • A)ᴴ * Hm + Hm * (c • A) = 0
     rw [conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hA', smul_zero]
 
+/- English proof (translation)
+Introduce `n Hm h d e X Q hX hQ hS`. Take `⟨Z, h1, h2, h3, h4⟩` from `exists_fields h X hX`. Take `⟨U, hU, hU0, hsol⟩` from `smooth_coeffs (lieSub Hm) Z Q h3 h1 hQ (fun y hy => by`. Take `⟨a, b, hab⟩` from `hS y hy`. Conclude with `⟨a, b, by simpa only [h4, Complex.coe_smul] using hab⟩)`.
+
+Establish `hm` using `prodEx_mem X hX`. Use `⟨U, hU, hU0, contDiff_prodEx X, hm, hQ, Z, h1, h2, fun Y hY => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, hab⟩` from `hsol (fun t => (prodEx X t)⁻¹ * Y * prodEx X t) (contDiff_conj h (contDiff_prodEx X) hm Y) (fun t => lie_conj h (hm t) hY)`. Conclude with `⟨a, b, ha, hb, fun t ht => by simpa only [Complex.coe_smul] using hab t ht⟩`.
+-/
 theorem chartExists : ChartExists := by
   intro n Hm h d e X Q hX hQ hS
   obtain ⟨Z, h1, h2, h3, h4⟩ := exists_fields h X hX

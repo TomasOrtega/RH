@@ -9,12 +9,20 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.S0.Fwd
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.psiGen`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_psiGen (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (m : Mat k r) :
     ‖Formalism.MainNotions.S.psiGen k r z c m‖ = 1 := by
   unfold Formalism.MainNotions.S.psiGen
   rw [mul_comm]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Establish `hs' : sᴴ * H * s = H` using `hs`. Establish `key : (s * x)ᴴ * H * (s * x) = xᴴ * H * x`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `show (s * x)ᴴ * H * (s * x) = H ↔ xᴴ * H * x = H`.
+
+Rewrite using `[key]`.
+-/
 theorem UH_mul_iff {n : ℕ} (H s x : Matrix (Fin n) (Fin n) ℂ) (hs : s ∈ UH H) :
     s * x ∈ UH H ↔ x ∈ UH H := by
   have hs' : sᴴ * H * s = H := hs
@@ -25,18 +33,27 @@ theorem UH_mul_iff {n : ℕ} (H s x : Matrix (Fin n) (Fin n) ℂ) (hs : s ∈ UH
   show (s * x)ᴴ * H * (s * x) = H ↔ xᴴ * H * x = H
   rw [key]
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `hsU : h * m ∈ UH (Hpk k r)` using `(UH_mul_iff _ h m hh.1).2 hm.1`. Conclude with `UH_mul_iff _ _ x hsU`.
+-/
 theorem Sset_mul_mem_iff (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (s x : Mat k r)
     (hs : s ∈ Sset k r z) : s * x ∈ UH (Hpk k r) ↔ x ∈ UH (Hpk k r) := by
   obtain ⟨h, hh, m, hm, rfl⟩ := hs
   have hsU : h * m ∈ UH (Hpk k r) := (UH_mul_iff _ h m hh.1).2 hm.1
   exact UH_mul_iff _ _ x hsU
 
+/- English proof (translation)
+Establish `hc : Continuous (fun y : Mt k r => (Matrix.of y)ᴴ * Hpk k r * Matrix.of y)`. Establish `h1 : Continuous (fun y : Mt k r => (Matrix.of y : Mat k r))` using `continuous_id`. Conclude with `((h1.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul h1`. Conclude with `isClosed_eq hc continuous_const`.
+-/
 theorem isClosed_setUH (k r : ℕ) : IsClosed {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} := by
   have hc : Continuous (fun y : Mt k r => (Matrix.of y)ᴴ * Hpk k r * Matrix.of y) := by
     have h1 : Continuous (fun y : Mt k r => (Matrix.of y : Mat k r)) := continuous_id
     exact ((h1.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul h1
   exact isClosed_eq hc continuous_const
 
+/- English proof (translation)
+Establish `hC` using `isClosed_setUH k r`. Establish `hf : ContinuousOn (fun y : Mt k r => (‖W (Matrix.of y)‖₊ : ℝ≥0∞) ^ 2) {y | Matrix.of y ∈ UH (Hpk k r)}` using `(ENNReal.continuous_pow 2).comp_continuousOn ((ENNReal.continuous_coe.comp continuous_nnnorm).comp_continuousOn hW)`. Use `hf.measurable_piecewise (continuousOn_const (c := (0 : ℝ≥0∞))) hC.measurableSet` as an intermediate fact. Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `this`.
+-/
 theorem measurable_indicator_normSq (k r : ℕ) (Vp : Type) [NormedAddCommGroup Vp]
     (W : Mat k r → Vp)
     (hW : ContinuousOn (fun y : Mt k r => W (Matrix.of y)) {y | Matrix.of y ∈ UH (Hpk k r)}) :
@@ -52,6 +69,13 @@ theorem measurable_indicator_normSq (k r : ℕ) (Vp : Type) [NormedAddCommGroup 
   rw [← Set.piecewise_eq_indicator]
   exact this
 
+/- English proof (translation)
+Take `⟨y0, hy0, hWy0⟩` from `hne`. Rewrite using `[lintegral_pos_iff_support (measurable_indicator_normSq k r Vp W hW)]`. Establish `hy0' : (y0 : Mt k r) ∈ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `hy0`. Establish `hnh : (fun y : Mt k r => W (Matrix.of y)) ⁻¹' {v | v ≠ 0} ∈ nhdsWithin (y0 : Mt k r) {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `(hW _ hy0').preimage_mem_nhdsWithin (isOpen_ne.mem_nhds hWy0)`. Take `⟨U, hUo, hyU, hUsub⟩` from `mem_nhdsWithin.1 hnh`.
+
+Establish `hpos : 0 < μG U` using `hopen U hUo ⟨y0, hyU, hy0⟩`. Use `lt_of_lt_of_le hpos (measure_mono_ae ?_)` and prove the remaining obligations. Establish `hae : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r)`. Rewrite using `[ae_iff]`. Simplify using `using hG.2.2.1`.
+
+Use `filter_upwards [hae] with y hy hyU'`. Establish `hyW : W (Matrix.of y) ≠ 0` using `hUsub ⟨hyU', hy⟩`. Use `show Set.indicator _ _ y ≠ 0`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} from hy)]`. Simplify using `using hyW`.
+-/
 theorem lintegral_pos (k r : ℕ) (Vp : Type) [NormedAddCommGroup Vp] (μG : Measure (Mt k r))
     (W : Mat k r → Vp) (hG : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μG)
     (hopen : ∀ U : Set (Mt k r), IsOpen U → (∃ y ∈ U, Matrix.of y ∈ UH (Hpk k r)) → 0 < μG U)
@@ -76,6 +100,25 @@ theorem lintegral_pos (k r : ℕ) (Vp : Type) [NormedAddCommGroup Vp] (μG : Mea
   rw [Set.indicator_of_mem (show y ∈ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} from hy)]
   simpa using hyW
 
+/- English proof (translation)
+Introduce `k r z c Vp _ _ π μG μS ν W hπ hG hS hQ hopen hW hEq hne h0`. Use `set g : Mt k r → ℝ≥0∞ := Set.indicator {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} (fun y => (‖W (Matrix.of y)‖₊ : ℝ≥0∞) ^ 2) with hgdef`. Establish `hgm : Measurable g` using `measurable_indicator_normSq k r Vp W hW`. Establish `hpos : 0 < ∫⁻ y, g y ∂μG` using `lintegral_pos k r Vp μG W hG hopen hW hne`. Establish `hQg` using `hQ g hgm`.
+
+Establish `hSae : ∀ᵐ s ∂μS, Matrix.of s ∈ Sset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hS.2.2.1`. Establish `hin : ∀ x : Mt k r, ∫⁻ s, g (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS ≤ ∫⁻ _s, g x ∂μS`. Introduce `x`.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSae] with s hs`. Distinguish the cases in `hx : Matrix.of x ∈ UH (Hpk k r)`. Establish `hsx : Matrix.of s * Matrix.of x ∈ UH (Hpk k r)` using `(Sset_mul_mem_iff k r z _ _ hs).2 hx`. Take `⟨h, hh, m, hm, hsd⟩` from `hs`.
+
+Establish `hm1 : (fun i j => (Matrix.of s * Matrix.of x) i j : Mt k r) ∈ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `hsx`. Establish `hm2 : x ∈ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `hx`. Rewrite using `[hgdef, Set.indicator_of_mem hm1, Set.indicator_of_mem hm2]`. Establish `heq : W (Matrix.of (fun i j => (Matrix.of s * Matrix.of x) i j)) = Formalism.MainNotions.S.psiGen k r z c m • π h (W (Matrix.of x))` using `by show W (Matrix.of s * Matrix.of x) = _`. Rewrite using `[hsd]`.
+
+Conclude with `hEq h hh m hm _ hx`. Establish `hn : ‖Formalism.MainNotions.S.psiGen k r z c m • π h (W (Matrix.of x))‖₊ = ‖W (Matrix.of x)‖₊` using `NNReal.eq (by rw [coe_nnnorm, coe_nnnorm, norm_smul, norm_psiGen, one_mul, hπ h hh])`. Rewrite using `[heq, hn]`. Establish `hm2 : x ∉ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `hx`. Establish `hsx : Matrix.of s * Matrix.of x ∉ UH (Hpk k r)` using `fun hh => hx ((Sset_mul_mem_iff k r z _ _ hs).1 hh)`.
+
+Establish `hm1 : (fun i j => (Matrix.of s * Matrix.of x) i j : Mt k r) ∉ {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}` using `hsx`. Rewrite using `[hgdef, Set.indicator_of_notMem hm1]`. Conclude with `zero_le`. Establish `hle : ∫⁻ y, g y ∂μG ≤ 0`. Rewrite using `[hQg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Use `(hin x).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const]`. Use `_ = (∫⁻ x, g x ∂ν) * μS Set.univ := lintegral_mul_const _ hgm`.
+
+Use `_ ≤ (∫⁻ x, (‖W (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂ν) * μS Set.univ := by gcongr with x`. Conclude with `Set.indicator_le_self _ _ x`. Use `_ = 0 := by`. Establish `: Formalism.MainNotions.S.l2SG ν W = ∫⁻ x, (‖W (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂ν` using `rfl`. Rewrite using `[← this, h0, zero_mul]`.
+
+Conclude with `absurd (lt_of_lt_of_le hpos hle) (lt_irrefl 0)`.
+-/
 theorem nonzero : NonzeroStatement := by
   intro k r z c Vp _ _ π μG μS ν W hπ hG hS hQ hopen hW hEq hne h0
   set g : Mt k r → ℝ≥0∞ := Set.indicator {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}

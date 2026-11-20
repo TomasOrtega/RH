@@ -23,6 +23,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.BesselSchur
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.fdegHC`. Use `div_pos (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_) (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_)` and prove the remaining obligations. Use `h (Finset.mem_filter.1 hb).2` as an intermediate fact. Conclude with `abs_pos.2 (sub_ne_zero.2 this.ne')`. Establish `: (a : ℕ) < b` using `(Finset.mem_filter.1 hb).2`.
+
+Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fdegHC_pos {n : ℕ} {mu : Fin n → ℝ} (h : StrictAnti mu) : 0 < Formalism.QuantumDeterminants.fdegHC mu := by
   unfold Formalism.QuantumDeterminants.fdegHC
   refine div_pos (Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_)
@@ -33,6 +38,11 @@ theorem fdegHC_pos {n : ℕ} {mu : Fin n → ℝ} (h : StrictAnti mu) : 0 < Form
     have : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ) := by exact_mod_cast this
     linarith
 
+/- English proof (translation)
+Establish `hc : ∀ s : MatKR k r, Continuous (fun x : Mt k r => (fun i j => (s * Matrix.of x) i j : Mt k r))` using `fun s => by`. Establish `h1 : Continuous (fun x : Mt k r => (Matrix.of x : MatKR k r))` using `continuous_id`. Conclude with `continuous_const.matrix_mul h1`. Set `e : Mt k r ≃ᵐ Mt k r` to `{ toFun := fun x => fun i j => (t⁻¹ * Matrix.of x) i j invFun := fun x => fun i j => (t * Matrix.of x) i j left_inv := fun x => by show t * (t⁻¹ * Matrix.of x) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ht, Matrix.one_mul]`.
+
+Use `right_inv := fun x => by show t⁻¹ * (t * Matrix.of x) = Matrix.of x`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ht, Matrix.one_mul]`. Use `measurable_toFun := (hc _).measurable`. Use `measurable_invFun := (hc _).measurable }`. Conclude with `e.measurableEmbedding`.
+-/
 theorem measurableEmbedding_lmul {k r : ℕ} {t : MatKR k r} (ht : IsUnit t.det) :
     MeasurableEmbedding (fun x : Mt k r => (fun i j => (t⁻¹ * Matrix.of x) i j : Mt k r)) := by
   have hc : ∀ s : MatKR k r, Continuous (fun x : Mt k r => (fun i j => (s * Matrix.of x) i j : Mt k r)) := fun s => by
@@ -51,6 +61,27 @@ theorem measurableEmbedding_lmul {k r : ℕ} {t : MatKR k r} (ht : IsUnit t.det)
       measurable_invFun := (hc _).measurable }
   exact e.measurableEmbedding
 
+/- English proof (translation)
+Take `⟨t, htG, htN, htz, -⟩` from `GlobalTheory.T.exists_unitaryTorus_scale_besselCharacter k r c hc`. Take `⟨-, htW, htψ⟩` from `htz z hS.1`. Take `⟨hS', hR⟩` from `GlobalTheory.T.torus_normaliser_bessel hH k r Wp z π u c μW μN μG νq t htG htN htW htψ hS`. Take `⟨hmul, hone, hinn, hsm, hTK, -, hKT, -, hcont⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r ε mu R hDS`. Establish `hU : Formalism.MainNotions.S.IsURepOn (BranchingSupport.GG k r) R.σ`.
+
+Use `⟨⟨?_, ?_⟩, fun g hg v => ?_, hcont⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `using hone v`. Introduce `a ha b hb`. Use extensionality with `v`.
+
+Simplify using `using hmul a ha b hb v`. Use `hinn g hg v v` as an intermediate fact. Rewrite `this` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ‖R.σ g v‖ ^ 2 = ‖v‖ ^ 2` using `by exact_mod_cast this`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`.
+
+Establish `hB'` using `((hR R hU).1 B).1 hB`. Take `⟨htu, htinv, -⟩` from `PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r t htG`. Establish `hdet : IsUnit t.det` using `(Matrix.isUnit_iff_isUnit_det t).mp htu`. Establish `hae : ∀ {μN νq : Measure (Mt k r)}, SideG k r z π u μW μN μG νq → ∀ᵐ x ∂νq, Matrix.of x ∈ UH (Hpk k r)` using `fun hS => by`. Take `⟨-, -, -, -, hW, hN, hG, hq⟩` from `hS`.
+
+Take `⟨hS0, hS1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`. Conclude with `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 hS0 hS1 hq`. Establish `hmove : ∀ v, PI.BesselPeriodGGP.l2SG (νq.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j) (fun g => B (R.σ t (R.σ g v))) = PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g v))` using `fun v => by`. Unfold `PI.BesselPeriodGGP.l2SG`. Rewrite using `[(measurableEmbedding_lmul hdet).lintegral_map]`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae hS] with x hx`. Establish `e : R.σ t (R.σ (t⁻¹ * Matrix.of x) v) = R.σ (Matrix.of x) v`. Rewrite using `[← hmul t htG _ (Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul htinv hx), ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul]`. Conclude with `congrArg (fun y => ((‖B y‖₊ : ℝ≥0∞)) ^ 2) e`.
+
+Take `⟨l, hl⟩` from `GlobalTheory.exists_normalised_bessel_map hH k r ε mu h R Wp z π u _ _ _ _ hDS hgap hok hS'`. Take `⟨v₁, hv₁, hlv⟩` from `GlobalTheory.T.discrete_series_bessel_gap hH k r ε mu h R Wp z π u _ _ _ _ _ l w hDS hgap hok hS' hB' hw (by rw [hmove]; exact h0) (by rw [hmove]; exact h1) hl`. Take `⟨c₀, hc₀, hfd⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH k r ε μG hS.2.2.2.2.2.2.1`. Establish `hdd : 0 < c₀ * Formalism.QuantumDeterminants.fdegHC mu` using `mul_pos hc₀ (fdegHC_pos hDS.1.1)`. Establish `hv₁s : v₁ ∈ R.sm` using `hTK _ (hKT _ hv₁)`.
+
+Take `⟨hb, hiso⟩` from `GlobalTheory.scaled_bessel_isometric hH k r ε mu h R Wp z π u _ _ _ _ l _ hDS hgap hok hS' hl (hfd mu R hDS).1 ⟨v₁, hv₁s, hlv⟩`. Take `⟨a, ha⟩` from `GlobalTheory.BesselLine.bessel_line hH k r ε mu R Wp z π u _ _ _ _ _ _ hDS hS' hb ⟨v₁, hv₁s, smul_ne_zero (Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hdd).ne') hlv⟩ hB'`. Use `⟨(‖a‖₊ : ℝ≥0∞) ^ 2, fun v hv => ?_⟩` and prove the remaining obligations. Establish `e : ((‖v‖₊ : ℝ≥0∞)) ^ 2 = ENNReal.ofReal (‖v‖ ^ 2)`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hmove, e, ← hiso v hv]`. Unfold `PI.BesselPeriodGGP.l2SG`. Rewrite using `[← lintegral_const_mul' _ _ (ENNReal.pow_ne_top ENNReal.coe_ne_top)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae hS'] with x hx`. Rewrite using `[ha _ (hsm _ hx v hv), nnnorm_smul, ENNReal.coe_mul, mul_pow]`.
+-/
 theorem exists_mass_eq (hH : Hyps) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     (R : Rep k r) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     [FiniteDimensional ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {π : MatKR k r → (Wp →L[ℂ] Wp)} {u : ℕ → ℝ} {c : ℂ}
@@ -110,6 +141,11 @@ theorem exists_mass_eq (hH : Hyps) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Boo
   filter_upwards [hae hS'] with x hx
   rw [ha _ (hsm _ hx v hv), nnnorm_smul, ENNReal.coe_mul, mul_pow]
 
+/- English proof (translation)
+Establish `e : ∀ (w : List (MatKR k r)) (v : H), PI.UpqRep.dsigW (k` using `k) (r := r) σ w v = dsigW σ w v := fun w v => by`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => exact congrArg (dsig σ X) ih`. Take `⟨h1, h2, h3, C, Ws, h4, h5⟩` from `h`.
+
+Use `⟨h1, h2, h3, C, Ws, h4, fun v hv => ?_⟩` and prove the remaining obligations. Simplify `h5 v hv` using `only [e]`.
+-/
 theorem isBesselMapSm_of {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {Wp : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {ψ : MatKR k r → ℂ}
     {σ : MatKR k r → (H →L[ℂ] H)} {π : MatKR k r → (Wp →L[ℂ] Wp)} {B : H → Wp} (h : IsBesselMapSm z ψ σ π B) :
@@ -122,6 +158,25 @@ theorem isBesselMapSm_of {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerPro
   refine ⟨h1, h2, h3, C, Ws, h4, fun v hv => ?_⟩
   simpa only [e] using h5 v hv
 
+/- English proof (translation)
+Introduce `hH D large₂ C' Cl Cg cb Cu cT CT C0 hCl hθ _ hZ τ w w' θ W hW A hA hT v hv`. Establish `hθ0` using `hθ τ w w' θ W hW`. Use `FiniteDimensional.complete ℂ W.Wp` as an intermediate fact. Establish `hU : ∀ i : Fin D.R.k, uOne D w τ (i.val + 1) = uS D w τ i` using `fun i => by`. Unfold `uOne`.
+
+Rewrite using `[dif_pos ⟨by omega, i.isLt⟩]`. Both sides reduce to the same expression. Take `⟨hnum, -, heps⟩` from `GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w _ hU`. Take `⟨-, -, -, -, -, -, -, -, -, -, hgap, hok, -, hh, -⟩` from `hnum`. Rewrite `hgap` using `[heps]`.
+
+Establish `hgap' : GapAtLeast (epsSH D.R) (lamD D τ) ((D.R.r : ℝ) ^ 19 / 4)` using `fun a b hab => le_trans (by have : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 19 := by positivity linarith) (hgap a b hab)`. Establish `hv1 : 1 ≤ D.host.v` using `hZ.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hvpos : 0 < D.host.v` using `by linarith`. Take `⟨c1, -, z1, -, t1, -, hG, w1, -, -, -, hN, q1, -⟩` from `hW`. Take `⟨hpar, hds, b1, -, hsm, hv0, ⟨P, hP, hlow⟩, hc, l1, -, -⟩` from `hA`.
+
+Establish `hTz : 0 < Tz D.R.k D.R.rS W.z` using `by rw [t1]; exact hT`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN`. Rewrite using `[hN]`. Conclude with `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical _ _ _ (ENNReal.ofReal_pos.2 (by positivity)) ENNReal.ofReal_lt_top`. Establish `hS : SideG D.R.k D.R.rS W.z W.π (uOne D w τ) W.μW W.μN W.μG W.νS` using `⟨z1, hTz, ⟨_, c1⟩, GlobalTheory.ThA.capParam_of_isHCTypeW _ _ _ _ _ _ _ z1 hTz c1 hU, w1, hNH, hG, q1⟩`.
+
+Establish `hka : 0 < D.host.ka` using `div_pos Real.pi_pos hvpos`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `hg1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Establish `hcne : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by positivity)`. Establish `hKF : (⟨A.H, A.σ⟩ : Rep D.R.k D.R.rS).KFin A.v0`.
+
+Take `⟨S, ⟨hfd, hst⟩, hwS⟩` from `PI.UnitaryGroupMassFormula.LowSmooth.exists_finStable_of_mem_sSup (Formalism.REAL.Kset (epsSH D.R)) (fun g => A.σ (P⁻¹ * g * P)) (F := {S | IsKTypeOf (epsSH D.R) (fun g => A.σ (P⁻¹ * g * P)) (lowK (epsSH D.R) (lamD D τ)) S}) (fun S hS => ⟨hS.1, hS.2.1⟩) hlow`. Use `⟨S, hfd, hwS, fun g hg x hx => ?_⟩` and prove the remaining obligations. Take `⟨hK, hback⟩` from `PI.UnitaryGroupMassFormula.LowSmooth.conj_mem_Kset hP hg`. Establish `h` using `hst _ hK x hx`. Simplify using `only at h`.
+
+Rewrite `h` using `[hback]`. Then use the resulting hypothesis. Establish `hnt : Nontrivial W.Wp`. Take `⟨g, -, hnt, -⟩` from `c1`. Conclude with `hnt`. Establish `hrk : (0 : ℝ) < Module.finrank ℂ W.Wp` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `l1' : PI.BesselPeriodGGP.l2SG W.νS (fun g => A.B (A.σ g A.v0)) = ENNReal.ofReal (A.cN * Module.finrank ℂ W.Wp)` using `l1`. Take `⟨a, ha⟩` from `exists_mass_eq hH (⟨A.H, A.σ⟩ : Rep D.R.k D.R.rS) (B := A.B) (w := A.v0) hcne ⟨hpar, hds⟩ hgap' hok hS (isBesselMapSm_of b1) hKF (by rw [l1']; exact (ENNReal.ofReal_pos.2 (mul_pos hc hrk)).ne') (by rw [l1']; exact ENNReal.ofReal_ne_top)`. Establish `e1 : l2SG W.νS (fun g => A.B (A.σ g v)) = a * (‖v‖₊ : ℝ≥0∞) ^ 2` using `ha v hv`. Establish `e2 : l2SG W.νS A.Φ = a * (‖A.v0‖₊ : ℝ≥0∞) ^ 2` using `ha A.v0 hsm`. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bessel_schur : Hyps → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ), 1000 ≤ Cl → (∀ τ w w' θ (W : LocW D.R.k D.R.rS), GoodW D τ w w' θ W → 0 < θ) → (∀ w, 0 < Tr D w) → BSch D large₂ C' Cl Cg cb Cu cT CT C0 := by
   intro hH D large₂ C' Cl Cg cb Cu cT CT C0 hCl hθ _ hZ τ w w' θ W hW A hA hT v hv
   have hθ0 := hθ τ w w' θ W hW
@@ -174,6 +229,11 @@ theorem bessel_schur : Hyps → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl C
   rw [e1, e2]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hθ`. Take `⟨-, -, -, -, -, -, hG, -, -, -, -, hN, q1, -⟩` from `hW`. Establish `hk : kapN D θ = 0` using `ENNReal.ofReal_eq_zero.2 (mul_nonpos_of_nonneg_of_nonpos (Real.rpow_nonneg (by positivity) _) (not_lt.1 hθ))`. Establish `hN0 : W.μN = 0` using `by rw [hN, hk]; unfold haarLie; exact zero_smul _ _`. Establish `h1` using `q1 (fun _ => 1) measurable_const`.
+
+Rewrite `h1` using `[hN0]`. Simplify using `only [muS, Measure.prod_zero, Measure.map_zero, lintegral_const, one_mul, Measure.coe_zero, Pi.zero_apply, zero_mul] at h1`. Conclude with `hG.2.1 (Measure.measure_univ_eq_zero.1 h1)`.
+-/
 theorem theta_pos (D : D7) {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
     (hv : 0 ≤ D.host.v) (hW : GoodW D τ w w' θ W) : 0 < θ := by
   by_contra hθ

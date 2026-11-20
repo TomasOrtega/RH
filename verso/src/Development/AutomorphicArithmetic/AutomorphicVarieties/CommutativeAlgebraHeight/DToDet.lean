@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n A G _ _ D y`. Establish `hchi : D.toDet.chi y = D.chi y`. Express the relevant statement in the definitionally equal form `D.D A[X] (ofT A G A[X] (X ⊗ₜ 1 - 1 ⊗ₜ y)) = D.D A[X] (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y)`. Use `congr 1`. Rewrite using `[map_sub, ofT_tmul, ofT_tmul, map_one, one_smul, MonoidAlgebra.one_def, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]`.
+
+Both sides reduce to the same expression. Establish `hlam : ∀ i, D.toDet.lam i y = D.lam i y` using `fun i => by`. Unfold `Det.lam GDet.lam`. Rewrite using `[hchi]`. Use `⟨hchi, hlam, hlam 1, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (B : Type) [CommRing B] [Algebra A B] (h : B ⊗[A] MonoidAlgebra A G), D.toDet.D B (1 + h * (1 ⊗ₜ y)) = D.D B (1 + ofT A G B h * MonoidAlgebra.mapRingHom G (algebraMap A B) y)`. Introduce `B _ _ h`. Express the relevant statement in the definitionally equal form `D.D B (ofT A G B (1 + h * (1 ⊗ₜ y))) = _`. Rewrite using `[map_add, map_one, map_mul, ofT_tmul, one_smul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hk B _ _ h`. Use `hk B (toT A G B h)` as an intermediate fact. Rewrite `this` using `[key, ofT_toT]`. Then use the resulting hypothesis. Introduce `hk B _ _ h`. Rewrite using `[key]`.
+
+Conclude with `hk B _`.
+-/
 theorem UpperTheory.V.CA.d_toDet :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (y : MonoidAlgebra A G), D.toDet.chi y = D.chi y ∧ (∀ i, D.toDet.lam i y = D.lam i y) ∧ D.toDet.tr y = D.tr y ∧ (D.toDet.Kills y ↔ D.Kills y) := by
   intro n A G _ _ D y

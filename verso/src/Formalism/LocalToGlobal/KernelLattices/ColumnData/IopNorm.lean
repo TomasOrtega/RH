@@ -19,6 +19,9 @@ variable {D : Car} {N N' : ℕ}
 def unionFd (M La : AddSubgroup (VC D N N')) (s : Set (VC D N N')) : Set (VC D N N') :=
   ⋃ q : La ⧸ M.addSubgroupOf La, (Quotient.out q : La) +ᵥ s
 
+/- English proof (translation)
+Establish `h : (QuotientAddGroup.mk (-g) : La ⧸ M.addSubgroupOf La) = QuotientAddGroup.mk (Quotient.out (QuotientAddGroup.mk (-g) : La ⧸ M.addSubgroupOf La))` using `(Quotient.out_eq _).symm`. Rewrite `h` using `[QuotientAddGroup.eq, neg_neg]`. Conclude with `AddSubgroup.mem_addSubgroupOf.mp h`.
+-/
 theorem out_mem (M La : AddSubgroup (VC D N N')) (g : La) :
     (((g + Quotient.out (QuotientAddGroup.mk (-g) : La ⧸ M.addSubgroupOf La) : La)) : VC D N N') ∈ M := by
   have h : (QuotientAddGroup.mk (-g) : La ⧸ M.addSubgroupOf La) =
@@ -27,15 +30,24 @@ theorem out_mem (M La : AddSubgroup (VC D N N')) (g : La) :
   rw [QuotientAddGroup.eq, neg_neg] at h
   exact AddSubgroup.mem_addSubgroupOf.mp h
 
+/- English proof (translation)
+Conclude with `Quotient.out_injective h`.
+-/
 theorem out_inj (M La : AddSubgroup (VC D N N')) {q q' : La ⧸ M.addSubgroupOf La}
     (h : (Quotient.out q : La) = Quotient.out q') : q = q' := by
   exact Quotient.out_injective h
 
+/- English proof (translation)
+Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, sub_eq_neg_add]`. Both sides reduce to the same expression.
+-/
 theorem mem_vadd_iff {La : AddSubgroup (VC D N N')} (g : La) (s : Set (VC D N N')) (x : VC D N N') :
     x ∈ g +ᵥ s ↔ x - (g : VC D N N') ∈ s := by
   rw [Set.mem_vadd_set_iff_neg_vadd_mem, sub_eq_neg_add]
   rfl
 
+/- English proof (translation)
+The claim follows from `NullMeasurableSet.iUnion fun q => hs.nullMeasurableSet_vadd _ ae_covers := by filter_upwards [hs.ae_covers] with x hx obtain ⟨g, hg⟩ := hx refine ⟨⟨_, out_mem M La g⟩, Set.mem_iUnion.2 ⟨QuotientAddGroup.mk (-g), ?_⟩⟩ rw [mem_vadd_iff] convert hg using 1 simp only [AddSubgroup.vad …`.
+-/
 theorem unionFd_fd {M La : AddSubgroup (VC D N N')} (hle : M ≤ La)
     [Finite (La ⧸ M.addSubgroupOf La)] {s : Set (VC D N N')}
     (hs : IsAddFundamentalDomain La s volume) :
@@ -94,12 +106,18 @@ theorem unionFd_fd {M La : AddSubgroup (VC D N N')} (hle : M ≤ La)
       exact Subtype.ext h2
     · exact hs.aedisjoint he
 
+/- English proof (translation)
+Introduce `q q' hqq'`. Conclude with `hs.aedisjoint (fun h => hqq' (out_inj M La h))`.
+-/
 theorem pieces_disj {M La : AddSubgroup (VC D N N')} {s : Set (VC D N N')}
     (hs : IsAddFundamentalDomain La s volume) :
     Pairwise (AEDisjoint volume on fun q : La ⧸ M.addSubgroupOf La => (Quotient.out q : La) +ᵥ s) := by
   intro q q' hqq'
   exact hs.aedisjoint (fun h => hqq' (out_inj M La h))
 
+/- English proof (translation)
+Unfold `unionFd`. Rewrite using `[MeasureTheory.lintegral_iUnion₀ (fun q => hs.nullMeasurableSet.vadd _) (pieces_disj hs)]`. Establish `h1 : ∀ q : La ⧸ M.addSubgroupOf La, ∫⁻ x in (Quotient.out q : La) +ᵥ s, f x = ∫⁻ x in s, f x` using `fun q => (hs.vadd _).setLIntegral_eq hs f hf`. Simplify using `only [h1, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem lint_unionFd {M La : AddSubgroup (VC D N N')} [Countable La]
     [Fintype (La ⧸ M.addSubgroupOf La)]
     {s : Set (VC D N N')} (hs : IsAddFundamentalDomain La s volume) (f : VC D N N' → ℝ≥0∞)
@@ -113,6 +131,9 @@ theorem lint_unionFd {M La : AddSubgroup (VC D N N')} [Countable La]
     fun q => (hs.vadd _).setLIntegral_eq hs f hf
   simp only [h1, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Unfold `unionFd`. Rewrite using `[MeasureTheory.measure_iUnion₀ (pieces_disj hs) (fun q => hs.nullMeasurableSet.vadd _)]`. Simplify using `only [MeasureTheory.measure_vadd, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem vol_unionFd {M La : AddSubgroup (VC D N N')} [Countable La]
     [Fintype (La ⧸ M.addSubgroupOf La)]
     {s : Set (VC D N N')} (hs : IsAddFundamentalDomain La s volume) :
@@ -121,6 +142,13 @@ theorem vol_unionFd {M La : AddSubgroup (VC D N N')} [Countable La]
   rw [MeasureTheory.measure_iUnion₀ (pieces_disj hs) (fun q => hs.nullMeasurableSet.vadd _)]
   simp only [MeasureTheory.measure_vadd, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite (La ⧸ M.addSubgroupOf La)`. Establish `hu` using `unionFd_fd hle hs`. Establish `hperM : ∀ (g : M) (x : VC D N N'), f (g +ᵥ x) = f x` using `fun g x => by show f ((g : VC D N N') + x) = f x`. Rewrite using `[add_comm]`. Conclude with `hper _ (hle g.2) x`.
+
+Establish `hperL : ∀ (g : La) (x : VC D N N'), ENNReal.ofReal (f (g +ᵥ x)) = ENNReal.ofReal (f x)` using `fun g x => by show ENNReal.ofReal (f ((g : VC D N N') + x)) = ENNReal.ofReal (f x)`. Rewrite using `[add_comm, hper _ g.2 x]`. Establish `hvol : volume t = volume (unionFd M La s)` using `ht.measure_eq hu`. Establish `hint : ∫ x in t, f x = ∫ x in unionFd M La s, f x` using `ht.setIntegral_eq hu hperM`. Establish `hlin : ∫⁻ x in unionFd M La s, ENNReal.ofReal (f x) = (Fintype.card (La ⧸ M.addSubgroupOf La) : ℝ≥0∞) * ∫⁻ x in s, ENNReal.ofReal (f x)` using `lint_unionFd hs _ hperL`.
+
+Establish `hI : ∀ u : Set (VC D N N'), ∫ x in u, f x = (∫⁻ x in u, ENNReal.ofReal (f x)).toReal` using `fun u => MeasureTheory.integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hf0) hfc.aestronglyMeasurable`. Establish `hn : (Fintype.card (La ⧸ M.addSubgroupOf La) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Rewrite using `[MeasureTheory.setAverage_eq, MeasureTheory.setAverage_eq, MeasureTheory.measureReal_def, MeasureTheory.measureReal_def, hvol, vol_unionFd hs, hint, hI, hlin, hI, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_natCast, smul_eq_mul, smul_eq_mul, mul_inv, show ∀ a b c : ℝ, …`.
+-/
 theorem avg_sub {M La : AddSubgroup (VC D N N')} [Countable La] [Countable M] (hle : M ≤ La)
     [Finite (La ⧸ M.addSubgroupOf La)] {s t : Set (VC D N N')}
     (hs : IsAddFundamentalDomain La s volume) (ht : IsAddFundamentalDomain M t volume)
@@ -168,6 +196,9 @@ variable {D : Car} {N N' : ℕ}
 def crD (T : Tor D) (A B : VC D N N' → ℂ) (z : VC D N N') : ℂ :=
   A z * starRingEnd ℂ (B z) * (Real.exp (-Real.pi * (Hf D T z z).re) : ℂ)
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Rewrite using `[map_div₀, Complex.conj_ofReal]`. Use `congr 1`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 private theorem Hf_swap_eq_conj (T : Tor D) (x y : VC D N N') :
     Hf D T y x = starRingEnd ℂ (Hf D T x y) := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.Hf
@@ -177,6 +208,11 @@ private theorem Hf_swap_eq_conj (T : Tor D) (x y : VC D N N') :
   exact Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ =>
     Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hadd : Hf D T (z + x) (z + x) = Hf D T z z + Hf D T z x + Hf D T x z + Hf D T x x`. Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Simplify using `only [Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd, Hf_swap_eq_conj T z x]`.
+
+Simplify using `only [Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_Hf_add' (T : Tor D) (z x : VC D N N') :
     (Hf D T (z + x) (z + x)).re =
       (Hf D T z z).re + 2 * (Hf D T z x).re + (Hf D T x x).re := by
@@ -188,10 +224,20 @@ theorem re_Hf_add' (T : Tor D) (z x : VC D N N') :
   simp only [Complex.add_re, Complex.conj_re]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, ← Complex.exp_add, Complex.add_conj, Complex.ofReal_exp]`.
+-/
 theorem exp_mul_conj (w : ℂ) :
     Complex.exp w * starRingEnd ℂ (Complex.exp w) = ((Real.exp (2 * w.re) : ℝ) : ℂ) := by
   rw [← Complex.exp_conj, ← Complex.exp_add, Complex.add_conj, Complex.ofReal_exp]
 
+/- English proof (translation)
+Simplify using `only [crD, Formalism.L2.Ker.Cd.TaylorLogMetric.U]`. Rewrite using `[re_Hf_add' T z y]`. Use `set e : ℂ := -(Real.pi : ℂ) * Hf D T z y - (Real.pi : ℂ) * Hf D T y y / 2 with he`. Establish `h` using `exp_mul_conj e`. Establish `hre : 2 * e.re = -Real.pi * (2 * (Hf D T z y).re + (Hf D T y y).re)`.
+
+Rewrite using `[he]`. Simplify using `only [Complex.sub_re, Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat_re, Complex.neg_im]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, hre, mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem crD_U (T : Tor D) (A B : VC D N N' → ℂ) (y z : VC D N N') :
     crD T (U D T y A) (U D T y B) z = crD T A B (z + y) := by
   simp only [crD, Formalism.L2.Ker.Cd.TaylorLogMetric.U]
@@ -212,6 +258,9 @@ theorem crD_U (T : Tor D) (A B : VC D N N' → ℂ) (y z : VC D N N') :
       congr 3
       ring
 
+/- English proof (translation)
+Unfold `crD`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem crD_smul (T : Tor D) (c c' : ℂ) (A B : VC D N N' → ℂ) (z : VC D N N') :
     crD T (fun w => c * A w) (fun w => c' * B w) z = c * starRingEnd ℂ c' * crD T A B z := by
   unfold crD
@@ -221,6 +270,9 @@ theorem crD_smul (T : Tor D) (c c' : ℂ) (A B : VC D N N' → ℂ) (z : VC D N 
 def ep (T : Tor D) (x y : VC D N N') : ℂ :=
   Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ))
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Rewrite using `[← add_div]`. Use `congr 1`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 private theorem Hf_add_leftColumnData (T : Tor D) (z y x : VC D N N') :
     Hf D T (z + y) x = Hf D T z x + Hf D T y x := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.Hf
@@ -228,11 +280,21 @@ private theorem Hf_add_leftColumnData (T : Tor D) (z y x : VC D N N') :
   congr 1
   simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc g, ← Complex.exp_add, h, Complex.exp_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mul_exp_mul_exp_eq_of_add_eq (g a b c d e : ℂ) (h : a + b = c + (d + e)) :
     g * Complex.exp a * Complex.exp b = Complex.exp c * (g * Complex.exp d * Complex.exp e) := by
   rw [mul_assoc g, ← Complex.exp_add, h, Complex.exp_add, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ w, al D T y * U D T y G w = G w` using `fun w => hG.2 y hy w`. Establish `hc : starRingEnd ℂ (Hf D T x y) = Hf D T x y - 2 * (((Hf D T x y).im : ℝ) : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `hcomm : U D T y (U D T x G) z = ep T x y * U D T x (U D T y G) z`. Simplify using `only [Formalism.L2.Ker.Cd.TaylorLogMetric.U, ep]`.
+
+Rewrite using `[Hf_add_leftColumnData, Hf_add_leftColumnData, Hf_swap_eq_conj T x y, hc, show z + y + x = z + x + y by abel]`. Apply `mul_exp_mul_exp_eq_of_add_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomm]`.
+
+Simplify using `only [Formalism.L2.Ker.Cd.TaylorLogMetric.U]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ep T x y * U D T x G z := by rw [key]; rfl`.
+-/
 theorem aU_eig (T : Tor D) {La₁ : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La₁) {y : VC D N N'} (hy : y ∈ La₁) (x z : VC D N N') :
     al D T y * U D T y (U D T x G) z = ep T x y * U D T x G z := by
@@ -255,11 +317,21 @@ theorem aU_eig (T : Tor D) {La₁ : AddSubgroup (VC D N N')} {G : VC D N N' → 
 def trm (T : Tor D) (G : VC D N N' → ℂ) (x : VC D N N') : VC D N N' → ℂ :=
   fun z => al D T x * U D T x G z
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.al`. Rewrite using `[map_zpow₀, map_neg, map_one, ← mul_zpow]`. Evaluate the numerical expressions.
+-/
 theorem al_mul_conj (T : Tor D) (y : VC D N N') : al D T y * starRingEnd ℂ (al D T y) = 1 := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.al
   rw [map_zpow₀, map_neg, map_one, ← mul_zpow]
   norm_num
 
+/- English proof (translation)
+Establish `hUt : ∀ x₀, U D T y (trm T G x₀) = fun w => (starRingEnd ℂ (al D T y) * ep T x₀ y) * trm T G x₀ w`. Introduce `x₀`. Use function extensionality and compare the values at `w`. Establish `h1` using `aU_eig T hG hy x₀ w`. Establish `h2` using `al_mul_conj T y`.
+
+Establish `hlin : U D T y (trm T G x₀) w = al D T x₀ * U D T y (U D T x₀ G) w`. Simplify using `only [Formalism.L2.Ker.Cd.TaylorLogMetric.U, trm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlin]`. Simplify using `only [trm]`.
+
+Take the linear combination `(al D T x₀ * starRingEnd ℂ (al D T y)) * h1 - (al D T x₀ * U D T y (U D T x₀ G) w) * h2`. Rewrite using `[← crD_U T (trm T G x) (trm T G x') y z, hUt x, hUt x', crD_smul T (starRingEnd ℂ (al D T y) * ep T x y) (starRingEnd ℂ (al D T y) * ep T x' y) (trm T G x) (trm T G x') z, map_mul, Complex.conj_conj]`. Establish `h2` using `al_mul_conj T y`. Take the linear combination `(ep T x y * starRingEnd ℂ (ep T x' y) * crD T (trm T G x) (trm T G x') z) * h2`.
+-/
 theorem crD_shift (T : Tor D) {La₁ : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La₁) {y : VC D N N'} (hy : y ∈ La₁) (x x' z : VC D N N') :
     crD T (trm T G x) (trm T G x') (z + y) =
@@ -283,6 +355,9 @@ theorem crD_shift (T : Tor D) {La₁ : AddSubgroup (VC D N N')} {G : VC D N N' �
   have h2 := al_mul_conj T y
   linear_combination (ep T x y * starRingEnd ℂ (ep T x' y) * crD T (trm T G x) (trm T G x') z) * h2
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Rewrite using `[← sub_div]`. Use `congr 1`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+-/
 private theorem Hf_sub_left' (T : Tor D) (x x' y : VC D N N') :
     Hf D T (x - x') y = Hf D T x y - Hf D T x' y := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.Hf
@@ -290,6 +365,11 @@ private theorem Hf_sub_left' (T : Tor D) (x x' y : VC D N N') :
   congr 1
   simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `ep`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add, Hf_sub_left' T x x' y, Complex.sub_im]`. Use `congr 1`. Simplify using `only [map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ep_mul_conj (T : Tor D) (x x' y : VC D N N') :
     ep T x y * starRingEnd ℂ (ep T x' y) =
       Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((Hf D T (x - x') y).im : ℂ)) := by
@@ -300,6 +380,13 @@ theorem ep_mul_conj (T : Tor D) (x x' y : VC D N N') :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`.
+
+Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h3 : (t : ℂ) = n`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `h3` after adjusting the coercions. Introduce and unpack `⟨n, rfl⟩`. Conclude with `⟨n, by push_cast; ring⟩`.
+-/
 theorem ep_eq_one_iff (t : ℝ) :
     Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (t : ℂ)) = 1 ↔ ∃ n : ℤ, t = n := by
   rw [Complex.exp_eq_one_iff]
@@ -316,6 +403,11 @@ theorem ep_eq_one_iff (t : ℝ) :
   · rintro ⟨n, rfl⟩
     exact ⟨n, by push_cast; ring⟩
 
+/- English proof (translation)
+Establish `hmp` using `MeasureTheory.measurePreserving_add_right (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')) x`. Establish `ht' : IsAddFundamentalDomain M ((fun z => z + x) ⁻¹' t) volume` using `ht.preimage_of_equiv hmp.quasiMeasurePreserving Function.bijective_id (fun g z => add_assoc (g : VC D N N') z x)`. Combine the equalities or inequalities in the displayed calculation. Use `ht.setIntegral_eq ht' (fun g z => ?_)` and prove the remaining obligations. Use `show f ((g : VC D N N') + z + x) = f (z + x)`.
+
+Rewrite using `[show (g : VC D N N') + z + x = z + x + g by abel, hper _ g.2]`. Use `_ = ∫ z in t, f z := hmp.setIntegral_preimage_emb (measurableEmbedding_addRight x) f t`.
+-/
 theorem int_shift {M : AddSubgroup (VC D N N')} [Countable M] {t : Set (VC D N N')}
     (ht : IsAddFundamentalDomain M t volume) (f : VC D N N' → ℂ)
     (hper : ∀ m ∈ M, ∀ z, f (z + m) = f z) (x : VC D N N') :
@@ -331,6 +423,9 @@ theorem int_shift {M : AddSubgroup (VC D N N')} [Countable M] {t : Set (VC D N N
         rw [show (g : VC D N N') + z + x = z + x + g by abel, hper _ g.2]
     _ = ∫ z in t, f z := hmp.setIntegral_preimage_emb (measurableEmbedding_addRight x) f t
 
+/- English proof (translation)
+Establish `h` using `int_shift ht f hper y`. Rewrite `h` using `[hy]`. Rewrite `h` using `[MeasureTheory.integral_const_mul]`. Establish `h2 : (lam - 1) * ∫ z in t, f z = 0` using `by rw [sub_mul, h, one_mul, sub_self]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hlam)`.
+-/
 theorem int_zero_of_char {M : AddSubgroup (VC D N N')} [Countable M] {t : Set (VC D N N')}
     (ht : IsAddFundamentalDomain M t volume) (f : VC D N N' → ℂ)
     (hper : ∀ m ∈ M, ∀ z, f (z + m) = f z) (y : VC D N N') (lam : ℂ) (hlam : lam ≠ 1)
@@ -342,6 +437,17 @@ theorem int_zero_of_char {M : AddSubgroup (VC D N N')} [Countable M] {t : Set (V
   have h2 : (lam - 1) * ∫ z in t, f z = 0 := by rw [sub_mul, h, one_mul, sub_self]
   exact (mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hlam)
 
+/- English proof (translation)
+Set `L : Submodule ℤ (VC D N N')` to `M.toIntSubmodule`. Use `haveI : DiscreteTopology L := hM.1`. Use `haveI : IsZLattice ℝ L := ⟨by simpa [L] using hM.2⟩`. Use `haveI : Countable M := by haveI := hM.1`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+
+Set `b` to `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`. Establish `hb : Submodule.span ℤ (Set.range b) = L` using `Module.Basis.ofZLatticeBasis_span ℝ L _`. Establish `hs0 : IsAddFundamentalDomain M (ZSpan.fundamentalDomain b) volume`. Establish `h` using `ZSpan.isAddFundamentalDomain b (MeasureTheory.volume : MeasureTheory.Measure (VC D N N'))`. Rewrite `h` using `[hb]`.
+
+Conclude with `h`. Establish `hcpt : IsCompact (closure (ZSpan.fundamentalDomain b))` using `(ZSpan.fundamentalDomain_isBounded b).isCompact_closure`. Take `⟨C, hC⟩` from `hcpt.exists_bound_of_continuousOn hf.continuousOn`. Establish `hbd : ∀ z, ‖f z‖ ≤ C`. Introduce `z`.
+
+Take `⟨m, hm, -⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b z`. Establish `hmM : (m : VC D N N') ∈ M` using `hb.le m.2`. Establish `h3` using `hC _ (subset_closure hm)`. Rewrite `h3` using `[show m +ᵥ z = z + (m : VC D N N') from add_comm _ _, hper _ hmM]`. Then use the resulting hypothesis. Establish `hfin : volume t ≠ ⊤`.
+
+Rewrite using `[ht.measure_eq hs0]`. Conclude with `((ZSpan.fundamentalDomain_isBounded b).measure_lt_top).ne`. Conclude with `MeasureTheory.Measure.integrableOn_of_bounded (M := C) hfin hf.aestronglyMeasurable (Filter.Eventually.of_forall hbd)`.
+-/
 theorem intOn_of_full {M : AddSubgroup (VC D N N')} (hM : FullLat M) {t : Set (VC D N N')}
     (ht : IsAddFundamentalDomain M t volume) (f : VC D N N' → ℂ) (hf : Continuous f)
     (hper : ∀ m ∈ M, ∀ z, f (z + m) = f z) : IntegrableOn f t volume := by
@@ -372,10 +478,18 @@ theorem intOn_of_full {M : AddSubgroup (VC D N N')} (hM : FullLat M) {t : Set (V
   exact MeasureTheory.Measure.integrableOn_of_bounded (M := C) hfin hf.aestronglyMeasurable
     (Filter.Eventually.of_forall hbd)
 
+/- English proof (translation)
+Use `haveI := hM.1`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+-/
 theorem countable_of_full {M : AddSubgroup (VC D N N')} (hM : FullLat M) : Countable M := by
   haveI := hM.1
   exact TopologicalSpace.separableSpace_iff_countable.1 inferInstance
 
+/- English proof (translation)
+Set `L : Submodule ℤ (VC D N N')` to `M.toIntSubmodule`. Use `haveI : DiscreteTopology L := hM.1`. Use `haveI : IsZLattice ℝ L := ⟨by simpa [L] using hM.2⟩`. Set `b` to `Module.Free.chooseBasis ℤ L`. Use `⟨ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L), ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `ZSpan.isAddFundamentalDomain (b.ofZLatticeBasis ℝ L) (MeasureTheory.volume : MeasureTheory.Measure (VC D N N'))`. Rewrite `h` using `[Module.Basis.ofZLatticeBasis_span]`. Conclude with `h`.
+-/
 theorem fd_of_full {M : AddSubgroup (VC D N N')} (hM : FullLat M) :
     ∃ t : Set (VC D N N'), IsAddFundamentalDomain M t volume := by
   let L : Submodule ℤ (VC D N N') := M.toIntSubmodule
@@ -388,6 +502,13 @@ theorem fd_of_full {M : AddSubgroup (VC D N N')} (hM : FullLat M) :
   rw [Module.Basis.ofZLatticeBasis_span] at h
   exact h
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : DiscreteTopology (La₁ : Set (VC D N N')) := h₁.1`. Conclude with `DiscreteTopology.of_subset this (fun v hv => (AddSubgroup.mem_inf.mp hv).1)`. Rewrite using `[eq_top_iff, ← h₂.2, Submodule.span_le]`. Introduce `v hv`.
+
+Establish `hn : (La₁.addSubgroupOf La₂).index ≠ 0` using `AddSubgroup.index_ne_zero_of_finite`. Establish `hmem : (La₁.addSubgroupOf La₂).index • (⟨v, hv⟩ : La₂) ∈ La₁.addSubgroupOf La₂` using `AddSubgroup.nsmul_index_mem _ _`. Establish `h1 : (La₁.addSubgroupOf La₂).index • v ∈ La₁`. Rewrite `hmem` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify using `using hmem`.
+
+Establish `h2 : (La₁.addSubgroupOf La₂).index • v ∈ La₂` using `La₂.nsmul_mem hv _`. Establish `h3 : (La₁.addSubgroupOf La₂).index • v ∈ Submodule.span ℝ ((La₁ ⊓ La₂ : AddSubgroup (VC D N N')) : Set (VC D N N'))` using `Submodule.subset_span (AddSubgroup.mem_inf.mpr ⟨h1, h2⟩)`. Establish `h4` using `Submodule.smul_mem _ (((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ h3`. Rewrite `h4` using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hn), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem full_inf {La₁ La₂ : AddSubgroup (VC D N N')} (h₁ : FullLat La₁) (h₂ : FullLat La₂)
     [Finite (La₂ ⧸ La₁.addSubgroupOf La₂)] : FullLat (La₁ ⊓ La₂) := by
   refine ⟨?_, ?_⟩
@@ -422,10 +543,16 @@ open scoped Pointwise ENNReal Function
 
 variable {D : Car} {N N' : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Use `fun_prop`.
+-/
 theorem Hf_cont_left (T : Tor D) (w : VC D N N') : Continuous fun z : VC D N N' => Hf D T z w := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.Hf
   fun_prop
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Hf`. Use `Continuous.div_const ?_ _` and prove the remaining obligations. Use `continuous_finset_sum _ fun τ _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : VC D N N' => z τ i j` using `(continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))`. Conclude with `hc.mul (Complex.continuous_conj.comp hc)`.
+-/
 theorem Hf_cont_diag (T : Tor D) : Continuous fun z : VC D N N' => Hf D T z z := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.Hf
   refine Continuous.div_const ?_ _
@@ -434,24 +561,36 @@ theorem Hf_cont_diag (T : Tor D) : Continuous fun z : VC D N N' => Hf D T z z :=
     (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))
   exact hc.mul (Complex.continuous_conj.comp hc)
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.U`. Conclude with `(hG.comp (continuous_id.add continuous_const)).mul (Complex.continuous_exp.comp ((continuous_const.mul (Hf_cont_left T x)).sub continuous_const))`.
+-/
 theorem U_cont (T : Tor D) {G : VC D N N' → ℂ} (hG : Continuous G) (x : VC D N N') :
     Continuous (U D T x G) := by
   unfold Formalism.L2.Ker.Cd.TaylorLogMetric.U
   exact (hG.comp (continuous_id.add continuous_const)).mul
     (Complex.continuous_exp.comp ((continuous_const.mul (Hf_cont_left T x)).sub continuous_const))
 
+/- English proof (translation)
+Unfold `Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens`. Conclude with `((continuous_norm.comp hG).pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp (Hf_cont_diag T))))`.
+-/
 theorem dens_cont (T : Tor D) {G : VC D N N' → ℂ} (hG : Continuous G) :
     Continuous (Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T G) := by
   unfold Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens
   exact ((continuous_norm.comp hG).pow 2).mul
     (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp (Hf_cont_diag T))))
 
+/- English proof (translation)
+Unfold `crD`. Conclude with `(hA.mul (Complex.continuous_conj.comp hB)).mul (Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp (Hf_cont_diag T)))))`.
+-/
 theorem crD_cont (T : Tor D) {A B : VC D N N' → ℂ} (hA : Continuous A) (hB : Continuous B) :
     Continuous (crD T A B) := by
   unfold crD
   exact (hA.mul (Complex.continuous_conj.comp hB)).mul (Complex.continuous_ofReal.comp
     (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp (Hf_cont_diag T)))))
 
+/- English proof (translation)
+Unfold `crD Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem crD_self (T : Tor D) (A : VC D N N' → ℂ) (z : VC D N N') :
     crD T A A z = ((Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T A z : ℝ) : ℂ) := by
   unfold crD Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens
@@ -459,10 +598,16 @@ theorem crD_self (T : Tor D) (A : VC D N N' → ℂ) (z : VC D N N') :
   push_cast
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normSq_eq (T : Tor D) (La' : AddSubgroup (VC D N N')) (G : VC D N N' → ℂ) :
     normSq D T La' G = ⨍ z in Classical.epsilon
       (fun Fd => IsAddFundamentalDomain La' Fd volume), Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T G z := rfl
 
+/- English proof (translation)
+Introduce `m hm z`. Establish `hm'` using `AddSubgroup.mem_inf.mp hm`. Rewrite using `[crD_shift T hG hm'.1 x x' z, ep_mul_conj]`. Take `⟨b, hb⟩` from `hZ (x - x') (La₂.sub_mem hx hx') m hm'.2`. Rewrite using `[(ep_eq_one_iff _).2 ⟨b, hb⟩, one_mul]`.
+-/
 theorem crD_Mper (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} {G : VC D N N' → ℂ}
     (hG : G ∈ ThSp D T La₁) (hZ : ∀ x ∈ La₂, ∀ y ∈ La₂, ∃ b : ℤ, (Hf D T x y).im = b)
     {x x' : VC D N N'} (hx : x ∈ La₂) (hx' : x' ∈ La₂) :
@@ -474,11 +619,19 @@ theorem crD_Mper (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')} {G : VC D N
   obtain ⟨b, hb⟩ := hZ (x - x') (La₂.sub_mem hx hx') m hm'.2
   rw [(ep_eq_one_iff _).2 ⟨b, hb⟩, one_mul]
 
+/- English proof (translation)
+Unfold `trm`. Conclude with `continuous_const.mul (U_cont T hG x)`.
+-/
 theorem trm_cont (T : Tor D) {G : VC D N N' → ℂ} (hG : Continuous G) (x : VC D N N') :
     Continuous (trm T G x) := by
   unfold trm
   exact continuous_const.mul (U_cont T hG x)
 
+/- English proof (translation)
+Simplify using `only [crD]`. Rewrite using `[map_mul, map_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+-/
 private theorem crD_const_mul_sum (T : Tor D) (c : ℂ) {ι : Type*} (s : Finset ι) (A : ι → VC D N N' → ℂ)
     (z : VC D N N') :
     crD T (fun w => c * ∑ i ∈ s, A i w) (fun w => c * ∑ i ∈ s, A i w) z =
@@ -494,6 +647,43 @@ private theorem crD_const_mul_sum (T : Tor D) (c : ℂ) {ι : Type*} (s : Finset
       refine congrArg _ (Finset.sum_congr rfl fun i _ => ?_)
       rw [Finset.mul_sum, Finset.sum_mul]
 
+/- English proof (translation)
+Establish `hGc : Continuous G` using `hG.1.continuous`. Establish `hI` using `Iop_mem_ThSp T hS hG`. Establish `hM : FullLat (La₁ ⊓ La₂)` using `full_inf h₁ h₂`. Use `haveI : Countable (La₁ ⊓ La₂ : AddSubgroup (VC D N N')) := countable_of_full hM`. Use `haveI : Countable La₁ := countable_of_full h₁`.
+
+Use `haveI : Countable La₂ := countable_of_full h₂`. Take `⟨t, ht⟩` from `fd_of_full hM`. Use `haveI : Finite (La₂ ⧸ (La₁ ⊓ La₂).addSubgroupOf La₂) := by`. Rewrite using `[AddSubgroup.inf_addSubgroupOf_right]`. Use `infer_instance`.
+
+Use `haveI : Finite (La₁ ⧸ (La₁ ⊓ La₂).addSubgroupOf La₁) := by`. Rewrite using `[AddSubgroup.inf_addSubgroupOf_left]`. Use `infer_instance`. Use `haveI := Fintype.ofFinite (La₂ ⧸ La₁.addSubgroupOf La₂)`. Establish `hs₁` using `Classical.epsilon_spec (fd_of_full h₁)`.
+
+Establish `hs₂` using `Classical.epsilon_spec (fd_of_full h₂)`. Establish `hd0 : ∀ (F : VC D N N' → ℂ) z, 0 ≤ Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T F z` using `fun F z => by`. Unfold `Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens`. Check the signs of the components of the expression. Establish `e1 : normSq D T La₂ (Iop D T La₁ La₂ G) = ⨍ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (Iop D T La₁ La₂ G) z`.
+
+Rewrite using `[normSq_eq]`. Conclude with `(avg_sub inf_le_right hs₂ ht _ (hd0 _) (dens_cont T hI.1.continuous) (fun g hg z => dens_periodic T La₂ _ hI g hg z)).symm`. Establish `hdU : ∀ x w, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T x G) w = Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T G (w + x)` using `fun x w => by`. Establish `h` using `crD_U T G G x w`. Rewrite `h` using `[crD_self, crD_self]`.
+
+Conclude with `h` after adjusting the coercions. Establish `hUx : ∀ x : VC D N N', ⨍ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T x G) z = normSq D T La₁ G`. Introduce `x`. Rewrite using `[← normSq_U_of_full T La₁ h₁ G hG x, normSq_eq]`. Use `avg_sub inf_le_left hs₁ ht _ (hd0 _) (dens_cont T (U_cont T hGc x)) ?_` and prove the remaining obligations.
+
+Introduce `g hg z`. Rewrite using `[hdU, hdU, show z + g + x = z + x + g by abel, dens_periodic T La₁ G hG g hg]`. Establish `hn0 : (((La₁.addSubgroupOf La₂).index : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr AddSubgroup.index_ne_zero_of_finite`. Establish `hcard : Fintype.card (La₂ ⧸ La₁.addSubgroupOf La₂) = (La₁.addSubgroupOf La₂).index`. Rewrite using `[AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+
+Establish `hxq : ∀ q : La₂ ⧸ La₁.addSubgroupOf La₂, ((Quotient.out q : La₂) : VC D N N') ∈ La₂` using `fun q => (Quotient.out q).2`. Establish `hint : ∀ q q' : La₂ ⧸ La₁.addSubgroupOf La₂, MeasureTheory.IntegrableOn (crD T (trm T G ((Quotient.out q : La₂) : VC D N N')) (trm T G ((Quotient.out q' : La₂) : VC D N N'))) t volume` using `fun q q' => intOn_of_full hM ht _ (crD_cont T (trm_cont T hGc _) (trm_cont T hGc _)) (crD_Mper T hG hZ (hxq q) (hxq q'))`. Establish `hoff : ∀ q q' : La₂ ⧸ La₁.addSubgroupOf La₂, q ≠ q' → ∫ z in t, crD T (trm T G ((Quotient.out q : La₂) : VC D N N')) (trm T G ((Quotient.out q' : La₂) : VC D N N')) z = 0`. Introduce `q q' hqq'`. Establish `hnot : ((Quotient.out q : La₂) : VC D N N') - ((Quotient.out q' : La₂) : VC D N N') ∉ La₁`.
+
+Introduce `hmem`. Apply `hqq'` to reduce the goal to its premises. Establish `e1 : (QuotientAddGroup.mk (Quotient.out q) : La₂ ⧸ La₁.addSubgroupOf La₂) = q` using `Quotient.out_eq q`. Establish `e2 : (QuotientAddGroup.mk (Quotient.out q') : La₂ ⧸ La₁.addSubgroupOf La₂) = q'` using `Quotient.out_eq q'`. Rewrite using `[← e1, ← e2, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+
+Establish `h3 : -((Quotient.out q : La₂) : VC D N N') + ((Quotient.out q' : La₂) : VC D N N') = -(((Quotient.out q : La₂) : VC D N N') - ((Quotient.out q' : La₂) : VC D N N'))` using `by abel`. Rewrite using `[h3]`. Conclude with `La₁.neg_mem hmem`. Establish `hex : ∃ y ∈ La₁, ¬ ∃ b : ℤ, (Hf D T (((Quotient.out q : La₂) : VC D N N') - ((Quotient.out q' : La₂) : VC D N N')) y).im = b`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Conclude with `hnot (hSD _ (La₂.sub_mem (hxq q) (hxq q')) hcon)`. Take `⟨y, hy, hyb⟩` from `hex`. Use `int_zero_of_char ht _ (crD_Mper T hG hZ (hxq q) (hxq q')) y (ep T ((Quotient.out q : La₂) : VC D N N') y * starRingEnd ℂ (ep T ((Quotient.out q' : La₂) : VC D N N') y)) ?_ (fun z => crD_shift T hG hy _ _ z)` and prove the remaining obligations. Rewrite using `[ep_mul_conj]`.
+
+Conclude with `fun h1 => hyb ((ep_eq_one_iff _).1 h1)`. Establish `hdiag : ∀ (q : La₂ ⧸ La₁.addSubgroupOf La₂) z, crD T (trm T G ((Quotient.out q : La₂) : VC D N N')) (trm T G ((Quotient.out q : La₂) : VC D N N')) z = ((Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T ((Quotient.out q : La₂) : VC D N N') G) z : ℝ) : ℂ)`. Introduce `q z`. Use `show crD T (fun w => al D T ((Quotient.out q : La₂) : VC D N N') * U D T ((Quotient.out q : La₂) : VC D N N') G w) (fun w => al D T ((Quotient.out q : La₂) : VC D N N') * U D T ((Quotient.out q : La₂) : VC D N N') G w) z = _`. Rewrite using `[crD_smul, al_mul_conj, one_mul, crD_self]`.
+
+Establish `hexp : ∀ z, ((Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (Iop D T La₁ La₂ G) z : ℝ) : ℂ) = ((((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) * ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, ∑ q' : La₂ ⧸ La₁.addSubgroupOf La₂, crD T (trm T G ((Quotient.out q : La₂) : VC D N N')) (trm T G …`. Introduce `z`. Rewrite using `[← crD_self]`. Establish `hI' : Iop D T La₁ La₂ G = fun w => ((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) * ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, trm T G ((Quotient.out q : La₂) : VC D N N') w`. Use function extensionality and compare the values at `w`.
+
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.Iop`. Rewrite using `[finsum_eq_sum_of_fintype]`. Both sides reduce to the same expression. Establish `hcc : ((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) * starRingEnd ℂ ((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) = ((((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ)`. Rewrite using `[map_inv₀, Complex.conj_ofReal, ← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _)]`.
+
+Rewrite using `[hI', crD_const_mul_sum, hcc]`. Establish `hint_sum : ∫ z in t, ((Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (Iop D T La₁ La₂ G) z : ℝ) : ℂ) = ((((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℂ) * ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, ((∫ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T ((Quotient.out q …`. Repeatedly rewrite using `[hexp]`. Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.integral_finset_sum _ (fun q _ => MeasureTheory.integrable_finset_sum _ (fun q' _ => hint q q'))]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_finset_sum _ (fun q' _ => hint q q'), Finset.sum_eq_single q (fun q' _ hq' => hoff q q' (Ne.symm hq')) (fun h => absurd (Finset.mem_univ q) h)]`. Repeatedly rewrite using `[hdiag]`. Conclude with `integral_ofReal`. Establish `hreal : ∫ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (Iop D T La₁ La₂ G) z = (((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ * ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, ∫ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T ((Quotient.out q : La₂) : VC D N N') G) …`.
+
+Establish `h` using `hint_sum`. Rewrite `h` using `[integral_complex_ofReal]`. Conclude with `h` after adjusting the coercions. Establish `hU' : ∀ q : La₂ ⧸ La₁.addSubgroupOf La₂, (volume t).toReal⁻¹ * ∫ z in t, Formalism.L2.Ker.Cd.IntegralLatticeDensity.dens D T (U D T ((Quotient.out q : La₂) : VC D N N') G) z = normSq D T La₁ G`. Introduce `q`.
+
+Rewrite using `[← hUx ((Quotient.out q : La₂) : VC D N N'), MeasureTheory.setAverage_eq, MeasureTheory.measureReal_def, smul_eq_mul]`. Rewrite using `[e1, MeasureTheory.setAverage_eq, MeasureTheory.measureReal_def, smul_eq_mul, hreal, mul_left_comm, Finset.mul_sum]`. Repeatedly rewrite using `[hU']`. Rewrite using `[Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hn0, one_mul]`.
+-/
 theorem iso_core (T : Tor D) {La₁ La₂ : AddSubgroup (VC D N N')}
     (h₁ : FullLat La₁) (h₂ : FullLat La₂)
     [Finite (La₂ ⧸ La₁.addSubgroupOf La₂)] [Finite (La₁ ⧸ La₂.addSubgroupOf La₁)]
@@ -643,6 +833,19 @@ def SelfDualRec : Prop :=
       ∀ v : VC D N N', (∀ y ∈ La D (tor0 D cc δ) L L', ∃ b : ℤ, (Hf D (tor0 D cc δ) v y).im = b) →
         v ∈ La D (tor0 D cc δ) L L'
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ N N' L₁ L₁' L₂ L₂' h₁ h₂ G hG`. Distinguish the cases in `h0 : δ = 0`. Substitute `h0` using the available equality. Establish `hLam : (tor0 D cc 0).abelian₂ = ⊥` using `by show lamOf D cc 0 = ⊥`. Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf`.
+
+Rewrite using `[AddSubgroup.closure_eq_bot_iff]`. Introduce and unpack `w ⟨c, _, rfl⟩`. Simplify using the standard rewrite rules. Establish `hLa : ∀ (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), La D (tor0 D cc 0) L L' = ⊥`. Introduce `L L'`.
+
+Unfold `Formalism.L2.Ker.Cd.TaylorLogMetric.La`. Rewrite using `[AddSubgroup.closure_eq_bot_iff]`. Introduce and unpack `z ⟨w, hw, A, _, rfl⟩`. Rewrite `hw` using `[hLam, AddSubgroup.mem_bot]`. Simplify using `[hw]`.
+
+Rewrite using `[hLa L₂ L₂', ← hLa L₁ L₁']`. Conclude with `IopIso_diag D (tor0 D cc 0) L₁ L₁' G hG`. Establish `hF₁` using `Formalism.L2.Ker.Cd.IntegralLatticeDensity.FL.fullLat D L₁ L₁' h₁ cc hcc δ h0`. Establish `hF₂` using `Formalism.L2.Ker.Cd.IntegralLatticeDensity.FL.fullLat D L₂ L₂' h₂ cc hcc δ h0`. Use `haveI := La_index_finite cc hcc δ L₁ L₂ L₁' L₂' h₁ h₂`.
+
+Use `haveI := La_index_finite cc hcc δ L₂ L₁ L₂' L₁' h₂ h₁`. Establish `hI₂` using `hA D cc hcc δ hδ h0 N N' L₂ L₂' h₂`. Use `IL.iso_core (tor0 D cc δ) hF₁ hF₂ ?_ (semiChar_of_HfInt _ hI₂) ?_ hG` and prove the remaining obligations. Introduce `x hx y hy`. Take `⟨a, b, _, hab⟩` from `hI₂ x hx y hy`.
+
+Conclude with `⟨b, by rw [hab]; simp⟩`. Introduce `v _ hv`. Conclude with `hB D cc hcc δ hδ h0 N N' L₁ L₁' h₁ v hv`.
+-/
 theorem IopIso_of_parts (hA : HfIntRec) (hB : SelfDualRec) :
     ∀ D : Car, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
       IopIso D (tor0 D cc δ) := by
@@ -677,6 +880,9 @@ theorem IopIso_of_parts (hA : HfIntRec) (hB : SelfDualRec) :
     · intro v _ hv
       exact hB D cc hcc δ hδ h0 N N' L₁ L₁' h₁ v hv
 
+/- English proof (translation)
+Conclude with `Formalism.L2.Ker.Cd.IntegralLatticeDensity.LinkThIndep_of (IopIso_of_parts hA hB) Formalism.L2.Ker.Cd.IntegralLatticeDensity.character_unit_on_determinant`.
+-/
 theorem LinkThIndep_of_parts (hA : HfIntRec) (hB : SelfDualRec) : LinkThIndep := by
   exact Formalism.L2.Ker.Cd.IntegralLatticeDensity.LinkThIndep_of (IopIso_of_parts hA hB)
     Formalism.L2.Ker.Cd.IntegralLatticeDensity.character_unit_on_determinant

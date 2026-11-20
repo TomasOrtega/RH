@@ -27,9 +27,15 @@ def AlgOver (S : Type) [CommRing S] [Algebra c.F S] [Algebra c'.F S] : Prop :=
 
 variable {c c'}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem embK_incF (τ : E →+* ℂ) (a : 𝓞 E) : incF c c' hle (embK c τ a) = embK c' τ a :=
   Subtype.ext rfl
 
+/- English proof (translation)
+Unfold `sOf`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Conclude with `h ((IntermediateField.inclusion c.le).toRingHom x)`.
+-/
 theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S) :
     sOf c' S = sOf c S := by
   unfold sOf
@@ -40,6 +46,11 @@ theorem sOf_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : Al
 
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Establish `key : ∀ a : 𝓞 E, algebraMap c'.F S (embK c' τ a) = algebraMap c.F S (embK c τ a)`. Introduce `a`. Rewrite using `[← embK_incF hle τ a]`. Conclude with `h (embK c τ a)`. Unfold `IsEigAt`.
+
+Simplify using `only [key]`.
+-/
 theorem isEigAt_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S)
     (τ : E →+* ℂ) (v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
     IsEigAt (Xo := Xo) c' τ v ↔ IsEigAt (Xo := Xo) c τ v := by
@@ -72,9 +83,15 @@ def FrPt.ext {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOv
   s := y.s
   gen := y.gen
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FrPt.res_ext {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S)
     (y : FrPt Xo c S) : (y.ext hle h).res hle h = y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FrPt.ext_res {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (h : AlgOver c c' hle S)
     (y : FrPt Xo c' S) : (y.res hle h).ext hle h = y := rfl
 

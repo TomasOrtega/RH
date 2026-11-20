@@ -16,9 +16,15 @@ open GlobalTheory.DRFil
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_inclusion (P : LocPrime l) {K K' : FinExt l} (h : K.1 ≤ K'.1) (c : ↥K.1) :
     algebraMap ↥K'.1 P.R.BdR (IntermediateField.inclusion h c) = algebraMap ↥K.1 P.R.BdR c := rfl
 
+/- English proof (translation)
+The claim follows from `K.2; haveI := K'.2 idem (K := ↥K.1) P.R.BdR (τ.comp (IntermediateField.inclusion h)) * idem (K := ↥K'.1) P.R.BdR τ = idem (K := ↥K'.1) P.R.BdR τ := by haveI := K.2; haveI := K'.2 obtain ⟨n, a, c, hrep, h1⟩ := idem_repr (K := ↥K.1) P.R.BdR (τ.comp (IntermediateField.inclusion h)) …`.
+-/
 theorem idem_restrict_mul (P : LocPrime l) {K K' LL : FinExt l} (h : K.1 ≤ K'.1)
     (τ : ↥K'.1 →ₐ[ℚ_[l]] ↥LL.1) :
     haveI := K.2; haveI := K'.2
@@ -32,6 +38,19 @@ theorem idem_restrict_mul (P : LocPrime l) {K K' LL : FinExt l} (h : K.1 ≤ K'.
   simp only [AlgHom.comp_apply] at h1
   rw [h1, one_smul]
 
+/- English proof (translation)
+Introduce `l _ P AI T K K' LL h V _ _ _ _ _ ρ hdr τ a`. Use `haveI := K.2`. Use `haveI := K'.2`. Use `haveI := LL.2`. Use `haveI := (GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ).1`.
+
+Take `⟨m, d, k, hA⟩` from `exists_adapted (P.PD K) (isField_dR T) ρ (filSpans T K LL ρ hdr) (τ.comp (IntermediateField.inclusion h))`. Establish `hI` using `idem_restrict_mul P h τ`. Establish `hA' : Adapted (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) τ (fun i => sm ℚ_[l] P.R.BdR ↥LL.1 V (idem P.R.BdR τ) (d i)) k`. Use `⟨fun i => ?_, fun r hr i => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Establish `hm` using `hA.mem i`.
+
+Use `⟨sm_idem_mem_DdRE (P.PD K') _ τ (GlobalTheory.Per.TiedRestrict.ddR_le h ρ (Submodule.mem_inf.1 (Submodule.mem_inf.1 hm).1).1), ?_⟩` and prove the remaining obligations. Use `sm_idem_mem_FilV (P.PD K') τ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.JumpDescent.FilV_eq P K K']`. Conclude with `(Submodule.mem_inf.1 hm).2`. Use `hA.indep (fun i => r i * idem P.R.BdR τ) (by` as an intermediate fact.
+
+Simplify `hr) i` using `only [sm_mul]`. Rewrite `this` using `[mul_left_comm, hI]`. Rewrite using `[mul_comm]`. Conclude with `this`. Rewrite `hy` using `[GlobalTheory.JumpDescent.FilV_eq P K K']`.
+
+Take `⟨r, hr, hy'⟩` from `hA.span n y hy`. Use `⟨r, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.JumpDescent.FilV_eq P K K']`. Conclude with `hr i`. Establish `e : sm ℚ_[l] P.R.BdR ↥LL.1 V (idem P.R.BdR τ) y = sm ℚ_[l] P.R.BdR ↥LL.1 V (idem P.R.BdR τ) (sm ℚ_[l] P.R.BdR ↥LL.1 V (idem P.R.BdR (τ.comp (IntermediateField.inclusion h))) y)`.
+
+Rewrite using `[← sm_mul, mul_comm, hI]`. Rewrite using `[e, hy', map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => sm_comm _ _ _`. Rewrite using `[hA.multV_eq, hA'.multV_eq]`.
+-/
 theorem multV_restrict : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K K' LL : FinExt l) (h : K.1 ≤ K'.1) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsDR (P.PD K) ρ → ∀ (τ : ↥K'.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), multV (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) τ a = multV (P.PD K) ρ (τ.comp (IntermediateField.inclusion h)) a := by
   intro l _ P AI T K K' LL h V _ _ _ _ _ ρ hdr τ a
   haveI := K.2; haveI := K'.2; haveI := LL.2

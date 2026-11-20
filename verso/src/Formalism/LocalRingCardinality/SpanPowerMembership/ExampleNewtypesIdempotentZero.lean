@@ -34,18 +34,29 @@ variable (r g : ℕ)
 
 def lab0 : (ZMod g)[X] := (X + C 1) ^ r
 
+/- English proof (translation)
+Use `⟨(monic_X_add_C 1).pow r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lab0, (monic_X_add_C 1).natDegree_pow, natDegree_X_add_C, mul_one]`. Rewrite using `[coeff_zero_eq_eval_zero]`. Simplify using `[lab0]`.
+-/
 theorem labelPolynomial_monic_degree [Fact g.Prime] (hr : r ≠ 0) :
     (lab0 r g).Monic ∧ (lab0 r g).natDegree = r ∧ (lab0 r g).coeff 0 ≠ 0 := by
   refine ⟨(monic_X_add_C 1).pow r, ?_, ?_⟩
   · rw [lab0, (monic_X_add_C 1).natDegree_pow, natDegree_X_add_C, mul_one]
   · rw [coeff_zero_eq_eval_zero]; simp [lab0]
 
+/- English proof (translation)
+Introduce `h` and use `not_isUnit_X_add_C (1 : ZMod g) (h _ (by rw [← pow_two]; exact pow_dvd_pow _ hr))`.
+-/
 theorem labelPolynomial_not_squarefree [Fact g.Prime] (hr : 2 ≤ r) : ¬ Squarefree (lab0 r g) := fun h =>
   not_isUnit_X_add_C (1 : ZMod g) (h _ (by rw [← pow_two]; exact pow_dvd_pow _ hr))
 
 def trivialSeriesIdempotent (f : (ZMod g)[X]) : MonoidAlgebra ℂ (GL (Fin r) (ZMod g)) :=
   if f = lab0 r g then 1 else 0
 
+/- English proof (translation)
+Establish `: NeZero g` using `⟨(Fact.out : g.Prime).ne_zero⟩`. Establish `hfin : {f : (ZMod g)[X] | f.Monic ∧ f.natDegree = r ∧ f.coeff 0 ≠ 0}.Finite`. Apply `(Set.finite_range (fun a : Fin r → ZMod g => Formalism.CyclotomicNorms.monicOf a)).subset` to reduce the goal to its premises. Introduce and unpack `f ⟨hm, hd, -⟩`. Conclude with `⟨fun i => f.coeff i, Formalism.CyclotomicNorms.Sqf.monicOf_coeffs f hm hd⟩`.
+
+Use `⟨hfin.toFinset, fun f => by simp, ?_⟩` and prove the remaining obligations. Unfold `trivialSeriesIdempotent`. Rewrite using `[Finset.sum_ite_eq']`. Rewrite using `[if_pos]`. Simplify using `using labelPolynomial_monic_degree r g hr`.
+-/
 theorem exists_sum_trivialSeriesIdempotent_eq_one [Fact g.Prime] (hr : r ≠ 0) : ∃ S : Finset (ZMod g)[X],
     (∀ f, f ∈ S ↔ f.Monic ∧ f.natDegree = r ∧ f.coeff 0 ≠ 0) ∧ ∑ f ∈ S, trivialSeriesIdempotent r g f = 1 := by
   have : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
@@ -65,6 +76,9 @@ section Types
 
 variable {R : Ranks} (H : Host R) (what₂ : Rows.Data R) (h : NHyp H what₂)
 
+/- English proof (translation)
+Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_ne_zero (R : Ranks) : R.r ≠ 0 := by
   have := R.two_le_m
   unfold Ranks.r
@@ -79,15 +93,24 @@ def TameHyp {R : Ranks} (H : Host R) : Prop :=
   ∀ k, ∀ w ∈ placesOver H.E (H.g k), ∃ γ : Formalism.ConjugateSelfDual.G H.E AlgC,
     TameGenAt (ReciprocityTheory.Gal.placeOf AlgC w) γ
 
+/- English proof (translation)
+Introduce `k w hw` and use `Tame.exists_tameGen _ _ (H.g_prime k).ne_zero (by have := (ReciprocityTheory.Gal.isPlaceOver_placeOf AlgC w ((H.g k : ℕ) : 𝓞 H.E)).mpr hw simpa using this)`.
+-/
 theorem tameHyp {R : Ranks} (H : Host R) : TameHyp H := fun k w hw =>
   Tame.exists_tameGen _ _ (H.g_prime k).ne_zero (by
     have := (ReciprocityTheory.Gal.isPlaceOver_placeOf AlgC w ((H.g k : ℕ) : 𝓞 H.E)).mpr hw
     simpa using this)
 
+/- English proof (translation)
+The claim follows from `H.der.discr_primes.1 p hp h`.
+-/
 theorem discr_prime {R : Ranks} (H : Host R) (p : ℕ) (hp : p.Prime) (h : (p : ℤ) ∣ discr H.E) :
     p ∣ H.QS * H.q * H.d :=
   H.der.discr_primes.1 p hp h
 
+/- English proof (translation)
+Establish `h : σ.restrictScalars ℚ * τ.restrictScalars ℚ = τ.restrictScalars ℚ * σ.restrictScalars ℚ`. Apply `(H.gal).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, mul_comm]`. Use extensionality with `x`. Conclude with `AlgEquiv.congr_fun h x`.
+-/
 theorem galK_comm {R : Ranks} (H : Host R) (σ τ : H.E ≃ₐ[H.K] H.E) : σ * τ = τ * σ := by
   have h : σ.restrictScalars ℚ * τ.restrictScalars ℚ = τ.restrictScalars ℚ * σ.restrictScalars ℚ := by
     apply (H.gal).injective
@@ -95,6 +118,11 @@ theorem galK_comm {R : Ranks} (H : Host R) (σ τ : H.E ≃ₐ[H.K] H.E) : σ * 
   ext x
   exact AlgEquiv.congr_fun h x
 
+/- English proof (translation)
+Establish `: z = algebraMap ℂ (MonoidAlgebra ℂ G) (z.coeff 1)`. Use extensionality with `g`. Distinguish the cases in `hg : g = 1`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[h g hg]`. Simplify using `[Finsupp.single_eq_of_ne hg]`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+-/
 theorem central_of_support {G : Type} [Group G] (z : MonoidAlgebra ℂ G)
     (h : ∀ g, g ≠ 1 → z.coeff g = 0) : z ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G) := by
   have : z = algebraMap ℂ (MonoidAlgebra ℂ G) (z.coeff 1) := by
@@ -174,6 +202,13 @@ def toyNtypes (ht : THyp H) (htm : TameHyp H)
   MtPar := fun _ _ σ => σ.elim
   AmbPar := fun _ σ => σ.elim
 
+/- English proof (translation)
+Establish `: Fact (H.g 0).Prime` using `⟨H.g_prime 0⟩`. Use `finsum_eq_zero_of_forall_eq_zero fun a => ?_` and prove the remaining obligations. Use `split_ifs with hg`. Establish `hf : 0 < R.f` using `by unfold Ranks.f Ranks.n; positivity`. Use `Finset.prod_eq_zero (Finset.mem_univ ⟨0, (⟨0, hf⟩ : Fin R.f)⟩) ?_` and prove the remaining obligations.
+
+Use `show (trivialSeriesIdempotent _ _ _).coeff _ = 0`. Unfold `trivialSeriesIdempotent`. Rewrite using `[if_neg]`. Both sides reduce to the same expression. Introduce `e`.
+
+Establish `h2 : 2 ≤ R.r` using `by have := R.m_add_three_le_k; unfold Ranks.r; omega`. Conclude with `labelPolynomial_not_squarefree R.r (H.g 0) h2 (e ▸ (hg 0).1.2.1 (⟨0, hf⟩ : Fin R.f))`. Both sides reduce to the same expression.
+-/
 theorem exampleNewtypes_idempotent_zero (ht htm teichC teichC_inj iota iota_inj) (g) :
     (toyNtypes H what₂ h ht htm teichC teichC_inj iota iota_inj).e0.coeff g = 0 := by
   have : Fact (H.g 0).Prime := ⟨H.g_prime 0⟩
@@ -190,6 +225,9 @@ theorem exampleNewtypes_idempotent_zero (ht htm teichC teichC_inj iota iota_inj)
       exact labelPolynomial_not_squarefree R.r (H.g 0) h2 (e ▸ (hg 0).1.2.1 (⟨0, hf⟩ : Fin R.f))
   · rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => LinearMap.ext fun _ => Subsingleton.elim _ _, fun _ _ => LinearMap.ext fun _ => Subsingleton.elim _ _⟩`.
+-/
 theorem toyNtypes_E0Tie [∀ μ, Subsingleton (what₂.Amb μ)] [∀ μ j, Subsingleton (what₂.Mt μ j)]
     (ht htm teichC teichC_inj iota iota_inj) :
     (toyNtypes H what₂ h ht htm teichC teichC_inj iota iota_inj).IdempotentMatchesAction :=
@@ -204,9 +242,15 @@ def ntypesT (ht : THyp H) (htm : TameHyp H) : NTypes (nautToy H what₂ h) :=
     (fun k w => @teichIota_inj (H.g k) (what₂.places.resChar w) ⟨H.g_prime k⟩
       ⟨what₂.places.resChar_prime w⟩)
 
+/- English proof (translation)
+The claim follows from `toyNtypes_E0Tie H what₂ h _ _ _ _ _ _`.
+-/
 theorem ntypesT_E0Tie [∀ μ, Subsingleton (what₂.Amb μ)] [∀ μ j, Subsingleton (what₂.Mt μ j)]
     (ht htm) : (ntypesT H what₂ h ht htm).IdempotentMatchesAction := toyNtypes_E0Tie H what₂ h _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `exampleNewtypes_idempotent_zero H what₂ h _ _ _ _ _ _ g`.
+-/
 theorem newtypes_idempotent_zero (ht htm) (g) : (ntypesT H what₂ h ht htm).e0.coeff g = 0 :=
   exampleNewtypes_idempotent_zero H what₂ h _ _ _ _ _ _ g
 

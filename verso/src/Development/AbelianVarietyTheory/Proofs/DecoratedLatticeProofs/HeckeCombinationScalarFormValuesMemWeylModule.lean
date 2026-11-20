@@ -18,6 +18,15 @@ namespace GlobalTheory.AdForm.TransAct
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hS j hj c hc φ hφ hinv e`. Establish `hR` using `(GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hI hP l Z u a Ch A hA j hj (A.chOf j e)).1`. Establish `key : ∀ g, (fun z : (I.chain l u a).Y j => A.rd θ j hj (A.chOf j e) φ z (A.h j (A.chOf j e) ⟨e, rfl⟩ * g)) ∈ ValC (Gr B.fields.emb B.embLL (B.R.N j)) (Col2.lamT (B.hcW u) j)`. Introduce `g`. Take `⟨γ, hγ, e', g', hg', κ, hκ, hdec⟩` from `hR.dec (A.h j (A.chOf j e) ⟨e, rfl⟩ * g)`.
+
+Set `U : (I.rec7 l Z).what₂.Tau → GL (Fin (B.R.N j)) ℂ` to `fun τ => ((Matrix.isUnit_iff_isUnit_det _).2 (RdVal.infM_unit θ _ (rankN (I.rec7 l Z) j hj) g' τ)).unit`. Establish `hfun : (fun z : (I.chain l u a).Y j => A.rd θ j hj (A.chOf j e) φ z (A.h j (A.chOf j e) ⟨e, rfl⟩ * g)) = (A.chi j (A.chOf j e) ⟨κ, hκ⟩ : ℂ) • GlobalTheory.Mem.ColAd.lT (Gr B.fields.emb B.embLL (B.R.N j)) U (φ e'.1)`. Use function extensionality and compare the values at `z`. Rewrite using `[hdec]`. Conclude with `(GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hI hP l Z u a Ch A hA θ hθ j hj φ hφ).2 (A.chOf j e) z γ hγ e' g' hg' ⟨κ, hκ⟩ (GlobalTheory.Mem.ColAd.frL (Gr B.fields.emb B.embLL (B.R.N j)) U z) (fun τ => rfl)`.
+
+Rewrite using `[hfun]`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.Mem.ColAd.lT_mem _ _ U (hφ e'.1).1)`. Establish `hsum : (fun (e : (I.stp u a j).Cl) (z : (I.chain l u a).Y j) => trc c (A.rd θ j hj (A.chOf j e) φ z) (A.h j (A.chOf j e) ⟨e, rfl⟩)) e = ∑ g ∈ c.support, c g • (fun z : (I.chain l u a).Y j => A.rd θ j hj (A.chOf j e) φ z (A.h j (A.chOf j e) ⟨e, rfl⟩ * g))`. Use function extensionality and compare the values at `z`. Simplify using `only [trc, rTrans, Finset.sum_apply, Pi.smul_apply]`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (key g)`.
+-/
 theorem trc_val_mem : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

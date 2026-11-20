@@ -14,6 +14,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKTorus
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP q x y hfr M₁ blk e hG hco hev Φ hΦ g h ξ hξ`. Take `⟨i, hi⟩` from `hξ`. Establish `htor` using `GlobalTheory.T.unitary_torus_element_exists F E σ B n X r s hP.base hP.herm q x y hfr`. Establish `hblk` using `GlobalTheory.T.frame_torus_lattice_action F E σ B n d X W q x y M₁ blk hG hco htor i`. Establish `hW` using `IsUWeilPair.isUSplitting hP.weil`.
+
+Use `set ξ' : Fin n × Fin d → AF F := fun j => algebraMap F (AF F) (ξ j) with hξ'`. Set `Λ : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun Ψ => e (om (g, h) Ψ) ξ' map_add' := fun a b => by simp map_smul' := fun c a => by simp }`. Establish `hxi : x i ≠ 0`. Introduce `h0`. Use `hfr.2.2 i i` as an intermediate fact.
+
+Simplify using `[h0, form] at this`. Establish `hc` using `GlobalTheory.T.unitary_inverse_infinite_nonzero F E σ B n X.J g (x i) hxi`. Use `GlobalTheory.T.pair_functional_nonvanishing hKP F E σ B n d X W M χX χW om r s r' s' hP Λ (mat g⁻¹ *ᵥ incV F (x i)) hc ?_ Φ hΦ` and prove the remaining obligations. Introduce `z _ _ Ψ hΨ`. Use `show e (om (g, h) (M.co.rho B.ψ _ Ψ)) ξ' = e (om (g, h) Ψ) ξ'`.
+
+Rewrite using `[hW.impl (g, h) _ Ψ hΨ]`. Establish `hgg : mat g * mat g⁻¹ = 1` using `by simp [mat]`. Establish `hgen : ∀ (A : Matrix (Fin n) (Fin n) (AE F E)) (Bm : Matrix (Fin d) (Fin d) (AE F E)) (u : Fin n → AE F E) (w : Fin d → AE F E), A * Matrix.vecMulVec u w * Bmᵀ = Matrix.vecMulVec (A *ᵥ u) (Bm *ᵥ w)`. Introduce `A Bm u w`. Use extensionality with `k l`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hact : actAB (cA σ) (g, h) (Matrix.vecMulVec (mat g⁻¹ *ᵥ incV F (x i)) z) = Matrix.vecMulVec (incV F (x i)) (mat h *ᵥ z)`. Express the relevant statement in the definitionally equal form `mat g * _ * (mat h)ᵀ = _`.
+
+Rewrite using `[hgen, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec]`. Rewrite using `[hact]`. Take `⟨z', hz', hze⟩` from `hblk (mat h *ᵥ z)`. Establish `hΨ2 : om (g, h) Ψ ∈ schA F _` using `hW.pres _ _ hΨ`. Establish `hheis` using `hev.Heisenberg₂ (Matrix.vecMulVec (incV F (x i)) (mat h *ᵥ z)) _ hΨ2`.
+
+Establish `h1 : incM F (1 : Matrix (Fin n) (Fin n) E) = 1`. Simplify using `[incM, Matrix.map_one]`. Establish `h1' : incM F (1 : Matrix (Fin d) (Fin d) E) = 1`. Simplify using `[incM, Matrix.map_one]`. Rewrite `hheis` using `[h1, h1', Matrix.one_mul, Matrix.transpose_one, Matrix.mul_one]`.
+
+Rewrite using `[hheis]`. Establish `hdot : ξ' ⬝ᵥ z' = 0`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ blk i`. Simplify using `[hξ', hi j hj]`.
+
+Simplify using `[hz' j hj]`. Simplify using `only [Darboux.rho, hze, schr, hdot, zero_dotProduct, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem vanish_of_block_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (q : ℕ) (x y : Fin q → Fin n → E), IsFrameU σ X.J x y →

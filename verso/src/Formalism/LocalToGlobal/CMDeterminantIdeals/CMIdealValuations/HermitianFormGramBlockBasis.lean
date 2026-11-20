@@ -10,6 +10,9 @@ namespace Formalism.L2.LamCM
 open NumberField IsDedekindDomain IsLocalRing Matrix
 open scoped nonZeroDivisors ComplexOrder
 
+/- English proof (translation)
+Simplify using `[dotProduct, mulVec, Matrix.one_apply]`.
+-/
 theorem dot_basis_vector_diag {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (j : Fin k) :
     star ((1 : Matrix (Fin k) (Fin k) ℂ) j) ⬝ᵥ (M *ᵥ (1 : Matrix (Fin k) (Fin k) ℂ) j) = M j j := by
   simp [dotProduct, mulVec, Matrix.one_apply]
@@ -18,6 +21,9 @@ section Gram
 
 variable {K : Type} [Field K] [NumberField K] {B : Type} {m : B → ℕ} {g : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Use extensionality with `j j'`. Simplify using `[gramBlock, Matrix.mul_apply, dotProduct, mulVec, ReciprocityTheory.MultiplicativeHeights.embVec]`.
+-/
 theorem gramBlock_eq (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Matrix (Fin g) (Fin g) K) (H : Matrix (Fin g) (Fin g) ℂ)
     (σ : K →+* ℂ) (b : B) :
     gramBlock e U H σ b = (((U.map σ).submatrix (fun j => e ⟨b, j⟩) id)ᵀ)ᴴ * H *
@@ -26,6 +32,11 @@ theorem gramBlock_eq (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Matrix (Fin g) (Fin 
   ext j j'
   simp [gramBlock, Matrix.mul_apply, dotProduct, mulVec, ReciprocityTheory.MultiplicativeHeights.embVec]
 
+/- English proof (translation)
+Rewrite using `[gramBlock_eq]`. Use `hH.conjTranspose_mul_mul_same ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_injective_iff]`. Establish `hdet : (U.map σ).det ≠ 0`. Rewrite using `[show U.map σ = σ.mapMatrix U from rfl, ← RingHom.map_det]`.
+
+Conclude with `(map_ne_zero σ).mpr hU`. Establish `hli : LinearIndependent ℂ (U.map σ).row` using `Matrix.linearIndependent_rows_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet))`. Establish `hinj : Function.Injective (fun j : Fin (m b) => e ⟨b, j⟩)` using `fun j j' h => eq_of_heq (Sigma.mk.inj_iff.mp (e.injective h)).2`. Conclude with `hli.comp _ hinj`.
+-/
 theorem gramBlock_posDef (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Matrix (Fin g) (Fin g) K)
     (H : Matrix (Fin g) (Fin g) ℂ) (σ : K →+* ℂ) (b : B) (hH : H.PosDef) (hU : U.det ≠ 0) :
     (gramBlock e U H σ b).PosDef := by
@@ -42,6 +53,9 @@ theorem gramBlock_posDef (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Matrix (Fin g) (
     eq_of_heq (Sigma.mk.inj_iff.mp (e.injective h)).2
   exact hli.comp _ hinj
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.MultiplicativeHeights.hq, dot_basis_vector_diag]`. Both sides reduce to the same expression.
+-/
 theorem hermitian_form_gramBlock_basis (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Matrix (Fin g) (Fin g) K) (H : Matrix (Fin g) (Fin g) ℂ)
     (σ : K →+* ℂ) (b : B) (j : Fin (m b)) :
     ReciprocityTheory.MultiplicativeHeights.hq (gramBlock e U H σ b) ((1 : Matrix (Fin (m b)) (Fin (m b)) ℂ) j) =
@@ -51,6 +65,27 @@ theorem hermitian_form_gramBlock_basis (e : (Σ b, Fin (m b)) ≃ Fin g) (U : Ma
 
 end Gram
 
+/- English proof (translation)
+Introduce `hKC hH K _ _ x T abelian₂ B _ _ m e ℓ U G a n r La logOm S hT hLam hloc harch hℓ hℓdeg hU hG hLa hr hmr hS hS5L hS5A`. Take `⟨μ, hμ⟩` from `MvPolynomial.ne_zero_iff.mp hG`. Establish `hTd : T.dual.Good` using `(degree_algebraic K T T hT hT).2.2.1`. Take `⟨σ₀⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hsum : ∑ v, μ v = ∑ b, ∑ i, a b i`.
+
+Take `⟨H₀, -, -, -, heq, -⟩` from `hS5A σ₀`. Use `subst_homogeneous B m a (MvPolynomial.map σ₀ G) (fun _ => 1) heq μ ?_` and prove the remaining obligations. Rewrite using `[substFr_one, MvPolynomial.coeff_map]`. Conclude with `(map_ne_zero σ₀).mpr hμ`. Unfold `Step5Arch at hS5A`.
+
+Use `choose Hs hHs using hS5A`. Establish `hRr : (0 : ℝ) < (r : ℝ) * La` using `mul_pos (Nat.cast_pos.mpr hr) (by linarith)`. Establish `hmem : MvPolynomial.coeff μ G ∈ (lineNN T.dual ℓ (fun v : FrVar m => e ⟨v.1, v.2.2⟩) μ n).I`. Use `coeff_mem_of_local K x.P.g ℓ T.dual (FrVar m) _ μ n _ hTd hℓ fun p => ?_` and prove the remaining obligations. Take `⟨t, cd, cl, ht, hcd, hcl, hv, V, K', _, _, _, _, _, _, f, Ub, hVc, hfin, hind, hUb, hclUb, hW⟩` from `hS5L p`.
+
+Use `⟨t, cl, ht, hcl, ?_⟩` and prove the remaining obligations. Establish `htn : t ^ n ≠ 0` using `pow_ne_zero _ ht.1`. Establish `hftn : f (t ^ n) ≠ 0` using `(map_ne_zero f).mpr htn`. Take `⟨w, hw⟩` from `coeff_integral_local V K' B m (MvPolynomial.map f G) Ub (fun b j => f (cl (e ⟨b, j⟩))) (f (t ^ n)) hVc hfin hftn hUb hclUb hW μ`. Establish `hrange : f (MvPolynomial.coeff μ G * (∏ v : FrVar m, cl (e ⟨v.1, v.2.2⟩) ^ μ v) / t ^ n) ∈ Set.range (algebraMap V K')`.
+
+Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_mul, map_prod]`. Simplify using `only [map_pow]`. Rewrite using `[← map_pow f t n, ← MvPolynomial.coeff_map, hw, mul_div_cancel_left₀ _ hftn]`. Establish `h1` using `(hind _).mp hrange`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, div_mul_cancel₀ _ htn]`. Use `_ ≤ p.valuation K (t ^ n) := mul_le_of_le_one_left' h1`. Establish `harch' : ∀ (σ : K →+* ℂ) (z : FrVar m → ℂ), (∀ v, ‖z v‖ * (ℓ ((fun v : FrVar m => e ⟨v.1, v.2.2⟩) v)).n σ ≤ 1) → ‖MvPolynomial.eval z (MvPolynomial.map σ G)‖ * T.dual.n σ ^ n ≤ S σ * ((r : ℝ) * La) ^ (∑ v, μ v)`. Introduce `σ z hz`.
+
+Take `⟨hpd, -, hbd, heq, hY⟩` from `hHs σ`. Establish `hTn : 0 < T.dual.n σ ^ n` using `pow_pos (hTd.2 σ) n`. Establish `hA` using `ArchTie_of hH B m a (MvPolynomial.map σ G) (fun b => gramBlock e U (Hs σ) σ b) (fun _ => 1) (fun b j => (ℓ (e ⟨b, j⟩)).n σ) (S σ / T.dual.n σ ^ n) La r (fun b => gramBlock_posDef e U (Hs σ) σ b hpd hU) heq (fun X hX => by rw [le_div_iff₀ hTn]; exact hY X hX) (fun b j => (hℓ _).2 …`. Rewrite `hA` using `[substFr_one]`. Rewrite using `[hsum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_mul_cancel₀ _ hTn.ne']`. Unfold `Step5Loc at hS5L`. Establish `key` using `hLK hKC K x T abelian₂ ℓ U Hs La logOm (FrVar m) (fun v => e ⟨v.1, v.2.2⟩) G μ n S ((r : ℝ) * La) hT hLam hloc harch hℓ hU hLa (fun σ => (hHs σ).1) (fun σ => (hHs σ).2.1) (fun p => by`. Take `⟨t, cd, cl, ht, hcd, hcl, hv, -⟩` from `hS5L p`.
+
+Conclude with `⟨cd, cl, hcd, hcl, hv⟩)`. Use the proof step `(fun σ j => (hHs σ).2.2.1 j) hℓdeg hμ hmem hS hRr harch'`. Establish `hc : (∑ v, (μ v : ℝ)) = ((∑ b, ∑ i, a b i : ℕ) : ℝ)`. Rewrite using `[← hsum, Nat.cast_sum]`. Rewrite `key` using `[hc]`.
+
+Conclude with `key`.
+-/
 theorem Step5_of (hLK : LamKey) : Step5 := by
   intro hKC hH K _ _ x T abelian₂ B _ _ m e ℓ U G a n r La logOm S hT hLam hloc harch hℓ hℓdeg hU hG hLa hr hmr hS hS5L hS5A
   classical

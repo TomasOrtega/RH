@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FiniteNearCodimOne
 
+/- English proof (translation)
+Proceed by induction on `t using WithBot.recBotCoe with`. Consider the case `bot => rw [WithBot.add_bot] at h₂`. Conclude with `absurd h₂.symm (WithBot.natCast_ne_bot _)`. Consider the case `coe t`. Establish `h₃ : (c : WithBot ℕ∞) + t ≤ ((1 : ℕ∞) : WithBot ℕ∞) + t` using `(add_le_add le_rfl hts).trans (h₁.trans h₂.symm).le`.
+
+Establish `h₄ : 1 + t = (D : ℕ∞)` using `by exact_mod_cast h₂`. Establish `ht : t ≠ ⊤` using `by rintro rfl; rw [add_top] at h₄; exact ENat.natCast_ne_top _ h₄.symm`. Establish `h₅ : c + t ≤ 1 + t` using `by exact_mod_cast h₃`. Conclude with `(ENat.add_le_add_iff_right ht).1 h₅`.
+-/
 theorem le_one_of_add_eq {c : ℕ∞} {s t : WithBot ℕ∞} {D : ℕ} (h₁ : (c : WithBot ℕ∞) + s = D)
     (h₂ : ((1 : ℕ∞) : WithBot ℕ∞) + t = D) (hts : t ≤ s) : c ≤ 1 := by
   induction t using WithBot.recBotCoe with
@@ -22,6 +27,11 @@ theorem le_one_of_add_eq {c : ℕ∞} {s t : WithBot ℕ∞} {D : ℕ} (h₁ : (
     have h₅ : c + t ≤ 1 + t := by exact_mod_cast h₃
     exact (ENat.add_le_add_iff_right ht).1 h₅
 
+/- English proof (translation)
+Rewrite using `[Order.coheight_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : x ⤳ genericPoint X` using `h (show x ≤ genericPoint X from genericPoint_specializes x)`. Conclude with `(h'.antisymm (genericPoint_specializes x)).eq`.
+
+Introduce and unpack `rfl b _`. Conclude with `genericPoint_specializes b`.
+-/
 theorem coheight_eq_zero_iff {X : Scheme.{0}} [IsIntegral X] (x : X) :
     Order.coheight x = 0 ↔ x = genericPoint X := by
   rw [Order.coheight_eq_zero]
@@ -32,6 +42,23 @@ theorem coheight_eq_zero_iff {X : Scheme.{0}} [IsIntegral X] (x : X) :
   · rintro rfl b _
     exact genericPoint_specializes b
 
+/- English proof (translation)
+Introduce `F _ X Y _ _ p q D hp hX hq hY π hπ hη z hz`. Establish `: IsProper p`. Take `⟨N, c, hc, rfl⟩` from `hp`. Use `isProper_str F N` as an intermediate fact. Use `infer_instance`.
+
+Establish `: IsProper q`. Take `⟨N, c, hc, rfl⟩` from `hq`. Use `isProper_str F N` as an intermediate fact. Use `infer_instance`. Establish `: IsProper (π ≫ p)` using `by rw [hπ]; infer_instance`.
+
+Establish `: IsProper π` using `IsProper.of_comp π p`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian q`. Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `: IsNoetherian Y` using `{}`. Establish `hzne : z ≠ genericPoint X` using `fun h => by`.
+
+Rewrite `hz` using `[(coheight_eq_zero_iff z).2 h]`. Conclude with `zero_ne_one hz`. Establish `hw : ∀ w : Y, π w = z → Order.coheight w = 1`. Introduce `w hwz`. Establish `h₁` using `(FieldDimCoheight.coheight_add_dim_closure_eq F Y q w).trans hY`.
+
+Establish `h₂` using `(FieldDimCoheight.coheight_add_dim_closure_eq F X p z).trans hX`. Rewrite `h₂` using `[hz]`. Establish `h₃` using `PosBaseChange.dim_image_le π.isClosedMap (isClosed_closure (s := ({w} : Set Y)))`. Rewrite `h₃` using `[← π.isClosedMap.closure_image_eq_of_continuous π.continuous, Set.image_singleton, hwz]`. Use `le_antisymm (le_one_of_add_eq h₁ h₂ h₃) (Order.one_le_iff_ne_zero.2 fun h0 => ?_)` and prove the remaining obligations.
+
+Rewrite `hwz` using `[(coheight_eq_zero_iff w).1 h0]`. Conclude with `hzne (hwz.symm.trans hη)`. Establish `hfin : (π ⁻¹' {z}).Finite`. Set `U : Y.Opens` to `π ⁻¹ᵁ ⟨(closure ({z} : Set X))ᶜ, isClosed_closure.isOpen_compl⟩`. Establish `hU : genericPoint Y ∈ U` using `by show π (genericPoint Y) ∈ (closure ({z} : Set X))ᶜ`.
+
+Rewrite using `[hη]`. Introduce `hc`. Conclude with `hzne ((specializes_iff_mem_closure.2 hc).antisymm (genericPoint_specializes z)).eq`. Use `(Mix.finite_coheight_one_notMem_open Y U hU).subset fun w hwz => ⟨hw w hwz, fun hwU => ?_⟩` and prove the remaining obligations. Establish `hwU' : π w ∈ (closure ({z} : Set X))ᶜ` using `hwU`.
+
+Conclude with `hwU' (by rw [show π w = z from hwz]; exact subset_closure rfl)`. Conclude with `exists_isFinite_morphismRestrict_of_finite_preimage_singleton π z hfin`.
+-/
 theorem exists_isFinite_restrict_of_coheight_eq_one : ∀ (F : Type) [Field F] (X Y : Scheme.{0})
     [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (D : ℕ), IsProjOver p →
     topologicalKrullDim X = (D : ℕ) → IsProjOver q → topologicalKrullDim Y = D →

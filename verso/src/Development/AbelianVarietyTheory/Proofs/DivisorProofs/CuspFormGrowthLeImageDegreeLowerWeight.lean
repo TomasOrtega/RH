@@ -18,6 +18,27 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.DegVal
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU Z G G' hG hG' hfin hB hM`. Break down `eq_or_ne (growthOn U Z G') 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨a, θ, ha, hθ, hmul⟩` from `hM`.
+
+Use `haveI := GlobalTheory.DegTop.finiteDimensional_of_growthOn (U := U) (Z := Z) hG hfin`. Establish `hR` using `GlobalTheory.T.cuspFormsRatioOnComponent_of_birational E H Dw l Xo c r U Z G hB`. Establish `hFG` using `GlobalTheory.T.flagSpaceComponent_functionField_fg E H Dw l Xo c r U hU Z`. Use `set ev := genPoint Z (cuspOn U Z G) with hev`. Set `S : ℕ → Submodule c.F (Om Z)` to `fun k => if k = 0 then ⊥ else (cuspOn U Z ((a * k) • G')).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F (θ ^ k))`.
+
+Establish `h1` using `GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.2.1 c.F _ _ ev (dimFlag Dw) a ha S (by`. Introduce `k t ht`. Distinguish the cases in `hk : k = 0`. Simplify using `only [S, hk, if_true, Submodule.mem_bot] at ht`. Substitute `ht` using the available equality.
+
+Use `⟨?_, ⟨0, 1, by simp [Submodule.one_eq_span], one_ne_zero, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[IsIntDeg, map_zero, mul_zero]`. Conclude with `isIntegral_zero`. Simplify using `only [S, hk, if_false] at ht`. Take `⟨f, hf, rfl⟩` from `ht`.
+
+Establish `hk1 : 1 ≤ k` using `Nat.one_le_iff_ne_zero.2 hk`. Take `⟨hc, hv⟩` from `hmul k hk1 f hf`. Conclude with `⟨GlobalTheory.T.isIntegralInConeDegree_of_valuativeBound c.F _ _ ev inferInstance inferInstance hFG _ _ hv, hR _ _ hc⟩)`. Establish `hθk : ∀ k : ℕ, genVal Z (θ ^ k) ≠ 0` using `fun k => by rw [map_pow]; exact pow_ne_zero _ hθ`. Establish `h2 : growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • G')))) ≤ growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (S k)))` using `GlobalTheory.DegTop.growth_mono _ fun k hk => by`.
+
+Establish `hk0 : k ≠ 0` using `by omega`. Use `show _ ≤ Cardinal.toENat (Module.rank c.F (S k))`. Establish `hS : S k = (cuspOn U Z ((a * k) • G')).map ((genVal Z).toLinearMap ∘ₗ LinearMap.mulLeft c.F (θ ^ k))` using `if_neg hk0`. Rewrite using `[hS, GlobalTheory.DegTop.rank_map_mul (U := U) (G := (a * k) • G') (hθk k)]`. Establish `hmulG : ∀ G₀ : WTZ E, growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • G₀)))) = growthOn U Z (a • G₀)` using `fun G₀ => by`.
+
+Rewrite using `[growthOn]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_nsmul]`. Establish `h3 : growth (dimFlag Dw) (fun k => Cardinal.toENat (Module.rank c.F (cuspOn U Z ((a * k) • G')))) = (a : ℝ≥0∞) ^ dimFlag Dw * growthOn U Z G'`.
+
+Rewrite using `[hmulG, GlobalTheory.T.cuspFormGrowthOnComponent_nsmul E H Dw l Xo c r U hU Z G' hG' a ha]`. Establish `h4 : growth (dimFlag Dw) (fun k => hilb ev (a * k)) ≤ (a : ℝ≥0∞) ^ dimFlag Dw * growthOn U Z G`. Rewrite using `[← GlobalTheory.T.cuspFormGrowthOnComponent_nsmul E H Dw l Xo c r U hU Z G hG a ha, ← hmulG]`. Conclude with `GlobalTheory.DegTop.growth_mono _ fun k hk => GlobalTheory.DegTop.hilb_le hG (Nat.mul_pos ha hk)`. Establish `haD0 : (a : ℝ≥0∞) ^ dimFlag Dw ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega))`.
+
+Establish `haDT : (a : ℝ≥0∞) ^ dimFlag Dw ≠ ⊤` using `ENNReal.pow_ne_top (ENNReal.natCast_ne_top a)`. Establish `hlow : (a : ℝ≥0∞) ^ dimFlag Dw * growthOn U Z G' ≤ growth (dimFlag Dw) (fun k => hilb ev (a * k))` using `h3 ▸ h2.trans h1`. Establish `hne0 : growth (dimFlag Dw) (fun k => hilb ev (a * k)) ≠ 0` using `ne_bot_of_le_ne_bot (mul_ne_zero haD0 h0) hlow`. Establish `hneT : growth (dimFlag Dw) (fun k => hilb ev (a * k)) ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top haDT hfin) h4`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.cone_degree_growth_chowForm_integrality.2.1 c.F _ _ ev (dimFlag Dw) a ha hne0 hneT`.
+
+Rewrite `hlow` using `[GlobalTheory.T.cone_degree_growth_chowForm_integrality.1 c.F _ _ ev (dimFlag Dw) a ha δ hδ]`. Rewrite using `[compDeg, ← hev, hδ.imageDeg_eq]`. Apply the tactic sequence `first | exact (ENNReal.mul_le_mul_iff_right haD0 haDT).1 hlow | exact (ENNReal.mul_le_mul_iff_left haD0 haDT).1 hlow`.
+-/
 theorem growthOn_le_compDeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), UnfAll U → ∀ (Z : Comp Xo c) (G G' : WTZ E), Even G.2 → Even G'.2 → growthOn U Z G ≠ ⊤ → BirOn U Z G → ValMult U Z G G' → growthOn U Z G' ≤ (compDeg U Z G : ℝ≥0∞) := by
   intro E _ _ _ H Dw l Xo c r U hU Z G G' hG hG' hfin hB hM
   rcases eq_or_ne (growthOn U Z G') 0 with h0 | h0

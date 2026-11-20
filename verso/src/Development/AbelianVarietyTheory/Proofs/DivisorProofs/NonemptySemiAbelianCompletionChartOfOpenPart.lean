@@ -21,6 +21,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.Desc.OpenChart
 
+/- English proof (translation)
+Establish `fg : (maximalIdeal (X.presheaf.stalk x)).FG` using `IsNoetherian.noetherian _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`. Set `φ` to `algebraMap (X.presheaf.stalk x) (AdicCompletion (maximalIdeal (X.presheaf.stalk x)) (X.presheaf.stalk x))`. Use `haveI : IsLocalHom φ := ((IsLocalRing.local_hom_TFAE φ).out 0 2).mpr hm.symm.le`. Establish `hres : Function.Surjective ((residue _).comp φ)`.
+
+Introduce `r`. Take `⟨a, ha⟩` from `(AdicCompletion.residueField_map_bijective (X.presheaf.stalk x)).2 r`. Take `⟨b, rfl⟩` from `residue_surjective a`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, RingHom.comp_apply, ResidueField.map_residue]`.
+
+Establish `hx : GlobalTheory.fromSpecCompletedStalk X x (closedPoint _) = x`. Rewrite using `[GlobalTheory.fromSpecCompletedStalk]`. Use `erw [Scheme.Hom.comp_apply]`. Establish `hc : Spec.map (CommRingCat.ofHom φ) (closedPoint _) = closedPoint (X.presheaf.stalk x)` using `IsLocalRing.comap_closedPoint φ`. Use `erw [hc]`.
+
+Conclude with `Scheme.fromSpecStalk_closedPoint`. Take `⟨e, he, hψ⟩` from `GlobalTheory.GenFan.stalk_factor_eq hx (CommRingCat.ofHom φ) (Scheme.stalkClosedPointTo (GlobalTheory.fromSpecCompletedStalk X x)) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk _)`. Use `⟨hx, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ]`. Conclude with `GlobalTheory.TorRef.isEtaleCompletion_comp_bij e he φ ⟨RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _), hm.symm, RingHom.Finite.of_surjective _ hres⟩`.
+
+Rewrite using `[hψ, ← RingHom.comp_assoc]`. Conclude with `hres.comp he.2`.
+-/
 theorem completedStalk_chart (X : Scheme.{0}) (x : X) [IsNoetherianRing (X.presheaf.stalk x)] :
     GlobalTheory.fromSpecCompletedStalk X x (closedPoint _) = x ∧
     IsEtaleCompletion (Scheme.stalkClosedPointTo (GlobalTheory.fromSpecCompletedStalk X x)).hom ∧
@@ -53,6 +64,19 @@ theorem completedStalk_chart (X : Scheme.{0}) (x : X) [IsNoetherianRing (X.presh
   · rw [hψ, ← RingHom.comp_assoc]
     exact hres.comp he.2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c S j _ A _ hA x hx`. Take `⟨x', rfl⟩` from `hx`. Use `haveI : Smooth Xo.s := by haveI := Xo.smooth; exact SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Use `haveI hreg : IsRegularLocalRing ((Xo.XF c).presheaf.stalk x') := GroundTheory.Arith.SchemeCoh.isRegularLocalRing_stalk_of_smooth_field (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) x'`. Take `⟨hcen, hEt, hres⟩` from `completedStalk_chart (Xo.XF c) x'`.
+
+Take `⟨ιF⟩` from `GlobalTheory.GenFan.exists_ringHom_stalk c.F (Xo.XF c) (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) x'`. Use `set St := (Xo.XF c).presheaf.stalk x'`. Use `set R := AdicCompletion (maximalIdeal St) St`. Use `haveI : IsRegularLocalRing R := GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion St`. Use `haveI : IsDomain R := GlobalTheory.isDomain_of_isRegularLocalRing R`.
+
+Set `g : Sp R ⟶ Xo.XF c` to `GlobalTheory.fromSpecCompletedStalk (Xo.XF c) x'`. Establish `hcz : CharZero R` using `(RingHom.charZero_iff ((algebraMap St R).comp ιF).injective).1 inferInstance`. Establish `hb : Function.Bijective (j.stalkMap (g (closedPoint R))).hom` using `ConcreteCategory.bijective_of_isIso _`. Use `⟨{ R := R complete := inferInstance charZero := hcz ξ := g ≫ j centre := by show j (g (closedPoint R)) = j x'` and prove the remaining obligations. Rewrite using `[hcen]`.
+
+Use `etc := GlobalTheory.MemberEt.isEtaleCompletion_comp_openImmersion _ _ j R g hEt`. Use `unr := by`. Apply `RingHom.FormallyUnramified.of_surjective` to reduce the goal to its premises. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `hres.comp hb.2`.
+
+Use `G := (Over.pullback g).obj A`. Use `semi := IsSemiAbelian.pullback (f := g) A hA`. Use `y := jK R ≫ g`. Use `hy := Category.assoc _ _ _`. Use `α := pullback.fst ((Over.pullback g).obj A).hom (jK R) ≫ pullback.fst A.hom g`.
+
+Use `gen := IsGrpPullback.comp (isGrpPullback_pullback _ (jK R)) (isGrpPullback_pullback A g) }⟩`.
+-/
 theorem nonempty_chart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) {S : Scheme.{0}} (j : Xo.XF c ⟶ S) [IsOpenImmersion j]
     (A : Over (Xo.XF c)) [GrpObj A], IsSemiAbelian A → ∀ x ∈ Set.range j, Nonempty (GlobalTheory.Desc.Chart j A x) := by

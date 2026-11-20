@@ -43,6 +43,11 @@ def opA {K : Type u} [Field K] {d N0 : ℕ} (TT : Finset (ZMod d))
   if s ∈ TT ∧ i.val = 0 then (if k = i then 1 else 0)
   else if s ∈ TT ∧ k.val = 0 then 0 else T s i k
 
+/- English proof (translation)
+Unfold `rowOp opA`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[hk]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Apply the tactic sequence `refine Finset.sum_congr rfl fun k _ => ?_ split_ifs <;> simp`.
+-/
 lemma rowOp_eq {K : Type u} [Field K] {d N0 N1 : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (s : ZMod d) (i : Fin N0) (b : Fin N1) :
     rowOp (N1 := N1) TT T s i b = ∑ k, C (opA TT T s i k) * X (s, k, b) := by
@@ -57,12 +62,22 @@ lemma rowOp_eq {K : Type u} [Field K] {d N0 N1 : ℕ} (TT : Finset (ZMod d))
   · refine Finset.sum_congr rfl fun k _ => ?_
     split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `opA`. Apply the tactic sequence `split_ifs <;> simp [hT]`.
+-/
 lemma opA_norm_le {K : Type u} [NormedField K] {d N0 : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (hT : ∀ s i k, ‖T s i k‖ ≤ 1) (s : ZMod d) (i k : Fin N0) :
     ‖opA TT T s i k‖ ≤ 1 := by
   unfold opA
   split_ifs <;> simp [hT]
 
+/- English proof (translation)
+Unfold `opA at h`. Distinguish the cases in `hi : i.val = 0`. Rewrite `h` using `[if_pos ⟨hs, hi⟩]`. Distinguish the cases in `hk : k = i`. Rewrite using `[hk]`.
+
+Rewrite `h` using `[if_neg hk]`. Conclude with `absurd rfl h`. Rewrite `h` using `[if_neg (fun hh => hi hh.2)]`. Distinguish the cases in `hk : k.val = 0`. Rewrite `h` using `[if_pos ⟨hs, hk⟩]`.
+
+Conclude with `absurd rfl h`. Conclude with `⟨fun hh => absurd hh hi, fun hh => absurd hh hk⟩`.
+-/
 lemma opA_top {K : Type u} [Field K] {d N0 : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (s : ZMod d) (hs : s ∈ TT) (i k : Fin N0)
     (h : opA TT T s i k ≠ 0) : i.val = 0 ↔ k.val = 0 := by
@@ -79,6 +94,11 @@ lemma opA_top {K : Type u} [Field K] {d N0 : ℕ} (TT : Finset (ZMod d))
       exact absurd rfl h
     · exact ⟨fun hh => absurd hh hi, fun hh => absurd hh hk⟩
 
+/- English proof (translation)
+Rewrite using `[rowOp_eq]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Introduce `κ`. Rewrite using `[coeff_C_mul, coeff_X, norm_mul]`. Use `mul_le_one₀ (opA_norm_le TT T hT s i k) (norm_nonneg _) ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma rowOp_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N1 : ℕ}
     (TT : Finset (ZMod d)) (T : ZMod d → Fin N0 → Fin N0 → K) (hT : ∀ s i k, ‖T s i k‖ ≤ 1)
     (s : ZMod d) (i : Fin N0) (b : Fin N1) :
@@ -91,6 +111,11 @@ lemma rowOp_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N
   refine mul_le_one₀ (opA_norm_le TT T hT s i k) (norm_nonneg _) ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `minorProd`. Use `Subring.prod_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_apply]`. Use `Subring.sum_mem _ fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+
+Use `zsmul_mem ?_ _` and prove the remaining obligations. Use `Subring.prod_mem _ fun r _ => ?_` and prove the remaining obligations. Conclude with `hrow _ _`.
+-/
 lemma minorProd_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {σ : Type}
     {N0 N1 Cn : ℕ} (row : Fin N0 → Fin N1 → MvPolynomial σ K)
     (hrow : ∀ i b, row i b ∈ opInt K σ) (p : Fin Cn → ℕ) (hp : ∀ c, p c ≤ N0)
@@ -107,14 +132,27 @@ lemma minorProd_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {σ
 def rowDeg {d N0 N1 : ℕ} (s : ZMod d) (k : Fin N0) (κ : ZV d N0 N1 →₀ ℕ) : ℕ :=
   ∑ b : Fin N1, κ (s, k, b)
 
+/- English proof (translation)
+Simplify using `[rowDeg]`.
+-/
 lemma rowDeg_zero {d N0 N1 : ℕ} (s : ZMod d) (k : Fin N0) :
     rowDeg (N1 := N1) s k 0 = 0 := by
   simp [rowDeg]
 
+/- English proof (translation)
+Simplify using `[rowDeg, Finset.sum_add_distrib]`.
+-/
 lemma rowDeg_add {d N0 N1 : ℕ} (s : ZMod d) (k : Fin N0) (a b : ZV d N0 N1 →₀ ℕ) :
     rowDeg s k (a + b) = rowDeg s k a + rowDeg s k b := by
   simp [rowDeg, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [rowDeg, Finsupp.finsetSum_apply, Finsupp.single_apply, Prod.mk.injEq]`. Rewrite using `[Finset.sum_comm]`. Distinguish the cases in `hs : s' = s`. Substitute `hs` using the available equality. Rewrite using `[if_pos rfl, Finset.card_filter]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ i = k`. Simplify using `[h]`. Simplify using `[h]`. Rewrite using `[if_neg hs]`.
+
+Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hh`. Conclude with `hs hh.1.symm`.
+-/
 lemma rowDeg_shape {d N0 N1 p : ℕ} (s s' : ZMod d) (k : Fin N0) (τ : Fin p → Fin N0)
     (I : Fin p → Fin N1) :
     rowDeg s' k (∑ i, Finsupp.single ((s, τ i, I i) : ZV d N0 N1) 1) =
@@ -135,6 +173,13 @@ lemma rowDeg_shape {d N0 N1 p : ℕ} (s s' : ZMod d) (k : Fin N0) (τ : Fin p �
     intro hh
     exact hs hh.1.symm
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun y : Fin N0 × Fin N1 => ((s, y.1, y.2) : ZV d N0 N1))`. Introduce `a b h`. Simplify `h` using `[Prod.ext_iff]`. Establish `hdet : (Matrix.of fun (r r' : Fin p) => (∑ j, C (A r j) * X (s, j, I r') : MvPolynomial (ZV d N0 N1) K)).det = rename (fun y : Fin N0 × Fin N1 => ((s, y.1, y.2) : ZV d N0 N1)) (Matrix.of fun (r r' : Fin p) => (∑ j, C (A r j) * X (j, I r') : MvPolynomial (Fin N0 × Fin N1) K)).det`. Rewrite using `[AlgHom.map_det]`.
+
+Use `congr 1`. Use `Matrix.ext fun r r' => ?_` and prove the remaining obligations. Simplify using `[AlgHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite `hm` using `[hdet, support_rename_of_injective hinj, Finset.mem_image]`. Take `⟨m, hm, rfl⟩` from `hm`.
+
+Take `⟨τ, hτ, hπ, rfl⟩` from `shape_minor_mem A I m hm`. Use `⟨τ, hτ, hπ, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_finsetSum]`. Simplify using `[Finsupp.mapDomain_single]`.
+-/
 lemma op_minor_mem {K : Type u} [Field K] {d N0 N1 p : ℕ} (s : ZMod d) (A : Fin p → Fin N0 → K)
     (I : Fin p → Fin N1) (mono : ZV d N0 N1 →₀ ℕ)
     (hm : mono ∈ (Matrix.of fun (r r' : Fin p) =>
@@ -162,6 +207,21 @@ lemma op_minor_mem {K : Type u} [Field K] {d N0 N1 p : ℕ} (s : ZMod d) (A : Fi
   rw [Finsupp.mapDomain_finsetSum]
   simp [Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Simplify using `only [rowOp_eq] at hm`. Take `⟨τ, hτ, ⟨π, hπ⟩, rfl⟩` from `op_minor_mem s (fun (r : Fin p) j => opA TT T s ⟨r.val, lt_of_lt_of_le r.isLt hp⟩ j) I mono hm`. Simplify using `only [rowDeg_shape, if_true]`. Use `⟨fun s' k hs => if_neg hs, shape_count_total τ, fun k => shape_count_le_one τ hτ k, ?_⟩` and prove the remaining obligations. Introduce `hs hp1 k0 hk0`.
+
+Establish `hiff : ∀ i, (π i).val = 0 ↔ τ i = k0`. Introduce `i`. Rewrite using `[opA_top TT T s hs _ _ (hπ i)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `Fin.ext (h.trans hk0.symm)`. Introduce `h`. Rewrite using `[h, hk0]`. Use `set i0 : Fin p := π.symm ⟨0, hp1⟩ with hi0`. Establish `hnone : (Finset.univ.filter (fun i => τ i = k0)).card = 1`.
+
+Rewrite using `[Finset.card_eq_one]`. Use `⟨i0, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, ← hiff i, hi0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[Equiv.eq_symm_apply]`. Conclude with `Fin.ext h`. Introduce `h`. Rewrite using `[h, Equiv.apply_symm_apply]`.
+
+Use `⟨hnone, fun k hk => ?_⟩` and prove the remaining obligations. Use `split_ifs with h2`. Conclude with `shape_count_le_one τ hτ _`. Establish `htot` using `shape_count_total τ`. Rewrite `htot` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k0), hnone]`.
+
+Establish `hne : k ≠ k0` using `fun h => hk (h ▸ hk0)`. Establish `hle : (Finset.univ.filter (fun i => τ i = k)).card ≤ ∑ j ∈ Finset.univ.erase k0, (Finset.univ.filter (fun i => τ i = j)).card` using `Finset.single_le_sum (f := fun j : Fin N0 => (Finset.univ.filter (fun i => τ i = j)).card) (fun _ _ => Nat.zero_le _) (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ k⟩)`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma op_minor_shape {K : Type u} [Field K] {d N0 N1 p : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (s : ZMod d) (hp : p ≤ N0) (I : Fin p → Fin N1)
     (mono : ZV d N0 N1 →₀ ℕ)
@@ -210,6 +270,13 @@ lemma op_minor_shape {K : Type u} [Field K] {d N0 N1 p : ℕ} (TT : Finset (ZMod
         (fun _ _ => Nat.zero_le _) (Finset.mem_erase.mpr ⟨hne, Finset.mem_univ k⟩)
     omega
 
+/- English proof (translation)
+Unfold `minorProd at hm`. Establish `hmin` using `fun c => op_minor_shape TT T s (hp c) (I c)`. Use `⟨fun s' k hs => ?_, ?_, fun k => ?_, fun hs hp1 k0 hk0 => ⟨?_, fun k hk => ?_⟩⟩` and prove the remaining obligations. Use `shape_prod_eq (R := K) (rowDeg s' k) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun _ => 0) Finset.univ (fun c _ m hm => (hmin c m hm).1 s' k hs) mono hm` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `shape_prod_eq (R := K) (fun m => ∑ k, rowDeg s k m) (by simp [rowDeg_zero]) (fun a b => by simp [rowDeg_add, Finset.sum_add_distrib]) _ (fun c => p c) Finset.univ (fun c _ m hm => (hmin c m hm).2.1) mono hm`. Use `shape_prod_le (R := K) (rowDeg s k) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun _ => 1) Finset.univ (fun c _ m hm => (hmin c m hm).2.2.1 k) mono hm` as an intermediate fact. Simplify using `using this`. Use `shape_prod_eq (R := K) (rowDeg s k0) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun _ => 1) Finset.univ (fun c _ m hm => ((hmin c m hm).2.2.2 hs (hp1 c) k0 hk0).1) mono hm` as an intermediate fact. Simplify using `using this`.
+
+Use `shape_prod_le (R := K) (rowDeg s k) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun c => if 2 ≤ p c then 1 else 0) Finset.univ (fun c _ m hm => ((hmin c m hm).2.2.2 hs (hp1 c) k0 hk0).2 k hk) mono hm` as an intermediate fact. Rewrite using `[Finset.card_filter]`. Conclude with `this`.
+-/
 lemma op_minorProd_shape {K : Type u} [Field K] {d N0 N1 Cn : ℕ} (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (s : ZMod d) (p : Fin Cn → ℕ) (hp : ∀ c, p c ≤ N0)
     (I : ∀ c, Fin (p c) → Fin N1) (mono : ZV d N0 N1 →₀ ℕ)
@@ -241,6 +308,21 @@ lemma op_minorProd_shape {K : Type u} [Field K] {d N0 N1 Cn : ℕ} (TT : Finset 
     rw [Finset.card_filter]
     exact this
 
+/- English proof (translation)
+Establish `hG` using `fun s' => op_minorProd_shape TT T s' (p s') (hp s') (I s')`. Use `⟨?_, fun k => ?_, fun hs k0 hk0 => ⟨?_, fun k hk => ?_⟩⟩` and prove the remaining obligations. Use `shape_prod_eq (R := K) (fun m => ∑ k, rowDeg s k m) (by simp [rowDeg_zero]) (fun a b => by simp [rowDeg_add, Finset.sum_add_distrib]) _ (fun s' => if s' = s then ∑ c, p s' c else 0) Finset.univ (fun s' _ m hm => by` as an intermediate fact. Distinguish the cases in `h : s' = s`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl]`. Conclude with `(hG s' m hm).2.1`. Rewrite using `[if_neg h]`. Conclude with `Finset.sum_eq_zero fun k _ => (hG s' m hm).1 s k (Ne.symm h)) κ hκ`. Simplify using `using this`.
+
+Use `shape_prod_le (R := K) (rowDeg s k) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun s' => if s' = s then colN s' else 0) Finset.univ (fun s' _ m hm => by` as an intermediate fact. Distinguish the cases in `h : s' = s`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(hG s' m hm).2.2.1 k`.
+
+Rewrite using `[if_neg h]`. Conclude with `le_of_eq ((hG s' m hm).1 s k (Ne.symm h))) κ hκ`. Simplify using `using this`. Use `shape_prod_eq (R := K) (rowDeg s k0) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun s' => if s' = s then colN s' else 0) Finset.univ (fun s' _ m hm => by` as an intermediate fact. Distinguish the cases in `h : s' = s`.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `((hG s' m hm).2.2.2 hs (hp1 s') k0 hk0).1`. Rewrite using `[if_neg h]`. Conclude with `(hG s' m hm).1 s k0 (Ne.symm h)) κ hκ`.
+
+Simplify using `using this`. Use `shape_prod_le (R := K) (rowDeg s k) (rowDeg_zero _ _) (rowDeg_add _ _) _ (fun s' => if s' = s then (Finset.univ.filter (fun c => 2 ≤ p s' c)).card else 0) Finset.univ (fun s' _ m hm => by` as an intermediate fact. Distinguish the cases in `h : s' = s`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Conclude with `((hG s' m hm).2.2.2 hs (hp1 s') k0 hk0).2 k hk`. Rewrite using `[if_neg h]`. Conclude with `le_of_eq ((hG s' m hm).1 s k (Ne.symm h))) κ hκ`. Simplify using `using this`.
+-/
 lemma op_prod_shape {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Finset (ZMod d))
     (T : ZMod d → Fin N0 → Fin N0 → K) (colN : ZMod d → ℕ) (p : ∀ s, Fin (colN s) → ℕ)
     (hp : ∀ s c, p s c ≤ N0) (hp1 : ∀ s c, 1 ≤ p s c) (I : ∀ s c, Fin (p s c) → Fin N1)
@@ -296,6 +378,11 @@ lemma op_prod_shape {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Fins
           exact le_of_eq ((hG s' m hm).1 s k (Ne.symm h))) κ hκ
     simpa using this
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.sum_filter, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : Pr (s, k)`.
+
+Simplify using `[h, rowDeg]`. Simplify using `[h]`.
+-/
 lemma sum_filter_rows {d N0 N1 : ℕ} [NeZero d] (Pr : ZMod d × Fin N0 → Prop) [DecidablePred Pr]
     (κ : ZV d N0 N1 →₀ ℕ) :
     (∑ y ∈ Finset.univ.filter (fun y : ZV d N0 N1 => Pr (y.1, y.2.1)), κ y) =
@@ -309,6 +396,39 @@ lemma sum_filter_rows {d N0 N1 : ℕ} [NeZero d] (Pr : ZMod d × Fin N0 → Prop
   · simp [h, rowDeg]
   · simp [h]
 
+/- English proof (translation)
+Introduce `K _ _ _ l d N0 N1 _ hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT colN p hp hp1 I T hT nu1 nu2 size hnu1 hnu2 hsize a ha hsa spec hspec hinj hframe`. Establish `hpos : 0 < ‖(l : K)‖`. Rewrite using `[norm_pos_iff]`. Conclude with `hl.ne_zero` after adjusting the coercions. Establish `h21 : ∀ s, nu2 s ≤ nu1 s`.
+
+Introduce `s`. Rewrite using `[hnu1, hnu2]`. Conclude with `(Finset.card_le_univ _).trans (by simp)`. Establish `h1s : ∀ s, nu1 s ≤ size s`. Introduce `s`.
+
+Rewrite using `[hnu1, hsize]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPint : (∏ s : ZMod d, minorProd (rowOp (N1` using `N1) TT T s) (p s) (hp s) (I s)) ∈ opInt K (ZV d N0 N1) := Subring.prod_mem _ fun s _ => minorProd_mem_opInt _ (fun i b => rowOp_mem_opInt TT T hT s i b) _ _ _`. Unfold `jetPair`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hpos.le _) fun κ hκ => ?_` and prove the remaining obligations.
+
+Establish `hsh` using `op_prod_shape TT T colN p hp hp1 I κ hκ`. Establish `hcap : ∀ (s : ZMod d) (k : Fin N0), ¬ (s ∈ TT ∧ k.val = 0) → rowDeg s k κ ≤ capL d TT nu1 nu2 s`. Introduce `s k hsk`. Unfold `capL`. Use `split_ifs with hs`.
+
+Rewrite using `[hnu2]`. Conclude with `((hsh s).2.2 hs ⟨0, h0⟩ rfl).2 k (fun hk => hsk ⟨hs, hk⟩)`. Rewrite using `[hnu1]`. Conclude with `(hsh s).2.1 k`. Establish `hjet` using `thmAJetA K l d N0 N1 hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε TT nu1 nu2 size h21 h1s a ha hsa spec κ ?_ ?_ hspec ?_ hframe`.
+
+Rewrite using `[mul_assoc, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `s hs`. Rewrite using `[hnu1]`. Conclude with `((hsh s).2.2 hs ⟨0, h0⟩ rfl).1`.
+
+Introduce `s`. Establish `hrows` using `sum_filter_rows (fun r : ZMod d × Fin N0 => r.1 = s ∧ ¬ (r.1 ∈ TT ∧ r.2.val = 0)) κ`. Use `Eq.trans (Finset.sum_congr ?_ fun _ _ => rfl) (hrows.trans ?_)` and prove the remaining obligations. Use extensionality with `y`. Simplify using `[frameTop]`.
+
+Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single s]`. Establish `htot` using `(hsh s).1`. Rewrite `htot` using `[← hsize]`. Unfold `Dl`. Use `split_ifs with hs`.
+
+Establish `htop` using `((hsh s).2.2 hs ⟨0, h0⟩ rfl).1`. Rewrite `htop` using `[← hnu1]`. Rewrite `htot` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨0, h0⟩ : Fin N0)), htop]`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⟨0, h0⟩ : Fin N0))]`. Establish `hrest : (∑ k ∈ Finset.univ.erase (⟨0, h0⟩ : Fin N0), if (s = s ∧ ¬ (s ∈ TT ∧ k.val = 0)) then rowDeg s k κ else 0) = ∑ k ∈ Finset.univ.erase (⟨0, h0⟩ : Fin N0), rowDeg s k κ`.
+
+Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_pos]`. Use `⟨rfl, fun hh => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.mem_erase.mp hk).1 (Fin.ext hh.2)`. Simplify using `only at hrest ⊢`.
+
+Rewrite using `[hrest, if_neg (by simp [hs])]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← htot]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[hs]`.
+
+Introduce `s' _ hs'`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `[hs']`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ s) hh`.
+
+Introduce `s0 j`. Rewrite using `[sum_filter_rows (fun r => spec r = some (s0, j))]`. Distinguish the cases in `hex : ∃ r0, spec r0 = some (s0, j)`. Take `⟨r0, hr0⟩` from `hex`. Establish `hfil : Finset.univ.filter (fun r => spec r = some (s0, j)) = {r0}`.
+
+Use extensionality with `r`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hr`. Conclude with `(hinj r0 r (by rw [hr0]; simp) (hr0.trans hr.symm)).symm`.
+
+Introduce `hr`. Rewrite using `[hr, hr0]`. Rewrite using `[hfil, Finset.sum_singleton]`. Take `⟨_, _, hs, hnt, _⟩` from `hspec r0.1 r0.2 s0 j hr0`. Rewrite using `[← hs]`.
+
+Conclude with `hcap r0.1 r0.2 hnt`. Rewrite using `[Finset.filter_false_of_mem (fun r _ hr => hex ⟨r, hr⟩)]`. Simplify using the standard rewrite rules.
+-/
 theorem thmAOp : ThmAOp.{u} := by
   intro K _ _ _ l d N0 N1 _ hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
     TT colN p hp hp1 I T hT nu1 nu2 size hnu1 hnu2 hsize a ha hsa spec hspec hinj hframe

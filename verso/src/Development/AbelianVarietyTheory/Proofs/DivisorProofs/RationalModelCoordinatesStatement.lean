@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixedLagr.ratCoord_linear_injective | exact GlobalTheory.MixedLagr.ratCoord_linear_injective | (intros; apply GlobalTheory.MixedLagr.ratCoord_linear_injective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rational_model_coordinates : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W),
     (∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,

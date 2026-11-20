@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Introduce `hS hC F _ _ n γ hγ`. Establish `hsep : (γ : Matrix (Fin n) (Fin n) F).charpoly.Separable` using `hγ`. Establish `hI : ((pI F n (AdelicGLn.diagonal F n γ)).val : Matrix (Fin n) (Fin n) (InfiniteAdeleRing F)) = (γ : Matrix (Fin n) (Fin n) F).map (algebraMap F (InfiniteAdeleRing F))`. Use extensionality with `a b`. Both sides reduce to the same expression.
+
+Establish `hIs : (pI F n (AdelicGLn.diagonal F n γ)).val.charpoly.Separable`. Rewrite using `[hI, Matrix.charpoly_map]`. Conclude with `hsep.map`. Use `⟨hIs, fun s => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨⟨r, hr⟩, -⟩` from `hC F n ⟨Real.exp s, Real.exp_pos s⟩`.
+
+Establish `h` using `hr (pI F n (AdelicGLn.diagonal F n γ))`. Establish `h' : (pI F n (zA F n s) * pI F n (AdelicGLn.diagonal F n γ)).val = (r : InfiniteAdeleRing F) • (pI F n (AdelicGLn.diagonal F n γ)).val` using `h`. Rewrite using `[h']`. Conclude with `hS _ n r _ hIs`. Establish `hv : ((finAt v (AdelicGLn.diagonal F n γ)).val : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = (γ : Matrix (Fin n) (Fin n) F).map (algebraMap F (v.adicCompletion F))`.
+
+Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[hv, Matrix.charpoly_map]`. Conclude with `hsep.map`.
+-/
 theorem UpperTheory.separableLocal_of_separableScalar :
     SepSc → CentLoc → SepLoc := by
   intro hS hC F _ _ n γ hγ

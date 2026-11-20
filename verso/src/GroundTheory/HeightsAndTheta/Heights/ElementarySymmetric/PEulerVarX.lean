@@ -6,6 +6,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Swarm
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerVar.proof GroundTheory.Heights₂.Heights.Kleiman.KHCechDSq.full GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerSES.full`.
+-/
 theorem EulerVar.proof : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerVar.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerVar.proof
     GroundTheory.Heights₂.Heights.Kleiman.KHCechDSq.full

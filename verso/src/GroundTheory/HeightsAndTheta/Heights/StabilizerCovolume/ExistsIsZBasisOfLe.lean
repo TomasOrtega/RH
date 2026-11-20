@@ -10,6 +10,13 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GroundTheory.Heights₂.Heights.LowerBoundFree Module
 open scoped Matrix
 
+/- English proof (translation)
+Establish `hle : I.restrictScalars ℤ ≤ L.restrictScalars ℤ` using `hIL`. Use `haveI : Module.Finite ℤ (L.restrictScalars ℤ) := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.Finite ℤ (I.restrictScalars ℤ) := Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`. Set `bI` to `Module.finBasis ℤ (I.restrictScalars ℤ)`. Use `⟨_, fun k => (bI k : Fin N → Em), ?_, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `bI.linearIndependent.map' (I.restrictScalars ℤ).subtype (Submodule.ker_subtype _)`. Establish `h` using `congrArg Subtype.val (bI.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[← h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hsp : Submodule.span ℤ (Set.range fun k => (bI k : Fin N → Em)) ≤ I.restrictScalars ℤ` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact (bI k).2)`. Conclude with `hsp hx`.
+-/
 theorem exists_isZBasis_of_le {Em : Type} [Field Em] [NumberField Em] {N : ℕ}
     {I L : Submodule (𝓞 Em) (Fin N → Em)} (hIL : I ≤ L) (hfg : (L.restrictScalars ℤ).FG) :
     ∃ m, ∃ b : Fin m → Fin N → Em, IsZBasis I b := by
@@ -28,6 +35,19 @@ theorem exists_isZBasis_of_le {Em : Type} [Field Em] [NumberField Em] {N : ℕ}
       Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact (bI k).2)
     exact hsp hx
 
+/- English proof (translation)
+Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz I hIL hI _ ρ v hv`. Establish `hex` using `exists_isZBasis_of_le hIL D.herm.fg`. Establish `hnz : ∃ ρ' v', IsNzFamily I ρ' v'` using `⟨ρ, v, hv⟩`. Establish `hn` using `D.herm.finrank_eq_two_mul_card_cm`. Establish `hpos : 0 < finrank ℚ Em` using `Module.finrank_pos`.
+
+Establish `key : ∀ ρ' (v' : Fin ρ' → Fin D.N → Em), IsNzFamily I ρ' v' → D.covolZ z I = (∏ τ, (D.herm.gramLie (D.j_le.trans (Nat.sub_le _ _)) (D.per z τ) τ v').det.re) / ((Submodule.span (𝓞 Em) (Set.range v')).toAddSubgroup.relIndex I.toAddSubgroup : ℝ) * rootDiscr Em ^ (D.f * ρ)`. Introduce `ρ' v' hv'`. Take `⟨m, b, hb⟩` from `hex`. Establish `h1` using `card_zBasis_eq_mul_finrank hv hb`. Establish `h2` using `card_zBasis_eq_mul_finrank hv' hb`.
+
+Establish `hρ : ρ' = ρ` using `Nat.eq_of_mul_eq_mul_right hpos (h2.symm.trans h1)`. Substitute `hρ` using the available equality. Rewrite using `[D.covolZ_eq_of_family hz hI hv' ⟨m, b, hb⟩]`. Use `congr 1`. Rewrite using `[rootDiscr, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), hn]`.
+
+Use `congr 1`. Establish `hf : D.f = Fintype.card Ψ` using `rfl`. Establish `hc : (Fintype.card Ψ : ℝ) ≠ 0`. Establish `: 0 < Fintype.card Ψ` using `by omega`. Check the signs of the components of the expression.
+
+Rewrite using `[hf]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Unfold `FullerData.nz HermDatum.nz`. Rewrite using `[dif_pos hnz]`.
+
+Conclude with `key _ _ hnz.choose_spec.choose_spec`.
+-/
 theorem UnitaryCovolume.proof : UnitaryCovolume.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz I hIL hI _ ρ v hv
   have hex := exists_isZBasis_of_le hIL D.herm.fg

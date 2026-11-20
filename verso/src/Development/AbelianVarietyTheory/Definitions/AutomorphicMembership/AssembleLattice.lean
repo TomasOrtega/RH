@@ -160,27 +160,93 @@ section
 variable (B : Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W)
     (G : GJStage B C)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_R : (assemble B C W V S N G).R = B.R := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_host : (assemble B C W V S N G).host = B.host := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_sp : (assemble B C W V S N G).sp = B.sp := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_rows : (assemble B C W V S N G).what₂ = W.what₂ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_hc : (assemble B C W V S N G).hc = B.hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_hcW : (assemble B C W V S N G).hcW = B.hcW := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_u₀ : (assemble B C W V S N G).u₀ = B.u₀ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_mem : (assemble B C W V S N G).mem = C.mem := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_div : (assemble B C W V S N G).div = V.div := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_embE : (assemble B C W V S N G).embE = B.embE := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_lattice : (assemble B C W V S N G).LL0 = B.LL0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_s : (assemble B C W V S N G).s = S.s := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_nd : (assemble B C W V S N G).nd = N.nd := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_loc : (assemble B C W V S N G).loc = N.loc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_fm : (assemble B C W V S N G).fm = C.fm := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_jet : (assemble B C W V S N G).jet = G.jet := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_gx : (assemble B C W V S N G).gx = G.gx := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_vol : (assemble B C W V S N G).vol = G.vol := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_cd : (assemble B C W V S N G).cd = G.cd := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_dsig : (assemble B C W V S N G).dsig = S.dsig := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_chTw : (assemble B C W V S N G).chTw = C.chTw := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem assemble_cOf : (assemble B C W V S N G).cOf = B.cOf := rfl
 
 end

@@ -7,6 +7,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.DefiniteAniso
 
+/- English proof (translation)
+Establish `h2 : A * (M * A.map star)ᵀ = 1`. Establish `h3 : (M * A.map star) * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 (by rw [← Matrix.mul_assoc]; exact h1)`. Establish `h4` using `congrArg Matrix.transpose h3`. Simplify `h4` using `[Matrix.transpose_mul]`. Take `⟨z, hxz⟩ : ∃ z, x = A *ᵥ z` from `⟨(M * A.map star)ᵀ *ᵥ x, by rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]⟩`.
+
+Establish `hstar : star (A *ᵥ z) = A.map star *ᵥ star z`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`. Establish `key : x ⬝ᵥ M *ᵥ star x = z ⬝ᵥ star z`. Rewrite using `[hxz, hstar, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose A z, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, h1, Matrix.vecMul_one]`.
+
+Rewrite `hx` using `[key]`. Establish `h5` using `congrArg Complex.re hx`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.re_sum, Complex.ofReal_re, Complex.zero_re] at h5`. Establish `hz : z = 0` using `funext fun i => by`. Establish `h6` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => Complex.normSq_nonneg _).1 h5 i (Finset.mem_univ i)`.
+
+Simplify using `using h6`. Rewrite using `[hxz, hz, Matrix.mulVec_zero]`.
+-/
 theorem eq_zero_of_congr_one {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (e : ι ≃ Fin n)
     {M : Matrix (Fin n) (Fin n) ℂ} {A : Matrix (Fin n) ι ℂ} (h1 : Aᵀ * M * A.map star = 1) (x : Fin n → ℂ)
     (hx : x ⬝ᵥ M *ᵥ star x = 0) : x = 0 := by
@@ -31,6 +40,15 @@ theorem eq_zero_of_congr_one {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     simpa using h6
   rw [hxz, hz, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Break down `h with ⟨-, A, hA⟩ | ⟨-, A, hA⟩` into its components or cases. Use `eq_zero_of_congr_one (A := A) (M := M) (Equiv.sumEmpty (Fin n) (Fin 0)) ?_ x hx` and prove the remaining obligations. Rewrite using `[hA]`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases.
+
+Break down `j with j | j` into its components or cases. Simplify using `[Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Use `eq_zero_of_congr_one (A := A) (M := -M) (Equiv.emptySum (Fin 0) (Fin n)) ?_ x ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hA]`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Conclude with `i.elim0`. Break down `j with j | j` into its components or cases.
+
+Conclude with `j.elim0`. Simplify using `[Matrix.one_apply]`. Rewrite using `[Matrix.neg_mulVec, dotProduct_neg, hx, neg_zero]`.
+-/
 theorem eq_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M n 0 ∨ HasSig M 0 n) (x : Fin n → ℂ)
     (hx : x ⬝ᵥ M *ᵥ star x = 0) : x = 0 := by
   rcases h with ⟨-, A, hA⟩ | ⟨-, A, hA⟩
@@ -54,6 +72,11 @@ end GlobalTheory.DefiniteAniso
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h B n X hX x hx`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hs : HasSig (X.J.map (B.emb w).1) n 0 ∨ HasSig (X.J.map (B.emb w).1) 0 n` using `hX.imp (fun h => h.sig w) fun h => h.sig w`. Establish `h1` using `congrArg (B.emb w).1 hx`. Establish `h2` using `DefiniteAniso.eq_zero_of_hasSig hs (fun i => (B.emb w).1 (x i)) (by`.
+
+Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, h.2.2.2, Matrix.map_apply, Pi.star_apply])`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h2 i`.
+-/
 theorem DefiniteAniso.anisotropic_of_definite : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ {B : Base F E} {n : ℕ} {X : Spc F E n}, (X.IsHerm σ B n 0 ∨ X.IsHerm σ B 0 n) → ∀ (x : Fin n → E), form σ X.J x x = 0 → x = 0 := by
   intro F E _ _ _ _ _ σ h B n X hX x hx
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance

@@ -9,6 +9,13 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 open Formalism.NG
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `O _ _ _ X X' T T' Z p q b hb₁ hb₂ d _ _ R' _ hdet Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ colIdx hinj D j e' Kc k0 hEE he₁ hgen π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ hvcc hcard sE tE δO ℓ cB what₂ qs lenRow deg vζ s vhE H0 Sha hEsum hk0 NNc cols eO vδ N h0 hE0 hδ0 hτ0 hKO hlift hRho …`. Establish `hEE' : E * E = δ • E` using `by rw [Algebra.smul_def]; exact hEE`. Use `collectAlt t ht (fun k => Module.length O (ColNNJ r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 →ₗ[R'] blockRestrictedRepresentationType bl ρk k)) univ _ what₂ cols qs lenRow vζ h0 e' j deg Sha eO vδ s vhE N H0 cB hvcc ?_ ?_ ?_` and prove the remaining obligations. Take `⟨F, Q, hrows, hcols, hQ, hlen⟩` from `hRho`. Conclude with `blockRhoLat O R' Tc G {a // bl a = 0} (ρk 0).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinj D j e' Kc k0 ℓ sE tE hEsum hEE' hE0 hk0 hδ0 hτ0 hKO hlift what₂ F lenRow Q s hrows hcols hQ hlen`.
+
+Take `⟨hu, he₁0, hE1, hδ1, hk1, F, Q, hrows, hqs, hcols, hQ, hlen⟩` from `hOne`. Establish `h1 : Fintype.card {a // bl a = (⟨1, by omega⟩ : Fin (t + 1))} = 1` using `hcard _ (fun h => by simp [Fin.ext_iff] at h)`. Conclude with `blockChiOneLat blockChiOneFull O R' Tc G _ (ρk ⟨1, by omega⟩).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinj D j e' Kc k0 ℓ cB h1 hu he₁0 hE1 hδ1 hk1 what₂ qs F deg vζ Q vhE hrows hqs hcols hQ hlen`. Introduce `c hc`. Take `⟨he₁0, hEc, hδc, hτc, hH0, F, Q, hrows, hqs, hcols, hQ, hlen⟩` from `hHigh c hc`.
+
+Establish `hc1 : Fintype.card {a // bl a = c} = 1` using `hcard c (by rintro rfl; simp at hc)`. Conclude with `blockChiCLat blockChiCFull O R' Tc G _ (ρk c).toRingHom r χ E e₁ δ δO ι ℕ colIdx hinj D j Kc k0 ℓ cB sE tE hc1 hEsum hEE' he₁0 hEc hk0 hδc hτc what₂ qs F deg vζ Q (Sha ((c : ℕ) - 1)) H0 hH0 hrows hqs hcols hQ hlen`.
+-/
 theorem length_bound_via_splitting :
   ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X X' : Type)
     (T : Subalgebra O (X → O)) (T' : Subalgebra O (X' → O)) (Z : Set X) (p : X' → X) (q : ℕ)

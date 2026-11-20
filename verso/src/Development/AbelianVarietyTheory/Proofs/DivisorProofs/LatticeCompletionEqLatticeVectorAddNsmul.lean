@@ -13,10 +13,26 @@ namespace GlobalTheory.LKGeo.LaHatMod
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `valuedAdicCompletion_eq_valuation' w q`.
+-/
 theorem valued_algebraMap (w : HeightOneSpectrum ℤ) (q : ℚ) :
     Valued.v (algebraMap ℚ (w.adicCompletion ℚ) q) = w.valuation ℚ q :=
   valuedAdicCompletion_eq_valuation' w q
 
+/- English proof (translation)
+Use `set c' : w.adicCompletion ℚ := algebraMap ℚ (w.adicCompletion ℚ) c`. Establish `hc' : c' ≠ 0`. Simplify using `only [c', ne_eq, map_eq_zero_iff _ (algebraMap ℚ (w.adicCompletion ℚ)).injective]`. Conclude with `hc0`. Establish `hpos : (0 : WithZero (Multiplicative ℤ)) < Valued.v c'` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hc')`.
+
+Establish `hU : IsOpen ((fun y => (y - x) / c') ⁻¹' (w.adicCompletionIntegers ℚ : Set (w.adicCompletion ℚ)))` using `(Valued.isOpen_valuationSubring _).preimage ((continuous_id.sub continuous_const).div_const c')`. Take `⟨k, hk⟩` from `(denseRange_algebraMap (K := ℚ) w).exists_mem_open hU ⟨x, by simp [SetLike.mem_coe, sub_self, zero_div]⟩`. Establish `hk' : Valued.v (x - algebraMap ℚ (w.adicCompletion ℚ) k) ≤ w.valuation ℚ c`. Establish `h : Valued.v ((algebraMap ℚ (w.adicCompletion ℚ) k - x) / c') ≤ 1` using `hk`. Rewrite `h` using `[map_div₀, div_le_one₀ hpos]`.
+
+Rewrite using `[Valuation.map_sub_swap, ← valued_algebraMap]`. Conclude with `h`. Establish `hk1 : w.valuation ℚ k ≤ 1`. Rewrite using `[← valued_algebraMap]`. Establish `e : algebraMap ℚ (w.adicCompletion ℚ) k = x - (x - algebraMap ℚ (w.adicCompletion ℚ) k)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hx (hk'.trans hc))`. Establish `hne : w.valuation ℚ c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc0`. Take `⟨r, hr⟩` from `exists_valuation_sub_lt_of_integer w hk1 (Units.mk0 _ hne)`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Establish `hr' : Valued.v (algebraMap ℚ (w.adicCompletion ℚ) (k - algebraMap ℤ ℚ r)) ≤ w.valuation ℚ c`. Rewrite using `[valued_algebraMap, Valuation.map_sub_swap]`. Conclude with `hr.le`. Establish `e : x - (r : w.adicCompletion ℚ) = (x - algebraMap ℚ (w.adicCompletion ℚ) k) + algebraMap ℚ (w.adicCompletion ℚ) (k - algebraMap ℤ ℚ r)`. Rewrite using `[map_sub, algebraMap_int_eq, eq_intCast, map_intCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hk' hr')`.
+-/
 theorem exists_int_valued_sub_le (w : HeightOneSpectrum ℤ) {x : w.adicCompletion ℚ} (hx : Valued.v x ≤ 1)
     {c : ℚ} (hc0 : c ≠ 0) (hc : w.valuation ℚ c ≤ 1) :
     ∃ r : ℤ, Valued.v (x - (r : w.adicCompletion ℚ)) ≤ w.valuation ℚ c := by
@@ -50,12 +66,34 @@ theorem exists_int_valued_sub_le (w : HeightOneSpectrum ℤ) {x : w.adicCompleti
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[← map_intCast (algebraMap ℚ (w.adicCompletion ℚ)), valued_algebraMap]`. Use `w.valuation_le_one (K := ℚ) z` as an intermediate fact. Simplify using `using this`.
+-/
 theorem valued_intCast (w : HeightOneSpectrum ℤ) (z : ℤ) :
     Valued.v ((z : w.adicCompletion ℚ)) ≤ 1 := by
   rw [← map_intCast (algebraMap ℚ (w.adicCompletion ℚ)), valued_algebraMap]
   have := w.valuation_le_one (K := ℚ) z
   simpa using this
 
+/- English proof (translation)
+Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hl).irreducible`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Set `w0 : HeightOneSpectrum ℤ` to `⟨Ideal.span {(l : ℤ)}, hmax.isPrime, by simpa using hl0⟩`. Establish `hw0 : w0.asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `h`.
+
+Establish `hp : (p : ℤ) ∈ Ideal.span {(l : ℤ)}`. Express the relevant statement in the definitionally equal form `(p : ℤ) ∈ w0.asIdeal`. Rewrite using `[h]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `hp` using `[Ideal.mem_span_singleton]`.
+
+Establish `hd : l ∣ p` using `by exact_mod_cast hp`. Break down `(Nat.Prime.eq_one_or_self_of_dvd (Fact.out : p.Prime) l hd) with h1 | h1` into its components or cases. Conclude with `hl.ne_one h1`. Conclude with `hlp h1`. Set `v0 : AwayP p` to `⟨w0, hw0⟩`.
+
+Establish `hlq0 : (l : ℚ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hlv : ∀ w : HeightOneSpectrum ℤ, w.valuation ℚ (l : ℚ) ≤ 1` using `fun w => by`. Use `w.valuation_le_one (K := ℚ) (l : ℤ)` as an intermediate fact. Simplify using `using this`. Take `⟨z, hz⟩` from `exists_int_valued_sub_le w0 (ha v0) hlq0 (hlv w0)`.
+
+Use `⟨z, (a - (z : AfP p)) * algebraMap ℚ (AfP p) (l : ℚ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[mem_adicCompletionIntegers, map_mul, map_sub, map_intCast, AlgHom.commutes, Valuation.map_mul, valued_algebraMap, map_inv₀]`. Establish `hne : v.1.valuation ℚ (l : ℚ) ≠ 0` using `(Valuation.ne_zero_iff _).2 hlq0`. Distinguish the cases in `hv : v = v0`.
+
+Substitute `hv` using the available equality. Rewrite using `[mul_inv_le_iff₀ (zero_lt_iff.2 hne), _root_.one_mul]`. Conclude with `hz`. Establish `hnot : (l : ℤ) ∉ v.1.asIdeal`. Introduce `hm`.
+
+Apply `hv` to reduce the goal to its premises. Establish `hle : Ideal.span {(l : ℤ)} ≤ v.1.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 hm`. Establish `heq` using `hmax.eq_of_le v.1.isPrime.ne_top hle`. Conclude with `Subtype.ext (HeightOneSpectrum.ext heq.symm)`. Establish `h1 : v.1.valuation ℚ (l : ℚ) = 1`.
+
+Use `(valuation_eq_one_iff_notMem (v := v.1) (K := ℚ) (r := (l : ℤ))).2 hnot` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1, inv_one, _root_.mul_one]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (ha v) (valued_intCast v.1 z))`. Establish `e : (l : AfP p) * algebraMap ℚ (AfP p) (l : ℚ)⁻¹ = 1`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ (AfP p)), ← map_mul, mul_inv_cancel₀ hlq0, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, _root_.mul_one]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by ring`.
+-/
 theorem exists_int_add_prime_mul (l : ℕ) (hl : l.Prime) (hlp : l ≠ p) (a : AfP p) (ha : IsIntAf a) :
     ∃ (z : ℤ) (a' : AfP p), IsIntAf a' ∧ a = (z : AfP p) + (l : AfP p) * a' := by
   have hmax : (Ideal.span {(l : ℤ)}).IsMaximal :=
@@ -102,6 +140,13 @@ theorem exists_int_add_prime_mul (l : ℕ) (hl : l.Prime) (hlp : l ≠ p) (a : A
           rw [e, _root_.mul_one]; ring
       _ = _ := by ring
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.recOnMul generalizing a with`. Consider the case `zero => exact absurd hn (lt_irrefl 0)`. Consider the case `one => exact ⟨0, a, ha, by simp⟩`. Consider the case `prime l hl`. Conclude with `exists_int_add_prime_mul l hl (fun h => by`.
+
+Substitute `h` using the available equality. Conclude with `hl.ne_one ((Nat.coprime_self _).1 hnp)) a ha`. Consider the case `mul m k ihm ihk`. Establish `hm : 0 < m` using `Nat.pos_of_ne_zero (fun h => by simp [h] at hn)`. Establish `hk : 0 < k` using `Nat.pos_of_ne_zero (fun h => by simp [h] at hn)`.
+
+Take `⟨hmp, hkp⟩` from `Nat.coprime_mul_iff_left.1 hnp`. Take `⟨z1, a1, h1, e1⟩` from `ihm hm hmp a ha`. Take `⟨z2, a2, h2, e2⟩` from `ihk hk hkp a1 h1`. Conclude with `⟨z1 + m * z2, a2, h2, by rw [e1, e2]; push_cast; ring⟩`.
+-/
 theorem exists_int_add_mul (n : ℕ) (hn : 0 < n) (hnp : n.Coprime p) (a : AfP p) (ha : IsIntAf a) :
     ∃ (z : ℤ) (a' : AfP p), IsIntAf a' ∧ a = (z : AfP p) + (n : AfP p) * a' := by
   induction n using Nat.recOnMul generalizing a with
@@ -122,6 +167,17 @@ end GlobalTheory.LKGeo.LaHatMod
 
 namespace GlobalTheory.LKGeo
 
+/- English proof (translation)
+Introduce `p _ D n hn hnp v hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨a, x, ha, rfl⟩` from `hu`. Take `⟨z, a', ha', e⟩` from `LaHatMod.exists_int_add_mul n hn hnp a ha`.
+
+Use `⟨z • x, a' ⊗ₜ ((1 : ℚ) ⊗ₜ x), AddSubgroup.subset_closure ⟨a', x, ha', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ((z : AfP p)) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x) = (1 : AfP p) ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] (z • x))`. Rewrite using `[show (z : AfP p) = (z : ℚ) • (1 : AfP p) by rw [← Algebra.algebraMap_eq_smul_one, map_intCast], TensorProduct.smul_tmul, TensorProduct.smul_tmul', show (z : ℚ) • (1 : ℚ) = z • (1 : ℚ) by simp, TensorProduct.smul_tmul]`. Establish `h2 : ((n : AfP p) * a') ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x) = n • (a' ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x))`. Rewrite using `[← nsmul_eq_mul, TensorProduct.smul_tmul']`.
+
+Rewrite using `[e, TensorProduct.add_tmul, h1, h2, inAf]`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp [inAf]⟩`. Consider the case `add u u' _ _ ih ih'`. Take `⟨x, w, hw, e⟩` from `ih`. Take `⟨x', w', hw', e'⟩` from `ih'`.
+
+Use `⟨x + x', w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[e, e', inAf, inAf, inAf, TensorProduct.tmul_add, TensorProduct.tmul_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `neg u _ ih`. Take `⟨x, w, hw, e⟩` from `ih`.
+
+Use `⟨-x, -w, neg_mem hw, ?_⟩` and prove the remaining obligations. Rewrite using `[e, inAf, inAf, TensorProduct.tmul_neg, TensorProduct.tmul_neg, smul_neg, neg_add]`.
+-/
 theorem exists_inAf_add_nsmul_of_mem_laHat : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (n : ℕ), 0 < n → n.Coprime p →
     ∀ v ∈ LaHat D, ∃ (x : D.La) (w : TensorProduct ℚ (AfP p) (VQ D)), w ∈ LaHat D ∧ v = inAf D x + n • w := by
   intro p _ D n hn hnp v hv

@@ -19,16 +19,35 @@ def unitsOfΓ {S : Scheme.{0}} {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S) (A : Typ
     Γ((overAt s A).left, ⊤)ˣ →* Aˣ :=
   Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom
 
+/- English proof (translation)
+The claim follows from `Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).hom).1`.
+-/
 theorem unitsOfΓ_injective {S : Scheme.{0}} {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S) (A : Type) [CommRing A]
     [Algebra Ω A] : Function.Injective (unitsOfΓ s A) :=
   Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).hom).1
 
+/- English proof (translation)
+Establish `h₁` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (f : A →+* B))`. Conclude with `Units.ext (congrArg (fun φ => φ.hom ζ.val) h₁)`.
+-/
 theorem unitsOfΓ_natural {S : Scheme.{0}} {Ω : Type} [Field Ω] (s : Sp Ω ⟶ S) {A B : Type} [CommRing A]
     [Algebra Ω A] [CommRing B] [Algebra Ω B] (f : A →ₐ[Ω] B) (ζ : Γ((overAt s A).left, ⊤)ˣ) :
     unitsOfΓ s B (Units.map (homAt s f).left.appTop.hom.toMonoidHom ζ) = Units.map (f : A →* B) (unitsOfΓ s A ζ) := by
   have h₁ := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (f : A →+* B))
   exact Units.ext (congrArg (fun φ => φ.hom ζ.val) h₁)
 
+/- English proof (translation)
+Introduce `Ω _ p _ _ S s G _ _ L c g hg x hx`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hex : ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), ∃ ζ : Γ((overAt s A).left, ⊤)ˣ, a ^ p = 0 → CubWeil c p (g A a) (homAt s (Algebra.ofId Ω A) ≫ x) ζ`. Introduce `A _ _ a`. Distinguish the cases in `ha : a ^ p = 0`.
+
+Take `⟨ζ, hζ, -⟩` from `UU.existsUnique_cubWeil c (hg.pow_eq_one hp ha) (y := homAt s (Algebra.ofId Ω A) ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])`. Conclude with `⟨ζ, fun _ => hζ⟩`. Conclude with `⟨1, fun h => absurd h ha⟩`. Use `choose ζ hζ using hex`. Introduce `A _ _ a ha`.
+
+Establish `key` using `GlobalTheory.T.alphaP_multiplicativeCharacter_eq_one Ω p (fun A _ _ a => unitsOfΓ s A (ζ A a)) ?_ ?_ A a ha`. Establish `: ζ A a = 1` using `unitsOfΓ_injective s A (key.trans (map_one _).symm)`. Conclude with `this ▸ hζ A a ha`. Introduce `A B _ _ _ _ f a ha beta_reduce`. Establish `hb : f a ^ p = 0` using `by rw [← map_pow, ha, map_zero]`.
+
+Establish `h₁` using `(hζ A a ha).comp (homAt s f)`. Rewrite `h₁` using `[← hg.1 A B f a ha, ← Category.assoc, hom_comp, Subsingleton.elim (f.comp (Algebra.ofId Ω A)) (Algebra.ofId Ω B)]`. Rewrite using `[(hζ B (f a) hb).unique h₁, unitsOfΓ_natural]`. Introduce `A _ _ a a' ha ha' beta_reduce`. Establish `hs : (a + a') ^ p = 0`.
+
+Break down `subsingleton_or_nontrivial A with _ | _` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `haveI : CharP A p := charP_of_injective_algebraMap (algebraMap Ω A).injective p`. Rewrite using `[add_pow_char, ha, ha', add_zero]`. Establish `h₁` using `(hζ A a ha).mul_left (hζ A a' ha')`.
+
+Rewrite `h₁` using `[← hg.2 A a a' ha ha']`. Rewrite using `[(hζ A (a + a') hs).unique h₁, map_mul]`.
+-/
 theorem cubWeil_alpha_rational : ∀ (Ω : Type) [Field Ω] (p : ℕ) [Fact p.Prime] [CharP Ω p] (S : Scheme.{0}) (s : Sp Ω ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (c : CubicalStr G L) (g : Fam s G), IsAlpha p s G g → ∀ x : overAt s Ω ⟶ G, x ^ p = 1 → ∀ (A : Type) [CommRing A] [Algebra Ω A] (a : A), a ^ p = 0 → CubWeil c p (g A a) (homAt s (Algebra.ofId Ω A) ≫ x) 1 := by
   intro Ω _ p _ _ S s G _ _ L c g hg x hx
   classical

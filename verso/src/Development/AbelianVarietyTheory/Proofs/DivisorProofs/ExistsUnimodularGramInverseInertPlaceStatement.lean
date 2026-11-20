@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.XmApply
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertGram.exists_gram_inv | exact GlobalTheory.InertGram.exists_gram_inv | (intros; apply GlobalTheory.InertGram.exists_gram_inv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_unimodular_gram_inverse_inertPlace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →
     ∀ (n r s : ℕ) (X : Spc F E n), X.IsHerm σ B r s →

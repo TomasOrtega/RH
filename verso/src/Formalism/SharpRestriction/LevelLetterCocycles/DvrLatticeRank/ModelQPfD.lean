@@ -6,6 +6,13 @@ namespace Formalism.MainNotions.N.Ln34.MQ
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc PowerSeries
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hϖ`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hp0 hϖ`. Establish `hk1 : k ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hpu (associated_one_iff_isUnit.1 (by simpa using hk))`. Establish `h1 : ϖ ^ m ∣ ϖ ^ (k * m)` using `pow_dvd_pow ϖ (Nat.le_mul_of_pos_left m (Nat.pos_of_ne_zero hk1))`. Establish `hdvd : a ∣ p ^ m` using `hm.dvd.trans (h1.trans (by rw [pow_mul]; exact (hk.symm.pow_pow).dvd))`. Take `⟨b, hb⟩` from `hdvd`.
+
+Conclude with `⟨m, b, by rw [hb, mul_comm]⟩`.
+-/
 theorem dvd_pow_of_dvr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : O) (hp0 : p ≠ 0)
     (hpu : ¬ IsUnit p) : ∀ a : O, a ≠ 0 → ∃ (k : ℕ) (b : O), p ^ k = b * a := by
   intro a ha
@@ -30,18 +37,30 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Simplify using `[DelS, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_DelS' {x : W.DD T} : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
   simp [DelS, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[letS, sub_eq_zero]`.
+-/
 theorem mem_letS' {c : ZMod n} {x : W.DD T} : x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
   simp [letS, sub_eq_zero]
 
+/- English proof (translation)
+Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+-/
 theorem γD_smulA' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
   rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
   exact this
 
+/- English proof (translation)
+Establish `hS : PowerSeries.HasSubst (π' i)` using `PowerSeries.HasSubst.of_constantCoeff_zero' hπ0`. Use `conv_lhs => rw [hF, PowerSeries.eq_X_mul_shift_add_const F]`. Rewrite using `[PowerSeries.subst_add hS, PowerSeries.subst_mul hS, PowerSeries.subst_X hS, PowerSeries.subst_C]`. Both sides reduce to the same expression.
+-/
 theorem expand_at (π' a : LetA O n) (i : ZMod n) (hπ0 : PowerSeries.constantCoeff (π' i) = 0)
     (F : PowerSeries O) (hF : a i = PowerSeries.subst (π' i) F) :
     a i = π' i * PowerSeries.subst (π' i) (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) F) +
@@ -53,6 +72,43 @@ theorem expand_at (π' a : LetA O n) (i : ZMod n) (hπ0 : PowerSeries.constantCo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set d : ZMod n := c - 1 with hd`. Establish `hπd : ∀ i, π' i = (w₁ : LetA O n) i * PowerSeries.X ^ s'` using `fun i => π_at s' π' w₁ hπ i`. Establish `hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0`. Introduce `i`. Rewrite using `[hπd i, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]`.
+
+Establish `hmem : ∀ j, (letE d : LetA O n) • b j ∈ NcS W T d`. Introduce `j`. Take `⟨hN, hΔ⟩` from `hbΔ j`. Use `⟨⟨(W.N T).smul_mem _ hN, (mem_DelS' W T).2 fun δ hδ => ?_⟩, (mem_letS' W T).2 ?_⟩` and prove the remaining obligations. Rewrite using `[γD_smulA', hΔ δ hδ, (show ∀ δ ∈ W.DelF, W.γA δ (letE d : LetA O n) = letE d from letE_mem W d) δ hδ]`.
+
+Rewrite using `[smul_smul, letE_mul_self']`. Set `v : Fin r → LcQ W T π' c` to `fun j => Submodule.Quotient.mk ⟨_, hmem j⟩`. Establish `hli : LinearIndependent O v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`.
+
+Establish `h0 : (∑ j, g j • (⟨_, hmem j⟩ : ↥(NcS W T d))) ∈ (PiNS W T π' 1).comap (NcS W T d).subtype`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sum]`. Simplify `hg` using `only [map_smul, Submodule.mkQ_apply]`. Rewrite `h0` using `[Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h0`.
+
+Take `⟨⟨y, hyN, hy⟩, -⟩` from `h0`. Take `⟨a', ha'⟩` from `(hbu y hyN).exists`. Establish `hxN : π' • y ∈ W.N T` using `(W.N T).smul_mem _ hyN`. Establish `hrep1 : π' • y = ∑ j, (π' * a' j) • b j`. Rewrite using `[ha', Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => smul_smul _ _ _`. Establish `hrep2 : π' • y = ∑ j, (algebraMap O (LetA O n) (g j) * (letE d : LetA O n)) • b j`. Establish `hy' : π' • y = ∑ j, g j • ((letE d : LetA O n) • b j)`. Rewrite using `[← hy]`. Use `show π' • y = ((π' ^ 1 : LetA O n) • LinearMap.id : W.DD T →ₗ[LetA O n] W.DD T) y`.
+
+Rewrite using `[pow_one]`. Both sides reduce to the same expression. Rewrite using `[hy']`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← smul_smul, algebraMap_smul]`. Establish `huq` using `(hbu _ hxN).unique hrep1 hrep2`.
+
+Establish `hj` using `congrFun (congrFun huq j) d`. Simplify using `only [Pi.mul_apply, letE, Pi.single_eq_same, mul_one] at hj`. Establish `hcc` using `congrArg PowerSeries.constantCoeff hj`. Rewrite `hcc` using `[map_mul, hπ0 d, zero_mul]`. Establish `: PowerSeries.constantCoeff ((algebraMap O (LetA O n) (g j)) d) = g j` using `by show PowerSeries.constantCoeff (algebraMap O (PowerSeries O) (g j)) = g j`.
+
+Rewrite using `[PowerSeries.algebraMap_apply]`. Simplify using the standard rewrite rules. Rewrite `hcc` using `[this]`. Conclude with `hcc.symm`. Establish `hsp : ⊤ ≤ Submodule.span O (Set.range v)`.
+
+Introduce and unpack `q -`. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨⟨hxN, hxΔ⟩, hxl⟩` from `hx`. Establish `hxΔ'` using `(mem_DelS' W T).1 hxΔ`. Establish `hxl'` using `(mem_letS' W T).1 hxl`.
+
+Take `⟨a, haΔ, hxa⟩` from `hbe x ⟨hxN, hxΔ'⟩`. Use `choose F hF using fun j => (huniq (a j) (haΔ j)).exists`. Set `κ : Fin r → O` to `fun j => PowerSeries.constantCoeff (F j d)`. Set `t : Fin r → LetA O n` to `fun j _ => PowerSeries.subst (π' d) (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) (F j d))`. Establish `hkey : ∀ j, (letE d : LetA O n) * a j = algebraMap O (LetA O n) (κ j) * letE d + π' * ((letE d : LetA O n) * t j)`.
+
+Introduce `j`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = d`. Substitute `hi` using the available equality. Simplify using `only [Pi.mul_apply, Pi.add_apply, letE, Pi.single_eq_same, one_mul, mul_one]`.
+
+Rewrite using `[expand_at π' (a j) _ (hπ0 _) (F j _) (hF j _)]`. Use `show _ = algebraMap O (PowerSeries O) (κ j) + _`. Rewrite using `[PowerSeries.algebraMap_apply]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, t, κ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[letE, Pi.single_apply, hi]`. Use `set y : W.DD T := ∑ j, ((letE d : LetA O n) * t j) • b j with hydef`. Establish `hyN : y ∈ W.N T` using `Submodule.sum_mem _ fun j _ => (W.N T).smul_mem _ (hbΔ j).1`. Establish `hxe : x = ∑ j, κ j • ((letE d : LetA O n) • b j) + π' • y` using `by conv_lhs => rw [← hxl', hxa, Finset.smul_sum]`. Rewrite using `[hydef, Finset.smul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hkey j, add_smul, smul_smul, ← algebraMap_smul (LetA O n) (κ j), smul_smul]`. Establish `hdiff : (⟨x, ⟨⟨hxN, hxΔ⟩, hxl⟩⟩ : ↥(NcS W T d)) - ∑ j, κ j • ⟨_, hmem j⟩ ∈ (PiNS W T π' 1).comap (NcS W T d).subtype`. Rewrite using `[Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_sub, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`.
+
+Establish `he : x - ∑ j, κ j • ((letE d : LetA O n) • b j) = π' • y` using `by rw [hxe]; abel`. Rewrite using `[he]`. Use `⟨⟨y, hyN, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((π' ^ 1 : LetA O n) • LinearMap.id : W.DD T →ₗ[LetA O n] W.DD T) y = π' • y`. Rewrite using `[pow_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[← he]`. Use `sub_mem hxΔ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hmem j).1.2)` and prove the remaining obligations. Establish `hq : (Submodule.Quotient.mk (⟨x, ⟨⟨hxN, hxΔ⟩, hxl⟩⟩ : ↥(NcS W T d)) : LcQ W T π' c) = ∑ j, κ j • v j`. Rewrite using `[(Submodule.Quotient.eq _).2 hdiff, ← Submodule.mkQ_apply, map_sum]`.
+
+Simplify using `only [map_smul, Submodule.mkQ_apply]`. Both sides reduce to the same expression. Rewrite using `[hq]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨Module.Basis.mk hli hsp⟩`.
+-/
 theorem basis_L [IsDomain O] (π' : LetA O n) (s' : ℕ) (hs : 1 ≤ s') (w₁ : (LetA O n)ˣ)
     (hπ : π' = w₁ * (letπ : LetA O n) ^ s')
     (huniq : ∀ a, Formalism.MainNotions.DeltaInvariantLattices.InAΔ W a → ∃! f : ZMod n → PowerSeries O, ∀ i, a i = PowerSeries.subst (π' i) (f i))
@@ -155,6 +211,9 @@ theorem basis_L [IsDomain O] (π' : LetA O n) (s' : ℕ) (hs : 1 ≤ s') (w₁ :
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
   exact ⟨Module.Basis.mk hli hsp⟩
 
+/- English proof (translation)
+Conclude with `Module.Finite.of_basis (basis_L W T π' s' hs w₁ hπ huniq b hbΔ hbu hbe c).some`.
+-/
 theorem finite_L [IsDomain O] (π' : LetA O n) (s' : ℕ) (hs : 1 ≤ s') (w₁ : (LetA O n)ˣ)
     (hπ : π' = w₁ * (letπ : LetA O n) ^ s')
     (huniq : ∀ a, Formalism.MainNotions.DeltaInvariantLattices.InAΔ W a → ∃! f : ZMod n → PowerSeries O, ∀ i, a i = PowerSeries.subst (π' i) (f i))

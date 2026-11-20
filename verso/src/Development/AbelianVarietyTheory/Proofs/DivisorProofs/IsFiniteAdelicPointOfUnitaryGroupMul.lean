@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinPtMul
 
+/- English proof (translation)
+Introduce `D V n g g' x x' hx hx'`. Take `⟨hg, e, h⟩` from `hx`. Take `⟨hg', e', h'⟩` from `hx'`. Substitute `e` using the available equality. Use `⟨mul_mem hg hg', rfl, fun i j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, Units.val_mul, Subgroup.coe_mul, Matrix.mul_apply, map_sum, Fin.cast_eq_self]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `a` using `h i k`. Establish `b` using `h' k j`. Simplify using `only [Fin.cast_eq_self] at a b`.
+
+Rewrite using `[a, b]`.
+-/
 theorem isFinPt_mul : ∀ {D : D7} (V : HSp D) {n : ℕ} (g g' : GA D V) (x x' : Formalism.MainNotions.StandardLatticesGL3.GA D n),
   IsFinPt V g x → IsFinPt V g' x' → IsFinPt V (g * g') (x * x') := by
   intro D V n g g' x x' hx hx'

@@ -18,6 +18,15 @@ def Pair (x : (Σ k, ι k) → Ω) (c : K → ℤ) (u : Ω) (f g : MRing ι O) :
   (∃ bf bg : K → ℕ, IsMultiHomog f bf ∧ IsMultiHomog g bg ∧ (fun k => (bf k : ℤ) - bg k) = c) ∧
     aeval x f = u * aeval x g
 
+/- English proof (translation)
+Take `⟨⟨bf, bg, hf, hg, hd⟩, hv⟩` from `h`. Take `⟨⟨bf', bg', hf', hg', hd'⟩, hv'⟩` from `h'`. Establish `he : bf + bg' = bf' + bg`. Use function extensionality and compare the values at `k`. Establish `h1` using `congrFun hd k`.
+
+Establish `h2` using `congrFun hd' k`. Simplify using `only [Pi.add_apply] at h1 h2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h1 : IsWeightedHomogeneous (blockWeight ι) (f * g') (bf + bg')` using `IsWeightedHomogeneous.mul hf hg'`. Establish `h2 : IsWeightedHomogeneous (blockWeight ι) (f' * g) (bf + bg')`.
+
+Rewrite using `[he]`. Conclude with `IsWeightedHomogeneous.mul hf' hg`. Use `GenericProjClosureDivisor.mem_of_homog (b := bf + bg') ?_ ?_` and prove the remaining obligations. Conclude with `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (sub_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h1) ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr h2))`. Rewrite using `[map_sub, map_mul, map_mul, hv, hv']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cross {x : (Σ k, ι k) → Ω} {c : K → ℤ} {u : Ω} {f g f' g' : MRing ι O}
     (h : Pair x c u f g) (h' : Pair x c u f' g') : f * g' - f' * g ∈ pointIdeal O x := by
   obtain ⟨⟨bf, bg, hf, hg, hd⟩, hv⟩ := h
@@ -39,6 +48,11 @@ theorem cross {x : (Σ k, ι k) → Ω} {c : K → ℤ} {u : Ω} {f g f' g' : MR
     ring
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `he : e = ∑ k, e k • blockWeight ι ⟨k, s k⟩`. Use extensionality with `j`. Simplify using `[blockWeight, Pi.single_apply]`. Unfold `IsMultiHomog`. Use `conv => enter [3]`.
+
+Rewrite using `[he]`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X O _ _).pow _`.
+-/
 theorem mono_homog (s : ∀ k, ι k) (e : K → ℕ) :
     IsMultiHomog (∏ k, X ⟨k, s k⟩ ^ e k : MRing ι O) e := by
   have he : e = ∑ k, e k • blockWeight ι ⟨k, s k⟩ := by
@@ -48,6 +62,9 @@ theorem mono_homog (s : ∀ k, ι k) (e : K → ℕ) :
   conv => enter [3]; rw [he]
   exact IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X O _ _).pow _
 
+/- English proof (translation)
+Introduce `hf`. Break down `hW.mem_or_mem hf with h3 | h3` into its components or cases. Conclude with `hc (hW.mem_of_pow_mem n h3)`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff (p := W)).1 h3`. Conclude with `hy k (hW.mem_of_pow_mem (e k) hk)`.
+-/
 theorem product_powers_not_mem_prime {A : Type} [CommRing A] {W : Ideal A} (hW : W.IsPrime) {c : A} (hc : c ∉ W) (y : K → A)
     (hy : ∀ k, y k ∉ W) (n : ℕ) (e : K → ℕ) : c ^ n * ∏ k, y k ^ e k ∉ W := by
   intro hf
@@ -56,6 +73,9 @@ theorem product_powers_not_mem_prime {A : Type} [CommRing A] {W : Ideal A} (hW :
   · obtain ⟨k, -, hk⟩ := (Ideal.IsPrime.prod_mem_iff (p := W)).1 h3
     exact hy k (hW.mem_of_pow_mem (e k) hk)
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k), ← zpow_add₀ (hy k), h k]`.
+-/
 theorem zpow_aux (y : K → Ω) (hy : ∀ k, y k ≠ 0) (b b' : K → ℤ) (p q : K → ℕ)
     (h : ∀ k, b k + q k = b' k + p k) :
     (∏ k, y k ^ b k) * ∏ k, y k ^ q k = (∏ k, y k ^ b' k) * ∏ k, y k ^ p k := by
@@ -63,12 +83,26 @@ theorem zpow_aux (y : K → Ω) (hy : ∀ k, y k ≠ 0) (b b' : K → ℤ) (p q 
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hy k), ← zpow_add₀ (hy k), h k]
 
+/- English proof (translation)
+Apply `mul_left_cancel₀ hm` to reduce the goal to its premises. Take the linear combination `D * Q * h - D * t * hb`.
+-/
 theorem mul_eq_one_of_covolume_identity {m m' t D P Q r u : Ω} (hm : m' ≠ 0) (h : t * m = r * (u * m')) (hb : m * Q = m' * P) :
     t * (D * P) = u * (r * D * Q) := by
   apply mul_left_cancel₀ hm
   linear_combination D * Q * h - D * t * hb
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨d, F, hF, eF⟩` from `A_forms_exist.chartRing_le_fracs x s hs hr`. Establish `hx : ∀ k, x ⟨k, s k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)`. Establish `hm : chartMon x s b' ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hx k)`. Take `⟨p, hp⟩ : ∃ p : K → ℕ, ∀ k, p k = (b k - b' k).toNat` from `⟨_, fun _ => rfl⟩`. Take `⟨q, hq⟩ : ∃ q : K → ℕ, ∀ k, q k = (b' k - b k).toNat` from `⟨_, fun _ => rfl⟩`.
+
+Establish `hpq : ∀ k, b k + q k = b' k + p k` using `fun k => by`. Establish `e1` using `hp k`. Establish `e2` using `hq k`. Use linear arithmetic over natural numbers and integers. Establish `hb : chartMon x s b * ∏ k, x ⟨k, s k⟩ ^ q k = chartMon x s b' * ∏ k, x ⟨k, s k⟩ ^ p k` using `zpow_aux (fun k => x ⟨k, s k⟩) hx b b' p q hpq`.
+
+Establish `h0 : IsMultiHomog (C ϖ ^ n : MRing ι O) 0`. Rewrite using `[← map_pow]`. Conclude with `isWeightedHomogeneous_C _ _`. Establish `h1 : IsMultiHomog (C ϖ ^ n * ∏ k, X ⟨k, s k⟩ ^ (d + p) k : MRing ι O) (0 + (d + p))` using `IsWeightedHomogeneous.mul h0 (mono_homog s (d + p))`. Establish `h2 : IsMultiHomog (F * ∏ k, X ⟨k, s k⟩ ^ q k : MRing ι O) (d + q)` using `IsWeightedHomogeneous.mul hF (mono_homog s q)`.
+
+Use `⟨_, _, ⟨⟨_, _, h1, h2, ?_⟩, ?_⟩, product_powers_not_mem_prime hW hϖ (fun k => X ⟨k, s k⟩) hX n (d + p)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `e1` using `hpq k`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [map_mul, map_prod, map_pow, aeval_X, aeval_C, eF, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Conclude with `mul_eq_one_of_covolume_identity hm h hb`.
+-/
 theorem pair_num {x : (Σ k, ι k) → Ω} {ϖ : O} {b b' : K → ℤ} {u : Ω} {s : ∀ k, ι k} (hs : mseg x s ≠ 0)
     {W : Ideal (MRing ι O)} (hW : W.IsPrime) (hϖ : (C ϖ : MRing ι O) ∉ W)
     (hX : ∀ k, (X ⟨k, s k⟩ : MRing ι O) ∉ W) {n : ℕ} {r : Ω} (hr : r ∈ chartRing O (mseg x) s)
@@ -101,6 +135,17 @@ theorem pair_num {x : (Σ k, ι k) → Ω} {ϖ : O} {b b' : K → ℤ} {u : Ω} 
       Finset.prod_mul_distrib]
     exact mul_eq_one_of_covolume_identity hm h hb
 
+/- English proof (translation)
+Use `choose s hX using hrel`. Establish `hs : mseg x s ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun k _ h0 => hX k (hPW ?_)` and prove the remaining obligations. Conclude with `GenericProjClosureDivisor.mem_of_homog (isWeightedHomogeneous_X O _ _) (by rw [aeval_X, h0])`. Take `⟨⟨n, r, hr, h⟩, n', r', hr', h'⟩` from `H s hs`.
+
+Take `⟨f, g, hp, hf⟩` from `pair_num hs hW hϖ hX hr h`. Establish `h'' : algebraMap O Ω ϖ ^ n' * chartMon x s b' = r' * (u⁻¹ * chartMon x s b)`. Apply `mul_left_cancel₀ hu` to reduce the goal to its premises. Rewrite using `[mul_left_comm r', ← mul_assoc u u⁻¹, mul_inv_cancel₀ hu, one_mul, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨g', f', ⟨⟨bg, bf, hg1, hf1, hd⟩, hv⟩, hg'⟩` from `pair_num hs hW hϖ hX hr' h''`. Establish `hp' : Pair x (b - b') u f' g'`. Use `⟨⟨bf, bg, hf1, hg1, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h1` using `congrFun hd k`.
+
+Simplify using `only [Pi.sub_apply] at h1 ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv, ← mul_assoc, mul_inv_cancel₀ hu, one_mul]`. Use `⟨f, g, hp, hf, fun hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `W.add_mem (hPW (cross hp hp')) (W.mul_mem_left f' hg)`.
+
+Rewrite `h1` using `[sub_add_cancel]`. Conclude with `(hW.mem_or_mem h1).elim hf hg'`.
+-/
 theorem pair_at {x : (Σ k, ι k) → Ω} {ϖ : O} {b b' : K → ℤ} {u : Ω} (hu : u ≠ 0)
     (H : ∀ s, mseg x s ≠ 0 → (∃ n : ℕ, ∃ r ∈ chartRing O (mseg x) s, algebraMap O Ω ϖ ^ n * chartMon x s b = r * (u * chartMon x s b')) ∧ ∃ n : ℕ, ∃ r ∈ chartRing O (mseg x) s, algebraMap O Ω ϖ ^ n * (u * chartMon x s b') = r * chartMon x s b)
     (W : Ideal (MRing ι O)) (hW : W.IsPrime) (hPW : pointIdeal O x ≤ W) (hrel : IsRelevant W)
@@ -131,6 +176,13 @@ theorem pair_at {x : (Σ k, ι k) → Ω} {ϖ : O} {b b' : K → ℤ} {u : Ω} (
 
 end PositivityTheory.Xgn.A_vertdiv_commensurable
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hM b b' u hu H`. Establish `hϖP : (C ϖ : MRing ι O) ∉ pointIdeal O x`. Introduce `hm`. Establish `h1 : ϖ ∈ (pointIdeal O x).comap (C : O →+* MRing ι O)` using `hm`. Rewrite `h1` using `[hM.noTorsion, Ideal.mem_bot]`.
+
+Conclude with `hϖ.ne_zero h1`. Take `⟨f, g, hp, hf, hg⟩` from `A_vertdiv_commensurable.pair_at hu H _ hM.multiProj.isPrime le_rfl hM.multiProj.relevant hϖP`. Use `⟨f, g, IsVerticalDivisor.of_unit_off_special hp.1 hf hg fun W hW hPW hrel hϖW => ?_, hp.2⟩` and prove the remaining obligations. Take `⟨f', g', hp', hf', hg'⟩` from `A_vertdiv_commensurable.pair_at hu H W hW hPW hrel hϖW`. Use `⟨g', f', hg', hf', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm g' f]`. Conclude with `A_vertdiv_commensurable.cross hp hp'`.
+-/
 theorem PositivityTheory.Xgn.t_vertdiv_commensurable : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O), Irreducible ϖ → ∀ d : ℕ, IsModelOver (pointIdeal O x) d → ∀ (b b' : K → ℤ) (u : Ω), u ≠ 0 → (∀ s, mseg x s ≠ 0 → (∃ n : ℕ, ∃ r ∈ chartRing O (mseg x) s, algebraMap O Ω ϖ ^ n * chartMon x s b = r * (u * chartMon x s b')) ∧ ∃ n : ℕ, ∃ r ∈ chartRing O (mseg x) s, algebraMap O Ω ϖ ^ n * (u * chartMon x s b') = r * chartMon x s b) → ∃ f g : MRing ι O, IsVerticalDivisor (pointIdeal O x) ϖ (b - b') f g ∧ aeval x f = u * aeval x g := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hM b b' u hu H
   have hϖP : (C ϖ : MRing ι O) ∉ pointIdeal O x := by

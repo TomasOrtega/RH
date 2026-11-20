@@ -19,14 +19,25 @@ def prjF : Hsub (AF F) σ J P →* Hsub (Af F) σ J P :=
   ((haMap σ J (sndA F)).comp (Hsub (AF F) σ J P).subtype).codRestrict (Hsub (Af F) σ J P)
     (fun g => haMap_stabT σ J (sndA F) (tupH P) g g.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prjF_val (g : Hsub (AF F) σ J P) :
     ((prjF σ J P g : Hsub (Af F) σ J P) : HA (Af F) σ J) = (splitA σ J (g : HA (AF F) σ J)).2 := rfl
 
+/- English proof (translation)
+Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)`. Conclude with `⟨⟨p, hp, hp0⟩⟩`.
+-/
 theorem nonempty_hos (F : Type) [Field F] [NumberField F] : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨p, hp0, hp⟩ :=
     Ring.not_isField_iff_exists_prime.mp (NumberField.RingOfIntegers.not_isField F)
   exact ⟨⟨p, hp, hp0⟩⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact inferInstance`. Consider the case `(obtain ⟨v⟩ := nonempty_hos F`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h2 : Subtype.val (0 : Af F) v = Subtype.val (1 : Af F) v` using `by rw [h]`.
+
+Apply the tactic sequence `have h0 : Subtype.val (0 : Af F) v = 0 := by first | rfl | simp`. Apply the tactic sequence `have h1 : Subtype.val (1 : Af F) v = 1 := by first | rfl | simp`. Conclude with `zero_ne_one (h0.symm.trans (h2.trans h1)))`.
+-/
 theorem nontrivial_Af (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   first
   | exact inferInstance
@@ -37,10 +48,18 @@ theorem nontrivial_Af (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) :
      have h1 : Subtype.val (1 : Af F) v = 1 := by first | rfl | simp
      exact zero_ne_one (h0.symm.trans (h2.trans h1)))
 
+/- English proof (translation)
+Use `haveI := nontrivial_Af F`. Conclude with `(algebraMap F (Af F)).injective`.
+-/
 theorem inj_Af (F : Type) [Field F] [NumberField F] : Function.Injective (algebraMap F (Af F)) := by
   haveI := nontrivial_Af F
   exact (algebraMap F (Af F)).injective
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `key : ∀ e : E, inclR (F` using `F) (E := E) R e = ((Algebra.linearMap F R).rTensor E) ((TensorProduct.lid F E).symm e) := by`. Introduce `e`. Simplify using `[inclR, Algebra.TensorProduct.includeRight_apply]`. Establish `hinj : Function.Injective ((Algebra.linearMap F R).rTensor E)` using `Module.Flat.rTensor_preserves_injective_linearMap (M := E) _ (by exact h)`.
+
+Rewrite `hxy` using `[key, key]`. Conclude with `(TensorProduct.lid F E).symm.injective (hinj hxy)`.
+-/
 theorem inclR_injective (R : Type) [CommRing R] [Algebra F R] (h : Function.Injective (algebraMap F R)) :
     Function.Injective (inclR (F := F) (E := E) R) := by
   intro x y hxy
@@ -53,6 +72,9 @@ theorem inclR_injective (R : Type) [CommRing R] [Algebra F R] (h : Function.Inje
   rw [key, key] at hxy
   exact (TensorProduct.lid F E).symm.injective (hinj hxy)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b i`. Use `first`. Consider the case `simp [actTup, ratTup, Formalism.UG.bc, Matrix.mulVec, dotProduct, map_sum]`. Consider the case `simp [actTup, ratTup, Formalism.UG.bc, Matrix.mulVec, Matrix.dotProduct, map_sum]`.
+-/
 private theorem actTup_bc (R : Type) [CommRing R] [Algebra F R] (u : GL (Fin n) E) {a : ℕ}
     (X : Fin a → Fin n → E) :
     actTup R (Formalism.UG.bc (inclR (F := F) (E := E) R) u) (ratTup (F := F) R X) =
@@ -62,6 +84,23 @@ private theorem actTup_bc (R : Type) [CommRing R] [Algebra F R] (u : GL (Fin n) 
   | simp [actTup, ratTup, Formalism.UG.bc, Matrix.mulVec, dotProduct, map_sum]
   | simp [actTup, ratTup, Formalism.UG.bc, Matrix.mulVec, Matrix.dotProduct, map_sum]
 
+/- English proof (translation)
+Use extensionality with `δ`. Prove the components needed by the constructor for the conclusion. Introduce `hδ`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.mp hδ`. Establish `hmem : HA.mat (AF F) σ J (γ : HA (AF F) σ J) ∈ HFin (AF F) σ J` using `hγ`.
+
+Take `⟨u, hu, hγu⟩` from `Subgroup.mem_map.mp hmem`. Use `show HA.mat (Af F) σ J (prjF σ J P γ : HA (Af F) σ J) ∈ HFin (Af F) σ J`. Use `Subgroup.mem_map.mpr ⟨u, hu, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc (inclR (F := F) (E := E) (Af F)) u = Formalism.UG.bc (tensMap (E := E) (sndA F)) (HA.mat (AF F) σ J (γ : HA (AF F) σ J))`. Rewrite using `[← hγu]`.
+
+Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, tensMap_inclR]`. Introduce `hδ`. Establish `hmem : HA.mat (Af F) σ J (δ : HA (Af F) σ J) ∈ HFin (Af F) σ J` using `hδ`. Take `⟨u, hu, hδu⟩` from `Subgroup.mem_map.mp hmem`.
+
+Establish `hcomm : (inclR (F` using `F) (E := E) (AF F)).comp (σ : E →+* E) = (sigR (AF F) σ).comp (inclR (F := F) (E := E) (AF F)) := by`. Use extensionality with `e`. Simplify using `[inclR, sigR]`. Establish `hHR : Formalism.UG.bc (inclR (F` using `F) (E := E) (AF F)) u ∈ HR (AF F) σ J := Formalism.UG.P.bc_mem _ _ _ hcomm J u hu`. Set `g : HA (AF F) σ J` to `⟨_, hHR⟩`.
+
+Establish `hX : (fun b => (u : Matrix (Fin n) (Fin n) E).mulVec (tupH P b)) = tupH P`. Establish `hst : actTup (Af F) (HA.mat (Af F) σ J (δ : HA (Af F) σ J)) (ratTup (F` using `F) (Af F) (tupH P)) = ratTup (F := F) (Af F) (tupH P) := δ.2`. Rewrite `hst` using `[← hδu, actTup_bc]`. Use function extensionality and compare the values at `b i`. Use `congrFun (congrFun hst b) i` as an intermediate fact.
+
+Use `first`. Consider the case `exact inclR_injective (E := E) (Af F) (inj_Af F) this`. Consider the case `exact inclR_injective (E := E) (Af F) (inj_Af F) (by simpa [ratTup] using this)`. Establish `hg : g ∈ Hsub (AF F) σ J P` using `by show actTup (AF F) (Formalism.UG.bc (inclR (F := F) (E := E) (AF F)) u) (ratTup (F := F) (AF F) (tupH P)) = ratTup (F := F) (AF F) (tupH P)`. Rewrite using `[actTup_bc, hX]`.
+
+Use `Subgroup.mem_map.mpr ⟨⟨g, hg⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show HA.mat (AF F) σ J g ∈ HFin (AF F) σ J`. Conclude with `Subgroup.mem_map.mpr ⟨u, hu, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show Formalism.UG.bc (tensMap (E := E) (sndA F)) (Formalism.UG.bc (inclR (F := F) (E := E) (AF F)) u) = HA.mat (Af F) σ J (δ : HA (Af F) σ J)`. Rewrite using `[← hδu]`. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, tensMap_inclR]`.
+-/
 theorem prjF_map_ratOf :
     (ratOf (K := Hsub (AF F) σ J P)).map (prjF σ J P) =
       (HFinIn (Af F) σ J : Subgroup (HA (Af F) σ J)).subgroupOf (Hsub (Af F) σ J P) := by
@@ -112,6 +151,15 @@ theorem prjF_map_ratOf :
       ext i j
       simp [Formalism.UG.bc, tensMap_inclR]
 
+/- English proof (translation)
+Establish `hmem : HA.mat (AF F) σ J (γ : HA (AF F) σ J) ∈ HFin (AF F) σ J` using `hγ`. Take `⟨u, -, hγu⟩` from `Subgroup.mem_map.mp hmem`. Establish `hh : Formalism.UG.bc (tensMap (E` using `E) (sndA F)) (HA.mat (AF F) σ J (γ : HA (AF F) σ J)) = 1 := by`. Use `congrArg (fun x : Hsub (Af F) σ J P => HA.mat (Af F) σ J (x : HA (Af F) σ J)) h1` as an intermediate fact. Conclude with `this`.
+
+Establish `hcomp : Formalism.UG.bc (inclR (F` using `F) (E := E) (Af F)) u = Formalism.UG.bc (tensMap (E := E) (sndA F)) (Formalism.UG.bc (inclR (F := F) (E := E) (AF F)) u) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc, tensMap_inclR]`. Establish `hb : Formalism.UG.bc (inclR (F` using `F) (E := E) (Af F)) u = 1 := by`. Rewrite using `[hcomp, hγu]`.
+
+Conclude with `hh`. Establish `hu1 : u = 1`. Use extensionality with `i j`. Apply `inclR_injective (E := E) (Af F) (inj_Af F)` to reduce the goal to its premises. Use `congrArg (fun g : GL (Fin n) (Af F ⊗[F] E) => (Units.val g) i j) hb` as an intermediate fact.
+
+Simplify `this` using `[Formalism.UG.bc, Matrix.one_apply, apply_ite]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show HA.mat (AF F) σ J (γ : HA (AF F) σ J) = 1`. Rewrite using `[← hγu, hu1, map_one]`.
+-/
 theorem prjF_inj (γ : Hsub (AF F) σ J P) (hγ : γ ∈ ratOf (K := Hsub (AF F) σ J P))
     (h1 : prjF σ J P γ = 1) : γ = 1 := by
   have hmem : HA.mat (AF F) σ J (γ : HA (AF F) σ J) ∈ HFin (AF F) σ J := hγ
@@ -138,6 +186,11 @@ theorem prjF_inj (γ : Hsub (AF F) σ J P) (hγ : γ ∈ ratOf (K := Hsub (AF F)
 
 variable [FiniteDimensional F E]
 
+/- English proof (translation)
+Establish `hs : Continuous (sndA F)` using `by first`. Consider the case `exact continuous_snd`. Consider the case `(simp only [sndA]; exact continuous_snd)`. Consider the case `fun_prop`. Establish `hm` using `continuous_haMap (σ := σ) (J := J) (sndA F) hs`.
+
+Conclude with `continuous_induced_rng.2 (hm.comp continuous_subtype_val)`.
+-/
 theorem continuous_prjF : Continuous (prjF σ J P) := by
   have hs : Continuous (sndA F) := by
     first
@@ -147,6 +200,13 @@ theorem continuous_prjF : Continuous (prjF σ J P) := by
   have hm := continuous_haMap (σ := σ) (J := J) (sndA F) hs
   exact continuous_induced_rng.2 (hm.comp continuous_subtype_val)
 
+/- English proof (translation)
+Establish `hs : Continuous (sndA F)` using `by first`. Consider the case `exact continuous_snd`. Consider the case `(simp only [sndA]; exact continuous_snd)`. Consider the case `fun_prop`. Establish `hf : Continuous (fstA F)` using `by first`.
+
+Consider the case `exact continuous_fst`. Consider the case `(simp only [fstA]; exact continuous_fst)`. Consider the case `fun_prop`. Establish `h1` using `continuous_haMap (σ := σ) (J := J) (fstA F) hf`. Establish `h2` using `continuous_haMap (σ := σ) (J := J) (sndA F) hs`.
+
+Use `first`. Consider the case `exact h1.prodMk h2`. Consider the case `exact h1.prod_mk h2`.
+-/
 theorem continuous_splitA_u : Continuous (splitA σ J) := by
   have hs : Continuous (sndA F) := by
     first
@@ -164,6 +224,13 @@ theorem continuous_splitA_u : Continuous (splitA σ J) := by
   | exact h1.prodMk h2
   | exact h1.prod_mk h2
 
+/- English proof (translation)
+Establish `hmat : Continuous (fun g : HA R σ J => (HA.mat R σ J g : Matrix (Fin n) (Fin n) (R ⊗[F] E)))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hc : Continuous (fun g : HA R σ J => actTup R (HA.mat R σ J g) (ratTup (F` using `F) R X0)) := by`. Unfold `actTup`. Use `continuous_pi fun b => ?_` and prove the remaining obligations. Use `continuous_pi fun i => ?_` and prove the remaining obligations.
+
+Use `first`. Consider the case `simp only [Matrix.mulVec, dotProduct]`. Consider the case `simp only [Matrix.mulVec, Matrix.dotProduct]`. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp hmat)).mul continuous_const`.
+
+Establish `hset : ((stabT R σ J X0 : Subgroup (HA R σ J)) : Set (HA R σ J)) = {g | actTup R (HA.mat R σ J g) (ratTup (F` using `F) R X0) = ratTup (F := F) R X0} := by`. Use extensionality with `g`. Conclude with `Iff.rfl`. Rewrite using `[hset]`. Conclude with `isClosed_eq hc continuous_const`.
+-/
 theorem isClosed_stabT' (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [T2Space R] {a : ℕ} (X0 : Fin a → Fin n → E) :
     IsClosed ((stabT R σ J X0 : Subgroup (HA R σ J)) : Set (HA R σ J)) := by
@@ -185,6 +252,19 @@ theorem isClosed_stabT' (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace 
   rw [hset]
   exact isClosed_eq hc continuous_const
 
+/- English proof (translation)
+Establish `hcl : IsClosed ((Hsub (Af F) σ J P : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J))` using `isClosed_stabT' σ J (Af F) (tupH P)`. Establish `hHf : MeasurableSet ((Hsub (Af F) σ J P : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J))` using `hcl.measurableSet`. Use `haveI : SecondCountableTopology (HA (Af F) σ J) := PI.VolStabSW.TopoAF.secondCountable_HA_of (Af F) σ J`. Use `haveI : LocallyCompactSpace (Hsub (Af F) σ J P) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := hM.2.2.1`.
+
+Use `haveI : SecondCountableTopology (Hsub (Af F) σ J P) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace (Hsub (Af F) σ J P) := inferInstance`. Use `haveI : SigmaFinite M.μHf := inferInstance`. Establish `hmeas : Measurable (splitA σ J)` using `(continuous_splitA_u σ J).measurable`. Set `T : Set (HA (Ainf F) σ J × HA (Af F) σ J)` to `univ ×ˢ (Subtype.val '' S)`.
+
+Establish `hT : MeasurableSet T` using `MeasurableSet.univ.prod (hHf.subtype_image hS)`. Establish `hpre : prjF σ J P ⁻¹' S = Subtype.val ⁻¹' (splitA σ J ⁻¹' T)`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨trivial, prjF σ J P g, h, rfl⟩`. Introduce and unpack `⟨-, s, hs, hse⟩`. Establish `: s = prjF σ J P g` using `Subtype.ext hse`. Use `show prjF σ J P g ∈ S`. Rewrite using `[← this]` and apply the resulting hypothesis.
+
+Rewrite using `[hpre, ← Measure.map_apply measurable_subtype_coe (hmeas hT), ← Measure.map_apply hmeas hT, hM.2.2.2.2.2.2.2.2.1, Measure.prod_prod]`. Establish `hIm : MeasurableSet (Subtype.val '' S : Set (HA (Af F) σ J))` using `hHf.subtype_image hS`. Establish `e1 : (amb M.μHinf) univ = M.μHinf univ`. Rewrite using `[Measure.map_apply measurable_subtype_coe MeasurableSet.univ, preimage_univ]`. Establish `e2 : (amb M.μHf) (Subtype.val '' S) = M.μHf S`.
+
+Rewrite using `[Measure.map_apply measurable_subtype_coe hIm, Subtype.val_injective.preimage_image]`. Rewrite using `[e1, e2]`.
+-/
 theorem measure_prjF_preimage (M : MeasW σ J P) (hM : M.IsTextNorm) (S : Set (Hsub (Af F) σ J P))
     (hS : MeasurableSet S) : M.μH (prjF σ J P ⁻¹' S) = M.μHinf univ * M.μHf S := by
   have hcl : IsClosed ((Hsub (Af F) σ J P : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J)) :=
@@ -219,6 +299,13 @@ theorem measure_prjF_preimage (M : MeasW σ J P) (hM : M.IsTextNorm) (S : Set (H
     rw [Measure.map_apply measurable_subtype_coe hIm, Subtype.val_injective.preimage_image]
   rw [e1, e2]
 
+/- English proof (translation)
+Use `haveI : Countable (HFinIn (AF F) σ J) := ((PI.VolSemiDirect.W.discHA_of PI.VolSemiDirect.W.Lc.tensor_adele_topology_holds) F E σ hCM n J hJ).1`. Use `haveI : Countable (ratOf (K := Hsub (AF F) σ J P)) := by`. Set `f : ratOf (K` to `Hsub (AF F) σ J P) → HFinIn (AF F) σ J := fun x => ⟨((x : Hsub (AF F) σ J P) : HA (AF F) σ J), Subgroup.mem_comap.1 x.2⟩`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`.
+
+Establish `e` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext e)`. Conclude with `hinj.countable`. Use `haveI := hM.1`. Use `haveI := hM.2.2.1`.
+
+Conclude with `Abs.unfold_mass h𝓕 (prjF σ J P) (continuous_prjF σ J P).measurable _ U (prjF_map_ratOf σ J P) (prjF_inj σ J P) hU hfin _ (fun x => by`. Rewrite using `[measure_prjF_preimage σ J P M hM _ (Abs.meas_smul_set hU x), measure_smul])`.
+-/
 theorem massUnfold_gen [NumberField E] (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (M : MeasW σ J P)
     (hM : M.IsTextNorm) (U : Subgroup (Hsub (Af F) σ J P)) (hU : MeasurableSet (U : Set (Hsub (Af F) σ J P)))
     (hfin : Formalism.L2.SG.TypedSets.MassFinite (G := ↥(Hsub (Af F) σ J P)) ((HFinIn (Af F) σ J : Subgroup (HA (Af F) σ J)).subgroupOf (Hsub (Af F) σ J P)) U)

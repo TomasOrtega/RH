@@ -5,6 +5,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.StarCover
 
+/- English proof (translation)
+Set `S : X × X → (Fin m → ℚ)` to `fun q j => (γ j q.1 q.2 : ℚ)`. Take `⟨b, hbS, hspan, hli⟩` from `exists_linearIndependent ℚ (Set.range S)`. Take `⟨n, f, hf⟩` from `(hli.setFinite).fin_embedding`. Establish `hfb : ∀ k, f k ∈ b` using `fun k => hf ▸ Set.mem_range_self k`. Establish `hpre : ∀ k, ∃ q, S q = f k` using `fun k => hbS (hfb k)`.
+
+Set `p : Fin n → X × X` to `fun k => (hpre k).choose`. Establish `hp : ∀ k, S (p k) = f k` using `fun k => (hpre k).choose_spec`. Use `⟨n, p, fun r hr x y => ?_⟩` and prove the remaining obligations. Establish `hmem : S (x, y) ∈ Submodule.span ℚ (Set.range f)`. Rewrite using `[hf, hspan]`.
+
+Conclude with `Submodule.subset_span ⟨(x, y), rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).mp hmem`. Establish `hj : ∀ j, (γ j x y : ℝ) = ∑ k, (c k : ℝ) * (γ j (p k).1 (p k).2 : ℝ)` using `fun j => by`. Use `congrFun hc j` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ← hp, S] at this`.
+
+Establish `h2` using `congrArg (fun q : ℚ => (q : ℝ)) this`. Simplify using `only [Rat.cast_sum, Rat.cast_mul, Rat.cast_intCast] at h2`. Conclude with `h2.symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hj, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = 0 := by simp [hr]`.
+-/
 theorem exists_points {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) :
     ∃ (n : ℕ) (p : Fin n → X × X), ∀ r : Fin m → ℝ,
       (∀ k, ∑ j, r j * (γ j (p k).1 (p k).2 : ℝ) = 0) → ∀ x y, ∑ j, r j * (γ j x y : ℝ) = 0 := by
@@ -37,6 +48,9 @@ end GlobalTheory.StarCover
 namespace GlobalTheory.StarCover
 open GlobalTheory.MinkWeylReal
 
+/- English proof (translation)
+Simplify using `only [dotR, castR, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Rat.cast_sum, Rat.cast_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem dotR_comb {n m : ℕ} (a : Fin n → ℚ) (u : Fin m → Fin n → ℚ) (r : Fin m → ℝ) :
     dotR a (∑ j, r j • castR (u j)) = ∑ j, r j * ((a ⬝ᵥ u j : ℚ) : ℝ) := by
   simp only [dotR, castR, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum,
@@ -44,6 +58,9 @@ theorem dotR_comb {n m : ℕ} (a : Fin n → ℚ) (u : Fin m → Fin n → ℚ) 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use `⟨fun y => ∑ j ∈ Finset.univ.filter (fun j => u j = y), r j, fun y _ => Finset.sum_nonneg fun j _ => hr j, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Finset.sum_image' _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [(Finset.mem_filter.mp hi).2]`.
+-/
 theorem mem_rcone_image {n m : ℕ} (u : Fin m → Fin n → ℚ) (r : Fin m → ℝ) (hr : ∀ j, 0 ≤ r j) :
     ∑ j, r j • castR (u j) ∈ rcone (Finset.univ.image u) := by
   classical
@@ -54,6 +71,13 @@ theorem mem_rcone_image {n m : ℕ} (u : Fin m → Fin n → ℚ) (r : Fin m →
   rw [Finset.sum_smul]
   exact Finset.sum_congr rfl fun i hi => by rw [(Finset.mem_filter.mp hi).2]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hx`. Set `k : Fin m → ℝ` to `fun j => ((Finset.univ.filter (fun i => u i = u j)).card : ℝ)`. Establish `hk : ∀ j, 0 < k j` using `fun j => by`. Simplify using `only [k, Nat.cast_pos, Finset.card_pos]`. Conclude with `⟨j, by simp⟩`.
+
+Use `⟨fun j => c (u j) / k j, fun j => div_nonneg (hc _ (by simp)) (hk j).le, ?_⟩` and prove the remaining obligations. Use `Finset.sum_image' _ fun j _ => ?_` and prove the remaining obligations. Establish `: ∀ i ∈ Finset.univ.filter (fun i => u i = u j), (c (u i) / k i) • castR (u i) = (c (u j) / k j) • castR (u j)` using `fun i hi => by`. Establish `hi'` using `(Finset.mem_filter.mp hi).2`. Establish `hki : k i = k j` using `by simp only [k, hi']`.
+
+Rewrite using `[hi', hki]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `c (u j) = k j * (c (u j) / k j)`. Clear denominators, using `[(hk j).ne']` for the nonvanishing conditions.
+-/
 theorem exists_of_mem_rcone_image {n m : ℕ} (u : Fin m → Fin n → ℚ) (x : Fin n → ℝ)
     (hx : x ∈ rcone (Finset.univ.image u)) :
     ∃ r : Fin m → ℝ, (∀ j, 0 ≤ r j) ∧ x = ∑ j, r j • castR (u j) := by
@@ -80,13 +104,22 @@ end GlobalTheory.StarCover
 namespace GlobalTheory.StarCover
 open GlobalTheory.MinkWeylReal
 
+/- English proof (translation)
+Simplify using `[toReal]`.
+-/
 theorem toReal_apply' {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (x y : X) :
     toReal β x y = (β x y : ℝ) := by simp [toReal]
 
+/- English proof (translation)
+Simplify using `[LinearMap.sum_apply, toReal_apply']`.
+-/
 theorem comb_apply {X : Type} [AddCommGroup X] {m : ℕ} (r : Fin m → ℝ) (γ : Fin m → LinearMap.BilinForm ℤ X)
     (x y : X) : (∑ j, r j • toReal (γ j)) x y = ∑ j, r j * (γ j x y : ℝ) := by
   simp [LinearMap.sum_apply, toReal_apply']
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun y => if y = u j then 1 else 0, fun y _ => by dsimp only; split_ifs <;> norm_num, ?_⟩`. Simplify using `[ite_smul]`.
+-/
 theorem castR_mem_rcone {n m : ℕ} (u : Fin m → Fin n → ℚ) (j : Fin m) :
     castR (u j) ∈ rcone (Finset.univ.image u) := by
   classical
@@ -98,6 +131,67 @@ end GlobalTheory.StarCover
 namespace GlobalTheory.StarCover
 open GlobalTheory.MinkWeylReal
 
+/- English proof (translation)
+Introduce `X _ m γ v B hsym hpsd hv0 ⟨c, hc, hvc⟩ ⟨t, ht, hBt⟩`. Take `⟨n, p, hp⟩` from `exists_points γ`. Use `set u : Fin m → Fin n → ℚ := fun j k => (γ j (p k).1 (p k).2 : ℚ) with hu`. Use `set T := Finset.univ.image u with hT`. Take `⟨A, hA⟩` from `minkR T`.
+
+Establish `hcomb : ∀ r : Fin m → ℝ, (∑ j, r j • castR (u j)) = fun k => ∑ j, r j * (γ j (p k).1 (p k).2 : ℝ)` using `fun r => by funext k; simp [castR, u, Finset.sum_apply]`. Establish `hv_app : ∀ x y, (v x y : ℝ) = ∑ j, c j * (γ j x y : ℝ)` using `fun x y => by`. Rewrite using `[← toReal_apply', hvc, comb_apply]`. Establish `hB_app : ∀ x y, B x y = ∑ j, t j * (γ j x y : ℝ)` using `fun x y => by rw [hBt, comb_apply]`. Use `set Ev : Fin n → ℝ := ∑ j, c j • castR (u j) with hEv`.
+
+Use `set EB : Fin n → ℝ := ∑ j, t j • castR (u j) with hEB`. Establish `hEvT : Ev ∈ rcone T` using `mem_rcone_image u c hc`. Establish `hEBT : EB ∈ rcone T` using `mem_rcone_image u t ht`. Establish `hAv : ∀ a ∈ A, 0 ≤ dotR a Ev` using `(hA Ev).mp hEvT`. Establish `hAB : ∀ a ∈ A, 0 ≤ dotR a EB` using `(hA EB).mp hEBT`.
+
+Establish `hAu : ∀ a ∈ A, ∀ j, 0 ≤ a ⬝ᵥ u j` using `fun a ha j => by`. Use `(hA _).mp (castR_mem_rcone u j) a ha` as an intermediate fact. Rewrite `this` using `[dotR_castR]`. Conclude with `this` after adjusting the coercions. Establish `hne : (A.filter fun a => 0 < dotR a Ev).Nonempty`.
+
+Assume the negation of the conclusion as `hno`. Rewrite `hno` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Establish `hneg : (-1 : ℝ) • Ev ∈ rcone T` using `(hA _).mpr fun a ha => by`. Rewrite using `[dotR_smul]`. Use `hno ha` as an intermediate fact.
+
+Use `push_neg at this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨r, hr, hrEq⟩` from `exists_of_mem_rcone_image u _ hneg`. Establish `hzero : ∀ x y, ∑ j, (r j + c j) * (γ j x y : ℝ) = 0` using `hp _ fun k => by`. Use `congrFun hrEq k` as an intermediate fact.
+
+Rewrite `this` using `[hcomb r, hEv, hcomb c]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [add_mul, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvyy : ∀ y, v y y = 0` using `fun y => by`.
+
+Establish `h1` using `hzero y y`. Establish `h2 : ∀ j, 0 ≤ (γ j y y : ℝ)` using `fun j => by exact_mod_cast hpsd j y`. Establish `h3 : ∑ j, c j * (γ j y y : ℝ) ≤ ∑ j, (r j + c j) * (γ j y y : ℝ)` using `Finset.sum_le_sum fun j _ => by nlinarith [hr j, h2 j]`. Establish `h4 : 0 ≤ ∑ j, c j * (γ j y y : ℝ)` using `Finset.sum_nonneg fun j _ => mul_nonneg (hc j) (h2 j)`. Establish `: (v y y : ℝ) = 0` using `by rw [hv_app]; linarith`.
+
+Conclude with `this` after adjusting the coercions. Establish `hvs : ∀ x y, v x y = v y x` using `fun x y => by`. Establish `: (v x y : ℝ) = v y x`. Rewrite using `[hv_app, hv_app]; exact Finset.sum_congr rfl fun j _ => by rw [hsym j x y]`. Conclude with `this` after adjusting the coercions.
+
+Apply `hv0` to reduce the goal to its premises. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Use `hvyy (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, hvyy x, hvyy y, hvs y x] at this`. Simplify using `only [LinearMap.zero_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨a, haF, hamin⟩` from `Finset.exists_min_image _ (fun a => dotR a EB / dotR a Ev) hne`. Take `⟨haA, hapos⟩` from `Finset.mem_filter.mp haF`. Use `set ts := dotR a EB / dotR a Ev with hts`. Establish `hts0 : 0 ≤ ts` using `div_nonneg (hAB a haA) hapos.le`.
+
+Establish `hB'T : EB - ts • Ev ∈ rcone T` using `(hA _).mpr fun a' ha' => by`. Rewrite using `[dotR_sub, dotR_smul]`. Distinguish the cases in `hpos : 0 < dotR a' Ev`. Use `hamin a' (Finset.mem_filter.mpr ⟨ha', hpos⟩)` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hpos`. Use polynomial arithmetic with `[hAB a' ha']`. Establish `hB'a : dotR a (EB - ts • Ev) = 0`. Rewrite using `[dotR_sub, dotR_smul, hts]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd, hdEq⟩` from `exists_of_mem_rcone_image u _ hB'T`. Establish `hdz : ∀ j, d j * ((a ⬝ᵥ u j : ℚ) : ℝ) = 0`. Use `hB'a` as an intermediate fact.
+
+Rewrite `this` using `[hdEq, dotR_comb]`. Conclude with `fun j => (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => mul_nonneg (hd j) (by exact_mod_cast hAu a haA j))).mp this j (Finset.mem_univ j)`. Take `⟨N, hN, z, hz⟩` from `GordanGenProof.exists_int_multiple a`. Set `w : (X × X) →₀ ℤ` to `∑ k, Finsupp.single (p k) (z k)`. Set `h` to `linW w`.
+
+Establish `hh : ∀ β : LinearMap.BilinForm ℤ X, h β = ∑ k, z k * β (p k).1 (p k).2` using `fun β => by`. Simplify using `only [h, linW_apply, w]`. Rewrite using `[← Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by ring)]`. Simplify using `[Finsupp.sum_single_index]`. Establish `hzk : ∀ k, (z k : ℝ) = (N : ℝ) * (a k : ℝ)` using `fun k => by`.
+
+Use `congrFun hz k` as an intermediate fact. Simplify using `only [GordanCones.toQ, Pi.smul_apply, smul_eq_mul] at this`. Establish `h2` using `congrArg (fun q : ℚ => (q : ℝ)) this`. Simplify using `using h2`. Establish `hhR : ∀ β : LinearMap.BilinForm ℤ X, (h β : ℝ) = N * dotR a (fun k => (β (p k).1 (p k).2 : ℝ))` using `fun β => by`.
+
+Rewrite using `[hh]`. Use `push_cast`. Simplify using `only [hzk, dotR, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Establish `hhγ : ∀ j, (h (γ j) : ℝ) = N * ((a ⬝ᵥ u j : ℚ) : ℝ)` using `fun j => by`.
+
+Rewrite using `[hhR, ← dotR_castR]`. Use `congr 2`. Establish `hhv : (h v : ℝ) = N * dotR a Ev`. Rewrite using `[hhR]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[hEv, hcomb c]`. Conclude with `hv_app _ _`. Establish `hNR : (0 : ℝ) < N` using `by exact_mod_cast hN`. Use `set Z := Finset.univ.filter fun j => h (γ j) = 0 with hZ`.
+
+Set `s : Fin Z.card ↪ Fin m` to `(Z.orderEmbOfFin rfl).toEmbedding`. Establish `hsZ : ∀ j, j ∈ Set.range s ↔ j ∈ Z` using `fun j => by`. Use `Finset.range_orderEmbOfFin Z rfl` as an intermediate fact. Simplify using `only [s, RelEmbedding.coe_toEmbedding]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Use `⟨Z.card, s, h, ⟨fun j => ?_, fun j => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ h (γ j)` using `by rw [hhγ]; exact mul_nonneg hNR.le (by exact_mod_cast hAu a haA j)`. Conclude with `this` after adjusting the coercions. Rewrite using `[hsZ]`.
+
+Simplify using `[Z]`. Establish `: (0 : ℝ) < h v` using `by rw [hhv]; exact mul_pos hNR hapos`. Conclude with `this` after adjusting the coercions. Establish `hdZ : ∀ j, j ∉ Z → d j = 0` using `fun j hj => by`. Establish `hne' : h (γ j) ≠ 0` using `by simpa [Z] using hj`.
+
+Establish `: ((a ⬝ᵥ u j : ℚ) : ℝ) ≠ 0` using `fun h0 => hne' (by`. Use `hhγ j` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `this)` after adjusting the coercions. Conclude with `(mul_eq_zero.mp (hdz j)).resolve_right this`.
+
+Establish `hsum : ∀ F : Fin m → (X →ₗ[ℤ] X →ₗ[ℤ] ℝ), ∑ i, d (s i) • F (s i) = ∑ j, d j • F j` using `fun F => by`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `j`. Rewrite using `[← hsZ]`.
+
+Simplify using the standard rewrite rules. Use `_ = ∑ j, d j • F j := Finset.sum_subset (Finset.subset_univ Z) (fun j _ hj => by rw [hdZ j hj, zero_smul])`. Establish `hexp : ∀ e : X × X, ∑ j, (t j - ts * c j - d j) * (γ j e.1 e.2 : ℝ) = ∑ j, t j * (γ j e.1 e.2 : ℝ) - ts * ∑ j, c j * (γ j e.1 e.2 : ℝ) - ∑ j, d j * (γ j e.1 e.2 : ℝ)` using `fun e => by`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Establish `key : ∀ x y, ∑ j, (t j - ts * c j - d j) * (γ j x y : ℝ) = 0` using `hp _ fun k => by`. Use `congrFun hdEq k` as an intermediate fact. Rewrite `this` using `[hEB, hEv, hcomb, hcomb, hcomb]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[hexp (p k)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Fin.cons ts fun i => d (s i), fun i => Fin.cases hts0 (fun i => hd _) i, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[hsum (fun j => toReal (γ j))]`.
+
+Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Establish `k1` using `key x y`. Rewrite `k1` using `[hexp (x, y)]`. Rewrite using `[hB_app]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, toReal_apply', hv_app, comb_apply]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem star_cover : ∀ (X : Type) [AddCommGroup X] (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X)
     (v : LinearMap.BilinForm ℤ X) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ), (∀ i y z, γ i y z = γ i z y) → (∀ i y, 0 ≤ γ i y y) →
     v ≠ 0 → InRCone γ v → B ∈ rcone γ → ∃ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ),
@@ -233,4 +327,7 @@ theorem star_cover : ∀ (X : Type) [AddCommGroup X] (m : ℕ) (γ : Fin m → L
 
 end GlobalTheory.StarCover
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.StarCover.star_cover`.
+-/
 example : ∀ (X : Type) [AddCommGroup X] (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (v : LinearMap.BilinForm ℤ X) (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ), (∀ i y z, γ i y z = γ i z y) → (∀ i y, 0 ≤ γ i y y) → v ≠ 0 → InRCone γ v → B ∈ rcone γ → ∃ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h ∧ 0 < h v ∧ B ∈ rcone (Fin.cons v fun j => γ (s j)) := GlobalTheory.StarCover.star_cover

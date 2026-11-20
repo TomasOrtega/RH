@@ -9,6 +9,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DualCon
 
+/- English proof (translation)
+Establish `hP : P.IsLB` using `hR.fam.isLB`. Establish `hP' : (ev P (fst A B'') (snd A B'' ≫ k)).IsLB` using `pull_isLB hP _`. Establish `key : ∀ (Y : Over S) (a : Y ⟶ A) (y : Y ⟶ B''), evc hP' a y = evc hP a (y ≫ k)`. Introduce `Y a y`. Rewrite using `[evc_ev hP, lift_fst, lift_snd_assoc]`.
+
+Establish `iso : ∀ (T : Over S) (N : LB (A ⊗ T).left) (hN : N.IsLB) (y : T ⟶ B''), LBIso N (ev (ev P (fst A B'') (snd A B'' ≫ k)) (fst A T) (snd A T ≫ y)) ↔ LBIso N (ev P (fst A T) (snd A T ≫ y ≫ k))`. Introduce `T N hN y`. Rewrite using `[← cls_eq_iff hN (pull_isLB hP' _), ← cls_eq_iff hN (pull_isLB hP _), cls_ev hP', cls_ev hP, key, Category.assoc]`. Use `⟨⟨hP', (isAdditive_iff hP').2 fun Y a a' t ↦ ?_⟩, fun T t N hN ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[key, key, key]`.
+
+Conclude with `(isAdditive_iff hP).1 hR.fam.add Y a a' (t ≫ k)`. Take `⟨x, ⟨hx1, hx2⟩, hu⟩` from `hR.univ T (t ≫ h) N hN`. Use `⟨hpb.lift x t hx1, ⟨hpb.lift_snd _ _ _, (iso T N hN.isLB _).2 ?_⟩, fun y ⟨hy1, hy2⟩ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hpb.lift_fst]`. Conclude with `hx2`.
+
+Establish `e : y ≫ k = x` using `hu (y ≫ k) ⟨by rw [Category.assoc, hpb.w, ← Category.assoc, hy1], (iso T N hN.isLB y).1 hy2⟩`. Conclude with `hpb.hom_ext (by rw [e, hpb.lift_fst]) (by rw [hy1, hpb.lift_snd])`.
+-/
 theorem Rep.baseChange (S : Scheme.{0}) (A B S' S'' B'' : Over S) [GrpObj A] (b : B ⟶ S')
     (P : LB (A ⊗ B).left) (h : S'' ⟶ S') (k : B'' ⟶ B) (b'' : B'' ⟶ S'') (hR : Rep A b P)
     (hpb : IsPullback k b'' b h) : Rep A b'' (ev P (fst A B'') (snd A B'' ≫ k)) := by

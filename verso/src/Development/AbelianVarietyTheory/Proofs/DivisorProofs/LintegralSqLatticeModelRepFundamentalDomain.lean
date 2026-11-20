@@ -18,6 +18,9 @@ open GlobalTheory.FinLatF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
 
+/- English proof (translation)
+Establish `h1 : JS⁻¹.map (incAF F E) * JS.map (incAF F E) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hS.2)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Conclude with `GlobalTheory.SymplOInv.sum_unitary (cAF σ) (JT.map (incAF F E)) (mtF σ JT h) (JS⁻¹.map (incAF F E)) (JS.map (incAF F E)) (mtF σ JS g⁻¹) h1 h.2 (g⁻¹).2 x y`.
+-/
 theorem hOF_actOF (hS : IsHermND σ JS) (g : GAF σ JS) (h : GAF σ JT) (x y : WOF F E nS nT) :
     hOF σ JS JT (actOF σ JS JT g h x) (actOF σ JS JT g h y) = hOF σ JS JT x y := by
   have h1 : JS⁻¹.map (incAF F E) * JS.map (incAF F E) = 1 := by
@@ -26,6 +29,9 @@ theorem hOF_actOF (hS : IsHermND σ JS) (g : GAF σ JS) (h : GAF σ JT) (x y : W
   exact GlobalTheory.SymplOInv.sum_unitary (cAF σ) (JT.map (incAF F E)) (mtF σ JT h) (JS⁻¹.map (incAF F E))
     (JS.map (incAF F E)) (mtF σ JS g⁻¹) h1 h.2 (g⁻¹).2 x y
 
+/- English proof (translation)
+Unfold `gamFF`. Rewrite using `[coe_rhoFF, coe_rhoFF]`. Unfold `symplOF`. Rewrite using `[hOF_actOF hS]`.
+-/
 theorem gamFF_rhoFF (hS : IsHermND σ JS) (ξ₀ : E) (ψ : AddChar (AF F) ℂ) (p : GAF σ JS × GAF σ JT)
     (x y : XFF F E nS nT) :
     gamFF σ JS JT ξ₀ ψ (rhoFF σ JS JT p x) (rhoFF σ JS JT p y) = gamFF σ JS JT ξ₀ ψ x y := by
@@ -34,11 +40,21 @@ theorem gamFF_rhoFF (hS : IsHermND σ JS) (ξ₀ : E) (ψ : AddChar (AF F) ℂ) 
   unfold symplOF
   rw [hOF_actOF hS]
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]`.
+-/
 theorem sigma_sigma (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := Classical.arbitrary _
   apply τ.injective
   rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξ hc Λ w lam Om h μ 𝓕 hμ h𝓕 p f`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hB.cm`. Establish `hn : ∀ a, ‖B.ψ a‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hB.std`. Take `⟨Bf, hB1, hB2⟩` from `GlobalTheory.T.exists_heisenbergInvariant_thetaMeanSquare_form F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ) (fun _ hf => hf) μ 𝓕 hμ h𝓕`. Rewrite using `[hB2, hB2, GlobalTheory.T.invariantForm_normalizedHeisenbergIntertwiner (isHeis_opFF hσ hS hT hξ hc h.hw) (fun x y => hn _) lam h.good _ h.sd h.span (rhoFF σ JS JT p) (gamFF_rhoFF hS ξ₀ B.ψ p) (h.sd' p) (h.fin p) (Om p) (h.op p) (h.vac p) Bf]`.
+
+Introduce `x u v`. Establish `h1 : ∀ u : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ, opFF hc w x u = phaseF σ JS JT ξ₀ B.ψ w x • (⟨heisOF σ JS JT ξ₀ B.ψ x u, hc x u u.2⟩ : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ)` using `fun u => rfl`. Establish `h2 : phaseF σ JS JT ξ₀ B.ψ w x * (starRingEnd ℂ) (phaseF σ JS JT ξ₀ B.ψ w x) = 1`. Rewrite using `[Complex.mul_conj', show ‖phaseF σ JS JT ξ₀ B.ψ w x‖ = 1 from hn _]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, h1, Bf.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_smul, h2, one_smul]`. Conclude with `hB1 x u v _ _ rfl rfl`.
+-/
 theorem lintegral_sq_Om : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

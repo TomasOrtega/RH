@@ -23,6 +23,23 @@ namespace GlobalTheory.ColRowsTop
 
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum GlobalTheory.ColNorms GlobalTheory.PeriodClassSum GlobalTheory.LastPeriod in
 
+/- English proof (translation)
+Establish `hT : (0 : ℝ) < (Pr.T u : ℝ)` using `Nat.cast_pos.2 (hPr.T_prime u).pos`. Establish `ht : ∀ τ, star (s (X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E)))) * s (X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E))) = ((Pr.T u : ℝ) : ℂ)` using `fun τ => by`. Establish `h1` using `hX.conjE (s.comp (X.emb τ)) (star ((Pr.piT u : 𝓞 X.E) : X.E))`. Rewrite `h1` using `[star_star, RingHom.comp_apply, RingHom.comp_apply, starRingEnd_apply]`. Establish `h2 : ((Pr.piT u : 𝓞 X.E) : X.E) * star ((Pr.piT u : 𝓞 X.E) : X.E) = (Pr.T u : X.E)`.
+
+Use `congrArg (fun z : 𝓞 X.E => (z : X.E)) (hPr.piT_norm u)` as an intermediate fact. Simplify using `only [map_mul, map_natCast] at this`. Conclude with `this`. Rewrite using `[← h1, ← map_mul, ← map_mul, h2]`. Simplify using the standard rewrite rules.
+
+Establish `hB` using `coefOpLe_brAt hL s (N_m_succ R) (W.lamTrue u R.m) W.sgTrue hI hS _ hT _ ht`. Use `set hM := mtildeOk W Ch sel (mu0 X.F X.E X.K Sg) hX P`. Use `set hE := GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.evOk W Ch sel Sg hX hPr P u`. Set `_` to `hM.fintypeCl`. Establish `h` using `sum_pair_le s _ _ _ _ hB ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).toCSD hM).wt (fun c => ψ ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).outSec.rep c)) (fun c => F ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).outSec.rep c))`.
+
+Establish `e0 : PtilFF W Ch sel (mu0 X.F X.E X.K Sg) P hM u ψ F = ∑ c, ((((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).toCSD hM).wt c : ℕ) : X.K)⁻¹ * pairBK W.sgTrue (brC W u (ψ ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).outSec.rep c))) (F ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).outSe …`. Unfold `PtilFF GSD.csOf`. Conclude with `(LinearMap.congr_fun (LinearMap.sum_apply _ _ _) _).trans (LinearMap.sum_apply _ _ _)`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt (evGSD W Ch sel (mu0 X.F X.E X.K Sg) P u) hE s ψ = ∑ c, ((((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).toCSD hM).wt c : ℕ) : ℝ)⁻¹ * sqAt s (W.lamTrue u R.m) (ψ ((mtildeGSD W Ch sel (mu0 X.F X.E X.K S …`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt GSD.ipAt`.
+
+Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `(re_inv_mul _ _).trans (congrArg₂ (· * ·) rfl ((gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb _ (W.lamTrue u R.m) s).2 _))`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt (mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P) hM s F = ∑ c, ((((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).toCSD hM).wt c : ℕ) : ℝ)⁻¹ * sqAt s W.sgTrue (F ((mtildeGSD W Ch sel (mu0 X.F X.E X.K Sg) P).o …`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt GSD.ipAt`.
+
+Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hg` using `(gram_posSemidef_and_sqAt X.E X.K X.Tau X.emb _ W.sgTrue s).2`. Simplify using `only [pairVr_one_eq, pairK_one_basis] at hg`. Use `(re_inv_mul _ _).trans (congrArg₂ (· * ·) rfl (Eq.trans ?_ (hg _)))` and prove the remaining obligations.
+
+Unfold `GSD.pairAt`. Rewrite using `[row_gramV]`. Both sides reduce to the same expression. Rewrite using `[e0, e1, e2]`. Use `h.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ?_ ?_) ?_)` and prove the remaining obligations.
+
+Rewrite using `[lastLog, Real.exp_add, mul_comm (-_ : ℝ), ← Real.rpow_def_of_pos hT, ← Int.cast_neg, Real.rpow_intCast]`. Conclude with `mul_le_mul_of_nonneg_left (Real.le_exp_log _) (by positivity)`. Conclude with `Finset.sum_nonneg fun c _ => mul_nonneg (by positivity) (sqAt_nonneg _ _ _)`. Conclude with `Finset.sum_nonneg fun c _ => mul_nonneg (by positivity) (sqAt_nonneg _ _ _)`.
+-/
 theorem periodFun_le (hL : LastMapNorm) {X : Fields} (hX : X.Ok) {Pr : Primes X} (hPr : Pr.Ok) {R : Ranks} (W : Wts X Pr.Word R)
     (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ)
     (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) (hI : ∀ τ, Br.Interlace (N_m_succ R) (W.lamTrue u R.m τ) (W.sgTrue τ))
@@ -84,6 +101,9 @@ theorem periodFun_le (hL : LastMapNorm) {X : Fields} (hX : X.Ok) {Pr : Primes X}
   · exact Finset.sum_nonneg fun c _ => mul_nonneg (by positivity) (sqAt_nonneg _ _ _)
   · exact Finset.sum_nonneg fun c _ => mul_nonneg (by positivity) (sqAt_nonneg _ _ _)
 
+/- English proof (translation)
+Substitute `hmu` using the available equality. Establish `h` using `periodFun_le hL hX hPr W Ch sel Sg P u hI hS v.embedding ψ F`. Rewrite `h` using `[InfinitePlace.norm_embedding_eq]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt, InfinitePlace.mk_embedding] at h`. Conclude with `h`.
+-/
 theorem period_le (hL : GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.LastMapNorm) {X : Fields} (hX : X.Ok) {Pr : Primes X} (hPr : Pr.Ok) {R : Ranks}
     (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {Sg : Set ℕ} (mu : Tup X.F X.E X.K Sg) (hmu : mu = 1)
@@ -99,6 +119,9 @@ theorem period_le (hL : GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSq
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.normSqAt, InfinitePlace.mk_embedding] at h
   exact h
 
+/- English proof (translation)
+Take `⟨n, e, X, -, hX⟩` from `hS`. Take `⟨y, rfl⟩` from `e.surjective ψ`. Rewrite using `[← hX v y, Complex.ofReal_re]`. Check the signs of the components of the expression.
+-/
 theorem ipAt_nonneg_of_datFramed {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} {h : S.Ok} (hS : DatFramed S h)
     (v : InfinitePlace K) (ψ : S.EqFun) : 0 ≤ (S.ipAt h v ψ ψ).re := by
   obtain ⟨n, e, X, -, hX⟩ := hS
@@ -106,6 +129,15 @@ theorem ipAt_nonneg_of_datFramed {K : Type} [Field K] [NumberField K] [StarRing 
   rw [← hX v y, Complex.ofReal_re]
   positivity
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4`. Take `⟨C, hC, hker⟩` from `GlobalTheory.T.prime_word_local_constants h1 h2 h3 h4`. Use `⟨max (2 * (16 + 25)) (max (6 * C + 1 + 2 * C * C) (4 * C * (25 + C))), ?_⟩` and prove the remaining obligations. Introduce `D N X _ s Pr W Ch G sel Sg hX Bs Df Xg mu cst I hL hP Mem wd b hY dl B χ cD hK hF hE ev pl x δ eJ R hHost hWt hChar hAn hmu hsharp hFD hS hR hRd hC0 hpos hev`. Establish `hPr : Pr.Ok` using `hHost.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hT : 1 ≤ Pr.T (wd x)` using `(hPr.T_prime _).one_le`. Establish `hk` using `hker D N X s Pr W Ch G sel Sg (mu Bs.μ0) (cst Bs.μ0) (I Bs.μ0) dl B χ cD pl (wd x) δ (b Bs.μ0 x) (hY Bs.μ0 x) (hK Bs.μ0 x) (hF Bs.μ0 x) (hE x) Bs.J eJ R hHost hWt hChar hAn hmu hsharp (hL Bs.μ0) hFD hS hR hRd`. Establish `hl` using `GlobalTheory.T.last_side_log_bound GlobalTheory.BranchLogBound.orthNormLogBound N X Pr W pl (wd x) δ Bs.J eJ R hWt hS hR hT hRd`. Take `⟨hn, hA, hsz⟩` from `GlobalTheory.ColRows.exists_htNums_of_kerSide_lastSide Bs.J (RPl N.R) (InfinitePlace X.K) R C 25 _ _ hC (by norm_num) ((le_max_left _ _).trans hC0) (((le_max_left _ _).trans (le_max_right _ _)).trans hC0) (((le_max_right _ _).trans (le_max_right _ _)).trans hC0) hk hl`. Take `⟨X0, hX0⟩` from `GlobalTheory.ColRows.exists_isFrames X.K Bs Df hpos`.
+
+Apply the tactic sequence `obtain ⟨hdet, hiso⟩ := GlobalTheory.ColFirstIso.colsIn_isometry X hX Pr N.R W Ch sel Sg (mu Bs.μ0) (cst Bs.μ0) (I Bs.μ0) G _ (hL Bs.μ0) (wd x) (hF Bs.μ0 x 0) hmu`. Take `⟨hint, hsh⟩` from `GlobalTheory.ColRows.weights_interlace_sameShift N X Pr W pl (wd x) δ hWt hR`. Establish `hdat` using `GlobalTheory.ColRows.evGSD_datFramed X hX Pr N.R W Ch sel Sg (mu Bs.μ0) (rPsymF Ch) (wd x) (hE x)`. Use `⟨GlobalTheory.T.kerChain_matrices_with_norm_bounds X.K Bs Df (colFace hX Df Xg mu cst I hL hP Mem wd b hY (kerRec mu cst I wd b hY (ambOf s B χ cD) hK) hF ev) x (memQ (A := kerRec mu cst I wd b hY (ambOf s B χ cD) hK) (hF := hF) hE (x := x)) _ (colPerL (hP Bs.μ0) Xg (wd x) (ev Bs …` and prove the remaining obligations. Introduce `v ψ F`.
+
+Establish `hb` using `period_le GlobalTheory.BranchNorm.lastMapNorm hX hPr W Ch sel (mu Bs.μ0) hmu (rPsymF Ch) (wd x) hint hsh (hP Bs.μ0) (hE x) v ψ.1 (ev Bs.μ0 F).1.1`. Rewrite using `[hA]`. Conclude with `hb.trans (mul_le_mul_of_nonneg_left (hev X0 hX0 v F) (mul_nonneg (Real.exp_pos _).le (ipAt_nonneg_of_datFramed hdat v ψ)))`.
+-/
 theorem rowsBody_colFace : ColumnNorms → GlobalTheory.IndefiniteRowSideFullHecke.MeanPeriodLogarithms.MeanPeriod → GlobalTheory.ColNorms.FamilyVectors → GlobalTheory.ColNorms.FamilyNorms → ∃ C0 : ℝ, ∀ (D : D7) (N : NumDatum) (X : Fields) [IsTotallyComplex X.K] (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (hX : X.Ok) (Bs : DefBase X.K) (Df : DefSide Bs) (Xg : Finset (Formalism.L2.Col.G0 X.E Pr.vGs N.R.r → X.K)) (mu : Bs.Tup → Tup X.F X.E X.K Sg) (cst : ∀ t, LocCst X (rowSG Pr sel (mu t))) (I : ∀ t, ChIdx X Pr N.R (QE sel (mu t : Chr X.F X.E X.K))) (hL : ∀ t, (I t).Ok Ch sel (mu t) (cst t) G (N.R.m - 2)) (hP : ∀ t, (mtildeGSD W Ch sel (mu t) (rPsymF Ch)).Ok) (Mem : Type) (wd : Mem → Pr.Word) (b : ∀ t, Mem → (I t).β (N.R.m - 2 + 1)) (hY : ∀ t x, YbHyp (R := N.R) sel (mu t) (cst t) (I t) (wd x) (N.R.m - 2) (b t x)) (dl : ℂ) (B : Base D D.host.ccK dl) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (hK : ∀ t x, KerEquivC W Ch sel (mu t) (cst t) (I t) (ambOf s B χ cD) (wd x) (N.R.m - 2) (b t x) (hY t x) (rPsymF Ch)) (hF : ∀ t x j, (chF W sel (mu t) (I t) (wd x) j).Ok) (hE : ∀ x, (evGSD W Ch sel (mu Bs.μ0) (rPsymF Ch) (wd x)).Ok) (ev : ∀ t, (Fin (Df.nV t) → X.K) →ₗ[X.K] V0X W Ch sel (mu t) Xg (rPsymF Ch)) (pl : RPl N.R ≃ X.Tau) (x : Mem) (δ : Code N) (eJ : Bs.J ≃ Fin N.R.m) (R : RecNums Bs.J (RPl N.R)), HostTie N s Pr → WeightTie N W pl (wd x) δ → CharTie N s W Ch G sel → AnalyticTie D dl χ cD → mu Bs.μ0 = 1 → (cst Bs.μ0).sharp = true → FieldOfDefinition W sel (mu Bs.μ0) (cst Bs.μ0) (wd x) (ambOf s B χ cD) → Sizes Pr W N.sc.a → SizeRows N δ (Pr.T (wd x)) → Reads N eJ δ (Pr.T (wd x)) R → C0 ≤ R.Ch → (∀ v : InfinitePlace X.K, ((Df.HV Bs.μ0).map v.embedding).PosDef) → (∀ X0, IsFrames Df X0 → ∀ v F, ((mtildeGSD W Ch sel (mu Bs.μ0) (rPsymF Ch)).ipAt (hP Bs.μ0) v ((ev Bs.μ0 F).1).1 ((ev Bs.μ0 F).1).1).re ≤ Formalism.HermitianLatticesTheory.normAt (Pi.basisFun X.K (Fin (Df.nV Bs.μ0))) X0 v F ^ 2) → RowsBody (colFace hX Df Xg mu cst I hL hP Mem wd b hY (kerRec mu cst I wd b hY (ambOf s B χ cD) hK) hF ev) x (memQ (A := kerRec mu cst I wd b hY (ambOf s B χ cD) hK) (hF := hF) hE (x := x)) (colsIn W Ch hX sel (mu Bs.μ0) (cst Bs.μ0) (I Bs.μ0) (hL Bs.μ0) (wd x)) R ∧ ∀ v, IsUnit ((MramH W Ch hX (wd x)).X v).det := by
   intro h1 h2 h3 h4
   obtain ⟨C, hC, hker⟩ := GlobalTheory.T.prime_word_local_constants h1 h2 h3 h4

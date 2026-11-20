@@ -20,24 +20,42 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (T2Space ((v : InfinitePlace F) → v.Completion))`.
+-/
 theorem t2Space_infiniteAdeleRing_of_numberField : T2Space (InfiniteAdeleRing F) :=
   inferInstanceAs (T2Space ((v : InfinitePlace F) → v.Completion))
 
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.secondCountableTopology`.
+-/
 theorem secondCountable_completion (v : InfinitePlace F) : SecondCountableTopology v.Completion :=
   (InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.secondCountableTopology
 
+/- English proof (translation)
+Use `haveI := secondCountable_completion F`. Conclude with `inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))`.
+-/
 theorem secondCountable_inf : SecondCountableTopology (InfiniteAdeleRing F) := by
   haveI := secondCountable_completion F
   exact inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
 
+/- English proof (translation)
+Use `haveI := t2Space_infiniteAdeleRing_of_numberField F`. Conclude with `inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`.
+-/
 theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
   haveI := t2Space_infiniteAdeleRing_of_numberField F
   exact inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Use `haveI := secondCountable_inf F`. Conclude with `inferInstanceAs (SecondCountableTopology (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`.
+-/
 theorem secondCountable_AF : SecondCountableTopology (AF F) := by
   haveI := secondCountable_inf F
   exact inferInstanceAs (SecondCountableTopology (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.toContinuousAdd (AF F) (AE F E)`.
+-/
 theorem continuousAdd_AE : ContinuousAdd (AE F E) :=
   IsModuleTopology.toContinuousAdd (AF F) (AE F E)
 
@@ -48,17 +66,29 @@ def homAE : AE F E ≃ₜ (Fin (Module.finrank F E) → AF F) :=
     continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap
     continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }
 
+/- English proof (translation)
+Use `haveI := t2Space_adeleRing_of_numberField F`. Conclude with `(homAE F E).isEmbedding.t2Space`.
+-/
 theorem t2Space_cm_host_adeles : T2Space (AE F E) := by
   haveI := t2Space_adeleRing_of_numberField F
   exact (homAE F E).isEmbedding.t2Space
 
+/- English proof (translation)
+Use `haveI := secondCountable_AF F`. Conclude with `(homAE F E).isEmbedding.secondCountableTopology`.
+-/
 theorem secondCountable_AE : SecondCountableTopology (AE F E) := by
   haveI := secondCountable_AF F
   exact (homAE F E).isEmbedding.secondCountableTopology
 
+/- English proof (translation)
+The claim follows from `(homAE F E).isClosedEmbedding.locallyCompactSpace`.
+-/
 theorem locallyCompact_AE : LocallyCompactSpace (AE F E) :=
   (homAE F E).isClosedEmbedding.locallyCompactSpace
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.topologicalAddGroup (R := AF F) (AE F E)`.
+-/
 theorem topAddGroup_AE : IsTopologicalAddGroup (AE F E) :=
   IsModuleTopology.topologicalAddGroup (R := AF F) (AE F E)
 
@@ -66,6 +96,11 @@ end GlobalTheory.AdelicFourierUniq
 
 open GlobalTheory.AdelicFourierUniq in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ ψ hψ d A _ p hp hsep μ hμ N hN hi h`. Use `letI : MeasurableSpace (Fin d → AE F E) := borel _`. Use `haveI : BorelSpace (Fin d → AE F E) := ⟨rfl⟩`. Use `haveI := t2Space_cm_host_adeles F E`. Use `haveI := secondCountable_AE F E`.
+
+Use `haveI := locallyCompact_AE F E`. Use `haveI := topAddGroup_AE F E`. Establish `hp0 : p 0 = 0` using `by simpa using hp 0 0`. Use `GlobalTheory.CharFourierInj.eq_zero (fun a u => ψ (p a u)) (fun a => hψ.1.comp (IsModuleTopology.continuous_of_linearMap (R := AF F) (p a))) (fun a x y => by simp only [map_add, AddChar.map_add_eq_mul]) (fun a b x => by simp only [hp, LinearMap.add_apply, AddChar.map_add_eq_mul]) …` and prove the remaining obligations.
+-/
 theorem GlobalTheory.AdelicFourierUniq.eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ψ : AddChar (AF F) ℂ),
     IsStd ψ → ∀ (d : ℕ) (A : Type) [AddCommGroup A] (p : A → (Fin d → AE F E) →ₗ[AF F] AF F),
     (∀ a b, p (a + b) = p a + p b) → (∀ u, (∀ a, ψ (p a u) = 1) → u = 0) →

@@ -15,6 +15,13 @@ namespace GlobalTheory.DblSchr
 
 open Matrix GlobalTheory.Doubling
 
+/- English proof (translation)
+Introduce `D S JB ξ h`. Establish `hinv : (dblSp S).gram⁻¹ = blkMat finSumFinEquiv S.gram⁻¹ (-S.gram⁻¹)` using `Matrix.inv_eq_left_inv (by`. Rewrite using `[gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.nonsing_inv_mul _ (isHermND_gram S).2.isUnit, blkMat_one])`. Rewrite using `[hinv, incM_JBd]`. Use extensionality with `i j`.
+
+Establish `hij : ∀ a b, ξ * incM D.host.F JB a b = incM D.host.F (D.host.xi0 • S.gram⁻¹) a b` using `fun a b => by`. Rewrite using `[← h]`. Both sides reduce to the same expression. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with i' | i' <;> rcases h2 : finSumFinEquiv.symm j with j' | j' <;>`. Simplify using `only [blkMat, GlobalTheory.WeilM.dbl, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.map_apply, Matrix.smul_apply, Matrix.submatrix_apply, h1, h2, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Ma …`.
+
+Conclude with `hij i' j'`. Conclude with `congrArg Neg.neg (hij i' j')`.
+-/
 theorem dblGram_xi : ∀ (D : D7) (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E),
     ξ • incM D.host.F JB = incM D.host.F (D.host.xi0 • S.gram⁻¹) →
     ξ • incM D.host.F (GlobalTheory.DblSchr.JBd S JB) = incM D.host.F (D.host.xi0 • (GlobalTheory.Doubling.dblSp S).gram⁻¹) := by
